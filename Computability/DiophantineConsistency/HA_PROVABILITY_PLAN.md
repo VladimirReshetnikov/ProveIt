@@ -1046,3 +1046,17 @@ The exact signed transport is retained; the positive root is derived,
 not imposed by absolute value. Free-J factor3 handling is explicit. These
 external integer deductions advance the low-degree transfer but are not
 automatically proofs about nonstandard internal arithmetic.
+
+
+## Actual C222 finite leaf contracts accepted
+
+The [actual C222 finite command leaves](reviews/arithmetic-command-leafperm222-root.md)
+now construct all nine physical AX selections, exact gate/bundle outputs
+and conditional false-target termination under all-top/all-stack contracts.
+Independent builds pass eighteen standard-only reports with identical
+objects. Direct rho8 retains u≤a; GEN/MP and represented unrestricted rho8
+compilation remain subsequent obligations.
+
+No false1 axiom is introduced. The terminator is conditional on an existing
+false-target contract, and exact saved-stack restoration supports the later
+MP major-premise call at top0 with its minor formula saved.

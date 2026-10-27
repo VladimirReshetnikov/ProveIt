@@ -89,6 +89,13 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [actual C222 finite command leaves](reviews/arithmetic-command-leafperm222-root.md)
+now construct all nine physical AX selections, exact gate/bundle outputs
+and conditional false-target termination under all-top/all-stack contracts.
+Independent builds pass eighteen standard-only reports with identical
+objects. Direct rho8 retains u≤a; GEN/MP and represented unrestricted rho8
+compilation remain subsequent obligations.
+
 The [actual C222 finite blocks](reviews/arithmetic-command-blockperm222-root.md)
 now prove exact cons execution, finite NIP popping, discard, zero-safe
 counter loading and AX setup with its real old-counter arguments.
