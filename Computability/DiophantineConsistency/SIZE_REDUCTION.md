@@ -3683,3 +3683,19 @@ rank and power restoration remain open; no lower-degree endpoint is claimed.
 This is an external integer theorem on the full generic signed carrier
 domain. It does not assume the desired positive source or promote external
 algebra into an internal arithmetic proof.
+
+
+## Free-J factor-three cancellation accepted
+
+The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
+now proves q^4 divides t from q^3 dividing Y and q^5 dividing
+(4Y(X+1)+3)t, for all signed integers, including q=0 and3 dividing q.
+Independent builds pass four propext/Quot.sound-only reports with identical
+objects. Its index-difference client is a main-Pell transfer prerequisite;
+no new equation endpoint is claimed.
+
+The literal finite geometric inverse and integer remainder modulo3 proof
+avoid a false coprimality premise. The q=3,Y=27,X=1,t=81 control shows
+that retaining q^5 divisibility would be incorrect on this generic domain.
+This remains an external finite algebra lemma, separate from internal HA
+proof-existence obligations.

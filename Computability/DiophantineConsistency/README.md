@@ -149,6 +149,13 @@ premise. Independent builds pass eight propext/Quot.sound-only reports and
 identical objects. Fixed consistency specialization and the full HA equation equivalence
 remain open.
 
+The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
+now proves q^4 divides t from q^3 dividing Y and q^5 dividing
+(4Y(X+1)+3)t, for all signed integers, including q=0 and3 dividing q.
+Independent builds pass four propext/Quot.sound-only reports with identical
+objects. Its index-difference client is a main-Pell transfer prerequisite;
+no new equation endpoint is claimed.
+
 The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
 now derives integral positive quotient witnesses and the signed Pell-root
 bound directly from literal A0, before source restoration. Independent
