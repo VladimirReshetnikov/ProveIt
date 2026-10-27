@@ -18,6 +18,19 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [internal power-recovery theorem](reviews/arithmetic-pell-power-recovery-root.md)
+now derives the actual represented exponential relation from the maintained
+transport/four norms and port bounds, with both indices derived internally.
+Independent fresh pairs match both objects/full logs and all nine standard-only
+reports, with zero refresh. Polynomial-zero extraction, concrete internal
+ports and simultaneous cofinal witnesses remain before the PA/HA theorem.
+
+The [actual GIC image theorem](reviews/validator-seed-gic-images222-root.md)
+now proves the real theory's moving-marker axiom images for arbitrary
+internal recognized closures. Independent fresh pairs match both objects,
+full logs and all twelve standard-only reports, with zero refresh.
+Finite axiom images, quotient/WF and actual ZF/ZFC calibration remain open.
+
 The [actual215 Home theorem](reviews/arithmetic-home215-root.md) now proves
 positive execution of the real Home checker on arbitrary internal data,
 including zero gap and the exact eighteen-step boundary. Its actual stepper

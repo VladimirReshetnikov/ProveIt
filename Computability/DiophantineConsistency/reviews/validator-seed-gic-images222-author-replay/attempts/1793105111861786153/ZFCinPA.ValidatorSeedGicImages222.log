@@ -1,0 +1,94 @@
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedGicImages222.lean:62:42: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+n : ℕ
+j : V
+t u : Bootstrapping.Semiterm V ℒₛₑₜ n
+⊢ relativize ℒₛₑₜ (domainCode j) (^rel 2 ⌜Language.Mem.mem⌝ (t.val ∷ u.val ∷ 0)) =
+    ^rel 2 ⌜Language.Mem.mem⌝ (t.val ∷ u.val ∷ 0)
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedGicImages222.lean:70:27: error: Application type mismatch: The argument
+  p.isSemiformula
+has type
+  IsSemiformula ℒₛₑₜ (↑1) p.val
+but is expected to have type
+  IsSemiformula ℒₛₑₜ 1 p.val
+in the application
+  tagRel_free j p.isSemiformula
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedGicImages222.lean:97:82: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+j : V
+K : Bootstrapping.Semiformula V ℒₛₑₜ 2
+⊢ Bootstrapping.Semiformula.subst
+        ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1, Bootstrapping.Semiterm.fvar 0]
+        (tagged (j + 1)
+          (Bootstrapping.Semiformula.rel Language.Mem.mem
+            ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1])) =
+      Bootstrapping.Semiformula.rel Language.Mem.mem ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1] ∧
+    Bootstrapping.Semiformula.subst
+          ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1, Bootstrapping.Semiterm.fvar 0]
+          (tagged (j + 1)
+            (Bootstrapping.Semiformula.rel Language.Mem.mem
+              ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 2])) =
+        Bootstrapping.Semiformula.rel Language.Mem.mem ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar 0] ∧
+      Bootstrapping.Semiformula.subst
+          ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1, Bootstrapping.Semiterm.bvar 2,
+            Bootstrapping.Semiterm.fvar 0]
+          (tagged (j + 1)
+            (Bootstrapping.Semiformula.rel Language.Mem.mem
+              ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 2])) =
+        Bootstrapping.Semiformula.rel Language.Mem.mem ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 2]
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedGicImages222.lean:127:37: error: Application type mismatch: The argument
+  hx
+has type
+  IsSemiformula ℒₛₑₜ 1 x
+but is expected to have type
+  IsSemiformula ℒₛₑₜ (↑1) x
+in the application
+  { val := x, isSemiformula := hx }
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedGicImages222.lean:133:6: error(lean.unknownIdentifier): Unknown constant `LO.FirstOrder.Arithmetic.Bootstrapping.Semiformula.val_free`
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedGicImages222.lean:169:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  shift ℒₛₑₜ (qqAlls ?m.347 ?count)
+in the target expression
+  shift ℒₛₑₜ (qqAlls b i) = qqAlls b i
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+b j : V
+hbs : shift ℒₛₑₜ b = b
+i k : V
+hb : IsSemiformula ℒₛₑₜ (k + (i + 1)) b
+base :
+  Bootstrapping.Provable seedTheory
+    (imp ℒₛₑₜ (emptyCode (j + (k + (i + 1)))) (tagRel (j + (k + (i + 1))) (subst ℒₛₑₜ (fvarVec (k + (i + 1))) b)))
+ih :
+  i ≤ k + (i + 1) →
+    Bootstrapping.Provable seedTheory
+      (imp ℒₛₑₜ (emptyCode (j + (k + (i + 1) - i)))
+        (tagRel (j + (k + (i + 1) - i)) (subst ℒₛₑₜ (fvarVec (k + (i + 1) - i)) (qqAlls b i))))
+hi : i + 1 ≤ k + (i + 1)
+e1 : k + (i + 1) - i = k + 1
+ih' :
+  Bootstrapping.Provable seedTheory
+    (imp ℒₛₑₜ (emptyCode (j + k + 1)) (tagRel (j + k + 1) (subst ℒₛₑₜ (fvarVec (k + 1)) (qqAlls b i))))
+hB : IsSemiformula ℒₛₑₜ (k + 1) (qqAlls b i)
+⊢ shift ℒₛₑₜ (qqAlls b i) = qqAlls b i
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedGicImages222.lean:169:36: error: Application type mismatch: The argument
+  hb.isUFormula
+has type
+  IsUFormula.{u_1, 0} ℒₛₑₜ b
+but is expected to have type
+  IsUFormula.{0, 0} ℒₛₑₜ ?m.347
+in the application
+  NativePeel.shift_qqAlls hb.isUFormula
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedGicImages222.lean:198:55: error: Application type mismatch: The argument
+  he
+has type
+  Derivable.{u_1, 0} seedTheory (emptyCode j ⫽ emptyGuard j ⫽ sideSet j)
+but is expected to have type
+  Derivable.{0, 0} ?m.100 (?m.102 ⫽ ?m.104)
+in the application
+  NativePeel.derivable_mp ?m.110 ?m.111 he

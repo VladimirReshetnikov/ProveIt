@@ -26,6 +26,25 @@ and half-index recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
 
+The [internal power-recovery theorem](reviews/arithmetic-pell-power-recovery-root.md)
+now derives `X = Exp.exp R`, the represented exponential graph and
+`Exp.exp R < Y` from the literal transport/four norms and genuine port
+bounds. Both Pell indices are derived. A fixed Sigma1 comparison and a
+nonnegative quotient avoid arbitrary-base exponentiation or signed modular
+oracles. Independent fresh pairs match both objects/full logs and all nine
+standard-only reports with zero refresh. Concrete internal ports, actual
+polynomial-zero extraction and simultaneous cofinal witnesses remain before
+PA/HA assembly.
+
+The [actual recognized GIC image theorem](reviews/validator-seed-gic-images222-root.md)
+now discharges `AxiomImages gicTheory V`, including arbitrary internal
+recognizer closure counts. The matrix is relativized before swapping its
+slots; genuine Sigma1 induction closes the changing-marker family. Its
+Type0 model boundary matches the reused syntax API and suffices for the
+proof-existence completeness route. Independent fresh pairs match both
+objects/full logs and all twelve standard-only reports with zero refresh.
+Finite axiom images, quotient/Member/WF and actual ZF/ZFC calibration remain.
+
 The [actual215 Home theorem](reviews/arithmetic-home215-root.md) now supplies
 positive internal execution of the real Home checker, including zero gap,
 empty true runs and the exact eighteen-step boundary for every right tail.
@@ -41,8 +60,9 @@ fourteen-field data, additive transport identity and port bounds. The actual
 four additive norms yield both Pell indices, `2*n = R+1`, and the positive
 omitted quotient in `k = R+1+4*E*Y*h`. Independent fresh pairs match both
 objects/full logs and all five standard-only reports, with zero prerequisite
-refreshes. Concrete internal ports, extraction of the norms from polynomial
-zero, power recovery and cofinal witnesses remain before PA/HA assembly.
+refreshes. Power recovery is supplied above; concrete internal ports,
+extraction of the norms from polynomial zero and cofinal witnesses remain
+before PA/HA assembly.
 
 The [changing-marker derivation transport](reviews/validator-seed-marker-relativization222-root.md)
 now handles all ten actual internal derivation constructors, using genuine
@@ -50,8 +70,8 @@ Sigma1 bounded-budget induction and explicit source axiom images. Its
 falsum endpoint composes the accepted marker discharge; the IΣ2 endpoint
 then supplies an actual checker refutation witness. Independent fresh pairs
 match both objects/full logs and all 15 standard-only reports, with zero
-prerequisite refreshes. The actual GIC/ZF axiom images remain to be proved;
-the conditional transport is not yet the ZFC-to-checker bridge.
+prerequisite refreshes. The GIC component is supplied above; the remaining
+source images and ZF calibration still precede the ZFC-to-checker bridge.
 
 The [actual215 symbolic executor theorem](reviews/arithmetic-symbolic-core215-root.md)
 now interprets the real checker oracle, every symbolic step and successful
@@ -70,9 +90,9 @@ as source antecedents. It retains tagged global support with an unrestricted
 input witness and coverage for tagged inputs in a. The arbitrary-matrix step
 uses actual source equality replacement. Three fixed total syntax graphs
 bind the matrix, body and conclusion. Independent fresh pairs match both
-objects/full logs and 13 standard-only reports. The actual tagged schema
-image and uniform recognizer closure, general proof interpretation and
-quotient/WF/ZF/ZFC calibration remain open.
+objects/full logs and 13 standard-only reports. The actual GIC schema image
+and uniform recognizer closure are supplied above; the remaining source
+images and quotient/WF/ZF/ZFC calibration remain open.
 
 The [actual half-carrier index theorem](reviews/arithmetic-pell-half-index-root.md)
 now derives the main Pell pair at the literal rank from the actual norms,
