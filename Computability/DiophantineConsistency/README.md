@@ -99,6 +99,11 @@ now has a proved internal decrease of the remaining word and exact
 all-raw Nat one-command semantics. Its independent pair passes thirteen
 standard-only reports. Halt0 and positive successful completion remain
 distinct; the draining and scheduling proofs are separate steps.
+The [whole-word draining theorem](reviews/arithmetic-command-runperm222-peer.md)
+now proves halt or successful completion within every internal word's
+numeric bound, with total represented evaluation and a closed PA totality
+proof. Its independent pair passes twenty-one standard-only reports.
+Execution composition, fairness and proof invariants remain open.
 The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
 now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)

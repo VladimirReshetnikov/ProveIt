@@ -640,6 +640,12 @@ now proves the required internal remaining-word decrease, retaining
 separate halt and successful-completion codes. Its independent pair passes
 thirteen standard-only reports and binds every raw Nat command to actual
 EnumPerm.cstep. The whole-word draining proof is a separate next checkpoint.
+The later [whole-word evaluator](reviews/arithmetic-command-runperm222-peer.md)
+now proves the drain bound at all internal IΣ1 word codes, total unique
+evaluation, and closed IΣ1/PA totality. Two independent fresh builds pass
+twenty-one standard-only reports. Its fixed-word pointwise induction does
+not quantify universally over changing work states. Execution composition,
+fair reach from candidate4 and the proof invariant remain open.
 
 The [73-module consistency refresh](reviews/fixed-consistency73-root.md)
 has now passed, including current R2Native, LSchema and the actual

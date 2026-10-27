@@ -2,6 +2,13 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [actual C222 whole-word evaluator](reviews/arithmetic-command-runperm222-peer.md)
+now has an independently rebuilt internal IΣ1 draining bound and total
+evaluation graph, with twenty-one standard-only reports. Its pointwise
+induction keeps word/work parameters fixed and preserves positive success
+versus halt0. Closed IΣ1/PA totality is proved; execution composition,
+scheduler fairness and the final HA consistency equivalence remain open.
+
 The [HA interval checkpoint](reviews/ha-strict-intervals-root.md) now has
 two independent successful builds and twelve propext/Quot.sound-only
 reports. Its literal existential-witness proof establishes s<S t iff
