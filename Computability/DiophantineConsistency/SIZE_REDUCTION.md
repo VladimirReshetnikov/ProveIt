@@ -3699,3 +3699,33 @@ avoid a false coprimality premise. The q=3,Y=27,X=1,t=81 control shows
 that retaining q^5 divisibility would be incorrect on this generic domain.
 This remains an external finite algebra lemma, separate from internal HA
 proof-existence obligations.
+
+
+## Four literal adaptive factors exclude negative units
+
+The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
+now extracts all four factor equalities from the literal signed product1.
+Finite modulo4 proofs exclude negative units without assuming factor
+positivity. Independent builds pass five standard-only reports and identical
+objects. Binding the full historical graph and the final HA endpoint remain
+separate.
+
+The generic signed factors retain q^3(q-1) and discriminant a^2+4a+3.
+Kernel-checked finite ZMod4 proofs establish each exclusion. The packet
+assumes neither A0/A1 nor a restored source, and supplies only the upstream
+algebra required by the separate adaptive bootstrap.
+
+
+## Positive integral adaptive main Pell root accepted
+
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
+The exact signed transport is retained; the positive root is derived,
+not imposed by absolute value. Free-J factor3 handling is explicit. These
+external integer deductions advance the low-degree transfer but are not
+automatically proofs about nonstandard internal arithmetic.

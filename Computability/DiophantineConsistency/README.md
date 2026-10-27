@@ -144,17 +144,38 @@ reports with identical objects, including fallback1 and repeated-zero
 checks. General source-proof interpretation and the final HA endpoint
 remain open.
 
+The [fixed HA consistency normalization](reviews/foundation-ha-consistency-normalization-peer.md)
+now proves both HA implications between the retained fixed GG consistency
+sentence and HA negation of the ordinary actual positive ZFC-refutation
+predicate. Independent builds pass eight standard-only reports and identical
+objects. This does not supply the equation/source PA theorem or an internal
+comparison with an independently encoded checker.
+
 The [actual Σ1 ordinary/GG theorem](reviews/foundation-ha-sigma-one-gg-root.md)
 now proves HA equivalence of the literal GG image with double negation of
 the ordinary positive formula, for arbitrary environments. Independent
-builds pass eleven standard-only reports and identical objects. Fixed ZFC
-consistency specialization and the full equation equivalence remain open.
+builds pass eleven standard-only reports and identical objects. The fixed consistency specialization is accepted above; the full
+equation equivalence remains open.
 
 The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
 now proves both implications for an arbitrary matrix, with no decision
 premise. Independent builds pass eight propext/Quot.sound-only reports and
 identical objects. Fixed consistency specialization and the full HA equation equivalence
 remain open.
+
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
+The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
+now extracts all four factor equalities from the literal signed product1.
+Finite modulo4 proofs exclude negative units without assuming factor
+positivity. Independent builds pass five standard-only reports and identical
+objects. Binding the full historical graph and the final HA endpoint remain
+separate.
 
 The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
 now proves q^4 divides t from q^3 dividing Y and q^5 dividing

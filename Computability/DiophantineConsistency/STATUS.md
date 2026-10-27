@@ -2,6 +2,32 @@
 
 Updated 26 October 2026. This is a work log, not a completion certificate.
 
+## Assessment of the requested HA endpoint
+
+26 October 2026, in response to the owner's progress question: roughly
+40–60% of the work for the displayed equation's HA proof-existence endpoint
+is a judgmental estimate, not a measured fraction of proof obligations or
+a calendar forecast. The logical infrastructure is well advanced; major
+internal arithmetic construction and calibration still remain. Smaller
+historical equations have additional transfer obligations beyond this estimate.
+
+Checked components include genuine HA derivations, the PA→HA proof map,
+the literal equation/GG comparison, actual bounded decisions and the Σ1
+ordinary/GG comparison. The fixed-consistency normalization has also passed independent review;
+its limited endpoint is recorded below and does not close the arithmetic
+connection to the equation.
+
+The decisive missing step is an actual PA derivation (or direct HA witness
+construction) connecting the displayed equation to the fixed ZFC refutation
+predicate. `FoundationHACurrentTransfer.current_iff_translated` still takes
+that PA theorem as a premise. Standard-Nat external equivalence does not
+supply it. Actual proof interpretation/compilation, exact215 calibration,
+and internal number-theoretic witness transformations remain critical work.
+A final assembly-only stage has not been reached. Later entries below are
+historical checkpoints; their older lists of open sublemmas can be superseded
+by more recent accepted records without closing this global obligation.
+
+
 The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
 now passes two independent builds with thirteen standard-only reports and
 identical objects. Its actual Π1/IΣ1 induction retains total lookup,
@@ -83,6 +109,20 @@ plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. Evaluation composition is accepted above; fixed command blocks and
 compiler/proof-state invariants remain subsequent checkpoints.
 
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
+The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
+now extracts all four factor equalities from the literal signed product1.
+Finite modulo4 proofs exclude negative units without assuming factor
+positivity. Independent builds pass five standard-only reports and identical
+objects. Binding the full historical graph and the final HA endpoint remain
+separate.
+
 The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
 now proves q^4 divides t from q^3 dividing Y and q^5 dividing
 (4Y(X+1)+3)t, for all signed integers, including q=0 and3 dividing q.
@@ -103,11 +143,18 @@ Four independent fresh builds pass eighteen standard-only reports with
 identical objects. The historical lower-degree carrier transfer remains
 separate; no equation metric or HA endpoint is promoted.
 
+The [fixed HA consistency normalization](reviews/foundation-ha-consistency-normalization-peer.md)
+now proves both HA implications between the retained fixed GG consistency
+sentence and HA negation of the ordinary actual positive ZFC-refutation
+predicate. Independent builds pass eight standard-only reports and identical
+objects. This does not supply the equation/source PA theorem or an internal
+comparison with an independently encoded checker.
+
 The [actual Σ1 ordinary/GG theorem](reviews/foundation-ha-sigma-one-gg-root.md)
 now proves HA equivalence of the literal GG image with double negation of
 the ordinary positive formula, for arbitrary environments. Independent
-builds pass eleven standard-only reports and identical objects. Fixed ZFC
-consistency specialization and the full equation equivalence remain open.
+builds pass eleven standard-only reports and identical objects. The fixed consistency specialization is accepted above; the full
+equation equivalence remains open.
 
 The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
 now proves both implications for an arbitrary matrix, with no decision

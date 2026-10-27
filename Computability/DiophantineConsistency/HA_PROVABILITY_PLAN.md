@@ -990,3 +990,59 @@ The physical AX setup retains u≤a explicitly. The actual checker accepts
 unrestricted rho8 parameters, so its later represented uniform compiler
 must implement the finite dominated-implication derivation instead of
 assuming this guard. No old C254 runtime semantics is imported.
+
+
+## Four literal adaptive factors exclude negative units
+
+The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
+now extracts all four factor equalities from the literal signed product1.
+Finite modulo4 proofs exclude negative units without assuming factor
+positivity. Independent builds pass five standard-only reports and identical
+objects. Binding the full historical graph and the final HA endpoint remain
+separate.
+
+The generic signed factors retain q^3(q-1) and discriminant a^2+4a+3.
+Kernel-checked finite ZMod4 proofs establish each exclusion. The packet
+assumes neither A0/A1 nor a restored source, and supplies only the upstream
+algebra required by the separate adaptive bootstrap.
+
+
+## Fixed Foundation ZFC consistency normalization accepted
+
+The [fixed HA consistency normalization](reviews/foundation-ha-consistency-normalization-peer.md)
+now proves both HA implications between the retained fixed GG consistency
+sentence and HA negation of the ordinary actual positive ZFC-refutation
+predicate. Independent builds pass eight standard-only reports and identical
+objects. This does not supply the equation/source PA theorem or an internal
+comparison with an independently encoded checker.
+
+The literal source is NNF negation of the actual positive Foundation
+provability predicate at falsity. Its real Σ1 certificate and exact
+empty-environment syntax equality permit the accepted generic comparison
+and GG-negation duality to compose inside HA. No positive Σ1 witness is
+extracted and no ordinary NNF-negation identity is assumed. Generic closed
+free-variable support and ordinary standard-Nat semantics remain separate
+support obligations. The decisive current-equation PA derivation is still
+a premise of FoundationHACurrentTransfer, not a consequence of this result.
+
+Both first author and independent builds pass, with eight standard-only
+reports and identical objects. The independent replay checks455 cached
+modules,139 Foundation modules,872 artifacts,57 boundaries and2118 unique
+pins before/after; it compiles only the new main/check pair. No full closure
+rebuild is claimed. Sources, drivers, input observations, logs, timings and
+object hashes are frozen in the linked author/peer records.
+
+
+## Positive integral adaptive main Pell root accepted
+
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
+The exact signed transport is retained; the positive root is derived,
+not imposed by absolute value. Free-J factor3 handling is explicit. These
+external integer deductions advance the low-degree transfer but are not
+automatically proofs about nonstandard internal arithmetic.
