@@ -40,6 +40,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
+now proves both directions for arbitrary internal IΣ1 times and boundaries,
+with exact pointer0/candidate4/zero-work specialization. The fixed Sigma1
+relation, strict normal clocks and zero absorption discharge every generic
+transport premise. Independent fresh triples match all objects/full logs
+and11 standard-only reports. Literal215 tape/site/boot/clock calibration,
+source-ZFC interpretation and the final PA/HA equation theorem remain open.
+
 The [internal known-unit classification](reviews/arithmetic-pell-known-unit-root.md)
 now derives a bounded least positive unit and a uniform internal index and
 ordinate scale for every solution of the same positive-discriminant norm.
@@ -54,8 +62,8 @@ live successor, with pointer decrease or candidate increment. Actual
 equality123, the full156-atom AX word, all selectors and payload reads are
 included. Independent fresh builds match both objects/full logs and13
 standard-only reports; ROOT authenticates both packets without a third build.
-Repeated internal execution/positive clocks, literal215 calibration and the
-final PA/HA equivalence remain open.
+The later runtime theorem above supplies repeated execution and positive
+clocks. Literal215 calibration and final PA/HA equivalence remain open.
 
 The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
 now give the full plus/minus classes for arbitrary internal indices, signed

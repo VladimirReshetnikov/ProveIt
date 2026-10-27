@@ -171,12 +171,20 @@ and genuine source proofs of empty objects,singletons and inhabited tags.
 Independent builds match both objects/full logs and17 standard-only reports.
 Guarded comprehension,marker-safe interpretation and ZF/ZFC calibration remain.
 
+The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
+now proves both directions at arbitrary internal times and boundaries,
+including the literal pointer0/candidate4/zero-work seed. Its fixed Sigma1
+relation and positive clocks are derived from actual root progress.
+Independent three-command builds match all objects/full logs and11 reports.
+Literal215 tape/boot calibration and the final PA/HA theorem remain open.
+
 The [actual internal DagPerm root](reviews/arithmetic-dag-rootperm222-root.md)
 now constructs a whole root execution for every internal scheduler boundary,
 with exact next-state agreement and pointer/candidate progress. This includes
 actual equality123, the complete156-atom AX word and all dispatch branches.
 Independent builds match both objects/full logs and13 standard-only reports.
-Repeated-run halting correspondence and literal215 simulation remain open.
+The later runtime theorem above supplies repeated-run halting; literal215
+simulation remains open.
 
 The [actual internal DagPerm macros](reviews/arithmetic-dag-macros-perm222-root.md)
 now execute pairing,unpairing,reads,all13 AX atoms and both fetch cases for

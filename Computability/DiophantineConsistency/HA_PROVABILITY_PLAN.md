@@ -11,6 +11,15 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
+now composes repeated execution in both directions using a fixed Sigma1
+relation and derived positive clocks. It retains arbitrary internal data
+and the exact pointer0/candidate4/zero-work seed. Independent fresh triples
+match all objects/full logs and11 standard-only reports. Its generic
+transport is the single explicitly approved unchanged-source refresh.
+The literal215 tape/site/boot/clock simulation, actual source-ZFC calibration
+and internal polynomial witness transformations remain before PA/HA assembly.
+
 The [internal known-unit theorem](reviews/arithmetic-pell-known-unit-root.md)
 now implements the bounded least-unit search and Sigma1 descent for an
 arbitrary positive discriminant with one known positive solution. The same
@@ -24,8 +33,8 @@ now constructs the whole execution at every internal boundary and proves
 exact scheduler agreement with pointer/candidate progress. Its actual
 equality123,156-atom AX word and complete dispatch retain zero/collision
 cases. Independent fresh builds reproduce both objects/full logs and13
-standard-only reports. Repeated-run halting and positive clocks must still
-be composed before the literal215 tape/site/boot/clock simulations.
+standard-only reports. The later runtime theorem above composes repeated
+runs and positive clocks; literal215 tape/site/boot/clock simulation remains.
 
 The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
 now derive full arbitrary-index plus/minus classes, the signed doubled step
