@@ -19,7 +19,7 @@ speedup, and none was formalized.
 | Manuscript | Date | Where | Claim |
 |---|---|---|---|
 | OpenAI, *The Exponential Time Hypothesis is False* | 25 October 2026 | vendored copy [`lib/openai-math/preprints/…/paper.pdf`](../../lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf), with LaTeX sources in [`build/`](../../lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/main_full_version.tex) and [provenance](../../lib/openai-math/preprints/PROVENANCE.md); upstream [`openai/math` preprint directory](https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026) (67 pages) | A deterministic exact counter for satisfying assignments of a k-CNF. For each fixed `k ⩾ 2` it uses `poly_k(n, m)` space and runs in time `(n+m)^{O_k(1)} · 2^{n/(log n)^{1/2+o(1)}}`. Its Appendix D gives `(n+m)^{O_k(1)} · 2^{O_k(n log log n/√(log n))}` in general and `2^{O_{k,D}(n/√(log n))}` when `m ⩽ Dn`. |
-| *A 2^{o(n)} time algorithm for 3-SAT*, credited to Claude (Anthropic) | 26 October 2026, 3:13 PM PT | [`Research/claude-2o-n-3sat/eth.pdf`](Research/claude-2o-n-3sat/eth.pdf) (49 pages) | A deterministic #k-SAT algorithm with time `2^{O(min{km/√(log m), k²·n·log log n/√(log n)})}`. Appendix E states `ETHIsFalse` and `MainTheorem` as Lean 4 propositions over Mathlib's multi-stack Turing machines. It reports proofs in a 1,881-file Lean 4.33.1 development, checked by the kernel, `leanchecker` and nanoda, with no axioms beyond the standard three. The development has not been published: its link is "to be added when a public location exists". The listing's comments cite the paper under the earlier title *The Exponential Time Hypothesis is False*. |
+| *A 2^{o(n)} time algorithm for 3-SAT*, credited to Claude (Anthropic) | 26 October 2026, 3:13 PM PT | [`Research/claude-2o-n-3sat/eth.pdf`](Research/claude-2o-n-3sat/eth.pdf) (49 pages) | A deterministic #k-SAT algorithm with time `2^{O(min{km/√(log m), k²·n·log log n/√(log n)})}`. Appendix E states `ETHIsFalse` and `MainTheorem` as Lean 4 propositions over Mathlib's multi-stack Turing machines. It reports proofs in a 1,881-file Lean 4.33.1 development, checked by the kernel, `leanchecker` and nanoda, with no axioms beyond the standard three. The PDF says the development's link is "to be added when a public location exists". It has since been published in [`anthropics/formal-math`](https://github.com/anthropics/formal-math); see [the Lean development of `eth.pdf`](#lean-development-of-ethpdf) below. The listing's comments cite the paper under the earlier title *The Exponential Time Hypothesis is False*. |
 
 The OpenAI preprint directory is vendored unmodified under
 [`lib/openai-math/preprints/`](../../lib/openai-math/preprints/PROVENANCE.md),
@@ -40,6 +40,40 @@ states a weaker bound than the manuscript:
 `(L+1)^{O_k(1)} · 2^{O_k(n (log log n)²/√(log n))}` time on a canonically
 encoded k-CNF of bit length `L`, in polynomial space. That development is not
 vendored here.
+
+### Lean development of `eth.pdf`
+
+The Lean 4 formalization of *A 2^{o(n)} time algorithm for 3-SAT*, which
+Appendix E of `eth.pdf` describes, is public in
+[`anthropics/formal-math`](https://github.com/anthropics/formal-math).
+It was added by pull request
+[anthropics/formal-math#31](https://github.com/anthropics/formal-math/pull/31),
+*Add eth: paper and Lean 4 formalization of "A 2^o(n) Time Algorithm for
+3-SAT"*:
+
+- Files and commit: the PR's changes at commit
+  [`1a6eee293b9e00cb432eef6018a21f523623a9af`](https://github.com/anthropics/formal-math/pull/31/changes/1a6eee293b9e00cb432eef6018a21f523623a9af)
+  (also
+  [as a commit](https://github.com/anthropics/formal-math/commit/1a6eee293b9e00cb432eef6018a21f523623a9af)
+  and as
+  [the `eth/` tree at that commit](https://github.com/anthropics/formal-math/tree/1a6eee293b9e00cb432eef6018a21f523623a9af/eth)).
+  The PR was merged into `main` on 2026-10-27 as merge commit `16a5ce4130`.
+- Contents, as the PR describes them: `eth/` is a self-contained Lake project
+  (Lean and Mathlib `v4.33.1`).
+  - `MainResults.lean` states the two propositions on Mathlib's Turing
+    machines: `ETHIsFalse` and the paper's main theorem.
+  - `Solution.lean` proves both from the files under `proof/`.
+  - `comparator.json` names them for Comparator.
+  - The only two `sorry`s are in `Challenge.lean`, which states the theorems
+    without proofs for that check.
+  - `eth/README.md` says how to check everything.
+
+  At the merge commit, `eth/` holds 1,062 files, 1,052 of them `.lean`.
+- Its `eth/paper.pdf` (900,337 bytes, blob `77f4a8f043`) is a different
+  revision from the `eth.pdf` filed here (868,673 bytes, blob `d2ad67d5b8`).
+
+This development is linked, not vendored. Nothing in ProveIt builds or
+checks it.
 
 ## Analysis and refinement packets
 

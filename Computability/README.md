@@ -27,7 +27,9 @@ Turing-completeness and non-full-abstraction boundaries are explicit.
 [`SubexponentialSAT/`](SubexponentialSAT/README.md) collects external claims
 that #k-SAT can be solved in `2^{o(n)}` time, which would refute the Exponential
 Time Hypothesis. They are the OpenAI preprint *The Exponential Time Hypothesis
-is False*, a second manuscript credited to Claude, and twenty-nine reports that
+is False*, a second manuscript credited to Claude (its Lean 4 development is in
+[`anthropics/formal-math`](https://github.com/anthropics/formal-math/tree/1a6eee293b9e00cb432eef6018a21f523623a9af/eth)),
+and twenty-nine reports that
 refine the OpenAI contraction algorithm or map its barriers. Nothing there is
 checked in ProveIt yet.
 
