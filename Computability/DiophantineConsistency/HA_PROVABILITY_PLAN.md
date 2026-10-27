@@ -11,6 +11,15 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [uniform internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
+now constructs the exact represented open proof of every internally typed
+full-seed body,with total raw constructor graphs and actual closed-instance
+recognition. Genuine source proofs provide empty objects,singletons and a
+joint empty marker with an inhabited tag. Independent builds reproduce both
+objects/full logs and17 reports. The [reviewed source route](research/validator-seed-tagged-interpretation-plan.md)
+still needs guarded comprehension/Collection,explicit marker transport and
+the genuine QHyp quotient/WF interpretation before ZF/ZFC calibration.
+
 The [actual internal DagPerm macros](reviews/arithmetic-dag-macros-perm222-root.md)
 now supply concrete run witnesses for pairing,unpairing,reads,all13 AX atoms
 and fetch, using the accepted actual control table and physical register file.

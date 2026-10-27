@@ -40,6 +40,15 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [actual internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
+now gives fixed total Sigma1 constructor graphs,recognized closed instances,
+and explicit represented open proofs for every internally typed two-slot
+matrix. It also proves source empty objects,arbitrary-term singletons,every
+marker's inhabited tag,and a joint empty-marker/tag witness with actual
+binders. Independent fresh pairs reproduce both objects/full logs and17
+standard-only reports. Guarded comprehension/Collection,the marker-preserving
+interpreter,the QHyp quotient route and actual ZF/ZFC calibration remain open.
+
 The [actual internal DagPerm macro package](reviews/arithmetic-dag-macros-perm222-root.md)
 now proves concrete pairing/unpairing,three reads,all13 AX atoms and both
 fetch branches over arbitrary internal IΣ1 data. Pair/unpair allow dirty

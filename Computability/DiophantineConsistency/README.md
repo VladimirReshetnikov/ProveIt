@@ -165,6 +165,12 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [internal source basis](reviews/validator-seed-source-basis222-root.md)
+now constructs explicit open seed proofs for every internally typed matrix,
+and genuine source proofs of empty objects,singletons and inhabited tags.
+Independent builds match both objects/full logs and17 standard-only reports.
+Guarded comprehension,marker-safe interpretation and ZF/ZFC calibration remain.
+
 The [actual internal DagPerm macros](reviews/arithmetic-dag-macros-perm222-root.md)
 now execute pairing,unpairing,reads,all13 AX atoms and both fetch cases for
 arbitrary internal data, with the actual physical file and rotated fetch loop.

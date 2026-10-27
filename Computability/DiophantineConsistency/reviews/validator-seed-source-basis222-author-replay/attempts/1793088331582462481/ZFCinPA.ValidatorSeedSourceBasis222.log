@@ -1,0 +1,73 @@
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedSourceBasis222.lean:69:4: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedSourceBasis222.lean:85:8: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedSourceBasis222.lean:110:4: error: Type mismatch: After simplification, term
+  have this :=
+    Meta.ClProver.Theorems.to_provable T (∼Bootstrapping.Semiformula.shift q 🡒 ∼p.free)
+      (Meta.ClProver.Theorems.add_hyp T T (WeakerThan.refl T) [] [∼Bootstrapping.Semiformula.shift q 🡒 ∼p.free]
+        (p.free 🡒 Bootstrapping.Semiformula.shift q) h
+        (Meta.ClProver.Theorems.imply_right T [p.free 🡒 Bootstrapping.Semiformula.shift q] []
+          (∼Bootstrapping.Semiformula.shift q) (∼p.free)
+          (Meta.ClProver.Theorems.imply_left T [∼Bootstrapping.Semiformula.shift q] [∼p.free] p.free
+            (Bootstrapping.Semiformula.shift q)
+            (Meta.ClProver.Theorems.neg_right T [∼Bootstrapping.Semiformula.shift q] [p.free] p.free
+              (Meta.ClProver.Theorems.neg_left T [p.free] [p.free] (Bootstrapping.Semiformula.shift q)
+                (Meta.ClProver.Theorems.right_closed T [p.free] [Bootstrapping.Semiformula.shift q] p.free
+                  (Qq.List.mem_of_eq rfl))))
+            (Meta.ClProver.Theorems.neg_right T [∼Bootstrapping.Semiformula.shift q, Bootstrapping.Semiformula.shift q]
+              [] p.free
+              (Meta.ClProver.Theorems.neg_left T [Bootstrapping.Semiformula.shift q, p.free] []
+                (Bootstrapping.Semiformula.shift q)
+                (Meta.ClProver.Theorems.right_closed T [Bootstrapping.Semiformula.shift q, p.free] []
+                  (Bootstrapping.Semiformula.shift q) (Qq.List.mem_of_eq rfl)))))));
+  this
+ has type
+  T ⊢ ∼Bootstrapping.Semiformula.shift q 🡒 ∼p.free
+but is expected to have type
+  T ⊢ ∼Bootstrapping.Semiformula.shift q 🡒 (∼p).free
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedSourceBasis222.lean:112:43: error: (getGoal) error: ?m.135 not a form of _ ⊢ _
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedSourceBasis222.lean:151:31: error(lean.unknownIdentifier): Unknown constant `LO.FirstOrder.Arithmetic.Bootstrapping.Semiformula.subst_and`
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedSourceBasis222.lean:152:21: error: Application type mismatch: The argument
+  hp
+has type
+  List.map Bootstrapping.Semiformula.shift
+      [Bootstrapping.Semiformula.subst ![c, a]
+          ((∀⁰
+              (⌜seedMem 3 0 1⌝ 🡒
+                ∃⁰
+                  Bootstrapping.Semiformula.subst ![⌜#1⌝, ⌜#0⌝] ⊥ ⋏
+                    (∀⁰
+                      (⌜seedSubset⌝ 🡒
+                        ∀⁰
+                          (Bootstrapping.Semiformula.subst ![⌜#0⌝, ⌜#1⌝] ⊥ 🡒
+                            ∃⁰ Bootstrapping.Semiformula.subst ![⌜#0⌝, ⌜#2⌝] ⊥ ⋏ ⌜seedMem 7 0 5⌝))))) ⋏
+            (∀⁰
+              (Bootstrapping.Semiformula.subst ![⌜#0⌝, ⌜#2⌝] ⊥ 🡒
+                ∃⁰ Bootstrapping.Semiformula.subst ![⌜#0⌝, ⌜#3⌝] ⊥ ⋏ ⌜seedMem 4 0 2⌝)))] ⊢[Source V]
+    (Bootstrapping.Semiformula.subst ![c, a]
+        ((∀⁰
+            (⌜seedMem 3 0 1⌝ 🡒
+              ∃⁰
+                Bootstrapping.Semiformula.subst ![⌜#1⌝, ⌜#0⌝] ⊥ ⋏
+                  (∀⁰
+                    (⌜seedSubset⌝ 🡒
+                      ∀⁰
+                        (Bootstrapping.Semiformula.subst ![⌜#0⌝, ⌜#1⌝] ⊥ 🡒
+                          ∃⁰ Bootstrapping.Semiformula.subst ![⌜#0⌝, ⌜#2⌝] ⊥ ⋏ ⌜seedMem 7 0 5⌝))))) ⋏
+          (∀⁰
+            (Bootstrapping.Semiformula.subst ![⌜#0⌝, ⌜#2⌝] ⊥ 🡒
+              ∃⁰ Bootstrapping.Semiformula.subst ![⌜#0⌝, ⌜#3⌝] ⊥ ⋏ ⌜seedMem 4 0 2⌝)))).shift
+but is expected to have type
+  ?m.103 ⊢ ?m.104 ⋏ ?m.105
+in the application
+  K!_left hp
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedSourceBasis222.lean:151:67: warning: This simp argument is unused:
+  Bootstrapping.Semiformula.shift_and
+
+Hint: Omit it from the simp argument list.
+  simp only [̵p̵a̵i̵r̵A̵t̵,̵p̵a̵i̵r̵M̵a̵t̵r̵i̵x̵,̵B̵o̵o̵t̵s̵t̵r̵a̵p̵p̵i̵n̵g̵.̵S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵s̵u̵b̵s̵t̵_̵a̵n̵d̵,̵B̵o̵o̵t̵s̵t̵r̵a̵p̵p̵i̵n̵g̵.̵S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵s̵h̵i̵f̵t̵_̵a̵n̵d̵]̵[̲p̲a̲i̲r̲A̲t̲,̲ ̲p̲a̲i̲r̲M̲a̲t̲r̲i̲x̲,̲ ̲B̲o̲o̲t̲s̲t̲r̲a̲p̲p̲i̲n̲g̲.̲S̲e̲m̲i̲f̲o̲r̲m̲u̲l̲a̲.̲s̲u̲b̲s̲t̲_̲a̲n̲d̲]̲ at hp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
