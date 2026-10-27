@@ -11,6 +11,21 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+Progress estimate on 27 October 2026: **roughly 40–60% of the full HA
+proof-existence target**. This is a judgment about the remaining mathematical
+work, not a measured fraction of completed files or a delivery-time estimate.
+The HA calculus, PA-to-HA proof translation and several relevant formula
+normalization results are established. The full arithmetic equivalence
+needed by the transfer theorem remains open. Its three substantial outstanding
+connections are actual ZFC/source-checker proof interpretation, actual
+control-to-tape simulation, and internal polynomial/Pell witness assembly.
+The checked scheduler/control halting theorem, literal tape/boot theorem
+and relaxed auxiliary norm theorem below are completed parts of those
+connections. Tagged Collection and register-box execution are under
+implementation; the [reviewed half-index proposal](research/arithmetic-pell-half-index-plan.md)
+is authorized for implementation, not yet a proved theorem. No closed Lean
+theorem yet asserts that the full equivalence has an HA proof.
+
 The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)
 now supplies the original-base Pell coordinates and both p|m and c|m for
 the same positive internal index. Genuine Sigma1 quotient induction and
