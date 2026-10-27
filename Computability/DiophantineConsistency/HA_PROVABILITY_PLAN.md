@@ -944,3 +944,18 @@ rank and power restoration remain open; no lower-degree endpoint is claimed.
 This is an external integer theorem on the full generic signed carrier
 domain. It does not assume the desired positive source or promote external
 algebra into an internal arithmetic proof.
+
+
+## Actual syntactic Σ1 ordinary/GG comparison accepted
+
+The [actual Σ1 ordinary/GG theorem](reviews/foundation-ha-sigma-one-gg-root.md)
+now proves HA equivalence of the literal GG image with double negation of
+the ordinary positive formula, for arbitrary environments. Independent
+builds pass eleven standard-only reports and identical objects. Fixed ZFC
+consistency specialization and the full equation equivalence remain open.
+
+All fourteen actual hierarchy constructors are covered, with the Π0 base
+discharged by existing bounded decisions and the bounded universal by finite
+DNS. The ordinary positive conclusion remains double-negated. Next specialize
+the actual retained provability predicate and normalize its negation; a
+proof of the current equation equivalence in PA still remains separate.

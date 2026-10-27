@@ -89,11 +89,17 @@ Four independent fresh builds pass eighteen standard-only reports with
 identical objects. The historical lower-degree carrier transfer remains
 separate; no equation metric or HA endpoint is promoted.
 
+The [actual Σ1 ordinary/GG theorem](reviews/foundation-ha-sigma-one-gg-root.md)
+now proves HA equivalence of the literal GG image with double negation of
+the ordinary positive formula, for arbitrary environments. Independent
+builds pass eleven standard-only reports and identical objects. Fixed ZFC
+consistency specialization and the full equation equivalence remain open.
+
 The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
 now proves both implications for an arbitrary matrix, with no decision
 premise. Independent builds pass eight propext/Quot.sound-only reports and
-identical objects. Actual hierarchy-one ordinary/GG comparison and the
-full HA equation equivalence remain open.
+identical objects. Fixed consistency specialization and the full HA equation equivalence
+remain open.
 
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
