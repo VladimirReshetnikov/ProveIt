@@ -164,6 +164,13 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [internal Pell periodicity theorem](reviews/arithmetic-pell-periodicity-root.md)
+now constructs nonnegative quotient witnesses for both coordinates after
+arbitrarily many internal4n periods modulo x(n), with actual remainder
+identities, reflection and first-window residue injectivity. Independent
+builds match both objects/full logs and ten standard-only reports. Full
+carrier index recovery and simultaneous witnesses still precede PA/HA assembly.
+
 The [actual DagPerm/p215 comparison](reviews/arithmetic-control-bisim-perm215-root.md)
 now proves both represented control interpreters halt together from every
 internal nine-register file in every IΣ1 model. All2,850 certificate entries

@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal Pell reflection/period package](reviews/arithmetic-pell-periodicity-root.md)
+now supplies both nonnegative quotient witnesses after any internal number
+of4n periods, actual model remainders and first-window residue injectivity.
+It uses genuine Sigma1 induction and justified subtraction, including the
+n=0/modulus1 case. Independent builds reproduce both objects/full logs and
+ten standard-only reports. Arbitrary residue classes, first-norm Q(Q+1)
+classification and simultaneous carrier witnesses remain before PA/HA assembly.
+
 The [actual internal DagPerm/p215 bisimulation](reviews/arithmetic-control-bisim-perm215-root.md)
 now compares both represented control runs with arbitrary internal register
 files and time witnesses. All2,850 entries,45 blocks and both bounded branch

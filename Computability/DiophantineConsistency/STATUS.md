@@ -40,6 +40,15 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [internal Pell periodicity theorem](reviews/arithmetic-pell-periodicity-root.md)
+now supplies concrete quotients for both coordinates at4n, genuine Sigma1
+induction over arbitrary internal period counts and starts, both actual
+remainder identities, guarded reflection and residue injectivity for i,j<=n.
+The n=0/modulus1 edge is covered. Independent fresh pairs match both objects,
+full logs and ten standard-only reports; ROOT reauthenticates without a third
+compile. Full plus/minus residue classes, first-norm Q(Q+1) classification,
+simultaneous witnesses and final PA/HA composition remain open.
+
 The [actual DagPerm/p215 comparison](reviews/arithmetic-control-bisim-perm215-root.md)
 now proves the two represented control interpreters halt together for every
 internal register file in every IΣ1 model. The full2,850-entry certificate,
