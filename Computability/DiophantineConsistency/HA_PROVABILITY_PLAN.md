@@ -899,3 +899,18 @@ ambient-parameter shifts. Its arbitrary matrix may contain unbounded
 quantifiers; only the outer interval is finite. The next literal Σ1
 comparison can use this for bounded universal quantification without
 assuming a positive Σ1 decision or Markov principle.
+
+
+## Actual finite C222 existential term rule
+
+The [actual C222 existential term rule](reviews/validator-existential-rules222-root.md)
+now constructs the encoded term-instance implication and composes it under
+arbitrary hypotheses. Independent builds pass thirteen standard-only
+reports with identical objects, including fallback1 and repeated-zero
+checks. General source-proof interpretation and the final HA endpoint
+remain open.
+
+This discharges the concrete typed-term freshness and vacuity side conditions
+using the original stream. The endpoint is actual internal CProv222, not a
+new HA derivation. Full source-proof interpretation still needs its own
+induction/context encoding and hypothesis invariants.
