@@ -3655,3 +3655,18 @@ rank; its reverse existence map uses proved canonical restoration. It
 therefore supplies a concrete common endpoint for the proposed transfer
 of older compact44 arithmetic without assuming private multiplier
 normalization.
+
+
+## Literal historical shifted-source bridge accepted
+
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
+
+Only old-z=new-z+1 changes. Reverse positivity uses the source-derived
+strict bound; all31 coordinates and all four ports remain explicit. The
+next low-degree work is adaptive-carrier soundness before source restoration,
+with the now checked source bridge serving only as a downstream endpoint.

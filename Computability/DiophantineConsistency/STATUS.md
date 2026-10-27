@@ -64,6 +64,13 @@ plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. The next runtime
 checkpoint proves that evaluation of the concatenated words composes.
 
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
+
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
 reports. Genuine simultaneous formula induction proves finite all/ex

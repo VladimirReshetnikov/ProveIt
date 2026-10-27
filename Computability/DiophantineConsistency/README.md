@@ -123,6 +123,12 @@ now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
 plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. The next runtime
 checkpoint proves that evaluation of the concatenated words composes.
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed

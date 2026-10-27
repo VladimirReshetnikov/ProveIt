@@ -870,3 +870,17 @@ History index0 is the fixed right word; raw index z builds shifted left
 word z+1. The bounded history invariant covers every internal lookup, with
 default0 outside it. Actual closed IΣ1/PA totality proof-existence is
 separate from the pending execution and compiler contracts.
+
+
+## Literal shifted-source adapter accepted externally
+
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
+
+This closes the variable-convention and positive-domain part of the planned
+historical transfer. It does not silently convert external finite algebra
+into an internal PA/HA proof; that remains a separate coding obligation.
