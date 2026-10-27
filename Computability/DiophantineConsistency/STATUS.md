@@ -4,12 +4,23 @@ Updated 27 October 2026. This is a work log, not a completion certificate.
 
 ## Assessment of the requested HA endpoint
 
-26 October 2026, in response to the owner's progress question: roughly
+27 October 2026, reassessed in response to the owner's progress question: roughly
 40–60% of the work for the displayed equation's HA proof-existence endpoint
 is a judgmental estimate, not a measured fraction of proof obligations or
 a calendar forecast. The logical infrastructure is well advanced; major
 internal arithmetic construction and calibration still remain. Smaller
 historical equations have additional transfer obligations beyond this estimate.
+
+The recent accepted internal Pell classification/residue theorems, concrete
+seed-theory AxOK and complete control-table checks reduce specific parts of
+those gaps. They do not justify calling the remaining work routine assembly.
+The three substantial bridges remain actual ZF/ZFC-to-checker calibration,
+checker-to-literal-machine execution, and uniform internal polynomial/Pell
+witness transformations. The source interpretation still needs explicit
+handling of its marker parameter; the existing parameter-free interpretation
+API cannot silently discharge it. The PA-to-HA translation and fixed target
+normalizations are largely established, so the main uncertainty is now in
+these arithmetic bridges rather than intuitionistic proof translation.
 
 Checked components include genuine HA derivations, the PA→HA proof map,
 the literal equation/GG comparison, actual bounded decisions and the Σ1
@@ -28,6 +39,14 @@ execution step; it does not supply those remaining bridges.
 A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
+
+The [actual p215 control catalogue](reviews/arithmetic-control215-table-root.md)
+now has complete kernel-checked equality for all4,751 rows, a high-bit bound,
+and represented internal run/specification laws. Independent author/peer
+pairs match both objects and complete logs with nine standard-only reports;
+ROOT reauthenticates both packets without a third compiler invocation.
+DagPerm/p215 bisimulation, structured execution, literal machine calibration
+and the final PA/HA theorem remain open.
 
 The [concrete full-seed source theory](reviews/validator-full-seed-theory222-root.md)
 now has its actual Delta1 recognizer, all-internal universal closure and

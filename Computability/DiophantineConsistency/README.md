@@ -164,6 +164,12 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [actual p215 control catalogue](reviews/arithmetic-control215-table-root.md)
+now binds all4,751 rows to the actual179-node program, including the packed
+high-bit bound and internal IΣ1 run/specification laws. Independent builds
+match both objects/full logs and nine standard-only reports. The actual
+DagPerm/p215 execution comparison and final PA/HA theorem remain open.
+
 The [concrete full-seed source theory](reviews/validator-full-seed-theory222-root.md)
 now has an actual Delta1 recognizer and discharged AxOK, including universal
 closure of arbitrary internal schema parameters. Its internal falsum proofs

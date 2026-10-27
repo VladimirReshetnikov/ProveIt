@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual p215 control catalogue](reviews/arithmetic-control215-table-root.md)
+now binds all4,751 packed rows to the actual179-node program and supplies
+represented IΣ1 run/specification laws. Independent builds reproduce both
+objects and all nine axiom reports. ROOT authenticates the complete frozen
+evidence without a third compile. The next runtime obligations are actual
+DagPerm/p215 bisimulation, structured execution and literal machine/tape
+calibration; this catalogue theorem does not supply the final PA premise.
+
 The [concrete full-seed source theory](reviews/validator-full-seed-theory222-root.md)
 now has a fixed Delta1 recognizer, genuine internal Pi2/IΣ2 universal closure,
 and discharged AxOK for equality,irreflexivity and the full seed schema.
