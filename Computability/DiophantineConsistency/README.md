@@ -32,6 +32,12 @@ the empty interval and the exact successor split inside HA, with twelve
 independently checked propext/Quot.sound-only reports. They support the
 next bounded-quantifier construction; literal checker normalization remains
 a separate obligation.
+The [bounded-quantifier theorem](reviews/ha-bounded-quantifiers-root.md)
+now proves actual HA decisions for finite universal/existential bounds
+from the explicit uniform matrix-decision formula. Its simultaneous HA
+induction and two independent builds pass seventeen propext/Quot.sound-only
+reports. Structural bounded syntax and the actual checker comparison
+remain separate clients.
 An [explicit translated ZFC consistency sentence](reviews/foundation-zfc-consistency-nat-root.md)
 now has a checked standard-Nat meaning equal to the actual syntactic
 ConZFC proposition, including Choice. Its independent two-leaf replay

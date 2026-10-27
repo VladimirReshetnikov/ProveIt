@@ -1,0 +1,63 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:64:13: warning: This simp argument is unused:
+  ball
+
+Hint: Omit it from the simp argument list.
+  simp only [b̵a̵l̵l̵,̵ ̵Formula.subst, subst_ltFormula, Term.subst, Formula.instTerm,
+      Formula.term_subst_instTerm_rename_succ] at hh
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:72:2: error: Type mismatch: After simplification, term
+  Relative.and_intro hl ha
+ has type
+  Relative Formula.Ax_s G (Formula.and (ltFormula s t) (inst a s))
+but is expected to have type
+  Relative Formula.Ax_s G (Formula.and (ltFormula s t) (Formula.subst (Formula.instTerm s) a))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:125:4: error: Type mismatch: After simplification, term
+  Relative.eq_elim (plus a) (Relative.eq_symm he)
+    (Relative.prepend (Relative.and_right hp) (Formula.eq (Term.var 0) ts))
+ has type
+  Relative Formula.Ax_s (Formula.eq (Term.var 0) ts :: G) (Formula.subst (Formula.instTerm (Term.var 0)) (plus a))
+but is expected to have type
+  Relative Formula.Ax_s (Formula.eq (Term.var 0) ts :: G) a
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:142:4: error: Type mismatch: After simplification, term
+  Relative.prepend (Relative.and_right hp) (ltFormula (Term.var 0) ts)
+ has type
+  Relative Formula.Ax_s (ltFormula (Term.var 0) ts :: G) a
+but is expected to have type
+  Relative Formula.Ax_s (ltFormula (Term.var 0) ts :: G) (inst (Formula.rename (SetTheory.up Nat.succ) a) (Term.var 0))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:147:4: error: Type mismatch: After simplification, term
+  Relative.prepend (Relative.and_right hp) (Formula.eq (Term.var 0) ts)
+ has type
+  Relative Formula.Ax_s (Formula.eq (Term.var 0) ts :: G) a
+but is expected to have type
+  Relative Formula.Ax_s (Formula.eq (Term.var 0) ts :: G) (Formula.subst (Formula.instTerm (Term.var 0)) (plus a))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:162:4: error: Type mismatch: After simplification, term
+  Relative.and_right hp
+ has type
+  Relative Formula.Ax_s G a
+but is expected to have type
+  Relative Formula.Ax_s G (inst (Formula.rename (SetTheory.up Nat.succ) a) (Term.var 0))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:208:11: error: unsolved goals
+G : List Formula
+a b : Formula
+ha : Relative Formula.Ax_s G (dec a)
+hb : Relative Formula.Ax_s G (dec b)
+⊢ a.imp Formula.bot = a ∨ a.imp Formula.bot = neg b ∨ a.imp Formula.bot = neg a ∨ a.imp Formula.bot ∈ G
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:210:11: error: unsolved goals
+G : List Formula
+a b : Formula
+ha : Relative Formula.Ax_s G (dec a)
+hb : Relative Formula.Ax_s G (dec b)
+⊢ b.imp Formula.bot = b ∨ b.imp Formula.bot = neg b ∨ b.imp Formula.bot = neg a ∨ b.imp Formula.bot ∈ G
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:259:43: error: Invalid `←` modifier: `inst` is a declaration name to be unfolded
+
+Hint: The simplifier cannot "refold" definitions by name. Use `rw` for this instead,
+                      or use the `←` simp modifier with an equational lemma for `inst`.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HABoundedQuantifiers.lean:259:6: error: Type mismatch: After simplification, term
+  hh
+ has type
+  Relative Formula.Ax_s G
+    ((Formula.subst (Formula.instTerm (Term.var 0)) (plus a)).or
+      ((Formula.subst (Formula.instTerm (Term.var 0)) (plus a)).imp Formula.bot))
+but is expected to have type
+  Relative Formula.Ax_s G (a.or (a.imp Formula.bot))

@@ -565,6 +565,15 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [HA bounded quantifiers](reviews/ha-bounded-quantifiers-root.md) now
+have actual HA empty/successor laws and decision proofs from the uniform
+object-language premise ∀x.dec a. Genuine simultaneous formula induction
+preserves arbitrary nested matrices and all ambient parameters. Two fresh
+independent builds pass seventeen propext/Quot.sound-only reports. The
+next clients are structural bounded-formula decision and the literal
+Foundation/GG bounded-syntax comparison, with actual checker normalization
+still separately required.
+
 The [uniform actual C222 alpha theorem](reviews/validator-environment-alpha222-root.md)
 is now independently checked for all internal typed source codes, with
 an explicit Π2 invariant under IΣ2. Both directions retain the same context,
