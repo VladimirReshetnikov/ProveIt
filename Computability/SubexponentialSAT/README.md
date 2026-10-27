@@ -69,6 +69,62 @@ standard-library Python.
 | [`3sat_refinement/`](Research/3sat_refinement/README.md) | `3sat_refinement_package.zip` | For sparse degree-k parity tests, a scalar lift `E_i(z) = (1 + ∏(1 − 2m(z)))/2` is proved. Modulo `2^p` it leaves no incidence monomial of degree above `k(p+a−1)`; at `p = n+1` that is `k(n+a)`, against the source's `k(2n+a)`. A second contraction over compactly indexed mode tuples would give `2^{O_k(n (log log n)^{3/2}/log n)}`. [`3sat_refinement_report.pdf`](Research/3sat_refinement/3sat_refinement_report.pdf), 17 pages; [`data/research_status.json`](Research/3sat_refinement/data/research_status.json) separates proved, inherited and assumed results. | The leading bound stays `2^{O_k(n log log n/√(log n))}`. The stronger exponent needs a compact factorization that is **not supplied**; compacting index strings alone gives tensors with too many wires. |
 | [`3sat_asymptotic_analysis/`](Research/3sat_asymptotic_analysis/README.md) | `3sat_asymptotic_analysis_20261027.zip` | **No stronger unrestricted bound is established.** It proves restricted barriers: weighted-budget tightening, taper retuning and Newton modes do not by themselves improve the exponent. Two **missing** interfaces are identified. A degree-preserving recursive interface would give `O(n √(log log n/log n))`; a uniform linear-wire compression interface would give `O(n/√(log n))`. [`report/report.pdf`](Research/3sat_asymptotic_analysis/report/report.pdf), 11 pages; [`research_decision/findings.md`](Research/3sat_asymptotic_analysis/research_decision/findings.md). | Neither interface is constructed. It includes three upstream Lean files in `audit/lean_selected/`, identified by `manifest.json`; they are not built. The bundled copy of the preprint and upstream README/license (`source/`) is omitted as byte-identical to upstream; `source/manifest.json` and the derived `source/paper.txt` are kept. |
 
+## Strongest claimed improvements over the OpenAI preprint
+
+This summary comes from each packet's README and status files. ProveIt has
+checked none of it. The baseline is the preprint's Appendix D:
+`2^{O_k(n log log n/√(log n))}` in the worst case and `2^{O_{k,D}(n/√(log n))}`
+at fixed clause density.
+
+**Strongest proved claim: an improvement in one density regime, not in the
+worst case.** Two packets claim it independently:
+
+- [`sat_density_improvement/`](Research/sat_density_improvement/README.txt)
+  claims `poly_k(n,m) · 2^{O_k((n/√(log n)) · min{log(2+m/n), log log n})}`.
+- [`eth_density_refinement/`](Research/eth_density_refinement/README.txt)
+  claims essentially the same bound, `2^{O(n log(2+B)/√(log n))}` for `m ⩽ Bn`
+  with `B ⩽ (log n)^A`.
+
+At `m = Θ(n log log n)` the exponent drops from `n log log n/√(log n)` to
+`n log log log n/√(log n)`. The gain appears only when the density `B` tends to
+infinity with `log B = o(log log n)`. Neither packet changes the worst-case
+exponent or the fixed-density exponent.
+
+**Proved improvements of constants only.** Each comparison below is between
+upper bounds, not measured runtimes.
+
+| Packet | Claimed gain |
+|---|---|
+| [`eth_contraction_improvements/`](Research/eth_contraction_improvements/README.txt) | Exponent coefficient 648.44… against 18,535.75… for the source schedule under the same analysis, about 28.6× |
+| [`eth_density_refinement/`](Research/eth_density_refinement/README.txt) | Leading mode-enumeration coefficient divided by 16 |
+| [`3sat_precision_refinement/`](Research/3sat_precision_refinement/README.md) | Working precision `24MD/u` → `6MD/u`, halving the leading constant |
+| [`cauchy_mode_improvement/`](Research/cauchy_mode_improvement/README.txt) | Mode-count ratio `1/√3` |
+
+**Strongest claim of all, conditional on an unproved step.**
+[`3sat_precision_refinement/`](Research/3sat_precision_refinement/README.md)
+claims that a structured-mode summation method would give
+`2^{O(n log log n/log n)}` in general and `2^{O(n/log n)}` at fixed density,
+replacing `√(log n)` in the denominator by `log n`. The method rests on a
+missing algorithm, which the packet states as an unproved hypothesis. The
+other conditional proposals are weaker:
+
+- [`3sat_refinement/`](Research/3sat_refinement/README.md) proposes
+  `n (log log n)^{3/2}/log n`. It needs a compact factorization that the packet
+  does not supply.
+- [`3sat_asymptotic_analysis/`](Research/3sat_asymptotic_analysis/README.md)
+  derives `n √(log log n/log n)` and `n/√(log n)` from two interfaces that it
+  calls missing. It concludes that no stronger unrestricted bound is
+  established.
+
+[`eth.pdf`](Research/claude-2o-n-3sat/eth.pdf) is a separate manuscript, not a
+refinement of the OpenAI preprint. Its `n`-bound, `k² n log log n/√(log n)`,
+has the same order as the preprint's Appendix D.
+
+All the conditional routes target the `√(log n)` denominator. The barrier
+results of `3sat_asymptotic_analysis/` say that retuning the existing
+parameters (weighted budgets, taper, Newton modes) cannot remove it. A real
+order improvement therefore needs new structure, not better constants.
+
 ## Placement record
 
 - Arrivals. The drop process staged the first five files (three packets,
