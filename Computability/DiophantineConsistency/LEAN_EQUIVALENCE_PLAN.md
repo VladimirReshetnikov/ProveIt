@@ -16,6 +16,15 @@ ZFC derivation is superseded as the primary remaining target.
 
 ## Required endpoints and evidence
 
+The current [13-positive/88-operation/degree51 packet](reviews/adaptive-current13-metrics-root.md)
+is now bound to the unchanged `NativeAdaptiveGraph` and
+`NativeAdaptiveCurrent2011` external endpoint at the exact current ports.
+Independent finite certification covers every live gate, complete degree
+leaders and all47,313 coefficient bytes; normal/optimized replays agree.
+This uses the accepted Lean existence equivalence, with a finite ordinary
+metric proof rather than a new kernel totalDegree theorem. The equation's
+internal PA/HA proof remains a required endpoint below.
+
 `DiophantineConsistency.ConZFC` is
 `¬ BProv ZFCax_s [] Form.fBot`, for the actual repository axiom predicate.
 `NativeZFC.noPositiveZero_iff_conZFC`, `ExplicitZFC` and `DirectQuarticZFC`

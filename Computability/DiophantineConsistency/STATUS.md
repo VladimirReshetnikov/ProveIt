@@ -40,6 +40,15 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [current13/88/51 metric packet](reviews/adaptive-current13-metrics-root.md)
+now independently certifies every live gate, complete specialized leading
+polynomial and all47,313 current coefficient bytes. Its literal evaluator and
+external ConZFC equivalence were already accepted; no new Lean build runs.
+ROOT normal/optimized replays reproduce the complete certificate/stdout and
+258 actual corruption controls. It improves current13/178/86 at the same
+tuple but does not dominate cheaper schedules such as13/75/96. The historical
+larger-tuple13/88/51 is a separate retained comparison; internal HA remains open.
+
 The [internal Pell periodicity theorem](reviews/arithmetic-pell-periodicity-root.md)
 now supplies concrete quotients for both coordinates at4n, genuine Sigma1
 induction over arbitrary internal period counts and starts, both actual

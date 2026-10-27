@@ -11,6 +11,13 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [current13/88/51 finite certificate](reviews/adaptive-current13-metrics-root.md)
+now covers the accepted literal graph at its exact current47,313-byte tuple:
+every paid/live gate, all specialized leaders, exact degree51 and complete
+coefficient reconstruction. The external Lean ConZFC endpoint is already
+closed. This promotes a current-tuple size comparison without a new Lean
+build or kernel totalDegree theorem; its internal PA/HA endpoint remains open.
+
 The [internal Pell reflection/period package](reviews/arithmetic-pell-periodicity-root.md)
 now supplies both nonnegative quotient witnesses after any internal number
 of4n periods, actual model remainders and first-window residue injectivity.
