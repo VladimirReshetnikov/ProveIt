@@ -152,6 +152,13 @@ builds pass sixteen standard-only reports with identical objects. Context
 quantifier transport,source derivation induction and source axiom
 interpretation remain open.
 
+The [actual C222 internal source-proof interpreter](reviews/validator-source-derivation222-root.md)
+now covers all ten source rules using actual internally coded derivations
+and Pi2/IΣ2 induction. Independent builds pass seventeen standard-only
+reports and identical objects. Its explicit AxOK premise still requires
+actual source-axiom interpretation before a fixed source-ZFC reduction;
+exact machine calibration and the final HA equivalence remain open.
+
 The [adaptive Mersenne recovery](reviews/native-adaptive-mersenne-root.md)
 now recovers3∤q,q∣X and a positive radix power q=(2^94517)^N from
 the literal cuts and actual width identity. Its generic proof excludes

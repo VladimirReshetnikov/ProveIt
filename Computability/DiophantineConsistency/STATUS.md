@@ -30,6 +30,13 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [actual C222 internal source-proof interpreter](reviews/validator-source-derivation222-root.md)
+now covers all ten Foundation proof rules by genuine Pi2/IΣ2 induction,
+with actual History222 witnesses and internally sized contexts. Independent
+builds pass seventeen standard-only reports with identical objects. The
+explicit AxOK premise still requires actual source-axiom images; a fixed
+source-ZFC calibration and the final HA equivalence remain open.
+
 The [adaptive Mersenne recovery](reviews/native-adaptive-mersenne-root.md)
 now derives3∤q,q∣X and q=(2^94517)^N with N>0 and94517*N≤R.toNat
 from the literal positive cuts and the actual width identity. It excludes

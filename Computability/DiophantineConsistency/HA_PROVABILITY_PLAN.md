@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual C222 source-proof interpreter](reviews/validator-source-derivation222-root.md)
+now translates all ten internal Foundation derivation cases under an
+explicit AxOK theory-image premise. Genuine Pi2/IΣ2 induction covers
+arbitrary internal codes and contexts. Independent builds pass seventeen
+standard-only reports with identical objects. The generic logical kernel
+is complete; actual source-axiom images,including the substantial tagged
+seed/set-theory construction,remain necessary for the fixed ZFC reduction.
+
 The [adaptive Mersenne recovery](reviews/native-adaptive-mersenne-root.md)
 now supplies the binary-radix conclusions from the smaller equation's
 positive cuts and actual width identity, including3∤q,q∣X and a positive
