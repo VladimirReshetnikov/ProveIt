@@ -21,10 +21,21 @@ connections are actual ZFC/source-checker proof interpretation, actual
 control-to-tape simulation, and internal polynomial/Pell witness assembly.
 The checked scheduler/control halting theorem, literal tape/boot theorem
 and relaxed auxiliary norm theorem below are completed parts of those
-connections. Tagged Collection awaits independent review; register-box
-execution and half-index recovery have since passed independent review
+connections. Tagged Collection, register-box execution and half-index
+recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
+
+The [actual tagged Collection theorem](reviews/validator-seed-tagged-collection222-root.md)
+now constructs genuine source Proof certificates for arbitrary internally
+typed binary matrices and free parameters, with exactly Empty(t) and t in a
+as source antecedents. It retains tagged global support with an unrestricted
+input witness and coverage for tagged inputs in a. The arbitrary-matrix step
+uses actual source equality replacement. Three fixed total syntax graphs
+bind the matrix, body and conclusion. Independent fresh pairs match both
+objects/full logs and 13 standard-only reports. The actual tagged schema
+image and uniform recognizer closure, general proof interpretation and
+quotient/WF/ZF/ZFC calibration remain open.
 
 The [actual half-carrier index theorem](reviews/arithmetic-pell-half-index-root.md)
 now derives the main Pell pair at the literal rank from the actual norms,
@@ -105,8 +116,9 @@ and guarded comprehension over arbitrary internal matrices/free parameters.
 The guarded endpoint has only Empty(t) as antecedent and retains U=t.
 Five fixed total raw syntax graphs and all capture-safe binders are checked.
 Independent fresh pairs match both objects/full logs and22 reports.
-Tagged Collection, marker-safe proof transport and the actual quotient/WF
-and ZF/ZFC calibration remain to be proved.
+The later Collection packet above extends it. Marker-safe proof transport,
+actual schema-image/recognizer binding, quotient/WF and ZF/ZFC calibration
+remain to be proved.
 
 The [actual internal augmented comprehension theorem](reviews/validator-seed-raw-comprehension222-root.md)
 now constructs a genuine source proof for arbitrary internal unary matrices

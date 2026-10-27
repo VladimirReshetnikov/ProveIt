@@ -165,6 +165,15 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [actual tagged Collection theorem](reviews/validator-seed-tagged-collection222-root.md)
+now constructs source Proof certificates with exactly Empty(t) and t in a
+as antecedents, for arbitrary internal binary matrices and free parameters.
+It preserves global support with an unrestricted input witness and coverage
+for tagged inputs in a, using actual source equality replacement. Three
+total raw graphs bind the matrix, body and conclusion. Independent builds
+match both objects/full logs and 13 standard-only reports. The tagged
+schema image, arbitrary recognizer closure and ZF/ZFC calibration remain open.
+
 The [changing-marker discharge theorem](reviews/validator-seed-marker-discharge222-peer.md)
 now removes an arbitrary internal number of domain side formulas and the
 final empty-marker guard from an actual residual source derivation.
@@ -178,8 +187,9 @@ now constructs genuine source Proof certificates for raw pairs, two-root
 and guarded comprehension with arbitrary internal matrices/free parameters.
 The final endpoint assumes only Empty(t), including the U=t branch, and
 retains all binder shifts and five fixed raw syntax graphs. Independent
-builds match both objects/full logs and22 standard-only reports. Tagged
-Collection, marker-safe interpretation and ZF/ZFC calibration remain open.
+builds match both objects/full logs and22 standard-only reports. The later
+Collection packet above extends it; marker-safe interpretation, actual
+schema-image/recognizer binding and ZF/ZFC calibration remain open.
 
 The [actual internal augmented comprehension proof](reviews/validator-seed-raw-comprehension222-root.md)
 now constructs a genuine source proof for every internal unary matrix and
