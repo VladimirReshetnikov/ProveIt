@@ -1,11 +1,11 @@
 # Research status
 
-Updated 25 October 2026. This is a work log, not a completion certificate.
+Updated 26 October 2026. This is a work log, not a completion certificate.
 
 The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
 now passes two independent builds with thirteen standard-only reports and
 identical objects. Its actual Π1/IΣ1 induction retains total lookup,
-repeated/zero labels and the exact qVec binder shifts. Semantic quantifier rules and the complete HA equivalence remain open.
+repeated/zero labels and the exact qVec binder shifts. General source-proof interpretation and the complete HA equivalence remain open.
 
 The [actual C222 evaluation laws](reviews/arithmetic-command-evaluationperm222-peer.md)
 now identify terminal with any stopped run and prove the exact head/tail
@@ -23,8 +23,7 @@ low-degree transfer and the final HA proof remain separate obligations.
 The [actual C222 stream theorem](reviews/validator-environment-streams222-root.md)
 now selects an explicit safe opposite-parity stream and proves relabelling
 between arbitrary free-safe starts, including overlapping s/s+2. Independent
-builds pass fifteen standard-only reports with identical objects. Semantic
-quantifier inference and arbitrary proof interpretation remain open.
+builds pass fifteen standard-only reports with identical objects. Arbitrary source-proof interpretation remains open.
 
 The [actual Foundation Δ₀ theorem](reviews/foundation-ha-deltazero-root.md)
 now proves HA decidability of the ordinary interpretation with arbitrary
@@ -50,6 +49,38 @@ working-register effect over internal IOpen inputs. Independent builds
 pass thirteen standard-only reports with identical objects, including raw0
 and literal AX y/x order. Represented append and execution composition
 remain subsequent runtime checkpoints.
+
+The [actual C222 existential term rule](reviews/validator-existential-rules222-root.md)
+now constructs the encoded term-instance implication and composes it under
+arbitrary hypotheses. Independent builds pass thirteen standard-only
+reports with identical objects, including fallback1 and repeated-zero
+checks. General source-proof interpretation and the final HA endpoint
+remain open.
+
+The [finite actual C222 quantifier rules](reviews/validator-quantifier-rules222-root.md)
+now prove ALL inference and both opened ALL/EXS body equivalences, retaining
+an explicit vacuity guard for hypotheses and deriving it for a shifted
+negative source hypothesis. Independent builds pass thirteen standard-only
+reports with identical objects. General source-proof interpretation remains open.
+
+The [actual C222 append graph](reviews/arithmetic-command-appendperm222-peer.md)
+now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
+plus actual finite command-list concatenation. Independent builds pass
+sixteen standard-only reports with identical objects. The next runtime
+checkpoint proves that evaluation of the concatenated words composes.
+
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
+
+The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
+now proves both implications for an arbitrary matrix, with no decision
+premise. Independent builds pass eight propext/Quot.sound-only reports and
+identical objects. Actual hierarchy-one ordinary/GG comparison and the
+full HA equation equivalence remain open.
 
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only

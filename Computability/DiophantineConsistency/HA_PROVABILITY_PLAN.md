@@ -841,3 +841,76 @@ unused projections may change, so the effect proof explicitly separates
 both short tags before discarding those fields. The independent parser
 preflight corrected duplicate import bookkeeping only; no Lean source
 correction or peer compiler failure occurred.
+
+
+## Actual finite ALL and opened-quantifier rules accepted
+
+The [finite actual C222 quantifier rules](reviews/validator-quantifier-rules222-root.md)
+now prove ALL inference and both opened ALL/EXS body equivalences, retaining
+an explicit vacuity guard for hypotheses and deriving it for a shifted
+negative source hypothesis. Independent builds pass thirteen standard-only
+reports with identical objects. EXS term introduction and general proof
+interpretation remain open.
+
+The object calculus here is actual C222, with numeric checker certificates.
+It is a component of the later internal proof translation, not itself an
+HA derivation of the equation equivalence. The negative source-hypothesis
+client matches the literal free/setShift shape of source ALL inference.
+
+
+## Actual C222 append representation accepted
+
+The [actual C222 append graph](reviews/arithmetic-command-appendperm222-peer.md)
+now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
+plus actual finite command-list concatenation. Independent builds pass
+sixteen standard-only reports with identical objects. The next runtime
+checkpoint proves that evaluation of the concatenated words composes.
+
+History index0 is the fixed right word; raw index z builds shifted left
+word z+1. The bounded history invariant covers every internal lookup, with
+default0 outside it. Actual closed IΣ1/PA totality proof-existence is
+separate from the pending execution and compiler contracts.
+
+
+## Literal shifted-source adapter accepted externally
+
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
+
+This closes the variable-convention and positive-domain part of the planned
+historical transfer. It does not silently convert external finite algebra
+into an internal PA/HA proof; that remains a separate coding obligation.
+
+
+## Finite bounded double-negation inside actual HA
+
+The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
+now proves both implications for an arbitrary matrix, with no decision
+premise. Independent builds pass eight propext/Quot.sound-only reports and
+identical objects. Actual hierarchy-one ordinary/GG comparison and the
+full HA equation equivalence remain open.
+
+The proof uses the existing real formula-induction axiom and capture-safe
+ambient-parameter shifts. Its arbitrary matrix may contain unbounded
+quantifiers; only the outer interval is finite. The next literal Σ1
+comparison can use this for bounded universal quantification without
+assuming a positive Σ1 decision or Markov principle.
+
+
+## Actual finite C222 existential term rule
+
+The [actual C222 existential term rule](reviews/validator-existential-rules222-root.md)
+now constructs the encoded term-instance implication and composes it under
+arbitrary hypotheses. Independent builds pass thirteen standard-only
+reports with identical objects, including fallback1 and repeated-zero
+checks. General source-proof interpretation and the final HA endpoint
+remain open.
+
+This discharges the concrete typed-term freshness and vacuity side conditions
+using the original stream. The endpoint is actual internal CProv222, not a
+new HA derivation. Full source-proof interpretation still needs its own
+induction/context encoding and hypothesis invariants.

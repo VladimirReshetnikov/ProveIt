@@ -112,6 +112,36 @@ working-register effect over internal IOpen inputs. Independent builds
 pass thirteen standard-only reports with identical objects, including raw0
 and literal AX y/x order. Represented append and execution composition
 remain subsequent runtime checkpoints.
+The [finite actual C222 quantifier rules](reviews/validator-quantifier-rules222-root.md)
+now prove ALL inference and both opened ALL/EXS body equivalences, retaining
+an explicit vacuity guard for hypotheses and deriving it for a shifted
+negative source hypothesis. Independent builds pass thirteen standard-only
+reports with identical objects. EXS term introduction and general proof
+interpretation remain open.
+The [actual C222 append graph](reviews/arithmetic-command-appendperm222-peer.md)
+now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
+plus actual finite command-list concatenation. Independent builds pass
+sixteen standard-only reports with identical objects. The next runtime
+checkpoint proves that evaluation of the concatenated words composes.
+The [actual C222 existential term rule](reviews/validator-existential-rules222-root.md)
+now constructs the encoded term-instance implication and composes it under
+arbitrary hypotheses. Independent builds pass thirteen standard-only
+reports with identical objects, including fallback1 and repeated-zero
+checks. General source-proof interpretation and the final HA endpoint
+remain open.
+
+The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
+now proves both implications for an arbitrary matrix, with no decision
+premise. Independent builds pass eight propext/Quot.sound-only reports and
+identical objects. Actual hierarchy-one ordinary/GG comparison and the
+full HA equation equivalence remain open.
+
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
