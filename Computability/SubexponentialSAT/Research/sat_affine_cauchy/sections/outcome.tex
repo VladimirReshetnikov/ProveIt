@@ -1,0 +1,87 @@
+\section{Results and their scope}
+
+The strongest new result is a strictly smaller certified exponential
+upper bound for the same generic normalized contraction problem used by
+the most recent packets. Set $\lambda=\ceil{\log_2s}$ and
+$E(s)=s/\sqrt\lambda$. The exact coefficients are
+\begin{align}
+ C_T&=\frac\pi{\ln2}
+ \left(\frac49\sqrt{\frac{2000000}{15773}}
+             +\frac{160\sqrt{14}}{351}\right)=\Ctime,\label{eq:headline-time}\\
+ C_S&=\frac\pi{\ln2}\sqrt{\frac{2000000}{47319}}=\Cspace.
+ \label{eq:headline-space}
+\end{align}
+Under the interface of Section~\ref{sec:interface}, time is
+$(s+\mathcal L)^{O(1)}2^{(C_T+o(1))E(s)}$ and space is
+$(s+\mathcal L)^{O(1)}2^{(C_S+o(1))E(s)}$.
+Eventual coefficients $30.414$ and $29.467$ are certified by exact rational
+interval calculations. The square-root ceiling changes no leading constant
+relative to the $s/\sqrt{\log_2s}$ scale used by some other packets.
+
+\begin{center}
+\begin{tabular}{p{7.5cm}rr}
+\toprule
+Generic normalized certificate & Time & Space\\\midrule
+Best reviewed polynomial-space branch \cite{flags}&46.184846&polynomial\\
+Best reviewed cached branch \cite{treecert}&30.891019&30.753913\\
+New menus, earlier three-stage schedule&30.512927&29.487537\\
+New menus, final four-stage schedule&\textbf{30.413349}&\textbf{29.466030}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new cached time coefficient is about $1.5463\%$ smaller and its space
+coefficient about $4.1877\%$ smaller than the strongest displayed comparable
+generic cached result. These percentages compare coefficients, not observed
+run times. If $U_{\rm old}$ and $U_{\rm new}$ denote the explicit
+upper-bound expressions, then
+\[
+ \log_2\frac{U_{\rm old}}{U_{\rm new}}
+ =\left(0.477670194017653\ldots+o(1)\right)E(s).
+\]
+This is a meaningful asymptotic improvement of the upper-bound function;
+it is not a lower bound on the time consumed by the older algorithm.
+
+\paragraph{The new idea.}
+The earlier best cached proof selected among three contraction trees and
+enumerated all tuples of their operation supports. We replace that small
+unstructured menu with a finite geometric menu and a pairwise correlation
+certificate. The nine-group construction uses the four parallel classes of
+$\mathbb F_3^2$; the thirteen-group construction uses cyclic shifts of one
+explicit seed. The certificate controls every feasible allocation of mode
+weights, including table construction. It pays for every actual recursive
+child-factor evaluation. This is a corpus-relative contribution; averaging,
+finite geometry, and fast matrix multiplication are classical tools.
+
+\paragraph{A second, local asymptotic improvement.}
+The normalized Cauchy matrix need not be materialized to compute its source
+linear forms. We give guarded product-tree algorithms for matrix-vector
+application and its transpose. At odd interpolation nodes, the features
+have a diagonal--Toeplitz--diagonal representation after known powers of
+two are cleared. All source forms then require one convolution. In the
+scalar ring this admits bit cost
+$\widetilde O(N(p+N))$, hence $\widetilde O(Np)$ for $p\ge N$, including
+the precision guards. The reviewed streamed application uses quadratic
+feature work. The prototype's one-convolution specialization is faster on
+all five reported fixtures; the general product-tree prototype is slower
+at those sizes, and those regressions are retained.
+
+\paragraph{The requested larger breakthrough remains open.}
+The global SAT order remains
+\[
+ \poly_k(n,m)2^{O_k(n\log\log n/\sqrt{\log n})}
+\]
+in the unrestricted fixed-width case and
+$2^{O_{k,D}(n/\sqrt{\log n})}\poly(n,m)$ at fixed clause density.
+No $n/\log n$ algorithm is proved here. The complete deliverable separates
+the new proved finite lemmas, imported analytic and arithmetic ingredients,
+tested implementation, and genuinely conditional ideas. No end-to-end SAT
+solver or new Lean formalization is claimed.
+
+The coefficients above are per normalized Boolean wire $s$. They cannot be
+inserted unchanged in an exponent written in SAT variables $n$. The
+existing density-sensitive and low-degree branches remain in the available
+portfolio; they have different premises. Nor can a numerical coefficient
+be claimed to dominate an unspecified constant in the new Anthropic
+big-$O$ bound. These distinctions are necessary to make the comparison
+mathematically meaningful.

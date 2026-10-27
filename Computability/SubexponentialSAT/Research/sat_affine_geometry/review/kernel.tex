@@ -1,0 +1,133 @@
+\section{An exact Toeplitz kernel for packet actions}
+\label{sec:kernel}
+
+This section gives a second, independent improvement: a faster exact
+\emph{matrix--vector subroutine}. It does not change the entropy coefficient
+or the logarithmic order of the SAT bound. Toeplitz multiplication and
+Kronecker substitution are classical; the contribution relative to the
+reviewed corpus is the ring-safe packet specialization, its implementation,
+and its comparison with an appropriate Boolean-input control.
+
+\subsection{The convolution identity}
+In the source packet deformation~\cite{openai}, let $L=2^a$,
+$S=\{-L,\ldots,L-1\}$, $\alpha=2L$, and
+\[
+ C(T)=\prod_{q\in S}(T-q),\qquad T=t+\alpha\zeta,\quad t\in S.
+\]
+For $-L<d<L$, define the cancelled polynomial
+\[
+ w_d=\frac{\prod_{q\in S\setminus\{d\}}(T-q)}{C'(0)}.
+\]
+The inherited integrality statement makes these entries meaningful in the
+source coefficient ring. The packet matrix satisfies
+$W_{xy}=w_{y-x}$ for $0\le x,y<L$ and is therefore Toeplitz. Put
+\[
+ A(X)=\sum_{d=-L+1}^{L-1}w_dX^{d+L-1},\qquad
+ B(X)=\sum_{y=0}^{L-1}v_yX^{L-1-y}.
+\]
+Then the exact identity
+\begin{equation}
+ (Wv)_x=[X^{2L-2-x}]A(X)B(X)\label{eq:toeplitz}
+\end{equation}
+holds over every commutative coefficient ring. Zero-fill excluded columns
+and discard excluded rows to obtain a masked action. For rows $r+hj$ and
+columns $c+hk$, use the shorter Toeplitz kernel
+$w_{c-r+h(k-j)}$. In particular, opposite parity masks use dimension $L/2$.
+No Fourier transform, inverse of $L$, or division by a nonunit is required.
+
+\subsection{Integral diagonal preparation}
+The delivered implementation fixes
+\[
+ R_p=(\mathbb Z/2^p\mathbb Z)[U]/(U^2+U+1).
+\]
+It accepts exact integer coordinates of $\zeta$ before reducing the output.
+Since $U^2+U+1$ is irreducible modulo two, an element is a unit precisely
+when its two integer coordinates are not both even. Its valuation is the
+minimum of their two-adic valuations.
+
+For $d\ne t$, $v_2(T-d)=v_2(t-d)\le a$. If $\zeta\ne0$, the remaining
+factor has valuation $a+1+v_2(\zeta)$. The complete residue grid gives
+\[
+ \sum_{q\in S\setminus\{t\}}v_2(t-q)=v_2(C'(0)),\qquad
+ v_2(C(T)/C'(0))=a+1+v_2(\zeta).
+\]
+Cancelling any one factor leaves a nonnegative valuation. Split each exact
+factor into a power of two and a unit before modular reduction. Multiply
+the units, cancel the odd part of $C'(0)$, and batch-invert all factor units.
+Restore only the nonnegative final power of two. The inverse identity is
+\[
+ (a+bU)^{-1}=\frac{(a-b)-bU}{a^2-ab+b^2};
+\]
+the denominator is odd for a unit. Preparation uses $O(L)$ ring operations
+and two unit inversions. Arbitrarily long input coordinates incur their
+own reading and normalization cost.
+
+If $\zeta=0$, cancel the unique zero factor symbolically: only $w_t$ can
+survive, and it is $C'(t)/C'(0)$. If $t=-L$, that diagonal is outside the
+matrix and the action is zero. These cases are explicitly implemented.
+
+\subsection{Exact integer convolution and bit cost}
+For nonnegative coordinate arrays $(a_i),(b_j)$, every ordinary convolution
+coefficient is at most $\min(\#a,\#b)(\max a_i)(\max b_j)$. Choose a
+byte-aligned power of two $Q$ strictly larger than this bound, pack the
+arrays as $\sum_i a_iQ^i$ and $\sum_jb_jQ^j$, multiply integers, and unpack.
+No digit can carry into its neighbor. Reduce the extracted coefficients
+modulo $2^p$. Byte-array packing avoids repeated large-integer shifts.
+
+For coordinate arrays $a+bU$ and $c+dU$, three scalar convolutions suffice:
+\[
+ A=a*c,\quad B=b*d,\quad C=(a+b)*(c+d),\qquad
+ (a+bU)*(c+dU)=(A-B)+(C-A-2B)U.
+\]
+A Boolean input uses just the two coordinate convolutions with that input.
+Let $M_{\rm int}(b)$ denote the bit cost of multiplying $b$-bit integers,
+and $I(p)$ that of a unit inversion at precision $p$. After input
+normalization, a conservative bound for preparation plus application is
+\begin{equation}
+ O\!\left(LM_{\rm int}(p+\log L)+I(p)
+              +M_{\rm int}(L(p+\log L))\right).\label{eq:kernel-cost}
+\end{equation}
+This includes reading and writing the full vector. Working storage for
+the action is $O(L(p+\log L))$ bits, in addition to whatever workspace the
+chosen integer multiplier needs. With a quasi-linear, near-linear-space
+integer multiplier the action is quasi-linear in the packed input size.
+The Python prototype uses its host's big-integer multiplication; it does
+not implement an asymptotically optimal multiplier.
+
+The Toeplitz identity also holds for unramified extension degree $e$ and
+nilpotent length $\ell$. Because $W$ has no $V$ dependence, a conservative
+coordinate extension needs $e^2\ell$ scalar convolutions plus polynomial
+coefficient reduction. That extension is an algorithmic observation, not
+an implemented arbitrary-ring interface in this archive.
+
+\subsection{Matched controls, including the negative result}
+The independent diagonal oracle forms each cancelled product at extra
+precision and only then removes the known power of two. It shares neither
+the batch-inversion preparation nor the convolution algorithm. The action
+oracle performs literal matrix--vector summation. For Boolean input, a
+stronger control skips zero columns and masked rows and uses additions
+only. This matters: multiplication-heavy dense controls overstate a speedup
+for the actual Boolean special case.
+
+Five-repeat synthetic timings are retained in
+\texttt{results/benchmarks.json}. Ratios below are control time divided by
+new time; a ratio below one means the new routine is slower. The general
+column includes preparation on both sides. Boolean columns measure action
+only with the same prepared diagonals.
+\begin{center}\small
+\begin{tabular}{rr rrr}
+\toprule $L$ & $p$ & General, incl. preparation & Boolean full grid & Boolean strided\\\midrule
+32&32&1.656&0.178&0.332\\
+64&64&2.432&0.208&0.427\\
+128&64&4.123&0.324&0.691\\
+256&128&4.434&0.345&0.846\\
+512&128&6.643&0.491&1.272\\
+1024&128&---&0.772&2.013\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus the generic convolution loses to the stronger Boolean control on
+every sampled fixture. The strided specialization wins only at the two
+largest sampled sizes. This is useful implementation evidence, not a
+measured SAT improvement. The coefficient theorem of the preceding section
+does not rely on these timings or on this kernel.

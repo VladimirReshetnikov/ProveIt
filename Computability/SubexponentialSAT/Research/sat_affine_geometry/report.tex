@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,microtype,xcolor}
+\usepackage{graphicx,tikz,fancyhdr,listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Affine Geometry and Paid Recursion for Subexponential SAT},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={A smaller certified contraction exponent; review of the latest ProveIt packets and Anthropic formalization}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\F}{\mathbb F}
+\newcommand{\K}{\mathcal K}
+\newcommand{\kap}{\kappa}
+\newcommand{\Escale}{\mathcal E}
+\newcommand{\pin}{\texttt{73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d}}
+\setlength{\emergencystretch}{3em}
+\setlength{\headheight}{14pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\makeatletter
+\renewcommand*\l@section[2]{\@dottedtocline{1}{0em}{1.5em}{\bfseries #1}{\bfseries #2}}
+\makeatother
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Affine geometry and paid recursion}
+\fancyhead[R]{\small Subexponential SAT research}
+\fancyfoot[C]{\thepage}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,framerule=.3pt}
+\title{Affine Geometry and Paid Recursion\\for Subexponential SAT\\[6pt]\large A smaller certified exponential upper bound, an exact convolution kernel,\\and an updated review of the published formalizations}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026 (Pacific date)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review ProveIt's twenty filed refinement packets and nine newly committed
+archives at \pin, with a closing review of their relocation through
+\texttt{7de9d09fec}, and incorporate the user's additional reference to
+Anthropic's now-public Lean development at revision
+\texttt{1a6eee293b9e00cb432eef6018a21f523623a9af}.
+For the common normalized Boolean tensor-contraction interface, we prove a
+new bound with time coefficient $30.2698729104\ldots$ and space coefficient
+$29.4875372869\ldots$ on the scale $s/\sqrt{\lceil\log_2s\rceil}$.
+The strongest comparable submitted pair is $30.8910189204\ldots$ and
+$30.7539128321\ldots$.
+
+The new ingredient is a four-plan contraction menu from the affine plane
+$\F_3^2$. Its uniform aggregation coefficient is exactly certified as
+$1/\sqrt3$, replacing $0.6021452276\ldots$ at nine groups. A short geometric
+proof bounds all operation supports, including intermediate table construction.
+A separate twelve-group certificate, punctured affine menus, and an explicit
+strict rational $9\to12\to8\to7\to4$ schedule pay for every recursive child
+entry. We also give an exact Toeplitz-convolution implementation for packet
+matrix actions and clarify why several tempting changes do not establish a
+smaller logarithmic order.
+
+These are natural-language proofs with reproducible finite certificates,
+relative to stated inherited deformation, recovery, and packing interfaces.
+The generic result uses subexponential space. It improves the coefficient in
+an exponential upper bound, not the unrestricted SAT exponent order, and is
+not a measured full-solver speedup or a new formal verification of either
+primary manuscript.
+\end{abstract}
+\setcounter{tocdepth}{1}{\small\tableofcontents}\newpage
+\input{review/corpus.tex}
+\input{review/interface.tex}
+\input{review/geometry.tex}
+\input{review/schedule.tex}
+\input{review/kernel.tex}
+\input{review/research.tex}
+\input{review/reproducibility.tex}
+\input{review/references.tex}
+\end{document}

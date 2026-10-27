@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "title": "Affine-plane contraction plans for exact SAT",
+  "date_pacific": "2026-10-26",
+  "repository_pins": {
+    "proveit": "73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d",
+    "anthropic": "1a6eee293b9e00cb432eef6018a21f523623a9af"
+  },
+  "status": "Mathematical proof relative to explicitly imported contraction interfaces, with exact finite certificates; not a new proof-assistant verification.",
+  "normalization": {
+    "s": "Normalized Boolean wire budget, not SAT variable count",
+    "E_s": "s/sqrt(ceil(log2(s)))",
+    "root_degree_max": "ceil(s^(9/10))",
+    "initial_precision_max": "s",
+    "coefficient_truncation_max": "s",
+    "entry_time": "poly(s+L)*2^(O(s^(9/10)))",
+    "entry_space": "poly(s+L)",
+    "matrix_exponent_allowance": "12/5 with a strict margin"
+  },
+  "bounds": {
+    "time": "poly(s+L)*2^((C_T+o(1))*E_s)",
+    "space": "poly(s+L)*2^((C_S+o(1))*E_s)",
+    "C_T_interval": [
+      "30.257035611496381514401045533302",
+      "30.257035611496381514401045533303"
+    ],
+    "C_S_interval": [
+      "25.989067718690217145240249761486",
+      "25.989067718690217145240249761487"
+    ],
+    "safe_eventual_time_coefficient": "30.26",
+    "safe_eventual_space_coefficient": "26.00",
+    "old_comparable_cached_time": "30.891018920366092...",
+    "old_comparable_cached_space": "30.753912832054975...",
+    "polynomial_space_frontier_unchanged": "46.184845586731..."
+  },
+  "new_results": [
+    {
+      "claim": "Four affine-plane plans",
+      "local_time_coefficient_squared": "1/3",
+      "unnormalized_Q": 5400,
+      "proof": "report.tex, Section 5",
+      "check": "code/check_affine_certificate.py"
+    },
+    {
+      "claim": "Same-plan joint time-space selection",
+      "local_space_coefficient_squared": "7/27",
+      "rho": "3/sqrt(7)",
+      "integer_score": "max(7*A^2,225*B^2)",
+      "rounding_error_objective_at_most": "3/sqrt(7)",
+      "proof": "report.tex, Section 6",
+      "check": "code/check_affine_certificate.py"
+    },
+    {
+      "claim": "Four twelve-group plans",
+      "local_coefficient_squared": "137/400",
+      "unnormalized_Q": 9864,
+      "tuples_exhausted": 810000,
+      "proof": "report.tex, Section 7",
+      "check": "code/check_twelve.py"
+    },
+    {
+      "claim": "Paid 9 -> 12 -> 9 -> 7 -> 4 recursion",
+      "total_taper_budget": "1/20",
+      "dominant_time_branch": "depth_1",
+      "dominant_space_stage": "root",
+      "proof": "report.tex, Section 8",
+      "check": "code/check_schedule.py"
+    }
+  ],
+  "imported_dependencies": [
+    "Exact Cauchy deformation and integral mode factorization",
+    "Hermite recovery and the canonical creation-precision entry interface",
+    "Full-Cauchy weighted entropy estimate and precision theorem",
+    "Asymmetric packet packing and near-unit padding",
+    "Fast matrix multiplication and the exact coordinate/CRT bridge",
+    "SAT and density-sensitive reductions"
+  ],
+  "unchanged_orders": {
+    "general_fixed_k_SAT": "n*log(log(n))/sqrt(log(n)) up to k-dependent constants and polynomial factors",
+    "fixed_density_fixed_k_SAT": "n/sqrt(log(n)) up to k,density-dependent constants and polynomial factors"
+  },
+  "review_scope": {
+    "placed_packets_screened": 20,
+    "incoming_packets_screened": 9,
+    "detailed_audit": "Strongest relevant cached and polynomial-space certificates, and inherited interfaces used by the new proof",
+    "all_upstream_proofs_independently_verified": false,
+    "anthropic_local_Lean_build": false
+  },
+  "verification": {
+    "summary": "results/validation_summary.json",
+    "normal_equals_optimized": true,
+    "finite_ring": "(Z/64Z)[epsilon]/(epsilon^2)",
+    "finite_fixtures": 72,
+    "finite_comparisons": 360,
+    "finite_group_entry_callbacks_paid": 9380,
+    "auxiliary_weight_3_8_certificate": "Additional local calculation only; not used in the composed theorem."
+  },
+  "not_claimed": [
+    "A smaller general SAT logarithmic order",
+    "An end-to-end fast SAT implementation",
+    "A practical SAT timing or memory speedup",
+    "A new Lean or Rocq theorem",
+    "A global optimum across contraction methods or schedules",
+    "Literature-wide priority",
+    "Numerical domination of the Anthropic unspecified-constant theorem"
+  ]
+}

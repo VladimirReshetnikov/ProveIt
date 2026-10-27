@@ -1,0 +1,154 @@
+\section{The new weighted certificate for choosing a contraction plan}
+\label{sec:portfolio}
+
+\subsection{Every matrix operation has nine linear supports}
+
+An operation merges disjoint sets $A,B$ with outside set $O$, or contracts
+the last three blocks. Its three index classes are the unordered pair sets
+$AB,AO,BO$. Their logarithmic dimensions are nonnegative numbers
+$H_1,H_2,H_3$. Formula~\eqref{eq:rectangle}, after sorting these numbers,
+is exactly the maximum of nine linear forms on the unsorted triple:
+\[
+ \operatorname{Perm}(1+\varepsilon/2,1+\varepsilon/2,0)
+ \quad\text{and}\quad
+ \operatorname{Perm}(1,47/56+\varepsilon,15/28).
+\]
+The first set has three vectors and the second six. This follows from the
+rearrangement inequality, since $1\ge47/56+\varepsilon\ge15/28$.
+They represent one sorted cost function, rather than nine separately
+executed algorithms.
+
+Multiply the supports by the fixed denominator $L_*=1{,}400{,}000$.
+The integer triples become
+\begin{equation}\label{eq:integer-triples}
+ (1400007,1400007,0),\qquad(1400000,1175014,750000),
+\end{equation}
+with the permutations just specified. Assign each unordered group edge its
+class coefficient, and assign zero to edges internal to a part.
+
+A plan is an ordered partition of $[r]$ into three nonempty blocks. Build
+each block by splitting its ordered list at $\lfloor k/2\rfloor$,
+recursively building the two halves, then multiplying their tables.
+Finally contract the three block tables. There are $r-3$ internal merges
+and one final triangle, hence $r-2$ operations and $9(r-2)$ supports.
+For plan $j$ let $\mathcal V_j$ be this finite set, and put
+\[
+ F_j(g)=L_*^{-1}\max_{v\in\mathcal V_j}v\cdot g.
+\]
+Up to polynomial factors, $2^{F_j(g)}$ pays for every local operation
+after the singleton group tables have been computed.
+
+\subsection{Couple the norm terms before taking pairwise maxima}
+
+The preceding tree packet used all tuples of one support from each plan.
+With $q$ plans and at most $m$ supports per plan, that exact certificate
+has $m^q$ tuples. The following certificate needs only $\binom q2m^2$
+support pairs. Its inequality can be weaker than complete tuple
+enumeration, but its manageable cost permits a larger, more effective
+menu of plans.
+
+\begin{theorem}[Weighted pair certificate]\label{thm:pair}
+Let $q\ge2$ and fix nonnegative integer weights $w_1,\ldots,w_q$ with
+$W=\sum_iw_i>0$. For $i<j$ define
+\begin{align}
+ A_{ij}=\max_{\substack{v\in\mathcal V_i\\z\in\mathcal V_j}}
+ \bigl(&w_i^2\norm v^2+w_j^2\norm z^2\notag\\
+       &+2(q-1)w_iw_j\,v\cdot z\bigr),\label{eq:pair-max}
+\end{align}
+and
+\[
+ U=\frac{\sum_{i<j}A_{ij}}{(q-1)W^2},\qquad
+ \beta^2=\frac{2U}{L_*^2r^2}.
+\]
+Selecting the plan of least $F_j(g)$ gives local nonrecursive time and
+local storage at most a polynomial factor times
+$2^{(\beta+o(1))\K(M,u)}$, uniformly over all exact mode-budget
+allocations.
+\end{theorem}
+
+\begin{proof}
+For arbitrary choices $v_i\in\mathcal V_i$, expansion of the squared norm
+gives the exact identity
+\begin{align*}
+ \left\|\sum_i\frac{w_i}{W}v_i\right\|_2^2
+ =\frac1{(q-1)W^2}\sum_{i<j}
+ \left(w_i^2\norm{v_i}^2+w_j^2\norm{v_j}^2
+       +2(q-1)w_iw_jv_i\cdot v_j\right).
+\end{align*}
+Each diagonal term occurs $q-1$ times. Taking the maximum of each pair
+bracket separately can only increase the sum, so the squared norm is at most $U$.
+For a given $g$, choose a maximizing support $v_i$ for each $F_i(g)$.
+Then
+\[
+ \min_iF_i(g)\le\sum_i\frac{w_i}{W}F_i(g)
+ =\frac1{L_*}\left(\sum_i\frac{w_i}{W}v_i\right)\cdot g
+ \le(\beta+o(1))\K
+\]
+by~\eqref{eq:undirected-entropy}. The fixed finite menu makes the error
+uniform. There is no exchange of a minimum and a maximum, and no assumption
+that independently maximizing supports can be realized simultaneously.
+
+Every table is an input or output of one of the plan's paid matrix
+operations. Its logarithmic size is a sum of two dimension logarithms,
+which is bounded by the first branch of~\eqref{eq:rectangle}. The
+backend's space bound therefore covers all local tables, including the
+singleton caches. Their costly recursive evaluation time is separate and
+remains in~\eqref{eq:recurrence}.
+\end{proof}
+
+The weights are a proof device, not random choices at runtime. The
+algorithm always selects the cheapest actual plan. Compared with separately
+bounding every norm and inner product, \eqref{eq:pair-max} also keeps the
+correlation between the norm and dot product of each pair of supports.
+
+\subsection{The complete ten-group certificate}
+
+Group labels start at zero. Each ordered block below is split as above.
+The plan weights have denominator $W=1000$.
+
+\begin{center}\small
+\begin{tabular}{crlll}
+\toprule Plan & $w_j$ & First block & Second block & Third block\\\midrule
+1&137&$(7,4,3,9)$&$(1,6,0)$&$(8,2,5)$\\
+2&124&$(5,4,6,7)$&$(9,1,8)$&$(2,3,0)$\\
+3&135&$(0,5,9,7)$&$(2,1,4)$&$(8,3,6)$\\
+4&120&$(0,4,7,8)$&$(2,9,6)$&$(1,5,3)$\\
+5&108&$(3,1,7,2)$&$(9,6,8)$&$(5,4,0)$\\
+6&119&$(7,1,5,8)$&$(2,9,4)$&$(0,6,3)$\\
+7&106&$(7,2,8,6)$&$(5,9,3)$&$(0,1,4)$\\
+8&87&$(1,9,6,7)$&$(2,5,0)$&$(4,3,8)$\\
+9&64&$(4,6,1,5)$&$(8,9,2)$&$(0,7,3)$\\
+\bottomrule
+\end{tabular}\end{center}
+
+There are 72 supports per plan, each in dimension $\binom{10}2=45$.
+The exact checker reconstructs all 648 supports and evaluates
+$\binom92\,72^2=186{,}624$ pair choices. It obtains
+\begin{equation}\label{eq:beta10}
+ \boxed{\displaystyle\beta_{10}^2=\CachedBetaSquared.}
+\end{equation}
+The JSON result contains every exact pair maximum and a maximizing support
+pair, so the certificate does not depend on a floating-point search result.
+The finite sum is reproduced from the plans and integer triples alone.
+
+\subsection{Exact selection and complexity of the selector}
+
+For each plan compute the integer
+\[
+ P_j=\max_{v\in\mathcal V_j}
+ \prod_{\{g,h\}}
+       \left(|\mathcal I_{gh}|\,|\mathcal I_{hg}|\right)^{v_{\{g,h\}}}.
+\]
+Minimizing $P_j$ is exactly equivalent to minimizing $F_j(g)$. Its bit
+length is polynomial in $s$: $r$, $q$, the support coefficients and their
+denominator are fixed constants, and the cardinalities have polynomial bit
+length. Thus plan selection has no logarithmic comparison oracle or
+rounding ambiguity. The literal integer-product routine in the code is
+intended as an exact specification; the large fixed denominator makes it
+unsuitable as a claim of practical efficiency.
+
+The improvement is new relative to the reviewed corpus: a fixed finite
+matrix-operation portfolio is certified by weighted coupled pairs, and
+that certificate is integrated with a paid recursive schedule. Averaging,
+matrix multiplication, and quadratic norm identities are classical; no
+literature-wide priority claim is made for those ingredients.

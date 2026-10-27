@@ -1,0 +1,140 @@
+\section{The complete cached time and space bound}
+\label{sec:schedule}
+
+\subsection{A strict rational schedule}
+
+Put $\lambda=\lceil\log_2s\rceil$, $B=\lceil6\log_2\lambda\rceil$,
+$u_d=\lfloor\eta_d\lambda\rfloor$, and
+$a_d=\sum_{j=0}^d(u_j+B)$. Choose
+\begin{align}
+ r_0&=10,&\eta_0&=\frac{301}{20000},\notag\\
+ r_1&=13,&\eta_1&=\frac{119}{10000},\notag\\
+ r_d&=7\quad(d\ge2),&
+ \eta_d&=\frac{1549}{324000}\left(\frac49\right)^{d-2}.
+ \label{eq:schedule}
+\end{align}
+The cumulative leading fractions obey
+\[
+ \eta_0+\eta_1=\frac{539}{20000},\qquad
+ \sum_{d\ge0}\eta_d=\frac8{225}.
+\]
+Stop at $H=\lceil s/\lambda^{3/4}\rceil$ wires and use the existing
+packing construction with relative slack $\lambda^{-3}$. All active
+tapers are positive eventually; small exceptional instances are handled
+by exhaustive evaluation.
+
+At depth one retain the old three-plan thirteen-group certificate
+$\beta_{13}^2=1572/4225$ \cite{trees}. Its plans are
+\begin{align*}
+ &(0,1,2,3,4)\mid(5,6,7,8)\mid(9,10,11,12),\\
+ &(12,10,1,6,4)\mid(9,0,3,8)\mid(5,2,7,11),\\
+ &(0,8,11,12,1)\mid(7,10,4,3)\mid(5,2,6,9).
+\end{align*}
+These use the older $12/5$ square-block backend. In the tail retain the
+single plan $(0,1,2)\mid(3,4)\mid(5,6)$ with
+$\beta_7^2=632/1225$. The new rectangle portfolio is needed only at the root.
+
+\subsection{Packing, depth, and precision are all paid}
+
+The exact integer comparisons
+\[
+ 10^{1000}<2^{3322},\quad13^{1000}<2^{3701},\quad7^{100}<2^{281}
+\]
+certify strict rational logarithm bounds. The dominant degree gates have
+the following margins below one:
+\begin{center}
+\begin{tabular}{lll}
+\toprule Stage & Exponent upper bound & Positive gap\\\midrule
+Root &$9/10+2\eta_0(3322/1000)$ &$39/5000000$\\
+Depth one &$9/10+(539/20000)(3701/1000)$ &$5161/20000000$\\
+Tail &$9/10+(8/225)(281/100)$ &$1/11250$\\
+\bottomrule
+\end{tabular}\end{center}
+The other fresh-side and packet-capacity gates are bounded by
+$(8/225)(1+2(3701/1000))<1$. Thus every gate in~\eqref{eq:gates}
+has a fixed positive exponent gap. It absorbs all polylogarithmic terms,
+the guards, and $s/M\le\lambda^{3/4}$.
+
+For a noncircular depth argument, first verify these gates provisionally
+through $3\log_3\lambda/4+O(1)$ levels. In that range the smallest tail
+taper is at least
+\[
+ \lambda^{\delta+o(1)},\qquad
+ \delta=1-\frac{3\ln(9/4)}{4\ln3}>0.
+\]
+Nearly lossless packing then makes every tail child smaller than $M/3$
+eventually. Hence an active path cannot exceed that provisional depth.
+Floors are uniformly negligible and the relative padding errors multiply
+to $1+o(1)$. In particular,
+\begin{equation}\label{eq:masses}
+ M_0\le s,\quad M_1\le(1+o(1))\frac s5,\quad
+ M_d\le(1+o(1))\frac{2s}{65}\left(\frac27\right)^{d-2}\quad(d\ge2).
+\end{equation}
+
+Every retained valuation gives
+$D\ge2^{a_{d-1}+B+1}$. The creation-time precision
+$O(s\lambda^2 2^{a_{d-1}})$ is at most
+$O(\lambda^{15/4}2^{-B})=o(1)$ times $MD/u_d$. Thus the sharp
+precision and entropy estimates apply uniformly. All precisions have
+polynomial bit length because $a_d\le(8/225)\lambda+O((\log\lambda)^2)$.
+Original entry routines cost $2^{O(s^{9/10})}$ times a polynomial;
+new packet routines cost $\exp(s^{8/225+o(1)})$; leaf work is
+$2^{O(s/\lambda^{3/4})}$. Each is lower order on $s/\sqrt\lambda$.
+The inherited immutable descriptions avoid recursively expanding entry
+routines. Polynomial overhead over $O(\log\lambda)$ levels contributes
+only $O(\lambda\log\lambda)$ to the exponent.
+
+\subsection{Unroll the charged recurrence}
+
+On the scale $s/\sqrt\lambda$, define
+\[
+ K_0^*=\frac\kappa{\sqrt{\eta_0}},\qquad
+ K_1^*=\frac\kappa{5\sqrt{\eta_1}},\qquad
+ K_2^*=\frac{2\kappa}{65\sqrt{\eta_2}}.
+\]
+The tail ratio is $\gamma=(2/7)/\sqrt{4/9}=3/7$ and
+$\alpha_7/(1-\gamma)=\sqrt3/2>\beta_7$. Unrolling
+\eqref{eq:recurrence}, including the terminal leaf route, gives the maximum
+of three coefficients:
+\begin{align}
+ C_0&=\beta_{10}K_0^*
+ =\frac\pi{\ln2}\sqrt{\CachedRadical}
+ =\CachedC\ldots,\label{eq:C0}\\
+ C_1&=\alpha_{10}K_0^*+\beta_{13}K_1^*
+ =\frac\pi{\ln2}\left(\sqrt{\frac{7200}{301}}+
+                       \sqrt{\frac{50304}{20111}}\right)
+ =29.3352039993294\ldots,\label{eq:C1}\\
+ C_\infty&=\alpha_{10}K_0^*+\alpha_{13}K_1^*
+              +\frac{\alpha_7K_2^*}{1-\gamma}\notag\\
+ &=\frac\pi{\ln2}\left(\sqrt{\frac{7200}{301}}+
+          \sqrt{\frac{19200}{20111}}+
+          \sqrt{\frac{77760}{261781}}\right)
+ =29.06574852464125\ldots.\label{eq:Cinf}
+\end{align}
+Exact rational intervals in the checker prove $C_0>C_1,C_\infty$ and
+$C_0<29.812$. Decimal output is not used in those comparisons.
+
+Ancestor and descendant tables coexist on one active recursion path, so
+their sizes add. Their exponent coefficients take a maximum, not a sum.
+The local space coefficients are at most
+$\beta_{10}K_0^*,\beta_{13}K_1^*,\beta_7K_2^*$, and the first is largest.
+This proves a common time and space upper-bound coefficient. It does not
+claim that the optimal space coefficient equals the optimal time coefficient.
+
+\begin{theorem}[Generic cached bound]\label{thm:cached}
+Under the explicit input premises and imported exact identities of
+Section~\ref{sec:interface}, the construction is deterministic and exact,
+with
+\[
+ T(s,\mathcal L),\ S(s,\mathcal L)
+ \le (s+\mathcal L)^{O(1)}2^{(C_0+o(1))s/\sqrt\lambda}.
+\]
+In particular, $29.812$ is an eventual coefficient for each resource.
+\end{theorem}
+\begin{proof}
+The chosen plan only reassociates the finite sums and products in
+\eqref{eq:exact-sum}, so exactness follows from the imported identity.
+The preceding gates justify its use at every depth. Theorem~\ref{thm:pair}
+and the paid recurrence prove the time bound; the local table argument
+proves the space bound. All remaining costs have just been included.
+\end{proof}

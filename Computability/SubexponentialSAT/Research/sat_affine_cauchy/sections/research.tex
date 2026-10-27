@@ -1,0 +1,300 @@
+\section{What the new source changes about the order question}
+\label{sec:order-research}
+
+The new cached coefficients improve a certified exponential constant.
+They leave the worst-case scale
+$n\log\log n/\sqrt{\log n}$ unchanged.  The user-supplied Anthropic
+development introduces a different algebraic mechanism, and therefore
+deserves more than a comparison of its headline bound.  This section
+examines a possible composition, makes one of the source's suggested
+extensions precise, and proves a restricted obstruction to a natural
+implementation of that extension.
+
+\subsection{A direct composition spends the apparent extra saving}
+
+The earlier precision packet gives an exact rank encoding of the
+structured mode sum \cite{precision}.  If the first deformation uses
+$r$ groups, its existing collision-packing certificate allows a retained
+level range of order
+\[
+ u\asymp\frac{\log M}{\log r}.
+\]
+Its compressed mode-index graph consequently has a certified bit budget
+on the scale
+\begin{equation}
+ B\asymp\frac{M}{\sqrt u}
+       \asymp\frac{M\sqrt{\log r}}{\sqrt{\log M}}.
+ \label{eq:composition-budget}
+\end{equation}
+These are the scales of that proof's envelopes, not lower bounds on the
+actual entropy of every instance.
+
+At fixed or polylogarithmic $r$, a group tensor can have degree comparable
+to $B/r$, so the original bounded-degree contraction theorem cannot
+simply be invoked again at size $B$.  This missing interface is already
+identified in the earlier reports \cite{precision,barriers}.
+Anthropic's complete-graph algorithm does permit arbitrary integer-valued node tensors
+with charged entry access \cite[Theorem A]{anthropic}.  It is therefore a
+more appropriate possible backend, after balancing and representation
+costs have been supplied.
+
+However, the inspected backend has an exponent rate of order
+$e(r)\asymp1/\sqrt{\log r}$ along its certified schedule.  Even the
+optimistic calculation that leaves out balancing and entry-evaluation
+overheads gives
+\begin{equation}
+ e(r)B\asymp
+ \frac1{\sqrt{\log r}}
+ \frac{M\sqrt{\log r}}{\sqrt{\log M}}
+ =\frac{M}{\sqrt{\log M}}.
+ \label{eq:composition-cancellation}
+\end{equation}
+For fixed $r$ the backend changes a constant.  Increasing $r$ spends
+the corresponding saving in the first-stage retained-level budget.
+Allowing $r$ to grow would also require uniform accounting for the
+exact-weight arrays and the newly expensive group entries.  Equation
+\eqref{eq:composition-cancellation} is thus a diagnosis of this proposed
+composition, not a completed composition theorem or an algorithmic lower
+bound.  The new source resolves an important admissibility mismatch but
+does not automatically supply the missing $M/\log M$ summation method.
+
+\subsection{A cost-complete form of the source's growth suggestion}
+
+Appendix B of the Anthropic paper builds crossing decompositions from
+operators on the graded space
+$V=\mathbb Q[t_1,t_2,\ldots]$, with $\operatorname{weight}(t_j)=j$.
+Here $\dim V_E=p(E)$ is the ordinary partition number.  Its two operator
+orders pass through spaces of weights at most $2h+s$ and $2h-s$.
+The asymptotic relation $\log_2p(E)=A\sqrt E+O(\log(E+2))$ gives the
+rank-sum parameter $\rho=1/\sqrt2$ and the logarithmic exponent
+$\log_2(1/\rho)=1/2$ \cite[Appendices A and B]{anthropic}.
+
+The source itself observes in Appendix H that growth like $E^\beta$
+would instead give $\rho=2^{\beta-1}$.  The following proposition
+formalizes that suggestion with the resource hypotheses needed for an
+algorithm.  The growth-to-rate idea belongs to the source.  No algebra
+meeting the stronger hypotheses below is constructed in this report.
+
+\begin{proposition}[Conditional graded-growth transfer]
+\label{prop:graded-growth}
+Fix a rational $0<\beta<1$.  Suppose an effectively presented graded rational
+operator system $V=\bigoplus_{E\ge0}V_E$ has fixed bases, finite,
+nondecreasing dimensions $d_E\ge1$, and
+\begin{equation}
+ \log_2d_E=A E^\beta+O(\log(E+2)),\qquad A>0.
+ \label{eq:graded-growth}
+\end{equation}
+For each bit length $b$, let $h$ be the least integer with $d_h\ge2^b$
+and label $2^b$ distinct basis states of $V_h$ by $x\in\{0,1\}^b$.
+Assume the following additional properties, uniformly in $b$.
+\begin{enumerate}
+\item A nondegenerate dual pairing and an exact operator identity give
+operators $Q_s(x,v)$ on $V_h$, for $|s|\le2h$, and a positive integer
+$D_h$, such that
+\[
+ \sum_{s=-2h}^{2h}Q_s(x,v)=D_h[x=v]\operatorname{Id}_{V_h}.
+\]
+\item Each $Q_s(x,v)$ has two exact factorizations, respectively as a
+sum of $h^{O(1)}$ products $B_{v,s,j}A_{x,s,j}$ and as a sum of
+$h^{O(1)}$ products $\widetilde A_{x,s,j}\widetilde B_{v,s,j}$.
+The intermediate spaces in the first factorization have weights at
+most $2h+s$, and those in the second at most $2h-s$.
+All factorization entries are integral, after any specified common
+denominator clearing.  This exact two-order identity is a hypothesis;
+a dimension estimate alone does not imply it.
+\item There are uniform algorithms computing $h$, labels, index lists,
+$D_h$, piece values and factorization entries in $2^{O(b)}$ bit
+operations.  The number of pieces is $b^{O(1)}$, and all integers have
+$b^{O(1)}$ bits.  In particular the hypotheses include the basis and
+rank-decoding costs and effective exact locality, wherever locality is
+used to prove the preceding identities.
+\end{enumerate}
+Then the system supplies pieces in Anthropic's Definition 7 with
+$\rho=2^{\beta-1}$.  Relative to its Theorem A and dense reduction, this
+gives, for fixed width $k$,
+\[
+ \poly(n,m)2^{O_k(n\log\log n/(\log n)^{1-\beta})}
+\]
+time at arbitrary density and
+$\poly(n,m)2^{O_{k,D}(n/(\log n)^{1-\beta})}$ when $m\le Dn$.
+No polynomial-space conclusion is part of this implication.
+\end{proposition}
+
+\begin{proof}
+For a piece define
+$A_s(x,y,u,v)=\langle e_u^*,Q_s(x,v)e_y\rangle$, where $e_u^*$ is
+the dual basis vector.
+The first identity gives
+$\sum_s A_s=D_h[x=v][y=u]$.
+The first factorization separates $(x,y)$ from $(u,v)$, and the
+second separates $(x,u)$ from $(y,v)$.  By monotonicity of $d_E$,
+their respective numbers of rank terms are at most
+$h^{O(1)}d_{2h+s}$ and $h^{O(1)}d_{2h-s}$.
+
+The matching upper and lower estimates in \eqref{eq:graded-growth},
+together with minimality of $h$, give
+\[
+ h=\Theta(b^{1/\beta}),\qquad
+ A h^\beta\le b+O(\log(b+2)).
+\]
+Indeed $d_{h-1}<2^b$ supplies the latter inequality up to
+$A(h^\beta-(h-1)^\beta)=O(1)$.  Rounding the logarithms of the
+rank term counts to bits and using concavity of $x^\beta$ gives
+\begin{align*}
+ c_s^{\rm row}+c_s^{\rm col}
+ &\le A\bigl((2h+s)^\beta+(2h-s)^\beta\bigr)+O(\log h)\\
+ &\le 2A(2h)^\beta+O(\log h)\\
+ &\le 2^{\beta+1}b+O(\log(b+2)).
+\end{align*}
+Thus Definition 7 holds with $4\rho=2^{\beta+1}$; its other
+conditions are precisely the effective hypotheses above.  Finitely
+many small values of $b$ can be absorbed by enlarging its fixed
+constant.  Theorem A has logarithmic exponent
+$\log_2(1/\rho)=1-\beta$.  For fixed rational $\beta$, the rational
+rate approximations required by that theorem are computable by integer
+power comparisons, so its stated consequences apply.
+\end{proof}
+
+For example, $\beta=1/3$ would replace the square-root denominator by
+$(\log n)^{2/3}$.  This is a sufficient-condition calculation, not an
+achieved improvement.  Even $\log d_E=\Theta(E^\beta)$ is insufficient
+to identify the displayed $\rho$: unrelated constants in the upper
+and lower estimates would remain in the rank bound.
+
+\subsection{Why deleting oscillator modes does not realize it}
+
+A natural candidate retains only square-weight generators,
+$\mathbb Q[t_1,t_4,t_9,\ldots]$.  Its attraction is the smaller
+partition growth.  Its immediate defect is that the current's positive
+commutator series has the form
+\begin{equation}
+ C(z)=\sum_{j\ge1}j^2z^{j^2},
+ \label{eq:square-current}
+\end{equation}
+up to a monomial shift or nonzero coefficient normalization.
+It cannot satisfy the polynomial-clearing locality used in Appendix B.
+The obstruction extends beyond this one choice.
+
+\begin{lemma}[Rational series cannot have unbounded support gaps]
+\label{lem:rational-gaps}
+Let $C(z)=\sum_{n\ge0}c_nz^n$ over a field be rational and not a
+polynomial.  After a finite prefix, its nonzero coefficient support has
+bounded gaps.
+\end{lemma}
+\begin{proof}
+Write $Q(z)C(z)=P(z)$ with $Q(0)=q_0\ne0$ and $d=\deg Q$.
+For $n>\deg P$ the coefficients satisfy
+\[
+ q_0c_n+q_1c_{n-1}+\cdots+q_dc_{n-d}=0.
+\]
+If $d$ consecutive coefficients in this tail were zero, induction
+would force every later coefficient to vanish.  This would make $C$
+a polynomial.  The case $d=0$ already makes $C$ a polynomial and is
+excluded.  Therefore sufficiently late gaps have length less than $d$.
+\end{proof}
+
+The series \eqref{eq:square-current} has arbitrarily long zero runs
+between consecutive squares and infinitely many nonzero terms, so it is
+not rational.  In particular, no nonzero polynomial $Q$ makes $QC$ a
+polynomial.  In the independent-current construction, clearing the
+two-variable commutator by a fixed power of $(\omega_1-\omega_2)$
+would, on taking its positive expansion and setting
+$z=\omega_2/\omega_1$, imply just such rationality.  More explicitly,
+up to a monomial shift the two-sided scalar distribution is
+$C(z)-C(z^{-1})$.  Multiplying its negative part by $(1-z)^N$ can
+produce positive exponents only below $N$.  Thus annihilation of the
+distribution forces all sufficiently high coefficients of
+$(1-z)^NC(z)$ to vanish.  The square-weight
+replacement therefore lacks the exact identity on which the claimed
+rank bounds would depend.
+
+\begin{proposition}[A growth obstruction for independent oscillators]
+\label{prop:oscillator-growth}
+Let $S\subseteq\mathbb Z_{>0}$ be infinite and be the nonzero
+coefficient support, apart from finitely many indices, of a rational
+nonpolynomial current series.  Give the polynomial space
+\[
+ V=\mathbb Q[t_n:n\in S]
+\]
+the grading $\operatorname{weight}(t_n)=n$.  There is $c>0$ such that,
+for all sufficiently large $E$,
+\begin{equation}
+ \sum_{j=0}^E\dim V_j\ge2^{c\sqrt E}.
+ \label{eq:cumulative-growth}
+\end{equation}
+Consequently this model cannot satisfy a uniform exact-degree upper
+bound $\dim V_E\le\exp(O(E^\beta+\log(E+2)))$ with $\beta<1/2$.
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{lem:rational-gaps}, a fixed integer $d$ bounds the gaps
+in $S$ after a finite prefix.  For sufficiently large $B$, at least
+$B/(2d)$ members of $S$ lie in $[1,B]$.  Independently choosing
+exponent zero or one on these generators produces at least
+$2^{B/(2d)}$ distinct monomials, every one of weight at most
+$B|S\cap[1,B]|\le B^2$.  Take $B=\lfloor\sqrt E\rfloor$.
+This proves the cumulative, rather than pointwise, lower bound
+\eqref{eq:cumulative-growth}.  On the other hand, the proposed
+exact-degree upper bound would imply
+\[
+ \sum_{j=0}^E\dim V_j
+ \le (E+1)\exp\bigl(O(E^\beta+\log(E+2))\bigr),
+\]
+contradicting \eqref{eq:cumulative-growth} when $\beta<1/2$.
+\end{proof}
+
+The independence in this proposition is not removed by taking a
+quotient that preserves a nondegenerate Heisenberg vacuum
+representation.  Suppose a nonzero vacuum $v_0$ is annihilated by
+positive operators $a_n$, the negative operators $a_{-n}$ raise weight
+by $n$, operators of either sign commute among themselves, and
+\[
+ [a_n,a_{-m}]=\delta_{nm}\gamma_n\operatorname{Id},
+ \qquad \gamma_n\ne0\quad(n\in S)
+\]
+over a characteristic-zero field.  In a relation among creation
+monomials of the same weight, apply
+$\prod_na_n^{\alpha_n}$ for any exponent tuple $\alpha$ appearing
+there.  Every different same-weight tuple has some smaller coordinate
+and is killed.  The matching tuple leaves
+$\prod_n\alpha_n!\gamma_n^{\alpha_n}\,v_0\ne0$.
+Hence its coefficient in the relation is zero, and all creation
+monomials are independent.  Such a quotient retains the growth
+obstruction.
+
+These statements concern the specified independent-current or
+Heisenberg-vacuum model.  They do not rule out different noncentral
+operator algebras, other exact recovery identities, compressed tensor
+representations, or faster SAT algorithms.  In particular, they are
+not general lower bounds for vertex algebras or for SAT.  Their useful
+conclusion is narrower: merely deleting oscillator modes, or imposing
+relations while retaining the displayed Heisenberg premises, does not
+implement the source's smaller-growth suggestion.
+
+\subsection{Further research questions}
+
+\begin{enumerate}
+\item Can a noncentral graded operator algebra supply the pairing,
+two-order identity and effective factorization of
+Proposition~\ref{prop:graded-growth} with $\beta<1/2$?  A candidate
+must escape the preceding Heisenberg premises while preserving exact
+recovery and uniform bit costs.
+\item Can a different exact recovery method use a nonrational current?
+Truncating its commutator is insufficient unless the residual is proved
+to vanish in the actual counting ring and the required precision is
+fully charged.
+\item Can the mode-rank and clique algorithms be composed with complete
+balancing and entry-query accounting to improve a coefficient or the
+memory tradeoff?  An order claim must additionally overcome
+\eqref{eq:composition-cancellation}.
+\item Which relations among the \emph{actual} group tensors permit
+implicit summation without materializing their formal boundary tables?
+Existing inventory barriers concern a representation; they do not
+establish independence or noncancellation of the values in those tables
+\cite{precision,barriers}.
+\end{enumerate}
+
+The first two questions seek a new algebraic ingredient.  The latter
+two seek a representation that uses more than pair entropy.  None of
+these required interfaces has been supplied here, so the proved
+positive improvement remains the smaller cached contraction constant
+and the exact kernel refinement established elsewhere in this report.

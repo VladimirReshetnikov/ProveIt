@@ -1,0 +1,269 @@
+\section{Why more flexible separator trees do not improve the flag bound}\label{sec:treebarrier}
+
+The round-four linear-flag packet \cite{flags} proved that
+\[
+ b_r=\frac1r\sqrt{\frac{(r-1)(4r+10)}9}
+\]
+is sharp among balanced binary separator trees under the Euclidean
+pair-entropy relaxation, when $r$ is a power of two. The same obstruction
+in fact applies to every binary separator tree, with arbitrary imbalance.
+
+We work first with unordered pair weights. In a complete graph on $n$
+vertices, let $F(S)$ denote the least possible maximum root-to-leaf sum of
+cut weights in a binary separator tree on $S$. Exact finite distributivity
+gives the recurrence
+\[
+ F(S)=\min_{A\sqcup B=S}\{w(A,B)+\max(F(A),F(B))\},\qquad
+ F(\{v\})=0.
+\]
+Let $U(n)$ be this optimum when every edge has weight $1$. Let $A(n)$ be
+the optimum when one distinguished vertex has incident edge weights $1$
+and all other edges have weight $2/3$. By symmetry their recurrences are
+\begin{align*}
+ U(n)&=\min_{k+l=n}\{kl+\max(U(k),U(l))\},\\
+ A(n)&=\min_{k+l=n}\left\{\frac{l(2k+1)}3+
+                   \max\left(A(k),\frac23U(l)\right)\right\}.
+\end{align*}
+Every minimum above ranges over nonempty parts ($k,l\ge1$).
+In the second line, the distinguished vertex lies on the side of size $k$.
+
+\paragraph{Two auxiliary inequalities.}
+For every positive integer $n$,
+\[
+ U(n)\ge\frac{n^2-1}3,\qquad
+ A(n)\ge\frac{2n^2+2n-4}9.
+\]
+For the first, assume $l\ge k$ at a split and apply induction to $U(l)$;
+the surplus over $(n^2-1)/3$ is $k(l-k)/3\ge0$.
+For the second, put $G(n)=(2n^2+2n-4)/9$.
+If $k\ge l$, use the $A(k)\ge G(k)$ branch. The surplus over $G(n)$,
+multiplied by nine, is $l(2(k-l)+1)\ge0$.
+If $k<l$, use $(2/3)U(l)\ge2(l^2-1)/9$ instead. The surplus is
+\[
+ 2k(l-k-1)+l+2>0.
+\]
+The base case $n=1$ is exact.
+
+\paragraph{Sharp value at powers of two.}
+Write $L(n)=(2n^2+3n-5)/9$. We prove $A(2^j)=L(2^j)$ by induction.
+For an unbalanced split of an even $n$, let $d=|k-l|\ge2$.
+If $k>l$, the bound using $G(k)$ exceeds $L(n)$ by
+\[
+ \frac{2ld-k+1}9=\frac{d(2l-1)-l+1}9>0.
+\]
+If $k<l$, the bound using $U(l)$ exceeds $L(n)$ by
+\[
+ \frac{k(2d-3)+3}9>0.
+\]
+In the balanced case $k=l=2^{j-1}$, induction gives exactly $L(n)$;
+the distinguished branch has the larger residual cost. The completely
+balanced tree supplies a matching upper bound: every path has
+$(n^2-1)/3$ unordered edges, and the path to the distinguished vertex
+contains all $n-1$ heavier edges. Thus its weight is
+\[
+ (n-1)+\frac23\left(\frac{n^2-1}3-(n-1)\right)=L(n),
+\]
+and no other leaf path is heavier.
+
+Return to directed pairs. Set $a_{gh}=1$ if $g=0$ or $h=0$ and $a_{gh}=2/3$
+otherwise. Then
+\[
+ \|a\|_2^2=\frac{(r-1)(4r+10)}9=2L(r).
+\]
+Every binary tree has a path with $a$-weight at least $2L(r)$.
+For $h=(K/(r\|a\|_2))a$, which lies on the Euclidean envelope
+$\|h\|_2=K/r$, every binary separator evaluator therefore has worst path
+cost at least $b_rK$. The imported adaptive flag upper bound attains it.
+
+This rules out improving $b_r$ merely by allowing arbitrary unbalanced
+binary separator trees at powers of two. It also covers separator nodes
+of arbitrary arity: replacing any such node by a binary refinement causes
+each refined root-to-child path to condition on a subset of the original
+node's cross-child indices, so no path cost increases. It is a theorem about the stated
+Euclidean entropy relaxation and child-evaluation tree model. It is not
+a lower bound for the actual tensor instances, non-tree algorithms, or SAT.
+
+
+\section{A rank obstruction for graded crossing decompositions}
+\label{sec:graded-window}
+
+This subsection concerns a concrete interface in Appendix B of the newly
+public Anthropic development \cite{anthropic-paper}.  It is not a lower bound for SAT or for
+arbitrary tensor algorithms.  All ranks are taken over a field $\mathbb F$.
+
+For an alphabet $X$ of size $N$, write
+\[
+ \mathsf C(x,y,u,v)=[x=v][y=u].
+\]
+Its row flattening has rows $(x,y)$ and columns $(u,v)$; its column
+flattening has rows $(x,u)$ and columns $(y,v)$.  Both flattenings are
+permutation matrices of size $N^2$ and therefore have rank $N^2$.
+
+\begin{proposition}[Finite graded-window obstruction]
+Let $d\in\mathbb F$ be nonzero, and suppose
+$d\mathsf C=\sum_{i\in I}A_i$.
+Suppose that the row flattening of each $A_i$ factors through
+$\bigoplus_{j\in J_i}W_{E_{ij}}$, where $W_E$ are finite-dimensional
+graded spaces and $0\le E_{ij}\le Bh$.
+Then
+\[
+ N^2\le \sum_{i\in I}\sum_{j\in J_i}\dim W_{E_{ij}}
+ \le \Bigl(\sum_{i\in I}|J_i|\Bigr)
+        \max_{0\le E\le Bh}\dim W_E.                 \tag{R1}
+\]
+The same assertion holds for the column flattening.
+\end{proposition}
+
+\begin{proof}
+Factoring a matrix through a vector space of dimension $D$ gives rank at
+most $D$.  Rank is subadditive under addition, and multiplication by the
+nonzero scalar $d$ does not change rank.  Applying these statements to the
+row flattening gives
+\[
+ N^2=\operatorname{rank}(d\mathsf C)
+ \le\sum_i\operatorname{rank}(A_i)
+ \le\sum_i\sum_j\dim W_{E_{ij}},
+\]
+followed by the maximum bound.  No commutation relation, positivity,
+particular basis, or asymptotic partition estimate is used.
+\end{proof}
+
+\begin{proposition}[Modular version]
+The finite rank inequality also holds if the pieces and their
+factorizations are integral and reconstruction is required only modulo
+$2^P$, provided $P>v_2(d)$:
+\[
+ \sum_i A_i\equiv d\mathsf C\pmod{2^P}.
+\]
+It is enough that each stated row factorization holds modulo $2^P$;
+choose integer representatives of its factors and use their integer
+products as the lifted pieces.
+\end{proposition}
+\begin{proof}
+Let $B$ be the sum of those lifted row matrices, write
+$d=2^v d'$ with $d'$ odd, and set $v=v_2(d)<P$.
+Then
+\[
+ B=2^v\bigl(d'\mathsf C+2^{P-v}E\bigr)
+\]
+for an integer matrix $E$.  The matrix in parentheses reduces modulo
+two to the invertible permutation matrix $\mathsf C$, so its determinant
+is odd.  Thus $B$ has rank $N^2$ over $\mathbb Q$.
+Rank subadditivity and the lifted factorizations give (R1), exactly as
+before.  The column claim follows using the column factorizations.
+\end{proof}
+If $P\le v_2(d)$, the reconstructed right-hand side is zero and the
+rank conclusion can fail, but that precision cannot recover even one
+nontrivial bit of the crossing after removing the scalar $d$.
+
+
+\begin{corollary}[The four-energy-window barrier]
+Suppose $N=2^\lambda$, $h=h(\lambda)\to\infty$, and
+$\lambda\sim c h^\alpha$, with $c,\alpha>0$.
+Suppose the total number of summands in (R1) is polynomial in $h$ and
+\[
+ \log_2\!\left(\max_{0\le E\le4h}\dim W_E\right)
+ \le c(4h)^\alpha+o(h^\alpha).
+\]
+Then $\alpha\ge1/2$.
+\end{corollary}
+
+\begin{proof}
+Taking base-two logarithms in (R1) gives
+$2\lambda\le O(\log h)+c4^\alpha h^\alpha+o(h^\alpha)$.
+Divide by $c h^\alpha$ and take the limit: $2\le4^\alpha$.
+\end{proof}
+
+In particular, the hypotheses follow from regular power growth
+$\log_2\dim W_E\sim cE^\alpha$ together with monotonicity of the dimensions,
+and the input encoding $\lambda\sim\log_2\dim W_h$.
+The stated uniform upper bound is the precise assumption actually used;
+an asymptotic formula at the single energy $h$ alone is insufficient.
+
+\subsection{Why paying for more pieces does not repair the same recursion}
+
+There is a quantitative version of the obstruction.
+Suppose each piece has at most $h^{O(1)}$ factorization channels,
+$\lambda\sim c h^\alpha$, and the intermediate spaces still satisfy
+the four-energy-window upper bound.  Then (R1) gives
+\[
+ \log_2|I|\ \ge\ (2-4^\alpha-o(1))\lambda.          \tag{R4}
+\]
+Thus a hypothetical $\alpha<1/2$ construction in the same window must
+have exponentially many pieces, even if all identities are valid.
+
+In the existing grid recursion, there are
+$R=\binom g2^2=(1/4+o(1))g^4$ independently indexed crossing rectangles,
+and the displayed implementation enumerates the Cartesian product
+$I^R$.  On writing its normalized bit parameter as $N_{\rm grid}=g^4\lambda$,
+the number of index tuples alone is at least
+\[
+ 2^{\,((2-4^\alpha)/4-o(1))N_{\rm grid}}.
+\]
+This is a positive exponential floor when $\alpha<1/2$.
+The conclusion is restricted to explicit independent enumeration of
+piece indices.  A structured summation of those indices might evade it,
+but it would be an additional algorithmic result; increasing the number
+of pieces while keeping the current loop does not evade the barrier.
+
+
+Appendix B uses $|I|=4h+1$ pieces, and each displayed factorization is a sum
+of at most $2h+1$ intermediate spaces.  The intermediate energies are
+$s+i$ and $2h-s-i$, with $-2h\le s\le2h$ and $0\le i\le2h$,
+so every nonzero space has energy at most $4h$.
+Thus the finite estimate applies with at most $(4h+1)(2h+1)$ summands.
+For $0<\alpha\le1$, Appendix H's heuristic replacement
+$\log\dim W_E\sim cE^\alpha$ would give the bit bound
+\[
+ c_i^{\rm row}+c_i^{\rm col}
+ \le 2^{\alpha+1}\lambda+o(\lambda),
+ \qquad \rho=2^{\alpha-1}.
+\]
+The corollary shows that simply transplanting $\alpha<1/2$ into these same
+intermediate-energy and polynomial-piece interfaces is impossible.
+This is stronger than the earlier corpus's obstruction \cite{roundtwo} that retained the
+Heisenberg commutators: the present statement needs only a finite
+factorization and rank subadditivity.  It does not assert that every
+possible crossing decomposition has $\rho\ge1/\sqrt2$.
+
+More generally, for a fixed $B>1$, the same rank proof forces $\alpha\ge\log_B2$ for an
+intermediate-energy window $Bh$. A wider window changes the factorization
+cost as well; it cannot be treated as a free relaxation.
+
+\section{What the naive Cauchy--clique composition can certify}
+\label{sec:nested-clique-obstruction}
+
+Write $s$ for the normalized root-wire budget and $K\ge2$ for a growing
+number of groups.  The existing packet layout uses $a$ coordinates,
+retains $u\le a$ valuation levels, and has label-array size
+$K^{2a}$.  Keeping this explicit layout polynomial in $s$ implies
+\[
+ u\log_2K\le a\log_2K=O(\log s).                    \tag{R2}
+\]
+The Cauchy mode enumeration certificate has logarithmic information
+budget on the scale $M/\sqrt u$ at an $M$-wire call.
+The newly public clique algorithm, as currently analyzed, has
+$e(K)=\Theta((\log K)^{-1/2})$ on its permitted sequence of clique sizes.
+Even if a compatible interface allowed this clique algorithm to multiply
+the whole Cauchy information budget by $e(K)$ with no additional cost,
+the resulting scale would be
+\[
+ \frac{M}{\sqrt u}\,e(K)
+ =\Theta\!\left(\frac{M}{\sqrt{u\log K}}\right)
+ =\Omega\!\left(\frac{M}{\sqrt{\log s}}\right).      \tag{R3}
+\]
+Here the last assertion is a statement about optimizing that proposed
+analytic certificate, not a lower bound on actual runtimes.  It assumes
+the displayed two-sided scales; an $O$-bound alone cannot prove a lower
+bound.  It also grants the hypothetical composition an ideal interface:
+in reality one must additionally pay for the local group-entry oracles,
+their precision and integer representation, and the clique algorithm's
+table-query convention.
+
+Consequently the tempting nested invocation is not yet an order
+improvement.  To make it one, at least one of the following quantitative
+facts must change: the explicit layout cost in (R2), the Cauchy mode
+information scale, the clique exponent as a function of $K$, or the
+information actually presented to the clique engine.  Running the same
+two estimates sequentially does not supply that change.
+

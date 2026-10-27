@@ -1,0 +1,144 @@
+\section{The common contraction interface}
+\label{sec:interface}
+
+\subsection{What is inherited and what is changed}
+The root problem is the exact contraction of a bipartite Boolean tensor
+network with at most $s$ wires, at most polynomially many vertices, and
+maximum degree at most $\ceil{s^{9/10}}$. Its description length is
+$\mathcal L$. Initial entries lie in
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad 1\le P_0,\ell\le s,
+\]
+and uniform entry evaluation has time
+$(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ and polynomial space, with fixed
+constants. The desired contraction is
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+We use the exact deformation, integral evaluations, tapered Hermite recovery,
+and immutable creation-precision convention of the source and refinements
+\cite{openai,asymmetric,joint,flags,treecert}. A retained tensor is evaluated
+at its creation precision and its canonical coordinates are reused; the
+canonical-lift map is never assumed to preserve multiplication or addition.
+Our new global result changes the summation of an already exact finite
+expression. Its algebraic validity does not depend on experimental timings.
+
+The auxiliary ring is a finite free extension
+\[
+ \mathcal A_p=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell),
+\]
+where $f$ is monic of degree $O(\log s)$ with irreducible reduction modulo
+two. All precisions and coordinate lengths remain polynomial in $s$.
+Arithmetic in this ring therefore introduces fixed polynomial factors.
+
+\subsection{Packing, modes, and exact list cardinalities}
+At depth $d$ let $u_d$ be the taper range, let
+$B=\ceil{6\log_2\lambda}$ for $\lambda=\ceil{\log_2s}$, and put
+\[
+ a_d=\sum_{j\le d}(u_j+B),\qquad L_d=2^{a_d},\qquad Q_d=r_d^{a_d}.
+\]
+For a retained interpolation node of valuation $i<u_d$, set
+$D=L_d/2^i$. The imported sharp precision estimate is
+\begin{equation}\label{eq:precision}
+ p_t\le(6+o(1))MD/u_d.
+\end{equation}
+Nearly lossless asymmetric packing makes each group child have at most
+$(2/r_d+o(1))M$ wires. Sufficient packing conditions, suppressing fixed
+polylogarithmic slack, are
+\begin{equation}\label{eq:packing}
+ Q_dR/M=o(1),\quad Q_d^2C(\log s)^2/M=o(1),\quad
+ L_dQ_d^2/M=o(1).
+\end{equation}
+At the root both degree bounds are $\ceil{s^{9/10}}$; subsequently one may
+take retained-side degree $R\le\ceil{s^{9/10}}$ and fresh-side degree
+$C\le 2L_{d-1}$. The concrete schedule below verifies all these conditions.
+
+Full-orientation Cauchy modes have weights at least
+$1+4q-2\pc(q)$ after lowering the common positive valuation offset. There
+are at most $(2/r^2+o(1))M/D$ modes of each index on a prescribed directed
+pair. Enumerate exact pair-weight arrays $b=(b_{gh})$ whose sum is less
+than $p_t$. The alphabet $r$ is fixed, so the number of these arrays is
+polynomial in $s$. Let $\mathcal I_{gh}$ be the finite list of mode tuples
+of the specified exact weight. Arrays with an empty list contribute zero.
+For every remaining array the expression is exactly
+\begin{equation}\label{eq:groupidentity}
+ \sum_{(\xi_{gh})\in\prod_{g\ne h}\mathcal I_{gh}}
+    \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\end{equation}
+Each $Z_g$ entry is a genuine child-network contraction, not a free oracle.
+
+List sizes and rank/unrank operations follow from
+\[
+ N(j,b)=N(j-1,b)+N(j,b-w_j),\quad N(0,0)=1,
+\]
+with zero for negative budgets and for $N(0,b)$ with $b>0$. Budgets,
+table dimensions, and bit lengths of counts are polynomial in $s$.
+This makes the selectors used later explicit exact algorithms.
+
+\subsection{The entropy estimate}
+Write $h_{gh}=\log_2|\mathcal I_{gh}|$ and
+\[
+ \kappa=\frac{\pi\sqrt2}{\ln2},\qquad
+ \K(M,u)=\kappa M/\sqrt u.
+\]
+The common weighted estimate is the following.
+
+\begin{lemma}[Imported weighted pair entropy]\label{lem:entropy}
+For every fixed nonnegative directed weight vector $z$,
+\[
+ \sum_{g\ne h}z_{gh}h_{gh}
+ \le\left(\frac{\norm z_2}{r}+o(1)\right)\K(M,u).
+\]
+The error is uniform over the active nodes and any fixed finite collection
+of weight vectors used below.
+\end{lemma}
+\begin{proof}
+The argument is included to expose the constant being used. The generating
+product for one mode family satisfies
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta(1+4q-2\pc(q))})
+   =\frac{\pi^2}{24\theta}+O(\log^2(2/\theta)).
+\]
+The weight-counting function is $x/4+O(\log(x+2))$; partial summation and
+$\int_0^\infty-\ln(1-e^{-x})\,dx=\pi^2/6$ give this estimate.
+For positive $z_e$ use the parameter $\theta/z_e$ and multiply the
+logarithm of its bound by $z_e$. Summing yields leading terms
+\[
+ \theta p_t+\frac{\pi^2}{24\theta}
+              \frac{(2+o(1))M}{r^2D}\sum_ez_e^2.
+\]
+Optimizing and using \eqref{eq:precision} gives the claim after division
+by $\ln2$. The saddle has scale $\sqrt u/D$; the additive guard makes the
+error $o(M/\sqrt u)$ uniformly. Zero coordinates are omitted. A fixed
+finite collection permits taking the largest of its error constants.
+\end{proof}
+
+\subsection{Cached matrix operations over the actual ring}
+For disjoint blocks $A,B$ and their complement $O$, let $H_1,H_2,H_3$
+be the logarithms of the products of index sizes on $A$--$O$,
+$A$--$B$, and $B$--$O$. The block-table merge is rectangular matrix
+multiplication. Square blocking with any rational-field matrix exponent
+strictly below $12/5$ gives exponent
+\begin{equation}\label{eq:matrix}
+ \mu(H)=H_1+H_2+H_3-\frac35\min(H_1,H_2,H_3)
+ =\max_j\left(\frac25H_j+\sum_{k\ne j}H_k\right).
+\end{equation}
+The cited matrix result is stronger than the inequality needed here
+\cite{matrix}. We retain the exact coordinate/CRT bridge already proved
+in the cached-tree packet \cite{cachedtree}. A brief explanation is useful:
+expand the coefficient ring into polynomially many coordinates, lift
+coordinates to integers, and perform the integer coordinate matrix products
+modulo enough nonexceptional odd primes. A fixed rational bilinear matrix
+algorithm has only finitely many denominator primes to exclude. CRT
+reconstructs integer products before applying the ring's structure constants
+and reducing modulo $2^p$. Reconstruction lengths are polynomial in $s$
+and the logarithms of matrix dimensions. No nonunit of $\mathcal A_p$ is
+inverted in this argument.
+
+The matrix bound dominates every input and output table size because
+$\mu(H)\ge H_j+H_k$ for distinct $j,k$. Sequential rectangular blocking
+and the fixed bilinear algorithm use a polynomial factor times that
+storage. Reshaping, indexing, and sorting also cost only a polynomial
+factor in record and index lengths. The verification code does not
+implement the theoretical fast matrix backend; that backend is an
+explicit imported dependency.

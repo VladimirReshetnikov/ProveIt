@@ -1,0 +1,168 @@
+\section{Exact interface and paid contraction costs}
+\label{sec:interface}
+
+\subsection{Imported algebra and packing}
+We use the same normalized problem as the current best generic packets.
+The input is a bipartite Boolean tensor network with at most $s$ edges,
+maximum degree at most $\ceil{s^{9/10}}$, and entries in
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad 1\le P_0,\ell\le s.
+\]
+Entry evaluation has time $(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ and
+polynomial space, with fixed interface constants. The unchanged contraction
+proof works in a polynomial-rank extension ring with an irreducible residue
+polynomial of degree $O(\log s)$. Tensor descriptions retain their specified
+creation precision and canonical entry representatives. Lifting those
+representatives is not assumed to preserve ring operations.
+
+The imported ingredients are exact Cauchy deformation and recovery,
+asymmetric near-unit padding, full-orientation Cauchy modes, and recursively
+evaluable group factors \cite{upstream,asymmetric,joint,portfolio}. This
+report alters how the finite group-factor sum is evaluated. It is not an
+independent proof of the entire upstream SAT algorithm.
+
+At an active call use wire budget $M$, group count $r$, taper length $u$,
+cumulative packet exponent $a$, a valuation $i<u$, and $D=2^{a-i}$.
+The common interface supplies
+\begin{align}
+ p_t&\le(6+o(1))MD/u,\label{eq:working-precision}\\
+ M_{\rm child}&\le(2/r+o(1))M.\label{eq:child-size}
+\end{align}
+For each directed pair of different groups, the multiplicity of each mode
+index $q$ is at most $(2+o(1))M/(r^2D)$ and its certified weight is
+$a+1-i+4q-2\pc(q)$. All error terms are uniform on the fixed set of
+arities and the active levels of the final schedule.
+
+If $Q=r^a$ and $R,C$ bound the two sides' degrees, sufficient padding gates
+are
+\begin{equation}\label{eq:packing}
+ QR/M=o(1),\quad Q^2C(\log s)^2/M=o(1),\quad 2^aQ^2/M=o(1).
+\end{equation}
+At the root both sides have degree at most $s^{9/10+o(1)}$. Subsequently
+the old side retains that bound and the fresh side has degree at most
+$2^{a_{d-1}+1}$. Section~\ref{sec:schedule} checks these gates before
+using the child-size conclusion.
+
+\subsection{Exact mode lists and the entropy envelope}
+Enumerate exact nonnegative pair budgets $b_{gh}$ with sum less than $p_t$.
+There are polynomially many such arrays because $r$ is fixed and $p_t$ is
+polynomial in $s$. Let $\mathcal I_{gh}$ be the finite list of mode
+exponent tuples of exact weight $b_{gh}$. Empty lists contribute zero.
+Put $h_{gh}=\log_2|\mathcal I_{gh}|$ and
+\[
+ \kappa=\frac{\pi\sqrt2}{\ln2},\qquad
+ \K(M,u)=\kappa M/\sqrt u.
+\]
+The contribution of the budget array is exactly
+\begin{equation}\label{eq:finite-sum}
+ \sum_{\xi_{gh}\in\mathcal I_{gh}}
+ \prod_{g=1}^r Z_g\bigl((\xi_e)_{e\ni g}\bigr).
+\end{equation}
+Each $Z_g$ entry requires a real recursive contraction; it is not a
+unit-cost oracle.
+
+For a fixed nonnegative directed weight vector $z$, the inherited bound is
+\begin{equation}\label{eq:entropy}
+ \sum_e z_eh_e\le
+ \left(\frac{\|z\|_2}{r}+o(1)\right)\K(M,u).
+\end{equation}
+For clarity, its leading constant follows by lowering mode weights to
+$1+4q-2\pc(q)$ and applying the generating-function estimate
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta(1+4q-2\pc(q))})
+ =\frac{\pi^2}{24\theta}+O(\log^2(2/\theta)).
+\]
+Using a common tilt $\theta/z_e$ gives leading natural-log bound
+\[
+ \theta p_t+\frac{\pi^2}{24\theta}
+ \frac{(2+o(1))M}{r^2D}\sum_ez_e^2.
+\]
+Optimize in $\theta$, apply \eqref{eq:working-precision}, and divide by
+$\ln2$. The logarithmic guard ensures that the residual term is lower order.
+For a fixed finite family of vectors, the error is uniform. All adaptive
+arguments below use such a finite family; no pointwise bound is silently
+applied to an uncontrolled growing collection.
+
+List sizes and indexing are explicit. The unbounded-knapsack recurrence
+\[
+ N(j,b)=N(j-1,b)+N(j,b-w_j),\quad N(0,0)=1
+\]
+with zero values for impossible budgets counts exact tuples. It also gives
+rank/unrank and polynomial-delay enumeration. Budgets, list-count bit lengths,
+and the number of mode types are polynomial in the original size parameter.
+
+\subsection{Matrix operations and support vectors}
+For disjoint group sets $A,B$ and $O=[r]\setminus(A\cup B)$, merging two
+boundary tables has three independent index classes: pairs joining $A$ to
+$O$, $A$ to $B$, and $B$ to $O$. Write their logarithmic dimensions as
+$H_1,H_2,H_3$. Using the established strict rational matrix exponent
+$\omega<12/5$ gives the upper exponent
+\begin{equation}\label{eq:matrix-cost}
+ H_1+H_2+H_3-\frac35\min(H_1,H_2,H_3)
+ =\max_j\left(\frac25 H_j+\sum_{k\ne j}H_k\right).
+\end{equation}
+Square blocking proves this rectangular estimate. The cited matrix result
+is stronger than needed; no newest-record assertion is necessary
+\cite{matrix}.
+
+The ring bridge is the one already established in \cite{tree,portfolio}.
+Expand each ring entry into its polynomially many integer coordinates,
+perform coordinate matrix products modulo sufficiently many ordinary primes
+away from the fixed denominator exceptions of a rational bilinear algorithm,
+reconstruct by CRT, apply the ring structure constants, and reduce modulo
+$2^{p_t}$. All reconstruction bounds have polynomial bit length. This uses
+neither division by a nonunit in the original ring nor a false field model
+for that ring. The fast backend is a theoretical dependency; the small
+prototype in this archive uses ordinary exact multiplication.
+
+For an undirected pair $e=\{g,h\}$ put $g_e=h_{gh}+h_{hg}$. Multiply
+\eqref{eq:matrix-cost} by five. Each operation supplies three vectors
+$v\in\{0,2,5\}^{\binom r2}$, zero on edges internal to its three
+parts, two on a discounted cross class, and five on the other classes.
+A plan first divides the groups into three blocks, builds each block table
+by binary merges, then contracts the final triangle. If $\mathcal V_j$ is
+the complete support set for plan $j$, put
+\[
+ F_j(g)=\frac15\max_{v\in\mathcal V_j}v\cdot g.
+\]
+Every boundary table is the input or output of an operation. Its exponent
+is a sum of two of the $H_i$, hence at most \eqref{eq:matrix-cost}.
+Thus $F_j$ pays for all local time and storage after singleton caching.
+
+\begin{lemma}[Paid adaptive support certificate]\label{lem:certificate}
+For $q$ fixed plans on $r$ groups let
+\[
+ Q_* =\max_{v_j\in\mathcal V_j}\left\|\sum_{j=1}^qv_j\right\|_2^2,
+ \qquad \beta_r=\frac{\sqrt{2Q_*}}{5qr},\qquad
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+Choosing a plan with smallest $F_j$ gives the recurrence
+\begin{equation}\label{eq:paid-recurrence}
+ T_d\le\poly(s)\left[
+ 2^{(\alpha_{r_d}+o(1))\K_d}T_{d+1}
+ +2^{(\beta_{r_d}+o(1))\K_d}\right],
+\end{equation}
+and local storage at most $\poly(s)2^{(\beta_{r_d}+o(1))\K_d}$.
+\end{lemma}
+\begin{proof}
+The minimum of the $F_j$ is at most their average, which equals
+\[
+ \frac1{5q}\max_{v_j\in\mathcal V_j}
+ \left(\sum_jv_j\right)\cdot g.
+\]
+Give both directed orientations of an edge the weight
+$(\sum_jv_j)_e/(5q)$ and apply \eqref{eq:entropy}. Its squared directed
+norm is $2\|\sum_jv_j\|_2^2/(25q^2)$, giving $\beta_r$.
+There are finitely many support tuples. The storage assertion follows
+from the preceding input/output observation. Caching one group's entries
+involves $2(r-1)$ incident directed pairs, giving $\alpha_r$; each entry
+is charged its child contraction. The fixed number of groups is absorbed
+by the polynomial factor.
+
+Selection needs no real-number oracle. Compute
+$\max_{v\in\mathcal V_j}\prod_e
+(|\mathcal I_{gh}|\,|\mathcal I_{hg}|)^{v_e}$ and compare those
+positive integers. Their bit lengths are polynomial. Sorted sequential
+table scans and reshaping add only polynomial factors in index and record
+length, so the analysis does not rely on free exponential random access.
+\end{proof}

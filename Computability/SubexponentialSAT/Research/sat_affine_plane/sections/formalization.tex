@@ -1,0 +1,91 @@
+\section{The supplied Anthropic formalization changes the evidence}
+\label{sec:formalization}
+
+During this investigation the user supplied pull request 31 of
+\path{anthropics/formal-math}, specifically commit \anthpin. This is
+substantive new evidence, not merely another statement of an unpublished
+proof. The ProveIt README at the initial review pin said that the Claude
+manuscript's Lean development was not public. The closing commit has now
+corrected that statement and linked this public development
+\cite{anthpr,closing}.
+
+\subsection{What the public theorem actually states}
+\path{eth/MainResults.lean} defines the result over Mathlib's finite-alphabet
+multistack Turing machines. It quantifies one machine and one constant before
+the clause width and the formula. For $k\ge1$, $n\ge4$, and at least two
+clauses, under the stated encoding and formula-normalization conditions,
+the machine outputs the exact number of satisfying assignments within
+\[
+ \floor{2^{C\min\{km/\sqrt{\log_2m},\,
+ k^2n\log_2\log_2n/\sqrt{\log_2n}\}}}
+\]
+steps \cite{anthmain}. Every declared variable must occur, clauses have
+width at most $k$, and identical clause lists may not be repeated. Clauses
+can contain repeated literals, opposing literals, or be empty. Small
+exceptional sizes, unused variables, and duplicate clauses need ordinary
+preprocessing or direct treatment before applying the formal theorem.
+The input encoding uses unary width/variable counts and fixed-width literal
+slots; the output uses $n+1$ binary positions.
+
+\path{eth/Solution.lean} proves both \texttt{MainResults.mainTheorem} and
+\texttt{MainResults.ethIsFalse} without hypotheses. The first proof follows
+the counted route through the implementation-level theorem; the second
+uses the normalization and Turing-machine consequences. The intermediate
+cost model permits polynomial-time whole-state work at an abstract step,
+but the final proposition counts actual Mathlib machine steps and absorbs
+the simulation cost into the unspecified constant \cite{anthsolution}.
+No polynomial-space guarantee is part of this displayed main proposition.
+Its unknown constant therefore cannot be equated with one of the
+normalized-wire coefficients in this report.
+
+\subsection{Verification evidence and its limits}
+The public source tree contains $1052$ Lean files: $1050$ development
+modules and two axiom-printing helper files. The source-only import audit
+found $810$ local modules reachable from \path{Solution.lean}; this closure
+excludes \path{Challenge.lean}. The latter deliberately supplies two
+\texttt{sorry} targets for Comparator. They are not proof holes imported
+by the solution.
+
+More strongly, the published \texttt{verify (eth)} job succeeded. Its
+retrieved log records a successful Lake build, Comparator acceptance, and
+nanoda kernel acceptance. The checked merge commit has Git tree
+\texttt{ab1069cc17ae5088e175ec37fa16fe8bd273753d}, identical to the
+tree of the user-supplied commit. The evidence therefore concerns exactly
+the supplied source tree, not a nearby earlier version \cite{anthci}.
+The comparator configuration names the two target theorems and allows
+only the standard axioms \texttt{propext}, \texttt{Quot.sound}, and
+\texttt{Classical.choice}.
+
+We retrieved and inspected this source and the published verification
+evidence. We did not perform a fresh local build of that development.
+The new affine-tree lemmas and improved numerical schedule in this report
+are separate natural-language results with exact computational certificates;
+they are not part of that Lean verification.
+
+\subsection{Why this does not automatically give a better order}
+The Anthropic manuscript supplies another contraction route, using
+crossing replacements and graded partition spaces. Its displayed
+worst-case counting order agrees with the square-root-logarithm scale
+being investigated here. The paper itself identifies a possible structural
+lever: a replacement with graded entropy $\log\dim V_E=O(E^\alpha)$,
+$\alpha<1/2$, together with all required effective identities and
+factorizations, would improve the logarithmic denominator power.
+Constructing only a smaller graded space does not supply those interfaces.
+
+The existing second-round corpus already discusses this route and its
+characteristic-zero Heisenberg and locality obstructions. Those observations
+must not be presented as new discoveries caused by seeing the now-public
+Lean code. The new source is valuable because it exposes verified interfaces
+against which a genuinely new replacement could be tested.
+
+A tempting composition also needs careful scale accounting. Suppose a
+growing-arity Cauchy reduction has entropy scale
+$B=O(M\sqrt{\log r/\log s})$, while a clique engine saves a factor
+$(\log r)^\alpha$. Their direct composition has upper exponent
+\[
+ O\!\left(\frac{M(\log r)^{1/2-\alpha}}{\sqrt{\log s}}\right).
+\]
+At $\alpha=1/2$ these two logarithmic factors cancel. Even this calculation
+assumes valid oracle, precision, and nonuniform-list interfaces. It explains
+why inserting the available clique solver is not by itself a proof of a new
+logarithmic order; it is not a lower bound against every possible composition.

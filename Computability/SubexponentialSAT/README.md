@@ -10,7 +10,7 @@ reports that analyse or refine one of those algorithms.
 development exists in this repository yet, so there are no `Lean/` or `Coq/`
 directories. The manuscripts and packets are external research material,
 filed as delivered. Their proofs, constants and verification claims are the
-authors' own. The twenty-nine packets below assume the unchanged arguments of the
+authors' own. The thirty-four packets below assume the unchanged arguments of the
 OpenAI preprint. None of them claims an end-to-end SAT solver or a measured
 speedup, and none was formalized.
 
@@ -85,12 +85,14 @@ pin `openai/math@7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a` or
 commits, so every packet analyses the same text. Proofs are in natural
 language, with exact finite checks in standard-library Python.
 
-There are four rounds. The first seven packets work from the preprint alone.
+There are five rounds. The first seven packets work from the preprint alone.
 The eight of the second round also review the first round and its placement
 here, and they build on it. The five of the third round review all fifteen
 earlier packets. They combine compatible ingredients, and they add the first
 measured (kernel-level) speedups. The nine of the fourth round push the
-coefficients further with adaptive partitions and contraction trees.
+coefficients further with adaptive partitions and contraction trees, and
+the five of the fifth round use affine-plane geometry and pairwise
+certificates.
 
 ### Round 1: proved refinements of the preprint's upper bounds
 
@@ -171,6 +173,23 @@ interface is the same, with degree at most `⌈s^{9/10}⌉` unless stated. Scale
 | [`3sat_round3_frontier/`](Research/3sat_round3_frontier/README.md) † | `3sat_round3_frontier_20261027.zip` | Polynomial-space 63.75736… ⌈⌉, and **23.66617… at degree ≤ `⌈s^{1/12}⌉`**, the smallest low-degree polynomial-space claim. Cached 37.93011… / 33.62304…; low-degree cached 14.23919… / 12.36130…. Centered antipodal extraction measured 1.56–2.30× and the cube-root filter 2.71–3.00×. [`report/report.pdf`](Research/3sat_round3_frontier/report/report.pdf), 20 pages. | Its 26 `evidence/` copies of files already here are omitted. Prior code is kept as inert `.py.txt`. |
 | [`eth_adaptive_schedules/`](Research/eth_adaptive_schedules/README.txt) † | `eth_adaptive_schedules_2026-10-26.zip` | Polynomial-space 63.78117…; cached 37.59170… / 33.62304…. An exact incremental matching-potential kernel goes from `O(VMQ³)` to `O(MQ² + VQ)` with an identical deterministic output. [`report.pdf`](Research/eth_adaptive_schedules/report.pdf), 22 pages. | Its benchmarks are synthetic graph-packing inputs. |
 
+### Round 5: affine-plane geometry and pairwise certificates
+
+Arrival `26bd83d4b3`. The five packets reviewed the round-4 placement
+(ProveIt `73dfb5e5ab`…`7de9d09fec`), and several cite the
+`anthropics/formal-math` Lean development. All five improve only the cached
+(subexponential-space) branch, except one low-degree polynomial-space
+schedule. Generic polynomial space stays at 46.185. Scale: `s/√⌈log₂ s⌉`
+unless marked `√log₂`.
+
+| Directory | Archive | Claim | Scope stated by the packet |
+|---|---|---|---|
+| [`sat_pairwise_certificates/`](Research/sat_pairwise_certificates/README.txt) | `sat_pairwise_certificates_2026-10-26.zip` | **Cached time = space `C = (π/ln 2)√(15952347164548384057/368725000000000000) = 29.81161…`**, the smallest cached time, from a weighted norm-coupled pair-support certificate. **Polynomial space at degree ≤ `⌈s^{1/12}⌉`: 16.81223…** (from 23.666) via a streamed 32 → 16 → 8 → 4 schedule. It proves two obstructions: the flag coefficient is optimal over binary separator trees in its entropy model, and a finite rank obstruction rules out thinner graded spaces. It includes a conservative bounded-density CNF translation. [`report.pdf`](Research/sat_pairwise_certificates/report.pdf), 21 pages. | The worst-case order is unchanged, and the coefficients are per wire. |
+| [`sat_affine_contraction/`](Research/sat_affine_contraction/README.md) | `sat_affine_contraction_2026-10-26.zip` | Cached 30.25704… time / **25.98907… space**, the smallest cached space. Four affine-plane partitions give local time coefficient `1/√3`, and a joint selector gives storage coefficient `√(7/27)`; the schedule is 9 → 12 → 9 → 7 → 4. [`report.pdf`](Research/sat_affine_contraction/report.pdf), 16 pages. | Time and space both stay subexponential. |
+| [`sat_affine_geometry/`](Research/sat_affine_geometry/README.txt) | `sat_affine_geometry_2026-10-26.zip` | Cached `C_T = (π/ln 2)(√(128000/5103) + √(21920/7857)) = 30.26987…`, with `C_S = (π/ln 2)√(8000/189) = 29.48754…` (`√log₂`). It uses a four-plan affine-plane menu, a twelve-group menu and punctured menus. The Toeplitz packet kernel has a mixed record: full-grid loses and parity-strided wins at the largest sizes, and the raw results are kept. [`report.pdf`](Research/sat_affine_geometry/report.pdf), 21 pages. | No Lean rebuild was done. Seven delivered LaTeX/Python build byproducts are not filed (see placement record). |
+| [`sat_affine_cauchy/`](Research/sat_affine_cauchy/README.txt) | `sat_affine_cauchy_2026-10-26.zip` | Cached 30.41335… / 29.46603…, from the four parallel classes of `F₃²`, thirteen cyclic plans and a 9 → 13 → 9 → 6 → … recursion. Guarded fast Cauchy feature transforms reduce to one convolution for odd nodes; the product-tree prototype is slower at small sizes, and the odd-node path is faster on all five measurements. It also proves an obstruction to an immediate sparse-oscillator route. [`report.pdf`](Research/sat_affine_cauchy/report.pdf), 23 pages. | Its conditional growth-rate route claims no smaller-order algorithm. |
+| [`sat_affine_plane/`](Research/sat_affine_plane/README.txt) | `sat_affine_plane_2026-10-26.zip` | Cached 30.69134… / 29.46603… (`√log₂`), using the `F₃²` parallel-line partitions (support coefficient exactly `1/√3`) and a four-plan certificate on 13 groups. [`report.pdf`](Research/sat_affine_plane/report.pdf), 23 pages. | It does not improve polynomial space. It records that the published `anthropics/formal-math` evidence was retrieved, not rebuilt. |
+
 ## Strongest claimed improvements over the OpenAI preprint
 
 This summary comes from each packet's README and status files. ProveIt has
@@ -239,11 +258,17 @@ coefficients are smaller:
 | 33.994… | 33.994… | [`subsat_rectangular/`](Research/subsat_rectangular/README.md), on `s/√⌈log₂ s⌉` |
 | 32.916… | 31.662… | [`subexponential_sat_adaptive_four/`](Research/subexponential_sat_adaptive_four/README.txt) (32.856 / 31.467 with a 19/8 backend) |
 | 31.252… | 31.252… | [`sat_adaptive_frontier/`](Research/sat_adaptive_frontier/README.txt) |
-| **30.891…** | **30.754…** | [`sat_adaptive_tree_certificate/`](Research/sat_adaptive_tree_certificate/README.txt), **the smallest cached claim**, on `s/√⌈log₂ s⌉` |
+| 30.891… | 30.754… | [`sat_adaptive_tree_certificate/`](Research/sat_adaptive_tree_certificate/README.txt), round 4's best, on `s/√⌈log₂ s⌉` |
+| 30.691… | 29.466… | [`sat_affine_plane/`](Research/sat_affine_plane/README.txt) |
+| 30.413… | 29.466… | [`sat_affine_cauchy/`](Research/sat_affine_cauchy/README.txt), on `s/√⌈log₂ s⌉` |
+| 30.270… | 29.488… | [`sat_affine_geometry/`](Research/sat_affine_geometry/README.txt) |
+| 30.257… | **25.989…** | [`sat_affine_contraction/`](Research/sat_affine_contraction/README.md), **the smallest cached space**, on `s/√⌈log₂ s⌉` |
+| **29.812…** | 29.812… | [`sat_pairwise_certificates/`](Research/sat_pairwise_certificates/README.txt), **the smallest cached time**, on `s/√⌈log₂ s⌉` |
 
 Low-degree networks have smaller coefficients under stronger input
-assumptions. In polynomial space, the smallest is `3sat_round3_frontier/`'s
-**23.666** at maximum degree `⌈s^{1/12}⌉`. The others are:
+assumptions. In polynomial space, the smallest is `sat_pairwise_certificates/`'s
+**16.812** at maximum degree `⌈s^{1/12}⌉`. The others are:
+- `3sat_round3_frontier/`: 23.666 at `⌈s^{1/12}⌉`;
 - `eth_adaptive_exact_kernels/`: 25.164 at `⌈s^{0.51}⌉`;
 - `sat_frontier_improvements/`: 26.902 at `s^{1/12}` and 31.929 at `s^{3/5}`;
 - `eth_asymmetric_packet_balancing/`: 31.064 at `⌈s^{1/12}⌉`;
@@ -302,7 +327,7 @@ All the conditional routes target the `√(log n)` denominator. The barrier
 results of `3sat_asymptotic_analysis/` say that retuning the existing
 parameters (weighted budgets, taper, Newton modes) cannot remove it. A real
 order improvement therefore needs new structure, not better constants. The
-second to fourth rounds confirm this: their twenty-two packets improve only `C`
+second to fifth rounds confirm this: their twenty-seven packets improve only `C`
 and kernel costs, and none closes a missing interface of the conditional
 proposals.
 
@@ -376,4 +401,17 @@ proposals.
   marked `-text`, and seven delivered `.log` files are force-added. At
   Vladimir's request, round 4 had no separate manifest or omission recheck
   beyond the blob-identity test that decides each omission.
+- Round 5. The drop process committed five archives in `26bd83d4b3`. In table
+  order they are filed with 32, 30, 57, 50 and 44 files. Not filed:
+  - one `SHA256SUMS` ledger;
+  - `sat_affine_geometry/provenance/closing-Computability_SubexponentialSAT_README.md`,
+    a byte copy of this README at `d86bd7259c` (in `OMITTED.tsv`);
+  - seven delivered build byproducts of `sat_affine_geometry/`: `report.aux`,
+    `.fdb_latexmk`, `.fls`, `.log`, `.out`, `.toc` and
+    `code/__pycache__/portfolios.cpython-312.pyc`. These are generated files
+    that the repository keeps out of history, and they remain in the
+    arrival archive.
+  Six delivered `results/*.log` build records are force-added. Three CRLF
+  CSV files are marked `-text`. As in round 4, no separate manifest, omission
+  or link recheck was run.
 - No supplied script, test, Makefile or LaTeX build was run.

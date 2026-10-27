@@ -1,0 +1,139 @@
+\section{Recent commits, the full comparison set, and the supplied PR}
+\label{sec:review}
+
+\subsection{Pinned review and incoming arrivals}
+The review is frozen at ProveIt commit \pin. It was committed at
+20:15:51 Pacific on October 26, 2026. The relevant progression is:
+\begin{center}\small
+\begin{tabular}{p{3.5cm}p{10.5cm}}
+\toprule
+Commit & Relevant action\\\midrule
+\texttt{2b925d8800} & Places the seven first-round packets and primary manuscripts.\\
+\texttt{3e09608991} & Vendors the OpenAI manuscript and its four LaTeX sources.\\
+\texttt{6d3adc4506} & Places eight round-2 packets.\\
+\texttt{450252e9d8} & Places five round-3 packets and restores two replay scripts.\\
+\texttt{b9941a7396} & Commits the nine new incoming round-4 archives.\\
+\texttt{a7ae5ab55f} & Places those nine packets under SubexponentialSAT.\\
+\texttt{7de9d09fec} & Links the Anthropic formalization; no mathematical packet changes.\\
+\bottomrule
+\end{tabular}
+\end{center}
+At the review pin, \path{docs/incoming/} contains its README only. Its nine
+recent SAT arrivals have already been relocated into the research tree.
+They are included here; reviewing only the earlier fifteen or twenty packets
+would give an obsolete benchmark. The review covered the 29 packet summaries
+and status declarations, with detailed examination of the source interfaces
+and leading proofs used in the new comparison. It did not independently
+reprove every statement in all 29 packets.
+
+The final branch check observed \texttt{7de9d09fecd17de776d712835ecb2011205c531d},
+committed at 20:20:40 Pacific. We inspected its complete relevant diff:
+it updates the README to link the Anthropic development and adds no
+new proposal or complexity bound. The mathematical corpus remains pinned
+at \pin; the documentation-only follow-up is recorded separately.
+
+The accompanying source manifest records immutable source paths, Git blob IDs and
+SHA-256 hashes. The checkout is unmodified. Historical archives and upstream
+manuscripts are linked rather than duplicated in this deliverable.
+
+\subsection{Inventory of the 29 refinement packets}
+In the following table, PS denotes polynomial space. Cached coefficients
+permit subexponential space. Unless qualified, numbers are generic
+normalized-wire time coefficients reported by the corresponding packet,
+with that packet's stated imported dependencies. This inventory summarizes
+the indexed corpus \cite{corpus}; the new result uses the actual leading
+interfaces, not just the printed decimal numbers.
+
+\begin{longtable}{p{5.1cm}p{9.0cm}}
+\toprule Packet & Relevant result or limitation\\\midrule
+\endfirsthead
+\toprule Packet & Relevant result or limitation\\\midrule
+\endhead
+\bottomrule\endfoot
+\path{eth_contraction_improvements}&Sharper Hermite taper and streamed extraction; PS $648.441$.\\
+\path{cauchy_mode_improvement}&Factorial modes; ratio $1/\sqrt3$ in the mode-enumeration constant.\\
+\path{3sat_precision_refinement}&Precision $24MD/u\to6MD/u$; the stronger $n/\log n$-type rates need an unproved summation algorithm.\\
+\path{sat_density_improvement}&Density-sensitive order envelope with $\min\{\log(2+m/n),\log\log n\}$.\\
+\path{eth_density_refinement}&Independent intermediate-density improvement and constant refinements.\\
+\path{3sat_refinement}&Scalar parity lift; second-contraction factorization remains missing.\\
+\path{3sat_asymptotic_analysis}&Scoped taper, rank and degree barriers; conditional interfaces remain unconstructed.\\
+\path{eth_asymmetric_packet_balancing}&PS $76.909$; asymmetric near-unit padding.\\
+\path{3sat_round2_refinement}&PS $84.066$; independent source and actual-domain audit.\\
+\path{eth_balanced_packing}&PS $94.748$; thin precision buffers and near-unit padding.\\
+\path{eth_high_moment}&PS $94.748$; degree-sensitive extensions.\\
+\path{eth_matching_refinement}&Third independent $94.748$ bound through matching-based packing.\\
+\path{eth_packet_refinement}&PS $95.664$; improved pair loads.\\
+\path{eth_recursive_refinement}&PS $133.207$; refined Cauchy residue classes.\\
+\path{eth_joint_cauchy}&Full-block slope-four modes; PS $319.686$, cached $225.597$. Its mode identity is used by later improvements.\\
+\path{sat_adaptive_contraction}&PS $55.709$; cached $36.750$; modular Cauchy kernels.\\
+\path{sat_frontier_improvements}&PS $63.857$, cached $38.484$; variable arity and quadratic feature construction.\\
+\path{subexponential_sat_frontier}&PS $63.852$, cached $37.930$; exact labeling and precision peeling.\\
+\path{subexponential_sat_kernel_improvements}&PS composition $66.605$; Smith, streamed and projective coefficient kernels.\\
+\path{subsat_contraction_tree}&Cached $35.355$; recursive table merging and a rational-matrix-to-ring bridge.\\
+\path{sat_adaptive_bounds}&Best generic PS $46.184846$; complete binary flags. Low-degree cached $13.379649$ under stronger assumptions.\\
+\path{sat_adaptive_tree_certificate}&Best generic cached $30.891019$ time and $30.753913$ space; adaptive three-plan support certificates.\\
+\path{sat_adaptive_frontier}&PS $50.30469$; cached time/space $31.25240$.\\
+\path{sat_adaptive_matrix_partition}&PS $50.21043$; cached $34.32528$.\\
+\path{subexponential_sat_adaptive_four}&PS $50.39373$; cached $32.91581$, or $32.85635$ with the stated stronger matrix backend.\\
+\path{subsat_rectangular}&PS $53.97753$; cached $33.99389$; precision and table barriers.\\
+\path{eth_adaptive_exact_kernels}&PS $55.33162$, cached $35.07061$; sparse-support scoring and fused feature recurrences.\\
+\path{3sat_round3_frontier}&PS $63.75736$; low-degree PS $23.66617$; centered extraction kernels.\\
+\path{eth_adaptive_schedules}&PS $63.78117$, cached $37.59170$; an incremental matching-potential kernel.\\
+\end{longtable}
+
+All these packets retain the unrestricted SAT order. The strongest
+established density-sensitive expression in the corpus is
+\begin{equation}\label{eq:density}
+ \poly_k(n,m)\,
+ 2^{O_k\left(\frac n{\sqrt{\log n}}
+        \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+For example, $m=\Theta(n\log\log n)$ yields
+$n\log\log\log n/\sqrt{\log n}$ in the exponent. This is an
+intermediate-density improvement, not a smaller unrestricted order.
+Conditional targets are not established algorithms that a new numerical
+coefficient must beat.
+
+\subsection{What the Anthropic revision changes}
+During the review, the user supplied PR 31 of \path{anthropics/formal-math}
+at exact revision
+\begin{center}\ap.\end{center}
+That revision publishes \path{eth/},
+including the paper, the standalone theorem statements, the proof entry
+point, the proof tree, and checking instructions \cite{anthropic}.
+Accordingly, the earlier description of this formalization as unpublished
+is stale; ProveIt's final documentation-only commit also corrects it.
+This is a change in source availability and inspectability, not a
+new smaller exponent stated in the PR.
+
+\path{MainResults.lean} states the existence of one finite-alphabet
+Mathlib multi-stack Turing machine and one constant $C$, both quantified
+before $k,n$ and the formula. Under $k\ge1$, $n\ge4$, $m\ge2$, no repeated
+clause-list, and occurrence of every declared variable, its bound is
+\[
+ 2^{C\min\{km/\sqrt{\log_2m},\,
+             k^2n\log_2\log_2n/\sqrt{\log_2n}\}}.
+\]
+\path{Solution.lean} supplies unconditional theorem terms through
+\path{CountedRoute.mainTheoremHolds}; the ETH statement follows through
+the named renaming and decision wrappers. There are 1,052 Lean files in
+the inspected revision. The two actual \texttt{sorry} terms found by the
+source scan are the intentionally unproved comparison statements in
+\path{Challenge.lean}; the proof entry point does not import that file.
+The comparator configuration lists the standard axioms
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, and
+requests \texttt{nanoda} checking.
+
+These are source-inspection findings. We did not install the pinned Lean
+toolchain, rebuild the 1,052-file development, or replay its kernel checks.
+A text scan for \texttt{sorry} is not a substitute for such a build.
+The PDF at the supplied revision is not byte-identical to ProveIt's earlier
+\path{claude-2o-n-3sat/eth.pdf}; both hashes are recorded. We therefore
+read the supplied paper directly instead of assuming the earlier PDF was
+the same document.
+
+The newly available source is relevant to the mathematical search. Its
+clique algorithm admits arbitrary integer-valued high-degree node tables, and its sharp
+decomposition uses a graded operator algebra with partition-number growth.
+Section~\ref{sec:order-research} examines both the possible composition with the
+Cauchy method and the growth-rate suggestion in its Appendix H.
