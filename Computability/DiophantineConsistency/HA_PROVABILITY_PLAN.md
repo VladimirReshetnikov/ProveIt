@@ -11,6 +11,13 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [adaptive canonical converse](reviews/native-adaptive-canonical-root.md)
+now turns every positive Carrier65 zero into a positive zero of the literal
+adaptive graph, retaining full PortBounds and deriving all private witness
+signs and the actual first-index quotient. Independent builds match both
+objects and six standard-only reports. This external existence map does
+not yet specialize the current ports or internalize the arithmetic in PA/HA.
+
 The [actual full-seed source image](reviews/validator-source-full-seed222-root.md)
 now gives the literal closure-and-root-request body a current C222 history
 witness for every internally typed matrix, arbitrary free environment and

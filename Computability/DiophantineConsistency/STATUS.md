@@ -29,6 +29,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [adaptive canonical converse](reviews/native-adaptive-canonical-root.md)
+now constructs the literal positive adaptive zero from every positive
+Carrier65 zero under full PortBounds. Source/index bounds derive every
+private positivity condition; the fifth input is exactly delta*i.
+Independent builds match both objects and six standard-only reports.
+The exact current specialization,closed ConZFC composition,current metrics
+and internal PA/HA arithmetic remain separate obligations.
+
 The [actual full-seed source image](reviews/validator-source-full-seed222-root.md)
 now supplies an actual History222 witness for every internally typed matrix,
 retaining the complete literal closure/root-request body and arbitrary

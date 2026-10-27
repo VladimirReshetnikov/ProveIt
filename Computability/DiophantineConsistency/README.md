@@ -164,6 +164,14 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [adaptive canonical converse](reviews/native-adaptive-canonical-root.md)
+now maps every positive Carrier65 zero under its complete PortBounds to
+a positive literal adaptive zero, preserving J/F/alpha. Its stronger
+canonical map constructs all private signs and the exact scaled multiplier.
+Independent builds match both objects and six standard-only reports.
+Current-port composition,metric certification and internal PA/HA arithmetic
+remain separate work.
+
 The [actual full-seed source image](reviews/validator-source-full-seed222-root.md)
 now proves an actual C222 history witness for every internally typed matrix
 and arbitrary free-safe output stream, retaining both closure and root
