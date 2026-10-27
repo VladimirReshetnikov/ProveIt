@@ -1,0 +1,472 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:29:63: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+  h ≥ 0
+  g ≥ 0
+  g - h ≥ 1
+  f ≥ 0
+  f - i ≥ 0
+  e ≥ 0
+  d ≥ 1
+  b ≥ 1
+  a ≥ 1
+where
+ a := ↑X
+ b := ↑Y
+ d := ↑r
+ e := ↑(Pell.yn ⋯ (r + 1))
+ f := ↑(Pell.yn ⋯ (2 * r + 1))
+ g := ↑((2 * (Y * (X + 1) + 2) - 1) ^ 2) * ↑X
+ h := ↑(2 * (2 * (X * Y ^ 2) + 1)) * ↑((X + 1) ^ 2)
+ i := ↑((2 * (Y * (X + 1) + 2) - 1) ^ (2 * r))
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:34:41: error: unsolved goals
+X Y r k c : ℕ
+hX : 1 ≤ X
+hY : 1 ≤ Y
+hr : 1 ≤ r
+hk : k = 2 * Pell.yn ⋯ (r + 1)
+hc : c = Pell.yn ⋯ (2 * r + 1)
+key : 2 * (2 * (X * Y ^ 2) + 1) * (X + 1) ^ 2 < (2 * (Y * (X + 1) + 2) - 1) ^ 2 * X
+hcl : (2 * (Y * (X + 1) + 2) - 1) ^ (2 * r) ≤ c
+hku : k ≤ 2 * (2 * (2 * (X * Y ^ 2) + 1)) ^ r
+hp : (2 * (2 * (X * Y ^ 2) + 1) * (X + 1) ^ 2) ^ r < ((2 * (Y * (X + 1) + 2) - 1) ^ 2 * X) ^ r
+⊢ (1 + X * 2 + X ^ 2) ^ r * (1 + X * Y ^ 2 * 2) ^ r * 2 ^ r * 2 =
+    (2 + X * 4 + X * Y ^ 2 * 4 + X ^ 2 * 2 + X ^ 2 * Y ^ 2 * 8 + X ^ 3 * Y ^ 2 * 4) ^ r * 2
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:46:28: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  j ≥ 0
+  i ≥ 0
+  h ≥ 0
+  h - i ≥ 1
+  g ≥ 1
+  f ≥ 0
+  e ≥ 0
+  2*e - g ≥ 0
+  2*e + f - g ≥ 0
+  2*e + f - g - j ≥ 0
+  d ≥ 1
+  b ≥ 1
+  a ≥ 1
+where
+ a := ↑X
+ b := ↑Y
+ d := ↑r
+ e := ↑(Pell.yn ⋯ (r + 1))
+ f := ↑k * ↑Y
+ g := ↑zeta
+ h := ↑(2 * c) * ↑(X ^ r)
+ i := ↑k * ↑((X + 1) ^ (2 * r))
+ j := ↑k * ↑(Y + 1)
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:64:53: error: unsolved goals
+r : ℕ
+hp : 2 ^ r ≤ 8 ^ r
+he : 8 ^ r = 2 ^ r * 2 ^ r * 2 ^ r
+⊢ 2 ^ r * 2 + 2 ^ r * 4 ^ r * 4 = 2 ^ r * 2 + 2 ^ (r * 3) * 4
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:134:43: error(lean.invalidField): Invalid field `mpr`: The environment does not contain `Function.mpr`, so it is not possible to project the field `mpr` from an expression
+  dvd_abs
+of type
+  ∀ (a b : ?m.182), a ∣ |b| ↔ a ∣ b
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:180:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(Int.toNat ?m.655)
+in the target expression
+  Int.ofNat (X * Y ^ 2).toNat = Int.ofNat (X.toNat * Y.toNat ^ 2)
+
+ports : Fin 4 → ℤ
+hports : PortBox ports
+hbeta : 15 ≤ ports 0
+J F alpha X Y k eta zeta gamma r q R Bt f i T u : ℤ
+hJ : 0 < J
+hF : 0 < F
+halpha : 0 < alpha
+hX : 0 < X
+hY : 0 < Y
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hr : 0 < r
+hf : 0 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hk : k = eta + zeta
+hq : q = ports 0 * J + 1
+hR : R = target q F alpha J (ports 2) (ports 3)
+hBt : Bt = (q * ports 1 + X) * (q - F - alpha) - q * F
+h0 : firstA0 q (X * k * Y ^ 2) k r Y Bt = 0
+h1 : mainA1 q X Y k eta gamma (k - R - 1) = 0
+hs : strongFactor (Y * (X + 1)) (k * Y + eta) f i = 1
+ha : auxiliaryFactor (Y * (X + 1)) (k * Y + eta) f T R u = 1
+hkpos : 0 < k
+n : ℕ
+hn : 25 ≤ n
+hindex : 2 * ↑n = R + 1
+hkn : k = 2 * ↑(Pell.yn ⋯ n)
+hcp : k * Y + eta = ↑(Pell.yn ⋯ R.toNat)
+hfour : 4 * X * Y ^ 2 ∣ k - R - 1
+hU : q ^ 2 * Y ∣ k - R - 1
+hqX : q ∣ 3 * X
+hproj : 4 * Y * (X + 1) + 3 ∣ 3 * (X - 2 ^ R.toNat)
+r0 : ℕ := ⋯
+c : ℤ := ⋯
+hr0 : 24 ≤ r0
+hnr : n = r0 + 1
+hRR : ↑R.toNat = R
+hRn : R.toNat = 2 * r0 + 1
+hXc : ↑X.toNat = X
+hYc : ↑Y.toNat = Y
+hkc : ↑k.toNat = k
+hcpos : 0 < c
+hcc : ↑c.toNat = c
+hec : ↑eta.toNat = eta
+hzc : ↑zeta.toNat = zeta
+⊢ Int.ofNat (X * Y ^ 2).toNat = Int.ofNat (X.toNat * Y.toNat ^ 2)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:184:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(Int.toNat ?m.684)
+in the target expression
+  Int.ofNat (Y * (X + 1)).toNat = Int.ofNat (Y.toNat * (X.toNat + 1))
+
+ports : Fin 4 → ℤ
+hports : PortBox ports
+hbeta : 15 ≤ ports 0
+J F alpha X Y k eta zeta gamma r q R Bt f i T u : ℤ
+hJ : 0 < J
+hF : 0 < F
+halpha : 0 < alpha
+hX : 0 < X
+hY : 0 < Y
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hr : 0 < r
+hf : 0 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hk : k = eta + zeta
+hq : q = ports 0 * J + 1
+hR : R = target q F alpha J (ports 2) (ports 3)
+hBt : Bt = (q * ports 1 + X) * (q - F - alpha) - q * F
+h0 : firstA0 q (X * k * Y ^ 2) k r Y Bt = 0
+h1 : mainA1 q X Y k eta gamma (k - R - 1) = 0
+hs : strongFactor (Y * (X + 1)) (k * Y + eta) f i = 1
+ha : auxiliaryFactor (Y * (X + 1)) (k * Y + eta) f T R u = 1
+hkpos : 0 < k
+n : ℕ
+hn : 25 ≤ n
+hindex : 2 * ↑n = R + 1
+hkn : k = 2 * ↑(Pell.yn ⋯ n)
+hcp : k * Y + eta = ↑(Pell.yn ⋯ R.toNat)
+hfour : 4 * X * Y ^ 2 ∣ k - R - 1
+hU : q ^ 2 * Y ∣ k - R - 1
+hqX : q ∣ 3 * X
+hproj : 4 * Y * (X + 1) + 3 ∣ 3 * (X - 2 ^ R.toNat)
+r0 : ℕ := ⋯
+c : ℤ := ⋯
+hr0 : 24 ≤ r0
+hnr : n = r0 + 1
+hRR : ↑R.toNat = R
+hRn : R.toNat = 2 * r0 + 1
+hXc : ↑X.toNat = X
+hYc : ↑Y.toNat = Y
+hkc : ↑k.toNat = k
+hcpos : 0 < c
+hcc : ↑c.toNat = c
+hec : ↑eta.toNat = eta
+hzc : ↑zeta.toNat = zeta
+hQnat : (X * Y ^ 2).toNat = X.toNat * Y.toNat ^ 2
+⊢ Int.ofNat (Y * (X + 1)).toNat = Int.ofNat (Y.toNat * (X.toNat + 1))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:187:8: error: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => k = 2 * ↑(Pell.yn ⋯ n)
+Error: Application type mismatch: The argument
+  a✝
+has type
+  ¬1 < 2 * _a + 1
+but is expected to have type
+  ¬1 < 2 * (X * Y ^ 2).toNat + 1
+in the application
+  adaptive_projection._proof_1 ports hQ a✝
+
+Explanation: The rewrite tactic rewrites an expression 'e' using an equality 'a = b' by the following process. First, it looks for all 'a' in 'e'. Second, it tries to abstract these occurrences of 'a' to create a function 'm := fun _a => ...', called the *motive*, with the property that 'm a' is definitionally equal to 'e'. Third, we observe that 'congrArg' implies that 'm a = m b', which can be used with lemmas such as 'Eq.mpr' to change the goal. However, if 'e' depends on specific properties of 'a', then the motive 'm' might not typecheck.
+
+Possible solutions: use rewrite's 'occs' configuration option to limit which occurrences are rewritten, or use 'simp' or 'conv' mode, which have strategies for certain kinds of dependencies (these tactics can handle proofs and 'Decidable' instances whose types depend on the rewritten term, and 'simp' can apply user-defined '@[congr]' theorems as well).
+
+ports : Fin 4 → ℤ
+hports : PortBox ports
+hbeta : 15 ≤ ports 0
+J F alpha X Y k eta zeta gamma r q R Bt f i T u : ℤ
+hJ : 0 < J
+hF : 0 < F
+halpha : 0 < alpha
+hX : 0 < X
+hY : 0 < Y
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hr : 0 < r
+hf : 0 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hk : k = eta + zeta
+hq : q = ports 0 * J + 1
+hR : R = target q F alpha J (ports 2) (ports 3)
+hBt : Bt = (q * ports 1 + X) * (q - F - alpha) - q * F
+h0 : firstA0 q (X * k * Y ^ 2) k r Y Bt = 0
+h1 : mainA1 q X Y k eta gamma (k - R - 1) = 0
+hs : strongFactor (Y * (X + 1)) (k * Y + eta) f i = 1
+ha : auxiliaryFactor (Y * (X + 1)) (k * Y + eta) f T R u = 1
+hkpos : 0 < k
+n : ℕ
+hn : 25 ≤ n
+hindex : 2 * ↑n = R + 1
+hkn : k = 2 * ↑(Pell.yn ⋯ n)
+hcp : k * Y + eta = ↑(Pell.yn ⋯ R.toNat)
+hfour : 4 * X * Y ^ 2 ∣ k - R - 1
+hU : q ^ 2 * Y ∣ k - R - 1
+hqX : q ∣ 3 * X
+hproj : 4 * Y * (X + 1) + 3 ∣ 3 * (X - 2 ^ R.toNat)
+r0 : ℕ := n - 1
+c : ℤ := k * Y + eta
+hr0 : 24 ≤ r0
+hnr : n = r0 + 1
+hRR : ↑R.toNat = R
+hRn : R.toNat = 2 * r0 + 1
+hXc : ↑X.toNat = X
+hYc : ↑Y.toNat = Y
+hkc : ↑k.toNat = k
+hcpos : 0 < c
+hcc : ↑c.toNat = c
+hec : ↑eta.toNat = eta
+hzc : ↑zeta.toNat = zeta
+hQnat : (X * Y ^ 2).toNat = X.toNat * Y.toNat ^ 2
+hanat : (Y * (X + 1)).toNat = Y.toNat * (X.toNat + 1)
+hQposN : 0 < X.toNat * Y.toNat ^ 2
+⊢ k.toNat = 2 * Pell.yn ⋯ (r0 + 1)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:191:8: error: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => k * Y + eta = ↑(Pell.yn ⋯ R.toNat)
+Error: Application type mismatch: The argument
+  a✝
+has type
+  ¬1 < _a + 2
+but is expected to have type
+  ¬1 < (Y * (X + 1)).toNat + 2
+in the application
+  adaptive_projection._proof_2 ports a✝
+
+Explanation: The rewrite tactic rewrites an expression 'e' using an equality 'a = b' by the following process. First, it looks for all 'a' in 'e'. Second, it tries to abstract these occurrences of 'a' to create a function 'm := fun _a => ...', called the *motive*, with the property that 'm a' is definitionally equal to 'e'. Third, we observe that 'congrArg' implies that 'm a = m b', which can be used with lemmas such as 'Eq.mpr' to change the goal. However, if 'e' depends on specific properties of 'a', then the motive 'm' might not typecheck.
+
+Possible solutions: use rewrite's 'occs' configuration option to limit which occurrences are rewritten, or use 'simp' or 'conv' mode, which have strategies for certain kinds of dependencies (these tactics can handle proofs and 'Decidable' instances whose types depend on the rewritten term, and 'simp' can apply user-defined '@[congr]' theorems as well).
+
+ports : Fin 4 → ℤ
+hports : PortBox ports
+hbeta : 15 ≤ ports 0
+J F alpha X Y k eta zeta gamma r q R Bt f i T u : ℤ
+hJ : 0 < J
+hF : 0 < F
+halpha : 0 < alpha
+hX : 0 < X
+hY : 0 < Y
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hr : 0 < r
+hf : 0 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hk : k = eta + zeta
+hq : q = ports 0 * J + 1
+hR : R = target q F alpha J (ports 2) (ports 3)
+hBt : Bt = (q * ports 1 + X) * (q - F - alpha) - q * F
+h0 : firstA0 q (X * k * Y ^ 2) k r Y Bt = 0
+h1 : mainA1 q X Y k eta gamma (k - R - 1) = 0
+hs : strongFactor (Y * (X + 1)) (k * Y + eta) f i = 1
+ha : auxiliaryFactor (Y * (X + 1)) (k * Y + eta) f T R u = 1
+hkpos : 0 < k
+n : ℕ
+hn : 25 ≤ n
+hindex : 2 * ↑n = R + 1
+hkn : k = 2 * ↑(Pell.yn ⋯ n)
+hcp : k * Y + eta = ↑(Pell.yn ⋯ R.toNat)
+hfour : 4 * X * Y ^ 2 ∣ k - R - 1
+hU : q ^ 2 * Y ∣ k - R - 1
+hqX : q ∣ 3 * X
+hproj : 4 * Y * (X + 1) + 3 ∣ 3 * (X - 2 ^ R.toNat)
+r0 : ℕ := n - 1
+c : ℤ := k * Y + eta
+hr0 : 24 ≤ r0
+hnr : n = r0 + 1
+hRR : ↑R.toNat = R
+hRn : R.toNat = 2 * r0 + 1
+hXc : ↑X.toNat = X
+hYc : ↑Y.toNat = Y
+hkc : ↑k.toNat = k
+hcpos : 0 < c
+hcc : ↑c.toNat = c
+hec : ↑eta.toNat = eta
+hzc : ↑zeta.toNat = zeta
+hQnat : (X * Y ^ 2).toNat = X.toNat * Y.toNat ^ 2
+hanat : (Y * (X + 1)).toNat = Y.toNat * (X.toNat + 1)
+hQposN : 0 < X.toNat * Y.toNat ^ 2
+hknN : k.toNat = 2 * Pell.yn ⋯ (r0 + 1)
+⊢ c.toNat = Pell.yn ⋯ (2 * r0 + 1)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:198:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑c.toNat
+in the target expression
+  Int.ofNat c.toNat = Int.ofNat (k.toNat * Y.toNat + eta.toNat)
+
+ports : Fin 4 → ℤ
+hports : PortBox ports
+hbeta : 15 ≤ ports 0
+J F alpha X Y k eta zeta gamma r q R Bt f i T u : ℤ
+hJ : 0 < J
+hF : 0 < F
+halpha : 0 < alpha
+hX : 0 < X
+hY : 0 < Y
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hr : 0 < r
+hf : 0 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hk : k = eta + zeta
+hq : q = ports 0 * J + 1
+hR : R = target q F alpha J (ports 2) (ports 3)
+hBt : Bt = (q * ports 1 + X) * (q - F - alpha) - q * F
+h0 : firstA0 q (X * k * Y ^ 2) k r Y Bt = 0
+h1 : mainA1 q X Y k eta gamma (k - R - 1) = 0
+hs : strongFactor (Y * (X + 1)) (k * Y + eta) f i = 1
+ha : auxiliaryFactor (Y * (X + 1)) (k * Y + eta) f T R u = 1
+hkpos : 0 < k
+n : ℕ
+hn : 25 ≤ n
+hindex : 2 * ↑n = R + 1
+hkn : k = 2 * ↑(Pell.yn ⋯ n)
+hcp : k * Y + eta = ↑(Pell.yn ⋯ R.toNat)
+hfour : 4 * X * Y ^ 2 ∣ k - R - 1
+hU : q ^ 2 * Y ∣ k - R - 1
+hqX : q ∣ 3 * X
+hproj : 4 * Y * (X + 1) + 3 ∣ 3 * (X - 2 ^ R.toNat)
+r0 : ℕ := ⋯
+c : ℤ := ⋯
+hr0 : 24 ≤ r0
+hnr : n = r0 + 1
+hRR : ↑R.toNat = R
+hRn : R.toNat = 2 * r0 + 1
+hXc : ↑X.toNat = X
+hYc : ↑Y.toNat = Y
+hkc : ↑k.toNat = k
+hcpos : 0 < c
+hcc : ↑c.toNat = c
+hec : ↑eta.toNat = eta
+hzc : ↑zeta.toNat = zeta
+hQnat : (X * Y ^ 2).toNat = X.toNat * Y.toNat ^ 2
+hanat : (Y * (X + 1)).toNat = Y.toNat * (X.toNat + 1)
+hQposN : 0 < X.toNat * Y.toNat ^ 2
+hknN : k.toNat = 2 * Pell.yn ⋯ (r0 + 1)
+hcpN : c.toNat = Pell.yn ⋯ (2 * r0 + 1)
+⊢ Int.ofNat c.toNat = Int.ofNat (k.toNat * Y.toNat + eta.toNat)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:202:9: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑k.toNat
+in the target expression
+  Int.ofNat k.toNat = Int.ofNat (eta.toNat + zeta.toNat)
+
+ports : Fin 4 → ℤ
+hports : PortBox ports
+hbeta : 15 ≤ ports 0
+J F alpha X Y k eta zeta gamma r q R Bt f i T u : ℤ
+hJ : 0 < J
+hF : 0 < F
+halpha : 0 < alpha
+hX : 0 < X
+hY : 0 < Y
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hr : 0 < r
+hf : 0 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hk : k = eta + zeta
+hq : q = ports 0 * J + 1
+hR : R = target q F alpha J (ports 2) (ports 3)
+hBt : Bt = (q * ports 1 + X) * (q - F - alpha) - q * F
+h0 : firstA0 q (X * k * Y ^ 2) k r Y Bt = 0
+h1 : mainA1 q X Y k eta gamma (k - R - 1) = 0
+hs : strongFactor (Y * (X + 1)) (k * Y + eta) f i = 1
+ha : auxiliaryFactor (Y * (X + 1)) (k * Y + eta) f T R u = 1
+hkpos : 0 < k
+n : ℕ
+hn : 25 ≤ n
+hindex : 2 * ↑n = R + 1
+hkn : k = 2 * ↑(Pell.yn ⋯ n)
+hcp : k * Y + eta = ↑(Pell.yn ⋯ R.toNat)
+hfour : 4 * X * Y ^ 2 ∣ k - R - 1
+hU : q ^ 2 * Y ∣ k - R - 1
+hqX : q ∣ 3 * X
+hproj : 4 * Y * (X + 1) + 3 ∣ 3 * (X - 2 ^ R.toNat)
+r0 : ℕ := ⋯
+c : ℤ := ⋯
+hr0 : 24 ≤ r0
+hnr : n = r0 + 1
+hRR : ↑R.toNat = R
+hRn : R.toNat = 2 * r0 + 1
+hXc : ↑X.toNat = X
+hYc : ↑Y.toNat = Y
+hkc : ↑k.toNat = k
+hcpos : 0 < c
+hcc : ↑c.toNat = c
+hec : ↑eta.toNat = eta
+hzc : ↑zeta.toNat = zeta
+hQnat : (X * Y ^ 2).toNat = X.toNat * Y.toNat ^ 2
+hanat : (Y * (X + 1)).toNat = Y.toNat * (X.toNat + 1)
+hQposN : 0 < X.toNat * Y.toNat ^ 2
+hknN : k.toNat = 2 * Pell.yn ⋯ (r0 + 1)
+hcpN : c.toNat = Pell.yn ⋯ (2 * r0 + 1)
+hckN : c.toNat = k.toNat * Y.toNat + eta.toNat
+⊢ Int.ofNat k.toNat = Int.ofNat (eta.toNat + zeta.toNat)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:213:8: error: mod_cast has type
+  2 ^ (2 * r0 + 1) ≤ 4 * Y.toNat
+but is expected to have type
+  ↑(2 ^ (2 * r0 + 1)) ≤ 4 * Y
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:215:8: error: Type mismatch: After simplification, term
+  hproj
+ has type
+  4 * (Y * 2) + 3 ∣ 3 * (1 - 2 ^ R.toNat)
+but is expected to have type
+  8 * Y + 3 ∣ 3 * (1 - 2 ^ R.toNat)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:220:51: error: mod_cast has type
+  2 ^ (2 * r0 + 1) < Y.toNat
+but is expected to have type
+  ↑(2 ^ (2 * r0 + 1)) < Y
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:221:32: error: (deterministic) timeout at `«Mathlib.Tactic.Linarith.SimplexAlgorithm.Gauss.getTableauImp»`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:225:6: error: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptivePowerRecovery.lean:159:41: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.

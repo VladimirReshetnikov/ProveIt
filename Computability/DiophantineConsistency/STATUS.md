@@ -179,6 +179,14 @@ plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. Evaluation composition is accepted above; fixed command blocks and
 compiler/proof-state invariants remain subsequent checkpoints.
 
+The [literal adaptive power recovery](reviews/native-adaptive-power-recovery-root.md)
+now derives X=2^R,the exact first index2n=R+1,and the required signed
+divisibility from the actual positive carrier tuple. Its projection retains
+3|q and its growth uses the actual eta/zeta split. Four independent builds
+pass fourteen standard-only reports and identical objects. Mersenne
+factor-three exclusion,whole-product/source transfer,the converse and
+internal HA arithmetic remain open.
+
 The [literal adaptive strong-index theorem](reviews/native-adaptive-strong-index-root.md)
 now recovers the actual main Pell coordinates at target R from literal
 A0/A1 and Fs/Fa, preserving unrestricted positive J. It derives square

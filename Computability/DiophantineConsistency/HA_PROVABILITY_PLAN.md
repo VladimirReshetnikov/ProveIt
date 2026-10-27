@@ -1291,3 +1291,20 @@ invariant Sigma1 without an unbounded forall-exists witness oracle.
 The reused old-named Tail254 module is numeric only and is rebuilt over the
 current dependencies. Actual command preservation must still use NIP0,
 DROP1,MP2,physical rho6(a,c),growG,old-d GEN and the current bundle gate.
+
+## Literal adaptive first index and power recovered
+
+The [literal adaptive power recovery](reviews/native-adaptive-power-recovery-root.md)
+now derives X=2^R,the exact first index2n=R+1,and the required signed
+divisibility from the actual positive carrier tuple. Its projection retains
+3|q and its growth uses the actual eta/zeta split. Four independent builds
+pass fourteen standard-only reports and identical objects. Mersenne
+factor-three exclusion,whole-product/source transfer,the converse and
+internal HA arithmetic remain open.
+
+All source/index/oddness/coprimality/power assumptions are absent from
+the public literal wrapper. The projection proves q|3X before any growth
+argument. The correct first index is2n=R+1,not n=R. The next Mersenne
+stage should exclude q=3*2^u using beta=2^94517-1,then derive q|X and a
+binary cell base without a restriction on J modulo3. Canonical source
+restoration/converse and actual internal PA arithmetic still remain.
