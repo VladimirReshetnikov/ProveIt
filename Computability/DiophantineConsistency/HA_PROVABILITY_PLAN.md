@@ -565,6 +565,13 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [represented Eind-context checkpoint](reviews/validator-eind-context222-root.md)
+now provides internal IΣ1 projections, cons equivalences, context vacuity
+and binder discharge with actual numeric C222 witnesses. Its independent
+pair passes twelve standard-only reports. The primitive equality premise
+is composed only in the proved weq-to-Eind direction; all four binder
+vacuity resources are retained. Uniform alpha and substitution remain open.
+
 The [fixed ZFC sentence binding](reviews/foundation-zfc-consistency-nat-root.md)
 now identifies an explicit GG/PAHF sentence's standard-Nat truth with the
 actual syntactic ConZFC proposition, including Choice. Two independent

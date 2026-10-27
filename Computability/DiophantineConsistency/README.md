@@ -32,6 +32,10 @@ The [uniform typed vacuity theorem](reviews/validator-environment-vacuity222-roo
 then supplies actual internal C222 proof witnesses under explicit label
 guards. Its IΣ2 induction and two fresh independent builds pass11
 standard-only reports; general proof interpretation remains open.
+The [finite Eind-context proofs](reviews/validator-eind-context222-root.md)
+then add represented projections, cons laws, context vacuity and binder
+discharge under IΣ1, with twelve independently checked standard-only reports.
+Uniform formula transport remains a separate checkpoint.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
