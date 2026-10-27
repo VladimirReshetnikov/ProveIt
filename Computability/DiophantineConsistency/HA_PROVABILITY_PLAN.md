@@ -1073,3 +1073,16 @@ rho8 and proof-history correctness remain open.
 The major MP call retains its precise saved-stack input; the physical AX
 old-counter arguments are derived from execution. These finite runtime
 contracts do not by themselves construct a represented proof-word history.
+
+
+## Generic ordinary support and Nat semantics accepted
+
+The [ordinary predicate syntax/semantics theorem](reviews/foundation-pahf-ordinary-semantics-root.md)
+now proves actual closedness and arbitrary-premodel valuation independence,
+plus exact ordinary interpretation over Nat. Independent builds pass eight
+standard-only reports and identical objects. Fixed consistency specialization
+and the equation/source arithmetic proof remain separate.
+
+Free-variable support is proved for arbitrary environments, with capture-safe
+lowering under both quantifiers. The standard-Nat theorem is a separate
+semantic induction and does not turn external truth into HA derivability.

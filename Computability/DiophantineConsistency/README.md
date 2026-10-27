@@ -157,6 +157,12 @@ reports with identical objects, including fallback1 and repeated-zero
 checks. General source-proof interpretation and the final HA endpoint
 remain open.
 
+The [ordinary predicate syntax/semantics theorem](reviews/foundation-pahf-ordinary-semantics-root.md)
+now proves actual closedness and arbitrary-premodel valuation independence,
+plus exact ordinary interpretation over Nat. Independent builds pass eight
+standard-only reports and identical objects. Fixed consistency specialization
+and the equation/source arithmetic proof remain separate.
+
 The [fixed HA consistency normalization](reviews/foundation-ha-consistency-normalization-peer.md)
 now proves both HA implications between the retained fixed GG consistency
 sentence and HA negation of the ordinary actual positive ZFC-refutation
