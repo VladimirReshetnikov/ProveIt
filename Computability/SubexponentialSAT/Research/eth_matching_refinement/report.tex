@@ -1,0 +1,517 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array,enumitem,xcolor}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{Matching packing and thin precision gaps}\fancyhead[R]{Research note}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\Darr}{D_{\rm arr}}
+\newcommand{\Hpad}{H_{\rm pad}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\vTwo}{v_2}
+\newcommand{\Pin}{770edf7756d197e8b18c26e71ada0c5c11faffd4}
+\title{Sharper quantitative bounds for subexponential SAT contraction\\[5pt]\large Exact matching-based packing and logarithmic precision gaps}
+\author{Research memorandum prepared for Vladimir Reshetnikov}
+\date{27 October 2026}
+\hypersetup{pdftitle={Sharper quantitative bounds for subexponential SAT contraction},pdfauthor={Research memorandum prepared for Vladimir Reshetnikov}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the seven analysis packets and two primary manuscripts collected in
+\texttt{Computability/SubexponentialSAT}. The exact Hermite taper, refined recovery precision, factorial Cauchy modes, and density-sensitive reductions are already present there and are not claimed as new. We instead prove a deterministic near-perfect packet-packing lemma using an exact rational conditional-expectation potential over matchings. It replaces the old requirement involving \(\Darr^2\Delta\) by one involving \(\Darr\Delta\) times a polynomial in the logarithm. We combine this with additive logarithmic gaps between successive interpolation scales. With the previously proved Cauchy weights, an entirely integral schedule gives the normalized contraction bound
+\[
+ (s+\LL)^{O(1)}2^{(94.7482022595\ldots+o(1))s/\sqrt{\log_2s}}
+\]
+when the root has at most \(s\) edges and maximum degree at most \(\ceil{s^{9/10}}\), under the original contraction interface. This is a smaller explicit upper-bound coefficient, not a smaller logarithmic exponent class, a measured speedup, or a proof of dominance over the independent Claude algorithm. The proofs are ordinary mathematical arguments; neither the new work nor the unchanged upstream argument has been independently verified end to end here.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Outcome in one sentence.} A new quantitative improvement to the OpenAI-based contraction pipeline is established, but the requested stronger worst-case asymptotic rate over \emph{all} proposals remains open.
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Scope, comparison, and provenance}
+\label{sec:scope}
+The current comparison target is ProveIt at commit
+\begin{center}\small\texttt{\Pin}.\end{center}
+Its \href{https://github.com/VladimirReshetnikov/ProveIt/tree/770edf7756d197e8b18c26e71ada0c5c11faffd4/Computability/SubexponentialSAT}{SubexponentialSAT project} consolidates the earlier arrivals. A final check of commit \texttt{45233238aebf} reviewed its later README summary of the strongest claims; it adds no proposal and does not change this comparison. The primary OpenAI source is pinned at
+\texttt{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}; ProveIt vendors that manuscript unchanged. The project records that its preprint directory is also byte-identical at the \texttt{42907c9e99} pin used by two packets. Thus these are not different mathematical baselines \cite{index,source}.
+
+The source's Appendix D states, for fixed clause width \(k\), deterministic exact counting in polynomial space with bounds
+\begin{align}
+ (n+m)^{O_k(1)}2^{O_k(n\log\log n/\sqrt{\log n})}
+ &\quad\text{in general},\label{eq:dense}\\
+ (n+m)^{O_{k,B}(1)}2^{O_{k,B}(n/\sqrt{\log n})}
+ &\quad\text{when }m\le Bn\text{ for fixed }B.\label{eq:sparse}
+\end{align}
+The upstream Lean scope page states a weaker bound with an additional \(\log\log n\) factor. Improving that weaker displayed formalization bound is not, by itself, an improvement over the manuscript \cite{leanscope}.
+
+\subsection{What is already in the repository}
+\footnotesize
+\begin{longtable}{@{}p{.27\textwidth}p{.65\textwidth}@{}}
+\toprule
+Packet or manuscript & Relevant result and its status \\
+\midrule\endfirsthead
+\toprule Packet or manuscript & Relevant result and its status \\
+\midrule\endhead
+\texttt{cauchy\_mode\_}\newline\texttt{improvement}
+& Finite integral Cauchy separation with weights \(1+b+2\vTwo(b!)\sim3b\). Improves the leading mode-count coefficient by \(1/\sqrt3\), not its order. This construction is inherited here. \\
+\addlinespace
+\texttt{eth\_contraction\_}\newline\texttt{improvements}
+& Exact taper and recovery allowance \(6MD/u\) in place of \(24MD/u\); revised schedule coefficient \(648.4410666\ldots\); streamed packet extraction. No stronger logarithmic order. \\
+\addlinespace
+\texttt{3sat\_precision\_}\newline\texttt{refinement}
+& Same leading precision refinement, plus an exact real taper minimax theorem. Its stronger structured-mode summation rate depends on an unproved algorithmic hypothesis. \\
+\addlinespace
+\texttt{sat\_density\_}\newline\texttt{improvement}
+& Density-uniform numerator \(n\min\{\log(2+m/n),\log\log n\}\), over \(\sqrt{\log n}\). This improves some growing-density regimes, not the unrestricted worst case. \\
+\addlinespace
+\texttt{eth\_density\_}\newline\texttt{refinement}
+& Overlapping density-sensitive bound and contraction retuning. Its smaller Hermite precision and larger retained range are already accounted for. \\
+\addlinespace
+\texttt{3sat\_refinement}
+& Proved scalar parity lift reducing the incidence-degree bound to \(k(n+a)\). The stronger second-contraction rate requires a missing compact factorization. \\
+\addlinespace
+\texttt{3sat\_asymptotic\_}\newline\texttt{analysis}
+& Restricted barriers and two unconstructed interfaces: degree-preserving recursion and linear-wire compilation. Explicitly establishes no improved unrestricted rate. \\
+\addlinespace
+Claude, \emph{A \(2^{o(n)}\) time algorithm for 3-SAT}
+& Separate crossing-decomposition method with exponent \(O(\min\{km/\sqrt{\log m},k^2n\log\log n/\sqrt{\log n}\})\). Its leading constants are not specified in a comparable normalization. \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The seven packets are cited through their pinned consolidated project paths \cite{packets}. The separate Claude manuscript is not a variant of the Cauchy--Hermite implementation. It asserts a separate Lean verification, but the public PDF's full-development link is not supplied; that claimed verification was not inspected here \cite{claude}. No polynomial-space conclusion for that independent algorithm is inferred from the OpenAI source.
+
+\subsection{The defensible improvement claim}
+Combining the earlier \(648.4410666488\ldots\) schedule analysis with the already available factorial Cauchy modes yields the explicit comparator
+\begin{equation}
+ C_{\rm combined}=648.4410666488\ldots/\sqrt3
+ =374.3776243833\ldots .\label{eq:comparison}
+\end{equation}
+This combination retains the earlier schedule, degrees, and lower-order entry costs. Our coefficient is \(94.7482022595\ldots\) under the same root normalization. These numbers compare upper-bound certificates, not actual runtimes. The former packet also optimizes its parameter family near a boundary infimum; the present argument changes the packing theorem and precision-gap architecture rather than merely rounding those old parameters differently.
+
+There is no justified assertion that our algorithm is faster than the separate Claude algorithm: unspecified constants cannot be ranked against an explicit constant from a different construction. Nor do we compare proved results against a conditional faster exponent as though its missing hypothesis had been established.
+
+\section{The inherited contraction interface}
+\label{sec:interface}
+Fix constants \(C\ge1\), \(A\ge0\), and the original description/entry-cost constants. Let \(s\) be the root size parameter, and suppose that the root network has at most \(Cs\) edges, maximum degree at most
+\[
+ \Delta=\ceil{s^{9/10}},
+\]
+initial precision and truncation order at most \(Cs\), and the entry-evaluation and description bounds of the source contraction theorem. In particular, entry evaluation has a fixed polynomial factor in \(s+\LL\) and an exponential allowance \(2^{A s^{9/10}}\), with polynomial space. Here \(\LL\) denotes the original description length. All hidden constants in this note may depend on the fixed interface constants, but not on the input network.
+
+At an active recursive call, \(M\) denotes the current edge count. A packet has \(L=2^a\) slots. Vertices on each side receive labels in \([r]^a\), and the number of ordered label-pair classes is
+\[
+ \Darr=r^{2a}.
+\]
+This symbol must not be confused with the interpolation-node scale
+\[
+ D_i=2^{a-i},\qquad i=\vTwo(t).
+\]
+The source packs equal-sized label classes into packets so that each coordinate fixes an unordered pair of symbols and the corresponding slot bit fixes the orientation. This combinatorial assembly is unchanged. We improve the loads of the classes supplied to it.
+
+The source also fixes canonical lifts entry by entry at each tensor's \emph{creation precision}. A tensor retains those representatives and its creation-time description in subsequent calls. All evaluations in one deformation refer to those same representatives. We retain this rule: canonical lifting is not assumed to preserve products or sums.
+
+\begin{theorem}[Quantitative refinement]\label{thm:main}
+Under the inherited interface, there is a deterministic polynomial-space refinement whose running time is
+\[
+ (s+\LL)^{O(1)}
+ 2^{(C C_{54}+o_{C,A}(1))s/\sqrt{\log_2 s}},
+\]
+where
+\begin{equation}
+ C_{54}=\frac{2\pi}{\ln2}
+ \frac{\sqrt{\frac{40}{3}\log_2 54}}{(8/9)^{3/2}}
+ =94.7482022595\ldots .\label{eq:c54}
+\end{equation}
+For root edge count at most \(s\), take \(C=1\). The exact taper, Hermite recovery identity, Cauchy separation, child-tensor construction, and entry-description mechanism are inherited; the new arguments are the packing lemma below and the precision schedule.
+\end{theorem}
+
+\section{Exact-rational matching-based packing}
+\label{sec:packing}
+The former collision argument controls a total squared deviation and then bounds each class by the square root of that total. This yields a sufficient hypothesis of the form \(\Darr^2\Delta\ll M\). The following replacement uses independence inside matchings and a sum of exact conditional expectations. The required scale becomes \(\Darr\Delta\poly(\log s)\ll M\).
+
+\begin{lemma}[Near-perfect labeling]\label{lem:matching}
+Let a bipartite multigraph have \(M\ge1\) edges and maximum degree at most a positive integer \(\Delta\). Let \(r\ge2\), \(a\ge1\), \(\lambda\ge1\) be integers, and set
+\[
+ N=r^a,\qquad D=N^2,\qquad L=2^a,\qquad c=2\Delta.
+\]
+There is a deterministically constructible labeling of the vertices by \([r]^a\) for which the maximum ordered-pair class load satisfies
+\begin{equation}
+ \max_\gamma X_\gamma<
+ \left(1+\frac1\lambda\right)\frac MD+2c\lambda\tau,
+ \qquad \tau=\ceil{\log_2(8cD)}.\label{eq:load}
+\end{equation}
+If all classes are padded to a common multiple \(\Hpad\) of \(L\), then
+\begin{equation}
+ \eta:=\frac{\Hpad D}{M}
+ <1+\frac1\lambda+\frac{D(2c\lambda\tau+L)}M.\label{eq:eta}
+\end{equation}
+In particular, the exact integer guard
+\begin{equation}
+ M\ge\lambda D(2c\lambda\tau+L)\label{eq:packingguard}
+\end{equation}
+implies \(\eta<1+2/\lambda\). The construction is polynomial time and space in the parameters used below, and permits parallel edges.
+\end{lemma}
+
+\begin{proof}
+An edge conflicts with at most \(2\Delta-2\) other edges. Greedily color the edges using \(c=2\Delta\) colors, obtaining matchings \(E_1,\ldots,E_c\); empty matchings are allowed. Write
+\[
+ m_k=|E_k|,\quad \mu_k=m_k/D,\quad t=1+1/\lambda,
+ \quad H_k=\ceil{(1+1/\lambda)\mu_k+2\lambda\tau}.
+\]
+Temporarily give each vertex an independent uniform label in \([r]^a\). For an ordered pair \(\gamma\), let \(X_{\gamma,k}\) count the edges of \(E_k\) with that pair of endpoint labels.
+
+Under a partial assignment, let \(p_{e,\gamma}\) be the conditional probability that edge \(e\) receives pair \(\gamma\). It belongs to
+\[
+ \{0,N^{-2},N^{-1},1\}.
+\]
+Define the exact rational potential
+\begin{equation}
+ \Phi=\sum_{\gamma,k}t^{-H_k}
+       \prod_{e\in E_k}\bigl(1+(t-1)p_{e,\gamma}\bigr).
+ \label{eq:potential}
+\end{equation}
+Within one matching the remaining random endpoint labels are disjoint. Therefore
+\[
+ \Phi=\mathbb E\left[\sum_{\gamma,k}t^{X_{\gamma,k}-H_k}
+             \,\middle|\,\text{partial assignment}\right].
+\]
+Averaging over the choices of the next vertex label gives exactly the current potential. Choosing a minimizing label cannot increase it.
+
+Initially, with \(\epsilon=1/\lambda\), each summand satisfies
+\begin{align*}
+ \ln\!\left(t^{-H_k}(1+\epsilon/D)^{m_k}\right)
+ &\le \mu_k\epsilon-\bigl((1+\epsilon)\mu_k+2\lambda\tau\bigr)
+                            \ln(1+\epsilon)\\
+ &\le-\tau.
+\end{align*}
+We used \(\ln(1+x)\le x\), \((1+\epsilon)\ln(1+\epsilon)\ge\epsilon\), and \(\ln(1+1/\lambda)\ge1/(2\lambda)\). Thus
+\[
+ \Phi_{\rm initial}\le cD e^{-\tau}\le cD2^{-\tau}\le\frac18.
+\]
+After all labels have been fixed, \(\Phi<1\). If any \(X_{\gamma,k}\ge H_k\), one positive summand would be at least one, a contradiction. Hence
+\[
+ X_{\gamma,k}\le H_k-1
+ <(1+1/\lambda)\mu_k+2\lambda\tau.
+\]
+Summing over \(k\) proves \eqref{eq:load}. Rounding the largest load up to a multiple of \(L\) increases it by less than \(L\), proving \eqref{eq:eta} and the guard consequence.
+\end{proof}
+
+\subsection{No real-arithmetic oracle is hidden}
+Every conditional factor in \eqref{eq:potential} has denominator dividing \(\lambda D\), and \(t^{-H_k}=(\lambda/(\lambda+1))^{H_k}\). A common denominator for all partial assignments and candidates is
+\begin{equation}
+ Q=(\lambda D)^M(\lambda+1)^{H_{\max}},\qquad
+ H_{\max}=\max_k H_k.\label{eq:denominator}
+\end{equation}
+There are at most \(M\) factors in a matching product. The bit length of \(Q\) is
+\[
+ O\bigl(M\log(\lambda D)+H_{\max}\log(\lambda+1)\bigr).
+\]
+Below, \(\tau=O(\lambda)\) and \(H_{\max}=O(M+\lambda^2)\), so this is polynomial in the root size. Exact integer comparisons after multiplication by \(Q\) select the next label. The numbers of labels, classes, colors, vertices, and candidate comparisons are polynomial as well. There is no need to approximate roots, logarithms, or the potential. The ceiling defining \(\tau\) is an integer bit-length computation.
+
+\subsection{Consequences for packets and children}
+Apply the original orientation-based packet assembly to the common padded class size. Its counts are now
+\begin{align}
+ \#\text{packets}&=\Hpad\Darr/L=\eta M/L,\label{eq:packetcount}\\
+ \#\text{real ports of one symbol on either side}
+ &\le\Hpad\Darr/r=\eta M/r.\label{eq:portcount}
+\end{align}
+Thus every child has at most \(2\eta M/r\) edges. The local Cauchy construction uses at most \(2\eta M/D_i\) mode families at each mode index. These replace the former convenient estimates \(3M/L\), \(3M/r\), \(6M/r\), and \(6M/D_i\). The new construction changes neither the real ports nor the orientation invariant.
+
+\section{An entirely integral thin-gap schedule}
+\label{sec:schedule}
+Put \(\lambda=\ceil{\log_2s}\), choose an integer \(C_0\ge\max(C,1)\), and set
+\[
+ r=54,\qquad H=\ceil{s/\lambda},\qquad
+ k_\lambda=\ceil{\log_2\lambda},\qquad g=6k_\lambda.
+\]
+The leaf threshold is \(H\). Define
+\begin{align}
+ d_{\max}&=\min\{d\ge0:18^d\ge C_0\lambda\},\label{eq:dmax}\\
+ A_\lambda&=\max\{a\ge0:54^{20a}\le2^\lambda\},\label{eq:budget}\\
+ U&=A_\lambda-(d_{\max}+1)g-k_\lambda^2.\label{eq:U}
+\end{align}
+At depth \(d\), use
+\begin{equation}
+ u_d=\floor{\frac{8U}{9^{d+1}}},\qquad
+ a_d=\sum_{j=0}^d u_j+(d+1)g,\qquad a_{-1}=0.
+ \label{eq:schedule}
+\end{equation}
+All schedule parameters are exactly computable using integer powers and divisions. For example, binary search finds \(A_\lambda\), and the tested powers have \(O(\lambda)\) bits. No floating-point approximation to \(\log_2 54\) is part of the algorithm.
+
+The relation
+\begin{equation}
+ a_d-a_{d-1}=u_d+g\label{eq:thin}
+\end{equation}
+replaces the previous \(2u_d\) increment. The additive \(g=O(\log\lambda)\) gap is sufficient to suppress inherited precision, while its cumulative cost is only \(O_C((\log\lambda)^2)\).
+
+\begin{lemma}[Schedule admissibility]\label{lem:admissibility}
+For all sufficiently large \(s\), every active call satisfies the matching-packing guard \eqref{eq:packingguard}, \(2L\le\Delta\), \(2\le u_d\le a_d\), and \(u_d\le M\). Every child has at most \(M/18\) edges, every active depth is at most \(d_{\max}\), and
+\begin{equation}
+ u_d\ge\Omega_C(\lambda^\beta),\qquad
+ \beta=1-\frac{\ln9}{\ln18}=0.2398124665\ldots>0.
+ \label{eq:umin}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Since \(\sum_{j\ge0}8U/9^{j+1}=U\), for \(d\le d_{\max}\) we have
+\begin{equation}
+ a_d\le A_\lambda-k_\lambda^2
+ \le\frac{\lambda}{20\log_2 54}-k_\lambda^2.
+ \label{eq:amax}
+\end{equation}
+For an active call \(M>H\ge s/\lambda\). Because \(2^\lambda<2s\),
+\begin{equation}
+ \frac{\Darr\Delta}{M}
+ \le O(\lambda)54^{-2k_\lambda^2}.
+ \label{eq:packingdecay}
+\end{equation}
+The right side decreases faster than every fixed inverse power of \(\lambda\). Also \(\tau=O(\lambda)\), and
+\[
+ L\Darr\le
+ 2^{\lambda(1+2\log_2 54)/(20\log_2 54)}
+ =s^{0.108689\ldots+o(1)}.
+\]
+Consequently
+\[
+ \frac{\lambda\Darr(2c\lambda\tau+L)}M=o(1).
+\]
+This proves \eqref{eq:packingguard} uniformly at such calls. It also gives \(\eta<1+2/\lambda\le3/2\) for \(\lambda\ge4\), hence child size at most \(3M/54=M/18\).
+
+There is no circular appeal to depth. Inductively assume the bound for ancestors. Then \(M\le Cs18^{-d}\). If the call is active, \(18^d<C\lambda\le C_0\lambda\), so \(d\le d_{\max}\). The preceding packing estimates then apply and prove the child bound. This closes the induction.
+
+We have \(d_{\max}=\log_{18}\lambda+O_C(1)\),
+\(U\sim\lambda/(20\log_2 54)\), and
+\(9^{d_{\max}}=O_C(\lambda^{\ln9/\ln18})\). These prove \eqref{eq:umin}, with floors harmless. Finally
+\[
+ L\le s^{1/(20\log_2 54)+o(1)}=s^{0.008689\ldots+o(1)},
+\]
+so \(2L\le\Delta\). We also have \(u_d\le a_d=O(\lambda)\ll M\).
+\end{proof}
+
+\paragraph{Finite exceptional sizes.}
+Before using the recursion, test \(\lambda\ge4\), \(U>0\), \(u_{d_{\max}}\ge2\), and the exact finite parameter inequalities at the calls where they are used. A failure invokes direct summation rather than an unjustified recursive step. The proof above shows that failures occur only in a finite initial range depending on the fixed constants. This is an asymptotic theorem, not a claim of a useful numerical crossover. The guards are essential to an implementation.
+
+\section{Recovery precision and inherited lifts}
+\label{sec:precision}
+We summarize the already available exact Hermite refinement to show that it remains valid with the new schedule. For \(L=2^a\), let \(S=\{-L,\ldots,L-1\}\). At an active call set
+\begin{equation}
+ B_{a,u}=L(2u-2)+2^{a+1-u},\qquad
+ h=\floor{\frac{M(2L-1)}{B_{a,u}}}+1,
+ \qquad q_i=h\max(0,u-i).\label{eq:taper}
+\end{equation}
+The total number of Hermite conditions is exactly
+\[
+ \sum_{t\in S\setminus\{0\}}q_{\vTwo(t)}=hB_{a,u}>M(2L-1).
+\]
+Thus it exceeds the degree bound of the deformed contraction polynomial. For \(i<u\), define \(D_i=2^{a-i}\) and
+\begin{align}
+ \Lambda_i&=D_i\sum_{j=1}^{a-i}\frac j{2^j}(q_i-q_{i+j}),\label{eq:loss}\\
+ p_i&=p+\Lambda_i+(q_i-1)(a+1-i).\label{eq:precision}
+\end{align}
+All quantities are integral. The existing Hermite recovery identity proves that \eqref{eq:precision} suffices: its multiplier loses exactly \(\Lambda_i\) powers of two, its jet coefficient of order \(j\) loses a further \(j(a+1-i)\), and the reciprocal local interpolation factor is integral with constant term one. Summing reconstruction terms loses no further precision. This is an inherited lemma, not a new contribution of this report \cite{packets}.
+
+Since \(\sum_{j\ge1}j^2/2^j=6\),
+\begin{equation}
+ \Lambda_i\le6hD_i.\label{eq:lossupper}
+\end{equation}
+Moreover, uniformly in the active regime,
+\begin{equation}
+ h=\left(1+O(1/u)+O(u/M)\right)M/u,
+ \qquad h\le3M/u\quad(u\ge2,M\ge u).
+ \label{eq:hasymptotic}
+\end{equation}
+Hence a precision increment is at most
+\[
+ 18M2^a/u+3M(a+1).
+\]
+
+\begin{lemma}[Thin gaps absorb inherited precision]\label{lem:precision}
+Under \eqref{eq:schedule}, uniformly over all active depths and retained nodes,
+\begin{equation}
+ p_i\le(6+o_C(1))\frac{MD_i}{u}.\label{eq:sharpprecision}
+\end{equation}
+The canonical-lift and polynomial-precision conditions of the source remain valid.
+\end{lemma}
+\begin{proof}
+Since the \(a_j\) strictly increase, \(\sum_{j<d}2^{a_j}\le2\cdot2^{a_{d-1}}\). Summing the preceding increment bound, using \(M\le Cs\), \(d=O_C(\log\lambda)\le\lambda\), and \(a_j\le\lambda\), gives, for sufficiently large \(s\), the convenient coarse bound
+\begin{equation}
+ p_d\le43Cs\lambda^2 2^{a_{d-1}}.\label{eq:inherited}
+\end{equation}
+It also holds at the root, since \(p_0\le Cs\) and \(a_{-1}=0\).
+
+For \(i<u_d\), relation \eqref{eq:thin} gives
+\[
+ D_i\ge2^{a_d-u_d+1}=2^{a_{d-1}+g+1}.
+\]
+Using \(M>s/\lambda\), \(u\le\lambda\), and \(2^g\ge\lambda^6\), we obtain
+\[
+ \frac{p_d}{MD_i/u}\le\frac{43C}{2}\lambda^4 2^{-g}
+ =O_C(\lambda^{-2}).
+\]
+Similarly,
+\[
+ \frac{3M(a+1)}{MD_i/u}=O(\lambda^2 2^{-g})=O(\lambda^{-4}).
+\]
+Now \eqref{eq:umin}, \eqref{eq:hasymptotic}, and \eqref{eq:lossupper} prove \eqref{eq:sharpprecision}.
+
+The recovery precisions strictly increase because the added losses are positive. All are polynomial in \(s\), since \(a=O(\lambda)\). We never change an entry's creation-time representatives, so the original immutable-description rule continues to apply.
+\end{proof}
+
+\begin{remark}
+The inequality in \eqref{eq:sharpprecision} is deliberately one-sided. At late valuation levels the loss can be smaller than \(6MD_i/u\); a uniform asymptotic equality would be false or unnecessarily strong. Nor does the source Hermite lemma require \(a\ge2u\): \(u\le a\) is sufficient, and is preserved here.
+\end{remark}
+
+\section{Uniform factorial-mode enumeration}
+\label{sec:modes}
+We inherit the finite Cauchy separation and its integral source functions from \path{cauchy_mode_improvement}. Its target coefficients have certified divisibility
+\begin{equation}
+ w_b=1+b+2\vTwo(b!)=1+3b-2s_2(b),\qquad b\ge0,
+ \label{eq:weights}
+\end{equation}
+where \(s_2(b)\) is binary digit sum. The construction uses only unit inversions; it does not divide by an even factorial in the residue ring. Its integrality proof uses the actual interpolation rows' congruence to the prime subring, not the false assertion that binomial polynomials are integral on every element of an arbitrary unramified extension.
+
+For \(\theta\downarrow0\),
+\begin{equation}
+ F(\theta):=\sum_{b\ge0}-\ln(1-e^{-\theta w_b})
+ =\frac{\pi^2+o(1)}{18\theta}.
+ \label{eq:entropy}
+\end{equation}
+One proof sandwiches all sufficiently large \(w_b\) between \((3-\epsilon)b\) and \((3+\epsilon)b\); the finitely many remaining terms contribute only \(O(\log(1/\theta))\). Equivalently, the digit-sum correction yields an \(O(\log^2(1/\theta))\) error. Truncating the modes to their actual finite tile range only decreases this generating function.
+
+At an interpolation node there are at most \(2\eta M/D_i\) mode families for each index \(b\). The retained exponent tuples have weighted sum strictly less than \(p_i\). Consequently their number \(N_i\) satisfies
+\begin{align}
+ \ln N_i
+ &\le\inf_{\theta>0}\left\{
+       \theta p_i+\frac{2\eta M}{D_i}F(\theta)\right\}\notag\\
+ &\le\left(2\pi\sqrt{\frac23}+o_C(1)\right)
+                    \frac M{\sqrt u}.
+ \label{eq:localcount}
+\end{align}
+To see the constant, substitute \(p_i\le(6+o(1))MD_i/u\) and optimize
+\(\theta(6MD_i/u)+\pi^2M/(9D_i\theta)\).
+The optimizing scale is \(\theta\asymp\sqrt u/D_i\). Since
+\(D_i\ge2^g\ge\lambda^6\) and \(u\le\lambda\), this tends to zero uniformly, including at the deepest active calls. The entropy remainder is therefore uniformly negligible. No real saddle point need be computed by the algorithm; it is only an analysis device.
+
+The child's tensor factorization, creation precision, source/target locality, and maximum-degree bound are unchanged. New packet vertices have at most \(2L\le\Delta\) ports. Thus replacing the counts in the analysis does not alter the admissibility interface of the recursive calls.
+
+\section{Global time and polynomial space}
+\label{sec:global}
+The sharper child count, not merely the bootstrap \(1/18\), gives along every active path
+\[
+ M_d\le M_0\left(\frac1{27}\left(1+\frac2\lambda\right)\right)^d.
+\]
+Since \(d=O_C(\log\lambda)\), the accumulated inflation is \(1+o_C(1)\). Also
+\[
+ u_d=(1+o_C(1))\frac{8U}{9^{d+1}}
+\]
+uniformly by \eqref{eq:umin}. It follows that
+\begin{align*}
+ \sum_d\frac{M_d}{\sqrt{u_d}}
+ &\le(1+o_C(1))\frac{M_0}{\sqrt U}
+ \frac1{\sqrt{8/9}}\sum_{d\ge0}(1/9)^d\\
+ &= (1+o_C(1))\frac{M_0}{\sqrt U}(8/9)^{-3/2}.
+\end{align*}
+Finally \(U\sim\lambda/(20\log_2 54)\). Combining this with \eqref{eq:localcount} and dividing by \(\ln2\) proves the coefficient \eqref{eq:c54}.
+
+The polynomial number of interpolation nodes, evaluation points, and groups per call contributes only \(O_C(\lambda\log\lambda)\) to the logarithm of the recursion tree size. Direct leaf summation has logarithmic cost \(O(s/\lambda)\), while inherited entry evaluation contributes \(O_{C,A}(s^{9/10})\). The packet-entry cost \(\exp(O(L\log s))\) is lower order as well; the pre-existing streamed extraction improvement can also be retained. All are \(o(s/\sqrt\lambda)\).
+
+Descriptions are treated by the original immutable entry mechanism, so their polynomial cost is a fixed polynomial in \(s+\LL\), not a factor recursively raised to depth. The interpolation degree is \(M(2L-1)<s^4\) for sufficiently large \(s\), retaining the source's residue-field interpolation capacity. Exact precision, potential numerators and denominators, and packet descriptions have polynomial bit length.
+
+Depth-first traversal stores only the current labels, tuple, interpolation data, group product, and a polynomial-size stack of \(O_C(\log\lambda)\) frames. It need not store the recursion tree. This proves polynomial space and completes Theorem~\ref{thm:main}.
+
+\subsection{Why choose 54 groups?}
+For general fixed \(r\), write \(\rho=2/r\), and use a geometrically decaying taper with factor \(b>1\). At the matching-packing boundary, the total interpolation budget is \(\lambda/(20\log_2r)\). Optimizing the resulting leading upper bound over \(b\) gives
+\[
+ b=(r/2)^{2/3},\qquad
+ C(r)=\frac{2\pi}{\ln2}
+ \frac{\sqrt{(40/3)\log_2r}}
+      {(1-(2/r)^{2/3})^{3/2}}.
+\]
+The continuous stationary equation is
+\[
+ (r/2)^{2/3}=1+2\ln r.
+\]
+Its relevant minimizer is near \(53.70\); the integer choice \(r=54\) gives \(b=9\) exactly. The adaptive slack \(k_\lambda^2+(d_{\max}+1)g\) makes the asymptotic boundary attainable without setting a finite instance on an invalid packing boundary. This is optimization within a particular upper-bound family, not global optimality for tensor contraction.
+
+\section{Consequences for SAT and the remaining gap}
+\label{sec:remaining}
+The new contraction theorem can replace the old contraction call in the existing exact-counting reductions. It preserves the density-sensitive result already in the repository, but it does not remove either the \(\sqrt{\log n}\) denominator or the worst-case \(\log\log n\) numerator. In particular, this report does \emph{not} prove a general \(2^{O(n/\sqrt{\log n})}\), \(2^{O(n\log\log n/\log n)}\), or \(2^{O(n/\log n)}\) counting algorithm.
+
+The coefficient \(94.7482\ldots\) is normalized by the contraction parameter \(s\), not directly by the SAT variable count \(n\). The reductions have their own edge inflation and fixed-width constants. It would be incorrect to place this numerical constant unmodified in front of \(n\log\log n/\sqrt{\log n}\).
+
+\subsection{The independent partition-operator construction}
+The Claude paper's crossing pieces obtain \(\rho=1/\sqrt2\) from partition-number growth. In its raw indexing, the balanced shift has row and column dimensions at least \(p(2h)\), while \(\log_2p(h)=\lambda+o(\lambda)\). Thus the combined raw index length is
+\[
+ 2\sqrt2\,\lambda+o(\lambda).
+\]
+Sharper Hardy--Ramanujan constants do not improve this leading ratio. Rectangular regrouping likewise preserves the corresponding square-root tradeoff; neither observation is a lower bound on all possible decompositions. A different rank cancellation or operator algebra might do better, but no such construction has been established here.
+
+The separate paper already uses tight balancing in its own clique scheme. Accordingly, our novelty claim is specifically a new matching-based derandomization and a thinner precision schedule \emph{for the OpenAI packet construction}, not the first use of near-perfect balancing anywhere in the collected work.
+
+\subsection{What would constitute the requested stronger breakthrough}
+A genuine improvement over the common worst-case logarithmic rate would need an additional structural step, for example:
+\begin{enumerate}
+\item an actual linear-wire compiler for the parity-query systems, with the required degree and entry-computation bounds;
+\item a proved compact factorization of the weighted mode sum that survives recursive entry creation and precision changes; or
+\item a crossing decomposition with a strictly better contraction ratio than \(1/\sqrt2\) in the independent framework.
+\end{enumerate}
+The first two directions are already explicitly proposed in the repository. Merely restating their conditional consequences is not a new algorithm. The present result closes a different, concrete quantitative improvement while leaving these stronger goals open.
+
+\section{Verification, artifacts, and integration}
+\label{sec:validation}
+The package accompanying this report supplies executable component checks, source provenance, and a replayable archive. These are checks of the new finite algebra and schedule arithmetic, not execution of the full asymptotically fast SAT algorithm. No Lean, Rocq, or other proof-assistant verification is claimed.
+
+The initial in-memory exact check exercised 144 conditional-average equalities on four finite bipartite multigraphs, with rational arithmetic implemented using arbitrary-precision integers. This is a sanity check of the potential's defining identity, not a proof of the asymptotic theorem. The final component suite passed in both normal and optimized Python. Its recorded coverage comprises 105 packing graph cases, 414 exact conditional-average equalities, 1,287 matching-class threshold checks, 515 certified logarithmic-budget cases checked against integer powers, 600 taper parameter cases and 1,860 exact loss sums, 44 partition-count cases, 10 exact integer schedules, and ten negative controls. The large-size schedule examples test the basic integer schedule guards only, not every finite packing guard, and are not practical crossover measurements. The delivered check scripts and machine-readable outputs are the authoritative execution record. A separate implementation audit additionally checked 4,096 exhaustive multigraph colorings, 1,011 direct-enumeration conditional expectations, six nonvacuous threshold-packing cases, 432 explicit minimum-label choices, 800 budget boundaries, 164 schedule boundaries, 1,584 precision parameter sets (9,744 rows), and 140 mode-count cases. These tests remain local component checks. The mathematical proofs in Sections~\ref{sec:packing}--\ref{sec:global}, together with the explicitly inherited source lemmas, support the asymptotic statement.
+
+\paragraph{Recommended integration order.}
+\begin{enumerate}
+\item Add the matching-packing routine with exact potential comparisons, including parallel-edge and empty-matching cases.
+\item Replace only the class-load certificate in the original packet assembly; retain its orientation convention and unused-slot handling.
+\item Install the integer schedule \eqref{eq:dmax}--\eqref{eq:schedule}, test all finite guards, and retain direct summation as the exceptional branch.
+\item Reuse the already proposed exact Hermite precision and integral Cauchy modes. Preserve strict weighted-budget inequalities and creation-time canonical representatives.
+\item Validate the complete modified tensor-contraction implementation before making any practical-performance or end-to-end correctness claim.
+\end{enumerate}
+
+\paragraph{Reproduction.}
+The editable source is \texttt{report.tex}; a standard \texttt{pdflatex} installation rebuilds the PDF with two passes. The archive's README identifies the check and integrity-replay commands. No external service, private data, or new package installation is needed by the mathematical component tests.
+
+\paragraph{Trust boundary.}
+The project README explicitly labels the imported packets as external research material, not checked ProveIt developments. This note preserves that distinction. Independent review of the new ordinary proof is useful evidence, but is not a kernel certificate or a replacement for verifying the unchanged upstream machinery. No claim of global optimality, external priority, or practical crossover is made.
+
+\begin{thebibliography}{9}\small
+\bibitem{index}
+Vladimir Reshetnikov, \emph{Sub-exponential 3-SAT (the Exponential Time Hypothesis)}, project index, pinned ProveIt commit \texttt{770edf7756d1}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/770edf7756d197e8b18c26e71ada0c5c11faffd4/Computability/SubexponentialSAT/README.md}.
+
+\bibitem{source}
+OpenAI, \emph{The Exponential Time Hypothesis is False}, revised 25 October 2026. Pinned source \texttt{openai/math@7ef5c0cc5ca4}; in particular, Appendix D and \texttt{build/quantitative-contraction.tex}.
+\url{https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026}.
+
+\bibitem{packets}
+External research packets prepared for Vladimir Reshetnikov, 26 October 2026: \emph{Factorial Cauchy Modes}; \emph{Quantitative Improvements to the Exact-Counting Contraction Algorithm}; \emph{Sharper Precision for Subexponential 3SAT}; and the four density, scalar-lift, and asymptotic-analysis packets compared in Section~\ref{sec:scope}. Pinned consolidated sources:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/770edf7756d197e8b18c26e71ada0c5c11faffd4/Computability/SubexponentialSAT/Research}.
+
+\bibitem{claude}
+Claude (Anthropic), as credited by the project, \emph{A \(2^{o(n)}\) time algorithm for 3-SAT}, 26 October 2026, 49-page manuscript, especially Appendices A--E.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/770edf7756d197e8b18c26e71ada0c5c11faffd4/Computability/SubexponentialSAT/Research/claude-2o-n-3sat/eth.pdf}.
+
+\bibitem{leanscope}
+OpenAI, \emph{SubexponentialSAT formalization scope}, pinned source documentation.
+\url{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/lean/docs/378.md}.
+\end{thebibliography}
+\end{document}

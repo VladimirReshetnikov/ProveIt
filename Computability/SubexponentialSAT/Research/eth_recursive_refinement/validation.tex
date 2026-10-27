@@ -1,0 +1,32 @@
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}X r@{}}
+\toprule
+Exact finite check & Cases\\
+\midrule
+Pivot-prefix counts, monotonicity and weight estimates & 10,000\\
+Integer-domain pivot-product valuation inequalities & 8,505\\
+Actual crossing-row parameter and residue cases & 19,008\\
+\quad Included cases with non-prime-field interpolation & 9,504\\
+Exact finite Cauchy separation identities & 50,496\\
+Target-coefficient valuation inequalities & 239,808\\
+Schedule guard and packet-budget identities & 25,704\\
+Selected logarithmic sizes, with all provisional active depths & 9\\
+Small multigraph/label-size configurations & 160\\
+\quad Fully enumerated vertex labelings & 6,096\\
+Finite abstract mode inventories & 21\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The kernel, schedule and packing checks pass with ordinary Python and
+with assertions disabled by \texttt{python3 -O}; their guards use explicit
+exceptions. The result records preserve the scope and the code hashes.
+The finite mode inventories use one, two or four colors and strict budgets
+from 16 to 1024. In all 21 of these sampled inventories the old
+factorial-Cauchy sequence has fewer admissible tuples than the new periodic
+sequence. This is consistent with the finite-index qualification in
+Section~\ref{sec:pivot21}: the theorem is asymptotic, and the periodic
+sequence has lower-order costs. The optional exact-count selection keeps
+the old basis whenever its finite inventory is smaller. These data are
+included as a check against interpreting the asymptotic coefficient as a
+uniform finite-input speedup.

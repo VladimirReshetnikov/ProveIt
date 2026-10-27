@@ -1,0 +1,254 @@
+PROVEIT ETH REVIEW
+Review cutoff: 3c64ee065c708ded485b8b14d9ad6c703a30ab11
+Commit time: 2026-10-27 01:01:59 UTC = 2026-10-26 18:01:59 PDT
+
+1. What was actually reviewed
+
+The initial snapshot was aa6933442eb936962de79ba6d321cd0391c450bd.
+It contained seven research ZIPs and two primary-manuscript PDFs in
+docs/incoming. All nine downloaded payloads were authenticated against
+the repository's Git blob SHA-1, and independent SHA-256 values were
+recorded in ProveIt/ETH_COMMIT_HISTORY.json.
+
+During the review a new ETH-specific commit appeared:
+2b925d8800cda68f5723b65dc1fcdaf3d8170359, dated 2026-10-27 00:58:36 UTC.
+It placed the material in Computability/SubexponentialSAT/Research and
+retired the nine incoming payloads. The refreshed review cutoff above
+includes that placement. The new project README was read completely.
+The entire Research subtree was retrieved without truncation: 150 tree
+entries. Every one of the 120 placed proposal/manuscript payload files
+was independently compared with the authenticated arrival payloads and
+matched byte for byte. The only extra Research metadata is OMITTED.tsv.
+The corresponding receipt is placement_verification.json.
+
+All seven main reports were read, including their substantive proofs,
+scope qualifications, conditional hypotheses, implementation accounting,
+and verification limitations. The asymptotic-analysis report's included
+TeX parts were read as well, together with its independent paper audit
+and decision-side findings. The source files are local under
+ProveIt/docs/incoming/<archive stem>/, where the original ZIP extraction
+layout is preserved. No upstream proposal script or proof-assistant
+development was executed in this audit. Reported prior finite-test
+counts are attributed to their archived logs, not to a fresh run here.
+
+Recent-history scope: the latest 100 reachable commit metadata were
+queried, and the three arrival commits plus the ETH placement commit
+were identified. The repository-wide recursive tree was truncated at
+42,891 entries, so an exhaustive full-repository filename search is not
+claimed. The complete target project, the updated docs/incoming listing,
+and all recent ETH arrival/placement changes were examined. At the review
+cutoff docs/incoming contains only its README; no eighth proposal is
+present in the new target project.
+
+2. Exact recent ETH commits
+
+a505bd768bce347c70e923586c5f72ad3085bf44, 2026-10-27 00:42:51 UTC:
+  cauchy_mode_improvement_2026-10-26.zip
+  eth_contraction_improvements.zip
+  sat_density_improvement.zip
+  paper.pdf (OpenAI upstream copy)
+  eth.pdf (Claude/Anthropic manuscript)
+
+64b3202ee84fc4d71fe69c34d2110c93b7da95cd, 2026-10-27 00:44:39 UTC:
+  3sat_precision_refinement_2026-10-26.zip
+  3sat_refinement_package.zip
+  eth_density_refinement.zip
+
+8afdbbea48d67b8d252a99e8926f3eca9649eae3, 2026-10-27 00:48:56 UTC:
+  3sat_asymptotic_analysis_20261027.zip
+
+2b925d8800cda68f5723b65dc1fcdaf3d8170359, 2026-10-27 00:58:36 UTC:
+  Placement into Computability/SubexponentialSAT; no new mathematical
+  proposal or modified payload, independently verified here.
+
+The project README explicitly says that nothing has been checked in
+ProveIt, no Lean or Coq directories exist, the packets assume unchanged
+OpenAI arguments, and none supplies a complete SAT solver or measured
+speedup. The placement commit itself ran no supplied tests or builds.
+
+3. Established frontier in these reports
+
+All runtime statements below depend on the unchanged source theorem.
+For fixed clause width the general bound remains
+  poly(n,m) * 2^{O_k(n loglog(n)/sqrt(log n))},
+and the fixed-density bound remains
+  poly(n,m) * 2^{O_{k,D}(n/sqrt(log n))}.
+
+The strongest established density envelope in the seven reports is
+  poly_k(n,m) *
+  2^{O_k((n/sqrt(log n))*min{log(2+m/n),loglog n})}.
+It improves slowly growing densities, but not the unrestricted n-only
+order or the fixed-density order. Both density reports prove variants
+of this same construction: density-only expander-code checks, followed
+by greedy elimination and an incidence encoding that retains actual
+monomial sparsity.
+
+The strongest explicitly declared geometric-mode contraction schedule
+has coefficient 648.4410666487529 multiplying s/sqrt(log_2 s), with
+normalized root M<=s, degree<=ceil(s^(9/10)), root precision/truncation
+<=s, and fixed entry-oracle constants. Its parameters are
+  r=256, rho=6/r=3/128,
+  u_d=floor(lambda/(720*12^d)),
+  a_d=2 sum_{j=0}^d u_j,
+  H=ceil(s/lambda), lambda=ceil(log_2 s).
+
+The same report already optimizes its schedule family. Its continuous
+boundary coefficient is
+  C_*(r)=2*pi*sqrt(480*log_2 r)
+         /(ln(2)*(1-(6/r)^(2/3))^(3/2)),
+with r approximately 251.005440999 and infimum approximately
+638.527489792. Strict feasible schedules can approach this infimum.
+It would be inaccurate to call 648.441 the absolute best coefficient
+implicit in every existing proposal.
+
+The factorial-Cauchy report changes weights from b+1 to
+  1+b+2*v_2(b!) = 3b+1-2*s_2(b),
+with no extra column tiles. It divides the leading logarithmic mode
+enumeration bound by sqrt(3). Combining it with the declared schedule
+above gives 374.3776243832656. Combining it with schedules approaching
+the existing continuous boundary gives infimum approximately
+368.65401811665055. These synthesized comparisons should be included
+when assessing a new coefficient, even though no one prior ZIP packages
+the entire combination.
+
+4. The seven packets, with nonduplicative content
+
+(a) cauchy_mode_improvement:
+    Exact finite Cauchy separation; both factorial gains transferred to
+    the target; prime-subring congruence at actual extension points;
+    weight slope 3; unchanged source/target groups and recursive size.
+    It explicitly leaves exploiting the narrower actual row family open.
+
+(b) eth_contraction_improvements:
+    Exact taper h~M/u instead of 3M/u; precision ~6MD/u instead of 24MD/u;
+    optimized r=256 schedule; streamed finite differences with <=2^L
+    evaluations and correct extra precision before factorial division.
+    It also derives the continuous schedule-family optimum above.
+
+(c) 3sat_precision_refinement:
+    Exact cardinal-Hermite loss and integer condition count; solves the
+    real full-loss minimax problem. Minimum maximum loss for required
+    mass W is W/(u/3+2/9-(2/9)4^{-u}), so leading constant 6 is already
+    optimal within that normalization-loss model. It gives an exact
+    rank-based mode network, but its fast summation remains a hypothesis.
+
+(d) sat_density_improvement:
+    Uniform all-density envelope using density-only sparse checks and
+    fixed-degree explicit expander powering. It handles m<=d by direct
+    enumeration of occurring variables. Global row count<n/4 and 3n
+    greedy rounds keep fewer than 4n equations.
+
+(e) eth_density_refinement:
+    Overlapping density theorem, a different small-m construction,
+    exact precision and conservative schedule improvements, Max-k-SAT
+    consequence, dimensional obstruction, and exact local Cauchy Smith
+    spectrum. The Smith result is especially relevant to novelty.
+
+(f) 3sat_refinement:
+    Exact scalar parity indicator, no auxiliary V axis, coefficient
+    divisibility, and sharp incidence cap k(p+a-1)=k(n+a). At the source's
+    at-most 6n test bound this changes 8kn to 7kn. It does not remove the
+    incidence entropy. Its second contraction needs the unproved LF
+    compact-factorization theorem; a separate union-support compiler is
+    also unproved.
+
+(g) 3sat_asymptotic_analysis:
+    No stronger bound; precise degree-preserving and linear-wire
+    interfaces; limitations of taper/partition/degree/parity shortcuts;
+    meaningful incidence-support examples arising from genuine 3CNF;
+    original-variable quotient, exterior-power, and norm-hashing leads.
+
+5. Conditional targets must not be called existing achieved algorithms
+
+The precision packet proposes
+  general: n loglog n/log n in the exponent;
+  fixed density: n/log n.
+It requires an algorithm summing actual structured modes with only
+exp(O(M/u)) admissible recursive calls. This is not proved.
+
+The scalar-refinement packet proposes
+  general: n(loglog n)^(3/2)/log n;
+  fixed density: n sqrt(loglog n)/log n.
+It requires LF, which factors high-degree group tensors into bounded-
+degree networks with a correspondingly reduced total edge count.
+The compressed rank graph alone violates the contraction degree bound.
+
+The asymptotic-analysis packet proposes
+  general: n sqrt(loglog n/log n)
+through a degree-preserving recursive compressed kernel, or
+  general: n/sqrt(log n)
+through linear-wire streaming compression. Neither interface is given.
+The union-support variant in the scalar packet has the latter target
+and the same missing local-factorization/entry-cost problem.
+
+An improved constant such as 324.2205 does not prove or dominate these
+unproved order-level targets. A correct conclusion is improvement of the
+strongest established and readily synthesized coefficient certificates,
+with the order-level targets still unresolved.
+
+6. Novelty boundary for the proposed full-orientation construction
+
+eth_density_refinement/report.tex, subsection 'A local Cauchy rank
+obstruction', already proves that the odd-unit matrix
+  K_ij=1/(a+2i-2j)
+has Smith invariant valuations
+  e_j=2j+2*v_2(j!)=4j-2*s_2(j).
+Its proof uses Cauchy determinants and factorial divisibility of integer
+Vandermonde determinants. This local slope 4 fact is prior work within
+the reviewed repository and should be credited explicitly.
+
+What none of the seven reports supplies is an explicit integral
+factorization valid at every retained valuation i, on the complete
+same-bit orientation blocks, preserving the source and target groups,
+preserving the O(L) packet arity, and retaining at most 6M/D modes of
+each quotient index. Establishing these properties and handling
+unramified-extension evaluation points is the substantive new step.
+Merely restating the local Smith spectrum would repeat existing work.
+
+If that full construction has weight slope 4 with the same multiplicity,
+then the existing explicit r=256 schedule gives coefficient
+  648.4410666487529/2 = 324.22053332437645.
+The ratio to the same-schedule factorial-Cauchy synthesis is
+  sqrt(3)/2 =0.8660254037844386,
+a 13.3974596 percent reduction in its leading exponent coefficient.
+It also improves on the stronger existing schedule-family factorial
+infimum approximately 368.6540181. The corresponding new continuous
+family infimum would be approximately 319.2637449, but this is optional
+parameter optimization, not necessary for the new kernel result.
+
+These coefficients concern upper-bound certificates for the normalized
+contraction interface. They are not absolute SAT exponents in n and do
+not establish wall-clock speedups or lower bounds for older programs.
+
+7. Source and manuscript caution
+
+Five packets pin OpenAI commit 7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a;
+the precision and ETH-density packets pin
+42907c9e999cc00d6abe7a50bfc1023250edd1b9. The placement README records
+the preprint directory as byte-identical at both revisions. The separate
+preprint audit is checking this independently.
+
+The 49-page Claude/Anthropic manuscript has time
+  2^{O(min{k*m/sqrt(log m), k^2*n*loglog n/sqrt(log n)})}.
+The loglog factor is OUTSIDE the square root. Its claimed Lean
+development is unpublished in the manuscript's own scope statement.
+It has the same fixed-k general logarithmic order as the OpenAI paper,
+so it does not silently supersede this comparison with a square-root-
+loglog general bound. It is a separate manuscript, not an independently
+checked proof in this audit.
+
+8. Useful deliverable metadata
+
+proposal_inventory.json: all seven reports, arrival and placement paths,
+Git SHA-1 and SHA-256 hashes, fixed source revisions, supplied refinements,
+conditional targets, limitations, and review scope.
+
+placement_verification.json: byte identity of 120 current payload files
+with independently authenticated arrival archives/PDF.
+
+PROJECT_README.md and PLACEMENT_OMITTED.tsv: current project documentation
+at the review cutoff, retained as audit inputs.
+
+repository_tree.json is a large truncated discovery result; it should
+not be included in the final user archive. The compact complete target
+subtree and receipts are more useful.

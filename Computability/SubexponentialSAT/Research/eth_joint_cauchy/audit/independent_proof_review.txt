@@ -1,0 +1,260 @@
+INDEPENDENT AUDIT: JOINT CROSSING-BLOCK CAUCHY MODES
+Prepared by the preprint-audit subagent; 2026-10-26 client date.
+
+Sources inspected
+-----------------
+OpenAI quantitative-contraction.tex, quantitative-reduction.tex, and main
+source at 42907c9e999cc00d6abe7a50bfc1023250edd1b9. The paper PDF blob is
+0503566e95bc587a4076573a45132d97531b8ba6, matching ProveIt's intake for the
+other cited OpenAI revision 7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a.
+Pinned source links and hashes are supplied in provenance/. This audit checks the proposed
+modification relative to the source's tensor-contraction interface, and is
+not a fresh formal verification of the entire ETH manuscript.
+
+Relevant prior work in the local ProveIt proposal set
+---------------------------------------------------
+The factorial Cauchy report supplies mode weights 1+b+2 v_2(b!), slope 3,
+without increasing the old column-tile count. The density-refinement report
+proves the Smith profile 4j-2s_2(j) for the odd-unit block
+1/(a+2i-2j), a unit. It uses this as a limitation, not a complete new routing
+of all crossing blocks through the recursive contraction. The present
+construction applies a full crossing-block decomposition, including every
+retained valuation level, and keeps the old family multiplicity. Classical
+Cauchy elimination and the special R=1 Smith profile are not novel claims.
+
+1. Exact factorization
+----------------------
+Fix 0<=i<a, R=2^i, L=2^a, J=L/2, and a retained T with v_2(T)=i. One fixed
+bit-i orientation has slot sequence
+  s_j = eR + (j mod R) + 2R floor(j/R),  0<=j<J,
+where e is 0 or 1. Both crossing row and crossing column slots belong to
+this sequence. Put K(x,y)=1/(T+x-y). No denominator vanishes, since the
+difference between two same-orientation slots has valuation either <i
+or >=i+1, whereas T has valuation i.
+
+For b>=0 define
+  P_b(x)= product_{h<b} (x-s_h)/(T+x-s_h),
+  Q_b(y)= product_{h<b} (s_h-y)/(T+s_h-y).
+Empty products are one. Direct subtraction proves
+  K(x,y) P_b(x)Q_b(y) - K(x,y)P_{b+1}(x)Q_{b+1}(y)
+    = T P_b(x)Q_b(y)/[(T+x-s_b)(T+s_b-y)].
+The residual is zero after J terms because every real row and column
+occurs among the J nodes. Hence the rank-one sum is exact, finite, and
+valid over the unramified coefficient field at all permitted interpolation
+values. It requires no analytic convergence argument.
+
+2. Uniform valuations and the exact Smith profile
+------------------------------------------------
+Write b=qR+r with 0<=r<R, and E_b=q+v_2(q!). For x=s_j, j<b, P_b(x)=0.
+For j>=b, factors with lower residue different from that of x have equal
+numerator and denominator valuations and contribute zero valuation. The
+same-residue predecessors number q or q+1; their excess valuations are
+1+v_2(k-h), for consecutive h. A falling factorial of length v is divisible
+by v!, so their sum is at least v+v_2(v!)>=E_b. The identical argument
+applies to Q_b. At the pivot j=b there are exactly q predecessors and the
+valuation is exactly E_b. These arguments use ordinary integer slot
+differences and v_2(T)=i only, so they remain valid over an unramified
+extension, without any invalid assertion about binomial polynomials on
+arbitrary extension-ring elements.
+
+Set
+  L_{xb} = [T/(T+x-s_b)] P_b(x)/2^{E_b},
+  U_{by} = [T/(T+s_b-y)] Q_b(y)/2^{E_b}.
+Both matrices are integral and triangular, with unit diagonal. The exact
+identity gives
+  T K = L diag(2^{2E_b}) U.
+Consequently the Smith invariant valuations of T K are exactly
+  2E_b = 4q-2s_2(q),  each q repeated R times.
+This is a constructive unit-triangular factorization; the Smith statement
+does not rest only on a determinant computation. It precludes a uniformly
+better ordered integral rank profile for this same full block, but is not
+a lower bound on other SAT algorithms or more general summation methods.
+
+3. The actual modes and routing
+------------------------------
+Let c(T)=C(T)/C'(0), as in the source, so v_2(c(T))>=a+1. Use source feature
+  ell_b(y)=[T/(T+s_b-y)]Q_b(y)/2^{E_b}
+and target coefficient
+  r_b(x)=2^{E_b}[c(T)/(T+x-s_b)]P_b(x).
+The source feature is integral and the target has valuation at least
+  w_q=a+1-i+2E_b=a+1-i+4q-2s_2(q).
+The source linear form sums ell_b(y)X_y over the real columns in this
+whole orientation half-packet. This is still a single source group.
+Its target rows belong to the opposite group. Thus every mode has exactly
+one source and one target, and the old child-network factorization is
+unchanged. Row factors remain affine in these modes. Packets with identical
+coordinate symbols have no crossing modes.
+
+For each q there are R values of r in each orientation, two orientations,
+and at most 3M/L packets. Therefore the multiplicity per q is at most
+  (3M/L)*2R = 6M/D,  D=L/R.
+The upper q limit is D/2-1. This is exactly the old family count, with a
+new slope-4 weight sequence instead of slope 3. Empty ports and earlier
+pivots give zero coefficients and cause no difficulty.
+
+4. Bit cost and precision
+-------------------------
+Every numerator slot difference is an ordinary integer, with known exact
+two-adic valuation. For each denominator, its valuation is determined from
+the ordinary residue T=t+2^{a+1}zeta: it is at most i and is unchanged by
+the extension term. Remove those explicit powers before inversion. In
+P_b/2^{E_b} and Q_b/2^{E_b}, the total remaining power is nonnegative by
+Section 2. Thus no division of an already reduced p-bit residue by a
+nonunit is required. The supplied p-bit zeta determines every normalized
+unit denominator to p bits, since the coefficient 2^{a+1} has more than
+enough powers of two to absorb the denominator normalization.
+
+Each product has at most L/2 factors. Its integer valuation data and
+unit inversions have polynomial bit cost in the source size and precision.
+All new data remain polynomial-sized. The old exp(O(L log s)) packet-entry
+routine remains valid (and the existing streamed finite-difference routine
+can also be retained). The coefficients are defined at creation precision;
+subsequent calls retain precisely those canonical representatives. The
+modification introduces no need to assume lifting preserves products.
+
+5. Weighted partition bound, including uniformity
+-------------------------------------------------
+For w_q=c_0+4q-2s_2(q), c_0=a+1-i>=1, the upper bound
+  sum_{q>=0} -ln(1-exp(-theta w_q))
+       <= (pi^2/24+o(1))/theta
+holds as theta tends to zero, uniformly in c_0>=1. For an upper bound one
+can replace c_0 by 1; the fixed weight sequence is 4q+O(log(q+2)). Split
+off any fixed finite prefix and compare the tail with slope 4-delta, then
+let delta tend to zero. This yields a rigorous uniform upper asymptotic.
+Finite truncation q<D/2 can only lower the count.
+
+When discussing a matching asymptotic, state additionally theta c_0->0
+and theta D->infinity. In the contraction regime theta is Theta(sqrt(u)/D),
+D>=2^{a_previous+u}, a=O(log s), and u tends uniformly to infinity, so
+both conditions hold. No matching lower bound is needed for the running
+time theorem, and a bound on all feasible tuples is not a runtime lower
+bound for the algorithm.
+
+For c<=6M/D families and precision p_t<=(6+o(1))MD/u, the optimized upper
+bound is
+  ln N <= (pi sqrt(6)+o(1)) M/sqrt(u).
+The slope-3 version has local coefficient 2pi sqrt(2). Their ratio is
+sqrt(3)/2 under matched schedules. The conclusion is an improved explicit
+upper-bound coefficient, not a smaller s/sqrt(log s) order.
+
+6. Revised schedule and numbers
+-------------------------------
+With r=256, rho=6/r=3/128, H=ceil(s/lambda), lambda=ceil(log_2 s), and
+  u_d=floor(lambda/(700*12^d)), a_d=2 sum_{j<=d}u_j,
+we have a_d<=6lambda/1925. Consequently
+  D_arr^2 Delta=O(s^{3849/3850})=o(s/lambda),
+  L D_arr=O(s^{102/1925}), 2L<=Delta eventually.
+The active-depth minimum u is a positive power of lambda, with exponent
+1-ln(12)/ln(128/3)=0.3379616482... . Inherited precision is negligible
+exactly as in the revised-schedule report. Using its explicit guard
+p_t=p+6hD+hu(a+1) gives equality p_t=(6+o(1))MD/u uniformly. If instead
+using the exact B_i guard from the precision report, write <= rather than
+equality because late retained levels can have a smaller dominant loss.
+
+Let gamma=rho sqrt(12)=0.08118988160479113 and
+  kappa=pi sqrt(4200)/ln(2)=293.7305083098111.
+The polynomial-space coefficient is
+  C4=kappa/(1-gamma)=319.6857570776865 <320.
+Under the older epsilon=1/720 schedule it would be324.2205333244.
+The existing slope-3 basis with the SAME 1/700 schedule gives369.1413158.
+The best boundary infimum for the existing optimized schedule family is
+slightly lower than that, so do not call the older374.3776 synthesis a
+global best. The new319.6858 certificate is below that existing infimum.
+
+7. Valid optional exponential-space acceleration
+------------------------------------------------
+Full padding makes the number of packets with unordered coordinate-symbol
+pair {g,h}, g!=h, exactly 2 Hpad D_arr/(r^2 L). A directed pair therefore
+has at most c_gh=6M/(r^2 D) mode families per q. Fix exact nonnegative
+weight budgets b_gh with sum<p_t. There are polynomially many such arrays
+because r is a fixed constant (the polynomial degree is very large).
+The exact-weight tuples of a pair can be ranked and decoded by polynomial
+dynamic programming. A local child contraction Z_g depends only on the
+pair indices incident to g, as is immediate from the packet definition.
+
+For any set E of directed pairs, the sum of pair rank entropies obeys
+  H_E <= (sqrt(|E|/r^2)+o(1)) K,
+where K=(pi sqrt(6)/ln 2)M/sqrt(u). At depth d its root-normalized bound
+is K_d<=(kappa+o(1))(s/sqrt(lambda)) gamma^d, in base-two units.
+The Cauchy-Schwarz proof uses sum_{E}b_gh<=p_t. The leading estimate is
+uniform over budgets: budgets that are a vanishing fraction of p_t have
+o(K) entropy by the old slope-1 bound; the others are in the uniform
+slope-4 asymptotic regime. There are only constantly many pairs.
+
+Partition the 256 groups into sizes85,85,86. A block of size k has
+  2rk-k^2-k directed incident pairs,
+  2k(r-k) directed pairs on its boundary.
+The maxima are36550 and29240. The total pairs joining distinct blocks
+are43690. Directly build each block table and then contract the triangle.
+The resulting recurrence has coefficients
+  A=sqrt(36550/65536)=0.7467989958713,
+  B=sqrt(43690/65536)=0.8164903515294.
+Since A/(1-gamma)=0.8127892596303<B, the time coefficient is
+  kappa B=239.828125984791 <240,
+and space coefficient is
+  kappa sqrt(29240/65536)=196.199445517575 <197.
+This is an explicit exponential-space algorithm, not the earlier unproved
+polynomial-space mode-network contraction hypothesis. The high-degree
+group tensors are evaluated by the old child interface and tabulated;
+the tensor-contraction theorem is never applied to them atomically.
+
+8. A stronger optional variant using cached groups and Strassen
+--------------------------------------------------------------
+First tabulate EACH Z_g as a function of all its incident pair ranks.
+There are2(r-1)=510 incident pairs, so this recursive-call cost has
+coefficient A1=sqrt(510/65536). Store these tables, then build the three
+block tables by the above enumeration, using only table lookups. Thus
+the A-block cost no longer multiplies a child-recursion cost.
+
+Combine every cross-block collection of indices into one index. The three
+block tensors are matrices with dimensions 2^H1,2^H2,2^H3.
+Division-free Strassen multiplication works over the source commutative
+ring. Rectangular blocking with block size equal to the smallest dimension
+gives cost exponent
+  H1+H2+H3-(3-omega)min(H1,H2,H3), omega=log_2(7).
+The three pair capacities are 14450,14620,14620 out of65536. Cauchy-Schwarz
+therefore bounds this exponent by (B_S+o(1))K, with
+  B_S^2=[43690-(1-(omega-2)^2)*14450]/65536,
+  B_S=0.76804094536198.
+This is a valid upper bound even without checking which entropy is smallest:
+take the maximum over the three possibilities, which assigns the reduced
+coefficient to the smallest capacity. Square padding and rectangular
+blocking change only constant factors. Strassen uses additions,
+subtractions and products, with no problematic division by two.
+
+Now max(B_S,A,A1/(1-gamma))=B_S. The time coefficient is
+  kappa B_S=225.5970572839233 <226,
+with the same space coefficient196.199445517575 <197. All dense matrices
+are already block tables or an output of one multiplication; their largest
+dimension product obeys the boundary-table bound. Depth-first Strassen
+uses only a constant multiple of the square block memory. Cached individual
+group tables are much smaller. Recursive table memory adds, and cannot
+multiply, the parent memory; the smaller child scale is absorbed.
+
+9. Scope and remaining limitations
+---------------------------------
+The source's arbitrary-density reduction still costs O(n log log n)
+effective wires and the contraction still has s/sqrt(log s) order. The
+optional cached method improves the explicit coefficient at exponential
+space cost, but does not establish O(s/log s), remove log log n from the
+dense case, or discharge the prior conditional low-degree interface.
+Numerical constants refer to the normalized tensor-network size s, not
+directly to the number of variables in an arbitrary input formula.
+
+Final review addendum
+---------------------
+The final report makes the uniform weighted-entropy argument directly with
+theta_e = theta / w_e. It includes zero and small exact-weight budgets,
+without a separate nonuniform saddle-point assumption. The exact-weight
+indexing code supplies polynomial-size count tables and rank/unrank routines.
+Sequential access to cached group tables is charged by restricted
+lexicographic enumeration: suffix rewinds are amortized by the assignments
+already traversed. Reordering matrix tables has only polynomial overhead
+per record. These details preserve the stated bit-cost and space bounds.
+
+The final independent implementation contains no Python assertion statements.
+Normal and optimized executions each passed 656,768 explicit conditions,
+including 180 rational and 180 unramified-extension factorizations, 19,116
+matrix entries in each family, and 436 exhaustive small-minor evaluations.
+These finite tests support the implementation; the all-size conclusions
+rest on the report's proofs and its explicitly imported preprint identities.

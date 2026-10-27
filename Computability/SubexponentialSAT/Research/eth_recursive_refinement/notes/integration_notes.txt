@@ -1,0 +1,72 @@
+INTEGRATION AND REPRODUCTION NOTES
+
+1. Reading order
+   report.pdf is the complete 17-page review and proof. Sections 1-2 state
+   the comparison standard and review all seven packets. Sections 5-8
+   prove the new generic contraction certificate. Section 9 explains the
+   SAT reductions and the separate lower-degree corollary. Sections 10-12
+   give the extra variance lemma, remaining obstacles, and exact checks.
+   kernel.tex is the complete editable source of the new local kernel
+   proof; it is included by report.tex, not compiled separately.
+
+2. What must be preserved in an eventual implementation
+   Retain the cited preprint's integral deformation, Hermite recovery,
+   source/target group factorization, and immutable creation-precision
+   semantics. Canonical lifts are not ring homomorphisms. A child entry
+   must be evaluated at its own creation precision before lifting.
+   Use the exact taper and precision formulas in report equations (5)
+   and (7), rather than treating their asymptotic upper bounds as exact
+   finite working precisions. Use the actual padding load and integer
+   schedule checks before entering the asymptotic recursive regime.
+
+3. The new source/target features
+   For each actual crossing column tile, determine the allowed residue
+   c modulo eight (2 or 6) as proved in Section 7.1. Build auxiliary
+   points from the repeated word ABABCABABCABAACABAACA. They need not
+   be actual rows. Source features are integral binomial values divided
+   only by units. Factorials occur multiplicatively in target features;
+   no nonunit factorial is inverted in the coefficient ring. Extension
+   arithmetic must respect the proved near-prime-subring congruence.
+
+4. Optional finite inventory selection
+   The new basis improves the asymptotic weight slope, not every finite
+   weight. For example, its b=4 weight is 10 while the prior basis gives
+   11. All 21 recorded small inventory comparisons favor the old basis.
+   A per-call dynamic program may count the old and new strict-budget
+   inventories exactly and select the smaller. This avoids that tuple-
+   count regression while preserving the new asymptotic certificate.
+   It does not establish a wall-clock performance advantage.
+
+5. Interpretation of schedule diagnostics
+   The schedule script reports the truth of finite sufficient conditions
+   at nine sampled values of lambda=log2(s). Some smaller samples fail
+   the asymptotic-regime conditions; these false flags are intentionally
+   preserved in schedule_checks.json. They are not failed algebraic
+   identities. The proved algorithm handles bounded exceptional sizes
+   by exhaustive summation or tests the regime before recursing.
+   No practical crossover threshold is claimed.
+
+6. Meaning of validation
+   The standard-library programs check finite exact identities and
+   arithmetic certificates. The extension tests include residues outside
+   the prime field. Normal and python -O summaries are identical; explicit
+   exceptions keep the checks active under optimization. These checks
+   support, but cannot replace, the general proofs. This package contains
+   no complete SAT solver, performance benchmark, Lean theorem, or audit
+   of all dependencies of either supplied preprint.
+
+7. Provenance and review
+   The intake snapshot and later placement commit are pinned in the
+   provenance directory. All 119 placed packet files were matched against
+   the extracted archives using Git blob hashes. An independent review
+   checked the new kernel proof, schedule induction and entropy constant,
+   lower-degree corollary, and release provenance. Earlier packet programs
+   were inspected as source but were not executed or redistributed.
+
+8. Reproducibility and file hashes
+   Follow README.md for the two Python runs and two pdflatex passes.
+   Check outputs are deterministic for the included code. A rebuilt PDF
+   may have different bytes due to TeX metadata despite identical content.
+   MANIFEST.json fingerprints the files as delivered; regenerating outputs
+   may change those fingerprints. results/report_build.json records the
+   delivered PDF's source hashes, page count, and layout verification.
