@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [bounded even seed-label theorem](reviews/validator-seed-padding222-root.md)
+now provides actual seed and matrix-vacuity witnesses for arbitrary internal
+typed matrices using a bounded even self-label and odd binder stream.
+Independent builds pass eleven standard-only reports with identical
+objects. This discharges the stated self-label freshness construction;
+it does not yet interpret tagged comprehension/Collection or discharge
+the fixed source theory's complete AxOK premise.
+
 The [actual C222 source-proof interpreter](reviews/validator-source-derivation222-root.md)
 now translates all ten internal Foundation derivation cases under an
 explicit AxOK theory-image premise. Genuine Pi2/IΣ2 induction covers

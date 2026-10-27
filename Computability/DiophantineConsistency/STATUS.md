@@ -30,6 +30,14 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [bounded even seed-label theorem](reviews/validator-seed-padding222-root.md)
+now chooses an arbitrarily large even self-label with actual seed and
+typed-matrix vacuity witnesses. Bounds handle stored labels and parity
+handles every future odd-stream label. Independent builds pass eleven
+standard-only reports and identical objects. This closes that freshness
+construction; tagged set-theory interpretation and actual source axiom
+images remain open before the fixed source-ZFC reduction.
+
 The [actual C222 internal source-proof interpreter](reviews/validator-source-derivation222-root.md)
 now covers all ten Foundation proof rules by genuine Pi2/IΣ2 induction,
 with actual History222 witnesses and internally sized contexts. Independent
