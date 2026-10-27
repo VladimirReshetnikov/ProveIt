@@ -51,6 +51,13 @@ pass thirteen standard-only reports with identical objects, including raw0
 and literal AX y/x order. Represented append and execution composition
 remain subsequent runtime checkpoints.
 
+The [finite actual C222 quantifier rules](reviews/validator-quantifier-rules222-root.md)
+now prove ALL inference and both opened ALL/EXS body equivalences, retaining
+an explicit vacuity guard for hypotheses and deriving it for a shifted
+negative source hypothesis. Independent builds pass thirteen standard-only
+reports with identical objects. EXS term introduction and general proof
+interpretation remain open.
+
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
 reports. Genuine simultaneous formula induction proves finite all/ex

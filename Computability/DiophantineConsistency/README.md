@@ -112,6 +112,12 @@ working-register effect over internal IOpen inputs. Independent builds
 pass thirteen standard-only reports with identical objects, including raw0
 and literal AX y/x order. Represented append and execution composition
 remain subsequent runtime checkpoints.
+The [finite actual C222 quantifier rules](reviews/validator-quantifier-rules222-root.md)
+now prove ALL inference and both opened ALL/EXS body equivalences, retaining
+an explicit vacuity guard for hypotheses and deriving it for a shifted
+negative source hypothesis. Independent builds pass thirteen standard-only
+reports with identical objects. EXS term introduction and general proof
+interpretation remain open.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed
