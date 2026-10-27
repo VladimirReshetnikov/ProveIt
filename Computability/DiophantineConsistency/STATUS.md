@@ -29,6 +29,13 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [actual full-seed source image](reviews/validator-source-full-seed222-root.md)
+now supplies an actual History222 witness for every internally typed matrix,
+retaining the complete literal closure/root-request body and arbitrary
+free-safe output stream. Independent two-leaf replay matches both objects
+and17 standard-only reports. The actual theory recognizer/parameter closure,
+tagged Collection/quotient and fixed source-ZFC reduction remain open.
+
 The [internal Pell recurrence](reviews/arithmetic-pell-recurrence-root.md)
 now supplies fixed total Sigma1/Delta1 graphs, coordinate graphs, the norm,
 growth bounds and both addition identities for arbitrary internal IΣ1

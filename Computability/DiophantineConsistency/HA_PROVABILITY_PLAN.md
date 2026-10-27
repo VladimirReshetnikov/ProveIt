@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual full-seed source image](reviews/validator-source-full-seed222-root.md)
+now gives the literal closure-and-root-request body a current C222 history
+witness for every internally typed matrix, arbitrary free environment and
+free-safe output stream. Independent builds agree on both objects and17
+standard-only reports. The actual schema recognizer/parameter closure,
+tagged Collection and quotient interpretation still precede a fixed
+source-ZFC AxOK/calibration theorem and the final HA transfer.
+
 The [internal Pell recurrence](reviews/arithmetic-pell-recurrence-root.md)
 is represented uniformly over arbitrary IΣ1 models, with fixed total
 Sigma1/Delta1 graphs and actual Sigma1 induction for its norm,growth and

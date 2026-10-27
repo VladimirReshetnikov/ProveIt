@@ -164,6 +164,13 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [actual full-seed source image](reviews/validator-source-full-seed222-root.md)
+now proves an actual C222 history witness for every internally typed matrix
+and arbitrary free-safe output stream, retaining both closure and root
+request. Independent builds reproduce both objects and17 standard-only
+reports. The source-theory recognizer/closure,tagged set-theory interpretation
+and fixed ZFC calibration remain separate obligations before HA assembly.
+
 The [internal Pell recurrence](reviews/arithmetic-pell-recurrence-root.md)
 now has fixed total arithmetic graphs and proves the norm,growth and
 addition formulas at arbitrary internal IΣ1 indices. Independent fresh
