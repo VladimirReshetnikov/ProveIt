@@ -1141,3 +1141,23 @@ independence. No broad machine Bridge import or independent checker
 reflection is introduced. Root reauthenticated the complete independent
 replay, all 3612 checked evidence observations, seven axiom reports and both
 objects after reading the full sources, checks, driver and peer receipt.
+
+## Uniform unrestricted rho8 circuit accepted
+
+The [uniform unrestricted rho8 circuit](reviews/arithmetic-command-rho8-circuitperm222-root.md)
+now supplies one finite circuit before every internal model/input quantifier,
+with no residual dominance condition. Actual guarded leaves and minor-first
+MP implement the finite generic implication derivation. Independent builds
+pass five standard-only reports and identical objects. This closes the
+uniform finite rho8 step; internal proof-history compilation and the full
+HA equivalence remain open.
+
+The witness is uniform over every model in each fixed universe parameter,
+with the existential outside all four input and saved-stack quantifiers.
+Its graph is literal parameter-free Sigma1 arithmetic syntax. The generic
+restricted rule uses actual u<=a dominance only at the leaf sites of the
+finite derivation. The exact actual MP composition eliminates any outer
+guard. This is the finite row needed by the subsequent represented proof
+history, not already the internal history or source interpretation. A
+Type0 fixed choice suffices for the PA completeness route, without claiming
+one circuit across all universe levels from the current theorem.

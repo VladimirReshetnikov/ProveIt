@@ -89,18 +89,26 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [uniform unrestricted rho8 circuit](reviews/arithmetic-command-rho8-circuitperm222-root.md)
+now supplies one finite circuit before every internal model/input quantifier,
+with no residual dominance condition. Actual guarded leaves and minor-first
+MP implement the finite generic implication derivation. Independent builds
+pass five standard-only reports and identical objects. This closes the
+uniform finite rho8 step; internal proof-history compilation and the full
+HA equivalence remain open.
+
 The [actual C222 finite circuit graphs](reviews/arithmetic-command-circuitperm222-peer.md)
 now represent every fixed numeric circuit by a parameter-free five-slot Σ1
 graph and bind current word/leaf expressions exactly. Independent builds
 pass nine standard-only reports and identical objects. The unrestricted
-rho8 compiler still needs one circuit chosen outside all model/input
-quantifiers; pointwise word existence alone does not discharge it.
+finite rho8 circuit is accepted above; internal proof-history compilation
+remains open.
 
 The [actual C222 GEN/MP rules](reviews/arithmetic-command-ruleperm222-root.md)
 now preserve all-top/all-stack contracts, including GEN at zero/code1 and
 both MP false-cache halt branches. Independent builds pass seven standard-only
-reports and identical objects. Uniform circuit compilation, unrestricted
-rho8 and proof-history correctness remain open.
+reports and identical objects. The unrestricted
+finite rho8 circuit is accepted above; proof-history correctness remains open.
 
 The [actual C222 finite command leaves](reviews/arithmetic-command-leafperm222-root.md)
 now construct all nine physical AX selections, exact gate/bundle outputs
