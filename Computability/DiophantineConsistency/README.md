@@ -165,6 +165,13 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [actual internal first-norm classification](reviews/arithmetic-pell-first-norm-root.md)
+now derives the doubled ordinate and full internal sequence index for
+x²=1+Q(Q+1)k² by genuine bounded Sigma1 descent. It also supplies the2Q/4Q
+residue quotients without an assumed parity or fundamental-unit theorem.
+Independent builds match both objects/full logs and eleven reports. Literal
+carrier index identification and simultaneous witnesses remain before PA/HA.
+
 The [internal Pell periodicity theorem](reviews/arithmetic-pell-periodicity-root.md)
 now constructs nonnegative quotient witnesses for both coordinates after
 arbitrarily many internal4n periods modulo x(n), with actual remainder

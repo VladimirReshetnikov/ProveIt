@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual internal first-norm theorem](reviews/arithmetic-pell-first-norm-root.md)
+now classifies every x²=1+Q(Q+1)k² solution in the represented sequence,
+deriving doubledness, bounded internal time and2Q/4Q residue quotients.
+It descends by the literal unit(2Q+1,2), justifies natural subtraction and
+uses genuine Sigma1 order induction. Independent builds reproduce both
+objects/full logs and eleven reports. First/main index identification,
+cofinal simultaneous witnesses and full equation PA/HA assembly remain.
+
 The [current13/88/51 finite certificate](reviews/adaptive-current13-metrics-root.md)
 now covers the accepted literal graph at its exact current47,313-byte tuple:
 every paid/live gate, all specialized leaders, exact degree51 and complete

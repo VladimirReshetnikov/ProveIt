@@ -49,6 +49,15 @@ ROOT normal/optimized replays reproduce the complete certificate/stdout and
 tuple but does not dominate cheaper schedules such as13/75/96. The historical
 larger-tuple13/88/51 is a separate retained comparison; internal HA remains open.
 
+The [actual internal first-norm classification](reviews/arithmetic-pell-first-norm-root.md)
+now proves both directions for x²=1+Q(Q+1)k², with arbitrary positive internal Q,
+bounded internal index, derived evenness and actual2Q/4Q residue quotients.
+Descent justifies both natural subtractions and uses genuine bounded-universal
+Sigma1 induction. Independent fresh pairs match both objects/full logs and
+all eleven reports. Actual index=(R+1)/2, simultaneous carrier witnesses and
+final PA/HA composition remain open; the external fundamental-unit theorem
+is not a premise of this new internal classification.
+
 The [internal Pell periodicity theorem](reviews/arithmetic-pell-periodicity-root.md)
 now supplies concrete quotients for both coordinates at4n, genuine Sigma1
 induction over arbitrary internal period counts and starts, both actual
