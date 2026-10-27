@@ -91,13 +91,22 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [actual C222 refutation-execution theorem](reviews/arithmetic-proof-word-enumperm222-root.md)
+now proves that an accepted internal C222 refutation forces the actual
+permuted enumerator to halt from candidate4 and any working state. A real
+AX reset and candidate bound discharge the scheduler premises. Independent
+builds pass eight standard-only reports and identical objects. The literal
+closed conditional has actual IΣ1 and PA derivations. Reverse soundness,
+source/215 calibration and the final HA equivalence remain open.
+
 The [all-internal C222 compiler](reviews/arithmetic-proof-word-perm222-root.md)
 now maps every accepted internal proof code to a represented command word
 with its exact conclusion and arbitrary initial top/saved stack. Genuine
 Pi1 prefix induction proves correctness,with no supplied global invariant.
 Its conditional false1 word halts from state(top,S,0,0). Independent builds
-pass eleven standard-only reports and identical objects. Universal reset,
-scheduler integration,source calibration and the HA equivalence remain open.
+pass eleven standard-only reports and identical objects. The reset and
+forward scheduler bridge are accepted above;reverse soundness,source
+calibration and the HA equivalence remain open.
 
 The [actual C222 compiler row](reviews/arithmetic-proof-word-rowperm222-root.md)
 now has a total fixed arithmetic graph for all twelve branches and invalid

@@ -1234,3 +1234,22 @@ route. A represented seed/tagged interpretation or proved alternative raw
 axiom deductions is needed. Old C254 R2Native cannot be renamed into this
 step. The accepted word compiler does not discharge source-calculus
 calibration or the missing actual equation/source PA proof.
+
+## Actual C222 refutation to enumerator halt is proved in IΣ1
+
+The [actual C222 refutation-execution theorem](reviews/arithmetic-proof-word-enumperm222-root.md)
+now proves that an accepted internal C222 refutation forces the actual
+permuted enumerator to halt from candidate4 and any working state. A real
+AX reset and candidate bound discharge the scheduler premises. Independent
+builds pass eight standard-only reports and identical objects. The literal
+closed conditional has actual IΣ1 and PA derivations. Reverse soundness,
+source/215 calibration and the final HA equivalence remain open.
+
+The initial cache can contain false1 and the counter may be arbitrary.
+The prefix AX c=1,x=y=0 resets both controls without inspecting their logical
+meaning. Its candidate starts with tag4,so the actual fair scheduler reaches
+it from4. The closed sentence quantifies actual checker codes and arbitrary
+working states,and uses only actual represented check/live/run syntax.
+Completeness over all Type0 IΣ1 models yields the internal theorem;it does
+not promote mere standard-Nat truth to provability. The reverse direction
+will carry bounded actual proof witnesses in each live working state.
