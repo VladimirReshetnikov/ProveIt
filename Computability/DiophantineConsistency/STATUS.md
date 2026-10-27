@@ -109,6 +109,13 @@ plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. Evaluation composition is accepted above; fixed command blocks and
 compiler/proof-state invariants remain subsequent checkpoints.
 
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
 The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
 now extracts all four factor equalities from the literal signed product1.
 Finite modulo4 proofs exclude negative units without assuming factor

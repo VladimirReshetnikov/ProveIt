@@ -3714,3 +3714,18 @@ The generic signed factors retain q^3(q-1) and discriminant a^2+4a+3.
 Kernel-checked finite ZMod4 proofs establish each exclusion. The packet
 assumes neither A0/A1 nor a restored source, and supplies only the upstream
 algebra required by the separate adaptive bootstrap.
+
+
+## Positive integral adaptive main Pell root accepted
+
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
+The exact signed transport is retained; the positive root is derived,
+not imposed by absolute value. Free-J factor3 handling is explicit. These
+external integer deductions advance the low-degree transfer but are not
+automatically proofs about nonstandard internal arithmetic.

@@ -1031,3 +1031,18 @@ modules,139 Foundation modules,872 artifacts,57 boundaries and2118 unique
 pins before/after; it compiles only the new main/check pair. No full closure
 rebuild is claimed. Sources, drivers, input observations, logs, timings and
 object hashes are frozen in the linked author/peer records.
+
+
+## Positive integral adaptive main Pell root accepted
+
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
+The exact signed transport is retained; the positive root is derived,
+not imposed by absolute value. Free-J factor3 handling is explicit. These
+external integer deductions advance the low-degree transfer but are not
+automatically proofs about nonstandard internal arithmetic.
