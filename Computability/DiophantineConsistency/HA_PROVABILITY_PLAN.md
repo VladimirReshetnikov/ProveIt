@@ -990,3 +990,18 @@ The physical AX setup retains u≤a explicitly. The actual checker accepts
 unrestricted rho8 parameters, so its later represented uniform compiler
 must implement the finite dominated-implication derivation instead of
 assuming this guard. No old C254 runtime semantics is imported.
+
+
+## Four literal adaptive factors exclude negative units
+
+The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
+now extracts all four factor equalities from the literal signed product1.
+Finite modulo4 proofs exclude negative units without assuming factor
+positivity. Independent builds pass five standard-only reports and identical
+objects. Binding the full historical graph and the final HA endpoint remain
+separate.
+
+The generic signed factors retain q^3(q-1) and discriminant a^2+4a+3.
+Kernel-checked finite ZMod4 proofs establish each exclusion. The packet
+assumes neither A0/A1 nor a restored source, and supplies only the upstream
+algebra required by the separate adaptive bootstrap.

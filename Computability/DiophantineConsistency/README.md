@@ -156,6 +156,13 @@ premise. Independent builds pass eight propext/Quot.sound-only reports and
 identical objects. Fixed consistency specialization and the full HA equation equivalence
 remain open.
 
+The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
+now extracts all four factor equalities from the literal signed product1.
+Finite modulo4 proofs exclude negative units without assuming factor
+positivity. Independent builds pass five standard-only reports and identical
+objects. Binding the full historical graph and the final HA endpoint remain
+separate.
+
 The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
 now proves q^4 divides t from q^3 dividing Y and q^5 dividing
 (4Y(X+1)+3)t, for all signed integers, including q=0 and3 dividing q.
