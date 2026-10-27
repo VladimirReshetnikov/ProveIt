@@ -40,6 +40,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [actual internal DagPerm macro package](reviews/arithmetic-dag-macros-perm222-root.md)
+now proves concrete pairing/unpairing,three reads,all13 AX atoms and both
+fetch branches over arbitrary internal IΣ1 data. Pair/unpair allow dirty
+scratch; macro cleanliness is explicit. The actual rotated136/300 fetch
+loop has its own Sigma1 invariant. Independent fresh pairs match both
+objects/full logs and22 standard-only reports. Equality123,complete AX
+word/dispatch,root execution and literal215 calibration remain open.
+
 The [current13/88/51 metric packet](reviews/adaptive-current13-metrics-root.md)
 now independently certifies every live gate, complete specialized leading
 polynomial and all47,313 current coefficient bytes. Its literal evaluator and

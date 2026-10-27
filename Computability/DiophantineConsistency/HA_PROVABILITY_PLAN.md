@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual internal DagPerm macros](reviews/arithmetic-dag-macros-perm222-root.md)
+now supply concrete run witnesses for pairing,unpairing,reads,all13 AX atoms
+and fetch, using the accepted actual control table and physical register file.
+The rotated fetch loop is proved with genuine Sigma1 iteration. Independent
+fresh builds reproduce both objects/full logs and22 standard-only reports.
+The actual equality/AX-word/dispatch/root theorem must still construct the
+whole structured execution before the accepted control/bisimulation bridges.
+
 The [actual internal first-norm theorem](reviews/arithmetic-pell-first-norm-root.md)
 now classifies every x²=1+Q(Q+1)k² solution in the represented sequence,
 deriving doubledness, bounded internal time and2Q/4Q residue quotients.

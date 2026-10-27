@@ -1,0 +1,40 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagMacrosPerm222.lean:794:51: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+st : AS V
+Gr : V → AS V :=
+  fun t =>
+    { np := st.np + t, tw := st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := st.p2, s1 := st.s1 - t, s2 := st.s2,
+      pl := st.pl }
+Hr : V → AS V :=
+  fun t =>
+    { np := st.np + t + 1, tw := st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := st.p2, s1 := st.s1 - t,
+      s2 := st.s2, pl := st.pl }
+G : V → V := fun t => writeValue (↑6) (st.np + t) (writeValue (↑8) (st.s1 - t) (enc st))
+hG : ∀ (t : V), G t = enc (Gr t)
+hadd : 𝚺₁-Function₁ fun t => st.np + t
+this : 𝚺₁-Function₁ G
+hpass :
+  ∀ t < st.s1,
+    IR (Edge.inc 0) (G t) Exit.normal (enc (Hr t)) ∧ IR (Edge.node 300) (enc (Hr t)) (Exit.cont 1) (G (t + 1))
+hi : IR (Edge.inc 0) (enc (Gr st.s1)) Exit.normal (enc (updAS (Gr st.s1) 0 (field (Gr st.s1) 0 + 1)))
+⊢ field
+      { np := st.np + st.s1 + 1, tw := st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := st.p2, s1 := 0, s2 := st.s2,
+        pl := st.pl }
+      6 =
+    0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagMacrosPerm222.lean:814:60: warning: This simp argument is unused:
+  updAS
+
+Hint: Omit it from the simp argument list.
+  simp [u̵p̵d̵A̵S̵,̵ ̵field]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagMacrosPerm222.lean:814:67: warning: This simp argument is unused:
+  field
+
+Hint: Omit it from the simp argument list.
+  simp [updAS,̵ ̵f̵i̵e̵l̵d̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
