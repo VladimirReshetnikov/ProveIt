@@ -18,6 +18,13 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [canonical215 control frame](reviews/arithmetic-control-frame215-root.md)
+now derives actual step/halt transport from a fixed represented entry,
+including complete consumed-path rebasing. Independent fresh pairs match
+both objects, full logs and all 20 standard-only reports, with zero refresh.
+Whole iteration and initial boot composition remain before the closed
+control/tape theorem.
+
 The [internal signed-factor theorem](reviews/arithmetic-signed-pairs-root.md)
 now derives all five positive unit identities from the scaled signed product
 and four negative-unit exclusions, including the transport factor's sign.

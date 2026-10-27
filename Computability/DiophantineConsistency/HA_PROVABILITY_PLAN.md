@@ -26,6 +26,23 @@ and half-index recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
 
+The estimate remains **about halfway**, with substantial uncertainty. The
+completed HA calculus, PA-to-HA translation and consistency normalization
+do not remove the need for a closed arithmetic theorem about this exact
+equation. The source/ZF interpretation and simultaneous polynomial witness
+construction still require mathematical development; they are not merely
+final file assembly. Machine simulation is closest to composition after
+the canonical-frame acceptance below. This estimate counts neither proof
+files nor independently replayed checkpoints as equal units of progress.
+
+The [canonical215 control-frame theorem](reviews/arithmetic-control-frame215-root.md)
+now fixes the represented entry graph, proves full consumed-path rebasing
+and derives actual six-case step/halt transport with arbitrary internal
+registers and zero gaps. Both independent objects, complete logs and all
+20 standard-only reports match, with zero refresh. Whole iteration,
+the initial frame and boot composition remain before the closed runtime
+endpoint; no final polynomial PA or HA equivalence is claimed.
+
 The [internal signed-factor extraction](reviews/arithmetic-signed-pairs-root.md)
 now turns an actual scaled five-factor signed product into five positive
 additive identities, using four negative-unit exclusions and deriving the
