@@ -1253,3 +1253,23 @@ working states,and uses only actual represented check/live/run syntax.
 Completeness over all Type0 IΣ1 models yields the internal theorem;it does
 not promote mere standard-Nat truth to provability. The reverse direction
 will carry bounded actual proof witnesses in each live working state.
+
+## Actual C222 internally sized source contexts accepted
+
+The [actual C222 context calculus](reviews/validator-proof-context222-root.md)
+now proves rules for internally sized implication contexts,including actual
+history witnesses,deduction,subsumption,source-list shifting and enumeration
+independence. Two independent builds pass sixteen standard-only reports
+and identical objects. The independent inventory explicitly repairs one
+omitted Aesop meta-import boundary. NNF compatibility,source derivation
+induction and source axiom interpretation remain open.
+
+The context representation is an actual arithmetic vector fold,not a
+standard finite Lean hypothesis list. Every public Der statement contains
+an actual checker witness for its implication chain. Fixed finite
+propositional certificates use the already accepted C222 classical calculus;
+this does not add classical rules to HA. Internal context enumeration may
+contain duplicates or any order. The source proof interpreter and actual
+set-theory schema images are subsequent substantive obligations.
+The next source-negation plan uses the corrected encoder-only40-boundary
+inventory and explicit Pi2 syntax induction under IΣ2.

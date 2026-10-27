@@ -91,6 +91,14 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [actual C222 context calculus](reviews/validator-proof-context222-root.md)
+now proves rules for internally sized implication contexts,including actual
+history witnesses,deduction,subsumption,source-list shifting and enumeration
+independence. Two independent builds pass sixteen standard-only reports
+and identical objects. The independent inventory explicitly repairs one
+omitted Aesop meta-import boundary. NNF compatibility,source derivation
+induction and source axiom interpretation remain open.
+
 The [actual C222 refutation-execution theorem](reviews/arithmetic-proof-word-enumperm222-root.md)
 now proves that an accepted internal C222 refutation forces the actual
 permuted enumerator to halt from candidate4 and any working state. A real

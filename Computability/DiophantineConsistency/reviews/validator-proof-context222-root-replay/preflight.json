@@ -1,0 +1,42 @@
+{
+  "status": "REJECTED_BEFORE_LEAN",
+  "driver_sha256": "a2118ffc3124918a2d303acd2ae3998338d2e1eefbd6330dcb65cee1d7ec1d7f",
+  "command": [
+    "python3",
+    "/tmp/validator-proof-context222-root.py"
+  ],
+  "exit_code": 1,
+  "diagnostic": "AssertionError: Foundation.FirstOrder.Basic.AesopInit",
+  "reason": "Frozen author inventory omitted public meta import Aesop; independent header check rejected it before creating an overlay or invoking Lean.",
+  "repair": [
+    {
+      "module": "Foundation.FirstOrder.Basic.AesopInit",
+      "recorded": [
+        "Init",
+        "Aesop.Frontend.Command"
+      ],
+      "actual": [
+        "Init",
+        "Aesop",
+        "Aesop.Frontend.Command"
+      ],
+      "added_boundary": {
+        "module": "Aesop",
+        "path": "/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean/Aesop.olean",
+        "sha256": "2b7f22adde1dc9ae77a35ef549ffc6b7c329a5f0904fec6f42d2e273e9a3d35e"
+      }
+    }
+  ],
+  "original_author_counts": {
+    "cached": 152,
+    "foundation": 117,
+    "artifacts": 503,
+    "boundaries": 39
+  },
+  "accepted_root_counts": {
+    "cached": 152,
+    "foundation": 117,
+    "artifacts": 503,
+    "boundaries": 40
+  }
+}
