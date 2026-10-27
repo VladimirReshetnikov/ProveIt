@@ -26,6 +26,15 @@ and half-index recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
 
+The [actual215 source-site theorem](reviews/arithmetic-site215-root.md)
+now derives all six instruction execution cases from actual LeafAt membership
+and the complete closed 4,751-site certificate. Internal data and zero gaps
+are arbitrary, clocks are positive, and full path/register suffixes remain.
+The terminal predicate is first(configuration)=0. Independent fresh pairs
+match both objects/full logs and all nineteen standard-only reports with
+zero refresh. Canonical consumed-path rebasing, the represented frame and
+whole control/tape calibration remain before PA/HA assembly.
+
 The [internal power-recovery theorem](reviews/arithmetic-pell-power-recovery-root.md)
 now derives `X = Exp.exp R`, the represented exponential graph and
 `Exp.exp R < Y` from the literal transport/four norms and genuine port
@@ -51,8 +60,8 @@ empty true runs and the exact eighteen-step boundary for every right tail.
 Its stepper and executor discharge Home semantics and preserve the moved
 flag, retaining the genuine fallback premises. Independent fresh pairs
 match both objects/full logs and all 14 standard-only reports with zero
-prerequisite refreshes. All-site contracts, canonical paths and whole
-control/tape equivalence remain open.
+prerequisite refreshes. All-site instruction contracts are supplied above;
+canonical paths and whole control/tape equivalence remain open.
 
 The [literal scalar-window and first-index theorem](reviews/arithmetic-pell-first-index-root.md)
 now derives the bounds needed for half-index recovery from the maintained
@@ -80,7 +89,7 @@ moved flag and derives positive clocks from an initially false flag.
 Normalization preserves the entire numeric configuration, and all four
 ordinary-Nat sepsR/sepsM/INC/DEC algebraic clients are proved. Independent
 fresh pairs match both objects/full logs and 15 standard-only reports,
-with zero prerequisite refreshes. Home is supplied above; all sites, canonical paths
+with zero prerequisite refreshes. Home and sites are supplied above; canonical paths
 and whole control/tape equivalence remain open.
 
 The [actual tagged Collection theorem](reviews/validator-seed-tagged-collection222-root.md)
@@ -123,7 +132,7 @@ and genuine Pi1 induction in IΣ1 handle internal scan and spare counts.
 Independent fresh triples match all three objects/full logs and 14 reports.
 One unchanged numeric-prefix helper was explicitly refreshed; no Foundation
 module was rebuilt. The later symbolic packet above supplies the ordinary-Nat
-encoding comparison and executor. Home is supplied above; all-site and control/tape composition
+encoding comparison and executor. Home and sites are supplied above; control/tape composition
 remain open.
 
 The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)
@@ -199,8 +208,9 @@ now represents continuation of the literal decimal evaluator, proves every
 sparse row on arbitrary internal tape halves, and composes all13 boot chunks
 at the exact95714 clock. The same fixed Sigma1 graph lifts the finite boot;
 both internal blank/boot halting directions include the early-halt exclusion.
-Independent fresh pairs match both objects/full logs and13 reports. Actual
-scans/boxes/home/site execution and control/tape calibration remain open.
+Independent fresh pairs match both objects/full logs and13 reports.
+The later scan/box/Home/site packets above supply uniform instruction
+execution; canonical and whole control/tape calibration remain open.
 
 The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
 now composes repeated execution in both directions using a fixed Sigma1

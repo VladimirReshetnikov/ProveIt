@@ -18,6 +18,12 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [actual215 source-site theorem](reviews/arithmetic-site215-root.md) now
+executes all six instruction cases on arbitrary internal data using the
+complete 4,751-site certificate. Independent fresh pairs match both objects,
+full logs and all nineteen standard-only reports, with zero refresh.
+Canonical reentry and whole control/tape calibration remain open.
+
 The [internal power-recovery theorem](reviews/arithmetic-pell-power-recovery-root.md)
 now derives the actual represented exponential relation from the maintained
 transport/four norms and port bounds, with both indices derived internally.
@@ -36,7 +42,8 @@ positive execution of the real Home checker on arbitrary internal data,
 including zero gap and the exact eighteen-step boundary. Its actual stepper
 and executor preserve the moved flag. Independent fresh pairs match both
 objects/full logs and all 14 standard-only reports with zero prerequisite
-refreshes. All sites, canonical paths and whole control/tape calibration remain.
+refreshes. Site instruction contracts are supplied above; canonical paths
+and whole control/tape calibration remain.
 
 The [literal scalar-window and first-index theorem](reviews/arithmetic-pell-first-index-root.md)
 now derives the required bounds and both Pell indices from the maintained
@@ -50,7 +57,8 @@ now interprets all ten actual internal derivation constructors under
 explicit source axiom images. Its falsum and checker-witness endpoints
 compose the accepted marker discharge. Independent fresh pairs match both
 objects/full logs and all 15 standard-only reports, with zero prerequisite
-refreshes. Actual GIC/ZF axiom images and ZFC calibration remain open.
+refreshes. Actual GIC images are supplied above; the remaining source images
+and ZF/ZFC calibration remain open.
 The [current13/88/51 form](reviews/adaptive-current13-metrics-root.md)
 now has a checked literal Lean evaluator and external ConZFC equivalence,
 with independently reviewed finite certificates for88 live operations,
@@ -266,7 +274,7 @@ register values and spare counts. The moved flag yields positive clocks
 from an initially false flag; normalization preserves the entire numeric
 configuration. All four ordinary-Nat tape-file bindings are proved.
 Independent builds match both objects/full logs and 15 standard-only reports.
-Home is supplied above; all sites, canonical paths and control/tape calibration remain.
+Home and sites are supplied above; canonical paths and control/tape calibration remain.
 
 The [actual215 register-box theorem](reviews/arithmetic-register-boxes215-root.md)
 now executes marking, increment and both decrement branches for all nine
@@ -275,7 +283,7 @@ It retains INC's appended spare and positive DEC's extra left bit; only
 zero DEC requires a spare. Fixed PR graphs and actual IΣ1 induction cover
 internally sized scans and spare suffixes. Independent fresh triples match
 all three objects/full logs and 14 standard-only reports. The later symbolic
-packet above supplies its executor; Home is supplied above, while all-site and final control/tape
+packet above supplies its executor; Home and sites are supplied above, while final control/tape
 calibration remain open.
 
 The [actual215 tape/boot theorem](reviews/arithmetic-machine-tape215-root.md)
