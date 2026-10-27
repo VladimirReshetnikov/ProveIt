@@ -30,6 +30,13 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [actual C222 command-preservation theorem](reviews/arithmetic-command-preservationperm222-root.md)
+now preserves certified working states for every internal raw command and
+extracts an actual falsity proof from a halt. AX retains its physical y/x
+and old-counter arguments. Two independent fresh builds pass eight
+standard-only reports with identical objects. Reverse scheduler induction,
+source/215 calibration and the final HA equivalence remain open.
+
 The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
 now passes two independent builds with thirteen standard-only reports and
 identical objects. Its actual Π1/IΣ1 induction retains total lookup,

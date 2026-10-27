@@ -128,8 +128,14 @@ now retains one internal bound on actual proof witnesses for all theorem
 stack entries. Its Delta1 stack predicate gives Sigma1 working-state
 certification;push/pop and cached-falsity extraction are checked. Independent
 three-file builds pass ten standard-only reports and identical objects,
-including an explicitly rebuilt numeric tail prerequisite. Command and
-reverse scheduler preservation remain open.
+including an explicitly rebuilt numeric tail prerequisite.
+
+The [actual C222 command-preservation theorem](reviews/arithmetic-command-preservationperm222-root.md)
+now preserves those certificates for every internal raw command and
+extracts an actual value2 falsity witness from a halt. The proof retains
+AX's physical y/x and old-counter arguments. Two independent fresh builds
+pass eight standard-only reports and identical objects. Reverse scheduler
+induction,source/215 calibration and the final HA equivalence remain open.
 
 The [actual C222 context calculus](reviews/validator-proof-context222-root.md)
 now proves rules for internally sized implication contexts,including actual

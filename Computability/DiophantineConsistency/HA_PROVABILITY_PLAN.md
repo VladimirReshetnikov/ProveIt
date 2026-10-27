@@ -11,6 +11,15 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual C222 local preservation theorem](reviews/arithmetic-command-preservationperm222-root.md)
+now retains bounded proof certificates across every successful command and
+extracts an actual History222 value2 witness at halt. Independent two-leaf
+replays agree byte-for-byte and pass eight standard-only reports. The next
+reverse-enumerator invariant is Sigma1: a halted state retains its falsity
+witness, while a live state retains a certified working code. This still
+requires scheduler induction and does not supply source-ZFC, exact215 or
+polynomial calibration.
+
 For each selected literal polynomial P, the intended endpoint is a Lean
 theorem asserting `HA.Proves equivalenceSentence`, with `HA.Proves` meaning
 existence of a finite derivation using intuitionistic first-order logic,
