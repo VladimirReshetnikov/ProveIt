@@ -1,6 +1,6 @@
 # Research status
 
-Updated 25 October 2026. This is a work log, not a completion certificate.
+Updated 26 October 2026. This is a work log, not a completion certificate.
 
 The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
 now passes two independent builds with thirteen standard-only reports and
