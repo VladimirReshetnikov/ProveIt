@@ -1,0 +1,1155 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Full crossing-block Cauchy modes}
+\fancyhead[R]{\small ETH research refinement}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\KK}{\mathcal K}
+\newcommand{\Aring}{\mathcal A}
+\newcommand{\CC}{\mathcal C}
+\newcommand{\vTwo}{v_2}
+\newcommand{\pop}{s_2}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\pin}{\texttt{3c64ee065c708ded485b8b14d9ad6c703a30ab11}}
+\hypersetup{pdftitle={Full crossing-block Cauchy modes and a faster time-space tradeoff for exact SAT counting},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Review of seven ETH proposals; constructive integral Cauchy decomposition; explicit contraction bounds}}
+\title{\textbf{Full Crossing-Block Cauchy Modes}\\[4pt]
+\large An improvement beyond the reviewed ProveIt ETH proposals\\
+and a faster option using more memory}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the seven ETH refinement packets placed in ProveIt on October 26,
+2026, together with the OpenAI preprint on which they depend and the separately
+filed Claude manuscript. We give a constructive improvement to the contraction
+engine. Instead of decomposing one column tile at a time, we eliminate a full
+crossing orientation block. At valuation level $i$, its integral separated
+modes have weights
+\[
+ a+1-i+4q-2s_2(q),
+\]
+with the same multiplicity bound as the existing modes of weights
+$1+3q-2s_2(q)$. A unit triangular factorization proves the exact Smith profile
+of the full padded block. The new step is the all-level, group-preserving
+realization of that profile; the reviewed packets already contain the
+corresponding local odd-unit Smith calculation.
+
+Under the preprint's normalized Boolean tensor-contraction interface, we
+derive polynomial-space time
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(319.685758+o(1))s/\sqrt{\log_2s}}.
+\]
+The strongest explicit combination of the earlier mode basis and schedule
+family approaches coefficient $368.654018$, so the improvement is beyond
+simply combining those packets. A second construction caches group tensors,
+forms three block tables, and applies division-free Strassen multiplication.
+It gives time coefficient $225.597058$ and space coefficient $196.199446$ on
+the same scale. Convenient eventual bounds are $320$ with polynomial space,
+or $226$ time and $197$ space in the exponential coefficients.
+
+These are smaller explicit exponential upper bounds. We do not establish a
+smaller logarithmic order for unrestricted 3-SAT. The full counting consequence
+uses the unchanged preprint reductions. Exact kernel and mode-summation
+prototypes are supplied; an end-to-end fast SAT solver and a new Lean
+formalization are not supplied.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Outcome and the comparison being made}
+\label{sec:outcome}
+
+The useful result is a new integral decomposition that fits the existing
+recursive algorithm, followed by an optional way to sum its modes with more
+memory. Neither result assumes the unproved compression hypotheses in the
+earlier research packets.
+
+Let $n$ denote declared Boolean variables, $m$ input clauses, and $k$ a fixed
+clause width. The strongest bound in the OpenAI manuscript, rather than its
+older formalized endpoint, is
+\begin{align}
+ T_{\rm general}(n,m)&=(n+m)^{O_k(1)}
+  2^{O_k(n\log\log n/\sqrt{\log n})},\label{eq:general}\\
+ T_{\rm sparse}(n,m)&=(n+m)^{O_{k,D}(1)}
+  2^{O_{k,D}(n/\sqrt{\log n})}\quad(m\le Dn).
+ \label{eq:sparse}
+\end{align}
+Both use polynomial space. The manuscript's quantitative appendix is the
+baseline throughout this note \cite{openai,reduction,contraction}.
+
+Our numerical coefficients apply to the normalized contraction size $s$,
+not directly to $n$. The reduction from a formula to a tensor network has
+additional width-dependent constants. In particular, writing
+$2^{320n/\sqrt{\log n}}$ as the resulting universal 3-SAT bound would be
+unjustified.
+
+\subsection{Two precise guarantees}
+\label{subsec:interface}
+Use the preprint's following interface, with its size constant normalized to
+one. A bipartite Boolean tensor network has at most $s$ edges, polynomially
+many vertices, maximum degree at most $\ceil{s^{9/10}}$, and description
+length $\mathcal L$. Its entries lie in
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),
+ \qquad 1\le P_0,\ell\le s.
+\]
+Each entry is evaluable in time $(s+\mathcal L)^b2^{A s^{9/10}}$ and
+space $(s+\mathcal L)^b$, for fixed constants $A,b$.
+All size and arithmetic bounds below are uniform for fixed interface
+constants. Bounded exceptional sizes can be treated by exhaustive contraction.
+
+\begin{theorem}[Polynomial-space improvement]\label{thm:main}
+Using the unchanged deformation, interpolation, packing, and reduction
+identities of the cited preprint, the normalized network can be contracted
+deterministically in polynomial space and time
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(C_{\rm ps}+o(1))s/\sqrt{\log_2s}},
+ \qquad
+ C_{\rm ps}=\frac{\pi\sqrt{4200}}
+ {\ln2\,(1-3\sqrt{12}/128)}
+ =319.6857570777\ldots .
+\]
+Consequently the coefficient $320$ is valid for all sufficiently large $s$.
+\end{theorem}
+
+\begin{theorem}[A faster option using more memory]\label{thm:fast}
+Under the same interface and imported identities, there is a deterministic
+contraction algorithm with bounds
+\begin{align*}
+ T&\le(s+\mathcal L)^{O(1)}
+   2^{(C_{\rm fast}+o(1))s/\sqrt{\log_2s}},\\
+ S&\le(s+\mathcal L)^{O(1)}
+   2^{(C_{\rm mem}+o(1))s/\sqrt{\log_2s}},
+\end{align*}
+where, for $\omega=\log_2 7$ and $\kappa=\pi\sqrt{4200}/\ln2$,
+\begin{align*}
+ C_{\rm fast}
+ &=\kappa\sqrt{\frac{43690-[1-(\omega-2)^2]14450}{65536}}
+   =225.5970572839\ldots,\\
+ C_{\rm mem}
+ &=\kappa\sqrt{\frac{29240}{65536}}
+   =196.1994455176\ldots .
+\end{align*}
+Thus coefficients $226$ for time and $197$ for space are valid eventually.
+\end{theorem}
+
+Theorem~\ref{thm:main} preserves polynomial space.
+Theorem~\ref{thm:fast} deliberately spends subexponential space to improve
+the time coefficient. The latter is a different resource tradeoff, not a
+polynomial-space speedup.
+
+\subsection{How much improves?}
+
+For the earlier explicit schedule $r=256$ and
+$u_d=\floor{\lambda/(720\cdot12^d)}$, the geometric, existing factorial,
+and new full-block bases have the following coefficients:
+\[
+ 648.4410666487\ldots,\qquad
+ 374.3776243833\ldots,\qquad
+ 324.2205333244\ldots .
+\]
+The new basis alone multiplies the leading mode-enumeration coefficient by
+$\sqrt3/2$ relative to the earlier factorial basis \cite{factorial}. The slightly larger
+admissible taper scale $1/700$ gives Theorem~\ref{thm:main}.
+
+The earlier schedule paper also optimizes its parameter family
+\cite{schedule}. Combining its boundary infimum with the old factorial
+basis gives approximately $368.6540181$, rather than $374.3776244$.
+Our polynomial-space coefficient is below both. This boundary value is an
+infimum of a specified certificate family, not a lower bound for all possible
+implementations of the earlier ideas. We compare explicit upper-bound
+certificates; we have not measured a SAT runtime ratio.
+
+\section{Repository review and what is already present}
+\label{sec:review}
+
+The review started at ProveIt commit
+\texttt{aa6933442eb936962de79ba6d321cd0391c450bd} and includes the
+subsequent placement of the same packets into
+\texttt{Computability/SubexponentialSAT}. The final review snapshot is
+\begin{center}\pin.\end{center}
+The relevant arrival commits are
+\texttt{a505bd768bce}, \texttt{64b3202ee84f}, and
+\texttt{8afdbbea48d6}; the placement commit is
+\texttt{2b925d8800cd}. The placed payloads were compared byte for byte
+against the seven authenticated archives and the Claude PDF: all 120 placed
+payload files matched. The detailed provenance records accompany this note.
+
+The OpenAI preprint directory is identical at the two pins used by these
+packets, \texttt{7ef5c0cc5ca4} and \texttt{42907c9e999c}. The
+ProveIt project README explicitly describes the material as external research
+that has not been checked in ProveIt \cite{proveit}. We do not turn that
+placement into a claim of formal verification.
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.23\textwidth}>{\raggedright\arraybackslash}p{.48\textwidth}>{\raggedright\arraybackslash}p{.23\textwidth}@{}}
+\toprule
+Packet & Established result or stated proposal & Consequence for this work\\
+\midrule\endhead
+Factorial Cauchy modes & Exact integral separation with weight
+$1+3q-2s_2(q)$; constant improvement inside the exponential. & Primary
+mode-basis comparator.\\[5pt]
+Contraction improvements & Exact taper count, smaller precision,
+explicit coefficient $648.4411$, and streamed packet extraction. & Reuse
+its proved refinements; do not rediscover them.\\[5pt]
+Precision refinement & Exact recovery losses and taper minimax analysis.
+Faster structured-mode summation is an unproved hypothesis. & No assumed
+fast oracle is used here.\\[5pt]
+SAT density improvement & Density dependence
+$n\min\{\log(2+m/n),\log\log n\}/\sqrt{\log n}$. & Compatible with the
+new contraction engine.\\[5pt]
+ETH density refinement & Same density improvement; local odd-unit Cauchy
+Smith valuations $4q-2s_2(q)$ and other constant refinements. & The local
+slope-four spectrum is already known in the reviewed material.\\[5pt]
+Scalar parity refinement & Removes the truncated-$V$ coordinate and reduces
+the incidence-degree cap to $k(n+a)$ for $a$ tests. A second-contraction
+speedup remains conditional. & Scalar arithmetic can be retained; our
+tabulation theorem supplies a different, fully costed tradeoff.\\[5pt]
+Asymptotic analysis & Restricted method barriers; degree-preserving and
+linear-wire compression targets are not constructed. & The corresponding
+smaller-order claims remain open.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The separate 49-page Claude manuscript states, for fixed $k$, the same
+relevant asymptotic order in $n$, with bound
+$2^{O(\min\{k^2n\log\log n/\sqrt{\log n},km/\sqrt{\log m}\})}$
+\cite{claude}. The $\log\log n$ factor is outside the square root. Its
+different crossing decomposition is not used in our proof.
+
+\paragraph{Novelty relative to the reviewed corpus.}
+Classical Cauchy elimination, Smith normal form, and Strassen multiplication
+are not new. The additional mathematical step here is a residue-ordered
+decomposition of an entire crossing orientation, valid at every retained
+valuation level and over the actual unramified interpolation ring. It attains
+the slope-four profile without increasing the mode-family bound or breaking
+the one-source/one-target group property. The second contribution is an
+explicit mode-graph evaluation with all oracle, time, and space costs paid.
+This is a comparison with the reviewed sources, not a global priority claim.
+
+\section{The crossing block and its arithmetic}
+\label{sec:block}
+
+Let $\OO$ be the preprint's unramified extension of $\mathbb Z_{(2)}$,
+with fraction field $\KK$, and normalize $\vTwo(2)=1$. An element of
+$\OO$ is a unit exactly when its reduction modulo two is nonzero.
+The scalar factors below lie in $\OO$; tensor entries can lie in
+$\Aring=\OO[V]/(V^\ell)$. Scalar integrality therefore also suffices when
+the tensor ring has nilpotents. All logarithms used for sizes are base two;
+$\ln$ denotes the natural logarithm.
+
+At a recursive call, put $L=2^a$ and
+\[
+ \CC(T)=\prod_{v=-L}^{L-1}(T-v),\qquad
+ \alpha=2^{a+1},\qquad
+ \Gamma(T)=\frac{\CC(T)}{\CC'(0)}.
+\]
+For row slot $x$ and column slot $y$ in the same packet, the source kernel is
+\begin{equation}\label{eq:W}
+ W_{xy}(T)=\frac{\Gamma(T)}{T+x-y}.
+\end{equation}
+The cancelled expression is a polynomial. At a retained interpolation node
+$t\ne0$, set
+\[
+ i=\vTwo(t)<a,\quad R=2^i,\quad D=L/R,\quad N=L/2,
+ \quad T=t+2^{a+1}\zeta,\quad\zeta\in\OO.
+\]
+The preprint's integrality argument gives
+\begin{equation}\label{eq:gamma}
+ \vTwo(T)=i,\qquad \Gamma(T)\in2^{a+1}\OO.
+\end{equation}
+The second assertion follows directly by taking the factor $T-t$ out of
+$\CC(T)$: every other factor has the valuation of its ordinary nonzero
+grid difference, and those valuations add to $\vTwo(\CC'(0))$.
+If $\zeta$ is a unit, the valuation is exactly $a+1$; when $\Gamma=0$,
+all crossing entries vanish.
+
+Within a packet with unequal symbols in coordinate $i$, crossing row and
+column slots have the same bit in that coordinate. Fix that bit
+$\varepsilon\in\{0,1\}$. Define
+\begin{equation}\label{eq:slots}
+ \sigma(j)=(j\bmod R)+2R\floor{j/R},\qquad 0\le j<N.
+\end{equation}
+The slots in this orientation are $\varepsilon R+\sigma(j)$.
+The offset cancels in $x-y$, so both orientations have the same scalar
+difference kernel. All columns in one orientation belong to a single source
+group, and its crossing rows belong to the other group.
+
+\begin{lemma}[Denominators have known valuation]\label{lem:denom}
+For any $j,k<N$, the element $T+\sigma(j)-\sigma(k)$ is nonzero and
+has valuation at most $i$. If $j\not\equiv k\pmod R$, its valuation is
+$\vTwo(j-k)<i$. If $j\equiv k\pmod R$, its valuation is $i$.
+\end{lemma}
+\begin{proof}
+In the first case, insertion of the zero bit at position $i$ preserves the
+lowest differing bit; adding $T$, of valuation $i$, cannot change it. In the
+second case, the difference of the two slots is divisible by $2R$, while
+$T/2^i$ is odd modulo two. In either case the normalized denominator is a
+unit. This reasoning works for any $\zeta\in\OO$, including elements
+outside the prime subring.
+\end{proof}
+
+\section{An exact integral decomposition of the whole block}
+\label{sec:decomposition}
+
+Write $s_h=\sigma(h)$. For $0\le b\le N$ define
+\[
+ P_b(x)=\prod_{h<b}\frac{x-s_h}{T+x-s_h},\qquad
+ Q_b(y)=\prod_{h<b}\frac{s_h-y}{T+s_h-y}.
+\]
+Empty products are one. For $b<N$ set
+\begin{equation}\label{eq:fg}
+ f_b(x)=\frac{T P_b(x)}{T+x-s_b},\qquad
+ g_b(y)=\frac{T Q_b(y)}{T+s_b-y}.
+\end{equation}
+
+\begin{lemma}[Finite Cauchy separation]\label{lem:separation}
+For $x,y\in\{s_0,\ldots,s_{N-1}\}$,
+\begin{equation}\label{eq:sep}
+ \frac{1}{T+x-y}=\frac1T\sum_{b=0}^{N-1}f_b(x)g_b(y).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $H_b=P_b(x)Q_b(y)/(T+x-y)$. Cross multiplication gives
+\[
+ (T+x-s_b)(T+s_b-y)-(x-s_b)(s_b-y)=T(T+x-y).
+\]
+Consequently
+\[
+ H_b-H_{b+1}
+ =\frac{T P_b(x)Q_b(y)}{(T+x-s_b)(T+s_b-y)}
+ =\frac1T f_b(x)g_b(y).
+\]
+The term $H_0$ is the desired kernel, and $H_N=0$ because one numerator
+factor is $x-x$. Telescoping proves the identity without an infinite series
+or an approximation.
+\end{proof}
+
+For $b=qR+r$, $0\le r<R$, define
+\begin{equation}\label{eq:E}
+ E_b=q+\vTwo(q!)=2q-s_2(q).
+\end{equation}
+The second equality is the elementary binary factorial-valuation identity.
+
+\begin{lemma}[Two factorial gains]\label{lem:valuation}
+For every $b,j<N$,
+\[
+ f_b(s_j),g_b(s_j)\in2^{E_b}\OO.
+\]
+Both vanish when $j<b$. At $j=b$, their valuation is exactly $E_b$.
+\end{lemma}
+\begin{proof}
+If $j<b$, the factor with $h=j$ is zero. Suppose $j\ge b$, and write
+$j=kR+v$. For a predecessor $h$ with residue different from $v$ modulo
+$R$, Lemma~\ref{lem:denom} shows that the numerator and denominator in
+the relevant factor of $P_b$ or $Q_b$ have the same valuation. Such a factor
+contributes zero net valuation.
+
+The predecessors with residue $v$ are $h=\ell R+v$ for
+$\ell=0,\ldots,c-1$, where $c=q$ if $v\ge r$ and $c=q+1$ if $v<r$.
+Their slot differences are $2R(k-\ell)$ and the denominators have valuation
+$i$. Their combined contribution is
+\[
+ c+\vTwo\bigl(k(k-1)\cdots(k-c+1)\bigr)
+ \ge c+\vTwo(c!)\ge q+\vTwo(q!).
+\]
+Here $k\ge c$ follows from $j\ge b$, and the first inequality follows
+from the integrality of the ordinary integer $\binom{k}{c}$.
+The remaining factors $T/(T+s_j-s_b)$ and $T/(T+s_b-s_j)$ are integral
+by Lemma~\ref{lem:denom}. At $j=b$ they equal one; the same-residue
+differences are exactly $2R,\ldots,2Rq$, giving equality in the valuation.
+Only ordinary integer factorials have been used. No assertion that arbitrary
+unramified extension elements have integral binomial polynomials is needed.
+\end{proof}
+
+Define the integral functions
+\[
+ F_b(x)=2^{-E_b}f_b(x),\qquad G_b(y)=2^{-E_b}g_b(y),
+\]
+and the target coefficient
+\begin{equation}\label{eq:target}
+ A_b(x)=\frac{\Gamma(T)}T\,2^{2E_b}F_b(x).
+\end{equation}
+
+\begin{theorem}[Group-preserving slope-four modes]\label{thm:modes}
+For every crossing orientation,
+\begin{equation}\label{eq:newW}
+ W_{xy}(T)=\sum_{b=0}^{N-1}A_b(x)G_b(y),
+ \qquad G_b(y)\in\OO,
+\end{equation}
+and, writing $b=qR+r$,
+\begin{equation}\label{eq:weights}
+ A_b(x)\in2^{w_q}\OO,\qquad
+ w_q=a+1-i+2q+2\vTwo(q!)
+     =a+1-i+4q-2s_2(q).
+\end{equation}
+There are $R$ such modes per $q$ in each orientation, and two orientations
+per unequal-symbol packet.
+\end{theorem}
+\begin{proof}
+Substitute the integral normalizations into Lemma~\ref{lem:separation}
+and multiply by $\Gamma(T)$. Equation~\eqref{eq:gamma} supplies valuation
+at least $a+1-i$ for $\Gamma(T)/T$. The remaining contribution is
+$2E_b$. The index interval $0\le b<N=R(D/2)$ contains exactly $R$ indices
+for each $0\le q<D/2$.
+\end{proof}
+
+For a mode $b$, the source linear form is
+\begin{equation}\label{eq:sourceform}
+ Z_b(X)=\sum_{\substack{y\text{ a real column}\\
+                   y\text{ in this orientation}}}G_b(y)X_y.
+\end{equation}
+It reads the entire half-packet, rather than one tile. That half-packet still
+lies in one source group. Its target coefficients are used only by rows in
+the other group. Missing real slots are simply omitted from the sum. The
+auxiliary pivots $s_h$ need not themselves be real ports.
+
+\section{Exact Smith profile and what its optimality means}
+\label{sec:smith}
+
+Let $K_{jk}=1/(T+s_j-s_k)$ for the full padded orientation. Form matrices
+$\mathsf L_{jb}=F_b(s_j)$ and $\mathsf U_{bk}=G_b(s_k)$.
+Lemma~\ref{lem:valuation} says that $\mathsf L$ is lower triangular,
+$\mathsf U$ upper triangular, and both have unit diagonal. Therefore
+\begin{equation}\label{eq:ldu}
+ TK=\mathsf L\,\operatorname{diag}(2^{2E_b})\,\mathsf U
+\end{equation}
+is an equivalence by invertible integral matrices. Since $E_b$ is
+nondecreasing, it is a Smith factorization up to unit diagonal factors.
+
+\begin{corollary}[The full-block invariant factors]\label{cor:smith}
+The Smith valuations of $TK$ are
+\[
+ 2E_b=4q-2s_2(q),\qquad b=qR+r,
+\]
+so each value indexed by $q$ occurs $R$ times. If $\zeta$ is a unit, the
+Smith valuations of the actual crossing block $W$ are exactly
+$a+1-i+4q-2s_2(q)$, with the same multiplicities.
+\end{corollary}
+
+For $i=0$, this specializes to the odd-unit profile already proved in the
+density refinement packet \cite{density}. The added fact needed for the
+algorithm is the full constructive factorization at arbitrary $i$, with
+integral source functions supported in one group and no extra mode-family
+factor. The invariant factors cannot be improved by invertible integral
+changes of basis. This is a local statement about the full padded kernel.
+It is not a lower bound for SAT, for general tensor contraction, or for sparse
+real-port restrictions of this block.
+
+\section{Compatibility with the recursive contraction}
+\label{sec:compatibility}
+
+The source packing produces at most $3M/L$ packets at an $M$-edge call.
+By Theorem~\ref{thm:modes}, the number of modes of a fixed index $q$ is at
+most
+\begin{equation}\label{eq:colors}
+ \frac{3M}{L}\,2R=\frac{6M}{D}.
+\end{equation}
+This is exactly the old multiplicity envelope. In particular, it has not
+been multiplied by the number of denominator-valuation classes.
+
+Each original row argument is still its local part plus a linear combination
+of formal modes. The product of its affine Boolean row factors has the
+property that the coefficient of a mode monomial $Z^\beta$ is divisible by
+$2^{\sum w_q\beta_b}$. At working precision $p_t$, retain only
+\begin{equation}\label{eq:budget}
+ \sum_b w_{q(b)}\beta_b<p_t.
+\end{equation}
+All omitted terms vanish. Extract the targeted coefficients in each
+packet-group tensor and substitute the source forms from
+\eqref{eq:sourceform}. Each mode still has one source and one target, so the
+same exact factorization holds:
+\begin{equation}\label{eq:recursion}
+ F(t+\alpha\zeta)=\sum_{\beta\text{ satisfying }\eqref{eq:budget}}
+                         \prod_{g=1}^{r}Z_{g,\beta}\pmod{2^{p_t}}.
+\end{equation}
+Here $Z_{g,\beta}$ is the contraction of the preprint's child network for
+group $g$, with the new packet coefficients. Its wires and vertex groups
+have not changed.
+
+\subsection{Exact arithmetic costs}
+
+Every quotient used in a feature can be evaluated by extracting the known
+powers of two from each numerator and denominator, then inverting only
+units. The net power remaining after division by $2^{E_b}$ is nonnegative
+by Lemma~\ref{lem:valuation}. Thus one need not lift a previously computed
+low-precision residue and divide it by a nonunit. The exact kernel prototype
+implements this factorwise normalization.
+
+Alternatively, exact rational coordinates have polynomial bit length and
+can be reduced after cancellation. There are polynomially many factors,
+each initially of polynomial bit length. The scalar denominators do not
+depend on $V$, so nilpotent tensor coordinates introduce no new inversion
+problem. Full feature tables have polynomial size in $s$; they can also be
+streamed.
+
+An entry of a packet tensor is a coefficient of a product of at most $L$
+affine factors, multiplied by prescribed powers of source forms. The original
+$\exp(O(L\log s))$ enumeration bound still applies, and the earlier
+streamed finite-difference improvement remains available \cite{schedule}.
+Neither is the leading cost under the schedule below. Descriptions retain
+the preprint's creation-precision tags and canonical entry representatives.
+No recursive composition of entry evaluators is introduced.
+
+\section{Mode entropy and the polynomial-space bound}
+\label{sec:entropy}
+
+We may conservatively lower the weights to
+\[
+ \widehat w_q=1+4q-2s_2(q).
+\]
+The actual base $a+1-i$ is at least one. We may also extend the finite range
+$q<D/2$ to all $q\ge0$ for an upper bound.
+
+\begin{lemma}[Weighted partition estimate]\label{lem:entropy}
+As $\theta\downarrow0$,
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta\widehat w_q})
+   =\frac{\pi^2}{24\theta}+O(\log^2(2/\theta)).
+\]
+Consequently, if at most $c$ modes have each weight $\widehat w_q$,
+the number $N(p,c)$ of nonnegative exponent tuples of total weight below $p$
+satisfies
+\[
+ \ln N(p,c)\le
+ \theta p+\frac{c\pi^2}{24\theta}
+       +O(c\log^2(2/\theta)).
+\]
+\end{lemma}
+\begin{proof}
+The sequence $\widehat w_q$ is increasing and
+$\widehat w_q=4q+O(\log(q+2))$. Its counting function is therefore
+$x/4+O(\log(x+2))$. Integrating
+$-\ln(1-e^{-\theta x})$ against that counting function gives the main
+term
+\[
+ \frac14\int_0^\infty-\ln(1-e^{-\theta x})\,dx
+  =\frac1{4\theta}\sum_{j\ge1}\frac1{j^2}
+  =\frac{\pi^2}{24\theta}.
+\]
+Integration by parts bounds the discrepancy, away from the bounded initial
+interval, by a constant times
+$\int_1^\infty\theta\log(x+2)/(e^{\theta x}-1)\,dx$.
+Splitting at $1/\theta$ gives $O(\log^2(2/\theta))$; the initial
+interval is smaller. The generating product
+$\prod_q(1-z^{\widehat w_q})^{-c}$ at $z=e^{-\theta}$ proves the
+second assertion. If $c$ is not an integer, use the actual integer
+multiplicities, bounded by $c$, in the same inequality.
+\end{proof}
+
+For $c=6M/D$, optimize the two leading terms with
+$\theta=(\pi/2)\sqrt{M/(Dp_t)}$. This gives
+\begin{equation}\label{eq:percall}
+ \ln N_\beta\le(\pi+o(1))\sqrt{Mp_t/D}.
+\end{equation}
+The error is uniform in the calls below: $p_t=(6+o(1))MD/u$, while
+$D$ grows faster than any fixed power of $\lambda$. In particular,
+$(M/D)\log^2(D/\sqrt u)=o(M/\sqrt u)$.
+The analogous leading constants for slopes one and three are respectively
+$2\pi$ and $2\pi/\sqrt3$, proving the matched gain.
+
+\subsection{The schedule and every required inequality}
+
+Set $\lambda=\ceil{\log_2s}$ and use
+\begin{equation}\label{eq:schedule}
+ r=256,\quad\rho=\frac6r=\frac3{128},\quad
+ H=\ceil{s/\lambda},\quad
+ u_d=\floor{\frac{\lambda}{700\cdot12^d}},\quad
+ a_d=2\sum_{j=0}^d u_j.
+\end{equation}
+Calls with at most $H$ edges are leaves. At depth $d$, set
+$u=u_d,a=a_d,L=2^a,D_{\rm arr}=r^{2a}$.
+The geometric sum gives $a_d\le6\lambda/1925$, so
+\begin{align*}
+ L&=O(s^{6/1925}),&D_{\rm arr}&=O(s^{96/1925}),\\
+ D_{\rm arr}^2\ceil{s^{9/10}}&=O(s^{3849/3850}),&
+ LD_{\rm arr}&=O(s^{102/1925}).
+\end{align*}
+The last two bounds are $o(H)$; also $2L\le\ceil{s^{9/10}}$
+eventually. Thus the source's three packing inequalities hold at every
+active call. The child bound is $\rho M$, and new packet degrees are at
+most $2L$, closing the graph invariants.
+
+Since $s/\lambda<M\le s\rho^d$ at an active call,
+\[
+ u_d=\Omega(\lambda^\eta),\qquad
+ \eta=1-\frac{\ln12}{\ln(128/3)}=0.3379616482\ldots>0.
+\]
+Thus all floors are uniformly negligible, $u_d\to\infty$, and
+$u_d/M\to0$ throughout the active recursion.
+
+Reuse the earlier exact taper count and valid precision allowance
+\cite{precision,schedule}:
+\begin{align}
+ Q(a,u)&=L(2u-2+2^{1-u}),\nonumber\\
+ h&=\ceil{\frac{M(2L-1)+1}{Q(a,u)}},\qquad
+ q_t=h\max(0,u-\vTwo(t)),\label{eq:taper}\\
+ p_t&=p+6hD_t+hu(a+1),\qquad D_t=L/2^{\vTwo(t)}.
+ \label{eq:precision}
+\end{align}
+There are enough Hermite conditions because their exact total is $hQ(a,u)$.
+The known Hermite multiplier loses at most $6hD_t$ powers of two; evaluating
+the quotient jet loses fewer than $hu(a+1)$ more. These are exact safe
+integer allowances, not floating-point estimates.
+
+The inherited precision obeys
+$p\le s\lambda^{O(1)}2^{a_{d-1}}$. A retained node has $i<u_d$, so
+$D_t\ge2^{a_{d-1}+u_d+1}$. The inherited term and the final term of
+\eqref{eq:precision} are therefore $o(MD_t/u_d)$ uniformly.
+Also $h=(1+o(1))M/u_d$. It follows that
+\begin{equation}\label{eq:p}
+ p_t=(6+o(1))MD_t/u_d.
+\end{equation}
+All precisions remain polynomial in $s$. The preprint's residue field of
+size $2^{4\lambda}$ still has more interpolation points than needed, since
+the deformation degree is $O(s^{1+6/1925})$.
+
+\subsection{Completing Theorem~\ref{thm:main}}
+
+Equations~\eqref{eq:percall} and \eqref{eq:p} give at depth $d$
+\[
+ \log_2N_\beta\le(\kappa+o(1))
+       \frac{s}{\sqrt\lambda}\gamma^d,
+ \quad \kappa=\frac{\pi\sqrt{4200}}{\ln2},
+ \quad\gamma=\rho\sqrt{12}=\frac{3\sqrt{12}}{128}<1.
+\]
+Polynomially many interpolation choices and groups per call contribute
+only $O(\lambda\log\lambda)$ to the overall logarithm. Summing the
+geometric exponents gives $\kappa/(1-\gamma)=C_{\rm ps}$.
+Leaf work costs $2^{O(s/\lambda)}$, and entry evaluation costs
+$2^{O(s^{9/10})}+\exp(O(L\log s))$ per appropriate call, both lower
+order than $2^{s/\sqrt\lambda}$. The fixed polynomial in the description
+length remains outside the exponential bound.
+
+Depth-first traversal stores one tuple, one running group product and sum,
+the polynomially sized interpolation data, and the creation descriptions
+at each of $O(\log\lambda)$ levels. This proves polynomial space and
+Theorem~\ref{thm:main}.
+
+\section{A fully costed mode-graph evaluation}
+\label{sec:modegraph}
+
+This section proves Theorem~\ref{thm:fast}. It uses the same child networks
+as before. It does not apply the contraction theorem to the high-degree
+group tensors that obstruct the earlier conditional proposals.
+
+\subsection{The number of modes for each directed group pair}
+
+The packing construction pads every ordered full-label class to the same
+multiple $H_{\rm pad}$ of $L$. At any fixed coordinate, for distinct group
+symbols $g,h$, the number of packets with unordered pair $\{g,h\}$ is
+\[
+ \frac{2H_{\rm pad}D_{\rm arr}}{r^2L}.
+\]
+Indeed the two ordered symbol pairs account for exactly
+$2D_{\rm arr}/r^2$ full-label classes, and these packets have $L$ slots.
+One orientation has source $g$ and target $h$, the other the reverse.
+There are $R$ modes of each index $q$ per orientation. Since
+$H_{\rm pad}D_{\rm arr}\le3M$, each directed pair has at most
+\begin{equation}\label{eq:paircolors}
+ c_{gh}\le\frac{6M}{r^2D}
+\end{equation}
+modes of each $q$. Real-port omissions can only reduce the required set;
+retaining dummy zero modes is harmless for an upper bound.
+
+Partition each tuple $\beta$ by its \emph{exact} total weight $b_{gh}$ on
+each directed pair. Enumerate nonnegative arrays with
+$\sum_{g\ne h}b_{gh}<p_t$. Since $r=256$ is fixed and $p_t$ is polynomial
+in $s$, this is a polynomial number of arrays, though with a very large
+fixed exponent. Every mode tuple belongs to exactly one array.
+For each pair, enumerate or index its finite list of tuples of that exact
+weight. Empty lists make the array contribute zero. This indexing does not
+require a counting oracle. With mode weights $w_1,\ldots,w_v$, the integer
+table
+\[
+ D(j,b)=D(j-1,b)+D(j,b-w_j),\qquad
+ D(0,0)=1,\quad D(0,b)=0\ (b>0),
+\]
+with negative-budget entries zero, counts unbounded nonnegative exponent
+vectors of exact weight $b$ on the first $j$ modes. There are polynomially
+many modes and $p_t$ is polynomial in $s$. These counts also have polynomial
+bit length, since they are bounded by $(p_t+1)^v$. Thus the table, exact
+rank/unrank operations, and emptiness checks take polynomial resources.
+Backtracking only into branches with positive completion count enumerates
+an exact-weight list with polynomial delay, including when most candidate
+prefixes would be infeasible.
+
+For one array, let $h_{gh}$ be the base-two logarithm of the size of its
+pair list; ceiling it to use binary ranks adds only a constant per pair.
+The group factor $Z_g$ depends only on pair indices incident with $g$.
+Its value is obtained by recursively contracting the same $\rho M$-edge
+child as in \eqref{eq:recursion}. No inexpensive group oracle is assumed.
+
+\begin{lemma}[Entropy for a selected set of directed pairs]
+\label{lem:subsetentropy}
+Write
+\[
+ K(M,u)=\frac{\pi\sqrt6}{\ln2}\frac{M}{\sqrt u}.
+\]
+For any fixed set $I$ of directed group pairs,
+\begin{equation}\label{eq:subsetentropy}
+ \sum_{e\in I}h_e\le
+   \left(\sqrt{|I|/r^2}+o(1)\right)K(M,u).
+\end{equation}
+More generally, if disjoint pair classes have cardinalities $v_j$ and
+total index lengths $H_j$, then for fixed nonnegative $w_j$,
+\begin{equation}\label{eq:weightedentropy}
+ \sum_jw_jH_j\le
+ \left(\sqrt{\frac{\sum_j w_j^2v_j}{r^2}}+o(1)\right)K(M,u).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use Lemma~\ref{lem:entropy} with the common per-pair color upper bound
+$c=6M/(r^2D)$. For a pair with allocated weight $b_e$, the generating
+product bounds its exact-weight count by $\exp(\theta_e b_e+cF(\theta_e))$,
+where $F$ is the sum in Lemma~\ref{lem:entropy}. Assign weight $w_e$ to that pair, and
+omit pairs with $w_e=0$. In its generating bound use parameter
+$\theta_e=\theta/w_e$. Multiplying that bound by $w_e$ and adding gives
+\[
+ \ln2\sum_e w_eh_e
+ \le\theta\sum_e b_e
+  +\frac{c\pi^2}{24\theta}\sum_e w_e^2
+  +O\bigl(c\log^2(2/\theta)\bigr).
+\]
+The number of pairs and their positive weights are fixed constants.
+This bound holds also for small or zero allocated budgets; it does not
+apply a large-budget saddle estimate to each pair separately.
+Since $\sum_e b_e<p_t$, optimize the two displayed leading terms and
+use $p_t=(6+o(1))MD/u$. The result is
+\[
+ \ln2\sum_e w_eh_e
+ \le(\pi+o(1))\sqrt{Mp_t/D}\,
+                         \sqrt{\sum_e w_e^2/r^2}.
+\]
+The error is uniform for the same reason as in Section~\ref{sec:entropy}.
+This proves the two stated forms after division by $\ln2$; fixed index
+rounding errors are lower order.
+\end{proof}
+
+\subsection{Cache each group before making three block tables}
+
+Partition the $256$ groups into blocks of sizes $85,85,86$.
+For each individual group, evaluate and store its function $Z_g$ on all
+incident pair-index tuples. This pays for the recursive children explicitly.
+There are $2(r-1)=510$ incident directed pairs, so the number of child calls
+per group is at most
+\[
+ 2^{(a_0+o(1))K(M,u)},\qquad a_0=\sqrt{510/65536}.
+\]
+
+For a block $B$, form a table on all directed pairs joining it to its
+complement. Each entry sums over its internal pair indices the product of
+the cached $Z_g$ for $g\in B$. Straight enumeration of all incident indices
+builds this table. For a block of size $k$ the number of incident directed
+pairs and the number of boundary directed pairs are, respectively,
+\[
+ 2rk-k^2-k,\qquad 2k(r-k).
+\]
+Their maxima for $k=85,86$ are $36550$ and $29240$.
+Thus table construction has exponent coefficient
+\[
+ a_B=\sqrt{36550/65536}=0.7467989958\ldots
+\]
+on the scale $K(M,u)$, and storing the tables has coefficient
+\[
+ j_B=\sqrt{29240/65536}=0.6679573281\ldots.
+\]
+The individual group caches are smaller. Work inside a block uses cached
+values; it does not multiply the block-table enumeration count by a new
+recursive child cost.
+
+This access cost can be realized by sequential records rather than an
+assumed constant-time lookup into an exponential table. Enumerate a block's
+boundary axes first and its internal axes last, and order each group's cache
+by the restriction of that axis order. Projecting the full lexicographic loop
+onto a group's axes either repeats a record, advances, or rewinds a suffix
+when counters reset. A rewind crosses no more cache records than the full
+suffix assignments just traversed. Charging rewinds to those preceding loops
+bounds total tape movement by the enumeration count times the fixed number
+of axes and the polynomial record length. This preserves the stated bit-cost
+bound. The small prototype uses ordinary Python tables to check the algebra;
+it is not an implementation of this tape-access schedule.
+
+Combining the two directed collections between each unordered pair of blocks
+into one index gives three tables on a triangle. Let their shared index
+dimensions be $d_1,d_2,d_3$ with logarithms $H_1,H_2,H_3$. The contraction
+is of the form
+\begin{equation}\label{eq:triangle}
+ \sum_{x=1}^{d_1}\sum_{y=1}^{d_2}\sum_{z=1}^{d_3}
+       A_{xz}B_{xy}C_{yz}.
+\end{equation}
+Enumerating all crossing indices already gives coefficient
+$\sqrt{43690/65536}$ and time constant $239.828126$, with the same space
+bound. The next step improves it further.
+
+\subsection{Division-free rectangular multiplication}
+
+Strassen's seven-product identity uses only addition, subtraction, and
+multiplication \cite{strassen}. It therefore works over the current
+commutative ring, including modulo powers of two and with nilpotents.
+For rectangular dimensions $d_1,d_2,d_3$, split into square blocks of side
+comparable to $\min d_j$, pad by at most a constant factor, and apply the
+identity recursively to each square product. This gives arithmetic time
+\[
+ O\left(d_1d_2d_3(\min d_j)^{\omega-3}
+              \poly(\log(2+\max d_j))\right),\qquad\omega=\log_2 7.
+\]
+The remaining inner product in \eqref{eq:triangle} is no larger in order.
+The exponent is
+\begin{equation}\label{eq:rectcost}
+ H_1+H_2+H_3-(3-\omega)\min(H_1,H_2,H_3).
+\end{equation}
+The three unordered block-pair classes have $14450,14620,14620$
+directed pairs. Expression~\eqref{eq:rectcost} is the maximum of three
+weighted sums, with weights $1,1,\omega-2$. Applying
+\eqref{eq:weightedentropy}, the worst bound discounts the smallest class,
+and is
+\[
+ (b_S+o(1))K(M,u),\qquad
+ b_S=\sqrt{\frac{43690-[1-(\omega-2)^2]14450}{65536}}
+ =0.7680409453\ldots .
+\]
+Notice $a_B<b_S$. Rectangular products can be processed one square block
+at a time. Recursive Strassen storage for one block is quadratic in its
+side; the three input tables and an output table fit within the already
+bounded boundary-table sizes. Thus the space coefficient remains $j_B$.
+Reblocking or transposing a stored matrix can be done by sorting its records
+on their new indices. The largest such record set is a boundary table;
+its logarithmic sorting overhead and record lengths are polynomial in $s$.
+Sequential square-block arithmetic and this reordering therefore also
+realize the claimed bit-operation bound without changing the space exponent.
+
+\subsection{The entire recursive time and space cost}
+
+Suppress polynomial factors per call. A correct upper recurrence is
+\begin{equation}\label{eq:fastrec}
+ T_d\le 2^{(a_0+o(1))K_d}\,rT_{d+1}
+          +2^{(a_B+o(1))K_d}+2^{(b_S+o(1))K_d},
+\end{equation}
+where $K_d\le(\kappa+o(1))s\gamma^d/\sqrt\lambda$.
+The first term pays for all cached group functions; the other two build and
+contract the tables. Exact weight arrays and interpolation choices multiply
+the recurrence by polynomial factors.
+
+At depth $d$, the coefficient from the preceding cached-child enumerations
+and the current matrix work is at most
+\[
+ a_0\frac{1-\gamma^d}{1-\gamma}+b_S\gamma^d.
+\]
+It is bounded by
+$\max\{a_0/(1-\gamma),b_S\}=b_S$, because
+$a_0/(1-\gamma)=0.0960106375\ldots<b_S$.
+The $a_B$ term and leaves are smaller. Hence the full time coefficient is
+$\kappa b_S=C_{\rm fast}$, proving the time assertion.
+
+The largest stored tables at depth $d$ have exponent at most $j_BK_d$.
+Ancestor caches and tables have polynomially many levels and geometrically
+decreasing exponent bounds, so their total has leading coefficient
+$\kappa j_B=C_{\rm mem}$. Polynomial-bit ring entries and their arithmetic
+costs do not change either coefficient. This proves
+Theorem~\ref{thm:fast}.
+
+\paragraph{Why this does not prove the old conditional targets.}
+The pair-index representation was already suggested in the earlier packets.
+Here the group tensors are evaluated by explicit tables and ordinary matrix
+multiplication. Their work remains exponential in $M/\sqrt u$ and their
+storage is subexponential in the original network size. We have not supplied
+a polynomial-space, subexponential-in-the-mode-count oracle or a low-degree
+factorization of the high-degree group tensors. The conditional
+$s/\log s$ targets do not follow.
+
+\section{Consequences for SAT and the limits of the result}
+\label{sec:sat}
+
+At fixed clause density, the source builds a bounded-degree Boolean network
+with $O_{k,D}(n)$ wires. At unrestricted density, its sparse parity-query
+reduction uses $O_k(n\log\log n)$ wires. Substitute either new engine
+without changing those encodings. Theorem~\ref{thm:main} gives the same
+orders \eqref{eq:general}--\eqref{eq:sparse}, with an improved explicit
+contraction certificate. Theorem~\ref{thm:fast} gives a further time
+coefficient reduction while using space of the same subexponential order
+as its time.
+
+The density-sensitive reduction of the reviewed packets can likewise be
+retained. With the polynomial-space engine, its established envelope remains
+\[
+ (n+m)^{O_k(1)}
+ 2^{O_k\left(\frac{n}{\sqrt{\log n}}
+       \min\{\log(2+m/n),\log\log n\}\right)}.
+\]
+The scalar parity lift, exact recovery budgets, and streamed coefficient
+extraction are compatible with the new modes. Their results are inherited
+improvements, not new contributions of this note.
+
+\subsection{What was not obtained}
+
+This investigation does not prove a smaller asymptotic order for the
+worst-case exponent in $n$. Both new engines still have
+$\log T=\Theta_{\rm bound}(s/\sqrt{\log s})$ as an upper-bound scale;
+the notation here describes the scale of the certificate, not an algorithmic
+lower bound. Neither $2^{O(n/\log n)}$ nor a removal of the dense-case
+$\log\log n$ factor has been established.
+
+The exact Smith profile explains why a further integral basis change in
+this same full block cannot turn its linear valuation growth into a
+quadratic profile. It does not rule out cancellation across modes, a more
+economical reduction, a different kernel, or a different algorithm.
+The fast option demonstrates that some useful sharing is possible without
+the earlier structural oracle, but only yields a constant improvement on
+the present entropy scale.
+
+\subsection{A numerical comparison of certificates}
+
+\begin{center}\small
+\begin{tabular}{@{}p{.60\textwidth}r l@{}}
+\toprule
+Construction or comparison & Time coefficient & Space\\
+\midrule
+Published schedule, audited geometric count & $18535.7538$ & polynomial\\
+Earlier improved explicit schedule & $648.4411$ & polynomial\\
+Earlier schedule plus earlier factorial modes & $374.3776$ & polynomial\\
+Earlier combined schedule-family infimum & $368.6540$ & polynomial\\
+New full-block modes on the same explicit schedule & $324.2205$ & polynomial\\
+New full-block modes, taper scale $1/700$ & $319.6858$ & polynomial\\
+New three-block tables, direct triangle sum & $239.8281$ & exp., $196.1994$\\
+New cached groups and Strassen triangle sum & $225.5971$ & exp., $196.1994$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every numerical entry refers to the normalized $s/\sqrt{\log_2s}$ scale.
+An exponential-space entry is its coefficient on that same scale.
+The infimum row is a limiting certificate, not an attained algorithm at the
+packing boundary. The first row is a later explicit reanalysis of the source
+parameters, not a numerical theorem stated by the source. These numbers are
+not practical benchmarks.
+
+The rounded bounds $320$, $226$, and $197$ do not depend on floating-point
+rounding. To certify them, use
+\[
+ \pi<\frac{22}{7},\qquad \ln2>\frac{6931}{10000},\qquad
+ \gamma<\frac{13}{160},\qquad \omega<\frac{281}{100}.
+\]
+The logarithm lower bound follows from four terms of
+$\ln2=2\sum_{j\ge0}3^{-(2j+1)}/(2j+1)$; the last inequality follows
+from $7^{100}<2^{281}$. Substitute these rational bounds into the squared
+coefficient formulas. Exact rational arithmetic gives values strictly below
+$320^2$, $226^2$, and $197^2$, respectively. The comparison program records
+these checks and the rational margins.
+
+\section{Executable artifacts, checks, and integration}
+\label{sec:verification}
+
+The archive contains this report as \texttt{report.tex} and
+\texttt{report.pdf}, original standard-library Python prototypes, exact
+validation records, a proposal inventory, and source hashes. The proofs
+above establish the all-size conclusions; finite tests check the implemented
+identities and look for counterexamples to their stated finite instances.
+
+\subsection{Kernel validation}
+
+The kernel is implemented both over rational scalars and over
+$\mathbb Q[U]/(U^2+U+1)$. The latter supplies an actual unramified extension
+whose nontrivial residue classes are not ordinary integers. The checker
+evaluates the original cancelled polynomial independently of the separated
+form, checks both orientations, and tests exact and modular contractions.
+Each of the normal and optimized Python runs passed the following checks:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}\toprule
+Check & Count per run\\\midrule
+Kernel configurations & 156\\
+Exact original-polynomial reconstructions & 10,248\\
+Modular truncated reconstructions & 25,620\\
+Integral source features & 5,124\\
+Integral normalized row features & 5,124\\
+Certified target-weight inequalities & 5,124\\
+Unit diagonal checks & 1,584\\
+Triangular support checks & 2,166\\
+Exact minors evaluated & 414\\
+Verified determinantal divisors & 24\\
+Exact two-child packet contractions & 4\\
+Truncated two-child packet contractions & 24\\
+\bottomrule\end{tabular}
+\end{center}
+There are 55,042 successful checked conditions, in addition to 414 minor
+evaluations, in each run. Both runs have identical substantive results.
+These tests include missing slots, both crossing orientations, non-prime
+extension values, and the zero-prefactor case.
+
+A separately written verifier passed 656,768 explicit conditions in each
+normal and optimized run. It checked 180 rational factorizations and 180
+unramified-extension factorizations, with 19,116 matrix entries in each
+family, plus 436 small minors. Its substantive results also agree between
+the two runs. This additional implementation checks the normalized block
+factorization independently of the production prototype's formulas.
+
+\subsection{Mode-graph validation and reproduction}
+
+The second prototype contracts finite directed mode graphs by literal tuple
+summation and by cached three-block tables. It uses exact per-pair weight
+allocations so every globally feasible tuple is counted once. The checker
+also compares division-free rectangular Strassen multiplication with direct
+integer and modular products. Its complete test counts and numerical
+certificate calculations are recorded in the supplied JSON results. Each
+normal and optimized run passed 312 graph-sum comparisons, 208 cache-call
+checks, 114 empty-domain checks, 24 rectangular products, and 24 triangle
+contractions. The tests include directed reverse pairs, missing pairs,
+unequal blocks, repeated state weights, negative entries, and residues
+modulo two and sixteen.
+The exact-weight indexing component separately passed 119 budget cases,
+366 rank/unrank round trips, and three invalid-input checks. Twelve abstract
+colored-partition models are counted exactly in the supplied comparison CSV;
+those counts are not SAT runtimes.
+
+\noindent\begin{minipage}{\textwidth}
+From the archive directory, use:
+\begin{verbatim}
+python3 code/verify_joint_cauchy.py
+python3 code/verify_mode_graph.py
+python3 code/verify_joint_cauchy_independent.py
+python3 code/compare_certificates.py
+python3 build_report.py
+\end{verbatim}
+\end{minipage}
+The first four commands use only the Python standard library. The final
+command requires a standard LaTeX installation with the packages listed in
+the source preamble. Tests use explicit exceptions rather than assertions
+that disappear under \texttt{python -O}. No upstream executable or Lean
+development was run during this investigation.
+
+\subsection{Integration points}
+
+In the preprint's \texttt{quantitative-contraction.tex}, replace the
+geometric crossing expansion by Theorem~\ref{thm:modes}; replace its
+weight and partition-count estimates by \eqref{eq:weights} and
+\eqref{eq:percall}; retain its local kernel, Hermite identity, child network
+topology, and creation-precision convention. Use
+\eqref{eq:schedule}--\eqref{eq:precision} for the explicit coefficient
+in Theorem~\ref{thm:main}. The polynomial-space implementation continues
+to stream feasible tuples.
+
+For Theorem~\ref{thm:fast}, replace the streaming sum in
+\eqref{eq:recursion} by the exact weight-array loop, individual group
+caches, three block tables, and rectangular multiplication of
+Section~\ref{sec:modegraph}. This is an optional branch because it changes
+the space guarantee.
+
+The delivered programs implement and check these local constructions.
+They do not include the preprint's complete packing, global interpolation,
+formula sparsification, or parity-query search engine. The main imported
+proofs and the claimed global ETH result have not been independently
+formalized here. The report and artifacts are a reviewable mathematical
+refinement, with those dependencies stated explicitly.
+
+\appendix
+\section{A short arithmetic specification for the seven-product step}
+\label{app:strassen}
+
+For square block matrices $A=(A_{ij})$ and $B=(B_{ij})$, define
+\begin{align*}
+ M_1&=(A_{11}+A_{22})(B_{11}+B_{22}),&
+ M_2&=(A_{21}+A_{22})B_{11},\\
+ M_3&=A_{11}(B_{12}-B_{22}),&
+ M_4&=A_{22}(B_{21}-B_{11}),\\
+ M_5&=(A_{11}+A_{12})B_{22},&
+ M_6&=(A_{21}-A_{11})(B_{11}+B_{12}),\\
+ M_7&=(A_{12}-A_{22})(B_{21}+B_{22}).
+\end{align*}
+Then
+\[
+ AB=\begin{pmatrix}
+ M_1+M_4-M_5+M_7 & M_3+M_5\\
+ M_2+M_4 & M_1-M_2+M_3+M_6
+ \end{pmatrix}.
+\]
+These are polynomial identities with integer coefficients. They remain valid
+modulo $2^p$ without an inverse of two and without a field assumption.
+Recursing gives exponent $\log_2 7$. A depth-first schedule retains
+$O(d^2)$ ring elements for a square block of side $d$; summing its geometric
+storage across recursion levels preserves that order. This supplies the
+specific matrix multiplication guarantee used in Theorem~\ref{thm:fast}.
+
+\section{Proof dependencies}
+
+\begin{center}\small
+\begin{tabular}{@{}p{.40\textwidth}p{.52\textwidth}@{}}\toprule
+Result & Dependency status\\\midrule
+Full crossing separation and integral factors & Proved in this report by
+finite telescoping and ordinary integer factorial divisibility.\\[4pt]
+Full padded Smith profile & Proved by the displayed unit triangular
+factorization; agrees with the earlier $i=0$ calculation.\\[4pt]
+Weighted entropy and pair allocation bounds & Proved here from the generating
+product and Cauchy--Schwarz.\\[4pt]
+Taper count, recovery identity, creation-precision rules & Imported from the
+preprint and prior packets; parameter compatibility is checked here.\\[4pt]
+Packing and child contraction semantics & Imported from the preprint;
+group support and new multiplicities are checked here.\\[4pt]
+Three-block caching and rectangular combination & Proved here using exact
+finite summation and the displayed seven-product identity.\\[4pt]
+General and density-sensitive SAT reductions & Imported; no new reduction
+claim or smaller logarithmic order is made.\\
+\bottomrule\end{tabular}
+\end{center}
+
+\begingroup\small\raggedright
+\begin{thebibliography}{12}
+\bibitem{openai} OpenAI. \emph{The Exponential Time Hypothesis is False}.
+October 25, 2026 revision. \href{https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026}{Pinned preprint directory}.
+\bibitem{contraction} OpenAI. \texttt{quantitative-contraction.tex}, same
+snapshot. \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-contraction.tex}{Exact contraction source}.
+\bibitem{reduction} OpenAI. \texttt{quantitative-reduction.tex}, same
+snapshot. \href{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-reduction.tex}{Exact reduction source}.
+\bibitem{proveit} Vladimir Reshetnikov, ProveIt repository.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT}{SubexponentialSAT project at the review snapshot}.
+\bibitem{factorial} \emph{A factorial Cauchy expansion for the subexponential
+3-SAT algorithm}. Research packet, October 26, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/cauchy_mode_improvement/report.tex}{Report source}.
+\bibitem{schedule} \emph{Quantitative Improvements to the Exact-Counting
+Contraction Algorithm}. Research packet, October 26, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/eth_contraction_improvements/report.tex}{Report source}.
+\bibitem{precision} \emph{3SAT precision refinement}. Research packet,
+October 26, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/3sat_precision_refinement/report.tex}{Report source}.
+\bibitem{density} \emph{A density-sensitive refinement of the October 2026
+exact k-SAT counting algorithm}. Research packet, October 26, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/eth_density_refinement/report.tex}{Report source}, especially the local Smith calculation.
+\bibitem{scalar} \emph{A Scalar Parity Refinement of the Subexponential SAT
+Counter}. Research packet, October 26, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/3sat_refinement/3sat_refinement_report.tex}{Report source}.
+\bibitem{asymptotic} \emph{Asymptotic improvement analysis for the October
+2026 3 SAT preprint}. Research packet dated October 27, 2026.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/report/report.tex}{Report source}.
+\bibitem{claude} Claude, Anthropic. \emph{A $2^{o(n)}$ time algorithm for
+3-SAT}. October 26, 2026, 3:13 PM PT.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/claude-2o-n-3sat/eth.pdf}{Filed manuscript}.
+\bibitem{strassen} Volker Strassen. Gaussian elimination is not optimal.
+\emph{Numerische Mathematik} 13 (1969), 354--356.
+\href{https://doi.org/10.1007/BF02165411}{doi:10.1007/BF02165411}.
+\end{thebibliography}
+\endgroup
+\end{document}

@@ -1,0 +1,449 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=black,citecolor=blue]{hyperref}
+\hypersetup{pdftitle={Review and refinement of the SubexponentialSAT proposals},pdfauthor={Research analysis},pdfsubject={Normalized coefficient improvement and unresolved stronger order targets}}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=1.5em}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\polylog}{\operatorname{polylog}}
+\newcommand{\dd}{D_{\rm arr}}
+\newcommand{\Dt}{D_t}
+\newcommand{\pin}{\texttt{047f4f0426fa38d1fe02f194aa6aac254c42f643}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{hypothesis}{Unproved hypothesis}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\title{\vspace{-1.5em}Review and refinement of the\\SubexponentialSAT proposals}
+\author{Second round research report}
+\date{27 October 2026}
+\begin{document}
+\maketitle
+\vspace{-1.6em}
+\begin{abstract}
+\noindent\textbf{A smaller unrestricted logarithmic order is not established.}
+The user's target is stronger than the paper's exponent
+$O(n\log\log n/\sqrt{\log n})$, not merely a smaller constant or a new proof of that rate.
+The recent ProveIt arrivals preserve this order; their stronger targets remain conditional.
+We derive a concrete improvement on their normalized tensor interface:
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(84.0662714943\ldots+o(1))s/\sqrt{\lceil\log_2s\rceil}}
+ \quad\text{with polynomial space},
+\]
+with a conservative eventual coefficient $85$, compared with the supplied $648.4411$ certificate.
+The new ingredients are deterministic matching-based collision packing, a thinner precision gap,
+exact crossing-packet accounting, and a two-stage grouping schedule.
+This is a mathematical derivation relative to unchanged source identities, not an independently
+verified full SAT algorithm, a Lean theorem, a practical benchmark, or a coefficient directly on $n$.
+We also identify precise missing interfaces for a true order improvement and prove narrow barriers
+to several shortcuts. The canonical source relocation is byte-preserving and adds no new theorem.
+\end{abstract}
+
+\section{What this review establishes}
+Fix clause width $k=3$. Write $n$ for the number of variables, $m$ for the
+number of clauses, $L_n=\log_2 n$, and $\ell_n=\log_2\log_2 n$; small inputs
+are handled separately. Polynomial factors include input reading and exact arithmetic.
+The imported OpenAI manuscript claims an exact-counting, deterministic polynomial-space bound
+\begin{equation}\label{eq:baseline}
+ \poly(n,m)2^{O(n\ell_n/\sqrt{L_n})},
+\end{equation}
+and, at each fixed density $m\le Dn$, the stronger exponent
+$O_D(n/\sqrt{L_n})$ \cite{openai}.
+The meaningful primary target here is an unrestricted exponent
+$o(n\ell_n/\sqrt{L_n})$, with all algorithmic and space costs paid.
+
+\textbf{The strongest available new conclusion is a coefficient improvement.}
+Section~\ref{sec:combined} proves the displayed $84.0663$ contraction certificate on exactly the
+normalized interface used by the supplied $648.4411$ certificate.
+At most $s$ edges, maximum degree $\lceil s^{0.9}\rceil$, initial precision and
+truncation parameter at most $s$, and the source's entry-oracle allowance are essential
+normalizations. Replacing $s$ by $O(n\log\log n)$ is not a license to put $84.0663$
+before $n\log\log n$: the reduction's hidden constants remain.
+
+The stronger proposal already present in the precision packet would give
+$O(n\ell_n/L_n)$ if its structured-summation hypothesis were proved.
+That is asymptotically stronger than our coefficient result and remains unproved.
+We do not call a successful synthesis of constants a solution to the user's stronger-order request.
+
+\textbf{Trust boundary.} ``Derived'' and ``proved relative to the source'' below refer to
+ordinary mathematical arguments conditional on the unchanged source deformation, integrality,
+recovery and recursive-factorization identities. Local exact checks are regression evidence,
+not a substitute for an asymptotic proof. No imported program, proof build or installer was run.
+No full SAT solver or full formal proof was constructed or executed.
+
+\section{Canonical sources and what the recent commits changed}
+The current frozen ProveIt snapshot is
+\begin{center}\small\pin.\end{center}
+The canonical project is
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT}{\texttt{Computability/SubexponentialSAT}}.
+Its research tree contains the seven supplied packets and the separate alternate manuscript.
+The original OpenAI source is vendored under \texttt{lib/openai-math/preprints/}.
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}\toprule
+UTC on 27 October & Commit prefix & Change\\\midrule
+00:42:51 & \texttt{a505bd768bce} & First five incoming artifacts\\
+00:44:39 & \texttt{64b3202ee84f} & Precision, parity and ETH-density packets\\
+00:48:56 & \texttt{8afdbbea48d6} & Our prior asymptotic-analysis packet\\
+00:58:36 & \texttt{2b925d8800cd} & Canonical project placement\\
+01:03:12 & \texttt{3e096089911f} & Original manuscript vendoring\\
+01:04:24 & \texttt{770edf7756d1} & Earlier canonical snapshot\\
+01:13:52 & \texttt{047f4f0426fa} & Closing snapshot and README comparison\\\bottomrule
+\end{tabular}
+\end{center}
+
+The closing check found the Research tree exactly unchanged; only the README comparison grew. Its claim about removing a denominator should be read carefully: the linear-wire conditional interface removes a log-log numerator, not the square-root denominator. The barriers remain representation-specific. This closing README adds no theorem.
+
+Independent byte mapping verifies all \textbf{120 filed research files}: 17 Cauchy,
+15 contraction, 9 SAT-density, 16 precision, 12 parity, 15 ETH-density,
+35 prior-analysis files, and one alternate PDF. Thirteen archive members were omitted
+as declared: five checksum ledgers and eight duplicate source files.
+The original paper is represented by its vendored copy. Six vendored manuscript files
+and the Apache license match the previously authenticated OpenAI bytes.
+The new README and omission index explain provenance and trust status; they do not
+supply a new mathematical proof. In particular the README explicitly says these materials
+have not been checked in ProveIt, no project Lean/Rocq development is included, and the
+alternate manuscript's claimed Lean development remains unpublished.
+
+The earlier repository-wide path inventory covered 223,088 descendants, resolved all four
+truncated tree replies by splitting them, and recorded no query failures. It was a path inventory,
+not a content search of every ambiguously named file or external submodule. The final relocation
+check inventoried the canonical and vendor subtrees, not the entire repository again.
+The archive preserves compact inventories, exact file maps and hashes rather than the enormous
+full path listing.
+
+Two OpenAI repository pins appear in the supplied reports:
+\begin{center}\small\texttt{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}\\
+\texttt{42907c9e999cc00d6abe7a50bfc1023250edd1b9}.\end{center}
+Their four relevant TeX blobs are identical, including quantitative contraction and reduction.
+Thus these differing pins do not introduce a mathematical source mismatch.
+
+\section{Comparison of the proposals}
+\label{sec:comparison}
+The labels below are short names for the canonical Research directories; the bibliography
+provides immutable links. All order comparisons suppress fixed-width constants.
+
+\begin{longtable}{@{}p{0.19\textwidth}p{0.49\textwidth}p{0.26\textwidth}@{}}
+\toprule
+Packet & Derived contribution & Order status\\\midrule\endhead
+Cauchy modes & Integral separated features with weights
+$1+b+2v_2(b!)=3b+1-2s_2(b)$; leading entropy coefficient divided by $\sqrt3$.
+& Same $n\ell_n/\sqrt{L_n}$ order.\\[5pt]
+Contraction & Exact taper condition count; leading precision loss $24\to6$;
+retuned schedule; streamed finite differences. Explicit normalized certificate
+$18535.7538\to648.4411$ under its accounting.
+& Same general and sparse orders.\\[5pt]
+SAT density & Uniform profile
+$n\min\{\log(2+m/n),\ell_n\}/\sqrt{L_n}$ via density-sensitive codes and actual query sparsity.
+& General order unchanged; fixed density gives $n/\sqrt{L_n}$.\\[5pt]
+Precision & Exact valuation loss and minimax taper, again with leading loss $6$.
+Compressed rank graph has high-degree group tensors.
+& $n\ell_n/L_n$ general and $n/L_n$ sparse require an unproved summation hypothesis.\\[5pt]
+Parity refinement & Scalar exact parity lift; incidence degree
+$k(2n+a)\to k(n+a)$ at precision $n+1$; removes the truncated coefficient axis.
+& Same proved order. Compact factorization would give $n\ell_n^{3/2}/L_n$.\\[5pt]
+ETH density & Largely the same density profile, different conservative parameters,
+matched parameter coefficient improvement and exact odd-Cauchy Smith profile.
+& Not a second density factor to multiply into the first.\\[5pt]
+Prior analysis & Our already delivered scoped barriers and degree-sensitive
+compressed-kernel research gate.
+& $n\sqrt{\ell_n/L_n}$ remains conditional on a kernel and recursive closure.\\[5pt]
+Alternate PDF & Different 49-page manuscript attributed within the PDF to
+Claude / Anthropic; a growing-node crossing construction.
+& Same fixed-width order; formalization claimed but unavailable for audit.\\[5pt]
+This report & Matching-potential packing, thin precision gaps, crossing fraction,
+two-stage schedule; normalized $C<85$ eventually.
+& Same order; not stronger than the conditional targets above.\\\bottomrule
+\end{longtable}
+
+\subsection{The improvements that can be composed}
+Exact taper and precision improvements, integral factorial-Cauchy modes, and the new packing
+act on different parts of the contraction argument and can be composed after checking their
+shared precision and recursive interface. The scalar parity reduction may independently set
+the truncated coefficient length to one. The density refinement independently reduces the
+Boolean wire budget to
+\[
+ O_k\!\left(n\min\{\log(2+m/n),\log\log n\}\right).
+\]
+Neither reduction should be multiplied blindly into a numerical coefficient on the normalized
+$s$ interface. The two density packets mostly repeat the same mathematical mechanism.
+
+The inspected density proof chain uses a lazy Margulis--Gabber--Galil walk, powering for small
+spectral error, exhaustive local-code search, shortening, and greedy exact-count minimization.
+The cost of local-code search is explicitly $2^{O(d^2)}$, not polynomial. After choosing
+polylogarithmic parameters, it is lower order than $2^{O(n/\sqrt{L_n})}$.
+High-incidence branching and degree-array encoding preserve polynomial space and yield
+$O(n\log(S+2))$ wires for $S$ actual monomials per parity equation.
+This source audit found no fatal gap in that chain relative to the imported identities;
+it did not rebuild a solver or formal proof. The external expander theorem is an input,
+not established by tiny graph tests \cite{mgg}.
+
+\subsection{Why the conditional targets are not achieved}
+The precision packet's exact rank network has only $O(M/\sqrt u+r^2)$ wires in its
+compressed representation, but the group tensors have excessive degree. Their subexponential
+entry evaluators do not make them bounded-degree factors. Equality-tree splitting cannot
+represent an arbitrary high-arity tensor, and restoring the original child network loses
+the compression. Its missing summation theorem is a real algorithmic obligation.
+
+Similarly, the parity packet's compact-factorization assumption must cover every generated
+group tensor, invalid-rank zeros included, with $O(W)$ total Boolean edges, maximum degree
+$W^{0.9}$, correct immutable creation precision, and construction/entry time
+$\poly(s)\exp(O(s/\log s+s^{0.9}))$. No such construction is supplied.
+The prior degree-kernel route also needs a deformation degree bound and a mode-family
+count measured by the compressed wire universe at every recursive child. A small root
+incidence degree alone does not establish these properties.
+
+\section{A combined contraction certificate below 85}\label{sec:combined}
+\input{combined.tex}
+
+\section{What the stronger order problem still requires}\label{sec:frontier}
+There are three distinct constructive routes, not three established ingredients.
+\begin{enumerate}
+\item \textbf{A degree-sensitive compressed deformation.} Produce a recursively closed
+kernel with global degree $K$ and mode multiplicity $O(M/\Dt)$ where $M$ is the compressed
+wire count. An exterior-power identity with degree $K=O(n)$ is insufficient if its modes
+still count the uncompressed incidence universe.
+\item \textbf{Structured mode aggregation.} Factor or sum the genuine high-arity rank tensors
+within the precision packet's target cost, preserving invalid-index zeros, bounded degree,
+polynomial descriptions, exact entry costs and polynomial space.
+\item \textbf{A different effective crossing algebra.} In the alternate manuscript's framework,
+construct a graded family with entropy exponent below $1/2$ while preserving exact crossing
+reconstruction, both factorizations, locality or a valid replacement, and effective integer costs.
+\end{enumerate}
+Any proposed improvement must retain deterministic exact arithmetic, polynomial-sized
+coordinate precision, a fixed polynomial dependence on description length, and immutable
+creation-time representatives. Reducing a leaf cutoff does not remove the root entropy.
+Exponentially many simultaneously stored tensor entries are not compatible with polynomial space.
+These are mathematical open interfaces, not denied permissions or missing tool access.
+
+\input{actual_domain.tex}
+
+\section{The separate alternate manuscript}\label{sec:alternate}
+The 49-page \emph{A $2^{o(n)}$ Time Algorithm for 3-SAT} is a different document from the
+67-page OpenAI paper. Its printed attribution is Claude / Anthropic; this is not independent
+authentication of organizational authorship. Its SHA-256 is
+\begin{center}\scriptsize\texttt{f0af035b6c87d04d3fcf07dae040df98029f4990c6493e3e9ab64c4ac714c0eb}.\end{center}
+Its strongest printed statement is a deterministic exact \#{$k$}-SAT bound
+\[
+ 2^{O\left(\min\{k^2n\log\log n/\sqrt{\log n},\;km/\sqrt{\log m}\}\right)}
+\]
+with an absolute hidden constant. For fixed $k=3$ this has the same unrestricted and
+fixed-density orders as \eqref{eq:baseline}. Unused declared variables are accounted for
+by multiplying the count by $2^{N-n}$ after normalization.
+
+The main body combines balanced networks and signed crossing decompositions. The
+row-or-column choice is global for a term, not independent at each rectangle.
+Appendix A states the uniform effective-piece contract and derives a logarithmic denominator
+power $\log_2(1/\rho)$. Appendix B's partition/Fock construction gives
+$\rho=1/\sqrt2$, hence power $1/2$. Appendix D improves the unrestricted $n$ dependence
+using sparse parity checks and modular truncation. This is substantive mathematical content,
+but this bounded audit did not independently reconstruct every coefficient identity or
+external sparsification estimate.
+
+\subsection{Formalization claims are not supplied proof evidence}
+Appendix E claims that both its strongest \texttt{MainTheorem} and \texttt{ETHIsFalse}
+were proved in Lean 4.33.1 over a pinned Mathlib, with 1,881 files and several checker paths.
+However, the printed listing contains definitions only, no theorem proof bodies, and the
+full-proof URL is literally a placeholder. The canonical project README also states that
+the claimed development is unpublished. The right conclusion is \emph{unverified formalization
+claim}, not ``verified strongest theorem'' and not ``only the weaker theorem was claimed''.
+No such build was performed here.
+
+Outstanding source-audit obligations include the Appendix B Laurent-series locality identity,
+Appendix C's explicitly labeled sparsification proof sketch, precise external Calabro thresholds
+used in Appendix D, and the correspondence between the paper's encoding/model and the claimed
+formal machine. The manuscript itself notes that some external thresholds were assumed rather
+than checked against the dissertation. No specific contradiction was found in this bounded
+review; that is not a certificate of correctness.
+
+Its own stated bound-level crossover estimates are astronomical: examples include
+$n>10^{10^8}$ for the unrestricted result and beyond $10^{10000}$ for a fixed-density example.
+These are not measured runtimes. Our new normalized coefficient does not make those examples
+practical, and does not automatically transfer to this different construction.
+
+\subsection{A genuine entropy lever and a restricted obstruction}
+Appendix H observes that if the full effective construction worked with
+$\log\dim V_E\sim C E^\alpha$, its concavity argument would yield
+\[
+ \rho=2^{\alpha-1},\qquad \log_2(1/\rho)=1-\alpha.
+\]
+Thus $\alpha<1/2$ could improve the actual denominator power, if every required identity and
+cost bound survived. The manuscript does not construct such a replacement.
+The following new elementary deductions show why simply thinning the existing space is not enough.
+
+\begin{lemma}[Partition states forced by the same Heisenberg relations]
+Let $W=\bigoplus_E W_E$ be a graded vector space over a characteristic-zero field, with
+$0\ne v\in W_0$. For every positive integer $m$, suppose commuting creation operators
+$a_{-m}$ have degree $m$, commuting annihilators $a_m$ have degree $-m$,
+$[a_m,a_{-j}]=m\delta_{mj}I$, and $a_mv=0$. Then $\dim W_E\ge p(E)$,
+the ordinary partition number.
+\end{lemma}
+\begin{proof}
+For each finite-support vector $\beta\ge0$ with $\sum_m m\beta_m=E$, set
+$v_\beta=\prod_m a_{-m}^{\beta_m}v$. In a linear relation among these vectors,
+apply $A_\beta=\prod_m a_m^{\beta_m}$. If $\gamma\ne\beta$ has the same weighted
+sum, some coordinate satisfies $\beta_m>\gamma_m$; commuting annihilators rightward
+then kills $v_\gamma$. The remaining term is
+\[
+ A_\beta v_\beta=\left(\prod_m m^{\beta_m}\beta_m!\right)v\ne0.
+\]
+Thus the coefficient of $v_\beta$ is zero. This holds for all $\beta$, proving independence.
+\end{proof}
+An elementary bound suffices: choose $r$ with $\sum_{j=2}^r j\le E$. Every subset of $\{2,\ldots,r\}$, padded to energy $E$ with ones, gives a distinct partition. Hence $p(E)\ge2^{r-1}$ with $r=\Theta(\sqrt E)$, and $\log\dim W_E=\Omega(\sqrt E)$.
+A nonzero quotient preserving all these exact relations and the vacuum cannot achieve
+$\alpha<1/2$. This is not a lower bound for SAT, tensor contraction, all graded algebras,
+or all crossing decompositions.
+
+\begin{lemma}[Naive infinite thinning loses ordinary finite-order locality]
+Retain only modes in a set $S\subseteq\mathbb Z_{>0}$ in the standard Heisenberg current.
+If $S$ and its positive complement are both infinite, no finite $H$ makes its scalar
+commutator vanish after multiplication by $(z-w)^H$.
+\end{lemma}
+\begin{proof}
+Its coefficient sequence is $c_j=j\mathbf1_{|j|\in S}$, with $c_0=0$.
+Multiplication by $z-w$ takes a forward difference after reindexing, so locality would give
+$\Delta^Hc_j=0$ for every integer $j$. In characteristic zero this is a polynomial sequence
+of degree at most $H-1$. Infinitely many missing positive modes force infinitely many roots,
+so the polynomial vanishes identically; retained positive modes contradict this.
+\end{proof}
+Periodic thinning may yield other diagonals of locality, but not the ordinary locality
+used by the source. Nonlinear regrading, for example $\deg t_m=m^2$, also breaks the
+printed homogeneous-shift rule: the degree of a product is no longer determined by
+its linear mode-index sum. Linear rescaling preserves the square-root entropy power.
+A new construction could escape these assumptions, but must reprove exact reconstruction,
+both integer factorizations, polynomially many pieces, polynomial bit lengths, and effective
+$2^{O(\lambda)}$ evaluation. A smaller Hilbert series alone is not an algorithm.
+
+\section{Proof status and verification evidence}\label{sec:status}
+\begin{longtable}{@{}p{0.32\textwidth}p{0.29\textwidth}p{0.33\textwidth}@{}}
+\toprule
+Claim & Status in this report & Evidence limit\\\midrule\endhead
+Canonical relocation and vendor identity & Exact byte checks pass & Provenance, not theorem verification.\\[5pt]
+Source ETH and quantitative contraction claims & Imported hypotheses & No full independent proof or solver build.\\[5pt]
+Supplied local taper, precision, factorial and density derivations & Source-reviewed relative results & Imported identities and external theorems remain inputs.\\[5pt]
+Matching-potential packing and bit complexity & New mathematical argument & Exact finite cases are regression checks only.\\[5pt]
+Combined two-stage coefficient below 85 & New relative derivation & No coefficient on SAT variable count; eventual, not practical.\\[5pt]
+Actual Cauchy rank gate & New actual-domain connection to prior Smith theorem & Restricted integral separated kernel family only.\\[5pt]
+Heisenberg and thinning barriers & New elementary deductions & Same algebra/current only; not SAT lower bounds.\\[5pt]
+Stronger unrestricted logarithmic order & Not established & Constructive interfaces remain missing.\\[5pt]
+Alternate strongest Lean formalization & Claimed in PDF, unaudited & Public proof bodies and checker artifacts unavailable.\\\bottomrule
+\end{longtable}
+
+Independent review cleared the two-stage derivation at the analytic-refinement level, conditional on the unchanged source identities. It found no packing, factorial-denominator, creation-precision or variable-alphabet obstruction. This is not an independent validation of the entire manuscript.
+
+The bundle includes newly authored standard-library regression scripts. They check exact
+matching conditional expectations on multigraphs, finite taper identities, rational schedule
+inequalities, and the actual Cauchy minors and reciprocal-row congruences.
+The author checker records 608 taper cases, 42 multigraph packing cases and 240 exact conditional means. The independent checker records 17 conditional-expectation cases across 279 exhaustive completions, 12 packet-count fixtures, 2,480 extension-field factorial identities and valuations, and 30 Hermite schedules with 432 rational multiplier checks. The frontier checker records 3,804 exact Cauchy minor checks across 18 matrices, plus actual-row residue tests. These finite ranges do not establish the asymptotic theorem.
+The rational certificate for $C<85$ does not rely on floating-point output.
+Normal and optimized Python runs must execute the same explicit checks; an \texttt{assert}-only
+checker would not satisfy this requirement. The release ledger records check counts, hashes,
+review scope and negative controls, separate from mathematical proof claims.
+
+The archive verifier checks safe unique paths, the complete member inventory, lengths and
+SHA-256 hashes, plus selected immutable source Git blobs. Corruption, missing members, extra
+members, duplicate paths and traversal attempts must be rejected. An isolated replay rebuilds
+only this authored report, compares extracted text and every page's rendered pixels, and reruns
+our local checks in normal and \texttt{-O} modes. Imported TeX and scripts are data; they are not
+compiled or executed. The manifest proves internal consistency, not authorship: the separately
+communicated whole-archive hash is the release identity.
+
+\section{Recommended next research steps}
+\begin{enumerate}
+\item \textbf{For a genuine order improvement, prioritize structured summation.} Try to
+factor the actual generated rank tensors rather than a generic high-arity tensor. A candidate
+must state exact construction, Boolean edge count, degree, entry bit-cost, precision lifting,
+invalid-index handling and recursion closure before any improved rate is claimed.
+\item \textbf{Explore actual-row separation only as a constant refinement.} The slope-four
+Smith profile motivates a better integral construction on the restricted reciprocal rows,
+but the family multiplicity and recursive compatibility must be paid. It cannot by itself
+change the logarithmic order.
+\item \textbf{Optimize depth-dependent schedules only after preserving finite guards.}
+The two-stage schedule is not claimed optimal. Extra stages may lower the coefficient,
+but must respect the initial degree exponent, packing slack, cumulative precision gap,
+and uniform leaf-depth argument. Such optimization still does not solve the primary target.
+\item \textbf{Request the alternate proof sources before treating its formal claims as verified.}
+Check the actual theorem type against its strongest printed statement, pinned dependencies,
+axioms, full kernel/checker logs and machine-cost correspondence. A placeholder link is not evidence.
+\end{enumerate}
+
+\appendix
+\section{Finite parameter conditions and crossover caution}
+The new schedule has exceptionally small packing slack:
+\[
+ 1-\left(0.9+\frac{20\log_2 37}{1043}\right)
+ =0.000106359240\ldots,
+\]
+\[
+ 1-(0.9+6A)=\frac{31}{307685}=0.000100752392\ldots.
+\]
+Thus factors such as $s^{-0.00010075}\polylog(s)$ tend to zero extremely slowly.
+The proof is an eventual asymptotic certificate, not an optimized finite threshold.
+No numerical global crossover $s_0$ is claimed.
+
+For a finite implementation, test the actual integer parameters: all retained taper levels
+must be positive; their count must fit the packet exponent; the matching potential must start
+below one; padding must satisfy the desired child-size guard; the new degree $2L$ must fit the
+interface; the field extension must dominate deformation degree; and every precision and
+entry-cost bound must hold. Direct summation handles exceptional sizes or failed guards.
+The proof shows these guards eventually hold uniformly, so fallback is confined to a finite
+exceptional range for fixed interface constants. This is an existence/complexity statement,
+not a supplied finite solver implementation.
+
+The additive gap $g=(\lceil\log_2\lambda\rceil)^2$ is large enough to make
+$\lambda^B2^{-g}=o(1)$ for every fixed $B$, yet its cumulative cost
+$O((\log\lambda)^3)$ is $o(\lambda)$. This separation is central: one must not
+replace the gap by a fixed constant without a new inherited-precision proof.
+
+\section{Selected source anchors and archive contents}
+All canonical research references use the frozen project under
+\begin{center}\small\texttt{Computability/SubexponentialSAT/Research/}.\end{center}
+The archive includes all six new report TeX files, the four unchanged OpenAI quantitative/source
+TeX files, the alternate manuscript PDF, the upstream license, exact provenance maps, the new proof notes and checkers,
+and this report's editable source and PDF. The seven original ZIP files, the duplicate OpenAI
+PDF, full repository path TSV and temporary rendering images are intentionally omitted.
+Their identities remain in the authenticated intake and relocation ledgers.
+
+OpenAI quantitative contraction anchors are: arithmetic and canonical creation precision
+(lines 11--72); packing and packet arrangement (114--171); deformation/integrality (183--241);
+Hermite identity and valuation loss (274--323); groups and column tiles (385--451);
+child factorization and entry descriptions (485--554); time/space induction (558--619).
+The quantitative reduction interface explicitly permits bipartite multigraphs.
+Line numbers refer to the bundled immutable source, not a moving branch.
+
+For the supplied reports, useful labels are:
+\begin{itemize}
+\item Contraction: \texttt{lem:taper}, \texttt{lem:precision}, \texttt{thm:packet}, \texttt{thm:main}.
+\item Cauchy: \texttt{lem:identity}, \texttt{lem:factorial}, \texttt{lem:actual-domain},
+\texttt{thm:weights}, \texttt{prop:recursion}, \texttt{lem:entropy}.
+\item Precision: \texttt{thm:precision}, \texttt{thm:optimal}, \texttt{hyp:acceleration}.
+\item Parity: \texttt{ass:LF}, \texttt{lem:extension}, \texttt{thm:conditional}.
+\item ETH density: \texttt{eq:smith} and the limits/research sections.
+\end{itemize}
+The exact Smith profile is credited to ETH density; the present addition is its embedding in
+actual packet slots and the explicit modular approximation-rank consequence.
+
+\begin{thebibliography}{10}\small
+\bibitem{project} ProveIt, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT}{Canonical SubexponentialSAT project}, frozen 27 October 2026.
+\bibitem{openai} OpenAI, \emph{The Exponential Time Hypothesis is False}, revised 25 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026}{Pinned vendored source and provenance}.
+\bibitem{cauchy} \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT/Research/cauchy_mode_improvement}{Factorial Cauchy mode improvement packet}.
+\bibitem{contraction} \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT/Research/eth_contraction_improvements}{Quantitative contraction improvement packet}.
+\bibitem{density} \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT/Research/sat_density_improvement}{SAT density improvement packet}; \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT/Research/eth_density_refinement}{ETH density refinement packet}.
+\bibitem{precision} \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT/Research/3sat_precision_refinement}{Precision refinement packet}.
+\bibitem{parity} \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT/Research/3sat_refinement}{Scalar parity refinement packet}.
+\bibitem{prior} \href{https://github.com/VladimirReshetnikov/ProveIt/tree/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis}{Prior asymptotic analysis packet}, already included among the arrivals.
+\bibitem{alternate} \emph{A $2^{o(n)}$ Time Algorithm for 3-SAT}, attributed in the PDF to Claude / Anthropic, 26 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/047f4f0426fa38d1fe02f194aa6aac254c42f643/Computability/SubexponentialSAT/Research/claude-2o-n-3sat/eth.pdf}{Pinned alternate manuscript}.
+\bibitem{mgg} Isabelle Archive of Formal Proofs, \href{https://isa-afp.org/browser_info/current/AFP/Expander_Graphs/Expander_Graphs_MGG.html}{Expander Graphs MGG}, inspected during the source audit on 27 October 2026.
+\end{thebibliography}
+\end{document}

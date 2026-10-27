@@ -14,10 +14,11 @@ a report at one of the destinations of section 2.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
-Nine arrivals of 26 October 2026 about sub-exponential 3-SAT, that is, about
-refuting the Exponential Time Hypothesis. The drop process staged the first
-five without committing them, and they were committed unchanged in
-`a505bd768b`; it committed the other four itself. They are placed in the new
+Seventeen arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
+is, about refuting the Exponential Time Hypothesis. The drop process staged
+the first five without committing them, and they were committed unchanged in
+`a505bd768b`; it committed the other twelve itself. The eight of
+`3e57705cf1` and `d098ba436b` are a second round that reviews the first. They are placed in the new
 project
 [`Computability/SubexponentialSAT/`](../../Computability/SubexponentialSAT/README.md)
 and retired here. Byte-identical copies of upstream `openai/math@7ef5c0cc5c`
@@ -36,6 +37,14 @@ instead of being filed.
 | `3sat_refinement_package.zip` | `64b3202ee8` | [Research/3sat_refinement](../../Computability/SubexponentialSAT/Research/3sat_refinement/README.md) |
 | `eth_density_refinement.zip` | `64b3202ee8` | [Research/eth_density_refinement](../../Computability/SubexponentialSAT/Research/eth_density_refinement/README.txt) |
 | `3sat_asymptotic_analysis_20261027.zip` | `8afdbbea48` | [Research/3sat_asymptotic_analysis](../../Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/README.md), without the eight upstream copies in `source/` |
+| `eth_asymmetric_packet_balancing_2026-10-26.zip` | `3e57705cf1` | [Research/eth_asymmetric_packet_balancing](../../Computability/SubexponentialSAT/Research/eth_asymmetric_packet_balancing/README.txt) |
+| `3sat_round2_refinement_20261027.zip` | `3e57705cf1` | [Research/3sat_round2_refinement](../../Computability/SubexponentialSAT/Research/3sat_round2_refinement/README.md), without 17 `evidence/` copies of files already in ProveIt |
+| `eth_balanced_packing_2026-10-26.zip` | `3e57705cf1` | [Research/eth_balanced_packing](../../Computability/SubexponentialSAT/Research/eth_balanced_packing/README.txt) |
+| `eth_high_moment_2026-10-26.zip` | `3e57705cf1` | [Research/eth_high_moment](../../Computability/SubexponentialSAT/Research/eth_high_moment/README.md) |
+| `eth_packet_refinement_2026-10-26.zip` | `3e57705cf1` | [Research/eth_packet_refinement](../../Computability/SubexponentialSAT/Research/eth_packet_refinement/README.txt) |
+| `eth_recursive_refinement_2026-10-26.zip` | `3e57705cf1` | [Research/eth_recursive_refinement](../../Computability/SubexponentialSAT/Research/eth_recursive_refinement/README.md) |
+| `eth_joint_cauchy_2026-10-26.zip` | `3e57705cf1` | [Research/eth_joint_cauchy](../../Computability/SubexponentialSAT/Research/eth_joint_cauchy/README.txt) |
+| `ETH_Matching_Packing_Thin_Gaps_2026-10-27.zip` | `d098ba436b` | [Research/eth_matching_refinement](../../Computability/SubexponentialSAT/Research/eth_matching_refinement/README.txt), without 11 `sources/` copies of files already in ProveIt |
 
 ## DiophantineConsistency proof-simplification packets
 

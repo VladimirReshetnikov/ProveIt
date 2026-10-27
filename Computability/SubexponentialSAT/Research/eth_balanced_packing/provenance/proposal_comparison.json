@@ -1,0 +1,89 @@
+{
+  "reviewed_proveit_commit": "aa6933442eb936962de79ba6d321cd0391c450bd",
+  "review_scope": "Seven submitted reports; theorem statements, limitations, and key contraction mechanisms reviewed. This is not a complete formal verification of the preprint or all seven reports.",
+  "common_proved_frontier": {
+    "arbitrary_density": "poly(n,m) 2^{O_k(n log log n / sqrt(log n))}",
+    "fixed_density": "poly(n,m) 2^{O_{k,D}(n / sqrt(log n))}",
+    "density_sensitive": "poly(n,m) 2^{O_k(n min(log(2+m/n),log log n)/sqrt(log n))}"
+  },
+  "packets": [
+    {
+      "archive": "3sat_asymptotic_analysis_20261027.zip",
+      "proved": "Restricted method barriers; exact taper and Newton identities; no stronger worst-case order.",
+      "conditional": [
+        "Degree-preserving compressed kernel: n sqrt(loglog n/log n).",
+        "Linear-wire compression: n/sqrt(log n) for arbitrary density."
+      ],
+      "novel_to_current_work": false
+    },
+    {
+      "archive": "3sat_precision_refinement_2026-10-26.zip",
+      "proved": "Exact linear-taper size; exact Hermite precision p+B_i+(q_i-1)(a+1-i); leading p=(6+o(1))MD/u vs(24+o(1))MD/u; full-loss real minimax taper.",
+      "conditional": [
+        "Structured summation: n loglog n/log n arbitrary density and n/log n fixed density."
+      ]
+    },
+    {
+      "archive": "3sat_refinement_package.zip",
+      "proved": "Scalar integer parity indicator, eliminating V; retained incidence degree cap k(a+n) instead of k(a+2n).",
+      "conditional": [
+        "Second contraction: n(loglog n)^(3/2)/log n arbitrary density.",
+        "Union-support compiler: n/sqrt(log n) arbitrary density."
+      ]
+    },
+    {
+      "archive": "cauchy_mode_improvement_2026-10-26.zip",
+      "proved": "Exact Cauchy separation with integral source functions; weights w_b=1+b+2v2(b!)=3b+1-2s2(b); 1/sqrt(3) matched enumeration-entropy coefficient.",
+      "conditional": []
+    },
+    {
+      "archive": "eth_contraction_improvements.zip",
+      "proved": "Precision leading6; r=256,b=12,u_d=floor(lambda/(720*12^d)); explicit normalized exponent coefficient648.4411...; streamed finite-difference extraction poly(s)2^L.",
+      "conditional": []
+    },
+    {
+      "archive": "eth_density_refinement.zip",
+      "proved": "Powered constant-degree expander checks depending on density; polylog-density sparse-query encoding with O(n log(2+B)) wires; density-sensitive bound.",
+      "conditional": []
+    },
+    {
+      "archive": "sat_density_improvement.zip",
+      "proved": "Same density-sensitive envelope; fixed-density and unrestricted worst-case orders unchanged.",
+      "conditional": []
+    }
+  ],
+  "new_padding_audit": {
+    "status": "passes independent source-level algebra, exact-rational derandomization, and recursive resource audit of the final two-stage theorem",
+    "hypotheses": "lambda>=4; D_arr=Q^2<=s<=2^lambda; M>=4 D_arr Delta lambda^4; maximum vertex degree<=Delta.",
+    "construction": "Greedily label whole row vertices into Q groups, obtaining row-group load<=M/Q+Delta. Independently and uniformly label whole column vertices, then derandomize by exact rational conditional expectation.",
+    "potential": "With mu=M/D_arr, z=1+1/(Delta lambda^2), and B=ceil((1+2/lambda)mu), use sum over cells z^(X_cell-B). The initial expectation is at most D_arr exp(-4lambda)<1.",
+    "derandomization": "Conditioning on whole-column labels leaves a product over independent unassigned vertices. Its exact rational average over the Q choices equals the current potential, so a minimizing choice never increases it. Integer loads at the end satisfy X_cell<B.",
+    "exact_bound": "H_pad<= (1+2/lambda) M/D_arr + L. With L D_arr/M<=1/lambda, total padded slots<=kappa M for kappa=1+3/lambda.",
+    "consequences": [
+      "packets<=kappa M/L",
+      "real ports per side and coordinate symbol<=kappa M/r",
+      "tile families<=2 kappa M/D",
+      "child wires<=2 kappa M/r"
+    ],
+    "uniformity": "The final integer capacity cap makes all packing gates valid at every actual non-fallback active call. The number of active depths is O(log lambda), so kappa^d=1+o(1) uniformly.",
+    "integrality": "H_pad is rounded to a multiple of L. The original orientation-class packet construction and exact padded symbol marginals are unchanged; parallel edges remain distinct ports.",
+    "prior_report_overlap": "No two-stage whole-vertex conditional-expectation construction or leading-one padded-slot bound found in the seven reports. Their contraction analyses retain3M/L,6M/D,6M/r."
+  },
+  "new_guard_audit": {
+    "status": "independently derived and agrees with the final additive guard and adaptive-cap construction",
+    "schedule": "g=ceil(8 log2(lambda+1)); d_max=ceil(log2 lambda); G=(d_max+1)g; r=54; A=max{A>=0 integer:4 r^(2A) Delta lambda^6<=s}; K=A-G; u_d=floor(8K/9^(d+1)); a_d=sum_{j<=d}u_j+(d+1)g.",
+    "finite_size_guards": "Use direct contraction if the cap set is empty, lambda<4, K<=0, or an actual active call has u_d=0. No positivity requirement is imposed at the artificial depth d_max.",
+    "reason": "Inherited precision is at most O(s lambda^2 2^(a_(d-1))), while MD/u>=s 2^(a_(d-1)+g)/lambda^2 at active nodes. The ratio is O(lambda^4/2^g)=o(1), uniformly.",
+    "capacity": "The geometric taper sum is at most K, so a_d<=A at every relevant depth. The cap gives 4 D_arr Delta lambda^4<=s/lambda^2<M, and also gives the degree and packet-rounding gates.",
+    "uniformity": "K=lambda/(20 log2 54)-O((log lambda)^2). Every actual active depth is less than log_26(lambda) for sufficiently large lambda, so the least active taper is bounded below by a positive power of lambda. Floor and guard losses are uniform relative o(1).",
+    "packet_budget": "The guard reserve G=O((log lambda)^2)=o(lambda) is paid explicitly by the cap. This replaces the prior factor-two cumulative taper without leaving fixed asymptotic slack.",
+    "prior_report_overlap": "The seven reports retain a_d=2 sum u_j in their global constructions; the final additive-guard and adaptive-cap construction is new relative to those reports."
+  },
+  "final_comparison_addendum": {
+    "prior_instantiated_coefficient": 648.4410666487529,
+    "prior_family_boundary_near_r251": 638.5274897998684,
+    "prior_family_boundary_plus_cauchy": 368.65401812093006,
+    "new_adaptive_coefficient": 94.74820225953412,
+    "note": "Prior optimized-family boundary is an approachable limiting certificate. All comparable members of that prior family have larger coefficients; this is not an actual-runtime lower bound."
+  }
+}

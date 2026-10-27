@@ -1,0 +1,255 @@
+% Original research note for integration into the parent report.
+% This file is an input fragment, not a standalone preamble.
+\section{An additional improvement from the actual Cauchy row domain}
+\label{sec:annulus-modes}
+
+The factorial Cauchy packet in the reviewed proposals uses the enlarged
+row domain $z\in2\mathbb Z_{(2)}$ (up to a highly divisible extension-ring
+perturbation). The actual reciprocal rows exclude a residue class.
+Keeping this information gives a termwise stronger integral mode basis
+without adding any source-tile families. The result is local: its worst
+limiting slope over all valuation levels remains three.
+
+Write $\nu_2(0)=+\infty$, and let
+\[
+ S_i=\{w\in\mathbb Z_{(2)}:0\le\nu_2(w)\le i\},\qquad i\ge0.
+\]
+Define $G(b)=b+\nu_2(b!)$ for $b\ge0$. The next construction is explicit;
+no theorem about generalized factorials is needed.
+
+\begin{lemma}[An explicit ordering of a punctured two-adic ball]
+\label{lem:annulus-order}
+For each $i\ge0$ there are distinct positive integers
+$a^{(i)}_0,a^{(i)}_1,\ldots$ in $S_i$ and nondecreasing integers
+$F_i(0),F_i(1),\ldots$ such that
+\[
+ F_i(b)=\min_{w\in S_i}\sum_{h<b}\nu_2(w-a^{(i)}_h),
+ \qquad
+ \sum_{h<b}\nu_2(a^{(i)}_b-a^{(i)}_h)=F_i(b).
+\]
+They can be constructed as follows. For $i=0$ take
+$a^{(0)}_b=2b+1$ and $F_0(b)=G(b)$. For $i\ge1$, the sequence
+$F_i$ is the sorted merge, with multiplicity, of the two strictly
+increasing sequences
+\[
+ G(n),\qquad n+F_{i-1}(n),\qquad n=0,1,2,\ldots.
+\]
+When the next element comes from the first sequence output the point
+$2n+1$; when it comes from the second output $2a^{(i-1)}_n$.
+Resolve a tie in favor of the first sequence. For every $i,b$,
+\[
+ a^{(i)}_b\le2b+1,
+ \qquad F_i(b)\ge\nu_2(b!).
+\]
+\end{lemma}
+
+\begin{proof}
+For the ordinary consecutive ordering $0,1,\ldots$, the minimum
+valuation of a product of $n$ consecutive differences over
+$\mathbb Z_{(2)}$ is $\nu_2(n!)$. This follows by counting, for every
+$r\ge1$, the at least $\lfloor n/2^r\rfloor$ factors in the appropriate
+residue class; equality holds at the next consecutive integer.
+Scaling and translating gives the assertion for odd integers, including
+rational two-integral arguments.
+
+Split $S_i$ into its odd part $1+2\mathbb Z_{(2)}$ and its even part
+$2S_{i-1}$. Differences between the two parts are units. If $n_o$
+odd and $n_e$ even points have already been chosen, the least possible
+valuation for the next odd point is $G(n_o)$, and that for the next even
+point is $n_e+F_{i-1}(n_e)$. Choosing the smaller proves the asserted
+minimum and the merge recursion. Both component sequences are strictly
+increasing: $G$ increases by at least one, as does $n+F_{i-1}(n)$.
+
+For the lower bound, use induction on $i$. The second component is
+termwise at least $G$ once $F_{i-1}(n)\ge\nu_2(n!)$. The sorted merge
+of two copies of $G$ is precisely $\nu_2(b!)$, because
+$\nu_2((2n)!)=\nu_2((2n+1)!)=G(n)$. Thus the merge in the statement
+is no smaller. The base case is immediate.
+
+The same termwise comparison and the odd-first tie rule imply that
+before an even point is selected, $n_o\ge n_e+1$. For an odd point,
+$2n_o+1\le2b+1$. For an even point, induction bounds it by
+$2(2n_e+1)\le2(n_o+n_e)=2b$. This proves the point-size bound and
+also makes the construction polynomial in the number of requested
+points and $i$.
+\end{proof}
+
+\begin{lemma}[Uniform valuation slope]
+\label{lem:annulus-slope}
+Put
+\[
+ R_i=1+\frac{3}{4^{i+1}-1}.
+\]
+Then, for all $i,b\ge0$,
+\[
+ R_i b-4\log_2(b+2)\le F_i(b)\le R_i b.
+\]
+\end{lemma}
+
+\begin{proof}
+The base case follows from
+$F_0(b)=2b-s_2(b)$, where $s_2(b)$ is the binary digit sum.
+For the induction step put $B=1+R_{i-1}$, so $2<B\le3$ and
+\[
+ R_i=\left(\frac12+\frac1B\right)^{-1}
+     =\frac{2B}{B+2}.
+\]
+Substitution gives the displayed closed form for $R_i$.
+The two component sequences are bounded above by $2n$ and $Bn$.
+Their merge at index $b$ is at most $R_i b$: the number of terms in
+these two arithmetic sequences no greater than $R_i b$ is at least
+$b+1$, since the two unrounded ratios sum to the integer $b$.
+
+For the lower bound let $x=F_i(b)$ and
+$L_b=\log_2(b+2)$. Each of the first $b+1$ terms of the merge has a
+component index at most $b$. The lower bounds for those components
+are $2n-L_b$ and $Bn-4L_b$. Consequently
+\[
+ b+1\le \frac{x+L_b}{2}+1+\frac{x+4L_b}{B}+1,
+\]
+so
+\[
+ x\ge R_i b-R_i-\left(\frac{R_i}{2}
+                      +\frac{4R_i}{B}\right)L_b.
+\]
+Here $R_i\le6/5$ and
+$R_i/2+4R_i/B=(B+8)/(B+2)\le5/2$.
+Since $L_b\ge1$, the last two losses together are at most
+$4L_b$. This proves the uniform estimate.
+\end{proof}
+
+\begin{lemma}[Stability under an unramified extension perturbation]
+\label{lem:annulus-extension}
+Let $\mathcal O$ be the unramified coefficient ring of the contraction
+argument, with valuation extending $\nu_2$. Suppose $R\ge2$,
+$w_0\in S_i$, $w-w_0\in2^R\mathcal O$, and
+$0\le b<2^{R-2}$. Then
+\[
+ \nu_2\left(\prod_{h<b}(w-a^{(i)}_h)\right)\ge F_i(b).
+\]
+\end{lemma}
+
+\begin{proof}
+The assertion is immediate for $b=0$. Otherwise the selected integers
+are distinct and satisfy $1\le a^{(i)}_h\le2b-1<2^{R-1}$.
+Choose the ordinary residue $c\in\{0,\ldots,2^R-1\}$ of $w_0$.
+If $c$ is nonzero and is not a selected point, take $w'=c$.
+It belongs to $S_i$, and all factor valuations are below $R$ and
+unchanged by the perturbation. If $c=0$, then $\nu_2(w_0)\ge R$,
+so $i\ge R$; take $w'=2^R\in S_i$. Again all differences to the
+selected points have valuation below $R$.
+Finally, if $c=a^{(i)}_h$ for one selected point, take
+$w'=a^{(i)}_h+2^R\in S_i$. Its difference from that point has
+valuation $R$, and its other difference valuations agree with those
+of $w$; the corresponding difference for $w$ has valuation at least
+$R$. In each case the product valuation for $w$ is at least that for
+$w'\in S_i$, which is at least $F_i(b)$ by
+Lemma~\ref{lem:annulus-order}. This argument uses only ordinary
+residues of $w_0$; $w$ itself may have nonzero extension coordinates.
+\end{proof}
+
+\begin{theorem}[Annulus Cauchy modes]
+\label{thm:annulus-modes}
+At a contraction node of valuation $i$, retain the existing packet
+layout and column tiles. Put
+\[
+ \alpha=2^{a+1},\quad T=t+\alpha\zeta,\quad
+ R=a+1-i,\quad J=2^{a-i-1},\quad y=y_0+2^{i+1}j,
+\]
+where $0\le j<J$ and $\zeta\in\mathcal O$. For a row crossing
+that tile, let
+\[
+ d_x=T-y_0+x,\quad z_x=\frac{2^{i+1}}{d_x},\quad
+ A_x=\frac{\mathcal C(T)}{\mathcal C'(0)d_x},
+ \qquad \xi_b=2a^{(i)}_b.
+\]
+Define
+\[
+ r_b(z)=\frac{b!\prod_{h<b}(z-\xi_h)}
+                    {\prod_{h=0}^{b}(1-hz)},
+ \qquad
+ s_b(j)=\frac{(1-b\xi_b)\binom{j}{b}}
+                    {\prod_{h=0}^{b}(1-\xi_h j)}.
+\]
+The exact finite identity
+\[
+ W_{xy}(T)=A_x\sum_{b=0}^{J-1}r_b(z_x)s_b(j)
+\]
+holds. All source functions $s_b(j)$ are two-integral; all displayed
+new denominators are units. The target coefficient $A_xr_b(z_x)$ is
+divisible by $2^{\omega_i(b)}$, where
+\[
+ \boxed{\ \omega_i(b)=R+b+F_i(b)+\nu_2(b!)\ }.
+\]
+In particular these weights are termwise no smaller than the previous
+factorial weights with the same base contribution $R$, and
+\[
+ \omega_i(b)=R+\left(3+\frac{3}{4^{i+1}-1}\right)b
+                 +O(\log(b+2)),
+\]
+with an absolute error constant. For $i=0$ the exact formula is
+$\omega_0(b)=R+2b+2\nu_2(b!)$.
+\end{theorem}
+
+\begin{proof}
+The crossing condition gives $e=\nu_2(t-y_0+x)\le i$. Since
+$\alpha\zeta$ has valuation at least $a+1$, one has
+$\nu_2(d_x)=e$, so $z_x$ is divisible by two and
+$\nu_2(A_x)\ge a+1-e\ge R$, as in the original integrality proof.
+For
+\[
+ w=z_x/2,\qquad w_0=2^i/(t-y_0+x),
+\]
+one has $w_0\in S_i$ and
+\[
+ \nu_2(w-w_0)\ge i+a+1-2e\ge a+1-i=R.
+\]
+Lemma~\ref{lem:annulus-extension} therefore yields
+\[
+ \nu_2\left(\prod_{h<b}(z_x-\xi_h)\right)
+ \ge b+F_i(b)\qquad (b<J=2^{R-2}).
+\]
+The remaining denominator factors in $r_b$ are units, proving the
+weight bound after multiplying by $b!$ and $A_x$.
+
+For completeness the identity is a telescoping Cauchy elimination.
+Let
+\[
+ U_b(z)=\prod_{h<b}\frac{z-\xi_h}{1-hz},\qquad
+ V_b(j)=\prod_{h<b}\frac{j-h}{1-\xi_hj}.
+\]
+Then direct multiplication gives
+\[
+ \frac{U_b(z)V_b(j)-U_{b+1}(z)V_{b+1}(j)}{1-zj}
+ =\frac{(1-b\xi_b)U_b(z)V_b(j)}{(1-bz)(1-\xi_bj)}
+ =r_b(z)s_b(j).
+\]
+For $0\le j<J$ the factor $V_J(j)$ vanishes. Summation gives
+$1/(1-zj)=\sum_{b<J}r_b(z)s_b(j)$, which becomes the kernel
+identity after multiplication by $A_x$. Since every $\xi_b$ is even,
+all source denominators and $1-b\xi_b$ are units. The binomial
+coefficient is evaluated as an ordinary integer: no factorial is
+divided in the residue ring. The comparison with the earlier weights
+uses $F_i(b)\ge\nu_2(b!)$, and the slope follows from
+Lemma~\ref{lem:annulus-slope} and
+$\nu_2(b!)=b-s_2(b)$.
+\end{proof}
+
+\paragraph{Algorithmic consequence and its scope.}
+Use one mode for each existing packet, tile, and index $b<J$, with
+source linear form $\sum_j s_b(j)X_{y_0+2^{i+1}j}$. Its source and
+target groups are unchanged. Hence the number of families, child
+network sizes, entry-evaluation mechanism, and canonical-lift
+invariant are unchanged. Truncate by the new exact weights.
+The admissible tuple set is contained in that certified by the old
+factorial weights, for every finite parameter choice. Precomputing
+the ordering and evaluating the integral features costs only a
+polynomial factor in the existing parameters. The uniform entropy
+analysis may still use slope three, while a fixed valuation level
+has the sharper slope
+$\gamma_i=3+3/(4^{i+1}-1)$. These slopes approach three as $i$ grows.
+Thus this result by itself is not a new logarithmic power in the
+worst-case SAT exponent, nor does it prove a uniform leading constant
+strictly better than the slope-three envelope over all levels.
+A valuation-dependent taper may exploit the local improvements, but
+that optimization is not assumed in the global theorem here.

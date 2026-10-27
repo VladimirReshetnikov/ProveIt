@@ -1,0 +1,925 @@
+{
+  "status": "Exact finite parameter checks plus analytic-certificate calculations. No end-to-end SAT execution or formal proof is claimed.",
+  "parameters": {
+    "groups": 54,
+    "decay": 9,
+    "epsilon": "1/132",
+    "guard": "ceil(log2(lambda+2))^2",
+    "leaf_threshold": "ceil(s/lambda)",
+    "bootstrap_shrink": "1/26"
+  },
+  "constants": {
+    "scope": "Coefficients in certified base-two upper bounds for normalized tensor size s; not measured runtimes or runtime ratios.",
+    "numerical_precision_digits": 50,
+    "values": {
+      "existing_schedule_geometric": "648.4410666487530507350509806149107056896790516736949027",
+      "existing_schedule_plus_factorial_Cauchy": "374.3776243832656353588500265912984173744220040111962318",
+      "new_fixed_schedule": "95.66394047289820886463320551480983761616076128278946338",
+      "new_fixed_schedule_general_formula": "95.66394047289820886463320551480983761616076128278946334",
+      "existing_certificate_divided_by_new": "6.778322777039042614876004806817478100495268827888737665",
+      "combined_prior_certificate_divided_by_new": "3.913466479977662915886929666313854406435820850718194443",
+      "r54_boundary_family_infimum": "94.74820225953413481253112513029367954187722139744702220"
+    },
+    "exact_new_expression": "9*pi*sqrt(22)/(2*ln(2))",
+    "exact_packing_margin_using_log_upper_bound": {
+      "numerator": "1",
+      "denominator": "550"
+    },
+    "log_upper_bound_integer_certificate": {
+      "inequality": "54^50 < 2^288",
+      "left": "416570000833893042728223986474194773342643943311300369327346514389950199517744910565376",
+      "right": "497323236409786642155382248146820840100456150797347717440463976893159497012533375533056",
+      "holds": true
+    }
+  },
+  "schedules": [
+    {
+      "lambda": "1000000",
+      "active_depth_count_upper_bound": 5,
+      "guard": 400,
+      "minimum_u": "1",
+      "maximum_a": "10520",
+      "a_upper_bound": {
+        "numerator": "115750",
+        "denominator": "11"
+      },
+      "packing_gap": {
+        "numerator": "-105952",
+        "denominator": "5"
+      },
+      "rounding_gap": {
+        "numerator": "4341448",
+        "denominator": "5"
+      },
+      "degree_gap": {
+        "numerator": "8894781",
+        "denominator": "10"
+      },
+      "relative_padding_excess_upper_bound": {
+        "numerator": "250001",
+        "denominator": "250000000000"
+      },
+      "tests": {
+        "all_retained_tapers_positive": true,
+        "cumulative_packet_bound": true,
+        "potential_packing_gap": false,
+        "padding_rounding_gap": true,
+        "new_packet_degree_at_most_Delta": true,
+        "bootstrap_shrink_at_most_one_over_26": true,
+        "guard_at_least_eight_log2_lambda": true
+      },
+      "all_sufficient_checks_pass": false,
+      "depths": [
+        {
+          "depth": 0,
+          "u": "7575",
+          "a": "7975",
+          "previous_a": "0",
+          "guard": 400,
+          "minimum_log2_D_t": "401",
+          "bootstrap_shrink_power": "1"
+        },
+        {
+          "depth": 1,
+          "u": "841",
+          "a": "9216",
+          "previous_a": "7975",
+          "guard": 400,
+          "minimum_log2_D_t": "8376",
+          "bootstrap_shrink_power": "26"
+        },
+        {
+          "depth": 2,
+          "u": "93",
+          "a": "9709",
+          "previous_a": "9216",
+          "guard": 400,
+          "minimum_log2_D_t": "9617",
+          "bootstrap_shrink_power": "676"
+        },
+        {
+          "depth": 3,
+          "u": "10",
+          "a": "10119",
+          "previous_a": "9709",
+          "guard": 400,
+          "minimum_log2_D_t": "10110",
+          "bootstrap_shrink_power": "17576"
+        },
+        {
+          "depth": 4,
+          "u": "1",
+          "a": "10520",
+          "previous_a": "10119",
+          "guard": 400,
+          "minimum_log2_D_t": "10520",
+          "bootstrap_shrink_power": "456976"
+        }
+      ]
+    },
+    {
+      "lambda": "100000000",
+      "active_depth_count_upper_bound": 6,
+      "guard": 729,
+      "minimum_u": "12",
+      "maximum_a": "856642",
+      "a_upper_bound": {
+        "numerator": "9423114",
+        "denominator": "11"
+      },
+      "packing_gap": {
+        "numerator": "3287104",
+        "denominator": "25"
+      },
+      "rounding_gap": {
+        "numerator": "2231871054",
+        "denominator": "25"
+      },
+      "degree_gap": {
+        "numerator": "891433561",
+        "denominator": "10"
+      },
+      "relative_padding_excess_upper_bound": {
+        "numerator": "25000001",
+        "denominator": "2500000000000000"
+      },
+      "tests": {
+        "all_retained_tapers_positive": true,
+        "cumulative_packet_bound": true,
+        "potential_packing_gap": true,
+        "padding_rounding_gap": true,
+        "new_packet_degree_at_most_Delta": true,
+        "bootstrap_shrink_at_most_one_over_26": true,
+        "guard_at_least_eight_log2_lambda": true
+      },
+      "all_sufficient_checks_pass": true,
+      "depths": [
+        {
+          "depth": 0,
+          "u": "757575",
+          "a": "758304",
+          "previous_a": "0",
+          "guard": 729,
+          "minimum_log2_D_t": "730",
+          "bootstrap_shrink_power": "1"
+        },
+        {
+          "depth": 1,
+          "u": "84175",
+          "a": "843208",
+          "previous_a": "758304",
+          "guard": 729,
+          "minimum_log2_D_t": "759034",
+          "bootstrap_shrink_power": "26"
+        },
+        {
+          "depth": 2,
+          "u": "9352",
+          "a": "853289",
+          "previous_a": "843208",
+          "guard": 729,
+          "minimum_log2_D_t": "843938",
+          "bootstrap_shrink_power": "676"
+        },
+        {
+          "depth": 3,
+          "u": "1039",
+          "a": "855057",
+          "previous_a": "853289",
+          "guard": 729,
+          "minimum_log2_D_t": "854019",
+          "bootstrap_shrink_power": "17576"
+        },
+        {
+          "depth": 4,
+          "u": "115",
+          "a": "855901",
+          "previous_a": "855057",
+          "guard": 729,
+          "minimum_log2_D_t": "855787",
+          "bootstrap_shrink_power": "456976"
+        },
+        {
+          "depth": 5,
+          "u": "12",
+          "a": "856642",
+          "previous_a": "855901",
+          "guard": 729,
+          "minimum_log2_D_t": "856631",
+          "bootstrap_shrink_power": "11881376"
+        }
+      ]
+    },
+    {
+      "lambda": "1000000000000",
+      "active_depth_count_upper_bound": 9,
+      "guard": 1600,
+      "minimum_u": "175",
+      "maximum_a": "8522741646",
+      "a_upper_bound": {
+        "numerator": "93750158400",
+        "denominator": "11"
+      },
+      "packing_gap": {
+        "numerator": "45450405952",
+        "denominator": "25"
+      },
+      "rounding_gap": {
+        "numerator": "22332381864802",
+        "denominator": "25"
+      },
+      "degree_gap": {
+        "numerator": "8914772583521",
+        "denominator": "10"
+      },
+      "relative_padding_excess_upper_bound": {
+        "numerator": "250000000001",
+        "denominator": "250000000000000000000000"
+      },
+      "tests": {
+        "all_retained_tapers_positive": true,
+        "cumulative_packet_bound": true,
+        "potential_packing_gap": true,
+        "padding_rounding_gap": true,
+        "new_packet_degree_at_most_Delta": true,
+        "bootstrap_shrink_at_most_one_over_26": true,
+        "guard_at_least_eight_log2_lambda": true
+      },
+      "all_sufficient_checks_pass": true,
+      "depths": [
+        {
+          "depth": 0,
+          "u": "7575757575",
+          "a": "7575759175",
+          "previous_a": "0",
+          "guard": 1600,
+          "minimum_log2_D_t": "1601",
+          "bootstrap_shrink_power": "1"
+        },
+        {
+          "depth": 1,
+          "u": "841750841",
+          "a": "8417511616",
+          "previous_a": "7575759175",
+          "guard": 1600,
+          "minimum_log2_D_t": "7575760776",
+          "bootstrap_shrink_power": "26"
+        },
+        {
+          "depth": 2,
+          "u": "93527871",
+          "a": "8511041087",
+          "previous_a": "8417511616",
+          "guard": 1600,
+          "minimum_log2_D_t": "8417513217",
+          "bootstrap_shrink_power": "676"
+        },
+        {
+          "depth": 3,
+          "u": "10391985",
+          "a": "8521434672",
+          "previous_a": "8511041087",
+          "guard": 1600,
+          "minimum_log2_D_t": "8511042688",
+          "bootstrap_shrink_power": "17576"
+        },
+        {
+          "depth": 4,
+          "u": "1154665",
+          "a": "8522590937",
+          "previous_a": "8521434672",
+          "guard": 1600,
+          "minimum_log2_D_t": "8521436273",
+          "bootstrap_shrink_power": "456976"
+        },
+        {
+          "depth": 5,
+          "u": "128296",
+          "a": "8522720833",
+          "previous_a": "8522590937",
+          "guard": 1600,
+          "minimum_log2_D_t": "8522592538",
+          "bootstrap_shrink_power": "11881376"
+        },
+        {
+          "depth": 6,
+          "u": "14255",
+          "a": "8522736688",
+          "previous_a": "8522720833",
+          "guard": 1600,
+          "minimum_log2_D_t": "8522722434",
+          "bootstrap_shrink_power": "308915776"
+        },
+        {
+          "depth": 7,
+          "u": "1583",
+          "a": "8522739871",
+          "previous_a": "8522736688",
+          "guard": 1600,
+          "minimum_log2_D_t": "8522738289",
+          "bootstrap_shrink_power": "8031810176"
+        },
+        {
+          "depth": 8,
+          "u": "175",
+          "a": "8522741646",
+          "previous_a": "8522739871",
+          "guard": 1600,
+          "minimum_log2_D_t": "8522741472",
+          "bootstrap_shrink_power": "208827064576"
+        }
+      ]
+    },
+    {
+      "lambda": "1000000000000000000000000",
+      "active_depth_count_upper_bound": 17,
+      "guard": 6400,
+      "minimum_u": "4088329",
+      "maximum_a": "8522727272727272325021",
+      "a_upper_bound": {
+        "numerator": "93750000000000001196800",
+        "denominator": "11"
+      },
+      "packing_gap": {
+        "numerator": "45454545454545570393952",
+        "denominator": "25"
+      },
+      "rounding_gap": {
+        "numerator": "22332386363636363762268427",
+        "denominator": "25"
+      },
+      "degree_gap": {
+        "numerator": "8914772727272727276749771",
+        "denominator": "10"
+      },
+      "relative_padding_excess_upper_bound": {
+        "numerator": "250000000000000000000001",
+        "denominator": "250000000000000000000000000000000000000000000000"
+      },
+      "tests": {
+        "all_retained_tapers_positive": true,
+        "cumulative_packet_bound": true,
+        "potential_packing_gap": true,
+        "padding_rounding_gap": true,
+        "new_packet_degree_at_most_Delta": true,
+        "bootstrap_shrink_at_most_one_over_26": true,
+        "guard_at_least_eight_log2_lambda": true
+      },
+      "all_sufficient_checks_pass": true,
+      "depths": [
+        {
+          "depth": 0,
+          "u": "7575757575757575757575",
+          "a": "7575757575757575763975",
+          "previous_a": "0",
+          "guard": 6400,
+          "minimum_log2_D_t": "6401",
+          "bootstrap_shrink_power": "1"
+        },
+        {
+          "depth": 1,
+          "u": "841750841750841750841",
+          "a": "8417508417508417521216",
+          "previous_a": "7575757575757575763975",
+          "guard": 6400,
+          "minimum_log2_D_t": "7575757575757575770376",
+          "bootstrap_shrink_power": "26"
+        },
+        {
+          "depth": 2,
+          "u": "93527871305649083426",
+          "a": "8511036288814066611042",
+          "previous_a": "8417508417508417521216",
+          "guard": 6400,
+          "minimum_log2_D_t": "8417508417508417527617",
+          "bootstrap_shrink_power": "676"
+        },
+        {
+          "depth": 3,
+          "u": "10391985700627675936",
+          "a": "8521428274514694293378",
+          "previous_a": "8511036288814066611042",
+          "guard": 6400,
+          "minimum_log2_D_t": "8511036288814066617443",
+          "bootstrap_shrink_power": "17576"
+        },
+        {
+          "depth": 4,
+          "u": "1154665077847519548",
+          "a": "8522582939592541819326",
+          "previous_a": "8521428274514694293378",
+          "guard": 6400,
+          "minimum_log2_D_t": "8521428274514694299779",
+          "bootstrap_shrink_power": "456976"
+        },
+        {
+          "depth": 5,
+          "u": "128296119760835505",
+          "a": "8522711235712302661231",
+          "previous_a": "8522582939592541819326",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522582939592541825727",
+          "bootstrap_shrink_power": "11881376"
+        },
+        {
+          "depth": 6,
+          "u": "14255124417870611",
+          "a": "8522725490836720538242",
+          "previous_a": "8522711235712302661231",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522711235712302667632",
+          "bootstrap_shrink_power": "308915776"
+        },
+        {
+          "depth": 7,
+          "u": "1583902713096734",
+          "a": "8522727074739433641376",
+          "previous_a": "8522725490836720538242",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522725490836720544643",
+          "bootstrap_shrink_power": "8031810176"
+        },
+        {
+          "depth": 8,
+          "u": "175989190344081",
+          "a": "8522727250728623991857",
+          "previous_a": "8522727074739433641376",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727074739433647777",
+          "bootstrap_shrink_power": "208827064576"
+        },
+        {
+          "depth": 9,
+          "u": "19554354482675",
+          "a": "8522727270282978480932",
+          "previous_a": "8522727250728623991857",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727250728623998258",
+          "bootstrap_shrink_power": "5429503678976"
+        },
+        {
+          "depth": 10,
+          "u": "2172706053630",
+          "a": "8522727272455684540962",
+          "previous_a": "8522727270282978480932",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727270282978487333",
+          "bootstrap_shrink_power": "141167095653376"
+        },
+        {
+          "depth": 11,
+          "u": "241411783736",
+          "a": "8522727272697096331098",
+          "previous_a": "8522727272455684540962",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727272455684547363",
+          "bootstrap_shrink_power": "3670344486987776"
+        },
+        {
+          "depth": 12,
+          "u": "26823531526",
+          "a": "8522727272723919869024",
+          "previous_a": "8522727272697096331098",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727272697096337499",
+          "bootstrap_shrink_power": "95428956661682176"
+        },
+        {
+          "depth": 13,
+          "u": "2980392391",
+          "a": "8522727272726900267815",
+          "previous_a": "8522727272723919869024",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727272723919875425",
+          "bootstrap_shrink_power": "2481152873203736576"
+        },
+        {
+          "depth": 14,
+          "u": "331154710",
+          "a": "8522727272727231428925",
+          "previous_a": "8522727272726900267815",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727272726900274216",
+          "bootstrap_shrink_power": "64509974703297150976"
+        },
+        {
+          "depth": 15,
+          "u": "36794967",
+          "a": "8522727272727268230292",
+          "previous_a": "8522727272727231428925",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727272727231435326",
+          "bootstrap_shrink_power": "1677259342285725925376"
+        },
+        {
+          "depth": 16,
+          "u": "4088329",
+          "a": "8522727272727272325021",
+          "previous_a": "8522727272727268230292",
+          "guard": 6400,
+          "minimum_log2_D_t": "8522727272727268236693",
+          "bootstrap_shrink_power": "43608742899428874059776"
+        }
+      ]
+    },
+    {
+      "lambda": "1000000000000000000000000000000000000000000000000",
+      "active_depth_count_upper_bound": 34,
+      "guard": 25600,
+      "minimum_u": "245145122790931",
+      "maximum_a": "8522727272727272727272727272727242084133248791",
+      "a_upper_bound": {
+        "numerator": "93750000000000000000000000000000000000009574400",
+        "denominator": "11"
+      },
+      "packing_gap": {
+        "numerator": "45454545454545454545454545454554279769624348192",
+        "denominator": "25"
+      },
+      "rounding_gap": {
+        "numerator": "22332386363636363636363636363636373227666293128417",
+        "denominator": "25"
+      },
+      "degree_gap": {
+        "numerator": "8914772727272727272727272727272727579158667512071",
+        "denominator": "10"
+      },
+      "relative_padding_excess_upper_bound": {
+        "numerator": "250000000000000000000000000000000000000000000001",
+        "denominator": "250000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "tests": {
+        "all_retained_tapers_positive": true,
+        "cumulative_packet_bound": true,
+        "potential_packing_gap": true,
+        "padding_rounding_gap": true,
+        "new_packet_degree_at_most_Delta": true,
+        "bootstrap_shrink_at_most_one_over_26": true,
+        "guard_at_least_eight_log2_lambda": true
+      },
+      "all_sufficient_checks_pass": true,
+      "depths": [
+        {
+          "depth": 0,
+          "u": "7575757575757575757575757575757575757575757575",
+          "a": "7575757575757575757575757575757575757575783175",
+          "previous_a": "0",
+          "guard": 25600,
+          "minimum_log2_D_t": "25601",
+          "bootstrap_shrink_power": "1"
+        },
+        {
+          "depth": 1,
+          "u": "841750841750841750841750841750841750841750841",
+          "a": "8417508417508417508417508417508417508417559616",
+          "previous_a": "7575757575757575757575757575757575757575783175",
+          "guard": 25600,
+          "minimum_log2_D_t": "7575757575757575757575757575757575757575808776",
+          "bootstrap_shrink_power": "26"
+        },
+        {
+          "depth": 2,
+          "u": "93527871305649083426861204638982416760194537",
+          "a": "8511036288814066591844369622147399925177779753",
+          "previous_a": "8417508417508417508417508417508417508417559616",
+          "guard": 25600,
+          "minimum_log2_D_t": "8417508417508417508417508417508417508417585217",
+          "bootstrap_shrink_power": "676"
+        },
+        {
+          "depth": 3,
+          "u": "10391985700627675936317911626553601862243837",
+          "a": "8521428274514694267780687533773953527040049190",
+          "previous_a": "8511036288814066591844369622147399925177779753",
+          "guard": 25600,
+          "minimum_log2_D_t": "8511036288814066591844369622147399925177805354",
+          "bootstrap_shrink_power": "17576"
+        },
+        {
+          "depth": 4,
+          "u": "1154665077847519548479767958505955762471537",
+          "a": "8522582939592541787329167301732459482802546327",
+          "previous_a": "8521428274514694267780687533773953527040049190",
+          "guard": 25600,
+          "minimum_log2_D_t": "8521428274514694267780687533773953527040074791",
+          "bootstrap_shrink_power": "456976"
+        },
+        {
+          "depth": 5,
+          "u": "128296119760835505386640884278439529163504",
+          "a": "8522711235712302622834553942616737922331735431",
+          "previous_a": "8522582939592541787329167301732459482802546327",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522582939592541787329167301732459482802571928",
+          "bootstrap_shrink_power": "11881376"
+        },
+        {
+          "depth": 6,
+          "u": "14255124417870611709626764919826614351500",
+          "a": "8522725490836720493446263569381657748946112531",
+          "previous_a": "8522711235712302622834553942616737922331735431",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522711235712302622834553942616737922331761032",
+          "bootstrap_shrink_power": "308915776"
+        },
+        {
+          "depth": 7,
+          "u": "1583902713096734634402973879980734927944",
+          "a": "8522727074739433590180897972355537729681066075",
+          "previous_a": "8522725490836720493446263569381657748946112531",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522725490836720493446263569381657748946138132",
+          "bootstrap_shrink_power": "8031810176"
+        },
+        {
+          "depth": 8,
+          "u": "175989190344081626044774875553414991993",
+          "a": "8522727250728623934262524017130413283096083668",
+          "previous_a": "8522727074739433590180897972355537729681066075",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727074739433590180897972355537729681091676",
+          "bootstrap_shrink_power": "208827064576"
+        },
+        {
+          "depth": 9,
+          "u": "19554354482675736227197208394823887999",
+          "a": "8522727270282978416938260244327621677919997267",
+          "previous_a": "8522727250728623934262524017130413283096083668",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727250728623934262524017130413283096109269",
+          "bootstrap_shrink_power": "5429503678976"
+        },
+        {
+          "depth": 10,
+          "u": "2172706053630637358577467599424876444",
+          "a": "8522727272455684470568897602905089277344899311",
+          "previous_a": "8522727270282978416938260244327621677919997267",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727270282978416938260244327621677920022868",
+          "bootstrap_shrink_power": "141167095653376"
+        },
+        {
+          "depth": 11,
+          "u": "241411783736737484286385288824986271",
+          "a": "8522727272697096254305635087191474566169911182",
+          "previous_a": "8522727272455684470568897602905089277344899311",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272455684470568897602905089277344924912",
+          "bootstrap_shrink_power": "3670344486987776"
+        },
+        {
+          "depth": 12,
+          "u": "26823531526304164920709476536109585",
+          "a": "8522727272723919785831939252112184042706046367",
+          "previous_a": "8522727272697096254305635087191474566169911182",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272697096254305635087191474566169936783",
+          "bootstrap_shrink_power": "95428956661682176"
+        },
+        {
+          "depth": 13,
+          "u": "2980392391811573880078830726234398",
+          "a": "8522727272726900178223750825992262873432306365",
+          "previous_a": "8522727272723919785831939252112184042706046367",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272723919785831939252112184042706071968",
+          "bootstrap_shrink_power": "2481152873203736576"
+        },
+        {
+          "depth": 14,
+          "u": "331154710201285986675425636248266",
+          "a": "8522727272727231332933952111978938299068580231",
+          "previous_a": "8522727272726900178223750825992262873432306365",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272726900178223750825992262873432331966",
+          "bootstrap_shrink_power": "64509974703297150976"
+        },
+        {
+          "depth": 15,
+          "u": "36794967800142887408380626249807",
+          "a": "8522727272727268127901752254866346679694855638",
+          "previous_a": "8522727272727231332933952111978938299068580231",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727231332933952111978938299068605832",
+          "bootstrap_shrink_power": "1677259342285725925376"
+        },
+        {
+          "depth": 16,
+          "u": "4088329755571431934264514027756",
+          "a": "8522727272727272216231507826298280944208908994",
+          "previous_a": "8522727272727268127901752254866346679694855638",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727268127901752254866346679694881239",
+          "bootstrap_shrink_power": "43608742899428874059776"
+        },
+        {
+          "depth": 17,
+          "u": "454258861730159103807168225306",
+          "a": "8522727272727272670490369556457384751377159900",
+          "previous_a": "8522727272727272216231507826298280944208908994",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272216231507826298280944208934595",
+          "bootstrap_shrink_power": "1133827315385150725554176"
+        },
+        {
+          "depth": 18,
+          "u": "50473206858906567089685358367",
+          "a": "8522727272727272720963576415363951841062543867",
+          "previous_a": "8522727272727272670490369556457384751377159900",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272670490369556457384751377185501",
+          "bootstrap_shrink_power": "29479510200013918864408576"
+        },
+        {
+          "depth": 19,
+          "u": "5608134095434063009965039818",
+          "a": "8522727272727272726571710510798014851027609285",
+          "previous_a": "8522727272727272720963576415363951841062543867",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272720963576415363951841062569468",
+          "bootstrap_shrink_power": "766467265200361890474622976"
+        },
+        {
+          "depth": 20,
+          "u": "623126010603784778885004424",
+          "a": "8522727272727272727194836521401799629912639309",
+          "previous_a": "8522727272727272726571710510798014851027609285",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272726571710510798014851027634886",
+          "bootstrap_shrink_power": "19928148895209409152340197376"
+        },
+        {
+          "depth": 21,
+          "u": "69236223400420530987222713",
+          "a": "8522727272727272727264072744802220160899887622",
+          "previous_a": "8522727272727272727194836521401799629912639309",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727194836521401799629912664910",
+          "bootstrap_shrink_power": "518131871275444637960845131776"
+        },
+        {
+          "depth": 22,
+          "u": "7692913711157836776358079",
+          "a": "8522727272727272727271765658513377997676271301",
+          "previous_a": "8522727272727272727264072744802220160899887622",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727264072744802220160899913223",
+          "bootstrap_shrink_power": "13471428653161560586981973426176"
+        },
+        {
+          "depth": 23,
+          "u": "854768190128648530706453",
+          "a": "8522727272727272727272620426703506646207003354",
+          "previous_a": "8522727272727272727271765658513377997676271301",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727271765658513377997676296902",
+          "bootstrap_shrink_power": "350257144982200575261531309080576"
+        },
+        {
+          "depth": 24,
+          "u": "94974243347627614522939",
+          "a": "8522727272727272727272715400946854273821551893",
+          "previous_a": "8522727272727272727272620426703506646207003354",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272620426703506646207028955",
+          "bootstrap_shrink_power": "9106685769537214956799814036094976"
+        },
+        {
+          "depth": 25,
+          "u": "10552693705291957169215",
+          "a": "8522727272727272727272725953640559565778746708",
+          "previous_a": "8522727272727272727272715400946854273821551893",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272715400946854273821577494",
+          "bootstrap_shrink_power": "236773830007967588876795164938469376"
+        },
+        {
+          "depth": 26,
+          "u": "1172521522810217463246",
+          "a": "8522727272727272727272727126162082375996235554",
+          "previous_a": "8522727272727272727272725953640559565778746708",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272725953640559565778772309",
+          "bootstrap_shrink_power": "6156119580207157310796674288400203776"
+        },
+        {
+          "depth": 27,
+          "u": "130280169201135273694",
+          "a": "8522727272727272727272727256442251577131534848",
+          "previous_a": "8522727272727272727272727126162082375996235554",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272727126162082375996261155",
+          "bootstrap_shrink_power": "160059109085386090080713531498405298176"
+        },
+        {
+          "depth": 28,
+          "u": "14475574355681697077",
+          "a": "8522727272727272727272727270917825932813257525",
+          "previous_a": "8522727272727272727272727256442251577131534848",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272727256442251577131560449",
+          "bootstrap_shrink_power": "4161536836220038342098551818958537752576"
+        },
+        {
+          "depth": 29,
+          "u": "1608397150631299675",
+          "a": "8522727272727272727272727272526223083444582800",
+          "previous_a": "8522727272727272727272727270917825932813257525",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272727270917825932813283126",
+          "bootstrap_shrink_power": "108199957741720996894562347292921981566976"
+        },
+        {
+          "depth": 30,
+          "u": "178710794514588852",
+          "a": "8522727272727272727272727272704933877959197252",
+          "previous_a": "8522727272727272727272727272526223083444582800",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272727272526223083444608401",
+          "bootstrap_shrink_power": "2813198901284745919258621029615971520741376"
+        },
+        {
+          "depth": 31,
+          "u": "19856754946065428",
+          "a": "8522727272727272727272727272724790632905288280",
+          "previous_a": "8522727272727272727272727272704933877959197252",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272727272704933877959222853",
+          "bootstrap_shrink_power": "73143171433403393900724146770015259539275776"
+        },
+        {
+          "depth": 32,
+          "u": "2206306105118380",
+          "a": "8522727272727272727272727272726996939010432260",
+          "previous_a": "8522727272727272727272727272724790632905288280",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272727272724790632905313881",
+          "bootstrap_shrink_power": "1901722457268488241418827816020396748021170176"
+        },
+        {
+          "depth": 33,
+          "u": "245145122790931",
+          "a": "8522727272727272727272727272727242084133248791",
+          "previous_a": "8522727272727272727272727272726996939010432260",
+          "guard": 25600,
+          "minimum_log2_D_t": "8522727272727272727272727272726996939010457861",
+          "bootstrap_shrink_power": "49444783888980694276889523216530315448550424576"
+        }
+      ]
+    }
+  ],
+  "family_optimization": {
+    "scope": "Numerical stationary point and boundary infima of this analysis family; not a claim of globally optimal contraction or an implemented boundary schedule.",
+    "continuous_stationary_groups": 53.70256875292617,
+    "best_integer_group_samples": [
+      {
+        "groups": 54,
+        "decay": 8.999999999999998,
+        "epsilon_boundary": 0.007722904127619556,
+        "boundary_coefficient": 94.74820225953414
+      },
+      {
+        "groups": 53,
+        "decay": 8.888543099974477,
+        "epsilon_boundary": 0.007747101504628673,
+        "boundary_coefficient": 94.74862901940331
+      },
+      {
+        "groups": 55,
+        "decay": 9.110770967978954,
+        "epsilon_boundary": 0.007699225172781661,
+        "boundary_coefficient": 94.74979050733114
+      },
+      {
+        "groups": 52,
+        "decay": 8.776382955329126,
+        "epsilon_boundary": 0.007771837676863778,
+        "boundary_coefficient": 94.75122702027355
+      },
+      {
+        "groups": 56,
+        "decay": 9.220872584116892,
+        "epsilon_boundary": 0.007676045341014721,
+        "boundary_coefficient": 94.75325018963795
+      },
+      {
+        "groups": 51,
+        "decay": 8.66350147401514,
+        "epsilon_boundary": 0.007797134168832256,
+        "boundary_coefficient": 94.75616651273755
+      },
+      {
+        "groups": 57,
+        "decay": 9.330320739724163,
+        "epsilon_boundary": 0.007653346335844178,
+        "boundary_coefficient": 94.75844918850466
+      },
+      {
+        "groups": 50,
+        "decay": 8.549879733383484,
+        "epsilon_boundary": 0.007823013740776517,
+        "boundary_coefficient": 94.76363329647822
+      }
+    ]
+  }
+}

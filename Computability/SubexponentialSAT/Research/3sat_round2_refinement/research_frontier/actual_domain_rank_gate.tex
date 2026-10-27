@@ -1,0 +1,99 @@
+% A source-compatible clarification, not a new order-level SAT algorithm.
+\section{What the actual Cauchy rows can and cannot improve}
+The density-refinement intake already proves the Smith profile below
+(its Section 9.4, equation labelled \texttt{eq:smith}). We do not claim
+that theorem as new. The following connects it explicitly to actual
+packet slots and states the resulting exact approximation obstruction.
+All rank statements concern integral separated approximations to this
+local kernel, not the complexity of SAT.
+
+\paragraph{Actual packet subblock.}
+At a retained node $t=2^i$, choose the allowed interpolation value
+$\zeta=1$, so $T=2^i+2^{a+1}$. In a packet whose two labels differ
+in coordinate $i$, take slots
+$x=2^{i+1}k$ and $y=2^{i+1}j$, with $0\le k,j<J=2^{a-i-1}$.
+Both slots have bit $i$ equal to zero, so these are crossing ports.
+Set
+\[
+ \delta=1+2^{a+1-i},\qquad
+ A=2^{-i}\mathcal C(T)/\mathcal C'(0).
+\]
+Then their crossing block is exactly
+\[
+ W_{2^{i+1}k,2^{i+1}j}(T)
+ =A K_{kj},\qquad K_{kj}=\frac1{\delta+2(k-j)}.
+\]
+All denominators of $K$ are units. Moreover $v_2(A)=a+1-i$:
+in the product for $\mathcal C(t+2^{a+1})$, the factor belonging to
+$t$ has valuation $a+1$, every other factor has its unshifted
+valuation, and the product of these other valuations equals that of
+$\mathcal C'(0)$ by the complete residue grid.
+The statement uses a filled, permissible packet, not a promise that
+all inputs contain one. Such a block is enough to test claims that
+hold uniformly for all permitted local kernels.
+
+\paragraph{Exact invariant factors.}
+For the $J\times J$ matrix $K$, the Smith valuations are
+\[
+ e_b=2b+2v_2(b!)=4b-2s_2(b),\qquad 0\le b<J.
+\]
+Indeed, an $q$-minor on distinct integer row and column indices has
+valuation
+\[
+ q(q-1)+v_2\!\prod_{k<l}(x_l-x_k)
+       +v_2\!\prod_{k<l}(y_l-y_k).
+\]
+The Vandermonde on any $q$ integers is divisible by
+$\prod_{b<q}b!$, as follows by factoring $b!$ from column $b$ of
+the binomial-polynomial evaluation determinant. Consecutive indices
+attain equality. Thus the $q$th determinantal ideal has valuation
+$q(q-1)+2\sum_{b<q}v_2(b!)$; successive differences give $e_b$.
+The same proof applies over the unramified extension used by the
+contraction algorithm.
+
+\paragraph{Exact modular approximation rank.}
+For any integer $h>0$, the least inner dimension $r$ in an integral
+factorization $K\equiv UV\pmod {2^h}$ is
+\[
+ r_h=\#\{b<J:e_b<h\}.
+\]
+To prove the lower bound, apply the integral invertible Smith row
+and column operations. If a rank-at-most-$r$ matrix approximated the
+diagonal Smith matrix to precision $h>e_r$, consider its first
+$(r+1)\times(r+1)$ principal block. Its determinant is zero. But the
+unperturbed determinant has valuation $\sum_{b\le r}e_b$; every
+term involving $k\ge1$ error entries has valuation at least
+\[
+ kh+\sum_{b=0}^{r-k}e_b
+ >\sum_{b=0}^{r}e_b.
+\]
+Such higher-valuation terms cannot cancel the unperturbed determinant.
+This is a contradiction. Conversely, retain exactly the Smith diagonal
+entries below precision $h$ and discard the others, then undo the
+integral changes of basis.
+For the actual unnormalized block, replace $h$ by $P-(a+1-i)$
+when approximation precision is $P>a+1-i$.
+
+Consequently, a uniform integral separated expansion whose mode
+coefficients have nondecreasing guaranteed valuations $w_b$ cannot
+have $w_r>e_r$ on the normalized block: retaining its first $r$ terms
+would contradict the rank bound. In particular, superlinear growth
+$w_b/b\to\infty$ is impossible by a mere integral separated-basis
+change on this local family. This leaves open nonseparated summation,
+correlated cancellation, new deformations, or a different recursive
+representation.
+
+\paragraph{Why slope three does not transfer automatically.}
+The factorial-Cauchy intake proves weights asymptotic to $3b$ using
+an enlarged auxiliary row domain. It is incorrect to assert that the
+actual reciprocal rows contain every even residue. For example,
+$t=1$, $i=0$, and tile $y_0=0$ give crossing rows $x=2k$ and
+$z_x=2/(1+2k+2^{a+1})\equiv2\pmod4$. For $i=1$, $t=2$, $y_0=0$,
+and $a\ge3$, the possible rows are either $z_x\equiv2\pmod4$ or
+$z_x\equiv12\pmod{16}$; residue $4\pmod{16}$ is absent.
+These are congruence exclusions even at arbitrarily large packet size.
+Thus the exact $4b+O(\log b)$ subblock obstruction is valid, whereas
+an optimal $3b+O(\log b)$ obstruction on all actual rows needs a
+separate proof. Splitting into additional row residue classes can also
+increase mode-family multiplicity, so a locally larger slope alone
+is not an end-to-end speedup.
