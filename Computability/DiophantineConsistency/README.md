@@ -199,11 +199,19 @@ arbitrary internal data, with the actual physical file and rotated fetch loop.
 Independent builds match both objects/full logs and22 standard-only reports.
 Complete AX dispatch/root execution and literal215 simulation remain open.
 
+The [internal common-unit theorem](reviews/arithmetic-pell-common-unit-root.md)
+now derives one base, both positive internal Pell indices and a positive
+scale below the original base from the actual norm. Both composition
+identities hold at every internal query index by Sigma1 induction.
+Independent builds match both objects/full logs and four standard-only
+reports. Strong divisibility and full relaxed integrality remain open.
+
 The [internal gcd normalization](reviews/arithmetic-gcd-normalization-root.md)
 now derives a fixed total unique Sigma1 gcd graph and the actual relaxed-norm
 factorization into a common discriminant. No gcd, coprimality or minimality
 premise is supplied. Independent builds match both objects/full logs and
-eight standard-only reports. Common-unit composition and full integrality remain.
+eight standard-only reports. The later common-unit packet above supplies
+composition; full integrality remains open.
 
 The [internal known-unit classification](reviews/arithmetic-pell-known-unit-root.md)
 now derives one least positive unit from a bounded search below a known

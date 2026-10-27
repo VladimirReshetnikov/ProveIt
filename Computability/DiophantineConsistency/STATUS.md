@@ -40,12 +40,21 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [internal common-unit theorem](reviews/arithmetic-pell-common-unit-root.md)
+now derives one Pell base, both positive internal indices and a positive
+scale below the original base from the actual relaxed norm. Simultaneous
+Sigma1 induction proves both composition identities at every internal query
+index, including0. Independent fresh pairs match both objects/full logs and
+four standard-only reports. Strong divisibility, large-index forcing, cubic
+congruences and full relaxed integrality remain open.
+
 The [internal gcd normalization](reviews/arithmetic-gcd-normalization-root.md)
 now proves a fixed Sigma1 total unique gcd graph and derives the actual
 positive-factor normalization of R²+D=D*f² from its own coefficient witness.
 No supplied gcd, coprimality or minimum is used. Independent fresh pairs
-match both objects/full logs and eight standard-only reports. Common-unit
-composition, strong divisibility and full relaxed integrality remain open.
+match both objects/full logs and eight standard-only reports. The later
+common-unit theorem above supplies composition; strong divisibility and
+full relaxed integrality remain open.
 
 The [actual internal augmented comprehension proof](reviews/validator-seed-raw-comprehension222-root.md)
 now supplies an actual source Proof certificate for every internally typed
