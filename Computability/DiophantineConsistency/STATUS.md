@@ -2,6 +2,13 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [HA interval checkpoint](reviews/ha-strict-intervals-root.md) now has
+two independent successful builds and twelve propext/Quot.sound-only
+reports. Its literal existential-witness proof establishes s<S t iff
+(s<t∨s=t), retaining arbitrary terms and shifted finite contexts. The
+bounded-quantifier decision proof and actual checker normalization remain
+separate work.
+
 The [actual C222 word tick](reviews/arithmetic-command-tickperm222-peer.md)
 now has independent source review and two fresh builds with thirteen
 standard-only reports. Active ticks halt or strictly decrease the shifted

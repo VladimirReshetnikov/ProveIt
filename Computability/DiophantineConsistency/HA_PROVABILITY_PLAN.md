@@ -565,6 +565,15 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [HA interval laws](reviews/ha-strict-intervals-root.md) now prove
+the empty interval, s<S s and both actual HA implications for
+s<S t iff (s<t∨s=t). Two independent fresh builds pass twelve
+propext/Quot.sound-only reports. The
+[next bounded-quantifier plan](research/ha-bounded-quantifier-next-leaf-audit.md)
+retains arbitrary matrices, bound shifts and a literal uniform decision
+formula. It also keeps the actual Δ1 fixed-point proof checker distinct
+from a syntactically bounded matrix; that normalization remains unproved.
+
 The [HA strict-order decision](reviews/foundation-ha-order-decidable-root.md)
 now proves the actual ordinary decision formula and double-negation
 stability for arbitrary terms, with capture-safe transport and finite

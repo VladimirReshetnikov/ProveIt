@@ -21,6 +21,11 @@ HA now [decides the interpreted strict-order atom](reviews/foundation-ha-order-d
 and proves its double-negation stability for arbitrary terms. Two independent
 builds pass twelve reports using only propext and Quot.sound. This supplies
 an atomic prerequisite for the pending bounded-checker comparison.
+The [strict interval laws](reviews/ha-strict-intervals-root.md) now prove
+the empty interval and the exact successor split inside HA, with twelve
+independently checked propext/Quot.sound-only reports. They support the
+next bounded-quantifier construction; literal checker normalization remains
+a separate obligation.
 An [explicit translated ZFC consistency sentence](reviews/foundation-zfc-consistency-nat-root.md)
 now has a checked standard-Nat meaning equal to the actual syntactic
 ConZFC proposition, including Choice. Its independent two-leaf replay
