@@ -975,3 +975,18 @@ avoid a false coprimality premise. The q=3,Y=27,X=1,t=81 control shows
 that retaining q^5 divisibility would be incorrect on this generic domain.
 This remains an external finite algebra lemma, separate from internal HA
 proof-existence obligations.
+
+
+## Actual C222 fixed command blocks accepted
+
+The [actual C222 finite blocks](reviews/arithmetic-command-blockperm222-root.md)
+now prove exact cons execution, finite NIP popping, discard, zero-safe
+counter loading and AX setup with its real old-counter arguments.
+Independent builds pass eighteen standard-only reports and identical
+objects. Selection/rule contracts and unrestricted rho8 compilation remain
+separate.
+
+The physical AX setup retains u≤a explicitly. The actual checker accepts
+unrestricted rho8 parameters, so its later represented uniform compiler
+must implement the finite dominated-implication derivation instead of
+assuming this guard. No old C254 runtime semantics is imported.

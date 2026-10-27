@@ -63,6 +63,13 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [actual C222 finite blocks](reviews/arithmetic-command-blockperm222-root.md)
+now prove exact cons execution, finite NIP popping, discard, zero-safe
+counter loading and AX setup with its real old-counter arguments.
+Independent builds pass eighteen standard-only reports and identical
+objects. Selection/rule contracts and unrestricted rho8 compilation remain
+separate.
+
 The [actual C222 append execution theorem](reviews/arithmetic-command-compositionperm222-peer.md)
 now proves exact evaluation composition over all internal words and states,
 using a bounded stopped-pair invariant. Independent builds pass thirteen
