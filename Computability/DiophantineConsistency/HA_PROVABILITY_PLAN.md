@@ -1086,3 +1086,18 @@ and the equation/source arithmetic proof remain separate.
 Free-variable support is proved for arbitrary environments, with capture-safe
 lowering under both quantifiers. The standard-Nat theorem is a separate
 semantic induction and does not turn external truth into HA derivability.
+
+
+## Fixed finite C222 circuit graphs accepted
+
+The [actual C222 finite circuit graphs](reviews/arithmetic-command-circuitperm222-peer.md)
+now represent every fixed numeric circuit by a parameter-free five-slot Σ1
+graph and bind current word/leaf expressions exactly. Independent builds
+pass nine standard-only reports and identical objects. The unrestricted
+rho8 compiler still needs one circuit chosen outside all model/input
+quantifiers; pointwise word existence alone does not discharge it.
+
+The syntax includes truncated subtraction and the zero-safe counter loader.
+Its graph is fixed before a model or its four inputs is supplied. Actual
+MP and AX tags, y/x payload order and the direct-leaf guard remain explicit.
+No internal circuit-code interpreter or proof history is assumed.

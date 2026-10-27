@@ -123,6 +123,13 @@ now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
 plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. The next runtime
 checkpoint proves that evaluation of the concatenated words composes.
+The [actual C222 finite circuit graphs](reviews/arithmetic-command-circuitperm222-peer.md)
+now represent every fixed numeric circuit by a parameter-free five-slot Σ1
+graph and bind current word/leaf expressions exactly. Independent builds
+pass nine standard-only reports and identical objects. The unrestricted
+rho8 compiler still needs one circuit chosen outside all model/input
+quantifiers; pointwise word existence alone does not discharge it.
+
 The [actual C222 GEN/MP rules](reviews/arithmetic-command-ruleperm222-root.md)
 now preserve all-top/all-stack contracts, including GEN at zero/code1 and
 both MP false-cache halt branches. Independent builds pass seven standard-only
