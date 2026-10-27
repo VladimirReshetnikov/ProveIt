@@ -931,3 +931,62 @@ replacement, word draining, run addition and terminal uniqueness. It needs
 no numerical lower bound on append codes and no least stopping time. It is
 an internal IΣ1 runtime theorem, not yet the full represented proof compiler
 or an HA equation equivalence.
+
+
+## Signed adaptive first-carrier bootstrap accepted
+
+The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
+now derives integral positive quotient witnesses and the signed Pell-root
+bound directly from literal A0, before source restoration. Independent
+builds pass five standard-only reports with identical objects. Main-Pell,
+rank and power restoration remain open; no lower-degree endpoint is claimed.
+
+This is an external integer theorem on the full generic signed carrier
+domain. It does not assume the desired positive source or promote external
+algebra into an internal arithmetic proof.
+
+
+## Actual syntactic Σ1 ordinary/GG comparison accepted
+
+The [actual Σ1 ordinary/GG theorem](reviews/foundation-ha-sigma-one-gg-root.md)
+now proves HA equivalence of the literal GG image with double negation of
+the ordinary positive formula, for arbitrary environments. Independent
+builds pass eleven standard-only reports and identical objects. Fixed ZFC
+consistency specialization and the full equation equivalence remain open.
+
+All fourteen actual hierarchy constructors are covered, with the Π0 base
+discharged by existing bounded decisions and the bounded universal by finite
+DNS. The ordinary positive conclusion remains double-negated. Next specialize
+the actual retained provability predicate and normalize its negation; a
+proof of the current equation equivalence in PA still remains separate.
+
+
+## Free-J factor-three cancellation accepted
+
+The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
+now proves q^4 divides t from q^3 dividing Y and q^5 dividing
+(4Y(X+1)+3)t, for all signed integers, including q=0 and3 dividing q.
+Independent builds pass four propext/Quot.sound-only reports with identical
+objects. Its index-difference client is a main-Pell transfer prerequisite;
+no new equation endpoint is claimed.
+
+The literal finite geometric inverse and integer remainder modulo3 proof
+avoid a false coprimality premise. The q=3,Y=27,X=1,t=81 control shows
+that retaining q^5 divisibility would be incorrect on this generic domain.
+This remains an external finite algebra lemma, separate from internal HA
+proof-existence obligations.
+
+
+## Actual C222 fixed command blocks accepted
+
+The [actual C222 finite blocks](reviews/arithmetic-command-blockperm222-root.md)
+now prove exact cons execution, finite NIP popping, discard, zero-safe
+counter loading and AX setup with its real old-counter arguments.
+Independent builds pass eighteen standard-only reports and identical
+objects. Selection/rule contracts and unrestricted rho8 compilation remain
+separate.
+
+The physical AX setup retains u≤a explicitly. The actual checker accepts
+unrestricted rho8 parameters, so its later represented uniform compiler
+must implement the finite dominated-implication derivation instead of
+assuming this guard. No old C254 runtime semantics is imported.

@@ -63,6 +63,13 @@ an explicit vacuity guard for hypotheses and deriving it for a shifted
 negative source hypothesis. Independent builds pass thirteen standard-only
 reports with identical objects. General source-proof interpretation remains open.
 
+The [actual C222 finite blocks](reviews/arithmetic-command-blockperm222-root.md)
+now prove exact cons execution, finite NIP popping, discard, zero-safe
+counter loading and AX setup with its real old-counter arguments.
+Independent builds pass eighteen standard-only reports and identical
+objects. Selection/rule contracts and unrestricted rho8 compilation remain
+separate.
+
 The [actual C222 append execution theorem](reviews/arithmetic-command-compositionperm222-peer.md)
 now proves exact evaluation composition over all internal words and states,
 using a bounded stopped-pair invariant. Independent builds pass thirteen
@@ -76,6 +83,19 @@ plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. Evaluation composition is accepted above; fixed command blocks and
 compiler/proof-state invariants remain subsequent checkpoints.
 
+The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
+now proves q^4 divides t from q^3 dividing Y and q^5 dividing
+(4Y(X+1)+3)t, for all signed integers, including q=0 and3 dividing q.
+Independent builds pass four propext/Quot.sound-only reports with identical
+objects. Its index-difference client is a main-Pell transfer prerequisite;
+no new equation endpoint is claimed.
+
+The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
+now derives integral positive quotient witnesses and the signed Pell-root
+bound directly from literal A0, before source restoration. Independent
+builds pass five standard-only reports with identical objects. Main-Pell,
+rank and power restoration remain open; no lower-degree endpoint is claimed.
+
 The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
 now proves all22 unconditional row identities and both positive existence
 maps at the current ports, deriving old-z>1 from the supplied source itself.
@@ -83,11 +103,17 @@ Four independent fresh builds pass eighteen standard-only reports with
 identical objects. The historical lower-degree carrier transfer remains
 separate; no equation metric or HA endpoint is promoted.
 
+The [actual Σ1 ordinary/GG theorem](reviews/foundation-ha-sigma-one-gg-root.md)
+now proves HA equivalence of the literal GG image with double negation of
+the ordinary positive formula, for arbitrary environments. Independent
+builds pass eleven standard-only reports and identical objects. Fixed ZFC
+consistency specialization and the full equation equivalence remain open.
+
 The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
 now proves both implications for an arbitrary matrix, with no decision
 premise. Independent builds pass eight propext/Quot.sound-only reports and
-identical objects. Actual hierarchy-one ordinary/GG comparison and the
-full HA equation equivalence remain open.
+identical objects. Fixed consistency specialization and the full HA equation equivalence
+remain open.
 
 The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
 now passes two independent builds and seventeen propext/Quot.sound-only
