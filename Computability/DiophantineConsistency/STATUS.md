@@ -40,6 +40,15 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
+now give the full plus/minus classes for arbitrary internal indices, signed
+doubled step-down with the inclusive2p=m endpoint, and actual odd-index
+witnesses. The target0/base2 exception is demonstrated; positive targets
+need no exception. Independent fresh pairs reproduce both objects/full logs
+and15 standard-only reports. Strong integrality, Qh congruences, carrier
+indices and simultaneous witnesses remain; the overall40–60% estimate above
+is unchanged by accepting this component.
+
 The [actual internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
 now gives fixed total Sigma1 constructor graphs,recognized closed instances,
 and explicit represented open proofs for every internally typed two-slot
@@ -81,8 +90,8 @@ induction over arbitrary internal period counts and starts, both actual
 remainder identities, guarded reflection and residue injectivity for i,j<=n.
 The n=0/modulus1 edge is covered. Independent fresh pairs match both objects,
 full logs and ten standard-only reports; ROOT reauthenticates without a third
-compile. Full plus/minus residue classes, first-norm Q(Q+1) classification,
-simultaneous witnesses and final PA/HA composition remain open.
+compile. The later residue-class and first-norm packets above extend this
+checkpoint. Simultaneous witnesses and final PA/HA composition remain open.
 
 The [actual DagPerm/p215 comparison](reviews/arithmetic-control-bisim-perm215-root.md)
 now proves the two represented control interpreters halt together for every

@@ -177,6 +177,13 @@ arbitrary internal data, with the actual physical file and rotated fetch loop.
 Independent builds match both objects/full logs and22 standard-only reports.
 Complete AX dispatch/root execution and literal215 simulation remain open.
 
+The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
+now cover arbitrary internal indices, the signed doubled step including2p=m,
+and odd-index witnesses. Independent fresh builds match both objects/full
+logs and all15 standard-only reports. The smallest-base exception at target0
+is exhibited explicitly; positive targets retain the full result. Strong
+integrality, carrier indices and simultaneous witnesses remain before PA/HA.
+
 The [actual internal first-norm classification](reviews/arithmetic-pell-first-norm-root.md)
 now derives the doubled ordinate and full internal sequence index for
 x²=1+Q(Q+1)k² by genuine bounded Sigma1 descent. It also supplies the2Q/4Q

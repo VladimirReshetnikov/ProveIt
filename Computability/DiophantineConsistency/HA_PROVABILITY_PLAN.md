@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
+now derive full arbitrary-index plus/minus classes, the signed doubled step
+with2p≤m, and odd-index witnesses in every IΣ1 model. The local growth gap
+is guarded by n≥2; the excluded target0/base2 collision is proved separately.
+Independent fresh pairs reproduce both objects/full logs and15 standard-only
+reports. Strong integrality, Qh identities, first/main carrier indices,
+cofinal simultaneous witnesses and final PA/HA assembly remain open.
+
 The [uniform internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
 now constructs the exact represented open proof of every internally typed
 full-seed body,with total raw constructor graphs and actual closed-instance
@@ -48,8 +56,8 @@ now supplies both nonnegative quotient witnesses after any internal number
 of4n periods, actual model remainders and first-window residue injectivity.
 It uses genuine Sigma1 induction and justified subtraction, including the
 n=0/modulus1 case. Independent builds reproduce both objects/full logs and
-ten standard-only reports. Arbitrary residue classes, first-norm Q(Q+1)
-classification and simultaneous carrier witnesses remain before PA/HA assembly.
+ten standard-only reports. The later residue-class and first-norm packets
+above extend this checkpoint; simultaneous carrier witnesses still remain.
 
 The [actual internal DagPerm/p215 bisimulation](reviews/arithmetic-control-bisim-perm215-root.md)
 now compares both represented control runs with arbitrary internal register
