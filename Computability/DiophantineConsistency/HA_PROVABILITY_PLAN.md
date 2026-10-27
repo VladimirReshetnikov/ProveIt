@@ -1080,8 +1080,8 @@ contracts do not by themselves construct a represented proof-word history.
 The [ordinary predicate syntax/semantics theorem](reviews/foundation-pahf-ordinary-semantics-root.md)
 now proves actual closedness and arbitrary-premodel valuation independence,
 plus exact ordinary interpretation over Nat. Independent builds pass eight
-standard-only reports and identical objects. Fixed consistency specialization
-and the equation/source arithmetic proof remain separate.
+standard-only reports and identical objects. The fixed consistency specialization is accepted below; the
+equation/source arithmetic proof remains open.
 
 Free-variable support is proved for arbitrary environments, with capture-safe
 lowering under both quantifiers. The standard-Nat theorem is a separate
@@ -1120,3 +1120,24 @@ and index comparison are consequences, not source assumptions. The full
 low-degree graph still needs strong-index identification and a converse;
 these external native arithmetic results also need internal arithmetic
 formalization before contributing an actual HA proof-existence endpoint.
+
+## Retained ordinary consistency target semantics accepted
+
+The [fixed ordinary consistency semantics](reviews/foundation-ha-consistency-semantics-peer.md)
+now proves actual closedness, arbitrary-premodel valuation independence and
+exact standard-Nat meaning of the retained formulas. The negative formula
+means precisely absence of an actual repository ZFC refutation. Independent
+builds pass seven standard-only reports and identical objects. This binds
+the normalized HA target semantically; the equation/source arithmetic
+proof and internal checker comparison remain separate obligations.
+
+The positive predicate is the actual source rho; outer HA negation
+has the negative consistency meaning. The proof uses actual closed support
+and a separate Nat interpretation induction, then the previously accepted
+fixed-source semantics. It does not identify ordinary NNF negation with
+outer HA negation syntactically or turn standard-model truth into an HA
+derivation. Arbitrary-premodel generality applies only to valuation
+independence. No broad machine Bridge import or independent checker
+reflection is introduced. Root reauthenticated the complete independent
+replay, all 3612 checked evidence observations, seven axiom reports and both
+objects after reading the full sources, checks, driver and peer receipt.

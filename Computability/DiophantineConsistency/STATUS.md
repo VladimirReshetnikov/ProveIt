@@ -172,11 +172,19 @@ Four independent fresh builds pass eighteen standard-only reports with
 identical objects. The historical lower-degree carrier transfer remains
 separate; no equation metric or HA endpoint is promoted.
 
+The [fixed ordinary consistency semantics](reviews/foundation-ha-consistency-semantics-peer.md)
+now proves actual closedness, arbitrary-premodel valuation independence and
+exact standard-Nat meaning of the retained formulas. The negative formula
+means precisely absence of an actual repository ZFC refutation. Independent
+builds pass seven standard-only reports and identical objects. This binds
+the normalized HA target semantically; the equation/source arithmetic
+proof and internal checker comparison remain separate obligations.
+
 The [ordinary predicate syntax/semantics theorem](reviews/foundation-pahf-ordinary-semantics-root.md)
 now proves actual closedness and arbitrary-premodel valuation independence,
 plus exact ordinary interpretation over Nat. Independent builds pass eight
-standard-only reports and identical objects. Fixed consistency specialization
-and the equation/source arithmetic proof remain separate.
+standard-only reports and identical objects. The fixed consistency specialization is accepted above; the
+equation/source arithmetic proof remains open.
 
 The [fixed HA consistency normalization](reviews/foundation-ha-consistency-normalization-peer.md)
 now proves both HA implications between the retained fixed GG consistency
