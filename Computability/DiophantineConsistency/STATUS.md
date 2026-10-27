@@ -30,6 +30,13 @@ historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
 
+The [actual C222 checker/enumerator equivalence](reviews/arithmetic-enum-soundnessperm222-root.md)
+now proves both directions at candidate4/work0, including a closed IΣ1
+and PA proof. Genuine Sigma1 time induction retains an actual falsity
+witness at halt and bounded certification while live. Independent builds
+pass twelve standard-only reports with identical objects. Source-ZFC,
+exact215 and polynomial internalization remain open before HA assembly.
+
 The [actual C222 source-negation theorem](reviews/validator-source-negation222-root.md)
 now proves both encoded NNF-negation implications for all internal typed
 formulas and arbitrary encoder states. Its genuine Pi2 code induction

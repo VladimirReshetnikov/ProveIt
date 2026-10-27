@@ -11,6 +11,15 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual C222 checker/enumerator equivalence](reviews/arithmetic-enum-soundnessperm222-root.md)
+now has genuine closed IΣ1 and PA proofs, with both directions between
+actual checker falsity and halting from pointer0,candidate4,work0. Its
+Sigma1 invariant retains bounded certification while live and an actual
+falsity witness after halt. Independent builds pass twelve standard-only
+reports and identical objects. This closes the proof-state/scheduler link;
+actual source-ZFC,exact215 and internal polynomial/Pell calibration remain
+required before the PA-to-HA assembly.
+
 The [actual C222 NNF-negation theorem](reviews/validator-source-negation222-root.md)
 now supplies both checker-witnessed implications for every internal typed
 source formula and arbitrary encoder states. Its explicit Pi2 invariant

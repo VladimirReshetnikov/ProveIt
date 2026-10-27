@@ -152,6 +152,14 @@ builds pass sixteen standard-only reports with identical objects. Context
 quantifier transport,source derivation induction and source axiom
 interpretation remain open.
 
+The [actual C222 checker/enumerator equivalence](reviews/arithmetic-enum-soundnessperm222-root.md)
+now has both directions at candidate4 and empty work, with actual closed
+IΣ1 and PA derivations. The reverse uses genuine Sigma1 time induction and
+certified halt witnesses; the forward uses the accepted compiler/reset.
+Independent builds pass twelve standard-only reports with identical
+objects. Source-ZFC,exact215 and internal polynomial calibration remain
+open before the final HA endpoint.
+
 The [actual C222 refutation-execution theorem](reviews/arithmetic-proof-word-enumperm222-root.md)
 now proves that an accepted internal C222 refutation forces the actual
 permuted enumerator to halt from candidate4 and any working state. A real
