@@ -2,6 +2,12 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [actual C222 word tick](reviews/arithmetic-command-tickperm222-peer.md)
+now has independent source review and two fresh builds with thirteen
+standard-only reports. Active ticks halt or strictly decrease the shifted
+remaining word; positive completion is distinct from halt0. This supplies
+the control measure for the separately reviewed draining proof.
+
 The [actual permuted enumerator run](reviews/arithmetic-enum-runperm222-peer.md)
 now has a total/unique internal IΣ1 graph, absorbing halt0, the semigroup
 law and exact all-time/all-state Nat agreement with actual EnumPerm.run.

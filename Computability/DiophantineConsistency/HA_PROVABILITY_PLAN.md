@@ -626,6 +626,11 @@ for all ordinary states/times. Its independent pair passes thirteen
 standard-only reports. The next runtime obligations are a draining bound
 for individual candidate words, fair reach from candidate4, proof-state
 invariants and exact215 simulation.
+The [word-evaluator tick](reviews/arithmetic-command-tickperm222-peer.md)
+now proves the required internal remaining-word decrease, retaining
+separate halt and successful-completion codes. Its independent pair passes
+thirteen standard-only reports and binds every raw Nat command to actual
+EnumPerm.cstep. The whole-word draining proof is a separate next checkpoint.
 
 The [73-module consistency refresh](reviews/fixed-consistency73-root.md)
 has now passed, including current R2Native, LSchema and the actual

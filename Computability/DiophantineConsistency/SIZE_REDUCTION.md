@@ -6,8 +6,11 @@ owner resumed Lean work to prove the resulting smallest equations equivalent
 to `Con(ZFC)`. The [resumed formalization plan](LEAN_EQUIVALENCE_PLAN.md)
 governs that work; this document retains the size frontier and its history.
 
-The required mathematical endpoint is unchanged: the equation's absence
-of solutions must be provably equivalent in ZFC to syntactic `Con(ZFC)`.
+The owner has strengthened the required mathematical endpoint: Lean must
+prove existence of an HA derivation of the equation's no-solution sentence
+iff the stated syntactic `Con(ZFC)` sentence. This also implies the requested
+internal ZFC provability. The [HA plan](HA_PROVABILITY_PLAN.md) records the
+remaining bridges; current external Lean equivalences alone do not finish it.
 A smaller formula must retain a complete ordinary proof chain, including
 its coefficient tuple and witness domain. Local gadget counts alone do
 not establish the size of a complete consistency equation.
@@ -23,6 +26,14 @@ certificate retain their sorted2501 binding. A new current-port graph or
 Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
+
+The [scaled syzygy proposal](research/scaled-norm-syzygy-search/PROPOSAL.md)
+investigates13/178/86 within the current47,313-byte coefficient family.
+Its complete candidate audit is pending. The
+[comparison correction](research/scaled-norm-syzygy-search/COMPARISON_SCOPE.md)
+retains the historical compact44 forms13/88/51 and12/96/70, which are
+smaller in these three metrics but use a different, larger coefficient
+family and older proof coverage. No global frontier improvement is claimed.
 
 A [bounded next-correction search](research/third-first-norm-correction-search/README.md)
 recovers the accepted92/90 and97/88 schedules without a further saving.
@@ -313,11 +324,13 @@ zero-set maps, full coefficient recipes and domain/metric distinctions.
 | Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
 | Positive integers | **14** | **65** | **150** | Maintained complete decimal page and every constant; full positive maps, exact graph, source and visual checks pass |
 | Positive integers | 13 | 72 / 74 | 124 / 122 | Complete CURRENT2011 mixed-carrier graphs; all-positive inverse maps and external Lean ConZFC endpoints, independent finite degree/whole-port checks |
-| Positive integers | 13 | 77 | 96 | Complete CURRENT2011 grouped-square graph; identical positive zero set to LV72, external Lean ConZFC endpoint and independent exact degree/whole-port checks |
+| Positive integers | 13 | 75 | 96 | Complete CURRENT2011 unit sphere, all-positive zero-set maps, external Lean endpoint and independent exact degree/whole-port checks |
+| Positive integers | 13 | 84 | 92 | Complete CURRENT2011 first-norm correction, same positive zero set and external Lean endpoint |
+| Positive integers | 13 | 92 / 97 | 90 / 88 | Complete CURRENT2011 further corrections, same positive zero set and independently checked external Lean endpoints |
 | Positive integers | 15 | 66 | 157 | Preserved complete P66 pages and coefficient checkpoints |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
-| Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
-| Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
+| Positive integers | 12 | 96 | 70 | Historical compact44 family; free positive J and an identical polarized norm tail |
+| Positive integers | 13 | 88 | 51 | Historical compact44 family; previous one-page90/51 version retains295,388 raw coefficient bytes |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
 | Positive integers | 10 | 89 / 95 | 288 / 262 | Uncentered saturated b transport; fewer-operation tradeoff, earlier page preserved |
