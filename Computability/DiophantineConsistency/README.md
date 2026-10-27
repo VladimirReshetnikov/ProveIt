@@ -17,6 +17,12 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+The [current13/178/86 tradeoff](reviews/thirteen-scaled-norm-syzygy86-root.md)
+now has independent Lean and complete finite audits, preserving the entire
+positive zero set and current47,313-byte coefficient tuple. It lowers the
+current thirteen-variable family's degree at substantial operation cost;
+historical larger-tuple forms remain separate comparisons. Its HA endpoint
+is still open.
 HA now [decides the interpreted strict-order atom](reviews/foundation-ha-order-decidable-root.md)
 and proves its double-negation stability for arbitrary terms. Two independent
 builds pass twelve reports using only propext and Quot.sound. This supplies

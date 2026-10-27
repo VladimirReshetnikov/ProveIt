@@ -1,0 +1,66 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenScaledNormSyzygy86.lean:103:4: error: 'change' tactic failed, pattern
+  v 9 < v 9 + v 10
+is not definitionally equal to target
+  (d.X + (d.X + 1) * d.Y * (d.k * d.Y + v 9) + v 12 * (4 * ((d.X + 1) * d.Y) + 3)) ^ 2 -
+      (((d.X + 1) * d.Y) ^ 2 + (4 * ((d.X + 1) * d.Y) + 3)) * (d.k * d.Y + v 9) ^ 2 =
+    1
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenScaledNormSyzygy86.lean:106:68: error: Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenScaledNormSyzygy86.lean:123:62: error: Application type mismatch: The argument
+  h
+has type
+  P * Q = 1
+but is expected to have type
+  Q * P = 1
+in the application
+  IsUnit.of_mul_eq_one_right Q h
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenScaledNormSyzygy86.lean:140:82: error: unsolved goals
+p : Fin 4 → ℤ
+v : Fin 13 → ℤ
+hb : 0 < p 0
+hv : ∀ (j : Fin 13), 0 < v j
+hp : (ThirteenCarrier.core p v).P ≠ -1
+hq : (data p v).Q ≠ -1
+hpq : (data p v).P * (data p v).Q = 1
+hz : Carrier65.strong (data p v) = 1
+hu : auxiliary p v = scale p v
+hP : (ThirteenCarrier.core p v).P = 1
+hQ : (data p v).Q = 1
+ha : scale p v ≠ 0
+⊢ scale p v *
+        (ThirteenGroupedSquares96.auxiliary p v -
+          (ThirteenSecondFirstNormCorrections.coefficient88 p v + coefficient p v) * ((data p v).P - 1)) -
+      syzygyCoefficient p v * (8 * v 12 * ((data p v).P - 1)) =
+    scale p v * ThirteenGroupedSquares96.auxiliary p v
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenScaledNormSyzygy86.lean:148:18: error: unsolved goals
+p : Fin 4 → ℤ
+v : Fin 13 → ℤ
+hb : 0 < p 0
+hv : ∀ (j : Fin 13), 0 < v j
+hp : (ThirteenCarrier.core p v).P ≠ -1
+hq : (data p v).Q ≠ -1
+hpq : (data p v).P * (data p v).Q = 1
+hU : ThirteenGroupedSquares96.auxiliary p v = 1
+hz : Carrier65.strong (data p v) = 1
+hP : (ThirteenCarrier.core p v).P = 1
+hQ : (data p v).Q = 1
+⊢ scale p v * (1 - (ThirteenSecondFirstNormCorrections.coefficient88 p v + coefficient p v) * ((data p v).P - 1)) -
+      syzygyCoefficient p v * (8 * v 12 * ((data p v).P - 1)) =
+    scale p v
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenScaledNormSyzygy86.lean:141:29: warning: This simp argument is unused:
+  hP
+
+Hint: Omit it from the simp argument list.
+  simp [auxiliary, ̲syzygy, ̲hP̵,̵h̵Q]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ThirteenScaledNormSyzygy86.lean:148:44: warning: This simp argument is unused:
+  hP
+
+Hint: Omit it from the simp argument list.
+  simp [auxiliary, ̲syzygy, ̲hP̵,̵h̵Q, ̲hU]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

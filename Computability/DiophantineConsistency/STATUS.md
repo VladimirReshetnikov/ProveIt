@@ -2,6 +2,13 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [current13/178/86 scaled syzygy](reviews/thirteen-scaled-norm-syzygy86-root.md)
+now passes two independent Lean builds with twelve standard-only reports
+and complete normal/optimized finite audits. Every positive zero and all
+current coefficient bytes are retained; no global frontier or HA endpoint
+is claimed. The next size direction audits transfer of the historically
+better compact44 arithmetic to the current small coefficient tuple.
+
 The [actual C222 whole-word evaluator](reviews/arithmetic-command-runperm222-peer.md)
 now has an independently rebuilt internal IΣ1 draining bound and total
 evaluation graph, with twenty-one standard-only reports. Its pointwise
