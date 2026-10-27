@@ -41,13 +41,23 @@ logs and eight reports. The later common-unit packet above combines it with
 KnownUnit and represented sequence composition. Strong divisibility and
 full integrality remain to be proved.
 
+The [actual internal guarded-comprehension theorem](reviews/validator-seed-guarded-comprehension222-root.md)
+now constructs genuine source Proof certificates for raw pairs, two-root
+and guarded comprehension over arbitrary internal matrices/free parameters.
+The guarded endpoint has only Empty(t) as antecedent and retains U=t.
+Five fixed total raw syntax graphs and all capture-safe binders are checked.
+Independent fresh pairs match both objects/full logs and22 reports.
+Tagged Collection, marker-safe proof transport and the actual quotient/WF
+and ZF/ZFC calibration remain to be proved.
+
 The [actual internal augmented comprehension theorem](reviews/validator-seed-raw-comprehension222-root.md)
 now constructs a genuine source proof for arbitrary internal unary matrices
 and free parameters. It preserves full member closure, branch overlaps and
 all binder shifts, with actual Proof certificates and fixed total raw syntax
 graphs. Independent fresh pairs match both objects/full logs and11 reports.
-Guarded comprehension and the parameter-safe marker/Collection/quotient route
-still precede actual ZF/ZFC calibration; no source-model premise is substituted.
+The later guarded packet above extends it. The parameter-safe marker,
+Collection and quotient route still precedes actual ZF/ZFC calibration;
+no source-model premise is substituted.
 
 The [bounded marker-counter proposal](research/validator-seed-marker-counter-proposal.md)
 describes a possible all-internal transport invariant with marker index j,

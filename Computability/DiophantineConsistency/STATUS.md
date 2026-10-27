@@ -84,13 +84,23 @@ match both objects/full logs and eight standard-only reports. The later
 common-unit theorem above supplies composition; strong divisibility and
 full relaxed integrality remain open.
 
+The [actual internal guarded-comprehension proof](reviews/validator-seed-guarded-comprehension222-root.md)
+now supplies genuine source Proof certificates for raw pairs, two-root and
+guarded comprehension with arbitrary internal matrices/free parameters.
+The guarded endpoint assumes only Empty(t), retains the U=t branch and
+produces an object containing t. Five fixed total raw syntax graphs and
+capture-safe bindings are included. Independent fresh pairs match both
+objects/full logs and22 standard-only reports; all655 first artifact
+providers match. Tagged Collection, marker-safe proof transport and the
+actual quotient/WF and ZF/ZFC calibration remain open.
+
 The [actual internal augmented comprehension proof](reviews/validator-seed-raw-comprehension222-root.md)
 now supplies an actual source Proof certificate for every internally typed
 unary matrix and arbitrary source term/free parameters. Full member closure,
 root/singleton overlaps, capture-safe binders and fixed total raw syntax
 graphs are included. Independent fresh pairs match both objects/full logs
-and11 standard-only reports. Guarded comprehension, marker-safe proof
-transport, Collection and actual ZF/ZFC calibration remain open.
+and11 standard-only reports. The later guarded packet above extends it;
+marker-safe proof transport, Collection and ZF/ZFC calibration remain open.
 
 The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
 now proves both directions for arbitrary internal IΣ1 times and boundaries,
