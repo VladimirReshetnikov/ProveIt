@@ -40,6 +40,14 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [internal known-unit classification](reviews/arithmetic-pell-known-unit-root.md)
+now derives a bounded least positive unit and a uniform internal index and
+ordinate scale for every solution of the same positive-discriminant norm.
+Its minimality comes from the supplied known solution and is not a premise
+of the public endpoint. Independent fresh pairs match both objects/full logs
+and four standard-only reports. Internal gcd normalization, composition,
+strong divisibility and full relaxed integrality still remain.
+
 The [actual internal DagPerm root](reviews/arithmetic-dag-rootperm222-root.md)
 now constructs either a halt run or a normal run to the actual scheduler's
 live successor, with pointer decrease or candidate increment. Actual

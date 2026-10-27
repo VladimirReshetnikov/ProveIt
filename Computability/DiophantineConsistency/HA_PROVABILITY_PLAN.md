@@ -11,6 +11,14 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [internal known-unit theorem](reviews/arithmetic-pell-known-unit-root.md)
+now implements the bounded least-unit search and Sigma1 descent for an
+arbitrary positive discriminant with one known positive solution. The same
+derived base/scale classifies every internal solution, including ordinate0.
+Independent fresh pairs match both objects/full logs and four standard-only
+reports. Internal gcd/common-discriminant construction, composition and
+strong divisibility remain before full relaxed integrality.
+
 The [actual internal DagPerm root](reviews/arithmetic-dag-rootperm222-root.md)
 now constructs the whole execution at every internal boundary and proves
 exact scheduler agreement with pointer/candidate progress. Its actual
@@ -33,8 +41,9 @@ and [gcd normalization derivation](research/arithmetic-pell-gcd-normalization-no
 A known positive unit bounds a finite least-unit search. Elementary gcd
 normalization then puts both relevant norm solutions over one discriminant,
 potentially replacing the external squarefree/fundamental-unit setup.
-These are formalization plans and a paper derivation; the internal gcd,
-descent, composition and strong-divisibility proofs remain to be constructed.
+The known-unit descent is now proved above. The gcd normalization remains
+a paper derivation; internal gcd, composition and strong divisibility still
+need formalization.
 
 The [uniform internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
 now constructs the exact represented open proof of every internally typed
