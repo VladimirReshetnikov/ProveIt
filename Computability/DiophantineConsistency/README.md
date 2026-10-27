@@ -165,6 +165,14 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [changing-marker discharge theorem](reviews/validator-seed-marker-discharge222-peer.md)
+now removes an arbitrary internal number of domain side formulas and the
+final empty-marker guard from an actual residual source derivation.
+It tracks the marker under variable shift, then uses actual source tag
+and empty-object proofs with genuine Sigma1 induction. Independent fresh
+pairs match both objects/full logs and 14 standard-only reports. General
+proof interpretation and source/quotient/ZF/ZFC calibration remain open.
+
 The [actual internal guarded-comprehension proof](reviews/validator-seed-guarded-comprehension222-root.md)
 now constructs genuine source Proof certificates for raw pairs, two-root
 and guarded comprehension with arbitrary internal matrices/free parameters.

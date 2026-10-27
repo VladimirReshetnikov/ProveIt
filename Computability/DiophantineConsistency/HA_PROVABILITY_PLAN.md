@@ -27,6 +27,15 @@ execution has since passed independent review below. The
 is authorized for implementation, not yet a proved theorem. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
 
+The [changing-marker discharge theorem](reviews/validator-seed-marker-discharge222-peer.md)
+now removes every internally sized domain side set and its negative empty
+marker guard from an actual residual source derivation. The family shift
+law, genuine Sigma1 induction, actual inhabited-tag and empty-object proofs
+yield a source falsum proof, including counter zero. It uses no shift-fixed
+domain assumption. Independent fresh pairs match both objects/full logs
+and 14 reports. The preceding arbitrary-derivation interpretation and
+actual source axiom images, quotient/WF and ZF/ZFC calibration remain open.
+
 The [actual215 register-box theorem](reviews/arithmetic-register-boxes215-root.md)
 now proves marking, increment, zero decrement and positive decrement for
 all nine physical registers with arbitrary internal data and positive
