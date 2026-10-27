@@ -26,6 +26,15 @@ and half-index recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
 
+The [literal scalar-window and first-index theorem](reviews/arithmetic-pell-first-index-root.md)
+now derives the bounds needed for half-index recovery from the maintained
+fourteen-field data, additive transport identity and port bounds. The actual
+four additive norms yield both Pell indices, `2*n = R+1`, and the positive
+omitted quotient in `k = R+1+4*E*Y*h`. Independent fresh pairs match both
+objects/full logs and all five standard-only reports, with zero prerequisite
+refreshes. Concrete internal ports, extraction of the norms from polynomial
+zero, power recovery and cofinal witnesses remain before PA/HA assembly.
+
 The [changing-marker derivation transport](reviews/validator-seed-marker-relativization222-root.md)
 now handles all ten actual internal derivation constructors, using genuine
 Sigma1 bounded-budget induction and explicit source axiom images. Its

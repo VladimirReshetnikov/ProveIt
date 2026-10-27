@@ -18,6 +18,13 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+The [literal scalar-window and first-index theorem](reviews/arithmetic-pell-first-index-root.md)
+now derives the required bounds and both Pell indices from the maintained
+data, port bounds, additive transport and four norms. It retains the positive
+omitted quotient. Independent fresh pairs match both objects/full logs and
+all five standard-only reports with zero prerequisite refreshes. Internal
+polynomial extraction, powers and cofinal witnesses remain open.
+
 The [changing-marker derivation transport](reviews/validator-seed-marker-relativization222-root.md)
 now interprets all ten actual internal derivation constructors under
 explicit source axiom images. Its falsum and checker-witness endpoints
