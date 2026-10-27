@@ -123,6 +123,13 @@ now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
 plus actual finite command-list concatenation. Independent builds pass
 sixteen standard-only reports with identical objects. The next runtime
 checkpoint proves that evaluation of the concatenated words composes.
+The [actual C222 append execution theorem](reviews/arithmetic-command-compositionperm222-peer.md)
+now proves exact evaluation composition over all internal words and states,
+using a bounded stopped-pair invariant. Independent builds pass thirteen
+standard-only reports and identical objects. Halt0 and positive completion
+remain distinct. Proof compiler invariants and exact215 calibration remain
+open.
+
 The [actual C222 existential term rule](reviews/validator-existential-rules222-root.md)
 now constructs the encoded term-instance implication and composes it under
 arbitrary hypotheses. Independent builds pass thirteen standard-only
