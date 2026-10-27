@@ -856,3 +856,17 @@ The object calculus here is actual C222, with numeric checker certificates.
 It is a component of the later internal proof translation, not itself an
 HA derivation of the equation equivalence. The negative source-hypothesis
 client matches the literal free/setShift shape of source ALL inference.
+
+
+## Actual C222 append representation accepted
+
+The [actual C222 append graph](reviews/arithmetic-command-appendperm222-peer.md)
+now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
+plus actual finite command-list concatenation. Independent builds pass
+sixteen standard-only reports with identical objects. The next runtime
+checkpoint proves that evaluation of the concatenated words composes.
+
+History index0 is the fixed right word; raw index z builds shifted left
+word z+1. The bounded history invariant covers every internal lookup, with
+default0 outside it. Actual closed IΣ1/PA totality proof-existence is
+separate from the pending execution and compiler contracts.
