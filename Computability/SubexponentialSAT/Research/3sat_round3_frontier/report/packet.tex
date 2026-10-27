@@ -1,0 +1,176 @@
+The following improvement is independent of the packing, taper and Cauchy-mode
+certificates. It replaces only the packet-entry coefficient extraction, not the
+mode sum or the SAT solver. The latest inspected reports retain the earlier
+streamed forward-difference routine. We provide a same-interface alternative,
+including the necessary characteristic-two precision accounting, an independent
+implementation, and comparisons against a forward-grid implementation already
+optimized by Gray traversal. The underlying polarization, Glynn, and root-filter
+ideas are classical; no priority is claimed for these identities. For context,
+see Glynn's \href{https://doi.org/10.1016/j.ejc.2010.01.010}{\emph{The permanent of a
+square matrix}} (2010) and Aaronson--Hance's
+\href{https://arxiv.org/abs/1212.0025}{generalized Glynn treatment} (2012).
+
+\subsection{Generic half-grid extraction with correct guard precision}
+Homogenize a packet product of $R$ affine forms by adding a constant coordinate
+of target exponent $R-|\beta|$; return zero if $|\beta|>R$. After dropping
+zero-exponent coordinates, write
+\[
+ H(Z)=\prod_{r=1}^{R}\sum_{j=1}^{t}a_{rj}Z_j,
+ \qquad \sum_{j=1}^t\beta_j=R,
+ \qquad G=\prod_j(\beta_j+1),\quad B=\prod_j\beta_j!.
+\]
+The empty product $R=0$ is handled directly as the constant one. All $\beta_j$ are now positive. The coefficient ring is the source's finite free quotient
+\[ A_p=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell), \]
+with $f$ monic;
+the argument allows nilpotents and does not require $A_p$ to be a field.
+
+\begin{proposition}[Paired centered differences]
+For $R>0$, let $\mathcal H$ contain one representative of each pair
+$\{\gamma,\beta-\gamma\}$ in $0\le\gamma\le\beta$, omitting the central point
+when every $\beta_j$ is even. Then
+\[
+ 2^{R-1}B[Z^\beta]H
+ =\sum_{\gamma\in\mathcal H}
+ (-1)^{R-|\gamma|}\prod_j\binom{\beta_j}{\gamma_j}
+ H(2\gamma-\beta).                                      \tag{P1}
+\]
+There are exactly $\lfloor G/2\rfloor$ evaluations. If $v=v_2(B)$, the
+coefficient modulo $2^p$ is recovered exactly by evaluating the right side at
+precision $p+R-1+v$, dividing canonical integer coordinates by $2^{R-1+v}$,
+and multiplying by $(B/2^v)^{-1}\bmod2^p$.
+\end{proposition}
+\begin{proof}
+Apply the difference of step two and order $\beta_j$ in each variable, starting
+at $-\beta_j$. A monomial of total degree $R$ vanishes if any exponent is below
+$\beta_j$; the only survivor is $Z^\beta$, with multiplier $2^RB$.
+Homogeneity gives $H(-(2\gamma-\beta))=(-1)^RH(2\gamma-\beta)$, while the
+binomial sign changes by the same parity. Paired summands are therefore equal.
+The unpaired central value is $H(0)=0$. Dividing the integral identity by two
+proves (P1). Its validity in the free integral quotient proves the stated
+coordinatewise divisibility. Keeping the additional $R-1+v$ bits, rather than
+illegally dividing a residue at precision $p$, recovers the answer.
+\end{proof}
+
+The representative set is a disjoint union of at most $t$ boxes: the first
+noncentral coordinate is below its midpoint, earlier coordinates are central,
+and later coordinates are unrestricted. Reflected mixed-radix Gray traversal
+changes one coordinate by one at a time. Keeping the $R$ current row sums updates
+them in $O(R)$ ring operations per evaluation, instead of recomputing $t$
+terms per row. No grid-indexed table is retained. The input and preprocessing
+are polynomial-sized, and auxiliary streaming state is polynomial in
+$R,t,p,\deg f,\ell$. The extra precision is at most $2R-1$ bits. Both this
+routine and the strong forward-Gray baseline use $O(RG)$ ring operations up to
+polynomial setup; the half-grid saves evaluations, not a new exponential order.
+The additional bit width means a wall-clock improvement is not a universal
+consequence of the evaluation count.
+
+\subsection{A cube-root profile using only unit division}
+For a better special profile, suppose $\omega^2+\omega+1=0$ in $A_p$.
+For positive target exponents $\beta_j\in\{1,2\}$, choose an index $k$ of minimum
+exponent and put $Z_k=1$. Then
+\[
+ [Z^\beta]H
+ =3^{-(t-1)}
+ \sum_{\gamma\in\{0,1,2\}^{t-1}}
+ \omega^{-\sum_{j\ne k}\beta_j\gamma_j}
+ H\bigl(Z_k=1,\ Z_j=\omega^{\gamma_j}\ (j\ne k)\bigr).       \tag{P2}
+\]
+All arithmetic is at precision $p$: $3$ is a unit, so no factorial or
+power-of-two division occurs. To prove (P2), apply character orthogonality to a
+monomial $Z^\alpha$. A survivor has
+$\alpha_j=\beta_j+3m_j$ with $m_j\ge0$ for $j\ne k$. Homogeneity forces
+$\alpha_k=\beta_k-3\sum_{j\ne k}m_j$. Since $\beta_k\le2$, nonnegativity
+implies every $m_j=0$. Thus precisely the requested coefficient survives.
+
+For $\beta=(2,\ldots,2)$, (P2) takes $3^{t-1}=G/3$ evaluations, versus
+$(G-1)/2$ centered evaluations and $G$ forward evaluations, with \emph{zero}
+extra precision bits. For many exponents one, the ternary grid may instead be
+larger; the implementation dispatches by the proven counts and never assumes
+this special-profile benefit is universal. A single surviving coordinate is
+handled directly by multiplying its row coefficients.
+
+This does not require enlarging the source's coefficient ring. Its residue
+field has degree $e=4\lceil\log_2s\rceil$, so it contains $\mathbb F_4$.
+A nontrivial root of $X^2+X+1$ in that subfield lifts uniquely to every precision,
+since its derivative $2X+1$ is a unit. If no root is supplied, exhaustive residue
+search uses at most $2^e<16s^4$ candidates, hence polynomial time in $s$;
+this is a conservative construction bound, not a claimed practical search.
+Subsequent Hensel lifting is polynomial in the ring dimension and precision.
+The supplied implementation accepts and verifies a root, and supplies a
+bit-by-bit Hensel lift from a residue root. Benchmarks state explicitly whether
+that lift is timed; they do not hide a residue-field search.
+
+\textbf{Creation precision.} For both methods the row coefficients are first
+canonically represented at the tensor's immutable creation precision $p$.
+Guard bits in (P1) are internal computation only. Return canonical coordinates
+modulo $2^p$, multiply the prescribed source-mode powers as before, and retain
+that creation-time representative in later recursive calls. The root filter
+works in the existing ring and changes no recursive tensor identity.
+
+\subsection{Verification and honest same-operation measurements}
+The independent code executes no imported report program. A direct coefficient
+multiplication oracle checked 6,737 cases against three kernels, giving 20,211
+exact equalities. Cases include exhaustive small binary matrices, noncanonical
+integer inputs, free monic quotients, nilpotents, and mode-weighted synthetic
+factors. Additional checks cover 180 cube-root cases, 32 degree-four Hensel
+fixtures, 212 adaptive-dispatch cases, 710 antipodal partitions and 1,014 Gray
+boxes. The same suite passes normally and under \texttt{python -O}. Negative
+controls detect insufficient guard precision, an invalid character root and
+changing creation precision. The exponential-table direct oracle is a
+small-case verifier, not the streaming algorithm.
+
+Measurements use Python 3.12.14 on an AMD EPYC 9V74 shared Linux executor,
+one untimed warmup and the median of three timed calls, with alternating method
+order. Generation of synthetic inputs is excluded; canonicalization,
+preprocessing, extraction and final division are included. Timings are not
+isolated-CPU measurements and have no asserted statistical significance.
+The baseline already performs Gray row-sum updates; it is not a claim of a
+best possible permanent implementation. Its zero-origin evaluation could
+trivially be skipped, saving one out of $G$ points.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Profile & $p$ & Forward Gray (s) & Half grid (s) & Ratio\\\midrule
+12 exponents one &64&0.05786&0.02698&2.14\\
+16 exponents one &64&1.06319&0.51464&2.07\\
+18 exponents one &256&5.41105&2.71399&1.99\\
+16 exponents one &1024&2.56917&1.11908&2.30\\
+Eight exponents two &64&0.09234&0.05321&1.74\\
+Six exponents three &256&0.06861&0.03437&2.00\\
+$(1,1,2,3,4,5)$ &256&0.02239&0.01435&1.56\\
+10 ones, quotient dimension 4 &64&0.06762&0.03738&1.81\\
+Six twos, quotient dimension 4 &64&0.05363&0.02808&1.91\\\bottomrule
+\end{tabular}
+\end{center}
+
+The cube-root table compares all methods in \emph{the same ring}, never a scalar
+baseline against an extension-ring candidate. Every profile is $(2,\ldots,2)$.
+Here $e=\deg f$ and the full dimension is $e\ell$.
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}\toprule
+$(R,e,\ell,p)$ & Forward (s) & Half (s) & Cube (s) & Cube + lift (s)\\\midrule
+$(12,2,1,64)$ &0.03206&0.01833&0.01100&0.01178\\
+$(16,2,2,64)$ &0.68721&0.36056&0.24594&0.23389\\
+$(14,4,1,64)$ &0.21847&0.10843&0.07282&0.06280\\
+$(12,4,2,256)$&0.15321&0.08484&0.05662&0.05916\\\bottomrule
+\end{tabular}
+\end{center}
+The cached-root cube routine is $2.71$--$3.00$ times faster than forward Gray and
+$1.47$--$1.67$ times faster than the centered routine in these four fixtures.
+The separate ``Cube + lift'' timings charge fresh Hensel lifting on every call;
+residue roots are supplied in both cases. The fact that some lift-inclusive
+medians are smaller illustrates executor/timing noise, not negative overhead.
+A deliberately adverse eight-ones profile in the degree-two ring used 2,187
+cubic evaluations versus 128 centered evaluations: the cubic routine took
+0.07935 s versus 0.00416 s, about 19.1 times slower. The adaptive routine
+correctly selected the half-grid. This negative case is why (P2) is selective,
+not a universal replacement.
+
+\textbf{Scope of the result.} These are measured improvements to a genuine,
+exact packet-entry operation, with independently checked formulas and no
+increase to the recursion's space class. They are not full-SAT timings, do not
+show the frequency of favorable profiles in real SAT contractions, and do not
+improve the $n\log\log n/\sqrt{\log n}$ global logarithmic order. In the current
+asymptotic schedule packet-entry work is already lower order. A production
+integration should benchmark the dispatch on actual generated packets rather
+than extrapolate these synthetic speed ratios to a solver.

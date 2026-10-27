@@ -14,10 +14,11 @@ a report at one of the destinations of section 2.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
-Twenty-two arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
+Thirty-one arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
 is, about refuting the Exponential Time Hypothesis. The drop process staged
 the first five without committing them, and they were committed unchanged in
-`a505bd768b`; it committed the other seventeen itself. The eight of
+`a505bd768b`; it committed the next seventeen itself. The nine of the fourth
+round were also only staged, and were committed unchanged in `b9941a7396`. The eight of
 `3e57705cf1` and `d098ba436b` are a second round that reviews the first. The
 five of `f42479bca2`, `f898a9fde4` and `fa6e904d10` are a third round that
 reviews both. They are placed in the new
@@ -52,6 +53,15 @@ instead of being filed.
 | `subexponential_sat_kernel_improvements_2026-10-26.zip` | `f42479bca2` | [Research/subexponential_sat_kernel_improvements](../../Computability/SubexponentialSAT/Research/subexponential_sat_kernel_improvements/README.md) |
 | `sat_frontier_improvements_2026-10-26.zip` | `f898a9fde4` | [Research/sat_frontier_improvements](../../Computability/SubexponentialSAT/Research/sat_frontier_improvements/README.txt) |
 | `sat_adaptive_contraction_2026-10-26.zip` | `fa6e904d10` | [Research/sat_adaptive_contraction](../../Computability/SubexponentialSAT/Research/sat_adaptive_contraction/README.md) |
+| `sat_adaptive_bounds_2026-10-26.zip` | `b9941a7396` | [Research/sat_adaptive_bounds](../../Computability/SubexponentialSAT/Research/sat_adaptive_bounds/README.txt) |
+| `sat_adaptive_tree_certificate_2026-10-26.zip` | `b9941a7396` | [Research/sat_adaptive_tree_certificate](../../Computability/SubexponentialSAT/Research/sat_adaptive_tree_certificate/README.txt) |
+| `sat_adaptive_frontier_2026-10-26.zip` | `b9941a7396` | [Research/sat_adaptive_frontier](../../Computability/SubexponentialSAT/Research/sat_adaptive_frontier/README.txt) |
+| `sat_adaptive_matrix_partition_2026-10-26.zip` | `b9941a7396` | [Research/sat_adaptive_matrix_partition](../../Computability/SubexponentialSAT/Research/sat_adaptive_matrix_partition/README.txt) |
+| `subexponential_sat_adaptive_four_2026-10-26.zip` | `b9941a7396` | [Research/subexponential_sat_adaptive_four](../../Computability/SubexponentialSAT/Research/subexponential_sat_adaptive_four/README.txt) |
+| `subsat_rectangular_2026-10-26.zip` | `b9941a7396` | [Research/subsat_rectangular](../../Computability/SubexponentialSAT/Research/subsat_rectangular/README.md) |
+| `ETH_Adaptive_Exact_Kernels_2026-10-27.zip` | `b9941a7396` | [Research/eth_adaptive_exact_kernels](../../Computability/SubexponentialSAT/Research/eth_adaptive_exact_kernels/README.txt), without 58 `sources/` copies of files already in ProveIt |
+| `3sat_round3_frontier_20261027.zip` | `b9941a7396` | [Research/3sat_round3_frontier](../../Computability/SubexponentialSAT/Research/3sat_round3_frontier/README.md), without 26 `evidence/` copies of files already in ProveIt |
+| `eth_adaptive_schedules_2026-10-26.zip` | `b9941a7396` | [Research/eth_adaptive_schedules](../../Computability/SubexponentialSAT/Research/eth_adaptive_schedules/README.txt) |
 
 ## DiophantineConsistency proof-simplification packets
 

@@ -1,0 +1,122 @@
+\section{The inherited contraction interface}
+\label{sec:interface}
+We use a bipartite Boolean tensor network with at most $s$ wires and a
+polynomial number of vertices. Each edge carries a bit. A vertex tensor
+is an implicitly specified function of its incident bits, and the
+contraction sums the product of these functions over all edge assignments.
+The initial entries lie in
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad 1\le P_0,\ell\le s.
+\]
+The maximum degree is at most $\lceil s^{9/10}\rceil$. For fixed $A,b$,
+an original entry is computable in
+$(s+\mathcal L)^b2^{A s^{9/10}}$ time and $(s+\mathcal L)^b$ space,
+where $\mathcal L$ is the description length. Fixed constant multiples
+in the precision bounds are harmless; a change of the edge-budget
+normalization changes numerical coefficients and must be tracked.
+
+Write $\lambda=\lceil\log_2s\rceil$. At depth $d$, a call has $M$ wires,
+group alphabet size $r$, packet length $L=2^a$, and $u$ retained
+valuation levels. The coefficient ring is enlarged to a polynomial-rank
+unramified extension and a truncated polynomial ring, exactly as in the
+source. Tensor descriptions preserve their creation-time representatives.
+We import the correctness of the source deformation, Hermite reconstruction,
+and factorization into child contractions~\cite{upstream}.
+
+\subsection{Packing and precision}
+Let $Q=r^a$. The asymmetric packing result gives padded mass
+$(1+o(1))M$ and child size $(2/r+o(1))M$ when, uniformly,
+\begin{equation}\label{eq:packing-import}
+ QR=o(M),\qquad Q^2 C\lambda^2=o(M),\qquad LQ^2=o(M).
+\end{equation}
+Here $R,C$ are the degree bounds on the two sides. At the root both
+are at most $\lceil s^{9/10}\rceil$. Below the root we orient the
+retained tensors on the first side and the newly created packet
+tensors on the other, so
+\[
+ R\le\lceil s^{9/10}\rceil,\qquad C\le2^{a_{d-1}+1}.
+\]
+This is the crucial asymmetric invariant~\cite{asymmetric}.
+
+Use
+\[
+ b=\lceil6\log_2\lambda\rceil,\quad
+ u_d=\lfloor f_d\lambda\rfloor,\quad
+ a_d=\sum_{j=0}^d(u_j+b).
+\]
+For a node with $i=v_2(t)<u_d$ put $D=2^{a_d-i}$.
+The sharp taper and additive buffer imply the uniform working precision
+\begin{equation}\label{eq:precision-import}
+ p_t\le(6+o(1))MD/u_d.
+\end{equation}
+The stored precision inherited from an ancestor is
+$O(s\lambda^2 2^{a_{d-1}})$. Since
+$D\ge2^{a_{d-1}+b+1}$ and active calls have
+$M>s/\lambda$, its ratio to $MD/u_d$ is
+$O(\lambda^4 2^{-b})=o(1)$.
+The jet-evaluation correction is lower order as well.
+These are the same imported precision guarantees used by the newer
+frontier packets~\cite{precision,frontier,tree}.
+
+\subsection{Full-block modes and a uniform entropy certificate}
+For every directed pair $e$ of distinct groups, full crossing-block
+Cauchy separation supplies
+\[
+ (2+o(1))\frac{M}{r^2D}
+\]
+mode families with weights
+\[
+ a+1-i+4q-2s_2(q),\qquad q=0,1,\ldots,
+\]
+with the appropriate finite endpoint. Source and target locality is
+preserved~\cite{joint}. For each directed pair fix an exact total weight
+budget $W_e$, with $\sum_eW_e<p_t$, and let $\mathcal I_e$ be the list
+of mode tuples with that exact weight. Set $h_e=\log_2|\mathcal I_e|$;
+empty lists contribute nothing and singleton lists have $h_e=0$.
+For fixed $r$, there are only polynomially many budget arrays.
+
+The common-tilt estimate in the incoming frontier and tree packets is
+\begin{equation}\label{eq:entropy-import}
+ \sum_e z_eh_e\le
+ \left(\frac{\sqrt{\sum_e z_e^2}}r+o(1)\right)K(M,u),\qquad
+ K(M,u)=\kappa\frac M{\sqrt u},\quad
+ \kappa=\frac{\pi\sqrt2}{\ln2},
+\end{equation}
+for any one of finitely many fixed nonnegative weight vectors $z$.
+It is important that this estimate also holds when individual $W_e$
+are small or zero.
+
+For clarity, its constant comes from
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta(1+4q-2s_2(q))})
+ =\frac{\pi^2+o(1)}{24\theta}.
+\]
+Use parameter $\theta/z_e$ for pair $e$, multiply its logarithmic
+generating-function bound by $z_e$, and sum. The leading expression is
+\[
+ \theta p_t+
+ \frac{\pi^2}{24\theta}\frac{(2+o(1))M}{r^2D}
+ \sum_ez_e^2.
+\]
+Optimizing $\theta$ and substituting \eqref{eq:precision-import}
+gives \eqref{eq:entropy-import}. The thin buffer makes the remainders
+uniform. Thus we import a proven common upper bound, not an unjustified
+large-budget approximation for every individual list.
+
+\subsection{The cache recurrence must pay for child evaluation}
+For a fixed exact-weight array, cache each group function on its incident
+pair indices. An entry is a real child contraction. There are
+$2(r-1)$ incident directed pairs, so the cache-construction coefficient is
+\[
+ a_r=\frac{\sqrt{2(r-1)}}r.
+\]
+If $b_rK(M,u)$ bounds local table construction and contraction, the
+correct recurrence, up to polynomial and uniform lower-order factors, is
+\begin{equation}\label{eq:charged-rec}
+ T_d\le
+ 2^{(a_{r_d}+o(1))K_d}T_{d+1}
+ +2^{(b_{r_d}+o(1))K_d}.
+\end{equation}
+Treating the group functions as free tables would omit the first term
+and produce an invalid improvement. The next section sharpens $b_r$
+and supplies a schedule that controls the entire recurrence.

@@ -1,0 +1,178 @@
+INDEPENDENT REVIEW OF THE FINITE ADAPTIVE-TREE SUPPORT CERTIFICATE
+
+Reviewed construction: selecting among finitely many cached contraction trees
+for each exact pair-weight array. This review concerns the local aggregation
+step and its support certificate. It does not independently certify every
+upstream tensor deformation, precision, or SAT reduction lemma.
+
+1. THE LOCAL MATRIX COST
+
+Let h_gh=log2 |I_gh| for each directed group pair, after fixing a feasible
+exact-weight array. Empty lists are skipped. A cached block table T_A has one
+index for every directed pair between A and its complement.
+
+To merge disjoint blocks A and B, write O=V\(A union B). The three independent
+index classes are the A--O, A--B, and B--O directed pairs. A rectangular matrix
+product has logarithmic dimensions H1,H2,H3 equal to their respective sums of
+h_gh. The imported exact coordinate/CRT bridge with exponent 12/5 gives local
+exponent
+
+  H1+H2+H3 - (3/5) min(H1,H2,H3)
+  = max{(2/5)H1+H2+H3, H1+(2/5)H2+H3,
+         H1+H2+(2/5)H3}.
+
+The final triangle has the same three-class cost. Input/output table sizes
+and the final trace/inner product are bounded by these exponents, because
+H1,H2,H3 are nonnegative. Multiplying by five yields integer support weights
+0,2,5 on undirected pairs, with identical weights on their two orientations.
+
+For three nonempty final blocks, binary construction uses r-3 internal merges
+plus one final triangle. Thus each tree supplies 3(r-2) linear forms:18 for
+r=8,21 for r=9,30 for r=12. Single-group cache preparation is a separate term
+and is not omitted from the global recurrence.
+
+2. SUPPORT-AVERAGING THEOREM
+
+For a fixed finite menu of q trees, let V_j be tree j's finite collection of
+integer undirected support vectors. Put g_{xy}=h_xy+h_yx. Its nonrecursive
+work exponent is bounded, up to common polynomial factors, by
+
+  F_j(g) = (1/5) max_{v in V_j} v dot g.
+
+The adaptive evaluator chooses the least F_j. Pointwise, for every g,
+
+ min_j F_j(g)
+ <= (1/q) sum_j F_j(g)
+ = (1/(5q)) max_{(v_1,...,v_q) in product V_j}
+                    (v_1+...+v_q) dot g.
+
+This identity is elementary and crucial: the maximum on the final line is
+over an independent operation choice from each tree. It is not the average
+of Euclidean norms, a minimum/maximum exchange, or an assumption that one
+tree is simultaneously best for every operation.
+
+The imported entropy estimate states, for fixed nonnegative directed weights z,
+
+  sum_{g != h} z_gh h_gh
+  <= (||z||_2/r + o(1)) K(M,u),
+  K(M,u)=pi sqrt(2)/ln(2) * M/sqrt(u).
+
+Given a tuple of undirected vectors, set each directed weight to the matching
+undirected entry of (v_1+...+v_q)/(5q). Its squared directed norm is exactly
+2||v_1+...+v_q||_2^2/(25 q^2). Consequently, if
+
+  Q = max_{(v_1,...,v_q)} ||v_1+...+v_q||_2^2,
+
+the adaptive coefficient on K(M,u) is at most
+
+  b = sqrt(2Q)/(5 q r).
+
+There are finitely many masks independent of s. Hence the entropy estimate's
+o(1) is uniform over this menu, including the adaptively chosen tree and mask.
+No covariance or isotropy assumption about random vertex permutations enters
+the proof. In particular it avoids the false step of treating vertex
+permutations as all permutations of edge coordinates.
+
+3. COMPUTABILITY AND RECURSIVE COST ACCOUNTING
+
+Counts |I_gh| are exact positive integers obtained by the existing polynomial
+dynamic program. For an integer support vector v, the value exp2(v dot g)
+is an integer product of powers of these counts. Maxima and comparisons between
+trees can therefore be made exactly, without floating-point logarithms or
+nonunit division. The menu is fixed, count bit lengths are polynomial in s,
+and all such comparisons have polynomial bit complexity.
+
+Selection happens before building the chosen block tables. All single-group
+factors are cached once, using genuine recursive child contractions exactly
+as in the prior method. The new theorem changes only the nonrecursive local
+aggregation coefficient b in
+
+  T_d <= poly(s) [ 2^{(a_r+o(1))K_d} T_{d+1}
+                  + 2^{(b+o(1))K_d} ],
+  a_r=sqrt(2(r-1))/r.
+
+It does not turn group factors into free entry oracles, and it does not remove
+the existing table memory. If every tree has the same multiset of block sizes,
+the old cardinality bound on peak table storage applies uniformly. The source
+coordinate/CRT algorithm's storage guarantee and all canonical creation-time
+precision conventions remain necessary imports.
+
+4. INDEPENDENT R=8 CERTIFICATE
+
+Trees (within each block, recursively split its ordered list at floor(k/2)):
+ A: (0,1,2), (3,4,5), (6,7).
+ B: (2,4,7), (6,0,5), (1,3).
+
+An independently written classifier labels vertices by their membership in
+the two merged blocks or their outside complement, then assigns0/2/5 by
+endpoint labels. It imports no code from the exploratory implementation.
+
+Each tree has18 masks and maximum individual undirected squared norm399.
+Exhaustive integer enumeration of all18^2=324 mask pairs gives Q=1276,
+so the maximum squared norm of their average is319. Thus
+
+  b8 = sqrt(2*1276)/(5*2*8) = sqrt638/40,
+  b8^2 = 319/800, b8 = 0.6314665470157544... .
+
+The sum of the324 integer squared norms is270288, an auxiliary reproducible
+checksum. The maximum is attained by four pairs of final-triangle masks.
+
+The final headline menus were independently checked as well:
+
+ r=9: 3 trees,21 operation masks each;21^3=9261 tuples;Q=3304;
+      b9^2=6608/18225; b9=4 sqrt413/135=0.6021452276415281... .
+      Auxiliary sum of all tuple squared norms:18018504.
+
+ r=13: 3 trees,33 masks each;33^3=35937 tuples;Q=7074;
+       b13^2=1572/4225; b13=2 sqrt393/65=0.6099762338953542... .
+       Auxiliary sum of all tuple squared norms:107119584.
+
+The standalone checker embeds both final menus, independently reconstructs
+all masks, checks the exact Q and b^2, and also retains the r=8 control.
+All checks use explicit exceptions rather than removable Python assertions.
+An optional --candidates argument accepts other JSON menus, ignoring their
+precomputed floating-point score and coefficient fields.
+
+5. STRONGER ADAPTIVE MEMORY ACCOUNTING
+
+For every particular tree and every particular exact-weight array, each
+stored block table is an input or output of one of that tree's matrix
+operations. Write its three log-dimensions H1,H2,H3. Each input/output size
+has log at most the sum of two of these dimensions, whereas its matrix work
+log is H1+H2+H3-(3/5)min(H1,H2,H3), which is at least every two-dimension
+sum. Single-group caches are included because each is used by a first merge
+or the final triangle. The imported fixed-base matrix routine uses a
+polynomial factor times input/output storage. Therefore, for the selected
+tree, every local table is bounded by its actual work exponent F_j(g).
+
+This proves a local memory coefficient b, not merely the old cardinality
+bound j_r. It is essential for the final schedule's stated space improvement:
+the root r=9 cardinality bound j9=2/3 alone gives34.04927518..., whereas the
+selected-cost bound b9 gives30.75391283205... . Resident tables along a
+recursion path add rather than multiply, and the schedule makes later local
+storage coefficients smaller. Polynomially many table types/depths do not
+change the leading exponential coefficient.
+
+6. CORPUS NOVELTY AND LIMITS
+
+The prior adaptive packet already chooses among280 triple partitions to
+minimize TOTAL crossing entropy, and proves that selected direct crossing sum
+by elementary averaging. It then bounds its block construction separately.
+Its polynomial-space recursive separator tree is fixed and balanced.
+
+The prior contraction-tree packet has fixed binary block trees and fixed
+triangle supports. It explicitly poses adaptive split-tree optimization from
+observed pair entropies as future research, noting that a uniform theorem must
+handle all budget allocations. Thus merely offering an optimizer would repeat
+an existing proposal. The finite whole-operation support-averaging certificate
+above supplies a uniform bound that was not found in any of the20 packets.
+
+The weighted entropy inequality, exact per-pair DP, tree construction, and
+matrix multiplication bridge are prior ingredients. This theorem is a new
+composition/selection analysis relative to the inspected corpus, not a claim
+of literature-wide priority for convexity, Cauchy--Schwarz, or tree portfolios.
+
+The result improves an explicit coefficient multiplying s/sqrt(log s).
+It does not by itself change the global logarithmic order or establish the
+unproved structured summation hypothesis exp(O(M/u)). It retains
+subexponential table space and the imported exact-contraction assumptions.

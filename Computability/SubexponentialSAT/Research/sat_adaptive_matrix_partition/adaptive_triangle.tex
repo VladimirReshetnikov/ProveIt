@@ -1,0 +1,162 @@
+% Scratch derivation for the root report; no standalone preamble.
+\section{Adaptive nine-group triangle contraction}
+Let $K>0$ and let $h_{gh}\ge0$ be the logarithmic sizes of the exact-weight
+mode lists, for the $72$ directed pairs on nine group vertices. The inherited
+weighted-entropy estimate implies, uniformly,
+\[
+ \|(h_{gh})\|_2\le (1+o(1))K/9.
+\]
+Here the inference from estimates for each fixed nonnegative weight vector is
+valid: normalize by $K$, use the coordinate estimates for boundedness, and
+apply compactness (or a fixed finite epsilon-net of the positive unit sphere).
+A sequence violating the asserted uniform norm bound would have a subsequence
+converging to a vector $x$ of norm greater than $1/9$; the fixed weight vector
+$x/\|x\|_2$ contradicts the original estimate.
+
+For an unordered pair $e=\{g,h\}$ put $w_e=h_{gh}+h_{hg}$. Write
+\[
+ W=\sum_e w_e,\qquad S=\sum_e w_e^2,
+ \qquad d_v=\sum_{e\ni v}w_e.
+\]
+Then $S\le 2\sum_{g\ne h}h_{gh}^2\le(2+o(1))K^2/81$.
+A partition of nine vertices into three triples has three interblock classes.
+Let their weights be $H_1,H_2,H_3$ and put $H=H_1+H_2+H_3$.
+The exponent of the imported exact rectangular matrix multiplication bridge,
+using a fixed rational matrix multiplication exponent below $12/5$, is
+\[
+ F=H-\frac35\min_i H_i.
+\]
+
+\begin{lemma}
+Among the $280$ partitions into triples there exists one with
+\[
+ F\le\sqrt{\frac{57}{175}}\,K+o(K).
+\]
+It can be selected with polynomial work from the integer sizes of the exact
+weight lists, without computing real logarithms.
+\end{lemma}
+\begin{proof}
+Choose the partition uniformly. For each unordered edge $e$, define
+$v_e\in\mathbb R^3$ to be zero if $e$ is internal, and otherwise to be the
+standard vector of its interblock class minus $(1/3,1/3,1/3)$. A fixed edge
+is crossing with probability $3/4$. Thus $\mathbb EH=3W/4$ and
+\[
+ \sum_i(H_i-H/3)^2=\left\|\sum_e w_e v_e\right\|_2^2.
+\]
+The covariance inner products are
+\[
+ \mathbb E(v_e\cdot v_f)=
+ \begin{cases}
+ 1/2,&e=f,\\
+ 1/28,&e\ne f\text{ share one vertex},\\
+ -1/21,&e,f\text{ are disjoint}.
+ \end{cases}
+\]
+For the adjacent case, the two other endpoints lie in the same other block
+with probability $3/14$ and in distinct other blocks with probability $9/28$.
+Their dot products are $2/3$ and $-1/3$, respectively, giving $1/28$.
+For the disjoint case, every partition has nine unordered edges in each
+interblock class, so $\sum_e v_e=0$. Each edge has fourteen adjacent edges and
+twenty-one disjoint edges. The row-sum identity therefore gives
+$1/2+14/28+21c=0$, hence $c=-1/21$.
+Expanding yields the exact identity
+\[
+ \mathbb E\sum_i(H_i-H/3)^2
+ =\frac8{21}S+\frac1{12}\sum_vd_v^2-\frac1{21}W^2.
+\]
+Let $B$ be the unsigned vertex-edge incidence matrix of $K_9$.
+Then $BB^{\mathsf T}=7I+J$. On vectors of zero sum, the largest squared
+singular value is seven. Applying this to
+$w'=w-(W/36)\mathbf1$ gives
+\[
+ \mathbb E\sum_i(H_i-H/3)^2
+ \le\frac{27}{28}\left(S-\frac{W^2}{36}\right).
+\]
+A triple of real numbers of sum zero has maximum at most the square root
+of two-thirds of its sum of squares. Jensen's inequality consequently gives
+\begin{align*}
+ \mathbb EF
+ &=\frac45\mathbb EH+\frac35\mathbb E\max_i(H/3-H_i)\\
+ &\le\frac35W+\frac9{5\sqrt{14}}
+                  \sqrt{S-W^2/36}\\
+ &\le\sqrt{\frac{4617}{350}}\sqrt S
+ \le\left(\sqrt{\frac{57}{175}}+o(1)\right)K.
+\end{align*}
+The penultimate step is two-dimensional Cauchy--Schwarz, since the coefficient
+of $\sqrt{W^2/36}$ is $18/5$, and
+$(18/5)^2+(9/(5\sqrt{14}))^2=4617/350$.
+Some partition is no worse than this mean.
+
+For a partition let $A_i\ge1$ be the integer product of the list sizes in its
+$i$th interblock class. Minimizing $F$ is equivalent to minimizing
+$(A_1A_2A_3)^5/(\min_iA_i)^3$. Compare these rational quantities by exact
+cross-multiplication over the $280$ partitions. Their bit lengths are
+polynomial, as in the existing exact-index interface. Zero-sized lists cause
+the entire exact-budget contribution to be skipped.
+\end{proof}
+
+\section{Composition with recursive table construction}
+Use the selected partition. Cache every group factor, paying for each entry
+with a real recursive child contraction. The incident-pair coefficient is
+$\alpha=4/9$. Build each triple table by first merging two singleton tables,
+then merging with its remaining singleton. For a merge of blocks of sizes
+$a,b$, with $k=a+b$, the three matrix index classes contain
+$2a(9-k),2ab,2b(9-k)$ directed pairs. The inherited entropy estimate and the
+$12/5$ matrix bridge give the coefficient
+\[
+ \frac1{9}\sqrt{v_1+v_2+v_3-\frac{21}{25}\min_i v_i}.
+\]
+The pair merge has classes $(14,2,14)$, with squared numerator $708/25$.
+The triple merge has classes $(12,4,24)$, with squared numerator $916/25$.
+The triangle lemma is below both relevant dominant costs. Hence the local
+nonrecursive time coefficient is
+\[
+ \beta=\frac{\sqrt{916}}{45}=0.6725664866854025\ldots.
+\]
+The largest stored boundary has thirty-six directed pairs, so its coefficient
+is $j=2/3$. Cache storage has coefficient $4/9$ and is smaller.
+The paid recurrence is
+\[
+ T_d\le\operatorname{poly}(s)2^{(\alpha+o(1))K_d}T_{d+1}
+      +\operatorname{poly}(s)2^{(\beta+o(1))K_d}.
+\]
+A single polynomial in total input description length pays for entry reading.
+
+Use precisely the already proved fixed-nine-group schedule in the incoming
+adaptive-contraction packet:
+\[
+ \lambda=\lceil\log_2s\rceil,
+ \quad B_\lambda=\max\{q\ge0:9^{20q}\le2^\lambda\},
+ \quad U=B_\lambda-\lceil\sqrt\lambda\rceil,
+ \quad u_d=\lfloor U/2^d\rfloor,
+\]
+with additive buffer $\lceil6\log_2\lambda\rceil$ and leaf threshold
+$\lceil s/\lambda\rceil$. All packing, precision, canonical creation,
+entry-oracle, ring-coordinate, and bit-cost gates remain the imported gates;
+the new computation changes only how the already constructed finite mode
+sum is evaluated. In particular, the uniform schedule analysis gives
+\[
+ K_d\le(\kappa+o(1))\gamma^d\frac{s}{\sqrt\lambda},
+ \qquad
+ \kappa=\frac{\pi\sqrt{40\log_2 9}}{\ln2},
+ \quad\gamma=\frac{2\sqrt2}{9}.
+\]
+Because
+\[
+ \frac\alpha{1-\gamma}=\frac4{9-2\sqrt2}<\frac23<\beta,
+\]
+the root merge term dominates the entire paid recurrence. The resulting
+relative exact-contraction certificate is
+\[
+ C_T=\kappa\frac{\sqrt{916}}{45}
+     =34.32528279728494\ldots,
+ \qquad
+ C_S=\frac23\kappa=34.02417800749051\ldots.
+\]
+Ancestor tables add instead of multiplying, and the unchanged schedule makes
+the deeper table exponents decrease geometrically. This is a subexponential
+space branch, not a polynomial-space theorem. It does not improve the
+logarithmic order of the SAT exponent or establish a stronger conditional
+summation interface. It is strictly smaller than the fastest explicit
+incoming normalized-wire certificate, $35.354588058401\ldots$ time and
+$34.274803005023\ldots$ space.

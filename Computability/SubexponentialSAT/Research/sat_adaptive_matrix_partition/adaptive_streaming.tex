@@ -1,0 +1,205 @@
+\section{An adaptive separator tree in polynomial space}
+\label{sec:adaptive-separator-new}
+
+The same second-moment idea gives a separate improvement that retains
+polynomial space. It changes only the order of the exact group-factor sum;
+it needs no matrix multiplication. We use the existing streamed separator
+algorithm and its $r=16$ precision and packing schedule. Its earlier
+coefficient is $55.709478318910\ldots$.
+
+\begin{theorem}[Adaptive streamed coefficient]
+\label{thm:adaptive-separator-new}
+Under the same normalized contraction interface and inherited algebraic
+identities, there is a polynomial-space algorithm with time
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(C_{\rm ps}+o(1))s/\sqrt{\log_2s}},\qquad
+ C_{\rm ps}=\frac{5\pi}{\ln2}\sqrt{\frac{145}{42}}
+ \left(1+\frac1{3\sqrt3}\right)
+ =50.210434836331\ldots .
+\]
+In particular, $50.22$ is a safe eventual coefficient.
+\end{theorem}
+
+\paragraph{The exact local sum.}
+Fix a pair-budget array for sixteen groups. Each directed pair $e$ has
+an exact-weight index list of size $N_e$, and write $h_e=\log_2N_e$.
+Empty lists discard the array. The imported entropy bound, in its
+Euclidean form, gives
+\[
+ \sum_e h_e^2\le (1+o(1))\frac{K^2}{16^2},\qquad
+ K=\frac{\pi\sqrt2}{\ln2}\frac{M}{\sqrt u}.
+\]
+For each unordered pair let $w_{ab}=h_{ab}+h_{ba}$, and put
+$q=\sum_{a<b}w_{ab}^2$ and $W=\sum_{a<b}w_{ab}$. Thus
+$q\le(1+o(1))K^2/128$.
+
+Take the full balanced binary tree on sixteen leaves. At a node, condition
+on all directed indices crossing its two child blocks, recurse independently
+on the two sides, multiply the answers, and sum. For a leaf $\ell$, let
+$E_\ell$ be the union of the cut-pair sets on its root-to-leaf path, viewed
+as unordered pairs, and let
+\[
+ L_\ell=\sum_{e\in E_\ell}w_e.
+\]
+The number of paid group-factor evaluations is at most
+$\sum_\ell2^{L_\ell}\le16\,2^{\max_\ell L_\ell}$, as in the inherited
+streamed separator identity. Each group-factor evaluation is an actual
+recursive child contraction. No cache or free oracle is used.
+
+\begin{lemma}[Adaptive tree moment bound]
+\label{lem:adaptive-tree-moment-new}
+For every nonnegative weighting of the $120$ unordered pairs, some
+relabeling of the balanced sixteen-leaf tree satisfies
+\[
+ \max_\ell L_\ell
+ \le \sqrt{\frac{725}{1344}}\,K+o(K).
+\]
+\end{lemma}
+
+\begin{proof}
+Uniformly permute the sixteen group labels over the leaves. A leaf path
+contains $64+16+4+1=85$ unordered cut pairs. Write
+\[
+ m=\frac1{16}\sum_\ell L_\ell,\qquad
+ V=\frac1{16}\sum_\ell(L_\ell-m)^2.
+\]
+Linearity of expectation gives $\mathbb E m=(85/120)W=(17/24)W$.
+For any sixteen real numbers,
+\[
+ \max_\ell L_\ell\le m+\sqrt{15}\sqrt V.
+\]
+Indeed, if the largest deviation is $t$, the other fifteen deviations
+sum to $-t$, so their squared sum is at least $t^2/15$.
+
+The quadratic form $\mathbb E V=w^{\mathsf T}Bw$ is invariant under
+permutations of the sixteen vertices. Its entries depend only on whether
+two unordered edges are equal, share an endpoint, or are disjoint:
+\[
+ B_{ee}=\frac{19}{192},\qquad
+ B_{ef}=\frac5{168}\quad(e\sim f),\qquad
+ B_{ef}=-\frac{179}{17472}\quad(e\cap f=\varnothing).
+\]
+Here is a direct derivation of these rational counts. An edge whose least
+common ancestor has $16,8,4,2$ leaves belongs to respectively
+$16,8,4,2$ leaf paths; these four edge classes have sizes $64,32,16,8$.
+Thus the trace of the leaf-centered covariance for a fixed tree is
+\[
+ 32\frac14+16\frac3{16}+8\frac7{64}=\frac{95}{8}.
+\]
+Dividing by $120$ gives $19/192$. For any one leaf, the degrees of the
+sixteen vertices in its path's edge set are $15,14,12,8$, with respective
+multiplicities $2,2,4,8$. Each vertex's average degree over leaves is
+$85/8$. The sum of these sixteen squared degree deviations is $495/4$.
+Subtracting twice the covariance trace leaves the total covariance over
+ordered adjacent edges, namely $495/4-2(95/8)=100$. Dividing by
+$16\cdot15\cdot14=3360$ gives $5/168$. Finally, constant edge weights give
+zero leaf variance. The ordered disjoint-edge covariance sum is therefore
+$-95/8-100=-895/8$, and its $120\binom{14}{2}=10920$ terms give
+$-179/17472$.
+
+For an independent executable check, use the incidence indicators
+$A_{\ell e}=\mathbf1_{e\in E_\ell}$ of one fixed tree, compute
+\[
+ \frac1{16}\sum_\ell A_{\ell e}A_{\ell f}
+ -\left(\frac1{16}\sum_\ell A_{\ell e}\right)
+  \left(\frac1{16}\sum_\ell A_{\ell f}\right),
+\]
+and average this value over the $120$ equal-edge cases, $1680$ unordered
+adjacent-edge pairs, and $5460$ unordered disjoint-edge pairs. Relabeling
+uniformly is exactly this orbit average. The supplied checker performs
+all of these counts with rational arithmetic.
+
+For a symbolic verification of the spectral bound, let $A$ be the adjacency
+matrix of the line graph of $K_{16}$. Its eigenvalues are $28$ on constants,
+$12$ on the fifteen-dimensional vertex component, and $-2$ on the
+remaining $104$ dimensions. This also follows directly from the unsigned
+vertex-edge incidence matrix $R$: $R^{\mathsf T}R=A+2I$ and
+$RR^{\mathsf T}=14I+J$. Substituting the three rational entries above
+therefore gives eigenvalues
+\[
+ 0,\qquad \frac{33}{56},\qquad \frac{85}{2912}
+\]
+for $B$ on these respective subspaces. Consequently
+\[
+ \mathbb E V\le\frac{33}{56}\left(q-\frac{W^2}{120}\right).
+\]
+Jensen's inequality and then the two-dimensional Cauchy inequality give
+\begin{align*}
+ \min_{\text{trees}}\max_\ell L_\ell
+ &\le\mathbb E\max_\ell L_\ell\\
+ &\le\frac{17}{24}W+
+       \sqrt{\frac{495}{56}}\sqrt{q-W^2/120}\\
+ &\le\sqrt{120(17/24)^2+495/56}\sqrt q\\
+ &\le\left(\sqrt{\frac{725}{1344}}+o(1)\right)K.
+\end{align*}
+This proves the lemma.
+\end{proof}
+
+\paragraph{An explicit deterministic choice.}
+An exact subset dynamic program avoids enumerating tree relabelings.
+Replace each $h_e$ by $b_e=\lceil\log_2N_e\rceil$, calculated from integer
+bit lengths, and use unordered weights $w_{ab}=b_{ab}+b_{ba}$. This changes
+any path weight by less than $170$ and hence preserves the coefficient.
+For every subset $S$ of power-of-two cardinality let $F(S)$ be the minimum
+possible maximum path weight for a balanced tree on $S$. For singleton sets
+put $F(\{v\})=0$. If $W(S)$ is the sum of internal unordered weights, then
+\[
+ F(S)=\min_{\substack{A\sqcup B=S\\|A|=|B|}}
+ \left[W(S)-W(A)-W(B)+\max\{F(A),F(B)\}\right].
+\]
+Indeed, the root cut weight is common to all paths, and the two subtree
+problems optimize independently. Ancestor cuts, when present, are also
+common additive constants and do not change this optimal substructure.
+Store a minimizing split and recover a complete minimizing tree.
+
+Compute $W(S)$ first for all $2^{16}$ masks. The dynamic program has
+$\binom{16}{1}+\binom{16}{2}+\binom{16}{4}+\binom{16}{8}+1=14827$
+states. Enumerating only splits with $\min S\in A$ examines
+$120+1820\cdot3+12870\cdot35+6435=462465$ splits. All arithmetic is on
+polynomial-bit integers. The selector is therefore deterministic and uses
+polynomial time and space in $s$. This exact finite selector does not imply
+a practical end-to-end SAT speedup. Once selected, the separator sum is
+streamed depth first. The local recurrence is
+\[
+ T_d\le\operatorname{poly}(s)\,
+ 2^{(\beta_{\rm ps}+o(1))K_d}T_{d+1},\qquad
+ \beta_{\rm ps}=\sqrt{725/1344}.
+\]
+All internal-node work is charged to the leaf evaluation count, and the
+index arrays and accumulators remain polynomial in size.
+
+\paragraph{Global schedule and coefficient.}
+Retain the earlier polynomial-space schedule. Let
+$\lambda=\lceil\log_2s\rceil$, $g=\lceil\sqrt\lambda\rceil$,
+$B_0=\lfloor(\lambda-g)/80\rfloor$, and
+\[
+ u_0=B_0,\qquad u_d=\lfloor3B_0/4^d\rfloor\quad(d\ge1),\qquad
+ a_d=\sum_{j=0}^d u_j+(d+1)\lceil6\log_2\lambda\rceil.
+\]
+Use leaf threshold $\lceil s/\lambda\rceil$. The total taper length is
+at most $2B_0$. The symmetric root gate and the retained-side asymmetric
+gate have a $\Theta(\sqrt\lambda)$ logarithmic margin. The fresh-side
+and padding exponents are at most $9\lambda/40+o(\lambda)<\lambda$.
+Near-lossless packing gives sharp child ratio $(1+o(1))/8$ and eventual
+ratio at most $1/6$, so active depth is at most $\log_6\lambda+O(1)$
+and $u_d\ge\lambda^{1-\log_6 4+o(1)}\to\infty$ there. The existing
+buffer absorbs inherited precision exactly as in the prior proof.
+Thus the unchanged schedule gives
+\[
+ \sum_d\frac{M_d}{\sqrt{u_d}}
+ \le\left[\sqrt{80}\left(1+\frac1{3\sqrt3}\right)+o(1)\right]
+ \frac{s}{\sqrt\lambda}.
+\]
+Multiplying by $(\pi\sqrt2/\ln2)\beta_{\rm ps}$ proves
+Theorem~\ref{thm:adaptive-separator-new}. Leaves, tensor entry evaluation,
+and polynomial factors have the same lower-order bounds as in the
+inherited schedule. Every recursion is streamed, so space stays polynomial.
+
+The new coefficient is the old $55.709478\ldots$ coefficient multiplied by
+\[
+ \frac{\sqrt{725/1344}}{\sqrt{170}/16}
+ =\sqrt{\frac{290}{357}}=0.90129\ldots.
+\]
+This improves a displayed upper-bound certificate, not a measured running
+time, and it leaves the SAT exponent's logarithmic order unchanged.

@@ -1,0 +1,104 @@
+\section{Why the exponent order is still unresolved}
+\label{sec:research}
+
+The positive contraction theorem decreases explicit coefficients in
+$2^{(C+o(1))\Escale(s)}$. It does not replace $\Escale(s)$ by a smaller
+order. The new Hermite theorem and the representation barriers identify
+several changes that cannot, on their own, supply that replacement.
+
+\subsection{Precision peeling does not justify a free reset}
+
+The incoming frontier packet already proves precision peeling:
+a mode tuple of total guaranteed weight $W<P$ can contribute as
+$2^W$ times a product of normalized child contractions modulo $2^{P-W}$.
+It also supplies the required creation-time precision caps~\cite{frontier}.
+This identity is prior work, not a new contribution here.
+
+A tempting further step is to reset the cumulative packet exponent
+because most tuples have small residual precision. The present
+upper-bound analysis does not justify that step. If its partition
+certificate at budget $P$ is $S(P)=c\sqrt P$ with the other parameters
+fixed, then for any fixed $B>0$,
+\[
+ S\!\left(P-\frac{P}{(\log s)^B}\right)
+ =S(P)\sqrt{1-(\log s)^{-B}}
+ =(1-o(1))S(P).
+\]
+Thus the high-residual part, $P-W\ge P/(\log s)^B$, still has the
+same leading counting certificate. Meanwhile
+\[
+ \log_2(P-W)\ge\log_2P-O(\log\log s).
+\]
+It retains the same leading inherited precision exponent.
+That change can recover an additive $O(\log\log s)$ in the packet
+exponent, not a new range of order $\log s$.
+Typical-residual reasoning or a split into a few fixed fractional
+bins misses this obstruction. The calculation concerns the current
+certificate; it is not a lower bound on actual evaluation times.
+A successful reset would require collective handling or new structure
+in that high-residual part.
+
+\subsection{Why binary tuple indices do not close the recursive interface}
+
+The exact-weight mode lists can be ranked and unranked with polynomial
+work. This gives a compact bit string describing a mode tuple, but a
+group function at fixed grouping arity can still depend on a linear
+fraction of all the new bits. Its degree then exceeds the
+$s^{9/10}$ entry-oracle premise of the contraction theorem at that
+new size. Evaluating such an entry recursively does not split its
+ports at low wire cost.
+
+The conditional structured-summation and degree-preserving proposals
+correctly isolate this missing factorization~\cite{precision,scalar,analysis}.
+Applying the contraction theorem a second time without constructing
+it would be circular. The finite rank/unrank dynamic program is
+necessary bookkeeping, not the missing algorithm.
+
+\subsection{Research questions with a concrete success criterion}
+
+\begin{enumerate}
+\item \textbf{Construct a small representation of a group function.}
+For a compressed mode network with $B$ index bits, exhibit an exact
+network with $O(B)$ wires, sublinear maximum degree, and entry evaluation
+cost compatible with the second contraction. The representation must
+encode the entire group function, including coefficient extraction,
+not just its tuple indices. This is the most direct route to the
+existing $s/\log s$ conditional target.
+
+\item \textbf{Exploit correlations among attainable Hermite jets.}
+Theorem~\ref{thm:finite-hermite} optimizes independent perturbations
+of the ordinary recovery blocks. It leaves open the lattice of jet
+vectors actually produced by the deformed contraction. Identify a
+uniform relation in that lattice and an exact recovery algorithm
+whose precision analysis uses it. Moving multiplicities among nodes
+alone now has a precise negative answer.
+
+\item \textbf{Avoid materializing formal exact-weight tables.}
+The inventory barrier does not prove that their entries are independent,
+nonzero, or information-theoretically incompressible. A representation
+that supports multiplication and summation without constructing every
+formal cell could evade it. The Cauchy kernel's structure must be shown
+to survive contraction with arbitrary allowed vertex tensors; that
+survival cannot be assumed.
+
+\item \textbf{Remove incidence entropy in the dense reduction.}
+The reviewed reduction uses $O(n)$ selected incidences among
+$n\,\polylog n$ possible incidences, leading to $O(n\log\log n)$
+index wires. A direct $O(n)$-wire representation with the required
+oracle bounds would improve the unrestricted SAT order even if the
+contraction's square-root logarithm stayed unchanged. Polynomial degree
+in incidence variables does not automatically imply low complexity in
+the binary rank bits.
+
+\item \textbf{Optimize time and space together under explicit premises.}
+The new rectangular and streamed algorithms can coexist with the
+lower-degree and lower-memory branches. Further schedule or hybrid
+separator/cache optimization may yield smaller coefficients.
+Such a result should be reported as a coefficient improvement unless
+it actually changes the logarithmic scale.
+\end{enumerate}
+
+No new affirmative algorithm for these open interfaces is supplied in
+this packet. The established refinements, their imported dependencies,
+and the still-open stronger target are recorded separately in
+\texttt{PROOF\_STATUS.json}.

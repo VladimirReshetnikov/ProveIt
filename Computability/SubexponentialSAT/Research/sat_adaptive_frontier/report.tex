@@ -1,0 +1,392 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black,pdftitle={Adaptive evaluation of the subexponential SAT mode graph},pdfauthor={Research prepared for Vladimir Reshetnikov with ChatGPT}}
+\pagestyle{fancy}\fancyhf{}\lhead{\small Adaptive evaluation of the SAT mode graph}\rhead{\small Research report}\cfoot{\thepage}
+\setlength{\headheight}{14pt}\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}\setlength{\emergencystretch}{3em}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\pc}{s_2}
+\newcommand{\kap}{\kappa}
+\newcommand{\K}{\mathcal K}
+\newcommand{\E}{\mathcal E}
+\newcommand{\pin}{\texttt{fd0edd17e6a29117179b40a453c0def59165bd7c}}
+\title{\textbf{Adaptive evaluation of the\\subexponential SAT mode graph}\\[6pt]\large Smaller certified exponential bounds, a review of twenty packets,\\and a conserved degree budget for further research}
+\author{Research prepared for Vladimir Reshetnikov\\with ChatGPT}
+\date{October 26, 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the fifteen integrated refinement packets and all five incoming
+SAT archives at ProveIt commit \texttt{fd0edd17e6a2}. We obtain two
+smaller explicit upper bounds within their shared exact tensor-contraction
+framework. Adaptive four-block separator conditioning gives
+\[
+ T\le (s+\mathcal L)^{O(1)}
+ 2^{(50.30468921410+o(1))s/\sqrt{\log_2s}}
+\]
+in polynomial space. A covariance bound controlling all three block constructions and the
+final matrix contraction simultaneously gives time and space coefficient
+$31.25239731266$ on the same scale. The strongest previously
+displayed coefficients are $55.70947831891$ in polynomial space and
+$35.35458805840$ with subexponential space. We also compare against a
+stronger $55.40466590661$ polynomial-space composition of incoming results.
+
+These are reductions of the leading coefficient in an exponential upper
+bound. We do not obtain a smaller order than
+$n\log\log n/\sqrt{\log n}$ for general-density SAT, or
+$n/\sqrt{\log n}$ at fixed density. The stronger conditional proposals in
+the corpus remain conditional. A separate exact degree-flow lemma identifies
+a conserved algebraic resource, together with the representation and entry
+evaluation obligations still preventing its use for an order improvement.
+The report includes proofs, reproducible exact finite checks, immutable
+source provenance, and integration notes. The new results import the
+upstream deformation and recovery identities; this is not an independent
+certification of the claimed refutation of ETH.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Outcome and the meaning of the improvement}
+\label{sec:outcome}
+
+The requested goal was to improve on the combined frontier of the recent
+proposals. The successful part of this investigation concerns the cost of
+evaluating their mode graph. Choosing its contraction structure after its
+exact index cardinalities are known gives a smaller certified exponential
+bound. The investigation did not establish a smaller logarithmic order.
+Both statements are essential to interpreting the result.
+
+Put $\lambda=\ceil{\log_2s}$ and
+$\E(s)=s/\sqrt\lambda$. The size $s$ counts normalized Boolean wires,
+not SAT variables. Let $\mathcal L$ denote the total input description
+length. The common interface consists of a bipartite Boolean tensor network
+with at most $s$ wires, maximum degree at most $\ceil{s^{9/10}}$, and
+entries in
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad 1\le P_0,\ell\le s.
+\]
+The original entry routines have time
+$(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ and polynomial space.
+The fixed constants in these requirements are part of the interface.
+The usual unramified extension of the scalar ring is used internally.
+Tensor descriptions retain their creation precisions and their original
+canonical representatives, as required by the source construction
+\cite{upstream,asymmetric}.
+
+\begin{theorem}[New relative contraction bounds]\label{thm:main}
+Under this interface and the imported exact identities listed in
+Section~\ref{sec:imports}, there are deterministic exact algorithms with
+the following bounds:
+\begin{enumerate}
+\item Polynomial space and time
+$(s+\mathcal L)^{O(1)}2^{(C_{\rm Q}+o(1))\E(s)}$, where
+\[
+ 50.30468921409<C_{\rm Q}<50.30468921410.
+\]
+\item Time $(s+\mathcal L)^{O(1)}2^{(C_{\rm A}+o(1))\E(s)}$ and
+space $(s+\mathcal L)^{O(1)}2^{(C_{\rm S}+o(1))\E(s)}$, where
+\[
+ C_{\rm A}=C_{\rm S}=\frac{\pi}{\ln2}
+ \sqrt{40\log_2 9\cdot\frac{2489356}{6638625}}
+ =31.2523973126509\ldots .
+\]
+\end{enumerate}
+The first algorithm is proved in Section~\ref{sec:quartet}; the second in
+Section~\ref{sec:joint-objective}. The $o(1)$ terms tend to zero for fixed
+interface constants. For example, $50.305$ and $31.253$ are safe eventual
+time coefficients, and $31.253$ is also a safe eventual space coefficient for
+the second algorithm.
+\end{theorem}
+
+\begin{center}
+\begin{tabular}{@{}p{0.54\textwidth}rr@{}}
+\toprule
+Common-interface certificate & Time coefficient & Space\\\midrule
+Integrated round-two minimum & $76.90899495$ & polynomial\\
+Incoming streamed separators & $55.70947832$ & polynomial\\
+Stronger incoming composition & $55.40466591$ & polynomial\\
+New adaptive quartet algorithm & $\mathbf{50.30468922}$ & polynomial\\\midrule
+Incoming cached contraction tree & $35.35458806$ & $C_S=34.27480301$\\
+New joint adaptive contraction & $\mathbf{31.25239732}$ & $C_S=31.25239732$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here a space coefficient means a bound
+$(s+\mathcal L)^{O(1)}2^{(C_S+o(1))\E(s)}$. The two new algorithms
+represent different memory budgets; the cached one does not provide
+polynomial space. Lower-degree specializations in the corpus impose
+stronger input assumptions and are not comparable to the general-degree
+rows of this table.
+
+The polynomial-space coefficient decreases by about $9.20\%$ against the
+stronger composed baseline. The cached coefficient decreases by about
+$11.60\%$ against the strongest displayed cached bound. More precisely,
+the ratios of the corresponding exponential certificate functions are
+\[
+ 2^{-(5.0999766925+o(1))\E(s)},\qquad
+ 2^{-(4.1021907458+o(1))\E(s)}.
+\]
+Both tend to zero. This comparison is between upper-bound functions.
+It proves neither a ratio of actual algorithm runtimes nor a practical
+speedup for SAT instances. The thresholds implicit in these constructions
+can be enormous.
+
+\subsection{Preserving the full existing envelope}
+Different packets also offer density-sensitive bounds, low-degree bounds,
+and other specialized interfaces. A finite algorithm portfolio can keep
+those methods and add the two new ones. On inputs satisfying several
+interfaces, interleaving the applicable exact algorithms incurs only a
+fixed scheduling overhead relative to the first to finish. A memory-restricted
+portfolio includes only algorithms respecting that restriction. Thus the
+new results can strengthen the common general-degree certificate while
+retaining every existing specialized option.
+
+No such claim is made for an unimplemented conditional proposal. In
+particular, a hypothetical $n/\log n$ counter would asymptotically beat
+the present $n/\sqrt{\log n}$ scale. We have not constructed that counter.
+
+\section{Frozen source review}
+\label{sec:review}
+
+The initial repository snapshot is \pin, whose head commit is dated
+October 26, 2026 at 19:33:01 Pacific time. The review covers the requested
+\path{Computability/SubexponentialSAT} and \path{docs/incoming}
+directories at that snapshot. There are fifteen integrated refinement
+packets, five then-incoming archives, and two primary manuscripts.
+The machine-readable provenance files give exact Git blobs, SHA-256
+hashes, paths, and immutable URLs. The local source checkout is unchanged.
+
+A closing check reviewed commit
+\texttt{dde01c4a63b822c25b8eb345299346c36f837b49}, dated October 26 at
+19:42:25 Pacific time. Its placement commit \texttt{450252e9d86c}
+files those same five archives under the Research directory. We checked
+all $230$ archive members against the corresponding closing Git blobs;
+every member is byte-identical. The placement also restores two
+round-two replay scripts and updates the indexes. It adds no new
+mathematical packet. At this closing snapshot, all twenty packets are
+integrated and \path{docs/incoming} contains only its index. The initial
+snapshot ledger remains useful for identifying the exact arrival
+archives; \path{provenance/closing_review.json} records the verified
+new locations.
+
+The source index explicitly labels this material as external research,
+with no ProveIt Lean or Rocq verification of these refinements
+\cite{index}. We catalogued every packet's stated claim and inspected the
+proofs and interfaces used below. This does not mean that every proof in
+all twenty packets, or the full primary manuscript, has been independently
+verified.
+
+\subsection{Recent commits that determine the comparison}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.18\textwidth}p{.75\textwidth}@{}}
+\toprule Commit & Relevant change\\\midrule\endhead
+\texttt{2b925d8800cd} & Places the first seven refinement packets and the separate Claude manuscript under SubexponentialSAT.\\
+\texttt{3e096089911f} & Vendors the OpenAI preprint and its four LaTeX source files, pinned to \texttt{openai/math@7ef5c0cc5c}.\\
+\texttt{45233238aebf} & Summarizes proved, density-sensitive, and conditional claims.\\
+\texttt{6d3adc450615} & Places eight round-two packets; the smallest displayed general-degree coefficient is $76.90899$.\\
+\texttt{f42479bca245}, \texttt{f898a9fde4c3}, \texttt{fa6e904d109b} & Adds the five SAT archives that were incoming at the initial snapshot. Their stronger bounds must be included in the comparison.\\
+\texttt{fd0edd17e6a2} & The initial pinned repository head used for the source extraction.\\
+\bottomrule
+\end{longtable}
+
+\subsection{The fifteen integrated packets}
+All paths in this subsection are relative to
+\path{Computability/SubexponentialSAT/Research/}. The exact report paths
+and fingerprints are in \path{provenance/source_inventory.json}.
+
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.63\textwidth}@{}}
+\toprule Packet & Claim relevant to the frontier\\\midrule\endhead
+\path{cauchy_mode_improvement} & Factorial Cauchy modes with asymptotic weight slope three; coefficient improvement, unchanged order.\\
+\path{eth_contraction_improvements} & Sharp Hermite taper, precision $6MD/u$, streamed coefficient extraction, schedule coefficient about $648.44$.\\
+\path{3sat_precision_refinement} & Exact precision and taper refinements. The $n\log\log n/\log n$ and $n/\log n$ targets require an unproved structured-summation algorithm.\\
+\path{sat_density_improvement} & Uniform density envelope with numerator $n\min\{\log(2+m/n),\log\log n\}$.\\
+\path{eth_density_refinement} & Overlapping density improvement and a local slope-four Cauchy Smith profile.\\
+\path{3sat_refinement} & Scalar parity lift and smaller incidence degree; faster second contraction remains conditional on a compact factorization.\\
+\path{3sat_asymptotic_analysis} & Restricted enumeration/taper barriers; degree-preserving and linear-wire interfaces remain missing.\\
+\path{eth_asymmetric_packet_balancing} & Asymmetric side-degree packing; general-degree $C=76.90899$, stronger-assumption low-degree $C=31.06413$.\\
+\path{3sat_round2_refinement} & Two-stage schedule, $C=84.06627$; also actual-domain and alternate-manuscript audits.\\
+\path{eth_balanced_packing} & Nearly lossless padding and additive precision guard; $C=94.74820$.\\
+\path{eth_high_moment} & Higher-moment balancing; the same $C=94.74820$, with low-degree specializations.\\
+\path{eth_matching_refinement} & Matching-potential balancing; again $C=94.74820$.\\
+\path{eth_packet_refinement} & Two-stage labeling, thin precision gaps; $C=95.66394$.\\
+\path{eth_recursive_refinement} & Residue-domain modes and an improved schedule; $C=133.20737$.\\
+\path{eth_joint_cauchy} & Whole-block slope-four integral separation, exact local Smith spectrum, and cached mode-graph contraction; $C=319.68576$ in polynomial space or $225.59706$ with subexponential space.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The table records the reports' claims, including their explicit conditions.
+Several already combine into stronger coefficients than their displayed
+standalone figures. We use those combinations when defining our baseline.
+
+\subsection{The five incoming archives}
+Each archive name below has suffix \texttt{\_2026-10-26.zip}. All five
+were safely extracted and reviewed. Their original archives and every
+extracted member are identified in the provenance ledger.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.34\textwidth}>{\raggedright\arraybackslash}p{.60\textwidth}@{}}
+\toprule Archive stem & Strongest pertinent statements\\\midrule\endhead
+\path{sat_adaptive_contraction} & Adaptive triples: cached time $36.75031252$, space $34.02417801$. Streamed binary separators: polynomial-space time $55.70947832$. Also a finite modular-kernel implementation.\\
+\path{sat_frontier_improvements} & Variable-arity schedules and cache composition. Polynomial-space coefficient about $63.8574$, cached coefficient $38.48449591$.\\
+\path{subexponential_sat_frontier} & Heterogeneous rational schedules: polynomial-space $63.85220339$, cached $37.93010908$; stronger comparisons against composed baselines.\\
+\path{subexponential_sat_kernel_improvements} & Adaptive Smith-mode selection and Gray, antipodal, and projective coefficient-extraction improvements; local guarantees, with unchanged global order.\\
+\path{subsat_contraction_tree} & Recursively built block tables and a coordinate/CRT bridge to a $12/5$ matrix exponent: cached time $35.35458806$, space $34.27480301$.\\
+\bottomrule
+\end{longtable}
+
+All five retain the original logarithmic exponent order. The polynomial-space
+separator algorithm of the first archive can be combined with the
+heterogeneous schedule of the third. This yields the stronger baseline
+$55.40466590661$, rather than merely $55.70947831891$. Our exact checker
+recomputes it. Within our own new schedule, replacing adaptive quartet
+conditioning by fixed binary conditioning gives $54.02470271284$;
+this matched comparison isolates the gain from the new graph evaluator.
+
+The cached result also requires a fair comparison. It improves on the
+smallest displayed incoming coefficient $35.35458806$ while decreasing
+its space coefficient. It is a new certified point, not a proof of global
+optimality over every conceivable retuning or composition of prior ideas.
+
+\subsection{SAT-level bounds and conditional targets}
+The two primary manuscripts~\cite{upstream,claude} state the general-density scale
+\[
+ (n+m)^{O_k(1)}2^{O_k(n\log\log n/\sqrt{\log n})}.
+\]
+The OpenAI Appendix D also states the fixed-density scale
+$2^{O_{k,D}(n/\sqrt{\log n})}$. The density packets~\cite{densityprior} refine the common
+envelope to
+\begin{equation}\label{eq:sat-envelope}
+ (n+m)^{O_k(1)}
+ 2^{O_k\left(\frac n{\sqrt{\log n}}
+ \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+For example, density $m/n=\Theta(\log\log n)$ replaces a
+$\log\log n$ numerator by $\log\log\log n$ in the corresponding
+density bound. Our methods can be used within this framework, but the
+displayed order in~\eqref{eq:sat-envelope} is unchanged.
+
+The stronger proposal $O(n\log\log n/\log n)$, with fixed-density
+$O(n/\log n)$, is conditional on an unproved summation interface~\cite{precisionprior}.
+Other proposals need an unconstructed degree-preserving or linear-wire
+compiler. Their hypothetical conclusions should neither be advertised
+as implemented algorithms nor claimed to be surpassed here.
+The separate Claude manuscript does not provide a matched explicit
+wire coefficient. We make no numerical dominance claim over an unknown
+constant in that different architecture.
+
+\section{The exact mode-graph interface}
+\label{sec:imports}
+
+\subsection{Imported algebra and precision}
+We import the upstream Cauchy deformation, integrality and Hermite recovery,
+the child-network factorization, and the immutable creation-precision
+convention \cite{upstream}. We import the refined Hermite leading loss,
+the asymmetric near-uniform packing conditions, and the whole-block
+slope-four integral modes \cite{asymmetric,joint,incomingadaptive}.
+These imported claims are stated as hypotheses of the relative refinement.
+The new graph arguments do not change their exact algebraic identities.
+
+At an active call let $M$ be its wire count, $u$ its retained taper range,
+$L=2^a$ its packet size, and $D=2^{a-i}$ at retained valuation level
+$i<u$. For $r$ groups, the imported estimates are
+\begin{align}
+ p_t&\le(6+o(1))MD/u,\label{eq:import-p}\\
+ c_e&\le\left(\frac2{r^2}+o(1)\right)M/D
+ \quad\text{for each directed group pair }e,\label{eq:import-c}\\
+ w_q&=a+1-i+4q-2\pc(q).\label{eq:import-w}
+\end{align}
+The number $c_e$ bounds the number of modes of index $q$ on pair $e$;
+$\pc(q)$ is the binary popcount. Every mode has one source and one target.
+Child networks have $(2/r+o(1))M$ wires. All $o(1)$ errors used below are
+uniform over active depths under the stated schedules.
+
+Fix an array of exact pair weights $b_e\ge0$ with $\sum_e b_e<p_t$.
+For fixed $r$ there are polynomially many arrays. Let $\mathcal I_e$ be
+the list of nonnegative mode-exponent vectors of exact weight $b_e$ on
+pair $e$. Skip any array with an empty list. The exact contribution is
+\begin{equation}\label{eq:mode-graph}
+ Z=\sum_{(\xi_e)\in\prod_e\mathcal I_e}
+       \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\end{equation}
+An evaluation of $Z_g$ is a genuine recursive tensor contraction. It is
+charged in all recurrences below, rather than treated as a constant-time
+oracle. Exact list cardinalities, enumeration and rank/unrank are
+available from the integer dynamic program
+\[
+ A(j,b)=A(j-1,b)+A(j,b-w_j),\qquad A(0,0)=1,
+\]
+with other zero or negative boundary cases assigned zero. Mode counts,
+budgets and count bit lengths are polynomial in $s$.
+
+\subsection{A uniform Euclidean entropy bound}
+Set $h_e=\log_2|\mathcal I_e|$, and
+\[
+ \K(M,u)=\kap M/\sqrt u,\qquad \kap=\pi\sqrt2/\ln2.
+\]
+The adaptive algorithms require an estimate uniform in the actual weight
+array, not just a bound for a single predetermined set of edges.
+
+\begin{lemma}[Uniform entropy norm]\label{lem:norm}
+For each fixed group count $r$ in our schedules,
+\begin{equation}\label{eq:norm}
+ \|h\|_2\le(1/r+o(1))\K(M,u).
+\end{equation}
+Consequently any fixed finite family of possibly data-selected
+nonnegative vectors $z$ satisfies
+$\sum_ez_eh_e\le(\|z\|_2/r+o(1))\K(M,u)$.
+\end{lemma}
+\begin{proof}
+Lower the weights to $1+4q-2\pc(q)$ and extend their range to all
+$q\ge0$. Their counting function is $x/4+O(\log(x+2))$, and therefore
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta(1+4q-2\pc(q))})
+ =\frac{\pi^2}{24\theta}+O(\log^2(2+1/\theta)),\quad 0<\theta\le1.
+\]
+This follows by integrating against the counting function and the
+identity $\int_0^\infty-\ln(1-e^{-x})\,dx=\pi^2/6$.
+If $c$ is the common upper envelope in~\eqref{eq:import-c}, the
+generating product gives
+\[
+ \ln|\mathcal I_e|\le\theta b_e+c\frac{\pi^2}{24\theta}
+       +O(c\log^2(2+1/\theta)).
+\]
+For $b_e>0$ take
+$\theta=\min\{1,\sqrt{c\pi^2/(24b_e)}\}$. When the minimum equals
+one, the excess cost is $O(c)$. The case $b_e=0$ has a singleton list.
+As all budgets are polynomial, this proves the uniform estimate
+\[
+ h_e\le\frac\pi{\sqrt6\ln2}\sqrt{c b_e}+O(c\lambda^2).
+\]
+Taking the Euclidean norm and using $\sum b_e<p_t$ yields
+\[
+ \|h\|_2\le\frac\pi{\sqrt6\ln2}\sqrt{c p_t}+O_r(c\lambda^2)
+ \le(1/r+o(1))\K(M,u).
+\]
+Indeed every schedule uses the additive buffer
+$b=\ceil{6\log_2\lambda}$ and
+$a_d=\sum_{j\le d}u_j+(d+1)b$, with $a_{-1}=0$, so
+$D\ge2^{a_{d-1}+b+1}\ge\lambda^6$. The last error divided by
+$M/\sqrt u$ is $O(\lambda^{5/2}/D)=o(1)$. This also handles zero
+and arbitrarily small pair budgets. Cauchy--Schwarz proves the final
+assertion without choosing an unjustified asymptotic saddle for each
+individual list.
+\end{proof}
+
+\input{sections/quartet.tex}
+\input{sections/joint_objective.tex}
+\input{sections/degree_flow.tex}
+\input{sections/conclusion.tex}
+\input{sections/references.tex}
+\end{document}

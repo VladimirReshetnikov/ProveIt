@@ -1,0 +1,46 @@
+\subsection{A cached low degree specialization}
+If the root maximum degree is at most $\ceil{s^{1/12}}$, retained tensors never gain ports. Both child sides therefore have degree at most
+$\max\{\ceil{s^{1/12}},2^{a_{d-1}+1}\}$. The invariant need not keep all later degrees below $s^{1/12}$. For increasing $a_d$ with leading root exponent above $1/12$, symmetric matching packing is valid whenever $a_d(1+2\log_2r_d)<\lambda$ has fixed leading slack.
+
+Use $r_0=12$, $u_0=\floor{239\lambda/2000}$, followed by
+\[
+ r_d=7,\qquad
+ u_d=\floor{\frac{567}{32000}(7/16)^{d-1}\lambda}\quad(d\ge1).
+\]
+The total leading budget is $151/1000$. The exact witnesses
+\[
+ 12^{478}<2^{1761},\qquad 7^{302}<2^{849}
+\]
+certify the root and tail rounding/packing capacities. Created degrees are at most $s^{.151+o(1)}<s^{.9}$. Tail children have limiting ratio $2/7$ and eventual coarse ratio $1/3$. Candidate depth $\ceil{\log_3\lambda}+3$ and $7/16>1/3$ give the same noncircular bootstrap, growing tapers and negligible floors; the preceding precision and bit-cost argument applies unchanged.
+
+Use blocks $(4,4,4)$ at the root. Then
+\[
+ \alpha_{12}=\sqrt{22}/12,\qquad
+ \beta_{12}=\sqrt{2(2+\tau^2)}/3,\qquad J_{12}=2/3.
+\]
+The tail uses the $r=7$ factors above. With
+\[
+ K_0=\frac\kappa{\sqrt{239/2000}},\qquad
+ K_1=\frac{\kappa/6}{\sqrt{567/32000}},\qquad
+ \gamma=\frac8{7\sqrt7},
+\]
+the exact recurrence gives
+\begin{align*}
+ C_T^{\rm low}
+ &=\max\left\{\beta_{12}K_0,\,
+ \alpha_{12}K_0+K_1\max\left(\beta_7,\frac{\alpha_7}{1-\gamma}\right)\right\}
+ =14.2391881944\ldots,\\
+ C_S^{\rm low}&=\max\{(2/3)K_0,J_7K_1\}=12.3613014576\ldots.
+\end{align*}
+Thus eventual coefficients $14.3$ time and $12.4$ space are valid on this additional low-degree interface. The exact checker proves the stronger rational upper bounds $14.251030$ and $12.366279$, respectively. This is not a generic-density result and remains a memory-intensive alternative.
+
+For transparency, the finite block counts used throughout this section are:
+\begin{center}\small
+\begin{tabular}{lrrrr}\toprule
+Alphabet and blocks & Group incidence & Max block incidence & Pair classes & Max boundary\\\midrule
+$7$ with $(3,2,2)$&12&30&$12,12,8$&24\\
+$9$ with $(3,3,3)$&16&42&$18,18,18$&36\\
+$12$ with $(4,4,4)$&22&76&$32,32,32$&64\\\bottomrule
+\end{tabular}
+\end{center}
+Every squared factor is divided by $r^2$, not $r(r-1)$. Absent diagonal families reduce the number of summands; they do not redistribute their capacity onto unequal pairs.

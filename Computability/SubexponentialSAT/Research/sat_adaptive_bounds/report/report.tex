@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.92in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl,hyperref,fancyhdr}
+\definecolor{ink}{HTML}{18354A}
+\definecolor{accent}{HTML}{136F81}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Adaptive contraction beyond the October 26 SAT frontier},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small Adaptive contraction beyond the SAT frontier}
+\rhead{\small October 26, 2026}
+\cfoot{\thepage}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\polylog}{\operatorname{polylog}}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\K}{\mathcal K}
+\newcommand{\F}{\mathbb F}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\vv}{\nu_2}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\smallpath}[1]{{\small\path{#1}}}
+\newcommand{\pin}{\texttt{fd0edd17e6a29117179b40a453c0def59165bd7c}}
+\title{\color{ink}\textbf{Adaptive contraction beyond the\\October 26 SAT frontier}\\[7pt]
+ \large New coefficient bounds, a pinned review of twenty packets,\\
+ and the remaining logarithmic-order barrier}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review all fifteen refinement packets filed under
+\path{Computability/SubexponentialSAT}, the five subsequent SAT archives in
+\path{docs/incoming}, and their common source manuscript at a pinned ProveIt
+snapshot. We obtain three improvements to the best explicit contraction
+certificates in that corpus. On the normalized scale
+$s/\sqrt{\log_2s}$, where $s$ counts Boolean wires, the polynomial-space time
+coefficient decreases from $55.7094783$ to $46.1848456$. The fastest general
+cached time coefficient decreases from $35.3545881$ to $34.3252828$, with
+space coefficient $34.0241780$. For roots of degree at most $s^{1/12}$,
+the cached time coefficient decreases from $15.3919332$ to $13.3796491$.
+
+The first improvement selects a separator tree from complete binary linear
+flags. A coset-intersection inequality makes an adaptive minimax bound
+rigorous. The second combines a centered entropy estimate for an adaptive
+three-block partition with recursive matrix-based table construction.
+Every recursive child evaluation is charged, and all schedules include
+precision, packing, degree, and stopping checks.
+
+These are strict improvements of leading coefficients in asymptotic
+upper-bound functions. They do \emph{not} replace the
+$n\log\log n/\sqrt{\log n}$ worst-case SAT exponent by a smaller
+logarithmic order, and they do not establish the corpus's conditional
+$n\log\log n/\log n$ target. The results are relative algorithmic
+refinements of the imported deformation and recovery identities, with
+new natural-language proofs and reproducible finite checks.
+\end{abstract}
+\clearpage
+{\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+\input{review}
+\input{interface}
+\input{cached}
+\input{flags}
+\input{consequences}
+\input{verification}
+\input{references}
+\end{document}

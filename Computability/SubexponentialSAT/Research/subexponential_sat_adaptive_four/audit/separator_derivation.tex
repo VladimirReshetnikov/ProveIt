@@ -1,0 +1,270 @@
+% Self-contained research section, to be included in the parent report.
+% Uses standard amsmath/amssymb/amsthm notation; no custom macros required.
+\section{Adaptive four-cluster streamed contraction}
+\label{sec:new-adaptive-separator}
+
+\paragraph{Scope.}
+This section improves a leading coefficient in the existing normalized
+Boolean tensor-contraction upper bound. It retains the upstream deformation,
+Hermite recovery, asymmetric packing, exact pair-index construction, and
+slope-four integral Cauchy separation. It does not improve the global
+$n\log\log n/\sqrt{\log n}$ SAT order. The new contribution is an exact
+adaptive streamed contraction tree and its sharper certified path cost.
+The resulting algorithm uses polynomial space.
+
+\subsection{The inherited interface and what is paid}
+At an active call let $M$ be the number of wires, $u$ the retained taper
+length, and $r$ a fixed grouping alphabet. For each exact pair-weight array,
+let $\mathcal I_{gh}$ be the list of mode tuples on directed group pair
+$(g,h)$, and write $h_{gh}=\log_2|\mathcal I_{gh}|$. Empty lists make the
+array contribute zero. The retained contribution is the finite contraction
+\[
+ \sum_{\xi\in\prod_{g\ne h}\mathcal I_{gh}}
+          \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\]
+Each evaluation of $Z_g$ is a genuine recursive child contraction. It is
+not a free tensor oracle. The imported exact-weight dynamic program gives
+list counts, ranking, and unranking with polynomial resources per index.
+
+Put
+\[
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac M{\sqrt u}.
+\]
+The reviewed pair-entropy argument gives, for each fixed nonnegative
+coefficient vector $z$,
+\begin{equation}\label{eq:new-weighted-entropy}
+ \sum_e z_e h_e\le
+ \left(\frac{\sqrt{\sum_ez_e^2}}r+o(1)\right)K(M,u).
+\end{equation}
+Only finitely many coefficient vectors, depending on the fixed integer
+$r$, will be used below. Thus the inherited uniform error applies without
+assuming a uniform theorem over a continuum of input-dependent vectors.
+
+For a binary contraction tree, condition on the cut indices at its root,
+sum the two sides independently, multiply, and continue recursively. If
+$E_g$ is the union of cut-edge sets along the path to leaf $g$, the number
+of calls to its group function is exactly
+\[
+ \prod_{e\in E_g}|\mathcal I_e|.
+\]
+The total number of group calls is the sum of these $r$ products. Internal
+overhead is bounded by a fixed polynomial times this sum. A depth-first
+implementation stores only the current index assignments and accumulators.
+This is the existing streamed separator identity; the new step is selecting
+the tree to reduce its worst path cost.
+
+\subsection{A sharp four-group inequality}
+Consider four groups and combine each pair of opposite directed entropies
+into a nonnegative undirected weight
+$w_{ij}=h_{ij}+h_{ji}$. There are three perfect matchings of $K_4$.
+For a matching consisting of edges $e,f$, splitting into these two pairs
+and then into singletons gives maximum path weight
+\[
+ H-\min(w_e,w_f),\qquad H=\sum_{i<j}w_{ij}.
+\]
+Choose the matching maximizing the smaller of its two weights.
+
+For each of the three opposite-edge pairs let $a_i$ be its smaller weight
+and $b_i$ its larger weight. The maximum path cost of the selected tree is
+\begin{align}
+ F_4(w)
+ &=\sum_{i=1}^3(a_i+b_i)-\max_i a_i\notag\\
+ &\le\frac23\sum_{i=1}^3a_i+\sum_{i=1}^3b_i\notag\\
+ &\le\sqrt{\frac{13}{3}}\,
+       \sqrt{\sum_{i=1}^3(a_i^2+b_i^2)}.
+ \label{eq:new-four-sharp}
+\end{align}
+The last inequality is ordinary Cauchy--Schwarz, with coefficient vector
+$(2/3,2/3,2/3,1,1,1)$.
+The constant is sharp: in every opposite-edge pair set its smaller weight
+to $2$ and its larger weight to $3$. Then $F_4=13$ and
+$\sum w_e^2=39$, giving equality.
+
+In the directed coordinates each undirected class contains two entries.
+Consequently the squared coefficient-vector norm is at most
+\[
+ 2\left(3\cdot\frac49+3\right)=\frac{26}{3}.
+\]
+This improves the fixed balanced four-group tree's squared path cardinality
+$10$. More explicitly, the adaptive path cost is bounded by one of finitely
+many weighted sums whose coefficients on directed entries are either
+$2/3$ or $1$ and whose squared norm is $26/3$.
+
+No numerical logarithms are needed in choosing the tree. Compare
+\[
+ \min\{|\mathcal I_{ij}|\,|\mathcal I_{ji}|,
+          |\mathcal I_{kl}|\,|\mathcal I_{lk}|\}
+\]
+over the three matchings by integer arithmetic. Its maximum selects exactly
+the matching required above.
+
+\subsection{Repeat the four-cluster choice hierarchically}
+Partition a set of $r$ groups into four predetermined clusters of sizes
+$b_1,b_2,b_3,b_4$. Let
+\[
+ k_{ij}=2b_i b_j
+\]
+be the number of directed group pairs in the class joining clusters $i,j$.
+Give that superedge its actual total entropy. Apply the four-group rule
+to choose the top two binary splits and recurse inside each cluster.
+
+Let $G(b)$ be an available squared-norm certificate for a cluster of size
+$b$. The new certificate is
+\begin{equation}\label{eq:new-unequal-recurrence}
+ G(r)\le
+ \sum_{i<j}k_{ij}
+ -\frac59\left[
+  \min(k_{12},k_{34})+\min(k_{13},k_{24})+\min(k_{14},k_{23})\right]
+ +\max_j G(b_j).
+\end{equation}
+To prove this, assign coefficient $2/3$ to the smaller-entropy superedge
+of each opposite pair and coefficient $1$ to its partner. The squared norm
+is the total class cardinality minus $5/9$ times the cardinalities of the
+three discounted classes. Each discounted class has cardinality at least
+the smaller of the corresponding two cardinalities, proving the top part
+of the bound. A leaf path subsequently enters one cluster. Its internal
+coordinates are disjoint from every top superedge, so squared norms add.
+Taking the largest child certificate proves the recurrence.
+
+A binary split into sizes $a,b$ also remains available, with certificate
+\[
+ 2ab+\max(G(a),G(b)).
+\]
+Together with $G(1)=0$, these formulas give a finite exact rational dynamic
+program over size partitions. This optimizes only this stated recurrence,
+not all possible contraction trees or algorithms.
+
+For four equal clusters of size $b$, the top cost is $(26/3)b^2$.
+In particular,
+\[
+ G(4^j)=\frac{26}{45}(16^j-1)
+\]
+is a valid closed-form certificate for the repeated equal-cluster rule.
+The values used below are
+\[
+ \begin{array}{c|ccc}
+ r&4&8&16\\\hline
+ G(r)&26/3&110/3&442/3\\
+ \text{fixed balanced tree}&10&42&170
+ \end{array}
+\]
+For $r=8$, split into four pairs and use $G(2)=2$ internally.
+
+At each fixed $r$, all adaptive choices produce only finitely many
+coefficient vectors. Applying~\eqref{eq:new-weighted-entropy} to this finite
+set proves the paid local recurrence
+\begin{equation}\label{eq:new-streamed-recurrence}
+ T_d\le\operatorname{poly}(s)
+ 2^{(\sqrt{G(r_d)}/r_d+o(1))K(M_d,u_d)}T_{d+1}.
+\end{equation}
+This includes every child-function evaluation. Distributivity over any
+commutative coefficient ring proves exactness, including rings with zero
+divisors and nilpotents.
+
+\subsection{An explicit schedule with a safe coefficient of 51}
+Let the root normalized wire bound be $s$, put
+$\lambda=\lceil\log_2s\rceil$,
+$\Lambda=\lambda-\lceil\sqrt\lambda\rceil$, and
+$b=\lceil6\log_2\lambda\rceil$. Handle bounded sizes directly. Use
+\[
+ \begin{array}{c|cccc}
+ d&0&1&2&3+k\ (k\ge0)\\\hline
+ r_d&16&16&8&4\\
+ u_d&\lfloor\Lambda/80\rfloor&\lfloor\Lambda/80\rfloor&
+ \lfloor\Lambda/120\rfloor&
+ \lfloor(\Lambda/160)(5/8)^k\rfloor
+ \end{array}
+\]
+and $a_d=\sum_{j\le d}u_j+(d+1)b$. Stop at
+$H=\lceil s/\lambda\rceil$ wires. The leading cumulative taper capacities
+are respectively $1/80,1/40,1/30$, and a tail limit of $1/20$.
+
+At the root, the high-degree packing gate is
+$2a_0\log_2(16)+(9/10)\log_2s$.
+Below the root the retained-side gate is
+$a_d\log_2r_d+(9/10)\log_2s$.
+In every case its upper bound is
+\[
+ \lambda-\frac1{10}\sqrt\lambda+O((\log\lambda)^2).
+\]
+This strictly negative square-root reserve absorbs all buffers and
+polylogarithmic packing factors. The fresh-side and rounding exponents are
+at most $(1/4)\lambda+O((\log\lambda)^2)$, far below $\lambda$.
+Created tensor degrees are at most $s^{1/20+o(1)}$, hence remain below the
+permitted root maximum degree $s^{9/10}$.
+
+For a noncircular depth argument, first verify these bounds for hypothetical
+active paths of length at most $\lceil\log_{5/3}\lambda\rceil+O(1)$.
+The least retained range is then
+\[
+ \lambda^{\eta+o(1)},\qquad
+ \eta=1-\frac{\ln(8/5)}{\ln(5/3)}>0,
+\]
+because $5/8>3/5$. Floors are therefore uniformly negligible. Packing gives
+eventual child ratio at most $3/5$, closing that depth bound. The sharper
+ratios are $1/8,1/8,1/4$, and $1/2$ thereafter, so accumulated padded sizes
+satisfy
+\[
+ M_0\le s,\quad M_1\le(1+o(1))s/8,\quad
+ M_2\le(1+o(1))s/64,\quad
+ M_{3+k}\le(1+o(1))s\,2^{-k}/256.
+\]
+The same additive precision buffer as in the reviewed algorithms makes
+inherited precision lower order: its ratio to $MD/u$ is
+$O(\lambda^4 2^{-b})=o(1)$. Thus the common sharp precision coefficient six
+and the pair-entropy estimate apply uniformly.
+
+Summing~\eqref{eq:new-streamed-recurrence} over the full path gives
+\begin{align}
+ C_{\rm new}=
+ \frac{\pi\sqrt2}{\ln2}\bigg[&
+ \frac9{128}\sqrt{\frac{35360}{3}}
+ +\frac{\sqrt{4400}}{512}
+ +\frac{\sqrt{4160/3}}{1024(1-\sqrt{2/5})}\bigg]
+ \label{eq:new-final-coefficient}\\
+ &=50.39372570050481\ldots.\notag
+\end{align}
+The resulting normalized contraction bound is
+\[
+ \operatorname{poly}(s+\mathcal L)
+ 2^{(C_{\rm new}+o(1))s/\sqrt{\log_2s}}
+\]
+in polynomial space. A convenient safe eventual coefficient is $51$.
+Polynomial factors over the logarithmic recursion depth add only
+$O(\lambda\log\lambda)$ to the exponent. Direct leaves cost
+$2^{O(s/\lambda)}$, permitted original entries cost $2^{O(s^{9/10})}$,
+and new packet entries cost $\exp(s^{1/20+o(1)})$; all are lower order.
+
+\subsection{A matched comparison and precise limitations}
+Keep the schedule above unchanged but replace the adaptive certificates
+by the prior fixed balanced-tree values $170,42,10$. The full coefficient
+then is
+\[
+ C_{\rm matched}=54.12829520660709\ldots.
+\]
+Thus the new tree mechanism alone reduces this matched coefficient by about
+$6.90\%$. This comparison already retunes the prior ingredients: it is
+stronger than comparing only against the incoming displayed polynomial-space
+value $55.70947831891$. The new certificate is also smaller than the
+$55.40466590661$ obtained by composing the prior fixed-tree rule with the
+other incoming multistage schedule.
+
+The statement is a strict comparison of proved upper-bound functions,
+conditional on the shared upstream interfaces. It is not an empirical
+SAT speedup or a lower bound on previous algorithms. It does not dominate
+the faster cached bounds under their different space allowance. It does
+not resolve the missing $n/\log n$-type summation interface and does not
+remove the density reduction's $\log\log n$ factor. The coefficient uses
+normalized network wires, not SAT variables.
+
+\paragraph{Executable evidence.}
+The supplied kernel chooses trees with exact integer products and evaluates
+finite mode graphs by streamed conditional sums. Its checker compares the
+answer with independent literal enumeration over residue rings containing
+a square-zero element, checks the exact number of paid child calls, exhausts
+the four-group inequality on $6^6$ integral weight vectors, checks its exact
+maximizer, and tests hierarchical path bounds. Rational square-root
+enclosures with $\pi<22/7$ and $\ln2>693/1000$ certify $C_{\rm new}<51$;
+coarse opposite enclosures already certify $C_{\rm matched}>54$.
+These are finite component checks; the uniform asymptotic theorem is the
+argument above, not an inference from a finite benchmark.

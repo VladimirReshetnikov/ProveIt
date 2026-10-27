@@ -1,0 +1,193 @@
+\section{Consequences for SAT and the limits of the improvement}
+\label{sec:consequences}
+
+\subsection{What changes after the existing reductions}
+
+The source's arbitrary-density reduction uses a normalized wire budget
+$s=O_k(n\log\log n)$ and other work of lower order than the displayed
+worst-case exponent \cite{source}. Applying either new general
+contraction algorithm retains
+\[
+ \poly_k(n,m)\,2^{O_k(n\log\log n/\sqrt{\log n})}.
+\]
+The polynomial-space branch retains polynomial space. The cached branch
+uses subexponential space of the same scale as its time exponent.
+For bounded clause density, the direct equality/clause network has
+$O_{k,D}(n)$ wires and bounded degree, so the low-degree cached theorem
+applies. Its order is still $2^{O_{k,D}(n/\sqrt{\log n})}$.
+
+These consequences should not be expressed by replacing $s$ with $n$
+inside a numerical coefficient. One must first pay the encoding's
+wire expansion and normalize precision and tensor-description costs.
+The density-sensitive result of the earlier packets can be retained
+by taking the better applicable reduction \cite{density}.
+
+\subsection{An explicit bounded-density wire count}
+\label{sec:wirecount}
+
+A simple count makes one translation entirely explicit.
+Let $L$ be the number of literal occurrences after deleting duplicate
+literals within clauses and tautologies. Let $d_v$ be the occurrence
+degree of variable $v$. Make every clause vertex a left vertex. For
+$d_v=1$, use a unary equality vertex on the right; for $d_v=2$, use
+a binary equality vertex. For $d_v\ge3$, take an equality tree with
+$d_v$ external ports and $d_v-2$ trivalent vertices, all provisionally
+on the right. Its $d_v-3$ internal edges each receive a left binary
+equality vertex. Clause-to-tree edges already have opposite colors,
+so they require no subdivision.
+
+The network is bipartite and has exactly
+\begin{equation}
+ M=L+2\sum_v(d_v-3)_+\le3L\le3km
+ \label{eq:explicit-wires}
+\end{equation}
+wires and maximum degree $\max\{k,3\}$. Every consistent variable
+value extends uniquely through its tree and the subdivisions.
+Unused declared variables contribute the scalar multiplier
+$2^{n_{\rm unused}}$. An empty clause is handled by returning zero;
+an empty formula gives $2^n$.
+
+Take $s=\max\{M,n+1,2\}$, so the modulus $2^{n+1}$ satisfies the
+normalized precision premise. For fixed $k,D>0$ with $m\le Dn$,
+put $B_{k,D}=\max\{3kD,1\}$. The low-degree result gives the explicit
+conservative consequence
+\[
+ T(n,m)\le\poly_{k,D}(n,m)\,
+ 2^{(C_{\rm low}B_{k,D}+o(1))n/\sqrt{\log_2n}},
+\]
+and the corresponding space coefficient is
+$C_{\rm low,space}B_{k,D}$. This is a direct wiring calculation,
+not a claim that this encoding has the optimal wire constant.
+It also does not provide a comparable numerical constant for the
+source's general-density compression.
+
+\subsection{Why the new theorems do not change logarithmic order}
+
+At a call with $M$ wires and taper range $u$, the mode-entropy scale
+is $M/\sqrt u$. The new summation arguments multiply that scale by
+smaller constants. Their fixed group alphabets allow $u=\Theta(\log s)$
+at the top of the recursion. They do not change either dependency.
+
+This is why a substantial decrease in a coefficient can coexist with
+an unchanged big-$O$ exponent class. If the objective is specifically
+to replace the worst-case expression
+$n\log\log n/\sqrt{\log n}$ by a little-$o$ expression, that objective
+remains unresolved by this iteration.
+
+\subsection{The stronger conditional proposals remain unproved}
+
+The precision-refinement packet's target
+$2^{O(n\log\log n/\log n)}$ requires a method summing the actual
+structured mode expression with only $\exp(O(M/u))$ paid recursive
+calls, preserving degree, precision, description size, and space.
+Our adaptive separators still use $\exp(O(M/\sqrt u))$ calls.
+The cached method reduces the exponent of its finite tensor summation,
+but still spends $\exp(\Theta(M/\sqrt u))$ on its certified tables
+in the worst envelope. Neither closes the missing interface.
+
+The other conditional routes seek a low-degree representation after
+compressing pair-mode lists or a uniformly linear-wire reduction.
+Short binary indices alone do not preserve the bounded-degree
+premise of the contraction theorem: a few tensors may carry a
+large fraction of all the new wires. Treating their entries as
+free recursive oracles would hide the main computation.
+
+\section{Attempted routes to a smaller exponent}
+\label{sec:attempts}
+
+\subsection{Repeated mode compression and its budget obstruction}
+
+One tempting approach is to compact the exact mode indices repeatedly.
+There is a useful restricted warning. Suppose a fixed number $t$ of
+successive, unfactored compact-mode constructions must obey taper
+budgets of the form
+\[
+ u_1\log r_1\le A_1\log s,\qquad
+ u_j\log r_j\le A_j\log r_{j-1}\quad(2\le j\le t),
+\]
+where $r_j>1$ and the $A_j$ are fixed constants. Multiplication gives
+\begin{equation}
+ \prod_{j=1}^t u_j
+ \le \left(\prod_{j=1}^t A_j\right)
+       \frac{\log s}{\log r_t}.
+ \label{eq:telescope}
+\end{equation}
+Thus a modeled denominator $\sqrt{\prod_j u_j}$ is still at most
+$O(\sqrt{\log s})$ when $r_t$ is bounded below by a constant greater
+than one. Within this explicit multiplicative-budget model,
+repeating the operation does not yield an extra power of $\log s$.
+
+This is an algebraic implication of the stated premises, not a lower
+bound for all compilers, all tensor algorithms, or SAT. The earlier
+factorization and asymptotic-analysis packets explain how analogous
+packing restrictions arise for their unfactored constructions
+\cite{factorization,barriers}. A new factorization may invalidate
+these premises. A growing number of stages also requires fresh
+uniform control of the constants and is not covered by this
+fixed-$t$ statement.
+
+\subsection{Grouping parity tests before expanding incidences}
+
+The general-density encoding has total retained incidence degree
+$K=O(n)$ inside an incidence universe of size $N=n\,\polylog n$.
+Its subset indexing costs
+$O(K\log(1+N/K))=O(n\log\log n)$ wires.
+We examined merging parity tests into fewer groups before this
+expansion. Reducing the incidence universe is attractive, but a
+single merged group can receive essentially all the allowed Taylor
+or nilpotent degree. Its requested coefficient may then involve
+all original variables. No uniformly shrinking coefficient oracle
+was established in this review.
+
+It would be incorrect to assume that oracle and count only the
+smaller outer network. A successful proof must either exclude
+such concentration, exploit a new algebraic representation, or
+show a decreasing measure for the coefficient computation itself.
+We retain this as a research question, not as a theorem.
+
+\section{Further research questions}
+\label{sec:further}
+
+\begin{enumerate}
+\item \textbf{Use more structure than pair entropy.}
+The linear-flag theorem is sharp for balanced binary trees under
+its Euclidean envelope, as proved in the preceding section.
+Can the actual packet factors rule out its extremal entropy
+configuration, or permit an unbalanced or non-tree summation?
+This asks for a verifiable structural statement about generated
+tensors, not a generic black-box improvement.
+
+\item \textbf{Remove table construction as the cached bottleneck.}
+The centered triangle estimate already puts the final triangle
+below the largest binary block merge. Further improving only
+the final multiplication will not lower the current local
+certificate. A useful next result would reduce the $1+2$
+merge score $916/25$ at nine groups, while continuing to charge
+all singleton child entries.
+
+\item \textbf{Construct the missing degree-preserving interface.}
+A compact mode-index network needs efficient local factors with
+controlled degree and immutable creation precision. Supplying
+that interface could change the logarithmic order. Merely
+showing that the index strings are short cannot.
+
+\item \textbf{Reduce the incidence universe without an expensive oracle.}
+Can a grouped parity lift compute concentrated coefficient
+queries within a strictly decreasing size/precision measure?
+A positive answer would address the extra $\log\log n$ factor
+in the general-density reduction.
+
+\item \textbf{Optimize a resource frontier with certified schedules.}
+The present algorithms select clear fixed alphabets and rational
+tapers. A finite dynamic program over valid alphabet changes,
+tree choices, and memory caps could certify additional coefficient
+improvements. Such optimization would refine the exponential
+constant unless it introduces a new dependence on $u$.
+
+\item \textbf{Formalize the finite new lemmas first.}
+The coset-intersection lemma, the linear-flag averaging identity,
+and the centered triangle estimate are compact mathematical
+targets. Formalizing them would give reusable trusted
+components before attempting the much larger analytic and
+arithmetic integration.
+\end{enumerate}

@@ -1,0 +1,26 @@
+\subsection{Comparison with the full fixed alphabet cached family}
+A fair comparator is not merely the joint packet's old $225.5971$ schedule, nor the asymmetric $r=16$ example after adding a cache. Retuning all the supplied ingredients with fixed alphabet $r=8$, blocks $(2,3,3)$, root taper $333\lambda/20000$, and tail tapers
+\[
+ (999/100000)(2/5)^{d-1}\lambda\quad(d\ge1)
+\]
+gives a feasible combined time coefficient $38.1868438947\ldots$ and space coefficient $34.0097101721\ldots$. Its total budget is $.0333\lambda$; the root, retained-side and rounding capacities have strict slack. The same guards and floors are admissible. Independent rational bounds certify eventual time $38.2$ and space $34.1$.
+
+There is also a useful rigorous separation from an entire stated certificate family. Fix the supplied asymmetric/slope-four engine and its direct three-block construction plus seven-product cost model. Allow every fixed integer alphabet $r\ge3$, every positive three-block partition and every positive taper allocation in this model. For generic degree exponent $.9$, its leading root and cumulative retained-side budgets obey
+\[
+ A_0\le\frac{.05}{\log_2r},\qquad A\le\frac{.1}{\log_2r}.
+\]
+Put $c=2/r$. Every time-certificate expression is at least its root-table term $\beta_r\kappa/\sqrt{A_0}$ and its complete cache-chain term. Relaxing the root cap in the latter and applying H\"older gives
+\[
+ \sum_{d\ge0}\frac{c^d}{\sqrt{v_d}}
+ \ge\frac1{\sqrt{A(1-c^{2/3})^3}},\qquad \sum_dv_d\le A,
+\]
+so another lower bound on the certificate expression is
+$\alpha_r\kappa/\sqrt{A(1-c^{2/3})^3}$.
+
+An independent exact-rational audit proves that every member of this family has coefficient strictly greater than $38$:
+\begin{itemize}
+\item For $r=3,\ldots,7$, the relaxed cache-chain expression alone exceeds $38$.
+\item For $r=8,\ldots,11$, enumeration of every unordered positive three-block partition shows the root-table expression exceeds $38$.
+\item For $r\ge12$, some block has $k\ge r/3$. Since $2rk-k^2-k$ is increasing for integer $k<r$, its build factor satisfies $A_r^2\ge5/9-1/(3r)\ge19/36$, while $\log_2r>7/2$. Conservative rational transcendental bounds make the root expression exceed $38$ for every remaining integer $r$.
+\end{itemize}
+The weakest certified lower bound is $38.0299943343\ldots$, whereas the new rational schedule has certified upper bound $37.9567995131\ldots$. This establishes a strict separation without depending on a floating-point optimizer. The lower bound concerns these worst-case \emph{upper-certificate expressions}, not actual algorithm runtimes, tensor contraction or SAT. It does not exclude other mode evaluators, matrix algorithms, cancellation methods or multistage schedules. The optional low-degree comparison is likewise scoped: applying the existing cache to the supplied low-degree $r=48$ schedule gives $18.4107$ time and $15.9887$ space, but no global low-degree optimum is claimed.

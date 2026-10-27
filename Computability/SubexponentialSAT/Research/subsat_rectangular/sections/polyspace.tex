@@ -1,0 +1,198 @@
+\section{A polynomial-space coefficient below 54}
+\label{sec:streamed-new}
+
+A closing repository check added the packet \path{sat_adaptive_contraction}~\cite{adaptive}.
+Its recursive-conditioning result changes the polynomial-space comparison
+frontier. The factor $\sqrt{17/24}$ in that packet reduces the number of
+paid child evaluations for streamed summation at arity sixteen; it is not
+a uniform improvement of the pair entropy bound and cannot multiply the
+cached coefficient from Section~\ref{sec:rectangular-new}. We instead compose
+its proved streamed identity with a new multistage retained-range schedule.
+
+\subsection{The appropriate composed comparator}
+
+The new packet's displayed polynomial-space coefficient is
+$55.70947831890997\ldots$. Combining its conditioning identity with the
+previously filed \path{subexponential_sat_frontier} schedule~\cite{frontier} already gives
+the stronger bound $55.40466590661055\ldots$. That prior schedule has arities
+$(13,14,8,6,4,4,\ldots)$ and fractions
+\[
+ \frac{27}{2000},\quad\frac{51}{4000},\quad
+ \frac{141}{20000},\quad\frac{107}{20000},\quad
+ \frac{27}{6400}\left(\frac58\right)^j\quad(j\ge0).
+\]
+We use the stronger composed comparator below. Neither it nor our new
+schedule is asserted to optimize all possible prior parameters.
+
+\subsection{Stream exact pair lists using balanced separators}
+
+Retain the exact pair-budget arrays and the inherited entropy scale
+\[
+ K(M,u)=\kappa\frac M{\sqrt u},\qquad
+ \kappa=\frac{\pi\sqrt2}{\ln2}.
+\]
+Fix a balanced binary tree on the $r$ groups. At a split $B=B_1\sqcup B_2$,
+enumerate the pair indices crossing the split, recursively sum the two sides
+conditional on these indices, and multiply the conditional answers.
+Ancestor indices remain fixed parameters. Finite distributivity proves the
+identity: after fixing crossing indices, no factor in one side depends on
+an internal index of the other side. A singleton evaluates its group factor
+by a genuine recursive tensor contraction.
+
+The sets of cut pairs on a root-to-leaf path are disjoint. If their union
+is $E_\ell$, the number of paid group-factor evaluations is at most
+\[
+ \sum_{\ell=1}^r\prod_{e\in E_\ell}|\mathcal I_e|.
+\]
+Sibling internal sums add to this work rather than multiplying through a
+leaf evaluation. The largest cardinality of $E_\ell$ is
+\[
+ v(1)=0,\qquad
+ v(r)=2\lfloor r/2\rfloor\lceil r/2\rceil+
+       \max\{v(\lfloor r/2\rfloor),v(\lceil r/2\rceil)\}.
+\]
+Thus, with
+\[
+ \beta(r)=\frac{\sqrt{v(r)}}r,
+\]
+the inherited subset-entropy estimate gives the fully paid recurrence
+\begin{equation}\label{eq:streamed-new-recurrence}
+ T_i\le\operatorname{poly}(s)\,
+       2^{(\beta(r_i)+o(1))K_i}T_{i+1}.
+\end{equation}
+This is the new packet's proved separator identity, applied at the arities
+below. It uses no field multiplication algorithm or cached exponential table.
+The separator assignment ranks, finite-ring accumulators and recursion
+frames have polynomial total size. All expensive group evaluations remain
+explicitly charged.
+
+\subsection{A strict multistage schedule}
+
+Let $\lambda=\lceil\log_2s\rceil$, $H=\lceil s/\lambda\rceil$,
+$b=\lceil6\log_2\lambda\rceil$, and
+\[
+ u_i=\lfloor f_i\lambda\rfloor,\qquad
+ a_i=\sum_{t=0}^i(u_t+b).
+\]
+Choose
+\[
+ (r_0,r_1,r_2,r_3,r_4)=(16,16,8,6,5),\qquad
+ r_{5+j}=4\quad(j\ge0),
+\]
+with
+\begin{align*}
+ f_0=f_1&=\frac{12499}{1000000},&
+ f_2&=\frac{2083}{250000},&
+ f_3&=\frac{107}{20000},\\
+ f_4&=\frac{219}{50000},&
+ f_{5+j}&=\frac{513}{200000}\left(\frac58\right)^j.
+\end{align*}
+The leading cumulative capacities at the first five levels and in the tail
+are exactly
+\[
+ 0.012499,\quad0.024998,\quad0.033330,\quad
+ 0.038680,\quad0.043060,\quad A_\infty=0.049900.
+\]
+All displayed decimals are terminating rational numbers, not numerical
+approximations used in place of inequalities.
+
+The root high-degree packing constraint is
+$9/10+2A_0\log_2r_0<1$. At later calls the old-side constraint is
+$9/10+A_i\log_2r_i<1$. Using the exact integer comparisons
+\[
+ 6^{200}<2^{517},\qquad5^{500}<2^{1161},
+\]
+the six regime bounds are, respectively,
+\[
+ \frac{124999}{125000},\quad
+ \frac{124999}{125000},\quad
+ \frac{99999}{100000},\quad
+ \frac{4999939}{5000000},\quad
+ \frac{24999633}{25000000},\quad
+ \frac{4999}{5000}.
+\]
+Every one is strictly below one. The fresh-side and packet-padding
+exponents are bounded by $(2\log_2r_i+1)A_i<1/4$ in all six regimes.
+New degrees are at most $s^{0.0499+o(1)}$, below the maintained
+$s^{9/10}$ bound. Consequently all packing gates tolerate the additive
+buffers and any fixed polylogarithmic slack.
+
+As before, first check all hypothetical active levels through
+$5+\lceil\log_{20/11}\lambda\rceil+O(1)$. The smallest taper in this range
+is at least $\lambda^{\eta+o(1)}$, with
+\[
+ \eta=1-\frac{\ln(8/5)}{\ln(20/11)}>0.
+\]
+All arities are at least four, so nearly lossless padding implies eventual
+child shrinkage at most $11/20$, closing the depth bootstrap. Padding may be
+chosen with relative error $O(\lambda^{-2})$, whose accumulation tends to
+zero over this depth. The sharper limiting wire masses are
+\[
+ (m_0,m_1,m_2,m_3,m_4,m_5)=
+ \left(1,\frac18,\frac1{64},\frac1{256},
+           \frac1{768},\frac1{1920}\right),
+ \qquad m_{5+j}=m_5\,2^{-j}.
+\]
+The six cut profiles are
+\[
+ (v(16),v(16),v(8),v(6),v(5),v(4))
+       =(170,170,42,24,18,10).
+\]
+The same precision guard gives inherited-to-local precision ratio
+$O(\lambda^4 2^{-b})=o(1)$, preserving the coefficient-six precision budget
+and the common-tilt entropy estimate uniformly.
+
+\subsection{Exact summation of the new certificate}
+
+Unroll \eqref{eq:streamed-new-recurrence}. With
+$\gamma=(1/2)/\sqrt{5/8}=\sqrt{2/5}$, the resulting coefficient is
+\begin{equation}\label{eq:streamed-new-coefficient}
+ C_{\rm ps}=\kappa\left[
+ \sum_{i=0}^4\frac{m_i\beta(r_i)}{\sqrt{f_i}}
+ +\frac{m_5\beta(4)}{\sqrt{f_5}(1-\gamma)}
+ \right]
+ =53.97753119806873\ldots.
+\end{equation}
+Its six contributions are approximately
+\[
+ 46.7203678473,\quad5.8400459809,\quad0.8888315523,\quad
+ 0.2794968539,\quad0.1070058158,\quad0.1417831479.
+\]
+The accompanying standard-library script verifies the profile recursion,
+wire masses, capacities, every strict packing gate, and rational interval
+bounds for all square roots, $\pi$, and $\ln2$. It proves
+\[
+ 53.97753119806<C_{\rm ps}<53.97753119808<54
+      <55.40466590660.
+\]
+These finite interval checks certify the arithmetic in the all-size proof;
+they do not stand in for the imported contraction identities.
+
+\begin{theorem}[Polynomial-space multistage conditioning]
+\label{thm:streamed-new}
+Under the normalized tensor interface and imported identities, the above
+streamed algorithm has
+\[
+ T(s,\mathcal L)\le(s+\mathcal L)^{O(1)}
+       2^{(C_{\rm ps}+o(1))s/\sqrt{\log_2s}},
+ \qquad C_{\rm ps}=53.97753119806873\ldots,
+\]
+and polynomial space. In particular, 54 is a valid eventual time
+coefficient.
+\end{theorem}
+
+The proof's remaining costs are unchanged: direct leaves take
+$2^{O(s/\lambda)}$, initial entry routines take $2^{O(s^{9/10})}$, and fresh
+packet routines take $\exp(s^{0.0499+o(1)})$. All are lower order after
+charging the ancestor separator enumerations. Multiplicity polynomials
+depend on $s$ alone and contribute $O(\lambda\log\lambda)$ to the exponent
+across the active depths. A single fixed polynomial in the description
+length pays for processing at each visited call. Depth-first separator
+summation and tensor recursion retain polynomial space throughout.
+
+The new coefficient is about $3.11\%$ below the newest packet's displayed
+$55.7094783189\ldots$, and about $2.58\%$ below the stronger prior composition
+$55.4046659066\ldots$. It complements the cached bound below 34 by improving
+the polynomial-space alternative. Both retain the same logarithmic order;
+neither proves the unresolved $n/\log n$-type targets or supplies a numerical
+coefficient per SAT variable.

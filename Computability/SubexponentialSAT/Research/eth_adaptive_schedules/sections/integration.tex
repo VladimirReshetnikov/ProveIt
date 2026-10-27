@@ -1,0 +1,102 @@
+\section{Integration, remaining limits, and further research}\label{sec:integration}
+\subsection{How the results fit into the existing framework}
+For the analytic improvement, retain the supplied deformation and recovery
+identities and substitute the schedules from \texttt{code/schedules.py}.
+Use the asymmetric whole-vertex packing bound, keep the two side-degree
+bounds separately, and use full crossing-block modes at every retained
+valuation level. Maintain each tensor's creation precision. The polynomial
+and cached schedules are separate resource choices; the cached mode-graph
+algorithm must explicitly charge group evaluations and store block tables.
+
+For the matching implementation, replace the reference
+\texttt{label\_graph} call with \texttt{label\_graph\_\allowbreak incremental}.
+Its complete result agrees on valid explicit graph inputs. For two-stage
+column balancing, use \texttt{derandomize\_\allowbreak integer} on the row-group weight
+matrix; the included benchmark wrapper demonstrates the unchanged
+\texttt{Labeling} interface. The functions preserve mathematical choices,
+so no new tail inequality is needed to reuse the corresponding packing
+certificate. A production implementation may stream diagnostics rather than
+retain every candidate, but the benchmarks here include them.
+
+These are integration-ready components and precise source-level replacement
+instructions. The project does not yet contain a complete contractor to which
+we could honestly report a tested end-to-end patch. The archive therefore
+supplies component implementations and proofs without claiming an implemented
+full counting pipeline. No remote repository write was required for this
+review and delivery.
+
+\subsection{Preserve the best applicable previous branch}
+The new general high-degree coefficients should not displace stronger
+specialized bounds. For example, the prior low-degree coefficient
+$31.0641$ combines with slope-four modes to give about $26.9023$ under its
+stronger degree premise. Similarly the density-sensitive reduction and the
+scalar parity lift remain available. A dispatcher can select a certificate
+whose premises have been verified; a finite portfolio can alternatively
+interleave correct deterministic algorithms with constant-factor scheduling
+overhead. Its upper bound is the minimum of the applicable running-time
+bounds, up to that overhead. For a polynomial-space portfolio, retain only
+polynomial-space branches.
+
+Thus the new contributions improve particular general-interface certificates
+and compatible executable kernels while preserving the existing specialized
+envelope. They do not numerically order an independent manuscript with an
+unspecified constant. Nor does a smaller normalized wire coefficient supply
+a variable-level coefficient without tracking the SAT reduction's wire count.
+
+\subsection{Why the general logarithmic order has not changed}
+The inherited mode pool still has linearly growing rank weights, and the
+packing conditions still permit taper $u$ only on a logarithmic scale.
+Combining $c\asymp M/D$ with $p\asymp MD/u$ gives tuple entropy on the
+$M/\sqrt u$ scale. Our finite alphabet schedules alter its leading coefficient,
+not those two structural facts. For fixed clause width, the strongest
+supported density envelope in Section~\ref{sec:review} is therefore retained;
+in particular the unrestricted bound still has exponent order
+$n\log\log n/\sqrt{\log n}$.
+
+The conditional $n/\log n$-type proposals need a faster uniform summation or
+factorization interface that is absent from the reviewed corpus. This article
+does not construct it. The full-block Smith spectrum is a local obstruction
+to changing its linear rank-weight growth by an invertible integral basis
+change; it is not a lower bound for SAT or for other representations.
+
+\subsection{Specific next research questions}
+\begin{enumerate}
+\item \textbf{Optimize the changing capacity constraints rigorously.}
+The rational schedules provide witnesses, not global optima. A useful next
+result is an interval-certified optimizer for the recurrence with state equal
+to the cumulative packet exponent, current degree bounds, and available
+memory. It should bound the infinite tail and the admissible alphabet range,
+rather than rely on a finite numerical scan.
+\item \textbf{Use actual real-port restrictions of Cauchy blocks.}
+The exact Smith valuations concern the full padded orientation. A
+polynomial-time method that finds a smaller integral separation for the
+real-port submatrix, while preserving source/target locality and entry costs,
+could reduce costs beyond another fixed schedule optimization. Any resulting
+claim must include the cost of finding and applying the separation.
+\item \textbf{Clear denominators for matching updates as well.}
+The matching routine currently uses exact fractions in its incremental
+product tables. A shared-denominator representation analogous to the column
+method could reduce normalization costs further. It must avoid enormous
+unreduced common integers and account for adaptive thresholds and sparse
+incident sets. This is a concrete next implementation experiment.
+\item \textbf{Improve the time-memory tradeoff continuously.}
+The cached algorithm stores three block tables. Partial caching, unequal
+blocks, or a schedule that spends memory only at selected depths may offer
+better bounds for a fixed memory budget. A valid recurrence must charge
+recomputation and sequential access rather than assume free table lookup.
+\item \textbf{Formalize the local invariants before the complete pipeline.}
+The matching-product update, common-denominator identity, and exact rational
+schedule guards are small independent targets. A full formal endpoint would
+also need inherited representation semantics, the bit-cost model, and the
+uniform depth/precision induction. Passing finite Python tests is useful
+evidence for those interfaces, not a replacement for such proofs.
+\end{enumerate}
+
+\paragraph{Reproduction and provenance.}
+Run \texttt{python3 run\_checks.py} for the six-process exact replay,
+\texttt{python3 code/benchmark\_kernels.py} for fresh timing measurements,
+and \texttt{bash build\_report.sh} to rebuild this PDF with pdf\LaTeX.
+The source inventory, reference hashes, benchmark seeds and raw samples are
+included. The benchmark records describe the delivered implementation hashes;
+new runs may change timing metadata without changing mathematical outputs.
+The report's proof dependency boundary remains explicit throughout.

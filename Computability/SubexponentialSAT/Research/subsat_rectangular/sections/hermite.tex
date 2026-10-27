@@ -1,0 +1,231 @@
+\section{Asymmetric Hermite nodes have the same precision optimum}
+\label{sec:asymmetric-hermite}
+
+The earlier exact minimax theorem treats valuation-symmetric
+multiplicities~\cite{precision}. An earlier barrier explicitly leaves
+asymmetric node selection open~\cite{analysis}. We remove that restriction
+for the \emph{fixed Hermite reconstruction with independent jet errors}.
+This is a precision-certificate theorem. It does not assert that the
+jets attainable by the source deformation can vary independently, or
+rule out recovery that exploits their correlations.
+
+\subsection{Exact loss of a node's recovery block}
+
+Let $a\ge u\ge1$, $N=a+1$, $L=2^a$, and let $S$ be a complete
+integer residue system modulo $2^N$ containing zero. For example,
+$S=\{-L,\ldots,L-1\}$. Assign nonnegative integer multiplicities
+$q_t$ to the nonzero nodes, put $q_0=0$, and require $q_t=0$ when
+$v_2(t)\ge u$. There is no symmetry or monotonicity requirement.
+
+For an active node $t$, put $i=v_2(t)$, $D_t=2^{a-i}$ and
+\[
+ E_t(T)=\prod_{v\in S\setminus\{0,t\}}
+       \left(\frac{T-v}{t-v}\right)^{q_v}.
+\]
+The ordinary Hermite reconstruction of $F(0)$ uses the first $q_t$
+coefficients of $F(t+2^Nz)$. The coefficient of its highest raw jet is
+exactly
+\[
+ E_t(0)(-t/2^N)^{q_t-1}.
+\]
+Indeed, $E_t(t+2^Nz)^{-1}$ is an integral power series with constant
+term one. The top raw jet only contributes through that constant term.
+The negative valuation of the displayed coefficient is
+\begin{equation}\label{eq:lambda-node}
+ \Lambda_t(q)=
+ \sum_{v\ne0,t}q_v\bigl(v_2(t-v)-v_2(v)\bigr)
+ +(q_t-1)(N-i).
+\end{equation}
+Every other raw-jet coefficient is a sum of terms
+$E_t(0)c_j(-t/2^N)^h$ with $c_j$ integral and $h\le q_t-1$.
+Its loss is therefore at most $\Lambda_t(q)$. The highest jet attains
+this bound exactly. Consequently
+\[
+ p+\max\{0,\Lambda_t(q)\}
+\]
+is the exact nondecreasing precision allowance for this node's
+independent-error recovery block at output precision $p$.
+Define its normalized worst loss by
+\begin{equation}\label{eq:H-objective}
+ H(q)=\max\left(0,\max_{t:q_t>0}\frac{\Lambda_t(q)}{D_t}\right).
+\end{equation}
+
+For $1\le k\le N$, define the residue-subtree mass
+\[
+ S_k(t)=\sum_{\substack{v\in S\\v\equiv t\pmod{2^k}}}q_v.
+\]
+Expressing valuations as sums of congruence indicators gives
+\begin{equation}\label{eq:subtree-loss}
+ \Lambda_t(q)=
+ \sum_{k=i+1}^{N}\bigl(S_k(t)-S_k(0)\bigr)-(N-i).
+\end{equation}
+To verify the endpoint carefully, for $k<N$ excluding $v=t$
+subtracts $(N-1-i)q_t$ from the valuation-difference sum.
+The highest-jet term adds $(q_t-1)(N-i)$, leaving
+$q_t-(N-i)$. The $q_t$ is precisely the $k=N$ subtree term.
+
+\subsection{Inactive nodes and convexity}
+
+Equation~\eqref{eq:lambda-node} can be evaluated as an affine expression
+even at inactive nodes. We also allow nonnegative real $q_t$ as a
+relaxation; real multiplicities are not actual jet counts.
+
+\begin{lemma}\label{lem:inactive}
+For every such nonnegative vector,
+\[
+ H(q)=
+ \max\left(0,\max_{\substack{t\in S\setminus\{0\}\\v_2(t)<u}}
+                    \frac{\Lambda_t(q)}{D_t}\right).
+\]
+In particular the relaxed objective is convex.
+\end{lemma}
+\begin{proof}
+Within an annulus $v_2(t)=i$, both $D_t$ and the negative terms in
+\eqref{eq:subtree-loss} are constant. Its maximization therefore depends
+only on the positive path sum $\sum_{k=i+1}^NS_k(t)$.
+If an inactive leaf has an ancestor containing positive mass, take
+the smallest such ancestor and an active leaf inside it. The two
+paths agree above that ancestor. Below it the inactive path has
+zero mass and the active path eventually has positive mass.
+The active leaf has a strictly larger path sum.
+Thus a nonempty annulus attains its maximum at an active leaf.
+An empty annulus has zero positive path mass and strictly negative
+affine loss. Adjoining zero makes its contribution irrelevant.
+The displayed expression is a maximum of affine functions.
+\end{proof}
+
+\begin{theorem}[Symmetrization of arbitrary node multiplicities]
+\label{thm:hermite-symmetry}
+Replace every $q_t$ by the average multiplicity on its valuation
+annulus, obtaining $\overline q$. Then
+\[
+ \sum_t\overline q_t=\sum_tq_t,\qquad
+ H(\overline q)\le H(q).
+\]
+The real minimum of this precision certificate is therefore attained
+by a valuation-symmetric profile, even when arbitrary asymmetric
+node choices are allowed.
+\end{theorem}
+\begin{proof}
+Consider automorphisms of the complete binary residue tree that fix
+the leaf zero. They preserve $v_2(t)$ and $v_2(t-v)$, and act
+transitively on every annulus. Permuting the multiplicity vector by
+any such automorphism preserves \eqref{eq:H-objective} and total mass.
+Averaging over this finite group gives $\overline q$. Convexity from
+Lemma~\ref{lem:inactive} proves the inequality.
+Only the valuations of the Hermite coefficients are used. We do not
+assume that the source polynomial deformation itself is invariant
+under these tree automorphisms.
+\end{proof}
+
+\subsection{An exact finite minimax formula}
+
+For a symmetric profile, write $q_i$ for its common value at
+valuation $i$ and set $q_i=0$ for $i\ge u$. Let
+$D_i=2^{a-i}$ and $n_i=N-i$. The exact normalized loss is
+\begin{equation}\label{eq:finite-symmetric}
+ \frac{\Lambda_i}{D_i}
+ =\left(2-\frac1{D_i}\right)q_i
+  -\sum_{j=1}^{u-1-i}\frac{j}{2^j}q_{i+j}
+  -\frac{n_i}{D_i}.
+\end{equation}
+For instance, the finite normalization sum has diagonal
+$2-(n_i+1)/D_i$; adding $(q_i-1)n_i/D_i$ gives precisely
+\eqref{eq:finite-symmetric}.
+
+Given required normalized total mass $W>0$, define backward rational
+recurrences
+\begin{align}
+ r_i&=\frac{1+\sum_{j=1}^{u-1-i}j2^{-j}r_{i+j}}
+                   {2-D_i^{-1}},\label{eq:r-rec}\\
+ c_i&=\frac{n_i/D_i+\sum_{j=1}^{u-1-i}j2^{-j}c_{i+j}}
+                   {2-D_i^{-1}},\label{eq:c-rec}\\
+ R_*&=\sum_{i=0}^{u-1}2^{-i}r_i,\qquad
+ C_*=\sum_{i=0}^{u-1}2^{-i}c_i.\label{eq:RC}
+\end{align}
+The starred $C_*$ here is a local minimax quantity, unrelated to
+the algorithmic constants $C_T,C_S$.
+
+\begin{theorem}[Finite optimum and integer enclosure]
+\label{thm:finite-hermite}
+Over all nonnegative real node multiplicities supported on
+$v_2(t)<u$ and satisfying $\sum_tq_t\ge LW$,
+\[
+ \min H(q)=\eta_*=\max\left\{0,\frac{W-C_*}{R_*}\right\}.
+\]
+If $W\ge C_*$, a minimizing symmetric profile is
+$q_i=\eta_*r_i+c_i$. If $W<C_*$, use $q_i=(W/C_*)c_i$.
+The optimum over integer multiplicities, even allowing arbitrary
+node-by-node asymmetry, lies in $[\eta_*,\eta_*+2)$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:hermite-symmetry} reduces the real lower bound to
+symmetric profiles. If $H(q)\le\eta$, equation
+\eqref{eq:finite-symmetric} gives
+\[
+ q_i\le
+ \frac{\eta+n_i/D_i+\sum_{j=1}^{u-1-i}j2^{-j}q_{i+j}}
+      {2-D_i^{-1}}.
+\]
+Backward induction yields $q_i\le\eta r_i+c_i$. Since an annulus
+contains $D_i=L2^{-i}$ nodes, completeness requires
+$W\le\sum_i2^{-i}q_i\le\eta R_*+C_*$. This proves the stated
+lower bound. The displayed profile achieves equality in every
+constraint if $W\ge C_*$. Scaling $c_i$ downward when $W<C_*$
+makes every affine loss nonpositive and gives exact mass $W$.
+
+For the integer upper bound, round every component of the chosen
+symmetric real profile upward. The total mass cannot decrease.
+In \eqref{eq:finite-symmetric}, the own-coordinate increase is
+less than $2-D_i^{-1}<2$, while every other increase has a
+nonpositive coefficient. Thus $H$ rises by less than two.
+The unrestricted integer minimum is no smaller than its real
+relaxation, which proves both sides.
+\end{proof}
+
+\subsection{The leading constant six survives asymmetry}
+
+Let $D_{\min}=2^{a-u+1}$. In the limit $D_i=\infty$, the backward
+recurrence has the explicit solution, already implicit in the
+symmetric taper analysis~\cite{precision},
+\[
+ r_i^{(\infty)}
+ =\frac{u-i}{6}+\frac5{18}+\frac29\,4^{-(u-i)},\qquad
+ R_\infty=\frac u3+\frac29-\frac29\,4^{-u}.
+\]
+Positivity of the finite recurrences gives
+\begin{equation}\label{eq:R-comparison}
+ R_\infty\le R_*
+ \le\left(1-\frac1{2D_{\min}}\right)^{-u}R_\infty,
+ \qquad
+ 0\le C_*\le\frac{a+1}{D_{\min}}R_*.
+\end{equation}
+For the first estimate, expand the backward recurrence as a sum over
+increasing index paths. Each visited index changes the limiting
+contribution by a factor at most
+$(1-1/(2D_{\min}))^{-1}$, and a path visits at most $u$ indices.
+The second estimate follows by comparing the inhomogeneous terms
+in \eqref{eq:r-rec} and \eqref{eq:c-rec}.
+
+Hermite recovery for degree at most $M(2L-1)$ requires total
+multiplicity at least $M(2L-1)+1$, so
+\[
+ W=\frac{M(2L-1)+1}{L}=(2+o(1))M.
+\]
+If $u\to\infty$, $u/D_{\min}\to0$,
+$(a+1)/D_{\min}=o(M/u)$, and $M/u\to\infty$, equations
+\eqref{eq:R-comparison} and Theorem~\ref{thm:finite-hermite} imply
+\begin{equation}\label{eq:asymmetric-six}
+ \min_{\text{integer node profiles}}H(q)
+   =(6+o(1))\frac M u.
+\end{equation}
+The thin-gap schedules have $D_{\min}\ge\lambda^6$ and
+$a,u=O(\lambda)$, so these conditions hold at active calls.
+Arbitrary omission or asymmetric weighting of nodes within the
+retained valuation levels therefore cannot improve the leading
+$MD/u$ precision scale in this fixed independent-error certificate.
+
+The exact finite checker tests the valuation identity, the inactive-node
+extension, symmetrization, and the minimax construction. Its role is
+to detect finite algebraic mistakes; the general theorem is proved
+above rather than inferred from those checks.

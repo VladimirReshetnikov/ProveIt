@@ -1,0 +1,150 @@
+\section{The exact interfaces being combined}\label{sec:interfaces}
+The new schedules change how work is allocated across recursive levels.
+Their correctness uses the same deformation, recovery, and child-factorization
+identities as the supplied preprint and refinement packets. We spell out the
+interfaces to make the combination checkable. We do not substitute the
+weaker formalized endpoint for the stronger manuscript bound, nor infer a
+formal proof from finite tests.
+
+\subsection{Asymmetric packing and the fresh side}
+At an active call with $M$ wires, choose a packet length $L=2^a$, an alphabet
+$r\ge3$, and $Q=r^a$ whole-vertex labels on each side. Let $R,C$ bound the
+row and column degrees. The asymmetric packing theorem gives labels with
+maximum ordered-pair load at most
+\begin{equation}\label{eq:load}
+ \left(1+\frac{2}{h_0-1}\right)
+ \left(\frac{M}{Q^2}+\frac{R}{Q}\right)
+ +2(h_0C+1)\ln Q,
+ \qquad h_0\ge2.
+\end{equation}
+This is an imported theorem of the asymmetric packet~\cite{asymmetric}.
+Its construction is useful here: greedily balance row stub counts, then
+assign column labels by exact conditional expectations of
+$\sum_{x,y}z^{X_{xy}}$, with $z=1+1/(h_0C)$. The average of the candidate
+expectations equals the previous expectation, so a minimizing label never
+increases it. Convexity of $z^w$ on $0\le w\le C$ proves
+\eqref{eq:load}. No real logarithm is evaluated to make an algorithmic choice.
+
+Write $\lambda=\ceil{\log_2s}$ and take $h_0=\max\{2,\lambda\}$.
+Rounding the maximum load upward to a multiple of $L$ yields a common padded
+mass $P=(1+o(1))M$ whenever, uniformly over active calls,
+\begin{equation}\label{eq:packing-conditions}
+ \frac{QR}{M}=o(1),\qquad
+ \frac{Q^2C\lambda^2}{M}=o(1),\qquad
+ \frac{LQ^2}{M}=o(1).
+\end{equation}
+The last condition pays for rounding. The orientation construction then
+retains exactly $P/r$ padded ports per symbol on each old side. Each child
+has at most
+\begin{equation}\label{eq:child}
+ (2/r+o(1))M
+\end{equation}
+wires. At a coordinate, exactly a fraction $1-1/r$ of ordered label pairs
+have unequal symbols and create crossing modes.
+
+The crucial degree invariant is asymmetric. Each child places all retained
+parent tensors on one side and newly formed packet tensors on the other.
+The retained tensors acquire no ports, and each new packet tensor has degree
+at most $2L$. Thus at depth $d\ge1$,
+\begin{equation}\label{eq:degrees}
+ R_d\le\ceil{s^{9/10}},\qquad C_d\le2^{a_{d-1}+1},
+\end{equation}
+provided every preceding packet degree was below $s^{9/10}$. Our proofs check
+that premise explicitly. At the root both sides can have degree
+$\ceil{s^{9/10}}$.
+
+\subsection{Full crossing-block modes preserve the interface}
+For a retained interpolation node of valuation $i<u\le a$, put
+$D_i=2^{a-i}$. The joint-Cauchy packet constructs integral, group-local
+separated modes for the full crossing orientation~\cite{joint}. Their
+certified valuations are
+\begin{equation}\label{eq:weights}
+ w_q=a+1-i+4q-2\pop(q),\qquad 0\le q<D_i/2.
+\end{equation}
+Each rank index has $2^i$ copies per orientation and there are two
+orientations per unequal-symbol packet. Consequently the number of copies
+per rank index is bounded by
+\begin{equation}\label{eq:families}
+ c_i\le\bigl(2(1-1/r)+o(1)\bigr)M/D_i.
+\end{equation}
+The all-level decomposition is essential: the older annulus construction's
+slopes tend to three. A local slope-four calculation at $i=0$ alone would
+not justify replacing three by four uniformly.
+
+For clarity, the full-block construction uses slots
+$\sigma(j)=(j\bmod2^i)+2^{i+1}\floor{j/2^i}$ and a finite telescoping
+Cauchy identity. At pivot $b=q2^i+t$, both separated factors have divisibility
+$2^{E_b}$, where $E_b=q+\nu_2(q!)=2q-\pop(q)$. The crossing scalar contributes
+$a+1-i$ more powers of two, giving~\eqref{eq:weights}. A mode reads columns
+in one group and supplies coefficients only to the other group. It changes
+neither child wires nor the degree invariant~\eqref{eq:degrees}. This is why
+it composes with asymmetric packing without a hidden multiplicity penalty.
+
+The retained tuple constraint is $\sum_qw_q\beta_q<p_i$. The exact source
+identity expresses the deformed contraction as a sum over such tuples of a
+product of $r$ child contractions. Features and coefficients can be computed
+in polynomial bit time per elementary operation in the same coefficient
+rings as the source. Known factors of two are cancelled before unit inversion.
+
+\subsection{Sharp Hermite precision with a thin gap}
+The exact linear-taper count and recovery losses are prior
+results~\cite{contraction,precision}. Write
+\begin{equation}\label{eq:hermite}
+ h=\ceil{\frac{M(2L-1)+1}{L(2u-2+2^{1-u})}},\qquad
+ q_i=h(u-i),\qquad
+ p_i=p+6hD_i+hu(a+1).
+\end{equation}
+The total number of Hermite conditions is
+$hL(2u-2+2^{1-u})$, greater than the degree $M(2L-1)$ of the deformation.
+The displayed $p_i$ is a sufficient working precision; exact smaller local
+losses could also be used.
+
+Both new schedules set
+\begin{equation}\label{eq:gap}
+ g=\ceil{\log_2\lambda}^{2},\qquad
+ a_d=\sum_{j=0}^du_j+(d+1)g,
+\end{equation}
+and stop at $H=\ceil{s/\lambda}$. At $O(\log\lambda)$ active depths,
+$a_d,u_d=O(\lambda)$ and the accumulated previous precision is bounded by
+$O(s\lambda^2 2^{a_{d-1}})$. Since $i<u_d$,
+$D_i\ge2^{a_{d-1}+g+1}$. It follows that
+\[
+ \frac{p}{MD_i/u_d}=O(\lambda^4 2^{-g})=o(1),\qquad
+ \frac{hu_d(a_d+1)}{MD_i/u_d}=o(1).
+\]
+When $u_d\to\infty$ uniformly, $h=(1+o(1))M/u_d$, and therefore
+\begin{equation}\label{eq:precision}
+ p_i\le(6+o(1))MD_i/u_d.
+\end{equation}
+We prove the uniform growth and depth bound for each schedule below.
+
+\subsection{The resulting local cost}
+Lowering~\eqref{eq:weights} to $\widehat w_q=1+4q-2\pop(q)$ and extending
+the finite rank interval only enlarge the tuple set. The joint packet's
+weighted-partition estimate is
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta\widehat w_q})
+ =\frac{\pi^2}{24\theta}+O\bigl(\log^2(2/\theta)\bigr).
+\]
+Hence $N_i$, the number of retained tuples, satisfies
+$\ln N_i\le\theta p_i+c_i\pi^2/(24\theta)+
+O(c_i\log^2(2/\theta))$. Optimize using the prescribed upper envelopes
+in~\eqref{eq:families} and~\eqref{eq:precision}. The optimizing
+$\theta\asymp\sqrt{u_d}/D_i$ tends uniformly to zero, and its error is
+lower order because $D_i\ge2^g$. This yields
+\begin{equation}\label{eq:local-entropy}
+ \log_2 N_i\le\bigl(k(r)+o(1)\bigr)\frac{M}{\sqrt{u_d}},
+ \qquad k(r)=\frac{\pi\sqrt{2(1-1/r)}}{\ln2}.
+\end{equation}
+The factor four in the rank weights is already proved by prior work; the
+new contribution is the feasible allocation of the $u_d$ and alphabets
+under the changing degree capacities.
+
+\begin{remark}[Creation-time representatives are retained]
+An existing tensor is evaluated with the precision at which its description
+was created. Later calls reuse its canonical integer representatives.
+Canonical lifting is not a ring homomorphism. The new schedules and kernel
+implementations do not replace that convention or recursively compose entry
+evaluators. Shared immutable descriptions preserve the source's oracle and
+space accounting.
+\end{remark}

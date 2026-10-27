@@ -1,0 +1,49 @@
+Suggested placement:
+Computability/SubexponentialSAT/Research/eth_adaptive_bounds/
+
+New modules and imports:
+
+1. report/flags.tex
+   New common-origin flag intersection lemma, exact adaptive selection,
+   local coefficient b_r=sqrt((r-1)(4r+10)/9)/r, and decreasing alphabet
+   schedule 16,16,8,4,4,... with rational tail taper 63/100.
+   Imports exact pair-weight factorization, weighted entropy, asymmetric
+   degree provenance, sharp Hermite precision, immutable creation caps,
+   and the source contraction semantics.
+
+2. report/cached.tex
+   New centered adaptive triangle bound and compatible cached schedules.
+   Combines imported binary table construction / coordinate-CRT matrix
+   bridge with the new adaptive entropy estimate. Uses only matrix
+   exponent 12/5, not a newly announced record exponent.
+
+3. report/interface.tex
+   Explicit shared contract and leading-constant entropy calculation.
+   The finite-net corollary justifies using the Euclidean entropy ball.
+
+Recommended README summary:
+
+"Adaptive linear flags reduce the general polynomial-space contraction
+coefficient from 55.70948 to 46.18485. A centered adaptive triangle estimate
+combined with recursively constructed tables gives general cached time
+34.32528 and space 34.02418, improving the previous fastest cached time
+35.35459. With root degree at most ceil(s^(1/12)), cached time/space become
+13.37965/13.25303. All coefficients are per normalized wire on
+s/sqrt(log2 s), and all retain the upstream exact identities. The report
+includes complete new proofs, independent review, and exact finite
+certificates; it does not change the SAT logarithmic order or close the
+conditional structured-mode summation hypothesis."
+
+Do not summarize the cached algorithm as polynomial space.
+Do not use the low-degree coefficient under the generic degree premise.
+Do not substitute s=n without paying a concrete encoding's wire factor.
+Do not label the finite programs as a full SAT solver or Lean verification.
+
+The report gives one explicit fixed-density wiring corollary:
+M=L+2 sum_v(d_v-3)_+ <=3km, with unused-variable scalar 2^n0 and
+s=max(M,n+1,2). It yields time coefficient
+13.379649066270 * max(3kD,1) on n/sqrt(log2 n) for fixed m<=Dn.
+
+All external input identities and the closing relocation check are in
+provenance/. The main manuscript and supplementary files are self-contained
+for rebuilding and rerunning the new finite checks.

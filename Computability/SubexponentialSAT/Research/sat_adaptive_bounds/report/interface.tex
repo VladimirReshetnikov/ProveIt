@@ -1,0 +1,236 @@
+\section{The common interface and its entropy geometry}
+\label{sec:interface}
+
+\subsection{Normalized tensors, arithmetic, and provenance}
+
+The input is a bipartite Boolean tensor network with at most $s$ wires,
+at most polynomially many vertices, and total graph/description length
+$\mathcal L$. Its contraction is
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+The general root degree bound is $\Delta=\ceil{s^{9/10}}$.
+Initial entries lie in
+$ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell)$ with
+$1\le P_0,\ell\le s$.
+Uniform entry evaluation uses
+$\poly(s+\mathcal L)2^{O(s^{9/10})}$ time and polynomial space.
+All constants in these input premises are fixed.
+
+The imported algorithm works in
+\[
+ R_p=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell),
+\]
+where $f$ is monic of degree $O(\log s)$ with irreducible reduction
+modulo two. Its rank and precision are polynomial in $s$. Tensor
+descriptions retain their creation precision: later calls evaluate an
+entry at that precision and reuse its canonical coordinate representatives.
+Canonical lifting is not assumed to preserve ring operations.
+
+We import the following exact facts from the source and the reviewed
+refinements \cite{source,asymmetric,joint,adaptive,tree}:
+
+\begin{enumerate}
+\item Cauchy deformation, local integral evaluations, and tapered Hermite
+recovery compute the original contraction exactly modulo the requested
+power of two.
+\item Nearly lossless asymmetric padding preserves the source/target
+locality and gives child wire count
+$(2/r+o(1))M$ at an active call with $M$ wires and fixed alphabet $r$.
+\item Full-orientation joint Cauchy modes have certified weights
+$a+1-i+4q-2\pc(q)$, precisely one source and one target group,
+and the exact recursive group-factor identity described below.
+\end{enumerate}
+
+The new work changes how that finite group-factor identity is summed.
+It does not alter its deformation, recovery, or ring semantics.
+
+\subsection{Packing and precision conditions}
+
+Let $\lambda=\ceil{\log_2s}$, $b=\ceil{6\log_2\lambda}$, and
+\[
+ a_d=\sum_{j=0}^d u_j+(d+1)b,\qquad
+ L_d=2^{a_d},\qquad Q_d=r_d^{a_d}.
+\]
+Here $u_d$ is the retained taper range. At a node of valuation $i<u_d$,
+write $D=2^{a_d-i}$. The reviewed sharp Hermite estimate is uniformly
+\begin{equation}
+ p_t\le(6+o(1))\frac{MD}{u_d}.
+ \label{eq:precision-interface}
+\end{equation}
+For completeness, the exact linear-taper slope may be taken as
+\[
+ \rho=\ceil{\frac{M(2L_d-1)+1}
+ {L_d(2u_d-2+2^{1-u_d})}},
+\]
+and a sufficient evaluation precision is
+$p+6\rho D+\rho u_d(a_d+1)$.
+The additive buffer makes the inherited $p$ and final additive term
+lower order on the schedules below.
+
+If $R,C$ bound the two sides' degrees, the sufficient padding gates are
+\begin{equation}
+ \frac{Q_dR}{M}=o(1),\qquad
+ \frac{Q_d^2C(\log s)^2}{M}=o(1),\qquad
+ \frac{L_dQ_d^2}{M}=o(1).
+ \label{eq:padding-interface}
+\end{equation}
+At the root $R=C=\Delta$. Below it, retained tensors remain on one side,
+and the fresh side has degree at most $2L_{d-1}$; thus one may use
+$R\le\Delta$, $C\le2L_{d-1}$ in the general setting.
+The separate lower-degree result tracks
+$\max\{\Delta,2L_{d-1}\}$ instead. Every schedule is checked before using
+the nearly lossless padding conclusion, closing the depth induction.
+
+The source estimate for inherited precision is
+$p=O(s\lambda^2 2^{a_{d-1}})$.
+Since $D\ge2^{a_{d-1}+b+1}$, $u_d\le\lambda$, and all our leaf
+thresholds have $s/M\le\lambda$, the ratio
+$p/(MD/u_d)$ is $O(\lambda^4 2^{-b})=o(1)$.
+This explains why the full precision history is compatible with
+\eqref{eq:precision-interface}.
+
+\subsection{Exact pair budgets and paid child factors}
+
+For a fixed alphabet $r$, enumerate exact weight arrays
+$(b_{gh})_{g\ne h}$ with nonnegative entries and sum below $p_t$.
+There are polynomially many arrays because $r$ is fixed and $p_t$ is
+polynomial in $s$. For one array, let $\mathcal I_{gh}$ be the finite
+list of mode exponent tuples of that exact pair weight. Discard an
+array if any list is empty. Define
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|,\qquad
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac M{\sqrt u}.
+\]
+The contribution of this array is exactly
+\begin{equation}
+ \sum_{(\xi_{gh})\in\prod_{g\ne h}\mathcal I_{gh}}
+       \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+ \label{eq:pair-identity}
+\end{equation}
+Each $Z_g$ entry is a genuine recursive child contraction. It is
+explicitly charged in every time recurrence in this report.
+
+For any prescribed mode weights $w_1,\ldots,w_v$, the recurrence
+\[
+ D(j,z)=D(j-1,z)+D(j,z-w_j),\qquad D(0,0)=1
+\]
+with the usual zero/negative boundary conventions counts exact-weight
+tuples. Budgets, mode counts, and integer bit lengths are polynomial
+in $s$. This table supplies exact list sizes, rank/unrank, and
+polynomial-delay iteration. No counting oracle is required.
+
+\begin{lemma}[Weighted pair entropy]\label{lem:weighted}
+For every fixed nonnegative vector $z=(z_e)$ on the directed group pairs,
+\begin{equation}
+ \sum_e z_e h_e
+ \le \left(\frac{\|z\|_2}{r}+o(1)\right)K(M,u).
+ \label{eq:weighted}
+\end{equation}
+The error is uniform over active calls and over any fixed finite family
+of such vectors.
+\end{lemma}
+\begin{proof}
+We include the leading-constant calculation to make the interface explicit.
+There are at most
+$c=(2/r^2+o(1))M/D$ modes of each index on a given directed pair.
+Lower their weights to
+$\widehat w_q=1+4q-2\pc(q)$ and extend $q$ to all nonnegative integers.
+Both changes only enlarge the list-generating function.
+The weight-counting function is $x/4+O(\log(x+2))$, so
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta\widehat w_q})
+ =\frac{\pi^2}{24\theta}+O(\log^2(2/\theta))
+ \quad(\theta\downarrow0).
+\]
+This follows by partial summation and
+$\int_0^\infty-\ln(1-e^{-x})\,dx=\pi^2/6$.
+For pair $e$ with $z_e>0$, apply the generating-product bound at
+$\theta/z_e$, multiply its logarithm by $z_e$, and sum over pairs.
+Using the total exact budget gives
+\[
+ \ln2\sum_e z_eh_e
+ \le \theta p_t+
+ \frac{c\pi^2}{24\theta}\sum_e z_e^2+
+ O_z(c\log^2(2/\theta)).
+\]
+Optimize the first two terms and use
+\eqref{eq:precision-interface}. The optimum has scale
+$\theta\asymp\sqrt u/D$. Since the additive buffer gives
+$D\ge\lambda^6$ up to a fixed factor, the error is
+$o(M/\sqrt u)$ uniformly. Zero weights are omitted.
+For a finite family, take the largest error constant.
+\end{proof}
+
+\begin{corollary}[Euclidean entropy envelope]\label{cor:l2}
+Uniformly over active calls and exact budget arrays,
+\[
+ \|h\|_2\le(1+o(1))K(M,u)/r.
+\]
+\end{corollary}
+\begin{proof}
+For a fixed $\varepsilon>0$, take a finite $\varepsilon$-net of the
+nonnegative unit sphere in the fixed dimension $r(r-1)$.
+For nonzero $h$, one of its vectors has inner product with
+$h/\|h\|_2$ at least $1-\varepsilon$.
+Apply Lemma~\ref{lem:weighted} uniformly on that finite net.
+This yields $\|h\|_2\le(1-\varepsilon)^{-1}(1+o(1))K/r$.
+First take the uniform size limit, then $\varepsilon\downarrow0$.
+This is precisely the asserted uniform $1+o(1)$ statement.
+\end{proof}
+
+This finite-net argument matters: an estimate stated only for each
+fixed weight vector should not silently be used with a newly
+data-dependent vector without a uniformity argument. The flag proof
+uses a different valid route: its possible vectors already form a
+fixed finite family.
+
+\subsection{Why the matrix backend applies to this ring}
+\label{sec:matrix-bridge}
+
+The cached construction uses the already reviewed rational-field
+matrix bound $\omega_{\mathbb Q}<12/5$; the primary result of
+Alman et al.\ supplies a strictly stronger bound \cite{matrix}.
+Here is the relevant ring bridge, restated from the contraction-tree
+packet \cite{tree}.
+
+Fix a finite rational bilinear square-matrix algorithm with exponent
+strictly below $12/5$. Its base size, coefficients, and denominator
+primes are constants. Away from that fixed finite set of primes,
+the same bilinear identities hold over the prime field. Recursing
+one product at a time gives quadratic working storage and a bound
+$O(N^{12/5})$ on square matrix operations, with slack absorbing
+fixed overhead.
+
+Write each entry of $R_p$ in its specified polynomial-rank basis
+over $\mathbb Z/2^p\mathbb Z$, and lift coordinates to integers in
+$[0,2^p)$. For matrices of dimensions $d_1,d_2,d_3$, an entry of an
+ordinary coordinate-pair product is bounded by
+$d_2(2^p-1)^2$. Its bit length is
+$O(p+\log d_2)$, polynomial in $s$.
+Compute each such product modulo enough nonexceptional odd primes
+to exceed this reconstruction bound, recover the exact nonnegative
+integer entries by CRT, combine them using the quotient ring's
+integer multiplication table, and finally reduce modulo $2^p$.
+The number and numerical magnitudes of the needed primes can be
+bounded polynomially in the reconstruction bit length. There are
+only polynomially many coordinate pairs.
+
+For rectangular matrices, split into square blocks with side
+comparable to $\min(d_1,d_2,d_3)$, padding by constant factors.
+The resulting bit-operation bound is
+\[
+ \poly(s+\mathcal L)\,
+ d_1d_2d_3\,\min(d_1,d_2,d_3)^{-3/5}.
+\]
+Storage is a polynomial factor times the input/output arrays.
+Reshaping and external sorting of polynomial-bit records add a
+polynomial factor. No inverse of two or of a nonunit is taken in
+$R_p$. Thus for index-length logarithms $H_1,H_2,H_3$ the exponent
+is
+\[
+ H_1+H_2+H_3-\tfrac35\min(H_1,H_2,H_3).
+\]
+The finite checkers accompanying this report check the new combinatorial
+use of this backend; they do not implement the large theoretical
+matrix algorithm.

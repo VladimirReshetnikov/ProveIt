@@ -1,0 +1,53 @@
+SUGGESTED REPOSITORY INTEGRATION
+
+This archive is a reviewable research packet. It has not been committed or
+published to the ProveIt repository. A possible destination is:
+
+  Computability/SubexponentialSAT/Research/sat_adaptive_frontier/
+
+Keep all source, checker, result and provenance files together. The report
+does not depend on the supplementary precursor. It should be indexed as
+an external relative refinement with natural-language proofs and exact
+finite checks, without Lean or Rocq verification.
+
+SUGGESTED INDEX ENTRY
+
+Adaptive evaluation of the subexponential SAT mode graph. Adaptive quartet
+conditioning lowers the common-interface polynomial-space time coefficient
+to C_Q = 50.30468921410. A joint covariance objective for block construction
+and matrix contraction lowers both cached time and space coefficients to
+C_J = 31.25239731266. Coefficients multiply s/sqrt(log2 s), where s counts
+normalized Boolean wires. The general-density and fixed-density SAT
+logarithmic orders remain unchanged. The packet also proves a conserved
+degree-flow identity and identifies its unresolved recursive-representation
+requirements. Source review covers twenty committed packets through
+dde01c4a63b822c25b8eb345299346c36f837b49.
+
+RECOMMENDED REVIEW ORDER
+
+1. Report Section 1: result, common interface and comparison scope.
+2. Section 2 and provenance/: source inventory and twenty-packet comparison.
+3. Section 3: imported hypotheses and the uniform entropy-norm proof.
+4. Adaptive quartet proof: exact tree choice and paid leaf calls.
+5. Joint covariance proof: all six local costs, exact partition choice,
+   ring-arithmetic bridge, multistage packing and recursive costs.
+6. Degree-flow lemma and its explicit implementation obstacles.
+7. Run the check suite; inspect the independent audit and proof-status file.
+
+IMPORTANT REPRODUCTION DISTINCTIONS
+
+The finite evaluators compute exact mode-graph contractions over nonfields.
+The asymptotic cached theorem imports a fast matrix-multiplication backend
+through integer coordinates and CRT. The finite prototype deliberately
+uses literal final summation to validate algebra and work accounting; it
+does not benchmark that backend. No SAT-level speedup was measured.
+
+The new upper-bound functions are smaller by exponential factors on the
+same E(s) scale. They do not change the Big-O order of the SAT exponent.
+Conditional n/log n targets and algorithms requiring stronger degree
+hypotheses remain distinct comparison classes.
+
+The main run_checks.py is the portable replay entry point. Supplementary
+checkers are self-contained optional historical calculations; their output
+paths are beside those scripts. Run verify_manifest.py before rebuilding
+or editing, since regenerating a PDF may change its binary metadata.

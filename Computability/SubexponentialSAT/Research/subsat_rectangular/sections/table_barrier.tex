@@ -1,0 +1,112 @@
+\section{An arity-uniform barrier for the full-table certificate model}
+\label{sec:cached-tree-barrier}
+
+The following result identifies a limit of the certificate used above, not
+a lower bound for SAT. It is useful because changing grouping arities or
+choosing a contraction tree adaptively might otherwise appear to evade the
+weighted-partition obstruction.
+
+Consider the abstract leading entropy relaxation on the $r(r-1)$ directed
+pairs of $r\ge3$ groups,
+\[
+ \mathcal H_r(K)=\{h\in\mathbb R_{\ge0}^{r(r-1)}:
+                       \|h\|_2\le K/r\}.
+\]
+This is the norm-ball envelope corresponding to the common-tilt
+Cauchy--Schwarz certificates; it intentionally forgets more detailed
+realizability constraints of actual mode lists. A full table for a subset
+$B$ of $k$ groups has logarithmic size
+\[
+ L_B(h)=\sum_{e\in\partial B}h_e,\qquad
+ |\partial B|=2k(r-k).
+\]
+A full-table binary contraction tree stores the prescribed table for each
+merged subset. The model includes the binary table-building schemes and
+their final triangle contraction used in the reviewed packets.
+
+\begin{proposition}[Fixed and adaptive table certificates]
+\label{prop:cached-tree-barrier}
+For every fixed full-table binary tree $\mathcal T$,
+\[
+ \sup_{h\in\mathcal H_r(K)}\ \max_{B\in\mathcal T}L_B(h)
+        \ge\frac23K.
+\]
+Even if the tree is chosen after $h$ is known,
+\[
+ \sup_{h\in\mathcal H_r(K)}\ \min_{\mathcal T}\
+            \max_{B\in\mathcal T}L_B(h)
+ \ge\frac{4}{9\sqrt{1-1/r}}K\ge\frac49K.
+\]
+\end{proposition}
+
+\begin{proof}
+Every full binary tree on $r$ leaves has a node with leaf count
+$k\in[r/3,2r/3]$. One proof starts at the root and descends while a child
+has more than $2r/3$ leaves. At the last such node its children both have
+at most $2r/3$ leaves, and at least one has at least $r/3$ leaves.
+For that node, $2k(r-k)\ge4r^2/9$. The support function of the nonnegative
+norm ball gives
+\[
+ \sup_{h\in\mathcal H_r(K)}L_B(h)
+       =\frac Kr\sqrt{2k(r-k)}\ge\frac23K,
+\]
+proving the fixed-tree statement.
+
+That argument cannot interchange the supremum over $h$ with the minimum
+over adaptively chosen trees. For the adaptive statement instead use the
+single vector
+\[
+ h_e=\frac{K}{r\sqrt{r(r-1)}}\quad\hbox{for every directed pair }e.
+\]
+It belongs to $\mathcal H_r(K)$ and works simultaneously against every
+tree. At each tree's balanced node,
+\[
+ L_B(h)\ge\frac{4r^2}{9}\frac{K}{r\sqrt{r(r-1)}}
+       =\frac{4K}{9\sqrt{1-1/r}}.
+\]
+\end{proof}
+
+The reviewed root packing certificate requires
+\[
+ 2a_0\log_2r+\frac9{10}\log_2s
+     \le(1-o(1))\log_2s,\qquad u_0\le a_0.
+\]
+Consequently, within that certificate,
+\[
+ u_0\le\left(\frac1{20}+o(1)\right)
+                  \frac{\log_2s}{\log_2r},\qquad
+ K(s,u_0)=\Omega\left(
+          \frac{s\sqrt{\log r}}{\sqrt{\log s}}\right).
+\]
+Proposition~\ref{prop:cached-tree-barrier} therefore prevents a worst-case
+$o(s/\sqrt{\log s})$ certificate from full-table tree selection, arity
+retuning, or a faster matrix backend alone. The constants are uniform in
+$r$. This remains an obstruction in the idealized real entropy model even
+if one grants growing arities and ignores their extra budget-enumeration
+costs.
+
+The statement is deliberately scoped. It does not claim that every point
+of $\mathcal H_r(K)$ is realized by an actual crossing network, that every
+instance materializes a table of this size, or that the packing inequality
+is necessary for all conceivable packing algorithms. It is a lower bound
+on this relaxed certificate model. Additional constraints on real mode
+lists, a nonmaterializing summation method, or a different packing or SAT
+representation may evade it. It supplies no complexity lower bound for
+SAT or for general tensor contraction.
+
+\paragraph{The newly filed streamed separator branch.}
+The recursive-conditioning certificate in Section~\ref{sec:streamed-new}
+also retains this order, by a separate elementary calculation. Its root cut
+alone gives
+\[
+ v(r)\ge2\lfloor r/2\rfloor\lceil r/2\rceil
+       \ge\frac{r^2-1}{2},\qquad
+ \beta(r)=\frac{\sqrt{v(r)}}r
+       \ge\sqrt{\frac{1-r^{-2}}2}\ge\frac23\quad(r\ge3).
+\]
+Consequently its local subset-entropy certificate is a positive uniform
+multiple of $K(s,u_0)$ even when the arity changes. This does not extend the
+full-table proposition to all streaming algorithms; it verifies the same
+order obstruction for this particular balanced recursive-conditioning
+profile. An exact summation method exploiting additional structure remains
+outside both scoped arguments.
