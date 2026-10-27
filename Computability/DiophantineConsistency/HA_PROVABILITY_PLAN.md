@@ -26,6 +26,15 @@ and half-index recovery have since passed independent review
 below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
 
+The [actual215 Home theorem](reviews/arithmetic-home215-root.md) now supplies
+positive internal execution of the real Home checker, including zero gap,
+empty true runs and the exact eighteen-step boundary for every right tail.
+Its stepper and executor discharge Home semantics and preserve the moved
+flag, retaining the genuine fallback premises. Independent fresh pairs
+match both objects/full logs and all 14 standard-only reports with zero
+prerequisite refreshes. All-site contracts, canonical paths and whole
+control/tape equivalence remain open.
+
 The [literal scalar-window and first-index theorem](reviews/arithmetic-pell-first-index-root.md)
 now derives the bounds needed for half-index recovery from the maintained
 fourteen-field data, additive transport identity and port bounds. The actual
@@ -51,7 +60,7 @@ moved flag and derives positive clocks from an initially false flag.
 Normalization preserves the entire numeric configuration, and all four
 ordinary-Nat sepsR/sepsM/INC/DEC algebraic clients are proved. Independent
 fresh pairs match both objects/full logs and 15 standard-only reports,
-with zero prerequisite refreshes. Actual Home, all sites, canonical paths
+with zero prerequisite refreshes. Home is supplied above; all sites, canonical paths
 and whole control/tape equivalence remain open.
 
 The [actual tagged Collection theorem](reviews/validator-seed-tagged-collection222-root.md)
@@ -94,7 +103,7 @@ and genuine Pi1 induction in IΣ1 handle internal scan and spare counts.
 Independent fresh triples match all three objects/full logs and 14 reports.
 One unchanged numeric-prefix helper was explicitly refreshed; no Foundation
 module was rebuilt. The later symbolic packet above supplies the ordinary-Nat
-encoding comparison and executor. Home, all-site and control/tape composition
+encoding comparison and executor. Home is supplied above; all-site and control/tape composition
 remain open.
 
 The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)

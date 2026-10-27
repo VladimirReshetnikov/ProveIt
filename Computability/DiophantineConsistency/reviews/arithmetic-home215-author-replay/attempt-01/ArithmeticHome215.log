@@ -1,0 +1,68 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticHome215.lean:51:4: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  e ≥ 0
+  d ≥ 0
+  d - e ≥ 1
+  b ≥ 0
+  a ≥ 0
+  a + b ≤ 6
+where
+ a := ↑i
+ b := ↑c
+ d := ↑(KHome.state (i + (c + 1)))
+ e := ↑(KHome.state (i + 1 + c))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticHome215.lean:57:24: error: Type mismatch
+  sub_add_cancel ?m.49
+has type
+  ∀ (b : ?m.47), ?m.49 - b + b = ?m.49
+but is expected to have type
+  n - 1 + 1 = n
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticHome215.lean:57:43: error: Type mismatch: After simplification, term
+  hn
+ has type
+  0 < n
+of sort `Prop` but is expected to have type
+  ?m.47
+of sort `Type ?u.41`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticHome215.lean:71:54: error: Ambiguous term
+  zero_div
+Possible interpretations:
+  _root_.zero_div : ∀ (a : ?m.135), 0 / a = 0
+  
+  Arithmetic.zero_div : ∀ (a : ?m.135), 0 / a = 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticHome215.lean:71:2: error: Type mismatch: After simplification, term
+  he
+ has type
+  step (frameSparse 50 (0 / 2) (2 * (Exp.exp 7 * (2 * R + 1)))) =
+    frameSparse 75 (0 / 2) (2 * (2 * (Exp.exp 7 * (2 * R + 1)) + 0))
+but is expected to have type
+  step (frameSparse 50 (0 / 2) (2 * (Exp.exp 7 * (2 * R + 1)))) = frameSparse 75 0 (Exp.exp (7 + 1 + 1) * (2 * R + 1))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticHome215.lean:133:10: error: Type mismatch: After simplification, term
+  hr
+ has type
+  Reach (leftFrame (KHome.state j) (flatValue gap v k xs L) R)
+    (leftFrame (KHome.state j') L (flatValue gap v k xs.reverse R))
+but is expected to have type
+  Reach (leftFrame (KHome.state j) (bitPrefix true (↑a * gap + ↑0) (flatValue gap v k xs L)) R)
+    (leftFrame (KHome.state j') L (flatValue gap v k xs.reverse (bitPrefix true (↑a * gap + ↑0) R)))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticHome215.lean:189:39: error: Type mismatch: After simplification, term
+  hm
+ has type
+  @Eq V (step (leftFrame (KHome.state j') 1 (flatValue gap v k u (flatValue gap v k r 0))))
+    (leftFrame 2 0 (2 * flatValue gap v k u (flatValue gap v k r 0) + 1))
+but is expected to have type
+  @Eq V
+    (step
+      (leftFrame
+        (match j' with
+        | 0 => 2
+        | 1 => 3
+        | 2 => 5
+        | 3 => 9
+        | 4 => 15
+        | 5 => 23
+        | 6 => 34
+        | 7 => 50
+        | x => 2)
+        1 (flatValue gap v k u (flatValue gap v k r 0))))
+    (leftFrame 2 0 (2 * flatValue gap v k u (flatValue gap v k r 0) + 1))
