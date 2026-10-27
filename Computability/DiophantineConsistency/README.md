@@ -17,6 +17,11 @@ The owner now additionally requires a Lean theorem that this equivalence
 is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+An [explicit translated ZFC consistency sentence](reviews/foundation-zfc-consistency-nat-root.md)
+now has a checked standard-Nat meaning equal to the actual syntactic
+ConZFC proposition, including Choice. Its independent two-leaf replay
+passes eight standard-only reports. This fixes the semantic target; the
+HA equivalence remains open.
 The owner reaffirmed HA after considering PA as an alternative. The
 [represented C222 formula encoder](reviews/validator-formula-encoder222-root.md)
 now passes an independent five-source build with13 standard-only reports,

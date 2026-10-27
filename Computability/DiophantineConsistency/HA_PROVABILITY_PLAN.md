@@ -565,6 +565,14 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [fixed ZFC sentence binding](reviews/foundation-zfc-consistency-nat-root.md)
+now identifies an explicit GG/PAHF sentence's standard-Nat truth with the
+actual syntactic ConZFC proposition, including Choice. Two independent
+fresh leaves pass eight standard-only reports over the validated410-module
+environment. This semantic comparison is unconditional. HA normalization
+to an untranslated checker and the current equation's internal equivalence
+remain open.
+
 The actual permuted enumerator now also has independent
 [fetch/progress](reviews/arithmetic-command-fetchperm222-peer.md) and
 [one-command effect](reviews/arithmetic-command-stepperm222-root.md)
@@ -609,9 +617,10 @@ local refreshes; that proposal is not an executed consistency proof.
 
 1. Authentic HA derivability and basic arithmetic/induction interfaces are
    checked, with one-way classical embedding and focused binder checks.
-2. The literal arithmetic equation sentence is checked. Supply the exact
-   arithmetized ZFC-refutation sentence and its coding comparison, retaining
-   the actual proof convention.
+2. The literal equation sentence and a fixed Foundation/GG ZFC consistency
+   sentence with its exact standard-Nat proof convention are checked.
+   Establish the remaining internal coding comparison to the intended
+   untranslated refutation checker.
 3. Establish the applicable proof-translation/stability theorem or the two
    direct internal witness transformations. Record which remaining native,
    Pell and machine lemmas need PA/HA proof-existence witnesses.
