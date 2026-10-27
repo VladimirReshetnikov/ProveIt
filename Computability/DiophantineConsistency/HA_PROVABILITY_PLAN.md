@@ -21,11 +21,21 @@ connections are actual ZFC/source-checker proof interpretation, actual
 control-to-tape simulation, and internal polynomial/Pell witness assembly.
 The checked scheduler/control halting theorem, literal tape/boot theorem
 and relaxed auxiliary norm theorem below are completed parts of those
-connections. Tagged Collection is under implementation; register-box
-execution has since passed independent review below. The
-[reviewed half-index proposal](research/arithmetic-pell-half-index-plan.md)
-is authorized for implementation, not yet a proved theorem. No closed Lean
+connections. Tagged Collection awaits independent review; register-box
+execution and half-index recovery have since passed independent review
+below. No closed Lean
 theorem yet asserts that the full equivalence has an HA proof.
+
+The [actual half-carrier index theorem](reviews/arithmetic-pell-half-index-root.md)
+now derives the main Pell pair at the literal rank from the actual norms,
+signed residues and explicit large-ordinate/half-window bounds. Exact odd
+coordinate division and represented Sigma1 induction retain alternating
+signs under both moduli; no modular inverse or square-root cancellation is
+used. The literal adapter handles either sign by absolute difference and
+uses the full scaled strict coefficient. Independent fresh pairs match both
+objects/full logs and ten reports. Deriving the scalar bounds from the
+literal data, the first-index identity, powers and cofinal witnesses remains
+before final polynomial/PA/HA assembly.
 
 The [changing-marker discharge theorem](reviews/validator-seed-marker-discharge222-peer.md)
 now removes every internally sized domain side set and its negative empty
@@ -54,7 +64,8 @@ two scaled natural coefficient certificates derive the latter divisibility;
 no cubic-congruence or power theorem is required. The structural helper
 retains zero indices. Independent fresh pairs match both objects/full logs
 and seven reports. The [mathematical note](research/arithmetic-pell-two-certificates.md)
-records the shorter proof. Later target-index/step-down transport, carrier
+records the shorter proof. The later half-index packet above proves the
+target-index step with explicit scalar bounds. Their derivation, first-carrier
 alignment, cofinal witnesses and final equation/PA/HA assembly remain open.
 
 The [actual relaxed-norm integral-solution theorem](reviews/arithmetic-pell-integral-solution-root.md)
