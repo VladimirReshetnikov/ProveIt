@@ -106,6 +106,12 @@ including a start at4, unless an earlier command halts. Two independent
 builds pass fourteen standard-only reports and identical objects. The
 proof retains a bounded stopped-time witness before enumeration resumes;
 compiler/proof-state invariants and exact215 calibration remain open.
+The [actual raw-command replacement](reviews/arithmetic-command-replaceperm222-peer.md)
+now preserves the permuted command's meaningful arguments and its complete
+working-register effect over internal IOpen inputs. Independent builds
+pass thirteen standard-only reports with identical objects, including raw0
+and literal AX y/x order. Represented append and execution composition
+remain subsequent runtime checkpoints.
 The latest [canonical-data refresh](reviews/current-equation-narrow-root.md)
 passes130 affected native/client builds and92 standard-only reports,
 with285 authenticated unchanged reuses and five independently refreshed

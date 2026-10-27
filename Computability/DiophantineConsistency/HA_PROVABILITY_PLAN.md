@@ -825,3 +825,19 @@ client retains its lower bound relative to the starting counter and its
 all-working-state halting premise. This does not prove that a checker
 certificate already compiles to such a word. The coupled-time induction
 never assumes completed scheduler states are absorbing.
+
+
+## Actual command-tail replacement accepted
+
+The [actual raw-command replacement](reviews/arithmetic-command-replaceperm222-peer.md)
+now preserves the permuted command's meaningful arguments and its complete
+working-register effect over internal IOpen inputs. Independent builds
+pass thirteen standard-only reports with identical objects, including raw0
+and literal AX y/x order. Represented append and execution composition
+remain subsequent runtime checkpoints.
+
+The new Σ1 graph retains unbounded reconstruction witnesses. Short-command
+unused projections may change, so the effect proof explicitly separates
+both short tags before discarding those fields. The independent parser
+preflight corrected duplicate import bookkeeping only; no Lean source
+correction or peer compiler failure occurred.
