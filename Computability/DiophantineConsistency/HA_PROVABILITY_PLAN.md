@@ -565,6 +565,13 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The [actual permuted-command parser](reviews/arithmetic-command-wordperm222-peer.md)
+now has a represented bounded graph in IOpen and agrees with the literal
+Nat decoder on every raw input. Its independent two-leaf replay passes
+nine standard-only reports. This respects the0/1/2/AX command layout and
+y-then-x packing; shifted fetch, full run simulation and fair reachability
+from counter4 remain open.
+
 The owner reaffirmed the **HA target** on26 October after discussing PA.
 PA may remain an intermediate theory in the already checked proof
 translation; existence of an actual HA derivation is the required endpoint.

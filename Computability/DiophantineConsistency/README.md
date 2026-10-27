@@ -42,6 +42,10 @@ machine leaves and24 standard-only axiom reports. The
 [C222 calibration audit](research/ha-c222-internalization-audit.md) separates
 the remaining seed-axiom and counter4 runtime bridges to the existing internal
 validator theorem; run totality alone does not prove that equivalence.
+The [literal permuted-command parser](reviews/arithmetic-command-wordperm222-peer.md)
+now has an internal bounded graph and agrees with the actual decoder on
+every raw Nat input. Its independent build passes nine standard-only
+reports. Counter4 reachability and the whole runtime bridge remain open.
 The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
 now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)
