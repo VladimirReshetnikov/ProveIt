@@ -1,0 +1,55 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:239:9: error: unsolved goals
+case none
+s' : KBoot.LConf
+q : ℕ
+left right : List Bool
+ht : KTableCore.tm215 q (right.headD false) = none
+h : none = some s'
+⊢ ArithmeticMachineStep215.stepValue (encodeList (q, left, right)) = encodeList s'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:245:6: error: Type mismatch: After simplification, term
+  bitsCode_head right
+ has type
+  @Eq ℕ (bitsCode right % 2) (right.getD 0 false).toNat
+but is expected to have type
+  @Eq ℕ (Mod.mod (bitsCode right) 2) (right.getD 0 false).toNat
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:252:6: error: Type mismatch: After simplification, term
+  hs
+ has type
+  ArithmeticMachineStep215.stepValue (frameSparse q (bitsCode left) (bitsCode right)) =
+    frameSparse q' (Div.div (bitsCode left) 2)
+      (Mod.mod (bitsCode left) 2 + 2 * (write.toNat + 2 * Div.div (bitsCode right) 2))
+but is expected to have type
+  ArithmeticMachineStep215.stepValue (frameSparse q (bitsCode left) (bitsCode right)) =
+    frameSparse q' (bitsCode left.tail) ((left.getD 0 false).toNat + 2 * (write.toNat + 2 * bitsCode right.tail))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:252:6: error: Type mismatch: After simplification, term
+  hs
+ has type
+  ArithmeticMachineStep215.stepValue (frameSparse q (bitsCode left) (bitsCode right)) =
+    frameSparse q' (write.toNat + 2 * bitsCode left) (Div.div (bitsCode right) 2)
+but is expected to have type
+  ArithmeticMachineStep215.stepValue (frameSparse q (bitsCode left) (bitsCode right)) =
+    frameSparse q' (write.toNat + 2 * bitsCode left) (bitsCode right.tail)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:251:8: warning: This simp argument is unused:
+  bitsCode_tail
+
+Hint: Omit it from the simp argument list.
+  simp only [Nat.numeral_eq, ̲Bool.false_eq_true, ̲if_false, ̲if_true, ̲natCast_nat, ̲HDiv.hDiv,H̵M̵o̵d̵.̵h̵M̵o̵d̵,̵
+          H̲M̲o̲d̲.̲h̲M̲o̲d̲,̲ ̲ArithmeticHistory254.foundation_div_nat, ̲ArithmeticHistory254.foundation_rem_nat,
+          bitsCode_t̵a̵i̵l̵,̵b̵i̵t̵s̵C̵o̵d̵e̵_̵head] at hs
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:251:22: warning: This simp argument is unused:
+  bitsCode_head
+
+Hint: Omit it from the simp argument list.
+  simp only [Nat.numeral_eq, ̲Bool.false_eq_true, ̲if_false, ̲if_true, ̲natCast_nat, ̲HDiv.hDiv,H̵M̵o̵d̵.̵h̵M̵o̵d̵,̵
+          H̲M̲o̲d̲.̲h̲M̲o̲d̲,̲ ̲ArithmeticHistory254.foundation_div_nat, ̲ArithmeticHistory254.foundation_rem_nat,
+          bitsCode_tail,̵b̵i̵t̵s̵C̵o̵d̵e̵_̵h̵e̵a̵d̵] at hs
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:325:8: error: Ambiguous term
+  pairDef.ofZero
+Possible interpretations:
+  HierarchySymbol.Semiformula.ofZero ArithmeticCantor.pairDef 𝚺₁ : HierarchySymbol.Semiformula Empty 3 𝚺₁
+  
+  HierarchySymbol.Semiformula.ofZero Arithmetic.pairDef 𝚺₁ : HierarchySymbol.Semiformula Empty 3 𝚺₁

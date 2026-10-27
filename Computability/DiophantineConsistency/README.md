@@ -199,6 +199,14 @@ arbitrary internal data, with the actual physical file and rotated fetch loop.
 Independent builds match both objects/full logs and22 standard-only reports.
 Complete AX dispatch/root execution and literal215 simulation remain open.
 
+The [actual215 tape/boot theorem](reviews/arithmetic-machine-tape215-root.md)
+now binds sparse transitions to the literal decimal evaluator for arbitrary
+internal tape halves. All13 checked chunks give its exact95714 boot prefix;
+the same fixed graph proves arbitrary internal continuation and both halting
+directions. Independent builds match both objects/full logs and13
+standard-only reports. Actual site execution and control/tape calibration
+remain before the equation's PA/HA proof.
+
 The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
 now proves the exact sequence gcd, index-divisibility equivalence including
 zero indices, and arbitrary-scale common-divisor consequence. Genuine bounded

@@ -49,6 +49,14 @@ and SHIFT at j−1, followed by simultaneous marker/domain discharge. This is
 a mathematical proposal with six inspected source pins, not a Lean theorem
 or compiler authorization; actual tagged and quotient axiom images remain.
 
+The [actual215 tape/boot theorem](reviews/arithmetic-machine-tape215-root.md)
+now represents continuation of the literal decimal evaluator, proves every
+sparse row on arbitrary internal tape halves, and composes all13 boot chunks
+at the exact95714 clock. The same fixed Sigma1 graph lifts the finite boot;
+both internal blank/boot halting directions include the early-halt exclusion.
+Independent fresh pairs match both objects/full logs and13 reports. Actual
+scans/boxes/home/site execution and control/tape calibration remain open.
+
 The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
 now composes repeated execution in both directions using a fixed Sigma1
 relation and derived positive clocks. It retains arbitrary internal data

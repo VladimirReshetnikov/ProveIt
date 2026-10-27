@@ -40,6 +40,16 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [actual215 tape/boot theorem](reviews/arithmetic-machine-tape215-root.md)
+now proves sparse-row execution on arbitrary internal tape halves, a fixed
+total continuation graph, the exact95714 boot prefix and both internal
+blank/boot halting directions. Sparse84 is arithmetic state24; terminal230
+retains its final write/move and halting tests first(config)=0. All thirteen
+checked boot chunks are composed through the same fixed run graph.
+Independent fresh pairs match both objects/full logs and13 standard-only
+reports. Actual scans/boxes/home/site execution and control/tape calibration
+remain open before final PA/HA assembly.
+
 The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
 now proves gcd(Y(m),Y(n))=Y(gcd(m,n)), index-divisibility reflection and
 the scaled common-divisor consequence at arbitrary internal indices,

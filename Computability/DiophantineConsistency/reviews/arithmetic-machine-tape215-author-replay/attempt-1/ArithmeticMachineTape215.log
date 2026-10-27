@@ -1,0 +1,166 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:41:37: error: Application type mismatch: The argument
+  h
+has type
+  decodeSparse q = some i
+but is expected to have type
+  List.find? (@decide (DecimalMachine215.sparseExpand ↑i = q)) ?m.12 = some ?m.8
+in the application
+  List.find?_some h
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:74:14: error: Application type mismatch: The argument
+  hd
+has type
+  decodeSparse q = some i
+but is expected to have type
+  some i = some i
+in the application
+  And.intro hd
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:75:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (write, move, q').2.2
+in the target expression
+  stateCode (DecimalMachine215.machine.transition i bit).next = sparseCode q'
+
+case some
+q q' : ℕ
+bit write move : Bool
+h : KTableCore.tm215 q bit = some (write, move, q')
+hq : q < 226
+hs : (some (write, move, q')).isSome = (decodeSparse ↑⟨q, hq⟩).isSome
+i : Fin 215
+hd : decodeSparse q = some i
+he : DecimalMachine215.sparseExpand ↑i = q
+hc :
+  some (write, move, q') =
+    some
+      ((DecimalMachine215.machine.transition i bit).write,
+        decide ((DecimalMachine215.machine.transition i bit).move = Move.right),
+        KDenseBridge.lab DecimalMachine215.sparseExpand 230 (DecimalMachine215.machine.transition i bit).next)
+ht :
+  ((DecimalMachine215.machine.transition i bit).write,
+      decide ((DecimalMachine215.machine.transition i bit).move = Move.right),
+      KDenseBridge.lab DecimalMachine215.sparseExpand 230 (DecimalMachine215.machine.transition i bit).next) =
+    (write, move, q')
+⊢ stateCode (DecimalMachine215.machine.transition i bit).next = sparseCode q'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:89:6: error: Type mismatch: After simplification, term
+  Nat.succ_ne_zero start
+ has type
+  Ne.{1} start.succ 0
+but is expected to have type
+  Ne.{u_1 + 1} 0 ↑(start + 1)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:102:4: error: Application type mismatch: The argument
+  HierarchySymbol.Defined.of_zero ArithmeticMachineGraph215.actionLookup_defined
+has type
+  HierarchySymbol.Defined
+    (fun v => v 0 = (fun v => ArithmeticMachineGraph215.actionLookup (v 0) (v 1)) fun x => v x.succ)
+    (HierarchySymbol.Semiformula.ofZero ArithmeticMachineGraph215.actionLookupDef ?m.36)
+but is expected to have type
+  HierarchySymbol.DefinedFunction ?m.21 ?m.22
+in the application
+  DefinedFunction.shigmaOne_absolute_func V ?m.31
+    (HierarchySymbol.Defined.of_zero ArithmeticMachineGraph215.actionLookup_defined)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:109:42: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:118:30: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:109:75: warning: 'simp' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:118:63: warning: 'simp' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:109:75: warning: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:118:63: warning: this tactic is never executed
+
+Note: This linter can be disabled with `set_option linter.unreachableTactic false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:154:47: error(lean.unknownIdentifier): Unknown identifier `actionNumber_positive`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:160:48: warning: This simp argument is unused:
+  hmv
+
+Hint: Omit it from the simp argument list.
+  simp [h̵m̵v̵,̵Nat.cast_add, ̲Nat.cast_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:189:2: error: Type mismatch: After simplification, term
+  h
+ has type
+  Iff ((Semiformula.Evalb e) ↑blueprint.resultDef) (e 0 = construction.result ![e 2] (e 1))
+but is expected to have type
+  Iff ((Semiformula.Evalb e) ↑runFromDef) (e 0 = runFrom (e (Fin.succ 0)) (e (Fin.succ 1)))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:215:4: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'frameSparse', which is 'noncomputable'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:224:9: error: unsolved goals
+case none
+s' : KBoot.LConf
+q : ℕ
+left right : List Bool
+ht : KTableCore.tm215 q (right.headD false) = none
+h :
+  (match KTableCore.tm215 q (right.head?.getD false) with
+    | none => none
+    | some (w, true, q') => some (q', w :: left, right.tail)
+    | some (w, false, q') => some (q', left.tail, left.head?.getD false :: w :: right.tail)) =
+    some s'
+⊢ ArithmeticMachineStep215.stepValue (encodeList (q, left, right)) = encodeList s'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:228:18: error(lean.unknownIdentifier): Unknown constant `List.getD_zero`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:228:6: error: Type mismatch: After simplification, term
+  bitsCode_head right
+ has type
+  bitsCode right % 2 = (right.getD 0 false).toNat
+but is expected to have type
+  bitsCode right % 2 = (right.headD false).toNat
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:229:63: error: Application type mismatch: The argument
+  hr
+has type
+  @HMod.hMod ℕ ℕ ℕ (@instHMod ℕ Nat.instMod) (bitsCode right) 2 = (right.headD false).toNat
+but is expected to have type
+  @HMod.hMod ℕ ℕ ℕ (@instHMod ℕ instMod_foundation) (bitsCode right) 2 = ↑(right.headD false).toNat
+in the application
+  sparse_step ht (bitsCode left) (bitsCode right) hr
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:232:13: error: trying to realize `_private.Lean.Environment.0.Lean.Environment.RealizeConstKey` value but `enableRealizationsForConst` must be called for 'DiophantineConsistency.ArithmeticMachineTape215.encodeList' first
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:233:36: error(lean.unknownIdentifier): Unknown constant `List.getD_zero`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:232:6: error: Type mismatch: After simplification, term
+  hs
+ has type
+  ArithmeticMachineStep215.stepValue (frameSparse q (bitsCode left) (bitsCode right)) =
+    frameSparse q' (bitsCode left / 2) (bitsCode left % 2 + 2 * (write.toNat + 2 * (bitsCode right / 2)))
+but is expected to have type
+  ArithmeticMachineStep215.stepValue (encodeList (q, left, right)) =
+    encodeList (q', left.tail, left.head?.getD false :: write :: right.tail)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:232:13: error: trying to realize `_private.Lean.Environment.0.Lean.Environment.RealizeConstKey` value but `enableRealizationsForConst` must be called for 'DiophantineConsistency.ArithmeticMachineTape215.encodeList' first
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:233:36: error(lean.unknownIdentifier): Unknown constant `List.getD_zero`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:232:6: error: Type mismatch: After simplification, term
+  hs
+ has type
+  ArithmeticMachineStep215.stepValue (frameSparse q (bitsCode left) (bitsCode right)) =
+    frameSparse q' (write.toNat + 2 * bitsCode left) (bitsCode right / 2)
+but is expected to have type
+  ArithmeticMachineStep215.stepValue (encodeList (q, left, right)) = encodeList (q', write :: left, right.tail)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:224:18: warning: This simp argument is unused:
+  ht
+
+Hint: Omit it from the simp argument list.
+  simp [̵h̵t̵]̵ ̵at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:243:4: error: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:254:4: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'frameSparse', which is 'noncomputable'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:257:6: error: trying to realize `_private.Lean.Environment.0.Lean.Environment.RealizeConstKey` value but `enableRealizationsForConst` must be called for 'DiophantineConsistency.ArithmeticMachineTape215.bootCode' first
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:281:10: error: trying to realize `_private.Lean.Environment.0.Lean.Environment.RealizeConstKey` value but `enableRealizationsForConst` must be called for 'DiophantineConsistency.ArithmeticMachineTape215.encodeList' first
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:281:4: error: `simp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:288:13: error: trying to realize `_private.Lean.Environment.0.Lean.Environment.RealizeConstKey` value but `enableRealizationsForConst` must be called for 'DiophantineConsistency.ArithmeticMachineTape215.encodeList' first
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:289:69: error: trying to realize `_private.Lean.Environment.0.Lean.Environment.RealizeConstKey` value but `enableRealizationsForConst` must be called for 'DiophantineConsistency.ArithmeticMachineTape215.bootCode' first
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:288:2: error: `simp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:300:37: error: Application type mismatch: The argument
+  HierarchySymbol.Defined.of_zero first_defined
+has type
+  HierarchySymbol.Defined (fun v => v 0 = (fun v => first (v 0)) fun x => v x.succ)
+    (HierarchySymbol.Semiformula.ofZero firstDef ?m.35)
+but is expected to have type
+  HierarchySymbol.DefinedFunction ?m.20 ?m.21
+in the application
+  DefinedFunction.shigmaOne_absolute_func V ?m.30 (HierarchySymbol.Defined.of_zero first_defined)
