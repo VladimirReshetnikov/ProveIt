@@ -40,6 +40,15 @@ A final assembly-only stage has not been reached. Later entries below are
 historical checkpoints; their older lists of open sublemmas can be superseded
 by more recent accepted records without closing this global obligation.
 
+The [actual DagPerm/p215 comparison](reviews/arithmetic-control-bisim-perm215-root.md)
+now proves the two represented control interpreters halt together for every
+internal register file in every IΣ1 model. The full2,850-entry certificate,
+all45 blocks/final34 indices and both actual branch successors are checked.
+Independent fresh builds match both objects/full logs and all eleven reports.
+This closes the actual control-program bisimulation, while structured
+checker dispatch and literal machine/tape/boot/clock calibration remain
+before the equation's PA/HA theorem.
+
 The [actual p215 control catalogue](reviews/arithmetic-control215-table-root.md)
 now has complete kernel-checked equality for all4,751 rows, a high-bit bound,
 and represented internal run/specification laws. Independent author/peer

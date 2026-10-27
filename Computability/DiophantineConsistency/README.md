@@ -164,6 +164,13 @@ AxOK for their exact finite recognizer. Literal irreflexivity uses Eind
 only. Independent builds pass25 standard-only reports and identical
 objects. The remaining set-theory axiom images and final HA endpoint stay open.
 
+The [actual DagPerm/p215 comparison](reviews/arithmetic-control-bisim-perm215-root.md)
+now proves both represented control interpreters halt together from every
+internal nine-register file in every IΣ1 model. All2,850 certificate entries
+and both successor branches are kernel checked. Independent builds match
+both objects/full logs and eleven standard-only reports. Structured checker
+dispatch,literal machine/tape calibration and final PA/HA assembly remain.
+
 The [actual p215 control catalogue](reviews/arithmetic-control215-table-root.md)
 now binds all4,751 rows to the actual179-node program, including the packed
 high-bit bound and internal IΣ1 run/specification laws. Independent builds

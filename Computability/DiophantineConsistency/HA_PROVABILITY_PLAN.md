@@ -11,6 +11,15 @@ synchronization with origin/main continue.
 
 ## Exact target and established results
 
+The [actual internal DagPerm/p215 bisimulation](reviews/arithmetic-control-bisim-perm215-root.md)
+now compares both represented control runs with arbitrary internal register
+files and time witnesses. All2,850 entries,45 blocks and both bounded branch
+successors are checked, including complete reserved/high-bit bounds.
+Independent fresh builds reproduce both objects/full logs and eleven reports.
+This removes the actual control-program comparison; structured checker
+dispatch and literal215 machine/tape/boot/clock simulation still precede
+the final PA premise and its HA transfer.
+
 The [actual p215 control catalogue](reviews/arithmetic-control215-table-root.md)
 now binds all4,751 packed rows to the actual179-node program and supplies
 represented IΣ1 run/specification laws. Independent builds reproduce both
