@@ -565,6 +565,16 @@ author build reports are kept separate from authenticated objects.
 
 ## Next reviewable checkpoints
 
+The actual permuted enumerator now also has independent
+[fetch/progress](reviews/arithmetic-command-fetchperm222-peer.md) and
+[one-command effect](reviews/arithmetic-command-stepperm222-root.md)
+replays. Four fresh commands pass20 standard-only reports. The graphs
+range over arbitrary internal IOpen inputs and have all-state/all-raw Nat
+adapters. The command permutation, AX order, old-counter dominance, actual
+growG/bundle222 and zero-versus-successor result convention are explicit.
+Scheduler fairness, internal proof invariants and exact215 simulation
+remain open.
+
 The [73-module consistency refresh](reviews/fixed-consistency73-root.md)
 has now passed, including current R2Native, LSchema and the actual
 Foundation consistency equivalence. It retains337 cached prerequisites,

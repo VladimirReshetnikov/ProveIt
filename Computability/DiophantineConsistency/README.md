@@ -50,6 +50,12 @@ The [literal permuted-command parser](reviews/arithmetic-command-wordperm222-pee
 now has an internal bounded graph and agrees with the actual decoder on
 every raw Nat input. Its independent build passes nine standard-only
 reports. Counter4 reachability and the whole runtime bridge remain open.
+The separately checked [fetch](reviews/arithmetic-command-fetchperm222-peer.md)
+and [one-command effect](reviews/arithmetic-command-stepperm222-root.md)
+now represent the actual permuted runtime in internal arithmetic and match
+all actual Nat states/raw codes. Their four independent builds pass20
+standard-only reports. Full run soundness, fairness and exact215 simulation
+remain open.
 The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
 now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)
