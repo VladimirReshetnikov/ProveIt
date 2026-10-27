@@ -605,6 +605,11 @@ adapters. The command permutation, AX order, old-counter dominance, actual
 growG/bundle222 and zero-versus-successor result convention are explicit.
 Scheduler fairness, internal proof invariants and exact215 simulation
 remain open.
+The [composed enumerator step](reviews/arithmetic-enum-stepperm222-root.md)
+is now independently checked as a total internal IOpen graph, with actual
+EnumPerm.enumStep semantics on every ordinary state. Its fresh pair passes
+eleven standard-only reports. Full represented recursion, scheduling and
+proof invariants remain separate checkpoints.
 
 The [73-module consistency refresh](reviews/fixed-consistency73-root.md)
 has now passed, including current R2Native, LSchema and the actual

@@ -2,6 +2,12 @@
 
 Updated 25 October 2026. This is a work log, not a completion certificate.
 
+The [composed actual enumerator step](reviews/arithmetic-enum-stepperm222-root.md)
+now passes two independent builds and eleven standard-only reports, with
+all-state standard-Nat agreement and arbitrary internal IOpen totality.
+The next runtime obligations are recursion, proof invariants and fairness;
+one represented step does not close the HA equation equivalence.
+
 The [finite C222 atomic transport](reviews/validator-atomic-transport222-root.md)
 now passes two independent current-source builds and13 standard-only
 reports. Its reverse binder adapter preserves the original context and

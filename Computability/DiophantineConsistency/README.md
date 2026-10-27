@@ -75,6 +75,11 @@ now represent the actual permuted runtime in internal arithmetic and match
 all actual Nat states/raw codes. Their four independent builds pass20
 standard-only reports. Full run soundness, fairness and exact215 simulation
 remain open.
+The [composed full enumerator step](reviews/arithmetic-enum-stepperm222-root.md)
+now also has a total internal graph and exact agreement with actual
+EnumPerm.enumStep on every ordinary state. Its two independent fresh
+builds pass eleven standard-only reports. The program0/program1 cases
+retain the actual scheduler behavior; full-run invariants remain open.
 The [C222 equality leaf](../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorGrowG222.lean)
 now translates into the actual C254 proof predicate for every internal input
 in every IΣ1 model. Its [independent replay](reviews/validator-growg222-root.md)
