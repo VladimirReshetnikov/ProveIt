@@ -722,5 +722,13 @@ against its clean pinned checkout; Mathlib and external inputs remain
 precompiled. Four unchanged prerequisites emit nine warnings without paired
 baselines. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mf-evaluate-sum-evidence/BUNDLE.json).
 
+The one-element Fin proof reuse `aec7bcf3db` removes 12 lines in three
+represented iteration modules, bringing the reviewed series to 7989. Both
+versions of all three targets and six direct clients pass; all 97 named
+declaration and instance axiom reports match. Independent review verified
+1,327 distinct historical source/object/manifest pins. Foundation, BusyBeaver
+and other dependencies remain authenticated precompiled inputs. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
