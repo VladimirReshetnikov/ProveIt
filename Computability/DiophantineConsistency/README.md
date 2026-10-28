@@ -997,8 +997,9 @@ were explicitly reused. After the next13 upstream proof simplifications,
 a [94-command refresh](reviews/ha-postmerge-refresh-20261026.md) passed
 with191 standard-only reports, including the maintained and new mixed-carrier
 endpoints;353 prerequisite objects and twelve unchanged intermediate clients
-were explicitly reused. Further frontier equations,
-size reductions and the HA proof-existence theorem remain active work.
+were explicitly reused. Further frontier equations and size reductions
+remain active work. The current equation's HA
+proof-existence theorem is established in the [HA plan](HA_PROVABILITY_PLAN.md).
 The new [direct witness interface](Lean/DiophantineConsistency/CurrentWitnessEquivalence2011.lean)
 also proves positive zero iff an actual syntactic ZFC refutation. Negating
 these maps requires no double-negation elimination; this does not turn
@@ -1016,9 +1017,10 @@ and 942 indexed tiles fit on one Letter page at the unchanged fonts.
 
 Decimal notation and distinct unsubscripted scalar unknowns are maintained
 display requirements. Future replacements must preserve them and update
-TeX and PDF together. The latest [format continuity check](reviews/current-decimal-distinct-names-2026-10-25-recheck.json)
-authenticates both complete files and all 715 digits in a fresh PDF extraction.
-A fresh one-page build is byte-identical, and its whole page was visually checked.
+TeX and PDF together. The [format continuity check](reviews/current-decimal-distinct-names-2026-10-25-recheck.json)
+authenticates the earlier presentation and its 715 digits. The current
+[status-correction audit](reviews/equation-formalization-status-20261028.md)
+checks the footer-only update, including its fresh one-page rendering.
 Subscripts in the fixed tile table and decoder index constant data.
 
 The new [mixed-carrier variants](research/thirteen-lv-carrier122/README.md)
@@ -1030,8 +1032,9 @@ complete graph/degree/whole-port audits passed independent normal/optimized
 [root replay](reviews/thirteen-lv-carrier122-root.md). The72/124 point
 improves both metrics of the preserved
 [73/126 checkpoint](research/thirteen-corrected-strong126/README.md).
-The71/128 and14/65/150 points remain separate tradeoffs. The decimal display
-is preserved, and HA proof-existence formalization remains open.
+The71/128 and14/65/150 points remain separate tradeoffs. At that checkpoint
+the decimal display was preserved, and HA proof-existence formalization for
+these mixed-carrier variants remained open.
 
 The further [grouped-square variant](research/thirteen-grouped-squares96/README.md)
 gives **13 positive variables,77 operations and exact degree96**, at the same
@@ -1101,16 +1104,19 @@ preserves all 430 actions while printing 715 decimal digits instead of 781.
 The complete decoder includes radix-one discoveries, both prefix endpoint
 domains and the necessary halt remainder.
 
-Complete TeX is5362 bytes, extracted nonwhite PDF text2879 characters,
-PDF153046 bytes and gzip integers4230 bytes. Against the preceding2471
-page, raw storage saves10812 bytes and compressed storage saves28 bytes.
-Printed specification length stays unchanged; PDF serialization saves
-one byte. Only the cell length, clause center and spatial exponent change
-in the source. Every predecessor remains available. The
-[independent page review](reviews/padding-staircase-carrier65-2011-page-peer.md)
-and [CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind the whole source,
-all four integers, every actual PDF digit, two visual inspections, fresh
-byte-identical rendering and the exact preceding record.
+The initially accepted presentation had5362 TeX bytes,2879 extracted
+nonwhite PDF characters and a153046-byte PDF; gzip integers remain4230
+bytes. Against the preceding2471 page, raw storage saves10812 bytes and
+compressed storage saves28 bytes. Its printed specification length stayed
+unchanged, and PDF serialization saved one byte. Only the cell length,
+clause center and spatial exponent changed in that source. Every predecessor
+remains available. The [independent page review](reviews/padding-staircase-carrier65-2011-page-peer.md)
+binds that historical presentation, all four integers and every PDF digit.
+The canonical page now has5359 TeX bytes,2871 extracted nonwhite PDF
+characters and a153879-byte PDF after a footer-only status correction. The
+[presentation audit](reviews/equation-formalization-status-20261028.md) and
+[CURRENT_EQUATION.json](CURRENT_EQUATION.json) bind its current rendering;
+the historical candidate manifests continue to bind the earlier footer.
 
 An independent [decimal conversion checkpoint](research/decimal-seed-stage-A-run/README.md)
 verifies the preceding complete781-digit integer by a full forward and reverse
@@ -1121,13 +1127,15 @@ It is preserved as an alternative while the newer14-variable equation above
 remains the maintained display. All original source, output and review records
 are retained; the formatting work does not replace a newer mathematical result.
 
-The ordinary proof is now accompanied by the closed external Lean
-equivalence above, composed with the actual decimal-machine/refutation
-calibration. An encoded object-ZFC proof, consistency decision or global
-minimum is not claimed. The one-page footer retains its earlier conservative
-native-calibration status; the current checked endpoint and validation scope
-are recorded here and in the formalization plan. Lean formalization remains
-active. The [decimal2953](candidates/one-page-decimal-carrier65-2953/equation.pdf),
+The ordinary proof is accompanied by the closed external Lean equivalence
+above, composed with the actual decimal-machine/refutation calibration.
+Lean also formalizes an HA derivation of the corresponding equivalence; the
+[HA plan](HA_PROVABILITY_PLAN.md) records the stronger IΣ₁ endpoint and its
+scope. The updated page footer reflects the established results. The printed
+transcription was independently checked; Lean does not parse the PDF itself.
+This presentation update does not replay the Lean endpoint. An encoded
+object-ZFC proof, consistency decision or global minimum is not claimed.
+The [decimal2953](candidates/one-page-decimal-carrier65-2953/equation.pdf),
 [block-mask2963](candidates/one-page-block-mask2963/equation.pdf),
 [low-padding2963](candidates/one-page-low-padding2963/equation.pdf),
 [single-clause2999](candidates/one-page-parity-clause2999/equation.pdf),
