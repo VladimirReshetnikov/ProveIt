@@ -94,6 +94,9 @@ Packet names refer to the subdirectories of this directory.
 | `arithmetic/patches/sidon-moment.patch` and `local_candidates/patches/SidonPositions.lean.patch` | y + zm | `SidonPositions` | adopted as `4d9e4d7a30`; factor the square-sum difference and reuse unordered-pair uniqueness.168→157 lines including two tactic imports. Thirteen final affected-cone/focus/audit calls pass; all18 Sidon and31 Bootstrap reports match. Three separate calls check four attributed reports after one corrected root-setup failure. The unchanged SplitCertificate59 rebuild emits46 linter warnings without a comparable baseline log; other dependencies are precompiled. Independent review passes |
 | `machine/M2-color_action.patch` | v | `WangMachineStep` | adopted as `b14017e756`; reuse the moved-head and read-write lemmas in the head cases.125→121 lines. After two prerequisite refreshes, five final target/two-client/focus/audit calls pass; all13 old reports match. Other dependencies are precompiled. Independent review passes |
 | `patches/RatioReparameterization.patch` | zb | `RatioReparameterization` | adopted as `137b5440de`; cancel factors using the existing coprimality hypothesis.180→173 lines with signed integer cases and guards retained. Four final target/client/focus/audit calls pass; all19 old reports match. Other dependencies are precompiled. Independent review passes |
+| `controller/patches/controller_coprime_cardinality.patch` | zh | `ControllerAuxiliaryChoice` | adopted as `1bc18914d4`; use the modular-cast zero criterion directly.50→44 lines. Four final target/client/focus/audit calls pass; both old reports match. Other dependencies are precompiled. Independent review passes |
+| `patches/PolynomialRangeBounds.patch`, adapted | y | `PolynomialRangeBounds` | adopted as `5fe9c4795a`; reuse the already imported geometric-sum identity without adding an import.150→143 lines, retaining signed bounds. Six final target/three-client/focus/audit calls pass; all nine old reports match. Seven prerequisites were freshly rebuilt after reusing three authenticated early-padding outputs; other dependencies are precompiled. Independent review passes |
+| `patches/modulus-reuse.patch` | a | `CurrentEarlyPadding2011` | adopted as `c414b8db6b`; specialize the existing modulus2048 selector congruence to16.311→305 lines. Thirty affected prerequisites were refreshed before baseline; eight final target/four-downstream/client/focus/audit calls pass and all19 old reports match. Three prerequisite modules emitted warnings without a comparable original full-cone baseline; other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -103,7 +106,6 @@ arrivals.
 | Proposal | Packet | Reason |
 |---|---|---|
 | `patches/conditional-padding.patch` | a | changes a theorem interface in `NativePreliminaryCount2011` / `CurrentCount2011`, which the research session is editing |
-| `patches/modulus-reuse.patch` | a | `CurrentEarlyPadding2011` is being edited by the research session |
 | `patches/representation-naturality.patch` | d | superseded by a's `assignment-map.patch` |
 | `coefficient-refactoring.patch` | c | superseded by d's compiled version |
 | `proposals/*.lean`, design-only sections | all | source-only demonstrations; revisit individually |
@@ -336,6 +338,14 @@ series from4548 to4559. Nine final scoped checks pass and all32 old public
 axiom reports match. Machine-step validation refreshed its encoding and action
 prerequisites; other dependencies remain precompiled. Inputs and results are
 in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-step-ratio-evidence/BUNDLE.json).
+
+The next three commits remove19 lines and399 bytes, advancing the reviewed
+series from4559 to4578. Eighteen final scoped checks pass and all30 old public
+axiom reports match. Early-padding validation refreshed30 affected
+prerequisites; polynomial validation reused three of those authenticated
+outputs and refreshed seven more. Three early-padding prerequisite modules
+emitted warnings without a comparable original full-cone baseline; other
+dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-choice-padding-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
