@@ -1,11 +1,9 @@
 import DiophantineConsistency.CurrentKernelData2011
 import Mathlib.Algebra.BigOperators.Ring.Finset
 
-/-! The exact coefficient mass of the fixed current kernel, as a pure ℕ fact
-importable next to Foundation. The batch proofs are copied verbatim from
-`CurrentKernel2011` (lines 122-449), whose remaining imports pull in Mathlib's
-`Matrix` and therefore clash with `Foundation.Vorspiel.Matrix`; only the
-Matrix-free table data `WangTiles942TableData` is used here. -/
+/-! The exact coefficient mass of the fixed current kernel, as a pure ℕ fact.
+The batch proofs use only Matrix-free table data and can be imported next to
+Foundation, whose matrix type clashes with Mathlib's `Matrix`. -/
 
 namespace DiophantineConsistency.ArithmeticMaskKernel
 

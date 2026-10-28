@@ -505,5 +505,14 @@ hash-authenticated; earlier local and external dependencies remain precompiled.
 The target object grew by 307392 bytes in the recorded builds. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-gap-certificate-evidence/BUNDLE.json).
 
+The current kernel mass reuse `0126040276` removes 316 net lines across the
+target and prerequisite comment, bringing the reviewed series to 6878. The
+prerequisite was rebuilt; target, focus, two direct clients and 24 old public
+axiom reports pass in baseline and final runs with matching output and no
+warnings. Three ancestor sources have newer timestamps than their cached objects,
+and external dependencies remain precompiled. Newly merged
+`ArithmeticConstructionBound` transitively imports the comment-only prerequisite;
+it was not checked. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-kernel-mass-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
