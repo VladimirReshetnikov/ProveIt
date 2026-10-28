@@ -209,38 +209,13 @@ theorem selector_reflection_lt (c : ZMod (N * 2011) → ℕ)
   have hh := Nat.mul_le_mul_left (2 ^ 45 - 1) hc
   omega
 
-private def controlCoefficient : Entry → ℕ
-  | .inl _ => 0
-  | .inr e => 2 * weight (.inr e)
-
 omit [NeZero (N * 2011)] in
 theorem control_reflection_le (c : ZMod (N * 2011) → ℕ)
     (hc : ∀ k, c k ≤ 1) (b : ZMod (N * 2011))
     {h : ℕ} (hh : h ≤ 1004) :
     (∑ e : Entry, if 1005 ≤ h + position e ∧ 942 ≤ source h e then
       2 * weight e * c (b + (source h e : ZMod (N * 2011))) else 0) ≤ 2 ^ 45 - 2048 := by
-  have hm (e : Entry) :
-      (if 1005 ≤ h + position e ∧ 942 ≤ source h e then
-        2 * weight e * c (b + (source h e : ZMod (N * 2011))) else 0) ≤
-      controlCoefficient e := by
-    rcases e with i | e
-    · have hp := selector_position_lt i
-      have hz : ¬(1005 ≤ h + position (.inl i) ∧ 942 ≤ source h (.inl i)) := by
-        intro hs
-        have he := source_nonselector_coefficient hh (.inl i) hs.2
-        omega
-      simp only [if_neg hz, controlCoefficient, le_refl]
-    · simp only [controlCoefficient]
-      split_ifs
-      · exact (Nat.mul_le_mul_left (2 * weight (.inr e)) (hc _)).trans_eq (Nat.mul_one _)
-      · exact Nat.zero_le _
-  have hs := Finset.sum_le_sum (fun e (_ : e ∈ (Finset.univ : Finset Entry)) => hm e)
-  have hmass : (∑ e : Entry, controlCoefficient e) = 2 ^ 45 - 2048 := by
-    rw [Fintype.sum_sum_type]
-    simp only [controlCoefficient, Finset.sum_const_zero, zero_add]
-    exact doubled_control_mass
-  rw [hmass] at hs
-  exact hs
+  exact ArithmeticCellPhysical.reflected_control_le hh _ (fun e => hc _)
 
 /-- The selector premise is physical at-most-one, with all control bits arbitrary.
 This applies through marker1004 as well as the needed reset band0..1003. -/
@@ -261,14 +236,7 @@ theorem reflected_lt (c : ZMod (N * 2011) → ℕ)
         2 * weight e * c (b + (source h e : ZMod (N * 2011)))) +
       (∑ e : Entry, if 1005 ≤ h + position e ∧ 942 ≤ source h e then
         2 * weight e * c (b + (source h e : ZMod (N * 2011))) else 0) := by
-    rw [selectorEntries, Finset.sum_filter, ← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl
-    intro e _
-    have hge : 942 ≤ source h e ↔ ¬source h e < 942 := by omega
-    by_cases hv : 1005 ≤ h + position e <;>
-      by_cases hf : source h e < 942 <;>
-        simp only [hv, hf, hge, not_true_eq_false, not_false_eq_true,
-          and_true, and_false, if_true, if_false, zero_add, add_zero]
+    exact ArithmeticCellPhysical.reflected_split h _
   rw [he]
   omega
 
