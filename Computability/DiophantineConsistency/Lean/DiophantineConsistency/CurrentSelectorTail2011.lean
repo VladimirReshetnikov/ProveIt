@@ -234,13 +234,8 @@ theorem tail_position_iff (i : Fin 942) :
     decide
   · have hr := physical_lt_iff_weight i 866 hi (by decide)
     rw [cutoff_position, cutoff_abstract_weight] at hr
-    constructor
-    · intro hp
-      refine ⟨hi, (weight_le_cutoff_iff i).mp ?_⟩
-      exact le_of_not_gt (fun hw => (not_lt_of_ge hp) (hr.mpr hw))
-    · intro hs
-      have hw := (weight_le_cutoff_iff i).mpr hs.2
-      exact le_of_not_gt (fun hp => (not_lt_of_ge hw) (hr.mp hp))
+    rw [and_iff_right hi, ← weight_le_cutoff_iff]
+    simpa only [Nat.not_lt] using not_congr hr
 
 /-- The literal physical tail of the doubled Phi coefficients. Repeated
 positions, if present in a stencil representation, would be summed once
@@ -259,16 +254,8 @@ private theorem selectorTail_zero : selectorTailTerm 0 = 0 := by
 
 private theorem selectorTail_succ (j : Fin 941) :
     selectorTailTerm j.succ = 2 * lowMass (tile j.succ) := by
-  have hi : j.succ ≠ 0 := by
-    intro h
-    have hv : j.val+1 = 0 := congrArg Fin.val h
-    omega
-  by_cases hs : (tile j.succ).south ≤ 45
-  · have hp := (tail_position_iff j.succ).mpr ⟨hi,hs⟩
-    simp only [selectorTailTerm, if_pos hp, lowMass, if_pos hs]
-  · have hp : ¬459 ≤ physicalPosition j.succ :=
-      fun h => hs ((tail_position_iff j.succ).mp h).2
-    simp only [selectorTailTerm, if_neg hp, lowMass, if_neg hs, mul_zero]
+  simp only [selectorTailTerm, tail_position_iff, ne_eq, Fin.succ_ne_zero,
+    not_false_eq_true, true_and, lowMass, mul_ite, mul_zero]
 
 private theorem sum_zero_succ {n : ℕ} (f : Fin (n+1) → ℕ) (g : Fin n → ℕ)
     (h₀ : f 0 = 0) (hs : ∀ j, f j.succ = g j) : (∑ i, f i) = ∑ j, g j := by
