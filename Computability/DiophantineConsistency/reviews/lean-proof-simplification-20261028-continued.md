@@ -76,5 +76,39 @@ ROOT checks every entry against its retained bytes and verifies archive
 integrity. The original source snapshots preserve the historical inputs for
 records whose module paths now refer to the changed files.
 
-The current goal remains active; further accepted work and synchronization
-will be recorded as they are completed.
+## South-word shifts
+
+`9602a7db90` specializes the existing binary-prefix and copy-translation
+lemmas for offsets19 and20. Both statements retain the nine physical copy
+equalities, Boolean bound, remainder guards and selectors940/941/942. Every
+byte outside the two proof bodies is literal. The complete module162→144
+removes18 lines/615 bytes without helper/import overhead.
+
+The exact supplied candidate failed because its literal additions and powers
+were not reduced; the first repair also failed because natural casts remained.
+The accepted proof explicitly normalizes those expressions. Both actual
+exit-1 results and their exact sources are retained. The accepted target,
+`CurrentWholeField2011` client, existing focus and eight-public audit all
+pass without final warnings; every old report is byte-identical.
+
+The original target and fresh baseline were checked after36 affected
+prerequisites of the selected target, client and focus were refreshed in dependency order. Two earlier preparation
+drivers were stopped after their running Lean commands completed: eight
+successful preliminary calls are recorded, and the dependent ones were
+repeated after the Bootstrap change. No Lean process was interrupted.
+Existing prerequisite warnings remain in `CurrentMasks2011` and
+`NativeBinaryScale`; they are separate from the final suite. The selected
+116-source graph otherwise reuses unchanged objects and the installed
+package boundary. No whole-project replay is claimed.
+
+`sync_audit` independently checks the full original/final sources, both
+proof contracts, actual status/log/time records and all eight old reports
+without running a compiler. ROOT also checks the unchanged bytes outside
+both proofs and authenticates the36 refreshed, two baseline, two failed and
+four final command records. Historical source snapshots and observations
+are preserved in [the South-word evidence bundle](lean-proof-simplification-20261028-south-evidence/BUNDLE.json).
+
+Together with the earlier two commits, this continuation removes229 net
+lines and advances the reviewed series to4384. All29 accepted scoped final
+calls pass and all129 old public axiom reports are byte-identical. The
+equation TeX/PDF remain unchanged, and the iterative goal remains active.
