@@ -730,5 +730,12 @@ declaration and instance axiom reports match. Independent review verified
 and other dependencies remain authenticated precompiled inputs. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-evidence/BUNDLE.json).
 
+The ordinary evaluation proof `de2fe5efbf` removes six more lines, bringing
+the reviewed series to 7995. Both target versions, two direct clients and all
+19 public axiom reports pass with matching logs. Six prerequisites were rebuilt
+and 22 relevant prior source/object pairs authenticated; the remaining project
+and external inputs are precompiled. One existing units warning matches.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-normal-evaluate-sum-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
