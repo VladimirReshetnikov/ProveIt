@@ -88,6 +88,9 @@ Packet names refer to the subdirectories of this directory.
 | `patches/02-variadic-fragments.patch` | p | `AnnotatedProofChecker` | adopted as `0c9a5e791e`; construct fragments for arbitrary premise lists, then specialize the existing zero- through three-premise results.376→366 lines including the new helper and removing a private lookup proof. Five final target/client/focus/variadic-probe/audit calls pass; all30 old reports are identical, and both new helpers use propext only. Dependencies are precompiled. Independent review passes |
 | `encoding/StateNumber.patch`, adapted | v | `WangMachineEncoding` | adopted as `2e8dd29f57`; use direct Option cases and finite-value simplification without the proposed import.171→156 lines. Seven final target/four-client/focus/audit calls pass; all21 old reports are identical. An equivalence-based candidate passed but added Classical.choice to two declarations and was rejected. Other dependencies are precompiled. Independent review passes |
 | `syntax/patches/list-head-monotone.patch` | y | `ObjectListHead` | adopted as `bfd57708b8`; rewrite a cons head and lift the existing left-pair bound by addition.129→121 lines. Four final target/client/focus/audit rechecks pass and all11 old reports are identical. Twenty-five earlier affected prerequisites and ten checker-affected prerequisites were refreshed; four earlier final calls are recorded separately. Other dependencies are precompiled. Independent review passes |
+| `algebra_examples/QuarticCompiler.patch` | e | `QuarticCompiler` | adopted as `1918aaeb02`; combine the identical addition and multiplication completeness branches.448→440 lines, evaluator data unchanged. Six final target/four-client/audit calls pass; all31 old reports match. Other dependencies are precompiled. Independent review passes |
+| `patches/B1-source-Y-row-one.patch` | zy | `NativePellBootstrap` | adopted as `9aace004ba`; derive the source Y lower bound directly from row one.648→640 lines with all premises unchanged. Five final target/two-client/focus/audit calls pass; all31 old reports match. Other dependencies are precompiled. Independent review passes |
+| `machine/M1-act_next_none_iff.patch` | v | `WangMachineAction` | adopted as `35b702513f`; apply state-number injectivity to the next-state identity.119→112 lines, retaining the target bound. After refreshing `WangMachineEncoding`, five final target/two-client/focus/audit calls pass; all15 reports match. Other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -309,6 +312,13 @@ axiom reports match. After25 prior affected prerequisites, the concurrent
 annotated checker change required a further ten-module refresh before the
 final checks. Four earlier successful final calls are retained separately;
 other dependencies are precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-listhead-evidence/BUNDLE.json).
+
+The next three commits remove23 lines and998 bytes across three modules,
+advancing the reviewed series from4514 to4537. Sixteen final scoped checks
+pass and all77 old public axiom reports match. The machine-action validation
+first refreshes its changed encoding dependency. Other project and package
+dependencies are precompiled; no full build is claimed. Inputs and recorded
+results are in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-three-more-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
