@@ -1,5 +1,6 @@
 import DiophantineConsistency.HACurrentAssembly2011
 import DiophantineConsistency.ArithmeticSoundness2011
+import DiophantineConsistency.ArithmeticCurrentConstruction2011
 
 /-! # The polynomial bridge from its two internal halves
 
@@ -38,5 +39,18 @@ theorem ha_current_iff_consistency (hc : ConstructionBridge) :
     ProofEquiv ArithmeticCurrentEquation2011.unsolvabilitySentence
       FoundationHAConsistencyNormalization.ordinaryConsistency :=
   ha_current_iff_consistency_of_polynomial (polynomialBridge hc)
+
+/-- **The construction half holds**, given the finite Local Normalization Lemma
+(`ArithmeticCurrentConstruction2011.halt_positive_zero`, stages K1–K7). -/
+theorem constructionBridge (hL : ArithmeticPackingCells.LocalNormalization) :
+    ConstructionBridge :=
+  fun _ _ _ T hT => ArithmeticCurrentConstruction2011.halt_positive_zero hL T hT
+
+/-- **The HA endpoint from the finite Local Normalization Lemma alone.** -/
+theorem ha_current_iff_consistency_of_local
+    (hL : ArithmeticPackingCells.LocalNormalization) :
+    ProofEquiv ArithmeticCurrentEquation2011.unsolvabilitySentence
+      FoundationHAConsistencyNormalization.ordinaryConsistency :=
+  ha_current_iff_consistency (constructionBridge hL)
 
 end DiophantineConsistency.HACurrentPolynomialBridge2011
