@@ -25,42 +25,39 @@ instance (out a b t s m : Nat) : Decidable (ForkCertificate out a b t s m) := by
   unfold ForkCertificate
   infer_instance
 
+/-- Translate by successor, where cast cancellation is unconditional. -/
+theorem forkCertificate_succ (out a b t s m : Nat) :
+    ForkCertificate (out+1) a b t s m ↔
+      QuadraticNatPairing.Certificate out (a+1) b t s m := by
+  simp only [ForkCertificate,QuadraticNatPairing.Certificate,Nat.cast_add,
+    Nat.cast_one,add_sub_cancel_right]
+
 theorem forkCertificate_iff (out a b t s m : Nat) :
     ForkCertificate out a b t s m ↔
       QuadraticNatPairing.Certificate out.pred (a+1) b t s m ∧ 0<out := by
-  constructor
-  · rintro ⟨ht,hm,hs,hout⟩
-    have ho : 0<out := by
-      have hnonneg := mul_nonneg (Int.natCast_nonneg t) (Int.natCast_nonneg b)
-      have hsq := mul_self_nonneg (m:ℤ)
-      have ha := Int.natCast_nonneg a
-      omega
-    have hp : (out.pred:ℤ)=(out:ℤ)-1 := by rw [Nat.pred_eq_sub_one]; omega
-    refine ⟨⟨ht,?_,?_,?_⟩,ho⟩
-    · simpa only [Nat.cast_add,Nat.cast_one] using hm
-    · simpa only [Nat.cast_add,Nat.cast_one] using hs
-    · simpa only [hp,Nat.cast_add,Nat.cast_one] using hout
-  · rintro ⟨⟨ht,hm,hs,hout⟩,ho⟩
-    have hp : (out.pred:ℤ)=(out:ℤ)-1 := by rw [Nat.pred_eq_sub_one]; omega
-    refine ⟨ht,?_,?_,?_⟩
-    · simpa only [Nat.cast_add,Nat.cast_one] using hm
-    · simpa only [Nat.cast_add,Nat.cast_one] using hs
-    · simpa only [hp,Nat.cast_add,Nat.cast_one] using hout
+  cases out with
+  | zero =>
+    simp only [Nat.lt_irrefl,and_false,iff_false]
+    intro h
+    have hz := h.2.2.2
+    have hn := mul_nonneg (Int.natCast_nonneg t) (Int.natCast_nonneg b)
+    have hs := mul_self_nonneg (m:ℤ)
+    omega
+  | succ out =>
+    simpa only [Nat.pred_succ,Nat.succ_pos,and_true] using
+      forkCertificate_succ out a b t s m
 
 theorem forkCertificate_sound {out a b t s m : Nat} (h : ForkCertificate out a b t s m) :
     out=forkCode a b := by
   obtain ⟨hc,ho⟩ := (forkCertificate_iff _ _ _ _ _ _).mp h
-  have he := QuadraticNatPairing.certificate_sound hc
-  rw [Nat.pred_eq_sub_one] at he
-  unfold forkCode
-  omega
+  have he := congrArg Nat.succ (QuadraticNatPairing.certificate_sound hc)
+  simpa only [Nat.succ_pred_eq_of_pos ho,forkCode,Nat.succ_eq_add_one] using he
 
 theorem forkCertificate_complete {out a b : Nat} (h : out=forkCode a b) :
     ∃ t s m,ForkCertificate out a b t s m := by
-  have ho : 0<out := by unfold forkCode at h; omega
-  have he : out.pred=Nat.pair (a+1) b := by rw [Nat.pred_eq_sub_one]; unfold forkCode at h; omega
-  obtain ⟨t,s,m,hc⟩ := QuadraticNatPairing.certificate_complete he
-  exact ⟨t,s,m,(forkCertificate_iff _ _ _ _ _ _).mpr ⟨hc,ho⟩⟩
+  subst out
+  obtain ⟨t,s,m,hc⟩ := QuadraticNatPairing.certificate_complete (a:=a+1) (b:=b) rfl
+  exact ⟨t,s,m,(forkCertificate_succ _ a b t s m).mpr hc⟩
 
 def program : Program 6 := .empty
 private def port (i : Fin 6) : Expr (Fin 6 ⊕ Fin program.nodes.length) := .var (.inl i)

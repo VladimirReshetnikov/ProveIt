@@ -23,15 +23,7 @@ theorem abs_coeff_linear_mul_le {m : ℕ} (w : Fin (m+1) → ℕ)
     (y : Fin (m+1) → ℤ) (D : ℤ[X]) (H : ℤ) (hH : 0≤H)
     (hD : ∀ i,|D.coeff i|≤H) (n : ℕ) :
     |(encoded w y*D).coeff n|≤H*∑ i,|y i| := by
-  classical
-  rw [encoded]
-  simp only [Finset.sum_mul,finsetSum_coeff]
-  calc
-    |∑ i,(monomial (w i) (y i)*D).coeff n| ≤
-        ∑ i,|(monomial (w i) (y i)*D).coeff n| := Finset.abs_sum_le_sum_abs _ _
-    _≤∑ i,|y i| * H := Finset.sum_le_sum fun i _ =>
-      abs_coeff_monomial_mul_le D H hH hD (w i) n (y i)
-    _=H*∑ i,|y i| := by rw [← Finset.sum_mul]; ring
+  exact SelectiveCoefficientBounds.abs_coeff_encoded_mul_le w y D H hH hD n
 
 /-- Uniform coefficient bound for the complete split source polynomial. -/
 theorem abs_coeff_product_le {m : ℕ} (w : Fin (m+1) → ℕ)

@@ -107,6 +107,12 @@ Packet names refer to the subdirectories of this directory.
 | `patches/pell-fixed-index.patch` | z | `NativePellBootstrap` | adopted as `a8c12692bf`; use the existing fixed-index Pell estimates and monotonicity.640→636 lines. Five final target/two-client/focus/audit calls pass and all31 old reports match. Six authenticated Sidon-cone objects were reused; other dependencies are precompiled. Independent review passes |
 | `syntax/patches/pairing-shell-threshold.patch` | y | `ObjectPairingInjective` | adopted as `5355cdf297`; a shell-midpoint helper collapses four branch combinations to two.104→100 lines including the new public helper, which omits the `succ_le` hypothesis. Twenty-four affected prerequisites were refreshed before baseline; six final target/two-client/focus/old-audit/new-helper calls pass and all six old reports match. The helper uses the standard three axioms; other dependencies are precompiled. Independent review passes |
 | signed Pell residue sign split, independent adaptation | k-inspired | `SignedPellResidue` | adopted as `16ea41285c`; negate both modular alternatives together, without adding the proposed helper or import.99→95 lines. Five final target/two-client/focus/audit calls pass and all five old reports match. StepDown emits an unused-variable warning without a current baseline comparison; other dependencies are precompiled. Independent review passes |
+| `patches/03-successor-certificate.patch` | p | `AnnotatedSyntaxGraphs` | adopted as `53b4259e9b`; share a successor-first certificate helper while retaining the impossible zero-output case.169→166 lines including the public helper. Nine affected prerequisites were refreshed after borrowing12 authenticated pairing outputs. Five final target/client/focus/zero-and-helper-probe/audit calls pass; all24 old reports including the decidable instance match, and the new helper uses propext only. Other dependencies are precompiled. Independent review passes |
+| `units/patches/gamma_pos_from_coprime.patch` | zl | `CurrentControllerUnits2011` | adopted as part of `ef081fa2ae`; derive Gamma positivity from its existing coprimality.196→193 lines. The joint seven final target/two-focus/client/two-audit calls pass and all35 old reports match; the target exponent warning is byte-identical before and after. Independent review passes |
+| `patches/controller-base-unit.patch` | zw | `CurrentControllerSubsets2011` | adopted as part of `ef081fa2ae`; derive the base unit from the odd block modulus.102→99 lines, with the proof comment updated. Nineteen SignedPell-affected prerequisites were refreshed before both baselines; joint final calls and old reports pass as above. Preparation warnings lack a comparable full-cone baseline; other dependencies are precompiled. Independent review passes |
+| `patches/rotation-rephase.patch` | zr | `CurrentWordRephase2011` | adopted as `ed5538c38c`; unfold binary rotation and use the existing physical shift equality.116→113 lines, retaining the named Boolean premise. Five final target/client/two-focus/audit checks pass and all eight old reports match; a second baseline/final run borrows an authenticated prior packing object. The stronger proof leaves `hc` unused, producing a new warning; the focus and borrowed prerequisite also emit exponent warnings. The broader client chain remains precompiled. Independent review passes |
+| `patches/coefficient-refactoring.patch`, NativeNinePolynomial52 hunk | c | `NativeNinePolynomial52` | adopted as `1eba5ee47c`; replace22 private row-specific naturality proofs with one finite case split.456→153 lines/−30587 bytes, all12 definitions and the public theorem statement retained. Sixteen affected prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass and all20 old reports match. The consolidated theorem has an 8M local heartbeat limit; one target build observed23.26→14.13s and the olean grew396072 bytes, without a general speedup claim. Other dependencies are precompiled. Independent review passes |
+| `projection-and-budget/patches/affine-budgets.patch`, repaired | k | `GraphSizeBounds`, `AffineBudget` | adopted as `8915bdc4a3`; share the witness-sum and depth-credit argument across three composition bounds.214→185 target lines plus a21-line helper, eight net lines saved. Twenty-eight affected prerequisites were rebuilt with the correct module root; seven final helper/target/two-client/focus/two-audit checks pass and all19 old reports match. The helper uses the standard three axioms. The supplied patch failed on three dead tactics; a wrong-root client run failed on private names and was replayed after rebuilding. Other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -117,7 +123,6 @@ arrivals.
 |---|---|---|
 | `patches/conditional-padding.patch` | a | changes a theorem interface in `NativePreliminaryCount2011` / `CurrentCount2011`, which the research session is editing |
 | `patches/representation-naturality.patch` | d | superseded by a's `assignment-map.patch` |
-| `coefficient-refactoring.patch` | c | superseded by d's compiled version |
 | `proposals/*.lean`, design-only sections | all | source-only demonstrations; revisit individually |
 
 The PR-congruence proofs use `simp`: both `prec` constructor proofs now depend
@@ -398,6 +403,98 @@ the reviewed series to4630. Five final scoped checks pass and all five old
 public axiom reports match. A StepDown client warning has no current baseline
 comparison; other dependencies remain precompiled. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-signed-or-evidence/BUNDLE.json).
+
+The successor certificate proof `53b4259e9b` removes three lines and241 bytes,
+including its new helper, bringing the reviewed series to4633. Five final
+scoped checks pass and all24 old axiom reports match; the new helper uses
+propext only. Nine prerequisites were refreshed after borrowing12 authenticated
+outputs; other dependencies remain precompiled. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-annotated-succ-evidence/BUNDLE.json).
+
+The controller proofs `ef081fa2ae` remove six lines and216 bytes, advancing
+the reviewed series to4639. Seven final scoped checks pass and all35 old
+public axiom reports match. Nineteen SignedPell-affected prerequisites were
+refreshed; preparation warnings lack a comparable full-cone baseline, and the
+Units target warning is identical before and after. Other dependencies remain
+precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-controller-units-subsets-evidence/BUNDLE.json).
+
+The rephasing proof `ed5538c38c` removes three lines and138 bytes, bringing
+the reviewed series to4642. Five final scoped checks pass in each of two runs,
+with all eight old public axiom reports matching. The stronger proof leaves a
+retained premise unused, producing a new warning; focus and previously built
+prerequisite exponent warnings are separately recorded. The authenticated
+borrowed object has a broader precompiled dependency chain. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-rephase-evidence/BUNDLE.json).
+
+The nine-variable coefficient proof `1eba5ee47c` removes303 lines and30587
+bytes, bringing the reviewed series to4945. Sixteen affected prerequisites
+were refreshed; four final scoped checks pass and all20 old reports match.
+The consolidated proof uses an 8M local heartbeat limit and its olean is
+396072 bytes larger in the recorded builds; single timing observations do
+not establish a speedup. Other dependencies remain precompiled. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-nine-polynomial-evidence/BUNDLE.json).
+
+The affine-budget cleanup `8915bdc4a3` removes eight net lines and168 bytes,
+including the new helper, bringing the reviewed series to4953. Twenty-eight
+prerequisites were rebuilt with the correct module root; seven final scoped
+checks pass and all19 old public axiom reports match. The failed supplied
+candidate and earlier wrong-root client run are retained separately. Other
+dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-affine-budget-evidence/BUNDLE.json).
+
+The quotient/remainder certificate proofs `9aa66dfb9c` remove ten lines and
+276 bytes, bringing the reviewed series to 4963. Both targets, one direct
+client and two focused checks pass in baseline and final runs; all 16 old
+public axiom reports match and the logs are warning-free. The checks reuse
+compiled dependencies, including six whose sources have newer timestamps, so
+they do not establish a fresh dependency closure. Baseline objects were later
+overwritten, but their hashes and logs were recorded. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-divmod-evidence/BUNDLE.json).
+
+The affine reflection proofs `a1b5f8f66b` remove 13 net lines and 453
+bytes, bringing the reviewed series to 4976. Both changed targets, two focused
+checks and two direct clients passed baseline and final checks; all 26 old
+public axiom reports match. A named hypothesis remains for compatibility and
+now produces an unused-variable warning. A broader client failed in both runs
+because a cached dependency was absent; other dependencies remained cached.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-affine-reflection-evidence/BUNDLE.json)
+for the failures and further limits.
+
+The convolution factoring `44b9daa98b` removes 13 net lines and 205 bytes,
+bringing the reviewed series to 4989. Baseline rebuilt 22 local modules and
+final rebuilt seven affected modules; all 25 baseline and 11 final checks
+passed, including matching focused outputs and 15 old public axiom reports.
+No warnings were reported. HilbertTenthProblem and Mathlib dependencies remained
+precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-convolution-evidence/BUNDLE.json).
+
+The generated gap row identities `ead16b9c20` remove 148 net lines and
+8425 bytes across the Lean source and its generator. Eight local prerequisites
+were rebuilt; baseline and final target, client, focus, and 17 old public axiom
+reports pass and match, including 26 existing client warnings. The refreshed
+certificate emitted 46 warnings without a comparable fresh prerequisite
+baseline; Mathlib remained precompiled. The initially considered `simp` proof
+produced a much larger object; the adopted `dsimp` proof avoids that observed
+cost. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-gap-source-evidence/BUNDLE.json).
+
+The generated nine-variable coefficient maps `f941ac02db` remove 347 net
+lines and 19424 bytes across two Lean files and their generators. Together
+with the gap row proof, this brings the reviewed series to 5484 net lines.
+Baseline and final targets, clients, focus checks and all 93 old public axiom
+reports pass and match. Ten additional calls pass after borrowing nine
+authenticated objects and rebuilding seven affected gap modules. Existing
+client warnings match; two refreshed prerequisites emit warnings without a
+comparable baseline. Other dependencies, including RatioReparameterization
+and Mathlib, remain precompiled. The original heartbeat limits are unchanged;
+target oleans grew by 512 and 544 bytes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-nine-maps-evidence/BUNDLE.json).
+
+The generated kernel record bounds `ada40e5eb9` remove 692 net lines across
+six Lean and generator files, bringing the reviewed series to 6176. All 13
+baseline and final checks pass with identical logs and all 54 old public axiom
+reports match. An authenticated refresh rebuilt 21 local modules and passed
+seven focused and axiom checks, with matching comparable output. Thirty-two
+objects were authenticated and reused; earlier local and external dependencies
+remain precompiled. Existing heartbeat limits and warnings are unchanged. The
+target oleans grew by 17640 and 9736 bytes in the recorded builds. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-kernel-records-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

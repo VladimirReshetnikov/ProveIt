@@ -109,7 +109,7 @@ private theorem box_facts (ports : Fin 4 → ℤ) (B K : ℤ)
   refine ⟨hsq,hp,hl,?_⟩
   nlinarith [mul_nonneg (by omega : 0 ≤ B) (sub_nonneg.mpr hK)]
 ''')
-for k,cs in enumerate(coeffs):
+for k in range(len(coeffs)):
  out.append(f'''theorem records{k}_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hB : 2 ≤ B) (hK : 16*B ≤ K)
     (hb : 0 ≤ ports 0 ∧ ports 0 < B)
@@ -127,10 +127,9 @@ for k,cs in enumerate(coeffs):
   have hf0 := hf.1
   have hf1 := hf.2
   intro i
-  fin_cases i
+  fin_cases i <;> dsimp [coefficients{k}] <;> rw [abs_lt] <;> constructor <;>
+    nlinarith only [hB,hK,hb0,hb1,hk0,hk1,hm0,hm1,hf0,hf1,hsq,hp,hl,hBK,sq_nonneg B]
 ''')
- for csingle in cs:
-  out.append(f'  · change |{csingle}| < 2*B*K\n    rw [abs_lt]\n    constructor <;> nlinarith only [hB,hK,hb0,hb1,hk0,hk1,hm0,hm1,hf0,hf1,hsq,hp,hl,hBK,sq_nonneg B]\n')
 out.append('''theorem kernelBounds_box (ports : Fin 4 → ℤ) (B K : ℤ)
     (hB : 2 ≤ B) (hK : 16*B ≤ K)
     (hb : 0 ≤ ports 0 ∧ ports 0 < B)

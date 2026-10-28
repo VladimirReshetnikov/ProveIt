@@ -120,36 +120,31 @@ theorem abs_coeff_monomial_mul_le (p : ℤ[X]) (H : ℤ) (hH : 0 ≤ H)
   · simp
     positivity
 
+/-- Multiplication by an encoded word costs its coordinate one-norm. -/
+theorem abs_coeff_encoded_mul_le {m : ℕ} (w : Fin (m+1) → ℕ)
+    (y : Fin (m+1) → ℤ) (D : ℤ[X]) (H : ℤ) (hH : 0≤H)
+    (hD : ∀ i,|D.coeff i|≤H) (n : ℕ) :
+    |(encoded w y*D).coeff n|≤H*∑ i,|y i| := by
+  classical
+  rw [encoded]
+  simp only [Finset.sum_mul,finsetSum_coeff]
+  calc
+    |∑ i,(monomial (w i) (y i)*D).coeff n| ≤
+        ∑ i,|(monomial (w i) (y i)*D).coeff n| := Finset.abs_sum_le_sum_abs _ _
+    _≤∑ i,|y i| * H := Finset.sum_le_sum fun i _ =>
+      abs_coeff_monomial_mul_le D H hH hD (w i) n (y i)
+    _=H*∑ i,|y i| := by rw [← Finset.sum_mul]; ring
+
 /-- A uniform bound on every coefficient of the product, including nontarget cells. -/
 theorem abs_coeff_square_mul_le {m : ℕ} (w : Fin (m + 1) → ℕ)
     (u : Fin (m + 1) → ℤ) (p : ℤ[X]) (H : ℤ) (hH : 0 ≤ H)
     (hp : ∀ i, |p.coeff i| ≤ H) (n : ℕ) :
     |(encoded w u ^ 2 * p).coeff n| ≤ H * (∑ i, |u i|) ^ 2 := by
-  classical
-  rw [encoded_square]
-  simp only [Finset.sum_mul, finsetSum_coeff]
-  calc
-    |∑ i, ∑ j, (monomial (w i + w j) (u i * u j) * p).coeff n| ≤
-        ∑ i, |∑ j, (monomial (w i + w j) (u i * u j) * p).coeff n| :=
-      Finset.abs_sum_le_sum_abs _ _
-    _ ≤ ∑ i, ∑ j, |(monomial (w i + w j) (u i * u j) * p).coeff n| := by
-      apply Finset.sum_le_sum
-      intro i _
-      exact Finset.abs_sum_le_sum_abs _ _
-    _ ≤ ∑ i, ∑ j, |u i| * |u j| * H := by
-      apply Finset.sum_le_sum
-      intro i _
-      apply Finset.sum_le_sum
-      intro j _
-      simpa only [abs_mul] using abs_coeff_monomial_mul_le p H hH hp
-        (w i + w j) n (u i * u j)
-    _ = H * (∑ i, |u i|) ^ 2 := by
-      simp only [pow_two, Finset.mul_sum, Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro i _
-      apply Finset.sum_congr rfl
-      intro j _
-      ring
+  have hs : 0 ≤ ∑ i, |u i| := Finset.sum_nonneg fun i _ => abs_nonneg (u i)
+  have hlinear := abs_coeff_encoded_mul_le w u p H hH hp
+  have htwice := abs_coeff_encoded_mul_le w u (encoded w u * p)
+    (H * ∑ i, |u i|) (mul_nonneg hH hs) hlinear n
+  simpa only [pow_two, mul_assoc] using htwice
 
 /-- The concrete `M(1+sum inputs)^2` bound with a dummy coordinate equal to one. -/
 theorem abs_coeff_padded_square_mul_le {m : ℕ} (w : Fin (m + 1) → ℕ)
