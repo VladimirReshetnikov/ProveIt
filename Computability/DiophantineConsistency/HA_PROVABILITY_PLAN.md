@@ -1910,8 +1910,8 @@ ha_current_iff_consistency_of_local (hL : ArithmeticPackingCells.LocalNormalizat
 ```
 
 This is an actual HA derivation of "the literal current equation has no positive
-zero ↔ ZFC proves no contradiction". Its single premise is a closed Π-statement
-about standard natural numbers, discussed last.
+zero ↔ ZFC proves no contradiction". Its single premise, a finite statement about
+standard natural numbers, is discharged in the next section.
 
 **How the derivation is obtained.** `HACurrentAssembly2011` chains three
 equivalences in every Type0 model `V` of `𝗜𝚺₂`, then applies completeness to get
@@ -1971,3 +1971,35 @@ bridge to `lnlD`) is in progress.
 `#print axioms` of `ha_current_iff_consistency`, `sourceBridge` and
 `sentence_of_no_halt` gives `propext`, `Classical.choice`, `Quot.sound`. No
 module in these chains uses `sorry` or `native_decide`.
+
+## The HA endpoint is unconditional (2026-10-28, 447801b6e4)
+
+[`HACurrentEquation2011`](Lean/DiophantineConsistency/HACurrentEquation2011.lean)
+proves, with no premises:
+
+```
+ha_current_iff_consistency :
+  ProofEquiv ArithmeticCurrentEquation2011.unsolvabilitySentence
+    FoundationHAConsistencyNormalization.ordinaryConsistency
+```
+
+It also exports `isigma2_proves_current_iff_consistency`,
+`peano_proves_current_iff_consistency` and `polynomialBridge`.
+
+The last premise, the finite Local Normalization Lemma, is now
+`ArithmeticLocalNormalization.localNormalization`. It rests on 37 Matrix-free
+`MF*` clones of the accepted ℕ proofs, with verbatim bodies written by a
+scripted closure pass, plus five new modules (about 1k lines). These new
+modules restate the per-digit mask tests for a single cell and place each
+admissible triple in a three-cell world, which forces the normalized block to
+equal `lnlD`.
+
+`HA.Derives` is intuitionistic natural deduction with equality, and it has no
+excluded-middle or double-negation rule. `HA.Proves` adds the six arithmetic
+axioms and the induction instances.
+
+`#print axioms` of the endpoint gives `propext`, `Classical.choice` and
+`Quot.sound`, and no `sorry`, `admit` or `native_decide` occurs in the chains.
+Because every link is internal to arbitrary models of `𝗜𝚺₂`, the
+derivation does not use Lean's proof of Con(ZFC). The same theorem for a
+trivially unsolvable equation would therefore make HA prove Con(ZFC).

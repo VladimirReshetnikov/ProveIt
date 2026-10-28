@@ -1,10 +1,10 @@
 # The internal polynomial bridge: module plan
 
-> **Status 2026-10-28.** Soundness (S1–S14) is proved unconditionally:
-> `ArithmeticSoundness2011.zero_halts`. Construction (K1–K7) is proved modulo
-> the finite `ArithmeticPackingCells.LocalNormalization`:
-> `ArithmeticCurrentConstruction2011.halt_positive_zero`. The HA endpoint is
-> `HACurrentPolynomialBridge2011.ha_current_iff_consistency_of_local`.
+> **Status 2026-10-28: complete.** Soundness (S1–S14):
+> `ArithmeticSoundness2011.zero_halts`. Construction (K1–K7):
+> `ArithmeticCurrentConstruction2011.halt_positive_zero`, with
+> `ArithmeticLocalNormalization.localNormalization` (Matrix-free `MF*` port).
+> Unconditional endpoint: `HACurrentEquation2011.ha_current_iff_consistency`.
 > Module names below are the planned ones; several stages were split into
 > helper modules (`ArithmeticCell*`, `ArithmeticConstruction*`,
 > `ArithmeticController*`, `ArithmeticTiling*`, `ArithmeticPacking*`).
