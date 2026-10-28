@@ -1,3 +1,4 @@
+import DiophantineConsistency.ArithmeticStandardCasts
 import DiophantineConsistency.ArithmeticPacking
 import DiophantineConsistency.CurrentKernelData2011
 import DiophantineConsistency.ArithmeticWangPlane
@@ -109,32 +110,16 @@ theorem tileN_bounded (m : ℕ) :
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-/-! ## Local numeral casts (independent copies, distinct names) -/
+/-! ## Local numeral casts -/
 
 theorem castExp (n : ℕ) : Exp.exp (n:V) = ((2^n : ℕ) : V) := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [Nat.cast_add, Nat.cast_one, exp_succ, ih]
-    push_cast
-    ring
+  exact ArithmeticStandardCasts.cast_exp n
 
 theorem castMod (a b : ℕ) : ((a % b : ℕ) : V) = (a:V) % (b:V) := by
-  rcases Nat.eq_zero_or_pos b with rfl | hb
-  · simp
-  · have he : (a:V) = (b:V) * ((a / b : ℕ) : V) + ((a % b : ℕ) : V) := by
-      exact_mod_cast (Nat.div_add_mod a b).symm
-    have hr : ((a % b : ℕ) : V) < (b:V) := by exact_mod_cast Nat.mod_lt a hb
-    have hb' : (0:V) < (b:V) := by exact_mod_cast hb
-    rw [he, mod_mul_add' _ _ hb', mod_eq_self_of_lt hr]
+  exact ArithmeticStandardCasts.cast_mod a b
 
 theorem castDiv (a b : ℕ) : ((a / b : ℕ) : V) = (a:V) / (b:V) := by
-  rcases Nat.eq_zero_or_pos b with rfl | hb
-  · simp
-  · have he : (a:V) = (b:V) * ((a / b : ℕ) : V) + ((a % b : ℕ) : V) := by
-      exact_mod_cast (Nat.div_add_mod a b).symm
-    have hr : ((a % b : ℕ) : V) < (b:V) := by exact_mod_cast Nat.mod_lt a hb
-    rw [he, div_mul_add' _ _ hr]
+  exact ArithmeticStandardCasts.cast_div a b
 
 def physList : List ℕ := List.ofFn fun i : Fin 942 => physicalPosition i
 
