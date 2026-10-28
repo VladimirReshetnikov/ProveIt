@@ -572,5 +572,15 @@ external dependencies remain precompiled. An initial all-trans prototype timed
 out, but its empty log and overwritten source have no standalone status record.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-jones-quartic-evidence/BUNDLE.json).
 
+The generated consumer-table proof `b696a79f7c` removes 26 net lines and 557
+bytes across the shared helper, three generated circuits and their generator,
+bringing the reviewed series to 7759. All baseline/final targets, rechecked
+prerequisites and clients, focused checks and 176 old public axiom reports pass;
+comparable logs match. Both initial joint-client runs exceeded the 6 GB Lean
+memory cap; sequential replays passed with a 9 GB cap. Earlier overwritten
+client records are excluded in favor of contemporaneous reruns, and the unchanged
+semantics prerequisite emits five matching warnings. Mathlib and other project
+dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-consumer-table-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
