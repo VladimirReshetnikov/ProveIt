@@ -673,5 +673,16 @@ One existing client warning matches; preparation warnings lack a comparable
 fresh pre-preparation run, and earlier dependencies remain precompiled. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-clean-bands-evidence/BUNDLE.json).
 
+The standard numeral cast reuse `f5a4267229` removes 18 net lines and 751
+bytes across four existing modules and a new shared helper, bringing the reviewed
+series to 7924. Original-snapshot and final targets, two selected direct clients,
+104 named old axiom reports and an actual Foundation matrix co-import pass.
+The replay captured its effective Lean path and object hashes. This also checks
+the previously unavailable ArithmeticCellTransfer client against the current
+matrix-free mask change. Two other PackingCells clients remain unchecked;
+earlier local and external dependencies remain precompiled. WangTable first
+exceeded the 6 GB Lean cap and passed at 9 GB; existing warnings and corrected
+preliminary failures are recorded. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-standard-casts-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
