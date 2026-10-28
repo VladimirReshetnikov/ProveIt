@@ -2044,13 +2044,17 @@ explicit tower of `Exp.exp`/`power`, so the map is elementary recursive.
 | positive zero `u` ⇒ halting time | `ArithmeticSoundness2011.zero_halts_below` | `t < β·u₀ + 1` |
 | halting time `T` ⇒ positive zero | `ArithmeticConstructionBound.halt_positive_zero_below` | every coordinate ≤ `zeroBound T` (exp/power depth 7) |
 | halting time `t` ⇒ C222 refutation | `ArithmeticRuntimeBound215.refutation_bound_of_blank_halts` | `proof ≤ 2^(2^(700t+8))` |
-| C222 refutation ⇒ enumerator halt | `ArithmeticEnumBoundFair.enum_halts_le_of_refutation` | `time ≤ W²`, where `W = resetWord (refutationWord code)` |
+| C222 refutation ⇒ halting time | `ArithmeticRefutationHaltBound.blank_halts_le_of_refutation` | `t ≤ Btape (7·Bdag (Bword code²))` |
 
-Three gaps remain before the last row reaches machine time:
-- a size bound on `refutationWord code`;
-- explicit per-step clocks for the DAG macro library (`IRun`/`Reach`);
-- explicit per-step clocks for the p215 tape frame (`ReachPos`).
+The last row composes four bounded layers:
+- `Bword`, the size of the compiled refutation word, a double exponential;
+- `Bdag n = n·2^(2^(100n+23609))` for the DAG macros;
+- a factor-7 bisimulation hop;
+- the quadratic tape bound `Btape`.
 
-All three are currently existential. The C222 ⇄ Foundation-ZFC link needs
+`Bword` contains one unevaluated fixed constant, `cb rho8Circuit`, because the
+rho8 circuit is chosen with `Classical.choose`.
+
+The C222 ⇄ Foundation-ZFC link needs
 proof-size bounds for the source-bridge proof transformations and is not
 yet attempted.
