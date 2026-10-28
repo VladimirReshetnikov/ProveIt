@@ -278,39 +278,29 @@ theorem shifted_Q_bounds {A C D G H k W J Q : ℤ}
     (hJ : J=4*A-5) (hQ : Q=3*W*C-2*(W^2-1)) :
     0 < J*(W^2+1)+Q ∧
       J*(W^2+1)+Q < k*(8*D^2-4*D-1)*G*H := by
-  have hJ3 : 3 ≤ J := by omega
   have hD1 : 1 ≤ D := by nlinarith only [hA,hD]
-  have hD0 : 0 < D := by omega
-  have hC0 : 0 < C := by omega
-  have hW2 : W^2 < D := by nlinarith only [hW,hWA,hD]
-  have hWC : W*C < D := by nlinarith only [sq_nonneg (W-C),hW2,hCD]
-  have hQ3 : Q < 3*D := by
-    rw [hQ]
-    nlinarith only [hWC,show 1 ≤ W^2 by nlinarith only [hW]]
-  have hstarEq : J*(W^2+1)+Q = J+(J-2)*W^2+3*W*C+2 := by rw [hQ]; ring
-  have hstar0 : 0 < J*(W^2+1)+Q := by
-    rw [hstarEq]
-    have hterm := mul_nonneg (show 0 ≤ J-2 by omega) (sq_nonneg W)
-    have hWC0 : 0 < W*C := mul_pos hW hC0
-    nlinarith only [hJ3,hterm,hWC0]
-  have hstar : J*(W^2+1)+Q < (4*A+3)*D := by
-    have hjmul := mul_le_mul_of_nonneg_left (show W^2+1 ≤ D by omega) (show 0 ≤ J by omega)
-    have hjD : J*D < 4*A*D := mul_lt_mul_of_pos_right (by omega) hD0
-    nlinarith only [hjmul,hjD,hQ3]
+  have hW2 : W^2+1 ≤ D := by nlinarith only [hW,hWA,hD]
+  have hWC : W*C+1 ≤ D := by nlinarith only [sq_nonneg (W-C),hW2,hCD]
+  have hnum : J*(W^2+1)+Q = (4*A-7)*W^2+3*W*C+4*A-3 := by rw [hJ,hQ]; ring
+  have hpos : 0 < J*(W^2+1)+Q := by
+    rw [hnum]
+    nlinarith only [mul_nonneg (show 0 ≤ 4*A-7 by omega) (sq_nonneg W),
+      mul_pos hW (show 0 < C by omega),hA]
+  have htop : J*(W^2+1)+Q ≤ (4*A-4)*D+1 := by
+    rw [hnum]
+    nlinarith only [mul_nonneg (show 0 ≤ 4*A-7 by omega)
+      (show 0 ≤ D-W^2-1 by omega),hWC]
   have hfac : 0 ≤ 8*D^2-4*D-1 := by nlinarith only [hD1,sq_nonneg (D-1)]
-  have hT : 9*D ≤ k*(8*D^2-4*D-1) := by
-    have hkfac := mul_le_mul_of_nonneg_right hk hfac
-    have hpoly := mul_nonneg (show 0 ≤ 8*D+1 by omega) (show 0 ≤ D-1 by omega)
-    nlinarith only [hkfac,hpoly]
-  have hTG : 9*D*A ≤ k*(8*D^2-4*D-1)*G := by
-    exact (mul_le_mul_of_nonneg_right hT (show 0 ≤ A by omega)).trans
-      (mul_le_mul_of_nonneg_left hG (by nlinarith only [hT,hD1]))
-  have hTH : k*(8*D^2-4*D-1)*G ≤ k*(8*D^2-4*D-1)*G*H := by
-    have hTG0 : 0 ≤ k*(8*D^2-4*D-1)*G := by nlinarith only [hTG,hA,hD1]
-    nlinarith only [mul_nonneg hTG0 (show 0 ≤ H-1 by omega)]
-  have hfinal : (4*A+3)*D < 9*D*A := by
-    nlinarith only [mul_pos (show 0 < 5*A-3 by omega) hD0]
-  exact ⟨hstar0,hstar.trans (hfinal.trans_le (hTG.trans hTH))⟩
+  have hgap : (4*A-4)*D+1 < 3*(8*D^2-4*D-1)*A := by
+    nlinarith only [mul_nonneg (show 0 ≤ A by omega)
+      (mul_nonneg (show 0 ≤ D-1 by omega) (show 0 ≤ 24*D+8 by omega)),hA,hD1]
+  have hlift : 3*(8*D^2-4*D-1)*A ≤ k*(8*D^2-4*D-1)*G*H := by
+    calc
+      _ ≤ k*(8*D^2-4*D-1)*G := mul_le_mul
+        (mul_le_mul_of_nonneg_right hk hfac) hG (by omega) (by positivity)
+      _ ≤ _ := le_mul_of_one_le_right
+        (mul_nonneg (mul_nonneg (by omega) hfac) (by omega)) hH
+  exact ⟨hpos,htop.trans_lt (hgap.trans_le hlift)⟩
 
 namespace FreeVars
 
