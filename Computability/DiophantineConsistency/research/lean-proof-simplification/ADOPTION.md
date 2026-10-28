@@ -837,5 +837,14 @@ match current source/object hashes and previous or new receipts; external
 packages remain precompiled. Independent review passes. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-wang-strip-split-evidence/BUNDLE.json).
 
+The gcd remainder sharing `83a30a00a3` removes five lines, bringing the
+reviewed series to 8163. Both target versions, the focused check and two direct
+production clients pass; all 26 environment-enumerated public/generated axiom
+reports match, including six matching warnings for printed generated auxiliaries.
+All 98 selected source/object pairs match prior receipts and 102 inventory import
+edges were checked. The further downstream ArithmeticPellIntegralSolution was
+not rebuilt; Foundation, Mathlib and historical inputs remain precompiled.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-gcd-remainder-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
