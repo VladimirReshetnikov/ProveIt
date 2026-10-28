@@ -789,5 +789,14 @@ TapePrefix; the prerequisite was built and the client passed, with its prefix
 command/path receipt reconstructed. Independent review passes. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-more-evidence/BUNDLE.json).
 
+The Pell divisibility reuse `10befdc6ac` removes eight net lines, bringing
+the reviewed series to 8081. Both target versions, two direct clients and
+all 14 public axiom reports pass with identical warning-free logs. Two immediate
+prerequisites were rebuilt and 100 selected source/object pairs matched
+authenticated receipts; other dependencies remain precompiled. The only new
+transitive module is Mathlib.Algebra.Ring.Divisibility.Basic, whose 510-job
+Lake closure passed a read-only freshness check. Independent review passes.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-dvd-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
