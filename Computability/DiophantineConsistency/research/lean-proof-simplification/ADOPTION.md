@@ -748,5 +748,15 @@ WangTable first failed at 6 GiB and passed at 10 GiB; the first refresh was
 deliberately interrupted to repair its dependency closure. Independent review
 passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-trace-evidence/BUNDLE.json).
 
+The Wang initialization proof cleanup `f82f4047ce` removes four lines,
+bringing the reviewed series to 8003. Paired target, focused check, four
+direct clients and 23 public axiom reports pass with matching logs. The
+initialization prerequisite was rebuilt, and Wang core, tile data and machine
+source objects matched recent receipts. Six BusyBeaver inputs and further
+tile-client prerequisites remain historical precompiled boundaries without
+exact receipts; the older graph is not wholly current, but affected clients
+were rebuilt and current tile data matched a recent receipt. Independent
+review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-initialization-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
