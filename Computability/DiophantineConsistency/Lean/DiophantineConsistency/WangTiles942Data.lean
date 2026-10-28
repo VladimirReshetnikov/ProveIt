@@ -97,6 +97,11 @@ def actionNat (j : ℕ) : Action := actionCache[j]?.getD (false,false,215)
 
 def action (j : Fin 430) : Action := actionNat j.val
 
+private theorem fromChunk (P : ℕ → Prop) {n a count : ℕ}
+    (h : ∀ j : Fin count, P (a + j.val)) (ha : a ≤ n) (hb : n < a + count) : P n := by
+  simpa only [Nat.add_sub_of_le ha] using h ⟨n-a, by omega⟩
+
+
 private theorem action_chunk_0 : ∀ j : Fin 16,
     actionNat (0 + j.val) = DecimalMachine215.action (0 + j.val) := by
   decide +kernel
@@ -209,114 +214,61 @@ private theorem action_chunk_416 : ∀ j : Fin 14,
 limit the kernel's temporary normalization memory. -/
 theorem action_eq_decoder : ∀ j : Fin 430, action j = DecimalMachine215.action j.val := by
   intro j
-  change actionNat j.val = DecimalMachine215.action j.val
+  let P := fun index => actionNat index = DecimalMachine215.action index
+  change P j.val
   by_cases h0 : j.val < 16
-  · have hh := action_chunk_0 ⟨j.val - 0, by omega⟩
-    have he : 0 + (j.val - 0) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 0) action_chunk_0 (by omega) (by omega)
   by_cases h16 : j.val < 32
-  · have hh := action_chunk_16 ⟨j.val - 16, by omega⟩
-    have he : 16 + (j.val - 16) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 16) action_chunk_16 (by omega) (by omega)
   by_cases h32 : j.val < 48
-  · have hh := action_chunk_32 ⟨j.val - 32, by omega⟩
-    have he : 32 + (j.val - 32) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 32) action_chunk_32 (by omega) (by omega)
   by_cases h48 : j.val < 64
-  · have hh := action_chunk_48 ⟨j.val - 48, by omega⟩
-    have he : 48 + (j.val - 48) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 48) action_chunk_48 (by omega) (by omega)
   by_cases h64 : j.val < 80
-  · have hh := action_chunk_64 ⟨j.val - 64, by omega⟩
-    have he : 64 + (j.val - 64) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 64) action_chunk_64 (by omega) (by omega)
   by_cases h80 : j.val < 96
-  · have hh := action_chunk_80 ⟨j.val - 80, by omega⟩
-    have he : 80 + (j.val - 80) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 80) action_chunk_80 (by omega) (by omega)
   by_cases h96 : j.val < 112
-  · have hh := action_chunk_96 ⟨j.val - 96, by omega⟩
-    have he : 96 + (j.val - 96) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 96) action_chunk_96 (by omega) (by omega)
   by_cases h112 : j.val < 128
-  · have hh := action_chunk_112 ⟨j.val - 112, by omega⟩
-    have he : 112 + (j.val - 112) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 112) action_chunk_112 (by omega) (by omega)
   by_cases h128 : j.val < 144
-  · have hh := action_chunk_128 ⟨j.val - 128, by omega⟩
-    have he : 128 + (j.val - 128) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 128) action_chunk_128 (by omega) (by omega)
   by_cases h144 : j.val < 160
-  · have hh := action_chunk_144 ⟨j.val - 144, by omega⟩
-    have he : 144 + (j.val - 144) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 144) action_chunk_144 (by omega) (by omega)
   by_cases h160 : j.val < 176
-  · have hh := action_chunk_160 ⟨j.val - 160, by omega⟩
-    have he : 160 + (j.val - 160) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 160) action_chunk_160 (by omega) (by omega)
   by_cases h176 : j.val < 192
-  · have hh := action_chunk_176 ⟨j.val - 176, by omega⟩
-    have he : 176 + (j.val - 176) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 176) action_chunk_176 (by omega) (by omega)
   by_cases h192 : j.val < 208
-  · have hh := action_chunk_192 ⟨j.val - 192, by omega⟩
-    have he : 192 + (j.val - 192) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 192) action_chunk_192 (by omega) (by omega)
   by_cases h208 : j.val < 224
-  · have hh := action_chunk_208 ⟨j.val - 208, by omega⟩
-    have he : 208 + (j.val - 208) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 208) action_chunk_208 (by omega) (by omega)
   by_cases h224 : j.val < 240
-  · have hh := action_chunk_224 ⟨j.val - 224, by omega⟩
-    have he : 224 + (j.val - 224) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 224) action_chunk_224 (by omega) (by omega)
   by_cases h240 : j.val < 256
-  · have hh := action_chunk_240 ⟨j.val - 240, by omega⟩
-    have he : 240 + (j.val - 240) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 240) action_chunk_240 (by omega) (by omega)
   by_cases h256 : j.val < 272
-  · have hh := action_chunk_256 ⟨j.val - 256, by omega⟩
-    have he : 256 + (j.val - 256) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 256) action_chunk_256 (by omega) (by omega)
   by_cases h272 : j.val < 288
-  · have hh := action_chunk_272 ⟨j.val - 272, by omega⟩
-    have he : 272 + (j.val - 272) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 272) action_chunk_272 (by omega) (by omega)
   by_cases h288 : j.val < 304
-  · have hh := action_chunk_288 ⟨j.val - 288, by omega⟩
-    have he : 288 + (j.val - 288) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 288) action_chunk_288 (by omega) (by omega)
   by_cases h304 : j.val < 320
-  · have hh := action_chunk_304 ⟨j.val - 304, by omega⟩
-    have he : 304 + (j.val - 304) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 304) action_chunk_304 (by omega) (by omega)
   by_cases h320 : j.val < 336
-  · have hh := action_chunk_320 ⟨j.val - 320, by omega⟩
-    have he : 320 + (j.val - 320) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 320) action_chunk_320 (by omega) (by omega)
   by_cases h336 : j.val < 352
-  · have hh := action_chunk_336 ⟨j.val - 336, by omega⟩
-    have he : 336 + (j.val - 336) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 336) action_chunk_336 (by omega) (by omega)
   by_cases h352 : j.val < 368
-  · have hh := action_chunk_352 ⟨j.val - 352, by omega⟩
-    have he : 352 + (j.val - 352) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 352) action_chunk_352 (by omega) (by omega)
   by_cases h368 : j.val < 384
-  · have hh := action_chunk_368 ⟨j.val - 368, by omega⟩
-    have he : 368 + (j.val - 368) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 368) action_chunk_368 (by omega) (by omega)
   by_cases h384 : j.val < 400
-  · have hh := action_chunk_384 ⟨j.val - 384, by omega⟩
-    have he : 384 + (j.val - 384) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 384) action_chunk_384 (by omega) (by omega)
   by_cases h400 : j.val < 416
-  · have hh := action_chunk_400 ⟨j.val - 400, by omega⟩
-    have he : 400 + (j.val - 400) = j.val := by omega
-    exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
-  have hh := action_chunk_416 ⟨j.val - 416, by omega⟩
-  have he : 416 + (j.val - 416) = j.val := by omega
-  exact (congrArg (fun index => actionNat index = DecimalMachine215.action index) he).mp hh
+  · exact fromChunk P (n := j.val) (a := 400) action_chunk_400 (by omega) (by omega)
+  exact fromChunk P (n := j.val) (a := 416) action_chunk_416 (by omega) (by omega)
 
 def decodedActions : List Action := List.ofFn (fun j : Fin 430 => DecimalMachine215.action j.val)
 
@@ -439,77 +391,37 @@ private theorem rail_chunk_208 : ∀ (d : Bool) (q : Fin 8),
 theorem railCache_eq_formula (d : Bool) (q : Fin 216) :
     (railCache d)[q.val]?.getD 0 = railFormula d q.val := by
   rw [railFormula_eq_filter]
+  let P := fun index => (railCache d)[index]?.getD 0 =
+    205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length
+  change P q.val
   by_cases h0 : q.val < 16
-  · have hh := rail_chunk_0 d ⟨q.val - 0, by omega⟩
-    have he : 0 + (q.val - 0) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 0) (rail_chunk_0 d) (by omega) (by omega)
   by_cases h16 : q.val < 32
-  · have hh := rail_chunk_16 d ⟨q.val - 16, by omega⟩
-    have he : 16 + (q.val - 16) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 16) (rail_chunk_16 d) (by omega) (by omega)
   by_cases h32 : q.val < 48
-  · have hh := rail_chunk_32 d ⟨q.val - 32, by omega⟩
-    have he : 32 + (q.val - 32) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 32) (rail_chunk_32 d) (by omega) (by omega)
   by_cases h48 : q.val < 64
-  · have hh := rail_chunk_48 d ⟨q.val - 48, by omega⟩
-    have he : 48 + (q.val - 48) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 48) (rail_chunk_48 d) (by omega) (by omega)
   by_cases h64 : q.val < 80
-  · have hh := rail_chunk_64 d ⟨q.val - 64, by omega⟩
-    have he : 64 + (q.val - 64) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 64) (rail_chunk_64 d) (by omega) (by omega)
   by_cases h80 : q.val < 96
-  · have hh := rail_chunk_80 d ⟨q.val - 80, by omega⟩
-    have he : 80 + (q.val - 80) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 80) (rail_chunk_80 d) (by omega) (by omega)
   by_cases h96 : q.val < 112
-  · have hh := rail_chunk_96 d ⟨q.val - 96, by omega⟩
-    have he : 96 + (q.val - 96) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 96) (rail_chunk_96 d) (by omega) (by omega)
   by_cases h112 : q.val < 128
-  · have hh := rail_chunk_112 d ⟨q.val - 112, by omega⟩
-    have he : 112 + (q.val - 112) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 112) (rail_chunk_112 d) (by omega) (by omega)
   by_cases h128 : q.val < 144
-  · have hh := rail_chunk_128 d ⟨q.val - 128, by omega⟩
-    have he : 128 + (q.val - 128) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 128) (rail_chunk_128 d) (by omega) (by omega)
   by_cases h144 : q.val < 160
-  · have hh := rail_chunk_144 d ⟨q.val - 144, by omega⟩
-    have he : 144 + (q.val - 144) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 144) (rail_chunk_144 d) (by omega) (by omega)
   by_cases h160 : q.val < 176
-  · have hh := rail_chunk_160 d ⟨q.val - 160, by omega⟩
-    have he : 160 + (q.val - 160) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 160) (rail_chunk_160 d) (by omega) (by omega)
   by_cases h176 : q.val < 192
-  · have hh := rail_chunk_176 d ⟨q.val - 176, by omega⟩
-    have he : 176 + (q.val - 176) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
+  · exact fromChunk P (n := q.val) (a := 176) (rail_chunk_176 d) (by omega) (by omega)
   by_cases h192 : q.val < 208
-  · have hh := rail_chunk_192 d ⟨q.val - 192, by omega⟩
-    have he : 192 + (q.val - 192) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
-  by_cases h208 : q.val < 216
-  · have hh := rail_chunk_208 d ⟨q.val - 208, by omega⟩
-    have he : 208 + (q.val - 208) = q.val := by omega
-    exact (congrArg (fun index => (railCache d)[index]?.getD 0 =
-      205 - 199 * d.toNat + ((targetList d).filter (fun a => a < index)).length) he).mp hh
-  omega
+  · exact fromChunk P (n := q.val) (a := 192) (rail_chunk_192 d) (by omega) (by omega)
+  exact fromChunk P (n := q.val) (a := 208) (rail_chunk_208 d) (by omega) (by omega)
+
 
 def rail (d : Bool) (q : ℕ) : ℕ :=
   if _hq : q < 216 then (railCache d)[q]?.getD 0 else railFormula d q
