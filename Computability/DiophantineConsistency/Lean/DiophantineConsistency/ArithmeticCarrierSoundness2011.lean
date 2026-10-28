@@ -18,10 +18,10 @@ attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix Current
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 private def plus (p q : Pair V) : Pair V := (p.1+q.1,p.2+q.2)
-private def minus (p q : Pair V) : Pair V := (p.1+q.2,p.2+q.1)
-private def pairEval {σ : Type*} (e : Expr σ) (v : σ → V) : Pair V :=
+def minus (p q : Pair V) : Pair V := (p.1+q.2,p.2+q.1)
+def pairEval {σ : Type*} (e : Expr σ) (v : σ → V) : Pair V :=
   (e.splitNatural.1.evalSemiring v,e.splitNatural.2.evalSemiring v)
-private def Rep {σ : Type*} (e : Expr σ) (v : σ → V) (p : Pair V) : Prop :=
+def Rep {σ : Type*} (e : Expr σ) (v : σ → V) (p : Pair V) : Prop :=
   Equivalent (pairEval e v) p
 
 private theorem equivalent_plus {p q r s : Pair V} (h : Equivalent p q)
@@ -34,7 +34,7 @@ private theorem equivalent_plus {p q r s : Pair V} (h : Equivalent p q)
     _=(p.2+q.1)+(r.2+s.1) := by rw [h,k]
     _=_ := by ring
 
-private theorem equivalent_minus {p q r s : Pair V} (h : Equivalent p q)
+theorem equivalent_minus {p q r s : Pair V} (h : Equivalent p q)
     (k : Equivalent r s) : Equivalent (minus p r) (minus q s) := by
   exact equivalent_plus h (show Equivalent (swap r) (swap s) from k.symm)
 
@@ -152,7 +152,7 @@ private theorem multiply_scale (a : V) (p q : Pair V) :
   apply Prod.ext <;> simp only [multiply,scale] <;> ring
 
 /-- This binds the original syntax while every potentially negative cut is a pair. -/
-private theorem literal_product (p : Fin 4 → ℕ) (v : Fin 14 → V)
+theorem literal_rep (p : Fin 4 → ℕ) (v : Fin 14 → V)
     (hq : 2≤(p 0:V)*v 0+1) :
     let b:=(p 0:V)*v 0; let q:=b+1; let X:=v 8*q; let Y:=v 7*q^3
     let E:=X*Y; let k:=v 10+v 11; let c:=k*Y+v 10; let a:=E+Y
@@ -166,11 +166,9 @@ private theorem literal_product (p : Fin 4 → ℕ) (v : Fin 14 → V)
     let U:=(S*S*magnitude vp*magnitude vp+v 12*v 12,S*S*v 12*v 12)
     let W:=(((p 1:V)+v 8)*q+q,((p 1:V)+v 8)*(v 1+v 2)+v 1+v 3*b)
     let Z:=(v 4*v 4,delta*(v 5*c*c)*(v 5*c*c))
-    (expressionAt (fun j => (p j:ℤ))).splitNatural.1.evalSemiring v=
-      (expressionAt (fun j => (p j:ℤ))).splitNatural.2.evalSemiring v →
-    Equivalent (scale delta (product5 P Q U W Z)) (natural delta) := by
+    Rep (expressionAt (fun j => (p j:ℤ))) v
+      (minus (multiply (multiply (multiply (multiply P Q) U) W) (scale delta Z)) (natural delta)) := by
   dsimp only
-  intro hz
   let b:=(p 0:V)*v 0; let q:=b+1; let X:=v 8*q; let Y:=v 7*q^3
   let E:=X*Y; let k:=v 10+v 11; let c:=k*Y+v 10; let a:=E+Y
   let H:=(4:V)*a+3; let delta:=(a+1)*(a+3); let d:=X+a*c+v 13*H
@@ -260,11 +258,35 @@ private theorem literal_product (p : Fin 4 → ℕ) (v : Fin 14 → V)
     apply equivalent_trans (rep_sub (rep_mul_nat hdelta (rep_pow_nat (rep_var v 4) 2)) (rep_pow_nat hS 2))
     exact strong_pair delta (v 5) c (v 4)
   have hprod:=rep_mul (rep_mul (rep_mul (rep_mul hP hQ) hU) hW) hZ
-  have hfull:=rep_sub hprod hdelta
-  have he:=zero_of_rep hfull hz
-  change _=(_+delta) at he
-  change _+0=_+delta
-  simpa only [multiply_scale,product5,minus,natural,add_zero] using he
+  exact rep_sub hprod hdelta
+
+
+/-- This binds the original syntax while every potentially negative cut is a pair. -/
+private theorem literal_product (p : Fin 4 → ℕ) (v : Fin 14 → V)
+    (hq : 2≤(p 0:V)*v 0+1) :
+    let b:=(p 0:V)*v 0; let q:=b+1; let X:=v 8*q; let Y:=v 7*q^3
+    let E:=X*Y; let k:=v 10+v 11; let c:=k*Y+v 10; let a:=E+Y
+    let H:=4*a+3; let delta:=(a+1)*(a+3); let d:=X+a*c+v 13*H
+    let M:=((p 2:V)+q*(p 3:V))*v 0
+    let rp:=(b*q+v 2)*(q^2-1)+M; let rn:=b*v 1*(q^2-1)
+    let tp:=(E*v 9+k+rn,rp); let vp:=(v 4*v 4*(c*v 6+rn),v 4*v 4*rp+c)
+    let S:=delta*v 5*c*c
+    let P:=(magnitude tp*magnitude tp,(E*Y)*(E*Y+1)*k*k)
+    let Q:=(d*d,delta*c*c)
+    let U:=(S*S*magnitude vp*magnitude vp+v 12*v 12,S*S*v 12*v 12)
+    let W:=(((p 1:V)+v 8)*q+q,((p 1:V)+v 8)*(v 1+v 2)+v 1+v 3*b)
+    let Z:=(v 4*v 4,delta*(v 5*c*c)*(v 5*c*c))
+    (expressionAt (fun j => (p j:ℤ))).splitNatural.1.evalSemiring v=
+      (expressionAt (fun j => (p j:ℤ))).splitNatural.2.evalSemiring v →
+    Equivalent (scale delta (product5 P Q U W Z)) (natural delta) := by
+  dsimp only
+  intro hz
+  have hfull := literal_rep p v hq
+  have he := zero_of_rep hfull hz
+  change _=(_+_) at he
+  change _+0=_+_
+  simpa only [multiply_scale, product5, minus, natural, add_zero] using he
+
 
 /-- Generic natural ports; the zero is the literal existing split evaluator. -/
 theorem expressionAt_equations (p : Fin 4 → ℕ) (v : Fin 14 → V)
