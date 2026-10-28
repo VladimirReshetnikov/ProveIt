@@ -108,6 +108,8 @@ Packet names refer to the subdirectories of this directory.
 | `syntax/patches/pairing-shell-threshold.patch` | y | `ObjectPairingInjective` | adopted as `5355cdf297`; a shell-midpoint helper collapses four branch combinations to two.104→100 lines including the new public helper, which omits the `succ_le` hypothesis. Twenty-four affected prerequisites were refreshed before baseline; six final target/two-client/focus/old-audit/new-helper calls pass and all six old reports match. The helper uses the standard three axioms; other dependencies are precompiled. Independent review passes |
 | signed Pell residue sign split, independent adaptation | k-inspired | `SignedPellResidue` | adopted as `16ea41285c`; negate both modular alternatives together, without adding the proposed helper or import.99→95 lines. Five final target/two-client/focus/audit calls pass and all five old reports match. StepDown emits an unused-variable warning without a current baseline comparison; other dependencies are precompiled. Independent review passes |
 | `patches/03-successor-certificate.patch` | p | `AnnotatedSyntaxGraphs` | adopted as `53b4259e9b`; share a successor-first certificate helper while retaining the impossible zero-output case.169→166 lines including the public helper. Nine affected prerequisites were refreshed after borrowing12 authenticated pairing outputs. Five final target/client/focus/zero-and-helper-probe/audit calls pass; all24 old reports including the decidable instance match, and the new helper uses propext only. Other dependencies are precompiled. Independent review passes |
+| `units/patches/gamma_pos_from_coprime.patch` | zl | `CurrentControllerUnits2011` | adopted as part of `ef081fa2ae`; derive Gamma positivity from its existing coprimality.196→193 lines. The joint seven final target/two-focus/client/two-audit calls pass and all35 old reports match; the target exponent warning is byte-identical before and after. Independent review passes |
+| `patches/controller-base-unit.patch` | zw | `CurrentControllerSubsets2011` | adopted as part of `ef081fa2ae`; derive the base unit from the odd block modulus.102→99 lines, with the proof comment updated. Nineteen SignedPell-affected prerequisites were refreshed before both baselines; joint final calls and old reports pass as above. Preparation warnings lack a comparable full-cone baseline; other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -406,6 +408,13 @@ scoped checks pass and all24 old axiom reports match; the new helper uses
 propext only. Nine prerequisites were refreshed after borrowing12 authenticated
 outputs; other dependencies remain precompiled. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-annotated-succ-evidence/BUNDLE.json).
+
+The controller proofs `ef081fa2ae` remove six lines and216 bytes, advancing
+the reviewed series to4639. Seven final scoped checks pass and all35 old
+public axiom reports match. Nineteen SignedPell-affected prerequisites were
+refreshed; preparation warnings lack a comparable full-cone baseline, and the
+Units target warning is identical before and after. Other dependencies remain
+precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-controller-units-subsets-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
