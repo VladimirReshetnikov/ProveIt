@@ -1,5 +1,5 @@
 import Foundation.FirstOrder.Intuitionistic.Rew
-import PAHF.PASyntax
+import PAHF.PACore
 
 /-! # Ordered-arithmetic syntax in the existing PAHF language
 

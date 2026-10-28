@@ -1,4 +1,4 @@
-import PAHF.PASyntax
+import PAHF.PACore
 
 /-! # Heyting arithmetic proof existence over the existing arithmetic syntax
 

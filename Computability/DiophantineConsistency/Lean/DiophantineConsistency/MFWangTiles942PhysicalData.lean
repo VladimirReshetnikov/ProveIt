@@ -1,14 +1,14 @@
-import DiophantineConsistency.WangTiles942TableData
+import DiophantineConsistency.MFWangTiles942Permutation
 import Mathlib.Order.Fin.Basic
 import Mathlib.Data.List.Chain
 
-/-! Matrix-free copy of `WangTiles942PhysicalData` (only the import is changed), for the
-kernel residues of K7.
-
-Literal non-Start physical-order certificate. Every index and coefficient
+/-! Matrix-free clone of `DiophantineConsistency.WangTiles942PhysicalData`: all declarations are kept,
+proof bodies verbatim; namespaces are prefixed by `DiophantineConsistency.MF` and
+imports retargeted to the Matrix-free clones. -/
+/-! Literal non-Start physical-order certificate. Every index and coefficient
 is checked against the actual decoded table; generated numerals are data only. -/
-namespace DiophantineConsistency.ArithmeticConstructionPhysicalData
-open WangTiles942
+namespace DiophantineConsistency.MF.WangTiles942PhysicalData
+open DiophantineConsistency.MF.WangTiles942 DiophantineConsistency.WangTiles942
 set_option Elab.async false
 set_option maxRecDepth 100000
 set_option maxHeartbeats 20000000
@@ -1324,4 +1324,4 @@ theorem rows_good : ∀ r ∈ rows, rowGood r := by
 
 theorem rows_descending : rows.IsChain (fun a b => b.2 < a.2) := by decide +kernel
 
-end DiophantineConsistency.ArithmeticConstructionPhysicalData
+end DiophantineConsistency.MF.WangTiles942PhysicalData
