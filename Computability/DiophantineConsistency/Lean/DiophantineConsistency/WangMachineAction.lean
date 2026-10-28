@@ -59,14 +59,7 @@ theorem act_stateNumber (a : Bool × Bool × ℕ) (ha : a.2.2 < 216) :
 
 theorem act_next_none_iff (a : Bool × Bool × ℕ) (ha : a.2.2 < 216) :
     (KDense215.act a).next = none ↔ a.2.2 = 215 := by
-  constructor
-  · intro h
-    have hs := act_stateNumber a ha
-    rw [h, stateNumber_none] at hs
-    exact hs.symm
-  · intro h
-    apply stateNumber_injective
-    rw [act_stateNumber a ha, h, stateNumber_none]
+  rw [← stateNumber_injective.eq_iff, act_stateNumber a ha, stateNumber_none]
 
 /-- This binds the literal cached action to the actual decimal machine. -/
 theorem transition_eq_cached (q : Fin 215) (b : Bool) :
