@@ -111,6 +111,7 @@ Packet names refer to the subdirectories of this directory.
 | `units/patches/gamma_pos_from_coprime.patch` | zl | `CurrentControllerUnits2011` | adopted as part of `ef081fa2ae`; derive Gamma positivity from its existing coprimality.196→193 lines. The joint seven final target/two-focus/client/two-audit calls pass and all35 old reports match; the target exponent warning is byte-identical before and after. Independent review passes |
 | `patches/controller-base-unit.patch` | zw | `CurrentControllerSubsets2011` | adopted as part of `ef081fa2ae`; derive the base unit from the odd block modulus.102→99 lines, with the proof comment updated. Nineteen SignedPell-affected prerequisites were refreshed before both baselines; joint final calls and old reports pass as above. Preparation warnings lack a comparable full-cone baseline; other dependencies are precompiled. Independent review passes |
 | `patches/rotation-rephase.patch` | zr | `CurrentWordRephase2011` | adopted as `ed5538c38c`; unfold binary rotation and use the existing physical shift equality.116→113 lines, retaining the named Boolean premise. Five final target/client/two-focus/audit checks pass and all eight old reports match; a second baseline/final run borrows an authenticated prior packing object. The stronger proof leaves `hc` unused, producing a new warning; the focus and borrowed prerequisite also emit exponent warnings. The broader client chain remains precompiled. Independent review passes |
+| `patches/coefficient-refactoring.patch`, NativeNinePolynomial52 hunk | c | `NativeNinePolynomial52` | adopted as `1eba5ee47c`; replace22 private row-specific naturality proofs with one finite case split.456→153 lines/−30587 bytes, all12 definitions and the public theorem statement retained. Sixteen affected prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass and all20 old reports match. The consolidated theorem has an 8M local heartbeat limit; one target build observed23.26→14.13s and the olean grew396072 bytes, without a general speedup claim. Other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -121,7 +122,6 @@ arrivals.
 |---|---|---|
 | `patches/conditional-padding.patch` | a | changes a theorem interface in `NativePreliminaryCount2011` / `CurrentCount2011`, which the research session is editing |
 | `patches/representation-naturality.patch` | d | superseded by a's `assignment-map.patch` |
-| `coefficient-refactoring.patch` | c | superseded by d's compiled version |
 | `proposals/*.lean`, design-only sections | all | source-only demonstrations; revisit individually |
 
 The PR-congruence proofs use `simp`: both `prec` constructor proofs now depend
@@ -424,6 +424,14 @@ retained premise unused, producing a new warning; focus and previously built
 prerequisite exponent warnings are separately recorded. The authenticated
 borrowed object has a broader precompiled dependency chain. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-rephase-evidence/BUNDLE.json).
+
+The nine-variable coefficient proof `1eba5ee47c` removes303 lines and30587
+bytes, bringing the reviewed series to4945. Sixteen affected prerequisites
+were refreshed; four final scoped checks pass and all20 old reports match.
+The consolidated proof uses an 8M local heartbeat limit and its olean is
+396072 bytes larger in the recorded builds; single timing observations do
+not establish a speedup. Other dependencies remain precompiled. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-nine-polynomial-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
