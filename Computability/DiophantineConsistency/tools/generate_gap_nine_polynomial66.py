@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Supply the H2082 scalar/MvPolynomial recipe and checked finite coefficient maps.
 Only inert checked Lean expression tables and the frozen split116 proof template
-are read. Every emitted equality is subsequently checked by Lean.
+are read. Lean checks each generated finite-case proof against its table.
 """
 from pathlib import Path
 import argparse,hashlib,re,json
@@ -22,7 +22,7 @@ def render():
  text=text.replace('    GapNineSource66.parameters,','    GapNineSource66.parameters,GapSourceWords66.literalParameters,')
  text=text.replace('    SplitWordBounds.powerSum,', '    SplitWordBounds.powerSum,')
  text=text.replace('# Literal nine-variable polynomial for the split116 free-carrier recipe','# Literal nine-variable polynomial for the H2082 free-carrier recipe').replace('7+39+43','6+36+43')
- # Regenerate every scalar-map branch from the actual85 checked coefficient recipes.
+ # Regenerate finite-case maps for the actual85 checked coefficient recipes.
  blocks=[f'-- H2082 kernel table SHA256 {hashlib.sha256(source.encode()).hexdigest()}.']
  for layer,count in enumerate((6,36,43)):
   found=re.search(rf'def coefficients{layer} .*? := !\[(.*?)\]\n',source,re.S)
@@ -31,10 +31,9 @@ def render():
   if len(exprs)!=count:raise ValueError('coefficient count')
   blocks.extend(['set_option linter.unusedSimpArgs false in',
     f'theorem map_coefficients{layer} (f : A →+* B) (ports : Fin 4 → A) (i : Fin {count}) :',
-    f'    f (coefficients{layer} ports i)=coefficients{layer} (fun j => f (ports j)) i := by','  fin_cases i'])
-  for expr in exprs:
-   mapped=re.sub(r'ports (\d+)',r'f (ports \1)',expr)
-   blocks.extend([f'  · change f ({expr})=({mapped})','    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]'])
+    f'    f (coefficients{layer} ports i)=coefficients{layer} (fun j => f (ports j)) i := by',
+    f'  fin_cases i <;> dsimp only [coefficients{layer}, Fin.reduceFinMk, Matrix.cons_val]',
+    '  all_goals simp only [map_neg, map_add, map_sub, map_mul, map_pow, map_ofNat, map_one, map_zero]'])
   blocks.append('')
  start='-- BEGIN GENERATED COEFFICIENT MAPS\n';end='-- END GENERATED COEFFICIENT MAPS\n'
  before,rest=text.split(start,1);_,after=rest.split(end,1)

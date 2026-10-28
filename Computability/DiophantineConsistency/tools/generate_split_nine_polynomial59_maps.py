@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Regenerate finite coefficient-map proofs from the checked kernel table.
 
-This reads inert Lean expression text, not executable upstream code. Each
-emitted scalar equality is subsequently checked by Lean against that table.
+This reads inert Lean expression text, not executable upstream code. The
+emitted finite-case proofs are checked by Lean against the coefficient table.
 """
 from pathlib import Path
 import hashlib
@@ -32,12 +32,8 @@ def generate() -> str:
         blocks.extend([
             f'theorem map_coefficients{layer} (f : A →+* B) (ports : Fin 4 → A) (i : Fin {count}) :',
             f'    f (coefficients{layer} ports i)=coefficients{layer} (fun j => f (ports j)) i := by',
-            '  fin_cases i'])
-        for expression in expressions:
-            mapped = re.sub(r'ports (\d+)', r'f (ports \1)', expression)
-            blocks.extend([
-                f'  · change f ({expression})=({mapped})',
-                '    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]'])
+            f'  fin_cases i <;> dsimp only [coefficients{layer}, Fin.reduceFinMk, Matrix.cons_val]',
+            '  all_goals simp only [map_neg, map_add, map_sub, map_mul, map_pow, map_ofNat, map_one, map_zero]'])
         blocks.append('')
     return '\n'.join(blocks).rstrip() + '\n'
 

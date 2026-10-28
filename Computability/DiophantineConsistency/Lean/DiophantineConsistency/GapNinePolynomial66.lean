@@ -98,187 +98,20 @@ def value (ports : Fin 4 → A) (height scale : A) (x : Fin 9 → A) : A :=
 set_option linter.unusedSimpArgs false in
 theorem map_coefficients0 (f : A →+* B) (ports : Fin 4 → A) (i : Fin 6) :
     f (coefficients0 ports i)=coefficients0 (fun j => f (ports j)) i := by
-  fin_cases i
-  · change f (((2) * ports 1))=(((2) * f (ports 1)))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-6))=((-6))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
+  fin_cases i <;> dsimp only [coefficients0, Fin.reduceFinMk, Matrix.cons_val]
+  all_goals simp only [map_neg, map_add, map_sub, map_mul, map_pow, map_ofNat, map_one, map_zero]
 
 set_option linter.unusedSimpArgs false in
 theorem map_coefficients1 (f : A →+* B) (ports : Fin 4 → A) (i : Fin 36) :
     f (coefficients1 ports i)=coefficients1 (fun j => f (ports j)) i := by
-  fin_cases i
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-2) * ports 1))=(((-2) * f (ports 1)))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2 + (-2) * ports 1))=((-2 + (-2) * f (ports 1)))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((2) * ports 0 + (2) * ports 0 * ports 1))=(((2) * f (ports 0) + (2) * f (ports 0) * f (ports 1)))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-8))=((-8))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-2) * ports 3 + (-2) * ports 2))=(((-2) * f (ports 3) + (-2) * f (ports 2)))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-6))=((-6))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-4) * ports 0))=(((-4) * f (ports 0)))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
+  fin_cases i <;> dsimp only [coefficients1, Fin.reduceFinMk, Matrix.cons_val]
+  all_goals simp only [map_neg, map_add, map_sub, map_mul, map_pow, map_ofNat, map_one, map_zero]
 
 set_option linter.unusedSimpArgs false in
 theorem map_coefficients2 (f : A →+* B) (ports : Fin 4 → A) (i : Fin 43) :
     f (coefficients2 ports i)=coefficients2 (fun j => f (ports j)) i := by
-  fin_cases i
-  · change f (((-(ports 0))))=(((-(f (ports 0)))))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-(ports 0))))=(((-(f (ports 0)))))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((1))=((1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((1))=((1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-(ports 0))))=(((-(f (ports 0)))))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((1))=((1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((1))=((1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-(ports 0))))=(((-(f (ports 0)))))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-2) * ports 0 * ports 3))=(((-2) * f (ports 0) * f (ports 3)))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-4))=((-4))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-2) * ports 0 ^ 2))=(((-2) * f (ports 0) ^ 2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((2))=((2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-2))=((-2))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f (((-(ports 0))))=(((-(f (ports 0)))))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((1))=((1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((-1))=((-1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
-  · change f ((1))=((1))
-    simp only [map_neg,map_add,map_sub,map_mul,map_pow,map_ofNat,map_one,map_zero]
+  fin_cases i <;> dsimp only [coefficients2, Fin.reduceFinMk, Matrix.cons_val]
+  all_goals simp only [map_neg, map_add, map_sub, map_mul, map_pow, map_ofNat, map_one, map_zero]
 -- END GENERATED COEFFICIENT MAPS
 
 theorem map_kernel0 (f : A →+* B) (ports : Fin 4 → A) (base : A) :
