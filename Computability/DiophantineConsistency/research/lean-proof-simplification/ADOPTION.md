@@ -866,5 +866,20 @@ reconstructed. External inputs remain precompiled and five matching warnings
 come from axiom probes. The object grows by 576 bytes despite the source
 reduction. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-bounded-exit-evidence/BUNDLE.json).
 
+The bounded outer-seed sharing `39c8dbe329` removes 120 net lines, bringing
+the reviewed series to 8312. Both targets, explicit old-interface checks,
+48 materialized old declaration/equation axiom reports and nine defining
+equation outputs match; both production Assembly clients and six Assembly
+axiom reports also pass. The seed cone uses 17 current rebuilds and eight
+verified first-pass objects; 54 additional Assembly prerequisites were rebuilt
+and all 162 phase/local source/object pins checked. The broader
+ArithmeticConstructionBound client remains unverified because its separate
+ArithmeticConstructionZero prerequisite was absent. External inputs remain
+precompiled; stale PAHF.PASyntax was excluded as unreachable. Assembly and
+seed preparation emitted 53 and five warnings without paired baselines; 11
+generated-auxiliary axiom warnings match, and the Foundation freshness check
+replayed 40 warnings. Initial missing Vec/PAHF failures are retained separately.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-outer-seed-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
