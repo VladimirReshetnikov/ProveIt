@@ -1897,3 +1897,77 @@ argument. The correct first index is2n=R+1,not n=R. The next Mersenne
 stage should exclude q=3*2^u using beta=2^94517-1,then derive q|X and a
 binary cell base without a restriction on J modulo3. Canonical source
 restoration/converse and actual internal PA arithmetic still remain.
+
+## Source and polynomial bridges proved internally (2026-10-27/28)
+
+The HA endpoint is assembled in
+[`HACurrentPolynomialBridge2011`](Lean/DiophantineConsistency/HACurrentPolynomialBridge2011.lean):
+
+```
+ha_current_iff_consistency_of_local (hL : ArithmeticPackingCells.LocalNormalization) :
+  ProofEquiv ArithmeticCurrentEquation2011.unsolvabilitySentence
+    FoundationHAConsistencyNormalization.ordinaryConsistency
+```
+
+This is an actual HA derivation of "the literal current equation has no positive
+zero ↔ ZFC proves no contradiction". Its single premise is a closed Π-statement
+about standard natural numbers, discussed last.
+
+**How the derivation is obtained.** `HACurrentAssembly2011` chains three
+equivalences in every Type0 model `V` of `𝗜𝚺₂`, then applies completeness to get
+an actual `𝗜𝚺₂`/PA proof and the existing GG transfer to HA.
+
+- **Polynomial bridge.** The no-zero sentence holds in `V` iff the represented
+  decimal215 run never halts in `V`.
+- **Checker/machine theorem** (`ArithmeticCheckerMachine215`). This link was
+  already closed.
+- **Source bridge.** ZFC consistency holds in `V` iff no internal History222
+  refutation exists.
+
+No step promotes standard-model truth to provability.
+
+**Source bridge** (`HACurrentAssembly2011.sourceBridge`, via
+`ZFCinPA.ValidatorConsistency222`).
+
+- *Upper direction* (8356b0e959). An accepted C222 code decodes to an internal
+  ZF theorem. Tags 9/11 are new: growG comes from equality alone, and the
+  helper-free seed bundle comes from Glazer's seed property in template
+  theories.
+- *Lower direction* (8f9ca10d95). The chain is
+  ZFC⊥ → ZF⊥ (L) → qTheory⊥ (well-founded quotient) → C222 seed theory⊥ (the
+  moving-marker tagged interpretation, `ValidatorSeedFixedImages222`,
+  `ValidatorSeedQTheory222`) → an actual value-two witness.
+
+**Polynomial bridge** (plan: `research/ha-polynomial-bridge-plan-20261027.md`).
+Facts about values below standard bounds are transferred from ℕ through
+`Nat.cast`: tiles < 942, digits < 2^47, carries ≤ 57. Every argument over the
+nonstandard cell count, length, or time is re-proved by internal IΣ1 induction.
+
+- *Soundness* (unconditional, f79467f544,
+  `ArithmeticSoundness2011.zero_halts`). The chain is: positive zero → window
+  interface → cell decoding (S9–S12) → marked cyclic Wang word → halt (S13–S14).
+- *Construction* (16bbf50270,
+  `ArithmeticCurrentConstruction2011.halt_positive_zero`). It runs from a
+  halting time T to the 14 coordinates, all positive, through these stages:
+  - run trace;
+  - band and helical tiling word;
+  - packing;
+  - rank forcing;
+  - controller (Hensel lifting, Γ a unit modulo d·p^{m+1});
+  - outer and auxiliary Pell seeds.
+
+**The remaining premise.** `LocalNormalization` is the finite Local
+Normalization Lemma. It covers admissible triples of the 942-tile table and the
+fixed 94517-bit kernel and masks, plus per-cell mask facts. It is a statement
+about standard naturals and is proved in ℕ by the legacy `CurrentWord*`
+modules. Those modules cannot be imported next to Foundation:
+- the reason is their path to Mathlib's `Matrix`;
+- the auto-realized `Matrix.map.eq_1` collides with
+  `Foundation.Vorspiel.Matrix`.
+
+A Matrix-free port (`MF*` clones with verbatim proof bodies, plus a per-cell
+bridge to `lnlD`) is in progress.
+
+`#print axioms` of `ha_current_iff_consistency`, `sourceBridge` and
+`sentence_of_no_halt` gives `propext`, `Classical.choice`, `Quot.sound`. No
+module in these chains uses `sorry` or `native_decide`.
