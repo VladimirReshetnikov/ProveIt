@@ -73,17 +73,7 @@ def expression {A : Prop} (r : Rep Empty (fun _ => A)) : Expr (Fin 9) :=
 
 theorem expression_correct {A : Prop} (r : Rep Empty (fun _ => A)) :
     (∃ v : Fin 9 → ℕ, (expression r).eval (fun i => (v i : ℤ)) = 0) ↔ A := by
-  have hν : 1 ≤ witnessCount r := (compile r).positive
-  have hdegree := (compile r).degree
-  have hnorm := (compile r).normalized
-  change (QuarticCompiler.quartic (left r) (right r)).totalDegree ≤ 4 at hdegree
-  change Normalized (QuarticCompiler.quartic (left r) (right r)) at hnorm
-  rw [← QuarticSyntax.polynomial_expression] at hdegree hnorm
-  have h := ExecutableJones.hasNaturalZero_expression _ hν hdegree hnorm 0
-  have heq := congrArg
-    (fun P : MvPolynomial (Fin (witnessCount r + 1)) ℤ => Wset P 1)
-    (QuarticSyntax.polynomial_expression (left r) (right r))
-  exact h.trans ((Iff.of_eq heq).trans (wset_iff r 1))
+  exact (ExecutableJones.hasNaturalZero_quartic (left r) (right r)).trans (wset_iff r 1)
 
 theorem eval_expression {A : Prop} (r : Rep Empty (fun _ => A)) (v : Fin 9 → ℤ) :
     (expression r).eval v =

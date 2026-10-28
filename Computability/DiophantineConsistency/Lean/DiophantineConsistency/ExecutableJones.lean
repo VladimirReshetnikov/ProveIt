@@ -208,6 +208,23 @@ theorem hasNaturalZero_expression {ν : ℕ} (seed : Expr (Fin (ν + 1)))
   simpa only [eval_expression] using
     JonesSyntax.hasNaturalZero_expression seed.toPolynomial hν hP hnorm bound
 
+/-- Jones syntax for any quartic compiled from a pair of natural expressions. -/
+theorem hasNaturalZero_quartic {m : ℕ} (p q : NatExpr (Empty ⊕ Fin m)) :
+    (∃ a : Fin 9 → ℕ, (expression (QuarticSyntax.expression p q) 0).eval
+      (fun i => (a i : ℤ)) = 0) ↔ Wset (QuarticCompiler.quartic p q) 1 := by
+  have hν : 1 ≤ QuarticCompiler.witnessCount p q := by
+    dsimp only [QuarticCompiler.witnessCount]
+    omega
+  have hP : (QuarticSyntax.expression p q).toPolynomial.totalDegree ≤ 4 := by
+    rw [QuarticSyntax.polynomial_expression]
+    exact QuarticCompiler.quartic_degree p q
+  have hnorm : Normalized (QuarticSyntax.expression p q).toPolynomial := by
+    rw [QuarticSyntax.polynomial_expression]
+    exact QuarticCompiler.quartic_normalized p q
+  simpa only [QuarticSyntax.polynomial_expression] using
+    hasNaturalZero_expression (QuarticSyntax.expression p q) hν hP hnorm 0
+
+
 /-- The entire syntax data path from a supplied representation is executable. -/
 def fromRep {A : Prop} (r : Rep Empty (fun _ => A)) : Expr (Fin 9) :=
   expression (QuarticSyntax.expression r.expression.splitNatural.1 r.expression.splitNatural.2) 0
@@ -224,18 +241,8 @@ theorem fromRep_correct {A : Prop} (r : Rep Empty (fun _ => A)) :
   let q := r.expression.splitNatural.2
   change (∃ a : Fin 9 → ℕ, (expression (QuarticSyntax.expression p q) 0).eval
     (fun i => (a i : ℤ)) = 0) ↔ A
-  have hν : 1 ≤ QuarticCompiler.witnessCount p q := by
-    dsimp only [QuarticCompiler.witnessCount]
-    omega
-  have hP : (QuarticSyntax.expression p q).toPolynomial.totalDegree ≤ 4 := by
-    rw [QuarticSyntax.polynomial_expression]
-    exact QuarticCompiler.quartic_degree p q
-  have hnorm : Normalized (QuarticSyntax.expression p q).toPolynomial := by
-    rw [QuarticSyntax.polynomial_expression]
-    exact QuarticCompiler.quartic_normalized p q
-  rw [hasNaturalZero_expression _ hν hP hnorm 0, QuarticSyntax.polynomial_expression]
-  exact (QuarticCompiler.wset_quartic_iff p q 1).trans
-    (r.correct_splitNatural Empty.elim).symm
+  rw [hasNaturalZero_quartic]
+  exact (QuarticCompiler.wset_quartic_iff p q 1).trans (r.correct_splitNatural Empty.elim).symm
 
 theorem noZero_fromRep {A : Prop} (r : Rep Empty (fun _ => A)) :
     (¬ ∃ a : Fin 9 → ℕ, (fromRep r).eval (fun i => (a i : ℤ)) = 0) ↔ ¬ A :=
