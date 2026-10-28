@@ -71,6 +71,10 @@ Packet names refer to the subdirectories of this directory.
 | compact structural size induction, adapted to retain the existing interpreter | zu, proof-only adaptation | `ExpressionSize` | adopted as `c87e01807b`; restricted simplification and explicit conjunction construction share the proof across constructors.90→80 lines/386 bytes, with all six definitions and the structure/derived instances literal. Six accepted target/three-client/focus/17-public calls pass, all reports byte-identical. Eight successful calls for axiom-rejected candidates, three failed production variants and one failed diagnostic remain separate. Independent full review passes |
 | `patches/SignedPellResidue.patch` | zza | `SignedPellResidue` | adopted with the fresh-seed proof as `4f571a7890`; pass the existing additive natural norm through `Nat.sub_eq_of_eq_add'` directly to classification.102→99 lines/38 bytes, with all sign cases and old premises preserved. Joint nine-call final suite below passes; all five old reports identical. Independent full review passes |
 | `patches/ThirteenFreshSeed.patch` | zza | `ThirteenFreshSeed` | adopted as the other file in `4f571a7890`; reuse the imported integer Pell norm twice.217→210 lines/204 bytes without helper/import overhead, preserving the negative ordinate and rank-three-mod-four guard. Both targets, four actual clients, both existing focuses and nine-old-public audit pass; all reports identical. The existing StepDown unused-hy warning remains. Independent full review passes |
+| `patches/S1-realizer-dependency-inversion.patch` | zy, adapted | `Computability`, `DirectScalarEnumerator` | adopted as `59616d9d46`; derive computability from the existing literal scalar program, with a separate semantics module and a compatibility wrapper preserving the old import surface. Complete production modules608→395,213 lines removed; a31-line all-input compatibility check is included, yielding182 net. Fifteen final target/client/probe/focus calls pass and all62 old declaration reports are identical. Independent source, import-graph and evidence review passes |
+| first-unit proof | t | `NativePellBootstrap` | adopted as `1e173a6849`; reuse nonzero Pell ordinate and exclude an integer between Q and Q+1.657→648 lines with signed ordinates and every premise unchanged. Joint ten-call final suite below passes; all old reports identical. Independent full review passes |
+| `coordinate_gt_of_margin_pos` | zb | `MarginSeparation` | adopted as part of `1e173a6849`; use positivity and the existing absolute-square bound directly.141→133 lines without helper/import overhead, retaining arbitrary signed C and g≥0. Joint ten-call final suite passes; all old reports identical. Independent full review passes |
+| `cyclic` integer-interval induction | u, adapted | `WangTiles942ResetRows` | adopted as part of `1e173a6849`; a single integer induction handles both directions with the original open-interval guards.162→150 lines without the proposal's extra import. Three targets, three clients, three focuses and59-old-public audit pass; all reports identical. Seventeen separate original Wang preparation, target, client and focus calls precede the baseline. Independent full review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -243,6 +247,14 @@ or new upstream HA replay is claimed. Inputs, original/corrected candidates,
 actual statuses and all144 archived entries are retained in
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-evidence/BUNDLE.json).
 The maintained decimal equation artifacts remain byte-identical.
+
+The subsequent commits `59616d9d46` and `1e173a6849` remove211 net Lean
+lines, including the enumerator compatibility wrapper and31-line regression,
+bringing the reviewed series4366. All25 accepted final calls pass, and all121
+old public reports are byte-identical. Original preparations and baselines
+are separate. Existing project/package dependencies remain a precompiled
+boundary outside the selected freshly checked cones. The equation artifacts
+remain unchanged. Details and inputs are in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-continuation-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
