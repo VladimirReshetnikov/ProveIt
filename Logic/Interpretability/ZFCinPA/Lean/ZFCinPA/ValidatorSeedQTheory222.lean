@@ -237,7 +237,7 @@ theorem provable_falsum_of_qTheory (h : Provable qTheory (^⊥ : V)) :
     Provable seedTheory (^⊥ : V) :=
   provable_falsum_of_tagged axiomImages_qTheory h
 
-theorem qTheory_refutation_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+theorem qTheory_refutation_witness
     (h : Provable qTheory (^⊥ : V)) :
     ∃ d : V, _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value d = 2 :=
   ValidatorSeedMarkerRelativization222.refutation_witness axiomImages_qTheory h

@@ -34,7 +34,6 @@ example (K : SetTheorySemiproposition 2) :
   recognizerBody_quote K
 example (p : V) : (V ⊧/![p] seedCh.val) ↔ SeedR p := by simp
 
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
 example (m b s : V) (hb : IsSemiformula ℒₛₑₜ m b)
     (hshift : shift ℒₛₑₜ b=b)

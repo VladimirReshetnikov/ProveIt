@@ -91,7 +91,7 @@ theorem seedLabel_stream (bound p s : V) (hs : s%2=1) :
 
 /-- Typed represented matrices have both an actual seed and its proved binder
 vacuity. The source typing and exact bound-stack length remain explicit. -/
-theorem typed_seed_vacuity [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem typed_seed_vacuity {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (bound F B s a b : V)
     (hlen : len B=n) (hF : F≤bound) (hB : B≤bound)
     (hs : s%2=1) (ha : a≤bound) (hb : b≤bound) :
@@ -103,7 +103,7 @@ theorem typed_seed_vacuity [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
     encode_vac hp F B s _ hlen (seedLabel_free bound _ F hF)
       (seedLabel_avoids bound _ B hB) (seedLabel_stream bound _ s hs)⟩
 
-theorem typed_seed_witnesses [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem typed_seed_witnesses {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (bound F B s a b : V)
     (hlen : len B=n) (hF : F≤bound) (hB : B≤bound)
     (hs : s%2=1) (ha : a≤bound) (hb : b≤bound) :

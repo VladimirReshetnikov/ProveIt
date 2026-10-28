@@ -217,7 +217,7 @@ theorem irreflexivity_image (F s : V) :
     enc_all,enc_or,encode_nmemAtom,enc_bot]
   simpa using cProv_gen s (compose (double_neg_elim (wel s s)) (not_mem_self s))
 
-theorem equality_refutation_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] :
+theorem equality_refutation_witness :
     letI := equalityDelta
     Provable (𝗘𝗤 ℒₛₑₜ : SetTheory) (^⊥ : V) →
       ∃ code : V, ArithmeticHistory222.value code=2 := by

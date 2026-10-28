@@ -30,7 +30,7 @@ theorem repeated_stored_labels (a z : V) (ha : z≠a) : Avoid z (a∷a∷(0 : V)
 
 theorem fresh_above_generalization (z s : V) (h : z<s) : StreamAvoid z s := stream_of_lt h
 
-theorem actual_numeric_checker_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem actual_numeric_checker_witness {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (F B s z : V) (hlen : len B=n)
     (hF : FreeAvoid z F) (hB : Avoid z B) (hs : StreamAvoid z s) :
     ∃ code : V, _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value code =

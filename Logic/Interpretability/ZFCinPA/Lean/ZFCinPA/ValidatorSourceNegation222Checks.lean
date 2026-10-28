@@ -8,7 +8,7 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstra
 open _root_.SetTheory.BusyBeaver.ZFC ArithmeticCode254
 open ValidatorProvability222 ValidatorFormulaEncoder222 ValidatorSourceNegation222
 open scoped LO.FirstOrder.Arithmetic
-variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 theorem equality_colliding_labels (s : V) :
     NegEq (0 : V) ?[(0 : V),0] s (^rel 2 0 ?[^#(0 : V),^#(1 : V)]) :=
@@ -40,13 +40,11 @@ theorem nested_alternation {n p : V} (hp : IsSemiformula ℒₛₑₜ (n+1+1) p)
     (F B s : V) : NegEq F B s (^∀ (^∃ p)) :=
   encode_neg (n := n) (by simpa using hp) F B s
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 theorem literal_nested_state {p : V} (hp : IsUFormula ℒₛₑₜ p) (F B s : V) :
     encode F B s (^∀ (^∃ p)) =
       wal s (codeNeg (wal (s+2) (codeNeg (encode F ((s+2)∷s∷B) (s+2+2) p)))) := by
   rw [encode_all F B s (by simpa using hp), encode_exs F (s∷B) (s+2) hp]
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 theorem malformed_zero_excluded (n F B s : V) :
     ¬IsSemiformula ℒₛₑₜ n (0 : V) ∧ encode F B s (0 : V)=0 :=
   ⟨fun h => IsUFormula.not_zero h.isUFormula, encode_zero F B s⟩

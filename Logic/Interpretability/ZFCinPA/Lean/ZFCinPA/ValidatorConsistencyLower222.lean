@@ -7,7 +7,7 @@ noncomputable section
 
 /-! # Internal ZF/ZFC refutations become actual C222 refutations
 
-In every model of `𝗜𝚺₂`, an internal `𝗭𝗙𝗖`-refutation becomes an internal
+In every model of `𝗜𝚺₁`, an internal `𝗭𝗙𝗖`-refutation becomes an internal
 `𝗭𝗙`-refutation (`LSchema`, the constructible interpretation), then a
 refutation in the quotient-interface theory `qTheory` (the well-founded
 quotient interpretation `QSchema`), then a refutation in the concrete C222
@@ -21,9 +21,7 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstra
 open LO.FirstOrder.SetTheory
 open scoped LO.FirstOrder.Arithmetic
 
-variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
-
-local instance : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁ := mod_ISigma_of_le (show 1 ≤ 2 by norm_num)
+variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-- **An internal `𝗭𝗙`-refutation yields an actual C222 refutation.** -/
 theorem refutation222_of_ZF (h : Bootstrapping.Provable (𝗭𝗙 : SetTheory) (^⊥ : V)) :

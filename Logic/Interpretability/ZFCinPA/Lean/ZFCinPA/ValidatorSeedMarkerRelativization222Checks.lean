@@ -38,7 +38,7 @@ example (hAx : ∀ p j : V, IsFormula ℒₛₑₜ p → p∈T.Δ₁Class → p<
     Derivable seedTheory (insert (tagRel j p) (insert (emptyGuard j) (sideSet j))))
     (h : Provable T (^⊥ : V)) : Provable seedTheory (^⊥ : V) :=
   provable_falsum_of_tagged hAx h
-example [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] (hAx : AxiomImages T V) (h : Provable T (^⊥ : V)) :
+example (hAx : AxiomImages T V) (h : Provable T (^⊥ : V)) :
     ∃ d : V, _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value d=2 :=
   refutation_witness hAx h
 

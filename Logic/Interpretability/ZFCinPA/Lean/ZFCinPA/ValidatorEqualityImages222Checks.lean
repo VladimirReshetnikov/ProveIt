@@ -60,7 +60,7 @@ theorem zero_stream_no_freshness (F : V) :
 
 theorem irreflexivity_at_zero : CProv (wim (wel (0 : V) 0) 1) := not_mem_self 0
 
-theorem equality_only_internal_refutation [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] :
+theorem equality_only_internal_refutation :
     letI := equalityDelta
     Provable (𝗘𝗤 ℒₛₑₜ : SetTheory) (^⊥ : V) →
       ∃ code : V, ArithmeticHistory222.value code=2 := equality_refutation_witness

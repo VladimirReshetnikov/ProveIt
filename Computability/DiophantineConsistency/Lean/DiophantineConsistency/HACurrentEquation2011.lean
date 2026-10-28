@@ -4,9 +4,9 @@ import DiophantineConsistency.ArithmeticLocalNormalization
 /-! # HA proves: the current equation has no positive zero ↔ ZFC is consistent
 
 The finitary endpoint for the maintained current Diophantine equation. Every
-link is an internal argument valid in every model of `𝗜𝚺₂` (at arbitrary,
+link is an internal argument valid in every model of `𝗜𝚺₁` (at arbitrary,
 possibly nonstandard, internal codes, times and sizes), so completeness yields an
-actual `𝗜𝚺₂` proof, hence a PA proof, and the Gödel–Gentzen transfer yields an
+actual `𝗜𝚺₁` proof (hence PRA-provable by Parsons' theorem), a PA proof, and the Gödel–Gentzen transfer yields an
 actual derivation in the repository's Heyting-arithmetic calculus:
 
 * polynomial bridge (`HACurrentPolynomialBridge2011.polynomialBridge`):
@@ -30,10 +30,18 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open HACurrentAssembly2011 HACurrentPolynomialBridge2011 FoundationHADeltaZeroGG
 
-/-- The polynomial bridge holds in every model of `𝗜𝚺₂`. -/
+/-- The polynomial bridge holds in every model of `𝗜𝚺₁`. -/
 theorem polynomialBridge : PolynomialBridge :=
   HACurrentPolynomialBridge2011.polynomialBridge
     (constructionBridge ArithmeticLocalNormalization.localNormalization)
+
+/-- **`𝗜𝚺₁` proves** the literal no-zero sentence equivalent to `Con(ZFC)`.
+Both sides are Π₁, so the equivalence is Π₂ and, by Parsons' theorem, also
+provable in primitive recursive arithmetic. -/
+theorem isigma1_proves_current_iff_consistency :
+    𝗜𝚺₁ ⊢ FoundationHACurrentNoZero2011.classicalSentence 🡘
+      FoundationZFCConsistencyNat.sourceSentence :=
+  HACurrentAssembly2011.isigma1_proves_current_iff_consistency polynomialBridge sourceBridge
 
 /-- **`𝗜𝚺₂` proves** the literal no-zero sentence equivalent to `Con(ZFC)`. -/
 theorem isigma2_proves_current_iff_consistency :

@@ -35,7 +35,7 @@ theorem twice_shifted_enumeration {L S : V} (hL : Enum L S) :
     Enum (shiftList (shiftList L)) (setShift ℒₛₑₜ (setShift ℒₛₑₜ S)) :=
   enum_shift (enum_shift hL)
 
-variable {T : SetTheory} [T.Δ₁] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+variable {T : SetTheory} [T.Δ₁]
 
 /-- The actual axiom-image boundary remains an argument of the whole client. -/
 theorem internally_sized_witness (hAx : AxOK T V) (d F s L : V)
@@ -68,7 +68,7 @@ theorem internal_proof_value_two (hAx : AxOK T V) {d : V}
 #print axioms streamFree_tail
 #print axioms enum_cons
 #print axioms enum_shift
-#print axioms inv_pi2
+#print axioms inv_sigma1
 #print axioms translate
 #print axioms cProv_falsum_of_provable
 #print axioms refutation_witness

@@ -34,7 +34,6 @@ theorem nested_source_shift (F s x p : V) (hp : IsSemiformula ℒₛₑₜ 2 p) 
   simpa [one_add_one_eq_two] using hp
 
 section
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
 theorem empty_generalization (i g : V) (h : CProv g) : CProv (wal i g) := by
   have hd : Der (0 : V) g := (der_nil g).mpr h

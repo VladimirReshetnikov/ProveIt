@@ -320,9 +320,9 @@ theorem provable_falsum_of_tagged (hAx : AxiomImages T V)
   rw [hd.1,taggedSeq_falsum] at htag
   exact provable_falsum_of_residual (der+1) htag
 
-/-- The already proved I-Sigma2 seed interpreter yields an actual C222
+/-- The already proved I-Sigma1 seed interpreter yields an actual C222
 history value, retaining precisely the source axiom-image boundary. -/
-theorem refutation_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] (hAx : AxiomImages T V)
+theorem refutation_witness (hAx : AxiomImages T V)
     (h : Provable T (^⊥ : V)) : ∃ d : V,
       _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value d=2 :=
   seedTheory_refutation_witness (provable_falsum_of_tagged hAx h)

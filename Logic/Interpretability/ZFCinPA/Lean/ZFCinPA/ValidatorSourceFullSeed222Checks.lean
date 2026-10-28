@@ -34,7 +34,6 @@ def parameterMatrix : SetTheorySemiproposition 2 :=
   ∀⁰ ((FirstOrder.Semiformula.rel Language.Mem.mem
     ![(#0 : SyntacticSemiterm ℒₛₑₜ 3),&17]) 🡒 seedMem 3 2 1)
 
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
 theorem arbitrary_internal (p F s : V) (hp : IsSemiformula ℒₛₑₜ 2 p)
     (hs : StreamFree s F) :

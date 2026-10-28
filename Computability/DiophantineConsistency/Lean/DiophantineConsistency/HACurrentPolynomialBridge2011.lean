@@ -4,7 +4,7 @@ import DiophantineConsistency.ArithmeticCurrentConstruction2011
 
 /-! # The polynomial bridge from its two internal halves
 
-`HACurrentAssembly2011.PolynomialBridge` says that in every model of `𝗜𝚺₂` the
+`HACurrentAssembly2011.PolynomialBridge` says that in every model of `𝗜𝚺₁` the
 literal no-zero sentence holds iff the represented decimal215 run never halts.
 Its `←` half is `ArithmeticSoundness2011.sentence_of_no_halt` (positive zero ⇒
 halt), proved unconditionally in every model of `𝗜𝚺₁`. Its `→` half is the
@@ -28,7 +28,7 @@ def ConstructionBridge : Prop :=
 
 /-- **The polynomial bridge from the construction half.** -/
 theorem polynomialBridge (hc : ConstructionBridge) : PolynomialBridge := by
-  intro V _ _ _
+  intro V _ _
   constructor
   · rintro hs ⟨T, hT⟩
     exact (classicalSentence_iff.mp hs) (hc V T hT)
