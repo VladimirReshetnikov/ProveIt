@@ -98,13 +98,7 @@ private def selectorUnit : Entry → ℕ
 
 private theorem reflected_mod_sixteen (e : Entry) :
     2 * weight e ≡ selectorUnit e [MOD 16] := by
-  rcases e with i | j | j | j | j
-  · change (2 * selectorWeight (tile i)) % 16 = 2 % 16
-    simp only [selectorWeight]
-    omega
-  all_goals
-    change (2 * 2 ^ _) % 16 = 0 % 16
-    fin_cases j <;> decide
+  exact (CurrentClause2011.reflected_weight_mod e).of_dvd (by decide : 16 ∣ 2048)
 
 omit [NeZero (N * 2011)] in
 theorem reflected_mod_selector_sources (c : ZMod (N * 2011) → ℕ)
