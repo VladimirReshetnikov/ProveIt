@@ -1,16 +1,16 @@
-import DiophantineConsistency.ArithmeticConstructionPhysicalData
-import DiophantineConsistency.MFWangTiles942Permutation
+import DiophantineConsistency.MFWangTiles942PhysicalData
 import Mathlib.Data.Finset.Sort
 
-/-! Matrix-free copy of `WangTiles942PhysicalOrder` (against `MFWangTiles942Permutation`;
-`physicalWeight` is dropped), for the kernel residues of K7.
-
-Exact binding of the checked physical-order data to the printed floor rank.
+/-! Matrix-free clone of `DiophantineConsistency.WangTiles942PhysicalOrder`: all declarations are kept,
+proof bodies verbatim; namespaces are prefixed by `DiophantineConsistency.MF` and
+imports retargeted to the Matrix-free clones. -/
+/-! Exact binding of the checked physical-order data to the printed floor rank.
 Only adjacent numerical inequalities are checked; all pairwise and coverage
 conclusions below are proved generically. -/
-namespace DiophantineConsistency.ArithmeticConstructionPhysicalOrder
+namespace DiophantineConsistency.MF.WangTiles942PhysicalOrder
 
-open WangTiles942 MF.WangTiles942 ArithmeticConstructionPhysicalData
+open DiophantineConsistency.MF.WangTiles942 DiophantineConsistency.WangTiles942
+  DiophantineConsistency.MF.WangTiles942PhysicalData
 open scoped BigOperators
 set_option Elab.async false
 set_option maxRecDepth 100000
@@ -101,7 +101,7 @@ theorem abstractAt_succ (j : Fin 941) : abstractAt j.succ = abstractIndex j := r
 
 theorem physicalMap_abstractAt (p : Fin 942) : physicalMap (abstractAt p) = p := by
   cases p using Fin.cases with
-  | zero => apply Fin.ext; rfl
+  | zero => exact physicalMap_zero
   | succ j =>
       apply Fin.ext
       exact position_eq j
@@ -123,6 +123,11 @@ theorem abstractAt_eq_inverse (p : Fin 942) : abstractAt p = physicalEquiv.symm 
 
 theorem full_coverage (i : Fin 942) : ∃ p : Fin 942, abstractAt p = i :=
   abstractAt_bijective.surjective i
+
+/-- The cache coefficients are the actual descending physical weights. -/
+theorem value_eq_physicalWeight (j : Fin 941) : value j = physicalWeight j.succ := by
+  rw [← weight_eq, ← abstractAt_succ, abstractAt_eq_inverse]
+  rfl
 
 def weightAt (p : Fin 942) : ℕ := Fin.cases (selectorWeight start) value p
 
@@ -151,4 +156,4 @@ theorem selector_sum_reindex {R : Type*} [AddCommMonoid R] (f : ℕ → ℕ → 
       change physicalPosition (abstractAt p)=p.val at hp
       rw [hp,weight_abstractAt]
 
-end DiophantineConsistency.ArithmeticConstructionPhysicalOrder
+end DiophantineConsistency.MF.WangTiles942PhysicalOrder

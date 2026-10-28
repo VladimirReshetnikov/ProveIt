@@ -1,4 +1,5 @@
 import DiophantineConsistency.ArithmeticCellTable
+import DiophantineConsistency.MFWangTiles942Permutation
 import DiophantineConsistency.ArithmeticMaskKernel
 import Mathlib.Data.Fintype.Card
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
@@ -8,16 +9,15 @@ import Mathlib.Tactic.NormNum
 /-! **Matrix-free standard facts about the 942-tile table and the fixed kernel**
 (soundness spec §2), importable next to Foundation.
 
-The accepted ℕ proofs of these facts live in `WangTiles942Core`,
-`WangTiles942Permutation`, `CurrentKernel2011`, `CurrentReflectedGeometry2011` and
-`CurrentSelectorTail2011`, whose `Mathlib.Tactic` imports pull in Mathlib's `Matrix`
-and therefore clash with `Foundation.Vorspiel.Matrix`. This module reproves exactly
-what the internal cell decoding needs from the Matrix-free data
-`WangTiles942TableData`/`CurrentKernelData2011`: colour bounds and the left inverse
-of the table (by `decide +kernel` over the 942 rows), the strict-rank description
-of `physicalPosition` and its bijectivity (copied from `WangTiles942Permutation`),
-the kernel geometry of reflected sources, and the exact physical selector tail
-(`tail_source_bound`, after `CurrentSelectorTail2011`). -/
+The table facts (colour bounds, the left inverse of the table, the strict-rank
+description of `physicalPosition` and its bijectivity) are those of the Matrix-free
+clones `MFWangTiles942Core`/`MFWangTiles942Permutation`, re-exported here under the
+names the internal cell decoding uses. This module adds what those clones lack:
+the row facts of `ArithmeticCellTable` (west bound `< 250`, the unique south-45
+row), the kernel geometry of reflected sources (as in `CurrentReflectedGeometry2011`;
+importing its Matrix-free clone would add ~350 modules to every cell module), and
+the exact physical selector tail (`tail_source_bound`, after
+`CurrentSelectorTail2011`). -/
 
 namespace DiophantineConsistency.ArithmeticCellPhysical
 
@@ -29,201 +29,23 @@ set_option maxRecDepth 100000
 set_option maxHeartbeats 20000000
 set_option exponentiation.threshold 1024
 
+export MF.WangTiles942 (TightColorsBounded weight_small strictRank strictRank_eq_sum nonStartWeight
+  nonStart_rows physicalPosition_zero physicalPosition_succ physicalPosition_lt
+  physicalPosition_injective physicalEquiv physical_lt_iff_weight)
+
 theorem tile_mem (i : Fin 942) :
     (orderedRows[i.val]'(by rw [ordered_count]; exact i.isLt)) ∈ orderedRows :=
   List.getElem_mem _
 
-theorem tile_tight (i : Fin 942) : Tight (tile i) := rows_tight _ (tile_mem i)
+theorem tile_tight (i : Fin 942) : TightColorsBounded (tile i) :=
+  MF.WangTiles942.all_rows_tight _ (tile_mem i)
 
-theorem tile_west_lt (i : Fin 942) : (tile i).west < 250 := rows_west_lt _ (tile_mem i)
+theorem tile_west_lt (i : Fin 942) : (tile i).west < 250 := (rows_facts _ (tile_mem i)).1
 
-theorem weight_small (i : Fin 942) : selectorWeight (tile i) < 2 ^ 44 := by
-  obtain ⟨hw, he, hn, hs⟩ := tile_tight i
-  dsimp only [selectorWeight]
-  omega
+theorem rows_south45 : ∀ row ∈ orderedRows, row.2.south = 45 → row.2 = cutoffTile :=
+  fun r h => (rows_facts r h).2
 
-theorem start_tile : tile 0 = ⟨2, 435, 3, 1⟩ := by decide +kernel
-
-theorem recovered_tile (i : Fin 942) : recoveredIndex (tile i) = i.val := by
-  have h := rows_recovered _ (tile_mem i)
-  have hi : (orderedRows[i.val]'(by rw [ordered_count]; exact i.isLt)).1 = i.val := by
-    have ho : i.val < orderedRows.length := by rw [ordered_count]; exact i.isLt
-    have hr : i.val < (List.range 942).length := by simpa only [List.length_range] using i.isLt
-    have he := congrArg (fun xs : List ℕ => xs[i.val]?) row_indices_exact
-    rw [List.getElem?_map, List.getElem?_eq_getElem ho, List.getElem?_eq_getElem hr] at he
-    simpa only [List.getElem_range, Option.map_some, Option.some.injEq] using he
-  exact h.trans hi
-
-theorem tile_injective : Function.Injective tile := by
-  intro i j h
-  apply Fin.ext
-  exact (recovered_tile i).symm.trans ((congrArg recoveredIndex h).trans (recovered_tile j))
-
-theorem tile_weight_injective :
-    Function.Injective (fun i : Fin 942 => selectorWeight (tile i)) := by
-  intro i j h
-  apply tile_injective
-  have hi := tile_tight i
-  have hj := tile_tight j
-  simp only at h
-  generalize tile i = t at hi h ⊢
-  generalize tile j = u at hj h ⊢
-  obtain ⟨tw, te, tn, ts⟩ := hi
-  obtain ⟨uw, ue, un, us⟩ := hj
-  dsimp only [selectorWeight] at h
-  cases t
-  cases u
-  simp only [Tile.mk.injEq]
-  dsimp only at *
-  omega
-
-/-! ### Strict ranks (copied from `WangTiles942Permutation`) -/
-
-section GenericRank
-
-variable {α : Type*} [Fintype α]
-
-noncomputable def strictUpper (w : α → ℕ) (i : α) : Finset α :=
-  Finset.univ.filter (fun j => w i < w j)
-
-noncomputable def strictRank (w : α → ℕ) (i : α) : ℕ := (strictUpper w i).card
-
-theorem strictRank_lt_card (w : α → ℕ) (i : α) : strictRank w i < Fintype.card α := by
-  exact Finset.card_lt_card (Finset.filter_ssubset.mpr
-    ⟨i, Finset.mem_univ i, Nat.lt_irrefl (w i)⟩)
-
-theorem strictRank_antitone {w : α → ℕ} {i j : α} (h : w i < w j) :
-    strictRank w j < strictRank w i := by
-  apply Finset.card_lt_card
-  apply Finset.ssubset_iff_subset_ne.mpr
-  constructor
-  · intro k hk
-    simp only [strictUpper, Finset.mem_filter, Finset.mem_univ, true_and] at *
-    exact h.trans hk
-  · intro he
-    have hj : j ∈ strictUpper w i := by
-      simp only [strictUpper, Finset.mem_filter, Finset.mem_univ, true_and]
-      exact h
-    have hj' : j ∈ strictUpper w j := he.symm ▸ hj
-    simp only [strictUpper, Finset.mem_filter, Finset.mem_univ, true_and,
-      lt_self_iff_false] at hj'
-
-theorem strictRank_injective {w : α → ℕ} (hw : Function.Injective w) :
-    Function.Injective (strictRank w) := by
-  intro i j he
-  apply hw
-  rcases lt_trichotomy (w i) (w j) with h | h | h
-  · have := strictRank_antitone h
-    omega
-  · exact h
-  · have := strictRank_antitone h
-    omega
-
-theorem strictRank_lt_iff (w : α → ℕ) (i j : α) :
-    strictRank w i < strictRank w j ↔ w j < w i := by
-  constructor
-  · intro hr
-    rcases lt_trichotomy (w i) (w j) with h | h | h
-    · have := strictRank_antitone h
-      omega
-    · have he : strictRank w i = strictRank w j := by
-        simp only [strictRank, strictUpper, h]
-      omega
-    · exact h
-  · exact strictRank_antitone
-
-theorem strictRank_eq_sum (w : α → ℕ) (i : α) :
-    strictRank w i = ∑ j : α, if w i < w j then 1 else 0 := by
-  simp only [strictRank, strictUpper, Finset.card_eq_sum_ones, Finset.sum_filter]
-
-end GenericRank
-
-/-! ### The physical positions -/
-
-theorem floor_weight_indicator (a b : ℕ) (ha : a < 2^44) (hb : b < 2^44) :
-    (2^44 - 1 + b - a) / 2^44 = if a < b then 1 else 0 := by
-  split_ifs <;> omega
-
-noncomputable def nonStartWeight (j : Fin 941) : ℕ := selectorWeight (tile j.succ)
-
-theorem nonStartWeight_injective : Function.Injective nonStartWeight := by
-  intro i j h
-  have he : i.succ = j.succ := tile_weight_injective h
-  apply Fin.ext
-  have hv : i.val+1 = j.val+1 := congrArg Fin.val he
-  omega
-
-theorem nonStart_rows : (orderedRows.drop 1).map Prod.snd =
-    List.ofFn (fun j : Fin 941 => tile ⟨j.val + 1, by omega⟩) := by
-  apply List.ext_getElem
-  · simp only [List.length_map, List.length_drop, List.length_ofFn, ordered_count]
-  · intro j h₁ h₂
-    simp only [List.getElem_map, List.getElem_drop, List.getElem_ofFn, tile,
-      Nat.add_comm]
-
-theorem physicalPosition_eq_printed (i : Fin 942) : physicalPosition i =
-    if i.val = 0 then 0 else 1 + ∑ j : Fin 941,
-      (2 ^ 44 - 1 + selectorWeight (tile ⟨j.val + 1, by omega⟩) -
-        selectorWeight (tile i)) / 2 ^ 44 := by
-  unfold physicalPosition
-  have hs := congrArg (fun ts : List Tile =>
-    (ts.map (fun t => (2 ^ 44 - 1 + selectorWeight t - selectorWeight (tile i)) /
-      2 ^ 44)).sum) nonStart_rows
-  simpa only [List.map_map, List.map_ofFn, List.sum_ofFn, Function.comp_def] using
-    congrArg (fun x : ℕ => if i.val = 0 then 0 else 1 + x) hs
-
-theorem physicalPosition_zero : physicalPosition 0 = 0 := rfl
-
-theorem physicalPosition_succ (i : Fin 941) :
-    physicalPosition i.succ = 1 + strictRank nonStartWeight i := by
-  rw [physicalPosition_eq_printed, if_neg (by exact Nat.succ_ne_zero i.val)]
-  apply congrArg (fun n : ℕ => 1+n)
-  calc
-    _ = ∑ j : Fin 941, if nonStartWeight i < nonStartWeight j then 1 else 0 := by
-      apply Finset.sum_congr rfl
-      intro j _
-      exact floor_weight_indicator _ _ (weight_small i.succ) (weight_small j.succ)
-    _ = strictRank nonStartWeight i := (strictRank_eq_sum _ _).symm
-
-theorem physicalPosition_lt (i : Fin 942) : physicalPosition i < 942 := by
-  cases i using Fin.cases with
-  | zero => rw [physicalPosition_zero]; omega
-  | succ j =>
-      rw [physicalPosition_succ]
-      have h : strictRank nonStartWeight j < 941 := by
-        have := strictRank_lt_card nonStartWeight j
-        simpa using this
-      omega
-
-theorem physicalPosition_injective : Function.Injective physicalPosition := by
-  intro i j h
-  cases i using Fin.cases <;> cases j using Fin.cases
-  · rfl
-  · rw [physicalPosition_zero, physicalPosition_succ] at h
-    omega
-  · rw [physicalPosition_succ, physicalPosition_zero] at h
-    omega
-  · rename_i i j
-    rw [physicalPosition_succ, physicalPosition_succ] at h
-    have he : strictRank nonStartWeight i = strictRank nonStartWeight j := by omega
-    exact congrArg Fin.succ (strictRank_injective nonStartWeight_injective he)
-
-noncomputable def physicalMap (i : Fin 942) : Fin 942 := ⟨physicalPosition i, physicalPosition_lt i⟩
-
-theorem physicalMap_injective : Function.Injective physicalMap := by
-  intro i j h
-  exact physicalPosition_injective (congrArg Fin.val h)
-
-theorem physicalMap_bijective : Function.Bijective physicalMap :=
-  ⟨physicalMap_injective, Finite.surjective_of_injective physicalMap_injective⟩
-
-noncomputable def physicalEquiv : Fin 942 ≃ Fin 942 :=
-  Equiv.ofBijective physicalMap physicalMap_bijective
-
-theorem physicalEquiv_val (i : Fin 942) : (physicalEquiv i).val = physicalPosition i := rfl
-
-theorem physical_symm (p : Fin 942) : physicalPosition (physicalEquiv.symm p) = p.val := by
-  rw [← physicalEquiv_val, Equiv.apply_symm_apply]
+theorem start_tile : tile 0 = ⟨2, 435, 3, 1⟩ := MF.WangTiles942.start_zero
 
 /-- Sums over tiles at their physical positions are sums over positions. -/
 theorem phys_sum (g : ℕ → ℕ) :
@@ -232,18 +54,6 @@ theorem phys_sum (g : ℕ → ℕ) :
   change (∑ i : Fin 942, g (physicalPosition i)) = ∑ p : Fin 942, g p.val at he
   rw [he]
   exact Fin.sum_univ_eq_sum_range g 942
-
-theorem physical_lt_iff_weight (i j : Fin 942) (hi : i ≠ 0) (hj : j ≠ 0) :
-    physicalPosition i < physicalPosition j ↔
-      selectorWeight (tile j) < selectorWeight (tile i) := by
-  cases i using Fin.cases with
-  | zero => exact False.elim (hi rfl)
-  | succ a =>
-      cases j using Fin.cases with
-      | zero => exact False.elim (hj rfl)
-      | succ b =>
-          rw [physicalPosition_succ, physicalPosition_succ, Nat.add_lt_add_iff_left]
-          exact strictRank_lt_iff _ _ _
 
 /-! ### Kernel geometry (after `CurrentReflectedGeometry2011`) -/
 

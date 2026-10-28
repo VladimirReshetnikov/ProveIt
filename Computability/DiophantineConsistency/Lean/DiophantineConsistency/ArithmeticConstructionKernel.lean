@@ -1,4 +1,4 @@
-import DiophantineConsistency.ArithmeticConstructionPhysicalOrder
+import DiophantineConsistency.MFWangTiles942PhysicalOrder
 import DiophantineConsistency.CurrentKernelData2011
 import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic.ReduceModChar
@@ -7,7 +7,7 @@ import Mathlib.Tactic.ReduceModChar
 # Modular values of the actual length2011 kernel
 
 Matrix-free copy of `CurrentKernelResidues2011` up to `K_mod_*` (reindexing
-through `ArithmeticConstructionPhysicalOrder`; `rawWord_eq` re-proved here).
+through `MFWangTiles942PhysicalOrder`; `rawWord_eq` re-proved here).
 
 The abstract selector sum is reindexed through the proved physical
 permutation. A verified Horner accumulator then evaluates that same sum;
@@ -15,7 +15,7 @@ the numerical data do not replace the literal kernel by a new port.
 -/
 namespace DiophantineConsistency.ArithmeticConstructionKernel
 
-open WangTiles942 ArithmeticConstructionPhysicalData ArithmeticConstructionPhysicalOrder
+open WangTiles942 MF.WangTiles942PhysicalData MF.WangTiles942PhysicalOrder
 open CurrentKernel2011
 open scoped BigOperators
 
