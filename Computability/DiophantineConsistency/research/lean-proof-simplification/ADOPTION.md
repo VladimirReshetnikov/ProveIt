@@ -808,5 +808,16 @@ and historical caches remain precompiled. Earlier missing-encoding failures
 and successful reruns are retained. Independent review passes. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-rail-card-evidence/BUNDLE.json).
 
+The shared selector bounds `9da35a0562` remove 37 net lines across four
+modules, bringing the reviewed series to 8132. Paired target builds and four
+representative clients pass; all 162 existing public, exported and generated
+axiom reports match, and both new helpers use the standard three axioms. All
+55 selected local prerequisites match the preceding reviewed reflected-graph
+objects; external packages and previously identified historical client
+dependencies remain precompiled, and other direct clients remain unchecked.
+Three existing cell warnings match after location normalization. The first
+prototype hit recursion limits and introduced an extra warning; both are
+retained separately. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-selector-shared-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
