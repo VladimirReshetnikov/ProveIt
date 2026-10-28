@@ -829,5 +829,13 @@ baselines; other HTP and Mathlib inputs remain precompiled. The earlier
 cache-bounded prototype is separate. Independent review passes. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-source-carry-image-evidence/BUNDLE.json).
 
+The Wang strip conditional rewrite `ebd0e9e513` removes eight lines,
+bringing the reviewed series to 8158. Both target versions, all three direct
+clients and 15 named/generated axiom reports pass with identical warning-free
+logs. Three prerequisites were rebuilt and all 24 local dependency nodes
+match current source/object hashes and previous or new receipts; external
+packages remain precompiled. Independent review passes. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-wang-strip-split-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
