@@ -49,12 +49,7 @@ def composeDirect (r : GraphRep f) (s : ∀ i, GraphRep (g i)) :
   intro v
   change (∃ a : Fin n → ℕ, v none = f a ∧
     ∀ i, a i = g i (v ∘ some)) ↔ v none = f (fun i => g i (v ∘ some))
-  constructor
-  · rintro ⟨a, ha, hg⟩
-    have he : a = fun i => g i (v ∘ some) := funext hg
-    simpa only [he] using ha
-  · intro h
-    exact ⟨fun i => g i (v ∘ some), h, fun _ => rfl⟩
+  simp only [← funext_iff, exists_eq_right]
 
 theorem composeDirect_witnessCount (r : GraphRep f) (s : ∀ i, GraphRep (g i)) :
     (composeDirect r s).witnessCount = n + (r.witnessCount + ∑ i, (s i).witnessCount) := by

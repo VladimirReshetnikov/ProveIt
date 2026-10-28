@@ -40,12 +40,7 @@ def compose {n : ℕ} {P : (Fin n → ℕ) → Prop}
   refine joined.ofIff ?_
   intro v
   change (∃ a : Fin n → ℕ, P a ∧ ∀ i, a i = f i v) ↔ P (fun i => f i v)
-  constructor
-  · rintro ⟨a, ha, hg⟩
-    have he : a = fun i => f i v := funext hg
-    simpa only [he] using ha
-  · intro h
-    exact ⟨fun i => f i v, h, fun i => rfl⟩
+  simp only [← funext_iff, exists_eq_right]
 
 end DiophantineConsistency.Rep
 
