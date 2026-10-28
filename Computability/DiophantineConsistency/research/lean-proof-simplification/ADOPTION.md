@@ -599,5 +599,23 @@ and no warnings. Other project and external dependencies remain precompiled;
 helper and instance-probe statuses were observed but lack separate JSON records.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-rhs-degree-evidence/BUNDLE.json).
 
+The shifted padding suffix reuse `423704157f` removes ten net lines across
+three modules, bringing the reviewed series to 7815. Baseline and corrected
+final affected modules, focuses, clients and 73 old public axiom reports pass.
+Three existing ArithmeticCellLocal warnings differ only by line number. An
+initial helper name caused an ambiguous focus check; its renamed version and
+boundary probes pass. The client was tested from its original pinned snapshot
+while a separate mask edit was in progress. Earlier local and external
+dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-padding-shift-evidence/BUNDLE.json).
+
+The matrix-free mask proof reuse `f405dc9f52` removes 19 net lines, bringing
+the reviewed series to 7834. Original-snapshot baseline and final targets use
+the same authenticated corrected padding/cell objects; all 31 old public axiom
+reports, boundary checks and actual Foundation.Vorspiel.Matrix co-imports pass
+with matching logs. ArithmeticCellTransfer could not be checked because its
+ArithmeticCyclicWord object was missing. Earlier dependencies remain precompiled,
+and the prerequisite build and failed direct-client probe statuses were observed
+rather than separately recorded in JSON. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mask-reuse-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

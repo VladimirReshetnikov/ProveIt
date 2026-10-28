@@ -1,0 +1,259 @@
+{
+  "description": "Matrix-free clause-mask theorem reuse: corrected common-parent baseline/final checks and independent review.",
+  "commit": "f405dc9f52",
+  "new_dependency": {
+    "module": "DiophantineConsistency.MFDoubledClause2011",
+    "source_sha256": "b23156b49c32f1275b1bcad2993a0ed55a0eeecbac49d5bbc9e8b6303200cd19",
+    "source_bytes": 2001,
+    "imports": [
+      "Mathlib.Data.Nat.Bitwise",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic.Bound",
+      "Mathlib.Tactic.ByContra",
+      "Mathlib.Tactic.FinCases",
+      "Mathlib.Tactic.GCongr",
+      "Mathlib.Tactic.IntervalCases",
+      "Mathlib.Tactic.Linarith",
+      "Mathlib.Tactic.NormNum",
+      "Mathlib.Tactic.NthRewrite",
+      "Mathlib.Tactic.Positivity",
+      "Mathlib.Tactic.Push",
+      "Mathlib.Tactic.Ring",
+      "Mathlib.Tactic.Set",
+      "Mathlib.Tactic.SplitIfs",
+      "Mathlib.Tactic.Tauto",
+      "Mathlib.Tactic.Use",
+      "Mathlib.Tactic.Zify"
+    ],
+    "project_local_imports": []
+  },
+  "authenticated_objects": {
+    "PaddingStaircase": {
+      "sha256": "c3150e76363365d6710786e226b6d1e37f50e588905aa2e749b9d784770e3d05",
+      "bytes": 402232,
+      "both_phases_same_resolved_object": true
+    },
+    "ArithmeticCellLocal": {
+      "sha256": "ce8260dff1ebeb14ba19d012f19bf5fc527a535005dfdd76a9481b17025a0ae2",
+      "bytes": 3620832,
+      "both_phases_same_resolved_object": true
+    },
+    "MFDoubledClause2011": {
+      "sha256": "1374f70ad1dfa30db44a7ac0c5c85cc2280027a5372c61277cd9e71af65dc4d4",
+      "bytes": 124552,
+      "both_phases_same_resolved_object": true
+    },
+    "Foundation.Vorspiel.Matrix": {
+      "sha256": "05bf3998353fc64e98da4a0eb14daa2948dec9e27d9bd60ff9d14790cfafea3d",
+      "bytes": 333848,
+      "both_phases_same_resolved_object": true
+    }
+  },
+  "results": {
+    "baseline_and_final_target_builds_each": 1,
+    "baseline_and_final_checks_each": 3,
+    "matching_old_public_axiom_reports": 31,
+    "checked_boundaries": [
+      "3",
+      "4",
+      "2^45+3"
+    ],
+    "foundation_coimport": "Foundation.Vorspiel.Matrix"
+  },
+  "limitations": [
+    "The direct ArithmeticCellTransfer probe failed because ArithmeticCyclicWord.olean was missing; that client is unchecked. The failed log is retained, but the probe did not have a standalone JSON status record.",
+    "The new MFDoubledClause2011 prerequisite build has its source snapshot, log, time, and object hash recorded, but no standalone JSON command/status record.",
+    "The initial baseline and prototype used an earlier padding/local object; the authoritative baseline2 and final checks instead share the same corrected final padding/local objects.",
+    "The padding graph used in earlier receipts is a static 77-node set and does not include the newly imported MFDoubledClause2011; its full source and import list are separately pinned here.",
+    "Earlier local, Foundation, and Mathlib dependencies remained precompiled; this is not a full fresh closure.",
+    "Timings are single observations; compiled objects and overlay links are excluded."
+  ],
+  "independent_review": "The old mask definition and theorem statement are unchanged. The imported matrix-free theorem uses the definitionally equal mask and adds no project dependency cycle. Corrected baseline2/final target, 31 axiom reports, boundary examples and actual Foundation.Vorspiel.Matrix co-import all passed with identical logs. Their parent and Foundation objects are identical across phases; padding/local object hashes match the corrected padding run.",
+  "archive": {
+    "path": "inputs-and-logs.zip",
+    "bytes": 35218,
+    "sha256": "45431faca015044880b740bb65d5c686a6a78571bd3d32765920b27c88e84a66",
+    "members": {
+      "ArithmeticCellLabels.original.lean": {
+        "bytes": 12107,
+        "sha256": "80ca17f2e39e2c847ae3c209d3abbcc224dd75af02fc67f83399297e444dbc21"
+      },
+      "axioms.lean": {
+        "bytes": 2201,
+        "sha256": "207e7b1e97c2ed985c8b7e441f5bd35345882b5aff4155103fc1ee20ff022353"
+      },
+      "baseline-axioms.log": {
+        "bytes": 3404,
+        "sha256": "ad82eb7fb13e3aa7df9f385c7f471f3d31a9fc0362372a5d802cb9c7f4ffa196"
+      },
+      "baseline-boundaries.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline-checks.json": {
+        "bytes": 1401,
+        "sha256": "1ad57da8e4610376f00464051fa6a967b75c46f9c5807b3bd9a3f6cf414d3a28"
+      },
+      "baseline-foundation.log": {
+        "bytes": 153,
+        "sha256": "d816c3891f5655249ead0f01ef763a0f18b854f1b5ab43d26fcdc498ff872aa8"
+      },
+      "baseline.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline.time": {
+        "bytes": 28,
+        "sha256": "3827fbd69f21dc2b3264fb516820bd99b3ee4201905b4e3cab23845e4f2f1632"
+      },
+      "baseline2-axioms.log": {
+        "bytes": 3404,
+        "sha256": "ad82eb7fb13e3aa7df9f385c7f471f3d31a9fc0362372a5d802cb9c7f4ffa196"
+      },
+      "baseline2-boundaries.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline2-checks.json": {
+        "bytes": 1402,
+        "sha256": "944831896db7bc80edfcdbfe13205f81863a90c370ce0aba035bbd151d222109"
+      },
+      "baseline2-foundation.log": {
+        "bytes": 153,
+        "sha256": "d816c3891f5655249ead0f01ef763a0f18b854f1b5ab43d26fcdc498ff872aa8"
+      },
+      "baseline2-replay.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline2-target-record.json": {
+        "bytes": 688,
+        "sha256": "90e9801e76134240897e5bc2cd51b1cb1df524beed86455d91274e6761526477"
+      },
+      "boundaries.lean": {
+        "bytes": 321,
+        "sha256": "6d10683648ff4bca1d20254a2aab500040785f856a5b61ae5c408d268e93b39a"
+      },
+      "change.diff": {
+        "bytes": 1641,
+        "sha256": "cd343bcedd6dc515255b31dc11e5811169384bada5778a6f99ebec708bdd8cdd"
+      },
+      "checks.py": {
+        "bytes": 856,
+        "sha256": "93ee29cd8e15d83e126b0e86de3450b5c0e1bc256e2be8699e508c08ba5c1102"
+      },
+      "final-axioms.log": {
+        "bytes": 3404,
+        "sha256": "ad82eb7fb13e3aa7df9f385c7f471f3d31a9fc0362372a5d802cb9c7f4ffa196"
+      },
+      "final-boundaries.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-checks.json": {
+        "bytes": 1400,
+        "sha256": "8ab38a906916b5d78fe2f8787678571e6cc1f9c728524c0eaaf830b48fb75445"
+      },
+      "final-foundation.log": {
+        "bytes": 153,
+        "sha256": "d816c3891f5655249ead0f01ef763a0f18b854f1b5ab43d26fcdc498ff872aa8"
+      },
+      "final-replay.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-target-record.json": {
+        "bytes": 674,
+        "sha256": "215d1a3d98f14fa4eca2ffc957f7eb979580fa5bc80a78636b1b008181c87076"
+      },
+      "final.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final.time": {
+        "bytes": 28,
+        "sha256": "90e5b48f169976e1686b41a0784122e6d69ed7f29145f4cbdd9791535ea3c16c"
+      },
+      "foundation.lean": {
+        "bytes": 148,
+        "sha256": "c2dc31c7156aa79150195971e84a6e3ca9883f36a9b50fb5ba651439cc714988"
+      },
+      "mf-prereq.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "mf-prereq.time": {
+        "bytes": 28,
+        "sha256": "dd4c2e3899341896ac0a70ff436b6d061ccd1782bcc42eb6b4eb36d8a62ffed0"
+      },
+      "padding-receipts/baseline-targets-records.json": {
+        "bytes": 3732,
+        "sha256": "d14f07bc96f5f04d2bce9a22985ba204fe7959a7442b494cd9a19787d4f54acd"
+      },
+      "padding-receipts/final-targets-records.json": {
+        "bytes": 3718,
+        "sha256": "6f437f611b12cdc7b15dc36641743eb3756813c117c6053940e2bba5f0a4de56"
+      },
+      "padding-receipts/graph-after.json": {
+        "bytes": 13648,
+        "sha256": "9f93e1d2d0dc0db3e08de17654638d9466e471741d3147768a3055e180a3f48e"
+      },
+      "padding-receipts/graph-before.json": {
+        "bytes": 13619,
+        "sha256": "8e18fb105c43a751de98e13c6042b24ab2ee4da09c81d15353afbaab5e36f9df"
+      },
+      "probe-overlay-axioms.log": {
+        "bytes": 3404,
+        "sha256": "ad82eb7fb13e3aa7df9f385c7f471f3d31a9fc0362372a5d802cb9c7f4ffa196"
+      },
+      "probe-overlay-boundaries.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "probe-overlay-checks.json": {
+        "bytes": 1402,
+        "sha256": "a2d656fc2ab603175f8bb6fe78437262c8607dbe8b653d6e1f389aa9c68d2d43"
+      },
+      "probe-overlay-foundation.log": {
+        "bytes": 153,
+        "sha256": "d816c3891f5655249ead0f01ef763a0f18b854f1b5ab43d26fcdc498ff872aa8"
+      },
+      "probe-target.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "probe-target.time": {
+        "bytes": 28,
+        "sha256": "4cb7fc0f62d73358597d9a842680799ec41e3396c6580abaf1d388c01f8ee727"
+      },
+      "probe-transfer.log": {
+        "bytes": 283,
+        "sha256": "9ea81e4cc3c3cbe718f2afcd7e01a0187a9ea1f399cae8322adf1a893dc6d8a2"
+      },
+      "probe.lean": {
+        "bytes": 242,
+        "sha256": "b22f28fbf166d6cbc4b4d70ac565ebb76fb1fa6f568dcb0ebc50dfd1097a5234"
+      },
+      "probe.log": {
+        "bytes": 67,
+        "sha256": "15a9755333426d531ffb2e2275a20072fcf1b10aa9ece4fe1e552dcc0747fd5e"
+      },
+      "snapshots/ArithmeticCellLabels.final.lean": {
+        "bytes": 11620,
+        "sha256": "b69b1fce6b01a886a5887ab1ca74dadaa8f0c1577d6b2e6eda3c6b9b03a3aa42"
+      },
+      "snapshots/ArithmeticCellLabels.original-source.lean": {
+        "bytes": 12107,
+        "sha256": "80ca17f2e39e2c847ae3c209d3abbcc224dd75af02fc67f83399297e444dbc21"
+      },
+      "snapshots/MFDoubledClause2011.lean": {
+        "bytes": 2001,
+        "sha256": "b23156b49c32f1275b1bcad2993a0ed55a0eeecbac49d5bbc9e8b6303200cd19"
+      },
+      "target-replay.py": {
+        "bytes": 1242,
+        "sha256": "a03f84aaf28fcd005e546c84340fd46e5be57da62b048480be6e17d6ad616612"
+      }
+    }
+  }
+}
