@@ -94,7 +94,7 @@ def value (ports : Fin 4 → A) (height scale : A) (x : Fin 9 → A) : A :=
   mixedValue ports height scale (successorShift x)
 
 -- BEGIN GENERATED COEFFICIENT MAPS
--- H2082 kernel table SHA256 777fa43ca252eae12d375d9152fa7a3019f3936af24c641f8ac0fcae876a2839.
+-- H2082 kernel table SHA256 d6cde26ab1e47c74fdcc746142c067a01617524ca99b3a882016e6bcdee80283.
 set_option linter.unusedSimpArgs false in
 theorem map_coefficients0 (f : A →+* B) (ports : Fin 4 → A) (i : Fin 6) :
     f (coefficients0 ports i)=coefficients0 (fun j => f (ports j)) i := by

@@ -41,7 +41,7 @@ noncomputable abbrev sparseKernel {n : ℕ} (e : Fin n → ℕ) (a : Fin n → R
   rfl
 ''')
  out.append(box)
- for k,cs in enumerate(coeffs):
+ for k in range(len(coeffs)):
   out.append(f'''theorem records{k}_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hB : 2 ≤ B) (hK : 16*B ≤ K)
     (hb : 0 ≤ ports 0 ∧ ports 0 < B)
@@ -59,10 +59,9 @@ noncomputable abbrev sparseKernel {n : ℕ} (e : Fin n → ℕ) (a : Fin n → R
   have hf0 := hf.1
   have hf1 := hf.2
   intro i
-  fin_cases i
+  fin_cases i <;> dsimp [coefficients{k}] <;> rw [abs_lt] <;> constructor <;>
+    nlinarith only [hB,hK,hb0,hb1,hk0,hk1,hm0,hm1,hf0,hf1,hsq,hp,hl,hBK,sq_nonneg B]
 ''')
-  for c in cs:
-   out.append(f'  · change |{c}| < 2*B*K\n    rw [abs_lt]\n    constructor <;> nlinarith only [hB,hK,hb0,hb1,hk0,hk1,hm0,hm1,hf0,hf1,hsq,hp,hl,hBK,sq_nonneg B]\n')
  for k in range(3):
   out.append(f'''theorem height_D{k} (ports : Fin 4 → ℤ) (H : ℤ) (hH : 0 ≤ H)
     (h : ∀ i, |coefficients{k} ports i| ≤ H) (j : ℕ) : |(D{k} ports).coeff j| ≤ H :=
