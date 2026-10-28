@@ -8,7 +8,7 @@ noncomputable section
 /-!
 # `𝗣𝗔 ⊢ Con(𝗭𝗙𝗖) ↔ the actual C222 checker accepts no refutation`
 
-Both directions hold in every model of `𝗜𝚺₂`, at arbitrary internal codes:
+Both directions hold in every model of `𝗜𝚺₁`, at arbitrary internal codes:
 
 * upper (`ModelCodedDecoderAccepted222`): an accepted C222 refutation decodes
   to an internal `𝗭𝗙`-refutation, hence an internal `𝗭𝗙𝗖`-refutation;
@@ -18,8 +18,8 @@ Both directions hold in every model of `𝗜𝚺₂`, at arbitrary internal code
   of the concrete C222 seed theory (the moving-marker tagged interpretation),
   and finally an actual C222 History222 value-two witness.
 
-Completeness over all Type0 models of `𝗜𝚺₂` gives the closed `𝗜𝚺₂` and PA
-theorems.
+Completeness over all Type0 models of `𝗜𝚺₁` gives the closed `𝗜𝚺₁` theorem;
+the `𝗜𝚺₂` and PA versions follow by weakening.
 -/
 
 namespace LeanProofs.ZFCinPA.ValidatorConsistency222
@@ -59,9 +59,8 @@ theorem not_consistent_of_222 {code : V}
 
 end Models
 
-/-- **The two-sided equivalence in every model of `𝗜𝚺₂`.** -/
-theorem consistent_iff_no_refutation222 {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
-    [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] :
+/-- **The two-sided equivalence in every model of `𝗜𝚺₁`.** -/
+theorem consistent_iff_no_refutation222 {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] :
     ((𝗭𝗙𝗖 : SetTheory).consistent : ArithmeticSentence).Evalb (M := V) ![] ↔
       ¬ ∃ code : V, _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value code = 2 := by
   constructor
@@ -71,12 +70,10 @@ theorem consistent_iff_no_refutation222 {V : Type} [ORingStructure V] [V↓[ℒ�
     by_contra hc
     exact hn (ValidatorConsistencyLower222.refutation222_of_not_consistent hc)
 
-theorem iSigma2_proves_con_ZFC_iff_222 :
-    𝗜𝚺 2 ⊢ ((𝗭𝗙𝗖 : SetTheory).consistent : ArithmeticSentence) 🡘 consistency222Sentence := by
-  apply LO.FirstOrder.Arithmetic.complete.{0} (𝗜𝚺 2) _
-  intro M _ hM
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺 2 := hM
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁ := mod_ISigma_of_le (show 1 ≤ 2 by norm_num)
+theorem iSigma1_proves_con_ZFC_iff_222 :
+    𝗜𝚺₁ ⊢ ((𝗭𝗙𝗖 : SetTheory).consistent : ArithmeticSentence) 🡘 consistency222Sentence := by
+  apply LO.FirstOrder.Arithmetic.complete.{0} 𝗜𝚺₁ _
+  intro M _ _
   have h := consistent_iff_no_refutation222 (V := M)
   have h' : consistency222Sentence.Evalb (M := M) ![] ↔
       ¬ ∃ code : M, _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value code = 2 := by
@@ -87,8 +84,13 @@ theorem iSigma2_proves_con_ZFC_iff_222 :
     models_iff]
   exact ⟨fun hc => h'.2 (h.1 hc), fun hn => h.2 (h'.1 hn)⟩
 
+theorem iSigma2_proves_con_ZFC_iff_222 :
+    𝗜𝚺 2 ⊢ ((𝗭𝗙𝗖 : SetTheory).consistent : ArithmeticSentence) 🡘 consistency222Sentence :=
+  Entailment.weakening (ISigma_weakerThan_of_le (by decide) : 𝗜𝚺₁ ⪯ 𝗜𝚺 2)
+    iSigma1_proves_con_ZFC_iff_222
+
 theorem peano_proves_con_ZFC_iff_222 :
     𝗣𝗔 ⊢ ((𝗭𝗙𝗖 : SetTheory).consistent : ArithmeticSentence) 🡘 consistency222Sentence :=
-  Entailment.weakening (inferInstance : 𝗜𝚺 2 ⪯ 𝗣𝗔) iSigma2_proves_con_ZFC_iff_222
+  Entailment.weakening (inferInstance : 𝗜𝚺₁ ⪯ 𝗣𝗔) iSigma1_proves_con_ZFC_iff_222
 
 end LeanProofs.ZFCinPA.ValidatorConsistency222

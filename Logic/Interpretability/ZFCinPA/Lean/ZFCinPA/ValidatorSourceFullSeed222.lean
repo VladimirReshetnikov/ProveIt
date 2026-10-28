@@ -98,9 +98,7 @@ private lemma rename_ex (x y p q : V) (h : EqUnder (Eind x y) p q)
     (vac_neg hx) (vac_neg hy))
 
 section Matrix
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma freshPair_same (F B s t : V)
     (hs : StreamFree s F) (ht : StreamFree t F)
     (hsB : StreamEnv s B) (htB : StreamEnv t B) (hap : Apart s t) :
@@ -128,7 +126,6 @@ theorem encode_stack_relabel {n p : V} (hp : IsSemiformula ℒₛₑₜ n p)
       (codeIff_symm (direct t u ht hu.1 htB hu.2.1 htu))
   · exact direct s t hs ht hsB htB (apart_of_mod_ne hmod)
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma stream_pair (r x y : V) (hx : x<r) (hy : y<r) :
     StreamEnv r (y∷x∷(0 : V)) := by
   intro k
@@ -240,7 +237,7 @@ private structure Frame where
     EqUnder h (val x y) (val x' y')
   vac : ∀ x y z, fresh z → z≠x → z≠y → Vac z (val x y)
 
-private def typedFrame [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {p : V}
+private def typedFrame {p : V}
     (hp : IsSemiformula ℒₛₑₜ 2 p) (F r : V) (hr : StreamFree r F) : Frame (V := V) where
   val := matrix F r p
   small := fun x => x<r
@@ -467,25 +464,20 @@ private lemma seed_binder (A : Frame (V := V)) (L : Layout A) (c : V)
       (L.ne (by decide)) (L.ne (by decide)) (L.ne (by decide))
 
 section TypedImage
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 private abbrev SF (n : ℕ) := Bootstrapping.Semiformula V ℒₛₑₜ n
 
 private def role (s : V) : ℕ → V
   | 0 => s
   | n+1 => role s n+2
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma role_eq (s : V) (n : ℕ) : role s n=s+2*(n : V) := by
   induction n with
   | zero => simp [role]
   | succ n ih => simp only [role,ih,coe_add_one]; ring
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma role_lt (s : V) {i j : ℕ} (h : i<j) : role s i<role s j := by
   simp only [role_eq,add_lt_add_iff_left]
   exact mul_lt_mul_of_pos_left (by exact_mod_cast h) (by simp)
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma role_free (F s : V) (hs : StreamFree s F) (i : ℕ) :
     FreeAvoid (role s i) F := by simpa only [role_eq] using hs (i : V)
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma role_stream (F s : V) (hs : StreamFree s F) (i : ℕ) :
     StreamFree (role s i) F := by
   intro j
@@ -516,26 +508,22 @@ private lemma enc_impIff (F B s : V) {n : ℕ} (p q : SF (V := V) n) {a b : V}
     (hp : CodeIff (encode F B s p.val) a) (hq : CodeIff (encode F B s q.val) b) :
     CodeIff (encode F B s (p 🡒 q).val) (wim a b) :=
   codeIff_trans (enc_imp F B s p q) (codeIff_imp hp hq)
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma enc_allIff (F B s : V) {n : ℕ} (p : SF (V := V) (n+1)) {a : V}
     (hp : CodeIff (encode F (s∷B) (s+2) p.val) a) :
     CodeIff (encode F B s (∀⁰ p).val) (wal s a) := by
   rw [Bootstrapping.Semiformula.val_all,encode_all F B s p.isUFormula]
   exact codeIff_all s hp
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma enc_exIff (F B s : V) {n : ℕ} (p : SF (V := V) (n+1)) {a : V}
     (hp : CodeIff (encode F (s∷B) (s+2) p.val) a) :
     CodeIff (encode F B s (∃⁰ p).val) (ex s a) := by
   rw [Bootstrapping.Semiformula.val_exs,encode_exs F B s p.isUFormula]
   exact iff_ex s hp
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma enc_conjIff (F B s : V) {n : ℕ} (p q : SF (V := V) n) {a b : V}
     (hp : CodeIff (encode F B s p.val) a) (hq : CodeIff (encode F B s q.val) b) :
     CodeIff (encode F B s (p ⋏ q).val) (conj a b) := by
   rw [Bootstrapping.Semiformula.val_and,encode_and F B s p.isUFormula q.isUFormula]
   exact iff_conj hp hq
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma enc_mem {n : ℕ} (F B s : V) (i j : Fin n) :
     encode F B s (⌜seedMem n i j⌝ : SF (V := V) n).val = wel B.[(i : V)] B.[(j : V)] := by
   have hu := (⌜seedMem n i j⌝ : SF (V := V) n).isUFormula
@@ -571,16 +559,12 @@ private lemma enc_copy (K : SF (V := V) 2) (F B s r : V) {n : ℕ} (i j : Fin n)
   exact encode_stack_relabel K.isSemiformula F _ s r (by simp [one_add_one_eq_two])
     hs hr (stream_pair _ _ _ hsj hsi) (stream_pair _ _ _ hrj hri)
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma nth_two (a b c d : V) : (a∷b∷c∷d).[2]=c := by
   rw [←one_add_one_eq_two,nth_adjoin_succ,nth_adjoin_one,nth_adjoin_zero]
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma nth_three (a b c d e : V) : (a∷b∷c∷d∷e).[3]=d := by
   rw [show (3 : V)=2+1 by norm_num,nth_adjoin_succ,nth_two]
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma nth_four (a b c d e f : V) : (a∷b∷c∷d∷e∷f).[4]=e := by
   rw [show (4 : V)=3+1 by norm_num,nth_adjoin_succ,nth_three]
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 private lemma nth_five (a b c d e f g : V) : (a∷b∷c∷d∷e∷f∷g).[5]=f := by
   rw [show (5 : V)=4+1 by norm_num,nth_adjoin_succ,nth_four]
 private def stack (s : V) : ℕ → V

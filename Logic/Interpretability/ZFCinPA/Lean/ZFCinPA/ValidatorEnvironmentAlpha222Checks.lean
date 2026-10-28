@@ -37,7 +37,7 @@ theorem reverse_all_same_context (B B' P Q x y : V)
     CProv (wim (eindContext B B') (wim (wal y Q) (wal x P))) :=
   (eqUnder_all_of_cons B B' P Q x y hb vxh vyh vxQ vyP).2
 
-theorem actual_reverse_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem actual_reverse_witness {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (F B B' s t : V)
     (hB : len B=n) (hB' : len B'=n) (hf : FreshPair F B B' s t) :
     ∃ code : V, ArithmeticHistory222.value code =

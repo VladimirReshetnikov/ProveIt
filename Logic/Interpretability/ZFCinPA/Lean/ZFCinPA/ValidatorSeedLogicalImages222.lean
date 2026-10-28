@@ -184,7 +184,7 @@ theorem provable_falsum_of_logicalTheory (h : Provable logicalTheory (^⊥ : V))
     Provable seedTheory (^⊥ : V) :=
   provable_falsum_of_tagged axiomImages_logicalTheory h
 
-theorem logicalTheory_refutation_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+theorem logicalTheory_refutation_witness
     (h : Provable logicalTheory (^⊥ : V)) :
     ∃ d : V, _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value d=2 :=
   ValidatorSeedMarkerRelativization222.refutation_witness axiomImages_logicalTheory h

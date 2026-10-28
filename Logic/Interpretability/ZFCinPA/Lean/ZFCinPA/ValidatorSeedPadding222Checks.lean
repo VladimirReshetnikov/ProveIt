@@ -26,7 +26,7 @@ example (bound F B p : V) (hF : F≤bound) (hB : B≤bound) :
     FreeAvoid (seedLabel bound p) F ∧ Avoid (seedLabel bound p) B :=
   ⟨seedLabel_free bound p F hF,seedLabel_avoids bound p B hB⟩
 
-example [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] :
+example :
     let c := seedLabel (3 : V) 0
     CProv (ex c (imageBody 1 3 c 0)) ∧ ValidatorRelationalCore222.Vac c 0 := by
   simpa only [ValidatorFormulaEncoder222.encode_verum] using

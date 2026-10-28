@@ -2003,3 +2003,32 @@ axioms and the induction instances.
 Because every link is internal to arbitrary models of `𝗜𝚺₂`, the
 derivation does not use Lean's proof of Con(ZFC). The same theorem for a
 trivially unsolvable equation would therefore make HA prove Con(ZFC).
+
+## IΣ₁ suffices: the equivalence is finitist (2026-10-28, 009a470554)
+
+```
+HACurrentEquation2011.isigma1_proves_current_iff_consistency :
+  𝗜𝚺₁ ⊢ classicalSentence 🡘 sourceSentence
+```
+
+IΣ₂ entered only through six Π₂ order inductions in the C222 source-proof
+interpreter. These covered vacuity, alpha transport, negation, the
+quantifier context, the derivation translation, and the seed closure.
+
+The inductions had quantified environments, binder stacks and streams without
+bounds. Foundation's `bounded_all_sigma1_order_induction`, an IΣ₁ theorem,
+bounds those parameters by Σ₁ functions of the recursive calls. That makes
+each invariant Σ₁.
+
+Two inductions needed a different repair:
+- `cProv_gen_context` inducts over sublists of a fixed context.
+- `translate` puts its context enumeration under an existential and reads it
+  back by enumeration independence.
+
+Both bridges now range over models of `𝗜𝚺₁`. The IΣ₂, PA and HA statements
+follow by weakening and by the GG transfer.
+
+Both sides are Π₁, so the equivalence is a Π₂ sentence. By Parsons' theorem
+(IΣ₁ is Π₂-conservative over PRA), it is provable in primitive recursive
+arithmetic. That is the standard formal reading of "finitary"; the repository
+has no PRA formalization, so the PRA step is the cited theorem.

@@ -221,46 +221,29 @@ private theorem free_subst_qVec_fvarVec {k B : V}
       simp
 
 section Images
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
 def pc (s m b F i : V) : V :=
   encode F 0 s (subst ℒₛₑₜ (fvarVec (m-i)) (qqAlls b i))
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
-private lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k→V)→Prop}
-    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
-  rcases h with ⟨φ,hφ⟩
-  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)),?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
-private lemma pi1_to_sigma2 {k : ℕ} {P : (Fin k→V)→Prop}
-    (h : 𝚷₁.Definable P) : (𝚺-[2]).Definable P := by
-  rcases h with ⟨φ,hφ⟩
-  refine ⟨.mkSigma φ.val (φ.pi_prop.strict_mono 𝚺 (by decide)),?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkSigma] using (hφ.iff (v := v))
 private instance avoid_delta : 𝚫₁-Relation[V] Avoid := by unfold Avoid; definability
 private instance free_delta : 𝚫₁-Relation[V] FreeAvoid := by unfold FreeAvoid; definability
 private instance streamFree_pi1 : 𝚷₁-Relation[V] StreamFree := by unfold StreamFree; definability
-private instance streamFree_sigma2 : 𝚺-[2]-Relation[V] StreamFree :=
-  pi1_to_sigma2 streamFree_pi1
-private instance cProv_pi2 : 𝚷-[2]-Predicate[V] CProv := sigma1_to_pi2 cProv_definable
 
 /-- Every length is internal. Free parameters are varied at each actual
-ALL step; no fixed-context GEN or standard-length induction is used. -/
+ALL step; no fixed-context GEN or standard-length induction is used. Each step
+extends the free environment by one eigenlabel, so the parameter stays below
+`alternateStart F s ∷ F` and bounded-parameter order induction in IΣ₁ applies. -/
 theorem closure_image {m b s : V} (hb : IsSemiformula ℒₛₑₜ m b)
     (hbs : shift ℒₛₑₜ b=b)
     (base : ∀ F : V, StreamFree s F →
       CProv (encode F 0 s (subst ℒₛₑₜ (fvarVec m) b))) :
     ∀ F : V, StreamFree s F → CProv (encode F 0 s (qqAlls b m)) := by
-  have hpc : 𝚺₁-Function₂[V] (fun F i => pc s m b F i) := by unfold pc; definability
-  haveI : 𝚺-[2]-Function₂[V] (fun F i => pc s m b F i) := hpc.of_sigmaOne
-  have key : ∀ i : V, i≤m → ∀ F : V, StreamFree s F → CProv (pc s m b F i) := by
-    apply InductionOnHierarchy.order_induction_sigma 𝚷 2
-      (P := fun i => i≤m → ∀ F : V, StreamFree s F → CProv (pc s m b F i))
-    · definability
-    intro i ih hi F hF
+  haveI hpc : 𝚺₁-Function₂[V] (fun F i => pc s m b F i) := by unfold pc; definability
+  have key : ∀ i F : V, i≤m → StreamFree s F → CProv (pc s m b F i) := by
+    refine bounded_all_sigma1_order_induction' (f := fun F => alternateStart F s ∷ F)
+      (P := fun i F => i≤m → StreamFree s F → CProv (pc s m b F i))
+      (by definability) (by definability) ?_
+    intro i F ih hi hF
     rcases zero_or_succ i with rfl | ⟨j,rfl⟩
     · simpa [pc] using base F hF
     · obtain ⟨k,rfl⟩ : ∃ k, m=k+(j+1) := ⟨m-(j+1),(tsub_add_cancel_of_le hi).symm⟩
@@ -274,15 +257,15 @@ theorem closure_image {m b s : V} (hb : IsSemiformula ℒₛₑₜ m b)
       have hw : IsSemitermVec ℒₛₑₜ (k+1) 1 (qVec ℒₛₑₜ (fvarVec k)) := by simpa using hf.qVec
       have hq : IsSemiformula ℒₛₑₜ 1
           (subst ℒₛₑₜ (qVec ℒₛₑₜ (fvarVec k)) (qqAlls b j)) := hB.subst hw
-      have ih' := ih j (by simp) (le_trans (by simp) hi)
-        (eigen F s∷F) (fresh_resources F s hF).2.2.1
+      have ih' := ih j (by simp) (eigen F s∷F) le_rfl (le_trans (by simp) hi)
+        (fresh_resources F s hF).2.2.1
       simp only [pc,e1] at ih'
       rw [←free_subst_qVec_fvarVec hB hBs] at ih'
       simp only [pc,add_tsub_cancel_right]
       rw [qqAlls_succ,substs_all hB.isUFormula]
       exact all_rule hq F s hF ih'
   intro F hF
-  have h := key m le_rfl F hF
+  have h := key m F le_rfl hF
   simp only [pc,tsub_self] at h
   have hc : IsSemiformula ℒₛₑₜ 0 (qqAlls b m) := IsSemiformula.qqAlls (by simpa using hb)
   rwa [subst_eq_self hc (fvarVec_isTermVec 0) (by simp)] at h
@@ -312,7 +295,7 @@ def seedTheory : SetTheory := ((𝗘𝗤 ℒₛₑₜ) ∪ {irreflexiveSentence}
 instance seedTheory_delta1 : seedTheory.Δ₁ :=
   (equalityDelta.add (Theory.Δ₁.singleton irreflexiveSentence)).add seedSchema_delta1
 
-theorem axOK_seedTheory [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] :
+theorem axOK_seedTheory :
     ValidatorSourceDerivation222.AxOK seedTheory V := by
   intro p hp hm F s hs
   change V ⊧/![p] ((equalityDelta.ch ⋎
@@ -328,7 +311,7 @@ theorem axOK_seedTheory [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] :
   · have hR : SeedR p := by simpa using hseed
     exact recognized_seed_image hR F s hs
 
-theorem seedTheory_refutation_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+theorem seedTheory_refutation_witness
     (h : Provable seedTheory (^⊥ : V)) :
     ∃ d : V, ArithmeticHistory222.value d=2 :=
   ValidatorSourceDerivation222.refutation_witness axOK_seedTheory h

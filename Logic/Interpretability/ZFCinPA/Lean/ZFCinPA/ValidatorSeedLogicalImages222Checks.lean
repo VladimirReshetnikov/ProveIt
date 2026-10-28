@@ -47,7 +47,7 @@ example (p j : V) (hp : IsFormula ℒₛₑₜ p) (hmem : p∈logicalTheory.Δ�
   axiomImages_logicalTheory p j hp hmem hj
 example (h : Provable logicalTheory (^⊥ : V)) : Provable seedTheory (^⊥ : V) :=
   provable_falsum_of_logicalTheory h
-example [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] (h : Provable logicalTheory (^⊥ : V)) :
+example (h : Provable logicalTheory (^⊥ : V)) :
     ∃ d : V, _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value d=2 :=
   logicalTheory_refutation_witness h
 

@@ -11,7 +11,7 @@ open ValidatorProvability222 ValidatorFormulaEncoder222
 open ValidatorEnvironmentAlpha222 ValidatorEnvironmentSubstitution222
 open ValidatorExistentialRules222
 open scoped LO.FirstOrder.Arithmetic
-variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 theorem fallback_one {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
     (index s : V) (hs : StreamFree s (0 : V)) :

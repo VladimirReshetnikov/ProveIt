@@ -33,13 +33,13 @@ theorem fallback_one_avoided (bound seed F k : V) (hF : F≤bound) :
     alternateStart bound seed+2*k≠1 :=
   (alternateStart_free bound seed F hF k).1
 
-theorem same_seed_relabel [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {p : V}
+theorem same_seed_relabel {p : V}
     (hp : IsFormula ℒₛₑₜ p) (F s : V) (hs : StreamFree s F) :
     CProv (wim (encode F 0 s p) (encode F 0 s p)) :=
   (encode_formula_relabel hp F s s hs hs).1
 
 /-- Both overlapping-stream directions have actual internal checker witnesses. -/
-theorem next_actual_witnesses [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {p : V}
+theorem next_actual_witnesses {p : V}
     (hp : IsFormula ℒₛₑₜ p) (F s : V) (hs : StreamFree s F) :
     (∃ code : V, ArithmeticHistory222.value code =
       wim (encode F 0 s p) (encode F 0 (s+2) p)+1) ∧

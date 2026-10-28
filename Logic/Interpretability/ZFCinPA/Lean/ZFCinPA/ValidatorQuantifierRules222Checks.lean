@@ -23,7 +23,6 @@ theorem extended_stream_safety (F s : V) (hs : StreamFree s F) :
     StreamFree (eigen F s+2) (eigen F s∷F) := (fresh_resources F s hs).2.2.2.1
 
 section
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 theorem actual_all_witness {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
     (F s : V) (hs : StreamFree s F)
     (h : CProv (encode (eigen F s∷F) 0 s (free ℒₛₑₜ p))) :
