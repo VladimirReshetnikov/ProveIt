@@ -61,11 +61,8 @@ theorem constructedWord_eq (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
 theorem rotation_eq (c : ZMod (N*2011) → ℕ) (hc : ∀ i, c i ≤ 1)
     (s t : ℕ) (hst : (s : ZMod N) = (t : ZMod N)) :
     binaryRotation 47 (displacement s) c = binaryRotation 47 (displacement t) c := by
-  funext i
-  rw [rotation_zero_phase (by decide : 0 < 47) _ c hc (by simp [displacement]),
-    rotation_zero_phase (by decide : 0 < 47) _ c hc (by simp [displacement])]
-  simp only [displacement,Nat.mul_div_cancel_left _ (by decide : 0 < 47)]
-  rw [physical_shift_eq s t hst]
+  simp only [binaryRotation,displacement,Nat.mul_mod_right,
+    Nat.mul_div_cancel_left _ (by decide : 0 < 47),physical_shift_eq s t hst]
 
 /-- The same source, carries, and digit function satisfy the new normalization. -/
 theorem normalization_rephase (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
