@@ -76,6 +76,10 @@ Packet names refer to the subdirectories of this directory.
 | `coordinate_gt_of_margin_pos` | zb | `MarginSeparation` | adopted as part of `1e173a6849`; use positivity and the existing absolute-square bound directly.141→133 lines without helper/import overhead, retaining arbitrary signed C and g≥0. Joint ten-call final suite passes; all old reports identical. Independent full review passes |
 | `cyclic` integer-interval induction | u, adapted | `WangTiles942ResetRows` | adopted as part of `1e173a6849`; a single integer induction handles both directions with the original open-interval guards.162→150 lines without the proposal's extra import. Three targets, three clients, three focuses and59-old-public audit pass; all reports identical. Seventeen separate original Wang preparation, target, client and focus calls precede the baseline. Independent full review passes |
 | `cyclic/patches/CurrentSouthShift2011.lean.patch` | o, adapted | `CurrentSouthShift2011` | adopted as `9602a7db90`; specialize the existing binary prefix and copy translation for offsets19 and20. Explicit numeral/cast simplification repairs the supplied patch.162→144 lines/615 bytes without helper/import overhead, preserving all nine copy equalities, Boolean bounds and selectors940/941/942. Four final target/client/focus/8-old-public calls pass, all reports identical. The exact packet and its first repair each failed and are retained separately;36 named prerequisite refreshes and the original baseline pass. Independent full review passes |
+| `native-proofs/one-hot-support.patch` | k | `CurrentCellLabels2011` | adopted as `00e26fc130`; use `Finset.sum_le_one_iff` for arbitrary finite index types.311→294 lines. Six final target/three-client/focus/audit calls pass and all23 public axiom reports are identical; selected prior prerequisite refreshes and other precompiled objects are distinguished. Independent review passes |
+| `patches/01-tail-cutoff.patch` | zd | `CurrentSelectorTail2011` | adopted as `0a8eb8938b`; derive the complementary cutoff with `not_congr` and simplify the successor step.335→322 lines with all guards unchanged. Four final target/client/focus/audit calls pass and all17 reports are identical. An initial overlay setup failure preceded the successful baseline; dependencies were precompiled. Independent review passes |
+| `patches/04-deterministic-and-helical.patch`, composition hunks | ze | `ComposeRepresentation`, `DirectComposition` | adopted as `a69be9f233`; use function extensionality and `exists_eq_right` in the proof arguments.148→138 lines. The original full constructed representations equal the new ones by `rfl` for arbitrary inputs; six axiom reports are identical. Nine final calls and a recorded nine-call replay pass in an isolated overlay with precompiled dependencies. Independent review passes |
+| `patches/04-deterministic-and-helical.patch`, helical hunk | ze | `WangTiles942HelicalQuotient` | adopted as `8e634984b5`; use period one along the helix to reach row zero.147→137 lines. Two prerequisite refreshes, original target/audit and four final target/client/focus/audit calls pass; all12 reports are identical. Four initial overlay path failures were corrected; other dependencies were precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -263,6 +267,16 @@ accepted final calls pass, with all eight old public reports byte-identical.
 Combined with the prior two commits,29 accepted final calls pass and129 old
 reports are byte-identical. The two earlier failed candidate calls and
 preparatory rebuilds are separate; see [its evidence bundle](../../reviews/lean-proof-simplification-20261028-south-evidence/BUNDLE.json).
+
+
+The next four commits remove50 lines across five modules, advancing the
+reviewed series from4384 to4434. Twenty-three final target/client/focus/audit
+calls and a separate nine-call composition replay pass. All58 recorded old
+public axiom reports are byte-identical. These are scoped checks using
+precompiled dependencies, not a whole-project build. The composition probe
+also verifies equality of the old and new complete representation values by
+`rfl`. Logs, source snapshots, command records and retained selector/helical setup
+failure logs are in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-four-proofs-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
