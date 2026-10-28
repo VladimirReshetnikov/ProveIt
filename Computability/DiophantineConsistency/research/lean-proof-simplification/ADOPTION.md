@@ -496,5 +496,14 @@ remain precompiled. Existing heartbeat limits and warnings are unchanged. The
 target oleans grew by 17640 and 9736 bytes in the recorded builds. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-kernel-records-evidence/BUNDLE.json).
 
+The generated gap certificate row proofs `7441eed24d` remove 386 net lines
+across the source and generator, bringing the reviewed series to 6562. Four
+baseline and final target, client, focus and axiom checks pass; all ten old
+public axiom reports and the client and focus logs match. Target warnings fall
+from 26 to three pre-existing warnings. Fifty-one local objects were
+hash-authenticated; earlier local and external dependencies remain precompiled.
+The target object grew by 307392 bytes in the recorded builds. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-gap-certificate-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
