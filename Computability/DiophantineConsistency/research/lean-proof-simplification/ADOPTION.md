@@ -103,6 +103,9 @@ Packet names refer to the subdirectories of this directory.
 | `patches/individual/trace-absolute-bound.patch` | u | `WangMachineTraceBounds` | adopted as `b0cc4adc6d`; use the absolute-value alternative directly.142→137 lines. Five machine/finish prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass and all13 old reports match. Other dependencies are precompiled. Independent review passes |
 | `patches/no-wrap-capacity.patch` | zr | `CurrentDummySafety2011` | adopted as `776133bf33`; use the preceding radix-power bound directly.213→208 lines, with the original guards retained. Four final target/client/focus/audit calls pass and all13 old reports match. The broader client graph was not refreshed and uses precompiled dependencies. Independent review passes |
 | `patches/02-prime-factor-order.patch`, adapted | zd | `CurrentControllerData2011` | adopted as `66dafcc2b6`; share a private prime-factor order helper and use kernel-checked closed cases without a new import.169→162 lines. Eighteen affected prerequisites were refreshed before baseline; five final target/two-client/focus/audit calls and the additional RankStride client pass. All49 named old reports match; two unchanged anonymous instances are outside the probe. Ten further trace-dependent prerequisites were refreshed. Preparation warnings lack a comparable full-cone baseline; broader RankStride dependencies remain precompiled. The supplied plain-decide candidate failed. Independent review passes |
+| `bridges/patches/WangTiles942TraceCycle.lean.patch`, repaired | zi | `WangTiles942TraceCycle` | adopted as `c74079d46b`; share temporal boundary cases with restricted simplification.182→178 lines. Five final target/two-client/focus/audit calls pass and all20 old reports match. The supplied candidate failed and is retained; an earlier Python setup failure has no retained log. Six authenticated prerequisite objects were reused; other dependencies are precompiled. Independent review passes |
+| `patches/pell-fixed-index.patch` | z | `NativePellBootstrap` | adopted as `a8c12692bf`; use the existing fixed-index Pell estimates and monotonicity.640→636 lines. Five final target/two-client/focus/audit calls pass and all31 old reports match. Six authenticated Sidon-cone objects were reused; other dependencies are precompiled. Independent review passes |
+| `syntax/patches/pairing-shell-threshold.patch` | y | `ObjectPairingInjective` | adopted as `5355cdf297`; a shell-midpoint helper collapses four branch combinations to two.104→100 lines including the new public helper, which omits the `succ_le` hypothesis. Twenty-four affected prerequisites were refreshed before baseline; six final target/two-client/focus/old-audit/new-helper calls pass and all six old reports match. The helper uses the standard three axioms; other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -375,6 +378,19 @@ refreshed, including ten for the additional RankStride client. Preparation
 warnings have no comparable full-cone baseline and broader RankStride
 dependencies remain precompiled. The supplied plain-decide candidate failed;
 the kernel repair passed. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-controller-order-evidence/BUNDLE.json).
+
+The next two commits remove eight lines and381 bytes, advancing the reviewed
+series from4614 to4622. Ten final scoped checks pass and all51 old public
+axiom reports match. Twelve previously refreshed prerequisite outputs were
+authenticated and reused; other dependencies remain precompiled. The trace
+packet's failed Lean candidate is retained, while an earlier Python setup
+failure has no retained log. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-trace-pell-evidence/BUNDLE.json).
+
+The pairing shell proof `5355cdf297` removes four lines and176 bytes,
+including its new helper, bringing the reviewed series to4626. Six final
+scoped checks pass and all six old public axiom reports match. Twenty-four
+affected prerequisites were refreshed; other dependencies remain precompiled.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pair-shell-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
