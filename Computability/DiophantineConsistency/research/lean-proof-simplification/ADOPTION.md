@@ -582,5 +582,22 @@ client records are excluded in favor of contemporaneous reruns, and the unchange
 semantics prerequisite emits five matching warnings. Mathlib and other project
 dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-consumer-table-evidence/BUNDLE.json).
 
+The HA decision proof reuse `8c0a3a9f61` removes 36 net lines, bringing the
+reviewed series to 7795. Twenty-one baseline project modules were rebuilt;
+final targets, two focused checks, two direct clients and all 37 old public
+axiom reports pass with matching logs and no warnings. Current PACore was
+authenticated from a prior refresh; Foundation, FirstOrder, AckermannHFCore,
+Mathlib and other earlier dependencies remain precompiled. The new-helper probe
+status was observed but not separately recorded in JSON. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-ha-decisions-evidence/BUNDLE.json).
+
+The DAG RHS degree reuse `e374d0dd9d` removes ten net lines and 503 bytes,
+bringing the reviewed series to 7805. Two prerequisites were rebuilt and four
+prior objects authenticated; targets, a direct client, focused checks, 56 old
+public axiom reports and two inferred-instance probes pass with matching output
+and no warnings. Other project and external dependencies remain precompiled;
+helper and instance-probe statuses were observed but lack separate JSON records.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-rhs-degree-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
