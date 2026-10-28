@@ -76,12 +76,8 @@ theorem signed_residue_cases {A : ℕ} (hA : 1 < A) {V y : ℤ}
     · exact Or.inr (by rwa [hj] at hr)
   by_cases hy0 : 0 ≤ y
   · simpa only [Int.natCast_natAbs, abs_of_nonneg hy0] using habs
-  · have hy0 : y ≤ 0 := by omega
-    rcases habs with hpos | hneg
-    · right
-      simpa only [Int.natCast_natAbs, abs_of_nonpos hy0, neg_neg] using hpos.neg
-    · left
-      simpa only [Int.natCast_natAbs, abs_of_nonpos hy0, neg_neg] using hneg.neg
+  · have h := habs.imp (fun h => h.neg) (fun h => h.neg)
+    simpa only [Int.natCast_natAbs, abs_of_nonpos (le_of_not_ge hy0), neg_neg, or_comm] using h
 
 /-- The full signed residue required by the thirteen-coordinate carrier.
 Neither V nor y is assumed positive, and no size bound on them is supplied. -/
