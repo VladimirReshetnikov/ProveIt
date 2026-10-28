@@ -564,5 +564,13 @@ object hashes match. Eleven local source/import/object pins were verified, while
 earlier local and external dependencies remain precompiled. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-mf-permutation-evidence/BUNDLE.json).
 
+The Jones quartic correctness reuse `ca84549030` removes 13 net lines across
+three modules, bringing the reviewed series to 7733. Four affected prerequisites
+were rebuilt; targets, a direct client, focused checks and all 58 old public
+axiom reports pass with matching logs and no warnings. Other project and
+external dependencies remain precompiled. An initial all-trans prototype timed
+out, but its empty log and overwritten source have no standalone status record.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-jones-quartic-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
