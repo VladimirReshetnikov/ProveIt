@@ -110,6 +110,7 @@ Packet names refer to the subdirectories of this directory.
 | `patches/03-successor-certificate.patch` | p | `AnnotatedSyntaxGraphs` | adopted as `53b4259e9b`; share a successor-first certificate helper while retaining the impossible zero-output case.169→166 lines including the public helper. Nine affected prerequisites were refreshed after borrowing12 authenticated pairing outputs. Five final target/client/focus/zero-and-helper-probe/audit calls pass; all24 old reports including the decidable instance match, and the new helper uses propext only. Other dependencies are precompiled. Independent review passes |
 | `units/patches/gamma_pos_from_coprime.patch` | zl | `CurrentControllerUnits2011` | adopted as part of `ef081fa2ae`; derive Gamma positivity from its existing coprimality.196→193 lines. The joint seven final target/two-focus/client/two-audit calls pass and all35 old reports match; the target exponent warning is byte-identical before and after. Independent review passes |
 | `patches/controller-base-unit.patch` | zw | `CurrentControllerSubsets2011` | adopted as part of `ef081fa2ae`; derive the base unit from the odd block modulus.102→99 lines, with the proof comment updated. Nineteen SignedPell-affected prerequisites were refreshed before both baselines; joint final calls and old reports pass as above. Preparation warnings lack a comparable full-cone baseline; other dependencies are precompiled. Independent review passes |
+| `patches/rotation-rephase.patch` | zr | `CurrentWordRephase2011` | adopted as `ed5538c38c`; unfold binary rotation and use the existing physical shift equality.116→113 lines, retaining the named Boolean premise. Five final target/client/two-focus/audit checks pass and all eight old reports match; a second baseline/final run borrows an authenticated prior packing object. The stronger proof leaves `hc` unused, producing a new warning; the focus and borrowed prerequisite also emit exponent warnings. The broader client chain remains precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -415,6 +416,14 @@ public axiom reports match. Nineteen SignedPell-affected prerequisites were
 refreshed; preparation warnings lack a comparable full-cone baseline, and the
 Units target warning is identical before and after. Other dependencies remain
 precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-controller-units-subsets-evidence/BUNDLE.json).
+
+The rephasing proof `ed5538c38c` removes three lines and138 bytes, bringing
+the reviewed series to4642. Five final scoped checks pass in each of two runs,
+with all eight old public axiom reports matching. The stronger proof leaves a
+retained premise unused, producing a new warning; focus and previously built
+prerequisite exponent warnings are separately recorded. The authenticated
+borrowed object has a broader precompiled dependency chain. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-rephase-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
