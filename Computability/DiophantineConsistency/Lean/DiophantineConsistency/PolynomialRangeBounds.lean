@@ -14,22 +14,15 @@ open Polynomial Finset
 open scoped BigOperators
 
 theorem geometric_identity (B : ℤ) (d : ℕ) :
-    (B - 1) * (∑ i ∈ range d, B ^ i) = B ^ d - 1 := by
-  induction d with
-  | zero => simp
-  | succ d ih =>
-    rw [sum_range_succ, mul_add, ih, pow_succ]
-    ring
+    (B - 1) * (∑ i ∈ range d, B ^ i) = B ^ d - 1 :=
+  mul_geom_sum B d
 
 theorem geometric_lt_two_top {B : ℤ} (hB : 2 ≤ B) (d : ℕ) :
     (∑ i ∈ range (d + 1), B ^ i) < 2 * B ^ d := by
-  induction d with
-  | zero => norm_num
-  | succ d ih =>
-    rw [sum_range_succ]
-    have hp : 0 < B ^ d := by positivity
-    have hnext : B ^ (d + 1) = B ^ d * B := pow_succ _ _
-    nlinarith
+  rw [sum_range_succ]
+  have hs : 0 ≤ ∑ i ∈ range d, B ^ i :=
+    sum_nonneg (fun i _ => pow_nonneg (by omega : 0 ≤ B) i)
+  nlinarith [geometric_identity B d, mul_nonneg (show 0 ≤ B - 2 by omega) hs]
 
 theorem abs_eval_lt {B H : ℤ} (hB : 2 ≤ B) (hH : 0 < H)
     (p : ℤ[X]) {d : ℕ} (hd : p.natDegree ≤ d) (hc : ∀ i, |p.coeff i| ≤ H) :
