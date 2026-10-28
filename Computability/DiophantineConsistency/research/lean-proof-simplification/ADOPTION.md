@@ -514,5 +514,15 @@ and external dependencies remain precompiled. Newly merged
 `ArithmeticConstructionBound` transitively imports the comment-only prerequisite;
 it was not checked. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-kernel-mass-evidence/BUNDLE.json).
 
+The Wang data chunk assembly `93240c46a2` removes 88 lines and 5485 bytes,
+bringing the reviewed series to 6966. The decoder prerequisite was freshly
+rebuilt; target, table and core clients, corrected boundary checks and all 21
+old public axiom reports pass in baseline and final runs with identical logs and
+no warnings. The initial boundary probe failed on an unqualified namespace;
+both failures and the corrected checks are retained. BusyBeaver and Mathlib
+remain precompiled. The newly merged arithmetic modules were not tested. The
+target object shrank by 1333584 bytes in the recorded builds. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-wang-chunks-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
