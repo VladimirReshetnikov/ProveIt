@@ -617,5 +617,20 @@ ArithmeticCyclicWord object was missing. Earlier dependencies remain precompiled
 and the prerequisite build and failed direct-client probe statuses were observed
 rather than separately recorded in JSON. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mask-reuse-evidence/BUNDLE.json).
 
+The reflected-geometry reuse `30decae790` removes 16 lines and 465 bytes,
+bringing the reviewed series to 7850. Target, two clients, focus and 27 old
+public axiom reports pass with matching logs and no warnings. The new
+prerequisite object was authenticated against a successful build using the
+latest matrix-free permutation. Five other local sources have newer timestamps
+than cached objects, and earlier dependencies remain precompiled. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-reflected-reuse-evidence/BUNDLE.json).
+
+The binary half-bound reuse `dfc1b71ea6` removes seven net lines, bringing the
+reviewed series to 7857. Population, carry and rank modules, focus, Repunit
+client, 45 old axiom reports and seven instance reports pass with matching
+output. The unchanged carry prerequisite emits six identical warnings; earlier
+Foundation and project dependencies remain precompiled. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-binary-half-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
