@@ -87,6 +87,7 @@ Packet names refer to the subdirectories of this directory.
 | `optional/permutation-injectivity.patch` | m | `WangTiles942Permutation` | adopted as `1e16302289`; compose finite injections and use `Fin.cons` injectivity.264→255 lines. Five final target/two-client/focus/audit calls pass; all33 old reports are identical. Other dependencies are precompiled. Independent review passes |
 | `patches/02-variadic-fragments.patch` | p | `AnnotatedProofChecker` | adopted as `0c9a5e791e`; construct fragments for arbitrary premise lists, then specialize the existing zero- through three-premise results.376→366 lines including the new helper and removing a private lookup proof. Five final target/client/focus/variadic-probe/audit calls pass; all30 old reports are identical, and both new helpers use propext only. Dependencies are precompiled. Independent review passes |
 | `encoding/StateNumber.patch`, adapted | v | `WangMachineEncoding` | adopted as `2e8dd29f57`; use direct Option cases and finite-value simplification without the proposed import.171→156 lines. Seven final target/four-client/focus/audit calls pass; all21 old reports are identical. An equivalence-based candidate passed but added Classical.choice to two declarations and was rejected. Other dependencies are precompiled. Independent review passes |
+| `syntax/patches/list-head-monotone.patch` | y | `ObjectListHead` | adopted as `bfd57708b8`; rewrite a cons head and lift the existing left-pair bound by addition.129→121 lines. Four final target/client/focus/audit rechecks pass and all11 old reports are identical. Twenty-five earlier affected prerequisites and ten checker-affected prerequisites were refreshed; four earlier final calls are recorded separately. Other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -301,6 +302,13 @@ The rejected state-number candidate and its seven successful calls are kept
 separate from the accepted proof. Dependencies outside the isolated targets
 were precompiled; no full build is claimed. Inputs and results are in
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-variadic-evidence/BUNDLE.json).
+
+The list-head proof `bfd57708b8` removes eight lines and400 bytes, bringing
+the reviewed series to4514. Four final rechecks pass and all11 old public
+axiom reports match. After25 prior affected prerequisites, the concurrent
+annotated checker change required a further ten-module refresh before the
+final checks. Four earlier successful final calls are retained separately;
+other dependencies are precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-listhead-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
