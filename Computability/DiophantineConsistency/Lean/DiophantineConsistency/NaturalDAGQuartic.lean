@@ -198,48 +198,22 @@ theorem expression_binaryOps (nodes : List (Node inputs fixed)) (left right : �
   dsimp only at hrest ⊢
   omega
 
-private theorem degree_sub {σ : Type*} {p q : MvPolynomial σ ℤ} {d : ℕ}
-    (hp : p.totalDegree ≤ d) (hq : q.totalDegree ≤ d) : (p-q).totalDegree ≤ d :=
-  (MvPolynomial.totalDegree_sub _ _).trans (max_le hp hq)
-
-private theorem degree_add {σ : Type*} {p q : MvPolynomial σ ℤ} {d : ℕ}
-    (hp : p.totalDegree ≤ d) (hq : q.totalDegree ≤ d) : (p+q).totalDegree ≤ d :=
-  (MvPolynomial.totalDegree_add _ _).trans (max_le hp hq)
-
 theorem wire_degree (inputs nodes j : ℕ) :
     (wire inputs nodes j).toPolynomial.totalDegree ≤ 1 := by
   unfold wire
   split <;> simp [Expr.toPolynomial]
 
 theorem rhs_degree (nodes : ℕ) (p : Fin fixed → ℤ) (n : Node inputs fixed) :
-    (rhs nodes p n).toPolynomial.totalDegree ≤ 2 := by
-  cases n with
-  | literal z =>
-    change (MvPolynomial.C z : MvPolynomial (Variables inputs nodes) ℤ).totalDegree ≤ 2
-    rw [MvPolynomial.totalDegree_C]
-    omega
-  | input i => simp [rhs,Expr.toPolynomial]
-  | constant i =>
-    change (MvPolynomial.C (p i) : MvPolynomial (Variables inputs nodes) ℤ).totalDegree ≤ 2
-    rw [MvPolynomial.totalDegree_C]
-    omega
-  | add a b =>
-    exact degree_add ((wire_degree _ _ a).trans (by decide))
-      ((wire_degree _ _ b).trans (by decide))
-  | sub a b =>
-    exact degree_sub ((wire_degree _ _ a).trans (by decide))
-      ((wire_degree _ _ b).trans (by decide))
-  | mul a b =>
-    exact (MvPolynomial.totalDegree_mul _ _).trans
-      (Nat.add_le_add (wire_degree inputs nodes a) (wire_degree inputs nodes b))
+    (rhs nodes p n).toPolynomial.totalDegree ≤ 2 :=
+  DAGQuartic.rhsWith_degree p Sum.inl (wire inputs nodes) (wire_degree inputs nodes) n
 
 theorem residual_degree (nodes : List (Node inputs fixed)) (left right : ℕ)
     (p : Fin fixed → ℤ) (i : Fin (nodes.length+1)) :
     (residual nodes left right p i).toPolynomial.totalDegree ≤ 2 := by
   refine Fin.cases ?_ (fun j => ?_) i
-  · exact degree_sub ((wire_degree inputs nodes.length left).trans (by decide))
+  · exact DAGQuartic.degree_sub ((wire_degree inputs nodes.length left).trans (by decide))
       ((wire_degree inputs nodes.length right).trans (by decide))
-  · exact degree_sub ((wire_degree inputs nodes.length j.val).trans (by decide))
+  · exact DAGQuartic.degree_sub ((wire_degree inputs nodes.length j.val).trans (by decide))
       (rhs_degree nodes.length p (nodes.getD j.val (.literal 0)))
 
 theorem polynomial_degree (nodes : List (Node inputs fixed)) (left right : ℕ)

@@ -189,7 +189,7 @@ theorem expression_binaryOps (nodes : List (Node inputs fixed)) (output : ℕ)
   dsimp only at hrest ⊢
   omega
 
-private theorem degree_sub {σ : Type*} {p q : MvPolynomial σ ℤ} {d : ℕ}
+theorem degree_sub {σ : Type*} {p q : MvPolynomial σ ℤ} {d : ℕ}
     (hp : p.totalDegree ≤ d) (hq : q.totalDegree ≤ d) : (p-q).totalDegree ≤ d :=
   (MvPolynomial.totalDegree_sub _ _).trans (max_le hp hq)
 
@@ -204,27 +204,43 @@ theorem wire_degree (inputs nodes j : ℕ) :
   · exact degree_sub (by simp [Expr.toPolynomial]) (by simp [Expr.toPolynomial])
   · simp [Expr.toPolynomial]
 
-theorem rhs_degree (nodes : ℕ) (p : Fin fixed → ℤ) (n : Node inputs fixed) :
-    (rhs nodes p n).toPolynomial.totalDegree ≤ 2 := by
+def rhsWith {σ : Type*} (p : Fin fixed → ℤ) (input : Fin inputs → σ)
+    (wire : ℕ → Expr σ) : Node inputs fixed → Expr σ
+  | .literal z => .constant z
+  | .input i => .var (input i)
+  | .constant i => .constant (p i)
+  | .add a b => wire a + wire b
+  | .sub a b => wire a - wire b
+  | .mul a b => wire a * wire b
+
+/-- A quadratic bound independent of how the circuit wires are represented. -/
+theorem rhsWith_degree {σ : Type*} (p : Fin fixed → ℤ) (input : Fin inputs → σ)
+    (wire : ℕ → Expr σ) (hw : ∀ j, (wire j).toPolynomial.totalDegree ≤ 1)
+    (n : Node inputs fixed) : (rhsWith p input wire n).toPolynomial.totalDegree ≤ 2 := by
   cases n with
   | literal z =>
-    change (MvPolynomial.C z : MvPolynomial (Variables inputs nodes) ℤ).totalDegree ≤ 2
+    change (MvPolynomial.C z : MvPolynomial σ ℤ).totalDegree ≤ 2
     rw [MvPolynomial.totalDegree_C]
     omega
-  | input i => simp [rhs,Expr.toPolynomial]
+  | input i => simp [rhsWith,Expr.toPolynomial]
   | constant i =>
-    change (MvPolynomial.C (p i) : MvPolynomial (Variables inputs nodes) ℤ).totalDegree ≤ 2
+    change (MvPolynomial.C (p i) : MvPolynomial σ ℤ).totalDegree ≤ 2
     rw [MvPolynomial.totalDegree_C]
     omega
   | add a b =>
-    exact degree_add ((wire_degree _ _ a).trans (by decide))
-      ((wire_degree _ _ b).trans (by decide))
+    exact degree_add ((hw a).trans (by decide))
+      ((hw b).trans (by decide))
   | sub a b =>
-    exact degree_sub ((wire_degree _ _ a).trans (by decide))
-      ((wire_degree _ _ b).trans (by decide))
+    exact degree_sub ((hw a).trans (by decide))
+      ((hw b).trans (by decide))
   | mul a b =>
     exact (MvPolynomial.totalDegree_mul _ _).trans
-      (Nat.add_le_add (wire_degree inputs nodes a) (wire_degree inputs nodes b))
+      (Nat.add_le_add (hw a) (hw b))
+
+
+theorem rhs_degree (nodes : ℕ) (p : Fin fixed → ℤ) (n : Node inputs fixed) :
+    (rhs nodes p n).toPolynomial.totalDegree ≤ 2 :=
+  rhsWith_degree p Sum.inl (wire inputs nodes) (wire_degree inputs nodes) n
 
 theorem residual_degree (nodes : List (Node inputs fixed)) (output : ℕ)
     (p : Fin fixed → ℤ) (i : Fin (nodes.length+1)) :
