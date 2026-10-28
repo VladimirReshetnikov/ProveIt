@@ -102,15 +102,7 @@ theorem complete (e : NatExpr σ) (v : σ → ℕ) :
   induction e with
   | constant n => intro k; simp [residualSyntax, Expr.eval, natAssignment, values]
   | var i => intro k; simp [residualSyntax, Expr.eval, natAssignment, values]
-  | add p q hp hq =>
-      intro k
-      cases k with
-      | inl j => simp [residualSyntax, Expr.eval, natAssignment, values, values_root]
-      | inr k =>
-          cases k with
-          | inl k => simpa [residualSyntax, Expr.eval_rename, assignment_comp, values] using hp k
-          | inr k => simpa [residualSyntax, Expr.eval_rename, assignment_comp, values] using hq k
-  | mul p q hp hq =>
+  | add p q hp hq | mul p q hp hq =>
       intro k
       cases k with
       | inl j => simp [residualSyntax, Expr.eval, natAssignment, values, values_root]

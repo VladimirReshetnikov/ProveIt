@@ -33,22 +33,7 @@ theorem stateNumber_le (s : Option (Fin 215)) : stateNumber s ≤ 215 := by
 
 theorem stateNumber_injective : Function.Injective stateNumber := by
   intro s t h
-  cases s with
-  | none =>
-      cases t with
-      | none => rfl
-      | some q =>
-          simp only [stateNumber] at h
-          have hq := q.isLt
-          omega
-  | some p =>
-      cases t with
-      | none =>
-          simp only [stateNumber] at h
-          have hp := p.isLt
-          omega
-      | some q =>
-          exact congrArg some (Fin.ext h)
+  cases s <;> cases t <;> simp_all [stateNumber, Fin.ext_iff] <;> omega
 
 theorem bit_le_one (b : Bool) : b.toNat ≤ 1 := by cases b <;> decide
 

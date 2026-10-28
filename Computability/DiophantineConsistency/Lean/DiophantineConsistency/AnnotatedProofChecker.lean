@@ -237,60 +237,50 @@ theorem Produces.step {p : List Line} {history : List Judgment} (hp : Produces p
   simp only [Option.bind_some]
   simp only [run,hv seen,if_true,List.cons_append]
 
-private theorem lookup_after (older : List Judgment) (j : Judgment) (tail : List Judgment) :
-    (older++j::tail)[older.length]?=some j := by
-  rw [List.getElem?_append_right (by omega)]
-  simp
+/-- Build a backward-reference list for an arbitrary list of premises. -/
+theorem collect_fragments (premises : List Judgment)
+    (ready : ∀ j ∈ premises, HasFragment j) :
+    ∃ lines history, ∃ parents : List Nat, Produces lines history ∧
+      ∀ seen, parents.map (fun i => (history ++ seen)[i]?) = premises.map some := by
+  induction premises with
+  | nil => exact ⟨[], [], [], fun _ => rfl, fun _ => rfl⟩
+  | cons a goals ih =>
+    obtain ⟨p, tail, hp⟩ := ready a (by simp)
+    obtain ⟨q, history, parents, hq, refs⟩ := ih (fun j hj => ready j (by simp [hj]))
+    refine ⟨p ++ q, history ++ (a :: tail), history.length :: parents, hp.append hq, ?_⟩
+    intro seen
+    have head : ((history ++ (a :: tail)) ++ seen)[history.length]? = some a := by
+      rw [List.append_assoc, List.getElem?_append_right (Nat.le_refl _)]
+      simp only [Nat.sub_self, List.cons_append, List.getElem?_cons_zero]
+    have rest := refs ((a :: tail) ++ seen)
+    simp only [List.map_cons]
+    rw [head]
+    apply congrArg (some a :: ·)
+    exact (congrArg (fun xs => parents.map (fun i => xs[i]?))
+      (List.append_assoc history (a :: tail) seen)).trans rest
 
-theorem fragment0 (r : Rule) (hs : r.side=true) (hm : r.premises=[]) : HasFragment r.output := by
-  refine ⟨[⟨r,[]⟩],[],?_⟩
+/-- Completeness for one rule, independent of the number of premises. -/
+theorem fragment (r : Rule) (hs : r.side = true)
+    (ready : ∀ j ∈ r.premises, HasFragment j) : HasFragment r.output := by
+  obtain ⟨lines, history, parents, hp, refs⟩ := collect_fragments r.premises ready
+  refine ⟨lines ++ [⟨r, parents⟩], history, hp.step r parents ?_⟩
   intro seen
-  simp [run,Line.valid,hs,hm]
+  simp only [Line.valid, hs, refs seen, decide_true, Bool.and_self]
+
+theorem fragment0 (r : Rule) (hs : r.side=true) (hm : r.premises=[]) : HasFragment r.output :=
+  fragment r hs (by rw [hm]; exact List.forall_mem_nil _)
 
 theorem fragment1 (r : Rule) (a : Judgment) (hs : r.side=true) (hm : r.premises=[a])
-    (ha : HasFragment a) : HasFragment r.output := by
-  obtain ⟨p,tail,hp⟩ := ha
-  refine ⟨p++[⟨r,[0]⟩],a::tail,hp.step r [0] ?_⟩
-  intro seen
-  simp [Line.valid,hs,hm]
+    (ha : HasFragment a) : HasFragment r.output :=
+  fragment r hs (fun _ hj => (List.mem_singleton.mp (hm ▸ hj)).symm ▸ ha)
 
 theorem fragment2 (r : Rule) (a b : Judgment) (hs : r.side=true) (hm : r.premises=[a,b])
-    (ha : HasFragment a) (hb : HasFragment b) : HasFragment r.output := by
-  obtain ⟨p,tp,hp⟩ := ha
-  obtain ⟨q,tq,hq⟩ := hb
-  let history := (b::tq)++(a::tp)
-  refine ⟨(p++q)++[⟨r,[(b::tq).length,0]⟩],history,?_⟩
-  apply (hp.append hq).step
-  intro seen
-  have hfirst : (history++seen)[(b::tq).length]?=some a := by
-    simpa only [history,List.append_assoc,List.cons_append] using lookup_after (b::tq) a (tp++seen)
-  have hsecond : (history++seen)[0]?=some b := rfl
-  simp only [Line.valid,hs,Bool.true_and,hm,List.map_cons,List.map_nil,decide_eq_true_eq]
-  change [(history++seen)[(b::tq).length]?,(history++seen)[0]?]=[some a,some b]
-  rw [hfirst,hsecond]
+    (ha : HasFragment a) (hb : HasFragment b) : HasFragment r.output :=
+  fragment r hs (by simpa [hm] using And.intro ha hb)
 
 theorem fragment3 (r : Rule) (a b c : Judgment) (hs : r.side=true) (hm : r.premises=[a,b,c])
-    (ha : HasFragment a) (hb : HasFragment b) (hc : HasFragment c) : HasFragment r.output := by
-  obtain ⟨p,tp,hp⟩ := ha
-  obtain ⟨q,tq,hq⟩ := hb
-  obtain ⟨t,tt,ht⟩ := hc
-  let history := (c::tt)++((b::tq)++(a::tp))
-  let parents := [(c::tt).length+(b::tq).length,(c::tt).length,0]
-  refine ⟨((p++q)++t)++[⟨r,parents⟩],history,?_⟩
-  apply ((hp.append hq).append ht).step
-  intro seen
-  have hfirst : (history++seen)[(c::tt).length+(b::tq).length]?=some a := by
-    have h := lookup_after ((c::tt)++(b::tq)) a (tp++seen)
-    simp only [List.length_append] at h
-    simpa only [history,List.append_assoc,List.cons_append] using h
-  have hsecond : (history++seen)[(c::tt).length]?=some b := by
-    simpa only [history,List.append_assoc,List.cons_append] using
-      lookup_after (c::tt) b (tq++((a::tp)++seen))
-  have hthird : (history++seen)[0]?=some c := rfl
-  simp only [Line.valid,parents,hs,Bool.true_and,hm,List.map_cons,List.map_nil,decide_eq_true_eq]
-  change [(history++seen)[(c::tt).length+(b::tq).length]?,
-    (history++seen)[(c::tt).length]?,(history++seen)[0]?]=[some a,some b,some c]
-  rw [hfirst,hsecond,hthird]
+    (ha : HasFragment a) (hb : HasFragment b) (hc : HasFragment c) : HasFragment r.output :=
+  fragment r hs (by simpa [hm] using And.intro ha (And.intro hb hc))
 
 theorem fragment_exists {G : List Form} {a : Form} (h : Prov G a) : HasFragment ⟨G,a⟩ := by
   induction h with

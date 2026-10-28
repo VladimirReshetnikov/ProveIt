@@ -36,16 +36,8 @@ theorem left_le_pair (a b : N H) : a≤ObjectNatPairing.pair H a b := by
 theorem listHead_le (code : N H) : ObjectNumericWire.listHead H code≤code := by
   rcases ObjectNumericWire.zero_or_cons H code with hz | hc
   · rw [hz,ObjectNumericWire.head_zero]
-  · obtain ⟨s,hs⟩ := (ObjectNaturalOrder.Natural.le_iff_exists_add H _ _).mp
-      (left_le_pair H (ObjectNumericWire.treeLeft H code) (ObjectNumericWire.treeRight H code))
-    apply (ObjectNaturalOrder.Natural.le_iff_exists_add H _ _).mpr
-    refine ⟨s,?_⟩
-    have hn : code≠0 := by
-      intro hz
-      exact ObjectNaturalDiscrete.add_one_ne_zero H _ (hc.symm.trans hz)
-    conv_rhs => rw [hc]
-    rw [ObjectNumericWire.listHead,if_neg hn,ObjectNumericWire.cons,← hs]
-    ac_rfl
+  · rw [hc,ObjectNumericWire.head_cons]
+    exact add_le_add (left_le_pair H _ _) (le_refl 1)
 
 def GuardCertificate (out code left slack : N H) : Prop :=
   code*out=code*(left+1) ∧ code=out+slack
