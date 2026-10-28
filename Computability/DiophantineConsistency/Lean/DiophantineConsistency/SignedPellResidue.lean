@@ -59,12 +59,9 @@ theorem signed_residue_cases {A : ℕ} (hA : 1 < A) {V y : ℤ}
       rw [mul_pow, sq_abs, sq_abs]
       nlinarith only [hnorm]
     exact_mod_cast hc
-  have hp : (A * V.natAbs) * (A * V.natAbs) -
-      (A * A - 1) * y.natAbs * y.natAbs = 1 := by
-    have he : (A * V.natAbs) * (A * V.natAbs) =
-        (A * A - 1) * y.natAbs * y.natAbs + 1 := by nlinarith only [hn]
-    omega
-  obtain ⟨n, hx, hy⟩ := Pell.eq_pell hA hp
+  obtain ⟨n, hx, hy⟩ := Pell.eq_pell hA (x := A * V.natAbs) (y := y.natAbs) (by
+    change (A * V.natAbs) * (A * V.natAbs) - (A * A - 1) * y.natAbs * y.natAbs = 1
+    simpa only [pow_two, mul_assoc] using Nat.sub_eq_of_eq_add' hn)
   have hd : A ∣ xn hA n := by rw [← hx]; exact dvd_mul_right A V.natAbs
   obtain ⟨j, hj⟩ := odd_index_of_base_dvd hA hd
   have hnodd : n = 2 * j + 1 := by omega
