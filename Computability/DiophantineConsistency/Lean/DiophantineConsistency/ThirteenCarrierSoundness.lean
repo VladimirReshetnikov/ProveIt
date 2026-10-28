@@ -182,21 +182,28 @@ theorem auxiliary_estimates {S V y : ℤ} (hS : 2 ≤ S)
     (show 0 ≤ |y| + 2 * |V| by positivity)
   nlinarith [sq_abs y, sq_abs V]
 
+/-- Affine carrier positivity needs no sign hypothesis on V. -/
+theorem affine_carrier_pos {b G V y m : ℤ} (hb : 0 < b) (hG : 0 < G)
+    (hsmall : -2 * V < y)
+    (hy : y = 1 + 4 * (b * (m - V ^ 2 * G) - G)) : 0 < m := by
+  by_contra hm
+  have hbm := mul_nonpos_of_nonneg_of_nonpos hb.le (show m ≤ 0 by omega)
+  have hAG := mul_nonneg (show 0 ≤ 1 + b * V ^ 2 by positivity)
+    (show 0 ≤ G - 1 by omega)
+  have hbV := mul_nonneg (show 0 ≤ b - 1 by omega) (sq_nonneg V)
+  nlinarith only [hy, hsmall, hbm, hAG, hbV, sq_nonneg (4 * V - 1)]
+
 /-- The positive carrier m forces the recovered transport to be nonnegative. -/
 theorem transport_nonneg {b m G V y : ℤ} (hb : 0 < b) (hm : 0 < m)
     (hy : y = 1 + 4 * (b * (m - V ^ 2 * G) - G))
     (hsmall : |y| < 2 * |V|) : 0 ≤ G := by
   by_contra hG
-  have hG : G ≤ -1 := by omega
-  have hV : 1 ≤ |V| := by have := abs_nonneg y; omega
-  have hVs : |V| ≤ V ^ 2 := by
-    have hh := mul_nonneg (abs_nonneg V) (by omega : 0 ≤ |V| - 1)
-    nlinarith [sq_abs V]
-  have hbm : 1 ≤ b * m := mul_pos hb hm
-  have hterm := mul_le_mul_of_nonneg_right (show 1 ≤ b from hb) (sq_nonneg V)
-  have hprod := mul_nonneg (show 0 ≤ 1 + b * V ^ 2 by positivity)
-    (by omega : 0 ≤ -G - 1)
-  nlinarith [le_abs_self y]
+  have hsmall' : -2 * |V| < 2 - y := by have := le_abs_self y; omega
+  have hreflect : 2 - y = 1 + 4 * (b * (-m - |V| ^ 2 * -G) - -G) := by
+    rw [sq_abs]
+    nlinarith only [hy]
+  have := affine_carrier_pos hb (show 0 < -G by omega) hsmall' hreflect
+  omega
 
 theorem base_dvd_transport (p : Fin 4 → ℤ) (v : Fin 13 → ℤ) (hb : 0 < p 0)
     (hv : ∀ j, 0 < v j) (hu : auxiliary p v = 1) : b p v ∣ G p v := by

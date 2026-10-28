@@ -42,32 +42,12 @@ theorem carrier_exists {b G V y : ℤ} (hb : 0 < b) (hG : 0 < G)
     ∃ m : ℤ, 0 < m ∧ y = 1 + 4 * (b * (m - V ^ 2 * G) - G) := by
   obtain ⟨g, hg⟩ := hd
   obtain ⟨e, he⟩ := hy
-  have hg0 : 0 < g := by
-    have : 0 < b * g := by rwa [← hg]
-    exact pos_of_mul_pos_right this hb.le
   let m := e + (1 + b * V ^ 2) * g
-  have hm : 4 * b * m = y - 1 + 4 * b * (1 + b * V ^ 2) * g := by
+  have heq : y = 1 + 4 * (b * (m - V ^ 2 * G) - G) := by
     dsimp [m]
-    linear_combination -he
-  have hVs : V ≤ V ^ 2 := by nlinarith
-  have hbVs : V ^ 2 ≤ b * V ^ 2 := by
-    have := mul_nonneg (show 0 ≤ b - 1 by omega) (sq_nonneg V)
-    nlinarith only [this]
-  have hcoef : 4 * (1 + V) ≤ 4 * b * (1 + b * V ^ 2) := by
-    have := mul_nonneg (show 0 ≤ b - 1 by omega)
-      (show 0 ≤ 1 + b * V ^ 2 by positivity)
-    nlinarith only [this, hVs, hbVs]
-  have hgcoef : 4 * b * (1 + b * V ^ 2) ≤ 4 * b * (1 + b * V ^ 2) * g := by
-    have := mul_nonneg (show 0 ≤ g - 1 by omega)
-      (show 0 ≤ 4 * b * (1 + b * V ^ 2) by positivity)
-    nlinarith only [this]
-  have hm0 : 0 < m := by
-    have hprod : 0 < 4 * b * m := by linarith
-    exact pos_of_mul_pos_right hprod (by positivity)
-  refine ⟨m, hm0, ?_⟩
-  dsimp [m]
-  rw [hg]
-  linear_combination he
+    rw [hg]
+    linear_combination he
+  exact ⟨m, ThirteenCarrierSoundness.affine_carrier_pos hb hG hsmall heq, heq⟩
 
 /-- A fresh strong seed and an auxiliary pair at any rank congruent to 3 modulo 4.
 The returned signed ordinate is negative; it is not an independent unknown. -/
