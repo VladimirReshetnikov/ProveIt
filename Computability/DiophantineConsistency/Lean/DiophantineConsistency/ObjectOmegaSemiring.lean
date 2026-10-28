@@ -18,21 +18,8 @@ universe u
 variable {V : Type u} {mem : V → V → Prop}
 
 theorem mulRel_one_left (H : ZFAxioms mem) {y : V} (hy : mem y (omegaV H)) :
-    MulRel H (natV H 1) y y := by
-  let ee : Nat → V := fun _ => vempty H
-  have h : ∀ n, mem n (omegaV H) →
-      Sat mem (scons n (scons (natV H 1) ee)) (mulForm 0 1 0) := by
-    apply omega_ind H (mulForm 0 1 0) (scons (natV H 1) ee)
-    · exact (mulForm_spec H _ 0 1 0).mpr (mulRel_zero H (natV_mem_omega H 1))
-    · intro n hn ih
-      have hm := mulRel_succ H ((mulForm_spec H _ 0 1 0).mp ih)
-      change MulRel H (natV H 1) (vsucc H n) (addValue H n (natV H 1)) at hm
-      have he : addValue H n (natV H 1)=vsucc H n := by
-        change addValue H n (vsucc H (vempty H))=vsucc H n
-        rw [addValue_succ_right H hn (vempty_in_omega H),addValue_zero_right H hn]
-      rw [he] at hm
-      exact (mulForm_spec H _ 0 1 0).mpr hm
-  exact (mulForm_spec H _ 0 1 0).mp (h y hy)
+    MulRel H (natV H 1) y y :=
+  mulRel_succ_left H (mulRel_zero_left H hy) (addRel_zero_left H hy)
 
 abbrev Natural (H : ZFAxioms mem) := {x : V // mem x (omegaV H)}
 

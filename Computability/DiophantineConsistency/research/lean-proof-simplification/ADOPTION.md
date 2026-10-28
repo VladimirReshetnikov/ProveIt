@@ -80,6 +80,10 @@ Packet names refer to the subdirectories of this directory.
 | `patches/01-tail-cutoff.patch` | zd | `CurrentSelectorTail2011` | adopted as `0a8eb8938b`; derive the complementary cutoff with `not_congr` and simplify the successor step.335→322 lines with all guards unchanged. Four final target/client/focus/audit calls pass and all17 reports are identical. An initial overlay setup failure preceded the successful baseline; dependencies were precompiled. Independent review passes |
 | `patches/04-deterministic-and-helical.patch`, composition hunks | ze | `ComposeRepresentation`, `DirectComposition` | adopted as `a69be9f233`; use function extensionality and `exists_eq_right` in the proof arguments.148→138 lines. The original full constructed representations equal the new ones by `rfl` for arbitrary inputs; six axiom reports are identical. Nine final calls and a recorded nine-call replay pass in an isolated overlay with precompiled dependencies. Independent review passes |
 | `patches/04-deterministic-and-helical.patch`, helical hunk | ze | `WangTiles942HelicalQuotient` | adopted as `8e634984b5`; use period one along the helix to reach row zero.147→137 lines. Two prerequisite refreshes, original target/audit and four final target/client/focus/audit calls pass; all12 reports are identical. Four initial overlay path failures were corrected; other dependencies were precompiled. Independent review passes |
+| `patches/01-unit-multiplication.patch` | zf | `ObjectOmegaSemiring` | adopted as `0947ccdb17`; reuse zero-left and successor-left multiplication with zero-left addition.120→107 lines. Six final target/three-client/focus/audit calls pass; all15 old reports are identical. Precompiled dependencies are reused. Independent review passes |
+| `bridges/patches/WangTiles942FinishConstruction.lean.patch` | zi | `WangTiles942FinishConstruction` | adopted as `fde0d4e9db`; share the two halted tile proofs through one private conjunction helper.164→155 lines including the helper. Four final target/client/focus/audit calls pass; all24 public reports are identical. Precompiled dependencies are reused. Independent review passes |
+| `cyclic/patches/CurrentCellCycle2011.lean.patch` | o | `CurrentCellCycle2011` | adopted as `7275f95fdc`; use the full-modulus identity for reachability and specialize existing arbitrary-base propagation.171→159 lines. Five final target/two-client/focus/audit calls pass; all25 reports are identical. Precompiled dependencies are reused; the Occupation client's broader closure was not fully refreshed. Independent review passes |
+| `patches/03-bounded-complement.patch` | zd | `CurrentTileColors2011` | adopted as `9adc972817`; use bounded subtraction injectivity for both color equalities.104→100 lines while source grows38 bytes. Four final target/client/focus/audit calls pass; all five reports are identical. Nine affected prerequisites were refreshed before baseline and the changed cycle, Occupation and Coordinate modules were refreshed before final checks; other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -277,6 +281,14 @@ precompiled dependencies, not a whole-project build. The composition probe
 also verifies equality of the old and new complete representation values by
 `rfl`. Logs, source snapshots, command records and retained selector/helical setup
 failure logs are in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-four-proofs-evidence/BUNDLE.json).
+
+The next four commits remove38 lines and1455 bytes across four modules,
+advancing the reviewed series from4434 to4472. Nineteen final scoped
+checks pass and all69 old public axiom reports are byte-identical. The tile
+color check separately refreshes nine affected prerequisites before baseline
+and three after the concurrent cell-cycle change. Other dependencies remain
+precompiled; no full build is claimed. Inputs and recorded results are in
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-four-more-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
