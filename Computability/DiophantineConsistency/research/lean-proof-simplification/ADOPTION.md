@@ -798,5 +798,15 @@ transitive module is Mathlib.Algebra.Ring.Divisibility.Basic, whose 510-job
 Lake closure passed a read-only freshness check. Independent review passes.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-dvd-evidence/BUNDLE.json).
 
+The Wang rail cardinality rewrite `8a7ecedcb2` removes 14 lines, bringing
+the reviewed series to 8095. Both targets, the focused check, seven direct
+clients and 32 public/generated axiom reports pass with matching logs. The
+target cone matches nine recent kernel receipts and three freshly rebuilt
+core/initialization/encoding prerequisites. CurrentOccupation passes only
+on a cache-bounded 89-node graph with six source-newer objects; other external
+and historical caches remain precompiled. Earlier missing-encoding failures
+and successful reruns are retained. Independent review passes. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-rail-card-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
