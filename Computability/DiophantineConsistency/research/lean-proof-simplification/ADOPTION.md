@@ -758,5 +758,16 @@ exact receipts; the older graph is not wholly current, but affected clients
 were rebuilt and current tile data matched a recent receipt. Independent
 review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-initialization-evidence/BUNDLE.json).
 
+The shared reflected bounds `777a764cf8` remove 50 net lines across four
+modules, bringing the reviewed series to 8053. Paired target builds and four
+representative clients pass, as do 160 existing public, exported and generated
+axiom comparisons; the two new helpers use the standard three axioms. Eighteen
+prior objects were authenticated and three affected modules rebuilt; the
+changed-object descendants are covered in the 59-node local graph. Remaining
+historical and external inputs are precompiled, and other direct clients remain
+unchecked. Three existing cell warnings match after location normalization;
+the initially failed normal and missing-MF prototypes are retained. Independent
+review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-reflected-shared-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
