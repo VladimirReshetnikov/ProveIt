@@ -475,5 +475,16 @@ baseline; Mathlib remained precompiled. The initially considered `simp` proof
 produced a much larger object; the adopted `dsimp` proof avoids that observed
 cost. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-gap-source-evidence/BUNDLE.json).
 
+The generated nine-variable coefficient maps `f941ac02db` remove 347 net
+lines and 19424 bytes across two Lean files and their generators. Together
+with the gap row proof, this brings the reviewed series to 5484 net lines.
+Baseline and final targets, clients, focus checks and all 93 old public axiom
+reports pass and match. Ten additional calls pass after borrowing nine
+authenticated objects and rebuilding seven affected gap modules. Existing
+client warnings match; two refreshed prerequisites emit warnings without a
+comparable baseline. Other dependencies, including RatioReparameterization
+and Mathlib, remain precompiled. The original heartbeat limits are unchanged;
+target oleans grew by 512 and 544 bytes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-nine-maps-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
