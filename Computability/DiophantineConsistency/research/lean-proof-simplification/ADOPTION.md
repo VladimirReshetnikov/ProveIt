@@ -819,5 +819,15 @@ Three existing cell warnings match after location normalization. The first
 prototype hit recursion limits and introduced an extra warning; both are
 retained separately. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-selector-shared-evidence/BUNDLE.json).
 
+The split/gap target-image rewrite `9e9c79e209` removes 18 lines, bringing
+the reviewed series to 8150. Both target versions, two direct clients, two
+existing focused checks and all five public axiom reports pass with matching
+logs. The 73-node graph and all changed-object descendants were checked; 21
+affected modules were rebuilt and ten HTP seeds authenticated. Fifteen
+warnings in three unchanged refresh prerequisites lack paired preparation
+baselines; other HTP and Mathlib inputs remain precompiled. The earlier
+cache-bounded prototype is separate. Independent review passes. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-source-carry-image-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
