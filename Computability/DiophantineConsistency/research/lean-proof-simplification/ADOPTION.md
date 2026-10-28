@@ -737,5 +737,16 @@ and 22 relevant prior source/object pairs authenticated; the remaining project
 and external inputs are precompiled. One existing units warning matches.
 Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-normal-evaluate-sum-evidence/BUNDLE.json).
 
+The trace Fin 1 reuse `cad556929a` removes four lines, bringing the reviewed
+series to 7999. Both target versions, the direct client and all 37 public
+axiom reports pass after refreshing 26 affected prerequisites. The 132 selected
+local dependency objects were classified: 97 historical pins, nine recent
+kernel builds and 26 refreshed descendants; external packages remain precompiled.
+Nine target and six client warnings match after location normalization. Four
+unchanged refreshed prerequisites emit 16 warnings without paired baselines.
+WangTable first failed at 6 GiB and passed at 10 GiB; the first refresh was
+deliberately interrupted to repair its dependency closure. Independent review
+passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-trace-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
