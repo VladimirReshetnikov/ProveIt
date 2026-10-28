@@ -97,6 +97,9 @@ Packet names refer to the subdirectories of this directory.
 | `controller/patches/controller_coprime_cardinality.patch` | zh | `ControllerAuxiliaryChoice` | adopted as `1bc18914d4`; use the modular-cast zero criterion directly.50→44 lines. Four final target/client/focus/audit calls pass; both old reports match. Other dependencies are precompiled. Independent review passes |
 | `patches/PolynomialRangeBounds.patch`, adapted | y | `PolynomialRangeBounds` | adopted as `5fe9c4795a`; reuse the already imported geometric-sum identity without adding an import.150→143 lines, retaining signed bounds. Six final target/three-client/focus/audit calls pass; all nine old reports match. Seven prerequisites were freshly rebuilt after reusing three authenticated early-padding outputs; other dependencies are precompiled. Independent review passes |
 | `patches/modulus-reuse.patch` | a | `CurrentEarlyPadding2011` | adopted as `c414b8db6b`; specialize the existing modulus2048 selector congruence to16.311→305 lines. Thirty affected prerequisites were refreshed before baseline; eight final target/four-downstream/client/focus/audit calls pass and all19 old reports match. Three prerequisite modules emitted warnings without a comparable original full-cone baseline; other dependencies are precompiled. Independent review passes |
+| `patches/NativeFieldCycles2011.patch`, retaining old imports | i | `NativeFieldCycles2011` | adopted as `43f5f376f9`; use surjectivity on the finite invariant even subset.111→104 lines. Five final target/client/two-focus/audit calls pass; both old reports match. The broader clients reuse precompiled intermediate dependencies. Independent review passes |
+| `strip/WangTiles942HeadBounds.patch` | za | `WangTiles942HeadBounds` | adopted as `c0e20c2490`; derive both wall bounds from finite-coordinate bounds and square monotonicity.135→130 lines. Five prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass. Seven reports match and both wall theorems strictly drop Quot.sound, with no added axioms. Other dependencies are precompiled. Independent review passes |
+| `physical/patches/fin_pred.patch` | zh | `WangTiles942PhysicalOrder` | adopted as `8cb3a1aaf7`; use Fin.pred and Fin.succ_pred.155→148 lines. The old and revised full index values are equal by `rfl` for every input. Two prerequisites were refreshed; five final target/client/focus/probe/audit calls pass and all31 old reports match. Other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -346,6 +349,14 @@ prerequisites; polynomial validation reused three of those authenticated
 outputs and refreshed seven more. Three early-padding prerequisite modules
 emitted warnings without a comparable original full-cone baseline; other
 dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-choice-padding-evidence/BUNDLE.json).
+
+The next three commits remove19 lines and637 bytes, advancing the reviewed
+series from4578 to4597. Fourteen final scoped checks pass;40 old public axiom
+reports match and two wall-bound reports are strict subsets, with no added
+axioms. The complete old and new physical index values are equal by `rfl`.
+Seven prerequisites were refreshed; other dependencies are precompiled,
+including intermediate dependencies in the broad cycle clients. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-cycle-wall-pred-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
