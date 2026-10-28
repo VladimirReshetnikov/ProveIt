@@ -96,23 +96,15 @@ theorem source_Y_ge_two (ports : Fin 4 → ℤ) (hβ : 0 < ports 0) (x : Fin 31 
     (hx : ∀ i, 0 < x i)
     (hs : ∀ k, SplitCertificate59.sourceRows ports (fun i => (x i : ℤ)) k = 0) :
     2 ≤ x 16 * x 9 := by
-  have h0 := hs 0
-  have h1 := hs 1
-  change (x 24 : ℤ) + ((-2) * ports 0) * x 0 + (-(ports 0 ^ 2)) * ((x 0 : ℤ) ^ 2) = 0 at h0
+  have hrow := hs 1
   change (-1 : ℤ) + (-1) * x 24 + x 16 + (-ports 0) * x 0 +
-    (-ports 0) * ((x 0 : ℤ) * x 24) = 0 at h1
-  let q : ℤ := 1 + (x 0 : ℤ) * ports 0
-  have hq : 2 ≤ q := by
-    have hx0 : (1 : ℤ) ≤ x 0 := by exact_mod_cast hx 0
-    dsimp [q]
-    nlinarith [mul_nonneg (show 0 ≤ (x 0 : ℤ) - 1 by omega) (show 0 ≤ ports 0 - 1 by omega)]
-  have hL : (x 24 : ℤ) = q ^ 2 - 1 := by dsimp [q]; linear_combination h0
-  have hN : (x 16 : ℤ) = q * (1 + x 24) := by dsimp [q]; linear_combination h1
-  have hL3 : (3 : ℤ) ≤ x 24 := by nlinarith
-  have hN8 : (8 : ℤ) ≤ x 16 := by
-    nlinarith [mul_nonneg (show 0 ≤ q - 2 by omega) (show 0 ≤ (x 24 : ℤ) - 3 by omega)]
-  have hN2 : 2 ≤ x 16 := by exact_mod_cast (show (2 : ℤ) ≤ x 16 by omega)
-  exact (Nat.mul_le_mul_right 1 hN2).trans (Nat.mul_le_mul_left _ (hx 9))
+    (-ports 0) * ((x 0 : ℤ) * x 24) = 0 at hrow
+  have hβJ : 0 ≤ ports 0 * (x 0 : ℤ) := mul_nonneg hβ.le (Nat.cast_nonneg _)
+  have hL : (1 : ℤ) ≤ x 24 := by exact_mod_cast hx 24
+  have hNz : (2 : ℤ) ≤ x 16 := by
+    nlinarith [mul_nonneg hβJ (Nat.cast_nonneg (x 24))]
+  have hN : 2 ≤ x 16 := by exact_mod_cast hNz
+  exact hN.trans (Nat.le_mul_of_pos_right _ (hx 9))
 
 /-- The literal index row and positive h imply the half-modulus bound for
 the native rank, independently of the auxiliary Pell step-down. -/
