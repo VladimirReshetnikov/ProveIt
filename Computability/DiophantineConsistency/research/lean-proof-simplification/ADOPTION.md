@@ -714,5 +714,13 @@ emit 51 warnings without paired baselines. Target command/path receipts were
 reconstructed from observed calls. Independent review passes. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-list-getd-evidence/BUNDLE.json).
 
+The matrix-free evaluation proof `f1706b3f77` removes six lines, bringing
+the reviewed series to 7977. Baseline and final targets, ArithmeticConstructionUnit
+and all 17 public axiom reports pass with matching logs after rebuilding 16
+target and ten additional client prerequisites. Foundation PRF was checked
+against its clean pinned checkout; Mathlib and external inputs remain
+precompiled. Four unchanged prerequisites emit nine warnings without paired
+baselines. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mf-evaluate-sum-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
