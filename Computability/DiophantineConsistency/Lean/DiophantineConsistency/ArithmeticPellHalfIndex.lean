@@ -189,7 +189,7 @@ theorem odd_rec (h b : V) :
   simpa only [mul_add,mul_assoc,mul_left_comm,mul_comm] using he
 
 /- The following algebraic transport has no inversion of the coefficient. -/
-private theorem transport_equal (m k l u0 u1 u2 v0 v1 v2 : V) (hm : 0<m)
+theorem transport_equal (m k l u0 u1 u2 v0 v1 v2 : V) (hm : 0<m)
     (hk : (k+l)%m=(4:V)%m)
     (hu : u2+u0+2*u1=k*u1) (hv : v2+v0+2*v1=l*v1)
     (h0 : u0%m=v0%m) (h1 : (u1+v1)%m=0) : u2%m=v2%m := by
@@ -214,7 +214,7 @@ private theorem transport_equal (m k l u0 u1 u2 v0 v1 v2 : V) (hm : 0<m)
       rw [show v2+(u0+2*u1+v0+2*v1)=(v2+v0+2*v1)+u0+2*u1 by ring,hv]
       congr 1; ring
 
-private theorem transport_opposite (m k l u0 u1 u2 v0 v1 v2 : V) (hm : 0<m)
+theorem transport_opposite (m k l u0 u1 u2 v0 v1 v2 : V) (hm : 0<m)
     (hk : (k+l)%m=(4:V)%m)
     (hu : u2+u0+2*u1=k*u1) (hv : v2+v0+2*v1=l*v1)
     (h0 : (u0+v0)%m=0) (h1 : u1%m=v1%m) : (u2+v2)%m=0 := by

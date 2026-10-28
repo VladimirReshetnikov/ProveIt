@@ -15,61 +15,6 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 attribute [local irreducible] xcoord ycoord oddQuotient
 
--- Finite modular cancellation, adapted from HalfIndex's private transport.
--- The represented inductions below retain the actual even and odd phases.
-private theorem same_add {m x y z w : V} (hm : 0<m)
-    (h : x%m=y%m) (h' : z%m=w%m) : (x+z)%m=(y+w)%m := by
-  rw [mod_add hm,mod_add (a:=y) hm,h,h']
-
-private theorem same_mul {m x y z w : V} (hm : 0<m)
-    (h : x%m=y%m) (h' : z%m=w%m) : (x*z)%m=(y*w)%m := by
-  rw [mod_mul hm,mod_mul (a:=y) hm,h,h']
-
-private theorem transport_equal (m k l u0 u1 u2 v0 v1 v2 : V) (hm : 0<m)
-    (hk : (k+l)%m=(4:V)%m)
-    (hu : u2+u0+2*u1=k*u1) (hv : v2+v0+2*v1=l*v1)
-    (h0 : u0%m=v0%m) (h1 : (u1+v1)%m=0) : u2%m=v2%m := by
-  have hzero : (u1+v1)%m=(0:V)%m := by simpa using h1
-  have h2zero : (2*(u1+v1))%m=0 := by simpa using same_mul hm (x:=(2:V)) rfl hzero
-  have hkzero : (k*(u1+v1))%m=0 := by simpa using same_mul hm (x:=k) rfl hzero
-  have hkey : (k*u1+2*v1)%m=(l*v1+2*u1)%m := by
-    calc
-      (k*u1+2*v1)%m=(k*u1+2*v1+2*(u1+v1))%m := by
-        exact (mod_add_remove_right_of_dvd (mod_eq_zero_iff_dvd.mp h2zero) hm).symm
-      _=(k*u1+2*u1+4*v1)%m := by congr 1; ring
-      _=(k*u1+2*u1+(k+l)*v1)%m := same_add hm rfl (same_mul hm hk.symm rfl)
-      _=(l*v1+2*u1+k*(u1+v1))%m := by congr 1; ring
-      _=(l*v1+2*u1)%m := mod_add_remove_right_of_dvd (mod_eq_zero_iff_dvd.mp hkzero) hm
-  apply mod_add_cancel _ _ (u0+2*u1+v0+2*v1) _ hm
-  calc
-    (u2+(u0+2*u1+v0+2*v1))%m=(k*u1+v0+2*v1)%m := by
-      rw [show u2+(u0+2*u1+v0+2*v1)=(u2+u0+2*u1)+v0+2*v1 by ring,hu]
-    _=(v0+(k*u1+2*v1))%m := by congr 1; ring
-    _=(u0+(l*v1+2*u1))%m := same_add hm h0.symm hkey
-    _=(v2+(u0+2*u1+v0+2*v1))%m := by
-      rw [show v2+(u0+2*u1+v0+2*v1)=(v2+v0+2*v1)+u0+2*u1 by ring,hv]
-      congr 1; ring
-
-private theorem transport_opposite (m k l u0 u1 u2 v0 v1 v2 : V) (hm : 0<m)
-    (hk : (k+l)%m=(4:V)%m)
-    (hu : u2+u0+2*u1=k*u1) (hv : v2+v0+2*v1=l*v1)
-    (h0 : (u0+v0)%m=0) (h1 : u1%m=v1%m) : (u2+v2)%m=0 := by
-  have hkey : (k*u1+l*v1)%m=(2*(u1+v1))%m := by
-    calc
-      (k*u1+l*v1)%m=(k*v1+l*v1)%m := same_add hm (same_mul hm rfl h1) rfl
-      _=((k+l)*v1)%m := by congr 1; ring
-      _=(4*v1)%m := same_mul hm hk rfl
-      _=(2*(v1+v1))%m := by congr 1; ring
-      _=(2*(u1+v1))%m := same_mul hm rfl (same_add hm h1.symm rfl)
-  have he : (u2+v2+2*(u1+v1))%m=(0+2*(u1+v1))%m := by
-    calc
-      (u2+v2+2*(u1+v1))%m=(u2+v2+2*(u1+v1)+(u0+v0))%m :=
-        (mod_add_remove_right_of_dvd (mod_eq_zero_iff_dvd.mp h0) hm).symm
-      _=((u2+u0+2*u1)+(v2+v0+2*v1))%m := by congr 1; ring
-      _=(2*(u1+v1))%m := by rw [hu,hv]; exact hkey
-      _=(0+2*(u1+v1))%m := by rw [zero_add]
-  simpa only [zero_mod] using mod_add_cancel (u2+v2) 0 (2*(u1+v1)) m hm he
-
 /-- The two phases modulo the full square, at every internal block index. -/
 theorem quotient_square_pair (a I f t : V) (hI : 2≤I) (hf : 0<f)
     (hn : I*I+delta a=delta a*f*f) :
