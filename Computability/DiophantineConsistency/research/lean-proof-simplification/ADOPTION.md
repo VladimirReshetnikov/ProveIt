@@ -459,5 +459,12 @@ because a cached dependency was absent; other dependencies remained cached.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-affine-reflection-evidence/BUNDLE.json)
 for the failures and further limits.
 
+The convolution factoring `44b9daa98b` removes 13 net lines and 205 bytes,
+bringing the reviewed series to 4989. Baseline rebuilt 22 local modules and
+final rebuilt seven affected modules; all 25 baseline and 11 final checks
+passed, including matching focused outputs and 15 old public axiom reports.
+No warnings were reported. HilbertTenthProblem and Mathlib dependencies remained
+precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-convolution-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
