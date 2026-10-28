@@ -846,5 +846,15 @@ edges were checked. The further downstream ArithmeticPellIntegralSolution was
 not rebuilt; Foundation, Mathlib and historical inputs remain precompiled.
 Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-gcd-remainder-evidence/BUNDLE.json).
 
+The shared modular reflected-source proof `b1ddb64112` removes 14 net
+lines, bringing the reviewed series to 8177. Both target versions, four
+representative clients, the actual Foundation Matrix co-import and all 48
+public axiom reports pass with matching logs. Both import sets gain only the
+new helper, which uses the standard three axioms. All 55 selected prerequisites
+match the prior reviewed graph; other client and external inputs remain
+precompiled, and additional direct clients were not exhaustively rebuilt.
+Initial path-shadowing and bare-Matrix probe failures are retained separately.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-reflected-source-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
