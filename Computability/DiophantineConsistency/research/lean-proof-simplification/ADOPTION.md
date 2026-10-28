@@ -67,6 +67,10 @@ Packet names refer to the subdirectories of this directory.
 | `rank-upper.patch` | zw | `NativePellBootstrap` | adopted as `7e186e0c71`; an explicit nonnegative polynomial deficit replaces loose intermediate rank/mask estimates.671→657 lines without helper/import. All original source/port bounds remain, including negative mask ports allowed by the window theorem; the separate PortBox premises remain unchanged. Four final target/first-index-client/focus/38-old-result calls pass after baseline, all reports identical and no warnings. Entire6-field structure and old data remain literal; independent full review passes |
 | `wang/proposals/boundary_fibers.patch` | o | `WangTiles942Boundary` | adopted as `a32e2a3d81`; two guarded colour-fiber helpers replace eight repeated case splits.201→161 lines including both helpers,84 bytes net. High-colour guard, halt head433, initializer south4, reset targets and nine square-west seam combinations retained. Ten final target/three-client/four-focus/generic-domain/15-old-result calls pass, all reports identical; new helpers standard-three axioms. Independent full review passes |
 | `current-kernel-horner.patch` | zzb | `CurrentKernelResidues2011` | adopted as `276e19a689`; a verified whole-list accumulator replaces58 private length proofs,59 chunk certificates and assembly.426→183 lines,243 net including the new function and two proofs. The actual941 rows, physical reindexing, protected Start, controls and literal K binding remain exact. Six final production/Units-client/two-focus/16-old-result/new-API calls pass; all old reports identical, three new declarations use propext only. Same source limits/imports, existing Units warning retained. Independent full source/data/contracts review passes; no speedup claim |
+| `patches/02-shifted-numerator.patch` | zx | `FreeCarrierRatio` | adopted as `52cd979b04`; the integer numerator envelope and a positive polynomial gap replace loose intermediate estimates, preserving signed Q and every free-carrier bound.501→491 lines/524 bytes without helper/import overhead; four final target/actual-client/existing-focus/65-public calls pass and all old reports are byte-identical. Original refresh and baseline are separate. Independent full review passes |
+| compact structural size induction, adapted to retain the existing interpreter | zu, proof-only adaptation | `ExpressionSize` | adopted as `c87e01807b`; restricted simplification and explicit conjunction construction share the proof across constructors.90→80 lines/386 bytes, with all six definitions and the structure/derived instances literal. Six accepted target/three-client/focus/17-public calls pass, all reports byte-identical. Eight successful calls for axiom-rejected candidates, three failed production variants and one failed diagnostic remain separate. Independent full review passes |
+| `patches/SignedPellResidue.patch` | zza | `SignedPellResidue` | adopted with the fresh-seed proof as `4f571a7890`; pass the existing additive natural norm through `Nat.sub_eq_of_eq_add'` directly to classification.102→99 lines/38 bytes, with all sign cases and old premises preserved. Joint nine-call final suite below passes; all five old reports identical. Independent full review passes |
+| `patches/ThirteenFreshSeed.patch` | zza | `ThirteenFreshSeed` | adopted as the other file in `4f571a7890`; reuse the imported integer Pell norm twice.217→210 lines/204 bytes without helper/import overhead, preserving the negative ordinate and rank-three-mod-four guard. Both targets, four actual clients, both existing focuses and nine-old-public audit pass; all reports identical. The existing StepDown unused-hy warning remains. Independent full review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -219,6 +223,26 @@ pre-execution report-counter repair remain separate. The installed package
 boundary and262 primary project objects are reused; this is not a whole
 project replay. Durable inputs, results and original/corrected receipts are
 in [the refresh bundle](../../reviews/lean-proof-simplification-309-refresh-20261026/BUNDLE.json).
+
+The28 October checkpoint adopts `52cd979b04`, `4f571a7890` and `c87e01807b`:
+four whole modules910→880 lines,30 net/1152 bytes removed, bringing the
+reviewed series4125→4155. All19 accepted-source calls pass and all91 old
+public reports are byte-identical. ROOT verifies37 complete old theorem
+headers and20 whole definitions remain literal. Every final source passed
+independent full review. The size proof's failed and axiom-rejected variants
+are retained separately from the accepted proof and its unchanged footprint.
+
+Upstream `6b774d6a65` is merged as `92fe8ac532`. Its data relocation changes
+only LowMaskCoding and adds LowMaskData in the selected dependency closure.
+Eleven separate post-merge calls freshly check all ten affected modules and
+the combined91-report audit; all pass, and full report stdout is identical.
+All220 source/configuration/equation pins and201 reused project objects
+remain authenticated; four focus-only roots retain their earlier checks.
+Installed packages remain a trusted precompiled boundary. No whole-project
+or new upstream HA replay is claimed. Inputs, original/corrected candidates,
+actual statuses and all144 archived entries are retained in
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-evidence/BUNDLE.json).
+The maintained decimal equation artifacts remain byte-identical.
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
