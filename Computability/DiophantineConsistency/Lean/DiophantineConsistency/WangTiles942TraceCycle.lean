@@ -154,18 +154,14 @@ The height lower bound keeps the initializer distinct from finish and reset. -/
 theorem cycleTile_temporal {H : ℕ} (hH : 3 ≤ H) (k : Fin H) (x : ℤ) :
     (cycleTile (nextIndex (by omega) k) x).north = (cycleTile k x).south := by
   rw [cycleTile_north,cycleTile_south]
-  by_cases h0 : k.val = 0
-  · have hn : (nextIndex (by omega) k).val = 1 := by
-      rw [nextIndex_val_of_lt (by omega) k (by omega),h0]
-    simp only [h0,hn,Nat.one_ne_zero,↓reduceIte,show 1+1 ≠ H by omega]
-  · by_cases hlast : k.val+1 = H
-    · have hn := nextIndex_val_of_last (by omega) k hlast
-      simp only [h0,hlast,hn,↓reduceIte]
-    · have hn := nextIndex_val_of_lt (by omega) k (by have hk := k.isLt; omega)
-      have hn0 : k.val+1 ≠ 0 := by omega
-      by_cases hfinish : k.val+2 = H
-      · simp only [h0,hlast,hfinish,hn,hn0,↓reduceIte]
-      · simp only [h0,hlast,hfinish,hn,hn0,↓reduceIte]
+  by_cases hlast : k.val+1 = H
+  · rw [nextIndex_val_of_last (by omega) k hlast]
+    simp only [if_neg (show k.val ≠ 0 by omega),if_pos hlast,if_true]
+  · rw [nextIndex_val_of_lt (by omega) k (by have hk := k.isLt; omega)]
+    have hsucc : k.val+1 ≠ 0 := by omega
+    by_cases h0 : k.val = 0
+    · simp only [h0,Nat.zero_add,Nat.one_ne_zero,↓reduceIte,show 2 ≠ H by omega]
+    · simp only [h0,hsucc,hlast,↓reduceIte,Nat.add_assoc]
 
 /-- A marked, horizontally matching, cyclic sequence of whole-integer rows
 exists at every sufficiently large height, independently of spatial choices. -/
