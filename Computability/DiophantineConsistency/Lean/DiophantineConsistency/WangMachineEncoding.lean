@@ -35,7 +35,7 @@ theorem stateNumber_injective : Function.Injective stateNumber := by
   intro s t h
   cases s <;> cases t <;> simp_all [stateNumber, Fin.ext_iff] <;> omega
 
-theorem bit_le_one (b : Bool) : b.toNat ≤ 1 := by cases b <;> decide
+theorem bit_le_one (b : Bool) : b.toNat ≤ 1 := Bool.toNat_le b
 
 /-- Head colors use precisely the same constructor as the literal table. -/
 def headColor (s : Option (Fin 215)) (b : Bool) : ℕ :=
@@ -144,13 +144,9 @@ adjacent operating state1 reading0, with plain blank cells elsewhere. -/
 theorem initialized_color (x : ℤ) :
     color DecimalMachineInitialization.initialized x =
       if x = 0 then 1 else if x = 1 then 4 else 0 := by
-  by_cases h0 : x = 0
-  · subst x
-    exact initialized_color_zero
-  · by_cases h1 : x = 1
-    · subst x
-      exact initialized_color_one
-    · rw [if_neg h0, if_neg h1]
-      exact initialized_color_other x h0 h1
+  split_ifs with h0 h1
+  · subst x; exact initialized_color_zero
+  · subst x; exact initialized_color_one
+  · exact initialized_color_other x h0 h1
 
 end DiophantineConsistency.WangMachineEncoding
