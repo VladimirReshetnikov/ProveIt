@@ -1,3 +1,4 @@
+import DiophantineConsistency.AffineBudget
 import DiophantineConsistency.RepresentationSize
 import DiophantineConsistency.PolynomialGraph
 import DiophantineConsistency.NativeFormulaGraphs
@@ -48,21 +49,11 @@ def Thin (C : ℕ) {σ : Type*} {P : (σ → ℕ) → Prop} (r : Rep σ P) : Pro
 theorem thin_compose (C : ℕ) (hC : 1 ≤ C) (hn : 1 ≤ n)
     (r : Rep (Fin n) P) (s : ∀ i, GraphRep (f i))
     (hr : Thin C r) (hs : ∀ i, Thin C (s i)) : Thin C (r.compose s) := by
-  let w := r.witnessCount + ∑ i, (s i).witnessCount
-  have hr' : r.depth ≤ 6 * w + C := by dsimp [Thin, w] at *; omega
-  have hs' (i) : (s i).depth ≤ 6 * w + C := by
-    have hsum : (s i).witnessCount ≤ ∑ j, (s j).witnessCount :=
-      Finset.single_le_sum (f := fun j => (s j).witnessCount)
-        (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
-    have hi := hs i
-    dsimp only [Thin] at hi
-    dsimp only [w]
-    omega
-  have hd := compose_depth_le r s (by omega : 1 ≤ 6 * w + C) hr' hs'
-  unfold Thin
-  rw [BoundedForallSize.predicate_compose_count]
-  change (r.compose s).depth ≤ 6 * (n + w) + C
-  omega
+  exact AffineBudget.compose
+    (fun i => (s i).witnessCount) (fun i => (s i).depth) hC hr hs
+    (fun _ hh hr hs => compose_depth_le r s hh hr hs)
+    (by omega : 2 * n + 2 ≤ 6 * (n))
+    (by rw [BoundedForallSize.predicate_compose_count])
 
 end Rep
 
@@ -113,40 +104,20 @@ theorem compose_depth_le (r : GraphRep f) (s : ∀ i, GraphRep (g i))
 theorem thin_composeDirect (C : ℕ) (hC : 1 ≤ C) (hn : 1 ≤ n)
     (r : GraphRep f) (s : ∀ i, GraphRep (g i))
     (hr : Thin C r) (hs : ∀ i, Thin C (s i)) : Thin C (r.composeDirect s) := by
-  let w := r.witnessCount + ∑ i, (s i).witnessCount
-  have hr' : r.depth ≤ 6 * w + C := by dsimp [Thin, w] at *; omega
-  have hs' (i) : (s i).depth ≤ 6 * w + C := by
-    have hsum : (s i).witnessCount ≤ ∑ j, (s j).witnessCount :=
-      Finset.single_le_sum (f := fun j => (s j).witnessCount)
-        (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
-    have hi := hs i
-    dsimp only [Thin] at hi
-    dsimp only [w]
-    omega
-  have hd := composeDirect_depth_le r s (by omega : 1 ≤ 6 * w + C) hr' hs'
-  unfold Thin
-  rw [composeDirect_witnessCount]
-  change (r.composeDirect s).depth ≤ 6 * (n + w) + C
-  omega
+  exact AffineBudget.compose
+    (fun i => (s i).witnessCount) (fun i => (s i).depth) hC hr hs
+    (fun _ hh hr hs => composeDirect_depth_le r s hh hr hs)
+    (by omega : 2 * n + 2 ≤ 6 * (n))
+    (by rw [composeDirect_witnessCount])
 
 theorem thin_compose (C : ℕ) (hC : 1 ≤ C) (hn : 1 ≤ n)
     (r : GraphRep f) (s : ∀ i, GraphRep (g i))
     (hr : Thin C r) (hs : ∀ i, Thin C (s i)) : Thin C (r.compose s) := by
-  let w := r.witnessCount + ∑ i, (s i).witnessCount
-  have hr' : r.depth ≤ 6 * w + C := by dsimp [Thin, w] at *; omega
-  have hs' (i) : (s i).depth ≤ 6 * w + C := by
-    have hsum : (s i).witnessCount ≤ ∑ j, (s j).witnessCount :=
-      Finset.single_le_sum (f := fun j => (s j).witnessCount)
-        (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
-    have hi := hs i
-    dsimp only [Thin] at hi
-    dsimp only [w]
-    omega
-  have hd := compose_depth_le r s (by omega : 1 ≤ 6 * w + C) hr' hs'
-  unfold Thin
-  rw [compose_witnessCount]
-  change (r.compose s).depth ≤ 6 * (n + 1 + w) + C
-  omega
+  exact AffineBudget.compose
+    (fun i => (s i).witnessCount) (fun i => (s i).depth) hC hr hs
+    (fun _ hh hr hs => compose_depth_le r s hh hr hs)
+    (by omega : 2 * n + 4 ≤ 6 * (n + 1))
+    (by rw [compose_witnessCount])
 
 theorem thin_add {σ : Type*} {f g : (σ → ℕ) → ℕ} (C : ℕ)
     (r : GraphRep f) (s : GraphRep g) (hr : Thin C r) (hs : Thin C s) :
