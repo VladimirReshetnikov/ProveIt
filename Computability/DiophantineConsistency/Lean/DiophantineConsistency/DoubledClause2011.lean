@@ -1,3 +1,4 @@
+import DiophantineConsistency.MFDoubledClause2011
 import Mathlib.Data.Nat.Bitwise
 import Mathlib.Tactic
 
@@ -19,27 +20,7 @@ def mask : ℕ := 2 ^ 45 - 4
 
 /-- The full mask tests precisely bits 2 through 44. -/
 theorem mask_iff (x : ℕ) : x &&& mask = 0 ↔ x % 2 ^ 45 ≤ 3 := by
-  have hd : (x &&& mask) / 4 = (x / 4) % 2 ^ 43 := by
-    calc
-      (x &&& mask) / 4 = (x &&& mask) / 2 / 2 := by
-        rw [Nat.div_div_eq_div_mul]
-      _ = (x / 2 / 2) &&& (2 ^ 43 - 1) := by
-        rw [Nat.and_div_two, Nat.and_div_two]
-        rfl
-      _ = (x / 4) % 2 ^ 43 := by
-        rw [Nat.and_two_pow_sub_one_eq_mod, Nat.div_div_eq_div_mul]
-  have hm : (x &&& mask) % 4 = 0 := by
-    change (x &&& mask) % 2 ^ 2 = 0
-    rw [Nat.and_mod_two_pow]
-    norm_num [mask]
-  constructor
-  · intro h
-    rw [h] at hd
-    norm_num at hd ⊢
-    omega
-  · intro h
-    norm_num at hd h
-    omega
+  exact DiophantineConsistency.MF.DoubledClause2011.mask_iff x
 
 /-- The ordinary raw clause, before reduction to one radix field. -/
 def raw (n W u k t b : ℕ) : ℕ :=
