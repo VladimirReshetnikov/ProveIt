@@ -131,31 +131,14 @@ def Selected {ι : Type*} (f : ι → ℕ) (i : ι) : Prop :=
 theorem sum_le_one_cases {ι : Type*} [Fintype ι] (f : ι → ℕ)
     (hf : (∑ i, f i) ≤ 1) : (∀ i, f i = 0) ∨ ∃ i, Selected f i := by
   classical
-  by_cases hz : (∑ i, f i) = 0
-  · left
-    intro i
-    have hi := Finset.single_le_sum (fun j (_ : j ∈ Finset.univ) => Nat.zero_le (f j))
-      (Finset.mem_univ i)
-    omega
-  · have hsum : (∑ i, f i) = 1 := by omega
-    have hex : ∃ i, 0 < f i := by
-      by_contra hnot
-      push Not at hnot
-      have hall : ∀ i, f i = 0 := fun i => by have := hnot i; omega
-      simp only [hall, Finset.sum_const_zero] at hsum
-      contradiction
-    obtain ⟨i, hi⟩ := hex
-    have hle := Finset.single_le_sum (fun j (_ : j ∈ Finset.univ) => Nat.zero_le (f j))
-      (Finset.mem_univ i)
-    have hi1 : f i = 1 := by omega
-    have herase : ∑ j ∈ Finset.univ.erase i, f j = 0 := by
-      have he := Finset.sum_erase_add (s := Finset.univ) f (Finset.mem_univ i)
-      omega
-    refine Or.inr ⟨i, hi1, ?_⟩
-    intro j hj
-    have hjmem : j ∈ Finset.univ.erase i := Finset.mem_erase.mpr ⟨hj, Finset.mem_univ j⟩
-    have hjle := Finset.single_le_sum (fun q (_ : q ∈ Finset.univ.erase i) => Nat.zero_le (f q)) hjmem
-    omega
+  have h := Finset.sum_le_one_iff.mp hf
+  by_cases hz : ∀ i, f i = 0
+  · exact Or.inl hz
+  · obtain ⟨i, hi⟩ := not_forall.mp hz
+    refine Or.inr ⟨i, (h i i (by simp) (by simp) hi hi).2, ?_⟩
+    intro j hji
+    by_contra hj
+    exact hji (h j i (by simp) (by simp) hj hi).1
 
 theorem Selected.weighted_sum {ι : Type*} [Fintype ι] {f : ι → ℕ} {i : ι}
     (h : Selected f i) (a : ι → ℕ) : (∑ j, a j * f j) = a i := by
