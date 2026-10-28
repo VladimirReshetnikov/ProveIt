@@ -102,6 +102,7 @@ Packet names refer to the subdirectories of this directory.
 | `physical/patches/fin_pred.patch` | zh | `WangTiles942PhysicalOrder` | adopted as `8cb3a1aaf7`; use Fin.pred and Fin.succ_pred.155→148 lines. The old and revised full index values are equal by `rfl` for every input. Two prerequisites were refreshed; five final target/client/focus/probe/audit calls pass and all31 old reports match. Other dependencies are precompiled. Independent review passes |
 | `patches/individual/trace-absolute-bound.patch` | u | `WangMachineTraceBounds` | adopted as `b0cc4adc6d`; use the absolute-value alternative directly.142→137 lines. Five machine/finish prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass and all13 old reports match. Other dependencies are precompiled. Independent review passes |
 | `patches/no-wrap-capacity.patch` | zr | `CurrentDummySafety2011` | adopted as `776133bf33`; use the preceding radix-power bound directly.213→208 lines, with the original guards retained. Four final target/client/focus/audit calls pass and all13 old reports match. The broader client graph was not refreshed and uses precompiled dependencies. Independent review passes |
+| `patches/02-prime-factor-order.patch`, adapted | zd | `CurrentControllerData2011` | adopted as `66dafcc2b6`; share a private prime-factor order helper and use kernel-checked closed cases without a new import.169→162 lines. Eighteen affected prerequisites were refreshed before baseline; five final target/two-client/focus/audit calls and the additional RankStride client pass. All49 named old reports match; two unchanged anonymous instances are outside the probe. Ten further trace-dependent prerequisites were refreshed. Preparation warnings lack a comparable full-cone baseline; broader RankStride dependencies remain precompiled. The supplied plain-decide candidate failed. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -365,6 +366,15 @@ series from4597 to4607. Eight final scoped checks pass and all26 old public
 axiom reports match. Five trace prerequisites were refreshed; the broader
 dummy client graph and other dependencies remain precompiled. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-trace-dummy-evidence/BUNDLE.json).
+
+The controller order proof `66dafcc2b6` removes seven lines and279 bytes,
+advancing the reviewed series to4614. Six final scoped target/client/focus/
+audit calls pass and all49 named old axiom reports match; two unchanged
+anonymous instances were outside that probe. Twenty-eight prerequisites were
+refreshed, including ten for the additional RankStride client. Preparation
+warnings have no comparable full-cone baseline and broader RankStride
+dependencies remain precompiled. The supplied plain-decide candidate failed;
+the kernel repair passed. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-controller-order-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
