@@ -124,7 +124,7 @@ theorem sound (e : NatExpr σ) (v : σ → ℕ) (w : Wire e → ℕ)
       have hh := h 0
       change (w 0 : ℤ) - (v i : ℤ) = 0 at hh
       exact_mod_cast sub_eq_zero.mp hh
-  | add p q hp hq =>
+  | add p q hp hq | mul p q hp hq =>
       have hleft : ∀ k, (residualSyntax p k).eval
           (natAssignment v (fun j => w (Sum.inr (Sum.inl j)))) = 0 := by
         intro k
@@ -136,24 +136,8 @@ theorem sound (e : NatExpr σ) (v : σ → ℕ) (w : Wire e → ℕ)
       have hl := hp (fun j => w (Sum.inr (Sum.inl j))) hleft
       have hr := hq (fun j => w (Sum.inr (Sum.inr j))) hright
       have hh := h (Sum.inl 0)
-      change (w (Sum.inl 0) : ℤ) - ((w (Sum.inr (Sum.inl (root p))) : ℤ) + w (Sum.inr (Sum.inr (root q)))) = 0 at hh
-      change w (Sum.inl 0) = p.eval v + q.eval v
-      rw [← hl, ← hr]
-      exact_mod_cast sub_eq_zero.mp hh
-  | mul p q hp hq =>
-      have hleft : ∀ k, (residualSyntax p k).eval
-          (natAssignment v (fun j => w (Sum.inr (Sum.inl j)))) = 0 := by
-        intro k
-        simpa [residualSyntax, Expr.eval_rename, assignment_comp] using h (Sum.inr (Sum.inl k))
-      have hright : ∀ k, (residualSyntax q k).eval
-          (natAssignment v (fun j => w (Sum.inr (Sum.inr j)))) = 0 := by
-        intro k
-        simpa [residualSyntax, Expr.eval_rename, assignment_comp] using h (Sum.inr (Sum.inr k))
-      have hl := hp (fun j => w (Sum.inr (Sum.inl j))) hleft
-      have hr := hq (fun j => w (Sum.inr (Sum.inr j))) hright
-      have hh := h (Sum.inl 0)
-      change (w (Sum.inl 0) : ℤ) - ((w (Sum.inr (Sum.inl (root p))) : ℤ) * w (Sum.inr (Sum.inr (root q)))) = 0 at hh
-      change w (Sum.inl 0) = p.eval v * q.eval v
+      dsimp [residualSyntax, Expr.eval, natAssignment] at hh
+      dsimp only [NatExpr.eval, root]
       rw [← hl, ← hr]
       exact_mod_cast sub_eq_zero.mp hh
 
@@ -180,29 +164,18 @@ theorem residual_degree (e : NatExpr σ) : ∀ k, (residual e k).totalDegree ≤
       intro k
       change ((MvPolynomial.X (Sum.inr 0) : MvPolynomial (σ ⊕ Fin 1) ℤ) - MvPolynomial.X (Sum.inl i)).totalDegree ≤ 2
       exact degree_sub (by simp) (by simp)
-  | add p q hp hq =>
+  | add p q hp hq | mul p q hp hq =>
       intro k
       cases k with
       | inl j =>
-          change ((MvPolynomial.X (Sum.inr (Sum.inl 0)) : MvPolynomial (σ ⊕ Wire (.add p q)) ℤ) -
-            (MvPolynomial.X (Sum.inr (Sum.inr (Sum.inl (root p)))) + MvPolynomial.X (Sum.inr (Sum.inr (Sum.inr (root q)))))).totalDegree ≤ 2
-          exact degree_sub (by simp) (degree_add (by simp) (by simp))
-      | inr k =>
-          cases k with
-          | inl k =>
-              simpa only [residual, residualSyntax, polynomial_rename] using
-                (MvPolynomial.totalDegree_rename_le _ (residual p k)).trans (hp k)
-          | inr k =>
-              simpa only [residual, residualSyntax, polynomial_rename] using
-                (MvPolynomial.totalDegree_rename_le _ (residual q k)).trans (hq k)
-  | mul p q hp hq =>
-      intro k
-      cases k with
-      | inl j =>
-          change ((MvPolynomial.X (Sum.inr (Sum.inl 0)) : MvPolynomial (σ ⊕ Wire (.mul p q)) ℤ) -
-            MvPolynomial.X (Sum.inr (Sum.inr (Sum.inl (root p)))) * MvPolynomial.X (Sum.inr (Sum.inr (Sum.inr (root q))))).totalDegree ≤ 2
-          apply degree_sub (by simp)
-          exact (MvPolynomial.totalDegree_mul _ _).trans (by simp)
+          first
+          | change ((MvPolynomial.X (Sum.inr (Sum.inl 0)) : MvPolynomial (σ ⊕ Wire (.add p q)) ℤ) -
+              (MvPolynomial.X (Sum.inr (Sum.inr (Sum.inl (root p)))) + MvPolynomial.X (Sum.inr (Sum.inr (Sum.inr (root q)))))).totalDegree ≤ 2
+            exact degree_sub (by simp) (degree_add (by simp) (by simp))
+          | change ((MvPolynomial.X (Sum.inr (Sum.inl 0)) : MvPolynomial (σ ⊕ Wire (.mul p q)) ℤ) -
+              MvPolynomial.X (Sum.inr (Sum.inr (Sum.inl (root p)))) * MvPolynomial.X (Sum.inr (Sum.inr (Sum.inr (root q))))).totalDegree ≤ 2
+            apply degree_sub (by simp)
+            exact (MvPolynomial.totalDegree_mul _ _).trans (by simp)
       | inr k =>
           cases k with
           | inl k =>

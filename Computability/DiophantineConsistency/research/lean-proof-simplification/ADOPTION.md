@@ -617,5 +617,177 @@ ArithmeticCyclicWord object was missing. Earlier dependencies remain precompiled
 and the prerequisite build and failed direct-client probe statuses were observed
 rather than separately recorded in JSON. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mask-reuse-evidence/BUNDLE.json).
 
+The reflected-geometry reuse `30decae790` removes 16 lines and 465 bytes,
+bringing the reviewed series to 7850. Target, two clients, focus and 27 old
+public axiom reports pass with matching logs and no warnings. The new
+prerequisite object was authenticated against a successful build using the
+latest matrix-free permutation. Five other local sources have newer timestamps
+than cached objects, and earlier dependencies remain precompiled. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-reflected-reuse-evidence/BUNDLE.json).
+
+The binary half-bound reuse `dfc1b71ea6` removes seven net lines, bringing the
+reviewed series to 7857. Population, carry and rank modules, focus, Repunit
+client, 45 old axiom reports and seven instance reports pass with matching
+output. The unchanged carry prerequisite emits six identical warnings; earlier
+Foundation and project dependencies remain precompiled. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-binary-half-evidence/BUNDLE.json).
+
+The quadratic quotient certificate reuse `baa756510e` removes seven net
+lines, bringing the reviewed series to 7864. Four DAG objects were authenticated
+and 22 affected prerequisites rebuilt. Baseline and final target, direct client,
+two focuses and all 16 old public axiom reports pass with matching logs and no
+warnings. The borrowed DAG semantics build previously emitted five matching
+warnings; four earlier sources have newer timestamps than cached objects and
+external dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-divmod-reuse-evidence/BUNDLE.json).
+
+The encoded-word degree reuse `803467264d` removes ten net lines across four
+modules, bringing the reviewed series to 7874. All 21 affected local modules
+were rebuilt in both phases; four focused checks and 50 old public axiom
+reports pass with matching logs and unchanged existing warnings. Fifty-one
+prior objects and the current gap certificate were authenticated; earlier
+local and Mathlib dependencies remain precompiled. The client driver was edited
+after baseline, though its original command/status records were retained;
+generator and helper-probe statuses were observed without separate JSON records.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-encoded-degree-evidence/BUNDLE.json).
+
+The matrix-free reflected-geometry reuse `300d4cb167` removes 20 net lines,
+bringing the reviewed series to 7894. Targets, a direct client, 21 old axiom
+reports and actual Foundation matrix co-imports pass with matching logs. Eight
+missing prerequisites were rebuilt; one unchanged prerequisite emitted a
+warning without a paired fresh baseline. Initial missing-object attempts were
+corrected and retained. Earlier dependencies remain precompiled. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-mf-reflected-reuse-evidence/BUNDLE.json).
+
+The quadratic predecessor proof `06786bfce1` removes seven net lines, bringing
+the reviewed series to 7901. Targets, two clients, focus, boundary checks and
+26 old axiom reports pass with matching logs. Twenty-two prior refreshed
+prerequisites and four authenticated DAG objects were reused; four earlier
+sources have newer timestamps than cached objects. Failed preliminary probes
+were retained, and the recorded graph was corrected after review. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-pred-certificate-evidence/BUNDLE.json).
+
+The clean-band list proof `b5a09e98e8` removes five net lines, bringing the
+reviewed series to 7906. Twenty-one affected prerequisites were refreshed;
+target, two clients, focus and ten old axiom reports pass with matching logs.
+One existing client warning matches; preparation warnings lack a comparable
+fresh pre-preparation run, and earlier dependencies remain precompiled. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-clean-bands-evidence/BUNDLE.json).
+
+The standard numeral cast reuse `f5a4267229` removes 18 net lines and 751
+bytes across four existing modules and a new shared helper, bringing the reviewed
+series to 7924. Original-snapshot and final targets, two selected direct clients,
+104 named old axiom reports and an actual Foundation matrix co-import pass.
+The replay captured its effective Lean path and object hashes. This also checks
+the previously unavailable ArithmeticCellTransfer client against the current
+matrix-free mask change. Two other PackingCells clients remain unchecked;
+earlier local and external dependencies remain precompiled. WangTable first
+exceeded the 6 GB Lean cap and passed at 9 GB; existing warnings and corrected
+preliminary failures are recorded. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-standard-casts-evidence/BUNDLE.json).
+
+The implication-transfer reuse `f77baa3490` removes six net lines, bringing the
+reviewed series to 7930. Isolated baseline and final target builds and the
+focused client pass; all ten target/client axiom reports match. The 37 local
+prerequisite source/object pairs were hash-audited, with 29 refreshed and eight
+historical pinned objects. Foundation, FirstOrder, most PAHF and external
+dependencies remain precompiled. Two broader clients remain unverified
+because prerequisite objects were unavailable; failed attempts are retained.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-ha-implication-evidence/BUNDLE.json).
+
+The shared gate induction `bdb9679e73` removes 27 net lines, bringing the
+reviewed series to 7957. Both target versions and four direct clients pass
+after rebuilding 12 local prerequisites and two additional client prerequisites;
+all 44 expanded public, instance and structure axiom reports match. The fifth
+direct client, EquationFromRep, remains unverified because its JonesSyntax
+closure has stale cached dependencies. The unchanged Paper1982 prerequisites
+emit 23 warnings without a paired baseline; Mathlib is precompiled. The build
+receipt reconstructs commands and uses a later captured Lake environment suffix.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-quartic-gates-evidence/BUNDLE.json).
+
+The conditional list lookup reuse `66f7e490ff` removes 14 net lines and 599
+bytes including the helper, bringing the reviewed series to 7971. Both normal
+and cell targets pass before and after against refreshed dependencies; all 89
+public and generated axiom reports match. Three normal, nine matrix-free and
+one cell direct clients pass, as does a Foundation Matrix co-import. The
+matrix-free and external dependencies remain cache-bounded. Three existing
+cell warnings match apart from locations; five unchanged refreshed prerequisites
+emit 51 warnings without paired baselines. Target command/path receipts were
+reconstructed from observed calls. Independent review passes. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-list-getd-evidence/BUNDLE.json).
+
+The matrix-free evaluation proof `f1706b3f77` removes six lines, bringing
+the reviewed series to 7977. Baseline and final targets, ArithmeticConstructionUnit
+and all 17 public axiom reports pass with matching logs after rebuilding 16
+target and ten additional client prerequisites. Foundation PRF was checked
+against its clean pinned checkout; Mathlib and external inputs remain
+precompiled. Four unchanged prerequisites emit nine warnings without paired
+baselines. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mf-evaluate-sum-evidence/BUNDLE.json).
+
+The one-element Fin proof reuse `aec7bcf3db` removes 12 lines in three
+represented iteration modules, bringing the reviewed series to 7989. Both
+versions of all three targets and six direct clients pass; all 97 named
+declaration and instance axiom reports match. Independent review verified
+1,327 distinct historical source/object/manifest pins. Foundation, BusyBeaver
+and other dependencies remain authenticated precompiled inputs. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-evidence/BUNDLE.json).
+
+The ordinary evaluation proof `de2fe5efbf` removes six more lines, bringing
+the reviewed series to 7995. Both target versions, two direct clients and all
+19 public axiom reports pass with matching logs. Six prerequisites were rebuilt
+and 22 relevant prior source/object pairs authenticated; the remaining project
+and external inputs are precompiled. One existing units warning matches.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-normal-evaluate-sum-evidence/BUNDLE.json).
+
+The trace Fin 1 reuse `cad556929a` removes four lines, bringing the reviewed
+series to 7999. Both target versions, the direct client and all 37 public
+axiom reports pass after refreshing 26 affected prerequisites. The 132 selected
+local dependency objects were classified: 97 historical pins, nine recent
+kernel builds and 26 refreshed descendants; external packages remain precompiled.
+Nine target and six client warnings match after location normalization. Four
+unchanged refreshed prerequisites emit 16 warnings without paired baselines.
+WangTable first failed at 6 GiB and passed at 10 GiB; the first refresh was
+deliberately interrupted to repair its dependency closure. Independent review
+passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-trace-evidence/BUNDLE.json).
+
+The Wang initialization proof cleanup `f82f4047ce` removes four lines,
+bringing the reviewed series to 8003. Paired target, focused check, four
+direct clients and 23 public axiom reports pass with matching logs. The
+initialization prerequisite was rebuilt, and Wang core, tile data and machine
+source objects matched recent receipts. Six BusyBeaver inputs and further
+tile-client prerequisites remain historical precompiled boundaries without
+exact receipts; the older graph is not wholly current, but affected clients
+were rebuilt and current tile data matched a recent receipt. Independent
+review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-initialization-evidence/BUNDLE.json).
+
+The shared reflected bounds `777a764cf8` remove 50 net lines across four
+modules, bringing the reviewed series to 8053. Paired target builds and four
+representative clients pass, as do 160 existing public, exported and generated
+axiom comparisons; the two new helpers use the standard three axioms. Eighteen
+prior objects were authenticated and three affected modules rebuilt; the
+changed-object descendants are covered in the 59-node local graph. Remaining
+historical and external inputs are precompiled, and other direct clients remain
+unchecked. Three existing cell warnings match after location normalization;
+the initially failed normal and missing-MF prototypes are retained. Independent
+review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-reflected-shared-evidence/BUNDLE.json).
+
+The carry lookup sharing `0ce4bf0bc5` removes eight net lines, bringing the
+reviewed series to 8061. Both targets, two direct clients, two affected bounds
+modules and two focused checks pass in both phases; all 39 named and 13
+generated axiom reports match, and the new helper has the standard three axioms.
+All 26 local graph nodes match authenticated receipts and all 11 descendants of
+refreshed HTP seeds were rebuilt. Five warnings in unchanged HTP preparation
+lack paired baselines; external packages are precompiled and the umbrella import
+was not rebuilt. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-carry-map-evidence/BUNDLE.json).
+
+The additional Fin 1 rewrites `ebaa26c8c9` remove 12 lines across Pell,
+repunit and tape modules, bringing the reviewed series to 8073. Both target
+versions and seven direct clients pass with matching warning-free logs; all
+91 named public axiom reports match. All 336 non-target nodes in the three
+inventories match current source/object hashes and exact receipts; Foundation,
+Mathlib and historical inputs remain precompiled. ArithmeticBinaryCarry emits
+six unpaired prerequisite warnings. An initial tape-client attempt lacked
+TapePrefix; the prerequisite was built and the client passed, with its prefix
+command/path receipt reconstructed. Independent review passes. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-more-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

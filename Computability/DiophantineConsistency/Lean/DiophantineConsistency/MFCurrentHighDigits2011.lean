@@ -1,4 +1,5 @@
 import Diophantine.Paper1976.Lemma23
+import DiophantineConsistency.ListGetDCases
 import Diophantine.Paper1984.Masking
 import DiophantineConsistency.CurrentMaskData2011
 import DiophantineConsistency.LowMaskData
@@ -65,18 +66,6 @@ set_option Elab.async false
 
 def cellDigit (j : ℕ) : ℕ := highDigits.getD j 0
 
-private theorem getD_append_cases (a b : List ℕ) (j : ℕ) :
-    (a ++ b).getD j 0 = if j < a.length then a.getD j 0 else b.getD (j-a.length) 0 := by
-  split_ifs with h
-  · exact List.getD_append a b 0 j h
-  · exact List.getD_append_right a b 0 j (by omega)
-
-private theorem getD_replicate_cases (n x j : ℕ) :
-    (List.replicate n x).getD j 0 = if j < n then x else 0 := by
-  split_ifs with h
-  · exact List.getD_replicate x h
-  · exact List.getD_eq_default (List.replicate n x) 0 (by simp only [List.length_replicate]; omega)
-
 private theorem highDigits_blocks : highDigits =
     List.replicate 1 4 ++ List.replicate 916 8 ++ List.replicate 43 0 ++
       List.replicate 9 1 ++ List.replicate 18 0 ++ List.replicate 8 1 ++
@@ -92,8 +81,8 @@ theorem cellDigit_formula (j : ℕ) : cellDigit j =
       if j < 1004 then 0 else if j = 1004 then 1 else if j = 1005 then 2^45-4 else 0 := by
   unfold cellDigit
   rw [highDigits_blocks]
-  simp only [List.append_assoc, getD_append_cases, List.length_replicate,
-    getD_replicate_cases]
+  simp only [List.append_assoc, ListGetDCases.append, List.length_replicate,
+    ListGetDCases.replicate]
   repeat' first | omega | split
 
 theorem cellDigit_zero : cellDigit 0 = 4 := by rw [cellDigit_formula]; decide

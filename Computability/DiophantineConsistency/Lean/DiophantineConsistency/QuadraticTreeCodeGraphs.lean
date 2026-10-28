@@ -14,22 +14,15 @@ def PredCertificate (out n : ℕ) : Prop :=
   (n : ℤ) * ((out : ℤ) + 1 - n) = 0 ∧ (out : ℤ) * ((out : ℤ) + 1 - n) = 0
 
 theorem pred_certificate_iff (out n : ℕ) : PredCertificate out n ↔ out = n.pred := by
-  constructor
-  · rintro ⟨hnrel,horel⟩
-    by_cases hn : n = 0
-    · subst n
-      have ho : out = 0 := by
-        have hmul : (out : ℤ) * ((out : ℤ) + 1) = 0 := by simpa using horel
-        rcases mul_eq_zero.mp hmul with h0 | h1 <;> omega
-      simp [ho]
-    · have hni : (n : ℤ) ≠ 0 := by exact_mod_cast hn
-      have hd := (mul_eq_zero.mp hnrel).resolve_left hni
-      have he : out + 1 = n := by omega
-      rw [←he,Nat.pred_succ]
-  · intro h
-    cases n with
-    | zero => simp only [Nat.pred_zero] at h; simp [PredCertificate,h]
-    | succ n => simp only [Nat.pred_succ] at h; simp [PredCertificate,h,Nat.cast_add]
+  cases n with
+  | zero =>
+    simp only [PredCertificate, Nat.cast_zero, Nat.pred_zero, mul_eq_zero,
+      Int.natCast_eq_zero, true_or, true_and, sub_zero]
+    omega
+  | succ n =>
+    simp only [PredCertificate, Nat.cast_succ, Nat.pred_succ, mul_eq_zero,
+      Int.natCast_eq_zero]
+    omega
 
 def predProgram : Program 2 := .empty
 private def predInput (i : Fin 2) : Expr (Fin 2 ⊕ Fin predProgram.nodes.length) := .var (.inl i)

@@ -1,5 +1,6 @@
 import DiophantineConsistency.QuadraticRegisterSystem
 import DiophantineConsistency.RegisterRelationLogic
+import DiophantineConsistency.RegisterDivMod
 
 /-! # A shared-register quotient/remainder certificate with an explicit positive guard -/
 
@@ -10,15 +11,7 @@ open NaturalRegisterProgram NaturalRegisterRelation ArithmeticDAG RegisterRelati
 theorem certificate_iff (q r n b : ℕ) :
     (∃ s, n = q * b + r ∧ b = r + s + 1) ↔
       0 < b ∧ q = n / b ∧ r = n % b := by
-  constructor
-  · rintro ⟨s, hn, hb⟩
-    have hb0 : 0 < b := by omega
-    have h := (Nat.div_mod_unique (a := n) (d := q) (c := r) hb0).mpr
-      ⟨by simpa [Nat.add_comm, Nat.mul_comm] using hn.symm, by omega⟩
-    exact ⟨hb0, h.1.symm, h.2.symm⟩
-  · rintro ⟨hb, rfl, rfl⟩
-    exact ⟨b - n % b - 1, (Nat.div_add_mod' n b).symm,
-      by have := Nat.mod_lt n hb; omega⟩
+  exact RegisterDivMod.certificate_iff q r n b
 
 /-- Source inputs are `(quotient,remainder,numerator,denominator)` and input
 4 is the explicit remainder-bound slack. The local constraints need no gates. -/

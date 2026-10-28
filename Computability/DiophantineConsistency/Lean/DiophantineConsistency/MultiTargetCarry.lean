@@ -26,7 +26,8 @@ def selectedMask (t n : ℕ) (positions : Finset ℕ) : ℕ :=
   Nat.ofDigits (2 ^ t) ((List.range n).map fun i =>
     if i ∈ positions then 2 ^ (t - 1) - 1 else 0)
 
-private theorem map_range_getD (f : ℕ → ℕ) {n i : ℕ} (hi : i < n) :
+/-- A mapped range evaluates to its image at each valid index. -/
+theorem map_range_getD (f : ℕ → ℕ) {n i : ℕ} (hi : i < n) :
     ((List.range n).map f).getD i 0 = f i := by
   rw [List.getD_eq_getElem _ _ (by simpa using hi)]
   simp

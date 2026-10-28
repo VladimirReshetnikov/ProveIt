@@ -20,13 +20,7 @@ The finite HA assumptions and arithmetic-axiom support are retained. -/
 theorem translated_imp_elim {G : List Formula} (φ ψ : Proposition ℒₒᵣ)
     (h : Relative Formula.Ax_s G (formula (φ 🡒 ψ)ᴺ)) :
     Relative Formula.Ax_s G (.imp (formula φᴺ) (formula ψᴺ)) := by
-  obtain ⟨p⟩ := (LO.FirstOrder.Derivation.imply_doubleNegation
-    (Λ := (𝗜𝗻𝘁¹ : Hilbertᵢ ℒₒᵣ)) φ ψ)
-  have hi := FoundationPAHFLogic.intuitionistic_proof p
-  change Derives [] (.and
-    (.imp (.imp (formula φᴺ) (formula ψᴺ)) (formula (φ 🡒 ψ)ᴺ))
-    (.imp (formula (φ 🡒 ψ)ᴺ) (.imp (formula φᴺ) (formula ψᴺ)))) at hi
-  exact ((relative_of_derives hi).and_right.weaken (by simp)).mp h
+  exact FoundationHAInduction.translated_imp_elim φ ψ h
 
 theorem sentence_imp_elim {φ ψ : ArithmeticSentence}
     (h : Proves (sentence (φ 🡒 ψ)ᴺ)) :

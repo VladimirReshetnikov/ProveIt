@@ -51,16 +51,10 @@ theorem evaluate_sum {R : Type*} [CommSemiring R] (r : R)
   induction l with
   | nil => simp [evaluate]
   | cons a l ih =>
-      simp only [List.length_cons]
-      rw [evaluate, Fin.sum_univ_succ]
-      simp only [Fin.val_zero, List.getElem_cons_zero,
-        Nat.add_sub_cancel, Nat.sub_zero, Fin.val_succ, List.getElem_cons_succ]
-      rw [ih]
-      congr 1
-      apply Finset.sum_congr rfl
-      intro j _
-      congr 2
-      omega
+      simp only [List.length_cons, evaluate, Fin.sum_univ_succ, Fin.val_zero,
+        List.getElem_cons_zero, Nat.add_sub_cancel, Nat.sub_zero, Fin.val_succ,
+        List.getElem_cons_succ, ih]
+      simp only [Nat.sub_sub, Nat.add_comm]
 
 private theorem evaluate_rows {R : Type*} [CommSemiring R] (r : R) :
     evaluate r rows = ∑ j : Fin 941, 2 * (value j : R) * r ^ (940-j.val) := by

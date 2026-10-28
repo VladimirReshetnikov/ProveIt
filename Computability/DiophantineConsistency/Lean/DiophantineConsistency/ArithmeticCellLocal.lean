@@ -1,4 +1,5 @@
 import DiophantineConsistency.ArithmeticCellPhysical
+import DiophantineConsistency.ListGetDCases
 import DiophantineConsistency.NativePreliminaryCount2011
 import Mathlib.Algebra.BigOperators.ModEq
 
@@ -33,18 +34,6 @@ set_option maxHeartbeats 4000000
 /-- The radix digit of `highPort` at cell sub-position `j`. -/
 def maskDigit (j : ℕ) : ℕ := highDigits.getD j 0
 
-private theorem getD_append_cases (a b : List ℕ) (j : ℕ) :
-    (a ++ b).getD j 0 = if j < a.length then a.getD j 0 else b.getD (j-a.length) 0 := by
-  split_ifs with h
-  · exact List.getD_append a b 0 j h
-  · exact List.getD_append_right a b 0 j (by omega)
-
-private theorem getD_replicate_cases (n x j : ℕ) :
-    (List.replicate n x).getD j 0 = if j < n then x else 0 := by
-  split_ifs with h
-  · exact List.getD_replicate x h
-  · exact List.getD_eq_default (List.replicate n x) 0 (by simp only [List.length_replicate]; omega)
-
 private theorem highDigits_blocks : highDigits =
     List.replicate 1 4 ++ List.replicate 916 8 ++ List.replicate 43 0 ++
       List.replicate 9 1 ++ List.replicate 18 0 ++ List.replicate 8 1 ++
@@ -59,8 +48,8 @@ theorem maskDigit_formula (j : ℕ) : maskDigit j =
       if j < 1004 then 0 else if j = 1004 then 1 else if j = 1005 then 2^45-4 else 0 := by
   unfold maskDigit
   rw [highDigits_blocks]
-  simp only [List.append_assoc, getD_append_cases, List.length_replicate,
-    getD_replicate_cases]
+  simp only [List.append_assoc, ListGetDCases.append, List.length_replicate,
+    ListGetDCases.replicate]
   repeat' first | omega | split
 
 theorem maskDigit_padding {j : ℕ} (hj : 1 ≤ j ∧ j ≤ 916) : maskDigit j = 8 := by
@@ -115,10 +104,6 @@ structure Local (cw tw kw dw : ℕ → ℕ) (kin phase : ℕ) : Prop where
 
 /-- The selector count of the cell. -/
 def count (cw : ℕ → ℕ) : ℕ := prefixSum (fun f => cw (4022 + f)) 942
-
-private def controlCoefficient : Entry → ℕ
-  | .inl _ => 0
-  | .inr e => 2 * weight (.inr e)
 
 /-- The incoming carry of offset `h`. -/
 def incoming (kw : ℕ → ℕ) (kin h : ℕ) : ℕ := if h = 0 then kin else kw (h - 1)
@@ -213,28 +198,9 @@ theorem selector_reflection_lt (h : ℕ) (hone : count cw ≤ 1) :
 theorem control_reflection_le {h : ℕ} (hh : h ≤ 1004) :
     (∑ e : Entry, if 1005 ≤ h + position e ∧ 942 ≤ source h e then
       2 * weight e * cw (4022 + source h e) else 0) ≤ 2 ^ 45 - 2048 := by
-  have hm (e : Entry) :
-      (if 1005 ≤ h + position e ∧ 942 ≤ source h e then
-        2 * weight e * cw (4022 + source h e) else 0) ≤ controlCoefficient e := by
-    rcases e with i | e
-    · have hp := selector_position_lt i
-      have hz : ¬(1005 ≤ h + position (.inl i) ∧ 942 ≤ source h (.inl i)) := by
-        intro hs
-        have he := source_nonselector_coefficient hh (.inl i) hs.2
-        omega
-      simp only [if_neg hz, controlCoefficient, le_refl]
-    · simp only [controlCoefficient]
-      split_ifs
-      · have hb := H.bool (4022 + source h (.inr e)) (by have := source_le hh (.inr e); omega)
-        exact (Nat.mul_le_mul_left (2 * weight (.inr e)) hb).trans_eq (Nat.mul_one _)
-      · exact Nat.zero_le _
-  have hs := Finset.sum_le_sum (fun e (_ : e ∈ (Finset.univ : Finset Entry)) => hm e)
-  have hmass : (∑ e : Entry, controlCoefficient e) = 2 ^ 45 - 2048 := by
-    rw [Fintype.sum_sum_type]
-    simp only [controlCoefficient, Finset.sum_const_zero, zero_add]
-    exact doubled_control_mass
-  rw [hmass] at hs
-  exact hs
+  apply ArithmeticCellPhysical.reflected_control_le hh
+  intro e
+  exact H.bool _ (by have := source_le hh e; omega)
 
 theorem refl_lt {h : ℕ} (hh : h ≤ 1004) (hone : count cw ≤ 1) :
     refl cw h < 2 * 2 ^ 45 - 2048 := by
@@ -247,14 +213,7 @@ theorem refl_lt {h : ℕ} (hh : h ≤ 1004) (hone : count cw ≤ 1) :
       (∑ e ∈ selectorEntries h, 2 * weight e * cw (4022 + source h e)) +
       (∑ e : Entry, if 1005 ≤ h + position e ∧ 942 ≤ source h e then
         2 * weight e * cw (4022 + source h e) else 0) := by
-    rw [selectorEntries, Finset.sum_filter, ← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl
-    intro e _
-    have hge : 942 ≤ source h e ↔ ¬source h e < 942 := by omega
-    by_cases hv : 1005 ≤ h + position e <;>
-      by_cases hf : source h e < 942 <;>
-        simp only [hv, hf, hge, not_true_eq_false, not_false_eq_true,
-          and_true, and_false, if_true, if_false, zero_add, add_zero]
+    exact ArithmeticCellPhysical.reflected_split h _
   rw [he]
   omega
 

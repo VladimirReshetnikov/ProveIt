@@ -12,11 +12,7 @@ open scoped BigOperators
 /-- A finite encoded word has degree at most its largest permitted position. -/
 theorem encoded_natDegree_le {m W : ℕ} (w : Fin (m+1) → ℕ)
     (hw : ∀ i,w i≤W) (y : Fin (m+1) → ℤ) : (encoded w y).natDegree≤W := by
-  classical
-  unfold encoded
-  apply natDegree_sum_le_of_forall_le
-  intro i _
-  exact (natDegree_monomial_le (y i)).trans (hw i)
+  exact SelectiveCarry.encoded_degree_le w y W hw
 
 /-- Degree bookkeeping for all three channels, without nonzero hypotheses. -/
 theorem product_natDegree_le {m W d0 d1 d2 : ℕ} (w : Fin (m+1) → ℕ)

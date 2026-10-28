@@ -131,7 +131,7 @@ theorem population_div_mod (a : V) :
     population a=population (2*(a/2)+a%2) := by rw [he]
     _=population (a/2)+a%2 := population_binary _ _ (lt_two_iff_le_one.mp (by simp))
 
-private theorem half_lt (a E : V) (h : a<2*E) : a/2<E := by
+theorem half_lt (a E : V) (h : a<2*E) : a/2<E := by
   have he : 2*(a/2)+a%2=a := div_add_mod a 2
   have hlo : 2*(a/2)≤a := by rw [←he]; simp
   by_contra hn

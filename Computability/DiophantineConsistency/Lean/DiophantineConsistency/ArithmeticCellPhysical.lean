@@ -108,6 +108,50 @@ theorem source_nonselector_coefficient {h : ℕ} (hh : h ≤ 1004) (e : Entry)
 noncomputable def selectorEntries (h : ℕ) : Finset Entry :=
   Finset.univ.filter (fun e => 1005 ≤ h + position e ∧ source h e < 942)
 
+
+theorem reflected_split (h : ℕ) (f : Entry → ℕ) :
+    (∑ e : Entry, if 1005 ≤ h + position e then f e else 0) =
+      (∑ e ∈ selectorEntries h, f e) +
+      (∑ e : Entry, if 1005 ≤ h + position e ∧ 942 ≤ source h e then f e else 0) := by
+  rw [selectorEntries, Finset.sum_filter, ← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro e _
+  have hge : 942 ≤ source h e ↔ ¬source h e < 942 := by omega
+  by_cases hv : 1005 ≤ h + position e <;>
+    by_cases hf : source h e < 942 <;>
+      simp only [hv, hf, hge, not_true_eq_false, not_false_eq_true,
+        and_true, and_false, if_true, if_false, zero_add, add_zero]
+
+private def controlCoefficient : Entry → ℕ
+  | .inl _ => 0
+  | .inr e => 2 * weight (.inr e)
+
+theorem reflected_control_le {h : ℕ} (hh : h ≤ 1004) (f : Entry → ℕ)
+    (hf : ∀ e, f e ≤ 1) :
+    (∑ e : Entry, if 1005 ≤ h + position e ∧ 942 ≤ source h e then
+      2 * weight e * f e else 0) ≤ 2 ^ 45 - 2048 := by
+  have hm (e : Entry) :
+      (if 1005 ≤ h + position e ∧ 942 ≤ source h e then
+        2 * weight e * f e else 0) ≤ controlCoefficient e := by
+    rcases e with i | e
+    · have hp := selector_position_lt i
+      have hz : ¬(1005 ≤ h + position (.inl i) ∧ 942 ≤ source h (.inl i)) := by
+        intro hs
+        have he := source_nonselector_coefficient hh (.inl i) hs.2
+        omega
+      simp only [if_neg hz, controlCoefficient, le_refl]
+    · simp only [controlCoefficient]
+      split_ifs
+      · exact (Nat.mul_le_mul_left (2 * weight (.inr e)) (hf _)).trans_eq (Nat.mul_one _)
+      · exact Nat.zero_le _
+  have hs := Finset.sum_le_sum (fun e (_ : e ∈ (Finset.univ : Finset Entry)) => hm e)
+  have hmass : (∑ e : Entry, controlCoefficient e) = 2 ^ 45 - 2048 := by
+    rw [Fintype.sum_sum_type]
+    simp only [controlCoefficient, Finset.sum_const_zero, zero_add]
+    exact doubled_control_mass
+  rw [hmass] at hs
+  exact hs
+
 theorem selector_source_injective (h : ℕ) :
     Set.InjOn (source h) (selectorEntries h : Set Entry) := by
   intro e he f hf hef
