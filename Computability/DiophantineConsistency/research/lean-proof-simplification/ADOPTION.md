@@ -632,5 +632,13 @@ output. The unchanged carry prerequisite emits six identical warnings; earlier
 Foundation and project dependencies remain precompiled. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-binary-half-evidence/BUNDLE.json).
 
+The quadratic quotient certificate reuse `baa756510e` removes seven net
+lines, bringing the reviewed series to 7864. Four DAG objects were authenticated
+and 22 affected prerequisites rebuilt. Baseline and final target, direct client,
+two focuses and all 16 old public axiom reports pass with matching logs and no
+warnings. The borrowed DAG semantics build previously emitted five matching
+warnings; four earlier sources have newer timestamps than cached objects and
+external dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-divmod-reuse-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
