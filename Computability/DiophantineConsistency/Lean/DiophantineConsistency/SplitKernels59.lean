@@ -65,13 +65,7 @@ theorem sourcePolynomial_zero_iff (ports : Fin 4 → ℤ) (x : Fin 31 → ℤ) :
   exact coeff_zero_iff_source_zero ports x
 
 theorem degree_encoded (x : Fin 31 → R) : (encoded weights x).natDegree ≤ 116 := by
-  apply natDegree_le_iff_coeff_eq_zero.mpr
-  intro j hj
-  simp only [encoded,finsetSum_coeff,coeff_monomial]
-  apply Finset.sum_eq_zero
-  intro i _
-  have hne : weights i ≠ j := by have hi := maximum_weight i; omega
-  exact if_neg hne
+  exact SelectiveCarry.encoded_degree_le weights x 116 maximum_weight
 
 theorem degree_sourcePolynomial (ports : Fin 4 → R) (x : Fin 31 → R) :
     (sourcePolynomial ports x).natDegree ≤ 2161 := by

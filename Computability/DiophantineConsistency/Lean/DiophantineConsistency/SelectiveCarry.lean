@@ -18,6 +18,15 @@ open SidonPositions (PairIndex)
 open SelectiveQuadraticCoding MultiTargetCarry
 open scoped BigOperators
 
+/-- The degree of an encoded word is bounded by its largest weight. -/
+theorem encoded_degree_le {R : Type*} [CommRing R] {m : ℕ}
+    (w : Fin (m + 1) → ℕ) (u : Fin (m + 1) → R) (W : ℕ)
+    (hw : ∀ i, w i ≤ W) : (encoded w u).natDegree ≤ W := by
+  unfold encoded
+  exact natDegree_sum_le_of_forall_le _ _
+    (fun i _ => (natDegree_monomial_le (u i)).trans (hw i))
+
+
 /-- The complete selective quadratic product. -/
 noncomputable def rowProduct {m r : ℕ} (w : Fin (m + 1) → ℕ)
     (s : Fin r → Finset (PairIndex m)) (a : Fin r → PairIndex m → ℤ)
@@ -40,10 +49,7 @@ theorem rowProduct_degree_lt {m r : ℕ} (w : Fin (m + 1) → ℕ)
     (hw : ∀ i, w i ≤ W)
     (hD : ∀ k p, p ∈ s k → E k - pairWeight w p ≤ D) :
     (rowProduct w s a u E).natDegree < D + 2 * W + 1 := by
-  have he : (encoded w u).natDegree ≤ W := by
-    unfold encoded
-    exact natDegree_sum_le_of_forall_le _ _
-      (fun i _ => (natDegree_monomial_le (u i)).trans (hw i))
+  have he := encoded_degree_le w u W hw
   have hd := natDegree_mul_le_of_le (natDegree_pow_le_of_le 2 he)
     (combined_degree_le w s a E D hD)
   change (encoded w u ^ 2 * combined w s a E).natDegree < D + 2 * W + 1
