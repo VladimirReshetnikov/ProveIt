@@ -88,12 +88,7 @@ theorem run_read_outside {n : ℕ} (M : Machine n) (t : ℕ) (x : ℤ)
 
 theorem run_read_of_abs_ge {n : ℕ} (M : Machine n) (t : ℕ) (x : ℤ)
     (hx : (t : ℤ) ≤ |x|) : Tape.read (M.run t).tape x = false := by
-  apply run_read_outside M t x
-  by_cases h : 0 ≤ x
-  · rw [abs_of_nonneg h] at hx
-    exact Or.inr hx
-  · rw [abs_of_neg (lt_of_not_ge h)] at hx
-    exact Or.inl (by omega)
+  exact run_read_outside M t x (le_abs'.mp hx)
 
 /-- Independent left and right margins may be enlarged arbitrarily. -/
 theorem finite_trace_box {n : ℕ} (M : Machine n) (T L R : ℕ)

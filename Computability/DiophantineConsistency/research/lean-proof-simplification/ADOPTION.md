@@ -91,6 +91,22 @@ Packet names refer to the subdirectories of this directory.
 | `algebra_examples/QuarticCompiler.patch` | e | `QuarticCompiler` | adopted as `1918aaeb02`; combine the identical addition and multiplication completeness branches.448→440 lines, evaluator data unchanged. Six final target/four-client/audit calls pass; all31 old reports match. Other dependencies are precompiled. Independent review passes |
 | `patches/B1-source-Y-row-one.patch` | zy | `NativePellBootstrap` | adopted as `9aace004ba`; derive the source Y lower bound directly from row one.648→640 lines with all premises unchanged. Five final target/two-client/focus/audit calls pass; all31 old reports match. Other dependencies are precompiled. Independent review passes |
 | `machine/M1-act_next_none_iff.patch` | v | `WangMachineAction` | adopted as `35b702513f`; apply state-number injectivity to the next-state identity.119→112 lines, retaining the target bound. After refreshing `WangMachineEncoding`, five final target/two-client/focus/audit calls pass; all15 reports match. Other dependencies are precompiled. Independent review passes |
+| `arithmetic/patches/sidon-moment.patch` and `local_candidates/patches/SidonPositions.lean.patch` | y + zm | `SidonPositions` | adopted as `4d9e4d7a30`; factor the square-sum difference and reuse unordered-pair uniqueness.168→157 lines including two tactic imports. Thirteen final affected-cone/focus/audit calls pass; all18 Sidon and31 Bootstrap reports match. Three separate calls check four attributed reports after one corrected root-setup failure. The unchanged SplitCertificate59 rebuild emits46 linter warnings without a comparable baseline log; other dependencies are precompiled. Independent review passes |
+| `machine/M2-color_action.patch` | v | `WangMachineStep` | adopted as `b14017e756`; reuse the moved-head and read-write lemmas in the head cases.125→121 lines. After two prerequisite refreshes, five final target/two-client/focus/audit calls pass; all13 old reports match. Other dependencies are precompiled. Independent review passes |
+| `patches/RatioReparameterization.patch` | zb | `RatioReparameterization` | adopted as `137b5440de`; cancel factors using the existing coprimality hypothesis.180→173 lines with signed integer cases and guards retained. Four final target/client/focus/audit calls pass; all19 old reports match. Other dependencies are precompiled. Independent review passes |
+| `controller/patches/controller_coprime_cardinality.patch` | zh | `ControllerAuxiliaryChoice` | adopted as `1bc18914d4`; use the modular-cast zero criterion directly.50→44 lines. Four final target/client/focus/audit calls pass; both old reports match. Other dependencies are precompiled. Independent review passes |
+| `patches/PolynomialRangeBounds.patch`, adapted | y | `PolynomialRangeBounds` | adopted as `5fe9c4795a`; reuse the already imported geometric-sum identity without adding an import.150→143 lines, retaining signed bounds. Six final target/three-client/focus/audit calls pass; all nine old reports match. Seven prerequisites were freshly rebuilt after reusing three authenticated early-padding outputs; other dependencies are precompiled. Independent review passes |
+| `patches/modulus-reuse.patch` | a | `CurrentEarlyPadding2011` | adopted as `c414b8db6b`; specialize the existing modulus2048 selector congruence to16.311→305 lines. Thirty affected prerequisites were refreshed before baseline; eight final target/four-downstream/client/focus/audit calls pass and all19 old reports match. Three prerequisite modules emitted warnings without a comparable original full-cone baseline; other dependencies are precompiled. Independent review passes |
+| `patches/NativeFieldCycles2011.patch`, retaining old imports | i | `NativeFieldCycles2011` | adopted as `43f5f376f9`; use surjectivity on the finite invariant even subset.111→104 lines. Five final target/client/two-focus/audit calls pass; both old reports match. The broader clients reuse precompiled intermediate dependencies. Independent review passes |
+| `strip/WangTiles942HeadBounds.patch` | za | `WangTiles942HeadBounds` | adopted as `c0e20c2490`; derive both wall bounds from finite-coordinate bounds and square monotonicity.135→130 lines. Five prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass. Seven reports match and both wall theorems strictly drop Quot.sound, with no added axioms. Other dependencies are precompiled. Independent review passes |
+| `physical/patches/fin_pred.patch` | zh | `WangTiles942PhysicalOrder` | adopted as `8cb3a1aaf7`; use Fin.pred and Fin.succ_pred.155→148 lines. The old and revised full index values are equal by `rfl` for every input. Two prerequisites were refreshed; five final target/client/focus/probe/audit calls pass and all31 old reports match. Other dependencies are precompiled. Independent review passes |
+| `patches/individual/trace-absolute-bound.patch` | u | `WangMachineTraceBounds` | adopted as `b0cc4adc6d`; use the absolute-value alternative directly.142→137 lines. Five machine/finish prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass and all13 old reports match. Other dependencies are precompiled. Independent review passes |
+| `patches/no-wrap-capacity.patch` | zr | `CurrentDummySafety2011` | adopted as `776133bf33`; use the preceding radix-power bound directly.213→208 lines, with the original guards retained. Four final target/client/focus/audit calls pass and all13 old reports match. The broader client graph was not refreshed and uses precompiled dependencies. Independent review passes |
+| `patches/02-prime-factor-order.patch`, adapted | zd | `CurrentControllerData2011` | adopted as `66dafcc2b6`; share a private prime-factor order helper and use kernel-checked closed cases without a new import.169→162 lines. Eighteen affected prerequisites were refreshed before baseline; five final target/two-client/focus/audit calls and the additional RankStride client pass. All49 named old reports match; two unchanged anonymous instances are outside the probe. Ten further trace-dependent prerequisites were refreshed. Preparation warnings lack a comparable full-cone baseline; broader RankStride dependencies remain precompiled. The supplied plain-decide candidate failed. Independent review passes |
+| `bridges/patches/WangTiles942TraceCycle.lean.patch`, repaired | zi | `WangTiles942TraceCycle` | adopted as `c74079d46b`; share temporal boundary cases with restricted simplification.182→178 lines. Five final target/two-client/focus/audit calls pass and all20 old reports match. The supplied candidate failed and is retained; an earlier Python setup failure has no retained log. Six authenticated prerequisite objects were reused; other dependencies are precompiled. Independent review passes |
+| `patches/pell-fixed-index.patch` | z | `NativePellBootstrap` | adopted as `a8c12692bf`; use the existing fixed-index Pell estimates and monotonicity.640→636 lines. Five final target/two-client/focus/audit calls pass and all31 old reports match. Six authenticated Sidon-cone objects were reused; other dependencies are precompiled. Independent review passes |
+| `syntax/patches/pairing-shell-threshold.patch` | y | `ObjectPairingInjective` | adopted as `5355cdf297`; a shell-midpoint helper collapses four branch combinations to two.104→100 lines including the new public helper, which omits the `succ_le` hypothesis. Twenty-four affected prerequisites were refreshed before baseline; six final target/two-client/focus/old-audit/new-helper calls pass and all six old reports match. The helper uses the standard three axioms; other dependencies are precompiled. Independent review passes |
+| signed Pell residue sign split, independent adaptation | k-inspired | `SignedPellResidue` | adopted as `16ea41285c`; negate both modular alternatives together, without adding the proposed helper or import.99→95 lines. Five final target/two-client/focus/audit calls pass and all five old reports match. StepDown emits an unused-variable warning without a current baseline comparison; other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -100,7 +116,6 @@ arrivals.
 | Proposal | Packet | Reason |
 |---|---|---|
 | `patches/conditional-padding.patch` | a | changes a theorem interface in `NativePreliminaryCount2011` / `CurrentCount2011`, which the research session is editing |
-| `patches/modulus-reuse.patch` | a | `CurrentEarlyPadding2011` is being edited by the research session |
 | `patches/representation-naturality.patch` | d | superseded by a's `assignment-map.patch` |
 | `coefficient-refactoring.patch` | c | superseded by d's compiled version |
 | `proposals/*.lean`, design-only sections | all | source-only demonstrations; revisit individually |
@@ -319,6 +334,70 @@ pass and all77 old public axiom reports match. The machine-action validation
 first refreshes its changed encoding dependency. Other project and package
 dependencies are precompiled; no full build is claimed. Inputs and recorded
 results are in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-three-more-evidence/BUNDLE.json).
+
+The Sidon proof `4d9e4d7a30` removes11 lines and524 bytes, bringing the
+reviewed series to4548. Thirteen final calls rebuild or check the selected
+Sidon-to-Bootstrap cone, and all49 old public reports match. Three additional
+calls audit four attributed Sidon declarations; an initial root-setup failure
+is retained separately. SplitCertificate59 emits46 linter warnings without a
+comparable original-build warning log; remaining dependencies are precompiled.
+Details are in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-sidon-evidence/BUNDLE.json).
+
+The next two commits remove11 lines and377 bytes, advancing the reviewed
+series from4548 to4559. Nine final scoped checks pass and all32 old public
+axiom reports match. Machine-step validation refreshed its encoding and action
+prerequisites; other dependencies remain precompiled. Inputs and results are
+in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-step-ratio-evidence/BUNDLE.json).
+
+The next three commits remove19 lines and399 bytes, advancing the reviewed
+series from4559 to4578. Eighteen final scoped checks pass and all30 old public
+axiom reports match. Early-padding validation refreshed30 affected
+prerequisites; polynomial validation reused three of those authenticated
+outputs and refreshed seven more. Three early-padding prerequisite modules
+emitted warnings without a comparable original full-cone baseline; other
+dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-choice-padding-evidence/BUNDLE.json).
+
+The next three commits remove19 lines and637 bytes, advancing the reviewed
+series from4578 to4597. Fourteen final scoped checks pass;40 old public axiom
+reports match and two wall-bound reports are strict subsets, with no added
+axioms. The complete old and new physical index values are equal by `rfl`.
+Seven prerequisites were refreshed; other dependencies are precompiled,
+including intermediate dependencies in the broad cycle clients. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-cycle-wall-pred-evidence/BUNDLE.json).
+
+The next two commits remove10 lines and309 bytes, advancing the reviewed
+series from4597 to4607. Eight final scoped checks pass and all26 old public
+axiom reports match. Five trace prerequisites were refreshed; the broader
+dummy client graph and other dependencies remain precompiled. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-trace-dummy-evidence/BUNDLE.json).
+
+The controller order proof `66dafcc2b6` removes seven lines and279 bytes,
+advancing the reviewed series to4614. Six final scoped target/client/focus/
+audit calls pass and all49 named old axiom reports match; two unchanged
+anonymous instances were outside that probe. Twenty-eight prerequisites were
+refreshed, including ten for the additional RankStride client. Preparation
+warnings have no comparable full-cone baseline and broader RankStride
+dependencies remain precompiled. The supplied plain-decide candidate failed;
+the kernel repair passed. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-controller-order-evidence/BUNDLE.json).
+
+The next two commits remove eight lines and381 bytes, advancing the reviewed
+series from4614 to4622. Ten final scoped checks pass and all51 old public
+axiom reports match. Twelve previously refreshed prerequisite outputs were
+authenticated and reused; other dependencies remain precompiled. The trace
+packet's failed Lean candidate is retained, while an earlier Python setup
+failure has no retained log. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-trace-pell-evidence/BUNDLE.json).
+
+The pairing shell proof `5355cdf297` removes four lines and176 bytes,
+including its new helper, bringing the reviewed series to4626. Six final
+scoped checks pass and all six old public axiom reports match. Twenty-four
+affected prerequisites were refreshed; other dependencies remain precompiled.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pair-shell-evidence/BUNDLE.json).
+
+The signed Pell proof `16ea41285c` removes four lines and102 bytes, bringing
+the reviewed series to4630. Five final scoped checks pass and all five old
+public axiom reports match. A StepDown client warning has no current baseline
+comparison; other dependencies remain precompiled. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-signed-or-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

@@ -26,19 +26,12 @@ theorem combined_dvd_iff {J F Q H C : ℤ} (hJF : J ∣ F - 1) :
   have hcop := isCoprime_of_congruence hJF
   constructor
   · intro h
-    have hJ : J ∣ Q * F + J * (H - C) :=
-      dvd_trans (show J ∣ J * F from ⟨F, rfl⟩) h
-    have hF : F ∣ Q * F + J * (H - C) :=
-      dvd_trans (show F ∣ J * F from ⟨J, by ring⟩) h
-    have hQF : J ∣ Q * F := by
-      simpa using dvd_sub hJ (show J ∣ J * (H - C) from ⟨H - C, rfl⟩)
-    have hJHC : F ∣ J * (H - C) := by
-      simpa using dvd_sub hF (show F ∣ Q * F from ⟨Q, by ring⟩)
-    exact ⟨hcop.symm.dvd_of_dvd_mul_right hQF, hcop.dvd_of_dvd_mul_left hJHC⟩
-  · rintro ⟨⟨q, hq⟩, ⟨z, hz⟩⟩
-    refine ⟨q + z, ?_⟩
-    rw [hq, hz]
-    ring
+    exact ⟨hcop.symm.dvd_of_dvd_mul_right
+      ((dvd_add_left (dvd_mul_right J _)).mp ((dvd_mul_right J F).trans h)),
+      hcop.dvd_of_dvd_mul_left
+      ((dvd_add_right (dvd_mul_left F Q)).mp ((dvd_mul_left F J).trans h))⟩
+  · rintro ⟨hQ, hT⟩
+    exact dvd_add (mul_dvd_mul_right hQ F) (mul_dvd_mul_left J hT)
 
 /-- The forward formula preserves the exact old H and extracts J divisibility. -/
 theorem newIndex_correct {B C F J Q H : ℤ} {j : ℕ}

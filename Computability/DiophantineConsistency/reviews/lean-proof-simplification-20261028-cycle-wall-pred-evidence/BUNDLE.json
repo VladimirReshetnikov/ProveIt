@@ -1,0 +1,358 @@
+{
+  "summary": {
+    "base_commit": "b9f1b1dad23e931d2cd60ffb09cdeaf841bbd1e9",
+    "source_commits": [
+      "43f5f376f9",
+      "c0e20c2490",
+      "8cb3a1aaf7"
+    ],
+    "source_modules": 3,
+    "lines_removed": 19,
+    "bytes_removed": 637,
+    "categories": {
+      "cycles": {
+        "old_lines": 111,
+        "new_lines": 104,
+        "old_axiom_reports_identical": 2,
+        "baseline_calls": 2,
+        "final_calls": 5
+      },
+      "walls": {
+        "old_lines": 135,
+        "new_lines": 130,
+        "identical_axiom_reports": 7,
+        "strict_axiom_subsets": 2,
+        "prerequisite_refresh_calls": 5,
+        "baseline_calls": 2,
+        "final_calls": 4
+      },
+      "pred": {
+        "old_lines": 155,
+        "new_lines": 148,
+        "old_axiom_reports_identical": 31,
+        "prerequisite_refresh_calls": 2,
+        "baseline_calls": 3,
+        "final_calls": 5,
+        "full_old_new_index_equal_by_rfl_for_all_inputs": true
+      }
+    },
+    "baseline_calls": 7,
+    "prerequisite_refresh_calls": 7,
+    "final_calls": 14,
+    "successful_recorded_calls": 28,
+    "identical_axiom_reports": 40,
+    "strict_axiom_subsets": 2,
+    "axiom_note": "The two wall bounds drop Quot.sound, from {propext, Quot.sound} to {propext}; no axiom additions. The axiom diff exit status 1 records this expected difference rather than a Lean check failure.",
+    "dependencies": "The cycles target uses installed precompiled package dependencies; the WholeField and SouthShift focus checks reuse precompiled intermediate project objects and are not a full refreshed cone. Five machine/row prerequisites and two physical-order prerequisites were refreshed in isolated overlays; remaining project and installed package objects were reused precompiled. No full-project build is claimed.",
+    "archive_scope": "Plain evidence files, proposal patches and committed final source snapshots; no overlay links or object binaries. Object paths and hashes in receipts are historical or reused observations.",
+    "independent_review": "Each source change and its scoped validation evidence passed independent review."
+  },
+  "files": {
+    "SUMMARY.json": {
+      "bytes": 2019,
+      "sha256": "1219fe737d215b54d3a3c98b928c63713e1efea4bd6d7c78c296044a1184318f"
+    },
+    "inputs-and-logs.zip": {
+      "bytes": 87414,
+      "sha256": "fb874265d62327d8b98a92009dac9fb3d286e39c6a57f6221e153850d9b065a4"
+    }
+  },
+  "archive_members": {
+    "committed/NativeFieldCycles2011.lean": {
+      "bytes": 4061,
+      "sha256": "cac3010b7c932977208f026657563d604ea8c0eea2498f6f6c93d5ab4293736a"
+    },
+    "committed/WangTiles942HeadBounds.lean": {
+      "bytes": 5612,
+      "sha256": "96933ecfe2574ca26f1ac633cdfb920e1b9ca0796a0080cfc76e19bff8cb93f9"
+    },
+    "committed/WangTiles942PhysicalOrder.lean": {
+      "bytes": 5821,
+      "sha256": "546d6b6d489402ccb518b4263f6e19d4e151ceaca73802f742d0c8abe988af72"
+    },
+    "cycles/axioms.lean": {
+      "bytes": 214,
+      "sha256": "faa6fa0d1d5a7bbfdc6fe891a4304a24f0cf2774d94c764ce58dcf9d021a6cad"
+    },
+    "cycles/baseline-axioms.log": {
+      "bytes": 240,
+      "sha256": "2fad754b5f6dff6c7782310c41b58c0f62de3c5e0155a5892e9655c99e6420b6"
+    },
+    "cycles/baseline-results.json": {
+      "bytes": 1720,
+      "sha256": "6acf18454c61d3b1741f4f5639ed18cdb30cd6b6bd58189e51ef34287bd58902"
+    },
+    "cycles/baseline-target.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cycles/commit-message.txt": {
+      "bytes": 632,
+      "sha256": "c7cb16ef588e9e7a73fefa8592cf28800552d65e71936be462c1b76236b1157e"
+    },
+    "cycles/final-axioms.log": {
+      "bytes": 240,
+      "sha256": "2fad754b5f6dff6c7782310c41b58c0f62de3c5e0155a5892e9655c99e6420b6"
+    },
+    "cycles/final-client.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cycles/final-focus.log": {
+      "bytes": 240,
+      "sha256": "2fad754b5f6dff6c7782310c41b58c0f62de3c5e0155a5892e9655c99e6420b6"
+    },
+    "cycles/final-results.json": {
+      "bytes": 4256,
+      "sha256": "374204dd72d39e00f4eda1b29c8c216b5794cc1f69d78c505dfff645f306d330"
+    },
+    "cycles/final-south-focus.log": {
+      "bytes": 871,
+      "sha256": "353cf01960570174d9cc51266578a7fa0a1e5d4df415a9c1325a5c8bce05c3bc"
+    },
+    "cycles/final-target.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cycles/final.lean": {
+      "bytes": 4061,
+      "sha256": "cac3010b7c932977208f026657563d604ea8c0eea2498f6f6c93d5ab4293736a"
+    },
+    "cycles/graph-after.json": {
+      "bytes": 47638,
+      "sha256": "4661b735febc8088e467bc7cf35f2daa68078662ac7a14e87b769a65044f71d6"
+    },
+    "cycles/graph-before.json": {
+      "bytes": 47638,
+      "sha256": "e0c7c1f38626e6638a534381ab92778271cd9dec4cf91c83494d2cd78d4d46b0"
+    },
+    "cycles/graph-final.py": {
+      "bytes": 3565,
+      "sha256": "0fe192e74eaebd8e1cc86dcfa20606adfebbc39224b68e0cc6aabf89d470ee9a"
+    },
+    "cycles/graph.py": {
+      "bytes": 3566,
+      "sha256": "b841b7c6147ccd0726e6d32fdcaa39a05daf0a9bf0d81554629efe7ab557c6f0"
+    },
+    "cycles/original.lean": {
+      "bytes": 4356,
+      "sha256": "9cac50de2b83d3b802eab615ab4340027b842abc910586d009c4847b913f8442"
+    },
+    "cycles/results.json": {
+      "bytes": 9555,
+      "sha256": "040b64a1f1afbb284c0151717ddc3cd6ea7c3ff469c7c1bc6861fa48337c4106"
+    },
+    "cycles/run.py": {
+      "bytes": 1495,
+      "sha256": "84a37745f39e4d2c2f7da195d38f9172b28550a84b9282bd571385844581b65a"
+    },
+    "pred/axioms.lean": {
+      "bytes": 2516,
+      "sha256": "fb7ebc8ed04ea31a6077eeae7648b7fa9a636cc465c3254f9b49bad8d8fb595e"
+    },
+    "pred/baseline-axioms.log": {
+      "bytes": 3749,
+      "sha256": "0b13cb604471ce1faa483c7021db67c81378e63b4ebfc3bb437e26a66cdb8d1d"
+    },
+    "pred/baseline-compat.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pred/baseline-prep-Permutation.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pred/baseline-prep-PhysicalData.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pred/baseline-results.json": {
+      "bytes": 4982,
+      "sha256": "ebf61bbb7dbaec47b49058f8d9526c2c27ba03f6e35090af43805dca6d6c8946"
+    },
+    "pred/baseline-target.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pred/commit-message.txt": {
+      "bytes": 669,
+      "sha256": "178dd6d6ab15c28e88150705f364b3a85f1e5783fb05bac19688307974d6cf1b"
+    },
+    "pred/compatibility.lean": {
+      "bytes": 517,
+      "sha256": "cea3c6d87bda17fff28043704c86a4f9cc18fc27986635c791449982ac82d187"
+    },
+    "pred/final-axioms.log": {
+      "bytes": 3749,
+      "sha256": "0b13cb604471ce1faa483c7021db67c81378e63b4ebfc3bb437e26a66cdb8d1d"
+    },
+    "pred/final-client.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pred/final-compat.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pred/final-focus.log": {
+      "bytes": 2042,
+      "sha256": "1507952541f56c1f2566bbedc04fcf9e94e8281aa2fe9e8d5b31ef3817e8c2e2"
+    },
+    "pred/final-results.json": {
+      "bytes": 4256,
+      "sha256": "f939f6ad5cdbe494e72be3cfe66652cfea30ca8dfff3f77a016e82f720c4afc4"
+    },
+    "pred/final-target.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "pred/final.lean": {
+      "bytes": 5821,
+      "sha256": "546d6b6d489402ccb518b4263f6e19d4e151ceaca73802f742d0c8abe988af72"
+    },
+    "pred/graph-after.json": {
+      "bytes": 30909,
+      "sha256": "9317d66877f7a2ee7b9ee0c1d7b93d7b7c256db3ebd82538dd7b8703d1194064"
+    },
+    "pred/graph-before.json": {
+      "bytes": 30909,
+      "sha256": "91612b60991ea546ec98d5d0bd862756418304b8ac3f1d75e917b376152f1ad9"
+    },
+    "pred/graph-final.py": {
+      "bytes": 3469,
+      "sha256": "9c75dc6f6ca0af8eb91efdcc68d7640f92b1fbc2c034a3582fd6734d041a1662"
+    },
+    "pred/graph.py": {
+      "bytes": 3470,
+      "sha256": "d0cba52c7ad5e8d1fd3cb68bf0fd885a161bbf0db2d1627ffdd50941ee67282e"
+    },
+    "pred/original.lean": {
+      "bytes": 6046,
+      "sha256": "e4c47779d350f7ec34ed3cd15a17a584e23077a2a56a8c8a0c2a53f8376ddddf"
+    },
+    "pred/results.json": {
+      "bytes": 13399,
+      "sha256": "1e24234c91a6b6f338e707efa8e2f36e253115c3529368f6e864db5fd1e9799e"
+    },
+    "pred/run.py": {
+      "bytes": 2080,
+      "sha256": "7d5b05eaab23625117ed53e5778882a4049bd5de18dc32bb4f9542be631a4dba"
+    },
+    "proposals/cycle.patch": {
+      "bytes": 1757,
+      "sha256": "b6d5be4f1cb56eb327def6e74a390059466a6a8143a14c976554925400d532d0"
+    },
+    "proposals/pred.patch": {
+      "bytes": 1117,
+      "sha256": "aee135e6abec55e5e161d776d39bdf505fbe6dd8eda63dbd07c374f491da9da8"
+    },
+    "proposals/walls.patch": {
+      "bytes": 1006,
+      "sha256": "ecb6cde2effad19fdfd3c74325cb0b59863ca17b7b4dea6ccc4bc752df6d7041"
+    },
+    "walls/axiom-comparison.json": {
+      "bytes": 466,
+      "sha256": "2404b44bbe3320c63befbece0b1d4c954ac35deff7f8d8d5bb479183db264aab"
+    },
+    "walls/axiom-diff.log": {
+      "bytes": 886,
+      "sha256": "98896e4943f4d8fc567546f280b1c8bcdfba95f60546248ea2b03030657406de"
+    },
+    "walls/axioms.lean": {
+      "bytes": 760,
+      "sha256": "c0810904ca1c45f8e97ee8216a87a8fd36744e921ec588613f76cfac13f1e34c"
+    },
+    "walls/baseline-axioms.log": {
+      "bytes": 1088,
+      "sha256": "8502196034aec7f1dc7d1b7925191324039e5607ea450c07d11d7094c115afc0"
+    },
+    "walls/baseline-results.json": {
+      "bytes": 1872,
+      "sha256": "cb1caa286f4ad3d73f6e1c94d7a82730e6ac62f629e58f2e95fe1621b58446ed"
+    },
+    "walls/baseline-target.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "walls/commit-message.txt": {
+      "bytes": 656,
+      "sha256": "8975e1881b89e26071349f6c5503e12f3e5f110cbc1ff946d9b6fc3ff35eb0ec"
+    },
+    "walls/final-axioms.log": {
+      "bytes": 1064,
+      "sha256": "bba962f54e993feb93c87b8a8d0526222ba8533b89d19db94f22e02fd44fa6f1"
+    },
+    "walls/final-client.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "walls/final-focus.log": {
+      "bytes": 1064,
+      "sha256": "bba962f54e993feb93c87b8a8d0526222ba8533b89d19db94f22e02fd44fa6f1"
+    },
+    "walls/final-results.json": {
+      "bytes": 3521,
+      "sha256": "7b43f6dcbcba54c62d90ac28c0449edddadc344422a831651dc2ae0c7d40ae22"
+    },
+    "walls/final-target.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "walls/final.lean": {
+      "bytes": 5612,
+      "sha256": "96933ecfe2574ca26f1ac633cdfb920e1b9ca0796a0080cfc76e19bff8cb93f9"
+    },
+    "walls/graph-after.json": {
+      "bytes": 12940,
+      "sha256": "b5ec0a38bb25cf25b6a019dcb0dea3563bbfa443ec67890339ea70abc2780d11"
+    },
+    "walls/graph-after.py": {
+      "bytes": 3457,
+      "sha256": "c6a7830fdfdb6c459bca2e3b7a583a9329c766266fb979e79dd9e8e084f2a113"
+    },
+    "walls/graph-before.json": {
+      "bytes": 12940,
+      "sha256": "642f6fd96ce47009693cebf88fd9fc6f1532dab7291432f969f44f1d7116d9c1"
+    },
+    "walls/graph.py": {
+      "bytes": 3458,
+      "sha256": "c7fb5503576bf34b996ce7bf64887cd5aeeab4b439e06503615b4e55ad1538dc"
+    },
+    "walls/original.lean": {
+      "bytes": 5729,
+      "sha256": "bed402c366871656a605ebef749451631c88b34ce57118fa6bea583fce700754"
+    },
+    "walls/prep-WangMachineAction.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "walls/prep-WangMachineEncoding.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "walls/prep-WangMachineStep.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "walls/prep-WangTiles942OperatingRow.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "walls/prep-WangTiles942RowEncoding.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "walls/prep-results.json": {
+      "bytes": 5765,
+      "sha256": "d214c825ef561d170713f090fa6b25249db21ea74ea6a3ad5e8405db597f4950"
+    },
+    "walls/results.json": {
+      "bytes": 18682,
+      "sha256": "d6a337966b8487186447a4444f131afd7474d35157b5c76f98ea171201880849"
+    },
+    "walls/run.py": {
+      "bytes": 1855,
+      "sha256": "e7685c9e59918f4865897ad0915b8f2b8fa1715312c040e13a3235f809705b05"
+    }
+  }
+}

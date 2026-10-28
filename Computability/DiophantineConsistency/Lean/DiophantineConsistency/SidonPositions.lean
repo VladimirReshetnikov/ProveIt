@@ -1,3 +1,5 @@
+import Mathlib.Tactic.Zify
+import Mathlib.Tactic.LinearCombination
 import Mathlib.Order.Fin.Basic
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.NormNum
@@ -70,23 +72,14 @@ theorem weight_sum_eq_iff {m : ℕ} (i j k l : Fin (m + 1)) :
   constructor
   · intro h
     obtain ⟨hsum, hsquares⟩ := sums_of_weight_sum_eq h
-    have hproduct : i.val * j.val = k.val * l.val := by nlinarith [hsum]
-    have hsumZ : (i.val : ℤ) + j.val = (k.val : ℤ) + l.val := by exact_mod_cast hsum
-    have hproductZ : (i.val : ℤ) * j.val = (k.val : ℤ) * l.val := by
-      exact_mod_cast hproduct
-    have hfactor : ((i.val : ℤ) - k.val) * ((i.val : ℤ) - l.val) = 0 := by
-      nlinarith [hsumZ, hproductZ]
-    rcases mul_eq_zero.mp hfactor with hik | hil
-    · have hik' : i = k := Fin.ext (by exact_mod_cast sub_eq_zero.mp hik)
-      left
-      refine ⟨hik', Fin.ext ?_⟩
-      have hi : i.val = k.val := congrArg Fin.val hik'
-      omega
-    · have hil' : i = l := Fin.ext (by exact_mod_cast sub_eq_zero.mp hil)
-      right
-      refine ⟨hil', Fin.ext ?_⟩
-      have hi : i.val = l.val := congrArg Fin.val hil'
-      omega
+    simp only [Fin.ext_iff]
+    zify at hsum hsquares ⊢
+    have hfactor : 2 * (((i.val : ℤ) - k.val) * ((i.val : ℤ) - l.val)) = 0 := by
+      linear_combination hsquares + ((i.val : ℤ) - j.val - k.val - l.val) * hsum
+    have hz : ((i.val : ℤ) - k.val) * ((i.val : ℤ) - l.val) = 0 := by omega
+    rcases mul_eq_zero.mp hz with h | h
+    · left; constructor <;> omega
+    · right; constructor <;> omega
   · rintro (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
     · rfl
     · exact Nat.add_comm _ _
@@ -94,10 +87,8 @@ theorem weight_sum_eq_iff {m : ℕ} (i j k l : Fin (m + 1)) :
 /-- In particular, every supplied index has a distinct position. -/
 theorem weight_injective (m : ℕ) : Function.Injective (weight m) := by
   intro i j h
-  have hp : weight m i + weight m 0 = weight m j + weight m 0 := by rw [h]
-  rcases (weight_sum_eq_iff i 0 j 0).mp hp with h | h
-  · exact h.1
-  · exact h.1.trans h.2
+  rcases (weight_sum_eq_iff i i j j).mp (congrArg (fun n => n + n) h) with h | h <;>
+    exact h.1
 
 /-- An explicit cubic bound for the largest position. -/
 theorem weight_le_cubic (m : ℕ) (i : Fin (m + 1)) :
@@ -154,12 +145,10 @@ theorem pairWeight_injective (m : ℕ) : Function.Injective (pairWeight (m := m)
   rcases (weight_sum_eq_iff p.val.1 p.val.2 q.val.1 q.val.2).mp h with
     ⟨h1, h2⟩ | ⟨h1, h2⟩
   · exact Subtype.ext (Prod.ext h1 h2)
-  · have hi : p.val.1 = q.val.1 := by
-      apply le_antisymm
-      · simpa only [h2] using p.property
-      · simpa only [← h1] using q.property
-    have hj : p.val.2 = q.val.2 := h2.trans (hi.symm.trans h1)
-    exact Subtype.ext (Prod.ext hi hj)
+  · have hp := p.property
+    have hq := q.property
+    apply Subtype.ext
+    apply Prod.ext <;> apply Fin.ext <;> omega
 
 theorem pairWeight_le {m : ℕ} (p : PairIndex m) :
     pairWeight p ≤ 4 * m ^ 3 + 2 * m ^ 2 + 2 * m :=

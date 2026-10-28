@@ -76,22 +76,15 @@ theorem offset19_excludes_510 {A : Type*} [Finite A] (sigma : A ≃ A)
   have hgate' : ∀ j, epsilon j = 1 → S j = 511 := by
     intro j hj
     exact (hgate j hj).trans hstar
-  have heven (n : ℕ) : S ((sigma : A → A)^[n] i) % 2 = 0 := by
-    induction n with
-    | zero => simp only [Function.iterate_zero, id_eq, hi]
-    | succ n ih =>
-        rw [Function.iterate_succ_apply']
-        have hm := successor_mod_four sigma S epsilon he hstep hgate' _ ih
-        omega
-  obtain ⟨p,hp,hperiod⟩ := Function.mem_periodicPts.mp (sigma.injective.mem_periodicPts i)
-  have hm := successor_mod_four sigma S epsilon he hstep hgate'
-    ((sigma : A → A)^[p-1] i) (heven (p-1))
-  have hreturn : sigma ((sigma : A → A)^[p-1] i) = i := by
-    rw [← Function.iterate_succ_apply' (f := (sigma : A → A)) (p-1) i]
-    have hpred : (p-1).succ = p := by omega
-    rw [hpred]
-    exact hperiod
-  rw [hreturn, hi] at hm
+  have hmap : Set.MapsTo sigma {j | S j % 2 = 0} {j | S j % 2 = 0} := by
+    intro j hj
+    change S (sigma j) % 2 = 0
+    have hm := successor_mod_four sigma S epsilon he hstep hgate' j hj
+    omega
+  have hb := ((Set.toFinite _).injOn_iff_bijOn_of_mapsTo hmap).mp sigma.injective.injOn
+  obtain ⟨j, hj, hji⟩ := hb.surjOn (show S i % 2 = 0 by omega)
+  have hm := successor_mod_four sigma S epsilon he hstep hgate' j hj
+  rw [hji, hi] at hm
   contradiction
 
 /-- Offset20 exclusion. A two-bit prefix with value at most2 makes every
