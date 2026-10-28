@@ -45,11 +45,7 @@ variable {p : Prog} {rows : Nat → Option Row} {step : V → V} {run : V → V 
 
 theorem reachB_mono {c : Nat} {E : Exit → Nat} {x y B B' : V} {X : Exit}
     (h : ReachB run c E x X y B) (hB : B ≤ B') : ReachB run c E x X y B' := by
-  cases X with
-  | halt => obtain ⟨t, ht, h⟩ := h; exact ⟨t, le_trans ht hB, h⟩
-  | normal => obtain ⟨t, ht, h⟩ := h; exact ⟨t, le_trans ht hB, h⟩
-  | brk k => obtain ⟨t, ht, h⟩ := h; exact ⟨t, le_trans ht hB, h⟩
-  | cont k => obtain ⟨t, ht, h⟩ := h; exact ⟨t, le_trans ht hB, h⟩
+  cases X <;> obtain ⟨t, ht, h⟩ := h <;> exact ⟨t, le_trans ht hB, h⟩
 
 theorem irunB_mono {e : RMDag.Edge} {x y B B' : V} {X : Exit}
     (h : IRunB p rows run e x X y B) (hB : B ≤ B') : IRunB p rows run e x X y B' :=
@@ -57,11 +53,7 @@ theorem irunB_mono {e : RMDag.Edge} {x y B B' : V} {X : Exit}
 
 theorem reach_of_reachB {c : Nat} {E : Exit → Nat} {x y B : V} {X : Exit}
     (h : ReachB run c E x X y B) : Reach run c E x X y := by
-  cases X with
-  | halt => obtain ⟨t, _, h⟩ := h; exact ⟨t, h⟩
-  | normal => obtain ⟨t, _, h⟩ := h; exact ⟨t, h⟩
-  | brk k => obtain ⟨t, _, h⟩ := h; exact ⟨t, h⟩
-  | cont k => obtain ⟨t, _, h⟩ := h; exact ⟨t, h⟩
+  cases X <;> obtain ⟨t, _, h⟩ := h <;> exact ⟨t, h⟩
 
 /-- Forgetting the bound recovers the accepted semantics. -/
 theorem irun_of_irunB {e : RMDag.Edge} {x y B : V} {X : Exit}
@@ -161,15 +153,8 @@ omit run_one spec in
 theorem reachB_trans {c₁ c₂ : Nat} {x y : V} {t₁ B₁ : V} (ht : t₁ ≤ B₁)
     (h₁ : run t₁ (liveValue (c₁ : V) x) = liveValue (c₂ : V) y) {E : Exit → Nat} {X : Exit}
     {z B₂ : V} (h₂ : ReachB run c₂ E y X z B₂) : ReachB run c₁ E x X z (B₁ + B₂) := by
-  cases X with
-  | halt => obtain ⟨t, h, ht'⟩ := h₂
-            exact ⟨t₁ + t, _root_.add_le_add ht h, by rw [run_add, h₁, ht']⟩
-  | normal => obtain ⟨t, h, ht'⟩ := h₂
-              exact ⟨t₁ + t, _root_.add_le_add ht h, by rw [run_add, h₁, ht']⟩
-  | brk k => obtain ⟨t, h, ht'⟩ := h₂
-             exact ⟨t₁ + t, _root_.add_le_add ht h, by rw [run_add, h₁, ht']⟩
-  | cont k => obtain ⟨t, h, ht'⟩ := h₂
-              exact ⟨t₁ + t, _root_.add_le_add ht h, by rw [run_add, h₁, ht']⟩
+  cases X <;> obtain ⟨t, h, ht'⟩ := h₂ <;>
+    exact ⟨t₁ + t, _root_.add_le_add ht h, by rw [run_add, h₁, ht']⟩
 
 omit run_one spec in
 theorem run_seqB {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y z A B : V}
