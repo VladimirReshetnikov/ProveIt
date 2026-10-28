@@ -19,9 +19,9 @@ All are built from `+`, `*`, `Exp.exp` and `ArithmeticPow.power`, and are
 monotone in `R`. The only growth fact used is `y_{t+1}(b) ≤ (2(b+2))^t`
 (`ArithmeticHalfBinomialSandwich.ycoord_le_power`).
 
-`outer_seed_bound` repeats the proof of `ArithmeticOuterSeed.outer_seed` and
-additionally records the binomial-floor bound on `Y`, the one coordinate whose
-size the seed relations alone do not control. -/
+`outer_seed_bound` specializes the shared outer-seed theorem with its
+binomial-floor bound on `Y`, the one coordinate whose size the seed relations
+alone do not control. -/
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
@@ -113,147 +113,12 @@ end mono
 
 /-! ### The outer seed with the binomial-floor bound on `Y` -/
 
-/-- **The outer Pell seed, with the size of its ordinate.** Same proof as
-`ArithmeticOuterSeed.outer_seed`; the extra conjunct is `Y = s*q^3 ≤ (2^R+1)^R`,
-read off the binomial floor `(X+1)^(2r) = 2*Y*X^r + v`. -/
+/-- **The outer Pell seed, with the size of its ordinate.** The extra conjunct
+`Y = s*q^3 ≤ (2^R+1)^R` follows from the shared binomial-floor construction. -/
 theorem outer_seed_bound (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : population R=3*u+2) :
     ∃ s n eta zeta gamma : V, 0<s ∧ 0<n ∧ 0<eta ∧ 0<zeta ∧ 0<gamma ∧
       SeedRelations u R s n eta zeta gamma ∧ s*Exp.exp u^3 ≤ Ys R := by
-  obtain ⟨r,rfl⟩ := hodd
-  have hpr : population r=3*u+1 := by
-    rw [population_odd] at hpop
-    exact add_right_cancel (hpop.trans (by ring))
-  have hu1 : 1≤u := by simpa using lt_iff_succ_le.mp hu
-  have hr4 : 4≤r := by
-    have h4 : (4:V)≤3*u+1 := by
-      have : (3:V)*1≤3*u := mul_le_mul_of_nonneg_left hu1 (by simp)
-      calc (4:V)=3*1+1 := by ring
-        _≤3*u+1 := add_le_add this le_rfl
-    rw [←hpr] at h4
-    exact le_trans h4 (le_trans (population_le r).1 (population_le r).2)
-  have hr1 : 1≤r := le_trans (by simp) hr4
-  obtain ⟨X,hX⟩ : ∃ X, X=Exp.exp (2*r+1) := ⟨_,rfl⟩
-  have hX1 : 1≤X := by rw [hX]; exact one_le_exp _
-  obtain ⟨Y,s,v,w,hN,hv,hYs,hY1,_⟩ := binomial_floor X r u hr1 hX hpr.ge
-  have hspos : 0<s := by
-    rcases zero_or_succ s with h0|⟨s',hs'⟩
-    · rw [h0,zero_mul] at hYs; rw [hYs] at hY1; simp at hY1
-    · rw [hs']; simp
-  have hY' : s*Exp.exp u^3=Y := by
-    rw [hYs,show 3*u=u+u+u by ring,exp_add,exp_add]; ring
-  -- the new size fact
-  have hYbound : s*Exp.exp u^3 ≤ Ys (2*r+1) := by
-    rw [hY', Ys, ← hX]
-    have hp1 : 1 ≤ power X r := one_le_power X r hX1
-    have h2p : 1 ≤ 2*power X r := le_trans hp1 (le_mul_of_one_le_left (by simp) (by simp))
-    calc Y ≤ Y*(2*power X r) := le_self_mul h2p
-      _ = 2*Y*power X r := by ring
-      _ ≤ 2*Y*power X r+v := le_add_of_nonneg_right (by simp)
-      _ = power (X+1) (2*r) := hN.symm
-      _ ≤ power (X+1) (2*r+1) :=
-          power_mono_exponent _ _ _ (le_add_of_nonneg_left (by simp))
-            (le_add_of_nonneg_right (by simp))
-  obtain ⟨hlo,hhi⟩ := construction_interval X Y r v hr4 hX hY1 hN hv
-  obtain ⟨K,hKd⟩ : ∃ K, ycoord (r+1) (2*(X*Y*Y-1)+1)=K := ⟨_,rfl⟩
-  obtain ⟨c,hcd⟩ : ∃ c, ycoord (2*r+1) (Y*(X+1))=c := ⟨_,rfl⟩
-  rw [hKd,hcd] at hlo hhi
-  obtain ⟨eta,heta_def⟩ : ∃ eta, eta=c-2*K*Y := ⟨_,rfl⟩
-  have hc : 2*K*Y+eta=c := by rw [heta_def]; exact add_tsub_cancel_of_le hlo.le
-  have heta : 0<eta := by rw [heta_def]; exact tsub_pos_of_lt hlo
-  have hetak : eta<2*K := by
-    have h : 2*K*Y+eta<2*K*Y+2*K := by rw [hc]; simpa [mul_add] using hhi
-    exact lt_of_add_lt_add_left h
-  obtain ⟨zeta,hzeta_def⟩ : ∃ zeta, zeta=2*K-eta := ⟨_,rfl⟩
-  have hk : eta+zeta=2*K := by rw [hzeta_def]; exact add_tsub_cancel_of_le hetak.le
-  have hzeta : 0<zeta := by rw [hzeta_def]; exact tsub_pos_of_lt hetak
-  have hZ1 : 1≤X*Y*Y := one_le_mul (one_le_mul hX1 hY1) hY1
-  have hB : 2*(X*Y*Y-1)+1+1=2*(X*Y*Y) := by
-    have he : X*Y*Y-1+1=X*Y*Y := tsub_add_cancel_of_le hZ1
-    calc
-      2*(X*Y*Y-1)+1+1=2*(X*Y*Y-1+1) := by ring
-      _=2*(X*Y*Y) := by rw [he]
-  have hdvd : X*Y∣2*(X*Y*Y-1)+1+1 := ⟨2*Y,by rw [hB]; ring⟩
-  obtain ⟨ρ,σ,hxρ,hyσ⟩ := residue_quotients (r+1) (2*(X*Y*Y-1)+1) (X*Y) hdvd
-  rw [hKd] at hyσ
-  have hEpos : 0<X*Y := lt_of_lt_of_le (by simp) (one_le_mul hX1 hY1)
-  have hxgt := x_gt (r+1) (2*(X*Y*Y-1)+1)
-  rw [hB,hKd,hxρ] at hxgt
-  have hρ : 2*σ+2≤ρ := by
-    have hK : σ+1≤K := by
-      rw [hyσ]
-      calc
-        σ+1≤X*Y*σ+(r+1) := add_le_add (le_mul_of_one_le_left (by simp)
-          (one_le_mul hX1 hY1)) (le_add_of_nonneg_left (by simp))
-        _=r+1+X*Y*σ := by ring
-    have h1 : X*Y*(2*σ+2)<X*Y*ρ+1 := calc
-      X*Y*(2*σ+2)=2*(X*Y)*(σ+1) := by ring
-      _≤2*(X*Y)*(Y*K) := mul_le_mul_of_nonneg_left
-          (le_trans hK (le_mul_of_one_le_left (by simp) hY1)) (by simp)
-      _=2*(X*Y*Y)*K := by ring
-      _<1+X*Y*ρ := hxgt
-      _=X*Y*ρ+1 := by ring
-    exact le_of_mul_le_mul_left (lt_succ_iff_le.mp h1) hEpos
-  obtain ⟨n,hn_def⟩ : ∃ n, n=ρ-2*σ := ⟨_,rfl⟩
-  have hnρ : n+2*σ=ρ := by
-    rw [hn_def]; exact tsub_add_cancel_of_le (le_trans (le_add_of_nonneg_right (by simp)) hρ)
-  have hn : 0<n := by
-    have : 2*σ+0<2*σ+n := by
-      calc 2*σ+0<2*σ+2 := add_lt_add_of_le_of_lt le_rfl (by simp)
-        _≤ρ := hρ
-        _=2*σ+n := by rw [←hnρ]; ring
-    exact lt_of_add_lt_add_left this
-  obtain ⟨gamma,hgamma⟩ := projection_quotient (X*Y+Y) (2*r+1)
-  have hYX : Y*(X+1)=X*Y+Y := by ring
-  rw [hYX] at hcd
-  rw [hcd,←hX] at hgamma
-  have hxc := x_gt (2*r+1) (X*Y+Y)
-  rw [hcd] at hxc
-  have hcX : X<c := by
-    rw [←hcd]
-    have hp := power_le_ycoord (X*Y+Y) (r+r)
-    rw [show r+r+1=2*r+1 by ring] at hp
-    have hbase : X<2*(X*Y+Y)+3 := by
-      have hXa : X≤X*Y+Y := le_trans (le_mul_of_one_le_right (by simp) hY1)
-        (le_add_of_nonneg_right (by simp))
-      calc
-        X≤X*Y+Y := hXa
-        _≤(X*Y+Y)+(X*Y+Y) := le_add_of_nonneg_right (by simp)
-        _=2*(X*Y+Y) := (two_mul _).symm
-        _<2*(X*Y+Y)+3 := lt_add_of_pos_right _ (by simp)
-    have hmono : 2*(X*Y+Y)+3≤power (2*(X*Y+Y)+3) (r+r) := by
-      have h13 : (1:V)≤2*(X*Y+Y)+3 := le_trans (by simp) (le_add_of_nonneg_left (by simp))
-      have := power_mono_exponent (2*(X*Y+Y)+3) 1 (r+r) h13
-        (le_trans hr1 (le_add_of_nonneg_right (by simp)))
-      simpa using this
-    exact lt_of_lt_of_le hbase (le_trans hmono hp)
-  have hgpos : 0<gamma := by
-    rcases zero_or_succ gamma with h0|⟨g,hg⟩
-    · exfalso
-      rw [h0,mul_zero,add_zero] at hgamma
-      have : (X*Y+Y+1)*c<X+(X*Y+Y)*c := by rw [hgamma] at hxc; exact hxc
-      have h2 : X+(X*Y+Y)*c<(X*Y+Y+1)*c := by
-        calc X+(X*Y+Y)*c<c+(X*Y+Y)*c := add_lt_add_of_lt_of_le hcX le_rfl
-          _=(X*Y+Y+1)*c := by ring
-      exact (lt_asymm this) h2
-    · rw [hg]; simp
-  refine ⟨s,n,eta,zeta,gamma,hspos,hn,heta,hzeta,hgpos,?_,hYbound⟩
-  dsimp only [SeedRelations]
-  rw [←hX,hY',hk,hc]
-  have htau : X*Y*n+2*K-(2*r+1)=xcoord (r+1) (2*(X*Y*Y-1)+1) := by
-    rw [hxρ]
-    apply tsub_eq_of_eq_add
-    rw [←hnρ,hyσ]; ring
-  have hnorm1 := norm (r+1) (2*(X*Y*Y-1)+1)
-  have hdelta : delta (2*(X*Y*Y-1)+1)=(2*(X*Y*Y))*(2*(X*Y*Y)+2) := by
-    unfold delta; rw [hB,show 2*(X*Y*Y-1)+1+3=2*(X*Y*Y-1)+1+1+2 by ring,hB]
-  rw [hdelta,hKd] at hnorm1
-  have hnorm2 := norm (2*r+1) (X*Y+Y)
-  rw [hcd] at hnorm2
-  unfold delta at hnorm2
-  have hd : X+(X*Y+Y)*c+gamma*(4*(X*Y+Y)+3)=xcoord (2*r+1) (X*Y+Y) := by rw [hgamma]; ring
-  refine ⟨?_,?_,hcd.symm,hd,r,rfl,htau,by rw [hKd]⟩
-  · rw [htau,hnorm1]; ring
-  · rw [hd,hnorm2]
+  simpa only [Ys] using ArithmeticOuterSeed.outer_seed_with_size u R hu hodd hpop
 
 /-! ### Sizes of the outer-seed coordinates from the seed relations -/
 

@@ -52,11 +52,10 @@ theorem x_gt (t b : V) : (b+1)*ycoord t b<xcoord t b := by
   exact lt_add_of_pos_right _ (by simp)
 
 /-- **The outer Pell seed.** -/
-theorem outer_seed (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : population R=3*u+2) :
+theorem outer_seed_with_size (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : population R=3*u+2) :
     ∃ s n eta zeta gamma : V, 0<s ∧ 0<n ∧ 0<eta ∧ 0<zeta ∧ 0<gamma ∧
-      SeedRelations u R s n eta zeta gamma := by
+      SeedRelations u R s n eta zeta gamma ∧ s*Exp.exp u^3 ≤ power (Exp.exp R + 1) R := by
   obtain ⟨r,rfl⟩ := hodd
-  -- sizes: σ(r) = 3u+1 and r ≥ 4
   have hpr : population r=3*u+1 := by
     rw [population_odd] at hpop
     exact add_right_cancel (hpop.trans (by ring))
@@ -71,7 +70,6 @@ theorem outer_seed (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : populati
   have hr1 : 1≤r := le_trans (by simp) hr4
   obtain ⟨X,hX⟩ : ∃ X, X=Exp.exp (2*r+1) := ⟨_,rfl⟩
   have hX1 : 1≤X := by rw [hX]; exact one_le_exp _
-  -- step 2: binomial floor (Kummer direction)
   obtain ⟨Y,s,v,w,hN,hv,hYs,hY1,_⟩ := binomial_floor X r u hr1 hX hpr.ge
   have hspos : 0<s := by
     rcases zero_or_succ s with h0|⟨s',hs'⟩
@@ -79,7 +77,18 @@ theorem outer_seed (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : populati
     · rw [hs']; simp
   have hY' : s*Exp.exp u^3=Y := by
     rw [hYs,show 3*u=u+u+u by ring,exp_add,exp_add]; ring
-  -- step 4: Pell interval
+  -- the new size fact
+  have hYbound : s*Exp.exp u^3 ≤ power (Exp.exp (2*r+1) + 1) (2*r+1) := by
+    rw [hY', ← hX]
+    have hp1 : 1 ≤ power X r := one_le_power X r hX1
+    have h2p : 1 ≤ 2*power X r := le_trans hp1 (le_mul_of_one_le_left (by simp) (by simp))
+    calc Y ≤ Y*(2*power X r) := le_mul_of_one_le_right (by simp) h2p
+      _ = 2*Y*power X r := by ring
+      _ ≤ 2*Y*power X r+v := le_add_of_nonneg_right (by simp)
+      _ = power (X+1) (2*r) := hN.symm
+      _ ≤ power (X+1) (2*r+1) :=
+          power_mono_exponent _ _ _ (le_add_of_nonneg_left (by simp))
+            (le_add_of_nonneg_right (by simp))
   obtain ⟨hlo,hhi⟩ := construction_interval X Y r v hr4 hX hY1 hN hv
   obtain ⟨K,hKd⟩ : ∃ K, ycoord (r+1) (2*(X*Y*Y-1)+1)=K := ⟨_,rfl⟩
   obtain ⟨c,hcd⟩ : ∃ c, ycoord (2*r+1) (Y*(X+1))=c := ⟨_,rfl⟩
@@ -93,7 +102,6 @@ theorem outer_seed (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : populati
   obtain ⟨zeta,hzeta_def⟩ : ∃ zeta, zeta=2*K-eta := ⟨_,rfl⟩
   have hk : eta+zeta=2*K := by rw [hzeta_def]; exact add_tsub_cancel_of_le hetak.le
   have hzeta : 0<zeta := by rw [hzeta_def]; exact tsub_pos_of_lt hetak
-  -- step 5: the first index n
   have hZ1 : 1≤X*Y*Y := one_le_mul (one_le_mul hX1 hY1) hY1
   have hB : 2*(X*Y*Y-1)+1+1=2*(X*Y*Y) := by
     have he : X*Y*Y-1+1=X*Y*Y := tsub_add_cancel_of_le hZ1
@@ -130,7 +138,6 @@ theorem outer_seed (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : populati
         _≤ρ := hρ
         _=2*σ+n := by rw [←hnρ]; ring
     exact lt_of_add_lt_add_left this
-  -- step 6: the root coefficient γ
   obtain ⟨gamma,hgamma⟩ := projection_quotient (X*Y+Y) (2*r+1)
   have hYX : Y*(X+1)=X*Y+Y := by ring
   rw [hYX] at hcd
@@ -165,10 +172,9 @@ theorem outer_seed (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : populati
           _=(X*Y+Y+1)*c := by ring
       exact (lt_asymm this) h2
     · rw [hg]; simp
-  refine ⟨s,n,eta,zeta,gamma,hspos,hn,heta,hzeta,hgpos,?_⟩
+  refine ⟨s,n,eta,zeta,gamma,hspos,hn,heta,hzeta,hgpos,?_,hYbound⟩
   dsimp only [SeedRelations]
   rw [←hX,hY',hk,hc]
-  -- the first ordinate
   have htau : X*Y*n+2*K-(2*r+1)=xcoord (r+1) (2*(X*Y*Y-1)+1) := by
     rw [hxρ]
     apply tsub_eq_of_eq_add
@@ -184,5 +190,14 @@ theorem outer_seed (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : populati
   refine ⟨?_,?_,hcd.symm,hd,r,rfl,htau,by rw [hKd]⟩
   · rw [htau,hnorm1]; ring
   · rw [hd,hnorm2]
+
+
+/-- The outer Pell seed without its size bound. -/
+theorem outer_seed (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : population R=3*u+2) :
+    ∃ s n eta zeta gamma : V, 0<s ∧ 0<n ∧ 0<eta ∧ 0<zeta ∧ 0<gamma ∧
+      SeedRelations u R s n eta zeta gamma := by
+  obtain ⟨s,n,eta,zeta,gamma,hs,hn,he,hz,hg,hseed,_⟩ :=
+    outer_seed_with_size u R hu hodd hpop
+  exact ⟨s,n,eta,zeta,gamma,hs,hn,he,hz,hg,hseed⟩
 
 end DiophantineConsistency.ArithmeticOuterSeed
