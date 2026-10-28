@@ -548,5 +548,14 @@ cached ancestors, and two direct construction clients were not tested. Target
 exit statuses were observed in the tool output rather than recorded in JSON. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-transport-evidence/BUNDLE.json).
 
+The shared literal representation `43c60fcabd` removes 207 net lines across
+two modules, bringing the reviewed series to 7715. Corrected snapshot baseline
+and final targets, focus, radix client and all nine old public axiom reports
+pass and match; five new or promoted helper reports pass. Seven prerequisites
+were refreshed and three objects authenticated. Earlier local, Foundation and
+Mathlib chains remain precompiled; ArithmeticCurrentConstruction2011 and the
+newly merged ArithmeticConstructionBound were not checked. An earlier baseline
+used edited sources and is excluded. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-literal-representation-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
