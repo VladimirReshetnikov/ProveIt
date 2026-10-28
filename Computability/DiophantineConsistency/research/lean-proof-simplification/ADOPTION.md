@@ -640,5 +640,15 @@ warnings. The borrowed DAG semantics build previously emitted five matching
 warnings; four earlier sources have newer timestamps than cached objects and
 external dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-divmod-reuse-evidence/BUNDLE.json).
 
+The encoded-word degree reuse `803467264d` removes ten net lines across four
+modules, bringing the reviewed series to 7874. All 21 affected local modules
+were rebuilt in both phases; four focused checks and 50 old public axiom
+reports pass with matching logs and unchanged existing warnings. Fifty-one
+prior objects and the current gap certificate were authenticated; earlier
+local and Mathlib dependencies remain precompiled. The client driver was edited
+after baseline, though its original command/status records were retained;
+generator and helper-probe statuses were observed without separate JSON records.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-encoded-degree-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
