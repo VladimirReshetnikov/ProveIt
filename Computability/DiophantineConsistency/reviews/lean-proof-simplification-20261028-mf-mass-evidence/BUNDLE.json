@@ -1,0 +1,264 @@
+{
+  "description": "Matrix-free kernel mass proof reuse: snapshots, split phase records, prerequisite builds, source graph, failed Foundation probe and independent review.",
+  "archive": {
+    "path": "inputs-and-logs.zip",
+    "bytes": 36417,
+    "sha256": "d046cfa7c9a1f874511c1e999907a9277e163f63df081b7f95eaf9945d28f610",
+    "members": {
+      "additional-borrowed.json": {
+        "bytes": 427,
+        "sha256": "5263a1a9b4888f1a0deaee5f4121c8f15bea9902e4be3b4896d77cf774ec118f"
+      },
+      "axioms.lean": {
+        "bytes": 1747,
+        "sha256": "1f03ee61386519cbe1e92cc798f288df5a52376e9d67022739cc13f68654ce02"
+      },
+      "baseline-first-records.json": {
+        "bytes": 2359,
+        "sha256": "3c7292d8177e25664986df1d435f2b589736dc6d47833d5c11ea5ba277c13c2c"
+      },
+      "baseline-records.json": {
+        "bytes": 640,
+        "sha256": "2ffa318cccc97aee4d793a1b7d4451a212b763240068b08a8736f202cb48c502"
+      },
+      "baseline-second-records.json": {
+        "bytes": 1280,
+        "sha256": "992af74a7a52710402a06d3c451d97de49569dd94d3b6d62ab74751cf4de3958"
+      },
+      "borrowed.json": {
+        "bytes": 2167,
+        "sha256": "efd3b0b9cee4f38b7a578880df4a1f0818a0cbb2cf2979798d945f16abb04114"
+      },
+      "build.py": {
+        "bytes": 1428,
+        "sha256": "5223002026d9751be979f5b4d41de7763b509b61398aa7bd2c033573abd0757a"
+      },
+      "change.diff": {
+        "bytes": 18085,
+        "sha256": "4c167b3d8ae54245333d1ef9d9e9bda8e493dbb83da130244d15e3e5e325c71d"
+      },
+      "final-records.json": {
+        "bytes": 3009,
+        "sha256": "16ab43a9eb3b438f42c57ead229cd731931d7558dde12ec71b05cdfcc5d150a4"
+      },
+      "final.lean": {
+        "bytes": 10078,
+        "sha256": "1f7533757d9ba8d4cd3641195df9daf63e13279eb225d5eedf6f7e1466a4decd"
+      },
+      "focus-foundation.lean": {
+        "bytes": 459,
+        "sha256": "497ec2759b77f1fc8cc6ce59d97513b14546c2a36c0811e1052f2645ab6ec426"
+      },
+      "focus.lean": {
+        "bytes": 504,
+        "sha256": "b23aa7afdf6d5dfd9a6aaee6acc1fa06b36139b090fa594fa8398c81f0b9e36a"
+      },
+      "graph.json": {
+        "bytes": 30542,
+        "sha256": "3a77531aafea9865ee3faa8fdd0e451470ae862b6353b5ef6f980c703238e0c0"
+      },
+      "hashes.json": {
+        "bytes": 1432,
+        "sha256": "eb92380369e8618edee2dea81fcd5004d2b096fde1703f448fe44896d746ec2e"
+      },
+      "logs/ArithmeticMaskKernel.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/ArithmeticMaskKernel.time": {
+        "bytes": 29,
+        "sha256": "dd620c388c236cec4830236974cae199b52833b9c820fa6cacdfad4274c29a7f"
+      },
+      "logs/CurrentKernelData2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/CurrentKernelData2011.time": {
+        "bytes": 28,
+        "sha256": "36387dc8339152dd243709e89c9428ab73691bf20ee927793283b10871f90508"
+      },
+      "logs/MFNativeCyclicCarryWord.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/MFNativeCyclicCarryWord.time": {
+        "bytes": 28,
+        "sha256": "3f89e9a8ede3630c92ccdbd293354e0d44a235577024cd3e6e766cff193a1271"
+      },
+      "logs/MFNativeCyclicConvolution.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/MFNativeCyclicConvolution.time": {
+        "bytes": 29,
+        "sha256": "19eb1e5bce2d870f588dc5eb4a03b71e6c469e7a79618db4cb57899c8e0f3c38"
+      },
+      "logs/MFNativeCyclicRotation.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/MFNativeCyclicRotation.time": {
+        "bytes": 28,
+        "sha256": "9de2d53e2b1514d047b33003c99a34d3ee840183cf660f83f735d508273b69bb"
+      },
+      "logs/MFPaper1982Carries.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/MFPaper1982Carries.time": {
+        "bytes": 28,
+        "sha256": "18d6752f3c2778103b46a182350de3207194a923c5e4576255db08ff5ca09fd7"
+      },
+      "logs/MFPaper1982Coding.log": {
+        "bytes": 326,
+        "sha256": "cb8d508d22b925913b5f18f9e1856fa715c930af4f0a2d6cd70d96c126cccb1e"
+      },
+      "logs/MFPaper1982Coding.time": {
+        "bytes": 28,
+        "sha256": "4aff60d01dde664a490e70aa448463691310aae983b8ccb4500edca16e15c521"
+      },
+      "logs/MFPaper1982Digits.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/MFPaper1982Digits.time": {
+        "bytes": 28,
+        "sha256": "7c225f4e7858870765f5914c9b7080d8b28f7c048762171a8d358630f8a4d9ae"
+      },
+      "logs/MFPaper1982Master2.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/MFPaper1982Master2.time": {
+        "bytes": 28,
+        "sha256": "f4cc3dbacde59aee778f2df706530ea62a498b9dd5e197fe376aaba88d7c269a"
+      },
+      "logs/MFPaper1984Identities.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/MFPaper1984Identities.time": {
+        "bytes": 28,
+        "sha256": "fd7a995e298fae8f905a70e283cab220468b727948b431018ecdbe8a4d28033c"
+      },
+      "logs/MFWangTiles942Core.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/MFWangTiles942Core.time": {
+        "bytes": 28,
+        "sha256": "bd0a80b7f8cec86073971a247d35543a51fdeccdd5a9f2ccd9101d6e213655a0"
+      },
+      "logs/baseline-axioms.log": {
+        "bytes": 2833,
+        "sha256": "0d051fedc2cccf421ef2c1c0a5472b606b98a868cb975a76c4b3f0cd57324489"
+      },
+      "logs/baseline-axioms.time": {
+        "bytes": 28,
+        "sha256": "0ed4c6d37a61758de50c9800aebd73a700c333912d4f9acd9383ecd2d07a5010"
+      },
+      "logs/baseline-client.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/baseline-client.time": {
+        "bytes": 28,
+        "sha256": "e425acfb6c2115690475f1475cd6089331eeeba4d2d6db8866e024f2ddf69ed7"
+      },
+      "logs/baseline-focus.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/baseline-focus.time": {
+        "bytes": 28,
+        "sha256": "b0123fce9cacbd61fb30207097d9f96ab645100d6d28780b6f269b3eaf2c9cb3"
+      },
+      "logs/baseline-foundation-missing.log": {
+        "bytes": 1001,
+        "sha256": "b42792742c23ecf1d5718967916a1a5bc58578b9597c8f376fdafd1a7eedfcea"
+      },
+      "logs/baseline-target.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/baseline-target.time": {
+        "bytes": 29,
+        "sha256": "992f0f1ede154c08e65099c0077f912ba033c0ea2335c647efcfb48e16347fce"
+      },
+      "logs/final-axioms.log": {
+        "bytes": 2833,
+        "sha256": "0d051fedc2cccf421ef2c1c0a5472b606b98a868cb975a76c4b3f0cd57324489"
+      },
+      "logs/final-axioms.time": {
+        "bytes": 28,
+        "sha256": "ec020cbec406fdd5039dff6349173c17627ce60b16311d07198a2d0687307a6d"
+      },
+      "logs/final-client.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/final-client.time": {
+        "bytes": 28,
+        "sha256": "db89dd6fb08127183a6999985511dffee7a95ba87318414c05b4592364683a2b"
+      },
+      "logs/final-focus.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/final-focus.time": {
+        "bytes": 28,
+        "sha256": "55964fcee351d76228914b6e1389460eb55c5c1a1240b6261fe0317af6ba3907"
+      },
+      "logs/final-target.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "logs/final-target.time": {
+        "bytes": 28,
+        "sha256": "ffc7dd83abd59947cfe9963717497cfbcb651c8215723fe78fb4eb8030f10fe3"
+      },
+      "matrix-check.lean": {
+        "bytes": 64,
+        "sha256": "fc5ac0e70bd3bafaa5255084a7cc43b0575c0055dfb6d54b6b373b5b9e20750e"
+      },
+      "original.lean": {
+        "bytes": 25506,
+        "sha256": "bd20769a5663f734c35d153ae99b5ee25b7465e63b915d531c5f99234545ebed"
+      },
+      "phase.py": {
+        "bytes": 1739,
+        "sha256": "859f2b9fff03cb32584a3e11d4aedadf6c8e7f3cf44167b84a0262421a431ba3"
+      },
+      "prereqs.json": {
+        "bytes": 9400,
+        "sha256": "b77ddf554ee23e42482fc67daf49aeeb1b6317956515a627e4a3840024d619f5"
+      },
+      "trial.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "trial.time": {
+        "bytes": 29,
+        "sha256": "d169eb1e904f1d736361b3a3042127d92cac52f1bd3520273d57cb0994c9e737"
+      }
+    }
+  },
+  "results": {
+    "source_commit": "6e09808cb8",
+    "net_lines_removed": 314,
+    "prerequisite_modules_built": 11,
+    "borrowed_objects_authenticated": 11,
+    "original_public_axiom_reports_identical": 24,
+    "target_client_focus_axioms_passed_baseline_final": true,
+    "foundation_coimport_attempt_status": 1,
+    "target_object_bytes_baseline": 785432,
+    "target_object_bytes_final": 585760
+  },
+  "limitations": [
+    "Baseline records are split across baseline-first, baseline-second and baseline-records. The first focus failed because Foundation was absent; its source and error log are separately retained. The later focused check defines a global Matrix and does not prove Foundation co-import compatibility.",
+    "Earlier local and external dependencies including Mathlib were precompiled. Source timestamps do not establish a fresh full closure.",
+    "Object files and overlay links are excluded. Object hashes, recorded prior borrowing receipts and timestamps are retained.",
+    "Target timings are individual concurrent observations, not evidence of a general speedup."
+  ],
+  "independent_review": "All four mass theorem headers and assumptions match; the source outside the intended proof block, import and corrected historical comment is preserved. All 27 pinned local source/import lists, 11 prerequisite source/object/log hashes and 11 borrowed object hashes matched when reviewed. All successful baseline/final target, client, corrected focus and 24 public axiom logs were byte-identical with no warnings. No proof, API or dependency-cycle defect was found."
+}

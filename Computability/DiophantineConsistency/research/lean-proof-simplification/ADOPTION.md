@@ -524,5 +524,29 @@ remain precompiled. The newly merged arithmetic modules were not tested. The
 target object shrank by 1333584 bytes in the recorded builds. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-wang-chunks-evidence/BUNDLE.json).
 
+The matrix-free kernel mass reuse `6e09808cb8` removes 314 lines, bringing the
+reviewed series to 7280. Eleven prerequisites were rebuilt; target, client,
+focus and 24 old public axiom reports match in baseline and final checks with
+no warnings. The focused Matrix-name test passes; a Foundation co-import could
+not run in this Lake environment. Earlier local and external dependencies remain
+precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mf-mass-evidence/BUNDLE.json).
+
+The selector-tail reuse `0e5e05a7c5` removes 173 lines and 7692 bytes, bringing
+the reviewed series to 7453. Target, focus, direct client and 17 old public
+axiom reports match with no warnings. Required new prerequisites were rebuilt
+or authenticated; five other sources have newer timestamps than their cached
+objects and external dependencies remain precompiled. The individual prerequisite
+shell commands were not recorded. An initial numeric proof added standard axioms;
+the original kernel-decided proof was restored. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-selector-tail-evidence/BUNDLE.json).
+
+The Pell transport reuse `e4c9f49314` removes 55 net lines, bringing the
+reviewed series to 7508. Both targets, two focused checks and 29 old public
+axiom reports pass and match; both promoted helpers use the standard three
+axioms. The auxiliary baseline was replayed from the original snapshot after an
+overlapping source read. NativePellBootstrap and SignedPellResidue remain older
+cached ancestors, and two direct construction clients were not tested. Target
+exit statuses were observed in the tool output rather than recorded in JSON. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-transport-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
