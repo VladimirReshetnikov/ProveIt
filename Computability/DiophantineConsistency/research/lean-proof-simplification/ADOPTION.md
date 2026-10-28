@@ -693,5 +693,15 @@ dependencies remain precompiled. Two broader clients remain unverified
 because prerequisite objects were unavailable; failed attempts are retained.
 Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-ha-implication-evidence/BUNDLE.json).
 
+The shared gate induction `bdb9679e73` removes 27 net lines, bringing the
+reviewed series to 7957. Both target versions and four direct clients pass
+after rebuilding 12 local prerequisites and two additional client prerequisites;
+all 44 expanded public, instance and structure axiom reports match. The fifth
+direct client, EquationFromRep, remains unverified because its JonesSyntax
+closure has stale cached dependencies. The unchanged Paper1982 prerequisites
+emit 23 warnings without a paired baseline; Mathlib is precompiled. The build
+receipt reconstructs commands and uses a later captured Lake environment suffix.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-quartic-gates-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
