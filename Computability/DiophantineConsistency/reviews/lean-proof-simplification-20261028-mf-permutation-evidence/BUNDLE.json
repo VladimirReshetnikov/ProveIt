@@ -1,0 +1,83 @@
+{
+  "description": "Independent review and scoped validation for the matrix-free physical-position injectivity proof.",
+  "archive": {
+    "path": "inputs-and-logs.zip",
+    "bytes": 13796,
+    "sha256": "86215dfe0a17601936d07f1961698aa222f7e3ec1bba60399f7921adee292562",
+    "members": {
+      "axioms.lean": {
+        "bytes": 2451,
+        "sha256": "1de7a21c6b7e55c7209855e4201be08e25e6b6e28c290787e950f22dcde18b3c"
+      },
+      "baseline-axioms.log": {
+        "bytes": 3752,
+        "sha256": "3acb5355f0cdab3a2ac45acb94f034ed82fd17037776ea460259e55e4285a2bb"
+      },
+      "baseline-client.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline-records.json": {
+        "bytes": 1707,
+        "sha256": "b55a105b11143975cdbe9a0f1983cc5e59c669b4979ce4cc081ae33ff618d391"
+      },
+      "baseline-target.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "change.diff": {
+        "bytes": 1595,
+        "sha256": "d46d7f7715fc9f8515fb943feb8b8f10bbe36e0309d3789effbce3e9bad3a486"
+      },
+      "driver.py": {
+        "bytes": 1471,
+        "sha256": "23a535e12babebcedbd2cf649ec25d790717c95f8da653753e13bc20bb724450"
+      },
+      "final-axioms.log": {
+        "bytes": 3752,
+        "sha256": "3acb5355f0cdab3a2ac45acb94f034ed82fd17037776ea460259e55e4285a2bb"
+      },
+      "final-client.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-records.json": {
+        "bytes": 1701,
+        "sha256": "afbdbbd2248c4fb4f3c022027a9159d754315fb3eea1e83141872834e650cbd8"
+      },
+      "final-target.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final.lean": {
+        "bytes": 11444,
+        "sha256": "84b439157b29b721853a544bfc3083207bc6195e0b8357c7744ddfd89e7c4093"
+      },
+      "graph.json": {
+        "bytes": 8226,
+        "sha256": "9b8fd7057dff577f53fda3384f19e3d8e19d41426bcce5839c7846c10ee5c4bc"
+      },
+      "original.lean": {
+        "bytes": 11577,
+        "sha256": "1cc139a1871f96c77dc838ca0786b7ea068291ad24587db767587b7c7ab42cc7"
+      }
+    }
+  },
+  "results": {
+    "baseline_commands_passed": 3,
+    "final_commands_passed": 3,
+    "existing_axiom_reports_identical": 33,
+    "local_graph_sources": 11,
+    "existing_client_object_identical": true,
+    "target_olean_bytes_baseline": 716408,
+    "target_olean_bytes_final": 700576,
+    "target_seconds_baseline": 4.00815443135798,
+    "target_seconds_final": 12.676991667598486
+  },
+  "review": "The only source change is the proof of physicalPosition_injective. Fin.cons_injective_iff handles the zero/nonzero cases; natural addition cancellation recovers equality of strict ranks. The original snapshot matches HEAD and the final snapshot matches the working source. All six recorded statuses, log hashes and compiled object hashes were independently checked. The 33 existing public axiom outputs are byte-identical; target and client logs are empty, and client object hashes agree. All 11 graph source hashes, direct import lists and object hashes match, and no non-target source is newer than its corresponding object. No relevant maintained generator was found.",
+  "limitations": [
+    "The scope uses authenticated existing objects for earlier local/project and external dependencies; it does not establish a fresh full dependency closure.",
+    "Timings are individual observations taken under concurrency and do not establish a performance trend.",
+    "Compiled objects and overlay links are excluded; their recorded hashes are preserved in phase records and graph data."
+  ]
+}

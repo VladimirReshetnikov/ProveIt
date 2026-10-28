@@ -557,5 +557,12 @@ Mathlib chains remain precompiled; ArithmeticCurrentConstruction2011 and the
 newly merged ArithmeticConstructionBound were not checked. An earlier baseline
 used edited sources and is excluded. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-literal-representation-evidence/BUNDLE.json).
 
+The matrix-free physical-position injectivity proof `1012776b84` removes five
+lines, bringing the reviewed series to 7720. Baseline and final target, direct
+client and all 33 old public axiom reports pass with identical logs; client
+object hashes match. Eleven local source/import/object pins were verified, while
+earlier local and external dependencies remain precompiled. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-mf-permutation-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
