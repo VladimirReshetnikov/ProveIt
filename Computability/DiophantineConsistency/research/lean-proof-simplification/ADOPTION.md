@@ -450,5 +450,14 @@ they do not establish a fresh dependency closure. Baseline objects were later
 overwritten, but their hashes and logs were recorded. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-divmod-evidence/BUNDLE.json).
 
+The affine reflection proofs `a1b5f8f66b` remove 13 net lines and 453
+bytes, bringing the reviewed series to 4976. Both changed targets, two focused
+checks and two direct clients passed baseline and final checks; all 26 old
+public axiom reports match. A named hypothesis remains for compatibility and
+now produces an unused-variable warning. A broader client failed in both runs
+because a cached dependency was absent; other dependencies remained cached.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-affine-reflection-evidence/BUNDLE.json)
+for the failures and further limits.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
