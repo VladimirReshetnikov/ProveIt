@@ -684,5 +684,14 @@ earlier local and external dependencies remain precompiled. WangTable first
 exceeded the 6 GB Lean cap and passed at 9 GB; existing warnings and corrected
 preliminary failures are recorded. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-standard-casts-evidence/BUNDLE.json).
 
+The implication-transfer reuse `f77baa3490` removes six net lines, bringing the
+reviewed series to 7930. Isolated baseline and final target builds and the
+focused client pass; all ten target/client axiom reports match. The 37 local
+prerequisite source/object pairs were hash-audited, with 29 refreshed and eight
+historical pinned objects. Foundation, FirstOrder, most PAHF and external
+dependencies remain precompiled. Two broader clients remain unverified
+because prerequisite objects were unavailable; failed attempts are retained.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-ha-implication-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
