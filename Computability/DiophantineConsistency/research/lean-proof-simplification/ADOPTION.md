@@ -769,5 +769,14 @@ unchecked. Three existing cell warnings match after location normalization;
 the initially failed normal and missing-MF prototypes are retained. Independent
 review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-reflected-shared-evidence/BUNDLE.json).
 
+The carry lookup sharing `0ce4bf0bc5` removes eight net lines, bringing the
+reviewed series to 8061. Both targets, two direct clients, two affected bounds
+modules and two focused checks pass in both phases; all 39 named and 13
+generated axiom reports match, and the new helper has the standard three axioms.
+All 26 local graph nodes match authenticated receipts and all 11 descendants of
+refreshed HTP seeds were rebuilt. Five warnings in unchanged HTP preparation
+lack paired baselines; external packages are precompiled and the umbrella import
+was not rebuilt. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-carry-map-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
