@@ -486,5 +486,15 @@ comparable baseline. Other dependencies, including RatioReparameterization
 and Mathlib, remain precompiled. The original heartbeat limits are unchanged;
 target oleans grew by 512 and 544 bytes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-nine-maps-evidence/BUNDLE.json).
 
+The generated kernel record bounds `ada40e5eb9` remove 692 net lines across
+six Lean and generator files, bringing the reviewed series to 6176. All 13
+baseline and final checks pass with identical logs and all 54 old public axiom
+reports match. An authenticated refresh rebuilt 21 local modules and passed
+seven focused and axiom checks, with matching comparable output. Thirty-two
+objects were authenticated and reused; earlier local and external dependencies
+remain precompiled. Existing heartbeat limits and warnings are unchanged. The
+target oleans grew by 17640 and 9736 bytes in the recorded builds. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-kernel-records-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
