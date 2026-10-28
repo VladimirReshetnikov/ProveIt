@@ -223,17 +223,12 @@ theorem physicalPosition_lt (i : Fin 942) : physicalPosition i < 942 := by
       omega
 
 theorem physicalPosition_injective : Function.Injective physicalPosition := by
-  intro i j h
-  cases i using Fin.cases <;> cases j using Fin.cases
-  · rfl
-  · rw [physicalPosition_zero, physicalPosition_succ] at h
-    omega
-  · rw [physicalPosition_succ, physicalPosition_zero] at h
-    omega
-  · rename_i i j
-    rw [physicalPosition_succ, physicalPosition_succ] at h
-    have he : strictRank nonStartWeight i = strictRank nonStartWeight j := by omega
-    exact congrArg Fin.succ (strictRank_injective nonStartWeight_injective he)
+  have hform : physicalPosition =
+      Fin.cons 0 (fun i : Fin 941 => 1 + strictRank nonStartWeight i) :=
+    funext (Fin.cases physicalPosition_zero physicalPosition_succ)
+  rw [hform]
+  exact Fin.cons_injective_iff.mpr ⟨by simp,
+    fun i j h => strictRank_injective nonStartWeight_injective (Nat.add_left_cancel h)⟩
 
 /-- The actual printed position, now with its range proved. -/
 def physicalMap (i : Fin 942) : Fin 942 := ⟨physicalPosition i, physicalPosition_lt i⟩
