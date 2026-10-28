@@ -79,6 +79,32 @@ theorem prefix_le_three_of_masks (N : ℕ) (p bit u digit : ℕ → ℕ)
 /-- Actual prefix sums of Boolean selector values. -/
 def prefixSum (bit : ℕ → ℕ) (N : ℕ) : ℕ := ∑ j ∈ Finset.range N, bit j
 
+
+/-- A shifted suffix of a finite sum is the corresponding prefix. -/
+theorem shifted_suffix_sum_general (a : ℕ → ℕ) {N j : ℕ} (hj : j ≤ N) :
+    (∑ p ∈ Finset.range N, if N ≤ j + p then a (j + p - N) else 0) =
+      prefixSum a j := by
+  have hn : N = (N - j) + j := by omega
+  have hz : (∑ p ∈ Finset.range (N - j),
+      if N ≤ j + p then a (j + p - N) else 0) = 0 := by
+    apply Finset.sum_eq_zero
+    intro p hp
+    have hp' := Finset.mem_range.mp hp
+    rw [if_neg (by omega : ¬N ≤ j + p)]
+  calc
+    _ = ∑ p ∈ Finset.range ((N - j) + j),
+        if N ≤ j + p then a (j + p - N) else 0 :=
+      congrArg (fun n => ∑ p ∈ Finset.range n,
+        if N ≤ j + p then a (j + p - N) else 0) hn
+    _ = _ := by
+      rw [Finset.sum_range_add, hz, zero_add]
+      unfold prefixSum
+      apply Finset.sum_congr rfl
+      intro p _
+      rw [if_pos (by omega : N ≤ j + (N - j + p)),
+        show j + (N - j + p) - N = p by omega]
+
+
 theorem prefix_zero (bit : ℕ → ℕ) : prefixSum bit 0 = 0 := by simp [prefixSum]
 
 theorem prefix_succ (bit : ℕ → ℕ) (j : ℕ) :
