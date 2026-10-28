@@ -112,6 +112,7 @@ Packet names refer to the subdirectories of this directory.
 | `patches/controller-base-unit.patch` | zw | `CurrentControllerSubsets2011` | adopted as part of `ef081fa2ae`; derive the base unit from the odd block modulus.102→99 lines, with the proof comment updated. Nineteen SignedPell-affected prerequisites were refreshed before both baselines; joint final calls and old reports pass as above. Preparation warnings lack a comparable full-cone baseline; other dependencies are precompiled. Independent review passes |
 | `patches/rotation-rephase.patch` | zr | `CurrentWordRephase2011` | adopted as `ed5538c38c`; unfold binary rotation and use the existing physical shift equality.116→113 lines, retaining the named Boolean premise. Five final target/client/two-focus/audit checks pass and all eight old reports match; a second baseline/final run borrows an authenticated prior packing object. The stronger proof leaves `hc` unused, producing a new warning; the focus and borrowed prerequisite also emit exponent warnings. The broader client chain remains precompiled. Independent review passes |
 | `patches/coefficient-refactoring.patch`, NativeNinePolynomial52 hunk | c | `NativeNinePolynomial52` | adopted as `1eba5ee47c`; replace22 private row-specific naturality proofs with one finite case split.456→153 lines/−30587 bytes, all12 definitions and the public theorem statement retained. Sixteen affected prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass and all20 old reports match. The consolidated theorem has an 8M local heartbeat limit; one target build observed23.26→14.13s and the olean grew396072 bytes, without a general speedup claim. Other dependencies are precompiled. Independent review passes |
+| `projection-and-budget/patches/affine-budgets.patch`, repaired | k | `GraphSizeBounds`, `AffineBudget` | adopted as `8915bdc4a3`; share the witness-sum and depth-credit argument across three composition bounds.214→185 target lines plus a21-line helper, eight net lines saved. Twenty-eight affected prerequisites were rebuilt with the correct module root; seven final helper/target/two-client/focus/two-audit checks pass and all19 old reports match. The helper uses the standard three axioms. The supplied patch failed on three dead tactics; a wrong-root client run failed on private names and was replayed after rebuilding. Other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -432,6 +433,13 @@ The consolidated proof uses an 8M local heartbeat limit and its olean is
 396072 bytes larger in the recorded builds; single timing observations do
 not establish a speedup. Other dependencies remain precompiled. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-nine-polynomial-evidence/BUNDLE.json).
+
+The affine-budget cleanup `8915bdc4a3` removes eight net lines and168 bytes,
+including the new helper, bringing the reviewed series to4953. Twenty-eight
+prerequisites were rebuilt with the correct module root; seven final scoped
+checks pass and all19 old public axiom reports match. The failed supplied
+candidate and earlier wrong-root client run are retained separately. Other
+dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-affine-budget-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
