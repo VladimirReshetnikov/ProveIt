@@ -51,37 +51,33 @@ private theorem max_not_lt {a b c d : R}
     ((square_le_square hnext).trans (max_square_le_pair c d))
   exact hup.ne he
 
+/- The shell midpoint recovers which branch produced the output. -/
+omit succ_le in
+theorem pair_lt_shell_cut (a b : R) :
+    pair a b < (max a b)*(max a b)+max a b ↔ a<b := by
+  by_cases hab : a<b
+  · simp only [pair,if_pos hab,max_eq_right hab.le,add_lt_add_iff_left]
+  · simp only [pair,if_neg hab,max_eq_left (le_of_not_gt hab)]
+    exact iff_of_false (not_lt_of_ge le_self_add) hab
+
 theorem pair_eq_pair_iff (a b c d : R) :
     pair a b=pair c d ↔ a=c ∧ b=d := by
   constructor
   · intro he
     have hm : max a b=max c d := le_antisymm
       (le_of_not_gt (max_not_lt succ_le he.symm)) (le_of_not_gt (max_not_lt succ_le he))
-    by_cases hab : a<b <;> by_cases hcd : c<d
-    · have hbd : b=d := by simpa only [max_eq_right hab.le,max_eq_right hcd.le] using hm
+    have hbranch : a<b ↔ c<d := by
+      rw [← pair_lt_shell_cut a b,← pair_lt_shell_cut c d,he,hm]
+    by_cases hab : a<b
+    · have hcd := hbranch.mp hab
+      have hbd : b=d := by simpa only [max_eq_right hab.le,max_eq_right hcd.le] using hm
       subst d
-      have hac : a=c := add_left_cancel (by
-        simpa only [pair,if_pos hab,if_pos hcd] using he)
-      exact ⟨hac,rfl⟩
-    · have hbc : b=c := by
-        simpa only [max_eq_right hab.le,max_eq_left (le_of_not_gt hcd)] using hm
-      subst c
-      have hae : a=b+d := add_left_cancel (a := b*b) (by
-        simpa only [pair,if_pos hab,if_neg hcd,add_assoc] using he)
-      have hba : b≤a := by rw [hae]; exact le_self_add
-      exact False.elim (hab.not_ge hba)
-    · have had : a=d := by
-        simpa only [max_eq_left (le_of_not_gt hab),max_eq_right hcd.le] using hm
-      subst d
-      have hce : c=a+b := add_left_cancel (a := a*a) (by
-        simpa only [pair,if_neg hab,if_pos hcd,add_assoc] using he.symm)
-      have hac : a≤c := by rw [hce]; exact le_self_add
-      exact False.elim (hcd.not_ge hac)
-    · have hac : a=c := by
+      exact ⟨add_left_cancel (by simpa only [pair,if_pos hab,if_pos hcd] using he),rfl⟩
+    · have hcd : ¬c<d := fun h => hab (hbranch.mpr h)
+      have hac : a=c := by
         simpa only [max_eq_left (le_of_not_gt hab),max_eq_left (le_of_not_gt hcd)] using hm
       subst c
-      exact ⟨rfl,add_left_cancel (by
-        simpa only [pair,if_neg hab,if_neg hcd] using he)⟩
+      exact ⟨rfl,add_left_cancel (by simpa only [pair,if_neg hab,if_neg hcd] using he)⟩
   · rintro ⟨rfl,rfl⟩
     rfl
 
