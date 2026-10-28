@@ -6,10 +6,11 @@ noncomputable section
 
 /-! Represented source NNF negation agrees with numeric implication-to-false
 under the actual C222 theorem predicate. The proof is uniform over internal
-typed syntax and arbitrary encoder states. Its code induction has an explicit
-Π₂ invariant and uses IΣ2. No freshness, stack length, primitive equality
-identification, source-axiom interpretation or closed consistency reduction
-is supplied or asserted. R2Neg is a proof guide only, not an import. -/
+typed syntax and arbitrary encoder states. Its code induction fixes the
+source environment, bounds the varying encoder state by its one-step
+successor and uses the bounded Σ₁ order induction of IΣ₁. No freshness,
+stack length, primitive equality identification, source-axiom interpretation
+or closed consistency reduction is supplied or asserted. R2Neg is a proof guide only, not an import. -/
 namespace LeanProofs.ZFCinPA.ValidatorSourceNegation222
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
 open _root_.SetTheory.BusyBeaver.ZFC ArithmeticCode254
@@ -70,92 +71,77 @@ private theorem or_case {a b p q : V}
     CodeIff (codeNeg (wim a (codeNeg b))) (codeNeg (wim (codeNeg p) q)) :=
   codeIff_neg (codeIff_imp ha (codeIff_neg_swap hb))
 
-/-! The universal encoder-state quantifiers make the induction invariant Π₂.
-The level promotions below use actual graph definability, not an assumed
-uniform proof-translation predicate. -/
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
-private lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k → V) → Prop}
-    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
-  rcases h with ⟨φ,hφ⟩
-  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)),?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
+/-! The source environment `F` is fixed outside the induction. The order
+variable is the formula code; the arity, binder stack and stream are bounded
+by their one-step successors `n+1`, `s∷B` and `s+2`, which dominate every
+recursive call. The invariant is then Σ₁ and the bounded order induction of
+IΣ₁ applies. -/
+private instance cProv_sigma1 : 𝚺₁-Predicate[V] CProv := cProv_definable
+private instance encode_sigma1 : 𝚺₁-Function₄[V] encode := encode_defined.to_definable
+private instance wim_sigma1 : 𝚺₁-Function₂[V] wim := wim_defined.to_definable₀
 
-private instance cProv_pi2 : 𝚷-[2]-Predicate[V] CProv := sigma1_to_pi2 cProv_definable
-private instance encode_sigma2 : 𝚺-[2]-Function₄[V] encode :=
-  (encode_defined.graph_delta.to_definable).of_deltaOne
-private instance wim_sigma2 : 𝚺-[2]-Function₂[V] wim := wim_defined.to_definable₀
-private instance semiformula_sigma2 : 𝚺-[2]-Relation[V] (IsSemiformula ℒₛₑₜ) :=
-  IsSemiformula.definable.of_deltaOne
-private instance sourceNeg_sigma2 : 𝚺-[2]-Function₁[V] (Bootstrapping.neg ℒₛₑₜ) :=
-  (Bootstrapping.neg.defined.graph_delta.to_definable).of_deltaOne
-
-private theorem negEq_pi2 : 𝚷-[2]-Predicate[V]
-    (fun p => ∀ n F B s : V, IsSemiformula ℒₛₑₜ n p → NegEq F B s p) := by
+private theorem negEq_sigma1 (F : V) : 𝚺₁-Relation₄[V]
+    (fun p n B s => IsSemiformula ℒₛₑₜ n p → NegEq F B s p) := by
   unfold NegEq CodeIff codeNeg
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.imp
-  · definability
-  · definability
+  definability
 
 /-- Both actual C222 implications for every typed internal source formula.
 The environment and binder state are arbitrary; no freshness or size
 constraint on either environment is needed. -/
-theorem encode_neg [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem encode_neg {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (F B s : V) : NegEq F B s p := by
-  have main : ∀ p : V, ∀ n F B s : V, IsSemiformula ℒₛₑₜ n p → NegEq F B s p := by
-    apply InductionOnHierarchy.order_induction_sigma 𝚷 2
-      (P := fun p => ∀ n F B s : V, IsSemiformula ℒₛₑₜ n p → NegEq F B s p)
-    · exact negEq_pi2
-    · intro p ih n F B s htyped
-      rcases IsSemiformula.case_iff.mp htyped with
-        (⟨k,R,v,hr,hv,rfl⟩ | ⟨k,R,v,hr,hv,rfl⟩ | rfl | rfl |
-          ⟨p,q,hp,hq,rfl⟩ | ⟨p,q,hp,hq,rfl⟩ | ⟨p,hp,rfl⟩ | ⟨p,hp,rfl⟩)
-      · rw [NegEq, neg_rel hr hv.isUTerm, encode_nrel F B s hr hv.isUTerm,
-          encode_rel F B s hr hv.isUTerm]
-        exact codeIff_refl _
-      · rw [NegEq, neg_nrel hr hv.isUTerm, encode_nrel F B s hr hv.isUTerm,
-          encode_rel F B s hr hv.isUTerm]
-        exact codeIff_doubleNeg _
-      · simp only [NegEq, neg_verum, encode_verum, encode_falsum]
-        exact ⟨cProv_ex_falso _, ded1 (.mp h0 (.ax cProv_truth))⟩
-      · simp only [NegEq, neg_falsum, encode_verum, encode_falsum]
-        exact ⟨cProv_mp (cProv_k _ _) (self_imp 1), cProv_mp (cProv_k _ _) cProv_truth⟩
-      · have ihp := ih p (by simp) n F B s hp
-        have ihq := ih q (by simp) n F B s hq
-        rw [NegEq, neg_and hp.isUFormula hq.isUFormula,
-          encode_or F B s hp.isUFormula.neg hq.isUFormula.neg,
-          encode_and F B s hp.isUFormula hq.isUFormula]
-        exact and_case ihp ihq
-      · have ihp := ih p (by simp) n F B s hp
-        have ihq := ih q (by simp) n F B s hq
-        rw [NegEq, neg_or hp.isUFormula hq.isUFormula,
-          encode_and F B s hp.isUFormula.neg hq.isUFormula.neg,
-          encode_or F B s hp.isUFormula hq.isUFormula]
-        exact or_case ihp ihq
-      · have ihp := ih p (by simp) (n+1) F (s∷B) (s+2) hp
-        rw [NegEq, neg_all hp.isUFormula, encode_exs F B s hp.isUFormula.neg,
-          encode_all F B s hp.isUFormula]
-        exact codeIff_neg (codeIff_all s (codeIff_neg_swap ihp))
-      · have ihp := ih p (by simp) (n+1) F (s∷B) (s+2) hp
-        rw [NegEq, neg_ex hp.isUFormula, encode_all F B s hp.isUFormula.neg,
-          encode_exs F B s hp.isUFormula]
-        exact codeIff_doubleNeg_right (codeIff_all s ihp)
-  exact main p n F B s hp
+  have hfy : 𝚺₁-Function₄[V] (fun _ n _ _ => n + 1) := by definability
+  have hfz : 𝚺₁-Function₄[V] (fun _ _ B s => s ∷ B) := by definability
+  have hfw : 𝚺₁-Function₄[V] (fun _ _ _ s => s + 2) := by definability
+  have hnB : ∀ B s : V, B ≤ s ∷ B := fun B s => (lt_adjoin' s B).le
+  have main : ∀ p n B s : V, IsSemiformula ℒₛₑₜ n p → NegEq F B s p := by
+    apply bounded_all_sigma1_order_induction₃ hfy hfz hfw (negEq_sigma1 F)
+    intro p n B s ih htyped
+    rcases IsSemiformula.case_iff.mp htyped with
+      (⟨k,R,v,hr,hv,rfl⟩ | ⟨k,R,v,hr,hv,rfl⟩ | rfl | rfl |
+        ⟨p,q,hp,hq,rfl⟩ | ⟨p,q,hp,hq,rfl⟩ | ⟨p,hp,rfl⟩ | ⟨p,hp,rfl⟩)
+    · rw [NegEq, neg_rel hr hv.isUTerm, encode_nrel F B s hr hv.isUTerm,
+        encode_rel F B s hr hv.isUTerm]
+      exact codeIff_refl _
+    · rw [NegEq, neg_nrel hr hv.isUTerm, encode_nrel F B s hr hv.isUTerm,
+        encode_rel F B s hr hv.isUTerm]
+      exact codeIff_doubleNeg _
+    · simp only [NegEq, neg_verum, encode_verum, encode_falsum]
+      exact ⟨cProv_ex_falso _, ded1 (.mp h0 (.ax cProv_truth))⟩
+    · simp only [NegEq, neg_falsum, encode_verum, encode_falsum]
+      exact ⟨cProv_mp (cProv_k _ _) (self_imp 1), cProv_mp (cProv_k _ _) cProv_truth⟩
+    · have ihp := ih p (by simp) n (by simp) B (hnB B s) s (by simp) hp
+      have ihq := ih q (by simp) n (by simp) B (hnB B s) s (by simp) hq
+      rw [NegEq, neg_and hp.isUFormula hq.isUFormula,
+        encode_or F B s hp.isUFormula.neg hq.isUFormula.neg,
+        encode_and F B s hp.isUFormula hq.isUFormula]
+      exact and_case ihp ihq
+    · have ihp := ih p (by simp) n (by simp) B (hnB B s) s (by simp) hp
+      have ihq := ih q (by simp) n (by simp) B (hnB B s) s (by simp) hq
+      rw [NegEq, neg_or hp.isUFormula hq.isUFormula,
+        encode_and F B s hp.isUFormula.neg hq.isUFormula.neg,
+        encode_or F B s hp.isUFormula hq.isUFormula]
+      exact or_case ihp ihq
+    · have ihp := ih p (by simp) (n+1) le_rfl (s∷B) le_rfl (s+2) le_rfl hp
+      rw [NegEq, neg_all hp.isUFormula, encode_exs F B s hp.isUFormula.neg,
+        encode_all F B s hp.isUFormula]
+      exact codeIff_neg (codeIff_all s (codeIff_neg_swap ihp))
+    · have ihp := ih p (by simp) (n+1) le_rfl (s∷B) le_rfl (s+2) le_rfl hp
+      rw [NegEq, neg_ex hp.isUFormula, encode_all F B s hp.isUFormula.neg,
+        encode_exs F B s hp.isUFormula]
+      exact codeIff_doubleNeg_right (codeIff_all s ihp)
+  exact main p n B s hp
 
-theorem encode_neg_forward [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem encode_neg_forward {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (F B s : V) :
     CProv (wim (encode F B s (Bootstrapping.neg ℒₛₑₜ p)) (codeNeg (encode F B s p))) :=
   (encode_neg hp F B s).1
-theorem encode_neg_backward [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem encode_neg_backward {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (F B s : V) :
     CProv (wim (codeNeg (encode F B s p)) (encode F B s (Bootstrapping.neg ℒₛₑₜ p))) :=
   (encode_neg hp F B s).2
 
-theorem encode_neg_witnesses [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem encode_neg_witnesses {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (F B s : V) :
     ∃ d e : V,
       ArithmeticHistory222.value d =

@@ -6,8 +6,8 @@ noncomputable section
 
 /-!
 Concrete internal fresh-stream selection and composition of actual C222 alpha
-transport. The fixed Σ0 selector uses IΣ1; formula transport invokes the
-accepted IΣ2 Alpha222 theorem. No CProv254 semantics are used. A coarse
+transport. The fixed Σ0 selector and formula transport (through the Alpha222
+theorem) both use IΣ1. No CProv254 semantics are used. A coarse
 bound by the numeric vector code suffices for every stored label. The fixed selector chooses the opposite parity above that bound. The
 formula client compares arbitrary free-safe starts, including overlapping
 streams. Original-stream safety remains explicit; source substitution,
@@ -113,7 +113,7 @@ lemma alternateStart_resources (F B B' seed : V) :
 
 /-- Compare arbitrary free-safe starts. When their residues agree, compose
 through the explicit fresh stream of the opposite parity. -/
-theorem encode_formula_relabel [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {p : V} (hp : IsFormula ℒₛₑₜ p)
+theorem encode_formula_relabel {p : V} (hp : IsFormula ℒₛₑₜ p)
     (F s t : V) (hs : StreamFree s F) (ht : StreamFree t F) :
     CProv (wim (encode F 0 s p) (encode F 0 t p)) ∧
     CProv (wim (encode F 0 t p) (encode F 0 s p)) := by
@@ -131,7 +131,7 @@ theorem encode_formula_relabel [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {p : V} (hp : I
   · exact encode_formula_alpha hp F s t hs ht (apart_of_mod_ne hmod)
 
 /-- The overlapping next-stream case needed after one binder allocation. -/
-lemma encode_formula_next [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {p : V} (hp : IsFormula ℒₛₑₜ p)
+lemma encode_formula_next {p : V} (hp : IsFormula ℒₛₑₜ p)
     (F s : V) (hs : StreamFree s F) :
     CProv (wim (encode F 0 s p) (encode F 0 (s+2) p)) ∧
     CProv (wim (encode F 0 (s+2) p) (encode F 0 s p)) :=
