@@ -70,7 +70,6 @@ lemma term_fresh_pair {t : V} (ht : IsTerm ℒₛₑₜ t)
     exact (alternateStart_apart F s j (i+1)).symm
 
 section Transport
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
 lemma instance_vac {p t : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
     (ht : IsTerm ℒₛₑₜ t) (F s : V) (hs : StreamFree s F) :

@@ -6,9 +6,9 @@ set_option Elab.async false
 noncomputable section
 
 /-! Actual C222 quantifier deductions through internally sized contexts.
-The general vacuity-guarded fold uses explicit Π₂ induction under IΣ₂.
-The source-specific fold uses a Σ₁ typed-list invariant, retaining IΣ₂ for
-the previously proved encoded-formula vacuity theorem. Every source hypothesis
+The general vacuity-guarded fold fixes its context and uses Σ₁ order induction
+over sublists drawn from it; the source-specific fold uses a Σ₁ typed-list
+invariant. Everything here is proved in IΣ₁. Every source hypothesis
 vacuity is derived from typing and the actual fresh-label resources. No blanket
 GEN-under-hypotheses rule, source axiom image, or complete proof interpretation
 is assumed. Existing R2Quant is a source-only guide and is not imported. -/
@@ -37,56 +37,44 @@ private lemma gen_cons {i a G g : V} (ha : Vac i a)
   exact ded2 (.mp (.ax ih)
     (.mp (.mp (.ax (all_distribution i a (imps G g))) h1) (.mp (.ax ha) h0)))
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
-private lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k → V) → Prop}
-    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
-  rcases h with ⟨φ,hφ⟩
-  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)),?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
+private instance imps_sigma1 : 𝚺₁-Function₂[V] imps := imps_definable
+private instance wim_sigma1 : 𝚺₁-Function₂[V] wim := wim_defined.to_definable₀
+private instance wal_sigma1 : 𝚺₁-Function₂[V] wal := wal_defined.to_definable₀
+private instance len_delta : 𝚫₁-Function₁[V] (len : V → V) :=
+  len_defined.graph_delta.to_definable
+private instance nth_delta : 𝚫₁-Function₂[V] (nth : V → V → V) :=
+  nth_defined.graph_delta.to_definable
 
-private instance vac_sigma1 : 𝚺₁-Relation[V] Vac := by unfold Vac; definability
-private instance vac_sigma2 : 𝚺-[2]-Relation[V] Vac := by
-  rcases vac_sigma1 (V := V) with ⟨φ,hφ⟩
-  refine ⟨.mkSigma φ.val (φ.sigma_prop.strict_mono 𝚺 (by decide)),?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkSigma] using (hφ.iff (v := v))
-private instance cProv_pi2 : 𝚷-[2]-Predicate[V] CProv := sigma1_to_pi2 cProv_definable
-private instance imps_sigma2 : 𝚺-[2]-Function₂[V] imps := imps_definable.of_sigmaOne
-private instance wim_sigma2 : 𝚺-[2]-Function₂[V] wim := wim_defined.to_definable₀
-private instance wal_sigma2 : 𝚺-[2]-Function₂[V] wal := wal_defined.to_definable₀
-private instance len_sigma2 : 𝚺-[2]-Function₁[V] (len : V → V) :=
-  len_defined.graph_delta.to_definable.of_deltaOne
-private instance nth_sigma2 : 𝚺-[2]-Function₂[V] (nth : V → V → V) :=
-  nth_defined.graph_delta.to_definable.of_deltaOne
+/-- The fold's invariant is Σ₁ once the vacuity premise is moved outside the
+induction: the context `G` is fixed and the induction runs over every list `H`
+whose entries all occur in `G`. That membership antecedent is Δ₁, and each
+entry inherits its Σ₁ vacuity certificate from `G`. -/
+private lemma gen_invariant_sigma1 (i g G : V) : 𝚺₁-Predicate[V]
+    (fun H => (∀ j < len H, ∃ k < len G, H.[j] = G.[k]) →
+      CProv (wim (wal i (imps H g)) (imps H (wal i g)))) := by
+  definability
 
-private lemma gen_invariant_pi2 (i g : V) : 𝚷-[2]-Predicate[V]
-    (fun G => (∀ j < len G, Vac i G.[j]) →
-      CProv (wim (wal i (imps G g)) (imps G (wal i g)))) := by
-  apply HierarchySymbol.Definable.imp
-  · definability
-  · definability
-
-section General
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
-
-/-- No claim of IΣ₁ induction for a context of arbitrary Σ₁ vacuity premises. -/
+/-- Generalization through a context of vacuous hypotheses, by Σ₁ order
+induction over the sublists drawn from the fixed context. -/
 theorem cProv_gen_context (i g G : V) (hG : ∀ j < len G, Vac i G.[j]) :
     CProv (wim (wal i (imps G g)) (imps G (wal i g))) := by
-  have main : ∀ G : V, (∀ j < len G, Vac i G.[j]) →
-      CProv (wim (wal i (imps G g)) (imps G (wal i g))) := by
-    apply InductionOnHierarchy.order_induction_sigma 𝚷 2
-      (P := fun G => (∀ j < len G, Vac i G.[j]) →
-        CProv (wim (wal i (imps G g)) (imps G (wal i g))))
-    · exact gen_invariant_pi2 i g
-    · intro G ih hG
-      rcases nil_or_adjoin G with (rfl | ⟨a,G,rfl⟩)
+  have main : ∀ H : V, (∀ j < len H, ∃ k < len G, H.[j] = G.[k]) →
+      CProv (wim (wal i (imps H g)) (imps H (wal i g))) := by
+    intro H
+    induction H using ISigma1.sigma1_order_induction
+    · exact gen_invariant_sigma1 i g G
+    case ind H ih =>
+      intro hH
+      rcases nil_or_adjoin H with (rfl | ⟨a,H,rfl⟩)
       · simpa using self_imp (wal i g)
-      · have ha : Vac i a := by simpa using hG 0 (by simp)
-        have ht : ∀ j < len G, Vac i G.[j] := fun j hj => by
-          simpa using hG (j+1) (by simpa using hj)
-        exact gen_cons ha (ih G (by simp) ht)
-  exact main G hG
+      · have ha : Vac i a := by
+          obtain ⟨k,hk,he⟩ := hH 0 (by simp)
+          simp only [nth_adjoin_zero] at he
+          exact he ▸ hG k hk
+        have ht : ∀ j < len H, ∃ k < len G, H.[j] = G.[k] := fun j hj => by
+          simpa using hH (j+1) (by simpa using hj)
+        exact gen_cons ha (ih H (by simp) ht)
+  exact main G (fun j hj => ⟨j,hj,rfl⟩)
 
 theorem der_gen (i : V) {G g : V} (hG : ∀ j < len G, Vac i G.[j])
     (h : Der G g) : Der G (wal i g) :=
@@ -110,8 +98,7 @@ theorem negEnc_member_vacuous (F s L : V) (hs : StreamFree s F)
   obtain ⟨j,hj,rfl⟩ := ha
   exact negEnc_vacuous F s L hs hL j hj
 
-/-- This fold's invariant is Σ₁: the typed-list antecedent is Δ₁.
-IΣ₂ remains explicit for encoded-formula vacuity, not for this list induction. -/
+/-- This fold's invariant is Σ₁: the typed-list antecedent is Δ₁. -/
 theorem cProv_gen_source_context (F s g : V) (hs : StreamFree s F) : ∀ L : V,
     (∀ j < len L, IsFormula ℒₛₑₜ L.[j]) →
     CProv (wim (wal (eigen F s) (imps (negEnc F s L) g))
@@ -141,7 +128,6 @@ theorem all_intro_opened {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
     cProv_mp (cProv_gen_source_context F s _ hs L hL) (cProv_gen (eigen F s) h)
   exact der_mp (der_of (all_opened_equiv hp F s hs).1) hg
 
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
 /-- Literal source shifting tails the extended free environment. -/
 theorem shifted_context (F s L x : V)
     (hL : ∀ j < len L, IsFormula ℒₛₑₜ L.[j]) :
@@ -168,8 +154,6 @@ theorem ex_intro_term {p t : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
     Der G (encode F 0 s (^∃ p)) :=
   der_mp (der_of (ex_term_imp hp ht F s hs)) h
 
-end General
-
 /-- Classical sequent recovery uses the actual numeric negative hypothesis,
 not source NNF negation or a semantic truth predicate. -/
 theorem seqC_cons_iff_der (F s L p : V) :
@@ -180,9 +164,6 @@ theorem seqC_cons_iff_der (F s L p : V) :
   · exact der_byContra
   · intro h
     exact der_undeduct (der_mp (der_of (double_neg_intro _)) h)
-
-section SourceRules
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
 theorem seqC_all {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
     (F s L : V) (hs : StreamFree s F)
@@ -216,5 +197,4 @@ theorem ex_context_witness {p t : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
     ∃ code : V, ArithmeticHistory222.value code = imps G (encode F 0 s (^∃ p)) + 1 :=
   ex_intro_term hp ht F s G hs h
 
-end SourceRules
 end LeanProofs.ZFCinPA.ValidatorSourceQuantifierContext222

@@ -5,13 +5,13 @@ set_option Elab.async false
 noncomputable section
 
 /-! Uniform represented vacuity for the actual C222 Eind-aware encoder.
-The syntax-only environment conventions and the represented Pi2 induction
+The syntax-only environment conventions and the represented induction
 pattern follow the existing configurable encoder. The atom proof is new:
 it uses actual C222 Eind_vac and membership vacuity, never primitive equality
 vacuity. Typed terms, exact bound-stack length, free fallback1 and the whole
 future binder stream are explicit. No positivity, pairwise distinctness,
 self-vacuity, seed truth or arbitrary Lean-predicate induction is assumed.
-Uniform proof witnesses require IΣ2; the local lemmas use IΣ1. -/
+The uniform result uses bounded-parameter order induction in IΣ₁. -/
 namespace LeanProofs.ZFCinPA.ValidatorEnvironmentVacuity222
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open LO.FirstOrder.Arithmetic.Bootstrapping
@@ -86,115 +86,76 @@ lemma atom_vac {n arity R terms : V} (hr : (ℒₛₑₜ).IsRel arity R)
   · exact ValidatorEind222.Eind_vac _ _ z hleft hright
   · exact vac_rel _ _ z hleft hright
 
-/-! The induction predicate is genuinely Pi-two, not Pi-one. -/
+/-! The invariant is Sigma-one once the free environment and the target label
+are fixed outside the induction: the binder stack and the fresh-label stream
+grow, but every recursive call's values are bounded by an explicit represented
+function, so bounded-parameter order induction in IΣ₁ applies. -/
 private instance len_delta : 𝚫₁-Function₁[V] (len : V→V) :=
   len_defined.graph_delta.to_definable
 private instance avoid_delta : 𝚫₁-Relation[V] Avoid := by unfold Avoid; definability
 private instance stream_pi1 : 𝚷₁-Relation[V] StreamAvoid := by unfold StreamAvoid; definability
-
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
-private lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k→V)→Prop}
-    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
-  rcases h with ⟨φ,hφ⟩
-  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)),?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
-omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
-private lemma pi1_to_sigma2 {k : ℕ} {P : (Fin k→V)→Prop}
-    (h : 𝚷₁.Definable P) : (𝚺-[2]).Definable P := by
-  rcases h with ⟨φ,hφ⟩
-  refine ⟨.mkSigma φ.val (φ.pi_prop.strict_mono 𝚺 (by decide)),?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkSigma] using (hφ.iff (v := v))
-
-private instance cProv_pi2 : 𝚷-[2]-Predicate[V] CProv :=
-  sigma1_to_pi2 cProv_definable
-private instance stream_sigma2 : 𝚺-[2]-Relation[V] StreamAvoid :=
-  pi1_to_sigma2 stream_pi1
-private instance avoid_sigma2 : 𝚺-[2]-Relation[V] Avoid :=
-  avoid_delta.of_deltaOne
-private instance len_sigma2 : 𝚺-[2]-Function₁[V] (len : V→V) :=
-  len_delta.of_deltaOne
-private instance encode_sigma2 : 𝚺-[2]-Function₄[V] encode :=
-  (encode_defined.graph_delta.to_definable).of_deltaOne
-private instance wim_sigma2 : 𝚺-[2]-Function₂[V] wim := wim_defined.to_definable₀
-private instance wal_sigma2 : 𝚺-[2]-Function₂[V] wal := wal_defined.to_definable₀
-private instance semiformula_sigma2 : 𝚺-[2]-Relation[V] (IsSemiformula ℒₛₑₜ) :=
-  IsSemiformula.definable.of_deltaOne
-private instance free_sigma2 : 𝚺-[2]-Relation[V] FreeAvoid := by
-  unfold FreeAvoid
-  definability
-private instance vac_pi2 : 𝚷-[2]-Relation[V] Vac := by
+private instance wim_sigma1 : 𝚺₁-Function₂[V] wim := wim_defined.to_definable₀
+private instance wal_sigma1 : 𝚺₁-Function₂[V] wal := wal_defined.to_definable₀
+private instance vac_sigma1 : 𝚺₁-Relation[V] Vac := by
   unfold Vac
   definability
 
-/-- Keep the hierarchy proof separate from the constructor induction. Each
-closure uses a fixed represented graph rather than unfolding the encoder. -/
-private lemma vac_invariant_pi2 : 𝚷-[2]-Predicate[V]
-    (fun p => ∀ n F B fresh z : V, IsSemiformula ℒₛₑₜ n p → len B=n →
-      FreeAvoid z F → Avoid z B → StreamAvoid z fresh → Vac z (encode F B fresh p)) := by
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.all
-  apply HierarchySymbol.Definable.imp
-  · definability
-  apply HierarchySymbol.Definable.imp
-  · definability
-  apply HierarchySymbol.Definable.imp
-  · definability
-  apply HierarchySymbol.Definable.imp
-  · definability
-  apply HierarchySymbol.Definable.imp
-  · definability
-  · definability
+/-- The bounded-parameter invariant, with the free environment `F` and the
+target label `z` held fixed. -/
+private lemma vac_invariant_sigma1 (F z : V) : 𝚺₁-Relation₃[V]
+    (fun p B fresh => IsSemiformula ℒₛₑₜ (len B) p → Avoid z B →
+      StreamAvoid z fresh → Vac z (encode F B fresh p)) := by
+  definability
 
-/-- Uniform vacuity for every internal encoded formula. IΣ₂ supports the
-Pi-two induction over all environment choices and proof witnesses. -/
-theorem encode_vac [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V} (hp : IsSemiformula ℒₛₑₜ n p)
+/-- Uniform vacuity for every internal encoded formula. The binder stack and
+fresh-label stream vary through the recursion, but every recursive call uses
+values bounded by `fresh ∷ B` and `fresh+2`, so bounded-parameter order
+induction in IΣ₁ suffices. -/
+theorem encode_vac {n p : V} (hp : IsSemiformula ℒₛₑₜ n p)
     (F B fresh z : V) (hlen : len B=n) (hF : FreeAvoid z F)
     (hB : Avoid z B) (hs : StreamAvoid z fresh) : Vac z (encode F B fresh p) := by
-  have main : ∀ p : V, ∀ n F B fresh z : V, IsSemiformula ℒₛₑₜ n p → len B=n →
-      FreeAvoid z F → Avoid z B → StreamAvoid z fresh → Vac z (encode F B fresh p) := by
-    apply InductionOnHierarchy.order_induction_sigma 𝚷 2
-      (P := fun p => ∀ n F B fresh z : V, IsSemiformula ℒₛₑₜ n p → len B=n →
-        FreeAvoid z F → Avoid z B → StreamAvoid z fresh → Vac z (encode F B fresh p))
-    · exact vac_invariant_pi2
-    · intro p ih n F B fresh z htyped hlen hF hB hs
-      rcases IsSemiformula.case_iff.mp htyped with
-        (⟨arity,R,terms,hr,ht,rfl⟩ | ⟨arity,R,terms,hr,ht,rfl⟩ | rfl | rfl |
-          ⟨p,q,hp,hq,rfl⟩ | ⟨p,q,hp,hq,rfl⟩ | ⟨p,hp,rfl⟩ | ⟨p,hp,rfl⟩)
-      · rw [encode_rel F B fresh hr ht.isUTerm]
-        exact atom_vac hr ht F B fresh z hlen hF hB
-      · rw [encode_nrel F B fresh hr ht.isUTerm]
-        exact vac_neg (atom_vac hr ht F B fresh z hlen hF hB)
-      · simpa using vac_truth z
-      · simpa using vac_falsum z
-      · rw [encode_and F B fresh hp.isUFormula hq.isUFormula]
-        exact vac_neg (vac_imp (ih p (by simp) n F B fresh z hp hlen hF hB hs)
-          (vac_neg (ih q (by simp) n F B fresh z hq hlen hF hB hs)))
-      · rw [encode_or F B fresh hp.isUFormula hq.isUFormula]
-        exact vac_imp (vac_neg (ih p (by simp) n F B fresh z hp hlen hF hB hs))
-          (ih q (by simp) n F B fresh z hq hlen hF hB hs)
-      · rw [encode_all F B fresh hp.isUFormula]
-        exact vac_all fresh (ih p (by simp) (n+1) F (fresh∷B) (fresh+2) z hp
-          (by simp [hlen]) hF (avoid_cons hB (stream_head hs)) (stream_next hs))
-      · rw [encode_exs F B fresh hp.isUFormula]
-        exact vac_neg (vac_all fresh (vac_neg
-          (ih p (by simp) (n+1) F (fresh∷B) (fresh+2) z hp
-            (by simp [hlen]) hF (avoid_cons hB (stream_head hs)) (stream_next hs))))
-  exact main p n F B fresh z hp hlen hF hB hs
+  have main : ∀ p B fresh : V, IsSemiformula ℒₛₑₜ (len B) p → Avoid z B →
+      StreamAvoid z fresh → Vac z (encode F B fresh p) := by
+    refine bounded_all_sigma1_order_induction₂
+      (fy := fun _ B fresh => fresh ∷ B) (fz := fun _ _ fresh => fresh+2)
+      (by definability) (by definability) (vac_invariant_sigma1 F z) ?_
+    intro p B fresh ih htyped hB hs
+    have hB' : B ≤ fresh ∷ B := le_of_lt (lt_adjoin' _ _)
+    have hf' : fresh ≤ fresh+2 := le_add_of_nonneg_right (Arithmetic.zero_le _)
+    rcases IsSemiformula.case_iff.mp htyped with
+      (⟨arity,R,terms,hr,ht,rfl⟩ | ⟨arity,R,terms,hr,ht,rfl⟩ | rfl | rfl |
+        ⟨p,q,hp,hq,rfl⟩ | ⟨p,q,hp,hq,rfl⟩ | ⟨p,hp,rfl⟩ | ⟨p,hp,rfl⟩)
+    · rw [encode_rel F B fresh hr ht.isUTerm]
+      exact atom_vac hr ht F B fresh z rfl hF hB
+    · rw [encode_nrel F B fresh hr ht.isUTerm]
+      exact vac_neg (atom_vac hr ht F B fresh z rfl hF hB)
+    · simpa using vac_truth z
+    · simpa using vac_falsum z
+    · rw [encode_and F B fresh hp.isUFormula hq.isUFormula]
+      exact vac_neg (vac_imp (ih p (by simp) B hB' fresh hf' hp hB hs)
+        (vac_neg (ih q (by simp) B hB' fresh hf' hq hB hs)))
+    · rw [encode_or F B fresh hp.isUFormula hq.isUFormula]
+      exact vac_imp (vac_neg (ih p (by simp) B hB' fresh hf' hp hB hs))
+        (ih q (by simp) B hB' fresh hf' hq hB hs)
+    · rw [encode_all F B fresh hp.isUFormula]
+      exact vac_all fresh (ih p (by simp) (fresh∷B) le_rfl (fresh+2) le_rfl
+        (by simpa using hp) (avoid_cons hB (stream_head hs)) (stream_next hs))
+    · rw [encode_exs F B fresh hp.isUFormula]
+      exact vac_neg (vac_all fresh (vac_neg
+        (ih p (by simp) (fresh∷B) le_rfl (fresh+2) le_rfl
+          (by simpa using hp) (avoid_cons hB (stream_head hs)) (stream_next hs))))
+  subst hlen
+  exact main p B fresh hp hB hs
 
 /-- Closed-bound-context client, with the same explicit free/binder avoidance. -/
-lemma encode_formula_vac [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {p : V} (hp : IsFormula ℒₛₑₜ p)
+lemma encode_formula_vac {p : V} (hp : IsFormula ℒₛₑₜ p)
     (F fresh z : V) (hF : FreeAvoid z F) (hs : StreamAvoid z fresh) :
     Vac z (encode F 0 fresh p) :=
   encode_vac hp F 0 fresh z (by simp) hF (avoid_nil z) hs
 
 /-- The same result exposes a numeric proof accepted by the actual represented
 C222 history, uniformly over every internal well-typed source formula. -/
-theorem encode_vac_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+theorem encode_vac_witness {n p : V}
     (hp : IsSemiformula ℒₛₑₜ n p) (F B fresh z : V) (hlen : len B=n)
     (hF : FreeAvoid z F) (hB : Avoid z B) (hs : StreamAvoid z fresh) :
     ∃ code : V, _root_.SetTheory.BusyBeaver.ZFC.ArithmeticHistory222.value code =

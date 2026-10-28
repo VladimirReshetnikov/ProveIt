@@ -43,7 +43,6 @@ lemma fresh_resources (F s : V) (hs : StreamFree s F) :
     streamFree_cons (streamFree_next hx) (stream_of_lt (by simp)),hx⟩
 
 section Transport
-variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
 /-- The source opening is a depth-zero formula, so formula alpha applies
 with the unchanged extended free environment on both sides. -/
