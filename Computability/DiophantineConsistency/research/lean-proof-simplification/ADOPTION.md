@@ -91,6 +91,7 @@ Packet names refer to the subdirectories of this directory.
 | `algebra_examples/QuarticCompiler.patch` | e | `QuarticCompiler` | adopted as `1918aaeb02`; combine the identical addition and multiplication completeness branches.448→440 lines, evaluator data unchanged. Six final target/four-client/audit calls pass; all31 old reports match. Other dependencies are precompiled. Independent review passes |
 | `patches/B1-source-Y-row-one.patch` | zy | `NativePellBootstrap` | adopted as `9aace004ba`; derive the source Y lower bound directly from row one.648→640 lines with all premises unchanged. Five final target/two-client/focus/audit calls pass; all31 old reports match. Other dependencies are precompiled. Independent review passes |
 | `machine/M1-act_next_none_iff.patch` | v | `WangMachineAction` | adopted as `35b702513f`; apply state-number injectivity to the next-state identity.119→112 lines, retaining the target bound. After refreshing `WangMachineEncoding`, five final target/two-client/focus/audit calls pass; all15 reports match. Other dependencies are precompiled. Independent review passes |
+| `arithmetic/patches/sidon-moment.patch` and `local_candidates/patches/SidonPositions.lean.patch` | y + zm | `SidonPositions` | adopted as `4d9e4d7a30`; factor the square-sum difference and reuse unordered-pair uniqueness.168→157 lines including two tactic imports. Thirteen final affected-cone/focus/audit calls pass; all18 Sidon and31 Bootstrap reports match. Three separate calls check four attributed reports after one corrected root-setup failure. The unchanged SplitCertificate59 rebuild emits46 linter warnings without a comparable baseline log; other dependencies are precompiled. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -319,6 +320,14 @@ pass and all77 old public axiom reports match. The machine-action validation
 first refreshes its changed encoding dependency. Other project and package
 dependencies are precompiled; no full build is claimed. Inputs and recorded
 results are in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-three-more-evidence/BUNDLE.json).
+
+The Sidon proof `4d9e4d7a30` removes11 lines and524 bytes, bringing the
+reviewed series to4548. Thirteen final calls rebuild or check the selected
+Sidon-to-Bootstrap cone, and all49 old public reports match. Three additional
+calls audit four attributed Sidon declarations; an initial root-setup failure
+is retained separately. SplitCertificate59 emits46 linter warnings without a
+comparable original-build warning log; remaining dependencies are precompiled.
+Details are in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-sidon-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
