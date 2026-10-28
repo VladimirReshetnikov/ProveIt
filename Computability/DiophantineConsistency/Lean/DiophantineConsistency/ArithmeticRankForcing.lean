@@ -20,13 +20,6 @@ open scoped LO.FirstOrder.Arithmetic
 open ArithmeticBinaryPopulation ArithmeticBinaryCarry
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem half_lt (a E : V) (h : a<2*E) : a/2<E := by
-  have he : 2*(a/2)+a%2=a := div_add_mod a 2
-  have hlo : 2*(a/2)≤a := by rw [←he]; simp
-  by_contra hn
-  have hmul := mul_le_mul_of_nonneg_left (le_of_not_gt hn) (Arithmetic.zero_le (2:V))
-  exact (not_lt_of_ge (le_trans hmul hlo)) h
-
 private theorem one_le_of_pos {x : V} (h : 0<x) : 1≤x := by
   simpa using lt_iff_succ_le.mp h
 
