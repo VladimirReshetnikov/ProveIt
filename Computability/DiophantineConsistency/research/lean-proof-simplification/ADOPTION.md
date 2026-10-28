@@ -703,5 +703,16 @@ emit 23 warnings without a paired baseline; Mathlib is precompiled. The build
 receipt reconstructs commands and uses a later captured Lake environment suffix.
 Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-quartic-gates-evidence/BUNDLE.json).
 
+The conditional list lookup reuse `66f7e490ff` removes 14 net lines and 599
+bytes including the helper, bringing the reviewed series to 7971. Both normal
+and cell targets pass before and after against refreshed dependencies; all 89
+public and generated axiom reports match. Three normal, nine matrix-free and
+one cell direct clients pass, as does a Foundation Matrix co-import. The
+matrix-free and external dependencies remain cache-bounded. Three existing
+cell warnings match apart from locations; five unchanged refreshed prerequisites
+emit 51 warnings without paired baselines. Target command/path receipts were
+reconstructed from observed calls. Independent review passes. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-list-getd-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
