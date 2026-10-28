@@ -100,6 +100,8 @@ Packet names refer to the subdirectories of this directory.
 | `patches/NativeFieldCycles2011.patch`, retaining old imports | i | `NativeFieldCycles2011` | adopted as `43f5f376f9`; use surjectivity on the finite invariant even subset.111→104 lines. Five final target/client/two-focus/audit calls pass; both old reports match. The broader clients reuse precompiled intermediate dependencies. Independent review passes |
 | `strip/WangTiles942HeadBounds.patch` | za | `WangTiles942HeadBounds` | adopted as `c0e20c2490`; derive both wall bounds from finite-coordinate bounds and square monotonicity.135→130 lines. Five prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass. Seven reports match and both wall theorems strictly drop Quot.sound, with no added axioms. Other dependencies are precompiled. Independent review passes |
 | `physical/patches/fin_pred.patch` | zh | `WangTiles942PhysicalOrder` | adopted as `8cb3a1aaf7`; use Fin.pred and Fin.succ_pred.155→148 lines. The old and revised full index values are equal by `rfl` for every input. Two prerequisites were refreshed; five final target/client/focus/probe/audit calls pass and all31 old reports match. Other dependencies are precompiled. Independent review passes |
+| `patches/individual/trace-absolute-bound.patch` | u | `WangMachineTraceBounds` | adopted as `b0cc4adc6d`; use the absolute-value alternative directly.142→137 lines. Five machine/finish prerequisites were refreshed before baseline; four final target/client/focus/audit calls pass and all13 old reports match. Other dependencies are precompiled. Independent review passes |
+| `patches/no-wrap-capacity.patch` | zr | `CurrentDummySafety2011` | adopted as `776133bf33`; use the preceding radix-power bound directly.213→208 lines, with the original guards retained. Four final target/client/focus/audit calls pass and all13 old reports match. The broader client graph was not refreshed and uses precompiled dependencies. Independent review passes |
 
 Packets g onward are triaged and adopted by the research session; the intake session only places
 arrivals.
@@ -357,6 +359,12 @@ axioms. The complete old and new physical index values are equal by `rfl`.
 Seven prerequisites were refreshed; other dependencies are precompiled,
 including intermediate dependencies in the broad cycle clients. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-cycle-wall-pred-evidence/BUNDLE.json).
+
+The next two commits remove10 lines and309 bytes, advancing the reviewed
+series from4597 to4607. Eight final scoped checks pass and all26 old public
+axiom reports match. Five trace prerequisites were refreshed; the broader
+dummy client graph and other dependencies remain precompiled. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-trace-dummy-evidence/BUNDLE.json).
 
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
