@@ -1,0 +1,86 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,enumitem,microtype,xcolor}
+\usepackage{fancyhdr,listings}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Pairwise Certificates for Adaptive SAT Contraction},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Certified exponential-coefficient improvements, public formalization update, and structural barriers}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Pairwise certificates for adaptive SAT contraction}
+\fancyhead[R]{\small Research report}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\K}{\mathcal K}
+\newcommand{\norm}[1]{\left\|#1\right\|_2}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\pin}{\texttt{a7ae5ab55f96}}
+\input{results/constants.tex}
+\title{Pairwise Certificates for Adaptive SAT Contraction\\[5pt]
+\large A smaller cached exponential coefficient, a low-degree polynomial-space improvement, and sharper obstructions to changing the exponent order}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026 (Pacific date)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the twenty-nine refinement packets in ProveIt through \pin,
+including the latest round-four placements, and incorporate the newly public
+Anthropic formalization identified by the user. A closing check includes
+the documentation update \texttt{7de9d09fecd1}. We obtain a deterministic
+normalized Boolean tensor-contraction bound with time and space
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(\CachedC\ldots+o(1))s/\sqrt{\lceil\log_2s\rceil}},
+\]
+improving the previous comparable cached time coefficient $30.891019$
+and space coefficient $30.753913$ (rounded).
+The new ingredient is a certificate for choosing among many contraction
+plans: distribute the squared norm of an averaged operation support among
+pairs of plans, then maximize each coupled pair exactly. This avoids the
+exponential dependence on the number of plans in the preceding certificate.
+It combines with the already available rectangular matrix backend and a
+strict $10\to13\to7$ recursion that pays for every child entry.
+
+For initial degree at most $\lceil s^{1/12}\rceil$, a separate streamed
+construction gives polynomial-space coefficient $16.81223380188329\ldots$,
+against $23.6661688071455\ldots$. We also extend the streamed flag
+optimality obstruction to all binary separator trees, and prove a
+graded-space rank obstruction suggested by the new formalization: a
+polynomial-size crossing decomposition confined to energy $4h$ cannot
+replace square-root graded entropy by a smaller positive power.
+
+The new elementary certificates and resource calculations have proofs and
+exact executable checks. Complete SAT consequences import the existing
+contraction identities; neither a full solver nor a rebuilt Lean development
+is supplied. The unrestricted SAT exponent order remains
+$n\log\log n/\sqrt{\log n}$. Thus this is a strict improvement in explicit
+exponential upper bounds, but not the requested improvement in the
+logarithmic order of the worst-case exponent.
+\end{abstract}
+\newpage\setcounter{tocdepth}{1}\tableofcontents\newpage
+\input{sections/review.tex}
+\input{sections/interface.tex}
+\input{sections/portfolio.tex}
+\input{sections/schedule.tex}
+\input{sections/lowdegree.tex}
+\input{sections/barriers.tex}
+\input{sections/formalization.tex}
+\input{sections/verification.tex}
+\input{sections/research.tex}
+\input{sections/references.tex}
+\end{document}

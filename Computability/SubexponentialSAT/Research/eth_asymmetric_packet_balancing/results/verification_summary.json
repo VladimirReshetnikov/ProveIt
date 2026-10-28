@@ -1,0 +1,44 @@
+{
+  "components": [
+    {
+      "commands": [
+        "python3 -B code/verify_packing.py",
+        "python3 -O -B code/verify_packing.py"
+      ],
+      "component": "packing",
+      "normal_optimized_byte_identical": true,
+      "result": "results/packing_checks.json",
+      "result_sha256": "d784a1c1f23ca22fecb719ab736a6189c4c92688ac8ad9c9f8cc36a6a4275d6b",
+      "status": "PASS"
+    },
+    {
+      "commands": [
+        "python3 -B code/annulus_modes.py",
+        "python3 -O -B code/annulus_modes.py"
+      ],
+      "component": "annulus",
+      "normal_optimized_byte_identical": true,
+      "result": "results/annulus_checks.json",
+      "result_sha256": "38ccd8e4f80e472ad983a3e23d28b222dcc518740d6125019b0148d4b7069f44",
+      "status": "PASS"
+    },
+    {
+      "commands": [
+        "python3 -B code/verify_schedule.py",
+        "python3 -O -B code/verify_schedule.py"
+      ],
+      "component": "schedule",
+      "normal_optimized_byte_identical": true,
+      "result": "results/schedule_results.json",
+      "result_sha256": "95f344b039dbbcbf091c0b9f8a87eb06a5154349bb8a08a4fa6a5f08ef6b6fd5",
+      "status": "PASS"
+    }
+  ],
+  "python": {
+    "implementation": "CPython",
+    "version": "3.12.14"
+  },
+  "scope": "New finite component checks only; not a complete SAT solver, asymptotic proof by experiments, formal proof-assistant build, or SAT performance benchmark.",
+  "scope_of_upstream_validation": "No upstream code or proof-assistant build is run.",
+  "status": "PASS"
+}

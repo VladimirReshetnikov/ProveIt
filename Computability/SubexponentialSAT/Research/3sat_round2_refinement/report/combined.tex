@@ -1,0 +1,307 @@
+\subsection{Interface and scope}
+Let $s\ge2$, $\lambda=\lceil\log_2s\rceil$, and let $\mathcal L$ be the total
+input description length. The network is bipartite and may have parallel edges, has at most
+$s$ Boolean edges and maximum degree $\lceil s^{0.9}\rceil$, and has entries in
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad P_0,\ell\le s.
+\]
+Its original entry routines cost at most $\poly(s+\mathcal L)2^{A_0s^{0.9}}$ time
+and polynomial space, for fixed interface constants. All local tensor descriptions retain
+the source's immutable creation-time representatives.
+
+\begin{theorem}[Relative contraction certificate]\label{thm:85}
+Assuming the unchanged source deformation, integrality, recovery and recursive-factorization
+identities, the construction below contracts this normalized interface in polynomial space and
+\[
+ (s+\mathcal L)^{O(1)}
+ 2^{(C+o(1))s/\sqrt\lambda},\qquad C=84.06627149423657\ldots<85.
+\]
+In particular $85$ replaces $C+o(1)$ for all sufficiently large $s$.
+\end{theorem}
+The new ingredients are near-balanced matching-potential packing, a thin additive precision
+gap, exact counting of crossing packets and a larger grouping alphabet at the root than in
+the tail. Exact taper, sharp precision and factorial-Cauchy modes come from the supplied
+reports and are not claimed as new here. Small or exceptional parameter choices are handled
+by direct summation, as in the source. The crossover can be enormous.
+
+\subsection{Deterministic near-balanced packing for multigraphs}
+Let an active graph have $M$ edges and maximum degree $\Delta$.
+Let $q=r^a$ be the number of labels on each side and $\dd=q^2$ the number of ordered
+label cells. Greedy edge coloring produces $K\le2\Delta-1$ matchings $E_j$,
+including for multigraphs: an edge has at most $2\Delta-2$ already colored neighbors.
+Write $m_j=|E_j|$.
+
+Assign independent uniform labels in $[q]$ to vertices. For each matching and label cell
+$\gamma$, let $X_{j,\gamma}$ be its load. Put
+\[
+ z=1+\lambda^{-1},\qquad
+ t_j=\left\lceil(1+\lambda^{-1})m_j/\dd+10\lambda^2\right\rceil,
+ \qquad \Phi=\sum_{j,\gamma}z^{X_{j,\gamma}-t_j}.
+\]
+Distinct edges within a matching have independent endpoints. Independence between different
+matchings is neither true nor needed, since expectation is linear. Thus
+\begin{align*}
+ \mathbb E\Phi
+ &=\sum_{j,\gamma}z^{-t_j}(1+1/(\lambda\dd))^{m_j}\\
+ &\le K\dd\,e^{-5\lambda}<1
+\end{align*}
+for all sufficiently large $s$ in the schedules below. To see the bound per term, use
+\[
+ \log(1+1/\lambda)\ge\frac1{2\lambda},\qquad
+ (1+1/\lambda)\log(1+1/\lambda)\ge\frac1\lambda,
+ \qquad \log(1+x)\le x.
+\]
+The $m_j$ terms cancel in the exponent and the additive $10\lambda^2$ leaves at most
+$-5\lambda$. The schedule has $\dd\le s$ and $K\le4s$, so the final strict inequality
+holds eventually. Logarithms in this expectation estimate are natural.
+
+\paragraph{Exact derandomization and bit cost.}
+Condition on a partial vertex labeling. Different edges of one matching still depend on
+disjoint unassigned vertices. The probability that an edge receives cell $\gamma$ is in
+$\{0,q^{-2},q^{-1},1\}$. Therefore the conditional expectation of each summand is exactly
+\[
+ z^{-t_j}\prod_{e\in E_j}(1+p_e/\lambda).
+\]
+At each vertex, try all $q$ possible labels and choose one minimizing this rational number
+summed over all terms. The average over labels is the current conditional expectation,
+so the invariant $\mathbb E[\Phi\mid\text{assigned labels}]<1$ persists.
+At completion $X_{j,\gamma}<t_j$ for every cell and matching, since otherwise one summand
+would be at least one. Hence, using $\lceil x\rceil-1<x$,
+\begin{equation}\label{eq:load}
+ X_\gamma<(1+\lambda^{-1})M/\dd+10K\lambda^2
+ \le(1+\lambda^{-1})M/\dd+20\Delta\lambda^2.
+\end{equation}
+There are polynomially many vertices, tried labels, cells and edges in $s+\mathcal L$.
+Every exponent $t_j$ is $O(s+\lambda^2)$, the rational bases have polynomial-size
+integer numerators and denominators, and products involve at most polynomially many factors.
+Exact rational products, sums and comparisons therefore have polynomial bit length and
+polynomial time/space cost. This deliberately simple implementation is not claimed practical.
+
+Pad every cell to the same multiple $H_{\rm pad}$ of packet length $L=2^a$.
+The total padded size is
+\begin{equation}\label{eq:padding}
+ B=H_{\rm pad}\dd
+ \le(1+\lambda^{-1})M+20\dd\Delta\lambda^2+L\dd.
+\end{equation}
+Consequently $B=(1+o(1))M$ whenever
+$\dd\Delta\polylog(s)=o(M)$ and $L\dd=o(M)$.
+This replaces the source's sufficient $\dd^2\Delta=o(M)$ condition while leaving its
+subsequent packet arrangement intact. There are $B/L$ packets. Each coordinate-symbol
+class has at most $B/r$ real ports on either side, so a child has at most
+\[
+ 2B/r=(2/r)(1+o(1))M
+\]
+edges. New packet vertices have degree at most $2L$; retained vertices keep their old degrees.
+
+\paragraph{A sharp scale for this specific packing architecture.}
+Take $t$ disjoint pairs, with $\Delta$ parallel edges on each pair, so $M=t\Delta$.
+Every nonzero cell load is a multiple of $\Delta$ and at least one is nonzero.
+Equal padding therefore forces $B\ge\Delta\dd$. Near-unit total padding is impossible
+if $\Delta\dd/M$ diverges. This is only a limitation of equal-padded collision packing,
+not a lower bound for contraction or SAT.
+
+\paragraph{Count crossing packets rather than all packets.}
+At any fixed coordinate, exactly the fraction $1-1/r$ of ordered padded label pairs
+have unequal symbols. Every packet fixes that pair. Thus exactly
+$(1-1/r)B/L$ packets can have crossing modes there. At retained valuation $i$, put
+$\Dt=2^{a-i}$. The number $c$ of column-tile families satisfies
+\begin{equation}\label{eq:families}
+ c\le2(1-1/r)B/\Dt=(2(1-1/r)+o(1))M/\Dt.
+\end{equation}
+Empty or purely local tiles only reduce this number.
+
+\subsection{Thin precision gaps and exact taper}
+Set $g(\lambda)=(\lceil\log_2\lambda\rceil)^2$. For positive integer taper lengths $u_d$, use
+\begin{equation}\label{eq:thin}
+ a_d=\sum_{j=0}^d u_j+(d+1)g(\lambda),\qquad a_{-1}=0.
+\end{equation}
+The source requires the cumulative packet exponent to dominate inherited precision;
+it does not require literally doubling every taper increment.
+At a retained $i<u_d$,
+\[
+ \Dt=2^{a_d-i}\ge2^{a_{d-1}+g+1}.
+\]
+Use the complete linear taper, with $a=a_d$, $u=u_d$,
+\begin{equation}\label{eq:taper}
+ h=\left\lceil\frac{M(2L-1)+1}{L(2u-2+2^{1-u})}\right\rceil,
+ \qquad q_i=h(u-i)\quad(0\le i<u),
+\end{equation}
+and $q_i=0$ thereafter. The exact condition count is
+\[
+ \sum_{i=0}^{u-1}\frac{L}{2^i}(u-i)=L(2u-2+2^{1-u}),
+\]
+so the total multiplicity is greater than the deformation degree $M(2L-1)$.
+The supplied sharp precision identity is
+\begin{equation}\label{eq:precision}
+ p_t=p+B_i+(q_i-1)(a+1-i),\qquad
+ B_i=\Dt\sum_{j=1}^{a-i}j2^{-j}(q_i-q_{i+j})\le6h\Dt.
+\end{equation}
+The taper is nonincreasing, its precision increments are positive, and the immutable
+creation-precision lifting convention is unchanged.
+
+Along a recursion path, precision increments are at most
+$s\lambda^{O(1)}2^{a_d}$. Inherited precision is therefore at most
+$s\lambda^{O(1)}2^{a_{d-1}}$. With leaf threshold $H=\lceil s/\lambda\rceil$,
+active calls have $M>s/\lambda$ and $u=O(\lambda)$, so inherited precision divided
+by $M\Dt/u$ is at most $\lambda^{O(1)}2^{-g}=o(1)$. The last evaluation-loss term
+in \eqref{eq:precision} is negligible for the same reason. If $u$ grows as a positive
+power of $\lambda$ uniformly at active depths, then
+$h=(1+o(1))M/u$ and
+\begin{equation}\label{eq:precision6}
+ p_t\le(6+o(1))M\Dt/u.
+\end{equation}
+The depth proof below supplies exactly that uniform growth. Over $O(\log\lambda)$ levels,
+the total gap consumes $O((\log\lambda)^3)=o(\lambda)$ label coordinates.
+No extra root precision is assumed.
+
+\subsection{Factorial modes and the complete arithmetic interface}
+Use the supplied exact Cauchy features, whose guaranteed weights are
+\[
+ w_b=1+b+2v_2(b!)=3b+1-2s_2(b),\qquad 0\le b<\Dt/2,
+\]
+where $s_2(b)$ is binary popcount. The actual row parameters satisfy the required
+prime-subring congruence at every interpolation value: $z_x/2$ differs from a rational
+2-integral quantity $2^i/d_0$ by a multiple of $2^{a+1-i}$.
+Since $b<\Dt/2=2^{a-i-1}$, the factorial-divisibility argument applies.
+There is no division by a factorial in a residue ring. Binomial features are computed
+as ordinary integers; $b!$ is multiplied into the target coefficient. Introduced denominators
+are units. Changing $r$, the taper or the packing does not change these local facts.
+
+For $c$ families and precision $p$, the generating-product estimate is
+\[
+ \log N(p,c)\le\left(\frac{\pi\sqrt2}{3}+o(1)\right)\sqrt{cp}.
+\]
+Apply monotonicity using uniform upper envelopes
+\[
+ P=(6+o(1))M\Dt/u,\qquad
+ C_{\rm fam}=(2(1-1/r)+o(1))M/\Dt,
+\]
+not an assumption that actual populated families or actual precision attain these envelopes.
+Their ratio has scale $\Dt^2/u$, and $\Dt\ge2^g$, so the small-saddle regime and
+its errors hold uniformly. Finite tile truncation only decreases the count. Combining
+\eqref{eq:families} and \eqref{eq:precision6} gives the local natural-log coefficient
+\begin{equation}\label{eq:localentropy}
+ \log N\le\left[2\pi\sqrt{\tfrac23(1-1/r)}+o(1)\right]M/\sqrt u.
+\end{equation}
+
+The exact local kernel, creation-time representatives and recursive child definitions are
+unchanged. The original source's packet-entry enumeration costs $\exp(O(L\log s))$,
+which is already lower order for the schedule below. The supplied streamed finite-difference
+replacement can reduce this to $\poly(s+\mathcal L)2^L$ using at most $L$ extra internal
+precision bits, but it is optional and not needed for this theorem. If used, the numerator
+must be computed modulo $2^{p_{\rm creation}+v_2(\prod\beta!)}$ before dividing canonical
+coordinates by the explicit power of two. Temporary precision must not alter tensor creation precision.
+
+The extension field still has degree $4\lambda$: deformation degrees $M(2L-1)$ are
+less than $s^4$ eventually. All precisions, field coordinates, rational-recovery operands and
+stored descriptions have polynomial bit length. The initial entry allowance
+$2^{A_0s^{0.9}}$ is lower order than the target exponent. Old entry routines are not
+recursively composed; descriptions remain immutable. The bound permits $\ell\le s$;
+the scalar parity specialization $\ell=1$ is compatible but unnecessary here.
+
+\subsection{An explicit two-stage grouping schedule}
+Choose exact rationals
+\begin{equation}\label{eq:schedule}
+ r_0=37,\quad u_0=\left\lfloor\frac{10}{1043}\lambda\right\rfloor;
+ \qquad r_d=8,\quad
+ u_d=\left\lfloor\frac{\lambda}{236(5/2)^{d-1}}\right\rfloor\quad(d\ge1).
+\end{equation}
+Use \eqref{eq:thin} and $H=\lceil s/\lambda\rceil$.
+First consider all candidate depths $d\le N=\lceil\log_3\lambda\rceil+3$,
+without assuming this is the actual depth. For these candidates the total gaps are
+$O((\log\lambda)^3)=o(\lambda)$, and
+\[
+ a_0/\lambda\le10/1043+o(1),\qquad
+ a_d/\lambda\le A+o(1),\quad
+ A=\frac{10}{1043}+\frac5{708}=\frac{12295}{738444}.
+\]
+The packing exponents are strictly less than one:
+\begin{align}
+ 0.9+2(10/1043)\log_2 37&=0.999893640759903\ldots<1,\label{eq:rootexp}\\
+ 0.9+2A\log_2 8=0.9+6A&=\frac{307654}{307685}<1.\label{eq:tailexp}
+\end{align}
+The first follows from the exact integer inequality $37^{200}<2^{1043}$;
+the second is rational. Thus $\dd\Delta\lambda^3/s=o(1)$ uniformly in the candidate
+range. Also $L\dd\lambda/s=o(1)$: its root exponent is
+$(10/1043)(1+2\log_2 37)$ and its tail exponent is $7A$, both below one.
+Finally $2L\le\lceil s^{0.9}\rceil$ eventually, preserving the degree interface.
+
+\paragraph{Noncircular depth bootstrap.}
+For every candidate active tail call, these estimates give $B/M\le4/3$ eventually,
+so each child has at most $M/3$ edges. Starting from $M\le s$, an active call cannot
+reach depth $N$; it would already have at most $H$ edges. Hence every real active call
+lies in the candidate range, closing the induction. This coarse bound ensures
+$u_d$ grows as a positive power of $\lambda$, since $5/2<3$.
+More sharply, \eqref{eq:padding} gives
+$B/M=1+O(1/\lambda)+o(1/\lambda)$ uniformly. Over $O(\log\lambda)$ levels this
+accumulates to $1+o(1)$, yielding for $d\ge1$
+\begin{equation}\label{eq:pathsize}
+ M_d\le(1+o(1))s\frac2{37}\,4^{-(d-1)}.
+\end{equation}
+An active tail depth is at most $\log_4\lambda+O(1)$, and therefore
+\[
+ u_d=\Omega(\lambda^{\eta+o(1)}),\qquad
+ \eta=1-\frac{\log(5/2)}{\log4}=0.33903595\ldots>0.
+\]
+This justifies uniform floor errors, exact-taper asymptotics and the inherited-precision estimates.
+The finite construction can check all guards and use direct summation when they fail.
+
+\subsection{The coefficient and total resources}
+Write
+\[
+ K(r)=\frac{2\pi}{\ln2}\sqrt{\frac23(1-1/r)}.
+\]
+Convert \eqref{eq:localentropy} to base two and sum along \eqref{eq:pathsize}. The geometric
+ratio in the tail is $\sqrt{5/2}/4<1$. Thus
+\begin{align}
+ C&=\frac{K(37)}{\sqrt{10/1043}}
+ +\frac{(2/37)K(8)}{\sqrt{1/236}\,(1-\sqrt{5/2}/4)}\label{eq:C}\\
+ &=84.06627149423657\ldots<85.\nonumber
+\end{align}
+An elementary rational upper certificate uses
+\[
+ \pi<22/7,\quad \ln2>69/100,\quad
+ \sqrt{12516/185}<8226/1000,
+\]
+\[
+ \sqrt{413/3}<11734/1000,\qquad \sqrt{5/2}<1582/1000.
+\]
+These imply
+\[
+ C<\frac{9128012476}{108030195}=84.49501064\ldots<85.
+\]
+The logarithm lower bound also follows by taking the first three positive terms of
+$\ln2=2\sum_{j\ge0}(1/3)^{2j+1}/(2j+1)$.
+An independent checker uses slightly different rational envelopes and obtains another
+strict upper bound $1659638632/19727253<85$.
+
+Polynomial branching overhead over $O(\log\lambda)$ levels contributes
+$O(\lambda\log\lambda)$ to the exponent, while leaf work contributes $O(s/\lambda)$.
+Both are lower order. So is original packet enumeration, since $L=s^{A+o(1)}$ with
+$A<0.02<0.9$; in particular this entry cost also fits the original $2^{O(s^{0.9})}$ allowance. Depth-first accumulation stores only polynomially many bits. Branching depends on
+$s$, not on $\mathcal L$, so the dependence on description length remains a fixed polynomial.
+This completes the relative proof of Theorem~\ref{thm:85}.
+
+\subsection{What the numerical comparison does and does not mean}
+\begin{center}
+\begin{tabular}{@{}lr@{}}\toprule
+Declared normalized construction & Leading certificate\\\midrule
+Supplied contraction schedule & $648.4410666487$\\
+That schedule plus factorial weights alone & $374.3776\ldots$\\
+Matching packing with one fixed alphabet & $93.8049738133$\\
+This two-stage schedule & $84.0662714942$\\
+Conservative eventual certificate here & $85$\\\bottomrule
+\end{tabular}
+\end{center}
+These are comparable certificates, not measured speeds or lower bounds on earlier algorithms.
+The $648.4411$ construction uses geometric modes, $r=256$, threefold padding and doubled
+cumulative taper; the naive factorial substitution divides its leading coefficient by
+$\sqrt3$ after compatibility checks. A single-stage matching construction with $r=46$,
+taper decay $8$ and initial taper fraction $10/1263$ yields the intermediate value shown.
+The two-stage schedule is not claimed globally optimal.
+
+All these bounds still have denominator $\sqrt{\log s}$. The unrestricted SAT wire budget
+remains $O_k(n\log\log n)$ and the fixed-density budget $O_{k,D}(n)$.
+Optimal finite taper profiles are compatible but have the same leading six-bit loss;
+they do not supply a new logarithmic power. A true order improvement needs a different
+summation or representation idea, not merely further tuning of these constants.

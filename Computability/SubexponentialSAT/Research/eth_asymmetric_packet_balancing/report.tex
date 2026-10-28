@@ -1,0 +1,933 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Asymmetric packet balancing for subexponential SAT}
+\fancyhead[R]{\small Research memorandum}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Ztwo}{\mathbb Z_{(2)}}
+\newcommand{\NN}{\mathbb Z_{\ge0}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\polylog}{\operatorname{polylog}}
+\newcommand{\vTwo}{\nu_2}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\sTwo}{s_2}
+\newcommand{\KL}{K_{\mathrm{asym}}}
+\newcommand{\sourceurl}[1]{\url{#1}}
+\hypersetup{pdftitle={Asymmetric packet balancing for subexponential SAT},pdfauthor={Research analysis prepared for Vladimir Reshetnikov},pdfsubject={Review of seven ETH proposals, deterministic balancing, Cauchy modes, explicit contraction bounds}}
+\title{Asymmetric packet balancing for\newline subexponential SAT\\[4pt]\large A review of the recent ProveIt proposals and a sharper contraction bound}
+\author{Research analysis prepared for Vladimir Reshetnikov\\\small with ChatGPT}
+\date{October 26, 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the seven analysis packets placed in ProveIt's
+\texttt{Computability/SubexponentialSAT} project on October 26, 2026.
+Their strongest justified general-density bound remains
+$\poly_k(n,m)2^{O_k(n\log\log n/\sqrt{\log n})}$, with a sharper
+clause-density dependence and several improvements to explicit coefficients.
+We prove a further refinement of their common tensor-contraction framework.
+A deterministic, exact-rational, two-stage labeling replaces collision
+variance by nearly uniform pair loads. A second improvement uses the
+asymmetric degrees created by the recursive child construction. Together
+with an additive precision buffer, the previously proved sharp Hermite
+budget, and factorial Cauchy modes, the resulting normalized bound is
+\[
+ T(s,\mathcal L)\le(s+\mathcal L)^{O(1)}
+ 2^{(\KL+o(1))s/\sqrt{\log_2s}},\qquad
+ \KL=\frac{\pi\sqrt{5/2}}{\ln2}(9+\sqrt3)
+ =76.9089949516\ldots .
+\]
+Here the root has at most $s$ Boolean wires and maximum degree at most
+$\lceil s^{9/10}\rceil$, with the other input conditions of the cited
+contraction theorem. This improves the earlier explicit certificate
+$648.4410666488\ldots$ in the same size normalization; the comparison
+concerns upper bounds, not measured runtimes. A separate integral Cauchy
+basis exploiting the actual reciprocal row domain gives mode slopes
+$4,16/5,64/21,\ldots$, without increasing the number of mode families.
+We also give a $31.0641320630\ldots$ coefficient for suitably low-degree
+inputs. These results do not improve the power of the logarithm or remove
+the general-density $\log\log n$ factor. The report contains ordinary
+mathematical proofs and exact finite prototypes. It does not supply an
+end-to-end SAT solver or a new proof-assistant certificate, and its SAT
+consequences retain the stated upstream dependencies.
+\end{abstract}
+\noindent\textbf{Source boundary.} The preprint is pinned to
+\texttt{openai/math@7ef5c0cc5c}. The repository placement and comparison
+are pinned to \texttt{ProveIt@2b925d8800}. Full identifiers, immutable links,
+and file hashes are supplied in \texttt{source\_manifest.json}.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Outcome, comparison, and meaning of the improvement}
+\label{sec:outcome}
+The requested target was an improvement beyond the recent ETH-related
+proposals, not merely a restatement of the cited preprint. The new
+contribution is a different constructive packing lemma and a recursion
+schedule that uses the two sides' different degree bounds. It composes
+with the strongest already proposed algebraic refinements.
+
+The following theorem is the principal result. All logarithms in its
+normalization are base two; $\ln$ is the natural logarithm.
+\begin{theorem}[Refined contraction bound, relative to the stated framework]
+\label{thm:main}
+Let $s\ge2$. Consider a bipartite Boolean tensor network with at most $s$
+wires, polynomially many vertices, maximum degree at most
+$\Delta=\lceil s^{9/10}\rceil$, and total graph/tensor description length
+$\mathcal L$. Its entries belong to
+\[
+ (\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad
+ 1\le P_0,\ell\le C s,
+\]
+for a fixed $C$. Suppose each original tensor entry is evaluable in
+$(s+\mathcal L)^b2^{A s^{9/10}}$ time and $(s+\mathcal L)^b$ space,
+for fixed $A,b$. Using the exact deformation and child-contraction
+identities of the cited preprint, there is a deterministic algorithm
+with polynomial space and bit time
+\begin{equation}\label{eq:headline}
+ (s+\mathcal L)^{O(1)}
+ 2^{(\KL+o(1))s/\sqrt{\log_2s}},\qquad
+ \KL=\frac{\pi\sqrt{5/2}}{\ln2}(9+\sqrt3).
+\end{equation}
+The $o(1)$ term tends to zero for the fixed interface constants above.
+The algorithm may use either the earlier factorial Cauchy basis or the
+stronger annulus basis proved in Section~\ref{sec:annulus-modes}.
+\end{theorem}
+
+The qualifier in the theorem is substantive. We prove the new packing,
+precision scheduling, and complexity statements here; we retain the
+preprint's exact algebraic contraction architecture. We inspected the
+relevant source identities and the earlier modifications, but did not
+rebuild the entire upstream formalization or independently formalize
+this theorem.
+
+\subsection{What the constants compare}
+The contraction size $s$ counts Boolean wires. It is not automatically
+the number $n$ of SAT variables. For a general formula, the reduction
+has $s=O_k(n\log\log n)$, with a width-dependent constant that must be
+tracked before converting any numerical wire coefficient into a
+numerical coefficient on $n\log\log n$.
+
+\begin{center}
+\begin{tabular}{@{}p{.60\textwidth}r@{}}
+\toprule
+Normalized contraction certificate & Base-two coefficient\\
+\midrule
+Earlier source-schedule analysis in the contraction packet & $18535.7538\ldots$\\
+Earlier refined schedule \cite{contractionpacket} & $648.4411\ldots$\\
+Earlier schedule plus factorial modes, matched composition & $374.4$\\
+New symmetric balancing and additive-buffer schedule & $93.9291\ldots$\\
+New asymmetric recursive schedule, Theorem~\ref{thm:main} & $76.9090\ldots$\\
+New low-degree specialization, Appendix~\ref{app:lowdegree} & $31.0641\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The low-degree row has stronger input assumptions and is listed separately.
+The numerical comparisons use the common normalized interface with
+$P_0,\ell\le s$; the new theorem additionally permits any fixed
+$P_0,\ell\le Cs$.
+The matched composition in the third row uses the earlier refined
+schedule, whose leaf cost is already lower order, and multiplies its
+mode coefficient by $1/\sqrt3$. Its unrounded value is
+$374.378\ldots$ and is recorded by the verification script. It is a composition for comparison, not another
+historical packet. The final coefficient is about $11.86\%$ of the
+previous $648.44$ certificate. This is not an $8.43$-fold wall-clock
+speedup: an exponent coefficient is being compared, and upper bounds do
+not establish ratios of actual running times.
+
+\subsection{What remains unresolved}
+For fixed clause width $k$, the strongest justified density envelope
+among the reviewed packets is still
+\begin{equation}\label{eq:density-envelope}
+ \poly_k(n,m)\,
+ 2^{O_k\left(\frac{n}{\sqrt{\log n}}
+      \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+Our engine can be used inside that reduction and inside the scalar parity
+lift of the earlier refinement. It changes their contraction constants,
+not the asymptotic expression in~\eqref{eq:density-envelope}.
+The proposed $n/\log n$ and related stronger exponents in the packets
+rest on explicitly missing summation or factorization interfaces. We do
+not treat those conditional targets as established algorithms, nor claim
+to have constructed their missing interfaces.
+
+\section{The reviewed commits and proposal frontier}
+\label{sec:review}
+The initially retrieved snapshot was
+\texttt{aa6933442eb936962de79ba6d321cd0391c450bd}. During the review,
+commit \texttt{2b925d8800cda68f5723b65dc1fcdaf3d8170359}
+placed the same delivered material under
+\texttt{Computability/SubexponentialSAT/Research}. We reviewed that
+placement and its index as well as the original archives. The arrival
+commits were:
+\begin{itemize}[leftmargin=1.5em]
+\item \texttt{a505bd768bce347c70e923586c5f72ad3085bf44}: three packets
+and the two primary manuscript PDFs;
+\item \texttt{64b3202ee84fc4d71fe69c34d2110c93b7da95cd}: three further
+refinement packets;
+\item \texttt{8afdbbea48d67b8d252a99e8926f3eca9649eae3}: the asymptotic
+analysis and barrier packet.
+\end{itemize}
+The placement records that these are external research artifacts, with
+no ProveIt Lean or Rocq development and no executed package validation
+at placement time \cite{repoindex}. Our checks below are new, scoped
+checks of our own components; they do not change that historical status.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.43\textwidth}>{\raggedright\arraybackslash}p{.25\textwidth}@{}}
+\toprule
+Packet & Strongest proved refinement claimed in the packet & Remaining limitation\\
+\midrule\endfirsthead
+\toprule Packet & Strongest proved refinement claimed in the packet & Remaining limitation\\\midrule\endhead
+Factorial Cauchy modes \cite{cauchypacket} & Weights
+$1+b+2\nu_2(b!)$; leading abstract mode entropy decreases by
+$1/\sqrt3$. & Same logarithmic order; original packing retained.\\[5pt]
+Contraction improvements \cite{contractionpacket} & Leading precision
+$6MD/u$; explicit coefficient $648.441\ldots$; streamed packet
+coefficient extraction. & Same global logarithmic order; packet factor
+three retained.\\[5pt]
+Precision refinement \cite{precisionpacket} & Exact Hermite condition
+count and loss; real taper minimax calculation. & Stronger structured-mode
+summation is an unproved hypothesis.\\[5pt]
+Uniform density improvement \cite{densitypacket} &
+Equation~\eqref{eq:density-envelope}, uniformly in clause density. &
+No stronger unrestricted $n$-only exponent.\\[5pt]
+Density refinement \cite{densityrefinement} &
+$n\log(2+B)/\sqrt{\log n}$ for $m\le Bn$ in its stated range;
+precision/schedule savings. & Overlaps the preceding density result;
+no new logarithmic power.\\[5pt]
+Scalar parity refinement \cite{scalarpacket} & Scalar integral lift;
+incidence-degree cap $k(p+a-1)$ rather than the source's
+$k(a+2(p-1))$. & Recursive compression requires an unsupplied compact
+factorization.\\[5pt]
+Asymptotic analysis \cite{barrierpacket} & Scoped obstructions and precise
+missing interfaces; no stronger unrestricted bound claimed. & Neither
+linear-wire compression nor degree-preserving recursion is constructed.\\
+\bottomrule
+\end{longtable}
+
+All seven analyze the same four preprint source files: the two pinned
+upstream commits in their manifests have identical relevant blobs.
+The separate 49-page manuscript credited to Claude (Anthropic),
+\emph{A $2^{o(n)}$ time algorithm for 3-SAT}, states a bound with exponent
+$O(\min\{km/\sqrt{\log m},k^2n\log\log n/\sqrt{\log n}\})$
+\cite{claudepaper}. It is a different construction. We inspected its
+headline and scope; we do not claim an explicit constant comparison to
+that manuscript or certify its reported unpublished Lean development.
+
+The OpenAI manuscript's sharper appendix gives the general exponent
+$n\log\log n/\sqrt{\log n}$ and fixed-density exponent
+$n/\sqrt{\log n}$ \cite{upstream,reduction}. The upstream formalization
+scope page states a weaker $(\log\log n)^2/\sqrt{\log n}$ numerator
+factor in its general bound \cite{leanscope}. Improving that weaker
+formal endpoint by quoting the manuscript would not answer the present
+research question.
+
+\section{The inherited exact contraction interface}
+\label{sec:interface}
+A Boolean tensor network has one Boolean variable per edge, with
+contraction
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+Parallel edges have distinct ports. The source works over an unramified
+extension $\mathcal O$ of $\Ztwo$ whose residue field has polynomial size,
+and over $\mathcal A=\mathcal O[V]/(V^\ell)$ modulo powers of two.
+Valuation and divisibility are coordinatewise in the fixed free bases.
+The arithmetic cost is polynomial in all the displayed parameters.
+
+At an active call let $M$ be its wire count, $L=2^a$ its packet length,
+and $r$ its fixed alphabet size. Labels belong to $[r]^a$ on both sides;
+write $Q=r^a$. Every ordered pair of labels is padded to the same load
+$H_{\rm pad}$, a multiple of $L$. The source's orientation construction
+then groups the padded slots into packets of length $L$. In coordinate
+$i$, the unordered pair of symbols is fixed within a packet, and bit $i$
+of a slot determines its orientation when the two symbols differ.
+Unused slots have no real ports.
+
+The deformation uses the integer grid
+\[
+ S=\{-L,-L+1,\ldots,L-1\},\qquad
+ \mathcal C(T)=\prod_{t\in S}(T-t),\qquad \alpha=2^{a+1},
+\]
+and a packet wire kernel
+\begin{equation}\label{eq:cauchy-interface}
+ W_{xy}(T)=\frac{\mathcal C(T)}{\mathcal C'(0)(T-(y-x))}.
+\end{equation}
+The denominator's linear factor cancels a numerator factor.
+The deformed contraction $F(T)$ has degree at most $M(2L-1)$,
+$F(0)$ is the desired contraction, and each $F(t+\alpha z)$ is integral.
+At $i=\nu_2(t)$, the specialization $W(t)$ connects only ports in the
+same coordinate-$i$ group.
+
+The nonlocal terms at $T=t+\alpha\zeta$ separate into linear source
+moments and target coefficients. At level $i$ a column tile has step
+$2^{i+1}$ and length $J=D_i/2$, where $D_i=L/2^i$. The earlier factorial
+basis has certified weights
+\begin{equation}\label{eq:factorial-weights}
+ w_j=1+j+2\nu_2(j!)=3j+1-2s_2(j),\qquad j\ge0.
+\end{equation}
+A tuple $\beta$ contributes only when $\sum_Zw_Z\beta_Z<p_t$, where
+$p_t$ is the working precision. For each tuple the source's exact
+factorization is
+\begin{equation}\label{eq:recursion-interface}
+ F(t+\alpha\zeta)=\sum_{\beta:\sum w_Z\beta_Z<p_t}
+                  \prod_{g=1}^r Z_{g,\beta}\pmod{2^{p_t}}.
+\end{equation}
+The child for group $g$ puts \emph{all retained tensors from both sides}
+of the parent on one side, and new packet tensors on the other.
+A new packet tensor has degree at most $2L$.
+
+This last structural fact drives the new schedule. Below the root, only
+one side can contain the original high-degree tensors. The other side is
+always made of fresh, much smaller packet tensors.
+
+\begin{remark}[Canonical representatives]
+Each tensor description retains its creation precision. Evaluating an
+old tensor later means evaluating it at that original precision and
+reusing its canonical integer coordinates. Canonical lifting is not a
+ring homomorphism. Neither the packing change nor the new mode basis
+licenses silently changing a tensor's defining lift. Our consequences
+use exactly the source's immutable-description convention.
+\end{remark}
+
+\section{Deterministic asymmetric balancing of pair loads}
+\label{sec:packing}
+We now prove the central new combinatorial lemma independently of tensor
+algebra. It applies to multigraphs and uses exact rational arithmetic.
+
+\begin{theorem}[Two-stage pair-load balancing]\label{thm:pair-balance}
+Let a bipartite multigraph have $M$ edges, maximum row degree at most
+$R$, and maximum column degree at most $C$, where $R,C$ are positive
+integers. For integers $Q\ge1$
+and $h\ge2$, there is a deterministic labeling of each side by $Q$ labels
+such that every ordered label-pair load $X_{ab}$ satisfies
+\begin{equation}\label{eq:pair-load}
+ X_{ab}\le\left(1+\frac{2}{h-1}\right)
+              \left(\frac{M}{Q^2}+\frac{R}{Q}\right)
+          +2(hC+1)\ln Q.
+\end{equation}
+The construction runs in polynomial bit time and space in the explicit
+graph size and the parameters $Q,h,R,C$.
+\end{theorem}
+\begin{proof}
+First assign row vertices greedily to the label with smallest current
+sum of incident degrees. If $W_a$ is the resulting stub load of row
+label $a$, then
+\[
+ W_a\le M/Q+R.
+\]
+Indeed, just before the final vertex placed in a bin, that bin has at
+most the current average load, and the vertex adds at most $R$.
+
+For each column vertex $v$, let $w_{av}$ count its edges to row label
+$a$. Multiplicities are counted, so $0\le w_{av}\le C$ and
+$\sum_vw_{av}=W_a$. Give each column vertex an independent uniform
+random label temporarily. Put
+\[
+ q=1+\frac1{hC},\qquad \Phi=\sum_{a,b=1}^Q q^{X_{ab}}.
+\]
+For a fixed pair,
+\[
+ \mathbb E q^{X_{ab}}
+   =\prod_v\left(1+\frac{q^{w_{av}}-1}{Q}\right).
+\]
+Convexity of $q^w$ on $[0,C]$ gives
+$q^w-1\le(w/C)(q^C-1)$. Hence
+\begin{equation}\label{eq:expected-potential}
+ \mathbb E\Phi\le Q^2
+ \exp\left(\frac{(q^C-1)\max_aW_a}{QC}\right).
+\end{equation}
+
+Assign the column labels in a fixed order. For each choice compute the
+conditional expectation of $\Phi$ exactly and choose a minimum. The
+average over the $Q$ choices equals the old conditional expectation, so
+the selected choice does not increase it. At termination,
+$q^{\max X_{ab}}\le\Phi\le\mathbb E\Phi$. Taking logarithms for the
+analysis, not for the algorithm, yields
+\[
+ \max X_{ab}\le\frac{2\ln Q}{\ln q}
+       +\frac{q^C-1}{C\ln q}\frac{\max_aW_a}{Q}.
+\]
+Now $1/\ln q\le hC+1$, since $\ln(1+x)\ge x/(1+x)$.
+Also $q^C\le e^{1/h}$, and $e^{1/h}-1\le1/(h-1)$, so
+\[
+ \frac{q^C-1}{C\ln q}
+ \le\frac{h+1/C}{h-1}\le1+\frac2{h-1}.
+\]
+This proves~\eqref{eq:pair-load}, including $Q=1$.
+
+For the algorithmic claim, a conditional expectation is a sum of terms
+$q^{x_{ab}}\prod_{v\ \mathrm{unassigned}}\frac{Q-1+q^{w_{av}}}{Q}$.
+All entries are rational, and the total exponent of $q$ in any product
+is at most $M$. Products over polynomially many vertices therefore have
+polynomial bit length. There are $Q$ candidate labels and $Q^2$ pair
+terms at every step. Straightforward exact numerator/denominator
+arithmetic already gives polynomial bit complexity; no numerical
+exponential or logarithm is computed by the labeling algorithm.
+\end{proof}
+
+\begin{corollary}[Nearly lossless uniform padding]\label{cor:padding}
+Let $h=\max\{2,\lceil\log_2s\rceil\}$ and $Q=s^{O(1)}$.
+Suppose, uniformly over the active calls under consideration,
+\begin{equation}\label{eq:padding-conditions}
+ \frac{QR}{M}=o(1),\qquad
+ \frac{Q^2C(\log s)^2}{M}=o(1),\qquad
+ \frac{LQ^2}{M}=o(1).
+\end{equation}
+Round the largest pair load upward to a multiple $H_{\rm pad}$ of $L$.
+Then
+\begin{equation}\label{eq:padded-mass}
+ P:=H_{\rm pad}Q^2=(1+o(1))M.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Multiply~\eqref{eq:pair-load} by $Q^2$ and divide by $M$.
+Each excess term tends to zero by~\eqref{eq:padding-conditions}; rounding
+adds less than $LQ^2$. Conversely $P\ge M$, because it contains all real
+edges. This proves the equality with a uniform relative error.
+\end{proof}
+
+\subsection{Why the power-scale conditions are useful and close to sharp}
+With $R=C=\Delta$, the earlier second-moment proof required
+$Q^4\Delta=o(M)$ for nearly lossless padding. The new lemma needs only
+$Q^2\Delta(\log s)^2=o(M)$, in addition to harmless rounding and the
+weaker row term. Thus its admissible leading packet exponent is twice
+as large in the symmetric setting.
+
+There is also a scoped obstruction. A row vertex of degree $R_0$ forces
+some pair load to be at least $R_0/Q$, regardless of the labels, so
+uniform padding uses at least $QR_0$ slots. A parallel bundle of
+$\mu$ edges forces at least $Q^2\mu$ padded slots. Consequently
+$QR_0=O(M)$ and $Q^2\mu=O(M)$ are necessary in worst-case examples for
+this particular common-pair-load architecture. Taking $\mu=C$ when
+$R\ge C$ witnesses the column-degree scale. Our sufficient conditions
+match these powers with logarithmic overhead and strict asymptotic
+slack. The little-oh conditions themselves are not claimed necessary,
+and this is not a lower bound for tensor contraction or SAT.
+
+\section{Packet counts, crossing families, and the recursive asymmetry}
+\label{sec:packets}
+The exact orientation construction can be retained after replacing its
+label assignment. The common padded mass $P=H_{\rm pad}Q^2$ gives
+$P/L$ packets. In each coordinate and on each side, a fixed symbol has
+exactly $P/r$ padded ports. Therefore its real-port count is at most
+$P/r$, and a child has at most
+\begin{equation}\label{eq:child-size}
+ 2P/r=(2/r+o(1))M
+\end{equation}
+wires.
+
+Only packets with two different coordinate symbols create crossing
+modes. Exactly a fraction $1-1/r$ of the padded ordered label pairs
+have this property. Each packet is homogeneous for it, so at valuation
+level $i$ the number of tile families is at most
+\begin{equation}\label{eq:family-count}
+ c_i\le(1-1/r)\frac{P}{L}\,2^{i+1}
+     =\left(2(1-1/r)+o(1)\right)\frac{M}{D_i}.
+\end{equation}
+This retains the exact equal-symbol saving as well as the improvement
+from padded mass $3M$ to $(1+o(1))M$.
+
+\begin{lemma}[Side-degree invariant]\label{lem:side-degree}
+At depth $d\ge1$, orient the child bipartition with all retained tensors
+on the row side and all fresh packet tensors on the column side.
+If all tensors created so far have degree at most $\Delta$, then
+\[
+ R_d\le\Delta,\qquad C_d\le2L_{d-1}.
+\]
+These bounds hold regardless of the chosen mode tuple, interpolation
+node, or interpolation value.
+\end{lemma}
+\begin{proof}
+The source child construction places all retained parent tensors from
+both old sides onto one new side. None gains a port. Each vertex on the
+other side is newly created for a parent packet and has at most its
+$L_{d-1}$ row and $L_{d-1}$ column ports. The degree is independent of the
+coefficient values and of the mode indices. The same construction repeats
+at every subsequent call.
+\end{proof}
+
+\section{Precision and entropy with an additive buffer}
+\label{sec:precision}
+The previous packets already sharpened the Hermite precision from a
+leading $24MD/u$ to $6MD/u$ \cite{contractionpacket,precisionpacket}.
+We use that result, with its proof ingredients explicit here, and change
+how successive packet exponents accommodate inherited precision.
+
+At valuation $i<u\le a$, let $q_i=\rho(u-i)$, with $q_i=0$ for $i\ge u$.
+There are $L/2^i$ nonzero grid points of valuation $i$. Thus the exact
+condition count is
+\begin{equation}\label{eq:condition-count}
+ \sum_{t\ne0}q_t=\rho L(2u-2+2^{1-u}).
+\end{equation}
+Choose
+\begin{equation}\label{eq:taper}
+ \rho=\left\lceil
+ \frac{M(2L-1)+1}{L(2u-2+2^{1-u})}
+ \right\rceil.
+\end{equation}
+The denominator is an integer because $u\le a$. The count exceeds the
+degree of $F$, and when $u\to\infty$, $u/M\to0$,
+$\rho=(1+o(1))M/u$ uniformly.
+
+The interpolation multiplier at a point of valuation $i$ has negative
+valuation
+\[
+ \Lambda_i=\rho\sum_{j=1}^{a-i}
+ j\min\{j,u-i\}\,2^{a-i-j}\le6\rho D_i,
+\]
+using $\sum_{j\ge1}j^2/2^j=6$. The inverse local Hermite factor is
+integral, and evaluating a jet of degree below $q_i$ loses at most
+$(q_i-1)(a+1-i)$ more bits. Hence the simple sufficient precision
+\begin{equation}\label{eq:working-precision}
+ p_t=p+6\rho D_i+\rho u(a+1)
+\end{equation}
+preserves the required residue modulo $2^p$. The exact smaller loss can
+also be used; the theorem needs only this upper envelope.
+
+Let $\lambda=\lceil\log_2s\rceil$ and
+\begin{equation}\label{eq:additive-buffer}
+ b=\lceil6\log_2\lambda\rceil,
+ \qquad a_d=a_{d-1}+u_d+b,\qquad a_{-1}=0.
+\end{equation}
+Assume active sizes are $M>s/\lambda$, the depth is $O(\log\lambda)$,
+and $a_d,u_d=O(\lambda)$ with $u_d\to\infty$ uniformly. For large $s$,
+$\rho\le2M/u$. Every precision increment is therefore bounded by
+$O(s2^{a_j}+s\lambda)$ at its ancestor depth $j$. Summing gives the
+explicit, sufficient estimate
+\begin{equation}\label{eq:inherited}
+ p=O(s\lambda^2 2^{a_{d-1}}).
+\end{equation}
+At the root it follows from $P_0=O(s)$.
+Since $i<u_d$,
+\[
+ D_i\ge2^{a_d-u_d+1}=2^{a_{d-1}+b+1}.
+\]
+Combining with $s/M\le\lambda$, $u_d\le\lambda$ gives
+\[
+ \frac{p}{MD_i/u_d}=O(\lambda^4 2^{-b})=O(\lambda^{-2})=o(1).
+\]
+Also $\rho u(a+1)/(MD_i/u)=O(u(a+1)/D_i)=o(1)$.
+Consequently
+\begin{equation}\label{eq:sharp-precision}
+ p_t\le(6+o(1))\frac{MD_i}{u_d}
+\end{equation}
+uniformly. The old cumulative rule doubled every retained range;
+only an additive $O(\log\log s)$ buffer is required.
+
+\subsection{The factorial weighted-partition bound}
+For the weights in~\eqref{eq:factorial-weights},
+\[
+ \sum_{j\ge0}-\ln(1-e^{-\theta w_j})
+   =\frac{\pi^2+o(1)}{18\theta},\qquad\theta\downarrow0.
+\]
+Indeed $w_j=3j+O(\log(j+2))$; compare it outside a fixed initial segment
+with $(3\pm\varepsilon)j$, use
+$\int_0^\infty-\ln(1-e^{-x})\,dx=\pi^2/6$, and then send
+$\varepsilon$ to zero. The finite initial segment contributes
+$O(\log(1/\theta))$.
+For at most $c_i$ families, the number of tuples of weighted degree less
+than $p_t$ is bounded by
+\[
+ N_i\le\exp\left(\theta p_t+
+             \frac{(\pi^2+o(1))c_i}{18\theta}\right).
+\]
+Extending a finite family to all $j\ge0$ only increases this bound.
+Optimize $\theta$ using the upper envelopes for $p_t$ and $c_i$ in
+\eqref{eq:family-count} and~\eqref{eq:sharp-precision}. The chosen
+$\theta$ tends uniformly to zero, since it is proportional to
+$\sqrt{u_d}/D_i$ and $D_i\ge\lambda^6$. We obtain
+\begin{equation}\label{eq:local-cost}
+ \ln N_i\le(\kappa_r+o(1))\frac{M}{\sqrt{u_d}},\qquad
+ \kappa_r=\pi\sqrt{\frac83(1-1/r)}.
+\end{equation}
+No lower bound on the actual family count is needed: its prescribed
+upper envelope can be used directly in the exponential estimate.
+
+\section{The explicit asymmetric schedule and its global bound}
+\label{sec:asymmetric-schedule}
+For Theorem~\ref{thm:main}, set
+\begin{align}
+ r&=16,& H&=\lceil s/\lambda\rceil,& b&=\lceil6\log_2\lambda\rceil,\notag\\
+ u_0&=\lfloor\lambda/81\rfloor,&
+ u_d&=\left\lfloor\frac{\lambda}{108\,4^{d-1}}\right\rfloor\ (d\ge1),&
+ a_d&=\sum_{j=0}^d(u_j+b).
+ \label{eq:main-schedule}
+\end{align}
+The sum of the leading retained ranges after the root equals
+$\lambda/81$, so the cumulative budget is $2\lambda/81$.
+
+\subsection{Applicability without a circular depth assumption}
+First consider every hypothetical depth
+$d\le d_*:=\lceil\log_6\lambda\rceil+2$ and every active $M>H$.
+Uniformly in that range,
+\[
+ a_0\le\lambda/81+O(\log\lambda),\quad
+ a_d\le2\lambda/81+O((\log\lambda)^2),\quad
+ u_d\ge\lambda^{\eta+o(1)},\quad
+ \eta=1-\frac{\ln4}{\ln6}>0.
+\]
+Thus flooring is a uniform relative $o(1)$ perturbation.
+
+At the root, both degree bounds are $\Delta$. Since $Q=16^{a_0}$,
+\[
+ Q^2\Delta=s^{809/810+o(1)},
+ \qquad \frac8{81}+\frac9{10}=\frac{809}{810}<1.
+\]
+The other terms in~\eqref{eq:padding-conditions} are smaller. Below the
+root, Lemma~\ref{lem:side-degree} gives $R_d\le\Delta$ and
+$C_d\le2^{a_{d-1}+1}$. Their relevant leading exponents are
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Quantity & Upper power of $s$, up to $o(1)$ & Exact margin\\
+\midrule
+$Q_dR_d$ & $4(2/81)+9/10=809/810$ & $1/810$\\
+$Q_d^2C_d$ & $8(2/81)+2/81=2/9$ & $7/9$\\
+$L_dQ_d^2$ & $9(2/81)=2/9$ & $7/9$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These fixed gaps absorb the logarithmic factors, the additive buffers,
+and the factor $s/M\le\lambda$. New packet degrees are below $\Delta$
+because $2/81<9/10$. Corollary~\ref{cor:padding} therefore holds
+uniformly for every hypothetical active depth under consideration.
+
+For sufficiently large $s$, each child has at most $M/6$ wires by
+\eqref{eq:child-size}. An active path cannot then exceed
+$\lceil\log_6\lambda\rceil+O(1)$. This validates the hypothetical range
+and closes the induction. More sharply, for a uniform $\delta_s\to0$,
+\begin{equation}\label{eq:sharp-shrink}
+ M_d\le s\left(\frac{1+\delta_s}{8}\right)^d.
+\end{equation}
+All exceptional bounded sizes, or sizes at which the explicit parameter
+checks fail, can be handled by direct summation. The theorem is
+asymptotic; the strict but small root gap does not suggest practical
+input thresholds.
+
+\subsection{Summing the actual work}
+For $r=16$, \eqref{eq:local-cost} gives
+$\kappa_{16}=\pi\sqrt{5/2}$. The root contributes
+$(9+o(1))s/\sqrt\lambda$ to $\sum_dM_d/\sqrt{u_d}$.
+The tail contributes at most
+\[
+ (1+o(1))\frac{s\sqrt{108}}{\sqrt\lambda}
+ \sum_{d\ge1}\frac{2^{d-1}}{8^d}
+ =\left(\sqrt3+o(1)\right)\frac{s}{\sqrt\lambda}.
+\]
+The perturbation in~\eqref{eq:sharp-shrink} changes a strictly convergent
+geometric series by $o(1)$. Thus
+\begin{equation}\label{eq:path-sum}
+ \sum_d\frac{M_d}{\sqrt{u_d}}
+ \le(9+\sqrt3+o(1))\frac{s}{\sqrt\lambda}.
+\end{equation}
+The polynomial number of interpolation nodes, values, and group choices
+at each of $O(\log\lambda)$ depths adds only
+$O(\lambda\log\lambda)$ to the logarithm of the total work.
+Direct leaves cost $2^{O(s/\lambda)}$; original entry routines cost
+$\exp(O(s^{9/10}))$; packet entry routines cost
+$\exp(O(L\log s))=\exp(s^{2/81+o(1)})$.
+These are all $2^{o(s/\sqrt\lambda)}$.
+Multiplying the per-call costs over the branching tree and dividing the
+natural logarithm by $\ln2$ proves~\eqref{eq:headline}.
+
+The total label sets and interpolation degrees are polynomial in $s$;
+in particular $M(2L-1)<s^4$ eventually. Precisions remain polynomial by
+\eqref{eq:inherited} and $a_d=O(\lambda)$. Old descriptions are immutable
+and shared by reference. Enumerate tuples, interpolation values, and
+child groups depth first, accumulating one sum and product at a time.
+This preserves polynomial working space and finishes the proof of
+Theorem~\ref{thm:main}.
+
+\input{annulus_modes.tex}
+
+\section{Consequences for SAT and integration with the earlier results}
+\label{sec:sat}
+For bounded clause density, the source uses a linear-size bounded-degree
+network. A clause contributes its satisfaction tensor. A variable's
+occurrences are linked by a tree of equality tensors, and an additional
+subdivision makes the network bipartite. Every satisfying assignment has
+one consistent extension to the internal equality wires. Unused variables
+contribute a power of two. Contracting modulo $2^{n+1}$ recovers the exact
+integer count because it lies in $[0,2^n]$.
+
+The new packing and schedule preserve this encoding and exactness.
+Moreover the low-degree theorem in Appendix~\ref{app:lowdegree} applies
+to the original bounded-degree networks. The guaranteed time is still
+$\poly_k(n,m)2^{O_{k,D}(n/\sqrt{\log n})}$ when $m\le Dn$.
+The numerical coefficient in terms of variables additionally depends
+on the wire count of the chosen encoding; the wire-level constants in
+this report must not be substituted directly for it.
+
+For arbitrary density, the earlier reductions use sparse parity tests
+and an incidence subset representation with $O_k(n\log\log n)$ wires.
+The uniform density-aware packet improves that count in its stated
+regimes, yielding~\eqref{eq:density-envelope}. The scalar parity packet
+reduces the retained incidence-degree cap and removes the auxiliary
+coefficient axis for that lift. These changes are compatible with our
+engine: it permits $\ell=1$ as well as truncated extension rings, and its
+inputs are still arbitrary tensors meeting the stated oracle bounds.
+Their correctness and density constructions remain separate imported
+results. This report adds no new sparsification or expander-code theorem.
+
+For integration, replace the preprint's collision labeling by
+Theorem~\ref{thm:pair-balance}, retaining the same packet orientation.
+Keep the exact side provenance of every child; do not discard it into a
+single maximum-degree parameter. Use~\eqref{eq:main-schedule}, the taper
+\eqref{eq:taper}, and the precision rule~\eqref{eq:working-precision}.
+Replace the mode basis by either~\eqref{eq:factorial-weights} or the
+annulus basis. The earlier streamed coefficient-extraction routine is
+also compatible, provided its temporary extra precision does not change
+the tensor's creation-time representatives. A separate
+\texttt{INTEGRATION.txt} gives the source-label map.
+
+\section{Executable evidence and its limits}
+\label{sec:checks}
+The deliverable contains original standard-library Python components for
+pair-label balancing, packet reconstruction, annulus orderings and exact
+Cauchy identities, and schedule arithmetic. The recorded run summary is
+included as \texttt{results/verification\_summary.json}. The tests use
+exact integers, rational numbers, and modular arithmetic for mathematical
+identities. Decimal constants are displays of exact formulas, not inputs
+to a proof or to the labeling algorithm.
+
+The packing prototype computes every candidate conditional expectation
+as a rational, checks the averaging identity, chooses a minimum, and
+checks the final potential. Multiedges and asymmetric degree fixtures
+are included. An independent reconstruction counts edges by their
+returned labels; a packet checker verifies real-edge preservation,
+shared slots, coordinate orientations, group load bounds, and the
+unequal-packet fraction on small examples.
+
+The annulus checks exercise selected-point minimality, the merge
+recurrence, the point-size and slope bounds, rational Cauchy identities,
+and arithmetic over
+\[
+ (\mathbb Z/2^{160}\mathbb Z)[U]/(U^2+U+1).
+\]
+The nontrivial extension coordinates are essential: arbitrary extension
+residues do not satisfy ordinary integer-valued binomial divisibility.
+The proof uses the actual row's highly divisible congruence to a rational
+point in the permitted annulus.
+
+For a concrete comparison of the new modes, use one tile family with
+$J=16$, base valuation $R=6$, and precision $p=64$. Compare with the
+previous factorial weights using the \emph{same} base contribution $R$.
+Exact dynamic programming gives:
+\begin{center}
+\begin{tabular}{@{}crr@{}}
+\toprule
+Valuation level $i$ & Previous feasible tuples & Annulus feasible tuples\\
+\midrule
+0 & 1726 & 634\\
+1 & 1726 & 1421\\
+2 & 1726 & 1683\\
+3 & 1726 & 1723\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are counts in a specified abstract mode-budget model, not running
+times or numbers of necessarily nonzero SAT contributions. The choice
+$a=i+5$ makes the displayed $J$ and $R$ consistent with the packet geometry.
+
+The schedule checker verifies the exact rational exponent margins,
+budget identities, convergence conditions, and numerical evaluations
+of the displayed constants. Its finite parameter examples are labeled
+as diagnostics; many small logarithmic sizes fail the asymptotic
+conditions and are not represented as successful practical instances.
+
+These are component checks and proof-supporting fixtures. The all-size
+conclusions come from the proofs. There is no full SAT engine in the
+archive, no SAT performance benchmark, no compiled Lean or Rocq theorem,
+and no verification of the entire upstream dependency graph.
+
+\section{Why the logarithmic order survives, and further research}
+\label{sec:questions}
+The weighted enumeration still has linearly growing mode weights.
+With $c\asymp M/D$, $p\asymp MD/u$, and $w_j\asymp j$, choose
+$B$ to be a sufficiently small fixed multiple of $D/\sqrt u$.
+There are $\Theta(cB)=\Theta(M/\sqrt u)$ mode variables in indices
+$[B,2B)$. Every zero-one choice among them fits the budget after adjusting
+the fixed multiple. Thus the abstract mode pool can have
+$\exp(\Omega(M/\sqrt u))$ feasible tuples. Their total unweighted degree
+is $O(M/\sqrt u)\le M$, so imposing the affine-product degree cap alone
+does not remove the obstruction. This is a scoped enumeration example,
+not a statement that every such tuple is nonzero on every actual SAT
+network, and not a lower bound for all algorithms.
+
+The annulus slopes tend to three as $i$ grows. Consequently a uniform
+replacement of three by a larger fixed slope has not been obtained.
+The new packing conditions still constrain $u$ to $O(\log s)$ in this
+architecture. Together these observations explain why the present
+result changes the leading coefficient while preserving the square-root
+logarithmic denominator.
+
+The most concrete next questions are:
+\begin{enumerate}[leftmargin=1.6em]
+\item \textbf{Can feasible modes be summed without enumerating them?}
+A useful theorem must provide an actual uniform factorization or
+coefficient algorithm for the packet-group tensors, with bounded wire
+count and controlled oracle complexity. Merely assigning shorter names
+to the tuples is insufficient.
+\item \textbf{Can the dense incidence representation lose its extra logarithm?}
+An $O(n)$-wire representation, with valid degree and entry-cost bounds,
+would remove the current $\log\log n$ overhead. The earlier packets state
+this missing interface; the present work does not construct it.
+\item \textbf{Can instance-sensitive degree and multiplicity information
+improve the first call?}
+The root alone pays the symmetric high-degree constraint. A construction
+that uses smaller parallel multiplicity, local neighborhood balance, or
+large-degree special structure could improve this remaining coefficient
+bottleneck. It would need a polynomial-time construction, not just a
+random-existence estimate.
+\item \textbf{What is the best finite taper with annulus weights?}
+The exact sequences $F_i(j)$ give more information than their limiting
+slopes. A finite optimization that incorporates actual family counts,
+node losses, and inherited precision could reduce enumeration in the
+specified finite model. It must not be advertised as a new logarithmic
+order unless a uniform asymptotic argument establishes that.
+\item \textbf{Can the new pieces be formalized and integrated?}
+The rational conditional-expectation lemma, packet invariants, and finite
+Cauchy identity are distinct formalization targets. A full result also
+needs the cost model, exact quotient-ring arithmetic, inherited
+precision, and immutable tensor descriptions. The supplied prototypes
+are a starting specification, not substitutes for those proofs.
+\end{enumerate}
+
+\appendix
+\section{A low-degree contraction coefficient}
+\label{app:lowdegree}
+When the root has maximum degree at most $\lceil s^{1/12}\rceil$,
+one can instead maintain that same small degree bound throughout and
+use symmetric packing. Set
+\[
+ r=48,\qquad u_d=\left\lfloor\frac{\lambda}{14\,8^d}\right\rfloor,
+ \qquad a_d=\sum_{j\le d}(u_j+b),\quad
+ b=\lceil6\log_2\lambda\rceil,\quad H=\lceil s/\lambda\rceil.
+\]
+Then $a_d\le4\lambda/49+O((\log\lambda)^2)$.
+The new packet degree is at most $s^{4/49+o(1)}<s^{1/12}$.
+Since $3^5<2^8$, one has $\log_2 48<28/5$, and
+\[
+ \frac8{49}\log_2 48+\frac1{12}
+ <\frac8{49}\frac{28}{5}+\frac1{12}
+ =\frac{419}{420}<1.
+\]
+Thus $Q^2\Delta\polylog(s)=o(M)$ and $LQ^2=o(M)$ uniformly at active
+calls. Coarse shrinkage $M/12$ and hypothetical depth
+$\lceil\log_{12}\lambda\rceil+2$ give the same noncircular bootstrap;
+$u_d$ grows at least as a fixed positive power of $\lambda$ there.
+The sharp child ratio is $(1+o(1))/24$, the family coefficient is
+$47/24$, and the natural-log mode coefficient is
+$\pi\sqrt{47/18}$. Therefore
+\begin{equation}\label{eq:lowdegree-constant}
+ K_{\rm low}=\frac{\pi\sqrt{47/18}\sqrt{14}}
+ {\ln2(1-\sqrt8/24)}=31.06413206299\ldots .
+\end{equation}
+Original entry routines may still have the source's allowed
+$\exp(O(s^{9/10}))$ cost: that remains lower order. Bounded-degree
+clause networks satisfy the smaller graph-degree premise eventually.
+The lower coefficient is not asserted for arbitrary high-degree inputs.
+
+For a direct intermediate comparison under the generic $s^{9/10}$
+degree premise, replace $14$ in this schedule by $128$. Then
+$a_d\le\lambda/112+O((\log\lambda)^2)$ and
+$2\log_2(48)/112+9/10<1$. The coefficient becomes
+$K_{\rm sym}=93.9291064374\ldots$, the symmetric row of the comparison
+table. The main theorem gains further by using the fresh side's smaller
+degree instead of imposing this generic bound on both sides.
+
+\section{Optimization of the depth allocation}
+\label{app:optimization}
+For a fixed child ratio $c\in(0,1)$ and budget
+$\sum_du_d\le A\lambda$, the continuous minimization problem is
+\[
+ \min\sum_{d\ge0}\frac{c^d}{\sqrt{u_d}}.
+\]
+H\"older's inequality, applied to
+$c^{2d/3}=(c^d/\sqrt{u_d})^{2/3}u_d^{1/3}$, gives
+\[
+ \sum_d\frac{c^d}{\sqrt{u_d}}
+ \ge\frac{1}{\sqrt{A\lambda}(1-c^{2/3})^{3/2}}.
+\]
+Equality is attained by
+$u_d=A\lambda(1-c^{2/3})c^{2d/3}$.
+This optimizes a stated schedule model, not all contraction algorithms.
+
+For the asymmetric high-degree model, the root budget is
+$A_0=(1-\gamma)/(2\log_2r)$ and the retained-side cumulative budget
+below the root is $2A_0$, provided the fresh-side and rounding constraints
+also hold. When $c^{2/3}<1/2$, the root cap is active. Spend $A_0$ at the
+root and allocate the other $A_0$ to later levels by the same rule.
+The path coefficient is
+\[
+ \frac1{\sqrt{A_0}}
+ \left(1+\frac{c}{(1-c^{2/3})^{3/2}}\right).
+\]
+For $\gamma=9/10$ and $r=16$, $c=1/8$ and $c^{2/3}=1/4$.
+The root/tail shape in~\eqref{eq:main-schedule} is exactly this shape,
+with strict inward shift from denominator $80$ to $81$.
+The boundary coefficient is $76.4327736858\ldots$; it is an infimum at
+an excluded boundary, not the displayed certified coefficient.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{upstream} OpenAI, \emph{The Exponential Time Hypothesis is False},
+October 25, 2026. Pinned preprint directory:
+\sourceurl{https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026}.
+\bibitem{contraction} Same source, \texttt{build/quantitative-contraction.tex},
+Git blob \texttt{51ba54efc29f51bbc0426f848003030da484f354}; especially
+\texttt{lem:tensor-packets}, \texttt{lem:tapered-hermite},
+\texttt{eq:tensor-recursion-identity}, and \texttt{subsec:tensor-children}.
+\bibitem{reduction} Same source, \texttt{build/quantitative-reduction.tex},
+Git blob \texttt{80389ac39d987133b71b2ddc2593e6fcdd99871a}.
+\bibitem{repoindex} Vladimir Reshetnikov, ProveIt ETH project index,
+placement commit \texttt{2b925d8800cda68f5723b65dc1fcdaf3d8170359}.
+\sourceurl{https://github.com/VladimirReshetnikov/ProveIt/blob/2b925d8800cda68f5723b65dc1fcdaf3d8170359/Computability/SubexponentialSAT/README.md}.
+\bibitem{cauchypacket} \emph{Factorial Cauchy modes for the subexponential
+3-SAT algorithm}, October 26, 2026, \texttt{Research/cauchy\_mode\_improvement}
+in the pinned ProveIt project. Arrival archive:
+\texttt{cauchy\_mode\_improvement\_2026-10-26.zip}.
+\bibitem{contractionpacket} \emph{Quantitative improvements to the
+exact-counting contraction algorithm}, October 26, 2026,
+\texttt{Research/eth\_contraction\_improvements}; arrival archive
+\texttt{eth\_contraction\_improvements.zip}.
+\bibitem{precisionpacket} \emph{Sharper precision for subexponential 3SAT},
+October 26, 2026, \texttt{Research/3sat\_precision\_refinement}; arrival
+archive \texttt{3sat\_precision\_refinement\_2026-10-26.zip}.
+\bibitem{densitypacket} \emph{Improving the clause-density dependence of
+exact k-SAT counting}, October 26, 2026,
+\texttt{Research/sat\_density\_improvement}; arrival archive
+\texttt{sat\_density\_improvement.zip}.
+\bibitem{densityrefinement} \emph{A density-sensitive refinement of exact
+\#k-SAT counting}, October 26, 2026,
+\texttt{Research/eth\_density\_refinement}; arrival archive
+\texttt{eth\_density\_refinement.zip}.
+\bibitem{scalarpacket} \emph{Refining the October 25, 2026 subexponential
+SAT algorithm}, October 26, 2026, \texttt{Research/3sat\_refinement};
+arrival archive \texttt{3sat\_refinement\_package.zip}.
+\bibitem{barrierpacket} \emph{Asymptotic improvement analysis for the
+October 2026 3 SAT preprint}, October 26--27, 2026,
+\texttt{Research/3sat\_asymptotic\_analysis}; arrival archive
+\texttt{3sat\_asymptotic\_analysis\_20261027.zip}.
+\bibitem{claudepaper} Claude (Anthropic), \emph{A $2^{o(n)}$ time algorithm
+for 3-SAT}, October 26, 2026, 3:13 PM Pacific, 49 pages. Delivered PDF
+at \texttt{Research/claude-2o-n-3sat/eth.pdf} in the pinned project.
+\bibitem{leanscope} OpenAI, scope page for the upstream Lean development:
+\sourceurl{https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/lean/docs/378.md}.
+\end{thebibliography}
+\end{document}

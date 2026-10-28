@@ -1,0 +1,127 @@
+\section{An exact minimax theorem for a finite menu}
+\label{sec:minimax}
+
+The central new tool is a characterization of the exact worst-case cost of
+a fixed finite menu of contraction plans. Earlier support certificates
+average the plans with equal weights. That is a valid upper bound, but
+need not be the optimum certificate for the same menu.
+
+\begin{theorem}[Exact support-hull identity]\label{thm:hull}
+Let $\mathcal V_1,\ldots,\mathcal V_q$ be nonempty finite subsets of
+$\R_{\ge0}^{E}$, where $E$ is finite. Define
+\[
+ F(g)=\min_{1\le j\le q}\max_{v\in\mathcal V_j}v\cdot g,
+ \qquad
+ \Lambda=\max_{v_j\in\mathcal V_j}
+        \dist\bigl(0,\conv\{v_1,\ldots,v_q\}\bigr).
+\]
+Then
+\begin{equation}\label{eq:hull-exact}
+ \max_{g\ge0,\,\|g\|_2\le1}F(g)=\Lambda.
+\end{equation}
+Equivalently,
+\[
+ \Lambda^2=\max_{v_j\in\mathcal V_j}
+       \min_{p\ge0,\,\sum_jp_j=1}p^TGp,
+ \qquad G_{ij}=v_i\cdot v_j.
+\]
+For rational supports, $\Lambda^2$ is rational and admits a finite exact
+certificate consisting of rational convex weights and a projection witness.
+\end{theorem}
+
+\begin{proof}
+Fix $g\ge0$ with $\|g\|_2\le1$. Select independently for each plan a
+support $v_j$ attaining its maximum. If $w$ is the point of the convex
+hull of these supports closest to zero, then
+\[
+ F(g)=\min_jv_j\cdot g\le w\cdot g\le\|w\|_2\le\Lambda.
+\]
+Conversely, choose a support tuple attaining $\Lambda$ and its closest
+point $w$. The projection condition gives
+$(v_j-w)\cdot w\ge0$ for every $j$. If $w=0$, the reverse inequality
+is automatic. Otherwise take $g=w/\|w\|_2$. Nonnegativity of the
+supports makes $g$ feasible, and
+\[
+ \max_{v\in\mathcal V_j}v\cdot g
+ \ge v_j\cdot g\ge\|w\|_2=\Lambda
+ \quad\hbox{for every }j.
+\]
+This proves equality. The Gram expression is the definition of the
+distance to a convex hull.
+
+The closest point lies in the relative interior of a simplex spanned by an
+affinely independent subset of the rational vertices. Its affine projection solves a rational
+linear system, so its coordinates and squared norm are rational. One can
+enumerate faces to find it. The conditions below give an exact verification
+that does not depend on numerical optimization.
+\end{proof}
+
+\subsection{A small exact certificate}
+
+For a proposed nonempty active set $A\subseteq\{1,\ldots,q\}$, solve
+\begin{equation}\label{eq:hull-kkt}
+ \begin{pmatrix}G_{AA}&-\mathbf1\\\mathbf1^T&0\end{pmatrix}
+ \binom{p_A}{t}=\binom{0}{1}.
+\end{equation}
+Use $p_j=0$ off $A$. A solution certifies a closest point if
+\[
+ p\ge0,\quad \mathbf1^Tp=1,\quad Gp\ge t\mathbf1,
+ \quad (Gp)_j=t\ \ (p_j>0).
+\]
+Indeed $p^TGp=t$, and for any other simplex vector $z$,
+\[
+ z^TGz=p^TGp+2(z-p)^TGp+(z-p)^TG(z-p)\ge t.
+\]
+The last term is nonnegative because $G$ is a Gram matrix. Singular active sets
+can be replaced by an affinely independent subset representing the same
+closest point. All checks are rational equalities or inequalities.
+
+For an upper certificate it is even simpler: \emph{any} rational simplex
+vector $p$ with $p^TGp\le B$ proves that tuple's distance squared is at
+most $B$. A projection witness attaining $B$ proves sharpness. Our
+checker first uses $p_j=1/q$. Only tuples for which the equal-average
+bound exceeds the candidate threshold require the more expensive exact
+face calculation. This makes exhaustive certification practical.
+
+\subsection{Application to contraction plans}
+
+Combine opposite directed entropies as
+$g_{\{a,b\}}=h_{ab}+h_{ba}$. Suppose every support of plan $j$ is an
+integer vector $v$ and its operation exponent is
+$d^{-1}\max_{v\in\mathcal V_j}v\cdot g$. If $R=\Lambda^2$ is the
+certificate from Theorem~\ref{thm:hull}, its local normalized coefficient is
+\begin{equation}\label{eq:beta-hull}
+ \beta_r=\frac{\sqrt{2R}}{dr}.
+\end{equation}
+To see this without assuming uniformity over infinitely many test vectors,
+fix one support tuple and its rational closest combination $w$. Give both
+orientations of each pair weight $w_e/d$. The squared directed norm is
+$2\|w\|_2^2/d^2$. Apply the inherited weighted entropy estimate to this
+vector. There are finitely many tuples, so its lower-order error is uniform
+over every vector used in this argument. Select the plan minimizing its
+actual operation exponent.
+
+The former equal-average certificate is recovered by always taking
+$p_j=1/q$. Thus the new theorem is never weaker for a fixed menu. It is
+strictly stronger when the worst applicable tuple has a closer nonuniform
+convex combination. It also supplies a matching worst-case entropy vector,
+so one can distinguish a poor proof of a menu from a menu that must actually
+be enlarged or changed.
+
+\paragraph{Scope of sharpness.}
+Equation~\eqref{eq:hull-exact} is exact for the nonnegative Euclidean
+entropy relaxation. It does not assert that every maximizing vector $g$
+comes from the exact weight lists of an actual Cauchy contraction. It is
+therefore a sharp finite certificate for the stated model, not a lower bound
+for SAT, for all contraction algorithms, or for the true runtime of a plan.
+
+\paragraph{Exact online selection.}
+Let $D_{ab}=|\mathcal I_{ab}|\,|\mathcal I_{ba}|$. For each plan compute
+\[
+ P_j=\max_{v\in\mathcal V_j}\prod_{\{a,b\}}D_{ab}^{v_{ab}}.
+\]
+The plan minimizing $P_j$ also minimizes the real operation exponent.
+All dimensions are positive integers; empty-list allocations contribute
+zero and are skipped. The fixed supports have constant integer entries,
+and the dimension counts have polynomial bit length, so this selection
+has polynomial bit cost and requires no floating-point comparisons.

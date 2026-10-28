@@ -1,0 +1,190 @@
+\section{The inherited interface and the new local task}
+\label{sec:interface}
+
+\subsection{Precisely which contraction problem is improved}
+The root input is a bipartite Boolean tensor network with at most $s$ wires,
+maximum vertex degree at most $\lceil s^{9/10}\rceil$, and entries in
+\[
+ \mathcal B_{P_0,\ell}
+   =(\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell),\qquad P_0,\ell\le s.
+\]
+Entry routines and descriptions satisfy the source interface: polynomial
+space and $(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ time, with fixed constants.
+The contraction routine works in a degree-$O(\log s)$ unramified extension
+of the coefficient ring. Descriptions carry immutable creation precisions:
+an old entry is always evaluated using its own creation-time representatives,
+then lifted to the current precision. Raising precision does not recompute a
+previous contraction or silently change a lift~\cite{openai,asymmetric}.
+
+An active call has $M$ wires, a fixed number $r$ of groups, retained valuation
+range $u$, cumulative packet exponent $a$, packet length $L=2^a$, and a
+retained valuation $i<u$. Write $D=2^{a-i}$. The inputs taken from the reviewed
+papers are the following, with their quantitative premises checked for our
+schedule in Section~\ref{sec:schedule}:
+\begin{enumerate}
+\item Nearly lossless asymmetric packet packing gives padded mass
+$(1+o(1))M$ and child size at most $(2/r+o(1))M$.
+\item Full-block integral Cauchy separation gives, for each directed pair
+of different groups, at most $(2+o(1))M/(r^2D)$ families of each mode index
+$q\ge0$, with guaranteed weights
+\[
+ w(i,q)=a+1-i+4q-2\pc(q).
+\]
+\item Sharp tapered Hermite recovery, with an additive precision guard,
+requires local precision $P\le(6+o(1))MD/u$.
+\item For every fixed collection of mode exponents, the deformed contraction
+factors into group values $Z_g$. A value of $Z_g$ is a contraction of a
+specified smaller network, not a free oracle.
+\end{enumerate}
+The source Cauchy deformation, integrality, recovery, exact group-factor
+identity, and packet-entry construction remain mathematical dependencies.
+Our proof changes how the resulting finite graphical sum is evaluated and
+how the costs are propagated. It is a theorem relative to these explicit
+interfaces, not an independent proof of the primary ETH result.
+
+\subsection{Exact budgets and finite index sets}
+Allocate a nonnegative integer budget $b_{gh}$ to every directed pair,
+with $\sum_{g\ne h}b_{gh}<P$. Let $\mathcal I_{gh}$ be the list of its mode
+exponent tuples having \emph{exact} total guaranteed weight $b_{gh}$.
+An empty list makes that allocation contribute zero. For all other allocations,
+put
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|,\qquad
+ g_{\{g,h\}}=h_{gh}+h_{hg},\qquad
+ \K(M,u)=\kap\frac M{\sqrt u},\quad
+ \kap=\frac{\pi\sqrt2}{\ln2}.
+\]
+The value to compute is the exact finite sum
+\begin{equation}
+ \sum_{\xi_{gh}\in\mathcal I_{gh}}
+       \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).\label{eq:graphsum}
+\end{equation}
+Because our $r$ belongs to the fixed set $\{4,7,8,9,12\}$, there are only
+polynomially many budget allocations. Exact list cardinalities, enumeration,
+and ranking/unranking use the integer knapsack recurrence
+\[
+ N(j,b)=N(j-1,b)+N(j,b-w_j),\qquad N(0,b)=\mathbf1_{b=0},
+\]
+with zero values at negative budgets. The bit length of every count is
+polynomial in $s$. Choosing a contraction plan can therefore use exact
+integer cardinalities; it does not need floating-point logarithms.
+
+\begin{lemma}[Weighted mode entropy]\label{lem:entropy}
+For each fixed nonnegative vector $z=(z_{gh})$ on directed pairs,
+\begin{equation}
+ \sum_{g\ne h}z_{gh}h_{gh}
+ \le \left(\frac{\|z\|_2}{r}+o(1)\right)\K(M,u).
+ \label{eq:entropy}
+\end{equation}
+The error is uniform over our fixed finite support families, all exact
+budget allocations, and all active depths of the schedule below.
+\end{lemma}
+\begin{proof}
+This is the inherited full-Cauchy generating-function bound~\cite{joint,tree}.
+The relevant one-family series obeys
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta(1+4q-2\pc(q))})
+  =\frac{\pi^2}{24\theta}+O(\log^2(2/\theta)).
+\]
+For pair $e$ with $z_e>0$, use parameter $\theta/z_e$ in the exponential
+counting bound, multiply the logarithm by $z_e$, and sum. The leading bound is
+\[
+ \theta P+\frac{\pi^2}{24\theta}
+          \frac{(2+o(1))M}{r^2D}\sum_ez_e^2.
+\]
+Optimizing $\theta$ and using $P\le(6+o(1))MD/u$ gives
+$\pi\sqrt2 M\|z\|_2/(r\sqrt u)$ in natural logarithms.
+Divide by $\ln2$. Zero weights are omitted. Our guard ensures
+$D\ge\lambda^6$ and the saddle has scale $\sqrt u/D$, so the error from
+the displayed series is lower order uniformly. This argument does not assume
+an independently asymptotic approximation for each small exact list.
+\end{proof}
+
+\subsection{Complete operation costs, including table construction}
+For a vertex subset $A$, its table sums all internal indices and retains all
+indices from $A$ to its complement. Merging disjoint sets $A,B$, with
+$O=[r]\setminus(A\cup B)$, is a rectangular matrix product. Its three
+logarithmic dimensions are the sums $H_1,H_2,H_3$ of pair entropies between
+the classes $A,O$, $A,B$, and $B,O$. With a matrix exponent strictly below
+$12/5$, square blocking gives the upper exponent
+\begin{equation}
+ H_1+H_2+H_3-\frac35\min(H_1,H_2,H_3)
+ =\max_j\left(\frac25H_j+\sum_{k\ne j}H_k\right).\label{eq:mm}
+\end{equation}
+The final contraction of three blocks has the same triangle cost. The trace
+or final inner product is no more expensive. The bound pays for intermediate
+block tables as well as the final multiplication.
+
+The field-to-ring bridge is the one already proved in the contraction-tree
+packet~\cite{tree,tree-old}. A coefficient-ring entry is a vector of
+polynomially many integer coordinates. Lift the coordinates, compute their
+matrix products modulo enough nonexceptional odd primes, reconstruct exact
+integer products by CRT, apply the ring structure constants, and reduce
+modulo $2^P$. The required reconstruction bit lengths are polynomial in
+$s$, including the logarithm of an exponential matrix dimension. A fixed
+rational bilinear matrix algorithm with exponent below $12/5$ supplies
+constant-size identities; denominators exclude only finitely many primes.
+Published matrix multiplication bounds suffice for this conservative
+exponent~\cite{mm}. We do not assume that the original quotient ring is a
+field or divide by two or a nilpotent in that ring.
+
+Sequential multiplication and reconstruction use a polynomial factor times
+the input/output table storage. Formula~\eqref{eq:mm} is at least the sum
+of any two $H_i$, so it bounds all tables in that operation. Sorting records
+by their index tuples and scanning them costs only polynomial factors in the
+record and index lengths beyond the enumerated table size. This avoids an
+unaccounted unit-cost random-access assumption for exponential tables.
+
+\subsection{Operation supports and the prior averaging lemma}
+Multiply each of the three linear forms in~\eqref{eq:mm} by five.
+The resulting vector $v$, indexed by unordered group pairs, has entries
+$0$ inside a class, $2$ on the discounted cross-class, and $5$ on the other
+two cross-classes. For a complete tree plan $j$, let $\mathcal V_j$ be its
+set of supports and put
+\[
+ F_j(g)=\frac15\max_{v\in\mathcal V_j}v\cdot g.
+\]
+A plan first builds three nonempty blocks by balanced binary merges and
+then contracts their triangle. It has $r-3$ merges and one triangle,
+hence $3(r-2)$ supports. The following is inherited from the latest tree
+packet, and is restated to make the new geometry's role explicit.
+
+\begin{lemma}[Support averaging]\label{lem:average}
+For $q$ fixed plans, define
+\[
+ Q=\max_{v_j\in\mathcal V_j}\left\|\sum_{j=1}^qv_j\right\|_2^2.
+\]
+Choosing the least-cost plan gives nonrecursive time and local storage
+bounded, up to polynomial factors, by
+\[
+ 2^{(\beta_r+o(1))\K(M,u)},\qquad
+ \beta_r=\frac{\sqrt{2Q}}{5qr}.
+\]
+\end{lemma}
+\begin{proof}
+Pointwise,
+$\min_jF_j(g)\le q^{-1}\sum_jF_j(g)
+=(5q)^{-1}\max_{v_j}(\sum_jv_j)\cdot g$.
+Give both orientations of an edge the weight
+$(\sum_jv_j)_e/(5q)$. Its squared directed norm is at most
+$2Q/(25q^2)$; apply Lemma~\ref{lem:entropy}. The family is fixed and finite.
+Every input or output table is bounded by its operation cost as just shown.
+This controls storage, including singleton caches, but not the time spent
+computing their entries; that time is charged next.
+\end{proof}
+
+Each singleton group has $2(r-1)$ incident directed pairs. Therefore its
+complete cache requires at most $2^{(\alpha_r+o(1))\K(M,u)}$ recursive
+child evaluations, where
+\[
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+The fully paid recurrence is
+\begin{equation}
+ T_d\le\poly(s)\left[
+ 2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+ +2^{(\beta_{r_d}+o(1))K_d}\right],\qquad K_d=\K(M_d,u_d).
+ \label{eq:paid}
+\end{equation}
+Summing only the local aggregation costs would miss the first term and
+would not establish our result.

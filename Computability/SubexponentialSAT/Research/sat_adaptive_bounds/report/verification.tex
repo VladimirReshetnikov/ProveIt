@@ -1,0 +1,90 @@
+\section{Verification, deliverables, and integration}
+\label{sec:verification}
+
+\subsection{What the finite checks establish}
+
+The accompanying programs use only the Python standard library.
+Every verification gate raises an explicit exception and remains active
+under \texttt{python -O}. Normal and optimized runs give the same
+mathematical results; only elapsed-time metadata may differ.
+
+\begin{itemize}
+\item \textbf{Flag combinatorics.} The checker enumerates all complete
+flags at $r=4,8,16,32$ and verifies the path sizes and uniform
+common-origin average exactly. It checks 798,192 exhaustive
+relative-leaf intersection cases for $r\le16$, and 64,000 further
+seeded cases at $r=32$. The latter are consistency tests, not an
+exhaustive proof for that size.
+
+\item \textbf{Adaptive flag evaluation.} Nine integer-weight profiles
+exercise exact tree selection, including an extremal profile attaining
+the balanced-tree entropy bound. Fifteen small contractions over
+$\mathbb Z/8\mathbb Z$ compare streamed conditioning against full
+enumeration, covering a ring with zero divisors.
+
+\item \textbf{Cached partitions.} The checker enumerates all 280
+partitions of nine groups into triples, and all 126,126 partitions
+of fifteen groups into three blocks of five. Every undirected edge
+crosses exactly 210 and 90,090 of these partitions, respectively.
+It checks 64 arbitrary nonnegative integer-weight instances of the
+centered triangle estimate over all 280 nine-group partitions.
+
+\item \textbf{Exact local and global certificates.} Every merge score,
+boundary count, rational schedule identity, recurrence-dominance
+inequality, and displayed strict packing inequality is checked.
+Coefficient bounds use rational enclosures for $\pi$, logarithms,
+and square roots, independently of decimal approximations.
+In particular the flag constant lies in
+$[46.184845586730,46.184845586731]$.
+
+\item \textbf{Independent audit.} A separate review checked the new
+proofs, their dependencies, and the charged recursive costs.
+Its exact-arithmetic spot checks and written review are included.
+\end{itemize}
+
+The finite programs do not prove the asymptotic analytic estimates by
+exhaustion. Those proofs are in the text. They also do not recheck the
+entire upstream deformation, Hermite recovery, SAT reductions, or the
+fast rational matrix algorithm. No new formal Lean or Rocq build, full
+SAT implementation, or SAT benchmark is claimed.
+
+\subsection{Reproduction}
+
+From the archive's top directory, run
+\begin{verbatim}
+python3 run_checks.py
+python3 build_report.py
+python3 verify_manifest.py
+\end{verbatim}
+The first command runs both new mathematical checkers normally and under
+optimization, compares their results after excluding timing metadata,
+and writes a new verification summary. The second uses
+\texttt{pdflatex} twice; the third checks the delivered file hashes.
+For an untouched archive, run the manifest check first. Rebuilding the
+PDF or rerunning timed checks can change its delivered hashes without
+changing the mathematical content.
+
+The complete report is \path{report/report.tex}, with its included
+section sources and compiled \path{report/report.pdf}.
+The \path{code/} directory contains the checkers, \path{results/}
+their outputs, \path{audit/} the independent review, and
+\path{provenance/} the reviewed source identities, arrival commits,
+and closing relocation check. No large upstream manuscripts or
+duplicate input ZIPs are required in the deliverable.
+
+\subsection{Suggested repository integration}
+
+The packet can be filed under
+\path{Computability/SubexponentialSAT/Research/eth_adaptive_bounds/}.
+Its new interface-compatible modules are the centered adaptive
+triangle estimate, recursively built cached tables with the two
+certified schedules, and adaptive linear-flag streamed separators.
+The integration note identifies their imports and recommended README
+claims.
+
+Preserve the resource distinctions in any repository summary.
+The polynomial-space coefficient is $46.1848456$; the faster general
+cached branch is $34.3252828$ time with $34.0241780$ space;
+the $13.3796491$ time coefficient requires the lower root degree.
+The worst-case SAT logarithmic order and the conditional status of
+the denominator-$\log n$ target remain unchanged.

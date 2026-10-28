@@ -1,0 +1,175 @@
+\section{Review cutoff and the comparison that is actually justified}
+\label{sec:review}
+The read-only review began at \nolinkurl{f898a9fde4} and closes at ProveIt
+commit \pin.
+The relevant chronology is:
+\begin{enumerate}
+\item \nolinkurl{2b925d8800}: placement of the first seven refinement packets
+and the two primary manuscripts;
+\item \nolinkurl{3e09608991}: vendoring of the OpenAI preprint at upstream
+\nolinkurl{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a};
+\item \nolinkurl{45233238ae}: a summary separating established refinements
+from conditional proposals;
+\item \nolinkurl{6d3adc4506}: placement of eight second-round packets;
+\item \nolinkurl{f42479bca2} and \nolinkurl{f898a9fde4}: arrival of the four
+newer ZIPs reviewed here;
+\item \nolinkurl{450252e9d8}: placement of those four packets plus
+\nolinkurl{sat_adaptive_contraction}, whose arrival is
+\nolinkurl{fa6e904d10}. The closing head also merges unrelated work.
+\end{enumerate}
+The initial committed summary did not include the four incoming packets.
+The closing check found the fifth new packet. All five are now placed,
+and the closing incoming directory contains only its index. We verified
+all 180 files in the four original extracted packets byte-for-byte against
+their new locations. We inspected the new LaTeX proofs as well as the relevant
+placed reports and the vendored quantitative source. The source index
+explicitly states that filing a packet did not verify its mathematics
+or run a formal build~\cite{index,commits,upstream}.
+
+\subsection{Three different meanings of strongest}
+For fixed clause width $k$, the strongest stated density envelope supported
+by the reviewed ordinary mathematical derivations is
+\begin{equation}\label{eq:density-envelope}
+ \poly_k(n,m)\,
+ 2^{O_k\left(
+ \frac{n}{\sqrt{\log n}}\,
+ \min\{\log(2+m/n),\,\log\log n\}\right)}.
+\end{equation}
+It specializes to $2^{O_{k,D}(n/\sqrt{\log n})}$ for fixed density
+$m\le Dn$, and has unrestricted exponent
+$O_k(n\log\log n/\sqrt{\log n})$~\cite{density,density2}.
+All twenty packets retain these worst-case orders wherever they state
+a proved global algorithm.
+
+For \emph{explicit coefficients on normalized tensor wires}, the strongest
+stated generic polynomial-space coefficient is
+$55.70947831891\ldots$~\cite{adaptive}. Combining that new streamed
+separator with the earlier multistage schedule gives the stronger derived
+comparator $55.40466590661\ldots$, which we also exceed. Allowing subexponential memory, the strongest
+stated generic time coefficient is $35.354588058401\ldots$, with space
+coefficient $34.274803005023\ldots$~\cite{frontier,tree}.
+Another cached algorithm uses time $37.93010908288\ldots$ and smaller
+space $33.62304092166\ldots$. Thus there is a time-space portfolio,
+not one method that dominates every memory allowance.
+
+For \emph{conditional statements}, the strongest reviewed target is
+\[
+ \poly_k(n,m)2^{O_k(n\log\log n/\log n)},\qquad
+ \poly_{k,D}(n,m)2^{O_{k,D}(n/\log n)}
+\]
+at unrestricted and fixed density, respectively. It requires an
+unconstructed structured-mode summation interface~\cite{precision}.
+Other conditional proposals require compact factorization,
+degree-preserving recursion, or linear-wire compression~\cite{scalar,analysis}.
+These implications are not available algorithms. Our coefficient
+improvement does not imply bounds smaller than these conditional targets.
+
+\subsection{The twenty packets}
+In the table, same order means that no smaller unrestricted SAT
+logarithmic order is established by that packet. Coefficients refer to
+the normalized wire scale defined in Section~\ref{sec:interface}.
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.435\textwidth}>{\raggedright\arraybackslash}p{.25\textwidth}@{}}
+\toprule
+Packet & Relevant contribution & Limitation or dependency\\\midrule
+\endfirsthead
+\toprule
+Packet & Relevant contribution & Limitation or dependency\\\midrule
+\endhead
+\nolinkurl{cauchy_mode_improvement} &
+Integral factorial Cauchy modes with asymptotic weight slope three. &
+Same order.\\[4pt]
+\nolinkurl{eth_contraction_improvements} &
+Exact taper count, precision $6MD/u$, streamed extraction;
+coefficient $648.4411$. &
+Imports the source contraction.\\[4pt]
+\nolinkurl{3sat_precision_refinement} &
+Exact recovery loss and optimal symmetric real taper. &
+Faster structured summation is conditional.\\[4pt]
+\nolinkurl{sat_density_improvement} &
+Uniform density envelope \eqref{eq:density-envelope}. &
+Worst-case and fixed-density orders unchanged.\\[4pt]
+\nolinkurl{eth_density_refinement} &
+Related density envelope and precision savings. &
+Overlaps the preceding density result.\\[4pt]
+\nolinkurl{3sat_refinement} &
+Scalar parity lift; a smaller incidence-degree cap. &
+Compact second-stage factorization missing.\\[4pt]
+\nolinkurl{3sat_asymptotic_analysis} &
+Scoped barriers and precise degree/compression interfaces. &
+No completed stronger-order algorithm.\\[4pt]
+\nolinkurl{eth_asymmetric_packet_balancing} &
+Asymmetric side-degree invariant; coefficient $76.9090$. &
+Lower-degree $31.0641$ has stronger premises.\\[4pt]
+\nolinkurl{3sat_round2_refinement} &
+Matching-potential packing; coefficient $84.0663$;
+actual-domain rank audit. &
+Same order.\\[4pt]
+\nolinkurl{eth_balanced_packing} &
+Nearly uniform whole-vertex pair loads; $94.7482$. &
+Same order.\\[4pt]
+\nolinkurl{eth_high_moment} &
+Moment-based deterministic balancing; $94.7482$. &
+Lower-degree specializations are separate.\\[4pt]
+\nolinkurl{eth_matching_refinement} &
+Matching potentials and thin gaps; $94.7482$. &
+Same order.\\[4pt]
+\nolinkurl{eth_packet_refinement} &
+Near-unit padding and logarithmic guard; $95.6639$. &
+Same order.\\[4pt]
+\nolinkurl{eth_recursive_refinement} &
+Missing-residue modes of slope $64/21$; $133.2074$. &
+Same order.\\[4pt]
+\nolinkurl{eth_joint_cauchy} &
+Full crossing-block slope four; cached contraction. &
+Its ingredients improve later compositions.\\[4pt]
+\nolinkurl{sat_frontier_improvements} &
+Multistage polynomial-space coefficient $63.8574$;
+cached $38.4845$. &
+Lower-degree cached $19.0839$ has stronger premises.\\[4pt]
+\nolinkurl{subexponential_sat_frontier} &
+Polynomial-space $63.8522$; cached $37.9301$;
+precision peeling. &
+Same order.\\[4pt]
+\nolinkurl{subexponential_sat_kernel_improvements} &
+Optimal integral Smith separation on actual ports;
+Gray, antipodal and projective extraction. &
+Instance-specific or lower-order kernel gains.\\[4pt]
+\nolinkurl{sat_adaptive_contraction} &
+Streamed conditioning: $55.7095$ polynomial space; adaptive cached $36.7503$. &
+Lower-degree cached $15.3919$ has stronger premises.\\[4pt]
+\nolinkurl{subsat_contraction_tree} &
+Binary block-table construction; exact CRT bridge;
+cached time $35.3546$. &
+Uses subexponential space.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+The accompanying \nolinkurl{audit/frontier_audit.md} gives exact source
+filenames and theorem labels for every row. The first fifteen packets
+are available through the pinned project index~\cite{index}; the last
+five are also in the closing placement~\cite{satfrontier,frontier,kernel,tree,adaptive}.
+
+\subsection{Limits of numerical domination}
+The separate manuscript credited to Claude has the same relevant
+$n$-only order but supplies no matching explicit coefficient in the
+normalized wire model. Consequently a numerical comparison with its
+unspecified constant is unavailable~\cite{claude}. Similarly, an input-class-specific
+coefficient such as $15.3919$ for degree at most $s^{1/12}$ must not be
+compared as if it applied to the generic degree-$s^{9/10}$ class.
+We retain those algorithms as options under their own premises.
+
+A coefficient improvement also does not prove a lower bound on the
+older algorithm's runtime. What can be compared are the displayed
+certifying functions. For the new $C_T$ and the previous explicit
+$C_{\mathrm{old}}=35.354588058401\ldots$,
+\[
+ \frac{2^{(C_T+o(1))\Escale(s)}}
+      {2^{(C_{\mathrm{old}}+o(1))\Escale(s)}}
+ =2^{-(C_{\mathrm{old}}-C_T+o(1))\Escale(s)}
+ \longrightarrow0.
+\]
+Polynomial prefactors do not change this conclusion. This is the
+precise sense in which the completed positive result is an asymptotically
+smaller upper-bound certificate.

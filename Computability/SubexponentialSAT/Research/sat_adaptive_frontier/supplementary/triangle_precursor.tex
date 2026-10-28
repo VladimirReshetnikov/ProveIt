@@ -1,0 +1,247 @@
+\section{Adaptive matrix multiplication by balanced partition covariance}
+\label{sec:adaptive-mm}
+
+We use the exact mode-graph identity~\eqref{eq:mode-graph} and the
+uniform entropy norm of Lemma~\ref{lem:norm}. Write $K(M,u)=\K(M,u)$
+in this section. The inherited pair-index and matrix-arithmetic interface
+is developed in the incoming contraction-tree report~\cite{incomingtree}.
+\begin{equation}\label{eq:adaptive-norm}
+ \|h\|_2\le(1/r+o(1))K(M,u).
+\end{equation}
+The new step chooses the three final blocks by their actual index sizes.
+The earlier adaptive packet minimized their total crossing weight and
+summed it directly.  Here the chosen objective is the cost of rectangular
+matrix multiplication.  The coefficient improvement is not obtained by
+assuming equal actual dimensions.
+
+\begin{lemma}[Covariance bound for adaptive triangle contraction]
+\label{lem:adaptive-mm}
+Let $r=3k$ with $k\ge2$, and let $h_{gh}\ge0$ be arbitrary directed pair
+weights.  Put $H=\sum_{g\ne h}h_{gh}$ and $N=r(r-1)$.
+For an equipartition $\mathcal P=(A,B,C)$ into blocks of size $k$, write
+$H_{AB},H_{AC},H_{BC}$ for the sums on the directed pairs joining the
+indicated blocks.  For $0\le\delta\le1$ define
+\[
+ F_\delta(\mathcal P)=H_{AB}+H_{AC}+H_{BC}
+            -\delta\min(H_{AB},H_{AC},H_{BC}).
+\]
+There is an equipartition for which
+\begin{equation}\label{eq:adaptive-mm-general}
+ F_\delta(\mathcal P)
+ \le \sqrt{A_\delta^2N+B_\delta^2}\,\|h\|_2,
+ \quad
+ A_\delta=\left(1-\frac\delta3\right)\frac{2k}{r-1},
+ \quad B_\delta^2=\frac{4\delta^2}{3}
+             \frac{2k^3}{(r-1)(r-2)}.
+\end{equation}
+For $\delta=3/5$, equations~\eqref{eq:adaptive-norm} and
+\eqref{eq:adaptive-mm-general} give local coefficient
+\begin{equation}\label{eq:adaptive-triangle-coefficient}
+ \beta_{\triangle}(3k)^2
+ =\frac{8k(8k-5)}{25(3k-1)(3k-2)}
+\end{equation}
+on $K(M,u)$.
+\end{lemma}
+\begin{proof}
+Combine opposite directed weights into undirected weights
+$x_{\{g,h\}}=h_{gh}+h_{hg}$.  Choose a uniformly random labelled
+partition into equal blocks.  Its three crossing classes have total
+$S=H_{AB}+H_{AC}+H_{BC}$ and variance sum
+\[
+ V=\sum_{J\in\{AB,AC,BC\}}(H_J-S/3)^2.
+\]
+The mean crossing sum is $\mathbb ES=2kH/(r-1)$.
+Also $\min_JH_J\ge S/3-\sqrt{2V/3}$, since three deviations sum to
+zero.  Jensen's inequality therefore gives
+\begin{equation}\label{eq:adaptive-jensen}
+ \mathbb EF_\delta\le A_\delta H+
+                         \delta\sqrt{\frac23\mathbb EV}.
+\end{equation}
+
+For an undirected edge $e$, set
+$Y_e=\mathbf1_{e\text{ joins }A,B}-\mathbf1_{e\text{ joins }A,C}$.
+By symmetry among the three classes,
+$\mathbb EV=\mathbb E(H_{AB}-H_{AC})^2$.
+The covariances $\mathbb EY_eY_f$ depend only on whether the edges are
+equal, share one endpoint, or are disjoint.  Counting ordered colors of
+the two, three, or four endpoints gives, respectively,
+\[
+ c_0=\frac{4k^2}{r(r-1)},\qquad
+ c_1=\frac{2k^2(k-2)}{r(r-1)(r-2)},\qquad
+ c_2=-\frac{8k^2(k-1)}{r(r-1)(r-2)(r-3)}.
+\]
+Here the equal-block restriction is used; independent vertex coloring
+would have different covariances.
+
+Let $m=\binom r2$, center $x$ by $x'_e=x_e-H/m$, and put
+$d'_v=\sum_{e\ni v}x'_e$.  The covariance matrix kills the constant
+vector because every partition has the same number $k^2$ of edges in
+each of the classes $AB$ and $AC$.  Expanding by the three edge-pair
+types gives
+\[
+ \mathbb EV=(c_0-2c_1+c_2)\sum_e(x'_e)^2
+                   +(c_1-c_2)\sum_v(d'_v)^2.
+\]
+Because $\sum_ex'_e=\sum_vd'_v=0$, Cauchy--Schwarz yields
+\[
+ \sum_v(d'_v)^2
+ =\sum_{\{v,w\}}x'_{vw}(d'_v+d'_w)
+ \le\|x'\|_2\sqrt{(r-2)\sum_v(d'_v)^2},
+\]
+and hence $\sum_v(d'_v)^2\le(r-2)\|x'\|_2^2$.
+Since $c_1-c_2\ge0$ for $k\ge2$, it follows that
+\[
+ \mathbb EV\le\Lambda\left(\|x\|_2^2-\frac{H^2}{m}\right),
+ \qquad
+ \Lambda=c_0+(r-4)c_1-(r-3)c_2
+        =\frac{2k^3}{(r-1)(r-2)}.
+\]
+Finally $\|x\|_2^2\le2\|h\|_2^2$, so
+\[
+ \mathbb EV\le2\Lambda\left(\|h\|_2^2-\frac{H^2}{N}\right).
+\]
+Insert this into~\eqref{eq:adaptive-jensen} and apply Cauchy--Schwarz to
+$A_\delta H+B_\delta\sqrt{\|h\|_2^2-H^2/N}$.  The result is
+\eqref{eq:adaptive-mm-general}.  The minimum partition cost is no larger
+than its mean.  Substitution of $\delta=3/5$, $r=3k$, and simplification
+give~\eqref{eq:adaptive-triangle-coefficient}.
+\end{proof}
+
+\paragraph{Exact algorithm and ring arithmetic.}
+For each of the finitely many equipartitions, compute the integer class
+dimensions $D_{AB},D_{AC},D_{BC}$ from the exact list sizes.  Choose one
+minimizing the rational score
+\[
+ \frac{(D_{AB}D_{AC}D_{BC})^5}
+      {\min(D_{AB},D_{AC},D_{BC})^3}.
+\]
+The logarithm of this score is $5F_{3/5}$.  Comparisons therefore use
+exact integers with polynomial bit length, not approximate logarithms.
+There are $280$ unlabelled equipartitions for $r=9$ and $5775$ for $r=12$;
+these are constants.  Build the chosen block tables by binary matrix
+merges as in the cached-tree packet, and contract their triangle using
+matrix multiplication of exponent $12/5$.  The integer-coordinate/CRT bridge from the incoming report makes this
+valid over the actual power-of-two quotient ring~\cite{incomingtree}.
+Here is the arithmetic reason. The ring is a free module of polynomial
+rank over $\mathbb Z/2^p\mathbb Z$, with a polynomial-size integer
+multiplication table. Lift input coordinates to integers and multiply each
+coordinate pair of matrices modulo sufficiently many nonexceptional odd
+primes. Reconstruct their integer products by CRT, apply the structure
+constants, and reduce modulo $2^p$. An unreduced coordinate product has
+bit length $O(p+\log d)$, where $d$ is an inner dimension; this is
+polynomial in $s$. Thus only polynomial bit overhead is incurred. A fixed
+rational bilinear algorithm of exponent below $12/5$ exists by the
+established field result~\cite{mm}; excluding its finitely many
+constant-denominator primes makes its identities valid in these fields.
+Computing recursive products sequentially bounds temporary storage by a
+polynomial factor times the input and output tables. This argument never
+inverts two or a nilpotent in the source quotient ring.
+
+\subsection{Paid block construction and child evaluation}
+The adaptive partition does not make table construction free.  Cache all
+$r$ group functions, evaluating every entry by a real recursive child
+contraction.  Their incident-pair coefficient is
+$a_r=\sqrt{2(r-1)}/r$.  To merge blocks of sizes $a,b$, with $q=a+b$,
+the three matrix index classes have cardinalities
+\[
+ 2a(r-q),\quad 2ab,\quad 2b(r-q).
+\]
+The inherited weighted entropy bound and the $12/5$ backend give squared
+numerator $v_1+v_2+v_3-(21/25)\min(v_1,v_2,v_3)$.
+All these bounds hold for every chosen partition.
+
+For $r=9$ use blocks $3,3,3$.  The $1+2$ merge has classes $12,4,24$,
+so its squared numerator is $916/25$.  The smaller $1+1$ merge has
+$708/25$, and the adaptive final triangle has squared coefficient
+$57/175$, strictly smaller than $916/2025$.  For $r=12$ use blocks
+$4,4,4$; the largest $2+2$ merge has classes $32,8,32$ and squared
+numerator $1632/25$, while the adaptive triangle has squared coefficient
+$432/1375$.  Consequently the complete local recurrence is
+\[
+ T_d\le\operatorname{poly}(s)\left(
+       2^{(a_{r_d}+o(1))K_d}T_{d+1}
+       +2^{(b_{r_d}+o(1))K_d}\right),
+\]
+with
+\[
+ a_9=\frac49,\quad b_9=\frac{2\sqrt{229}}{45},\quad j_9=\frac23;
+ \qquad
+ a_{12}=\frac{\sqrt{22}}{12},\quad
+ b_{12}=\frac{\sqrt{102}}{15},\quad j_{12}=\frac23.
+\]
+Here $j_r$ is the largest storage coefficient on $K_d$; output boundary
+sizes are $36$ and $64$ respectively.  The incoming sorting/streaming
+layout and coordinate bridge pay polynomial bit overhead per record.
+
+\subsection{A full schedule and its certified coefficient}
+Put $\lambda=\lceil\log_2s\rceil$, $g=\lceil\sqrt\lambda\rceil$,
+$b=\lceil6\log_2\lambda\rceil$, and define
+\[
+ B=\left\lfloor\frac{\lambda-g}{20\log_2 9}\right\rfloor,
+ \qquad v=\left\lfloor\frac56\left(\frac\lambda{36}-B\right)\right\rfloor.
+\]
+The first floor can be computed exactly by the largest integer $B$ with
+$9^{20B}\le2^{\lambda-g}$; no transcendental test is required.  Set
+\[
+ r_0=9,\quad u_0=B,\qquad
+ r_d=12,\quad u_d=\lfloor v/6^{d-1}\rfloor\ (d\ge1),\qquad
+ a_d=\sum_{j\le d}(u_j+b),\quad H=\lceil s/\lambda^{3/4}\rceil.
+\]
+Then $\sum_du_d\le B+6v/5\le\lambda/36$.
+At the root, the symmetric packing term $Q_0^2\Delta$ has binary
+logarithm at most $\lambda-g/10+O(\log\lambda)$.  Below it the
+retained-side term $Q_d\Delta$ has exponent at most
+$9/10+\log_2(12)/36<1$ in $s$, and the fresh-side and padding terms
+have exponent at most $(2\log_2(12)+1)/36<1$.  For an exact rational
+certificate, $12^{100}<2^{359}$ leaves margin $1/3600$ in the former
+inequality.  Fresh packet degrees have exponent at most $1/36+o(1)$.
+
+As in the incoming cached proof, consider hypothetical active depths up
+to $\tfrac34\log_5\lambda+O(1)$.  The retained ranges satisfy
+$u_d\ge\lambda^{\eta+o(1)}$, where
+$\eta=1-3\ln6/(4\ln5)>0$; the latter is certified by $6^3<5^4$.
+The packing gates hold uniformly there, and give a coarse tail shrinkage
+of $1/5$, closing the depth bootstrap.  The sharp sizes are
+\[
+ M_0\le s,\qquad M_d\le(1+o(1))^d\frac{2s}{9\,6^{d-1}}\quad(d\ge1).
+\]
+The buffer gives $D\ge2^{a_{d-1}+b+1}$ and absorbs inherited precision:
+the source bound $O(s\lambda^2 2^{a_{d-1}})$ is
+$o(MD/u)$ since $s/M\le\lambda^{3/4}$ and
+$\lambda^{15/4}2^{-b}\to0$.  Thus all local entropy bounds are uniform.
+
+Let
+\[
+ \kappa=\frac{\pi\sqrt2}{\ln2},\quad
+ A=\frac1{20\log_2 9},\quad
+ W=\frac56\left(\frac1{36}-A\right),\quad
+ K_0^*=\frac\kappa{\sqrt A},\quad K_1^*=\frac{2\kappa}{9\sqrt W},
+ \quad\gamma=\frac1{\sqrt6}.
+\]
+The root $K$ coefficient is $K_0^*$, and the tail coefficients are bounded
+by $(1+o(1))K_1^*\gamma^{d-1}$.  Expanding the paid recurrence yields
+\begin{align*}
+ C_T&=\max\left\{b_9K_0^*,\quad
+      a_9K_0^*+K_1^*\max\left(b_{12},\frac{a_{12}}{1-\gamma}\right)\right\}\\
+ &=\max\{34.32528279728\ldots,\ 32.27135203916\ldots\}
+  =34.32528279728\ldots,\\
+ C_S&=\max\{j_9K_0^*,j_{12}K_1^*\}
+   =34.02417800749\ldots.
+\end{align*}
+Ancestor table sizes add rather than multiply.  Polynomial per-level
+factors contribute only $O(\lambda\log\lambda)$ to the exponent.
+Leaves, original entries, and fresh packet routines have respective
+local work $2^{O(s/\lambda^{3/4})}$, $2^{O(s^{9/10})}$, and
+$\exp(s^{1/36+o(1)})$, all lower order after the paid child recurrence.
+For bounded exceptional inputs or failed explicit parameter gates use
+direct contraction.  We conclude, relative to the inherited interface,
+\[
+ T(s,\mathcal L)\le\operatorname{poly}(s+\mathcal L)
+ 2^{(34.32528279728\ldots+o(1))s/\sqrt{\log_2s}},\qquad
+ S(s,\mathcal L)\le\operatorname{poly}(s+\mathcal L)
+ 2^{(34.02417800749\ldots+o(1))s/\sqrt{\log_2s}}.
+\]
+In particular $34.326$ and $34.025$ are safe eventual coefficients.
+These improve the incoming $35.3545880584\ldots$ time and
+$34.2748030050\ldots$ space certificates, while retaining subexponential
+space.  The logarithmic order of the SAT bound is unchanged.

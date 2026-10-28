@@ -1,0 +1,57 @@
+\section{The public Anthropic formalization and its scope}
+\label{sec:formalization}
+
+The supplied link identifies \texttt{anthropics/formal-math} PR~31 at
+commit \texttt{1a6eee293b9e}.
+GitHub metadata reports it merged on 2026-10-27 at 03:07:22 UTC,
+or October 26 at 8:07:22 PM Pacific daylight time, with merge commit
+\texttt{16a5ce41304f}
+\cite{anthropic-pr}. ProveIt's closing commit \texttt{7de9d09fecd1}
+already updates the earlier index's publication status and links this
+development \cite{closing}. The new public paper has 900,337 bytes;
+the older ProveIt copy has 868,673 bytes. They are distinct revisions.
+The analysis of the graded crossing construction in this report uses the public
+paper at the user's supplied commit.
+
+We read the 49-page paper, \path{eth/README.md},
+\path{eth/MainResults.lean}, \path{eth/Solution.lean}, the proof README,
+the paper-to-Lean index, the comparator configuration, and toolchain pin.
+\path{MainResults.lean} contains the endpoint definitions and imports
+Mathlib. \path{Solution.lean} supplies theorems whose types are exactly
+\texttt{MainResults.ETHIsFalse} and \texttt{MainResults.MainTheorem}
+\cite{anthropic-main,anthropic-solution}.
+
+The counting endpoint states one deterministic finite-alphabet multistack
+Turing machine and one constant $C$, both chosen before $k$ and the input,
+with time
+\[
+ 2^{C\min\{km/\sqrt{\log_2m},\,
+           k^2n\log_2\log_2n/\sqrt{\log_2n}\}}.
+\]
+Its domain is precisely specified: $k\ge1$, at least two clauses, at least
+four variables, all declared variables occurring, and no repeated clause
+lists. It counts assignments in a fixed bit encoding. The ETH endpoint
+negates positivity of the deterministic 3-SAT exponent defined in that
+machine model. These are substantive public statements, rather than merely
+an unpublished proof claim.
+
+The project pins Lean and Mathlib 4.33.1. Its README documents the build and
+axiom-printing commands; the comparator configuration enables nanoda and
+permits \texttt{propext}, \texttt{Quot.sound}, and
+\texttt{Classical.choice}. These are source-reported verification procedures.
+We did not run a fresh build, comparator, or kernel check of the transitive
+development, and make no claim to have done so.
+
+For fixed $k$, the published endpoint retains the same relevant logarithmic
+exponent order. It does not supply a numerical normalized-wire coefficient
+comparable to $C_0$. The proof README also explains that intermediate
+counted operations may be polynomial-time functions of a bounded state,
+with constants changing on conversion to actual machine steps. A numerical
+constant from those intermediate counts therefore cannot simply be
+multiplied into another contractor's bit-operation coefficient.
+
+The link provides a different algebraic route worth exploring.
+Appendix B represents crossing pieces using operators on a graded space;
+their two factorization orders pass through complementary energies.
+The four-energy rank theorem above uses that explicit structure to reject
+one tempting but invalid route to a stronger denominator.

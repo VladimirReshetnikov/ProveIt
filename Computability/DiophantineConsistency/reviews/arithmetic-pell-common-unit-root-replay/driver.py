@@ -1,0 +1,188 @@
+from pathlib import Path
+import hashlib, json, os, re, shutil, subprocess, tempfile, time
+
+ROOT = Path('/home/codex/.codex/worktrees/46be/Proofs')
+DC = ROOT / 'Computability/DiophantineConsistency'
+PLAN = DC / 'research/arithmetic-pell-common-unit-cache-plan.json'
+PROPOSAL = DC / 'research/arithmetic-pell-common-unit-plan.md'
+observations = {}
+
+
+def require(ok, message):
+    if not ok: raise RuntimeError(message)
+
+
+def record(path):
+    p = Path(path); data = p.read_bytes()
+    return dict(path=str(p), sha256=hashlib.sha256(data).hexdigest(), bytes=len(data))
+
+
+def check(pin):
+    actual = record(pin['path'])
+    require(actual['sha256'] == pin['sha256'], 'hash: '+pin['path'])
+    if 'bytes' in pin: require(actual['bytes'] == pin['bytes'], 'size: '+pin['path'])
+    observations[actual['path']] = actual
+    return actual
+
+
+def save(path, value):
+    Path(path).write_text(json.dumps(value, indent=2)+'\n')
+
+
+def imports(path):
+    text = Path(path).read_text(); out=[]; i=depth=0
+    while i<len(text):
+        pair=text[i:i+2]
+        if depth:
+            if pair=='/-': depth+=1; i+=2
+            elif pair=='-/': depth-=1; i+=2
+            else: out.append('\n' if text[i]=='\n' else ' '); i+=1
+        elif pair=='/-': depth=1; i+=2
+        elif pair=='--':
+            while i<len(text) and text[i]!='\n': i+=1
+        else: out.append(text[i]); i+=1
+    require(depth==0,'comment balance')
+    clean=''.join(out)
+    initial=[] if re.search(r'^\s*prelude\s*$',clean,re.M) else ['Init']
+    return list(dict.fromkeys(initial+[n for line in re.findall(
+        r'^\s*(?:(?:public|private|meta)\s+)*import\s+([^\n]+)',clean,re.M)
+        for n in line.split()]))
+
+
+AUTHOR_PACKET = DC / 'reviews/arithmetic-pell-common-unit-replay.json'
+check(dict(path=str(AUTHOR_PACKET),sha256='f0d1fa0262177ebc9428ae2553dbe07c863628e2e38677f1f76654a4b51e3c0d'))
+author=json.loads(AUTHOR_PACKET.read_text())
+require(author['status']=='PASS' and len(author['records'])==2,'accepted author pair')
+manifest=DC / 'reviews/arithmetic-pell-common-unit-author-replay/FILES.json'
+check(dict(path=str(manifest),sha256='bbea505f01ff11dfdc4239c4b91c273afd03f1d2e38cbf5f6a8eb7a6157c526b'))
+rows=json.loads(manifest.read_text());require(len(rows)==34,'author manifest34')
+for pin in rows: check(dict(pin,path=str(ROOT/pin['path'])))
+check(dict(path=str(DC/'reviews/arithmetic-pell-common-unit-author.md'),sha256='dc70315da6f6b2bb867834b25df49227776aa86c409b0d964283a3bff46b4f1f'))
+for row in author['records']:
+    require(row['exit_code']==0,'author exit')
+    for key in ['source','snapshot','object','log','timing']: check(row[key])
+
+check(dict(path=str(PLAN),sha256='7081d8c2bc515ea333aadb90fd3d6506643b09c26a5686f1f049c000438a0942'))
+check(dict(path=str(PROPOSAL),sha256='7ab5627b00a4c6fc0459978c6d4d7d58aff0b053d1dc69bb2a71e57c61d04402'))
+plan=json.loads(PLAN.read_text())
+require(plan['counts']==dict(custom=99,Foundation=95,artifacts=384,external=38,
+    boundary_artifacts=114,boundary_primaries=38,boundary_companions=76,fresh_prerequisites=0),'scope')
+for pin in plan['pins']: check(pin)
+SUPPLEMENT = DC / 'research/arithmetic-pell-common-unit-accepted-gcd.json'
+check(dict(path=str(SUPPLEMENT),sha256='30dd84a1b14560c94ed2bdb78e9c6ec1e09c6375106f6f199427f2fc5e7453c2'))
+supplement=json.loads(SUPPLEMENT.read_text())
+for pin in supplement['pins']: check(pin)
+require(supplement['original_plan']==record(PLAN),'original plan unchanged')
+modules={x['module']:x for x in plan['modules']}
+gcd=modules[supplement['module']]
+require(gcd['source']==supplement['source'] and gcd['objects']==[supplement['old_object']],
+    'one accepted supplement')
+check(supplement['accepted_object'])
+gcd['objects']=[supplement['accepted_object']]
+gcd['provenance']='ROOT accepted provider supplement; original frozen plan preserved'
+
+boundary={x['module'] for x in plan['external']}
+visited=set(); active=set(); edges=set()
+
+
+def visit(name):
+    if name not in modules:
+        require(name in boundary,'unknown boundary '+name); edges.add(name); return
+    if name in visited: return
+    require(name not in active,'cycle '+name); active.add(name)
+    item=modules[name]; check(item['source'])
+    require(imports(item['source']['path'])==item['imports'],'header '+name)
+    for obj in item['objects']: check(obj)
+    for dep in item['imports']: visit(dep)
+    active.remove(name); visited.add(name)
+
+
+for name in plan['direct_imports']: visit(name)
+require(visited==set(modules) and edges==boundary,'exact DAG')
+for item in plan['external']:
+    check(item['source'])
+    for obj in item['artifacts']: check(obj)
+check(plan['compiler'])
+names=['ArithmeticPellCommonUnit','ArithmeticPellCommonUnitChecks']
+sources=[check(record(DC/('Lean/DiophantineConsistency/'+n+'.lean'))) for n in names]
+require(imports(sources[0]['path'])==['Init',*plan['direct_imports']],'main imports')
+require(imports(sources[1]['path'])==['Init','DiophantineConsistency.'+names[0]],'checks imports')
+require(shutil.disk_usage('/tmp').free>=512*1024**2,'initial reserve')
+private=Path(tempfile.mkdtemp(prefix='arithmetic-pell-common-unit-root-'))
+lib=private/'lib'; logs=private/'logs'; lib.mkdir(); logs.mkdir()
+shutil.copyfile(__file__,private/'driver.py')
+shutil.copyfile(PLAN,private/'plan.json')
+shutil.copyfile(PROPOSAL,private/'proposal.md')
+shutil.copyfile(SUPPLEMENT,private/'accepted-gcd.json')
+for source in sources: shutil.copyfile(source['path'],logs/Path(source['path']).name)
+for item in plan['modules']:
+    folder=lib/Path(item['module'].replace('.','/')).parent
+    folder.mkdir(parents=True,exist_ok=True)
+    for obj in item['objects']:
+        (folder/Path(obj['path']).name).symlink_to(Path(obj['path']).resolve())
+lean_path=[str(lib),*plan['boundary_search']]
+providers=[]
+for item in plan['modules']+plan['external']:
+    for expected in item.get('objects',item.get('artifacts')):
+        rel=Path(*item['module'].split('.')[:-1])/Path(expected['path']).name
+        actual=next((Path(root)/rel for root in lean_path if (Path(root)/rel).is_file()),None)
+        require(actual is not None,'missing provider '+str(rel))
+        providers.append(dict(module=item['module'],expected=expected,
+            actual=check(dict(expected,path=str(actual)))))
+require(len(providers)==498,'all first providers')
+save(private/'providers.json',providers)
+save(private/'authentication.json',dict(pins=list(observations.values())))
+inputs=dict(plan=record(PLAN),proposal=record(PROPOSAL),accepted_supplement=record(SUPPLEMENT),counts=plan['counts'],sources=sources,
+    compiler=plan['compiler'],LEAN_PATH=lean_path,providers=record(private/'providers.json'),
+    authentication=record(private/'authentication.json'))
+save(private/'inputs.json',inputs)
+state=dict(status='RUNNING',private=str(private),driver=record(__file__),inputs=record(private/'inputs.json'),records=[])
+save(private/'state.json',state)
+with Path('/tmp/arithmetic-pell-common-unit-root-runs.txt').open('a') as stream:
+    stream.write(str(private)+'\n')
+env=dict(os.environ,LEAN_PATH=':'.join(lean_path),LEAN_NUM_THREADS='1')
+env.pop('LEAN_SRC_PATH',None)
+print('PRIVATE '+str(private),flush=True)
+try:
+    for name,source in zip(names,sources):
+        check(source)
+        require(shutil.disk_usage(private).free>=512*1024**2,'command reserve')
+        output=lib/'DiophantineConsistency'/(name+'.olean')
+        output.parent.mkdir(parents=True,exist_ok=True)
+        require(not output.exists() and not output.is_symlink(),'fresh output')
+        snapshot=logs/(name+'.lean'); shutil.copyfile(source['path'],snapshot)
+        log=logs/(name+'.log'); timing=logs/(name+'.time')
+        command=[plan['compiler']['path'],'-M6000','-j1','-DElab.async=false','-o',str(output),source['path']]
+        print('START '+name,flush=True); start=time.monotonic()
+        with log.open('w') as stream:
+            code=subprocess.run(['/usr/bin/time','-v','-o',str(timing),*command],cwd=ROOT,env=env,
+                stdout=stream,stderr=subprocess.STDOUT).returncode
+        rec=dict(module='DiophantineConsistency.'+name,source=source,snapshot=record(snapshot),
+            command=command,exit_code=code,seconds=time.monotonic()-start,log=record(log),timing=record(timing))
+        state['records'].append(rec); save(private/'state.json',state)
+        print(log.read_text(),flush=True)
+        require(code==0,'compile '+name)
+        require(not re.search(r'\b(?:warning|error|sorryAx)\b',log.read_text()),'clean diagnostics '+name)
+        reports=[list(x) for x in re.findall(
+            r"'([^']+)' (?:depends on axioms:\s*\[([^\]]*)\]|does not depend on any axioms)",log.read_text())]
+        for theorem,axioms in reports:
+            require(set(re.findall('[A-Za-z][A-Za-z.]*',axioms))<=
+                {'propext','Classical.choice','Quot.sound'},'standard axioms '+theorem)
+        require(len(reports)==(4 if name.endswith('Checks') else 0),'report count')
+        require(output.is_file() and not output.is_symlink(),'regular output')
+        rec.update(object=record(output),axiom_reports=reports)
+        expected=next(r for r in author['records'] if r['module']==rec['module'])
+        require(rec['source']['sha256']==expected['source']['sha256'],'frozen source equality')
+        require(rec['object']['sha256']==expected['object']['sha256'],'independent object equality')
+        require(rec['log']['sha256']==expected['log']['sha256'],'complete log equality')
+        require(reports==expected['axiom_reports'],'all report equality')
+        rec['author_object_and_full_log_equal']=True
+        save(private/'state.json',state); check(source)
+    for pin in list(observations.values()): check(pin)
+    require(shutil.disk_usage(private).free>=512*1024**2,'final reserve')
+    state.update(status='PASS',author_packet=record(AUTHOR_PACKET),reports=4,final_free_bytes=shutil.disk_usage(private).free,
+        final_observed_paths=len(observations))
+    save(private/'state.json',state); print('PASS '+str(private),flush=True)
+except BaseException as error:
+    state.update(status='FAILED',failure=str(error)); save(private/'state.json',state)
+    raise

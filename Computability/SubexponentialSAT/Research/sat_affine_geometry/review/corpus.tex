@@ -1,0 +1,213 @@
+\section{Result, comparison, and limits}
+\label{sec:result}
+
+Put $\lambda=\lceil\log_2s\rceil$ and $\Escale(s)=s/\sqrt\lambda$, where
+$s$ is the normalized number of Boolean wires. Under the interface in
+Section~\ref{sec:interface}, this report establishes
+\begin{align}
+ T(s,\mathcal L)&\le (s+\mathcal L)^{O(1)}
+       2^{(30.2698729104411\ldots+o(1))\Escale(s)},\label{eq:headline-time}\\
+ S(s,\mathcal L)&\le (s+\mathcal L)^{O(1)}
+       2^{(29.4875372869212\ldots+o(1))\Escale(s)}.\label{eq:headline-space}
+\end{align}
+Here $\mathcal L$ is the input description length. Convenient safe eventual
+coefficients are $30.270$ and $29.488$. Every recursively evaluated tensor
+entry is charged. The proof uses the same conservative matrix exponent
+$12/5$ as the strongest comparable submitted tree certificate; using a newer
+matrix exponent is not the source of the gain.
+
+\begin{center}
+\begin{tabular}{p{7.4cm}rr}
+\toprule Generic normalized interface & Time coefficient & Space coefficient\\\midrule
+Strongest latest cached packet~\cite{tree} &30.891019&30.753913\\
+This report &\textbf{30.269873}&\textbf{29.487537}\\
+Strongest polynomial-space packet~\cite{flags} &46.184846&polynomial\\
+\bottomrule
+\end{tabular}
+\end{center}
+The time coefficient decreases by about $2.01\%$ and the space coefficient
+by about $4.12\%$. For the displayed asymptotic bound expressions,
+\[
+ \log_2\frac{U_{\rm previous}(s)}{U_{\rm new}(s)}
+  =(0.621146009925\ldots+o(1))\Escale(s).
+\]
+This is an exponential separation of \emph{certified upper-bound expressions}.
+It is not a lower bound on the previous algorithm's actual runtime.
+The new algorithm spends subexponential memory; it does not replace the
+polynomial-space branch when memory is constrained.
+
+\paragraph{The mathematical change.}
+Nine groups are the nine points of $\F_3^2$. Its four directions give four
+partitions into three parallel lines. Each partition specifies a full
+contraction plan. We choose the cheapest plan for the actual exact mode-list
+sizes. A geometric support bound gives aggregation coefficient
+$1/\sqrt3=0.5773502691\ldots$, versus $0.6021452276\ldots$ for the previous
+nine-group menu. A twelve-group menu is separately certified by integer
+arithmetic. Puncturing one or two points from the affine plane supplies the
+later eight- and seven-group steps. This makes the entire recursion cheaper,
+not just its first operation.
+
+\paragraph{What the result does not establish.}
+The power of the logarithm is unchanged. The inherited density-aware SAT
+order remains
+\begin{equation}
+ (n+m)^{O_k(1)}\,
+ 2^{O_k\left(\frac{n}{\sqrt{\log n}}
+        \min\{\log(2+m/n),\log\log n\}\right)}.\label{eq:sat-envelope}
+\end{equation}
+Thus the worst-case exponent is still of order
+$n\log\log n/\sqrt{\log n}$, and at fixed clause density it is
+$n/\sqrt{\log n}$. Small sizes are treated separately. The constant per
+wire cannot simply be placed before the number $n$ of SAT variables:
+the reduction has its own expansion and arithmetic constants.
+We do not numerically dominate the unspecified constants in either distinct
+primary SAT theorem. Nor do we treat conditional $n/\log n$ proposals as
+completed algorithms. This is a new coefficient theorem and an exact kernel
+improvement, not a claimed breakthrough in the unrestricted logarithmic order.
+
+\section{Review of the recent repository state}
+\label{sec:corpus}
+
+\subsection{Frozen source state and recent commits}
+The review is pinned to ProveIt \pin. At that revision,
+\texttt{Computability/SubexponentialSAT/Research} contains twenty filed
+refinement packets and one separate Claude manuscript. The OpenAI manuscript
+is vendored under \texttt{lib/openai-math/preprints}. Nine additional SAT
+archives are present in \texttt{docs/incoming}. All nine were safely extracted,
+passed ZIP CRC verification, and had their README, status, report, and relevant
+proof/code sources inspected. The selected mathematical dependencies were
+read in detail; this is not a line-by-line audit of every historical artifact.
+
+The recent mathematical intake is summarized below; times are Pacific on
+October 26, 2026.
+\begin{center}\small
+\begin{tabular}{p{3.1cm}p{1.7cm}p{9.1cm}}
+\toprule Commit & Time & Relevant change\\\midrule
+\texttt{6d3adc4506}&19:03:44&Eight second-round packets placed.\\
+\texttt{f42479bca2}, \texttt{f898a9fde4}, \texttt{fa6e904d10}
+ &19:28--19:31&Five third-round packet arrivals.\\
+\texttt{450252e9d8}&19:36:02&Those five packets placed; two replay scripts restored.\\
+\texttt{b9941a7396}&20:11:06&Nine new SAT archives committed unchanged.\\
+\texttt{73dfb5e5ab}&20:11:10&Mathematical intake snapshot after a merge.\\
+\texttt{a7ae5ab55f}&20:15:51&Nine incoming packets filed; comparison README updated.\\
+\texttt{7de9d09fec}&20:20:40&Public Anthropic formalization linked.\\
+\bottomrule
+\end{tabular}
+\end{center}
+At the intake snapshot, the project README predates the nine new archives.
+Stopping at that earlier README would incorrectly use $35.354588\ldots$
+as the cached target. The new $30.8910189\ldots$ target comes from the
+tree-certificate archive~\cite{tree}. A closing review through
+\texttt{7de9d09fecd17de776d712835ecb2011205c531d} covers the two later
+commits: there are now twenty-nine filed packets, \texttt{docs/incoming}
+contains only its README, and the comparison README includes the new
+frontier. The archived source links in this report intentionally retain
+the original immutable ZIP snapshot. Exact Git-blob matching confirms the
+relocated research files against the original archive members.
+The provenance directory records complete commit identities, immutable paths,
+Git blob identifiers, and SHA-256 hashes for the reviewed corpus.
+
+\subsection{The nine new archives}
+The table abbreviates archive names; the complete names and source anchors
+are in \texttt{review/latest-frontier.txt}. All generic numbers use the same
+root-degree promise $\lceil s^{9/10}\rceil$. ``PS'' denotes polynomial
+space. A dash means this table does not extract a PS result from that packet,
+not that no other branch exists.
+\begin{center}\small
+\begin{tabular}{p{6.1cm}rrr}
+\toprule Packet & PS time & Cached time & Cached space\\\midrule
+\texttt{3sat\_round3\_frontier}&63.75736&37.93011&33.62304\\
+\texttt{ETH\_Adaptive\_Exact\_Kernels}&55.33162&35.07061&33.99950\\
+\texttt{eth\_adaptive\_schedules}&63.78117&37.59170&33.62304\\
+\texttt{sat\_adaptive\_bounds}&\textbf{46.18485}&34.32528&34.02418\\
+\texttt{sat\_adaptive\_frontier}&50.30469&31.25240&31.25240\\
+\texttt{sat\_adaptive\_matrix\_partition}&50.21043&34.32528&34.02418\\
+\texttt{sat\_adaptive\_tree\_certificate}&---&\textbf{30.89102}&\textbf{30.75391}\\
+\texttt{subexponential\_sat\_adaptive\_four}&50.39373&32.91581&31.66171\\
+\texttt{subsat\_rectangular}&53.97753&33.99389&33.99372\\
+\bottomrule
+\end{tabular}
+\end{center}
+The four-block packet also gives $32.85635/31.46748$ with matrix exponent
+$19/8$. This does not change the identity of the strongest generic target.
+The older twenty packets establish sharp Hermite budgets, nearly lossless
+packing, factorial and full-block Cauchy modes, adaptive separators, fast
+matrix aggregation, and exact kernels. Those ingredients are credited as
+inputs to this report, not rediscovered contributions.
+
+The specialized bounds must remain separate. At degree at most $s^{1/12}$,
+the newly inspected corpus includes a PS composition with coefficient
+$22.1981057366\ldots$, and the incomparable cached points
+$13.3796490663/13.2530249330$ and $14.2391881944/12.3613014576$.
+At degree at most $s^{0.51}$ there is a PS bound $25.1637654152\ldots$.
+These stronger input promises are not implied by our generic theorem.
+The full useful portfolio retains those branches, the density refinement,
+and the new generic branch.
+
+\subsection{What was checked in the strongest incoming proof}
+The tree-certificate packet bounds complete operation supports, includes the
+recursive cost of singleton caches, and uses a strict $9\to13\to7$ schedule.
+We independently reconstructed its finite integer certificates:
+\[
+ (r,Q,\text{tuples})=(9,3304,9261),\quad(13,7074,35937).
+\]
+Its root, depth-one, and tail branches are respectively
+$30.7539128321$, $30.8910189204$, and $30.5129274328$; the depth-one branch
+sets the time bound. We found no defect in this scoped support/recurrence
+argument. Its inherited deformation and SAT reduction are still separate
+proof dependencies.
+
+\section{The additional Anthropic reference}
+\label{sec:anthropic}
+
+The user supplied revision
+\texttt{1a6eee293b9e00cb432eef6018a21f523623a9af} of pull request 31 in
+\texttt{anthropics/formal-math}. The pull request was merged at
+20:07:22 Pacific on October 26 as commit \texttt{16a5ce4130}. We inspected the supplied revision, rather
+than silently replacing it with a later branch state~\cite{anthropic-pr}.
+
+This materially updates the source record: the Lean development is now
+public. At the supplied revision, \texttt{eth/} contains 1,062 files,
+including 1,052 Lean files, of which 1,047 are under \texttt{proof/}.
+The earlier ProveIt statement that this development is unpublished, together
+with its earlier file count, is superseded. The closing ProveIt commit
+\texttt{7de9d09fec} already links the public development. The public
+\texttt{eth/paper.pdf} is a different revision from the older PDF filed in
+ProveIt; this report uses the public paper for the crossing-interface review.
+
+\paragraph{The actual public proposition.}
+\texttt{MainResults.MainTheorem} quantifies one deterministic
+\texttt{TM2ComputableAux Bool Bool} machine, with every stack alphabet finite,
+and one natural constant $C$, \emph{before} quantifying $k,n$ and the input
+formula. For $k\ge1$, $n\ge4$, at least two clauses, no repeated clause list,
+and every variable occurring, it counts satisfying assignments within
+\begin{equation}
+ \left\lfloor 2^{C\min\{km/\sqrt{\log_2m},\,
+       k^2n\log_2\log_2n/\sqrt{\log_2n}\}}\right\rfloor
+ \label{eq:anthropic-bound}
+\end{equation}
+steps of the specified finite-alphabet machine. The count is returned in
+$n+1$ bits. The input hypotheses deal explicitly with repeated clauses,
+unused variables, and the singular small logarithms; the separate ETH
+statement supplies its own front end. Clause order within a clause is part
+of the literal list encoding~\cite{anthropic-statement}.
+
+\texttt{Solution.lean} provides closed theorem terms of precisely
+\texttt{ETHIsFalse} and \texttt{MainTheorem}. The README describes the
+Mathlib/Lean 4.33.1 build, axiom printout, Comparator statement comparison,
+and nanoda check. Static inspection found the two expected challenge stubs
+using \texttt{sorry} in \texttt{Challenge.lean}, and no explicit axiom
+declarations in the Lean project. We did not rebuild the 1,052-file development
+or independently rerun nanoda in this session. Source presence and static
+inspection are not being reported as a completed kernel verification.
+The stated main theorem has no polynomial-space conjunct.
+
+\paragraph{Effect on this research.}
+The published bound has the same worst-case and fixed-density logarithmic
+orders as the comparison corpus. It has no matched numerical coefficient per
+normalized Cauchy-network wire, so our coefficient theorem cannot be called
+a numerical improvement over that distinct full algorithm. Its
+operator/graded-space method does give an important alternative route to an
+order improvement; Section~\ref{sec:research} identifies precisely which
+part remains missing. The supplied source is now included in the comparison
+and in the archive's provenance.

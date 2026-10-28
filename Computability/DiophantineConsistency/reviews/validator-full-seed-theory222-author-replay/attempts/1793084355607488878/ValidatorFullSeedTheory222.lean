@@ -1,0 +1,323 @@
+import ZFCinPA.SchemaClosure
+import ZFCinPA.ValidatorSourceFullSeed222
+import ZFCinPA.ValidatorEqualityImages222
+
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+
+/-! The actual full-seed schema, with a concrete Δ₁ recognizer and all
+internal axiom images in C222. The source theory is explicitly new; it is
+not identified with raw GIC, containers, or the later tagged quotient. -/
+namespace LeanProofs.ZFCinPA.ValidatorFullSeedTheory222
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
+open LO.FirstOrder.SetTheory
+open _root_.SetTheory.BusyBeaver.ZFC ArithmeticCode254
+open ValidatorSourceFullSeed222 ValidatorProvability222 ValidatorFormulaEncoder222
+open ValidatorEnvironmentStreams222 ValidatorEnvironmentAlpha222
+open ValidatorQuantifierRules222 ValidatorEqualityImages222
+open scoped LO.FirstOrder.Arithmetic
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The theory retains the frozen body and closes ALL its free parameters. -/
+def seedSchema : SetTheory :=
+  Set.range (fun K : SetTheorySemiproposition 2 => (fullSeedBodyMeta K).univCl)
+
+def seedRecognizerBodyMeta (K : SetTheorySemiproposition 2) : SetTheoryProposition :=
+  fullSeedBodyMeta (∼K)
+def seedRecognizerBodyVal (k : V) : V :=
+  fullSeedBodyVal (Bootstrapping.neg ℒₛₑₜ k)
+
+theorem seedSchema_eq_negRange : seedSchema =
+    Set.range (fun K : SetTheorySemiproposition 2 => (seedRecognizerBodyMeta K).univCl) := by
+  ext σ
+  constructor
+  · rintro ⟨K,rfl⟩
+    refine ⟨∼K,?_⟩
+    simp [seedRecognizerBodyMeta]
+  · rintro ⟨K,rfl⟩
+    exact ⟨∼K,rfl⟩
+
+private theorem quote_negative {n : ℕ} (K : SetTheorySemiproposition n) :
+    (⌜∼K⌝ : V)=Bootstrapping.neg ℒₛₑₜ (⌜K⌝ : V) := by
+  simp [FirstOrder.Semiformula.quote_def]
+
+theorem recognizerBody_quote (K : SetTheorySemiproposition 2) :
+    seedRecognizerBodyVal (⌜K⌝ : V) = (⌜seedRecognizerBodyMeta K⌝ : V) := by
+  unfold seedRecognizerBodyVal seedRecognizerBodyMeta
+  rw [←quote_negative,fullSeedBodyVal_quote]
+
+private theorem subst01_meta (K : SetTheorySemiproposition 2) :
+    (K ⇜ ![(#0 : SyntacticSemiterm ℒₛₑₜ 6),#1]) =
+      (Rew.castLE (by omega) ▹ K : SetTheorySemiproposition 6) := by
+  apply FirstOrder.Semiformula.rew_eq_of_funEqOn
+  · intro x
+    match x with
+    | 0 => simp
+    | 1 => simp
+  · intro x _
+    simp
+
+private theorem subst01_quote (K : SetTheorySemiproposition 2) :
+    subst ℒₛₑₜ ((^#0∷^#1∷0) : ℕ) (⌜K⌝ : ℕ) = ⌜K⌝ := by
+  change ((⌜K⌝ : Bootstrapping.Semiformula ℕ ℒₛₑₜ 2).subst
+    ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 6)⌝,⌜(#1 : SyntacticSemiterm ℒₛₑₜ 6)⌝]).val = ⌜K⌝
+  have he : (⌜K⌝ : Bootstrapping.Semiformula ℕ ℒₛₑₜ 2).subst
+      ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 6)⌝,⌜(#1 : SyntacticSemiterm ℒₛₑₜ 6)⌝] =
+      (⌜K ⇜ ![(#0 : SyntacticSemiterm ℒₛₑₜ 6),#1]⌝ : Bootstrapping.Semiformula ℕ ℒₛₑₜ 6) := by
+    simp [Matrix.comp_vecCons',Matrix.constant_eq_singleton]
+  rw [he,←FirstOrder.Semiformula.quote_def,subst01_meta,
+    FirstOrder.Semiformula.quote_castLE (V := ℕ) K (by omega)]
+
+private theorem negative_core_le_body (k : V) :
+    Bootstrapping.neg ℒₛₑₜ (subst ℒₛₑₜ (^#0∷^#1∷0) k) ≤ fullSeedBodyVal k := by
+  unfold fullSeedBodyVal Bootstrapping.imp
+  exact le_of_lt <| lt_trans (lt_or_left _ _) <| lt_trans (lt_forall _) <|
+    lt_trans (lt_or_right _ _) <| lt_trans (lt_forall _) <|
+    lt_trans (lt_K!_right _ _) <| lt_trans (lt_exists _) <|
+    lt_trans (lt_or_right _ _) <| lt_trans (lt_forall _) <|
+    lt_trans (lt_K!_left _ _) <| lt_trans (lt_exists _) (lt_forall _)
+
+/-- Negating the parameter exposes its identity copy positively. This is
+only a recognizer parameterization; the theory itself is unchanged. -/
+theorem recognizerBody_quote_bound (K : SetTheorySemiproposition 2) :
+    (⌜K⌝ : ℕ) ≤ seedRecognizerBodyVal (⌜K⌝ : ℕ) := by
+  have h := negative_core_le_body (V := ℕ) (⌜∼K⌝ : ℕ)
+  rw [subst01_quote,quote_negative] at h
+  have hk := FirstOrder.Semiformula.quote_isSemiformula (V := ℕ) K
+  rw [hk.isUFormula.neg_neg] at h
+  rcases le_def.mp h with h|h
+  · exact Nat.le_of_eq h
+  · exact Nat.le_of_lt h
+
+private def mem01Code : ℕ := ⌜seedMem 3 0 1⌝
+private def mem05Code : ℕ := ⌜seedMem 7 0 5⌝
+private def mem02Code : ℕ := ⌜seedMem 4 0 2⌝
+private def subsetCode : ℕ := ⌜seedSubset⌝
+
+/-- One fixed graph, including the actual negative parameter and all five
+matrix occurrences. The repeated [0,2] vector has one shared raw code. -/
+def recognizerBodyGraph : 𝚺₁.Semisentence 2 := .mkSigma
+  “out k.
+    ∃ nk, !(Bootstrapping.negGraph ℒₛₑₜ) nk k ∧
+    ∃ b0 b1 b2 b3, !qqBvarDef b0 0 ∧ !qqBvarDef b1 1 ∧
+      !qqBvarDef b2 2 ∧ !qqBvarDef b3 3 ∧
+    ∃ t0 t1 t2 t3, !adjoinDef t0 b0 0 ∧ !adjoinDef t1 b1 0 ∧
+      !adjoinDef t2 b2 0 ∧ !adjoinDef t3 b3 0 ∧
+    ∃ v10 v01 v02 v03, !adjoinDef v10 b1 t0 ∧ !adjoinDef v01 b0 t1 ∧
+      !adjoinDef v02 b0 t2 ∧ !adjoinDef v03 b0 t3 ∧
+    ∃ s10 s01 s02 s03,
+      !(Bootstrapping.substsGraph ℒₛₑₜ) s10 v10 nk ∧
+      !(Bootstrapping.substsGraph ℒₛₑₜ) s01 v01 nk ∧
+      !(Bootstrapping.substsGraph ℒₛₑₜ) s02 v02 nk ∧
+      !(Bootstrapping.substsGraph ℒₛₑₜ) s03 v03 nk ∧
+    ∃ c7 e7 i6 a6 i5 a5 c4 e4 i3 a3,
+      !qqAndDef c7 s02 ↑mem05Code ∧ !qqExsDef e7 c7 ∧
+      !(Bootstrapping.impGraph ℒₛₑₜ) i6 s01 e7 ∧ !qqAllDef a6 i6 ∧
+      !(Bootstrapping.impGraph ℒₛₑₜ) i5 ↑subsetCode a6 ∧ !qqAllDef a5 i5 ∧
+      !qqAndDef c4 s10 a5 ∧ !qqExsDef e4 c4 ∧
+      !(Bootstrapping.impGraph ℒₛₑₜ) i3 ↑mem01Code e4 ∧ !qqAllDef a3 i3 ∧
+    ∃ cr er ir ar co eo,
+      !qqAndDef cr s03 ↑mem02Code ∧ !qqExsDef er cr ∧
+      !(Bootstrapping.impGraph ℒₛₑₜ) ir s02 er ∧ !qqAllDef ar ir ∧
+      !qqAndDef co a3 ar ∧ !qqExsDef eo co ∧ !qqAllDef out eo”
+
+instance recognizerBody_defined :
+    𝚺₁-Function₁ (seedRecognizerBodyVal : V→V) via recognizerBodyGraph :=
+  .mk fun v => by
+    simp [recognizerBodyGraph,seedRecognizerBodyVal,fullSeedBodyVal,
+      mem01Code,mem05Code,mem02Code,subsetCode,numeral_eq_natCast,
+      FirstOrder.Semiformula.coe_quote_eq_quote]
+
+/-- Literal bounded closure recognizer, with both total-graph presentations. -/
+def seedCh : 𝚫₁.Semisentence 1 := .mkDelta
+  (.mkSigma “p.
+    ∃ m < p+1, ∃ b < p+1,
+      !qqAllsDef p b m ∧ !(Bootstrapping.isUFormula ℒₛₑₜ).sigma b ∧
+      !(Bootstrapping.shiftGraph ℒₛₑₜ) b b ∧ !(Bootstrapping.bvGraph ℒₛₑₜ) m b ∧
+      ∃ fv, !fvarVecDef fv m ∧ ∃ s, !(Bootstrapping.substsGraph ℒₛₑₜ) s fv b ∧
+      ∃ K < s+1, !(Bootstrapping.isSemiformula ℒₛₑₜ).sigma 2 K ∧ !recognizerBodyGraph s K”)
+  (.mkPi “p.
+    ∃ m < p+1, ∃ b < p+1,
+      (∀ y, !qqAllsDef y b m → y=p) ∧ !(Bootstrapping.isUFormula ℒₛₑₜ).pi b ∧
+      (∀ y, !(Bootstrapping.shiftGraph ℒₛₑₜ) y b → y=b) ∧
+      (∀ y, !(Bootstrapping.bvGraph ℒₛₑₜ) y b → y=m) ∧
+      ∀ fv, !fvarVecDef fv m → ∀ s, !(Bootstrapping.substsGraph ℒₛₑₜ) s fv b →
+      ∃ K < s+1, !(Bootstrapping.isSemiformula ℒₛₑₜ).pi 2 K ∧
+        ∀ ib, !recognizerBodyGraph ib K → s=ib”)
+
+abbrev SeedR : V→Prop := SchemaRecognizer ℒₛₑₜ 2 seedRecognizerBodyVal
+instance seedR_defined : 𝚫₁-Predicate[V] (SeedR : V→Prop) via seedCh := .mk <| by
+  constructor
+  · intro v
+    simp [seedCh,HierarchySymbol.Semiformula.val_sigma,eq_comm]
+  · intro v
+    simp [seedCh,HierarchySymbol.Semiformula.val_sigma,SchemaRecognizer,
+      lt_succ_iff_le,eq_comm,Nat.cast_ofNat]
+
+instance seedSchema_delta1 : seedSchema.Δ₁ where
+  ch := seedCh
+  mem_iff φ := by
+    have h : (ℕ ⊧/![(⌜φ⌝ : ℕ)] seedCh.val) ↔ SeedR (⌜φ⌝ : ℕ) := by simp
+    rw [h,show SeedR (⌜φ⌝ : ℕ)=
+      SchemaRecognizer ℒₛₑₜ 2 seedRecognizerBodyVal (⌜φ⌝ : ℕ) from rfl,
+      schemaRecognizer_quote_iff seedRecognizerBodyMeta seedRecognizerBodyVal
+        (recognizerBody_quote (V := ℕ)) recognizerBody_quote_bound φ,
+      seedSchema_eq_negRange]
+    exact (mem_range_univCl_iff seedRecognizerBodyMeta φ).symm
+  isDelta1 := HierarchySymbol.Semiformula.ProvablyProperOn.ofProperOn.{0} _ fun W _ _ => by
+    haveI := seedR_defined (V := W)
+    simp
+
+private lemma fvarVec_isTermVec (slots : V) :
+    IsSemitermVec ℒₛₑₜ slots 0 (fvarVec slots) := by
+  apply IsSemitermVec.iff.mpr
+  refine ⟨len_fvarVec slots,?_⟩
+  intro i hi
+  rw [nth_fvarVec slots i hi]
+  simp
+
+private lemma shift_qqAlls {body : V} (hb : IsUFormula ℒₛₑₜ body) (count : V) :
+    shift ℒₛₑₜ (qqAlls body count)=qqAlls (shift ℒₛₑₜ body) count := by
+  induction count using ISigma1.sigma1_succ_induction
+  · definability
+  case zero => simp
+  case succ count ih =>
+    rw [qqAlls_succ,shift_all (isUFormula_qqAlls.mpr hb),ih,qqAlls_succ]
+
+private theorem free_subst_qVec_fvarVec {k B : V}
+    (hB : IsSemiformula ℒₛₑₜ (k+1) B) (hs : shift ℒₛₑₜ B=B) :
+    free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ (fvarVec k)) B)=
+      subst ℒₛₑₜ (fvarVec (k+1)) B := by
+  have hf := fvarVec_isTermVec (V := V) k
+  have hw : IsSemitermVec ℒₛₑₜ (k+1) 1 (qVec ℒₛₑₜ (fvarVec k)) := by simpa using hf.qVec
+  rw [free,substs1,shift_substs hB hw,hs,
+    substs_substs hB (show IsSemitermVec ℒₛₑₜ 1 0 ?[^&0] by simp) hw.termShiftVec]
+  congr 1
+  apply nth_ext' (k+1)
+  · simp [hw.termShiftVec.isUTerm]
+  · simp
+  · intro i hi
+    rw [nth_termSubstVec hw.termShiftVec.isUTerm hi,nth_termShiftVec hw.isUTerm hi,
+      nth_fvarVec _ _ hi]
+    rcases zero_or_succ i with rfl | ⟨j,rfl⟩
+    · simp [Bootstrapping.qVec]
+    · have hj : j<k := by simpa using hi
+      simp only [Bootstrapping.qVec,hf.lh,nth_adjoin_succ]
+      rw [nth_termBShiftVec hf.isUTerm hj,nth_fvarVec _ _ hj]
+      simp
+
+section Images
+variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+
+def pc (s m b F i : V) : V :=
+  encode F 0 s (subst ℒₛₑₜ (fvarVec (m-i)) (qqAlls b i))
+
+omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
+private lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k→V)→Prop}
+    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
+  rcases h with ⟨φ,hφ⟩
+  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)),?_⟩
+  intro v
+  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
+omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] in
+private lemma pi1_to_sigma2 {k : ℕ} {P : (Fin k→V)→Prop}
+    (h : 𝚷₁.Definable P) : (𝚺-[2]).Definable P := by
+  rcases h with ⟨φ,hφ⟩
+  refine ⟨.mkSigma φ.val (φ.pi_prop.strict_mono 𝚺 (by decide)),?_⟩
+  intro v
+  simpa only [HierarchySymbol.Semiformula.val_mkSigma] using (hφ.iff (v := v))
+private instance avoid_delta : 𝚫₁-Relation[V] Avoid := by unfold Avoid; definability
+private instance free_delta : 𝚫₁-Relation[V] FreeAvoid := by unfold FreeAvoid; definability
+private instance streamFree_pi1 : 𝚷₁-Relation[V] StreamFree := by unfold StreamFree; definability
+private instance streamFree_sigma2 : 𝚺-[2]-Relation[V] StreamFree :=
+  pi1_to_sigma2 streamFree_pi1
+private instance cProv_pi2 : 𝚷-[2]-Predicate[V] CProv := sigma1_to_pi2 cProv_definable
+
+/-- Every length is internal. Free parameters are varied at each actual
+ALL step; no fixed-context GEN or standard-length induction is used. -/
+theorem closure_image {m b s : V} (hb : IsSemiformula ℒₛₑₜ m b)
+    (hbs : shift ℒₛₑₜ b=b)
+    (base : ∀ F : V, StreamFree s F →
+      CProv (encode F 0 s (subst ℒₛₑₜ (fvarVec m) b))) :
+    ∀ F : V, StreamFree s F → CProv (encode F 0 s (qqAlls b m)) := by
+  have hpc : 𝚺₁-Function₂[V] (fun F i => pc s m b F i) := by unfold pc; definability
+  haveI : 𝚺-[2]-Function₂[V] (fun F i => pc s m b F i) := hpc.of_sigmaOne
+  have key : ∀ i : V, i≤m → ∀ F : V, StreamFree s F → CProv (pc s m b F i) := by
+    apply InductionOnHierarchy.order_induction_sigma 𝚷 2
+      (P := fun i => i≤m → ∀ F : V, StreamFree s F → CProv (pc s m b F i))
+    · definability
+    intro i ih hi F hF
+    rcases zero_or_succ i with rfl | ⟨j,rfl⟩
+    · simpa [pc] using base F hF
+    · obtain ⟨k,rfl⟩ : ∃ k, m=k+(j+1) := ⟨m-(j+1),(tsub_add_cancel_of_le hi).symm⟩
+      have e1 : k+(j+1)-j=k+1 := by
+        rw [add_comm j 1,←add_assoc,add_tsub_cancel_right]
+      have hB : IsSemiformula ℒₛₑₜ (k+1) (qqAlls b j) :=
+        IsSemiformula.qqAlls (by rwa [add_assoc,add_comm 1 j])
+      have hBs : shift ℒₛₑₜ (qqAlls b j)=qqAlls b j := by
+        rw [shift_qqAlls hb.isUFormula,hbs]
+      have hf := fvarVec_isTermVec (V := V) k
+      have hw : IsSemitermVec ℒₛₑₜ (k+1) 1 (qVec ℒₛₑₜ (fvarVec k)) := by simpa using hf.qVec
+      have hq : IsSemiformula ℒₛₑₜ 1
+          (subst ℒₛₑₜ (qVec ℒₛₑₜ (fvarVec k)) (qqAlls b j)) := hB.subst hw
+      have ih' := ih j (by simp) (le_trans (by simp) hi)
+        (eigen F s∷F) (fresh_resources F s hF).2.2.1
+      simp only [pc,e1] at ih'
+      rw [←free_subst_qVec_fvarVec hB hBs] at ih'
+      simp only [pc,add_tsub_cancel_right]
+      rw [qqAlls_succ,substs_all hB.isUFormula]
+      exact all_rule hq F s hF ih'
+  intro F hF
+  have h := key m le_rfl F hF
+  simp only [pc,tsub_self] at h
+  have hc : IsSemiformula ℒₛₑₜ 0 (qqAlls b m) := IsSemiformula.qqAlls (by simpa using hb)
+  rwa [subst_eq_self hc (fvarVec_isTermVec 0) (by simp)] at h
+
+theorem recognized_seed_image {p : V} (hp : SeedR p) (F s : V)
+    (hs : StreamFree s F) : CProv (encode F 0 s p) := by
+  obtain ⟨m,_,b,_,rfl,hbu,hbs,hbv,K,_,hK,hbody⟩ := hp
+  have hb : IsSemiformula ℒₛₑₜ m b := by
+    rw [isSemiformula_iff]
+    exact ⟨hbu,by simp [hbv]⟩
+  apply closure_image hb hbs (s := s) _ F hs
+  intro G hG
+  rw [hbody]
+  exact typed_fullSeed_image hK.neg G s hG
+
+theorem axOK_seedSchema : ValidatorSourceDerivation222.AxOK seedSchema V := by
+  intro p _ hp F s hs
+  have hR : SeedR p := by
+    change V ⊧/![p] seedCh.val at hp
+    simpa using hp
+  exact recognized_seed_image hR F s hs
+
+end Images
+
+def irreflexiveSentence : SetTheorySentence := “∀ x, x ∈ x → ⊥”
+def seedTheory : SetTheory := ((𝗘𝗤 ℒₛₑₜ) ∪ {irreflexiveSentence}) ∪ seedSchema
+instance seedTheory_delta1 : seedTheory.Δ₁ :=
+  (equalityDelta.add (Theory.Δ₁.singleton irreflexiveSentence)).add seedSchema_delta1
+
+theorem axOK_seedTheory [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] :
+    ValidatorSourceDerivation222.AxOK seedTheory V := by
+  intro p hp hm F s hs
+  change V ⊧/![p] ((equalityDelta.ch ⋎
+    (Theory.Δ₁.singleton irreflexiveSentence).ch) ⋎ seedCh).val at hm
+  simp only [HierarchySymbol.Semiformula.val_or,LogicalConnective.HomClass.map_or,
+    LogicalConnective.Prop.or_eq] at hm
+  rcases hm with (he|hi)|hseed
+  · letI := equalityDelta
+    exact axOK_equality p hp he F s hs
+  · have hi' : p=ORingStructure.numeral (Encodable.encode irreflexiveSentence) := by simpa using hi
+    rw [hi',numeral_eq_natCast_app,LO.FirstOrder.Sentence.quote_eq_encode]
+    exact irreflexivity_image F s
+  · have hR : SeedR p := by simpa using hseed
+    exact recognized_seed_image hR F s hs
+
+theorem seedTheory_refutation_witness [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
+    (h : Provable seedTheory (^⊥ : V)) :
+    ∃ d : V, ArithmeticHistory222.value d=2 :=
+  ValidatorSourceDerivation222.refutation_witness axOK_seedTheory h
+
+end LeanProofs.ZFCinPA.ValidatorFullSeedTheory222

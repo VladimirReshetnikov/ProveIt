@@ -16,6 +16,15 @@ ZFC derivation is superseded as the primary remaining target.
 
 ## Required endpoints and evidence
 
+The current [13-positive/88-operation/degree51 packet](reviews/adaptive-current13-metrics-root.md)
+is now bound to the unchanged `NativeAdaptiveGraph` and
+`NativeAdaptiveCurrent2011` external endpoint at the exact current ports.
+Independent finite certification covers every live gate, complete degree
+leaders and all47,313 coefficient bytes; normal/optimized replays agree.
+This uses the accepted Lean existence equivalence, with a finite ordinary
+metric proof rather than a new kernel totalDegree theorem. The equation's
+internal PA/HA proof remains a required endpoint below.
+
 `DiophantineConsistency.ConZFC` is
 `¬ BProv ZFCax_s [] Form.fBot`, for the actual repository axiom predicate.
 `NativeZFC.noPositiveZero_iff_conZFC`, `ExplicitZFC` and `DirectQuarticZFC`
@@ -49,6 +58,25 @@ coefficient-height alternatives recorded in `SIZE_REDUCTION.md` and the
 manuscript catalogue. These must be assessed by their actual metrics and
 bindings, rather than replacing the goal with one convenient equation.
 No global optimality theorem is requested or inferred from that ledger.
+
+The [first-norm auxiliary correction](research/thirteen-first-norm-correction92/README.md)
+now gives13 positive variables,84 operations and exact degree92. Either
+sphere equation first forces P=1, so the correction vanishes; every
+positive assignment is retained in both directions. Independent fresh
+Lean builds pass eight standard-only reports, and complete normal/optimized
+finite audits verify the two leading cancellations and all fixed ports.
+See the [root acceptance](reviews/thirteen-first-norm-correction92-root.md).
+This trades nine operations for four degrees against13/75/96. Its external
+ConZFC equivalence is checked; the HA endpoint remains open.
+
+The [complete normalized product](research/fourteen-normalized-product106/README.md)
+now supplies14 positive variables,67 operations and degree106 with the
+unchanged current ports. The exact scaled identity and positive delta
+preserve every positive zero. Two independent fresh current-source builds
+pass six standard-only reports; normal/optimized complete finite audits
+verify the full degree, all paid operations and all47313 coefficient bytes.
+See the [root acceptance](reviews/fourteen-normalized-product106-root.md).
+Its external ConZFC equivalence is checked; its HA endpoint remains open.
 
 ## Current gaps and implementation order
 
@@ -154,6 +182,35 @@ graph and cannot serve as the new 13-variable binding.
 
 The entries below record the state at each checkpoint. Later entries and
 the current-gap section above supersede earlier lists of open work.
+
+After merging upstream8e13da9d92, the latest
+[native/client refresh](reviews/ha-native-merge-refresh-20261026.md)
+passes47 fresh builds and155 standard-only reports. It authenticates the
+469-source inventory and422 cached objects, including the new upstream
+native proofs, and freshly checks the affected local equation endpoints
+through the exact arithmetic sentence/HA stability. This is scoped current
+source validation, not a fresh whole-closure replay or the final HA theorem.
+
+The current HA track now includes the actual C222 equality core and four
+further actual source order images. The former internally derives the
+helper, specialization, rho7 and gated membership vacuity; seed semantics
+remain open. The latter covers addEqOfLt, addLtAdd, oneLeOfZeroLt and
+ltTrans by actual HA predecessor constructions followed by negative proof
+maps. Six independent root leaf invocations passed58 standard-only reports,
+all objects byte-identical to the authors'. See the
+[C222 review](reviews/validator-equality-core222-root.md) and
+[order review](reviews/foundation-ha-order-witnesses-root.md). The
+[final order review](reviews/foundation-ha-order-final-root.md) now also
+discharges mulLtMul, ltIrrefl and ltTri with six independent builds and53
+standard-only reports. No source order case remains. These checkpoints
+do not yet prove the final HA consistency equivalence.
+
+The [complete PA negative proof transfer](reviews/foundation-ha-peano-peer.md)
+now composes all actual source equality/arithmetic/induction cases. An
+actual Foundation PA proof yields a genuine HA proof of its literal GG
+image, with no remaining source-axiom image premise. Independent fresh main
+and checks pass nine reports and match author objects. This leaves the
+source PA equivalence, actual target comparison and C222 calibration open.
 
 ### First arithmetic checkpoint
 
@@ -973,6 +1030,25 @@ Both leaves passed [independent root replay](reviews/thirteen-shared-squares96-r
 with eleven standard-only reports and identical author/root objects. Separate
 normal/optimized finite audits cover all76 operations, the exact degree and
 whole coefficient tuple. No new HA endpoint or fresh whole closure is claimed.
+
+`ThirteenUnitSphere96` proves the integer three-square lemma and the exact
+sign sequence needed for `(PQ)²+U²+Z²−3=0`. It preserves the entire positive
+zero set of LV72 and the actual current-port external ConZFC equivalence.
+Both leaves passed [independent root replay](reviews/thirteen-unit-sphere96-root.md),
+with13 standard-only reports and identical author/root objects. Separate
+normal/optimized full audits give13/75/96 with unchanged complete ports.
+The new polynomial is different; only its positive zero set is identified.
+
+`NearSquareNormZero` and `CarrierNonzeroSpheres` now add complete14/71/80
+and14/72/68 current-port forms. Generic integer descent and four actual
+nonzero factors justify the two spheres; both preserve the entire original
+positive zero set. Four independent leaves pass12 standard-only reports
+with byte-identical author objects. Full finite normal/optimized checks
+bind every gate, exact degree and all47313 raw coefficient bytes. See
+[root acceptance](reviews/fourteen-nonzero-spheres-root.md). The native
+dependency cache is the current merged361-module selected closure; only
+four new leaves are fresh, not that whole closure. No internal HA/ZFC
+endpoint or displayed-page replacement is asserted.
 
 Each verified checkpoint is
 preceded by bounded source/check replay. The reverse arithmetic work now

@@ -29,7 +29,11 @@ Balog–Szemerédi theorem and Szemerédi's theorem (Gowers catalogue
 Theorems 7.1, 7.2 and 1.2) to
 [`../Combinatorics/Ramsey/Lean/GowersSzemeredi/`](../Combinatorics/Ramsey/Lean/GowersSzemeredi/).
 Its README records provenance, the backport modules under `OAI/Compat/`, and
-every per-file port change.
+every per-file port change. Its [`preprints/`](openai-math/preprints/PROVENANCE.md)
+subdirectory holds an unmodified copy of the upstream manuscript directory
+*The Exponential Time Hypothesis is False* (commit
+`7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a`, Apache-2.0). It is the primary
+source of [`../Computability/SubexponentialSAT/`](../Computability/SubexponentialSAT/README.md).
 
 Repository-authored Busy Beaver models, bridges, and score certificates live
 under [`../Computability/BusyBeaver/`](../Computability/BusyBeaver/), not here.

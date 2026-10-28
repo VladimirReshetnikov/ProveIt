@@ -1,0 +1,79 @@
+\section{Verification, artifacts, and integration}
+\label{sec:repro}
+
+\subsection{What the certificate programs actually establish}
+All delivered correctness checkers use only the Python standard library.
+They use explicit exceptions rather than Python assertions, so their
+checks remain active under \texttt{python3 -O}. Normal and optimized
+executions produce identical JSON for every checker.
+\begin{center}\small
+\begin{tabular}{p{4.4cm}p{9.5cm}}
+\toprule Checker & Evidence and scope\\\midrule
+\texttt{check\_portfolios.py}&Exhaustive integer support norms for all five
+group counts; compact geometric/twelve-group certificates; 100 exact plan
+selection cases; deliberate rejection of a false $Q=9863$.\\
+\texttt{check\_schedule.py}&Integer logarithm certificates, rational outward
+intervals for $\pi$, $\ln2$, square roots and every paid branch; strict
+packing gates; invalid taper/tail and $30.26$ negative controls.\\
+\texttt{check\_affine\_algebra.py}&45 fixtures, 153 complete planned
+contractions, 749 literal assignments, and 3,013 paid group-entry calls
+over $(\mathbb Z/64\mathbb Z)[V]/(V^2)$.\\
+\texttt{check\_toeplitz.py}&1,048 packet cases; 12,328 independent cancelled
+diagonals; 2,096 general actions; 149 masked actions; 1,048 Boolean and
+1,048 strided actions; 350 unrelated convolutions; 10 invalid inputs.\\
+\texttt{check\_lacunary.py}&Explicit nonzero finite-difference witnesses
+for pole orders $0$ through $64$.\\
+\bottomrule
+\end{tabular}
+\end{center}
+The algebra test caches every singleton factor and compares the full plan
+with a literal graphical sum. Its oracle expands constant and linear
+coefficients directly rather than sharing the evaluator's ring
+multiplication. Fixtures include zero divisors, nilpotents, distinct
+opposite orientations, singleton dimensions, empty allocations, and
+disconnected effective graphs. The finite implementation uses literal
+rectangular multiplication; the theoretical fast matrix backend is a
+separate inherited existence argument.
+
+These tests corroborate the implementation and the finite certificates.
+They do not prove the all-size packing and recovery interfaces, run a full
+SAT solver, or constitute Lean verification of the new theorem. The
+all-size additions in this report are justified by the mathematical
+arguments, with the proof dependencies stated explicitly.
+
+\subsection{Replaying the package}
+From the extracted archive directory, run
+\begin{lstlisting}
+python3 code/run_checks.py
+python3 code/verify_manifest.py
+bash build.sh
+\end{lstlisting}
+The first command runs every checker normally and with optimization,
+compares outputs, and writes a combined verification report. The second
+checks file integrity against the packaged manifest. The third builds
+\texttt{report.pdf} from the included \LaTeX{} sources; it needs a normal
+TeX installation with \texttt{latexmk}, AMS packages, TikZ, and Latin Modern.
+Recorded benchmark timings are evidence from this session, not deterministic
+test expectations. To measure them again, use
+\begin{lstlisting}
+python3 code/check_toeplitz.py --benchmark --output benchmarks_rerun.json
+\end{lstlisting}
+
+\subsection{Contents and proof status}
+The archive includes the complete \LaTeX{} source tree and compiled PDF;
+frozen contraction menus; exact certificate and algebra programs; normal
+and optimized JSON results; raw benchmark samples; a source review and
+independent audit notes; immutable source URLs and hashes; and a
+machine-readable \texttt{PROOF\_STATUS.json}.
+
+The source provenance identifies both repositories at exact commits and
+all nine incoming ZIP hashes. Primary upstream source files are not
+duplicated wholesale. The package is self-contained for replaying its
+new finite certificates and for building its PDF; reading the inherited
+proofs requires the referenced source snapshots.
+
+For repository integration, this is a proposed new research packet. No
+remote branch, issue, pull request, or repository file was changed during
+this session. The latest repository documentation already records that the
+Anthropic formalization is public at the supplied revision. The new
+numerical frontier here is a separate normalized contraction theorem.

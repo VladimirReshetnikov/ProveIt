@@ -1,0 +1,65 @@
+\section{What the supplied Anthropic commit changes}
+\label{sec:formal}
+
+The link supplied during this review is pull request 31 at commit
+\texttt{1a6eee293b9e} of
+\path{anthropics/formal-math} \cite{anthpr}. It publishes the paper and
+Lean development of \emph{A $2^{o(n)}$ Time Algorithm for 3-SAT}.
+This supersedes the older ProveIt overview's statement that the development
+had not been published. The closing commit \texttt{7de9d09fecd1} already
+corrects that overview and links this development.
+
+\subsection{The exact public endpoint}
+
+The file \path{eth/MainResults.lean} imports Mathlib alone and defines
+the public statements. Its main theorem asserts the existence of one
+deterministic finite-alphabet Mathlib multi-stack Turing machine and one
+constant $C$, both chosen before the clause width $k$, such that the machine
+counts satisfying assignments in at most
+\begin{equation}\label{eq:anth-main}
+ 2^{C\min\{km/\sqrt{\log_2m},\ k^2n\log_2\log_2n/\sqrt{\log_2n}\}}
+\end{equation}
+steps, with the stated integer rounding. Its premises are $k\ge1$,
+$n\ge4$, $m\ge2$, at most $k$ literals per clause, no repeated clause,
+and occurrence of every variable. Its output is the exact count in $n+1$
+binary digits. The theorem about ETH is stated separately and follows
+through explicit front ends.
+
+The proof in \path{eth/Solution.lean} invokes
+\path{CountedRoute.mainTheoremHolds}. The separate ETH endpoint is
+constructed through \path{NamesInOrder} and \path{Wrap}. The two \path{sorry} declarations
+in \path{eth/Challenge.lean} are intentionally unproved comparison
+statements. The solution does not import that challenge file.
+
+The pinned checkout contains $1{,}052$ Lean source files. A static scan
+found the two intentional challenge placeholders and no other literal
+\path{sorry}/\path{admit} declaration. That scan is not a kernel proof
+check. The README reports the build, axiom listing with
+\path{propext}, \path{Classical.choice}, and \path{Quot.sound}, and
+the comparator/nanoda workflow. We inspected the source and entry points;
+we did not independently rebuild the development or reproduce those
+reported kernel checks in this session.
+
+The supplied 49-page PDF is not byte-identical to the earlier 49-page
+\path{eth.pdf} in ProveIt. Both hashes are retained in the source ledger.
+The algorithmic order in \eqref{eq:anth-main} agrees with the previous
+manuscript's stated order. Publication of the development is an important
+change in what can be inspected, rather than a new smaller asymptotic
+order to beat.
+
+\subsection{Why its constants cannot simply replace wire constants}
+
+The solution comments explicitly distinguish intermediate counted
+operations from final Turing-machine steps. The simulation can multiply
+the intermediate exponent by an unspecified constant, absorbed in the
+big-$O$ theorem. Consequently an internal clique coefficient or rank
+ratio is not a numerical competitor to the Cauchy contractor's
+$C\,s/\sqrt{\log_2s}$ bit-time coefficient.
+
+The two algorithms nevertheless suggest a useful research comparison.
+The OpenAI construction organizes a weighted Cauchy mode sum, whereas the
+Anthropic construction rewrites crossings with operators on a graded
+polynomial space and then selects a contraction direction. Both currently
+lead to a square-root logarithm. Section~\ref{sec:order-research} and its accompanying research
+notes test whether their structures can be combined without hiding entry
+costs or paying the gain back in a different parameter.

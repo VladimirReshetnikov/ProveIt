@@ -1,0 +1,65 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRegisterBoxes215.lean:255:56: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  step (frameSparse qb ?L (2 * ?R + 1))
+in the target expression
+  runFrom v (step (frameSparse qb (2 * L + digit false) (2 * bitPrefix true v R + digit true))) =
+    frameSparse qa (reverseBlock v L) R
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+qa qb : ℕ
+h0 : KTableCore.tm215 qa false = some (false, true, qb)
+h1 : KTableCore.tm215 qb true = some (true, true, qa)
+hs : KTableCore.tm215 qa true = some (true, true, qa)
+v L R : V
+⊢ runFrom v (step (frameSparse qb (2 * L + digit false) (2 * bitPrefix true v R + digit true))) =
+    frameSparse qa (reverseBlock v L) R
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRegisterBoxes215.lean:264:4: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  step (frameSparse 94 ?L (2 * ?R + 1))
+in the target expression
+  runFrom v (step (frameSparse 94 (2 * L + digit true) (2 * bitPrefix true v R + digit true))) =
+    frameSparse 0 (reverseCarryBlock v L) R
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+v L R : V
+⊢ runFrom v (step (frameSparse 94 (2 * L + digit true) (2 * bitPrefix true v R + digit true))) =
+    frameSparse 0 (reverseCarryBlock v L) R
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRegisterBoxes215.lean:274:69: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  step (leftFrame entry (2 * ?L + 1) ?R)
+in the target expression
+  runFrom (v + 1) (step (leftFrame entry (2 * bitPrefix true v (2 * L) + digit true) R)) = leftFrame exit L (block v R)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+entry ones exit : ℕ
+h1 : KTableCore.tm215 entry true = some (true, false, ones)
+hs : KTableCore.tm215 ones true = some (true, false, ones)
+h0 : KTableCore.tm215 ones false = some (false, false, exit)
+v L R : V
+⊢ runFrom (v + 1) (step (leftFrame entry (2 * bitPrefix true v (2 * L) + digit true) R)) = leftFrame exit L (block v R)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRegisterBoxes215.lean:288:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * bitPrefix ?b ?n ?z + digit ?b
+in the target expression
+  leftFrame 97 L (2 * (2 * bitPrefix true v R + 1)) = leftFrame 97 L (block v R)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+v L R : V
+⊢ leftFrame 97 L (2 * (2 * bitPrefix true v R + 1)) = leftFrame 97 L (block v R)
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticRegisterBoxes215.lean:356:37: warning: This simp argument is unused:
+  bitPrefix_succ
+
+Hint: Omit it from the simp argument list.
+  simp only [̵r̵e̵v̵e̵r̵s̵e̵C̵a̵r̵r̵y̵B̵l̵o̵c̵k̵,̵b̵i̵t̵P̵r̵e̵f̵i̵x̵_̵s̵u̵c̵c̵,̵b̵i̵t̵P̵r̵e̵f̵i̵x̵_̵o̵n̵e̵,̵d̵i̵g̵i̵t̵_̵t̵r̵u̵e̵]̵[̲r̲e̲v̲e̲r̲s̲e̲C̲a̲r̲r̲y̲B̲l̲o̲c̲k̲,̲ ̲b̲i̲t̲P̲r̲e̲f̲i̲x̲_̲o̲n̲e̲,̲ ̲d̲i̲g̲i̲t̲_̲t̲r̲u̲e̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

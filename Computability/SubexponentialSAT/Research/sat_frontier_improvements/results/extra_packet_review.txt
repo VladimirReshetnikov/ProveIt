@@ -1,0 +1,82 @@
+Closing review delta: matching refinement packet
+================================================
+Closing ProveIt snapshot:
+474ddba696a5d385c091c23fb2995f69edd13e00
+Placement commit:
+6d3adc45061535ebe6fa7cd3d9b37dff7dcfc22a
+Original arrival archive: ETH_Matching_Packing_Thin_Gaps_2026-10-27.zip
+Original arrival commit prefix: d098ba436b
+
+Canonical report path:
+Computability/SubexponentialSAT/Research/eth_matching_refinement/report.tex
+Git blob:
+ee8c396087e1127579b84ce9d3757ab7f65228cb
+SHA-256:
+3ee901913f8af9aa0f58abf1d57e6ec5a9655a82943372559c39e907709ba724
+Local inspected report:
+/dev/shm/proveit-dede6eb48f8f/matching_delta/report.tex
+
+Four inspected files, all verified against their returned Git blob hashes:
+matching_delta/README.txt
+matching_delta/report.tex
+matching_delta/code/refinement.py
+matching_delta/results/constants.json
+Exact pinned URLs, sizes and hashes are in matching_delta/provenance.json.
+
+Proof-focused findings
+----------------------
+The principal theorem (report Section 2, label thm:main) gives normalized
+polynomial-space time coefficient 94.74820225953415 when root M<=s and
+maximum degree<=ceil(s^0.9). For a root with M<=C*s it explicitly pays C
+multiplying that coefficient. This matches the generic coefficient already
+present in the balanced-packing and higher-moment packets; it is weaker
+than the previous asymmetric coefficient 76.9089949516.
+
+Section 3 proves exact rational derandomization using at most c=2*Delta
+matchings, label-pair count D, and tau=ceil(log2(8*c*D)). The potential is
+sum over matching/cell pairs of t^(-H_k) times a product of conditional
+edge factors, with t=1+1/lambda. Independence is used only within each
+matching. Its initial expectation is at most 1/8, and exact conditional
+minimization preserves this. Consequently
+  X_max < (1+1/lambda)*M/D + 2*c*lambda*tau.
+Uniform padding has relative mass below
+  1+1/lambda + D*(2*c*lambda*tau+L)/M.
+The exact guard M>=lambda*D*(2*c*lambda*tau+L) yields padding below
+1+2/lambda and child ratio (2/r)*(1+2/lambda).
+This is valid for multigraphs. Common rational denominator bit length and
+all candidate counts are explicitly polynomial in the application.
+
+Section 4 fixes r=54. Its exact cap A_lambda=floor(lambda/(20*log2(54)))
+reserves (d_max+1)*g+ceil(log2(lambda))^2 bits, with
+  d_max=min{d:18^d>=ceil(C)*lambda}, g=6*ceil(log2(lambda)),
+  u_d=floor(8*U/9^(d+1)), a_d=sum_{j<=d}u_j+(d+1)*g.
+The square-log reserve makes D*Delta/M decay faster than any inverse
+polynomial in lambda. The child ratio is at most 1/18 for a noncircular
+bootstrap, and minimum taper grows with exponent 1-ln(9)/ln(18)>0.
+
+Sections 5--6 reuse the leading precision bound 6*M*D_i/u and the older
+factorial weights 1+3*b-2*popcount(b). They pay inherited precision using
+the additive gap. They do not supply the full-orientation slope-four
+basis, asymmetric side-degree exploitation, multistage arity, cached group
+tables, a new SAT logarithmic order, or a missing structured-sum oracle.
+The global constant follows from child ratio 1/27 and taper ratio 1/9.
+I found no substantive gap in these new proof components during this
+source-level review; the unchanged upstream proof was not recertified.
+
+There is no stronger-premise degree specialization or practical benchmark
+in this packet. code/refinement.py contains small exact component routines
+for matching coloring, conditional potentials, labeling, log intervals,
+integer budgets, schedules, inherited Hermite precision, and abstract
+factorial-mode tuple counts. It contains no complete contraction or SAT
+solver and no accelerated full-Cauchy feature construction. The report
+explicitly disclaims a measured speedup. Its schedule basic_guard is only
+a basic positivity/taper test, not a full finite contraction guard.
+
+Effect on present report
+------------------------
+This adds a fifteenth packet to coverage without changing the prior best
+generic coefficient, the strongest conditional targets, or the present
+comparison of the 63.8574 polynomial-space certificate, 38.4845 cached
+certificate, and measured local kernel improvement. Matching potentials
+and thin gaps should continue to be credited as prior ingredients, as they
+already are. No new novelty overlap was found.

@@ -1,0 +1,161 @@
+\section{Exact contraction interface and local cost supports}
+\label{sec:interface}
+
+\subsection{Input promises and imported dependencies}
+
+The normalized input is a bipartite Boolean tensor network with at most
+$s$ wires, polynomially many vertices, and maximum degree at most
+$\lceil s^{9/10}\rceil$. Its value is
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+The entries belong to $(\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell)$ with
+$1\le P_0,\ell\le s$. A uniform entry procedure uses polynomial space
+and $(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ bit operations, with fixed
+constants. All subsequent estimates use these same promises.
+
+The inherited computation extends scalars to
+\[
+ R_p=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell),
+\]
+where $f$ is monic of degree $O(\log s)$ and irreducible modulo two.
+Ring rank and coordinate precision remain polynomial in $s$. A tensor
+description retains its creation precision and is evaluated using the same
+canonical coordinate representatives at later precisions. Canonical
+lifting is not used as a homomorphism.
+
+We import the exact Cauchy deformation, local integrality, Hermite recovery,
+and original SAT reductions from the source, and the compatible refinements
+of packing, full-orientation modes, and sharp local precision from the
+reviewed packets \cite{openai,asymmetric,joint,flags,pairwise}. The proof
+below starts after those constructions have produced finite mode lists.
+It only changes how the ensuing finite sum is evaluated and bounded.
+
+\subsection{The mode sum and its entropy inequality}
+
+At one active call, let $M$ be the wire count, $r$ a fixed group count,
+$u$ the retained valuation range, $a$ the packet exponent, and
+$D=2^{a-i}$ for $0\le i<u$. The imported identities give
+\[
+ p_t\le (6+o(1))\frac{MD}{u},\qquad
+ M_{\rm child}\le\left(\frac2r+o(1)\right)M.
+\]
+For each directed group pair $(g,h)$, $g\ne h$, enumerate its exact
+valuation budget and let $\mathcal I_{gh}$ be the finite list of mode
+exponent tuples realizing that budget. Empty lists contribute zero and are
+skipped. With $r$ fixed, the budget arrays are polynomially numerous in $s$.
+Their exact list cardinalities, ranking, and unranking are supplied by the
+ordinary finite knapsack recurrence for the known integral mode weights.
+
+For one budget array the contribution is precisely
+\begin{equation}\label{eq:finite-sum}
+ \sum_{\xi_{gh}\in\mathcal I_{gh}}
+       \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\end{equation}
+An entry of $Z_g$ is an actual recursive contraction, with its cost charged
+later. Write
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|,\quad
+ g_{\{g,h\}}=h_{gh}+h_{hg},\quad
+ K(M,u)=\kappa\frac M{\sqrt u},\qquad
+ \kappa=\frac{\pi\sqrt2}{\ln2}.
+\]
+The inherited common-tilt estimate states that for each fixed nonnegative
+unordered support $v$,
+\begin{equation}\label{eq:entropy-interface}
+ v\cdot g\le\left(\frac{\sqrt2\norm v}{r}+o(1)\right)K(M,u).
+\end{equation}
+The error is uniform on a fixed finite support family. The factor
+$\sqrt2$ converts an unordered edge into its two directed copies and must
+be retained.
+
+For orientation, the mode weights have the form
+$a+1-i+4j-2\operatorname{popcount}(j)$, and at most
+$(2/r^2+o(1))M/D$ modes of each index occur on a directed pair.
+The generating product has logarithm
+$\pi^2/(24\theta)+O(\log^2(2/\theta))$ as $\theta\downarrow0$.
+Combining this with the common precision budget and minimizing in $\theta$
+gives \eqref{eq:entropy-interface}. The buffers in Section~\ref{sec:recursion}
+make its error uniform on all active calls. We use this already proved
+interface, rather than asserting that a finite checker proves its analytic
+asymptotics.
+
+\subsection{Contraction plans and the arithmetic backend}
+
+A plan is an ordered partition of $[r]$ into three nonempty blocks. Each
+block is built recursively by splitting its ordered list at its midpoint.
+Merging disjoint blocks $A,B$ with outside block $O$ is a matrix product
+whose three index classes correspond to $AB,AO,BO$. After the three main
+blocks have been built, the remaining triangle is contracted.
+Every step follows from finite distributivity over $R_p$.
+
+The retained rectangular backend uses fixed field bounds
+$\omega<19/8$ and dual exponent $\alpha>3/10$. These weaker rational
+allowances follow from the published bounds in \cite{matrix}.
+For sorted logarithmic dimensions $x\ge y\ge z\ge0$, set
+$\varepsilon=10^{-5}$. The reviewed implementation gives the exponent
+\begin{equation}\label{eq:rect-cost}
+ F(x,y,z)=\max\left\{
+ (1+\varepsilon/2)(x+y),\quad
+ x+(47/56+\varepsilon)y+(15/28)z
+ \right\}.
+\end{equation}
+The input/output term is included. As a function of the unsorted triple,
+this is the maximum of the distinct permutations of
+$(1+\varepsilon/2,1+\varepsilon/2,0)$ and
+$(1,47/56+\varepsilon,15/28)$, by the rearrangement inequality.
+
+The exact ring bridge lifts coordinates to bounded integers, uses finitely
+many nonexceptional odd primes for the fixed rational bilinear algorithms,
+reconstructs integer products by CRT, and reduces modulo $2^p$ after
+combining the ring structure constants. The number of coordinate products,
+primes, and bits per coordinate is polynomial in $s$. Thus the field
+algorithms yield the same displayed exponential coefficient over $R_p$
+without inverting a nonunit. A fixed bilinear recursion processes one
+recursive product at a time; its working storage is a polynomial factor
+times the largest relevant input/output table \cite{rectangular}.
+
+Put $L_*=1{,}400{,}000$. The integral triples are
+\begin{equation}\label{eq:triples}
+ (1400007,1400007,0),\qquad(1400000,1175014,750000).
+\end{equation}
+An operation produces nine vectors by assigning these permuted triples to
+its three crossing edge classes and zero to edges internal to a class.
+There are $r-2$ operations per plan. At $r=10$ this gives $72$ supports
+in dimension $\binom{10}2=45$. Denote their multiset by $\mathcal V_j$.
+The time score for plan $j$ is
+\[
+ F_j(g)=\frac1{L_*}\max_{v\in\mathcal V_j}v\cdot g.
+\]
+Repeated supports are harmless; their deterministic order is fixed by
+postorder traversal and lexicographic order of the nine triples.
+
+For each nonempty stored block $A$, let $b_A$ be the indicator of its
+edge boundary. There are $17$ distinct such vectors per ten-group plan,
+including all singleton tables. Define the storage score
+\begin{equation}\label{eq:space-score}
+ G_j(g)=\max_A b_A\cdot g.
+\end{equation}
+Every input and output of an internal matrix product is one of these
+boundary tables. The final three matrices are also included. Constantly
+many simultaneous tables change their size only by a constant factor.
+
+\subsection{Exact plan selection}
+
+The final algorithm chooses a plan minimizing
+\begin{equation}\label{eq:joint-selector}
+ J_j(g)=\max\{F_j(g),(21/20)G_j(g)\}.
+\end{equation}
+This one choice will achieve both the time and space bounds. It is not
+legitimate to choose one plan for time and another plan for space and
+combine their guarantees.
+
+There is an exact integer implementation. Set
+$d_{gh}=|\mathcal I_{gh}|\,|\mathcal I_{hg}|$ for unordered pairs.
+Augment each time support by the integer vectors $1{,}470{,}000\,b_A$.
+For every augmented support $v$, form $\prod_e d_e^{v_e}$, take the maximum
+within a plan, and choose the plan of smallest maximum, breaking ties by
+index. Taking a base-two logarithm shows equivalence to
+\eqref{eq:joint-selector}. The exponents, group count, and menu size are
+fixed constants; the integers have polynomial bit length in $s$.
+No floating-point comparison or optimization oracle is needed at runtime.

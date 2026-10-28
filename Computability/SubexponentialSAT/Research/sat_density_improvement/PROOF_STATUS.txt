@@ -1,0 +1,77 @@
+PROOF STATUS AND DEPENDENCIES
+
+1. IMPORTED RESULTS
+
+The report relies on the OpenAI preprint at the commit recorded in
+source_manifest.json for:
+
+  - its Boolean tensor-contraction theorem, with time
+    poly(s+description_length) * 2^{O(s/sqrt(log s))};
+  - its total-order parity-lift identity and associated incidence-degree
+    bound K = k(a+2n);
+  - its monomial-to-tensor-network representation and tensor-entry formulas;
+  - its general-density exact #k-SAT counter for the high-density branch.
+
+It relies on the classical Margulis-Gabber-Galil spectral theorem for the
+explicit expander family. The cited Isabelle AFP theory supplies the graph
+definition and an independently accessible formal spectral proof.
+
+The original preprint's full proof/formalization and the AFP session were
+not rebuilt or independently reverified in this task.
+
+2. DERIVATIONS IN THIS REPORT
+
+  - Uniform sparse-system count depending on actual monomial bound S,
+    with time poly(n) * 2^{O(n log(S+2)/sqrt(log n))}.
+  - Explicit powered-lazy-expander checks whose support is polynomial in
+    density B, with no log n term in that support bound.
+  - Exact local-code existence, row budget, distance, padding and shortening
+    bounds, with fully integer parameter selection.
+  - Greedy elimination as an oracle reduction and its uniform integration
+    with the sparse-system counter.
+  - The density-dependent hybrid time bound and polynomial-space accounting.
+  - A combinatorial obstruction to improving the mode count using only its
+    weight and ordinary-degree budgets. This is not a computational lower bound.
+
+These are mathematical arguments in the LaTeX/PDF. They have received
+independent adversarial checks within this research task. They have not
+been mechanized in Lean, Rocq, or Isabelle, and have not undergone external
+peer review.
+
+3. EXECUTED FINITE COMPONENT CHECKS
+
+All passed using exact integer or rational arithmetic:
+
+  3,248 inverse-port identities on lazy MGG graphs, sides 2 through 8;
+  4 exact rational spectral certificates, sides 2 through 5;
+  5 exhaustive small local-code searches;
+  156 shortening and unique zero-extension checks;
+  2,047 subset rank/unrank cases, all N <= 10;
+  30,000 wire and incidence-encoding inequalities;
+  72 greedy parity rounds;
+  1,000 exact parameter cases, B = 1,...,1000;
+  27,696 padding and row-budget checks.
+
+The script does not instantiate the enormous theorem-sized expander degrees.
+It computes their integer parameters symbolically as arbitrary-precision
+integers. The toy code examples are clearly separated from the asymptotic
+parameter choices. No component test is presented as a proof for all sizes.
+
+4. IMPLEMENTATION STATUS
+
+The archive contains reference routines and finite checks for the new
+components. It does not contain a complete implementation of the source
+tensor-contraction engine or of the entire subexponential #k-SAT solver.
+No measured speedup or realistic crossover size has been established.
+
+5. EXACT SCOPE OF THE IMPROVEMENT
+
+At m = Theta(n log log n), the exponent improves from
+O(n log log n/sqrt(log n)) to O(n log log log n/sqrt(log n)), with k fixed.
+More generally it improves the source's combined upper bounds whenever
+B tends to infinity and log B = o(log log n).
+
+The unrestricted worst-case n-only exponent remains
+O(n log log n/sqrt(log n)). The fixed-density exponent remains
+O(n/sqrt(log n)). Further improvement of either is an open target of this
+work, not an established result.

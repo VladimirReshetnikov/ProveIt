@@ -1,3 +1,4 @@
+import DiophantineConsistency.CurrentMaskData2011
 import DiophantineConsistency.NativeSourceMask
 import Mathlib.Data.Nat.Digits.Lemmas
 import Mathlib.Tactic.IrreducibleDef
@@ -20,12 +21,6 @@ set_option maxRecDepth 10000
 set_option maxHeartbeats 4000000
 set_option Elab.async false
 
-def radix : ℕ := 2 ^ 47
-def width : ℕ := 47 * 2011
-def beta : ℕ := radix ^ 2011 - 1
-
-irreducible_def lowSupport : Finset ℕ := Finset.range 951 ∪ Finset.Ico 960 986 ∪ {1004}
-
 theorem lowSupport_lt : lowSupport ⊆ Finset.range 2011 := by
   intro j hj
   simp only [lowSupport_def, Finset.mem_union, Finset.mem_range, Finset.mem_Ico,
@@ -47,17 +42,6 @@ theorem lowSupport_card : lowSupport.card = 978 := by
   rw [lowSupport_def, Finset.card_union_of_disjoint h2, Finset.card_union_of_disjoint h1]
   norm_num
 
-def lowPort : ℕ := mask radix 2 2011 lowSupport
-
-/-- All nonzero high-mask digits occur in this1006-digit prefix. -/
-def highPrefix : List ℕ :=
-  4 :: (List.replicate 916 8 ++ List.replicate 43 0 ++ List.replicate 9 1 ++
-    List.replicate 18 0 ++ List.replicate 8 1 ++ List.replicate 9 0 ++ [1, 2 ^ 45 - 4])
-
-def highDigits : List ℕ := highPrefix ++ List.replicate 1005 0
-def highPort : ℕ := Nat.ofDigits radix highDigits
-
-
 theorem highPrefix_length : highPrefix.length = 1006 := by simp [highPrefix]
 theorem highDigits_length : highDigits.length = 2011 := by simp [highDigits, highPrefix_length]
 
@@ -72,7 +56,6 @@ theorem highDigits_lt {a : ℕ} (ha : a ∈ highDigits) : a < radix := by
   rcases ha with ha | ⟨_, rfl⟩
   · exact highPrefix_lt ha
   · decide
-
 
 theorem lowPort_population : σ 2 lowPort + 978 = width := by
   have h := low_mask_population (t := 47) (k := 1) (n := 2011)
@@ -95,7 +78,6 @@ theorem highPort_population : σ 2 highPort = 978 := by
 theorem population : σ 2 lowPort + σ 2 highPort = width := by
   rw [highPort_population]
   exact lowPort_population
-
 
 theorem beta_pos : 0 < beta := by
   have hp : 1 < radix ^ 2011 := one_lt_pow₀ (by decide : 1 < radix) (by decide)
@@ -144,7 +126,6 @@ theorem highPort_pos : 0 < highPort := by
   rw [hz, σ_two_zero] at hp
   omega
 
-
 theorem lowPort_mod_radix : lowPort % radix = radix - 2 := by
   have he := Nat.ofDigits_mod_eq_head! radix (maskList radix 2 2011 lowSupport)
   rw [ofDigits_maskList (by decide : 1 ≤ (2 : ℕ)) (by decide : 2 ≤ radix) lowSupport_lt] at he
@@ -177,9 +158,6 @@ theorem highPort_four : highPort % 8 = 4 := by
   rw [List.cons_append, Nat.ofDigits_cons]
   rw [Nat.add_mod, Nat.mul_mod, show radix % 8 = 0 from by decide]
   omega
-
-
-def ports (K : ℤ) : Fin 4 → ℤ := ![beta, K, lowPort, highPort + beta]
 
 /-- The entire finite mask interface has no machine or tableau premise. -/
 theorem interface (K : ℤ) (hK : 0 ≤ K) :

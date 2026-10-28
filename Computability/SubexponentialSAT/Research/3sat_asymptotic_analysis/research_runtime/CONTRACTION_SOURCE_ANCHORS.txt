@@ -1,0 +1,251 @@
+    75	
+    76	All estimates below hold for sufficiently large $s$, with the
+    77	threshold depending only on the fixed constants.  A fixed finite
+    78	range of smaller sizes is handled by direct summation. The parameter
+    79	inequalities can be tested directly.  Set
+    80	\[
+    81	 H=\left\lceil\frac{s}{\lfloor\sqrt\lambda\rfloor}\right\rceil,
+    82	 \qquad r=64,\qquad \varepsilon=\frac1{128\cdot1024},
+    83	 \qquad \Delta=\lceil s^{9/10}\rceil.
+    84	\]
+    85	A call with $M\le H$ edges is a leaf and is evaluated directly.
+    86	At an active call at depth $d$, with the root at depth zero, use
+    87	\begin{equation}\label{eq:tensor-parameters}
+    88	 u=u_d=\left\lfloor\frac{\varepsilon\lambda}{2^d}\right\rfloor,
+    89	 \qquad a=a_d=2\sum_{j=0}^d u_j,\qquad
+    90	 a_{-1}=0,\qquad L=2^a,\qquad D_{\rm arr}=r^{2a}.
+    91	\end{equation}
+    92	We will arrange that every child has at most $M/8$ edges and maximum
+    93	degree at most $\Delta$.  These assertions imply, on every active path,
+    94	\[
+    95	 H<M\le Cs\,8^{-d},\qquad
+    96	 d\le\frac{\log_2\lambda}{6}+O_C(1).
+    97	\]
+    98	Consequently
+    99	\begin{equation}\label{eq:tensor-parameter-bounds}
+   100	 u=\Theta_C(\lambda/2^d),\quad
+   101	 \lambda^{4/5}\le u\le M,\quad
+   102	 a\le4\varepsilon\lambda,\quad
+   103	 L,D_{\rm arr}\le s^{1/1000}
+   104	\end{equation}
+   105	for all sufficiently large $s$.  In particular, at each active call
+   106	\begin{equation}\label{eq:tensor-packing-conditions}
+   107	 M\ge2D_{\rm arr}^{\,2}\Delta,\qquad
+   108	 M\ge L D_{\rm arr},\qquad 2L\le\Delta.
+   109	\end{equation}
+   110	For example, the right side of the first inequality is
+   111	$O(s^{9/10+2/1000})=o(H)$.  The other inequalities follow in the
+   112	same way.
+   113	
+   114	\begin{lemma}[Packing into packets]\label{lem:tensor-packets}
+   115	Under \eqref{eq:tensor-packing-conditions}, label the vertices on
+   116	each side of the network by elements of $[r]^a$.  There is a
+   117	deterministically constructible labeling and an embedding of the
+   118	edges into packets of $L$ slots with the following properties.
+   119	\begin{enumerate}
+   120	\item There are at most $3M/L$ packets.  Each edge occupies the same
+   121	      slot at its row and column ends. Unused slots have no ports.
+   122	\item In every packet and every coordinate, the unordered pair of
+   123	      row and column symbols is fixed.  When these symbols differ,
+   124	      bit $i$ of the slot number specifies their orientation in
+   125	      coordinate $i$, for $0\le i<a$.
+   245	\label{subsec:tensor-hermite}
+   246	
+   247	The next lemma isolates the precision estimate.  All power-series
+   248	truncations in its statement are ordinary truncations in $z$.
+   249	
+   250	\begin{lemma}[Tapered Hermite recovery]\label{lem:tapered-hermite}
+   251	Let integers $u,M$ satisfy $1\le u\le a$ and $M\ge u$, and put
+   252	$h=\lceil3M/u\rceil$.
+   253	For $t\in S\setminus\{0\}$ set
+   254	\[
+   255	 i=v_2(t),\qquad q_t=q(i)=h\max(0,u-i),\qquad D_t=L/2^i.
+   256	\]
+   257	Suppose $F\in(\mathcal K[V]/(V^\ell))[T]$ has degree at most
+   258	$M(2L-1)$, $F(0)\in\mathcal A$, and
+   259	$F(t+\alpha z)\in\mathcal A[z]$ for every $t\in S$.
+   260	For $p\ge1$, its value $F(0)$ modulo $2^p$ can be recovered from
+   261	\[
+   262	 F(t+\alpha z)\pmod{2^{p_t}},
+   263	 \qquad
+   264	 p_t=p+8hD_t+8M(a+1),\qquad q_t>0.
+   265	\]
+   266	Only the first $q_t$ coefficients of each polynomial are needed.
+   267	Recovery takes polynomial time and space in $M,L,\ell,e$ and the
+   268	precisions.
+   269	\end{lemma}
+   270	\begin{proof}
+   271	There are $L$ odd points in $S$, so
+   272	$\sum_{t\ne0}q_t\ge Lhu\ge3ML>M(2L-1)$.  Also
+   273	$h\le4M/u$, and hence $q_t\le4M$.
+   274	For each $t$ of positive multiplicity put
+   275	\[
+   294	
+   295	Each factor of $E_t(t+\alpha z)$ is a power of
+   296	$1+\alpha z/(t-q)$.  It is integral and has constant term one.
+   297	Its reciprocal truncated at $q_t$ is therefore integral, so
+   298	forming the quotient in \eqref{eq:tensor-hermite-origin} loses no
+   299	precision.
+   300	
+   301	Fix $i=v_2(t)$ and $D=D_t$.  Directly from the product,
+   302	\begin{align}
+   303	 v_2(E_t(0))
+   304	 &=\sum_{q\ne0,t}q_q\bigl(v_2(q)-v_2(t-q)\bigr)\notag\\
+   305	 &=D\sum_{j=1}^{a-i}\frac{j}{2^j}
+   306	                           \bigl(q(i+j)-q(i)\bigr)
+   307	 \ \ge -6Dh. \label{eq:tensor-hermite-loss}
+   308	\end{align}
+   309	To justify the second equality, points of valuation less than $i$
+   310	contribute zero.  For $1\le j\le a-i$, there are $D/2^j$ points with
+   311	$v_2(q)=i+j$, and the same number with $v_2(t-q)=i+j$.
+   312	The latter have $v_2(q)=i$, and these levels exhaust the points
+   313	other than $t$ with that valuation.  These counts follow from the
+   314	complete residue grid, whose nonzero integer differences have
+   315	valuation at most $a$.  Finally,
+   316	$q(i+j)-q(i)\ge-hj$ and $\sum_{j\ge1}j^2/2^j=6$.
+   317	
+   318	Evaluation of a polynomial of degree below $q_t$ at $-t/\alpha$
+   319	loses at most $4M(a+1)$ further powers of two.  Thus replacing
+   320	each quotient coefficient by any lift of its residue modulo
+   321	$2^{p_t}$ changes its contribution in
+   322	\eqref{eq:tensor-hermite-origin} by an element of $2^p\mathcal A$.
+   323	Summing these errors loses no further precision.  The reconstructed
+   324	sum is integral, since it differs from the integral value $F(0)$
+   347	
+   348	The input and child precisions satisfy
+   349	\begin{equation}\label{eq:tensor-precision-bound}
+   350	 p\le s\lambda^{O(1)}2^{a_{d-1}},
+   351	 \qquad
+   352	 p_t=O_C(MD_t/u).
+   353	\end{equation}
+   354	The first assertion holds at the root since $P_0\le Cs$.
+   355	Along a path, the increments in precision are
+   356	$8hD_t+8M(a+1)$, with $h\le4M/u$, $M\le Cs$, and
+   357	$D_t\le2^{a_d}$.  Summing them over $O(\log\lambda)$ depths
+   358	proves the first assertion for every call, including leaves.
+   359	For the second, $q_t>0$ implies $i<u$ and hence
+   360	\[
+   361	 D_t\ge2^{a_d-u}=2^{a_{d-1}+u}.
+   362	\]
+   363	Since $M>H$ and $u\ge\lambda^{4/5}$, this extra factor $2^u$
+   364	dominates every fixed power of $\lambda$.  Thus the first bound
+   365	on $p$, as well as $8M(a+1)$, is $O_C(MD_t/u)$.
+   366	The remaining increment $8hD_t$ has that bound directly.
+   367	All precisions remain polynomial in $s$ because
+   368	$a_d\le4\varepsilon\lambda$.
+   369	
+   370	The taper accounts for the factor $1/u$ in this estimate.
+   371	For comparison, assign the same multiplicity $q_*=\Theta(M)$ to
+   372	every level below $u$, and zero to the remaining levels.  At the
+   373	last retained level $i=u-1$, the identity
+   374	\eqref{eq:tensor-hermite-loss} would give the loss
+   375	\[
+   376	 -q_*D_t\sum_{j=1}^{a-i}\frac{j}{2^j}=-\Theta(MD_t).
+   377	\]
+   378	Our multiplicities instead change by only $h=\Theta(M/u)$ per
+   379	level, giving loss $O(MD_t/u)$.  The cumulative choice of $a_d$
+   380	provides the additional factor $2^u$ needed to absorb inherited
+   381	precision and the evaluation loss.  Thus the smaller bound holds
+   382	at every retained level and every recursion depth.
+   425	\end{equation}
+   426	Indeed the first fraction has valuation at least $a+1-i\ge1$,
+   427	and the ratio raised to the $b$th power has valuation at least
+   428	one before taking that power.  The geometric remainder is
+   429	divisible by $2^{p_t}$.  These expressions are computable by
+   430	factoring the known powers of two and using only unit inverses.
+   431	
+   432	For each such packet, tile, and $b$ introduce a mode variable $Z$
+   433	of weight $w_Z=b+1$, to be replaced by
+   434	\[
+   435	 L_Z(X)=\sum_{\text{real columns }y\text{ in the tile}}j^bX_y.
+   436	\]
+   437	As usual $j^0=1$, including $j=0$.
+   438	Its source is the tile's column group and its target is the other
+   439	group in that packet's coordinate pair.  Formula
+   440	\eqref{eq:tensor-mode-expansion} expresses each row form as its
+   441	local part plus a linear combination of its targeted modes.
+   442	The coefficient of $Z$ is divisible by $2^{w_Z}$.
+   443	There are at most
+   444	\begin{equation}\label{eq:tensor-mode-multiplicity}
+   445	 (3M/L)2^{i+1}=6M/D
+   446	\end{equation}
+   447	variables of any one weight.
+   448	
+   449	In the product of the affine factors
+   450	$l_{Y_x}((W(T)X)_x)$, every coefficient of a mode monomial
+   451	$Z^\beta$ is divisible by $2^{\sum_Zw_Z\beta_Z}$.
+   452	Consequently only the exponent tuples
+   453	\begin{equation}\label{eq:tensor-mode-budget}
+   454	 \sum_Zw_Z\beta_Z<p_t
+   455	\end{equation}
+   456	need be considered.  The number of these tuples is
+   457	\begin{equation}\label{eq:tensor-partition-count}
+   458	 \exp\bigl(O(\sqrt{Mp_t/D})\bigr)
+   459	       =\exp\bigl(O_C(M/\sqrt u)\bigr).
+   460	\end{equation}
+   461	Here is the complete counting estimate.  For any $\theta>0$,
+   462	the generating product and \eqref{eq:tensor-mode-multiplicity}
+   463	bound the number by
+   464	\[
+   465	 \exp\left(\theta p_t+\frac{6M}{D}
+   466	                   \sum_{j\ge1}-\ln(1-e^{-\theta j})\right).
+   467	\]
+   468	Expanding the logarithm and summing the geometric series gives
+   469	\[
+   470	 \sum_{j\ge1}-\ln(1-e^{-\theta j})
+   471	  =\sum_{h\ge1}\frac1{h(e^{\theta h}-1)}
+   472	  \le\frac1\theta\sum_{h\ge1}\frac1{h^2}.
+   473	\]
+   474	Take $\theta=\sqrt{M/(Dp_t)}$ and use
+   475	\eqref{eq:tensor-precision-bound}.  All mode variables and their
+   476	exponents have polynomial-size descriptions.  Tuples satisfying
+   477	\eqref{eq:tensor-mode-budget} can be enumerated with polynomial
+   478	delay and space by ordering the variables and successively choosing
+   479	each exponent subject to the remaining budget.  Every feasible partial
+   480	choice has the all-zero continuation, so the number of visited
+   481	partial choices is at most the number of complete tuples times
+   482	the number of variables, up to an additive constant.
+   483	
+   484	\subsubsection{The child networks and their descriptions}
+   485	\label{subsec:tensor-children}
+   486	
+   487	For one tuple $\beta$ in \eqref{eq:tensor-mode-budget} construct
+   488	a child network for each group $g\in[r]$.
+   489	Place all current vertices in group $g$, from both sides of the
+   490	current network, on one side of the child.  Retain their ports and
+   565	by its child contractions.  Interpolate $F(t+\alpha z)$ and apply
+   566	Lemma~\ref{lem:tapered-hermite}.  At a leaf, sum directly over all
+   567	Boolean edge assignments.  Lemma~\ref{lem:tensor-integrality},
+   568	the recursion identity, and the recovery lemma prove correctness
+   569	by induction from the leaves.
+   570	
+   571	The number of interpolation nodes, values, and groups at a call
+   572	is polynomial in $s$, independently of $\mathcal L$.
+   573	By \eqref{eq:tensor-partition-count}, the number of children of
+   574	an active depth-$d$ call is at most
+   575	\[
+   576	 s^{O(1)}\exp\left(
+   577	       O_C\left(\frac{s}{\sqrt\lambda}
+   578	                    \left(\frac{\sqrt2}{8}\right)^d\right)\right).
+   579	\]
+   580	Indeed $M\le Cs\,8^{-d}$ and
+   581	$u_d=\Theta_C(\lambda/2^d)$.  Multiplying these bounds over the
+   582	$O_C(\log\lambda)$ depths, or bounding the number of nodes on
+   583	each level in this way, gives at most
+   584	\[
+   585	 \exp\left(O_C(s/\sqrt\lambda)
+   586	                   +O_C(\lambda\log\lambda)\right)
+   587	       =\exp(O_C(s/\sqrt\lambda))
+   588	\]
+   589	calls in total.  At a leaf, direct summation uses at most $2^H$
+   590	assignments and polynomially many entry evaluations per assignment.
+   591	Its cost is bounded by a polynomial in $s+\mathcal L$ times
+   592	\[
+   593	 \exp(O_C(H)+O_{C,A}(s^{9/10}))
+   594	   =\exp(O_{C,A}(s/\sqrt\lambda)).
+   595	\]
+   596	Local arithmetic, packing, descriptions, and recovery use
+   597	polynomial time per generated term, apart from the already
+   598	bounded entry computations.  The description-dependent factor
+   599	bounds the work per call. Since the branching bound is independent of
+   600	$\mathcal L$, the total work retains a fixed polynomial factor in $s+\mathcal L$.

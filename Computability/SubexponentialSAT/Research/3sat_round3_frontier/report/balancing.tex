@@ -1,0 +1,48 @@
+\subsection{The baseline already caches row sums}
+The incoming packet-refinement code already stores row power sums and suffix products; it compares $Q$ candidate labels for each of $n_c$ column vertices in $O(n_cQ^2)$ rational operations. Comparing only with the asymmetric packet's literal triple sum would overstate the novelty. Our additional step removes the candidate-independent term and visits only row labels incident to the current column. For matched $z$, row labels and processing order, it preserves the exact minimizers, including first-label tie breaking, and therefore inherits the same pair-load theorem. It does not improve the padding bound.
+
+Fix the row labels, a positive rational $z>1$, and a column order. Let $w_{aj}$ be the edge multiplicity between row label $a$ and column vertex $j$. Let $X_{ab}$ be the load assigned so far to the label cell $(a,b)$. Define
+\[
+ S_a=\sum_{b=0}^{Q-1}z^{X_{ab}},\quad
+ f_{aj}=\frac{Q-1+z^{w_{aj}}}{Q},\quad
+ U_a=\prod_{k\ge j}f_{ak},\quad E=\sum_a U_aS_a.
+\]
+Here $E$ is the conditional expectation of $\sum_{a,b}z^{X_{ab}}$, because the remaining columns are independently uniform. Parallel edges are bundled into the multiplicity; they are not independent labeling choices.
+
+\begin{proposition}[Sparse exact candidate scores]
+Put $A_j=\{a:w_{aj}>0\}$ and $U'_a=U_a/f_{aj}$ on $A_j$, leaving $U'_a=U_a$ outside it. Define
+\begin{align*}
+ B&=E+\sum_{a\in A_j}(U'_a-U_a)S_a,\\
+ \delta_b&=\sum_{a\in A_j}U'_a z^{X_{ab}}(z^{w_{aj}}-1).
+\end{align*}
+Then assigning column $j$ label $b$ gives conditional expectation exactly $B+\delta_b$.
+\end{proposition}
+\begin{proof}
+Remove the remaining random factor $f_{aj}$ from each row. Assigning label $b$ multiplies its one cell by $z^{w_{aj}}$ and leaves all other cells unchanged. The new row sum is $S_a+z^{X_{ab}}(z^{w_{aj}}-1)$. Summing with $U'_a$ yields the displayed identity. Every $f_{aj}$ is positive, so all rational divisions are defined. Averaging $\delta_b$ over $b$ and using $Qf_{aj}=Q-1+z^{w_{aj}}$ recovers the old $E$. Thus the least $b$ minimizing $\delta_b$ preserves the usual conditional-expectation nonincrease invariant and exactly matches the dense method. Update $E\leftarrow B+\delta_b$, $U\leftarrow U'$, and only the affected $S_a,X_{ab}$. Empty columns choose label zero and leave $E$ unchanged. Induction proves every maintained identity.
+\end{proof}
+
+\subsection{Operation counts and bit costs}
+Let $D=\sum_j|A_j|$. With powers $z^0,\ldots,z^M$ precomputed, initialization uses $O(M+D+Q^2)$ rational operations after construction of the weights. Processing uses
+\[
+ O(QD+n_cQ)
+\]
+operations and comparisons, instead of $\Theta(n_cQ^2)$ for dense cached scores. Since $D\le\min(M,n_cQ)$, the dominant score saving can approach a factor $Q$ in sparse support. Dense support retains the same arithmetic order; no universal finite speedup is implied.
+
+Streaming the future products by exact division avoids the $Q$ by $n_c$ suffix table. The shared power table, loads and sparse factors occupy $O(M+Q^2+D+Q)$ rational entries. The delivered adjacency-matrix prototype also stores and scans its supplied matrix, so its $O(n_rn_c+n_rQ)$ input/preprocessing cost, including greedy row-label scans, is not hidden. A sparse edge-list implementation could avoid that matrix but is not claimed here.
+
+For the inherited choice $z=(hC+1)/(hC)$, products have polynomial bit length: the total edge-weight degree is at most $M$, and at most $n_c$ factors contribute denominators $Q$. Exact additions, reduced fractions, divisions and comparisons consequently remain polynomial-time. These arithmetic counts do not claim the same ratio of bit times.
+
+\subsection{Measured component results}
+All three score paths were implemented afresh: literal sums, dense cached sums, and sparse increments. Preprocessing and power tables are shared, and the dense baseline also receives streaming future products, strengthening the comparison. Imported executable code was not run. Normal and optimized Python each pass 140 fixture/label configurations with identical scores, choices, loads and final potentials; 470 independently enumerated completions verify the conditional means, and four invalid inputs are rejected.
+
+\begin{center}\small
+\begin{tabular}{rrrrrr}\toprule
+$Q$ & Columns & Rows & Column degree & Cached ms & Incremental ms\\\midrule
+8 &32&16&2&6.983&1.925\\
+16&48&32&2&37.156&3.908\\
+24&64&48&2&87.676&7.040\\
+24&64&48&8&151.508&32.844\\
+12&32&24&24&36.244&24.179\\\bottomrule
+\end{tabular}
+\end{center}
+The recorded median ratios are $3.63$, $9.51$, $12.45$, $4.61$, and $1.50$. Candidate-term counts change respectively from $2048,12288,36864,36864,4608$ to $504,1488,3048,10584,3924$. The benchmark uses three repetitions in alternating order, includes setup and invariant checks, and omits verbose trace generation equally. The recorded environment is Python 3.12.14 on Linux x86-64; exact samples, deterministic fixture generation and counts are retained. These selected sparse-to-denser fixtures are not representative SAT workloads. Timing variation is expected, and the measurements do not establish end-to-end SAT speedups or a practical asymptotic crossover.

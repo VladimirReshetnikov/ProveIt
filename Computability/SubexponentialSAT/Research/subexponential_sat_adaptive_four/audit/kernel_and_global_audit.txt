@@ -1,0 +1,105 @@
+INDEPENDENT AUDIT OF THE ADAPTIVE FOUR-BLOCK RESULT
+
+Scope
+-----
+This audit checks the new local four-block inequality, the proposed global
+schedule's numerical and packing accounting, and a finite implementation of
+the exact regrouping identity. It does not certify the imported OpenAI SAT
+reductions, implement the asymptotic fast matrix-multiplication backend, or
+establish a smaller logarithmic order for unrestricted SAT.
+
+1. Local coefficient certificate
+-------------------------------
+The six linear forms for each K4 matching arise correctly from the two
+rectangular merges and the three possible smallest matrix dimensions.
+Choosing the best matching can be bounded by the mean of one maximizing
+linear form per matching. The uniform mean has squared norm at most 244/75.
+An elementary proof is in ../k4_uniform_certificate.tex. The independent
+exact check of all 216 choices is ../verify_k4_uniform_certificate.py.
+No numerical optimization is needed for the proof. A star weighting of 4/5
+versus 2/3 attains equality for all three matchings, proving sharpness for
+this local strategy and this rectangular cost model.
+
+2. Combining directed pair entropies
+-----------------------------------
+For four equal blocks of b groups, each undirected block-pair logarithm
+sums 2b^2 directed pair logarithms, and these six index sets are disjoint.
+Cauchy-Schwarz yields ||w||_2 <= sqrt(2)*b*||h||_2. The imported generating
+product estimate is uniform for normalized weight vectors v in [0,1]^{r(r-1)};
+choosing v=h/||h||_2 therefore yields ||h||_2 <= (1+o(1))*K/r. The resulting
+new local coefficient is sqrt(61/150). The zero vector needs no division.
+Uniformity of the imported error estimate should be stated in the report:
+an assertion only for fixed v independent of the input would not suffice.
+
+3. Proposed complete schedule
+-----------------------------
+Let Lambda=lambda-ceil(sqrt(lambda)). The proposed arities are 8,12,8,
+followed by 4,4,... . The taper allocations are Lambda/60, Lambda/90,
+Lambda/180, followed by (Lambda/160)*(5/8)^k. Their total is Lambda/20.
+Floors and additive O(log lambda) buffers must be included as in the proof.
+
+With child size (2/r+o(1))*M, the leading coefficients of K(M,u) on the
+s/sqrt(lambda) scale are
+  K0 = 49.64951776832136
+  K1 = 15.20199806345429
+  K2 =  3.58314530608443
+  K3 =  0.84455544796968,
+and the tail ratio is sqrt(2/5).
+Singleton caching coefficients are sqrt(2(r-1))/r.
+
+The resulting time candidates are
+  depth 0 local work:      31.66170678619399
+  depth 1 local work:      32.91581386492430
+  depth 2 local work:      31.44839675525458
+  depth 3 local work:      31.37784922057879
+  limiting paid-oracle sum:32.24640164313060.
+Every later local candidate lies between the depth-3 value and that limit.
+Thus depth 1 is the maximum in this schedule.
+
+4. Packing and memory accounting
+--------------------------------
+The retained-side packing exponents reach their boundary at root
+  9/10 + 6/60 = 1,
+at depth 2
+  9/10 + 3/30 = 1,
+and in the limiting r=4 tail
+  9/10 + 2/20 = 1.
+Lambda=lambda-ceil(sqrt(lambda)) supplies a 2^{-c sqrt(lambda)} margin,
+which absorbs logarithmic active-size, padding, and buffer factors.
+At depth 1 the retained-side exponent is
+  9/10 + log2(12)/36 < 1.
+Fresh-side and packet-rounding exponents are bounded by 1/4+o(1), safely
+below one. The tail's coarse shrink bound may be taken as 3/5 eventually;
+with leaf cutoff s/lambda this still gives a positive power of lambda for
+the smallest active taper, since 1+ln(5/8)/ln(5/3)>0.
+
+The space coefficient 31.66170678619399 is justified using the CHOSEN
+adaptive matching: its boundary exponent C is <= its selected merge cost,
+which is <= sqrt(61/150)*K. A fixed worst-case half-block boundary count
+would instead give the weaker coefficient 35.10751069662202 at the root.
+Initial four-block tables have coefficient sqrt(3/8), below sqrt(61/150),
+as do the singleton caches. Matrix input/output arrays and ordinary blocked
+fast-multiplication workspace fit within the selected merge cost. Ancestor
+tables add their storage requirements; their sizes do not multiply.
+
+5. Exact finite implementation
+-----------------------------
+adaptive_four.py caches each singleton oracle entry once, builds four block
+tables using binary merges, compares all three matching cost models using
+exact integer fifth powers, performs the two selected merges, and finishes
+with an inner product. It uses only ring addition and multiplication in
+factor values. A domain index belongs to both endpoint factors even though
+it is labelled by an ordered pair. Missing domains have cardinality one.
+
+The implementation intentionally uses naive cubic matrix multiplication.
+It illustrates exactness and oracle accounting, not the fast-backend time
+bound. The matching selector nevertheless compares the proved 12/5 cost
+model exactly, without floating-point logarithms.
+
+verify_adaptive_four.py passed 47 fixtures against independent full-assignment
+summation, over Z/64Z and (Z/64Z)[epsilon]/(epsilon^2), for r=4,8,12. They
+include active opposite-direction indices, a fully active directed K4,
+cardinalities 1,2,3,4, all three matching choices at every arity, actual
+nilpotents and zero divisors, and exact paid-oracle counts. The suite covers
+17,174 global assignments; 36 fixture results are nonzero. No timing or
+production SAT performance claim follows from these finite checks.

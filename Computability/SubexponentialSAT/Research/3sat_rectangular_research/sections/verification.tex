@@ -1,0 +1,95 @@
+\section{Reproducibility and proof status}\label{sec:verification}
+
+\subsection{What the accompanying programs verify}
+
+The archive is self-contained for its finite certificate checks and its
+SAT normalization tests. Those programs require only the Python standard
+library. Their acceptance conditions use explicit exceptions, so running
+Python with optimization does not disable the checks.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.40\textwidth}p{.53\textwidth}@{}}
+\toprule Component & Verification performed\\\midrule
+\path{verify_new_backend.py} & All 2,274,237 support-pair choices for the supplied unweighted menus; exact fractions, witnesses, affine-nine closed form, and small tails.\\
+\path{verify_weighted_ten.py} & All 186,624 weighted support pairs; rejects a lowered bound, deleted input/output supports, and an altered coefficient.\\
+\path{verify_schedule.py} & Exact rational intervals for both paid maxima; prefix gates; root space dominance; tail boundary and convergence checks.\\
+\path{verify_packing_gates.py} & Independent rational gate, wire-mass, depth and precision audit, with integer power comparisons.\\
+\path{verify_normalization.py} & Exact Boolean semantics, unique extensions, wire formula, degree and bipartiteness, unused variables, malformed inputs, and two incorrect-gadget controls.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+There are $2\,460\,861$ exhaustive pair comparisons in the two support
+suites together. The backend-support checker also tests 2,197 small
+integer dimension-log triples against the sorted formula. These samples
+are a regression check; the rearrangement and interpolation proofs,
+rather than the samples, establish the formula for all dimensions.
+
+The normalization suite uses 171 raw formulas and constructs 684
+networks. It directly evaluates 664 complete integer tensor contractions,
+enumerating 361,624 edge assignments, and compares with 8,376 original
+variable assignments. Separately, 40 equality gadgets are checked on
+2,550 boundary conditions, using 310,950 boundary/internal assignments.
+Twenty-five larger structural cases reach 3,994 wires. All eight invalid
+inputs are rejected; incorrect literal signs and broken equality are
+detected. These finite tests accompany the general proof in
+Theorem~\ref{thm:equality}; they do not substitute for it.
+
+The new fifteen-plan certificate also has an independent reconstruction
+of its trees and all 1,437,345 pair comparisons. Its fixed-width integer
+implementation proves that the largest possible intermediate value is
+below $2^{63}$, then recomputes maximizing witnesses with arbitrary-size
+integers. The main supplied checker uses arbitrary-size integers throughout.
+
+The suites passed both ordinary execution and \texttt{python3 -O}, with
+identical mathematical outputs. The final archive reruns the portable
+entry points. Exact result receipts and negative-control evidence are
+included. Neither a floating-point optimizer nor an unfinished exploratory
+search supplies any accepted theorem or inequality.
+
+\subsection{What is proved, imported, and not implemented}
+
+The new mathematical content is the exact characteristic-zero backend
+bridge, the updated finite support certificates including the cyclic
+fifteen-plan construction, the fully charged integer schedules, the
+growing-degree equality normalization, and the scoped locality lemma.
+The source Cauchy/Hermite contraction, packing and entropy interfaces are
+imported with their hypotheses; the two characteristic-zero matrix
+exponents are primary-source theorem dependencies. This report does not
+independently reprove all of those sources.
+
+The archive does not contain a full subexponential SAT solver, explicit
+large matrix schemes achieving the imported exponents, or a Lean
+formalization of the new results. The fixed algebraic-scheme search proves
+effectivity, but it may have an enormous fixed cost. The packing margins
+and root-degree comparisons are eventual asymptotic statements, not
+useful finite-size thresholds or benchmark predictions.
+
+The audit of the supplied Anthropic development records a successful
+upstream CI build at the requested SHA and checks its theorem statement
+and selected interfaces. It is not a new local Lean build. In particular,
+its big-$O$ machine theorem must not be cited as formal verification of
+the new numerical coefficients.
+
+\subsection{Archive guide}
+
+\texttt{report.tex} and \texttt{sections/} contain the complete source;
+\texttt{report.pdf} is the compiled report. \texttt{code/} contains the
+portable checks and equality-network compiler, \texttt{data/} the exact
+plans and weights, and \texttt{results/} the reproduced outputs.
+\texttt{audit/} records independent and formal-source evidence.
+\texttt{provenance.json} pins the reviewed repositories and incoming
+archives. \texttt{PROOF\_STATUS.json} separates theorem dependencies,
+implemented components, and unresolved objectives.
+
+Run \texttt{python3 code/run\_checks.py} from any directory to regenerate
+the main certificates. Add \texttt{--optimized} to run the suites with
+Python optimization. Run \texttt{sh build\_report.sh} to rebuild the PDF
+using a normal LaTeX installation. Detailed commands and component scope
+are in \texttt{README.txt}. No downloaded prior research packet is needed
+to execute these finite checks.
+
+The principal remaining objective is mathematical: produce a compatible
+replacement that improves the logarithmic exponent order. The exact
+certificates here make the improved coefficient bounds reviewable while
+leaving that objective explicitly open.

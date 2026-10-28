@@ -1,0 +1,61 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/NativeAdaptiveCanonical.lean:283:42: error: unsolved goals
+p : Fin 4 → ℤ
+hp : PortBox p
+hb : 15 ≤ p 0
+v : Fin 15 → ℤ
+hv : ∀ (j : Fin 15), 0 < v j
+hc : Carrier66.Canonical p v
+b : Carrier65.Core ℤ := Carrier66.core p v
+hspos : ∀ (j : Fin 31), 0 < Carrier66Source.source p v j
+hsc :
+  0 < (Carrier65.core p (Carrier66.drop v 1)).X ∧
+    0 < (Carrier65.core p (Carrier66.drop v 1)).Y ∧
+      0 < (Carrier65.core p (Carrier66.drop v 1)).E ∧ 0 < (Carrier65.core p (Carrier66.drop v 1)).a
+hX : 0 < b.X
+hY : 0 < b.Y
+hE : 0 < b.E
+hd : 0 < b.delta
+hq : 2 ≤ b.q
+hk : 0 < b.k
+hell : 0 < b.ell
+hV : 0 < b.V
+hgap : 0 < v 13 ^ 2 - b.V ^ 2
+hu : 0 < v 13 - b.V
+hzn : 1 < Carrier66Source.sourceNat p v 3
+hz : 1 < v 3
+t : ℤ
+ht : v 9 < t
+hquot : b.k - b.rank - 1 = b.q ^ 2 * b.Y * t
+bb : ℤ := b.q * (v 3 - 1)
+hbb : 2 ≤ bb
+hkE : b.E < b.k
+hkS : v 8 < b.k
+htau : b.ell < v 10
+rr : ℤ := ((b.q - 1) * b.k + 1) * bb + v 10 - b.ell - b.k - v 8
+hr : 0 < rr
+gg : ℤ := v 14 - v 9 + t
+hg : 0 < gg
+x : Fin 13 → ℤ := assignment p v rr gg
+hGq : (NativeAdaptiveGraph.core p (assignment p v rr gg)).q = (Carrier66.core p v).q
+hGk : (NativeAdaptiveGraph.core p (assignment p v rr gg)).k = (Carrier66.core p v).k
+hGc : (NativeAdaptiveGraph.core p (assignment p v rr gg)).c = (Carrier66.core p v).c
+hGa : (NativeAdaptiveGraph.core p (assignment p v rr gg)).a = (Carrier66.core p v).a
+hGR : (NativeAdaptiveGraph.core p (assignment p v rr gg)).rank = (Carrier66.core p v).rank
+hGV : (NativeAdaptiveGraph.core p (assignment p v rr gg)).V = (Carrier66.core p v).V
+hGy : (NativeAdaptiveGraph.core p (assignment p v rr gg)).y = v 13
+hx : ∀ (j : Fin 13), 0 < x j
+hBt : (NativeAdaptiveGraph.core p x).Bt = (b.q - 1) * bb
+he : b.X * b.k * b.Y ^ 2 = b.ell
+ha : b.Y * (b.X + 1) = b.a
+hdc : (b.a + 2) ^ 2 - 1 = b.delta
+hcc : b.k * b.Y + v 11 = b.c
+hs : v 4 ^ 2 - b.delta * v 6 ^ 2 * b.c ^ 4 - 1 = 0
+hstrong : b.delta * (v 4 ^ 2 - 1) = b.S ^ 2
+⊢ b.q ^ 2 * b.Y * b.a * b.c + b.q ^ 2 * b.Y * b.a * v 14 * 4 + b.q ^ 2 * b.Y * v 14 * 3 + b.q ^ 3 * b.Y * v 9 =
+    b.q ^ 2 * b.Y * b.a * b.c + b.q ^ 2 * b.Y * b.a * v 14 * 4 + b.q ^ 2 * b.Y * v 14 * 3 + b.q ^ 2 * b.Y * b.X

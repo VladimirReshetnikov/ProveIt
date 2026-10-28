@@ -1,0 +1,417 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:75:49: error: unexpected token '('; expected ')', ',' or ':'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:75:46: error: Type mismatch
+  enc
+has type
+  AS ?m.357 → ?m.357
+but is expected to have type
+  V
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:53:35: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+st : AS V
+N : V
+hN1 : N ≤ st.s1
+hN2 : N ≤ st.p2
+X : Exit
+y : V
+hfin :
+  IR (Edge.node 463)
+    (enc
+      { np := st.np, tw := st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := st.p2 - N, s1 := st.s1 - N, s2 := st.s2,
+        pl := st.pl })
+    X y
+Gr : V → AS V :=
+  fun t =>
+    { np := st.np, tw := st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := st.p2 - t, s1 := st.s1 - t, s2 := st.s2,
+      pl := st.pl }
+Hr : V → AS V :=
+  fun t =>
+    { np := st.np, tw := st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := st.p2 - t - 1, s1 := st.s1 - t,
+      s2 := st.s2, pl := st.pl }
+G : V → V := fun t => writeValue 7 (st.p2 - t) (writeValue 8 (st.s1 - t) (enc st))
+hG : ∀ (t : V), G t = enc (Gr t)
+this : 𝚺₁-Function₁ G
+hpass :
+  ∀ t < N, IR (Edge.decnz 5) (G t) Exit.normal (enc (Hr t)) ∧ IR (Edge.node 462) (enc (Hr t)) (Exit.cont 1) (G (t + 1))
+hh :
+  ∀ (N : V),
+    (∀ t < N, IR (Edge.decnz 5) (G t) Exit.normal sorry ∧ IR (Edge.node 462) sorry (Exit.cont 1) (G (t + 1))) →
+      ∀ {X : Exit} {y : V}, IR (Edge.node 463) (G N) X y → IR (Edge.node 463) (G 0) X y
+⊢ IR (Edge.node 463) (enc st) X y
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:103:23: error: unexpected token '('; expected ':=' or '|'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:103:20: error: Type mismatch
+  enc
+has type
+  AS ?m.66 → ?m.66
+but is expected to have type
+  V
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:103:7: error: Missing cases:
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:100:68: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+st : AS V
+hp : st.p2 = 0
+Gr : V → AS V :=
+  fun t =>
+    { np := st.np, tw := st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := 0, s1 := st.s1 - t, s2 := st.s2,
+      pl := st.pl }
+G : V → V := fun t => writeValue 7 0 (writeValue 8 (st.s1 - t) (enc st))
+hG : V → sorry
+⊢ IR (Edge.node 466) (enc st) (Exit.brk 1)
+    (enc
+      { np := st.np, tw := st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := 0, s1 := 0, s2 := st.s2, pl := st.pl })
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:270:21: error: Application type mismatch: The argument
+  wel
+has type
+  AXAtom
+of sort `Type` but is expected to have type
+  V → V → V
+of sort `Type u_1` in the application
+  popA wel
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:271:21: error: Application type mismatch: The argument
+  wal
+has type
+  AXAtom
+of sort `Type` but is expected to have type
+  V → V → V
+of sort `Type u_1` in the application
+  popA wal
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:272:21: error: Application type mismatch: The argument
+  weq
+has type
+  AXAtom
+of sort `Type` but is expected to have type
+  V → V → V
+of sort `Type u_1` in the application
+  popA weq
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:273:20: error: Application type mismatch: The argument
+  wa
+has type
+  AXAtom
+of sort `Type` but is expected to have type
+  V → V → V
+of sort `Type u_1` in the application
+  popA wa
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:274:21: error: Application type mismatch: The argument
+  wex
+has type
+  AXAtom
+of sort `Type` but is expected to have type
+  V → V → V
+of sort `Type u_1` in the application
+  popA wex
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:275:31: error: Function expected at
+  wn
+but this term has type
+  AXAtom
+
+Note: Expected a function because this term is being applied to the argument
+  st.tw
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:280:13: error: Function expected at
+  par1
+but this term has type
+  AXAtom
+
+Note: Expected a function because this term is being applied to the argument
+  st
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:281:13: error: Function expected at
+  par2
+but this term has type
+  AXAtom
+
+Note: Expected a function because this term is being applied to the argument
+  st
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:282:13: error: Function expected at
+  par3
+but this term has type
+  AXAtom
+
+Note: Expected a function because this term is being applied to the argument
+  st
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:284:13: error: Function expected at
+  cons
+but this term has type
+  AXAtom
+
+Note: Expected a function because this term is being applied to the argument
+  st
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:285:2: error: Type mismatch
+  wel_m st hc
+has type
+  Rn (Edge.node 181) st
+    { np := st.np, tw := ArithmeticCode254.wel (first st.ws) st.tw, ws := second st.ws, ac := st.ac, p1 := st.p1,
+      p2 := st.p2, s1 := st.s1, s2 := st.s2, pl := st.pl }
+but is expected to have type
+  Rn (Edge.node wel.node) st (wel.effect st)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:286:2: error: Type mismatch
+  wal_m st hc
+has type
+  Rn (Edge.node 180) st
+    { np := st.np, tw := ArithmeticCode254.wal (first st.ws) st.tw, ws := second st.ws, ac := st.ac, p1 := st.p1,
+      p2 := st.p2, s1 := st.s1, s2 := st.s2, pl := st.pl }
+but is expected to have type
+  Rn (Edge.node wal.node) st (wal.effect st)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:287:2: error: Type mismatch
+  weq_m st hc
+has type
+  Rn (Edge.node 182) st
+    { np := st.np, tw := ArithmeticCode254.weq (first st.ws) st.tw, ws := second st.ws, ac := st.ac, p1 := st.p1,
+      p2 := st.p2, s1 := st.s1, s2 := st.s2, pl := st.pl }
+but is expected to have type
+  Rn (Edge.node weq.node) st (weq.effect st)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:288:2: error: Type mismatch
+  wn_m st hc
+has type
+  Rn (Edge.node 218) st
+    { np := st.np, tw := ArithmeticDagMacrosPerm222.wn st.tw, ws := st.ws, ac := st.ac, p1 := st.p1, p2 := st.p2,
+      s1 := st.s1, s2 := st.s2, pl := st.pl }
+but is expected to have type
+  Rn (Edge.node wn.node) st (wn.effect st)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:289:2: error: Type mismatch
+  wa_m st hc
+has type
+  Rn (Edge.node 178) st
+    { np := st.np, tw := ArithmeticDagMacrosPerm222.wa (first st.ws) st.tw, ws := second st.ws, ac := st.ac,
+      p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2, pl := st.pl }
+but is expected to have type
+  Rn (Edge.node wa.node) st (wa.effect st)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:290:2: error: Type mismatch
+  wex_m st hc
+has type
+  Rn (Edge.node 183) st
+    { np := st.np, tw := ArithmeticDagMacrosPerm222.wex (first st.ws) st.tw, ws := second st.ws, ac := st.ac,
+      p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2, pl := st.pl }
+but is expected to have type
+  Rn (Edge.node wex.node) st (wex.effect st)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:354:8: warning: declaration uses `sorry`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:362:2: warning: 'rfl' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:360:39: warning: declaration uses `sorry`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:360:39: warning: declaration uses `sorry`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:360:39: warning: declaration uses `sorry`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:360:39: warning: declaration uses `sorry`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:360:39: warning: declaration uses `sorry`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:360:39: warning: declaration uses `sorry`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:399:8: error(lean.invalidField): Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  R
+has type `V` which does not have the necessary form.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:404:2: error(lean.invalidField): Invalid field notation: Field projection operates on types of the form `C ...` where C is a constant. The expression
+  R
+has type `V` which does not have the necessary form.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:414:28: error: Application type mismatch: The argument
+  rfl
+has type
+  ?m.49 = ?m.49
+but is expected to have type
+  { np := st.np, tw := st.tw, ws := st.ws, ac := 1, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+        pl := st.pl }.ac =
+    0 + 1
+in the application
+  @dec_brk V inst✝¹ inst✝ 142 143 rfl
+    { np := st.np, tw := st.tw, ws := st.ws, ac := 1, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2, pl := st.pl }
+    0 rfl
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:419:61: error: Application type mismatch: The argument
+  rfl
+has type
+  ?m.89 = ?m.89
+but is expected to have type
+  {
+        np :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.np,
+        tw :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.tw,
+        ws :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.ws,
+        ac := 1,
+        p1 :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.p1,
+        p2 :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.p2,
+        s1 :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.s1,
+        s2 :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.s2,
+        pl :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.pl }.ac =
+    0 + 1
+in the application
+  @dec_brk V inst✝¹ inst✝ 145 146 rfl
+    {
+      np :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.np,
+      tw :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.tw,
+      ws :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.ws,
+      ac := 1,
+      p1 :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.p1,
+      p2 :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.p2,
+      s1 :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.s1,
+      s2 :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.s2,
+      pl :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := 2, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.pl }
+    0 rfl
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:424:73: error: Application type mismatch: The argument
+  rfl
+has type
+  ?m.86 = ?m.86
+but is expected to have type
+  {
+        np :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.np,
+        tw :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.tw,
+        ws :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.ws,
+        ac := c + 2,
+        p1 :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.p1,
+        p2 :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.p2,
+        s1 :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.s1,
+        s2 :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.s2,
+        pl :=
+          { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+              pl := st.pl }.pl }.ac =
+    c + 1 + 1
+in the application
+  @dec_brk V inst✝¹ inst✝ 145 146 rfl
+    {
+      np :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.np,
+      tw :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.tw,
+      ws :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.ws,
+      ac := c + 2,
+      p1 :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.p1,
+      p2 :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.p2,
+      s1 :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.s1,
+      s2 :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.s2,
+      pl :=
+        { np := st.np, tw := st.tw, ws := st.ws, ac := c + 3, p1 := st.p1, p2 := st.p2, s1 := st.s1, s2 := st.s2,
+            pl := st.pl }.pl }
+    (c + 1) rfl
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:478:28: error: unexpected token '('; expected '⟩'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:478:20: error: Insufficient number of fields for `⟨...⟩` constructor: Constructor `Exists.intro` has 2 explicit field, but only 1 was provided
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:478:21: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  HAdd V (?m.414 → ?m.414) ?m.419
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:473:2: error: unsolved goals
+case neg
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+raw np t S d h : V
+h2 : first raw = 2
+hd :
+  Rn (Edge.node 141)
+    { np := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.np,
+      tw := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.tw,
+      ws := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.ws, ac := 2,
+      p1 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.p1,
+      p2 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.p2,
+      s1 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.s1,
+      s2 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.s2,
+      pl := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.pl }
+    (mpOut
+      { np := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.np,
+        tw := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.tw,
+        ws := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.ws, ac := 0,
+        p1 :=
+          { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.p1 +
+            first { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.pl,
+        p2 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.p2,
+        s1 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.s1,
+        s2 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.s2,
+        pl := second { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.pl })
+he :
+  { np := np, tw := t, ws := S, ac := first raw, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw } =
+    { np := np, tw := t, ws := S, ac := 2, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }
+hr :
+  Rn (Edge.node 139) (boundary raw np t S d h)
+    (mpOut
+      { np := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.np,
+        tw := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.tw,
+        ws := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.ws, ac := 0,
+        p1 :=
+          { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.p1 +
+            first { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.pl,
+        p2 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.p2,
+        s1 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.s1,
+        s2 := { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.s2,
+        pl := second { np := np, tw := t, ws := S, ac := 0, p1 := d, p2 := h, s1 := 0, s2 := 0, pl := second raw }.pl })
+hm : ¬wim t (d + first (second raw)) = h
+⊢ (stepValue raw (stateValue t S d h) = 0 ∧ ∃ y, IR (Edge.node 139) (enc (boundary raw np t S d h)) Exit.halt y) ∨
+    ∃ t' S' d' h',
+      stepValue raw (stateValue t S d h) = someState t' S' d' h' ∧
+        Rn (Edge.node 139) (boundary raw np t S d h) (boundary (tailValue raw) np t' S' d' h')
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:455:53: error: unsolved goals
+case inr.inr.inr
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+raw np t S d h c : V
+hc : first raw = c + 3
+⊢ (stepValue raw (stateValue t S d h) = 0 ∧ ∃ y, IR (Edge.node 139) (enc (boundary raw np t S d h)) Exit.halt y) ∨
+    ∃ t' S' d' h',
+      stepValue raw (stateValue t S d h) = someState t' S' d' h' ∧
+        Rn (Edge.node 139) (boundary raw np t S d h) (boundary (tailValue raw) np t' S' d' h')
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:504:22: error: unexpected token '('; expected ')', ',' or ':'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:522:28: error: unexpected token '('; expected ')', ',' or ':'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:521:13: error(lean.unknownIdentifier): Unknown identifier `fetch_run`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRootPerm222.lean:520:29: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+pl np t S d h : V
+⊢ (enumValue (DiophantineConsistency.ArithmeticEnumStepPerm222.liveValue pl np (stateValue t S d h)) = 0 ∧
+      ∃ y, IR (Edge.node 0) (enc (boundary pl np t S d h)) Exit.halt y) ∨
+    ∃ pl' np' t' S' d' h',
+      enumValue (DiophantineConsistency.ArithmeticEnumStepPerm222.liveValue pl np (stateValue t S d h)) =
+          DiophantineConsistency.ArithmeticEnumStepPerm222.liveValue pl' np' (stateValue t' S' d' h') ∧
+        Rn (Edge.node 0) (boundary pl np t S d h) (boundary pl' np' t' S' d' h') ∧ (pl' < pl ∨ np' = np + 1)

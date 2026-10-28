@@ -1,0 +1,93 @@
+INDEPENDENT AUDIT OF THE FIVE-GROUP-COUNT SCHEDULE
+
+Reviewed: scratch_schedule/schedule_proof.tex,
+scratch_schedule/check_final_schedule.py, final_schedule_certificate.json.
+Result: no defect found in the new local-to-global argument under its
+explicit imported normalized contraction interface. This is a mathematical
+and code review, not a proof-assistant certificate or a re-verification of
+all source SAT reductions and exact identities.
+
+1. Local factors and recurrence.
+The independently checked local squares are1/3,137/400,279/800,891/2450,
+13/25 at r=9,12,8,7,4. All count nonrecursive work and local tables, while
+the singleton-cache child calls have separate coefficient
+alpha_r=sqrt(2(r-1))/r. Therefore the stated recurrence correctly uses
+2^(alpha K)*T_child + 2^(b K), rather than treating children as free or
+multiplying all local aggregation work by the child runtime.
+
+2. Exact schedule.
+Group counts9,12,8,7,4 thereafter and taper fractions
+63/4000,97/8000,21/4000,31/12500,
+then(106449/20000000)*(63/100)^j are compatible.
+The tail sum is2877/200000 and total4999/100000<1/20.
+Multiplying successive2/r child ratios gives exactly
+1,2/9,1/27,1/108,1/378, then(1/378)*2^(-j).
+
+3. Gates and noncircular depth argument.
+The rational log upper bounds317/100,717/200,3,14037/5000,2 are valid
+by the explicit integer-power comparisons. The claimed root and retained
+gaps29/200000,109/1600000,1/1600,42523/10^9,1/50000 are positive.
+The fresh-side/rounding exponent is bounded by4084183/10000000<1.
+The cumulative guard isO((log lambda)^2) overO(log lambda) levels, so
+the strict constant exponent gaps absorb it and all polylogarithmic costs.
+With H=ceil(s/lambda^(3/4)), the hypothetical depth bound based on child
+ratio11/20 is valid before assuming actual shrinkage. Because63/100>11/20,
+u_d is bounded below by a positive constant timeslambda^(1/4) throughout
+that hypothetical range. Thus the packing hypotheses hold there, actual
+children eventually shrink by at most11/20, and the depth bound closes.
+There is no use of a concluded depth bound to justify its own hypotheses.
+
+4. Precision and immutable entries.
+D>=2^(a_previous+B+1), B=ceil(6log2lambda), and the imported precision
+p=O(s lambda^2 2^a_previous) imply
+p/(MD/u)=O(lambda^(15/4)2^(-B))=O(lambda^(-9/4)).
+All active tapers diverge, so floors are uniform relativeo(1). The remaining
+Hermite additive term is lower order under the same inherited interface.
+Generated degrees and entry-work exponents are at most4999/100000+o(1),
+well below the generic retained cap9/10. The frozen creation-precision
+convention avoids recursively expanding older contraction algorithms as
+entry oracles. This convention is a real imported dependency, not newly
+proved here.
+
+5. Infinite tail and child-call multiplicities.
+Its K-coefficient ratio is gamma=5/sqrt63<1. A terminal local aggregation
+at offsett has coefficient
+P4+K4*[alpha4*(1-gamma^t)/(1-gamma)+b4*gamma^t].
+This is a convex combination of the two endpoints, and alpha4/(1-gamma)
+is larger thanb4. The full infinite child-call endpoint consequently bounds
+every finite tail depth and all terminal leaf multiplicities. Direct leaf
+work2^O(s/lambda^(3/4)), original entry work2^O(s^.9), and fresh entry work
+exp(s^(.04999+o(1))) are lower order after those multiplicities are paid.
+
+6. Constants.
+The five full time candidates are approximately
+29.487537286921217,30.269872910441123,29.690498000478482,
+30.006711339130669,30.262408169227825. Depth1 dominates, by a positive
+gap from the close infinite-tail competitor. Simplifying its two terms
+independently gives
+ C_T=(pi/ln2)[sqrt(128000/5103)+sqrt(21920/7857)].
+The maximal local-memory term is the root, with
+ C_S=(pi/ln2)sqrt(8000/189).
+Ancestor table sizes add along one active path; their exponents do not add.
+Thus the same full algorithm has time coefficient30.269872910441123...
+and space coefficient29.487537286921217.... Safe eventual constants30.27
+and29.488 have strict slack. Their concrete crossover sizes are not supplied.
+
+7. Exact numerical checker inspection.
+The interval operations are outward: positive inverse reverses endpoints;
+products check all four endpoint products; integer-square-root rounding
+encloses both square-root endpoints. Machin's alternating arctangent series
+and the positive atanh series forln2 have valid remainder signs/bounds.
+The closed-form equality is additionally justified by the algebra in item6,
+not solely by overlap of two computed intervals. Invalid larger-second-taper
+and excessive-tail schedules are rejected by exact packing inequalities;
+the coefficient30.26 is excluded by a strict rational lower interval.
+No theorem-validating inequality relies on Python assert or on floating point.
+
+8. Scope.
+The schedule improves the strongest explicit generic cached pair at the
+reviewed snapshot,30.891018920366.../30.753912832055..., under identical
+generic premises and the same12/5 backend. It does not dominate every
+low-degree or polynomial-space variant. It changes the leading coefficient
+of s/sqrt(log s), not that logarithmic order, and it is not a numerical
+coefficient per original SAT variable without reduction constants.

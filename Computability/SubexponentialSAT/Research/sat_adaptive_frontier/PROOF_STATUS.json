@@ -1,0 +1,78 @@
+{
+  "title": "Adaptive evaluation of the subexponential SAT mode graph",
+  "date_label": "2026-10-26 (Pacific time)",
+  "initial_repository_commit": "fd0edd17e6a29117179b40a453c0def59165bd7c",
+  "closing_repository_commit": "dde01c4a63b822c25b8eb345299346c36f837b49",
+  "reviewed_proposal_packets": 20,
+  "parameter": "s is the normalized Boolean-wire count, not the SAT variable count n",
+  "exponential_scale": "s/sqrt(log2(s))",
+  "result_type": "Relative contraction refinements with explicit imported algebraic hypotheses",
+  "new_results": [
+    {
+      "name": "Adaptive quartet conditioning",
+      "time_coefficient_interval": ["50.30468921409", "50.30468921410"],
+      "safe_eventual_time_coefficient": "50.305",
+      "space": "polynomial",
+      "proof": "sections/quartet.tex",
+      "executable_checks": ["code/verify_quartet.py"]
+    },
+    {
+      "name": "Joint adaptive cached contraction",
+      "time_and_space_coefficient": "(pi*sqrt(2)/ln(2))*sqrt(20*log2(9))*sqrt(2489356/6638625)",
+      "coefficient_decimal": "31.252397312650919857900163691591",
+      "safe_eventual_time_and_space_coefficient": "31.253",
+      "space": "subexponential",
+      "proof": "sections/joint_objective.tex",
+      "executable_checks": [
+        "code/check_joint_objective.py",
+        "code/joint_partition_prototype.py",
+        "code/audit_joint_objective.py"
+      ]
+    },
+    {
+      "name": "Conserved degree flow",
+      "status": "Exact algebraic identity; no completed recursive representation or smaller-order SAT algorithm",
+      "proof": "sections/degree_flow.tex",
+      "executable_checks": ["code/check_degree_flow.py"]
+    }
+  ],
+  "imported_hypotheses": [
+    "Exact Cauchy deformation, integrality, Hermite recovery and child-network factorization",
+    "Immutable creation-precision descriptions and original canonical representatives",
+    "Asymmetric nearly uniform packing and the refined leading precision loss",
+    "Whole-block slope-four integral modes and polynomial-cost exact indexing",
+    "Integer-coordinate and CRT bridge for a matrix exponent strictly below 12/5"
+  ],
+  "comparison": {
+    "polynomial_space_composed_baseline": "55.40466590661",
+    "polynomial_space_best_displayed_incoming": "55.70947831891",
+    "cached_best_displayed_incoming_time": "35.354588058401011",
+    "cached_best_displayed_incoming_space": "34.274803005022687",
+    "comparison_kind": "Explicit upper-bound functions under a matched general-degree interface",
+    "actual_runtime_speedup_claimed": false,
+    "optimality_over_all_possible_retimings_or_compositions_claimed": false
+  },
+  "verification_scope": {
+    "natural_language_proofs": true,
+    "exact_rational_coefficient_certificates": true,
+    "finite_nonfield_contraction_prototypes": true,
+    "separate_mathematical_and_source_audits": true,
+    "lean_or_rocq_formalization": false,
+    "complete_sat_solver": false,
+    "fast_matrix_backend_implemented_or_benchmarked": false,
+    "independent_validation_of_entire_upstream_preprint": false,
+    "improved_logarithmic_order_in_sat_exponent": false,
+    "unimplemented_conditional_n_over_log_n_target_surpassed": false
+  },
+  "replay": ["python3 run_checks.py", "python3 -O run_checks.py"],
+  "build": "python3 build_report.py",
+  "integrity": "python3 verify_manifest.py",
+  "limitations": [
+    "All global results retain the imported hypotheses stated in the report.",
+    "Constants multiply normalized wire count; translating them directly into SAT-variable coefficients is invalid.",
+    "The same SAT logarithmic exponent orders remain; thresholds can be enormous.",
+    "No numeric dominance claim is made over unknown constants in the separate Claude manuscript.",
+    "Lower-degree specializations impose stronger assumptions and are preserved as separate options.",
+    "Finite checks validate implementations and arithmetic; the all-input inequalities depend on the written proofs."
+  ]
+}

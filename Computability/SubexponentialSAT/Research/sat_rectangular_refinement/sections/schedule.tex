@@ -1,0 +1,206 @@
+\section{A complete paid schedule}
+\label{sec:schedule}
+
+\subsection{Exact local data}
+
+The fixed menus and squared local coefficients for the updated backend are
+as follows. Pair certificates have equal weights except at the root; the
+four-group row uses the maximum norm of a single plan's supports.
+
+\begin{center}\small
+\begin{tabular}{@{}cll@{}}
+\toprule $r$ & Menu and certificate & $\beta_r^2$\\
+\midrule
+10 & Nine weighted plans; triples & $16437522499887100933/56000000000000000000$\\
+13 & Thirteen cyclic plans; pairs & $3132736483411/10985000000000$\\
+9 & Four affine-line plans; pairs & $31125270001/108000000000$\\
+7 & Punctured affine plans; pairs & $1239384150031/3920000000000$\\
+6 & Six cyclic plans; pairs & $111407262503/337500000000$\\
+5 & Five cyclic plans; pairs & $440004400011/1250000000000$\\
+4 & $(0,1)\mid(2)\mid(3)$ & $40000400001/80000000000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The cyclic six-group seed is $(0,1)\mid(2,5)\mid(3,4)$ and the
+five-group seed is $(0,1)\mid(2,4)\mid(3)$. All shifts modulo the
+respective group count are used. The nine-point menus are the parallel
+lines of the affine plane $\F_3^2$; deleting points 7 and 8 gives the
+seven-group menu with the listed orders retained. Exact literal plans,
+including the ordered splits inside every block, are part of
+\texttt{data/certificate.json}. The verifier reconstructs their supports;
+it does not trust stored support vectors or reported decimal optima.
+
+\subsection{Tapers and strict packing gates}
+
+Let $B=\ceil{6\log_2\lambda}$,
+$u_d=\floor{\eta_d\lambda}$, and
+$a_d=\sum_{j=0}^d(u_j+B)$. Use group counts
+\[
+ 10\longrightarrow13\longrightarrow9\longrightarrow7
+ \longrightarrow6\longrightarrow5\longrightarrow4
+ \longrightarrow4\longrightarrow\cdots
+\]
+and the following rational taper schedule:
+\begin{equation}\label{eq:etas}
+\begin{aligned}
+ \eta_0&=\frac{75257}{5000000},&
+ \eta_1&=\frac{119723}{10000000},&
+ \eta_2&=\frac{45227}{10000000},\\
+ \eta_3&=\frac{20371}{5000000},&
+ \eta_4&=\frac{15323}{5000000},&
+ \eta_5&=\frac{43823}{10000000},\\
+ \eta_d&=\frac{641247}{250000000}
+           \left(\frac{63}{100}\right)^{d-6}\quad(d\ge6).
+\end{aligned}
+\end{equation}
+The successive leading cumulative caps, with the last including the
+entire infinite tail, are
+\begin{equation}\label{eq:caps}
+ (A_0,A_1,A_2,A_3,A_4,A_5,A_\infty)
+ =\frac{(150514,270237,315464,356206,386852,430675,499999)}{10^7}.
+\end{equation}
+Use relative padding slack $\lambda^{-3}$, and stop at
+$M\le H=\ceil{s/\lambda}$ wires.
+
+Integer power comparisons certify the rational upper bounds on
+$\log_2 r$ in the next table; the last value is exact. The root's
+dominant exponent is $9/10+2A_0\log_2 10$, whereas later retained-side
+exponents are $9/10+A_d\log_2r_d$, with $A_\infty$ used in the tail.
+
+\begin{center}\small
+\begin{tabular}{@{}crl@{}}
+\toprule $r_d$ & Certified bound for $\log_2r_d$ & Gap below one\\
+\midrule
+10 &$3321929/10^6$&$1589247/2500000000000$\\
+13 &$3700440/10^6$&$104893/250000000000$\\
+9  &$3169926/10^6$&$154021/625000000000$\\
+7  &$2807355/10^6$&$330487/1000000000000$\\
+6  &$2584963/10^6$&$473381/2500000000000$\\
+5  &$2321929/10^6$&$129117/400000000000$\\
+4  &$2$&$1/5000000$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every gap is strictly positive. The other fresh-side and packet-rounding
+exponents are bounded by
+\[
+ A_\infty\left(1+2\frac{3700440}{10^6}\right)<1.
+\]
+The root's old-side single-$Q$ gate is weaker than its displayed $Q^2$
+gate. Below the root, fresh packet degrees have exponent at most
+$A_\infty+o(1)<9/10$. Thus all three conditions in~\eqref{eq:packing}
+hold once $s$ is sufficiently large. The small fixed gaps absorb the
+additive guards, floors, polylogarithmic factors, and $s/M\le\lambda$.
+Their smallness is also why these are eventual bounds, not practical
+finite-size promises.
+
+\subsection{Closing the depth and precision induction}
+
+To avoid assuming the desired contraction before proving packing, verify
+the gates provisionally through tail depth
+$\log_{20/11}\lambda+O(1)$. On this whole range the smallest tail taper
+has order
+\[
+ \lambda^{\delta+o(1)},\qquad
+ \delta=1+\frac{\ln(63/100)}{\ln(20/11)}>0,
+\]
+because $63/100>11/20$. Hence the uniform packing estimates apply through
+the provisional depth. They give actual tail child ratio
+$1/2+o(1)<11/20$, so an active path cannot exceed that depth. This closes
+the induction. There are $O(\log\lambda)$ levels and accumulated relative
+padding error $1+o(1)$.
+
+At a retained interpolation node,
+$D\ge2^{a_{d-1}+B+1}$. The inherited creation-precision bound
+$O(s\lambda^2 2^{a_{d-1}})$ is at most
+\[
+ O(\lambda^4 2^{-B})=o(1)
+\]
+times $MD/u_d$, using $s/M\le\lambda$ and $u_d\le\lambda$.
+Thus the precision and entropy bounds in Section~\ref{sec:interface}
+apply uniformly. Moreover
+$a_d\le A_\infty\lambda+O((\log\lambda)^2)$, so all precisions have
+polynomial magnitude and polynomial bit length.
+
+The leading wire masses at depths zero through six are
+\begin{equation}\label{eq:masses}
+ (m_0,\ldots,m_6)
+ =\left(1,\frac15,\frac2{65},\frac4{585},
+          \frac8{4095},\frac8{12285},\frac{16}{61425}\right),
+ \qquad M_d\le(1+o(1))m_ds.
+\end{equation}
+Later masses halve. Original entry routines cost
+$2^{O(s^{9/10})}$ times a polynomial, new packet routines cost
+$\exp(s^{A_\infty+o(1)})$ times a polynomial, and direct leaves cost
+$2^{O(s/\lambda)}$ times their entry overhead. All are lower order on
+$s/\sqrt\lambda$. In the normalized-work recurrence~\eqref{eq:paid},
+multiplying the $\poly(s)$ overheads over
+$O(\log\lambda)$ levels adds only $O(\lambda\log\lambda)$ to the
+exponent. Restoring the single factor $P(s+\mathcal L)$ from
+Section~\ref{sec:interface} gives the polynomial description-length
+factor in the theorem. The imported immutable-entry representation is retained
+throughout; an entry description is not recursively expanded into an
+exponentially large expression.
+
+\subsection{Exact time and space constants}
+
+Define
+\[
+ K_d^*=\kappa\frac{m_d}{\sqrt{\eta_d}}\quad(0\le d\le6),
+ \qquad \gamma=\frac{1/2}{\sqrt{63/100}}=\frac5{\sqrt{63}}<1.
+\]
+At a finite stage $i\le5$, the aggregation branch of~\eqref{eq:paid}
+has coefficient
+\[
+ C_i=\sum_{j<i}\alpha_{r_j}K_j^*+\beta_{r_i}K_i^*.
+\]
+For the tail, $\alpha_4/(1-\gamma)>\beta_4$. Its finite aggregation
+branches interpolate between the first-tail aggregation and the limiting
+all-cache route. Consequently the exact global time coefficient is
+\begin{equation}\label{eq:CT}
+ \boxed{C_T=\sum_{j=0}^{5}\alpha_{r_j}K_j^*
+           +\frac{\alpha_4 K_6^*}{1-5/\sqrt{63}}.}
+\end{equation}
+The finite checker proves that this is larger than every $C_i$. For
+orientation, the complete list is
+\begin{center}\small
+\begin{tabular}{@{}lr@{}}
+\toprule Paid branch & Coefficient\\
+\midrule
+Root aggregation &$28.305780030299\ldots$\\
+Depth 1 aggregation &$28.422653469923\ldots$\\
+Depth 2 aggregation &$28.155469836586\ldots$\\
+Depth 3 aggregation &$28.270593027933\ldots$\\
+Depth 4 aggregation &$28.354261620480\ldots$\\
+Depth 5 aggregation &$28.380927811887\ldots$\\
+Tail, including all recursive cache work &$28.433739378341\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Ancestor and descendant tables coexist, so their storage sizes add.
+There are only $O(\log\lambda)$ active frames, and hence their leading
+storage coefficient is the maximum of the local coefficients, not their
+sum. The largest local coefficient is at the root:
+\begin{equation}\label{eq:CS}
+ \boxed{C_S=\beta_{10}K_0^*
+ =\frac\pi{\ln2}
+  \sqrt{\frac{2}{\eta_0}
+       \frac{16437522499887100933}{56000000000000000000}}.}
+\end{equation}
+The later local coefficients are approximately $6.25666$, $1.57435$,
+$0.38609$, $0.12996$, $0.03741$, and $0.02331$, and then decay
+geometrically. Polynomial matrix workspace and CRT overhead do not change
+these coefficients.
+
+Equations~\eqref{eq:CT}--\eqref{eq:CS}, with the literal rational data,
+define the headline values exactly. Rational interval arithmetic proves
+\[
+ C_T<\SafeC<\oldC,\qquad C_S<\SafeS.
+\]
+All finite branches, terminal work, packing and entry costs have now been
+charged, proving Theorem~\ref{thm:main}. The separate incoming
+$30.257036\ldots/25.989068\ldots$ memory point remains useful when its
+smaller space exponent is preferred.

@@ -1,0 +1,49 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticPellCommonUnit.lean:105:76: error: `simp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticPellCommonUnit.lean:106:4: error: Tactic `apply` failed: could not unify the conclusion of `lt_of_mul_self_lt_mul_self₀ (Arithmetic.zero_le S)`
+  ?m.680 < S
+with the goal
+  S < a + 2
+
+Note: The full type of `lt_of_mul_self_lt_mul_self₀ (Arithmetic.zero_le S)` is
+  ?m.680 * ?m.680 < S * S → ?m.680 < S
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+a R f : V
+hR : 0 < R
+hf : 0 < f
+hn : R * R + delta a = delta a * (f * f)
+hD : 0 < delta a
+hA : 1 < a + 2
+d s t : V
+hdp : 0 < d
+hsp : 0 < s
+htp : 0 < t
+hd : delta a = d * d * s
+hr : R = d * s * t
+hfsol : f * f = 1 + s * t * t
+hseed : (a + 2) * (a + 2) = 1 + s * d * d
+b v : V
+hvp : 0 < v
+left✝³ : b + 2 ≤ a + 2
+left✝² : v ≤ d
+hb : (b + 2) * (b + 2) = 1 + s * v * v
+hclass : ∀ (x y : V), x * x = 1 + s * y * y → ∃ n ≤ y, x = xcoord n b ∧ y = v * ycoord n b
+e : V
+left✝¹ : e ≤ d
+he : a + 2 = xcoord e b
+n : V
+left✝ : n ≤ t
+hfn : f = xcoord n b
+htn : t = v * ycoord n b
+hep : 0 < e
+hnp : 0 < n
+S : V := ycoord e b
+hed : d = v * S
+hSp : 0 < S
+hdb : delta b = s * v * v
+hdelta : delta a = delta b * S * S
+hRform : R = delta b * S * ycoord n b
+hd1 : 1 ≤ delta b
+⊢ S < a + 2

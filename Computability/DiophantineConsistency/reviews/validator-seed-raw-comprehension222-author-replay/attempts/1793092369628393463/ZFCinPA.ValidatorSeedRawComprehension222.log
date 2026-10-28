@@ -1,0 +1,314 @@
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:159:4: error: Type mismatch: After simplification, term
+  h
+ has type
+  @Entailment.Prf (InternalTheory V ℒₛₑₜ) (Bootstrapping.Formula V ℒₛₑₜ) instEntailmentInternalTheoryFormula (Source V)
+    ⌜∀⁰*
+        (Matrix.conj (⇑Rewriting.emb ∘ fun i => “#(Fin.addCast 2 i) = #(i.addNat 2)”) 🡒
+          FirstOrder.Semiformula.rel Language.Mem.mem (⇑Rew.emb ∘ fun i => #(Fin.addCast 2 i)) 🡒
+            FirstOrder.Semiformula.rel Language.Mem.mem (⇑Rew.emb ∘ fun i => #(i.addNat 2)))⌝
+but is expected to have type
+  @Entailment.Prf (InternalTheory V ℒₛₑₜ) (Bootstrapping.Semiformula V ℒₛₑₜ 0) instEntailmentInternalTheoryFormula
+    (Source V)
+    (∀⁰
+      ∀⁰
+        ∀⁰
+          ∀⁰
+            (Bootstrapping.Semiformula.nrel op(=) ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 2] ⋎
+                Bootstrapping.Semiformula.nrel op(=) ![Bootstrapping.Semiterm.bvar 1, Bootstrapping.Semiterm.bvar 3] ⋎
+                  ⊥) ⋎
+              Bootstrapping.Semiformula.nrel Language.Mem.mem
+                  ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1] ⋎
+                Bootstrapping.Semiformula.rel Language.Mem.mem
+                  ![Bootstrapping.Semiterm.bvar 2, Bootstrapping.Semiterm.bvar 3])
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:173:4: error: Type mismatch: After simplification, term
+  h
+ has type
+  Source V ⊢! ∀⁰ ∀⁰ ∀⁰ ∼⌜“#2 = #1”⌝ ⋎ ∼⌜“#1 = #0”⌝ ⋎ ⌜“#2 = #0”⌝
+but is expected to have type
+  Source V ⊢!
+    ∀⁰
+      ∀⁰
+        ∀⁰
+          Bootstrapping.Semiformula.nrel op(=) ![Bootstrapping.Semiterm.bvar 2, Bootstrapping.Semiterm.bvar 1] ⋎
+            Bootstrapping.Semiformula.nrel op(=) ![Bootstrapping.Semiterm.bvar 1, Bootstrapping.Semiterm.bvar 0] ⋎
+              Bootstrapping.Semiformula.rel op(=) ![Bootstrapping.Semiterm.bvar 2, Bootstrapping.Semiterm.bvar 0]
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:211:18: warning: This simp argument is unused:
+  Matrix.comp_vecCons'
+
+Hint: Omit it from the simp argument list.
+  simp [supportBody, ̲closureTerm, ̲subsetTerm, ̲memTerm, ̲Bootstrapping.Semiformula.free,
+      Bootstrapping.Semiformula.shift_substs, ̲Bootstrapping.Semiformula.substs_substs,
+  ̵  ̵ ̵ ̵SemitermVec.q,
+  ̲ ̲ ̲ ̲ ̲Matrix.c̵o̵m̵p̵_̵vecC̵o̵n̵s̵'̵,̵M̵a̵t̵r̵i̵x̵.̵v̵e̵c̵Head, ̲Matrix.vecTail]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:233:2: error: Type mismatch: After simplification, term
+  hx
+ has type
+  [(∀⁰
+          (Bootstrapping.Semiformula.rel Language.Mem.mem
+              ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar c] 🡒
+            ∃⁰
+              Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.bvar 1, Bootstrapping.Semiterm.bvar 0] K ⋏
+                (∀⁰
+                  (∀⁰
+                      (Bootstrapping.Semiformula.rel Language.Mem.mem
+                          ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1] 🡒
+                        Bootstrapping.Semiformula.rel Language.Mem.mem
+                          ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 3]) 🡒
+                    ∀⁰
+                      (Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1]
+                          K 🡒
+                        ∃⁰
+                          Bootstrapping.Semiformula.subst
+                              ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 2] K ⋏
+                            Bootstrapping.Semiformula.rel Language.Mem.mem
+                              ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar c]))))) ⋏
+        (∀⁰
+          (Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar a] K 🡒
+            ∃⁰
+              Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar a] K ⋏
+                Bootstrapping.Semiformula.rel Language.Mem.mem
+                  ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar c]))] ⊢[Source V]
+    Bootstrapping.Semiformula.rel Language.Mem.mem ![Bootstrapping.Semiterm.fvar y, Bootstrapping.Semiterm.fvar c] 🡒
+      ∃⁰
+        Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.fvar y, Bootstrapping.Semiterm.bvar 0] K ⋏
+          (∀⁰
+            (∀⁰
+                (Bootstrapping.Semiformula.rel Language.Mem.mem
+                    ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1] 🡒
+                  Bootstrapping.Semiformula.rel Language.Mem.mem
+                    ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar y]) 🡒
+              ∀⁰
+                (Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1] K 🡒
+                  ∃⁰
+                    Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 2] K ⋏
+                      Bootstrapping.Semiformula.rel Language.Mem.mem
+                        ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar c])))
+but is expected to have type
+  [pairAt K (Bootstrapping.Semiterm.fvar a) (Bootstrapping.Semiterm.fvar c)] ⊢[Source V]
+    Bootstrapping.Semiformula.rel Language.Mem.mem ![Bootstrapping.Semiterm.fvar y, Bootstrapping.Semiterm.fvar c] 🡒
+      ∃⁰
+        Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.fvar y, Bootstrapping.Semiterm.bvar 0] K ⋏
+          (∀⁰
+            (∀⁰
+                (Bootstrapping.Semiformula.rel Language.Mem.mem
+                    ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1] 🡒
+                  Bootstrapping.Semiformula.rel Language.Mem.mem
+                    ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar y]) 🡒
+              ∀⁰
+                (Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 1] K 🡒
+                  ∃⁰
+                    Bootstrapping.Semiformula.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.bvar 2] K ⋏
+                      Bootstrapping.Semiformula.rel Language.Mem.mem
+                        ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar c])))
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:270:18: error: Application type mismatch: The argument
+  hp
+has type
+  [subsetTerm (Bootstrapping.Semiterm.fvar p) (Bootstrapping.Semiterm.fvar y),
+      closureTerm K (Bootstrapping.Semiterm.fvar c) (Bootstrapping.Semiterm.fvar y)] ⊢[Source V]
+    subsetTerm (Bootstrapping.Semiterm.fvar p) (Bootstrapping.Semiterm.fvar y)
+of sort `Prop` but is expected to have type
+  ?m.340 ⊢! ?m.342
+of sort `Type ?u.142` in the application
+  ?m.344⨀!hp
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:266:4: warning: This simp argument is unused:
+  Matrix.comp_vecCons'
+
+Hint: Omit it from the simp argument list.
+  simp [̵s̵u̵b̵s̵e̵t̵T̵e̵r̵m̵,̵m̵e̵m̵T̵e̵r̵m̵,̵B̵o̵o̵t̵s̵t̵r̵a̵p̵p̵i̵n̵g̵.̵S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵s̵u̵b̵s̵t̵s̵_̵s̵u̵b̵s̵t̵s̵,̵S̵e̵m̵i̵t̵e̵r̵m̵V̵e̵c̵.̵q̵,̵
+  ̵ ̵ ̵ ̵ ̵M̵a̵t̵r̵i̵x̵.̵c̵o̵m̵p̵_̵v̵e̵c̵C̵o̵n̵s̵'̵,̵M̵a̵t̵r̵i̵x̵.̵v̵e̵c̵H̵e̵a̵d̵,̵M̵a̵t̵r̵i̵x̵.̵v̵e̵c̵T̵a̵i̵l̵]̵[̲s̲u̲b̲s̲e̲t̲T̲e̲r̲m̲,̲ ̲m̲e̲m̲T̲e̲r̲m̲,̲ ̲B̲o̲o̲t̲s̲t̲r̲a̲p̲p̲i̲n̲g̲.̲S̲e̲m̲i̲f̲o̲r̲m̲u̲l̲a̲.̲s̲u̲b̲s̲t̲s̲_̲s̲u̲b̲s̲t̲s̲,̲ ̲S̲e̲m̲i̲t̲e̲r̲m̲V̲e̲c̲.̲q̲,̲ ̲M̲a̲t̲r̲i̲x̲.̲v̲e̲c̲H̲e̲a̲d̲,̲
+  ̲ ̲ ̲ ̲ ̲M̲a̲t̲r̲i̲x̲.̲v̲e̲c̲T̲a̲i̲l̲]̲ at hs
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:280:2: error: Type mismatch: After simplification, term
+  TProof.specialize_with_ctx! h w
+ has type
+  @FiniteContext.Provable (Bootstrapping.Semiformula V ℒₛₑₜ 0) (InternalTheory V ℒₛₑₜ)
+    instEntailmentInternalTheoryFormula instLogicalConnectiveSemiformula (Source V)
+    [∀⁰
+        (Bootstrapping.Semiformula.rel Language.Mem.mem ![Bootstrapping.Semiterm.bvar 0, Semiterm.bShift p] 🡘
+          Bootstrapping.Semiformula.rel op(=) ![Bootstrapping.Semiterm.bvar 0, Semiterm.bShift z])]
+    (Bootstrapping.Semiformula.rel Language.Mem.mem ![w, p] 🡘 Bootstrapping.Semiformula.rel op(=) ![w, z])
+but is expected to have type
+  @FiniteContext.Provable (Bootstrapping.Formula V ℒₛₑₜ) (InternalTheory V ℒₛₑₜ) instEntailmentInternalTheoryFormula
+    instLogicalConnectiveSemiformula (Source V) [singletonAt p z]
+    (Bootstrapping.Semiformula.rel Language.Mem.mem ![w, p] 🡘 Bootstrapping.Semiformula.rel op(=) ![w, z])
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:294:2: error: Proof search failed: [memTerm z p, eqTerm p r, eqTerm z z, singletonAt p z,
+  singletonAt r a] ⟹ [eqTerm z a, memTerm z r, memTerm z p, eqTerm z a]
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:309:2: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:361:58: warning: This simp argument is unused:
+  Matrix.comp_vecCons'
+
+Hint: Omit it from the simp argument list.
+  simp [rawAugMatrix, ̲singTerm, ̲singletonAt, ̲eqTerm, ̲memTerm,
+      Bootstrapping.Semiformula.substs_substs, ̲SemitermVec.q, ̲Matrix.c̵o̵m̵p̵_̵vecC̵o̵n̵s̵'̵,̵M̵a̵t̵r̵i̵x̵.̵v̵e̵c̵Head, ̲Matrix.vecTail]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:373:2: error: Proof search failed: [singletonAt p y, memTerm y a ⋏ Bootstrapping.Semiformula.subst ![y] θ, eqTerm p p,
+  singletonAt p z, memTerm z a ⋏ Bootstrapping.Semiformula.subst ![z] θ,
+  singletonAt r a] ⟹ [singletonAt p y, eqTerm y z, eqTerm z a, eqTerm p r, eqTerm y a, eqTerm p r]
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:419:4: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:412:53: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:447:6: error: Proof search failed: [singletonAt p (Semiterm.shift z),
+  Bootstrapping.Semiformula.subst ![Semiterm.shift z] θ.shift 🡒
+    Bootstrapping.Semiformula.subst ![Semiterm.shift z, p] (rawAugMatrix θ.shift (Semiterm.shift a) (Semiterm.shift r)),
+  singletonAt (Semiterm.shift r) (Semiterm.shift a),
+  pairAt (rawAugMatrix θ.shift (Semiterm.shift a) (Semiterm.shift r)) (Semiterm.shift r) (Semiterm.shift c),
+  memTerm (Semiterm.shift z) (Semiterm.shift a),
+  Bootstrapping.Semiformula.subst ![Semiterm.shift z]
+    θ.shift] ⟹ [memTerm (Semiterm.shift z) (Semiterm.shift a),
+  closureTerm (rawAugMatrix θ.shift (Semiterm.shift a) (Semiterm.shift r)) (Semiterm.shift c) (Semiterm.shift a),
+  memTerm (Semiterm.shift a) (Semiterm.shift c), memTerm (Semiterm.shift z) (Semiterm.shift c),
+  Bootstrapping.Semiformula.subst ![Semiterm.shift z, p] (rawAugMatrix θ.shift (Semiterm.shift a) (Semiterm.shift r)),
+  pairAt (rawAugMatrix θ.shift (Semiterm.shift a) (Semiterm.shift r)) (Semiterm.shift r) (Semiterm.shift c)]
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:448:4: error: Type mismatch: After simplification, term
+  h
+ has type
+  Source V ⊢
+    ∀⁰
+        (Bootstrapping.Semiformula.rel Language.Mem.mem
+            ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar 0] 🡘
+          Bootstrapping.Semiformula.rel op(=) ![Bootstrapping.Semiterm.bvar 0, (Semiterm.shift z).bShift]) 🡒
+      ∀⁰
+          (Bootstrapping.Semiformula.rel Language.Mem.mem ![Bootstrapping.Semiterm.bvar 0, (Semiterm.shift r).bShift] 🡘
+            Bootstrapping.Semiformula.rel op(=) ![Bootstrapping.Semiterm.bvar 0, (Semiterm.shift a).bShift]) 🡒
+        pairAt (rawAugMatrix θ.shift (Semiterm.shift a) (Semiterm.shift r)) (Semiterm.shift r) (Semiterm.shift c) 🡒
+          Bootstrapping.Semiformula.rel Language.Mem.mem ![Semiterm.shift z, Semiterm.shift a] 🡒
+            Bootstrapping.Semiformula.subst ![Semiterm.shift z] θ.shift 🡒
+              Bootstrapping.Semiformula.rel Language.Mem.mem ![Semiterm.shift z, Semiterm.shift c]
+but is expected to have type
+  Source V ⊢
+    ∀⁰
+        (Bootstrapping.Semiformula.rel Language.Mem.mem
+            ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar 0] 🡘
+          Bootstrapping.Semiformula.rel op(=)
+            ![Bootstrapping.Semiterm.bvar 0,
+              Semiterm.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar 0]
+                (Semiterm.shift z).bShift.bShift]) 🡒
+      ∀⁰
+          (Bootstrapping.Semiformula.rel Language.Mem.mem ![Bootstrapping.Semiterm.bvar 0, (Semiterm.shift r).bShift] 🡘
+            Bootstrapping.Semiformula.rel op(=) ![Bootstrapping.Semiterm.bvar 0, (Semiterm.shift a).bShift]) 🡒
+        pairAt (rawAugMatrix θ.shift (Semiterm.shift a) (Semiterm.shift r)) (Semiterm.shift r) (Semiterm.shift c) 🡒
+          Bootstrapping.Semiformula.rel Language.Mem.mem ![Semiterm.shift z, Semiterm.shift a] 🡒
+            Bootstrapping.Semiformula.subst ![Semiterm.shift z] θ.shift 🡒
+              Bootstrapping.Semiformula.rel Language.Mem.mem ![Semiterm.shift z, Semiterm.shift c]
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:459:2: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:505:4: error: Type mismatch: After simplification, term
+  h'
+ has type
+  Source V ⊢
+    ∀⁰
+        (Bootstrapping.Semiformula.rel Language.Mem.mem
+            ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar 0] 🡘
+          Bootstrapping.Semiformula.rel op(=) ![Bootstrapping.Semiterm.bvar 0, (Semiterm.shift a).bShift]) 🡒
+      ∃⁰ rawAugBody θ.shift (Semiterm.shift a)
+but is expected to have type
+  Source V ⊢
+    ∀⁰
+        (Bootstrapping.Semiformula.rel Language.Mem.mem
+            ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar 0] 🡘
+          Bootstrapping.Semiformula.rel op(=)
+            ![Bootstrapping.Semiterm.bvar 0,
+              Semiterm.subst ![Bootstrapping.Semiterm.bvar 0, Bootstrapping.Semiterm.fvar 0]
+                (Semiterm.shift a).bShift.bShift]) 🡒
+      ∃⁰ rawAugBody θ.shift (Semiterm.shift a)
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:515:2: error: Type mismatch: After simplification, term
+  (rawAugProof θ a).derivationOf
+ has type
+  @DerivationOf V inst✝¹ inst✝ ℒₛₑₜ Language.Set.instEncodableSet instLORDefinableSet seedTheory
+    (instΔ₁Theory (Source V)) (rawAugProof θ a).val {^∃ (rawAugBody θ a).val}
+but is expected to have type
+  @DerivationOf V inst✝¹ inst✝ ℒₛₑₜ Language.Set.instEncodableSet instLORDefinableSet seedTheory seedTheory_delta1
+    (rawAugProof θ a).val {^∃ (rawAugBody θ a).val}
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:569:2: error: Tactic `rfl` failed: The left-hand side
+  ⌜#1⌝
+is not definitionally equal to the right-hand side
+  ^#1
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+⊢ ⌜#1⌝ = ^#1
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:578:67: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+θ : Bootstrapping.Semiformula V ℒₛₑₜ 1
+a r : V
+⊢ (subst ℒₛₑₜ (^#1 ∷ ^&r ∷ 0)
+          (^rel 2 ⌜op(=)⌝
+            ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+              (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) =
+        ^rel 2 ⌜op(=)⌝ (^#1 ∷ ^&r ∷ 0) ∧
+      subst ℒₛₑₜ (^#0 ∷ ^&a ∷ 0)
+          (^rel 2 ⌜op(=)⌝
+            ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+              (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) =
+        ^rel 2 ⌜op(=)⌝ (^#0 ∷ ^&a ∷ 0)) ∧
+    iff ℒₛₑₜ
+          (^rel 2 ⌜Language.Mem.mem⌝
+            ((Matrix.vecHead fun i => ⌜![#0, #2] i⌝).val ∷
+              (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #2] i⌝)).val ∷ 0))
+          (^rel 2 ⌜op(=)⌝
+            ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+              (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) =
+        iff ℒₛₑₜ (^rel 2 ⌜Language.Mem.mem⌝ (^#0 ∷ ^#2 ∷ 0)) (^rel 2 ⌜op(=)⌝ (^#0 ∷ ^#1 ∷ 0)) ∧
+      subst ℒₛₑₜ (^#0 ∷ ^&a ∷ 0)
+          (^rel 2 ⌜Language.Mem.mem⌝
+            ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+              (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) =
+        ^rel 2 ⌜Language.Mem.mem⌝ (^#0 ∷ ^&a ∷ 0)
+/home/codex/.codex/worktrees/46be/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ValidatorSeedRawComprehension222.lean:586:55: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+θ : Bootstrapping.Semiformula V ℒₛₑₜ 1
+a : V
+⊢ imp ℒₛₑₜ
+        (^rel 2 ⌜Language.Mem.mem⌝
+          ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+            (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0))
+        (subst ℒₛₑₜ (^#0 ∷ ^&a ∷ 0)
+            (^rel 2 ⌜op(=)⌝
+              ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+                (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) ^⋎
+          subst ℒₛₑₜ (^#0 ∷ ^&a ∷ 0)
+              (^rel 2 ⌜Language.Mem.mem⌝
+                ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+                  (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) ^⋏
+            subst ℒₛₑₜ (^#0 ∷ 0) θ.val) =
+      imp ℒₛₑₜ (^rel 2 ⌜Language.Mem.mem⌝ (^#0 ∷ ^#1 ∷ 0))
+        (^rel 2 ⌜op(=)⌝ (^#0 ∷ ^&a ∷ 0) ^⋎ ^rel 2 ⌜Language.Mem.mem⌝ (^#0 ∷ ^&a ∷ 0) ^⋏ subst ℒₛₑₜ (^#0 ∷ 0) θ.val) ∧
+    imp ℒₛₑₜ
+        (subst ℒₛₑₜ (^#0 ∷ ^&a ∷ 0)
+            (^rel 2 ⌜op(=)⌝
+              ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+                (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) ^⋎
+          subst ℒₛₑₜ (^#0 ∷ ^&a ∷ 0)
+              (^rel 2 ⌜Language.Mem.mem⌝
+                ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+                  (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) ^⋏
+            subst ℒₛₑₜ (^#0 ∷ 0) θ.val)
+        (^rel 2 ⌜Language.Mem.mem⌝
+          ((Matrix.vecHead fun i => ⌜![#0, #1] i⌝).val ∷
+            (Matrix.vecHead (Matrix.vecTail fun i => ⌜![#0, #1] i⌝)).val ∷ 0)) =
+      imp ℒₛₑₜ
+        (^rel 2 ⌜op(=)⌝ (^#0 ∷ ^&a ∷ 0) ^⋎ ^rel 2 ⌜Language.Mem.mem⌝ (^#0 ∷ ^&a ∷ 0) ^⋏ subst ℒₛₑₜ (^#0 ∷ 0) θ.val)
+        (^rel 2 ⌜Language.Mem.mem⌝ (^#0 ∷ ^#1 ∷ 0))

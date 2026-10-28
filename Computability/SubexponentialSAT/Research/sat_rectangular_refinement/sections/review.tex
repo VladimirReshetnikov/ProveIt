@@ -1,0 +1,131 @@
+\section{Frozen source review and the actual comparison frontier}
+\label{sec:review}
+
+\subsection{Revision and review depth}
+
+\begin{samepage}
+The ProveIt review is frozen at
+\begin{center}\small\ttfamily
+8e76d515063c4b9fbd8743a846b457e3a01bc039.
+\end{center}
+\end{samepage}
+The relevant recent commits are summarized below. Times in the source
+metadata are UTC; these changes occurred during the evening of 26 October
+in Pacific time. Source hashes and exact paths are recorded in the archive.
+
+\begin{center}\small
+\begin{tabular}{@{}llp{8.3cm}@{}}
+\toprule Commit prefix & UTC time, 27 Oct. & Relevant change\\
+\midrule
+\texttt{6d3adc4506}&02:03&Eight round-2 packets placed.\\
+\texttt{450252e9d8}&02:36&Five round-3 packets placed; omitted scripts restored.\\
+\texttt{a7ae5ab55f}&03:15&Nine round-4 packets placed.\\
+\texttt{7de9d09fec}&03:20&Public Anthropic Lean development linked.\\
+\texttt{26bd83d4b3}&03:51&Five new affine/pairwise ZIP archives arrived.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The project index contains 29 refinement packets: seven in round 1, eight
+in round 2, five in round 3, and nine in round 4. The five newest incoming
+archives raise the reviewed inventory to 34. We screened all indexed
+claims and read the full mathematical sections that determine the current
+frontier, inherited interfaces, and proposed order improvements. This is
+not an assertion of an independent end-to-end proof audit of every earlier
+packet. The inventory states which source claims are being summarized;
+the main theorem has a narrower explicit dependency list.
+
+During completion, commit \texttt{324f3d9b009a} placed the five incoming
+packets into the project. All 213 placed files matched the reviewed ZIP
+members by Git blob identity, including all 160 LaTeX, Python and JSON
+files; the omitted files were documented ancillary or build files.
+The closing observed main revision was \texttt{0cf10036e6ad}.
+This placement changes the index to 34 packets without changing the
+reviewed mathematics. The full identity check accompanies the archive.
+
+\subsection{The five archives missing from the index}
+
+All entries below concern the same generic normalized input model and
+multiply $s/\sqrt\lambda$ in a base-two exponent. They are source claims
+whose finite frontier certificates were inspected; the two leading
+pairwise checkers were also replayed.
+
+\begin{center}\small
+\begin{tabular}{@{}p{6.1cm}rr@{}}
+\toprule Incoming archive stem & Time coefficient & Space coefficient\\
+\midrule
+\texttt{sat\_pairwise\_certificates}&29.811609&29.811609\\
+\texttt{sat\_affine\_contraction}&30.257036&25.989068\\
+\texttt{sat\_affine\_geometry}&30.269873&29.487537\\
+\texttt{sat\_affine\_cauchy}&30.413349&29.466030\\
+\texttt{sat\_affine\_plane}&30.691338&29.466030\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first two rows form the relevant time--space tradeoff among these
+five. A smaller time coefficient does not erase the second row's smaller
+memory coefficient. The best generic polynomial-space coefficient remains
+$46.184845586731\ldots$ from \texttt{sat\_adaptive\_bounds}. The newest
+pairwise packet separately gives $16.812233801883\ldots$ in polynomial
+space at root degree at most $\ceil{s^{1/12}}$. That lower-degree result
+has stronger assumptions and is not a competitor in the generic
+degree-$s^{9/10}$ table.
+
+The older indexed generic cached record was $30.891018920366\ldots$.
+Comparing a new result only with that value would miss the incoming
+$29.8116\ldots$ frontier. None of the 34 packets establishes a smaller
+general order than~\eqref{eq:satorders}. The conditional improvements
+require an additional algorithm or representation theorem that is not
+provided by the corresponding packet.
+
+\subsection{The two primary algorithms and formal verification}
+
+The vendored OpenAI manuscript at upstream revision
+\nolinkurl{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a} proves the bounds
+in~\eqref{eq:satorders}, with polynomial space, in its quantitative
+appendix~\cite{openai}. Its published Lean scope page reports the weaker
+general exponent $n(\log\log n)^2/\sqrt{\log n}$ for that formal
+development~\cite{openaiscope}. The paper's sharper quantitative appendix
+and its formalized theorem should not be conflated.
+
+The Anthropic source is inspected at the user's exact commit
+\begin{center}\small\ttfamily
+1a6eee293b9e00cb432eef6018a21f523623a9af.
+\end{center}
+Its \texttt{MainResults.lean} states a finite-alphabet deterministic
+Mathlib Turing-machine counting theorem, and \texttt{Solution.lean}
+supplies proofs without extra hypotheses. Specializing to 3-SAT gives
+\begin{equation}\label{eq:anthropic}
+ 2^{O\left(\min\left\{
+       \frac{m}{\sqrt{\log m}},
+       \frac{n\log\log n}{\sqrt{\log n}}
+       \right\}\right)}.
+\end{equation}
+The stated counting form assumes normalized clauses and occurring named
+variables; small cases and unused variables are handled by the usual
+front end. Raw input normalization adds a polynomial factor in input
+length. The separate ETH wrapper is also proved~\cite{anthropiccode}.
+
+We retrieved the exact-commit upstream verification log. The
+\texttt{verify (eth)} job reports successful Lean-kernel, nanoda, and
+Comparator acceptance, with the deliberately unproved challenge statements
+kept separate from \texttt{Solution.lean}~\cite{anthropicci}. This is
+observed upstream verification, not a local rebuild performed here. The
+older round-2 statement that the public development was unavailable is
+therefore obsolete. The Anthropic development does not formalize the
+ProveIt refinement packets or the new results in this report, and its
+displayed time theorem does not supply the OpenAI paper's polynomial-space
+claim.
+
+\subsection{A stronger available matrix backend}
+
+The newest pairwise packet still uses $\omega<19/8$ and dual exponent
+$\alpha>3/10$. Current primary sources contain stronger results.
+The OpenAI scope page records $\omega(\C)\le9/4$ and
+$\alpha>0.465$~\cite{matrixscope}. Uzna\'nski's version-2 theorem gives
+$\omega(1,1/2,1)=2$ and $\omega\le9/4$ over characteristic zero, with
+positive exponent slack understood~\cite{uznanski}. We use these two
+fixed shapes. This avoids assuming uniform constants for a continuously
+varying family of rectangular shapes. The transfer to the exact modular
+calculation is proved in Section~\ref{sec:matrix}.

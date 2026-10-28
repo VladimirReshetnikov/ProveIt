@@ -1,0 +1,63 @@
+\section{Decision shortcuts and the encoding obstacle}
+Reducing the root modulus to two does not remove the current algorithm's internal precision cost. Its recurrence has the form
+\[
+ p_t=p+8\lceil3M/u\rceil\delta+8M(a+1).
+\]
+Even $p=1$ leaves the $\Omega(M\delta/u)$ term. Substituting the existing precision certificate into the mode estimate still gives the same $O(M/\sqrt u)$ exponent. This does not exclude a different parity-counting algorithm; it explains why parity alone does not improve this one.
+
+There is also a precise limitation on lowering polynomial degree while preserving witnesses.
+\begin{proposition}[Degree needed to preserve an odd solution count]\label{prop:odd}
+For polynomials $P_1,\ldots,P_a$ over $\F_2$ on $n$ Boolean variables, if $\sum_i\deg P_i<n$, their number of common zeros is even. Consequently, a same-variable solution-set-preserving encoding of a uniquely satisfiable formula cannot always have total degree $o(n)$.
+\end{proposition}
+\begin{proof}
+On the Boolean cube the common-zero indicator is
+$Q(x)=\prod_i(1+P_i(x))$. Its degree is less than $n$. Every monomial in $Q$ omits some variable, so summing it over all Boolean assignments gives zero in $\F_2$. Thus $\sum_xQ(x)=0$. A unique common zero would instead give one.
+\end{proof}
+This statement does not constrain arbitrary decision reductions or reductions that intentionally change the witnesses.
+
+The incidence encoding creates a different obstacle. If different rows use disjoint incidence variables and each has $r$ distinct cubic monomials, the product of $a$ row factors $(1+P_i)$ has at least $r^a$ distinct incidence monomials: independently choose one cubic term in each row. The rows' disjoint indeterminates prevent collisions or cancellation among these products. With $a=\Theta(n)$ and $r=\log^{\Theta(1)}n$, injectively indexing these monomials needs $\Omega(n\log\log n)$ bits.
+
+This is not restricted to an arbitrary unrelated polynomial example. The bundled note \texttt{research\_decision/findings.md}, Section 2, gives a complete probabilistic construction from genuine 3-CNF violation polynomials. For $n\ge\lceil e^{10}\rceil$, choose $m=n\lceil\ln n\rceil$ clauses on distinct variable triples and $6n$ parity rows, including each clause independently with probability $4\ln(2m)/n$. A union bound over violation sets and assignments, together with row-size tail bounds, shows that some matrix preserves the exact solution set and has $\Theta(\log^2 n)$ distinct cubic terms per row. Its separated-incidence product has $2^{\Omega(n\log\log n)}$ nonzero monomials. The construction is an existence argument, not a proposed randomized solver or a description of the paper's deterministic greedy output.
+
+Identifying incidence copies with their original Boolean variables may create very large cancellations and leaves at most $2^n$ multilinear supports. An algorithm that performs this quotient implicitly while retaining small local descriptions and low degree would evade the incidence-indexing obstruction. Such an algorithm has not been established here.
+
+Other black-box retunings do not fix the problem. The supplied sparsification certificate, followed only by direct fixed-density contraction, optimizes for 3-SAT to exponent
+\[
+ O\!\left(\frac{n(\log\log n)^{2/3}}{(\log n)^{1/6}}\right),
+\]
+which is worse than \eqref{eq:baseline}. Branching on $t$ variables and paying the same black-box cost on $n-t$ variables gives exponent $t+Cf(n-t)$, where $f(n)=n\log\log n/\sqrt{\log n}$. Since $f'(n)\to0$, branching on $t\le n/2$ eventually increases that certificate; $t>n/2$ already costs exponentially more than $2^{Cf(n)}$. These conclusions concern those specific certificates, not all sparsification or branching algorithms.
+
+\input{degree_route.tex}
+
+\section{An exact sufficient compression lemma}\label{sec:conditional}
+The following hypothesis isolates a sufficient missing theorem. It is deliberately stated with all interface costs rather than just a wire count.
+
+\begin{hypothesis}[Uniform streaming compression]\label{hyp:compression}
+Fix a function $W$ with $n\le W(n)\le n(\log n)^c$ for a fixed constant $c$. There is a deterministic polynomial-space procedure that, for every 3-CNF $F$, streams at most
+\[
+ \poly(n,m)2^{O(W(n)/\sqrt{\log W(n)})}
+\]
+Boolean tensor networks in the same total time. Uniform fixed constants guarantee the following for each network:
+\begin{enumerate}
+\item It is bipartite, has at most $CW(n)$ wires, at most polynomially many vertices in $W(n)$, and maximum degree at most $\lceil W(n)^{9/10}\rceil$.
+\item Entries belong to $(\Z/2^{n+1}\Z)[V]/(V^\ell)$, where $1\le\ell\le CW(n)$. Write $\mathcal L$ for the total graph and evaluator-description length, which is polynomial in $n+m$.
+\item Every entry at every Boolean port assignment is computable in time $(W(n)+\mathcal L)^b2^{AW(n)^{9/10}}$ and space $(W(n)+\mathcal L)^b$, with fixed constants $A,b$ independent of $F,n,m$. The immutable description may include the original input encoding; this adds no wires.
+\item A specified polynomial-time linear functional of each contraction gives a residue; the sum of these residues is $\#F$ modulo $2^{n+1}$.
+\end{enumerate}
+\end{hypothesis}
+
+\begin{proposition}[Conditional consequence]\label{prop:compression}
+Assuming the paper's contraction theorem and Hypothesis~\ref{hyp:compression}, exact counting and decision take time
+\[
+ \poly(n,m)2^{O(W(n)/\sqrt{\log W(n)})}
+\]
+and polynomial space. In particular, $W(n)=O(n)$ would improve the unrestricted-density exponent to $O(n/\sqrt{\log n})$.
+\end{proposition}
+\begin{proof}
+Apply the contraction theorem with $s=\lceil W(n)\rceil$ to one network at a time. Its initial precision $n+1$ is $O(s)$, and every other hypothesis is explicitly supplied. Multiplying the per-call bound by the number of networks changes only the fixed constant in the exponential rate. Apply the given functionals and accumulate modulo $2^{n+1}$. The true count lies between zero and $2^n$, so this residue determines the count exactly. Streaming preserves polynomial space.
+\end{proof}
+
+Any $W(n)=o(n\log\log n)$ in the stated range already improves the general exponent, because $\log W(n)=\Theta(\log n)$. The hard missing part is Hypothesis~\ref{hyp:compression}, not Proposition~\ref{prop:compression}. Merging the entire formula into one $n$-port tensor does not prove it: the degree cap fails, and evaluating that tensor after a purported degree reduction may conceal the original hard computation.
+
+A concrete place to search is the paper's older original-variable interface before incidence expansion. It already uses $n$ Boolean variables and total input degree $O(n)$ but has the weaker loglog-squared analysis. A recursive replacement would need to prove that transformed factors retain controlled local degree, that shared measurement variables do not restore the incidence-code size, that local evaluation stays subdominant, and that interpolation precision remains controlled at every depth. None of these closure properties follows just from having $n$ original variables.
+

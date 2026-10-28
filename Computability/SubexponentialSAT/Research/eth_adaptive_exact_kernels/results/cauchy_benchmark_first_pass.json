@@ -1,0 +1,535 @@
+{
+  "method": "self-authored modular product reference versus recurrence; no archive code executed",
+  "workload": "complete dense target and source N-by-N tables, both including initialization",
+  "baseline": "Both share cached denominator unit inverses, batch inversion, known triangular zeros and identical ring arithmetic.",
+  "ring": "(Z/2^p Z)[U]/(U^2+U+1), zeta=U, p=4N+16",
+  "precision_choice": "p exceeds the last guaranteed target weight; this is not a fixed-small-p truncation benchmark.",
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "processor": ""
+  },
+  "limitations": "Local component timings, not SAT runtimes or claims about partial/on-demand table workloads.",
+  "records": [
+    {
+      "a": 2,
+      "i": 0,
+      "N": 2,
+      "precision": 24,
+      "product_median_seconds": 0.00022618000002694316,
+      "recurrent_median_seconds": 0.00014906800060998648,
+      "measured_speedup": 1.5172941147759027,
+      "product_multiplications": 37,
+      "recurrent_multiplications": 35,
+      "multiplication_ratio": 1.0571428571428572,
+      "initialization_multiplications": 24,
+      "unit_inversions_each": 2,
+      "unit_denominators": 3,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.0007677300018258393,
+        9.236400001100264e-05,
+        0.00022618000002694316
+      ],
+      "recurrent_samples_seconds": [
+        0.00014906800060998648,
+        0.00017949100219993852,
+        7.731399819022045e-05
+      ]
+    },
+    {
+      "a": 2,
+      "i": 1,
+      "N": 2,
+      "precision": 24,
+      "product_median_seconds": 0.00034422600219841115,
+      "recurrent_median_seconds": 0.00011042300320696086,
+      "measured_speedup": 3.11733961404078,
+      "product_multiplications": 37,
+      "recurrent_multiplications": 35,
+      "multiplication_ratio": 1.0571428571428572,
+      "initialization_multiplications": 24,
+      "unit_inversions_each": 2,
+      "unit_denominators": 3,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.0018073840001306962,
+        8.090199844446033e-05,
+        0.00034422600219841115
+      ],
+      "recurrent_samples_seconds": [
+        0.0006170949964143801,
+        8.130499918479472e-05,
+        0.00011042300320696086
+      ]
+    },
+    {
+      "a": 3,
+      "i": 0,
+      "N": 4,
+      "precision": 32,
+      "product_median_seconds": 0.00016791199959698133,
+      "recurrent_median_seconds": 0.0001851089982665144,
+      "measured_speedup": 0.9070979864264981,
+      "product_multiplications": 122,
+      "recurrent_multiplications": 94,
+      "multiplication_ratio": 1.297872340425532,
+      "initialization_multiplications": 52,
+      "unit_inversions_each": 2,
+      "unit_denominators": 7,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.0001648760007810779,
+        0.00016791199959698133,
+        0.0008774560010351706
+      ],
+      "recurrent_samples_seconds": [
+        0.0007352680004260037,
+        0.00015395800073747523,
+        0.0001851089982665144
+      ]
+    },
+    {
+      "a": 3,
+      "i": 1,
+      "N": 4,
+      "precision": 32,
+      "product_median_seconds": 0.000272552999376785,
+      "recurrent_median_seconds": 0.0001857959978224244,
+      "measured_speedup": 1.4669476338089862,
+      "product_multiplications": 128,
+      "recurrent_multiplications": 100,
+      "multiplication_ratio": 1.28,
+      "initialization_multiplications": 58,
+      "unit_inversions_each": 2,
+      "unit_denominators": 9,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.00033027999961632304,
+        0.00023026299822959118,
+        0.000272552999376785
+      ],
+      "recurrent_samples_seconds": [
+        0.0001857959978224244,
+        0.0004815929969481658,
+        0.00016632999904686585
+      ]
+    },
+    {
+      "a": 3,
+      "i": 2,
+      "N": 4,
+      "precision": 32,
+      "product_median_seconds": 0.00016767600027378649,
+      "recurrent_median_seconds": 0.00033916100073838606,
+      "measured_speedup": 0.49438467249695495,
+      "product_multiplications": 122,
+      "recurrent_multiplications": 94,
+      "multiplication_ratio": 1.297872340425532,
+      "initialization_multiplications": 52,
+      "unit_inversions_each": 2,
+      "unit_denominators": 7,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.0001609070022823289,
+        0.0002789469981507864,
+        0.00016767600027378649
+      ],
+      "recurrent_samples_seconds": [
+        0.0002495949993317481,
+        0.00033916100073838606,
+        0.0023117950004234444
+      ]
+    },
+    {
+      "a": 4,
+      "i": 0,
+      "N": 8,
+      "precision": 48,
+      "product_median_seconds": 0.0011870100024680141,
+      "recurrent_median_seconds": 0.0004713569978775922,
+      "measured_speedup": 2.518282337618485,
+      "product_multiplications": 552,
+      "recurrent_multiplications": 272,
+      "multiplication_ratio": 2.0294117647058822,
+      "initialization_multiplications": 108,
+      "unit_inversions_each": 2,
+      "unit_denominators": 15,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.0011870100024680141,
+        0.0007354369990935083,
+        0.004792611998709617
+      ],
+      "recurrent_samples_seconds": [
+        0.0004713569978775922,
+        0.003932651998184156,
+        0.00037288000021362677
+      ]
+    },
+    {
+      "a": 4,
+      "i": 2,
+      "N": 8,
+      "precision": 48,
+      "product_median_seconds": 0.001164901001175167,
+      "recurrent_median_seconds": 0.000696900999173522,
+      "measured_speedup": 1.6715444554630596,
+      "product_multiplications": 570,
+      "recurrent_multiplications": 290,
+      "multiplication_ratio": 1.9655172413793103,
+      "initialization_multiplications": 126,
+      "unit_inversions_each": 2,
+      "unit_denominators": 21,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.001169870996818645,
+        0.001164901001175167,
+        0.001140120999480132
+      ],
+      "recurrent_samples_seconds": [
+        0.0008017500003916211,
+        0.0005779950006399304,
+        0.000696900999173522
+      ]
+    },
+    {
+      "a": 4,
+      "i": 3,
+      "N": 8,
+      "precision": 48,
+      "product_median_seconds": 0.0018960950001201127,
+      "recurrent_median_seconds": 0.0003478500002529472,
+      "measured_speedup": 5.450898372118221,
+      "product_multiplications": 552,
+      "recurrent_multiplications": 272,
+      "multiplication_ratio": 2.0294117647058822,
+      "initialization_multiplications": 108,
+      "unit_inversions_each": 2,
+      "unit_denominators": 15,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.0020016429989482276,
+        0.0018960950001201127,
+        0.0014167379995342344
+      ],
+      "recurrent_samples_seconds": [
+        0.00041576899820938706,
+        0.00033817200164776295,
+        0.0003478500002529472
+      ]
+    },
+    {
+      "a": 5,
+      "i": 0,
+      "N": 16,
+      "precision": 80,
+      "product_median_seconds": 0.0051553889970819,
+      "recurrent_median_seconds": 0.001834506998420693,
+      "measured_speedup": 2.810231305478866,
+      "product_multiplications": 3348,
+      "recurrent_multiplications": 868,
+      "multiplication_ratio": 3.857142857142857,
+      "initialization_multiplications": 220,
+      "unit_inversions_each": 2,
+      "unit_denominators": 31,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.0037759719998575747,
+        0.007603993999509839,
+        0.0051553889970819
+      ],
+      "recurrent_samples_seconds": [
+        0.0011682330004987307,
+        0.001834506998420693,
+        0.0032563320019107778
+      ]
+    },
+    {
+      "a": 5,
+      "i": 2,
+      "N": 16,
+      "precision": 80,
+      "product_median_seconds": 0.004235214997606818,
+      "recurrent_median_seconds": 0.001257979001820786,
+      "measured_speedup": 3.3666817899796504,
+      "product_multiplications": 3402,
+      "recurrent_multiplications": 922,
+      "multiplication_ratio": 3.6898047722342735,
+      "initialization_multiplications": 274,
+      "unit_inversions_each": 2,
+      "unit_denominators": 49,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.00429066400101874,
+        0.00353603600160568,
+        0.004235214997606818
+      ],
+      "recurrent_samples_seconds": [
+        0.0011999090020253789,
+        0.001257979001820786,
+        0.0018944560033560265
+      ]
+    },
+    {
+      "a": 5,
+      "i": 4,
+      "N": 16,
+      "precision": 80,
+      "product_median_seconds": 0.005105345000629313,
+      "recurrent_median_seconds": 0.0012872660008724779,
+      "measured_speedup": 3.9660373203122226,
+      "product_multiplications": 3348,
+      "recurrent_multiplications": 868,
+      "multiplication_ratio": 3.857142857142857,
+      "initialization_multiplications": 220,
+      "unit_inversions_each": 2,
+      "unit_denominators": 31,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.0038578820021939464,
+        0.005105345000629313,
+        0.007874071001424454
+      ],
+      "recurrent_samples_seconds": [
+        0.0012872660008724779,
+        0.003277412997704232,
+        0.0012797560011676978
+      ]
+    },
+    {
+      "a": 6,
+      "i": 0,
+      "N": 32,
+      "precision": 144,
+      "product_median_seconds": 0.035378632997890236,
+      "recurrent_median_seconds": 0.007154094000725308,
+      "measured_speedup": 4.945228982775935,
+      "product_multiplications": 23852,
+      "recurrent_multiplications": 3020,
+      "multiplication_ratio": 7.898013245033113,
+      "initialization_multiplications": 444,
+      "unit_inversions_each": 2,
+      "unit_denominators": 63,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.035378632997890236,
+        0.027634653000859544,
+        0.046375305002584355
+      ],
+      "recurrent_samples_seconds": [
+        0.012431176997779403,
+        0.006316716000583256,
+        0.007154094000725308
+      ]
+    },
+    {
+      "a": 6,
+      "i": 3,
+      "N": 32,
+      "precision": 144,
+      "product_median_seconds": 0.07448758899772656,
+      "recurrent_median_seconds": 0.009633739999117097,
+      "measured_speedup": 7.73194927458631,
+      "product_multiplications": 23978,
+      "recurrent_multiplications": 3146,
+      "multiplication_ratio": 7.621741894469167,
+      "initialization_multiplications": 570,
+      "unit_inversions_each": 2,
+      "unit_denominators": 105,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.03584836399750202,
+        0.12697745400146232,
+        0.07448758899772656
+      ],
+      "recurrent_samples_seconds": [
+        0.009633739999117097,
+        0.03917867500058492,
+        0.007857466000132263
+      ]
+    },
+    {
+      "a": 6,
+      "i": 5,
+      "N": 32,
+      "precision": 144,
+      "product_median_seconds": 0.10042317600164097,
+      "recurrent_median_seconds": 0.01415635699959239,
+      "measured_speedup": 7.093857268825058,
+      "product_multiplications": 23852,
+      "recurrent_multiplications": 3020,
+      "multiplication_ratio": 7.898013245033113,
+      "initialization_multiplications": 444,
+      "unit_inversions_each": 2,
+      "unit_denominators": 63,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.08318238300125813,
+        0.10042317600164097,
+        0.7999767740002426
+      ],
+      "recurrent_samples_seconds": [
+        0.011636767998425057,
+        0.01415635699959239,
+        0.02444911999918986
+      ]
+    },
+    {
+      "a": 7,
+      "i": 0,
+      "N": 64,
+      "precision": 272,
+      "product_median_seconds": 0.6109460859988758,
+      "recurrent_median_seconds": 0.08244981999814627,
+      "measured_speedup": 7.4099141273154,
+      "product_multiplications": 181852,
+      "recurrent_multiplications": 11164,
+      "multiplication_ratio": 16.289143676101755,
+      "initialization_multiplications": 892,
+      "unit_inversions_each": 2,
+      "unit_denominators": 127,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.9021529450001253,
+        0.5846920309995767,
+        0.6109460859988758
+      ],
+      "recurrent_samples_seconds": [
+        0.08244981999814627,
+        0.13052310400235,
+        0.054690278997441055
+      ]
+    },
+    {
+      "a": 7,
+      "i": 3,
+      "N": 64,
+      "precision": 272,
+      "product_median_seconds": 0.7332502589997603,
+      "recurrent_median_seconds": 0.07561239099959494,
+      "measured_speedup": 9.697488061231768,
+      "product_multiplications": 182146,
+      "recurrent_multiplications": 11458,
+      "multiplication_ratio": 15.896840635363938,
+      "initialization_multiplications": 1186,
+      "unit_inversions_each": 2,
+      "unit_denominators": 225,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.7602843799977563,
+        0.7332502589997603,
+        0.6209009110025363
+      ],
+      "recurrent_samples_seconds": [
+        0.0633637609971629,
+        0.07561239099959494,
+        0.08292108499881579
+      ]
+    },
+    {
+      "a": 7,
+      "i": 6,
+      "N": 64,
+      "precision": 272,
+      "product_median_seconds": 0.35125862499990035,
+      "recurrent_median_seconds": 0.024914192999858642,
+      "measured_speedup": 14.09873580901831,
+      "product_multiplications": 181852,
+      "recurrent_multiplications": 11164,
+      "multiplication_ratio": 16.289143676101755,
+      "initialization_multiplications": 892,
+      "unit_inversions_each": 2,
+      "unit_denominators": 127,
+      "repeats": 3,
+      "product_samples_seconds": [
+        0.34584755500327446,
+        0.35125862499990035,
+        0.35826107500179205
+      ],
+      "recurrent_samples_seconds": [
+        0.024914192999858642,
+        0.025446970998018514,
+        0.022502776002511382
+      ]
+    },
+    {
+      "a": 8,
+      "i": 0,
+      "N": 128,
+      "precision": 528,
+      "product_median_seconds": 8.218984751001699,
+      "recurrent_median_seconds": 0.33275095599674387,
+      "measured_speedup": 24.700108603390838,
+      "product_multiplications": 1424572,
+      "recurrent_multiplications": 42812,
+      "multiplication_ratio": 33.27506306642997,
+      "initialization_multiplications": 1788,
+      "unit_inversions_each": 2,
+      "unit_denominators": 255,
+      "repeats": 3,
+      "product_samples_seconds": [
+        7.366183337999246,
+        9.431378993998806,
+        8.218984751001699
+      ],
+      "recurrent_samples_seconds": [
+        0.29801688799852855,
+        0.33275095599674387,
+        0.37807880899708834
+      ]
+    },
+    {
+      "a": 8,
+      "i": 4,
+      "N": 128,
+      "precision": 528,
+      "product_median_seconds": 8.248104701997363,
+      "recurrent_median_seconds": 0.2882016530020337,
+      "measured_speedup": 28.61921372095378,
+      "product_multiplications": 1425202,
+      "recurrent_multiplications": 43442,
+      "multiplication_ratio": 32.80700704387459,
+      "initialization_multiplications": 2418,
+      "unit_inversions_each": 2,
+      "unit_denominators": 465,
+      "repeats": 3,
+      "product_samples_seconds": [
+        7.431340869999985,
+        8.248104701997363,
+        8.430203062998771
+      ],
+      "recurrent_samples_seconds": [
+        0.32007860200246796,
+        0.2882016530020337,
+        0.2263263309978356
+      ]
+    },
+    {
+      "a": 8,
+      "i": 7,
+      "N": 128,
+      "precision": 528,
+      "product_median_seconds": 6.715446397000051,
+      "recurrent_median_seconds": 0.24848047100022086,
+      "measured_speedup": 27.0260530735797,
+      "product_multiplications": 1424572,
+      "recurrent_multiplications": 42812,
+      "multiplication_ratio": 33.27506306642997,
+      "initialization_multiplications": 1788,
+      "unit_inversions_each": 2,
+      "unit_denominators": 255,
+      "repeats": 3,
+      "product_samples_seconds": [
+        8.537596281999868,
+        5.95735698900171,
+        6.715446397000051
+      ],
+      "recurrent_samples_seconds": [
+        0.24848047100022086,
+        0.36438293699757196,
+        0.187608497999463
+      ]
+    }
+  ]
+}

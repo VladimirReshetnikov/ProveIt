@@ -1,0 +1,63 @@
+INTEGRATION MAP -- MATHEMATICAL REFINEMENT, NOT AN EXISTING SOLVER PATCH
+
+Target: preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/
+build/quantitative-contraction.tex at openai/math commit
+7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a.
+
+1. Packing (lem:tensor-packets)
+Replace the collision second-moment labeling with the report's two-stage
+pair-load balancing. Label the high-degree side greedily by total degree.
+For the opposite side, use exact rational conditional expectation of
+sum q^X, q=1+1/(h*C_column). Keep the existing orientation embedding.
+Track padded mass P exactly, so packets=P/L, per-symbol padded ports=P/r,
+child wires<=2P/r, and crossing family count<=2(1-1/r)P/D.
+
+2. Degree invariants (subsec:tensor-children)
+At every child, keep side provenance: all retained tensors from both parent
+sides are rows; all newly created packet tensors are columns. Their maximum
+column degree is at most 2L_parent. Root degrees may both be ceil(s^0.9).
+Use QR=o(M), Q^2*C_column*log(s)^2=o(M), LQ^2=o(M), not a symmetric
+Q^2*Delta condition at every depth.
+
+3. Parameters (eq:tensor-parameters)
+Use lambda=ceil(log2 s), r=16, H=ceil(s/lambda),
+b=ceil(6 log2 lambda), u0=floor(lambda/81),
+ud=floor(lambda/(108*4^(d-1))) for d>=1,
+ad=sum_{j<=d}(uj+b). For bounded exceptional sizes or failed finite guards,
+use direct summation. Every active range must have u>=1 and u<=a.
+
+4. Precision (lem:tapered-hermite)
+Use the exact Hermite condition count L*rho*(2u-2+2^(1-u)). Choose
+rho=ceil((M(2L-1)+1)/(L*(2u-2+2^(1-u)))).
+Sufficient child precision: p+6*rho*D+rho*u*(a+1).
+The fixed buffer is justified by the explicit inherited bound
+p=O(s*lambda^2*2^a_previous); do not replace it by an unspecified
+lambda^O(1) and then assume six logarithms still suffice.
+
+5. Modes (eq:tensor-mode-expansion, eq:tensor-mode-budget)
+The theorem can use previous factorial weights 1+j+2*v2(j!).
+Optionally replace them by annulus weights
+R+j+F_i(j)+v2(j!), R=a+1-i, with the source/target features in
+annulus_modes.tex and code/annulus_modes.py. Keep the actual finite cutoff
+j<J=D/2. Use only unit inverses and integer binomial coefficients; no
+factorial division is permitted in the residue ring.
+
+6. Entry evaluation and lifting
+The earlier streamed finite-difference coefficient extraction can be used.
+Keep every tensor's creation precision and reuse its canonical coordinates
+at all later calls. Temporary extra arithmetic precision inside a kernel
+must not redefine the tensor's stored lift.
+
+7. Cost proof (subsec:tensor-cost)
+Use the exact unequal-pair fraction, local log count
+(pi*sqrt(5/2)+o(1))*M/sqrt(u), and path sum
+(9+sqrt(3)+o(1))*s/sqrt(lambda). Bootstrap depth first with coarse child
+ratio1/6. The sharper limiting child ratio1/8 is then available for the
+coefficient. Leaves use H=s/lambda and are lower order.
+
+Suggested ProveIt destination for review:
+Computability/SubexponentialSAT/Research/asymmetric_packet_balancing/
+
+The report's all-size lemmas and component tests can be integrated
+independently. Formalizing a full bit-time theorem needs the existing
+ring, interpolation, recursive correctness, and machine-cost development.

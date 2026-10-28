@@ -6,8 +6,11 @@ owner resumed Lean work to prove the resulting smallest equations equivalent
 to `Con(ZFC)`. The [resumed formalization plan](LEAN_EQUIVALENCE_PLAN.md)
 governs that work; this document retains the size frontier and its history.
 
-The required mathematical endpoint is unchanged: the equation's absence
-of solutions must be provably equivalent in ZFC to syntactic `Con(ZFC)`.
+The owner has strengthened the required mathematical endpoint: Lean must
+prove existence of an HA derivation of the equation's no-solution sentence
+iff the stated syntactic `Con(ZFC)` sentence. This also implies the requested
+internal ZFC provability. The [HA plan](HA_PROVABILITY_PLAN.md) records the
+remaining bridges; current external Lean equivalences alone do not finish it.
 A smaller formula must retain a complete ordinary proof chain, including
 its coefficient tuple and witness domain. Local gadget counts alone do
 not establish the size of a complete consistency equation.
@@ -23,6 +26,84 @@ certificate retain their sorted2501 binding. A new current-port graph or
 Lean exact-degree theorem is not claimed by that algebraic transfer.
 
 ## 25 October continuation
+
+The [historical-front transfer audit](research/ordinary-low-degree-current2011-transfer-audit.md)
+now identifies a route from the older13/88/51 and12/96/70 arithmetic to
+the current coefficient interface. The first scoped implementation will
+reconstruct a Carrier65 zero from any positive authoritative ordinary
+source, using the same native rank and rebuilding private Pell seeds.
+The shifted-z adapter and adaptive-carrier/free-J proofs remain separate;
+the historical metrics are not yet current-tuple Lean endpoints.
+
+The [scaled syzygy proposal](research/scaled-norm-syzygy-search/PROPOSAL.md)
+led to the separately [accepted13/178/86 equation](reviews/thirteen-scaled-norm-syzygy86-root.md)
+within the current47,313-byte coefficient family. Two independent Lean
+builds pass twelve standard-only reports, and normal/optimized complete
+finite audits reproduce every gate leader and the exact current ports. The
+[comparison correction](research/scaled-norm-syzygy-search/COMPARISON_SCOPE.md)
+retains the historical compact44 forms13/88/51 and12/96/70, which are
+smaller in these three metrics but use a different, larger coefficient
+family and older proof coverage. No global frontier improvement is claimed.
+
+A [bounded next-correction search](research/third-first-norm-correction-search/README.md)
+recovers the accepted92/90 and97/88 schedules without a further saving.
+Its [independently checked obstruction](reviews/third-correction-obstruction-root.md)
+excludes only additional A(P-1)+B(Q-1) corrections of degrees at most22/26:
+their degree44 terms are divisible by w², while U88 has a nonzero w-linear
+component. Higher-degree cancellations and other constructions remain open;
+this is not an optimality claim.
+
+Two [further first-norm corrections](research/thirteen-second-first-norm-corrections/README.md)
+now supply13/92/90 and13/97/88 (variables/operations/degree), with the same
+complete current coefficient tuple. Both retain the entire positive zero
+set. Independent normal/optimized finite audits and two fresh Lean builds
+pass, including ten standard-only axiom reports and both actual external
+ConZFC endpoints. See the [root review](reviews/thirteen-second-first-norm-corrections-root.md).
+The different polynomials trade more operations for lower degree; HA
+proof existence and global optimality remain open.
+
+The [first-norm auxiliary correction](research/thirteen-first-norm-correction92/README.md)
+now gives13 positive variables,84 operations and exact degree92. Either
+sphere equation first forces P=1, so the correction vanishes; every
+positive assignment is retained in both directions. Independent fresh
+Lean builds pass eight standard-only reports, and complete normal/optimized
+finite audits verify the two leading cancellations and all fixed ports.
+See the [root acceptance](reviews/thirteen-first-norm-correction92-root.md).
+This trades nine operations for four degrees against13/75/96. Its external
+ConZFC equivalence is checked; the HA endpoint remains open.
+
+The [complete normalized product](research/fourteen-normalized-product106/README.md)
+now supplies14 positive variables,67 operations and degree106 with the
+unchanged current ports. The exact scaled identity and positive delta
+preserve every positive zero. Two independent fresh current-source builds
+pass six standard-only reports; normal/optimized complete finite audits
+verify the full degree, all paid operations and all47313 coefficient bytes.
+See the [root acceptance](reviews/fourteen-normalized-product106-root.md).
+Its external ConZFC equivalence is checked; its HA endpoint remains open.
+
+26 October nonzero spheres: the
+[two new fourteen-variable forms](research/fourteen-nonzero-spheres/README.md)
+have complete profiles14/71/80 and14/72/68 at unchanged current ports.
+Integer descent proves the necessary norm factors cannot vanish; their
+nonzero-square equations preserve every positive Carrier65 assignment by
+identity maps. Four independent root Lean builds pass12 standard-only
+reports, and normal/optimized full finite audits reproduce both exact
+degrees and all47313 coefficient bytes. See the
+[acceptance](reviews/fourteen-nonzero-spheres-root.md). These improve the
+historical15/73/80 and15/75/68 points and trade an extra variable against
+the13-variable frontier. The decimal page and open HA endpoint are unchanged.
+
+26 October unit sphere: the
+[75/96 equation](research/thirteen-unit-sphere96/README.md)
+uses `(PQ)²+U²+Z²−3=0`. The integer sphere theorem and actual negative-unit
+exclusions recover PQ=U=Z=1, preserving every positive zero by identity maps.
+The auxiliary sign is established only after Z=1. The complete profile is
+13 positive unknowns,42 multiplications/18 additions/15 subtractions, degree96,
+and unchanged47313 raw/4230 gzip coefficient bytes. Both Lean leaves and full
+normal/optimized graph/degree/port audits passed
+[independent root review](reviews/thirteen-unit-sphere96-root.md), including
+the actual external ConZFC endpoint. It improves76/96 by one operation;
+the polynomials are different. The decimal14/65/150 page is unchanged.
 
 26 October shared residual: the
 [76/96 presentation](research/thirteen-shared-squares96/README.md)
@@ -253,11 +334,14 @@ zero-set maps, full coefficient recipes and domain/metric distinctions.
 | Integers | 315 / 316 | not optimized | 4 | Preserved raw parents;217/218 rows,7999/7987 terms,height14250071 |
 | Positive integers | **14** | **65** | **150** | Maintained complete decimal page and every constant; full positive maps, exact graph, source and visual checks pass |
 | Positive integers | 13 | 72 / 74 | 124 / 122 | Complete CURRENT2011 mixed-carrier graphs; all-positive inverse maps and external Lean ConZFC endpoints, independent finite degree/whole-port checks |
-| Positive integers | 13 | 77 | 96 | Complete CURRENT2011 grouped-square graph; identical positive zero set to LV72, external Lean ConZFC endpoint and independent exact degree/whole-port checks |
+| Positive integers | 13 | 75 | 96 | Complete CURRENT2011 unit sphere, all-positive zero-set maps, external Lean endpoint and independent exact degree/whole-port checks |
+| Positive integers | 13 | 84 | 92 | Complete CURRENT2011 first-norm correction, same positive zero set and external Lean endpoint |
+| Positive integers | 13 | 92 / 97 | 90 / 88 | Complete CURRENT2011 further corrections, same positive zero set and independently checked external Lean endpoints |
+| Positive integers | 13 | 178 | 86 | Complete CURRENT2011 scaled syzygy; independently checked all-positive maps, exact degree/whole-port audit and external Lean endpoint; expensive degree tradeoff |
 | Positive integers | 15 | 66 | 157 | Preserved complete P66 pages and coefficient checkpoints |
 | Positive integers | 15 | 69 | 155 | Complete one-page specification, including every constant |
-| Positive integers | 12 | 96 | 70 | Free positive J and an identical polarized norm tail |
-| Positive integers | 13 | 88 | 51 | Free positive J; previous one-page90/51 version retained |
+| Positive integers | 12 | 96 | 70 | Historical compact44 family; free positive J and an identical polarized norm tail |
+| Positive integers | 13 | 88 | 51 | Historical compact44 family; previous one-page90/51 version retains295,388 raw coefficient bytes |
 | Positive integers | 14 | 73 / 74 / 75 / 76 | 342 / 312 / 293 / 191 | Hilbert Tenth root transfer and scaled ordinate centers |
 | Positive integers | 11 | 111 | 211 | Adaptive carrier combined with the double center |
 | Positive integers | 10 | 89 / 95 | 288 / 262 | Uncentered saturated b transport; fewer-operation tradeoff, earlier page preserved |
@@ -3544,3 +3628,104 @@ norm, packed R, transport or native calibration; it is not a full false
 zero. Those additional simultaneous constraints could still prove this
 chart sound. Its consistency equivalence remains open, so no new degree
 frontier or maintained-page change is claimed.
+
+## Read-only alternatives after the 13/75/96 unit sphere
+
+The [next-reduction note](research/thirteen-unit-sphere96-next-reductions.md)
+records two sound algebraic schedules at74 operations, of degrees152 and
+164. Both are dominated by the accepted13/72/124 point, so they are not
+materialized as new candidate packets. Replacing the signed ordinate's
+L*V carrier by V would suggest74/80, but the positive witness maps require
+a sign bound that the accepted proofs do not establish. This remains an
+unproved lead; the verified degree96 point remains13/75/96.
+
+
+## Ordinary-source bridge to current constants accepted
+
+The [ordinary-source construction](reviews/native-ordinary-source-construction-root.md)
+now accepts every positive old-z source zero and rebuilds a Carrier65 zero
+with the same scalar fields and rank. Two independent builds pass twelve
+standard-only reports and identical objects. Actual current-source
+existence is externally equivalent to inconsistency; shifted-z/historical
+low-degree transfer and the final HA proof remain separate obligations.
+
+This checkpoint changes no polynomial or metric. Its all-positive source
+soundness rebuilds private Pell witnesses and retains the original source
+rank; its reverse existence map uses proved canonical restoration. It
+therefore supplies a concrete common endpoint for the proposed transfer
+of older compact44 arithmetic without assuming private multiplier
+normalization.
+
+
+## Literal historical shifted-source bridge accepted
+
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
+
+Only old-z=new-z+1 changes. Reverse positivity uses the source-derived
+strict bound; all31 coordinates and all four ports remain explicit. The
+next low-degree work is adaptive-carrier soundness before source restoration,
+with the now checked source bridge serving only as a downstream endpoint.
+
+
+## Signed adaptive first-carrier bootstrap accepted
+
+The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
+now derives integral positive quotient witnesses and the signed Pell-root
+bound directly from literal A0, before source restoration. Independent
+builds pass five standard-only reports with identical objects. Main-Pell,
+rank and power restoration remain open; no lower-degree endpoint is claimed.
+
+This is an external integer theorem on the full generic signed carrier
+domain. It does not assume the desired positive source or promote external
+algebra into an internal arithmetic proof.
+
+
+## Free-J factor-three cancellation accepted
+
+The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
+now proves q^4 divides t from q^3 dividing Y and q^5 dividing
+(4Y(X+1)+3)t, for all signed integers, including q=0 and3 dividing q.
+Independent builds pass four propext/Quot.sound-only reports with identical
+objects. Its index-difference client is a main-Pell transfer prerequisite;
+no new equation endpoint is claimed.
+
+The literal finite geometric inverse and integer remainder modulo3 proof
+avoid a false coprimality premise. The q=3,Y=27,X=1,t=81 control shows
+that retaining q^5 divisibility would be incorrect on this generic domain.
+This remains an external finite algebra lemma, separate from internal HA
+proof-existence obligations.
+
+
+## Four literal adaptive factors exclude negative units
+
+The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
+now extracts all four factor equalities from the literal signed product1.
+Finite modulo4 proofs exclude negative units without assuming factor
+positivity. Independent builds pass five standard-only reports and identical
+objects. Binding the full historical graph and the final HA endpoint remain
+separate.
+
+The generic signed factors retain q^3(q-1) and discriminant a^2+4a+3.
+Kernel-checked finite ZMod4 proofs establish each exclusion. The packet
+assumes neither A0/A1 nor a restored source, and supplies only the upstream
+algebra required by the separate adaptive bootstrap.
+
+
+## Positive integral adaptive main Pell root accepted
+
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
+The exact signed transport is retained; the positive root is derived,
+not imposed by absolute value. Free-J factor3 handling is explicit. These
+external integer deductions advance the low-degree transfer but are not
+automatically proofs about nonstandard internal arithmetic.

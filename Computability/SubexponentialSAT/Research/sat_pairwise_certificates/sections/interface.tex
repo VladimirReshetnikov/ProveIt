@@ -1,0 +1,132 @@
+\section{The inherited exact interface and new proof obligations}
+\label{sec:interface}
+
+\subsection{Input, rings, and immutable entries}
+
+The input is a bipartite Boolean tensor network with at most $s$ wires,
+polynomially many vertices, maximum degree at most $\lceil s^{9/10}\rceil$,
+and description length $\mathcal L$. Its contraction is
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+Entries lie in $(\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell)$ with
+$1\le P_0,\ell\le s$. A uniform entry routine takes
+$(s+\mathcal L)^{O(1)}2^{O(s^{9/10})}$ time and polynomial space, with
+fixed constants. The low-degree theorem changes the degree premise alone.
+
+The source uses an extension ring
+\[
+ R_p=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell)
+\]
+with polynomial rank and precision. Each tensor is tagged with its creation
+precision. Later evaluations use the same canonical integer representatives
+of its creation-time value. Canonical lifting is not treated as a ring
+homomorphism. These conventions, the deformation, and exact Hermite recovery
+are imported \cite{source,asymmetric,joint,flags,trees}.
+
+\subsection{Exact mode sum and entropy}
+
+At an active call with $M$ wires, fixed alphabet $r$, retained taper $u$,
+packet exponent $a$, and valuation $i<u$, put $D=2^{a-i}$. The compatible
+inherited lemmas give child wire count $(2/r+o(1))M$, precision
+$p_t\le(6+o(1))MD/u$, and at most $(2/r^2+o(1))M/D$ mode families of
+each index on each directed pair. Their certified weights are
+$a+1-i+4j-2\pc(j)$.
+
+Enumerate an exact weight allocation $(b_{gh})_{g\ne h}$ with sum below
+$p_t$. Let $\mathcal I_{gh}$ be its finite list of mode tuples. Skip an
+allocation with an empty list and set
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|,\qquad
+ \K(M,u)=\kappa M/\sqrt u,\qquad\kappa=\pi\sqrt2/\ln2.
+\]
+Its contribution is exactly
+\begin{equation}\label{eq:exact-sum}
+ \sum_{\xi_{gh}\in\mathcal I_{gh}}
+       \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}),
+\end{equation}
+where each $Z_g$ entry is a genuine recursive contraction. There are
+polynomially many allocations since $r$ is fixed and all budgets are
+polynomial in $s$. A knapsack recurrence computes exact list cardinalities,
+rank/unrank, and polynomial-delay iteration; no counting oracle is introduced.
+
+For every fixed nonnegative directed vector $z$, the common-tilt estimate is
+\begin{equation}\label{eq:entropy}
+ \sum_{g\ne h}z_{gh}h_{gh}
+ \le \left(\frac{\norm z}{r}+o(1)\right)\K(M,u).
+\end{equation}
+To recall its leading constant, the mode weight generating product has
+natural logarithm $\pi^2/(24\theta)+O(\log^2(2/\theta))$.
+The shared budget then gives the following natural-logarithm bound,
+before division by $\ln2$:
+\[
+ \theta p_t+\frac{\pi^2}{24\theta}
+        \frac{(2+o(1))M}{r^2D}\sum z_{gh}^2.
+\]
+Optimizing the first two terms gives \eqref{eq:entropy}; the additive buffer
+makes the error uniform on the fixed finite support family used here.
+
+For unordered pairs $e=\{g,h\}$ write $g_e=h_{gh}+h_{hg}$.
+Any unordered support $v$ therefore satisfies
+\begin{equation}\label{eq:undirected-entropy}
+ v\cdot g\le\left(\frac{\sqrt2\norm v}{r}+o(1)\right)\K.
+\end{equation}
+The factor $\sqrt2$ is essential. A fixed finite-net argument also gives
+$\norm h\le(1+o(1))\K/r$ when needed below.
+
+\subsection{Packing gates and the paid recurrence}
+
+With $L=2^a$, $Q=r^a$, side degrees $R,C$, sufficient gates are
+\begin{equation}\label{eq:gates}
+ QR/M=o(1),\qquad Q^2C(\log s)^2/M=o(1),\qquad LQ^2/M=o(1).
+\end{equation}
+Initially both degrees are at most $s^{9/10+o(1)}$; afterwards the retained
+side remains under that bound and the newly created side has degree at most
+$2^{a_{d-1}+1}$. The low-degree proof tracks all previous packet degrees.
+
+Each group has $2(r-1)$ incident directed pairs. Thus forming its full table
+requires at most $2^{(\alpha_r+o(1))\K}$ recursive child evaluations, where
+\[
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+If a certified local contraction plan costs $2^{(\beta_r+o(1))\K}$,
+the correctly charged recurrence is
+\begin{equation}\label{eq:recurrence}
+ T_d\le\poly(s)\left[
+    2^{(\alpha_{r_d}+o(1))\K_d}T_{d+1}
+    +2^{(\beta_{r_d}+o(1))\K_d}\right].
+\end{equation}
+A smaller local operation coefficient alone is insufficient; the theorem
+must control the maximum of all branches of this recurrence.
+
+\subsection{Rectangular backend retained from the corpus}
+
+We use the already reviewed field bounds $\alpha>3/10$ and $\omega<19/8$,
+supported by the stronger primary results in \cite{matrix}. Fix
+$\varepsilon=10^{-5}$. For sorted logarithmic matrix dimensions
+$x\ge y\ge z\ge0$, the corpus's rectangular construction gives
+\begin{equation}\label{eq:rectangle}
+ F(x,y,z)=\max\left\{
+ (1+\varepsilon/2)(x+y),\quad
+ x+(47/56+\varepsilon)y+(15/28)z\right\}.
+\end{equation}
+The first term pays for input/output arrays. It cannot be omitted.
+Tensoring a fixed $N\times N^{3/10}\times N$ algorithm of exponent
+$2+\varepsilon$ with a fixed square algorithm of exponent $19/8$ gives
+the second term, with square blocking of the largest dimension. Rational
+coordinate lifting, nonexceptional odd primes, and CRT extend the algorithms
+to $R_p$ without dividing by a nonunit. Fixed bilinear recursions process one
+child product at a time and use a polynomial factor times the largest
+input/output array in space \cite{rectangular}.
+
+For completeness, the rectangle interpolation takes
+$t_0=(y-z)/(1-3/10)$ and $t_1=(z-(3/10)y)/(1-3/10)$ when
+$z\ge(3/10)y$. The arithmetic exponent, including blocking, is bounded by
+$x-y+(2+\varepsilon)t_0+(19/8)t_1$.
+When $z<(3/10)y$, padding gives $x+y+\varepsilon y$.
+Both are at most \eqref{eq:rectangle}. The three matrix dimension
+permutations are justified by the symmetries of the bilinear multiplication
+tensor, with each permuted algorithm executed afresh.
+
+The present contribution changes the adaptive plan certificate. It does not
+claim the rectangular matrix bound, Cauchy basis, or Hermite recovery as new.

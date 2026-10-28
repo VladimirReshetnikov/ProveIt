@@ -1,0 +1,233 @@
+THE STRICT RATIONAL 9 -> 13 -> 7 SCHEDULE
+Independent derivation for the adaptive contraction-tree report
+
+Status. This is a relative refinement of the normalized tensor-contraction
+interface in the supplied ProveIt packets. It imports their deformation,
+canonical creation-precision convention, slope-four modes, sharp Hermite
+precision, asymmetric near-lossless packing, weighted pair entropy, and
+exact matrix-multiplication bridge. The only additional inputs are the
+independently checkable three-tree certificates
+  b_9^2 = 6608/18225,   b_13^2 = 1572/4225.
+It does not independently certify the upstream ETH manuscript, change the
+logarithmic order, or supply an end-to-end practical SAT implementation.
+
+1. Normalization and exact local constants
+
+Write lambda=ceil(log_2 s), kappa=pi sqrt(2)/ln 2. A call with M wires and
+taper u has K=kappa M/sqrt(u). Let
+  a_r = sqrt(2(r-1))/r.
+For an r-group call, cache the group functions and then select the best
+available tree using the exact pair-index list lengths. The paid time
+recurrence is
+  T_d <= poly(s) [2^{(a_{r_d}+o(1))K_d} T_{d+1}
+                         +2^{(b_{r_d}+o(1))K_d}],
+apart from one overall fixed polynomial in s+L accounting for input entry
+routines and descriptions. The exponential table-construction part does
+not treat a group function as a unit-cost oracle.
+
+At r=9 and r=13 use the adaptive portfolios and the displayed b-values.
+At r=7 an ordinary fixed balanced tree suffices: blocks (3,2,2), splitting
+the size-three block as 1+2. Its largest triangle cost is
+  32-(21/25)*8=632/25,
+so one can safely use
+  b_7^2 = 632/1225, b_7 = sqrt(632)/35.
+(The sharper optimal binary tree gives 624/1225, but this schedule does
+not need that optimization.) Both satisfy b_7^2<3/4. The singleton
+cache coefficient is below b_r for each of r=9,13,7.
+
+Every table that the selected tree stores is an input or output of a
+matrix multiplication whose time exponent is at least that table's size
+exponent. Thus its total space is at most poly(s+L)2^{(b_r+o(1))K}, including
+cached singleton tables. This avoids reusing an obsolete fixed-tree space
+constant after adaptively changing the tree.
+
+2. Parameters
+
+Put
+  r_0=9,       u_0=floor((63/4000)lambda),
+  r_1=13,      u_1=floor((9/800)lambda),
+  r_d=7,       u_d=floor((77/16200)lambda (4/9)^{d-2}), d>=2.
+Also put
+  b=ceil(6 log_2 lambda),
+  a_d=sum_{j=0}^d u_j+(d+1)b,
+  L_d=2^{a_d},
+  H=ceil(s/lambda^{3/4}).
+A call with M<=H is evaluated directly. Use the near-lossless padding
+construction with relative slack, for example, lambda^{-3}. This is
+permitted by the strict polynomial capacity margins below and ensures
+that products of per-level 1+o(1) losses over O(log lambda) levels remain
+1+o(1), rather than merely assuming that fact.
+
+The exact identities behind the capacity allocation are
+  63/4000+9/800 = 27/1000,
+  63/4000+9/800+(77/16200)/(1-4/9) = 8/225.
+Therefore
+  a_0=(63/4000)lambda+O(log lambda),
+  a_1=(27/1000)lambda+O(log lambda),
+  a_d <= (8/225)lambda+O((log lambda)^2)
+throughout a logarithmic-depth path.
+
+3. Noncircular depth bootstrap and degree invariant
+
+Hypothesize active depths only up to
+  D_max=3+ceil(3 log(lambda)/(4 log 3)).
+At all these depths the deepest taper is at least lambda^{eta+o(1)}, where
+  eta = 1 - 3 log(9/4)/(4 log 3) > 0.44.
+Thus every active taper tends uniformly to infinity. The floor errors,
+buffers and number of levels contribute only O((log lambda)^2) to a_d.
+All initial degrees are <=ceil(s^{9/10}), and each new packet vertex has
+at most 2L_d=s^{8/225+o(1)} ports. Hence the global degree invariant remains
+s^{9/10+o(1)} (and, eventually, new packet degrees are much less than the
+original cap).
+
+At the root both sides have degree at most s^{9/10+o(1)}. With
+Q_0=9^{a_0}, the root packing condition follows from
+  9/10+2*(63/4000)log_2 9 < 1.
+At depth 1, one side consists of retained old vertices of degree at most
+s^{9/10+o(1)}, while the newly created opposite side has degree at most
+2^{a_0+1}. With Q_1=13^{a_1}, the potentially tight asymmetric condition is
+  9/10+(27/1000)log_2 13 < 1.
+For d>=2 the analogous tight condition is
+  9/10+(8/225)log_2 7 < 1.
+The conditions Q_d^2 C_d polylog(s)=o(M) and L_d Q_d^2=o(M) are much
+looser: their exponents are bounded above by
+  (8/225)(2log_2 13+1)<1.
+Indeed C_d<=2^{a_{d-1}+1} for the fresh side. The M denominator costs at
+most lambda^{3/4} at an active call. All other factors are logarithmic.
+
+Entirely rational certificates are
+  9^100 < 2^317,
+  13^1000 < 2^3701,
+  7^100 < 2^281.
+These give respective exponent gaps of at least
+  29/200000, 73/1000000, 1/11250.
+They absorb arbitrary fixed powers of logarithms, including the
+lambda^{-3} packing slack and all buffer terms. The auxiliary exponent is
+bounded using log_2 13<3701/1000.
+
+Consequently packing holds uniformly in the hypothesized depth range.
+Children have (2/r_d+O(lambda^{-3}))M wires. In particular, tail children
+have at most M/3 wires for all sufficiently large s. If an active call
+persisted beyond D_max, this shrinkage would give M<=H, a contradiction.
+This closes the induction without presupposing the depth bound needed
+for the packing estimates. The sharper ratios now imply uniformly
+  M_0<=s,
+  M_1<=(1+o(1))(2/9)s,
+  M_d<=(1+o(1))(4/117)(2/7)^{d-2}s, d>=2.
+
+4. Uniform precision and the slope-four entropy interface
+
+At active interpolation nodes i<u_d, let D_t=2^{a_d-i}. The buffer gives
+  D_t >= 2^{a_{d-1}+b+1},  a_{-1}=0.
+The sum of inherited precision increments is bounded by
+  p_d=O(s lambda^2 2^{a_{d-1}}).
+This coarse bound follows by summing O(log lambda) previous increments,
+using M<=s, u>=1, a=O(lambda), and D<=2^a. Relative to M D_t/u_d it is
+  O(lambda^{2+1+3/4} 2^{-b}) = O(lambda^{-9/4}) = o(1).
+The O(M a_d) evaluation loss is also lower order, since its relative
+size is O(lambda^2 2^{-b}). Rounding the multiplicities costs only a
+relative O(u_d/M)=o(1). Therefore the sharp taper estimate applies with
+  p_t <= (6+o(1)) M D_t/u_d
+uniformly at every active depth.
+
+The mode offset, slope-four weighted partition calculation and exact
+pair-index construction can therefore be imported with their uniform
+error terms. The increasing u_d and the additive buffer prevent a
+nonuniform error near the last active level. All precision bit lengths
+are polynomial in s: p_d<=s^{1+8/225+o(1)}. The extension/truncation ring
+has polynomial rank and polynomial-size structure constants.
+
+5. Enumeration and implementation costs
+
+For fixed r<=13, arrays of exact pair weights number at most
+(p_t+1)^{r(r-1)}, polynomial in s. Their exact-weight index lists are
+counted/ranked/unranked with the integer dynamic program already given
+in the supplied cached-tree packet. List cardinalities have polynomial
+bit length. Empty lists contribute zero. Each of the finitely many tree
+candidates has finitely many linear logarithmic cost expressions with
+weights 0,2/5,1. Candidate selection is exact: multiply the list lengths
+raised to the integer weights 0,2,5 and compare the resulting integers.
+No floating-point logarithm is needed to select a tree.
+
+The number of interpolation nodes, values, pair-budget arrays and groups
+per call is poly(s), independent of the input-description length L.
+Products of such factors over O(log lambda) levels contribute only
+2^{O(lambda log lambda)}. Work for each generated entry or arithmetic
+operation has one fixed poly(s+L) factor; it does not multiply by a new
+power of L at every recursive level.
+
+Original entry routines take poly(s+L)2^{O(s^{9/10})} time. New packet
+routines take exp(O(2^{a_d}log s))=exp(s^{8/225+o(1)}) time. Both are
+lower order on the scale s/sqrt(lambda). A leaf enumerates at most
+2^H assignments, so its total work is also 2^{o(s/sqrt(lambda))} apart
+from a fixed polynomial factor. Original and packet tensor descriptions
+are immutable and tagged with creation precision, exactly as in the
+source algorithm. Retained descriptions are shared by reference, so
+entry routines are not recursively composed or silently re-lifted.
+
+6. Full paid time recurrence
+
+Define
+  K0 = kappa /sqrt(63/4000),
+  K1 = kappa (2/9)/sqrt(9/800),
+  K2 = kappa (4/117)/sqrt(77/16200),
+  gamma = (2/7)/sqrt(4/9)=3/7.
+On the common scale s/sqrt(lambda), the K coefficients are at most
+K0,K1,K2 gamma^{d-2} (up to uniform 1+o(1) losses).
+
+Unrolling the recurrence, including all paid child tables and the final
+leaf work, gives
+ C_T=max{b9 K0,
+         a9 K0+b13 K1,
+         a9 K0+a13 K1+K2 max(b7,a7/(1-gamma))}.
+For the tail, the expression after j stages is
+ a7(1-gamma^j)/(1-gamma)+b7 gamma^j;
+its maximum is max(b7,a7/(1-gamma)). The infinite sum also covers leaves.
+Here
+  a7/(1-gamma)=sqrt(3)/2 > b7,
+so the three numerical candidates are
+  30.753912832054975354229948988135...,
+  30.891018920366092231453928171727...,
+  30.512927432780512909205333163937....
+The middle one is strictly largest. Equivalently,
+ C_T = (pi/ln 2)(sqrt(128000/5103)+sqrt(134144/41067))
+     = (pi/ln 2)(160 sqrt(35)/189+32 sqrt(393)/351)
+     <30.892.
+
+7. Space
+
+At a given call, the cached singleton entries, selected-tree tables and
+matrix-multiplication working storage fit within
+poly(s+L)2^{(b_r+o(1))K}. Child cache entries are constructed sequentially.
+Tables retained on ancestor stack frames occupy a sum of memory sizes,
+not a product. The polynomial number of stack frames changes the
+exponent only by a lower-order term. The maximum local coefficient is
+at the root:
+ C_S=b9 K0=(pi/ln 2)sqrt(302080/6561)
+             =32 pi sqrt(295)/(81 ln 2)
+             =30.753912832054975354229948988135...<30.754.
+The depth-1 coefficient is 8.19150213324197..., and the depth>=2 maximum
+is less than 2.3 even using the safe fixed r=7 tree. CRT records, sorting
+and coefficient coordinates add polynomial factors per table cell, as
+in the source matrix-multiplication bridge.
+
+Thus the relative algorithmic theorem is
+ time  (s+L)^{O(1)} 2^{(C_T+o(1))s/sqrt(log_2 s)},
+ space (s+L)^{O(1)} 2^{(C_S+o(1))s/sqrt(log_2 s)}.
+It improves the certified time coefficient in the supplied normalized
+interface. Its transfer through the existing SAT reductions retains
+n log log n/sqrt(log n) in the general case and n/sqrt(log n) at fixed
+density. Constants per normalized wire must not be mislabeled constants
+per original SAT variable. Conditional n/log n targets remain open.
+
+8. Exact numerical certificates
+
+schedule_checks.py uses only Python's standard library. Every assertion
+uses integer or Fraction arithmetic. Logarithm capacity inequalities are
+checked by integer powers. Square roots are enclosed using integer square
+roots on a 10^50 grid. Pi is enclosed through Machin's identity and the
+alternating arctangent series; ln 2 is enclosed by a positive atanh series
+and an explicit geometric tail bound. Decimal formatting happens only
+after all assertions have succeeded. This certificate assumes the two
+local adaptive b^2 inputs and does not replace the separate finite
+portfolio audit.

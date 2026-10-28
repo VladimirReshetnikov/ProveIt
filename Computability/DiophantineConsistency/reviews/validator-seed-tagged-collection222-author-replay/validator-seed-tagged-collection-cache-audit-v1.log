@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/validator-seed-tagged-collection-cache-audit.py", line 82, in <module>
+    check_manifest(REV / 'validator-seed-guarded-comprehension222-root-replay/FILES.json',
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   '4c4abe69d3c3614ed285addc3502ded78203bf060a3202ea8d12f6ca177bdd2b')
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/validator-seed-tagged-collection-cache-audit.py", line 69, in check_manifest
+    observe(path.parent / item['path'], item['sha256'])
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/validator-seed-tagged-collection-cache-audit.py", line 30, in observe
+    actual = sha(path)
+  File "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/validator-seed-tagged-collection-cache-audit.py", line 21, in sha
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+                          ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/validator-seed-guarded-comprehension222-root-replay/Computability/DiophantineConsistency/reviews/validator-seed-guarded-comprehension222-root-replay/ValidatorSeedGuardedComprehension222.lean'

@@ -1,0 +1,187 @@
+\section{What further constant tuning can and cannot do}\label{sec:envelope}
+
+\subsection{Exact optimum of the preceding nine-plan envelope}
+
+This subsection uses the preceding packet's rectangular backend,
+integer scale \(1400000\), and its nine plans. It helps distinguish a new
+plan construction from merely reweighting the old certificate.
+Let \(a_i\) be the chosen support with index
+\[
+ (67,67,69,69,67,69,67,69,69)_i,
+\]
+using the supplied lexicographic conventions. Put
+\(G_{ij}=a_i\cdot a_j\), \(z=G^{-1}\mathbf1\), and
+\(p=z/(\mathbf1^{\mathsf T}z)\).
+The accompanying rational checker proves that \(G\) is invertible and all
+\(p_i>0\). Define
+\[
+ H=\frac{1}{1400000^2\,\mathbf1^{\mathsf T}G^{-1}\mathbf1}.
+\]
+With these weights, conditional pair elimination leaves 1536 support
+tuples. Their exact maximum weighted squared norm is \(H\).
+
+\begin{proposition}[Restricted nine-plan optimum]\label{prop:nineopt}
+For the old nine menus with their old backend, the worst-case value of
+\(\min_i F_i(g)\) over nonnegative unit Euclidean vectors \(g\) is exactly
+\(\sqrt H\). At the retained root schedule its coefficient is strictly
+between \(29.746057\) and \(29.746058\).
+\end{proposition}
+\begin{proof}
+The weighted version of Lemma~\ref{lem:norm}, verified globally with
+the rational \(p\), gives the upper bound.
+For the lower bound put
+\[
+ b=\sum_i p_i a_i/1400000.
+\]
+The equation \(Gp=\mathbf1/(\mathbf1^{\mathsf T}z)\) implies
+\[
+ \norm b^2=H,\qquad (a_i/1400000)\cdot b=H
+ \quad\hbox{for every }i.
+\]
+All coordinates of \(b\) are nonnegative. At \(g=b/\sqrt H\),
+each plan has a support of value \(\sqrt H\), so
+\(\min_iF_i(g)\ge\sqrt H\).
+Together with the upper bound this proves equality.
+\end{proof}
+
+This lower bound belongs to the Euclidean support envelope. It is not a
+SAT lower bound and need not be attained by actual generated mode lists.
+It nevertheless proves that further manipulation of mixing weights,
+even depending on the support tuple, cannot improve that unchanged
+nine-plan envelope below the displayed value. The new affine plans
+escape the premise by changing the menu.
+
+\subsection{A uniform-entropy limit for this twelve-plan architecture}
+
+For any ten-group plan ending in blocks of sizes \(4,3,3\), uniform
+unordered edge entropy gives final logarithmic dimensions in the ratio
+\(12:12:9\). With the anchored backend \eqref{eq:rectcost}, the prescribed
+cost envelope of the last operation is at least the linear branch \(12+21c\)
+times the entropy of one edge.
+Consequently its Euclidean-envelope coefficient obeys
+\begin{equation}\label{eq:uniformlower}
+ \beta\ge\frac{\sqrt2}{10\sqrt{45}}(12+21c).
+\end{equation}
+This holds for every menu of such plans, because uniform entropy makes
+all final partitions identical in dimension.
+At \(\eta_0=301/20000\), the resulting root coefficient is at least
+\[
+ \frac{\kappa}{\sqrt{301/20000}}
+ \frac{\sqrt2(12+21c)}{10\sqrt{45}}
+ =29.0807310194429\ldots.
+\]
+Thus this backend, root schedule, and final block architecture leave only
+about \(0.0682\) absolute coefficient headroom below \(C_*\).
+Changing just these menus cannot reach the unchanged tail branch
+\(29.0657485\ldots\).
+This is a useful stopping criterion for that particular search, not a
+limitation on other contraction architectures or improved matrix backends.
+
+\section{Attempts to change the logarithmic order}\label{sec:order}
+
+The main square-root scale comes from the mode entropy
+\(K(M,u)=\Theta(M/\sqrt u)\) together with admissible
+\(u=O(\log s)\). A fixed finite improvement of a positive local coefficient
+keeps that scale. The extra \(\log\log n\) in the dense SAT reduction is
+the information needed by the current selected-incidence encoding.
+It is not a polynomial arithmetic factor that disappears by using a
+faster multiplication routine.
+
+Several apparent order improvements were already explored in earlier
+packets. Retuning the Hermite taper, imposing the ordinary-degree cap
+alone, applying the same contractor directly to encoded mode indices,
+and optimizing ordinary sparsification against the current density cost
+do not supply the missing recursive interface \cite{barriers,precision}.
+We did not repackage those conditional routes as new theorems.
+
+Two additional elementary obstructions emerged from the present attempts.
+Their hypotheses are deliberately narrow.
+
+\subsection{Changing the prime requires a different packet geometry}
+
+\begin{lemma}[Two good cyclic shifts]\label{lem:prime}
+Let \(p\) be prime and \(R,C:\mathbb Z/p\mathbb Z\to A\) be row and
+column group labels. A shift \(d\) is good if
+\(R(t)=C(t+d)\) for every \(t\).
+If two distinct shifts are good, both labelings are the same constant.
+\end{lemma}
+\begin{proof}
+For good \(d\ne e\),
+\(C(t+d)=R(t)=C(t+e)\).
+Thus \(C(s)=C(s+e-d)\) for every \(s\).
+The nonzero difference \(e-d\) generates the cyclic group of prime
+order, so iterating this equality makes \(C\) constant everywhere.
+Then \(R(t)=C(t+d)\) gives the same constant.
+\end{proof}
+
+For \(p=2\) there is one nonzero shift, so a nonconstant swapped labeling
+can localize every nonzero residue. For an odd prime, two such residues
+already force constancy. A nonconstant prime-cycle construction can retain
+at most one of the \(p-1\) nonzero residues as good.
+Thus the observation that a larger prime reduces the number of precision
+digits does not by itself generalize the binary packet proof.
+
+The precise finite-group extension identifies an escape: for a finite
+abelian group \(G\) and a nonempty set \(D\) of good shifts, \(C\) need only
+be constant on cosets of
+\(\langle d-e:d,e\in D\rangle\).
+Conversely that condition, with \(R(t)=C(t+d_0)\) for a fixed \(d_0\in D\),
+makes every shift in \(D\) good. This follows by invariance under the
+generators in one direction and under \(d-d_0\) in the other.
+Affine vector spaces and other packet geometries are therefore not ruled
+out by Lemma~\ref{lem:prime}.
+
+\subsection{Coherent original-variable substitutions do not automatically split}
+
+\begin{lemma}[Incidence coherence]\label{lem:coherence}
+Give variables and factors group labels which agree at every
+factor--variable incidence. Then every connected component of the
+bipartite incidence graph has a single group label.
+\end{lemma}
+\begin{proof}
+The labels at the endpoints of every edge are equal. Equality propagates
+along a path, and any two vertices of a connected component are joined
+by a path.
+\end{proof}
+
+\begin{corollary}[Shared linear-form version]
+Let \(E=\bigoplus_{j=1}^r E_j\). Replace every occurrence of original
+variable \(v\) by the same nonzero vector or linear form \(\ell_v\in E\).
+Suppose factor \(f\) is assigned to group \(\sigma(f)\), and locality is
+enforced by \(\ell_v\in E_{\sigma(f)}\) for every variable in its scope.
+Then all factors in a connected incidence component lie in one group.
+If its \(k\) variable images are also linearly independent, that group
+has dimension at least \(k\).
+\end{corollary}
+\begin{proof}
+If a variable met factors in two different groups, its image would belong
+to their intersection, which is zero, contradicting nonzeroness.
+The incidence lemma then gives one group per connected component.
+Linear independence of \(k\) vectors in that group implies the dimension
+bound.
+\end{proof}
+
+This rejects only a direct, fully coherent substitution that enforces
+locality by structural containment. It permits rank-deficient or vanishing
+images, factor-specific cancellations, measurements, correction modes,
+and occurrence-dependent substitutions. The source's measurement
+machinery falls outside the restrictive hypothesis. The corollary is not
+a barrier to all degree-preserving encodings.
+
+\subsection{Decision alone does not justify tiny parity-check budgets}
+
+Reducing the precision of the final answer is not enough to remove the
+linear term in the number of parity tests. The sparse-query degree bound
+already contains a term proportional to the number of tests, even when
+the requested output precision is small.
+A useful scoped example is a formula with disjoint clauses: every
+Boolean clause-violation vector is realizable. If a linear parity map
+accepts exactly the zero violation vector, its kernel must be trivial,
+so its rank equals the number of clauses.
+This does not make disjoint clauses difficult to solve directly. It only
+invalidates a general argument that decision automatically permits
+sublinearly many exact parity filters.
+
+We have not proved a new smaller-order deterministic 3-SAT algorithm.
+No experiments in this archive are evidence for such a claim.
+

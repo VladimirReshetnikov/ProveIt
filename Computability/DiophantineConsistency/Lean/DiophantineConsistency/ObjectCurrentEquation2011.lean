@@ -1,3 +1,4 @@
+import DiophantineConsistency.CurrentEquationSyntax2011
 import DiophantineConsistency.CurrentPolynomialWindow2011
 import DiophantineConsistency.ObjectNaturalDiscrete
 import DiophantineConsistency.WeightedExpressionDegree
@@ -20,48 +21,6 @@ set_option Elab.async false
 noncomputable section
 namespace DiophantineConsistency.ObjectCurrentEquation2011
 
-/-- Literal arithmetic syntax, in the same coordinate and port order as
-`Carrier65.core`. All four ports are single integer-constant leaves. -/
-def expressionAt (p : Fin 4 → ℤ) : Expr (Fin 14) :=
-  let J : Expr (Fin 14) := .var 0
-  let F : Expr (Fin 14) := .var 1
-  let alpha : Expr (Fin 14) := .var 2
-  let z : Expr (Fin 14) := .var 3
-  let f : Expr (Fin 14) := .var 4
-  let i : Expr (Fin 14) := .var 5
-  let T : Expr (Fin 14) := .var 6
-  let s : Expr (Fin 14) := .var 7
-  let w : Expr (Fin 14) := .var 8
-  let n : Expr (Fin 14) := .var 9
-  let eta : Expr (Fin 14) := .var 10
-  let zeta : Expr (Fin 14) := .var 11
-  let y : Expr (Fin 14) := .var 12
-  let gamma : Expr (Fin 14) := .var 13
-  let b := Expr.constant (p 0) * J
-  let q := b + 1
-  let C := q - F - alpha
-  let X := w * q
-  let Y := s * q ^ 3
-  let E := X * Y
-  let k := eta + zeta
-  let ell := E * k * Y
-  let c := k * Y + eta
-  let a := E + Y
-  let H := 4 * a + 3
-  let delta := a ^ 2 + H
-  let D := X + a * c + gamma * H
-  let rank := (b * (q - F) + alpha) * (q ^ 2 - 1) +
-    (Expr.constant (p 2) + q * Expr.constant (p 3)) * J
-  let tau := E * n + k - rank
-  let V := f ^ 2 * (c * T - rank) - c
-  let S := i * delta * c ^ 2
-  let P := tau ^ 2 - ell * (ell + k)
-  let Q := D ^ 2 - delta * c ^ 2
-  let U := S ^ 2 * (V ^ 2 - y ^ 2) + y ^ 2
-  let W := (Expr.constant (p 1) + w) * C + (q - F) - z * b
-  let Z := delta * f ^ 2 - S ^ 2
-  P * Q * U * W * Z - delta
-
 theorem evalRing_expressionAt {R : Type*} [CommRing R]
     (p : Fin 4 → ℤ) (v : Fin 14 → R) :
     (expressionAt p).evalRing v = Carrier65.value (fun j => (p j : R)) v := by
@@ -82,9 +41,6 @@ theorem polynomial_expressionAt (p : Fin 4 → ℤ) :
   rw [← Expr.evalRing_X, evalRing_expressionAt]
   rfl
 
-/-- The current ports retain the full kernel and both complete masks. -/
-def expression : Expr (Fin 14) := expressionAt CurrentWindowCarry2011.ports
-
 theorem polynomial_expression :
     expression.toPolynomial = CurrentPolynomialWindow2011.polynomial :=
   polynomial_expressionAt CurrentWindowCarry2011.ports
@@ -93,16 +49,10 @@ theorem eval_expression (v : Fin 14 → ℤ) :
     expression.eval v = MvPolynomial.eval v CurrentPolynomialWindow2011.polynomial := by
   rw [← polynomial_expression, Expr.eval_toPolynomial]
 
-/-- This substitution changes the domain, without adding any variables. -/
-def positiveShift {σ : Type*} (e : Expr σ) : Expr σ :=
-  e.subst (fun i => Expr.var i + Expr.constant 1)
-
 theorem eval_positiveShift {σ : Type*} (e : Expr σ) (v : σ → ℤ) :
     (positiveShift e).eval v = e.eval (fun i => v i + 1) := by
   simp only [positiveShift, Expr.eval_subst, Expr.eval_add, Expr.eval_var,
     Expr.eval_constant]
-
-def naturalExpression : Expr (Fin 14) := positiveShift expression
 
 theorem eval_naturalExpression (v : Fin 14 → ℕ) :
     naturalExpression.eval (fun i => (v i : ℤ)) =

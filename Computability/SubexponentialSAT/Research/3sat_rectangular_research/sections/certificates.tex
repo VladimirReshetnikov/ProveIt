@@ -1,0 +1,180 @@
+\section{Exact certificates for adaptive contraction plans}\label{sec:certificates}
+
+Fix an exact mode-weight allocation. A plan partitions the $r$ group labels
+into three ordered blocks. Inside each block, recursively split after its
+floor midpoint and form the two boundary tables. Finish by contracting the
+three complete block tables. A merge has parts $A,B,O$, where $O$ is the
+complement of $A\cup B$. Its three index classes are the unordered edges
+between those parts. The final operation has the three final blocks as
+its parts. There are $r-2$ operations in a complete plan.
+
+For the backend of Theorem~\ref{thm:updated-rectangle}, set
+\[
+ H_0=21\,400\,000.
+\]
+The nine integer support triples are the distinct permutations of
+\begin{equation}\label{eq:supports}
+ (21\,400\,107,21\,400\,107,0),\qquad
+ (21\,400\,000,16\,750\,214,10\,000\,000).
+\end{equation}
+A support vector is zero on edges inside an operation part, and takes
+the corresponding coefficient on each of its three cross classes.
+Let $\mathcal V_j$ contain all $9(r-2)$ supports of plan $j$.
+The local operation exponent of that plan is bounded by
+\[
+ F_j(g)=\frac1{H_0}\max_{v\in\mathcal V_j}v\cdot g.
+\]
+This includes every internal merge. It does not count only the final
+triangle. The input/output branch in \eqref{eq:supports} also pays for
+every stored boundary table.
+
+\begin{lemma}[Weighted coupled-pair certificate]\label{lem:paircertificate}
+Let there be $q\ge2$ plans, with fixed nonnegative integer weights
+$w_1,\ldots,w_q$ and $W=\sum_jw_j>0$. For $i<j$ compute
+\[
+ A_{ij}=\max_{v\in\mathcal V_i,\,w\in\mathcal V_j}
+ \left(w_i^2\norm v^2+w_j^2\norm w^2
+             +2(q-1)w_iw_j(v\cdot w)\right).
+\]
+Choosing the least-cost plan gives local time and space coefficient
+\begin{equation}\label{eq:betacertificate}
+ \beta_r^2=
+ \frac{2\sum_{i<j}A_{ij}}{(q-1)W^2H_0^2r^2}
+\end{equation}
+relative to $\K(M,u)$. For one plan the valid squared coefficient is
+$2\max_{v\in\mathcal V_1}\norm v^2/(H_0^2r^2)$.
+\end{lemma}
+
+\begin{proof}
+For a given $g\ge0$, choose $v_j$ attaining the maximum for plan $j$.
+The exact identity
+\[
+ (q-1)\left\|\sum_jw_jv_j\right\|_2^2
+ =\sum_{i<j}\left(w_i^2\norm{v_i}^2+w_j^2\norm{v_j}^2
+                   +2(q-1)w_iw_jv_i\cdot v_j\right)
+\]
+holds because each diagonal term is counted $q-1$ times and each cross
+term once with its required multiplier. Therefore the squared norm is
+at most $\sum A_{ij}/(q-1)$. Also
+\[
+ \min_jF_j(g)\le\frac1{WH_0}\left(\sum_jw_jv_j\right)\cdot g.
+\]
+Apply \eqref{eq:unordered}. Only a fixed finite number of supports and
+support sums is possible, so the inherited error is uniform. One need
+not suppose the independently maximizing support pairs are jointly
+consistent. An upper bound on their sum is sufficient. The single-plan
+case follows directly from the same entropy estimate.
+
+To choose a plan, write $d_{\{a,b\}}=|\mathcal I_{ab}|\,|\mathcal I_{ba}|$.
+Compute for each plan the integer
+\[
+ P_j=\max_{v\in\mathcal V_j}\prod_e d_e^{v_e},
+\]
+and choose the smallest, breaking ties by its index. Its logarithm is
+$H_0F_j(g)$. The number of supports, their coefficients and denominators
+are fixed, so these integers have polynomial bit length. Selection
+introduces no comparison oracle for real logarithms. All input/output
+tables are covered by the first support family. Sequential matrix
+execution then bounds local space by local time on the exponential scale.
+\end{proof}
+
+The identity is a finite mathematical tool. The new work consists of the
+updated backend, the new fifteen-group construction, their exact
+certificates and the paid global schedules. Averaging and quadratic
+norm identities themselves are classical.
+
+\subsection{The new fifteen-group cyclic construction}
+
+Start with the ordered blocks
+\begin{equation}\label{eq:15seed}
+ (13,8,12,10,1)\mid(2,14,0,5,6)\mid(3,4,7,9,11).
+\end{equation}
+For $j=0,\ldots,14$, add $j$ modulo 15 to every entry, preserving the
+within-block order. Use all fifteen resulting plans with equal weights.
+Each five-element block is built by the prescribed recursive split, so
+the internal order matters. There are 117 supports per plan.
+
+Exact enumeration of all
+$\binom{15}{2}117^2=1\,437\,345$ support pairs gives
+\begin{equation}\label{eq:beta15}
+ \boxed{\beta_{15}^2=
+   \frac{10\,797\,642\,389\,573\,327}{38\,640\,375\,000\,000\,000}}.
+\end{equation}
+The generator, all plans, pair maxima and maximizing indices are supplied.
+The checker uses arbitrary-precision integers throughout. An independent
+implementation explicitly reconstructs the four merges inside each
+five-element block and confirms the same fraction. This is an exhaustive
+finite certificate, not a sample of entropy vectors or a numerical
+optimization output. The seed was found by finite exploratory search;
+no global optimality of the seed or schedule is claimed.
+
+\subsection{Affine nine and cyclic thirteen}
+
+The four parallel classes of the affine plane $\mathbb F_3^2$ give the
+following useful complete plans:
+\[
+\begin{split}
+ &(0,1,2)\mid(3,4,5)\mid(6,7,8),\\
+ &(0,3,6)\mid(1,4,7)\mid(2,5,8),\\
+ &(0,5,7)\mid(1,3,8)\mid(2,4,6),\\
+ &(0,4,8)\mid(2,3,7)\mid(1,5,6).
+\end{split}
+\]
+These plans are inherited from the latest affine packets. The updated
+backend yields a new coefficient. Put
+$a=335/428+10^{-5}$ and $b=50/107$. The exact value is
+\begin{equation}\label{eq:beta9}
+ \beta_9^2=
+ \frac{3(1+a^2+b^2)+2(1+a+b)^2}{54}
+ =\frac{357\,623\,761\,181\,449}{1\,236\,492\,000\,000\,000}.
+\end{equation}
+There is a geometric explanation for the expression: a final second-branch
+support has squared norm $9H_0^2(1+a^2+b^2)$, and supports from transverse
+directions have inner product $2H_0^2(1+a+b)^2$. Every intersection of
+their three cross classes has exactly two edges. The largest coupled pair
+value is $42\,914\,851\,341\,773\,880$. The exact checker exhausts
+all $6\cdot63^2=23\,814$ pairs and checks that the internal-merge cases
+do not exceed that value. All four final supports attain it jointly;
+this certifies sharpness of this particular average-norm calculation,
+not optimality for actual SAT instances or all plans.
+
+For thirteen groups use all cyclic translates of the existing ordered seed
+\[
+ (11,2,8,9,7)\mid(10,1,0,5)\mid(6,4,3,12).
+\]
+With the new backend, the same exact method gives
+\begin{equation}\label{eq:beta13}
+ \beta_{13}^2=
+ \frac{36\,196\,226\,703\,680\,947}{125\,767\,265\,000\,000\,000}.
+\end{equation}
+There are 99 supports per plan and $78\cdot99^2=764\,478$ checked pairs.
+
+\subsection{Ten-group cache and small tails}
+
+The ten-group stage retains the nine plans and mixing weights of
+\cite{pairwise}. The weights, in plan order, are
+\[
+ (137,124,135,120,108,119,106,87,64),\qquad W=1000.
+\]
+The complete ordered plans are in \texttt{data/new\_backend\_weighted10.json}.
+They are included rather than read from a mutable external location.
+Applying Lemma~\ref{lem:paircertificate} to the new supports gives
+\begin{equation}\label{eq:beta10}
+ \beta_{10}^2=
+ \frac{13\,753\,456\,054\,476\,639\,694\,573}
+      {45\,796\,000\,000\,000\,000\,000\,000}.
+\end{equation}
+All $36\cdot72^2=186\,624$ pairs are checked. This does not require
+the optional unary-potential reparameterization explored during the review.
+
+The small-tail plans are $(0,1,2)\mid(3,4)\mid(5,6)$,
+$(0,1)\mid(2,3)\mid(4,5)$, and $(0,1)\mid(2)\mid(3)$.
+Their coefficients are
+\[
+ \beta_7^2=\frac{120001200003}{245000000000},\quad
+ \beta_6^2=\frac{4444488889}{10000000000},\quad
+ \beta_4^2=\frac{40000400001}{80000000000}.
+\]
+The input/output branch determines these bounds. Omitting it would
+incorrectly shrink a cost that includes materializing the tables.
+

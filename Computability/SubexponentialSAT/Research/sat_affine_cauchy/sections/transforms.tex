@@ -1,0 +1,221 @@
+\section{Fast, precision-safe Cauchy feature application}
+\label{sec:transforms}
+
+\subsection{A different local interface}
+The global theorem above reduces the cost of summing mode indices. This
+section improves a different step: evaluating all source linear forms at a
+given port assignment. Earlier packets give quadratic feature-table
+construction or quadratic streamed application \cite{joint,kernels,cachedtree}.
+The output of a full $N\times N$ table already has quadratic size. A
+matrix-vector product has only linear input and output size and need not
+materialize that table. We exploit this distinction.
+
+Fast polynomial products, multipoint evaluation, transposed algorithms,
+and Toeplitz convolution are classical \cite{mca}. The contribution here
+is their exact realization for the corpus's normalized two-adic features,
+including the extra precision required by the normalization. We found no
+such implementation or argument in the inspected packet text. This is a
+corpus-relative finding, not a claim of priority for fast structured linear
+algebra in general.
+
+Let $L=2^a$, $N=L/2$, $R=2^i$ with $0\le i<a$, and define the
+increasing orientation slots
+\[
+ s_j=(j\bmod R)+2R\floor{j/R}\qquad(0\le j<N).
+\]
+Let $T$ be a specified element of valuation $i$ in the unramified
+coefficient ring, available at the increased precision required below.
+The source has $T=t+2^{a+1}\zeta$ with a fixed canonical description, so
+such evaluation is available. For $\epsilon\in\{1,-1\}$ put
+$x_j=\epsilon s_j$, $z_b=\epsilon s_b$ and
+\[
+ E_b=2\floor{b/R}-\pc(\floor{b/R}).
+\]
+The normalized features of \cite{joint} are
+\begin{equation}\label{eq:features}
+ F_{jb}=2^{-E_b}\frac{T}{T+x_j-z_b}
+             \prod_{h<b}\frac{x_j-z_h}{T+x_j-z_h}.
+\end{equation}
+They are integral and vanish for $j<b$. Positive sign gives the target
+features; negative sign gives the source features, commonly denoted $G$.
+Thus the source forms are precisely $G^{\mathsf T}v$ for the vector of
+real column bits. Omitted ports may be omitted from the sum or zero-filled.
+We allow the first $1\le B\le N$ modes and any specified set $J$ of real ports.
+Vector entries may belong to the finite free nilpotent extension as well.
+Canonical lifts of vector entries can be chosen freely: integrality of
+$F$ makes the output modulo $2^p$ independent of those choices. This does
+not assert that canonical lifting is a ring homomorphism.
+
+\subsection{The denominator valuations}
+Let
+\[
+ D_B(X)=\prod_{h<B}(T+X-z_h),\qquad H=E_{B-1}.
+\]
+The sequence $E_b$ is nondecreasing. For $j\in J$, the known valuation of
+the denominator is
+\begin{equation}\label{eq:denvaluation}
+ \kappa_j=v_2(D_B(x_j))
+   =\sum_{d=1}^{i}\#\{h<B:h\equiv j\pmod{2^d}\}.
+\end{equation}
+Indeed the slot difference has valuation either below $i$ or strictly
+above $i$; both slots have bit $i$ equal to zero. Since $v_2(T)=i$,
+the summand denominator has valuation $\min(i,v_2(j-h))$, with $i$ for
+$j=h$. Counting divisibility levels proves \eqref{eq:denvaluation}.
+For $\kappa=\max_{j\in J}\kappa_j$, with zero for an empty set,
+\[
+ \kappa\le B(1-1/R)+i,\qquad H\le2(B-1)/R.
+\]
+In particular,
+\begin{equation}\label{eq:guards}
+ H+\kappa\le2B+i,\qquad H+2\kappa\le2B+2i.
+\end{equation}
+The implementation uses the exact valuations, not merely these upper bounds.
+
+\subsection{Synthesis by a rational Newton product tree}
+For a consecutive interval $I=[l,r)$ define
+\[
+ A_I(X)=\prod_{h\in I}(X-z_h),\quad
+ B_I(X)=\prod_{h\in I}(T+X-z_h),
+\]
+and, with $w_b=c_b2^{H-E_b}T$,
+\[
+ C_I(X)=\sum_{b\in I}w_b
+    \prod_{l\le h<b}(X-z_h)
+    \prod_{b<h<r}(T+X-z_h).
+\]
+For consecutive halves $I=I_1\cup I_2$ the identity
+\begin{equation}\label{eq:producttree}
+ C_I=C_{I_1}B_{I_2}+A_{I_1}C_{I_2}
+\end{equation}
+is division free. At the root,
+\[
+ (Fc)_j=\frac{C_{[0,B)}(x_j)}{2^H D_B(x_j)}.
+\]
+Build the product tree and evaluate the numerator and denominator at all
+$x_j$ modulo $2^{p+H+\kappa}$. Monic product/remainder trees need only
+division by monic polynomials, so no nonunit leading coefficient is
+inverted. By integrality of $F$, the numerator at $x_j$ is divisible
+by $2^{H+\kappa_j}$. Divide that power of two exactly, invert the unit
+part of the denominator, and reduce modulo $2^p$. The guard leaves at
+least $p$ correct bits. All unit inverses can be obtained by one batch
+inverse and linear multiplication work.
+
+\subsection{The transpose requires a separate guard}
+It would be invalid simply to transpose an algorithm that contains
+divisions by powers of two. We instead derive a division-free linear
+map and justify its final divisions directly.
+
+Put $P=p+H+\kappa$. First build and evaluate $D_B$ at precision
+$P_{\rm high}=p+H+2\kappa$. Its normalized units
+$u_j=D_B(x_j)/2^{\kappa_j}$ are then known modulo $2^P$.
+Batch-invert them and set
+\[
+ w_j=2^{\kappa-\kappa_j}u_j^{-1}v_j\pmod{2^P}.
+\]
+For $N_b(X)=\prod_{0\le h<b}(X-z_h)\prod_{b<h<B}(T+X-z_h)$, compute
+$q_b=\sum_jN_b(x_j)w_j$ as follows. First obtain the first $B$ moments
+\[
+ m_k=\sum_jw_jx_j^k
+\]
+from the first $B$ coefficients of $\sum_jw_j/(1-x_jZ)$. A balanced
+numerator/denominator construction and power-series inversion do this.
+The series denominator has constant coefficient one. Newton inversion
+$g\leftarrow g(2-fg)$ works in this ring; it does not require that two
+be invertible.
+
+Next transpose the division-free recurrence \eqref{eq:producttree}.
+If $d$ is the parent coefficient functional, its child functionals are
+\[
+ d_1[k]=\sum_t B_{I_2}[t]d[k+t],\qquad
+ d_2[k]=\sum_t A_{I_1}[t]d[k+t].
+\]
+Each is a polynomial correlation. At the leaves the resulting values
+are the $q_b$. Finally,
+\begin{equation}\label{eq:transposefinal}
+ (F^{\mathsf T}v)_b=\frac{Tq_b}{2^{\kappa+E_b}}\pmod{2^p}.
+\end{equation}
+The numerator is divisible by the displayed power because $F$ is
+integral. Since $E_b\le H$, the core precision $P$ leaves at least $p$
+bits. The higher precision for denominator preparation is essential:
+normalizing a denominator first consumes $\kappa_j$ bits before its
+unit inverse is used at precision $P$.
+
+\begin{theorem}[Fast guarded feature application]\label{thm:transform}
+Let $m=B+|J|$. Both synthesis and the transposed source-form map can be
+computed without a dense feature table in
+\[
+ O\bigl(\mathsf M_{\mathcal A}(m,p+O(B+i))\log(m+2)\bigr)
+\]
+arithmetic cost, plus linear unit arithmetic and a batch inverse, where
+$\mathsf M_{\mathcal A}$ is polynomial-multiplication cost over the actual
+coefficient algebra. A stored product tree uses $O(m\log(m+2))$
+coefficient storage. The required precisions are respectively
+$p+H+\kappa$ and $p+H+2\kappa$ for synthesis and transpose preparation.
+\end{theorem}
+\begin{proof}
+The preceding identities prove correctness. At each balanced-tree level
+the total polynomial degree is $O(m)$; standard superlinear
+multiplication-cost bounds sum to the displayed complexity. Monic
+remainders, constant-one series inversion, and correlations have the
+same multiplication-based bounds. The storage bound counts the
+coefficients across tree levels. Equations~\eqref{eq:guards} give the
+precision assertion.
+\end{proof}
+
+\subsection{Odd interpolation nodes need only one convolution}
+When $i=0$ the formula simplifies substantially: $s_j=2j$ and $T$ is a
+unit. Let
+\[
+ f_j=v_2(j!)=j-\pc(j),\quad o_j=j!/2^{f_j},\quad
+ D_j=\prod_{h=0}^j(T+2\epsilon h),\quad D_{-1}=1,
+\]
+and put $u_j=o_j/D_j$, $v_j=D_{j-1}/o_j$. All these denominators are
+units. Direct cancellation in \eqref{eq:features} gives
+\begin{equation}\label{eq:toeplitz}
+ F_{jb}=\epsilon^bT\,
+  2^{f_j-f_b-f_{j-b}}u_jv_{j-b}\qquad(j\ge b).
+\end{equation}
+The exponent equals $v_2\binom jb\ge0$. To verify the identity, the
+numerator product in \eqref{eq:features} is
+$(2\epsilon)^b j!/(j-b)!$, the denominator product is
+$D_j/D_{j-b-1}$, and $E_b=b+f_b$.
+
+\begin{theorem}[One-convolution source forms]\label{thm:oneconv}
+For all $N$ modes and ports at $i=0$, either $Fc$ or $F^{\mathsf T}v$
+is computable with one polynomial convolution, $O(N)$ preparation,
+and one batch inverse at precision $p+2f_{N-1}$.
+\end{theorem}
+\begin{proof}
+Set $K=f_{N-1}$ and $V_t=2^{K-f_t}v_t$ at that precision.
+For synthesis convolve $V$ with
+$c'_b=c_b\epsilon^bT2^{K-f_b}$. Multiply coefficient $j$ by $u_j$ and
+divide by $2^{2K-f_j}$; equation~\eqref{eq:toeplitz} gives $(Fc)_j$.
+For the transpose correlate $V$ with $a_j=v^{\rm input}_j2^{f_j}u_j$.
+At index $b$, multiply by $\epsilon^bT$ and divide by $2^{K+f_b}$.
+Again \eqref{eq:toeplitz} gives exactly the desired answer. One reversed
+polynomial product yields all correlations. Each division is exact and
+consumes at most $2K$ bits. The odd parts $o_j$ and products $D_j$ are
+prepared by recurrence and batch inversion in linear work.
+\end{proof}
+
+In the scalar ring, quasi-linear integer multiplication with Kronecker
+substitution gives $\widetilde O(N(p+N))$ bit operations, including
+the guard. It is therefore $\widetilde O(Np)$ when $p\ge N$. The
+coefficient algebra's rank must be included for extension rings, or one
+can leave the cost as $\mathsf M_{\mathcal A}$. The executable supplied
+here implements the scalar ring with CPython integers. It does not
+implement an optimal FFT backend or an optimized extension-ring version.
+
+Taking $p=p_t$ at the active-node scale $p\asymp MD/u$ and $N=RD/2$ gives
+$p/N\asymp 2M/(Ru)$. Under the fixed schedule of this report,
+$R\le2^u=s^{\eta_d+o(1)}$, while active $M>s/\lambda^{3/4}$.
+Thus the extra $O(N)$ bits are lower order than the active precision.
+This argument must be rechecked for a different schedule; it is not a
+license to omit guards from a general complexity claim.
+
+Finally, these transforms evaluate linear source forms. The subsequent
+nonlinear mode monomials and the paid child contractions still have to be
+summed. The transforms alone therefore leave the global exponent scale
+unchanged. Their benefit is a provable local asymptotic improvement and,
+for the odd-node specialization, a measured improvement on the supplied
+small kernel fixtures.

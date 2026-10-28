@@ -1,0 +1,91 @@
+\section{Validation, reproducibility, and remaining proof obligations}
+\label{sec:validation}
+
+\subsection{What was checked}
+
+The delivered production verifier constructs every support from the stated
+ordered plans and matrix weights. Rigorous integer branch bounds cover
+$173{,}846{,}817$ Cartesian support tuples, directly evaluate $7{,}560$
+tuple norms, and solve $18$ nonuniform hull problems with exact rational
+arithmetic. Every pruned block is bounded above, counted, and included in
+an exact sum-of-squared-norms checksum. The code validates the projection
+inequalities for the sharp witnesses. It does not sample a continuous set
+of entropy vectors or use floating-point optimization as a proof.
+
+The independent implementation reconstructs the supports and evaluates
+all tuple norms without the production branch pruning. It obtains the
+same tuple counts, maxima, checksums and certified rational bounds.
+Its support ordering may differ, so witness indices need not be identical.
+The twelve-group certificate for the newer backend is an upper bound;
+only the other three certificates are asserted to be sharp for their menus.
+
+The schedule verifier uses convergent rational series for logarithms and
+$\pi$, and integer square-root enclosures. It checks every prefix gate,
+the infinite-tail gates, the complete paid time recurrence, storage, and
+strict separation from the rounded eventual constants. No binary
+floating-point result is used to accept a schedule. The independent
+schedule check also verifies the classical packing gates by integer-power
+comparisons and recomputes its constants at high precision.
+
+A small exact evaluator checks all four plans on sixteen finite mode-graph
+fixtures over $(\mathbb Z/64\mathbb Z)[V]/(V^2)$, including a zero divisor
+and a nonzero nilpotent. Its $64$ plan evaluations agree with literal
+enumeration over $1{,}024$ assignments. It records $495$ actual child-entry
+calls while constructing the caches, and checks two invalid-input controls.
+This tests the contraction and selection identities over a nonfield; it is
+not an implementation of the asymptotically fast matrix backend.
+
+The modular-rank compiler passes $945$ finite-field factorization cases,
+nine crossing-identity cases, four invalid-input rejections, an
+exceptional-prime rank check, $2{,}049$ nonnegative CRT cases,
+$4{,}097$ signed CRT cases, and $50$ signed-network cases followed by
+two-adic reduction. One negative control demonstrates why the least
+nonnegative CRT representative cannot simply be reduced modulo $2^\nu$.
+Another demonstrates that exponentially many small-rank pieces violate
+the uniform polynomial-piece interface.
+
+All delivered production drivers were run both normally and with
+\texttt{python3 -O}; their mathematical results agree. These checks use
+explicit exceptions rather than removable assertions. The full replay,
+artifact hashes and dependency boundaries are recorded in
+\path{results/} and \path{PROOF_STATUS.json}.
+
+\subsection{How to reproduce the finite claims}
+
+From the archive's top-level directory, run
+\begin{lstlisting}
+python3 run_checks.py
+python3 run_checks.py --optimized
+python3 audit/independent/replay_menu_certificate.py --help
+python3 build_report.py
+python3 verify_bundle.py
+\end{lstlisting}
+The core certificate, schedule, comparison, algebra and modular checks use
+Python's standard library. The optional independent exhaustive replay
+uses NumPy; its independent high-precision schedule check uses mpmath.
+The PDF build requires a standard TeX installation with pdfLaTeX and the
+packages listed in \path{report.tex}. The exact command lines and expected
+outputs are in \path{README.txt}.
+
+\subsection{What has not been established}
+
+The new finite minimax theorem, menu certificates, matrix-coordinate
+transfer argument and schedule analysis are supplied here. The exact
+deformation, Hermite recovery, Cauchy mode identity, entry interfaces and
+SAT reductions remain imported from the cited sources. This is therefore
+a relative improvement of those constructions, with those premises made
+explicit, rather than an independent proof of their entire SAT theorem.
+
+We did not build a complete SAT solver, benchmark a SAT instance, implement
+the large fixed fast-matrix schemes, or independently rebuild the supplied
+Lean formalization. No claim of practical crossover, global optimality
+over all contraction plans, polynomial-space improvement, or a smaller
+worst-case logarithmic order is made. The actual-rank criterion in
+Section~\ref{sec:order-research} is an open theorem obligation, not a
+consequence of the small finite probes.
+
+The archive is suitable for review and integration as a new research
+packet. Its exact finite certificates and explicit assumptions make the
+proposed improvement concrete; any future claim of a better logarithmic
+power should discharge the rank criterion or supply a different paid
+uniform interface.

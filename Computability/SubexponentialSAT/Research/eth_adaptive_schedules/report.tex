@@ -1,0 +1,168 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.93in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Adaptive schedules and exact incremental packing}
+\fancyhead[R]{\small SubexponentialSAT review}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.5em}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\pop}{\operatorname{popcount}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Cnew}{C_{\mathrm{poly}}}
+\newcommand{\Ccache}{C_{\mathrm{cache}}}
+\newcommand{\Scache}{S_{\mathrm{cache}}}
+\hypersetup{pdftitle={Adaptive schedules and exact incremental packing for SubexponentialSAT},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={Review of fifteen refinement packets; rigorous contraction certificates; reproducible exact kernel benchmarks}}
+\title{\textbf{Adaptive Schedules and Exact Incremental Packing}\\[5pt]
+\large Improvements beyond the current SubexponentialSAT certificates}
+\author{Research prepared for Vladimir Reshetnikov\\with ChatGPT}
+\date{October 26, 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review seven refinement packets in ProveIt's SubexponentialSAT project and
+all eight research archives in its incoming directory at commit
+\texttt{d098ba436b33}. The meaningful baseline includes compatible combinations
+of these proposals. We give a rational multistage schedule which, combined
+with their asymmetric packing, sharp Hermite precision, and full crossing-block
+Cauchy modes, has normalized polynomial-space contraction coefficient
+$\Cnew=63.781173756244\ldots$, below the comparable prior fixed-alphabet
+boundary certificate $66.192723693577\ldots$.
+A separately costed three-stage schedule for the existing cached mode-graph
+engine gives time coefficient $\Ccache=37.59170255554\ldots$ and space
+coefficient $\Scache=33.6230409217\ldots$.
+We also implement two exact packing improvements. Incremental matching
+potentials reduce the labeling update work from $\Theta(VMQ^3)$ to
+$O(MQ^2+VQ)$ rational operations, with explicitly charged initialization and
+additional state. A common-denominator column implementation improves the
+already cached rational reference in reproducible benchmarks. Both preserve
+the original deterministic labels and exact potential values.
+The coefficients multiply $s/\sqrt{\log_2 s}$ for a declared tensor interface,
+not the SAT variable count. The general SAT logarithmic order is unchanged.
+The analytic results retain the supplied framework's exact algebraic identities;
+the executable artifacts are packing kernels, not a complete SAT solver.
+\end{abstract}
+\noindent\textbf{Deliverable.} The archive contains this article's full \LaTeX,
+the compiled PDF, exact certificate checkers, portable implementations,
+verbatim benchmark references, source identities, and raw measurement records.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Results and the comparison that they support}
+\label{sec:results}
+The request was to review the recent proposals and improve on their combined
+frontier. Comparing only to the older $648.44$ certificate would miss most of
+the subsequent progress. The new incoming archives supply asymmetric degree
+bounds, sharper crossing modes, nearly lossless packing, thin precision gaps,
+and an optional algorithm that spends more memory to reduce time. We account
+for these together before stating an improvement.
+
+Let $s\ge2$ be a normalized root budget, and let $\mathcal L$ be the total
+explicit graph and tensor-description length. The interface throughout the
+numerical comparisons is a bipartite Boolean tensor network with at most $s$
+wires and maximum degree at most $\ceil{s^{9/10}}$. Its entries belong to
+\[
+ (\Z/2^{P_0}\Z)[V]/(V^\ell),\qquad 1\le P_0,\ell\le s.
+\]
+Original entries must be evaluable in
+$(s+\mathcal L)^b\exp(A s^{9/10})$ time and $(s+\mathcal L)^b$ space,
+for fixed constants $A,b$. Any fixed $O(s)$ allowance for $P_0,\ell$ gives
+the same leading results. All statements retain the source's creation-time
+precision convention and exact contraction identities.
+
+\begin{theorem}[Two explicit improved certificates]\label{thm:main}
+Under this interface and the imported exact identities specified in
+Section~\ref{sec:interfaces}, the following deterministic contraction bounds hold.
+\begin{enumerate}
+\item In polynomial space,
+\[
+ T(s,\mathcal L)\le(s+\mathcal L)^{O(1)}
+ 2^{(\Cnew+o(1))s/\sqrt{\log_2s}},
+ \qquad \Cnew=63.781173756244\ldots<64.
+\]
+\item With subexponential space,
+\begin{align*}
+ T(s,\mathcal L)&\le(s+\mathcal L)^{O(1)}
+ 2^{(\Ccache+o(1))s/\sqrt{\log_2s}},\\
+ S(s,\mathcal L)&\le(s+\mathcal L)^{O(1)}
+ 2^{(\Scache+o(1))s/\sqrt{\log_2s}},
+\end{align*}
+where
+\[
+ \Ccache=\frac{\pi}{\ln2}\sqrt{\frac{300000}{4361}}
+ =37.59170255554\ldots,
+ \qquad
+ \Scache=\frac{\pi}{\ln2}\sqrt{\frac{240000}{4361}}
+ =33.6230409217\ldots.
+\]
+In particular, eventual coefficients $38$ for time and $34$ for space are valid.
+\end{enumerate}
+\end{theorem}
+
+The first certificate is approximately $3.64\%$ smaller in its leading
+coefficient than $66.192724\ldots$, the prior asymmetric fixed-alphabet
+boundary combined with the full-block modes. It is also below the strictly
+feasible displayed composition, about $66.6051$. This is a comparison of
+upper-bound certificates. It does not prove that every execution of an older
+algorithm takes longer, nor a ratio of actual SAT runtimes.
+
+The second statement must have its own comparison. Composing the reviewed
+cached engine with near-unit asymmetric packing already gives a coefficient
+approaching $38.167745697$ with alphabet eight. A further two-stage continuous
+comparison gives approximately $37.8906$. Our explicit rational three-stage
+schedule is below both. These comparisons are specified schedule families;
+we do not claim a global optimum over every possible reoptimization.
+
+\begin{center}
+\begin{tabular}{@{}p{.59\textwidth}rr@{}}
+\toprule
+Certificate in the same high-degree interface & Time & Space\\
+\midrule
+Asymmetric packet, displayed & $76.9090$ & polynomial\\
+Asymmetric displayed schedule + full-block modes & $66.6051$ & polynomial\\
+Prior fixed-alphabet boundary + full-block modes & $66.1927$ & polynomial\\
+\textbf{New rational multistage schedule} & $\mathbf{63.7812}$ & polynomial\\
+Composed cached engine, alphabet-eight boundary & $38.1677$ & $33.9927$\\
+\textbf{New rational three-stage cached schedule} & $\mathbf{37.5917}$ & $\mathbf{33.6230}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+An exponential space entry is a coefficient on the same
+$s/\sqrt{\log_2s}$ scale. Boundary rows are infima approached with inward
+slack, not asserted finite-size parameter settings.
+
+The practical result is independent of those enormous asymptotic thresholds.
+For the newest matching-potential prototype we preserve every assignment,
+matching, threshold, load, and selected exact potential. The optimized
+algorithm avoids repeated products. A second exact-integer routine preserves
+the column-labeling reference, including its tie-breaking. Section~\ref{sec:experiments}
+gives measured timings and the exact scope of the tests.
+
+\input{sections/review.tex}
+\input{sections/interfaces.tex}
+\input{sections/polynomial_schedule.tex}
+\input{sections/cached_schedule.tex}
+\input{sections/kernels.tex}
+\input{sections/experiments.tex}
+\input{sections/integration.tex}
+\input{sections/references.tex}
+\end{document}

@@ -1,3 +1,4 @@
+import DiophantineConsistency.CurrentKernelData2011
 import DiophantineConsistency.CurrentKernel2011
 import DiophantineConsistency.NativeWindowCarry
 
@@ -6,9 +7,6 @@ namespace DiophantineConsistency.CurrentWindowCarry2011
 open NativeCyclicConvolution CurrentKernel2011
 set_option Elab.async false
 variable {n : ℕ} [NeZero n]
-
-/-- The four actual integer ports, including the one source high-mask shift. -/
-def ports : Fin 4 → ℤ := CurrentMasks2011.ports (K : ℤ)
 
 theorem interface : NativeSourceMask.Interface ports CurrentMasks2011.width
     CurrentMasks2011.lowPort CurrentMasks2011.highPort :=

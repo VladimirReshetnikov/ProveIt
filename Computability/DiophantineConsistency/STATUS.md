@@ -1,6 +1,684 @@
 # Research status
 
-Updated 25 October 2026. This is a work log, not a completion certificate.
+Updated 27 October 2026. This is a work log, not a completion certificate.
+
+## Assessment of the requested HA endpoint
+
+27 October 2026, reassessed in response to the owner's progress question: roughly
+40–60% of the work for the displayed equation's HA proof-existence endpoint
+is a judgmental estimate, not a measured fraction of proof obligations or
+a calendar forecast. The logical infrastructure is well advanced; major
+internal arithmetic construction and calibration still remain. Smaller
+historical equations have additional transfer obligations beyond this estimate.
+
+The recent accepted internal Pell classification/residue theorems, concrete
+seed-theory AxOK and complete control-table checks reduce specific parts of
+those gaps. They do not justify calling the remaining work routine assembly.
+The three substantial bridges remain actual ZF/ZFC-to-checker calibration,
+checker-to-literal-machine execution, and uniform internal polynomial/Pell
+witness transformations. The source interpretation still needs explicit
+handling of its marker parameter; the existing parameter-free interpretation
+API cannot silently discharge it. The PA-to-HA translation and fixed target
+normalizations are largely established, so the main uncertainty is now in
+these arithmetic bridges rather than intuitionistic proof translation.
+
+Checked components include genuine HA derivations, the PA→HA proof map,
+the literal equation/GG comparison, actual bounded decisions and the Σ1
+ordinary/GG comparison. The fixed-consistency normalization has also passed independent review;
+its limited endpoint is recorded below and does not close the arithmetic
+connection to the equation.
+
+The decisive missing step is an actual PA derivation (or direct HA witness
+construction) connecting the displayed equation to the fixed ZFC refutation
+predicate. `FoundationHACurrentTransfer.current_iff_translated` still takes
+that PA theorem as a premise. Standard-Nat external equivalence does not
+supply it. Actual source-proof interpretation, scheduler/exact215 calibration,
+and internal number-theoretic witness transformations remain critical work.
+The accepted C222 proof-word compiler below closes its own conditional
+execution step; it does not supply those remaining bridges.
+A final assembly-only stage has not been reached. Later entries below are
+historical checkpoints; their older lists of open sublemmas can be superseded
+by more recent accepted records without closing this global obligation.
+
+The [actual215 tape/boot theorem](reviews/arithmetic-machine-tape215-root.md)
+now proves sparse-row execution on arbitrary internal tape halves, a fixed
+total continuation graph, the exact95714 boot prefix and both internal
+blank/boot halting directions. Sparse84 is arithmetic state24; terminal230
+retains its final write/move and halting tests first(config)=0. All thirteen
+checked boot chunks are composed through the same fixed run graph.
+Independent fresh pairs match both objects/full logs and13 standard-only
+reports. Actual scans/boxes/home/site execution and control/tape calibration
+remain open before final PA/HA assembly.
+
+The [actual relaxed auxiliary norm theorem](reviews/arithmetic-pell-index-divisibility-root.md)
+now derives both p|m and c|m at the same positive internal original-base
+Pell index. Exact quotient induction and two natural coefficient certificates
+finish the latter divisibility without a cubic-congruence or power theorem;
+the structural helper includes both zero indices. Both actual norm input
+forms are retained. Independent fresh pairs match both objects/full logs
+and seven standard-only reports. Later target-index recovery, carrier
+alignment, cofinal witnesses and final equation/PA/HA assembly remain open.
+
+The [actual relaxed-norm integral-solution theorem](reviews/arithmetic-pell-integral-solution-root.md)
+now derives the common-unit index multiple from the actual large-c bound,
+then a positive original-base index m with p|m, f=X_m(a) and
+i*c*c=delta(a)*Y_m(a). Both additive and justified truncated inputs are
+included. Independent fresh pairs match both objects/full logs and five
+standard-only reports. The later index-divisibility packet above supplies
+c|m and the complete relaxed auxiliary implication; subsequent index recovery
+and cofinal witnesses remain open.
+
+The [internal Pell strong-divisibility theorem](reviews/arithmetic-pell-strong-divisibility-root.md)
+now proves gcd(Y(m),Y(n))=Y(gcd(m,n)), index-divisibility reflection and
+the scaled common-divisor consequence at arbitrary internal indices,
+including0. Norm-derived coefficient certificates justify cancellation;
+a bounded Sigma1 induction proves the Euclidean descent. Independent fresh
+pairs match both objects/full logs and seven standard-only reports.
+The later integral-solution packet above supplies large-c index forcing;
+final c|m and full integrality remain open.
+
+The [internal common-unit theorem](reviews/arithmetic-pell-common-unit-root.md)
+now derives one Pell base, both positive internal indices and a positive
+scale below the original base from the actual relaxed norm. Simultaneous
+Sigma1 induction proves both composition identities at every internal query
+index, including0. Independent fresh pairs match both objects/full logs and
+four standard-only reports. The later strong-divisibility packet above
+supplies sequence gcd; large-index forcing, cubic congruences and full
+relaxed integrality remain open.
+
+The [internal gcd normalization](reviews/arithmetic-gcd-normalization-root.md)
+now proves a fixed Sigma1 total unique gcd graph and derives the actual
+positive-factor normalization of R²+D=D*f² from its own coefficient witness.
+No supplied gcd, coprimality or minimum is used. Independent fresh pairs
+match both objects/full logs and eight standard-only reports. The later
+common-unit theorem above supplies composition; strong divisibility and
+full relaxed integrality remain open.
+
+The [actual internal guarded-comprehension proof](reviews/validator-seed-guarded-comprehension222-root.md)
+now supplies genuine source Proof certificates for raw pairs, two-root and
+guarded comprehension with arbitrary internal matrices/free parameters.
+The guarded endpoint assumes only Empty(t), retains the U=t branch and
+produces an object containing t. Five fixed total raw syntax graphs and
+capture-safe bindings are included. Independent fresh pairs match both
+objects/full logs and22 standard-only reports; all655 first artifact
+providers match. Tagged Collection, marker-safe proof transport and the
+actual quotient/WF and ZF/ZFC calibration remain open.
+
+The [actual internal augmented comprehension proof](reviews/validator-seed-raw-comprehension222-root.md)
+now supplies an actual source Proof certificate for every internally typed
+unary matrix and arbitrary source term/free parameters. Full member closure,
+root/singleton overlaps, capture-safe binders and fixed total raw syntax
+graphs are included. Independent fresh pairs match both objects/full logs
+and11 standard-only reports. The later guarded packet above extends it;
+marker-safe proof transport, Collection and ZF/ZFC calibration remain open.
+
+The [actual internal scheduler/control halting theorem](reviews/arithmetic-dag-runtimeperm222-root.md)
+now proves both directions for arbitrary internal IΣ1 times and boundaries,
+with exact pointer0/candidate4/zero-work specialization. The fixed Sigma1
+relation, strict normal clocks and zero absorption discharge every generic
+transport premise. Independent fresh triples match all objects/full logs
+and11 standard-only reports. Literal215 tape/site/boot/clock calibration,
+source-ZFC interpretation and the final PA/HA equation theorem remain open.
+
+The [internal known-unit classification](reviews/arithmetic-pell-known-unit-root.md)
+now derives a bounded least positive unit and a uniform internal index and
+ordinate scale for every solution of the same positive-discriminant norm.
+Its minimality comes from the supplied known solution and is not a premise
+of the public endpoint. Independent fresh pairs match both objects/full logs
+and four standard-only reports. The later gcd theorem above supplies
+normalization; composition, strong divisibility and full integrality remain.
+
+The [actual internal DagPerm root](reviews/arithmetic-dag-rootperm222-root.md)
+now constructs either a halt run or a normal run to the actual scheduler's
+live successor, with pointer decrease or candidate increment. Actual
+equality123, the full156-atom AX word, all selectors and payload reads are
+included. Independent fresh builds match both objects/full logs and13
+standard-only reports; ROOT authenticates both packets without a third build.
+The later runtime theorem above supplies repeated execution and positive
+clocks. Literal215 calibration and final PA/HA equivalence remain open.
+
+The [internal Pell residue classes](reviews/arithmetic-pell-residue-classes-root.md)
+now give the full plus/minus classes for arbitrary internal indices, signed
+doubled step-down with the inclusive2p=m endpoint, and actual odd-index
+witnesses. The target0/base2 exception is demonstrated; positive targets
+need no exception. Independent fresh pairs reproduce both objects/full logs
+and15 standard-only reports. Strong integrality, Qh congruences, carrier
+indices and simultaneous witnesses remain; the overall40–60% estimate above
+is unchanged by accepting this component.
+
+The [actual internal seed-source basis](reviews/validator-seed-source-basis222-root.md)
+now gives fixed total Sigma1 constructor graphs,recognized closed instances,
+and explicit represented open proofs for every internally typed two-slot
+matrix. It also proves source empty objects,arbitrary-term singletons,every
+marker's inhabited tag,and a joint empty-marker/tag witness with actual
+binders. Independent fresh pairs reproduce both objects/full logs and17
+standard-only reports. Guarded comprehension/Collection,the marker-preserving
+interpreter,the QHyp quotient route and actual ZF/ZFC calibration remain open.
+
+The [actual internal DagPerm macro package](reviews/arithmetic-dag-macros-perm222-root.md)
+now proves concrete pairing/unpairing,three reads,all13 AX atoms and both
+fetch branches over arbitrary internal IΣ1 data. Pair/unpair allow dirty
+scratch; macro cleanliness is explicit. The actual rotated136/300 fetch
+loop has its own Sigma1 invariant. Independent fresh pairs match both
+objects/full logs and22 standard-only reports. The later root packet above
+extends this checkpoint; literal215 calibration remains open.
+
+The [current13/88/51 metric packet](reviews/adaptive-current13-metrics-root.md)
+now independently certifies every live gate, complete specialized leading
+polynomial and all47,313 current coefficient bytes. Its literal evaluator and
+external ConZFC equivalence were already accepted; no new Lean build runs.
+ROOT normal/optimized replays reproduce the complete certificate/stdout and
+258 actual corruption controls. It improves current13/178/86 at the same
+tuple but does not dominate cheaper schedules such as13/75/96. The historical
+larger-tuple13/88/51 is a separate retained comparison; internal HA remains open.
+
+The [actual internal first-norm classification](reviews/arithmetic-pell-first-norm-root.md)
+now proves both directions for x²=1+Q(Q+1)k², with arbitrary positive internal Q,
+bounded internal index, derived evenness and actual2Q/4Q residue quotients.
+Descent justifies both natural subtractions and uses genuine bounded-universal
+Sigma1 induction. Independent fresh pairs match both objects/full logs and
+all eleven reports. Actual index=(R+1)/2, simultaneous carrier witnesses and
+final PA/HA composition remain open; the external fundamental-unit theorem
+is not a premise of this new internal classification.
+
+The [internal Pell periodicity theorem](reviews/arithmetic-pell-periodicity-root.md)
+now supplies concrete quotients for both coordinates at4n, genuine Sigma1
+induction over arbitrary internal period counts and starts, both actual
+remainder identities, guarded reflection and residue injectivity for i,j<=n.
+The n=0/modulus1 edge is covered. Independent fresh pairs match both objects,
+full logs and ten standard-only reports; ROOT reauthenticates without a third
+compile. The later residue-class and first-norm packets above extend this
+checkpoint. Simultaneous witnesses and final PA/HA composition remain open.
+
+The [actual DagPerm/p215 comparison](reviews/arithmetic-control-bisim-perm215-root.md)
+now proves the two represented control interpreters halt together for every
+internal register file in every IΣ1 model. The full2,850-entry certificate,
+all45 blocks/final34 indices and both actual branch successors are checked.
+Independent fresh builds match both objects/full logs and all eleven reports.
+This closes the actual control-program bisimulation, while structured
+checker dispatch and literal machine/tape/boot/clock calibration remain
+before the equation's PA/HA theorem.
+
+The [actual p215 control catalogue](reviews/arithmetic-control215-table-root.md)
+now has complete kernel-checked equality for all4,751 rows, a high-bit bound,
+and represented internal run/specification laws. Independent author/peer
+pairs match both objects and complete logs with nine standard-only reports;
+ROOT reauthenticates both packets without a third compiler invocation.
+DagPerm/p215 bisimulation, structured execution, literal machine calibration
+and the final PA/HA theorem remain open.
+
+The [concrete full-seed source theory](reviews/validator-full-seed-theory222-root.md)
+now has its actual Delta1 recognizer, all-internal universal closure and
+AxOK for equality,irreflexivity and every fully closed seed instance.
+An internal falsum proof gives an actual History222 value2 witness without
+an axiom-image premise. Independent builds match both objects/full logs
+and13 standard-only reports. Tagged/parameterized interpretation and the
+actual ZF/ZFC calibration remain open before final PA/HA composition.
+
+The [internal Pell residue/index package](reviews/arithmetic-pell-congruences-root.md)
+now supplies nonnegative residue quotients at every internal index, actual
+remainder identities,4Q first-index transport, norm-solution certificates,
+strict ordinate growth and index uniqueness in IΣ1. Independent builds
+match both objects/full logs and nine standard-only reports. Carrier index
+identities,simultaneous witnesses and final PA/HA composition remain open.
+
+The [current literal adaptive equivalence](reviews/native-adaptive-current2011-root.md)
+now closes positive-zero iff actual not-ConZFC and no-positive-zero iff
+actual ConZFC for the complete13-input graph at the exact current ports.
+Independent builds match both objects and all ten reports, including
+axiom-free width. This is an external Lean equivalence. Current specialized
+metrics and the internal PA/HA proof remain separate; no display/frontier
+change is promoted.
+
+The [actual whole DagPerm control table](reviews/arithmetic-dag-controlperm222-root.md)
+now has complete4751-row catalogue equality, a packed high-bit bound and
+unconditional whole-root occurrence. Independent fresh PackedTables/main/
+Checks builds match all objects and12 standard-only reports. All75 kernel
+blocks and the final15 indices are covered. Structured interpreter execution,
+p215/site/tape calibration and the final PA/HA endpoint remain open.
+
+The [internal Pell classification](reviews/arithmetic-pell-classification-root.md)
+now proves both directions between the stated norm and a represented
+internal sequence index<=y in every IΣ1 model. The descent and bounded
+universal have actual Sigma1 induction/definability proofs. Independent
+builds match both objects and six standard-only reports. Carrier congruences,
+index restrictions,cofinal simultaneous witnesses and final PA/HA composition
+remain open; this is not an arbitrary-discriminant theorem.
+
+The [adaptive canonical converse](reviews/native-adaptive-canonical-root.md)
+now constructs the literal positive adaptive zero from every positive
+Carrier65 zero under full PortBounds. Source/index bounds derive every
+private positivity condition; the fifth input is exactly delta*i.
+Independent builds match both objects and six standard-only reports.
+The exact current specialization,closed ConZFC composition,current metrics
+and internal PA/HA arithmetic remain separate obligations.
+
+The [actual full-seed source image](reviews/validator-source-full-seed222-root.md)
+now supplies an actual History222 witness for every internally typed matrix,
+retaining the complete literal closure/root-request body and arbitrary
+free-safe output stream. Independent two-leaf replay matches both objects
+and17 standard-only reports. The actual theory recognizer/parameter closure,
+tagged Collection/quotient and fixed source-ZFC reduction remain open.
+
+The [internal Pell recurrence](reviews/arithmetic-pell-recurrence-root.md)
+now supplies fixed total Sigma1/Delta1 graphs, coordinate graphs, the norm,
+growth bounds and both addition identities for arbitrary internal IΣ1
+indices. Independent builds produce identical objects and nine standard-only
+reports. No Foundation/prerequisite build ran. Classification,congruences,
+cofinal witness construction and the final equation/ConZFC PA/HA proof
+remain open.
+
+The [literal adaptive graph](reviews/native-adaptive-graph-root.md)
+now binds all88 ordered binary gates and proves signed zero iff the four
+literal cuts; every positive zero restores all31 source coordinates and
+all22 original rows. Independent two-leaf replay matches both objects and
+eight standard-only reports. A separate normal/optimized text audit checks
+17 aliases and26 projections and rejects220 actual corruptions. The
+canonical converse,current-port endpoint and PA/HA internal arithmetic
+remain open; no new metric is promoted.
+
+
+The [internal register-loop theorem](reviews/arithmetic-dag-loops-root.md)
+now proves transfer,copy and clear at arbitrary internal counters, with
+literal DagPerm197/192/214 instances and a real represented clear-table
+occurrence. Six refreshed prerequisites and two new leaves pass independent
+builds with identical objects and eight standard-only reports. Whole root
+occurrence,actual scheduler/215 calibration and the HA endpoint remain open.
+
+The [actual C222 equality axiom images](reviews/validator-equality-images222-root.md)
+now discharge AxOK for the specified actual finite equality recognizer,
+including all five fully closed source axioms. Literal irreflexivity also
+has an Eind-only proof. Independent builds pass25 standard-only reports
+and identical objects. Set-theory/schema images,the fixed source-ZFC
+reduction and the final HA equivalence remain open.
+
+The [adaptive source restoration](reviews/native-adaptive-source-restoration-root.md)
+now constructs all31 positive original-source coordinates and proves all22
+literal rows from the original positive inputs and four cuts. Deleted
+quotients and ordinary gamma have proved positive signs; visible fields
+and rank are preserved. Independent builds pass five standard-only reports
+with identical objects. Whole graph binding,the canonical converse,current
+endpoint composition and internal arithmetic remain open.
+
+The [bounded even seed-label theorem](reviews/validator-seed-padding222-root.md)
+now chooses an arbitrarily large even self-label with actual seed and
+typed-matrix vacuity witnesses. Bounds handle stored labels and parity
+handles every future odd-stream label. Independent builds pass eleven
+standard-only reports and identical objects. This closes that freshness
+construction; tagged set-theory interpretation and actual source axiom
+images remain open before the fixed source-ZFC reduction.
+
+The [actual C222 internal source-proof interpreter](reviews/validator-source-derivation222-root.md)
+now covers all ten Foundation proof rules by genuine Pi2/IΣ2 induction,
+with actual History222 witnesses and internally sized contexts. Independent
+builds pass seventeen standard-only reports with identical objects. The
+explicit AxOK premise still requires actual source-axiom images; a fixed
+source-ZFC calibration and the final HA equivalence remain open.
+
+The [adaptive Mersenne recovery](reviews/native-adaptive-mersenne-root.md)
+now derives3∤q,q∣X and q=(2^94517)^N with N>0 and94517*N≤R.toNat
+from the literal positive cuts and the actual width identity. It excludes
+factor3 before cancelling it. Independent builds pass eight standard-only
+reports with identical objects. Full source restoration,the positive converse,
+whole small-equation graph binding and internal arithmetic remain open.
+
+The [actual C222 source quantifier contexts](reviews/validator-source-quantifier-context222-root.md)
+now prove GEN/ALL/EXS through internally sized contexts, deriving the source
+hypotheses' vacuity from typing and fresh-label resources. Independent
+two-leaf builds pass23 standard-only reports and identical objects. The
+next source step is genuine Pi2/IΣ2 induction over all ten proof rules;
+source-axiom images and the final HA equivalence remain open.
+
+The [actual C222 checker/enumerator equivalence](reviews/arithmetic-enum-soundnessperm222-root.md)
+now proves both directions at candidate4/work0, including a closed IΣ1
+and PA proof. Genuine Sigma1 time induction retains an actual falsity
+witness at halt and bounded certification while live. Independent builds
+pass twelve standard-only reports with identical objects. Source-ZFC,
+exact215 and polynomial internalization remain open before HA assembly.
+
+The [actual C222 source-negation theorem](reviews/validator-source-negation222-root.md)
+now proves both encoded NNF-negation implications for all internal typed
+formulas and arbitrary encoder states. Its genuine Pi2 code induction
+uses explicit IΣ2. Independent two-leaf builds pass sixteen standard-only
+reports with identical objects. Context quantifier rules,full source-proof
+interpretation and source-axiom images remain open.
+
+The [actual C222 command-preservation theorem](reviews/arithmetic-command-preservationperm222-root.md)
+now preserves certified working states for every internal raw command and
+extracts an actual falsity proof from a halt. AX retains its physical y/x
+and old-counter arguments. Two independent fresh builds pass eight
+standard-only reports with identical objects. Reverse scheduler induction,
+source/215 calibration and the final HA equivalence remain open.
+
+The [numeric C222 substitution/opening theorem](reviews/validator-environment-substitution222-root.md)
+now passes two independent builds with thirteen standard-only reports and
+identical objects. Its actual Π1/IΣ1 induction retains total lookup,
+repeated/zero labels and the exact qVec binder shifts. General source-proof interpretation and the complete HA equivalence remain open.
+
+The [actual C222 evaluation laws](reviews/arithmetic-command-evaluationperm222-peer.md)
+now identify terminal with any stopped run and prove the exact head/tail
+successor equations. Independent review and two fresh builds pass six
+standard-only reports with identical objects. These supply the local laws
+for the separately developed fair scheduler reach theorem.
+
+The [ordinary-source construction](reviews/native-ordinary-source-construction-root.md)
+now accepts every positive old-z source zero and rebuilds a Carrier65 zero
+with the same scalar fields and rank. Two independent builds pass twelve
+standard-only reports and identical objects. Actual current-source
+existence is externally equivalent to inconsistency; shifted-z/historical
+low-degree transfer and the final HA proof remain separate obligations.
+
+The [actual C222 stream theorem](reviews/validator-environment-streams222-root.md)
+now selects an explicit safe opposite-parity stream and proves relabelling
+between arbitrary free-safe starts, including overlapping s/s+2. Independent
+builds pass fifteen standard-only reports with identical objects. Arbitrary source-proof interpretation remains open.
+
+The [actual Foundation Δ₀ theorem](reviews/foundation-ha-deltazero-root.md)
+now proves HA decidability of the ordinary interpretation with arbitrary
+term environments. It uses actual bounded syntax and exact binder shifts,
+with twelve independently checked standard-only reports. The actual delta-one checker normalization remains open.
+
+The [bounded ordinary/GG comparison](reviews/foundation-ha-deltazero-gg-root.md)
+now proves both HA implications for actual Foundation Δ₀ formulas and
+arbitrary term environments. Two independent builds pass nine standard-only
+reports. Existential recovery uses the whole bounded existential's actual
+HA decision; the literal consistency-checker comparison remains open.
+
+The [actual C222 fair scheduler](reviews/arithmetic-enum-fairperm222-peer.md)
+now reaches every internal candidate at or above its initial counter,
+including a start at4, unless an earlier command halts. Two independent
+builds pass fourteen standard-only reports and identical objects. The
+proof retains a bounded stopped-time witness before enumeration resumes;
+compiler/proof-state invariants and exact215 calibration remain open.
+
+The [actual raw-command replacement](reviews/arithmetic-command-replaceperm222-peer.md)
+now preserves the permuted command's meaningful arguments and its complete
+working-register effect over internal IOpen inputs. Independent builds
+pass thirteen standard-only reports with identical objects, including raw0
+and literal AX y/x order. Represented append and execution composition are accepted below;
+compiler/proof-state invariants remain separate.
+
+The [actual C222 existential term rule](reviews/validator-existential-rules222-root.md)
+now constructs the encoded term-instance implication and composes it under
+arbitrary hypotheses. Independent builds pass thirteen standard-only
+reports with identical objects, including fallback1 and repeated-zero
+checks. General source-proof interpretation and the final HA endpoint
+remain open.
+
+The [finite actual C222 quantifier rules](reviews/validator-quantifier-rules222-root.md)
+now prove ALL inference and both opened ALL/EXS body equivalences, retaining
+an explicit vacuity guard for hypotheses and deriving it for a shifted
+negative source hypothesis. Independent builds pass thirteen standard-only
+reports with identical objects. General source-proof interpretation remains open.
+
+The [actual C222 bounded-stack certificate](reviews/arithmetic-stack-certificate222-root.md)
+now retains one internal bound on actual proof witnesses for all theorem
+stack entries. Its Delta1 stack predicate gives Sigma1 working-state
+certification;push/pop and cached-falsity extraction are checked. Independent
+three-file builds pass ten standard-only reports and identical objects,
+including an explicitly rebuilt numeric tail prerequisite. Command and
+reverse scheduler preservation remain open.
+
+The [actual C222 context calculus](reviews/validator-proof-context222-root.md)
+now proves rules for internally sized implication contexts,including actual
+history witnesses,deduction,subsumption,source-list shifting and enumeration
+independence. Two independent builds pass sixteen standard-only reports
+and identical objects. The independent inventory explicitly repairs one
+omitted Aesop meta-import boundary. NNF compatibility,source derivation
+induction and source axiom interpretation remain open.
+
+The [actual C222 refutation-execution theorem](reviews/arithmetic-proof-word-enumperm222-root.md)
+now proves that an accepted internal C222 refutation forces the actual
+permuted enumerator to halt from candidate4 and any working state. A real
+AX reset and candidate bound discharge the scheduler premises. Independent
+builds pass eight standard-only reports and identical objects. The literal
+closed conditional has actual IΣ1 and PA derivations. Reverse soundness,
+source/215 calibration and the final HA equivalence remain open.
+
+The [all-internal C222 compiler](reviews/arithmetic-proof-word-perm222-root.md)
+now maps every accepted internal proof code to a represented command word
+with its exact conclusion and arbitrary initial top/saved stack. Genuine
+Pi1 prefix induction proves correctness,with no supplied global invariant.
+Its conditional false1 word halts from state(top,S,0,0). Independent builds
+pass eleven standard-only reports and identical objects. The reset and
+forward scheduler bridge are accepted above;reverse soundness,source
+calibration and the HA equivalence remain open.
+
+The [actual C222 compiler row](reviews/arithmetic-proof-word-rowperm222-root.md)
+now has a total fixed arithmetic graph for all twelve branches and invalid
+tags. Actual row acceptance and local child contracts imply its exact
+all-top/all-stack execution contract. Independent builds pass six
+standard-only reports and identical objects. The unrestricted rho8 choice
+is fixed before Type0 models; the represented proof-history induction is accepted above.
+
+The [uniform unrestricted rho8 circuit](reviews/arithmetic-command-rho8-circuitperm222-root.md)
+now supplies one finite circuit before every internal model/input quantifier,
+with no residual dominance condition. Actual guarded leaves and minor-first
+MP implement the finite generic implication derivation. Independent builds
+pass five standard-only reports and identical objects. This closes the
+uniform finite rho8 step; proof-history compilation is accepted above,
+and the full HA equivalence remains open.
+
+The [actual C222 finite circuit graphs](reviews/arithmetic-command-circuitperm222-peer.md)
+now represent every fixed numeric circuit by a parameter-free five-slot Σ1
+graph and bind current word/leaf expressions exactly. Independent builds
+pass nine standard-only reports and identical objects. The unrestricted
+finite rho8 circuit and represented proof-history compilation are
+accepted above; scheduler/source calibration remains open.
+
+The [actual C222 GEN/MP rules](reviews/arithmetic-command-ruleperm222-root.md)
+now preserve all-top/all-stack contracts, including GEN at zero/code1 and
+both MP false-cache halt branches. Independent builds pass seven standard-only
+reports and identical objects. The unrestricted
+finite rho8 circuit is accepted above; proof-history correctness remains open.
+
+The [actual C222 finite command leaves](reviews/arithmetic-command-leafperm222-root.md)
+now construct all nine physical AX selections, exact gate/bundle outputs
+and conditional false-target termination under all-top/all-stack contracts.
+Independent builds pass eighteen standard-only reports with identical
+objects. Direct rho8 retains u≤a; GEN/MP and represented unrestricted rho8
+compilation remain subsequent obligations.
+
+The [actual C222 finite blocks](reviews/arithmetic-command-blockperm222-root.md)
+now prove exact cons execution, finite NIP popping, discard, zero-safe
+counter loading and AX setup with its real old-counter arguments.
+Independent builds pass eighteen standard-only reports and identical
+objects. Selection/rule contracts and unrestricted rho8 compilation remain
+separate.
+
+The [actual C222 append execution theorem](reviews/arithmetic-command-compositionperm222-peer.md)
+now proves exact evaluation composition over all internal words and states,
+using a bounded stopped-pair invariant. Independent builds pass thirteen
+standard-only reports and identical objects. Halt0 and positive completion
+remain distinct. Proof compiler invariants and exact215 calibration remain
+open.
+
+The [actual C222 append graph](reviews/arithmetic-command-appendperm222-peer.md)
+now has all-internal IΣ1 lookup, identity/associativity and totality proofs,
+plus actual finite command-list concatenation. Independent builds pass
+sixteen standard-only reports with identical objects. Evaluation composition is accepted above; fixed command blocks and
+compiler/proof-state invariants remain subsequent checkpoints.
+
+The [literal adaptive power recovery](reviews/native-adaptive-power-recovery-root.md)
+now derives X=2^R,the exact first index2n=R+1,and the required signed
+divisibility from the actual positive carrier tuple. Its projection retains
+3|q and its growth uses the actual eta/zeta split. Four independent builds
+pass fourteen standard-only reports and identical objects. Mersenne
+factor-three exclusion,whole-product/source transfer,the converse and
+internal HA arithmetic remain open.
+
+The [literal adaptive strong-index theorem](reviews/native-adaptive-strong-index-root.md)
+now recovers the actual main Pell coordinates at target R from literal
+A0/A1 and Fs/Fa, preserving unrestricted positive J. It derives square
+divisibility and both auxiliary congruences before index identification,
+with positive actual V/y and quotient witnesses. Independent builds pass
+three standard-only reports and identical objects. First-index/power
+recovery, source transfer, converse and internal HA arithmetic remain open.
+
+The [adaptive rank-window theorem](reviews/native-adaptive-rank-window-root.md)
+now derives the target window, both Pell classifications, n>=25, n<p,
+p>=6, a positive main ordinate, the large-c bound and both 2p<c/2R<c
+bounds from the literal A0/A1 equations and stated port/positivity data.
+Two independent builds pass five standard-only reports and identical
+objects. Signed divisibility needs no assumed nonnegative quotient.
+Strong-index restoration, power recovery, the converse and internal HA
+formalization remain open.
+
+The [adaptive main-carrier bootstrap](reviews/native-adaptive-main-bootstrap-root.md)
+now derives a positive integral main Pell root and q^4 dividing the signed
+index difference from literal A1 and preceding first-carrier divisibility.
+Independent builds pass nine standard-only reports and identical objects.
+No restored-source or rank-window premise is assumed. Index bounds, power
+recovery and the full lower-degree transfer remain separate.
+
+The [adaptive unit-factor theorem](reviews/native-adaptive-unit-factors-peer.md)
+now extracts all four factor equalities from the literal signed product1.
+Finite modulo4 proofs exclude negative units without assuming factor
+positivity. Independent builds pass five standard-only reports and identical
+objects. Binding the full historical graph and the final HA endpoint remain
+separate.
+
+The [adaptive factor-three cancellation](reviews/native-adaptive-factor-three-peer.md)
+now proves q^4 divides t from q^3 dividing Y and q^5 dividing
+(4Y(X+1)+3)t, for all signed integers, including q=0 and3 dividing q.
+Independent builds pass four propext/Quot.sound-only reports with identical
+objects. Its index-difference client is a main-Pell transfer prerequisite;
+no new equation endpoint is claimed.
+
+The [signed adaptive first-carrier theorem](reviews/native-adaptive-carrier-bootstrap-root.md)
+now derives integral positive quotient witnesses and the signed Pell-root
+bound directly from literal A0, before source restoration. Independent
+builds pass five standard-only reports with identical objects. Main-Pell,
+rank and power restoration remain open; no lower-degree endpoint is claimed.
+
+The [shifted-z source bridge](reviews/native-shifted-source-adapter-root.md)
+now proves all22 unconditional row identities and both positive existence
+maps at the current ports, deriving old-z>1 from the supplied source itself.
+Four independent fresh builds pass eighteen standard-only reports with
+identical objects. The historical lower-degree carrier transfer remains
+separate; no equation metric or HA endpoint is promoted.
+
+The [fixed ordinary consistency semantics](reviews/foundation-ha-consistency-semantics-peer.md)
+now proves actual closedness, arbitrary-premodel valuation independence and
+exact standard-Nat meaning of the retained formulas. The negative formula
+means precisely absence of an actual repository ZFC refutation. Independent
+builds pass seven standard-only reports and identical objects. This binds
+the normalized HA target semantically; the equation/source arithmetic
+proof and internal checker comparison remain separate obligations.
+
+The [ordinary predicate syntax/semantics theorem](reviews/foundation-pahf-ordinary-semantics-root.md)
+now proves actual closedness and arbitrary-premodel valuation independence,
+plus exact ordinary interpretation over Nat. Independent builds pass eight
+standard-only reports and identical objects. The fixed consistency specialization is accepted above; the
+equation/source arithmetic proof remains open.
+
+The [fixed HA consistency normalization](reviews/foundation-ha-consistency-normalization-peer.md)
+now proves both HA implications between the retained fixed GG consistency
+sentence and HA negation of the ordinary actual positive ZFC-refutation
+predicate. Independent builds pass eight standard-only reports and identical
+objects. This does not supply the equation/source PA theorem or an internal
+comparison with an independently encoded checker.
+
+The [actual Σ1 ordinary/GG theorem](reviews/foundation-ha-sigma-one-gg-root.md)
+now proves HA equivalence of the literal GG image with double negation of
+the ordinary positive formula, for arbitrary environments. Independent
+builds pass eleven standard-only reports and identical objects. The fixed consistency specialization is accepted above; the full
+equation equivalence remains open.
+
+The [HA finite bounded double-negation theorem](reviews/ha-bounded-double-negation-root.md)
+now proves both implications for an arbitrary matrix, with no decision
+premise. Independent builds pass eight propext/Quot.sound-only reports and
+identical objects. Fixed consistency specialization and the full HA equation equivalence
+remain open.
+
+The [HA bounded-quantifier checkpoint](reviews/ha-bounded-quantifiers-root.md)
+now passes two independent builds and seventeen propext/Quot.sound-only
+reports. Genuine simultaneous formula induction proves finite all/ex
+decisions under an explicit uniform matrix-decision formula, preserving
+arbitrary nested matrices and ambient parameters. Structural syntax and
+the literal consistency-checker normalization remain open.
+
+The [uniform C222 alpha theorem](reviews/validator-environment-alpha222-root.md)
+now passes two independent builds and fifteen standard-only reports. Its
+all-internal Π2/IΣ2 induction preserves the same context in both directions
+and derives the four binder-vacuity resources. Numeric checker witnesses
+are explicit. General proof interpretation remains open.
+
+The [current13/178/86 scaled syzygy](reviews/thirteen-scaled-norm-syzygy86-root.md)
+now passes two independent Lean builds with twelve standard-only reports
+and complete normal/optimized finite audits. Every positive zero and all
+current coefficient bytes are retained; no global frontier or HA endpoint
+is claimed. The next size direction audits transfer of the historically
+better compact44 arithmetic to the current small coefficient tuple.
+
+The [actual C222 whole-word evaluator](reviews/arithmetic-command-runperm222-peer.md)
+now has an independently rebuilt internal IΣ1 draining bound and total
+evaluation graph, with twenty-one standard-only reports. Its pointwise
+induction keeps word/work parameters fixed and preserves positive success
+versus halt0. Closed IΣ1/PA totality is proved; execution composition,
+scheduler fairness and the final HA consistency equivalence remain open.
+
+The [HA interval checkpoint](reviews/ha-strict-intervals-root.md) now has
+two independent successful builds and twelve propext/Quot.sound-only
+reports. Its literal existential-witness proof establishes s<S t iff
+(s<t∨s=t), retaining arbitrary terms and shifted finite contexts. The
+bounded-quantifier decision proof and actual checker normalization remain
+separate work.
+
+The [actual C222 word tick](reviews/arithmetic-command-tickperm222-peer.md)
+now has independent source review and two fresh builds with thirteen
+standard-only reports. Active ticks halt or strictly decrease the shifted
+remaining word; positive completion is distinct from halt0. This supplies
+the control measure for the separately reviewed draining proof.
+
+The [actual permuted enumerator run](reviews/arithmetic-enum-runperm222-peer.md)
+now has a total/unique internal IΣ1 graph, absorbing halt0, the semigroup
+law and exact all-time/all-state Nat agreement with actual EnumPerm.run.
+Independent review and two fresh builds pass thirteen standard-only
+reports with byte-identical objects. Word draining, fairness, proof
+invariants and the final HA equation equivalence remain open.
+
+The [HA strict-order decision](reviews/foundation-ha-order-decidable-root.md)
+now passes two independent builds and twelve propext/Quot.sound-only reports.
+It proves the ordinary decision disjunction and order-specific stability
+under arbitrary terms and finite contexts. Bounded-matrix and literal
+checker normalization remain open.
+
+The [composed actual enumerator step](reviews/arithmetic-enum-stepperm222-root.md)
+now passes two independent builds and eleven standard-only reports, with
+all-state standard-Nat agreement and arbitrary internal IOpen totality.
+The next runtime obligations are recursion, proof invariants and fairness;
+one represented step does not close the HA equation equivalence.
+
+The [finite C222 atomic transport](reviews/validator-atomic-transport222-root.md)
+now passes two independent current-source builds and13 standard-only
+reports. Its reverse binder adapter preserves the original context and
+uses only primitive-equality-to-Eind, followed by Eind symmetry. Uniform
+formula transport and the final HA equation equivalence remain open.
+
+The [closed HA consistency comparison](reviews/foundation-ha-zfc-validator-root.md)
+now proves both directions between the two fixed GG consistency sentences,
+with eight independently checked standard-only reports and no supplied
+PA-proof premise. The fixed standard-Nat meaning is separately checked.
+This is one completed link; the current equation's HA equivalence is open.
+
+**26 October update:** The owner reaffirmed HA as the final target.
+The [C222 formula encoder](reviews/validator-formula-encoder222-root.md)
+passes five independent fresh compilations and13 standard-only reports;
+it represents the actual equality-as-Eind interpretation and nested SHIFT
+for internal arithmetic inputs. The final HA derivation remains open.
+The [consistency cache audit](research/fixed-consistency-nat-cache-gap-audit.md)
+authenticates all139 selected Foundation providers, while a proposed73
+local-module refresh remains unexecuted at this checkpoint.
+The subsequent [scoped refresh](reviews/fixed-consistency73-root.md) now
+passes all73 selected source builds,20 standard-only reports and final
+hash checks. It preserves the45 existing legacy linter warnings and closes
+the local current-source provider gap for R2Native/LSchema/Equivalence.
+Its older C254 consistency theorem does not close the current215/222 bridge.
+The later [uniform typed C222 vacuity checkpoint](reviews/validator-environment-vacuity222-root.md)
+passes two independent builds and11 standard-only reports, with an explicit
+Π2 invariant under IΣ2 and numeric actual-checker witnesses. It advances
+proof interpretation without closing the final HA endpoint.
 
 **Current direction:** On 25 October 2026 the owner resumed Lean
 formalization, requesting proofs for the simplest equations constructed

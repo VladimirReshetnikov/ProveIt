@@ -1,0 +1,98 @@
+TWELVE-GROUP FOUR-PLAN SUPPORT CERTIFICATE
+
+Use the four ordered final partitions in scratch_portfolios/certified.json,
+entry r=12. Within each four-vertex final block, split its order into two
+pairs, contract each pair, then merge the pairs. The four plans are:
+
+ P0: (0,1,2,3) | (4,5,6,7) | (8,9,10,11)
+ P1: (9,6,4,0) | (1,7,10,11) | (5,3,2,8)
+ P2: (1,2,10,4) | (3,11,6,9) | (7,0,8,5)
+ P3: (0,5,10,11) | (3,8,1,6) | (4,9,7,2)
+
+There are30 operation support vectors in each plan, with entries0,2,5
+as in the affine-plane proof and the inherited12/5 matrix multiplication
+bound. The operation types are:
+ A=(1,1,10): merging the vertices of a pair;
+ B=(2,2,8): merging the two pairs of a four-vertex final block;
+ C=(4,4,4): contracting the final three block tables.
+
+1. Individual norms and pairwise finite arithmetic.
+
+The maximum squared norms for A,B,C are504,816,864. These follow directly
+from25(ab+ac+bc)-21 min(ab,ac,bc).
+
+For any distinct plans, the maximum cross dot products are bounded by
+the following table (each entry is also attained among the listed plans):
+
+          A    B    C
+  A      504  500  400
+  B      500  516  500
+  C      400  500  540.
+
+These entries are finite integer identities on66 unordered edges. They were
+independently reconstructed directly from vertex memberships and checked
+over all six ordered plan-pairs and their30-by-30 support choices. No
+random input weights or floating point is used. They can alternatively be
+verified by the following formula for each pair of operation tripartitions:
+  dot(v,w)=25*|S(v) intersection S(w)|
+           -15*(|D(v) intersection S(w)|+|D(w) intersection S(v)|)
+           +9*|D(v) intersection D(w)|,
+where S is the nonzero support and D is the discounted support.
+
+If a four-tuple includes any internal support (typeA orB), single out that
+support. Its squared norm is at most816; its dot product with each of the
+other three supports is at most516. The remaining three squared norms are
+at most864 and their three mutual dots at most540. Hence
+  ||v0+v1+v2+v3||^2 <=816+3*864+2*(3*516+3*540)=9744.
+Thus an extremizer above9744 must use four final typeC supports.
+
+2. The final supports reduce to a four-vertex permutation problem.
+
+Number each final plan's three supports0,1,2 by which cross-class is
+discounted, in the order(0,1),(0,2),(1,2) of final block labels. Every
+final support has squared norm864. For any two different plans i<j,
+the final-final dot is540 exactly when x_j=p_ij(x_i), and522 otherwise.
+The preferred permutations p_ij, written as lists of their values at0,1,2,
+are:
+  p01=(1,2,0),   p02=(1,0,2),   p03=(2,0,1),
+  p12=(0,2,1),   p13=(1,2,0),   p23=(2,1,0).
+
+Equivalently, the six3-by-3 final dot matrices are:
+  01: [522,540,522; 522,522,540; 540,522,522]
+  02: [522,540,522; 540,522,522; 522,522,540]
+  03: [522,522,540; 540,522,522; 522,540,522]
+  12: [540,522,522; 522,522,540; 522,540,522]
+  13: [522,540,522; 522,522,540; 540,522,522]
+  23: [522,522,540; 522,540,522; 540,522,522].
+
+The triangles012,023,123 are inconsistent: in each of these triangles,
+p_jk(p_ij(x)) != p_ik(x) for all three possible x. This is checked by
+three substitutions per triangle. Triangle013 is consistent.
+
+It is impossible for five of the six preferred pair relations to hold.
+Indeed five edges of K4 contain two triangles. At most one triangle is
+consistent, so one of the two triangles would violate the displayed
+permutation constraints. Therefore at most four pairs have dot540.
+Four are attained, for instance at(x0,x1,x2,x3)=(0,1,0,2).
+
+Consequently the exact maximum over final supports, and hence all supports,
+is
+  Q=4*864+2*(6*522+4*(540-522))=9864.
+This is a short certificate for the exhaustive arithmetic value; it is not
+a claim of optimality over all possible choices of four plans.
+
+3. Algorithmic coefficient and independent exhaustive check.
+
+With four plans and r=12, the inherited support-averaging inequality gives
+  b12^2=2*Q/(25*4^2*12^2)=137/400.
+The selected plan's local nonrecursive time and local memory exponent is
+at most(b12+o(1))*K(M,u). The number of paid child calls has its separate
+coefficient alpha12=sqrt(22)/12. All semantics and exact-integer plan
+selection are unchanged from the affine-plane/supported-tree construction.
+
+An independent endpoint-membership implementation also enumerated all
+30^4=810000 support tuples. It foundQ9864, sum of squared norms3501532800,
+and9 maximizing tuples. The explicit first reported maximizer has global
+support indices(27,28,27,29), namely final choices(0,1,0,2). These results
+are recorded in source/r12_r13_independent.json; the r13 entry there is a
+separate unused search audit and is not a dependency of this certificate.

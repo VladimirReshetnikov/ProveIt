@@ -1,0 +1,205 @@
+\section{A faster schedule with subexponential memory}\label{sec:cached}
+
+The full-block Cauchy packet already constructs a cached mode-graph
+algorithm: evaluate group functions, assemble three block tables, and
+contract their triangle by rectangular Strassen multiplication
+\cite{joint}. We retain that algorithm and give a new three-stage rational
+schedule. Combining it with asymmetric near-unit packing \cite{asymmetric}
+proves the second part of Theorem~\ref{thm:main}. Its memory use is
+subexponential; it does not inherit the preceding section's polynomial-space
+bound.
+
+\subsection{The fully charged local recurrence}
+
+At a call with $M$ edges, taper $u$, and $r$ groups, let
+\[
+ K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac{M}{\sqrt u}.
+\]
+Near-unit padding bounds the number of colors of each rank index on a
+specified directed pair of distinct groups by
+$(2+o(1))M/(r^2D)$. Combining the slope-four partition estimate with working
+precision $(6+o(1))MD/u$ gives the inherited selected-pair entropy bound
+\[
+ \sum_{e\in I}\log_2 |\mathcal I_e|
+ \le\left(\frac{\sqrt{|I|}}r+o(1)\right)K(M,u).
+\]
+Here $\mathcal I_e$ is the list of mode tuples of a prescribed exact weight
+on pair $e$. The weighted version replaces $|I|$ by the sum of squared
+pair weights. Exact pair-weight arrays are enumerated first, subject to
+the common precision budget. Their number is polynomial for fixed $r$.
+The original dynamic program provides exact counts and polynomial-delay
+indexing of each list; no completion-count oracle is assumed \cite{joint}.
+
+A group function depends on its $2(r-1)$ incident directed pairs. Caching
+it consequently requires at most
+$2^{(\alpha_r+o(1))K(M,u)}$ recursive child evaluations, where
+\[
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+For a block containing $k$ groups, the counts of incident pairs and boundary
+pairs are $2rk-k^2-k$ and $2k(r-k)$, respectively. Their square roots divided
+by $r$ determine the table-construction and storage coefficients. If the
+three unordered block-pair collections have cardinalities $v_1,v_2,v_3$,
+rectangular Strassen multiplication has coefficient
+\[
+ \beta_{\rm matrix}=
+ \frac{\sqrt{v_1+v_2+v_3-\bigl[1-(\omega-2)^2\bigr]
+                   \min(v_1,v_2,v_3)}}r,
+ \qquad \omega=\log_2 7.
+\]
+This follows from its rectangular exponent
+$H_1+H_2+H_3-(3-\omega)\min H_j$ and the weighted entropy bound.
+The algorithm uses only ring operations, so it remains valid over the
+coefficient ring with its nilpotents and even modulus.
+
+Write $\beta_r$ for the larger of the construction and matrix coefficients,
+and $j_r$ for the boundary-storage coefficient. The three alphabets used
+below give
+\[
+ B_*:=\frac{\sqrt{2\bigl(2+(\omega-2)^2\bigr)}}3,
+\]
+\begin{center}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$r$ & Block sizes & $\alpha_r$ & $\beta_r$ & $j_r$\\
+\midrule
+$7$ & $(2,2,3)$ & $\sqrt{12}/7$ & $\sqrt{30}/7$ & $\sqrt{24}/7$\\
+$9$ & $(3,3,3)$ & $4/9$ & $B_*$ & $2/3$\\
+$6$ & $(2,2,2)$ & $\sqrt{10}/6$ & $B_*$ & $2/3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $r=7$, table construction dominates the matrix product: the latter's
+squared numerator is $24+8(\omega-2)^2<30$. The exact integer inequality
+$7^{16}<2^{45}$ proves $\omega<45/16$, which also gives $B_*<77/100$.
+
+Suppressing polynomial factors, the correct recurrence is
+\begin{equation}\label{eq:cached-recurrence}
+ T_d\le 2^{(\alpha_{r_d}+o(1))K_d}\,r_dT_{d+1}
+       +2^{(\beta_{r_d}+o(1))K_d},
+ \qquad K_d=K(M_d,u_d).
+\end{equation}
+Thus all recursive group evaluations are charged. Block-table enumeration
+uses cached values, rather than multiplying its entire work by another
+child-contraction cost. The inherited sequential-record ordering, rewind
+charging, and matrix reblocking arguments give this bound in bit operations,
+without assuming unit-cost access to an exponential table \cite{joint}.
+
+\subsection{An exact three-stage schedule}
+
+Set $\lambda=\ceil{\log_2s}$, $H=\ceil{s/\lambda}$,
+$g=\ceil{\log_2\lambda}^{2}$, and
+$a_d=\sum_{j\le d}u_j+(d+1)g$. Choose
+\begin{align}
+ r_0&=7,&u_0&=\floor{\frac{89\lambda}{5000}},\notag\\
+ r_1&=9,&u_1&=\floor{\frac{137\lambda}{10000}},\label{eq:cached-schedule}\\
+ r_{2+j}&=6,&u_{2+j}&=
+ \floor{\frac{923\lambda}{250000}\left(\frac{12}{25}\right)^j}
+ \quad(j\ge0).\notag
+\end{align}
+The leading cumulative taper after the second stage is $63/2000$.
+The tail budget is $71/10000$, making the full leading cumulative budget
+$193/5000$. The parameter generator computes these rational floors and
+cumulative sums exactly, without constructing an instance of size $2^\lambda$.
+
+We verify feasibility before assuming a recursion-depth bound. Consider
+hypothetical active depths through
+$\ceil{\log_{5/2}\lambda}+3$. Their cumulative gaps are
+$O((\log\lambda)^3)=o(\lambda)$. The three exact witnesses
+\[
+ 7^{89}<2^{250},\qquad 9^{63}<2^{200},\qquad 6^{193}<2^{500}
+\]
+prove the root constraint
+$9/10+2(89/5000)\log_2 7<1$ and the retained-side constraints
+$9/10+(63/2000)\log_2 9<1$ and
+$9/10+(193/5000)\log_2 6<1$.
+Below the root, fresh column degrees are at most $2^{a_{d-1}+1}$.
+The fresh-side and padding exponents are therefore less than
+$1/5+193/5000<1$; all new degrees remain below $s^{9/10}$.
+These fixed power margins absorb both the logarithmic factors and
+$M^{-1}<\lambda/s$ in the three packing conditions.
+
+Uniformly, the padded-mass ratio is
+$1+O(1/\lambda)+s^{-\epsilon+o(1)}$ for some fixed $\epsilon>0$.
+Hence it eventually passes the exact actual-mass guard, and every child
+has at most $2M/5$ edges. This proves that no active path exceeds the
+hypothetical depth range and closes the induction. Tail tapers grow
+uniformly as a positive power of $\lambda$, because $25/12<5/2$.
+Their floors are negligible. The thin-gap precision proof and the uniform
+slope-four entropy estimate consequently apply at every active node.
+Small inputs and failed finite guards retain the direct-contraction fallback.
+
+\subsection{Time and memory, including the entire tail}
+
+Let $k=\pi\sqrt2/\ln2$. After suppressing the common scale
+$s/\sqrt\lambda$, the first three upper envelopes for $K_d$ are
+\begin{align*}
+ \widehat K_0&=\frac{k}{\sqrt{89/5000}}
+       =48.0429214176\ldots,\\
+ \widehat K_1&=\frac{(2/7)k}{\sqrt{137/10000}}
+       =15.6462794092\ldots,\\
+ \widehat K_2&=\frac{(4/63)k}{\sqrt{923/250000}}
+       =6.6977356903\ldots.
+\end{align*}
+The subsequent envelopes form a geometric sequence with ratio
+\[
+ \gamma=\frac{1/3}{\sqrt{12/25}}=\frac5{6\sqrt3}<1.
+\]
+Products of the padding errors across $O(\log\lambda)$ levels are
+$1+o(1)$, so these are uniform leading envelopes for the actual recursion.
+
+Unrolling~\eqref{eq:cached-recurrence}, the tail contributes its previously
+paid prefix plus
+\[
+ \widehat K_2\max\left\{B_*,\frac{\alpha_6}{1-\gamma}\right\}.
+\]
+Indeed a terminal matrix operation at tail depth $j$ has coefficient
+$\widehat K_2[\alpha_6(1-\gamma^j)/(1-\gamma)+B_*\gamma^j]$;
+its supremum is the larger endpoint. Here the infinite cache endpoint
+$\alpha_6/(1-\gamma)>1$ dominates $B_*$. The complete time coefficient
+is therefore bounded by the maximum of
+\begin{align*}
+ \beta_7\widehat K_0
+   &=37.5917025555\ldots,\\
+ \alpha_7\widehat K_0+B_*\widehat K_1
+   &=35.7860204992\ldots,\\
+ \alpha_7\widehat K_0+\alpha_9\widehat K_1+
+          \frac{\alpha_6\widehat K_2}{1-\gamma}
+   &=37.5321972011\ldots.
+\end{align*}
+The root is strictly largest. Rational square-root intervals certify both
+comparisons after cancelling the common positive factor $k$. In particular,
+this comparison pays the entire infinite cached tail, rather than testing
+only a few recursion levels. Simplifying the root expression gives
+\[
+ \boxed{\Ccache=\frac{\pi}{\ln2}\sqrt{\frac{300000}{4361}}}.
+\]
+
+The storage envelopes are $j_7\widehat K_0$, $j_9\widehat K_1$, and
+$j_6\widehat K_2\gamma^j$. Their maximum is the root value. An active
+stack stores a sum of polynomially many tables, whose leading exponential
+coefficient is their maximum; it is not a product of those storage sizes.
+Thus
+\[
+ \boxed{\Scache=\frac{\pi}{\ln2}\sqrt{\frac{240000}{4361}}}
+       =\sqrt{4/5}\,\Ccache.
+\]
+Polynomial-bit records, sequential sorting and reblocking, and the polynomial
+number of exact weight arrays preserve both coefficients. Interpolation and
+other per-level polynomial work add only $O(\lambda\log\lambda)$ to the
+time logarithm. Leaves, original entries, and new packet entries have the
+same lower-order bounds as in the preceding proof. Immutable descriptions
+retain their creation-time representatives; no recursively composed entry
+oracle or altered lifting rule is introduced.
+
+The exact checker certifies
+\[
+\begin{split}
+ 37.591702555541&<\Ccache<37.591702555542,\\
+ 33.623040921657&<\Scache<33.623040921658.
+\end{split}
+\]
+These are rationally certified enclosures, using Machin's formula and a
+positive series for $\ln2$. Consequently eventual coefficients $37.6$ for
+time and $34$ for space are valid. No practical crossover size follows from
+these asymptotic margins.

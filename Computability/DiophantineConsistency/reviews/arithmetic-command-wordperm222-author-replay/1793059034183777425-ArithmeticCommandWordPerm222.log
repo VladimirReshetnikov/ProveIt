@@ -1,0 +1,37 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCommandWordPerm222.lean:41:2: error: unsolved goals
+case pos
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻
+e : Fin (1 + 1) → V
+hs : ¬first (e 1) < 2
+hm : first (e 1) = 2
+⊢ e 0 = second (second (e 1)) → 2 ≤ e 1
+
+case neg
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻
+e : Fin (1 + 1) → V
+hs : ¬first (e 1) < 2
+hm : ¬first (e 1) = 2
+⊢ e 0 = second (second (second (e 1))) → 2 ≤ first (e 1)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCommandWordPerm222.lean:79:12: error: Type mismatch: After simplification, term
+  tail_mp x r
+ has type
+  @Eq ℕ (tailValue (cantor 2 (cantor x r))) r
+but is expected to have type
+  @Eq ℕ (tailValue (cantor 2 (cantor x r))) r
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCommandWordPerm222.lean:80:16: error: Type mismatch: After simplification, term
+  tail_ax c y x r
+ has type
+  @Eq ℕ (tailValue (cantor (c + 3) (cantor y (cantor x r)))) r
+but is expected to have type
+  @Eq ℕ (tailValue (cantor (c + 3) (cantor y (cantor x r)))) r
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticCommandWordPerm222.lean:94:42: warning: This simp argument is unused:
+  Nat.succ_eq_add_one
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵N̵a̵t̵.̵s̵u̵c̵c̵_̵e̵q̵_̵a̵d̵d̵_̵o̵n̵e̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

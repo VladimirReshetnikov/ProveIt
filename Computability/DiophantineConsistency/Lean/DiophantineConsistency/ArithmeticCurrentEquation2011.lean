@@ -1,3 +1,4 @@
+import DiophantineConsistency.CurrentEquationSyntax2011
 import DiophantineConsistency.ArithmeticExpression
 import DiophantineConsistency.ObjectCurrentEquation2011
 
@@ -15,10 +16,6 @@ open SetTheory.PA
 open ObjectCurrentEquation2011
 
 attribute [local irreducible] expression naturalExpression
-
-/-- A literal closed formula in the ordinary `0,S,+,*` language. -/
-def unsolvabilitySentence : Formula :=
-  ArithmeticExpression.noZeroSentence naturalExpression
 
 theorem sentence_unsolvabilitySentence : Formula.Sentence unsolvabilitySentence :=
   ArithmeticExpression.sentence_noZeroSentence naturalExpression

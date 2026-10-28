@@ -1,0 +1,118 @@
+\section{Results and their precise scope}\label{sec:results}
+
+Let $n$ denote the number of declared variables, $m$ the number of input
+clauses, and $L$ the number of literal occurrences after elementary
+normalization. Clauses have at most three literals. Repeated literals,
+tautologies, duplicate clauses and unused variables are handled explicitly.
+In particular $L\le3m$; no assumption of bounded occurrence is imposed on
+the original formula. Logarithms in displayed complexity coefficients are
+base two. Polynomial factors include the time to read the original input.
+
+The following two normalized statements concern the same Boolean tensor
+interface used by the previous packets, stated in Section~\ref{sec:interface}.
+They are mathematical refinements using the cited exact contraction and
+matrix theorems as dependencies. They do not rest on an unproved new
+structured-summation hypothesis.
+
+\begin{theorem}[Two certified cached bounds]\label{thm:contractors}
+For a normalized network with at most $s$ wires and root maximum degree at
+most $\ceil{s^{9/10}}$, there is a deterministic exact contraction algorithm
+whose time and space are at most
+\[
+ (s+\LL)^{O(1)}
+ 2^{(C_{\rm gen}+o(1))s/\sqrt{\log_2s}},
+ \qquad C_{\rm gen}=28.6327662765359\ldots.
+\]
+If the root maximum degree is at most $\ceil{s^{1/12}}$, the time and space
+coefficients respectively become
+\[
+ C_{\rm low}=10.3367239855467\ldots,\qquad
+ C_{\rm low,space}=10.3366545686347\ldots.
+\]
+The same original entry-evaluation premise is permitted in both statements.
+Safe eventual coefficients are $28.633$ in the first case and $10.337$ in
+the second. All coefficients are specified exactly by rational data, square
+roots, and $\kappa=\pi\sqrt2/\ln2$ in Section~\ref{sec:schedules}; decimal
+strings are descriptive.
+\end{theorem}
+
+\begin{theorem}[Occurrence-based 3-SAT bound]\label{thm:sat}
+Every 3-CNF can be decided, and its satisfying assignments counted exactly,
+in time
+\[
+ \poly(n+m)\,
+ 2^{(C_{\rm low}+o(1))L/\sqrt{\log_2L}},
+\]
+with space coefficient $C_{\rm low,space}$ on the same scale, as $L\to\infty$.
+Bounded $L$ and formulas without nonempty clauses are handled directly.
+In particular, for $m\to\infty$ the time is at most
+\[
+ \poly(n+m)\,
+ 2^{(3C_{\rm low}+o(1))m/\sqrt{\log_2m}},
+ \qquad 3C_{\rm low}=31.0101719566402\ldots.
+\]
+For fixed $D>0$, $m\le Dn$ gives the conservative time bound
+$\poly(n+m)2^{(3DC_{\rm low}+o(1))n/\sqrt{\log_2n}}$.
+\end{theorem}
+
+The count statement is used because the imported contraction identities
+compute a count. Its only decision output is whether that integer is
+positive. No additional SAT width or problem class is part of the application.
+
+\subsection{A fair comparison against the previous proposals}
+
+\begin{center}\small
+\begin{tabular}{@{}p{.38\textwidth}rr@{}}
+\toprule Same normalized premise & Previous time & New time\\\midrule
+Root degree at most $s^{9/10}$, cached & $29.8116089454$ & $28.6327662766$\\
+Root degree at most $s^{1/12}$, cached & $13.3796490663$ & $10.3367239856$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The preceding bounds are from \cite{pairwise,flags}.
+The decreases in these certified leading coefficients are about $3.95\%$
+and $22.74\%$. They are comparisons of proved upper-bound formulas under
+matched assumptions, not measurements of SAT runtime. The new cached
+algorithms use subexponential space. The polynomial-space coefficient
+$46.1848455867\ldots$ under the general premise is not improved by
+Theorem~\ref{thm:contractors} under a polynomial-space guarantee.
+
+The preceding low-degree polynomial-space contractor has coefficient
+$16.8122338018833\ldots$ \cite{pairwise}. Our normalization also gives its
+occurrence-based consequence with that coefficient per literal. This is a
+tighter SAT translation, not a new polynomial-space contractor.
+
+To avoid overstating the gain, one should also grant the old contractors
+the best available elementary normalization. High-occurrence branching
+already appears in \cite{balanced}; changing its cutoff to $\log^2 L$
+also exposes the low-degree interface with only a lower-order branching
+cost. Thus a fair composed previous cached benchmark is
+$13.3796490663\ldots$ per literal, even though the latest explicit
+translation used trivalent equality trees and up to $3L$ wires.
+Our stronger $10.3367239856\ldots$ coefficient improves that composed
+benchmark as well. The equality-tree saving is not counted twice.
+
+\subsection{What remains unresolved}
+
+Combining the new contractor with the existing dense-formula reduction
+retains the worst-case order
+\[
+ \poly(n+m)\,2^{O(n\log\log n/\sqrt{\log n})}.
+\]
+The earlier density-sensitive envelope
+\[
+ \poly(n+m)\,2^{O\left(\frac n{\sqrt{\log n}}
+       \min\{\log(2+m/n),\log\log n\}\right)}
+\]
+can still be used \cite{density,density2}. A fixed portfolio of the direct
+and compressed algorithms preserves the better applicable bound. The
+numeric constants in Theorem~\ref{thm:sat} do not replace the unspecified
+constants in that dense reduction.
+
+No smaller logarithmic-order bound, such as
+$2^{O(n\log\log n/\log n)}$, has been proved here. No dominance is claimed
+over the unspecified numerical constant in the independent Anthropic
+algorithm. The improvement is substantial within the quantified contractor
+frontier, but it is not the requested change of worst-case exponent order.
+

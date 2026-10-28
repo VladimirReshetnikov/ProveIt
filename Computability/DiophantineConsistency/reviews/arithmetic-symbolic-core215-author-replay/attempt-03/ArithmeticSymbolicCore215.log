@@ -1,0 +1,33 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSymbolicCore215.lean:399:4: error: Type mismatch: After simplification, term
+  repeat3_nat k []
+ has type
+  @Eq ℕ (repeat3 6 k (bitsCode [])) (bitsCode (KRuntimeCore.sepsR (List.replicate k 1)))
+but is expected to have type
+  @Eq ℕ (repeat3 6 k 0) (bitsCode (KRuntimeCore.sepsR (List.replicate k 1)))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSymbolicCore215.lean:401:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  repeat3 6 k 0
+in the target expression
+  file (List.ofFn v) (repeat3 6 k 0) = bitsCode (KRuntimeCore.sepsR (List.ofFn v ++ List.replicate k 1))
+
+v : Fin 9 → ℕ
+k : ℕ
+hk : repeat3 6 k 0 = bitsCode (KRuntimeCore.sepsR (List.replicate k 1))
+⊢ file (List.ofFn v) (repeat3 6 k 0) = bitsCode (KRuntimeCore.sepsR (List.ofFn v ++ List.replicate k 1))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSymbolicCore215.lean:419:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  bitsCode (List.replicate ?n ?b ++ ?xs)
+in the target expression
+  markedBlock (v r) (file (after v r) (repeat3 6 k 0)) =
+    bitsCode (false :: false :: List.replicate (v r) true ++ KRuntimeCore.sepsR (after v r ++ List.replicate k 1))
+
+case e_a
+v : Fin 9 → ℕ
+r : Fin 9
+k : ℕ
+⊢ markedBlock (v r) (file (after v r) (repeat3 6 k 0)) =
+    bitsCode (false :: false :: List.replicate (v r) true ++ KRuntimeCore.sepsR (after v r ++ List.replicate k 1))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSymbolicCore215.lean:454:93: error: unsolved goals
+v : Fin 9 → ℕ
+r : Fin 9
+k : ℕ
+⊢ before v r ++ (v r - 1) :: (after v r ++ List.replicate k 1) =
+    before v r ++ (v r - 1) :: (after v r ++ List.replicate k 1)

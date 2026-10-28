@@ -1,0 +1,88 @@
+{
+  "title": "Claim-by-claim proof and dependency status",
+  "date_pacific": "2026-10-26",
+  "formalization": "No Lean or Rocq build was run. These are ordinary mathematical proofs and finite component checks.",
+  "claims": [
+    {
+      "id": "pair_load_balancing",
+      "latex_label": "thm:pair-balance",
+      "status": "proved_here",
+      "assumptions": "Explicit bipartite multigraph, positive integer R,C, integer Q>=1,h>=2.",
+      "evidence": "Exact conditional-expectation proof; exhaustive and randomized small fixtures in code/verify_packing.py."
+    },
+    {
+      "id": "near_unit_padding",
+      "latex_label": "cor:padding",
+      "status": "proved_here",
+      "assumptions": "QR/M=o(1), Q^2 C (log s)^2/M=o(1), L Q^2/M=o(1), uniformly over active calls.",
+      "evidence": "Direct consequence of pair-load bound and integer rounding."
+    },
+    {
+      "id": "recursive_asymmetry",
+      "latex_label": "lem:side-degree",
+      "status": "proved_here_relative_to_upstream_child_identity",
+      "assumptions": "Exact child construction from the pinned quantitative-contraction appendix.",
+      "evidence": "Side provenance: retained tensors versus fresh packet tensors of degree at most 2L_parent."
+    },
+    {
+      "id": "annulus_ordering",
+      "latex_label": "lem:annulus-order",
+      "status": "proved_here",
+      "assumptions": "Rows in S_i={w in Z_(2):0<=v2(w)<=i}.",
+      "evidence": "Explicit recursive ordering, minimum product valuations, uniform slope proof; finite exact checks."
+    },
+    {
+      "id": "extension_stability",
+      "latex_label": "lem:annulus-extension",
+      "status": "proved_here",
+      "assumptions": "w-w0 in 2^R O with ordinary rational w0 in S_i; indices below the stated cutoff.",
+      "evidence": "Valuation argument; quadratic unramified extension checks and outside-domain negative control."
+    },
+    {
+      "id": "annulus_cauchy_modes",
+      "latex_label": "thm:annulus-modes",
+      "status": "proved_here",
+      "assumptions": "Actual reciprocal row domain, integral binomial source features, unit denominators.",
+      "evidence": "Exact telescoping Cauchy identity and target-feature valuations."
+    },
+    {
+      "id": "asymmetric_constant_76_90899",
+      "latex_label": "thm:main",
+      "status": "proved_here_relative_to_stated_framework",
+      "assumptions": "At most s Boolean wires; max degree ceil(s^0.9); polynomially many vertices; P0,ell<=Cs; specified entry oracle; unchanged exact upstream deformation and child-contraction identities.",
+      "evidence": "Full schedule, bootstrap, precision inheritance, entropy and bit-cost proofs in report.tex. Finite schedule checks only support exact parameter arithmetic."
+    },
+    {
+      "id": "low_degree_constant_31_06413",
+      "latex_label": "app:lowdegree",
+      "status": "proved_here_relative_to_stated_framework_with_stronger_inputs",
+      "assumptions": "Same interface, max degree at most ceil(s^(1/12)).",
+      "evidence": "Separate schedule and strict packing exponent margin."
+    },
+    {
+      "id": "factorial_modes_and_sharp_precision",
+      "status": "inherited_reviewed_refinements",
+      "source": "The Cauchy-mode and contraction-improvement packets; citations in report.pdf.",
+      "evidence": "Inspected mathematical arguments; not claimed as new contributions here."
+    },
+    {
+      "id": "sat_density_envelope",
+      "latex_label": "eq:density-envelope",
+      "status": "inherited_upstream_and_prior_packet_consequence",
+      "assumptions": "Pinned SAT-to-network reduction and cited density arguments.",
+      "evidence": "New contraction engine preserves the stated logarithmic order; numeric wire coefficients are not numerical variable coefficients."
+    },
+    {
+      "id": "stronger_logarithmic_order",
+      "status": "not_established",
+      "detail": "No unconditional n/log n-type algorithm or removal of the general-density loglog factor is supplied."
+    },
+    {
+      "id": "complete_sat_solver",
+      "status": "not_supplied",
+      "detail": "Executable artifacts implement and check only new local components and schedule arithmetic."
+    }
+  ],
+  "comparison_scope": "Seven reviewed proposal packets at ProveIt placement 2b925d8800cda68f5723b65dc1fcdaf3d8170359. The separate Claude manuscript was reviewed only for headline and scope; no numeric constant dominance is claimed over it.",
+  "novelty_scope": "New relative to the reviewed packets; no exhaustive literature-wide novelty assertion."
+}

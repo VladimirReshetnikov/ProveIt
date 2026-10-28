@@ -1,0 +1,80 @@
+# Audit of the linked baseline and formalization
+
+## Scope and pinned sources
+
+This is a source and statement audit, not an independent Lean rebuild or a line-by-line rederivation of the 1,000-file proof development.
+
+- ProveIt baseline snapshot supplied by the coordinating agent: `8e76d515063c4b9fbd8743a846b457e3a01bc039`.
+- Formalization: `anthropics/formal-math` commit `1a6eee293b9e00cb432eef6018a21f523623a9af`, the exact commit in the user's link. Checked out locally at `formal-math-audit/eth`.
+- GitHub PR 31 was observed merged, with that exact head SHA.
+- Exact-commit GitHub check run `verify (eth)` was observed completed with conclusion `success`: https://github.com/anthropics/formal-math/actions/runs/40440389861/job/121979112896 . The check-runs API returned two successful runs. The separate commit-status API had zero statuses and said pending; it is not a substitute for check-runs.
+
+Primary URLs:
+
+1. https://github.com/anthropics/formal-math/blob/1a6eee293b9e00cb432eef6018a21f523623a9af/eth/MainResults.lean
+2. https://github.com/anthropics/formal-math/blob/1a6eee293b9e00cb432eef6018a21f523623a9af/eth/Solution.lean
+3. https://github.com/anthropics/formal-math/blob/1a6eee293b9e00cb432eef6018a21f523623a9af/eth/README.md
+4. https://github.com/anthropics/formal-math/blob/1a6eee293b9e00cb432eef6018a21f523623a9af/eth/proof/PaperIndex.lean
+5. https://github.com/anthropics/formal-math/blob/1a6eee293b9e00cb432eef6018a21f523623a9af/eth/paper.pdf
+6. https://github.com/VladimirReshetnikov/ProveIt/blob/8e76d515063c4b9fbd8743a846b457e3a01bc039/lib/openai-math/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/paper.pdf
+
+SHA-256:
+
+| File | Hash |
+|---|---|
+| Formalization MainResults.lean | `47f78a9550d95b37d8718dd1ee16ae824da893a5e17c319f737e6d0a5ed24944` |
+| Formalization Solution.lean | `27d304798a6ec294db7fdeee301227b70d72044cb31c85615901a8d728b0b98f` |
+| Claude paper.pdf | `7af518b09342c967ea371c74b8989806684c5d02aabe5763ca08554aff5025a0` |
+| Vendored OpenAI paper.pdf | `5b1612dc2eebb2cad5b4cbe62d1fed2982f01ab1908c26f70010a651487e8123` |
+
+## Exact baseline bounds for 3-SAT
+
+The OpenAI paper, Theorem 1.1 and Appendix D, states a deterministic exact counter in
+
+`(n+m)^{O(1)} 2^{O(n log log n / sqrt(log n))}`
+
+bit operations and polynomial space for fixed width 3. At fixed clause density `m <= D n`, its bound becomes
+
+`(n+m)^{O_D(1)} 2^{O_D(n / sqrt(log n))}`.
+
+The Claude paper and formalization state the counting bound
+
+`2^{O(min(m/sqrt(log m), n log log n/sqrt(log n)))}`
+
+at width 3, after clauses have been deduplicated and variable names normalized. This is the specialization of the stronger uniform-in-k expression `min(km/sqrt(log m), k^2 n loglog n/sqrt(log n))`.
+
+Consequently the linked formalization does not itself improve the worst-case n-only exponent of the revised OpenAI baseline. It supplies an independent proved algorithmic route with the same order and a direct clause bound. Polynomial space is explicit in the OpenAI paper; it is not a conjunct of MainResults.MainTheorem and should not be inferred for the Claude algorithm from that formal theorem.
+
+## What the Lean theorem actually says
+
+`MainResults.lean` imports Mathlib only and defines the statement independently of the project proof machinery. Its main theorem is:
+
+There exist one deterministic `TM2ComputableAux Bool Bool` machine M and one natural constant C, with every stack alphabet finite, such that for every `k >= 1`, every `n >= 4`, and every formula with at most k literals per clause, no repeated clause, at least two clauses, and every variable occurring, M computes the number of satisfying assignments within the floor of
+
+`2^{C min(km/sqrt(log_2 m), k^2 n log_2 log_2 n/sqrt(log_2 n))}`
+
+steps. The machine is chosen before k and the formula. Input is explicit binary clause data with unary k and n; output is n+1 bits containing the full count. `TM2OutputsInTime` counts concrete steps, not a postulated oracle for contraction. The extra requirement that every stack alphabet be finite closes a possible issue in Mathlib's generic machine interface, which only requires input-alphabet finiteness by default.
+
+Clauses are lists, and the formula list is Nodup. Reordered versions of a clause count as distinct, but there are still only `(2n+1)^k` possible clauses. Thus for fixed width 3 the restriction is compatible with reading a polynomial-sized normalized input. An arbitrary input can be deduplicated in polynomial time. Small n, small m, unused declared variables, and unusual encodings need ordinary front-end handling; they are not mathematical counterexamples to the asymptotic statement.
+
+`MainResults.ETHIsFalse` is the negation of positive infimum s_3, for finite-alphabet deterministic Turing machines deciding all normalized 3-CNFs. The main theorem is stronger: it produces a single uniform machine with an explicit subexponential rate. `Solution.lean` proves the two exposed propositions by imported proof terms with no theorem hypotheses.
+
+## Audit of admitted axioms and imported cost models
+
+An `rg` scan of all project `.lean` files found `sorry` only twice, in `Challenge.lean`. That file is the deliberately unproved comparator specification and is not imported by Solution. The same scan found no source lines declaring `axiom`, `unsafe`, `implemented_by`, or `native_decide`.
+
+The README instructs checking `PrintAxioms.lean` and reports only `propext`, `Classical.choice`, and `Quot.sound`. `comparator.json` allows exactly these three axioms and enables the independent nanoda kernel. The exact-commit CI check succeeded. This audit did not independently execute Lean, Comparator, or nanoda; no stronger local verification claim should be made.
+
+The internal cost conventions are more permissive than literal word operations: a transition can be a polynomial-time function of its entire state, and state sizes have explicit bounds. The proof then converts these machines, table queries, and padding strings to ordinary TM computations. PaperIndex documents resulting constant-factor changes in the exponent. In particular, its internal evaluation of Appendix B pieces can write `2^{c lambda}` padding and then use a polynomial-time transition on that state. That prevents reading the printed constants as machine-step constants, but it does not weaken the exposed asymptotic TM statement; those polynomial overheads are absorbed by the absolute O constant.
+
+Other documented differences include a polynomial overhead for alternating the two algorithms, a time-budget padding string, and slightly enlarged recursion-rate numbers. These all preserve the asymptotic orders. Some intermediate Section 6 results are formalized as decision theorems, while a separate counting development proves the count-preserving version. Thus it would be incorrect to infer a missing final #SAT theorem merely from the decision form of one intermediate result.
+
+## Relevant mechanism and genuine frontier
+
+Claude Theorem A uses a family of exact crossing pieces. Definition 7 requires polynomially many pieces in lambda, polynomial bit lengths, effective evaluation in `2^{O(lambda)}`, and row/column factorization costs with sum at most `4 rho lambda + O(log lambda)`. The resulting recurrence has clique size roughly squared each level and rate multiplied by rho, giving denominator power `alpha = log_2(1/rho)`.
+
+Appendix B's graded polynomial space has dimension p(h), the ordinary partition number. `log p(h) = Theta(sqrt(h))` yields total row/column cost `2 sqrt(2) lambda + O(log lambda)`, rho=`1/sqrt(2)`, and alpha=1/2. A replacement exact graded construction with `log dim V_h ~ h^beta` would formally suggest rho=`2^{beta-1}` and alpha=`1-beta`, provided all identities and effectivity requirements were supplied.
+
+This last observation is not new: Claude Appendix H says it, and ProveIt's `3sat_round2_refinement/research_alternate/` already audits it and proves scoped Heisenberg barriers. Naively keeping only sparse oscillator modes or regrading the ordinary Heisenberg representation breaks the locality/duality identities or retains partition-growth entropy. It is not a proved improvement and should not be counted as this iteration's contribution.
+
+The audit found no formal statement defect supporting a discount of the existing bound, and no new unconditional asymptotic improvement. Its value is fixing the comparison target and verifying the formalization's scope and exact-commit evidence.

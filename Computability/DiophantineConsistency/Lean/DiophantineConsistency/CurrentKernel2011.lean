@@ -1,3 +1,4 @@
+import DiophantineConsistency.CurrentKernelData2011
 import DiophantineConsistency.WangTiles942Core
 import DiophantineConsistency.CurrentMasks2011
 import DiophantineConsistency.NativeWindowCarry
@@ -20,8 +21,6 @@ set_option Elab.async false
 set_option maxRecDepth 100000
 set_option maxHeartbeats 20000000
 
-abbrev radix : ℕ := CurrentMasks2011.radix
-
 /-- A coarse bound sufficient for cancellation, without a permutation premise. -/
 theorem physicalPosition_le (i : Fin 942) : physicalPosition i ≤ 942 := by
   rw [physicalPosition_eq_printed]
@@ -38,23 +37,6 @@ theorem physicalPosition_le (i : Fin 942) : physicalPosition i ≤ 942 := by
     have hs := Finset.sum_le_sum (fun j (_ : j ∈ (Finset.univ : Finset (Fin 941))) => hb j)
     simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one] at hs
     omega
-
-/-- The34 control entries use the actual packed west/north/east/south order. -/
-abbrev Entry := Fin 942 ⊕ (Fin 8 ⊕ (Fin 9 ⊕ (Fin 8 ⊕ Fin 9)))
-
-def position : Entry → ℕ
-  | .inl i => physicalPosition i
-  | .inr (.inl j) => 978 + j.val -- west
-  | .inr (.inr (.inl j)) => 960 + j.val -- north
-  | .inr (.inr (.inr (.inl j))) => 969 + j.val -- east
-  | .inr (.inr (.inr (.inr j))) => 942 + j.val -- south
-
-def weight : Entry → ℕ
-  | .inl i => selectorWeight (tile i)
-  | .inr (.inl j) => 2 ^ (10 + j.val)
-  | .inr (.inr (.inl j)) => 2 ^ (18 + j.val)
-  | .inr (.inr (.inr (.inl j))) => 2 ^ (27 + j.val)
-  | .inr (.inr (.inr (.inr j))) => 2 ^ (35 + j.val)
 
 theorem position_le (e : Entry) : position e ≤ 985 := by
   rcases e with i | j | j | j | j
@@ -91,19 +73,6 @@ theorem phi_printed {R : Type*} [CommSemiring R] (x : R) :
   simp only [phi, Fintype.sum_sum_type, position, weight]
   rw [bit_sum, bit_sum, bit_sum, bit_sum]
   ring
-
-abbrev Term := Fin 3 ⊕ Entry
-
-def exponent : Term → ℕ
-  | .inl j => ![18, 1004, 2020] j
-  | .inr e => 1005 - position e
-
-def coefficient : Term → ℕ
-  | .inl _ => 1
-  | .inr e => 2 * weight e
-
-def rawWord (r : ℕ) : ℕ := ∑ t : Term, coefficient t * r ^ exponent t
-def K : ℕ := rawWord radix
 
 theorem term_count : Fintype.card Term = 979 := by simp [Term, Entry]
 
@@ -149,7 +118,6 @@ theorem K_printed : (K : ℚ) =
     (radix : ℚ) ^ 18 + (radix : ℚ) ^ 1004 + (radix : ℚ) ^ 2020 +
       2 * (radix : ℚ) ^ 1005 * phi ((radix : ℚ)⁻¹) :=
   rawWord_printed radix (by decide)
-
 
 /- The exact mass is proved on unsorted row families in16-entry kernel
    batches. No large floor-rank computation is evaluated for this bound. -/

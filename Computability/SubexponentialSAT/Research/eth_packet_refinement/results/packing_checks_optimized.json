@@ -1,0 +1,105 @@
+{
+  "status": "PASS",
+  "python_optimization_level": 1,
+  "seed": 20261026,
+  "arithmetic": "fractions.Fraction; exact comparisons and integer log majorants",
+  "total_labelings_verified": 1332,
+  "counts": {
+    "edge_case_labelings": 80,
+    "exhaustive_simple_graphs": 512,
+    "exhaustive_labelings": 1024,
+    "seeded_multigraph_labelings": 180,
+    "packet_labelings": 48,
+    "packet_instances": 48,
+    "packet_slots_checked": 13888,
+    "real_packet_slots_checked": 562,
+    "candidate_potentials_checked": 9136,
+    "potential_trace_values_checked": 5374,
+    "determinism_checks": 24,
+    "negative_controls": 13
+  },
+  "packet_examples": [
+    {
+      "r": 2,
+      "a": 2,
+      "q": 4,
+      "lambda": 2,
+      "edges": 10,
+      "delta": 6,
+      "max_load": 3,
+      "common_padding": 4,
+      "packets": 16,
+      "rational_load_bound": {
+        "numerator": 883,
+        "denominator": 16
+      },
+      "potential_trace_fraction_bit_lengths": [
+        [
+          30,
+          26
+        ],
+        [
+          30,
+          26
+        ],
+        [
+          25,
+          20
+        ],
+        [
+          14,
+          10
+        ]
+      ]
+    },
+    {
+      "r": 2,
+      "a": 3,
+      "q": 8,
+      "lambda": 2,
+      "edges": 11,
+      "delta": 5,
+      "max_load": 3,
+      "common_padding": 8,
+      "packets": 64,
+      "rational_load_bound": {
+        "numerator": 8601,
+        "denominator": 128
+      },
+      "potential_trace_fraction_bit_lengths": [
+        [
+          25,
+          19
+        ],
+        [
+          25,
+          19
+        ],
+        [
+          25,
+          19
+        ],
+        [
+          15,
+          9
+        ]
+      ]
+    }
+  ],
+  "checks": [
+    "deterministic weighted-greedy row assignment and balance",
+    "direct recomputation of every stored conditional expectation",
+    "exact averaging identity over every next-label choice",
+    "chosen label is the exact minimum with deterministic tie breaking",
+    "nonincreasing potential and exact terminal potential",
+    "load matrix and all parallel-edge multiplicities preserved",
+    "rational conservative load and padding certificates",
+    "secant convexity inequality at every integer weight up to Delta",
+    "exact common padding and packet count",
+    "all real edges appear exactly once in matching row/column slots",
+    "slot bits implement every coordinate orientation",
+    "coordinate-symbol port bounds, child-wire bounds, and mode-family identity",
+    "invalid inputs, corrupted trace/loads, deleted edge, and corrupted orientation are detected"
+  ],
+  "scope": "Finite tests of the new packing construction; not an end-to-end SAT solver or a finite-test proof of the asymptotic theorem."
+}

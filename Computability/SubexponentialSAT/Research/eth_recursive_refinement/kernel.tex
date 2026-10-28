@@ -1,0 +1,352 @@
+\section{A residue-aware Cauchy separation}
+\label{sec:pivot21}
+
+This section changes the separated basis used for crossing entries in one
+contraction call. It does not assume an unproved faster summation routine.
+The new basis has the same source and target groups as the previous
+factorial-Cauchy basis, but its guaranteed valuation grows with slope
+$64/21$ instead of $3$.
+
+\subsection{The actual row domain}
+
+Let $\mathcal O$ be the unramified coefficient ring used in the source
+construction, with valuation $\nu_2(2)=1$. In particular, its reduction
+modulo two can be a proper extension of $\mathbb F_2$. Set
+\[
+ L=2^a,\quad i=\nu_2(t)<a,\quad
+ \alpha=2^{a+1},\quad T=t+\alpha\zeta,\quad \zeta\in\mathcal O,
+ \qquad J=2^{a-i-1}.
+\]
+A column tile has positions
+$y=y_0+2^{i+1}j$, where $0\le y_0<2^{i+1}$ and $0\le j<J$.
+For a crossing row $x$, the bits in position $i$ of $x$ and $y_0$
+are equal. Define
+\[
+ d_0=t-y_0+x,\qquad d=d_0+\alpha\zeta,\qquad
+ z_x=\frac{2^{i+1}}{d},\qquad w_x=\frac{z_x}{2},
+ \qquad R=a+1-i.
+\]
+The source's crossing condition gives $d_0\ne0$ and
+$\nu_2(d_0)\le i$. With
+\[
+ \mathscr C(T)=\prod_{q=-L}^{L-1}(T-q),\qquad
+ c_x=\frac{\mathscr C(T)}{\mathscr C'(0)d},
+\]
+the kernel is
+\begin{equation}
+ W_{xy}(T)=\frac{c_x}{1-z_xj},
+ \qquad z_x\in2\mathcal O,\quad \nu_2(c_x)\ge1.
+ \label{eq:pivot21-kernel}
+\end{equation}
+The last lower bound may be sharpened to $R$, but an offset of one
+already suffices for the comparison below.
+
+\begin{lemma}[A missing residue class]
+\label{lem:pivot21-domain}
+Put $w_0=2^i/d_0\in\mathbb Z_{(2)}$. Then
+\[
+ w_x-w_0\in2^R\mathcal O.
+\]
+If $i\ge1$, define $c\in\{2,6\}$ by
+\[
+ c=\begin{cases}
+       6,&\text{bit }i-1\text{ of }y_0\text{ is zero},\\
+       2,&\text{bit }i-1\text{ of }y_0\text{ is one}.
+    \end{cases}
+\]
+For $R\ge3$, the residue of $w_x$ modulo eight lies in the prime
+subring and is different from $8-c$. If $i=0$, $w_x$ is odd and
+either choice of $c$ is valid.
+\end{lemma}
+
+\begin{proof}
+Write $v=\nu_2(d_0)\le i$. Adding $2^{a+1}\zeta$ preserves that
+valuation. Therefore
+\[
+ w_x-w_0=
+ -\frac{2^{i+a+1}\zeta}{d_0(d_0+2^{a+1}\zeta)},\qquad
+ \nu_2(w_x-w_0)\ge i+a+1-2v\ge R.
+\]
+This proves the prime-subring assertion when $R\ge3$.
+
+Only the case $\nu_2(w_0)=1$ could give residue two or six. In this
+case $v=i-1$. Write the lower $i$ bits of $x$ and $y_0$ as $x_<$
+and $y_<$. Since their bits in position $i$ agree, the other part of
+$x-y_0$ is divisible by $2^{i+1}$. The difference $x_<-y_<$ lies
+strictly between $-2^i$ and $2^i$ and, by $v=i-1$, is an odd
+multiple of $2^{i-1}$. It must be $+2^{i-1}$ when bit $i-1$ of
+$y_0$ is zero, and $-2^{i-1}$ otherwise. Since
+$t/2^{i-1}\equiv2\pmod4$, the odd number
+$d_0/2^{i-1}$ is respectively three or one modulo four. Its inverse
+has the same residue, so $w_0$ is respectively six or two modulo
+eight. In all other valuation cases neither residue can occur.
+For $i=0$, $d_0$ is odd, which proves the last statement.
+\end{proof}
+
+The exceptional value $R=2$ gives $J=1$. It has only the mode $b=0$
+and needs no residue exclusion.
+
+\subsection{An explicit sequence of auxiliary row points}
+
+Repeat the word of length 21
+\[
+ A\ B\ A\ B\ C\ A\ B\ A\ B\ C\ A\ B\ A\ A\ C\ A\ B\ A\ A\ C\ A.
+\]
+At the $k$th occurrence of a letter, starting at $k=0$, set
+\begin{equation}
+ v_h=\begin{cases}
+       1+2k,&\text{letter }A,\\
+       4k,&\text{letter }B,\\
+       c+8k,&\text{letter }C,
+     \end{cases}
+ \qquad \rho_h=2v_h.
+ \label{eq:pivot21-points}
+\end{equation}
+The index $h$ counts positions in the repeated word. Let $A_b,B_b,C_b$
+be the numbers of the three letters among its first $b$ positions.
+Thus a complete block has counts $(11,6,4)$. Define
+\begin{equation}
+ \eta_b=\min\left\{
+ A_b+\nu_2(A_b!),\quad
+ 2B_b+\nu_2(B_b!)+C_b,\quad
+ 3C_b+\nu_2(C_b!)+B_b
+ \right\}.
+ \label{eq:pivot21-eta}
+\end{equation}
+
+\begin{lemma}[Factorials near the prime subring]
+\label{lem:pivot21-near-prime}
+If $q\in\mathcal O$, $q_0\in\mathbb Z_{(2)}$, and
+$q-q_0\in2^Q\mathcal O$, then for every integer $0\le m<2^Q$,
+\[
+ \nu_2\!\left(\prod_{k=0}^{m-1}(q-k)\right)\ge\nu_2(m!).
+\]
+\end{lemma}
+
+\begin{proof}
+For $1\le r\le\lfloor\log_2m\rfloor$, the rational $q_0$ has a
+well-defined integer residue modulo $2^r$. Among $m$ consecutive
+integers, at least $\lfloor m/2^r\rfloor$ have that residue.
+Since $r\le Q$, the corresponding factors $q-k$ are divisible by
+$2^r$. Summing over $r$ proves the result by Legendre's formula.
+For $m=0,1$ the assertion is immediate.
+\end{proof}
+
+This lemma is necessary: an arbitrary extension element of $\mathcal O$
+need not have integral binomial coefficients. The actual rows have the
+required proximity to the prime subring.
+
+\begin{lemma}[Valuation of the pivot product]
+\label{lem:pivot21-product}
+For every actual crossing row and every $0\le b<J$,
+\[
+ \nu_2\!\left(\prod_{h=0}^{b-1}(w_x-v_h)\right)\ge\eta_b.
+\]
+Furthermore, $\eta_b$ is nondecreasing and
+\[
+ \eta_b=\frac{22}{21}b+O(\log(b+2)).
+\]
+\end{lemma}
+
+\begin{proof}
+Suppose first that $R\ge3$. The permitted residues split into three
+cases. If $w_x$ is odd, the $A$ factors give
+\[
+ 2^{A_b}\prod_{k<A_b}\left(\frac{w_x-1}{2}-k\right),
+\]
+while every $B$ or $C$ factor is a unit. Their valuation is at least
+$A_b+\nu_2(A_b!)$.
+
+If $w_x\equiv0\pmod4$, the $B$ factors similarly contribute at
+least $2B_b+\nu_2(B_b!)$, each $C$ factor contributes exactly one
+power of two, and the $A$ factors are units. The resulting bound is
+the second term in \eqref{eq:pivot21-eta}.
+
+The remaining permitted case is $w_x\equiv c\pmod8$. Now the $C$
+factors contribute at least $3C_b+\nu_2(C_b!)$, each $B$ factor
+contributes one power of two, and the $A$ factors are units. This
+gives the third term.
+
+To justify the factorial steps over $\mathcal O$, apply
+Lemma~\ref{lem:pivot21-near-prime} after dividing by two, four, or
+eight. Lemma~\ref{lem:pivot21-domain} supplies precisions $R-1$,
+$R-2$, and $R-3$ respectively. The first two factor counts satisfy
+\[
+ A_b\le b<J=2^{R-2}<2^{R-1},\qquad
+ B_b\le b<2^{R-2}.
+\]
+If $b=21q+r$, $0\le r\le20$, the positions of the letter $C$ give
+\[
+ C_b=4q+\lfloor r/5\rfloor\le\lfloor b/5\rfloor
+ \le\lfloor b/4\rfloor.
+\]
+Thus, whenever $C_b>0$, $C_b<2^{R-3}$. If $R\le3$, no $C$ factor
+occurs. The case $R=2$ has $b=0$, so its product bound is immediate.
+
+Each expression in the minimum \eqref{eq:pivot21-eta} is
+nondecreasing as the three counts increase. For $b=21q$,
+Legendre's formula gives the exact identity
+\[
+ \eta_{21q}=22q-
+ \max\{s_2(11q),s_2(6q),s_2(4q)\},
+\]
+where $s_2$ is the number of ones in the binary expansion.
+For general $b$, the three counts differ by $O(1)$ from
+$(11b/21,6b/21,4b/21)$. The bound
+$s_2(m)=O(\log(m+2))$ proves the claimed asymptotic formula.
+\end{proof}
+
+\subsection{A finite separation with no nonunit division}
+
+For arbitrary even auxiliary points $\rho_h$, set
+\[
+ U_b(z)=\prod_{h<b}\frac{z-\rho_h}{1-hz},\qquad
+ V_b(j)=\prod_{h<b}\frac{j-h}{1-\rho_hj}.
+\]
+All denominators are units for $z\in2\mathcal O$ and integer $j$.
+
+\begin{lemma}[Finite Cauchy elimination]
+\label{lem:pivot21-finite}
+For every nonnegative integer $q$,
+\begin{equation}
+ \frac1{1-zj}
+ =\sum_{b<q}
+ \frac{(1-b\rho_b)U_b(z)V_b(j)}{(1-bz)(1-\rho_bj)}
+ +\frac{U_q(z)V_q(j)}{1-zj}.
+ \label{eq:pivot21-finite}
+\end{equation}
+If $0\le j<J$ and $q=J$, the remainder is zero.
+\end{lemma}
+
+\begin{proof}
+The elementary identity
+\[
+ (1-bz)(1-\rho_bj)-(z-\rho_b)(j-b)
+   =(1-b\rho_b)(1-zj)
+\]
+shows that the $b$th summand is the difference of the consecutive
+remainders $U_b(z)V_b(j)/(1-zj)$ and
+$U_{b+1}(z)V_{b+1}(j)/(1-zj)$. Telescope. For $j<J$, the product
+$V_J(j)$ contains the zero factor $j-j$.
+\end{proof}
+
+For the specific points \eqref{eq:pivot21-points}, define
+\begin{align}
+ \ell_b(j)&=
+ \frac{(1-b\rho_b)\binom jb}
+      {\prod_{h=0}^{b}(1-\rho_hj)},
+ \label{eq:pivot21-source}\\
+ r_b(x)&=
+ c_x\,b!\,
+ \frac{\prod_{h=0}^{b-1}(z_x-\rho_h)}
+      {\prod_{h=0}^{b}(1-hz_x)}.
+ \label{eq:pivot21-target}
+\end{align}
+Here $\binom jb=0$ for $b>j$.
+
+\begin{theorem}[Residue-aware separated kernel]
+\label{thm:pivot21-kernel}
+For every actual crossing entry,
+\[
+ W_{xy}(T)=\sum_{b=0}^{J-1}r_b(x)\ell_b(j).
+\]
+Every source feature $\ell_b(j)$ belongs to $\mathbb Z_{(2)}$.
+The target coefficient satisfies
+\begin{equation}
+ \nu_2(r_b(x))\ge\omega_b,
+ \qquad
+ \omega_b=1+b+\nu_2(b!)+\eta_b
+          =\frac{64}{21}b+O(\log(b+2)).
+ \label{eq:pivot21-weight}
+\end{equation}
+The weights $\omega_b$ are strictly increasing. The stronger offset
+$R$ may replace one in this formula.
+\end{theorem}
+
+\begin{proof}
+Use Lemma~\ref{lem:pivot21-finite} with $q=J$, and replace
+$\prod_{h<b}(j-h)$ by the integer product $b!\binom jb$.
+The integer binomial and the odd denominators make
+\eqref{eq:pivot21-source} integral. In
+\eqref{eq:pivot21-target}, factoring two from each of the $b$
+numerator factors gives $2^b\prod_{h<b}(w_x-v_h)$. Combine
+Lemma~\ref{lem:pivot21-product} with the explicit $b!$ and
+$\nu_2(c_x)\ge1$. Legendre's formula gives the slope
+$1+1+22/21=64/21$. Finally, $\eta_b$ is nondecreasing and the term
+$b$ increases strictly, so the weights do also.
+\end{proof}
+
+The formula multiplies the factorial into the target. It never divides
+by a factorial in the coefficient ring. Implementation uses integer
+binomial coefficients, ring multiplication, and unit inversion only.
+The points $\rho_h$ are auxiliary interpolation points; they need not
+be actual rows in a packet.
+
+\subsection{Consequences for the contraction accounting}
+
+For each existing column tile, replace its source moment of degree $b$
+by
+\[
+ L_b(X)=\sum_{\substack{\text{real columns }y\text{ in the tile}\\
+                        y=y_0+2^{i+1}j}}
+               \ell_b(j)X_y.
+\]
+There is still one mode of each weight per old tile. It is a linear
+form in bits of the same source group and targets the same other group.
+After expanding the row factors, a mode-exponent tuple $\beta$ whose
+total certified weight is at least the working precision $p$ has
+coefficient zero modulo $2^p$. Thus the retained condition is
+\[
+ \sum_{\text{tile families }f}\sum_{b=0}^{J-1}
+             \omega_b\beta_{f,b}<p.
+\]
+The source's child factorization, wire count, degree bounds, and
+creation-precision convention are preserved. Products defining the
+features contain at most $J\le L$ factors of polynomial description
+length, so the entry-oracle bounds remain valid. This argument also
+permits the strongest compatible previous packet-entry routine.
+
+To quantify the gain, let $N_\gamma(c,p)$ denote the abstract tuple
+count with $c$ families and weights
+$\omega_b=\gamma b+O(\log(b+2))$. Its standard generating-product
+bound is
+\[
+ N_\gamma(c,p)\le
+ \exp\!\left(\theta p+
+       c\sum_{b\ge0}-\ln(1-e^{-\theta\omega_b})\right).
+\]
+As $\theta\downarrow0$, the sum has leading term
+$\pi^2/(6\gamma\theta)$. Optimizing $\theta$ gives the leading
+logarithmic bound
+\[
+ \ln N_\gamma(c,p)\le
+ \left(\pi\sqrt{\frac{2}{3\gamma}}+o(1)\right)\sqrt{cp}.
+\]
+The actual finite cutoff only reduces this bound. In the active-call
+regime, $p/c\to\infty$, so the displayed asymptotic applies uniformly
+with the previously verified schedule.
+
+Consequently, replacing the previous factorial-Cauchy weights of slope
+$3$ by \eqref{eq:pivot21-weight}, while retaining a matched precision
+and recursion schedule, multiplies the leading enumeration coefficient by
+\begin{equation}
+ \sqrt{\frac{3}{64/21}}=\sqrt{\frac{63}{64}}
+   =0.9921567416\ldots.
+ \label{eq:pivot21-ratio}
+\end{equation}
+Relative to the geometric weights of slope one, the factor is
+$\sqrt{21/64}$. These are comparisons of explicit upper-bound
+certificates. They are not wall-clock speedup measurements or lower
+bounds on the old algorithm, and they do not change the logarithmic
+order of the global SAT bound.
+
+The new weights need not dominate the old weights at every finite
+index. For example, the new weight at $b=4$ is $10$, while the old
+factorial-Cauchy weight is $11$. The improvement is in the proved
+leading asymptotic coefficient. If desired, an implementation may
+count the old and new abstract tuple sets by ordinary generating-function
+dynamic programming and choose the smaller set at each call. The numbers
+of families, modes and precision units are polynomial in $s$, and the
+counts have polynomial bit length, so this selection has polynomial
+bit cost and space. It preserves both exact identities and the new
+asymptotic upper bound. No uniform finite-input speedup is asserted.

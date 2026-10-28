@@ -1,0 +1,84 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,xcolor,enumitem,xurl}
+\usepackage[colorlinks=true,allcolors=blue!55!black,breaklinks=true]{hyperref}
+\hypersetup{
+ pdftitle={A sharper certified contraction bound for 3-SAT},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Exact coefficient refinements and the remaining logarithmic barrier},
+ pdfkeywords={3-SAT, exact algorithms, tensor contraction, verified certificates}
+}
+\usepackage{fancyhdr}
+\definecolor{ink}{RGB}{24,44,67}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Certified refinements for 3-SAT}
+\fancyhead[R]{\small 26 October 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert_2}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\K}{\mathcal K}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\F}{\mathbb F}
+\newcommand{\C}{\mathbb C}
+\newcommand{\oldC}{29.81160894538347\ldots}
+\newcommand{\sameC}{29.77681894508374\ldots}
+\input{results/headline.tex}
+\title{\color{ink}A sharper certified contraction bound for 3-SAT\\[4pt]
+\large Rectangular multiplication, coupled support certificates,\\
+and the remaining logarithmic barrier}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{26 October 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review the 3-SAT research at a fixed ProveIt revision, including all five
+new incoming archives absent from its 29-packet index. The strongest
+comparable generic cached contraction coefficient is $\oldC$, multiplying
+$s/\sqrt{\ceil{\log_2s}}$ in a base-two exponent. A weighted triple
+certificate lowers that coefficient to $\sameC$ with the same matrix
+backend and the same recursion schedule. Incorporating newer, explicitly
+identified characteristic-zero matrix-multiplication results and a newly
+certified schedule gives coefficients $\NewC$ for time and $\NewS$ for
+space. Every recursive table entry is charged. We prove a finite-base
+arithmetic transfer that permits the imported matrix algorithms over the
+two-adic coefficient rings without a map from those rings to odd prime
+fields. We also prove a restricted rectangular-grid minimax obstruction
+for the Anthropic crossing recursion and supply exact finite operator-rank
+probes. These results improve explicit upper-bound coefficients. They do
+not prove a smaller general 3-SAT exponent order than
+$n\log\log n/\sqrt{\log n}$, or an asymptotic improvement over the
+unspecified constants of the independent Anthropic algorithm. No
+end-to-end SAT implementation or new Lean formalization is claimed.
+\end{abstract}
+\tableofcontents
+\clearpage
+\input{sections/outcome}
+\input{sections/review}
+\input{sections/interface}
+\input{sections/matrix}
+\input{sections/certificates}
+\input{sections/schedule}
+\input{sections/barriers}
+\input{sections/validation}
+\appendix
+\input{sections/quadratic}
+\input{sections/references}
+\end{document}

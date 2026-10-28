@@ -1,0 +1,93 @@
+\section{Outcome and exact scope}
+\label{sec:outcome}
+
+The objective was an improvement for \emph{3-SAT}, with a smaller
+logarithmic order preferred to another constant improvement. The strongest
+result established in this investigation is a strict improvement of the
+explicit generic contraction certificate. The stronger objective remains
+unresolved.
+
+Write
+\[
+ \lambda=\ceil{\log_2s},\qquad
+ \kappa=\frac{\pi\sqrt2}{\ln2}.
+\]
+Here $s$ is a normalized Boolean wire budget, \emph{not} the number of SAT
+variables. The common interface and all its entry costs are stated in
+Section~\ref{sec:interface}.
+
+\begin{theorem}[Certified improvement]\label{thm:main}
+For the generic input interface of Section~\ref{sec:interface}, there is
+a deterministic exact contractor with
+\[
+ T(s,\mathcal L)\le (s+\mathcal L)^{O(1)}
+       2^{(C_T+o(1))s/\sqrt\lambda},\qquad
+ S(s,\mathcal L)\le (s+\mathcal L)^{O(1)}
+       2^{(C_S+o(1))s/\sqrt\lambda},
+\]
+where $C_T=\NewC<\SafeC$ and $C_S=\NewS<\SafeS$ are defined exactly
+in Section~\ref{sec:schedule}. Thus $\SafeC$ and $\SafeS$ are safe
+eventual coefficients for time and space, respectively.
+The theorem imports the explicitly listed Cauchy deformation, mode,
+Hermite-recovery, packing and entry-representation results, and the
+characteristic-zero rectangular matrix-multiplication theorem of
+Uzna\'nski~\cite{uznanski}. The new finite certificates and complete
+schedule are proved and checked here. The displayed space bound is
+subexponential.
+
+Independently of the newer matrix theorem, the weighted triple certificate
+with the preceding packet's $19/8$ and $3/10$ backend and its unchanged
+schedule gives time and space coefficient $\sameC$.
+\end{theorem}
+
+The comparison in this theorem is between \emph{proved upper-bound
+functions under the same normalized interface}. It is not a measurement
+of SAT running times. In particular, replacing $C_{\rm old}$ by
+$C_{\rm new}<C_{\rm old}$ changes the certified leading envelope by
+\[
+ 2^{-(C_{\rm old}-C_{\rm new}+o(1))s/\sqrt\lambda}.
+\]
+This is a strict asymptotic improvement in that envelope. It does not
+establish a ratio between the actual running times of two implementations.
+
+\subsection{What transfers to 3-SAT}
+
+The source's direct clause/equality encoding at bounded clause density
+has $s=O(n)$, while its general reduction has $s=O(n\log\log n)$.
+Substitution therefore retains
+\begin{equation}\label{eq:satorders}
+ \poly(n+m)\,2^{O(n/\sqrt{\log n})}
+ \quad(m\le Dn,\ D\text{ fixed}),\qquad
+ \poly(n+m)\,2^{O(n\log\log n/\sqrt{\log n})}
+ \quad\text{in general}.
+\end{equation}
+The inherited identities count satisfying assignments, so testing whether
+the resulting count is positive decides 3-SAT. The mathematical contractor
+is more general because that is the interface used by the 3-SAT reduction;
+no other SAT width or unrelated counting problem is pursued here.
+
+The reviewed papers do not give a common explicit conversion from every
+generic coefficient per normalized wire to a coefficient per variable for
+the dense reduction. Also, the Anthropic algorithm has a different
+architecture and unspecified constants in its $O$ notation. Hence a claim
+that $\NewC$ is a universal best constant for 3-SAT, or that this algorithm
+asymptotically beats the Anthropic algorithm on all inputs, would be
+unsupported.
+
+\subsection{What is new, inherited, and still missing}
+
+The new work consists of the complete weighted-triple certificate, its
+strict improvement with the old backend, the finite and exact use of the
+updated backend, the new paid schedule, the rectangular-grid minimax
+calculation, and executable rank probes of the actual crossing operators.
+The incoming pair-certificate report explicitly suggested higher-order
+support certificates as future work; our triple result completes one
+concrete instance of that suggestion. We make no priority claim for
+quadratic identities, averaging, matrix interpolation, field descent, or
+the general idea of a certificate hierarchy.
+
+The logarithmic-order improvement would require a new structural theorem.
+Section~\ref{sec:barriers} records what the examined approaches can prove,
+why several plausible substitutions fail, and a precise crossing-factor
+target that would suffice. Failed approaches and finite experiments are
+kept separate from the contractor theorem.

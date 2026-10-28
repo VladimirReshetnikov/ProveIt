@@ -1,0 +1,79 @@
+INTEGRATION SPECIFICATION
+=========================
+
+This is a mathematical and subroutine-level refinement specification.
+No claim is made that the upstream project has been changed or that a full
+implementation of its SAT algorithm has been produced.
+
+Pinned source: openai/math@7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a
+Primary file: preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/
+              build/quantitative-contraction.tex
+
+1. NORMALIZED INTERFACE
+Normalize the size parameter so that root edge count, root precision P0,
+and truncation order ell are each at most s. Keep the input maximum-degree
+bound ceil(s^(9/10)) and the original implicit-entry interface.
+The displayed constant 648.441... is in this s parameter, not directly n.
+
+2. PARAMETERS (eq:tensor-parameters and surrounding parameter paragraph)
+lambda = ceil(log_2(s))
+r = 256
+rho = 6/r = 3/128
+H = ceil(s/lambda)
+u_d = floor(lambda/(720 * 12^d))
+a_d = 2 sum_{j=0}^d u_j
+L = 2^a_d
+D_arr = r^(2a_d)
+Delta = ceil(s^(9/10))
+
+The new parameter proof must replace the source's bounds involving
+s^(1/1000) and lambda^(4/5). Use L=O(s^(1/330)),
+D_arr=O(s^(16/330)), and active u=Omega(lambda^0.337961648...).
+Use direct enumeration for the finite exceptional range; all necessary
+parameter inequalities can be checked with integer arithmetic.
+
+3. EXACT TAPER (lem:tapered-hermite)
+At an active call, set Q=M(2L-1) and
+W=sum_{i=0}^{u-1}2^(a-i)(u-i)=L(2u-2)+2^(a+1-u).
+Use h=ceil((Q+1)/W), q_t=h max(0,u-v2(t)).
+Then the total number of Hermite conditions is hW>Q.
+No approximation to W, h, or q_t is permitted.
+
+4. PRECISION (eq:tensor-precision-bound and recovery lemma)
+Use p_t=p+6hD_t+hu(a+1), where D_t=L/2^v2(t).
+The prototype adds one optional guard bit. Either version has the same
+leading constant. The report proves the version without the guard bit.
+The old uniform bounds q_t<=4M and p_t=O(MD_t/u) are replaced by
+q_t<=(1+o(1))M and p_t=(6+o(1))MD_t/u on active calls.
+Retain exact rational reconstruction and the canonical-lift convention.
+
+5. PACKET COEFFICIENT KERNEL
+In the paragraph beginning "All new tensors are given implicitly", replace
+term-choice enumeration in the product of affine row factors by
+code/packet_extraction.py::coefficient_finite_difference.
+
+For R row factors and target beta, immediately return zero if sum(beta)>R.
+Otherwise add beta_0=R-sum(beta), homogenize, and stream the rectangular
+finite-difference grid. The grid has product_j(beta_j+1)<=2^R points.
+Compute its numerator at p_c+v bits, where
+v=sum_j v2(beta_j!)<=R, divide its canonical coordinates by 2^v,
+and invert only the odd part of product_j(beta_j!) modulo 2^p_c.
+
+Input coefficients are canonically reduced at the tensor's CREATION
+precision p_c before being lifted for this internal calculation. Return
+canonical residues at p_c. Later recursive calls must reuse those same
+representatives. Do not recompute the old tensor with a new creation
+precision, and do not silently increase the kernel's defining precision.
+After extracting the coefficient, multiply the source-mode powers required
+by the original packet definition modulo 2^p_c.
+
+6. COST PROOF
+Use ln N_beta <= theta p_t + pi^2 M/(D_t theta).
+Its minimum is 2pi sqrt(Mp_t/D_t). Summing over depths has ratio
+rho sqrt(12)=3sqrt(12)/128. The cutoff H contributes only a lower-order
+s/lambda term. Polynomial-space depth-first execution is unchanged.
+
+7. CLAIMS THAT MUST NOT BE ADDED
+The modifications do not prove a 1/log n exponent, do not remove the
+dense-case loglog n factor, do not prove an actual timing ratio by comparing
+upper bounds, and do not establish independent formal verification of ETH.

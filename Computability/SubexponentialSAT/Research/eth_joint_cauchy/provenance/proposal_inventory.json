@@ -1,0 +1,330 @@
+{
+  "audit_title": "Inventory of recent ProveIt ETH research proposals",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "initial_snapshot": "aa6933442eb936962de79ba6d321cd0391c450bd",
+  "review_cutoff": "3c64ee065c708ded485b8b14d9ad6c703a30ab11",
+  "review_cutoff_commit_time_utc": "2026-10-27T01:01:59Z",
+  "review_cutoff_client_time": "2026-10-26 18:01:59 America/Los_Angeles",
+  "placement_commit": "2b925d8800cda68f5723b65dc1fcdaf3d8170359",
+  "placement_commit_time_utc": "2026-10-27T00:58:36Z",
+  "project_path": "Computability/SubexponentialSAT",
+  "project_readme_git_sha1": "cab763eef6b84ab0554375ae23080896b007573b",
+  "research_subtree_git_sha1": "2de706601ded18cad212c77ffe0aff2b09d3d4c5",
+  "research_subtree_truncated": false,
+  "research_subtree_entries": 150,
+  "placed_payload_files_independently_byte_verified": 120,
+  "scope": {
+    "recent_commit_metadata": "Latest 100 reachable commits at cutoff, including 12 since2026-10-27T00:40:00Z; three arrival commits and one ETH placement commit identified.",
+    "subtree": "Full untruncated Computability/SubexponentialSAT/Research tree and project README; docs/incoming contains only README after placement.",
+    "root_tree_limitation": "Repository-wide recursive tree was truncated at 42891 entries; no claim of exhaustive full-repository filename search. The complete target project and all recent ETH intake/placement changes were examined.",
+    "report_review": "Complete natural-language report bodies and incorporated TeX parts, including proofs, limits, conditional assumptions, and test scope.",
+    "not_performed": "No full OpenAI proof rebuild, no Lean/Rocq build, no execution of upstream proposal tests; supplied test logs are attributed evidence."
+  },
+  "common_frontier": {
+    "general_fixed_width": "poly(n,m)2^{O_k(n loglog n/sqrt(log n))}",
+    "fixed_density": "poly(n,m)2^{O_{k,D}(n/sqrt(log n))}",
+    "density_envelope": "poly_k(n,m)2^{O_k((n/sqrt(log n)) min{log(2+m/n),loglog n})}",
+    "space": "Polynomial",
+    "best_declared_geometric_schedule_coefficient": 648.4410666487529,
+    "synthesis_same_schedule_factorial_cauchy_coefficient": 374.3776243832656,
+    "synthesis_boundary_schedule_factorial_infimum_approx": 368.65401811665055,
+    "proposed_new_full_orientation_coefficient_same_schedule": 324.22053332437645,
+    "new_vs_same_schedule_factorial_ratio": 0.8660254037844386,
+    "comparison_scope": "Normalized contraction size s, maximum degree<=ceil(s^(9/10)), initial precision and truncation<=s, with fixed entry-oracle constants. Coefficients multiply s/sqrt(log_2 s). This does not assert pointwise measured runtime ratios or lower bounds."
+  },
+  "novelty_boundary": [
+    "The exact taper, precision reduction, r=256 schedule, streamed coefficient extraction, scalar parity lift, and density-aware reduction are existing proposals.",
+    "The local odd-unit Cauchy Smith profile 4j-2s_2(j) is already proved in eth_density_refinement.",
+    "A constructive integral all-level orientation-block factorization preserving source/target group locality, full packet dimension and 6M/D mode-multiplicity envelope is not supplied by any reviewed packet.",
+    "Constant refinement cannot be described as proving the conditional n/log n or other order-level targets."
+  ],
+  "proposals": [
+    {
+      "id": "cauchy_mode_improvement",
+      "title": "A factorial Cauchy expansion for the subexponential 3-SAT algorithm",
+      "arrival_archive": "docs/incoming/cauchy_mode_improvement_2026-10-26.zip",
+      "arrival_commit": "a505bd768bce347c70e923586c5f72ad3085bf44",
+      "arrival_commit_time_utc": "2026-10-27T00:42:51Z",
+      "arrival_archive_git_sha1": "384327a6de6e4a46161ad6a5ad350082f0f634c7",
+      "arrival_archive_sha256": "1e6ac0202133e37dc6ac3480aa5f4c7a0c77b29592d04e47b63a3e7fd32e9d2e",
+      "arrival_archive_bytes": 603205,
+      "placed_directory": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement",
+      "placed_report": "Computability/SubexponentialSAT/Research/cauchy_mode_improvement/report.tex",
+      "placed_report_git_sha1": "108e12b461b678313ab70c9e5e58d8dc05763e1a",
+      "placed_report_sha256": "ce113c3e7b5a8b313427692d18d87ceed179cfef53258a38a2f061b2a20996e9",
+      "placed_report_bytes": 36298,
+      "report_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/cauchy_mode_improvement/report.tex",
+      "upstream_source_revision": "7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a",
+      "status": "Natural-language mathematical derivation relative to the unchanged OpenAI manuscript; finite component-check outputs supplied; not formalized and not an end-to-end solver.",
+      "proved_or_imported_refinements": [
+        "Finite Cauchy separation on each existing column tile with integral source functions.",
+        "Weight w_b=1+b+2 v_2(b!)=3b+1-2 s_2(b), compared with geometric b+1.",
+        "Leading logarithm of the abstract mode count reduced by factor 1/sqrt(3) for matched precision and tile count.",
+        "Explicit matched whole-contraction bounds with the source schedule and deeper cutoff H=ceil(s/log_2 s)."
+      ],
+      "conditional_targets": [],
+      "limitations": [
+        "No change to logarithmic order s/sqrt(log s) or n loglog n/sqrt(log n).",
+        "Prime-subring congruence is necessary; binomial polynomials are not integer-valued at arbitrary unramified-extension elements.",
+        "Bound comparisons concern enumeration envelopes, not measured SAT runtimes."
+      ],
+      "review_notes": [
+        "Read complete report, including finite remainder identity, transfer of both factorials to target, congruence lemma, recursion compatibility, entropy asymptotic, and global cost.",
+        "Its generic auxiliary-row kernel has slope 3. The report explicitly leaves actual reciprocal-row structure open.",
+        "The proposed full-orientation mode construction must be compared with this basis combined with the strongest prior taper/schedule, not solely with geometric modes."
+      ]
+    },
+    {
+      "id": "eth_contraction_improvements",
+      "title": "Quantitative Improvements to the Exact-Counting Contraction Algorithm",
+      "arrival_archive": "docs/incoming/eth_contraction_improvements.zip",
+      "arrival_commit": "a505bd768bce347c70e923586c5f72ad3085bf44",
+      "arrival_commit_time_utc": "2026-10-27T00:42:51Z",
+      "arrival_archive_git_sha1": "ff172e8062ad58e31b00007f3f165d6d6de9d0f8",
+      "arrival_archive_sha256": "9915159ea86b1d6572c2bb3952761b252f363db293a41dfa23109d60937cf7fc",
+      "arrival_archive_bytes": 462089,
+      "placed_directory": "Computability/SubexponentialSAT/Research/eth_contraction_improvements",
+      "placed_report": "Computability/SubexponentialSAT/Research/eth_contraction_improvements/report.tex",
+      "placed_report_git_sha1": "2b23485801f2900c60c38392cf5e91e0aa9f3e60",
+      "placed_report_sha256": "c298aa2c1a0b126e2cc5c0964f3c472190b1afb39a9575e1abcab3a16e9a7637",
+      "placed_report_bytes": 38638,
+      "report_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/eth_contraction_improvements/report.tex",
+      "upstream_source_revision": "7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a",
+      "status": "Natural-language mathematical derivation relative to the unchanged OpenAI manuscript; finite component-check outputs supplied; not formalized and not an end-to-end solver.",
+      "proved_or_imported_refinements": [
+        "Exact condition count h=ceil((M(2L-1)+1)/(L(2u-2+2^(1-u))))=(1+o(1))M/u.",
+        "Precision p_t=p+6hD_t+hu(a+1)=(6+o(1))MD_t/u.",
+        "Normalized geometric-mode coefficient 648.4410666487529 with r=256, rho=3/128, u_d=floor(lambda/(720*12^d)), a_d=2 sum_{j<=d} u_j, H=ceil(s/lambda).",
+        "Comparator for published schedule: 18535.7538316684, including leaf coefficient one.",
+        "Streamed homogeneous finite differences extract a packet coefficient in poly(s) product_j(beta_j+1)<=poly(s)2^L time and polynomial space, with up to L extra precision bits for factorial division.",
+        "Within its schedule family, continuous boundary coefficient C_*(r)=2 pi sqrt(480 log_2 r)/(ln 2 (1-(6/r)^(2/3))^(3/2)); minimizer r approximately 251.00544, infimum approximately 638.5274898 for geometric modes."
+      ],
+      "conditional_targets": [],
+      "limitations": [
+        "No improved logarithmic order for unrestricted or fixed-density exact SAT.",
+        "The numerical coefficient applies to normalized network size s, not directly to n.",
+        "Boundary optimum is an infimum approached by strict feasible schedules, not the declared r=256 rational schedule."
+      ],
+      "review_notes": [
+        "Read complete report, including packing exponents, inherited precision, active-depth estimates, path cost, parameter optimization, exact modular division, canonical-lift discipline, and appendices.",
+        "Its Max-k-SAT approximation sharpening to n/sqrt(log n) follows from the existing fixed-density theorem and is not a new exact-counting rate.",
+        "No full solver or proof-assistant validation is supplied."
+      ]
+    },
+    {
+      "id": "3sat_precision_refinement",
+      "title": "Sharper precision for subexponential 3SAT",
+      "arrival_archive": "docs/incoming/3sat_precision_refinement_2026-10-26.zip",
+      "arrival_commit": "64b3202ee84fc4d71fe69c34d2110c93b7da95cd",
+      "arrival_commit_time_utc": "2026-10-27T00:44:39Z",
+      "arrival_archive_git_sha1": "761128f75a6b3367cfc8be90850021d521d41751",
+      "arrival_archive_sha256": "2727d62e9461a3caf52c0a02f87244700668cc831ee4e9269ecf3215ae531de0",
+      "arrival_archive_bytes": 472843,
+      "placed_directory": "Computability/SubexponentialSAT/Research/3sat_precision_refinement",
+      "placed_report": "Computability/SubexponentialSAT/Research/3sat_precision_refinement/report.tex",
+      "placed_report_git_sha1": "ef71910583fe996f22bb070cca8ebe1b58efb368",
+      "placed_report_sha256": "4a286c4b9dd5828206e42c64f6b641ea33f8c10974a9cd1996aa98806ec02259",
+      "placed_report_bytes": 44093,
+      "report_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/3sat_precision_refinement/report.tex",
+      "upstream_source_revision": "42907c9e999cc00d6abe7a50bfc1023250edd1b9",
+      "status": "Natural-language mathematical derivation relative to the unchanged OpenAI manuscript; finite component-check outputs supplied; not formalized and not an end-to-end solver.",
+      "proved_or_imported_refinements": [
+        "Same exact Hermite condition count and asymptotic precision improvement from 24MD/u to at most 6MD/u.",
+        "Exact recovery budget P_t=p+B_i+(q_i-1)(a+1-i), B_i=D_i sum_{j=1}^{a-i}j 2^(-j)(q_i-q_{i+j}).",
+        "Real full-loss minimax value W/(u/3+2/9-(2/9)4^(-u)); optimizer q_i=eta((u-i)/6+5/18+(2/9)4^(-(u-i))).",
+        "Exact compressed mode-sum representation by ordered group-pair exact-weight ranks using O(M/sqrt(u)+r^2) bits per budget array."
+      ],
+      "conditional_targets": [
+        {
+          "target": "poly(n,m)2^{O(n loglog n/log n)} general, poly(n,m)2^{O(n/log n)} fixed density",
+          "missing_theorem": "Structured-mode acceleration using only poly(s)exp(O(M/u)) admissible recursive contraction calls, with preserved degree, precision, descriptions, and polynomial space.",
+          "status": "Unproved hypothesis; compressed representation alone does not supply acceleration."
+        }
+      ],
+      "limitations": [
+        "Taper-only changes cannot improve the leading MD/u loss scale within the full-loss model.",
+        "Compact mode indices produce high-degree group tensors; invoking contraction again is not justified."
+      ],
+      "review_notes": [
+        "Read complete main report and its conditional sections; reviewed exact taper recurrence and finite-grid correction.",
+        "The strongest claimed rate is explicitly conditional; it must not be classified as an achieved solver bound."
+      ]
+    },
+    {
+      "id": "sat_density_improvement",
+      "title": "Improving the Clause-Density Dependence of Exact k-SAT Counting",
+      "arrival_archive": "docs/incoming/sat_density_improvement.zip",
+      "arrival_commit": "a505bd768bce347c70e923586c5f72ad3085bf44",
+      "arrival_commit_time_utc": "2026-10-27T00:42:51Z",
+      "arrival_archive_git_sha1": "54674fff5454a3c84b94f1f77d04c1875c5b4bf0",
+      "arrival_archive_sha256": "713d5a7e2e7cdf07e4aed542d54818846c5ceb0365f8d92740b285f6a997a529",
+      "arrival_archive_bytes": 476245,
+      "placed_directory": "Computability/SubexponentialSAT/Research/sat_density_improvement",
+      "placed_report": "Computability/SubexponentialSAT/Research/sat_density_improvement/density_aware_sat_improvement.tex",
+      "placed_report_git_sha1": "876335635af2e582bc33a813172515167ac6f5c1",
+      "placed_report_sha256": "b92c2f8fc29cb995166556168c5cf0d66f7d90dd5964218a353bf0098fa3006d",
+      "placed_report_bytes": 40154,
+      "report_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/sat_density_improvement/density_aware_sat_improvement.tex",
+      "upstream_source_revision": "7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a",
+      "status": "Natural-language mathematical derivation relative to the unchanged OpenAI manuscript; finite component-check outputs supplied; not formalized and not an end-to-end solver.",
+      "proved_or_imported_refinements": [
+        "For fixed k, poly_k(n,m)2^{O_k((n/sqrt(log n)) min{log(2+m/n),loglog n})} bit time and polynomial space, uniform in density.",
+        "Initial parity checks from powered lazy Margulis-Gabber-Galil graphs and local codes have support depending polynomially on B log(2B), instead of log m.",
+        "Sparsity-sensitive incidence encoding uses O_k(n log(S+2)) wires.",
+        "At m=Theta(n loglog n), exponent scale improves to n logloglog n/sqrt(log n)."
+      ],
+      "conditional_targets": [],
+      "limitations": [
+        "Unrestricted n-only and fixed-density orders remain unchanged.",
+        "Local-code exhaustive search and degree bounds are asymptotic and extremely impractical.",
+        "Imports spectral expander theorem and OpenAI contraction/lift theorems."
+      ],
+      "review_notes": [
+        "Read complete report, including explicit integer parameters, graph padding and row count, local-code entropy, shortening, greedy elimination, all complexity overheads, and hybrid cutoff.",
+        "Small-instance branch m<=d is direct enumeration of occurring variables; the declared-variable count is retained via a free-variable factor.",
+        "Overlaps substantially with eth_density_refinement; they are parallel derivations of the same density envelope."
+      ]
+    },
+    {
+      "id": "eth_density_refinement",
+      "title": "A density-sensitive refinement of the October 2026 exact #k-SAT counting algorithm",
+      "arrival_archive": "docs/incoming/eth_density_refinement.zip",
+      "arrival_commit": "64b3202ee84fc4d71fe69c34d2110c93b7da95cd",
+      "arrival_commit_time_utc": "2026-10-27T00:44:39Z",
+      "arrival_archive_git_sha1": "4d3de09f5c599d6308905f73d60fa73d2234b0d0",
+      "arrival_archive_sha256": "e8a2b80c0a638484c6bdc11a43773268c64a5ba0e6b43c78634d4b26eafad31d",
+      "arrival_archive_bytes": 442836,
+      "placed_directory": "Computability/SubexponentialSAT/Research/eth_density_refinement",
+      "placed_report": "Computability/SubexponentialSAT/Research/eth_density_refinement/report.tex",
+      "placed_report_git_sha1": "74b6793da35822061e5d0c5b157f41e6602f83a0",
+      "placed_report_sha256": "85ee2dd4f952c395589c1bfe59e1e6505a2ff80e34c7e8b828fddb11b6b12e39",
+      "placed_report_bytes": 40950,
+      "report_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/eth_density_refinement/report.tex",
+      "upstream_source_revision": "42907c9e999cc00d6abe7a50bfc1023250edd1b9",
+      "status": "Natural-language mathematical derivation relative to the unchanged OpenAI manuscript; finite component-check outputs supplied; not formalized and not an end-to-end solver.",
+      "proved_or_imported_refinements": [
+        "For fixed k, A and 1<=B<=(log n)^A, exact counting in poly(n,m)2^{O_{k,A}(n log(2+B)/sqrt(log n))} and polynomial space.",
+        "Hybrid extension gives the same all-density minimum envelope as sat_density_improvement.",
+        "Exact taper and precision improvements; a conservative eta=1/2048 schedule with r=64 reduces matched mode-enumeration coefficient by 16; resulting mode coefficient 1158.422114 plus leaf coefficient 1.",
+        "Max-k-SAT additive approximation exponent n/sqrt(log n) by applying the existing fixed-density solver to the linear-size threshold encoding.",
+        "Exact Smith invariant valuations e_j=2j+2v_2(j!)=4j-2s_2(j) for K_{ij}=1/(a+2i-2j) when a is a unit."
+      ],
+      "conditional_targets": [],
+      "limitations": [
+        "No stronger unrestricted or fixed-density logarithmic order.",
+        "The Smith spectrum is a local rank obstruction and not a supplied all-level mode implementation.",
+        "No full solver or formalization."
+      ],
+      "review_notes": [
+        "Read complete report, including expander/local-code alternative for m<=D, row bound 3n, greedy 3n rounds, sparse-query oracle, exact precision, parameter retuning, MaxSAT, dimensional barrier and Smith proof.",
+        "Critical novelty boundary: slope4 local Smith valuations were already present here. A new contribution must establish an explicit integral factorization fitting every retained valuation level with unchanged group support and mode multiplicity.",
+        "Its density theorem can be retained when installing a better contraction kernel."
+      ]
+    },
+    {
+      "id": "3sat_refinement",
+      "title": "A Scalar Parity Refinement of the Subexponential SAT Counter",
+      "arrival_archive": "docs/incoming/3sat_refinement_package.zip",
+      "arrival_commit": "64b3202ee84fc4d71fe69c34d2110c93b7da95cd",
+      "arrival_commit_time_utc": "2026-10-27T00:44:39Z",
+      "arrival_archive_git_sha1": "f559d884ce8c8755feb76fbef1e69a0016100166",
+      "arrival_archive_sha256": "f5a65ba0a013967ba2869991b0f646c09305cff76b6766d37712e56ed0b356cd",
+      "arrival_archive_bytes": 480245,
+      "placed_directory": "Computability/SubexponentialSAT/Research/3sat_refinement",
+      "placed_report": "Computability/SubexponentialSAT/Research/3sat_refinement/3sat_refinement_report.tex",
+      "placed_report_git_sha1": "6c3110004cd3d4edcee0a4574d124676c25a8a3c",
+      "placed_report_sha256": "c6e284af1fa7beeb036f5c66e5b1b4b5a32171573bb28827fb87ddfa1f324b58",
+      "placed_report_bytes": 47717,
+      "report_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/3sat_refinement/3sat_refinement_report.tex",
+      "upstream_source_revision": "7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a",
+      "status": "Natural-language mathematical derivation relative to the unchanged OpenAI manuscript; finite component-check outputs supplied; not formalized and not an end-to-end solver.",
+      "proved_or_imported_refinements": [
+        "Exact scalar parity indicator E_i=(1+(-1)^c_i product_j(1-2m_ij))/2 over integers.",
+        "Local coefficient valuation at least max(0,ceil(|S|/k)-1), and global retained incidence-degree cap k(p+a-1), hence k(n+a) at p=n+1.",
+        "Removes the auxiliary V axis; scalar coefficients via Boolean Mobius inversion.",
+        "Exact group-pair budget and rank encoding of the mode sum; invalid rank codes contribute zero."
+      ],
+      "conditional_targets": [
+        {
+          "target": "Contraction poly(s)2^{O(s sqrt(loglog s)/log s)}; general SAT poly(n,m)2^{O_k(n (loglog n)^(3/2)/log n)}; fixed density poly(n,m)2^{O(n sqrt(loglog n)/log n)}",
+          "missing_theorem": "LF: compact factorization of the actual group tensors using O(W) total edges and maximum degree<=W^(9/10), with affordable entries and canonical precision.",
+          "status": "Not supplied."
+        },
+        {
+          "target": "General SAT poly(n,m)2^{O(n/sqrt(log n))}",
+          "missing_theorem": "Uniform O(n)-wire, bounded-degree compiler for the union-support counting functional.",
+          "status": "Not supplied."
+        }
+      ],
+      "limitations": [
+        "Scalar lift improves arithmetic representation and degree-cap constants, not the leading general-input exponent.",
+        "Incidence support indexing remains O(n loglog n); parity and ordinary-degree caps do not change the mode enumeration scale."
+      ],
+      "review_notes": [
+        "Read complete report, including scalar coefficient proofs and sharpness, exact counter integration, compression, first-stage large-r schedule, inherited-precision extension, retuned preprocessing, conditional consequences, and union-support alternative.",
+        "The local scalar proof is independent of the unproved factorization. It may be combined with new modes, but is already known in this repository."
+      ]
+    },
+    {
+      "id": "3sat_asymptotic_analysis",
+      "title": "Asymptotic improvement analysis for the October 2026 3 SAT preprint",
+      "arrival_archive": "docs/incoming/3sat_asymptotic_analysis_20261027.zip",
+      "arrival_commit": "8afdbbea48d67b8d252a99e8926f3eca9649eae3",
+      "arrival_commit_time_utc": "2026-10-27T00:48:56Z",
+      "arrival_archive_git_sha1": "5ceee06c87f62d5aa1db70c699d471eaea44b916",
+      "arrival_archive_sha256": "02deac7de7de77550eafcee20cc251e7c6706fb3914e4e88946297ef74c5dd57",
+      "arrival_archive_bytes": 1472570,
+      "placed_directory": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis",
+      "placed_report": "Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/report/report.tex",
+      "placed_report_git_sha1": "68fcb8b0acca3e967d51c02decf483956dd459c6",
+      "placed_report_sha256": "4a249e9d9752c9668bfc785541529dce314e69646363a3c221df72b4cce6e598",
+      "placed_report_bytes": 16103,
+      "report_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/3c64ee065c708ded485b8b14d9ad6c703a30ab11/Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/report/report.tex",
+      "upstream_source_revision": "7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a",
+      "status": "Natural-language mathematical derivation relative to the unchanged OpenAI manuscript; finite component-check outputs supplied; not formalized and not an end-to-end solver.",
+      "proved_or_imported_refinements": [
+        "No improved unrestricted runtime established.",
+        "Restricted mode-enumeration and nonmonotone Hermite-taper barriers; Newton modes improve only linear valuation constant.",
+        "Identifies weaker formalized loglog-squared endpoint and sharper manuscript Appendix D.",
+        "Decision-side barriers: root parity does not remove internal precision; total degree<n forces even solution count; genuine SAT parity systems can exhibit incidence entropy Theta(n loglog n).",
+        "Additional barriers and leads include indispensable dense subformulas, original-variable Boolean quotient, exterior-power kernels, and extension-field norm hashing."
+      ],
+      "conditional_targets": [
+        {
+          "target": "General SAT poly(n,m)2^{O(n sqrt(loglog n/log n))}",
+          "missing_theorem": "Degree-preserving compressed deformation and recursively closed low-mode-multiplicity interface with global K=O(n), wire size s=Theta(n loglog n).",
+          "status": "Not constructed."
+        },
+        {
+          "target": "General SAT poly(n,m)2^{O(n/sqrt(log n))}",
+          "missing_theorem": "Uniform streaming O(n)-wire contraction compression satisfying complete graph, precision, and entry-cost interface.",
+          "status": "Not constructed."
+        }
+      ],
+      "limitations": [
+        "Neither proposed interface is proved; fixed-density exponent is not improved.",
+        "Barriers concern particular representations/certificates, not lower bounds for SAT or all tensor contraction."
+      ],
+      "review_notes": [
+        "Read report and all incorporated TeX parts: TAPER_AND_NEWTON_LEMMAS, research_routes, degree_route and CONDITIONAL_DEGREE_KERNEL; reviewed research_decision/findings.md and independent paper audit.",
+        "Finite checks and selected Lean excerpts do not constitute a full preprint verification or proof-assistant build."
+      ]
+    }
+  ],
+  "other_manuscripts": [
+    {
+      "path": "Computability/SubexponentialSAT/Research/claude-2o-n-3sat/eth.pdf",
+      "git_sha1": "d2ad67d5b86add67c8256e4633fec11c48d0db44",
+      "sha256": "f0af035b6c87d04d3fcf07dae040df98029f4990c6493e3e9ab64c4ac714c0eb",
+      "date": "2026-10-26 15:13 America/Los_Angeles",
+      "claim": "2^{O(min{k m/sqrt(log m), k^2 n loglog n/sqrt(log n)})}; exact #kSAT.",
+      "scope": "Separate 49-page manuscript; same fixed-k general logarithmic order. The loglog factor is outside the square root. Its asserted Lean development is not publicly linked in the manuscript. Not independently rebuilt."
+    },
+    {
+      "arrival": "docs/incoming/paper.pdf",
+      "git_sha1": "0503566e95bc587a4076573a45132d97531b8ba6",
+      "sha256": "5b1612dc2eebb2cad5b4cbe62d1fed2982f01ab1908c26f70010a651487e8123",
+      "placement": "Omitted as byte-identical to OpenAI preprint PDF; recorded in Research/OMITTED.tsv."
+    }
+  ]
+}

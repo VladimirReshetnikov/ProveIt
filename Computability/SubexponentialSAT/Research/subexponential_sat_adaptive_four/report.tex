@@ -1,0 +1,975 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,xurl,hyperref,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!50!black,
+ pdftitle={Adaptive four-block contraction for the current SubexponentialSAT frontier},
+ pdfauthor={Research prepared for Vladimir Reshetnikov with ChatGPT}}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small Adaptive four-block contraction}\rhead{\small October 26, 2026}
+\cfoot{\thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=2pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\polylog}{\operatorname{polylog}}
+\newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\pc}{s_2}
+\newcommand{\K}{\mathcal K}
+\newcommand{\pin}{\texttt{dde01c4a63b822c25b8eb345299346c36f837b49}}
+\newcommand{\rooturl}{https://github.com/VladimirReshetnikov/ProveIt}
+\title{\textbf{Adaptive four-block contraction}\\[4pt]
+\large A sharper asymptotic certificate beyond the current\\SubexponentialSAT research packets}
+\author{Research prepared for Vladimir Reshetnikov\\with ChatGPT}
+\date{October 26, 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review twenty refinement packets and the two primary manuscripts.
+The five newest packets arrived through \texttt{docs/incoming} at snapshot
+\texttt{fa6e904d109b}; the closing snapshot \texttt{dde01c4a63b8}
+files them under SubexponentialSAT. The requested improvement in the logarithmic order of
+general SAT is not established. We do obtain two new explicit exponential
+upper-bound certificates in the common normalized tensor-contraction model.
+
+For $s$ Boolean wires, maximum degree at most $\ceil{s^{9/10}}$, and the
+specified entry-oracle and precision interface, our cached algorithm has
+\[
+ T\le\poly(s+\mathcal L)2^{(C_T+o(1))s/\sqrt{\log_2s}},\qquad
+ S\le\poly(s+\mathcal L)2^{(C_S+o(1))s/\sqrt{\log_2s}},
+\]
+where
+\[
+ C_T=\frac\pi{\ln2}\left(\frac{\sqrt{105}}2+\sqrt{\frac{183}{40}}\right)
+ =32.9158138649\ldots,\qquad
+ C_S=\frac\pi{\ln2}\sqrt{\frac{244}{5}}=31.6617067862\ldots .
+\]
+The best displayed incoming cached certificate is $35.3545880584$ in time
+and $34.2748030050$ in space. A second construction preserves polynomial
+space and has time coefficient $50.3937257005$, compared with the best
+displayed $55.7094783189$ and a stronger matched composition $54.1282952066$.
+
+The new ingredient is a sharp four-block inequality for adaptive matrix
+contraction, together with an adaptive four-cluster separator inequality.
+The choices depend on exact mode-list sizes. Both are proved by elementary
+finite-dimensional arguments; no compact-mode summation hypothesis is
+assumed. The global schedules pay for every child contraction and preserve
+the inherited packing and precision conditions. Supporting code verifies
+the new finite identities and bounds over exact arithmetic. It does not
+implement the full SAT algorithm or the asymptotically fast matrix backend.
+The SAT orders $n\log\log n/\sqrt{\log n}$ and $n/\sqrt{\log n}$ remain
+unchanged. All SAT consequences retain the explicitly listed upstream
+deformation and reduction dependencies.
+\end{abstract}
+\clearpage
+{\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{Results and the comparison being made}
+\label{sec:results}
+
+The useful outcome is a proved change in how the mode graph is contracted.
+The algorithm chooses among three ways of pairing four blocks after the
+exact mode budgets have been fixed. Treating this choice as part of the
+algorithm, rather than bounding a fixed contraction tree by its worst
+allocation, reduces the leading coefficient.
+
+\begin{theorem}[Cached normalized contraction certificate]
+\label{thm:cached}
+Assume the normalized interface in Section~\ref{sec:interface} and the
+imported identities listed there. There is a deterministic exact contraction
+algorithm with time coefficient $C_T$ and space coefficient $C_S$ displayed
+in the abstract. In particular, eventual coefficients $33$ for time and
+$32$ for space are valid. The algorithm uses subexponential space.
+\end{theorem}
+
+\begin{theorem}[Polynomial-space certificate]
+\label{thm:ps}
+Under the same interface, there is a deterministic exact contraction
+algorithm using polynomial space and time
+\[
+ \poly(s+\mathcal L)2^{(C_P+o(1))s/\sqrt{\log_2s}},
+ \qquad C_P=50.3937257005\ldots .
+\]
+An exact expression for $C_P$ is given in~\eqref{eq:ps-constant}; in
+particular, the eventual coefficient $51$ is valid.
+\end{theorem}
+
+These are refinements of upper bounds. They are not measured ratios of
+running times. The common size parameter $s$ counts normalized Boolean
+network wires. It is not the SAT variable count $n$. An input reduction and
+its wire constants are needed to obtain numerical coefficients in terms of
+$n$.
+
+\begin{center}
+\begin{tabular}{@{}p{0.50\textwidth}rr@{}}
+\toprule
+Certificate at degree $\ceil{s^{9/10}}$ & Time & Space\\\midrule
+Best displayed incoming cached bound \cite{tree} & $35.354588$ & $34.274803$\\
+Prior compatible cached composition, Section~\ref{sec:comparison}
+ & $34.832153$ & $33.992701$\\
+New cached bound, Theorem~\ref{thm:cached} & $32.915814$ & $31.661707$\\\midrule
+Best displayed incoming polynomial-space bound \cite{adaptive}
+ & $55.709478$ & polynomial\\
+Prior ingredients on our polynomial-space schedule & $54.128295$ & polynomial\\
+New polynomial-space bound, Theorem~\ref{thm:ps} & $50.393726$ & polynomial\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The comparison deliberately includes compatible older ingredients. We do
+not claim a global optimum over every retuning of every earlier algorithm.
+The new sharp local inequality is strictly stronger than the fixed-tree
+and adaptive-crossing estimates used in the supplied packets. The report
+provides both historical comparisons and matched analytical ablations.
+
+\subsection{What the requested order improvement would require}
+
+The strongest justified general-density envelope in the reviewed reports is
+\begin{equation}\label{eq:sat-envelope}
+ \poly_k(n,m)\,
+ 2^{O_k\!\left(\frac{n}{\sqrt{\log n}}
+     \min\{\log(2+m/n),\log\log n\}\right)}.
+\end{equation}
+It reduces to $2^{O_k(n\log\log n/\sqrt{\log n})}$ in the worst case and
+$2^{O_{k,D}(n/\sqrt{\log n})}$ at fixed density $m\le Dn$.
+The new engines retain these orders under the existing reductions.
+
+The conditional $n\log\log n/\log n$ target in the precision packet
+\cite{precision} would be a stronger order improvement. Its structured
+summation algorithm is not supplied by that packet or by this report.
+We do not count an unproved conditional proposal as an established upper
+bound, and we do not claim to outperform it if its missing hypothesis is
+eventually proved. Section~\ref{sec:barriers} records the unsuccessful order
+routes investigated here and their precise obstacles.
+
+\section{Frozen review of the recent commits}
+\label{sec:review}
+
+The closing main-branch snapshot is \pin, committed on October 26,
+2026 at 19:42:25 Pacific time. The opening review used
+\texttt{fa6e904d109b}, committed at 19:31:45, and inspected all five incoming
+archives. The initially cloned default branch had an additional merge,
+\texttt{fd0edd17e6a2}, with identical relevant source trees. A closing
+refresh found the placement commit below. The reviewed files were compared
+with their filed versions, and the provenance ledger retains both locations.
+No repository change was submitted.
+
+\begin{longtable}{@{}p{0.18\textwidth}p{0.76\textwidth}@{}}
+\toprule Commit & Relevant change\\\midrule\endfirsthead
+\toprule Commit & Relevant change\\\midrule\endhead
+\texttt{2b925d8800cd} & Created the SubexponentialSAT project and filed the
+seven first-round packets and the primary manuscripts.\\
+\texttt{3e096089911f} & Vendored the unchanged OpenAI preprint from
+\texttt{openai/math@7ef5c0cc5c}.\\
+\texttt{45233238aebf} & Summarized the strongest first-round claims and
+separated conditional proposals from established refinements.\\
+\texttt{3e57705cf14e}, \texttt{d098ba436b33} & Received the eight second-round
+archives.\\
+\texttt{6d3adc450615} & Filed all eight under the research directory;
+the project README records that their SAT order is unchanged.\\
+\texttt{f42479bca245}, \texttt{f898a9fde4c3}, \texttt{fa6e904d109b}
+& Added the five further incoming archives reviewed here. These must be
+included in a current comparison; the opening filed README alone omitted them.\\
+\texttt{450252e9d86c} & Filed those five packets unchanged, updated the
+project summary, and restored two round-two support scripts. The closing
+\texttt{docs/incoming} contains only its README.\\
+\bottomrule
+\end{longtable}
+
+The closing check verified all $230$ filed members against the five reviewed
+archives and their Git blobs. There were no omissions or extra members.
+The two restored scripts match their earlier manifest hashes and concern
+PDF builds and archive checks, not mathematical algorithms.
+The provenance ledger records Git blob IDs, SHA-256 hashes, immutable links,
+and the members inspected inside the five ZIPs. The review inventory is in
+\path{provenance/corpus_review.json}. Appendix~\ref{app:inventory} gives
+the mathematical summary. The review covers the main claims and interfaces,
+not a new formal verification of every upstream proof.
+
+\subsection{Trust boundary of the source collection}
+
+The project README explicitly says that these are external research packets
+filed as delivered; it reports no Lean or Rocq development for this project
+inside ProveIt. The OpenAI manuscript and the separate Claude manuscript
+are primary claims, not a proof supplied by this report. The upstream Lean
+scope described in the repository has an additional logarithmic factor
+compared with the manuscript's Appendix D. We do not equate those two
+statements or claim to have rebuilt that formalization.
+
+The new theorems below are ordinary mathematical refinements relative to
+the exact-contraction framework. Their genuinely new combinatorial lemmas
+are self-contained. The implementation checks are exact finite checks of
+those components, not substitutes for the uniform asymptotic proofs.
+
+\section{Normalized input and inherited exact interfaces}
+\label{sec:interface}
+
+Let $s\ge2$, $\lambda=\ceil{\log_2s}$, and let $\mathcal L$ be the total
+graph and tensor-description length. The input is a bipartite Boolean
+tensor network with at most $s$ wires and maximum degree at most
+$\Delta=\ceil{s^{9/10}}$. Its contraction is
+\[
+ Z=\sum_{x\in\{0,1\}^{E}}\prod_v T_v(x|_{\delta(v)}).
+\]
+The entries are in $(\mathbb Z/2^{P_0}\mathbb Z)[V]/(V^\ell)$, with
+$P_0,\ell\le s$. Fixed multiples of $s$ give the same leading constants.
+An original entry routine has time
+$\poly(s+\mathcal L)2^{O(s^{9/10})}$ and polynomial space, with fixed
+interface constants. Arbitrarily expensive tensor oracles are excluded.
+
+During contraction the coefficient ring may be extended to
+\[
+ R_p=(\mathbb Z/2^p\mathbb Z)[U,V]/(f(U),V^\ell),
+ \qquad \deg f=O(\log s),
+\]
+where $f$ is monic and irreducible modulo two. Each ring entry has
+polynomially many coordinates of polynomial bit length. The creation
+precision of every tensor is part of its immutable description. A later
+call evaluates that tensor at its creation precision and uses the same
+canonical coordinate representatives. Canonical lifting is not treated
+as a ring homomorphism.
+
+The following exact ingredients are imported from the preprint and the
+listed refinements \cite{openai,asymmetric,joint,adaptive,tree}.
+
+\begin{enumerate}
+\item The polynomial Cauchy deformation, its integral evaluation at the
+chosen nodes, exact Hermite recovery, and the child-network identity.
+\item Asymmetric packet packing: with packet length $L=2^a$, $Q=r^a$
+labels per side, row and column degree bounds $R,C$, nearly lossless
+padding holds under $QR\polylog(s)=o(M)$,
+$Q^2C\polylog(s)=o(M)$, and $LQ^2=o(M)$.
+At the root the stronger symmetric term $Q^2\Delta\polylog(s)=o(M)$
+is sufficient. Padded mass is $(1+o(1))M$, and each child has
+$(2/r+o(1))M$ wires.
+\item Below the root, the old side retains degree at most $\Delta$;
+the newly created side has degree at most $2^{a_{d-1}+1}$.
+\item Full crossing-block Cauchy modes, each local to one directed pair
+of groups, with weights
+\[
+ w_q=a+1-i+4q-2\pc(q),\qquad q\ge0.
+\]
+At valuation level $i$, put $D=2^{a-i}$. Each directed pair has at most
+$(2/r^2+o(1))M/D$ modes at any given index $q$.
+\item Sharp recovery precision $p_t\le(6+o(1))MD/u$ once the inherited
+precision is made negligible by an additive logarithmic buffer.
+\end{enumerate}
+
+We prove that our schedules satisfy these hypotheses. We also prove the new
+mode-graph contraction identities and their resource bounds, rather than
+assuming a faster oracle for the group functions.
+
+\section{Exact mode lists and a Euclidean entropy bound}
+\label{sec:entropy}
+
+Fix one active call, interpolation node, and exact array of directed-pair
+budgets $b_{gh}$ with $\sum_{g\ne h}b_{gh}<p_t$. The number of arrays is
+polynomial in $s$ because $r$ is a fixed constant. Let $\mathcal I_{gh}$ be
+the set of mode-exponent tuples on that pair of exact weight $b_{gh}$.
+An empty list makes this array contribute zero. Otherwise write
+\[
+ h_{gh}=\log_2|\mathcal I_{gh}|\ge0,
+ \qquad K(M,u)=\frac{\pi\sqrt2}{\ln2}\frac{M}{\sqrt u}.
+\]
+The contribution is exactly
+\begin{equation}\label{eq:modegraph}
+ \sum_{(\xi_{gh})\in\prod_{g\ne h}\mathcal I_{gh}}
+ \prod_{g=1}^r Z_g((\xi_e)_{e\ni g}).
+\end{equation}
+Here an entry of $Z_g$ is obtained by contracting the prescribed child
+network. It is a paid recursive call.
+
+\begin{lemma}[Uniform entropy ball]\label{lem:entropy-ball}
+For fixed $r$, uniformly over the exact arrays and active calls,
+\[
+ \|h\|_2\le\left(\frac1r+o(1)\right)K(M,u).
+\]
+Consequently, for any nonnegative vector $z$, including one chosen from
+the actual lists, $z\cdot h\le(\|z\|_2/r+o(1))K$ when $\|z\|_2=O(1)$.
+\end{lemma}
+
+\begin{proof}
+Lower the actual weights to $\widehat w_q=1+4q-2\pc(q)$ and extend the
+index range. Its counting function is $x/4+O(\log(x+2))$, giving
+\[
+ \sum_{q\ge0}-\ln(1-e^{-\theta\widehat w_q})
+ =\frac{\pi^2}{24\theta}+O(\log^2(2+1/\theta))
+\]
+as $\theta\downarrow0$, with a corresponding uniform upper bound for all
+$\theta>0$. The identity
+$\int_0^\infty-\ln(1-e^{-x})\,dx=\pi^2/6$ supplies the coefficient.
+
+For any $z\in[0,1]^{r(r-1)}$, use parameter $\theta/z_e$ for pair $e$,
+omitting a pair with $z_e=0$, and multiply its logarithmic bound by $z_e$.
+With $c=(2/r^2+o(1))M/D$, the result is
+\[
+ \ln2\,(z\cdot h)\le \theta p_t+
+ \frac{c\pi^2}{24\theta}\|z\|_2^2
+ +O_r(c\log^2(2+1/\theta)).
+\]
+Take $\|z\|_2=1$ and optimize the two leading terms. Using
+$p_t\le(6+o(1))MD/u$ yields $(K/r+o(K))$ after division by $\ln2$.
+The saddle has order $\sqrt u/D$. Our schedules give $D\ge\lambda^6$
+up to a fixed factor, $u\le\lambda$, and $\log D=O(\lambda)$, so the
+error relative to $M/\sqrt u$ is $O(\lambda^{5/2}/D)=o(1)$.
+This estimate is uniform for every such $z$, even near a coordinate face.
+Set $z=h/\|h\|_2$ if $h\ne0$. The zero case is immediate.
+\end{proof}
+
+There is also a way to apply the later arguments using only the source's
+fixed-vector entropy lemma. The four-block proof produces just $216$
+possible mean coefficient vectors. Apply the inherited estimate separately
+to those fixed vectors and take the largest of their finitely many error
+terms. The separator construction likewise produces a finite family of
+fixed masks for each fixed arity. Thus the adaptive use does not require
+an unproved extension of the source estimate to arbitrary variable weights.
+
+\subsection{Counting, indexing, and making adaptive choices}
+
+For mode weights $w_1,\ldots,w_v$, the dynamic program
+\[
+ A(j,b)=A(j-1,b)+A(j,b-w_j),\qquad A(0,0)=1
+\]
+with zero values at negative budgets counts the exact lists. It supports
+rank, unrank, and enumeration with polynomial delay. Both the number of
+modes and the budgets are polynomial in $s$; counts are bounded by
+$(p_t+1)^v$ and therefore have polynomial bit length. No counting oracle
+is needed.
+
+The six aggregated domain sizes for four blocks are exact products of
+integer list sizes. With matrix exponent $12/5$, the fifth power of a
+merge cost is an integer quotient of products of those sizes. It can be
+compared by cross multiplication. Alternatively, use ceiling binary
+logarithms, computed by integer bit length: this changes the cost by only
+$O_r(1)$, which is negligible in every displayed leading exponent. Thus
+adaptation needs neither approximate real comparisons nor an unconstructed
+optimization algorithm.
+
+\section{Exact matrix multiplication and table storage}
+\label{sec:mm}
+
+The main theorem uses the same safe exponent $\omega=12/5$ as the incoming
+cached-tree packet \cite{tree}. The primary matrix-multiplication literature
+provides an exponent strictly below $12/5$ \cite{mm}. We need the exact
+arithmetic bridge, since $R_p$ has nonunits and nilpotents.
+
+Fix a finite rational bilinear multiplication algorithm whose recursive
+exponent is strictly below $12/5$. Exclude the fixed finite set of primes
+dividing its coefficients' denominators. A product of integer coordinate
+matrices with shared dimension $N$ and entries below $2^p$ has entries
+below $N2^{2p}$. Compute the product over polynomially many nonexceptional
+small prime fields until their product exceeds this bound, reconstruct by
+CRT, and reduce modulo $2^p$. The required number of primes and all
+intermediate bit lengths are polynomial in $s$, because $p$ and $\log N$
+are polynomial in $s$. Expanding ring entries in the fixed module basis
+requires only polynomially many coordinate products; the integer structure
+constants reconstruct their ring product. No division by a nonunit in
+$R_p$ occurs.
+
+A rectangular product with dimensions $N_1,N_2,N_3$ can be split into
+square blocks of side comparable to $\min N_j$. The bit work is bounded by
+\[
+ \poly(s+\mathcal L)
+ N_1N_2N_3(\min N_j)^{-3/5}.
+\]
+For index logarithms $x,y,z$, its exponent is therefore
+\begin{equation}\label{eq:mm-cost}
+ x+y+z-\tfrac35\min(x,y,z).
+\end{equation}
+A fixed bilinear base algorithm can process its recursive products
+sequentially and accumulate outputs, with quadratic field-element storage.
+The rectangular and CRT wrappers require a polynomial factor times the
+input/output array sizes. Those sizes are bounded by the work exponent
+in~\eqref{eq:mm-cost}.
+
+Table records have polynomial bit length. The required orderings can be
+obtained by sorting and scanning records in polynomial overhead per record.
+The argument does not assume free random access to integers with
+exponentially many bits. The finite code uses ordinary exact multiplication
+to test the tensor identity, not the theoretical fast backend.
+
+\input{k4_certificate}
+
+\section{Building the four tables and paying for child calls}
+\label{sec:local}
+
+For $r\in\{4,8,12\}$, first cache every $Z_g$ on its incident pair
+indices. There are $2(r-1)$ incident directed pairs, so
+Lemma~\ref{lem:entropy-ball} bounds the child-call count by
+\[
+ 2^{(\alpha_r+o(1))K},\qquad
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+The fixed factor $r$ and all exact weight arrays are polynomial overhead.
+
+Partition the groups into four equal, predetermined blocks. For any subset
+$B$, its table $T_B$ is indexed by its boundary directed pairs and sums
+the product of the cached factors over the internal pairs. If disjoint
+sets of sizes $a,b$ are merged in a graph on $r$ groups, the three index
+classes of the matrix product have cardinalities
+\[
+ 2a(r-a-b),\qquad 2ab,\qquad 2b(r-a-b).
+\]
+If these numbers are $v_1,v_2,v_3$, the weighted entropy estimate and
+\eqref{eq:mm-cost} give coefficient
+\begin{equation}\label{eq:merge-cardinality}
+ \frac1r\sqrt{v_1+v_2+v_3-\frac{21}{25}\min(v_1,v_2,v_3)}.
+\end{equation}
+Indeed the cost is the maximum of three linear forms with coefficients
+$1,1,2/5$ on the index classes; apply the entropy ball to each.
+
+For $r=8$, each initial block has size two. Its classes are $(12,2,12)$,
+and its squared numerator is $608/25$. For $r=12$, first form pairs and
+then triples. The size-three merge has classes $(18,4,36)$ and squared
+numerator $1366/25$; smaller merges cost less. For $r=4$, the four input
+blocks are the already cached singleton factors. Thus
+\[
+ \frac{\sqrt{608/25}}8 < \beta,
+ \qquad \frac{\sqrt{1366/25}}{12}<\beta,
+ \qquad \beta=\sqrt{\frac{61}{150}}.
+\]
+The new adaptive four-block theorem controls the remaining contraction
+by $2^{(\beta+o(1))K}$ work. It also bounds the chosen pair tables and
+matrix temporaries, since every input and output size is at most that
+matching's merge-cost bound. The fixed initial block tables fit within
+the same envelope.
+
+\begin{proposition}[Paid local recurrence]\label{prop:recurrence}
+Suppressing polynomial factors per call, the new cached engine satisfies
+\begin{equation}\label{eq:recurrence}
+ T_d\le 2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+             +2^{(\beta+o(1))K_d},
+ \qquad S_{d,\mathrm{local}}\le2^{(\beta+o(1))K_d}.
+\end{equation}
+All recursive group entries are charged by the first term. The second
+term uses cached group values and makes no uncharged child call.
+\end{proposition}
+
+The identities hold in any commutative ring: the regrouping changes only
+the order of finite sums and products. Fast matrix multiplication is an
+optional implementation of those same products. Taking minima over the
+three pairings does not alter the value of the contraction.
+
+\section{A complete cached schedule}
+\label{sec:cached-schedule}
+
+For sufficiently large $s$, put
+\[
+ \Lambda=\lambda-\ceil{\sqrt\lambda},\qquad
+ b_*=\ceil{6\log_2\lambda},\qquad H=\ceil{s/\lambda}.
+\]
+Handle the finite smaller range by direct summation. Set
+$u_d=\floor{f_d\Lambda}$ and
+$a_d=\sum_{j=0}^d(u_j+b_*)$. Use
+\begin{equation}\label{eq:cached-schedule}
+\begin{array}{c|c|c|c|c}
+ d&r_d&f_d&A_d=\sum_{j\le d}f_j&m_d\\\hline
+0&8&1/60&1/60&1\\
+1&12&1/90&1/36&1/4\\
+2&8&1/180&1/30&1/24\\
+3+k&4&(1/160)(5/8)^k&<1/20&(1/96)2^{-k}
+\end{array}
+\end{equation}
+Here $m_d$ is the limiting wire-count multiplier; the bounds will show
+$M_d\le(1+o(1))^d m_d s$ uniformly on active paths.
+
+\subsection{Packing, depth, and integer floors}
+
+At the root, $2A_0\log_2r_0+9/10=1$. The retreat from $\lambda$ to
+$\Lambda$ gives a negative $\Theta(\sqrt\lambda)$ in its binary-log
+packing exponent. Below the root, the dominant old-side exponents are
+\[
+ \frac9{10}+\frac{\log_2 12}{36}<1\quad(d=1),\qquad
+ \frac9{10}+\frac3{30}=1\quad(d=2),\qquad
+ \frac9{10}+2A_d\le1\quad(d\ge3).
+\]
+Equality at the limiting power is again accompanied by the negative
+$\Theta(\sqrt\lambda)$ retreat. For a rational strict certificate at
+depth one, $12^{100}<2^{359}$ implies
+$\log_2 12<359/100$, leaving a margin of $1/3600$.
+
+The fresh-side term has leading power $2A_d\log_2r_d+A_{d-1}$, and
+rounding has leading power $(1+2\log_2r_d)A_d$. Both are at most $1/4$
+throughout this schedule (with a smaller bound at depth one). Additive
+buffers, polynomial logarithmic factors, and $s/M\le\lambda$ cost only
+$O((\log\lambda)^2)$ in their binary logarithms. They are absorbed by
+the strict power gaps or by the $\sqrt\lambda$ retreat. New packet
+degrees are at most $s^{1/20+o(1)}$, below the maintained $s^{9/10}$ cap.
+
+For a noncircular depth argument, provisionally consider
+$O(\log\lambda)$ depths with tail length at most
+$\log_{20/11}\lambda+O(1)$. At all those depths the smallest taper is
+\[
+ \lambda^{\eta+o(1)},\qquad
+ \eta=1-\frac{\ln(8/5)}{\ln(20/11)}>0,
+\]
+since $5/8>11/20$. Hence all $u_d$ diverge uniformly and the floors are
+relative $o(1)$ perturbations. The packing inequalities just proved are
+uniform on this provisional range. Their child ratios are eventually at
+most $11/20$, with sharper limits $1/4,1/6,1/4,1/2$. Therefore every active
+path fits inside the provisional range. This closes the bootstrap.
+
+Padding errors are exponentially small in $\sqrt\lambda$ or a fixed
+negative power of $s$, after polynomial logarithmic factors. Their product
+over $O(\log\lambda)$ levels is $1+o(1)$. The asserted $m_d$ bounds and
+uniform geometric estimates follow.
+
+\subsection{Precision and entry evaluation}
+
+The inherited precision is $O(s\lambda^2 2^{a_{d-1}})$. For retained levels
+$i<u_d$, the additive buffer gives
+$D=2^{a_d-i}\ge2^{a_{d-1}+b_*+1}$. Thus
+\[
+ \frac{p_{\mathrm{inherited}}}{MD/u_d}
+ =O(\lambda^4 2^{-b_*})=o(1).
+\]
+The remaining jet-loss term is also lower order. The sharp budget
+$p_t\le(6+o(1))MD/u_d$ is therefore uniform. All precisions,
+interpolation degrees, extension ranks, and tensor-description sizes are
+polynomial in $s$.
+
+Leaves cost $2^{O(s/\lambda)}$. Original entry routines cost
+$2^{O(s^{9/10})}\poly(s+\mathcal L)$. Packet routines cost at most
+$\exp(O(2^{a_d}\log s))=\exp(s^{1/20+o(1)})$ times polynomial factors.
+Each is $2^{o(s/\sqrt\lambda)}$. Creation-time representatives are retained;
+the routine for an old tensor is not replaced by a recursively expanding
+computation at each precision increase.
+
+\subsection{Unrolling the recurrence without losing child costs}
+
+Put $\kappa=\pi\sqrt2/\ln2$ and $\gamma=\sqrt{2/5}$. On the scale
+$s/\sqrt\lambda$, the four leading $K$ values are
+\begin{align*}
+ k_0&=\kappa\sqrt{60}=49.6495177683\ldots,\\
+ k_1&=\kappa\sqrt{90}/4=15.2019980635\ldots,\\
+ k_2&=\kappa\sqrt{180}/24=3.5831453061\ldots,\\
+ k_{3+j}&=(\kappa\sqrt{160}/96)\gamma^j
+             =0.8445554480\ldots\gamma^j.
+\end{align*}
+Unrolling~\eqref{eq:recurrence} takes the maximum of each local
+aggregation cost plus the preceding cache costs. The four finite starting
+candidates and the infinite cache limit are
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule Candidate & Coefficient\\\midrule
+$\beta k_0$ & $31.6617067862$\\
+$\alpha_8k_0+\beta k_1$ & $32.9158138649$\\
+$\alpha_8k_0+\alpha_{12}k_1+\beta k_2$ & $31.4483967553$\\
+$\alpha_8k_0+\alpha_{12}k_1+\alpha_8k_2+\beta k_3$
+ & $31.3778492206$\\
+$\alpha_8k_0+\alpha_{12}k_1+\alpha_8k_2+
+       \alpha_4 k_3/(1-\gamma)$ & $32.2464016431$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The tail candidates have the form
+\[
+ P+\frac{\alpha_4 k_3}{1-\gamma}
+ +\left(\beta-\frac{\alpha_4}{1-\gamma}\right)k_3\gamma^j,
+\]
+so their maximum is an endpoint or their limit. The second displayed
+candidate is the largest; exact rational interval certificates in the
+code verify every strict comparison. It equals the stated $C_T$.
+
+Local stored tables have coefficient at most $\beta k_d$.
+Ancestor storage adds, rather than multiplies: child calls are processed
+one at a time while the partially filled parent cache is retained. Since
+$k_d$ is largest at the root, the space coefficient is $C_S=\beta k_0$.
+Polynomial work accumulated over $O(\log\lambda)$ depths contributes
+$O(\lambda\log\lambda)=o(s/\sqrt\lambda)$ to the time exponent. This
+proves Theorem~\ref{thm:cached}.
+
+Here the per-level multiplicative overhead is polynomial in $s$, not a
+fresh power of the entire original description length. Immutable tensor
+descriptions reference original entry routines, and packet routines have
+size polynomial in $s$. A single fixed polynomial in $s+\mathcal L$ pays
+for original input handling and an original entry evaluation. Factoring
+it out of the recurrence avoids a spurious $\mathcal L^{O(\log\lambda)}$
+factor. This is the same description convention as the imported interface.
+
+\section{A new adaptive separator bound in polynomial space}
+\label{sec:ps}
+
+Caching is not needed for a second, independent improvement. Condition on
+the directed indices crossing a split, contract its two sides separately,
+multiply their values, and sum over the crossing assignment. This is exact
+distributivity over finite sums. A depth-first implementation stores only
+the current assignments, ring accumulators, and recursion stack.
+
+\subsection{The four-cluster inequality}
+
+For a four-vertex graph let $w_{ij}\ge0$ be the combined weight of both
+directions and let $W=\sum w_{ij}$. For a perfect matching $\{e,f\}$,
+the largest root-to-leaf conditioning cost is $W-\min(w_e,w_f)$.
+For the three opposite-edge pairs write $a_i$ for the smaller weight and
+$b_i$ for the larger. Choosing the matching with largest $a_i$ gives
+\begin{align*}
+ W-\max_i a_i
+ &\le \tfrac23\sum_i a_i+\sum_i b_i\\
+ &\le\sqrt{\tfrac{13}3}\left(\sum_e w_e^2\right)^{1/2}.
+\end{align*}
+The constant is sharp: set every $a_i=2$ and every $b_i=3$.
+
+For four predetermined clusters each of size $b$, each combined cluster
+pair contains $2b^2$ directed coordinates. Cauchy--Schwarz bounds the
+squared norm of their six aggregated weights by $2b^2$ times the directed
+cross-cluster squared norm. Internal coordinates are disjoint. If $g(r)$
+bounds the squared norm of a complete root-to-leaf path functional on
+$r$ groups, the adaptive construction satisfies
+\begin{equation}\label{eq:g-recurrence}
+ g(4b)\le\frac{26}{3}b^2+g(b).
+\end{equation}
+With $g(1)=0$, this gives
+$g(4^j)=(26/45)((4^j)^2-1)$. In particular
+\[
+ g(4)=26/3,\qquad g(8)=110/3,\qquad g(16)=442/3.
+\]
+For $r=8$, use four clusters of size two and $g(2)=2$.
+Fixed balanced binary trees have the larger respective values
+$10,42,170$.
+
+The cost bound for the full adaptive tree follows by combining its
+cross-cluster and within-cluster norm bounds on disjoint coordinates.
+For the actual entropy vector, the local time and number of child calls
+are at most
+\[
+ 2^{(\sigma_r+o(1))K},\qquad \sigma_r=\sqrt{g(r)}/r.
+\]
+There are only constantly many cluster choices for fixed $r$. Select the
+matching by exact products of list sizes. Every leaf factor evaluation
+is an actual recursive child call, and is charged by the same path bound.
+
+\subsection{An admissible schedule and its full coefficient}
+
+Use the same $\Lambda,b_*,H$ conventions, now with
+\[
+\begin{array}{c|c|c|c|c}
+d&r_d&f_d&A_d&m_d\\\hline
+0&16&1/80&1/80&1\\
+1&16&1/80&1/40&1/8\\
+2&8&1/120&1/30&1/64\\
+3+k&4&(1/160)(5/8)^k&<1/20&(1/256)2^{-k}.
+\end{array}
+\]
+The root symmetric gate and the subsequent old-side gates have limiting
+exponent one, with the negative $\sqrt\lambda$ retreat. Fresh-side and
+rounding exponents are at most $1/4$. All arities are powers of two;
+there is no irrational packing-capacity comparison. The previous depth,
+precision, floor, and entry-cost argument applies verbatim.
+
+The streamed recurrence is multiplicative,
+$T_d\le\poly(s)2^{(\sigma_{r_d}+o(1))K_d}T_{d+1}$, so its coefficients
+sum. The resulting exact expression is
+\begin{equation}\label{eq:ps-constant}
+ C_P=\frac{\pi\sqrt2}{\ln2}
+ \left[
+ \frac9{128}\sqrt{80\cdot\frac{442}3}
+ +\frac1{512}\sqrt{120\cdot\frac{110}3}
+ +\frac{\sqrt{160\cdot(26/3)}}{1024(1-\sqrt{2/5})}
+ \right].
+\end{equation}
+This is $50.3937257005\ldots$. Replace $442/3,110/3,26/3$ by
+$170,42,10$ in the same expression to obtain the matched prior coefficient
+$54.1282952066\ldots$. This separates the gain from the new adaptive
+inequality from any gain due merely to schedule selection.
+
+All mode indices, weights, stack frames, and ring entries have polynomial
+bit length. Both recursions have logarithmic depth and retain only a
+polynomial number of such objects when streamed. This proves
+Theorem~\ref{thm:ps}.
+
+\section{Comparison with compatible prior constructions}
+\label{sec:comparison}
+
+The five newest archives already combine much of the older work. Comparing
+only with the filed $76.909$ coefficient would substantially overstate
+the new result. The strongest displayed cached certificate is the
+contraction-tree packet's $(35.354588,34.274803)$ time--space pair; the
+strongest displayed polynomial-space certificate is the adaptive packet's
+$55.709478$ \cite{tree,adaptive}.
+
+A stronger cached prior composition is also available. Use the paid
+singleton caches and recursive block-table construction from the tree
+packet, but choose a $3,3,2$ partition of eight groups minimizing crossing
+entropy as in the adaptive packet. Each directed edge is crossing with
+probability $3/4$, so the final direct crossing sum has coefficient
+\[
+ \beta_{\mathrm{old},8}=\tfrac34\frac{\sqrt{56}}8.
+\]
+Building the three blocks has smaller coefficient
+$\sqrt{766/25}/8$. At arities twelve and four retain the prior fixed
+three-block matrix construction, with coefficients $\sqrt{12/25}$ and
+$\sqrt{208/25}/4$, respectively. On our cached schedule the root
+dominates, with coefficient
+\[
+ C_{\mathrm{old,composed}}=
+ \tfrac34\frac{\sqrt{56}}8\,\kappa\sqrt{60}
+ =34.8321534202\ldots .
+\]
+The root storage in this composition is
+$(\sqrt{30}/8)\kappa\sqrt{60}=33.9927010637\ldots$.
+The supporting schedule checker recomputes these values rather than using
+the rounded text as a certificate. This composition is prior machinery,
+not counted as a new lemma.
+
+Our cached bound is strictly below both the displayed and this composed
+time certificate, and uses a smaller space certificate. The analogous
+matched polynomial-space comparison was derived above. The guarantee is
+about the specified common interface. It does not numerically dominate
+unspecified constants in the separate Claude manuscript, low-degree bounds
+with stronger hypotheses, or unproved conditional order targets.
+
+Running a finite portfolio of the new and inherited engines preserves
+the best valid bound in each input regime. For exact algorithms, ordinary
+round-robin simulation stops when the first finishes; its overhead is
+constant for a fixed portfolio. This also preserves special-case benefits
+whose assumptions differ from the general-degree normalization. We have
+not proved that our schedules are optimal over all possible portfolios or
+all future combinations of the underlying framework.
+
+\subsection{A slightly faster matrix backend}
+
+The parametric local theorem permits any established $7/3\le\omega<3$.
+Choosing $\omega=19/8$ is supported by the primary bound in \cite{mm},
+with fixed slack. On the same schedule replace $\beta$ by
+$\sqrt{617/1536}$. The root table-formation estimates also decrease, so
+the same accounting applies. The exact expressions become
+\[
+ C_T(\omega)=\frac\pi{\ln2}\frac{\sqrt{105}}2
+       +\frac{\pi\sqrt2}{\ln2}\frac{\sqrt{90}}4
+            \sqrt{\frac{\omega^2+4}{24}},
+\quad
+ C_S(\omega)=\frac{\pi\sqrt2}{\ln2}\sqrt{60}
+            \sqrt{\frac{\omega^2+4}{24}}.
+\]
+The main theorem uses $12/5$ so that the principal comparison uses the
+same backend as the incoming tree packet. The optional refinement does
+not change the logarithmic order, and the code is not an implementation
+of either asymptotically fast backend.
+For $\omega=19/8$, the numerical coefficients are
+$C_T=32.8563452760\ldots$ and $C_S=31.4674831881\ldots$.
+
+\section{Why the stronger logarithmic targets remain unresolved}
+\label{sec:barriers}
+
+\subsection{Precision peeling is locally useful but not a new leading saving}
+
+The incoming frontier packet already implements computing a contribution
+of certified valuation $V$ at residual precision $P-V$. It also explains
+that this does not reduce the leading recursive bound. Our audit confirms
+the reason: every active child creates a fresh Hermite loss of order
+$MD/u$, while inherited precision is only
+$O(\lambda^4 2^{-b_*})MD/u=o(MD/u)$. Reducing an already subordinate
+quantity leaves the leading term unchanged.
+
+The peeling interface retains the same graph and ports. It does not
+correlate large mode weight with a smaller child wire count or lower
+deformation degree. Such an additional correlation could matter, but it
+has not been proved. Treating peeling alone as a second leading saving
+would repeat a limitation already documented in the incoming work.
+
+\subsection{A short index is not a bounded-degree tensor description}
+
+The precision packet compresses mode indices to
+$S_\beta=O(M/\sqrt u+r^2)$ rank bits. The compressed network still has
+only $r$ genuine group tensors, of degree on the scale $S_\beta/r$.
+This fails the required sublinear maximum-degree condition when $r$ is
+fixed or only polylogarithmic. Reapplying the same theorem is not licensed.
+
+The quantitative tradeoff already in that packet is
+$u=O(\log M/\log r)$ for the first pass and $u'=O(\log r)$ for a second
+pass. Their putative savings multiply back to
+\[
+ \frac M{\sqrt{\log M/\log r}}\frac1{\sqrt{\log r}}
+ =\frac M{\sqrt{\log M}}.
+\]
+This is a barrier for that particular proof route, not a complexity lower
+bound for SAT or for every representation of these tensors.
+
+\subsection{The exterior-power route needs more than reduced degree}
+
+The earlier asymptotic-analysis packet explicitly asks for a closed
+recursive interface combining deformation degree $K(2L-1)$,
+$O(M/D)$ modes, $M/8$ compressed-wire children, and admissible descriptions
+and entry costs. If supplied, it would yield
+$\poly(s+\mathcal L)2^{O(\sqrt{sK/\log s})}$, hence
+$2^{O(n\sqrt{\log\log n/\log n})}$ for its intended reduction.
+
+The local exterior-power degree statement does not supply the required
+compressed mode count: the ordinary separation scales with the original
+incidence universe. Antisymmetry restricts occupation but does not itself
+eliminate square-root partition entropy. A generic transfer of low
+incidence degree to rank-bit degree is also false: the singleton
+coefficient table of the degree-one polynomial $z_{2^b}$ is AND on its
+$b$ binary index bits, with Boolean degree $b$.
+
+The sharp local Smith profiles in the newest kernel archive further limit
+improvements obtained just by increasing Cauchy-mode valuation weights.
+The present report gains by summing an existing exact mode graph more
+efficiently. It does not claim a superlinear valuation slope or a new
+compact tensor compiler.
+
+\section{Validation and reproduction}
+\label{sec:validation}
+
+The archive includes the complete report source and compiled PDF; exact
+four-block and separator implementations; independent literal-sum tests
+over rings with zero divisors; rational schedule certificates; source and
+archive hashes; and a single replay command.
+
+\begin{center}
+\begin{tabular}{@{}p{0.33\textwidth}p{0.60\textwidth}@{}}
+\toprule Check & What it establishes\\\midrule
+Four-block certificate & All $6^3=216$ selections of cost forms, the
+analytic correction inequalities, and an exact equality witness.\\
+Separator certificate & The sharp four-group inequality, hierarchical
+path bounds, exact ring contractions, and paid factor-call counts.\\
+Cached graph evaluator & Equality with independent direct enumeration;
+all requested singleton entries counted; chosen pair contractions and
+cardinality-one index cases.\\
+Schedule certificate & Exact capacity equalities, rational logarithmic
+gate, local build costs, interval-separated recurrence candidates,
+and eventual rounded coefficients.\\
+PDF build & Compilation with shell escape disabled, resolved references,
+and visual inspection of rendered pages.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The executed checks include $216$ exact cost-form selections, $46{,}656$
+exhaustive four-group weight vectors, $720$ hierarchical path inequalities,
+$47$ cached graph fixtures, and $216$ streamed graph fixtures. The cached
+fixtures cover $17{,}174$ complete assignments under independent literal
+enumeration; the streamed fixtures separately check $17{,}830$ paid factor
+evaluations. The graph tests include modular rings and nonzero nilpotents.
+Exact interval arithmetic isolates every scalar schedule constant and
+proves the strict recurrence comparisons.
+
+The recorded machine-readable results identify the deterministic seeds.
+Checks use explicit exceptions and remain
+active under \texttt{python -O}; normal and optimized results are compared.
+Finite fixtures validate the algebra and implementation interfaces. The
+proofs in the report establish the asymptotic claims. Neither kind of
+evidence is described as a new Lean/Rocq verification.
+
+From the extracted archive, run
+\begin{verbatim}
+python3 code/replay.py
+python3 code/build_report.py
+\end{verbatim}
+The first command needs Python 3.10 or newer and its standard library. The
+second additionally needs pdfLaTeX and the packages listed in the preamble.
+The replay writes separate results instead of overwriting the delivered
+evidence. No network, credential, SAT repository build, or external
+service is needed. The optional faster matrix backend is a theorem-level
+dependency, not a bundled production implementation.
+
+\appendix
+\section{The twenty-packet review inventory}
+\label{app:inventory}
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.64\textwidth}@{}}
+\toprule Packet & Relevant strongest contribution and status\\\midrule\endfirsthead
+\toprule Packet & Relevant strongest contribution and status\\\midrule\endhead
+\path{cauchy_mode_improvement} & Integral factorial modes with slope three;
+constant improvement, unchanged SAT order.\\
+\path{eth_contraction_improvements} & Sharp Hermite condition counts,
+leading recovery precision six, streamed coefficient extraction.\\
+\path{3sat_precision_refinement} & Exact recovery-loss and taper analysis;
+stronger $n\log\log n/\log n$ target conditional on missing summation.\\
+\path{sat_density_improvement} & Uniform density-sensitive envelope
+\eqref{eq:sat-envelope}; intermediate-density order improvement.\\
+\path{eth_density_refinement} & Overlapping density refinement and
+precision/Smith analysis; no unrestricted order improvement.\\
+\path{3sat_refinement} & Scalar parity lift and incidence-degree reduction;
+second-contraction target lacks the required compact factorization.\\
+\path{3sat_asymptotic_analysis} & Scoped barriers and explicit missing
+degree-preserving and linear-wire interfaces.\\\midrule
+\path{eth_asymmetric_packet_balancing} & Unequal retained/fresh degree
+bounds, general coefficient $76.908995$; lower-degree results separate.\\
+\path{3sat_round2_refinement} & Combined coefficient $84.06627$;
+source and actual-domain audits.\\
+\path{eth_balanced_packing} & Nearly lossless padding; coefficient
+$94.74820$.\\
+\path{eth_high_moment} & High-moment/orbit packing; same general
+coefficient $94.74820$.\\
+\path{eth_matching_refinement} & Matching-potential packing and thin
+precision gaps; same general coefficient $94.74820$.\\
+\path{eth_packet_refinement} & Pair-load control and thin precision gaps;
+coefficient $95.66394$.\\
+\path{eth_recursive_refinement} & Actual-domain modes and additive gaps;
+coefficient $133.20737$.\\
+\path{eth_joint_cauchy} & Full crossing-block slope-four modes; mode graph,
+cached triangle contraction; resource tradeoffs explicit.\\\midrule
+\path{sat_adaptive_contraction} & Streamed separator coefficient
+$55.709478$; cached adaptive coefficient $36.750313$; low-degree and
+kernel benchmarks have different scopes.\\
+\path{sat_frontier_improvements} & Variable-arity and cached compositions;
+practical kernel work. All retain the logarithmic order.\\
+\path{subexponential_sat_frontier} & Multistage polynomial-space coefficient
+$63.852203$; cached $37.930109$; exact label scoring and precision peeling.\\
+\path{subexponential_sat_kernel_improvements} & Exact local Smith profiles,
+adaptive elimination, packet extraction, and arithmetic improvements;
+no new global SAT order.\\
+\path{subsat_contraction_tree} & Recursive cached table construction and
+coordinate/CRT matrix bridge; $35.354588$ time, $34.274803$ space;
+linear prefix feature generation.\\
+\bottomrule
+\end{longtable}
+\normalsize
+The two primary manuscripts are the vendored OpenAI preprint and
+\path{Research/claude-2o-n-3sat/eth.pdf}. The former supplies the common
+normalized framework; the latter has the same stated general SAT order
+but no matched explicit coefficient for this common wire interface.
+
+\begin{thebibliography}{20}
+\bibitem{repo} Vladimir Reshetnikov, \emph{ProveIt: SubexponentialSAT},
+closing snapshot \texttt{dde01c4a63b8} (full identifier in the link).
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/dde01c4a63b822c25b8eb345299346c36f837b49/Computability/SubexponentialSAT}.
+\bibitem{incoming} \emph{ProveIt incoming reports}, historical arrival
+snapshot \texttt{fa6e904d109b} (full identifier in the link).
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/fa6e904d109b738154db7fe41e7f2777e6d24aee/docs/incoming}.
+\bibitem{openai} OpenAI, \emph{The Exponential Time Hypothesis is False},
+October 25, 2026. Upstream pin
+\texttt{7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a}; quantitative contraction
+and reduction appendices.
+\url{https://github.com/openai/math/tree/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026}.
+\bibitem{precision} \emph{3sat precision refinement}, first-round report,
+\path{Research/3sat_precision_refinement/report.tex} in \cite{repo}.
+\bibitem{asymmetric} \emph{Asymmetric packet balancing for subexponential
+SAT}, \path{Research/eth_asymmetric_packet_balancing/report.tex} in
+\cite{repo}.
+\bibitem{joint} \emph{Joint Cauchy contraction},
+\path{Research/eth_joint_cauchy/report.tex} in \cite{repo}.
+\bibitem{adaptive} \emph{Adaptive aggregation for subexponential SAT},
+\path{sat_adaptive_contraction_2026-10-26.zip}, internal
+\path{adaptive_sat_review.tex}, in \cite{incoming}; now
+\path{Research/sat_adaptive_contraction/} in \cite{repo}.
+\bibitem{tree} \emph{Contraction trees and streamed Cauchy features for
+subexponential SAT}, \path{subsat_contraction_tree_2026-10-26.zip}, internal
+\path{report/cached_tree.tex}, in \cite{incoming}; now
+\path{Research/subsat_contraction_tree/} in \cite{repo}.
+\bibitem{frontier} \emph{Subexponential SAT: combined bounds and exact
+implementation improvements},
+\path{subexponential_sat_frontier_2026-10-26.zip}, internal
+\path{theory.tex} and \path{implementation.tex}, in \cite{incoming}.
+\bibitem{kernel} \emph{Subexponential SAT kernel improvements},
+\path{subexponential_sat_kernel_improvements_2026-10-26.zip}, internal
+\path{report.tex}, in \cite{incoming}.
+\bibitem{mm} Josh Alman, Ran Duan, Virginia Vassilevska Williams,
+Yinzhan Xu, Zixuan Xu, and Renfei Zhou,
+\emph{More Asymmetry Yields Faster Matrix Multiplication},
+arXiv:2404.16349, SODA 2025. Only a fixed exponent below $19/8$, and hence
+below $12/5$, is used here; no current-record assertion is required.
+\url{https://arxiv.org/abs/2404.16349}.
+\end{thebibliography}
+\end{document}

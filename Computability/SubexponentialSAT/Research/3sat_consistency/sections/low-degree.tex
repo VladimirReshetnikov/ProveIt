@@ -1,0 +1,219 @@
+\section{A degree-aware specialization for the 3-SAT reduction}
+\label{sec:low-degree}
+
+The generic degree allowance $s^{9/10}$ is deliberately broad. A reduction
+with a smaller maximum degree should use a different retained-range schedule.
+Here we prove a separate bound under maximum initial degree
+$\lceil s^{51/100}\rceil$. Section~\ref{sec:3sat} records the wire and degree
+premises needed to apply such a contraction theorem to 3-SAT. The new
+schedule is useful in its own right; it is not obtained by simply rescaling
+the generic displayed coefficient.
+
+\subsection{A strict rational schedule}
+
+Retain the same group sequence $10,13,7,7,\ldots$ and local coefficients
+as in Section~\ref{sec:recursion}. Put
+\begin{align*}
+ \eta_0&=\frac{59}{800},&
+ \eta_1&=\frac{181}{4000},&
+ \eta_d&=\frac{89}{5000}\left(\frac49\right)^{d-2}\quad(d\ge2).
+\end{align*}
+For $\lambda=\lceil\log_2s\rceil$, use
+\[
+ u_d=\lfloor\eta_d\lambda\rfloor,\qquad
+ B=\lceil6\log_2\lambda\rceil,\qquad
+ a_d=\sum_{j\le d}(u_j+B),
+\]
+relative padding slack $\lambda^{-3}$, and direct evaluation below
+$H=\lceil s/\lambda^{3/4}\rceil$. The two relevant cumulative fractions are
+\[
+ A_1=\eta_0+\eta_1=\frac{119}{1000},\qquad
+ A_\infty=\eta_0+\eta_1+\frac95\eta_2=\frac{472}{3125}.
+\]
+The fixed logarithm bounds
+\[
+ \log_2 10<\frac{1661}{500},\qquad
+ \log_2 13<\frac{3701}{1000},\qquad
+ \log_2 7<\frac{281}{100}
+\]
+are certified by integer powering in the supplied checker. The following
+positive gaps are exact rational values. The degree column subtracts
+$51/100+2\eta_0\log_2 10$ at the root and
+$51/100+A_d\log_2 r_d$ afterwards from one. The capacity column subtracts
+$(1+2\log_2r_d)A_d$ from one.
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Stage & Degree gap & Capacity gap\\\midrule
+Root, $r=10$ & $1/200000$ & $87251/200000$\\
+Depth one, $r=13$ & $49581/1000000$ & $81/500000$\\
+Tail, $r=7$ & $20493/312500$ & $9/78125$\\\bottomrule
+\end{tabular}
+\end{center}
+These are bounds using the displayed rational logarithm upper bounds.
+The fresh-side gate has exponent
+$2A_d\log_2r_d+A_{d-1}\le(1+2\log_2r_d)A_d$, so the capacity column also
+pays that gate. Moreover $A_\infty<51/100$, ensuring that all newly created
+packet degrees remain within the retained degree budget. This proof uses
+stage-specific capacity bounds; replacing every tail logarithm by
+$\log_2 13$ would unnecessarily discard this schedule.
+
+For completeness, the depth and precision arguments still close uniformly.
+Provisionally consider at most $\frac34\log_3\lambda+O(1)$ active tail
+levels. The smallest retained range in that window is a positive power of
+$\lambda$, since $(9/4)^3<3^4$. All fixed exponent gaps in the table absorb
+the $O((\log\lambda)^2)$ cumulative precision buffers and
+$s/M\le\lambda^{3/4}$. Nearly lossless packing then gives actual tail child
+ratio $2/7+o(1)<1/3$, proving the provisional depth bound.
+The product of all relative padding losses is $1+o(1)$, and floors are
+uniformly negligible. The retained deformation scales satisfy
+$D\ge2^{a_{d-1}+B+1}$. Consequently the imported creation precision
+$O(s\lambda^2 2^{a_{d-1}})$ divided by $MD/u_d$ is
+$O(\lambda^{15/4}2^{-B})=o(1)$. This justifies the same sharp precision
+and entropy bounds used in the generic theorem.
+
+All numerical representations have polynomial bit length, because
+$a_d\le(472/3125)\lambda+O((\log\lambda)^2)$.
+The unchanged entry-access costs and the direct leaves are lower order on
+$s/\sqrt\lambda$: the generic permitted original-entry cost
+$2^{O(s^{9/10})}$ already suffices, while new packet descriptions cost
+$\exp(s^{472/3125+o(1)})$ and leaves cost
+$2^{O(s/\lambda^{3/4})}$. No stronger entry-access assumption is silently
+introduced by the smaller degree premise.
+
+\subsection{Charge the recurrence before comparing coefficients}
+
+Let $\beta^2$ be the new exact ten-group coefficient from
+Section~\ref{sec:consistency}. The retained thirteen- and seven-group
+coefficients remain $\beta_{13}^2=1572/4225$ and
+$\beta_7^2=632/1225$, with
+$\alpha_r=\sqrt{2(r-1)}/r$. The geometric tail ratio is again $3/7$.
+Unrolling the paid recurrence gives
+\begin{align*}
+ C_0&=\frac\pi{\ln2}\sqrt{\frac{1600\beta^2}{59}}
+      =13.43744330254181\ldots,\\
+ C_1&=\frac\pi{\ln2}
+      \left(\sqrt{\frac{288}{59}}+
+            \sqrt{\frac{100608}{152945}}\right)
+      =13.68968074357885\ldots,\\
+ C_\infty&=\frac\pi{\ln2}
+      \left(\sqrt{\frac{288}{59}}+
+            \sqrt{\frac{7680}{30589}}+
+            \sqrt{\frac{1200}{15041}}\right)
+      =13.56492576337809\ldots.
+\end{align*}
+Every tail local branch lies below the terminal branch because
+$\alpha_7^2/(1-3/7)^2=3/4>\beta_7^2$. Exact rational enclosures prove
+$C_1>\max(C_0,C_\infty)$.
+
+The joint root selector gives local root space coefficient
+$\frac{20}{21}C_0=12.79756505003982\ldots$.
+The depth-one and initial tail coefficients are respectively
+$3.67597904980247\ldots$ and $1.06178489349021\ldots$; later tail
+coefficients decrease geometrically. Ancestor and descendant tables add
+in size, so their exponent coefficients are maximized rather than summed.
+
+\begin{theorem}[Degree-$51/100$ specialization]\label{thm:low-degree}
+Under the normalized input and entry-access premises of
+Section~\ref{sec:interface}, strengthened to maximum initial degree at most
+$\lceil s^{51/100}\rceil$, there is a deterministic exact contraction algorithm
+with
+\begin{align*}
+ T&\le\poly(s+\mathcal L)\,
+       2^{(\widehat C_T+o(1))s/\sqrt\lambda},\\
+ S&\le\poly(s+\mathcal L)\,
+       2^{(\widehat C_S+o(1))s/\sqrt\lambda},
+\end{align*}
+where
+\[
+ \widehat C_T=C_1=13.68968074357885\ldots,
+ \qquad
+ \widehat C_S=\frac{20}{21}C_0=12.79756505003982\ldots.
+\]
+Thus $13.690$ and $12.798$ are safe eventual coefficients for time and space.
+\end{theorem}
+\begin{proof}
+The strict gate table, depth bootstrap, and precision argument establish all
+premises of the imported local contraction and the new joint certificate
+at every active call. The fully charged recurrence and the strict branch
+comparisons give the time bound. The local space comparisons give the
+space bound. All remaining entry and arithmetic costs were included above.
+Exactness follows from the unchanged contraction identities and plan
+regrouping, independently of the parameter estimates.
+\end{proof}
+
+\subsection{What causes this specialization's improvement}
+
+A same-schedule comparison is essential. Replacing the new root coefficient
+by the older pairwise certificate gives root coefficient
+$13.46705560666417\ldots$. That is still below $C_1$, so the old and new
+root certificates give \emph{the same overall time coefficient} on this
+schedule. The low-degree time improvement is therefore a degree-aware
+composition of the available ingredients; it must not be attributed to
+the new root potentials. The new joint certificate separately supplies the
+smaller root space guarantee.
+
+The old time-support argument on this schedule bounds local root space by
+$13.46705560666417\ldots$; the new joint argument bounds it by
+$12.79756505003982\ldots$. Dividing the old root bound by $21/20$ would
+require its own augmented-support certificate and is not justified merely
+by the new selector's existence. These comparisons concern valid upper
+bounds, not matching lower bounds for actual memory use.
+
+The standalone \texttt{check\_low\_degree.py} verifies the exact gate gaps,
+recurrence radicals, interval comparisons, and the unchanged dominant time
+branch for both root certificates. It also rejects three deliberately
+false claims, including reuse of this schedule at degree exponent $0.52$.
+The specialized coefficients remain per normalized wire; converting them
+into a numerical coefficient per 3-SAT variable requires the explicit wire
+ledger of the chosen reduction.
+
+\subsection{Earlier usable bounds and a stronger inherited comparator}
+
+The printed $25.163765\ldots$ polynomial-space bound at degree $s^{0.51}$
+is not the only fair comparator \cite{exactkernels}. The eight-group cached
+proof in \cite{cacheeight} uses, in its smaller-degree branch,
+$\eta_d=1/(15\cdot2^d)$. Its root and retained-degree exponents are
+$\delta+2/5$, while its fresh-side and capacity exponent is at most $14/15$.
+It therefore works for every fixed $\delta<3/5$, including $51/100$,
+although the stated corollary uses the stronger $s^{1/12}$ premise.
+This already gives time $19.08387285\ldots$ and space $16.99635053\ldots$.
+Replacing its matrix allowance by the available $12/5$ bound leaves its
+literal block-table construction as the bottleneck, with time coefficient
+$(\pi/\ln2)\sqrt{135/8}=18.61856916\ldots$.
+Omitting the table-construction cost would give an invalid comparison.
+
+A closer comparator simply multiplies every taper in the incoming generic
+$10\to13\to7$ schedule by $17/4$, keeping its old pairwise certificate.
+Its cumulative tapers are $5117/80000$, $9163/80000$, and $34/225$.
+The degree and capacity gates hold for $\delta=51/100$; the tail check uses
+the stricter certified bound $\log_2 7<14037/5000$.
+The dominant root coefficient is then
+\[
+ \frac{29.81160894538347\ldots}{\sqrt{17/4}}
+ =14.46075441781\ldots.
+\]
+The exact checker includes these gates and all paid branches. This is an
+inherited composition evaluated here, not a theorem printed in the source.
+It is a substantially stronger baseline than comparing only with the old
+generic headline or the polynomial-space number.
+
+\begin{center}\small
+\begin{tabular}{lrl}
+\toprule Construction valid at degree $s^{0.51}$ & Time & Space class\\
+\midrule
+Printed exact-kernels branch & $25.16377\ldots$ & Polynomial\\
+Eight-group proof, extended premise & $19.08387\ldots$ & Subexponential\\
+Eight groups, faster backend, tables paid & $18.61857\ldots$ & Subexponential\\
+Old pairwise schedule scaled by $17/4$ & $14.46075\ldots$ & Subexponential\\
+New stage-specific schedule & $13.68968\ldots$ & Subexponential\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last improvement is about $5.33\%$ relative to the immediately
+preceding time coefficient. The new root potentials are not its cause,
+as the same-schedule calculation above makes explicit. None of these
+comparisons proves optimality among all retunings of older primitives.
+For the stronger degree-$s^{1/12}$ promise, earlier cached coefficients
+as small as $13.37965\ldots$ remain available; the present specialization
+does not supersede that separate regime \cite{flags}.

@@ -1,0 +1,249 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:30:16: error: unsolved goals
+case func.zero
+ξ : Type u_1
+n : ℕ
+bv : Fin n → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+v : Fin 0 → Semiterm ℒₒᵣ ξ n
+ih :
+  ∀ (a : Fin 0),
+    Term.eval natStructure ee (termAux bv fv (v a)) =
+      Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v a)
+⊢ 0 =
+    Structure.func Language.ORing.Func.zero fun i =>
+      Semiterm.val
+        (fun i =>
+          Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+            (bv i))
+        (fun x =>
+          Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+            (fv x))
+        (v i)
+
+case func.one
+ξ : Type u_1
+n : ℕ
+bv : Fin n → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+v : Fin 0 → Semiterm ℒₒᵣ ξ n
+ih :
+  ∀ (a : Fin 0),
+    Term.eval natStructure ee (termAux bv fv (v a)) =
+      Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v a)
+⊢ 1 =
+    Structure.func Language.ORing.Func.one fun i =>
+      Semiterm.val
+        (fun i =>
+          Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+            (bv i))
+        (fun x =>
+          Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+            (fv x))
+        (v i)
+
+case func.add
+ξ : Type u_1
+n : ℕ
+bv : Fin n → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+v : Fin 2 → Semiterm ℒₒᵣ ξ n
+ih :
+  ∀ (a : Fin 2),
+    Term.eval natStructure ee (termAux bv fv (v a)) =
+      Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v a)
+⊢ Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+        (termAux bv fv (v 0)) +
+      Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+        (termAux bv fv (v 1)) =
+    Structure.func Language.ORing.Func.add fun i =>
+      Semiterm.val
+        (fun i =>
+          Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+            (bv i))
+        (fun x =>
+          Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+            (fv x))
+        (v i)
+
+case func.mul
+ξ : Type u_1
+n : ℕ
+bv : Fin n → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+v : Fin 2 → Semiterm ℒₒᵣ ξ n
+ih :
+  ∀ (a : Fin 2),
+    Term.eval natStructure ee (termAux bv fv (v a)) =
+      Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v a)
+⊢ Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+        (termAux bv fv (v 0)) *
+      Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+        (termAux bv fv (v 1)) =
+    Structure.func Language.ORing.Func.mul fun i =>
+      Semiterm.val
+        (fun i =>
+          Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+            (bv i))
+        (fun x =>
+          Term.eval { zero := 0, succ := fun x => x + 1, add := fun x1 x2 => x1 + x2, mul := fun x1 x2 => x1 * x2 } ee
+            (fv x))
+        (v i)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:32:62: warning: This simp argument is unused:
+  standardModel
+
+Hint: Omit it from the simp argument list.
+  simp [termAux, Term.eval, natStructure, ArithmeticExpression.semiringStructure,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲Semiterm.val, s̵t̵a̵n̵d̵a̵r̵d̵M̵o̵d̵e̵l̵,̵ ̵ih]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:32:77: warning: This simp argument is unused:
+  ih
+
+Hint: Omit it from the simp argument list.
+  simp [termAux, Term.eval, natStructure,
+  ̵  ̵ ̵ ̵ ̵ ̵ ̵ ̵ArithmeticExpression.semiringStructure,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲Semiterm.val, standardModel,̵ ̵i̵h̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:69:2: error: Unnecessary `generalizing` argument: Variable `bv` is generalized automatically
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:70:10: error: unsolved goals
+case verum
+ξ : Type u_1
+n n✝ : ℕ
+bv : Fin n✝ → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+⊢ (Semiformula.Eval (fun i => Term.eval natStructure ee (bv i)) fun x => Term.eval natStructure ee (fv x))
+    Semiformula.verum
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:72:12: error: unsolved goals
+case rel.eq
+ξ : Type u_1
+n n✝ : ℕ
+bv : Fin n✝ → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+v : Fin 2 → Semiterm ℒₒᵣ ξ n✝
+⊢ Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v 0) =
+      Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v 1) ↔
+    {
+        toTr :=
+          Semiformula.EvalAux
+            {
+              func := fun x f =>
+                match (motive := (x : ℕ) → Language.ORing.Func x → (Fin x → ℕ) → ℕ) x, f with
+                | .(0), Language.ORing.Func.zero => fun x => 0
+                | .(0), Language.ORing.Func.one => fun x => 1
+                | .(2), Language.ORing.Func.add => fun v => v 0 + v 1
+                | .(2), Language.ORing.Func.mul => fun v => v 0 * v 1,
+              rel := fun x r =>
+                match (motive := (x : ℕ) → Language.ORing.Rel x → (Fin x → ℕ) → Prop) x, r with
+                | .(2), Language.ORing.Rel.eq => fun v => v 0 = v 1
+                | .(2), Language.ORing.Rel.lt => fun v => v 0 < v 1 }
+            (fun x => Term.eval natStructure ee (fv x)) fun i => Term.eval natStructure ee (bv i),
+        map_top' := ⋯, map_bot' := ⋯, map_neg' := ⋯, map_imply' := ⋯, map_and' := ⋯, map_or' := ⋯ }
+      (Semiformula.rel Language.ORing.Rel.eq v)
+
+case rel.lt
+ξ : Type u_1
+n n✝ : ℕ
+bv : Fin n✝ → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+v : Fin 2 → Semiterm ℒₒᵣ ξ n✝
+⊢ Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v 0) <
+      Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v 1) ↔
+    {
+        toTr :=
+          Semiformula.EvalAux
+            {
+              func := fun x f =>
+                match (motive := (x : ℕ) → Language.ORing.Func x → (Fin x → ℕ) → ℕ) x, f with
+                | .(0), Language.ORing.Func.zero => fun x => 0
+                | .(0), Language.ORing.Func.one => fun x => 1
+                | .(2), Language.ORing.Func.add => fun v => v 0 + v 1
+                | .(2), Language.ORing.Func.mul => fun v => v 0 * v 1,
+              rel := fun x r =>
+                match (motive := (x : ℕ) → Language.ORing.Rel x → (Fin x → ℕ) → Prop) x, r with
+                | .(2), Language.ORing.Rel.eq => fun v => v 0 = v 1
+                | .(2), Language.ORing.Rel.lt => fun v => v 0 < v 1 }
+            (fun x => Term.eval natStructure ee (fv x)) fun i => Term.eval natStructure ee (bv i),
+        map_top' := ⋯, map_bot' := ⋯, map_neg' := ⋯, map_imply' := ⋯, map_and' := ⋯, map_or' := ⋯ }
+      (Semiformula.rel Language.ORing.Rel.lt v)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:76:13: error: unsolved goals
+case nrel.eq
+ξ : Type u_1
+n n✝ : ℕ
+bv : Fin n✝ → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+v : Fin 2 → Semiterm ℒₒᵣ ξ n✝
+⊢ ¬Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v 0) =
+        Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v 1) ↔
+    {
+        toTr :=
+          Semiformula.EvalAux
+            {
+              func := fun x f =>
+                match (motive := (x : ℕ) → Language.ORing.Func x → (Fin x → ℕ) → ℕ) x, f with
+                | .(0), Language.ORing.Func.zero => fun x => 0
+                | .(0), Language.ORing.Func.one => fun x => 1
+                | .(2), Language.ORing.Func.add => fun v => v 0 + v 1
+                | .(2), Language.ORing.Func.mul => fun v => v 0 * v 1,
+              rel := fun x r =>
+                match (motive := (x : ℕ) → Language.ORing.Rel x → (Fin x → ℕ) → Prop) x, r with
+                | .(2), Language.ORing.Rel.eq => fun v => v 0 = v 1
+                | .(2), Language.ORing.Rel.lt => fun v => v 0 < v 1 }
+            (fun x => Term.eval natStructure ee (fv x)) fun i => Term.eval natStructure ee (bv i),
+        map_top' := ⋯, map_bot' := ⋯, map_neg' := ⋯, map_imply' := ⋯, map_and' := ⋯, map_or' := ⋯ }
+      (Semiformula.nrel Language.ORing.Rel.eq v)
+
+case nrel.lt
+ξ : Type u_1
+n n✝ : ℕ
+bv : Fin n✝ → SetTheory.PA.Term
+fv : ξ → SetTheory.PA.Term
+ee : ℕ → ℕ
+v : Fin 2 → Semiterm ℒₒᵣ ξ n✝
+⊢ Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v 1) ≤
+      Semiterm.val (fun i => Term.eval natStructure ee (bv i)) (fun x => Term.eval natStructure ee (fv x)) (v 0) ↔
+    {
+        toTr :=
+          Semiformula.EvalAux
+            {
+              func := fun x f =>
+                match (motive := (x : ℕ) → Language.ORing.Func x → (Fin x → ℕ) → ℕ) x, f with
+                | .(0), Language.ORing.Func.zero => fun x => 0
+                | .(0), Language.ORing.Func.one => fun x => 1
+                | .(2), Language.ORing.Func.add => fun v => v 0 + v 1
+                | .(2), Language.ORing.Func.mul => fun v => v 0 * v 1,
+              rel := fun x r =>
+                match (motive := (x : ℕ) → Language.ORing.Rel x → (Fin x → ℕ) → Prop) x, r with
+                | .(2), Language.ORing.Rel.eq => fun v => v 0 = v 1
+                | .(2), Language.ORing.Rel.lt => fun v => v 0 < v 1 }
+            (fun x => Term.eval natStructure ee (fv x)) fun i => Term.eval natStructure ee (bv i),
+        map_top' := ⋯, map_bot' := ⋯, map_neg' := ⋯, map_imply' := ⋯, map_and' := ⋯, map_or' := ⋯ }
+      (Semiformula.nrel Language.ORing.Rel.lt v)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:81:6: error: `simp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:84:6: error: `simp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:87:6: error: `simp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:92:6: error: `simp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:75:26: warning: This simp argument is unused:
+  Semiformula.EvalAux
+
+Hint: Omit it from the simp argument list.
+  simp [Semiformula.doubleNegation, formulaAux, Formula.Sat, Semiformulaᵢ.neg_def,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲sat_ltFormula, eval_termAux, Semiformula.Eval, S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵E̵v̵a̵l̵A̵u̵x̵,̵ ̵standardModel]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/FoundationPAHFNatSemantics.lean:79:26: warning: This simp argument is unused:
+  Semiformula.EvalAux
+
+Hint: Omit it from the simp argument list.
+  simp [Semiformula.doubleNegation, formulaAux, Formula.Sat, Semiformulaᵢ.neg_def,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲sat_ltFormula, eval_termAux, Semiformula.Eval, S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵E̵v̵a̵l̵A̵u̵x̵,̵ ̵standardModel]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,161 @@
+\section{Repository review and the formal baseline}\label{sec:review}
+
+\subsection{Pinned scope and recent changes}
+
+The review uses these two immutable ProveIt snapshots:
+\begin{flushleft}\small
+Opening: \texttt{8e76d515063c4b9fbd8743a846b457e3a01bc039}\\
+Closing: \texttt{0cf10036e6ad732c27f13e6058f4acd9b3d78415}
+\end{flushleft}
+The opening snapshot contains twenty-nine filed refinement packets, the
+separate Claude manuscript, and five newer incoming ZIP packets. At the
+closing snapshot, those same five packets have been filed, giving
+thirty-four refinement packets plus the Claude manuscript; incoming
+contains only its README.
+We inspected the scoped commit histories, inventories, report sources and
+relevant implementations. This is not a claim that every prior proof has
+been independently reconstructed or formalized.
+
+\begin{center}\small
+\begin{tabular}{@{}p{.19\textwidth}p{.74\textwidth}@{}}
+\toprule Commit & Relevant change\\\midrule
+\texttt{2b925d8800} & Initial placement of seven refinement packets and manuscripts.\\
+\texttt{3e09608991} & Vendors the OpenAI preprint from upstream \texttt{7ef5c0cc5c}.\\
+\texttt{6d3adc4506} & Places eight round-two packets.\\
+\texttt{450252e9d8} & Places five round-three packets and restores two scripts.\\
+\texttt{a7ae5ab55f} & Places nine round-four packets.\\
+\texttt{7de9d09fec} & Links the newly public Anthropic Lean development.\\
+\texttt{26bd83d4b3} & Adds the five newest incoming packets reviewed here.\\
+\texttt{8e76d51506} & Opening snapshot, containing the five incoming arrivals.\\
+\texttt{324f3d9b00} & Places those same five round-five packets; no mathematical change.\\
+\texttt{0cf10036e6} & Closing snapshot; thirty-four packets filed and incoming clear.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The relevant October~27 UTC commits occurred on October~26 in Pacific time.
+The archive records full hashes and immutable URLs. The source preprint
+directory is an ordinary vendored directory, not an unresolved submodule.
+
+The closing audit compared all 213 newly placed file blobs with the original
+ZIP bytes and found them identical. The nine omitted members are a hash
+ledger, one duplicated README snapshot and seven generated build byproducts.
+Every previously filed research directory retains its Git tree hash.
+The latest histories of both requested paths end at the round-five
+placement, so no additional mathematical packet or changed mathematical
+content entered the comparison. Full evidence is recorded in
+\path{provenance.json} and \path{audit/closing_archive_verification.json}.
+
+\subsection{The preceding frontier}
+
+The source's sharper tensor-contraction appendix gives, for 3-SAT,
+$\poly(n+m)2^{O(n\log\log n/\sqrt{\log n})}$ time, with polynomial
+space, and $2^{O_D(n/\sqrt{\log n})}$ at fixed density
+\cite{source}. Its interpolation-only body and the older OpenAI Lean scope
+statement are weaker; they are not the baseline used here.
+
+The following ledger records the contribution and limitation of the
+twenty-nine packets already filed at the opening snapshot. Constants are on the normalized wire scale unless stated.
+The status of the original papers remains that of externally supplied
+research; ProveIt's placement commits explicitly do not claim to verify
+their entire contents \cite{index}.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.34\textwidth}>{\raggedright\arraybackslash}p{.59\textwidth}@{}}
+\toprule Packet & Contribution relevant to this review\\\midrule
+\endfirsthead
+\toprule Packet & Contribution relevant to this review\\\midrule
+\endhead
+\path{cauchy_mode_improvement} & Factorial integral Cauchy modes; smaller mode coefficient, unchanged order.\\
+\path{eth_contraction_improvements} & Sharp Hermite counts and streamed packet extraction; polynomial-space coefficient $648.44$.\\
+\path{3sat_precision_refinement} & Sharp recovery loss; faster structured mode summation remains an unproved interface.\\
+\path{sat_density_improvement} & Density-sensitive $n\log(2+m/n)/\sqrt{\log n}$ envelope.\\
+\path{eth_density_refinement} & Independent overlapping density improvement; no unrestricted order change.\\
+\path{3sat_refinement} & Scalar parity lift and smaller incidence-degree cap; compact second contraction remains conditional.\\
+\path{3sat_asymptotic_analysis} & Restricted precision, enumeration and degree barriers; no better unrestricted exponent.\\
+\path{eth_asymmetric_packet_balancing} & Nearly lossless asymmetric packing, additive precision buffer; coefficient $76.909$.\\
+\path{3sat_round2_refinement} & Matching-potential packing and two-stage coefficient $84.066$; scoped rank tests.\\
+\path{eth_balanced_packing} & Nearly balanced whole-vertex labeling; coefficient $94.748$; direct-incidence SAT application.\\
+\path{eth_high_moment} & High-moment derandomization and degree-sensitive grouping; coefficient $94.748$.\\
+\path{eth_matching_refinement} & Matching-potential version of the same $94.748$ coefficient.\\
+\path{eth_packet_refinement} & Two-stage packing and additive gaps; coefficient $95.664$.\\
+\path{eth_recursive_refinement} & Actual residue-class Cauchy structure and low-degree corollaries; coefficient $133.207$.\\
+\path{eth_joint_cauchy} & Full-orientation Cauchy modes and pair-weight entropy; coefficient $319.69$.\\
+\path{sat_adaptive_contraction} & Adaptive streamed separators; polynomial-space $55.709$, cached $36.750$.\\
+\path{sat_frontier_improvements} & Variable alphabets and degree-sensitive schedules; polynomial-space $63.857$.\\
+\path{subexponential_sat_frontier} & Polynomial-space $63.852$, cached $37.930$; exact labeling and precision kernels.\\
+\path{subsat_contraction_tree} & Fully charged cached tree construction; time $35.355$.\\
+\path{subexponential_sat_kernel_improvements} & Compatible compositions, adaptive Smith separation and exact extraction kernels.\\
+\path{sat_adaptive_bounds} & Sharp flag separator; general polynomial-space $46.185$ and low-degree cached $13.379649$.\\
+\path{sat_adaptive_tree_certificate} & Per-allocation tree choice; cached $30.891$.\\
+\path{sat_adaptive_frontier} & Adaptive quartet conditioning and joint cached selection; cached $31.252$.\\
+\path{sat_adaptive_matrix_partition} & Optimal specified sixteen-group separator; cached $34.325/34.024$.\\
+\path{subexponential_sat_adaptive_four} & Four-block local inequality; cached $32.916$, or $32.856$ with a sharper backend.\\
+\path{subsat_rectangular} & Rectangular multiplication with input/output cost, ring bridge, and precision barriers; cached $33.994$.\\
+\path{eth_adaptive_exact_kernels} & Degree-sensitive schedules and exact packing/Cauchy kernels; general polynomial-space $55.332$.\\
+\path{3sat_round3_frontier} & Low-degree polynomial-space $23.666$ and exact extraction kernels; reviewed an earlier frontier.\\
+\path{eth_adaptive_schedules} & Variable schedules and incremental matching potential; polynomial-space $63.781$.\\
+\bottomrule
+\end{longtable}
+
+Several packets report measured improvements of individual kernels. Those
+measurements are not end-to-end 3-SAT benchmarks and do not establish a
+new logarithmic-order theorem. Likewise, a stronger bound requiring an
+unsupplied factorization is not a proved competitor in the frontier table.
+
+The five packets that were incoming at the opening snapshot, now filed
+as round five, must also enter the comparison \cite{incoming}:
+
+\begin{center}\small
+\begin{tabular}{@{}p{.40\textwidth}rr@{}}
+\toprule Round-five packet & Cached time & Cached space\\\midrule
+\path{sat_affine_cauchy} & $30.41335$ & $29.46603$\\
+\path{sat_affine_contraction} & $30.25704$ & $25.98907$\\
+\path{sat_affine_geometry} & $30.26987$ & $29.48754$\\
+\path{sat_affine_plane} & $30.69134$ & $29.46603$\\
+\path{sat_pairwise_certificates} & $29.81161$ & $29.81161$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All five retain the same normalized exponent scale. The last also improves
+the low-degree polynomial-space coefficient to $16.8122338\ldots$.
+The earlier $25.98907$ cached space coefficient remains a useful
+time--space tradeoff: our generic $28.633$ space guarantee does not
+dominate it. The principal numeric improvement claimed here is time under
+matched premises, together with a stronger low-degree time/space pair.
+
+\subsection{What the cited Lean development establishes}
+
+The supplied Anthropic SHA
+\texttt{1a6eee293b9e00cb432eef6018a21f523623a9af} is the exact PR~31 head.
+It was merged as \texttt{16a5ce41304fcdaea4e0be7c132e1c361dc26da5}.
+The formal statement quantifies one deterministic finite-alphabet machine
+and one constant before the formula and clause width. Specializing to
+3-SAT gives exact counting within
+\[
+ 2^{O\left(\min\left\{
+ m/\sqrt{\log m},\ n\log\log n/\sqrt{\log n}\right\}\right)}.
+\]
+The formal promises include distinct clause lists, every variable occurring,
+$n\ge4$, and $m\ge2$; elementary preprocessing and the separate naming
+frontend handle general encodings. This is a uniform machine theorem,
+not merely a different machine for each desired exponential rate
+\cite{anthropicmain,anthropicsolution}.
+
+The exact SHA has a successful GitHub Actions verification run, including
+the build and the declared Comparator checks \cite{anthropicci}.
+A static source scan found the two intended challenge placeholders and
+no additional occurrences of \texttt{sorry}, \texttt{axiom},
+\texttt{admit}, or \texttt{unsafe}. Lean and Lake are unavailable in this
+execution environment, so this work did not perform a fresh kernel build.
+The audit examines the endpoint and its principal interfaces, not each of
+the roughly 1,050 proof modules.
+
+The formal proof does not certify the numeric coefficients of any ProveIt
+refinement. Its intermediate machine simulation can cost a fixed power of
+an operation budget, which preserves the stated big-$O$ order but changes
+the constant in the exponent. The explicit comments in
+\texttt{Solution.lean} explain this distinction. Our coefficients instead
+come from the direct bit-operation accounting in the stated contraction
+and matrix interfaces.
+

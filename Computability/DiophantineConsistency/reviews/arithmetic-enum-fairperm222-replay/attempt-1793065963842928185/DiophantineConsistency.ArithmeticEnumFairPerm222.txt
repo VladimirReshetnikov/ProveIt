@@ -1,0 +1,35 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticEnumFairPerm222.lean:165:10: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+initialCandidate initialWork offset time w : V
+hw : run time (liveValue 0 initialCandidate initialWork) = liveValue 0 (initialCandidate + offset) w
+t : V
+left✝ : t ≤ initialCandidate + offset + 1
+he :
+  run t (liveValue 0 (initialCandidate + offset) w) =
+    if ArithmeticCommandRunPerm222.evalValue (initialCandidate + offset + 1) w = 0 then 0
+    else
+      liveValue 0 (initialCandidate + offset + 1)
+        (ArithmeticCommandRunPerm222.evalValue (initialCandidate + offset + 1) w - 1)
+hv : ¬ArithmeticCommandRunPerm222.evalValue (initialCandidate + offset + 1) w = 0
+⊢ (if ArithmeticCommandRunPerm222.evalValue (initialCandidate + (offset + 1)) w = 0 then 0
+    else
+      liveValue 0 (initialCandidate + (offset + 1))
+        (ArithmeticCommandRunPerm222.evalValue (initialCandidate + (offset + 1)) w - 1)) =
+    liveValue 0 (initialCandidate + (offset + 1))
+      (ArithmeticCommandRunPerm222.evalValue (initialCandidate + (offset + 1)) w - 1)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticEnumFairPerm222.lean:165:24: warning: This simp argument is unused:
+  hv
+
+Hint: Omit it from the simp argument list.
+  simp only [h̵v̵,̵if_false, ̲add_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticEnumFairPerm222.lean:165:27: warning: This simp argument is unused:
+  if_false
+
+Hint: Omit it from the simp argument list.
+  simp only [̵h̵v̵,̵i̵f̵_̵f̵a̵l̵s̵e̵,̵a̵d̵d̵_̵a̵s̵s̵o̵c̵]̵[̲h̲v̲,̲ ̲a̲d̲d̲_̲a̲s̲s̲o̲c̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

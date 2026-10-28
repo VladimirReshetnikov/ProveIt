@@ -1,0 +1,184 @@
+# Exact convolution for packet-Cauchy actions
+
+## Claim and scope
+
+For an L-slot packet, its Cauchy deformation matrix is Toeplitz. Given its
+2L-1 distinct diagonals, its complete action on an L-vector over
+R_p=(Z/2^p Z)[U]/(U^2+U+1) can be computed with three exact integer
+convolutions. An actual Boolean column input needs two narrower products.
+The resulting bit work is O(M_int(L(p+log L))) plus linear packing and
+unpacking; M_int denotes the cost of exact integer multiplication. With a
+quasi-linear integer multiplier this is quasi-linear in that packed length.
+The included Python prototype uses the host's big-integer multiplier; it
+does not implement or claim an asymptotically optimal integer multiplier.
+
+More explicitly, for the implemented fixed quadratic ring the action costs
+O(M_int(L(p+log L))+L(p+log L)) bit operations, includes reading the
+diagonals/vector and writing all L output pairs, and uses
+O(L(p+log L)) working bits. Diagonal preparation costs O(L) ring
+multiplications plus two unit inversions, hence O(L M_int(p)+I(p)) bit
+operations for fixed quadratic degree, apart from the exact input
+normalization cost stated below. Thus preparing and applying a packet costs
+O(L M_int(p)+I(p)+M_int(L(p+log L))), with linear terms understood.
+The dense general-ring control uses L^2 quadratic-ring multiplications and
+O(L^2) additions. The stronger masked Boolean control uses only additions
+on the selected row/column pairs and can be faster at small sizes.
+
+For the source's unramified extension degree e and nilpotent length ell,
+the Toeplitz identity remains exact. Because W itself has no V dependence,
+one conservative extension of the action is e^2*ell scalar convolutions,
+followed by coefficient reduction modulo the defining polynomial. For
+bounded-size defining coefficients this gives
+O(e^2*ell*M_int(L(p+log L))+L*e^2*ell*p) bit work, in addition to kernel
+preparation in that extension. This is a direct coordinate algorithm, not
+an implemented arbitrary-extension API. The delivered code fixes e=2 and
+ell=1; its measured ratios are only for that ring.
+
+This improves the quadratic dense-action subroutine. It does not change the
+number of weighted mode tuples, prove a new SAT exponent order, construct a
+complete contraction engine, or replace the full Cauchy feature table when
+an application actually needs every feature. Toeplitz-to-convolution and
+Kronecker substitution are classical techniques. The contribution relative
+to the reviewed corpus is their exact, ring-safe application to this packet
+action, an implementation and matched controls.
+
+## Algebraic identity
+
+Use the source's notation L=2^a, S={-L,...,L-1}, alpha=2L,
+C(T)=product_{q in S}(T-q), and T=t+alpha*zeta, with t in S. Put
+
+    w_d = product_{q in S, q != d}(T-q) / C'(0), -L < d < L.
+
+Then W_xy(T)=w_(y-x). For a vector v_y define the polynomial arrays
+
+    A(X)=sum_{d=-L+1}^{L-1} w_d X^(d+L-1),
+    B(X)=sum_{y=0}^{L-1} v_y X^(L-1-y).
+
+Their product has coefficient
+
+    [X^(2L-2-x)] A(X) B(X) = sum_y w_(y-x) v_y.
+
+This proves the action formula over any commutative coefficient ring; no
+field inverse or division by L is involved. For a masked local block,
+replace v_y by zero on excluded columns and discard excluded output rows.
+At a fixed source valuation level a packet has at most two group symbols,
+so all its local blocks need at most two such masked actions.
+
+There is a useful exact specialization when both slot sets are arithmetic
+progressions. Rows r+hj and columns c+hk give the smaller Toeplitz matrix
+w_(c-r+h(k-j)). Thus the bit-0 local groups, with opposite row/column
+parities, require a convolution of dimension L/2, not L. The routine
+strided_boolean_action implements this specialization and restores zeros
+at all excluded output positions. This reduces practical overhead; it
+does not change the already stated asymptotic order.
+
+## Integral preparation in O(L) ring operations
+
+The concrete implementation supports exact integer coordinates of zeta in
+Z[U]/(U^2+U+1), then reduces outputs modulo 2^p. The reduction modulo 2 of
+U^2+U+1 is irreducible. Thus an element is a unit exactly when its two
+integer coordinates are not both even, and its 2-adic valuation is the
+minimum coordinate valuation. The latter is multiplicative on nonzero
+elements in the associated unramified local ring.
+
+For d != t, v_2(T-d)=v_2(t-d)<=a. If zeta is nonzero, the remaining factor
+T-t has valuation a+1+v_2(zeta). The complete residue grid gives
+
+    sum_{q in S, q != t} v_2(t-q) = v_2(C'(0))
+
+independently of t. Consequently
+
+    v_2(C(T)/C'(0)) = a+1+v_2(zeta),
+
+and cancellation of any one T-d leaves a nonnegative valuation. To compute
+all w_d, split each exact factor T-q into a power of two and a unit before
+reduction. Multiply the units, cancel the scalar odd part of C'(0), and
+batch-invert the O(L) factor units. For each d, subtract its exact valuation
+and multiply by its inverse unit. Only nonnegative final powers of two are
+restored. Nothing divides a residue by two.
+
+If zeta=0, exactly one factor T-t is zero. Every w_d except d=t is zero;
+w_t=C'(t)/C'(0) is computed after cancelling the zero factor symbolically.
+If t=-L, that diagonal is outside the L by L matrix, so all entries vanish.
+The code handles this branch explicitly. Unit inversion in R_p uses
+
+    (a+bU)^(-1) = ((a-b)-bU)/(a^2-ab+b^2),
+
+whose scalar denominator is odd precisely for a unit. Preparation uses
+O(L) p-bit ring operations and two unit inversions, plus exact input
+normalization/valuation bookkeeping. Arbitrarily long input coordinates
+also incur their input-reading and normalization cost.
+
+## No-carry convolution
+
+After choosing canonical residues, let A=max a_i, B=max b_j and
+t=min(number of a_i, number of b_j). Every unreduced scalar convolution
+coefficient is at most tAB. Choose a byte-aligned power Q of two strictly
+larger than tAB. Form integers sum_i a_i Q^i and sum_j b_j Q^j. Their
+ordinary product contains the exact convolution coefficients as radix-Q
+digits, because none reaches Q. Read those digits and reduce modulo 2^p.
+The zero-input case is handled before choosing Q. Byte-array packing and
+unpacking are linear in the packed bit length and avoid quadratic repeated
+shifting of large integers.
+
+For pairs representing a+bU and c+dU, take the scalar convolutions
+
+    A=a*c, B=b*d, C=(a+b)*(c+d).
+
+The answer has real coordinate A-B and U-coordinate C-A-2B, since
+U^2=-U-1. All coordinate arrays can first be reduced modulo 2^p. For a
+Boolean column vector, compute its convolution with each diagonal
+coordinate separately; no cross-coordinate product is necessary. This
+also reduces the required radix from roughly 2p+log L bits to p+log L bits.
+
+## Independent evidence
+
+The cancelled-polynomial oracle forms each w_d directly as a product of
+2L-1 factors at precision p+v_2(C'(0)), then removes the known scalar power
+of two. It shares no unit-product preparation, batch inverses, or Toeplitz
+convolution with the production routine. The action oracle is literal
+matrix-vector summation. A stronger Boolean control skips zero columns and
+masked rows and performs no multiplication by Boolean bits.
+
+The verifier checks 1,048 packet cases, 12,328 independently prepared
+diagonals, 2,096 general vector actions, 149 arbitrary masked actions,
+1,048 Boolean masked actions, 1,048 parity-strided actions, 350 unrelated
+packed-convolution cases and
+10 invalid inputs. It includes signed 60-bit extension parameters, zero and
+nonunit parameters, scalar and extension coordinates, p=1 and p=129, and
+the entire retained/interpolating grid for small L. Normal and optimized
+Python produce identical digests. The finite tests corroborate the
+implementation; the all-size proof is the identity and arithmetic argument
+above.
+
+Run:
+
+    python3 check_toeplitz.py
+    python3 -O check_toeplitz.py
+    python3 check_toeplitz.py --benchmark --output benchmarks_rerun.json
+
+Benchmarks are paired five-repeat synthetic subroutine timings. General
+ring-vector measurements and the stronger Boolean-mask measurements are
+reported separately in benchmarks.json. They compare identical outputs
+and arithmetic domains; they do not compare complete SAT solver runtimes.
+The generic full-grid convolution is slower than the stronger Boolean
+control on the sampled small fixtures; that negative result is retained.
+The strided specialization is also measured against this control, without
+using a multiplication-heavy Boolean baseline.
+
+## Source
+
+The packet definition is OpenAI's quantitative-contraction.tex,
+equation tensor-cauchy and its integrality lemma, pinned at
+7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a:
+https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/The-Exponential-Time-Hypothesis-is-False-October-25-2026/build/quantitative-contraction.tex
+
+Prior ProveIt packets optimize full feature tables and individual
+coefficients. A corpus search for Toeplitz, convolution, FFT and multipoint
+action did not find this action algorithm in the reviewed filed/incoming
+reports. This is a corpus-relative observation, not a global priority claim.
+
+Conservative report accounting: include O(log L) factor/valuation
+bookkeeping with precision by writing O(L M_int(p+log L)+I(p)+
+M_int(L(p+log L))) after exact input normalization. Action workspace also
+includes the chosen integer multiplication algorithm workspace.

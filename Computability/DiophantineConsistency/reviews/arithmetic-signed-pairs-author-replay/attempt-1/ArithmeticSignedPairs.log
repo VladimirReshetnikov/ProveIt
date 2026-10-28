@@ -1,0 +1,29 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSignedPairs.lean:33:2: warning: 'change (p.1 + r.2) + q.2 = (p.2 + r.1) + q.2' tactic does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSignedPairs.lean:57:40: error: `simp` made no progress
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSignedPairs.lean:68:0: warning: automatically included section variable(s) unused in theorem `DiophantineConsistency.ArithmeticSignedPairs.multiply_swap_right`:
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSignedPairs.lean:76:2: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticSignedPairs.lean:148:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  magnitude (swap p)
+in the target expression
+  magnitude (p.2, p.1) = p.2 - p.1
+
+case inr
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Pair V
+h : magnitude p = 1
+hn : p.1 + 1 ≠ p.2
+hp : p.1 ≤ p.2
+he : p.2 = p.1 + (p.2 - p.1)
+hm : magnitude (p.2, p.1) = p.2 - p.1
+⊢ p.1 = p.2 + 1

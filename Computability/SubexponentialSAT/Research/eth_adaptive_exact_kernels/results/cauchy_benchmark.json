@@ -1,0 +1,955 @@
+{
+  "method": "self-authored modular product reference versus recurrence; no archive code executed",
+  "workload": "complete dense target and source N-by-N tables, both including initialization",
+  "baseline": "Both share cached denominator unit inverses, batch inversion, known triangular zeros and identical ring arithmetic.",
+  "ring": "(Z/2^p Z)[U]/(U^2+U+1), zeta=U, p=4N+16",
+  "precision_choice": "p exceeds the last guaranteed target weight; this is not a fixed-small-p truncation benchmark.",
+  "environment": {
+    "python": "3.12.14",
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.41",
+    "processor": ""
+  },
+  "limitations": "Local component timings, not SAT runtimes or claims about partial/on-demand table workloads.",
+  "records": [
+    {
+      "a": 2,
+      "i": 0,
+      "N": 2,
+      "precision": 24,
+      "product_median_seconds": 0.00010587900032987818,
+      "recurrent_median_seconds": 0.000389077998988796,
+      "measured_speedup": 0.2721279553330053,
+      "product_median_cpu_seconds": 0.00010242099999996368,
+      "recurrent_median_cpu_seconds": 0.00038527900000001614,
+      "measured_cpu_speedup": 0.2658359266919801,
+      "product_multiplications": 37,
+      "recurrent_multiplications": 35,
+      "multiplication_ratio": 1.0571428571428572,
+      "initialization_multiplications": 24,
+      "unit_inversions_each": 2,
+      "unit_denominators": 3,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.00013023200153838843,
+        8.441799946012907e-05,
+        0.0002525060008338187,
+        0.00010587900032987818,
+        8.502700075041503e-05
+      ],
+      "recurrent_samples_seconds": [
+        0.00031884300187812187,
+        0.0012484809994930401,
+        0.0005453099984151777,
+        8.154399984050542e-05,
+        0.000389077998988796
+      ],
+      "product_cpu_samples_seconds": [
+        0.00011981599999999482,
+        8.164199999999289e-05,
+        0.0002483930000000134,
+        0.00010242099999996368,
+        8.146800000002896e-05
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.00031408399999999226,
+        0.001244263999999995,
+        0.0005410859999999684,
+        7.795499999996292e-05,
+        0.00038527900000001614
+      ]
+    },
+    {
+      "a": 2,
+      "i": 1,
+      "N": 2,
+      "precision": 24,
+      "product_median_seconds": 8.767599865677767e-05,
+      "recurrent_median_seconds": 0.00022840900055598468,
+      "measured_speedup": 0.38385527034118627,
+      "product_median_cpu_seconds": 8.358299999999819e-05,
+      "recurrent_median_cpu_seconds": 0.00022278500000000312,
+      "measured_cpu_speedup": 0.3751733734317706,
+      "product_multiplications": 37,
+      "recurrent_multiplications": 35,
+      "multiplication_ratio": 1.0571428571428572,
+      "initialization_multiplications": 24,
+      "unit_inversions_each": 2,
+      "unit_denominators": 3,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.00012988199887331575,
+        0.00094256500233314,
+        8.517099922755733e-05,
+        8.767599865677767e-05,
+        8.594999962951988e-05
+      ],
+      "recurrent_samples_seconds": [
+        0.00015847299800952896,
+        0.00021776300127385184,
+        0.00022840900055598468,
+        0.0007688099976803642,
+        0.0006611740027437918
+      ],
+      "product_cpu_samples_seconds": [
+        0.0001258109999999757,
+        0.0009350470000000222,
+        8.174099999996853e-05,
+        8.358299999999819e-05,
+        8.220999999997147e-05
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.00015418400000000165,
+        0.00021380000000004173,
+        0.00022278500000000312,
+        0.0007645660000000221,
+        0.0006565739999999654
+      ]
+    },
+    {
+      "a": 3,
+      "i": 0,
+      "N": 4,
+      "precision": 32,
+      "product_median_seconds": 0.001009447001706576,
+      "recurrent_median_seconds": 0.0004840360015805345,
+      "measured_speedup": 2.085479175950558,
+      "product_median_cpu_seconds": 0.0007343049999999351,
+      "recurrent_median_cpu_seconds": 0.00047984400000000704,
+      "measured_cpu_speedup": 1.5302994306481363,
+      "product_multiplications": 122,
+      "recurrent_multiplications": 94,
+      "multiplication_ratio": 1.297872340425532,
+      "initialization_multiplications": 52,
+      "unit_inversions_each": 2,
+      "unit_denominators": 7,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.0013233169993327465,
+        0.0012512549983512145,
+        0.00017582600048626773,
+        0.001009447001706576,
+        0.00026006100233644247
+      ],
+      "recurrent_samples_seconds": [
+        0.0014065530012885574,
+        0.0004840360015805345,
+        0.0006942480031284504,
+        0.00016258500181720592,
+        0.00019156300186295994
+      ],
+      "product_cpu_samples_seconds": [
+        0.0013185259999999865,
+        0.001247233999999986,
+        0.00017321500000000434,
+        0.0007343049999999351,
+        0.00025556500000001314
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.001402575000000017,
+        0.00047984400000000704,
+        0.000689636000000049,
+        0.00015890900000004038,
+        0.00018847099999996786
+      ]
+    },
+    {
+      "a": 3,
+      "i": 1,
+      "N": 4,
+      "precision": 32,
+      "product_median_seconds": 0.0002766559991869144,
+      "recurrent_median_seconds": 0.00021850499979336746,
+      "measured_speedup": 1.2661312072883382,
+      "product_median_cpu_seconds": 0.000272503000000035,
+      "recurrent_median_cpu_seconds": 0.0002148140000000076,
+      "measured_cpu_speedup": 1.2685532600297251,
+      "product_multiplications": 128,
+      "recurrent_multiplications": 100,
+      "multiplication_ratio": 1.28,
+      "initialization_multiplications": 58,
+      "unit_inversions_each": 2,
+      "unit_denominators": 9,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.0001687500007392373,
+        0.0001789009984349832,
+        0.00038657800178043544,
+        0.00035745099739870057,
+        0.0002766559991869144
+      ],
+      "recurrent_samples_seconds": [
+        0.00021850499979336746,
+        0.0015473490020667668,
+        0.0001613790009287186,
+        0.000442225002188934,
+        0.00017902799663715996
+      ],
+      "product_cpu_samples_seconds": [
+        0.0001661989999999225,
+        0.00017483200000001364,
+        0.0003823590000000543,
+        0.00031924500000002354,
+        0.000272503000000035
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.0002148140000000076,
+        0.0015430029999999872,
+        0.00015746000000005367,
+        0.0004378680000000079,
+        0.0001743670000000641
+      ]
+    },
+    {
+      "a": 3,
+      "i": 2,
+      "N": 4,
+      "precision": 32,
+      "product_median_seconds": 0.0006671169976470992,
+      "recurrent_median_seconds": 0.0005973709994577803,
+      "measured_speedup": 1.1167549115250417,
+      "product_median_cpu_seconds": 0.0006624129999999173,
+      "recurrent_median_cpu_seconds": 0.0005934009999999379,
+      "measured_cpu_speedup": 1.1162990962266437,
+      "product_multiplications": 122,
+      "recurrent_multiplications": 94,
+      "multiplication_ratio": 1.297872340425532,
+      "initialization_multiplications": 52,
+      "unit_inversions_each": 2,
+      "unit_denominators": 7,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.0006843800001661293,
+        0.001632342999073444,
+        0.00019672000053105876,
+        0.0006671169976470992,
+        0.0002718640025705099
+      ],
+      "recurrent_samples_seconds": [
+        0.00019328300186316483,
+        0.0011796479993790854,
+        0.0005973709994577803,
+        0.00015644899758626707,
+        0.0007076010006130673
+      ],
+      "product_cpu_samples_seconds": [
+        0.0006802899999999168,
+        0.001628324999999986,
+        0.0001928300000000327,
+        0.0006624129999999173,
+        0.0002677869999999638
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.0001889149999999562,
+        0.0011625899999999634,
+        0.0005934009999999379,
+        0.00015306500000000778,
+        0.000702366999999926
+      ]
+    },
+    {
+      "a": 4,
+      "i": 0,
+      "N": 8,
+      "precision": 48,
+      "product_median_seconds": 0.002191818002756918,
+      "recurrent_median_seconds": 0.0007883260004746262,
+      "measured_speedup": 2.780344681562315,
+      "product_median_cpu_seconds": 0.002171100999999953,
+      "recurrent_median_cpu_seconds": 0.000783721000000015,
+      "measured_cpu_speedup": 2.770247320155912,
+      "product_multiplications": 552,
+      "recurrent_multiplications": 272,
+      "multiplication_ratio": 2.0294117647058822,
+      "initialization_multiplications": 108,
+      "unit_inversions_each": 2,
+      "unit_denominators": 15,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.0022038890019757673,
+        0.0008532620013284031,
+        0.004690301000664476,
+        0.000652251997962594,
+        0.002191818002756918
+      ],
+      "recurrent_samples_seconds": [
+        0.0007883260004746262,
+        0.0004941939987475052,
+        0.001955801999429241,
+        0.0005558220000239089,
+        0.0007885169979999773
+      ],
+      "product_cpu_samples_seconds": [
+        0.0021992509999999577,
+        0.0008485310000000412,
+        0.004685234999999954,
+        0.000648749000000004,
+        0.002171100999999953
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.000783721000000015,
+        0.0004899010000000148,
+        0.0019505969999999984,
+        0.0005496809999999686,
+        0.000784940999999928
+      ]
+    },
+    {
+      "a": 4,
+      "i": 2,
+      "N": 8,
+      "precision": 48,
+      "product_median_seconds": 0.0009944090015778784,
+      "recurrent_median_seconds": 0.0005068930004199501,
+      "measured_speedup": 1.9617729989446127,
+      "product_median_cpu_seconds": 0.0009899549999999868,
+      "recurrent_median_cpu_seconds": 0.0005023899999999637,
+      "measured_cpu_speedup": 1.9704910527678863,
+      "product_multiplications": 570,
+      "recurrent_multiplications": 290,
+      "multiplication_ratio": 1.9655172413793103,
+      "initialization_multiplications": 126,
+      "unit_inversions_each": 2,
+      "unit_denominators": 21,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.0006200850002642255,
+        0.0011569319976842962,
+        0.0006274970000959001,
+        0.0009944090015778784,
+        0.0011309929977869615
+      ],
+      "recurrent_samples_seconds": [
+        0.0003202499974577222,
+        0.0005068930004199501,
+        0.0004868600008194335,
+        0.0006045589980203658,
+        0.0025163620011880994
+      ],
+      "product_cpu_samples_seconds": [
+        0.0006158710000000456,
+        0.0011524750000000417,
+        0.0006246859999999854,
+        0.0009899549999999868,
+        0.0011270000000001001
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.00031626800000006394,
+        0.0005023899999999637,
+        0.00048285800000003043,
+        0.0006012459999999997,
+        0.002512234000000002
+      ]
+    },
+    {
+      "a": 4,
+      "i": 3,
+      "N": 8,
+      "precision": 48,
+      "product_median_seconds": 0.0013857400008419063,
+      "recurrent_median_seconds": 0.0009543810010654852,
+      "measured_speedup": 1.451977773336692,
+      "product_median_cpu_seconds": 0.000752999000000032,
+      "recurrent_median_cpu_seconds": 0.0006094159999999738,
+      "measured_cpu_speedup": 1.235607532457409,
+      "product_multiplications": 552,
+      "recurrent_multiplications": 272,
+      "multiplication_ratio": 2.0294117647058822,
+      "initialization_multiplications": 108,
+      "unit_inversions_each": 2,
+      "unit_denominators": 15,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.007023460002528736,
+        0.0018647990000317805,
+        0.0007428290009556804,
+        0.0004815949978365097,
+        0.0013857400008419063
+      ],
+      "recurrent_samples_seconds": [
+        0.0040419739998469595,
+        0.000306942001770949,
+        0.0018249269996886142,
+        0.0004350099989096634,
+        0.0009543810010654852
+      ],
+      "product_cpu_samples_seconds": [
+        0.007019341999999984,
+        0.0018453729999999835,
+        0.0007384320000000111,
+        0.00047769200000002954,
+        0.000752999000000032
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.004037186000000026,
+        0.00030317400000001715,
+        0.001820527999999988,
+        0.000430931999999995,
+        0.0006094159999999738
+      ]
+    },
+    {
+      "a": 5,
+      "i": 0,
+      "N": 16,
+      "precision": 80,
+      "product_median_seconds": 0.0077757649996783584,
+      "recurrent_median_seconds": 0.00201955100055784,
+      "measured_speedup": 3.850244434297791,
+      "product_median_cpu_seconds": 0.007770438999999962,
+      "recurrent_median_cpu_seconds": 0.0020150569999999313,
+      "measured_cpu_speedup": 3.8561881872325334,
+      "product_multiplications": 3348,
+      "recurrent_multiplications": 868,
+      "multiplication_ratio": 3.857142857142857,
+      "initialization_multiplications": 220,
+      "unit_inversions_each": 2,
+      "unit_denominators": 31,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.005795588000182761,
+        0.0077757649996783584,
+        0.006833686999016209,
+        0.065747361000831,
+        0.009667266000178643
+      ],
+      "recurrent_samples_seconds": [
+        0.002947439999843482,
+        0.011982313000771683,
+        0.0013481509995472152,
+        0.00201955100055784,
+        0.0014498939999612048
+      ],
+      "product_cpu_samples_seconds": [
+        0.005790548999999978,
+        0.007770438999999962,
+        0.006825446000000124,
+        0.06574567399999998,
+        0.009662368000000088
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.0029430010000000006,
+        0.011927679000000024,
+        0.0013442619999999295,
+        0.0020150569999999313,
+        0.0013676350000000337
+      ]
+    },
+    {
+      "a": 5,
+      "i": 2,
+      "N": 16,
+      "precision": 80,
+      "product_median_seconds": 0.004761979002068983,
+      "recurrent_median_seconds": 0.002423302001261618,
+      "measured_speedup": 1.9650786404623959,
+      "product_median_cpu_seconds": 0.004755755000000139,
+      "recurrent_median_cpu_seconds": 0.002418586999999972,
+      "measured_cpu_speedup": 1.9663361293185624,
+      "product_multiplications": 3402,
+      "recurrent_multiplications": 922,
+      "multiplication_ratio": 3.6898047722342735,
+      "initialization_multiplications": 274,
+      "unit_inversions_each": 2,
+      "unit_denominators": 49,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.005151558998477412,
+        0.004539827998087276,
+        0.004761979002068983,
+        0.004136830000788905,
+        0.004930612001771806
+      ],
+      "recurrent_samples_seconds": [
+        0.0014325230004033074,
+        0.002423302001261618,
+        0.003302433997305343,
+        0.0030676609967486,
+        0.0008745279992581345
+      ],
+      "product_cpu_samples_seconds": [
+        0.005147013999999839,
+        0.0045128109999998944,
+        0.004755755000000139,
+        0.00413396399999999,
+        0.004926411000000019
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.0014272939999999679,
+        0.002418586999999972,
+        0.003279577999999894,
+        0.0030632770000000864,
+        0.0008710110000000881
+      ]
+    },
+    {
+      "a": 5,
+      "i": 4,
+      "N": 16,
+      "precision": 80,
+      "product_median_seconds": 0.003921798001101706,
+      "recurrent_median_seconds": 0.001609306000318611,
+      "measured_speedup": 2.436949840692365,
+      "product_median_cpu_seconds": 0.003916956999999943,
+      "recurrent_median_cpu_seconds": 0.0016047140000001736,
+      "measured_cpu_speedup": 2.4409066039179064,
+      "product_multiplications": 3348,
+      "recurrent_multiplications": 868,
+      "multiplication_ratio": 3.857142857142857,
+      "initialization_multiplications": 220,
+      "unit_inversions_each": 2,
+      "unit_denominators": 31,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.0038901090010767803,
+        0.005851966998307034,
+        0.005100186001072871,
+        0.003921798001101706,
+        0.0032743880001362413
+      ],
+      "recurrent_samples_seconds": [
+        0.0010206160004599951,
+        0.0018317419999220874,
+        0.001609306000318611,
+        0.001741770000080578,
+        0.0010970360017381608
+      ],
+      "product_cpu_samples_seconds": [
+        0.0038861930000000378,
+        0.005847144000000082,
+        0.005095982000000054,
+        0.003916956999999943,
+        0.0032700740000000117
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.0010087639999998288,
+        0.001827507000000006,
+        0.0016047140000001736,
+        0.0017375209999999086,
+        0.0010935519999999421
+      ]
+    },
+    {
+      "a": 6,
+      "i": 0,
+      "N": 32,
+      "precision": 144,
+      "product_median_seconds": 0.030873577001329977,
+      "recurrent_median_seconds": 0.004997453997930279,
+      "measured_speedup": 6.177861169730912,
+      "product_median_cpu_seconds": 0.030863077000000017,
+      "recurrent_median_cpu_seconds": 0.004992783999999917,
+      "measured_cpu_speedup": 6.181536593612007,
+      "product_multiplications": 23852,
+      "recurrent_multiplications": 3020,
+      "multiplication_ratio": 7.898013245033113,
+      "initialization_multiplications": 444,
+      "unit_inversions_each": 2,
+      "unit_denominators": 63,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.0394972649992269,
+        0.030873577001329977,
+        0.02872796399969957,
+        0.026402529001643416,
+        0.2483942470025795
+      ],
+      "recurrent_samples_seconds": [
+        0.03499659199951566,
+        0.016893590000108816,
+        0.004997453997930279,
+        0.004355613000370795,
+        0.0038998550007818267
+      ],
+      "product_cpu_samples_seconds": [
+        0.03948192599999989,
+        0.030863077000000017,
+        0.02872434700000004,
+        0.026399607999999963,
+        0.2054822249999999
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.03499204799999989,
+        0.016889960999999953,
+        0.004992783999999917,
+        0.004352206999999941,
+        0.0038955090000003523
+      ]
+    },
+    {
+      "a": 6,
+      "i": 3,
+      "N": 32,
+      "precision": 144,
+      "product_median_seconds": 0.04672009599744342,
+      "recurrent_median_seconds": 0.00446021599782398,
+      "measured_speedup": 10.474850549891958,
+      "product_median_cpu_seconds": 0.046717195999999905,
+      "recurrent_median_cpu_seconds": 0.004455284000000059,
+      "measured_cpu_speedup": 10.485795293857649,
+      "product_multiplications": 23978,
+      "recurrent_multiplications": 3146,
+      "multiplication_ratio": 7.621741894469167,
+      "initialization_multiplications": 570,
+      "unit_inversions_each": 2,
+      "unit_denominators": 105,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.0492261569997936,
+        0.02986237900040578,
+        0.04672009599744342,
+        0.049844599001517054,
+        0.030275070002971916
+      ],
+      "recurrent_samples_seconds": [
+        0.004536011001619045,
+        0.004507935998844914,
+        0.00446021599782398,
+        0.004296828999940772,
+        0.003956843000196386
+      ],
+      "product_cpu_samples_seconds": [
+        0.04922194099999988,
+        0.0298589709999999,
+        0.046717195999999905,
+        0.0498416559999999,
+        0.030272808999999956
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.004531360999999734,
+        0.004503771999999628,
+        0.004455284000000059,
+        0.004292860000000065,
+        0.003951879000000158
+      ]
+    },
+    {
+      "a": 6,
+      "i": 5,
+      "N": 32,
+      "precision": 144,
+      "product_median_seconds": 0.15423753499999293,
+      "recurrent_median_seconds": 0.009387491001689341,
+      "measured_speedup": 16.430112686364957,
+      "product_median_cpu_seconds": 0.15039074099999983,
+      "recurrent_median_cpu_seconds": 0.009365095000000156,
+      "measured_cpu_speedup": 16.05864553429488,
+      "product_multiplications": 23852,
+      "recurrent_multiplications": 3020,
+      "multiplication_ratio": 7.898013245033113,
+      "initialization_multiplications": 444,
+      "unit_inversions_each": 2,
+      "unit_denominators": 63,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.04301683799712919,
+        0.03032652600086294,
+        0.15423753499999293,
+        0.24505542800034164,
+        0.23844984999959706
+      ],
+      "recurrent_samples_seconds": [
+        0.00380669199876138,
+        0.004589758002111921,
+        0.019649647998448927,
+        0.03146721299708588,
+        0.009387491001689341
+      ],
+      "product_cpu_samples_seconds": [
+        0.04301217299999971,
+        0.030323410000000273,
+        0.15039074099999983,
+        0.24494264700000024,
+        0.23785830699999977
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.003802846999999776,
+        0.004571592000000013,
+        0.01960474699999981,
+        0.03146290099999982,
+        0.009365095000000156
+      ]
+    },
+    {
+      "a": 7,
+      "i": 0,
+      "N": 64,
+      "precision": 272,
+      "product_median_seconds": 0.4184714770017308,
+      "recurrent_median_seconds": 0.029819453997333767,
+      "measured_speedup": 14.033505678512672,
+      "product_median_cpu_seconds": 0.4173529029999994,
+      "recurrent_median_cpu_seconds": 0.02981473299999937,
+      "measured_cpu_speedup": 13.998210314343858,
+      "product_multiplications": 181852,
+      "recurrent_multiplications": 11164,
+      "multiplication_ratio": 16.289143676101755,
+      "initialization_multiplications": 892,
+      "unit_inversions_each": 2,
+      "unit_denominators": 127,
+      "repeats": 5,
+      "product_samples_seconds": [
+        1.510322117999749,
+        0.39397813899995526,
+        0.4184714770017308,
+        0.4240429140008928,
+        0.4121594220014231
+      ],
+      "recurrent_samples_seconds": [
+        0.06851903999995557,
+        0.048518407998926705,
+        0.0289729760006594,
+        0.028931873999681557,
+        0.029819453997333767
+      ],
+      "product_cpu_samples_seconds": [
+        1.45856823,
+        0.3933543530000003,
+        0.4173529029999994,
+        0.42324774099999996,
+        0.411770937
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.06851539100000004,
+        0.04851377799999934,
+        0.02896957599999972,
+        0.028927555000000105,
+        0.02981473299999937
+      ]
+    },
+    {
+      "a": 7,
+      "i": 3,
+      "N": 64,
+      "precision": 272,
+      "product_median_seconds": 0.9025497410002572,
+      "recurrent_median_seconds": 0.0730651760022738,
+      "measured_speedup": 12.3526663505494,
+      "product_median_cpu_seconds": 0.9018560489999992,
+      "recurrent_median_cpu_seconds": 0.07306153900000112,
+      "measured_cpu_speedup": 12.343786639917143,
+      "product_multiplications": 182146,
+      "recurrent_multiplications": 11458,
+      "multiplication_ratio": 15.896840635363938,
+      "initialization_multiplications": 1186,
+      "unit_inversions_each": 2,
+      "unit_denominators": 225,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.9025497410002572,
+        1.04349406899928,
+        1.055005321999488,
+        0.6017874270000902,
+        0.41740155200022855
+      ],
+      "recurrent_samples_seconds": [
+        0.0730651760022738,
+        0.07962715800022124,
+        0.08385184600047069,
+        0.07026457600295544,
+        0.024776171001576586
+      ],
+      "product_cpu_samples_seconds": [
+        0.9018560489999992,
+        1.0431924860000006,
+        1.0454159329999992,
+        0.6016340409999987,
+        0.41741237199999937
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.07306153900000112,
+        0.0796252560000017,
+        0.08384964300000064,
+        0.06816697899999902,
+        0.024771412999999853
+      ]
+    },
+    {
+      "a": 7,
+      "i": 6,
+      "N": 64,
+      "precision": 272,
+      "product_median_seconds": 0.5282432040003187,
+      "recurrent_median_seconds": 0.036414324000361376,
+      "measured_speedup": 14.506467399891218,
+      "product_median_cpu_seconds": 0.5282612829999991,
+      "recurrent_median_cpu_seconds": 0.03530517899999985,
+      "measured_cpu_speedup": 14.962713629068451,
+      "product_multiplications": 181852,
+      "recurrent_multiplications": 11164,
+      "multiplication_ratio": 16.289143676101755,
+      "initialization_multiplications": 892,
+      "unit_inversions_each": 2,
+      "unit_denominators": 127,
+      "repeats": 5,
+      "product_samples_seconds": [
+        0.5208941349992529,
+        0.5966311460033467,
+        0.5310235350007133,
+        0.4963363520000712,
+        0.5282432040003187
+      ],
+      "recurrent_samples_seconds": [
+        0.02783347500007949,
+        0.03168098700189148,
+        0.036414324000361376,
+        0.036429753999982495,
+        0.04442474400275387
+      ],
+      "product_cpu_samples_seconds": [
+        0.5209115349999998,
+        0.5962379010000003,
+        0.531009461,
+        0.4962257490000006,
+        0.5282612829999991
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.02782796199999993,
+        0.03058504200000023,
+        0.03530517899999985,
+        0.03641851100000082,
+        0.04442126800000068
+      ]
+    },
+    {
+      "a": 8,
+      "i": 0,
+      "N": 128,
+      "precision": 528,
+      "product_median_seconds": 6.677054189000046,
+      "recurrent_median_seconds": 0.20583959899886395,
+      "measured_speedup": 32.438142230528236,
+      "product_median_cpu_seconds": 6.652982034000001,
+      "recurrent_median_cpu_seconds": 0.20584054199999713,
+      "measured_cpu_speedup": 32.32104797897439,
+      "product_multiplications": 1424572,
+      "recurrent_multiplications": 42812,
+      "multiplication_ratio": 33.27506306642997,
+      "initialization_multiplications": 1788,
+      "unit_inversions_each": 2,
+      "unit_denominators": 255,
+      "repeats": 5,
+      "product_samples_seconds": [
+        4.541418296001211,
+        4.654091904998495,
+        6.677054189000046,
+        6.730018686001131,
+        7.150075849996938
+      ],
+      "recurrent_samples_seconds": [
+        0.1981135349997203,
+        0.18838353200044367,
+        0.44888007799818297,
+        0.49509945300087566,
+        0.20583959899886395
+      ],
+      "product_cpu_samples_seconds": [
+        4.541261436999999,
+        4.652919342000001,
+        6.652982034000001,
+        6.672596839000001,
+        7.108672585999997
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.19811621300000226,
+        0.18837734699999942,
+        0.44889347200000174,
+        0.4947922180000006,
+        0.20584054199999713
+      ]
+    },
+    {
+      "a": 8,
+      "i": 4,
+      "N": 128,
+      "precision": 528,
+      "product_median_seconds": 6.6278682539996225,
+      "recurrent_median_seconds": 0.2205848759986111,
+      "measured_speedup": 30.046793661598787,
+      "product_median_cpu_seconds": 6.612366924,
+      "recurrent_median_cpu_seconds": 0.22058782300000246,
+      "measured_cpu_speedup": 29.97611941616526,
+      "product_multiplications": 1425202,
+      "recurrent_multiplications": 43442,
+      "multiplication_ratio": 32.80700704387459,
+      "initialization_multiplications": 2418,
+      "unit_inversions_each": 2,
+      "unit_denominators": 465,
+      "repeats": 5,
+      "product_samples_seconds": [
+        6.511996622000879,
+        10.182326506001118,
+        11.665234986998257,
+        6.387281128001632,
+        6.6278682539996225
+      ],
+      "recurrent_samples_seconds": [
+        0.2205848759986111,
+        0.19575576299757813,
+        0.22430817900021793,
+        0.21939620499688317,
+        0.2630403760012996
+      ],
+      "product_cpu_samples_seconds": [
+        6.478930951000002,
+        9.841039130999988,
+        11.234064763999996,
+        6.342917075000003,
+        6.612366924
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.22058782300000246,
+        0.19573666099999798,
+        0.2227936150000005,
+        0.21511536900000294,
+        0.263036489000001
+      ]
+    },
+    {
+      "a": 8,
+      "i": 7,
+      "N": 128,
+      "precision": 528,
+      "product_median_seconds": 6.587109492000309,
+      "recurrent_median_seconds": 0.24247576899870182,
+      "measured_speedup": 27.166052588271512,
+      "product_median_cpu_seconds": 6.5761632410000175,
+      "recurrent_median_cpu_seconds": 0.24232146999999316,
+      "measured_cpu_speedup": 27.13817822663507,
+      "product_multiplications": 1424572,
+      "recurrent_multiplications": 42812,
+      "multiplication_ratio": 33.27506306642997,
+      "initialization_multiplications": 1788,
+      "unit_inversions_each": 2,
+      "unit_denominators": 255,
+      "repeats": 5,
+      "product_samples_seconds": [
+        6.970642273998237,
+        6.310785417997977,
+        6.415631104999193,
+        6.587109492000309,
+        7.428122023000469
+      ],
+      "recurrent_samples_seconds": [
+        0.24247576899870182,
+        0.21053718899929663,
+        0.3153982450021431,
+        0.27911765599856153,
+        0.20394917000157875
+      ],
+      "product_cpu_samples_seconds": [
+        6.924824141000002,
+        6.274084751999993,
+        6.394153095000007,
+        6.5761632410000175,
+        7.388672756999995
+      ],
+      "recurrent_cpu_samples_seconds": [
+        0.24232146999999316,
+        0.2105337469999995,
+        0.3105545460000201,
+        0.27860634600000367,
+        0.20395121000001382
+      ]
+    }
+  ]
+}

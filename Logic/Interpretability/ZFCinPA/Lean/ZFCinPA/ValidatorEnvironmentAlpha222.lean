@@ -1,0 +1,297 @@
+import ZFCinPA.ValidatorAtomicTransport222
+
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+
+/-! Uniform all-internal alpha conversion for the actual C222 encoder.
+The fixed Eind context is preserved in both directions. Future binder
+streams explicitly avoid both stacks, all free labels including fallback1,
+and each other. The represented proof-existence invariant is Π2 and the
+uniform theorem explicitly uses IΣ2. No old C254 proof, source substitution,
+arbitrary proof translation or semantic seed validity is assumed. -/
+namespace LeanProofs.ZFCinPA.ValidatorEnvironmentAlpha222
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open LO.FirstOrder.Arithmetic.Bootstrapping
+open _root_.SetTheory.BusyBeaver.ZFC ArithmeticCode254
+open ValidatorProvability222 ValidatorRelationalCore222 ValidatorEind222
+open ValidatorFormulaEncoder222 ValidatorEnvironmentVacuity222
+open ValidatorEindContext222 ValidatorAtomicTransport222
+open scoped LO.FirstOrder.Arithmetic
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def StreamEnv (s B : V) : Prop := ∀ k : V, Avoid (s+2*k) B
+def StreamFree (s F : V) : Prop := ∀ k : V, FreeAvoid (s+2*k) F
+def Apart (s t : V) : Prop := ∀ i j : V, s+2*i ≠ t+2*j
+
+def FreshPair (F B B' s t : V) : Prop :=
+  StreamFree s F ∧ StreamFree t F ∧
+  StreamEnv s B ∧ StreamEnv s B' ∧
+  StreamEnv t B ∧ StreamEnv t B' ∧ Apart s t
+
+private lemma next_label (s k : V) : (s+2)+2*k=s+2*(k+1) := by ring
+
+lemma streamFree_next {s F : V} (h : StreamFree s F) : StreamFree (s+2) F := by
+  intro k
+  rw [next_label]
+  exact h (k+1)
+
+lemma streamEnv_cons_next {s B x : V} (h : StreamEnv s B)
+    (hx : ∀ k : V, (s+2)+2*k≠x) : StreamEnv (s+2) (x∷B) := by
+  intro k
+  apply avoid_cons _ (hx k)
+  rw [next_label]
+  exact h (k+1)
+
+lemma freshPair_next {F B B' s t : V} (h : FreshPair F B B' s t) :
+    FreshPair F (s∷B) (t∷B') (s+2) (t+2) := by
+  rcases h with ⟨hsF,htF,hsB,hsB',htB,htB',hap⟩
+  have hss : ∀ k : V, (s+2)+2*k≠s := fun k =>
+    ((stream_of_lt (z := s) (fresh := s+2) (by simp)) k).symm
+  have htt : ∀ k : V, (t+2)+2*k≠t := fun k =>
+    ((stream_of_lt (z := t) (fresh := t+2) (by simp)) k).symm
+  have hst : ∀ k : V, (s+2)+2*k≠t := by
+    intro k
+    rw [next_label]
+    simpa using hap (k+1) 0
+  have hts : ∀ k : V, (t+2)+2*k≠s := by
+    intro k
+    rw [next_label]
+    simpa using (hap 0 (k+1)).symm
+  refine ⟨streamFree_next hsF,streamFree_next htF,
+    streamEnv_cons_next hsB hss,streamEnv_cons_next hsB' hst,
+    streamEnv_cons_next htB hts,streamEnv_cons_next htB' htt,?_⟩
+  intro i j
+  rw [next_label,next_label]
+  exact hap (i+1) (j+1)
+
+/-- Both cross-body vacuity arguments, with no assertion that a binder is
+vacuous in its own body. The right side still has the left-to-right context. -/
+lemma cross_body_vac [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+    (hp : IsSemiformula ℒₛₑₜ (n+1) p) (F B B' s t : V)
+    (hB : len B=n) (hB' : len B'=n) (h : FreshPair F B B' s t) :
+    Vac s (encode F (t∷B') (t+2) p) ∧
+    Vac t (encode F (s∷B) (s+2) p) := by
+  rcases h with ⟨hsF,htF,hsB,hsB',htB,htB',hap⟩
+  have hst : s≠t := by simpa using hap 0 0
+  constructor
+  · apply encode_vac hp F (t∷B') (t+2) s (by simp [hB'])
+    · simpa using hsF 0
+    · exact avoid_cons (by simpa using hsB' 0) hst
+    · intro k
+      rw [next_label]
+      simpa using hap 0 (k+1)
+  · apply encode_vac hp F (s∷B) (s+2) t (by simp [hB])
+    · simpa using htF 0
+    · exact avoid_cons (by simpa using htB 0) hst.symm
+    · intro k
+      rw [next_label]
+      simpa using (hap (k+1) 0).symm
+
+private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
+private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
+private lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
+  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
+private lemma h2 {G : List V} {a b c : V} : D (c::b::a::G) a :=
+  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
+private lemma ofDer {p : V} (d : D [] p) : CProv p :=
+  d.sound cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
+private lemma ded3 {a b c p : V} (d : D [c,b,a] p) :
+    CProv (wim a (wim b (wim c p))) :=
+  ofDer (Kalmar.deduction cProv_classical
+    (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d)))
+
+lemma contra_under {h p q : V} (hpq : CProv (wim h (wim p q))) :
+    CProv (wim h (wim (ValidatorRelationalCore222.neg q) (ValidatorRelationalCore222.neg p))) :=
+  ded3 (.mp h1 (.mp (.mp (.ax hpq) h2) h0))
+
+lemma eqUnder_neg {h p q : V} (he : EqUnder h p q) : EqUnder h (ValidatorRelationalCore222.neg p) (ValidatorRelationalCore222.neg q) :=
+  ⟨contra_under he.2,contra_under he.1⟩
+
+lemma imp_under {h p p' q q' : V}
+    (hp : CProv (wim h (wim p' p))) (hq : CProv (wim h (wim q q'))) :
+    CProv (wim h (wim (wim p q) (wim p' q'))) :=
+  ded3 (.mp (.mp (.ax hq) h2) (.mp h1 (.mp (.mp (.ax hp) h2) h0)))
+
+lemma eqUnder_imp {h p p' q q' : V} (hp : EqUnder h p p') (hq : EqUnder h q q') :
+    EqUnder h (wim p q) (wim p' q') :=
+  ⟨imp_under hp.2 hq.1,imp_under hp.1 hq.2⟩
+
+lemma eqUnder_conj {h p p' q q' : V} (hp : EqUnder h p p') (hq : EqUnder h q q') :
+    EqUnder h (conj p q) (conj p' q') :=
+  eqUnder_neg (eqUnder_imp hp (eqUnder_neg hq))
+
+/-- Reverse ALL keeps the same old context and precomposes the explicit
+weq(y,x)→Eind(y,x)→Eind(x,y) chain before the reverse body certificate. -/
+lemma eqUnder_all_of_cons (B B' p q x y : V)
+    (hb : EqUnder (eindContext (x∷B) (y∷B')) p q)
+    (vxh : Vac x (eindContext B B')) (vyh : Vac y (eindContext B B'))
+    (vxq : Vac x q) (vyp : Vac y p) :
+    EqUnder (eindContext B B') (wal x p) (wal y q) := by
+  constructor
+  · exact all_of_cons B B' p q x y hb.1 vxh vxq vyh (vac_all x vyp)
+  · exact all_relational (eindContext B B') q p y x
+      (reverse_primitive_premise (discharge_cons B B' x y hb.2))
+      vyh vyp vxh (vac_all y vxq)
+
+lemma eqUnder_ex_of_cons (B B' p q x y : V)
+    (hb : EqUnder (eindContext (x∷B) (y∷B')) p q)
+    (vxh : Vac x (eindContext B B')) (vyh : Vac y (eindContext B B'))
+    (vxq : Vac x q) (vyp : Vac y p) :
+    EqUnder (eindContext B B') (ex x p) (ex y q) :=
+  eqUnder_neg (eqUnder_all_of_cons B B' (ValidatorRelationalCore222.neg p) (ValidatorRelationalCore222.neg q) x y
+    (eqUnder_neg hb) vxh vyh (vac_neg vxq) (vac_neg vyp))
+
+/-- The paired universal/existential step for the eventual formula induction. -/
+lemma encoded_binder_steps [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+    (hp : IsSemiformula ℒₛₑₜ (n+1) p) (F B B' s t : V)
+    (hB : len B=n) (hB' : len B'=n) (hf : FreshPair F B B' s t)
+    (ih : EqUnder (eindContext (s∷B) (t∷B'))
+      (encode F (s∷B) (s+2) p) (encode F (t∷B') (t+2) p)) :
+    EqUnder (eindContext B B') (encode F B s (^∀ p)) (encode F B' t (^∀ p)) ∧
+    EqUnder (eindContext B B') (encode F B s (^∃ p)) (encode F B' t (^∃ p)) := by
+  have hv := cross_body_vac hp F B B' s t hB hB' hf
+  rcases hf with ⟨_,_,hsB,hsB',htB,htB',_⟩
+  have vs : Vac s (eindContext B B') := eindContext_vac B B' s (hB.trans hB'.symm)
+    (by simpa using hsB 0) (by simpa using hsB' 0)
+  have vt : Vac t (eindContext B B') := eindContext_vac B B' t (hB.trans hB'.symm)
+    (by simpa using htB 0) (by simpa using htB' 0)
+  constructor
+  · rw [encode_all F B s hp.isUFormula,encode_all F B' t hp.isUFormula]
+    exact eqUnder_all_of_cons B B' _ _ s t ih vs vt hv.1 hv.2
+  · rw [encode_exs F B s hp.isUFormula,encode_exs F B' t hp.isUFormula]
+    exact eqUnder_ex_of_cons B B' _ _ s t ih vs vt hv.1 hv.2
+
+/-! The uniform proof-existence invariant is Pi-two. These graph interfaces
+keep hierarchy closure independent of the implementation of numeric syntax. -/
+private instance len_delta : 𝚫₁-Function₁[V] (len : V→V) :=
+  len_defined.graph_delta.to_definable
+private instance avoid_delta : 𝚫₁-Relation[V] Avoid := by unfold Avoid; definability
+private instance free_delta : 𝚫₁-Relation[V] FreeAvoid := by unfold FreeAvoid; definability
+private instance streamEnv_pi1 : 𝚷₁-Relation[V] StreamEnv := by unfold StreamEnv; definability
+private instance streamFree_pi1 : 𝚷₁-Relation[V] StreamFree := by unfold StreamFree; definability
+private instance apart_pi1 : 𝚷₁-Relation[V] Apart := by unfold Apart; definability
+private instance freshPair_pi1 : 𝚷₁-Relation₅[V] FreshPair := by unfold FreshPair; definability
+
+omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
+private lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k→V)→Prop}
+    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
+  rcases h with ⟨φ,hφ⟩
+  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)),?_⟩
+  intro v
+  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
+omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
+private lemma pi1_to_sigma2 {k : ℕ} {P : (Fin k→V)→Prop}
+    (h : 𝚷₁.Definable P) : (𝚺-[2]).Definable P := by
+  rcases h with ⟨φ,hφ⟩
+  refine ⟨.mkSigma φ.val (φ.pi_prop.strict_mono 𝚺 (by decide)),?_⟩
+  intro v
+  simpa only [HierarchySymbol.Semiformula.val_mkSigma] using (hφ.iff (v := v))
+
+private instance cProv_pi2 : 𝚷-[2]-Predicate[V] CProv :=
+  sigma1_to_pi2 cProv_definable
+private instance freshPair_sigma2 : 𝚺-[2]-Relation₅[V] FreshPair :=
+  pi1_to_sigma2 freshPair_pi1
+private instance len_sigma2 : 𝚺-[2]-Function₁[V] (len : V→V) := len_delta.of_deltaOne
+private instance encode_sigma2 : 𝚺-[2]-Function₄[V] encode :=
+  (encode_defined.graph_delta.to_definable).of_deltaOne
+private instance eindContext_sigma2 : 𝚺-[2]-Function₂[V] eindContext :=
+  (eindContext_defined.graph_delta.to_definable).of_deltaOne
+private instance wim_sigma2 : 𝚺-[2]-Function₂[V] wim := wim_defined.to_definable₀
+private instance semiformula_sigma2 : 𝚺-[2]-Relation[V] (IsSemiformula ℒₛₑₜ) :=
+  IsSemiformula.definable.of_deltaOne
+private instance eqUnder_pi2 : 𝚷-[2]-Relation₃[V] EqUnder := by
+  unfold EqUnder
+  definability
+
+private lemma alpha_invariant_pi2 : 𝚷-[2]-Predicate[V]
+    (fun p => ∀ n F B B' s t : V, IsSemiformula ℒₛₑₜ n p → len B=n → len B'=n →
+      FreshPair F B B' s t → EqUnder (eindContext B B') (encode F B s p) (encode F B' t p)) := by
+  apply HierarchySymbol.Definable.all
+  apply HierarchySymbol.Definable.all
+  apply HierarchySymbol.Definable.all
+  apply HierarchySymbol.Definable.all
+  apply HierarchySymbol.Definable.all
+  apply HierarchySymbol.Definable.all
+  apply HierarchySymbol.Definable.imp
+  · definability
+  apply HierarchySymbol.Definable.imp
+  · definability
+  apply HierarchySymbol.Definable.imp
+  · definability
+  apply HierarchySymbol.Definable.imp
+  · definability
+  · definability
+
+/-- All-internal alpha transport, in both directions under the same represented
+Eind stack context. The future-stream invariant is an explicit premise. -/
+theorem encode_eq_under [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+    (hp : IsSemiformula ℒₛₑₜ n p) (F B B' s t : V)
+    (hB : len B=n) (hB' : len B'=n) (hf : FreshPair F B B' s t) :
+    EqUnder (eindContext B B') (encode F B s p) (encode F B' t p) := by
+  have main : ∀ p : V, ∀ n F B B' s t : V, IsSemiformula ℒₛₑₜ n p →
+      len B=n → len B'=n → FreshPair F B B' s t →
+      EqUnder (eindContext B B') (encode F B s p) (encode F B' t p) := by
+    apply InductionOnHierarchy.order_induction_sigma 𝚷 2
+      (P := fun p => ∀ n F B B' s t : V, IsSemiformula ℒₛₑₜ n p → len B=n → len B'=n →
+        FreshPair F B B' s t → EqUnder (eindContext B B') (encode F B s p) (encode F B' t p))
+    · exact alpha_invariant_pi2
+    · intro p ih n F B B' s t htyped hB hB' hf
+      rcases IsSemiformula.case_iff.mp htyped with
+        (⟨arity,R,terms,hr,ht,rfl⟩ | ⟨arity,R,terms,hr,ht,rfl⟩ | rfl | rfl |
+          ⟨p,q,hp,hq,rfl⟩ | ⟨p,q,hp,hq,rfl⟩ | ⟨p,hp,rfl⟩ | ⟨p,hp,rfl⟩)
+      · rw [encode_rel F B s hr ht.isUTerm,encode_rel F B' t hr ht.isUTerm]
+        exact atom_eq_under hr ht F B B' s t hB
+      · rw [encode_nrel F B s hr ht.isUTerm,encode_nrel F B' t hr ht.isUTerm]
+        exact eqUnder_neg (atom_eq_under hr ht F B B' s t hB)
+      · simpa using eqUnder_refl (eindContext B B') (0 : V)
+      · simpa using eqUnder_refl (eindContext B B') (1 : V)
+      · rw [encode_and F B s hp.isUFormula hq.isUFormula,
+          encode_and F B' t hp.isUFormula hq.isUFormula]
+        exact eqUnder_conj (ih p (by simp) n F B B' s t hp hB hB' hf)
+          (ih q (by simp) n F B B' s t hq hB hB' hf)
+      · rw [encode_or F B s hp.isUFormula hq.isUFormula,
+          encode_or F B' t hp.isUFormula hq.isUFormula]
+        exact eqUnder_imp (eqUnder_neg (ih p (by simp) n F B B' s t hp hB hB' hf))
+          (ih q (by simp) n F B B' s t hq hB hB' hf)
+      · exact (encoded_binder_steps hp F B B' s t hB hB' hf
+          (ih p (by simp) (n+1) F (s∷B) (t∷B') (s+2) (t+2) hp
+            (by simp [hB]) (by simp [hB']) (freshPair_next hf))).1
+      · exact (encoded_binder_steps hp F B B' s t hB hB' hf
+          (ih p (by simp) (n+1) F (s∷B) (t∷B') (s+2) (t+2) hp
+            (by simp [hB]) (by simp [hB']) (freshPair_next hf))).2
+  exact main p n F B B' s t hp hB hB' hf
+
+/-- At empty bound stacks the Eind context is truth. Stream selection and
+any comparison to the fixed formulaEncoder remain separate clients. -/
+lemma encode_formula_alpha [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {p : V} (hp : IsFormula ℒₛₑₜ p)
+    (F s t : V) (hs : StreamFree s F) (ht : StreamFree t F) (hap : Apart s t) :
+    CProv (wim (encode F 0 s p) (encode F 0 t p)) ∧
+    CProv (wim (encode F 0 t p) (encode F 0 s p)) := by
+  have hf : FreshPair F 0 0 s t :=
+    ⟨hs,ht,(fun k => avoid_nil (s+2*k)),(fun k => avoid_nil (s+2*k)),
+      (fun k => avoid_nil (t+2*k)),(fun k => avoid_nil (t+2*k)),hap⟩
+  have he := encode_eq_under hp F 0 0 s t (by simp) (by simp) hf
+  have hc : CProv (eindContext (0 : V) 0) := by simpa using (cProv_truth (V := V))
+  exact ⟨cProv_mp he.1 hc,cProv_mp he.2 hc⟩
+
+/-- Malformed source codes use the separate output-zero branch; no typing
+or freshness is claimed for source0. -/
+lemma encode_malformed_eq_under (h F B B' s t : V) {p : V}
+    (hp : ¬IsUFormula ℒₛₑₜ p) :
+    EqUnder h (encode F B s p) (encode F B' t p) := by
+  rw [encode_of_not_formula F B s hp,encode_of_not_formula F B' t hp]
+  exact eqUnder_refl h 0
+
+/-- Both directions have actual internal numeric proof codes accepted by
+History222; neither the source nor the witness is assumed standard Nat. -/
+theorem encode_alpha_witnesses [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
+    (hp : IsSemiformula ℒₛₑₜ n p) (F B B' s t : V)
+    (hB : len B=n) (hB' : len B'=n) (hf : FreshPair F B B' s t) :
+    (∃ code : V, ArithmeticHistory222.value code =
+      wim (eindContext B B') (wim (encode F B s p) (encode F B' t p))+1) ∧
+    (∃ code : V, ArithmeticHistory222.value code =
+      wim (eindContext B B') (wim (encode F B' t p) (encode F B s p))+1) :=
+  encode_eq_under hp F B B' s t hB hB' hf
+
+end LeanProofs.ZFCinPA.ValidatorEnvironmentAlpha222

@@ -1,0 +1,51 @@
+# Exact optimum for the inherited nine-plan Euclidean envelope
+
+This is a limit of the specified finite support-menu analysis. It is neither a lower bound for 3-SAT nor a lower bound on the actual running time of the contractor. Actual mode dimensions may occupy a strict subset of the Euclidean ball used by the entropy inequality.
+
+Let V_i be the 72 exact support vectors of inherited plan i, divided by the support scale L=1,400,000. For g>=0 define F_i(g)=max_{v in V_i} v·g. Consider
+
+    E = max_{g>=0, ||g||_2<=1} min_i F_i(g).
+
+The exact optimal certificate establishes E=sqrt(H), where H is supplied as an exact rational in `fixed_menu_optimal_certificate.json`.
+
+Choose the zero-based support tuple
+
+    (67,67,69,69,67,69,67,69,69).
+
+For its integer support vectors u_i, form the 9-by-9 Gram matrix G_ij=u_i·u_j. Let z=G^{-1}1, Z=1^T z, and p=z/Z. The checker performs rational Gaussian elimination, verifies Gz=1 exactly, verifies every p_i>0 and sum p_i=1, and defines H=1/(L^2 Z).
+
+## Upper bound
+
+For arbitrary choices of one vector u_i from each menu, an exact compatibility-sensitive certificate proves
+
+    ||sum_i p_i u_i/L||_2^2 <= H.
+
+The certificate uses the pair identity for weighted vectors a_i=w_i u_i, where the rational p_i share integer denominator W:
+
+    sum_{i<j}(||a_i||^2+||a_j||^2+16 a_i·a_j)
+        = 8 ||sum_i a_i||^2.
+
+Conditioning this identity on one support and taking independent maxima for the other pair terms gives a valid upper bound. A support is discarded only if that bound is strictly less than the known witness norm times 8. The remaining domain sizes are (2,2,2,2,3,2,2,2,4), leaving 1,536 tuples. Every tuple is evaluated with exact integers, and their maximum equals the witness norm. A discarded support cannot occur in any better tuple, so this proves the bound over all 72^9 tuples.
+
+Given any g, choose each u_i maximizing the plan support value. Then
+
+    min_i F_i(g) <= sum_i p_i F_i(g)
+                = (sum_i p_i u_i/L)·g
+                <= sqrt(H) ||g||_2.
+
+## Matching lower bound
+
+Set h=sum_i p_i u_i/L for the chosen tuple. The exact Gram equations give
+
+    ||h||_2^2 = H,
+    (u_i/L)·h = H for every i.
+
+All support coordinates are nonnegative, so g=h/sqrt(H) is an allowed unit vector. Consequently each F_i(g)>=sqrt(H), proving E>=sqrt(H). Together with the upper bound, this proves equality.
+
+Thus changing constant weights, allowing support-tuple-dependent weights, or solving the relaxed finite support problem more expensively cannot reduce this menu's Euclidean-envelope coefficient. A new menu, a sharper operation-cost function, or extra information about attainable mode dimensions is needed.
+
+## Numerical translation
+
+With the unchanged 10->13->7 retained-range schedule and eta_0=301/20000, the resulting root coefficient lies strictly between 29.746057 and 29.746058. Its value for display is approximately 29.74605709336834. Rational Machin-series bounds for pi, an artanh-series bound for log 2, and integer-square-root intervals prove the interval. The next-depth and infinite-tail coefficients remain about 29.335204 and 29.065749, respectively.
+
+The earlier exact replay using the inherited integer weights (137,124,135,120,108,119,106,87,64)/1000 gives 29.748359453790464 instead. The original pairwise-relaxed certificate gives 29.811608945383473. These are comparisons of certified upper-bound coefficients, not measured runtimes.

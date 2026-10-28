@@ -1,0 +1,77 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,graphicx}
+\usepackage{listings,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!55!black,breaklinks=true]{hyperref}
+\setlength{\headheight}{14pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Finite geometry for adaptive contraction}
+\fancyhead[R]{\small ProveIt research iteration}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\K}{\mathcal K}
+\newcommand{\pc}{\operatorname{popcount}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\F}{\mathbb F}
+\newcommand{\pin}{\texttt{73dfb5e5ab6e91bd7375e5b97ef85d7e1cc8e81d}}
+\newcommand{\anthpin}{\texttt{1a6eee293b9e00cb432eef6018a21f523623a9af}}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,framerule=.3pt}
+\input{results/constants.tex}
+\hypersetup{pdftitle={Finite Geometry for Adaptive Contraction: A Certified Improvement and the Remaining Order Barrier},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\title{\textbf{Finite Geometry for Adaptive Contraction}\\[5pt]
+\large A certified improvement beyond the twenty-nine reviewed SAT packets\\
+and the remaining obstacle to a smaller exponent order}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{October 26, 2026 (Pacific date)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We review twenty filed refinement packets and all nine newer archives at
+the pinned ProveIt snapshot, together with the public Anthropic proof supplied
+during this investigation. The newest comparable generic cached bound is
+$30.891018920366\ldots$ in the coefficient of $s/\sqrt{\log_2 s}$,
+with space coefficient $30.753912832055\ldots$.
+We give a new finite-geometric construction of adaptive contraction trees.
+The four parallel classes of the affine plane $\F_3^2$ yield a sharp local
+coefficient $1/\sqrt3$; a short Gram-matrix argument pays for every internal
+table construction, not only the final multiplication. Together with a
+second certified tree family and a fully paid recursion, the resulting
+normalized time coefficient is at most \NewTimeBound, with space coefficient
+at most \NewSpaceBound, for all sufficiently large inputs.
+These are improvements of explicit asymptotic upper bounds. The algorithm
+uses subexponential space and retains the existing reductions and exact
+matrix-multiplication interface. It does not change the unrestricted SAT
+order $n\log\log n/\sqrt{\log n}$, and does not claim the requested
+logarithmic-order breakthrough. We also prove a scoped obstruction to a
+direct odd-prime replacement and extend the known binary-separator witness
+to unbalanced trees at the relevant arities. Exact checkers, a finite
+contraction prototype, provenance records, and reproducible results accompany
+the report. The new refinements are not Lean formalized.
+\end{abstract}
+\clearpage
+\setcounter{tocdepth}{2}
+\tableofcontents
+\newpage
+\input{sections/review.tex}
+\input{sections/interface.tex}
+\input{sections/affine.tex}
+\input{sections/schedule.tex}
+\input{sections/formalization.tex}
+\input{sections/obstructions.tex}
+\input{sections/verification.tex}
+\input{sections/references.tex}
+\end{document}

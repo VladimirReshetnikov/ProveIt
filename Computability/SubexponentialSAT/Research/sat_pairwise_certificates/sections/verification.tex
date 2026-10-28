@@ -1,0 +1,74 @@
+\section{Verification, deliverables, and logical status}
+\label{sec:verification}
+
+\subsection{What is proved here and what is imported}
+
+\begin{longtable}{p{5.0cm}p{8.7cm}}
+\toprule Item & Status\\\midrule\endfirsthead
+\toprule Item & Status\\\midrule\endhead
+\bottomrule\endfoot
+Weighted norm-coupled pair certificate & New elementary proof; all finite maxima checked exactly.\\
+Nine ten-group rectangle plans and weights & New fixed certificate; 648 supports and 186,624 pair choices regenerated.\\
+$10\to13\to7$ time/space theorem & New compatible schedule and paid resource analysis, using stated imported identities and backend.\\
+Low-degree coefficient $16.812234$ & New composition of the existing flag lemma with a verified degree-flow schedule.\\
+All-binary-tree flag obstruction & New elementary proof; exact finite recurrences checked through size 128.\\
+Four-energy-window rank obstruction & New finite rank proof and asymptotic corollaries; also valid for the specified modular reconstruction.\\
+Cauchy deformation, exact recovery, packing, mode identity & Imported from pinned source and refinement packets.\\
+Rectangular field algorithms and CRT bridge & Imported mathematical dependencies; not implemented by the finite checker.\\
+Anthropic formalization & Public source and endpoints inspected; no fresh Lean build.\\
+Complete SAT implementation or timing & Not supplied. No practical speedup measurement is claimed.\\
+Smaller unrestricted logarithmic exponent order & Not established.\\
+\end{longtable}
+
+The complete contraction conclusions are conditional on the correctness of
+the imported mathematical interface, in the same sense as the preceding
+refinement packets. The new finite support inequality itself is unconditional
+and applies to arbitrary finite vector menus.
+
+\subsection{Exact computational checks}
+
+All proof checkers use the Python standard library. They use explicit
+exceptions for failed checks, so checks remain active under
+\texttt{python -O}. The supporting results include:
+\begin{itemize}
+\item Exact regeneration of all nine rectangle support menus, the coupled
+pair maxima and witness indices, and the rational value of $\beta_{10}^2$.
+\item Exact root, depth-one, and tail packing inequalities, total taper
+capacity, paid recurrence branches, and strict $C_0<29.812$.
+\item Rational bounds on $\pi$, $\ln2$, and square roots: Machin's identity
+with alternating arctangent bounds, the positive atanh series for $\ln2$
+with a geometric tail bound, and integer square-root bounds. Decimal
+renderings are for display only.
+\item The streamed-tree lower recurrences and exact values at powers of
+two through 128, together with the low-degree schedule and
+$C_{\rm low}<16.813$.
+\item Finite exact checks of crossing flattening ranks, modular full-rank
+reconstruction, and negative controls showing why insufficient precision
+cannot support that rank conclusion.
+\end{itemize}
+
+The new cached support construction was independently regenerated with a
+separate implementation before the final certificate was selected. An
+independent mathematical review checked the low-degree degree-flow proof
+and the all-tree obstruction. The archive includes the final standalone
+checkers, their outputs, and reproducible commands. Finite tests supplement
+the symbolic proofs; they do not establish asymptotic uniformity by sampling.
+
+\subsection{Reproduction and integration}
+
+Run \texttt{python3 code/run\_checks.py} from the packet root to regenerate
+the exact checks, then \texttt{bash build.sh} to compile the report with
+pdfLaTeX. The main source is \texttt{report.tex}; all inputs are included.
+No source repository or numerical optimizer is needed to replay the new
+certificates. A fixed-data JSON file records the plans, weights, and
+schedules, and the provenance directory identifies the reviewed commits
+and source blobs.
+
+The suggested integration destination is
+\path{Computability/SubexponentialSAT/Research/sat_pairwise_certificates/}.
+The integration note supplies a concise index entry and records that the
+Anthropic publication update is already present at the closing head.
+No GitHub mutation was made as part of
+this review. The archive's integrity ledger excludes itself and temporary
+LaTeX build files; it is not a claim that the imported corpus was formally
+verified.

@@ -1,0 +1,37 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagLoops.lean:156:15: error: don't know how to synthesize implicit argument `p`
+  @run_decPos ?m.143 rows V inst✝² inst✝¹ step run run_one spec r (G t) (lreg x r - t - 1)
+    (Eq.mpr (id (congrFun' (congrArg Eq (lreg_lupd_same x (lreg x r - t) r)) (lreg x r - t - 1 + 1)))
+      (Eq.symm (tsub_add_cancel_of_le (one_le_of_pos (tsub_pos_of_lt ht)))))
+context:
+V : Type u_1
+inst✝² : ORingStructure V
+inst✝¹ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Prog
+rows : ℕ → Option Row
+step : V → V
+run : V → V → V
+inst✝ : 𝚺₁-Function₂ run
+run_zero : ∀ (x : V), run 0 x = x
+run_add : ∀ (t u x : V), run (t + u) x = run u (run t x)
+run_one : ∀ (x : V), run 1 x = step x
+spec : ∀ (c : ℕ) (row : Row) (x : V), rows c = some row → step (liveValue (↑c) x) = sem regValue write liveValue row x
+n r : ℕ
+hn : p.nodes n = (Edge.decnz r, Edge.cont 1)
+x : V
+G : V → V := ⋯
+this : 𝚺₁-Function₁ G
+hG0 : G 0 = x
+t : V
+ht : t < lreg x r
+⊢ Prog
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagLoops.lean:156:9: error: failed to infer `have` declaration type
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagLoops.lean:145:0: warning: automatically included section variable(s) unused in theorem `SetTheory.BusyBeaver.ZFC.ArithmeticDagLoops.clear`:
+  [𝚺₁-Function₂ run]
+  run_zero
+  run_add
+  run_one
+  spec
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [𝚺₁-Function₂ run] run_zero run_add run_one spec in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

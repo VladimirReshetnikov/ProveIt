@@ -1,0 +1,1631 @@
+﻿2026-10-27T02:46:48.8374106Z Current runner version: '2.338.0'
+2026-10-27T02:46:48.8399050Z ##[group]Runner Image Provisioner
+2026-10-27T02:46:48.8400000Z Hosted Compute Agent
+2026-10-27T02:46:48.8400807Z Version: 20261021.618
+2026-10-27T02:46:48.8401462Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T02:46:48.8402300Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T02:46:48.8403056Z Worker ID: {699cb4aa-8578-456f-98d5-d6eb44ac7758}
+2026-10-27T02:46:48.8403893Z Region: westcentralus
+2026-10-27T02:46:48.8404505Z Cloud: Azure
+2026-10-27T02:46:48.8405055Z ##[endgroup]
+2026-10-27T02:46:48.8406470Z ##[group]Operating System
+2026-10-27T02:46:48.8407161Z Ubuntu
+2026-10-27T02:46:48.8407763Z 26.04.1
+2026-10-27T02:46:48.8408317Z LTS
+2026-10-27T02:46:48.8408857Z ##[endgroup]
+2026-10-27T02:46:48.8409696Z ##[group]Runner Image
+2026-10-27T02:46:48.8410734Z Image: ubuntu-26.04
+2026-10-27T02:46:48.8411375Z Version: 20261012.163.1
+2026-10-27T02:46:48.8412698Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261012.163/images/ubuntu/Ubuntu2604-Readme.md
+2026-10-27T02:46:48.8414261Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261012.163
+2026-10-27T02:46:48.8415348Z ##[endgroup]
+2026-10-27T02:46:48.8416496Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T02:46:48.8418446Z Contents: read
+2026-10-27T02:46:48.8419126Z Metadata: read
+2026-10-27T02:46:48.8419766Z ##[endgroup]
+2026-10-27T02:46:48.8422011Z Secret source: None
+2026-10-27T02:46:48.8423072Z Cache mode: write
+2026-10-27T02:46:48.8423773Z Prepare workflow directory
+2026-10-27T02:46:48.8948422Z Prepare all required actions
+2026-10-27T02:46:48.8999219Z Getting action download info
+2026-10-27T02:46:49.1587452Z Download action repository 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+2026-10-27T02:46:49.3549085Z Download action repository 'actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-10-27T02:46:49.4423571Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-10-27T02:46:49.5904750Z Complete job name: verify (eth)
+2026-10-27T02:46:49.6764352Z ##[group]Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+2026-10-27T02:46:49.6765360Z with:
+2026-10-27T02:46:49.6765821Z   persist-credentials: false
+2026-10-27T02:46:49.6766364Z   repository: anthropics/formal-math
+2026-10-27T02:46:49.6770762Z   token: ***
+2026-10-27T02:46:49.6771218Z   ssh-strict: true
+2026-10-27T02:46:49.6771664Z   ssh-user: git
+2026-10-27T02:46:49.6772091Z   clean: true
+2026-10-27T02:46:49.6772538Z   sparse-checkout-cone-mode: true
+2026-10-27T02:46:49.6773067Z   fetch-depth: 1
+2026-10-27T02:46:49.6773503Z   fetch-tags: false
+2026-10-27T02:46:49.6773949Z   show-progress: true
+2026-10-27T02:46:49.6774404Z   lfs: false
+2026-10-27T02:46:49.6774816Z   submodules: false
+2026-10-27T02:46:49.6775271Z   set-safe-directory: true
+2026-10-27T02:46:49.6775778Z   allow-unsafe-pr-checkout: false
+2026-10-27T02:46:49.6776569Z env:
+2026-10-27T02:46:49.6776978Z   ELAN_VERSION: v4.2.3
+2026-10-27T02:46:49.6777715Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T02:46:49.6778710Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:46:49.6779821Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T02:46:49.6781069Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T02:46:49.6782028Z ##[endgroup]
+2026-10-27T02:46:49.9455524Z Syncing repository: anthropics/formal-math
+2026-10-27T02:46:49.9457251Z ##[group]Getting Git version info
+2026-10-27T02:46:49.9458048Z Working directory is '/home/runner/work/formal-math/formal-math'
+2026-10-27T02:46:49.9459155Z [command]/usr/bin/git version
+2026-10-27T02:46:49.9459779Z git version 2.55.0
+2026-10-27T02:46:49.9461683Z ##[endgroup]
+2026-10-27T02:46:49.9466550Z Temporarily overriding HOME='/home/runner/work/_temp/e64f8592-35b0-4b78-8287-65ef36151de2' before making global git config changes
+2026-10-27T02:46:49.9469099Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T02:46:49.9471179Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/formal-math/formal-math
+2026-10-27T02:46:49.9476027Z Deleting the contents of '/home/runner/work/formal-math/formal-math'
+2026-10-27T02:46:49.9479035Z ##[group]Determining repository object format
+2026-10-27T02:46:49.9481002Z ##[endgroup]
+2026-10-27T02:46:49.9482207Z ##[group]Initializing the repository
+2026-10-27T02:46:49.9486211Z [command]/usr/bin/git init /home/runner/work/formal-math/formal-math
+2026-10-27T02:46:49.9595096Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T02:46:49.9596424Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T02:46:49.9597803Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T02:46:49.9599167Z hint: call:
+2026-10-27T02:46:49.9600435Z hint:
+2026-10-27T02:46:49.9601391Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T02:46:49.9602105Z hint:
+2026-10-27T02:46:49.9603037Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T02:46:49.9604490Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T02:46:49.9605310Z hint:
+2026-10-27T02:46:49.9605844Z hint: 	git branch -m <name>
+2026-10-27T02:46:49.9606389Z hint:
+2026-10-27T02:46:49.9607077Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T02:46:49.9608260Z Initialized empty Git repository in /home/runner/work/formal-math/formal-math/.git/
+2026-10-27T02:46:49.9610839Z [command]/usr/bin/git remote add origin https://github.com/anthropics/formal-math
+2026-10-27T02:46:49.9658043Z ##[endgroup]
+2026-10-27T02:46:49.9659173Z ##[group]Disabling automatic garbage collection
+2026-10-27T02:46:49.9660874Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T02:46:49.9694357Z ##[endgroup]
+2026-10-27T02:46:49.9695601Z ##[group]Setting up auth
+2026-10-27T02:46:49.9696386Z Removing SSH command configuration
+2026-10-27T02:46:49.9699928Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T02:46:49.9735825Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T02:46:50.0146419Z Removing HTTP extra header
+2026-10-27T02:46:50.0152097Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T02:46:50.0188516Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T02:46:50.0477283Z Removing includeIf entries pointing to credentials config files
+2026-10-27T02:46:50.0483224Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T02:46:50.0517412Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T02:46:50.0816521Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T02:46:50.0856366Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/formal-math/formal-math/.git.path /home/runner/work/_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config
+2026-10-27T02:46:50.0889992Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/formal-math/formal-math/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config
+2026-10-27T02:46:50.0924396Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config
+2026-10-27T02:46:50.0956874Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config
+2026-10-27T02:46:50.0987017Z ##[endgroup]
+2026-10-27T02:46:50.0993360Z ##[group]Fetching the repository
+2026-10-27T02:46:50.0994713Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +80ee23547e985fd4c7fc71fbc6910af85207bcf3:refs/remotes/pull/31/merge
+2026-10-27T02:46:51.2770530Z From https://github.com/anthropics/formal-math
+2026-10-27T02:46:51.2772585Z  * [new ref]         80ee23547e985fd4c7fc71fbc6910af85207bcf3 -> pull/31/merge
+2026-10-27T02:46:51.2776622Z ##[endgroup]
+2026-10-27T02:46:51.2778346Z ##[group]Determining the checkout info
+2026-10-27T02:46:51.2780619Z ##[endgroup]
+2026-10-27T02:46:51.2782657Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T02:46:51.2836462Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T02:46:51.2867741Z ##[group]Checking out the ref
+2026-10-27T02:46:51.2871184Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/31/merge
+2026-10-27T02:46:51.4462514Z Note: switching to 'refs/remotes/pull/31/merge'.
+2026-10-27T02:46:51.4463893Z 
+2026-10-27T02:46:51.4464884Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-27T02:46:51.4467290Z changes and commit them, and you can discard any commits you make in this
+2026-10-27T02:46:51.4469002Z state without impacting any branches by switching back to a branch.
+2026-10-27T02:46:51.4469970Z 
+2026-10-27T02:46:51.4471049Z If you want to create a new branch to retain commits you create, you may
+2026-10-27T02:46:51.4473049Z do so (now or later) by using -c with the switch command. Example:
+2026-10-27T02:46:51.4473946Z 
+2026-10-27T02:46:51.4474342Z   git switch -c <new-branch-name>
+2026-10-27T02:46:51.4475076Z 
+2026-10-27T02:46:51.4475810Z Or undo this operation with:
+2026-10-27T02:46:51.4476653Z 
+2026-10-27T02:46:51.4477218Z   git switch -
+2026-10-27T02:46:51.4477867Z 
+2026-10-27T02:46:51.4479159Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-27T02:46:51.4480708Z 
+2026-10-27T02:46:51.4482248Z HEAD is now at 80ee235 Merge 1a6eee293b9e00cb432eef6018a21f523623a9af into e1a4e6508154ea59f030480661590a9fe3018011
+2026-10-27T02:46:51.4487516Z ##[endgroup]
+2026-10-27T02:46:51.4527279Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T02:46:51.4555398Z 80ee23547e985fd4c7fc71fbc6910af85207bcf3
+2026-10-27T02:46:51.4564965Z ##[group]Removing auth
+2026-10-27T02:46:51.4566478Z Removing SSH command configuration
+2026-10-27T02:46:51.4568856Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T02:46:51.4606728Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T02:46:51.4904524Z Removing HTTP extra header
+2026-10-27T02:46:51.4907811Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T02:46:51.4945292Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T02:46:51.5226113Z Removing includeIf entries pointing to credentials config files
+2026-10-27T02:46:51.5228499Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T02:46:51.5255333Z includeif.gitdir:/home/runner/work/formal-math/formal-math/.git.path
+2026-10-27T02:46:51.5257404Z includeif.gitdir:/home/runner/work/formal-math/formal-math/.git/worktrees/*.path
+2026-10-27T02:46:51.5259403Z includeif.gitdir:/github/workspace/.git.path
+2026-10-27T02:46:51.5261238Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-27T02:46:51.5265616Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/formal-math/formal-math/.git.path
+2026-10-27T02:46:51.5291066Z /home/runner/work/_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config
+2026-10-27T02:46:51.5302486Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/formal-math/formal-math/.git.path \/home\/runner\/work\/_temp\/git\-credentials\-7c66bcf1\-610c\-42de\-9597\-6f568c1e2433\.config
+2026-10-27T02:46:51.5341173Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/formal-math/formal-math/.git/worktrees/*.path
+2026-10-27T02:46:51.5372064Z /home/runner/work/_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config
+2026-10-27T02:46:51.5380786Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/formal-math/formal-math/.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-7c66bcf1\-610c\-42de\-9597\-6f568c1e2433\.config
+2026-10-27T02:46:51.5416307Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-10-27T02:46:51.5451501Z /github/runner_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config
+2026-10-27T02:46:51.5456018Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-7c66bcf1\-610c\-42de\-9597\-6f568c1e2433\.config
+2026-10-27T02:46:51.5489924Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-10-27T02:46:51.5516320Z /github/runner_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config
+2026-10-27T02:46:51.5525030Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-7c66bcf1\-610c\-42de\-9597\-6f568c1e2433\.config
+2026-10-27T02:46:51.5560733Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T02:46:51.5844273Z Removing credentials config '/home/runner/work/_temp/git-credentials-7c66bcf1-610c-42de-9597-6f568c1e2433.config'
+2026-10-27T02:46:51.5852256Z ##[endgroup]
+2026-10-27T02:46:51.6096690Z ##[group]Run sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL || true
+2026-10-27T02:46:51.6098292Z [36;1msudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL || true[0m
+2026-10-27T02:46:51.6099395Z [36;1mdf -h /[0m
+2026-10-27T02:46:51.6264595Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T02:46:51.6265531Z env:
+2026-10-27T02:46:51.6266206Z   ELAN_VERSION: v4.2.3
+2026-10-27T02:46:51.6267132Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T02:46:51.6268205Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:46:51.6269173Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T02:46:51.6270146Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T02:46:51.6271198Z ##[endgroup]
+2026-10-27T02:47:30.6506229Z Filesystem      Size  Used Avail Use% Mounted on
+2026-10-27T02:47:30.6507109Z /dev/root       145G   38G  107G  27% /
+2026-10-27T02:47:30.6561637Z ##[group]Run toolchain="$(tr -d '[:space:]' < lean-toolchain)"
+2026-10-27T02:47:30.6562203Z [36;1mtoolchain="$(tr -d '[:space:]' < lean-toolchain)"[0m
+2026-10-27T02:47:30.6562593Z [36;1mtags=("v${toolchain#*:v}")[0m
+2026-10-27T02:47:30.6563085Z [36;1m# Palomar's rule: lean4export at the release tag named after the project's Lean version.[0m
+2026-10-27T02:47:30.6563794Z [36;1m# This repository's addition: when a stable patch release (vX.Y.Z, Z > 0) has no tag of its own, the[0m
+2026-10-27T02:47:30.6564508Z [36;1m# vX.Y.0 tag is taken, and comparator-check.sh builds it with the project's toolchain. Release[0m
+2026-10-27T02:47:30.6565017Z [36;1m# candidates do not fall back.[0m
+2026-10-27T02:47:30.6565725Z [36;1mif [[ "${tags[0]}" =~ ^(v[0-9]+\.[0-9]+)\.[1-9][0-9]*$ ]]; then tags+=("${BASH_REMATCH[1]}.0"); fi[0m
+2026-10-27T02:47:30.6566185Z [36;1mfor tag in "${tags[@]}"; do[0m
+2026-10-27T02:47:30.6566818Z [36;1m  refs="$(git ls-remote https://github.com/leanprover/lean4export "refs/tags/$tag" "refs/tags/$tag^{}")"[0m
+2026-10-27T02:47:30.6567506Z [36;1m  commit="$(awk -v t="refs/tags/$tag^{}" '$2==t {print $1}' <<<"$refs")"[0m
+2026-10-27T02:47:30.6568068Z [36;1m  [ -n "$commit" ] || commit="$(awk -v t="refs/tags/$tag" '$2==t {print $1}' <<<"$refs")"[0m
+2026-10-27T02:47:30.6568537Z [36;1m  [ -z "$commit" ] || break[0m
+2026-10-27T02:47:30.6568859Z [36;1mdone[0m
+2026-10-27T02:47:30.6569126Z [36;1mif [ -z "$commit" ]; then[0m
+2026-10-27T02:47:30.6569673Z [36;1m  echo "::error::leanprover/lean4export has no release ${tags[0]}${tags[1]:+ or ${tags[1]}} for toolchain $toolchain"[0m
+2026-10-27T02:47:30.6570418Z [36;1m  exit 1[0m
+2026-10-27T02:47:30.6570782Z [36;1mfi[0m
+2026-10-27T02:47:30.6571254Z [36;1mecho "toolchain=$toolchain lean4export=$tag@$commit"[0m
+2026-10-27T02:47:30.6571713Z [36;1mecho "toolchain=$toolchain" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T02:47:30.6572138Z [36;1mecho "lean4export_commit=$commit" >> "$GITHUB_OUTPUT"[0m
+2026-10-27T02:47:30.6641629Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T02:47:30.6642041Z env:
+2026-10-27T02:47:30.6642296Z   ELAN_VERSION: v4.2.3
+2026-10-27T02:47:30.6642725Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T02:47:30.6643254Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:47:30.6643706Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T02:47:30.6644150Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T02:47:30.6644543Z ##[endgroup]
+2026-10-27T02:47:31.1849948Z toolchain=leanprover/lean4:v4.33.1 lean4export=v4.33.0@15f6055e299ad5b89345e533cc2192f4cc00f659
+2026-10-27T02:47:31.1965063Z ##[group]Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-10-27T02:47:31.1965467Z with:
+2026-10-27T02:47:31.1965671Z   path: ~/.elan
+2026-10-27T02:47:31.1966071Z   key: elan-v4.2.3-leanprover/lean4:v4.33.1-comparator-575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:47:31.1966548Z   enableCrossOsArchive: false
+2026-10-27T02:47:31.1966821Z   fail-on-cache-miss: false
+2026-10-27T02:47:31.1967065Z   lookup-only: false
+2026-10-27T02:47:31.1967282Z   save-always: false
+2026-10-27T02:47:31.1967486Z env:
+2026-10-27T02:47:31.1967682Z   ELAN_VERSION: v4.2.3
+2026-10-27T02:47:31.1968042Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T02:47:31.1968513Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:47:31.1968890Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T02:47:31.1969256Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T02:47:31.1969566Z ##[endgroup]
+2026-10-27T02:47:31.5166627Z Cache not found for input keys: elan-v4.2.3-leanprover/lean4:v4.33.1-comparator-575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:47:31.5269936Z ##[group]Run if [ ! -x "$HOME/.elan/bin/elan" ]; then
+2026-10-27T02:47:31.5270608Z [36;1mif [ ! -x "$HOME/.elan/bin/elan" ]; then[0m
+2026-10-27T02:47:31.5271342Z [36;1m  curl --fail --location --proto '=https' --tlsv1.2 --output "$RUNNER_TEMP/elan.tar.gz" \[0m
+2026-10-27T02:47:31.5272282Z [36;1m    "https://github.com/leanprover/elan/releases/download/${ELAN_VERSION}/elan-x86_64-unknown-linux-gnu.tar.gz"[0m
+2026-10-27T02:47:31.5272919Z [36;1m  echo "${ELAN_SHA256}  $RUNNER_TEMP/elan.tar.gz" | sha256sum --check[0m
+2026-10-27T02:47:31.5273312Z [36;1m  mkdir -p "$RUNNER_TEMP/elan"[0m
+2026-10-27T02:47:31.5273675Z [36;1m  tar -xzf "$RUNNER_TEMP/elan.tar.gz" -C "$RUNNER_TEMP/elan"[0m
+2026-10-27T02:47:31.5274163Z [36;1m  "$RUNNER_TEMP/elan/elan-init" -y --no-modify-path --default-toolchain none[0m
+2026-10-27T02:47:31.5274570Z [36;1mfi[0m
+2026-10-27T02:47:31.5274805Z [36;1mecho "$HOME/.elan/bin" >> "$GITHUB_PATH"[0m
+2026-10-27T02:47:31.5342149Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T02:47:31.5342505Z env:
+2026-10-27T02:47:31.5342706Z   ELAN_VERSION: v4.2.3
+2026-10-27T02:47:31.5343077Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T02:47:31.5343548Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:47:31.5343939Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T02:47:31.5344307Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T02:47:31.5344617Z ##[endgroup]
+2026-10-27T02:47:31.5507813Z   % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+2026-10-27T02:47:31.5508670Z                                  Dload  Upload  Total   Spent   Left   Speed
+2026-10-27T02:47:31.5509126Z 
+2026-10-27T02:47:31.7623734Z   0      0   0      0   0      0      0      0                              0
+2026-10-27T02:47:31.7624356Z   0      0   0      0   0      0      0      0                              0
+2026-10-27T02:47:31.7625050Z   0      0   0      0   0      0      0      0                              0
+2026-10-27T02:47:31.7625572Z 
+2026-10-27T02:47:31.9452490Z   0      0   0      0   0      0      0      0                              0
+2026-10-27T02:47:31.9476559Z 100  4.75M 100  4.75M   0      0 12.04M      0                              0
+2026-10-27T02:47:31.9477087Z 100  4.75M 100  4.75M   0      0 12.03M      0                              0
+2026-10-27T02:47:31.9477485Z 100  4.75M 100  4.75M   0      0 12.03M      0                              0
+2026-10-27T02:47:31.9565372Z /home/runner/work/_temp/elan.tar.gz: OK
+2026-10-27T02:47:32.2377299Z ##[group]Run lean --version
+2026-10-27T02:47:32.2377750Z [36;1mlean --version[0m
+2026-10-27T02:47:32.2378276Z [36;1mif grep -q '"name": *"mathlib"' lake-manifest.json 2>/dev/null; then[0m
+2026-10-27T02:47:32.2378844Z [36;1m  lake exe cache get[0m
+2026-10-27T02:47:32.2379186Z [36;1melse[0m
+2026-10-27T02:47:32.2379665Z [36;1m  echo "no Mathlib dependency in lake-manifest.json; nothing to fetch"[0m
+2026-10-27T02:47:32.2380501Z [36;1mfi[0m
+2026-10-27T02:47:32.2457116Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T02:47:32.2457481Z env:
+2026-10-27T02:47:32.2457692Z   ELAN_VERSION: v4.2.3
+2026-10-27T02:47:32.2458078Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T02:47:32.2458560Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:47:32.2458955Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T02:47:32.2459388Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T02:47:32.2459712Z ##[endgroup]
+2026-10-27T02:47:32.5375158Z info: Version 4.2.4 of elan is available! Use `elan self update` to update.
+2026-10-27T02:47:32.9497044Z info: downloading https://releases.lean-lang.org/lean4/v4.33.1/lean-4.33.1-linux.tar.zst
+2026-10-27T02:47:37.1422293Z info: installing /home/runner/.elan/toolchains/leanprover--lean4---v4.33.1
+2026-10-27T02:47:44.2927246Z Lean (version 4.33.1, x86_64-unknown-linux-gnu, commit 819816b2e0a3bf405af45ae5c7af2491d8f5bee6, Release)
+2026-10-27T02:47:44.3390165Z info: mathlib: cloning https://github.com/leanprover-community/mathlib4
+2026-10-27T02:48:12.6288541Z info: mathlib: checking out revision '0df444a360eaa60ab8c11dca51a86af692955474'
+2026-10-27T02:48:14.8653355Z info: plausible: cloning https://github.com/leanprover-community/plausible
+2026-10-27T02:48:15.2962591Z info: plausible: checking out revision 'b7eb3304aeae834b12dda98993a37f6a41f6f0bb'
+2026-10-27T02:48:15.3098798Z info: LeanSearchClient: cloning https://github.com/leanprover-community/LeanSearchClient
+2026-10-27T02:48:15.7712663Z info: LeanSearchClient: checking out revision '5f4d51b81cbd3f6b32b156bfad9056621a040404'
+2026-10-27T02:48:15.7842606Z info: importGraph: cloning https://github.com/leanprover-community/import-graph
+2026-10-27T02:48:16.2776125Z info: importGraph: checking out revision '16f02aa7642864af59f1ff0e384a015994db9118'
+2026-10-27T02:48:16.2972092Z info: proofwidgets: cloning https://github.com/leanprover-community/ProofWidgets4
+2026-10-27T02:48:17.1198570Z info: proofwidgets: checking out revision '4be2e3d5087eeb272cf5a8853b8f9dd025ef5957'
+2026-10-27T02:48:17.7431077Z info: aesop: cloning https://github.com/leanprover-community/aesop
+2026-10-27T02:48:18.5280525Z info: aesop: checking out revision '3448c0bcc5ce01b2d1546e483ec3620e32df3d0e'
+2026-10-27T02:48:18.5474106Z info: Qq: cloning https://github.com/leanprover-community/quote4
+2026-10-27T02:48:19.0694772Z info: Qq: checking out revision '92c15be17b7caf78c2ad767ec40f89052d908d81'
+2026-10-27T02:48:19.0829900Z info: batteries: cloning https://github.com/leanprover-community/batteries
+2026-10-27T02:48:21.6930176Z info: batteries: checking out revision '4488d40d070b9700d4d5a6aa342f0d40c31b2a2d'
+2026-10-27T02:48:21.7308797Z info: Cli: cloning https://github.com/leanprover/lean4-cli
+2026-10-27T02:48:22.1608864Z info: Cli: checking out revision '6130a47896ce867c6a4a55373441e59e565bad0f'
+2026-10-27T02:48:22.5753322Z ✔ [1/5] Built Cache.Cli (316ms)
+2026-10-27T02:48:22.5753726Z ✔ [2/5] Built Cache.Lean (377ms)
+2026-10-27T02:48:22.9776257Z ✔ [6/26] Built Cache.Cli:c.o (172ms)
+2026-10-27T02:48:22.9776858Z ✔ [7/26] Built Cache.Lean:c.o (196ms)
+2026-10-27T02:48:23.1779443Z ✔ [8/26] Built Cache.Infra (415ms)
+2026-10-27T02:48:23.3782089Z ✔ [9/26] Built Cache.Infra:c.o (218ms)
+2026-10-27T02:48:23.6786278Z ✔ [10/26] Built Batteries.Tactic.OpenPrivate (919ms)
+2026-10-27T02:48:24.9801116Z ✔ [11/26] Built Batteries.Tactic.OpenPrivate:c.o (1.2s)
+2026-10-27T02:48:25.0802384Z ✔ [12/26] Built Cache.IO (1.4s)
+2026-10-27T02:48:25.8803704Z ✔ [13/26] Built Cache.Hashing (776ms)
+2026-10-27T02:48:26.2798494Z ✔ [14/26] Built Cache.Hashing:c.o (428ms)
+2026-10-27T02:48:26.7803263Z ✔ [15/26] Built Cache.IO:c.o (1.6s)
+2026-10-27T02:48:27.8815881Z ✔ [16/26] Built Cache.Requests (2.0s)
+2026-10-27T02:48:28.4831906Z ✔ [17/26] Built Cache.Marker (566ms)
+2026-10-27T02:48:28.5824665Z ✔ [18/26] Built Cache.Marker:c.o (157ms)
+2026-10-27T02:48:29.1851982Z ✔ [19/26] Built Cache.Query (750ms)
+2026-10-27T02:48:29.5836722Z ✔ [20/26] Built Cache.Query:c.o (404ms)
+2026-10-27T02:48:29.9842986Z ✔ [21/26] Built Cache.Warning (808ms)
+2026-10-27T02:48:30.2847022Z ✔ [22/26] Built Cache.Warning:c.o (248ms)
+2026-10-27T02:48:30.6852018Z ✔ [23/26] Built Cache.Requests:c.o (2.8s)
+2026-10-27T02:48:31.1857046Z ✔ [24/26] Built Cache.Main (1.2s)
+2026-10-27T02:48:32.0867980Z ✔ [25/26] Built Cache.Main:c.o (894ms)
+2026-10-27T02:48:32.8886429Z ✔ [26/26] Built cache:exe (780ms)
+2026-10-27T02:48:35.5292991Z Current branch: HEAD
+2026-10-27T02:48:35.5293614Z Using cache from origin: (some leanprover-community/mathlib4)
+2026-10-27T02:48:35.5294779Z Attempting to download 8690 file(s) from leanprover-community/mathlib4 cache at https://lakecache.blob.core.windows.net/mathlib4-master
+2026-10-27T02:48:35.9686580Z 
+2026-10-27T02:48:36.0769825Z Downloaded: 1 file(s) [attempted 1/8690 = 0%, 190 KB/s], Decompressed: 0
+2026-10-27T02:48:36.1753054Z Downloaded: 82 file(s) [attempted 82/8690 = 0%, 2170 KB/s], Decompressed: 18
+2026-10-27T02:48:36.2776837Z Downloaded: 258 file(s) [attempted 258/8690 = 2%, 707 KB/s], Decompressed: 18
+2026-10-27T02:48:36.3874093Z Downloaded: 402 file(s) [attempted 402/8690 = 4%, 545 KB/s], Decompressed: 63
+2026-10-27T02:48:36.4872627Z Downloaded: 453 file(s) [attempted 453/8690 = 5%, 612 KB/s], Decompressed: 63
+2026-10-27T02:48:36.5891618Z Downloaded: 559 file(s) [attempted 559/8690 = 6%, 1112 KB/s], Decompressed: 63
+2026-10-27T02:48:36.6898149Z Downloaded: 732 file(s) [attempted 732/8690 = 8%, 2807 KB/s], Decompressed: 63
+2026-10-27T02:48:36.7952039Z Downloaded: 923 file(s) [attempted 923/8690 = 10%, 4169 KB/s], Decompressed: 63
+2026-10-27T02:48:36.9002004Z Downloaded: 1099 file(s) [attempted 1099/8690 = 12%, 493 KB/s], Decompressed: 63
+2026-10-27T02:48:37.0571624Z Downloaded: 1257 file(s) [attempted 1257/8690 = 14%, 1350 KB/s], Decompressed: 63
+2026-10-27T02:48:37.2015798Z Downloaded: 1410 file(s) [attempted 1410/8690 = 16%, 3782 KB/s], Decompressed: 63
+2026-10-27T02:48:37.3399790Z Downloaded: 1504 file(s) [attempted 1504/8690 = 17%, 9939 KB/s], Decompressed: 63
+2026-10-27T02:48:37.4526071Z Downloaded: 1606 file(s) [attempted 1606/8690 = 18%, 585 KB/s], Decompressed: 282
+2026-10-27T02:48:37.5541273Z Downloaded: 1697 file(s) [attempted 1697/8690 = 19%, 233 KB/s], Decompressed: 282
+2026-10-27T02:48:37.6631968Z Downloaded: 1800 file(s) [attempted 1800/8690 = 20%, 1657 KB/s], Decompressed: 282
+2026-10-27T02:48:37.7631767Z Downloaded: 1894 file(s) [attempted 1894/8690 = 21%, 244 KB/s], Decompressed: 282
+2026-10-27T02:48:37.8601624Z Downloaded: 2039 file(s) [attempted 2039/8690 = 23%, 1844 KB/s], Decompressed: 282
+2026-10-27T02:48:37.9671689Z Downloaded: 2239 file(s) [attempted 2239/8690 = 25%, 226 KB/s], Decompressed: 282
+2026-10-27T02:48:38.0692671Z Downloaded: 2432 file(s) [attempted 2432/8690 = 27%, 596 KB/s], Decompressed: 282
+2026-10-27T02:48:38.1672486Z Downloaded: 2610 file(s) [attempted 2610/8690 = 30%, 1574 KB/s], Decompressed: 282
+2026-10-27T02:48:38.2721871Z Downloaded: 2772 file(s) [attempted 2772/8690 = 31%, 6480 KB/s], Decompressed: 282
+2026-10-27T02:48:38.3694003Z Downloaded: 2936 file(s) [attempted 2936/8690 = 33%, 1942 KB/s], Decompressed: 282
+2026-10-27T02:48:38.5141688Z Downloaded: 3059 file(s) [attempted 3059/8690 = 35%, 6085 KB/s], Decompressed: 282
+2026-10-27T02:48:38.6481840Z Downloaded: 3209 file(s) [attempted 3209/8690 = 36%, 2324 KB/s], Decompressed: 282
+2026-10-27T02:48:38.7781776Z Downloaded: 3304 file(s) [attempted 3304/8690 = 38%, 303 KB/s], Decompressed: 282
+2026-10-27T02:48:38.9118817Z Downloaded: 3398 file(s) [attempted 3398/8690 = 39%, 262 KB/s], Decompressed: 282
+2026-10-27T02:48:39.0118177Z Downloaded: 3491 file(s) [attempted 3491/8690 = 40%, 3366 KB/s], Decompressed: 282
+2026-10-27T02:48:39.1681545Z Downloaded: 3614 file(s) [attempted 3614/8690 = 41%, 2080 KB/s], Decompressed: 282
+2026-10-27T02:48:39.2868050Z Downloaded: 3735 file(s) [attempted 3735/8690 = 42%, 4740 KB/s], Decompressed: 282
+2026-10-27T02:48:39.3925845Z Downloaded: 3826 file(s) [attempted 3826/8690 = 44%, 251 KB/s], Decompressed: 282
+2026-10-27T02:48:39.5021944Z Downloaded: 3923 file(s) [attempted 3923/8690 = 45%, 2808 KB/s], Decompressed: 282
+2026-10-27T02:48:39.6175327Z Downloaded: 4079 file(s) [attempted 4079/8690 = 46%, 1204 KB/s], Decompressed: 282
+2026-10-27T02:48:39.7174966Z Downloaded: 4228 file(s) [attempted 4228/8690 = 48%, 2384 KB/s], Decompressed: 282
+2026-10-27T02:48:39.8184684Z Downloaded: 4379 file(s) [attempted 4379/8690 = 50%, 330 KB/s], Decompressed: 282
+2026-10-27T02:48:39.9269294Z Downloaded: 4483 file(s) [attempted 4483/8690 = 51%, 1296 KB/s], Decompressed: 282
+2026-10-27T02:48:40.0235261Z Downloaded: 4634 file(s) [attempted 4634/8690 = 53%, 503 KB/s], Decompressed: 282
+2026-10-27T02:48:40.1571630Z Downloaded: 4785 file(s) [attempted 4785/8690 = 55%, 565 KB/s], Decompressed: 282
+2026-10-27T02:48:40.3041758Z Downloaded: 4843 file(s) [attempted 4843/8690 = 55%, 2352 KB/s], Decompressed: 282
+2026-10-27T02:48:40.4033799Z Downloaded: 4934 file(s) [attempted 4934/8690 = 56%, 225 KB/s], Decompressed: 282
+2026-10-27T02:48:40.5051693Z Downloaded: 5072 file(s) [attempted 5072/8690 = 58%, 1311 KB/s], Decompressed: 282
+2026-10-27T02:48:40.6112609Z Downloaded: 5203 file(s) [attempted 5203/8690 = 59%, 470 KB/s], Decompressed: 282
+2026-10-27T02:48:40.7757657Z Downloaded: 5367 file(s) [attempted 5367/8690 = 61%, 597 KB/s], Decompressed: 282
+2026-10-27T02:48:40.9338923Z Downloaded: 5516 file(s) [attempted 5516/8690 = 63%, 1632 KB/s], Decompressed: 282
+2026-10-27T02:48:41.0351319Z Downloaded: 5605 file(s) [attempted 5605/8690 = 64%, 176 KB/s], Decompressed: 282
+2026-10-27T02:48:41.1681728Z Downloaded: 5696 file(s) [attempted 5696/8690 = 65%, 317 KB/s], Decompressed: 282
+2026-10-27T02:48:41.2690616Z Downloaded: 5793 file(s) [attempted 5793/8690 = 66%, 4239 KB/s], Decompressed: 282
+2026-10-27T02:48:41.4001692Z Downloaded: 5884 file(s) [attempted 5884/8690 = 67%, 1055 KB/s], Decompressed: 282
+2026-10-27T02:48:41.4990498Z Downloaded: 5933 file(s) [attempted 5933/8690 = 68%, 1260 KB/s], Decompressed: 282
+2026-10-27T02:48:41.6091634Z Downloaded: 6019 file(s) [attempted 6019/8690 = 69%, 456 KB/s], Decompressed: 282
+2026-10-27T02:48:41.7081686Z Downloaded: 6117 file(s) [attempted 6117/8690 = 70%, 5475 KB/s], Decompressed: 282
+2026-10-27T02:48:41.8093360Z Downloaded: 6230 file(s) [attempted 6230/8690 = 71%, 2296 KB/s], Decompressed: 282
+2026-10-27T02:48:41.9102542Z Downloaded: 6377 file(s) [attempted 6377/8690 = 73%, 2897 KB/s], Decompressed: 282
+2026-10-27T02:48:42.0169347Z Downloaded: 6485 file(s) [attempted 6485/8690 = 74%, 3032 KB/s], Decompressed: 282
+2026-10-27T02:48:42.1997902Z Downloaded: 6622 file(s) [attempted 6622/8690 = 76%, 886 KB/s], Decompressed: 282
+2026-10-27T02:48:42.3127160Z Downloaded: 6773 file(s) [attempted 6773/8690 = 77%, 1672 KB/s], Decompressed: 282
+2026-10-27T02:48:42.4129416Z Downloaded: 6861 file(s) [attempted 6861/8690 = 78%, 213 KB/s], Decompressed: 282
+2026-10-27T02:48:42.5142422Z Downloaded: 7007 file(s) [attempted 7007/8690 = 80%, 299 KB/s], Decompressed: 282
+2026-10-27T02:48:42.6135196Z Downloaded: 7066 file(s) [attempted 7066/8690 = 81%, 1427 KB/s], Decompressed: 282
+2026-10-27T02:48:42.7133484Z Downloaded: 7203 file(s) [attempted 7203/8690 = 82%, 509 KB/s], Decompressed: 282
+2026-10-27T02:48:42.8170453Z Downloaded: 7301 file(s) [attempted 7301/8690 = 84%, 3024 KB/s], Decompressed: 282
+2026-10-27T02:48:42.9162721Z Downloaded: 7354 file(s) [attempted 7354/8690 = 84%, 4514 KB/s], Decompressed: 282
+2026-10-27T02:48:43.0195211Z Downloaded: 7477 file(s) [attempted 7477/8690 = 86%, 952 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.1231469Z Downloaded: 7654 file(s) [attempted 7654/8690 = 88%, 3342 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.2282255Z Downloaded: 7858 file(s) [attempted 7858/8690 = 90%, 1489 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.3243508Z Downloaded: 8035 file(s) [attempted 8035/8690 = 92%, 1079 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.4271499Z Downloaded: 8187 file(s) [attempted 8187/8690 = 94%, 509 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.5344610Z Downloaded: 8224 file(s) [attempted 8224/8690 = 94%, 1050 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.6573624Z Downloaded: 8350 file(s) [attempted 8350/8690 = 96%, 1204 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.7782229Z Downloaded: 8444 file(s) [attempted 8444/8690 = 97%, 2462 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.8791880Z Downloaded: 8541 file(s) [attempted 8541/8690 = 98%, 7142 KB/s], Decompressed: 1588
+2026-10-27T02:48:43.9838916Z Downloaded: 8633 file(s) [attempted 8633/8690 = 99%, 1534 KB/s], Decompressed: 1588
+2026-10-27T02:48:44.1209034Z Downloaded: 8687 file(s) [attempted 8687/8690 = 99%, 952 KB/s], Decompressed: 1588
+2026-10-27T02:48:44.1333643Z Downloaded: 8690 file(s) [attempted 8690/8690 = 100%, 195 KB/s], Decompressed: 1588
+2026-10-27T02:48:44.1334638Z Downloaded: 8690 file(s) [attempted 8690/8690 = 100%, 195 KB/s], Decompressed: 1588
+2026-10-27T02:49:05.2162414Z Decompressed 8690 file(s)
+2026-10-27T02:49:05.2164085Z Already decompressed 8690 file(s)
+2026-10-27T02:49:05.4144571Z ##[group]Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-10-27T02:49:05.4144949Z with:
+2026-10-27T02:49:05.4145164Z   path: eth/.lake/build
+2026-10-27T02:49:05.4145787Z   key: lakebuild-Linux-eth-5e915a8e95ffef3cb5d965f5ea9e50051a4555d339b456d0248f0a7a8364161d-80ee23547e985fd4c7fc71fbc6910af85207bcf3
+2026-10-27T02:49:05.4146693Z   restore-keys: lakebuild-Linux-eth-5e915a8e95ffef3cb5d965f5ea9e50051a4555d339b456d0248f0a7a8364161d-
+
+2026-10-27T02:49:05.4147229Z   enableCrossOsArchive: false
+2026-10-27T02:49:05.4147508Z   fail-on-cache-miss: false
+2026-10-27T02:49:05.4147748Z   lookup-only: false
+2026-10-27T02:49:05.4147975Z   save-always: false
+2026-10-27T02:49:05.4148177Z env:
+2026-10-27T02:49:05.4148366Z   ELAN_VERSION: v4.2.3
+2026-10-27T02:49:05.4148736Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T02:49:05.4149228Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:49:05.4149881Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T02:49:05.4150549Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T02:49:05.4150905Z ##[endgroup]
+2026-10-27T02:49:05.7124028Z Cache not found for input keys: lakebuild-Linux-eth-5e915a8e95ffef3cb5d965f5ea9e50051a4555d339b456d0248f0a7a8364161d-80ee23547e985fd4c7fc71fbc6910af85207bcf3, lakebuild-Linux-eth-5e915a8e95ffef3cb5d965f5ea9e50051a4555d339b456d0248f0a7a8364161d-
+2026-10-27T02:49:05.7245586Z ##[group]Run lake build 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+2026-10-27T02:49:05.7246058Z [36;1mlake build 2>&1 | tee "$RUNNER_TEMP/lake-build.log"[0m
+2026-10-27T02:49:05.7246607Z [36;1m# The trusted comparator statement files (Challenge.lean, Challenge/<Topic>.lean) carry placeholder[0m
+2026-10-27T02:49:05.7247217Z [36;1m# proofs by design; a sorry reported for any other file fails the job.[0m
+2026-10-27T02:49:05.7247775Z [36;1mif grep -F "declaration uses 'sorry'" "$RUNNER_TEMP/lake-build.log" \[0m
+2026-10-27T02:49:05.7248245Z [36;1m     | grep -v -E '(^|[ /])Challenge(/[^ :]*)?\.lean:'; then[0m
+2026-10-27T02:49:05.7248665Z [36;1m  echo "::error::sorry outside the comparator challenge files"[0m
+2026-10-27T02:49:05.7249012Z [36;1m  exit 1[0m
+2026-10-27T02:49:05.7249237Z [36;1mfi[0m
+2026-10-27T02:49:05.7319044Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T02:49:05.7319394Z env:
+2026-10-27T02:49:05.7319639Z   ELAN_VERSION: v4.2.3
+2026-10-27T02:49:05.7320068Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T02:49:05.7320749Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T02:49:05.7321140Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T02:49:05.7321606Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T02:49:05.7321922Z ##[endgroup]
+2026-10-27T02:49:09.4272052Z ✔ [2400/2417] Built ThreeSatStatement (2.1s)
+2026-10-27T02:49:09.7271760Z ✔ [2401/2417] Built PiecesStatement (2.2s)
+2026-10-27T02:49:09.7300923Z ✔ [2402/2417] Built ParityChecksStatement (2.2s)
+2026-10-27T02:49:09.7330895Z ✔ [2403/2417] Built LevelsStatement (2.3s)
+2026-10-27T02:49:11.3311875Z ✔ [2404/2417] Built PartitionStatement (1.0s)
+2026-10-27T02:49:11.5291774Z ✔ [2405/2441] Built KSatStatement (1.8s)
+2026-10-27T02:49:11.5331100Z ✔ [2406/2441] Built ThreeSatRateStatement (1.8s)
+2026-10-27T02:49:11.5341022Z ✔ [2407/2441] Built ThmEveryDeltaStatement (1.9s)
+2026-10-27T02:49:13.4351832Z ✔ [2431/2441] Built CountKSatStatement (1.9s)
+2026-10-27T02:49:13.6326812Z ✔ [2432/2441] Built NetworkStatements (2.3s)
+2026-10-27T02:49:13.6360768Z ✔ [2433/2441] Built EightSquareStatement (2.1s)
+2026-10-27T02:49:14.5381880Z ✔ [2434/2444] Built AppHalfPiecesStatement (2.9s)
+2026-10-27T02:49:15.4381813Z ✔ [2435/2450] Built PaperSentencesStatement (1.0s)
+2026-10-27T02:49:15.6411876Z ✔ [2436/2452] Built ClauseBoundStatement (2.0s)
+2026-10-27T02:49:15.9431877Z ✔ [2437/2463] Built StepMachineStatements (2.3s)
+2026-10-27T02:49:16.0421779Z ✔ [2438/2463] Built ToTuring.TM.Tree (1.6s)
+2026-10-27T02:49:17.2471868Z ✔ [2439/2463] Built ToTuring.TM.Run (1.8s)
+2026-10-27T02:49:17.5463804Z ✔ [2440/2469] Built ToTuring.Bound (1.6s)
+2026-10-27T02:49:17.7466210Z ✔ [2441/2471] Built FixedWidthVariableBoundStatement (2.1s)
+2026-10-27T02:49:19.2622560Z ✔ [2442/2471] Built StepMachines.Prog.Stepped (3.1s)
+2026-10-27T02:49:19.3621872Z ✔ [2443/2471] Built ToTuring.TM.Frag (2.1s)
+2026-10-27T02:49:19.3661198Z ✔ [2444/2471] Built Groundwork.Net.Defs (1.8s)
+2026-10-27T02:49:19.8624257Z ✔ [2445/2471] Built UniformInKStatement (2.1s)
+2026-10-27T02:49:21.8721734Z ✔ [2446/2471] Built ToTuring.Enc (2.5s)
+2026-10-27T02:49:21.9678875Z ✔ [2447/2476] Built ToTuring.TM.Stacks (2.1s)
+2026-10-27T02:49:22.1681625Z ✔ [2448/2476] Built StepMachines.Prog.Range (2.9s)
+2026-10-27T02:49:22.4686330Z ✔ [2449/2476] Built StepMachines.Prog.Chunks (3.1s)
+2026-10-27T02:49:23.7691909Z ✔ [2450/2476] Built ToTuring.TM.Rename (1.9s)
+2026-10-27T02:49:24.4692016Z ✔ [2451/2477] Built MainTheoremFormsStatement (2.5s)
+2026-10-27T02:49:25.0694492Z ✔ [2452/2477] Built Groundwork.Net.Calculus (2.7s)
+2026-10-27T02:49:25.1711838Z ✔ [2453/2477] Built PaddedDescent.Params (1.4s)
+2026-10-27T02:49:25.9751757Z ✔ [2454/2479] Built ToTuring.EncLemmas (3.8s)
+2026-10-27T02:49:27.4822021Z ✔ [2455/2481] Built StepMachines.Prog.Brute (3.1s)
+2026-10-27T02:49:28.0911951Z ✔ [2457/2483] Built StepMachines.Prog.Comb (2.9s)
+2026-10-27T02:49:28.7922533Z ✔ [2458/2484] Built ToTuring.TM.Move (3.7s)
+2026-10-27T02:49:33.1021621Z ✔ [2459/2495] Built ToTuring.TM.Ops (4.4s)
+2026-10-27T02:49:33.1031039Z ✔ [2460/2495] Built StepMachines.Math.GridArith (4.0s)
+2026-10-27T02:49:33.2031838Z ✔ [2461/2498] Built Groundwork.Net.Net (7.2s)
+2026-10-27T02:49:35.7124156Z ✔ [2462/2498] Built StepMachines.Math.Code (2.4s)
+2026-10-27T02:49:35.8131988Z ✔ [2463/2503] Built Groundwork.Cross.Bit (2.7s)
+2026-10-27T02:49:35.9141766Z ✔ [2464/2503] Built Groundwork.Net.Colouring (8.4s)
+2026-10-27T02:49:36.2151877Z ✔ [2465/2503] Built ToTuring.PolyT (3.1s)
+2026-10-27T02:49:38.0272902Z ✔ [2466/2503] Built StepMachines.Prog.Spec (2.3s)
+2026-10-27T02:49:38.0291401Z ✔ [2467/2503] Built StepMachines.Math.CodeMore (2.3s)
+2026-10-27T02:49:38.1302069Z ✔ [2468/2503] Built StepMachines.Math.Pull (1.8s)
+2026-10-27T02:49:38.9282978Z ✔ [2469/2503] Built Groundwork.Cross.Cuts (3.1s)
+2026-10-27T02:49:39.6281310Z ✔ [2470/2506] Built Groundwork.Net.ColouringNet (1.6s)
+2026-10-27T02:49:40.3292007Z ✔ [2471/2506] Built StepMachines.Prog.SideBasics (2.2s)
+2026-10-27T02:49:40.8296417Z ✔ [2472/2506] Built ToTuring.Closure.Basic (2.8s)
+2026-10-27T02:49:41.5406613Z ✔ [2473/2506] Built StepMachines.Math.CodeSeq (1.0s)
+2026-10-27T02:49:41.7415205Z ✔ [2475/2508] Built StepMachines.Prog.GridDefs (2.8s)
+2026-10-27T02:49:42.9454603Z ✔ [2476/2508] Built Groundwork.Grid.Defs (2.6s)
+2026-10-27T02:49:43.6492027Z ✔ [2477/2508] Built StepMachines.Prog.NetProg (2.8s)
+2026-10-27T02:49:45.2551966Z ✔ [2478/2510] Built ToTuring.Closure.Cases (3.7s)
+2026-10-27T02:49:46.8641782Z ✔ [2479/2510] Built StepMachines.Math.SatArith (3.3s)
+2026-10-27T02:49:48.3811747Z ✔ [2480/2510] Built StepMachines.Math.Sparse (5.4s)
+2026-10-27T02:49:49.3911675Z ✔ [2481/2512] Built StepMachines.Math.SatNet (7.6s)
+2026-10-27T02:49:50.8956358Z ✔ [2482/2512] Built Groundwork.Grid.Grid (5.7s)
+2026-10-27T02:49:51.0981684Z ✔ [2483/2512] Built ToTuring.Closure.Fold (4.2s)
+2026-10-27T02:49:51.1010830Z ✔ [2484/2512] Built StepMachines.Math.SparsifyTree (2.8s)
+2026-10-27T02:49:54.5055290Z ✔ [2485/2518] Built StepMachines.Math.Formula (3.6s)
+2026-10-27T02:49:54.8058991Z ✔ [2486/2518] Built StepMachines.Prog.Walk (3.7s)
+2026-10-27T02:49:54.9061648Z ✔ [2487/2518] Built StepMachines.Prog.CountNet (5.6s)
+2026-10-27T02:49:55.8081863Z ✔ [2488/2519] Built Groundwork.Grid.RowNet (4.6s)
+2026-10-27T02:49:56.6092046Z ✔ [2489/2519] Built StepMachines.Math.Sparsify (1.7s)
+2026-10-27T02:49:57.3100953Z ✔ [2490/2519] Built ToTuring.Lib.Bool (2.8s)
+2026-10-27T02:49:58.1151926Z ✔ [2491/2520] Built StepMachines.Math.SparsifyCount (2.3s)
+2026-10-27T02:49:58.3171772Z ✔ [2492/2520] Built StepMachines.Prog.Decode (3.5s)
+2026-10-27T02:49:59.7231697Z ✔ [2493/2527] Built StepMachines.Prog.Count (3.1s)
+2026-10-27T02:49:59.7280858Z ✔ [2494/2527] Built SparsifyWidthK.Defs (1.6s)
+2026-10-27T02:49:59.8224987Z ✔ [2495/2527] Built StepMachines.Math.SparsifyStep (1.6s)
+2026-10-27T02:50:00.6260137Z ✔ [2496/2528] Built Groundwork.Grid.Expand (3.3s)
+2026-10-27T02:50:02.0341904Z ✔ [2497/2528] Built PaddedDescent.F.MarkMath (2.3s)
+2026-10-27T02:50:02.1311926Z ✔ [2498/2528] Built StepMachines.Math.SparsifyList (2.3s)
+2026-10-27T02:50:02.6311865Z ✔ [2499/2528] Built ToTuring.Lib.List1 (2.9s)
+2026-10-27T02:50:03.7351639Z ✔ [2500/2528] Built Groundwork.Grid.Size (3.0s)
+2026-10-27T02:50:04.9402632Z ✔ [2501/2532] Built StepMachines.Math.CutWord (3.0s)
+2026-10-27T02:50:04.9421059Z ✔ [2502/2532] Built StepMachines.Math.Digits (2.8s)
+2026-10-27T02:50:05.5421831Z ✔ [2503/2534] Built StepMachines.Math.SparsifyProg (2.9s)
+2026-10-27T02:50:07.4492899Z ✔ [2504/2534] Built ToTuring.Lib.List1b (3.8s)
+2026-10-27T02:50:07.8537608Z ✔ [2505/2534] Built StepMachines.Prog.CutProg (2.3s)
+2026-10-27T02:50:08.0551815Z ✔ [2506/2535] Built WidthK.Decode (3.0s)
+2026-10-27T02:50:10.2624111Z ✔ [2507/2535] Built StepMachines.Prog.Sat (2.3s)
+2026-10-27T02:50:10.4662306Z ✔ [2508/2535] Built StepMachines.Math.SideCodes (2.0s)
+2026-10-27T02:50:11.7842660Z ✔ [2509/2536] Built StepMachines.Prog.BruteE (6.8s)
+2026-10-27T02:50:12.7902447Z ✔ [2510/2536] Built SparsifyWidthK.DefsProg (2.5s)
+2026-10-27T02:50:12.7933294Z ✔ [2511/2536] Built StepMachines.Prog.NetRun (4.0s)
+2026-10-27T02:50:15.8001768Z ✔ [2512/2536] Built StepMachines.Prog.NetVal (5.4s)
+2026-10-27T02:50:17.3048493Z ✔ [2513/2536] Built StepMachines.Math.RebalanceArith (4.5s)
+2026-10-27T02:50:17.9051650Z ✔ [2514/2539] Built StepMachines.Math.SideNet (5.1s)
+2026-10-27T02:50:19.3221698Z ✔ [2515/2539] Built StepMachines.Prog.GridLoop (3.5s)
+2026-10-27T02:50:20.1228463Z ✔ [2516/2543] Built CountKSat.Defs (2.8s)
+2026-10-27T02:50:21.0271992Z ✔ [2517/2546] Built StepMachines.Prog.GridCount (1.7s)
+2026-10-27T02:50:21.4271716Z ✔ [2518/2555] Built StepMachines.Math.SideX (3.6s)
+2026-10-27T02:50:22.1281835Z ✔ [2519/2560] Built ToTuring.Machine.Lift (1.0s)
+2026-10-27T02:50:22.2275867Z ✔ [2520/2560] Built ToTuring.Lib.Nat1 (10s)
+2026-10-27T02:50:23.0291589Z ✔ [2523/2560] Built ToTuring.EndLemmas (1.0s)
+2026-10-27T02:50:23.9321691Z ✔ [2524/2560] Built CircuitLowerBoundStatement (1.8s)
+2026-10-27T02:50:24.1301991Z ✔ [2525/2560] Built StepMachines.Prog.Side (2.7s)
+2026-10-27T02:50:26.5511942Z ✔ [2526/2560] Built AppVariablesStatement (2.6s)
+2026-10-27T02:50:27.3532114Z ✔ [2527/2560] Built ToTuring.Machine.Host (5.2s)
+2026-10-27T02:50:27.9551724Z ✔ [2528/2560] Built ToTuring.Lib.Nat1b (4.9s)
+2026-10-27T02:50:28.0598205Z ✔ [2529/2560] Built PaddedDescent.RateLemmas (3.9s)
+2026-10-27T02:50:28.2600819Z ✔ [2530/2560] Built CircuitLowerBoundInfinitelyOftenStatement (1.8s)
+2026-10-27T02:50:30.8679544Z ✔ [2531/2582] Built PaddedDescent.Host (2.9s)
+2026-10-27T02:50:31.2761668Z ✔ [2558/2589] Built StepMachines.Prog.SidePresents (3.9s)
+2026-10-27T02:50:31.8781687Z ✔ [2559/2589] Built ToTuring.Lib.List2 (3.9s)
+2026-10-27T02:50:33.2800698Z ✔ [2560/2589] Built ToTuring.Lib.Nat2 (4.9s)
+2026-10-27T02:50:33.3851984Z ✔ [2561/2589] Built GraphProblemsStatement (2.5s)
+2026-10-27T02:50:34.0861811Z ✔ [2562/2589] Built QueryMachines.Kernel (2.8s)
+2026-10-27T02:50:35.4874125Z ✔ [2563/2589] Built ToTuring.Lib.Unary (2.2s)
+2026-10-27T02:50:35.6881791Z ✔ [2564/2589] Built ToTuring.Lib.List3 (3.8s)
+2026-10-27T02:50:37.2914554Z ✔ [2565/2590] Built PaddedDescent.Pad (3.9s)
+2026-10-27T02:50:40.6031764Z ✔ [2566/2601] Built PaddedDescent.PadRate (3.3s)
+2026-10-27T02:50:41.5014492Z ✔ [2576/2601] Built ToTuring.Lib.Int (7.5s)
+2026-10-27T02:50:43.7051716Z ✔ [2577/2601] Built ToTuring.Poly.Spec (2.2s)
+2026-10-27T02:50:44.4052633Z ✔ [2578/2605] Built ToTuring.Machine.EndTM (3.8s)
+2026-10-27T02:50:45.3061711Z ✔ [2579/2605] Built ToTuring.Poly.Sparsify (9.6s)
+2026-10-27T02:50:45.9092757Z ✔ [2580/2606] Built PaddedDescent.F.Fuel (2.1s)
+2026-10-27T02:50:46.5101846Z ✔ [2581/2606] Built Paper.SecNetworks_Model (2.1s)
+2026-10-27T02:50:47.8122531Z ✔ [2582/2609] Built ToTuring.Poly.IsPoly (2.5s)
+2026-10-27T02:50:48.4141701Z ✔ [2583/2610] Built SparsifyWidthK.Interfaces (2.6s)
+2026-10-27T02:50:48.8251693Z ✔ [2584/2610] Built PaddedDescent.F.Data (2.2s)
+2026-10-27T02:50:52.0341969Z ✔ [2585/2610] Built ToTuring.Poly.Basic (3.2s)
+2026-10-27T02:50:54.1371880Z ✔ [2586/2610] Built ToTuring.Poly.Range (5.7s)
+2026-10-27T02:50:54.2342154Z ✔ [2587/2610] Built ToTuring.Poly.Words (18s)
+2026-10-27T02:50:54.9371733Z ✔ [2588/2611] Built CountKSat.Interfaces (2.9s)
+2026-10-27T02:50:56.7421753Z ✔ [2589/2611] Built PaddedDescent.F.MarkNet (2.6s)
+2026-10-27T02:50:57.9441660Z ✔ [2590/2611] Built ToTuring.Poly.Comb (3.7s)
+2026-10-27T02:50:58.1507233Z ✔ [2592/2638] Built ToTuring.Poly.Brute (3.2s)
+2026-10-27T02:51:01.5481690Z ✔ [3278/3303] Built PaddedDescent.F.Prog (3.6s)
+2026-10-27T02:51:01.8481563Z ✔ [3279/3303] Built KSatFreeCodeStatement (2.9s)
+2026-10-27T02:51:04.6571781Z ✔ [3280/3308] Built PaddedDescent.F.Interfaces (3.1s)
+2026-10-27T02:51:05.6591827Z ✔ [3281/3310] Built ClauseBound.Alg.Data (3.8s)
+2026-10-27T02:51:07.3661756Z ✔ [3282/3310] Built ClauseBound.Gen.PartA (2.7s)
+2026-10-27T02:51:09.6741744Z ✔ [3283/3313] Built ClauseBound.Alg.Prog (3.0s)
+2026-10-27T02:51:11.3898299Z ✔ [3284/3313] Built Eight.SecCrossing_PolyDefs (4.1s)
+2026-10-27T02:51:14.9971909Z ✔ [3285/3316] Built ClauseBound.Alg.Interfaces (5.3s)
+2026-10-27T02:51:18.4005655Z ✔ [3286/3318] Built QueryMachines.Runs (6.9s)
+2026-10-27T02:51:18.8021752Z ✔ [3287/3323] Built Paper.SecNetworks_DefFactor (3.8s)
+2026-10-27T02:51:22.0092395Z ✔ [3288/3323] Built Paper.SecCrossing_Crossing (3.2s)
+2026-10-27T02:51:22.5161876Z ✔ [3289/3323] Built ToTuring.Lib.Table (4.2s)
+2026-10-27T02:51:25.5207315Z ✔ [3290/3327] Built ToTuring.Poly.Digits (3.6s)
+2026-10-27T02:51:30.7331674Z ✔ [3291/3327] Built Paper.SecLevel_Grid (5.2s)
+2026-10-27T02:51:34.1371731Z ✔ [3292/3327] Built ToTuring.Poly.NetFun (46s)
+2026-10-27T02:51:36.1362599Z ✔ [3293/3327] Built ToTuring.Poly.Grid (2.0s)
+2026-10-27T02:51:38.3421850Z ✔ [3294/3327] Built ToTuring.Poly.Walk (2.3s)
+2026-10-27T02:51:42.4522221Z ✔ [3295/3327] Built ToTuring.Poly.Cut (11s)
+2026-10-27T02:51:44.8602345Z ✔ [3296/3327] Built Paper.SecNetworks_Networks (2.4s)
+2026-10-27T02:51:52.3751880Z ✔ [3297/3327] Built ToTuring.Poly.Decode (55s)
+2026-10-27T02:51:54.5881896Z ✔ [3298/3327] Built SingleBitPieces.SecNetworks_LemGrouping (2.2s)
+2026-10-27T02:51:59.8051907Z ✔ [3299/3328] Built Eight.SecNetworks_Defs (5.2s)
+2026-10-27T02:52:05.1091661Z ✔ [3300/3328] Built ToTuring.Poly.Sat (5.3s)
+2026-10-27T02:52:08.3146126Z ✔ [3301/3328] Built PaddedDescent.BrutePad (3.2s)
+2026-10-27T02:52:13.2281921Z ✔ [3302/3330] Built Eight.SecNetworks_LemGrouping (4.9s)
+2026-10-27T02:52:16.9491715Z ✔ [3303/3330] Built ClauseBound.Grid.Size (3.7s)
+2026-10-27T02:52:18.1487711Z ✔ [3304/3330] Built ToTuring.Poly.GridSide (33s)
+2026-10-27T02:52:20.9591686Z ✔ [3305/3330] Built QueryMachines.CombDefs (2.8s)
+2026-10-27T02:52:21.0581752Z ✔ [3306/3337] Built PaddedDescent.Reduce (4.2s)
+2026-10-27T02:52:23.5681914Z ✔ [3307/3337] Built Paper.SecLevel_Recursion (2.4s)
+2026-10-27T02:52:23.7701810Z ✔ [3308/3337] Built ClauseBound.Grid.Expand (2.8s)
+2026-10-27T02:52:25.8695165Z ✔ [3309/3337] Built QueryMachines.CombRunsStatement (2.2s)
+2026-10-27T02:52:25.8696069Z ✔ [3310/3337] Built ToTuring.Poly.Count (63s)
+2026-10-27T02:52:26.1707904Z ✔ [3311/3339] Built QueryMachines.Comb (2.7s)
+2026-10-27T02:52:28.0791895Z ✔ [3312/3339] Built CountKSatRate.Defs (2.2s)
+2026-10-27T02:52:29.2821943Z ✔ [3313/3339] Built PaddedDescent.F.Table (3.4s)
+2026-10-27T02:52:30.6841849Z ✔ [3314/3342] Built ClauseBound.Alg.GridNet (4.5s)
+2026-10-27T02:52:30.7833537Z ✔ [3315/3342] Built PrintedStatement (2.7s)
+2026-10-27T02:52:31.5901717Z ✔ [3316/3342] Built Paper.SecProof_Proof (2.3s)
+2026-10-27T02:52:32.7909339Z ✔ [3317/3343] Built CountKSatRate.Interfaces (2.1s)
+2026-10-27T02:52:33.7939141Z ✔ [3318/3343] Built Eight.SecLevel_GridDefs (2.2s)
+2026-10-27T02:52:33.8951809Z ✔ [3319/3343] Built PaddedDescent.F.RebalF (3.0s)
+2026-10-27T02:52:35.0971655Z ✔ [3320/3343] Built CliqueLevelsStatement (2.4s)
+2026-10-27T02:52:35.8976714Z ✔ [3321/3343] Built Eight.SecProof_NetworkDefs (2.2s)
+2026-10-27T02:52:36.0981909Z ✔ [3322/3343] Built Paper.SecPseudocode_Algorithm (2.3s)
+2026-10-27T02:52:38.1041819Z ✔ [3323/3349] Built ClauseBound.Alg.Top (3.0s)
+2026-10-27T02:52:38.1042946Z ✔ [3324/3349] Built Exits.Defs (2.1s)
+2026-10-27T02:52:40.0081712Z ✔ [3325/3349] Built ClauseBound.Alg.GridPresents (3.9s)
+2026-10-27T02:52:41.0183127Z ✔ [3326/3349] Built ClauseBound.Gen.Defs (2.9s)
+2026-10-27T02:52:41.1185307Z ✔ [3327/3349] Built SparsifyWidthK.ProgMain (3.1s)
+2026-10-27T02:52:42.3198464Z ✔ [3328/3349] Built ClauseBound.Alg.TopNet (2.3s)
+2026-10-27T02:52:43.3221953Z ✔ [3329/3349] Built ClauseBound.Alg.Grid (2.2s)
+2026-10-27T02:52:43.6221671Z ✔ [3330/3349] Built GeneralPieces.Defs (2.5s)
+2026-10-27T02:52:44.8274380Z ✔ [3331/3349] Built PaddedDescent.F.FuelCert (66s)
+2026-10-27T02:52:45.0291706Z ✔ [3332/3350] Built AppRunningTimeStatement (2.7s)
+2026-10-27T02:52:45.7292670Z ✔ [3333/3353] Built UniformInK.Spars.Defs (2.4s)
+2026-10-27T02:52:45.9291785Z ✔ [3334/3353] Built ClauseBound.TopN.Defs (2.3s)
+2026-10-27T02:52:47.2331613Z ✔ [3335/3353] Built Eight.Level.Defs (2.4s)
+2026-10-27T02:52:48.4345472Z ✔ [3336/3353] Built GeneralPieces.DefGenPieces.Progs (2.7s)
+2026-10-27T02:52:48.6377273Z ✔ [3337/3353] Built ClausesOccurStatement (2.7s)
+2026-10-27T02:52:51.3436002Z ✔ [3338/3353] Built UniformInK.Tree.Defs (2.8s)
+2026-10-27T02:52:51.4451795Z ✔ [3339/3354] Built PaddedDescent.F.MarkProf (4.2s)
+2026-10-27T02:52:52.4491745Z ✔ [3340/3356] Built PaddedDescent.F.MarkPi (4.1s)
+2026-10-27T02:52:54.1551664Z ✔ [3342/3451] Built SparsificationLemma.Defs (2.7s)
+2026-10-27T02:52:54.5651810Z ✔ [3822/3848] Built Eight.ViaGrouping.Defs (3.1s)
+2026-10-27T02:52:55.6654322Z ✔ [3838/3848] Built ClauseBound.TopN.EvalW (3.2s)
+2026-10-27T02:52:56.7681733Z ✔ [3839/3848] Built Eight.ViaGrouping.SatPsiDefs (2.2s)
+2026-10-27T02:52:56.9701937Z ✔ [3840/3950] Built Eight.ViaGrouping.GridPsiDefs (2.4s)
+2026-10-27T02:52:57.6731733Z ✔ [4005/4022] Built ClauseBound.Gen.Pick (12s)
+2026-10-27T02:52:57.9721691Z ✔ [4006/4023] Built Eight.ViaGrouping.LevelDefs (2.3s)
+2026-10-27T02:52:59.1741685Z ✔ [4007/4023] Built ClauseBound.ParityChecks.NetDefs (2.4s)
+2026-10-27T02:53:00.1781631Z ✔ [4008/4024] Built GeneralPieces.Tied.Defs (2.3s)
+2026-10-27T02:53:00.1782911Z ✔ [4009/4024] Built ClauseBound.ParityChecks.RunDefs (3.1s)
+2026-10-27T02:53:00.7811655Z ✔ [4010/4025] Built ClauseBound.Rec.Few (3.1s)
+2026-10-27T02:53:01.3811775Z ✔ [4011/4026] Built Eight.ViaGrouping.AlgDefs (2.2s)
+2026-10-27T02:53:02.4841788Z ✔ [4012/4026] Built PiecesFromEightSquaresStatement (2.3s)
+2026-10-27T02:53:03.5931669Z ✔ [4013/4029] Built Eight.SecCrossing_Blocks (2.9s)
+2026-10-27T02:53:03.8941903Z ✔ [4014/4029] Built Eight.SecCrossing_Identity (3.7s)
+2026-10-27T02:53:06.2041984Z ✔ [4015/4029] Built PiecesCountedStatement (3.7s)
+2026-10-27T02:53:07.9113867Z ✔ [4016/4032] Built Eight.SecCrossing_MulOut (4.3s)
+2026-10-27T02:53:08.8112092Z ✔ [4017/4040] Built Eight.SecCrossing_PiecesAC (4.9s)
+2026-10-27T02:53:09.5141911Z ✔ [4018/4040] Built Eight.SecCrossing_FactDefs (3.4s)
+2026-10-27T02:53:09.8151718Z ✔ [4019/4040] Built ClauseBound.ParityChecks.Params (8.5s)
+2026-10-27T02:53:10.0141661Z ✔ [4020/4043] Built SingleBitPieces.SecCrossing_PolyA (2.1s)
+2026-10-27T02:53:14.2231668Z ✔ [4021/4043] Built Eight.SecCrossing_Chunk (4.4s)
+2026-10-27T02:53:14.4241923Z ✔ [4022/4043] Built ClauseBound.ParityChecks.ProgDefs (4.4s)
+2026-10-27T02:53:20.5365817Z ✔ [4023/4043] Built SingleBitPieces.Level.Pieces (6.1s)
+2026-10-27T02:53:21.5399967Z ✔ [4024/4045] Built PaddedDescent.F.CertGrid (12s)
+2026-10-27T02:53:22.0421921Z ✔ [4025/4045] Built SingleBitPieces.Level.Presents (7.8s)
+2026-10-27T02:53:27.9641733Z ✔ [4026/4045] Built ClauseBound.ParityChecks.TopDefs (5.9s)
+2026-10-27T02:53:29.0624614Z ✔ [4027/4045] Built Eight.SecCrossing_Fact (7.5s)
+2026-10-27T02:53:36.2811676Z ✔ [4028/4045] Built Eight.Level.Pieces (8.3s)
+2026-10-27T02:53:42.5991710Z ✔ [4029/4047] Built Eight.SecCrossing_Cert (22s)
+2026-10-27T02:53:44.8041734Z ✔ [4030/4047] Built SingleBitPieces.Level.Arith (8.5s)
+2026-10-27T02:53:47.8060697Z ✔ [4031/4047] Built Eight.Level.Presents (5.3s)
+2026-10-27T02:53:50.4221879Z ✔ [4032/4047] Built ClauseBound.Both.Defs (5.7s)
+2026-10-27T02:53:51.5331705Z ✔ [4033/4047] Built Eight.SecCrossing_LemPieces (3.7s)
+2026-10-27T02:53:54.3451830Z ✔ [4034/4050] Built ClauseBound.Alg.CertGridG (25s)
+2026-10-27T02:53:55.5472432Z ✔ [4035/4050] Built SingleBitPieces.SecPseudocode_Levels (5.1s)
+2026-10-27T02:53:59.0581836Z ✔ [4036/4052] Built UniformInK.Top.Defs (4.7s)
+2026-10-27T02:54:02.9691719Z ✔ [4037/4052] Built Eight.SecLevel_Grid (7.4s)
+2026-10-27T02:54:03.9681898Z ✔ [4038/4052] Built Eight.Level.Arith (12s)
+2026-10-27T02:54:06.3781796Z ✔ [4039/4056] Built SingleBitPieces.SecProof_Cost (7.4s)
+2026-10-27T02:54:07.6791943Z ✔ [4040/4056] Built SparsificationLemma.Geo.Defs (3.8s)
+2026-10-27T02:54:09.7807892Z ✔ [4041/4056] Built Eight.SecLevel_EStar (3.3s)
+2026-10-27T02:54:12.2901794Z ✔ [4042/4056] Built Eight.SecPseudocode_Levels (9.3s)
+2026-10-27T02:54:13.0892260Z ✔ [4043/4056] Built Eight.SecLevel_GridWords (5.4s)
+2026-10-27T02:54:16.6042014Z ✔ [4044/4057] Built CountKSat.Value (4.3s)
+2026-10-27T02:54:18.1101937Z ✔ [4045/4058] Built SparsificationLemma.Mach.Defs (5.1s)
+2026-10-27T02:54:18.9161737Z ✔ [4046/4062] Built Eight.SecProof_Network (9.2s)
+2026-10-27T02:54:19.4144828Z ✔ [4047/4062] Built Eight.Level.Min (2.8s)
+2026-10-27T02:54:20.1171580Z ✔ [4048/4065] Built ClauseBound.Alg.CertLevel (70s)
+2026-10-27T02:54:22.5241793Z ✔ [4049/4065] Built Eight.Level.SecPseudocode (2.4s)
+2026-10-27T02:54:22.8231860Z ✔ [4050/4065] Built Enumerate.Defs (3.9s)
+2026-10-27T02:54:23.6281946Z ✔ [4051/4065] Built Eight.SecNetworks_Tables (4.2s)
+2026-10-27T02:54:24.3281817Z ✔ [4052/4073] Built Eight.ViaGrouping.Table (6.2s)
+2026-10-27T02:54:25.4281791Z ✔ [4053/4073] Built Eight.Level.Cert (2.6s)
+2026-10-27T02:54:25.7289903Z ✔ [4054/4073] Built Eight.SecNetworks_Clique (3.1s)
+2026-10-27T02:54:25.9321644Z ✔ [4055/4073] Built VariablesFixedWidthStatement (2.3s)
+2026-10-27T02:54:27.0331572Z ✔ [4056/4075] Built Tower.Defs (2.7s)
+2026-10-27T02:54:27.5387256Z ✔ [4057/4080] Built CountedToPadded.GenLevelsDefs (2.1s)
+2026-10-27T02:54:27.8403033Z ✔ [4058/4080] Built Eight.Level.End (2.2s)
+2026-10-27T02:54:28.3411632Z ✔ [4059/4080] Built Eight.ViaGrouping.Display (2.4s)
+2026-10-27T02:54:29.3424747Z ✔ [4060/4086] Built VariableBound.Params.Defs (2.3s)
+2026-10-27T02:54:29.6421892Z ✔ [4061/4086] Built VariableBound.Field.Defs (2.1s)
+2026-10-27T02:54:30.4431759Z ✔ [4062/4086] Built Eight.SecProof_Proof (2.6s)
+2026-10-27T02:54:31.1451750Z ✔ [4063/4086] Built Value.Defs (2.8s)
+2026-10-27T02:54:31.7451885Z ✔ [4064/4089] Built VariableBound.Printed.ThmVariablesADefs (2.5s)
+2026-10-27T02:54:32.4511598Z ✔ [4065/4092] Built VariableBound.Search.Defs (2.1s)
+2026-10-27T02:54:34.0551558Z ✔ [4066/4092] Built Suffices.Defs (2.9s)
+2026-10-27T02:54:35.0591946Z ✔ [4067/4092] Built ClauseBound.Part.Rec (3.2s)
+2026-10-27T02:54:37.0591900Z ✔ [4068/4092] Built VariableBound.Net.Defs (4.6s)
+2026-10-27T02:54:37.0611039Z ✔ [4069/4092] Built ClauseBound.Boson.Defs (3.0s)
+2026-10-27T02:54:38.3652466Z ✔ [4070/4094] Built Exits.AlgDefs (3.3s)
+2026-10-27T02:54:41.2753078Z ✔ [4071/4094] Built ClauseBound.Part.Bits (4.2s)
+2026-10-27T02:54:41.4772030Z ✔ [4072/4094] Built VariableBound.Count.Defs (3.1s)
+2026-10-27T02:54:41.4780910Z ✔ [4073/4094] Built ClauseBound.Part.ListP (4.3s)
+2026-10-27T02:54:44.3841862Z ✔ [4074/4095] Built ClauseBound.Boson.Basic (3.1s)
+2026-10-27T02:54:44.9861782Z ✔ [4075/4098] Built ClauseBound.Rec.Window (3.5s)
+2026-10-27T02:54:45.6961626Z ✔ [4076/4098] Built Printed.Programs (4.2s)
+2026-10-27T02:54:47.4981848Z ✔ [4077/4098] Built VariableBound.Top.Defs (3.1s)
+2026-10-27T02:54:48.6021684Z ✔ [4078/4098] Built ClauseBound.Rec.Defs (2.9s)
+2026-10-27T02:54:49.3033230Z ✔ [4079/4098] Built ClauseBound.Inst.HalfPart (4.4s)
+2026-10-27T02:54:50.5051731Z ✔ [4080/4098] Built ClauseBound.Rec.Tail (3.1s)
+2026-10-27T02:54:51.3081705Z ✔ [4081/4099] Built WidthK.Poly.Decode (21s)
+2026-10-27T02:54:51.6059454Z ✔ [4082/4099] Built ExplicitCost.EntryDefs (3.0s)
+2026-10-27T02:54:52.2069166Z ✔ [4083/4101] Built CountedRecursion.AnswersDefs (2.9s)
+2026-10-27T02:54:53.2111785Z ✔ [4084/4102] Built Printed.CodingDefs (2.7s)
+2026-10-27T02:54:53.8171862Z ✔ [4085/4102] Built CountKSat.InOut (2.2s)
+2026-10-27T02:54:54.4171644Z ✔ [4086/4102] Built ClauseBound.Rec.Blocks (3.0s)
+2026-10-27T02:54:55.0211678Z ✔ [4087/4103] Built ClauseBound.Boson.Defs2 (2.7s)
+2026-10-27T02:54:56.5251601Z ✔ [4088/4104] Built ExplicitCost.GroupingDefs (3.3s)
+2026-10-27T02:54:57.2252078Z ✔ [4089/4104] Built CountedRecursion.GridProcedures (3.5s)
+2026-10-27T02:54:57.4271893Z ✔ [4090/4104] Built ClauseBound.Boson.Scalars (3.1s)
+2026-10-27T02:54:58.0321649Z ✔ [4091/4110] Built GivenStatement (3.1s)
+2026-10-27T02:55:02.2435193Z ✔ [4092/4110] Built ClauseBound.Boson.Size (4.8s)
+2026-10-27T02:55:02.3461777Z ✔ [4093/4110] Built ClauseBound.Alg.End (5.9s)
+2026-10-27T02:55:02.7452091Z ✔ [4094/4110] Built ClauseBound.Rec.CountRow (5.5s)
+2026-10-27T02:55:03.0501847Z ✔ [4095/4110] Built CountedRecursion.SolverDefs (5.0s)
+2026-10-27T02:55:05.1522306Z ✔ [4096/4110] Built ClauseBound.Boson.WickPlus (2.8s)
+2026-10-27T02:55:05.5554332Z ✔ [4097/4110] Built ClauseBound.Boson.Dual (3.3s)
+2026-10-27T02:55:05.8557633Z ✔ [4098/4117] Built ClauseBound.Rec.Number (3.1s)
+2026-10-27T02:55:06.1592868Z ✔ [4099/4117] Built ClauseBound.Both.End (3.1s)
+2026-10-27T02:55:09.5741711Z ✔ [4100/4117] Built ClauseBound.Boson.HalfSum (3.4s)
+2026-10-27T02:55:09.8721513Z ✔ [4102/4117] Built ClauseBound.Boson.KF (3.9s)
+2026-10-27T02:55:11.4731851Z ✔ [4103/4117] Built CountedRecursion.RecursionDefs (5.9s)
+2026-10-27T02:55:11.7771699Z ✔ [4104/4117] Built GeneralPieces.Tied.BoundDefs (2.2s)
+2026-10-27T02:55:12.6765554Z ✔ [4105/4118] Built UniformInK.Top.End (2.8s)
+2026-10-27T02:55:14.7851623Z ✔ [4106/4118] Built ClauseBound.Boson.Half (3.4s)
+2026-10-27T02:55:14.9861791Z ✔ [4107/4118] Built SparsificationLemma.Cal.Defs (3.2s)
+2026-10-27T02:55:15.4841946Z ✔ [4108/4123] Built VariableBound.Paper.Decide (2.8s)
+2026-10-27T02:55:17.0871562Z ✔ [4109/4127] Built Wrap.Defs (2.3s)
+2026-10-27T02:55:17.2901847Z ✔ [4110/4133] Built CircuitLowerBound.Defs (1.8s)
+2026-10-27T02:55:18.4041631Z ✔ [4111/4133] Built StepSparsify.Defs (3.4s)
+2026-10-27T02:55:18.9051993Z ✔ [4112/4133] Built CircuitLowerBound.Interfaces (1.6s)
+2026-10-27T02:55:21.7102040Z ✔ [4113/4133] Built CircuitLowerBound.Tab.Spec (2.8s)
+2026-10-27T02:55:23.2111669Z ✔ [4114/4140] Built CountKSat.Host (6.1s)
+2026-10-27T02:55:24.3111918Z ✔ [4115/4140] Built GeneralPieces.Num.PartA (5.9s)
+2026-10-27T02:55:26.4131680Z ✔ [4116/4141] Built CircuitLowerBound.Tab.Frame (4.7s)
+2026-10-27T02:55:27.1152051Z ✔ [4117/4141] Built QueryMachines.CombRuns (3.0s)
+2026-10-27T02:55:30.6291812Z ✔ [4118/4141] Built QueryMachines.Poly (6.4s)
+2026-10-27T02:55:31.2295344Z ✔ [4119/4141] Built VariableBound.Paper.Arith (4.8s)
+2026-10-27T02:55:31.6301612Z ✔ [4120/4141] Built Wrap.FrontEnd (4.5s)
+2026-10-27T02:55:33.1331754Z ✔ [4121/4141] Built GeneralPieces.Num.Asymptotic (2.4s)
+2026-10-27T02:55:34.0372354Z ✔ [4122/4141] Built Wrap.Coding (2.4s)
+2026-10-27T02:55:35.0411768Z ✔ [4123/4141] Built CircuitLowerBound.Tab.Sound (3.8s)
+2026-10-27T02:55:35.4401511Z ✔ [4124/4141] Built WidthThree.Rates (2.4s)
+2026-10-27T02:55:38.4471695Z ✔ [4125/4143] Built Wrap.Arith (4.4s)
+2026-10-27T02:55:38.7569161Z ✔ [4126/4145] Built Wrap.Sim (3.3s)
+2026-10-27T02:55:40.7651925Z ✔ [4127/4145] Built GeneralPieces.Num.Between (5.7s)
+2026-10-27T02:55:43.7672248Z ✔ [4128/4145] Built Wrap.CodingExists (5.3s)
+2026-10-27T02:55:44.0644150Z ✔ [4129/4145] Built VariableBound.Paper.Rename.Defs (3.3s)
+2026-10-27T02:55:46.2752120Z ✔ [4130/4148] Built VariableBound.Paper.Rename.Time (2.2s)
+2026-10-27T02:55:46.3741890Z ✔ [4131/4149] Built TwoMachines.Defs (2.7s)
+2026-10-27T02:55:46.3761297Z ✔ [4132/4149] Built Wrap.ArithRate (7.6s)
+2026-10-27T02:55:49.7801980Z ✔ [4133/4149] Built VariableBound.Paper.Rename.Math (3.5s)
+2026-10-27T02:55:50.8831953Z ✔ [4134/4155] Built ClauseBound.Both.TimeM (4.5s)
+2026-10-27T02:55:52.6871917Z ✔ [4135/4155] Built VariableBound.Paper.Rename.End (2.0s)
+2026-10-27T02:55:56.6011915Z ✔ [4136/4156] Built PaddedDescent.F.Price (3.9s)
+2026-10-27T02:56:00.7101821Z ✔ [4137/4162] Built ClauseBound.Alg.TopArith (4.1s)
+2026-10-27T02:56:02.6161826Z ✔ [4138/4164] Built PaddedDescent.Col.Colouring (11s)
+2026-10-27T02:56:02.8181909Z ✔ [4139/4164] Built PaddedDescent.Seq (2.1s)
+2026-10-27T02:56:05.0241857Z ✔ [4140/4165] Built ClauseBound.Inst.RecArith (59s)
+2026-10-27T02:56:05.5271550Z ✔ [4141/4165] Built PaddedDescent.Col.Good (2.7s)
+2026-10-27T02:56:08.3351701Z ✔ [4142/4165] Built CountKSatRate.Leaf (2.8s)
+2026-10-27T02:56:09.1355077Z ✔ [4143/4168] Built ClauseBound.Inst.HalfTab (4.1s)
+2026-10-27T02:56:11.0366740Z ✔ [4144/4168] Built SparsifyWidthK.Thresholds (8.4s)
+2026-10-27T02:56:11.5421899Z ✔ [4145/4168] Built PaddedDescent.F.RebalG (3.2s)
+2026-10-27T02:56:12.2420936Z ✔ [4146/4168] Built ClauseBound.Inst.Half (3.1s)
+2026-10-27T02:56:13.0491605Z ✔ [4147/4169] Built ClauseBound.Alg.Decode (26s)
+2026-10-27T02:56:15.5512836Z ✔ [4148/4169] Built PaddedDescent.F.SideF (3.3s)
+2026-10-27T02:56:16.4531697Z ✔ [4149/4169] Built PaddedDescent.Choice (4.9s)
+2026-10-27T02:56:16.8531800Z ✔ [4150/4169] Built VariableBound.Printed.TiedDefs (3.8s)
+2026-10-27T02:56:17.8530705Z ✔ [4151/4170] Built VariableBound.Paper.Rename.Code (2.3s)
+2026-10-27T02:56:20.8624734Z ✔ [4152/4173] Built WidthK.Top.Sat (9.9s)
+2026-10-27T02:56:21.8691736Z ✔ [4153/4173] Built ClauseBound.Alg.CertCount (4.0s)
+2026-10-27T02:56:22.6711076Z ✔ [4154/4173] Built VariableBound.Paper.Rename.Cert (6.3s)
+2026-10-27T02:56:23.4721914Z ✔ [4155/4173] Built PaddedDescent.F.ArithWalk (2.6s)
+2026-10-27T02:56:24.6804219Z ✔ [4156/4173] Built ClauseBound.Gen.End (6.8s)
+2026-10-27T02:56:24.8807262Z ✔ [4157/4173] Built SparsifyThenCount.Defs (3.0s)
+2026-10-27T02:56:25.5833128Z ✔ [4158/4173] Built CountKSat.Top.Count (2.1s)
+2026-10-27T02:56:25.8836472Z ✔ [4159/4175] Built CountKSat.Walk (3.2s)
+2026-10-27T02:56:28.2885400Z ✔ [4160/4178] Built SparsifyThenCount.PlanUsedDefs (2.7s)
+2026-10-27T02:56:28.2891203Z ✔ [4161/4178] Built ClauseBound.TopN.Budget (3.4s)
+2026-10-27T02:56:29.3931880Z ✔ [4162/4179] Built SparsifyWidthK.Poly.Sparsify (4.8s)
+2026-10-27T02:56:29.5934953Z ✔ [4163/4180] Built ClauseBound.ParityChecks.TopOL (3.6s)
+2026-10-27T02:56:31.1981666Z ✔ [4164/4180] Built ClauseBound.TopN.Arith (2.9s)
+2026-10-27T02:56:31.4964255Z ✔ [4165/4184] Built RecursionWithPieces.Defs (3.2s)
+2026-10-27T02:56:33.3001657Z ✔ [4166/4184] Built CountKSat.Poly (2.1s)
+2026-10-27T02:56:35.8020913Z ✔ [4167/4184] Built ClauseBound.TopN.Gen (2.5s)
+2026-10-27T02:56:38.9081802Z ✔ [4168/4184] Built PairsToBound.Defs (3.2s)
+2026-10-27T02:56:41.6121759Z ✔ [4169/4184] Built PaddedDescent.F.CertSparsify (12s)
+2026-10-27T02:57:22.4692230Z ✔ [4170/4186] Built PaddedDescent.F.CertSide (50s)
+2026-10-27T02:57:25.6741687Z ✔ [4171/4186] Built ClauseBound.ParityChecks.MasterOL (3.2s)
+2026-10-27T02:57:28.3777786Z ✔ [4172/4186] Built CountedInstanceStatement (2.8s)
+2026-10-27T02:57:30.9851879Z ✔ [4174/4188] Built PaddedDescent.F.CertTop (2.6s)
+2026-10-27T02:57:34.4941581Z ✔ [4175/4189] Built ClauseBound.Alg.CertTop (52s)
+2026-10-27T02:57:34.4944489Z ✔ [4176/4189] Built ClauseBound.ParityChecks.CertLib (3.5s)
+2026-10-27T02:57:41.2021647Z ✔ [4177/4189] Built PaddedDescent.F.CertEval (6.7s)
+2026-10-27T02:57:48.8127415Z ✔ [4178/4191] Built ClauseBound.ParityChecks.BudgetOL (7.6s)
+2026-10-27T02:57:50.9151749Z ✔ [4179/4191] Built ClauseBound.ParityChecks.CertNum (16s)
+2026-10-27T02:57:51.2281331Z ✔ [4180/4193] Built PaddedDescent.F.CertA (2.4s)
+2026-10-27T02:57:54.9361640Z ✔ [4181/4193] Built ClauseBound.ParityChecks.ArithAux (3.7s)
+2026-10-27T02:57:55.0361802Z ✔ [4182/4195] Built ClauseBound.ParityChecks.Sizes (4.1s)
+2026-10-27T02:57:57.0452281Z ✔ [4183/4196] Built PaddedDescent.F.NSat (2.1s)
+2026-10-27T02:57:59.1478567Z ✔ [4184/4200] Built ClauseBound.TopN.ArithR (4.2s)
+2026-10-27T02:58:01.2561712Z ✔ [4185/4201] Built SparsifyWidthK.Step (4.1s)
+2026-10-27T02:58:01.8541671Z ✔ [4186/4201] Built SparsifyWidthK.SetAlg (2.7s)
+2026-10-27T02:58:04.8602979Z ✔ [4187/4201] Built SparsifyWidthK.Refine (3.0s)
+2026-10-27T02:58:08.6722106Z ✔ [4188/4201] Built ClauseBound.Gen.Chain (3.8s)
+2026-10-27T02:58:11.6741775Z ✔ [4189/4204] Built PaddedDescent.F.Top (2.0s)
+2026-10-27T02:58:13.6763560Z ✔ [4190/4204] Built CountKSatRate.Top (2.1s)
+2026-10-27T02:58:17.8873450Z ✔ [4191/4205] Built ClauseBound.ParityChecks.ArithOL (16s)
+2026-10-27T02:58:17.9864446Z ✔ [4192/4205] Built PaddedDescent.F.CertMark (99s)
+2026-10-27T02:58:18.1874233Z ✔ [4193/4205] Built ClauseBound.Gen.RateAux (4.5s)
+2026-10-27T02:58:19.8883417Z ✔ [4194/4206] Built ClauseBound.Gen.Seq (2.1s)
+2026-10-27T02:58:20.2931355Z ✔ [4195/4207] Built ClauseBound.Inst.HalfEnd (2.1s)
+2026-10-27T02:58:20.5921627Z ✔ [4196/4207] Built ClauseBound.TopN.Walk (2.6s)
+2026-10-27T02:58:22.9991946Z ✔ [4197/4209] Built ClauseBound.ParityChecks.CertPar (3.1s)
+2026-10-27T02:58:24.0031767Z ✔ [4198/4211] Built ClauseBound.Gen.Rate (3.7s)
+2026-10-27T02:58:28.4131572Z ✔ [4199/4211] Built ClauseBound.Alg.Enum (4.4s)
+2026-10-27T02:58:28.6132017Z ✔ [4200/4214] Built ClauseBound.Inst.CertHalfPart (7.0s)
+2026-10-27T02:58:31.4161797Z ✔ [4201/4215] Built ClauseBound.Alg.Level (3.0s)
+2026-10-27T02:58:31.7151895Z ✔ [4202/4216] Built ClauseBound.Inst.CertHalfSmall (3.1s)
+2026-10-27T02:58:34.1240105Z ✔ [4203/4217] Built PaddedDescent.F.LenList (2.7s)
+2026-10-27T02:58:35.5382048Z ✔ [4204/4217] Built ClauseBound.Alg.Need (3.8s)
+2026-10-27T02:58:37.4381828Z ✔ [4205/4218] Built ClauseBound.Alg.NeedC (3.3s)
+2026-10-27T02:58:38.8431827Z ✔ [4206/4220] Built PaddedDescent.F.Descend (3.3s)
+2026-10-27T02:58:40.1471813Z ✔ [4207/4220] Built ClauseBound.Alg.CertTopNet (2.7s)
+2026-10-27T02:58:41.7492965Z ✔ [4208/4222] Built ClauseBound.Alg.Descend (2.9s)
+2026-10-27T02:58:42.9511838Z ✔ [4209/4224] Built CountKSatRate.Brute (2.8s)
+2026-10-27T02:58:43.3515243Z ✔ [4210/4225] Built ClauseBound.Inst.CertHalfTab (20s)
+2026-10-27T02:58:44.6591500Z ✔ [4211/4225] Built CountKSat.ProgC (2.9s)
+2026-10-27T02:58:45.4571984Z ✔ [4212/4226] Built CountKSat.StepCount (2.5s)
+2026-10-27T02:58:46.2691614Z ✔ [4213/4226] Built ClauseBound.Alg.TopVal (2.9s)
+2026-10-27T02:58:47.5761535Z ✔ [4214/4243] Built PaddedDescent.F.MarkDeg (2.9s)
+2026-10-27T02:58:48.4762648Z ✔ [4215/4243] Built CountKSatRate.Walk (2.2s)
+2026-10-27T02:58:51.1801847Z ✔ [4216/4243] Built CountKSatRate.Tree (2.7s)
+2026-10-27T02:58:51.3871399Z ✔ [4217/4243] Built CountKSatRate.Pad (3.8s)
+2026-10-27T02:58:51.8859952Z ✔ [4218/4243] Built ClauseBound.Inst.CertHalf (6.4s)
+2026-10-27T02:58:53.2931657Z ✔ [4219/4243] Built CountKSatRate.Stack (2.1s)
+2026-10-27T02:58:54.2920583Z ✔ [4220/4243] Built Tower.Cost (2.4s)
+2026-10-27T02:58:55.3951786Z ✔ [4221/4243] Built TwoMachines.Main (4.1s)
+2026-10-27T02:58:55.5961992Z ✔ [4222/4243] Built Tower.Kernel (2.4s)
+2026-10-27T02:58:56.7991710Z ✔ [4223/4243] Built Tower.Chain (2.5s)
+2026-10-27T02:58:58.0051550Z ✔ [4224/4243] Built Tower.Poly (2.5s)
+2026-10-27T02:58:58.2029700Z ✔ [4225/4243] Built Tower.Toy.Defs (2.6s)
+2026-10-27T02:59:00.0053781Z ✔ [4226/4243] Built Tower.Runs (3.2s)
+2026-10-27T02:59:00.8081813Z ✔ [4227/4243] Built Tower.PolyTower (2.9s)
+2026-10-27T02:59:01.5106605Z ✔ [4228/4243] Built Tower.Toy.Spec (3.3s)
+2026-10-27T02:59:03.4201654Z ✔ [4229/4253] Built Tower.TowerRuns (3.4s)
+2026-10-27T02:59:07.4303981Z ✔ [4230/4253] Built Eight.App_Pieces (4.0s)
+2026-10-27T02:59:08.4331898Z ✔ [4231/4253] Built Eight.SecNetworks_Grouping (6.9s)
+2026-10-27T02:59:08.8354294Z ✔ [4232/4253] Built Tower.Toy.Machines (7.0s)
+2026-10-27T02:59:10.6431544Z ✔ [4233/4253] Built GraphProblems.Engine (2.3s)
+2026-10-27T02:59:11.6461804Z ✔ [4234/4253] Built Eight.ViaGrouping.Bridge (4.2s)
+2026-10-27T02:59:11.8437341Z ✔ [4235/4255] Built Tower.Toy.Meets (3.0s)
+2026-10-27T02:59:12.2441606Z ✔ [4236/4257] Built PaddedDescent.F.CertNet (162s)
+2026-10-27T02:59:13.3481638Z ✔ [4237/4257] Built Eight.App_Rate (2.6s)
+2026-10-27T02:59:14.0473080Z ✔ [4238/4258] Built Eight.ViaGrouping.LevelCert (2.2s)
+2026-10-27T02:59:14.6525232Z ✔ [4239/4258] Built Eight.ViaGrouping.Search (3.0s)
+2026-10-27T02:59:15.8581682Z ✔ [4240/4260] Built GraphProblems.Defs (2.5s)
+2026-10-27T02:59:16.5611611Z ✔ [4241/4260] Built Eight.ViaGrouping.LevelNet (4.3s)
+2026-10-27T02:59:23.6721701Z ✔ [4242/4260] Built GraphProblems.Host (7.9s)
+2026-10-27T02:59:25.4746133Z ✔ [4243/4260] Built PaddedDescent.Col.CertG (10s)
+2026-10-27T02:59:26.9931729Z ✔ [4244/4260] Built GraphProblems.Interfaces (3.3s)
+2026-10-27T02:59:28.8981808Z ✔ [4245/4264] Built Eight.ViaGrouping.Main (12s)
+2026-10-27T02:59:31.2011732Z ✔ [4246/4265] Built CountKSatRate.Cert (4.2s)
+2026-10-27T02:59:33.8072860Z ✔ [4247/4266] Built CircuitLowerBound.InterfacesPolyT (2.6s)
+2026-10-27T02:59:38.3154851Z ✔ [4248/4266] Built Eight.ViaGrouping.Level (12s)
+2026-10-27T02:59:40.7221671Z ✔ [4249/4267] Built ClauseBound.Alg.CertEnum (26s)
+2026-10-27T02:59:41.1223856Z ✔ [4250/4267] Built WidthK.Top.Poly (2.8s)
+2026-10-27T02:59:42.6271597Z ✔ [4251/4267] Built ClauseBound.TopN.Cert (8.8s)
+2026-10-27T02:59:43.5301715Z ✔ [4252/4268] Built WidthK.Top.EndLemmas (2.4s)
+2026-10-27T02:59:44.6331702Z ✔ [4253/4268] Built CountKSat.EndLemmas (2.0s)
+2026-10-27T02:59:47.1451734Z ✔ [4254/4269] Built ClauseBound.ParityChecks.CertOL (3.6s)
+2026-10-27T02:59:51.6531479Z ✔ [4255/4270] Built CircuitLowerBound.Main (4.5s)
+2026-10-27T02:59:51.9541755Z ✔ [4256/4271] Built GraphProblems.Cert (23s)
+2026-10-27T02:59:53.4550107Z ✔ [4257/4272] Built ClauseBound.ParityChecks.CertTopOL (8.8s)
+2026-10-27T02:59:55.5621876Z ✔ [4258/4272] Built CircuitLowerBound.Tab.Complete (3.6s)
+2026-10-27T02:59:55.7651574Z ✔ [4259/4272] Built CircuitLowerBound.Small (4.1s)
+2026-10-27T02:59:56.3632702Z ✔ [4260/4273] Built GraphProblems.Sized (2.0s)
+2026-10-27T02:59:59.2682530Z ✔ [4261/4273] Built GraphProblems.SetTM (3.7s)
+2026-10-27T02:59:59.2742489Z ✔ [4262/4273] Built CircuitLowerBound.Tab.Pack (3.6s)
+2026-10-27T02:59:59.5692639Z ✔ [4263/4275] Built ClauseBound.MainBoth (3.1s)
+2026-10-27T02:59:59.5693739Z ✔ [4264/4275] Built CircuitLowerBound.Alg.Parse (18s)
+2026-10-27T03:00:01.7791685Z ✔ [4265/4275] Built CircuitLowerBound.Tab.Glue (2.4s)
+2026-10-27T03:00:03.1881765Z ✔ [4266/4275] Built GraphProblems.ColorTM (3.7s)
+2026-10-27T03:00:05.1911683Z ✔ [4267/4278] Built CircuitLowerBound.Alg.Machine (5.6s)
+2026-10-27T03:00:05.1921039Z ✔ [4268/4278] Built CircuitLowerBound.Tab.Table (5.0s)
+2026-10-27T03:00:06.4041931Z ✔ [4269/4279] Built VariableBound.Paper.MainTheorem (4.7s)
+2026-10-27T03:00:08.4131280Z ✔ [4270/4280] Built Eight.Cor.Defs (3.2s)
+2026-10-27T03:00:10.3151677Z ✔ [4271/4280] Built CircuitLowerBound.Circ.Norm (3.9s)
+2026-10-27T03:00:11.1251715Z ✔ [4272/4280] Built CircuitLowerBound.Circ.Blocks (5.9s)
+2026-10-27T03:00:12.6341544Z ✔ [4273/4280] Built Wrap.Main (4.2s)
+2026-10-27T03:00:12.7321751Z ✔ [4275/4282] Built CircuitLowerBound.Cert.Sched (9.5s)
+2026-10-27T03:00:23.7531799Z ✔ [4276/4282] Built CircuitLowerBound.Cert.TabF (11s)
+2026-10-27T03:00:29.5801611Z ✔ [4277/4289] Built CircuitLowerBound.Alg.Time (18s)
+2026-10-27T03:00:41.0071751Z ✔ [4278/4290] Built CircuitLowerBound.Oracle.Machine (11s)
+2026-10-27T03:00:44.6096686Z ✔ [4279/4290] Built Eight.ViaGrouping.CorDefs2 (3.6s)
+2026-10-27T03:00:49.6146904Z ✔ [4280/4291] Built CircuitLowerBound.ENP.Round (25s)
+2026-10-27T03:00:50.1152859Z ✔ [4281/4291] Built CircuitLowerBound.Oracle.Runs (5.6s)
+2026-10-27T03:00:52.3164067Z ✔ [4282/4293] Built GraphProblems.Read (2.7s)
+2026-10-27T03:00:54.4229504Z ✔ [4283/4330] Built CircuitLowerBound.ENP.Restart (4.2s)
+2026-10-27T03:00:57.0312050Z ✔ [4284/4330] Built CircuitLowerBound.Oracle.Restart (4.7s)
+2026-10-27T03:00:57.9331801Z ✔ [4285/4330] Built GraphProblems.Sets (3.5s)
+2026-10-27T03:00:59.4340640Z ✔ [4286/4330] Built GraphProblems.Blocks (2.4s)
+2026-10-27T03:01:02.0482836Z ✔ [4287/4330] Built GraphProblems.DomTree (4.1s)
+2026-10-27T03:01:06.3591673Z ✔ [4288/4330] Built CircuitLowerBound.Circ.Form (56s)
+2026-10-27T03:01:13.6691808Z ✔ [4289/4330] Built Eight.ViaGrouping.SatPsi (7.3s)
+2026-10-27T03:01:16.4741662Z ✔ [4290/4330] Built Eight.Cor.NSETHDefs (2.8s)
+2026-10-27T03:01:19.0801512Z ✔ [4291/4330] Built Eight.Cor.WidthDefs (2.6s)
+2026-10-27T03:01:21.9801739Z ✔ [4292/4330] Built Value.Sums (2.9s)
+2026-10-27T03:01:22.8791640Z ✔ [4293/4330] Built Eight.ViaGrouping.Keeps (23s)
+2026-10-27T03:01:25.5844552Z ✔ [4294/4330] Built Value.Words (3.6s)
+2026-10-27T03:01:26.1941591Z ✔ [4295/4332] Built Variance.Defs (3.3s)
+2026-10-27T03:01:28.1991822Z ✔ [4296/4332] Built Eight.ViaGrouping.GridPsi (26s)
+2026-10-27T03:01:28.5976455Z ✔ [4297/4332] Built Coding.Defs (3.0s)
+2026-10-27T03:01:28.8021702Z ✔ [4298/4332] Built GraphProblems.Color (2.7s)
+2026-10-27T03:01:33.0171891Z ✔ [4299/4332] Built Eight.ViaGrouping.Count (4.8s)
+2026-10-27T03:01:35.6151682Z ✔ [4300/4332] Built Eight.Cor.NSETH (6.0s)
+2026-10-27T03:01:36.6155421Z ✔ [4301/4332] Built Eight.ViaGrouping.LemGrouping (3.6s)
+2026-10-27T03:01:38.9359174Z ✔ [4302/4332] Built Value.Clique (3.4s)
+2026-10-27T03:01:40.2381715Z ✔ [4303/4333] Built Value.Blocks (3.6s)
+2026-10-27T03:01:42.1431886Z ✔ [4304/4334] Built Eight.Cor.Width (13s)
+2026-10-27T03:01:42.1452456Z ✔ [4305/4334] Built Variance.Cov (3.2s)
+2026-10-27T03:01:42.8497540Z ✔ [4306/4334] Built Exits.Tested (2.6s)
+2026-10-27T03:01:44.5515003Z ✔ [4307/4334] Built Eight.ViaGrouping.LevelEnd (2.5s)
+2026-10-27T03:01:45.0561914Z ✔ [4308/4334] Built Coding.OccLists (2.9s)
+2026-10-27T03:01:45.1552223Z ✔ [4309/4334] Built Coding.GridDefs (2.3s)
+2026-10-27T03:01:47.2642369Z ✔ [4310/4334] Built Coding.Sets (2.6s)
+2026-10-27T03:01:47.3640941Z ✔ [4311/4334] Built Coding.Padding (2.3s)
+2026-10-27T03:01:48.2812047Z ✔ [4312/4334] Built Eight.Cor.Graph (3.1s)
+2026-10-27T03:01:50.2855163Z ✔ [4313/4335] Built Value.Joint (2.9s)
+2026-10-27T03:01:50.5881643Z ✔ [4314/4335] Built Eight.ViaGrouping.CorNSETH (3.3s)
+2026-10-27T03:01:51.1901899Z ✔ [4315/4336] Built Exits.Poly (2.0s)
+2026-10-27T03:01:54.3975165Z ✔ [4316/4336] Built Variance.Var (4.1s)
+2026-10-27T03:01:54.7979919Z ✔ [4317/4336] Built Eight.Cor.WidthProg (3.6s)
+2026-10-27T03:01:55.3977155Z ✔ [4318/4336] Built Exits.Grouping (4.8s)
+2026-10-27T03:01:57.2061857Z ✔ [4319/4336] Built Exits.Runs (2.8s)
+2026-10-27T03:01:57.5051895Z ✔ [4320/4336] Built Eight.ViaGrouping.Alg (2.7s)
+2026-10-27T03:01:58.7091791Z ✔ [4321/4336] Built Coding.OccLinks (3.4s)
+2026-10-27T03:02:00.2144652Z ✔ [4322/4336] Built Eight.ViaGrouping.CorGraph (2.7s)
+2026-10-27T03:02:01.2386794Z ✔ [4323/4337] Built Value.End (2.5s)
+2026-10-27T03:02:01.2387555Z ✔ [4324/4337] Built Coding.Grid (4.0s)
+2026-10-27T03:02:03.0411803Z ✔ [4325/4337] Built Exits.Level (2.8s)
+2026-10-27T03:02:06.0541892Z ✔ [4326/4339] Built Variance.Grouping (4.8s)
+2026-10-27T03:02:06.6581667Z ✔ [4327/4339] Built Coding.Occ (5.4s)
+2026-10-27T03:02:07.2771620Z ✔ [4328/4339] Built Exits.Decides (4.3s)
+2026-10-27T03:02:09.3861941Z ✔ [4329/4339] Built SparsificationLemma.Side (2.7s)
+2026-10-27T03:02:10.1871927Z ✔ [4330/4343] Built Exits.Count (4.1s)
+2026-10-27T03:02:10.6991915Z ✔ [4331/4345] Built SparsificationLemma.One (3.4s)
+2026-10-27T03:02:13.5111647Z ✔ [4332/4346] Built UniformInK.Spars.Bound (3.4s)
+2026-10-27T03:02:15.5131634Z ✔ [4333/4346] Built UniformInK.Spars.Step (4.8s)
+2026-10-27T03:02:16.4171572Z ✔ [4334/4346] Built Coding.OccMore (7.1s)
+2026-10-27T03:02:17.2182129Z ✔ [4335/4347] Built SparsificationLemma.Shrink (3.7s)
+2026-10-27T03:02:19.2341779Z ✔ [4336/4350] Built SparsificationLemma.Bound (3.7s)
+2026-10-27T03:02:19.2371295Z ✔ [4337/4350] Built SparsificationLemma.Len (2.8s)
+2026-10-27T03:02:21.9411868Z ✔ [4338/4351] Built SparsificationLemma.Iface (2.7s)
+2026-10-27T03:02:22.2451797Z ✔ [4339/4351] Built Coding.OccTests (4.0s)
+2026-10-27T03:02:22.4481907Z ✔ [4340/4356] Built UniformInK.Spars.Thresholds (3.2s)
+2026-10-27T03:02:25.7601833Z ✔ [4341/4356] Built SparsificationLemma.Gen (3.5s)
+2026-10-27T03:02:27.8901666Z ✔ [4342/4361] Built SparsificationLemma.Mach.Walk (5.5s)
+2026-10-27T03:02:28.6901738Z ✔ [4343/4361] Built UniformInK.Top.Leaves (6.8s)
+2026-10-27T03:02:30.9001851Z ✔ [4344/4366] Built UniformInK.Tree.Tree (5.2s)
+2026-10-27T03:02:32.0991666Z ✔ [4345/4366] Built UniformInK.Spars.Iface (4.2s)
+2026-10-27T03:02:36.3016223Z ✔ [4346/4373] Built UniformInK.Spars.Main (4.2s)
+2026-10-27T03:02:40.5212056Z ✔ [4347/4373] Built UniformInK.Top.Budget (11s)
+2026-10-27T03:02:42.4221714Z ✔ [4348/4373] Built UniformInK.Cert.Sparsify (11s)
+2026-10-27T03:02:43.6261624Z ✔ [4349/4373] Built Suffices.Sizes (7.3s)
+2026-10-27T03:02:47.7294149Z ✔ [4350/4373] Built SparsificationLemma.Geo.Thr (4.1s)
+2026-10-27T03:02:49.3361298Z ✔ [4351/4373] Built SparsificationLemma.Mach.Len (6.9s)
+2026-10-27T03:02:50.1411668Z ✔ [4352/4373] Built UniformInK.Cert.Walk (2.4s)
+2026-10-27T03:02:52.1461746Z ✔ [4353/4373] Built Suffices.Total (11s)
+2026-10-27T03:02:52.7491602Z ✔ [4354/4373] Built Suffices.Loop (3.4s)
+2026-10-27T03:02:52.9481820Z ✔ [4355/4373] Built SparsificationLemma.Geo.Tau (2.8s)
+2026-10-27T03:02:55.3521893Z ✔ [4356/4373] Built SparsificationLemma.Mach.Cert (3.2s)
+2026-10-27T03:02:56.1521683Z ✔ [4357/4373] Built SparsificationLemma.Geo.S (3.2s)
+2026-10-27T03:02:59.4611894Z ✔ [4358/4373] Built Suffices.Main (6.8s)
+2026-10-27T03:03:00.0621965Z ✔ [4359/4400] Built SparsificationLemma.Mach.Main (3.9s)
+2026-10-27T03:03:03.2701800Z ✔ [4360/4400] Built ThreeSatOnTree.Defs (3.2s)
+2026-10-27T03:03:04.0761638Z ✔ [4361/4400] Built SparsificationLemma.Geo.Eps (8.7s)
+2026-10-27T03:03:06.1781974Z ✔ [4362/4400] Built SparsificationLemma.Mach.Full (6.7s)
+2026-10-27T03:03:06.7801891Z ✔ [4363/4400] Built Printed.Close (3.5s)
+2026-10-27T03:03:08.2871722Z ✔ [4364/4400] Built Printed.Coding (4.2s)
+2026-10-27T03:03:08.9901644Z ✔ [4365/4400] Built Printed.Absorb (2.9s)
+2026-10-27T03:03:12.0994279Z ✔ [4366/4400] Built ThreeSatPrinted.Defs (3.1s)
+2026-10-27T03:03:12.6021715Z ✔ [4367/4400] Built Printed.HandOver (4.3s)
+2026-10-27T03:03:14.3091882Z ✔ [4368/4400] Built CircuitLowerBound.Circ.Clause (181s)
+2026-10-27T03:03:16.0092008Z ✔ [4369/4400] Built Enumerate.Enumeration (3.4s)
+2026-10-27T03:03:16.0131548Z ✔ [4370/4400] Built SparsificationLemma.TreeWalk.Walk (3.9s)
+2026-10-27T03:03:18.1152172Z ✔ [4371/4400] Built SparsificationLemma.Mach.LemSparsification (3.8s)
+2026-10-27T03:03:19.9271543Z ✔ [4372/4400] Built Printed.GroupingProcs (3.9s)
+2026-10-27T03:03:20.2251734Z ✔ [4373/4400] Built Printed.Achievable (4.2s)
+2026-10-27T03:03:21.6266290Z ✔ [4374/4400] Built Printed.LevelPoly (3.5s)
+2026-10-27T03:03:21.8291729Z ✔ [4375/4400] Built CircuitLowerBound.Closed (1.0s)
+2026-10-27T03:03:23.1312043Z ✔ [4376/4400] Built ThreeSatOnTree.ThmEveryDelta (2.9s)
+2026-10-27T03:03:25.3351781Z ✔ [4377/4400] Built Enumerate.Named (3.7s)
+2026-10-27T03:03:27.7381233Z ✔ [4378/4400] Built Printed.GroupingEntry (5.9s)
+2026-10-27T03:03:27.7400924Z ✔ [4379/4400] Built Printed.LevelNetworks (4.6s)
+2026-10-27T03:03:30.1552010Z ✔ [4380/4400] Built ThreeSatPrinted.ThmEveryDelta (2.4s)
+2026-10-27T03:03:31.1571638Z ✔ [4381/4400] Built Printed.Count (5.8s)
+2026-10-27T03:03:31.6571813Z ✔ [4382/4400] Built CircuitLowerBound.Inf (3.9s)
+2026-10-27T03:03:33.1643022Z ✔ [4383/4400] Built Exits.End (3.0s)
+2026-10-27T03:03:34.9781709Z ✔ [4384/4400] Built Printed.GroupingPoly (28s)
+2026-10-27T03:03:38.8801853Z ✔ [4385/4400] Built Printed.GroupingRun (7.2s)
+2026-10-27T03:03:39.1803306Z ✔ [4386/4400] Built Printed.Proof (6.0s)
+2026-10-27T03:03:39.2821544Z ✔ [4387/4400] Built Eight.Cor.ENP (4.2s)
+2026-10-27T03:03:41.6871932Z ✔ [4388/4400] Built Printed.LevelCost (10s)
+2026-10-27T03:03:41.9874420Z ✔ [4389/4400] Built Coding.SetForm (3.1s)
+2026-10-27T03:03:41.9882879Z ✔ [4390/4400] Built Printed.Grouping (2.8s)
+2026-10-27T03:03:42.2911665Z ✔ [4391/4461] Built Eight.ViaGrouping.CorENP (3.1s)
+2026-10-27T03:03:44.0976134Z ✔ [4393/4461] Built Occ.Defs (2.1s)
+2026-10-27T03:03:44.4041882Z ✔ [4394/4461] Built SplitSat.Defs (2.4s)
+2026-10-27T03:03:45.1994353Z ✔ [4395/4461] Built FreeCode.Order (2.8s)
+2026-10-27T03:03:45.3042192Z ✔ [4396/4461] Built Printed.LevelSentences (3.6s)
+2026-10-27T03:03:47.0105074Z ✔ [4397/4461] Built FreeCode.Random (2.9s)
+2026-10-27T03:03:47.0111058Z ✔ [4398/4461] Built SizeCircuit.Defs (2.5s)
+2026-10-27T03:03:47.5161532Z ✔ [4399/4461] Built ThmCount.Defs (2.3s)
+2026-10-27T03:03:48.1171511Z ✔ [4400/4461] Built SplitCount.Defs (2.8s)
+2026-10-27T03:03:49.3191778Z ✔ [4401/4461] Built FreeCode.Defs (2.3s)
+2026-10-27T03:03:49.4185406Z ✔ [4402/4461] Built Occ.Main (2.4s)
+2026-10-27T03:03:50.7321732Z ✔ [4403/4461] Built SplitSat.Leaf (2.7s)
+2026-10-27T03:03:51.6371856Z ✔ [4404/4461] Built SplitSat.Cert (2.3s)
+2026-10-27T03:03:52.2391437Z ✔ [4405/4461] Built SplitSat.Simulate (4.7s)
+2026-10-27T03:03:52.3382118Z ✔ [4406/4461] Built Printed.LevelFrom (2.9s)
+2026-10-27T03:03:53.2391651Z ✔ [4407/4461] Built Complement.Defs (2.4s)
+2026-10-27T03:03:54.8471778Z ✔ [4408/4461] Built SizeCircuit.CircuitDefs (2.5s)
+2026-10-27T03:03:55.7511605Z ✔ [4409/4461] Built SizeCircuit.General (3.5s)
+2026-10-27T03:03:57.4551876Z ✔ [4410/4461] Built SizeCircuit.SizedCert (5.9s)
+2026-10-27T03:03:59.4621862Z ✔ [4411/4461] Built ThmCount.Rates (6.2s)
+2026-10-27T03:04:00.1632132Z ✔ [4412/4461] Built SplitCount.Disjoint (4.5s)
+2026-10-27T03:04:00.9683178Z ✔ [4413/4461] Built ThmCount.FrontEnd (6.2s)
+2026-10-27T03:04:01.4711848Z ✔ [4414/4461] Built SplitCount.Host (3.0s)
+2026-10-27T03:04:02.1738910Z ✔ [4415/4461] Built SplitCount.Tree (2.7s)
+2026-10-27T03:04:02.9771636Z ✔ [4416/4461] Built SplitCount.Sizes (2.8s)
+2026-10-27T03:04:03.8791611Z ✔ [4417/4461] Built SplitCount.Width (2.4s)
+2026-10-27T03:04:04.4781707Z ✔ [4418/4462] Built SplitCount.Cert (2.3s)
+2026-10-27T03:04:04.4820844Z ✔ [4419/4462] Built FreeCode.Code (3.5s)
+2026-10-27T03:04:06.9861560Z ✔ [4420/4462] Built SplitSat.Sizes (4.0s)
+2026-10-27T03:04:06.9890930Z ✔ [4421/4462] Built SplitSat.Procedure (3.1s)
+2026-10-27T03:04:07.2861824Z ✔ [4422/4462] Built Printed.End (2.8s)
+2026-10-27T03:04:07.9861703Z ✔ [4423/4462] Built Given.Networks (3.5s)
+2026-10-27T03:04:09.2895893Z ✔ [4424/4462] Built Sat3Graph.Defs (2.3s)
+2026-10-27T03:04:09.8951708Z ✔ [4425/4462] Built Complement.Sets (2.9s)
+2026-10-27T03:04:10.0941795Z ✔ [4426/4462] Built SizeCircuit.Compare (2.9s)
+2026-10-27T03:04:11.5991887Z ✔ [4427/4462] Built SizeCircuit.Addition (3.6s)
+2026-10-27T03:04:12.9041843Z ✔ [4428/4462] Built SizeCircuit.Gamma (3.6s)
+2026-10-27T03:04:13.1044989Z ✔ [4429/4462] Built ThmCount.Main (3.2s)
+2026-10-27T03:04:13.5071703Z ✔ [4430/4462] Built SplitCount.StepOne (3.4s)
+2026-10-27T03:04:16.1141684Z ✔ [4431/4462] Built SplitCount.Leaf (4.5s)
+2026-10-27T03:04:16.3151900Z ✔ [4432/4462] Built FreeCode.Reader (3.2s)
+2026-10-27T03:04:16.5165385Z ✔ [4433/4462] Built GeneralPieces.Group.CaseI (3.6s)
+2026-10-27T03:04:18.1188676Z ✔ [4434/4462] Built FreeCode.Behind (4.6s)
+2026-10-27T03:04:21.6291855Z ✔ [4435/4462] Built Sat3Graph.Host (5.2s)
+2026-10-27T03:04:25.0331810Z ✔ [4436/4462] Built SplitSat.Walk (8.0s)
+2026-10-27T03:04:25.4332634Z ✔ [4437/4462] Built Sat3Graph.Split (3.8s)
+2026-10-27T03:04:25.5351740Z ✔ [4438/4462] Built Given.Level (9.2s)
+2026-10-27T03:04:28.1412669Z ✔ [4439/4462] Built Sat3Graph.Cert (10s)
+2026-10-27T03:04:28.2401608Z ✔ [4440/4466] Built SizeCircuit.Circuit (2.8s)
+2026-10-27T03:04:32.7461946Z ✔ [4441/4466] Built SizeCircuit.Sized (4.6s)
+2026-10-27T03:04:33.3524016Z ✔ [4442/4466] Built Complement.Readers (8.3s)
+2026-10-27T03:04:35.7561801Z ✔ [4443/4466] Built SplitCount.Suffices (7.5s)
+2026-10-27T03:04:35.7581051Z ✔ [4444/4466] Built SplitSat.Reader (2.4s)
+2026-10-27T03:04:38.4651652Z ✔ [4445/4466] Built FreeCode.ReaderCert (5.7s)
+2026-10-27T03:04:38.7671792Z ✔ [4446/4466] Built Sat3Graph.Coloring (2.0s)
+2026-10-27T03:04:39.5725020Z ✔ [4447/4466] Built Given.End (3.8s)
+2026-10-27T03:04:42.1791620Z ✔ [4449/4466] Built Sat3Graph.Ask (3.4s)
+2026-10-27T03:04:43.0811789Z ✔ [4450/4466] Built Complement.Main (3.5s)
+2026-10-27T03:04:43.7831621Z ✔ [4451/4466] Built ClauseBound.Group.Sample (5.3s)
+2026-10-27T03:04:44.4823314Z ✔ [4452/4466] Built Complement.FromGamma (2.4s)
+2026-10-27T03:04:45.9891851Z ✔ [4453/4470] Built SizeCircuit.Cert (20s)
+2026-10-27T03:04:46.3911822Z ✔ [4454/4470] Built SplitSat.Main (3.3s)
+2026-10-27T03:04:46.6901670Z ✔ [4455/4470] Built SplitCount.Main (2.0s)
+2026-10-27T03:04:48.5951705Z ✔ [4456/4470] Built FreeCode.Brute (4.1s)
+2026-10-27T03:04:49.1945602Z ✔ [4457/4470] Built Sat3Graph.Sets (3.2s)
+2026-10-27T03:04:50.0961697Z ✔ [4458/4471] Built ClauseBound.Group.Grouping (3.3s)
+2026-10-27T03:04:51.8094429Z ✔ [4459/4471] Built SizeCircuit.Main (3.3s)
+2026-10-27T03:04:53.8151610Z ✔ [4460/4471] Built Sat3Graph.Dominating (7.4s)
+2026-10-27T03:04:54.6311672Z ✔ [4461/4473] Built GeneralPieces.Rec.Chain (5.5s)
+2026-10-27T03:04:56.3301707Z ✔ [4462/4473] Built FreeCode.Tied (4.5s)
+2026-10-27T03:04:56.9316226Z ✔ [4463/4473] Built GeneralPieces.Num.PartAUse (6.9s)
+2026-10-27T03:04:58.8441686Z ✔ [4464/4474] Built GeneralPieces.Rec.Descend (4.2s)
+2026-10-27T03:04:59.2461848Z ✔ [4465/4475] Built Sat3Graph.Main (2.9s)
+2026-10-27T03:04:59.9501954Z ✔ [4466/4476] Built GeneralPieces.Group.CaseII (6.2s)
+2026-10-27T03:05:00.0501781Z ✔ [4467/4477] Built FreeCode.Main (3.1s)
+2026-10-27T03:05:02.0581945Z ✔ [4468/4478] Built PaddedDescent.F.Expand (2.8s)
+2026-10-27T03:05:02.8648102Z ✔ [4469/4479] Built PaddedDescent.F.MarkSums (2.0s)
+2026-10-27T03:05:06.8911697Z ✔ [4470/4479] Built PaddedDescent.F.MarkCode (4.8s)
+2026-10-27T03:05:08.9991688Z ✔ [4471/4480] Built GeneralPieces.Group.Lemma (8.0s)
+2026-10-27T03:05:15.0372637Z ✔ [4472/4480] Built PaddedDescent.F.MarkSum (6.0s)
+2026-10-27T03:05:15.1397976Z ✔ [4473/4480] Built PaddedDescent.F.MarkVal (12s)
+2026-10-27T03:05:17.1661697Z ✔ [4474/4481] Built PaddedDescent.F.MarkLayers (10s)
+2026-10-27T03:05:20.8681803Z ✔ [4475/4485] Built PaddedDescent.F.MarkSize (5.6s)
+2026-10-27T03:05:21.2691923Z ✔ [4476/4485] Built GeneralPieces.Rec.Rate (22s)
+2026-10-27T03:05:21.3691847Z ✔ [4477/4485] Built PaddedDescent.F.Eval (4.2s)
+2026-10-27T03:05:21.5721652Z ✔ [4478/4488] Built GeneralPieces.Rec.Level (6.5s)
+2026-10-27T03:05:23.3775668Z ✔ [4479/4491] Built PaddedDescent.Threshold (2.6s)
+2026-10-27T03:05:23.6883994Z ✔ [4480/4494] Built PaddedDescent.F.ArithCol (2.3s)
+2026-10-27T03:05:25.7941653Z ✔ [4481/4497] Built GeneralPieces.Rec.Seq (4.4s)
+2026-10-27T03:05:26.0951802Z ✔ [4482/4497] Built PaddedDescent.F.ArithLevel (4.6s)
+2026-10-27T03:05:27.5982843Z ✔ [4484/4497] Built PaddedDescent.F.ArithTop (3.9s)
+2026-10-27T03:05:28.1991582Z ✔ [4485/4497] Built PaddedDescent.F.ArithStack (4.8s)
+2026-10-27T03:05:29.9081722Z ✔ [4486/4497] Built GeneralPieces.Rec.PartB (4.1s)
+2026-10-27T03:05:31.9151754Z ✔ [4487/4502] Built PaddedDescent.F.ArithMark (3.7s)
+2026-10-27T03:05:34.7191193Z ✔ [4488/4503] Built PaddedDescent.F.ArithInv (7.1s)
+2026-10-27T03:05:36.7228789Z ✔ [4489/4503] Built PaddedDescent.F.ArithSched (6.9s)
+2026-10-27T03:05:37.0274971Z ✔ [4490/4503] Built GeneralPieces.Trim.Prog (5.1s)
+2026-10-27T03:05:39.4378758Z ✔ [4491/4503] Built PaddedDescent.F.ArithGlob (2.7s)
+2026-10-27T03:05:39.7371681Z ✔ [4492/4505] Built PaddedDescent.F.ArithFits (2.7s)
+2026-10-27T03:05:39.7401215Z ✔ [4493/4505] Built GeneralPieces.Top.CaseI (5.1s)
+2026-10-27T03:05:42.5421722Z ✔ [4494/4506] Built GeneralPieces.Trim.Cert (2.8s)
+2026-10-27T03:05:45.1581858Z ✔ [4495/4506] Built GeneralPieces.Top.EndM (5.8s)
+2026-10-27T03:05:47.1801726Z ✔ [4496/4506] Built ClauseBound.TopN.End (4.7s)
+2026-10-27T03:05:49.3871832Z ✔ [4497/4506] Built GeneralPieces.DefGenPieces.Conv (4.2s)
+2026-10-27T03:05:50.8881953Z ✔ [4498/4506] Built PaddedDescent.F.ArithTopInv (11s)
+2026-10-27T03:05:51.1881229Z ✔ [4499/4506] Built ClauseBound.ParityChecks.Ev (4.0s)
+2026-10-27T03:05:53.9971963Z ✔ [4500/4510] Built PaddedDescent.F.ArithA (2.8s)
+2026-10-27T03:05:54.1971791Z ✔ [4501/4510] Built GeneralPieces.Num.TopDisplay (28s)
+2026-10-27T03:05:55.2970930Z ✔ [4502/4512] Built ClauseBound.ParityChecks.EndOL (5.9s)
+2026-10-27T03:05:56.2991806Z ✔ [4503/4513] Built PaddedDescent.Main (2.3s)
+2026-10-27T03:05:58.2041818Z ✔ [4504/4513] Built GeneralPieces.DefGenPieces.MayAssume (7.3s)
+2026-10-27T03:05:58.5052034Z ✔ [4505/4517] Built ClauseBound.ParityChecks.Congr (3.2s)
+2026-10-27T03:05:58.9053134Z ✔ [4506/4517] Built GeneralPieces.Num.PartD (2.6s)
+2026-10-27T03:05:59.0061616Z ✔ [4507/4518] Built ClauseBound.ParityChecks.Approx (4.9s)
+2026-10-27T03:06:00.5112289Z ✔ [4508/4519] Built ClauseBound.ParityChecks.Dummy (2.0s)
+2026-10-27T03:06:01.5152036Z ✔ [4509/4522] Built ClauseBound.ParityChecks.StepOne (2.6s)
+2026-10-27T03:06:04.8251831Z ✔ [4510/4522] Built ClauseBound.ParityChecks.Martingale (4.3s)
+2026-10-27T03:06:05.6291921Z ✔ [4511/4524] Built ClauseBound.ParityChecks.Shape (7.4s)
+2026-10-27T03:06:05.8271906Z ✔ [4512/4524] Built ClauseBound.ParityChecks.Num (6.7s)
+2026-10-27T03:06:06.3282201Z ✔ [4513/4524] Built ClauseBound.ParityChecks.BridgeInc (4.7s)
+2026-10-27T03:06:08.5301967Z ✔ [4514/4524] Built ClauseBound.ParityChecks.Structure (2.8s)
+2026-10-27T03:06:10.3401653Z ✔ [4515/4526] Built ClauseBound.ParityChecks.Start (5.5s)
+2026-10-27T03:06:10.5431655Z ✔ [4516/4526] Built UniformInK.Top.FallBack (4.8s)
+2026-10-27T03:06:12.4439628Z ✔ [4517/4526] Built ClauseBound.ParityChecks.Bridge (3.0s)
+2026-10-27T03:06:13.6486349Z ✔ [4518/4538] Built ClauseBound.ParityChecks.ChoiceByPotential (3.3s)
+2026-10-27T03:06:13.8498822Z ✔ [4525/4539] Built GeneralPieces.Ring.Defs (3.3s)
+2026-10-27T03:06:16.9543421Z ✔ [4526/4540] Built ClauseBound.Boson.Text (4.5s)
+2026-10-27T03:06:17.8521989Z ✔ [4528/4540] Built ClauseBound.ParityChecks.Run (11s)
+2026-10-27T03:06:20.4621748Z ✔ [4529/4549] Built ClauseBound.Part.Upper (6.8s)
+2026-10-27T03:06:25.2862429Z ✔ [4537/4549] Built GeneralPieces.Ring.Bridge (8.3s)
+2026-10-27T03:06:25.6866953Z ✔ [4538/4550] Built ClauseBound.ParityChecks.RunF (7.9s)
+2026-10-27T03:06:26.5921927Z ✔ [4539/4550] Built GeneralPieces.Series.Rings (6.1s)
+2026-10-27T03:06:30.3071736Z ✔ [4540/4553] Built GeneralPieces.Ring.Basic (5.1s)
+2026-10-27T03:06:31.4325952Z ✔ [4541/4554] Built GeneralPieces.Series.Expansion (4.9s)
+2026-10-27T03:06:32.7322288Z ✔ [4542/4554] Built ClauseBound.ParityChecks.Count (7.0s)
+2026-10-27T03:06:37.3472025Z ✔ [4543/4554] Built GeneralPieces.Ring.OpFacts (5.9s)
+2026-10-27T03:06:37.3501545Z ✔ [4544/4554] Built GeneralPieces.GenF.Exp (4.6s)
+2026-10-27T03:06:40.2482040Z ✔ [4545/4554] Built GeneralPieces.Series.Deriv (9.0s)
+2026-10-27T03:06:40.3470714Z ✔ [4546/4559] Built GeneralPieces.GenF.Hahn (2.0s)
+2026-10-27T03:06:41.4522057Z ✔ [4547/4560] Built GeneralPieces.ThmRunningTime (4.1s)
+2026-10-27T03:06:44.4641749Z ✔ [4548/4569] Built GeneralPieces.Ring.Op (4.2s)
+2026-10-27T03:06:45.4671641Z ✔ [4549/4576] Built GeneralPieces.GenF.Taylor (5.2s)
+2026-10-27T03:06:46.1681678Z ✔ [4550/4576] Built RecursionWithPieces.Master (4.7s)
+2026-10-27T03:06:48.5802080Z ✔ [4551/4576] Built GeneralPieces.Series.OneLaurent (4.1s)
+2026-10-27T03:06:49.0741832Z ✔ [4552/4576] Built GeneralPieces.GenF.PDeriv (2.9s)
+2026-10-27T03:06:50.5784498Z ✔ [4553/4576] Built GeneralPieces.Ring.LemmaQ (5.1s)
+2026-10-27T03:06:51.8003384Z ✔ [4554/4577] Built ClauseBound.Part.Lower (38s)
+2026-10-27T03:06:52.5052060Z ✔ [4555/4580] Built GeneralPieces.GenF.Defs (3.9s)
+2026-10-27T03:06:54.2081785Z ✔ [4556/4581] Built GeneralPieces.GenF.Coeff (2.3s)
+2026-10-27T03:06:56.0131778Z ✔ [4558/4581] Built GeneralPieces.Series.ReadOff (5.4s)
+2026-10-27T03:06:56.4113745Z ✔ [4560/4581] Built GeneralPieces.Ring.Dual (7.4s)
+2026-10-27T03:06:56.7161871Z ✔ [4561/4581] Built ClauseBound.Part.Bounds (4.2s)
+2026-10-27T03:06:59.1291712Z ✔ [4562/4581] Built GeneralPieces.GenF.Borel (2.4s)
+2026-10-27T03:06:59.5297191Z ✔ [4563/4581] Built GeneralPieces.GenF.Kappa (5.4s)
+2026-10-27T03:07:00.2369670Z ✔ [4564/4583] Built GeneralPieces.GenF.Products (4.2s)
+2026-10-27T03:07:02.5421722Z ✔ [4566/4585] Built GeneralPieces.GenF.Bra (6.1s)
+2026-10-27T03:07:04.1489925Z ✔ [4567/4586] Built GeneralPieces.Ring.Pieces (5.1s)
+2026-10-27T03:07:04.3551754Z ✔ [4568/4586] Built GeneralPieces.Series.Constant (4.8s)
+2026-10-27T03:07:06.7581798Z ✔ [4569/4586] Built GeneralPieces.Ring.Lex (4.2s)
+2026-10-27T03:07:07.4591667Z ✔ [4570/4586] Built GeneralPieces.GenF.Assemble (7.3s)
+2026-10-27T03:07:08.6651580Z ✔ [4571/4586] Built GeneralPieces.GenF.DDComm (4.3s)
+2026-10-27T03:07:12.7801885Z ✔ [4572/4587] Built GeneralPieces.GenF.NormalL (6.0s)
+2026-10-27T03:07:12.7831161Z ✔ [4573/4587] Built ClauseBound.Boson.Final (4.1s)
+2026-10-27T03:07:12.9794425Z ✔ [4574/4587] Built GeneralPieces.GenF.YY (5.5s)
+2026-10-27T03:07:14.8813089Z ✔ [4575/4587] Built GeneralPieces.DefGenPieces.ToPure (2.1s)
+2026-10-27T03:07:16.5871968Z ✔ [4576/4587] Built GeneralPieces.Series.LemmaQ (3.8s)
+2026-10-27T03:07:18.9981729Z ✔ [4577/4587] Built GeneralPieces.Ring.Sizes (5.0s)
+2026-10-27T03:07:21.9021740Z ✔ [4578/4587] Built GeneralPieces.GenF.Y2 (6.0s)
+2026-10-27T03:07:22.8062090Z ✔ [4579/4587] Built GeneralPieces.Group.Calls (6.3s)
+2026-10-27T03:07:28.1134577Z ✔ [4580/4590] Built GeneralPieces.GenF.Normal (9.2s)
+2026-10-27T03:07:34.3361762Z ✔ [4581/4591] Built ClauseBound.Boson.HalfList (6.1s)
+2026-10-27T03:07:37.1401990Z ✔ [4582/4594] Built GeneralPieces.Ring.Bits (14s)
+2026-10-27T03:07:37.6412760Z ✔ [4583/4596] Built GeneralPieces.GenF.Commute (33s)
+2026-10-27T03:07:37.6413766Z ✔ [4584/4596] Built ClauseBound.Inst.HalfIfc (3.4s)
+2026-10-27T03:07:41.5471597Z ✔ [4585/4596] Built ClauseBound.Inst.HalfEnc (3.9s)
+2026-10-27T03:07:42.0481646Z ✔ [4586/4597] Built GeneralPieces.Half.List (4.9s)
+2026-10-27T03:07:43.4540625Z ✔ [4587/4597] Built GeneralPieces.Ring.ThmHalfPieces (5.8s)
+2026-10-27T03:07:45.1551790Z ✔ [4588/4597] Built ClauseBound.Inst.HalfSpec (3.6s)
+2026-10-27T03:07:46.9661727Z ✔ [4589/4598] Built GeneralPieces.Half.Order (3.5s)
+2026-10-27T03:07:48.7692008Z ✔ [4590/4598] Built ClauseBound.Inst.HalfLabs (3.7s)
+2026-10-27T03:07:49.4721739Z ✔ [4591/4598] Built ClauseBound.Inst.HalfFact (7.3s)
+2026-10-27T03:07:50.1761789Z ✔ [4592/4602] Built GeneralPieces.GenF.Y (28s)
+2026-10-27T03:07:51.6902016Z ✔ [4593/4602] Built GeneralPieces.Half.Consts (4.8s)
+2026-10-27T03:07:52.5941838Z ✔ [4594/4608] Built GeneralPieces.Half.Size (3.7s)
+2026-10-27T03:07:53.0941761Z ✔ [4595/4611] Built ClauseBound.Inst.HalfVal (3.7s)
+2026-10-27T03:07:53.5981846Z ✔ [4596/4613] Built GeneralPieces.GenF.YMain (3.4s)
+2026-10-27T03:07:55.8031741Z ✔ [4597/4613] Built ClauseBound.Inst.HalfTabSpec (4.1s)
+2026-10-27T03:07:56.1061861Z ✔ [4598/4613] Built ClauseBound.Inst.HalfPar (3.6s)
+2026-10-27T03:07:56.3062030Z ✔ [4599/4617] Built GeneralPieces.GenF.Main (2.8s)
+2026-10-27T03:07:56.3090730Z ✔ [4600/4617] Built UniformInK.Top.Correct (3.2s)
+2026-10-27T03:07:58.6171701Z ✔ [4601/4617] Built VariableBound.Top.CorrectB (2.8s)
+2026-10-27T03:07:59.1216763Z ✔ [4602/4617] Built VariableBound.Top.Correct (2.8s)
+2026-10-27T03:07:59.2222077Z ✔ [4603/4619] Built ClauseBound.Inst.HalfTabBot (3.1s)
+2026-10-27T03:07:59.7204370Z ✔ [4604/4619] Built ClauseBound.Inst.HalfTabKF (3.4s)
+2026-10-27T03:08:02.0311912Z ✔ [4605/4620] Built VariableBound.Net.CertEv (3.4s)
+2026-10-27T03:08:02.1291925Z ✔ [4606/4620] Built SparsifyThenCount.CorrectB (2.9s)
+2026-10-27T03:08:02.1310967Z ✔ [4607/4620] Built UniformInK.Cert.Top (2.0s)
+2026-10-27T03:08:02.9391814Z ✔ [4608/4620] Built SparsifyThenCount.Correct (3.2s)
+2026-10-27T03:08:04.9421670Z ✔ [4609/4624] Built UniformInK.Cert.Both (2.0s)
+2026-10-27T03:08:04.9441038Z ✔ [4610/4624] Built SparsifyThenCount.Tied (2.8s)
+2026-10-27T03:08:06.0471919Z ✔ [4611/4624] Built ClauseBound.Inst.HalfPad (3.9s)
+2026-10-27T03:08:06.3468975Z ✔ [4612/4625] Built VariableBound.Cert.Top (3.5s)
+2026-10-27T03:08:08.0513050Z ✔ [4613/4627] Built VariableBound.StepParity (2.0s)
+2026-10-27T03:08:08.1569685Z ✔ [4614/4627] Built VariableBound.Printed.Tied (3.2s)
+2026-10-27T03:08:08.9601601Z ✔ [4615/4627] Built UniformInK.Top.Time (3.9s)
+2026-10-27T03:08:09.3594567Z ✔ [4616/4627] Built ClauseBound.Inst.HalfAll (2.0s)
+2026-10-27T03:08:12.0633235Z ✔ [4617/4627] Built SparsifyThenCount.CertTop (4.1s)
+2026-10-27T03:08:12.2661944Z ✔ [4618/4630] Built VariableBound.Family.Pairwise (4.2s)
+2026-10-27T03:08:12.2690828Z ✔ [4619/4630] Built VariableBound.Family.SmallBias (3.3s)
+2026-10-27T03:08:14.4723624Z ✔ [4620/4633] Built VariableBound.Field.Alg (2.2s)
+2026-10-27T03:08:17.7801869Z ✔ [4621/4634] Built VariableBound.Family.Main (3.3s)
+2026-10-27T03:08:18.4821668Z ✔ [4622/4634] Built VariableBound.Top.Time (9.1s)
+2026-10-27T03:08:19.3843974Z ✔ [4623/4634] Built SparsifyThenCount.CertBoth (7.2s)
+2026-10-27T03:08:19.9859491Z ✔ [4624/4635] Built GeneralPieces.Half.Spec (7.8s)
+2026-10-27T03:08:21.2931935Z ✔ [4625/4635] Built VariableBound.Field.Quot (3.5s)
+2026-10-27T03:08:21.4942019Z ✔ [4626/4635] Built VariableBound.Field.Ring (3.0s)
+2026-10-27T03:08:22.3984387Z ✔ [4627/4638] Built VariableBound.Field.Transfer (3.0s)
+2026-10-27T03:08:24.4011914Z ✔ [4628/4638] Built GeneralPieces.Half.Main (3.2s)
+2026-10-27T03:08:24.9042009Z ✔ [4629/4638] Built VariableBound.Params.Spec (3.3s)
+2026-10-27T03:08:25.0042314Z ✔ [4630/4640] Built VariableBound.Field.Search (2.6s)
+2026-10-27T03:08:28.2131696Z ✔ [4631/4641] Built GeneralPieces.Tied.Bound (3.1s)
+2026-10-27T03:08:28.4142409Z ✔ [4632/4641] Built ClauseBound.ParityChecks.Binom (3.0s)
+2026-10-27T03:08:28.9151968Z ✔ [4633/4641] Built VariableBound.Params.Cert (4.1s)
+2026-10-27T03:08:32.1252006Z ✔ [4634/4642] Built VariableBound.Field.Family (3.9s)
+2026-10-27T03:08:32.5381886Z ✔ [4635/4643] Built VariableBound.StepChoice (4.1s)
+2026-10-27T03:08:32.7391888Z ✔ [4636/4643] Built GeneralPieces.Main (3.8s)
+2026-10-27T03:08:34.7441827Z ✔ [4637/4646] Built VariableBound.Field.Cert (14s)
+2026-10-27T03:08:36.5582018Z ✔ [4638/4648] Built VariableBound.Net.Rank (3.0s)
+2026-10-27T03:08:36.9571955Z ✔ [4639/4648] Built VariableBound.Search.Correct (4.3s)
+2026-10-27T03:08:38.4601611Z ✔ [4640/4650] Built VariableBound.Params.Ineq (6.4s)
+2026-10-27T03:08:39.5671691Z ✔ [4641/4652] Built VariableBound.Net.Basic (4.9s)
+2026-10-27T03:08:40.2651864Z ✔ [4642/4652] Built VariableBound.Net.Total (3.2s)
+2026-10-27T03:08:40.6651474Z ✔ [4643/4652] Built VariableBound.Net.CertRank (4.2s)
+2026-10-27T03:08:43.8781771Z ✔ [4644/4652] Built VariableBound.Net.Tests (4.3s)
+2026-10-27T03:08:45.0774008Z ✔ [4645/4652] Built VariableBound.Net.Tuples (4.9s)
+2026-10-27T03:08:45.7812204Z ✔ [4646/4654] Built VariableBound.Net.Prof (5.1s)
+2026-10-27T03:08:50.7952106Z ✔ [4647/4655] Built VariableBound.Net.SizeB (5.7s)
+2026-10-27T03:08:53.4191811Z ✔ [4648/4655] Built VariableBound.Net.Val (9.5s)
+2026-10-27T03:08:56.6223526Z ✔ [4649/4657] Built VariableBound.Net.Fit (5.8s)
+2026-10-27T03:08:58.1353763Z ✔ [4650/4657] Built VariableBound.Net.SizeU (12s)
+2026-10-27T03:08:59.1361874Z ✔ [4651/4659] Built VariableBound.Net.SizeP (5.7s)
+2026-10-27T03:09:00.5404272Z ✔ [4652/4659] Built VariableBound.Net.Ev (3.0s)
+2026-10-27T03:09:03.6491931Z ✔ [4653/4660] Built VariableBound.Search.Cert (25s)
+2026-10-27T03:09:04.9551766Z ✔ [4654/4660] Built VariableBound.Net.SizeSmall (4.4s)
+2026-10-27T03:09:05.7551675Z ✔ [4655/4662] Built VariableBound.Count.Correct (6.6s)
+2026-10-27T03:09:07.9574544Z ✔ [4656/4673] Built VariableBound.Top.Budget (2.0s)
+2026-10-27T03:09:08.7591800Z ✔ [4657/4673] Built UniformInK.Top.ArithDefs (3.0s)
+2026-10-27T03:09:10.9615304Z ✔ [4658/4673] Built UniformInK.Top.CorrectB (2.0s)
+2026-10-27T03:09:11.1618205Z ✔ [4659/4673] Built UniformInK.Tree.Stack (2.4s)
+2026-10-27T03:09:14.5711859Z ✔ [4660/4673] Built UniformInK.Top.ArithTop (3.3s)
+2026-10-27T03:09:16.5761671Z ✔ [4661/4673] Built UniformInK.Top.ArithMaster (5.6s)
+2026-10-27T03:09:18.2771688Z ✔ [4662/4676] Built UniformInK.Top.ArithNat (3.8s)
+2026-10-27T03:09:19.7771964Z ✔ [4663/4679] Built VariableBound.Count.Cert (16s)
+2026-10-27T03:09:20.0791643Z ✔ [4664/4679] Built VariableBound.Top.ArithDefs (3.4s)
+2026-10-27T03:09:20.8831880Z ✔ [4665/4679] Built VariableBound.Printed.VariablesA.Level (2.6s)
+2026-10-27T03:09:22.7861818Z ✔ [4666/4679] Built StepSparsify.Walk (3.0s)
+2026-10-27T03:09:23.2876942Z ✔ [4667/4679] Built StepSparsify.CertWalk (3.3s)
+2026-10-27T03:09:26.1931666Z ✔ [4668/4679] Built VariableBound.Top.ArithTop (5.2s)
+2026-10-27T03:09:26.8951866Z ✔ [4669/4679] Built VariableBound.Top.ArithPlan (4.0s)
+2026-10-27T03:09:29.9022099Z ✔ [4670/4679] Built VariableBound.Printed.VariablesA.Arith (3.1s)
+2026-10-27T03:09:31.3051744Z ✔ [4671/4681] Built VariableBound.Top.ArithNeed (8.0s)
+2026-10-27T03:09:34.7101884Z ✔ [4672/4683] Built StepSparsify.WalkCount (4.8s)
+2026-10-27T03:09:36.1132052Z ✔ [4673/4683] Built VariableBound.Printed.VariablesA.Main (4.8s)
+2026-10-27T03:09:39.4214475Z ✔ [4674/4689] Built SparsificationLemma.Cal.Beta (3.3s)
+2026-10-27T03:09:39.9222039Z ✔ [4675/4691] Built SparsificationLemma.Cal.Real (5.2s)
+2026-10-27T03:09:40.9243557Z ✔ [4676/4691] Built VariableBound.Top.ArithNat (14s)
+2026-10-27T03:09:41.8251778Z ✔ [4677/4694] Built SparsificationLemma.Cal.Thr (2.4s)
+2026-10-27T03:09:46.7412384Z ✔ [4678/4694] Built VariableBound.Top.Arith (4.9s)
+2026-10-27T03:09:50.2469693Z ✔ [4679/4694] Built SparsificationLemma.Cal.Alpha (9.4s)
+2026-10-27T03:09:51.3522281Z ✔ [4680/4696] Built SparsificationLemma.Cal.Facts (4.7s)
+2026-10-27T03:09:54.2641914Z ✔ [4681/4696] Built VariableBound.Paper.Forms (3.0s)
+2026-10-27T03:09:56.8692012Z ✔ [4682/4722] Built SparsificationLemma.StepSparsifyDefs (2.6s)
+2026-10-27T03:09:57.3702351Z ✔ [4683/4722] Built StepSparsify.CalNumbers (5.0s)
+2026-10-27T03:10:00.1781748Z ✔ [4684/4724] Built SparsificationLemma.Nodes (3.3s)
+2026-10-27T03:10:01.2801916Z ✔ [4685/4724] Built SparsificationLemma.Cal.Main (3.9s)
+2026-10-27T03:10:02.0951689Z ✔ [4686/4724] Built StepSparsify.CertThCal (22s)
+2026-10-27T03:10:02.7961704Z ✔ [4687/4724] Built Consequences.Defs (2.6s)
+2026-10-27T03:10:04.6991834Z ✔ [4688/4724] Built PrintedOrder.Defs (2.6s)
+2026-10-27T03:10:04.7986122Z ✔ [4689/4724] Built FromPrinted.CountDefs (3.5s)
+2026-10-27T03:10:06.3026480Z ✔ [4690/4724] Built StepSparsify.CalLeaves (3.6s)
+2026-10-27T03:10:07.1061697Z ✔ [4691/4724] Built SparsificationLemma.Sketch (2.5s)
+2026-10-27T03:10:07.4071775Z ✔ [4692/4724] Built SparsificationLemma.StepSparsify (2.6s)
+2026-10-27T03:10:09.6171743Z ✔ [4693/4724] Built Consequences.Sets (2.5s)
+2026-10-27T03:10:09.8161568Z ✔ [4694/4724] Built FromPrinted.SatDefs (3.4s)
+2026-10-27T03:10:10.4162205Z ✔ [4695/4724] Built PrintedOrder.AddUp (2.0s)
+2026-10-27T03:10:12.5191479Z ✔ [4696/4724] Built PrintedOrder.Deciding (2.8s)
+2026-10-27T03:10:13.4241735Z ✔ [4697/4724] Built FromPrinted.GraphDefs (3.0s)
+2026-10-27T03:10:13.5231916Z ✔ [4698/4724] Built FromPrinted.Count (3.7s)
+2026-10-27T03:10:16.2374733Z ✔ [4699/4724] Built SparsificationLemma.Main (2.8s)
+2026-10-27T03:10:16.4361949Z ✔ [4700/4724] Built StepSparsify.CalServes (3.9s)
+2026-10-27T03:10:18.2401793Z ✔ [4702/4724] Built ThmCount.MEps (4.7s)
+2026-10-27T03:10:19.9411971Z ✔ [4703/4724] Built FromPrinted.Core (3.5s)
+2026-10-27T03:10:21.7417590Z ✔ [4704/4724] Built Consequences.Dom (5.5s)
+2026-10-27T03:10:21.7441429Z ✔ [4705/4724] Built PrintedOrder.Counting (3.5s)
+2026-10-27T03:10:23.0471888Z ✔ [4706/4724] Built FromPrinted.Sets (3.1s)
+2026-10-27T03:10:24.5453877Z ✔ [4707/4724] Built VariableBound.Net.CertNet (86s)
+2026-10-27T03:10:24.9572047Z ✔ [4708/4724] Built FromPrinted.SplitSat (3.3s)
+2026-10-27T03:10:24.9620987Z ✔ [4709/4724] Built FromPrinted.FreeCode (3.2s)
+2026-10-27T03:10:27.1633555Z ✔ [4710/4724] Built FromPrinted.Sat3Graph (4.2s)
+2026-10-27T03:10:27.2634608Z ✔ [4711/4753] Built Consequences.Main (2.7s)
+2026-10-27T03:10:27.9644622Z ✔ [4712/4823] Built VariableBound.Net.Main (3.0s)
+2026-10-27T03:10:29.2761752Z ✔ [4713/4823] Built FromPrinted.Dom (4.4s)
+2026-10-27T03:10:30.3831774Z ✔ [4714/4823] Built FromPrinted.Verifier (3.2s)
+2026-10-27T03:10:30.4862045Z ✔ [4715/4823] Built GeneralPieces.Num.Remarks (3.1s)
+2026-10-27T03:10:32.4921601Z ✔ [4716/4823] Built OccurM.Arith (4.5s)
+2026-10-27T03:10:33.4952260Z ✔ [4717/4823] Built VariableBound.Paper.Rename.Compact (4.2s)
+2026-10-27T03:10:33.8971965Z ✔ [4718/4823] Built PiecesCounted.Basic (3.5s)
+2026-10-27T03:10:34.2961821Z ✔ [4719/4823] Built PiecesCounted.PaddedData (3.8s)
+2026-10-27T03:10:36.4081936Z ✔ [4720/4823] Built PiecesFromEightSquares.LemPieces (3.0s)
+2026-10-27T03:10:37.0075165Z ✔ [4721/4823] Built ExplicitCost.Mirror (3.5s)
+2026-10-27T03:10:37.8113488Z ✔ [4722/4823] Built ExplicitCost.GroupingNumbers (3.9s)
+2026-10-27T03:10:39.7221977Z ✔ [4723/4823] Built CountedToPadded.Defs (3.3s)
+2026-10-27T03:10:43.1281776Z ✔ [4724/4823] Built CountedToPadded.Compare (6.1s)
+2026-10-27T03:10:47.0386257Z ✔ [4725/4823] Built CountedRecursion.Answers (3.9s)
+2026-10-27T03:10:47.9432077Z ✔ [4726/4823] Built CountedRecursion.PolyLists (8.2s)
+2026-10-27T03:10:50.0482148Z ✔ [4727/4823] Built CountedToPadded.GenLevels (12s)
+2026-10-27T03:10:50.6483442Z ✔ [4728/4823] Built CountedRecursion.Numbers (3.6s)
+2026-10-27T03:10:50.8522260Z ✔ [4729/4823] Built CountedRecursion.SquareGrid (2.9s)
+2026-10-27T03:10:53.6607077Z ✔ [4730/4823] Built CountedRecursion.PartAPrinted (3.0s)
+2026-10-27T03:10:54.5827454Z ✔ [4731/4823] Built CountedRecursion.CrudeBounds (4.6s)
+2026-10-27T03:10:55.5851891Z ✔ [4732/4823] Built ExplicitCost.Poly (21s)
+2026-10-27T03:10:56.6892388Z ✔ [4733/4823] Built CountedRecursion.EndBounds (5.8s)
+2026-10-27T03:10:56.9901682Z ✔ [4734/4823] Built VariableBound.MainPrinted (3.3s)
+2026-10-27T03:10:57.9901694Z ✔ [4735/4823] Built FromPrinted.Circuits (3.4s)
+2026-10-27T03:10:59.9021761Z ✔ [4736/4823] Built OccurM.TiedDefs (2.0s)
+2026-10-27T03:11:02.5223017Z ✔ [4737/4823] Built GeneralPieces.Rec.Count (6.0s)
+2026-10-27T03:11:02.6221919Z ✔ [4738/4823] Built PiecesCounted.Sizes (4.7s)
+2026-10-27T03:11:03.2371701Z ✔ [4739/4823] Built PiecesCounted.Oracle (3.4s)
+2026-10-27T03:11:04.3381838Z ✔ [4740/4823] Built OccurM.ArithBack (7.7s)
+2026-10-27T03:11:05.3411929Z ✔ [4741/4823] Built CountedToPadded.Pick (2.7s)
+2026-10-27T03:11:07.4461797Z ✔ [4742/4823] Built ExplicitCost.SameRuns (4.9s)
+2026-10-27T03:11:07.9491714Z ✔ [4743/4823] Built CountedToPadded.Tables (3.6s)
+2026-10-27T03:11:08.7491823Z ✔ [4744/4823] Built CountedToPadded.TablesValue (3.5s)
+2026-10-27T03:11:11.1561640Z ✔ [4745/4823] Built CountedToPadded.Need (7.9s)
+2026-10-27T03:11:11.6568318Z ✔ [4746/4823] Built CountedRecursion.Within (3.6s)
+2026-10-27T03:11:12.2601958Z ✔ [4747/4823] Built CountedRecursion.PolyRules (3.4s)
+2026-10-27T03:11:15.5621282Z ✔ [4748/4823] Built CountedRecursion.LevelNumbers (3.0s)
+2026-10-27T03:11:15.9651396Z ✔ [4749/4823] Built CountedRecursion.GridLemmas (3.7s)
+2026-10-27T03:11:20.4791789Z ✔ [4750/4823] Built CountedRecursion.CliqueReads (4.9s)
+2026-10-27T03:11:25.0901809Z ✔ [4751/4823] Built CountedRecursion.PolyQueries (13s)
+2026-10-27T03:11:26.7951699Z ✔ [4752/4823] Built CountedRecursion.EndPlugged (6.3s)
+2026-10-27T03:11:29.7031711Z ✔ [4753/4823] Built SparsifyThenCount.Main (4.7s)
+2026-10-27T03:11:30.5032371Z ✔ [4754/4823] Built OccurM.Prep (3.7s)
+2026-10-27T03:11:35.2281956Z ✔ [4755/4823] Built CountedToPadded.RunFor (27s)
+2026-10-27T03:11:36.1352023Z ✔ [4756/4823] Built PiecesCounted.PadThen (5.7s)
+2026-10-27T03:11:39.4422263Z ✔ [4757/4823] Built OccurM.AllOccur (4.2s)
+2026-10-27T03:11:42.0451808Z ✔ [4758/4823] Built ExplicitCost.Cost (5.9s)
+2026-10-27T03:11:49.4582729Z ✔ [4759/4823] Built CountedToPadded.Levels (7.4s)
+2026-10-27T03:11:53.2831675Z ✔ [4760/4823] Built ExplicitCost.GroupingPoly (37s)
+2026-10-27T03:11:53.3831929Z ✔ [4761/4823] Built CountedRecursion.EndSolves (3.0s)
+2026-10-27T03:11:55.5861694Z ✔ [4762/4823] Built PiecesCounted.Trimmed (25s)
+2026-10-27T03:11:57.5941662Z ✔ [4763/4823] Built CountedRecursion.Brute (4.2s)
+2026-10-27T03:12:01.2043373Z ✔ [4764/4823] Built CountedRecursion.ChainLabel (5.6s)
+2026-10-27T03:12:02.7092382Z ✔ [4765/4823] Built CountedToPadded.SolverPoly (23s)
+2026-10-27T03:12:03.3102029Z ✔ [4766/4823] Built CountedRecursion.SolverStages (10s)
+2026-10-27T03:12:04.2134001Z ✔ [4767/4823] Built CountedRecursion.EndCounted (3.1s)
+2026-10-27T03:12:05.6175368Z ✔ [4768/4823] Built CountedRecursion.PatternPsi (8.1s)
+2026-10-27T03:12:05.9201981Z ✔ [4769/4823] Built CountedRecursion.CallParts (3.2s)
+2026-10-27T03:12:07.8251812Z ✔ [4770/4823] Built CountedRecursion.PolySolverData (3.6s)
+2026-10-27T03:12:08.1251905Z ✔ [4771/4823] Built CountedRecursion.PolyProcedure (4.8s)
+2026-10-27T03:12:08.8331799Z ✔ [4772/4823] Built OccurM.Top (2.9s)
+2026-10-27T03:12:11.0413070Z ✔ [4773/4823] Built SparsifyThenCount.PlanUsed (5.4s)
+2026-10-27T03:12:11.3451708Z ✔ [4774/4823] Built PiecesCounted.Padded (3.5s)
+2026-10-27T03:12:12.7493349Z ✔ [4775/4823] Built PiecesCounted.Assume (3.9s)
+2026-10-27T03:12:13.0511639Z ✔ [4776/4823] Built ExplicitCost.GroupingSearch (4.9s)
+2026-10-27T03:12:14.6551635Z ✔ [4777/4823] Built CountedRecursion.Base (3.5s)
+2026-10-27T03:12:15.0561779Z ✔ [4778/4823] Built CountedToPadded.Main (2.3s)
+2026-10-27T03:12:16.5611869Z ✔ [4779/4823] Built CountedRecursion.Chain (5.2s)
+2026-10-27T03:12:16.9613329Z ✔ [4780/4823] Built CountedRecursion.SolverPattern (3.0s)
+2026-10-27T03:12:18.5632147Z ✔ [4781/4823] Built CountedRecursion.CaseTwo (3.9s)
+2026-10-27T03:12:18.9656743Z ✔ [4782/4823] Built CountedRecursion.Totals (3.9s)
+2026-10-27T03:12:20.4701903Z ✔ [4783/4823] Built CountedRecursion.Expansion (3.9s)
+2026-10-27T03:12:21.4722598Z ✔ [4784/4823] Built CountedRecursion.PatternValues (4.5s)
+2026-10-27T03:12:23.2811820Z ✔ [4785/4823] Built CountedRecursion.ParentSize (4.4s)
+2026-10-27T03:12:23.6791954Z ✔ [4786/4823] Built CountedRecursion.PolySolver (3.2s)
+2026-10-27T03:12:24.6831670Z ✔ [4787/4823] Built OccurM.Main (3.2s)
+2026-10-27T03:12:25.1881938Z ✔ [4788/4823] Built CountedRecursion.CallLemma (6.7s)
+2026-10-27T03:12:25.6902035Z ✔ [4789/4823] Built OccurM.Wrapper (2.4s)
+2026-10-27T03:12:26.7931787Z ✔ [4790/4823] Built RecursionWithPieces.Main (3.1s)
+2026-10-27T03:12:28.3992017Z ✔ [4791/4823] Built PiecesCounted.EightSquare (3.2s)
+2026-10-27T03:12:30.6011992Z ✔ [4792/4823] Built ExplicitCost.GroupingCall (4.9s)
+2026-10-27T03:12:30.7033062Z ✔ [4793/4823] Built CountedRecursion.TotalRoom (3.9s)
+2026-10-27T03:12:35.7301807Z ✔ [4794/4823] Built CountedRecursion.LevelBound (7.2s)
+2026-10-27T03:12:36.7302518Z ✔ [4795/4823] Built CountedRecursion.Meets (6.1s)
+2026-10-27T03:12:37.0321991Z ✔ [4796/4823] Built CountedRecursion.SolverCall (6.3s)
+2026-10-27T03:12:40.2451742Z ✔ [4797/4823] Built CountedRecursion.PolyEnd (3.2s)
+2026-10-27T03:12:41.0451756Z ✔ [4798/4823] Built CountedRecursion.LabelCrude (5.4s)
+2026-10-27T03:12:43.0461693Z ✔ [4799/4823] Built CountedRecursion.PatternIs (6.3s)
+2026-10-27T03:12:43.8511606Z ✔ [4800/4823] Built PiecesCounted.Half (19s)
+2026-10-27T03:12:44.1497964Z ✔ [4801/4823] Built RecursionWithPieces.Forms (3.1s)
+2026-10-27T03:12:44.2501919Z ✔ [4802/4823] Built CountedRecursion.CallFacts (4.0s)
+2026-10-27T03:12:47.8601899Z ✔ [4803/4823] Built CountedRecursion.CountBase (3.6s)
+2026-10-27T03:12:48.2593080Z ✔ [4804/4823] Built ExplicitCost.GroupingLemma (5.3s)
+2026-10-27T03:12:49.1651868Z ✔ [4805/4823] Built CountedRecursion.RoomWithin (5.3s)
+2026-10-27T03:12:51.3651655Z ✔ [4806/4823] Built CountedRecursion.PolyAll (3.1s)
+2026-10-27T03:12:52.4711835Z ✔ [4807/4823] Built CountedRecursion.ParentNumbers (3.2s)
+2026-10-27T03:12:53.5721859Z ✔ [4808/4823] Built PrintedOrder.Close (2.3s)
+2026-10-27T03:12:53.5750906Z ✔ [4809/4823] Built CountedRecursion.SolverRoom (5.8s)
+2026-10-27T03:12:54.6732502Z ✔ [4810/4823] Built ThmCount.Remark (2.3s)
+2026-10-27T03:12:56.7861883Z ✔ [4812/4823] Built CountedRecursion.ChildIsGood (3.2s)
+2026-10-27T03:12:57.0992373Z ✔ [4813/4863] Built CountedRecursion.ProcedureCost (3.5s)
+2026-10-27T03:12:58.1020338Z ✔ [4814/4863] Built CountedRecursion.CountStep (13s)
+2026-10-27T03:12:58.2022080Z ✔ [4815/4863] Built CountedRecursion.RowWeightRun (3.5s)
+2026-10-27T03:12:59.4032064Z ✔ [4816/4863] Built VariableBound.Net.StepCost (2.2s)
+2026-10-27T03:13:01.4141773Z ✔ [4817/4863] Built VariableBound.Field.Main (3.2s)
+2026-10-27T03:13:01.8141790Z ✔ [4818/4863] Built CountedRecursion.SolverStep (5.0s)
+2026-10-27T03:13:03.6201945Z ✔ [4819/4863] Built RecursionToBound.Defs (4.3s)
+2026-10-27T03:13:03.9192059Z ✔ [4820/4863] Built VariableBound.Printed.VariablesA.StepSparsify (5.8s)
+2026-10-27T03:13:04.5202005Z ✔ [4821/4863] Built PairsToBound.Width (3.2s)
+2026-10-27T03:13:06.9291713Z ✔ [4822/4863] Built PairsToBound.Pairs (5.1s)
+2026-10-27T03:13:08.0444429Z ✔ [4823/4863] Built CountedRecursion.TotalCount (4.4s)
+2026-10-27T03:13:08.3542438Z ✔ [4824/4863] Built CountedRecursion.RowPairRun (4.5s)
+2026-10-27T03:13:08.3560852Z ✔ [4825/4863] Built ThmVariables.Defs (3.9s)
+2026-10-27T03:13:09.9591688Z ✔ [4826/4863] Built FixedWidthSteps.RouteDefs (3.1s)
+2026-10-27T03:13:11.7661778Z ✔ [4827/4863] Built RecursionToBound.Tree (3.7s)
+2026-10-27T03:13:12.3821817Z ✔ [4828/4863] Built RecursionToBound.Cert.Numbers (3.9s)
+2026-10-27T03:13:15.2873081Z ✔ [4829/4863] Built PairsToBound.Arith (6.9s)
+2026-10-27T03:13:17.2960003Z ✔ [4830/4863] Built PairsToBound.Exhaust (4.9s)
+2026-10-27T03:13:18.4001934Z ✔ [4831/4863] Built PairsToBound.FrontEnd (6.6s)
+2026-10-27T03:13:19.5991798Z ✔ [4832/4863] Built CountedInstance.Pairs (4.4s)
+2026-10-27T03:13:21.5034764Z ✔ [4833/4863] Built CountedRecursion.RowFactorRun (4.2s)
+2026-10-27T03:13:21.6041786Z ✔ [4834/4863] Built VariableBound.Printed.VariablesA.Setting (11s)
+2026-10-27T03:13:21.6071635Z ✔ [4835/4863] Built FixedWidthSteps.Sentence (3.2s)
+2026-10-27T03:13:22.7072132Z ✔ [4836/4863] Built FixedWidthSteps.Hypothesis (3.1s)
+2026-10-27T03:13:24.6132171Z ✔ [4837/4863] Built RecursionToBound.Guard (3.1s)
+2026-10-27T03:13:24.6151293Z ✔ [4838/4863] Built FixedWidthSteps.Small (3.2s)
+2026-10-27T03:13:25.4164505Z ✔ [4839/4863] Built FixedWidthSteps.Numbers (3.9s)
+2026-10-27T03:13:32.3401883Z ✔ [4840/4863] Built RecursionToBound.Correct (7.7s)
+2026-10-27T03:13:32.5390844Z ✔ [4841/4863] Built PairsToBound.Main (7.9s)
+2026-10-27T03:13:35.2451950Z ✔ [4842/4863] Built CountedRecursion.BothNetworks (9.8s)
+2026-10-27T03:13:37.5611972Z ✔ [4843/4863] Built VariableBound.Printed.ThmVariablesA (5.0s)
+2026-10-27T03:13:39.5594934Z ✔ [4844/4863] Built CountedRecursion.Main (4.2s)
+2026-10-27T03:13:43.3681639Z ✔ [4846/4881] Built CountedInstance.Main (3.8s)
+2026-10-27T03:13:45.8711826Z ✔ [4847/4881] Built MinOfBounds.Defs (2.5s)
+2026-10-27T03:13:46.0709002Z ✔ [4848/4881] Built RecursionToBound.Numbers (13s)
+2026-10-27T03:13:47.4731847Z ✔ [4849/4881] Built FixedWidthSteps.Absorb (9.9s)
+2026-10-27T03:13:47.6741725Z ✔ [4850/4882] Built RecursionToBound.Cert.Thresholds (24s)
+2026-10-27T03:13:48.3763302Z ✔ [4851/4882] Built MinOfBounds.Rename (2.3s)
+2026-10-27T03:13:48.8801591Z ✔ [4852/4882] Built MainRoute.Defs (2.0s)
+2026-10-27T03:13:50.7841624Z ✔ [4853/4882] Built MinOfBounds.Arith (3.4s)
+2026-10-27T03:13:52.9061672Z ✔ [4854/4885] Built FixedWidthSteps.Choice (4.0s)
+2026-10-27T03:13:53.8272571Z ✔ [4856/4885] Built ThmVariables.Bound (6.2s)
+2026-10-27T03:13:58.1581903Z ✔ [4857/4885] Built MainRoute.GeneralDefs (4.3s)
+2026-10-27T03:13:59.0591835Z ✔ [4858/4887] Built RecursionToBound.Cert.Exponent (8.2s)
+2026-10-27T03:14:00.4641889Z ✔ [4860/4887] Built MainRoute.EveryMachine (7.6s)
+2026-10-27T03:14:01.2642222Z ✔ [4861/4887] Built MinOfBounds.Main (3.1s)
+2026-10-27T03:14:02.2671829Z ✔ [4862/4887] Built ThmVariables.PartA (3.2s)
+2026-10-27T03:14:03.5667250Z ✔ [4863/4888] Built NamesInOrder.Defs (3.1s)
+2026-10-27T03:14:04.3684554Z ✔ [4867/4888] Built RecursionToBound.OneOutput (16s)
+2026-10-27T03:14:04.3685503Z ✔ [4868/4888] Built MainRoute.General (3.1s)
+2026-10-27T03:14:05.4722432Z ✔ [4869/4888] Built RecursionToBound.Cert.Top (3.2s)
+2026-10-27T03:14:07.2781970Z ✔ [4870/4888] Built ThmVariables.EveryMachine (2.9s)
+2026-10-27T03:14:07.6751722Z ✔ [4871/4889] Built CountedRoute.Defs (3.2s)
+2026-10-27T03:14:08.4791912Z ✔ [4874/4967] Built NamesInOrder.General (3.1s)
+2026-10-27T03:14:09.3783393Z ✔ [6114/6268] Built MainRoute.GeneralInM (5.9s)
+2026-10-27T03:14:15.3877817Z ✔ [9749/9768] Built NamesInOrder.Arith (8.2s)
+2026-10-27T03:14:20.2944750Z ✔ [9750/9768] Built MainResults (6.7s)
+2026-10-27T03:14:21.3958147Z ✔ [9752/9768] Built RecursionToBound.Exponent (13s)
+2026-10-27T03:14:24.3993026Z ⚠ [9753/9768] Built Challenge (4.2s)
+2026-10-27T03:14:24.3993673Z warning: Challenge.lean:12:8: declaration uses `sorry`
+2026-10-27T03:14:24.3994313Z warning: Challenge.lean:16:8: declaration uses `sorry`
+2026-10-27T03:14:27.0017203Z ✔ [9755/9768] Built RecursionToBound.End (5.7s)
+2026-10-27T03:14:28.8038035Z ✔ [9756/9768] Built RecursionToBound.Main (1.8s)
+2026-10-27T03:14:30.7061992Z ✔ [9757/9768] Built MainRoute.GeneralMain (1.9s)
+2026-10-27T03:14:31.4122258Z ✔ [9758/9768] Built FixedWidthSteps.Main (2.6s)
+2026-10-27T03:14:31.5117098Z ✔ [9759/9768] Built ThmVariables.Main (2.6s)
+2026-10-27T03:14:33.7186651Z ✔ [9761/9768] Built NamesInOrder.Chain (2.9s)
+2026-10-27T03:14:35.5262260Z ✔ [9762/9768] Built NamesInOrder.Main (1.8s)
+2026-10-27T03:14:37.8268967Z ✔ [9763/9768] Built CountedRoute.Main (2.4s)
+2026-10-27T03:14:42.0316932Z ✔ [9765/9768] Built Solution (4.2s)
+2026-10-27T03:14:46.9385579Z ✔ [9767/9768] Built PaperIndex (4.8s)
+2026-10-27T03:14:46.9876042Z Build completed successfully (9768 jobs).
+2026-10-27T03:14:47.0541574Z ##[group]Run actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
+2026-10-27T03:14:47.0541963Z with:
+2026-10-27T03:14:47.0542186Z   path: ~/.cache/lean-ci-tools
+2026-10-27T03:14:47.0543212Z   key: comparator-575674928e239f5bc452aab72d1dd7b0f1326494-lean4export-15f6055e299ad5b89345e533cc2192f4cc00f659-leanprover/lean4:v4.33.1-nanoda-68d5ca9db226849b41a6fff59d796ff19d0a8840-landrun-811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T03:14:47.0544246Z   enableCrossOsArchive: false
+2026-10-27T03:14:47.0544502Z   fail-on-cache-miss: false
+2026-10-27T03:14:47.0544744Z   lookup-only: false
+2026-10-27T03:14:47.0544971Z   save-always: false
+2026-10-27T03:14:47.0545190Z env:
+2026-10-27T03:14:47.0545384Z   ELAN_VERSION: v4.2.3
+2026-10-27T03:14:47.0545745Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T03:14:47.0546238Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T03:14:47.0546671Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T03:14:47.0547051Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T03:14:47.0547367Z ##[endgroup]
+2026-10-27T03:14:47.3726011Z Cache not found for input keys: comparator-575674928e239f5bc452aab72d1dd7b0f1326494-lean4export-15f6055e299ad5b89345e533cc2192f4cc00f659-leanprover/lean4:v4.33.1-nanoda-68d5ca9db226849b41a6fff59d796ff19d0a8840-landrun-811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T03:14:47.3855258Z ##[group]Run bash ../.github/scripts/comparator-check.sh
+2026-10-27T03:14:47.3855684Z [36;1mbash ../.github/scripts/comparator-check.sh[0m
+2026-10-27T03:14:47.4014019Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T03:14:47.4014387Z env:
+2026-10-27T03:14:47.4014594Z   ELAN_VERSION: v4.2.3
+2026-10-27T03:14:47.4014969Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T03:14:47.4015470Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T03:14:47.4015868Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T03:14:47.4016234Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T03:14:47.4016616Z   LEAN4EXPORT_COMMIT: 15f6055e299ad5b89345e533cc2192f4cc00f659
+2026-10-27T03:14:47.4016985Z   LOG_DIR: /home/runner/work/_temp/comparator-logs
+2026-10-27T03:14:47.4017285Z ##[endgroup]
+2026-10-27T03:14:47.4167129Z project /home/runner/work/formal-math/formal-math/eth, toolchain leanprover/lean4:v4.33.1, configurations: comparator.json
+2026-10-27T03:14:47.4204197Z == comparator @ 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T03:14:49.0024120Z info: Version 4.2.4 of elan is available! Use `elan self update` to update.
+2026-10-27T03:14:49.4785074Z info: downloading https://releases.lean-lang.org/lean4/v4.34.0-rc1/lean-4.34.0-rc1-linux.tar.zst
+2026-10-27T03:14:55.9345436Z info: installing /home/runner/.elan/toolchains/leanprover--lean4---v4.34.0-rc1
+2026-10-27T03:15:03.3281014Z info: lean4export: cloning https://github.com/leanprover/lean4export
+2026-10-27T03:15:04.1652452Z info: lean4export: checking out revision 'b18d673bd29b476466a51a3be1012df2ed322b10'
+2026-10-27T03:15:04.4714491Z ✔ [1/4] Built Comparator.Util (291ms)
+2026-10-27T03:15:07.9740401Z ✔ [5/16] Built Comparator.Util:c.o (127ms)
+2026-10-27T03:15:09.3746597Z ✔ [6/16] Built Export.Parse (1.4s)
+2026-10-27T03:15:09.8766893Z ✔ [7/16] Built Comparator.Axioms (502ms)
+2026-10-27T03:15:10.2772307Z ✔ [8/16] Built Comparator.Axioms:c.o (468ms)
+2026-10-27T03:15:10.3771927Z ✔ [9/16] Built Comparator.Compare (579ms)
+2026-10-27T03:15:10.7769202Z ✔ [10/16] Built Comparator.Compare:c.o (404ms)
+2026-10-27T03:15:10.8770614Z ✔ [11/16] Built Comparator (431ms)
+2026-10-27T03:15:10.8771348Z ✔ [12/16] Built Comparator:c.o (88ms)
+2026-10-27T03:15:12.3788584Z ✔ [13/16] Built Main (1.6s)
+2026-10-27T03:15:13.0795736Z ✔ [14/16] Built Export.Parse:c.o (3.8s)
+2026-10-27T03:15:13.2798064Z ✔ [15/16] Built Main:c.o (906ms)
+2026-10-27T03:15:14.0806035Z ✔ [16/16] Built comparator:exe (795ms)
+2026-10-27T03:15:14.0811107Z Build completed successfully (16 jobs).
+2026-10-27T03:15:14.0868387Z == lean4export @ 15f6055e299ad5b89345e533cc2192f4cc00f659
+2026-10-27T03:15:18.7078648Z ✔ [2/6] Built Export (3.3s)
+2026-10-27T03:15:19.7089513Z ✔ [3/6] Built Main (949ms)
+2026-10-27T03:15:19.8090815Z ✔ [4/6] Built Main:c.o (191ms)
+2026-10-27T03:15:21.1095645Z ✔ [5/6] Built Export:c.o (2.4s)
+2026-10-27T03:15:23.1124196Z ✔ [6/6] Built lean4export:exe (2.1s)
+2026-10-27T03:15:23.1128567Z Build completed successfully (6 jobs).
+2026-10-27T03:15:23.1205713Z == nanoda_lib @ 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T03:15:48.8514602Z == landrun @ 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T03:15:50.2861401Z go: downloading github.com/zouuup/landrun v0.1.18-0.20260723122309-811cfff51cea
+2026-10-27T03:15:50.9490375Z go: downloading github.com/urfave/cli/v3 v3.6.2
+2026-10-27T03:15:51.0521865Z go: downloading github.com/landlock-lsm/go-landlock v0.9.0
+2026-10-27T03:15:52.1372574Z go: downloading golang.org/x/sys v0.40.0
+2026-10-27T03:15:52.1385501Z go: downloading kernel.org/pub/linux/libs/security/libcap/psx v1.2.77
+2026-10-27T03:16:02.5787824Z == comparator comparator.json  (log: /home/runner/work/_temp/comparator-logs/comparator.log)
+2026-10-27T03:16:04.5421471Z Building Challenge
+2026-10-27T03:16:10.6162666Z ⚠ [8707/8708] Replayed Challenge
+2026-10-27T03:16:10.6163216Z warning: Challenge.lean:12:8: declaration uses `sorry`
+2026-10-27T03:16:10.6164302Z warning: Challenge.lean:16:8: declaration uses `sorry`
+2026-10-27T03:16:10.6614942Z Build completed successfully (8708 jobs).
+2026-10-27T03:16:23.8654149Z Exporting #[Nat, String, String.mk, Char, Quot, Quot.mk, Quot.lift, Quot.ind, MainResults.ethIsFalse, MainResults.mainTheorem, propext, Quot.sound, Classical.choice, Nat.add, Nat.sub, Nat.mul, Nat.pow, Nat.gcd, Nat.div, Nat.mod, Nat.beq, Nat.ble, Nat.land, Nat.lor, Nat.xor, Nat.shiftLeft, Nat.shiftRight, String.ofList, Char.ofNat, List, eagerReduce] from Challenge
+2026-10-27T03:16:23.8656504Z Building Solution
+2026-10-27T03:16:28.3136427Z Build completed successfully (9516 jobs).
+2026-10-27T03:17:32.4456475Z Exporting #[Nat, String, String.mk, Char, Quot, Quot.mk, Quot.lift, Quot.ind, MainResults.ethIsFalse, MainResults.mainTheorem, propext, Quot.sound, Classical.choice, Nat.add, Nat.sub, Nat.mul, Nat.pow, Nat.gcd, Nat.div, Nat.mod, Nat.beq, Nat.ble, Nat.land, Nat.lor, Nat.xor, Nat.shiftLeft, Nat.shiftRight, String.ofList, Char.ofNat, List, eagerReduce] from Solution
+2026-10-27T03:17:32.4458717Z Running nanoda kernel on solution
+2026-10-27T03:21:26.8436429Z nanoda kernel accepts the solution
+2026-10-27T03:21:26.8436839Z Running Lean default kernel on solution.
+2026-10-27T03:21:26.8437175Z Lean default kernel accepts the solution
+2026-10-27T03:21:26.8437471Z Your solution is okay!
+2026-10-27T03:21:26.9111587Z PASS comparator.json
+2026-10-27T03:21:26.9112619Z All 1 comparator configuration(s) accepted.
+2026-10-27T03:21:26.9204455Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+2026-10-27T03:21:26.9204895Z with:
+2026-10-27T03:21:26.9205104Z   name: logs-eth
+2026-10-27T03:21:26.9205482Z   path: /home/runner/work/_temp/lake-build.log
+/home/runner/work/_temp/comparator-logs/
+
+2026-10-27T03:21:26.9205915Z   if-no-files-found: ignore
+2026-10-27T03:21:26.9206157Z   retention-days: 30
+2026-10-27T03:21:26.9206383Z   compression-level: 6
+2026-10-27T03:21:26.9206614Z   overwrite: false
+2026-10-27T03:21:26.9206840Z   include-hidden-files: false
+2026-10-27T03:21:26.9207093Z   archive: true
+2026-10-27T03:21:26.9207301Z env:
+2026-10-27T03:21:26.9207503Z   ELAN_VERSION: v4.2.3
+2026-10-27T03:21:26.9207870Z   ELAN_SHA256: df0b2b3a439961ffcbb3985214365ffe40f49bc871df04dff268c7d8e21ca8b2
+2026-10-27T03:21:26.9208341Z   COMPARATOR_COMMIT: 575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T03:21:26.9208738Z   NANODA_COMMIT: 68d5ca9db226849b41a6fff59d796ff19d0a8840
+2026-10-27T03:21:26.9209179Z   LANDRUN_COMMIT: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T03:21:26.9209502Z ##[endgroup]
+2026-10-27T03:21:27.0841887Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-27T03:21:27.0843327Z The least common ancestor is /home/runner/work/_temp. This will be the root directory of the artifact
+2026-10-27T03:21:27.0843860Z With the provided path, there will be 3 files uploaded
+2026-10-27T03:21:27.0844343Z Artifact name is valid!
+2026-10-27T03:21:27.0844616Z Root directory input is valid!
+2026-10-27T03:21:27.4213737Z Uploading artifact: logs-eth.zip
+2026-10-27T03:21:27.4250068Z Beginning upload of artifact content to blob storage
+2026-10-27T03:21:27.7200152Z Uploaded bytes 13307
+2026-10-27T03:21:27.7756400Z Finished uploading artifact content to blob storage!
+2026-10-27T03:21:27.7757336Z SHA256 digest of uploaded artifact is 1d7e09dba340c7eece514124bf1770c7a34f230ac310f7a67126039688a3c861
+2026-10-27T03:21:27.7758250Z Finalizing artifact upload
+2026-10-27T03:21:28.6083523Z Artifact logs-eth successfully finalized. Artifact ID 12706548261
+2026-10-27T03:21:28.6084296Z Artifact logs-eth has been successfully uploaded! Final size is 13307 bytes. Artifact ID is 12706548261
+2026-10-27T03:21:28.6088186Z Artifact download URL: https://github.com/anthropics/formal-math/actions/runs/40440389861/artifacts/12706548261
+2026-10-27T03:21:28.6309804Z Post job cleanup.
+2026-10-27T03:21:28.7811382Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/formal-math/formal-math --files-from manifest.txt --use-compress-program zstdmt
+2026-10-27T03:21:31.7208817Z Sent 0 of 229386285 (0.0%), 0.0 MBs/sec
+2026-10-27T03:21:32.6496051Z Sent 229386285 of 229386285 (100.0%), 113.3 MBs/sec
+2026-10-27T03:21:32.9153123Z Cache saved with key: comparator-575674928e239f5bc452aab72d1dd7b0f1326494-lean4export-15f6055e299ad5b89345e533cc2192f4cc00f659-leanprover/lean4:v4.33.1-nanoda-68d5ca9db226849b41a6fff59d796ff19d0a8840-landrun-811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+2026-10-27T03:21:33.0577902Z Post job cleanup.
+2026-10-27T03:21:33.1947186Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/formal-math/formal-math --files-from manifest.txt --use-compress-program zstdmt
+2026-10-27T03:21:39.8997131Z Sent 0 of 179749235 (0.0%), 0.0 MBs/sec
+2026-10-27T03:21:40.5695726Z Sent 179749235 of 179749235 (100.0%), 102.6 MBs/sec
+2026-10-27T03:21:40.7902982Z Cache saved with key: lakebuild-Linux-eth-5e915a8e95ffef3cb5d965f5ea9e50051a4555d339b456d0248f0a7a8364161d-80ee23547e985fd4c7fc71fbc6910af85207bcf3
+2026-10-27T03:21:40.8062072Z Post job cleanup.
+2026-10-27T03:21:40.9457288Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/formal-math/formal-math --files-from manifest.txt --use-compress-program zstdmt
+2026-10-27T03:21:59.2963107Z Sent 0 of 1505187279 (0.0%), 0.0 MBs/sec
+2026-10-27T03:22:00.2954270Z Sent 536870912 of 1505187279 (35.7%), 255.5 MBs/sec
+2026-10-27T03:22:01.2947393Z Sent 872415232 of 1505187279 (58.0%), 277.0 MBs/sec
+2026-10-27T03:22:02.3002003Z Sent 1169642959 of 1505187279 (77.7%), 278.5 MBs/sec
+2026-10-27T03:22:02.8366888Z Sent 1505187279 of 1505187279 (100.0%), 315.8 MBs/sec
+2026-10-27T03:22:03.1999299Z Cache saved with key: elan-v4.2.3-leanprover/lean4:v4.33.1-comparator-575674928e239f5bc452aab72d1dd7b0f1326494
+2026-10-27T03:22:03.2299314Z Post job cleanup.
+2026-10-27T03:22:03.3222861Z [command]/usr/bin/git version
+2026-10-27T03:22:03.3268068Z git version 2.55.0
+2026-10-27T03:22:03.3303656Z Temporarily overriding HOME='/home/runner/work/_temp/3c0c60f2-9a72-4be6-9385-7503341d6cd9' before making global git config changes
+2026-10-27T03:22:03.3304931Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T03:22:03.3308704Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/formal-math/formal-math
+2026-10-27T03:22:03.3348824Z Removing SSH command configuration
+2026-10-27T03:22:03.3356117Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T03:22:03.3399803Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T03:22:03.3726761Z Removing HTTP extra header
+2026-10-27T03:22:03.3732803Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T03:22:03.3772806Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T03:22:03.4072327Z Removing includeIf entries pointing to credentials config files
+2026-10-27T03:22:03.4079316Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T03:22:03.4116871Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T03:22:03.4632286Z Cleaning up orphan processes
+

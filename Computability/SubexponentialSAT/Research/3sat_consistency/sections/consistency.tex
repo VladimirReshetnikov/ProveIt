@@ -1,0 +1,195 @@
+\section{A certificate that preserves support consistency}
+\label{sec:consistency}
+
+\subsection{A general exact inequality}
+
+Let $\mathcal W_1,\ldots,\mathcal W_q$ be nonempty finite indexed families
+of vectors in $\R^d$, and let $p_i\ge0$, $\sum_i p_i=1$, $q\ge2$.
+Identical vectors may have distinct indices and distinct potentials.
+For $i<j$ define
+\[
+ c_{ij}(v,z)=\frac{p_i^2\norm v^2+p_j^2\norm z^2}{q-1}
+                     +2p_ip_j\langle v,z\rangle.
+\]
+Choose a function $\phi_{ij,i}$ on $\mathcal W_i$ and
+$\phi_{ij,j}$ on $\mathcal W_j$ for each unordered pair. Require
+\begin{equation}\label{eq:conservation}
+ \sum_{j\ne i}\phi_{\{i,j\},i}(v)=0
+ \qquad(i\in[q],\ v\in\mathcal W_i).
+\end{equation}
+Set
+\begin{equation}\label{eq:pair-certificate}
+ A_{ij}=\max_{v\in\mathcal W_i,z\in\mathcal W_j}
+ \{c_{ij}(v,z)+\phi_{ij,i}(v)+\phi_{ij,j}(z)\},
+ \qquad U=\sum_{i<j}A_{ij}.
+\end{equation}
+
+\begin{theorem}[Consistency certificate]\label{thm:consistency}
+For every simultaneous choice $v_i\in\mathcal W_i$,
+\[
+ \norm{\sum_i p_i v_i}^{\!2}\le U.
+\]
+If every vector is nonnegative and the entropy estimate
+\eqref{eq:entropy-interface} applies, the plan minimizing
+$\max_{v\in\mathcal W_i}v\cdot g$ has local coefficient at most
+$\beta=\sqrt{2U}/r$.
+\end{theorem}
+\begin{proof}
+Each squared term $p_i^2\norm{v_i}^2$ occurs in $q-1$ pair costs, with
+coefficient $1/(q-1)$. Thus
+\[
+ \norm{\sum_i p_i v_i}^{\!2}
+ =\sum_{i<j}c_{ij}(v_i,v_j)
+ =\sum_{i<j}\{c_{ij}(v_i,v_j)+\phi_{ij,i}(v_i)+\phi_{ij,j}(v_j)\}.
+\]
+The second equality is exactly \eqref{eq:conservation}; it uses the same
+$v_i$ at every pair containing $i$. Bound each summand by its maximum to
+obtain the first conclusion.
+
+For a given $g$, choose a support $v_i$ maximizing each plan's score.
+The minimum of those scores is no larger than their convex average,
+which is $(\sum_i p_i v_i)\cdot g$. The averaged support is nonnegative
+and belongs to a fixed finite family. Apply
+\eqref{eq:entropy-interface} and the first conclusion. No interchange of
+a minimum and maximum, or simultaneous realizability of arbitrary pair
+maximizers, is asserted.
+\end{proof}
+
+Zero potentials recover the incoming pair certificate. Nonzero potentials
+can decrease the sum of maxima while leaving every true simultaneous
+quadratic expression unchanged. Negative potential values are permitted;
+only the support vectors used in the entropy estimate need to be
+nonnegative.
+
+\subsection{The fixed ten-group family and exact data}
+
+We retain the incoming nine ordered plans. Their new proof weights have
+denominator $W=100000$:
+\begin{center}\small
+\begin{tabular}{crlll}
+\toprule $j$ & $w_j$ & First block & Second block & Third block\\
+\midrule
+0&12527&$(7,4,3,9)$&$(1,6,0)$&$(8,2,5)$\\
+1&11761&$(5,4,6,7)$&$(9,1,8)$&$(2,3,0)$\\
+2&13353&$(0,5,9,7)$&$(2,1,4)$&$(8,3,6)$\\
+3&11841&$(0,4,7,8)$&$(2,9,6)$&$(1,5,3)$\\
+4&10132&$(3,1,7,2)$&$(9,6,8)$&$(5,4,0)$\\
+5&12324&$(7,1,5,8)$&$(2,9,4)$&$(0,6,3)$\\
+6&11088&$(7,2,8,6)$&$(5,9,3)$&$(0,1,4)$\\
+7&10184&$(1,9,6,7)$&$(2,5,0)$&$(4,3,8)$\\
+8&6790&$(4,6,1,5)$&$(8,9,2)$&$(0,7,3)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Use normalized supports $v/L_*$ in the theorem and weights $p_j=w_j/W$.
+The potentials are integers divided by $P=10^{12}$. The complete
+arrays are in \texttt{data/support\_consistency\_certificate.json}.
+
+To state the finite certificate without dependence on an optimizer, put
+\[
+ D_*=(q-1)W^2L_*^2=156800000000000000000000.
+\]
+For raw integral supports $v,z$ and potential numerators $a_{ij,i}(v)$,
+the exact pair numerator is
+\begin{align}\label{eq:integer-pair}
+ N_{ij}(v,z)={}&w_i^2\norm v^2+w_j^2\norm z^2
+             +16w_iw_j\langle v,z\rangle\notag\\
+ &+\frac{D_*}{P}\bigl(a_{ij,i}(v)+a_{ij,j}(z)\bigr).
+\end{align}
+$D_*/P$ is an integer. Exhaustively maximizing these integers for each
+pair and dividing their sum by $D_*$ gives
+\begin{equation}\label{eq:exact-U}
+ U=\frac{283611964650596186827}{17500000000000000000},\qquad
+ \boxed{\ \beta_{10}^2=\frac{2U}{10^2}
+       =\frac{283611964650596186827}{875000000000000000000}\ }.
+\end{equation}
+There are $9\cdot72=648$ conservation equations and
+$\binom92 72^2=186624$ time-support pairs. Their exact maxima and
+witnesses are recorded with the certificate. The supplied checkers
+reconstruct the supports from the ordered plans and
+\eqref{eq:triples}; they do not trust an externally supplied support matrix.
+
+\subsection{Joint storage control with the same certificate}
+
+For every stored-block boundary $b_A$, the original time family contains
+an input/output support $1400007\,b_A$. Append the support
+$1470000\,b_A$, and give it the same potentials as that input/output
+support. Conservation remains exact. The new normalized support is
+$(21/20)b_A$, so the maximum over this augmented family is precisely
+the score in \eqref{eq:joint-selector}.
+
+\begin{lemma}[Augmented certificate]\label{lem:joint}
+For the fixed data above, adding the $17$ boundary supports per plan does
+not increase any exact pair maximum. Therefore the selector
+\eqref{eq:joint-selector} simultaneously guarantees
+\[
+ F_j(g)\le(\beta_{10}+o(1))K(M,u),\qquad
+ G_j(g)\le\left(\frac{20}{21}\beta_{10}+o(1)\right)K(M,u).
+\]
+\end{lemma}
+\begin{proof}
+There are $89$ augmented supports per plan. The time--time choices have
+already been checked. The remaining number of choices is
+\[
+ \binom92(89^2-72^2)=98532.
+\]
+For each such choice the integer expression
+\eqref{eq:integer-pair} is at most the corresponding old maximum.
+The strict minimum margin is positive and is reproduced by both exact
+checkers; no numerical comparison is used. This finite inequality is the
+certificate premise of Theorem~\ref{thm:consistency}. There are $801$
+conservation equations in the enlarged family. Apply that theorem to the
+augmented score, then use the two terms in its defining maximum.
+\end{proof}
+
+\subsection{Discovery and its separation from verification}
+
+The discovery method is a finite potential redistribution. With current
+corrected pair matrix $M_{ij}(v,z)$, fix plan $i$ and define
+\[
+ a_{ij}(v)=\max_z M_{ij}(v,z),\qquad
+ \overline a_i(v)=\frac1{q-1}\sum_{j\ne i}a_{ij}(v).
+\]
+Update $\phi_{ij,i}(v)$ by adding
+$\overline a_i(v)-a_{ij}(v)$. The increments sum to zero for every $v$.
+Each incident pair's conditional maximum then becomes $\overline a_i(v)$,
+and the sum of its unconditional maxima cannot increase, because
+\[
+ (q-1)\max_v\overline a_i(v)
+ \le\sum_{j\ne i}\max_v a_{ij}(v).
+\]
+This supplies a simple descent procedure. Numerical sweeps and a short
+search over proof weights suggested the displayed data.
+
+For each plan, the potentials on all but its last incident pair were
+rounded to denominator $10^{12}$. The final potential was set to the
+negative exact sum of the preceding ones. All pair maxima were then
+recomputed as integers. The accepted certificate needs no floating-point
+tolerance, optimization software, convergence assertion, or optimality
+claim about the discovery procedure.
+
+\subsection{A nearly sharp limit for this particular proof method}
+\label{sec:weight-limit}
+
+Let $t_i$ be the raw support with index $67,67,69,69,67,69,67,69,69$,
+respectively, in the nine plans. Put $G_{ij}=\langle t_i,t_j\rangle$.
+For any mixture $p$ with $\sum_i p_i=1$, this one allowed simultaneous
+tuple already has squared normalized norm $p^TGp/L_*^2$.
+The exact checker verifies that $G$ is positive definite and
+$G^{-1}\mathbf1$ has positive coordinates. Completing the square gives
+\begin{equation}\label{eq:mixture-lower}
+ \frac{p^TGp}{L_*^2}
+ \ge U_*:=\frac1{L_*^2\mathbf1^TG^{-1}\mathbf1}
+ =16.206397979569626\ldots .
+\end{equation}
+The corresponding coefficient lower bound at the fixed root taper lies
+within $4.3\cdot10^{-10}$ of the coefficient proved here. The comparison
+is certified with rational bounds, including the exact Gram matrix and
+its positive-definiteness certificate.
+
+Thus another search over the mixture weights of these same nine plans
+cannot yield a material improvement \emph{through this worst-case
+average-norm argument}. This does not establish optimality of the actual
+adaptive plan selector. Different menus, a proof of the minimum of plan
+costs that avoids a fixed average, stronger information on generated
+mode lists, or a different contraction representation remain possible.

@@ -1,0 +1,96 @@
+\section{Reproducible tests and measured performance}\label{sec:experiments}
+All Python components use the standard library. The reference implementations
+are copied verbatim from the reviewed packets, with archive/member paths and
+SHA-256 identities in \texttt{code/reference/provenance.json}. The mathematical
+checker suite verifies those identities before importing them. The full
+reproduction uses no network and does not rebuild a proof assistant.
+
+\subsection{Exact validation}
+Both ordinary Python and \texttt{python -O} pass the following checks:
+\begin{itemize}
+\item \textbf{Column kernels:} 932 instances, including exhaustive small
+Boolean weight matrices, empty columns, zero weights, ties, seeded integer
+weights, two rational bases, and different thresholds. Each of two incremental
+implementations matches 9,828 exact candidate potentials and every output
+field of the direct reference.
+\item \textbf{Matching kernel:} 399 instances, including every simple
+$2\times3$ graph, seeded multigraphs, parallel edges, $Q=1,2,3$, and both
+accepted edge-pair representations. All assignments, matching partitions,
+thresholds, loads, and 1,920 selected trace values match exactly.
+\item \textbf{Independent expectation check:} 128 prefix expectations are
+computed by averaging 1,366 full assignments using final cell loads and the
+defining exponential potential. This check uses neither implementation's
+conditional-product formula and catches a possible shared formula error.
+\item \textbf{Schedules:} integer power witnesses, radical enclosures,
+convergence margins, infinite-tail dominance, and 216 exact parameter-generator
+cases pass. The two coefficient intervals are proved with rational arithmetic,
+not estimated from large-parameter timing samples.
+\end{itemize}
+The package replay runs six checker processes and compares the mathematical
+outputs across ordinary and optimized Python and with the shipped results.
+Only execution flags, elapsed times, and interpreter metadata are omitted
+from those comparisons. Explicit failure checks remain active under
+\texttt{-O}. Finite tests corroborate the local implementation identities;
+the all-size conclusions are proved in Sections~\ref{sec:polyschedule}--\ref{sec:cached}.
+
+\subsection{Benchmark protocol}
+Measurements use one CPython 3.12.14 process on Linux x86-64 and
+\texttt{perf\_counter\_ns}. Each fixture has a recorded seed and five
+repetitions, alternating baseline and improved execution order. The result of
+every timed execution is checked for exact equality after timing. Tables show
+medians of the full call, including graph preprocessing. Raw samples,
+interpreter/platform metadata, fixture parameters, and implementation hashes
+are retained in \texttt{results/benchmarks.json}.
+
+These are seeded synthetic graph-packing fixtures, not SAT formulas. They
+were chosen to compare exact kernel semantics at manageable sizes. Changing
+$Q$, graph structure, or the arithmetic backend can change the ratio. No
+statistical claim about a population of SAT instances follows from this set.
+
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\multicolumn{5}{c}{Matching-potential kernel: seconds per complete labeling call}\\
+\cmidrule(lr){1-5}
+Edges $M$ & Labels $Q$ & Reference & Incremental & Ratio\\
+\midrule
+16  & 2 & 0.005282 & 0.000922 & $5.73\times$\\
+32  & 4 & 0.147977 & 0.005195 & $28.48\times$\\
+64  & 4 & 0.543776 & 0.011181 & $48.63\times$\\
+128 & 4 & 2.131277 & 0.021639 & $98.49\times$\\
+96  & 8 & 7.480087 & 0.056324 & $132.81\times$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The reference here is the newest matching archive's
+\texttt{refinement.py:label\_graph}. Its analytic certificate is unchanged.
+The incremental routine returns the same complete dictionary, including its
+selected potential trace. The extra product table is included in the new
+routine's implementation; the comparison does not claim equal peak space.
+
+\begin{center}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+\multicolumn{6}{c}{Column kernel: seconds including the same graph preprocessing}\\
+\cmidrule(lr){1-6}
+Columns $N$ & Edges $M$ & Labels $Q$ & Cached suffix & Integer scores & Ratio\\
+\midrule
+16  & 64   & 4  & 0.001113 & 0.000284 & $3.92\times$\\
+32  & 128  & 4  & 0.002900 & 0.000593 & $4.89\times$\\
+64  & 256  & 8  & 0.016422 & 0.002153 & $7.63\times$\\
+128 & 512  & 8  & 0.042958 & 0.006298 & $6.82\times$\\
+256 & 1024 & 16 & 0.357637 & 0.032936 & $10.86\times$\\
+\bottomrule
+\end{tabular}
+\end{center}
+This stronger comparator already uses cached suffix products and row-power
+sums. The integer implementation additionally constructs all candidate
+fractions internally, then returns the reference's selected-trace interface.
+Comparing only with the slower direct potential would overstate the new work.
+
+The observed ranges are therefore $5.73$--$132.81$ for matching and
+$3.92$--$10.86$ for columns on these fixtures. They demonstrate concrete local
+improvement alongside the exact identities. They do not establish those
+factors for other inputs, for a compiled implementation, or for an end-to-end
+subexponential SAT solver. No such complete solver is supplied by this work
+or by the benchmark references.

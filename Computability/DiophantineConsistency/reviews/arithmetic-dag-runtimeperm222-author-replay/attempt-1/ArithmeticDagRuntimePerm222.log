@@ -1,0 +1,40 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRuntimePerm222.lean:49:81: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+e : Fin 2 → V
+⊢ (∃ x x_1 x_2 x_3 x_4 x_5,
+      e 0 = ArithmeticEnumStepPerm222.liveValue x x_1 (stateValue x_2 x_3 x_4 x_5) ∧
+        ∃ x_6,
+          (x_6 =
+              ArithmeticControlFile.fileValue fun x_7 =>
+                Semiterm.val (x_6 :> stateValue x_2 x_3 x_4 x_5 :> x_5 :> x_4 :> x_3 :> x_2 :> x_1 :> x :> e) Empty.elim
+                  (![#4, #7, #5, #3, ↑0, ↑0, #6, #2, ↑0] x_7)) ∧
+            e 1 = ArithmeticControlFile.liveValue 1 x_6) ↔
+    ∃ pl np t S d h,
+      e 0 = ArithmeticEnumStepPerm222.liveValue pl np (stateValue t S d h) ∧
+        e 1 = ArithmeticControlFile.liveValue 1 (ArithmeticControlFile.fileValue ![S, pl, t, d, 0, 0, np, h, 0])
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRuntimePerm222.lean:70:4: error: Type mismatch: After simplification, term
+  congrArg (fun x => ArithmeticControlFile.regValue x 1) he
+ has type
+  @Eq V (![S, pl, t, d, 0, 0, np, h, 0] 1) (![S', pl', t', d', 0, 0, np', h', 0] 1)
+but is expected to have type
+  @Eq V pl pl'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRuntimePerm222.lean:73:4: error: Type mismatch: After simplification, term
+  congrArg (fun x => ArithmeticControlFile.regValue x 6) he
+ has type
+  @Eq V (![S, pl, t, d, 0, 0, np, h, 0] 6) (![S', pl', t', d', 0, 0, np', h', 0] 6)
+but is expected to have type
+  @Eq V np np'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRuntimePerm222.lean:76:11: error: Ambiguous term
+  lt_irrefl
+Possible interpretations:
+  _root_.lt_irrefl pl : ¬pl < pl
+  
+  Arithmetic.lt_irrefl pl : ¬pl < pl
+/home/codex/.codex/worktrees/46be/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDagRuntimePerm222.lean:78:11: error: Ambiguous term
+  lt_irrefl
+Possible interpretations:
+  _root_.lt_irrefl np : ¬np < np
+  
+  Arithmetic.lt_irrefl np : ¬np < np

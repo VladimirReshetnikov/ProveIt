@@ -1,0 +1,98 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:224:80: error: unsolved goals
+q left right : ℕ
+⊢ Code254.P (↑(sparseCode q)) (Code254.P left right) = Code254.P (sparseCode q) (Code254.P left right)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:225:36: warning: This simp argument is unused:
+  Nat.cast_id
+
+Hint: Omit it from the simp argument list.
+  simp only [̵f̵r̵a̵m̵e̵S̵p̵a̵r̵s̵e̵,̵c̵a̵n̵t̵o̵r̵_̵n̵a̵t̵,̵N̵a̵t̵.̵c̵a̵s̵t̵_̵i̵d̵]̵[̲f̲r̲a̲m̲e̲S̲p̲a̲r̲s̲e̲,̲ ̲c̲a̲n̲t̲o̲r̲_̲n̲a̲t̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:239:9: error: unsolved goals
+case none
+s' : KBoot.LConf
+q : ℕ
+left right : List Bool
+h :
+  (match KTableCore.tm215 q (right.headD false) with
+    | none => none
+    | some (w, true, q') => some (q', w :: left, right.tail)
+    | some (w, false, q') => some (q', left.tail, left.headD false :: w :: right.tail)) =
+    some s'
+ht : KTableCore.tm215 q (right.head?.getD false) = none
+⊢ ArithmeticMachineStep215.stepValue (encodeList (q, left, right)) = encodeList s'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:244:6: error: Type mismatch: After simplification, term
+  bitsCode_head right
+ has type
+  bitsCode right % 2 = (right.getD 0 false).toNat
+but is expected to have type
+  Mod.mod (bitsCode right) 2 = ↑(right.getD 0 false).toNat
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:245:73: error: Tactic `subst` failed: did not find equation for eliminating 's''
+
+case some.false
+s' : KBoot.LConf
+q : ℕ
+left right : List Bool
+h :
+  (match KTableCore.tm215 q (right.headD false) with
+    | none => none
+    | some (w, true, q') => some (q', w :: left, right.tail)
+    | some (w, false, q') => some (q', left.tail, left.headD false :: w :: right.tail)) =
+    some s'
+write : Bool
+q' : ℕ
+ht : KTableCore.tm215 q (right.head?.getD false) = some (write, false, q')
+hs :
+  ArithmeticMachineStep215.stepValue (frameSparse q (bitsCode left) (bitsCode right)) =
+    if false = true then frameSparse q' (2 * bitsCode left + ↑write.toNat) (bitsCode right / 2)
+    else frameSparse q' (bitsCode left / 2) (bitsCode left % 2 + 2 * (↑write.toNat + 2 * (bitsCode right / 2)))
+⊢ ArithmeticMachineStep215.stepValue (encodeList (q, left, right)) = encodeList s'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:245:73: error: Tactic `subst` failed: did not find equation for eliminating 's''
+
+case some.true
+s' : KBoot.LConf
+q : ℕ
+left right : List Bool
+h :
+  (match KTableCore.tm215 q (right.headD false) with
+    | none => none
+    | some (w, true, q') => some (q', w :: left, right.tail)
+    | some (w, false, q') => some (q', left.tail, left.headD false :: w :: right.tail)) =
+    some s'
+write : Bool
+q' : ℕ
+ht : KTableCore.tm215 q (right.head?.getD false) = some (write, true, q')
+hs :
+  ArithmeticMachineStep215.stepValue (frameSparse q (bitsCode left) (bitsCode right)) =
+    if true = true then frameSparse q' (2 * bitsCode left + ↑write.toNat) (bitsCode right / 2)
+    else frameSparse q' (bitsCode left / 2) (bitsCode left % 2 + 2 * (↑write.toNat + 2 * (bitsCode right / 2)))
+⊢ ArithmeticMachineStep215.stepValue (encodeList (q, left, right)) = encodeList s'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:239:35: warning: This simp argument is unused:
+  ht
+
+Hint: Omit it from the simp argument list.
+  simp only [KBoot.lstep,̵h̵t̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:243:67: warning: This simp argument is unused:
+  Nat.cast_id
+
+Hint: Omit it from the simp argument list.
+  simp only [̵H̵M̵o̵d̵.̵h̵M̵o̵d̵,̵A̵r̵i̵t̵h̵m̵e̵t̵i̵c̵H̵i̵s̵t̵o̵r̵y̵2̵5̵4̵.̵f̵o̵u̵n̵d̵a̵t̵i̵o̵n̵_̵r̵e̵m̵_̵n̵a̵t̵,̵N̵a̵t̵.̵c̵a̵s̵t̵_̵i̵d̵]̵[̲H̲M̲o̲d̲.̲h̲M̲o̲d̲,̲ ̲A̲r̲i̲t̲h̲m̲e̲t̲i̲c̲H̲i̲s̲t̲o̲r̲y̲2̲5̲4̲.̲f̲o̲u̲n̲d̲a̲t̲i̲o̲n̲_̲r̲e̲m̲_̲n̲a̲t̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:245:42: warning: This simp argument is unused:
+  ht
+
+Hint: Omit it from the simp argument list.
+  simp only [KBoot.lstep,h̵t̵,̵ ̲Option.some.injEq] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:245:45: warning: This simp argument is unused:
+  Option.some.injEq
+
+Hint: Omit it from the simp argument list.
+  simp only [̵K̵B̵o̵o̵t̵.̵l̵s̵t̵e̵p̵,̵h̵t̵,̵O̵p̵t̵i̵o̵n̵.̵s̵o̵m̵e̵.̵i̵n̵j̵E̵q̵]̵[̲K̲B̲o̲o̲t̲.̲l̲s̲t̲e̲p̲,̲ ̲h̲t̲]̲ at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticMachineTape215.lean:318:8: error: (kernel) excessive memory consumption detected

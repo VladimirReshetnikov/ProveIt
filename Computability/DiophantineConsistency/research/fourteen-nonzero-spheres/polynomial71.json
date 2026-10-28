@@ -1,0 +1,520 @@
+{
+  "arithmetic_proof": "../../Lean/DiophantineConsistency/CarrierNonzeroSpheres.lean",
+  "arithmetic_proof_sha256": "f2fb2bfc613e152e9b62d690d1564b41735f34dd2f7ec71c1a5980212b4ed51a",
+  "coefficient_binding": {
+    "certificate": "../../research/padding-staircase-independent/certificate.json",
+    "certificate_sha256": "fae49c56a9c57d394335c8a47da395f000a0c25cb8267d1330104eddbbc7850f",
+    "ordinary_proof": "../../research/padding-staircase-independent/PROOF.md",
+    "ordinary_proof_sha256": "69ce844ef80894251f4bd9510d9f60468585b4a004f4a624d3b347ce3e144fb8",
+    "path": "coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 94941,
+        "file": "K.bin.gz",
+        "gzip_sha256": "cfc3229f5281580358370e198b433936161b732a7229a1f8dc4f8839a701f4ab",
+        "raw_bytes": 11868,
+        "raw_sha256": "64a62b9e1eb8642492a159fc5c3a2e1c131a99c0e2f1e3b8b90fac9241166ec7"
+      },
+      "MC": {
+        "bits": 94517,
+        "file": "MC.bin.gz",
+        "gzip_sha256": "b178777ae605e6d0073c824c48237e89e9b28911a2583bce7c6689a50ce3cdfd",
+        "raw_bytes": 11815,
+        "raw_sha256": "2b5c9296e32616260e64a051c92892645b9aa1bf0bf4c0d931e464080702ca9f"
+      },
+      "MF": {
+        "bits": 94518,
+        "file": "MF_source.bin.gz",
+        "gzip_sha256": "f04d074f8413c49581f262bcbb030c616f00745935010afc0d30050771627c3a",
+        "raw_bytes": 11815,
+        "raw_sha256": "5c15fc24e4978b878ed531abf30b2dcfe255083372034612b759b65eee1f0c25"
+      },
+      "beta": {
+        "bits": 94517,
+        "file": "beta.bin.gz",
+        "gzip_sha256": "a94c07b25b9c185fa920d5c76ab04ea4de69b0a6a439995cf5ee390be225c719",
+        "raw_bytes": 11815,
+        "raw_sha256": "a22ea3808ae016284c057d90f1bf2b76db1be2d34d11c0856f3315f6577d4b27"
+      }
+    },
+    "raw_bytes": 47313,
+    "schema": "padding_staircase2011_materialized_v1"
+  },
+  "display_scalar_names": {
+    "MC": "mu",
+    "MF": "omega",
+    "N0": "P",
+    "N1": "Q",
+    "Nt": "W",
+    "U": "U",
+    "Z": "Z",
+    "main_root": "D",
+    "qm": "b"
+  },
+  "exact_degree": 80,
+  "fixed_numerals": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "name": "fourteen_current2011_nonzero_sphere71_degree80",
+  "operation_counts": {
+    "*": 39,
+    "+": 18,
+    "-": 14
+  },
+  "operations": 71,
+  "output": "polynomial",
+  "parent_polynomial": "../../candidates/one-page-padding-staircase-carrier65-2011/polynomial.json",
+  "parent_polynomial_sha256": "f1f7611842896806fa9e70ad102c6a0e7aa11747a650968f1c74cb169f0e253e",
+  "proof": "PROOF.md",
+  "proof_boundary": "Same entire fourteen-positive-coordinate zero set as actual2011 Carrier65, by identity maps; external ConZFC endpoint, no internal HA/ZFC proof or global minimum.",
+  "schema": "literal_integer_arithmetic_dag_v1",
+  "source": [
+    [
+      "qm",
+      "*",
+      "beta",
+      "J"
+    ],
+    [
+      "q",
+      "+",
+      "qm",
+      1
+    ],
+    [
+      "q2",
+      "*",
+      "q",
+      "q"
+    ],
+    [
+      "q3",
+      "*",
+      "q2",
+      "q"
+    ],
+    [
+      "X",
+      "*",
+      "w",
+      "q"
+    ],
+    [
+      "Y",
+      "*",
+      "s",
+      "q3"
+    ],
+    [
+      "E",
+      "*",
+      "X",
+      "Y"
+    ],
+    [
+      "k",
+      "+",
+      "eta",
+      "zeta"
+    ],
+    [
+      "kY",
+      "*",
+      "k",
+      "Y"
+    ],
+    [
+      "ell",
+      "*",
+      "E",
+      "kY"
+    ],
+    [
+      "c",
+      "+",
+      "kY",
+      "eta"
+    ],
+    [
+      "a",
+      "+",
+      "E",
+      "Y"
+    ],
+    [
+      "four_a",
+      "*",
+      4,
+      "a"
+    ],
+    [
+      "H",
+      "+",
+      "four_a",
+      3
+    ],
+    [
+      "a2",
+      "*",
+      "a",
+      "a"
+    ],
+    [
+      "Delta",
+      "+",
+      "a2",
+      "H"
+    ],
+    [
+      "ac",
+      "*",
+      "a",
+      "c"
+    ],
+    [
+      "main_base",
+      "+",
+      "X",
+      "ac"
+    ],
+    [
+      "gammaH",
+      "*",
+      "gamma",
+      "H"
+    ],
+    [
+      "main_root",
+      "+",
+      "main_base",
+      "gammaH"
+    ],
+    [
+      "c2",
+      "*",
+      "c",
+      "c"
+    ],
+    [
+      "Dc2",
+      "*",
+      "Delta",
+      "c2"
+    ],
+    [
+      "main_square",
+      "*",
+      "main_root",
+      "main_root"
+    ],
+    [
+      "N1",
+      "-",
+      "main_square",
+      "Dc2"
+    ],
+    [
+      "qF",
+      "-",
+      "q",
+      "F"
+    ],
+    [
+      "C",
+      "-",
+      "qF",
+      "alpha"
+    ],
+    [
+      "gap_product",
+      "*",
+      "qm",
+      "qF"
+    ],
+    [
+      "gap",
+      "+",
+      "gap_product",
+      "alpha"
+    ],
+    [
+      "q2minus1",
+      "-",
+      "q2",
+      1
+    ],
+    [
+      "rproduct",
+      "*",
+      "gap",
+      "q2minus1"
+    ],
+    [
+      "qMF",
+      "*",
+      "q",
+      "MF"
+    ],
+    [
+      "maskfactor",
+      "+",
+      "MC",
+      "qMF"
+    ],
+    [
+      "mask",
+      "*",
+      "maskfactor",
+      "J"
+    ],
+    [
+      "R",
+      "+",
+      "rproduct",
+      "mask"
+    ],
+    [
+      "En",
+      "*",
+      "E",
+      "n"
+    ],
+    [
+      "tau_partial",
+      "+",
+      "En",
+      "k"
+    ],
+    [
+      "tau",
+      "-",
+      "tau_partial",
+      "R"
+    ],
+    [
+      "tau2",
+      "*",
+      "tau",
+      "tau"
+    ],
+    [
+      "ell_plus_k",
+      "+",
+      "ell",
+      "k"
+    ],
+    [
+      "first_product",
+      "*",
+      "ell",
+      "ell_plus_k"
+    ],
+    [
+      "N0",
+      "-",
+      "tau2",
+      "first_product"
+    ],
+    [
+      "Kw",
+      "+",
+      "K0",
+      "w"
+    ],
+    [
+      "transport",
+      "*",
+      "Kw",
+      "C"
+    ],
+    [
+      "transport_partial",
+      "+",
+      "transport",
+      "qF"
+    ],
+    [
+      "zqm",
+      "*",
+      "z",
+      "qm"
+    ],
+    [
+      "Nt",
+      "-",
+      "transport_partial",
+      "zqm"
+    ],
+    [
+      "f2",
+      "*",
+      "f",
+      "f"
+    ],
+    [
+      "cT",
+      "*",
+      "c",
+      "T"
+    ],
+    [
+      "cTminusR",
+      "-",
+      "cT",
+      "R"
+    ],
+    [
+      "f2inner",
+      "*",
+      "f2",
+      "cTminusR"
+    ],
+    [
+      "V",
+      "-",
+      "f2inner",
+      "c"
+    ],
+    [
+      "i2",
+      "*",
+      "i",
+      "i"
+    ],
+    [
+      "i2Dc2",
+      "*",
+      "i2",
+      "Dc2"
+    ],
+    [
+      "strong_term",
+      "*",
+      "i2Dc2",
+      "c2"
+    ],
+    [
+      "Z",
+      "-",
+      "f2",
+      "strong_term"
+    ],
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "square_gap",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "f2minus1",
+      "-",
+      "f2",
+      1
+    ],
+    [
+      "Theta",
+      "*",
+      "Delta",
+      "f2minus1"
+    ],
+    [
+      "auxiliary",
+      "*",
+      "Theta",
+      "square_gap"
+    ],
+    [
+      "U",
+      "+",
+      "auxiliary",
+      "y2"
+    ],
+    [
+      "PQ",
+      "*",
+      "N0",
+      "N1"
+    ],
+    [
+      "UW",
+      "*",
+      "U",
+      "Nt"
+    ],
+    [
+      "rUW",
+      "-",
+      "UW",
+      1
+    ],
+    [
+      "PQ2",
+      "*",
+      "PQ",
+      "PQ"
+    ],
+    [
+      "rUW2",
+      "*",
+      "rUW",
+      "rUW"
+    ],
+    [
+      "Z2",
+      "*",
+      "Z",
+      "Z"
+    ],
+    [
+      "sum1",
+      "+",
+      "PQ2",
+      "rUW2"
+    ],
+    [
+      "sum2",
+      "+",
+      "sum1",
+      "Z2"
+    ],
+    [
+      "polynomial",
+      "-",
+      "sum2",
+      2
+    ]
+  ],
+  "witness_domain": "strictly positive integers",
+  "witnesses": [
+    "J",
+    "F",
+    "alpha",
+    "z",
+    "f",
+    "i",
+    "T",
+    "s",
+    "w",
+    "n",
+    "eta",
+    "zeta",
+    "y",
+    "gamma"
+  ],
+  "zero_set_proof_sha256": "efade416bb7157651be664255745881982d60da1c613051454725694538d2437"
+}

@@ -1,0 +1,191 @@
+\section{The complete paid recursion}
+\label{sec:recursion}
+
+\subsection{Every child-table entry has a cost}
+
+For a group count $r$, a singleton factor is incident with $2(r-1)$
+directed pair lists. Applying the common entropy inequality to their
+indicator gives the entry-count coefficient
+\[
+ \alpha_r=\frac{\sqrt{2(r-1)}}r.
+\]
+Filling a singleton table invokes one recursive child contraction for
+every entry. A locally certified aggregation coefficient $\beta_r$
+therefore gives the paid recurrence
+\begin{equation}\label{eq:paid-recurrence}
+ T_d\le\poly(s)\left[
+       2^{(\alpha_{r_d}+o(1))K_d}T_{d+1}
+       +2^{(\beta_{r_d}+o(1))K_d}\right],
+ \qquad K_d=\kappa\frac{M_d}{\sqrt{u_d}}.
+\end{equation}
+Using only the smaller local aggregation term would omit the main
+recursive work. We retain the complete recurrence.
+
+The root uses the joint certificate of Lemma~\ref{lem:joint}.
+At depth one we retain the incoming thirteen-group three-plan certificate
+$\beta_{13}^2=1572/4225$. In the tail we use the seven-group plan
+$(0,1,2)\mid(3,4)\mid(5,6)$ with $\beta_7^2=632/1225$.
+Those two local estimates use the previously reviewed $12/5$ matrix
+allowance and have the same entry and storage conventions
+\cite{trees,pairwise}. Their support checks are included in our replay.
+
+\subsection{An explicit integer schedule}
+
+Write $\lambda=\lceil\log_2s\rceil$, $B=\lceil6\log_2\lambda\rceil$.
+Keep the preceding fastest packet's schedule:
+\begin{align}\label{eq:schedule}
+ r_0&=10,& \eta_0&=\frac{301}{20000},\notag\\
+ r_1&=13,& \eta_1&=\frac{119}{10000},\notag\\
+ r_d&=7\quad(d\ge2),&
+ \eta_d&=\frac{1549}{324000}\left(\frac49\right)^{d-2}.
+\end{align}
+Set
+\[
+ u_d=\lfloor\eta_d\lambda\rfloor,\quad
+ a_d=\sum_{j=0}^d(u_j+B),\quad L_d=2^{a_d},\quad Q_d=r_d^{a_d}.
+\]
+The cumulative retained fractions are
+\[
+ \eta_0+\eta_1=\frac{539}{20000},\qquad
+ \sum_{d\ge0}\eta_d=\frac8{225}.
+\]
+Use padding with relative slack $\lambda^{-3}$ and stop at
+$M\le H=\lceil s/\lambda^{3/4}\rceil$. For a finite exceptional range
+of $s$, use direct evaluation. This is an eventual asymptotic certificate;
+we do not assert that its small positive gate margins yield a useful
+finite-size crossover.
+
+\subsection{Degree, packing, and depth gates}
+
+With side degrees bounded by $R,C$, the sufficient inherited packing gates
+are
+\begin{equation}\label{eq:packing-gates}
+ QR/M=o(1),\qquad Q^2C(\log s)^2/M=o(1),\qquad LQ^2/M=o(1).
+\end{equation}
+Initially $R,C\le s^{9/10+o(1)}$. Subsequently the retained side stays
+under that bound and the fresh side has degree at most $2^{a_{d-1}+1}$.
+
+The exact integer inequalities
+\[
+ 10^{1000}<2^{3322},\qquad 13^{1000}<2^{3701},\qquad 7^{100}<2^{281}
+\]
+give strict rational upper bounds on the relevant logarithms. The largest
+old-degree exponents are consequently separated from one by
+\begin{center}
+\begin{tabular}{lll}
+\toprule Stage & Exponent upper bound & Positive gap\\
+\midrule
+Root & $9/10+2\eta_0(3322/1000)$ & $39/5000000$\\
+Depth one & $9/10+(539/20000)(3701/1000)$ & $5161/20000000$\\
+Tail & $9/10+(8/225)(281/100)$ & $1/11250$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The fresh-side and packet-capacity exponents are at most
+\[
+ \frac8{225}\left(1+2\cdot\frac{3701}{1000}\right)<1.
+\]
+All gaps are fixed positive constants. They absorb the additive
+$O((\log\lambda)^2)$ guards, all fixed polylogarithmic factors, and
+$s/M\le\lambda^{3/4}$ on active calls. Fresh degrees remain below
+$s^{8/225+o(1)}<s^{9/10}$.
+
+For a noncircular depth argument, provisionally consider depths through
+$\lceil(3/4)\log_3\lambda\rceil+O(1)$. Since $4/9>1/3$, the smallest
+tail taper in that range is at least $\lambda^{1/4+o(1)}$.
+The gates just proved therefore hold uniformly. Nearly lossless padding
+then makes each tail child smaller than $M/3$ for all sufficiently large
+$s$. An active path cannot exceed the provisional depth. This closes the
+induction, proves all active tapers diverge, and makes their floors
+negligible. The padding errors over $O(\log\lambda)$ levels multiply to
+$1+o(1)$, yielding
+\begin{equation}\label{eq:masses}
+ M_0\le s,\quad M_1\le(1+o(1))s/5,\quad
+ M_d\le(1+o(1))\frac{2s}{65}(2/7)^{d-2}\quad(d\ge2).
+\end{equation}
+
+\subsection{Precision, entry access, and leaves}
+
+For a retained valuation $i<u_d$,
+$D=2^{a_d-i}\ge2^{a_{d-1}+B+1}$. The inherited creation-time precision
+bound is $p=O(s\lambda^2 2^{a_{d-1}})$. Hence
+\[
+ \frac{p}{MD/u_d}=O(\lambda^{15/4}2^{-B})=o(1).
+\]
+The additional Hermite terms are absorbed by the same buffer. The local
+precision bound and entropy estimate thus apply uniformly, while
+$a_d\le(8/225)\lambda+O((\log\lambda)^2)$ keeps every ring rank and
+precision polynomial in $s$.
+
+Original entry routines have cost $2^{O(s^{9/10})}$ times a polynomial;
+fresh packet entry routines have cost $\exp(s^{8/225+o(1)})$. Direct leaves
+cost $2^{O(s/\lambda^{3/4})}$ times these entry costs. Each is lower
+order on the scale $s/\sqrt\lambda$. The immutable entry descriptions
+prevent expansion of an entire ancestor contraction inside an entry call.
+We first count arithmetic and entry requests, then charge their uniform
+description-access cost; the input-length polynomial is paid once.
+Polynomial overhead in $s$ over $O(\log\lambda)$ levels adds
+$O(\lambda\log\lambda)=o(s/\sqrt\lambda)$ to the exponent.
+
+\subsection{Unrolling every time branch and the simultaneous space bound}
+
+On the normalized scale define
+\[
+ K_0^*=\frac\kappa{\sqrt{\eta_0}},\qquad
+ K_1^*=\frac\kappa{5\sqrt{\eta_1}},\qquad
+ K_2^*=\frac{2\kappa}{65\sqrt{\eta_2}}.
+\]
+The tail ratio is $\gamma=(2/7)/\sqrt{4/9}=3/7$. Its entry sum has
+coefficient $\alpha_7/(1-\gamma)=\sqrt3/2>\beta_7$. A tail aggregation
+at offset $t$ is bounded by a convex combination of the initial tail
+aggregation and the infinite entry sum. Therefore the only candidates
+needed to bound every branch of \eqref{eq:paid-recurrence} are
+\begin{align}
+ C_0&=\beta_{10}K_0^*
+ =\frac\pi{\ln2}\sqrt{\frac{2\beta_{10}^2}{301/20000}}
+ =\NewTime\ldots,\label{eq:C0}\\
+ C_1&=\alpha_{10}K_0^*+\beta_{13}K_1^*
+ =\frac\pi{\ln2}\left(\sqrt{\frac{7200}{301}}
+                       +\sqrt{\frac{50304}{20111}}\right)
+ =29.3352039993294\ldots,\label{eq:C1}\\
+ C_\infty&=\alpha_{10}K_0^*+\alpha_{13}K_1^*
+                 +\frac{\alpha_7K_2^*}{1-\gamma}\notag\\
+ &=\frac\pi{\ln2}\left(\sqrt{\frac{7200}{301}}
+        +\sqrt{\frac{19200}{20111}}
+        +\sqrt{\frac{77760}{261781}}\right)
+ =29.065748524641\ldots .\label{eq:Cinf}
+\end{align}
+Rational interval arithmetic verifies $C_0>C_1,C_\infty$ and
+$C_0<29.747$. At the root the joint selector bounds local storage by
+$(20/21)C_0$. At subsequent depths the local storage coefficients are at
+most $7.16817894875$ and $2.04877062910$, followed by a decreasing
+geometric tail. Caches on one active recursion path coexist, so their
+\emph{sizes add}: their leading exponent is the maximum, not the sum.
+
+\begin{theorem}[Improved normalized contraction bound]\label{thm:global}
+Under the input promises and imported exact interfaces of
+Section~\ref{sec:interface}, the described deterministic contraction
+procedure has simultaneous bounds
+\begin{align*}
+ T(s,\mathcal L)&\le(s+\mathcal L)^{O(1)}
+    2^{(C_T+o(1))s/\sqrt{\lceil\log_2s\rceil}},\\
+ S(s,\mathcal L)&\le(s+\mathcal L)^{O(1)}
+    2^{(C_S+o(1))s/\sqrt{\lceil\log_2s\rceil}},
+\end{align*}
+where
+\[
+ \boxed{C_T=\NewTime\ldots,\qquad
+ C_S=\frac{20}{21}C_T=\NewSpace\ldots.}
+\]
+The safe eventual coefficients $29.747$ and $28.330$ are valid.
+\end{theorem}
+\begin{proof}
+The exact plan changes only the association and order of the finite sums
+and products in \eqref{eq:finite-sum}. The imported identity and recovery
+therefore give the original contraction. The gate and depth argument
+justifies every call. The finite certificates and the paid recurrence give
+the three time candidates, whose maximum is $C_0$. The simultaneous
+storage argument gives $C_S$. All remaining costs and uniform errors have
+been charged above. Strict gaps to the displayed safe coefficients absorb
+the lower-order terms for sufficiently large $s$.
+\end{proof}

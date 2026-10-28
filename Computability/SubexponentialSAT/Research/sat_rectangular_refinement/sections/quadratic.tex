@@ -1,0 +1,155 @@
+% Standalone mathematical fragment, not an end-to-end SAT theorem.
+\section{A quadratic majorant for rectangular multiplication}
+
+The following result concerns the rectangular exponent envelope supplied by
+$\omega(1,k,1)\le 1+k+1/(4k)$ for $1/2\le k\le1$, together with
+$\omega(1,1/2,1)\le2$. These shape bounds come from~\cite{uznanski}. The finite-algorithm
+and exact-ring transfer are treated in Section~\ref{sec:matrix}; the
+finite shape library needed here is specified below. The first theorem
+is an exact algebraic inequality for the displayed function $U$.
+
+For three nonnegative logarithmic dimensions, sort them as $0\le a\le b\le c$
+and define
+\[
+ U(a,b,c)=\begin{cases}
+ b+c,&2a\le b,\\
+ c+a+b^2/(4a),&b\le2a,\ a>0.
+ \end{cases}
+\]
+For $a=b=0$ set $U=c$. This is the equal-outer-dimension rectangular
+curve followed by blocking the largest dimension. It is not asserted to be
+the strongest general three-dimensional matrix exponent.
+
+\begin{theorem}[Symmetric quadratic majorant]
+For all $a,b,c\ge0$, with $U$ interpreted after sorting,
+\[
+ U(a,b,c)^2\le \frac{55}{96}
+ \left(7(a^2+b^2+c^2)-4(ab+ac+bc)\right).
+\tag{Q}
+\]
+Equality occurs at any positive scalar multiple or permutation of
+$(1,1,20/17)$. In particular, $55/96$ cannot be reduced while keeping
+the displayed quadratic form fixed.
+\end{theorem}
+\begin{proof}
+If $b=0$ the result is immediate. Otherwise divide by $b^2$ and write
+$x=a/b$, $y=c/b$. First suppose $1/2\le x\le1$, $y\ge1$. The difference
+between the right side and $(y+x+1/(4x))^2$ is $Ay^2+By+C$, where
+\[
+ A=\frac{289}{96},\qquad
+ B=-\frac{103x^2+55x+12}{24x},\qquad
+ C=\frac{289x^2-220x+337-6/x^2}{96}.
+\]
+A direct rational calculation gives
+\[
+ 4AC-B^2=\frac{(1-x)R(x)}{2304x^2},\qquad
+ R(x)=-41085x^3+67815x^2-7590x-2310.
+\]
+On $[1/2,1]$ the degree-three Bernstein coefficients of $R$, after
+$x=(1+t)/2$, are
+\[
+ \frac{45705}{8},\quad10615,\quad\frac{32065}{2},\quad16830.
+\]
+They are strictly positive. Hence $A>0$ and $4AC-B^2\ge0$, which imply
+$Ay^2+By+C\ge0$ for every real $y$.
+
+For $0\le x\le1/2$ the squared left side is $(1+y)^2$. The derivative
+with respect to $x$ of the difference is
+\[
+ \frac{55}{96}(14x-4-4y)<0\qquad(y\ge1).
+\]
+The difference is therefore at least its value at $x=1/2$, already
+covered. At $x=1$, the discriminant vanishes and the quadratic has its
+zero at $y=20/17$, proving the equality claim.
+\end{proof}
+
+\paragraph{Uniform interpretation with positive slack.}
+Fix $\delta>0$. Choose a finite rational mesh in $[1/2,1]$, containing
+both endpoints, and a positive slack for each of the finitely many
+algorithms from~\cite{uznanski}. For $1/2\le a/b\le1$, round $a/b$
+up to the next mesh point $k$, pad the inner dimension, and block the
+largest dimension. The exponent is at most
+\[
+ c+b\left(k+\frac1{4k}+\eta\right).
+\]
+The derivative of $k+1/(4k)$ lies in $[0,3/4]$ on this interval.
+Thus a sufficiently fine fixed mesh and sufficiently small fixed
+$\eta>0$ bound the padding and algorithmic loss by
+$\delta(a+b+c)$. For $a/b<1/2$, use the half-width endpoint. Rounding
+finite-base recursion counts contributes only fixed dimension factors.
+The mesh can be selected using exact integer-power comparisons of the
+input dimensions, so no real-number oracle is required. Proposition~\ref{prop:ring}
+applies to this finite collection after taking one common number field
+and the union of its finite exceptional-prime sets.
+
+Consequently every fixed positive enlargement of a coefficient derived
+from $U$ is realized by a fixed finite library. The exact envelope and its
+limiting coefficient do not assert attainment of an exponent infimum
+with zero slack. The main time and space coefficients use the separate
+fixed-slack endpoint library of Lemma~\ref{lem:rectangle}.
+
+\section{A final-triangle certificate from the affine plane of order three}
+
+Identify the nine group labels with $\mathbb F_3^2$. Its four directions
+partition the points into three parallel lines. For direction $j$, let
+$H_j$ be the three-by-36 zero-one matrix whose rows indicate the three
+unordered pairs of line classes. For a nonnegative unordered-edge entropy
+vector $g\in\mathbb R_{\ge0}^{36}$, its three aggregate dimensions are
+$H_jg$.
+
+\begin{theorem}[Final triangle only]
+There is a direction $j$ with
+\[
+ U(H_jg)\le\sqrt{\frac{1485}{128}}\,\|g\|_2.
+\tag{A}
+\]
+In the inherited nine-group mode-entropy normalization, this gives the
+local final-triangle coefficient
+\[
+ \beta_{9,\mathrm{final}}^2=\frac{55}{192},\qquad
+ \beta_{9,\mathrm{final}}=0.5352180241\ldots.
+\]
+This statement does not pay for producing the three line-block tensors.
+\end{theorem}
+\begin{proof}
+Stack the four $H_j$ into a twelve-by-36 matrix $H$. Each row has nine
+ones. Within a direction the rows have disjoint supports; between two
+directions any two rows have inner product two. The latter count is
+obtained from the four intersections of two selected lines in each
+direction: exactly the two opposite corner pairs belong to both supports.
+Thus $HH^T$ has diagonal blocks $9I_3$ and off-diagonal blocks $2J_3$.
+Let $K$ be block diagonal with four copies of $9I_3-2J_3$.
+By (Q),
+\[
+ \frac14\sum_{j=1}^4 U(H_jg)^2
+ \le g^T\left(\frac{55}{384}H^TKH\right)g.
+\]
+The nonzero eigenvalues of $H^TKH$ are $81$ with multiplicity nine and
+$9$ with multiplicity three. To see this directly, decompose the
+12-dimensional row space into the eight-dimensional subspace having
+coordinate sum zero in each block, the three-dimensional subspace of
+blockwise constants whose total is zero, and the one-dimensional constant
+subspace. On these, $HH^T$ acts by $9,3,27$, respectively, while $K$
+acts by $9,3,3$. Their product therefore acts by $81,9,81$.
+The largest eigenvalue of the averaged quadratic form is
+$55\cdot81/384=1485/128$. The minimum of four nonnegative numbers is at
+most their root-mean-square, proving (A).
+
+If the directed mode entropy vector has Euclidean norm at most
+$(1+o(1))\mathcal K/9$, then joining the two orientations gives
+$\|g\|_2\le(\sqrt2/9+o(1))\mathcal K$. Substitution into (A) yields
+$\beta^2=2(1485/128)/81=55/192$.
+\end{proof}
+
+\paragraph{Scope of the result.}
+The proof covers the final aggregation of three precomputed blocks. To
+interpret it algorithmically with a fixed finite library, replace
+$\beta_{9,\mathrm{final}}$ by any strictly larger coefficient, as explained
+above. It gives no bound for producing those block tensors, for a complete
+contraction plan, or for the full 3-SAT recurrence. The internal line-block
+merges and recursive cache construction must still be charged. No verified
+combination that improves the main fully paid coefficient is established
+here, and this appendix's coefficient is not used in that calculation.
+A common quadratic certificate for both internal and final operations,
+or an adaptive combination of linear and quadratic certificates, remains
+a possible continuation of this local result.

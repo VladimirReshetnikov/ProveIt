@@ -1,0 +1,80 @@
+\section{Verification, reproducibility, and limits}
+\label{sec:validation}
+
+\subsection{What the finite checks certify}
+
+The standalone checker reconstructs every operation support from the
+literal ordered plans and integer backend coefficients. It recomputes
+the complete root pair and triple maxima for both backends, all later
+menu certificates, exact rational packing gaps, cumulative taper sums,
+child masses, every paid recurrence branch, and the space maximum.
+The $31,352,832$ root support triples are evaluated for each backend.
+Pair-dot-product precomputation changes the implementation cost, not
+which triples are included.
+
+All acceptance comparisons use integers or rational interval arithmetic.
+Square roots are enclosed using integer arithmetic; logarithm and $\pi$
+intervals have explicit rational remainder bounds. Displayed decimals
+are produced only after the exact inequalities have passed. The checks
+run normally and under Python's optimized mode, so removing language-level
+\texttt{assert} statements does not remove a proof gate. Negative controls
+exercise rejection of corrupted certificate data. The JSON results retain
+the exact fractions and maxima needed to inspect what was verified.
+
+The separate quadratic checker verifies its polynomial identities and
+positive Bernstein coefficients, and constructs the affine incidence
+matrices to verify the exact spectral polynomial and multiplicities.
+The separate operator probe checks the crossing reconstruction and the
+finite modular ranks described in Section~\ref{sec:barriers}.
+
+\subsection{Replaying the archive}
+
+From the extracted archive directory, use a Python 3.10-or-newer standard
+library and run
+\begin{verbatim}
+python3 code/run_checks.py
+python3 code/build_report.py
+\end{verbatim}
+The first command writes fresh results under \texttt{replay\_results/},
+leaving the delivered result files unchanged. It runs the primary
+certificate, an independent reconstruction, and the quadratic check.
+To repeat the separate finite operator experiments as well, NumPy must
+be available in the selected Python environment; use
+\texttt{python3 code/run\_checks.py --full}.
+The second displayed command invokes
+\texttt{pdflatex} without shell escape and checks the build log for errors,
+unresolved references, and overfull boxes. It requires a conventional TeX
+installation with the packages in the preamble. No verification command
+downloads software, calls GitHub, or mutates a remote repository.
+
+The deliverable includes the complete LaTeX source, compiled PDF, literal
+certificate data, standalone Python checks, delivered results, a compact
+source manifest, source-review inventory, and proof-status notes. The
+source manifest pins the repository and incoming archive identities.
+It does not duplicate the 34 earlier papers. The ZIP is kept below 4 MB.
+
+\subsection{Claims not supplied by these checks}
+
+Finite enumeration is not a proof of the inherited analytic contractor,
+the newer matrix-multiplication theorem, or an end-to-end SAT executable.
+Those are mathematical dependencies cited in the text. The tests also do
+not implement the asymptotic matrix algorithms, whose finite base cases
+may be enormous. This work does not claim a measured SAT speedup, a
+practical crossover threshold, global optimality of the menus or taper
+schedule, or a new Lean/Rocq verification of these refinements.
+
+The source review and successful upstream CI evidence make the present
+status of the Anthropic development much clearer than older reports did.
+They do not transfer that development's verification status to the new
+certificate theorem. The small new algebraic statements are reasonable
+future formalization targets, but no unbuilt Lean file is presented as a
+checked theorem here.
+
+The remaining research objective is explicit: reduce the general
+$n\log\log n/\sqrt{\log n}$ exponent order with a complete counted
+construction. The crossing interface with $\rho<1/\sqrt2$, a recursive
+compressed degree-preserving representation, or an evaluator that avoids
+independent mode-index enumeration would be substantive routes. This
+report provides none of those missing algorithms. Its completed
+positive result is the strict coefficient improvement with all new
+finite and recursive costs accounted for.

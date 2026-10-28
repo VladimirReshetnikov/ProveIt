@@ -12,6 +12,71 @@ Nothing in this directory is part of the repository's research material. An
 archive becomes part of it only once it has been placed in, and written into,
 a report at one of the destinations of section 2.
 
+## Sub-exponential 3-SAT (ETH) reports
+
+Forty-three arrivals of 26–27 October 2026 about sub-exponential 3-SAT, that
+is, about refuting the Exponential Time Hypothesis. The drop process staged
+the first five without committing them, and they were committed unchanged in
+`a505bd768b`; it committed the next seventeen itself. The nine of the fourth
+round were also only staged, and were committed unchanged in `b9941a7396`.
+The five of the fifth round arrived committed, in `26bd83d4b3`, and the
+seven of the sixth in `eb173b3d9f`. The eight of
+`3e57705cf1` and `d098ba436b` are a second round that reviews the first. The
+five of `f42479bca2`, `f898a9fde4` and `fa6e904d10` are a third round that
+reviews both. They are placed in the new
+project
+[`Computability/SubexponentialSAT/`](../../Computability/SubexponentialSAT/README.md)
+and retired here. Byte-identical copies of upstream `openai/math@7ef5c0cc5c`
+files are listed in
+[`Research/OMITTED.tsv`](../../Computability/SubexponentialSAT/Research/OMITTED.tsv)
+instead of being filed.
+
+| Archive | Arrival | Placement |
+|---|---|---|
+| `cauchy_mode_improvement_2026-10-26.zip` | `a505bd768b` | [Research/cauchy_mode_improvement](../../Computability/SubexponentialSAT/Research/cauchy_mode_improvement/README.txt) |
+| `eth_contraction_improvements.zip` | `a505bd768b` | [Research/eth_contraction_improvements](../../Computability/SubexponentialSAT/Research/eth_contraction_improvements/README.txt) |
+| `sat_density_improvement.zip` | `a505bd768b` | [Research/sat_density_improvement](../../Computability/SubexponentialSAT/Research/sat_density_improvement/README.txt) |
+| `eth.pdf` | `a505bd768b` | [Research/claude-2o-n-3sat/eth.pdf](../../Computability/SubexponentialSAT/Research/claude-2o-n-3sat/eth.pdf) |
+| `paper.pdf` | `a505bd768b` | Not filed: byte-identical to the OpenAI preprint's `paper.pdf` ([project README](../../Computability/SubexponentialSAT/README.md#primary-manuscripts)) |
+| `3sat_precision_refinement_2026-10-26.zip` | `64b3202ee8` | [Research/3sat_precision_refinement](../../Computability/SubexponentialSAT/Research/3sat_precision_refinement/README.md) |
+| `3sat_refinement_package.zip` | `64b3202ee8` | [Research/3sat_refinement](../../Computability/SubexponentialSAT/Research/3sat_refinement/README.md) |
+| `eth_density_refinement.zip` | `64b3202ee8` | [Research/eth_density_refinement](../../Computability/SubexponentialSAT/Research/eth_density_refinement/README.txt) |
+| `3sat_asymptotic_analysis_20261027.zip` | `8afdbbea48` | [Research/3sat_asymptotic_analysis](../../Computability/SubexponentialSAT/Research/3sat_asymptotic_analysis/README.md), without the eight upstream copies in `source/` |
+| `eth_asymmetric_packet_balancing_2026-10-26.zip` | `3e57705cf1` | [Research/eth_asymmetric_packet_balancing](../../Computability/SubexponentialSAT/Research/eth_asymmetric_packet_balancing/README.txt) |
+| `3sat_round2_refinement_20261027.zip` | `3e57705cf1` | [Research/3sat_round2_refinement](../../Computability/SubexponentialSAT/Research/3sat_round2_refinement/README.md), without 15 `evidence/` copies of files already in ProveIt |
+| `eth_balanced_packing_2026-10-26.zip` | `3e57705cf1` | [Research/eth_balanced_packing](../../Computability/SubexponentialSAT/Research/eth_balanced_packing/README.txt) |
+| `eth_high_moment_2026-10-26.zip` | `3e57705cf1` | [Research/eth_high_moment](../../Computability/SubexponentialSAT/Research/eth_high_moment/README.md) |
+| `eth_packet_refinement_2026-10-26.zip` | `3e57705cf1` | [Research/eth_packet_refinement](../../Computability/SubexponentialSAT/Research/eth_packet_refinement/README.txt) |
+| `eth_recursive_refinement_2026-10-26.zip` | `3e57705cf1` | [Research/eth_recursive_refinement](../../Computability/SubexponentialSAT/Research/eth_recursive_refinement/README.md) |
+| `eth_joint_cauchy_2026-10-26.zip` | `3e57705cf1` | [Research/eth_joint_cauchy](../../Computability/SubexponentialSAT/Research/eth_joint_cauchy/README.txt) |
+| `ETH_Matching_Packing_Thin_Gaps_2026-10-27.zip` | `d098ba436b` | [Research/eth_matching_refinement](../../Computability/SubexponentialSAT/Research/eth_matching_refinement/README.txt), without 11 `sources/` copies of files already in ProveIt |
+| `subexponential_sat_frontier_2026-10-26.zip` | `f42479bca2` | [Research/subexponential_sat_frontier](../../Computability/SubexponentialSAT/Research/subexponential_sat_frontier/README.md) |
+| `subsat_contraction_tree_2026-10-26.zip` | `f42479bca2` | [Research/subsat_contraction_tree](../../Computability/SubexponentialSAT/Research/subsat_contraction_tree/README.txt) |
+| `subexponential_sat_kernel_improvements_2026-10-26.zip` | `f42479bca2` | [Research/subexponential_sat_kernel_improvements](../../Computability/SubexponentialSAT/Research/subexponential_sat_kernel_improvements/README.md) |
+| `sat_frontier_improvements_2026-10-26.zip` | `f898a9fde4` | [Research/sat_frontier_improvements](../../Computability/SubexponentialSAT/Research/sat_frontier_improvements/README.txt) |
+| `sat_adaptive_contraction_2026-10-26.zip` | `fa6e904d10` | [Research/sat_adaptive_contraction](../../Computability/SubexponentialSAT/Research/sat_adaptive_contraction/README.md) |
+| `sat_adaptive_bounds_2026-10-26.zip` | `b9941a7396` | [Research/sat_adaptive_bounds](../../Computability/SubexponentialSAT/Research/sat_adaptive_bounds/README.txt) |
+| `sat_adaptive_tree_certificate_2026-10-26.zip` | `b9941a7396` | [Research/sat_adaptive_tree_certificate](../../Computability/SubexponentialSAT/Research/sat_adaptive_tree_certificate/README.txt) |
+| `sat_adaptive_frontier_2026-10-26.zip` | `b9941a7396` | [Research/sat_adaptive_frontier](../../Computability/SubexponentialSAT/Research/sat_adaptive_frontier/README.txt) |
+| `sat_adaptive_matrix_partition_2026-10-26.zip` | `b9941a7396` | [Research/sat_adaptive_matrix_partition](../../Computability/SubexponentialSAT/Research/sat_adaptive_matrix_partition/README.txt) |
+| `subexponential_sat_adaptive_four_2026-10-26.zip` | `b9941a7396` | [Research/subexponential_sat_adaptive_four](../../Computability/SubexponentialSAT/Research/subexponential_sat_adaptive_four/README.txt) |
+| `subsat_rectangular_2026-10-26.zip` | `b9941a7396` | [Research/subsat_rectangular](../../Computability/SubexponentialSAT/Research/subsat_rectangular/README.md) |
+| `ETH_Adaptive_Exact_Kernels_2026-10-27.zip` | `b9941a7396` | [Research/eth_adaptive_exact_kernels](../../Computability/SubexponentialSAT/Research/eth_adaptive_exact_kernels/README.txt), without 58 `sources/` copies of files already in ProveIt |
+| `3sat_round3_frontier_20261027.zip` | `b9941a7396` | [Research/3sat_round3_frontier](../../Computability/SubexponentialSAT/Research/3sat_round3_frontier/README.md), without 26 `evidence/` copies of files already in ProveIt |
+| `eth_adaptive_schedules_2026-10-26.zip` | `b9941a7396` | [Research/eth_adaptive_schedules](../../Computability/SubexponentialSAT/Research/eth_adaptive_schedules/README.txt) |
+| `sat_pairwise_certificates_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_pairwise_certificates](../../Computability/SubexponentialSAT/Research/sat_pairwise_certificates/README.txt) |
+| `sat_affine_contraction_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_contraction](../../Computability/SubexponentialSAT/Research/sat_affine_contraction/README.md) |
+| `sat_affine_geometry_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_geometry](../../Computability/SubexponentialSAT/Research/sat_affine_geometry/README.txt) |
+| `sat_affine_cauchy_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_cauchy](../../Computability/SubexponentialSAT/Research/sat_affine_cauchy/README.txt) |
+| `sat_affine_plane_2026-10-26.zip` | `26bd83d4b3` | [Research/sat_affine_plane](../../Computability/SubexponentialSAT/Research/sat_affine_plane/README.txt) |
+| `sat_rectangular_refinement_2026-10-26.zip` | `eb173b3d9f` | [Research/sat_rectangular_refinement](../../Computability/SubexponentialSAT/Research/sat_rectangular_refinement/README.md) |
+| `3sat_rectangular_research_2026-10-26.zip` | `eb173b3d9f` | [Research/3sat_rectangular_research](../../Computability/SubexponentialSAT/Research/3sat_rectangular_research/README.txt) |
+| `3sat_partial_affine_2026-10-27.zip` | `eb173b3d9f` | [Research/3sat_partial_affine](../../Computability/SubexponentialSAT/Research/3sat_partial_affine/README.txt) |
+| `sat_minimax_2026-10-27.zip` | `eb173b3d9f` | [Research/sat_minimax](../../Computability/SubexponentialSAT/Research/sat_minimax/README.txt) |
+| `3sat_compatible_affine_2026-10-26.zip` | `eb173b3d9f` | [Research/sat_compatible_affine](../../Computability/SubexponentialSAT/Research/sat_compatible_affine/README.txt) |
+| `3sat_consistency_2026-10-26.zip` | `eb173b3d9f` | [Research/3sat_consistency](../../Computability/SubexponentialSAT/Research/3sat_consistency/README.md) |
+| `ETH_Rectangular_Portfolios_Exact_Kernels_2026-10-27.zip` | `eb173b3d9f` | [Research/eth_rectangular_portfolios](../../Computability/SubexponentialSAT/Research/eth_rectangular_portfolios/README.txt), without its `sources/` copies and the 11-file `anthropic_snapshot/eth/` copy of `anthropics/formal-math` |
+
 ## DiophantineConsistency proof-simplification packets
 
 Fifty-four proof-simplification packets of 26 October 2026, reviewing commits from `60e9c5d620` onward, are placed under
