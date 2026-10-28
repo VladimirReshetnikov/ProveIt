@@ -11,19 +11,14 @@ theorem certificate_iff (q r n b : ℕ) :
     (∃ s, n = q * b + r ∧ b = r + s + 1) ↔
       0 < b ∧ q = n / b ∧ r = n % b := by
   constructor
-  · rintro ⟨s,hn,hb⟩
+  · rintro ⟨s, hn, hb⟩
     have hb0 : 0 < b := by omega
-    have hr : r < b := by omega
-    have hmod : n % b = r := by
-      simp [hn,Nat.add_mod,Nat.mod_eq_of_lt hr]
-    have hdiv : n / b = q := by
-      rw [hn,Nat.add_comm (q*b) r,Nat.add_mul_div_right r q hb0,Nat.div_eq_of_lt hr,Nat.zero_add]
-    exact ⟨hb0,hdiv.symm,hmod.symm⟩
-  · rintro ⟨hb,hq,hr⟩
-    have hrb : r < b := by rw [hr]; exact Nat.mod_lt n hb
-    refine ⟨b-r-1,?_,by omega⟩
-    rw [hq,hr]
-    exact (Nat.div_add_mod' n b).symm
+    have h := (Nat.div_mod_unique (a := n) (d := q) (c := r) hb0).mpr
+      ⟨by simpa [Nat.add_comm, Nat.mul_comm] using hn.symm, by omega⟩
+    exact ⟨hb0, h.1.symm, h.2.symm⟩
+  · rintro ⟨hb, rfl, rfl⟩
+    exact ⟨b - n % b - 1, (Nat.div_add_mod' n b).symm,
+      by have := Nat.mod_lt n hb; omega⟩
 
 /-- Source inputs are `(quotient,remainder,numerator,denominator)` and input
 4 is the explicit remainder-bound slack. The local constraints need no gates. -/
