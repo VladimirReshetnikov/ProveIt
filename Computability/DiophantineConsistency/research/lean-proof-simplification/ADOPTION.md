@@ -856,5 +856,15 @@ precompiled, and additional direct clients were not exhaustively rebuilt.
 Initial path-shadowing and bare-Matrix probe failures are retained separately.
 Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-reflected-source-evidence/BUNDLE.json).
 
+The bounded-exit rewrite `b16f744e3b` removes 15 lines, bringing the
+reviewed series to 8192. Both target versions, the sole direct client and all
+38 public/generated axiom reports pass; three lazy equation declarations were
+materialized during review. The 158-node graph and 156 selected dependency
+pairs match authenticated receipts, with no conflicts across 1,265 merged
+cache files. EnumBoundTower was rebuilt; its command/path receipt was
+reconstructed. External inputs remain precompiled and five matching warnings
+come from axiom probes. The object grows by 576 bytes despite the source
+reduction. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-bounded-exit-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
