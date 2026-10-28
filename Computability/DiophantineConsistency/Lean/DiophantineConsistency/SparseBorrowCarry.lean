@@ -124,21 +124,12 @@ theorem marked_digit_lt_two_iff {B : ℕ} (hB : 4≤B) (S : Finset ℕ) (h : ℕ
     if raw S h i+borrow (raw S h) i<0 then -1 else 0 from rfl,hraw]
   split_ifs with hn <;> push_cast <;> omega
 
-private theorem map_range_getD (f : ℕ → ℕ) {n i : ℕ} (hi : i<n) :
-    ((List.range n).map f).getD i 0=f i := by
-  rw [List.getD_eq_getElem _ _ (by simpa using hi)]
-  simp
-
 theorem maskList_value (B n : ℕ) (S : Finset ℕ) (hS : ∀ i∈S,i<n) :
     Nat.ofDigits B (maskList B n S)=mask B S := by
   rw [maskList,ofDigits_map_range]
   simp only [ite_mul,zero_mul]
-  rw [← Finset.sum_filter]
-  have hs : (range n).filter (fun i => i∈S)=S := by
-    ext i
-    simp only [mem_filter,mem_range]
-    exact ⟨fun h => h.2,fun hi => ⟨hS i hi,hi⟩⟩
-  rw [hs,mask,Finset.mul_sum]
+  rw [← Finset.sum_filter,
+    Finset.filter_mem_eq_of_subset (fun i hi => mem_range.mpr (hS i hi)), mask, Finset.mul_sum]
 
 /-- Generic finite signed-word decoder, with sparse +1 padding and B-2 mask. -/
 theorem tau_sparse_iff {B t n : ℕ} (hB : B=2^t) (ht : 2≤t)
@@ -168,14 +159,14 @@ theorem tau_sparse_iff {B t n : ℕ} (hB : B=2^t) (ht : 2≤t)
   constructor
   · intro htau i hi
     have hc := htau i (hS i hi)
-    rw [map_range_getD _ (hS i hi),maskList,map_range_getD _ (hS i hi),if_pos hi] at hc
+    rw [MultiTargetCarry.map_range_getD _ (hS i hi),maskList,MultiTargetCarry.map_range_getD _ (hS i hi),if_pos hi] at hc
     have hdB : (digit B (raw S h) i).toNat<2^t := by rw [← hB]; exact hd _ (List.mem_map.mpr ⟨i,List.mem_range.mpr (hS i hi),rfl⟩)
     rw [τ_comm] at hc
     have hsmall : (digit B (raw S h) i).toNat<2 :=
       (lemma_2_7 (k:=1) (K:=t) (by omega) hdB).mpr (by simpa only [pow_one,hB] using hc)
     exact (marked_digit_lt_two_iff hB4 S h i hi (hh i (hS i hi))).mp hsmall
   · intro hz i hi
-    rw [map_range_getD _ hi,maskList,map_range_getD _ hi]
+    rw [MultiTargetCarry.map_range_getD _ hi,maskList,MultiTargetCarry.map_range_getD _ hi]
     by_cases hip : i∈S
     · rw [if_pos hip]
       have hsmall := (marked_digit_lt_two_iff hB4 S h i hip (hh i hi)).mpr (hz i hip)
