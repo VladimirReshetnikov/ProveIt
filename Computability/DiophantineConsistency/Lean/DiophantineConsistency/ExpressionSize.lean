@@ -39,19 +39,9 @@ def splitSize {σ : Type*} : Expr σ → SplitSize
 theorem splitSize_correct {σ : Type*} (e : Expr σ) :
     QuarticCompiler.Gates.count e.splitNatural.1 = (splitSize e).positive ∧
     QuarticCompiler.Gates.count e.splitNatural.2 = (splitSize e).negative := by
-  induction e with
-  | constant a => exact ⟨rfl, rfl⟩
-  | var i => exact ⟨rfl, rfl⟩
-  | add p q hp hq =>
-    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.add,
-      hp.1, hp.2, hq.1, hq.2, Nat.add_assoc]
-  | sub p q hp hq =>
-    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.sub,
-      hp.1, hp.2, hq.1, hq.2, Nat.add_assoc]
-  | mul p q hp hq =>
-    simp [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.mul,
-      hp.1, hp.2, hq.1, hq.2, Nat.add_assoc, Nat.add_left_comm, Nat.add_comm]
-    omega
+  induction e <;>
+    simp_all only [Expr.splitNatural, QuarticCompiler.Gates.count, splitSize, SplitSize.leaf,
+      SplitSize.add, SplitSize.sub, SplitSize.mul, and_self] <;> constructor <;> omega
 
 @[simp] theorem splitSize_rename {σ τ : Type*} (e : Expr σ) (f : σ → τ) :
     splitSize (e.rename f) = splitSize e := by
