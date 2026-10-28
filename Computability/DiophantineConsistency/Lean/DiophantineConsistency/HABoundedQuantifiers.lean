@@ -175,7 +175,7 @@ private theorem dec_map {G : List Formula} {a b : Formula}
       (G := b :: neg a :: G) (List.mem_cons_of_mem _ List.mem_cons_self))).mp
       (((hb.prepend _).prepend _).mp (Relative.hypothesis List.mem_cons_self))
 
-private theorem dec_and {G : List Formula} {a b : Formula}
+theorem dec_and {G : List Formula} {a b : Formula}
     (ha : Relative Formula.Ax_s G (dec a)) (hb : Relative Formula.Ax_s G (dec b)) :
     Relative Formula.Ax_s G (dec (.and a b)) := by
   apply Relative.or_elim ha
@@ -194,7 +194,7 @@ private theorem dec_and {G : List Formula} {a b : Formula}
       (List.mem_cons_of_mem _ List.mem_cons_self)).mp
       (Relative.and_left (Relative.hypothesis List.mem_cons_self))
 
-private theorem dec_or {G : List Formula} {a b : Formula}
+theorem dec_or {G : List Formula} {a b : Formula}
     (ha : Relative Formula.Ax_s G (dec a)) (hb : Relative Formula.Ax_s G (dec b)) :
     Relative Formula.Ax_s G (dec (.or a b)) := by
   apply Relative.or_elim ha

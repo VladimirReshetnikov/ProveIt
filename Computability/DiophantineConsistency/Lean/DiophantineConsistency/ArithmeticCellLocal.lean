@@ -138,26 +138,8 @@ private theorem weight_mod_sixteen (e : Entry) : 2 * weight e ≡ selectorUnit16
 
 theorem shifted_suffix_sum (a : ℕ → ℕ) {j : ℕ} (hj : j ≤ 942) :
     (∑ p ∈ Finset.range 942, if 942 ≤ j + p then a (j + p - 942) else 0) =
-      prefixSum a j := by
-  have hn : 942 = (942 - j) + j := by omega
-  have hz : (∑ p ∈ Finset.range (942 - j),
-      if 942 ≤ j + p then a (j + p - 942) else 0) = 0 := by
-    apply Finset.sum_eq_zero
-    intro p hp
-    have hp' := Finset.mem_range.mp hp
-    rw [if_neg (by omega : ¬942 ≤ j + p)]
-  calc
-    _ = ∑ p ∈ Finset.range ((942 - j) + j),
-        if 942 ≤ j + p then a (j + p - 942) else 0 :=
-      congrArg (fun n => ∑ p ∈ Finset.range n,
-        if 942 ≤ j + p then a (j + p - 942) else 0) hn
-    _ = _ := by
-      rw [Finset.sum_range_add, hz, zero_add]
-      unfold prefixSum
-      apply Finset.sum_congr rfl
-      intro p _
-      rw [if_pos (by omega : 942 ≤ j + (942 - j + p)),
-        show j + (942 - j + p) - 942 = p by omega]
+      prefixSum a j :=
+  PaddingStaircase.shifted_suffix_sum_general a hj
 
 private def selectorUnit2048 : Entry → ℕ
   | .inl _ => 2

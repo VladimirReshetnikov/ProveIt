@@ -572,5 +572,50 @@ external dependencies remain precompiled. An initial all-trans prototype timed
 out, but its empty log and overwritten source have no standalone status record.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-jones-quartic-evidence/BUNDLE.json).
 
+The generated consumer-table proof `b696a79f7c` removes 26 net lines and 557
+bytes across the shared helper, three generated circuits and their generator,
+bringing the reviewed series to 7759. All baseline/final targets, rechecked
+prerequisites and clients, focused checks and 176 old public axiom reports pass;
+comparable logs match. Both initial joint-client runs exceeded the 6 GB Lean
+memory cap; sequential replays passed with a 9 GB cap. Earlier overwritten
+client records are excluded in favor of contemporaneous reruns, and the unchanged
+semantics prerequisite emits five matching warnings. Mathlib and other project
+dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-consumer-table-evidence/BUNDLE.json).
+
+The HA decision proof reuse `8c0a3a9f61` removes 36 net lines, bringing the
+reviewed series to 7795. Twenty-one baseline project modules were rebuilt;
+final targets, two focused checks, two direct clients and all 37 old public
+axiom reports pass with matching logs and no warnings. Current PACore was
+authenticated from a prior refresh; Foundation, FirstOrder, AckermannHFCore,
+Mathlib and other earlier dependencies remain precompiled. The new-helper probe
+status was observed but not separately recorded in JSON. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-ha-decisions-evidence/BUNDLE.json).
+
+The DAG RHS degree reuse `e374d0dd9d` removes ten net lines and 503 bytes,
+bringing the reviewed series to 7805. Two prerequisites were rebuilt and four
+prior objects authenticated; targets, a direct client, focused checks, 56 old
+public axiom reports and two inferred-instance probes pass with matching output
+and no warnings. Other project and external dependencies remain precompiled;
+helper and instance-probe statuses were observed but lack separate JSON records.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-rhs-degree-evidence/BUNDLE.json).
+
+The shifted padding suffix reuse `423704157f` removes ten net lines across
+three modules, bringing the reviewed series to 7815. Baseline and corrected
+final affected modules, focuses, clients and 73 old public axiom reports pass.
+Three existing ArithmeticCellLocal warnings differ only by line number. An
+initial helper name caused an ambiguous focus check; its renamed version and
+boundary probes pass. The client was tested from its original pinned snapshot
+while a separate mask edit was in progress. Earlier local and external
+dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-padding-shift-evidence/BUNDLE.json).
+
+The matrix-free mask proof reuse `f405dc9f52` removes 19 net lines, bringing
+the reviewed series to 7834. Original-snapshot baseline and final targets use
+the same authenticated corrected padding/cell objects; all 31 old public axiom
+reports, boundary checks and actual Foundation.Vorspiel.Matrix co-imports pass
+with matching logs. ArithmeticCellTransfer could not be checked because its
+ArithmeticCyclicWord object was missing. Earlier dependencies remain precompiled,
+and the prerequisite build and failed direct-client probe statuses were observed
+rather than separately recorded in JSON. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mask-reuse-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

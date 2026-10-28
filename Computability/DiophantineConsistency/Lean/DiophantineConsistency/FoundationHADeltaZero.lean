@@ -72,42 +72,6 @@ private theorem dec_neg {G : List SetTheory.PA.Formula} {a : SetTheory.PA.Formul
       (Relative.hypothesis (List.mem_cons_of_mem _ List.mem_cons_self))
   · exact Relative.or_intro_left _ (Relative.hypothesis List.mem_cons_self)
 
-private theorem dec_and {G : List SetTheory.PA.Formula} {a b : SetTheory.PA.Formula}
-    (ha : Relative SetTheory.PA.Formula.Ax_s G (dec a))
-    (hb : Relative SetTheory.PA.Formula.Ax_s G (dec b)) :
-    Relative SetTheory.PA.Formula.Ax_s G (dec (.and a b)) := by
-  apply Relative.or_elim ha
-  · apply Relative.or_elim (hb.prepend a)
-    · exact Relative.or_intro_left _ ((Relative.hypothesis
-        (List.mem_cons_of_mem _ List.mem_cons_self)).and_intro
-        (Relative.hypothesis List.mem_cons_self))
-    · apply Relative.or_intro_right
-      apply Relative.imp_intro
-      exact (Relative.hypothesis (G := .and a b :: neg b :: a :: G)
-        (List.mem_cons_of_mem _ List.mem_cons_self)).mp
-        (Relative.and_right (Relative.hypothesis List.mem_cons_self))
-  · apply Relative.or_intro_right
-    apply Relative.imp_intro
-    exact (Relative.hypothesis (G := .and a b :: neg a :: G)
-      (List.mem_cons_of_mem _ List.mem_cons_self)).mp
-      (Relative.and_left (Relative.hypothesis List.mem_cons_self))
-
-private theorem dec_or {G : List SetTheory.PA.Formula} {a b : SetTheory.PA.Formula}
-    (ha : Relative SetTheory.PA.Formula.Ax_s G (dec a))
-    (hb : Relative SetTheory.PA.Formula.Ax_s G (dec b)) :
-    Relative SetTheory.PA.Formula.Ax_s G (dec (.or a b)) := by
-  apply Relative.or_elim ha
-  · exact Relative.or_intro_left _ (Relative.or_intro_left _ (Relative.hypothesis List.mem_cons_self))
-  · apply Relative.or_elim (hb.prepend (neg a))
-    · exact Relative.or_intro_left _ (Relative.or_intro_right _ (Relative.hypothesis List.mem_cons_self))
-    · apply Relative.or_intro_right
-      apply Relative.imp_intro
-      apply Relative.or_elim (Relative.hypothesis List.mem_cons_self)
-      · exact (Relative.hypothesis (G := a :: .or a b :: neg b :: neg a :: G)
-          (by simp [neg])).mp (Relative.hypothesis List.mem_cons_self)
-      · exact (Relative.hypothesis (G := b :: .or a b :: neg b :: neg a :: G)
-          (by simp [neg])).mp (Relative.hypothesis List.mem_cons_self)
-
 private theorem dec_map {a b : SetTheory.PA.Formula} (hd : Proves (dec a))
     (hf : Proves (.imp a b)) (hb : Proves (.imp b a)) : Proves (dec b) := by
   apply Relative.or_elim hd

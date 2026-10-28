@@ -1,0 +1,248 @@
+{
+  "description": "Shared shifted suffix summation: proof snapshots, dependency graph, old client snapshot, baseline/final records and independent review.",
+  "commit": "423704157f",
+  "results": {
+    "baseline_and_final_module_builds_each": 5,
+    "baseline_and_final_checks_each": 5,
+    "matching_old_public_axiom_reports": 73,
+    "helper_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "existing_ArithmeticCellLocal_warnings_each": 3
+  },
+  "limitations": [
+    "The first helper name conflicted with an existing unqualified theorem; that focused check failed and is retained. The helper was renamed, and the corrected checks passed.",
+    "The current graph pins 77 original nodes. The concurrent mask refactor also changed ArithmeticCellLabels and added an edge to MFDoubledClause2011, which is absent from this static node set. The padding client check instead used the included original ArithmeticCellLabels snapshot.",
+    "ArithmeticCellLocal baseline/final warning texts match after accounting for moved source line numbers; raw logs are not byte-identical.",
+    "Earlier local and external dependencies were reused precompiled; borrowed receipts are included and this is not a full fresh closure.",
+    "The corrected helper log and source are retained, but its separate command/status was not stored as a standalone JSON record.",
+    "Initial final-target object hashes were superseded by corrected builds; the initial source snapshots and records are retained without the superseded objects.",
+    "Timings are single observations; compiled objects and overlay links are excluded."
+  ],
+  "independent_review": "Both original 942-case proofs use the identical arithmetic argument. The shared version generalizes it to arbitrary N, and old theorem statements and other source are unchanged. Baseline/final target, focused, client and 73 axiom checks passed; focused and client outputs matched. The original ArithmeticCellLabels client snapshot matches the pre-change source, and the concurrent mask edit is not silently substituted. Corrected general helper checks include N=0 and j=N. All 77 graph-after source pins and recorded imports matched the worktree at review time.",
+  "archive": {
+    "path": "inputs-and-logs.zip",
+    "bytes": 78256,
+    "sha256": "6c6c678ee7ed0fe7313fda4d244bb7663ea3309761e904b70b49f773fe3c7345",
+    "members": {
+      "ArithmeticCellLocal.first-final.lean": {
+        "bytes": 20991,
+        "sha256": "24b11ec65948b3e59d7f5cc99ef8564abf949ca7466d8f38e6b4d177b1102044"
+      },
+      "ArithmeticCellLocal.original.lean": {
+        "bytes": 21693,
+        "sha256": "ea23ce7a8f95748ab76f2b6c075674c1874624972ab695acb3784c7db1866112"
+      },
+      "CurrentEarlyPadding2011.first-final.lean": {
+        "bytes": 14264,
+        "sha256": "2111bcd626bd3763f5a5efd1e7d172849525c5042b6fef708f4ba68b56f1e808"
+      },
+      "CurrentEarlyPadding2011.original.lean": {
+        "bytes": 14966,
+        "sha256": "a670326e927c795f8dcae21221eee614bb9d110d0aec2c35f13b9079edd21a80"
+      },
+      "PaddingStaircase.first-final.lean": {
+        "bytes": 8594,
+        "sha256": "fdd906cb5bb14c58884f3e51a752d1aa830e4eaa116cd9dee03d9bb38e223a21"
+      },
+      "PaddingStaircase.original.lean": {
+        "bytes": 7635,
+        "sha256": "b75d9c9cf430b4e3f8b020246c75eefd9c367f740cc6b1a99bc5de4859fb4932"
+      },
+      "axioms.lean": {
+        "bytes": 5437,
+        "sha256": "222b393f117b4f74754dc3d669720130c40f6272427c4989f8609371032fafc1"
+      },
+      "baseline-ArithmeticCellLabels.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline-ArithmeticCellLocal.log": {
+        "bytes": 1378,
+        "sha256": "eb9baa091596a9ba4f01d0460a775dfe453d21a9c0a20588e56164ed6b1cfc00"
+      },
+      "baseline-CurrentClause2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline-CurrentEarlyPadding2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline-CurrentEarlyPadding2011Checks.log": {
+        "bytes": 1303,
+        "sha256": "bf3f25523f6091b5d277c20344f39a75eb81302151b34ffddf827d86207dff6d"
+      },
+      "baseline-CurrentOneHot2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline-NativePreliminaryCount2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline-PaddingStaircase.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "baseline-PaddingStaircaseChecks.log": {
+        "bytes": 882,
+        "sha256": "9867261aedf72c961bf7bad86719de5c2c92b95b8881249601f09873b9a175ea"
+      },
+      "baseline-axioms.log": {
+        "bytes": 8601,
+        "sha256": "945cfc67c099c194a4eaff7ecc01f4946b83d641eb8f1bfab6b480d557d3f1f6"
+      },
+      "baseline-checks-records.json": {
+        "bytes": 2566,
+        "sha256": "129c159f326aafc79799c12dfdf7f9bea2a900e4713c7231c28a065ad067a14d"
+      },
+      "baseline-targets-records.json": {
+        "bytes": 3732,
+        "sha256": "d14f07bc96f5f04d2bce9a22985ba204fe7959a7442b494cd9a19787d4f54acd"
+      },
+      "borrowed-permutation/final-records.json": {
+        "bytes": 1701,
+        "sha256": "afbdbbd2248c4fb4f3c022027a9159d754315fb3eea1e83141872834e650cbd8"
+      },
+      "borrowed-permutation/graph.json": {
+        "bytes": 8226,
+        "sha256": "9b8fd7057dff577f53fda3384f19e3d8e19d41426bcce5839c7846c10ee5c4bc"
+      },
+      "borrowed-tail/final-records.json": {
+        "bytes": 1328,
+        "sha256": "6dfce6b191e5827f78416f6d10a1c9abf27fc6574430680091c9b166c13b24f7"
+      },
+      "borrowed-tail/graph.json": {
+        "bytes": 26358,
+        "sha256": "a33439e90defd599d183a72fdc6cec9fc133fe70b64b3b4070dffc95c7bd6eb5"
+      },
+      "borrowed-tail/summary.json": {
+        "bytes": 5606,
+        "sha256": "0610924517427ef08308fa9e3af862e91ddae521230694613eb11865dbb49c35"
+      },
+      "change.diff": {
+        "bytes": 5026,
+        "sha256": "b83f6d6c972b53cb86ed1fb730983a4e4b1c10f779e886ef137db441f025e2da"
+      },
+      "corrected-early-focus.log": {
+        "bytes": 1303,
+        "sha256": "bf3f25523f6091b5d277c20344f39a75eb81302151b34ffddf827d86207dff6d"
+      },
+      "corrected-final-targets-records.json": {
+        "bytes": 3718,
+        "sha256": "6f437f611b12cdc7b15dc36641743eb3756813c117c6053940e2bba5f0a4de56"
+      },
+      "corrected-onehot.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "driver.py": {
+        "bytes": 1818,
+        "sha256": "324780b2de45b6265e436fdf81adc47d078ebb9ca2ac704a5afa340bcededd52"
+      },
+      "final-ArithmeticCellLabels.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-ArithmeticCellLocal.log": {
+        "bytes": 1378,
+        "sha256": "73cfb2128159196ddeb89f78ed6107234fe062fd6575bbca2be9ff81ff771e3a"
+      },
+      "final-CurrentClause2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-CurrentEarlyPadding2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-CurrentEarlyPadding2011Checks.log": {
+        "bytes": 1303,
+        "sha256": "bf3f25523f6091b5d277c20344f39a75eb81302151b34ffddf827d86207dff6d"
+      },
+      "final-CurrentOneHot2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-NativePreliminaryCount2011.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-PaddingStaircase.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "final-PaddingStaircaseChecks.log": {
+        "bytes": 882,
+        "sha256": "9867261aedf72c961bf7bad86719de5c2c92b95b8881249601f09873b9a175ea"
+      },
+      "final-axioms.log": {
+        "bytes": 8601,
+        "sha256": "945cfc67c099c194a4eaff7ecc01f4946b83d641eb8f1bfab6b480d557d3f1f6"
+      },
+      "final-checks-records.json": {
+        "bytes": 2559,
+        "sha256": "cfaeb93143eabd6f8eae7dd59e4fe6eccfbcc3a9adfce7e9b0c30bf40c862f72"
+      },
+      "final-targets-records.json": {
+        "bytes": 3718,
+        "sha256": "6f437f611b12cdc7b15dc36641743eb3756813c117c6053940e2bba5f0a4de56"
+      },
+      "first-final-CurrentEarlyPadding2011Checks.log": {
+        "bytes": 2124,
+        "sha256": "5983873d255241c00d93b04a5e8df3218bcf094be092095e8fc456ba8a6dbe6a"
+      },
+      "first-final-checks-records.json": {
+        "bytes": 1071,
+        "sha256": "af884835038de28321e1d25e3ec99389be646557c8657dce3723a77419a08efe"
+      },
+      "first-final-targets-records.json": {
+        "bytes": 3719,
+        "sha256": "753290bb3fc1f25217dbc5ae93aad8b34bca431c666b253764d97fe1e387b3d1"
+      },
+      "graph-after.json": {
+        "bytes": 13648,
+        "sha256": "9f93e1d2d0dc0db3e08de17654638d9466e471741d3147768a3055e180a3f48e"
+      },
+      "graph-before.json": {
+        "bytes": 13619,
+        "sha256": "8e18fb105c43a751de98e13c6042b24ab2ee4da09c81d15353afbaab5e36f9df"
+      },
+      "helper-check-final.log": {
+        "bytes": 130,
+        "sha256": "2d3cd292da89b32dfa671fd64798730b1adbf8d151f8545256c7d136f95ee171"
+      },
+      "helper-check.lean": {
+        "bytes": 528,
+        "sha256": "e933047d3a87d91ed2d82cb1d0f304fb5be2b39f4ce0a4fa4d00c7d53327dbf2"
+      },
+      "helper-check.log": {
+        "bytes": 120,
+        "sha256": "642b5a274faa3c29af33198315941caf767fd3e8c9eb07543189c951dcf05d72"
+      },
+      "probe-padding.log": {
+        "bytes": 28,
+        "sha256": "ed6838405c639eae9e5348d68d6a508819c3b004276389dbcac5313cecca2096"
+      },
+      "snapshots/ArithmeticCellLabels.original.lean": {
+        "bytes": 12107,
+        "sha256": "80ca17f2e39e2c847ae3c209d3abbcc224dd75af02fc67f83399297e444dbc21"
+      },
+      "snapshots/ArithmeticCellLocal.final.lean": {
+        "bytes": 20999,
+        "sha256": "14584c50b532f75ed97954d8063a392812c1b8dac44e5c221f3f676033347ce3"
+      },
+      "snapshots/CurrentEarlyPadding2011.final.lean": {
+        "bytes": 14272,
+        "sha256": "1e72f7fed3d0e80882afd20e11cfda4dfc7eb4e25540c6938259342ba6bbe319"
+      },
+      "snapshots/PaddingStaircase.final.lean": {
+        "bytes": 8602,
+        "sha256": "9f0940b9e827ac921ad025d72b73a1b9051e87383d7828f2bb15df2f6efa965d"
+      }
+    }
+  }
+}

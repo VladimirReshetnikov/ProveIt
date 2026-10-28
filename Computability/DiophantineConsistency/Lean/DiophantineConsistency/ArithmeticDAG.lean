@@ -133,6 +133,15 @@ theorem reaches_of_laterConsumer (nodes : List (Node inputs fixed)) (output : �
         exact Relation.ReflTransGen.head hedge (ih (output-j) hdist j hjo rfl)
   exact hgeneral (output-i) i hi rfl
 
+/-- A concrete later-consumer table proves reachability for each node. -/
+theorem reaches_of_consumer_table (nodes : List (Node inputs fixed)) (consumers : List ℕ)
+    (output : ℕ) (hlen : nodes.length = output + 1)
+    (hc : ∀ i : Fin output, i.val < consumers.getD i.val 0 ∧
+      consumers.getD i.val 0 ≤ output ∧ Edge nodes i.val (consumers.getD i.val 0))
+    (i : ℕ) (hi : i < nodes.length) : Reaches nodes output i := by
+  apply reaches_of_laterConsumer nodes output (fun j hj => ⟨_, hc ⟨j, hj⟩⟩) i
+  omega
+
 def operationCount (nodes : List (Node inputs fixed)) : ℕ :=
   ((Finset.range nodes.length).filter (fun i => (nodes.getD i (.literal 0)).isBinary)).card
 

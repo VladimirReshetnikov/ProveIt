@@ -586,12 +586,7 @@ private theorem positive_consumer_certificate : ∀ i : Fin 490,
 
 theorem positive_all_live (i : ℕ) (hi : i < positiveNodes.length) :
     Reaches positiveNodes positiveOutput i := by
-  have hc : ∀ j < 490, ∃ k, j < k ∧ k ≤ 490 ∧ Edge positiveNodes j k := by
-    intro j hj
-    exact ⟨positiveConsumers.getD j 0,positive_consumer_certificate ⟨j,hj⟩⟩
-  apply reaches_of_laterConsumer positiveNodes 490 hc i
-  rw [positive_length] at hi
-  omega
+  exact reaches_of_consumer_table positiveNodes positiveConsumers 490 positive_length positive_consumer_certificate i hi
 
 theorem positive_operation_count : operationCount positiveNodes = 456 := by decide +kernel
 
@@ -1202,12 +1197,7 @@ private theorem natural_consumer_certificate : ∀ i : Fin 497,
 
 theorem natural_all_live (i : ℕ) (hi : i < naturalNodes.length) :
     Reaches naturalNodes naturalOutput i := by
-  have hc : ∀ j < 497, ∃ k, j < k ∧ k ≤ 497 ∧ Edge naturalNodes j k := by
-    intro j hj
-    exact ⟨naturalConsumers.getD j 0,natural_consumer_certificate ⟨j,hj⟩⟩
-  apply reaches_of_laterConsumer naturalNodes 497 hc i
-  rw [natural_length] at hi
-  omega
+  exact reaches_of_consumer_table naturalNodes naturalConsumers 497 natural_length natural_consumer_certificate i hi
 
 theorem natural_operation_count : operationCount naturalNodes = 463 := by decide +kernel
 

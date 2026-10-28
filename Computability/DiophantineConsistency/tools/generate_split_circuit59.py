@@ -106,12 +106,7 @@ set_option synthInstance.maxSize 512
 
 theorem {domain}_all_live (i : ℕ) (hi : i < {domain}Nodes.length) :
     Reaches {domain}Nodes {domain}Output i := by
-  have hc : ∀ j < {out}, ∃ k, j < k ∧ k ≤ {out} ∧ Edge {domain}Nodes j k := by
-    intro j hj
-    exact ⟨{domain}Consumers.getD j 0,{domain}_consumer_certificate ⟨j,hj⟩⟩
-  apply reaches_of_laterConsumer {domain}Nodes {out} hc i
-  rw [{domain}_length] at hi
-  omega
+  exact reaches_of_consumer_table {domain}Nodes {domain}Consumers {out} {domain}_length {domain}_consumer_certificate i hi
 ''')
   text.append(f'theorem {domain}_operation_count : operationCount {domain}Nodes = {count} := by decide +kernel\n')
   for name,k in [('literals',0),('inputs',1),('fixed',2),('additions',3),('subtractions',4),('multiplications',5)]:
