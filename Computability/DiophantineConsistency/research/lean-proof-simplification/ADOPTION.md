@@ -441,5 +441,14 @@ checks pass and all19 old public axiom reports match. The failed supplied
 candidate and earlier wrong-root client run are retained separately. Other
 dependencies remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-affine-budget-evidence/BUNDLE.json).
 
+The quotient/remainder certificate proofs `9aa66dfb9c` remove ten lines and
+276 bytes, bringing the reviewed series to 4963. Both targets, one direct
+client and two focused checks pass in baseline and final runs; all 16 old
+public axiom reports match and the logs are warning-free. The checks reuse
+compiled dependencies, including six whose sources have newer timestamps, so
+they do not establish a fresh dependency closure. Baseline objects were later
+overwritten, but their hashes and logs were recorded. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-divmod-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
