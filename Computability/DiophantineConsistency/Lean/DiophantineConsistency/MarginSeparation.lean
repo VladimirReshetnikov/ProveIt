@@ -75,20 +75,12 @@ theorem coordinate_gt_of_margin_pos {C K Y cap g : ℤ}
     (hm : 0 < (K ^ 2 - 4 * (C - K * Y) ^ 2) * cap - 8 * g * K ^ 2) :
     K < C := by
   have hgap : 0 < K ^ 2 - 4 * (C - K * Y) ^ 2 := by
-    by_contra h
-    have hmul := mul_nonpos_of_nonpos_of_nonneg (le_of_not_gt h) (le_of_lt hcap)
-    have htail : 0 ≤ 8 * g * K ^ 2 := by positivity
-    linarith
-  by_contra h
-  have hC : C ≤ K := by omega
-  have hKY : 2 * K ≤ K * Y := by
-    have := mul_le_mul_of_nonneg_left hY (le_of_lt hK)
-    nlinarith
-  have hCK : K ≤ -(C - K * Y) := by nlinarith
-  have hsq : K ^ 2 ≤ (C - K * Y) ^ 2 := by
-    have := mul_self_le_mul_self (le_of_lt hK) hCK
-    nlinarith
-  nlinarith [sq_nonneg K]
+    apply (mul_pos_iff_of_pos_right hcap).mp
+    exact lt_of_lt_of_le hm (sub_le_self _ (by positivity))
+  have hwindow := abs_lt_of_sq_lt_sq' (a := 2 * (C - K * Y))
+    (b := K) (by nlinarith only [hgap]) hK.le
+  have hKY := mul_le_mul_of_nonneg_left hY hK.le
+  nlinarith only [hwindow.1, hKY, hK]
 
 /-- The first Pell radicand has the unconditional strict majorant `P*K`. -/
 theorem first_majorant {P K : ℤ} (hP : 0 < P) (hK : 2 ≤ K) :

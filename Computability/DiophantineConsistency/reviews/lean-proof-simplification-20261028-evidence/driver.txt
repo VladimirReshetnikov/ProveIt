@@ -1,0 +1,56 @@
+from pathlib import Path
+import hashlib,json,re,subprocess,time
+OUT=Path('/tmp/diophantine-oct28-refresh')
+S=json.loads((OUT/'setup.json').read_text())
+def rec(p):
+    p=Path(p);b=p.read_bytes()
+    return {'path':str(p),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}
+def guard():
+    for p,h in S['after']['files'].items():
+        assert rec(p)['sha256']==h,('source drift',p)
+    for r in S['reused_objects']:
+        assert rec(r['object'])['sha256']==r['sha256'],('reused object drift',r['object'])
+    assert subprocess.check_output(['git','-C','.lake/packages/mathlib','rev-parse','HEAD'],text=True).strip()==S['after']['mathlib_head']
+    assert not subprocess.check_output(['git','-C','.lake/packages/mathlib','status','--porcelain','--untracked-files=no'],text=True).strip()
+guard()
+steps=[]
+for p in S['ordered_sources']:
+    name=Path(p).stem
+    steps.append({'tag':name,'source':p,'object':'.lake/build/lib/lean/DiophantineConsistency/'+name+'.olean'})
+steps.append({'tag':'all-old-public-axioms','source':str(OUT/'all-old-public-axioms.lean')})
+assert len(steps)==11
+for step in steps:step['source_record']=rec(step['source'])
+manifest={'scope':S['scope'],'merged_HEAD':S['after']['checked_commit'],'upstream':S['upstream'],'protected':S['after']['files'],'project_edges':S['after']['project_import_edges'],'roots':S['after']['roots'],'reused_objects':S['reused_objects'],'focus_only_roots':S['focus_only_roots_without_objects'],'steps':steps,'driver':rec(__file__),'expected_public_report':rec(OUT/'expected-axioms.log')}
+assert not (OUT/'execution.json').exists()
+(OUT/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+state={'complete':False,'records':[],'source_and_reuse_guards_before':True}
+(OUT/'execution.json').write_text(json.dumps(state,indent=2)+'\n')
+began_all=time.monotonic()
+for number,step in enumerate(steps,1):
+    assert rec(step['source'])==step['source_record']
+    cmd=['lake','env','lean','-M6000','-j1','-DElab.async=false',step['source']]
+    if 'object' in step:cmd+=['-o',step['object']]
+    log=OUT/(f'{number:02d}-'+step['tag']+'.log')
+    timing=OUT/(f'{number:02d}-'+step['tag']+'.time')
+    began=time.monotonic()
+    with log.open('wb') as stream:
+        result=subprocess.run(['/usr/bin/time','-f','elapsed_seconds=%e max_rss_kib=%M exit_status=%x','-o',str(timing),*cmd],stdout=stream,stderr=subprocess.STDOUT)
+    row={'number':number,'tag':step['tag'],'argv':cmd,'actual_exit_status':result.returncode,'source':step['source_record'],'elapsed_monotonic_seconds':time.monotonic()-began,'log':rec(log),'timing':rec(timing)}
+    if 'object' in step and result.returncode==0:row['object']=rec(step['object'])
+    state['records'].append(row)
+    (OUT/'execution.json').write_text(json.dumps(state,indent=2)+'\n')
+    print(number,step['tag'],'actualexit',result.returncode,flush=True)
+    if result.returncode:raise SystemExit(result.returncode)
+guard()
+for r in state['records']:
+    assert rec(r['source']['path'])==r['source']
+    if 'object' in r:assert rec(r['object']['path'])==r['object']
+actual=Path(state['records'][-1]['log']['path']).read_bytes()
+expected=(OUT/'expected-axioms.log').read_bytes()
+pattern=re.compile(r"'([^']+)' (?:depends on axioms:\s*\[([^\]]*)\]|does not depend on any axioms)",re.S)
+old=pattern.findall(expected.decode());new=pattern.findall(actual.decode())
+assert len(old)==len(new)==91
+assert old==new
+state.update({'complete':True,'source_and_reuse_guards_after':True,'old_public_reports':91,'old_public_report_sets_identical':True,'old_public_report_stdout_byte_identical':actual==expected,'elapsed_monotonic_seconds':time.monotonic()-began_all})
+(OUT/'execution.json').write_text(json.dumps(state,indent=2)+'\n')
+print('PASS all11 calls;91reportsexact;stdoutbyteequal',actual==expected,flush=True)
