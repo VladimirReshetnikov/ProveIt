@@ -131,29 +131,14 @@ namespace DiophantineConsistency.GapCertificate66
  'def constantCoefficient (ports : Fin 4 → R) : Fin 22 → R :=\n  '+g.vec(ca0)+'\n',
  'def linearCoefficient (ports : Fin 4 → R) : Fin 22 → Fin 31 → R :=\n  '+g.vec(ca1)+'\n',
  'def quadraticCoefficient (ports : Fin 4 → R) : Fin 22 → PairIndex 30 → R :=\n  '+g.vec(ca2)+'\n']
- for k in range(22):
-  ps=[g.pairlit(pairs[i])for i in indices[k]]
-  cert.append(f'''private theorem rowIdentity_{k} (ports : Fin 4 → R) (x : Fin 31 → R) :
-    value (constantCoefficient ports {k}) (linearSupport {k}) (linearCoefficient ports {k})
-      (quadraticSupport {k}) (quadraticCoefficient ports {k}) x = deliveredRows ports x {k} := by
-  have hs1 : linearSupport {k} = {g.fset(sorted(a1[k]))} := rfl
-  have hs2 : quadraticSupport {k} = {g.fset(ps)} := by decide +kernel
-  have ha0 : constantCoefficient ports {k} = {ca0[k]} := rfl
-  have ha1 : linearCoefficient ports {k} = {ca1[k]} := by unfold linearCoefficient; rfl
-  have ha2 : quadraticCoefficient ports {k} = {ca2[k]} := by unfold quadraticCoefficient; rfl
-  have hsource : deliveredRows ports x {k} = {g.expression(delivered[k])} := by
-    unfold deliveredRows GapSource66.rows rowOrder
-    rfl
-  rw [hs1,hs2,ha0,ha1,ha2,hsource]
-  simp [value,linearValue,rowValue]
-  <;> ring
-''')
  cert.append('''theorem rowValue_eq_source (ports : Fin 4 → R) (x : Fin 31 → R) (k : Fin 22) :
     value (constantCoefficient ports k) (linearSupport k) (linearCoefficient ports k)
       (quadraticSupport k) (quadraticCoefficient ports k) x = deliveredRows ports x k := by
-  fin_cases k
+  fin_cases k <;>
+    dsimp [constantCoefficient, linearCoefficient, quadraticCoefficient, linearSupport,
+      quadraticSupport, quadraticIndices, activePair, deliveredRows, GapSource66.rows, rowOrder] <;>
+    simp [value, linearValue, rowValue] <;> ring
 ''')
- cert.extend(f'  · exact rowIdentity_{k} ports x\n'for k in range(22))
  cert.append('''theorem coeff_source_rows (ports : Fin 4 → R) (x : Fin 31 → R) (k : Fin 22) :
     (product weights x (constantCoefficient ports) linearSupport (linearCoefficient ports)
       quadraticSupport (quadraticCoefficient ports) targets).coeff (targets k) =
