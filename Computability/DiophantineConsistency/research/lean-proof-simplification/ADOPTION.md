@@ -466,5 +466,14 @@ passed, including matching focused outputs and 15 old public axiom reports.
 No warnings were reported. HilbertTenthProblem and Mathlib dependencies remained
 precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-convolution-evidence/BUNDLE.json).
 
+The generated gap row identities `ead16b9c20` remove 148 net lines and
+8425 bytes across the Lean source and its generator. Eight local prerequisites
+were rebuilt; baseline and final target, client, focus, and 17 old public axiom
+reports pass and match, including 26 existing client warnings. The refreshed
+certificate emitted 46 warnings without a comparable fresh prerequisite
+baseline; Mathlib remained precompiled. The initially considered `simp` proof
+produced a much larger object; the adopted `dsimp` proof avoids that observed
+cost. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-gap-source-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
