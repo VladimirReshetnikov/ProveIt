@@ -83,12 +83,7 @@ private theorem pair_convolution (c : ZMod (N * cellLength) → ℕ)
       fun p => p.2 * c (k - (p.1 : ZMod (N * cellLength)))).sum =
     (l.map fun p => p.2 * (c (k - ((2409 - p.1 : ℕ) : ZMod (N * cellLength))) +
       c (k - ((3015 - p.1 : ℕ) : ZMod (N * cellLength))))).sum := by
-  induction l with
-  | nil => rfl
-  | cons p l ih =>
-    simp only [List.flatMap_cons, List.map_append, List.sum_append, List.map_cons,
-      List.sum_cons, List.map_nil, List.sum_nil, add_zero, ih]
-    ring
+  simp [List.flatMap, List.sum_flatten, List.map_map, Function.comp_def, mul_add]
 
 /-- An exact stencil expansion; no collision after cyclic folding is lost. -/
 theorem convolution_entries (c : ZMod (N * cellLength) → ℕ)
