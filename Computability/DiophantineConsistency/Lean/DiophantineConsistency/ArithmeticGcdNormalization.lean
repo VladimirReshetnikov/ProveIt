@@ -73,20 +73,15 @@ theorem gcd_certificate_exists (a b : V) : ∃ g : V, GcdCert a b g := by
     have hs : P (a+b) := ⟨hab,le_rfl,0,0,1,1,by simp⟩
     obtain ⟨g,hg,hmin⟩ := InductionOnHierarchy.least_number 𝚺 1 hP hs
     obtain ⟨hgp,hgb,hbez⟩ := hg
-    have hda : g∣a := by
+    have divides_of_remainder (x : V) (hrem : Bez a b (x%g)) : g∣x := by
       apply mod_eq_zero_iff_dvd.mp
       by_contra hn
-      have hr : 0<a%g := lt_of_le_of_ne (Arithmetic.zero_le (a%g)) (Ne.symm hn)
-      have hlt : a%g<g := mod_lt a hgp
-      exact hmin (a%g) hlt ⟨hr,le_trans (le_of_lt hlt) hgb,
-        bez_remainder hbez (div_add_mod a g).symm⟩
-    have hdb : g∣b := by
-      apply mod_eq_zero_iff_dvd.mp
-      by_contra hn
-      have hr : 0<b%g := lt_of_le_of_ne (Arithmetic.zero_le (b%g)) (Ne.symm hn)
-      have hlt : b%g<g := mod_lt b hgp
-      exact hmin (b%g) hlt ⟨hr,le_trans (le_of_lt hlt) hgb,
-        bez_swap (bez_remainder (bez_swap hbez) (div_add_mod b g).symm)⟩
+      have hr : 0<x%g := lt_of_le_of_ne (Arithmetic.zero_le (x%g)) (Ne.symm hn)
+      have hlt : x%g<g := mod_lt x hgp
+      exact hmin (x%g) hlt ⟨hr,le_trans (le_of_lt hlt) hgb,hrem⟩
+    have hda : g∣a := divides_of_remainder a (bez_remainder hbez (div_add_mod a g).symm)
+    have hdb : g∣b := divides_of_remainder b
+      (bez_swap (bez_remainder (bez_swap hbez) (div_add_mod b g).symm))
     exact ⟨g,hda,hdb,hbez⟩
 
 theorem gcd_certificate_unique {a b g h : V}
