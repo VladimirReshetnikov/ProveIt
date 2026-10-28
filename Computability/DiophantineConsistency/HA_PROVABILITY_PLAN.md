@@ -2032,3 +2032,25 @@ Both sides are Π₁, so the equivalence is a Π₂ sentence. By Parsons' theore
 (IΣ₁ is Π₂-conservative over PRA), it is provable in primitive recursive
 arithmetic. That is the standard formal reading of "finitary"; the repository
 has no PRA formalization, so the PRA step is the cited theorem.
+
+## Explicit elementary witness transfers (2026-10-28, iteration 3)
+
+The finitist content is made explicit as bounded Π₁ statements. Each is proved
+in every model of IΣ₁. In each, the witness map is a bounded search below an
+explicit tower of `Exp.exp`/`power`, so the map is elementary recursive.
+
+| Transfer | Theorem | Bound |
+|---|---|---|
+| positive zero `u` ⇒ halting time | `ArithmeticSoundness2011.zero_halts_below` | `t < β·u₀ + 1` |
+| halting time `T` ⇒ positive zero | `ArithmeticConstructionBound.halt_positive_zero_below` | every coordinate ≤ `zeroBound T` (exp/power depth 7) |
+| halting time `t` ⇒ C222 refutation | `ArithmeticRuntimeBound215.refutation_bound_of_blank_halts` | `proof ≤ 2^(2^(700t+8))` |
+| C222 refutation ⇒ enumerator halt | `ArithmeticEnumBoundFair.enum_halts_le_of_refutation` | `time ≤ W²`, where `W = resetWord (refutationWord code)` |
+
+Three gaps remain before the last row reaches machine time:
+- a size bound on `refutationWord code`;
+- explicit per-step clocks for the DAG macro library (`IRun`/`Reach`);
+- explicit per-step clocks for the p215 tape frame (`ReachPos`).
+
+All three are currently existential. The C222 ⇄ Foundation-ZFC link needs
+proof-size bounds for the source-bridge proof transformations and is not
+yet attempted.
