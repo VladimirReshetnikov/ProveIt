@@ -161,6 +161,33 @@ theorem selector_source_injective (h : ℕ) :
   unfold source at hef
   omega
 
+
+theorem selector_sum_le (h : ℕ) (f : ℕ → ℕ) :
+    (∑ e ∈ selectorEntries h, f (source h e)) ≤ ∑ j ∈ Finset.range 942, f j := by
+  have hsub : (selectorEntries h).image (source h) ⊆ Finset.range 942 := by
+    intro j hj
+    obtain ⟨e, he, rfl⟩ := Finset.mem_image.mp hj
+    exact Finset.mem_range.mpr (Finset.mem_filter.mp he).2.2
+  calc
+    _ = ∑ j ∈ (selectorEntries h).image (source h), f j := by
+      symm
+      exact Finset.sum_image (selector_source_injective h)
+    _ ≤ _ := Finset.sum_le_sum_of_subset hsub
+
+theorem selector_weighted_lt (h : ℕ) (f : ℕ → ℕ)
+    (hone : (∑ e ∈ selectorEntries h, f (source h e)) ≤ 1) :
+    (∑ e ∈ selectorEntries h, 2 * weight e * f (source h e)) < 2 ^ 45 := by
+  have hm : (∑ e ∈ selectorEntries h, 2 * weight e * f (source h e)) ≤
+      (2 ^ 45 - 1) * (∑ e ∈ selectorEntries h, f (source h e)) := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro e _
+    apply Nat.mul_le_mul_right
+    have hh := doubled_weight_lt e
+    omega
+  have hh := Nat.mul_le_mul_left (2 ^ 45 - 1) hone
+  omega
+
 /-! ### The physical selector tail (after `CurrentSelectorTail2011`) -/
 
 noncomputable def cutoff : ℕ := 1575850607617

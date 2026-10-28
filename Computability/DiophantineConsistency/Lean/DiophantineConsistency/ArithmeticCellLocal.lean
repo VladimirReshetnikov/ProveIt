@@ -168,32 +168,12 @@ theorem refl_cell {h : ℕ} (hh : h ≤ 1004) :
 
 theorem selector_source_sum_le (h : ℕ) :
     (∑ e ∈ selectorEntries h, cw (4022 + source h e)) ≤ count cw := by
-  have hsub : (selectorEntries h).image (source h) ⊆ Finset.range 942 := by
-    intro f hf
-    obtain ⟨e, he, rfl⟩ := Finset.mem_image.mp hf
-    exact Finset.mem_range.mpr (Finset.mem_filter.mp he).2.2
-  calc
-    _ = ∑ f ∈ (selectorEntries h).image (source h), cw (4022 + f) := by
-      symm
-      exact Finset.sum_image (selector_source_injective h)
-    _ ≤ ∑ f ∈ Finset.range 942, cw (4022 + f) :=
-      Finset.sum_le_sum_of_subset hsub
-    _ = _ := rfl
+  exact ArithmeticCellPhysical.selector_sum_le h (fun j => cw (4022 + j))
 
 theorem selector_reflection_lt (h : ℕ) (hone : count cw ≤ 1) :
     (∑ e ∈ selectorEntries h, 2 * weight e * cw (4022 + source h e)) < 2 ^ 45 := by
-  have hs := selector_source_sum_le H h
-  have hm : (∑ e ∈ selectorEntries h, 2 * weight e * cw (4022 + source h e)) ≤
-      (2 ^ 45 - 1) * (∑ e ∈ selectorEntries h, cw (4022 + source h e)) := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_le_sum
-    intro e _
-    apply Nat.mul_le_mul_right
-    have hh := doubled_weight_lt e
-    omega
-  have hc : (∑ e ∈ selectorEntries h, cw (4022 + source h e)) ≤ 1 := hs.trans hone
-  have hh := Nat.mul_le_mul_left (2 ^ 45 - 1) hc
-  omega
+  exact ArithmeticCellPhysical.selector_weighted_lt h (fun j => cw (4022 + j))
+    ((selector_source_sum_le H h).trans hone)
 
 theorem control_reflection_le {h : ℕ} (hh : h ≤ 1004) :
     (∑ e : Entry, if 1005 ≤ h + position e ∧ 942 ≤ source h e then

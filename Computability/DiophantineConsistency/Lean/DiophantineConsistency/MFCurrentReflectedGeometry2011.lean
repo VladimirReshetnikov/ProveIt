@@ -175,17 +175,8 @@ theorem selector_source_sum_le (c : ZMod (N * 2011) → ℕ)
     (b : ZMod (N * 2011)) (h : ℕ) :
     (∑ e ∈ selectorEntries h, c (b + (source h e : ZMod (N * 2011)))) ≤
       ∑ f : Fin 942, c (b + (f.val : ZMod (N * 2011))) := by
-  have hsub : (selectorEntries h).image (source h) ⊆ Finset.range 942 := by
-    intro f hf
-    obtain ⟨e, he, rfl⟩ := Finset.mem_image.mp hf
-    exact Finset.mem_range.mpr (Finset.mem_filter.mp he).2.2
-  calc
-    _ = ∑ f ∈ (selectorEntries h).image (source h), c (b + (f : ZMod (N * 2011))) := by
-      symm
-      exact Finset.sum_image (selector_source_injective h)
-    _ ≤ ∑ f ∈ Finset.range 942, c (b + (f : ZMod (N * 2011))) :=
-      Finset.sum_le_sum_of_subset hsub
-    _ = _ := (Fin.sum_univ_eq_sum_range _ 942).symm
+  have hr := ArithmeticCellPhysical.selector_sum_le h (fun j => c (b + (j : ZMod (N * 2011))))
+  exact hr.trans_eq (Fin.sum_univ_eq_sum_range _ 942).symm
 
 omit [NeZero (N * 2011)] in
 theorem selector_reflection_lt (c : ZMod (N * 2011) → ℕ)
@@ -193,21 +184,8 @@ theorem selector_reflection_lt (c : ZMod (N * 2011) → ℕ)
     (hone : (∑ f : Fin 942, c (b + (f.val : ZMod (N * 2011)))) ≤ 1) :
     (∑ e ∈ selectorEntries h,
       2 * weight e * c (b + (source h e : ZMod (N * 2011)))) < 2 ^ 45 := by
-  have hs := selector_source_sum_le c b h
-  have hm : (∑ e ∈ selectorEntries h,
-      2 * weight e * c (b + (source h e : ZMod (N * 2011)))) ≤
-      (2 ^ 45 - 1) * (∑ e ∈ selectorEntries h,
-        c (b + (source h e : ZMod (N * 2011)))) := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_le_sum
-    intro e _
-    apply Nat.mul_le_mul_right
-    have hh := doubled_weight_lt e
-    omega
-  have hc : (∑ e ∈ selectorEntries h,
-      c (b + (source h e : ZMod (N * 2011)))) ≤ 1 := hs.trans hone
-  have hh := Nat.mul_le_mul_left (2 ^ 45 - 1) hc
-  omega
+  exact ArithmeticCellPhysical.selector_weighted_lt h (fun j => c (b + (j : ZMod (N * 2011))))
+    ((selector_source_sum_le c b h).trans hone)
 
 omit [NeZero (N * 2011)] in
 theorem control_reflection_le (c : ZMod (N * 2011) → ℕ)
