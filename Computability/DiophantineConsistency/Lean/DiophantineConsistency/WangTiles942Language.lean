@@ -52,30 +52,16 @@ theorem mem_targets_iff_decoded (d : Bool) (q : ℕ) : q ∈ targets d ↔
 theorem target_prefix_card_lt {d : Bool} {q : ℕ} (hq : q ∈ targets d) :
     (targets d ∩ Finset.range q).card < (targets d).card := by
   apply Finset.card_lt_card
-  apply Finset.ssubset_iff_subset_ne.mpr
-  refine ⟨Finset.inter_subset_left, ?_⟩
-  intro he
-  have h : q ∈ targets d ∩ Finset.range q := he.symm ▸ hq
-  have := Finset.mem_range.mp (Finset.mem_inter.mp h).2
-  omega
+  exact (Finset.ssubset_iff_of_subset Finset.inter_subset_left).2 ⟨q, hq, by simp⟩
 
 /-- A target strictly below another number makes the corresponding ranks strict. -/
 theorem rail_strict_mono {d : Bool} {p q : ℕ}
     (hp : p ∈ targets d) (hpq : p < q) : rail d p < rail d q := by
   have hc : (targets d ∩ Finset.range p).card < (targets d ∩ Finset.range q).card := by
     apply Finset.card_lt_card
-    apply Finset.ssubset_iff_subset_ne.mpr
-    constructor
-    · intro a ha
-      obtain ⟨hat, hap⟩ := Finset.mem_inter.mp ha
-      exact Finset.mem_inter.mpr ⟨hat, Finset.mem_range.mpr
-        (lt_trans (Finset.mem_range.mp hap) hpq)⟩
-    · intro he
-      have hm : p ∈ targets d ∩ Finset.range q :=
-        Finset.mem_inter.mpr ⟨hp, Finset.mem_range.mpr hpq⟩
-      have hm' := he.symm ▸ hm
-      have := Finset.mem_range.mp (Finset.mem_inter.mp hm').2
-      omega
+    refine (Finset.ssubset_iff_of_subset
+      (Finset.inter_subset_inter_left (Finset.range_mono (Nat.le_of_lt hpq)))).2 ?_
+    exact ⟨p, by simp [hp, hpq], by simp⟩
   rw [rail_eq_formula, rail_eq_formula]
   unfold railFormula
   omega
