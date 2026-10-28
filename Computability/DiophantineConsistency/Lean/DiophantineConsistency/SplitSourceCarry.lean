@@ -46,17 +46,8 @@ theorem tau_targets_iff {r B b g k t : ℕ} (w : Fin 31 → ℕ)
       ∃ z : Fin 31 → ℕ,(∀ i,z i<b) ∧ g=LowMaskCoding.indexedCode B w z ∧
         ∀ j,(SplitCoefficientBounds.product w (fun i => (z i:ℤ)+1) D0 D1 D2).coeff (q j)=0 := by
   have htargets : ∀ i∈univ.image q,i<2162 := by
-    intro i hi
-    obtain ⟨j,_,rfl⟩ := mem_image.mp hi
-    exact hq j
+    simpa only [forall_mem_image, mem_univ, true_implies] using hq
   rw [tau_product_iff w hwinj hw hb hB ht hbB hg (univ.image q) htargets D0 D1 D2 hH hk hbase hJ]
-  constructor
-  · rintro ⟨z,hz,hcode,hcoeff⟩
-    exact ⟨z,hz,hcode,fun j => hcoeff (q j) (mem_image.mpr ⟨j,mem_univ j,rfl⟩)⟩
-  · rintro ⟨z,hz,hcode,hcoeff⟩
-    refine ⟨z,hz,hcode,?_⟩
-    intro i hi
-    obtain ⟨j,_,rfl⟩ := mem_image.mp hi
-    exact hcoeff j
+  simp only [forall_mem_image, mem_univ, true_implies]
 
 end DiophantineConsistency.SplitSourceCarry

@@ -1,3 +1,4 @@
+import DiophantineConsistency.ReflectedSource
 import Diophantine.Paper1976.Lemma23
 import Diophantine.Paper1984.Masking
 import DiophantineConsistency.CurrentKernelData2011
@@ -101,20 +102,6 @@ theorem reflected_even (c : ZMod (N * 2011) → ℕ) (k : ZMod (N * 2011)) :
   intro e _
   ring
 
-private theorem add_residue (b : ZMod (N * 2011)) (e : ℕ) :
-    (b + (e : ZMod (N * 2011))).val % 2011 = (b.val + e) % 2011 := by
-  have hh : (((b + (e : ZMod (N * 2011))).val : ℕ) : ZMod (N * 2011)) =
-      ((b.val + e : ℕ) : ZMod (N * 2011)) := by
-    simp only [Nat.cast_add, ZMod.natCast_zmod_val]
-  exact ((ZMod.natCast_eq_natCast_iff _ _ _).mp hh).of_dvd ⟨N, by ring⟩
-
-private theorem sub_residue (k : ZMod (N * 2011)) (e : ℕ) :
-    ((k - (e : ZMod (N * 2011))).val + e) % 2011 = k.val % 2011 := by
-  have hh : (((k - (e : ZMod (N * 2011))).val + e : ℕ) : ZMod (N * 2011)) =
-      (k.val : ZMod (N * 2011)) := by
-    simp only [Nat.cast_add, ZMod.natCast_zmod_val, sub_add_cancel]
-  exact ((ZMod.natCast_eq_natCast_iff _ _ _).mp hh).of_dvd ⟨N, by ring⟩
-
 /-- A negative same-cell offset wraps into unsupported residues1006..2010.
 Otherwise the source is exactly the nonnegative offset h+p−1005. -/
 theorem reflected_source (c : ZMod (N * 2011) → ℕ)
@@ -123,26 +110,7 @@ theorem reflected_source (c : ZMod (N * 2011) → ℕ)
     {h p : ℕ} (hh : h ≤ 1004) (hp : p ≤ 985) :
     c (b + (h : ZMod (N * 2011)) - ((1005 - p : ℕ) : ZMod (N * 2011))) =
       if 1005 ≤ h + p then c (b + ((h + p - 1005 : ℕ) : ZMod (N * 2011))) else 0 := by
-  by_cases hv : 1005 ≤ h + p
-  · rw [if_pos hv]
-    congr 1
-    rw [Nat.cast_sub (by omega : p ≤ 1005), Nat.cast_sub hv, Nat.cast_add]
-    ring
-  · rw [if_neg hv]
-    apply hsupport
-    intro hs
-    have hl := support_le hs
-    have hr := sub_residue (b + (h : ZMod (N * 2011))) (1005 - p)
-    simp only [add_residue, Nat.add_mod, hb, zero_add, Nat.mod_mod,
-      Nat.mod_eq_of_lt (by omega : h < 2011)] at hr
-    have hx := Nat.mod_lt
-      (b + (h : ZMod (N * 2011)) - ((1005 - p : ℕ) : ZMod (N * 2011))).val
-      (by decide : 0 < 2011)
-    have hr' :
-        (((b + (h : ZMod (N * 2011)) - ((1005 - p : ℕ) : ZMod (N * 2011))).val % 2011)
-          + (1005 - p)) % 2011 = h := by
-      simpa only [Nat.add_mod, Nat.mod_mod] using hr
-    omega
+  exact ReflectedSource.source c ↑lowSupport (fun f hf => support_le hf) hsupport b hb hh hp
 
 def source (h : ℕ) (e : Entry) : ℕ := h + position e - 1005
 
@@ -175,17 +143,8 @@ theorem selector_source_sum_le (c : ZMod (N * 2011) → ℕ)
     (b : ZMod (N * 2011)) (h : ℕ) :
     (∑ e ∈ selectorEntries h, c (b + (source h e : ZMod (N * 2011)))) ≤
       ∑ f : Fin 942, c (b + (f.val : ZMod (N * 2011))) := by
-  have hsub : (selectorEntries h).image (source h) ⊆ Finset.range 942 := by
-    intro f hf
-    obtain ⟨e, he, rfl⟩ := Finset.mem_image.mp hf
-    exact Finset.mem_range.mpr (Finset.mem_filter.mp he).2.2
-  calc
-    _ = ∑ f ∈ (selectorEntries h).image (source h), c (b + (f : ZMod (N * 2011))) := by
-      symm
-      exact Finset.sum_image (selector_source_injective h)
-    _ ≤ ∑ f ∈ Finset.range 942, c (b + (f : ZMod (N * 2011))) :=
-      Finset.sum_le_sum_of_subset hsub
-    _ = _ := (Fin.sum_univ_eq_sum_range _ 942).symm
+  have hr := ArithmeticCellPhysical.selector_sum_le h (fun j => c (b + (j : ZMod (N * 2011))))
+  exact hr.trans_eq (Fin.sum_univ_eq_sum_range _ 942).symm
 
 omit [NeZero (N * 2011)] in
 theorem selector_reflection_lt (c : ZMod (N * 2011) → ℕ)
@@ -193,21 +152,8 @@ theorem selector_reflection_lt (c : ZMod (N * 2011) → ℕ)
     (hone : (∑ f : Fin 942, c (b + (f.val : ZMod (N * 2011)))) ≤ 1) :
     (∑ e ∈ selectorEntries h,
       2 * weight e * c (b + (source h e : ZMod (N * 2011)))) < 2 ^ 45 := by
-  have hs := selector_source_sum_le c b h
-  have hm : (∑ e ∈ selectorEntries h,
-      2 * weight e * c (b + (source h e : ZMod (N * 2011)))) ≤
-      (2 ^ 45 - 1) * (∑ e ∈ selectorEntries h,
-        c (b + (source h e : ZMod (N * 2011)))) := by
-    rw [Finset.mul_sum]
-    apply Finset.sum_le_sum
-    intro e _
-    apply Nat.mul_le_mul_right
-    have hh := doubled_weight_lt e
-    omega
-  have hc : (∑ e ∈ selectorEntries h,
-      c (b + (source h e : ZMod (N * 2011)))) ≤ 1 := hs.trans hone
-  have hh := Nat.mul_le_mul_left (2 ^ 45 - 1) hc
-  omega
+  exact ArithmeticCellPhysical.selector_weighted_lt h (fun j => c (b + (j : ZMod (N * 2011))))
+    ((selector_source_sum_le c b h).trans hone)
 
 omit [NeZero (N * 2011)] in
 theorem control_reflection_le (c : ZMod (N * 2011) → ℕ)

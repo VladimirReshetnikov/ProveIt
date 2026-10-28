@@ -1,5 +1,6 @@
 import DiophantineConsistency.ArithmeticPellRecurrence
 import DiophantineConsistency.ArithmeticGcdNormalization
+import Mathlib.Algebra.Ring.Divisibility.Basic
 
 /-! Strong divisibility of the represented Pell ordinate at all internal
 indices. Norm-derived natural Bezout certificates supply cancellation;
@@ -12,15 +13,6 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder.Arithmetic
 open ArithmeticPellRecurrence ArithmeticGcdNormalization
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-
-private theorem dvd_sum {h x y : V} (hx : h∣x) (hy : h∣y) : h∣x+y := by
-  obtain ⟨u,hu⟩ := hx
-  obtain ⟨v,hv⟩ := hy
-  exact ⟨u+v,by rw [hu,hv]; ring⟩
-
-private theorem dvd_product {h x : V} (hx : h∣x) (y : V) : h∣x*y := by
-  obtain ⟨u,hu⟩ := hx
-  exact ⟨u*y,by rw [hu]; ring⟩
 
 /-- Divisible summand removal, also for divisor zero. -/
 theorem dvd_remove {h x y : V} (hs : h∣x+y) (hy : h∣y) : h∣x := by
@@ -58,7 +50,7 @@ theorem gcd_add_right (a b : V) : gcdValue a (a+b)=gcdValue a b := by
   · rintro ⟨ha,hs⟩
     exact ⟨ha,dvd_remove (by simpa only [add_comm] using hs) ha⟩
   · rintro ⟨ha,hb⟩
-    exact ⟨ha,dvd_sum ha hb⟩
+    exact ⟨ha,dvd_add ha hb⟩
 
 /-- The actual norm supplies a unit certificate against any ordinate divisor.
 No positivity of h or modular inverse premise is needed. -/
@@ -77,7 +69,7 @@ theorem common_divisors_add (b m n h : V) :
       (h∣ycoord m b ∧ h∣ycoord n b) := by
   constructor
   · rintro ⟨hm,hs⟩
-    have htail : h∣ycoord m b*xcoord n b := dvd_product hm _
+    have htail : h∣ycoord m b*xcoord n b := dvd_mul_of_dvd_left hm _
     have hhead : h∣xcoord m b*ycoord n b := by
       apply dvd_remove (y := ycoord m b*xcoord n b) _ htail
       rwa [←(addition m n b).2]
@@ -85,8 +77,8 @@ theorem common_divisors_add (b m n h : V) :
   · rintro ⟨hm,hn⟩
     refine ⟨hm,?_⟩
     rw [(addition m n b).2]
-    exact dvd_sum (by simpa only [mul_comm] using dvd_product hn (xcoord m b))
-      (dvd_product hm (xcoord n b))
+    exact dvd_add (dvd_mul_of_dvd_right hn (xcoord m b))
+      (dvd_mul_of_dvd_left hm (xcoord n b))
 
 theorem gcd_y_add (b m n : V) :
     gcdValue (ycoord m b) (ycoord (m+n) b)=

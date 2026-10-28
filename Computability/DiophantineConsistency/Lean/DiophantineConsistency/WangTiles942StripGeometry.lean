@@ -23,23 +23,15 @@ theorem initial_tile {T : ℤ → Tile} {N L R : ℕ} (h : InitialStrip T N L R)
     (x : ℤ) (hl : -(L : ℤ) < x) (hr : x < (R : ℤ)) :
     T x = if x < 0 then ⟨2,434,2,0⟩ else
       if x = 0 then start else if x = 1 then ⟨3,436,4,4⟩ else ⟨4,436,4,0⟩ := by
-  by_cases hx : x < 0
-  · rw [if_pos hx]
-    have hc : ((-x).toNat : ℤ) = -x := Int.toNat_of_nonneg (by omega)
+  split_ifs with hx hz ho
+  · have hc : ((-x).toNat : ℤ) = -x := Int.toNat_of_nonneg (by omega)
     have hi := h.left_inside (-x).toNat (by omega) (by omega)
     simpa only [hc, neg_neg] using hi
-  · rw [if_neg hx]
-    by_cases hz : x = 0
-    · rw [if_pos hz, hz]
-      exact h.start_at_zero
-    · rw [if_neg hz]
-      by_cases ho : x = 1
-      · rw [if_pos ho, ho]
-        exact h.head_at_one
-      · rw [if_neg ho]
-        have hc : (x.toNat : ℤ) = x := Int.toNat_of_nonneg (by omega)
-        have hi := h.right_inside x.toNat (by omega) (by omega)
-        simpa only [hc] using hi
+  · subst x; exact h.start_at_zero
+  · subst x; exact h.head_at_one
+  · have hc : (x.toNat : ℤ) = x := Int.toNat_of_nonneg (by omega)
+    have hi := h.right_inside x.toNat (by omega) (by omega)
+    simpa only [hc] using hi
 
 theorem initial_vertical_nonseam {T : ℤ → Tile} {N L R : ℕ}
     (h : InitialStrip T N L R) (x : ℤ) (hl : -(L : ℤ) < x) (hr : x < (R : ℤ)) :

@@ -789,5 +789,72 @@ TapePrefix; the prerequisite was built and the client passed, with its prefix
 command/path receipt reconstructed. Independent review passes. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-more-evidence/BUNDLE.json).
 
+The Pell divisibility reuse `10befdc6ac` removes eight net lines, bringing
+the reviewed series to 8081. Both target versions, two direct clients and
+all 14 public axiom reports pass with identical warning-free logs. Two immediate
+prerequisites were rebuilt and 100 selected source/object pairs matched
+authenticated receipts; other dependencies remain precompiled. The only new
+transitive module is Mathlib.Algebra.Ring.Divisibility.Basic, whose 510-job
+Lake closure passed a read-only freshness check. Independent review passes.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-dvd-evidence/BUNDLE.json).
+
+The Wang rail cardinality rewrite `8a7ecedcb2` removes 14 lines, bringing
+the reviewed series to 8095. Both targets, the focused check, seven direct
+clients and 32 public/generated axiom reports pass with matching logs. The
+target cone matches nine recent kernel receipts and three freshly rebuilt
+core/initialization/encoding prerequisites. CurrentOccupation passes only
+on a cache-bounded 89-node graph with six source-newer objects; other external
+and historical caches remain precompiled. Earlier missing-encoding failures
+and successful reruns are retained. Independent review passes. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-rail-card-evidence/BUNDLE.json).
+
+The shared selector bounds `9da35a0562` remove 37 net lines across four
+modules, bringing the reviewed series to 8132. Paired target builds and four
+representative clients pass; all 162 existing public, exported and generated
+axiom reports match, and both new helpers use the standard three axioms. All
+55 selected local prerequisites match the preceding reviewed reflected-graph
+objects; external packages and previously identified historical client
+dependencies remain precompiled, and other direct clients remain unchecked.
+Three existing cell warnings match after location normalization. The first
+prototype hit recursion limits and introduced an extra warning; both are
+retained separately. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-selector-shared-evidence/BUNDLE.json).
+
+The split/gap target-image rewrite `9e9c79e209` removes 18 lines, bringing
+the reviewed series to 8150. Both target versions, two direct clients, two
+existing focused checks and all five public axiom reports pass with matching
+logs. The 73-node graph and all changed-object descendants were checked; 21
+affected modules were rebuilt and ten HTP seeds authenticated. Fifteen
+warnings in three unchanged refresh prerequisites lack paired preparation
+baselines; other HTP and Mathlib inputs remain precompiled. The earlier
+cache-bounded prototype is separate. Independent review passes. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-source-carry-image-evidence/BUNDLE.json).
+
+The Wang strip conditional rewrite `ebd0e9e513` removes eight lines,
+bringing the reviewed series to 8158. Both target versions, all three direct
+clients and 15 named/generated axiom reports pass with identical warning-free
+logs. Three prerequisites were rebuilt and all 24 local dependency nodes
+match current source/object hashes and previous or new receipts; external
+packages remain precompiled. Independent review passes. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-wang-strip-split-evidence/BUNDLE.json).
+
+The gcd remainder sharing `83a30a00a3` removes five lines, bringing the
+reviewed series to 8163. Both target versions, the focused check and two direct
+production clients pass; all 26 environment-enumerated public/generated axiom
+reports match, including six matching warnings for printed generated auxiliaries.
+All 98 selected source/object pairs match prior receipts and 102 inventory import
+edges were checked. The further downstream ArithmeticPellIntegralSolution was
+not rebuilt; Foundation, Mathlib and historical inputs remain precompiled.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-gcd-remainder-evidence/BUNDLE.json).
+
+The shared modular reflected-source proof `b1ddb64112` removes 14 net
+lines, bringing the reviewed series to 8177. Both target versions, four
+representative clients, the actual Foundation Matrix co-import and all 48
+public axiom reports pass with matching logs. Both import sets gain only the
+new helper, which uses the standard three axioms. All 55 selected prerequisites
+match the prior reviewed graph; other client and external inputs remain
+precompiled, and additional direct clients were not exhaustively rebuilt.
+Initial path-shadowing and bare-Matrix probe failures are retained separately.
+Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-reflected-source-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
