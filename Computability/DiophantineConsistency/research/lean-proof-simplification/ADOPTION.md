@@ -650,5 +650,28 @@ after baseline, though its original command/status records were retained;
 generator and helper-probe statuses were observed without separate JSON records.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-encoded-degree-evidence/BUNDLE.json).
 
+The matrix-free reflected-geometry reuse `300d4cb167` removes 20 net lines,
+bringing the reviewed series to 7894. Targets, a direct client, 21 old axiom
+reports and actual Foundation matrix co-imports pass with matching logs. Eight
+missing prerequisites were rebuilt; one unchanged prerequisite emitted a
+warning without a paired fresh baseline. Initial missing-object attempts were
+corrected and retained. Earlier dependencies remain precompiled. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-mf-reflected-reuse-evidence/BUNDLE.json).
+
+The quadratic predecessor proof `06786bfce1` removes seven net lines, bringing
+the reviewed series to 7901. Targets, two clients, focus, boundary checks and
+26 old axiom reports pass with matching logs. Twenty-two prior refreshed
+prerequisites and four authenticated DAG objects were reused; four earlier
+sources have newer timestamps than cached objects. Failed preliminary probes
+were retained, and the recorded graph was corrected after review. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-pred-certificate-evidence/BUNDLE.json).
+
+The clean-band list proof `b5a09e98e8` removes five net lines, bringing the
+reviewed series to 7906. Twenty-one affected prerequisites were refreshed;
+target, two clients, focus and ten old axiom reports pass with matching logs.
+One existing client warning matches; preparation warnings lack a comparable
+fresh pre-preparation run, and earlier dependencies remain precompiled. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-clean-bands-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
