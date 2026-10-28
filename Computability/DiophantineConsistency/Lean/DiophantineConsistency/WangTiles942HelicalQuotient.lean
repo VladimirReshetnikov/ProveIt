@@ -22,22 +22,12 @@ The equality is proved in both integer time directions. -/
 theorem row_zero_of_helix {α : Type*} (T : ℤ → ℤ → α) (w : ℤ)
     (hhelix : ∀ x t, T (x+w) (t-1) = T x t) (x t : ℤ) :
     T x t = T (x+w*t) 0 := by
-  induction t using Int.induction_on generalizing x with
-  | zero => simp
-  | succ n ih =>
-      have hh := hhelix x ((n : ℤ)+1)
-      rw [add_sub_cancel_right] at hh
-      calc
-        T x ((n : ℤ)+1) = T (x+w) n := hh.symm
-        _ = T ((x+w)+w*n) 0 := ih _
-        _ = T (x+w*((n : ℤ)+1)) 0 := by congr 1; ring
-  | pred n ih =>
-      have hh := hhelix (x-w) (-(n : ℤ))
-      rw [sub_add_cancel] at hh
-      calc
-        T x (-(n : ℤ)-1) = T (x-w) (-(n : ℤ)) := hh
-        _ = T ((x-w)+w*(-(n : ℤ))) 0 := ih _
-        _ = T (x+w*(-(n : ℤ)-1)) 0 := by congr 1; ring
+  let f : ℤ → α := fun s => T (x+w*s) (t-s)
+  have hp : Function.Periodic f 1 := by
+    intro s
+    dsimp [f]
+    convert hhelix (x+w*s) (t-s) using 1; congr 1 <;> ring
+  simpa [f] using hp.sub_int_mul_eq (x := t) t
 
 /-- A generic integer periodic function agrees with its remainder values. -/
 theorem periodic_emod {α : Type*} {f : ℤ → α} {n : ℤ}
