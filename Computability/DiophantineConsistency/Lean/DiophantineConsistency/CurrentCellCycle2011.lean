@@ -96,30 +96,12 @@ theorem iterate_period (b : Cell N) :
 /-- The exact difference cell witnesses transitivity from any base. -/
 theorem reachable_from (a b : Cell N) :
     ∃ j < N, (next : Cell N → Cell N)^[j] a = b := by
-  have hd : (((b : ZMod (N * 2011)) - (a : ZMod (N * 2011))).val % 2011) = 0 := by
-    have hh := CurrentClause2011.subtraction_residue
-      (b : ZMod (N * 2011)) (a : ZMod (N * 2011)).val
-    rw [ZMod.natCast_zmod_val] at hh
-    simpa only [Nat.add_mod, a.property, b.property, add_zero, Nat.mod_mod] using hh
-  let d : Cell N := ⟨(b : ZMod (N * 2011)) - (a : ZMod (N * 2011)), hd⟩
+  let d := theta (a : ZMod (N * 2011)).val b
   refine ⟨index d, index_lt d, ?_⟩
   apply Subtype.ext
-  rw [coe_iterate_next, cast_index_mul]
-  change (a : ZMod (N * 2011)) + ((b : ZMod (N * 2011)) - a) = b
+  rw [coe_iterate_next, cast_index_mul, coe_theta]
+  simp only [wholeShift, a.property, Nat.sub_zero, ZMod.natCast_zmod_val]
   abel
-
-/-- Any successor-preserved property true at zero holds at every cell.
-The predicate is arbitrary; no intended occupation conclusion is assumed. -/
-theorem propagate (P : Cell N → Prop) (hzero : P 0)
-    (hnext : ∀ b, P b → P (next b)) : ∀ b, P b := by
-  have hp (j : ℕ) : P ((next : Cell N → Cell N)^[j] 0) := by
-    induction j with
-    | zero => exact hzero
-    | succ j ih =>
-        rw [Function.iterate_succ_apply']
-        exact hnext _ ih
-  intro b
-  simpa only [iterate_index_zero] using hp (index b)
 
 /-- A base other than zero also propagates over the same spatial cycle. -/
 theorem propagate_from (P : Cell N → Prop) (a : Cell N) (ha : P a)
@@ -133,6 +115,12 @@ theorem propagate_from (P : Cell N → Prop) (a : Cell N) (ha : P a)
   intro b
   obtain ⟨j, _, hj⟩ := reachable_from a b
   exact hj ▸ hp j
+
+/-- Any successor-preserved property true at zero holds at every cell.
+The predicate is arbitrary; no intended occupation conclusion is assumed. -/
+theorem propagate (P : Cell N → Prop) (hzero : P 0)
+    (hnext : ∀ b, P b → P (next b)) : ∀ b, P b := by
+  exact propagate_from P 0 hzero hnext
 
 /-- A finite coordinate equivalence with the canonical quotient as value. -/
 def coordinateFin : Cell N ≃ Fin N where
