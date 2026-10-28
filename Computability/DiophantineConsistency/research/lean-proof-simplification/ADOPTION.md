@@ -778,5 +778,16 @@ refreshed HTP seeds were rebuilt. Five warnings in unchanged HTP preparation
 lack paired baselines; external packages are precompiled and the umbrella import
 was not rebuilt. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-carry-map-evidence/BUNDLE.json).
 
+The additional Fin 1 rewrites `ebaa26c8c9` remove 12 lines across Pell,
+repunit and tape modules, bringing the reviewed series to 8073. Both target
+versions and seven direct clients pass with matching warning-free logs; all
+91 named public axiom reports match. All 336 non-target nodes in the three
+inventories match current source/object hashes and exact receipts; Foundation,
+Mathlib and historical inputs remain precompiled. ArithmeticBinaryCarry emits
+six unpaired prerequisite warnings. An initial tape-client attempt lacked
+TapePrefix; the prerequisite was built and the client passed, with its prefix
+command/path receipt reconstructed. Independent review passes. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-one-more-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
