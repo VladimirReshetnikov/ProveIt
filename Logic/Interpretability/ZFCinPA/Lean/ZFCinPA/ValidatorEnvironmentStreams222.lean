@@ -76,19 +76,11 @@ through the explicit fresh stream of the opposite parity. -/
 theorem encode_formula_relabel {p : V} (hp : IsFormula ℒₛₑₜ p)
     (F s t : V) (hs : StreamFree s F) (ht : StreamFree t F) :
     CProv (wim (encode F 0 s p) (encode F 0 t p)) ∧
-    CProv (wim (encode F 0 t p) (encode F 0 s p)) := by
-  classical
-  by_cases hmod : s % 2=t % 2
-  · let u := alternateStart F s
-    have hu : StreamFree u F := alternateStart_free F s F (le_refl F)
-    have hsu : Apart s u := alternateStart_apart F s
-    have htu : Apart t u := apart_of_mod_ne (by
-      rw [← hmod]
-      exact alternateStart_mod_ne F s)
-    have hsu' := encode_formula_alpha hp F s u hs hu hsu
-    have htu' := encode_formula_alpha hp F t u ht hu htu
-    exact ⟨compose hsu'.1 htu'.2,compose htu'.1 hsu'.2⟩
-  · exact encode_formula_alpha hp F s t hs ht (apart_of_mod_ne hmod)
+    CProv (wim (encode F 0 t p) (encode F 0 s p)) :=
+  ValidatorLabelAvoidance.stream_relabel
+    (R := fun a b => CProv (wim (encode F 0 a p) (encode F 0 b p))) F s t
+    (fun h₁ h₂ => compose h₁ h₂)
+    (fun a b ha hb hab => encode_formula_alpha hp F a b ha hb hab) hs ht
 
 /-- The overlapping next-stream case needed after one binder allocation. -/
 lemma encode_formula_next {p : V} (hp : IsFormula ℒₛₑₜ p)

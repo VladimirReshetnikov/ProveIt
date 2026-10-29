@@ -195,4 +195,24 @@ lemma alternateStart_resources (F B B' seed : V) :
       (le_add_of_nonneg_right (Arithmetic.zero_le B'))
   · exact le_add_of_nonneg_left (Arithmetic.zero_le (F+B))
 
+
+/-- Opposite-parity bridging extends a symmetric transport relation from
+apart streams to any two streams avoiding the same free environment. -/
+lemma stream_relabel {R : V → V → Prop} (F s t : V)
+    (compose : ∀ {a b c}, R a b → R b c → R a c)
+    (alpha : ∀ a b, StreamFree a F → StreamFree b F → Apart a b → R a b ∧ R b a)
+    (hs : StreamFree s F) (ht : StreamFree t F) : R s t ∧ R t s := by
+  classical
+  by_cases hmod : s % 2=t % 2
+  · let u := alternateStart F s
+    have hu : StreamFree u F := alternateStart_free F s F (le_refl F)
+    have hsu : Apart s u := alternateStart_apart F s
+    have htu : Apart t u := apart_of_mod_ne (by
+      rw [← hmod]
+      exact alternateStart_mod_ne F s)
+    have hsu' := alpha s u hs hu hsu
+    have htu' := alpha t u ht hu htu
+    exact ⟨compose hsu'.1 htu'.2,compose htu'.1 hsu'.2⟩
+  · exact alpha s t hs ht (apart_of_mod_ne hmod)
+
 end LeanProofs.ZFCinPA.ValidatorLabelAvoidance
