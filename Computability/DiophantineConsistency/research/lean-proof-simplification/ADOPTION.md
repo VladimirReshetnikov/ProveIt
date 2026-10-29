@@ -1571,5 +1571,15 @@ and 23,348 instances match. Earlier variants were superseded; the direct
 provider matches a source/object receipt and the wider closure remains cached.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-input-cases-evidence/BUNDLE.json).
 
+The modular cancellation sharing `0d0b625be5` replaces three independent
+model-arithmetic arguments with one qualified helper and leaves the reviewed
+net line reduction at 9897: its four-file diff has 33 insertions and 33
+deletions. All three targets and their ControllerData, CellDecoding and
+PellHalfIndex clients pass paired builds. All 241 existing names, 231 public
+reports, private reports, 38,882 simp entries and 16,587 instances match;
+client object hashes differ after the added imports. The new helper is not a
+global simp lemma or instance. Direct providers match current-source receipts;
+the broader closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-shared-modular-cancel-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
