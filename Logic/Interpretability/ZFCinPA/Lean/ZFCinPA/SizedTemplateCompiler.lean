@@ -111,6 +111,9 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       b + height d ≤ B → Good tr T₂ F e B d →
       DerivableLe T₂.theory (translateSequent (tr.formula b) Γ).val
         (Exp.exp (stg (height d) e)) := by
+  have child_heights {b h₁ h₂ B : ℕ} (h : b + (max h₁ h₂ + 1) ≤ B) :
+      b + h₁ ≤ B ∧ b + h₂ ≤ B := by
+    constructor <;> omega
   intro Γ d
   induction d with
   | closed Δ p hp hn =>
@@ -145,11 +148,10 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       obtain ⟨hh, gp, gq⟩ := hg
       simp only [height] at hbB ⊢
       have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
-      simp only [bufferBound] at hbb
-      have hp := ihp b (le_trans (le_max_left _ _) hbb)
-        (le_trans (Nat.add_le_add_left (le_trans (le_max_left _ _) (Nat.le_succ _)) b) hbB) gp
-      have hq := ihq b (le_trans (le_max_right _ _) hbb)
-        (le_trans (Nat.add_le_add_left (le_trans (le_max_right _ _) (Nat.le_succ _)) b) hbB) gq
+      simp only [bufferBound, max_le_iff] at hbb
+      have hhgt := child_heights hbB
+      have hp := ihp b hbb.1 hhgt.1 gp
+      have hq := ihq b hbb.2 hhgt.2 gq
       rw [translateSequent_insert] at hp hq
       simp only [Bootstrapping.Sequent.val_insert] at hp hq
       have hm : (tr.formula b φ).val ^⋏ (tr.formula b ψ).val ∈
@@ -252,11 +254,10 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       obtain ⟨hh, gp, gq⟩ := hg
       simp only [height] at hbB ⊢
       have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
-      simp only [bufferBound] at hbb
-      have hp := ihp b (le_trans (le_max_left _ _) hbb)
-        (le_trans (Nat.add_le_add_left (le_trans (le_max_left _ _) (Nat.le_succ _)) b) hbB) gp
-      have hq := ihq b (le_trans (le_max_right _ _) hbb)
-        (le_trans (Nat.add_le_add_left (le_trans (le_max_right _ _) (Nat.le_succ _)) b) hbB) gq
+      simp only [bufferBound, max_le_iff] at hbb
+      have hhgt := child_heights hbB
+      have hp := ihp b hbb.1 hhgt.1 gp
+      have hq := ihq b hbb.2 hhgt.2 gq
       have hφ := (Good.here tr gp) b hb _ (Finset.mem_insert_self _ _)
       rw [translateSequent_insert] at hp hq
       rw [tr.neg] at hq
