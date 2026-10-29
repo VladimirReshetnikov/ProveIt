@@ -179,180 +179,145 @@ theorem mac_intro {e : RMDag.Edge} {st st' : AS V} {x c : V} (hs : sz st ≤ tow
 
 /-! ## The transfer and copy loops -/
 
+/-- Package a two-register transfer after bounding its output size. -/
+private theorem transferMacro {n m src dst : Nat}
+    (hn : DagPerm.dagPerm.nodes n = (.decnz src, .node m))
+    (hm : DagPerm.dagPerm.nodes m = (.inc dst, .cont 2))
+    (hd : phys src ≠ phys dst) (hdr : dst < 9) (hsr : src < 9)
+    (st : AS V) (hs : sz st ≤ tower j L)
+    (hsz : sz (updAS (updAS st dst (field st dst + field st src)) src 0) ≤ sz st + sz st) :
+    Mac (.node n) st (updAS (updAS st dst (field st dst + field st src)) src 0) j L 1 := by
+  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
+    ArithmeticDagControlPerm222.spec hn hm hd (enc st)
+  rw [lreg_enc st dst hdr, lreg_enc st src hsr, lupd_enc st dst hdr,
+    lupd_enc _ src hsr] at h
+  exact mac_intro hL hs h (field_le_sz st src) (by norm_num) hsz
+
+/-- Package a three-register copy after bounding its output size. -/
+private theorem copyMacro {n m m' src d1 d2 : Nat}
+    (hn : DagPerm.dagPerm.nodes n = (.decnz src, .node m))
+    (hm : DagPerm.dagPerm.nodes m = (.node m', .cont 2))
+    (hm' : DagPerm.dagPerm.nodes m' = (.inc d1, .inc d2))
+    (h1 : phys src ≠ phys d1) (h2 : phys src ≠ phys d2) (h12 : phys d1 ≠ phys d2)
+    (hd1 : d1 < 9) (hsr : src < 9) (hd2 : d2 < 9)
+    (st : AS V) (hs : sz st ≤ tower j L)
+    (hsz : sz (updAS (updAS (updAS st d1 (field st d1 + field st src)) d2
+      (field st d2 + field st src)) src 0) ≤ sz st + sz st) :
+    Mac (.node n) st (updAS (updAS (updAS st d1 (field st d1 + field st src)) d2
+      (field st d2 + field st src)) src 0) j L 1 := by
+  have h := copy2B (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
+    ArithmeticDagControlPerm222.spec hn hm hm' h1 h2 h12 (enc st)
+  rw [lreg_enc st d1 hd1, lreg_enc st src hsr, lreg_enc st d2 hd2,
+    lupd_enc st d1 hd1, lupd_enc _ d2 hd2, lupd_enc _ src hsr] at h
+  exact mac_intro hL hs h (field_le_sz st src) (by norm_num) hsz
+
+
 theorem loop201M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 201) st { st with ac := st.ac + st.s1, s1 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 201) (m := 202) (src := 6) (dst := 3) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 3 (by omega), lreg_enc st 6 (by omega), lupd_enc st 3 (by omega),
-    lupd_enc _ 6 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 6) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 201) (m := 202) (src := 6) (dst := 3) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop203M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 203) st { st with np := st.np + st.s1, s1 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 203) (m := 204) (src := 6) (dst := 0) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 0 (by omega), lreg_enc st 6 (by omega), lupd_enc st 0 (by omega),
-    lupd_enc _ 6 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 6) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 203) (m := 204) (src := 6) (dst := 0) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop205M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 205) st { st with p1 := st.p1 + st.s1, s1 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 205) (m := 206) (src := 6) (dst := 4) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 4 (by omega), lreg_enc st 6 (by omega), lupd_enc st 4 (by omega),
-    lupd_enc _ 6 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 6) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 205) (m := 206) (src := 6) (dst := 4) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop207M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 207) st { st with p2 := st.p2 + st.s1, s1 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 207) (m := 191) (src := 6) (dst := 5) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 5 (by omega), lreg_enc st 6 (by omega), lupd_enc st 5 (by omega),
-    lupd_enc _ 6 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 6) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 207) (m := 191) (src := 6) (dst := 5) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop208M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 208) st { st with tw := st.tw + st.s1, s1 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 208) (m := 186) (src := 6) (dst := 1) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 1 (by omega), lreg_enc st 6 (by omega), lupd_enc st 1 (by omega),
-    lupd_enc _ 6 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 6) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 208) (m := 186) (src := 6) (dst := 1) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop209M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 209) st { st with pl := st.pl + st.s2, s2 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 209) (m := 210) (src := 7) (dst := 8) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 8 (by omega), lreg_enc st 7 (by omega), lupd_enc st 8 (by omega),
-    lupd_enc _ 7 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 7) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 209) (m := 210) (src := 7) (dst := 8) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop211M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 211) st { st with s1 := st.s1 + st.s2, s2 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 211) (m := 185) (src := 7) (dst := 6) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 6 (by omega), lreg_enc st 7 (by omega), lupd_enc st 6 (by omega),
-    lupd_enc _ 7 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 7) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 211) (m := 185) (src := 7) (dst := 6) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop212M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 212) st { st with ws := st.ws + st.s2, s2 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 212) (m := 213) (src := 7) (dst := 2) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 2 (by omega), lreg_enc st 7 (by omega), lupd_enc st 2 (by omega),
-    lupd_enc _ 7 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 7) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 212) (m := 213) (src := 7) (dst := 2) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop216M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 216) st { st with s1 := st.s1 + st.tw, tw := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 216) (m := 185) (src := 1) (dst := 6) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 6 (by omega), lreg_enc st 1 (by omega), lupd_enc st 6 (by omega),
-    lupd_enc _ 1 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 1) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 216) (m := 185) (src := 1) (dst := 6) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop217M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 217) st { st with tw := st.tw + st.ws, ws := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 217) (m := 186) (src := 2) (dst := 1) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 1 (by omega), lreg_enc st 2 (by omega), lupd_enc st 1 (by omega),
-    lupd_enc _ 2 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 2) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 217) (m := 186) (src := 2) (dst := 1) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop197M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 197) st { st with p2 := st.p2 + st.p1, p1 := 0 } j L 1 := by
-  have h := transferB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 197) (m := 191) (src := 4) (dst := 5) rfl rfl
-    (by decide) (enc st)
-  rw [lreg_enc st 5 (by omega), lreg_enc st 4 (by omega), lupd_enc st 5 (by omega),
-    lupd_enc _ 4 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 4) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring)) (le_self_add : sz st ≤ sz st + sz st))
+  apply transferMacro hL (n := 197) (m := 191) (src := 4) (dst := 5) rfl rfl
+    (by decide) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring)) le_self_add
 
 theorem loop193M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 193) st { st with s1 := st.s1 + st.ac, tw := st.tw + st.ac, ac := 0 } j L 1 := by
-  have h := copy2B (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 193) (m := 189) (m' := 190) (src := 3) (d1 := 6)
-    (d2 := 1) rfl rfl rfl (by decide) (by decide) (by decide) (enc st)
-  rw [lreg_enc st 6 (by omega), lreg_enc st 3 (by omega), lreg_enc st 1 (by omega),
-    lupd_enc st 6 (by omega), lupd_enc _ 1 (by omega), lupd_enc _ 3 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 3) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring : _ = sz st + st.ac))
-      (_root_.add_le_add le_rfl (field_le_sz st 3)))
+  apply copyMacro hL (n := 193) (m := 189) (m' := 190) (src := 3) (d1 := 6) (d2 := 1)
+    rfl rfl rfl (by decide) (by decide) (by decide) (by omega) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring : _ = sz st + st.ac))
+    (_root_.add_le_add le_rfl (field_le_sz st 3))
 
 theorem loop194M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 194) st { st with pl := st.pl + st.np, s1 := st.s1 + st.np, np := 0 } j L 1 := by
-  have h := copy2B (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 194) (m := 195) (m' := 196) (src := 0) (d1 := 8)
-    (d2 := 6) rfl rfl rfl (by decide) (by decide) (by decide) (enc st)
-  rw [lreg_enc st 8 (by omega), lreg_enc st 0 (by omega), lreg_enc st 6 (by omega),
-    lupd_enc st 8 (by omega), lupd_enc _ 6 (by omega), lupd_enc _ 0 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 0) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring : _ = sz st + st.np))
-      (_root_.add_le_add le_rfl (field_le_sz st 0)))
+  apply copyMacro hL (n := 194) (m := 195) (m' := 196) (src := 0) (d1 := 8) (d2 := 6)
+    rfl rfl rfl (by decide) (by decide) (by decide) (by omega) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring : _ = sz st + st.np))
+    (_root_.add_le_add le_rfl (field_le_sz st 0))
 
 theorem loop198M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 198) st { st with s1 := st.s1 + st.p1, tw := st.tw + st.p1, p1 := 0 } j L 1 := by
-  have h := copy2B (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 198) (m := 189) (m' := 190) (src := 4) (d1 := 6)
-    (d2 := 1) rfl rfl rfl (by decide) (by decide) (by decide) (enc st)
-  rw [lreg_enc st 6 (by omega), lreg_enc st 4 (by omega), lreg_enc st 1 (by omega),
-    lupd_enc st 6 (by omega), lupd_enc _ 1 (by omega), lupd_enc _ 4 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 4) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring : _ = sz st + st.p1))
-      (_root_.add_le_add le_rfl (field_le_sz st 4)))
+  apply copyMacro hL (n := 198) (m := 189) (m' := 190) (src := 4) (d1 := 6) (d2 := 1)
+    rfl rfl rfl (by decide) (by decide) (by decide) (by omega) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring : _ = sz st + st.p1))
+    (_root_.add_le_add le_rfl (field_le_sz st 4))
 
 theorem loop200M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 200) st { st with s1 := st.s1 + st.p2, tw := st.tw + st.p2, p2 := 0 } j L 1 := by
-  have h := copy2B (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 200) (m := 189) (m' := 190) (src := 5) (d1 := 6)
-    (d2 := 1) rfl rfl rfl (by decide) (by decide) (by decide) (enc st)
-  rw [lreg_enc st 6 (by omega), lreg_enc st 5 (by omega), lreg_enc st 1 (by omega),
-    lupd_enc st 6 (by omega), lupd_enc _ 1 (by omega), lupd_enc _ 5 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 5) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring : _ = sz st + st.p2))
-      (_root_.add_le_add le_rfl (field_le_sz st 5)))
+  apply copyMacro hL (n := 200) (m := 189) (m' := 190) (src := 5) (d1 := 6) (d2 := 1)
+    rfl rfl rfl (by decide) (by decide) (by decide) (by omega) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring : _ = sz st + st.p2))
+    (_root_.add_le_add le_rfl (field_le_sz st 5))
 
 theorem loop215M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 215) st { st with s1 := st.s1 + st.tw, s2 := st.s2 + st.tw, tw := 0 } j L 1 := by
-  have h := copy2B (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 215) (m := 187) (m' := 188) (src := 1) (d1 := 6)
-    (d2 := 7) rfl rfl rfl (by decide) (by decide) (by decide) (enc st)
-  rw [lreg_enc st 6 (by omega), lreg_enc st 1 (by omega), lreg_enc st 7 (by omega),
-    lupd_enc st 6 (by omega), lupd_enc _ 7 (by omega), lupd_enc _ 1 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 1) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring : _ = sz st + st.tw))
-      (_root_.add_le_add le_rfl (field_le_sz st 1)))
+  apply copyMacro hL (n := 215) (m := 187) (m' := 188) (src := 1) (d1 := 6) (d2 := 7)
+    rfl rfl rfl (by decide) (by decide) (by decide) (by omega) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring : _ = sz st + st.tw))
+    (_root_.add_le_add le_rfl (field_le_sz st 1))
 
 theorem loop192M (st : AS V) (hs : sz st ≤ tower j L) :
     Mac (.node 192) st { st with s1 := st.s1 + st.ac, s2 := st.s2 + st.ac, ac := 0 } j L 1 := by
-  have h := copy2B (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-    ArithmeticDagControlPerm222.spec (n := 192) (m := 187) (m' := 188) (src := 3) (d1 := 6)
-    (d2 := 7) rfl rfl rfl (by decide) (by decide) (by decide) (enc st)
-  rw [lreg_enc st 6 (by omega), lreg_enc st 3 (by omega), lreg_enc st 7 (by omega),
-    lupd_enc st 6 (by omega), lupd_enc _ 7 (by omega), lupd_enc _ 3 (by omega)] at h
-  exact mac_intro hL hs h (field_le_sz st 3) (by norm_num)
-    (le_trans (le_of_eq (by simp only [sz]; ring : _ = sz st + st.ac))
-      (_root_.add_le_add le_rfl (field_le_sz st 3)))
+  apply copyMacro hL (n := 192) (m := 187) (m' := 188) (src := 3) (d1 := 6) (d2 := 7)
+    rfl rfl rfl (by decide) (by decide) (by decide) (by omega) (by omega) (by omega) st hs
+  exact le_trans (le_of_eq (by simp only [sz, updAS, field]; ring : _ = sz st + st.ac))
+    (_root_.add_le_add le_rfl (field_le_sz st 3))
 
 end DiophantineConsistency.ArithmeticRuntimeBoundDagMacros
