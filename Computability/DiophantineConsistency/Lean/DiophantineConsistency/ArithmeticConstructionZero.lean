@@ -88,12 +88,8 @@ theorem equations_zero (p : Fin 4 → ℕ) (v : Fin 14 → V) (hv : ∀ j, 0 < v
       _=_ := by ring
   -- the first norm: τ = E·n + k − R ≥ 1
   have htau_pos : R < E*v 9+k := by
-    by_contra hc
-    have h0 : E*v 9+k-R=0 := tsub_eq_zero_of_le (le_of_not_gt hc)
     change (E*v 9+k-R)*(E*v 9+k-R)=1+(E*Y)*(E*Y+1)*k*k at hP
-    rw [h0, zero_mul] at hP
-    exact absurd hP.symm (ne_of_gt (lt_of_lt_of_le _root_.zero_lt_one (le_add_of_nonneg_right
-      (Arithmetic.zero_le _))))
+    exact tsub_pos_iff_lt.mp (pos_of_mul_pos_left (by rw [hP]; simp) (by simp))
   have hmagP : magnitude ((E*v 9+k+rn,rp) : Pair V)=E*v 9+k-R := by
     apply magnitude_of_add
     rw [hrr]
