@@ -565,9 +565,7 @@ theorem provable_exists_L : Provable 𝗭𝗙 (^∃ (⌜domL⌝ : W)) := by
 /-! ### The internal axiom class of `𝗭𝗙𝗖` -/
 
 lemma mem_class_union {T U : SetTheory} [T.Δ₁] [U.Δ₁] {p : W} :
-    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := by
-  change W ⊧/![p] (T.Δ₁ch ⋎ U.Δ₁ch).val ↔ W ⊧/![p] T.Δ₁ch.val ∨ W ⊧/![p] U.Δ₁ch.val
-  simp
+    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := FiniteTheoryRecognizer.union_class_iff T U p
 
 /-- The internal `𝗭𝗙𝗖` axiom class splits into five parts. -/
 lemma mem_ZFC_class {p : W} (h : p ∈ (𝗭𝗙𝗖 : SetTheory).Δ₁Class) :

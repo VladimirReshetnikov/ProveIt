@@ -50,11 +50,7 @@ lemma ofFinite_class_shift_fixed (T : Theory L) (finite : Set.Finite T) {p : V} 
 
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
 lemma union_class_iff (T U : Theory L) [T.Δ₁] [U.Δ₁] (p : V) :
-    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := by
-  change (V ⊧/![p] (T.Δ₁ch ⋎ U.Δ₁ch).val) ↔
-    (V ⊧/![p] T.Δ₁ch.val) ∨ (V ⊧/![p] U.Δ₁ch.val)
-  rw [HierarchySymbol.Semiformula.val_or]
-  simp only [LogicalConnective.HomClass.map_or,LogicalConnective.Prop.or_eq]
+    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := FiniteTheoryRecognizer.union_class_iff T U p
 
 /-- Every literal schema recognizer supplies the needed closed syntax. -/
 lemma schemaRecognizer_shift_fixed {arity : Nat} {Fval : V → V} {p : V}
