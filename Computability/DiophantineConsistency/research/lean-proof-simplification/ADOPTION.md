@@ -1982,5 +1982,14 @@ client builds pass using refreshed cell-label and decoding providers; client
 objects differ, but checked declaration reports and sampled registrations
 match. The wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-wholefield-orbit-evidence/BUNDLE.json).
 
+The shared selector-unit map `cf31781e72` removes five net Lean lines, bringing
+the reviewed series to 10280. The affected proof came from Claude-coauthored
+commit `f79467f544`. One private map replaces two identical maps for the two
+residue proofs. Paired target and direct-client builds pass with identical
+client objects; common public declaration reports and sampled registrations
+match. Private helper names and two private reports change. Four direct project
+providers have source-matched receipts; the wider closure remains cached. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-selector-unit-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

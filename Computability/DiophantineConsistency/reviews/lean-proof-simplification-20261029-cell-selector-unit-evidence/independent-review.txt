@@ -1,0 +1,28 @@
+Independent review of the selector unit candidate
+
+The diff replaces two definitionally identical private selector-unit functions
+with one, allowing the existing divisibility proof to omit a change step. The
+only other edits update references to the renamed helper. Imports, public
+theorem statements and assumptions are unchanged. The target baseline and
+both direct-client source snapshots match the current worktree. Git blame
+attributes the original declarations to Claude-coauthored f79467f5448.
+
+I independently verified all four paired build source/input/output/log pins,
+the identical client objects, and all 16 recorded probe object pins. Target
+census has 177 common declarations, with changed printed types only for the
+two private weight-mod theorems that reference the renamed helper; ten private
+selector declarations disappear and seven appear. Client names/types/axioms and
+sampled global simp/instance registrations match. All nine tracked Lean/Python
+references to the old helper names are in the original module; no tracked
+external references were found. Both builds emit the same three existing
+warnings after normalizing file paths and shifted line numbers.
+
+All four declared direct source/object producer associations match successful
+source-pinned prior records. ArithmeticCellLabels is the only tracked direct
+Lean client found. The remaining transitive dependency closure is cached; the
+reported interface comparisons do not establish equality of proof bodies or
+all persistent extensions. Reproducible check: /tmp/cell-selector-unit-peer-audit.py
+and /tmp/cell-selector-unit-peer-audit.log. No issue found.
+
+Postcommit check: cf31781e72 and its parent match the final and baseline
+source snapshots byte-for-byte.
