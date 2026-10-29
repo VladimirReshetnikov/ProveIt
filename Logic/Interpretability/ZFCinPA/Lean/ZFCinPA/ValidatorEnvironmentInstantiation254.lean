@@ -29,43 +29,32 @@ noncomputable def termInstantiateAt (d index source : V) : V :=
 noncomputable def instantiateAt (d index source : V) : V :=
   subst ℒₛₑₜ (instantiationVec d index) source
 
+private lemma instantiation_matches (d F B B' index : V)
+    (hB : Ext d B B' (freeLabel F index)) :
+    ValidatorEnvironmentSubstitution254.Matches F B B' (d+1) (instantiationVec d index) := by
+  intro i hi
+  by_cases hid : i<d
+  · rw [show (instantiationVec d index).[i]=(^#i : V) from
+      (qVecIter_free_spec (L := ℒₛₑₜ) d index).1 i hid]
+    rw [TermLabels.term_bvar,hB.2.2.1 i hid]
+  · have he : i=d := le_antisymm (lt_succ_iff_le.mp hi) (le_of_not_gt hid)
+    subst i
+    rw [show (instantiationVec d index).[d]=(^&index : V) from
+      (qVecIter_free_spec (L := ℒₛₑₜ) d index).2]
+    rw [TermLabels.term_fvar,hB.2.2.2]
+
 lemma term_labels_instantiate {d source : V} (ht : IsSemiterm ℒₛₑₜ (d+1) source)
     (F B B' index : V) (hB : Ext d B B' (freeLabel F index)) :
-    TermLabels.term F B (termInstantiateAt d index source)=TermLabels.term F B' source := by
-  rcases ht.case with (⟨i,hi,rfl⟩ | ⟨j,rfl⟩ | ⟨k,f,args,hf,_,rfl⟩)
-  · unfold termInstantiateAt
-    rw [termSubst_bvar]
-    by_cases hid : i<d
-    · rw [show (instantiationVec d index).[i]=(^#i : V) from
-        (qVecIter_free_spec (L := ℒₛₑₜ) d index).1 i hid]
-      rw [TermLabels.term_bvar,TermLabels.term_bvar,hB.2.2.1 i hid]
-    · have he : i=d := le_antisymm (lt_succ_iff_le.mp hi) (le_of_not_gt hid)
-      subst i
-      rw [show (instantiationVec d index).[d]=(^&index : V) from
-        (qVecIter_free_spec (L := ℒₛₑₜ) d index).2]
-      rw [TermLabels.term_fvar,TermLabels.term_bvar,hB.2.2.2]
-  · simp [termInstantiateAt]
-  · have hfalse : False := by
-      have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
-      rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
-        .mkSigma “k f. ⊥” from rfl] at hf'
-      simp at hf'
-    exact hfalse.elim
+    TermLabels.term F B (termInstantiateAt d index source)=TermLabels.term F B' source :=
+  ValidatorEnvironmentSubstitution254.term_labels_subst ht (instantiation_matches d F B B' index hB)
 
 lemma vec_labels_instantiate {d arity terms : V} (ht : IsSemitermVec ℒₛₑₜ arity (d+1) terms)
     (F B B' index : V) (hB : Ext d B B' (freeLabel F index)) :
     TermLabels.vec F B arity
       (termSubstVec ℒₛₑₜ arity (instantiationVec d index) terms)=
-      TermLabels.vec F B' arity terms := by
-  have hn := (instantiationVec_typed d index).termSubstVec ht
-  apply nth_ext' arity
-  · exact TermLabels.vec_length F B hn.isUTerm
-  · exact TermLabels.vec_length F B' ht.isUTerm
-  · intro i hi
-    rw [TermLabels.vec_nth F B hn.isUTerm hi,
-      nth_termSubstVec ht.isUTerm hi,
-      TermLabels.vec_nth F B' ht.isUTerm hi]
-    exact term_labels_instantiate (ht.nth hi) F B B' index hB
+      TermLabels.vec F B' arity terms :=
+  ValidatorEnvironmentSubstitution254.vec_labels_subst ht (instantiationVec_typed d index)
+    (instantiation_matches d F B B' index hB)
 
 lemma instantiateAt_isSemiformula {d p : V} (index : V) (hp : IsSemiformula ℒₛₑₜ (d+1) p) :
     IsSemiformula ℒₛₑₜ d (instantiateAt d index p) := hp.subst (instantiationVec_typed d index)
@@ -105,13 +94,8 @@ private instance len_delta : 𝚫₁-Function₁[V] (len : V→V) :=
 lemma encode_instantiateAt {d p : V} (hp : IsSemiformula ℒₛₑₜ (d+1) p)
     (F B B' index fresh : V) (hB : Ext d B B' (freeLabel F index)) :
     encode F B fresh (instantiateAt d index p)=encode F B' fresh p := by
-  have hm : ValidatorEnvironmentSubstitution254.Matches F B B' (d+1) (instantiationVec d index) := by
-    intro i hi
-    have hv : IsSemiterm ℒₛₑₜ (d+1) (^#i) := by simpa using hi
-    have h := term_labels_instantiate hv F B B' index hB
-    simpa only [termInstantiateAt,termSubst_bvar,TermLabels.term_bvar] using h
   exact ValidatorEnvironmentSubstitution254.encode_subst hp (instantiationVec_typed d index)
-    F B B' fresh hm
+    F B B' fresh (instantiation_matches d F B B' index hB)
 
 /-- Actual single-variable source substitution at depth zero. -/
 lemma encode_substs1_fvar {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
