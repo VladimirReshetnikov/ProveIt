@@ -86,11 +86,19 @@ lemma Reach.trans_positive {x y z : V} (h : Reach x y) (g : ReachPos y z) : Reac
   obtain ⟨t,he⟩ := h; obtain ⟨u,hu,hue⟩ := g
   exact ⟨t+u,lt_of_lt_of_le hu (by simp),by rw [runFrom_add,he,hue]⟩
 
-/-- The actual checker oracle, without a caller-supplied box axiom. -/
-theorem oracle_actual (v : Fin 9 → V) (k L : V) (hk : 0<k)
+/-- Oracle dispatch is independent of the relation used to certify each box. -/
+theorem oracle_of_boxes (v : Fin 9 → V) (k L : V) (R : V → V → Prop)
+    (hmark : ∀ r : Fin 9, R (frameSparse (skipState r) L (plain v k))
+      (leftFrame (markExit r) L (marked v r k)))
+    (hinc : ∀ r : Fin 9, R (frameSparse 64 L (marked v r k))
+      (leftFrame 40 L (plain (Function.update v r (v r+1)) (k+1))))
+    (hdecp : ∀ r : Fin 9, 0 < v r → R (frameSparse 0 L (marked v r k))
+      (leftFrame 40 (2*L+1) (plain (Function.update v r (v r-1)) k)))
+    (hdec0 : ∀ r : Fin 9, v r = 0 → R (frameSparse 0 L (marked v r k))
+      (leftFrame 97 L (plain v k)))
     {q q' : Nat} {br : Branch} {x x' : BoxSt} {extra : Bool}
     (h : KRuntimeCore.oracle q br x=some (q',x',extra)) (hv : BranchValid br v) :
-    ReachPos (frameSparse q L (boxValue v k x))
+    R (frameSparse q L (boxValue v k x))
       (leftFrame q' (if extra then 2*L+1 else L) (boxValue v k x')) := by
   cases x with
   | plain e =>
@@ -107,14 +115,14 @@ theorem oracle_actual (v : Fin 9 → V) (k L : V) (hk : 0<k)
         subst q
         simpa only [box_plain,boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,Bool.false_eq_true,if_false,
           KRuntimeCore.sk,KRuntimeCore.skList,KRuntimeCore.markExit,skipState,markExit] using
-          box_mark v ⟨r,hr⟩ L k
+          hmark ⟨r,hr⟩
   | mark r =>
     by_cases hr : r<9
     · by_cases hq : q=64
       · simp only [KRuntimeCore.oracle,if_pos hr,if_pos hq,Option.some.injEq,Prod.mk.injEq] at h
         obtain ⟨rfl,rfl,rfl⟩ := h
         subst q
-        simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,Bool.false_eq_true,if_false] using box_inc v ⟨r,hr⟩ L k
+        simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,Bool.false_eq_true,if_false] using hinc ⟨r,hr⟩
       · by_cases hzero : q=0
         · cases br with
           | none => simp [KRuntimeCore.oracle,hr,hzero] at h
@@ -127,14 +135,25 @@ theorem oracle_actual (v : Fin 9 → V) (k L : V) (hk : 0<k)
               · simp [KRuntimeCore.oracle,hr] at h
                 obtain ⟨rfl,rfl,rfl⟩ := h
                 have hp : 0<v ⟨r,hr⟩ := pos_iff_ne_zero.mpr (by simpa [BranchValid,getValue,hr] using hv)
-                simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,if_true] using box_decp v ⟨r,hr⟩ L k hp
+                simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,if_true] using hdecp ⟨r,hr⟩ hp
               · simp [KRuntimeCore.oracle,hr] at h
                 obtain ⟨rfl,rfl,rfl⟩ := h
                 have hz : v ⟨r,hr⟩=0 := by simpa [BranchValid,getValue,hr] using hv
-                simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,Bool.false_eq_true,if_false] using box_dec0 v ⟨r,hr⟩ L k hk hz
+                simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,Bool.false_eq_true,if_false] using hdec0 ⟨r,hr⟩ hz
             · simp [KRuntimeCore.oracle,hr,hzero,he] at h
         · simp [KRuntimeCore.oracle,hr,hq,hzero] at h
     · simp [KRuntimeCore.oracle,hr] at h
+
+
+/-- The actual checker oracle, without a caller-supplied box axiom. -/
+theorem oracle_actual (v : Fin 9 → V) (k L : V) (hk : 0<k)
+    {q q' : Nat} {br : Branch} {x x' : BoxSt} {extra : Bool}
+    (h : KRuntimeCore.oracle q br x=some (q',x',extra)) (hv : BranchValid br v) :
+    ReachPos (frameSparse q L (boxValue v k x))
+      (leftFrame q' (if extra then 2*L+1 else L) (boxValue v k x')) := by
+  exact oracle_of_boxes v k L ReachPos
+    (fun r => box_mark v r L k) (fun r => box_inc v r L k)
+    (fun r hr => box_decp v r L k hr) (fun r hr => box_dec0 v r L k hk hr) h hv
 
 noncomputable def segValue (gap : V) (v : Fin 9 → V) (k : V) : Seg → V → V
   | .bit b,z => 2*z+digit b

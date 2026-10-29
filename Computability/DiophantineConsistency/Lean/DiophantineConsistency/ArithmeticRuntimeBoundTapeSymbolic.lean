@@ -120,52 +120,9 @@ theorem oracle_actualB (v : Fin 9 → V) (k L : V) (hk : 0<k)
     (h : KRuntimeCore.oracle q br x=some (q',x',extra)) (hv : BranchValid br v) :
     ReachPosB (frameSparse q L (boxValue v k x))
       (leftFrame q' (if extra then 2*L+1 else L) (boxValue v k x')) (boxW v k) := by
-  cases x with
-  | plain e =>
-    cases e with
-    | inc r => simp [KRuntimeCore.oracle] at h
-    | dec r => simp [KRuntimeCore.oracle] at h
-    | none =>
-      cases hs : KRuntimeCore.skipTarget q with
-      | none => simp [KRuntimeCore.oracle,hs] at h
-      | some r =>
-        obtain ⟨hq,hr⟩ := KRuntimeCore.skipTarget_sk hs
-        simp only [KRuntimeCore.oracle,hs,Option.map_some,Option.some.injEq,Prod.mk.injEq] at h
-        obtain ⟨rfl,rfl,rfl⟩ := h
-        subst q
-        simpa only [box_plain,boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,Bool.false_eq_true,if_false,
-          KRuntimeCore.sk,KRuntimeCore.skList,KRuntimeCore.markExit,skipState,markExit] using
-          box_markB v ⟨r,hr⟩ L k
-  | mark r =>
-    by_cases hr : r<9
-    · by_cases hq : q=64
-      · simp only [KRuntimeCore.oracle,if_pos hr,if_pos hq,Option.some.injEq,Prod.mk.injEq] at h
-        obtain ⟨rfl,rfl,rfl⟩ := h
-        subst q
-        simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,Bool.false_eq_true,if_false] using
-          box_incB v ⟨r,hr⟩ L k
-      · by_cases hzero : q=0
-        · cases br with
-          | none => simp [KRuntimeCore.oracle,hr,hzero] at h
-          | some rz =>
-            obtain ⟨r',z⟩ := rz
-            by_cases he : r=r'
-            · subst r'
-              subst q
-              cases z
-              · simp [KRuntimeCore.oracle,hr] at h
-                obtain ⟨rfl,rfl,rfl⟩ := h
-                have hp : 0<v ⟨r,hr⟩ := pos_iff_ne_zero.mpr (by simpa [BranchValid,getValue,hr] using hv)
-                simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,if_true] using
-                  box_decpB v ⟨r,hr⟩ L k hp
-              · simp [KRuntimeCore.oracle,hr] at h
-                obtain ⟨rfl,rfl,rfl⟩ := h
-                have hz : v ⟨r,hr⟩=0 := by simpa [BranchValid,getValue,hr] using hv
-                simpa only [boxValue,boxTail,dif_pos hr,markedTail_zero,plainTail_zero,Bool.false_eq_true,if_false] using
-                  box_dec0B v ⟨r,hr⟩ L k hk hz
-            · simp [KRuntimeCore.oracle,hr,hzero,he] at h
-        · simp [KRuntimeCore.oracle,hr,hq,hzero] at h
-    · simp [KRuntimeCore.oracle,hr] at h
+  exact oracle_of_boxes v k L (fun a b => ReachPosB a b (boxW v k))
+    (fun r => box_markB v r L k) (fun r => box_incB v r L k)
+    (fun r hr => box_decpB v r L k hr) (fun r hr => box_dec0B v r L k hk hr) h hv
 
 lemma peelLeft_actualB (gap : V) (v : Fin 9 → V) (k : V)
     {q : Nat} {b : Bool} {a c : Nat} {l r : List Seg} {t : SConf} {m : Bool}
