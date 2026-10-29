@@ -92,13 +92,7 @@ theorem haltingSentence_nat : haltingSentence.val.Evalb (M := Nat) ![] ↔
     ∃ time, (DecimalMachine215.machine.run time).state = none := by
   have h (time : Nat) : (0 = (SetTheory.Cantor.ofNat (run time)).1) ↔
       (DecimalMachine215.machine.run time).state = none := by
-    constructor
-    · intro ht
-      apply (run_halt_iff time).mp
-      simpa only [ArithmeticCantor.first_nat] using ht.symm
-    · intro ht
-      have hs := (run_halt_iff time).mpr ht
-      simpa only [ArithmeticCantor.first_nat] using hs.symm
+    simpa only [ArithmeticCantor.first_nat, eq_comm] using (run_halt_iff time)
   simpa [haltingSentence] using (exists_congr h)
 
 /-- A closed arithmetic assertion of total unique evaluation, not an internal
