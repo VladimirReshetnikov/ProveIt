@@ -1,6 +1,7 @@
 import ZFCinPA.SizedTemplateAxioms
 import ZFCinPA.LevelDerivation
 import ZFCinPA.SizedCongruence
+import ZFCinPA.SizedCongruenceAtoms
 
 /-! Axiom audit for the bounded template axiom leaves and bounded equality replacement. -/
 
@@ -12,3 +13,8 @@ import ZFCinPA.SizedCongruence
 #print axioms LeanProofs.ZFCinPA.SizedCongruence.step_all
 #print axioms LeanProofs.ZFCinPA.SizedCongruence.step_ex
 #print axioms LeanProofs.ZFCinPA.SizedCongruence.core
+#print axioms LeanProofs.ZFCinPA.SizedCongruenceAtoms.ext_chain
+#print axioms LeanProofs.ZFCinPA.SizedCongruenceAtoms.refl_leaf
+#print axioms LeanProofs.ZFCinPA.SizedCongruenceAtoms.atom_for
+#print axioms LeanProofs.ZFCinPA.SizedCongruenceAtoms.atomOK
+#print axioms LeanProofs.ZFCinPA.SizedCongruenceAtoms.replace_le
