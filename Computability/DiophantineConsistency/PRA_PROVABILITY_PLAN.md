@@ -130,6 +130,9 @@ witness. Extraction of that disjunction from a general proof remains open.
 The [open-matrix selection bridge](reviews/pra-herbrand-selection-root.md)
 now accepts the actual Foundation open formula and a finite-disjunction proof
 in the universal theory, yielding a candidate-PRA proof at one PR witness.
+The [existential-sequent structure](reviews/herbrand-existential-sequents-root.md)
+shows the relevant cut-free proofs contain no universal-rule nodes and collects
+their existential terms. The disjunction extraction itself remains open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive

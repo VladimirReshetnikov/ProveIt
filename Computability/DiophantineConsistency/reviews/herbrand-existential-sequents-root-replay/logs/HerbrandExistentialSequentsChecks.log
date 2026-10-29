@@ -1,0 +1,9 @@
+'DiophantineConsistency.HerbrandExistentialSequents.noUniversal_rew_iff' depends on axioms: [propext]
+'DiophantineConsistency.HerbrandExistentialSequents.noUniversal_neg_of_prefix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandExistentialSequents.cutFree_noUniversalRule' depends on axioms: [propext, Quot.sound]
+DiophantineConsistency.HerbrandExistentialSequents.cutFree_noUniversalRule.{u_1} {L : LO.FirstOrder.Language}
+  {Γ : LO.FirstOrder.Sequent L} (d : ⊢ᴸᴷ¹ Γ) (hCutFree : d.IsCutFree)
+  (hΓ : ∀ φ ∈ Γ, DiophantineConsistency.HerbrandExistentialSequents.NoUniversal φ) :
+  DiophantineConsistency.HerbrandExistentialSequents.NoAllRule d
