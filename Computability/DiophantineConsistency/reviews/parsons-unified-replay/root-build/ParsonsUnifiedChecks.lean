@@ -1,0 +1,15 @@
+import DiophantineConsistency.ParsonsUnified
+#print axioms DiophantineConsistency.ParsonsUnified.initial_derivation
+#print axioms DiophantineConsistency.ParsonsUnified.initial_result
+#print axioms DiophantineConsistency.ParsonsUnified.shift_formula
+#print axioms DiophantineConsistency.ParsonsUnified.terminal_measure
+#print axioms DiophantineConsistency.ParsonsUnified.base_open
+#print axioms DiophantineConsistency.ParsonsUnified.base_terminal
+#print axioms DiophantineConsistency.ParsonsUnified.base_branch
+#print axioms DiophantineConsistency.ParsonsUnified.marked_contraction
+#print axioms DiophantineConsistency.ParsonsUnified.marked_universal
+#print axioms DiophantineConsistency.ParsonsUnified.marked_or
+#print axioms DiophantineConsistency.ParsonsUnified.marked_and
+#print axioms DiophantineConsistency.ParsonsUnified.marked_exs
+#print axioms DiophantineConsistency.ParsonsUnified.parameter_case
+#print axioms DiophantineConsistency.ParsonsUnified.counter_case
