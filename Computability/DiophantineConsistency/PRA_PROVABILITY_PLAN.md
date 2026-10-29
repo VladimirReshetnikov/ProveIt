@@ -8,6 +8,10 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A subsequent upstream merge changed `ArithmeticCarrierRadix2011.lean`. The
+adaptive window and reverse-construction replays below authenticate their
+earlier source snapshots; a source-current downstream rebuild is required.
+
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
 refresh](reviews/herbrand-all-instantiation-root.md) has now passed twice

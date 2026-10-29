@@ -18,3 +18,7 @@ preserved. Initial exploratory attempts had a subtraction rewrite error and
 a missing positivity argument; their terminal output was not retained in the
 packet. Foundation/packages and inherited project objects remain cache
 boundaries, not a fresh transitive source audit.
+
+A subsequent upstream merge changed `ArithmeticCarrierRadix2011.lean`. This
+receipt authenticates the earlier dependency snapshot; the affected
+source-current downstream replay is pending.
