@@ -251,6 +251,12 @@ private theorem sigma_isCell {x : V} (hx : IsCell N x) : IsCell N ((x + DD) % nn
   have hD : (2011:V) ∣ DD := mod_eq_zero_iff_dvd.mp (shiftD_spec H.N_pos hr).2
   rw [mod_add_remove_right_of_dvd hD (by norm_num), hx.2]
 
+private theorem orbit_isCell (m : V) : IsCell N ((m * DD) % nn) := by
+  refine ⟨mod_lt _ (mul_pos (by norm_num) H.N_pos), ?_⟩
+  rw [mod_mod_of_dvd' (by norm_num) (dvd_mul_right _ _)]
+  have hD : (2011:V) ∣ DD := mod_eq_zero_iff_dvd.mp (shiftD_spec H.N_pos hr).2
+  exact mod_eq_zero_iff_dvd.mpr (dvd_mul_of_dvd_right hD m)
+
 private theorem theta_sigma {x : V} (hx : IsCell N x) : cyc nn ((x + DD) % nn) DD = x := by
   have hn : (0:V) < nn := mul_pos (by norm_num) H.N_pos
   apply cyc_unique hx.1
@@ -297,11 +303,7 @@ theorem not_nineteen : False := by
     case zero =>
       simpa [mod_eq_self_of_lt hn] using start_bit0 H
     case succ m ih =>
-      have hD : (2011:V) ∣ DD := mod_eq_zero_iff_dvd.mp (shiftD_spec H.N_pos hr).2
-      have hxm : IsCell N ((m * DD) % nn) := by
-        refine ⟨mod_lt _ hn, ?_⟩
-        rw [mod_mod_of_dvd' (by norm_num) (dvd_mul_right _ _)]
-        exact mod_eq_zero_iff_dvd.mpr (dvd_mul_of_dvd_right hD m)
+      have hxm := orbit_isCell H hr m
       have he : dig 47 C ((m * DD) % nn + ((941:ℕ):V)) = 0 := by
         rcases bool_dig H (cell_lt H hxm (q := 941) (by omega)) with h | h
         · exact h
@@ -316,20 +318,14 @@ theorem not_nineteen : False := by
       exact he
   -- at `m = N - 1` the orbit returns to cell 0
   obtain ⟨M, hM⟩ : ∃ M, N = M + 1 := ⟨N - 1, (tsub_add_cancel_of_le (pos_iff_one_le.mp H.N_pos)).symm⟩
-  have hxM : IsCell N ((M * DD) % nn) := by
-    refine ⟨mod_lt _ hn, ?_⟩
-    rw [mod_mod_of_dvd' (by norm_num) (dvd_mul_right _ _)]
-    have hD : (2011:V) ∣ DD := mod_eq_zero_iff_dvd.mp (shiftD_spec H.N_pos hr).2
-    exact mod_eq_zero_iff_dvd.mpr (dvd_mul_of_dvd_right hD M)
+  have hxM := orbit_isCell H hr M
   have hs := step19 H hr hxM (j := 1) (by omega)
   have hret : ((M * DD) % nn + DD) % nn = 0 := by
     rw [mod_add_mod' hn]
-    have hD := div_add_mod DD 2011
-    rw [(shiftD_spec H.N_pos hr).2, add_zero] at hD
-    have h2 : M * DD + DD = N * DD := by rw [hM]; ring
-    rw [h2]
-    conv_lhs => rw [← hD]
-    rw [show N * (2011 * (DD / 2011)) = 2011 * N * (DD / 2011) by ring, mod_mul_self_right]
+    rw [show M * DD + DD = N * DD by rw [hM]; ring]
+    exact mod_eq_zero_iff_dvd.mpr (by
+      simpa [mul_comm] using mul_dvd_mul_right
+        (mod_eq_zero_iff_dvd.mp (shiftD_spec H.N_pos hr).2) N)
   rw [hret, show 941 + 1 = 942 + 0 by rfl, key M, start_bit H (j := 1) (by omega) (by omega)] at hs
   exact _root_.one_ne_zero hs
 
