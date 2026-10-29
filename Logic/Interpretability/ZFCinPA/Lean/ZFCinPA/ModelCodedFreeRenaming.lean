@@ -262,26 +262,13 @@ lemma rename_isSemiformula (chosen level offset : V) {depth p : V}
     IsSemiformula L depth (rename L chosen level offset p))
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
   · definability
-  · intro depth arity R terms hR ht
-    rw [rename_rel chosen level offset hR ht.isUTerm]
-    exact IsSemiformula.rel.mpr ⟨hR,termRenameVec_isSemiterm chosen level offset ht⟩
-  · intro depth arity R terms hR ht
-    rw [rename_nrel chosen level offset hR ht.isUTerm]
-    exact IsSemiformula.nrel.mpr ⟨hR,termRenameVec_isSemiterm chosen level offset ht⟩
-  · intro depth; simp
-  · intro depth; simp
-  · intro depth p q hp hq ihp ihq
-    rw [rename_and chosen level offset hp.isUFormula hq.isUFormula]
-    exact IsSemiformula.and.mpr ⟨ihp,ihq⟩
-  · intro depth p q hp hq ihp ihq
-    rw [rename_or chosen level offset hp.isUFormula hq.isUFormula]
-    exact IsSemiformula.or.mpr ⟨ihp,ihq⟩
-  · intro depth p hp ih
-    rw [rename_all chosen level offset hp.isUFormula]
-    simpa using ih
-  · intro depth p hp ih
-    rw [rename_exs chosen level offset hp.isUFormula]
-    simpa using ih
+  all_goals
+    intros
+    simp (discharger := aesop (add safe [IsSemitermVec.isUTerm, IsSemiformula.isUFormula]))
+      [*, rename_rel, rename_nrel, termRenameVec_isSemiterm,
+        rename_and, rename_or, rename_all, rename_exs,
+        IsSemiformula.rel, IsSemiformula.nrel, IsSemiformula.and, IsSemiformula.or]
+
 lemma rename_isUFormula (chosen level offset : V) {p : V} (hp : IsUFormula L p) :
     IsUFormula L (rename L chosen level offset p) :=
   (rename_isSemiformula chosen level offset hp.isSemiformula).isUFormula
