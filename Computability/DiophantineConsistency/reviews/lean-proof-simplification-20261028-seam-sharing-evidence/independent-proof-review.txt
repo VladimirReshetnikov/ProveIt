@@ -1,0 +1,47 @@
+Independent review: seam-colour proof sharing, 28 October 2026
+
+Scope: compared the isolated final source in /tmp/seam-sharing/sources/final
+against the workspace baseline, reviewed `seam_vertical` and its colour-table
+facts, checked saved target/client/provider/probe records, and ran an independent
+ArithmeticTilingWord declaration probe. No repository files were changed.
+
+Finding: no correctness or statement change found. `seamIdx H t` selects one
+of 938, 939, 934 and 933; the existing `c938`, `c939`, `c934` and `c933`
+theorems give both its south and north colours as 437. The candidate proves
+those two facts together for an arbitrary `t` and combines the south fact at
+`k` with the north fact at `k'`. This retains the original theorem statement,
+all cases including degenerate H, and the original typeclass assumptions; the
+diff changes no other source text or imports. Baseline/final source hashes are
+`c440527e4e50bc590c13bae863030d38e1ae32a05c71ea47bcd96aee5d4c56e5` and
+`2536c40a29f08f13c3e4787639c0d622151c4255bfd3278c2c54909db5949c4b`.
+
+Three target builds in each phase passed. Baseline user CPU was 29.71, 29.13,
+and 30.26 seconds; final was 30.82, 31.10, and 33.20 seconds. This local sample
+shows a modest increase rather than a speed improvement, with no controlled
+claim about other machines or loads. Each phase also passed the TilingWord,
+ConstructionAssembly and CurrentConstruction clients, including their later
+coherent rebuilds. I verified 18 build records, source/output/log hashes and 62
+direct-import before/after hashes and first-provider resolutions. The coherent
+pin audit has 28 direct-input occurrences and no unmatched non-fresh provider;
+the final TilingBand source is taken from the candidate snapshot and its object
+hash matches the freshly built target, even though that direct-input record's
+workspace-source field necessarily describes the unchanged baseline file.
+
+The recorded target census has 61 baseline and final declarations with no
+name changes, byte-identical type/axiom reports and definition equations, and
+identical whole-environment simp output (29,730 logged lines). TilingWord's
+unchanged source produced different object bytes across phases; its warning
+logs match after normalizing the baseline/final source paths. My independent
+probe in /tmp/seam-independent-review/ found the same 18 TilingWord namespace
+names and byte-identical type/axiom reports; commands, LEAN_PATH, source and
+input-object before/after hashes, statuses and log hashes are in that
+directory's records.json. The later Assembly and CurrentConstruction objects
+are byte-identical across phases.
+
+The target and coherent clients reuse project, Foundation and Lean/toolchain
+caches; matching direct providers and recorded hashes do not amount to a full
+transitive rebuild or a check of every downstream client. The initial broader
+pin audit had unresolved providers; the later coherent audit and rebuilt lanes
+are the basis for the client conclusion above. There is no refactor-specific
+correctness blocker within those limits. The timing tradeoff should be stated
+rather than treating the shorter proof as a demonstrated speedup.

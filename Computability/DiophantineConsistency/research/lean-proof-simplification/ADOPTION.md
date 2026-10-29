@@ -1337,5 +1337,16 @@ names disappear and sixteen private helper/auxiliary names are added; none is
 a default simp rule. The failed initial draft and name probe are retained,
 and other transitive dependencies remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-unpair-sharing-evidence/BUNDLE.json).
 
+The seam-colour proof sharing `fa98fc9b83` removes 14 net Lean lines,
+bringing the reviewed series to 9598. Its original module came from the
+Claude-coauthored commit `3cd04ac37f`. A single four-case fact now supplies
+both north and south seam colours. Paired target, tiling and construction
+builds pass over refreshed providers; 61 target declaration reports and
+29,730 global simp entries match. The changed-byte tiling client has matching
+reports for its 18 checked declarations. Three local target timing pairs show
+a median user-CPU increase from 29.71 to 31.10 seconds; this is not a general
+benchmark. Earlier old-provider endpoint attempts and a failed simplifier are
+retained but excluded, and transitive dependencies remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-seam-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
