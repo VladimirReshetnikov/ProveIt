@@ -36,11 +36,6 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 /-- The member level of the general binder-stripping step. -/
 def sβc (c x : V) : V := 10 * (x + 3) + c
 
-private theorem fvVec_bound {n : ℕ} {c : V}
-    (h : ∀ j : ℕ, j ≤ n → (^&(j : V) : V) ≤ lvB c) :
-    ∀ i, ((fvVec (V := V) n) i).val ≤ lvB c := fun i => by
-  simpa [fvVec] using h i (le_of_lt i.isLt)
-
 theorem strip_gen {c : V} (hc : 1 ≤ c) : ∀ (n : ℕ) (φ : Bootstrapping.Semiformula V ℒₛₑₜ n) (u W : V),
     (∀ j : ℕ, j ≤ n → (^&(j : V) : V) ≤ lvB c) → 2 ≤ u →
     φ.val ≤ lvB u → 4 ≤ W → sβc c (u + 3 * n) + 1 ≤ W →

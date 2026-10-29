@@ -1,5 +1,6 @@
 import ZFCinPA.ModelCodedFreeRenaming
 import ZFCinPA.OpenedClosure
+import ZFCinPA.FiniteTheoryRecognizer
 
 /-!
 Actual ZF/ZFC axiom invariance under represented free renaming. The finite
@@ -29,27 +30,12 @@ lemma sentence_quote_shift_fixed (sentence : Sentence L) :
   rw [FirstOrder.Sentence.quote_def,←FirstOrder.Semiformula.quote_shift,hs]
 
 lemma singleton_class_iff (sentence : Sentence L) (p : V) :
-    (V ⊧/![p] (Theory.Δ₁.singleton sentence).ch.val) ↔ p = (⌜sentence⌝ : V) := by
-  change (V ⊧/![p] “x. x = ↑(Encodable.encode sentence)”) ↔ _
-  simp [FirstOrder.Sentence.quote_eq_encode,numeral_eq_natCast]
+    (V ⊧/![p] (Theory.Δ₁.singleton sentence).ch.val) ↔ p = (⌜sentence⌝ : V) := FiniteTheoryRecognizer.singleton_class_iff sentence p
 
 /-- The finite recognizer cannot acquire new nonstandard axiom codes. -/
 lemma ofList_class_iff (sentences : List (Sentence L)) (p : V) :
     (V ⊧/![p] (Theory.Δ₁.ofList sentences).ch.val) ↔
-      ∃ sentence ∈ sentences, p = (⌜sentence⌝ : V) := by
-  induction sentences with
-  | nil =>
-    change False ↔ _
-    simp
-  | cons sentence sentences ih =>
-    have ih' : (V ⊧/![p] (Theory.Δ₁.ofList sentences).ch.val) ↔
-        ∃ sentence ∈ sentences, p = (⌜sentence⌝ : V) := ih
-    change (V ⊧/![p] ((Theory.Δ₁.singleton sentence).ch ⋎
-      (Theory.Δ₁.ofList sentences).ch).val) ↔ _
-    rw [HierarchySymbol.Semiformula.val_or]
-    simp only [LogicalConnective.HomClass.map_or,LogicalConnective.Prop.or_eq]
-    rw [singleton_class_iff sentence p,ih']
-    simp
+      ∃ sentence ∈ sentences, p = (⌜sentence⌝ : V) := FiniteTheoryRecognizer.ofList_class_iff sentences p
 
 lemma ofList_class_shift_fixed (sentences : List (Sentence L)) {p : V} :
     (V ⊧/![p] (Theory.Δ₁.ofList sentences).ch.val) → shift L p = p := by

@@ -44,11 +44,17 @@ theorem eqClosureModels {n : ℕ} (a b : TermN n) :
 
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
-theorem val_term_pair {n : ℕ} (e : Fin n → M) (a b : TermN n) :
-    (Semiterm.val e Empty.elim ∘ ![a, b]) =
-      ![Semiterm.val e Empty.elim a, Semiterm.val e Empty.elim b] := by
+theorem val_pair {ξ : Type} {n : ℕ} (e : Fin n → M) (v : ξ → M)
+    (a b : Semiterm language ξ n) :
+    (Semiterm.val e v ∘ ![a, b]) = ![Semiterm.val e v a, Semiterm.val e v b] := by
   apply funext
   exact Fin.forall_fin_two.mpr ⟨rfl, rfl⟩
+
+omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
+theorem val_term_pair {n : ℕ} (e : Fin n → M) (a b : TermN n) :
+    (Semiterm.val e Empty.elim ∘ ![a, b]) =
+      ![Semiterm.val e Empty.elim a, Semiterm.val e Empty.elim b] :=
+  val_pair e Empty.elim a b
 
 
 theorem modelComposition {m n : ℕ} (f : Code m) (g : Codes n m) (e : Fin n → M) :

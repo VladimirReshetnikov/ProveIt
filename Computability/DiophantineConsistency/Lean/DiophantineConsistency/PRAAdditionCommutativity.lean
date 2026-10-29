@@ -32,13 +32,11 @@ theorem commBody_eval (x : M) (e : ℕ → M) : commBody.Eval ![x] e ↔
   dsimp only [commBody, Semiformula.EvalAux]
   rw [eqRel]
   have hp : (Semiterm.val ![x] e ∘ ![(.fvar 0 : Semiterm language ℕ 1), .bvar 0]) = ![e 0, x] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar, Semiterm.val_fvar, Matrix.cons_val_zero] using
+      val_pair ![x] e (.fvar 0) (.bvar 0)
   have hq : (Semiterm.val ![x] e ∘ ![(.bvar 0 : Semiterm language ℕ 1), .fvar 0]) = ![x, e 0] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar, Semiterm.val_fvar, Matrix.cons_val_zero] using
+      val_pair ![x] e (.bvar 0) (.fvar 0)
   change Structure.func (L := language) addCode
     (Semiterm.val ![x] e ∘ ![(.fvar 0 : Semiterm language ℕ 1), .bvar 0]) =
     Structure.func (L := language) addCode
@@ -68,13 +66,11 @@ theorem modelCommSentence : M↓[language] ⊧ commSentence := by
   intro e
   simp only [applyCode, Semiterm.val_func]
   have hp : (Semiterm.val e Empty.elim ∘ ![(.bvar 0 : TermN 2), .bvar 1]) = ![e 0, e 1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar] using
+      val_term_pair e (.bvar 0) (.bvar 1)
   have hq : (Semiterm.val e Empty.elim ∘ ![(.bvar 1 : TermN 2), .bvar 0]) = ![e 1, e 0] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar] using
+      val_term_pair e (.bvar 1) (.bvar 0)
   rw [hp, hq]
   exact modelAddComm (e 0) (e 1)
 
