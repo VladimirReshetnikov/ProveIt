@@ -49,19 +49,13 @@ theorem modelWitnessSentence : M↓[language] ⊧ witnessSentence := by
       ![e 0, Structure.func (L := language) Code.succ (fun _ =>
         Structure.func (L := language) predCode (fun _ =>
           Structure.func (L := language) subCode ![e 1,e 0]))] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases ?_ (fun k => Fin.elim0 k) j
-    change Structure.func (L := language) Code.succ
-      (fun _ => Structure.func (L := language) predCode (fun _ =>
-        Structure.func (L := language) subCode
-          (fun i => Semiterm.val e Empty.elim (![.bvar 1, .bvar 0] i : TermN 2)))) = _
     have hp : (fun i : Fin 2 => Semiterm.val e Empty.elim (![.bvar 1, .bvar 0] i : TermN 2)) =
         ![e 1,e 0] := by
       simpa only [Function.comp_def, Semiterm.val_bvar] using
         val_term_pair e (.bvar 1) (.bvar 0)
-    rw [hp]
-    rfl
+    simpa [Semiterm.val_func, Function.comp_def, hp] using
+      val_term_pair e (.bvar 0)
+        (.func Code.succ (fun _ => .func predCode (fun _ => .func subCode ![.bvar 1, .bvar 0])))
   rw [hrel, hadd]
   by_cases hxy : Structure.rel (L := language) Language.ORing.Rel.lt ![e 0,e 1]
   · exact Or.inr (modelWitness (e 0) (e 1) hxy)
