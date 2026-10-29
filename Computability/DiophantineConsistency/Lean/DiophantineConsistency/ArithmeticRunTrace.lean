@@ -119,8 +119,8 @@ theorem hd_succ (o τ : V) : hd o (τ + 1) = hstep (run τ) (hd o τ) := by
 
 /-! ## Actions of reachable configurations -/
 
-theorem bit_le (r : V) : r % 2 ≤ 1 := by
-  rcases mod_two r with h | h <;> simp [h]
+theorem bit_le (r : V) : r % 2 ≤ 1 :=
+  le_one_iff_eq_zero_or_one.mpr (mod_two r)
 
 /-- The looked-up action of an operating state code is a genuine action. -/
 theorem act_spec {st b : V} (hst0 : st ≠ 0) (hst : st ≤ 215) (hb : b ≤ 1) :
@@ -211,8 +211,7 @@ theorem halted_stable (o T : V) (hT : first (run T) = 0) (i : V) :
   case succ i ih =>
     have h' : first (run (T + i)) = 0 := by rw [ih.1]; exact hT
     obtain ⟨e1, e2⟩ := halted_step o (T + i) h'
-    rw [← add_assoc, e1, e2]
-    exact ih
+    simpa only [← add_assoc, e1, e2] using ih
 
 theorem halted_stable_le (o T τ : V) (hT : first (run T) = 0) (hτ : T ≤ τ) :
     run τ = run T ∧ hd o τ = hd o T := by
@@ -229,12 +228,9 @@ theorem head_bounds (o τ : V) : o ≤ hd o τ + τ ∧ hd o τ ≤ o + τ := by
   case succ τ ih =>
     rw [hd_succ]
     refine ⟨?_, ?_⟩
-    · calc o ≤ hd o τ + τ := ih.1
-        _ ≤ (hstep (run τ) (hd o τ) + 1) + τ := add_le_add (le_hstep _ _) le_rfl
-        _ = hstep (run τ) (hd o τ) + (τ + 1) := by ring
-    · calc hstep (run τ) (hd o τ) ≤ hd o τ + 1 := hstep_le _ _
-        _ ≤ (o + τ) + 1 := add_le_add ih.2 le_rfl
-        _ = o + (τ + 1) := by ring
+    · exact le_trans ih.1 (by simpa only [add_assoc, add_comm, add_left_comm] using
+        (add_le_add (le_hstep (run τ) (hd o τ)) (le_refl τ)))
+    · exact le_trans (hstep_le _ _) (by simpa only [add_assoc, add_comm, add_left_comm] using add_le_add_right ih.2 1)
 
 /-- **Trace box of the head.** After a halt at `T`, every head column at every
 time lies in `[o-T, o+T]`. -/
