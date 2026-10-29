@@ -1075,5 +1075,16 @@ preparation warnings lack a paired baseline; Foundation Matrix co-import fails
 in both phases due to an existing collision. Independent graph and 46-record
 receipt audits pass. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-local-cell-sharing-evidence/BUNDLE.json).
 
+The radix digit proof reuse `114e39f96f` removes 14 net lines, bringing
+the reviewed series to 8897. Paired targets and the NativeVariableMask client
+pass; all 16 existing namespace declaration reports and two forced equations
+match. Compatibility probes check definitional equality of the word functions
+and use of periodic_sum without a NeZero instance. Of 59 unchanged selected
+local objects, 29 match recent receipts and 30 historical Diophantine objects
+remain unmatched precompiled inputs. Foundation Matrix co-import fails in both
+phases due to the existing collision; compatibility probes lack separate
+command/timing receipts. Twelve build and interface records and 62 local
+source/object pins were independently checked. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-radix-digits-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
