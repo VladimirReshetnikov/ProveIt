@@ -1448,5 +1448,15 @@ client objects; all 33 target declaration reports and 29,064 global simp
 entries match. Direct project inputs match prior source/object receipts; the
 transitive dependency closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-origin-block-evidence/BUNDLE.json).
 
+The Pell reflection simplification `3b3572a2d6` removes eight net Lean
+lines, bringing the reviewed series to 9802. Both reflection forms now follow
+from their additive identities by reassociation and guarded subtraction
+cancellation. Paired targets and refreshed HalfIndex clients pass with
+identical client objects; all 26 old declaration reports, 28,968 global simp
+entries and 13,167 instances match. Two generated public auxiliaries are
+added without global registration. An earlier client replay used a stale
+provider and is superseded; the wider transitive closure remains cached. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-reflection-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
