@@ -104,6 +104,12 @@ lemma replacement_class_iff (p : V) :
   change (V ⊧/![p] repCh.val) ↔ _
   simp
 
+/-- An internal ZF axiom is an equality, fixed, separation, or replacement axiom. -/
+lemma mem_ZF_class {p : V} (h : p ∈ (𝗭𝗙 : SetTheory).Δ₁Class) :
+    p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁Class ∨ p ∈ zfFixed.Δ₁Class ∨ SepR p ∨ RepR p := by
+  change p ∈ (𝗘𝗤 ℒₛₑₜ ∪ zfFixed ∪ separationTheory ∪ replacementTheory : SetTheory).Δ₁Class at h
+  simpa only [union_class_iff, separation_class_iff, replacement_class_iff, or_assoc] using h
+
 /-- Actual internal ZF axiom membership for every shift-fixed unary code. -/
 theorem sepBody_mem_zf_of_shift_fixed (K : Semiformula V ℒₛₑₜ 1)
     (hK : K.shift = K) : (sepBody K).val ∈ (𝗭𝗙 : SetTheory).Δ₁Class := by
