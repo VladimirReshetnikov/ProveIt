@@ -50,8 +50,11 @@ has a proved arity-checked roundtrip and an [independent replay](reviews/pra-cod
 The [first-order language](Lean/DiophantineConsistency/PRALanguage.lean)
 now embeds the existing ordered-ring language and has a checked natural-model
 reduct; its [independent replay](reviews/pra-language-root.md) passed.
-Primitive-recursive bounds on the codec, the PRA theory and conservation
-remain open. This is not a uniform primitive-recursive evaluator.
+The [candidate PRA theory](Lean/DiophantineConsistency/PRATheory.lean)
+now defines its full axiom families and proves standard-natural-model validity;
+its [independent replay](reviews/pra-theory-root.md) passed. Compatibility with
+a standard PRA presentation, object-theoretic arithmetic bridges,
+primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
