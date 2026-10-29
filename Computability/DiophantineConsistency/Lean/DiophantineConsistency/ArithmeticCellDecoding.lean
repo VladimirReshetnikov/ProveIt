@@ -64,15 +64,9 @@ theorem eq_of_bits {x y n : ℕ} (hx : x < 2 ^ n) (hy : y < 2 ^ n)
 
 theorem prefix_unique (f : ℕ → ℕ) (h : prefixSum f 942 ≤ 1) {p q : ℕ} (hp : p < 942)
     (hq : q < 942) (hfp : f p = 1) (hfq : f q = 1) : p = q := by
-  by_contra hne
-  have hsub : ({p, q} : Finset ℕ) ⊆ Finset.range 942 := by
-    intro x hx
-    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
-    rcases hx with rfl | rfl <;> simpa
-  have hle := Finset.sum_le_sum_of_subset (f := f) hsub
-  rw [Finset.sum_pair hne, hfp, hfq] at hle
   unfold prefixSum at h
-  omega
+  exact ((Finset.sum_le_one_iff.mp h) p q (Finset.mem_range.mpr hp)
+    (Finset.mem_range.mpr hq) (by omega) (by omega)).1
 
 theorem zero_bits (j : ℕ) : 0 / 2 ^ j % 2 = 0 := by simp
 
