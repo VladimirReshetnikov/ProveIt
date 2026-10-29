@@ -1818,5 +1818,13 @@ registrations match. The private wrapper is removed; downstream construction
 clients were not rebuilt and the wider closure remains cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261029-pell-integral-direct-evidence/BUNDLE.json).
 
+The proof-word tail bound simplification `2cdde09b46` removes eight net Lean
+lines, bringing the reviewed series to 10112. The affected proof came from
+Claude-coauthored commit `d9775aa0f5b`. A direct nonnegative square comparison
+replaces a contradiction chain. Paired target and ProofWordBound builds pass
+with identical client objects; all 83 target declaration reports and sampled
+registrations match. The transitive closure remains cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-level-square-direct-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
