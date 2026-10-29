@@ -185,3 +185,9 @@ The [finite order-witness code](reviews/pra-q-witness-code-root.md) packages
 all-model meaning, and derives its witness statement in candidate PRA.
 The [witnessing note](research/pra-witness-bridge-20261029.md) records the
 remaining general Σ₁ and presentation obligations.
+
+The [term compiler](reviews/pra-term-compilation-root.md) now maps every
+candidate-language term with finitely many bound inputs to one finite PR
+code and proves its equality to that term inside candidate PRA. This is a
+definitional-extension ingredient; formula normalization and general Σ₁
+witnessing remain open.

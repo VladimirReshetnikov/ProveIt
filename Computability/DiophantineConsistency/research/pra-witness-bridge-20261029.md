@@ -65,3 +65,12 @@ checkpoints supplies either that translation or Π₂ conservation.
 The source and compiler-provider details for individual checkpoints are
 recorded in the associated review evidence. They inherit the existing
 Foundation cache; a fresh transitive Foundation rebuild is not claimed.
+
+## Uniform term-to-code compilation
+
+The [term compilation theorem](../reviews/pra-term-compilation-root.md)
+compiles an arbitrary candidate-language term with n bound inputs to a
+single finite `Code n` and gives an actual candidate-PRA derivation of the
+universally closed equality to the original term. Its semantics are proved
+in arbitrary equality models, and each resulting fixed code is primitive
+recursive. Formula normalization and Σ₁ witnessing remain open.
