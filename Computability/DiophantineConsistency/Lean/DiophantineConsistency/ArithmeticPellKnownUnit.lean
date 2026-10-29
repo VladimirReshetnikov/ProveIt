@@ -48,7 +48,7 @@ theorem least_unit (D A S : V) (hD : 0<D) (_hA : 1<A) (hS : 0<S)
       (mul_self_le_mul_self (by simp) hyS) (Arithmetic.zero_le D)) 1
   exact hmin y hyv ⟨hy,hyS,x,hxA,hn⟩
 
-private theorem advance_iff (D F v x y : V) (hF : F*F=1+D*v*v) :
+theorem advance_iff (D F v x y : V) (hF : F*F=1+D*v*v) :
     (F*x+D*v*y)*(F*x+D*v*y)=1+D*(v*x+F*y)*(v*x+F*y) ↔
       x*x=1+D*y*y := by
   let common := D*v*v*x*x+2*F*D*v*x*y+D*D*v*v*y*y

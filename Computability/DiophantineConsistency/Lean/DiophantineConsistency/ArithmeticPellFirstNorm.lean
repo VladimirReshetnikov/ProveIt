@@ -52,18 +52,9 @@ theorem norm_advance_iff (q x k : V) :
     ((2*q+3)*x+2*discriminant q*k)*((2*q+3)*x+2*discriminant q*k)=
       1+discriminant q*(2*x+(2*q+3)*k)*(2*x+(2*q+3)*k) ↔
       x*x=1+discriminant q*k*k := by
-  let d := discriminant q
-  let a := 2*q+3
-  let common := 4*d*x*x+4*a*d*x*k+4*d*d*k*k
-  have hl : (a*x+2*d*k)*(a*x+2*d*k)=x*x+common := by
-    dsimp [a,d,discriminant,common]
-    ring
-  have hr : 1+d*(2*x+a*k)*(2*x+a*k)=(1+d*k*k)+common := by
-    dsimp [a,d,discriminant,common]
-    ring
-  change (a*x+2*d*k)*(a*x+2*d*k)=1+d*(2*x+a*k)*(2*x+a*k) ↔ x*x=1+d*k*k
-  rw [hl,hr]
-  exact add_right_cancel_iff
+  simpa only [mul_comm (discriminant q) (2 : V)] using
+    ArithmeticPellKnownUnit.advance_iff (discriminant q) (2*q+3) 2 x k (by
+      unfold discriminant; ring)
 
 /-- Descent uses the actual unit(2Q+1,2) and proves both inverse
 identities over natural arithmetic before descending on the ordinate. -/
