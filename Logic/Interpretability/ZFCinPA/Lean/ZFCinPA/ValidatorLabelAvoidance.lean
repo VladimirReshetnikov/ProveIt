@@ -54,4 +54,50 @@ lemma term_label_avoids {n t : V} (ht : IsSemiterm ℒₛₑₜ n t)
       .mkSigma “k f. ⊥” from rfl] at hf'
     simp at hf'
 
+
+def StreamEnv (s B : V) : Prop := ∀ k : V, Avoid (s+2*k) B
+def StreamFree (s F : V) : Prop := ∀ k : V, FreeAvoid (s+2*k) F
+def Apart (s t : V) : Prop := ∀ i j : V, s+2*i ≠ t+2*j
+
+def FreshPair (F B B' s t : V) : Prop :=
+  StreamFree s F ∧ StreamFree t F ∧
+  StreamEnv s B ∧ StreamEnv s B' ∧
+  StreamEnv t B ∧ StreamEnv t B' ∧ Apart s t
+
+private lemma next_label (s k : V) : (s+2)+2*k=s+2*(k+1) := by ring
+
+lemma streamFree_next {s F : V} (h : StreamFree s F) : StreamFree (s+2) F := by
+  intro k
+  rw [next_label]
+  exact h (k+1)
+
+lemma streamEnv_cons_next {s B x : V} (h : StreamEnv s B)
+    (hx : ∀ k : V, (s+2)+2*k≠x) : StreamEnv (s+2) (x∷B) := by
+  intro k
+  apply avoid_cons _ (hx k)
+  rw [next_label]
+  exact h (k+1)
+
+lemma freshPair_next {F B B' s t : V} (h : FreshPair F B B' s t) :
+    FreshPair F (s∷B) (t∷B') (s+2) (t+2) := by
+  rcases h with ⟨hsF,htF,hsB,hsB',htB,htB',hap⟩
+  have hss : ∀ k : V, (s+2)+2*k≠s := fun k =>
+    ((stream_of_lt (z := s) (fresh := s+2) (by simp)) k).symm
+  have htt : ∀ k : V, (t+2)+2*k≠t := fun k =>
+    ((stream_of_lt (z := t) (fresh := t+2) (by simp)) k).symm
+  have hst : ∀ k : V, (s+2)+2*k≠t := by
+    intro k
+    rw [next_label]
+    simpa using hap (k+1) 0
+  have hts : ∀ k : V, (t+2)+2*k≠s := by
+    intro k
+    rw [next_label]
+    simpa using (hap 0 (k+1)).symm
+  refine ⟨streamFree_next hsF,streamFree_next htF,
+    streamEnv_cons_next hsB hss,streamEnv_cons_next hsB' hst,
+    streamEnv_cons_next htB hts,streamEnv_cons_next htB' htt,?_⟩
+  intro i j
+  rw [next_label,next_label]
+  exact hap (i+1) (j+1)
+
 end LeanProofs.ZFCinPA.ValidatorLabelAvoidance
