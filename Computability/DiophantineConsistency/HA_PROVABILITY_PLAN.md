@@ -2576,3 +2576,9 @@ of the actual current 13-variable expression. The first-carrier gap and
 current mask bounds are discharged; no index relationship or input power is
 assumed. Strong-index recovery, full internal converse and the HA transfer
 for this smaller equation remain open.
+
+The companion [main-root congruence](reviews/adaptive-main-congruence2011-root.md)
+uses the actual positive `q³` quotient for Y and the oriented main root to
+establish an exact additive congruence modulo `q⁵`, with the same canonical
+rank. It does not cancel the variable factor or establish an index relation;
+those remain necessary for the smaller equation's internal equivalence.
