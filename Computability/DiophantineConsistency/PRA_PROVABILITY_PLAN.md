@@ -108,6 +108,9 @@ the rest of the witness map still need binding to the actual construction.
 The [Pell phase bound](reviews/adaptive-construction-aux-phase2011-root.md)
 now proves `ycoord R b ≥ 2` for `R % 4 = 3`; binding the construction's
 actual ordinate identity to the client remains open.
+The [first and main carrier identities](reviews/adaptive-construction-carrier2011-root.md)
+are now proved under explicit witness relations; deriving those relations and
+the complete adaptive zero remains open.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
