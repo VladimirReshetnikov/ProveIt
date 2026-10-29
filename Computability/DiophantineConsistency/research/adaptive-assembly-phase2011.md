@@ -22,3 +22,8 @@ An independent run of the projection test passed, and a separate audit run
 produced JSON identical to the packaged result. The stopped WangTable worker
 was the independent attempt; the separate author worker remains live and
 I/O-blocked.
+
+The four Wang-independent Pell prerequisites, with their available checks,
+have since [passed two source-current replays](../reviews/adaptive-assembly-pell2011-author.md)
+against the authenticated adaptive provider. The remaining assembly sources
+and cross-namespace boundaries still require the scoped audit described above.
