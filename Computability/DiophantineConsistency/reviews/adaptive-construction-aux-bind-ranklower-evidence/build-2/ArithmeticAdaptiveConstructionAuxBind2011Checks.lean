@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAuxBind2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAuxBind2011.adaptive_auxiliary_of_phase

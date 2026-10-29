@@ -21,3 +21,11 @@ continue to apply; this is not a fresh transitive rebuild.
 After these builds, an upstream merge changed HalfBinomial and adaptive
 population. The recorded provider is the preceding snapshot and must be
 refreshed before claiming current-source coverage.
+
+The affected provider was subsequently rebuilt and independently replayed.
+Two further AuxBind builds against that refreshed provider passed at
+`/tmp/adaptive13-construction-aux-bind-ranklower-ri9h7ctd` and
+`/tmp/adaptive13-construction-aux-bind-ranklower-2mf2ooi9`, with matching
+source, object and complete-log hashes. The [18-file refresh evidence](adaptive-construction-aux-bind-ranklower-evidence/FILES.json)
+has SHA-256 `a374249454f69f2a64fba5772842a5b369dbb434bf2c88aa0ed7f9135e7b8cda`.
+The prior inherited-provider and theorem-scope qualifications still apply.
