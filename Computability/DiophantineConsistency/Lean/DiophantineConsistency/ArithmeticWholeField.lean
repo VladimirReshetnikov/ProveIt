@@ -132,9 +132,7 @@ private theorem hit {r₀ : ℕ} (hr : (W / 47) % 2011 = (r₀ : V)) {b : V} (hb
 
 private theorem start_south {j : ℕ} (hj : j < 9) :
     dig 47 C ((0:V) + ((942 + j : ℕ) : V)) = ((510 / 2 ^ j % 2 : ℕ) : V) := by
-  have h := (start_holds H).2.2.1 j hj
-  rw [start_tile] at h
-  exact h
+  simpa only [start_tile] using (start_holds H).2.2.1 j hj
 
 private theorem start_bit {j : ℕ} (hj : 1 ≤ j) (hj9 : j < 9) :
     dig 47 C ((0:V) + ((942 + j : ℕ) : V)) = 1 := by
@@ -227,11 +225,8 @@ private theorem gate {x y : V} (hx : IsCell N x) (hy : IsCell N y)
   subst this
   rw [hxi.2.2.1 0 (by omega), hyi.2.2.1 0 (by omega)]
 
-private theorem bool_dig {k : V} (hk : k < (2011 * N : V)) : dig 47 C k = 0 ∨ dig 47 C k = 1 := by
-  have h := H.boolean k hk
-  rcases eq_or_lt_of_le h with h1 | h1
-  · exact Or.inr h1
-  · exact Or.inl (lt_one_iff_eq_zero.mp h1)
+private theorem bool_dig {k : V} (hk : k < (2011 * N : V)) : dig 47 C k = 0 ∨ dig 47 C k = 1 :=
+  le_one_iff_eq_zero_or_one.mp (H.boolean k hk)
 
 private theorem cell_lt {x : V} (hx : IsCell N x) {q : ℕ} (hq : q < 2011) : x + (q:V) < (2011 * N : V) :=
   lt_of_lt_of_le ((add_lt_add_iff_left _).mpr (by exact_mod_cast hq)) (cell_room hx.1 hx.2)
@@ -282,12 +277,10 @@ theorem not_nineteen : False := by
   -- the two predecessors of cell 0
   have r1 : ∀ j : ℕ, j < 9 → dig 47 C ((0:V) + ((942 + j : ℕ) : V)) =
       dig 47 C (cyc nn 0 DD + ((941 + j : ℕ) : V)) := fun j hj => by
-    have := step19 H hr hx1 hj
-    rwa [sigma_theta H hr h0] at this
+    simpa only [sigma_theta H hr h0] using step19 H hr hx1 hj
   have r2 : ∀ j : ℕ, j < 9 → dig 47 C (cyc nn 0 DD + ((942 + j : ℕ) : V)) =
       dig 47 C (cyc nn (cyc nn 0 DD) DD + ((941 + j : ℕ) : V)) := fun j hj => by
-    have := step19 H hr hx2 hj
-    rwa [sigma_theta H hr hx1] at this
+    simpa only [sigma_theta H hr hx1] using step19 H hr hx2 hj
   -- the gate cell `θ²0`
   have g1 : dig 47 C (cyc nn (cyc nn 0 DD) DD + ((941:ℕ):V)) = 1 :=
     (r2 0 (by omega)).symm.trans ((r1 1 (by omega)).symm.trans
