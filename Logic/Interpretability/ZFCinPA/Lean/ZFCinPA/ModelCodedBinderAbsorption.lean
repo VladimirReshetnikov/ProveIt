@@ -1,4 +1,5 @@
 import ZFCinPA.ModelCodedBindOne
+import BoundedPAConsistency.InternalRelativization
 
 set_option autoImplicit false
 
@@ -110,38 +111,11 @@ theorem bindOneAt_namedAll {p : V} (hp : IsFormula L p) (chosen : V) :
 vector fixes all existing internal bound indices at each quantifier depth. -/
 theorem subst_unused_free {depth p : V} (hp : IsSemiformula L depth p) :
     ∀ x : V, subst L (qVecIter L depth (^&x ∷ 0)) p = p := by
-  apply IsSemiformula.pi1_structural_induction (P := fun depth p =>
-    ∀ x : V, subst L (qVecIter L depth (^&x ∷ 0)) p = p)
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
-  · definability
-  · intro depth arity R terms hR ht x
-    rw [substs_rel hR ht.isUTerm]
-    apply congrArg (fun args => ^rel arity R args)
-    apply nth_ext' arity
-    · simp [ht.isUTerm]
-    · exact ht.lh
-    · intro i hi
-      rw [nth_termSubstVec ht.isUTerm hi]
-      exact termSubst_eq_self (ht.nth hi) (qVecIter_free_spec depth x).1
-  · intro depth arity R terms hR ht x
-    rw [substs_nrel hR ht.isUTerm]
-    apply congrArg (fun args => ^nrel arity R args)
-    apply nth_ext' arity
-    · simp [ht.isUTerm]
-    · exact ht.lh
-    · intro i hi
-      rw [nth_termSubstVec ht.isUTerm hi]
-      exact termSubst_eq_self (ht.nth hi) (qVecIter_free_spec depth x).1
-  · intro depth x; simp
-  · intro depth x; simp
-  · intro depth p q hp hq ihp ihq x
-    rw [substs_and hp.isUFormula hq.isUFormula,ihp x,ihq x]
-  · intro depth p q hp hq ihp ihq x
-    rw [substs_or hp.isUFormula hq.isUFormula,ihp x,ihq x]
-  · intro depth p hp ih x
-    rw [substs_all hp.isUFormula,←qVecIter_succ,ih x]
-  · intro depth p hp ih x
-    rw [substs_ex hp.isUFormula,←qVecIter_succ,ih x]
+  intro x
+  apply LeanProofs.BoundedPAConsistency.InternalRelativization.subst_eq_self_of_prefix hp
+    (m := depth+1) (a := depth) ?_ (by simp) (qVecIter_free_spec depth x).1
+  simpa [add_comm] using qVecIter_isSemitermVec (L := L)
+    (show IsSemitermVec (V := V) L 1 0 (^&x ∷ 0) by simp) depth
 
 theorem substs1_formula {p : V} (hp : IsFormula L p) (x : V) :
     substs1 L (^&x) p = p := by
