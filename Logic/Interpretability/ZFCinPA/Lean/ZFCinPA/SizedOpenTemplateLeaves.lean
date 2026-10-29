@@ -36,6 +36,11 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 /-- The member level of the general binder-stripping step. -/
 def sβc (c x : V) : V := 10 * (x + 3) + c
 
+private theorem fvVec_bound {n : ℕ} {c : V}
+    (h : ∀ j : ℕ, j ≤ n → (^&(j : V) : V) ≤ lvB c) :
+    ∀ i, ((fvVec (V := V) n) i).val ≤ lvB c := fun i => by
+  simpa [fvVec] using h i (le_of_lt i.isLt)
+
 theorem strip_gen {c : V} (hc : 1 ≤ c) : ∀ (n : ℕ) (φ : Bootstrapping.Semiformula V ℒₛₑₜ n) (u W : V),
     (∀ j : ℕ, j ≤ n → (^&(j : V) : V) ≤ lvB c) → 2 ≤ u →
     φ.val ≤ lvB u → 4 ≤ W → sβc c (u + 3 * n) + 1 ≤ W →
@@ -45,10 +50,8 @@ theorem strip_gen {c : V} (hc : 1 ≤ c) : ∀ (n : ℕ) (φ : Bootstrapping.Sem
       simpa [shs, Bootstrapping.Semiformula.subst_nil_eq_self] using h
   | n + 1, φ, u, W, hfv, hu, hφ, hW4, hW, h => by
       have hfv' : ∀ j : ℕ, j ≤ n → (^&(j : V) : V) ≤ lvB c := fun j hj => hfv j (by omega)
-      have hent1 : ∀ j, ((fvVec (V := V) (n + 1)) j).val ≤ lvB c := fun j => by
-        simpa [fvVec] using hfv j (by omega)
-      have hent : ∀ j, ((fvVec (V := V) n) j).val ≤ lvB c := fun j => by
-        simpa [fvVec] using hfv' j (by omega)
+      have hent1 := fvVec_bound hfv
+      have hent := fvVec_bound hfv'
       set χ := (shs n φ).subst (fvVec n).q
       have hAφ : (∀⁰ φ).val ≤ lvB (u + 2) := by
         have : (∀⁰ φ).val = ^∀ φ.val := by simp
@@ -175,7 +178,7 @@ theorem oschema_leaf {a : ℕ}
     exact (closure_opening Ks σ).trans (htr _ p)
   have hc4 : (1 : V) ≤ (N : V) + 4 := le_trans (by norm_num) le_add_self
   have lO : ((shs N T).subst (fvVec N)).val ≤ lvB (10 * ((t : V) * (u + 1) + N + 1) + (N + 4)) :=
-    tsubst_le _ _ (shs_level T hT N) hc4 (fun j => by simpa [fvVec] using fvar_le_of_le j (le_of_lt j.isLt))
+    tsubst_le _ _ (shs_level T hT N) hc4 (fvVec_bound (fun j hj => fvar_le_of_le j hj))
   set U : V := 10 * ((t : V) * (u + 1) + t + 1) + t + 4 with hU
   have hlev : 10 * ((t : V) * (u + 1) + N + 1) + (N + 4) ≤ U := by
     calc 10 * ((t : V) * (u + 1) + N + 1) + (N + 4) ≤ 10 * ((t : V) * (u + 1) + t + 1) + (t + 4) :=
