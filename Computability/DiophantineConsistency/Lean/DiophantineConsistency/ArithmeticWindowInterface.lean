@@ -136,10 +136,7 @@ theorem window_of_equations (u : Fin 14 → V) (hu : ∀ j, 0 < u j)
       ((CurrentMasks2011.highPort+CurrentMasks2011.beta:ℕ):V)
       (u 0) (u 1) (u 2) (u 3) (u 8) (u 7) (lt_of_lt_of_le (by norm_num) hb) (hu 0) (hu 1)
       (hu 2) (hu 3) (hu 8) (hu 7) hl hh rfl ht').1
-  have hlt : u 1 + u 2 < q u := by
-    by_contra hn
-    rw [tsub_tsub, tsub_eq_zero_of_le (le_of_not_gt hn)] at hgap
-    exact _root_.lt_irrefl _ hgap
+  have hlt : u 1 + u 2 < q u := tsub_pos_iff_lt.mp (by simpa only [tsub_tsub] using hgap)
   have hfour := ArithmeticSaturation.four_block (q u) (CurrentMasks2011.beta:V) (u 0) (u 1) (u 2)
     (CurrentMasks2011.lowPort:V) (CurrentMasks2011.highPort:V) rfl hgap (one_le_mul_of_one_le_of_one_le
       (pos_iff_one_le.mp highPort_pos)
