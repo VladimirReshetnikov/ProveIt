@@ -66,8 +66,13 @@ theorem fvar_small : ∀ j : ℕ, j ≤ 6 → (^&(j : V) : V) ≤ lvB 3 := by
   rcases hj' with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
     rw [lvB_three] <;> simp [qqFvar, pair] <;> norm_num
 
-theorem fvVec_le {n : ℕ} (hn : n ≤ 6) : ∀ j, ((fvVec (V := V) n) j).val ≤ lvB 3 := fun j => by
-  simpa [fvVec] using fvar_small j (by omega)
+theorem fvVec_bound {n : ℕ} {c : V}
+    (h : ∀ j : ℕ, j ≤ n → (^&(j : V) : V) ≤ lvB c) :
+    ∀ i, ((fvVec (V := V) n) i).val ≤ lvB c := fun i => by
+  simpa [fvVec] using h i (le_of_lt i.isLt)
+
+theorem fvVec_le {n : ℕ} (hn : n ≤ 6) : ∀ j, ((fvVec (V := V) n) j).val ≤ lvB 3 :=
+  fvVec_bound (fun j hj => fvar_small j (le_trans hj hn))
 
 theorem free_fvVec {n : ℕ} (ψ : Bootstrapping.Semiformula V ℒₛₑₜ (n + 1)) :
     ((shs n ψ).subst (fvVec n).q).free = (shs (n + 1) ψ).subst (fvVec (n + 1)) := by
