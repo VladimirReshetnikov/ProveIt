@@ -208,11 +208,7 @@ theorem exists_outer_seed (u R r : ℕ) (hu : 0 < u) (hR : R = 2*r+1)
   have hKr : r+1 < K := lt_yn_of_two_le hP (by omega)
   have hkR : R+1 < k := by dsimp [k]; omega
   obtain ⟨h,hh⟩ := (Nat.modEq_iff_dvd' hkR.le).mp hmod.symm
-  have hh0 : 0 < h := by
-    by_contra hn
-    have : h = 0 := by omega
-    rw [this,mul_zero] at hh
-    omega
+  have hh0 : 0 < h := Nat.pos_of_mul_pos_left (by rw [← hh]; exact Nat.sub_pos_of_lt hkR)
   have hindex : k = 1+R+E*h := by omega
   have hcX : X < c := by
     have hbase : X < 2*(a+2)-1 := by
@@ -242,11 +238,7 @@ theorem exists_outer_seed (u R r : ℕ) (hu : 0 < u) (hR : R = 2*r+1)
     change D ≡ X+c*a [MOD 4*a+3] at hh
     simpa only [Nat.mul_comm c a] using hh
   obtain ⟨gamma,hgamma⟩ := (Nat.modEq_iff_dvd' hrootlarge.le).mp hrootmod.symm
-  have hgamma0 : 0 < gamma := by
-    by_contra hn
-    have : gamma = 0 := by omega
-    rw [this,mul_zero] at hgamma
-    omega
+  have hgamma0 : 0 < gamma := Nat.pos_of_mul_pos_left (by rw [← hgamma]; exact Nat.sub_pos_of_lt hrootlarge)
   have hroot : D = X+a*c+gamma*(4*a+3) := by
     rw [mul_comm gamma]
     omega
