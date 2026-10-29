@@ -1348,5 +1348,16 @@ a median user-CPU increase from 29.71 to 31.10 seconds; this is not a general
 benchmark. Earlier old-provider endpoint attempts and a failed simplifier are
 retained but excluded, and transitive dependencies remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-seam-sharing-evidence/BUNDLE.json).
 
+The site edge-check sharing `6e40d24f7c` removes 14 net Lean lines, bringing
+the reviewed series to 9612. The bounded tape module originated in the
+Claude-coauthored commit `11f7ea173b`. Two identical edge-check proofs now
+come from the existing site module. Paired site, frame, tape-control and
+tape-run builds pass; 73 common public/generated reports, five surviving
+private reports, the bounded endpoint and 29,339 global simp entries match.
+Two helper names become public, eight private names disappear and five
+public/generated names appear. Fresh probes pin direct inputs; broader
+reference searches were terminated, so the no-reference check is limited to
+the project Lean tree. Other transitive dependencies remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-site-check-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
