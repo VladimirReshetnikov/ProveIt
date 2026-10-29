@@ -83,21 +83,16 @@ theorem population_ofDigits (w : ℕ) (l : List ℕ) (hl : ∀ x ∈ l, x < 2^w)
 /-- A standard digit list of length `L` gives a number below `2^{wL}`. -/
 theorem ofDigits_lt_exp (w : ℕ) (l : List ℕ) (hl : ∀ x ∈ l, x < 2^w) :
     ((Nat.ofDigits (2^w) l : ℕ) : V) < Exp.exp ((w:V) * (l.length : V)) := by
-  induction l with
-  | nil => simp
-  | cons a l ih =>
-    have ha : (a:V) < Exp.exp (w:V) := by
-      rw [cast_exp]; exact_mod_cast hl a (by simp)
-    have he : ((Nat.ofDigits (2^w) (a :: l) : ℕ) : V) =
-        ((Nat.ofDigits (2^w) l : ℕ) : V) * Exp.exp (w:V) + (a:V) := by
-      rw [Nat.ofDigits_cons, cast_exp]; push_cast; ring
-    have hi := lt_iff_succ_le.mp (ih (fun x hx => hl x (by simp [hx])))
-    rw [he, List.length_cons, Nat.cast_succ, exp_mul_succ]
-    calc ((Nat.ofDigits (2^w) l : ℕ) : V) * Exp.exp (w:V) + (a:V)
-        < ((Nat.ofDigits (2^w) l : ℕ) : V) * Exp.exp (w:V) + Exp.exp (w:V) :=
-          (add_lt_add_iff_left _).mpr ha
-      _ = (((Nat.ofDigits (2^w) l : ℕ) : V) + 1) * Exp.exp (w:V) := by ring
-      _ ≤ _ := mul_le_mul_of_nonneg_right hi (by simp)
+  have hNat : Nat.ofDigits (2^w) l < 2^(w * l.length) := by
+    cases w with
+    | zero =>
+      simp only [pow_zero, Nat.zero_mul, Nat.ofDigits_one] at *
+      simp [List.sum_eq_zero (fun x hx => Nat.lt_one_iff.mp (hl x hx))]
+    | succ w =>
+      rw [pow_mul]
+      exact Nat.ofDigits_lt_base_pow_length (by simp) hl
+  rw [← Nat.cast_mul, cast_exp]
+  exact_mod_cast hNat
 
 /-! ### The masks -/
 
