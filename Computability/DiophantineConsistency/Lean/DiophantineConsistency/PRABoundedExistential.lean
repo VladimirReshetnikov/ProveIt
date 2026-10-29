@@ -25,15 +25,14 @@ theorem modelNegateBit {n : ℕ} (c : Code n) : M↓[language] ⊧ bitSentence (
 theorem modelNegateCorrect {n : ℕ} (c : Code n) (φ : Semisentence language n)
     (h : M↓[language] ⊧ nonzeroCorrectSentence c φ) :
     M↓[language] ⊧ oneCorrectSentence (notCode c) (∼φ) := by
-  simp only [models_iff, nonzeroCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff] at h
-  simp only [models_iff, oneCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
+  apply (oneCorrectSentence_iff _ _).mpr
   intro e
-  have hc := h e
-  have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars n) = e := by funext i; rfl
-  have hz : (Semiterm.val (L := language) e Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  simp [Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func, hv, hz] at hc
-  simp [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hv, hz, modelNotCode,
-    modelIsZeroCharacter] at hc ⊢
+  rw [modelNotCode, modelIsZeroCharacter]
+  have hc := (nonzeroCorrectSentence_iff c φ).mp h e
+  change (Structure.func (L := language) c e =
+    Structure.func (L := language) (Code.zero 0) Fin.elim0 ↔
+      Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim e (∼φ))
+  rw [Semiformula.EvalAux_neg]
   tauto
 
 end models

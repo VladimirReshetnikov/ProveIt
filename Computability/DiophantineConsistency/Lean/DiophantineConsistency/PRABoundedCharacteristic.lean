@@ -39,16 +39,28 @@ theorem oneCorrectSentence_iff {n : ℕ} (c : Code n) (φ : Semisentence languag
   rw [hz]
   tauto
 
+omit [M↓[language] ⊧* PRA] in
+theorem nonzeroCorrectSentence_iff {n : ℕ} (c : Code n) (φ : Semisentence language n) :
+    M↓[language] ⊧ nonzeroCorrectSentence c φ ↔
+      ∀ e : Fin n → M, Structure.func (L := language) c e ≠
+        Structure.func (L := language) (Code.zero 0) Fin.elim0 ↔ φ.Eval e Empty.elim := by
+  simp only [models_iff, nonzeroCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
+  apply forall_congr'
+  intro e
+  have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars n) = e := by funext i; rfl
+  simp [Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func, hv, iff_def]
+  have hz : (Semiterm.val (L := language) e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN n)) =
+      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
+  rw [hz]
+  tauto
+
 theorem modelNonzeroCorrect {n : ℕ} (c : Code n) (φ : Semisentence language n)
     (hbit : M↓[language] ⊧ bitSentence c) (hcorrect : M↓[language] ⊧ oneCorrectSentence c φ) :
     M↓[language] ⊧ nonzeroCorrectSentence c φ := by
-  simp only [models_iff, nonzeroCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
+  apply (nonzeroCorrectSentence_iff _ _).mpr
   intro e
   have hb := (PRACharacteristicBit.bitSentence_iff c).mp hbit e
   have hc := (oneCorrectSentence_iff c φ).mp hcorrect e
-  simp [Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func]
-  have hz : (Semiterm.val (L := language) e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN n)) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  rw [hz]
   have hne := modelOneNeZero (M := M)
   constructor
   · intro h
@@ -81,8 +93,7 @@ theorem modelBoundedBy {n : ℕ} (φ : Semisentence language (n+1)) (bound : M) 
 theorem modelBoundedCharacteristic {n : ℕ} (c : Code (n+1)) (φ : Semisentence language (n+1))
     (hcorrect : M↓[language] ⊧ nonzeroCorrectSentence c φ) :
     M↓[language] ⊧ oneCorrectSentence (universalCode c) (boundedBy φ) := by
-  simp only [models_iff, nonzeroCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff] at hcorrect
-  simp only [models_iff, oneCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
+  apply (oneCorrectSentence_iff _ _).mpr
   intro e
   have hp : Fin.cases (e 0) (fun i : Fin n => e i.succ) = e := by funext i; exact Fin.cases rfl (fun _ => rfl) i
   have hb := modelBoundedBy φ (e 0) (fun i : Fin n => e i.succ)
@@ -98,17 +109,8 @@ theorem modelBoundedCharacteristic {n : ℕ} (c : Code (n+1)) (φ : Semisentence
     intro x
     apply imp_congr_right
     intro _
-    let args : Fin (n+1) → M := Fin.cases x (fun i : Fin n => e i.succ)
-    have hc := hcorrect args
-    have hv : (Semiterm.val (L := language) args Empty.elim ∘ vars (n+1)) = args := by funext i; rfl
-    have hz : (Semiterm.val (L := language) args Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-    simpa [Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func, hv, hz, iff_def, args] using hc
-  have hcode : Structure.func (L := language) (universalCode c) e =
-      Structure.func (L := language) oneCode Fin.elim0 ↔ (boundedBy φ).Eval e Empty.elim :=
-    (modelUniversalCode_eval c e).2.trans (hgood.trans hAll)
-  have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars (n+1)) = e := by funext i; rfl
-  have hz : (Semiterm.val (L := language) e Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  simpa [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hv, hz, iff_def] using hcode
+    exact (nonzeroCorrectSentence_iff c φ).mp hcorrect _
+  exact (modelUniversalCode_eval c e).2.trans (hgood.trans hAll)
 
 end models
 
