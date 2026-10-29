@@ -348,31 +348,24 @@ theorem eval_le (e : Circuit) {a b c u m : V} (ha : a ≤ lev m) (hb : b ≤ lev
   | input3 => simpa only [cb, Circuit.eval, Nat.cast_one] using hm u hu
   | zero => exact Arithmetic.zero_le _
   | one => exact le_trans (by simp only [Circuit.eval]; norm_num) (four_le_lev _)
-  | plus x y ihx ihy =>
+  | plus x y ihx ihy | pair x y ihx ihy | imp x y ihx ihy =>
     simp only [cb, Circuit.eval]
     push_cast
     have hx' := le_lev_of ihx (lift_left (cb x : V) (cb y) m)
     have hy' := le_lev_of ihy (lift_right (cb x : V) (cb y) m)
-    exact le_lev_of (add_le_lev hx' hy') (add_const_le _ m 1)
+    first
+    | case plus => exact le_lev_of (add_le_lev hx' hy') (add_const_le _ m 1)
+    | case pair =>
+      have h1 : (1 : V) ≤ ((cb x : V) + cb y) * (m + 1) :=
+        le_trans (one_le_level x m) (lift_left _ _ m)
+      exact le_lev_of (pair_le' h1 hx' hy') (add_const_le _ m 2)
+    | case imp =>
+      have h1 : (1 : V) ≤ ((cb x : V) + cb y) * (m + 1) :=
+        le_trans (one_le_level x m) (lift_left _ _ m)
+      exact le_lev_of (wim_le h1 hx' hy') (add_const_le _ m 4)
   | sub x y ihx _ =>
     simp only [cb, Circuit.eval]
     exact le_trans tsub_le_self ihx
-  | pair x y ihx ihy =>
-    simp only [cb, Circuit.eval]
-    push_cast
-    have hx' := le_lev_of ihx (lift_left (cb x : V) (cb y) m)
-    have hy' := le_lev_of ihy (lift_right (cb x : V) (cb y) m)
-    have h1 : (1 : V) ≤ ((cb x : V) + cb y) * (m + 1) :=
-      le_trans (one_le_level x m) (lift_left _ _ m)
-    exact le_lev_of (pair_le' h1 hx' hy') (add_const_le _ m 2)
-  | imp x y ihx ihy =>
-    simp only [cb, Circuit.eval]
-    push_cast
-    have hx' := le_lev_of ihx (lift_left (cb x : V) (cb y) m)
-    have hy' := le_lev_of ihy (lift_right (cb x : V) (cb y) m)
-    have h1 : (1 : V) ≤ ((cb x : V) + cb y) * (m + 1) :=
-      le_trans (one_le_level x m) (lift_left _ _ m)
-    exact le_lev_of (wim_le h1 hx' hy') (add_const_le _ m 4)
   | append x y ihx ihy =>
     simp only [cb, Circuit.eval]
     push_cast
