@@ -98,9 +98,14 @@ theorem variation {d K MC HP N s ρ : V} {X0 X1 δ : V → V}
   have hC : Cw d N X1 = Cw d N X0 + ρ * bsum d δ N := by rw [hC1, hP]
   refine ⟨hC, ?_⟩
   -- the wrap terms agree
-  have hN1 : 1 ≤ N := h0.N_gt.le
-  have hδ0 : ∀ j, ¬ (j + 1 < N ∧ j + s < N) → δ j = 0 := fun j hj => by
-    by_contra hc; exact hj (hsafe j hc)
+  have htail (k : V) (hk : k ≤ N) (hs : ∀ j, δ j ≠ 0 → j + k < N)
+      (j : V) : δ (N - k + j) = 0 := by
+    by_contra hn
+    have hlt := hs (N - k + j) hn
+    have hge : N ≤ N - k + j + k := by
+      calc N = N - k + k := (tsub_add_cancel_of_le hk).symm
+        _ ≤ N - k + j + k := add_le_add (le_add_of_nonneg_right (Arithmetic.zero_le j)) le_rfl
+    exact (not_lt.mpr hge) hlt
   have hwrapH : bsum d (hi d K X1) N / Exp.exp (d * (N - 1)) =
       bsum d (hi d K X0) N / Exp.exp (d * (N - 1)) := by
     have hb1 : ∀ j < N, hi d K X1 j < Exp.exp d := fun j hj => by
@@ -113,13 +118,9 @@ theorem variation {d K MC HP N s ρ : V} {X0 X1 δ : V → V}
     apply bsum_congr (fun j hj => hb1 _ (lt_tsub_iff_left.mp hj))
     intro j hj
     have hlt : N - 1 + j < N := lt_tsub_iff_left.mp hj
-    have hge : N ≤ N - 1 + j + 1 := by
-      calc N = N - 1 + 1 := (tsub_add_cancel_of_le hN1).symm
-        _ ≤ N - 1 + j + 1 := add_le_add (le_add_of_nonneg_right (Arithmetic.zero_le j)) le_rfl
-    have hz : δ (N - 1 + j) = 0 := hδ0 _ (fun hc => absurd hc.1 (not_lt.mpr hge))
+    have hz : δ (N - 1 + j) = 0 := htail 1 h0.N_gt.le (fun j hj => (hsafe j hj).1) j
     show K * X1 (N - 1 + j) / Exp.exp d = K * X0 (N - 1 + j) / Exp.exp d
     rw [hX _ hlt, hz, mul_zero, add_zero]
-  have hsN : s ≤ N := h0.s_lt.le
   have hwrapC : Cw d N X1 / Exp.exp (d * (N - s)) = Cw d N X0 / Exp.exp (d * (N - s)) := by
     unfold Cw
     rw [bsum_div tsub_le_self hX1, bsum_div tsub_le_self (X_lt h0)]
@@ -128,10 +129,7 @@ theorem variation {d K MC HP N s ρ : V} {X0 X1 δ : V → V}
     apply bsum_congr (fun j hj => hX1 _ (lt_tsub_iff_left.mp hj))
     intro j hj
     have hlt : N - s + j < N := lt_tsub_iff_left.mp hj
-    have hge : N ≤ N - s + j + s := by
-      calc N = N - s + s := (tsub_add_cancel_of_le hsN).symm
-        _ ≤ N - s + j + s := add_le_add (le_add_of_nonneg_right (Arithmetic.zero_le j)) le_rfl
-    have hz : δ (N - s + j) = 0 := hδ0 _ (fun hc => absurd hc.2 (not_lt.mpr hge))
+    have hz : δ (N - s + j) = 0 := htail s h0.s_lt.le (fun j hj => (hsafe j hj).2) j
     rw [hX _ hlt, hz, mul_zero, add_zero]
   have f1 := F_formula h1
   have f0 := F_formula h0
