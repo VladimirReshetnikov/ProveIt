@@ -1,0 +1,8 @@
+import DiophantineConsistency.ParsonsPrenexPair
+#print axioms DiophantineConsistency.ParsonsPrenexPair.guard_free
+#print axioms DiophantineConsistency.ParsonsPrenexPair.body_free
+#print axioms DiophantineConsistency.ParsonsPrenexPair.pair_forward_pointwise
+#print axioms DiophantineConsistency.ParsonsPrenexPair.pair_backward_pointwise
+#print axioms DiophantineConsistency.ParsonsPrenexPair.pair_forward
+#print axioms DiophantineConsistency.ParsonsPrenexPair.pair_backward
+#print axioms DiophantineConsistency.ParsonsPrenexPair.pair_strict_matrix

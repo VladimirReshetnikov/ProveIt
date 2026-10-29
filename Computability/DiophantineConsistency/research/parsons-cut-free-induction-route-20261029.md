@@ -184,3 +184,9 @@ The [strict Σ₁ prenex fragment](../reviews/parsons-prenex-root.md) now
 proves both rule-calculus transformations between `E ∨ ∃x Q(x)` and
 `∃x(Q(x) ∨ E)`, preserving parameter shifts and bounded matrices. The
 bounded collection case and complete strict Π₂ adapter remain open.
+
+The [two-witness prenex fragment](../reviews/parsons-prenex-pair-root.md)
+converts a disjunction of two strict Σ₁ formulas in both directions to an
+explicit two-variable existential block with bounded matrix. No pairing
+function is assumed. Arbitrary blocks, finite collection and the complete
+strict Π₂ adapter remain open.
