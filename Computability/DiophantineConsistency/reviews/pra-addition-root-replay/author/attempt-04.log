@@ -1,0 +1,18 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddition.lean:84:81: error: cannot omit referenced section variable `inst✝³`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddition.lean:94:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 1 → M
+⊢ Semiterm.val e Empty.elim (applyCode addCode ![#0, applyCode (Code.zero 0) Fin.elim0]) = Semiterm.val e Empty.elim #0
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddition.lean:100:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 2 → M
+⊢ Semiterm.val e Empty.elim (applyCode addCode ![#0, applyCode Code.succ fun x => #1]) =
+    Semiterm.val e Empty.elim (applyCode Code.succ fun x => applyCode addCode ![#0, #1])
