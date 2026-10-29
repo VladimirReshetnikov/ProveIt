@@ -1870,5 +1870,13 @@ both direct clients pass with identical client objects; eight target declaration
 reports and sampled registrations match. An older transitive Pell chain remains
 cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-radix-positivity-evidence/BUNDLE.json).
 
+The squared-seed positivity simplification `11856f40e2` removes one net Lean
+line, bringing the reviewed series to 10156. Product positivity replaces a zero
+contradiction while retaining the coefficient witness and norm equation. Paired
+target and both direct clients pass with identical client objects; target
+declaration and registration reports match. Older objects appear in later
+transitive path samples and the wider closure remains cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-squared-seed-positive-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
