@@ -42,8 +42,10 @@ ordered-ring embedding. It is a design, not yet a Lean implementation.
 The first [primitive-recursive function code module](Lean/DiophantineConsistency/PRAFunctionCodes.lean)
 now represents fixed-arity codes and proves their exact correspondence with
 Mathlib's primitive-recursive vector functions. Its [independent replay](reviews/pra-function-codes-root.md)
-passed; effective code equality and encoding, the PRA theory and conservation
-remain open. This is not a uniform primitive-recursive evaluator.
+passed. The [finite syntax](Lean/DiophantineConsistency/PRAFiniteFunctionCodes.lean)
+has decidable equality and a surjective semantics-preserving conversion; its
+[independent replay](reviews/pra-finite-function-codes-root.md) also passed.
+Numerical encoding, the PRA theory and conservation remain open. This is not a uniform primitive-recursive evaluator.
 
 ## Concrete bridge to formalize
 
