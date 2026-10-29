@@ -133,25 +133,18 @@ theorem binom_one_right (n : V) : binom n 1=n := by
   · definability
   case zero => simpa using binom_zero_succ (0:V)
   case succ n ih =>
-    have h := binom_succ_succ n 0
-    rw [zero_add] at h
-    rw [h,ih,binom_zero_right,add_comm]
+    simpa only [zero_add, ih, binom_zero_right, add_comm] using binom_succ_succ n 0
 
 theorem binom_pos (n k : V) (h : k≤n) : 0<binom n k := by
-  have all : ∀ n : V, ∀ k ≤ n, 0<binom n k := by
-    intro n
-    induction n using ISigma1.sigma1_succ_induction
-    · definability
-    case zero =>
-      intro k hk
-      have : k=0 := le_antisymm hk (by simp)
-      simp [this]
-    case succ n ih =>
-      intro k hk
-      rcases zero_or_succ k with rfl|⟨k,rfl⟩
-      · simp
-      · rw [binom_succ_succ]
-        exact lt_of_lt_of_le (ih k (by simpa using hk)) (by simp)
-  exact all n k h
+  induction n using ISigma1.sigma1_succ_induction generalizing k with
+  | hP => definability
+  | zero =>
+    have : k=0 := le_antisymm h (by simp)
+    simp [this]
+  | succ n ih =>
+    rcases zero_or_succ k with rfl|⟨k,rfl⟩
+    · simp
+    · rw [binom_succ_succ]
+      exact lt_of_lt_of_le (ih k (by simpa using h)) (by simp)
 
 end DiophantineConsistency.ArithmeticBinomPascal
