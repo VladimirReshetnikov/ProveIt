@@ -1,9 +1,8 @@
 import DiophantineConsistency.MFWangTiles942PhysicalData
 import Mathlib.Data.Finset.Sort
 
-/-! Matrix-free clone of `DiophantineConsistency.WangTiles942PhysicalOrder`: all declarations are kept,
-proof bodies verbatim; namespaces are prefixed by `DiophantineConsistency.MF` and
-imports retargeted to the Matrix-free clones. -/
+/-! Matrix-free physical-order proof. The ordinary physical-order module
+reuses these independently maintained results. -/
 /-! Exact binding of the checked physical-order data to the printed floor rank.
 Only adjacent numerical inequalities are checked; all pairwise and coverage
 conclusions below are proved generically. -/
