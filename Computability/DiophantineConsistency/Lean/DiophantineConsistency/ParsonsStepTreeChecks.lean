@@ -1,0 +1,5 @@
+import DiophantineConsistency.ParsonsStepTree
+#print axioms DiophantineConsistency.ParsonsStepTree.bounded
+#print axioms DiophantineConsistency.ParsonsStepTree.neg_bounded_exists
+#print axioms DiophantineConsistency.ParsonsStepTree.strict
+#print axioms DiophantineConsistency.ParsonsStepTree.strict_negative
