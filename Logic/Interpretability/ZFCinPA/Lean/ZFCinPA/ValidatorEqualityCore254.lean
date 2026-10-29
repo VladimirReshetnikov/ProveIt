@@ -73,13 +73,17 @@ lemma eq_right (x y z : V) :
     CProv (wim (weq x y) (wim (weq z x) (weq z y))) :=
   ded2 (.mp (.mp (.ax (eq_trans z x y)) h0) h1)
 
+private lemma congr_of_sides (R : V → V → V) (a a' b b' : V)
+    (hl : CProv (wim (weq a a') (wim (R a b) (R a' b))))
+    (hr : CProv (wim (weq b b') (wim (R a' b) (R a' b')))) :
+    CProv (wim (weq a a') (wim (weq b b') (wim (R a b) (R a' b')))) :=
+  ded3 (.mp (.mp (.ax hr) h1) (.mp (.mp (.ax hl) h2) h0))
+
 lemma rel_congr (a a' b b' : V) :
     CProv (wim (weq a a') (wim (weq b b') (wim (wel a b) (wel a' b')))) :=
-  ded3 (.mp (.mp (.ax (rel_right b b' a')) h1)
-    (.mp (.mp (.ax (rel_left a a' b)) h2) h0))
+  congr_of_sides wel a a' b b' (rel_left a a' b) (rel_right b b' a')
 lemma eq_congr (a a' b b' : V) :
     CProv (wim (weq a a') (wim (weq b b') (wim (weq a b) (weq a' b')))) :=
-  ded3 (.mp (.mp (.ax (eq_right b b' a')) h1)
-    (.mp (.mp (.ax (eq_left a a' b)) h2) h0))
+  congr_of_sides weq a a' b b' (eq_left a a' b) (eq_right b b' a')
 
 end LeanProofs.ZFCinPA.ValidatorEqualityCore254
