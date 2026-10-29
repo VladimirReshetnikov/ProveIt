@@ -115,6 +115,14 @@ private theorem not_empty_succ {b b' : V} (hb : IsCell N b) (hb' : IsCell N b')
     he.2.2.2.1 hi.2.2.2.2.2 (fun k hk => by rw [east_copy H hb' hk, hprev])
   omega
 
+private theorem holds_of_selector {b p : V} (hb : IsCell N b) (hp : p < 942)
+    (hd : dig 47 C (b + p) = 1) : ∃ i : Fin 942, CellHolds C b i := by
+  rcases decode H hb with ⟨he, -⟩ | h
+  · obtain ⟨p₀, rfl⟩ := eq_nat_of_lt_nat (n := 942) (by simpa using hp)
+    rw [he p₀ (by exact_mod_cast hp)] at hd
+    exact absurd hd _root_.zero_ne_one
+  · exact h
+
 /-- **Occupation (B8)**: every cell `2011·j`, `j < N`, has a set selector. -/
 theorem occupied : ∀ j : V, j < N → ∃ p < (942:V), dig 47 C (2011 * j + p) = 1 := by
   intro j
@@ -129,25 +137,18 @@ theorem occupied : ∀ j : V, j < N → ∃ p < (942:V), dig 47 C (2011 * j + p)
     have hb := cell_of_index hjN
     have hb' := cell_of_index hj
     obtain ⟨p, hp, hd⟩ := ih hjN
-    rcases decode H hb with ⟨he, -⟩ | ⟨i, hi⟩
-    · obtain ⟨p₀, rfl⟩ := eq_nat_of_lt_nat (n := 942) (by simpa using hp)
-      rw [he p₀ (by exact_mod_cast hp)] at hd
-      exact absurd hd _root_.zero_ne_one
-    · have hprev : prevCell (2011 * N) (2011 * (j + 1)) = 2011 * j := by
-        apply cyc_unique hb.1
-        congr 1
-        ring
-      rcases decode H hb' with he' | ⟨i', hi'⟩
-      · exact absurd he' (not_empty_succ H hb hb' hprev hi)
-      · exact ⟨(physicalPosition i' : V), by exact_mod_cast physicalPosition_lt i', hi'.1⟩
+    obtain ⟨i, hi⟩ := holds_of_selector H hb hp hd
+    have hprev : prevCell (2011 * N) (2011 * (j + 1)) = 2011 * j := by
+      apply cyc_unique hb.1
+      congr 1
+      ring
+    rcases decode H hb' with he' | ⟨i', hi'⟩
+    · exact absurd he' (not_empty_succ H hb hb' hprev hi)
+    · exact ⟨(physicalPosition i' : V), by exact_mod_cast physicalPosition_lt i', hi'.1⟩
 
 theorem holds_of_index {j : V} (hj : j < N) : ∃ i : Fin 942, CellHolds C (2011 * j) i := by
   obtain ⟨p, hp, hd⟩ := occupied H j hj
-  rcases decode H (cell_of_index hj) with ⟨he, -⟩ | h
-  · obtain ⟨p₀, rfl⟩ := eq_nat_of_lt_nat (n := 942) (by simpa using hp)
-    rw [he p₀ (by exact_mod_cast hp)] at hd
-    exact absurd hd _root_.zero_ne_one
-  · exact h
+  exact holds_of_selector H (cell_of_index hj) hp hd
 
 end window
 
