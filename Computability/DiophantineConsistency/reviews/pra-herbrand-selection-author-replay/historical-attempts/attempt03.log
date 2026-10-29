@@ -1,0 +1,7 @@
+'DiophantineConsistency.PRAHerbrandSelection.modelMatrixAt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAHerbrandSelection.PRA_exists_witness_of_openDisjunction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAHerbrandSelection.PRA_exists_witness_of_openDisjunction {n : ℕ}
+  (φ : Semisentence language (n + 1)) (hOpen : Semiformula.Open φ) (fallback : Code n) (ws : List (Code n))
+  (hEither : UniversalAxiom ⊢ ∀⁰* openMatrixList φ fallback ws) : ∃ c, Primrec (eval c) ∧ PRA ⊢ ∀⁰* openMatrixAt φ c

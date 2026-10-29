@@ -120,6 +120,9 @@ open matrix. An effective recognition theorem is still required.
 The [finite witness selector](reviews/pra-finite-witness-root.md) collapses a
 provable finite disjunction of explicit candidate witnesses to one fixed PR
 witness. Extraction of that disjunction from a general proof remains open.
+The [open-matrix selection bridge](reviews/pra-herbrand-selection-root.md)
+now accepts the actual Foundation open formula and a finite-disjunction proof
+in the universal theory, yielding a candidate-PRA proof at one PR witness.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
