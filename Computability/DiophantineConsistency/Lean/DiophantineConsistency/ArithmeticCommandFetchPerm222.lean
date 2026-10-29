@@ -42,8 +42,7 @@ theorem fetch_total (pl np : V) : ∃! out, fetchDef.val.Evalb ![out,pl,np] := b
     second (fetchValue (raw+1) np)=np := by simp
 
 lemma pred_add_one (pl : V) (hp : pl≠0) : pl-1+1=pl := by
-  have hpos : 0<pl := lt_of_le_of_ne (Arithmetic.zero_le pl) (Ne.symm hp)
-  exact tsub_add_cancel_of_le (by simpa using lt_iff_succ_le.mp hpos)
+  exact tsub_add_cancel_of_le (pos_iff_one_le.mp (pos_iff_ne_zero.mpr hp))
 
 /-- Reading any raw command from a nonempty shifted pointer strictly lowers
 the residual pointer. Raw candidate zero is still executed when pl=1. -/
@@ -60,11 +59,7 @@ theorem new_candidate_bound (np : V) : tailValue (first (fetchValue 0 np))≤np 
 theorem fetch_nat (s : EnumPerm.St) :
     fetchValue s.pl s.np=Code254.P (EnumPerm.fetch s).1 (EnumPerm.fetch s).2 := by
   rcases s with ⟨pl,np,t,ws,d,h⟩
-  cases pl with
-  | zero => simp [fetchValue, EnumPerm.fetch, cantor_nat]
-  | succ raw =>
-      change fetchValue (raw+1) np=Code254.P raw np
-      rw [fetch_continuation, cantor_nat]
+  cases pl <;> simp [fetchValue, EnumPerm.fetch, cantor_nat]
 
 theorem raw_nat (s : EnumPerm.St) :
     first (fetchValue s.pl s.np)=(EnumPerm.fetch s).1 := by
