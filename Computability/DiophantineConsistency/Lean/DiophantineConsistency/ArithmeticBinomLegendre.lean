@@ -55,22 +55,23 @@ theorem two_adic (b : V) (hb : 0<b) : ∃ j o, (∃ z, o=2*z+1) ∧ b=Exp.exp j*
       · exact ⟨0,b,⟨x,hx⟩,by simp⟩
   exact all b hb
 
+/-- An odd factor prevents an additional power of two. -/
+private theorem exp_odd_ge {j p o t : V} (ho : ∃ z, o=2*z+1)
+    (h : Exp.exp j*o=Exp.exp p*t) : p≤j := by
+  by_contra hn
+  have hjp : j<p := lt_of_not_ge hn
+  obtain ⟨d,hd⟩ : ∃ d, p=j+(d+1) := ⟨p-(j+1),by
+    exact (add_tsub_cancel_of_le (lt_iff_succ_le.mp hjp)).symm.trans (by ring)⟩
+  rw [hd,exp_add,exp_succ] at h
+  have h' : Exp.exp j*o=Exp.exp j*(2*(Exp.exp d*t)) := by rw [h]; ring
+  have he := cancel_left (exp_pos j) h'
+  rcases ho with ⟨z,rfl⟩
+  exact two_mul_ne_odd _ _ he.symm
+
 /-- The power of two in `2^j * odd` is unique. -/
 theorem exp_odd_unique {j p o o' : V} (ho : ∃ z, o=2*z+1) (ho' : ∃ z, o'=2*z+1)
-    (h : Exp.exp j*o=Exp.exp p*o') : j=p := by
-  have side : ∀ {j p o o' : V}, (∃ z, o=2*z+1) → Exp.exp j*o=Exp.exp p*o' → ¬j<p := by
-    intro j p o o' ho h hjp
-    obtain ⟨d,hd⟩ : ∃ d, p=j+(d+1) := ⟨p-(j+1),by
-      exact (add_tsub_cancel_of_le (lt_iff_succ_le.mp hjp)).symm.trans (by ring)⟩
-    rw [hd,exp_add,exp_succ] at h
-    have h' : Exp.exp j*o=Exp.exp j*(2*(Exp.exp d*o')) := by rw [h]; ring
-    have he := cancel_left (exp_pos j) h'
-    rcases ho with ⟨z,rfl⟩
-    exact two_mul_ne_odd _ _ he.symm
-  rcases lt_trichotomy j p with hlt|heq|hgt
-  · exact absurd hlt (side ho h)
-  · exact heq
-  · exact absurd hgt (side ho' h.symm)
+    (h : Exp.exp j*o=Exp.exp p*o') : j=p :=
+  le_antisymm (exp_odd_ge ho' h.symm) (exp_odd_ge ho h)
 
 /-! ### Legendre's formula for two -/
 
@@ -150,18 +151,10 @@ theorem exp_population_dvd_central (r : V) : Exp.exp (population r)∣binom (2*r
 /-- Soundness direction: `2^m ∣ binom (2r) r → m ≤ σ(r)`. -/
 theorem le_population_of_exp_dvd_central (r m : V) (h : Exp.exp m∣binom (2*r) r) :
     m≤population r := by
-  by_contra hn
-  have hlt : population r<m := lt_of_not_ge hn
   rcases central_valuation r with ⟨o,ho,hv⟩
   rcases h with ⟨t,ht⟩
-  obtain ⟨d,hd⟩ : ∃ d, m=population r+(d+1) := ⟨m-(population r+1),by
-    exact (add_tsub_cancel_of_le (lt_iff_succ_le.mp hlt)).symm.trans (by ring)⟩
-  rw [hd,exp_add,exp_succ] at ht
-  have h' : Exp.exp (population r)*o=Exp.exp (population r)*(2*(Exp.exp d*t)) := by
-    rw [←hv,ht]; ring
-  have he := cancel_left (exp_pos _) h'
-  rcases ho with ⟨z,rfl⟩
-  exact two_mul_ne_odd _ _ he.symm
+  apply exp_odd_ge ho
+  rw [←hv,ht]
 
 theorem population_pos (r : V) (hr : 0<r) : 0<population r := by
   have all : ∀ r : V, 0<r → 0<population r := by
