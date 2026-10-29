@@ -48,10 +48,15 @@ theorem tA_allClosure : ∀ (n : ℕ) (φ : Semiproposition (setTemplateLanguage
       simp only [tA]
       ring
 
+theorem tA_univCl_eq (q : Proposition (setTemplateLanguage k arities)) :
+    tA (Rewriting.emb q.univCl : Proposition (setTemplateLanguage k arities)) =
+      tA (OpenTemplateClosure.sourceClosure q) + 2 * (0 + q.fvSup) := by
+  rw [FirstOrder.Semiformula.coe_univCl_eq_univCl', FirstOrder.Semiformula.univCl', tA_allClosure]
+  rfl
+
 theorem tA_univCl (q : Proposition (setTemplateLanguage k arities)) :
     2 * (0 + q.fvSup) ≤ tA (Rewriting.emb q.univCl : Proposition (setTemplateLanguage k arities)) := by
-  rw [FirstOrder.Semiformula.coe_univCl_eq_univCl', FirstOrder.Semiformula.univCl']
-  rw [tA_allClosure]
+  rw [tA_univCl_eq]
   omega
 
 /-! ## Every template axiom leaf, bounded -/
