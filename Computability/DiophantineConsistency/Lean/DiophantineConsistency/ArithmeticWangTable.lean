@@ -149,9 +149,8 @@ instance tab_defined (l : List ℕ) (k : ℕ) :
   | cons v vs ih =>
     refine .mk fun e => ?_
     classical
-    by_cases hi : e 1 = ORingStructure.numeral k
-    · simp [tabDef, tabValue, (ih (k + 1)).iff, hi]
-    · simp [tabDef, tabValue, (ih (k + 1)).iff, hi]
+    by_cases hi : e 1 = ORingStructure.numeral k <;>
+      simp [tabDef, tabValue, (ih (k + 1)).iff, hi]
 
 theorem tab_cast_aux (l : List ℕ) (k m : ℕ) :
     tabValue l k (((k + m : ℕ)) : V) = (l.getD m 0 : V) := by
@@ -176,9 +175,7 @@ def colList (f : Tile → ℕ) : List ℕ := List.ofFn fun i : Fin 942 => f (til
 theorem colList_getD (f : Tile → ℕ) (hf : f ⟨0, 0, 0, 0⟩ = 0) (m : ℕ) :
     (colList f).getD m 0 = f (tileN m) := by
   rw [List.getD_eq_getElem?_getD, colList, List.getElem?_ofFn]
-  by_cases hm : m < 942
-  · rw [dif_pos hm, tileN, dif_pos hm]; rfl
-  · rw [dif_neg hm, tileN, dif_neg hm, hf]; rfl
+  by_cases hm : m < 942 <;> simp [tileN, hm, hf]
 
 noncomputable def westC (i : V) : V := tabValue (colList Tile.west) 0 i
 noncomputable def northC (i : V) : V := tabValue (colList Tile.north) 0 i
@@ -306,9 +303,7 @@ noncomputable def hcV (st b : V) : V := if st = 0 then 432 + b else 2 * st + b
 
 theorem hcV_cast (st b : ℕ) : hcV (st : V) (b : V) = (hcN st b : V) := by
   unfold hcV hcN
-  by_cases h : st = 0
-  · subst h; simp
-  · simp [h]
+  by_cases h : st = 0 <;> simp [h]
 
 theorem lookupValue_cast (rows : List (ℕ × ℕ)) (first q bit : ℕ) :
     lookupValue rows first (q : V) (bit : V) = (lookupNat rows first q bit : V) := by
@@ -333,9 +328,9 @@ theorem head_step {i st b : V} (hi : i < 942) (hst0 : st ≠ 0) (hst : st ≤ 21
           southC i' = hcV st' (northC i')) := by
   obtain ⟨m, hm, rfl⟩ := tile_index hi
   obtain ⟨p, hp, rfl⟩ := standard_of_lt (n := 216) (i := st)
-    (lt_of_le_of_lt hst (by simpa using (Nat.cast_lt (α := V)).mpr (by decide : (215 : ℕ) < 216)))
+    (lt_of_le_of_lt hst (by norm_num))
   obtain ⟨β, hβ, rfl⟩ := standard_of_lt (n := 2) (i := b)
-    (lt_of_le_of_lt hb (by simpa using (Nat.cast_lt (α := V)).mpr (by decide : (1 : ℕ) < 2)))
+    (lt_of_le_of_lt hb (by norm_num))
   have hp0 : p ≠ 0 := by rintro rfl; exact hst0 (by simp)
   obtain ⟨q, rfl⟩ : ∃ q, p = q + 1 := ⟨p - 1, by omega⟩
   rw [northC_cast] at hn
