@@ -21,11 +21,7 @@ theorem mod_add_cancel (a b c m : V) (hm : 0<m)
   exact ArithmeticModularCancellation.add_cancel hm h
 
 theorem mod_reduce (a m n : V) (hm : 0<m) (hdiv : m∣n) :
-    (a%n)%m=a%m := by
-  have hd : m∣n*(a/n) := dvd_mul_of_dvd_left hdiv _
-  calc
-    (a%n)%m=(n*(a/n)+a%n)%m := (mod_add_remove_left_of_dvd hd hm).symm
-    _=a%m := by rw [div_add_mod]
+    (a%n)%m=a%m := ArithmeticModularCancellation.mod_mod_of_dvd hm hdiv a
 
 theorem mod_scale (a m c : V) (hm : 0<m) (hc : 0<c) :
     (c*a)%(c*m)=c*(a%m) := by

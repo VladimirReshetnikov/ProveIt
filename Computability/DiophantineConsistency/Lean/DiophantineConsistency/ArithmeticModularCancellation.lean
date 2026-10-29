@@ -21,4 +21,9 @@ theorem add_cancel {a b c m : V} (hm : 0 < m) (h : (a+c)%m=(b+c)%m) : a%m=b%m :=
     rw [mod_add (a:=a+c) hm,mod_add (a:=b+c) hm,h]
   simpa only [add_assoc,hc,mod_add_mul' _ _ hm] using hh
 
+/-- Reducing modulo a multiple does not change the residue modulo its divisor. -/
+theorem mod_mod_of_dvd {m n : V} (hm : 0 < m) (h : m ∣ n) (a : V) : a % n % m = a % m := by
+  conv_rhs => rw [← div_add_mod a n]
+  rw [mod_add_remove_left_of_dvd (dvd_mul_of_dvd_left h _) hm]
+
 end DiophantineConsistency.ArithmeticModularCancellation

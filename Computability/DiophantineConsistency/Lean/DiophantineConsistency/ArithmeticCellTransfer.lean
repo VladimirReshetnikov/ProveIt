@@ -55,9 +55,8 @@ theorem mod_add_mod' {n : V} (hn : 0 < n) (x y : V) : (x % n + y) % n = (x + y) 
   have he : n * (x / n) + x % n + y = (x % n + y) + n * (x / n) := by ring
   rw [he, mod_add_mul' _ _ hn]
 
-theorem mod_mod_of_dvd' {m n : V} (hm : 0 < m) (h : m ∣ n) (a : V) : a % n % m = a % m := by
-  conv_rhs => rw [← div_add_mod a n]
-  rw [mod_add_remove_left_of_dvd (dvd_mul_of_dvd_left h _) hm]
+theorem mod_mod_of_dvd' {m n : V} (hm : 0 < m) (h : m ∣ n) (a : V) : a % n % m = a % m :=
+  ArithmeticModularCancellation.mod_mod_of_dvd hm h a
 
 theorem eq_of_add_mod_eq {n x y e : V} (hx : x < n) (hy : y < n)
     (h : (x + e) % n = (y + e) % n) : x = y := by
