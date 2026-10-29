@@ -967,5 +967,15 @@ other transitive inputs remain cached. Interface probes have matching logs
 but no separate command/status receipts. Target and client records and logs
 were independently checked. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-gates-semiring-sharing-evidence/BUNDLE.json).
 
+The object-code inversion sharing `8fa57453aa` removes 15 net lines,
+bringing the reviewed series to 8574. Paired targets and the direct
+ObjectCodeSeal client pass; all 83 existing declaration types and axiom
+reports, and 15 forced equation declarations, match. ObjectCodeClosure is a
+precompiled input without a matching source/object receipt, and package and
+other transitive inputs remain cached. Interface probes have matching logs but
+no separate command/status receipts; early failed probe outputs were
+overwritten. Target and client records and logs were independently checked.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-object-code-bound-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
