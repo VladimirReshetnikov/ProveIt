@@ -70,18 +70,19 @@ lemma below_label {env next : V} (he : Below env next) (j : V) :
   by_cases hj : j<len env
   · simpa [freeLabel,hj] using he.2 j hj
   · simpa [freeLabel,hj] using he.1
-lemma positive_cons {env x : V} (he : Positive env) (hx : 0<x) : Positive (x∷env) := by
+private lemma all_nth_cons {P : V → Prop} {env x : V}
+    (he : ∀ j<len env, P env.[j]) (hx : P x) :
+    ∀ j<len (x∷env), P (x∷env).[j] := by
   intro j hj
   rcases zero_or_succ j with (rfl | ⟨j,rfl⟩)
   · simpa using hx
   · simpa using he j (by simpa using hj)
+
+lemma positive_cons {env x : V} (he : Positive env) (hx : 0<x) : Positive (x∷env) :=
+  all_nth_cons (P := fun v => 0<v) he hx
 lemma below_cons {env x next : V} (he : Below env next) (hx : x<next) :
-    Below (x∷env) next := by
-  refine ⟨he.1,?_⟩
-  intro j hj
-  rcases zero_or_succ j with (rfl | ⟨j,rfl⟩)
-  · simpa using hx
-  · simpa using he.2 j (by simpa using hj)
+    Below (x∷env) next :=
+  ⟨he.1, all_nth_cons (P := fun v => v<next) he.2 hx⟩
 
 namespace TermLabels
 
