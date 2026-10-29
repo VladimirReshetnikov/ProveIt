@@ -1848,5 +1848,13 @@ Paired target and TilingRows builds pass; client objects differ for an unknown
 reason, while the checked declaration and registration reports match. The
 transitive closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-tiling-colours-direct-evidence/BUNDLE.json).
 
+The fixed tiling-band edge simplification `85306187dc` removes four net Lean
+lines, bringing the reviewed series to 10141. The affected proofs came from
+Claude-coauthored commit `3cd04ac37f`. Existing reset cases simplify directly,
+and the initial-column bound uses `lt_succ_iff_le`. Paired target and TilingWord
+builds pass; client objects differ for an unknown reason, while the checked
+declaration and registration reports match. The transitive closure remains
+cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-tiling-band-fixed-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
