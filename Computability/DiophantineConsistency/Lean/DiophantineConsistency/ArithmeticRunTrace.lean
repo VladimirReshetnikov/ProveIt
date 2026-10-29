@@ -73,20 +73,11 @@ instance hstep_definable : 𝚺₁-Function₂[V] hstep := hstep_defined.to_defi
 
 theorem hstep_le (c h : V) : hstep c h ≤ h + 1 := by
   unfold hstep
-  split
-  · exact le_add_of_nonneg_right (Arithmetic.zero_le 1)
-  · split
-    · exact le_trans (tsub_le_self) (le_add_of_nonneg_right (Arithmetic.zero_le 1))
-    · exact le_rfl
+  split_ifs <;> simp
 
 theorem le_hstep (c h : V) : h ≤ hstep c h + 1 := by
   unfold hstep
-  split
-  · exact le_add_of_nonneg_right (Arithmetic.zero_le 1)
-  · split
-    · exact le_tsub_add
-    · exact le_trans (le_add_of_nonneg_right (Arithmetic.zero_le 1))
-        (le_add_of_nonneg_right (Arithmetic.zero_le 1))
+  split_ifs <;> first | exact le_tsub_add | simp
 
 /-! ## The head recursion -/
 
