@@ -120,10 +120,7 @@ theorem positive_quotient (c f R u H : V) (hc : 0<c) (hu : 0<u)
     rw [←ho]
     exact add_pos hu hc
   have hsum : (u+c+R)%c=0 := by
-    calc
-      (u+c+R)%c=(u+R+c)%c := by congr 1; ring
-      _=(u+R)%c := mod_add_remove_right hc
-      _=0 := huc
+    simpa only [show u+c+R=u+R+c by ring, mod_add_remove_right hc] using huc
   have hco : (o+R)%c=0 := by
     have he : u+c+R=(o+R)+c*(H*o) := by rw [ho,hfc]; ring
     rw [he,mod_add_mul' _ _ hc] at hsum
@@ -185,9 +182,7 @@ theorem auxiliary_seed (a R : V) (hphase : R%4=3) :
   let u:=oddQuotient ((R-1)/2) (I-2)
   let y:=ycoord R (I-2)
   have hux : xcoord R (I-2)=I*u := by
-    have hh := odd_exact ((R-1)/2) (I-2)
-    rw [←hodd,hb] at hh
-    exact hh
+    simpa only [u, ←hodd,hb] using odd_exact ((R-1)/2) (I-2)
   have hu : 0<u := by
     apply pos_of_mul_pos_right (a := I) _ (by simp)
     rw [←hux]
@@ -198,8 +193,7 @@ theorem auxiliary_seed (a R : V) (hphase : R%4=3) :
       2*(2*(R/4)+1)+1=2*((R-1)/2)+1 := by rw [hhalf]
       _=R := hodd.symm
   have huf : (u+c)%(f*f)=0 := by
-    have hh := (quotient_square_pair a I f (R/4) hI hf hnorm).2
-    simpa only [u,hhalf,hphaseindex] using hh
+    simpa only [u,hhalf,hphaseindex] using (quotient_square_pair a I f (R/4) hI hf hnorm).2
   have huc : (u+R)%c=0 := by
     have hh := (quotient_divisor_pair I c (R/4) hI hc hIc).2
     have hfour : 4*(R/4)+3=R := by simpa only [hphase] using div_add_mod R 4
