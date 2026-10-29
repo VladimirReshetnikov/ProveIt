@@ -128,21 +128,9 @@ theorem norm_normalization (R D f : V)
   obtain ⟨g,hg⟩ := gcd_certificate_exists R D
   obtain ⟨t,hRt⟩ := hg.1
   obtain ⟨d,hDd⟩ := hg.2.1
-  have hg0 : 0<g := by
-    by_contra hn
-    have hz : g=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le g)
-    simp [hz] at hRt
-    simp [hRt] at hR
-  have ht0 : 0<t := by
-    by_contra hn
-    have hz : t=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le t)
-    simp [hz] at hRt
-    simp [hRt] at hR
-  have hd0 : 0<d := by
-    by_contra hn
-    have hz : d=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le d)
-    simp [hz] at hDd
-    simp [hDd] at hD
+  have hg0 : 0<g := pos_of_mul_pos_left (by rw [←hRt]; exact hR) (by simp)
+  have ht0 : 0<t := pos_of_mul_pos_right (by rw [←hRt]; exact hR) (by simp)
+  have hd0 : 0<d := pos_of_mul_pos_right (by rw [←hDd]; exact hD) (by simp)
   obtain ⟨u,v,w,z,he⟩ := hg.2.2
   have hunit : Bez t d 1 := by
     refine ⟨u,v,w,z,?_⟩
@@ -165,11 +153,7 @@ theorem norm_normalization (R D f : V)
     (by simpa only [mul_assoc,mul_comm,mul_left_comm] using hdiv)
   have hdiv2 : d∣g := unit_certificate_cancel hunit (by simpa only [mul_comm] using hdiv1)
   obtain ⟨s,hgs⟩ := hdiv2
-  have hs0 : 0<s := by
-    by_contra hn
-    have hz : s=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le s)
-    simp [hz] at hgs
-    simp [hgs] at hg0
+  have hs0 : 0<s := pos_of_mul_pos_right (by rw [←hgs]; exact hg0) (by simp)
   have hlast : 1+s*t*t=f*f := by
     apply mul_left_cancel₀ (ne_of_gt hd0)
     calc
