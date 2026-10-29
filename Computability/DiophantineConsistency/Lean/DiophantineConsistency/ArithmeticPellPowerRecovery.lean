@@ -126,9 +126,7 @@ theorem coefficient_gap (X Y : V) (hX : 16≤X) (hY : 1≤Y) :
       add_le_add_left (add_le_add (mul_le_mul_of_nonneg_left hsq (by simp)) h204) 9
     _=(2*(Y*(X+1))+3)*(2*(Y*(X+1))+3) := by ring
   apply lt_of_lt_of_le _ hlarge
-  have hnum : (32:V)<204+9 := by
-    simpa only [show (32:V)+181=204+9 by ring] using
-      (lt_add_of_pos_right (32:V) (by simp : (0:V)<181))
+  have hnum : (32:V)<204+9 := by norm_num
   have h := add_lt_add_of_le_of_lt (le_refl (64*X*Y*Y)) hnum
   simpa only [show 16*(2*(2*X*Y*Y+1))=64*X*Y*Y+32 by ring,add_assoc] using h
 
@@ -148,7 +146,7 @@ theorem power_bound (X Y r k c eta zeta : V) (hX : 16≤X) (hY : 1≤Y) (hr : 2�
     rw [hB]; exact coefficient_gap X Y hX hY
   have hrp : 0<r := lt_of_lt_of_le (by simp : (0:V)<2) hr
   have hlow := paired_comparison_strict (Y*(X+1)) B hsep r hrp
-  have hkpos : 0<k := by rw [hkez]; exact lt_of_le_of_lt (by simp : (0:V)≤eta) (lt_add_of_pos_right eta hz)
+  have hkpos : 0<k := by rw [hkez]; exact add_pos_of_nonneg_of_pos (by simp) hz
   have hinterval : c<k*(Y+1) := by
     rw [hck]
     have he : eta<k := by rw [hkez]; exact lt_add_of_pos_right eta hz
@@ -165,7 +163,7 @@ theorem power_bound (X Y r k c eta zeta : V) (hX : 16≤X) (hY : 1≤Y) (hr : 2�
   have hindex : 2*r+3≤4*r := by
     have h4 : (4:V)≤2*r := by simpa only [show (2:V)*2=4 by ring] using
       mul_le_mul_of_nonneg_left hr (by simp : (0:V)≤2)
-    have h3 : (3:V)≤2*r := le_trans (by simpa only [show (3:V)+1=4 by ring] using (show (3:V)≤3+1 by simp)) h4
+    have h3 : (3:V)≤2*r := le_trans (by norm_num) h4
     have h := add_le_add (le_refl (2*r)) h3
     simpa only [show 2*r+2*r=4*r by ring] using h
   have hfloor : 2*Exp.exp (2*r+1)+2≤Exp.exp (4*r) := calc
