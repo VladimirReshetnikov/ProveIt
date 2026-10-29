@@ -1,0 +1,23 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedInduction.lean:91:13: error: typeclass instance problem is stuck
+  Structure ?m.79 M
+
+Note: Lean will not try to resolve this typeclass instance problem because the first type argument to `Structure` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedInduction.lean:123:6: error: Type mismatch
+  Iff.trans hc' he
+has type
+  Structure.func c
+        (Semiterm.val (fun i => Fin.cases x params (Fin.cast h i)) Empty.elim ∘ vars (1 + Semiformula.fvSup φ)) =
+      Structure.func oneCode (Semiterm.val (fun i => Fin.cases x params (Fin.cast h i)) Empty.elim ∘ Fin.elim0) ↔
+    (Semiformula.Eval ![x] e) φ
+but is expected to have type
+  (Structure.func c fun i => Fin.cases x params (Fin.cast h i)) = Structure.func oneCode Fin.elim0 ↔
+    (Semiformula.Eval ![x] e) φ
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedInduction.lean:122:93: warning: This simp argument is unused:
+  vars
+
+Hint: Omit it from the simp argument list.
+  simp [characteristicMatrix, Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func,̵ ̵v̵a̵r̵s̵] at hc'
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

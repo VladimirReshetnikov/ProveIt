@@ -1,0 +1,99 @@
+import DiophantineConsistency.PRAOpenInduction
+
+/-! Primitive-recursive witnessing along a quantifier-free induction. -/
+set_option autoImplicit false
+namespace DiophantineConsistency.PRAPrimitiveRecursionInduction
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAOpenInduction
+
+def iterateCode {n : ℕ} (base : Code n) (step : Code (n+2)) : Code (n+1) := .prec base step
+
+theorem iterateCode_primrec {n : ℕ} (base : Code n) (step : Code (n+2)) :
+    Primrec (eval (iterateCode base step)) := eval_primrec _
+
+private def params1 (n : ℕ) : Fin n → Semiterm language ℕ 1 := fun i => .fvar i.val
+private def recursiveBody {n : ℕ} (pred : Code (n+2)) (base : Code n) (step : Code (n+2)) :
+    Semiproposition language 1 :=
+  Semiformula.rel Language.ORing.Rel.eq
+    ![.func pred (Fin.cases (.bvar 0) (Fin.cases
+        (.func (iterateCode base step) (Fin.cases (.bvar 0) (params1 n))) (params1 n))),
+      .func oneCode Fin.elim0]
+
+theorem recursiveBody_open {n : ℕ} (pred : Code (n+2)) (base : Code n) (step : Code (n+2)) :
+    (recursiveBody pred base step).Open := by simp [recursiveBody, Semiformula.Open]
+
+section models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
+  [M↓[language] ⊧* PRA]
+
+omit [Nonempty M] [M↓[language] ⊧* PRA] in
+private theorem recursiveBody_eval {n : ℕ} (pred : Code (n+2)) (base : Code n) (step : Code (n+2))
+    (x : M) (e : ℕ → M) : (recursiveBody pred base step).Eval ![x] e ↔
+    let params := fun i : Fin n => e i.val
+    let iterate := Structure.func (L := language) (iterateCode base step) (Fin.cases x params)
+    Structure.func (L := language) pred (Fin.cases x (Fin.cases iterate params)) =
+      Structure.func (L := language) oneCode Fin.elim0 := by
+  change Semiformula.EvalAux (inferInstance : Structure language M) e ![x] (recursiveBody pred base step) ↔ _
+  dsimp only [recursiveBody, Semiformula.EvalAux]
+  rw [eqRel]
+  have hi : (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (params1 n)) =
+      Fin.cases x (fun i : Fin n => e i.val) := by
+    funext i
+    exact Fin.cases rfl (fun _ => rfl) i
+  have hp : (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (Fin.cases
+      (.func (iterateCode base step) (Fin.cases (.bvar 0) (params1 n))) (params1 n))) =
+      Fin.cases x (Fin.cases (Structure.func (L := language) (iterateCode base step)
+        (Fin.cases x (fun i : Fin n => e i.val))) (fun i : Fin n => e i.val)) := by
+    funext i
+    refine Fin.cases rfl (fun j => ?_) i
+    refine Fin.cases ?_ (fun _ => rfl) j
+    change Structure.func (L := language) (iterateCode base step)
+      (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (params1 n)) = _
+    rw [hi]
+  have hz : (Semiterm.val (L := language) ![x] e ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
+  simp [Semiterm.val_func, hp, hz]
+
+/-- If a PR predicate has a PR base witness and a PR successor update,
+open induction proves that its recursively generated witnesses work at every
+index, in every candidate-PRA model and for every parameter valuation. -/
+theorem modelRecursiveWitness {n : ℕ} (pred : Code (n+2)) (base : Code n) (step : Code (n+2))
+    (e : ℕ → M)
+    (hbase : Structure.func (L := language) pred (Fin.cases
+      (Structure.func (L := language) (Code.zero 0) Fin.elim0)
+      (Fin.cases (Structure.func (L := language) base (fun i : Fin n => e i.val)) (fun i => e i.val))) =
+      Structure.func (L := language) oneCode Fin.elim0)
+    (hstep : ∀ x y, Structure.func (L := language) pred
+      (Fin.cases x (Fin.cases y (fun i : Fin n => e i.val))) = Structure.func (L := language) oneCode Fin.elim0 →
+      Structure.func (L := language) pred (Fin.cases (Structure.func (L := language) Code.succ (fun _ => x))
+        (Fin.cases (Structure.func (L := language) step (Fin.cases x (Fin.cases y (fun i : Fin n => e i.val))))
+          (fun i : Fin n => e i.val))) = Structure.func (L := language) oneCode Fin.elim0) :
+    ∀ x, Structure.func (L := language) pred (Fin.cases x (Fin.cases
+      (Structure.func (L := language) (iterateCode base step) (Fin.cases x (fun i : Fin n => e i.val)))
+      (fun i : Fin n => e i.val))) = Structure.func (L := language) oneCode Fin.elim0 := by
+  let z : M := Structure.func (L := language) (Code.zero 0) Fin.elim0
+  let s : M → M := fun x => Structure.func (L := language) Code.succ (fun _ => x)
+  let params : Fin n → M := fun i => e i.val
+  let iter : M → M := fun x => Structure.func (L := language) (iterateCode base step) (Fin.cases x params)
+  let p : M → M → M := fun x y => Structure.func (L := language) pred (Fin.cases x (Fin.cases y params))
+  let next : M → M → M := fun x y => Structure.func (L := language) step (Fin.cases x (Fin.cases y params))
+  intro x
+  apply (recursiveBody_eval pred base step x e).mp
+  apply modelOpenInduction (M := M) (recursiveBody pred base step) (recursiveBody_open pred base step) e
+  · apply (recursiveBody_eval pred base step z e).mpr
+    change p z (iter z) = _
+    have hb := modelBase (M := M) base step params
+    change iter z = Structure.func (L := language) base params at hb
+    rw [hb]
+    exact hbase
+  · intro t ht
+    apply (recursiveBody_eval pred base step (s t) e).mpr
+    change p (s t) (iter (s t)) = _
+    have hs := modelStep (M := M) base step (Fin.cases t params)
+    change iter (s t) = next t (iter t) at hs
+    rw [hs]
+    apply hstep
+    exact (recursiveBody_eval pred base step t e).mp ht
+
+end models
+end DiophantineConsistency.PRAPrimitiveRecursionInduction

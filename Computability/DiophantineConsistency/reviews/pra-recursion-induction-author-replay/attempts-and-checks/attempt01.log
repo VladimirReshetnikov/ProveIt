@@ -1,0 +1,18 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAPrimitiveRecursionInduction.lean:47:81: error: unsolved goals
+M : Type
+inst✝¹ : Structure language M
+inst✝ : Structure.Eq language M
+n : ℕ
+pred : Code (n + 2)
+base : Code n
+step : Code (n + 2)
+x : M
+e : ℕ → M
+hi : (Semiterm.val ![x] e ∘ fun i => Fin.cases (#0) (params1 n) i) = fun i => Fin.cases x (fun i => e ↑i) i
+i : Fin (n + 1 + 1)
+j : Fin (n + 1)
+⊢ (Structure.func (iterateCode base step) fun i => Fin.cases x (fun i => e ↑i) i) =
+    Fin.cases x
+      (fun i =>
+        Fin.cases (Structure.func (iterateCode base step) fun i => Fin.cases x (fun i => e ↑i) i) (fun i => e ↑i) i)
+      (Fin.succ 0)

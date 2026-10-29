@@ -1,0 +1,44 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAPrimitiveRecursionInduction.lean:152:95: error: unsolved goals
+M : Type
+inst✝¹ : Structure language M
+inst✝ : Structure.Eq language M
+n : ℕ
+pred step : Code (n + 2)
+e : ℕ → M
+x y : M
+hz : Semiterm.val ![y, x] e ∘ Fin.elim0 = Fin.elim0
+hold :
+  (Semiterm.val ![y, x] e ∘ fun i => Fin.cases (#1) (fun i => Fin.cases (#0) (params2 n) i) i) = fun i =>
+    Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i
+hsucc : Semiterm.val ![y, x] e ∘ ![#1] = fun x_1 => x
+hnew :
+  (Semiterm.val ![y, x] e ∘ fun i =>
+      Fin.cases (Semiterm.func Code.succ ![#1])
+        (fun i =>
+          Fin.cases (Semiterm.func step fun i => Fin.cases (#1) (fun i => Fin.cases (#0) (params2 n) i) i) (params2 n)
+            i)
+        i) =
+    fun i =>
+    Fin.cases (Structure.func Code.succ fun x_1 => x)
+      (fun i =>
+        Fin.cases (Structure.func step fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i) (fun i => e ↑i)
+          i)
+      i
+⊢ ¬(Structure.func pred fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i) =
+          Structure.func oneCode Fin.elim0 ∨
+      (Structure.func pred fun i =>
+          Fin.cases (Structure.func Code.succ fun x_1 => x)
+            (fun i =>
+              Fin.cases (Structure.func step fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i)
+                (fun i => e ↑i) i)
+            i) =
+        Structure.func oneCode Fin.elim0 ↔
+    (Structure.func pred fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i) =
+        Structure.func oneCode Fin.elim0 →
+      (Structure.func pred fun i =>
+          Fin.cases (Structure.func Code.succ fun x_1 => x)
+            (fun i =>
+              Fin.cases (Structure.func step fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i)
+                (fun i => e ↑i) i)
+            i) =
+        Structure.func oneCode Fin.elim0
