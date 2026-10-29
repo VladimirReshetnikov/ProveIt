@@ -2210,5 +2210,14 @@ match. Five project providers have source-matched receipts; the wider closure
 remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-firstindex-base-shared.md)
 records hashes and external paths without raw logs or objects.
 
+The context-lookup iteration reuse `f09fabb788` removes eight net Lean lines,
+bringing the reviewed series to 10452. Existing NatIterate recursion and
+fixed-point lemmas replace two inductions. Paired target, two direct clients and
+the dedicated check pass with identical client objects; 31 checked declarations,
+including the generated drop equation, and sampled registrations match. Two
+providers were rebuilt from current source; the umbrella and wider closure remain
+unbuilt or cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-context-drop-shared.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
