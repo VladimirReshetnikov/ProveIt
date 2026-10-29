@@ -2262,3 +2262,42 @@ the schema obligations as its one premise. `#print axioms` gives `propext`,
 - *Risk.* The engine accepts obligations up to `2^(2^(2^(aL(p+1))))`. If the
   glue tower is taller, the engine needs one more exponential, which is a
   mechanical change.
+
+## Stage 3b in progress: sized Hilbert combinators (2026-10-28)
+
+**Scope correction.** The scope section said that typed internal proofs
+"already build explicit codes". That holds only for Foundation's *primitive*
+typed constructors (`TDerivation.em`, `and'`, `or'`, `all'`, `exs'`, `wk`,
+`shift`, `cut`, `byAxm`). The derived `TDerivation.and`/`or`/`all`/`exs` go
+through `Derivable.toTDerivation`, which picks the code with
+`Classical.choose`. So do the operations built from them:
+- `TProof.modusPonens` (`⨀`);
+- every Hilbert axiom of the internal `Entailment.Minimal` instance;
+- `TProof.all` and `specialize`;
+- `ModelCodedShiftCancellation.cancelShift`.
+
+Their codes are unconstrained, so each such step must be re-derived from the
+bounded primitive rules.
+
+**`SizedProof`** (new, generic over the language) does this for the six
+combinators the `L` schema obligations use: `mdp` (`⨀`), `K_intro`, `K_left`,
+`K_right`, `C_id`, `E_id`. Each costs at most four bounded rule applications
+under one member bound. The usage count over the 48 `L*` modules plus the
+template compiler is: `⨀` 51, `K!_intro` 50, `K!_left`/`K!_right` 10 each,
+`E!_id` 2, `C!_id` 1. The module also proves
+`neg_code_le : neg L q ≤ 2^(2^(12(q+1)))`, so callers can supply member bounds for
+negated formulas.
+
+**Roadmap for the rest of Stage 3b:**
+1. A generic substitution size bound. Placeholder atoms translate to
+   `K.subst (translated terms)`, and under binders `qVec` bShifts the
+   substituted terms, which is bounded by squaring as in `ShiftBound`.
+2. Sized template compilation: translated-formula codes by meta induction on
+   the template formula, `compileDerivation` by meta induction on the fixed
+   template derivation, and a sized `cancelShift`.
+3. The axiom leaves of the templates, among them the `SetCongruence`
+   congruence proofs.
+4. The `L` inductions `glue`, `peel`, `driverT`, `numOK`, `fun_MT` and
+   `slot_MT`.
+5. `sep_obligation`/`repl_obligation` → `hSchema` → an unconditional bounded
+   ZFC → ZF transport.
