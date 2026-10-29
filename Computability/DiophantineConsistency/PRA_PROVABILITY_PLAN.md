@@ -164,3 +164,24 @@ The [Q theorem translation](reviews/pra-q-translation-root.md) now proves
 that every actual Foundation Q theorem has a candidate-PRA proof of its
 mapped sentence. It is an existence theorem by soundness and completeness,
 not a primitive-recursive proof transformer or a conservation theorem.
+
+The [parameterized open induction rule](reviews/pra-induction-rule-root.md)
+is admissible in the candidate PRA theory: closed proofs of the base and
+step yield a closed proof of the induction conclusion. This does not yet
+admit the Σ₁ rule required for Parsons conservation.
+
+The [Parsons open-rule adapter](reviews/pra-parsons-open-rule-root.md)
+connects candidate PRA’s quantifier-free induction rule to the exact
+`ParsonsRule.base` and `step` definitions. The general Σ₁ rule and its
+witnessing reduction are still open.
+
+The [explicit order witness](reviews/pra-q-witness-root.md) supplies a
+closed candidate-PRA proof using `pred(y-x)` as the witness for strict
+order. The subtraction-to-Q provider chain was rebuilt after the upstream
+source merge. General Σ₁ witnessing and conservation remain open.
+
+The [finite order-witness code](reviews/pra-q-witness-code-root.md) packages
+`pred(y-x)` into one primitive-recursive function symbol, proves its
+all-model meaning, and derives its witness statement in candidate PRA.
+The [witnessing note](research/pra-witness-bridge-20261029.md) records the
+remaining general Σ₁ and presentation obligations.
