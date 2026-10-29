@@ -1,0 +1,23 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HerbrandWitnessExample.lean:22:28: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @Structure.rel ?m.80 ?m.81 ?m.82 2 op(=) ?m.85
+in the target expression
+  @Structure.rel language M inst✝² 2 Language.ORing.Rel.eq (Semiterm.val (e 0 :> e) Empty.elim ∘ ![#0, #1])
+
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 1 → M
+⊢ Structure.rel Language.ORing.Rel.eq (Semiterm.val (e 0 :> e) Empty.elim ∘ ![#0, #1])
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Language.ORing.Rel.eq
+  has type
+    Language.ORing.Rel 2
+  but is expected to have type
+    language.Rel 2
+  in the application
+    Structure.rel Language.ORing.Rel.eq
