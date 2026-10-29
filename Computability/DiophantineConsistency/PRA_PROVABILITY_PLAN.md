@@ -53,8 +53,9 @@ side-guard hypothesis and smaller local recursive proofs. Deriving that guard
 from a general Π₂ context and assembling the global induction remain open.
 The [marked universal case](reviews/parsons-shift-root.md) shifts every
 nonprincipal marked entry coherently under the eigenvariable. Other marked
-logical cases, principal negative base-axiom decomposition and the single
-global recursion remain open.
+logical cases have now been completed for side-tagged occurrences in the
+[marked logical cases](reviews/parsons-marked-logical-root.md). Principal
+negative base-axiom decomposition and the single global recursion remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
