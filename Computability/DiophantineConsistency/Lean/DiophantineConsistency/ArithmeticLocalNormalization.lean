@@ -123,16 +123,10 @@ theorem block (mc mp mt dc uc dp up dt : ℕ) (hmc : mc < 942) (hmp : mp < 942) 
   · intro hmc0
     have hct : ct ≠ 0 := by
       intro hz
-      have hs := hS
-      subst hmc0
-      rw [tile_mk mt hmt] at hs
-      rw [show (⟨mt, hmt⟩ : Fin 942) = 0 from hz, ArithmeticWangTable.tileN_zero] at hs
-      have h435 : (tile (0 : Fin 942)).north = 435 := by
-        have := ArithmeticWangTable.tileN_zero
-        simp only [ArithmeticWangTable.tileN, show (0 : ℕ) < 942 by norm_num, dif_pos] at this
-        rw [show (0 : Fin 942) = ⟨0, by norm_num⟩ from rfl, this]
-      rw [h435] at hs
-      exact absurd hs (by norm_num)
+      have hmt0 : mt = 0 := by simpa [ct] using congrArg Fin.val hz
+      subst mt
+      subst mc
+      norm_num [ArithmeticWangTable.tileN_zero] at hS
     rw [highPort_pred_sum]
     refine and_sums_zero (fun e : ℕ => digits (base (1 : ZMod 3) + (e : ZMod (3*2011))))
       (fun e => if e = 0 then 3 else CurrentHighDigits2011.cellDigit e) (fun e => hb _) ?_ 2011 ?_
