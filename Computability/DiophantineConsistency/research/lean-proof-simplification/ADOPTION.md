@@ -2238,5 +2238,14 @@ helper/proof names removed. The umbrella and wider closure remain unbuilt or
 cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-annotated-lookup-simp.md)
 records hashes and external paths without raw logs or objects.
 
+The window-gap bound simplification `a43f8695f6` removes three net Lean lines,
+bringing the reviewed series to 10470. The affected proof came from
+Claude-coauthored commit `d2a666efce2`. Positive truncated subtraction yields
+the strict bound directly. Paired target and both direct-client builds pass with
+current-source providers; one client object matches and the other differs.
+Checked declarations and sampled registrations match; the wider closure remains
+cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-window-interface-gap.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
