@@ -1,0 +1,9 @@
+import DiophantineConsistency.ParsonsClosure
+#print axioms DiophantineConsistency.ParsonsClosure.paired_lift
+#print axioms DiophantineConsistency.ParsonsClosure.fix_exsClosure
+#print axioms DiophantineConsistency.ParsonsClosure.exsClosure_fixitr
+#print axioms DiophantineConsistency.ParsonsClosure.paired_closure
+#print axioms DiophantineConsistency.ParsonsClosure.closed_induction_normalization
+#print axioms DiophantineConsistency.ParsonsClosure.normalize_closed_context
+#print axioms DiophantineConsistency.ParsonsClosure.normalize_closed_list
+#print axioms DiophantineConsistency.ParsonsClosure.normalized_cut_free
