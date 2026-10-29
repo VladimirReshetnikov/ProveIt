@@ -28,32 +28,26 @@ theorem evalRel_iff (H : ZFAxioms mem) (e : NatExpr σ) (v : σ → Natural H)
   | var i =>
     change z.val=(v i).val ↔ v i=z
     exact ⟨fun h => Subtype.ext h.symm,fun h => (congrArg Subtype.val h).symm⟩
-  | add p q hp hq =>
+  | add p q hp hq | mul p q hp hq =>
     constructor
-    · rintro ⟨a,b,ha,hb,hadd⟩
+    · rintro ⟨a,b,ha,hb,hrel⟩
       let aa : Natural H := ⟨a,evalRel_result_nat H _ (fun i => (v i).property) p ha⟩
       let bb : Natural H := ⟨b,evalRel_result_nat H _ (fun i => (v i).property) q hb⟩
       have ea : p.evalSemiring v=aa := (hp aa).mp ha
       have eb : q.evalSemiring v=bb := (hq bb).mp hb
-      change p.evalSemiring v+q.evalSemiring v=z
+      first
+      | change p.evalSemiring v+q.evalSemiring v=z
+      | change p.evalSemiring v*q.evalSemiring v=z
       rw [ea,eb]
-      exact (Natural.addRel_iff H aa bb z).mp hadd
+      first
+      | exact (Natural.addRel_iff H aa bb z).mp hrel
+      | exact (Natural.mulRel_iff H aa bb z).mp hrel
     · intro h
-      exact ⟨(p.evalSemiring v).val,(q.evalSemiring v).val,
-        (hp _).mpr rfl,(hq _).mpr rfl,(Natural.addRel_iff H _ _ z).mpr h⟩
-  | mul p q hp hq =>
-    constructor
-    · rintro ⟨a,b,ha,hb,hmul⟩
-      let aa : Natural H := ⟨a,evalRel_result_nat H _ (fun i => (v i).property) p ha⟩
-      let bb : Natural H := ⟨b,evalRel_result_nat H _ (fun i => (v i).property) q hb⟩
-      have ea : p.evalSemiring v=aa := (hp aa).mp ha
-      have eb : q.evalSemiring v=bb := (hq bb).mp hb
-      change p.evalSemiring v*q.evalSemiring v=z
-      rw [ea,eb]
-      exact (Natural.mulRel_iff H aa bb z).mp hmul
-    · intro h
-      exact ⟨(p.evalSemiring v).val,(q.evalSemiring v).val,
-        (hp _).mpr rfl,(hq _).mpr rfl,(Natural.mulRel_iff H _ _ z).mpr h⟩
+      first
+      | exact ⟨(p.evalSemiring v).val,(q.evalSemiring v).val,
+          (hp _).mpr rfl,(hq _).mpr rfl,(Natural.addRel_iff H _ _ z).mpr h⟩
+      | exact ⟨(p.evalSemiring v).val,(q.evalSemiring v).val,
+          (hp _).mpr rfl,(hq _).mpr rfl,(Natural.mulRel_iff H _ _ z).mpr h⟩
 
 theorem equationRel_iff {n : ℕ} (H : ZFAxioms mem) (e : Expr (Fin n))
     (v : Fin n → Natural H) :
