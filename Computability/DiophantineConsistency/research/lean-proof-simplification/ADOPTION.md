@@ -1291,5 +1291,16 @@ The failed initial proof and a wrong-namespace probe are retained but excluded,
 and the original failed proof source was reconstructed after being overwritten.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-controller-dmap-evidence/BUNDLE.json).
 
+The repeated Cantor square-bound simplification `34bb4f5483` removes six net
+lines, bringing the reviewed series to 9538. Both affected modules originated
+in Claude-coauthored commits `9168659697` and `d9775aa0f5`. The original ring
+identity and inequalities now compose directly. Paired builds of both targets
+and their clients pass; 106 public and 20 private declaration type and axiom
+reports, forced equations and namespace-scoped simp entries match. Six cached
+direct input source/object pairs match prior receipts; transitive dependencies
+remain precompiled. Two failed interface probes are retained, but their
+generated sources were overwritten. An initial `nlinarith` probe had missing
+imports and proves no mathematical limitation. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-cantor-bound-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
