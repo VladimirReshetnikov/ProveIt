@@ -1,0 +1,32 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:86:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x : M
+z : M := Structure.func (Code.zero 0) Fin.elim0
+hone :
+  Structure.func (Code.succ.comp (Codes.cons (Code.zero 0) (Codes.nil 0))) Fin.elim0 =
+    Structure.func Code.succ fun i => Structure.func (getCode (Codes.cons (Code.zero 0) (Codes.nil 0)) i) Fin.elim0
+ha :
+  Structure.func (addCore.comp (Codes.cons (Code.proj 1) (Codes.cons (Code.proj 0) (Codes.nil 2))))
+      ![x, Structure.func oneCode Fin.elim0] =
+    Structure.func addCore fun i =>
+      Structure.func (getCode (Codes.cons (Code.proj 1) (Codes.cons (Code.proj 0) (Codes.nil 2))) i)
+        ![x, Structure.func oneCode Fin.elim0]
+hb :
+  (Structure.func ((Code.proj 0).prec (Code.succ.comp (Codes.cons (Code.proj 1) (Codes.nil 3)))) fun i =>
+      Fin.cases (Structure.func (Code.zero 0) Fin.elim0) ![x] i) =
+    Structure.func (Code.proj 0) ![x]
+hs :
+  (Structure.func ((Code.proj 0).prec (Code.succ.comp (Codes.cons (Code.proj 1) (Codes.nil 3)))) fun i =>
+      Fin.cases (Structure.func Code.succ fun x_1 => ![z, x] 0) (fun i => ![z, x] i.succ) i) =
+    Structure.func (Code.succ.comp (Codes.cons (Code.proj 1) (Codes.nil 3))) fun i =>
+      Fin.cases (![z, x] 0)
+        (fun i =>
+          Fin.cases
+            (Structure.func ((Code.proj 0).prec (Code.succ.comp (Codes.cons (Code.proj 1) (Codes.nil 3)))) ![z, x])
+            (fun i => ![z, x] i.succ) i)
+        i
+⊢ Structure.func addCode ![x, Structure.func oneCode Fin.elim0] = Structure.func Code.succ fun x_1 => x

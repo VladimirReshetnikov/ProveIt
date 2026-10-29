@@ -1,0 +1,29 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:26:8: warning: automatically included section variable(s) unused in theorem `_private.Computability.DiophantineConsistency.Lean.DiophantineConsistency.PRAAddOne.0.DiophantineConsistency.PRAAddOne.eqRel`:
+  [Nonempty M]
+  [M↓[language] ⊧* PRA]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Nonempty M] [M↓[language] ⊧* PRA] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:57:2: error: Type mismatch: After simplification, term
+  h'
+ has type
+  (Structure.func (f.prec g) fun x =>
+      Semiterm.val e Empty.elim (Fin.cases (Semiterm.func (Code.zero 0) Fin.elim0) (vars n) x)) =
+    Structure.func f fun x => e x
+but is expected to have type
+  (Structure.func (f.prec g) fun i => Fin.cases (Structure.func (Code.zero 0) Fin.elim0) e i) = Structure.func f e
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:69:2: error: Type mismatch: After simplification, term
+  h'
+ has type
+  (Structure.func (f.prec g) fun x =>
+      Semiterm.val e Empty.elim (Fin.cases (Semiterm.func Code.succ fun x => #0) (fun i => #i.succ) x)) =
+    Structure.func g fun x =>
+      Semiterm.val e Empty.elim
+        (Fin.cases (#0)
+          (fun i =>
+            Fin.cases (Semiterm.func (f.prec g) fun i => Fin.cases (#0) (fun i => #i.succ) i) (fun i => #i.succ) i)
+          x)
+but is expected to have type
+  (Structure.func (f.prec g) fun i => Fin.cases (Structure.func Code.succ fun x => e 0) (fun i => e i.succ) i) =
+    Structure.func g fun i => Fin.cases (e 0) (fun i => Fin.cases (Structure.func (f.prec g) e) (fun i => e i.succ) i) i

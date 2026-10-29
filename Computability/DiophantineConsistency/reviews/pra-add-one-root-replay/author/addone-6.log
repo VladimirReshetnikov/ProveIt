@@ -1,0 +1,20 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:65:2: error: Type mismatch: After simplification, term
+  h'
+ has type
+  (Structure.func (f.prec g) fun i =>
+      Fin.cases (Structure.func (Code.zero 0) fun x => Semiterm.val e Empty.elim x.elim0) (fun i => e i) i) =
+    Structure.func f fun i => e i
+but is expected to have type
+  (Structure.func (f.prec g) fun i => Fin.cases (Structure.func (Code.zero 0) Fin.elim0) e i) = Structure.func f e
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:77:2: error: Type mismatch: After simplification, term
+  h'
+ has type
+  (Structure.func (f.prec g) fun i => Fin.cases (Structure.func Code.succ fun x => e 0) (fun i => e i.succ) i) =
+    Structure.func g fun i =>
+      Fin.cases (e 0)
+        (fun i =>
+          Fin.cases (Structure.func (f.prec g) fun i => Fin.cases (e 0) (fun i => e i.succ) i) (fun i => e i.succ) i)
+        i
+but is expected to have type
+  (Structure.func (f.prec g) fun i => Fin.cases (Structure.func Code.succ fun x => e 0) (fun i => e i.succ) i) =
+    Structure.func g fun i => Fin.cases (e 0) (fun i => Fin.cases (Structure.func (f.prec g) e) (fun i => e i.succ) i) i
