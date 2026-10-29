@@ -1,0 +1,3 @@
+import DiophantineConsistency.ParsonsOrInvert
+#print axioms DiophantineConsistency.ParsonsOrInvert.invert
+#print axioms DiophantineConsistency.ParsonsOrInvert.invert_below_exs
