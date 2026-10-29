@@ -107,6 +107,12 @@ def Row.valid (mode k : Nat) (r : Row) (seen : List Row) : Bool :=
 def Row.Good (mode k : Nat) (r : Row) : Prop :=
   ∃ f : Form,r.input=formCode f ∧ r.output=formCode (renamed mode k r.depth f)
 
+def binaryForm (tag : Nat) (f g : Form) : Form :=
+  if tag=3 then fImp f g else if tag=4 then fAnd f g else fOr f g
+
+def unaryForm (tag : Nat) (f : Form) : Form := if tag=6 then fAll f else fEx f
+
+
 theorem binary_sound (mode k : Nat) (r : Row) (seen : List Row)
     (hs : ∀ a∈seen,a.Good mode k) (ht : r.tag=3 ∨ r.tag=4 ∨ r.tag=5)
     (h : binaryAt r seen=true) : r.Good mode k := by
@@ -121,16 +127,9 @@ theorem binary_sound (mode k : Nat) (r : Row) (seen : List Row)
       obtain ⟨f,hfi,hfo⟩ := hs a (List.mem_of_getElem? ha)
       obtain ⟨g,hgi,hgo⟩ := hs b (List.mem_of_getElem? hb)
       rcases h with ⟨hda,hdb,hi,ho⟩
-      rcases ht with h3 | h4 | h5
-      · refine ⟨fImp f g,?_,?_⟩
-        · simpa only [h3,hfi,hgi,code_imp] using hi
-        · simpa only [h3,hfo,hgo,hda,hdb,renamed,rename,code_imp] using ho
-      · refine ⟨fAnd f g,?_,?_⟩
-        · simpa only [h4,hfi,hgi,code_and] using hi
-        · simpa only [h4,hfo,hgo,hda,hdb,renamed,rename,code_and] using ho
-      · refine ⟨fOr f g,?_,?_⟩
-        · simpa only [h5,hfi,hgi,code_or] using hi
-        · simpa only [h5,hfo,hgo,hda,hdb,renamed,rename,code_or] using ho
+      refine ⟨binaryForm r.tag f g, ?_, ?_⟩
+      · rcases ht with h | h | h <;> simpa [binaryForm,h,hfi,hgi] using hi
+      · rcases ht with h | h | h <;> simpa [binaryForm,h,hfo,hgo,hda,hdb,renamed,rename] using ho
 
 theorem unary_sound (mode k : Nat) (r : Row) (seen : List Row)
     (hs : ∀ a∈seen,a.Good mode k) (ht : r.tag=6 ∨ r.tag=7)
@@ -142,13 +141,9 @@ theorem unary_sound (mode k : Nat) (r : Row) (seen : List Row)
     simp only [ha,unaryEquations,decide_eq_true_eq] at h
     obtain ⟨f,hfi,hfo⟩ := hs a (List.mem_of_getElem? ha)
     rcases h with ⟨_,hd,hi,ho⟩
-    rcases ht with h6 | h7
-    · refine ⟨fAll f,?_,?_⟩
-      · simpa only [h6,hfi,code_all] using hi
-      · simpa only [h6,hfo,hd,renamed_all,code_all] using ho
-    · refine ⟨fEx f,?_,?_⟩
-      · simpa only [h7,hfi,code_ex] using hi
-      · simpa only [h7,hfo,hd,renamed_ex,code_ex] using ho
+    refine ⟨unaryForm r.tag f, ?_, ?_⟩
+    · rcases ht with h | h <;> simpa [unaryForm,h,hfi] using hi
+    · rcases ht with h | h <;> simpa [unaryForm,h,hfo,hd] using ho
 
 theorem Row.sound (mode k : Nat) (r : Row) (seen : List Row)
     (hs : ∀ a∈seen,a.Good mode k) (h : r.valid mode k seen=true) : r.Good mode k := by
@@ -250,10 +245,6 @@ def Ready (mode k depth : Nat) (f : Form) : Prop :=
   ∃ rows tail r,r.depth=depth ∧ r.input=formCode f ∧
     r.output=formCode (renamed mode k depth f) ∧ Produces mode k rows (r::tail)
 
-def binaryForm (tag : Nat) (f g : Form) : Form :=
-  if tag=3 then fImp f g else if tag=4 then fAnd f g else fOr f g
-
-def unaryForm (tag : Nat) (f : Form) : Form := if tag=6 then fAll f else fEx f
 
 theorem ready_binary (mode k depth tag : Nat) (f g : Form)
     (ht : tag=3 ∨ tag=4 ∨ tag=5) (hf : Ready mode k depth f) (hg : Ready mode k depth g) :
