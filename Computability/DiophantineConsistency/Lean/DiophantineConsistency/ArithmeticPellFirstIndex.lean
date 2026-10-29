@@ -203,12 +203,7 @@ theorem first_main_indices (E Y k eta N d f i R y T : V)
       rw [hb]
       exact le_mul_of_one_le_left (by simp) (by simp)
     _=2*ycoord 2 B := by
-      have hy2 : ycoord 2 B=2*(B+2) := by
-        rw [show (2:V)=1+1 by ring,y_succ]
-        have hx1 : xcoord 1 B=B+2 := by simpa using x_succ (0:V) B
-        have hy1 : ycoord 1 B=1 := by simpa using y_succ (0:V) B
-        rw [hx1,hy1]; ring
-      rw [hy2]; ring
+      rw [y_two]; ring
     _≤2*ycoord n B := mul_le_mul_of_nonneg_left ((y_strictMono B).monotone
       (le_trans (by simpa only [show (2:V)+3=5 by ring] using (show (2:V)≤2+3 by simp)) hn5)) (by simp)
     _=k := hnk

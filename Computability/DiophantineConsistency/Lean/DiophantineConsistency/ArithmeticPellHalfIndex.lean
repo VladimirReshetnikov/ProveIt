@@ -234,13 +234,16 @@ theorem transport_opposite (m k l u0 u1 u2 v0 v1 v2 : V) (hm : 0<m)
       _=(0+2*(u1+v1))%m := by rw [zero_add]
   simpa only [zero_mod] using mod_add_cancel (u2+v2) 0 (2*(u1+v1)) m hm he
 
+/-- The ordinate after two Pell steps. -/
+theorem y_two (a : V) : ycoord 2 a=2*(a+2) := by
+  have h := y_two_step (0:V) a
+  have hy1 : ycoord 1 a=1 := by simpa using y_succ (0:V) a
+  simpa only [zero_add,y_zero,add_zero,hy1,mul_one] using h
+
 theorem y_three (a : V) : ycoord 3 a+1=4*(a+2)*(a+2) := by
   have h := y_two_step (1:V) a
   have hy1 : ycoord 1 a=1 := by simpa using y_succ (0:V) a
-  have hy2 : ycoord 2 a=2*(a+2) := by
-    rw [show (2:V)=1+1 by ring,y_succ,hy1]
-    have hx1 : xcoord 1 a=a+2 := by simpa using x_succ (0:V) a
-    rw [hx1]; ring
+  have hy2 := y_two a
   rw [show (1:V)+2=3 by ring,show (1:V)+1=2 by ring,hy1,hy2] at h
   exact h.trans (by ring)
 
@@ -403,11 +406,7 @@ theorem half_index (a c d f i R y u : V)
       by_contra hn
       have hp' : p≤2 := le_of_not_gt hn
       have he := (y_strictMono a).monotone hp'
-      have hy2 : ycoord 2 a=2*(a+2) := by
-        have h := y_two_step (0:V) a
-        have hy1 : ycoord 1 a=1 := by simpa using y_succ (0:V) a
-        simpa only [zero_add,y_zero,add_zero,hy1,mul_one] using h
-      rw [hcp,hy2] at he
+      rw [hcp,y_two] at he
       exact (not_lt_of_ge he) htwo
     simpa only [show (2:V)+1=3 by ring] using lt_iff_succ_le.mp hp2
   have hpc : 2*p<c := by rw [←hcp]; exact twice_index_lt_y a p hp3
