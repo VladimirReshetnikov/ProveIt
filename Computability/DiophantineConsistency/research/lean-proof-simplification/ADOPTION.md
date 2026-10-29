@@ -1900,5 +1900,16 @@ with identical client objects; all 65 target declaration reports and sampled
 registrations match. The historical transitive Pell chain and wider closure
 remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-carrier-square-sharing-evidence/BUNDLE.json).
 
+The high-digit lookup sharing `8e51af07d2` removes seven net Lean lines,
+bringing the reviewed series to 10200. A focused facts module holds the block
+decomposition and lookup proof previously repeated in three consumers, without
+adding the lookup import to the common mask-data module. All thirteen tested
+direct module clients pass with identical client objects; the umbrella was not
+rebuilt. Named theorem reports and sampled registrations match, but 141 generated
+public proof names disappear and 14 other generated reports change. A tracked
+Lean/Python search found no references to the affected names. One cached provider
+lacks a matched producer receipt; raw environment logs are omitted from the
+compact archive. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-high-digits-module-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
