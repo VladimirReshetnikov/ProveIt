@@ -169,3 +169,8 @@ The [parameterized open induction rule](reviews/pra-induction-rule-root.md)
 is admissible in the candidate PRA theory: closed proofs of the base and
 step yield a closed proof of the induction conclusion. This does not yet
 admit the Σ₁ rule required for Parsons conservation.
+
+The [Parsons open-rule adapter](reviews/pra-parsons-open-rule-root.md)
+connects candidate PRA’s quantifier-free induction rule to the exact
+`ParsonsRule.base` and `step` definitions. The general Σ₁ rule and its
+witnessing reduction are still open.
