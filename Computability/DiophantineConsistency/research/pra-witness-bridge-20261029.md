@@ -82,3 +82,9 @@ primitive toward compiling open formulas. That compiler remains open.
 The [Boolean operations](../reviews/pra-boolean-ops-root.md) now prove
 bit closure, conjunction and negation in all candidate-PRA equality models.
 The equality-atom code and full open-formula compiler remain open.
+
+The [conditional formula compiler](../reviews/pra-open-formula-compiler-root.md)
+now maps Boolean combinations of equality and order atoms to finite PR
+characteristic codes and yields candidate-PRA correctness proofs assuming
+two explicit equality-code certificates. Those certificates and coverage
+of every Foundation open formula remain separate work.
