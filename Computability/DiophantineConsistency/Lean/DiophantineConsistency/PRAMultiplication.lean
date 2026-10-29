@@ -106,13 +106,8 @@ theorem modelMulSuccSentence : M↓[language] ⊧ mulSuccSentence := by
       val_term_pair e (.bvar 0) (applyCode Code.succ (fun _ => .bvar 1))
   have hright : (Semiterm.val e Empty.elim ∘ ![applyCode mulCode ![.bvar 0, .bvar 1], .bvar 0]) =
       ![Structure.func (L := language) mulCode ![e 0, e 1], e 0] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · change Structure.func (L := language) mulCode
-        (Semiterm.val e Empty.elim ∘ ![(.bvar 0 : TermN 2), .bvar 1]) = _
-      rw [hpair]
-      rfl
-    · exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [applyCode, Semiterm.val_func, Semiterm.val_bvar, hpair] using
+      val_term_pair e (applyCode mulCode ![.bvar 0, .bvar 1]) (.bvar 0)
   simp only [applyCode] at hleft hright
   rw [hleft, hright]
   exact modelMulSucc (e 0) (e 1)

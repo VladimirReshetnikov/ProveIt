@@ -37,13 +37,8 @@ theorem subAddBody_eval (x : M) (e : ℕ → M) : subAddBody.Eval ![x] e ↔
   have hq : (Semiterm.val ![x] e ∘
       ![(.func addCode ![.bvar 0, .fvar 0] : Semiterm language ℕ 1), .bvar 0]) =
       ![Structure.func (L := language) addCode ![x,e 0], x] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · change Structure.func (L := language) addCode
-        (Semiterm.val ![x] e ∘ ![(.bvar 0 : Semiterm language ℕ 1), .fvar 0]) = _
-      rw [hp]
-      rfl
-    · exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_func, Semiterm.val_bvar, Matrix.cons_val_zero, hp] using
+      val_pair ![x] e (.func addCode ![.bvar 0, .fvar 0]) (.bvar 0)
   change Structure.func (L := language) subCode (Semiterm.val ![x] e ∘
       ![(.func addCode ![.bvar 0, .fvar 0] : Semiterm language ℕ 1), .bvar 0]) = e 0 ↔ _
   rw [hq]
@@ -75,13 +70,8 @@ theorem modelSubAddSentence : M↓[language] ⊧ subAddSentence := by
       val_term_pair e (.bvar 0) (.bvar 1)
   have hq : (Semiterm.val e Empty.elim ∘ ![applyCode addCode ![.bvar 0, .bvar 1], .bvar 0]) =
       ![Structure.func (L := language) addCode ![e 0,e 1], e 0] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · change Structure.func (L := language) addCode
-        (Semiterm.val e Empty.elim ∘ ![(.bvar 0 : TermN 2), .bvar 1]) = _
-      rw [hp]
-      rfl
-    · exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [applyCode, Semiterm.val_func, Semiterm.val_bvar, hp] using
+      val_term_pair e (applyCode addCode ![.bvar 0, .bvar 1]) (.bvar 0)
   simp only [applyCode] at hq
   rw [hq]
   exact modelSubAdd (e 0) (e 1)
