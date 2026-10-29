@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAuxClient2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAuxClient2011.adaptive_auxiliary_of_equations
