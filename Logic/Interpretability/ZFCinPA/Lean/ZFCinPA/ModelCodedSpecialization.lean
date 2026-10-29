@@ -83,6 +83,24 @@ lemma subst_qqAlls (time : V) : ∀ n m p vector : V,
       ← qVecIter_succ_left]
     simp
 
+/-- Iterated lifting inserts the identity bound-variable prefix, independent
+of the initial typed vector. -/
+lemma qVecIter_prefix {n m vector : V} (hw : IsSemitermVec L n m vector)
+    (time : V) : ∀ i<time, (qVecIter L time vector).[i] = ^#i := by
+  induction time using ISigma1.pi1_succ_induction
+  · definability
+  case zero => intro i hi; simp at hi
+  case succ time ih =>
+    intro i hi
+    rcases zero_or_succ i with rfl | ⟨i,rfl⟩
+    · simp [qVecIter_succ,Bootstrapping.qVec]
+    · have hi' : i<time := by simpa using hi
+      have hv := qVecIter_isSemitermVec hw time
+      rw [qVecIter_succ]
+      simp only [Bootstrapping.qVec,nth_adjoin_succ,hv.lh]
+      rw [nth_termBShiftVec hv.isUTerm (lt_of_lt_of_le hi' (by simp)),ih i hi']
+      simp
+
 /-- qVec iteration retains each lower bound slot and shifts the final free term. -/
 lemma qVecIter_free_spec (time : V) : ∀ x : V,
     (∀ i < time, (qVecIter L time (^&x ∷ 0)).[i] = ^#i) ∧
@@ -96,14 +114,7 @@ lemma qVecIter_free_spec (time : V) : ∀ x : V,
       simpa [add_comm] using qVecIter_isSemitermVec (L := L)
         (show IsSemitermVec (V := V) L 1 0 (^&x ∷ 0) by simp) time
     refine ⟨?_,?_⟩
-    · intro i hi
-      rcases zero_or_succ i with rfl | ⟨i,rfl⟩
-      · simp [Bootstrapping.qVec]
-      · have hit : i < time := by simpa using hi
-        rw [qVecIter_succ]
-        simp only [Bootstrapping.qVec,nth_adjoin_succ,hvec.lh]
-        rw [nth_termBShiftVec hvec.isUTerm (lt_trans hit (by simp)),(ih x).1 i hit]
-        simp
+    · exact qVecIter_prefix (show IsSemitermVec (V := V) L 1 0 (^&x ∷ 0) by simp) _
     · rw [qVecIter_succ]
       simp only [Bootstrapping.qVec,nth_adjoin_succ,hvec.lh]
       rw [nth_termBShiftVec hvec.isUTerm (by simp),(ih x).2]
