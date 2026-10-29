@@ -1,0 +1,16 @@
+'DiophantineConsistency.ParsonsPrenexList.aggregate_source' depends on axioms: [propext]
+'DiophantineConsistency.ParsonsPrenexList.aggregate_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexList.matrix_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexList.forward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexList.backward' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.ParsonsPrenexList.forward (ps : List Packed)
+  (h : Proof 𝗣𝗔⁻ (DiophantineConsistency.ParsonsStructure.disjoin (List.map asFormula ps))) :
+  Proof 𝗣𝗔⁻
+    (DiophantineConsistency.ParsonsPrenexTuple.block
+      (DiophantineConsistency.ParsonsPrenexTree.matrix (aggregate ps).tree))
+DiophantineConsistency.ParsonsPrenexList.backward (ps : List Packed)
+  (h :
+    Proof 𝗣𝗔⁻
+      (DiophantineConsistency.ParsonsPrenexTuple.block
+        (DiophantineConsistency.ParsonsPrenexTree.matrix (aggregate ps).tree))) :
+  Proof 𝗣𝗔⁻ (DiophantineConsistency.ParsonsStructure.disjoin (List.map asFormula ps))
