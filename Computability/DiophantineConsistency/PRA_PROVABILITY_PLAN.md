@@ -39,6 +39,31 @@ specifies arity-indexed primitive-recursive codes, defining equations, full
 language equality, parameterized quantifier-free induction and the exact
 ordered-ring embedding. It is a design, not yet a Lean implementation.
 
+The first [primitive-recursive function code module](Lean/DiophantineConsistency/PRAFunctionCodes.lean)
+now represents fixed-arity codes and proves their exact correspondence with
+Mathlib's primitive-recursive vector functions. Its [independent replay](reviews/pra-function-codes-root.md)
+passed. The [finite syntax](Lean/DiophantineConsistency/PRAFiniteFunctionCodes.lean)
+has decidable equality and a surjective semantics-preserving conversion; its
+[independent replay](reviews/pra-finite-function-codes-root.md) also passed.
+A [numeric codec](Lean/DiophantineConsistency/PRACodeEncoding.lean) now
+has a proved arity-checked roundtrip and an [independent replay](reviews/pra-code-encoding-root.md).
+The [first-order language](Lean/DiophantineConsistency/PRALanguage.lean)
+now embeds the existing ordered-ring language and has a checked natural-model
+reduct; its [independent replay](reviews/pra-language-root.md) passed.
+The [candidate PRA theory](Lean/DiophantineConsistency/PRATheory.lean)
+now defines its full axiom families and proves standard-natural-model validity;
+its [independent replay](reviews/pra-theory-root.md) passed. Compatibility with
+a standard PRA presentation, object-theoretic arithmetic bridges,
+primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
+
+The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
+now identifies the exact accepted polynomial and proves its single positive
+shift over arbitrary commutative semirings. The [internal factor-magnitude theorem](reviews/adaptive-factor-magnitude2011-root.md)
+now derives magnitude one for the four actual factors from the literal zero.
+The [factor-unit theorem](reviews/adaptive-factor-units2011-root.md) now
+excludes the negative units by internal modulo-four reasoning and derives all
+four positive units. Pell recovery and zero-existence equivalence remain open.
+
 ## Concrete bridge to formalize
 
 1. Choose and define a precise PRA language and proof calculus, including its

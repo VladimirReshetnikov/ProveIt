@@ -1,0 +1,146 @@
+diff --git a/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean b/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean
+index 8ae39e3cd4..e123f5536c 100644
+--- a/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean
++++ b/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBinderAbsorption.lean
+@@ -24,82 +24,96 @@ private instance termBindOneAt_delta : 𝚫₁-Function₃[V] (termBindOneAt L)
+ private instance bindOneAt_delta : 𝚫₁-Function₃[V] (bindOneAt L) :=
+   bindOneAt_defined.graph_delta.to_definable
+ 
+-lemma termBindOneAt_absorb {depth term : V} (ht : IsSemiterm L depth term) :
+-    ∀ chosen : V,
+-    termBindOneAt L chosen (depth+1) (termBindOneAt L chosen depth term) =
++lemma termBindOneAt_absorb_any {depth term : V} (ht : IsSemiterm L depth term) :
++    ∀ chosen e : V,
++    termBindOneAt L chosen e (termBindOneAt L chosen depth term) =
+       termBindOneAt L chosen depth term := by
+   apply IsSemiterm.induction 𝚷 ?_ ?_ ?_ ?_ term ht
+   · definability
+-  · intro z hz chosen; simp
+-  · intro x chosen
++  · intro z hz chosen e; simp
++  · intro x chosen e
+     classical
+     by_cases h : x = chosen
+     · simp [h]
+-    · simp [termBindOneAt_fvar,h]
+-  · intro arity f terms hf hv ih chosen
++    · simp [termBindOneAt_fvar, h]
++  · intro arity f terms hf hv ih chosen e
+     rw [termBindOneAt_func chosen depth hf hv.isUTerm,
+-      termBindOneAt_func chosen (depth+1) hf (termBindOneVecAt_isUTerm chosen depth hv.isUTerm)]
++      termBindOneAt_func chosen e hf (termBindOneVecAt_isUTerm chosen depth hv.isUTerm)]
+     apply congrArg (fun args => ^func arity f args)
+     apply nth_ext' arity
+     · simp [termBindOneVecAt_isUTerm chosen depth hv.isUTerm]
+     · simp [hv.isUTerm]
+     · intro i hi
+-      rw [nth_termBindOneVecAt chosen (depth+1)
+-          (termBindOneVecAt_isUTerm chosen depth hv.isUTerm) hi,
++      rw [nth_termBindOneVecAt chosen e (termBindOneVecAt_isUTerm chosen depth hv.isUTerm) hi,
+         nth_termBindOneVecAt chosen depth hv.isUTerm hi]
+-      exact ih i hi chosen
++      exact ih i hi chosen e
+ 
+-lemma termBindOneVecAt_absorb {depth arity terms : V}
+-    (ht : IsSemitermVec L arity depth terms) (chosen : V) :
+-    termBindOneVecAt L chosen (depth+1) arity (termBindOneVecAt L chosen depth arity terms) =
++lemma termBindOneAt_absorb {depth term : V} (ht : IsSemiterm L depth term) :
++    ∀ chosen : V,
++    termBindOneAt L chosen (depth+1) (termBindOneAt L chosen depth term) =
++      termBindOneAt L chosen depth term :=
++  fun chosen => termBindOneAt_absorb_any ht chosen (depth+1)
++
++lemma termBindOneVecAt_absorb_any {depth arity terms : V}
++    (ht : IsSemitermVec L arity depth terms) (chosen e : V) :
++    termBindOneVecAt L chosen e arity (termBindOneVecAt L chosen depth arity terms) =
+       termBindOneVecAt L chosen depth arity terms := by
+   apply nth_ext' arity
+   · simp [termBindOneVecAt_isUTerm chosen depth ht.isUTerm]
+   · simp [ht.isUTerm]
+   · intro i hi
+-    rw [nth_termBindOneVecAt chosen (depth+1)
++    rw [nth_termBindOneVecAt chosen e
+         (termBindOneVecAt_isUTerm chosen depth ht.isUTerm) hi,
+       nth_termBindOneVecAt chosen depth ht.isUTerm hi]
+-    exact termBindOneAt_absorb (ht.nth hi) chosen
++    exact termBindOneAt_absorb_any (ht.nth hi) chosen e
+ 
+-/-- Internal structural induction keeps the chosen label quantified and
+-increments both binder depths under each quantifier. -/
+-theorem bindOneAt_absorb {depth p : V} (hp : IsSemiformula L depth p) :
+-    ∀ chosen : V,
+-    bindOneAt L chosen (depth+1) (bindOneAt L chosen depth p) =
+-      bindOneAt L chosen depth p := by
++lemma termBindOneVecAt_absorb {depth arity terms : V}
++    (ht : IsSemitermVec L arity depth terms) (chosen : V) :
++    termBindOneVecAt L chosen (depth+1) arity (termBindOneVecAt L chosen depth arity terms) =
++      termBindOneVecAt L chosen depth arity terms :=
++  termBindOneVecAt_absorb_any ht chosen (depth+1)
++
++/-- Once a label is bound, rebinding it at any depth leaves the body unchanged. -/
++theorem bindOneAt_absorb_any {depth p : V} (hp : IsSemiformula L depth p) :
++    ∀ chosen e : V,
++    bindOneAt L chosen e (bindOneAt L chosen depth p) = bindOneAt L chosen depth p := by
+   apply IsSemiformula.pi1_structural_induction (P := fun depth p =>
+-    ∀ chosen : V,
+-    bindOneAt L chosen (depth+1) (bindOneAt L chosen depth p) =
+-      bindOneAt L chosen depth p)
++    ∀ chosen e : V,
++    bindOneAt L chosen e (bindOneAt L chosen depth p) = bindOneAt L chosen depth p)
+     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
+   · definability
+-  · intro depth arity R terms hR ht chosen
++  · intro depth arity R terms hR ht chosen e
+     rw [bindOneAt_rel chosen depth hR ht.isUTerm,
+-      bindOneAt_rel chosen (depth+1) hR (termBindOneVecAt_isUTerm chosen depth ht.isUTerm),
+-      termBindOneVecAt_absorb ht chosen]
+-  · intro depth arity R terms hR ht chosen
++      bindOneAt_rel chosen e hR (termBindOneVecAt_isUTerm chosen depth ht.isUTerm)]
++    rw [termBindOneVecAt_absorb_any ht chosen e]
++  · intro depth arity R terms hR ht chosen e
+     rw [bindOneAt_nrel chosen depth hR ht.isUTerm,
+-      bindOneAt_nrel chosen (depth+1) hR (termBindOneVecAt_isUTerm chosen depth ht.isUTerm),
+-      termBindOneVecAt_absorb ht chosen]
+-  · intro depth chosen; simp
+-  · intro depth chosen; simp
+-  · intro depth p q hp hq ihp ihq chosen
++      bindOneAt_nrel chosen e hR (termBindOneVecAt_isUTerm chosen depth ht.isUTerm)]
++    rw [termBindOneVecAt_absorb_any ht chosen e]
++  · intro depth chosen e; simp
++  · intro depth chosen e; simp
++  · intro depth p q hp hq ihp ihq chosen e
+     rw [bindOneAt_and chosen depth hp.isUFormula hq.isUFormula,
+-      bindOneAt_and chosen (depth+1) (bindOneAt_isSemiformula hp chosen).isUFormula
+-        (bindOneAt_isSemiformula hq chosen).isUFormula,ihp chosen,ihq chosen]
+-  · intro depth p q hp hq ihp ihq chosen
++      bindOneAt_and chosen e (bindOneAt_isSemiformula hp chosen).isUFormula
++        (bindOneAt_isSemiformula hq chosen).isUFormula, ihp chosen e, ihq chosen e]
++  · intro depth p q hp hq ihp ihq chosen e
+     rw [bindOneAt_or chosen depth hp.isUFormula hq.isUFormula,
+-      bindOneAt_or chosen (depth+1) (bindOneAt_isSemiformula hp chosen).isUFormula
+-        (bindOneAt_isSemiformula hq chosen).isUFormula,ihp chosen,ihq chosen]
+-  · intro depth p hp ih chosen
++      bindOneAt_or chosen e (bindOneAt_isSemiformula hp chosen).isUFormula
++        (bindOneAt_isSemiformula hq chosen).isUFormula, ihp chosen e, ihq chosen e]
++  · intro depth p hp ih chosen e
+     rw [bindOneAt_all chosen depth hp.isUFormula,
+-      bindOneAt_all chosen (depth+1) (bindOneAt_isSemiformula hp chosen).isUFormula,
+-      ih chosen]
+-  · intro depth p hp ih chosen
++      bindOneAt_all chosen e (bindOneAt_isSemiformula hp chosen).isUFormula, ih chosen (e+1)]
++  · intro depth p hp ih chosen e
+     rw [bindOneAt_exs chosen depth hp.isUFormula,
+-      bindOneAt_exs chosen (depth+1) (bindOneAt_isSemiformula hp chosen).isUFormula,
+-      ih chosen]
++      bindOneAt_exs chosen e (bindOneAt_isSemiformula hp chosen).isUFormula, ih chosen (e+1)]
++
++/-- Internal structural induction keeps the chosen label quantified and
++increments both binder depths under each quantifier. -/
++theorem bindOneAt_absorb {depth p : V} (hp : IsSemiformula L depth p) :
++    ∀ chosen : V,
++    bindOneAt L chosen (depth+1) (bindOneAt L chosen depth p) =
++      bindOneAt L chosen depth p :=
++  fun chosen => bindOneAt_absorb_any hp chosen (depth+1)
+ 
+ /-- A named universal has no remaining free occurrence of its selected label. -/
+ theorem bindOneAt_namedAll {p : V} (hp : IsFormula L p) (chosen : V) :

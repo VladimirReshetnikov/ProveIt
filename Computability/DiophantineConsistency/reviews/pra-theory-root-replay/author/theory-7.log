@@ -1,0 +1,14 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRATheory.lean:99:2: error: No goals to be solved
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRATheory.lean:102:8: warning: declaration uses `sorry`
+n : ℕ
+f : Code n
+g : Code (n + 2)
+e : Fin (n + 1) → ℕ
+⊢ Structure.rel Language.ORing.Rel.eq
+    (Semiterm.val e Empty.elim ∘
+      ![applyCode (f.prec g) fun i => Fin.cases (applyCode Code.succ fun x => #0) (fun i => #i.succ) i,
+        applyCode g fun i =>
+          Fin.cases (#0)
+            (fun i =>
+              Fin.cases (applyCode (f.prec g) fun i => Fin.cases (#0) (fun i => #i.succ) i) (fun i => #i.succ) i)
+            i])
