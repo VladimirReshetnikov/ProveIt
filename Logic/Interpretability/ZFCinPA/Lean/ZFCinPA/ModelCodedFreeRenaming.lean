@@ -617,34 +617,12 @@ lemma rename_of_shift_fixed (chosen level offset : V) {p : V} (hp : IsUFormula L
     shift L p = p → rename L chosen level offset p = p := by
   apply IsUFormula.ISigma1.sigma1_succ_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
-  · intro arity R terms hR ht h
-    have hterms : termShiftVec L arity terms = terms := by
-      simpa only [shift_rel hR ht,qqRel_inj,true_and] using h
-    rw [rename_rel chosen level offset hR ht,
-      termRenameVec_of_shift_fixed chosen level offset ht hterms]
-  · intro arity R terms hR ht h
-    have hterms : termShiftVec L arity terms = terms := by
-      simpa only [shift_nrel hR ht,qqNRel_inj,true_and] using h
-    rw [rename_nrel chosen level offset hR ht,
-      termRenameVec_of_shift_fixed chosen level offset ht hterms]
-  · intro _; simp
-  · intro _; simp
-  · intro p q hp hq ihp ihq h
-    have hparts : shift L p = p ∧ shift L q = q := by
-      simpa only [shift_and hp hq,qqAnd_inj] using h
-    rw [rename_and chosen level offset hp hq,ihp hparts.1,ihq hparts.2]
-  · intro p q hp hq ihp ihq h
-    have hparts : shift L p = p ∧ shift L q = q := by
-      simpa only [shift_or hp hq,qqOr_inj] using h
-    rw [rename_or chosen level offset hp hq,ihp hparts.1,ihq hparts.2]
-  · intro p hp ih h
-    have hbody : shift L p = p := by
-      simpa only [shift_all hp,qqAll_inj] using h
-    rw [rename_all chosen level offset hp,ih hbody]
-  · intro p hp ih h
-    have hbody : shift L p = p := by
-      simpa only [shift_exs hp,qqExs_inj] using h
-    rw [rename_exs chosen level offset hp,ih hbody]
+  all_goals
+    intros
+    simp_all [shift_rel, shift_nrel, qqRel_inj, qqNRel_inj,
+      rename_rel, rename_nrel, termRenameVec_of_shift_fixed,
+      shift_and, shift_or, qqAnd_inj, qqOr_inj, rename_and, rename_or,
+      shift_all, shift_exs, qqAll_inj, qqExs_inj, rename_all, rename_exs]
 
 lemma rename_neg (chosen level offset : V) {p : V} (hp : IsUFormula L p) :
     rename L chosen level offset (neg L p) = neg L (rename L chosen level offset p) := by
