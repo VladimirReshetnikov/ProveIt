@@ -50,12 +50,7 @@ lemma atom_vac {n arity R terms : V} (hr : (ℒₛₑₜ).IsRel arity R)
     (ht : IsSemitermVec ℒₛₑₜ arity n terms)
     (F B fresh z : V) (hlen : len B=n) (hF : FreeAvoid z F) (hB : Avoid z B) :
     Vac z (atom ?[F,B,fresh] arity R terms) := by
-  have hr' : V ⊧/![arity,R] (LeanProofs.ZFCinPA.instLORDefinableSet.rel).val := hr
-  rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.rel : 𝚺₀.Semisentence 2) =
-    .mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)” from rfl] at hr'
-  have harity : arity=2 := by
-    have hc : (arity=2 ∧ R=0) ∨ (arity=2 ∧ R=1) := by simpa using hr'
-    exact hc.elim And.left And.left
+  have harity : arity=2 := ValidatorLabelAvoidance.set_relation_arity hr
   subst arity
   have hlabel (i : V) (hi : i<2) :
       z≠(ValidatorEnvironmentLabels254.TermLabels.vec F B 2 terms).[i] := by

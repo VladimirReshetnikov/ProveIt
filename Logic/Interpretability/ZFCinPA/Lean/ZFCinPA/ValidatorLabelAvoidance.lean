@@ -232,4 +232,13 @@ lemma term_labels_related {P : V → V → Prop} {n u : V}
       .mkSigma “k f. ⊥” from rfl] at hf'
     simp at hf'
 
+
+/-- Every internal relation symbol of the set language has arity two. -/
+lemma set_relation_arity {arity R : V} (hr : (ℒₛₑₜ).IsRel arity R) : arity=2 := by
+  have hr' : V ⊧/![arity,R] (LeanProofs.ZFCinPA.instLORDefinableSet.rel).val := hr
+  rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.rel : 𝚺₀.Semisentence 2) =
+    .mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)” from rfl] at hr'
+  have hc : (arity=2 ∧ R=0) ∨ (arity=2 ∧ R=1) := by simpa using hr'
+  exact hc.elim And.left And.left
+
 end LeanProofs.ZFCinPA.ValidatorLabelAvoidance
