@@ -84,13 +84,15 @@ lemma certified_mp_success {B t s h : V} (b : V)
   have hsC : StackB C s := stack_weaken (old_le_extendBound B p) hs
   exact certified_state (prov_extend hv) (prov_truth hC) (stack_cons (prov_truth hC) hsC)
 
-/-- The fixed nine newly proved AX stack entries plus the top gate witness
-share one finite explicit bound. The old top and full old stream are retained. -/
-lemma certified_ax {B t s h : V} (a b c u : V)
-    (ht : ProvB B t) (hh : ProvB B h) (hs : StackB B s) :
-    CertifiedWorking (stateValue (gateValue a b c) (axStackValue a h b c u t s) 0 0) := by
-  obtain ⟨ph, _, hph⟩ := hh
-  obtain ⟨pg, hpg⟩ := gate_witness a b c
+/-- The fixed AX witnesses preserve the stack with their explicit common bound. -/
+theorem ax_working_with_witnesses {B t s h : V} (a b c u ph pg : V)
+    (hph : value ph = h + 1) (hpg : value pg = gateValue a b c + 1)
+    (ht : ProvB B t) (hs : StackB B s) :
+    WorkingB (witnessBound B [pg, node 3 (cantor a b), node 4 (cantor a (cantor b c)),
+      node 5 (cantor a (cantor b c)), node 6 (cantor a (cantor b c)),
+      node 7 (cantor a (cantor b c)), node 8 (cantor a c), node 9 (cantor a (cantor b c)),
+      node 10 (cantor a (cantor b (cantor c u))), node 2 (cantor u ph)])
+      (stateValue (gateValue a b c) (axStackValue a h b c u t s) 0 0) := by
   let p1 := node 3 (cantor a b)
   let p2 := node 4 (cantor a (cantor b c))
   let p3 := node 5 (cantor a (cantor b c))
@@ -128,7 +130,16 @@ lemma certified_ax {B t s h : V} (a b c u : V)
     exact stack_cons h1 (stack_cons h2 (stack_cons h3 (stack_cons h4
       (stack_cons h5 (stack_cons h6 (stack_cons h7 (stack_cons h8
         (stack_cons hG (stack_cons (prov_weaken hBC ht) (stack_weaken hBC hs))))))))))
-  exact certified_state hgate (prov_truth hC) hstack
+  exact (working_state C _ _ _ _).mpr ⟨hgate, prov_truth hC, hstack⟩
+
+/-- The fixed nine newly proved AX stack entries plus the top gate witness
+share one finite explicit bound. The old top and full old stream are retained. -/
+lemma certified_ax {B t s h : V} (a b c u : V)
+    (ht : ProvB B t) (hh : ProvB B h) (hs : StackB B s) :
+    CertifiedWorking (stateValue (gateValue a b c) (axStackValue a h b c u t s) 0 0) := by
+  obtain ⟨ph, _, hph⟩ := hh
+  obtain ⟨pg, hpg⟩ := gate_witness a b c
+  exact ⟨_, ax_working_with_witnesses a b c u ph pg hph hpg ht hs⟩
 
 /-- Local preservation for every actual selector and all physical fields.
 The API p/q corresponds to y/x in the AX branch; u is the old counter d. -/

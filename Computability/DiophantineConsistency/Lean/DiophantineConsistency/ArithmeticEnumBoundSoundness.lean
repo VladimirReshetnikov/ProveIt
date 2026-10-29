@@ -167,43 +167,8 @@ theorem ax_working {B t s h : V} (a b c u ph : V) (hph : value ph = h+1)
     (ht : ProvB B t) (hs : StackB B s) :
     WorkingB (witnessBound B (axWitnesses a b c u ph))
       (stateValue (gateValue a b c) (axStackValue a h b c u t s) 0 0) := by
-  set ps := axWitnesses a b c u ph
-  set C := witnessBound B ps
-  have hBC : B ≤ C := old_le_witnessBound B ps
-  have hC : 1 ≤ C := le_trans hs.1 hBC
-  have hgate : ProvB C (gateValue a b c) :=
-    prov_at_witnessBound (p := gateWitness a b c) (by simp [ps, axWitnesses])
-      (gateWitness_value a b c)
-  have h1 : ProvB C (rho1 a b) :=
-    prov_at_witnessBound (p := node 3 (cantor a b)) (by simp [ps, axWitnesses]) (value_r1 a b)
-  have h2 : ProvB C (rho2 a b c) :=
-    prov_at_witnessBound (p := node 4 (cantor a (cantor b c))) (by simp [ps, axWitnesses])
-      (value_r2 a b c)
-  have h3 : ProvB C (ArithmeticTemplates254.rho3 a b c) :=
-    prov_at_witnessBound (p := node 5 (cantor a (cantor b c))) (by simp [ps, axWitnesses])
-      (value_r3 a b c)
-  have h4 : ProvB C (ArithmeticTemplates254.rho4 a b c) :=
-    prov_at_witnessBound (p := node 6 (cantor a (cantor b c))) (by simp [ps, axWitnesses])
-      (value_r4 a b c)
-  have h5 : ProvB C (ArithmeticTemplates254.rho5 a b c) :=
-    prov_at_witnessBound (p := node 7 (cantor a (cantor b c))) (by simp [ps, axWitnesses])
-      (value_r5 a b c)
-  have h6 : ProvB C (rho6 a c) :=
-    prov_at_witnessBound (p := node 8 (cantor a c)) (by simp [ps, axWitnesses]) (value_r6 a c)
-  have h7 : ProvB C (ArithmeticTemplates222.growG a b c) :=
-    prov_at_witnessBound (p := node 9 (cantor a (cantor b c))) (by simp [ps, axWitnesses])
-      (value_growG a b c)
-  have h8 : ProvB C (rho8 a b c u) :=
-    prov_at_witnessBound (p := node 10 (cantor a (cantor b (cantor c u))))
-      (by simp [ps, axWitnesses]) (value_r8 a b c u)
-  have hG : ProvB C (wal u h) :=
-    prov_at_witnessBound (p := node 2 (cantor u ph)) (by simp [ps, axWitnesses])
-      (value_gen u h ph hph)
-  have hstack : StackB C (axStackValue a h b c u t s) := by
-    exact stack_cons h1 (stack_cons h2 (stack_cons h3 (stack_cons h4
-      (stack_cons h5 (stack_cons h6 (stack_cons h7 (stack_cons h8
-        (stack_cons hG (stack_cons (prov_weaken hBC ht) (stack_weaken hBC hs))))))))))
-  exact (working_state C _ _ _ _).mpr ⟨hgate, prov_truth hC, hstack⟩
+  exact ax_working_with_witnesses a b c u ph (gateWitness a b c) hph
+    (gateWitness_value a b c) ht hs
 
 /-- The proof of `certified_mp_success`, retaining its concrete bound. -/
 theorem mp_working {B t s h : V} (b pt ph : V) (hpt : value pt = t+1) (hph : value ph = h+1)
