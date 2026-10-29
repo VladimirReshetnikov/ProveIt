@@ -1,0 +1,6 @@
+import DiophantineConsistency.ParsonsBaseInvariant
+#print axioms DiophantineConsistency.ParsonsBaseInvariant.initial_base
+#print axioms DiophantineConsistency.ParsonsBaseInvariant.shift_good
+#print axioms DiophantineConsistency.ParsonsBaseInvariant.select_good
+#print axioms DiophantineConsistency.ParsonsBaseInvariant.open_good
+#print axioms DiophantineConsistency.ParsonsBaseInvariant.terminal_good

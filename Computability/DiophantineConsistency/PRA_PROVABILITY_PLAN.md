@@ -142,8 +142,10 @@ The [restricted counterexample case](reviews/parsons-counter-strict-root.md)
 requires its smaller derivations only for tree-side, strict-block contexts.
 A separate [actual PA-minus axiom certificate](reviews/parsons-base-positive-root.md)
 now supplies Tree descriptors for terminal base reclassification, including
-the axiom with an unbounded existential. Integrating that base certificate
-into the restricted induction hypothesis and proving the recursion remain.
+the axiom with an unbounded existential. The [marked base invariant](reviews/parsons-base-invariant-root.md)
+preserves that certificate through initial contexts, shifts, contraction,
+opening and terminal reclassification. Integrating it into the restricted
+induction hypothesis and proving the recursion remain.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
