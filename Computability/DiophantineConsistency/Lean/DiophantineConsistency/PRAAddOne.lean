@@ -93,9 +93,10 @@ theorem modelSwapComposition (f : Code 2) (x y : M) :
   exact h
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
-private theorem val_cases {n k : ℕ} (a : TermN k) (b : Fin n → TermN k) (e : Fin k → M) :
-    (fun i => Semiterm.val e Empty.elim (Fin.cases a b i)) =
-      Fin.cases (Semiterm.val e Empty.elim a) (fun i => Semiterm.val e Empty.elim (b i)) := by
+theorem val_cases {ξ : Type} {n k : ℕ} (a : Semiterm language ξ k)
+    (b : Fin n → Semiterm language ξ k) (e : Fin k → M) (f : ξ → M) :
+    (fun i => Semiterm.val e f (Fin.cases a b i)) =
+      Fin.cases (Semiterm.val e f a) (fun i => Semiterm.val e f (b i)) := by
   funext i
   exact Fin.cases rfl (fun _ => rfl) i
 

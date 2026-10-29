@@ -55,14 +55,8 @@ theorem modelCodeWitnessSentence : M↓[language] ⊧ codeWitnessSentence := by
       (![.bvar 0, .func Code.succ (fun _ => .func witnessCode ![.bvar 0, .bvar 1])] i : TermN 2)) =
       ![e 0, Structure.func (L := language) Code.succ (fun _ =>
         Structure.func (L := language) witnessCode ![e 0,e 1])] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases ?_ (fun k => Fin.elim0 k) j
-    change Structure.func (L := language) Code.succ
-      (fun _ => Structure.func (L := language) witnessCode
-        (fun i => Semiterm.val e Empty.elim (![.bvar 0, .bvar 1] i : TermN 2))) = _
-    rw [hrel]
-    rfl
+    simpa [Semiterm.val_func, Function.comp_def, hrel] using
+      val_term_pair e (.bvar 0) (.func Code.succ (fun _ => .func witnessCode ![.bvar 0, .bvar 1]))
   rw [hrel, hadd]
   by_cases hxy : Structure.rel (L := language) Language.ORing.Rel.lt ![e 0,e 1]
   · exact Or.inr (modelWitnessByCode (e 0) (e 1) hxy)

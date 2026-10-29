@@ -43,25 +43,18 @@ private theorem minimalBody_eval {n : ℕ} (good : Code (n+1)) (x : M) (e : ℕ 
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have hsearch : (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (parameters n)) =
       Fin.cases x (fun i : Fin n => e i.val) := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    rfl
+    simpa only [Function.comp_def, Semiterm.val_bvar, Semiterm.val_fvar,
+      Matrix.cons_val_zero, parameters] using
+      val_cases (.bvar 0) (parameters n) ![x] e
   have hgood : (Semiterm.val ![x] e ∘ Fin.cases
       (.func predCode (fun _ => searchTerm good)) (parameters n)) =
       Fin.cases (Structure.func (L := language) predCode (fun _ =>
         Structure.func (L := language) (searchCode good)
           (Fin.cases x (fun i : Fin n => e i.val)))) (fun i : Fin n => e i.val) := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · change Structure.func (L := language) predCode
-        (Semiterm.val ![x] e ∘ fun _ : Fin 1 => searchTerm good) = _
-      congr 1
-      funext k
-      refine Fin.cases ?_ (fun l => Fin.elim0 l) k
-      change Structure.func (L := language) (searchCode good)
-        (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (parameters n)) = _
-      rw [hsearch]
-    · rfl
+    have hsearch' : (fun i => Semiterm.val ![x] e (Fin.cases (.bvar 0) (parameters n) i)) =
+        Fin.cases x (fun i : Fin n => e i.val) := hsearch
+    simpa [Semiterm.val_func, searchTerm, parameters, Function.comp_def, hsearch'] using
+      val_cases (.func predCode (fun _ => searchTerm good)) (parameters n) ![x] e
   change (Structure.func (L := language) (searchCode good)
       (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (parameters n)) =
       Structure.func (L := language) (Code.zero 0)
@@ -129,10 +122,8 @@ theorem modelSearchPredecessorGood {n : ℕ} (good : Code (n+1)) (x : M) (e : �
       rw [←htfind]
       exact hg
 
-theorem modelMinimalSentence {n : ℕ} (good : Code (n+1)) : M↓[language] ⊧ minimalSentence good := by
-  simp only [models_iff, minimalSentence, Semiformula.eval_univCl, Semiformula.eval_all]
-  intro e x
-  exact (minimalBody_eval good x e).mpr (modelSearchPredecessorGood good x e)
+theorem modelMinimalSentence {n : ℕ} (good : Code (n+1)) : M↓[language] ⊧ minimalSentence good :=
+  (minimalSentence_iff good).mpr (fun e x => modelSearchPredecessorGood good x e)
 
 end models
 

@@ -111,18 +111,19 @@ theorem modelBoundedFormula {n : ℕ} (good : Code (n+1)) (bound : M) (params : 
   intro x
   have ha : (Semiterm.val (L := language) (x :> Fin.cases bound params) Empty.elim ∘
       Fin.cases (.bvar 0) (fun i : Fin n => .bvar i.succ.succ)) = Fin.cases x params := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
+    simpa [Function.comp_def, Semiterm.val_bvar] using
+      val_cases (.bvar 0) (fun i : Fin n => .bvar i.succ.succ)
+        (x :> Fin.cases bound params) Empty.elim
   have hz : (Semiterm.val (L := language) (x :> Fin.cases bound params) Empty.elim ∘ Fin.elim0) =
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   simp [ha,hz]
 
-theorem modelUniversalCorrectSentence {n : ℕ} (good : Code (n+1)) :
-    M↓[language] ⊧ universalCorrectSentence good := by
-  simp only [models_iff, universalCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
-  intro e
+private theorem modelUniversalCode_eval {n : ℕ} (good : Code (n+1)) (e : Fin (n+1) → M) :
+    IsBit (Structure.func (L := language) (universalCode good) e) ∧
+      (Structure.func (L := language) (universalCode good) e =
+        Structure.func (L := language) oneCode Fin.elim0 ↔
+          (boundedFormula good).Eval e Empty.elim) := by
   have hc := modelUniversalCode good (e 0) (fun i => if h : i < n then e ⟨i+1, by omega⟩ else e 0)
-  -- The environment used by `modelUniversalCode` enumerates the tail of `e`.
   have hp : (fun i : Fin n => (if h : i.val < n then e ⟨i.val+1, by omega⟩ else e 0)) =
       (fun i : Fin n => e i.succ) := by
     funext i
@@ -132,9 +133,13 @@ theorem modelUniversalCorrectSentence {n : ℕ} (good : Code (n+1)) :
   have he : Fin.cases (e 0) (fun i : Fin n => e i.succ) = e := by funext i; exact Fin.cases rfl (fun _ => rfl) i
   have hb := modelBoundedFormula good (e 0) (fun i : Fin n => e i.succ)
   rw [he] at hb
-  have hcorrect : Structure.func (L := language) (universalCode good) e =
-      Structure.func (L := language) oneCode Fin.elim0 ↔ (boundedFormula good).Eval e Empty.elim := by
-    simpa only [he] using (hc.2.trans hb.symm)
+  exact ⟨by simpa only [he] using hc.1, by simpa only [he] using (hc.2.trans hb.symm)⟩
+
+theorem modelUniversalCorrectSentence {n : ℕ} (good : Code (n+1)) :
+    M↓[language] ⊧ universalCorrectSentence good := by
+  simp only [models_iff, universalCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
+  intro e
+  have hcorrect := (modelUniversalCode_eval good e).2
   have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars (n+1)) = e := by funext i; rfl
   have hz : (Semiterm.val (L := language) e Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   simpa [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hv, hz, iff_def] using hcorrect
@@ -143,16 +148,7 @@ theorem modelUniversalBitSentence {n : ℕ} (good : Code (n+1)) :
     M↓[language] ⊧ PRACharacteristicBit.bitSentence (universalCode good) := by
   simp only [models_iff, PRACharacteristicBit.bitSentence, Semiformula.eval_allClosure]
   intro e
-  have hc := modelUniversalCode good (e 0) (fun i => if h : i < n then e ⟨i+1, by omega⟩ else e 0)
-  have hp : (fun i : Fin n => (if h : i.val < n then e ⟨i.val+1, by omega⟩ else e 0)) =
-      (fun i : Fin n => e i.succ) := by
-    funext i
-    simp only [i.isLt, ↓reduceDIte]
-    congr 1
-  rw [hp] at hc
-  have he : Fin.cases (e 0) (fun i : Fin n => e i.succ) = e := by funext i; exact Fin.cases rfl (fun _ => rfl) i
-  have hbit : IsBit (Structure.func (L := language) (universalCode good) e) := by
-    simpa only [he] using hc.1
+  have hbit := (modelUniversalCode_eval good e).1
   change Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim e _
   simp [Semiformula.EvalAux, eqRel, applyCode, vars, Function.comp_def]
   have hz : (fun i : Fin 0 => Semiterm.val e Empty.elim (Fin.elim0 i : TermN (n+1))) =

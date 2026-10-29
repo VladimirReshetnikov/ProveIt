@@ -64,8 +64,7 @@ variable [Structure.Mem (setTemplateLanguage k arities) M]
 
 @[simp] lemma eval_lift {n : ℕ} (σ : SetTheorySemisentence n) (e : Fin n → M) (ε : Empty → M) :
     (lift (k := k) (arities := arities) σ).Eval e ε ↔
-      σ.Eval (s := SetTheory.standardStructure M) e ε := by
-  rw [lift, Semiformula.eval_lMap, reduct_standard]
+      σ.Eval (s := SetTheory.standardStructure M) e ε := LTemplate.eval_set_lMap σ e ε
 
 theorem models_totS (F : Semisentence (setTemplateLanguage k arities) 2) :
     M↓[setTemplateLanguage k arities] ⊧ totS F ↔

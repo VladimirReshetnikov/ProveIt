@@ -329,38 +329,11 @@ lemma rename_shift_lift (chosen level offset : V) {p : V} (hp : IsUFormula L p) 
     rename L chosen (level+1) offset (shift L p) = shift L (rename L chosen level offset p) := by
   apply IsUFormula.ISigma1.sigma1_succ_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
-  · intro arity R terms hR ht
-    rw [shift_rel hR ht,rename_rel chosen (level+1) offset hR ht.termShiftVec,
-      termRenameVec_shift_lift chosen level offset ht,
-      rename_rel chosen level offset hR ht]
-    rw [shift_rel hR (termRenameVec_isUTerm chosen level offset ht)]
-  · intro arity R terms hR ht
-    rw [shift_nrel hR ht,rename_nrel chosen (level+1) offset hR ht.termShiftVec,
-      termRenameVec_shift_lift chosen level offset ht,
-      rename_nrel chosen level offset hR ht]
-    rw [shift_nrel hR (termRenameVec_isUTerm chosen level offset ht)]
-  · simp
-  · simp
-  · intro p q hp hq ihp ihq
-    rw [shift_and hp hq,
-      rename_and chosen (level+1) offset hp.shift hq.shift,
-      rename_and chosen level offset hp hq,ihp,ihq]
-    rw [shift_and (rename_isUFormula chosen level offset hp)
-      (rename_isUFormula chosen level offset hq)]
-  · intro p q hp hq ihp ihq
-    rw [shift_or hp hq,
-      rename_or chosen (level+1) offset hp.shift hq.shift,
-      rename_or chosen level offset hp hq,ihp,ihq]
-    rw [shift_or (rename_isUFormula chosen level offset hp)
-      (rename_isUFormula chosen level offset hq)]
-  · intro p hp ih
-    rw [shift_all hp,rename_all chosen (level+1) offset hp.shift,
-      rename_all chosen level offset hp,ih]
-    rw [shift_all (rename_isUFormula chosen level offset hp)]
-  · intro p hp ih
-    rw [shift_exs hp,rename_exs chosen (level+1) offset hp.shift,
-      rename_exs chosen level offset hp,ih]
-    rw [shift_exs (rename_isUFormula chosen level offset hp)]
+  all_goals
+    intros
+    simp_all [shift_rel, shift_nrel, rename_rel, rename_nrel, termRenameVec_shift_lift,
+      termRenameVec_isUTerm, shift_and, shift_or, rename_and, rename_or,
+      rename_isUFormula, shift_all, shift_exs, rename_all, rename_exs]
 
 lemma termRename_shift_offset (chosen offset : V) {term : V} (ht : IsUTerm L term) :
     termRename L chosen 0 offset (termShift L term) =
@@ -399,30 +372,10 @@ lemma rename_shift_offset (chosen offset : V) {p : V} (hp : IsUFormula L p) :
     rename L chosen 0 offset (shift L p) = rename L chosen 0 (offset+1) p := by
   apply IsUFormula.ISigma1.sigma1_succ_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
-  · intro arity R terms hR ht
-    rw [shift_rel hR ht,rename_rel chosen 0 offset hR ht.termShiftVec,
-      termRenameVec_shift_offset chosen offset ht,
-      rename_rel chosen 0 (offset+1) hR ht]
-  · intro arity R terms hR ht
-    rw [shift_nrel hR ht,rename_nrel chosen 0 offset hR ht.termShiftVec,
-      termRenameVec_shift_offset chosen offset ht,
-      rename_nrel chosen 0 (offset+1) hR ht]
-  · simp
-  · simp
-  · intro p q hp hq ihp ihq
-    rw [shift_and hp hq,
-      rename_and chosen 0 offset hp.shift hq.shift,
-      rename_and chosen 0 (offset+1) hp hq,ihp,ihq]
-  · intro p q hp hq ihp ihq
-    rw [shift_or hp hq,
-      rename_or chosen 0 offset hp.shift hq.shift,
-      rename_or chosen 0 (offset+1) hp hq,ihp,ihq]
-  · intro p hp ih
-    rw [shift_all hp,rename_all chosen 0 offset hp.shift,
-      rename_all chosen 0 (offset+1) hp,ih]
-  · intro p hp ih
-    rw [shift_exs hp,rename_exs chosen 0 offset hp.shift,
-      rename_exs chosen 0 (offset+1) hp,ih]
+  all_goals
+    intros
+    simp_all [shift_rel, shift_nrel, rename_rel, rename_nrel, termRenameVec_shift_offset,
+      shift_and, shift_or, rename_and, rename_or, shift_all, shift_exs, rename_all, rename_exs]
 
 lemma termRename_bShift (chosen level offset : V) {term : V} (ht : IsUTerm L term) :
     termRename L chosen level offset (termBShift L term) =
@@ -617,54 +570,20 @@ lemma rename_of_shift_fixed (chosen level offset : V) {p : V} (hp : IsUFormula L
     shift L p = p → rename L chosen level offset p = p := by
   apply IsUFormula.ISigma1.sigma1_succ_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
-  · intro arity R terms hR ht h
-    have hterms : termShiftVec L arity terms = terms := by
-      simpa only [shift_rel hR ht,qqRel_inj,true_and] using h
-    rw [rename_rel chosen level offset hR ht,
-      termRenameVec_of_shift_fixed chosen level offset ht hterms]
-  · intro arity R terms hR ht h
-    have hterms : termShiftVec L arity terms = terms := by
-      simpa only [shift_nrel hR ht,qqNRel_inj,true_and] using h
-    rw [rename_nrel chosen level offset hR ht,
-      termRenameVec_of_shift_fixed chosen level offset ht hterms]
-  · intro _; simp
-  · intro _; simp
-  · intro p q hp hq ihp ihq h
-    have hparts : shift L p = p ∧ shift L q = q := by
-      simpa only [shift_and hp hq,qqAnd_inj] using h
-    rw [rename_and chosen level offset hp hq,ihp hparts.1,ihq hparts.2]
-  · intro p q hp hq ihp ihq h
-    have hparts : shift L p = p ∧ shift L q = q := by
-      simpa only [shift_or hp hq,qqOr_inj] using h
-    rw [rename_or chosen level offset hp hq,ihp hparts.1,ihq hparts.2]
-  · intro p hp ih h
-    have hbody : shift L p = p := by
-      simpa only [shift_all hp,qqAll_inj] using h
-    rw [rename_all chosen level offset hp,ih hbody]
-  · intro p hp ih h
-    have hbody : shift L p = p := by
-      simpa only [shift_exs hp,qqExs_inj] using h
-    rw [rename_exs chosen level offset hp,ih hbody]
+  all_goals
+    intros
+    simp_all [shift_rel, shift_nrel, qqRel_inj, qqNRel_inj,
+      rename_rel, rename_nrel, termRenameVec_of_shift_fixed,
+      shift_and, shift_or, qqAnd_inj, qqOr_inj, rename_and, rename_or,
+      shift_all, shift_exs, qqAll_inj, qqExs_inj, rename_all, rename_exs]
 
 lemma rename_neg (chosen level offset : V) {p : V} (hp : IsUFormula L p) :
     rename L chosen level offset (neg L p) = neg L (rename L chosen level offset p) := by
   apply IsUFormula.ISigma1.sigma1_succ_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
-  · intro arity R terms hR ht
-    simp [hR,ht,rename_rel,rename_nrel,termRenameVec_isUTerm]
-  · intro arity R terms hR ht
-    simp [hR,ht,rename_rel,rename_nrel,termRenameVec_isUTerm]
-  · simp
-  · simp
-  · intro p q hp hq ihp ihq
-    simp [hp,hq,hp.neg,hq.neg,rename_and,rename_or,
-      rename_isUFormula,ihp,ihq]
-  · intro p q hp hq ihp ihq
-    simp [hp,hq,hp.neg,hq.neg,rename_and,rename_or,
-      rename_isUFormula,ihp,ihq]
-  · intro p hp ih
-    simp [hp,hp.neg,rename_all,rename_exs,rename_isUFormula,ih]
-  · intro p hp ih
-    simp [hp,hp.neg,rename_all,rename_exs,rename_isUFormula,ih]
+  all_goals
+    intros
+    simp_all [rename_rel, rename_nrel, termRenameVec_isUTerm,
+      rename_and, rename_or, rename_isUFormula, rename_all, rename_exs]
 
 end LeanProofs.ZFCinPA.ModelCodedFreeRenaming

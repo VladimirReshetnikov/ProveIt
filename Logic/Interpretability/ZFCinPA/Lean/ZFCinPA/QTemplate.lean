@@ -42,20 +42,19 @@ local instance : Language.Mem (setTemplateLanguage k arities) := ⟨Sum.inl Lang
 /-- The GIC body over the enlarged language. -/
 def gicBodySource (ψ : Semiproposition (setTemplateLanguage k arities) 2) :
     Proposition (setTemplateLanguage k arities) :=
-  “∀ a, ∃ b, (∀ y, (y ∈ b → ∃ x, !ψ x y)) ∧
-    (∀ x, (x ∈ a → ((∃ y, !ψ x y) → ∃ y, (y ∈ b ∧ !ψ x y))))”
+  GicTemplateSyntax.gicBodySource ψ
 
 /-- `y ∈ b` (level 3; `y = #0`, `b = #1`). -/
 def srcYB3 : Semiproposition (setTemplateLanguage k arities) 3 :=
-  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #1]
+  GicTemplateSyntax.srcYB3
 
 /-- `x ∈ a` (level 3; `x = #0`, `a = #2`). -/
 def srcXA3 : Semiproposition (setTemplateLanguage k arities) 3 :=
-  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #2]
+  GicTemplateSyntax.srcXA3
 
 /-- `y ∈ b` (level 4; `y = #0`, `b = #2`). -/
 def srcYB4 : Semiproposition (setTemplateLanguage k arities) 4 :=
-  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #2]
+  GicTemplateSyntax.srcYB4
 
 lemma gicBodySource_eq (ψ : Semiproposition (setTemplateLanguage k arities) 2) :
     gicBodySource ψ =
@@ -217,30 +216,20 @@ variable [Structure.Mem (setTemplateLanguage k arities) M]
 /-- Lifted `ℒₛₑₜ` formulas read in the `ℒₛₑₜ` reduct. -/
 @[simp] lemma eval_liftSet {n : ℕ} (σ : SetTheorySemisentence n) (e : Fin n → M) (ε : Empty → M) :
     (liftSet (k := k) (arities := arities) σ).Eval e ε ↔
-      σ.Eval (s := SetTheory.standardStructure M) e ε := by
-  rw [liftSet, Semiformula.eval_lMap, LTemplate.reduct_standard]
+      σ.Eval (s := SetTheory.standardStructure M) e ε := LTemplate.eval_set_lMap σ e ε
 
 /-- The `ℒₛₑₜ` reduct of a model of `templN` is a model of `qTheory`. -/
 lemma pure_modelsN [M↓[setTemplateLanguage k arities] ⊧* templN k arities] :
-    M↓[ℒₛₑₜ] ⊧* qTheory := by
-  have h : (s.lMap (setHom k arities)).toStruc ⊧* qTheory := by
-    constructor
-    intro p hp
-    apply Semiformula.models_lMap.mp
-    exact LO.FirstOrder.Theory.models M (templN k arities) (Or.inl ⟨p, hp, rfl⟩)
-  simpa only [LTemplate.reduct_standard] using h
+    M↓[ℒₛₑₜ] ⊧* qTheory :=
+  LTemplate.pure_models_of_subset qTheory (templN k arities) (fun _ hp => Or.inl hp)
 
 omit [Structure.Eq (setTemplateLanguage k arities) M] in
 /-- Global image collection for every enlarged matrix. -/
 lemma gic_iffN [M↓[setTemplateLanguage k arities] ⊧* templN k arities]
     (p : Semiproposition (setTemplateLanguage k arities) 2) (f : ℕ → M) (a : M) :
     ∃ b : M, (∀ y, y ∈ b → ∃ x, p.Eval ![x, y] f) ∧
-      (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) := by
-  have h := LO.FirstOrder.Theory.models M (templN k arities) (Or.inr (Or.inr ⟨p, rfl⟩))
-  have h' : ∀ f : ℕ → M, ∀ a : M, ∃ b : M, (∀ y, y ∈ b → ∃ x, p.Eval ![x, y] f) ∧
-      (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) := by
-    simpa [models_iff, gicBodySource] using h
-  exact h' f a
+      (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) :=
+  GicTemplateSyntax.gic_iff_of_mem (templN k arities) p (Or.inr (Or.inr ⟨p, rfl⟩)) f a
 
 end Semantics
 
@@ -252,14 +241,7 @@ theorem templ_provableN (σ : Sentence (setTemplateLanguage k arities))
       [Structure.Mem (setTemplateLanguage k arities) M]
       [M↓[setTemplateLanguage k arities] ⊧* templN k arities],
       M↓[setTemplateLanguage k arities] ⊧ σ) :
-    templN k arities ⊢ σ := by
-  apply LO.FirstOrder.Theory.Proof.complete.{0,0}
-  apply consequence_iff_eq.{0,0}.mpr
-  intro M _ s _ hT
-  letI : SetStructure M := ⟨fun y x =>
-    Structure.rel (L := setTemplateLanguage k arities) (Sum.inl Language.Set.Rel.mem) ![x, y]⟩
-  letI : Structure.Mem (setTemplateLanguage k arities) M := ⟨fun _ _ => Iff.rfl⟩
-  letI : M↓[setTemplateLanguage k arities] ⊧* templN k arities := hT
-  exact H M
+    templN k arities ⊢ σ :=
+  LTemplate.provable_of_standard_models (templN k arities) σ H
 
 end LeanProofs.ZFCinPA.QTemplate

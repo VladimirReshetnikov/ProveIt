@@ -40,13 +40,8 @@ theorem reconstructBody_eval (x : M) (e : ℕ → M) : reconstructBody.Eval ![x]
   have hq : (Semiterm.val ![x] e ∘
       ![(.bvar 0 : Semiterm language ℕ 1), .func subCode ![.fvar 0, .bvar 0]]) =
       ![x, Structure.func (L := language) subCode ![e 0,x]] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases ?_ (fun k => Fin.elim0 k) j
-    change Structure.func (L := language) subCode
-      (Semiterm.val ![x] e ∘ ![(.fvar 0 : Semiterm language ℕ 1), .bvar 0]) = _
-    rw [hp]
-    rfl
+    simpa only [Semiterm.val_func, Semiterm.val_bvar, Matrix.cons_val_zero, hp] using
+      val_pair ![x] e (.bvar 0) (.func subCode ![.fvar 0, .bvar 0])
   change (Structure.func (L := language) subCode
       (Semiterm.val ![x] e ∘ ![(.fvar 0 : Semiterm language ℕ 1), .bvar 0]) =
       Structure.func (L := language) (Code.zero 0)
