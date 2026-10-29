@@ -48,8 +48,7 @@ theorem cyc_of_lt {n k e : V} (he : e < n) (hke : k < e) : cyc n k e = n - e + k
     rw [add_comm k n]; exact (tsub_add_eq_add_tsub hen).symm
   rw [h1]
   apply mod_eq_self_of_lt
-  have : n - e + k < n - e + e := (add_lt_add_iff_left _).mpr hke
-  rwa [tsub_add_cancel_of_le hen] at this
+  simpa only [tsub_add_cancel_of_le hen] using (add_lt_add_iff_left (n-e)).mpr hke
 
 /-- The predecessor index. -/
 theorem cyc_one {n k : V} (hk : k < n) :
@@ -183,9 +182,7 @@ theorem kernel_rotation_congr {ι : Type*} [Fintype ι] (w n X : V) (a e : ι �
     (hn : 0 < n) (hM : 0 < Exp.exp (w*n) - 1) :
     ((∑ i, a i * Exp.exp (w * e i)) * X) % (Exp.exp (w*n) - 1) =
       (∑ i, a i * rot w n X (e i % n)) % (Exp.exp (w*n) - 1) := by
-  rw [Finset.sum_mul]
-  have : ∀ i, a i * Exp.exp (w * e i) * X = a i * (Exp.exp (w * e i) * X) := fun i => mul_assoc _ _ _
-  simp only [this]
+  simp only [Finset.sum_mul, mul_assoc]
   exact sum_mod_congr Finset.univ a (fun i => Exp.exp (w * e i) * X)
     (fun i => rot w n X (e i % n)) _ hM fun i _ => exp_mul_mod_rot w n (e i) X hn hM
 
