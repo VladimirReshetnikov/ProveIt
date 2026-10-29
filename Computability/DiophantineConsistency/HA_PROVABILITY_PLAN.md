@@ -2609,3 +2609,8 @@ The [adaptive strong norm](reviews/adaptive-strong-norm2011-root.md) now
 derives `I²+Δ=Δf²` from the literal zero, matching the generic half-index
 theorem’s normalized strong equation. The auxiliary norm, signed residues
 and full half-index application are separate obligations.
+
+The [adaptive auxiliary norm](reviews/adaptive-aux-norm2011-root.md) now
+derives `I²z²+y²=1+I²y²` from the literal zero, using the magnitudes of
+the actual signed auxiliary pair. The signed congruences and generic
+half-index application remain separate obligations.
