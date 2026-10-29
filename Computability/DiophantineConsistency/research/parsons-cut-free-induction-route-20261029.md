@@ -110,3 +110,14 @@ The actual target remains a closed Lean derivation of PRA provability for the
 exact maintained sentence, followed by separate internal transfers for other
 selected equations. The result in `ParsonsCutFree` is a reusable entry point,
 not a proof of either half of Parsons' theorem.
+
+## Principal existential induction case
+
+[`ParsonsInductionCase`](../Lean/DiophantineConsistency/ParsonsInductionCase.lean)
+normalizes the open negative induction axiom with its parameters, and its
+principal existential case consumes three explicit, strictly shorter cut-free
+recursive cases to construct the guarded-rule proof. The logical cut used for
+context normalization precedes cut elimination and carries no height claim.
+The [independent replay](../reviews/parsons-induction-case-root.md) agrees
+with the author builds. Actual universal closure, the remaining derivation
+cases, and rule-to-PRA witnessing are still needed for conservation.
