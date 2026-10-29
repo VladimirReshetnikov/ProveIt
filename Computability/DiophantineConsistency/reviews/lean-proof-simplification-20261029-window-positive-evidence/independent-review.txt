@@ -1,0 +1,11 @@
+Independent review of the repeated-block positivity simplification, 2026-10-29
+
+In dig_mul_rep, the hypothesis k < m * (N + 1), together with nonnegativity of k, gives a positive product; pos_of_mul_pos_left yields m > 0 directly. This replaces the indirect zero contradiction without changing imports, assumptions or statements. Git blame attributes the affected proof to Claude-coauthored 5fcd5632b3b. Baseline source matches the workspace at review time.
+
+I independently checked all eight successful target/client builds, source and object hashes, direct import first-provider paths, logs and timing records, and all 16 object-pinned probes. The target and CyclicWord declaration/name, printed type/axiom and sampled simp/instance reports match byte-for-byte; their phase objects differ. The MaskConstants and WindowBits client objects are byte-identical. Both CyclicWord builds emit the same existing unused-variable warning after phase-path normalization; the other build logs are empty. Printed reports do not prove body or every persistent-extension equality. All three tracked direct Lean clients are covered.
+
+The direct Repunit, BinaryCarry, StandardCasts, MaskData and MaskKernel source/object pairs match successful before/after source-pinned producer records. For MaskData and MaskKernel these records are /dev/shm/claude-transport-sharing/assembly-common-records.json. I corrected the README, which had described them as unmatched. Current-source receipts do not establish current-source transitive closure; other project, Foundation and Mathlib objects remain cached. The build script samples the workspace source for every import: the final clients therefore record the baseline WindowDigits source hash while using the final phase target object. That final object is separately linked by its own build record to the changed source snapshot, and the client input object hashes match it. These checks use the workspace at review time; workspace-sample assertions need adjustment after adoption.
+
+Independent audit and output: /tmp/window-positive-peer-audit.py and /tmp/window-positive-peer-audit.log.
+
+Postcommit check: source commit fc6984d9b0 and its parent match the tested final and baseline snapshots, respectively.

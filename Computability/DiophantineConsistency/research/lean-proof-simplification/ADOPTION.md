@@ -2010,5 +2010,15 @@ public simp names disappear, one generated proof is added and another changes
 type; tracked Lean/Python searches found no references to the affected names.
 The wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-prefix-unique-evidence/BUNDLE.json).
 
+The repeated-block width positivity simplification `fc6984d9b0` removes two
+net Lean lines, bringing the reviewed series to 10297. The affected proof came
+from Claude-coauthored commit `5fcd5632b3b`. Positive multiplication replaces
+a zero contradiction. Paired target and all three direct-client builds pass;
+two client objects match, and the differing client's checked reports and sampled
+registrations match. Five project input providers have source-matched receipts;
+the wider closure remains cached. Final-client input records sample the baseline
+workspace source, while the target build separately pins the final source and
+object. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-window-positive-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

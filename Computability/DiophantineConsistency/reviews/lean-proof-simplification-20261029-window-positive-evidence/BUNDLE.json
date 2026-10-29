@@ -1,0 +1,297 @@
+{
+  "schema": "lean-proof-simplification-evidence-v1",
+  "source_commit": "fc6984d9b027337aa5ab91f402ec63a4c01d8518",
+  "source_parent": "714dc8e754cc0b0e19f30d89df5d76f6363f8b5c",
+  "scope": "Derive repeated-block positivity directly",
+  "validation": "Paired target and all three direct client builds pass. Target and CyclicWord objects differ; MaskConstants and WindowBits objects are identical. Sixteen object-pinned probes show the target and CyclicWord printed declarations, types, axioms and sampled global simp/instance registrations match. Five unchanged external direct providers match successful source-current producer receipts.",
+  "limitations": [
+    "Paired clients and direct provider receipts do not establish a source-current transitive closure; wider downstream clients were not rebuilt.",
+    "The recorded workspace source path for the target imported by clients was sampled before the source commit, so its hash is the baseline in both phases; the final client object was built with the separately pinned final target object.",
+    "Declaration reports and sampled registrations do not establish equality of proof bodies or all persistent extensions. CyclicWord objects differ, and both phase logs have the same pre-existing warning.",
+    "Compiled objects are excluded. Recorded build and probe paths refer to the original environment; full replay requires external object dependencies."
+  ],
+  "archive": "inputs-and-logs.zip",
+  "archive_sha256": "6c4a951d5eb4b6dd9e9ef7ffc86083590479e03d60920cd9ee1851a63c7cc959",
+  "independent_review": {
+    "path": "independent-review.txt",
+    "sha256": "1e2d7d8f558f40c08ca5f304b6c65039195e8f56bda529ca30d01385b278a09c"
+  },
+  "members": {
+    "commit/baseline/ArithmeticWindowDigits.lean": {
+      "bytes": 15844,
+      "sha256": "98b88dc6ea88bdf55eb64ea78ca5e168a26e7496ea741890c4907b5eb9f3a29f"
+    },
+    "commit/final/ArithmeticWindowDigits.lean": {
+      "bytes": 15788,
+      "sha256": "eb65f9b682a406550d87ad83758d4b98e996c74db7b21b82f2b54b1a6bf109ac"
+    },
+    "independent/audit.log": {
+      "bytes": 717,
+      "sha256": "202142e2bd6f5365577901b9ff75d3aeca269f704dddd87a21333fded81516c9"
+    },
+    "independent/audit.py": {
+      "bytes": 4041,
+      "sha256": "98eb71c21af779067f2a34e767a0c272839e3f1fd685469684d75939b1832b39"
+    },
+    "independent/review.txt": {
+      "bytes": 2238,
+      "sha256": "1e2d7d8f558f40c08ca5f304b6c65039195e8f56bda529ca30d01385b278a09c"
+    },
+    "prototype/ArithmeticCyclicWord-instances.lean": {
+      "bytes": 301,
+      "sha256": "02772c20c5d747bd80a80bb9bbbddd02b0d77fc43d9c450a559fdbf1096ba00f"
+    },
+    "prototype/ArithmeticCyclicWord-interfaces.lean": {
+      "bytes": 493,
+      "sha256": "02cdb10e0a68fd2433f5664b200a987d32e35d45e53c72f319423e7d329a0b4d"
+    },
+    "prototype/ArithmeticCyclicWord-names.lean": {
+      "bytes": 345,
+      "sha256": "09d1bc5ff55aa94a43166877a1eea51de098c648b8fa9a3fc5a165e5ae9b47c3"
+    },
+    "prototype/ArithmeticCyclicWord-simp.lean": {
+      "bytes": 515,
+      "sha256": "2f22880c28b224dc3fd5b8fc44c1e44837e29b5cbaa158297485b2e096bba0c1"
+    },
+    "prototype/ArithmeticWindowDigits-instances.lean": {
+      "bytes": 303,
+      "sha256": "d2185de1afa1cc514982db013d395b0bd692392fde7859dc6537f18fc4d3caf8"
+    },
+    "prototype/ArithmeticWindowDigits-interfaces.lean": {
+      "bytes": 499,
+      "sha256": "32ab2b69a8b9cdc1e9a52ccb9b2c9568d3f4a9a6132d7ae76bb9e9bd31c197f9"
+    },
+    "prototype/ArithmeticWindowDigits-names.lean": {
+      "bytes": 351,
+      "sha256": "122c2a7ea788b25787ff5a1db932af672c37b2a7e75ba3915fef2cae8dbe2790"
+    },
+    "prototype/ArithmeticWindowDigits-simp.lean": {
+      "bytes": 517,
+      "sha256": "3e7551ee8aa08eb766d2dd58dcdfb0aa14afba0ee3d626bf85065329921667ec"
+    },
+    "prototype/README.txt": {
+      "bytes": 2118,
+      "sha256": "08514c7fa59008ce48f6f0c1115b0517465d858f5b7ed375b7b4b2c42c7a8962"
+    },
+    "prototype/audit.log": {
+      "bytes": 486,
+      "sha256": "5c38d2203669156402eb78af015c871911469859ec1cb5ce53db05efc9028f3c"
+    },
+    "prototype/audit.py": {
+      "bytes": 2075,
+      "sha256": "6641f53877acd0bf1f767cdf9ae4e084b7e1ae9c17c8816b485ce66a4d111128"
+    },
+    "prototype/baseline-ArithmeticCyclicWord-instances.log": {
+      "bytes": 721920,
+      "sha256": "217e88c8d7a9947454446cb2821936d53cf1b11b0a8b680b36769afa0f2d8a02"
+    },
+    "prototype/baseline-ArithmeticCyclicWord-interfaces.log": {
+      "bytes": 8636,
+      "sha256": "8884d04eb770e8553caa31f35b1daaac751b2370248bcb14c52d6a7fd01f19ae"
+    },
+    "prototype/baseline-ArithmeticCyclicWord-names.log": {
+      "bytes": 1562,
+      "sha256": "1b77f89f94a631d7f68d0c22594b5b784158038718a121d54cc53b7eb86d85e0"
+    },
+    "prototype/baseline-ArithmeticCyclicWord-simp.log": {
+      "bytes": 1610041,
+      "sha256": "938594abec55b6dae954948a40d3a8c5b379ce1e570d34b79273ac27aa9f7cb6"
+    },
+    "prototype/baseline-ArithmeticCyclicWord.log": {
+      "bytes": 306,
+      "sha256": "94cbe4313d5f9d70ba4c0c0dd294359131e7e3564845c17b51d5ad0c25303f64"
+    },
+    "prototype/baseline-ArithmeticCyclicWord.time": {
+      "bytes": 50,
+      "sha256": "5b417cbdbf2e2700d73c2ef7c8a9b365d047c962abbb33ac9b67d931656d6243"
+    },
+    "prototype/baseline-ArithmeticMaskConstants.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticMaskConstants.time": {
+      "bytes": 50,
+      "sha256": "ae675180984f3236403c358712fa7b8328954312047a929c4ab0e202e748a2ce"
+    },
+    "prototype/baseline-ArithmeticWindowBits.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticWindowBits.time": {
+      "bytes": 50,
+      "sha256": "c1a2d179301a09fd52623e5de43997d1cb86d62abec86466a24f7a802fa693ab"
+    },
+    "prototype/baseline-ArithmeticWindowDigits-instances.log": {
+      "bytes": 721841,
+      "sha256": "82fe4fd430afb5694fe14b4c7764fc50480370fcea6c86cde7f4bfe947b1ed0e"
+    },
+    "prototype/baseline-ArithmeticWindowDigits-interfaces.log": {
+      "bytes": 19279,
+      "sha256": "eeeb8d7cee16ca057951f144bc019d0087631580c0e46cfbdf7de3e751be5e86"
+    },
+    "prototype/baseline-ArithmeticWindowDigits-names.log": {
+      "bytes": 3584,
+      "sha256": "74ee56efb02b40b855ac0d6375d6f5fd245e1e5eed79c20b2d9cce0c13b002bd"
+    },
+    "prototype/baseline-ArithmeticWindowDigits-simp.log": {
+      "bytes": 1605567,
+      "sha256": "3e5c07d9d4287fe102ce67130f51ed8241e7a9da63940ed19cee1463ab6a7809"
+    },
+    "prototype/baseline-ArithmeticWindowDigits.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticWindowDigits.time": {
+      "bytes": 52,
+      "sha256": "899ced6d6de58ae8f91db30211e48b3469d8262e4cfd3335a5f424388d1d8b4a"
+    },
+    "prototype/baseline-records.json": {
+      "bytes": 16279,
+      "sha256": "a88c25bd088d40dca90018751daed523f0ea33f437e455889fc5bbb19e65c30b"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticCyclicWord.lean": {
+      "bytes": 8513,
+      "sha256": "890bb35639daad00a18c22c38679fb9bceb3e3bd84c2090e9a785f19e32e1926"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticMaskConstants.lean": {
+      "bytes": 10307,
+      "sha256": "dcf27b778181091c3fab210b860ba280e121f6bb267975a07e6231b928072825"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticWindowBits.lean": {
+      "bytes": 4797,
+      "sha256": "2c2908c21d9cda638823e679038a52d60b6314a82f97020fc34884e70f9f88af"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticWindowDigits.lean": {
+      "bytes": 15844,
+      "sha256": "98b88dc6ea88bdf55eb64ea78ca5e168a26e7496ea741890c4907b5eb9f3a29f"
+    },
+    "prototype/build.py": {
+      "bytes": 2373,
+      "sha256": "e929ce64006e0ff940f7fcc20d5152b5126b422ff14580d3976a15156db9e463"
+    },
+    "prototype/final-ArithmeticCyclicWord-instances.log": {
+      "bytes": 721920,
+      "sha256": "217e88c8d7a9947454446cb2821936d53cf1b11b0a8b680b36769afa0f2d8a02"
+    },
+    "prototype/final-ArithmeticCyclicWord-interfaces.log": {
+      "bytes": 8636,
+      "sha256": "8884d04eb770e8553caa31f35b1daaac751b2370248bcb14c52d6a7fd01f19ae"
+    },
+    "prototype/final-ArithmeticCyclicWord-names.log": {
+      "bytes": 1562,
+      "sha256": "1b77f89f94a631d7f68d0c22594b5b784158038718a121d54cc53b7eb86d85e0"
+    },
+    "prototype/final-ArithmeticCyclicWord-simp.log": {
+      "bytes": 1610041,
+      "sha256": "938594abec55b6dae954948a40d3a8c5b379ce1e570d34b79273ac27aa9f7cb6"
+    },
+    "prototype/final-ArithmeticCyclicWord.log": {
+      "bytes": 303,
+      "sha256": "a6f4dace3f61e98aecb2f41d6cd6998279636b322f0ba043be4fb6d7ed056208"
+    },
+    "prototype/final-ArithmeticCyclicWord.time": {
+      "bytes": 50,
+      "sha256": "13c68ba48471e6d1942108e4c4cf0c6e968a749c950db93024970f266cadad3a"
+    },
+    "prototype/final-ArithmeticMaskConstants.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticMaskConstants.time": {
+      "bytes": 50,
+      "sha256": "0502e2adb5719d4922d7eb218547e9e700c181003d7d174bb2f98b74facece20"
+    },
+    "prototype/final-ArithmeticWindowBits.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticWindowBits.time": {
+      "bytes": 50,
+      "sha256": "f5473ab84be4a17adf265700938f0d7b429daa22309884a52f9231a642d2b9b6"
+    },
+    "prototype/final-ArithmeticWindowDigits-instances.log": {
+      "bytes": 721841,
+      "sha256": "82fe4fd430afb5694fe14b4c7764fc50480370fcea6c86cde7f4bfe947b1ed0e"
+    },
+    "prototype/final-ArithmeticWindowDigits-interfaces.log": {
+      "bytes": 19279,
+      "sha256": "eeeb8d7cee16ca057951f144bc019d0087631580c0e46cfbdf7de3e751be5e86"
+    },
+    "prototype/final-ArithmeticWindowDigits-names.log": {
+      "bytes": 3584,
+      "sha256": "74ee56efb02b40b855ac0d6375d6f5fd245e1e5eed79c20b2d9cce0c13b002bd"
+    },
+    "prototype/final-ArithmeticWindowDigits-simp.log": {
+      "bytes": 1605567,
+      "sha256": "3e5c07d9d4287fe102ce67130f51ed8241e7a9da63940ed19cee1463ab6a7809"
+    },
+    "prototype/final-ArithmeticWindowDigits.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticWindowDigits.time": {
+      "bytes": 52,
+      "sha256": "8f55f8b0cae5dee20da6ffc3a1f2fc527c428d250e4dd4f7c5eca1d8efe3c8e0"
+    },
+    "prototype/final-records.json": {
+      "bytes": 16138,
+      "sha256": "da455b6b8edf939747682fe607a0af51155c52c8c0b479c4e2bb03b48aec3bc5"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticCyclicWord.lean": {
+      "bytes": 8513,
+      "sha256": "890bb35639daad00a18c22c38679fb9bceb3e3bd84c2090e9a785f19e32e1926"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticMaskConstants.lean": {
+      "bytes": 10307,
+      "sha256": "dcf27b778181091c3fab210b860ba280e121f6bb267975a07e6231b928072825"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticWindowBits.lean": {
+      "bytes": 4797,
+      "sha256": "2c2908c21d9cda638823e679038a52d60b6314a82f97020fc34884e70f9f88af"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticWindowDigits.lean": {
+      "bytes": 15788,
+      "sha256": "eb65f9b682a406550d87ad83758d4b98e996c74db7b21b82f2b54b1a6bf109ac"
+    },
+    "prototype/probe-records.json": {
+      "bytes": 34807,
+      "sha256": "c24a942e1aed75dbcdae3b4b7e3bf92e5a3bc76faa3a80793569e712dd494fa0"
+    },
+    "prototype/probe.py": {
+      "bytes": 1627,
+      "sha256": "bf69c2effa2202a8444b70f06207b325e9f046fbdc7f7974db99e543c1268810"
+    },
+    "providers/binary-half-final-records.json": {
+      "bytes": 8321,
+      "sha256": "b41be9182d4adfc86047bb9b323f0b3d2560cd72552ae4e7ffa02cfca0154e9f"
+    },
+    "providers/binary-half-supplement-records.json": {
+      "bytes": 11251,
+      "sha256": "bf3d64a68448f7a2abe9e293027d7dc945a65cbd95feb825b715f32665a83354"
+    },
+    "providers/transport-assembly-common-records.json": {
+      "bytes": 102782,
+      "sha256": "aa6892acb9942dcf88bc4b2fa0ac732483473467f574dfa56a66db43c682bc07"
+    },
+    "sources/ArithmeticBinaryCarry.lean": {
+      "bytes": 8474,
+      "sha256": "a7ec88c7107cffb0cc485ec03043517fde1a17ff1b0318f1efb44ab376a8a56b"
+    },
+    "sources/ArithmeticMaskData.lean": {
+      "bytes": 6335,
+      "sha256": "7c7e838148b1a702f84ccbd9996a73cd5f92cc045b1db60a312498f38bc653d6"
+    },
+    "sources/ArithmeticMaskKernel.lean": {
+      "bytes": 16650,
+      "sha256": "c9e809399a231efcaf8393aaebe85cd0cea55de340c761d0b540ba529948c85a"
+    },
+    "sources/ArithmeticRepunit.lean": {
+      "bytes": 3766,
+      "sha256": "e649dce9190092e0c6733924a76196fcfb7110d5b411506067ad8efac3b01fb2"
+    },
+    "sources/ArithmeticStandardCasts.lean": {
+      "bytes": 1452,
+      "sha256": "8f7014e3f71cae1b7afb3d0ca97eaba73965b544bbc95fd8f7887e71ae46417b"
+    }
+  }
+}
