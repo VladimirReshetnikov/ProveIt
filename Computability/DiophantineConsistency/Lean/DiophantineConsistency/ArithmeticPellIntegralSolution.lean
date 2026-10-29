@@ -40,16 +40,6 @@ theorem doubled_y_growth (b g : V) (hg : 0<g) :
     _=ycoord (g+g) b := (addition g g b).2.symm
     _=ycoord (2*g) b := by congr 1; ring
 
-private theorem le_of_positive_multiple {c v : V} (hv : 0<v) (h : c∣v) : c≤v := by
-  obtain ⟨k,hk⟩ := h
-  have hkp : 0<k := by
-    by_contra hn
-    have hz : k=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le k)
-    simp [hz] at hk
-    simp [hk] at hv
-  rw [hk]
-  exact Arithmetic.le_mul_of_pos_right hkp
-
 /-- A proper gcd index contradicts the supplied large-c bound. Every
 positivity needed for the doubling and cancellation is derived explicitly. -/
 theorem large_index_multiple (b n M S T A D c : V)
@@ -70,7 +60,7 @@ theorem large_index_multiple (b n M S T A D c : V)
   have hygp : 0<ycoord g b := lt_of_lt_of_le hgp (time_le_y g b)
   have hcM : c∣T*ycoord M b := ⟨T*S,by rw [hYM]; ring⟩
   have hcg : c∣T*ycoord g b := scaled_common_divisor b n M T c hcN hcM
-  have hcle : c≤T*ycoord g b := le_of_positive_multiple (mul_pos hT hygp) hcg
+  have hcle : c≤T*ycoord g b := le_of_dvd (mul_pos hT hygp) hcg
   by_contra hnd
   have hgne : g≠M := by
     intro he
