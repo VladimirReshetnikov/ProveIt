@@ -1389,5 +1389,15 @@ simp rules. Paired timing samples show no substantial local regression, but
 are not a controlled benchmark. Superseded and failed tactics are retained,
 and transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-rowrel-sharing-evidence/BUNDLE.json).
 
+The mask membership cast simplification `06cf327bb2` removes eight net Lean
+lines, bringing the reviewed series to 9681. Its original module was in the
+Claude-coauthored commit `5fcd5632b3`. Cast normalization now proves the
+unchanged predicate equivalence directly. Paired mask, rank, window and
+refreshed construction endpoint builds pass; all 37 target names, 32 public
+and five private type/axiom reports and 35,447 global simp entries match.
+The separate construction supplement completes the checks initially marked
+pending. Historical source-sample exceptions and failed probes are recorded;
+transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mask-cast-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
