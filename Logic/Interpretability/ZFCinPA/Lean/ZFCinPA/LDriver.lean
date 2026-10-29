@@ -1,6 +1,7 @@
 import ZFCinPA.SetRelativization
 import ZFCinPA.LDriverSteps
 import ZFCinPA.LTransVal
+import ZFCinPA.SubstIdentity
 
 set_option autoImplicit false
 noncomputable section
@@ -144,13 +145,10 @@ theorem typed_of_Θ {n m p : V} (hp : IsSemiformula ℒₛₑₜ m p) (h : Θ n 
 alone, whatever the target level. -/
 theorem subst_bvar0_val (P : SF V 1) {m : ℕ} (w : SemitermVec V ℒₛₑₜ 1 m)
     (hw : (w 0).val = ^#0) : (P.subst w).val = P.val := by
-  have h1 := congrArg Bootstrapping.Semiformula.val (Bootstrapping.Semiformula.subst_eq_self₁ P)
-  have hv : Bootstrapping.SemitermVec.val w =
-      Bootstrapping.SemitermVec.val (![Bootstrapping.Semiterm.bvar 0] : SemitermVec V ℒₛₑₜ 1 1) := by
-    simp [Bootstrapping.SemitermVec.val, Matrix.vecHead, Matrix.vecTail, hw]
-  simp only [Bootstrapping.Semiformula.val_substs] at h1 ⊢
-  rw [hv]
-  exact h1
+  apply SubstIdentity.Semiformula.subst_bvarVec_val P w
+  intro i
+  rw [Fin.fin_one_eq_zero i]
+  exact hw
 
 theorem quote_neg_val {n : ℕ} (φ : SetTheorySemiproposition n) :
     (⌜∼φ⌝ : V) = neg ℒₛₑₜ (⌜φ⌝ : V) := by

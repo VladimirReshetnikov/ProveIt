@@ -1,5 +1,6 @@
 import ZFCinPA.NativeSchemaSem
 import ZFCinPA.NativePeel
+import ZFCinPA.SubstIdentity
 import ZFCinPA.NativeFixed
 
 set_option autoImplicit false
@@ -59,28 +60,19 @@ variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 lemma subst_bvar0 (K : Bootstrapping.Semiformula V ℒₛₑₜ 1)
     (w : Bootstrapping.SemitermVec V ℒₛₑₜ 1 1) (hw : w 0 = .bvar 0) :
     (K.subst w).val = K.val := by
-  have e : w = ![.bvar 0] := funext fun i ↦ by rw [Fin.fin_one_eq_zero i, hw]; rfl
-  subst e
-  rw [Bootstrapping.Semiformula.val_substs]
-  apply Bootstrapping.subst_eq_self K.isSemiformula (by simp)
-  intro i hi
-  have : i = 0 := by simpa using hi
-  subst this
-  simp
+  apply SubstIdentity.Semiformula.subst_bvarVec_val K w
+  intro i
+  rw [Fin.fin_one_eq_zero i, hw]
+  rfl
 
 lemma subst_bvar01 (K : Bootstrapping.Semiformula V ℒₛₑₜ 2)
     (w : Bootstrapping.SemitermVec V ℒₛₑₜ 2 2) (hw0 : w 0 = .bvar 0) (hw1 : w 1 = .bvar 1) :
     (K.subst w).val = K.val := by
-  have e : w = ![.bvar 0, .bvar 1] := funext fun i ↦ by
-    match i with
-    | 0 => rw [hw0]; rfl
-    | 1 => rw [hw1]; rfl
-  subst e
-  rw [Bootstrapping.Semiformula.val_substs]
-  apply Bootstrapping.subst_eq_self K.isSemiformula (by simp)
-  intro i hi
-  have hi' : i < (2 : V) := by simpa using hi
-  rcases le_one_iff_eq_zero_or_one.mp (lt_two_iff_le_one.mp hi') with rfl | rfl <;> simp
+  apply SubstIdentity.Semiformula.subst_bvarVec_val K w
+  intro i
+  match i with
+  | 0 => rw [hw0]; rfl
+  | 1 => rw [hw1]; rfl
 
 lemma translate_sepS (K : Bootstrapping.Semiformula V ℒₛₑₜ 1) :
     (translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb sepS : Proposition SL)).val =
