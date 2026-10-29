@@ -1677,5 +1677,14 @@ reports and sampled registrations match. The client object bytes differ for an
 unknown reason; transitive dependencies remain cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261029-tiling-band-dispatch-evidence/BUNDLE.json).
 
+The low-digit replacement sharing `3e1cc2606b` removes one net Lean line,
+bringing the reviewed series to 10003. The affected proofs originated in
+Claude-coauthored commit `5fcd5632b3`. A private lemma shares the bounded
+replacement invariant across the subtraction and addition cases. Paired
+WindowDigits and WindowBits builds pass with identical client objects; all 51
+existing declaration reports, 28,973 simp entries and 13,172 instances match.
+CyclicWord and MaskConstants were not rebuilt and the transitive closure remains
+cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-window-digit-replacement-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
