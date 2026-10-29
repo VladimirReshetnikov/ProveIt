@@ -96,7 +96,7 @@ def count (cw : ℕ → ℕ) : ℕ := prefixSum (fun f => cw (4022 + f)) 942
 /-- The incoming carry of offset `h`. -/
 def incoming (kw : ℕ → ℕ) (kin h : ℕ) : ℕ := if h = 0 then kin else kw (h - 1)
 
-private def selectorUnit16 : Entry → ℕ
+private def selectorUnit : Entry → ℕ
   | .inl _ => 2
   | .inr _ => 0
 
@@ -105,11 +105,7 @@ theorem shifted_suffix_sum (a : ℕ → ℕ) {j : ℕ} (hj : j ≤ 942) :
       prefixSum a j :=
   PaddingStaircase.shifted_suffix_sum_general a hj
 
-private def selectorUnit2048 : Entry → ℕ
-  | .inl _ => 2
-  | .inr _ => 0
-
-private theorem weight_mod_2048 (e : Entry) : 2 * weight e ≡ selectorUnit2048 e [MOD 2048] := by
+private theorem weight_mod_2048 (e : Entry) : 2 * weight e ≡ selectorUnit e [MOD 2048] := by
   rcases e with i | j | j | j | j
   · change (2 * selectorWeight (tile i)) % 2048 = 2 % 2048
     simp only [selectorWeight]
@@ -118,8 +114,7 @@ private theorem weight_mod_2048 (e : Entry) : 2 * weight e ≡ selectorUnit2048 
     change (2 * 2 ^ _) % 2048 = 0 % 2048
     fin_cases j <;> decide
 
-private theorem weight_mod_sixteen (e : Entry) : 2 * weight e ≡ selectorUnit16 e [MOD 16] := by
-  change 2 * weight e ≡ selectorUnit2048 e [MOD 16]
+private theorem weight_mod_sixteen (e : Entry) : 2 * weight e ≡ selectorUnit e [MOD 16] := by
   exact (weight_mod_2048 e).of_dvd (by norm_num)
 
 section local_cell
@@ -255,9 +250,9 @@ theorem refl_padding {j : ℕ} (hj : j ≤ 483) :
     refl cw (63 + j) % 16 = (2 * prefixSum (fun f => cw (4022 + f)) j) % 16 := by
   have hs := Nat.ModEq.sum (s := Finset.univ) (fun e _ =>
     (weight_mod_sixteen e).mul_right (cw (4022 + (63 + j) - (1005 - position e))))
-  have he : (∑ e : Entry, selectorUnit16 e * cw (4022 + (63 + j) - (1005 - position e))) =
+  have he : (∑ e : Entry, selectorUnit e * cw (4022 + (63 + j) - (1005 - position e))) =
       2 * (∑ i : Fin 942, cw (4022 + (63 + j) - (1005 - physicalPosition i))) := by
-    simp only [Fintype.sum_sum_type, selectorUnit16, zero_mul, Finset.sum_const_zero,
+    simp only [Fintype.sum_sum_type, selectorUnit, zero_mul, Finset.sum_const_zero,
       add_zero, position, Finset.mul_sum]
   have hsrc : (∑ i : Fin 942, cw (4022 + (63 + j) - (1005 - physicalPosition i))) =
       prefixSum (fun f => cw (4022 + f)) j := by
@@ -319,9 +314,9 @@ theorem refl_clause_mod : refl cw 1005 % 2048 = (2 * count cw) % 2048 := by
   rw [refl_clause_index H]
   have hs := Nat.ModEq.sum (s := Finset.univ) (fun e _ =>
     (weight_mod_2048 e).mul_right (cw (4022 + position e)))
-  have he : (∑ e : Entry, selectorUnit2048 e * cw (4022 + position e)) =
+  have he : (∑ e : Entry, selectorUnit e * cw (4022 + position e)) =
       2 * (∑ i : Fin 942, cw (4022 + physicalPosition i)) := by
-    simp only [Fintype.sum_sum_type, selectorUnit2048, zero_mul, Finset.sum_const_zero,
+    simp only [Fintype.sum_sum_type, selectorUnit, zero_mul, Finset.sum_const_zero,
       add_zero, position, Finset.mul_sum]
   rw [he, ← count_eq_phys H] at hs
   exact hs
