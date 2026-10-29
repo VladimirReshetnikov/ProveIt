@@ -46,43 +46,34 @@ noncomputable def termOpenAt (d source : V) : V :=
 noncomputable def openAt (d source : V) : V :=
   subst ℒₛₑₜ (openingVec d) (shift ℒₛₑₜ source)
 
+private lemma opening_matches (d F B B' x : V) (hB : Ext d B B' x) :
+    ValidatorEnvironmentSubstitution254.Matches (x∷F) B B' (d+1) (openingVec d) := by
+  intro i hi
+  by_cases hid : i<d
+  · rw [show (openingVec d).[i]=(^#i : V) from
+      (qVecIter_free_spec (L := ℒₛₑₜ) d 0).1 i hid]
+    rw [TermLabels.term_bvar,hB.2.2.1 i hid]
+  · have he : i=d := le_antisymm (lt_succ_iff_le.mp hi) (le_of_not_gt hid)
+    subst i
+    rw [show (openingVec d).[d]=(^&0 : V) from
+      (qVecIter_free_spec (L := ℒₛₑₜ) d 0).2]
+    rw [TermLabels.term_fvar,freeLabel_cons_zero,hB.2.2.2]
+
 lemma term_labels_open {d source : V} (ht : IsSemiterm ℒₛₑₜ (d+1) source)
     (F B B' x : V) (hB : Ext d B B' x) :
     TermLabels.term (x∷F) B (termOpenAt d source)=TermLabels.term F B' source := by
-  rcases ht.case with (⟨i,hi,rfl⟩ | ⟨j,rfl⟩ | ⟨k,f,args,hf,_,rfl⟩)
-  · unfold termOpenAt
-    rw [termShift_bvar,termSubst_bvar]
-    by_cases hid : i<d
-    · rw [show (openingVec d).[i]=(^#i : V) from
-        (qVecIter_free_spec (L := ℒₛₑₜ) d 0).1 i hid]
-      rw [TermLabels.term_bvar,TermLabels.term_bvar,hB.2.2.1 i hid]
-    · have he : i=d := le_antisymm (lt_succ_iff_le.mp hi) (le_of_not_gt hid)
-      subst i
-      rw [show (openingVec d).[d]=(^&0 : V) from
-        (qVecIter_free_spec (L := ℒₛₑₜ) d 0).2]
-      rw [TermLabels.term_fvar,freeLabel_cons_zero,TermLabels.term_bvar,hB.2.2.2]
-  · simp [termOpenAt]
-  · have hfalse : False := by
-      have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
-      rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
-        .mkSigma “k f. ⊥” from rfl] at hf'
-      simp at hf'
-    exact hfalse.elim
+  have h := ValidatorEnvironmentSubstitution254.term_labels_subst ht.termShift
+    (opening_matches d F B B' x hB)
+  simpa only [termOpenAt,TermLabels.term_shift ht.isUTerm,tail_cons] using h
 
 lemma vec_labels_open {d arity terms : V} (ht : IsSemitermVec ℒₛₑₜ arity (d+1) terms)
     (F B B' x : V) (hB : Ext d B B' x) :
     TermLabels.vec (x∷F) B arity
       (termSubstVec ℒₛₑₜ arity (openingVec d) (termShiftVec ℒₛₑₜ arity terms))=
       TermLabels.vec F B' arity terms := by
-  have hn := (openingVec_typed d).termSubstVec ht.termShiftVec
-  apply nth_ext' arity
-  · exact TermLabels.vec_length (x∷F) B hn.isUTerm
-  · exact TermLabels.vec_length F B' ht.isUTerm
-  · intro i hi
-    rw [TermLabels.vec_nth (x∷F) B hn.isUTerm hi,
-      nth_termSubstVec ht.termShiftVec.isUTerm hi,nth_termShiftVec ht.isUTerm hi,
-      TermLabels.vec_nth F B' ht.isUTerm hi]
-    exact term_labels_open (ht.nth hi) F B B' x hB
+  have h := ValidatorEnvironmentSubstitution254.vec_labels_subst ht.termShiftVec
+    (openingVec_typed d) (opening_matches d F B B' x hB)
+  simpa only [TermLabels.vec_shift (x∷F) B' ht.isUTerm,tail_cons] using h
 
 lemma openAt_isSemiformula {d p : V} (hp : IsSemiformula ℒₛₑₜ (d+1) p) :
     IsSemiformula ℒₛₑₜ d (openAt d p) := hp.shift.subst (openingVec_typed d)
@@ -124,13 +115,8 @@ private instance len_delta : 𝚫₁-Function₁[V] (len : V→V) :=
 lemma encode_openAt {d p : V} (hp : IsSemiformula ℒₛₑₜ (d+1) p)
     (F B B' x fresh : V) (hB : Ext d B B' x) :
     encode (x∷F) B fresh (openAt d p)=encode F B' fresh p := by
-  have hm : ValidatorEnvironmentSubstitution254.Matches (x∷F) B B' (d+1) (openingVec d) := by
-    intro i hi
-    have hv : IsSemiterm ℒₛₑₜ (d+1) (^#i) := by simpa using hi
-    have h := term_labels_open hv F B B' x hB
-    simpa only [termOpenAt,termShift_bvar,termSubst_bvar,TermLabels.term_bvar] using h
   have he := ValidatorEnvironmentSubstitution254.encode_subst hp.shift (openingVec_typed d)
-    (x∷F) B B' fresh hm
+    (x∷F) B B' fresh (opening_matches d F B B' x hB)
   simpa only [openAt,encode_shift hp.isUFormula,tail_cons] using he
 
 /-- The matrix identity used by the actual Foundation ALL rule. Source and
