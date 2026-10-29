@@ -82,9 +82,7 @@ theorem prefix_stable (a n : V) (hn : ‖a‖≤n) (m : V) :
     rw [←add_assoc,prefix_succ,ih,fbit_eq_zero_of_le (le_trans hn (by simp)),add_zero]
 
 theorem prefix_eq_population (n a : V) (hn : ‖a‖≤n) : prefixCount n a=population a := by
-  have h:=prefix_stable a ‖a‖ le_rfl (n-‖a‖)
-  rw [add_tsub_self_of_le hn] at h
-  exact h
+  simpa only [add_tsub_self_of_le hn, population] using prefix_stable a ‖a‖ le_rfl (n-‖a‖)
 
 theorem prefix_binary (n a : V) :
     prefixCount (n+1) (2*a)=prefixCount n a ∧
@@ -120,9 +118,7 @@ theorem population_le (a : V) : population a≤‖a‖ ∧ ‖a‖≤a :=
 
 theorem population_binary (a r : V) (hr : r≤1) :
     population (2*a+r)=population a+r := by
-  rcases le_one_iff_eq_zero_or_one.mp hr with h|h
-  · simp [h]
-  · simp [h]
+  rcases le_one_iff_eq_zero_or_one.mp hr with rfl | rfl <;> simp
 
 theorem population_div_mod (a : V) :
     population a=population (a/2)+a%2 := by
