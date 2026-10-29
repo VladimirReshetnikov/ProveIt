@@ -295,4 +295,48 @@ theorem step_apply (c st' d w : V) (hd : d ≤ 1) (hw : w ≤ 1)
     rw [e2', mod_mul_add' _ _ (by norm_num : (0:V) < 2), mod_eq_self_of_lt hw2]
   rw [hz, e4, e2, em, ew]
 
+open ArithmeticMachineRun215 (run run_succ run_zero)
+open ArithmeticMachinePerm252 ArithmeticMachineGraphPerm252
+
+/-- The blank configuration reads the initial K215 action. -/
+theorem initial_action :
+    ArithmeticMachineGraph215.actionLookup (first (1 : V)) (second (second (1 : V)) % 2) =
+      1 + 4 * 2 + 2 * 1 + 1 := by
+  have hzero : cantor (0 : V) 0 = 0 := by simp [cantor, triangle]
+  have hone : cantor (1 : V) 0 = 1 := by simp [cantor, triangle, one_add_one_eq_two]
+  have hcode : actCode 0 = 12 := by decide +kernel
+  have h1 : (1 : V) = cantor 1 (cantor 0 0) := by rw [hzero, hone]
+  have f1 : first (1 : V) = 1 := by
+    have := first_cantor (1 : V) (cantor 0 0); rwa [← h1] at this
+  have s1 : second (1 : V) = 0 := by
+    have := second_cantor (1 : V) (cantor 0 0); rwa [← h1, hzero] at this
+  have s0 : second (0 : V) = 0 := by
+    have := second_cantor (0 : V) 0; rwa [hzero] at this
+  have hl : lookupNat ArithmeticMachineGraph215.literalRows 0 1 0 = 12 := by
+    have := lookup_eq_actCode 0 0 (by norm_num) (by norm_num)
+    simpa [hcode] using this
+  rw [f1, s1, s0, zero_mod]
+  have := lookupValue_cast (V := V) ArithmeticMachineGraph215.literalRows 0 1 0
+  rw [hl] at this
+  simp only [Nat.cast_one, Nat.cast_zero, Nat.cast_ofNat] at this
+  simp only [ArithmeticMachineGraph215.actionLookup]
+  rw [this]; norm_num
+
+/-- The first blank machine step, shared by the row and trace proofs. -/
+theorem initial_run_one : run (1 : V) = cantor 2 (cantor 1 0) := by
+  have hzero : cantor (0 : V) 0 = 0 := by simp [cantor, triangle]
+  have hone : cantor (1 : V) 0 = 1 := by simp [cantor, triangle, one_add_one_eq_two]
+  have h1 : (1 : V) = cantor 1 (cantor 0 0) := by rw [hzero, hone]
+  have s1 : second (1 : V) = 0 := by
+    have := second_cantor (1 : V) (cantor 0 0); rwa [← h1, hzero] at this
+  have f0 : first (0 : V) = 0 := by
+    have := first_cantor (0 : V) 0; rwa [hzero] at this
+  have s0 : second (0 : V) = 0 := by
+    have := second_cantor (0 : V) 0; rwa [hzero] at this
+  have hs := step_apply (1 : V) 2 1 1 le_rfl le_rfl (initial_action (V := V))
+  have hr := run_succ (0 : V)
+  rw [zero_add, run_zero] at hr
+  rw [hr, hs, if_neg _root_.one_ne_zero, s1, f0, s0]
+  simp
+
 end DiophantineConsistency.ArithmeticWangPlane

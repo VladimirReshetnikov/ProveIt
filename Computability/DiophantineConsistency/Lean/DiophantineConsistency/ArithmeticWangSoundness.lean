@@ -41,32 +41,8 @@ theorem cantor_one_zero : cantor (1 : V) 0 = 1 := by
 
 /-- The represented configuration after the first blank step: state code2,
 left half1 (the written bit), right half0. -/
-theorem run_one : run (1 : V) = cantor 2 (cantor 1 0) := by
-  have h1 : (1 : V) = cantor 1 (cantor 0 0) := by rw [cantor_zero_zero, cantor_one_zero]
-  have f1 : first (1 : V) = 1 := by
-    have := first_cantor (1 : V) (cantor 0 0); rwa [← h1] at this
-  have s1 : second (1 : V) = 0 := by
-    have := second_cantor (1 : V) (cantor 0 0); rwa [← h1, cantor_zero_zero] at this
-  have f0 : first (0 : V) = 0 := by
-    have := first_cantor (0 : V) 0; rwa [cantor_zero_zero] at this
-  have s0 : second (0 : V) = 0 := by
-    have := second_cantor (0 : V) 0; rwa [cantor_zero_zero] at this
-  have hl : lookupNat ArithmeticMachineGraph215.literalRows 0 1 0 = 12 := by
-    have := lookup_eq_actCode 0 0 (by norm_num) (by norm_num)
-    simpa [actCode_zero] using this
-  have hA : ArithmeticMachineGraph215.actionLookup (first (1 : V)) (second (second (1 : V)) % 2) =
-      1 + 4 * 2 + 2 * 1 + 1 := by
-    rw [f1, s1, s0, zero_mod]
-    have := lookupValue_cast (V := V) ArithmeticMachineGraph215.literalRows 0 1 0
-    rw [hl] at this
-    simp only [Nat.cast_one, Nat.cast_zero, Nat.cast_ofNat] at this
-    simp only [ArithmeticMachineGraph215.actionLookup]
-    rw [this]; norm_num
-  have hs := step_apply (1 : V) 2 1 1 le_rfl le_rfl hA
-  have hr := run_succ (0 : V)
-  rw [zero_add, run_zero] at hr
-  rw [hr, hs, if_neg _root_.one_ne_zero, s1, f0, s0]
-  simp
+theorem run_one : run (1 : V) = cantor 2 (cantor 1 0) :=
+  ArithmeticWangPlane.initial_run_one
 
 section main
 variable {a : V → V} [𝚺₁-Function₁ a] {N s : V} (h : MarkedWord a N s)
