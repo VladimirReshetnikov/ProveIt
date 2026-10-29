@@ -48,9 +48,7 @@ instance pl_definable (a : V → V) [𝚺₁-Function₁ a] (N s : V) :
   unfold pl adr; definability
 
 theorem mod_add_mod {N : V} (x y : V) (hN : 0 < N) : (x % N + y) % N = (x + y) % N := by
-  conv_rhs => rw [← div_add_mod x N]
-  have he : N * (x / N) + x % N + y = (x % N + y) + N * (x / N) := by ring
-  rw [he, mod_add_mul' _ _ hN]
+  rw [mod_add hN, mod_eq_self_of_lt (mod_lt x hN), ← mod_add hN]
 
 section plane
 variable {a : V → V} {N s : V} (h : MarkedWord a N s)
@@ -106,9 +104,7 @@ theorem pl_zero : pl a N s 0 0 = 0 := by
   simp [h.marker]
 
 theorem pl_origin_N : pl a N s N N = 0 := by
-  have := pl_period_t h N 0
-  rw [zero_add] at this
-  rw [this, pl_origin h]
+  simpa only [zero_add, pl_origin h] using pl_period_t h N 0
 
 end plane
 
