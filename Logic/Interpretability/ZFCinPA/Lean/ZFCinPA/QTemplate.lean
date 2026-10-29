@@ -1,4 +1,5 @@
 import ZFCinPA.LTemplate
+import ZFCinPA.GicTemplateSyntax
 import ZFCinPA.ModelCodedSchemaAxioms
 import ZFCinPA.ValidatorSeedQTheory222
 
@@ -60,8 +61,7 @@ lemma gicBodySource_eq (ψ : Semiproposition (setTemplateLanguage k arities) 2) 
     gicBodySource ψ =
       ∀⁰ ∃⁰ ((∀⁰ (srcYB3 🡒 ∃⁰ (ψ ⇜ ![(#0 : SyntacticSemiterm (setTemplateLanguage k arities) 4), #1]))) ⋏
         (∀⁰ (srcXA3 🡒 ((∃⁰ (ψ ⇜ ![(#1 : SyntacticSemiterm (setTemplateLanguage k arities) 4), #0])) 🡒
-          ∃⁰ (srcYB4 ⋏ (ψ ⇜ ![(#1 : SyntacticSemiterm (setTemplateLanguage k arities) 4), #0])))))) := by
-  simp [gicBodySource, srcYB3, srcXA3, srcYB4, FirstOrder.Semiformula.Operator.mem_def]
+          ∃⁰ (srcYB4 ⋏ (ψ ⇜ ![(#1 : SyntacticSemiterm (setTemplateLanguage k arities) 4), #0])))))) := GicTemplateSyntax.gicBodySource_eq ψ
 
 /-! ## Internal proofs of the translated GIC instances -/
 
@@ -77,13 +77,7 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 lemma translate_gicBodySource
     (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
     (p : Semiproposition (setTemplateLanguage k arities) 2) :
-    translateFormula Ks (gicBodySource p) = gicBody (translateFormula Ks p) := by
-  rw [gicBodySource_eq]
-  simp only [translateFormula_neg', translateFormula,
-    translateFormula_subst, gicBody, srcYB3, srcXA3, srcYB4, gicAtomYB3, gicAtomXA3, gicAtomYB4,
-    FirstOrder.Semiformula.typed_quote_rel, Semiterm.typed_quote_bvar,
-    translateTerm_bvar, Bootstrapping.Semiformula.imp_def, Matrix.comp_vecCons', Matrix.empty_eq]
-  all_goals rfl
+    translateFormula Ks (gicBodySource p) = gicBody (translateFormula Ks p) := GicTemplateSyntax.translate_gicBodySource Ks p
 
 /-- The support substitution is the raw identity on the core. -/
 lemma gic_core_subst_identity (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
