@@ -113,15 +113,10 @@ theorem rowRel_iff (y c H X : V) : RowRel y c H X ↔ y = rowIdx c H X := by
   · by_cases hX : X = H
     · simp [h0, hX]
     · by_cases hr : (X = H + 1 ∧ eastC (headIdx c) ≠ 0) ∨ (X + 1 = H ∧ westC (headIdx c) ≠ 0)
-      · rcases hr with ⟨h1, h2⟩ | ⟨h1, h2⟩
-        · simp [h0, h1, h2]
-        · simp [h0, hX, h1, h2]
+      · rcases hr with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> simp [h0, hX, h1, h2]
       · have hn := not_or.mp hr
-        have hn1 : X ≠ H + 1 ∨ eastC (headIdx c) = 0 := by
-          simpa only [not_and_or, not_not] using hn.1
-        have hn2 : X + 1 ≠ H ∨ westC (headIdx c) = 0 := by
-          simpa only [not_and_or, not_not] using hn.2
-        simp [h0, hX, hr, hn1, hn2]
+        simp only [not_and_or, not_not] at hn
+        simp [h0, hX, hr, hn.1, hn.2]
 
 instance rowIdx_definable : 𝚺₁-Function₃ (rowIdx : V → V → V → V) :=
   fun3_of_rel (by unfold RowRel; definability) rowRel_iff
