@@ -75,11 +75,10 @@ theorem period_quotients (blocks n start b : V) :
     obtain ⟨r,s,hx,hy⟩ := ih
     refine ⟨r+rx*xcoord (4*n*blocks+start) b+delta b*ry*ycoord (4*n*blocks+start) b,
       s+rx*ycoord (4*n*blocks+start) b+ry*xcoord (4*n*blocks+start) b,?_,?_⟩
-    · rw [show 4*n*(blocks+1)+start=4*n+(4*n*blocks+start) by ring,
-        (addition (4*n) (4*n*blocks+start) b).1,hx4,hy4,hx,hy]
-      ring
-    · rw [show 4*n*(blocks+1)+start=4*n+(4*n*blocks+start) by ring,
-        (addition (4*n) (4*n*blocks+start) b).2,hx4,hy4,hx,hy]
+    all_goals
+      simp only [show 4*n*(blocks+1)+start=4*n+(4*n*blocks+start) by ring,
+        (addition (4*n) (4*n*blocks+start) b).1,
+        (addition (4*n) (4*n*blocks+start) b).2, hx4, hy4, hx, hy]
       ring
 
 theorem period_mod (blocks n start b : V) :
