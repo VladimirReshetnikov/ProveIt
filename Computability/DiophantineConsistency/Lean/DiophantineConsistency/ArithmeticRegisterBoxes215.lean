@@ -334,38 +334,28 @@ lemma carry_reverse_file (vs : List V) (L : V) :
 lemma carry_spares (n L R : V) :
     runFrom (3*n) (frameSparse 0 L (repeat3 6 n R))=
       frameSparse 0 (repeat3 5 n L) R := by
-  have all : ∀ n : V, ∀ L R : V,
-      runFrom (3*n) (frameSparse 0 L (repeat3 6 n R))=frameSparse 0 (repeat3 5 n L) R := by
-    intro n
-    induction n using ISigma1.pi1_succ_induction
-    · definability
-    case zero => intro L R; simp
-    case succ n ih =>
-      intro L R
-      have hb : block (1:V) (repeat3 6 n R)=6+8*repeat3 6 n R := by
-        simp only [block,ones_succ,bitPrefix_one,digit_true]; ring
-      have hc : reverseCarryBlock (1:V) L=5+8*L := by
-        simp only [reverseCarryBlock,bitPrefix_one,digit_true]; ring
-      rw [show 3*(n+1)=(1+2)+3*n by ring,repeat3_succ,←hb,runFrom_add,carry_block,hc,ih,repeat3_push]
-  exact all n L R
+  induction n using ISigma1.pi1_succ_induction generalizing L R with
+  | hP => definability
+  | zero => simp
+  | succ n ih =>
+    have hb : block (1:V) (repeat3 6 n R)=6+8*repeat3 6 n R := by
+      simp only [block,ones_succ,bitPrefix_one,digit_true]; ring
+    have hc : reverseCarryBlock (1:V) L=5+8*L := by
+      simp only [reverseCarryBlock,bitPrefix_one,digit_true]; ring
+    rw [show 3*(n+1)=(1+2)+3*n by ring,repeat3_succ,←hb,runFrom_add,carry_block,hc,ih,repeat3_push]
 lemma return_spares (n L R : V) :
     runFrom (3*n) (leftFrame 40 (repeat3 3 n L) R)=
       leftFrame 40 L (repeat3 6 n R) := by
-  have all : ∀ n : V, ∀ L R : V,
-      runFrom (3*n) (leftFrame 40 (repeat3 3 n L) R)=leftFrame 40 L (repeat3 6 n R) := by
-    intro n
-    induction n using ISigma1.pi1_succ_induction
-    · definability
-    case zero => intro L R; simp
-    case succ n ih =>
-      intro L R
-      have hb : reverseBlock (1:V) (repeat3 3 n L)=3+8*repeat3 3 n L := by
-        simp only [reverseBlock,ones_succ,bitPrefix_one,digit_true]; ring
-      have hc : block (1:V) R=6+8*R := by
-        simp only [block,ones_succ,bitPrefix_one,digit_true]; ring
-      rw [show 3*(n+1)=(1+2)+3*n by ring,repeat3_succ,←hb,runFrom_add,
-        return_block (ones:=54) (by rfl) (by rfl) (by rfl),hc,ih,repeat3_push]
-  exact all n L R
+  induction n using ISigma1.pi1_succ_induction generalizing L R with
+  | hP => definability
+  | zero => simp
+  | succ n ih =>
+    have hb : reverseBlock (1:V) (repeat3 3 n L)=3+8*repeat3 3 n L := by
+      simp only [reverseBlock,ones_succ,bitPrefix_one,digit_true]; ring
+    have hc : block (1:V) R=6+8*R := by
+      simp only [block,ones_succ,bitPrefix_one,digit_true]; ring
+    rw [show 3*(n+1)=(1+2)+3*n by ring,repeat3_succ,←hb,runFrom_add,
+      return_block (ones:=54) (by rfl) (by rfl) (by rfl),hc,ih,repeat3_push]
 lemma carry_reverse_spares (n L : V) : 2*repeat3 5 n L+1=repeat3 3 n (2*L+1) := by
   induction n using ISigma1.sigma1_succ_induction
   · definability
