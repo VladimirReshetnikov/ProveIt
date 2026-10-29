@@ -126,7 +126,11 @@ client, internal converse and final HA/PRA proof-existence endpoints remain
 open. The [reverse transport identity](reviews/adaptive-construction-transport2011-root.md)
 is now proved from the positive 14-coordinate equation system, but the other
 reverse witnesses and adaptive zero construction remain open. The
-[strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
+[auxiliary phase client](reviews/adaptive-construction-aux-bind2011-root.md)
+constructs the positive adaptive auxiliary coordinate from the original
+equations when the rank phase and exact Pell-ordinate identity are supplied;
+those facts must still be exposed for the chosen halting construction.
+The [strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
 now follows from the maintained strong norm with the scaled multiplier.
 The [auxiliary witness positivity lemma](reviews/adaptive-construction-aux2011-root.md)
 proves `y-u>0` from the auxiliary norm when `y ≥ 2`; the
