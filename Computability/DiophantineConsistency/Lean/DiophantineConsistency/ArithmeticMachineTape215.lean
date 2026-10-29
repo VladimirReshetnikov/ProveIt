@@ -188,9 +188,8 @@ instance runFrom_defined : 𝚺₁-Function₂[V] runFrom via runFromDef := .mk 
   have h := (construction (V:=V)).result_defined.df e
   change blueprint.resultDef.val.Evalb e ↔
     e 0=construction.result (fun i : Fin 1 => e i.succ.succ) (e 1) at h
-  rw [he] at h
   change blueprint.resultDef.val.Evalb e ↔ e 0=construction.result ![e 2] (e 1)
-  exact h
+  simpa only [he] using h
 instance runFrom_defined_delta : 𝚫₁-Function₂[V] runFrom via runFromDeltaDef :=
   runFrom_defined.graph_delta
 instance runFrom_definable : 𝚺₁-Function₂[V] runFrom := runFrom_defined.to_definable
@@ -344,8 +343,7 @@ theorem boot_halts_le_of_blank (t : V) (ht : first (ArithmeticMachineRun215.run 
     rw [internal_boot, bootCode_state] at hz
     exact (by simp : (24 : V) ≠ 0) hz
   refine ⟨t - 95714, tsub_le_self, ?_⟩
-  rw [← continuation, add_tsub_cancel_of_le hle]
-  exact ht
+  simpa only [← continuation, add_tsub_cancel_of_le hle] using ht
 
 
 /-- Both witnesses may be nonstandard. A halt before the checked live boot
