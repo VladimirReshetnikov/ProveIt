@@ -131,6 +131,11 @@ now cover the actual generated step and negative sides, and [finite-prefix
 descriptors](reviews/parsons-strict-prefix-tree-root.md) extend this to any
 finite existential prefix over a bounded matrix. Arbitrary Foundation Σ₁
 syntax and the global induction remain open.
+The [tree logical invariant](reviews/parsons-tree-logical-root.md) is now
+preserved through ordinary logical and contraction premises, while the
+[strict-block invariant](reviews/parsons-strict-invariant-root.md) preserves
+finite-prefix induction blocks and their generated side descriptors. These
+do not establish the remaining base-terminal cases or global recursion.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 

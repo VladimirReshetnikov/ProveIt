@@ -1,0 +1,6 @@
+import DiophantineConsistency.ParsonsTreeLogical
+#print axioms DiophantineConsistency.ParsonsTreeLogical.good_or
+#print axioms DiophantineConsistency.ParsonsTreeLogical.good_and
+#print axioms DiophantineConsistency.ParsonsTreeLogical.good_all
+#print axioms DiophantineConsistency.ParsonsTreeLogical.good_exs
+#print axioms DiophantineConsistency.ParsonsTreeLogical.good_select

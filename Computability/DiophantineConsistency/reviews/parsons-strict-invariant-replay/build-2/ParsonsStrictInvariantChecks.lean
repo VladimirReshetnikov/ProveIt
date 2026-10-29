@@ -1,0 +1,7 @@
+import DiophantineConsistency.ParsonsStrictInvariant
+#print axioms DiophantineConsistency.ParsonsStrictInvariant.rewrite
+#print axioms DiophantineConsistency.ParsonsStrictInvariant.base_tree
+#print axioms DiophantineConsistency.ParsonsStrictInvariant.step_tree
+#print axioms DiophantineConsistency.ParsonsStrictInvariant.negative_tree
+#print axioms DiophantineConsistency.ParsonsStrictInvariant.shift_blocks
+#print axioms DiophantineConsistency.ParsonsStrictInvariant.select_blocks
