@@ -60,8 +60,9 @@ The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-ro
 now identifies the exact accepted polynomial and proves its single positive
 shift over arbitrary commutative semirings. The [internal factor-magnitude theorem](reviews/adaptive-factor-magnitude2011-root.md)
 now derives magnitude one for the four actual factors from the literal zero.
-Negative-unit exclusions, Pell recovery and zero-existence equivalence remain
-open.
+The [factor-unit theorem](reviews/adaptive-factor-units2011-root.md) now
+excludes the negative units by internal modulo-four reasoning and derives all
+four positive units. Pell recovery and zero-existence equivalence remain open.
 
 ## Concrete bridge to formalize
 
