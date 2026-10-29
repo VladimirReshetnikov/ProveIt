@@ -60,3 +60,9 @@ subtraction to an additive order witness still requires proof.
 The [reconstruction law](../reviews/pra-sub-reconstruct-root.md) now derives
 `y-x=0 ∨ x+(y-x)=y` in the candidate theory. The full Q order clause still
 requires composing this with the nonzero and successor witnesses.
+
+The [Q order and all-axiom theorem](../reviews/pra-q-order-root.md) now
+derives the exact translated Foundation Q order clause and the image of
+every actual Robinson Q axiom in the candidate PRA theory. A general
+proof-translation object, standard PRA comparison and the conservation
+theorem are still separate work.

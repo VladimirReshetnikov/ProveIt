@@ -150,3 +150,12 @@ the conservativity theorem.
 The task also continues to seek smaller rigorously certified equations;
 size improvements and the proof-existence results for each proposed form must
 be tracked separately.
+
+## All Q axiom images in the candidate theory
+
+The [Q-order client](reviews/pra-q-order-root.md) proves the additive
+witness characterization of represented strict order in arbitrary
+candidate-PRA equality models and obtains `PRA_proves_all_Q`: each actual
+Foundation Robinson Q axiom maps to a closed candidate-PRA derivation.
+This is not yet a proof translation for arbitrary Q derivations, an
+equivalence with standard PRA, or an IΣ₁-to-PRA conservation theorem.
