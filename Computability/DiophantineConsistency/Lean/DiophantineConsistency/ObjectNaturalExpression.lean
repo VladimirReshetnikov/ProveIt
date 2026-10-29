@@ -64,40 +64,32 @@ theorem evalRel_total (H : ZFAxioms mem) (v : σ → V)
   induction e with
   | constant n => exact ⟨natV H n, rfl⟩
   | var i => exact ⟨v i, rfl⟩
-  | add p q hp hq =>
+  | add p q hp hq | mul p q hp hq =>
       obtain ⟨a, ha⟩ := hp
       obtain ⟨b, hb⟩ := hq
-      obtain ⟨z, hz⟩ := addRel_total H
-        (evalRel_result_nat H v hv p ha) (evalRel_result_nat H v hv q hb)
-      exact ⟨z, a, b, ha, hb, hz⟩
-  | mul p q hp hq =>
-      obtain ⟨a, ha⟩ := hp
-      obtain ⟨b, hb⟩ := hq
-      obtain ⟨z, hz⟩ := mulRel_total H
-        (evalRel_result_nat H v hv p ha) (evalRel_result_nat H v hv q hb)
-      exact ⟨z, a, b, ha, hb, hz⟩
+      have haN := evalRel_result_nat H v hv p ha
+      have hbN := evalRel_result_nat H v hv q hb
+      first
+      | obtain ⟨z, hz⟩ := addRel_total H haN hbN
+        exact ⟨z, a, b, ha, hb, hz⟩
+      | obtain ⟨z, hz⟩ := mulRel_total H haN hbN
+        exact ⟨z, a, b, ha, hb, hz⟩
 
 theorem evalRel_unique (H : ZFAxioms mem) (v : σ → V) (e : NatExpr σ)
     {z z' : V} (h : EvalRel H v e z) (h' : EvalRel H v e z') : z = z' := by
   induction e generalizing z z' with
   | constant n => exact h.trans h'.symm
   | var i => exact h.trans h'.symm
-  | add p q hp hq =>
+  | add p q hp hq | mul p q hp hq =>
       obtain ⟨a, b, ha, hb, hz⟩ := h
       obtain ⟨a', b', ha', hb', hz'⟩ := h'
       have ea := hp ha ha'
       have eb := hq hb hb'
       subst a'
       subst b'
-      exact addRel_unique H hz hz'
-  | mul p q hp hq =>
-      obtain ⟨a, b, ha, hb, hz⟩ := h
-      obtain ⟨a', b', ha', hb', hz'⟩ := h'
-      have ea := hp ha ha'
-      have eb := hq hb hb'
-      subst a'
-      subst b'
-      exact mulRel_unique H hz hz'
+      first
+      | exact addRel_unique H hz hz'
+      | exact mulRel_unique H hz hz'
 
 /-- Internal expression evaluation agrees with external evaluation on numerals. -/
 theorem evalRel_numerals (H : ZFAxioms mem) (v : σ → Nat) (e : NatExpr σ) :
