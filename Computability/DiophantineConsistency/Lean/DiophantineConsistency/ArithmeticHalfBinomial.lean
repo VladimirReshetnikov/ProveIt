@@ -45,8 +45,7 @@ theorem seventy_two_lt_exp (r : V) (hr : 4≤r) : 72*r<Exp.exp (2*r+1) := by
           have : Exp.exp (2*(4+s)+1)+Exp.exp (2*(4+s)+1)+2*Exp.exp (2*(4+s)+1)=
             4*Exp.exp (2*(4+s)+1) := by ring
           rw [←this]; exact le_add_of_nonneg_right (by simp)
-  have h := all (r-4)
-  rwa [add_tsub_cancel_of_le hr] at h
+  simpa only [add_tsub_cancel_of_le hr] using all (r-4)
 
 private theorem dvd_of_add {d C b : V} (hd : 0<d) (hsum : d∣C+b) (hb : d∣b) : d∣C := by
   apply mod_eq_zero_iff_dvd.mp
@@ -67,10 +66,8 @@ theorem half_binomial (X Y r eta zeta : V) (hr : 4≤r) (hX : X=Exp.exp (2*r+1))
   have hr0 : 0<r := lt_of_lt_of_le (by simp) hr1
   have hXbig : Exp.exp (2*r)<X := by rw [hX]; exact exp_monotone.mpr (by simp)
   have hX1 : 1≤X := le_trans (one_le_exp _) hXbig.le
-  have h72 : 72*r<X+1 := by
-    have h := seventy_two_lt_exp r hr
-    rw [←hX] at h
-    exact lt_of_lt_of_le h (le_add_of_nonneg_right (by simp))
+  have h72 : 72*r<X+1 := lt_of_lt_of_le
+    (by simpa only [hX] using seventy_two_lt_exp r hr) (le_add_of_nonneg_right (by simp))
   obtain ⟨hlow,hup⟩ := sandwich_of_interval X Y r eta zeta hX1 hY hr1 h72 hck hk hzeta
   obtain ⟨v,w,hN,hv⟩ := central_split_lt X r hXbig
   obtain ⟨C',hC'⟩ := two_dvd_central r hr0
@@ -184,10 +181,8 @@ theorem construction_interval (X Y r v : V) (hr : 4≤r) (hX : X=Exp.exp (2*r+1)
   have hr1 : 1≤r := le_trans (by simp) hr
   have hXbig : Exp.exp (2*r)<X := by rw [hX]; exact exp_monotone.mpr (by simp)
   have hX1 : 1≤X := le_trans (one_le_exp _) hXbig.le
-  have h72 : 72*r<X+1 := by
-    have h := seventy_two_lt_exp r hr
-    rw [←hX] at h
-    exact lt_of_lt_of_le h (le_add_of_nonneg_right (by simp))
+  have h72 : 72*r<X+1 := lt_of_lt_of_le
+    (by simpa only [hX] using seventy_two_lt_exp r hr) (le_add_of_nonneg_right (by simp))
   have hcrude : power (X+1) (2*r)<2*(Y+1)*power X r := by
     rw [hN]
     calc
