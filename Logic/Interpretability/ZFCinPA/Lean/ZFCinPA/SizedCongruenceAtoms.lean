@@ -37,15 +37,11 @@ local infix:46 " ≐ₛ " => eqAtom
 theorem tvec_entries {k : ℕ} (v : Bootstrapping.SemitermVec V ℒₛₑₜ k 0) {c : V}
     (h : ∀ i, (v i).val ≤ lvB c) :
     (∀ i < (k : V), v.val.[i] ≤ lvB c) ∧ (∀ i < (k : V), IsVarTerm v.val.[i]) := by
-  constructor
-  · intro i hi
+  have entry (i : V) (hi : i < (k : V)) : v.val.[i] ≤ lvB c ∧ IsVarTerm v.val.[i] := by
     obtain ⟨j, rfl⟩ := eq_fin_of_lt_nat hi
     rw [Bootstrapping.SemitermVec.val_nth_eq]
-    exact h j
-  · intro i hi
-    obtain ⟨j, rfl⟩ := eq_fin_of_lt_nat hi
-    rw [Bootstrapping.SemitermVec.val_nth_eq]
-    exact closed_isVar (by simpa using (v j).isSemiterm)
+    exact ⟨h j, closed_isVar (by simpa using (v j).isSemiterm)⟩
+  exact ⟨fun i hi => (entry i hi).1, fun i hi => (entry i hi).2⟩
 
 theorem tsubst_le {k : ℕ} (ψ : Bootstrapping.Semiformula V ℒₛₑₜ k)
     (v : Bootstrapping.SemitermVec V ℒₛₑₜ k 0) {u c : V} (hψ : ψ.val ≤ lvB u) (hc : 1 ≤ c)
