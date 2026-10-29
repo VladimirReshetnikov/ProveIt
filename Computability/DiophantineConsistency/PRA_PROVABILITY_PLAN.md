@@ -102,6 +102,12 @@ have likewise been derived.
 Compatibility with a standard PRA presentation, further arithmetic bridges,
 primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
 
+The [candidate universal-presentation equivalence](reviews/pra-universal-equivalence-root.md)
+now proves the same sentence-level theorems in the explicitly defined universal
+axiom family and candidate PRA, with arbitrary open-induction parameters. The
+result uses completeness externally and does not yet identify the candidate
+with standard PRA or establish a witnessing or conservation theorem.
+
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
 shift over arbitrary commutative semirings. The [internal factor-magnitude theorem](reviews/adaptive-factor-magnitude2011-root.md)
