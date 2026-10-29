@@ -107,10 +107,7 @@ lemma embed_terminal_eval (word np w : V) :
       else liveValue 0 np (ArithmeticCommandRunPerm222.evalValue word w-1) := by
   by_cases ht : ArithmeticCommandRunPerm222.terminal word w = 0
   · simp [ArithmeticCommandRunPerm222.evalValue, embedValue, ht]
-  · have hw : ArithmeticCommandTickPerm222.remaining (ArithmeticCommandRunPerm222.terminal word w) = 0 := by
-      rcases ArithmeticCommandRunPerm222.terminal_stopped word w with h0 | hw
-      · exact False.elim (ht h0)
-      · exact hw
+  · have hw := (ArithmeticCommandRunPerm222.terminal_stopped word w).resolve_left ht
     simp [ArithmeticCommandRunPerm222.evalValue, embedValue, ht, hw]
 
 theorem drain (word np w : V) : ∃ t ≤ word,
