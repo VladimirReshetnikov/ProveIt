@@ -192,16 +192,21 @@ theorem recognized_gic_image {p : V} (hp : GicR p) (j : V) :
   rw [hbody]
   exact gic_body_image ⟨K,hK⟩ (j+m)
 
+/-- Turn a guarded tagged implication into the corresponding axiom image. -/
+theorem derivable_of_tagged_imp {p j : V} (hp : IsFormula ℒₛₑₜ p)
+    (h : Provable seedTheory (imp ℒₛₑₜ (emptyCode j) (tagRel j p))) :
+    Derivable seedTheory (insert (tagRel j p) (insert (emptyGuard j) (sideSet j))) := by
+  have he : Derivable seedTheory (insert (emptyCode j) (insert (emptyGuard j) (sideSet j))) :=
+    Derivable.em (by simp [empty_typed,emptyGuard_typed,sideSet,isFormulaSet_domSet (domain_typed j)])
+      (emptyCode j) (by simp) (by simp [emptyGuard])
+  exact NativePeel.derivable_mp (tagRel_typed j hp) h he
+
 /-- A concrete component of the actual moving-marker axiom-image contract. -/
 theorem axiomImages_gicTheory : AxiomImages gicTheory V := by
   intro p j hp hmem _
   have hrec : GicR p := by
     change V ⊧/![p] gicCh.val at hmem
     simpa using hmem
-  have hi := recognized_gic_image hrec j
-  have he : Derivable seedTheory (insert (emptyCode j) (insert (emptyGuard j) (sideSet j))) :=
-    Derivable.em (by simp [empty_typed,emptyGuard_typed,sideSet,isFormulaSet_domSet (domain_typed j)])
-      (emptyCode j) (by simp) (by simp [emptyGuard])
-  exact NativePeel.derivable_mp (tagRel_typed j hp) hi he
+  exact derivable_of_tagged_imp hp (recognized_gic_image hrec j)
 
 end LeanProofs.ZFCinPA.ValidatorSeedGicImages222

@@ -142,14 +142,6 @@ theorem equality_image (σ : SetTheorySentence) (hσ : σ∈𝗘𝗤 ℒₛₑ�
     | eq => exact relExt_image Language.Eq.eq j
     | mem => exact relExt_image Language.Mem.mem j
 
-private theorem implication_image {p j : V} (hp : IsFormula ℒₛₑₜ p)
-    (h : Provable seedTheory (imp ℒₛₑₜ (emptyCode j) (tagRel j p))) :
-    Derivable seedTheory (insert (tagRel j p) (insert (emptyGuard j) (sideSet j))) := by
-  have he : Derivable seedTheory (insert (emptyCode j) (insert (emptyGuard j) (sideSet j))) :=
-    Derivable.em (by simp [empty_typed,emptyGuard_typed,sideSet,isFormulaSet_domSet (domain_typed j)])
-      (emptyCode j) (by simp) (by simp [emptyGuard])
-  exact NativePeel.derivable_mp (tagRel_typed j hp) h he
-
 theorem axiomImages_equality :
     letI := ValidatorEqualityImages222.equalityDelta
     AxiomImages (𝗘𝗤 ℒₛₑₜ) V := by
@@ -157,7 +149,7 @@ theorem axiomImages_equality :
   intro p j hp hm _
   obtain ⟨σ,hσ,rfl⟩ := ValidatorEqualityImages222.mem_ch_ofFinite
     (𝗘𝗤 ℒₛₑₜ) Theory.EqAxiom.finite hm
-  exact implication_image hp (equality_image σ hσ j)
+  exact derivable_of_tagged_imp hp (equality_image σ hσ j)
 
 /-- This concrete source theory does not add NativeTheory's literal container axiom. -/
 def logicalTheory : SetTheory := ((𝗘𝗤 ℒₛₑₜ) ∪ {irreflexiveSentence}) ∪ gicTheory
@@ -176,7 +168,7 @@ theorem axiomImages_logicalTheory : AxiomImages logicalTheory V := by
   · exact axiomImages_equality p j hp he hj
   · have hi' : p=ORingStructure.numeral (Encodable.encode irreflexiveSentence) := by simpa using hi
     rw [hi',numeral_eq_natCast_app,←LO.FirstOrder.Sentence.quote_eq_encode] at hp ⊢
-    exact implication_image hp (irreflexivity_image j)
+    exact derivable_of_tagged_imp hp (irreflexivity_image j)
   · exact axiomImages_gicTheory p j hp hgic hj
 
 /-- No remaining axiom-image premise for this concrete, smaller source theory. -/
