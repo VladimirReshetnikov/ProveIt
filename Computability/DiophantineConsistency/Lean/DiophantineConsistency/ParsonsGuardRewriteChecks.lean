@@ -1,0 +1,3 @@
+import DiophantineConsistency.ParsonsGuardRewrite
+#print axioms DiophantineConsistency.ParsonsGuardRewrite.rewrite
+#print axioms DiophantineConsistency.ParsonsGuardRewrite.all_sigma
