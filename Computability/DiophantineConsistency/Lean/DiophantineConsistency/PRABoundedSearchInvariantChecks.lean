@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRABoundedSearchInvariant
+#print axioms DiophantineConsistency.PRABoundedSearchInvariant.modelSearchFindsBad
+#print axioms DiophantineConsistency.PRABoundedSearchInvariant.PRA_proves_candidateSentence
+#check DiophantineConsistency.PRABoundedSearchInvariant.PRA_proves_candidateSentence

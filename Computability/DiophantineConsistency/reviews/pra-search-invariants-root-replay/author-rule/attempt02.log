@@ -1,0 +1,8 @@
+'DiophantineConsistency.PRABoundedSearchUniversalRule.inductionFromSearch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedSearchUniversalRule.inductionFromSearch {M : Type} (zero one : M)
+  (succ pred good find : M → M) (hOneNeZero : one ≠ zero) (hExhaustion : ∀ (x : M), x = zero ∨ succ (pred x) = x)
+  (hBit : ∀ (x : M), good x = zero ∨ good x = one) (hCandidate : ∀ (x : M), good (find x) = zero ∨ find x = x)
+  (hMinimal : ∀ (x : M), find x = zero ∨ good (pred (find x)) ≠ zero) (hBase : good zero = one)
+  (hStep : ∀ (x : M), good x = one → good (succ x) = one) (x : M) : good x = one

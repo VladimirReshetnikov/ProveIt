@@ -250,3 +250,10 @@ interface. A bounded search invariant and universal presentation remain open.
 The [bounded-search code](reviews/pra-bounded-search-code-root.md) now has
 its all-model zero and step equations for arbitrary fixed predicates and
 parameters. Its search correctness and universal presentation are still open.
+
+The [bounded-search invariants](reviews/pra-search-invariants-root.md) now
+provide closed candidate-PRA candidate and predecessor conditions for any
+fixed predicate code. A separate logical lemma derives Boolean induction
+from these conditions, bitness, successor exhaustion and base/step. The
+actual universal theory, presentation equivalence and general Σ₁ witnessing
+remain open.
