@@ -1,0 +1,20 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchFreeze.lean:32:103: error: unsolved goals
+M : Type
+inst✝¹ : Structure language M
+inst✝ : Structure.Eq language M
+n : ℕ
+good : Code (n + 1)
+x : M
+e : ℕ → M
+⊢ Structure.func (searchCode good)
+        (Semiterm.val ![x] e ∘ fun i => Fin.cases (Semiterm.func addCode ![&n, #0]) (parameters n) i) =
+      Structure.func (searchCode good) (Semiterm.val ![x] e ∘ fun i => Fin.cases (&n) (parameters n) i) ↔
+    (Structure.func (searchCode good) fun i => Fin.cases (Structure.func addCode ![e n, x]) (fun i => e ↑i) i) =
+      Structure.func (searchCode good) fun i => Fin.cases (e n) (fun i => e ↑i) i
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchFreeze.lean:36:45: warning: This simp argument is unused:
+  parameters
+
+Hint: Omit it from the simp argument list.
+  simp [currentTerm, initialTerm, startTerm, p̵a̵r̵a̵m̵e̵t̵e̵r̵s̵,̵ ̵Semiterm.val_func]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

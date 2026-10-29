@@ -1,0 +1,26 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:112:13: error: typeclass instance problem is stuck
+  Structure ?m.86 M
+
+Note: Lean will not try to resolve this typeclass instance problem because the first type argument to `Structure` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:109:24: warning: This simp argument is unused:
+  Semiterm.val_func
+
+Hint: Omit it from the simp argument list.
+  simp only [applyCode,̵ ̵S̵e̵m̵i̵t̵e̵r̵m̵.̵v̵a̵l̵_̵f̵u̵n̵c̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:136:2: error: Type mismatch: After simplification, term
+  Iff.trans hc.right (Iff.symm hb)
+ has type
+  (Structure.func (universalCode good) fun i => Fin.cases (e 0) (fun i => e i.succ) i) =
+      Structure.func oneCode Fin.elim0 ↔
+    (Semiformula.Eval e Empty.elim) (boundedFormula good)
+but is expected to have type
+  (Structure.func (universalCode good) (Semiterm.val e Empty.elim ∘ vars (n + 1)) =
+        Structure.func oneCode (Semiterm.val e Empty.elim ∘ Fin.elim0) →
+      (Semiformula.Eval e Empty.elim) (boundedFormula good)) ∧
+    ((Semiformula.Eval e Empty.elim) (boundedFormula good) →
+      Structure.func (universalCode good) (Semiterm.val e Empty.elim ∘ vars (n + 1)) =
+        Structure.func oneCode (Semiterm.val e Empty.elim ∘ Fin.elim0))

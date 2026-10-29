@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRABoundedBoolean
+open DiophantineConsistency.PRABoundedBoolean
+#print axioms PRA_andCharacteristic
+#print axioms PRA_orCharacteristic
+#check PRA_andCharacteristic
+#check PRA_orCharacteristic

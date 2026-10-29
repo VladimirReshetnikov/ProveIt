@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRABoundedSearchFreeze
+open DiophantineConsistency.PRABoundedSearchFreeze
+#print axioms freezeBody_open
+#print axioms modelSearchStepBad
+#print axioms modelSearchFreeze
+#check modelSearchFreeze

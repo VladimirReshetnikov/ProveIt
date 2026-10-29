@@ -1,0 +1,16 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedCharacteristic.lean:94:4: error: Type mismatch: After simplification, term
+  hc
+ has type
+  (¬Structure.func c (Semiterm.val (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim ∘ vars (n + 1)) =
+          Structure.func (Code.zero 0)
+            (Semiterm.val (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim ∘ Fin.elim0) →
+      (Semiformula.Eval (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim) φ) ∧
+    ((Semiformula.Eval (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim) φ →
+      ¬Structure.func c (Semiterm.val (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim ∘ vars (n + 1)) =
+          Structure.func (Code.zero 0)
+            (Semiterm.val (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim ∘ Fin.elim0))
+but is expected to have type
+  (¬(Structure.func c fun i => Fin.cases x (fun i => e i.succ) i) = Structure.func (Code.zero 0) Fin.elim0 →
+      (Semiformula.Eval (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim) φ) ∧
+    ((Semiformula.Eval (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim) φ →
+      ¬(Structure.func c fun i => Fin.cases x (fun i => e i.succ) i) = Structure.func (Code.zero 0) Fin.elim0)

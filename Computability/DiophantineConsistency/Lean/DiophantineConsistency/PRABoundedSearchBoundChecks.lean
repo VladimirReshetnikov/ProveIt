@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRABoundedSearchBound
+open DiophantineConsistency.PRABoundedSearchBound
+#print axioms boundBody_open
+#print axioms modelSearchBound
+#check modelSearchBound

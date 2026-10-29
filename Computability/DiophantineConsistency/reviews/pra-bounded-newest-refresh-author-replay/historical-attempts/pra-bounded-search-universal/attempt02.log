@@ -1,0 +1,19 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:72:14: error: failed to elaborate eliminator, expected type is not available
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:70:71: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+good : Code (n + 1)
+bound : M
+e : ℕ → M
+params : Fin n → M := fun i => e ↑i
+⊢ let params := fun i => e ↑i;
+  let value := Structure.func (universalCode good) fun i => Fin.cases bound params i;
+  IsBit value ∧
+    (value = Structure.func oneCode Fin.elim0 ↔
+      ∀ (x : M),
+        Structure.rel Language.ORing.Rel.lt ![x, bound] →
+          (Structure.func good fun i => Fin.cases x params i) ≠ Structure.func (Code.zero 0) Fin.elim0)

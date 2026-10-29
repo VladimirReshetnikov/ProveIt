@@ -1,0 +1,11 @@
+import DiophantineConsistency.PRABoundedSearchUniversal
+open DiophantineConsistency.PRABoundedSearchUniversal
+#print axioms universalCode_primrec
+#print axioms modelSearchUniversal
+#print axioms modelUniversalCode
+#print axioms modelBoundedFormula
+#print axioms modelUniversalCorrectSentence
+#print axioms PRA_proves_universalBitSentence
+#print axioms PRA_proves_universalCorrectSentence
+#check PRA_proves_universalBitSentence
+#check PRA_proves_universalCorrectSentence

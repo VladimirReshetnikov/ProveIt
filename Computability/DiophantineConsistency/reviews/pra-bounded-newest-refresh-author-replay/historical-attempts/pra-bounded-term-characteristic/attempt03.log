@@ -1,0 +1,20 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedTermCharacteristic.lean:15:98: error: unsolved goals
+n : ℕ
+φ : Semisentence language (n + 1)
+t : TermN n
+⊢ (∀⁰[Semiformula.rel Language.ORing.Rel.lt ![#0, Rew.bShift t]]
+      (Rewriting.app
+          (Rew.embSubsts
+            (⇑(Rew.subst (#0 :> ⇑Rew.bShift ∘ fun i => Fin.cases t (vars n) i)) ∘ fun i =>
+              Fin.cases (#0) (fun i => #i.succ.succ) i)))
+        φ) =
+    ∀⁰[Semiformula.rel Language.ORing.Rel.lt ![#0, Rew.bShift t]] φ
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedTermCharacteristic.lean:17:43: warning: This simp argument is unused:
+  vars
+
+Hint: Omit it from the simp argument list.
+  simp [termBoundedBy, boundedBy, Rewriting.subst, ← TransitiveRewriting.comp_app,
+  ̵  ̵ ̵ ̵Rew.q_subst,
+  ̲  ̲ ̲ ̲Rew.subst_comp_embSubsts,̵ ̵v̵a̵r̵s̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

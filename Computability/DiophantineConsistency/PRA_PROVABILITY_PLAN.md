@@ -54,7 +54,11 @@ providers, followed by `PRAEqualityDifference` and
 `PRASubSuccessorInvariant`. The [24-module refresh](reviews/pra-peanominus-current-refresh-root.md)
 and later [seven-module suffix](reviews/pra-peanominus-suffix-refresh-root.md)
 each passed independent replays for their respective earlier source snapshots.
-Rebuilding the affected chain against the latest merged sources is in progress.
+The [82-module current-source rebuild](research/pra-bounded-characteristic-20261029.md)
+has since passed an author run and two isolated replays, including the complete
+candidate-PRA Σ₀ characteristic compiler and bounded-matrix witness theorem.
+These witnessing results start with a candidate-PRA proof; they do not provide
+the missing rule-to-PRA comparison.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)

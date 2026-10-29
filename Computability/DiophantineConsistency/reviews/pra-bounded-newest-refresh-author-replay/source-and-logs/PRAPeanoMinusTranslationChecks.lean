@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAPeanoMinusTranslation
+open DiophantineConsistency.PRAPeanoMinusTranslation
+#print axioms PRA_proves_peanoMinusAxiom
+#print axioms PRA_proves_peanoMinusTheorem
+#check PRA_proves_peanoMinusAxiom
+#check PRA_proves_peanoMinusTheorem
