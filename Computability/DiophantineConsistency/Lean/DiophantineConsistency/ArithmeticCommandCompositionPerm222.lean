@@ -54,12 +54,8 @@ theorem tick_extend_succ (right raw w : V) :
 After left completion, the appended continuation is allowed to progress. -/
 theorem tick_extend_active (right config : V) (hc : ¬ Stopped config) :
     tickValue (extendValue right config) = extendValue right (tickValue config) := by
-  have h0 : config ≠ 0 := fun h => hc (Or.inl h)
-  have hw : remaining config ≠ 0 := fun h => hc (Or.inr h)
-  have hcfg : liveValue ((remaining config-1)+1) (working config) = config := by
-    rw [pred_add_one (remaining config) hw]
-    exact live_decode config h0
-  simpa only [hcfg] using tick_extend_succ right (remaining config-1) (working config)
+  simpa only [live_decode_active config hc] using
+    tick_extend_succ right (remaining config-1) (working config)
 
 /-- A bounded stopped-pair witness, or the two evaluators are still paired.
 Every non-time parameter stays fixed during this Sigma1 induction. No least

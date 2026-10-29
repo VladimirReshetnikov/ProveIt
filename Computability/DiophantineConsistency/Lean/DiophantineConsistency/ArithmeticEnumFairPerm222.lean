@@ -59,15 +59,9 @@ lemma enum_embed_succ (np raw w : V) :
 lemma enum_embed_active (np config : V) (hc : ¬ Stopped config) :
     enumValue (embedValue np config) =
       embedValue np (ArithmeticCommandTickPerm222.tickValue config) := by
-  have h0 : config ≠ 0 := fun h => hc (Or.inl h)
-  have hw : ArithmeticCommandTickPerm222.remaining config ≠ 0 := fun h => hc (Or.inr h)
-  have he : ArithmeticCommandTickPerm222.liveValue
-      ((ArithmeticCommandTickPerm222.remaining config-1)+1)
-      (ArithmeticCommandTickPerm222.working config) = config := by
-    rw [ArithmeticCommandTickPerm222.pred_add_one _ hw]
-    exact ArithmeticCommandTickPerm222.live_decode config h0
-  simpa only [he] using enum_embed_succ np
-    (ArithmeticCommandTickPerm222.remaining config-1) (ArithmeticCommandTickPerm222.working config)
+  simpa only [ArithmeticCommandTickPerm222.live_decode_active config hc] using
+    enum_embed_succ np (ArithmeticCommandTickPerm222.remaining config-1)
+      (ArithmeticCommandTickPerm222.working config)
 
 /-- After the first stopped word time, retain that bounded witness instead
 of asserting that the scheduler remains paired at later times. -/
