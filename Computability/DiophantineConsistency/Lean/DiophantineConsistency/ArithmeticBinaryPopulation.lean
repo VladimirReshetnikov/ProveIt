@@ -132,11 +132,8 @@ theorem population_div_mod (a : V) :
     _=population (a/2)+a%2 := population_binary _ _ (lt_two_iff_le_one.mp (by simp))
 
 theorem half_lt (a E : V) (h : a<2*E) : a/2<E := by
-  have he : 2*(a/2)+a%2=a := div_add_mod a 2
-  have hlo : 2*(a/2)≤a := by rw [←he]; simp
-  by_contra hn
-  have hmul := mul_le_mul_of_nonneg_left (le_of_not_gt hn) (Arithmetic.zero_le (2:V))
-  exact (not_lt_of_ge (le_trans hmul hlo)) h
+  apply div_lt_of_lt_mul
+  simpa only [mul_comm] using h
 
 /-- Internal block concatenation, including zero length and zero high block. -/
 theorem concatenate (A n b : V) (hb : b<Exp.exp n) :
