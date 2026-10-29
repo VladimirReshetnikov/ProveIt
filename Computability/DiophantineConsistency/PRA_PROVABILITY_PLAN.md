@@ -33,6 +33,11 @@ formulas with finitely many packed parameters. Lean now proves [candidate-PRA
 witnessing for open ∀∃ formulas](reviews/herbrand-all-instantiation-root.md).
 The formal IΣ₁-to-PRA conservation argument and the candidate's comparison
 with a standard PRA presentation remain open.
+The [PA-minus bridge audit](research/pra-peanominus-bridge-audit-20261029.md)
+tracks the exact mapped equality axioms and all 17 non-equality axiom
+families. Closed candidate-PRA derivations now cover eight arithmetic
+families, including associativity, commutativity and distributivity; the nine
+order families and transport of arbitrary PA-minus proofs remain open.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
@@ -91,6 +96,14 @@ now opens selected side occurrences at arbitrary terms while retaining
 cut-freeness and the strict bound below an existential inference. The
 [fresh-variable client](reviews/parsons-fresh-open-root.md) opens a selected
 universal side under the same strict bound while shifting the entire context.
+The [finite-prefix counterexample rule](reviews/parsons-guard-prefix-root.md)
+now opens an explicitly described finite universal guard, assuming that all
+other projected sides are Σ₁ and that all strictly smaller derivations have
+already been handled. [Guard rewriting](reviews/parsons-guard-rewrite-root.md)
+preserves such descriptors under term substitution, and [fresh context
+opening](reviews/parsons-fresh-context-root.md) selects a universal at any
+side position without consuming the height margin. Multiple guards and the
+global recursion are not yet discharged by these conditional lemmas.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 

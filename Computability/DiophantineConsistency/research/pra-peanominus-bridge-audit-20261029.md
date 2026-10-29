@@ -2,13 +2,13 @@
 
 The desired statement is `PRA ⊢ Semiformula.lMap PRALanguage.embedding σ` for every `σ ∈ 𝗣𝗔⁻`, where `embedding : ℒₒᵣ →ᵥ language` maps `0`, `1`, `+`, `*`, equality, and strict order to the designated finite primitive-recursive function codes and the candidate's order relation. The target `PRA` is the candidate first-order theory defined in this repository. A theorem transporting all Foundation PA-minus proofs is a subsequent consequence, not yet established.
 
-Foundation's `PeanoMinus` has equality plus these 16 non-equality families. Status below concerns proofs at the exact mapped Foundation sentence, not merely standard-natural truth. A model lemma is a fact in **arbitrary** candidate-PRA equality models; Foundation completeness can then yield a closed candidate-PRA derivation. “Not yet discharged” means no exact mapped theorem has been verified in this audit; it does not assert unprovability.
+Foundation's `PeanoMinus` has equality plus these 17 non-equality families. An earlier progress report and version of this audit incorrectly said 16; the constructor-by-constructor count is 17. Status below concerns proofs at the exact mapped Foundation sentence, not merely standard-natural truth. A model lemma is a fact in **arbitrary** candidate-PRA equality models; Foundation completeness can then yield a closed candidate-PRA derivation. “Not yet discharged” means no exact mapped theorem has been verified in this audit; it does not assert unprovability.
 
 | Foundation axiom | Current evidence and remaining work |
 | --- | --- |
 | Equality | `PRAQCompatibility.PRA_proves_qEquality` proves the exact mapped equality axioms. |
 | `addZero` | `PRAPeanoMinusBasic.PRA_proves_addZero` proves the exact mapped sentence using the established Q proof. |
-| `addAssoc` | Not yet discharged. Open-induction proof is needed in arbitrary candidate models. |
+| `addAssoc` | `PRAPeanoMinusAddAssoc.PRA_proves_addAssoc` proves the exact mapped axiom using open induction in arbitrary candidate-PRA models. |
 | `addComm` | `PRAPeanoMinusBasic.PRA_proves_addComm` proves the exact mapped sentence using the arbitrary-model addition commutativity lemma. |
 | `addEqOfLt` | The Q order equivalence and order witness are available; the exact mapped PA-minus axiom has not yet been discharged. |
 | `zeroLe` | Not yet discharged. |
@@ -17,10 +17,10 @@ Foundation's `PeanoMinus` has equality plus these 16 non-equality families. Stat
 | `addLtAdd` | Not yet discharged; depends on addition and order compatibility. |
 | `mulZero` | `PRAPeanoMinusBasic.PRA_proves_mulZero` proves the exact mapped sentence using the established Q proof. |
 | `mulOne` | `PRAPeanoMinusBasic.PRA_proves_mulOne` proves the exact mapped sentence from multiplication recursion and zero laws. |
-| `mulAssoc` | Not yet discharged. |
-| `mulComm` | Not yet discharged. |
+| `mulAssoc` | `PRAPeanoMinusMulAssoc.PRA_proves_mulAssoc` proves the exact mapped axiom using open induction and distributivity in arbitrary candidate-PRA models. |
+| `mulComm` | `PRAPeanoMinusMulComm.PRA_proves_mulComm` proves the exact mapped axiom using open induction and multiplication left-zero and left-successor in arbitrary candidate-PRA models. |
 | `mulLtMul` | Not yet discharged. |
-| `distr` | Not yet discharged. |
+| `distr` | `PRAPeanoMinusDistributivity.PRA_proves_distr` proves the exact mapped axiom using open induction and mapped-model addition associativity. |
 | `ltIrrefl` | Not yet discharged. |
 | `ltTrans` | Not yet discharged. |
 | `ltTri` | Not yet discharged. |
