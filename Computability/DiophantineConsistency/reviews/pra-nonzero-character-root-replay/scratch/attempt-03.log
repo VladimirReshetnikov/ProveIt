@@ -1,0 +1,36 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzeroCharacter.lean:61:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 1 → M
+⊢ (Semiformula.EvalAux inferInstance Empty.elim e
+        (Semiformula.rel Language.ORing.Rel.eq ![applyCode nonzeroCode fun x => #0, applyCode oneCode Fin.elim0]).neg ∨
+      ¬Semiterm.val e Empty.elim (![#0, applyCode (Code.zero 0) Fin.elim0] 0) =
+          Semiterm.val e Empty.elim (![#0, applyCode (Code.zero 0) Fin.elim0] 1)) ∧
+    (Semiformula.EvalAux inferInstance Empty.elim e
+        (Semiformula.nrel Language.ORing.Rel.eq ![#0, applyCode (Code.zero 0) Fin.elim0]).neg ∨
+      Semiterm.val e Empty.elim (![applyCode nonzeroCode fun x => #0, applyCode oneCode Fin.elim0] 0) =
+        Semiterm.val e Empty.elim (![applyCode nonzeroCode fun x => #0, applyCode oneCode Fin.elim0] 1))
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzeroCharacter.lean:65:13: warning: This simp argument is unused:
+  Semiformula.imp_eq
+
+Hint: Omit it from the simp argument list.
+  simp only [Semiformula.i̵m̵p̵_̵e̵q̵,̵ ̵S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵neg_rel, Semiformula.neg_nrel, Semiformula.EvalAux]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzeroCharacter.lean:65:33: warning: This simp argument is unused:
+  Semiformula.neg_rel
+
+Hint: Omit it from the simp argument list.
+  simp only [Semiformula.imp_eq, S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵n̵e̵g̵_̵r̵e̵l̵,̵ ̵Semiformula.neg_nrel, Semiformula.EvalAux]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzeroCharacter.lean:65:54: warning: This simp argument is unused:
+  Semiformula.neg_nrel
+
+Hint: Omit it from the simp argument list.
+  simp only [Semiformula.imp_eq, Semiformula.neg_rel, Semiformula.n̵e̵g̵_̵n̵r̵e̵l̵,̵ ̵S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵EvalAux]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
