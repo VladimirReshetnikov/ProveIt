@@ -1399,5 +1399,16 @@ The separate construction supplement completes the checks initially marked
 pending. Historical source-sample exceptions and failed probes are recorded;
 transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mask-cast-evidence/BUNDLE.json).
 
+The generated native row padding sharing `2f04c5dcb3` removes 76 net Lean
+lines, bringing the reviewed series to 9757; the accompanying generator edit
+makes the two-file total a 72-line reduction. A private padded-coordinate fact
+replaces repeated per-row facts in 22 proofs without changing row data.
+Regeneration and paired current-provider target/client builds pass, and both
+client objects match baseline. The 100 public and 22 old private declaration
+reports, 31,715 global simp entries and 13,981 instances match; three private
+names are added. One paired repeat used 35.28s baseline versus 36.94s final
+user CPU, a small local sample. The slower v1 and Lean-internal v2 are retained
+as superseded; transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-native-row-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
