@@ -159,3 +159,8 @@ candidate-PRA equality models and obtains `PRA_proves_all_Q`: each actual
 Foundation Robinson Q axiom maps to a closed candidate-PRA derivation.
 This is not yet a proof translation for arbitrary Q derivations, an
 equivalence with standard PRA, or an IΣ₁-to-PRA conservation theorem.
+
+The [Q theorem translation](reviews/pra-q-translation-root.md) now proves
+that every actual Foundation Q theorem has a candidate-PRA proof of its
+mapped sentence. It is an existence theorem by soundness and completeness,
+not a primitive-recursive proof transformer or a conservation theorem.
