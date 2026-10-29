@@ -77,8 +77,9 @@ natural zero. The [first-root divisibility client](reviews/adaptive-first-divisi
 now derives a positive internal quotient `Y/q³` from the actual natural zero.
 The [transport theorem](reviews/adaptive-transport2011-root.md) now derives
 the actual positive transport and gap. The [transport quotient theorem](reviews/adaptive-transport-quotient2011-root.md)
-now derives the exact positive transport multiple. Main-root orientation,
-index recovery and the full zero-existence equivalence remain open.
+now derives the exact positive transport multiple. The [main-root orientation theorem](reviews/adaptive-main-orientation2011-root.md)
+now derives its positive signed representation. Index recovery and the full
+zero-existence equivalence remain open.
 
 The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
 now proves in Lean that both maintained source sentences are Π₁ and their

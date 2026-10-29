@@ -1,0 +1,10 @@
+import DiophantineConsistency.ArithmeticAdaptiveMainOrientation2011
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ArithmeticAdaptiveMainOrientation2011Checks
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticAdaptiveMainOrientation2011
+#print axioms main_root_rep
+end DiophantineConsistency.ArithmeticAdaptiveMainOrientation2011Checks
