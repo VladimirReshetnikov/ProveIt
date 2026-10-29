@@ -1099,5 +1099,17 @@ Matrix co-import already fails in both phases. The maintained checks emit one
 matching exponentiation warning per phase. Independent graph, source, receipt
 and declaration reviews pass. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-word-top-sharing-evidence/BUNDLE.json).
 
+The finite two-row proof simplification `c44ea5ddf0` removes 18 net
+lines, bringing the reviewed series to 9037. Paired targets and focused
+clients pass; all 46 old public and private declaration reports and all 11
+materialized definition equations match. Three new generated simp auxiliaries
+use only propext and are not registered as default simp rules. The 87-node
+local graph has 67 rebuilt nodes, three pinned FirstOrder inputs and 17
+unaffected precompiled local objects; transitive external dependencies remain
+precompiled. Five ArithmeticDAGSemantics preparation warnings lack a paired
+baseline; earlier simpa warnings and an initial lazy-equation probe failure
+are retained. Independent graph, 82-record and equation audits pass. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-fin-two-rows-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
