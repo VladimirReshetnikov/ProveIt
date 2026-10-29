@@ -214,3 +214,7 @@ The [characteristic bit theorem](reviews/pra-characteristic-bit-root.md)
 now supplies actual candidate-PRA proofs of both Boolean range and formula
 correctness for every open formula after packing its free parameters.
 Bounded formulas and Σ₁ witnessing remain open.
+
+The [selection code](reviews/pra-select-code-root.md) has both defining
+equations as closed candidate-PRA derivations and an all-model composition
+interface. A bounded search invariant and universal presentation remain open.
