@@ -80,6 +80,11 @@ recorded prior snapshot; subsequent upstream commits changed some prerequisite
 sources. The certificate supplies a conservation input, not conservation or
 PRA derivability itself.
 
+The [cut-free adapter](reviews/parsons-cut-free-independent.md) now turns an
+actual finite Foundation theory proof into a cut-free derivation with the
+same axiom list. It does not eliminate induction axioms; the accompanying
+route note identifies the missing inversion and witnessing lemmas.
+
 ## Concrete bridge to formalize
 
 1. Choose and define a precise PRA language and proof calculus, including its
