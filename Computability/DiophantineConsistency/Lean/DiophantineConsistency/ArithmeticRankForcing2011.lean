@@ -42,9 +42,8 @@ theorem lowPort_four_nat : CurrentMasks2011.lowPort % 4 = 2 := by
   omega
 
 theorem lowPort_mod_four : (CurrentMasks2011.lowPort:V)%4=2 := by
-  have h := ArithmeticMaskConstants.cast_mod (V:=V) CurrentMasks2011.lowPort 4
-  rw [lowPort_four_nat] at h
-  simpa using h.symm
+  simpa only [lowPort_four_nat, Nat.cast_ofNat] using
+    (ArithmeticMaskConstants.cast_mod (V:=V) CurrentMasks2011.lowPort 4).symm
 
 /-- **Rank forcing at the actual carrier.** -/
 theorem current_rank_forcing (v : Fin 14 → V) (N C : V) (hN : 0<N)
@@ -66,15 +65,11 @@ theorem current_rank_forcing (v : Fin 14 → V) (N C : V) (hN : 0<N)
   have hJ1 : 1≤v 0 := by rw [hJ,hj]; exact le_add_of_nonneg_left (by simp)
   -- q = 2^u
   have hq : q v=Exp.exp ((CurrentMasks2011.width:V)*N) := by
-    unfold q
-    rw [hJ,current_beta_exp (V:=V)]
-    exact repunit_identity _ N
+    simpa only [q, hJ, current_beta_exp (V:=V)] using
+      repunit_identity (CurrentMasks2011.width:V) N
   -- block bounds
   have hhp_lt : (CurrentMasks2011.highPort:V)<(CurrentMasks2011.beta:V) := by
-    have h2 : (CurrentMasks2011.highPort:V)+(CurrentMasks2011.beta:V)<
-        (CurrentMasks2011.beta:V)+(CurrentMasks2011.beta:V) := by
-      have h := hh; push_cast at h; rw [two_mul] at h; exact h
-    exact lt_of_add_lt_add_right h2
+    exact lt_of_add_lt_add_right (by simpa only [Nat.cast_add, two_mul] using hh)
   have hM : (CurrentMasks2011.lowPort:V)*v 0+1<q v := by
     unfold q
     have h1 : (CurrentMasks2011.lowPort:V)+1≤(CurrentMasks2011.beta:V) := lt_iff_succ_le.mp hl
