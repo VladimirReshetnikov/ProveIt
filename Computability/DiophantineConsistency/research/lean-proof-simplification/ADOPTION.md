@@ -1302,5 +1302,17 @@ remain precompiled. Two failed interface probes are retained, but their
 generated sources were overwritten. An initial `nlinarith` probe had missing
 imports and proves no mathematical limitation. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-cantor-bound-evidence/BUNDLE.json).
 
+The scheduler proof sharing `82ac343059` removes a duplicate induction and
+scheduling argument while adding two net source lines for preserved wrappers;
+the reviewed series therefore stands at 9536 net lines removed. The bounded
+module originated in the Claude-coauthored commit `9168659697`. The original
+bounded clock estimates and hypotheses remain, and the unbounded results now
+discard those bounds. Paired builds and refreshed production clients pass;
+all 37 old target declaration reports and namespace-scoped simp entries match.
+Two new bounded helper names are visible earlier. Two unchanged-source client
+objects differ by bytes, although their checked declaration reports match.
+Transitive inputs remain precompiled; the first superseded interface probe was
+overwritten and is excluded. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-enum-fair-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
