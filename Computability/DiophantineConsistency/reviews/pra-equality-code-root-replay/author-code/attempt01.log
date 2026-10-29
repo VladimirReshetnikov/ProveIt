@@ -1,0 +1,25 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAEqualityCode.lean:33:37: error: typeclass instance problem is stuck
+  ?m.72↓[language] ⊧* PRA
+
+Note: Lean will not try to resolve this typeclass instance problem because the fourth type argument to `Semantics.ModelsSet` contains metavariables. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAEqualityCode.lean:50:2: error: Type mismatch
+  (modelEqualityCode (e 0) (e 1)).left
+has type
+  IsBit (Structure.func equalityCode ![e 0, e 1])
+but is expected to have type
+  (Structure.func equalityCode fun x => e x) = Structure.func (Code.zero 0) Fin.elim0 ∨
+    (Structure.func equalityCode fun x => e x) = Structure.func oneCode Fin.elim0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAEqualityCode.lean:61:2: error: Tactic `tauto` failed
+
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 2 → M
+hz : (fun i => Semiterm.val e Empty.elim i.elim0) = Fin.elim0
+h : Structure.func equalityCode ![e 0, e 1] = Structure.func oneCode Fin.elim0 ↔ e 0 = e 1
+⊢ (¬(Structure.func equalityCode fun x => e x) = Structure.func oneCode Fin.elim0 ∨ e 0 = e 1) ∧
+    (¬e 0 = e 1 ∨ (Structure.func equalityCode fun x => e x) = Structure.func oneCode Fin.elim0)

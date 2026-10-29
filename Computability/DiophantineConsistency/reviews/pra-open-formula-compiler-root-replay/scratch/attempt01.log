@@ -1,0 +1,136 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAOpenFormulaCompiler.lean:94:6: error: Type mismatch
+  hEq ?m.89 ?m.90
+has type
+  IsBit (Structure.func eqCode ![?m.89, ?m.90]) ∧
+    (Structure.func eqCode ![?m.89, ?m.90] = Structure.func oneCode Fin.elim0 ↔ ?m.89 = ?m.90)
+but is expected to have type
+  IsBit (Structure.func eqCode ![Semiterm.val e Empty.elim a, Semiterm.val e Empty.elim b]) ∧
+    (Structure.func (compileFormula eqCode (OpenFormula.equal a b)) e = Structure.func oneCode Fin.elim0 ↔
+      formulaHolds e (OpenFormula.equal a b))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAOpenFormulaCompiler.lean:100:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Structure.func nonzeroCode fun x => Structure.func subCode ![?y, ?x]
+in the target expression
+  Structure.func (compileFormula eqCode (OpenFormula.less a b)) e = Structure.func oneCode Fin.elim0 ↔
+    formulaHolds e (OpenFormula.less a b)
+
+case less.right
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+eqCode : Code 2
+hEq :
+  ∀ (x y : M),
+    IsBit (Structure.func eqCode ![x, y]) ∧ (Structure.func eqCode ![x, y] = Structure.func oneCode Fin.elim0 ↔ x = y)
+e : Fin n → M
+a b : TermN n
+⊢ Structure.func (compileFormula eqCode (OpenFormula.less a b)) e = Structure.func oneCode Fin.elim0 ↔
+    formulaHolds e (OpenFormula.less a b)
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    compileFormula eqCode (OpenFormula.less a b)
+  has type
+    Code n
+  but is expected to have type
+    language.Func n
+  in the application
+    Structure.func (compileFormula eqCode (OpenFormula.less a b))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAOpenFormulaCompiler.lean:106:17: error: Application type mismatch: The argument
+  Iff.trans hc (not_congr ih.right)
+has type
+  (Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e) = Structure.func oneCode Fin.elim0 ↔
+    ¬formulaHolds e p
+but is expected to have type
+  Structure.func (compileFormula eqCode p.not) e = Structure.func oneCode Fin.elim0 ↔ formulaHolds e p.not
+in the application
+  ⟨hb, Iff.trans hc (not_congr ih.right)⟩
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAOpenFormulaCompiler.lean:111:17: error: Application type mismatch: The argument
+  Iff.trans hc (and_congr ihp.right ihq.right)
+has type
+  Structure.func mulCode ![Structure.func (compileFormula eqCode p) e, Structure.func (compileFormula eqCode q) e] =
+      Structure.func oneCode Fin.elim0 ↔
+    formulaHolds e p ∧ formulaHolds e q
+but is expected to have type
+  Structure.func (compileFormula eqCode (p.and q)) e = Structure.func oneCode Fin.elim0 ↔ formulaHolds e (p.and q)
+in the application
+  ⟨hb, Iff.trans hc (and_congr ihp.right ihq.right)⟩
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAOpenFormulaCompiler.lean:120:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Structure.func isZeroCode fun x =>
+      Structure.func mulCode
+        ![Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e,
+          Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e]) =
+    Structure.func oneCode Fin.elim0
+in the target expression
+  Structure.func (compileFormula eqCode (p.or q)) e = Structure.func oneCode Fin.elim0 ↔ formulaHolds e (p.or q)
+
+case or
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+eqCode : Code 2
+hEq :
+  ∀ (x y : M),
+    IsBit (Structure.func eqCode ![x, y]) ∧ (Structure.func eqCode ![x, y] = Structure.func oneCode Fin.elim0 ↔ x = y)
+e : Fin n → M
+p q : OpenFormula n
+ihp :
+  IsBit (Structure.func (compileFormula eqCode p) e) ∧
+    (Structure.func (compileFormula eqCode p) e = Structure.func oneCode Fin.elim0 ↔ formulaHolds e p)
+ihq :
+  IsBit (Structure.func (compileFormula eqCode q) e) ∧
+    (Structure.func (compileFormula eqCode q) e = Structure.func oneCode Fin.elim0 ↔ formulaHolds e q)
+hp : IsBit (Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e)
+hp' :
+  (Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e) = Structure.func oneCode Fin.elim0 ↔
+    Structure.func (compileFormula eqCode p) e ≠ Structure.func oneCode Fin.elim0
+hq : IsBit (Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e)
+hq' :
+  (Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e) = Structure.func oneCode Fin.elim0 ↔
+    Structure.func (compileFormula eqCode q) e ≠ Structure.func oneCode Fin.elim0
+hm :
+  IsBit
+    (Structure.func mulCode
+      ![Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e,
+        Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e])
+hm' :
+  Structure.func mulCode
+        ![Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e,
+          Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e] =
+      Structure.func oneCode Fin.elim0 ↔
+    (Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e) = Structure.func oneCode Fin.elim0 ∧
+      (Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e) = Structure.func oneCode Fin.elim0
+hb :
+  IsBit
+    (Structure.func isZeroCode fun x =>
+      Structure.func mulCode
+        ![Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e,
+          Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e])
+hb' :
+  (Structure.func isZeroCode fun x =>
+        Structure.func mulCode
+          ![Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e,
+            Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e]) =
+      Structure.func oneCode Fin.elim0 ↔
+    Structure.func mulCode
+        ![Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode p) e,
+          Structure.func isZeroCode fun x => Structure.func (compileFormula eqCode q) e] ≠
+      Structure.func oneCode Fin.elim0
+⊢ Structure.func (compileFormula eqCode (p.or q)) e = Structure.func oneCode Fin.elim0 ↔ formulaHolds e (p.or q)
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    compileFormula eqCode (p.or q)
+  has type
+    Code n
+  but is expected to have type
+    language.Func n
+  in the application
+    Structure.func (compileFormula eqCode (p.or q))
