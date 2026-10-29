@@ -77,48 +77,43 @@ theorem encode_subst {n m p w : V} (hp : IsSemiformula ℒₛₑₜ n p)
     (hw : IsSemitermVec ℒₛₑₜ n m w) (F B B' fresh : V)
     (he : Matches F B B' n w) :
     encode F B fresh (subst ℒₛₑₜ w p)=encode F B' fresh p := by
-  have main : ∀ n p : V, IsSemiformula ℒₛₑₜ n p →
-      ∀ m F B B' w s : V, IsSemitermVec ℒₛₑₜ n m w → Matches F B B' n w →
-        encode F B s (subst ℒₛₑₜ w p)=encode F B' s p := by
-    intro n p hp
-    apply IsSemiformula.pi1_structural_induction (P := fun n p =>
-      ∀ m F B B' w s : V, IsSemitermVec ℒₛₑₜ n m w → Matches F B B' n w →
-        encode F B s (subst ℒₛₑₜ w p)=encode F B' s p)
-      ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
-    · unfold Matches; definability
-    · intro n arity R terms hr ht m F B B' w s hw he
-      have hv := hw.termSubstVec ht
-      rw [substs_rel hr ht.isUTerm,encode_rel F B s hr hv.isUTerm,
-        encode_rel F B' s hr ht.isUTerm]
-      simp only [ValidatorEnvironmentLabels254.Formulas.atom,nth_adjoin_zero,nth_adjoin_one,
-        vec_labels_subst ht hw he]
-    · intro n arity R terms hr ht m F B B' w s hw he
-      have hv := hw.termSubstVec ht
-      rw [substs_nrel hr ht.isUTerm,encode_nrel F B s hr hv.isUTerm,
-        encode_nrel F B' s hr ht.isUTerm]
-      simp only [ValidatorEnvironmentLabels254.Formulas.atom,nth_adjoin_zero,nth_adjoin_one,
-        vec_labels_subst ht hw he]
-    · intro n m F B B' w s hw he; simp
-    · intro n m F B B' w s hw he; simp
-    · intro n p q hp hq ihp ihq m F B B' w s hw he
-      rw [substs_and hp.isUFormula hq.isUFormula,
-        encode_and F B s (hp.subst hw).isUFormula (hq.subst hw).isUFormula,
-        encode_and F B' s hp.isUFormula hq.isUFormula,
-        ihp m F B B' w s hw he,ihq m F B B' w s hw he]
-    · intro n p q hp hq ihp ihq m F B B' w s hw he
-      rw [substs_or hp.isUFormula hq.isUFormula,
-        encode_or F B s (hp.subst hw).isUFormula (hq.subst hw).isUFormula,
-        encode_or F B' s hp.isUFormula hq.isUFormula,
-        ihp m F B B' w s hw he,ihq m F B B' w s hw he]
-    · intro n p hp ih m F B B' w s hw he
-      rw [substs_all hp.isUFormula,encode_all F B s (hp.subst hw.qVec).isUFormula,
-        encode_all F B' s hp.isUFormula,
-        ih (m+1) F (s∷B) (s∷B') (qVec ℒₛₑₜ w) (s+2) hw.qVec (matches_qVec hw he s)]
-    · intro n p hp ih m F B B' w s hw he
-      rw [substs_ex hp.isUFormula,encode_exs F B s (hp.subst hw.qVec).isUFormula,
-        encode_exs F B' s hp.isUFormula,
-        ih (m+1) F (s∷B) (s∷B') (qVec ℒₛₑₜ w) (s+2) hw.qVec (matches_qVec hw he s)]
-  exact main n p hp m F B B' w fresh hw he
+  refine (IsSemiformula.pi1_structural_induction (P := fun n p =>
+    ∀ m F B B' w s : V, IsSemitermVec ℒₛₑₜ n m w → Matches F B B' n w →
+      encode F B s (subst ℒₛₑₜ w p)=encode F B' s p)
+    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp) m F B B' w fresh hw he
+  · unfold Matches; definability
+  · intro n arity R terms hr ht m F B B' w s hw he
+    have hv := hw.termSubstVec ht
+    rw [substs_rel hr ht.isUTerm,encode_rel F B s hr hv.isUTerm,
+      encode_rel F B' s hr ht.isUTerm]
+    simp only [ValidatorEnvironmentLabels254.Formulas.atom,nth_adjoin_zero,nth_adjoin_one,
+      vec_labels_subst ht hw he]
+  · intro n arity R terms hr ht m F B B' w s hw he
+    have hv := hw.termSubstVec ht
+    rw [substs_nrel hr ht.isUTerm,encode_nrel F B s hr hv.isUTerm,
+      encode_nrel F B' s hr ht.isUTerm]
+    simp only [ValidatorEnvironmentLabels254.Formulas.atom,nth_adjoin_zero,nth_adjoin_one,
+      vec_labels_subst ht hw he]
+  · intro n m F B B' w s hw he; simp
+  · intro n m F B B' w s hw he; simp
+  · intro n p q hp hq ihp ihq m F B B' w s hw he
+    rw [substs_and hp.isUFormula hq.isUFormula,
+      encode_and F B s (hp.subst hw).isUFormula (hq.subst hw).isUFormula,
+      encode_and F B' s hp.isUFormula hq.isUFormula,
+      ihp m F B B' w s hw he,ihq m F B B' w s hw he]
+  · intro n p q hp hq ihp ihq m F B B' w s hw he
+    rw [substs_or hp.isUFormula hq.isUFormula,
+      encode_or F B s (hp.subst hw).isUFormula (hq.subst hw).isUFormula,
+      encode_or F B' s hp.isUFormula hq.isUFormula,
+      ihp m F B B' w s hw he,ihq m F B B' w s hw he]
+  · intro n p hp ih m F B B' w s hw he
+    rw [substs_all hp.isUFormula,encode_all F B s (hp.subst hw.qVec).isUFormula,
+      encode_all F B' s hp.isUFormula,
+      ih (m+1) F (s∷B) (s∷B') (qVec ℒₛₑₜ w) (s+2) hw.qVec (matches_qVec hw he s)]
+  · intro n p hp ih m F B B' w s hw he
+    rw [substs_ex hp.isUFormula,encode_exs F B s (hp.subst hw.qVec).isUFormula,
+      encode_exs F B' s hp.isUFormula,
+      ih (m+1) F (s∷B) (s∷B') (qVec ℒₛₑₜ w) (s+2) hw.qVec (matches_qVec hw he s)]
 
 lemma matches_pair (F B t u : V) :
     Matches F B (TermLabels.term F B t∷TermLabels.term F B u∷0) 2 (t∷u∷0) := by
