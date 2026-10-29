@@ -1,0 +1,59 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveRadix2011.lean:63:4: error: Type mismatch: After simplification, term
+  h
+ has type
+  @Eq V (v 6)
+    (Exp.exp
+      (((1 + v 0 * ↑CurrentMasks2011.beta - 1) * (1 + v 0 * ↑CurrentMasks2011.beta - v 1) + v 2) *
+          ((1 + v 0 * ↑CurrentMasks2011.beta) ^ 2 - 1) +
+        (↑(![CurrentMasks2011.beta, CurrentKernel2011.K, CurrentMasks2011.lowPort,
+                  CurrentMasks2011.highPort + CurrentMasks2011.beta]
+                2) +
+            (1 + v 0 * ↑CurrentMasks2011.beta) *
+              ↑(![CurrentMasks2011.beta, CurrentKernel2011.K, CurrentMasks2011.lowPort,
+                    CurrentMasks2011.highPort + CurrentMasks2011.beta]
+                  3)) *
+          v 0))
+but is expected to have type
+  @Eq V (v 6) (Exp.exp R)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveRadix2011.lean:73:46: error: Application type mismatch: The argument
+  hqN
+has type
+  (Exp.exp d - 1) * v 0 + 1 = Exp.exp (d * N)
+but is expected to have type
+  q = ?m.474
+in the application
+  Eq.trans (Eq.symm hq) hqN
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveRadix2011.lean:76:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  q
+in the target expression
+  Exponential (↑CurrentMasks2011.width * N) (1 + v 0 * ↑CurrentMasks2011.beta)
+
+case refine_1
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+v : Fin 13 → V
+hv : ∀ (j : Fin 13), 0 < v j
+hz : InternalZero expression v
+d : V := ↑CurrentMasks2011.width
+q : V := 1 + v 0 * ↑CurrentMasks2011.beta
+R : V :=
+  ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) +
+    (↑CurrentMasks2011.lowPort + q * ↑(CurrentMasks2011.highPort + CurrentMasks2011.beta)) * v 0
+hd : 4 ≤ d
+hd2 : 2 ≤ d
+hq : q = (Exp.exp d - 1) * v 0 + 1
+hX : v 6 = Exp.exp R
+hq3 : q ∣ 3 * Exp.exp R
+w : V
+hw : Exp.exp R = q * w
+hfact : Exp.exp R = w * ((Exp.exp d - 1) * v 0 + 1)
+left✝ : 0 < w
+N : V
+hN : 0 < N
+hqN : (Exp.exp d - 1) * v 0 + 1 = Exp.exp (d * N)
+hNR : d * N ≤ R
+hwexp : w = Exp.exp (R - d * N)
+hqn : q = Exp.exp (d * N)
+hXq : v 6 = q * w
+⊢ Exponential (↑CurrentMasks2011.width * N) (1 + v 0 * ↑CurrentMasks2011.beta)

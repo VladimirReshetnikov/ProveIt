@@ -2638,3 +2638,14 @@ The [adaptive power recovery](reviews/adaptive-power-finish2011-root.md)
 now derives `X = Exp.exp R` from the actual current natural zero in every
 selected IΣ₁ model. It does not assume `q | X`; radix alignment, full
 soundness, the converse and the HA/PRA transfers remain open.
+
+The [adaptive Mersenne cancellation](reviews/adaptive-mersenne2011-root.md)
+now removes the factor three from `q | 3·2^R` for the actual Mersenne-port
+shape, including arbitrary internal exponents. The actual radix client is
+a separate binding.
+
+The [actual adaptive radix theorem](reviews/adaptive-radix2011-root.md)
+now derives positive internal `N` and `w` with `q=2^(width·N)`,
+`width·N≤R`, `w=2^(R−width·N)`, and `X=q·w` from the literal current
+zero, retaining both exponential graphs. Transport/window soundness,
+the internal converse and the HA/PRA transfers remain open.

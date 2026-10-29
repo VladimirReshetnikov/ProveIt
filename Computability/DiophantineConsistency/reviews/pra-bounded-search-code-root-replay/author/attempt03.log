@@ -1,0 +1,15 @@
+'DiophantineConsistency.PRABoundedSearchCode.searchCode_primrec' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedSearchCode.modelSearchZero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRABoundedSearchCode.modelSearchStep' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRABoundedSearchCode.modelSearchStepEquation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedSearchCode.modelSearchStepEquation {M : Type} [Nonempty M]
+  [Structure DiophantineConsistency.PRALanguage.language M] [Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] {n : ℕ}
+  (good : Code (n + 1)) (e : Fin (n + 1) → M) :
+  (Structure.func (searchCode good) fun i => Fin.cases (Structure.func Code.succ fun x => e 0) (fun i => e i.succ) i) =
+    Structure.func (searchStep good) fun i =>
+      Fin.cases (e 0) (fun i => Fin.cases (Structure.func (searchCode good) e) (fun i => e i.succ) i) i
