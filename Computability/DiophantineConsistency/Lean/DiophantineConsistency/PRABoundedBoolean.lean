@@ -25,17 +25,18 @@ theorem modelAndCorrect {n : ℕ} (c d : Code n) (φ ψ : Semisentence language 
     (hcbit : M↓[language] ⊧ bitSentence c) (hdbit : M↓[language] ⊧ bitSentence d)
     (hc : M↓[language] ⊧ oneCorrectSentence c φ) (hd : M↓[language] ⊧ oneCorrectSentence d ψ) :
     M↓[language] ⊧ oneCorrectSentence (andCode c d) (φ ⋏ ψ) := by
-  simp only [models_iff, oneCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff] at hc hd ⊢
+  apply (oneCorrectSentence_iff _ _).mpr
   intro e
   have hb1 := (PRACharacteristicBit.bitSentence_iff c).mp hcbit e
   have hb2 := (PRACharacteristicBit.bitSentence_iff d).mp hdbit e
-  have h1 := hc e
-  have h2 := hd e
-  have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars n) = e := by funext i; rfl
-  have hz : (Semiterm.val (L := language) e Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  simp [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hv, hz] at h1 h2 ⊢
+  have h1 := (oneCorrectSentence_iff c φ).mp hc e
+  have h2 := (oneCorrectSentence_iff d ψ).mp hd e
   rw [modelAndCode]
   have hm := (modelMulBit _ _ hb1 hb2).2
+  change (Structure.func (L := language) mulCode
+    ![Structure.func (L := language) c e, Structure.func (L := language) d e] =
+      Structure.func (L := language) oneCode Fin.elim0 ↔
+    φ.Eval e Empty.elim ∧ ψ.Eval e Empty.elim)
   tauto
 
 end models

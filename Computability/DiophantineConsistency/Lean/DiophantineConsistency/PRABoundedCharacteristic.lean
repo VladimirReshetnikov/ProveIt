@@ -24,17 +24,31 @@ section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* PRA]
 
+omit [M↓[language] ⊧* PRA] in
+theorem oneCorrectSentence_iff {n : ℕ} (c : Code n) (φ : Semisentence language n) :
+    M↓[language] ⊧ oneCorrectSentence c φ ↔
+      ∀ e : Fin n → M, Structure.func (L := language) c e =
+        Structure.func (L := language) oneCode Fin.elim0 ↔ φ.Eval e Empty.elim := by
+  simp only [models_iff, oneCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
+  apply forall_congr'
+  intro e
+  have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars n) = e := by funext i; rfl
+  simp [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hv, iff_def]
+  have hz : (Semiterm.val (L := language) e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN n)) =
+      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
+  rw [hz]
+  tauto
+
 theorem modelNonzeroCorrect {n : ℕ} (c : Code n) (φ : Semisentence language n)
     (hbit : M↓[language] ⊧ bitSentence c) (hcorrect : M↓[language] ⊧ oneCorrectSentence c φ) :
     M↓[language] ⊧ nonzeroCorrectSentence c φ := by
-  simp only [models_iff, oneCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff] at hcorrect
   simp only [models_iff, nonzeroCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
   intro e
   have hb := (PRACharacteristicBit.bitSentence_iff c).mp hbit e
-  have hc := hcorrect e
-  simp [Semiformula.eval_rel, Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func] at hc ⊢
+  have hc := (oneCorrectSentence_iff c φ).mp hcorrect e
+  simp [Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func]
   have hz : (Semiterm.val (L := language) e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN n)) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  rw [hz] at hc ⊢
+  rw [hz]
   have hne := modelOneNeZero (M := M)
   constructor
   · intro h
