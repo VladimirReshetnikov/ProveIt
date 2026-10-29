@@ -1929,5 +1929,13 @@ objects differ for an unknown reason, but checked interfaces match. One generate
 public proof name disappears; the wider closure remains cached. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-no-carry-evidence/BUNDLE.json).
 
+The Pell factor-positivity simplification `3b87f2fa76` removes five net Lean
+lines, bringing the reviewed series to 10214. Existing product equations give
+positivity of both factors directly. Paired target and both direct-client builds
+pass with identical client objects; target declaration reports and sampled
+registrations match. Direct provider receipts match their sources, while older
+transitive path samples and the wider closure remain cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-pell-factor-positivity-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
