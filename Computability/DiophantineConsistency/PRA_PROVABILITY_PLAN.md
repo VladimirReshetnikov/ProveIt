@@ -126,8 +126,10 @@ decreasing formula-complexity measure and the explicit `Below H` hypothesis.
 The [Boolean-tree version](reviews/parsons-counter-tree-root.md) extends that
 local case to finite positive Boolean trees, with an additive node measure.
 For strict Σ₁ predicates with bounded matrices, [step descriptors](reviews/parsons-step-tree-root.md)
-now cover the actual generated step and negative sides. Arbitrary Foundation
-Σ₁ syntax and the global induction remain open.
+now cover the actual generated step and negative sides, and [finite-prefix
+descriptors](reviews/parsons-strict-prefix-tree-root.md) extend this to any
+finite existential prefix over a bounded matrix. Arbitrary Foundation Σ₁
+syntax and the global induction remain open.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 

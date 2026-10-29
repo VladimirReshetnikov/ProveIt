@@ -1,0 +1,6 @@
+import DiophantineConsistency.ParsonsStrictPrefixTree
+#print axioms DiophantineConsistency.ParsonsStrictPrefixTree.of_guard
+#print axioms DiophantineConsistency.ParsonsStrictPrefixTree.negative_closure
+#print axioms DiophantineConsistency.ParsonsStrictPrefixTree.negative_free
+#print axioms DiophantineConsistency.ParsonsStrictPrefixTree.strict_step
+#print axioms DiophantineConsistency.ParsonsStrictPrefixTree.strict_negative
