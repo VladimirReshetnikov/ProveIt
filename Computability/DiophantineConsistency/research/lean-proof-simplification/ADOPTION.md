@@ -2274,5 +2274,15 @@ tracked or nonignored untracked Lean/Python references were found. The wider
 closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-native-z-positive.md)
 records hashes and external paths without raw logs or objects.
 
+The Pell ordinate growth sharing `24f81fcabc` removes eleven net Lean lines,
+bringing the reviewed series to 10495. Two ordinary public recurrence theorems
+replace duplicated growth proofs, retaining existing exported wrappers. Paired
+builds of twelve modules pass after a source-matched GCD provider refresh; 148
+common declaration reports and sampled registrations match. Three check objects
+match while six unchanged clients differ for an undetermined reason. Recurrence
+has 51 tracked transitive consumers; the wider closure remains cached or unbuilt.
+The compact [evidence note](../../reviews/lean-proof-simplification-20261029-pell-growth-sharing.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
