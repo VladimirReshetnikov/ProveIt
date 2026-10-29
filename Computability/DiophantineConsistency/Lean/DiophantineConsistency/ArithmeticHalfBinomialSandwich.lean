@@ -77,11 +77,11 @@ theorem base_eq (X Y : V) (hX : 1≤X) (hY : 1≤Y) : 2*(X*Y*Y-1)+1+2=2*X*Y*Y+1 
     _=2*X*Y*Y+1 := by rw [he]; ring
 
 theorem base_eq' (X Y : V) (hX : 1≤X) (hY : 1≤Y) : 2*(2*(X*Y*Y-1)+1)+3=4*X*Y*Y+1 := by
-  have h1 : 1≤X*Y*Y := one_le_mul (one_le_mul hX hY) hY
-  have he : X*Y*Y-1+1=X*Y*Y := tsub_add_cancel_of_le h1
+  apply add_right_cancel (b := (1:V))
   calc
-    2*(2*(X*Y*Y-1)+1)+3=4*(X*Y*Y-1+1)+1 := by ring
-    _=4*X*Y*Y+1 := by rw [he]; ring
+    2*(2*(X*Y*Y-1)+1)+3+1=2*(2*(X*Y*Y-1)+1+2) := by ring
+    _=2*(2*X*Y*Y+1) := by rw [base_eq X Y hX hY]
+    _=(4*X*Y*Y+1)+1 := by ring
 
 /-- Finite coefficient comparison for the lower estimate. -/
 theorem lower_coefficient (X Y : V) (hX : 1≤X) (hY : 1≤Y) :
