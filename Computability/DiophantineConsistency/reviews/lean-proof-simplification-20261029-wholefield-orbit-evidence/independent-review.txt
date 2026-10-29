@@ -1,0 +1,29 @@
+Independent review of /dev/shm/wholefield-orbit-refresh (precommit)
+
+The private orbit_isCell lemma proves the duplicated cell-range and
+modulo-divisibility obligations from the existing shift specification. The
+return-to-origin argument uses 2011 | DD to derive (2011*N) | (N*DD). Both
+changes preserve the theorem statement, hypotheses and imports. The current
+worktree target equals the baseline snapshot and the current client source
+equals both phase client sources.
+
+An independent audit verifies all source-ordered target/client builds and
+first-provider source/object pins. The refreshed Decoding producer was rebuilt
+from current source against current CellTransfer and the now-adopted
+CellLabels. Their source-current producer rows and the recorded providers'
+first-path inputs match the replay. WangPlane is also source-current; its
+WangTable and MachineRun215 objects match its producer inputs, without a claim
+that these two transitive objects are current-source builds. Other transitive
+objects remain cached.
+
+Target probes pin the exact target object; client probes pin both exact phase
+outputs and six relevant provider objects and match those to the build inputs.
+74 target declaration/type/axiom reports match with one new private helper;
+71 client reports and sampled global simp/instance registrations match. Client
+object bytes differ. This does not establish proof-body equality, every Lean
+extension, or compilation of other downstream clients. The independently
+reproducible receipt and comparison checks are in
+/tmp/wholefield-orbit-refresh-peer-audit.py and its .log.
+
+Postcommit check: source commit 28dcbeff43 and its parent contain byte-for-byte
+identical final and baseline ArithmeticWholeField snapshots, respectively.

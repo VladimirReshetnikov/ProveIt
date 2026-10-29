@@ -1974,5 +1974,13 @@ The direct providers and Pascal have source-matched receipts; two client-only
 providers lack matching receipts, and the broader closure remains cached. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261029-legendre-parity-evidence/BUNDLE.json).
 
+The orbit-cell sharing `28dcbeff43` removes four net Lean lines, bringing the
+reviewed series to 10275. The affected proof came from Claude-coauthored commit
+`f79467f544`. A private helper shares the orbit membership argument, and direct
+divisibility replaces quotient expansion for the return. Paired target and
+client builds pass using refreshed cell-label and decoding providers; client
+objects differ, but checked declaration reports and sampled registrations
+match. The wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-wholefield-orbit-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
