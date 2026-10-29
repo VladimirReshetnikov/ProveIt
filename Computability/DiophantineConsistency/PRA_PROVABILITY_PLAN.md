@@ -48,6 +48,11 @@ The [PA-minus translation](Lean/DiophantineConsistency/PRAPeanoMinusTranslation.
 now assembles them into a candidate-PRA derivation of every mapped PA-minus
 theorem. The comparison with standard PRA and the conservation argument
 remain open.
+The [bounded-induction comparison](reviews/parsons-bounded-bridge-root.md)
+now translates every Foundation IΣ₀ theorem and every proof in a bounded-only
+rule calculus into candidate PRA. The original intermediate rule calculus
+also permits Σ₁ induction, so this does not yet translate the strict Π₂
+endpoint.
 Subsequent upstream merges changed `PRAQCompatibility`, `PRAPeanoMinusBasic`,
 `PRAPeanoMinusOrderBasic`, `PRAQOrder`, and several addition and subtraction
 providers, followed by `PRAEqualityDifference` and
