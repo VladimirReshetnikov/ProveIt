@@ -53,7 +53,9 @@ is now independently replayed for every internal exponent matching the radix.
 The [actual-zero window theorem](reviews/adaptive-window2011-root.md) now
 assembles these inputs in arbitrary IΣ₁ models. The window-to-machine halt
 client, internal converse and final HA/PRA proof-existence endpoints remain
-open.
+open. The [reverse transport identity](reviews/adaptive-construction-transport2011-root.md)
+is now proved from the positive 14-coordinate equation system, but the other
+reverse witnesses and adaptive zero construction remain open.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
