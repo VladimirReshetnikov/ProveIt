@@ -1063,5 +1063,17 @@ Foundation Matrix co-import fails identically in both phases due to the existing
 collision. Fourteen build and probe records, local source/object hashes and
 matching logs were independently checked. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-physical-order-sharing-evidence/BUNDLE.json).
 
+The local cell construction proof reuse `b616cba766` removes 78 net
+lines, bringing the reviewed series to 8883. Paired targets, the direct
+CurrentWordConstruction client and existing checks pass; 40 surviving
+declaration reports and five forced equations match. One unused private helper
+and 45 compiler-generated auxiliaries disappear; no tracked qualified
+references or baseline default simp registrations were found. Of 133 selected
+local source/object pairs, 33 were rebuilt, 73 match prior pins and 27
+historical Diophantine objects remain unmatched precompiled inputs. Two
+preparation warnings lack a paired baseline; Foundation Matrix co-import fails
+in both phases due to an existing collision. Independent graph and 46-record
+receipt audits pass. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-local-cell-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
