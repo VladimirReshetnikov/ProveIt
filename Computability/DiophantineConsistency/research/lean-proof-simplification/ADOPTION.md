@@ -1439,5 +1439,14 @@ Direct project providers match prior source/object receipts; the transitive
 closure remains cached. The initial stale-provider run and corrected overlay
 setup are described in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-support-cast-evidence/BUNDLE.json).
 
+The origin block addition sharing `526cb2490b` removes six net Lean lines,
+bringing the reviewed series to 9794. The original module was introduced in
+Claude-coauthored commit `5fcd5632b3`. The proof now uses block addition and
+the one-block representation of the origin indicator, without a separate
+induction. Paired target and both direct-client builds pass with identical
+client objects; all 33 target declaration reports and 29,064 global simp
+entries match. Direct project inputs match prior source/object receipts; the
+transitive dependency closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-origin-block-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
