@@ -1,5 +1,6 @@
 import DiophantineConsistency.PRAAdditionCommutativity
 import DiophantineConsistency.PRAQOrder
+import DiophantineConsistency.PRAPeanoMinusPartial
 import DiophantineConsistency.PRABooleanOps
 import Foundation.FirstOrder.Arithmetic.PeanoMinus.Basic
 
@@ -35,18 +36,14 @@ theorem mapped_of_standard (σ : Sentence ℒₒᵣ)
   rw [reduct_eq]
   exact h
 
-theorem modelAddComm : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus.Axiom.addComm := by
-  apply mapped_of_standard
-  simp [PeanoMinus.Axiom.addComm]
-  intro x y
-  exact PRAAdditionCommutativity.modelAddComm x y
+theorem modelAddComm : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus.Axiom.addComm :=
+  PRAPeanoMinusPartial.model_addComm
 
 theorem modelMulOne : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus.Axiom.mulOne := by
   apply mapped_of_standard
   simp [PeanoMinus.Axiom.mulOne]
   intro x
-  change Structure.func (L := language) mulCode ![x, Structure.func (L := language) oneCode Fin.elim0] = x
-  rw [PRABooleanOps.modelOneSuccZero, modelMulSucc, modelMulZero, modelZeroLeft]
+  exact PRABooleanOps.modelMulOne x
 
 end models
 
@@ -59,10 +56,8 @@ theorem PRA_proves_mulZero : PRA ⊢ Semiformula.lMap embedding PeanoMinus.Axiom
 theorem PRA_proves_equality {σ : Sentence ℒₒᵣ} (hσ : σ ∈ 𝗘𝗤 ℒₒᵣ) :
     PRA ⊢ Semiformula.lMap embedding σ := PRA_proves_qEquality hσ
 
-theorem PRA_proves_addComm : PRA ⊢ Semiformula.lMap embedding PeanoMinus.Axiom.addComm := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ _
-  exact modelAddComm
+theorem PRA_proves_addComm : PRA ⊢ Semiformula.lMap embedding PeanoMinus.Axiom.addComm :=
+  PRAPeanoMinusPartial.PRA_proves_addComm
 
 theorem PRA_proves_mulOne : PRA ⊢ Semiformula.lMap embedding PeanoMinus.Axiom.mulOne := by
   apply Theory.Proof.complete_on_eq_models.{0,0}
