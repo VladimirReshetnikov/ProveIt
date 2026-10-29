@@ -1,3 +1,4 @@
+import ZFCinPA.OpenedClosure
 import ZFCinPA.LFvBound
 import ZFCinPA.LGlue4
 
@@ -221,12 +222,8 @@ theorem tr_peelConcl :
 end Tr
 
 lemma shift_qqAlls {body : V} (hb : IsUFormula ℒₛₑₜ body) (count : V) :
-    shift ℒₛₑₜ (qqAlls body count) = qqAlls (shift ℒₛₑₜ body) count := by
-  induction count using ISigma1.sigma1_succ_induction
-  · definability
-  case zero => simp
-  case succ count ih =>
-    rw [qqAlls_succ, shift_all (isUFormula_qqAlls.mpr hb), ih, qqAlls_succ]
+    shift ℒₛₑₜ (qqAlls body count) = qqAlls (shift ℒₛₑₜ body) count :=
+  OpenedClosure.shift_qqAlls hb count
 
 /-- **One peel step**: the freed statement at `k + 1` matched variables gives
 the relativized universal at `k`. -/
@@ -245,24 +242,8 @@ theorem peel_step {k p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
 /-- Freeing the first binder of an opened closure opens one more variable. -/
 theorem free_subst_qVec_fvarVec {k B : V} (hB : IsSemiformula ℒₛₑₜ (k + 1) B)
     (hs : shift ℒₛₑₜ B = B) :
-    free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ (fvarVec k)) B) = subst ℒₛₑₜ (fvarVec (k + 1)) B := by
-  have hf := ModelCodedBindFree.fvarVec_isTermVec (L := ℒₛₑₜ) (V := V) k
-  have hw : IsSemitermVec ℒₛₑₜ (k + 1) 1 (qVec ℒₛₑₜ (fvarVec k)) := by simpa using hf.qVec
-  rw [free, substs1, shift_substs hB hw, hs,
-    substs_substs hB (show IsSemitermVec ℒₛₑₜ 1 0 ?[^&0] by simp) hw.termShiftVec]
-  congr 1
-  apply nth_ext' (k + 1)
-  · simp [hw.termShiftVec.isUTerm]
-  · simp
-  · intro i hi
-    rw [nth_termSubstVec hw.termShiftVec.isUTerm hi, nth_termShiftVec hw.isUTerm hi,
-      nth_fvarVec _ _ hi]
-    rcases zero_or_succ i with rfl | ⟨j, rfl⟩
-    · simp [Bootstrapping.qVec]
-    · have hj : j < k := by simpa using hi
-      simp only [Bootstrapping.qVec, hf.lh, nth_adjoin_succ]
-      rw [nth_termBShiftVec hf.isUTerm hj, nth_fvarVec _ _ hj]
-      simp
+    free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ (fvarVec k)) B) = subst ℒₛₑₜ (fvarVec (k + 1)) B :=
+  OpenedClosure.free_subst_qVec_fvarVec hB hs
 
 /-- **The peel**: the statement for the opened body gives the statement for
 the closure, at zero matched variables. -/

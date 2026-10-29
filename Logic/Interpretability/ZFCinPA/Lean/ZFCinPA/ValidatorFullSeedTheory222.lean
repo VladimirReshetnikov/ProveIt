@@ -1,3 +1,4 @@
+import ZFCinPA.OpenedClosure
 import ZFCinPA.SchemaClosure
 import ZFCinPA.ValidatorSourceFullSeed222
 import ZFCinPA.ValidatorEqualityImages222
@@ -178,42 +179,18 @@ instance seedSchema_delta1 : seedSchema.Δ₁ where
     simp
 
 private lemma fvarVec_isTermVec (slots : V) :
-    IsSemitermVec ℒₛₑₜ slots 0 (fvarVec slots) := by
-  apply IsSemitermVec.iff.mpr
-  refine ⟨len_fvarVec slots,?_⟩
-  intro i hi
-  rw [nth_fvarVec slots i hi]
-  simp
+    IsSemitermVec ℒₛₑₜ slots 0 (fvarVec slots) :=
+  ModelCodedBindFree.fvarVec_isTermVec slots
 
 private lemma shift_qqAlls {body : V} (hb : IsUFormula ℒₛₑₜ body) (count : V) :
-    shift ℒₛₑₜ (qqAlls body count)=qqAlls (shift ℒₛₑₜ body) count := by
-  induction count using ISigma1.sigma1_succ_induction
-  · definability
-  case zero => simp
-  case succ count ih =>
-    rw [qqAlls_succ,shift_all (isUFormula_qqAlls.mpr hb),ih,qqAlls_succ]
+    shift ℒₛₑₜ (qqAlls body count)=qqAlls (shift ℒₛₑₜ body) count :=
+  OpenedClosure.shift_qqAlls hb count
 
 private theorem free_subst_qVec_fvarVec {k B : V}
     (hB : IsSemiformula ℒₛₑₜ (k+1) B) (hs : shift ℒₛₑₜ B=B) :
     free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ (fvarVec k)) B)=
-      subst ℒₛₑₜ (fvarVec (k+1)) B := by
-  have hf := fvarVec_isTermVec (V := V) k
-  have hw : IsSemitermVec ℒₛₑₜ (k+1) 1 (qVec ℒₛₑₜ (fvarVec k)) := by simpa using hf.qVec
-  rw [free,substs1,shift_substs hB hw,hs,
-    substs_substs hB (show IsSemitermVec ℒₛₑₜ 1 0 ?[^&0] by simp) hw.termShiftVec]
-  congr 1
-  apply nth_ext' (k+1)
-  · simp [hw.termShiftVec.isUTerm]
-  · simp
-  · intro i hi
-    rw [nth_termSubstVec hw.termShiftVec.isUTerm hi,nth_termShiftVec hw.isUTerm hi,
-      nth_fvarVec _ _ hi]
-    rcases zero_or_succ i with rfl | ⟨j,rfl⟩
-    · simp [Bootstrapping.qVec]
-    · have hj : j<k := by simpa using hi
-      simp only [Bootstrapping.qVec,hf.lh,nth_adjoin_succ]
-      rw [nth_termBShiftVec hf.isUTerm hj,nth_fvarVec _ _ hj]
-      simp
+      subst ℒₛₑₜ (fvarVec (k+1)) B :=
+  OpenedClosure.free_subst_qVec_fvarVec hB hs
 
 section Images
 
