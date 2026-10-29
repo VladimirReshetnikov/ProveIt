@@ -94,7 +94,9 @@ same axiom list. [Height-preserving conjunction inversion](reviews/parsons-selec
 is now established for arbitrary cut-free contexts. Induction-axiom reduction
 and the PRA witnessing theorem remain open. The [guard syntax](reviews/parsons-guard-independent.md)
 now preserves Σ₁ complexity and side parameters under substitution, preparing
-the intended induction-rule case.
+the intended induction-rule case. The [guarded three-premise transformer](reviews/parsons-rule-independent.md)
+now constructs that isolated case in an explicit Σ₁-rule calculus; the whole
+cut-free reduction and PRA witnessing are not yet established.
 
 The [mapped Robinson Q result](reviews/pra-q-compatibility-root.md) now
 proves that all actual Foundation Q axioms except its strict-order definition
