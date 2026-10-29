@@ -1,4 +1,5 @@
 import ZFCinPA.ValidatorEnvironmentLabels254
+import ZFCinPA.ValidatorEnvironmentSubstitution254
 import ZFCinPA.ModelCodedSpecialization
 
 set_option autoImplicit false
@@ -123,59 +124,14 @@ private instance len_delta : 𝚫₁-Function₁[V] (len : V→V) :=
 lemma encode_openAt {d p : V} (hp : IsSemiformula ℒₛₑₜ (d+1) p)
     (F B B' x fresh : V) (hB : Ext d B B' x) :
     encode (x∷F) B fresh (openAt d p)=encode F B' fresh p := by
-  have main : ∀ n p : V, IsSemiformula ℒₛₑₜ n p →
-      ∀ d : V, n=d+1 → ∀ F B B' x fresh : V, Ext d B B' x →
-        encode (x∷F) B fresh (openAt d p)=encode F B' fresh p := by
-    intro n p hp
-    apply IsSemiformula.pi1_structural_induction (P := fun n p =>
-      ∀ d : V, n=d+1 → ∀ F B B' x fresh : V, Ext d B B' x →
-        encode (x∷F) B fresh (openAt d p)=encode F B' fresh p)
-      ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
-    · unfold Ext openAt openingVec; definability
-    · intro n arity R terms hr ht d hn F B B' x s hB
-      subst n
-      have hv := (openingVec_typed d).termSubstVec ht.termShiftVec
-      rw [openAt_rel d hr ht.isUTerm,encode_rel (x∷F) B s hr hv.isUTerm,
-        encode_rel F B' s hr ht.isUTerm]
-      simp only [ValidatorEnvironmentLabels254.Formulas.atom,nth_adjoin_zero,nth_adjoin_one,
-        vec_labels_open ht F B B' x hB]
-    · intro n arity R terms hr ht d hn F B B' x s hB
-      subst n
-      have hv := (openingVec_typed d).termSubstVec ht.termShiftVec
-      rw [openAt_nrel d hr ht.isUTerm,encode_nrel (x∷F) B s hr hv.isUTerm,
-        encode_nrel F B' s hr ht.isUTerm]
-      simp only [ValidatorEnvironmentLabels254.Formulas.atom,nth_adjoin_zero,nth_adjoin_one,
-        vec_labels_open ht F B B' x hB]
-    · intro n d hn F B B' x s hB; simp
-    · intro n d hn F B B' x s hB; simp
-    · intro n p q hp hq ihp ihq d hn F B B' x s hB
-      subst n
-      rw [openAt_and d hp.isUFormula hq.isUFormula,
-        encode_and (x∷F) B s (openAt_isSemiformula hp).isUFormula
-          (openAt_isSemiformula hq).isUFormula,
-        encode_and F B' s hp.isUFormula hq.isUFormula,
-        ihp d rfl F B B' x s hB,ihq d rfl F B B' x s hB]
-    · intro n p q hp hq ihp ihq d hn F B B' x s hB
-      subst n
-      rw [openAt_or d hp.isUFormula hq.isUFormula,
-        encode_or (x∷F) B s (openAt_isSemiformula hp).isUFormula
-          (openAt_isSemiformula hq).isUFormula,
-        encode_or F B' s hp.isUFormula hq.isUFormula,
-        ihp d rfl F B B' x s hB,ihq d rfl F B B' x s hB]
-    · intro n p hp ih d hn F B B' x s hB
-      subst n
-      rw [openAt_all d hp.isUFormula,
-        encode_all (x∷F) B s (openAt_isSemiformula hp).isUFormula,
-        encode_all F B' s hp.isUFormula]
-      exact congrArg (fun body => _root_.SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wal s body)
-        (ih (d+1) rfl F (s∷B) (s∷B') x (s+2) (ext_cons hB s))
-    · intro n p hp ih d hn F B B' x s hB
-      subst n
-      rw [openAt_exs d hp.isUFormula,
-        encode_exs (x∷F) B s (openAt_isSemiformula hp).isUFormula,
-        encode_exs F B' s hp.isUFormula,
-        ih (d+1) rfl F (s∷B) (s∷B') x (s+2) (ext_cons hB s)]
-  exact main (d+1) p hp d rfl F B B' x fresh hB
+  have hm : ValidatorEnvironmentSubstitution254.Matches (x∷F) B B' (d+1) (openingVec d) := by
+    intro i hi
+    have hv : IsSemiterm ℒₛₑₜ (d+1) (^#i) := by simpa using hi
+    have h := term_labels_open hv F B B' x hB
+    simpa only [termOpenAt,termShift_bvar,termSubst_bvar,TermLabels.term_bvar] using h
+  have he := ValidatorEnvironmentSubstitution254.encode_subst hp.shift (openingVec_typed d)
+    (x∷F) B B' fresh hm
+  simpa only [openAt,encode_shift hp.isUFormula,tail_cons] using he
 
 /-- The matrix identity used by the actual Foundation ALL rule. Source and
 target contexts still require the separate formula-level alpha theorem. -/
