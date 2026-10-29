@@ -2361,3 +2361,42 @@ exponentials (a mechanical change to `towerB` and `ax_le`).
 - the `L` inductions (`glue`, `peel`, `driverT`, `numOK`, `fun_MT`,
   `slot_MT`) restated with `SizedProof`;
 - the `sep`/`repl` assembly.
+
+## Stage 3b: sized template compilation pieces (2026-10-28)
+
+All of the following hold in every model of IΣ₁; `#print axioms` gives
+`propext`, `Classical.choice` and `Quot.sound` (`SizedTemplateCompilerAudit`).
+
+- **`ZFCinPA.SizedTemplateCompiler.sized_compile`.** Fix a buffered
+  translation and a meta-level derivation `d`. Suppose every translated
+  formula of every sequent of `d` (at buffers `≤ B`) is below `F`, the
+  translated terms and axiom leaves are below `2^e`, and `F ≤ e`. Then the
+  translated conclusion has a derivation with code at most
+  `2^(1024^(height d)·e)`. It is proved by meta induction on `d` from the
+  bounded primitive rules, so it never uses `compileDerivation`'s chosen
+  axiom codes.
+- **`ZFCinPA.SizedShiftCancel`.** `cancelShiftLe` re-derives
+  `⊢ shift φ ⇒ ⊢ φ` from the bounded rules: generalize, then specialize at
+  `&0`, in four rule stages. `cancelShiftNLe` iterates it along `shiftN`.
+  This replaces `cancelShift`, whose `TProof.all`/`specialize` codes are
+  chosen.
+- **`ZFCinPA.TemplateTranslateLevel.translate_level`.** For each fixed
+  template formula `φ` there is a meta-level constant `tA φ : ℕ`, uniform
+  across models, such that placeholders at level `u` give a translation at
+  level `tA φ·(u+1)`. Placeholder atoms go through `subst_level`, negated
+  ones through `neg_level`, and set atoms are bounded directly.
+
+**Next.**
+1. Instantiate `Good` for `openTranslation Ks`. The formula bound is
+   `F = lvB(Amax·(u+B+1)) + 1` with `Amax` the meta maximum of `tA` over the
+   formulas of `d`; `shiftedPredicates Ks b` is at level `u + b` by
+   `shift_level`.
+2. Bound the template axiom leaves:
+   - `liftedZFProof` is `byAxm`, so its code is explicit;
+   - `separationProof`/`replacementProof` go through `openAxiomProofCode`,
+     an explicit code function whose `specializedProofCode` recursion needs
+     level bounds;
+   - the `SetCongruence` congruence proofs are internal inductions that need
+     bounded twins.
+3. With those, `compiled`/`compiledG` get explicit bounds, and the `L`
+   inductions can be restated on top of `SizedProof`.

@@ -1,7 +1,11 @@
 import ZFCinPA.SizedTemplateCompiler
+import ZFCinPA.SizedShiftCancel
+import ZFCinPA.TemplateTranslateLevel
 
-/-! Axiom audit for `SizedTemplateCompiler`. -/
+/-! Axiom audit for the sized template compiler, shift cancellation and translation levels. -/
 
-open LeanProofs.ZFCinPA.SizedTemplateCompiler
-
-#print axioms sized_compile
+#print axioms LeanProofs.ZFCinPA.SizedTemplateCompiler.sized_compile
+#print axioms LeanProofs.ZFCinPA.SizedShiftCancel.cancelShiftLe
+#print axioms LeanProofs.ZFCinPA.SizedShiftCancel.cancelShiftNLe
+#print axioms LeanProofs.ZFCinPA.TemplateTranslateLevel.translateVec_le
+#print axioms LeanProofs.ZFCinPA.TemplateTranslateLevel.translate_level
