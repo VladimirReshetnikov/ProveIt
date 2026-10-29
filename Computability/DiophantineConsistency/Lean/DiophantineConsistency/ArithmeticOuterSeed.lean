@@ -43,13 +43,8 @@ def SeedRelations (u R s n eta zeta gamma : V) : Prop :=
     ∃ r, R=2*r+1 ∧ tau=xcoord (r+1) (2*(E*Y-1)+1) ∧ k=2*ycoord (r+1) (2*(E*Y-1)+1)
 
 /-- `x_t(b) > (b+1)*y_t(b)` at every internal time. -/
-theorem x_gt (t b : V) : (b+1)*ycoord t b<xcoord t b := by
-  apply lt_of_mul_self_lt_mul_self₀ (by simp)
-  have he : xcoord t b*xcoord t b=
-      ((b+1)*ycoord t b)*((b+1)*ycoord t b)+(1+2*(b+1)*ycoord t b*ycoord t b) := by
-    rw [norm]; unfold delta; ring
-  rw [he]
-  exact lt_add_of_pos_right _ (by simp)
+theorem x_gt (t b : V) : (b+1)*ycoord t b<xcoord t b :=
+  ArithmeticPellPowerRecovery.x_gt b t
 
 /-- **The outer Pell seed.** -/
 theorem outer_seed_with_size (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop : population R=3*u+2) :

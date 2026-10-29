@@ -12,17 +12,20 @@ open scoped LO.FirstOrder.Arithmetic
 open ArithmeticPellRecurrence ArithmeticPellFirstIndex ArithmeticPellHalfIndex
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
+/-- The Pell abscissa exceeds (b+1) times the ordinate. -/
+theorem x_gt (b t : V) : (b+1)*ycoord t b<xcoord t b := by
+  apply lt_of_mul_self_lt_mul_self₀ (by simp)
+  have he : xcoord t b*xcoord t b=
+      ((b+1)*ycoord t b)*((b+1)*ycoord t b)+(1+2*(b+1)*ycoord t b*ycoord t b) := by
+    rw [norm]
+    unfold delta
+    ring
+  rw [he]
+  exact lt_add_of_pos_right _ (by simp)
+
 /-- The strict lower step includes time zero. -/
 theorem y_lower (b t : V) : (2*b+3)*ycoord t b<ycoord (t+1) b := by
-  have hx : (b+1)*ycoord t b<xcoord t b := by
-    apply lt_of_mul_self_lt_mul_self₀ (by simp)
-    have he : xcoord t b*xcoord t b=
-        ((b+1)*ycoord t b)*((b+1)*ycoord t b)+(1+2*(b+1)*ycoord t b*ycoord t b) := by
-      rw [norm]
-      unfold delta
-      ring
-    rw [he]
-    exact lt_add_of_pos_right _ (by simp)
+  have hx := x_gt b t
   rw [y_succ]
   calc
     (2*b+3)*ycoord t b=(b+1)*ycoord t b+(b+2)*ycoord t b := by ring
