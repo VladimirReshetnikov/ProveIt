@@ -60,15 +60,11 @@ theorem shs_level {n : ℕ} (φ : Bootstrapping.Semiformula V ℒₛₑₜ n) {u
 def fvVec (n : ℕ) : Bootstrapping.SemitermVec V ℒₛₑₜ n 0 :=
   fun j => Bootstrapping.Semiterm.fvar ((j : ℕ) : V)
 
-theorem fvar_small : ∀ j : ℕ, j ≤ 6 → (^&(j : V) : V) ≤ lvB 3
-  | 0, _ => by rw [lvB_three]; simp [qqFvar, pair]; norm_num
-  | 1, _ => by rw [lvB_three]; simp [qqFvar, pair]; norm_num
-  | 2, _ => by rw [lvB_three]; simp [qqFvar, pair]; norm_num
-  | 3, _ => by rw [lvB_three]; simp [qqFvar, pair]; norm_num
-  | 4, _ => by rw [lvB_three]; simp [qqFvar, pair]; norm_num
-  | 5, _ => by rw [lvB_three]; simp [qqFvar, pair]; norm_num
-  | 6, _ => by rw [lvB_three]; simp [qqFvar, pair]; norm_num
-  | j + 7, h => absurd h (by omega)
+theorem fvar_small : ∀ j : ℕ, j ≤ 6 → (^&(j : V) : V) ≤ lvB 3 := by
+  intro j hj
+  have hj' : j = 0 ∨ j = 1 ∨ j = 2 ∨ j = 3 ∨ j = 4 ∨ j = 5 ∨ j = 6 := by omega
+  rcases hj' with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rw [lvB_three] <;> simp [qqFvar, pair] <;> norm_num
 
 theorem fvVec_le {n : ℕ} (hn : n ≤ 6) : ∀ j, ((fvVec (V := V) n) j).val ≤ lvB 3 := fun j => by
   simpa [fvVec] using fvar_small j (by omega)
@@ -133,10 +129,10 @@ theorem strip : ∀ (n : ℕ) (φ : Bootstrapping.Semiformula V ℒₛₑₜ n) 
         unfold sβ
         rw [hcast]
         exact le_of_add_eq (y := 11) (by ring)
+      have hχ : ∀⁰ χ = (shs n (∀⁰ φ)).subst (fvVec n) := by
+        rw [shs_all, Bootstrapping.Semiformula.substs_all]
       have hAv : (∀⁰ χ).val ≤ lvB (sβ (u + n)) := by
-        have e : ∀⁰ χ = (shs n (∀⁰ φ)).subst (fvVec n) := by
-          rw [shs_all, Bootstrapping.Semiformula.substs_all]
-        rw [e]
+        rw [hχ]
         refine lift_lvB (tsubst_le _ _ (shs_level _ hAφ n) (by norm_num) (fvVec_le hn')) ?_
         unfold sβ
         exact le_of_eq (by ring)
@@ -146,9 +142,7 @@ theorem strip : ∀ (n : ℕ) (φ : Bootstrapping.Semiformula V ℒₛₑₜ n) 
         rw [hcast]
         exact le_of_add_eq (y := 20 * (n : V) + 29) (by ring)
       have d1 := all_step hW4 hAv hFv hmW (by rw [free_fvVec]; exact h)
-      have e2 : ∀⁰ χ = (shs n (∀⁰ φ)).subst (fvVec n) := by
-        rw [shs_all, Bootstrapping.Semiformula.substs_all]
-      rw [e2] at d1
+      rw [hχ] at d1
       have ih := strip n (∀⁰ φ) (u + 2) (W + 1 + 1) hn' (le_trans hu le_self_add) hAφ
         (le_trans hW4 (le_trans le_self_add le_self_add)) (by
           refine le_trans ?_ (le_trans hW (le_trans le_self_add le_self_add))
@@ -551,15 +545,11 @@ theorem conj_le {n : ℕ} : ∀ {a : ℕ} (f : Fin a → Bootstrapping.Semiformu
       push_cast
       ring
 
-theorem bvar_small : ∀ j : ℕ, j ≤ 6 → (^#(j : V) : V) ≤ lvB 3
-  | 0, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
-  | 1, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
-  | 2, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
-  | 3, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
-  | 4, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
-  | 5, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
-  | 6, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
-  | j + 7, h => absurd h (by omega)
+theorem bvar_small : ∀ j : ℕ, j ≤ 6 → (^#(j : V) : V) ≤ lvB 3 := by
+  intro j hj
+  have hj' : j = 0 ∨ j = 1 ∨ j = 2 ∨ j = 3 ∨ j = 4 ∨ j = 5 ∨ j = 6 := by omega
+  rcases hj' with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rw [lvB_three] <;> simp [qqBvar, pair] <;> norm_num
 
 /-- Substitution of variable terms, for typed vectors with bound variables. -/
 theorem tsubst_le_var {k m : ℕ} (ψ : Bootstrapping.Semiformula V ℒₛₑₜ k)
