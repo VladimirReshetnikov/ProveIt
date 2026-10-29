@@ -1718,5 +1718,13 @@ match. ConstructionVariation objects match, while PackingCells objects differ
 for an unknown reason; transitive dependencies remain cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261029-packing-rotation-evidence/BUNDLE.json).
 
+The window prefix-tail simplification `6416d3a8d7` removes three net Lean
+lines, bringing the reviewed series to 10031. The affected proof originated in
+Claude-coauthored commit `5fcd5632b3`. A targeted left-side rewrite replaces
+the intermediate congruence calculation. Paired WindowCarry and WindowInterface
+builds pass with identical client objects; target and client declaration and
+registration reports match. The transitive closure remains cached. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261029-window-carry-tail-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
