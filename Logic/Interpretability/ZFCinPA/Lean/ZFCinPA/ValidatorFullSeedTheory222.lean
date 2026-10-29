@@ -54,7 +54,7 @@ private theorem subst01_quote (K : SetTheorySemiproposition 2) :
   have : i=0 ∨ i=1 := by omega
   rcases this with rfl | rfl <;> simp
 
-private theorem negative_core_le_body (k : V) :
+theorem neg_subst_le_fullSeedBody (k : V) :
     Bootstrapping.neg ℒₛₑₜ (subst ℒₛₑₜ (^#0∷^#1∷0) k) ≤ fullSeedBodyVal k := by
   unfold fullSeedBodyVal Bootstrapping.imp
   exact le_of_lt <| lt_trans (lt_or_left _ _) <| lt_trans (lt_forall _) <|
@@ -67,7 +67,7 @@ private theorem negative_core_le_body (k : V) :
 only a recognizer parameterization; the theory itself is unchanged. -/
 theorem recognizerBody_quote_bound (K : SetTheorySemiproposition 2) :
     (⌜K⌝ : ℕ) ≤ seedRecognizerBodyVal (⌜K⌝ : ℕ) := by
-  have h := negative_core_le_body (V := ℕ) (⌜∼K⌝ : ℕ)
+  have h := neg_subst_le_fullSeedBody (V := ℕ) (⌜∼K⌝ : ℕ)
   rw [subst01_quote,quote_negative] at h
   have hk := FirstOrder.Semiformula.quote_isSemiformula (V := ℕ) K
   rw [hk.isUFormula.neg_neg] at h

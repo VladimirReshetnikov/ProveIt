@@ -49,18 +49,9 @@ private theorem subst01 {k : V} (hk : IsSemiformula ℒₛₑₜ 2 k) :
     subst j
     simp
 
-private theorem negative_core_le_body (k : V) :
-    Bootstrapping.neg ℒₛₑₜ (subst ℒₛₑₜ (^#0∷^#1∷0) k) ≤ fullSeedBodyVal k := by
-  unfold fullSeedBodyVal Bootstrapping.imp
-  exact le_of_lt <| lt_trans (lt_or_left _ _) <| lt_trans (lt_forall _) <|
-    lt_trans (lt_or_right _ _) <| lt_trans (lt_forall _) <|
-    lt_trans (lt_K!_right _ _) <| lt_trans (lt_exists _) <|
-    lt_trans (lt_or_right _ _) <| lt_trans (lt_forall _) <|
-    lt_trans (lt_K!_left _ _) <| lt_trans (lt_exists _) (lt_forall _)
-
 theorem recognizer_parameter_bound (K : Semiformula V ℒₛₑₜ 2) :
     K.val ≤ seedRecognizerBodyVal K.val := by
-  have h := negative_core_le_body (∼K).val
+  have h := ValidatorFullSeedTheory222.neg_subst_le_fullSeedBody (∼K).val
   rw [subst01 (∼K).isSemiformula] at h
   simpa [seedRecognizerBodyVal] using h
 
