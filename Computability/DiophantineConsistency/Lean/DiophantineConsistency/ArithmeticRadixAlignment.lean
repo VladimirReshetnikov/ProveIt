@@ -30,12 +30,9 @@ theorem block_quotient (d n : V) :
     obtain ⟨z,hz⟩ := ih
     refine ⟨1+Exp.exp d*z,?_⟩
     rw [show d*(n+1)=d*n+d by ring,exp_add,hz]
-    calc
-      (1+(Exp.exp d-1)*z)*Exp.exp d=
-          Exp.exp d+(Exp.exp d-1)*(Exp.exp d*z) := by ring
-      _=((Exp.exp d-1)+1)+(Exp.exp d-1)*(Exp.exp d*z) :=
-        congrArg (fun x : V => x+(Exp.exp d-1)*(Exp.exp d*z)) (radix_add_one d).symm
-      _=1+(Exp.exp d-1)*(1+Exp.exp d*z) := by ring
+    rw [show Exp.exp d=(Exp.exp d-1)+1 from (radix_add_one d).symm]
+    simp only [add_tsub_cancel_right]
+    ring
 
 /-- Reduction of an arbitrary internal exponent, with a nonzero modulus. -/
 theorem exp_mod_radix (d u : V) (hd : 2≤d) :
@@ -110,9 +107,7 @@ theorem factor_alignment (d J R w : V) (hd : 2≤d) (hJ : 0<J)
     conv_lhs => rw [←add_tsub_self_of_le hbound]
     rw [exp_add,←hqN]
   have hcancel : q*w=q*Exp.exp (R-d*N) := by
-    calc
-      q*w=Exp.exp R := by simpa [q,mul_comm] using he.symm
-      _=q*Exp.exp (R-d*N) := hrest
+    simpa only [q,mul_comm] using he.symm.trans hrest
   exact ⟨hw,N,hN,hqN,hbound,mul_left_cancel₀ (ne_of_gt hq) hcancel⟩
 
 end DiophantineConsistency.ArithmeticRadixAlignment
