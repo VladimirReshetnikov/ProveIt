@@ -1,0 +1,29 @@
+Independent review of controller dummy-map refactor, 28 October 2026
+
+The new proof preserves the original theorem statement and all hypotheses. For
+positions satisfying IsPos, pos_decode and the existing injectivity hypothesis
+show that the decoded coordinate has the selected zc value exactly when the
+position is pos e. Splitting on that equality yields the selected and unselected
+cases; the existing disjointness hypothesis handles the selected bit. Outside
+IsPos, isPos_pos rules out pos e and both sides are zero. No import changes.
+
+I verified the eight source builds' status, source/workspace before/after
+hashes, output, log and time hashes, and all 30 direct-input source/object hashes
+against the retained paths. Their input audit reports same-phase outputs or
+matching current-source/object historical receipts. The target and downstream
+interface logs and assembly logs compare byte-for-byte. The target census and
+global simp comparison are supplied by the prototype's recorded probes.
+
+The archive CRC and all 67 manifest members match. The source baseline is
+byte-identical to both the parent of commit 61482d12ea and Claude-coauthored
+commit 172621966a; the final snapshot is byte-identical to 61482d12ea. My first
+archive verification mistakenly assumed the ZIP had no enclosing directory;
+it failed before checking the manifest. The corrected check used the actual
+prefix and passed. The original failed proof's source was reconstructed after
+being overwritten and is not counted as passing validation. The first downstream
+interface probe also failed because of a wrong namespace; corrected probes pass.
+
+This is an incremental validation: unchanged transitive dependencies and package
+libraries remain precompiled, and the archive excludes compiled objects and the
+original environment. The comparison does not prove a clean full-repository
+build or equality of all persistent environment extensions.

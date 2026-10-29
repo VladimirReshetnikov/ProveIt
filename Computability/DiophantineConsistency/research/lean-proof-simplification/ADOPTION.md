@@ -1279,5 +1279,17 @@ retained but excluded. Object and arithmetic imports are checked separately:
 their combined import encounters the same existing Matrix conflict in both
 phases. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-positive-shift-sharing-evidence/BUNDLE.json).
 
+The controller dummy-map proof `61482d12ea` removes 26 net lines, bringing the
+reviewed series to 9532. Its original module was introduced in the
+Claude-coauthored commit `172621966a`. The proof now relates the decoded
+coordinate directly to its position and splits on whether that position is
+selected. Paired controller, variation and assembly builds pass; all 41 target
+declaration type and axiom reports and the 38,804-entry global simp set match.
+Thirty direct-input occurrences match same-phase outputs or prior
+current-source/object receipts; transitive dependencies remain precompiled.
+The failed initial proof and a wrong-namespace probe are retained but excluded,
+and the original failed proof source was reconstructed after being overwritten.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-controller-dmap-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
