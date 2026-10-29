@@ -63,7 +63,9 @@ logical cases have now been completed for side-tagged occurrences in the
 negative base-axiom decomposition and the single global recursion remain open.
 The separate [negative-base state](reviews/parsons-base-state-root.md) now
 handles universal opening and terminal resolution when its explicit Π₂/Σ₁
-shape hypotheses hold. Initial axiom classification, integration and a
+shape hypotheses hold. The [base-axiom shape theorem](reviews/parsons-base-shape-root.md)
+now establishes the required universal-prefix/Σ₁ shape for every PA-minus
+axiom and preserves it under opening and shifting. Integration and a
 secondary recursion measure remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
@@ -83,8 +85,10 @@ reverse witnesses and adaptive zero construction remain open. The
 [strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
 now follows from the maintained strong norm with the scaled multiplier.
 The [auxiliary witness positivity lemma](reviews/adaptive-construction-aux2011-root.md)
-proves `y-u>0` from the auxiliary norm when `y ≥ 2`; this bound and the rest
-of the adaptive witness map still need binding to the actual construction.
+proves `y-u>0` from the auxiliary norm when `y ≥ 2`; the
+[coordinate client](reviews/adaptive-construction-aux-client2011-root.md)
+binds this to the actual 14-coordinate equations. The ordinate bound and
+the rest of the witness map still need binding to the actual construction.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)

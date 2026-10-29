@@ -1,0 +1,10 @@
+import DiophantineConsistency.ParsonsBaseShape
+#print axioms DiophantineConsistency.ParsonsBaseShape.eq_prefix_sentence
+#print axioms DiophantineConsistency.ParsonsBaseShape.paminus_prefix_sentence
+#print axioms DiophantineConsistency.ParsonsBaseShape.paminus_prefix
+#print axioms DiophantineConsistency.ParsonsBaseShape.prefix_rew
+#print axioms DiophantineConsistency.ParsonsBaseShape.prefix_open
+#print axioms DiophantineConsistency.ParsonsBaseShape.nonterminal_is_all
+#print axioms DiophantineConsistency.ParsonsBaseShape.initial
+#print axioms DiophantineConsistency.ParsonsBaseShape.openState
+#print axioms DiophantineConsistency.ParsonsBaseShape.shiftState
