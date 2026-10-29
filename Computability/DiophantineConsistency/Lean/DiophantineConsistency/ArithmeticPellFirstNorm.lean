@@ -44,8 +44,7 @@ theorem two_le_ordinate (q x k : V) (hk : 0<k)
     calc
       x*x<x*x+(q+1) := by simp
       _=(q+2)*(q+2) := by rw [h]; unfold discriminant; ring
-  have hge := lt_iff_succ_le.mp hlo
-  rw [show q+1+1=q+2 by ring] at hge
+  have hge : q+2≤x := by simpa [show q+1+1=q+2 by ring] using lt_iff_succ_le.mp hlo
   exact (not_lt_of_ge hge) hhi
 
 theorem norm_advance_iff (q x k : V) :
@@ -87,10 +86,7 @@ theorem solution_index (q x k : V) (h : x*x=1+discriminant q*k*k) :
           (by simpa using lt_iff_succ_le.mp (positive_x q x 0 hn))
         subst x
         exact ⟨0,le_refl _,by simp,by simp⟩
-      · have hkp : 0<k := by
-          rcases Arithmetic.zero_le k with he|hp
-          · exact False.elim (hk he.symm)
-          · exact hp
+      · have hkp : 0<k := pos_iff_ne_zero.mpr hk
         obtain ⟨u,v,_,hv,hu,hix,hik⟩ := descent q x k hkp hn
         obtain ⟨time,ht,hxu,hyv⟩ := ih v hv u (x_bound q u v hu) hu
         refine ⟨time+1,lt_iff_succ_le.mp (lt_of_le_of_lt ht hv),?_,?_⟩
