@@ -1,0 +1,8 @@
+import DiophantineConsistency.ParsonsShift
+#print axioms DiophantineConsistency.ParsonsShift.normalized_closed
+#print axioms DiophantineConsistency.ParsonsShift.state_shift
+#print axioms DiophantineConsistency.ParsonsShift.shift_formula
+#print axioms DiophantineConsistency.ParsonsShift.shift_output
+#print axioms DiophantineConsistency.ParsonsShift.shift_formulas
+#print axioms DiophantineConsistency.ParsonsShift.shift_outputs
+#print axioms DiophantineConsistency.ParsonsShift.marked_universal
