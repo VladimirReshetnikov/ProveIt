@@ -143,3 +143,13 @@ sequent to its parameter-closed counterexample matrix and then cut-eliminates
 the resulting sequent. The [independent replay](../reviews/parsons-closure-root.md)
 checks this preprocessing transformer. Translating the resulting cut-free
 proof and proving PRA witnessing remain open.
+
+## Actual IΣ₁ proof client
+
+[`ParsonsTheoryNormalize.normalizeISigma`](../Lean/DiophantineConsistency/ParsonsTheoryNormalize.lean)
+starts with an actual Foundation IΣ₁ proof, partitions its finite axioms into
+PA-minus and Σ₁ induction, and returns a normalized cut-free sequent with
+certificates for the partition. The [independent replay](../reviews/parsons-theory-normalize-root.md)
+checks this bridge. The transformation uses classical choice and is not
+claimed primitive recursive. Translation into the rule calculus and PRA
+witnessing remain open.
