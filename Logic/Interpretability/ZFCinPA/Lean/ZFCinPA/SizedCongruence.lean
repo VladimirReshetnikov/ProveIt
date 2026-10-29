@@ -373,6 +373,15 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
 
 /-! ## The propositional steps -/
 
+private theorem cseq_parts {n w₁ w₂ E c v p : V} (hp : IsSemiformula ℒₛₑₜ n p)
+    (hv : p ≤ lvB v) (inp : Inp n w₁ w₂ E c) :
+    neg ℒₛₑₜ (subst ℒₛₑₜ w₁ p) ≤ lvB (mB v c) ∧ subst ℒₛₑₜ w₂ p ≤ lvB (mB v c) ∧
+      IsFormula ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ w₁ p)) ∧ IsFormula ℒₛₑₜ (subst ℒₛₑₜ w₂ p) := by
+  have hb := cseq_le hp hv inp
+  have hf := cseq_formulaSet hp inp
+  exact ⟨hb _ (by simp [Cseq]), hb _ (by simp [Cseq]),
+    hf _ (by simp [Cseq]), hf _ (by simp [Cseq])⟩
+
 theorem step_and {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ n p)
     (hq : IsSemiformula ℒₛₑₜ n q) (inp : Inp n w₁ w₂ E c) (hpqv : p ^⋏ q ≤ lvB v)
     (hW : mB v c + 1 ≤ W) (hW4 : 4 ≤ W)
@@ -381,11 +390,8 @@ theorem step_and {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ 
   have hpq : IsSemiformula ℒₛₑₜ n (p ^⋏ q) := by simp [hp, hq]
   have hS0 := cseq_le hpq hpqv inp
   have hSf := cseq_formulaSet hpq inp
-  have hpb := cseq_le hp (le_trans (le_of_lt (lt_K!_left p q)) hpqv) inp
-  have hqb := cseq_le hq (le_trans (le_of_lt (lt_K!_right p q)) hpqv) inp
-  have hpf := cseq_formulaSet hp inp
-  have hqf := cseq_formulaSet hq inp
-  obtain ⟨hw₁, hw₂, -, -, -, -, -, -⟩ := inp
+  have hw₁ := inp.1
+  have hw₂ := inp.2.1
   set A₁ := subst ℒₛₑₜ w₁ p
   set B₁ := subst ℒₛₑₜ w₁ q
   set A₂ := subst ℒₛₑₜ w₂ p
@@ -396,14 +402,12 @@ theorem step_and {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ 
       neg_and (hp.subst hw₁).isUFormula (hq.subst hw₁).isUFormula]
   rw [hS] at hS0 hSf ⊢
   set S := insert (neg ℒₛₑₜ A₁ ^⋎ neg ℒₛₑₜ B₁) (insert (A₂ ^⋏ B₂) E) with hSdef
-  have mA₁ : neg ℒₛₑₜ A₁ ≤ lvB (mB v c) := hpb _ (by simp [Cseq, A₁])
-  have mA₂ : A₂ ≤ lvB (mB v c) := hpb _ (by simp [Cseq, A₂])
-  have mB₁ : neg ℒₛₑₜ B₁ ≤ lvB (mB v c) := hqb _ (by simp [Cseq, B₁])
-  have mB₂ : B₂ ≤ lvB (mB v c) := hqb _ (by simp [Cseq, B₂])
-  have fA₁ : IsFormula ℒₛₑₜ (neg ℒₛₑₜ A₁) := hpf _ (by simp [Cseq, A₁])
-  have fA₂ : IsFormula ℒₛₑₜ A₂ := hpf _ (by simp [Cseq, A₂])
-  have fB₁ : IsFormula ℒₛₑₜ (neg ℒₛₑₜ B₁) := hqf _ (by simp [Cseq, B₁])
-  have fB₂ : IsFormula ℒₛₑₜ B₂ := hqf _ (by simp [Cseq, B₂])
+  obtain ⟨mA₁, mA₂, fA₁, fA₂⟩ := cseq_parts hp (le_trans (le_of_lt (lt_K!_left p q)) hpqv) inp
+  obtain ⟨mB₁, mB₂, fB₁, fB₂⟩ := cseq_parts hq (le_trans (le_of_lt (lt_K!_right p q)) hpqv) inp
+  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ A₁) at fA₁
+  change IsFormula ℒₛₑₜ A₂ at fA₂
+  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ B₁) at fB₁
+  change IsFormula ℒₛₑₜ B₂ at fB₂
   have hW1 : mB v c + 1 ≤ W + 1 := le_trans hW le_self_add
   have hW2 : mB v c + 1 ≤ W + 1 + 1 := le_trans hW1 le_self_add
   have side : ∀ (X Y : V), X ≤ lvB (mB v c) → IsFormula ℒₛₑₜ X →
@@ -436,11 +440,8 @@ theorem step_or {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ n
   have hpq : IsSemiformula ℒₛₑₜ n (p ^⋎ q) := by simp [hp, hq]
   have hS0 := cseq_le hpq hpqv inp
   have hSf := cseq_formulaSet hpq inp
-  have hpb := cseq_le hp (le_trans (le_of_lt (lt_or_left p q)) hpqv) inp
-  have hqb := cseq_le hq (le_trans (le_of_lt (lt_or_right p q)) hpqv) inp
-  have hpf := cseq_formulaSet hp inp
-  have hqf := cseq_formulaSet hq inp
-  obtain ⟨hw₁, hw₂, -, -, -, -, -, -⟩ := inp
+  have hw₁ := inp.1
+  have hw₂ := inp.2.1
   set A₁ := subst ℒₛₑₜ w₁ p
   set B₁ := subst ℒₛₑₜ w₁ q
   set A₂ := subst ℒₛₑₜ w₂ p
@@ -451,14 +452,12 @@ theorem step_or {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ n
       neg_or (hp.subst hw₁).isUFormula (hq.subst hw₁).isUFormula]
   rw [hS] at hS0 hSf ⊢
   set S := insert (neg ℒₛₑₜ A₁ ^⋏ neg ℒₛₑₜ B₁) (insert (A₂ ^⋎ B₂) E) with hSdef
-  have mA₁ : neg ℒₛₑₜ A₁ ≤ lvB (mB v c) := hpb _ (by simp [Cseq, A₁])
-  have mA₂ : A₂ ≤ lvB (mB v c) := hpb _ (by simp [Cseq, A₂])
-  have mB₁ : neg ℒₛₑₜ B₁ ≤ lvB (mB v c) := hqb _ (by simp [Cseq, B₁])
-  have mB₂ : B₂ ≤ lvB (mB v c) := hqb _ (by simp [Cseq, B₂])
-  have fA₁ : IsFormula ℒₛₑₜ (neg ℒₛₑₜ A₁) := hpf _ (by simp [Cseq, A₁])
-  have fA₂ : IsFormula ℒₛₑₜ A₂ := hpf _ (by simp [Cseq, A₂])
-  have fB₁ : IsFormula ℒₛₑₜ (neg ℒₛₑₜ B₁) := hqf _ (by simp [Cseq, B₁])
-  have fB₂ : IsFormula ℒₛₑₜ B₂ := hqf _ (by simp [Cseq, B₂])
+  obtain ⟨mA₁, mA₂, fA₁, fA₂⟩ := cseq_parts hp (le_trans (le_of_lt (lt_or_left p q)) hpqv) inp
+  obtain ⟨mB₁, mB₂, fB₁, fB₂⟩ := cseq_parts hq (le_trans (le_of_lt (lt_or_right p q)) hpqv) inp
+  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ A₁) at fA₁
+  change IsFormula ℒₛₑₜ A₂ at fA₂
+  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ B₁) at fB₁
+  change IsFormula ℒₛₑₜ B₂ at fB₂
   have hW1 : mB v c + 1 ≤ W + 1 := le_trans hW le_self_add
   have hW2 : mB v c + 1 ≤ W + 1 + 1 := le_trans hW1 le_self_add
   set S₂ := insert A₂ (insert B₂ S) with hS₂
