@@ -116,10 +116,9 @@ theorem positive_quotient (c f R u H : V) (hc : 0<c) (hu : 0<u)
       u=absdiff (f*f*c*T) (f*f*R+c) := by
   obtain ⟨o,ho⟩ := mod_eq_zero_iff_dvd.mp huf
   have ho0 : 0<o := by
-    by_contra h
-    have hz : o=0 := le_antisymm (le_of_not_gt h) (by simp)
-    have hzero : u+c=0 := by simpa [hz] using ho
-    exact (ne_of_gt (add_pos hu hc)) hzero
+    apply pos_of_mul_pos_right (a := f*f) _ (by simp)
+    rw [←ho]
+    exact add_pos hu hc
   have hsum : (u+c+R)%c=0 := by
     calc
       (u+c+R)%c=(u+R+c)%c := by congr 1; ring
@@ -132,10 +131,9 @@ theorem positive_quotient (c f R u H : V) (hc : 0<c) (hu : 0<u)
   let T:V := (o+R)/c
   have hT : c*T=o+R := mul_div_self_of_dvd.mpr (mod_eq_zero_iff_dvd.mp hco)
   have hTp : 0<T := by
-    by_contra h
-    have hz : T=0 := le_antisymm (le_of_not_gt h) (by simp)
-    have hzero : o+R=0 := by simpa [hz] using hT.symm
-    exact (ne_of_gt (lt_of_lt_of_le ho0 (by simp))) hzero
+    apply pos_of_mul_pos_right (a := c) _ (by simp)
+    rw [hT]
+    exact lt_of_lt_of_le ho0 (by simp)
   have hliteral : f*f*c*T=u+c+f*f*R := by
     calc
       f*f*c*T=(f*f)*(c*T) := by ring
@@ -191,11 +189,9 @@ theorem auxiliary_seed (a R : V) (hphase : R%4=3) :
     rw [←hodd,hb] at hh
     exact hh
   have hu : 0<u := by
-    by_contra h
-    have hz : u=0 := le_antisymm (le_of_not_gt h) (by simp)
-    have hzero : xcoord R (I-2)=0 := by simpa [hz] using hux
-    have hxpos : 0<xcoord R (I-2) := lt_of_lt_of_le (by simp : (0:V)<1) (one_le_x R (I-2))
-    exact (ne_of_gt hxpos) hzero
+    apply pos_of_mul_pos_right (a := I) _ (by simp)
+    rw [←hux]
+    exact lt_of_lt_of_le (by simp : (0:V)<1) (one_le_x R (I-2))
   have hy : 0<y := lt_of_lt_of_le hR (time_le_y R (I-2))
   have hphaseindex : 2*(2*(R/4)+1)+1=R := by
     calc
