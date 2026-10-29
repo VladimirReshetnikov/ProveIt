@@ -115,9 +115,7 @@ theorem modelSearchPredecessorGood {n : ℕ} (good : Code (n+1)) (x : M) (e : �
     · rw [hg, modelSelectZero] at hs
       rw [hs]
       exact (minimalBody_eval good t e).mp ht
-    · have hex := modelExhaustion (M := M)
-      simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
-      have he := (PRAExhaustion.body_eval (g (find t)) e).mp (hex e (g (find t)))
+    · have he := modelZeroOrSuccPred (g (find t))
       have hsucc := he.resolve_left hg
       change s (Structure.func (L := language) predCode (fun _ => g (find t))) = g (find t) at hsucc
       rw [←hsucc, modelSelectSucc] at hs

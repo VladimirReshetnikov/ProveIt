@@ -29,10 +29,8 @@ theorem modelWitness (x y : M)
           Structure.func (L := language) subCode ![y,x]))] = y := by
   have hn := (modelLtDifference x y).mp hxy
   have hr := (modelReconstruct x y).resolve_left hn
-  have hex := modelExhaustion (M := M)
-  simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
   let d := Structure.func (L := language) subCode ![y,x]
-  have h := (body_eval d (fun _ => y)).mp (hex (fun _ => y) d)
+  have h := modelZeroOrSuccPred d
   rw [h.resolve_left hn]
   exact hr
 

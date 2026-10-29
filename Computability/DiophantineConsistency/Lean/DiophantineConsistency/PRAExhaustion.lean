@@ -90,6 +90,15 @@ theorem modelExhaustion : M↓[language] ⊧ exhaustionSentence := by
     exact (modelAddOne y).symm
 
 
+theorem modelZeroOrSuccPred (x : M) :
+    x = Structure.func (L := language) (Code.zero 0) Fin.elim0 ∨
+      Structure.func (L := language) Code.succ
+        (fun _ => Structure.func (L := language) predCode (fun _ => x)) = x := by
+  have h := modelExhaustion (M := M)
+  simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at h
+  exact (body_eval x (fun _ => x)).mp (h (fun _ => x) x)
+
+
 end models
 
 /-- A closed candidate-PRA derivation of zero-or-successor exhaustion. -/

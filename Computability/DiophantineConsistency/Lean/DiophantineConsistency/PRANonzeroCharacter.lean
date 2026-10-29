@@ -44,9 +44,7 @@ theorem modelNonzeroCharacter (x : M) :
     Structure.func (L := language) nonzeroCode (fun _ => x) =
       Structure.func (L := language) oneCode Fin.elim0 ↔
       x ≠ Structure.func (L := language) (Code.zero 0) Fin.elim0 := by
-  have hEx := modelExhaustion (M := M)
-  simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hEx
-  have hb := (body_eval x (fun _ => x)).mp (hEx (fun _ => x) x)
+  have hb := modelZeroOrSuccPred x
   constructor
   · intro hv hx
     subst x

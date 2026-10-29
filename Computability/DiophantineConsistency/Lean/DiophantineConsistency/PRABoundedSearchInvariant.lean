@@ -99,9 +99,7 @@ theorem modelSearchCandidateInvariant {n : ℕ} (good : Code (n+1)) (x : M) (e :
       left
       rw [hs]
       exact hg
-    · have hex := modelExhaustion (M := M)
-      simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
-      have he := (PRAExhaustion.body_eval (g (find t)) e).mp (hex e (g (find t)))
+    · have he := modelZeroOrSuccPred (g (find t))
       have hp := he.resolve_left hg
       change s (Structure.func (L := language) predCode (fun _ => g (find t))) = g (find t) at hp
       rw [←hp, modelSelectSucc] at hs

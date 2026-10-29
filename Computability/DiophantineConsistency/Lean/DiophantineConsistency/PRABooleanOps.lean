@@ -27,9 +27,7 @@ theorem modelOneSuccZero : (Structure.func (L := language) oneCode Fin.elim0 : M
   exact h'.symm.trans h
 
 theorem modelNonzeroBit (x : M) : IsBit (Structure.func (L := language) nonzeroCode (fun _ => x)) := by
-  have hex := modelExhaustion (M := M)
-  simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
-  rcases (body_eval x (fun _ => x)).mp (hex (fun _ => x) x) with hz | hs
+  rcases modelZeroOrSuccPred x with hz | hs
   · left
     rw [hz]
     exact modelNonzeroZero
@@ -38,9 +36,7 @@ theorem modelNonzeroBit (x : M) : IsBit (Structure.func (L := language) nonzeroC
     exact modelNonzeroSucc _
 
 theorem modelIsZeroBit (x : M) : IsBit (Structure.func (L := language) isZeroCode (fun _ => x)) := by
-  have hex := modelExhaustion (M := M)
-  simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
-  rcases (body_eval x (fun _ => x)).mp (hex (fun _ => x) x) with hz | hs
+  rcases modelZeroOrSuccPred x with hz | hs
   · right
     rw [hz]
     exact modelIsZeroZero

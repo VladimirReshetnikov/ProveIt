@@ -131,12 +131,10 @@ theorem model_qSuccInj : M↓[language] ⊧ Semiformula.lMap embedding qSuccInj 
   exact h
 
 theorem model_qZeroOrSucc : M↓[language] ⊧ Semiformula.lMap embedding qZeroOrSucc := by
-  have hEx := modelExhaustion (M := M)
-  simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hEx
   have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim qZeroOrSucc := by
     simp [qZeroOrSucc]
     intro x
-    have hb := (body_eval x (fun _ => x)).mp (hEx (fun _ => x) x)
+    have hb := modelZeroOrSuccPred x
     rcases hb with hz | hs
     · exact Or.inl hz
     · right

@@ -69,10 +69,8 @@ theorem modelLtWitness (x y : M) :
   constructor
   · intro hn
     have hr := (modelReconstruct x y).resolve_left hn
-    have hex := modelExhaustion (M := M)
-    simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
     let d := Structure.func (L := language) subCode ![y,x]
-    have h := (body_eval d (fun _ => y)).mp (hex (fun _ => y) d)
+    have h := modelZeroOrSuccPred d
     have hs := h.resolve_left hn
     refine ⟨Structure.func (L := language) predCode (fun _ => d), ?_⟩
     rw [hs]
