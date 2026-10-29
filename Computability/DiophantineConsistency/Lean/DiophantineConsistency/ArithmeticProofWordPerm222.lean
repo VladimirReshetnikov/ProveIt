@@ -195,9 +195,8 @@ theorem good_succ (raw : V) (hp : PrefixGood raw) : Good (raw+1) := by
 
 /-- Genuine definable internal induction, including nonstandard proof codes. -/
 theorem good_all (code : V) : Good code := by
-  have hp : ∀ bound : V, PrefixGood bound := by
-    intro bound
-    induction bound using ISigma1.pi1_succ_induction
+  have hp : PrefixGood code := by
+    induction code using ISigma1.pi1_succ_induction
     · exact prefixGood_definable
     case zero =>
       intro i hi
@@ -210,7 +209,7 @@ theorem good_all (code : V) : Good code := by
       · subst i
         exact good_succ raw ih
       · exact ih i (lt_succ_iff_le.mp (lt_of_le_of_ne hi he))
-  exact hp code code le_rfl
+  exact hp code le_rfl
 
 theorem accepted_contract (code : V) (hv : ArithmeticHistory222.value code≠0) :
     Contract (rawWord code) (ArithmeticHistory222.value code-1) :=
