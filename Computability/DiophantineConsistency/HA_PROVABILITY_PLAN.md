@@ -2614,3 +2614,9 @@ The [adaptive auxiliary norm](reviews/adaptive-aux-norm2011-root.md) now
 derives `I²z²+y²=1+I²y²` from the literal zero, using the magnitudes of
 the actual signed auxiliary pair. The signed congruences and generic
 half-index application remain separate obligations.
+
+The [exact adaptive Pell-index theorem](reviews/adaptive-exact-indices2011-root.md)
+now derives `m=R`, `2n=R+1`, and `k=R+1+4Q·t` from the literal current
+zero in arbitrary IΣ₁ models, retaining both actual root representations.
+Its half-index prerequisite chain was independently rebuilt from current
+source. Power recovery, internal converse and HA transfer remain open.
