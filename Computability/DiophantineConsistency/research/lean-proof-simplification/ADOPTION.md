@@ -1726,5 +1726,13 @@ builds pass with identical client objects; target and client declaration and
 registration reports match. The transitive closure remains cached. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261029-window-carry-tail-evidence/BUNDLE.json).
 
+The saturation order simplification `e9b2cb4040` removes four net Lean lines,
+bringing the reviewed series to 10035. The affected proofs came from
+Claude-coauthored commit `5fcd5632b3`. Additive cancellation and subtraction
+positivity replace two contradiction arguments. Paired Saturation and
+WindowInterface builds pass with identical client objects; declarations and
+sampled registrations match. The transitive closure remains cached. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261029-saturation-order-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
