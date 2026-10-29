@@ -43,6 +43,14 @@ theorem eqClosureModels {n : ℕ} (a b : TermN n) :
     simpa [Function.comp_def] using h e
 
 
+omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
+theorem val_term_pair {n : ℕ} (e : Fin n → M) (a b : TermN n) :
+    (Semiterm.val e Empty.elim ∘ ![a, b]) =
+      ![Semiterm.val e Empty.elim a, Semiterm.val e Empty.elim b] := by
+  apply funext
+  exact Fin.forall_fin_two.mpr ⟨rfl, rfl⟩
+
+
 theorem modelComposition {m n : ℕ} (f : Code m) (g : Codes n m) (e : Fin n → M) :
     Structure.func (L := language) (Code.comp f g) e =
       Structure.func (L := language) f (fun i => Structure.func (L := language) (getCode g i) e) := by
