@@ -50,8 +50,7 @@ theorem eq_zero_of_fbit (m : V) : ∀ x < Exp.exp m, (∀ i < m, fbit x i = 0) �
       simpa [fbit_eq_div] using this
     have hq : x / 2 < Exp.exp m := by
       apply div_lt_of_lt_mul
-      rw [exp_succ, mul_comm] at hx
-      exact hx
+      simpa [exp_succ, mul_comm] using hx
     have hz : x / 2 = 0 := ih (x/2) hq (fun i hi => by
       rw [← fbit_succ_eq_half]
       exact h (1+i) (by rw [add_comm 1 i]; exact (add_lt_add_iff_right 1).mpr hi))
@@ -102,8 +101,7 @@ theorem noCarry_ones_two (m x : V) (hx : x < Exp.exp (m+1))
       add_tsub_cancel_right]
   have hq : x / 2 < Exp.exp m := by
     apply div_lt_of_lt_mul
-    rw [exp_succ, mul_comm] at hx
-    exact hx
+    simpa [exp_succ, mul_comm] using hx
   have hz : x / 2 = 0 := eq_zero_of_fbit m (x/2) hq fun i hi => by
     have := (noCarry_iff _ _).mp h (1+i)
     rw [h2, add_comm 1 i, fbit_mul_two_mul, fbit_exp_sub_one m i hi] at this
@@ -235,10 +233,9 @@ theorem rep_succ_add (d N : V) : rep d (N+1) = rep d N + Exp.exp (d*N) := by
   · definability
   case zero => simpa using rep_succ d 0
   case succ N ih =>
-    calc rep d (N+1+1) = rep d (N+1) * Exp.exp d + 1 := rep_succ _ _
-      _ = (rep d N + Exp.exp (d*N)) * Exp.exp d + 1 := by rw [ih]
-      _ = (rep d N * Exp.exp d + 1) + Exp.exp (d*N) * Exp.exp d := by ring
-      _ = rep d (N+1) + Exp.exp (d*(N+1)) := by rw [← rep_succ, mul_add, mul_one, exp_add]
+    conv_lhs => rw [rep_succ, ih]
+    conv_rhs => rw [rep_succ, mul_add, mul_one, exp_add]
+    ring
 
 /-- A number whose first `k` digits are Boolean has remainder at most the unit `rep w k`. -/
 theorem mod_le_rep (w X k : V) : (∀ i < k, dig w X i ≤ 1) → X % Exp.exp (w*k) ≤ rep w k := by
@@ -283,8 +280,7 @@ theorem dig_mul_rep (w m a : V) (ha : a < Exp.exp (w*m)) (N : V) :
 
 theorem dig_succ_pos (w Q r k : V) (hr : r < Exp.exp w) (hk : 0 < k) :
     dig w (Q * Exp.exp w + r) k = dig w Q (k-1) := by
-  have := dig_mul_add_high w Q r 1 k (by simpa using hr) (pos_iff_one_le.mp hk)
-  simpa using this
+  simpa using dig_mul_add_high w Q r 1 k (by simpa using hr) (pos_iff_one_le.mp hk)
 
 theorem dig_succ_zero (w Q r : V) (hr : r < Exp.exp w) :
     dig w (Q * Exp.exp w + r) 0 = r := by
