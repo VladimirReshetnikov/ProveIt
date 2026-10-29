@@ -88,3 +88,8 @@ now maps Boolean combinations of equality and order atoms to finite PR
 characteristic codes and yields candidate-PRA correctness proofs assuming
 two explicit equality-code certificates. Those certificates and coverage
 of every Foundation open formula remain separate work.
+
+The [Foundation open-formula coverage](../reviews/pra-open-formula-coverage-root.md)
+now parses every open semisentence with finitely many bound inputs and
+composes the conditional characteristic theorem. The two equality-bit
+certificates remain explicit premises and must still be discharged.
