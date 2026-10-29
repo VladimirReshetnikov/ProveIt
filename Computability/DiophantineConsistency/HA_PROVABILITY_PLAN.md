@@ -2593,3 +2593,9 @@ now binds factor-three cancellation to an actual current adaptive zero and
 derives `q⁴ | magnitude(R+1,k)` in arbitrary IΣ₁ models, without assuming
 a sign for the difference or coprimality with three. Exact index recovery,
 the converse, and the HA transfer remain open.
+
+The [first Pell-index residue](reviews/adaptive-early-index2011-root.md)
+now follows from the literal adaptive zero: `(2n) mod q⁴ = R+1`, with
+explicit lower bounds and the original classified-root coordinates. The
+exact first/main index comparison and the full internal equivalence remain
+open.
