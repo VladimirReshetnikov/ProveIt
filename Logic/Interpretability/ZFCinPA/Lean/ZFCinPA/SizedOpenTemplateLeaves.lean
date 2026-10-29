@@ -248,20 +248,12 @@ theorem templ_leaf_gen (harity : ∀ i, arities i ≤ 3) (σ : Sentence (setTemp
     DLv 𝗭𝗙 (insert (translateFormula Ks (Rewriting.emb σ)).val ∅)
       (leafG (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities))) u) := by
   set t : V := (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V)
-  have hx := translate_level (Rewriting.emb σ) u Ks hK
   have hge1 : t * (u + 1) + 5 ≤ leafG (tA (Rewriting.emb σ : Proposition _)) u := by
     refine le_trans (le_trans le_self_add (SizedLTemplate.leafW_ge σ u)) ?_
     unfold SizedLTemplate.leafW leafG
     exact le_self_add
   rcases SizedTemplateAxioms.templ_lifted_or_congruence σ h with hl | ⟨i, rfl⟩ | ⟨p, rfl⟩ | ⟨p, rfl⟩
-  · have hw4 : (4 : V) ≤ t * (u + 1) + 4 := le_add_self
-    refine (DLv.by_axm hw4 ((SeqLt.empty _).insert (lt_lvB_of hx (_root_.add_le_add le_rfl
-      (by norm_num)))) (SizedTemplateAxioms.singleton_formulaSet _)
-      (translateFormula Ks (Rewriting.emb σ)).val (by simp) ?_).mono
-      (le_trans (le_of_eq (by ring)) hge1)
-    rcases hl with ⟨τ, hτ, rfl⟩
-    rw [translateFormula_lMap_set_emb]
-    exact (Bootstrapping.Δ₁Class.mem_iff'' (T := (𝗭𝗙 : SetTheory))).mpr hτ
+  · exact (SizedLTemplate.lifted_leaf Ks hK σ hl).mono hge1
   · rw [SetCongruence.translate_setPlaceholderCongruenceSentence]
     refine (cong_leaf (arities i) (harity i) (Ks i) hu (hK i)).mono ?_
     unfold leafG
