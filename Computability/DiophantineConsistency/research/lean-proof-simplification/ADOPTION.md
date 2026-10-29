@@ -1826,5 +1826,12 @@ with identical client objects; all 83 target declaration reports and sampled
 registrations match. The transitive closure remains cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261029-level-square-direct-evidence/BUNDLE.json).
 
+The residual-square symmetry simplification `227a58c783` removes three net
+Lean lines, bringing the reviewed series to 10115. Commutativity directly
+reuses the oriented square-gap identity. Paired target, three direct module
+clients and the focused check pass; all three client objects and target reports
+match. The umbrella importer was not rebuilt and some client inputs lack
+source-matched receipts. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-residual-square-symmetry-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
