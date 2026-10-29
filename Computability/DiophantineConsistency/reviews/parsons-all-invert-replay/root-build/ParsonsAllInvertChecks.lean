@@ -1,0 +1,8 @@
+import DiophantineConsistency.ParsonsAllInvert
+
+#print axioms DiophantineConsistency.ParsonsAllInvert.height_rewrite
+#print axioms DiophantineConsistency.ParsonsAllInvert.instantiate_height
+#print axioms DiophantineConsistency.ParsonsAllInvert.instantiate_cutFree
+#print axioms DiophantineConsistency.ParsonsAllInvert.invert
+#print axioms DiophantineConsistency.ParsonsAllInvert.invert_first
+#print axioms DiophantineConsistency.ParsonsAllInvert.invert_below_exs

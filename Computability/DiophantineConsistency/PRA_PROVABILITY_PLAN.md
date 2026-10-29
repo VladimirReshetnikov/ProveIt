@@ -79,7 +79,9 @@ guard, and the global recursion remains open. The [strict Π₂ disjunction
 normalizer](reviews/parsons-prenex-pi2-or-root.md) supplies a bounded-matrix
 tupled prenex form for a pair of strict ∀∃ side formulas. The corresponding
 [strict conjunction normalizer](reviews/parsons-prenex-pi2-and-root.md) has
-also been proved. General Π₂ normalization remains open. The [identity and truth leaves](reviews/parsons-leaves-root.md)
+also been proved. General Π₂ normalization remains open. [Height-preserving universal inversion](reviews/parsons-all-invert-root.md)
+now opens selected side occurrences at arbitrary terms while retaining
+cut-freeness and the strict bound below an existential inference. The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
@@ -106,6 +108,9 @@ the rest of the witness map still need binding to the actual construction.
 The [Pell phase bound](reviews/adaptive-construction-aux-phase2011-root.md)
 now proves `ycoord R b ≥ 2` for `R % 4 = 3`; binding the construction's
 actual ordinate identity to the client remains open.
+The [first and main carrier identities](reviews/adaptive-construction-carrier2011-root.md)
+are now proved under explicit witness relations; deriving those relations and
+the complete adaptive zero remains open.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
