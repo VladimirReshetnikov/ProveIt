@@ -71,11 +71,6 @@ private theorem reduct_eq :
       rw [Matrix.fun_eq_vec_two v]
       rfl
 
-omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem eqRel (v : Fin 2 → M) :
-    Structure.rel (L := language) Language.ORing.Rel.eq v ↔ v 0 = v 1 := by
-  change Structure.rel (L := language) Language.Eq.eq v ↔ _
-  exact Structure.eq_lang
 
 theorem modelSuccNeZero (x : M) :
     Structure.func (L := language) Code.succ (fun _ => x) ≠
