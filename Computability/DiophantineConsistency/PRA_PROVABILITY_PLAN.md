@@ -148,7 +148,11 @@ preserves that certificate through initial contexts, shifts, contraction,
 opening and terminal reclassification. The [strengthened counterexample
 case](reviews/parsons-counter-stable-root.md) now incorporates this base
 certificate into the restricted smaller-derivation hypothesis. The global
-recursion remains open.
+recursion is now [proved for the restricted invariant](reviews/parsons-global-strict-root.md):
+cut-free derivations with Tree sides, strict induction blocks and actual-axiom
+base certificates yield PA-minus rule proofs. Connecting normalized proofs,
+handling arbitrary Σ₁ induction and eliminating the remaining rule calculus
+into candidate PRA remain separate requirements.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
