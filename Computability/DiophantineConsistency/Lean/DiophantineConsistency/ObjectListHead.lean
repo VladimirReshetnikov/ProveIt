@@ -71,13 +71,7 @@ private theorem guard_rows (x : Fin 4 → N H) :
       x 1=x 0+x 3 := by
     rw [literal_guard1]
     simp [Expr.SemiringZero,Expr.splitNatural,NatExpr.evalSemiring,Sum.elim]
-  constructor
-  · intro h
-    exact ⟨h0.mp (h 0),h1.mp (h 1)⟩
-  · intro h i
-    fin_cases i
-    · exact h0.mpr h.1
-    · exact h1.mpr h.2
+  simp only [Fin.forall_fin_two, h0, h1, GuardCertificate]
 
 theorem rows_zero_iff (x : Fin 9 → N H) :
     ObjectQuadraticSystem.RowsZero H QuadraticListHead.system (Sum.elim x Fin.elim0) ↔

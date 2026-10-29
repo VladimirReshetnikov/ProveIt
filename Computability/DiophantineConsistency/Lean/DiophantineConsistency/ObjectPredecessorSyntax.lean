@@ -32,13 +32,7 @@ theorem rows_zero_iff (x : Fin 2 → N H) :
       x 0*(x 0+1)=x 0*x 1 := by
     rw [literal_row1]
     simp [Expr.SemiringZero,Expr.splitNatural,NatExpr.evalSemiring,Sum.elim]
-  constructor
-  · intro h
-    exact ⟨h0.mp (h 0),h1.mp (h 1)⟩
-  · intro h i
-    fin_cases i
-    · exact h0.mpr h.1
-    · exact h1.mpr h.2
+  simp only [Fin.forall_fin_two, h0, h1, ObjectPredecessor.Certificate]
 
 def expression : Expr (Fin 2) :=
   QuadraticTreeCodeGraphs.predSystem.expression.rename (Sum.elim id Fin.elim0)
