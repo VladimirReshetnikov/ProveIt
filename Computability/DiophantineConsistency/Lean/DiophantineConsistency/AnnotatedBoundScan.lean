@@ -42,16 +42,10 @@ theorem scan_done (fuel history : Nat) :
 theorem step_cons (r : Row) (rows seen : List Row) :
     step (Nat.pair (tableCode (r::rows)) (tableCode seen))=
       if valid r seen then Nat.pair (tableCode rows) (tableCode (r::seen)) else 0 := by
-  by_cases hv : valid r seen=true
-  · have hl := (localCheck_correct r seen).mpr hv
-    change localCheck (rowCode r) (listCode (seen.map rowCode))=1 at hl
-    simp [step,tableCode,List.map_cons,listCode,hl,hv]
-  · have hn : localCheck (rowCode r) (tableCode seen)≠1 :=
-      fun h => hv ((localCheck_correct r seen).mp h)
-    have hl : localCheck (rowCode r) (tableCode seen)=0 :=
-      (localCheck_boolean (rowCode r) (tableCode seen)).resolve_right hn
-    change localCheck (rowCode r) (listCode (seen.map rowCode))=0 at hl
-    simp [step,tableCode,List.map_cons,listCode,hl,hv]
+  have hl := AnnotatedRenameLocal.eq_truth_of_boolean _ _
+    (localCheck_boolean (rowCode r) (tableCode seen)) (localCheck_correct r seen)
+  change localCheck (rowCode r) (listCode (seen.map rowCode)) = _ at hl
+  cases hv : valid r seen <;> simp [step,tableCode,List.map_cons,listCode,hl,hv,truth]
 
 theorem scan_table (rows seen : List Row) (fuel : Nat)
     (hf : rows.length≤fuel) :

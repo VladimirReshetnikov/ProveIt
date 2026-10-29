@@ -18,6 +18,11 @@ def truth (b : Bool) : Nat := if b then 1 else 0
 
 theorem truth_boolean (b : Bool) : truth b=0 ∨ truth b=1 := by cases b <;> simp [truth]
 
+/-- A zero-or-one checker is determined by when it accepts. -/
+theorem eq_truth_of_boolean (n : Nat) (b : Bool) (hn : n=0 ∨ n=1)
+    (h : n=1 ↔ b=true) : n=truth b := by
+  cases b <;> simp_all [truth]
+
 def atomicCheck (mode k code : Nat) : Nat :=
   atomicInput (Nat.pair mode (Nat.pair k code))
 def bottomCheck (code : Nat) : Nat := truth (bottomEquations (decodeRow code))

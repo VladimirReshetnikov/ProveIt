@@ -46,16 +46,10 @@ theorem scan_done (fuel mode k history : Nat) :
 theorem step_cons (mode k : Nat) (r : Row) (rows seen : List Row) :
     step mode k (Nat.pair (tableCode (r::rows)) (tableCode seen))=
       if r.valid mode k seen then Nat.pair (tableCode rows) (tableCode (r::seen)) else 0 := by
-  by_cases hv : r.valid mode k seen=true
-  · have hl := (localCheck_correct mode k r seen).mpr hv
-    change localCheck mode k (rowCode r) (listCode (seen.map rowCode))=1 at hl
-    simp [step,tableCode,List.map_cons,listCode,hl,hv]
-  · have hn : localCheck mode k (rowCode r) (tableCode seen)≠1 :=
-      fun h => hv ((localCheck_correct mode k r seen).mp h)
-    have hl : localCheck mode k (rowCode r) (tableCode seen)=0 :=
-      (localCheck_boolean mode k (rowCode r) (tableCode seen)).resolve_right hn
-    change localCheck mode k (rowCode r) (listCode (seen.map rowCode))=0 at hl
-    simp [step,tableCode,List.map_cons,listCode,hl,hv]
+  have hl := eq_truth_of_boolean _ _
+    (localCheck_boolean mode k (rowCode r) (tableCode seen)) (localCheck_correct mode k r seen)
+  change localCheck mode k (rowCode r) (listCode (seen.map rowCode)) = _ at hl
+  cases hv : r.valid mode k seen <;> simp [step,tableCode,List.map_cons,listCode,hl,hv,truth]
 
 theorem scan_table (mode k : Nat) (rows seen : List Row) (fuel : Nat)
     (hf : rows.length≤fuel) :
