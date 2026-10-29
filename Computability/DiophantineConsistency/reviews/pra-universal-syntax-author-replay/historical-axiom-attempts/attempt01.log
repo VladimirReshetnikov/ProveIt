@@ -1,0 +1,74 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:35:9: error: unsolved goals
+case refl
+⊢ UniversalPrefix (“#0 = #0”)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:36:9: error: unsolved goals
+case symm
+⊢ “#1 = #0”.qr = 0 ∧ “#0 = #1”.qr = 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:37:10: error: unsolved goals
+case trans
+⊢ “#2 = #1”.qr = 0 ∧ “#1 = #0”.qr = 0 ∧ “#2 = #0”.qr = 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:42:6: error: Tactic `apply` failed: could not unify the conclusion of `@conj_open`
+  (Matrix.conj ?v).Open
+with the goal
+  Semiformula.qr (Matrix.conj fun i => “#(Fin.addCast k✝ i) = #(i.addNat k✝)”) = 0 ∧
+    “!!(Semiterm.func f fun i => #(Fin.addCast k✝ i)) = !!(Semiterm.func f fun i => #(i.addNat k✝))”.qr = 0
+
+Note: The full type of `@conj_open` is
+  ∀ {ξ : Type} {n k : ℕ} (v : Fin k → Semiformula language ξ n), (∀ (i : Fin k), (v i).Open) → (Matrix.conj v).Open
+
+case funcExt
+k✝ : ℕ
+f : language.Func k✝
+⊢ Semiformula.qr (Matrix.conj fun i => “#(Fin.addCast k✝ i) = #(i.addNat k✝)”) = 0 ∧
+    “!!(Semiterm.func f fun i => #(Fin.addCast k✝ i)) = !!(Semiterm.func f fun i => #(i.addNat k✝))”.qr = 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:45:13: error: unsolved goals
+case relExt
+k✝ : ℕ
+r : language.Rel k✝
+i : Fin k✝
+⊢ “#(Fin.addCast k✝ i) = #(i.addNat k✝)”.qr = 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:35:18: warning: This simp argument is unused:
+  Theory.Eq.refl
+
+Hint: Omit it from the simp argument list.
+  simp [T̵h̵e̵o̵r̵y̵.̵E̵q̵.̵r̵e̵f̵l̵,̵ ̵UniversalPrefix, Semiformula.Open]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:35:51: warning: This simp argument is unused:
+  Semiformula.Open
+
+Hint: Omit it from the simp argument list.
+  simp [Theory.Eq.refl, UniversalPrefix,̵ ̵S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵O̵p̵e̵n̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:36:18: warning: This simp argument is unused:
+  Theory.Eq.symm
+
+Hint: Omit it from the simp argument list.
+  simp [T̵h̵e̵o̵r̵y̵.̵E̵q̵.̵s̵y̵m̵m̵,̵ ̵UniversalPrefix, Semiformula.Open]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:37:19: warning: This simp argument is unused:
+  Theory.Eq.trans
+
+Hint: Omit it from the simp argument list.
+  simp [T̵h̵e̵o̵r̵y̵.̵E̵q̵.̵t̵r̵a̵n̵s̵,̵ ̵UniversalPrefix, Semiformula.Open]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:40:74: warning: This simp argument is unused:
+  Semiformula.qr_rel
+
+Hint: Omit it from the simp argument list.
+  simp only [UniversalPrefix, Semiformula.Open, Semiformula.qr_imply, S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵q̵r̵_̵r̵e̵l̵,̵Nat.max_eq_zero_iff,
+          and_true]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:41:29: warning: This simp argument is unused:
+  and_true
+
+Hint: Omit it from the simp argument list.
+  simp only [UniversalPrefix, Semiformula.Open, Semiformula.qr_imply, Semiformula.qr_rel,
+          Nat.max_eq_zero_iff,̵ ̵a̵n̵d̵_̵t̵r̵u̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:53:8: warning: declaration uses `sorry`

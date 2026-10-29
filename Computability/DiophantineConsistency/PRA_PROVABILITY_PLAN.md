@@ -107,6 +107,9 @@ now proves the same sentence-level theorems in the explicitly defined universal
 axiom family and candidate PRA, with arbitrary open-induction parameters. The
 result uses completeness externally and does not yet identify the candidate
 with standard PRA or establish a witnessing or conservation theorem.
+The [universal syntax certificate](reviews/pra-universal-syntax-root.md) now
+proves that every axiom in that presentation has a universal prefix and an
+open matrix. An effective recognition theorem is still required.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive

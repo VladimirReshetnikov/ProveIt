@@ -1,0 +1,32 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:54:83: error: unsolved goals
+case not
+n : ℕ
+a✝ : OpenFormula n
+a_ih✝ : Semiformula.Open (asFormula a✝)
+⊢ Semiformula.qr (asFormula a✝) = 0
+
+case and
+n : ℕ
+a✝¹ a✝ : OpenFormula n
+a_ih✝¹ : Semiformula.Open (asFormula a✝¹)
+a_ih✝ : Semiformula.Open (asFormula a✝)
+⊢ Semiformula.qr (asFormula a✝¹) = 0 ∧ Semiformula.qr (asFormula a✝) = 0
+
+case or
+n : ℕ
+a✝¹ a✝ : OpenFormula n
+a_ih✝¹ : Semiformula.Open (asFormula a✝¹)
+a_ih✝ : Semiformula.Open (asFormula a✝)
+⊢ Semiformula.qr (asFormula a✝¹) = 0 ∧ Semiformula.qr (asFormula a✝) = 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:89:28: error: unsolved goals
+case characteristicCorrect
+n✝ : ℕ
+p : OpenFormula n✝
+⊢ Semiformula.qr (asFormula p) = 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAUniversalAxiomSyntax.lean:91:67: warning: This simp argument is unused:
+  asFormula_open p
+
+Hint: Omit it from the simp argument list.
+  simp [UniversalPrefix, Semiformula.Open, Semiformula.qr_iff,̵ ̵a̵s̵F̵o̵r̵m̵u̵l̵a̵_̵o̵p̵e̵n̵ ̵p̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
