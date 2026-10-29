@@ -264,4 +264,111 @@ theorem spc_le {body₀ n₀ l₀ c R : V} (hb₀ : IsSemiformula ℒₛₑₜ n
     rw [show w + 1 + 1 + 1 + 3 * r = w + 3 * (r + 1) by ring] at ih'
     exact ih'
 
+/-! ## Closing a formula: `bindFreeAt` levels -/
+
+theorem vec2_bindFree (d : V) {a b : V} (ha : IsUTerm ℒₛₑₜ a) (hb : IsUTerm ℒₛₑₜ b) :
+    termBindFreeVecAt ℒₛₑₜ d 2 (a ∷ b ∷ 0) =
+      termBindFreeAt ℒₛₑₜ d a ∷ termBindFreeAt ℒₛₑₜ d b ∷ 0 := by
+  have hv : IsUTermVec ℒₛₑₜ 2 (a ∷ b ∷ 0 : V) := by simp [ha, hb]
+  apply nth_ext' 2 (by rw [termBindFreeVecAt_lh d hv]) (by simp [one_add_one_eq_two])
+  intro i hi
+  rw [nth_termBindFreeVecAt d hv hi]
+  rcases le_one_iff_eq_zero_or_one.mp (lt_two_iff_le_one.mp hi) with rfl | rfl <;> simp
+
+theorem two_le_lvB (y : V) : 2 ≤ lvB y := by
+  have := lvB_mono (Arithmetic.zero_le y); rwa [lvB_zero] at this
+
+theorem two_mul_lvB_le (y : V) : lvB y + lvB y ≤ lvB (y + 1) := by
+  rw [lvB_succ, ← two_mul]
+  exact mul_le_mul_of_nonneg_right (two_le_lvB y) (Arithmetic.zero_le _)
+
+theorem tbf_le {d t u C : V} (hC : 2 ≤ C) (ht : IsUTerm ℒₛₑₜ t) (htu : t ≤ lvB u)
+    (hd : d ≤ lvB C) : termBindFreeAt ℒₛₑₜ d t ≤ lvB (u + C + 3) := by
+  rcases term_var ht with ⟨z, rfl⟩ | ⟨x, rfl⟩
+  · rw [termBindFreeAt_bvar]
+    exact lift_lvB htu (le_trans le_self_add le_self_add)
+  · rw [termBindFreeAt_fvar]
+    have hx : x ≤ lvB u := le_trans (le_trans (le_pair_right _ _) le_self_add) htu
+    have hs : d + x ≤ lvB (u + C + 1) :=
+      le_trans (_root_.add_le_add (lift_lvB hd (le_add_self : C ≤ u + C))
+        (lift_lvB hx (le_self_add : u ≤ u + C))) (two_mul_lvB_le (u + C))
+    have h2 : (2 : V) ≤ u + C + 1 := le_trans hC (le_trans (le_add_self : C ≤ u + C) le_self_add)
+    have := pair_lvB h2 (Arithmetic.zero_le (lvB (u + C + 1))) hs
+    have e : u + C + 1 + 2 = u + C + 3 := by ring
+    rw [e] at this
+    exact this
+
+set_option maxHeartbeats 4000000 in
+/-- **`bindFreeAt` multiplies levels**, under the invariant `depth + level ≤ D`. -/
+theorem bindFreeAt_level {C D : V} (hC : 2 ≤ C) (hD : D ≤ lvB C) :
+    ∀ u x : V, x ≤ lvB u → IsUFormula ℒₛₑₜ x → ∀ d : V, d + u ≤ D →
+      bindFreeAt ℒₛₑₜ d x ≤ lvB (10 * (u + 1) + C + 13) := by
+  intro u
+  induction u using ISigma1.pi1_succ_induction
+  · simp only [lvB]
+    definability
+  · intro x hx hxF
+    exact absurd rfl (formula_level_pos hx hxF)
+  · case succ u ih =>
+    intro x hx hxF d hdD
+    have hd : d ≤ lvB C := le_trans (le_trans le_self_add hdD) hD
+    have hdu : d + u ≤ D := le_trans (_root_.add_le_add le_rfl le_self_add) hdD
+    have hdu1 : d + 1 + u ≤ D := by rw [add_assoc, add_comm 1 u]; exact hdD
+    set m := 10 * (u + 1) + C + 13 with hm
+    have hm2 : (2 : V) ≤ m := le_trans hC (le_trans (le_add_self : C ≤ 10 * (u + 1) + C) le_self_add)
+    have hfin : m + 10 = 10 * (u + 1 + 1) + C + 13 := by rw [hm]; ring
+    have hatom : u + C + 3 + 10 ≤ 10 * (u + 1 + 1) + C + 13 :=
+      le_of_add_eq (y := 9 * u + 20) (by ring)
+    have hC3 : (2 : V) ≤ u + C + 3 := le_trans hC (le_trans (le_add_self : C ≤ u + C) le_self_add)
+    rcases hxF.case with ⟨k, R, v, hR, hv, rfl⟩ | ⟨k, R, v, hR, hv, rfl⟩ | rfl | rfl |
+        ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ | ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
+    · obtain ⟨rfl, hR01⟩ := isRel_set hR
+      obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
+      rw [bindFreeAt_rel d hR hv, vec2_bindFree d ht₁ ht₂]
+      have hx' : ⟪(0 : V), 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1) := hx
+      obtain ⟨h₁, h₂⟩ := atom_children hx'
+      have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
+      exact lift_lvB (atom_rebuild hC3 (by simp) hR1 (tbf_le hC ht₁ h₁ hd) (tbf_le hC ht₂ h₂ hd))
+        hatom
+    · obtain ⟨rfl, hR01⟩ := isRel_set hR
+      obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
+      rw [bindFreeAt_nrel d hR hv, vec2_bindFree d ht₁ ht₂]
+      have hx' : ⟪(1 : V), 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1) := hx
+      obtain ⟨h₁, h₂⟩ := atom_children hx'
+      have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
+      exact lift_lvB (atom_rebuild hC3 le_rfl hR1 (tbf_le hC ht₁ h₁ hd) (tbf_le hC ht₂ h₂ hd))
+        hatom
+    · rw [bindFreeAt_verum]
+      exact lift_lvB hx (le_of_add_eq (y := 9 * u + 32 + C) (by ring))
+    · rw [bindFreeAt_falsum]
+      exact lift_lvB hx (le_of_add_eq (y := 9 * u + 32 + C) (by ring))
+    · rw [bindFreeAt_and d hp hq]
+      have hx' : ⟪(4 : V), ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1) := hx
+      have hY := (pair_children hx').2
+      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp d hdu
+      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq d hdu
+      rw [← hfin]
+      exact pair_lvB_le (le_trans hm2 le_self_add) (slack4 _)
+        (tag_le_lvB (by norm_num) (le_trans hm2 le_self_add)) (pair_lvB' hm2 ihp ihq)
+    · rw [bindFreeAt_or d hp hq]
+      have hx' : ⟪(5 : V), ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1) := hx
+      have hY := (pair_children hx').2
+      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp d hdu
+      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq d hdu
+      rw [← hfin]
+      exact pair_lvB_le (le_trans hm2 le_self_add) (slack4 _)
+        (tag_le_lvB (by norm_num) (le_trans hm2 le_self_add)) (pair_lvB' hm2 ihp ihq)
+    · rw [bindFreeAt_all d hp]
+      have hx' : ⟪(6 : V), p⟫ + 1 ≤ lvB (u + 1) := hx
+      have ihp := ih p (pair_children hx').2 hp (d + 1) hdu1
+      rw [← hfin]
+      exact lift_lvB (pair_lvB hm2 (tag_le_lvB (by norm_num) hm2) ihp)
+        (_root_.add_le_add le_rfl (by norm_num))
+    · rw [bindFreeAt_exs d hp]
+      have hx' : ⟪(7 : V), p⟫ + 1 ≤ lvB (u + 1) := hx
+      have ihp := ih p (pair_children hx').2 hp (d + 1) hdu1
+      rw [← hfin]
+      exact lift_lvB (pair_lvB hm2 (tag_le_lvB (by norm_num) hm2) ihp)
+        (_root_.add_le_add le_rfl (by norm_num))
+
 end LeanProofs.ZFCinPA.SizedOpenAxiom
