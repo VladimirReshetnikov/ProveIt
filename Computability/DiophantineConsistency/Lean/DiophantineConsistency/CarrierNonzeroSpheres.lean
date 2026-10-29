@@ -237,17 +237,10 @@ theorem current_positive_zero71_iff :
   have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := by
     change (0 : ℤ) < CurrentMasks2011.beta
     exact_mod_cast CurrentMasks2011.beta_pos
-  constructor <;> rintro ⟨v,hv,hz⟩ <;> refine ⟨v,hv,?_⟩
-  · change MvPolynomial.eval v (polynomial71 CurrentWindowCarry2011.ports)=0 at hz
-    change MvPolynomial.eval v (Carrier65.polynomial CurrentWindowCarry2011.ports)=0
-    rw [eval_polynomial71] at hz
-    rw [Carrier65.eval_polynomial]
-    exact (positive_zero71_iff_original _ v hb hv).mp hz
-  · change MvPolynomial.eval v (Carrier65.polynomial CurrentWindowCarry2011.ports)=0 at hz
-    change MvPolynomial.eval v (polynomial71 CurrentWindowCarry2011.ports)=0
-    rw [Carrier65.eval_polynomial] at hz
-    rw [eval_polynomial71]
-    exact (positive_zero71_iff_original _ v hb hv).mpr hz
+  unfold CurrentCarrierArithmetic2011.PositiveZero currentPolynomial71
+    CurrentPolynomialWindow2011.polynomial
+  simp only [eval_polynomial71, Carrier65.eval_polynomial]
+  exact exists_congr fun v => and_congr_right (fun hv => positive_zero71_iff_original _ v hb hv)
 
 theorem current_positive_zero72_iff :
     CurrentCarrierArithmetic2011.PositiveZero currentPolynomial72 ↔
@@ -255,17 +248,10 @@ theorem current_positive_zero72_iff :
   have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := by
     change (0 : ℤ) < CurrentMasks2011.beta
     exact_mod_cast CurrentMasks2011.beta_pos
-  constructor <;> rintro ⟨v,hv,hz⟩ <;> refine ⟨v,hv,?_⟩
-  · change MvPolynomial.eval v (polynomial72 CurrentWindowCarry2011.ports)=0 at hz
-    change MvPolynomial.eval v (Carrier65.polynomial CurrentWindowCarry2011.ports)=0
-    rw [eval_polynomial72] at hz
-    rw [Carrier65.eval_polynomial]
-    exact (positive_zero72_iff_original _ v hb hv).mp hz
-  · change MvPolynomial.eval v (Carrier65.polynomial CurrentWindowCarry2011.ports)=0 at hz
-    change MvPolynomial.eval v (polynomial72 CurrentWindowCarry2011.ports)=0
-    rw [Carrier65.eval_polynomial] at hz
-    rw [eval_polynomial72]
-    exact (positive_zero72_iff_original _ v hb hv).mpr hz
+  unfold CurrentCarrierArithmetic2011.PositiveZero currentPolynomial72
+    CurrentPolynomialWindow2011.polynomial
+  simp only [eval_polynomial72, Carrier65.eval_polynomial]
+  exact exists_congr fun v => and_congr_right (fun hv => positive_zero72_iff_original _ v hb hv)
 
 /-- External exact-current-port equivalences, not internal HA/ZFC derivations. -/
 theorem no_current_positive_zero71_iff_conZFC :
