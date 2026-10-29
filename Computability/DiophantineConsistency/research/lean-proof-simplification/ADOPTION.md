@@ -1878,5 +1878,12 @@ declaration and registration reports match. Older objects appear in later
 transitive path samples and the wider closure remains cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261029-squared-seed-positive-evidence/BUNDLE.json).
 
+The Wang bit-bound simplification `224acccf56` removes four net Lean lines,
+bringing the reviewed series to 10160. The affected proofs came from
+Claude-coauthored commit `64422b55f4`. Quotient, remainder and mod-two bounds
+replace four bit case analyses. Paired target and five direct clients pass;
+one client object matches and four differ for unknown reasons, while checked
+interfaces match. The wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-wang-push-direct-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
