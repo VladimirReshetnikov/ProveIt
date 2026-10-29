@@ -40,20 +40,15 @@ theorem equivalent_minus {p q r s : Pair V} (h : Equivalent p q)
 
 private theorem square_magnitude (p : Pair V) :
     Equivalent (multiply p p) (natural (magnitude p*magnitude p)) := by
-  rcases le_total p.2 p.1 with h|h
-  · let u:=p.1-p.2
-    have hu : p.1=p.2+u := by rw [add_comm,tsub_add_cancel_of_le h]
-    rw [magnitude_of_add hu]
-    change p.1*p.1+p.2*p.2+0=(p.1*p.2+p.2*p.1)+u*u
-    rw [hu]; ring
-  · let u:=p.2-p.1
-    have hu : p.2=p.1+u := by rw [add_comm,tsub_add_cancel_of_le h]
-    have hm := magnitude_of_add hu
-    change magnitude (swap p)=u at hm
-    rw [magnitude_swap] at hm
-    rw [hm]
-    change p.1*p.1+p.2*p.2+0=(p.1*p.2+p.2*p.1)+u*u
-    rw [hu]; ring
+  wlog h : p.2 ≤ p.1 generalizing p
+  · have hh := this (swap p) (le_of_not_ge h)
+    rw [multiply_swap_left, multiply_swap_right, magnitude_swap] at hh
+    simpa only [swap, Prod.eta] using hh
+  let u := p.1-p.2
+  have hu : p.1=p.2+u := by rw [add_comm,tsub_add_cancel_of_le h]
+  rw [magnitude_of_add hu]
+  change p.1*p.1+p.2*p.2+0=(p.1*p.2+p.2*p.1)+u*u
+  rw [hu]; ring
 
 private theorem rep_nat {σ : Type*} (v : σ → V) (n : ℕ) :
     Rep (Expr.constant (n:ℤ)) v (natural (n:V)) := by
