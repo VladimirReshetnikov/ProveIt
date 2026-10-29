@@ -32,9 +32,8 @@ theorem subAddBody_eval (x : M) (e : ℕ → M) : subAddBody.Eval ![x] e ↔
   dsimp only [subAddBody, Semiformula.EvalAux]
   rw [eqRel]
   have hp : (Semiterm.val ![x] e ∘ ![(.bvar 0 : Semiterm language ℕ 1), .fvar 0]) = ![x,e 0] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar, Semiterm.val_fvar, Matrix.cons_val_zero] using
+      val_pair ![x] e (.bvar 0) (.fvar 0)
   have hq : (Semiterm.val ![x] e ∘
       ![(.func addCode ![.bvar 0, .fvar 0] : Semiterm language ℕ 1), .bvar 0]) =
       ![Structure.func (L := language) addCode ![x,e 0], x] := by
@@ -72,9 +71,8 @@ theorem modelSubAddSentence : M↓[language] ⊧ subAddSentence := by
   intro e
   simp only [applyCode, Semiterm.val_func, Semiterm.val_bvar]
   have hp : (Semiterm.val e Empty.elim ∘ ![(.bvar 0 : TermN 2), .bvar 1]) = ![e 0, e 1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar] using
+      val_term_pair e (.bvar 0) (.bvar 1)
   have hq : (Semiterm.val e Empty.elim ∘ ![applyCode addCode ![.bvar 0, .bvar 1], .bvar 0]) =
       ![Structure.func (L := language) addCode ![e 0,e 1], e 0] := by
     funext i

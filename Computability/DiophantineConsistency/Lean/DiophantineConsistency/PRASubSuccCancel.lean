@@ -35,9 +35,8 @@ theorem cancelBody_eval (x : M) (e : ℕ → M) : cancelBody.Eval ![x] e ↔
   dsimp only [cancelBody, Semiformula.EvalAux]
   rw [eqRel]
   have hp : (Semiterm.val ![x] e ∘ ![(.fvar 0 : Semiterm language ℕ 1), .bvar 0]) = ![e 0,x] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar, Semiterm.val_fvar, Matrix.cons_val_zero] using
+      val_pair ![x] e (.fvar 0) (.bvar 0)
   have hq : (Semiterm.val ![x] e ∘
       ![(.func Code.succ (fun _ => .fvar 0) : Semiterm language ℕ 1),
         .func Code.succ (fun _ => .bvar 0)]) =
@@ -77,9 +76,8 @@ theorem modelCancelSentence : M↓[language] ⊧ cancelSentence := by
   intro e
   simp only [applyCode, Semiterm.val_func]
   have hp : (Semiterm.val e Empty.elim ∘ ![(.bvar 0 : TermN 2), .bvar 1]) = ![e 0, e 1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar] using
+      val_term_pair e (.bvar 0) (.bvar 1)
   have hq : (Semiterm.val e Empty.elim ∘ ![applyCode Code.succ (fun _ => .bvar 0),
       applyCode Code.succ (fun _ => .bvar 1)]) =
       ![Structure.func (L := language) Code.succ (fun _ => e 0),

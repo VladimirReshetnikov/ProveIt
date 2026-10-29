@@ -35,9 +35,8 @@ theorem reconstructBody_eval (x : M) (e : ℕ → M) : reconstructBody.Eval ![x]
   have hz : (Semiterm.val ![x] e ∘ (Fin.elim0 : Fin 0 → Semiterm language ℕ 1)) =
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have hp : (Semiterm.val ![x] e ∘ ![(.fvar 0 : Semiterm language ℕ 1), .bvar 0]) = ![e 0,x] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar, Semiterm.val_fvar, Matrix.cons_val_zero] using
+      val_pair ![x] e (.fvar 0) (.bvar 0)
   have hq : (Semiterm.val ![x] e ∘
       ![(.bvar 0 : Semiterm language ℕ 1), .func subCode ![.fvar 0, .bvar 0]]) =
       ![x, Structure.func (L := language) subCode ![e 0,x]] := by
