@@ -44,3 +44,6 @@ models and a closed candidate-PRA derivation of `0+x=x`. Addition
 commutativity and the additive-witness definition of order remain to be
 derived; these are prerequisites for the full Q compatibility route, not
 proof of standard PRA equivalence or Parsons conservation.
+
+The [left-successor law](../reviews/pra-addition-succ-left-root.md) is now
+a closed candidate-PRA derivation, with an independent current-source replay.
