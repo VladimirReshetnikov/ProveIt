@@ -288,33 +288,27 @@ theorem one_sub_succ (i : V) : (1 : V) - (i + 1) = 0 :=
 theorem bsum_add_origin {w : V} {f : V → V} [𝚺₁-Function₁ f] {n c : V} (hn : 0 < n)
     (hf : ∀ j < n, f j < Exp.exp w) (h0 : f 0 + c < Exp.exp w) :
     bsum w (fun j => f j + c * (1 - j)) n = bsum w f n + c := by
+  haveI : 𝚺₁-Function₁ (fun j : V => c * (1 - j)) := by definability
   haveI : 𝚺₁-Function₁ (fun j => f j + c * (1 - j)) := by definability
-  have hf' : ∀ j < n, f j + c * (1 - j) < Exp.exp w := by
+  have hc : c < Exp.exp w := lt_of_le_of_lt (le_add_of_nonneg_left (Arithmetic.zero_le _)) h0
+  have hsum : ∀ j < n, f j + c * (1 - j) < Exp.exp w := by
     intro j hj
     rcases zero_or_succ j with rfl | ⟨i, rfl⟩
     · simpa using h0
-    · rw [one_sub_succ, mul_zero, add_zero]; exact hf _ hj
-  have key : ∀ m, m ≤ n → 0 < m → ∃ Y, Blocks w f m Y ∧
-      Blocks w (fun j => f j + c * (1 - j)) m (Y + c) := by
-    intro m
-    induction m using ISigma1.sigma1_succ_induction
-    · definability
-    case zero => intro _ h; exact absurd h (_root_.lt_irrefl 0)
-    case succ m ih =>
-      intro hm _
-      have hm' : m < n := lt_of_lt_of_le (lt_add_one m) hm
-      rcases zero_or_succ m with rfl | ⟨i, rfl⟩
-      · refine ⟨f 0, ?_, ?_⟩
-        · simpa using blocks_succ (blocks_zero w f) (hf 0 hn)
-        · simpa using blocks_succ (blocks_zero w (fun j => f j + c * (1 - j))) (by simpa using h0)
-      · obtain ⟨Y, hY, hY'⟩ := ih hm'.le (by simp)
-        refine ⟨_, blocks_succ hY (hf _ hm'), ?_⟩
-        have := blocks_succ hY' (hf' _ hm')
-        rw [one_sub_succ, mul_zero, add_zero] at this
-        convert this using 1
-        ring
-  obtain ⟨Y, hY, hY'⟩ := key n le_rfl hn
-  rw [bsum_unique hf' hY', bsum_unique hf hY]
+    · simpa [one_sub_succ] using hf _ hj
+  have hc' : c < Exp.exp (w * n) := by
+    apply lt_of_lt_of_le hc
+    apply exp_monotone_le.mpr
+    simpa using mul_le_mul_of_nonneg_left (pos_iff_one_le.mp hn) (Arithmetic.zero_le w)
+  have hblock : Blocks w (fun j => c * (1 - j)) n c := by
+    refine ⟨hc', fun j hj => ?_⟩
+    rcases zero_or_succ j with rfl | ⟨i, rfl⟩
+    · simp [mod_eq_self_of_lt hc]
+    · have h := dig_succ_pos w 0 c (i + 1) hc (by simp)
+      simpa [dig, one_sub_succ] using h
+  have hconst : bsum w (fun j => c * (1 - j)) n = c :=
+    bsum_unique (fun j hj => by simpa only [hblock.2 j hj] using dig_lt w c j) hblock
+  rw [bsum_add hsum (fun _ _ => rfl), hconst]
 
 /-- Subtracting `c ≤ f 0` from block `0` only. -/
 theorem bsum_sub_origin {w : V} {f : V → V} [𝚺₁-Function₁ f] {n c : V} (hn : 0 < n)
