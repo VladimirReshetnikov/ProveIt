@@ -1,0 +1,45 @@
+Independent review: ObjectNaturalSemiring shared add/mul induction
+
+No correctness defect found in the tested change, now committed as `483be9ee15`. The combined induction alternative retains both
+original cases. In each forward direction it constructs the same internal
+natural witnesses from the relation proofs and applies the two induction
+hypotheses before using the matching `Natural.addRel_iff` or
+`Natural.mulRel_iff`. The reverse direction chooses the same evaluated
+witnesses as before and applies the corresponding relation equivalence. The
+three `first` blocks select the operation-specific goal/proof locally; this
+saves duplicate witness handling at the cost of making that tactic dispatch
+implicit. Kernel acceptance ensures each selected branch proves its actual
+goal. The original quantified statement, all guards, definitions, imports and
+other cases are unchanged; the source comparison verifies that the only edit is
+inside the original add/mul induction alternatives.
+
+The tested baseline source matches commit `483be9ee15`'s parent; the tested
+final source matches that commit and the current workspace. The baseline
+build was a historical isolated sample, not a post-commit workspace build.
+
+The independent audit verifies the six freshly rebuilt direct target/client
+provider sources, objects, logs, timing and their recorded first input paths.
+Both target builds, the production `ObjectResidualSquares` client and the
+focused `checks/ObjectOmegaSemiring.lean` build succeeded in paired lanes;
+both client object hashes match exactly. The top-level
+`Computability/DiophantineConsistency/Lean/DiophantineConsistency.lean`
+umbrella also directly imports the target and was not rebuilt. Underlying
+cached ObjectDistributivity, NaturalExpression, ObjectNaturalExpression,
+QuarticCompiler and SyntaxCoefficients objects have no source-matched receipt
+in this experiment; other transitive project and package inputs are cached.
+No clean current-source transitive closure is established.
+
+All four target declaration names, their type/axiom reports, 32,692 global
+simp entries and 14,590 instance entries match in the paired target probes.
+Probes pin the target objects and do not cover every environment extension or
+unrebuilt client. First target user CPU baseline/final was 1.43/1.54 s; the
+repeat was 1.54/1.56 s. Two small shared-load samples do not establish a
+general performance result. The initial successful exploratory final build used
+older cached direct providers; its copied log and timing match its receipt,
+but its original output path was overwritten by the paired final build.
+
+Reproducible audit and log: `/tmp/object-semiring-independent-audit.py` and
+`/tmp/object-semiring-independent-audit.log`. A first audit-script setup error
+(indexing the timing argument incorrectly) is preserved in
+`/tmp/object-semiring-independent-audit-setup-failure.log`; it did not affect
+any Lean build. No repository files were modified for this review.

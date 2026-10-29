@@ -1650,5 +1650,14 @@ provider inputs lack current-source receipts and the wider closure includes an
 older SignedPellResidue object. The directly importing umbrella was not rebuilt.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-carrier-set-iff-sharing-evidence/BUNDLE.json).
 
+The object natural semiring witness sharing `483be9ee15` removes six net Lean
+lines, bringing the reviewed series to 9993. Addition and multiplication share
+the witness and induction argument, while their relation-specific steps are
+selected with `first`. Paired target, ObjectResidualSquares and focused
+ObjectOmegaSemiring check builds pass with identical client objects; all four
+declaration reports, 32,692 simp entries and 14,590 instances match. The
+directly importing umbrella was not rebuilt, and provider inputs remain cached
+without current-source receipts. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-object-natural-semiring-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
