@@ -1803,5 +1803,12 @@ comparison. Paired target and three direct clients pass with identical client
 objects; checked declaration and registration reports match. The wider closure
 remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-signed-pairs-factors-evidence/BUNDLE.json).
 
+The auxiliary-seed positivity simplification `0e833fe200` removes four net Lean
+lines, bringing the reviewed series to 10094. Positivity of the existing products
+replaces three zero-contradiction arguments. Paired target and three direct
+clients pass with identical client objects; checked declarations and
+registrations match. The transitive closure remains cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-auxiliary-seed-positive-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
