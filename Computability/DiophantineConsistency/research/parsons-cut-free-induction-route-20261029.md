@@ -153,3 +153,14 @@ certificates for the partition. The [independent replay](../reviews/parsons-theo
 checks this bridge. The transformation uses classical choice and is not
 claimed primitive recursive. Translation into the rule calculus and PRA
 witnessing remain open.
+
+## Opening the normalized parameter block
+
+[`ParsonsOpened`](../Lean/DiophantineConsistency/ParsonsOpened.lean) proves
+that the exact parameter block in the normalized IΣ₁ proof opens to the
+principal counterexample matrix for any term substitution. Its selected
+client connects an actual normalized formula to the local guarded case,
+with the three smaller recursive premises explicit. The supplied local
+derivation is not yet shown to be a descendant of the normalized proof.
+The [independent replay](../reviews/parsons-opened-root.md) checks the
+bridge; the full cut-free recursion and PRA witnessing remain open.
