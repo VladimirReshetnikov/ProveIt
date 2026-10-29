@@ -90,19 +90,8 @@ theorem period_mod (blocks n start b : V) :
   rw [hx,hy]
   exact ⟨mod_add_mul' _ r hp,mod_add_mul' _ s hp⟩
 
-theorem y_lt_x (time b : V) : ycoord time b<xcoord time b := by
-  have hd : 1≤delta b := by
-    unfold delta
-    exact one_le_mul (by simp)
-      (le_trans (by simp : (1:V)≤3) (by simp : (3:V)≤b+3))
-  have hle : ycoord time b*ycoord time b≤delta b*ycoord time b*ycoord time b := by
-    simpa only [one_mul,mul_assoc] using
-      mul_le_mul_of_nonneg_right hd (Arithmetic.zero_le (ycoord time b*ycoord time b))
-  apply lt_of_mul_self_lt_mul_self₀ (by simp)
-  calc
-    ycoord time b*ycoord time b≤delta b*ycoord time b*ycoord time b := hle
-    _<1+delta b*ycoord time b*ycoord time b := by simp
-    _=xcoord time b*xcoord time b := (norm time b).symm
+theorem y_lt_x (time b : V) : ycoord time b<xcoord time b :=
+  ArithmeticPellRecurrence.ordinate_lt_abscissa b time
 
 /-- In the first n-window, equal actual residues identify the internal index. -/
 theorem index_eq_of_mod (i j n b : V) (hi : i≤n) (hj : j≤n)

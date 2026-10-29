@@ -15,19 +15,8 @@ open ArithmeticPellCommonUnit ArithmeticPellStrongDivisibility
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-- The actual norm also gives the strict inequality at index zero. -/
-theorem y_lt_x (b j : V) : ycoord j b<xcoord j b := by
-  have hd : 1≤delta b := by
-    have hp : 0<delta b := by unfold delta; exact mul_pos (by simp) (by simp)
-    simpa using lt_iff_succ_le.mp hp
-  apply lt_of_mul_self_lt_mul_self₀ (Arithmetic.zero_le (xcoord j b))
-  calc
-    ycoord j b*ycoord j b<1+ycoord j b*ycoord j b := by
-      simpa only [add_comm] using lt_add_one (ycoord j b*ycoord j b)
-    _≤1+delta b*ycoord j b*ycoord j b := by
-      apply add_le_add le_rfl
-      simpa only [mul_assoc] using le_mul_of_one_le_left
-        (Arithmetic.zero_le (ycoord j b*ycoord j b)) hd
-    _=xcoord j b*xcoord j b := (norm j b).symm
+theorem y_lt_x (b j : V) : ycoord j b<xcoord j b :=
+  ArithmeticPellRecurrence.ordinate_lt_abscissa b j
 
 theorem doubled_y_growth (b g : V) (hg : 0<g) :
     2*ycoord g b*ycoord g b<ycoord (2*g) b := by

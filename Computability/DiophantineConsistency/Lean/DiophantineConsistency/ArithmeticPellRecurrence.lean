@@ -143,4 +143,20 @@ theorem addition (left right b : V) :
       dsimp [delta]
       ring
 
+/-- Every represented Pell ordinate is strictly below its abscissa. -/
+theorem ordinate_lt_abscissa (b j : V) : ycoord j b<xcoord j b := by
+  have hd : 1≤delta b := by
+    have hp : 0<delta b := by unfold delta; exact mul_pos (by simp) (by simp)
+    simpa using lt_iff_succ_le.mp hp
+  apply lt_of_mul_self_lt_mul_self₀ (Arithmetic.zero_le (xcoord j b))
+  calc
+    ycoord j b*ycoord j b<1+ycoord j b*ycoord j b := by
+      simpa only [add_comm] using lt_add_one (ycoord j b*ycoord j b)
+    _≤1+delta b*ycoord j b*ycoord j b := by
+      apply add_le_add le_rfl
+      simpa only [mul_assoc] using le_mul_of_one_le_left
+        (Arithmetic.zero_le (ycoord j b*ycoord j b)) hd
+    _=xcoord j b*xcoord j b := (norm j b).symm
+
+
 end DiophantineConsistency.ArithmeticPellRecurrence
