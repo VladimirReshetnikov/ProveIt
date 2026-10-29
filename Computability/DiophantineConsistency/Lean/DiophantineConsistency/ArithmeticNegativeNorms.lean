@@ -13,9 +13,6 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder.Arithmetic
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem one_le_of_pos {x : V} (h : 0<x) : 1≤x := by
-  simpa using lt_iff_succ_le.mp h
-
 /-- Actual internal remainders, with no external residue-class oracle. -/
 theorem square_mod_four (x : V) : (x*x)%4=0 ∨ (x*x)%4=1 := by
   obtain ⟨k,h|h⟩ := even_or_odd x
@@ -88,7 +85,7 @@ theorem consecutive_negative_descent (n x y : V) (hn : 2≤n)
     have hb := h
     simp only [he,mul_zero] at hb
     exact (ne_of_gt (by simp : (0:V)<x*x+1)) hb
-  have hy1 := one_le_of_pos hy
+  have hy1 := pos_iff_one_le.mp hy
   have h2 : (2:V)≤n*y*y := calc
     2≤n := hn
     _≤n*(y*y) := le_mul_of_one_le_right (by simp) (one_le_mul hy1 hy1)

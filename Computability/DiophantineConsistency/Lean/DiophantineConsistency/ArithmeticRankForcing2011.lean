@@ -46,9 +46,6 @@ theorem lowPort_mod_four : (CurrentMasks2011.lowPort:V)%4=2 := by
   rw [lowPort_four_nat] at h
   simpa using h.symm
 
-private theorem one_le_of_pos {x : V} (h : 0<x) : 1≤x := by
-  simpa using lt_iff_succ_le.mp h
-
 /-- **Rank forcing at the actual carrier.** -/
 theorem current_rank_forcing (v : Fin 14 → V) (N C : V) (hN : 0<N)
     (hJ : v 0=rep (CurrentMasks2011.width:V) N) (hC : 0<C) (halpha : 0<v 2)
@@ -94,9 +91,9 @@ theorem current_rank_forcing (v : Fin 14 → V) (N C : V) (hN : 0<N)
     exact lt_of_le_of_lt (le_trans tsub_le_self hHle) (lt_add_one _)
   have hpos : (0:V)<(CurrentMasks2011.highPort:V) := ArithmeticMaskConstants.highPort_pos
   have hHJ : (CurrentMasks2011.highPort:V)*v 0-1+1=(CurrentMasks2011.highPort:V)*v 0 :=
-    tsub_add_cancel_of_le (one_le_mul (one_le_of_pos hpos) hJ1)
+    tsub_add_cancel_of_le (one_le_mul (pos_iff_one_le.mp hpos) hJ1)
   have hsumA : (C-1)+1+v 1+v 2=q v := by
-    rw [tsub_add_cancel_of_le (one_le_of_pos hC),hq]; exact hsum
+    rw [tsub_add_cancel_of_le (pos_iff_one_le.mp hC),hq]; exact hsum
   -- the rank identity
   have hrank : rank v=fourBlocks ((CurrentMasks2011.width:V)*N) (C-1)
       ((CurrentMasks2011.lowPort:V)*v 0+1) (v 1) ((CurrentMasks2011.highPort:V)*v 0-1) (v 2) := by
@@ -122,7 +119,7 @@ theorem current_rank_forcing (v : Fin 14 → V) (N C : V) (hN : 0<N)
     rw [mod_add (by norm_num : (0:V)<4), mod_mul (by norm_num : (0:V)<4), lowPort_mod_four, hJ4]
     norm_num
   have hu2 : 2≤(CurrentMasks2011.width:V)*N := le_trans (le_trans (by norm_num) hW3)
-    (le_mul_of_one_le_right (by simp) (one_le_of_pos hN))
+    (le_mul_of_one_le_right (by simp) (pos_iff_one_le.mp hN))
   refine ⟨hq,hrank,?_,?_,?_⟩
   · rw [hrank,hpop,hmask]; ring
   · rw [hrank]; exact fourBlocks_mod_four _ _ _ _ _ _ hu2 hA4 hM4

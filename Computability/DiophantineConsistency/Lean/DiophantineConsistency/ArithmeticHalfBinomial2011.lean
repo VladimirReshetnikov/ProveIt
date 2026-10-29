@@ -18,9 +18,6 @@ attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix Current
   CurrentMasks2011.lowPort CurrentMasks2011.highPort
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem one_le_of_pos {x : V} (h : 0<x) : 1≤x := by
-  simpa using lt_iff_succ_le.mp h
-
 /-- The rank dominates `q^2-1`, hence `3h+1` when `q = 2^h ≥ 16`. -/
 theorem three_h_lt_rank (v : Fin 14 → V) (hv : ∀j,0<v j) (h : V)
     (hq : q v=Exp.exp h) : 3*h+1≤rank v := by
@@ -30,11 +27,11 @@ theorem three_h_lt_rank (v : Fin 14 → V) (hv : ∀j,0<v j) (h : V)
     calc
       (16:V)=15*1+1 := by ring
       _≤(CurrentMasks2011.beta:V)*v 0+1 :=
-        add_le_add (mul_le_mul hb (one_le_of_pos (hv 0)) (by simp) (by simp)) le_rfl
+        add_le_add (mul_le_mul hb (pos_iff_one_le.mp (hv 0)) (by simp) (by simp)) le_rfl
   have hR : (q v)^2-1≤rank v := by
     unfold rank
     have h1 : 1≤(q v-1)*(q v-v 1)+v 2 :=
-      le_trans (one_le_of_pos (hv 2)) (le_add_of_nonneg_left (by simp))
+      le_trans (pos_iff_one_le.mp (hv 2)) (le_add_of_nonneg_left (by simp))
     calc
       (q v)^2-1=1*((q v)^2-1) := (one_mul _).symm
       _≤((q v-1)*(q v-v 1)+v 2)*((q v)^2-1) := mul_le_mul_of_nonneg_right h1 (by simp)
@@ -86,7 +83,7 @@ theorem population_of_equations (v : Fin 14 → V) (hv : ∀j,0<v j)
   have hY : 1≤Y v := by
     unfold Y
     have hq1 : 1≤q v := by unfold q; exact le_add_of_nonneg_left (by simp)
-    exact one_le_mul (one_le_of_pos (hv 7)) (by
+    exact one_le_mul (pos_iff_one_le.mp (hv 7)) (by
       simpa only [show (q v)^3=q v*q v*q v by ring] using one_le_mul (one_le_mul hq1 hq1) hq1)
   have hck : ycoord (2*r+1) (Y v*(X v+1))=2*ycoord (r+1) (2*(X v*Y v*Y v-1)+1)*Y v+v 10 := by
     rw [show Y v*(X v+1)=X v*Y v+Y v by ring,←hR,←hc,hrn,←hk]

@@ -21,9 +21,6 @@ open scoped LO.FirstOrder.Arithmetic
 open ArithmeticPow ArithmeticPellRecurrence ArithmeticPellPowerRecovery
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem one_le_of_pos {x : V} (h : 0<x) : 1≤x := by
-  simpa using lt_iff_succ_le.mp h
-
 theorem y_one (b : V) : ycoord 1 b=1 := by simpa using y_succ (0:V) b
 
 /-! Fixed graphs for the two growth invariants (base parameter held fixed). -/
