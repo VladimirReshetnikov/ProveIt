@@ -115,10 +115,8 @@ theorem modelSearchFindsBad {n : ℕ} (good : Code (n+1)) (x : M) (e : ℕ → M
   · rw [h]
     exact hx
 
-theorem modelCandidateSentence {n : ℕ} (good : Code (n+1)) : M↓[language] ⊧ candidateSentence good := by
-  simp only [models_iff, candidateSentence, Semiformula.eval_univCl, Semiformula.eval_all]
-  intro e x
-  exact (invariantBody_eval good x e).mpr (modelSearchCandidateInvariant good x e)
+theorem modelCandidateSentence {n : ℕ} (good : Code (n+1)) : M↓[language] ⊧ candidateSentence good :=
+  (candidateSentence_iff good).mpr (fun e x => modelSearchCandidateInvariant good x e)
 
 end models
 

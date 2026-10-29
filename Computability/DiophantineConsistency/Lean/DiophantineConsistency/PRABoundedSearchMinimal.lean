@@ -122,10 +122,8 @@ theorem modelSearchPredecessorGood {n : ℕ} (good : Code (n+1)) (x : M) (e : �
       rw [←htfind]
       exact hg
 
-theorem modelMinimalSentence {n : ℕ} (good : Code (n+1)) : M↓[language] ⊧ minimalSentence good := by
-  simp only [models_iff, minimalSentence, Semiformula.eval_univCl, Semiformula.eval_all]
-  intro e x
-  exact (minimalBody_eval good x e).mpr (modelSearchPredecessorGood good x e)
+theorem modelMinimalSentence {n : ℕ} (good : Code (n+1)) : M↓[language] ⊧ minimalSentence good :=
+  (minimalSentence_iff good).mpr (fun e x => modelSearchPredecessorGood good x e)
 
 end models
 
