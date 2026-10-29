@@ -74,3 +74,7 @@ single finite `Code n` and gives an actual candidate-PRA derivation of the
 universally closed equality to the original term. Its semantics are proved
 in arbitrary equality models, and each resulting fixed code is primitive
 recursive. Formula normalization and Σ₁ witnessing remain open.
+
+The [is-zero code](../reviews/pra-iszero-root.md) now has an actual
+candidate-PRA correctness derivation, supplying a Boolean complement
+primitive toward compiling open formulas. That compiler remains open.
