@@ -1,0 +1,384 @@
+{
+  "qualification": "Inherits independently replayed basic order chain, verified local providers and Foundation/mathlib. Establishes the remaining three exact mapped PA-minus order axioms in candidate PRA; a single all-axioms and proof-translation theorem remains separate. This is not PA/HA conservation or an internal HA proof.",
+  "parent_modules": {
+    "PRAFunctionCodes": {
+      "source_sha256": "e09d14c2ec3c11c306ca826ee4402ab51887646b6554979afd45827532473bbf",
+      "object_resolved": "/tmp/pra-function-codes-root-ld2dgh6b/lib/DiophantineConsistency/PRAFunctionCodes.olean",
+      "object_sha256": "8440cc3e807df295d16ba75468785e314c750a033bf008c0e191789b59b4cd7e",
+      "local_imports": []
+    },
+    "PRAFiniteFunctionCodes": {
+      "source_sha256": "f0a5ba7482344477c2c7ca5ec2544f127ede62ec30e60b1101bfaed7be94db74",
+      "object_resolved": "/tmp/pra-finite-function-codes-root-fjtcwus4/lib/DiophantineConsistency/PRAFiniteFunctionCodes.olean",
+      "object_sha256": "39af36620dc6af0f45906d208378af639bc4073114044c4afc53ffbd35767b8c",
+      "local_imports": [
+        "PRAFunctionCodes"
+      ]
+    },
+    "PRACodeEncoding": {
+      "source_sha256": "9cb69eddaa4fb7150578f9de8e6cb22a952240c8ec323a4ce2f8d6313238b4ea",
+      "object_resolved": "/tmp/pra-code-encoding-root-e6ee_nqd/lib/DiophantineConsistency/PRACodeEncoding.olean",
+      "object_sha256": "7e1e7c58f1ee3755235b07a8b43a727e11f0ff52ef0d304a8821c63c5fed0a2a",
+      "local_imports": [
+        "PRAFiniteFunctionCodes"
+      ]
+    },
+    "PRALanguage": {
+      "source_sha256": "5e21edfdc4593f441f46f7fde9f8d0fc467eb1369c03251fe4f3a1a4d17a57de",
+      "object_resolved": "/tmp/pra-language-root-ugx71zo4/lib/DiophantineConsistency/PRALanguage.olean",
+      "object_sha256": "f9325ab1d722c34c32e456653a4594aee1aa3f718c521eda5c5037e90d3b233e",
+      "local_imports": [
+        "PRACodeEncoding"
+      ]
+    },
+    "PRATheory": {
+      "source_sha256": "302c0097f95ffc2fd67f4ba9c1c15e70f0a5279e3067bee7e68be4b8ca7b4045",
+      "object_resolved": "/tmp/pra-q-current-refresh-5t4dxi2l/lib/DiophantineConsistency/PRATheory.olean",
+      "object_sha256": "3261443880f6abef40c60b9bcd901ea53504fd6f895ae9cb5b3285b6c8150a13",
+      "local_imports": [
+        "PRALanguage"
+      ]
+    },
+    "PRAAddOne": {
+      "source_sha256": "15d35b8b124cfff125d1470dbaf218fc89e9a522487b0b944a5b0982b52fd4ed",
+      "object_resolved": "/tmp/pra-addcomm-current-g5wd9yz7/lib/DiophantineConsistency/PRAAddOne.olean",
+      "object_sha256": "c1a553e48cfe9c60aaed2a326f70852601e4c4d64cbbd22d78886c279cdf4371",
+      "local_imports": [
+        "PRATheory"
+      ]
+    },
+    "PRAAddition": {
+      "source_sha256": "3e2876d4c680ec27bb1674bd6633c50e11d0a971e67f5e9b0a4ba57511ce2063",
+      "object_resolved": "/tmp/pra-addcomm-current-g5wd9yz7/lib/DiophantineConsistency/PRAAddition.olean",
+      "object_sha256": "82a3179b31caeb08b866efc9c56361570ec1c1d26e8902bd9f086df40a200d4c",
+      "local_imports": [
+        "PRAAddOne"
+      ]
+    },
+    "PRAMultiplication": {
+      "source_sha256": "11c827f84b0bcfe25ab3b499784b9915abaec037f776722f5f8d05e5d31372b3",
+      "object_resolved": "/tmp/pra-order-current-qjhbjsba/lib/DiophantineConsistency/PRAMultiplication.olean",
+      "object_sha256": "9bf5d96fe4b42cfab6701f28fd2b86611db5d3fcad622a23cb5c032fb83baee0",
+      "local_imports": [
+        "PRAAddOne"
+      ]
+    },
+    "PRANonzero": {
+      "source_sha256": "72b5d340b0e48fbc988f78f4efaee6803aa6cccd5f1355c76515cadd4833d8de",
+      "object_resolved": "/tmp/pra-order-current-qjhbjsba/lib/DiophantineConsistency/PRANonzero.olean",
+      "object_sha256": "8b180c84ec7362d6e0a7cefe5163836b8e904e7b8f4637c28276ced9e8e52efa",
+      "local_imports": [
+        "PRAMultiplication"
+      ]
+    },
+    "PRATermCompilation": {
+      "source_sha256": "49ce05862aae65c8774af1f2a801b6e45789fc44cefb4c3b04501fb81749979c",
+      "object_resolved": "/tmp/pra-term-compilation-author/lib/DiophantineConsistency/PRATermCompilation.olean",
+      "object_sha256": "bfd428549a3698218467c8ee67daa9484baaf6d4d49f452db2c84bf1efd802ab",
+      "local_imports": [
+        "PRAAddOne"
+      ]
+    },
+    "PRAExhaustion": {
+      "source_sha256": "98304483bc3667bc6ffe91244755009d7494b2a9a6b1438d15b973b9dc1f3760",
+      "object_sha256": "121aabe31bcf7605d35ed09eea9019fd081484ff5fdb1d584a576698dc8683b4",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAOpenInduction": {
+      "source_sha256": "fec65cf997ed4532dd32df0afc2242062f50401a2fc677934f93fe92946e7a04",
+      "object_sha256": "a68ad451c9717ac35d27f90b556adac754f2d96a268a7cc2775fb52adfa8af6d",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAAdditionZeroLeft": {
+      "source_sha256": "5b5120b9c9c9573a152f171b475e1b359a69f4a54c8d9d63007546cb28cf30d2",
+      "object_sha256": "1357493074c2dcd966c56c63924285143bdffd50af2df725a9ffc94e73b73e7b",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAAdditionSuccLeft": {
+      "source_sha256": "511456b6c7b8859001681d8e8196a61c42658baacb3f439201a816470c636e95",
+      "object_sha256": "27916edd12a36825bc7bf79588037d0d76a1d68d03e2c60334eafae8393f64db",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAAdditionCommutativity": {
+      "source_sha256": "acb0544b8fce237148d719fa66fdffd1c8576b7efe5ff523af75b71594b85d85",
+      "object_sha256": "605f6f599b895bcfcbacf9e12aad33933326da488e90cad02bbcdffa5ec1554c",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRASubtraction": {
+      "source_sha256": "3f9046575346d77d5e816da2b6b147af301d7031216f1839ce645144f70c9e9e",
+      "object_sha256": "6ee2e2bfe1cb0cc1e8e41e65e791374f8618589f57cfb0bfbaecdde82199bedf",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRASubSuccCancel": {
+      "source_sha256": "ae3d0537602c4eca20e17c2b5018c381031c10ab028deabccb1d19a0b850e350",
+      "object_sha256": "c6a82d45077afc5473b36aee0a32538a42bbc7fae05db42de2d25b687c3e25a3",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRASubAddition": {
+      "source_sha256": "6586c0e926c0d384a7ace1e3c0e471703a89d4d26dd33c496ec3f8bd2f10218a",
+      "object_sha256": "ad5785c7bedf8cee9aa94380f9c08e2d8ffecac062e23c6f4e573331e98d1bc2",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRASubReconstruct": {
+      "source_sha256": "4ab0dbdd1742fb6b24cd6f1e6c45399d2ce922b4398c887a06b17f138d276091",
+      "object_sha256": "148781816d147bd757acebbe61c3a6dd19f70ec41e4203bd3396be2b9f36f76d",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAQCompatibility": {
+      "source_sha256": "0161fb78e162af3c18c4366c10d437ee4580d79fba8f8ce7fe519b3257c385e6",
+      "object_sha256": "451a7de70dbbd047bffb3ab8b05583bffa9c0f8604fba66f5a8d7b7c0a9d83ca",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRASubSuccessorInvariant": {
+      "source_sha256": "b5773abdfe5085e148efdfaafa8b1b9c14877239c9ed13299bab9bf03f0fdf59",
+      "object_sha256": "f3b779b502af0df719229a6ba3d32553279f815087b9b36c6a740b0b55d64e4b",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAEqualityDifference": {
+      "source_sha256": "2cc522e2ca3b3b888aaea4d3eadf8cd272af2457543237da1ca83df37fa8cbb0",
+      "object_sha256": "aca4fb1f7003d49ce300f5356df7f72b3302092328f9a5518f3ad66d6079cb6e",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRANonzeroCharacter": {
+      "source_sha256": "8e756b2f3e0825f3f90008e17cf492af874c03df2189331dd5e1fd1513a31df7",
+      "object_sha256": "553ac76d20ea378ce1cc8ca6392a615620adb89e4452366a0fa58750c6217b28",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAIsZero": {
+      "source_sha256": "a346cba7ed93b8d495eeca81c85e52510eb45938bf417eb950d9e66b2a0d2f98",
+      "object_sha256": "341c45dbc80cfb1c79b97a483b6e7e913f6d570280340e9e4fc15537fc33e7a2",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRABooleanOps": {
+      "source_sha256": "71b879b607264d4c09e08a3d0524456548a81c028c70660cd054b7fae13f7352",
+      "object_sha256": "5d4890fa120d5ea4853f23b2338f54fbf67a984592d6e6ace616940701b40bce",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAQOrder": {
+      "source_sha256": "a58f9274cf55668ff201e4f51363bd78aacfd932ab088fb8a3293a0bd8f0c8dc",
+      "object_sha256": "1c97870356eef30e56f386c32816e3f7d5c37f869a5ee546c97d805bfeceff76",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAOpenFormulaCompiler": {
+      "source_sha256": "fb33b4e7b02ecdd63c02d8597ef082dba2db59ac7fa11a426b79b92eaa00dafa",
+      "object_sha256": "f1eec46f2efd7c9a69f14e629b6a826a14b0ca66137723062e9de1ae4138b6b9",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAOpenFormulaCoverage": {
+      "source_sha256": "ded570b9c467b6eae914805d3c930d7d9d725d4e3a46fc8f01687810853bdcdb",
+      "object_sha256": "64de3da805f8e2e23f7df4a9cfbfe6da0c22c2b43954ff615000c58f7e42f645",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAEqualityCode": {
+      "source_sha256": "5ede4f3aea932d355768b2840eabafd40fe96bdf0bb1c28e818fbae4b9206b96",
+      "object_sha256": "d0fb34c8a7f8cf15f7ca0622deac532ada9fc730194db402101ccda304601076",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAFormulaParameters": {
+      "source_sha256": "7f9c72821b1f5badfb0980b854cfdd10b366db47c1bf0522d8da77a5cc4b44fa",
+      "object_sha256": "87b2dfc1b79fab940642f0134e40e94e8e63b2f63f971e52225376798c351c35",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRACharacteristicBit": {
+      "source_sha256": "c48765a5addfdcd86f938598bbbc252454845573d269f8ef5888fe1963c6fee0",
+      "object_sha256": "2da3e6b29b7b9f20f5a4c8f400220bced9303c2556e569f9e8857aad1dffad92",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRASelectCode": {
+      "source_sha256": "19bf6a8b068a259071eca04987a9c9b1eb5df41aaf1c2242e77284d5682eaf3d",
+      "object_sha256": "50a4912e1e94c69700064d0b9a305bd427fcfdf3f94c8a3fdd65adb7f3cf1090",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRABoundedSearchCode": {
+      "source_sha256": "4b94e3258ee74fa0d716792e377639193d1f986dad76d55951c4d551ef7f37ac",
+      "object_sha256": "3b15a10cfec1b253d77736b649d95c1708077feb61dbbca502a6dfd42aa5d587",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRABoundedSearchInvariant": {
+      "source_sha256": "6af53f3a5f332257f62795ce11297e10a51060e21c600554064dbc86a039a321",
+      "object_sha256": "3c87d3a2149115ed580a70e61788d60a4417757cee4ef54ae882cc94f5a6429f",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRABoundedSearchMinimal": {
+      "source_sha256": "ebe8da4c0232a0a8e3c50d1f863966432eefea4190acfe751efceb0ad0a9c8bf",
+      "object_sha256": "13fae9ea8cb401c95de7210f93039a773ca3f7eead854b2ee87d99281190f813",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRABoundedSearchUniversalRule": {
+      "source_sha256": "c1d9d1526c471c97c91c4c9254e27db74e3f569713f925365a0841be4a2df2d8",
+      "object_sha256": "906391fb2629fc9f469ab4fa62de704256ec9e2036bfb73716d563d77f3eba6b",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAUniversalCandidate": {
+      "source_sha256": "40c015f87a9f329aa9896db66dbe25735eef5cdf72a0b6f8117e57c530bdb5e1",
+      "object_sha256": "f427deb5a1e4b5d86c6732c93143d6bb5bec0219888604a2d3ba72bf280ad55a",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAUniversalModelLemmas": {
+      "source_sha256": "1a5515bf84eb7697eff80c1d2003b1ba8f9a2b97e7c9f8ab17b6ed3cdd055bce",
+      "object_sha256": "60c29c84349f30450081f69c9ee88c02fc0ab98165e047b3d3d455e36b599408",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAUniversalInduction": {
+      "source_sha256": "90fc880e77511ed2e576c37b81be5174c15cafbbc8223a49ce5e60d5bee32c5f",
+      "object_sha256": "942558e20ac88ac645a1d1ceace93be06d9ebdd992b8e2228649a0451fe9b4e0",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAUniversalEquivalence": {
+      "source_sha256": "0fcdcd9855310cc4ba433bec766a37085a33d1d68682a22d91dd33893f071b49",
+      "object_sha256": "f812a61161a0d5c371489e224087d627bc3490a4037544f984134e4ab4694377",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAUniversalSyntax": {
+      "source_sha256": "2a715b891d8f31f01287945aacedfec0814a93982989232b316c2fb3c431442c",
+      "object_sha256": "52f64e6ed6437c98cd1a3793037802dd2d35984b420d78f10e827374e183ceea",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandExistentialSequents": {
+      "source_sha256": "d4bd459a05f9d8f9b9f4fba6000874c0e065777d7289b30236587dfa50ee3e96",
+      "object_sha256": "e0a253001cff25b76ba0e9272ec25501ae4a735fda7eb323e64b21476a3de304",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAUniversalAxiomSyntax": {
+      "source_sha256": "fe89529a11f6d0c5c816885234fe4947da0285a71f8a3cd90a981e897fa12f3a",
+      "object_sha256": "d3a545ba93fce278184e825b920040ff22c3c84f87df4ff35e26c507ab5e090b",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandUniversalPreparation": {
+      "source_sha256": "75b8bce7559ba34a5950c9ab95d362901047f07148808f0d41456005da01d553",
+      "object_sha256": "c9fff96d3d8cae2393df7f326ffeb4753e445fad19736e765f828cda12585850",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandBoundedSemantics": {
+      "source_sha256": "91916e0adda6ddbd6d5ce5b5f8ebe7146772b7e98fecd592eedf174483d42147",
+      "object_sha256": "352c90770f425378c6f9b2c73934b0a8914f1da3f6cff429759a5427a4b25448",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandBoundedSoundness": {
+      "source_sha256": "040eacb47249cebb8526bd05085980c25849001e32913c62d4b5b681c2897383",
+      "object_sha256": "e1224fe3c54367ea09a35bac873349d83b985e6681cd8a5b9a1880fff4d28e64",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandBoundedTruth": {
+      "source_sha256": "ce0954d9654e4a5f9428179a567f02a4cf5689098e84ef1382771cf8228879db",
+      "object_sha256": "9f568379027ff45814f10358263a1647d9eb5c69188ee40cee184c9bdeb1d17f",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandFiniteExtraction": {
+      "source_sha256": "29eaccb228aa22859a342de5acab8c8ec2b0f61331d07668df4ecb7517e23989",
+      "object_sha256": "5f2011fb12f76d59456ef2315b627a1b4a164f2117c014319e7008291e63408c",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAFiniteWitnessChoice": {
+      "source_sha256": "f99485f6a29d17c4804c473dd36b87deef4dfd6a2537ecc3732816c771a4fb19",
+      "object_sha256": "100b4b1a7885243762bc109d68128d940631fcbc05f479f8f2aab086b365880e",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAFiniteWitnessList": {
+      "source_sha256": "0766ae1bb92e241491c795df43ada37e6aa60a6ffe21e08655f6b2c93bf658cf",
+      "object_sha256": "511bd79f3833e75329d33ba2b808a0104954bc488ba7f0c9d5e6829792719315",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAHerbrandSelection": {
+      "source_sha256": "927d8d3993bbd1380c51c5ffbab865fd02b51183cf0472c72884ed517a74fe76",
+      "object_sha256": "29331dbbc291771794f12256433b0c555a4bf16da827b53d9378239a424e6176",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandParameterizedWitness": {
+      "source_sha256": "a80c0e3beffb0e016e1a90d882f8f7ee8f2858eaec9d00dc845c182b23d60342",
+      "object_sha256": "072300020ffd1ad58bd7c6cda0405267840ff311b4aec2425b6efbfb040667e9",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandParameterizedWitnessChecks": {
+      "source_sha256": "d4541940b64dffb2aa6f32dd2fd28b664b548ebf95025d6284fd1a4a7e92a2be",
+      "object_sha256": "801e988d0693ee8d5a12187776d9eb11a38c32c393273e0fd875333fb70a90c6",
+      "log_sha256": "a8cbcce9db72647bac55e28b98308f190c7057684091aa229a042cf8b8d2cdb3"
+    },
+    "HerbrandAllInstantiation": {
+      "source_sha256": "2279d33bf29c2576a02e26611fd728398e35bd013c85cd04065b052d5764b682",
+      "object_sha256": "7d5a1856d5856780c28aa9284119880d77f1d20dfa0a21ae0fa25d5658303d37",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "HerbrandAllInstantiationChecks": {
+      "source_sha256": "7bcfe86c10a099971d80d61cb02d0489976e9df22a0e477c891d3ce4e97e00a3",
+      "object_sha256": "dabdc934d76d46c408f554fbb59b5e5a45dccdd8d49cddb28b588c3375b174d9",
+      "log_sha256": "95b80ca67e407068b5ee8b09c194fa95946da3770698fbc72b55ef3adc74629d"
+    },
+    "PRAPeanoMinusBasic": {
+      "source_sha256": "884d48250ed2b1ce602be6d3a056789a3987a7c109686715c2bfc5e2ab65f431",
+      "object_sha256": "a8384cf35daec25268c4701d58f88a7c7261ec7d92e2697935ae9df599d6028f",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAPeanoMinusBasicChecks": {
+      "source_sha256": "9df6a3f1f93c9f617dba46e99a07ef90697afffe1b948f617b1fc2927c3a9019",
+      "object_sha256": "32aaf8ab671e6efc1313b84d356309c6cdb18eebd1af656d94ae5f0ed3e9b2ac",
+      "log_sha256": "4bea908fa8dbcdc86f8d033626ad2dfb9e1a47df82448d694d1d723aff4cb21e"
+    },
+    "PRAPeanoMinusAddAssoc": {
+      "source_sha256": "1889e4a41bed87ff04b39bf27c8b3a5ad595283c98b4666b78c916497a7d5bae",
+      "object_sha256": "a23d831d374c8ecae3d82cd962c40198e5fa3a8e27efb1ce0c1ea990e53dde65",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAPeanoMinusAddAssocChecks": {
+      "source_sha256": "647073a95b9b3ed7296b49c43354996f367da77dc9d176fbaf17ff811a36c1f8",
+      "object_sha256": "f396fbb3da6b0cedf9ddaf27eff6ff676c49782a754c37538946f92462d23ae3",
+      "log_sha256": "1893dfa14391310328534f23c213b49190c6fe3907bad306fa1e19c24b5c727c"
+    },
+    "PRAPeanoMinusDistributivity": {
+      "source_sha256": "0f3e237fcd4ae078d05641a83da29fe32af258e2da3e7baafe874ff49b21e7f3",
+      "object_sha256": "8fc03ef9be9a412a5b386a9a739aa248dba4ac88cbcfee2ab444e9a3ef8777ba",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAPeanoMinusDistributivityChecks": {
+      "source_sha256": "fe8f1e67016b7dbd82851503517221cf209f9abc15badeb241da260983c69b03",
+      "object_sha256": "3008deed40298735c65c599539c068a0ace468f4b75b938e742198f239738124",
+      "log_sha256": "d31aab65d1fd70415f2bf3fe7bb86ae7ec05ae4f16c70a5638a8cd0e13f33ea8"
+    },
+    "PRAPeanoMinusMulAssoc": {
+      "source_sha256": "5c72520d98e05ef187f2aa447fe5d7a2e560f54abb62891027c07b35c32bc1af",
+      "object_sha256": "24d92f5dd787a8d371b99b6e3614c7aea856c9a6b60b54e717fd4b688ab795f7",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAPeanoMinusMulAssocChecks": {
+      "source_sha256": "2846804edf1a11c62d2ed8e19f1c03481c33c35ccb060301d5e7eb885cc4b62c",
+      "object_sha256": "4c329f5e4d7933fd616166de25b15bc2ca1596bdb5bbd19b3a0f94dcf61d41c7",
+      "log_sha256": "f1095309d1d958dd17c681839c152770d356f7ae5b231994faa20f9f9130cb51"
+    },
+    "PRAPeanoMinusMulComm": {
+      "source_sha256": "5929a1e1be92c870c0d89d950c0060a8b8a299677467a6357130a1e01595529d",
+      "object_sha256": "5a776b935653390eb0845016906d217fef047719f936d48e321f6d8f29392d80",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAPeanoMinusMulCommChecks": {
+      "source_sha256": "8fee95a6c69fb3a84d0591909533be85a42ca6401d94047e0ee6c7df3a5cde42",
+      "object_sha256": "7651d9dca934deaa32cd765b7976db6e8eb218a16af2df916b8dfb4730a5f7fb",
+      "log_sha256": "2a83690cd6ed5258b806df40437068966d2aee5208e82c8de8071372e7f339ba"
+    },
+    "PRAPeanoMinusOrderBasic": {
+      "source_sha256": "19174bdce0ce23cb0210931c1bba89d506767a2736bda301e5c752afe9657827",
+      "object_sha256": "4ed0d100318df8fa32077002e9b4874db778d08a66575da1a4014bb44e3c0c58",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAPeanoMinusOrderBasicChecks": {
+      "source_sha256": "4e5fcd1e58d7e275aef6eff43cc128ba1c31791e90b5016b4b738ca1444b3a85",
+      "object_sha256": "99eb70179ff899c87980b29834e87a01671a5879cc13adea6ca952c9931e62d3",
+      "log_sha256": "b5907648c852eebe15de6b172dfce274201e24cc1062277b8d8eb1a32b47ac00"
+    }
+  },
+  "modules": {
+    "PRAPeanoMinusOrderAlgebra": {
+      "source_sha256": "93aa061b98c732a2d89dc43f590ea3d1f477efb69101e4ca5ff391d40a2f5aa1",
+      "object_sha256": "1868b587f398586520bd0087960e94db915ae9f9b4b14edb2153db053dacef3e",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "PRAPeanoMinusOrderAlgebraChecks": {
+      "source_sha256": "9d044023e97e394e650af37b8e38369c29c1e3d0e5552f33708b3a52aee63777",
+      "object_sha256": "657be4dbf8a479a009a3f8d59e2c6950035f7f996d63fe682bce2cb9445f8907",
+      "log_sha256": "30ce781f2adff4a362934fced82674244c17bbe162f5dac48b2650ea68395341"
+    }
+  },
+  "order": [
+    "PRAPeanoMinusOrderAlgebra",
+    "PRAPeanoMinusOrderAlgebraChecks"
+  ]
+}
