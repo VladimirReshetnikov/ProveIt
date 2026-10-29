@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A subsequent upstream merge changed eleven PRA prerequisites, including the
+Boolean, exhaustion, search and order modules. The relevant later PRA and
+Herbrand receipts authenticate their preceding snapshots; a new downstream
+source-current refresh is required.
+
 A later upstream merge generalized `PRAFormulaParameters.qr_rew` and updated
 `PRAUniversalSyntax` to use it. The affected universal-presentation, syntax
 and Herbrand replays below authenticate their earlier source snapshots; a
@@ -159,7 +164,9 @@ shows the relevant cut-free proofs contain no universal-rule nodes and collects
 their existential terms. [Finite extraction](reviews/herbrand-finite-extraction-root.md)
 now derives a disjunction for a prepared existential sequent. Preparing a
 general ∀∃ proof and translating the extracted terms to appropriately
-parameterized PR codes remain open.
+parameterized PR codes remain open. The [prepared-sequent parameterized witness](reviews/herbrand-parameterized-witness-root.md)
+now provides the latter step for its exact prepared input; the general ∀∃
+preparation remains open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
