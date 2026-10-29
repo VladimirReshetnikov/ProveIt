@@ -1,0 +1,3 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAux2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAux2011.ordinate_gt_difference
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAux2011.positive_auxiliary_witness

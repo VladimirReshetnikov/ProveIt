@@ -1,0 +1,4 @@
+import DiophantineConsistency.ParsonsGuardContext
+#print axioms DiophantineConsistency.ParsonsGuardContext.shift_good
+#print axioms DiophantineConsistency.ParsonsGuardContext.cost_open
+#print axioms DiophantineConsistency.ParsonsGuardContext.sigma_or_universal

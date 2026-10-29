@@ -1,0 +1,3 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionCarrier2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionCarrier2011.first_carrier_cut
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionCarrier2011.main_carrier_cut

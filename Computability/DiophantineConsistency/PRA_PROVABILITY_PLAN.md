@@ -9,10 +9,12 @@ printed proof is not required.
 ## Current scope and open endpoints
 
 Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean`,
-`ArithmeticBinomLegendre.lean`, and `ArithmeticHalfBinomial.lean`. The adaptive
-population, window and reverse
-replays below authenticate their earlier source snapshots; a source-current
-downstream rebuild is required.
+`ArithmeticBinomLegendre.lean`, `ArithmeticHalfBinomial.lean`, and
+`ArithmeticHalfBinomialSandwich.lean`. The affected adaptive population,
+window, and reverse-construction suffix has since [passed two current-source
+replays](reviews/adaptive-sandwich-postmerge2011-author.md), with the inherited
+provider boundary documented there. The later CellWindow continuation is
+still pending.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
@@ -35,9 +37,10 @@ The formal IΣ₁-to-PRA conservation argument and the candidate's comparison
 with a standard PRA presentation remain open.
 The [PA-minus bridge audit](research/pra-peanominus-bridge-audit-20261029.md)
 tracks the exact mapped equality axioms and all 17 non-equality axiom
-families. Closed candidate-PRA derivations now cover eight arithmetic
-families, including associativity, commutativity and distributivity; the nine
-order families and transport of arbitrary PA-minus proofs remain open.
+families. Closed candidate-PRA derivations now cover all seventeen families,
+including associativity, commutativity, distributivity, and the order axioms.
+Their assembly into a theory-level translation, the comparison with standard
+PRA, and the conservation argument remain open.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
@@ -104,6 +107,12 @@ preserves such descriptors under term substitution, and [fresh context
 opening](reviews/parsons-fresh-context-root.md) selects a universal at any
 side position without consuming the height margin. Multiple guards and the
 global recursion are not yet discharged by these conditional lemmas.
+In particular, a generated step mark can itself be non-prenex Π₂ and need
+not carry a guard descriptor; a recursion restricted to guarded contexts
+would therefore not suffice without an adapter that preserves the height bound.
+The [finite guarded-context counterexample case](reviews/parsons-counter-context-root.md)
+now handles any number of descriptor-bearing sides, using a separate
+decreasing formula-complexity measure and the explicit `Below H` hypothesis.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
@@ -121,7 +130,11 @@ client, internal converse and final HA/PRA proof-existence endpoints remain
 open. The [reverse transport identity](reviews/adaptive-construction-transport2011-root.md)
 is now proved from the positive 14-coordinate equation system, but the other
 reverse witnesses and adaptive zero construction remain open. The
-[strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
+[auxiliary phase client](reviews/adaptive-construction-aux-bind2011-root.md)
+constructs the positive adaptive auxiliary coordinate from the original
+equations when the rank phase and exact Pell-ordinate identity are supplied;
+those facts must still be exposed for the chosen halting construction.
+The [strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
 now follows from the maintained strong norm with the scaled multiplier.
 The [auxiliary witness positivity lemma](reviews/adaptive-construction-aux2011-root.md)
 proves `y-u>0` from the auxiliary norm when `y ≥ 2`; the

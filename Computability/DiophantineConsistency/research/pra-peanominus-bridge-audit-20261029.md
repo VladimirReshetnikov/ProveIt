@@ -10,20 +10,20 @@ Foundation's `PeanoMinus` has equality plus these 17 non-equality families. An e
 | `addZero` | `PRAPeanoMinusBasic.PRA_proves_addZero` proves the exact mapped sentence using the established Q proof. |
 | `addAssoc` | `PRAPeanoMinusAddAssoc.PRA_proves_addAssoc` proves the exact mapped axiom using open induction in arbitrary candidate-PRA models. |
 | `addComm` | `PRAPeanoMinusBasic.PRA_proves_addComm` proves the exact mapped sentence using the arbitrary-model addition commutativity lemma. |
-| `addEqOfLt` | The Q order equivalence and order witness are available; the exact mapped PA-minus axiom has not yet been discharged. |
-| `zeroLe` | Not yet discharged. |
-| `zeroLtOne` | Not yet discharged. |
-| `oneLeOfZeroLt` | Not yet discharged. |
-| `addLtAdd` | Not yet discharged; depends on addition and order compatibility. |
+| `addEqOfLt` | `PRAPeanoMinusOrderBasic.PRA_proves_addEqOfLt` proves the exact mapped axiom in arbitrary candidate-PRA models. |
+| `zeroLe` | `PRAPeanoMinusOrderBasic.PRA_proves_zeroLe` proves the exact mapped axiom in arbitrary candidate-PRA models. |
+| `zeroLtOne` | `PRAPeanoMinusOrderBasic.PRA_proves_zeroLtOne` proves the exact mapped axiom in arbitrary candidate-PRA models. |
+| `oneLeOfZeroLt` | `PRAPeanoMinusOrderBasic.PRA_proves_oneLeOfZeroLt` proves the exact mapped axiom in arbitrary candidate-PRA models. |
+| `addLtAdd` | `PRAPeanoMinusOrderAlgebra.PRA_proves_addLtAdd` proves the exact mapped axiom using the order witness and addition laws. |
 | `mulZero` | `PRAPeanoMinusBasic.PRA_proves_mulZero` proves the exact mapped sentence using the established Q proof. |
 | `mulOne` | `PRAPeanoMinusBasic.PRA_proves_mulOne` proves the exact mapped sentence from multiplication recursion and zero laws. |
 | `mulAssoc` | `PRAPeanoMinusMulAssoc.PRA_proves_mulAssoc` proves the exact mapped axiom using open induction and distributivity in arbitrary candidate-PRA models. |
 | `mulComm` | `PRAPeanoMinusMulComm.PRA_proves_mulComm` proves the exact mapped axiom using open induction and multiplication left-zero and left-successor in arbitrary candidate-PRA models. |
-| `mulLtMul` | Not yet discharged. |
+| `mulLtMul` | `PRAPeanoMinusOrderAlgebra.PRA_proves_mulLtMul` proves the exact mapped axiom using order witnesses and distributivity. |
 | `distr` | `PRAPeanoMinusDistributivity.PRA_proves_distr` proves the exact mapped axiom using open induction and mapped-model addition associativity. |
-| `ltIrrefl` | Not yet discharged. |
-| `ltTrans` | Not yet discharged. |
-| `ltTri` | Not yet discharged. |
+| `ltIrrefl` | `PRAPeanoMinusOrderBasic.PRA_proves_ltIrrefl` proves the exact mapped axiom in arbitrary candidate-PRA models. |
+| `ltTrans` | `PRAPeanoMinusOrderAlgebra.PRA_proves_ltTrans` proves the exact mapped axiom using order witnesses. |
+| `ltTri` | `PRAPeanoMinusOrderBasic.PRA_proves_ltTri` proves the exact mapped axiom in arbitrary candidate-PRA models. |
 
 The existing `PRAQOrder.PRA_proves_all_Q` discharges every **Robinson Q axiom**, including its strict-order clause, under the same embedding, and `PRAQProofTranslation.PRA_proves_qTheorem` transports Q theorems via soundness and completeness. PA-minus has additional ordered semiring and trichotomy axioms, so the Q theorem cannot be substituted for the desired PA-minus theorem. Existing addition/multiplication recursion laws, induction rule, subtraction and order witness lemmas are ingredients for the remaining families.
 
