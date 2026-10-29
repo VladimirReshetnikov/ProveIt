@@ -27,6 +27,10 @@ is also proved for Σ₁ side formulas and arbitrary parameters. These are
 noncomputable proof transformers, not conditional collection axioms or
 PRA-internal transformations. The complete cut-free translation and
 witnessing remain open.
+The [principal logical cases](reviews/parsons-logical-cases-root.md) now
+provide the existential, universal, disjunction and conjunction transformers
+with explicit strictly smaller local recursive hypotheses. Nonprincipal cases,
+contraction and a global cut-free recursion remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
@@ -116,6 +120,9 @@ open matrix. An effective recognition theorem is still required.
 The [finite witness selector](reviews/pra-finite-witness-root.md) collapses a
 provable finite disjunction of explicit candidate witnesses to one fixed PR
 witness. Extraction of that disjunction from a general proof remains open.
+The [open-matrix selection bridge](reviews/pra-herbrand-selection-root.md)
+now accepts the actual Foundation open formula and a finite-disjunction proof
+in the universal theory, yielding a candidate-PRA proof at one PR witness.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
