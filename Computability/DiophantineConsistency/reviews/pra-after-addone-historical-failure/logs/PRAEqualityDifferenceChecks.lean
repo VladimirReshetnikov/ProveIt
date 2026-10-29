@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAEqualityDifference
+#print axioms DiophantineConsistency.PRAEqualityDifference.modelBothDifferencesZero
+#check DiophantineConsistency.PRAEqualityDifference.modelBothDifferencesZero
