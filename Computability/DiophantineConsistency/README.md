@@ -18,6 +18,15 @@ is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
 of such a proof is sufficient; a literal printed proof is unnecessary.
 The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
 
+**Current proof status (29 October 2026).** The maintained 14-variable
+equation now has closed Lean IΣ₁ and HA proof-existence theorems in
+[`HACurrentEquation2011`](Lean/DiophantineConsistency/HACurrentEquation2011.lean).
+The earlier progress descriptions below are historical checkpoints. The active
+objective also requires a Lean proof of PRA provability; the existing citation
+of Parsons' theorem is an external argument, and the needed PRA calculus and
+formal transfer remain open. See the [PRA plan](PRA_PROVABILITY_PLAN.md) for
+the exact gap and the separate work needed for other equation-size records.
+
 The [internal binary population package](reviews/arithmetic-binary-population-root.md)
 now proves total represented population, block concatenation and complement
 weights at arbitrary internal lengths, including zero. Independent fresh
