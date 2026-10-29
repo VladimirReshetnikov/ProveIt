@@ -2152,3 +2152,61 @@ directions and are reusable Foundation-level infrastructure.
    bounded restatement, not a wrapper.
 3. `Classical.choose`-picked fixed objects, such as the rho8 circuit in
    `Bword`, leave constants unevaluated but still fixed.
+
+## Stage 0–1: sized derivations and the bounded relativization engine (2026-10-28)
+
+Both new modules are in `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/`.
+They hold in every model of IΣ₁. `#print axioms` gives `propext`,
+`Classical.choice` and `Quot.sound`
+(`InternalRelativizationBoundAudit.lean`).
+
+**`SizedDerivation`** (372 lines).
+- It defines `DerivableLe T s b := ∃ d ≤ b, DerivationOf T d s`.
+- Bounded twins of `em`, `verum`, `and_m`, `or_m`, `all_m`, `ex_m`, `wk`,
+  `shift`, `cut`, `by_axm`, `ofSetEq` and `of_ss`. The derived `and`/`or`
+  are bounded by a member bound.
+- The single arithmetic engine is `pair_succ_le_exp`: `⟪a,b⟫+1 ≤ 2^(4e)` when
+  `a, b ≤ 2^e` and `e ≥ 3`. As a result, every rule whose entries are at most
+  `2^e` (`e ≥ 4`) has code at most `2^(1024e)`.
+
+**`InternalRelativizationBound`** (978 lines). All bounds take one numeric
+parameter `a`, which bounds `d`, `¬d`, and the side formulas
+`¬δ(&i)`/`δ(&i) ≤ 2^(a(i+1))`.
+- `relativize_le`: `relativize L d p ≤ relB a p = 2^(2^((a+12)(p+1)))`, by
+  formula induction.
+- `derivableLe_relSet`: a `T`-derivation with code `n` yields the relativized
+  `U`-derivation. It has at most `n + a` side formulas and code at most
+  `towerB a n = 2^(2^(2^(ac a·(n+1))))`, with `ac a = 2(a²+2a+12)+40`. The
+  proof is the same `Derivation.induction1` as the unbounded engine, with
+  three bounds:
+  - all members of all sequents built at node `n` lie below one bound
+    `memB a n`;
+  - each input node costs at most four bounded rule applications;
+  - the resulting factor `2^40` in the exponent is absorbed by `stage4_le`.
+- `derivableLe_of_domSet`: discharging `m` side formulas multiplies the
+  exponent by `2^(30m)`.
+- `provableLe_relativize` / `provableLe_falsum_of_relativize`: a `T`-proof
+  with code `n` gives a `U`-proof with code at most
+  `provB a n = 2^(2^(30(n+a)) · 2^(2^(ac a·(n+1))))`. That bound is explicit
+  and elementary.
+
+**Scope correction.** The ZF/ZFC `L` step goes through
+`SetRelativization.provable_falsum_of_relativize_set`. That is a thin wrapper
+around this engine, so the scope stands: one engine serves `L`, and the
+quotient chain reuses `derivable_of_domSet`.
+
+**Still to do for Stage 1.** The other shared inductions:
+- `SetCongruence.replace_aux`/`term_replace_aux`;
+- `NumeralOmega.provable_numChainOmegaCode`;
+- `PackageInduction`.
+
+**Risks for the applications** (Stage 3 onward).
+- *Triple-exponential axiom obligations.* The bounded engine assumes axiom
+  obligations within `2^(2^(2^(a(p+1))))`. If the `L` obligations (`glue`,
+  `peel`, `driverT`) come out taller, the engine's tower needs more height.
+  That change is mechanical: `towerB` gets another exponential, and so does
+  `ax_le`.
+- *Substitution bounds for `⌜domL⌝`.* The side-formula hypotheses
+  `domF L d i ≤ 2^(a(i+1))` need a substitution-size lemma for the fixed
+  domain formula. This is a polynomial bound for a standard formula, but it
+  is not yet proved.
