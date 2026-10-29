@@ -208,4 +208,127 @@ theorem oschema_leaf {a : ℕ}
   exact hstrip.mono (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hNt (by norm_num)))
 
 
+/-! ## Every template axiom leaf, at arbitrary placeholders -/
+
+/-- The uniform leaf level at arbitrary placeholders. -/
+def leafG (t : ℕ) (u : V) : V := (t : V) * (u + 2) + congL u + 5 + oschW t u
+
+theorem congL_mono {u u' : V} (h : u ≤ u') : congL u ≤ congL u' := by
+  have e : congL u' + 1130 * u = congL u + 1130 * u' := by
+    unfold congL lW₁ coreL SizedCongruence.cW sW mBig; ring
+  have h2 : congL u + 1130 * u ≤ congL u' + 1130 * u := by
+    rw [e]; exact _root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left h (by norm_num))
+  exact (add_le_add_iff_right _).mp h2
+
+theorem oschW_mono {t A : ℕ} {u U : V} (ht : t ≤ A) (hu : u ≤ U) : oschW t u ≤ oschW A U := by
+  have htA : (t : V) ≤ A := by exact_mod_cast ht
+  have hm : (t : V) * (u + 1) ≤ (A : V) * (U + 1) :=
+    mul_le_mul htA (_root_.add_le_add hu le_rfl) (Arithmetic.zero_le _) (Arithmetic.zero_le _)
+  unfold oschW sβc
+  refine _root_.add_le_add (_root_.add_le_add (_root_.add_le_add (openW_mono ?_) ?_) le_rfl)
+    (mul_le_mul_of_nonneg_left htA (by norm_num))
+  · exact _root_.add_le_add (_root_.add_le_add (mul_le_mul_of_nonneg_left
+      (_root_.add_le_add (_root_.add_le_add hm htA) le_rfl) (by norm_num)) htA) le_rfl
+  · exact _root_.add_le_add (mul_le_mul_of_nonneg_left (_root_.add_le_add (_root_.add_le_add hm
+      (mul_le_mul_of_nonneg_left htA (by norm_num))) le_rfl) (by norm_num)) (_root_.add_le_add htA le_rfl)
+
+theorem leafG_mono {t A : ℕ} {u U : V} (ht : t ≤ A) (hu : u ≤ U) : leafG t u ≤ leafG A U := by
+  have htA : (t : V) ≤ A := by exact_mod_cast ht
+  unfold leafG
+  exact _root_.add_le_add (_root_.add_le_add (_root_.add_le_add (mul_le_mul htA
+    (_root_.add_le_add hu le_rfl) (Arithmetic.zero_le _) (Arithmetic.zero_le _)) (congL_mono hu))
+    le_rfl) (oschW_mono ht hu)
+
+/-- **Every template axiom leaf is bounded, at arbitrary placeholders.** -/
+theorem templ_leaf_gen (harity : ∀ i, arities i ≤ 3) (σ : Sentence (setTemplateLanguage k arities))
+    (h : σ ∈ LTemplate.templTheory k arities)
+    (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
+    {u : V} (hu : 2 ≤ u) (hK : ∀ i, (Ks i).val ≤ lvB u) :
+    DLv 𝗭𝗙 (insert (translateFormula Ks (Rewriting.emb σ)).val ∅)
+      (leafG (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities))) u) := by
+  set t : V := (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V) with ht
+  have hx := translate_level (Rewriting.emb σ) u Ks hK
+  have hge1 : t * (u + 1) + 5 ≤ leafG (tA (Rewriting.emb σ : Proposition _)) u := by
+    unfold leafG
+    rw [← ht]
+    refine le_trans ?_ (le_self_add)
+    refine le_trans ?_ (_root_.add_le_add (_root_.add_le_add le_rfl (Arithmetic.zero_le (congL u)))
+      le_rfl)
+    exact _root_.add_le_add (le_trans (mul_le_mul_of_nonneg_left (_root_.add_le_add le_rfl
+      (by norm_num : (1 : V) ≤ 2)) (Arithmetic.zero_le _)) (by simp)) le_rfl
+  rcases SizedTemplateAxioms.templ_lifted_or_congruence σ h with hl | ⟨i, rfl⟩ | ⟨p, rfl⟩ | ⟨p, rfl⟩
+  · have hw4 : (4 : V) ≤ t * (u + 1) + 4 := le_add_self
+    refine (DLv.by_axm hw4 ((SeqLt.empty _).insert (lt_lvB_of hx (_root_.add_le_add le_rfl
+      (by norm_num)))) (SizedTemplateAxioms.singleton_formulaSet _)
+      (translateFormula Ks (Rewriting.emb σ)).val (by simp) ?_).mono
+      (le_trans (le_of_eq (by ring)) hge1)
+    rcases hl with ⟨τ, hτ, rfl⟩
+    rw [translateFormula_lMap_set_emb]
+    exact (Bootstrapping.Δ₁Class.mem_iff'' (T := (𝗭𝗙 : SetTheory))).mpr hτ
+  · rw [SetCongruence.translate_setPlaceholderCongruenceSentence]
+    refine (cong_leaf (arities i) (harity i) (Ks i) hu (hK i)).mono ?_
+    unfold leafG
+    exact le_trans (le_add_self : congL u ≤ _ + congL u)
+      (le_trans le_self_add le_self_add)
+  · refine (oschema_leaf OpenSchemaTemplates.sepBodySource sepBody
+      (fun Ks p => OpenSchemaTemplates.translate_sepBodySource Ks p)
+      (fun K _ hK hu => open_sep_le K hK hu) Ks hu hK p).mono ?_
+    unfold leafG; exact le_add_self
+  · refine (oschema_leaf OpenSchemaTemplates.repBodySource repBody
+      (fun Ks p => OpenSchemaTemplates.translate_repBodySource Ks p)
+      (fun K _ hK hu => open_rep_le K hK hu) Ks hu hK p).mono ?_
+    unfold leafG; exact le_add_self
+
+/-! ## Bounded compilation at arbitrary placeholders -/
+
+/-- The exponent level of the general compiler. -/
+def cExpG (A B : ℕ) (u : V) : V := 10 * ((A : V) * (u + B + 1) + 1) + 3 + leafG A (u + B)
+
+/-- The leaf bound `e` of the general compiler. -/
+def cEG (A B : ℕ) (u : V) : V := lvB (cExpG A B u) + 1
+
+/-- **Bounded template compilation over `templTheory`, at arbitrary
+placeholders** of arity at most `3` and level `u ≥ 2`. -/
+theorem sized_compileT_gen (harity : ∀ i, arities i ≤ 3)
+    (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i)) {u : V} (hu : 2 ≤ u)
+    (hK : ∀ i, (Ks i).val ≤ lvB u) {σ : Sentence (setTemplateLanguage k arities)}
+    (d : LTemplate.templTheory k arities ⟹₂
+      ({(Rewriting.emb σ : Proposition (setTemplateLanguage k arities))} : Finset _)) :
+    DerivableLe 𝗭𝗙 (insert (translateFormula Ks (Rewriting.emb σ)).val ∅)
+      (Exp.exp (SizedTemplateCompiler.stg (4 * BufferedTemplateProofCompiler.bufferBound d)
+        (SizedTemplateCompiler.stg (SizedTemplateCompiler.height d)
+          (cEG (SizedOpenTemplate.derMax d)
+            (BufferedTemplateProofCompiler.bufferBound d + SizedTemplateCompiler.height d) u)))) := by
+  set A := SizedOpenTemplate.derMax d with hAd
+  set B := BufferedTemplateProofCompiler.bufferBound d + SizedTemplateCompiler.height d with hBd
+  set E := cExpG A B u with hE
+  have hX : (A : V) * (u + B + 1) ≤ 10 * ((A : V) * (u + B + 1) + 1) :=
+    le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num))
+  have hcanE : 10 * ((A : V) * (u + B + 1) + 1) + 3 ≤ E := by rw [hE]; unfold cExpG; exact le_self_add
+  have hE1 : (1 : V) ≤ E := le_trans (by norm_num) (le_trans le_add_self hcanE)
+  have he : (4 : V) ≤ cEG A B u := le_trans (four_le_lvB hE1) le_self_add
+  have hFe : lvB ((A : V) * (u + B + 1)) + 1 ≤ cEG A B u :=
+    _root_.add_le_add (lvB_mono (le_trans hX (le_trans le_self_add hcanE))) le_rfl
+  have hAE : (A : V) ≤ E := by
+    refine le_trans ?_ (le_trans hX (le_trans le_self_add hcanE))
+    exact le_mul_of_one_le_right (Arithmetic.zero_le _) le_add_self
+  have hT : lvB (A : V) ≤ Exp.exp (cEG A B u) :=
+    le_trans (lvB_mono hAE) (le_trans le_self_add (le_of_lt (lt_exp _)))
+  have hcan : lvB (10 * ((A : V) * (u + B + 1) + 1) + 3) + 1 ≤ cEG A B u :=
+    _root_.add_le_add (lvB_mono hcanE) le_rfl
+  have hax : SizedOpenTemplate.AxOK (fun σ' ↦ ∀ b ≤ B,
+      DerivableLe ((𝗭𝗙 : SetTheory).internalize V).theory
+        (insert (translateFormula (shiftedPredicates Ks b) (Rewriting.emb σ')).val ∅)
+        (Exp.exp (cEG A B u))) d := by
+    refine SizedLTemplate.axOK_of _ (A := A) ?_ d le_rfl
+    intro σ' hσ' htA b hb
+    have hub : (2 : V) ≤ u + b := le_trans hu le_self_add
+    refine DerivableLe.mono (templ_leaf_gen harity σ' hσ' (shiftedPredicates Ks b) hub
+      (SizedOpenTemplate.shifted_level Ks hK b)) (exp_monotone_le.mpr ?_)
+    refine le_trans (lvB_mono ?_) le_self_add
+    have hbB : u + (b : V) ≤ u + B := _root_.add_le_add le_rfl (by exact_mod_cast hb)
+    exact le_trans (leafG_mono htA hbB) (by unfold cExpG; exact le_add_self)
+  exact SizedOpenTemplate.sized_open_compile (U := (𝗭𝗙 : SetTheory).internalize V) Ks hK d le_rfl
+    he hFe hT hcan hax
+
 end LeanProofs.ZFCinPA.SizedOpenTemplateLeaves
