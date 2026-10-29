@@ -1937,5 +1937,14 @@ registrations match. Direct provider receipts match their sources, while older
 transitive path samples and the wider closure remain cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261029-pell-factor-positivity-evidence/BUNDLE.json).
 
+The shared integer beta positivity lemma `ca3ebb3033` removes 31 net Lean
+lines, bringing the reviewed series to 10245. Nineteen proofs use one public
+cast lemma. Paired builds of the changed modules and tested clients pass,
+including a replay with the source-matched positive-source provider. Checked
+interfaces and sampled registrations match; some client objects differ.
+NativeAdaptiveCurrent2011 and the umbrella were not rebuilt, and the wider
+transitive closure remains cached. The compact archive omits large environment
+logs but records their external paths and hashes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-beta-int-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
