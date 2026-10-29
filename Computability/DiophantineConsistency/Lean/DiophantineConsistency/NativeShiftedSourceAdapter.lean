@@ -87,10 +87,8 @@ theorem source_old_z_gt_one (p : Fin 4 → ℤ) {d MC MF : ℕ}
     calc
       (p 1).toNat + x 10 = ((p 1).toNat + x 10) * 1 := by omega
       _ ≤ ((p 1).toNat + x 10) * gap p x := Nat.mul_le_mul_left _ hC
-  by_contra hz
-  have hsub : x 3 - 1 = 0 := by omega
-  rw [hsub, zero_mul, add_zero] at ht
-  omega
+  have hp : 0 < (x 3 - 1) * (sourceQ p x - 1) := by omega
+  exact Nat.sub_pos_iff_lt.mp (Nat.pos_of_mul_pos_right hp)
 
 private theorem positive_nat_cast (x : Fin 31 → ℤ) (hx : ∀ i, 0 < x i) :
     ∃ n : Fin 31 → ℕ, (∀ i, 0 < n i) ∧ (fun i => (n i : ℤ)) = x := by
