@@ -31,19 +31,8 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
 theorem modelWitnessCode (x y : M) :
     Structure.func (L := language) witnessCode ![x,y] =
       Structure.func (L := language) predCode (fun _ =>
-        Structure.func (L := language) subCode ![y,x]) := by
-  have h := modelComposition (M := M) predCode
-    (.cons (.comp subCode (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))) (.nil 2)) ![x,y]
-  have hs := modelSwapComposition (M := M) subCode x y
-  have ha : (fun i => Structure.func (L := language)
-      (getCode (.cons (.comp subCode (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))) (.nil 2)) i) ![x,y]) =
-      fun _ => Structure.func (L := language) subCode ![y,x] := by
-    funext i
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) i
-    exact hs
-  change Structure.func (L := language) witnessCode ![x,y] = _ at h
-  rw [ha] at h
-  exact h
+        Structure.func (L := language) subCode ![y,x]) :=
+  PRAQOrder.modelUnaryAfterSwap predCode subCode x y
 
 theorem modelWitnessByCode (x y : M)
     (hxy : Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]) :

@@ -14,22 +14,28 @@ section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* PRA]
 
-theorem modelLtBit (x y : M) :
-    Structure.func (L := language) ltBitCode ![x,y] =
-      Structure.func (L := language) nonzeroCode
-        (fun _ => Structure.func (L := language) subCode ![y,x]) := by
-  have h := modelComposition (M := M) nonzeroCode
-    (.cons (.comp subCode (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))) (.nil 2)) ![x,y]
-  have hs := modelSwapComposition (M := M) subCode x y
+/-- Compose a unary code with a binary code applied to reversed arguments. -/
+theorem modelUnaryAfterSwap (f : Code 1) (g : Code 2) (x y : M) :
+    Structure.func (L := language)
+      (Code.comp f (.cons (.comp g (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))) (.nil 2))) ![x,y] =
+      Structure.func (L := language) f (fun _ => Structure.func (L := language) g ![y,x]) := by
+  have h := modelComposition (M := M) f
+    (.cons (.comp g (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))) (.nil 2)) ![x,y]
+  have hs := modelSwapComposition (M := M) g x y
   have ha : (fun i => Structure.func (L := language)
-      (getCode (.cons (.comp subCode (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))) (.nil 2)) i) ![x,y]) =
-      fun _ => Structure.func (L := language) subCode ![y,x] := by
+      (getCode (.cons (.comp g (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))) (.nil 2)) i) ![x,y]) =
+      fun _ => Structure.func (L := language) g ![y,x] := by
     funext i
     refine Fin.cases ?_ (fun j => Fin.elim0 j) i
     exact hs
-  change Structure.func (L := language) ltBitCode ![x,y] = _ at h
   rw [ha] at h
   exact h
+
+theorem modelLtBit (x y : M) :
+    Structure.func (L := language) ltBitCode ![x,y] =
+      Structure.func (L := language) nonzeroCode
+        (fun _ => Structure.func (L := language) subCode ![y,x]) :=
+  modelUnaryAfterSwap nonzeroCode subCode x y
 
 theorem modelLtBitDefinition (x y : M) :
     Structure.rel (L := language) Language.ORing.Rel.lt ![x,y] ↔
