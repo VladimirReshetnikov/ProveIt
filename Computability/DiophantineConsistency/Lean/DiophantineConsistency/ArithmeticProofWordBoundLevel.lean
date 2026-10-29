@@ -165,18 +165,10 @@ theorem tail_sq_le (raw : V) : tailValue raw * tailValue raw ≤ 2 * raw := by
 
 /-- The tail of a word below `lev (a+1)` lies below `lev a`. -/
 theorem tail_le_lev {raw a : V} (h : raw + 1 ≤ lev (a + 1)) : tailValue raw ≤ lev a := by
-  by_contra hn
-  have hlt : lev a < tailValue raw := lt_of_not_ge hn
-  have h1 : lev a * lev a < tailValue raw * tailValue raw :=
-    mul_lt_mul'' hlt hlt (Arithmetic.zero_le _) (Arithmetic.zero_le _)
-  have h2 : tailValue raw * tailValue raw < 2 * (raw + 1) := by
-    refine lt_of_le_of_lt (tail_sq_le raw) ?_
-    rw [mul_add, mul_one]
-    exact lt_add_of_pos_right _ (by norm_num)
-  have h3 : 2 * (raw + 1) ≤ lev a * lev a := by
-    rw [lev_sq]
-    exact mul_le_mul_of_nonneg_left h (Arithmetic.zero_le 2)
-  exact _root_.lt_irrefl _ (lt_trans h1 (lt_of_lt_of_le h2 h3))
+  apply nonneg_le_nonneg_of_sq_le_sq (Arithmetic.zero_le _)
+  apply le_trans (tail_sq_le raw)
+  rw [lev_sq]
+  exact mul_le_mul_of_nonneg_left (le_trans (by simp) h) (Arithmetic.zero_le 2)
 
 /-- One replaced command costs six levels. -/
 theorem replace_le {raw y n : V} (hn : 1 ≤ n) (hr : raw ≤ lev n) (hy : y ≤ lev n) :
