@@ -26,4 +26,13 @@ theorem mod_mod_of_dvd {m n : V} (hm : 0 < m) (h : m ∣ n) (a : V) : a % n % m 
   conv_rhs => rw [← div_add_mod a n]
   rw [mod_add_remove_left_of_dvd (dvd_mul_of_dvd_left h _) hm]
 
+/-- Scaling a residue and its modulus by the same positive factor. -/
+theorem mul_mod_mul {k a b : V} (hk : 0 < k) (hb : 0 < b) :
+    (k * a) % (k * b) = k * (a % b) := by
+  have he : k * a = (k * b) * (a / b) + k * (a % b) := by
+    calc k * a = k * (b * (a / b) + a % b) := by rw [div_add_mod]
+      _ = _ := by ring
+  have hr : k * (a % b) < k * b := mul_lt_mul_of_pos_left (mod_lt _ hb) hk
+  rw [he, mod_mul_add' _ _ (mul_pos hk hb), mod_eq_self_of_lt hr]
+
 end DiophantineConsistency.ArithmeticModularCancellation

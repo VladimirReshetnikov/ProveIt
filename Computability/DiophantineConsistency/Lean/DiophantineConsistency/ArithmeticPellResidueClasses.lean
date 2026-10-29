@@ -24,15 +24,7 @@ theorem mod_reduce (a m n : V) (hm : 0<m) (hdiv : m∣n) :
     (a%n)%m=a%m := ArithmeticModularCancellation.mod_mod_of_dvd hm hdiv a
 
 theorem mod_scale (a m c : V) (hm : 0<m) (hc : 0<c) :
-    (c*a)%(c*m)=c*(a%m) := by
-  have hr : c*(a%m)<c*m := mul_lt_mul_of_pos_left (mod_lt a hm) hc
-  calc
-    (c*a)%(c*m)=((a/m)*(c*m)+c*(a%m))%(c*m) := by
-      congr 1
-      calc
-        c*a=c*(m*(a/m)+a%m) := by rw [div_add_mod]
-        _=(a/m)*(c*m)+c*(a%m) := by ring
-    _=c*(a%m) := mod_mul_add_of_lt _ _ hr
+    (c*a)%(c*m)=c*(a%m) := ArithmeticModularCancellation.mul_mod_mul hc hm
 
 theorem x_strictMono (b : V) : StrictMono (fun t : V => xcoord t b) := by
   intro i j hij
