@@ -16,10 +16,7 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 def discriminant (q : V) : V := (q+1)*(q+2)
 
 theorem positive_x (q x k : V) (h : x*x=1+discriminant q*k*k) : 0<x := by
-  have h1 : 1≤x*x := by rw [h]; simp
-  by_contra hn
-  have hz : x=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le x)
-  simp [hz] at h1
+  exact pos_of_mul_pos_left (b := x) (by rw [h]; simp) (Arithmetic.zero_le x)
 
 theorem x_bound (q x k : V) (h : x*x=1+discriminant q*k*k) : x≤(q+2)*k+1 := by
   apply nonneg_le_nonneg_of_sq_le_sq (Arithmetic.zero_le _)

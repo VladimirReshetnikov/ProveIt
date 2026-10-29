@@ -15,10 +15,7 @@ private theorem one_le {z : V} (hz : 0<z) : 1≤z := by
   simpa using lt_iff_succ_le.mp hz
 
 theorem positive_x (b x y : V) (h : x*x=1+delta b*y*y) : 0<x := by
-  have h1 : 1≤x*x := by rw [h]; simp
-  by_contra hn
-  have hz : x=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le x)
-  simp [hz] at h1
+  exact pos_of_mul_pos_left (b := x) (by rw [h]; simp) (Arithmetic.zero_le x)
 
 /-- The bound makes the later induction invariant a bounded universal. -/
 theorem x_bound (b x y : V) (h : x*x=1+delta b*y*y) : x≤(b+2)*y+1 := by
