@@ -218,28 +218,6 @@ theorem leading_D2 (ports : Fin 4 → R) : (D2 ports).coeff 1850 = 1 := by
   rw [coeff_sparseKernel _ positions2_injective]
   rfl
 
-private theorem box_facts (ports : Fin 4 → ℤ) (B K : ℤ)
-    (hB : 2 ≤ B) (hK : 16*B ≤ K)
-    (hb : 0 ≤ ports 0 ∧ ports 0 < B)
-    (hk : 0 ≤ ports 1 ∧ ports 1 < K)
-    (hm : 0 ≤ ports 2 ∧ ports 2 < B)
-    (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
-    ports 0 ^ 2 ≤ B ^ 2 ∧ ports 3 * ports 0 ≤ 2*B^2 ∧
-      ports 0 * (ports 1+1) < B*K ∧ 16*B^2 ≤ B*K := by
-  have hsq : ports 0 ^ 2 ≤ B ^ 2 :=
-    (sq_le_sq₀ hb.1 (by omega)).mpr hb.2.le
-  have hp : ports 3 * ports 0 ≤ 2*B^2 := by
-    calc
-      _ ≤ (2*B)*B := mul_le_mul hf.2.le hb.2.le hb.1 (by omega)
-      _ = _ := by ring
-  have hl : ports 0 * (ports 1+1) < B*K := by
-    calc
-      _ ≤ ports 0*K := mul_le_mul_of_nonneg_left (by omega) hb.1
-      _ < B*K := mul_lt_mul_of_pos_right hb.2 (by omega)
-  refine ⟨hsq,hp,hl,?_⟩
-  nlinarith [mul_nonneg (by omega : 0 ≤ B) (sub_nonneg.mpr hK)]
-
-
 theorem records0_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hB : 2 ≤ B) (hK : 16*B ≤ K)
     (hb : 0 ≤ ports 0 ∧ ports 0 < B)
@@ -247,7 +225,7 @@ theorem records0_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hm : 0 ≤ ports 2 ∧ ports 2 < B)
     (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
     ∀ i, |coefficients0 ports i| < 2*B*K := by
-  obtain ⟨hsq,hp,hl,hBK⟩ := box_facts ports B K hB hK hb hk hm hf
+  obtain ⟨hsq,hp,hl,hBK⟩ := SplitKernelData59.port_box_facts ports B K hB hK hb hk hm hf
   have hb0 := hb.1
   have hb1 := hb.2
   have hk0 := hk.1
@@ -267,7 +245,7 @@ theorem records1_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hm : 0 ≤ ports 2 ∧ ports 2 < B)
     (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
     ∀ i, |coefficients1 ports i| < 2*B*K := by
-  obtain ⟨hsq,hp,hl,hBK⟩ := box_facts ports B K hB hK hb hk hm hf
+  obtain ⟨hsq,hp,hl,hBK⟩ := SplitKernelData59.port_box_facts ports B K hB hK hb hk hm hf
   have hb0 := hb.1
   have hb1 := hb.2
   have hk0 := hk.1
@@ -287,7 +265,7 @@ theorem records2_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hm : 0 ≤ ports 2 ∧ ports 2 < B)
     (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
     ∀ i, |coefficients2 ports i| < 2*B*K := by
-  obtain ⟨hsq,hp,hl,hBK⟩ := box_facts ports B K hB hK hb hk hm hf
+  obtain ⟨hsq,hp,hl,hBK⟩ := SplitKernelData59.port_box_facts ports B K hB hK hb hk hm hf
   have hb0 := hb.1
   have hb1 := hb.2
   have hk0 := hk.1

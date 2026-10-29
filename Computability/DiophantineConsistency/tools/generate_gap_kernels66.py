@@ -8,8 +8,6 @@ g=importlib.util.module_from_spec(s);s.loader.exec_module(g)
 
 def render():
  source,layout,kernels,*_=g.read()
- old=(ROOT/'Lean/DiophantineConsistency/SplitKernelData59.lean').read_text()
- box=old[old.index('private theorem box_facts'):old.index('theorem records0_lt')]
  header='''import DiophantineConsistency.GapGeometry66
 import DiophantineConsistency.SplitKernelData59
 /-! # The85 literal H2082 kernel records and their sharp generic height
@@ -40,7 +38,6 @@ noncomputable abbrev sparseKernel {n : ℕ} (e : Fin n → ℕ) (a : Fin n → R
   rw [coeff_sparseKernel _ positions2_injective]
   rfl
 ''')
- out.append(box)
  for k in range(len(coeffs)):
   out.append(f'''theorem records{k}_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hB : 2 ≤ B) (hK : 16*B ≤ K)
@@ -49,7 +46,7 @@ noncomputable abbrev sparseKernel {n : ℕ} (e : Fin n → ℕ) (a : Fin n → R
     (hm : 0 ≤ ports 2 ∧ ports 2 < B)
     (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
     ∀ i, |coefficients{k} ports i| < 2*B*K := by
-  obtain ⟨hsq,hp,hl,hBK⟩ := box_facts ports B K hB hK hb hk hm hf
+  obtain ⟨hsq,hp,hl,hBK⟩ := SplitKernelData59.port_box_facts ports B K hB hK hb hk hm hf
   have hb0 := hb.1
   have hb1 := hb.2
   have hk0 := hk.1

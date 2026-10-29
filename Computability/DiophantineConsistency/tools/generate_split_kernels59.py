@@ -108,6 +108,17 @@ private theorem box_facts (ports : Fin 4 → ℤ) (B K : ℤ)
       _ < B*K := mul_lt_mul_of_pos_right hb.2 (by omega)
   refine ⟨hsq,hp,hl,?_⟩
   nlinarith [mul_nonneg (by omega : 0 ≤ B) (sub_nonneg.mpr hK)]
+
+/-- Arithmetic facts shared by the two kernel coefficient bounds. -/
+theorem port_box_facts (ports : Fin 4 → ℤ) (B K : ℤ)
+    (hB : 2 ≤ B) (hK : 16*B ≤ K)
+    (hb : 0 ≤ ports 0 ∧ ports 0 < B)
+    (hk : 0 ≤ ports 1 ∧ ports 1 < K)
+    (hm : 0 ≤ ports 2 ∧ ports 2 < B)
+    (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
+    ports 0 ^ 2 ≤ B ^ 2 ∧ ports 3 * ports 0 ≤ 2*B^2 ∧
+      ports 0 * (ports 1+1) < B*K ∧ 16*B^2 ≤ B*K :=
+  box_facts ports B K hB hK hb hk hm hf
 ''')
 for k in range(len(coeffs)):
  out.append(f'''theorem records{k}_lt (ports : Fin 4 → ℤ) (B K : ℤ)
