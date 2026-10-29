@@ -109,66 +109,19 @@ def RowRel (y c H X : V) : Prop :=
 theorem rowRel_iff (y c H X : V) : RowRel y c H X ↔ y = rowIdx c H X := by
   unfold RowRel rowIdx
   by_cases h0 : first c = 0
-  · rw [if_pos h0]
-    by_cases hX : X = H
-    · rw [if_pos hX]
-      constructor
-      · rintro (⟨-, -, hy⟩ | ⟨-, hX', -⟩ | ⟨h0', -⟩ | ⟨h0', -⟩ | ⟨h0', -⟩)
-        · exact hy
-        · exact absurd hX hX'
-        all_goals exact absurd h0 h0'
-      · intro hy; exact Or.inl ⟨h0, hX, hy⟩
-    · rw [if_neg hX]
-      constructor
-      · rintro (⟨-, hX', -⟩ | ⟨-, -, hy⟩ | ⟨h0', -⟩ | ⟨h0', -⟩ | ⟨h0', -⟩)
-        · exact absurd hX' hX
-        · exact hy
-        all_goals exact absurd h0 h0'
-      · intro hy; exact Or.inr (Or.inl ⟨h0, hX, hy⟩)
-  · rw [if_neg h0]
-    by_cases hX : X = H
-    · rw [if_pos hX]
-      constructor
-      · rintro (⟨h0', -⟩ | ⟨h0', -⟩ | ⟨-, -, hy⟩ | ⟨-, hX', -⟩ | ⟨-, hX', -⟩)
-        · exact absurd h0' h0
-        · exact absurd h0' h0
-        · exact hy
-        all_goals exact absurd hX hX'
-      · intro hy; exact Or.inr (Or.inr (Or.inl ⟨h0, hX, hy⟩))
-    · rw [if_neg hX]
-      by_cases hr : (X = H + 1 ∧ eastC (headIdx c) ≠ 0) ∨ (X + 1 = H ∧ westC (headIdx c) ≠ 0)
-      · rw [if_pos hr]
-        constructor
-        · rintro (⟨h0', -⟩ | ⟨h0', -⟩ | ⟨-, hX', -⟩ | ⟨-, -, -, hy⟩ | ⟨-, -, h1, h2, -⟩)
-          · exact absurd h0' h0
-          · exact absurd h0' h0
-          · exact absurd hX' hX
-          · exact hy
-          · exfalso
-            rcases hr with ⟨a1, a2⟩ | ⟨a1, a2⟩
-            · rcases h1 with b | b
-              · exact b a1
-              · exact a2 b
-            · rcases h2 with b | b
-              · exact b a1
-              · exact a2 b
-        · intro hy; exact Or.inr (Or.inr (Or.inr (Or.inl ⟨h0, hX, hr, hy⟩)))
-      · rw [if_neg hr]
-        constructor
-        · rintro (⟨h0', -⟩ | ⟨h0', -⟩ | ⟨-, hX', -⟩ | ⟨-, -, hr', -⟩ | ⟨-, -, -, -, hy⟩)
-          · exact absurd h0' h0
-          · exact absurd h0' h0
-          · exact absurd hX' hX
-          · exact absurd hr' hr
-          · exact hy
-        · intro hy
-          refine Or.inr (Or.inr (Or.inr (Or.inr ⟨h0, hX, ?_, ?_, hy⟩)))
-          · by_cases h1 : X = H + 1
-            · right; by_contra h2; exact hr (Or.inl ⟨h1, h2⟩)
-            · left; exact h1
-          · by_cases h1 : X + 1 = H
-            · right; by_contra h2; exact hr (Or.inr ⟨h1, h2⟩)
-            · left; exact h1
+  · by_cases hX : X = H <;> simp [h0, hX]
+  · by_cases hX : X = H
+    · simp [h0, hX]
+    · by_cases hr : (X = H + 1 ∧ eastC (headIdx c) ≠ 0) ∨ (X + 1 = H ∧ westC (headIdx c) ≠ 0)
+      · rcases hr with ⟨h1, h2⟩ | ⟨h1, h2⟩
+        · simp [h0, h1, h2]
+        · simp [h0, hX, h1, h2]
+      · have hn := not_or.mp hr
+        have hn1 : X ≠ H + 1 ∨ eastC (headIdx c) = 0 := by
+          simpa only [not_and_or, not_not] using hn.1
+        have hn2 : X + 1 ≠ H ∨ westC (headIdx c) = 0 := by
+          simpa only [not_and_or, not_not] using hn.2
+        simp [h0, hX, hr, hn1, hn2]
 
 instance rowIdx_definable : 𝚺₁-Function₃ (rowIdx : V → V → V → V) :=
   fun3_of_rel (by unfold RowRel; definability) rowRel_iff
