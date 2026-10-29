@@ -957,5 +957,15 @@ receipts. Transitive dependencies remain cached or partly refreshed, and no
 full clean build is claimed. The target and client records and logs were
 independently checked. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mask-digit-bound-evidence/BUNDLE.json).
 
+The semiring gate branch sharing `28a62dffb9` removes 21 net lines,
+bringing the reviewed series to 8559. Paired targets and the direct
+QuarticSemiring client pass; all 204 existing declaration types and axiom
+reports and ten materialized equation theorems match. The QuarticCompiler
+prerequisite matches prior receipts, but NaturalExpressionSemiring is a
+precompiled object without a matching source/object receipt; package and
+other transitive inputs remain cached. Interface probes have matching logs
+but no separate command/status receipts. Target and client records and logs
+were independently checked. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-gates-semiring-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
