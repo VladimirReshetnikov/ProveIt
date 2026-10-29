@@ -2163,5 +2163,15 @@ unavailable after import in tested probes. The wider closure remains cached.
 The compact [evidence note](../../reviews/lean-proof-simplification-20261029-wb-member-macro.md)
 records hashes and external paths without raw logs or objects.
 
+The marker parity simplification `128d91fcb5` removes three net Lean lines,
+bringing the reviewed series to 10418. The affected proof came from
+Claude-coauthored commit `f79467f5448`. Direct modular simplification replaces
+a Boolean bound and ring regrouping. Paired target and direct-client builds pass;
+objects differ, but 143 common declaration reports and sampled registrations
+match. One generated public report changes and two generated names disappear;
+no nonignored Lean/Python references were found. Existing warnings match and the
+wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-cell-phase-odd.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
