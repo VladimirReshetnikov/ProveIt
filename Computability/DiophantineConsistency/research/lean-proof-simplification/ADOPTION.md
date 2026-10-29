@@ -1840,5 +1840,13 @@ three direct clients pass with identical client objects; all 29 target
 declaration reports and sampled registrations match. The wider Pell and
 construction closure was not rebuilt. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-gcd-product-positivity-evidence/BUNDLE.json).
 
+The tiling colour numeral simplification `ab35b49240` removes six net Lean
+lines, bringing the reviewed series to 10137. The affected proofs came from
+Claude-coauthored commit `5fcd5632b3`. Direct conversion and numeral
+normalization replace intermediate equalities in four existing bit branches.
+Paired target and TilingRows builds pass; client objects differ for an unknown
+reason, while the checked declaration and registration reports match. The
+transitive closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-tiling-colours-direct-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
