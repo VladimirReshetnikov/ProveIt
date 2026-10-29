@@ -1326,5 +1326,16 @@ One public alias is added; Gap's private helper and five generated auxiliaries
 are removed. The earlier stale-cache client failure is retained and excluded,
 and other transitive providers remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-generated-box-sharing-evidence/BUNDLE.json).
 
+The bounded DAG unpair sharing `f3faf5c4b3` removes 37 net Lean lines,
+bringing the reviewed series to 9584. Its original module came from the
+Claude-coauthored commit `ca0c31b62d`. One private walk now handles the two
+registers, preserving their nodes, updates and `tower j (L+13)` bound. Paired
+current-provider builds through DAG Halt pass, and five unchanged-source
+clients have identical objects. The 116 common public declaration reports
+and 29,279 global simp entries match. Thirteen unstable generated loop proof
+names disappear and sixteen private helper/auxiliary names are added; none is
+a default simp rule. The failed initial draft and name probe are retained,
+and other transitive dependencies remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-unpair-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
