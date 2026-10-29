@@ -51,69 +51,22 @@ theorem halts_le_of_check_rev (e : Entry) (he : cert 0 = some e) (hN : 0 < N)
     (hα : ∀ p : Fin 9, vget e.α p = 0) (hβ : ∀ p : Fin 9, vget e.β p = 0) (x t : V)
     (ht : runA t (live (e.a : V) x) = 0) :
     ∃ tb ≤ ((fuel : V) + 1) * t, runB tb (live (e.b : V) x) = 0 := by
-  haveI : 𝚺₁-Relation[V] (Rel reg live cert N) :=
-    (rel_defined reg live cert N liveDef regDef).to_definable
-  obtain ⟨K, hK⟩ : ∃ K : V, K = (fuel : V) + 1 := ⟨_, rfl⟩
-  rw [← hK]
-  have hK1 : (1 : V) ≤ K := by rw [hK]; exact le_add_self
-  have rel_live : ∀ a b, Rel reg live cert N a b → a ≠ 0 ∧ b ≠ 0 := by
-    intro a b h
-    obtain ⟨_, _, _, _, _, _, _, ha, hb, _, _⟩ := rel_entry a b h
-    exact ⟨ha ▸ live_ne _ _, hb ▸ live_ne _ _⟩
-  have rel_step : ∀ a b, Rel reg live cert N a b → ∃ ka kb, 1 ≤ ka ∧ 1 ≤ kb ∧ kb ≤ K ∧
-      ((runA ka a = 0 ∧ runB kb b = 0) ∨ Rel reg live cert N (runA ka a) (runB kb b)) := by
-    intro a b h
-    obtain ⟨i, hi, e, he, x, ya, yb, ha, hb, hsa, hsb⟩ := rel_entry a b h
-    obtain ⟨_, he', hc, hs0, hs1, _⟩ := entryOK_spec rowsA rowsB cert fuel N i (hcheck i hi)
-    rw [he] at he'
-    cases he'
-    obtain ⟨ka, kb, hka, hkb, _, hkaK, hq⟩ := entry_step_le fileOf reg_fileOf stepA stepB runA
-      runB rowsA rowsB cert fuel runA_zero runB_zero runA_add runB_add runA_one runB_one specA
-      specB reg_write_same reg_write_other e hc x ya yb hsa hsb
-    refine ⟨ka, kb, hka, hkb, by rw [hK]; exact hkaK, ?_⟩
-    rw [ha, hb]
-    rcases hq with hz | ⟨s, e', hs, hes, x', ya', yb', ha', hb', hsa', hsb'⟩
-    · exact .inl hz
-    · have hsN : s < N := by rcases hs with rfl | rfl <;> assumption
-      refine .inr ?_
-      rw [ha', hb']
-      obtain ⟨e'', he'', _, _, _, hpos⟩ := entryOK_spec rowsA rowsB cert fuel N s (hcheck s hsN)
-      rw [hes] at he''
-      cases he''
-      exact rel_of_entry s hsN e' hes hpos x' ya' yb' hsa' hsb'
   have h0 : Rel reg live cert N (live (e.a : V) x) (live (e.b : V) x) := by
     obtain ⟨e', he', _, _, _, hpos⟩ := entryOK_spec rowsA rowsB cert fuel N 0 (hcheck 0 hN)
     rw [he] at he'
     cases he'
     exact rel_of_entry 0 hN e he hpos x x x
       (fun p => by rw [hα p]; simp) (fun p => by rw [hβ p]; simp)
-  have clocks : ∀ n : V, ∃ ta tb, tb ≤ K * n ∧ n ≤ ta ∧
-      ((runA ta (live (e.a : V) x) = 0 ∧ runB tb (live (e.b : V) x) = 0) ∨
-        Rel reg live cert N (runA ta (live (e.a : V) x)) (runB tb (live (e.b : V) x))) := by
-    intro n
-    induction n using ISigma1.sigma1_succ_induction
-    · definability
-    case zero =>
-      exact ⟨0, 0, by simp, le_rfl, .inr (by simpa only [runA_zero, runB_zero] using h0)⟩
-    case succ n ih =>
-      obtain ⟨ta, tb, htb, hta, hq⟩ := ih
-      have hKn : K * (n+1) = K * n + K := by ring
-      rcases hq with ⟨hza, hzb⟩ | hr
-      · refine ⟨ta+1, tb+1, ?_, _root_.add_le_add hta le_rfl, .inl ⟨?_, ?_⟩⟩
-        · rw [hKn]; exact _root_.add_le_add htb hK1
-        · rw [runA_add, hza, runA_halted]
-        · rw [runB_add, hzb, runB_halted]
-      · obtain ⟨ka, kb, hka, _, hkbK, hs⟩ := rel_step _ _ hr
-        refine ⟨ta+ka, tb+kb, ?_, _root_.add_le_add hta hka, ?_⟩
-        · rw [hKn]; exact _root_.add_le_add htb hkbK
-        · rw [runA_add, runB_add]
-          exact hs
-  obtain ⟨ta, tb, htb, hta, hq⟩ := clocks t
+  obtain ⟨ta, tb, hta, hta', htb, htb', hq⟩ := bounded_clocks
+    fileOf reg_fileOf liveDef regDef stepA stepB runA runB rowsA rowsB cert fuel N
+    runA_zero runB_zero runA_add runB_add runA_one runB_one runA_halted runB_halted
+    specA specB reg_write_same reg_write_other hcheck _ _ h0 t
   have hz : runA ta (live (e.a : V) x) = 0 := by
-    rw [← add_tsub_cancel_of_le hta, runA_add, ht, runA_halted]
+    rw [← add_tsub_cancel_of_le hta', runA_add, ht, runA_halted]
   rcases hq with ⟨_, hzb⟩ | hr
   · exact ⟨tb, htb, hzb⟩
-  · exact absurd hz (rel_live _ _ hr).1
+  · obtain ⟨_, _, _, _, _, _, _, ha, _, _, _⟩ := rel_entry _ _ hr
+    exact absurd hz (ha ▸ live_ne _ _)
 
 end Main
 end Model
