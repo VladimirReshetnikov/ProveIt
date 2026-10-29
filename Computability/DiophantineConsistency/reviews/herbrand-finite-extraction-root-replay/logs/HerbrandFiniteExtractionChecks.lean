@@ -1,0 +1,4 @@
+import DiophantineConsistency.HerbrandFiniteExtraction
+#print axioms DiophantineConsistency.HerbrandFiniteExtraction.modelPreparedWitness
+#print axioms DiophantineConsistency.HerbrandFiniteExtraction.universal_proves_extractedDisjunction
+#check DiophantineConsistency.HerbrandFiniteExtraction.universal_proves_extractedDisjunction

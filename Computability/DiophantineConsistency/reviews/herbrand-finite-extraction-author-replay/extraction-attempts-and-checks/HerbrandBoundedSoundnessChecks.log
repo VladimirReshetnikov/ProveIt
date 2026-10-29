@@ -1,0 +1,9 @@
+'DiophantineConsistency.HerbrandBoundedSoundness.boundedSound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandBoundedSoundness.boundedSound.{u_1} {L : LO.FirstOrder.Language} {M : Type}
+  [LO.FirstOrder.Structure L M] {Γ : LO.FirstOrder.Sequent L} (d : ⊢ᴸᴷ¹ Γ) (hCutFree : d.IsCutFree)
+  (hNoAll : DiophantineConsistency.HerbrandExistentialSequents.NoAllRule d)
+  (terms : List (LO.FirstOrder.SyntacticTerm L))
+  (hTerms : ∀ t ∈ DiophantineConsistency.HerbrandExistentialSequents.existentialTerms d, t ∈ terms) (e : ℕ → M) :
+  ∃ φ ∈ Γ, DiophantineConsistency.HerbrandBoundedSemantics.boundedEval terms e φ

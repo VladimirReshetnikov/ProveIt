@@ -1,0 +1,10 @@
+'DiophantineConsistency.HerbrandBoundedTruth.bounded_implies_truth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandBoundedTruth.bounded_open_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandBoundedTruth.bounded_open_iff.{u_1} {L : LO.FirstOrder.Language} {M : Type}
+  [LO.FirstOrder.Structure L M] (terms : List (LO.FirstOrder.SyntacticTerm L)) (e : ℕ → M)
+  (φ : LO.FirstOrder.Proposition L) (hOpen : LO.FirstOrder.Semiformula.Open φ) :
+  DiophantineConsistency.HerbrandBoundedSemantics.boundedEval terms e φ ↔ (LO.FirstOrder.Semiformula.Eval ![] e) φ

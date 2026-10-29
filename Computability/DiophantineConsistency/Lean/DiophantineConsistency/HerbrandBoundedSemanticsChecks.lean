@@ -1,0 +1,4 @@
+import DiophantineConsistency.HerbrandBoundedSemantics
+#print axioms DiophantineConsistency.HerbrandBoundedSemantics.logicalSize_rew
+#print axioms DiophantineConsistency.HerbrandBoundedSemantics.boundedEval
+#check DiophantineConsistency.HerbrandBoundedSemantics.boundedEval

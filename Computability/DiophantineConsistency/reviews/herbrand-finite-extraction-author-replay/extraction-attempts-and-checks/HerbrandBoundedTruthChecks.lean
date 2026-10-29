@@ -1,0 +1,4 @@
+import DiophantineConsistency.HerbrandBoundedTruth
+#print axioms DiophantineConsistency.HerbrandBoundedTruth.bounded_implies_truth
+#print axioms DiophantineConsistency.HerbrandBoundedTruth.bounded_open_iff
+#check DiophantineConsistency.HerbrandBoundedTruth.bounded_open_iff
