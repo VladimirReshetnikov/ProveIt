@@ -126,13 +126,11 @@ theorem first_main_indices (E Y k eta N d f i R y T : V)
   have hRk : R+1≤k := by rw [←hrem]; exact mod_le _ _
   have hRn : R+1≤2*n := by rw [←hnrem]; exact mod_le _ _
   have hn5 : 5≤n := by
-    by_contra hn
-    have hn4 : n≤4 := le_iff_lt_succ.mpr (by
-      simpa only [show (4:V)+1=5 by ring] using lt_of_not_ge hn)
-    have h8 : 2*n≤8 := by
-      simpa only [show (2:V)*4=8 by ring] using mul_le_mul_of_nonneg_left hn4 (by simp : (0:V)≤2)
-    have he := le_trans hRn (le_trans h8 hR8)
-    exact (not_le_of_gt (lt_add_one R)) he
+    have h8 : (2:V)*4 < 2*n := by
+      rw [show (2:V)*4=8 by ring]
+      exact lt_of_le_of_lt hR8 (lt_of_lt_of_le (lt_add_one R) hRn)
+    have h4 : (4:V)<n := lt_of_mul_lt_mul_left h8 (by simp)
+    simpa only [show (4:V)+1=5 by ring] using lt_iff_succ_le.mp h4
   have hc : 0<c := lt_of_lt_of_le (mul_pos hk hYpos) (by simp : k*Y≤k*Y+eta)
   have hkc : k<c := calc
     k≤k*Y := le_mul_of_one_le_right (by simp) (le_trans (by simp : (1:V)≤2) hY)
