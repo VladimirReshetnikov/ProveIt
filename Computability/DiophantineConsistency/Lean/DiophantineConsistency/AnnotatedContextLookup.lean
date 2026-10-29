@@ -49,23 +49,15 @@ private theorem cons_ne_one (f : Form) (G : List Form) : contextCode (f::G)≠1 
     Nat.pred_eq_sub_one,Nat.add_sub_cancel,Nat.unpair_pair]
 
 theorem drop_succ (code index : Nat) : drop code (index+1)=drop (tail code) index := by
-  induction index with
-  | zero => rfl
-  | succ index ih =>
-    change tail (drop code (index+1))=tail (drop (tail code) index)
-    rw [ih]
+  simpa only [drop] using NatIterate.rec_succ tail code index
 
 theorem lookup_contextCode (G : List Form) (index : Nat) :
     lookup (contextCode G) index=optionCode ((G[index]?).map formCode) := by
   induction G generalizing index with
   | nil =>
-    have h : ∀ index,drop (contextCode []) index=contextCode [] := by
-      intro index
-      induction index with
-      | zero => rfl
-      | succ index ih => simp only [drop] at *; rw [ih,tail_nil]
     change head (drop (contextCode []) index)=0
-    rw [h]
+    rw [show drop (contextCode []) index = contextCode [] from
+      NatIterate.rec_fixed tail _ tail_nil index]
     exact head_nil
   | cons f G ih =>
     cases index with
