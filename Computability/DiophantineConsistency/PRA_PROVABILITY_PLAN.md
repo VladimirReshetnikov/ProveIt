@@ -209,3 +209,8 @@ The [formula-parameter packing](reviews/pra-formula-parameters-root.md)
 extends the open characteristic result to arbitrary free numerical parameters
 by explicit finite argument packing with an exact evaluation theorem.
 Bounded formulas, universal presentation and Σ₁ witnessing remain open.
+
+The [characteristic bit theorem](reviews/pra-characteristic-bit-root.md)
+now supplies actual candidate-PRA proofs of both Boolean range and formula
+correctness for every open formula after packing its free parameters.
+Bounded formulas and Σ₁ witnessing remain open.
