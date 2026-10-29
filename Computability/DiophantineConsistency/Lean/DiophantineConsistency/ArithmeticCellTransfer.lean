@@ -61,39 +61,17 @@ theorem mod_mod_of_dvd' {m n : V} (hm : 0 < m) (h : m ∣ n) (a : V) : a % n % m
 theorem eq_of_add_mod_eq {n x y e : V} (hx : x < n) (hy : y < n)
     (h : (x + e) % n = (y + e) % n) : x = y := by
   have hn : 0 < n := lt_of_le_of_lt (Arithmetic.zero_le x) hx
-  suffices key : ∀ a b : V, a < n → b < n → a ≤ b → (a + e) % n = (b + e) % n → a = b by
-    rcases le_total x y with hxy | hxy
-    · exact key x y hx hy hxy h
-    · exact (key y x hy hx hxy h.symm).symm
-  intro a b ha hb hab hm
-  obtain ⟨d, rfl⟩ := exists_add_of_le hab
-  have hd : d < n := lt_of_le_of_lt (le_add_self) hb
-  set s := a + e with hs
-  have h1 := div_add_mod s n
-  have h2 := div_add_mod (s + d) n
-  have he : a + d + e = s + d := by rw [hs]; ring
-  rw [he] at hm
-  rw [← hm] at h2
-  have h3 : n * (s / n) + d = n * ((s + d) / n) := by
-    have : n * (s / n) + s % n + d = n * ((s + d) / n) + s % n := by rw [h1, h2]
-    have : n * (s / n) + d + s % n = n * ((s + d) / n) + s % n := by rw [← this]; ring
-    exact add_right_cancel this
-  by_contra hne
-  have hd0 : 0 < d := by
-    rcases eq_or_lt_of_le (Arithmetic.zero_le d) with h0 | h0
-    · exact absurd (show a = a + d by rw [← h0, add_zero]) hne
-    · exact h0
-  have hq : s / n < (s + d) / n := by
-    by_contra hq
-    have hle : n * ((s + d) / n) ≤ n * (s / n) :=
-      mul_le_mul_of_nonneg_left (le_of_not_gt hq) (Arithmetic.zero_le n)
-    rw [← h3] at hle
-    exact absurd (lt_of_lt_of_le (lt_add_of_pos_right _ hd0) hle) (_root_.lt_irrefl _)
-  have hq1 : s / n + 1 ≤ (s + d) / n := lt_iff_succ_le.mp hq
-  have hle : n * (s / n + 1) ≤ n * ((s + d) / n) :=
-    mul_le_mul_of_nonneg_left hq1 (Arithmetic.zero_le n)
-  rw [← h3, mul_add, mul_one] at hle
-  exact absurd (le_of_add_le_add_left hle) (not_le.mpr hd)
+  have hr := le_of_lt (mod_lt e hn)
+  have hc : e + (n - e % n) = n * (e / n + 1) := by
+    calc
+      e + (n - e % n) = (n * (e / n) + e % n) + (n - e % n) := by rw [div_add_mod]
+      _ = n * (e / n) + (e % n + (n - e % n)) := by ring
+      _ = n * (e / n) + n := by rw [add_tsub_cancel_of_le hr]
+      _ = n * (e / n + 1) := by ring
+  have hh : ((x + e) + (n - e % n)) % n = ((y + e) + (n - e % n)) % n := by
+    rw [mod_add (a := x + e) hn, mod_add (a := y + e) hn, h]
+  simpa only [add_assoc, hc, mod_add_mul' _ _ hn, mod_eq_self_of_lt hx,
+    mod_eq_self_of_lt hy] using hh
 
 theorem mod_add_cancel {n a c d : V} (hn : 0 < n) (h : (a + d) % n = (c + d) % n) :
     a % n = c % n := by
