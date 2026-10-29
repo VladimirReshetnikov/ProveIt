@@ -86,12 +86,11 @@ theorem no_finish (k H : V) (hHl : lW < H) (hHr : H < rW)
         exact lt_tsub_iff_right.mpr (lt_tsub_iff_left.mp hm)
   have hH : northC (pl a N s H (k + 1)) = 438 := by
     rcases le_or_gt X0 H with hle | hlt
-    · have := right (H - X0) (by rwa [add_tsub_cancel_of_le hle])
-      rwa [add_tsub_cancel_of_le hle] at this
-    · have := left (X0 - H) (tsub_lt_tsub_left_of_le hlt.le hHl)
-      rwa [tsub_tsub_cancel_of_le hlt.le] at this
-  rw [← pl_south h] at hH
-  rw [hH] at hsH
+    · simpa only [add_tsub_cancel_of_le hle] using
+        right (H - X0) (by rwa [add_tsub_cancel_of_le hle])
+    · simpa only [tsub_tsub_cancel_of_le hlt.le] using
+        left (X0 - H) (tsub_lt_tsub_left_of_le hlt.le hHl)
+  rw [pl_south h, hH] at hsH
   exact absurd hsH (by norm_num)
 
 /-- One represented machine step from an operating configuration. -/
@@ -107,7 +106,7 @@ theorem row_step (k : V) (hinv : RowInv a N s lW rW k) (hlive : first (run k) �
     intro X hXl hXr hne; rw [col X hXl hXr]; simp [colorV, hne]
   have plain_le : ∀ X, lW < X → X < rW → X ≠ H → northC (pl a N s X k) ≤ 1 := by
     intro X hXl hXr hne; rw [plain X hXl hXr hne]; exact tb_le _ _ _ _
-  have hb : (second (second c)) % 2 ≤ 1 := by rcases mod_two (second (second c)) with e | e <;> simp [e]
+  have hb : (second (second c)) % 2 ≤ 1 := le_one_iff_eq_zero_or_one.mpr (mod_two _)
   have hn : northC (pl a N s H k) = 2 * first c + (second (second c)) % 2 := by
     rw [col H hHl hHr]; simp [colorV, hcV, hlive]
   obtain ⟨st', d, w, hst', hd, hw, hA, hsH, hR, hL⟩ :=
@@ -186,7 +185,7 @@ theorem row_step (k : V) (hinv : RowInv a N s lW rW k) (hlive : first (run k) �
     intro X hXr hXl
     rw [colored_iff, ← pl_south h, hrun, hstep, if_pos hd0]
     simp only [colorV, first_cantor, second_cantor]
-    have hm : (first (second c)) % 2 ≤ 1 := by rcases mod_two (first (second c)) with e | e <;> simp [e]
+    have hm : (first (second c)) % 2 ≤ 1 := le_one_iff_eq_zero_or_one.mpr (mod_two _)
     by_cases hXG : X = G
     · subst hXG
       rw [if_pos rfl, push_mod _ _ hm]
