@@ -61,9 +61,7 @@ theorem large_index_multiple (b n M S T A D c : V)
     intro he
     apply hgne
     simpa only [he,mul_one] using hk.symm
-  have hkp : 0<k := lt_of_le_of_ne (Arithmetic.zero_le k) (Ne.symm hk0)
-  have hkle : 1≤k := by simpa using lt_iff_succ_le.mp hkp
-  have hklt : 1<k := lt_of_le_of_ne hkle (Ne.symm hk1)
+  have hklt : 1<k := lt_of_le_of_ne (pos_iff_one_le.mp (pos_iff_ne_zero.mpr hk0)) (Ne.symm hk1)
   have hk2 : 2≤k := by simpa only [one_add_one_eq_two] using lt_iff_succ_le.mp hklt
   have h2g : 2*g≤M := by
     rw [hk,mul_comm 2 g]
@@ -100,10 +98,7 @@ theorem integral_solution (a c p i f : V)
   obtain ⟨b,e,n,S,hep,hnp,hSp,hSA,hS,he,hf',hD,hR',hcomp⟩ :=
     common_unit_composition a (i*c*c) f hR hf hnorm
   let T := delta b*S
-  have hTp : 0<T := by
-    apply mul_pos _ hSp
-    unfold delta
-    exact mul_pos (by simp) (by simp)
+  have hTp : 0<T := mul_pos (by simp [delta]) hSp
   have hDTS : delta a=T*S := hD
   have hYM : ycoord (e*p) b=S*c := by
     rw [←(hcomp p).2,←hcp]
