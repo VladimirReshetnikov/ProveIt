@@ -2073,5 +2073,13 @@ registrations match, though several client objects differ. The recurrence has
 closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-shared-pell-recurrence.md)
 records hashes and external paths without raw logs or objects.
 
+The nested-remainder sharing `8f153edc15` is line-neutral and keeps the reviewed
+series at 10352 while replacing two independent proofs with one public lemma.
+The cell proof came from Claude-coauthored commit `f79467f5448`. Paired builds
+and refreshed cell, controller and Pell replays pass; 240 common declaration
+reports and sampled registrations match, though most client objects differ.
+The wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-mod-nested-share.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
