@@ -23,12 +23,7 @@ private theorem equalClosure_universal {n : ℕ} (a b : TermN n) :
   simp [UniversalPrefix, Semiformula.Open]
 
 private theorem defining_universal {σ : Sentence language} (h : DefiningEquation σ) : UniversalPrefix σ := by
-  cases h with
-  | zero n => exact equalClosure_universal _ _
-  | projection i => exact equalClosure_universal _ _
-  | composition f g => exact equalClosure_universal _ _
-  | recursionBase f g => exact equalClosure_universal _ _
-  | recursionStep f g => exact equalClosure_universal _ _
+  cases h <;> exact equalClosure_universal _ _
 
 private theorem equality_universal {σ : Sentence language} (h : σ ∈ 𝗘𝗤 language) : UniversalPrefix σ := by
   cases h with
@@ -59,16 +54,7 @@ theorem universalAxiom_isUniversal {σ : Sentence language} (h : UniversalAxiom 
   | equality σ h => exact equality_universal h
   | defining σ h => exact defining_universal h
   | basic σ h =>
-      cases h with
-      | succNonzero =>
-          apply universalPrefix_allClosure
-          rfl
-      | succInjective =>
-          apply universalPrefix_allClosure
-          rfl
-      | orderDefinition =>
-          apply universalPrefix_allClosure
-          rfl
+      cases h <;> apply universalPrefix_allClosure <;> rfl
   | exhaustion =>
       apply universalPrefix_univCl
       change UniversalPrefix exhaustionBody
