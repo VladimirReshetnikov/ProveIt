@@ -1702,5 +1702,13 @@ TilingTable builds pass; 79 target and 73 client declaration reports and
 sampled registrations match. Client object bytes differ for an unknown reason,
 and the transitive closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-runtrace-step-bound-evidence/BUNDLE.json).
 
+The rank order-lemma cleanup `062d55baa1` removes five net Lean lines, bringing
+the reviewed series to 10022. The wrappers came from Claude-coauthored commit
+`5fcd5632b3`; imported order facts now replace them at their call sites.
+Paired RankForcing and RankForcing2011 builds
+pass with identical client objects; nine retained declaration reports and the
+sampled registrations match. The wrappers were unregistered, and transitive
+dependencies remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-rank-order-cleanup-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

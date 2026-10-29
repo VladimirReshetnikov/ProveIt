@@ -1,0 +1,30 @@
+Independent review of /tmp/rank-order-cleanup
+
+No correctness blocker found. The first removed wrapper restates
+pos_iff_one_le.mp, and the second proves x ≤ x + y, precisely the instance of
+le_add_right le_rfl used at each of the three call sites. The diff preserves the
+target's imports, definitions, public statements, guards and constants. Both
+private declarations disappear; the new proofs introduce no declaration names.
+
+The independent audit script and log /tmp/rank-order-independent-audit-claude-a.py
+and /tmp/rank-order-independent-audit-claude-a.log verify the tested baseline against commit 062d55baa1^ and the final against
+062d55baa1 and the current workspace, plus paired target/client outputs and direct-input object pins, source
+matching BinaryCarry producer and three prior client-provider source/object
+pairs, the retained nine declaration/type/axiom reports, removed private names,
+identical global simp and instance lists, identical client output, and the
+recorded initial overlay failure. The scope of source searches is tracked
+Lean/Python files under the research directory; an additional git grep for the
+qualified names produced /tmp/rank-order-independent-search-claude-a.log (empty).
+This cannot exclude untracked files, other code, computed names or downstream
+consumers. Probe comparisons do not cover all persistent extensions.
+
+The retained first-build log establishes missing ArithmeticMaskPopulation in the
+provisional overlay, not a proof failure; output object paths were later reused.
+BinaryCarry is source-matched, but these direct-provider checks do not establish
+current-source transitive closure. My audit confirms the current search path
+resolves the recorded old WindowDigits object, whose producer's source matches
+the pre-adoption Git parent; this is a post-build path sample, not a pin proving
+which transitive bytes were loaded at build time. README also correctly reports
+sampled older PellRecurrence, BinomLegendre and HalfBinomial objects and notes
+that samples do not prove loaded bytes. Single target and client CPU samples
+are similar and are not robust benchmarking. The proof change is committed as 062d55baa1; this review made no repository edits.
