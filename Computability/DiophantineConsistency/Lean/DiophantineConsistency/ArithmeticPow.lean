@@ -120,10 +120,9 @@ theorem perturbation_coefficient (a e r : V) (h : 2*r*e≤a) :
     (a+2*r*e)*(a+e)≤a*(a+2*(r+1)*e) := by
   have hd : 2*r*e+(a-2*r*e)=a := add_tsub_cancel_of_le h
   have hid : a*(a+2*(r+1)*e)=(a+2*r*e)*(a+e)+e*(a-2*r*e) := by
-    calc
-      a*(a+2*(r+1)*e)=(2*r*e+(a-2*r*e))*((2*r*e+(a-2*r*e))+2*(r+1)*e) := by rw [hd]
-      _=((2*r*e+(a-2*r*e))+2*r*e)*((2*r*e+(a-2*r*e))+e)+e*(a-2*r*e) := by ring
-      _=(a+2*r*e)*(a+e)+e*(a-2*r*e) := by rw [hd]
+    rw [← hd]
+    simp only [add_tsub_cancel_left]
+    ring
   rw [hid]
   exact le_add_of_nonneg_right (by simp)
 
