@@ -150,15 +150,15 @@ theorem row_contract (tag payload u v p q : V)
     have hg : MPGate (first payload) u v := by
       by_contra hn
       exact hr (by simp [ArithmeticRow222.rowKernel,ArithmeticRow254.rowKernel,mpValue,hn])
-    rcases hg with ⟨x,_,m,_,hu,hv,hm⟩
+    have hg' := hg
+    rcases hg' with ⟨x,_,m,_,hu,hv,hm⟩
     have hun : u≠0 := by rw [hu]; simp
     have hvn : v≠0 := by rw [hv]; simp
     have hux : u-1=x := by rw [hu]; simp
     have hvm : v-1=wim x (first payload) := by rw [hv]; simpa using hm
     have hc := mp_contract (hux ▸ hp hun) (hvm ▸ hq hvn)
-    have hg' : MPGate (first payload) u v := ⟨x,by rw [hu]; simp,m,by rw [hv]; simp,hu,hv,hm⟩
     simpa [rowValue,ArithmeticRow222.rowKernel,ArithmeticRow254.rowKernel,
-      eval_mpCircuit,Circuit.eval,mpValue,hg'] using hc
+      eval_mpCircuit,Circuit.eval,mpValue,hg] using hc
   by_cases h2 : tag=2
   · subst tag
     have hun : u≠0 := by
