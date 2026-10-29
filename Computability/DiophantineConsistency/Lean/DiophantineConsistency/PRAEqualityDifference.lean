@@ -23,14 +23,6 @@ section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* PRA]
 
-omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
-private theorem val_pair {ξ : Type} {n : ℕ} (b : Fin n → M) (f : ξ → M)
-    (u v : Semiterm language ξ n) :
-    (Semiterm.val b f ∘ ![u,v]) = ![Semiterm.val b f u, Semiterm.val b f v] := by
-  funext i
-  refine Fin.cases rfl (fun j => ?_) i
-  exact Fin.cases rfl (fun k => Fin.elim0 k) j
-
 omit [Nonempty M] [M↓[language] ⊧* PRA] in
 private theorem body_eval (x : M) (e : ℕ → M) : body.Eval ![x] e ↔
     Structure.func (L := language) subCode ![x,e 0] ≠
