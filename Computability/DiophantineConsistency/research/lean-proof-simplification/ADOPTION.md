@@ -1965,5 +1965,14 @@ a tracked Lean/Python search found no references. Direct providers have
 source-matched receipts, while the wider closure remains cached. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-sum-unique-evidence/BUNDLE.json).
 
+The Legendre parity simplification `1ba9520188` removes six net Lean lines,
+bringing the reviewed series to 10271. The affected proof came from
+Claude-coauthored commit `90f67cbdd9`. Comparing remainders modulo two replaces
+the order split. Paired target and direct-client builds pass with identical
+client objects; target declaration reports and sampled registrations match.
+The direct providers and Pascal have source-matched receipts; two client-only
+providers lack matching receipts, and the broader closure remains cached. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261029-legendre-parity-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
