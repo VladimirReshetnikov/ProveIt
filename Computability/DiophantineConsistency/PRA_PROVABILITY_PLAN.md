@@ -179,3 +179,9 @@ The [explicit order witness](reviews/pra-q-witness-root.md) supplies a
 closed candidate-PRA proof using `pred(y-x)` as the witness for strict
 order. The subtraction-to-Q provider chain was rebuilt after the upstream
 source merge. General Σ₁ witnessing and conservation remain open.
+
+The [finite order-witness code](reviews/pra-q-witness-code-root.md) packages
+`pred(y-x)` into one primitive-recursive function symbol, proves its
+all-model meaning, and derives its witness statement in candidate PRA.
+The [witnessing note](research/pra-witness-bridge-20261029.md) records the
+remaining general Σ₁ and presentation obligations.
