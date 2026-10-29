@@ -47,6 +47,9 @@ has decidable equality and a surjective semantics-preserving conversion; its
 [independent replay](reviews/pra-finite-function-codes-root.md) also passed.
 A [numeric codec](Lean/DiophantineConsistency/PRACodeEncoding.lean) now
 has a proved arity-checked roundtrip and an [independent replay](reviews/pra-code-encoding-root.md).
+The [first-order language](Lean/DiophantineConsistency/PRALanguage.lean)
+now embeds the existing ordered-ring language and has a checked natural-model
+reduct; its [independent replay](reviews/pra-language-root.md) passed.
 Primitive-recursive bounds on the codec, the PRA theory and conservation
 remain open. This is not a uniform primitive-recursive evaluator.
 
