@@ -1,4 +1,5 @@
 import ZFCinPA.ZFDelta1
+import ZFCinPA.FiniteTheoryRecognizer
 import Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Typed
 
 /-!
@@ -91,11 +92,7 @@ lemma rep_body_shift_fixed (K : Semiformula V ℒₛₑₜ 2) (hK : K.shift = K)
 
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
 lemma union_class_iff (T U : Theory ℒₛₑₜ) [T.Δ₁] [U.Δ₁] (p : V) :
-    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := by
-  change (V ⊧/![p] (T.Δ₁ch ⋎ U.Δ₁ch).val) ↔
-    (V ⊧/![p] T.Δ₁ch.val) ∨ (V ⊧/![p] U.Δ₁ch.val)
-  rw [HierarchySymbol.Semiformula.val_or]
-  simp only [LogicalConnective.HomClass.map_or, LogicalConnective.Prop.or_eq]
+    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := FiniteTheoryRecognizer.union_class_iff T U p
 
 lemma separation_class_iff (p : V) :
     p ∈ separationTheory.Δ₁Class ↔ SepR p := by

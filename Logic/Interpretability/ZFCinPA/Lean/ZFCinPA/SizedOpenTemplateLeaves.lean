@@ -136,10 +136,8 @@ def oschW (t : ℕ) (u : V) : V :=
 
 theorem tA_univCl_eq (q : Proposition (setTemplateLanguage k arities)) :
     tA (Rewriting.emb q.univCl : Proposition (setTemplateLanguage k arities)) =
-      tA (sourceClosure q) + 2 * (0 + q.fvSup) := by
-  rw [FirstOrder.Semiformula.coe_univCl_eq_univCl', FirstOrder.Semiformula.univCl',
-    SizedLTemplate.tA_allClosure]
-  rfl
+      tA (sourceClosure q) + 2 * (0 + q.fvSup) :=
+  SizedLTemplate.tA_univCl_eq q
 
 set_option maxHeartbeats 2000000 in
 /-- **The schema leaf at arbitrary placeholders.** -/

@@ -60,11 +60,15 @@ theorem shs_level {n : ℕ} (φ : Bootstrapping.Semiformula V ℒₛₑₜ n) {u
 def fvVec (n : ℕ) : Bootstrapping.SemitermVec V ℒₛₑₜ n 0 :=
   fun j => Bootstrapping.Semiterm.fvar ((j : ℕ) : V)
 
-theorem fvar_small : ∀ j : ℕ, j ≤ 6 → (^&(j : V) : V) ≤ lvB 3 := by
-  intro j hj
+private theorem small_varcode (tag j : ℕ) (ht : tag ≤ 1) (hj : j ≤ 6) :
+    (⟪(tag : V), (j : V)⟫ + 1) ≤ lvB 3 := by
+  have ht' : tag = 0 ∨ tag = 1 := by omega
   have hj' : j = 0 ∨ j = 1 ∨ j = 2 ∨ j = 3 ∨ j = 4 ∨ j = 5 ∨ j = 6 := by omega
-  rcases hj' with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-    rw [lvB_three] <;> simp [qqFvar, pair] <;> norm_num
+  rcases ht' with rfl | rfl <;> rcases hj' with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
+    rw [lvB_three] <;> simp [pair] <;> norm_num
+
+theorem fvar_small : ∀ j : ℕ, j ≤ 6 → (^&(j : V) : V) ≤ lvB 3 := fun j hj => by
+  simpa [qqFvar] using (small_varcode (V := V) 1 j (by omega) hj)
 
 theorem fvVec_bound {n : ℕ} {c : V}
     (h : ∀ j : ℕ, j ≤ n → (^&(j : V) : V) ≤ lvB c) :
@@ -548,11 +552,8 @@ theorem conj_le {n : ℕ} : ∀ {a : ℕ} (f : Fin a → Bootstrapping.Semiformu
       push_cast
       ring
 
-theorem bvar_small : ∀ j : ℕ, j ≤ 6 → (^#(j : V) : V) ≤ lvB 3 := by
-  intro j hj
-  have hj' : j = 0 ∨ j = 1 ∨ j = 2 ∨ j = 3 ∨ j = 4 ∨ j = 5 ∨ j = 6 := by omega
-  rcases hj' with rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
-    rw [lvB_three] <;> simp [qqBvar, pair] <;> norm_num
+theorem bvar_small : ∀ j : ℕ, j ≤ 6 → (^#(j : V) : V) ≤ lvB 3 := fun j hj => by
+  simpa [qqBvar] using (small_varcode (V := V) 0 j (by omega) hj)
 
 /-- Substitution of variable terms, for typed vectors with bound variables. -/
 theorem tsubst_le_var {k m : ℕ} (ψ : Bootstrapping.Semiformula V ℒₛₑₜ k)
