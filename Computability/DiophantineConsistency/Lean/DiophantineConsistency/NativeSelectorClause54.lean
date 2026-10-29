@@ -65,12 +65,9 @@ theorem selectors_zero (x : Fin 457 → ℕ) (h : selectorCount x = 0) : ∀ i, 
 theorem selectors_one (x : Fin 457 → ℕ) (h : selectorCount x = 1) :
     ∃ i, x i = 1 ∧ ∀ j, j ≠ i → x j = 0 := by
   classical
-  have hex : ∃ i, x i ≠ 0 := by
-    by_contra he
-    push Not at he
-    have hz : selectorCount x = 0 := by simp [selectorCount,he]
-    omega
-  obtain ⟨i,hi⟩ := hex
+  have hp : 0 < ∑ j : Fin 457, x j := by change 0 < selectorCount x; omega
+  obtain ⟨i, _, hi⟩ := Finset.sum_pos_iff.mp hp
+  have hi : x i ≠ 0 := ne_of_gt hi
   have hs := Finset.sum_le_one_iff.mp (show (∑ j : Fin 457, x j) ≤ 1 by exact h.le)
   have hii : x i = 1 := (hs i i (Finset.mem_univ i) (Finset.mem_univ i) hi hi).2
   refine ⟨i,hii,?_⟩
