@@ -63,7 +63,9 @@ shift over arbitrary commutative semirings. The [internal factor-magnitude theor
 now derives magnitude one for the four actual factors from the literal zero.
 The [factor-unit theorem](reviews/adaptive-factor-units2011-root.md) now
 excludes the negative units by internal modulo-four reasoning and derives all
-four positive units. Pell recovery and zero-existence equivalence remain open.
+four positive units. The [scaled-norm theorem](reviews/adaptive-scaled-norms2011-root.md)
+derives both actual scaled Pell equations and positive scales. Unscaled Pell
+recovery and the zero-existence equivalence remain open.
 
 The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
 now proves in Lean that both maintained source sentences are Π₁ and their
