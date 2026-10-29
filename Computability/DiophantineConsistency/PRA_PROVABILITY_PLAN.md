@@ -15,6 +15,9 @@ calculus, an ordered-ring embedding, and characteristic codes for open
 formulas with finitely many packed parameters. The formal conservation and
 witnessing arguments remain open; the candidate's comparison with a standard
 PRA presentation also remains to be proved.
+The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
+are proved for Σ₁ relations, but assembling the inference still assumes a
+proof of its finite-extension step. This is not a completed collection rule.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),

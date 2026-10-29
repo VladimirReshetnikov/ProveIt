@@ -1,0 +1,8 @@
+import DiophantineConsistency.ParsonsCollectionRule
+#print axioms DiophantineConsistency.ParsonsCollectionRule.collector_sigma
+#print axioms DiophantineConsistency.ParsonsCollectionRule.collector_base_eq
+#print axioms DiophantineConsistency.ParsonsCollectionRule.body_zero
+#print axioms DiophantineConsistency.ParsonsCollectionRule.base_logic
+#print axioms DiophantineConsistency.ParsonsCollectionRule.zeroMin_paminus
+#print axioms DiophantineConsistency.ParsonsCollectionRule.paminus_base
+#print axioms DiophantineConsistency.ParsonsCollectionRule.collect_if_step
