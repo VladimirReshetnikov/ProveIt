@@ -50,9 +50,8 @@ theorem modelLtBitDefinition (x y : M) :
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   rw [hz] at h
   have hv : (fun i : Fin 2 => Semiterm.val ![x,y] Empty.elim (![.bvar 0, .bvar 1] i : TermN 2)) = ![x,y] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa [Function.comp_def] using
+      val_term_pair ![x,y] (.bvar 0) (.bvar 1)
   rw [hv] at h
   tauto
 
