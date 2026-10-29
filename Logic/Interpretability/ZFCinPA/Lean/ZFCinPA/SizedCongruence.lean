@@ -486,15 +486,19 @@ theorem step_or {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ n
 
 /-! ## Constants -/
 
+private theorem step_const {n w₁ w₂ E c v W z : V} (inp : Inp n w₁ w₂ E c)
+    (hz : IsSemiformula ℒₛₑₜ n z) (hv : z ≤ lvB v)
+    (hW : mB v c + 1 ≤ W) (hW4 : 4 ≤ W) (hmem : (^⊤ : V) ∈ Cseq w₁ w₂ z E) :
+    DLv 𝗭𝗙 (Cseq w₁ w₂ z E) (W + 1) :=
+  DLv.verum hW4 ((cseq_le hz hv inp).toLt hW) (cseq_formulaSet hz inp) hmem
+
 theorem step_verum {n w₁ w₂ E c v W : V} (inp : Inp n w₁ w₂ E c) (hv : (^⊤ : V) ≤ lvB v)
     (hW : mB v c + 1 ≤ W) (hW4 : 4 ≤ W) : DLv 𝗭𝗙 (Cseq w₁ w₂ ^⊤ E) (W + 1) :=
-  DLv.verum hW4 ((cseq_le (by simp) hv inp).toLt hW) (cseq_formulaSet (by simp) inp)
-    (by simp [Cseq])
+  step_const inp (by simp) hv hW hW4 (by simp [Cseq])
 
 theorem step_falsum {n w₁ w₂ E c v W : V} (inp : Inp n w₁ w₂ E c) (hv : (^⊥ : V) ≤ lvB v)
     (hW : mB v c + 1 ≤ W) (hW4 : 4 ≤ W) : DLv 𝗭𝗙 (Cseq w₁ w₂ ^⊥ E) (W + 1) :=
-  DLv.verum hW4 ((cseq_le (by simp) hv inp).toLt hW) (cseq_formulaSet (by simp) inp)
-    (by simp [Cseq])
+  step_const inp (by simp) hv hW hW4 (by simp [Cseq])
 
 /-! ## Atoms -/
 
