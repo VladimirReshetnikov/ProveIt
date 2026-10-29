@@ -1,0 +1,24 @@
+# Exposing the constructed auxiliary Pell phase
+
+The current assembly chooses a rank `R` and proves `R % 4 = 3` using the rank-forcing theorem. Its auxiliary Pell seed also returns `y = ycoord R (I - 2)`, where `I = delta a * i * c * c`, `a` is the chosen main Pell base, and `c = ycoord R a`. The final fourteen-coordinate vector uses the same first three rank inputs and places `y` in coordinate 12. Thus exposing the phase and the auxiliary base from the assembly would supply both additional inputs of `ArithmeticAdaptiveConstructionAuxBind2011.adaptive_auxiliary_of_phase` for the actual reverse construction.
+
+The working edit strengthens a bounded internal helper with these two facts, while retaining the existing `construction_below_hL` interface as a projection wrapper. It uses the same direct radix substitution already used in the assembly: first prove the final vector's radix is the chosen `q`, then unfold rank, rewrite that radix and use the rank formula. The auxiliary base is explicitly `delta a * i * c * c - 2`.
+
+A small [projection test](../reviews/adaptive-assembly-projection2011-evidence/Projection.lean) compiled successfully against the independently replayed rank-lower provider; it checks the full-vector radix and rank, rank phase, and coordinate-12 ordinate binding. Its three-file evidence manifest has SHA256 `68af678b8934588115140aaf648e87d043daad4b8638516699f63e5c1176e9db`. This test does not compile the actual assembly. Earlier attempts to specialize a generic rank congruence to two fourteen-entry vectors consumed several gigabytes; an initial full historical-overlay assembly attempt was stopped under memory pressure. After replacing that approach with direct radix substitution, the full edited Assembly compiled successfully with empty diagnostics against the historical pinned overlay in 105.55 seconds. Its [six-file historical-build evidence](../reviews/adaptive-assembly-historical2011-evidence/FILES.json) has manifest SHA256 `bb97f701639bdb7ad5f5ccc9c6fe796b7d99e0585267cbc39da691397158c584`; the resulting object hash is `f033d19eeaa60c27af60cf1b84e40030ed015d5924d6401b1a18c2a2ceb567ae`. This is not a source-current build: direct Pell prerequisites and many overlapping objects in that overlay predate the current sources. The full assembly edit still requires a build on authenticated current prerequisites.
+
+For a current-source assembly build, the conservative [closure audit](../reviews/adaptive-assembly-closure2011-evidence/audit.json) records 84 DiophantineConsistency modules reachable from the assembly. The independently accepted rank-lower provider and historical pinned assembly overlay have 50 shared objects with different hashes. The other 32 assembly modules available only in the historical overlay all depend transitively on at least one of these different objects, so the overlays cannot be safely combined by search-path precedence alone. The two providers' object hashes, source hashes, source imports, and topological ordering are recorded in that audit; its two-file manifest has SHA256 `c1312f185245150b3b848c8445183c3efba8ccd58732b43f9c1644c6344b59cf`.
+
+Three of those 32 modules are present in the independently authenticated 36-module CellWindow prefix. Four more, including WangTable, are among its ten modules awaiting continuation. Assuming that continuation is accepted against the current provider, the remaining 25 assembly-specific modules should be rebuilt in this dependency order:
+
+1. `ArithmeticRunTrace`, `ArithmeticTilingTable`, `ArithmeticTilingRows`, `ArithmeticTilingBand`, `ArithmeticTilingWord`.
+2. `ArithmeticPackingBlocks`, `ArithmeticPacking`, `ArithmeticPackingCells`, `ArithmeticRankForcing`, `ArithmeticRankForcing2011`.
+3. `ArithmeticControllerLift`, `ArithmeticControllerData`, `ArithmeticControllerChoice`, `ArithmeticControllerStride`, `ArithmeticController`.
+4. `MFWangTiles942PhysicalData`, `MFWangTiles942PhysicalOrder`, `ArithmeticConstructionKernel`, `ArithmeticConstructionUnit`, `ArithmeticConstructionVariation`.
+5. `ArithmeticOuterSeed`, `ArithmeticPellSquaredSeed`, `ArithmeticPellAuxiliarySeed`, `ArithmeticConstructionBoundPell`, `ArithmeticConstructionAssembly`.
+
+This list is conservative within the DiophantineConsistency graph, not a complete proof of a minimal full closure. The audit records 46 direct imports outside that namespace; BusyBeaver, PAHF, Foundation, and package prerequisites must be checked separately for source and object compatibility. In particular, the stopped WangTable worker is a real blocker to this proposed continuation, not an accepted current-source build.
+
+An independent run of the projection test passed, and a separate audit run
+produced JSON identical to the packaged result. The stopped WangTable worker
+was the independent attempt; the separate author worker remains live and
+I/O-blocked.

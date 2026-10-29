@@ -31,4 +31,7 @@ The proof route takes place in classical Lean metatheory and must not be confuse
 
 After the independent translation replay, an upstream merge changed
 `PRAQCompatibility` and `PRAPeanoMinusBasic`. The replay covers the preceding
-source snapshot; the affected chain needs a current-source rebuild.
+source snapshot. The affected chain was rebuilt and independently replayed,
+then the order suffix was refreshed and independently replayed. Further merges
+changed `PRAQOrder` and several addition and subtraction providers, so a new
+downstream rebuild is required for current-source coverage.
