@@ -91,7 +91,9 @@ The [cut-free adapter](reviews/parsons-cut-free-independent.md) now turns an
 actual finite Foundation theory proof into a cut-free derivation with the
 same axiom list. [Height-preserving conjunction inversion](reviews/parsons-selection-independent.md)
 is now established for arbitrary cut-free contexts. Induction-axiom reduction
-and the PRA witnessing theorem remain open.
+and the PRA witnessing theorem remain open. The [guard syntax](reviews/parsons-guard-independent.md)
+now preserves Σ₁ complexity and side parameters under substitution, preparing
+the intended induction-rule case.
 
 ## Concrete bridge to formalize
 
