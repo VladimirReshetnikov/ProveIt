@@ -74,18 +74,12 @@ theorem solution_residues (b x y m : V) (hn : x*x=1+delta b*y*y) (hm : m∣b+1) 
   exact ⟨time,r,s,ht,hx,hy,by rwa [←hx],by rwa [←hy]⟩
 
 theorem y_add_ge (left right b : V) : ycoord left b+right≤ycoord (left+right) b := by
-  have h1 : ycoord right b≤xcoord left b*ycoord right b := by
-    simpa only [one_mul] using mul_le_mul_of_nonneg_right (one_le_x left b)
-      (Arithmetic.zero_le (ycoord right b))
-  have h2 : ycoord left b≤ycoord left b*xcoord right b := by
-    simpa only [mul_one] using mul_le_mul_of_nonneg_left (one_le_x right b)
-      (Arithmetic.zero_le (ycoord left b))
   rw [(addition left right b).2]
   calc
-    ycoord left b+right≤ycoord left b+ycoord right b :=
-      _root_.add_le_add le_rfl (time_le_y right b)
-    _≤ycoord left b*xcoord right b+xcoord left b*ycoord right b := _root_.add_le_add h2 h1
-    _=xcoord left b*ycoord right b+ycoord left b*xcoord right b := add_comm _ _
+    ycoord left b+right ≤ ycoord left b*xcoord right b+xcoord left b*ycoord right b :=
+      _root_.add_le_add (le_mul_of_one_le_right (Arithmetic.zero_le _) (one_le_x right b))
+        (le_trans (time_le_y right b) (le_mul_of_one_le_left (Arithmetic.zero_le _) (one_le_x left b)))
+    _ = _ := add_comm _ _
 
 theorem y_strictMono (b : V) : StrictMono (fun time : V => ycoord time b) := by
   intro left right h
