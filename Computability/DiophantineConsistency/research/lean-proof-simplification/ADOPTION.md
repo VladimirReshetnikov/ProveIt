@@ -1359,5 +1359,16 @@ public/generated names appear. Fresh probes pin direct inputs; broader
 reference searches were terminated, so the no-reference check is limited to
 the project Lean tree. Other transitive dependencies remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-site-check-sharing-evidence/BUNDLE.json).
 
+The generated near-target isolation sharing `53d3f3ff97` removes 13 net
+Lean lines, bringing the reviewed series to 9625. One bounded-offset argument
+now serves the linear and quadratic cross-target proofs in both geometries;
+the generator emits the shared lemma and the numeric data is unchanged.
+Paired geometry, certificate, source, adopted kernel and wrapper builds pass,
+as does independent regeneration. The 157 common public reports, 31,715
+global simp entries and 13,981 instance entries match. A public helper and two
+generated auxiliaries appear; four public and two private generated proof
+names disappear. Preliminary overwritten or failed attempts are retained as
+historical evidence, and transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-near-isolation-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

@@ -1,0 +1,79 @@
+Independent review: generated near-target geometry sharing, 28 October 2026
+
+Scope: reviewed the isolated candidate and generator under
+/dev/shm/target-near-sharing, regenerated in a separate regular-file tree,
+checked the saved Lean target/client/probe/provider receipts and archive, and
+inspected exposure to the already adopted kernel modules. No repository files
+were changed by this review.
+
+Finding: no refactor-specific correctness issue found. The new public
+`SplitCertificate59.target_cross_of_near` proves that if two offsets are at
+most `d` and the equality fails inside the two-sided near band, then it fails
+globally. Outside either side of the band, the hypothesized equality would
+contradict the relevant offset bound and natural subtraction inequalities.
+The 116-bound linear and 232-bound quadratic applications in both geometries
+retain the original near-test premises and public theorem statements. The
+quadratic second offset is bounded by 232 from the same maximum-weight facts.
+
+The only generator change is to emit this helper and the shorter proof bodies,
+and to classify the helper into the geometry output using its doc-comment
+prefix. The Gap generator itself is unchanged and reuses the altered split
+geometry slice. All six source/kernel/layout JSON inputs match the workspace.
+All eight SplitGeometry59 and six GapGeometry66 multiline top-level `def`
+blocks are unchanged; the SplitCertificate59 and GapCertificate66 output files
+are byte-identical to the workspace originals. I copied the two generators,
+the six JSON files and four generated outputs to
+/tmp/target-near-independent-regeneration and ran `python .../replay.py`.
+Split regeneration, Gap regeneration and Gap `--check` all returned zero;
+all input hashes stayed fixed and the four generated files matched the
+candidate byte-for-byte. Exact commands, logs and hashes are in that tree's
+records.json. This run did not write to the repository or candidate tree.
+
+The existing receipts record successful paired builds of both geometry files
+and both certificate files, followed by paired rebuilds of GapSource66 and
+GapCertificate66 using the freshly built geometry/certificate inputs. I
+independently checked 12 build source, object and log hashes and 24 direct-input
+before/after hashes. The two preliminary GapCertificate66 receipts used an
+older GapSource provider; its first-provider path changed later when the fresh
+replay was installed. Those preliminary records are historical, not proof that
+the replay used the old input. The separate fresh replay inputs and current
+first-provider paths match. The DegreeSeparatedCoding input object and current
+source hashes match the prior recorded fresh receipt.
+
+The recorded namespace census changes 181 baseline names to 178 final names:
+one new public helper and two generated auxiliaries; four removed generated
+public `linear_cross._proof_*` names and two removed private generated
+quadratic auxiliaries. No original named theorem was removed. I found no
+tracked Lean/Python references to the qualified removed generated names. The
+157 common public type/axiom reports and six forced definition equations are
+byte-identical. Global simp membership (31,715 entries) and instance/priority
+reports (13,981 entries) are identical. The new helper reports only `propext`
+and `Quot.sound`. I rechecked all eight probe source, target-object and log
+hashes. The existing compact evidence ZIP passed CRC and all 92 manifest hashes
+(SHA-256 `945a36c23a2d5578013da710fec655516f2aa1ff232a05fdecbd21c9db367793`).
+
+SplitKernelData59 imports SplitGeometry59, and GapKernelData66 imports both
+GapGeometry66 and SplitKernelData59. Their imports do not change, but they now
+see the new public `SplitCertificate59.target_cross_of_near` and its generated
+auxiliaries through the existing path. The new helper has no simp or instance
+registration; the full-environment census above is unchanged. Paired fresh
+builds of these two adopted kernel modules and of their SplitKernels59 and
+GapKernels66 wrapper clients have now passed, eight builds total. Each phase
+used its own geometry, certificate and newly built kernel objects. I independently
+ran `python /tmp/target-near-audit-kernel.py`, saved output to
+/tmp/target-near-independent-kernel-audit.txt, and verified all eight sources
+against the current workspace, all object/log hashes, all 18 direct input hashes
+and first-provider paths; no discrepancies. The prior common-provider records
+at /dev/shm/shared-box-prototype/common-records.json show successful builds of
+SelectiveCarry, SelectiveCoefficientBounds, PolynomialRangeBounds and
+SplitWordBounds, and their recorded current source/object hashes still match.
+The two SplitKernelData builds took 88.69/89.21 seconds user CPU, GapKernelData
+82.42/84.47, SplitKernels 56.76/54.81, and GapKernels 51.47/51.42; paired runs
+were concurrent, so elapsed timing is not a controlled benchmark.
+
+The compared runs use cached transitive project prerequisites and installed
+Mathlib/Lean objects; matching recorded direct inputs is not a clean rebuild
+of the entire source closure or a test of every downstream client. The initial
+smoke failure and intermediate generator misclassification were superseded;
+the archive documents that their original raw output/source was not retained.
+Within these limits, no refactor-specific blocker was found.
