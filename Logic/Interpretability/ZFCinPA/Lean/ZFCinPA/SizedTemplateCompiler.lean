@@ -111,6 +111,9 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       b + height d ≤ B → Good tr T₂ F e B d →
       DerivableLe T₂.theory (translateSequent (tr.formula b) Γ).val
         (Exp.exp (stg (height d) e)) := by
+  have translated_mem {b : ℕ} {Γ : Finset (Proposition L₁)} {p : Proposition L₁}
+      (hp : p ∈ Γ) : (tr.formula b p).val ∈ (translateSequent (tr.formula b) Γ).val :=
+    Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent (tr.formula b) hp)
   have child_heights {b h₁ h₂ B : ℕ} (h : b + (max h₁ h₂ + 1) ≤ B) :
       b + h₁ ≤ B ∧ b + h₂ ≤ B := by
     constructor <;> omega
@@ -120,8 +123,8 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       intro b _ hbB hg
       have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       refine DerivableLe.em he (seq_bound tr hb (Good.here tr hg) hFe) (translateSequent (tr.formula b) Δ).val_formulaSet
-        (tr.formula b p).val (Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent _ hp)) ?_
-      have := Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent (tr.formula b) hn)
+        (tr.formula b p).val (translated_mem hp) ?_
+      have := translated_mem (b := b) hn
       rw [tr.neg] at this
       simpa using this
   | axm σ hT hΓ =>
@@ -132,14 +135,14 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
         (translateSequent (tr.formula b) _).val_formulaSet ?_ (hg.2 b hb)
       intro y hy
       rcases mem_bitInsert_iff.mp hy with rfl | hy
-      · exact Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent _ hΓ)
+      · exact translated_mem hΓ
       · simp at hy
   | verum h =>
       intro b _ hbB hg
       have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       refine DerivableLe.verum he (seq_bound tr hb (Good.here tr hg) hFe)
         (translateSequent (tr.formula b) _).val_formulaSet ?_
-      have := Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent (tr.formula b) h)
+      have := translated_mem (b := b) h
       rw [tr.verum] at this
       simpa using this
   | @and Δ φ ψ h dp dq ihp ihq =>
@@ -156,7 +159,7 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       simp only [Bootstrapping.Sequent.val_insert] at hp hq
       have hm : (tr.formula b φ).val ^⋏ (tr.formula b ψ).val ∈
           (translateSequent (tr.formula b) Δ).val := by
-        have := Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent (tr.formula b) h)
+        have := translated_mem (b := b) h
         rw [tr.and] at this
         simpa using this
       exact DerivableLe.and_m (four_le_stg he _)
@@ -175,7 +178,7 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       simp only [Bootstrapping.Sequent.val_insert] at hp
       have hm : (tr.formula b φ).val ^⋎ (tr.formula b ψ).val ∈
           (translateSequent (tr.formula b) Δ).val := by
-        have := Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent (tr.formula b) h)
+        have := translated_mem (b := b) h
         rw [tr.or] at this
         simpa using this
       exact DerivableLe.or_m (four_le_stg he _)
@@ -192,7 +195,7 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       rw [translateSequent_insert, tr.free, tr.sequent_shift] at hp
       simp only [Bootstrapping.Sequent.val_insert, Semiformula.free_val] at hp
       have hm : ^∀ (tr.formula b φ).val ∈ (translateSequent (tr.formula b) Δ).val := by
-        have := Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent (tr.formula b) h)
+        have := translated_mem (b := b) h
         rw [tr.all] at this
         simpa using this
       exact DerivableLe.all_m (four_le_stg he _)
@@ -208,7 +211,7 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       rw [translateSequent_insert, tr.subst₁] at hp
       simp only [Bootstrapping.Sequent.val_insert, Semiformula.val_substs] at hp
       have hm : ^∃ (tr.formula b φ).val ∈ (translateSequent (tr.formula b) Δ).val := by
-        have := Bootstrapping.Sequent.mem_iff.mp (formula_mem_translateSequent (tr.formula b) h)
+        have := translated_mem (b := b) h
         rw [tr.exs] at this
         simpa using this
       exact DerivableLe.ex_m (four_le_stg he _)
