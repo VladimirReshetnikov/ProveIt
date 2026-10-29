@@ -112,15 +112,6 @@ private def selectorUnit16 : Entry → ℕ
   | .inl _ => 2
   | .inr _ => 0
 
-private theorem weight_mod_sixteen (e : Entry) : 2 * weight e ≡ selectorUnit16 e [MOD 16] := by
-  rcases e with i | j | j | j | j
-  · change (2 * selectorWeight (tile i)) % 16 = 2 % 16
-    simp only [selectorWeight]
-    omega
-  all_goals
-    change (2 * 2 ^ _) % 16 = 0 % 16
-    fin_cases j <;> decide
-
 theorem shifted_suffix_sum (a : ℕ → ℕ) {j : ℕ} (hj : j ≤ 942) :
     (∑ p ∈ Finset.range 942, if 942 ≤ j + p then a (j + p - 942) else 0) =
       prefixSum a j :=
@@ -138,6 +129,10 @@ private theorem weight_mod_2048 (e : Entry) : 2 * weight e ≡ selectorUnit2048 
   all_goals
     change (2 * 2 ^ _) % 2048 = 0 % 2048
     fin_cases j <;> decide
+
+private theorem weight_mod_sixteen (e : Entry) : 2 * weight e ≡ selectorUnit16 e [MOD 16] := by
+  change 2 * weight e ≡ selectorUnit2048 e [MOD 16]
+  exact (weight_mod_2048 e).of_dvd (by norm_num)
 
 section local_cell
 variable {cw tw kw dw : ℕ → ℕ} {kin phase : ℕ} (H : Local cw tw kw dw kin phase)
