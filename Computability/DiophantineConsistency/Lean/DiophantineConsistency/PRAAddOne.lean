@@ -63,9 +63,7 @@ theorem modelBase {n : ℕ} (f : Code n) (g : Code (n+2)) (e : Fin n → M) :
     Semiformula.eval_rel] at h
   have h' := (eqRel _).mp (h e)
   have hz : (fun i : Fin 0 => Semiterm.val e Empty.elim (Fin.elim0 i : TermN n)) =
-      (Fin.elim0 : Fin 0 → M) := by
-    funext i
-    exact Fin.elim0 i
+      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   simpa [applyCode, vars, Function.comp_def, val_cases, hz] using h'
 
 theorem modelStep {n : ℕ} (f : Code n) (g : Code (n+2)) (e : Fin (n+1) → M) :
@@ -118,9 +116,7 @@ theorem modelAddOne (x : M) :
     Structure.func (L := language) addCore _ at ha
   rw [harg] at ha
   have hbArg : Fin.cases (Structure.func (L := language) (Code.zero 0) Fin.elim0) ![x] = ![z,x] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    rfl
   rw [hbArg, modelProjection] at hb
   change Structure.func (L := language) addCore ![z,x] = x at hb
   change Structure.func (L := language) addCore
@@ -158,14 +154,11 @@ theorem PRA_proves_addOne : PRA ⊢ addOneSentence := by
   intro e
   apply (eqRel _).mpr
   have hz : (fun i : Fin 0 => Semiterm.val e Empty.elim (Fin.elim0 i : TermN 1)) =
-      (Fin.elim0 : Fin 0 → M) := by
-    funext i
-    exact Fin.elim0 i
+      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have ha : Fin.cases (e 0) (fun _ : Fin 1 => Structure.func (L := language) oneCode Fin.elim0) =
       ![e 0, Structure.func (L := language) oneCode Fin.elim0] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    apply funext
+    exact Fin.forall_fin_two.mpr ⟨rfl, rfl⟩
   simpa [Function.comp_def, applyCode, val_cases, hz, ha] using modelAddOne (e 0)
 
 end DiophantineConsistency.PRAAddOne
