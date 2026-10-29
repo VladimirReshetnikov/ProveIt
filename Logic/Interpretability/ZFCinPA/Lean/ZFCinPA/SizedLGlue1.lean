@@ -335,8 +335,9 @@ theorem tr_le {i J : V} (h : i + 1 ≤ J) (φ : Proposition GL)
     (mul_le_mul_of_nonneg_right (by exact_mod_cast hφ) (Arithmetic.zero_le _))
 
 set_option maxHeartbeats 4000000 in
-/-- **Matching environments are functional, bounded.** -/
-theorem fun_MT_le (J : V) : DLv 𝗭𝗙 (insert (funVal J) ∅) (funW J) := by
+/-- **Matching environments are functional, bounded**, at every index up to a
+target `J`, at the compile level of `J`. -/
+theorem fun_MT_leJ {i₀ J : V} (h₀ : i₀ ≤ J) : DLv 𝗭𝗙 (insert (funVal i₀) ∅) (wF J + 10 * i₀) := by
   obtain ⟨W0, hW0⟩ : ∃ W0 : V, W0 = wF J := ⟨_, rfl⟩
   have hu2 := two_le_uM J
   have key : ∀ i : V, i ≤ J → DLv 𝗭𝗙 (insert (funVal i) ∅) (W0 + 10 * i) := by
@@ -404,8 +405,11 @@ theorem fun_MT_le (J : V) : DLv 𝗭𝗙 (insert (funVal J) ∅) (funW J) := by
       refine d4.mono ?_
       rw [hw]
       exact le_of_add_eq (y := 4) (by ring)
-  have := key J le_rfl
+  have := key i₀ h₀
   rw [hW0] at this
   exact this
+
+/-- **Matching environments are functional, bounded.** -/
+theorem fun_MT_le (J : V) : DLv 𝗭𝗙 (insert (funVal J) ∅) (funW J) := fun_MT_leJ le_rfl
 
 end LeanProofs.ZFCinPA.SizedLGlue1
