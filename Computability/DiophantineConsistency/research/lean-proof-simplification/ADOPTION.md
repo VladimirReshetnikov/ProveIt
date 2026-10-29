@@ -1810,5 +1810,13 @@ clients pass with identical client objects; checked declarations and
 registrations match. The transitive closure remains cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261029-auxiliary-seed-positive-evidence/BUNDLE.json).
 
+The Pell positive-divisibility bound `1a0b5f209e` removes ten net Lean lines,
+bringing the reviewed series to 10104. An imported lemma replaces a private
+wrapper at its sole call site. Paired target and two direct clients pass with
+identical client objects; five surviving declaration reports and sampled
+registrations match. The private wrapper is removed; downstream construction
+clients were not rebuilt and the wider closure remains cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-pell-integral-direct-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
