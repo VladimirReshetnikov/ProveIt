@@ -1,0 +1,9 @@
+import DiophantineConsistency.ParsonsLogicalCases
+#print axioms DiophantineConsistency.ParsonsLogicalCases.existential
+#print axioms DiophantineConsistency.ParsonsLogicalCases.universal
+#print axioms DiophantineConsistency.ParsonsLogicalCases.disjunction
+#print axioms DiophantineConsistency.ParsonsLogicalCases.conjunction
+#print axioms DiophantineConsistency.ParsonsLogicalCases.existential_case
+#print axioms DiophantineConsistency.ParsonsLogicalCases.universal_case
+#print axioms DiophantineConsistency.ParsonsLogicalCases.disjunction_case
+#print axioms DiophantineConsistency.ParsonsLogicalCases.conjunction_case

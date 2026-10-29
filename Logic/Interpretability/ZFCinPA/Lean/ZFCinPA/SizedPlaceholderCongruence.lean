@@ -284,13 +284,11 @@ theorem symcut {x y Γ c W : V} (hx : IsSemiterm ℒₛₑₜ 0 x) (hy : IsSemit
         (le_trans (sW_D c) hW))
   have up : ∀ k : V, 10 * (m + 1) + 1 ≤ W + k := fun k => le_trans hw le_self_add
   have up4 : ∀ k : V, 4 ≤ W + k := fun k => le_trans hw4 le_self_add
-  have d1 := spec_step (φ := ∀⁰ symmBody) (t := tx) rfl rfl hX₀ hY₁ (lift_lvB lx hcm) (up 1)
-    (up4 1) ((lΓ'.toLt hw).mono le_self_add) fΓ' d0
-  have d2 := spec_step (φ := symmBody.subst (Bootstrapping.SemitermVec.q ![tx])) (t := ty)
+  have d1 := spec_step_up (k := 1) (φ := ∀⁰ symmBody) (t := tx) rfl rfl hX₀ hY₁
+    (lift_lvB lx hcm) hw hw4 (lΓ'.toLt hw) fΓ' d0
+  have d2 := spec_step_up (k := 1 + 3) (φ := symmBody.subst (Bootstrapping.SemitermVec.q ![tx])) (t := ty)
     (Bootstrapping.Semiformula.substs_all _ _).symm (subst_q_sing _ _ _) hY₁ hY₂
-    (lift_lvB ly hcm) (by simpa [add_assoc] using up (1 + 3))
-    (by simpa [add_assoc] using up4 (1 + 3))
-    ((lΓ'.toLt hw).mono (by simpa [add_assoc] using (le_self_add : W ≤ W + (1 + 3)))) fΓ' d1
+    (lift_lvB ly hcm) hw hw4 (lΓ'.toLt hw) fΓ' (by simpa [add_assoc] using d1)
   have hIs : symmBody.subst ![ty, tx] = I := by simp [symmBody, hI, SetCongruence.eqAtom]
   rw [hIs] at d2 hY₂
   -- the negative side: `x = y ∧ y ≠ x`
@@ -325,7 +323,7 @@ theorem symcut {x y Γ c W : V} (hx : IsSemiterm ℒₛₑₜ 0 x) (hy : IsSemit
     DLv.cut (by simpa [add_assoc] using up4 (1 + 3 + 3))
       ((lΓ'.toLt hw).mono (by simpa [add_assoc] using (le_self_add : W ≤ W + (1 + 3 + 3))))
       I.val (lt_lvB_of hY₂ (le_trans hm1 (by simpa [add_assoc] using
-        (le_self_add : W ≤ W + (1 + 3 + 3))))) d2
+        (le_self_add : W ≤ W + (1 + 3 + 3))))) (by simpa [add_assoc] using d2)
       (by rw [← Bootstrapping.Semiformula.val_neg]; exact dN.mono hL13)
   refine DLv.cut (by simpa [add_assoc] using up4 (1 + 3 + 3 + 1))
     ((hΓ.toLt hw).mono (by simpa [add_assoc] using (le_self_add : W ≤ W + (1 + 3 + 3 + 1))))

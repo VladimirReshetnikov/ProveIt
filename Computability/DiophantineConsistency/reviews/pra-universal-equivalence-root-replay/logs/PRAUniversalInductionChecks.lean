@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAUniversalInduction
+#print axioms DiophantineConsistency.PRAUniversalInduction.modelOpenInductionAxiom
+#check DiophantineConsistency.PRAUniversalInduction.modelOpenInductionAxiom

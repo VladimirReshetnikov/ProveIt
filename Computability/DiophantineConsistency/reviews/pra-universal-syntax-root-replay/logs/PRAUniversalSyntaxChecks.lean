@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAUniversalSyntax
+#print axioms DiophantineConsistency.PRAUniversalSyntax.universalPrefix_rew_iff
+#print axioms DiophantineConsistency.PRAUniversalSyntax.universalPrefix_univCl
+#check DiophantineConsistency.PRAUniversalSyntax.universalPrefix_univCl

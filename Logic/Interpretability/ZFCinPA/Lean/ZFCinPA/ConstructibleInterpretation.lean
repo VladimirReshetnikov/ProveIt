@@ -458,23 +458,38 @@ lemma isUFormula_quote {n : ℕ} (ψ : SetTheorySemiproposition n) :
     IsUFormula ℒₛₑₜ (⌜ψ⌝ : W) :=
   (LO.FirstOrder.Semiformula.quote_isSemiformula ψ).isUFormula
 
+lemma shift_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) : shift ℒₛₑₜ (⌜σ⌝ : W) = ⌜σ⌝ := by
+  rw [LO.FirstOrder.Sentence.quote_def, ← LO.FirstOrder.Semiformula.quote_shift]
+  congr 1
+  rw [Rewriting.shift, ← TransitiveRewriting.comp_app, Rew.shift_comp_emb]
+
+lemma isSemiformula_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) :
+    IsSemiformula ℒₛₑₜ (k : W) (⌜σ⌝ : W) := by
+  rw [LO.FirstOrder.Sentence.quote_def]
+  simpa using LO.FirstOrder.Semiformula.quote_isSemiformula (V := W)
+    (Rewriting.emb σ : SetTheorySemiproposition k)
+
+lemma embSubsts_eq_comp_general {ξ : Type*} {n k : ℕ} (v : Fin k → Semiterm ℒₛₑₜ ξ n) :
+    (Rew.embSubsts v : Rew ℒₛₑₜ Empty k ξ n) = (Rew.subst v).comp Rew.emb := by
+  ext x
+  · simp [Rew.comp_app]
+  · exact x.elim
+
+lemma quote_embSubsts {k n : ℕ} (σ : Semisentence ℒₛₑₜ k) (v : Fin k → SyntacticSemiterm ℒₛₑₜ n) :
+    (⌜(Rew.embSubsts v ▹ σ : SetTheorySemiproposition n)⌝ : W) =
+      subst ℒₛₑₜ (SemitermVec.val fun i ↦ (⌜v i⌝ : Bootstrapping.Semiterm W ℒₛₑₜ n)) ⌜σ⌝ := by
+  rw [embSubsts_eq_comp_general, TransitiveRewriting.comp_app, LO.FirstOrder.Semiformula.quote_def,
+    LO.FirstOrder.Semiformula.typed_quote_substs, Bootstrapping.Semiformula.val_substs,
+    LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+
 lemma embSubsts_eq_comp {ξ : Type*} {n : ℕ} :
     (Rew.embSubsts ![(#0 : Semiterm ℒₛₑₜ ξ (n + 1))] : Rew ℒₛₑₜ Empty 1 ξ (n + 1)) =
-      (Rew.subst ![#0]).comp Rew.emb := by
-  ext x
-  · rw [Fin.fin_one_eq_zero x]
-    simp [Rew.comp_app]
-  · exact x.elim
+      (Rew.subst ![#0]).comp Rew.emb := embSubsts_eq_comp_general _
 
 /-- The domain formula has the same code at every binder depth. -/
 lemma quote_domAt (n : ℕ) :
     (⌜(domAt domL n : SetTheorySemiproposition (n + 1))⌝ : W) = ⌜domL⌝ := by
-  have h : (domAt domL n : SetTheorySemiproposition (n + 1)) =
-      (Rewriting.emb domL : SetTheorySemiproposition 1) ⇜ ![#0] := by
-    rw [domAt, embSubsts_eq_comp, TransitiveRewriting.comp_app]
-  rw [h, LO.FirstOrder.Semiformula.quote_def, LO.FirstOrder.Semiformula.typed_quote_substs,
-    Bootstrapping.Semiformula.val_substs, LO.FirstOrder.Sentence.quote_def,
-    LO.FirstOrder.Semiformula.quote_def]
+  rw [domAt, quote_embSubsts]
   refine subst_eq_self_of_prefix (k := 1) (by simp) (SemitermVec.isSemitermVec _) (by simp) ?_
   intro i hi
   have : i = 0 := by simpa using hi
@@ -522,10 +537,7 @@ theorem quote_relF_sentence (σ : SetTheorySentence) :
 
 lemma isSemiformula_quote_domL : IsSemiformula ℒₛₑₜ 1 (⌜domL⌝ : W) := by simp
 
-lemma shift_quote_domL : shift ℒₛₑₜ (⌜domL⌝ : W) = ⌜domL⌝ := by
-  rw [LO.FirstOrder.Sentence.quote_def, ← LO.FirstOrder.Semiformula.quote_shift]
-  congr 1
-  rw [Rewriting.shift, ← TransitiveRewriting.comp_app, Rew.shift_comp_emb]
+lemma shift_quote_domL : shift ℒₛₑₜ (⌜domL⌝ : W) = ⌜domL⌝ := shift_quote_sen domL
 
 /-- `Prov_ZF(∃x (x ∈ L))`. -/
 theorem provable_exists_L : Provable 𝗭𝗙 (^∃ (⌜domL⌝ : W)) := by
@@ -556,26 +568,13 @@ lemma mem_ZFC_class {p : W} (h : p ∈ (𝗭𝗙𝗖 : SetTheory).Δ₁Class) :
   · exact Or.inr (Or.inr (Or.inl h))
 
 /-- A code in the class of a finite list theory is one of the listed codes. -/
-lemma mem_ch_ofList {p : W} : ∀ (l : List SetTheorySentence),
-    W ⊧/![p] (Theory.Δ₁.ofList l).ch.val → ∃ σ ∈ l, p = ⌜σ⌝
-  | [], h => by
-      change W ⊧/![p] (⊥ : 𝚫₁.Semisentence 1).val at h
-      simp at h
-  | φ :: l, h => by
-      change W ⊧/![p] ((Theory.Δ₁.singleton φ).ch ⋎ (Theory.Δ₁.ofList l).ch).val at h
-      simp only [HierarchySymbol.Semiformula.val_or, LogicalConnective.HomClass.map_or,
-        LogicalConnective.Prop.or_eq] at h
-      rcases h with h | h
-      · refine ⟨φ, by simp, ?_⟩
-        have h' : p = ORingStructure.numeral (Encodable.encode φ) := by simpa using h
-        rw [h', numeral_eq_natCast_app, LO.FirstOrder.Sentence.quote_eq_encode]
-      · obtain ⟨σ, hσ, rfl⟩ := mem_ch_ofList l h
-        exact ⟨σ, by simp [hσ], rfl⟩
+lemma mem_ch_ofList {p : W} (l : List SetTheorySentence)
+    (h : W ⊧/![p] (Theory.Δ₁.ofList l).ch.val) : ∃ σ ∈ l, p=⌜σ⌝ :=
+  LeanProofs.ZFCinPA.SetRelativization.finite_mem_ch_ofList l h
 
 lemma mem_ch_ofFinite (T : SetTheory) (hT : Set.Finite T) {p : W}
-    (h : W ⊧/![p] (Theory.Δ₁.ofFinite T hT).ch.val) : ∃ σ ∈ T, p = ⌜σ⌝ := by
-  obtain ⟨σ, hσ, rfl⟩ := mem_ch_ofList hT.toFinset.toList h
-  exact ⟨σ, by simpa using hσ, rfl⟩
+    (h : W ⊧/![p] (Theory.Δ₁.ofFinite T hT).ch.val) : ∃ σ ∈ T, p=⌜σ⌝ :=
+  LeanProofs.ZFCinPA.SetRelativization.finite_mem_ch_ofFinite T hT h
 
 lemma standard_of_mem_class {p : W}
     (hp : p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁Class ∨ p ∈ zfFixed.Δ₁Class ∨

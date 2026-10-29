@@ -1,0 +1,9 @@
+import DiophantineConsistency.ParsonsInvariant
+#print axioms DiophantineConsistency.ParsonsInvariant.output_pi_two
+#print axioms DiophantineConsistency.ParsonsInvariant.base_branch
+#print axioms DiophantineConsistency.ParsonsInvariant.selected_subset
+#print axioms DiophantineConsistency.ParsonsInvariant.selected_formulas
+#print axioms DiophantineConsistency.ParsonsInvariant.marked_contraction
+#print axioms DiophantineConsistency.ParsonsInvariant.initial_formulas
+#print axioms DiophantineConsistency.ParsonsInvariant.initial_derivation
+#print axioms DiophantineConsistency.ParsonsInvariant.initial_result

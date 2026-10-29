@@ -79,6 +79,16 @@ theorem spec_step {φ : Bootstrapping.Semiformula V ℒₛₑₜ 1} {t : Bootstr
   rw [← Bootstrapping.Semiformula.neg_all]
   exact neg_lt_of_level hXm hw
 
+/-- Specialize in a fixed context at any level above the initial bound. -/
+theorem spec_step_up {φ : Bootstrapping.Semiformula V ℒₛₑₜ 1} {t : Bootstrapping.Term V ℒₛₑₜ}
+    {X Y : Bootstrapping.Formula V ℒₛₑₜ} {Γ w m k : V}
+    (hX : ∀⁰ φ = X) (hY : φ.subst ![t] = Y) (hXm : X.val ≤ lvB m) (hYm : Y.val ≤ lvB m)
+    (htm : t.val ≤ lvB m) (hw : 10 * (m + 1) + 1 ≤ w) (hw4 : 4 ≤ w)
+    (hΓ : SeqLt Γ w) (hfs : IsFormulaSet ℒₛₑₜ Γ)
+    (h : DLv 𝗭𝗙 (insert X.val Γ) (w + k)) : DLv 𝗭𝗙 (insert Y.val Γ) (w + k + 3) :=
+  spec_step hX hY hXm hYm htm (le_trans hw le_self_add) (le_trans hw4 le_self_add)
+    (hΓ.mono le_self_add) hfs h
+
 /-! ## The fixed theorems and their numeral proofs -/
 
 /-- `∀ x, x = x`. -/
@@ -258,25 +268,16 @@ theorem ext_chain (r : (ℒₛₑₜ).Rel 2) {Γ c w : V} (ta₁ ta₂ tb₁ tb�
   have d0 : DLv 𝗭𝗙 (insert (∀⁰ ∀⁰ ∀⁰ ∀⁰ θ : Bootstrapping.Formula V ℒₛₑₜ).val Γ) (w + 1) :=
     DLv.wk hw4 (hΓ.insert (lt_of_level hX₀ hw1)) (formulaSet_insert hfs)
       (insert_subset_insert_of_subset _ (by intro z hz; simp at hz)) ((ext_dlv r).mono hwD)
-  have up : ∀ k : V, 10 * (m + 1) + 1 ≤ w + k := fun k => le_trans hw le_self_add
-  have up4 : ∀ k : V, 4 ≤ w + k := fun k => le_trans hw4 le_self_add
-  have d1 := spec_step (φ := ∀⁰ ∀⁰ ∀⁰ θ) (t := ta₁) rfl rfl hX₀ hY₁ (lift_lvB h₁ hcm) (up 1) (up4 1)
-    (hΓ.mono le_self_add) hfs d0
-  have d2 := spec_step (φ := (∀⁰ ∀⁰ θ).subst (Bootstrapping.SemitermVec.q ![ta₁])) (t := tb₁)
+  have d1 := spec_step_up (k := 1) (φ := ∀⁰ ∀⁰ ∀⁰ θ) (t := ta₁) rfl rfl hX₀ hY₁ (lift_lvB h₁ hcm) hw hw4 hΓ hfs d0
+  have d2 := spec_step_up (k := 1 + 3) (φ := (∀⁰ ∀⁰ θ).subst (Bootstrapping.SemitermVec.q ![ta₁])) (t := tb₁)
     (Bootstrapping.Semiformula.substs_all _ _).symm
-    (subst_q_sing _ _ _) hY₁ hY₂ (lift_lvB h₃ hcm)
-    (by simpa [add_assoc] using up (1 + 3)) (by simpa [add_assoc] using up4 (1 + 3))
-    (hΓ.mono (by simpa [add_assoc] using (le_self_add : w ≤ w + (1 + 3)))) hfs d1
-  have d3 := spec_step (φ := (∀⁰ θ).subst (Bootstrapping.SemitermVec.q ![tb₁, ta₁])) (t := ta₂)
+    (subst_q_sing _ _ _) hY₁ hY₂ (lift_lvB h₃ hcm) hw hw4 hΓ hfs (by simpa [add_assoc] using d1)
+  have d3 := spec_step_up (k := 1 + 3 + 3) (φ := (∀⁰ θ).subst (Bootstrapping.SemitermVec.q ![tb₁, ta₁])) (t := ta₂)
     (Bootstrapping.Semiformula.substs_all _ _).symm
-    (subst_q_sing _ _ _) hY₂ hY₃ (lift_lvB h₂ hcm)
-    (by simpa [add_assoc] using up (1 + 3 + 3)) (by simpa [add_assoc] using up4 (1 + 3 + 3))
-    (hΓ.mono (by simpa [add_assoc] using (le_self_add : w ≤ w + (1 + 3 + 3)))) hfs d2
-  exact spec_step (φ := θ.subst (Bootstrapping.SemitermVec.q ![ta₂, tb₁, ta₁])) (t := tb₂)
+    (subst_q_sing _ _ _) hY₂ hY₃ (lift_lvB h₂ hcm) hw hw4 hΓ hfs (by simpa [add_assoc] using d2)
+  simpa [add_assoc] using spec_step_up (k := 1 + 3 + 3 + 3) (φ := θ.subst (Bootstrapping.SemitermVec.q ![ta₂, tb₁, ta₁])) (t := tb₂)
     (Bootstrapping.Semiformula.substs_all _ _).symm
-    (subst_q_sing _ _ _) hY₃ hY₄ (lift_lvB h₄ hcm)
-    (by simpa [add_assoc] using up (1 + 3 + 3 + 3)) (by simpa [add_assoc] using up4 (1 + 3 + 3 + 3))
-    (hΓ.mono (by simpa [add_assoc] using (le_self_add : w ≤ w + (1 + 3 + 3 + 3)))) hfs d3
+    (subst_q_sing _ _ _) hY₃ hY₄ (lift_lvB h₄ hcm) hw hw4 hΓ hfs (by simpa [add_assoc] using d3)
 
 theorem ext_inst (r : (ℒₛₑₜ).Rel 2) (ta₁ ta₂ tb₁ tb₂ : Bootstrapping.Term V ℒₛₑₜ) :
     (extBody r).subst ![tb₂, ta₂, tb₁, ta₁] =

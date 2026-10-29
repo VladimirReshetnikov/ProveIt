@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A later upstream merge generalized `PRAFormulaParameters.qr_rew` and updated
+`PRAUniversalSyntax` to use it. The affected universal-presentation, syntax
+and Herbrand replays below authenticate their earlier source snapshots; a
+source-current downstream rebuild is in progress.
+
 The 14-variable equation in `equation.pdf` has closed IΣ₁ and HA
 proof-existence theorems, but no Lean theorem producing the requested PRA
 derivation. The candidate PRA development now includes an actual proof
@@ -17,7 +22,34 @@ witnessing arguments remain open; the candidate's comparison with a standard
 PRA presentation also remains to be proved.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
-proof of its finite-extension step. This is not a completed collection rule.
+proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
+now proves that step under arbitrary assignments, yielding an unconditional
+collection-rule transformer when the exact implication is parameter-free.
+The [arbitrary-parameter collection rule](reviews/parsons-specialize-root.md)
+is now proved as a noncomputable proof transformer by specializing the closed
+finite-extension theorem. The [positive-guarded bounded rule](reviews/parsons-guarded-collection-root.md)
+is also proved for Σ₁ side formulas and arbitrary parameters. These are
+noncomputable proof transformers, not conditional collection axioms or
+PRA-internal transformations. The complete cut-free translation and
+witnessing remain open.
+The [principal logical cases](reviews/parsons-logical-cases-root.md) now
+provide the existential, universal, disjunction and conjunction transformers
+with explicit strictly smaller local recursive hypotheses. Nonprincipal cases,
+a fixed global projection and a global cut-free recursion remain open. The
+[structural case](reviews/parsons-structure-root.md) now handles contraction
+under any fixed projection and discharges actual PA-minus base axioms.
+The [base-only branch](reviews/parsons-fold-root.md) now folds an arbitrary
+side sequent and discharges any finite set of actual PA-minus axioms, without
+a cut-free or recursive-hypothesis requirement.
+The [marked-context invariant](reviews/parsons-invariant-root.md) now starts
+from the actual normalized cut-free proof, retains occurrence-specific tags,
+handles its base-only and contraction branches, and recovers the original
+conclusion from a marked-output proof. The output proof and global induction
+remain open.
+The [marked induction-block cases](reviews/parsons-marked-block-root.md)
+handle parameter opening and the final counter-witness under an explicit Σ₁
+side-guard hypothesis and smaller local recursive proofs. Deriving that guard
+from a general Π₂ context and assembling the global induction remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
@@ -25,8 +57,16 @@ now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
 [aligned radix](reviews/adaptive-radix2011-root.md) in arbitrary IΣ₁ models.
 The [normalized transport](reviews/adaptive-transport-restoration2011-root.md)
 has also been recovered from the actual adaptive zero and independently replayed.
-The machine-window soundness, internal converse and final HA/PRA
-proof-existence endpoints remain open.
+The corresponding [rank-population lower bound](reviews/adaptive-population2011-root.md)
+is now independently replayed for every internal exponent matching the radix.
+The [actual-zero window theorem](reviews/adaptive-window2011-root.md) now
+assembles these inputs in arbitrary IΣ₁ models. The window-to-machine halt
+client, internal converse and final HA/PRA proof-existence endpoints remain
+open. The [reverse transport identity](reviews/adaptive-construction-transport2011-root.md)
+is now proved from the positive 14-coordinate equation system, but the other
+reverse witnesses and adaptive zero construction remain open. The
+[strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
+now follows from the maintained strong norm with the scaled multiplier.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
@@ -93,6 +133,24 @@ candidate object theory; the [multiplication clauses](reviews/pra-multiplication
 have likewise been derived.
 Compatibility with a standard PRA presentation, further arithmetic bridges,
 primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
+
+The [candidate universal-presentation equivalence](reviews/pra-universal-equivalence-root.md)
+now proves the same sentence-level theorems in the explicitly defined universal
+axiom family and candidate PRA, with arbitrary open-induction parameters. The
+result uses completeness externally and does not yet identify the candidate
+with standard PRA or establish a witnessing or conservation theorem.
+The [universal syntax certificate](reviews/pra-universal-syntax-root.md) now
+proves that every axiom in that presentation has a universal prefix and an
+open matrix. An effective recognition theorem is still required.
+The [finite witness selector](reviews/pra-finite-witness-root.md) collapses a
+provable finite disjunction of explicit candidate witnesses to one fixed PR
+witness. Extraction of that disjunction from a general proof remains open.
+The [open-matrix selection bridge](reviews/pra-herbrand-selection-root.md)
+now accepts the actual Foundation open formula and a finite-disjunction proof
+in the universal theory, yielding a candidate-PRA proof at one PR witness.
+The [existential-sequent structure](reviews/herbrand-existential-sequents-root.md)
+shows the relevant cut-free proofs contain no universal-rule nodes and collects
+their existential terms. The disjunction extraction itself remains open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive

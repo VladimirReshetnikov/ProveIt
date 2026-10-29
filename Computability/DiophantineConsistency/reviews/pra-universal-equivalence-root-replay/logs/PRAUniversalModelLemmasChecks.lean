@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAUniversalModelLemmas
+#print axioms DiophantineConsistency.PRAUniversalModelLemmas.modelCompiledCorrect
+#print axioms DiophantineConsistency.PRAUniversalModelLemmas.modelExhaustion
+#print axioms DiophantineConsistency.PRAUniversalModelLemmas.modelAddOne
