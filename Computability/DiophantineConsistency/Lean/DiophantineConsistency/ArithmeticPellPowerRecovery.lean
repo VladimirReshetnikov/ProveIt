@@ -35,14 +35,12 @@ theorem y_lower (b t : V) : (2*b+3)*ycoord t b<ycoord (t+1) b := by
 theorem y_upper (b t : V) (ht : 0<t) : ycoord (t+1) b≤2*(b+2)*ycoord t b := by
   have hy : 1≤ycoord t b := le_trans (pos_iff_one_le.mp ht) (time_le_y t b)
   have hx : xcoord t b≤(b+2)*ycoord t b := by
-    by_contra hn
-    have hs := mul_self_lt_mul_self (by simp) (lt_of_not_ge hn)
-    have he : xcoord t b*xcoord t b≤((b+2)*ycoord t b)*((b+2)*ycoord t b) := calc
+    apply nonneg_le_nonneg_of_sq_le_sq (by simp)
+    calc
       xcoord t b*xcoord t b=1+delta b*ycoord t b*ycoord t b := norm t b
       _≤ycoord t b*ycoord t b+delta b*ycoord t b*ycoord t b :=
         add_le_add_left (one_le_mul hy hy) _
       _=((b+2)*ycoord t b)*((b+2)*ycoord t b) := by unfold delta; ring
-    exact (not_lt_of_ge he) hs
   rw [y_succ]
   calc
     xcoord t b+(b+2)*ycoord t b≤(b+2)*ycoord t b+(b+2)*ycoord t b := add_le_add_left hx _
