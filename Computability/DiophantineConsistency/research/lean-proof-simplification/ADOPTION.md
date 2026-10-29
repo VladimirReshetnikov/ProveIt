@@ -1123,5 +1123,19 @@ six MF modules and both Foundation Matrix import orders already fail in both
 phases. Initial client/input and audit setup failures are retained. Independent
 source, graph, input and receipt audits pass. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-carry-sharing-evidence/BUNDLE.json).
 
+The word-copy proof reuse `f9fd7daf20` removes 58 net lines, bringing
+the reviewed series to 9123. Paired targets, maintained checks and the direct
+CurrentWordOrigin client pass; all 15 retained declaration reports and the
+forced constructedWord equation match. Explicit three-field MarkedWord and
+six-field Facts bridges preserve the original guards, and compatibility probes
+cover zero N without a NeZero instance. Sixteen generated proof auxiliaries
+disappear without tracked references or baseline default simp registrations.
+The pinned replay checks 160 non-target local and 65 direct external inputs;
+27 historical local objects and transitive package inputs remain precompiled.
+The original graph omitted one carry-to-MF import edge; the corrected graph has
+the same node set and topological build order, and both records are retained.
+Ordinary Foundation Matrix co-import fails identically in both phases. Independent
+graph, input, bridge and receipt audits pass. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-word-copies-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
