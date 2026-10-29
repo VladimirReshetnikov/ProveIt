@@ -27,15 +27,14 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
 theorem modelNonzeroCorrect {n : ℕ} (c : Code n) (φ : Semisentence language n)
     (hbit : M↓[language] ⊧ bitSentence c) (hcorrect : M↓[language] ⊧ oneCorrectSentence c φ) :
     M↓[language] ⊧ nonzeroCorrectSentence c φ := by
-  simp only [models_iff, bitSentence, Semiformula.eval_allClosure] at hbit
   simp only [models_iff, oneCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff] at hcorrect
   simp only [models_iff, nonzeroCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
   intro e
-  have hb := hbit e
+  have hb := (PRACharacteristicBit.bitSentence_iff c).mp hbit e
   have hc := hcorrect e
-  simp [Semiformula.eval_rel, Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func] at hb hc ⊢
+  simp [Semiformula.eval_rel, Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func] at hc ⊢
   have hz : (Semiterm.val (L := language) e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN n)) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  rw [hz] at hb hc ⊢
+  rw [hz] at hc ⊢
   have hne := modelOneNeZero (M := M)
   constructor
   · intro h

@@ -17,17 +17,10 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
   [M↓[language] ⊧* PRA]
 
 theorem modelNegateBit {n : ℕ} (c : Code n) : M↓[language] ⊧ bitSentence (notCode c) := by
-  simp only [models_iff, bitSentence, Semiformula.eval_allClosure]
+  apply (PRACharacteristicBit.bitSentence_iff _).mpr
   intro e
-  have h : IsBit (Structure.func (L := language) (notCode c) e) := by
-    rw [modelNotCode]
-    exact modelIsZeroBit _
-  change Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim e _
-  simp [Semiformula.EvalAux, eqRel, applyCode, vars, Function.comp_def]
-  have hz : (fun i : Fin 0 => Semiterm.val e Empty.elim (Fin.elim0 i : TermN n)) =
-      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  rw [hz]
-  exact h
+  rw [modelNotCode]
+  exact modelIsZeroBit _
 
 theorem modelNegateCorrect {n : ℕ} (c : Code n) (φ : Semisentence language n)
     (h : M↓[language] ⊧ nonzeroCorrectSentence c φ) :
