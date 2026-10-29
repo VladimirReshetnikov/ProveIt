@@ -1137,5 +1137,20 @@ the same node set and topological build order, and both records are retained.
 Ordinary Foundation Matrix co-import fails identically in both phases. Independent
 graph, input, bridge and receipt audits pass. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-word-copies-sharing-evidence/BUNDLE.json).
 
+The kernel residue proof reuse `40daf05518` removes 52 net lines,
+bringing the reviewed series to 9175. Paired targets, the maintained check
+and CurrentControllerUnits client pass; 35 surviving public/generated reports,
+seven surviving private reports and five forced equations match. Seven unused
+private helpers and their generated names, plus four public generated
+auxiliaries, disappear without tracked full-name references or default simp
+registrations; two private evaluator bridges are added. Seven prerequisites
+were rebuilt, and each replay pins 99 local and 66 direct external inputs.
+Historical local objects and transitive external packages remain precompiled.
+The controller client has one matching exponentiation warning per phase;
+interface probes have eight matching generated-name warnings. Foundation Matrix
+co-import already fails in both phases. A separate reviewer from the source
+prototype independently reconstructed the graph and checked the refresh and
+receipts. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-kernel-residues-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
