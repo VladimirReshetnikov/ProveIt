@@ -100,6 +100,13 @@ theorem rot_identity (w n X e : V) (he : e ≤ n) :
         X % Exp.exp (w * (n - e))) := by rw [h1, hn]; ring
     _ = _ := by rw [hX]
 
+private theorem bsum_pos_of_origin {w n : V} {f : V → V} [𝚺₁-Function₁ f]
+    (hf : ∀ j < n, f j < Exp.exp w) (hn : 0 < n) (hf0 : 0 < f 0) :
+    0 < bsum w f n := by
+  have hd := dig_bsum hf hn
+  rw [dig_zero_index] at hd
+  exact lt_of_lt_of_le (by rwa [hd]) (mod_le _ _)
+
 section main
 variable {d K MC HP N s : V} {X : V → V} [𝚺₁-Function₁ X]
   (h : PackingInput d K MC HP N s X)
@@ -131,17 +138,11 @@ theorem C_add_F_lt : Cw d N X + Fw d K N s X < Exp.exp (d * N) := by
   rw [Cw, Fw, ← bsum_add (h := fun j => X j + blk d K N s X j) h.cell_sum (fun _ _ => rfl)]
   exact bsum_lt h.cell_sum
 
-theorem C_pos : 0 < Cw d N X := by
-  have hd := dig_bsum (X_lt h) (N_pos h)
-  rw [dig_zero_index] at hd
-  have : 1 ≤ Cw d N X % Exp.exp d := by rw [Cw, hd]; exact h.origin
-  exact lt_of_lt_of_le (by norm_num) (le_trans this (mod_le _ _))
+theorem C_pos : 0 < Cw d N X :=
+  bsum_pos_of_origin (X_lt h) (N_pos h) (lt_of_lt_of_le (by norm_num) h.origin)
 
-theorem F_pos : 0 < Fw d K N s X := by
-  have hd := dig_bsum (blk_lt h) (N_pos h)
-  rw [dig_zero_index] at hd
-  have : 0 < Fw d K N s X % Exp.exp d := by rw [Fw, hd]; exact h.blk_pos
-  exact lt_of_lt_of_le this (mod_le _ _)
+theorem F_pos : 0 < Fw d K N s X :=
+  bsum_pos_of_origin (blk_lt h) (N_pos h) h.blk_pos
 
 /-- **Sizes.** `0 < α` and `C + F + α = q`. -/
 theorem packing_alpha : 0 < alpha d K N s X ∧
