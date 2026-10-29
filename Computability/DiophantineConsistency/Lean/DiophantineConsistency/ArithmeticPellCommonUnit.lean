@@ -60,15 +60,11 @@ theorem common_unit_setup (a R f : V) (hR : 0<R) (hf : 0<f)
       S=ycoord e b ∧ a+2=xcoord e b ∧ f=xcoord n b ∧
       delta a=delta b*S*S ∧ R=delta b*S*ycoord n b := by
   have hD : 0<delta a := by unfold delta; exact mul_pos (by simp) (by simp)
-  have hA : 1<a+2 := by
-    calc (1:V)<2 := by simp
-         _≤a+2 := by simp
+  have hA : 1<a+2 := lt_of_lt_of_le (by simp : (1:V)<2) (by simp)
   obtain ⟨d,s,t,hdp,hsp,htp,hd,hr,hfsol⟩ :=
     ArithmeticGcdNormalization.norm_normalization R (delta a) f hR hD hf hn
   have hseed : (a+2)*(a+2)=1+s*d*d := by
-    calc
-      (a+2)*(a+2)=1+delta a := parameter_norm a
-      _=1+s*d*d := by rw [hd]; ring
+    simpa only [hd,mul_comm,mul_left_comm,mul_assoc] using parameter_norm a
   obtain ⟨b,v,hvp,_,_,hb,hclass⟩ :=
     ArithmeticPellKnownUnit.known_unit_classification s (a+2) d hsp hA hdp hseed
   obtain ⟨e,_,he,hed⟩ := hclass (a+2) d hseed
@@ -78,11 +74,7 @@ theorem common_unit_setup (a R f : V) (hR : 0<R) (hf : 0<f)
   let S := ycoord e b
   change d=v*S at hed
   have hSp : 0<S := pos_of_mul_pos_right (by rw [← hed]; exact hdp) (by simp)
-  have hdb : delta b=s*v*v := by
-    apply add_left_cancel (a := (1:V))
-    calc
-      1+delta b=(b+2)*(b+2) := (parameter_norm b).symm
-      _=1+s*v*v := hb
+  have hdb : delta b=s*v*v := add_left_cancel ((parameter_norm b).symm.trans hb)
   have hdelta : delta a=delta b*S*S := by
     rw [hd,hed,hdb]
     ring
@@ -90,9 +82,7 @@ theorem common_unit_setup (a R f : V) (hR : 0<R) (hf : 0<f)
     rw [hr,hed,htn,hdb]
     ring
   have hSbound : S<a+2 := by
-    have hd1 : 1≤delta b := by
-      have hp : 0<delta b := by unfold delta; exact mul_pos (by simp) (by simp)
-      simpa using lt_iff_succ_le.mp hp
+    have hd1 : 1≤delta b := pos_iff_one_le.mp (by unfold delta; exact mul_pos (by simp) (by simp))
     apply lt_of_mul_self_lt_mul_self₀ (Arithmetic.zero_le (a+2))
     calc
       S*S<1+S*S := by simpa only [add_comm] using lt_add_one (S*S)
