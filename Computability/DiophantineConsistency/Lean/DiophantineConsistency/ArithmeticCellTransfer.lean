@@ -51,9 +51,7 @@ theorem inSupport_cast (j : ℕ) : inSupport (j:V) ↔ j ∈ CurrentMasks2011.lo
 /-! ### Modular arithmetic -/
 
 theorem mod_add_mod' {n : V} (hn : 0 < n) (x y : V) : (x % n + y) % n = (x + y) % n := by
-  conv_rhs => rw [← div_add_mod x n]
-  have he : n * (x / n) + x % n + y = (x % n + y) + n * (x / n) := by ring
-  rw [he, mod_add_mul' _ _ hn]
+  rw [mod_add hn, mod_eq_self_of_lt (mod_lt x hn), ← mod_add hn]
 
 theorem mod_mod_of_dvd' {m n : V} (hm : 0 < m) (h : m ∣ n) (a : V) : a % n % m = a % m :=
   ArithmeticModularCancellation.mod_mod_of_dvd hm h a
@@ -88,8 +86,8 @@ theorem cell_room {N b : V} (hb : b < 2011 * N) (hb0 : b % 2011 = 0) : b + 2011 
   rw [hb0, add_zero] at hd
   rw [← hd] at hb ⊢
   have hlt : b / 2011 < N := lt_of_mul_lt_mul_left hb (by simp)
-  have := mul_le_mul_of_nonneg_left (lt_iff_succ_le.mp hlt) (Arithmetic.zero_le (2011:V))
-  rwa [mul_add, mul_one] at this
+  simpa only [mul_add, mul_one] using
+    mul_le_mul_of_nonneg_left (lt_iff_succ_le.mp hlt) (Arithmetic.zero_le (2011:V))
 
 /-! ### Window positions of a cell -/
 
@@ -153,10 +151,9 @@ theorem noCarry_cast {a b : ℕ} (h : NoCarry (a:V) (b:V)) : a &&& b = 0 := by
   · simp [ha]
 
 theorem std_of_le {x : V} {m : ℕ} (h : x ≤ (m:V)) : ∃ k : ℕ, x = k := by
-  obtain ⟨k, rfl⟩ := eq_nat_of_lt_nat (n := m + 1) (by
+  exact eq_nat_of_lt_nat (n := m + 1) (by
     have : (m:V) < ((m + 1 : ℕ) : V) := by exact_mod_cast Nat.lt_succ_self m
     exact lt_of_le_of_lt h this)
-  exact ⟨k, rfl⟩
 
 theorem exponent_le (t : CurrentKernel2011.Term) : CurrentKernel2011.exponent t ≤ 2020 := by
   rcases t with j | e
@@ -202,8 +199,7 @@ theorem snapshot {N W C F : V} {κ : V → V} (H : CellInput N W C F κ) {b : V}
   have hq_lt : ∀ q : ℕ, q < 2011 → b + (q:V) < 2011 * N := fun q hq =>
     lt_of_lt_of_le ((add_lt_add_iff_left b).mpr (by exact_mod_cast hq)) hroom
   have h47 : Exp.exp (47:V) = ((2 ^ 47 : ℕ) : V) := by
-    have := natCast_exp (V:=V) 47
-    rwa [Nat.cast_ofNat] at this
+    simpa only [Nat.cast_ofNat] using natCast_exp (V:=V) 47
   -- standard values
   have ex_cw : ∀ p : ℕ, ∃ m : ℕ, dig 47 C (win (2011 * N) b p) = m := fun p =>
     std_of_le (m := 1) (by simpa using H.boolean (win (2011 * N) b p) (cyc_lt hn _ _))
