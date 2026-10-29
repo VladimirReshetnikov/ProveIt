@@ -1920,5 +1920,14 @@ registrations match. Two generated public proof names disappear and one changes
 type; no tracked Lean/Python references were found. The wider closure remains
 cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-label-bound-evidence/BUNDLE.json).
 
+The cell-transfer no-carry simplification `798054eafe` removes four net Lean
+lines, bringing the reviewed series to 10209. The affected proof came from
+Claude-coauthored commit `f79467f5448`. The unbounded no-carry equivalence
+replaces a cutoff and separate high-bit case. Three paired target/client lanes
+pass, including a replay pinning current BinaryCarry and Population. Client
+objects differ for an unknown reason, but checked interfaces match. One generated
+public proof name disappears; the wider closure remains cached. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-no-carry-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
