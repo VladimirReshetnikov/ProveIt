@@ -1,0 +1,279 @@
+import ZFCinPA.NativeSchemaSem
+import ZFCinPA.NativePeel
+import ZFCinPA.NativeFixed
+
+set_option autoImplicit false
+noncomputable section
+
+/-!
+# `ZF` is interpretable in the native theory, inside `IΣ₁` (`R3`)
+
+In every model of `𝗜𝚺₁`, every internal axiom code of `𝗭𝗙` has an internal
+`nativeTheory`-derivation of its WF interpretation (parameter
+`NativeInterp.PN`), with domain side formulas:
+
+* equality axioms and the seven fixed axioms: `NativeFixed.provable_interp_fixed`;
+* a separation code `qqAlls b m` with core `K`: the congruence law of `K` is
+  a theorem of pure equality logic (`SetCongruence.congruenceProof₁`), so its
+  interpretation is derivable in `nativeTheory` with domain side formulas
+  (`derivable_interp_of_EQ`, by `InternalInterpretation.derivable_iSet`);
+  the compiled template `NativeSchemaSem.sepT` turns it into the interpreted
+  separation body (`sep_base`; the code identities are
+  `NTInterp.interp_translate`), and the peel closes the opened parameters
+  (`sep_obligation`);
+* replacement codes, the same with `replT` (`repl_obligation`).
+
+Hence (`provable_falsum_native_of_ZF`) an internal `𝗭𝗙`-refutation yields an
+internal `nativeTheory`-refutation, and by completeness
+
+`𝗜𝚺₁ ⊢ Con(nativeTheory) → Con(𝗭𝗙)` and `𝗣𝗔 ⊢ Con(nativeTheory) → Con(𝗭𝗙)`.
+-/
+
+namespace LeanProofs.ZFCinPA.NativeSchema
+
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
+open LO.FirstOrder.SetTheory
+open LeanProofs.ZFCinPA LeanProofs.ZFCinPA.SetPlaceholders LeanProofs.ZFCinPA.SetPlaceholderQuotient
+open LeanProofs.ZFCinPA.InternalInterpretation LeanProofs.BoundedPAConsistency.InternalRelativization
+open LeanProofs.ZFCinPA.NativeSet LeanProofs.ZFCinPA.NativeInterp LeanProofs.ZFCinPA.NTemplate
+open LeanProofs.ZFCinPA.NTInterp LeanProofs.ZFCinPA.NativeSchemaSem LeanProofs.ZFCinPA.NativePeel
+open LeanProofs.ZFCinPA.OpenSchemaTemplates
+open scoped LO.FirstOrder.Arithmetic
+
+local instance {k : ℕ} {arities : Fin k → ℕ} : Language.Mem (setTemplateLanguage k arities) :=
+  ⟨Sum.inl Language.Set.Rel.mem⟩
+
+/-! ## The source bodies as template translations -/
+
+lemma emb_sepS : (Rewriting.emb sepS : Proposition SL) = sepBodySource (Rewriting.emb R1) := by
+  simp [sepS, sepBodySource, R1]
+
+lemma emb_repS : (Rewriting.emb repS : Proposition RL) = repBodySource (Rewriting.emb R2) := by
+  simp [repS, repBodySource, R2, FirstOrder.Semiformula.existsUnique,
+    FirstOrder.Semiformula.bexsMem, LO.FirstOrder.bexs]
+
+section Internal
+
+variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+lemma subst_bvar0 (K : Bootstrapping.Semiformula V ℒₛₑₜ 1)
+    (w : Bootstrapping.SemitermVec V ℒₛₑₜ 1 1) (hw : w 0 = .bvar 0) :
+    (K.subst w).val = K.val := by
+  have e : w = ![.bvar 0] := funext fun i ↦ by rw [Fin.fin_one_eq_zero i, hw]; rfl
+  subst e
+  rw [Bootstrapping.Semiformula.val_substs]
+  apply Bootstrapping.subst_eq_self K.isSemiformula (by simp)
+  intro i hi
+  have : i = 0 := by simpa using hi
+  subst this
+  simp
+
+lemma subst_bvar01 (K : Bootstrapping.Semiformula V ℒₛₑₜ 2)
+    (w : Bootstrapping.SemitermVec V ℒₛₑₜ 2 2) (hw0 : w 0 = .bvar 0) (hw1 : w 1 = .bvar 1) :
+    (K.subst w).val = K.val := by
+  have e : w = ![.bvar 0, .bvar 1] := funext fun i ↦ by
+    match i with
+    | 0 => rw [hw0]; rfl
+    | 1 => rw [hw1]; rfl
+  subst e
+  rw [Bootstrapping.Semiformula.val_substs]
+  apply Bootstrapping.subst_eq_self K.isSemiformula (by simp)
+  intro i hi
+  have hi' : i < (2 : V) := by simpa using hi
+  rcases le_one_iff_eq_zero_or_one.mp (lt_two_iff_le_one.mp hi') with rfl | rfl <;> simp
+
+lemma translate_sepS (K : Bootstrapping.Semiformula V ℒₛₑₜ 1) :
+    (translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb sepS : Proposition SL)).val =
+      sepBodyVal K.val := by
+  rw [emb_sepS, translate_sepBodySource]
+  have e : translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb R1 : Semiproposition SL 1) = K :=
+    Bootstrapping.Semiformula.ext (subst_bvar0 K _ rfl)
+  rw [e, sepBodyVal_eq K]
+
+lemma translate_repS (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
+    (translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb repS : Proposition RL)).val =
+      repBodyVal K.val := by
+  rw [emb_repS, translate_repBodySource]
+  have e : translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb R2 : Semiproposition RL 2) = K :=
+    Bootstrapping.Semiformula.ext (subst_bvar01 K _ rfl rfl)
+  rw [e, repBodyVal_eq K]
+
+/-! ## Transport of equality-logic theorems -/
+
+lemma hTermSet : ∀ t : V, IsTerm ℒₛₑₜ t → ∃ j, t = ^&j :=
+  fun _ ht ↦ SetRelativization.isTerm_eq_fvar ht
+
+lemma domSet_zero_empty : domSet ℒₛₑₜ (dom (PN : V)) 0 = ∅ :=
+  mem_ext fun y => by simp [mem_domSet_iff]
+
+/-- Every internal equality axiom is interpreted-derivable. -/
+lemma eq_obligation {p : V} (h : p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁Class) :
+    ∃ m, Derivable nativeTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
+  obtain ⟨σ, hσ, rfl⟩ :=
+    ConstructibleInterpretation.mem_ch_ofFinite (𝗘𝗤 ℒₛₑₜ) Theory.EqAxiom.finite h
+  refine ⟨0, ?_⟩
+  rw [domSet_zero_empty]
+  exact (NativeFixed.provable_interp_fixed σ (Or.inl hσ)).toDerivable
+
+/-- **Equality-logic theorems transport**: the interpretation of an internal
+`𝗘𝗤`-theorem is derivable in `nativeTheory` with domain side formulas. -/
+lemma derivable_interp_of_EQ {φ : V} (h : Provable (𝗘𝗤 ℒₛₑₜ : SetTheory) φ) :
+    ∃ m, Derivable nativeTheory (insert (interp (PN : V) φ) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
+  obtain ⟨der, hder⟩ := h.toDerivable
+  obtain ⟨m, hm⟩ := derivable_iSet good_PN hTermSet (fun p _ hp ↦ eq_obligation hp) hder.2
+  rw [hder.1, iSet_insert] at hm
+  have hrelempty : iSet (PN : V) (∅ : V) = ∅ := mem_ext fun y => by simp [mem_iSet_iff]
+  rw [hrelempty] at hm
+  exact ⟨m, Derivable.ofSetEq (fun x => by simp) hm⟩
+
+lemma derivable_domSet_mono {x m m' : V} (hm : m ≤ m') (hx : IsFormula ℒₛₑₜ x)
+    (h : Derivable nativeTheory (insert x (domSet ℒₛₑₜ (dom (PN : V)) m))) :
+    Derivable nativeTheory (insert x (domSet ℒₛₑₜ (dom (PN : V)) m')) := by
+  have hd : IsSemiformula ℒₛₑₜ 1 (⌜domS⌝ : V) := by simp
+  refine Derivable.wk (by simp [hx, isFormulaSet_domSet hd m']) ?_ h
+  intro y hy
+  rcases mem_bitInsert_iff.mp hy with rfl | hy
+  · simp
+  · exact mem_bitInsert_iff.mpr (Or.inr (domSet_subset hm hy))
+
+/-! ## The bases -/
+
+/-- **The separation base**: the interpreted separation body over any core. -/
+theorem sep_base {K : V} (hK : IsSemiformula ℒₛₑₜ 1 K) :
+    ∃ m, Derivable nativeTheory
+      (insert (interp (PN : V) (sepBodyVal K)) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
+  let Kt : Bootstrapping.Semiformula V ℒₛₑₜ 1 := ⟨K, by simpa using hK⟩
+  have hc : Provable (𝗘𝗤 ℒₛₑₜ : SetTheory) (SetCongruence.congruenceFormula 1 Kt).val :=
+    Bootstrapping.tprovable_iff_provable.mp (SetCongruence.congruenceProof₁ (𝗘𝗤 ℒₛₑₜ) Kt)
+  obtain ⟨m, hm⟩ := derivable_interp_of_EQ hc
+  have ht := compileN_provable (k := 1) (arities := ar1) (fun _ ↦ by simp)
+    (fun i ↦ IK ((fun _ : Fin 1 ↦ Kt) i)) sepT_provable
+  rw [sepT, LogicalConnective.HomClass.map_imply, translateFormula_imp] at ht
+  have hp := Bootstrapping.tprovable_iff_provable.mp ht
+  rw [Bootstrapping.Semiformula.val_imp, ← interp_translate_emb, ← interp_translate_emb,
+    translate_sepS, cong1, SetCongruence.translate_setPlaceholderCongruenceSentence] at hp
+  have hS : IsFormula ℒₛₑₜ (interp (PN : V) (sepBodyVal K)) := by
+    rw [sepBodyVal_eq Kt]
+    exact isSemiformula_interp good_PN (sepBody Kt).isSemiformula
+  exact ⟨m, derivable_mp hS hp hm⟩
+
+/-- **The replacement base**: the interpreted replacement body over any core. -/
+theorem repl_base {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K) :
+    ∃ m, Derivable nativeTheory
+      (insert (interp (PN : V) (repBodyVal K)) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
+  let Kt : Bootstrapping.Semiformula V ℒₛₑₜ 2 := ⟨K, by simpa using hK⟩
+  have hc : Provable (𝗘𝗤 ℒₛₑₜ : SetTheory) (SetCongruence.congruenceFormula 2 Kt).val :=
+    Bootstrapping.tprovable_iff_provable.mp (SetCongruence.congruenceProof₂ (𝗘𝗤 ℒₛₑₜ) Kt)
+  obtain ⟨m, hm⟩ := derivable_interp_of_EQ hc
+  have ht := compileN_provable (k := 1) (arities := ar2) (fun _ ↦ by show (2 : ℕ) ≤ 3; omega)
+    (fun i ↦ IK ((fun _ : Fin 1 ↦ Kt) i)) replT_provable
+  rw [replT, LogicalConnective.HomClass.map_imply, translateFormula_imp] at ht
+  have hp := Bootstrapping.tprovable_iff_provable.mp ht
+  rw [Bootstrapping.Semiformula.val_imp, ← interp_translate_emb, ← interp_translate_emb,
+    translate_repS, cong2, SetCongruence.translate_setPlaceholderCongruenceSentence] at hp
+  have hS : IsFormula ℒₛₑₜ (interp (PN : V) (repBodyVal K)) := by
+    rw [repBodyVal_eq Kt]
+    exact isSemiformula_interp good_PN (repBody Kt).isSemiformula
+  exact ⟨m, derivable_mp hS hp hm⟩
+
+/-! ## The schema obligations -/
+
+/-- **Every internal separation axiom is interpreted-derivable.** -/
+theorem sep_obligation {p : V} (hp : SepR p) :
+    ∃ e, Derivable nativeTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) e)) := by
+  obtain ⟨m, -, b, -, rfl, hbU, hbs, hbv, K, -, hK, hKb⟩ := hp
+  have hb : IsSemiformula ℒₛₑₜ m b := by simpa [hbv] using hbU.isSemiformula
+  have hK' : IsSemiformula ℒₛₑₜ 1 K := by simpa using hK
+  obtain ⟨e, he⟩ := sep_base hK'
+  refine ⟨e, peel good_PN hb hbs ?_⟩
+  rw [hKb]
+  exact derivable_domSet_mono le_add_self (he.isFormulaSet.insert.1) he
+
+/-- **Every internal replacement axiom is interpreted-derivable.** -/
+theorem repl_obligation {p : V} (hp : RepR p) :
+    ∃ e, Derivable nativeTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) e)) := by
+  obtain ⟨m, -, b, -, rfl, hbU, hbs, hbv, K, -, hK, hKb⟩ := hp
+  have hb : IsSemiformula ℒₛₑₜ m b := by simpa [hbv] using hbU.isSemiformula
+  have hK' : IsSemiformula ℒₛₑₜ 2 K := by simpa using hK
+  obtain ⟨e, he⟩ := repl_base hK'
+  refine ⟨e, peel good_PN hb hbs ?_⟩
+  rw [hKb]
+  exact derivable_domSet_mono le_add_self (he.isFormulaSet.insert.1) he
+
+/-! ## The axiom class of `𝗭𝗙` -/
+
+lemma separation_class_iff (p : V) : p ∈ separationTheory.Δ₁Class ↔ SepR p := by
+  change (V ⊧/![p] sepCh.val) ↔ _
+  simp
+
+lemma replacement_class_iff (p : V) : p ∈ replacementTheory.Δ₁Class ↔ RepR p := by
+  change (V ⊧/![p] repCh.val) ↔ _
+  simp
+
+/-- The internal `𝗭𝗙` axiom class splits into four parts. -/
+lemma mem_ZF_class {p : V} (h : p ∈ (𝗭𝗙 : SetTheory).Δ₁Class) :
+    p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁Class ∨ p ∈ zfFixed.Δ₁Class ∨ SepR p ∨ RepR p := by
+  have h' : p ∈ (𝗘𝗤 ℒₛₑₜ ∪ zfFixed ∪ separationTheory ∪ replacementTheory : SetTheory).Δ₁Class := h
+  rcases ConstructibleInterpretation.mem_class_union.mp h' with h' | h'
+  · rcases ConstructibleInterpretation.mem_class_union.mp h' with h' | h'
+    · rcases ConstructibleInterpretation.mem_class_union.mp h' with h' | h'
+      · exact Or.inl h'
+      · exact Or.inr (Or.inl h')
+    · exact Or.inr (Or.inr (Or.inl ((separation_class_iff p).1 h')))
+  · exact Or.inr (Or.inr (Or.inr ((replacement_class_iff p).1 h')))
+
+/-- Every internal fixed axiom of `𝗭𝗙` is interpreted-derivable. -/
+lemma fixed_obligation {p : V} (h : p ∈ zfFixed.Δ₁Class) :
+    ∃ m, Derivable nativeTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
+  obtain ⟨σ, hσ, rfl⟩ := ConstructibleInterpretation.mem_ch_ofList
+    [Axiom.empty, Axiom.extentionality, Axiom.pairing, Axiom.union,
+      Axiom.power, Axiom.infinity, Axiom.foundation] h
+  refine ⟨0, ?_⟩
+  rw [domSet_zero_empty]
+  exact (NativeFixed.provable_interp_fixed σ (Or.inr (by simpa [zfFixed] using hσ))).toDerivable
+
+/-- **Every internal axiom of `𝗭𝗙` is interpreted-derivable in `nativeTheory`.** -/
+theorem zf_obligation (p : V) (_ : IsFormula ℒₛₑₜ p) (h : p ∈ (𝗭𝗙 : SetTheory).Δ₁Class) :
+    ∃ m, Derivable nativeTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
+  rcases mem_ZF_class h with h | h | h | h
+  · exact eq_obligation h
+  · exact fixed_obligation h
+  · exact sep_obligation h
+  · exact repl_obligation h
+
+/-! ## The consistency transfer -/
+
+/-- **`ZF` refutations become native refutations, in `IΣ₁`.** -/
+theorem provable_falsum_native_of_ZF (h : Provable (𝗭𝗙 : SetTheory) (^⊥ : V)) :
+    Provable nativeTheory (^⊥ : V) :=
+  provable_falsum_of_interp good_PN hTermSet zf_obligation NativeFixed.provable_domain h
+
+theorem consistent_ZF_of_native (h : nativeTheory.Consistent V) :
+    (𝗭𝗙 : SetTheory).Consistent V := by
+  have e : (⌜(⊥ : Sentence ℒₛₑₜ)⌝ : V) = ^⊥ := by
+    simp [LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+  intro hZF
+  apply h
+  unfold LO.FirstOrder.Theory.Consistent at *
+  rw [e] at hZF ⊢
+  exact provable_falsum_native_of_ZF hZF
+
+end Internal
+
+/-- **`𝗜𝚺₁ ⊢ Con(nativeTheory) → Con(𝗭𝗙)`.** -/
+theorem iSigma1_proves_con_native_imp_con_ZF :
+    𝗜𝚺₁ ⊢ (nativeTheory.consistent : ArithmeticSentence) 🡒 (𝗭𝗙 : SetTheory).consistent := by
+  apply LO.FirstOrder.Arithmetic.complete.{0} 𝗜𝚺₁ _
+  intro M _ hM
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁ := hM
+  simp only [Semantics.Imp.models_imply]
+  intro h
+  have h' : nativeTheory.Consistent M := by simpa [models_iff] using h
+  simpa [models_iff] using consistent_ZF_of_native h'
+
+/-- **`𝗣𝗔 ⊢ Con(nativeTheory) → Con(𝗭𝗙)`.** -/
+theorem peano_proves_con_native_imp_con_ZF :
+    𝗣𝗔 ⊢ (nativeTheory.consistent : ArithmeticSentence) 🡒 (𝗭𝗙 : SetTheory).consistent :=
+  Entailment.WeakerThan.pbl iSigma1_proves_con_native_imp_con_ZF
+
+end LeanProofs.ZFCinPA.NativeSchema

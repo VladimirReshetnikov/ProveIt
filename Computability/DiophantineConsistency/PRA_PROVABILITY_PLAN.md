@@ -52,8 +52,9 @@ now embeds the existing ordered-ring language and has a checked natural-model
 reduct; its [independent replay](reviews/pra-language-root.md) passed.
 The [candidate PRA theory](Lean/DiophantineConsistency/PRATheory.lean)
 now defines its full axiom families and proves standard-natural-model validity;
-its [independent replay](reviews/pra-theory-root.md) passed. Compatibility with
-a standard PRA presentation, object-theoretic arithmetic bridges,
+its [independent replay](reviews/pra-theory-root.md) passed. A closed [object-theoretic add-one theorem](reviews/pra-add-one-root.md)
+now connects the designated addition and successor symbols in that theory.
+Compatibility with a standard PRA presentation, further arithmetic bridges,
 primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
@@ -63,6 +64,13 @@ now derives magnitude one for the four actual factors from the literal zero.
 The [factor-unit theorem](reviews/adaptive-factor-units2011-root.md) now
 excludes the negative units by internal modulo-four reasoning and derives all
 four positive units. Pell recovery and zero-existence equivalence remain open.
+
+The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
+now proves in Lean that both maintained source sentences are Π₁ and their
+literal biconditional is Π₂. Its source-current replay was performed at the
+recorded prior snapshot; subsequent upstream commits changed some prerequisite
+sources. The certificate supplies a conservation input, not conservation or
+PRA derivability itself.
 
 ## Concrete bridge to formalize
 

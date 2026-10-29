@@ -1,0 +1,72 @@
+import DiophantineConsistency.PRATheory
+import Foundation.FirstOrder.Completeness.CounterModel
+
+/-! The designated addition code's successor law in the candidate PRA theory. -/
+set_option autoImplicit false
+namespace DiophantineConsistency.PRAAddOne
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory
+
+instance : 𝗘𝗤 language ⪯ PRA :=
+  Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl h)))
+
+def addOneSentence : Sentence language :=
+  equalClosure (n := 1) (applyCode addCode (Fin.cases (.bvar 0) (fun _ => applyCode oneCode Fin.elim0)))
+    (applyCode .succ (fun _ => .bvar 0))
+
+section models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
+  [M↓[language] ⊧* PRA]
+
+omit [Structure.Eq language M] in
+theorem modelDefiningEquation {φ : Sentence language} (h : DefiningEquation φ) : M↓[language] ⊧ φ :=
+  Theory.models (T := PRA) M (Or.inl (Or.inl (Or.inr h)))
+
+private theorem eqRel (v : Fin 2 → M) :
+    Structure.rel (L := language) Language.ORing.Rel.eq v ↔ v 0 = v 1 := by
+  change Structure.rel (L := language) Language.Eq.eq v ↔ _
+  exact Structure.eq_lang
+
+theorem modelComposition {m n : ℕ} (f : Code m) (g : Codes n m) (e : Fin n → M) :
+    Structure.func (L := language) (Code.comp f g) e =
+      Structure.func (L := language) f (fun i => Structure.func (L := language) (getCode g i) e) := by
+  have h := modelDefiningEquation (M := M) (DefiningEquation.composition f g)
+  simp only [models_iff, compositionEquation, equalClosure, Semiformula.eval_allClosure,
+    Semiformula.eval_rel] at h
+  have h' := (eqRel _).mp (h e)
+  simpa [applyCode, vars, Function.comp_def] using h'
+
+
+theorem modelProjection {n : ℕ} (i : Fin n) (e : Fin n → M) :
+    Structure.func (L := language) (Code.proj i) e = e i := by
+  have h := modelDefiningEquation (M := M) (DefiningEquation.projection i)
+  simp only [models_iff, projectionEquation, equalClosure, Semiformula.eval_allClosure,
+    Semiformula.eval_rel] at h
+  have h' := (eqRel _).mp (h e)
+  simpa [applyCode, vars, Function.comp_def] using h'
+
+theorem modelBase {n : ℕ} (f : Code n) (g : Code (n+2)) (e : Fin n → M) :
+    Structure.func (L := language) (Code.prec f g)
+        (Fin.cases (Structure.func (L := language) (Code.zero 0) Fin.elim0) e) =
+      Structure.func (L := language) f e := by
+  have h := modelDefiningEquation (M := M) (DefiningEquation.recursionBase f g)
+  simp only [models_iff, recursionBaseEquation, equalClosure, Semiformula.eval_allClosure,
+    Semiformula.eval_rel] at h
+  have h' := (eqRel _).mp (h e)
+  simpa [applyCode, vars, Function.comp_def] using h'
+
+theorem modelStep {n : ℕ} (f : Code n) (g : Code (n+2)) (e : Fin (n+1) → M) :
+    Structure.func (L := language) (Code.prec f g)
+        (Fin.cases (Structure.func (L := language) Code.succ (fun _ => e 0)) (fun i => e i.succ)) =
+      Structure.func (L := language) g
+        (Fin.cases (e 0) (Fin.cases (Structure.func (L := language) (Code.prec f g) e)
+          (fun i => e i.succ))) := by
+  have h := modelDefiningEquation (M := M) (DefiningEquation.recursionStep f g)
+  simp only [models_iff, recursionStepEquation, equalClosure, Semiformula.eval_allClosure,
+    Semiformula.eval_rel] at h
+  have h' := (eqRel _).mp (h e)
+  simpa [applyCode, Function.comp_def] using h'
+
+end models
+end DiophantineConsistency.PRAAddOne

@@ -1,0 +1,30 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:15:52: error: typeclass instance problem is stuck
+  OfNat (Fin ?m.26) 0
+
+Note: Lean will not try to resolve this typeclass instance problem because the first type argument to `OfNat` contains metavariables. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+  Fin ?m.26
+due to the absence of the instance above
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:22:0: warning: automatically included section variable(s) unused in theorem `DiophantineConsistency.PRAAddOne.modelDefiningEquation`:
+  [Structure.Eq language M]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Structure.Eq language M] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:26:20: error(lean.unknownIdentifier): Unknown constant `LO.FirstOrder.Language.Func.comp`
+
+Note: Inferred this name from the expected resulting type of `.comp`:
+  Language.Func ?m.8 ?m.11
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:26:20: error(lean.invalidDottedIdent): Invalid dotted identifier notation: The expected type of `.comp`
+  Language.Func ?m.8 ?m.11
+is not of the form `C ...` or `... → C ...` where C is a constant
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:26:77: error: Application type mismatch: The argument
+  getCode g i
+has type
+  Code n
+but is expected to have type
+  Language.Func (?m.26 i) n
+in the application
+  Structure.func (getCode g i)
