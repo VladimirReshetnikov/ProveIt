@@ -13,13 +13,9 @@ open scoped LO.FirstOrder.Arithmetic
 open ArithmeticPellRecurrence
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem square_le (x z : V) (h : x*x≤z*z) : x≤z := by
-  by_contra hn
-  exact (not_lt_of_ge h) (mul_self_lt_mul_self (by simp) (lt_of_not_ge hn))
-
 private theorem norm_x_bound (D x y : V) (h : x*x=1+D*y*y) :
     x≤(D+1)*y+1 := by
-  apply square_le
+  apply nonneg_le_nonneg_of_sq_le_sq (Arithmetic.zero_le _)
   calc
     x*x=1+D*y*y := h
     _≤(1+D*y*y)+((D*D+D+1)*y*y+2*(D+1)*y) := by simp
@@ -46,7 +42,7 @@ theorem least_unit (D A S : V) (hD : 0<D) (_hA : 1<A) (hS : 0<S)
   have hyv : y<v := lt_of_not_ge hnot
   have hyS : y≤S := le_trans (le_of_lt hyv) hvS
   have hxA : x≤A := by
-    apply square_le
+    apply nonneg_le_nonneg_of_sq_le_sq (Arithmetic.zero_le _)
     rw [hn,hseed]
     simpa only [mul_assoc,add_comm] using _root_.add_le_add_left (mul_le_mul_of_nonneg_left
       (mul_self_le_mul_self (by simp) hyS) (Arithmetic.zero_le D)) 1
@@ -76,7 +72,7 @@ theorem minimal_unit_descent (D F v x y : V)
     ∃ u z : V, 0<u ∧ z<y ∧ u*u=1+D*z*z ∧
       x=F*u+D*v*z ∧ y=v*u+F*z := by
   have hFy : v*x≤F*y := by
-    apply square_le
+    apply nonneg_le_nonneg_of_sq_le_sq (Arithmetic.zero_le _)
     apply (add_le_add_iff_right (y*y)).mp
     calc
       (v*x)*(v*x)+y*y=(F*y)*(F*y)+v*v := by

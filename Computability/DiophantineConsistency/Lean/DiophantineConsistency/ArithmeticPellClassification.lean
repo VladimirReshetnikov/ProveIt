@@ -14,10 +14,6 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 private theorem one_le {z : V} (hz : 0<z) : 1≤z := by
   simpa using lt_iff_succ_le.mp hz
 
-private theorem square_le (x z : V) (h : x*x≤z*z) : x≤z := by
-  by_contra hn
-  exact (not_lt_of_ge h) (mul_self_lt_mul_self (by simp) (lt_of_not_ge hn))
-
 theorem positive_x (b x y : V) (h : x*x=1+delta b*y*y) : 0<x := by
   have h1 : 1≤x*x := by rw [h]; simp
   by_contra hn
@@ -26,7 +22,7 @@ theorem positive_x (b x y : V) (h : x*x=1+delta b*y*y) : 0<x := by
 
 /-- The bound makes the later induction invariant a bounded universal. -/
 theorem x_bound (b x y : V) (h : x*x=1+delta b*y*y) : x≤(b+2)*y+1 := by
-  apply square_le
+  apply nonneg_le_nonneg_of_sq_le_sq (Arithmetic.zero_le _)
   calc
     x*x=1+delta b*y*y := h
     _≤(1+delta b*y*y)+(y*y+2*(b+2)*y) := by simp
@@ -59,7 +55,7 @@ theorem descent (b x y : V) (hy : 0<y) (h : x*x=1+delta b*y*y) :
     rw [hid]
     exact lt_add_of_pos_right _ (lt_of_lt_of_le (mul_pos ha ha) (by simp))
   have hxle : x≤a*y := by
-    apply square_le
+    apply nonneg_le_nonneg_of_sq_le_sq (Arithmetic.zero_le _)
     calc
       x*x=1+d*y*y := h
       _≤y*y+d*y*y := by

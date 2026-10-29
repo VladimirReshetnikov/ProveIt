@@ -15,10 +15,6 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 def discriminant (q : V) : V := (q+1)*(q+2)
 
-private theorem square_le (x z : V) (h : x*x≤z*z) : x≤z := by
-  by_contra hn
-  exact (not_lt_of_ge h) (mul_self_lt_mul_self (by simp) (lt_of_not_ge hn))
-
 theorem positive_x (q x k : V) (h : x*x=1+discriminant q*k*k) : 0<x := by
   have h1 : 1≤x*x := by rw [h]; simp
   by_contra hn
@@ -26,7 +22,7 @@ theorem positive_x (q x k : V) (h : x*x=1+discriminant q*k*k) : 0<x := by
   simp [hz] at h1
 
 theorem x_bound (q x k : V) (h : x*x=1+discriminant q*k*k) : x≤(q+2)*k+1 := by
-  apply square_le
+  apply nonneg_le_nonneg_of_sq_le_sq (Arithmetic.zero_le _)
   calc
     x*x=1+discriminant q*k*k := h
     _≤(1+discriminant q*k*k)+((q+2)*k*k+2*(q+2)*k) := by simp
