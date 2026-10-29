@@ -1,0 +1,25 @@
+'DiophantineConsistency.HerbrandTripleParameterized.prepareAllTriple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleParameterized.universal_proves_parameterTripleDisjunction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleParameterized.candidate_proves_parameterTripleDisjunction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandTripleParameterized.universal_proves_parameterTripleDisjunction {n : ℕ}
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language (n + 3))
+  (hOpen : LO.FirstOrder.Semiformula.Open φ)
+  (p : DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom.Proof (∀⁰* ∃⁰ ∃⁰ ∃⁰ φ)) :
+  DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom ⊢
+    LO.FirstOrder.Semiformula.univCl
+      (DiophantineConsistency.HerbrandTripleExtraction.tripleDisjunction (parameterTripleMatrix φ)
+        (DiophantineConsistency.HerbrandExistentialSequents.existentialTerms (prepareAllTriple φ hOpen p).derivation))
+DiophantineConsistency.HerbrandTripleParameterized.candidate_proves_parameterTripleDisjunction {n : ℕ}
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language (n + 3))
+  (hOpen : LO.FirstOrder.Semiformula.Open φ) (h : DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* ∃⁰ ∃⁰ ∃⁰ φ) :
+  ∃ p,
+    DiophantineConsistency.PRATheory.PRA ⊢
+      LO.FirstOrder.Semiformula.univCl
+        (DiophantineConsistency.HerbrandTripleExtraction.tripleDisjunction (parameterTripleMatrix φ)
+          (DiophantineConsistency.HerbrandExistentialSequents.existentialTerms (prepareAllTriple φ hOpen p).derivation))

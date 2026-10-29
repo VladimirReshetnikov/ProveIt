@@ -1,0 +1,10 @@
+import DiophantineConsistency.HerbrandTripleExtraction
+open DiophantineConsistency.HerbrandTripleExtraction
+#print axioms prepareTriple
+#print axioms prepareTripleClosed
+#print axioms tripleDisjunction_eval
+#print axioms modelTripleWitness
+#print axioms universal_proves_preparedTripleDisjunction
+#print axioms universal_proves_tripleDisjunction
+#check universal_proves_preparedTripleDisjunction
+#check universal_proves_tripleDisjunction

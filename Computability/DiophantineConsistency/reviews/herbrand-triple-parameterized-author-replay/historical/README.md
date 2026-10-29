@@ -1,0 +1,1 @@
+Initial partial draft, prior to the candidate-PRA wrapper; historical non-input. The first scratch command failed because Lean requires input under the workspace root; a source-current workspace compile subsequently succeeded.

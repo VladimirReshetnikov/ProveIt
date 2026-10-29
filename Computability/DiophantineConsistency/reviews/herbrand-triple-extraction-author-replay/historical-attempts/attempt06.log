@@ -1,0 +1,22 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HerbrandTripleExtraction.lean:56:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  @boundedEval language M inst✝¹ ts e (Semiformula.exs (∃⁰ ∃⁰ φ))
+in the target expression
+  @boundedEval language M inst✝¹ ts e (∃⁰ ∃⁰ ∃⁰ φ)
+
+case inl
+M : Type
+inst✝² : Nonempty M
+inst✝¹ : Structure language M
+inst✝ : M↓[language] ⊧* UniversalAxiom
+φ : Semiproposition language 3
+hOpen : Semiformula.Open φ
+axioms : List (Sentence language)
+hAxioms : ∀ σ ∈ axioms, UniversalAxiom σ
+p : Prepared (∃⁰ ∃⁰ φ) axioms
+e : ℕ → M
+ts : List (SyntacticTerm language) := existentialTerms p.derivation
+hval : boundedEval ts e (∃⁰ ∃⁰ ∃⁰ φ)
+hx : boundedEval ts e (Semiformula.exs (∃⁰ ∃⁰ φ)) = ∃ t ∈ ts, boundedEval ts e ((∃⁰ ∃⁰ φ)/[t])
+⊢ ∃ t ∈ existentialTerms p.derivation,
+    ∃ u ∈ existentialTerms p.derivation,
+      ∃ v ∈ existentialTerms p.derivation, (Semiformula.Eval ![] e) (tripleInstance φ t u v)

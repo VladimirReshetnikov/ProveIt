@@ -57,6 +57,10 @@ now translates every Foundation IΣ₀ theorem and every proof in a bounded-only
 rule calculus into candidate PRA. The original intermediate rule calculus
 also permits Σ₁ induction, so this does not yet translate the strict Π₂
 endpoint.
+The finite Herbrand machinery now extracts disjunctions of unpaired term
+triples from triple-existential candidate-theory proofs, with a separate
+universally parameterized client. This does not yet give the interactive
+existential-universal-existential extraction required by the Σ₁ comparison.
 Subsequent upstream merges changed `PRAQCompatibility`, `PRAPeanoMinusBasic`,
 `PRAPeanoMinusOrderBasic`, `PRAQOrder`, and several addition and subtraction
 providers, followed by `PRAEqualityDifference` and

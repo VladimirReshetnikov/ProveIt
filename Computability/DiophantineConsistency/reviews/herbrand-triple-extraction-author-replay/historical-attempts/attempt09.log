@@ -1,0 +1,12 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HerbrandTripleExtraction.lean:49:75: error: unsolved goals
+M : Type
+inst✝ : Structure language M
+φ : Semiproposition language 3
+ts : List (SyntacticTerm language)
+e : ℕ → M
+hfold :
+  ∀ (xs : List (SyntacticTerm language × SyntacticTerm language × SyntacticTerm language)),
+    (Semiformula.Eval ![] e) (List.foldr (fun p acc => tripleInstance φ p.1 p.2.1 p.2.2 ⋎ acc) ⊥ xs) ↔
+      ∃ p ∈ xs, (Semiformula.Eval ![] e) (tripleInstance φ p.1 p.2.1 p.2.2)
+⊢ (∃ a a_1 b, (a ∈ ts ∧ a_1 ∈ ts ∧ b ∈ ts) ∧ (Semiformula.Eval ![] e) (tripleInstance φ a a_1 b)) ↔
+    ∃ t ∈ ts, ∃ u ∈ ts, ∃ v ∈ ts, (Semiformula.Eval ![] e) (tripleInstance φ t u v)
