@@ -1,0 +1,29 @@
+'DiophantineConsistency.ParsonsPrenexTuple.left_projection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.right_projection' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.matrixOr_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.matrixAnd_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.semantic_or' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.semantic_and' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.proofOfSemanticImplication' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.orForward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.orBackward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.andForward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTuple.andBackward' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.ParsonsPrenexTuple.orForward {n₁ k₁ n₂ k₂ : ℕ}
+  (A : LO.FirstOrder.ArithmeticSemiformula ℕ (n₁ + k₁)) (B : LO.FirstOrder.ArithmeticSemiformula ℕ (n₂ + k₂))
+  (h : DiophantineConsistency.ParsonsRule.Proof 𝗣𝗔⁻ (block A ⋎ block B)) :
+  DiophantineConsistency.ParsonsRule.Proof 𝗣𝗔⁻ (block (matrixOr A B))
+DiophantineConsistency.ParsonsPrenexTuple.orBackward {n₁ k₁ n₂ k₂ : ℕ}
+  (A : LO.FirstOrder.ArithmeticSemiformula ℕ (n₁ + k₁)) (B : LO.FirstOrder.ArithmeticSemiformula ℕ (n₂ + k₂))
+  (h : DiophantineConsistency.ParsonsRule.Proof 𝗣𝗔⁻ (block (matrixOr A B))) :
+  DiophantineConsistency.ParsonsRule.Proof 𝗣𝗔⁻ (block A ⋎ block B)
+DiophantineConsistency.ParsonsPrenexTuple.andForward {n₁ k₁ n₂ k₂ : ℕ}
+  (A : LO.FirstOrder.ArithmeticSemiformula ℕ (n₁ + k₁)) (B : LO.FirstOrder.ArithmeticSemiformula ℕ (n₂ + k₂))
+  (h : DiophantineConsistency.ParsonsRule.Proof 𝗣𝗔⁻ (block A ⋏ block B)) :
+  DiophantineConsistency.ParsonsRule.Proof 𝗣𝗔⁻ (block (matrixAnd A B))
+DiophantineConsistency.ParsonsPrenexTuple.andBackward {n₁ k₁ n₂ k₂ : ℕ}
+  (A : LO.FirstOrder.ArithmeticSemiformula ℕ (n₁ + k₁)) (B : LO.FirstOrder.ArithmeticSemiformula ℕ (n₂ + k₂))
+  (h : DiophantineConsistency.ParsonsRule.Proof 𝗣𝗔⁻ (block (matrixAnd A B))) :
+  DiophantineConsistency.ParsonsRule.Proof 𝗣𝗔⁻ (block A ⋏ block B)

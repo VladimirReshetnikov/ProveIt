@@ -1,0 +1,6 @@
+Matrix.vecAppend_eq_ite.{u_1} {m n : ℕ} {α : Type u_1} {o : ℕ} (ho : o = m + n) (u : Fin m → α) (v : Fin n → α) :
+  Matrix.vecAppend ho u v = fun i => if h : ↑i < m then u ⟨↑i, h⟩ else v ⟨↑i - m, ⋯⟩
+Matrix.appeendr_addCast.{w} {α : Type w} {m n : ℕ} (u : Fin m → α) (v : Fin n → α) (i : Fin m) :
+  Matrix.appendr u v (Fin.addCast n i) = u i
+Matrix.appeendr_addNat.{w} {α : Type w} {m n : ℕ} (u : Fin m → α) (v : Fin n → α) (i : Fin n) :
+  Matrix.appendr u v (i.addNat m) = v i
