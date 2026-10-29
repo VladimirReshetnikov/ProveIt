@@ -215,4 +215,21 @@ lemma stream_relabel {R : V → V → Prop} (F s t : V)
     exact ⟨compose hsu'.1 htu'.2,compose htu'.1 hsu'.2⟩
   · exact alpha s t hs ht (apart_of_mod_ne hmod)
 
+
+/-- Transport labels of any typed set term from coordinate transport and
+reflexivity. The set language has no function-symbol case. -/
+lemma term_labels_related {P : V → V → Prop} {n u : V}
+    (hu : IsSemiterm ℒₛₑₜ n u) (F B B' : V) (hB : len B=n)
+    (hcoord : ∀ i<len B, P B.[i] B'.[i]) (hrefl : ∀ x, P x x) :
+    P (TermLabels.term F B u) (TermLabels.term F B' u) := by
+  rcases hu.case with (⟨i,hi,rfl⟩ | ⟨i,rfl⟩ | ⟨k,f,args,hf,_,rfl⟩)
+  · rw [TermLabels.term_bvar,TermLabels.term_bvar]
+    exact hcoord i (by rwa [hB])
+  · rw [TermLabels.term_fvar,TermLabels.term_fvar]
+    exact hrefl _
+  · have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
+    rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
+      .mkSigma “k f. ⊥” from rfl] at hf'
+    simp at hf'
+
 end LeanProofs.ZFCinPA.ValidatorLabelAvoidance
