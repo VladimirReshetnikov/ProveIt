@@ -18,3 +18,7 @@ state and logs](pra-universal-syntax-root-replay/) and the [author packet](pra-u
 are preserved. Historical failed probes, including admitted scratch code, are
 labeled as such and are not compiled or imported. Foundation, Mathlib and
 unchanged local objects remain inherited cache boundaries.
+
+After this replay, an upstream merge simplified two case proofs in
+`PRAUniversalAxiomSyntax.lean`. The replay above authenticates the prior source
+snapshot, not the newly merged file; a source-current replay is pending.
