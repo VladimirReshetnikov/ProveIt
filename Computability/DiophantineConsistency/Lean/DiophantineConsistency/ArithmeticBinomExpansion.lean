@@ -41,16 +41,14 @@ instance bsum_definable : 𝚺₁-Function₃[V] bsum := bsum_defined.to_definab
 theorem bsum_succ (X n j : V) : bsum X n (j+1)=bsum X n j+binom n j*power X j := by
   simp [bsum,construction]
 
+private theorem bsum_one (X n : V) : bsum X n 1 = 1 := by
+  simpa using bsum_succ X n 0
+
 /-- Pascal's rule summed. -/
 theorem pascal_sum (X n j : V) : bsum X (n+1) (j+1)=bsum X n (j+1)+X*bsum X n j := by
   induction j using ISigma1.sigma1_succ_induction
   · definability
-  case zero =>
-    have h1 := bsum_succ X (n+1) 0
-    have h2 := bsum_succ X n 0
-    simp only [zero_add,bsum_zero,binom_zero_right,power_zero,mul_one] at h1 h2
-    simp only [zero_add,bsum_zero,mul_zero,add_zero]
-    rw [h1,h2]
+  case zero => simp [bsum_one]
   case succ j ih =>
     rw [bsum_succ X (n+1) (j+1),ih,binom_succ_succ,bsum_succ X n (j+1),bsum_succ X n j,
       power_succ]
@@ -68,10 +66,7 @@ theorem bsum_stable (X n m : V) : bsum X n (n+1+m)=bsum X n (n+1) := by
 theorem binomial_theorem (X n : V) : power (X+1) n=bsum X n (n+1) := by
   induction n using ISigma1.sigma1_succ_induction
   · definability
-  case zero =>
-    have h := bsum_succ X 0 0
-    simp only [zero_add,bsum_zero,binom_zero_right,power_zero,mul_one] at h
-    simp [h]
+  case zero => simp [bsum_one]
   case succ n ih =>
     have hs := bsum_stable X n 1
     rw [power_succ,ih,pascal_sum,hs]
