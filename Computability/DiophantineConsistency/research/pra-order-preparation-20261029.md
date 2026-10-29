@@ -56,3 +56,7 @@ The independently replayed [subtraction laws](../reviews/pra-subtraction-laws-ro
 now provide closed candidate-PRA derivations of simultaneous-successor
 cancellation and `(x+y)-x=y`. The reverse direction from nonzero
 subtraction to an additive order witness still requires proof.
+
+The [reconstruction law](../reviews/pra-sub-reconstruct-root.md) now derives
+`y-x=0 ∨ x+(y-x)=y` in the candidate theory. The full Q order clause still
+requires composing this with the nonzero and successor witnesses.
