@@ -41,6 +41,11 @@ under any fixed projection and discharges actual PA-minus base axioms.
 The [base-only branch](reviews/parsons-fold-root.md) now folds an arbitrary
 side sequent and discharges any finite set of actual PA-minus axioms, without
 a cut-free or recursive-hypothesis requirement.
+The [marked-context invariant](reviews/parsons-invariant-root.md) now starts
+from the actual normalized cut-free proof, retains occurrence-specific tags,
+handles its base-only and contraction branches, and recovers the original
+conclusion from a marked-output proof. The output proof and global induction
+remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
