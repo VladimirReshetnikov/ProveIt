@@ -64,18 +64,14 @@ theorem stepValue_nat_encoded (u : NumericConfig) :
   let bit : Bool := decide (u.right % 2 = 1)
   have hlookup : lookupNat ArithmeticMachineGraph215.literalRows 0
       u.state (u.right % 2) = actionNumber (DecimalMachine215.machine.transition q bit) := by
-    have h := ArithmeticMachineGraph215.literal_lookup_actual q bit
     have hq : q.val + 1 = u.state := by dsimp [q]; omega
-    simpa only [hq, bit, native_read_bit] using h
+    simpa only [hq, bit, native_read_bit] using ArithmeticMachineGraph215.literal_lookup_actual q bit
   rw [hlookup, if_neg (Nat.ne_of_gt (actionNumber_positive _)), applyValue_nat]
   unfold numericStep actionAt
   simp [hz, hfin, q, bit]
 
 theorem stepValue_nat (code : Nat) : stepValue code = nativeStep code := by
-  calc
-    stepValue code = stepValue (encodeConfig (decodeConfig code)) := by rw [encode_decode]
-    _ = encodeConfig (numericStep DecimalMachine215.machine (decodeConfig code)) := stepValue_nat_encoded _
-    _ = nativeStep code := rfl
+  simpa only [encode_decode, nativeStep] using stepValue_nat_encoded (decodeConfig code)
 
 theorem stepDef_nat (out input : Nat) :
     stepDef.val.Evalb ![out,input] ↔ out = nativeStep input := by
