@@ -49,11 +49,8 @@ theorem square_gap (a b : N H) : ∃ d : N H,
   rcases le_total a b with hab | hba
   · exact oriented a b hab
   · obtain ⟨d,hd,hzero⟩ := oriented b a hba
-    refine ⟨d,?_,hzero.trans eq_comm⟩
-    calc
-      a^2+b^2=b^2+a^2 := add_comm _ _
-      _ = 2*b*a+d^2 := hd
-      _ = 2*a*b+d^2 := by ring
+    exact ⟨d, by simpa only [add_comm, mul_comm, mul_left_comm, mul_assoc] using hd,
+      hzero.trans eq_comm⟩
 
 def positiveSum : List (N H × N H) → N H
   | [] => 0
