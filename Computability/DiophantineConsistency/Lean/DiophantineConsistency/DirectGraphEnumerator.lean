@@ -217,15 +217,7 @@ def optionStepProgram : R optionStep :=
 
 def boundedRunProgram : R (fun n => encodeOption (boundedRun n initialState)) := by
   refine ofEq (iterate optionStepProgram (encodeOption (some initialState))) ?_
-  intro n
-  induction n with
-  | zero => rfl
-  | succ n ih =>
-    change optionStep (Nat.rec _ _ n) = _
-    rw [ih, optionStep_encode]
-    change _ = encodeOption ((fun o : Option St => o.bind enumStep)^[n + 1] (some initialState))
-    rw [Function.iterate_succ_apply']
-    rfl
+  exact DirectEnumerator.boundedRun_rec
 
 /-- Closed code data for the exact bounded halting test used by the ZFC bridge. -/
 def program : R haltingTest := by

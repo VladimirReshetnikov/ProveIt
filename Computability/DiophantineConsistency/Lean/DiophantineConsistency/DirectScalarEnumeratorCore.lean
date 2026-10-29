@@ -251,9 +251,10 @@ def optionStepProgram : R optionStep :=
     optionStep (encodeOption o) = encodeOption (o.bind enumStep) := by
   cases o <;> simp [optionStep, encodeOption]
 
-def boundedRunProgram : R (fun n => encodeOption (boundedRun n initialState)) := by
-  refine (iterate optionStepProgram (encodeOption (some initialState))).ofEq ?_
-  intro n
+/-- The scalar iterator follows the literal bounded enumerator on every input. -/
+theorem boundedRun_rec (n : ℕ) :
+    Nat.rec (encodeOption (some initialState)) (fun _ acc => optionStep acc) n =
+      encodeOption (boundedRun n initialState) := by
   induction n with
   | zero => rfl
   | succ n ih =>
@@ -262,6 +263,10 @@ def boundedRunProgram : R (fun n => encodeOption (boundedRun n initialState)) :=
     change _ = encodeOption ((fun o : Option St => o.bind enumStep)^[n + 1] (some initialState))
     rw [Function.iterate_succ_apply']
     rfl
+
+def boundedRunProgram : R (fun n => encodeOption (boundedRun n initialState)) := by
+  refine (iterate optionStepProgram (encodeOption (some initialState))).ofEq ?_
+  exact boundedRun_rec
 
 /-- Closed code data for the exact bounded halting test used by the ZFC bridge. -/
 def program : ScalarPRCode.Realizes haltingTest := by
