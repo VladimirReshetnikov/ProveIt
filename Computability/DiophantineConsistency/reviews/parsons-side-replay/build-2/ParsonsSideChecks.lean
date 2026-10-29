@@ -1,0 +1,4 @@
+import DiophantineConsistency.ParsonsSide
+#print axioms DiophantineConsistency.ParsonsSide.base_sigma
+#print axioms DiophantineConsistency.ParsonsSide.step_pi_two
+#print axioms DiophantineConsistency.ParsonsSide.side_complexities
