@@ -82,12 +82,8 @@ private theorem mass_bound (W : V) :
   rw [Fintype.sum_option]
   simp only [coeff]
   rw [kernel_mass]
-  have h47 : W % 47 ≤ 46 := by
-    by_contra hc
-    have h1 : (46:V) + 1 ≤ W % 47 := lt_iff_succ_le.mp (lt_of_not_ge hc)
-    have h2 := mod_lt W (show (0:V) < 47 by norm_num)
-    norm_num at h1
-    exact absurd h2 (not_lt.mpr h1)
+  have h47 : W % 47 ≤ 46 := lt_succ_iff_le.mp (by
+    simpa only [show (46 : V) + 1 = 47 by norm_num] using mod_lt W (show (0 : V) < 47 by norm_num))
   have hE46 : Exp.exp (46:V) = ((2^46:ℕ):V) := by
     have := cast_exp (V:=V) 46
     rwa [Nat.cast_ofNat] at this
