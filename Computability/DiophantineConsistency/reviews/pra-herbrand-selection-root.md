@@ -20,4 +20,5 @@ Mathlib and unchanged local objects remain inherited cache boundaries.
 
 A subsequent upstream merge changed `PRAFormulaParameters.lean` and
 `PRAUniversalSyntax.lean`. This receipt authenticates the earlier snapshot;
-the affected downstream source-current replay is pending.
+the affected downstream [source-current replay](pra-parameter-current-root.md)
+has since passed.

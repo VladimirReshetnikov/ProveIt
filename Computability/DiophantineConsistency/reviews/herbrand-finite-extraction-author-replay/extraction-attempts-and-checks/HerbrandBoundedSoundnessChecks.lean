@@ -1,0 +1,3 @@
+import DiophantineConsistency.HerbrandBoundedSoundness
+#print axioms DiophantineConsistency.HerbrandBoundedSoundness.boundedSound
+#check DiophantineConsistency.HerbrandBoundedSoundness.boundedSound

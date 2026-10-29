@@ -1,0 +1,9 @@
+'DiophantineConsistency.HerbrandUniversalPreparation.prepare' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.HerbrandUniversalPreparation.prepareClosed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandUniversalPreparation.prepareClosed
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 1)
+  (hOpen : LO.FirstOrder.Semiformula.Open φ)
+  (p : DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom.Proof (∃⁰ φ)) :
+  DiophantineConsistency.HerbrandUniversalPreparation.Prepared (LO.FirstOrder.Rewriting.emb φ) p.axioms

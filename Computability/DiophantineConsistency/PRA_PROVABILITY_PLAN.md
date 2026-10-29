@@ -11,7 +11,8 @@ printed proof is not required.
 A later upstream merge generalized `PRAFormulaParameters.qr_rew` and updated
 `PRAUniversalSyntax` to use it. The affected universal-presentation, syntax
 and Herbrand replays below authenticate their earlier source snapshots; a
-source-current downstream rebuild is in progress.
+[source-current downstream rebuild](reviews/pra-parameter-current-root.md)
+has now passed twice for the 17 affected committed modules.
 
 The 14-variable equation in `equation.pdf` has closed IΣ₁ and HA
 proof-existence theorems, but no Lean theorem producing the requested PRA
@@ -150,7 +151,10 @@ now accepts the actual Foundation open formula and a finite-disjunction proof
 in the universal theory, yielding a candidate-PRA proof at one PR witness.
 The [existential-sequent structure](reviews/herbrand-existential-sequents-root.md)
 shows the relevant cut-free proofs contain no universal-rule nodes and collects
-their existential terms. The disjunction extraction itself remains open.
+their existential terms. [Finite extraction](reviews/herbrand-finite-extraction-root.md)
+now derives a disjunction for a prepared existential sequent. Preparing a
+general ∀∃ proof and translating the extracted terms to appropriately
+parameterized PR codes remain open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive

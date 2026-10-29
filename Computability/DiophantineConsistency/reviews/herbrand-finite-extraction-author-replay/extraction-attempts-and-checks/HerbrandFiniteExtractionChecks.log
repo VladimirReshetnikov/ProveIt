@@ -1,0 +1,16 @@
+'DiophantineConsistency.HerbrandFiniteExtraction.modelPreparedWitness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandFiniteExtraction.universal_proves_extractedDisjunction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandFiniteExtraction.universal_proves_extractedDisjunction
+  (φ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (hOpen : LO.FirstOrder.Semiformula.Open φ)
+  (axioms : List (LO.FirstOrder.Sentence DiophantineConsistency.PRALanguage.language))
+  (hAxioms : ∀ σ ∈ axioms, DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom σ)
+  (p : DiophantineConsistency.HerbrandUniversalPreparation.Prepared φ axioms) :
+  DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom ⊢
+    LO.FirstOrder.Semiformula.univCl
+      (DiophantineConsistency.HerbrandFiniteExtraction.termDisjunction φ
+        (DiophantineConsistency.HerbrandExistentialSequents.existentialTerms p.derivation))

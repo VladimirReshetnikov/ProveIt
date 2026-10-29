@@ -29,4 +29,5 @@ The updated `PRAUniversalAxiomSyntax` source SHA-256 is
 
 A subsequent upstream merge changed `PRAFormulaParameters.lean` and
 `PRAUniversalSyntax.lean`. This receipt authenticates the earlier snapshot;
-the affected downstream source-current replay is pending.
+the affected downstream [source-current replay](pra-parameter-current-root.md)
+has since passed.

@@ -1,0 +1,4 @@
+import DiophantineConsistency.HerbrandUniversalPreparation
+#print axioms DiophantineConsistency.HerbrandUniversalPreparation.prepare
+#print axioms DiophantineConsistency.HerbrandUniversalPreparation.prepareClosed
+#check DiophantineConsistency.HerbrandUniversalPreparation.prepareClosed
