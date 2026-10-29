@@ -1,0 +1,10 @@
+import DiophantineConsistency.ArithmeticAdaptiveFirstDivisibility2011
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ArithmeticAdaptiveFirstDivisibility2011Checks
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticAdaptiveFirstDivisibility2011
+#print axioms first_root_rep
+end DiophantineConsistency.ArithmeticAdaptiveFirstDivisibility2011Checks

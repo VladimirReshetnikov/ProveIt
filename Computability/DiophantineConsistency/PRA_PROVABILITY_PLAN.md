@@ -55,7 +55,10 @@ now defines its full axiom families and proves standard-natural-model validity;
 its [independent replay](reviews/pra-theory-root.md) passed. A closed [object-theoretic add-one theorem](reviews/pra-add-one-root.md)
 now connects the designated addition and successor symbols in that theory.
 The [predecessor exhaustion theorem](reviews/pra-exhaustion-root.md) is also
-a closed derivation using its recursion and open-induction axioms.
+a closed derivation using its recursion and open-induction axioms. The
+[addition clauses](reviews/pra-addition-root.md) are also derived in the
+candidate object theory; the [multiplication clauses](reviews/pra-multiplication-root.md)
+have likewise been derived.
 Compatibility with a standard PRA presentation, further arithmetic bridges,
 primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
 
@@ -70,8 +73,12 @@ derives both actual scaled Pell equations and positive scales. An [internal squa
 now proves the required positive-scale cancellation, including zero roots.
 The [adaptive quotient client](reviews/adaptive-quotients2011-root.md)
 now applies it to construct both positive unscaled roots from the actual
-natural zero. Root orientation, transport, index recovery and the full
-zero-existence equivalence remain open.
+natural zero. The [first-root divisibility client](reviews/adaptive-first-divisibility2011-root.md)
+now derives a positive internal quotient `Y/q³` from the actual natural zero.
+The [transport theorem](reviews/adaptive-transport2011-root.md) now derives
+the actual positive transport and gap. The [transport quotient theorem](reviews/adaptive-transport-quotient2011-root.md)
+now derives the exact positive transport multiple. Main-root orientation,
+index recovery and the full zero-existence equivalence remain open.
 
 The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
 now proves in Lean that both maintained source sentences are Π₁ and their
@@ -79,6 +86,12 @@ literal biconditional is Π₂. Its source-current replay was performed at the
 recorded prior snapshot; subsequent upstream commits changed some prerequisite
 sources. The certificate supplies a conservation input, not conservation or
 PRA derivability itself.
+
+The [cut-free adapter](reviews/parsons-cut-free-independent.md) now turns an
+actual finite Foundation theory proof into a cut-free derivation with the
+same axiom list. [Height-preserving conjunction inversion](reviews/parsons-selection-independent.md)
+is now established for arbitrary cut-free contexts. Induction-axiom reduction
+and the PRA witnessing theorem remain open.
 
 ## Concrete bridge to formalize
 

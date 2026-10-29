@@ -1,0 +1,38 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveFirstDivisibility2011.lean:122:39: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?a * ?b % ?b
+in the target expression
+  v 7 * b % ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0)))) =
+    Q * (Bp * W) % ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 13 → V
+hM : 0 < (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * (v 0 * ↑(p 0))
+hQ : 0 < (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0)))
+t : V
+ht :
+  magnitude (pairEval (rootTerm (factors fun j => ↑(p j)).1) v) =
+    (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * (v 0 * ↑(p 0)) * t
+b : V := v 0 * ↑(p 0)
+q : V := 1 + b
+Q : V := q * (q * q)
+k : V := v 9 + v 10
+ell : V := v 6 * v 7 * (v 7 * k)
+M : V := Q * b
+W : V := 1 + k * b
+A : V := v 6 + ↑(p 1) * q
+Bp : V := q * A
+Bn : V := (v 1 + v 2) * A + v 1 * q
+z : Pair V := pairEval (rootTerm (factors fun j => ↑(p j)).1) v
+hdiv : M ∣ magnitude z
+hzmod : z.1 % M = z.2 % M
+hpair : (M * (ell + k + v 8) + v 7 * b + Bn * (W * Q)) % M = Bp * (W * Q) % M
+hdQM : Q ∣ M
+hQpair :
+  v 7 * b % ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0)))) =
+    Q * (Bp * W) % ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))))
+hleft : M * (ell + k + v 8) + v 7 * b + Bn * (W * Q) = v 7 * b + Q * (b * (ell + k + v 8) + Bn * W)
+hright : Bp * (W * Q) = Q * (Bp * W)
+⊢ (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) ∣ v 7
