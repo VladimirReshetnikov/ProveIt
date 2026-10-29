@@ -118,23 +118,13 @@ lemma eq_obligation {p : V} (h : p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁
 /-- **Equality-logic theorems transport**: the interpretation of an internal
 `𝗘𝗤`-theorem is derivable in `nativeTheory` with domain side formulas. -/
 lemma derivable_interp_of_EQ {φ : V} (h : Provable (𝗘𝗤 ℒₛₑₜ : SetTheory) φ) :
-    ∃ m, Derivable nativeTheory (insert (interp (PN : V) φ) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
-  obtain ⟨der, hder⟩ := h.toDerivable
-  obtain ⟨m, hm⟩ := derivable_iSet good_PN hTermSet (fun p _ hp ↦ eq_obligation hp) hder.2
-  rw [hder.1, iSet_insert] at hm
-  have hrelempty : iSet (PN : V) (∅ : V) = ∅ := mem_ext fun y => by simp [mem_iSet_iff]
-  rw [hrelempty] at hm
-  exact ⟨m, Derivable.ofSetEq (fun x => by simp) hm⟩
+    ∃ m, Derivable nativeTheory (insert (interp (PN : V) φ) (domSet ℒₛₑₜ (dom (PN : V)) m)) :=
+  InternalInterpretation.derivable_interp_of_provable good_PN hTermSet (fun _ _ hp ↦ eq_obligation hp) h
 
 lemma derivable_domSet_mono {x m m' : V} (hm : m ≤ m') (hx : IsFormula ℒₛₑₜ x)
     (h : Derivable nativeTheory (insert x (domSet ℒₛₑₜ (dom (PN : V)) m))) :
-    Derivable nativeTheory (insert x (domSet ℒₛₑₜ (dom (PN : V)) m')) := by
-  have hd : IsSemiformula ℒₛₑₜ 1 (⌜domS⌝ : V) := by simp
-  refine Derivable.wk (by simp [hx, isFormulaSet_domSet hd m']) ?_ h
-  intro y hy
-  rcases mem_bitInsert_iff.mp hy with rfl | hy
-  · simp
-  · exact mem_bitInsert_iff.mpr (Or.inr (domSet_subset hm hy))
+    Derivable nativeTheory (insert x (domSet ℒₛₑₜ (dom (PN : V)) m')) :=
+  InternalInterpretation.derivable_domSet_mono good_PN.isDom hm hx h
 
 /-! ## The bases -/
 
