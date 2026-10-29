@@ -37,9 +37,10 @@ The formal IΣ₁-to-PRA conservation argument and the candidate's comparison
 with a standard PRA presentation remain open.
 The [PA-minus bridge audit](research/pra-peanominus-bridge-audit-20261029.md)
 tracks the exact mapped equality axioms and all 17 non-equality axiom
-families. Closed candidate-PRA derivations now cover eight arithmetic
-families, including associativity, commutativity and distributivity; the nine
-order families and transport of arbitrary PA-minus proofs remain open.
+families. Closed candidate-PRA derivations now cover fourteen families,
+including associativity, commutativity, distributivity, and six basic order
+axioms. Three order families and transport of arbitrary PA-minus proofs
+remain open.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
