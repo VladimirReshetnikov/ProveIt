@@ -74,17 +74,15 @@ lemma atom_vac {n arity R terms : V} (hr : (ℒₛₑₜ).IsRel arity R)
     have hc : (arity=2 ∧ R=0) ∨ (arity=2 ∧ R=1) := by simpa using hr'
     exact hc.elim And.left And.left
   subst arity
-  have hleft : z≠(ValidatorEnvironmentLabels254.TermLabels.vec F B 2 terms).[0] := by
-    rw [ValidatorEnvironmentLabels254.TermLabels.vec_nth F B ht.isUTerm (by simp)]
-    exact term_label_avoids (ht.nth (by simp)) F B z hlen hF hB
-  have hright : z≠(ValidatorEnvironmentLabels254.TermLabels.vec F B 2 terms).[1] := by
-    rw [ValidatorEnvironmentLabels254.TermLabels.vec_nth F B ht.isUTerm (by simp)]
-    exact term_label_avoids (ht.nth (by simp)) F B z hlen hF hB
+  have hlabel (i : V) (hi : i<2) :
+      z≠(ValidatorEnvironmentLabels254.TermLabels.vec F B 2 terms).[i] := by
+    rw [ValidatorEnvironmentLabels254.TermLabels.vec_nth F B ht.isUTerm hi]
+    exact term_label_avoids (ht.nth hi) F B z hlen hF hB
   classical
   simp only [atom,nth_adjoin_zero,nth_adjoin_one]
   split
-  · exact ValidatorEind222.Eind_vac _ _ z hleft hright
-  · exact vac_rel _ _ z hleft hright
+  · exact ValidatorEind222.Eind_vac _ _ z (hlabel 0 (by simp)) (hlabel 1 (by simp))
+  · exact vac_rel _ _ z (hlabel 0 (by simp)) (hlabel 1 (by simp))
 
 /-! The invariant is Sigma-one once the free environment and the target label
 are fixed outside the induction: the binder stack and the fresh-label stream
