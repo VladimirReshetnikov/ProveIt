@@ -1,4 +1,5 @@
 import ZFCinPA.ModelCodedBindOne
+import ZFCinPA.ModelCodedBindTwoSlots
 
 set_option autoImplicit false
 
@@ -49,28 +50,8 @@ lemma swapVec_spec (depth : V) :
     (∀ i < depth, (swapVec L depth).[i] = ^#i) ∧
     (swapVec L depth).[depth] = ^#(depth+1) ∧
     (swapVec L depth).[depth+1] = ^#depth := by
-  induction depth using ISigma1.sigma1_succ_induction
-  · definability
-  case zero => simp
-  case succ depth ih =>
-    have hv := swapVec_isSemitermVec (L := L) depth
-    refine ⟨?_,?_,?_⟩
-    · intro i hi
-      rcases zero_or_succ i with rfl | ⟨i,rfl⟩
-      · simp [swapVec_succ,Bootstrapping.qVec]
-      · have hi' : i < depth := by simpa using hi
-        rw [swapVec_succ]
-        simp only [Bootstrapping.qVec,nth_adjoin_succ,hv.lh]
-        rw [nth_termBShiftVec hv.isUTerm (lt_trans hi' (by simp)),ih.1 i hi']
-        simp
-    · rw [swapVec_succ]
-      simp only [Bootstrapping.qVec,nth_adjoin_succ,hv.lh]
-      rw [nth_termBShiftVec hv.isUTerm (by simp),ih.2.1]
-      simp
-    · rw [swapVec_succ]
-      simp only [Bootstrapping.qVec,nth_adjoin_succ,hv.lh]
-      rw [nth_termBShiftVec hv.isUTerm (by simp),ih.2.2]
-      simp
+  simpa only [swapVec, ModelCodedBindTwoSlots.twoSlotVec, add_zero] using
+    (ModelCodedBindTwoSlots.twoSlotVec_spec (L := L) (1 : V) 0 depth)
 
 lemma termBindOneAt_swap {depth term : V} (ht : IsSemiterm L depth term) :
     ∀ a b : V, a ≠ b →
