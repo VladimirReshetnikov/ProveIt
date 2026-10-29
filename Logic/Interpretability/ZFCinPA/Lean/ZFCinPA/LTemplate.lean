@@ -182,6 +182,12 @@ lemma reduct_standard :
         (Sum.inl Language.Set.Rel.mem) v = (v 0 ∈ v 1)
       exact propext (Structure.mem_lang (L := setTemplateLanguage k arities) (M := M) (v := v))
 
+/-- A lifted set-language sentence evaluates in the standard reduct. -/
+lemma eval_set_lMap {n : ℕ} (σ : SetTheorySemisentence n) (e : Fin n → M) (ε : Empty → M) :
+    (σ.lMap (setHom k arities)).Eval e ε ↔
+      σ.Eval (s := SetTheory.standardStructure M) e ε := by
+  rw [Semiformula.eval_lMap, reduct_standard]
+
 /-- A model of an enlarged theory models every theory lifted into it. -/
 lemma pure_models_of_subset (T : SetTheory) (S : Theory (setTemplateLanguage k arities))
     [M↓[setTemplateLanguage k arities] ⊧* S]

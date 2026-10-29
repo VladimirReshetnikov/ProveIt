@@ -216,8 +216,7 @@ variable [Structure.Mem (setTemplateLanguage k arities) M]
 /-- Lifted `ℒₛₑₜ` formulas read in the `ℒₛₑₜ` reduct. -/
 @[simp] lemma eval_liftSet {n : ℕ} (σ : SetTheorySemisentence n) (e : Fin n → M) (ε : Empty → M) :
     (liftSet (k := k) (arities := arities) σ).Eval e ε ↔
-      σ.Eval (s := SetTheory.standardStructure M) e ε := by
-  rw [liftSet, Semiformula.eval_lMap, LTemplate.reduct_standard]
+      σ.Eval (s := SetTheory.standardStructure M) e ε := LTemplate.eval_set_lMap σ e ε
 
 /-- The `ℒₛₑₜ` reduct of a model of `templN` is a model of `nativeTheory`. -/
 lemma pure_modelsN [M↓[setTemplateLanguage k arities] ⊧* templN k arities] :
