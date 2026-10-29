@@ -130,3 +130,7 @@ closed induction axiom and proves that arbitrary term instances recover a
 rewritten Σ₁ induction axiom. The [independent replay](../reviews/parsons-parameters-root.md)
 also checks its LK normalization once the block is opened. Eliminating the
 whole block within the decreasing cut-free recursion remains open.
+
+The [side-complexity check](../reviews/parsons-side-root.md) classifies all
+three principal-case side disjunctions as Π₂ in Foundation’s non-prenex
+hierarchy. It does not produce the required strict prenex normal form.

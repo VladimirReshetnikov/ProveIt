@@ -51,3 +51,8 @@ a closed candidate-PRA derivation, with an independent current-source replay.
 The [addition commutativity law](../reviews/pra-addition-commutativity-root.md)
 is also a closed candidate-PRA derivation. The subtraction and additive
 witness arguments needed for the Q order clause are still separate work.
+
+The independently replayed [subtraction laws](../reviews/pra-subtraction-laws-root.md)
+now provide closed candidate-PRA derivations of simultaneous-successor
+cancellation and `(x+y)-x=y`. The reverse direction from nonzero
+subtraction to an additive order witness still requires proof.
