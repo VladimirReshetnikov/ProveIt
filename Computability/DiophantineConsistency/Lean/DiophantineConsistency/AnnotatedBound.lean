@@ -154,11 +154,6 @@ theorem Produces.step {p history : List Row}
   rw [run_append,hp seen]
   simp only [Option.bind_some,run,hv seen,if_true,List.cons_append]
 
-private theorem lookup_after (older : List Row) (r : Row) (tail : List Row) :
-    (older++r::tail)[older.length]?=some r := by
-  rw [List.getElem?_append_right (by omega)]
-  simp
-
 theorem valid_binary (r : Row) (seen : List Row) (a b : Row)
     (ht : r.tag=3 ∨ r.tag=4 ∨ r.tag=5) (ha : seen[r.first]?=some a)
     (hb : seen[r.second]?=some b) (he : binaryEquations r a b=true) :
@@ -192,8 +187,7 @@ theorem ready_binary (tag : Nat) (f g : Form)
   · intro seen
     apply valid_binary r (history++seen) a b
     · exact ht
-    · simpa only [r,history,List.append_assoc,List.cons_append] using
-        lookup_after (b::tq) a (tp++seen)
+    · simp [r,history,List.append_assoc]
     · rfl
     · simp [binaryEquations,r,hai,hbi,hao,hbo]
 
