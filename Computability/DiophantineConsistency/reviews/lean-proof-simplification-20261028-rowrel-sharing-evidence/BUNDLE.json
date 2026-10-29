@@ -1,0 +1,575 @@
+{
+  "schema": "lean-proof-simplification-evidence-v1",
+  "source_commit": "8ee624a4d06dedda8ad7412a379b11203dfad846",
+  "source_parent": "af34addf607ee863a31f84e45d9052a8320f7f25",
+  "scope": "Simplify Claude-coauthored tiling row relation proof",
+  "coauthor_provenance": {
+    "commit": "3cd04ac37f",
+    "qualification": "Claude Opus 5.5 coauthor trailer on original source commit; not exclusive authorship."
+  },
+  "validation": "Three paired target builds and four paired current-source clients pass; 59 original declaration type/axiom reports and 29,730 global simp entries match. Two new generated auxiliaries are not default simp rules. Independent proof, direct-input and probe reviews are included.",
+  "limitations": [
+    "Two generated rowRel_iff simp auxiliaries appear but are not registered as default simp rules; the previously tested version exposed a further equation and is superseded.",
+    "Earlier broad-tactic attempts failed or were terminated and are not counted as passing evidence.",
+    "The recorded timing samples are incremental, not randomized controlled benchmarks. Historical transitive project/Foundation/package objects remain cached and no full closure or every downstream client was rebuilt.",
+    "Compiled objects and original replay environment are excluded."
+  ],
+  "archive": "inputs-and-logs.zip",
+  "archive_sha256": "7c3b8e71ddf94275a6f24ce3edd001e7d4778a29c060c0572a3cdc260db7a331",
+  "members": {
+    "rowrel-sharing-evidence-20261028/README.md": {
+      "sha256": "0579fce6671eb91e208956116bf8201151ad49944ed796d96a5ea53a00cb70a4",
+      "bytes": 3896
+    },
+    "rowrel-sharing-evidence-20261028/manifest.sha256": {
+      "sha256": "5843fd57766c1fca52fbbd85efd62a8ef421368447a724d1d736eb66fb2048e5",
+      "bytes": 13212
+    },
+    "rowrel-sharing-evidence-20261028/prototype.patch": {
+      "sha256": "c0edca1097b11cec4a80a67baf55d16f76478b6937db40e54240a87272035723",
+      "bytes": 3446
+    },
+    "rowrel-sharing-evidence-20261028/provenance/baseline-source-audit.json": {
+      "sha256": "723bacd2606934b90a31b1bd79c75f232e1b59ccfd56ce88da2580060b85b502",
+      "bytes": 961
+    },
+    "rowrel-sharing-evidence-20261028/provenance/claude-source-commit.txt": {
+      "sha256": "da305d8f246ea48a9c782db77521b9c0d6072ef049cc407dc93f7027105e9473",
+      "bytes": 1730
+    },
+    "rowrel-sharing-evidence-20261028/provenance/controller-dmap-final-records.json": {
+      "sha256": "0c5756b71290eff00e937b58b55c24d6552c6a23f7220292a9a936dabed57c5c",
+      "bytes": 22482
+    },
+    "rowrel-sharing-evidence-20261028/provenance/pell-local-pins.json": {
+      "sha256": "65a86ce7b14337d3217120d3d68bd1f5fa14bd22bedc4d21fff7af54d538db25",
+      "bytes": 129792
+    },
+    "rowrel-sharing-evidence-20261028/provenance/positive-shift-clean-records.json": {
+      "sha256": "46c7a4e43ca1bf199baa8f65535ce341b122f5668741837285605527b2e07db1",
+      "bytes": 137897
+    },
+    "rowrel-sharing-evidence-20261028/provenance/seam-coherent-final-records.json": {
+      "sha256": "3a991cfbd74dff14ddebd994fe6dd80482330391a63cfd0cc133d9469377f44c",
+      "bytes": 19173
+    },
+    "rowrel-sharing-evidence-20261028/provenance/toolchain.txt": {
+      "sha256": "98e0981047bbf5c7289f7eb988532a4e923f301d2014b5633936cba0b1ffbc0a",
+      "bytes": 106
+    },
+    "rowrel-sharing-evidence-20261028/provenance/transport/assembly-common-records.json": {
+      "sha256": "aa6892acb9942dcf88bc4b2fa0ac732483473467f574dfa56a66db43c682bc07",
+      "bytes": 102782
+    },
+    "rowrel-sharing-evidence-20261028/provenance/transport/assembly-input-pins.json": {
+      "sha256": "f36873fca14053d5dbcfa25259714988d34dc8eed92dd7d6831332e2496d0797",
+      "bytes": 67689
+    },
+    "rowrel-sharing-evidence-20261028/provenance/transport/assembly-phase-records.json": {
+      "sha256": "239d3c5bf6f174413a89534c249e79f536e51764205617dab03adb134b88c745",
+      "bytes": 45203
+    },
+    "rowrel-sharing-evidence-20261028/provenance/transport/provider-audit.json": {
+      "sha256": "acf799ba38746a197750baa8a225a0033244cdf66bf657a8201d9cc9e4c02d7a",
+      "bytes": 96559
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticConstructionAssembly-5.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticConstructionAssembly-5.time": {
+      "sha256": "9df414e1b1ae2abf5e77b0fc3515039f538b04b65014d26782aef8c8a4e32d6f",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticCurrentConstruction2011-6.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticCurrentConstruction2011-6.time": {
+      "sha256": "745309ab20fb1c4376065d64331ed566106c9d7b20e832803c0dfd18b2c014b7",
+      "bytes": 50
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingBand-3.log": {
+      "sha256": "e749ce0cf6ae189d3223573fe9964f96cbc24e4da398cc17bd93752c4c72beb8",
+      "bytes": 310
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingBand-3.time": {
+      "sha256": "d675fa89eb762f7f9eaf34b2ebe38c5fe2ba5e6a5c5a6a64bdbe185d443121b8",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingRows-0.log": {
+      "sha256": "5c6bfa08a9eece4f6857ebbfbe4c7643f0207de09b539c25ba2bfea43f108849",
+      "bytes": 1548
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingRows-0.time": {
+      "sha256": "efc6d19be267857c30975b704fcf77a1a4bf827b798ec6502162af3a5615a1de",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingRows-1.log": {
+      "sha256": "5c6bfa08a9eece4f6857ebbfbe4c7643f0207de09b539c25ba2bfea43f108849",
+      "bytes": 1548
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingRows-1.time": {
+      "sha256": "7adebf5b7ee7aaea998af55d5c3d6556ae0d8b2e100ee6ad9ee3f6c1bb888958",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingRows-2.log": {
+      "sha256": "5c6bfa08a9eece4f6857ebbfbe4c7643f0207de09b539c25ba2bfea43f108849",
+      "bytes": 1548
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingRows-2.time": {
+      "sha256": "ea17d087dd8403d0641c033b2e5cd02b17f2e19c30238d6799fd7b2ae81958da",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingWord-4.log": {
+      "sha256": "bdcccc3d00ab898861703c8e1542fac7cc2ff3c70e31f6c7e1ac0253b3aa0baa",
+      "bytes": 3202
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-ArithmeticTilingWord-4.time": {
+      "sha256": "01dce1e4a574caa171388f207cf9946555872b8abe13371933ddee49e9f5307a",
+      "bytes": 51
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-alt-alternate-interfaces.log": {
+      "sha256": "6b8c73df9df50549e657205cf5bebb9b61118128fe4cb63f68f39fd9fdd1f7c9",
+      "bytes": 44725
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-alt-global-simp.log": {
+      "sha256": "5d533adb83c30105ea686db01e3c6b019587321fc06adccc5e5c3ba5e6176b6a",
+      "bytes": 1649471
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-alt-names.log": {
+      "sha256": "17d32b2058726bad80e39915cb7c70ff5927c5c5e30ea10d630c234b06cdb4b5",
+      "bytes": 6879
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-alt-private.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-interfaces.lean": {
+      "sha256": "f66759b24b9dce824d32fa4fea0a12583ad5f750c9f9891a540bd3cc0cb4f688",
+      "bytes": 7967
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-name-diff.json": {
+      "sha256": "9e576658d4190861e92f3773fdcb11620058ad6005b06a8f91de300c49e82ace",
+      "bytes": 226
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-names.log": {
+      "sha256": "17d32b2058726bad80e39915cb7c70ff5927c5c5e30ea10d630c234b06cdb4b5",
+      "bytes": 6879
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-probe-records.json": {
+      "sha256": "08cdb50870680ba3e050952d0998c6e551d850d13f6b1d0bd095034da90e5549",
+      "bytes": 12387
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-probes.py": {
+      "sha256": "5cf55bbd425807fa7299f009941bb07ddb33a69226dd7abf397814be2b1adf4c",
+      "bytes": 2024
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate-records.json": {
+      "sha256": "489e3f3962b15ae9a904aa878ed982b6f6e91a4063a193992f84986ab8a98c0f",
+      "bytes": 32656
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate.log": {
+      "sha256": "fc9639aa2316828de3e2a99f9aba264998996137a8fe615d14d08ca16d2453ca",
+      "bytes": 1518
+    },
+    "rowrel-sharing-evidence-20261028/records/alternate.time": {
+      "sha256": "db7e4c2bf67703ea78734bbde84abd2f77112b8f55f2175131909c28101715e0",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/audit-inputs.py": {
+      "sha256": "999ebf45fb212c74656bceafcc280adfa98e0fd1b346732606092c12d9f63452",
+      "bytes": 2337
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticConstructionAssembly-5.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticConstructionAssembly-5.time": {
+      "sha256": "c8b51b834836ca5aadfc6fda71a023f91ee05aa05969029caee370adeb58dd9a",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticCurrentConstruction2011-6.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticCurrentConstruction2011-6.time": {
+      "sha256": "6976cc7c8b0be7068263b80a46d16d8609f998f6ca3bb625e075fa6ba49016cf",
+      "bytes": 50
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingBand-3.log": {
+      "sha256": "51ecca0e34176aadaa632fcd7663cf1e1eab8e3c1a4c7407c849da43da090da7",
+      "bytes": 309
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingBand-3.time": {
+      "sha256": "056d6388ae55bf350b4f349fae717d981ee80951fdf21aa1703285f5b359629d",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingRows-0.log": {
+      "sha256": "b9c4343197659565e25638b029e83be6e69fdcc9b5cb0b9225e1ad8e3d349a0b",
+      "bytes": 1545
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingRows-0.time": {
+      "sha256": "d7ce0e1f42f75547f00c4ed0a070c7ea52df9910e75f0d73596b3110d1876e4f",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingRows-1.log": {
+      "sha256": "b9c4343197659565e25638b029e83be6e69fdcc9b5cb0b9225e1ad8e3d349a0b",
+      "bytes": 1545
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingRows-1.time": {
+      "sha256": "65fbf44439f5e54a9effc1651a1c13a8fd6af2eab87d48383bbb87299fb1f286",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingRows-2.log": {
+      "sha256": "b9c4343197659565e25638b029e83be6e69fdcc9b5cb0b9225e1ad8e3d349a0b",
+      "bytes": 1545
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingRows-2.time": {
+      "sha256": "485feb121d8e3fcdded60ca88df68f82841f7e84e466bc2def4402beac7e381e",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingWord-4.log": {
+      "sha256": "f6d03a581da4a1d8d12e2aab5e92ffe96892d61a2d1f5db830cf14fc4acec00a",
+      "bytes": 3193
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-ArithmeticTilingWord-4.time": {
+      "sha256": "c0b3d62d6d6313d18c0644614461ed893238718e0374ee0f39f6ef753dfbf2de",
+      "bytes": 51
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-alt-alternate-interfaces.log": {
+      "sha256": "6b8c73df9df50549e657205cf5bebb9b61118128fe4cb63f68f39fd9fdd1f7c9",
+      "bytes": 44725
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-alt-global-simp.log": {
+      "sha256": "5d533adb83c30105ea686db01e3c6b019587321fc06adccc5e5c3ba5e6176b6a",
+      "bytes": 1649471
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-alt-names.log": {
+      "sha256": "b673d171ea5edede4b91505df7655cff898c5522e8b63eab4238c871aa12b309",
+      "bytes": 6743
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-alt-private.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-global-simp.log": {
+      "sha256": "5d533adb83c30105ea686db01e3c6b019587321fc06adccc5e5c3ba5e6176b6a",
+      "bytes": 1649471
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-interfaces.log": {
+      "sha256": "30a2f081ec12b2b108fa681a7b5dbc61a09e204980f30abeaeb511ae093f099a",
+      "bytes": 44525
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-names.log": {
+      "sha256": "b673d171ea5edede4b91505df7655cff898c5522e8b63eab4238c871aa12b309",
+      "bytes": 6743
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-private.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/baseline-records.json": {
+      "sha256": "dde56259bfa71826ab92efa0ba9f58380043fae59e4bd2c50bdd67e81c829ca7",
+      "bytes": 32565
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticConstructionAssembly-5.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticConstructionAssembly-5.time": {
+      "sha256": "b18fd00c2fbb08e59195d28280348f431b5f207a6743c6541b934ef53df5f2ff",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticCurrentConstruction2011-6.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticCurrentConstruction2011-6.time": {
+      "sha256": "deb72eb4425512425682a37e0c8684eb0d3f9003921285185e3b110af2acd411",
+      "bytes": 50
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingBand-3.log": {
+      "sha256": "af3227ac994c9d179d84870c6f3844390795087e5b7b2884f1932b4a6736a315",
+      "bytes": 306
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingBand-3.time": {
+      "sha256": "167f497c5f38bf39d055a69ec96d85bd92a2a5a0f639e5fffb7b03874c0c95d4",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingRows-0.log": {
+      "sha256": "1d012aeade67ae1b1123838a9ce2dc6df15a570b28ce05665d6c22b96f0eb929",
+      "bytes": 1536
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingRows-0.time": {
+      "sha256": "51d2d5931b76cb5b9faa74f504b2409fc1dcaf93af168ada33e01a59dda79201",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingRows-1.log": {
+      "sha256": "1d012aeade67ae1b1123838a9ce2dc6df15a570b28ce05665d6c22b96f0eb929",
+      "bytes": 1536
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingRows-1.time": {
+      "sha256": "98b029695e524490596f7120f968e1036a8757670220816d571036b33c3d193d",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingRows-2.log": {
+      "sha256": "1d012aeade67ae1b1123838a9ce2dc6df15a570b28ce05665d6c22b96f0eb929",
+      "bytes": 1536
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingRows-2.time": {
+      "sha256": "39c49f8a380addcd7ee71a59f3bf10705aacf5a4ecf3e964fcaa83a55fdc87d4",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingWord-4.log": {
+      "sha256": "77f6d787f70700f87bc139c6dd36cb2a9204f77eae0b9244b0db9f78ac00e0a4",
+      "bytes": 3166
+    },
+    "rowrel-sharing-evidence-20261028/records/final-ArithmeticTilingWord-4.time": {
+      "sha256": "0e047035cb3bd3b543d8371375aaef9605f77ebb4b0db3b30b47523e2bf6ee8f",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/final-global-simp.log": {
+      "sha256": "5d533adb83c30105ea686db01e3c6b019587321fc06adccc5e5c3ba5e6176b6a",
+      "bytes": 1649471
+    },
+    "rowrel-sharing-evidence-20261028/records/final-interfaces.log": {
+      "sha256": "30a2f081ec12b2b108fa681a7b5dbc61a09e204980f30abeaeb511ae093f099a",
+      "bytes": 44525
+    },
+    "rowrel-sharing-evidence-20261028/records/final-names.log": {
+      "sha256": "07c14c267689b4695280038bee94d7baf049aaa7b55484e0cd1efffb4775612f",
+      "bytes": 6940
+    },
+    "rowrel-sharing-evidence-20261028/records/final-private.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/final-records.json": {
+      "sha256": "6deda1a7c605b5b60d60d60eb25971685abc489a1cda6347c697c5853f03d0fb",
+      "bytes": 32289
+    },
+    "rowrel-sharing-evidence-20261028/records/full-prototype.log": {
+      "sha256": "950755286a14a8a957e83c962d0523e146df2549bdd4187a7a6d1b1937696b6b",
+      "bytes": 1506
+    },
+    "rowrel-sharing-evidence-20261028/records/full-prototype.time": {
+      "sha256": "7fa554cab92a18b4818378a2a108b95fb006dc07fed12c68a5d5fa0871b3f593",
+      "bytes": 52
+    },
+    "rowrel-sharing-evidence-20261028/records/global-simp-records.json": {
+      "sha256": "bdcec55058b1f6833fdf9b1603bcecfc956186363ffad2d8cab062b9e9aa0c1e",
+      "bytes": 2381
+    },
+    "rowrel-sharing-evidence-20261028/records/global-simp.lean": {
+      "sha256": "16a16fc0e727d1777c2ff8d032f5a57e342fd521c5fbba5d06761e411166a191",
+      "bytes": 678
+    },
+    "rowrel-sharing-evidence-20261028/records/input-pin-audit.json": {
+      "sha256": "a0aa672fe314334b516301168e17077c2a88a13624ae8404c2dfe5e3d794cc85",
+      "bytes": 25836
+    },
+    "rowrel-sharing-evidence-20261028/records/interfaces.lean": {
+      "sha256": "f66759b24b9dce824d32fa4fea0a12583ad5f750c9f9891a540bd3cc0cb4f688",
+      "bytes": 7967
+    },
+    "rowrel-sharing-evidence-20261028/records/name-diff.json": {
+      "sha256": "954d63246736837a8cd62681dec44b3a107b0a679eb6f8cdc713c6c96cbb92d9",
+      "bytes": 285
+    },
+    "rowrel-sharing-evidence-20261028/records/names.lean": {
+      "sha256": "50b08269df0729567739344e3fad4f4c23213df69d2f9606ebb9c2cacd539225",
+      "bytes": 1029
+    },
+    "rowrel-sharing-evidence-20261028/records/package.py": {
+      "sha256": "3fd1e1df68655d594c449e896a6fded27c7e3ea26a64c29eb68996e82ddc8153",
+      "bytes": 6911
+    },
+    "rowrel-sharing-evidence-20261028/records/private.lean": {
+      "sha256": "919d2bd201477d34e2835468b6cbe8d92ff036726f2aa23e68e6b237e9db997d",
+      "bytes": 411
+    },
+    "rowrel-sharing-evidence-20261028/records/probe-records.json": {
+      "sha256": "8b21695647b5b5d362c258727e9269457c9bd96cd925198c5705b7c49ff7c4c7",
+      "bytes": 8849
+    },
+    "rowrel-sharing-evidence-20261028/records/probe.lean": {
+      "sha256": "ece8c957bfb48a2958117d833d592bf4fc9cb2d19f8002483a48a1015fa13dc1",
+      "bytes": 483
+    },
+    "rowrel-sharing-evidence-20261028/records/probe.log": {
+      "sha256": "be1275a49d75201135ae75f659b2bb3a2103d85ef9d4539434887779ae80601b",
+      "bytes": 202
+    },
+    "rowrel-sharing-evidence-20261028/records/probe2.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/probe3.lean": {
+      "sha256": "2dc4a626b891c5724b86bc257b18a654decf2dbd81d83364cb95e018ca81b763",
+      "bytes": 957
+    },
+    "rowrel-sharing-evidence-20261028/records/probe3.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/probe5.lean": {
+      "sha256": "1195449d4593698cf495dd114b7c67f0dc8c9fa11fe5726e42d72d55477de6a2",
+      "bytes": 1226
+    },
+    "rowrel-sharing-evidence-20261028/records/probe5.log": {
+      "sha256": "584581dad1dd777ce091138fd184efebda5a87a2ab77cd635b2a436c03ce94d0",
+      "bytes": 256
+    },
+    "rowrel-sharing-evidence-20261028/records/probe5.time": {
+      "sha256": "dbd17cdf9a1c51dbda4fc71dea115aa87b5bcb5256ce1e72eff1ac80c89a3e8c",
+      "bytes": 38
+    },
+    "rowrel-sharing-evidence-20261028/records/probe6.lean": {
+      "sha256": "946cc2cccd637bdfe8ec980349cd97b23e53b43a48efde5b0c2c42fb1276b012",
+      "bytes": 1222
+    },
+    "rowrel-sharing-evidence-20261028/records/probe6.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/probe6.time": {
+      "sha256": "9e0fa86c24c95ccf242ef1e48481f2cf3b35e5777bd373418cf80bf27599a872",
+      "bytes": 38
+    },
+    "rowrel-sharing-evidence-20261028/records/probe7.lean": {
+      "sha256": "239fd0955aadba0c3c7b587ceafdbbe3df26803c12df5d1a0a23beeca596c1ed",
+      "bytes": 1165
+    },
+    "rowrel-sharing-evidence-20261028/records/probe7.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "rowrel-sharing-evidence-20261028/records/probe7.time": {
+      "sha256": "c66d02dc6c5319fa5b02e0935d5a5532b0f51ff6916402f591e10bd4c92d87eb",
+      "bytes": 38
+    },
+    "rowrel-sharing-evidence-20261028/records/probes.py": {
+      "sha256": "f9fe5898c701c560652c8d1378771aa10701309f7e9477d79100701451257adb",
+      "bytes": 1971
+    },
+    "rowrel-sharing-evidence-20261028/records/replay.py": {
+      "sha256": "a110314300c493f68fdc49ac339703444e7ccca637504a419407585787d873e5",
+      "bytes": 2954
+    },
+    "rowrel-sharing-evidence-20261028/records/timing-summary.json": {
+      "sha256": "307fbae4e41e7b4619cea54c434eea3f009a3603bb2c9d6537018d0309d5175d",
+      "bytes": 736
+    },
+    "rowrel-sharing-evidence-20261028/sources/alternate/DiophantineConsistency/ArithmeticConstructionAssembly.lean": {
+      "sha256": "1cc5bd39c814ab497fd326ec091265fa8f3969e46f54712b9c928b3f45eaba2f",
+      "bytes": 21409
+    },
+    "rowrel-sharing-evidence-20261028/sources/alternate/DiophantineConsistency/ArithmeticCurrentConstruction2011.lean": {
+      "sha256": "a3ca72629ddbd95656914e0137e2909f611553f99bb2a3a19c26d3a76a6b88fe",
+      "bytes": 2416
+    },
+    "rowrel-sharing-evidence-20261028/sources/alternate/DiophantineConsistency/ArithmeticTilingBand.lean": {
+      "sha256": "2536c40a29f08f13c3e4787639c0d622151c4255bfd3278c2c54909db5949c4b",
+      "bytes": 9901
+    },
+    "rowrel-sharing-evidence-20261028/sources/alternate/DiophantineConsistency/ArithmeticTilingRows.lean": {
+      "sha256": "b4c1ec12bfd125167c15d20b756735e605c4d6a963ac7270eacec8bb87a27876",
+      "bytes": 17926
+    },
+    "rowrel-sharing-evidence-20261028/sources/alternate/DiophantineConsistency/ArithmeticTilingWord.lean": {
+      "sha256": "b412f70d7089bd9387b00cfa6a5d82b75baaf3cf9d665d85ce9f1e8b8e64c049",
+      "bytes": 16221
+    },
+    "rowrel-sharing-evidence-20261028/sources/baseline/DiophantineConsistency/ArithmeticConstructionAssembly.lean": {
+      "sha256": "1cc5bd39c814ab497fd326ec091265fa8f3969e46f54712b9c928b3f45eaba2f",
+      "bytes": 21409
+    },
+    "rowrel-sharing-evidence-20261028/sources/baseline/DiophantineConsistency/ArithmeticCurrentConstruction2011.lean": {
+      "sha256": "a3ca72629ddbd95656914e0137e2909f611553f99bb2a3a19c26d3a76a6b88fe",
+      "bytes": 2416
+    },
+    "rowrel-sharing-evidence-20261028/sources/baseline/DiophantineConsistency/ArithmeticTilingBand.lean": {
+      "sha256": "2536c40a29f08f13c3e4787639c0d622151c4255bfd3278c2c54909db5949c4b",
+      "bytes": 9901
+    },
+    "rowrel-sharing-evidence-20261028/sources/baseline/DiophantineConsistency/ArithmeticTilingRows.lean": {
+      "sha256": "6de8bd53c357640bc8fa5bdd6a6dcec2847c2d2f672a1a09f9ce7225156af523",
+      "bytes": 19701
+    },
+    "rowrel-sharing-evidence-20261028/sources/baseline/DiophantineConsistency/ArithmeticTilingWord.lean": {
+      "sha256": "b412f70d7089bd9387b00cfa6a5d82b75baaf3cf9d665d85ce9f1e8b8e64c049",
+      "bytes": 16221
+    },
+    "rowrel-sharing-evidence-20261028/sources/final/DiophantineConsistency/ArithmeticConstructionAssembly.lean": {
+      "sha256": "1cc5bd39c814ab497fd326ec091265fa8f3969e46f54712b9c928b3f45eaba2f",
+      "bytes": 21409
+    },
+    "rowrel-sharing-evidence-20261028/sources/final/DiophantineConsistency/ArithmeticCurrentConstruction2011.lean": {
+      "sha256": "a3ca72629ddbd95656914e0137e2909f611553f99bb2a3a19c26d3a76a6b88fe",
+      "bytes": 2416
+    },
+    "rowrel-sharing-evidence-20261028/sources/final/DiophantineConsistency/ArithmeticTilingBand.lean": {
+      "sha256": "2536c40a29f08f13c3e4787639c0d622151c4255bfd3278c2c54909db5949c4b",
+      "bytes": 9901
+    },
+    "rowrel-sharing-evidence-20261028/sources/final/DiophantineConsistency/ArithmeticTilingRows.lean": {
+      "sha256": "d2d1aee8717c216c952c8ef6f2985f45354fed6bfe26a4af906260a5485e5867",
+      "bytes": 17983
+    },
+    "rowrel-sharing-evidence-20261028/sources/final/DiophantineConsistency/ArithmeticTilingWord.lean": {
+      "sha256": "b412f70d7089bd9387b00cfa6a5d82b75baaf3cf9d665d85ce9f1e8b8e64c049",
+      "bytes": 16221
+    }
+  },
+  "independent_probes": {
+    "file": "independent-probes.zip",
+    "sha256": "0c6ae27a6bee3468e2e6ece4ff9f56fab8a1138fffbbebd79921a316f1e6f27c",
+    "members": {
+      "rowrel-independent-audit.py": {
+        "sha256": "e02b0c946ce71184e3e51d730b434c5093ed3920b37ecfc2739673e8d5218d39",
+        "bytes": 1833
+      },
+      "rowrel-independent-audit.log": {
+        "sha256": "4b0f90c8e4c4b69032288627e904ab8e837a413c3108732320852e1706b33aa6",
+        "bytes": 1173
+      },
+      "rowrel-independent-generated.lean": {
+        "sha256": "e3af1d703f7472cd60ef1ed65f7569c6a7f50bd1853c6907c3b1e70c8b128a77",
+        "bytes": 374
+      },
+      "rowrel-independent-generated.py": {
+        "sha256": "2a79bc300a83a41b99761de8d5e6cd0ecf03c20c2636ee20f9d516bb2405c536",
+        "bytes": 855
+      },
+      "rowrel-independent-generated.json": {
+        "sha256": "97431ac9c0307a26f6a71ecf6069a5fdf56287966c84629be90e36edc67c05a4",
+        "bytes": 1559
+      },
+      "rowrel-independent-generated.log": {
+        "sha256": "329c3d131caa322e4842f428bea8b170b335e78a9c7e0638af97eead66363350",
+        "bytes": 1756
+      },
+      "rowrel-independent-pins.py": {
+        "sha256": "5b583ec0a7592bb88c87bb4d0cb7f1a2d92c5c85d5a9a981a04bf5d303b9dc0d",
+        "bytes": 2352
+      },
+      "rowrel-independent-pins.json": {
+        "sha256": "a0aa672fe314334b516301168e17077c2a88a13624ae8404c2dfe5e3d794cc85",
+        "bytes": 25836
+      },
+      "rowrel-independent-pins.log": {
+        "sha256": "11f86d3c72a0d4f3f454ec0535265b4429d5ee62887491c21ca772e7eee7dc26",
+        "bytes": 23
+      }
+    }
+  },
+  "independent_proof_review": {
+    "file": "independent-proof-review.txt",
+    "sha256": "6fe035aa28fccb494fee9bf145bd45ac1068528f38604ffc9030416204910f3c"
+  },
+  "independent_archive_review": {
+    "file": "independent-archive-review.txt",
+    "sha256": "340564146bee70043f25254f01e80aee4e73ba774a8fa9f958f55ba07c559e0f"
+  }
+}

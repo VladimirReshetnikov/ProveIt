@@ -1379,5 +1379,15 @@ endpoint pass. The 38 target names, 24 public type/axiom reports, 29,189 global
 simp entries and bounded endpoint reports match. Two initial malformed-overlay
 attempts are excluded, and transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-tape-return-sharing-evidence/BUNDLE.json).
 
+The tiling row relation simplification `8ee624a4d0` removes 47 net Lean lines,
+bringing the reviewed series to 9673. Its original module came from the
+Claude-coauthored commit `3cd04ac37f`. The existing halt, head and receiver
+guards now drive one direct case analysis. Three paired target builds and four
+paired tiling/construction clients pass. All 59 old declaration reports and
+29,730 global simp entries match; two new generated auxiliaries are not default
+simp rules. Paired timing samples show no substantial local regression, but
+are not a controlled benchmark. Superseded and failed tactics are retained,
+and transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-rowrel-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
