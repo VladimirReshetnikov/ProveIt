@@ -1632,5 +1632,23 @@ names, 294 public/generated reports, private reports, 29,279 simp entries and
 13,370 instances match. Direct providers are source-pinned and the wider
 closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-dag-zero-skip-evidence/BUNDLE.json).
 
+The binary carry boundary simplification `a3af2f89c7` removes four net Lean
+lines, bringing the reviewed series to 9980. The affected proof originated in
+Claude-coauthored commit `5fcd5632b3`. The proof shares its out-of-range bound
+and uses nonnegative inequalities for the zero-sum case. Paired target,
+RankForcing and Saturation builds pass with identical client objects; all 14
+declaration reports, 28,971 simp entries and 13,167 instances match. Another
+direct client, WindowDigits, was not rebuilt; the wider closure is cached. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261029-binary-carry-evidence/BUNDLE.json).
+
+The carrier positive-zero equivalence sharing `2ad82db137` removes seven net
+Lean lines, bringing the reviewed series to 9987. Existing pointwise
+equivalences are lifted through the same positive witness. Paired target and
+three direct module client builds pass with identical client objects; all 18 target
+declaration reports, 55,241 simp entries and 23,370 instances match. Four
+provider inputs lack current-source receipts and the wider closure includes an
+older SignedPellResidue object. The directly importing umbrella was not rebuilt.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-carrier-set-iff-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

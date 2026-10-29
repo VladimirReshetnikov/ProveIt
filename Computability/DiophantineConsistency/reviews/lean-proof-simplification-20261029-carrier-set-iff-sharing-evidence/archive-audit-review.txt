@@ -1,0 +1,47 @@
+Independent archive audit: carrier-set-iff sharing
+
+The current bundle passes CRC, exact membership, and all 93 member sizes and
+SHA-256 hashes. The archive SHA-256 is
+`f2a071b68ac494f127d1030ae951f909bf514c96cf9035c1b6786aa03cdc28f4`;
+the BUNDLE.json SHA-256 before adding this audit metadata is
+`6c0c484a77f34c1a5f68e27608752128df373d16c3986a65022450b90e948bde`.
+The standalone and archived independent reviews agree. Target snapshots match
+parent `a3af2f89c7c99436a415920dfe75c4e302c4ac39` and commit
+`2ad82db137524389a91abab7807f598626e380fa`; three client snapshots match their
+respective commit sources.
+
+All eight paired target/client receipts and archived log/time/source hashes
+are consistent. The two direct target providers, two other client providers,
+and CurrentMaskData prerequisite have successful current-source build receipts;
+the previously refreshed ThirteenFreshSeed source/object receipt matches the
+input to ThirteenCarrierComplete. The three tested client object hashes match
+between phases, and the currently available external .olean files match the
+recorded eight object hashes. Five paired target output reports are identical:
+18 namespace declarations and types/axioms, definition equations, an empty
+private census, 55,241 simp lines and 23,370 instance lines. Paired target
+repeat receipts and their recorded direct-input hashes match the main builds.
+The single-sample/shared-load timing limitation is correctly described.
+
+The first CurrentMasks2011 build failed against a cached object missing
+`lowSupport_range_Ico_disjoint`; its receipt, log and time are included. The
+successful subsequent refresh is separately recorded. The four specifically
+identified provider inputs LowMaskData, NativeSourceMask, NativeRadixDigits,
+and Carrier66Source lack matched current-source build receipts within this
+experiment; SignedPellResidue remains an older cached object in the separately
+recorded ThirteenFreshSeed provider chain. Its old source/object inventory and
+current source hash check out, but the inventory is not a fresh build receipt.
+The wider project and package closure remains cached.
+
+The first manifest wording claimed all three direct clients. Audit found that
+the untested umbrella `Computability/DiophantineConsistency/Lean/DiophantineConsistency.lean`
+also directly imports the target. The current manifest correctly restricts the
+claim to the three clients under the module directory and discloses the
+untested umbrella. The bundle contains no .olean files: portable validation
+can inspect object hashes in receipts but cannot independently verify their
+bytes or replay a clean closure without external inputs. Probe coverage also
+does not establish every environment extension or downstream client.
+
+Reproducible archive and optional external-object checks:
+`archive-audit.py` and `archive-audit-output.txt` in this directory. The optional external-object checks require the original objects.
+No repository source files were modified; the audit report, script and log
+were added to the evidence directory for review.
