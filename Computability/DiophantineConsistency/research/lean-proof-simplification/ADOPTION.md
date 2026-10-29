@@ -1515,5 +1515,15 @@ match current-source receipts, with a historical workspace-source sampling
 exception recorded; the broader closure remains cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-controller-stride-period-evidence/BUNDLE.json).
 
+The safe suffix sharing `5e81225d7d` removes two net Lean lines, bringing
+the reviewed series to 9862. The original proof was introduced in
+Claude-coauthored commit `16bbf502706`. A shared suffix-zero invariant replaces
+two repeated contradictions while retaining both safety guards. Paired target
+and Assembly builds pass with identical client objects; all six target reports,
+38,804 simp entries and 16,567 instances match. The refreshed target pair used
+58.88s baseline and 32.11s final user CPU under shared load. Current block,
+controller and Wang-plane providers were refreshed; older Pell, HalfBinomial
+and tiling objects remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-variation-tail-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
