@@ -1,3 +1,4 @@
+import DiophantineConsistency.ArithmeticUnaryRecursion
 import Foundation.FirstOrder.Arithmetic.HFS.PRF
 import Mathlib.Tactic.Ring
 
@@ -38,13 +39,9 @@ noncomputable def run (time b : V) : V := construction.result ![b] time
 def runDef : 𝚺₁.Semisentence 3 := blueprint.resultDef
 def runDeltaDef : 𝚫₁.Semisentence 3 := blueprint.resultDeltaDef
 
-instance run_defined : 𝚺₁-Function₂[V] run via runDef := .mk fun e => by
-  have he : (fun i : Fin 1 => e i.succ.succ) = ![e 2] := funext <| Fin.forall_fin_one.mpr rfl
-  have h := (construction (V := V)).result_defined.df e
-  change blueprint.resultDef.val.Evalb e ↔
-    e 0=construction.result (fun i : Fin 1 => e i.succ.succ) (e 1) at h
-  rw [he] at h
-  exact h
+instance run_defined : 𝚺₁-Function₂[V] run via runDef :=
+  ArithmeticUnaryRecursion.result_defined blueprint construction
+
 instance run_defined_delta : 𝚫₁-Function₂[V] run via runDeltaDef := run_defined.graph_delta
 instance run_definable : 𝚺₁-Function₂[V] run := run_defined.to_definable
 
