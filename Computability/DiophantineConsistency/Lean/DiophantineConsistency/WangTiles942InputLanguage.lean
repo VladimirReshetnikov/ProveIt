@@ -53,9 +53,9 @@ theorem north_operating_iff_transition {t : Tile} (ht : Allowed t)
   have hb := operating_head_bounds q b
   constructor
   · intro hn
-    cases ht with
-    | start => simp only [start] at hn; omega
-    | transition j =>
+    cases ht
+    case start => simp only [start] at hn; omega
+    case transition j =>
         have hj : j = inputIndex q b := by
           apply Fin.ext
           rw [inputIndex_val]
@@ -64,22 +64,18 @@ theorem north_operating_iff_transition {t : Tile} (ht : Allowed t)
           omega
         subst j
         rfl
-    | pass a c =>
+    case pass a c =>
         have ha := a.isLt
         have hc := c.isLt
         simp only at hn
         omega
-    | receive d p hp c => have hc := c.isLt; simp only at hn; omega
-    | finish a c =>
+    case receive d p hp c => have hc := c.isLt; simp only at hn; omega
+    case finish a c =>
         have ha := a.isLt
         have hc := c.isLt
         simp only at hn
         omega
-    | initLeft => simp only at hn; omega
-    | initHead => simp only at hn; omega
-    | initRight => simp only at hn; omega
-    | reset p hp => simp only at hn; omega
-    | seam a c => simp only at hn; omega
+    all_goals (simp only at hn; omega)
   · rintro rfl
     exact indexed_transition_input q b
 
@@ -95,17 +91,13 @@ theorem north_halt_iff_pass_or_finish {t : Tile} (ht : Allowed t) (b : Fin 2) :
   constructor
   · intro hn
     rw [halt_head_eq] at hn
-    cases ht with
-    | start => simp only [start] at hn; omega
-    | transition j => have hj := transition_north_bound j; omega
-    | pass a c => exact Or.inl (congrArg (fun n : ℕ => (⟨0,n,0,n⟩ : Tile)) hn)
-    | receive d p hp c => have hc := c.isLt; simp only at hn; omega
-    | finish a c => exact Or.inr (congrArg (fun n : ℕ => (⟨0,n,0,438⟩ : Tile)) hn)
-    | initLeft => simp only at hn; omega
-    | initHead => simp only at hn; omega
-    | initRight => simp only at hn; omega
-    | reset p hp => simp only at hn; omega
-    | seam a c => simp only at hn; omega
+    cases ht
+    case start => simp only [start] at hn; omega
+    case transition j => have hj := transition_north_bound j; omega
+    case pass a c => exact Or.inl (congrArg (fun n : ℕ => (⟨0,n,0,n⟩ : Tile)) hn)
+    case receive d p hp c => have hc := c.isLt; simp only at hn; omega
+    case finish a c => exact Or.inr (congrArg (fun n : ℕ => (⟨0,n,0,438⟩ : Tile)) hn)
+    all_goals (simp only at hn; omega)
   · rintro (rfl | rfl) <;> exact (halt_head_eq b).symm
 
 /-- A plain-symbol input may pass, finish, or receive a head from an actual
@@ -117,21 +109,17 @@ theorem north_plain_iff {t : Tile} (ht : Allowed t) (b : Fin 2) :
   have hb := b.isLt
   constructor
   · intro hn
-    cases ht with
-    | start => simp only [start] at hn; omega
-    | transition j => rw [transition_north_eq_index] at hn; omega
-    | pass a c => exact Or.inl (congrArg (fun n : ℕ => (⟨0,n,0,n⟩ : Tile)) hn)
-    | receive d q hq c =>
+    cases ht
+    case start => simp only [start] at hn; omega
+    case transition j => rw [transition_north_eq_index] at hn; omega
+    case pass a c => exact Or.inl (congrArg (fun n : ℕ => (⟨0,n,0,n⟩ : Tile)) hn)
+    case receive d q hq c =>
         have hc : c = b := Fin.ext hn
         subst c
         exact Or.inr (Or.inr ⟨d,q,hq,rfl⟩)
-    | finish a c => exact Or.inr (Or.inl
+    case finish a c => exact Or.inr (Or.inl
         (congrArg (fun n : ℕ => (⟨0,n,0,438⟩ : Tile)) hn))
-    | initLeft => simp only at hn; omega
-    | initHead => simp only at hn; omega
-    | initRight => simp only at hn; omega
-    | reset p hp => simp only at hn; omega
-    | seam a c => simp only at hn; omega
+    all_goals (simp only at hn; omega)
   · rintro (rfl | rfl | ⟨d,q,hq,rfl⟩) <;> rfl
 
 end DiophantineConsistency.WangTiles942InputLanguage
