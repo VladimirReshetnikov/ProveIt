@@ -136,11 +136,8 @@ private theorem strong_pair (a i c f : V) :
   ring
 private theorem auxiliary_negative (S u y : V) :
     S*S*u*u+y*y+1≠S*S*y*y := by
-  intro h
-  apply ArithmeticNegativeNorms.square_aux_ne_negative S u y
-  calc
-    _=S*S*u*u+y*y+1:=by ring
-    _=S*S*y*y:=h
+  simpa only [mul_assoc, mul_comm, mul_left_comm] using
+    ArithmeticNegativeNorms.square_aux_ne_negative S u y
 
 private theorem multiply_scale (a : V) (p q : Pair V) :
     multiply p (scale a q)=scale a (multiply p q) := by
