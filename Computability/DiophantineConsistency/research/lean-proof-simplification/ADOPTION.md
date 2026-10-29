@@ -1486,5 +1486,24 @@ all seven target declaration reports and 29,056 global simp entries match.
 Direct project providers match prior current-source receipts; the transitive
 closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-halfbinom-cancel-evidence/BUNDLE.json).
 
+The initial-machine-step sharing `1518cb44ce` removes eight net Lean lines,
+bringing the reviewed series to 9840. Wang soundness was introduced in
+Claude-coauthored commit `64422b55f4`. The initial action and first step are
+proved once and reused by both existing downstream theorems. Paired builds and
+a TilingTable client pass; 148 existing co-import and 73 client declaration
+reports, 29,730 simp entries and 13,383 instances match, though client objects
+differ. Two public helpers and one generated auxiliary are added; co-import
+short names were checked within the documented scope. Transitive providers
+remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-initial-sharing-evidence/BUNDLE.json).
+
+The bounded row-witness sharing `fc85f9a87d` removes 11 net Lean lines,
+bringing the reviewed series to 9851. Existing binary and unary constructors
+replace repeated tag-specific witnesses, retaining all tag and lookup guards.
+Paired target and two clients pass with identical client objects against a
+refreshed nearby provider chain; all 60 declaration reports, 25,317 simp
+entries and 11,807 instances match. The slower initial tactic variant was
+superseded. The changed branch bodies predate a Claude-coauthored adjacent edit;
+the remaining transitive closure is cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-annotated-bound-witness-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
