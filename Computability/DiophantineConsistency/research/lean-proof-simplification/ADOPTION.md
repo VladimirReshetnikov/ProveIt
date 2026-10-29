@@ -1742,5 +1742,20 @@ BinomLegendre object bytes differ for an unknown reason, while their checked
 declarations and registrations match. The transitive closure remains cached.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-binary-half-direct-evidence/BUNDLE.json).
 
+The Pell power recovery order cleanup `dab24627b9` removes six net Lean lines,
+bringing the reviewed series to 10044. Two private wrappers are replaced by
+imported order lemmas. Paired target and three direct clients pass with
+identical client objects; retained declaration and registration reports match.
+The separate combined FirstNorm-to-PowerRecovery replay also passes. Its
+transitive closure contains an older PellResidueClasses object. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-pell-recovery-order-evidence/BUNDLE.json).
+
+The first Pell norm bound simplification `541e94df32` removes two net Lean
+lines, bringing the reviewed series to 10046. Positivity and the existing upper
+bound imply the ordinate is one, eliminating an impossible zero branch. Paired
+target and two direct clients pass with identical client objects. The combined
+replay through the adopted PowerRecovery proof passes with identical objects;
+the wider dependency closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-first-positive-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
