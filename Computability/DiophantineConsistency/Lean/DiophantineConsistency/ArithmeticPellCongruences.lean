@@ -28,9 +28,8 @@ theorem residue_quotients (time b m : V) (hm : m∣b+1) :
     obtain ⟨r,s,hx,hy⟩ := ih
     refine ⟨r+w*xcoord time b+w*(b+3)*ycoord time b,
       r+s+w*ycoord time b,?_,?_⟩
-    · simp only [x_succ,hbase,hd,hx,hy]
-      ring
-    · simp only [y_succ,hbase,hx,hy]
+    all_goals
+      simp only [x_succ,y_succ,hbase,hd,hx,hy]
       ring
 
 theorem residue_divisibility (time b m : V) (hm : m∣b+1) :
@@ -52,10 +51,8 @@ theorem first_transport (time b Q R k : V) (hb : b+1=2*Q)
   have hm : 2*Q∣b+1 := ⟨1,by simpa only [mul_one] using hb⟩
   obtain ⟨_,s,_,hy⟩ := residue_quotients time b (2*Q) hm
   refine ⟨s,?_⟩
-  calc
-    k=2*ycoord time b := hk
-    _=2*time+(4*Q)*s := by rw [hy]; ring
-    _=R+1+(4*Q)*s := by rw [←hR]
+  rw [hk,hy,hR]
+  ring
 
 theorem first_difference_four (time b Q R k : V) (hb : b+1=2*Q)
     (hk : k=2*ycoord time b) (hR : R+1=2*time) :
