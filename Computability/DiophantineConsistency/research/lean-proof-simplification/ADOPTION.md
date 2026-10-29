@@ -1238,5 +1238,17 @@ lacks a paired baseline. Initial failed prototypes and an incomplete audit
 observation are retained. Independent proof, graph and receipt reviews pass.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-claude-transport-sharing-evidence/BUNDLE.json).
 
+The symbolic oracle dispatch sharing `86c4490d08` removes 24 net lines,
+bringing the reviewed series to 9438. The bounded module originated in the
+Claude-coauthored commit `11f7ea173b`. A relation-parametric proof now serves
+both versions while preserving the branch guards, positive-spare hypothesis
+and exact `boxW` bound. Paired target and client builds pass, as do comparisons
+of 160 stable declaration type and axiom reports and default simp membership.
+One unstable generated proof auxiliary was renamed. Cached upstream inputs and
+external libraries remain precompiled; direct-input hashes were sampled after
+the builds. An invalid initial interface receipt is retained, with fresh stable
+reruns replacing it. Independent proof review confirms the branch conditions
+and bound. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-oracle-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
