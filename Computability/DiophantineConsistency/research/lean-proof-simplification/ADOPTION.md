@@ -2173,5 +2173,14 @@ no nonignored Lean/Python references were found. Existing warnings match and the
 wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-cell-phase-odd.md)
 records hashes and external paths without raw logs or objects.
 
+The annotated form-constructor reuse `056ae83a35` removes nine net Lean lines,
+bringing the reviewed series to 10427. Existing binary and unary form definitions
+are reused as soundness witnesses across tag cases. Paired target and nine tested
+client/intermediate builds pass with identical client objects; 486 checked
+reports and sampled registrations match. Three external project providers have
+source-matched receipts; the wider closure remains cached. The compact [evidence
+note](../../reviews/lean-proof-simplification-20261029-annotated-rename-construct.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
