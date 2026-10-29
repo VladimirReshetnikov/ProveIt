@@ -2020,5 +2020,14 @@ the wider closure remains cached. Final-client input records sample the baseline
 workspace source, while the target build separately pins the final source and
 object. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-window-positive-evidence/BUNDLE.json).
 
+The common Pell unit positivity simplification `dd1410705b` removes twelve
+net Lean lines, bringing the reviewed series to 10309. Existing positive
+coordinates and product facts replace three zero-contradiction arguments.
+Paired target and both direct-client builds pass with identical client objects;
+checked target reports and sampled registrations match. Direct project providers
+have source-matched receipts; the wider closure remains cached. The compact
+[evidence note](../../reviews/lean-proof-simplification-20261029-pell-common-positive.md)
+records hashes and external paths but does not include raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
