@@ -2126,5 +2126,13 @@ registrations match. The wider closure remains cached. The compact [evidence
 note](../../reviews/lean-proof-simplification-20261029-pell-x-gt-share.md)
 records hashes and external paths without raw logs or objects.
 
+The Pell upper-coordinate square comparison `fe8073db5a` removes two net Lean
+lines, bringing the reviewed series to 10368. A nonnegative square-order lemma
+replaces an indirect contradiction. Paired target and all three direct-client
+builds pass with identical client objects; checked declarations and sampled
+registrations match. Four project providers have source-matched receipts; the
+wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-power-y-upper.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
