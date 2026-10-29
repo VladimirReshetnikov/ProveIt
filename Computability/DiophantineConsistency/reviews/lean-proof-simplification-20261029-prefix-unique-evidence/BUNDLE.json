@@ -1,0 +1,374 @@
+{
+  "schema": "lean-proof-simplification-evidence-v1",
+  "source_commit": "714dc8e754cc0b0e19f30d89df5d76f6363f8b5c",
+  "source_parent": "286e23a75f6502f95926bc225b858e5612181daf",
+  "scope": "Use finite-sum characterization for prefix uniqueness",
+  "validation": "Paired target ArithmeticCellDecoding and direct client ArithmeticWholeField builds pass using refreshed current CellLocal and CellLabels objects. Rebuilt current CellTransfer against those objects produces exactly the direct object used. Eight object-pinned probes per phase report 69 common target declarations, 68 with identical type and axioms, one changed generated proof, two generated simp declarations removed and one proof added; 75 client declarations and sampled registrations match. Client objects differ.",
+  "limitations": [
+    "The target, direct client, and prior producer receipts do not establish a source-current transitive closure. Wider downstream clients were not rebuilt.",
+    "The removed generated names and changed generated proof name have no references in tracked Lean/Python search. Declaration reports and sampled registrations do not prove equality of proof bodies or all persistent extensions.",
+    "Compiled objects are omitted. Recorded build and probe paths refer to original temporary directories; full replay requires the external environment and object dependencies.",
+    "Both target builds issue the same one warning and both client builds the same eleven warnings after phase path and line-number normalization.",
+    "Original phase probe logs were omitted from the archive: recorded hashes match refreshed logs byte-for-byte, and original probe records are included."
+  ],
+  "archive": "inputs-and-logs.zip",
+  "archive_sha256": "b9fc205e8284f5f97c0656d15c29893dbacdb8db9185be7d9146f287cd706163",
+  "independent_review": {
+    "path": "independent-review.txt",
+    "sha256": "4930df282f4667c5885b4c82cf86a5212b970bba6a327eb545dd33c74b794b5e"
+  },
+  "members": {
+    "commit/baseline/ArithmeticCellDecoding.lean": {
+      "bytes": 13577,
+      "sha256": "45261f48c454d8230c8834761f88e613ad3a8056cf2045144dd378df4d26d1b3"
+    },
+    "commit/final/ArithmeticCellDecoding.lean": {
+      "bytes": 13397,
+      "sha256": "1146b4c394bc5fccd30b808465e2b85598960fa5d07a532e280234516f84b1a4"
+    },
+    "independent/original-audit.log": {
+      "bytes": 529,
+      "sha256": "52cfe0ae832db31b0db88f31d810a221215a7b71e782346f2051e575545e407b"
+    },
+    "independent/original-audit.py": {
+      "bytes": 4198,
+      "sha256": "a1380aab53b5ff5c7ce0f8ab4bce050256847e6897c3147f427f53e4db6b5b1b"
+    },
+    "independent/refresh-audit.log": {
+      "bytes": 667,
+      "sha256": "1f03c7ee5ba964fe768f4019c1904e22119ee474feb271d55a523088f57bfe45"
+    },
+    "independent/refresh-audit.py": {
+      "bytes": 6275,
+      "sha256": "309afbb0b578393abbc3e7528581ab4b1e761318b406d53c3b4ac152a6982af7"
+    },
+    "independent/review.txt": {
+      "bytes": 2731,
+      "sha256": "4930df282f4667c5885b4c82cf86a5212b970bba6a327eb545dd33c74b794b5e"
+    },
+    "original/baseline-probes.json": {
+      "bytes": 21427,
+      "sha256": "19088e44800cc484e17454cb7f63db56a4fe514f7989c5b8ab280922a9b60d34"
+    },
+    "original/baseline-records.json": {
+      "bytes": 12718,
+      "sha256": "7affefd93f75ce7cb5eb61f47c9cc585af585233cb67c56ac514dee5c1e736ca"
+    },
+    "original/final-probes.json": {
+      "bytes": 21259,
+      "sha256": "eeb6ee05a20e8aed45ad43c1af5ab82947b0b257f5d858646ea55f76c1ea0106"
+    },
+    "original/final-records.json": {
+      "bytes": 12610,
+      "sha256": "e41e57c9486a0cf6764cd885e6d00f7feef488f0d6b518d17a81af3e97e0b5ff"
+    },
+    "providers/binary-half-direct-final-supplement-records.json": {
+      "bytes": 11251,
+      "sha256": "bf3d64a68448f7a2abe9e293027d7dc945a65cbd95feb825b715f32665a83354"
+    },
+    "providers/cell-no-carry-refresh-records.json": {
+      "bytes": 11453,
+      "sha256": "c05475e92a223e367788649d7d701c74992840e3ef8864ac48160be16f45f882"
+    },
+    "providers/cell-selector-unit-final-records.json": {
+      "bytes": 9258,
+      "sha256": "ad13da72760df0e600fd8b9d31373f12ee41c702ab062566901ed2c3bcabd499"
+    },
+    "providers/cell-sum-unique-final-records.json": {
+      "bytes": 9324,
+      "sha256": "0059e8f9d33be7004819e0d4b9193bb9a6fd256fdaf31c52ea2e415c67700afd"
+    },
+    "providers/shared-modular-cancel-records.json": {
+      "bytes": 55095,
+      "sha256": "dbcffd99ff983fb26550f3098bb801fb3f5f11dcb44c425b21b74d80ec2a5062"
+    },
+    "refresh/ArithmeticCellDecoding-instances.lean": {
+      "bytes": 303,
+      "sha256": "1955a8568540e9fef6db064fe80da4131426c3a40c5397d09ef5061155132885"
+    },
+    "refresh/ArithmeticCellDecoding-interfaces.lean": {
+      "bytes": 499,
+      "sha256": "8b4e5036e4d71c2068fda3710730f1a480bbb95260a84be63551fc479cd73738"
+    },
+    "refresh/ArithmeticCellDecoding-names.lean": {
+      "bytes": 351,
+      "sha256": "d777c3c5181aa95dd0263f52e9abae57141d0627ad36c2ab9cad3fc554702a41"
+    },
+    "refresh/ArithmeticCellDecoding-simp.lean": {
+      "bytes": 517,
+      "sha256": "2756c21b3855cf0f77fe346a52834cf628565944297b1504a204fa1d884f856e"
+    },
+    "refresh/ArithmeticWholeField-instances.lean": {
+      "bytes": 301,
+      "sha256": "db31c4af01121c3c1180764d1942f14b76063bc9b46549e4c1f5338c86b467b8"
+    },
+    "refresh/ArithmeticWholeField-interfaces.lean": {
+      "bytes": 493,
+      "sha256": "eb2fb5bb49e652a3089c6f3e6edb58b80e48976f8097125103f793f8eda62941"
+    },
+    "refresh/ArithmeticWholeField-names.lean": {
+      "bytes": 345,
+      "sha256": "48939ee21901cff1f47a40fe7e46ed2f76f3311f77d5eecc16297c487ca5db2c"
+    },
+    "refresh/ArithmeticWholeField-simp.lean": {
+      "bytes": 515,
+      "sha256": "cb13ed41fa480f40b4894673cd3769a57db1354bc8fb6e5a682d3681c7ed42b3"
+    },
+    "refresh/README.txt": {
+      "bytes": 3448,
+      "sha256": "da9f226ac4faf2252a1bc063411fe7a392cce34ca7bfb66e0d54ce86feb2282b"
+    },
+    "refresh/audit.log": {
+      "bytes": 956,
+      "sha256": "3a501dc455c2969e9097c892b3579bd885f095d5a4a667359e68730f205f7758"
+    },
+    "refresh/audit.py": {
+      "bytes": 4849,
+      "sha256": "d112b20cdf388818f5c3ea9dbf6bec1b58d294fcba99ee330e1363a388625c06"
+    },
+    "refresh/baseline-ArithmeticCellDecoding-instances.log": {
+      "bytes": 797520,
+      "sha256": "44c0b62b3bb109a7abd668a4cd4d952e044567767f871f9ffbfea89332c42f82"
+    },
+    "refresh/baseline-ArithmeticCellDecoding-instances.time": {
+      "bytes": 50,
+      "sha256": "093d1f07074440718c642063e8c75586ab9c8b12db0530a4cabb837fe6c7d875"
+    },
+    "refresh/baseline-ArithmeticCellDecoding-interfaces.log": {
+      "bytes": 19855,
+      "sha256": "04665120622d585756f2f06b56aa01e5ae0b7a3411c5cb54950d6de39bc45754"
+    },
+    "refresh/baseline-ArithmeticCellDecoding-interfaces.time": {
+      "bytes": 50,
+      "sha256": "e1a4ef71a1f6f64725cc6151104b8c7c2e81745e17a8278d020a2a90c672f52a"
+    },
+    "refresh/baseline-ArithmeticCellDecoding-names.log": {
+      "bytes": 5165,
+      "sha256": "a4e42b9b02d697d098e85fb7f0cb7b7e6682191cf0e531a32ed6c61f8b2193c7"
+    },
+    "refresh/baseline-ArithmeticCellDecoding-names.time": {
+      "bytes": 50,
+      "sha256": "9ff822337495f02a923bb60ceed1d19c0026fdf3a07972641e0ff024aa5641c5"
+    },
+    "refresh/baseline-ArithmeticCellDecoding-simp.log": {
+      "bytes": 1834388,
+      "sha256": "8cb8c409daac7ef52097c83b748841b89dc7e2c9bc067e36ed513aee058e49bb"
+    },
+    "refresh/baseline-ArithmeticCellDecoding-simp.time": {
+      "bytes": 50,
+      "sha256": "173d048558b2c048bdeee044af16621692b54f2b90374a07a526a9dc2a9d689f"
+    },
+    "refresh/baseline-ArithmeticCellDecoding.log": {
+      "bytes": 513,
+      "sha256": "2427d20de5f3b6ecf541447c62fd5360e988d7c6f1ca580d76f84cd14aa8441d"
+    },
+    "refresh/baseline-ArithmeticCellDecoding.time": {
+      "bytes": 50,
+      "sha256": "e0afff5f2fbc1d02b7063e6e8a973a09b75970335e58fb4b9efe7b1523ef806f"
+    },
+    "refresh/baseline-ArithmeticWholeField-instances.log": {
+      "bytes": 797520,
+      "sha256": "44c0b62b3bb109a7abd668a4cd4d952e044567767f871f9ffbfea89332c42f82"
+    },
+    "refresh/baseline-ArithmeticWholeField-instances.time": {
+      "bytes": 50,
+      "sha256": "b8d206a272149791a92f6d5d6f03edd137280c5d378fdaa042e247b771fdc078"
+    },
+    "refresh/baseline-ArithmeticWholeField-interfaces.log": {
+      "bytes": 23282,
+      "sha256": "8948e1fde781192e5b96ca8978dae4c1c7b1084c86b4789e373a5e9604f2676d"
+    },
+    "refresh/baseline-ArithmeticWholeField-interfaces.time": {
+      "bytes": 50,
+      "sha256": "04c9c51289be5158053a85412dabf160512eeebb0d296ec583b4a55c84eb3ab5"
+    },
+    "refresh/baseline-ArithmeticWholeField-names.log": {
+      "bytes": 6572,
+      "sha256": "6439a0520e0aba5fe94f5b9b249708a3b99f34187b3eebc17b41d1b2d339b781"
+    },
+    "refresh/baseline-ArithmeticWholeField-names.time": {
+      "bytes": 50,
+      "sha256": "65f3f5a5c50daaaeb676cfd5517b75b1dcd37271f0945cf30d2af558672da08c"
+    },
+    "refresh/baseline-ArithmeticWholeField-simp.log": {
+      "bytes": 1834388,
+      "sha256": "8cb8c409daac7ef52097c83b748841b89dc7e2c9bc067e36ed513aee058e49bb"
+    },
+    "refresh/baseline-ArithmeticWholeField-simp.time": {
+      "bytes": 50,
+      "sha256": "5684986fe6d3f271125008e4461ec8df8826d24f600cefd8f2841a10abfc5e70"
+    },
+    "refresh/baseline-ArithmeticWholeField.log": {
+      "bytes": 3735,
+      "sha256": "41b1d26505b01d3a30635ac3b81a6d8651ee630d2f6d06b81a86aed1c5d4da7b"
+    },
+    "refresh/baseline-ArithmeticWholeField.time": {
+      "bytes": 52,
+      "sha256": "de417d8263d6e9d19a29ae8e99d68d8e800a64dbbe83438e302832410309c0c1"
+    },
+    "refresh/baseline-probes.json": {
+      "bytes": 21939,
+      "sha256": "bb4011a546f43397dad8532b223c9cd239081ec1d639ee99360b8f40e1c59c37"
+    },
+    "refresh/baseline-records.json": {
+      "bytes": 12972,
+      "sha256": "b81cd6d33acd7d813fc8f7625d5812a63e865418e2670fe6e6a36aade3e7ef01"
+    },
+    "refresh/baseline/DiophantineConsistency/ArithmeticCellDecoding.lean": {
+      "bytes": 13577,
+      "sha256": "45261f48c454d8230c8834761f88e613ad3a8056cf2045144dd378df4d26d1b3"
+    },
+    "refresh/baseline/DiophantineConsistency/ArithmeticWholeField.lean": {
+      "bytes": 16460,
+      "sha256": "60ec3e182a625607cf2f15a042b6399ea1e4c0ffaa3249b6c45e56f38335452b"
+    },
+    "refresh/build-transfer.py": {
+      "bytes": 2127,
+      "sha256": "414d57d99c38c4adaf0913a87de78333e3a408348b9b4539d14d80ae2b83f11d"
+    },
+    "refresh/build.py": {
+      "bytes": 2754,
+      "sha256": "7adf0173033e6a6c27082b9aeb8840b387d5cca47c72cc1d16cfbd59af8e6cb8"
+    },
+    "refresh/final-ArithmeticCellDecoding-instances.log": {
+      "bytes": 797520,
+      "sha256": "44c0b62b3bb109a7abd668a4cd4d952e044567767f871f9ffbfea89332c42f82"
+    },
+    "refresh/final-ArithmeticCellDecoding-instances.time": {
+      "bytes": 50,
+      "sha256": "71198cda78146ca5bfb5121c08b3a30764f16a517b862c0577d6e94c27effa6c"
+    },
+    "refresh/final-ArithmeticCellDecoding-interfaces.log": {
+      "bytes": 19606,
+      "sha256": "28ede952d8fbd6a7ccf812037f69ed33e3f41bd1fcb28e17bdccd87311434460"
+    },
+    "refresh/final-ArithmeticCellDecoding-interfaces.time": {
+      "bytes": 50,
+      "sha256": "06c686cd2e605a1e03c6f229bfc3c53c595a7cb0cdd7fb8cea3a3d0cf5433687"
+    },
+    "refresh/final-ArithmeticCellDecoding-names.log": {
+      "bytes": 5093,
+      "sha256": "a9803a2c445f8374ceb760c2b6a0a1d4c2cc3419271f7c6980cf794daf037c1a"
+    },
+    "refresh/final-ArithmeticCellDecoding-names.time": {
+      "bytes": 50,
+      "sha256": "95c220338f35e7bbb22b10bdd419d3696f0940bdaf6874342535117c9d3a0437"
+    },
+    "refresh/final-ArithmeticCellDecoding-simp.log": {
+      "bytes": 1834388,
+      "sha256": "8cb8c409daac7ef52097c83b748841b89dc7e2c9bc067e36ed513aee058e49bb"
+    },
+    "refresh/final-ArithmeticCellDecoding-simp.time": {
+      "bytes": 50,
+      "sha256": "1aec84b41f29bda8fc487b78c116d8e98f3967a65a1638311fbcafae91c37274"
+    },
+    "refresh/final-ArithmeticCellDecoding.log": {
+      "bytes": 510,
+      "sha256": "5a8c89116cabc013c3bea28ff89e875a453d6dfd579f4962a8a2a45a7f228c1a"
+    },
+    "refresh/final-ArithmeticCellDecoding.time": {
+      "bytes": 50,
+      "sha256": "df52ab79d2ea686c69e2f1a9e0296f4cdc68bf3fe32e62f304264f3a3a0e7f67"
+    },
+    "refresh/final-ArithmeticWholeField-instances.log": {
+      "bytes": 797520,
+      "sha256": "44c0b62b3bb109a7abd668a4cd4d952e044567767f871f9ffbfea89332c42f82"
+    },
+    "refresh/final-ArithmeticWholeField-instances.time": {
+      "bytes": 50,
+      "sha256": "d3515dac336eb6ad121545bb92b4ac3709fffcf803498874ef7738a5737a4f9a"
+    },
+    "refresh/final-ArithmeticWholeField-interfaces.log": {
+      "bytes": 23282,
+      "sha256": "8948e1fde781192e5b96ca8978dae4c1c7b1084c86b4789e373a5e9604f2676d"
+    },
+    "refresh/final-ArithmeticWholeField-interfaces.time": {
+      "bytes": 50,
+      "sha256": "f3d137a838e6104d90c596b7beb302e6d3ed37139e66fb1e65a7dbf5d14467c7"
+    },
+    "refresh/final-ArithmeticWholeField-names.log": {
+      "bytes": 6572,
+      "sha256": "6439a0520e0aba5fe94f5b9b249708a3b99f34187b3eebc17b41d1b2d339b781"
+    },
+    "refresh/final-ArithmeticWholeField-names.time": {
+      "bytes": 50,
+      "sha256": "167f41906fc96fb7967572393c49ae4657a0c72bea32ae46e8e03fa8c5146acb"
+    },
+    "refresh/final-ArithmeticWholeField-simp.log": {
+      "bytes": 1834388,
+      "sha256": "8cb8c409daac7ef52097c83b748841b89dc7e2c9bc067e36ed513aee058e49bb"
+    },
+    "refresh/final-ArithmeticWholeField-simp.time": {
+      "bytes": 50,
+      "sha256": "e179b89a410db3ca11201d1026134dffabd783112b847324045b39e823285dea"
+    },
+    "refresh/final-ArithmeticWholeField.log": {
+      "bytes": 3702,
+      "sha256": "aa139a4c48775602b1d92931a635887b059bb30a197d56e9ad3459191722a7c4"
+    },
+    "refresh/final-ArithmeticWholeField.time": {
+      "bytes": 52,
+      "sha256": "63c0d4c5d9442215661758365b0d37eaed31422d3e4013237a3047863c539f1b"
+    },
+    "refresh/final-probes.json": {
+      "bytes": 21771,
+      "sha256": "5ea700acd3f72f4fe204ab72a559131c51b81e582b1b7d331364f0b3580a3790"
+    },
+    "refresh/final-records.json": {
+      "bytes": 12864,
+      "sha256": "8b49095d843c430ec9ef0757ebc66c36d24ea9eb0f4d384e78bc3823b0a80f43"
+    },
+    "refresh/final/DiophantineConsistency/ArithmeticCellDecoding.lean": {
+      "bytes": 13397,
+      "sha256": "1146b4c394bc5fccd30b808465e2b85598960fa5d07a532e280234516f84b1a4"
+    },
+    "refresh/final/DiophantineConsistency/ArithmeticWholeField.lean": {
+      "bytes": 16460,
+      "sha256": "60ec3e182a625607cf2f15a042b6399ea1e4c0ffaa3249b6c45e56f38335452b"
+    },
+    "refresh/probe.py": {
+      "bytes": 1449,
+      "sha256": "c0f48afc8b16b72da4124393b44c7e158c9529d6b51d14bbe3050941fbd13249"
+    },
+    "refresh/provider-transfer-record.json": {
+      "bytes": 6373,
+      "sha256": "c821863a9aa21bc53527f2922773f831bc0663bc83e6e2620e4c666d9940db66"
+    },
+    "refresh/provider-transfer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "refresh/provider-transfer.time": {
+      "bytes": 51,
+      "sha256": "2377a6149deacb7b2595339d67514557a44b52298f90d03e0acb12511a53c201"
+    },
+    "sources/ArithmeticCellLabels.lean": {
+      "bytes": 10821,
+      "sha256": "096f4d71694efd27060a23e979b0a2cf2736fc1abad641fadbf8663433cc025d"
+    },
+    "sources/ArithmeticCellLocal.lean": {
+      "bytes": 17564,
+      "sha256": "a3eadc1e481d842d81bfa5e334fbca99c46535b9479c51b8fc2df34727a220df"
+    },
+    "sources/ArithmeticCellTransfer.lean": {
+      "bytes": 14083,
+      "sha256": "d972455d407d7efc87307928949b735ee4d0cadf814e39f715fbc1e891e0b49b"
+    },
+    "sources/ArithmeticCyclicWord.lean": {
+      "bytes": 8513,
+      "sha256": "890bb35639daad00a18c22c38679fb9bceb3e3bd84c2090e9a785f19e32e1926"
+    },
+    "sources/ArithmeticModularCancellation.lean": {
+      "bytes": 1012,
+      "sha256": "2b519d5cc333065c8db60db2b75f460ce42bbc856aefb9920da20095f329e29b"
+    },
+    "sources/ArithmeticStandardCasts.lean": {
+      "bytes": 1452,
+      "sha256": "8f7014e3f71cae1b7afb3d0ca97eaba73965b544bbc95fd8f7887e71ae46417b"
+    },
+    "sources/ArithmeticWholeField.lean": {
+      "bytes": 16460,
+      "sha256": "60ec3e182a625607cf2f15a042b6399ea1e4c0ffaa3249b6c45e56f38335452b"
+    }
+  }
+}

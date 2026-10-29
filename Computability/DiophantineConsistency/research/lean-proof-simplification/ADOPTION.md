@@ -2000,5 +2000,15 @@ declaration reports and sampled registrations match. The old private theorem
 name is replaced by a public name of the same type and axioms; the wider
 closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-advance-sharing-evidence/BUNDLE.json).
 
+The prefix uniqueness simplification `714dc8e754` removes six net Lean lines,
+bringing the reviewed series to 10295. The affected proof came from
+Claude-coauthored commit `f79467f544`. Mathlib's `Finset.sum_le_one_iff`
+replaces the two-index subset contradiction. Paired target and client builds
+pass with a refreshed selector and transfer provider chain; client objects
+differ, but checked reports and sampled registrations match. Two generated
+public simp names disappear, one generated proof is added and another changes
+type; tracked Lean/Python searches found no references to the affected names.
+The wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-prefix-unique-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
