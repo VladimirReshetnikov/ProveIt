@@ -47,17 +47,9 @@ noncomputable abbrev sparseKernel {n : ℕ} (e : Fin n → ℕ) (a : Fin n → R
     (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
     ∀ i, |coefficients{k} ports i| < 2*B*K := by
   obtain ⟨hsq,hp,hl,hBK⟩ := SplitKernelData59.port_box_facts ports B K hB hK hb hk hm hf
-  have hb0 := hb.1
-  have hb1 := hb.2
-  have hk0 := hk.1
-  have hk1 := hk.2
-  have hm0 := hm.1
-  have hm1 := hm.2
-  have hf0 := hf.1
-  have hf1 := hf.2
   intro i
   fin_cases i <;> dsimp [coefficients{k}] <;> rw [abs_lt] <;> constructor <;>
-    nlinarith only [hB,hK,hb0,hb1,hk0,hk1,hm0,hm1,hf0,hf1,hsq,hp,hl,hBK,sq_nonneg B]
+    nlinarith only [hB,hK,hb.1,hb.2,hk.1,hk.2,hm.1,hm.2,hf.1,hf.2,hsq,hp,hl,hBK,sq_nonneg B]
 ''')
  for k in range(3):
   out.append(f'''theorem height_D{k} (ports : Fin 4 → ℤ) (H : ℤ) (hH : 0 ≤ H)

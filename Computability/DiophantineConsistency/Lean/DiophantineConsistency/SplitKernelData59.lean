@@ -317,17 +317,9 @@ theorem records0_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
     ∀ i, |coefficients0 ports i| < 2*B*K := by
   obtain ⟨hsq,hp,hl,hBK⟩ := box_facts ports B K hB hK hb hk hm hf
-  have hb0 := hb.1
-  have hb1 := hb.2
-  have hk0 := hk.1
-  have hk1 := hk.2
-  have hm0 := hm.1
-  have hm1 := hm.2
-  have hf0 := hf.1
-  have hf1 := hf.2
   intro i
   fin_cases i <;> dsimp [coefficients0] <;> rw [abs_lt] <;> constructor <;>
-    nlinarith only [hB,hK,hb0,hb1,hk0,hk1,hm0,hm1,hf0,hf1,hsq,hp,hl,hBK,sq_nonneg B]
+    nlinarith only [hB,hK,hb.1,hb.2,hk.1,hk.2,hm.1,hm.2,hf.1,hf.2,hsq,hp,hl,hBK,sq_nonneg B]
 
 theorem records1_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hB : 2 ≤ B) (hK : 16*B ≤ K)
@@ -337,17 +329,9 @@ theorem records1_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
     ∀ i, |coefficients1 ports i| < 2*B*K := by
   obtain ⟨hsq,hp,hl,hBK⟩ := box_facts ports B K hB hK hb hk hm hf
-  have hb0 := hb.1
-  have hb1 := hb.2
-  have hk0 := hk.1
-  have hk1 := hk.2
-  have hm0 := hm.1
-  have hm1 := hm.2
-  have hf0 := hf.1
-  have hf1 := hf.2
   intro i
   fin_cases i <;> dsimp [coefficients1] <;> rw [abs_lt] <;> constructor <;>
-    nlinarith only [hB,hK,hb0,hb1,hk0,hk1,hm0,hm1,hf0,hf1,hsq,hp,hl,hBK,sq_nonneg B]
+    nlinarith only [hB,hK,hb.1,hb.2,hk.1,hk.2,hm.1,hm.2,hf.1,hf.2,hsq,hp,hl,hBK,sq_nonneg B]
 
 theorem records2_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hB : 2 ≤ B) (hK : 16*B ≤ K)
@@ -357,17 +341,9 @@ theorem records2_lt (ports : Fin 4 → ℤ) (B K : ℤ)
     (hf : 0 ≤ ports 3 ∧ ports 3 < 2*B) :
     ∀ i, |coefficients2 ports i| < 2*B*K := by
   obtain ⟨hsq,hp,hl,hBK⟩ := box_facts ports B K hB hK hb hk hm hf
-  have hb0 := hb.1
-  have hb1 := hb.2
-  have hk0 := hk.1
-  have hk1 := hk.2
-  have hm0 := hm.1
-  have hm1 := hm.2
-  have hf0 := hf.1
-  have hf1 := hf.2
   intro i
   fin_cases i <;> dsimp [coefficients2] <;> rw [abs_lt] <;> constructor <;>
-    nlinarith only [hB,hK,hb0,hb1,hk0,hk1,hm0,hm1,hf0,hf1,hsq,hp,hl,hBK,sq_nonneg B]
+    nlinarith only [hB,hK,hb.1,hb.2,hk.1,hk.2,hm.1,hm.2,hf.1,hf.2,hsq,hp,hl,hBK,sq_nonneg B]
 
 theorem kernelBounds_box (ports : Fin 4 → ℤ) (B K : ℤ)
     (hB : 2 ≤ B) (hK : 16*B ≤ K)
