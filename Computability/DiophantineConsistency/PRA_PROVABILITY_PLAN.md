@@ -45,8 +45,10 @@ The [normalized transport](reviews/adaptive-transport-restoration2011-root.md)
 has also been recovered from the actual adaptive zero and independently replayed.
 The corresponding [rank-population lower bound](reviews/adaptive-population2011-root.md)
 is now independently replayed for every internal exponent matching the radix.
-The machine-window soundness, internal converse and final HA/PRA
-proof-existence endpoints remain open.
+The [actual-zero window theorem](reviews/adaptive-window2011-root.md) now
+assembles these inputs in arbitrary IΣ₁ models. The window-to-machine halt
+client, internal converse and final HA/PRA proof-existence endpoints remain
+open.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
