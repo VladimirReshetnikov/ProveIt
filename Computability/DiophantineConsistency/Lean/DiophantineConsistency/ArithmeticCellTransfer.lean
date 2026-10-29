@@ -147,18 +147,14 @@ theorem noCarry_cast {a b : ℕ} (h : NoCarry (a:V) (b:V)) : a &&& b = 0 := by
   apply Nat.eq_of_testBit_eq
   intro i
   rw [Nat.testBit_and, Nat.zero_testBit]
-  by_cases hi : i < a + b + 1
-  · have hv := h (i:V) (by exact_mod_cast hi)
-    rw [fbit_cast, fbit_cast, ← Nat.cast_add] at hv
-    have hv' : a / 2 ^ i % 2 + b / 2 ^ i % 2 ≤ 1 := by exact_mod_cast hv
-    rw [Nat.testBit_eq_decide_div_mod_eq, Nat.testBit_eq_decide_div_mod_eq]
-    by_cases ha : a / 2 ^ i % 2 = 1
-    · have : b / 2 ^ i % 2 ≠ 1 := by omega
-      simp [this]
-    · simp [ha]
-  · have ha : a < 2 ^ i := lt_of_lt_of_le (by omega : a < i) Nat.lt_two_pow_self.le
-    rw [Nat.testBit_eq_false_of_lt ha]
-    simp
+  have hv := (noCarry_iff _ _).mp h (i:V)
+  rw [fbit_cast, fbit_cast, ← Nat.cast_add] at hv
+  have hv' : a / 2 ^ i % 2 + b / 2 ^ i % 2 ≤ 1 := by exact_mod_cast hv
+  rw [Nat.testBit_eq_decide_div_mod_eq, Nat.testBit_eq_decide_div_mod_eq]
+  by_cases ha : a / 2 ^ i % 2 = 1
+  · have : b / 2 ^ i % 2 ≠ 1 := by omega
+    simp [this]
+  · simp [ha]
 
 theorem std_of_le {x : V} {m : ℕ} (h : x ≤ (m:V)) : ∃ k : ℕ, x = k := by
   obtain ⟨k, rfl⟩ := eq_nat_of_lt_nat (n := m + 1) (by
