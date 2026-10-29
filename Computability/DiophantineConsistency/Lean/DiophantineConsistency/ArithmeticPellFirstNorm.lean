@@ -1,4 +1,5 @@
 import DiophantineConsistency.ArithmeticPellCongruences
+import DiophantineConsistency.ArithmeticPellKnownUnit
 
 /-! Classification of the actual first norm x²=1+Q(Q+1)k² in internal
 arithmetic. Write Q=q+1 to avoid a hidden positivity/subtraction premise.
@@ -78,71 +79,16 @@ identities over natural arithmetic before descending on the ordinate. -/
 theorem descent (q x k : V) (hk : 0<k) (h : x*x=1+discriminant q*k*k) :
     ∃ u v : V, 0<u ∧ v<k ∧ u*u=1+discriminant q*v*v ∧
       x=(2*q+3)*u+2*discriminant q*v ∧ k=2*u+(2*q+3)*v := by
-  let a := 2*q+3
-  let d := discriminant q
-  have ha : 0<a := lt_of_lt_of_le (by simp : (0:V)<3)
-    (by change (3:V)≤2*q+3; simp)
-  have hid : (a*x)*(a*x)=(2*d*k)*(2*d*k)+(a*a+d*k*k) := by
-    rw [show (a*x)*(a*x)=a*a*(x*x) by ring,h]
-    dsimp [a,d,discriminant]
+  have hD : 0 < discriminant q := by unfold discriminant; exact mul_pos (by simp) (by simp)
+  have hF : (2*q+3)*(2*q+3)=1+discriminant q*2*2 := by
+    unfold discriminant
     ring
-  have hdk : 2*d*k<a*x := by
-    apply lt_of_mul_self_lt_mul_self₀ (by simp)
-    rw [hid]
-    exact lt_add_of_pos_right _ (lt_of_lt_of_le (mul_pos ha ha) (by simp))
-  have hk2 := two_le_ordinate q x k hk h
-  have h4 : 4≤k*k := by
-    calc
-      4=(2:V)*2 := by ring
-      _≤k*k := mul_le_mul hk2 hk2 (by simp) (by simp)
-  have hxle : 2*x≤a*k := by
-    apply square_le
-    calc
-      (2*x)*(2*x)=4+4*d*k*k := by
-        rw [show (2*x)*(2*x)=4*(x*x) by ring,h]
-        ring
-      _≤k*k+4*d*k*k := _root_.add_le_add h4 le_rfl
-      _=(a*k)*(a*k) := by dsimp [a,d,discriminant]; ring
-  have hxlow : (q+1)*k<x := by
-    apply lt_of_mul_self_lt_mul_self₀ (by simp)
-    have he : x*x=((q+1)*k)*((q+1)*k)+(1+(q+1)*k*k) := by
-      rw [h]
-      unfold discriminant
-      ring
-    rw [he]
-    exact lt_add_of_pos_right _ (by simp)
-  let u := a*x-2*d*k
-  let v := a*k-2*x
-  have hu : 0<u := tsub_pos_iff_lt.mpr hdk
-  have hux : u+2*d*k=a*x := tsub_add_cancel_of_le (le_of_lt hdk)
-  have hvk : v+2*x=a*k := tsub_add_cancel_of_le hxle
-  have hv : v<k := by
-    have hl : 2*(q+1)*k<2*x := by
-      simpa only [mul_assoc] using mul_lt_mul_of_pos_left hxlow (by simp : (0:V)<2)
-    have he : 2*(q+1)*k+v<2*(q+1)*k+k := by
-      calc
-        2*(q+1)*k+v<2*x+v := by simpa only [add_comm] using _root_.add_lt_add_right hl v
-        _=a*k := by rw [add_comm (2*x) v,hvk]
-        _=2*(q+1)*k+k := by dsimp [a]; ring
-    exact (add_lt_add_iff_left _).mp he
-  have hix : a*u+2*d*v=x := by
-    apply add_right_cancel (b := 2*a*d*k+4*d*x)
-    calc
-      (a*u+2*d*v)+(2*a*d*k+4*d*x)=a*(u+2*d*k)+2*d*(v+2*x) := by ring
-      _=a*(a*x)+2*d*(a*k) := by rw [hux,hvk]
-      _=x+(2*a*d*k+4*d*x) := by dsimp [a,d,discriminant]; ring
-  have hik : 2*u+a*v=k := by
-    apply add_right_cancel (b := 4*d*k+2*a*x)
-    calc
-      (2*u+a*v)+(4*d*k+2*a*x)=2*(u+2*d*k)+a*(v+2*x) := by ring
-      _=2*(a*x)+a*(a*k) := by rw [hux,hvk]
-      _=k+(4*d*k+2*a*x) := by dsimp [a,d,discriminant]; ring
-  have hn : u*u=1+discriminant q*v*v := by
-    apply (norm_advance_iff q u v).mp
-    change (a*u+2*d*v)*(a*u+2*d*v)=1+d*(2*u+a*v)*(2*u+a*v)
-    rw [hix,hik]
-    exact h
-  exact ⟨u,v,hu,hv,hn,hix.symm,hik.symm⟩
+  obtain ⟨u, v, hu, hv, hn, hx, hy⟩ :=
+    ArithmeticPellKnownUnit.minimal_unit_descent (discriminant q) (2*q+3) 2 x k
+      hD (lt_of_lt_of_le (by norm_num : (1:V)<3) (by simp)) (by norm_num) hF
+      (fun x k hk h => two_le_ordinate q x k hk h) hk h
+  refine ⟨u, v, hu, hv, hn, ?_, hy⟩
+  simpa only [mul_comm (discriminant q) (2 : V)] using hx
 
 theorem solution_index (q x k : V) (h : x*x=1+discriminant q*k*k) :
     ∃ time : V, time≤k ∧ xcoord time (2*q+1)=x ∧ 2*ycoord time (2*q+1)=k := by
