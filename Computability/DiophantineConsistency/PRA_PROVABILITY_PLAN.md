@@ -80,6 +80,10 @@ and `PRAPeanoMinusBasic`. A dependency-aware 92-module author rebuild and two
 independent replays have since matched all source, object and full-log hashes,
 including the bounded compiler, witness and induction-counterexample modules.
 The bounded-only comparison client still needs a replay against that provider.
+A further upstream merge changed `PRAAddOne`, bounded-search and order-witness
+modules, and `PRASubReconstruct`. The 92-module and interactive extraction
+replays therefore cover the preceding source snapshot; their affected
+dependency graphs require another current-source rebuild.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)

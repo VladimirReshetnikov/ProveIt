@@ -15,6 +15,11 @@ The [replay packet](../reviews/herbrand-interactive-author-replay/manifest.json)
 authenticates its local parent sources and objects; Foundation and Mathlib
 remain inherited boundaries.
 
+A later upstream merge changed `PRAAddOne`, `PRASubReconstruct`,
+`PRABoundedSearchInvariant`, and `PRABoundedSearchMinimal`, which are in the
+extractors' transitive import graph. The recorded replays cover the preceding
+source snapshot and must be refreshed before claiming current-source coverage.
+
 `HerbrandInteractiveTriple.separated_interactive` extends the construction to
 three separate challenges per round, reserving distinct indices and proving
 that candidate terms use only parameters and earlier rounds. Its author and
@@ -23,6 +28,12 @@ the independent replay is `/tmp/herbrand-interactive-triple-independent-xk8q_fea
 Both results produce proofs in the candidate universal theory. Neither
 eliminates the disjunction, translates arbitrary Σ₁ induction, or establishes
 PRA conservation.
+
+The three-challenge extractor still has only one outer witness per round. The
+intended Ferreira normal form has four outer witnesses; applying it needs a
+verified four-witness generalization or a pairing and decoding reduction. Its
+inner existential witness may also depend on the three challenge variables,
+which must be preserved by the prenex adapter.
 
 For the separate pure-existential route, `HerbrandPackedTriple` applies the
 coded counterexample-defeat theorem to finite triple extraction, packing all
