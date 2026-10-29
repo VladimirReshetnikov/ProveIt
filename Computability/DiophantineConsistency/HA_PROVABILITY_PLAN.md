@@ -2448,3 +2448,50 @@ All of the following hold in every model of IΣ₁; `#print axioms` gives
 exponential in `p`, followed by derivation exponentials. So `towerB`/`ax_le`
 in `InternalRelativizationBound` need one or two more exponentials before
 the assembly.
+
+## Stage 3b: template axiom leaves (2026-10-29)
+
+**Proved** (every model of IΣ₁; audit `ZFCinPA.SizedCongruenceAudit`, axioms
+`propext`/`Classical.choice`/`Quot.sound`):
+
+| Module | Result |
+|---|---|
+| `ZFCinPA.SizedTemplateAxioms` | lifted `𝗭𝗙` and non-congruence equality leaves: one `axm` rule, code bound via `translate_level`, at every buffer |
+| `ZFCinPA.LevelDerivation` | the scale `DLv T s w := DerivableLe T s (2^(lvB w))`: one level per primitive rule once `w ≥ 4`; bounded `spec` |
+| `ZFCinPA.SizedCongruence` | bounded equality replacement for internal formulas, parameterized by the atom case (`AtomOK`); induction on `formulaComplexity` |
+| `ZFCinPA.SizedCongruenceAtoms` | `AtomOK` from fixed `𝗭𝗙` theorems with numeral proofs; `replace_le` unconditional |
+| `ZFCinPA.SizedPlaceholderCongruence` | `cong_leaf`: `congruenceFormula a K` (a ≤ 3) at level `congL u`, linear in the level `u` of `K` |
+
+Three design points:
+
+- **The measure is formula complexity, not the code.** The `∀` premise of
+  replacement concerns `shift p`, whose code is larger than that of `∀ p`
+  when `p` has free variables. Foundation's `formulaComplexity` is invariant
+  under shift, substitution and negation. So the code level `v` stays fixed
+  through the induction, and the variable level `c` grows by one per binder.
+- **Fixed theorems enter as numerals.** The atom, reflexivity and symmetry
+  cases use meta-level `𝗭𝗙` proofs, quoted as standard numerals
+  (`proof_of_quote_proof`) and specialized by bounded `spec_step`s.
+- **No compounding of levels.** Each intermediate formula is a *fixed*
+  formula under one substitution of closed variable terms (`tsubst_le`), so
+  its level is linear in `c`. Iterating `subst_level` would multiply the
+  level by 10 at each step instead.
+
+**Remaining leaf: separation/replacement instances.**
+- *The issue.* `OpenSchemaTemplates.separationProof` uses `closeTemplate`,
+  which is `generalizeAll` with chosen codes. It then uses
+  `zfSeparationProof K = openAxiomProofCode (sepBody K)`.
+- *What is explicit.* `openAxiomProofCode` is an explicit code:
+  `specializedProofCode` runs `specializeCode` (cut, wk, ∃, axL)
+  `bv (bindFreeAt 0 p)` times.
+- *Plan.*
+  1. Bound `specializeCode` (+3 levels).
+  2. Prove a Π₁ induction on the remaining binders for `subst W body₀`, with
+     `W` ranging over vectors of variable terms of level ≤ `c`. This avoids
+     compounding: `subst v (subst W body₀) = subst (termSubstVec v W) body₀`,
+     and the result is again a vector of variable terms.
+  3. Bound `closeFormulaCode` by a level bound for `bindFreeAt`.
+  4. Generalize `strip` (currently `n ≤ 6`) to the template's `fvSup` binders.
+- *Expected cost.* The closure over `m` free variables costs `+2m` levels,
+  and `m` can be as large as the code. For placeholders without free
+  variables, `m` is the template's `fvSup`, a meta-level constant.
