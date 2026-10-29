@@ -83,25 +83,6 @@ theorem natural_zero_iff_positive_zero :
     rw [eval_naturalExpression, hx]
     exact hz
 
-/-- The generic pair identity prevents any expansion of the large current
-split-natural tree. It holds over every commutative semiring. -/
-theorem split_positiveShift {σ R : Type*} [CommSemiring R]
-    (e : Expr σ) (v : σ → R) :
-    ((positiveShift e).splitNatural.1.evalSemiring v,
-      (positiveShift e).splitNatural.2.evalSemiring v) =
-      (e.splitNatural.1.evalSemiring (fun i => v i + 1),
-       e.splitNatural.2.evalSemiring (fun i => v i + 1)) := by
-  induction e <;>
-    simp_all [positiveShift, Expr.subst, Expr.splitNatural, NatExpr.evalSemiring]
-
-def InternalZero {σ R : Type*} [CommSemiring R] (e : Expr σ) (v : σ → R) : Prop :=
-  e.splitNatural.1.evalSemiring v = e.splitNatural.2.evalSemiring v
-
-theorem internalZero_positiveShift {σ R : Type*} [CommSemiring R]
-    (e : Expr σ) (v : σ → R) :
-    InternalZero (positiveShift e) v ↔ InternalZero e (fun i => v i + 1) :=
-  Iff.of_eq (congrArg (fun p : R × R => p.1 = p.2) (split_positiveShift e v))
-
 open SetTheory SetTheory.Form
 open LeanProofs.BoundedZFCConsistency ObjectOmegaSemiring
 

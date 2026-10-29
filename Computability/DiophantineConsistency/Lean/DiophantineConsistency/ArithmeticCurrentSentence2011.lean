@@ -48,33 +48,14 @@ theorem classicalSentence_iff_natural :
 
 /-! ### The positive shift -/
 
-private def plus (p q : Pair V) : Pair V := (p.1+q.1,p.2+q.2)
-private def minus (p q : Pair V) : Pair V := (p.1+q.2,p.2+q.1)
-private def pairEval {σ : Type*} (e : Expr σ) (v : σ → V) : Pair V :=
-  (e.splitNatural.1.evalSemiring v,e.splitNatural.2.evalSemiring v)
-
-private theorem split_positiveShift {σ : Type*} (e : Expr σ) (v : σ → V) :
-    pairEval (positiveShift e) v=pairEval e (fun j => v j+1) := by
-  induction e with
-  | constant a => rfl
-  | var j => simp [positiveShift,Expr.subst,pairEval,Expr.splitNatural,NatExpr.evalSemiring]
-  | add e f he hf => exact congrArg₂ plus he hf
-  | sub e f he hf => exact congrArg₂ minus he hf
-  | mul e f he hf => exact congrArg₂ multiply he hf
-
 /-- A natural zero at `v` is exactly a zero of the original polynomial at `v+1`. -/
 theorem natural_zero_iff (v : Fin 14 → V) :
     naturalExpression.splitNatural.1.evalSemiring v =
         naturalExpression.splitNatural.2.evalSemiring v ↔
       expression.splitNatural.1.evalSemiring (fun j => v j + 1) =
         expression.splitNatural.2.evalSemiring (fun j => v j + 1) := by
-  have he := split_positiveShift expression v
-  have h1 := congrArg Prod.fst he
-  have h2 := congrArg Prod.snd he
-  change (pairEval naturalExpression v).1 = (pairEval naturalExpression v).2 ↔
-    (pairEval expression (fun j => v j+1)).1 = (pairEval expression (fun j => v j+1)).2
   unfold naturalExpression
-  rw [h1, h2]
+  exact internalZero_positiveShift expression v
 
 /-- A positive zero of the original polynomial. -/
 def PositiveZero (u : Fin 14 → V) : Prop :=

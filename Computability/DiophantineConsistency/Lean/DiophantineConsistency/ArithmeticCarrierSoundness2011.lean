@@ -461,15 +461,6 @@ theorem current_equations (v : Fin 14 → V) (hv : ∀j,0<v j)
   exact vector_equations CurrentMasks2011.beta CurrentKernel2011.K CurrentMasks2011.lowPort
     CurrentMasks2011.highPort v hb0 hl hh hv hz
 
-private theorem split_positiveShift {σ : Type*} (e : Expr σ) (v : σ → V) :
-    pairEval (positiveShift e) v=pairEval e (fun j => v j+1) := by
-  induction e with
-  | constant a => rfl
-  | var j => simp [positiveShift,Expr.subst,pairEval,Expr.splitNatural,NatExpr.evalSemiring]
-  | add e f he hf => exact congrArg₂ plus he hf
-  | sub e f he hf => exact congrArg₂ minus he hf
-  | mul e f he hf => exact congrArg₂ multiply he hf
-
 /-- The maintained natural expression performs exactly one positive shift. -/
 theorem current_natural_equations (v : Fin 14 → V)
     (hz : naturalExpression.splitNatural.1.evalSemiring v=
@@ -478,11 +469,6 @@ theorem current_natural_equations (v : Fin 14 → V)
       (CurrentMasks2011.lowPort:V) ((CurrentMasks2011.highPort+CurrentMasks2011.beta:ℕ):V)
       (fun j => v j+1) := by
   apply current_equations _ (fun j => lt_of_le_of_lt (Arithmetic.zero_le (v j)) (lt_add_one _))
-  have he:=split_positiveShift expression v
-  have h1:=congrArg Prod.fst he
-  have h2:=congrArg Prod.snd he
-  change (pairEval naturalExpression v).1=(pairEval naturalExpression v).2 at hz
-  change (pairEval expression (fun j => v j+1)).1=(pairEval expression (fun j => v j+1)).2
-  exact h1.symm.trans (hz.trans h2)
+  exact (internalZero_positiveShift expression v).mp hz
 
 end DiophantineConsistency.ArithmeticCarrierSoundness2011
