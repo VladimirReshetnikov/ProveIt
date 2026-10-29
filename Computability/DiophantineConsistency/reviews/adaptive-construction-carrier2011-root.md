@@ -16,3 +16,7 @@ provider inventories and states](adaptive-construction-carrier2011-replay/)
 are retained. The provider predates the upstream `ArithmeticCarrierRadix2011`
 refactor; a source-current downstream replay is required. Foundation/packages
 and inherited project objects remain cache boundaries.
+
+A later upstream merge changed the `ArithmeticBinomLegendre.lean` dependency.
+This receipt authenticates its earlier population-provider snapshot; a
+source-current downstream replay is required.
