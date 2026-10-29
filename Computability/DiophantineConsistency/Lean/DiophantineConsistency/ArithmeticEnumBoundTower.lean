@@ -97,12 +97,9 @@ theorem cantor_le_tower {x y j : V} {n : ℕ} (hn : 2 ≤ n)
     (hx : x ≤ tower j n) (hy : y ≤ tower j n) : cantor x y ≤ tower j (n+2) := by
   have hs := add_le_tower hn hx hy
   have hc : cantor x y ≤ (x + y + 1) * (x + y + 1) := by
-    refine le_trans (cantor_polybound x y) ?_
-    have he : (x + y + 1) * (x + y + 1) = (x + y) * (x + y + 1) + (x + y + 1) := by ring
-    rw [he]
-    refine _root_.add_le_add le_rfl ?_
-    calc y ≤ x + y := le_add_self
-      _ ≤ x + y + 1 := le_self_add
+    rw [show (x + y + 1) * (x + y + 1) = (x + y) * (x + y + 1) + (x + y + 1) by ring]
+    exact le_trans (cantor_polybound x y)
+      (_root_.add_le_add le_rfl (le_trans le_add_self le_self_add))
   rw [tower_succ j (n+1)]
   exact le_trans hc (sq_ge hs)
 

@@ -101,12 +101,9 @@ theorem pair_le {x y n : V} (hn : 1 ≤ n) (hx : x ≤ lev n) (hy : y ≤ lev n)
     cantor x y + 1 ≤ lev (n + 2) := by
   have hL : 8 ≤ lev n := eight_le_lev hn
   have hc : cantor x y ≤ (x + y + 1) * (x + y + 1) := by
-    refine le_trans (cantor_polybound x y) ?_
-    have he : (x + y + 1) * (x + y + 1) = (x + y) * (x + y + 1) + (x + y + 1) := by ring
-    rw [he]
-    refine _root_.add_le_add le_rfl ?_
-    calc y ≤ x + y := le_add_self
-      _ ≤ x + y + 1 := le_self_add
+    rw [show (x + y + 1) * (x + y + 1) = (x + y) * (x + y + 1) + (x + y + 1) by ring]
+    exact le_trans (cantor_polybound x y)
+      (_root_.add_le_add le_rfl (le_trans le_add_self le_self_add))
   have hs : x + y + 1 ≤ 2 * lev n + 1 := by
     calc x + y + 1 ≤ lev n + lev n + 1 := _root_.add_le_add (_root_.add_le_add hx hy) le_rfl
       _ = 2 * lev n + 1 := by ring
