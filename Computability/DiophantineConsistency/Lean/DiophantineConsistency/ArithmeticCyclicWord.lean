@@ -94,20 +94,17 @@ theorem rot_mod (w n X e : V) (he : e ≤ n) (hM : 0 < Exp.exp (w*n) - 1) :
     (Exp.exp (w*e) * X) % (Exp.exp (w*n) - 1) = rot w n X e % (Exp.exp (w*n) - 1) := by
   have hPM : Exp.exp (w*n) = (Exp.exp (w*n) - 1) + 1 :=
     (tsub_add_cancel_of_le (one_le_exp _)).symm
-  have hX : X = X / Exp.exp (w*(n-e)) * Exp.exp (w*(n-e)) + X % Exp.exp (w*(n-e)) := by
-    calc X = Exp.exp (w*(n-e)) * (X / Exp.exp (w*(n-e))) + X % Exp.exp (w*(n-e)) :=
-          (div_add_mod X _).symm
-      _ = _ := by ring
   have hc := exp_complement w n e he
   have e1 : Exp.exp (w*e) * X =
       rot w n X e + X / Exp.exp (w*(n-e)) * (Exp.exp (w*n) - 1) := by
     unfold rot
-    calc Exp.exp (w*e) * X = Exp.exp (w*e) *
-          (X / Exp.exp (w*(n-e)) * Exp.exp (w*(n-e)) + X % Exp.exp (w*(n-e))) := by rw [← hX]
+    have hX := div_add_mod X (Exp.exp (w*(n-e)))
+    calc
+      _ = Exp.exp (w*e) * (Exp.exp (w*(n-e)) * (X / Exp.exp (w*(n-e))) +
+          X % Exp.exp (w*(n-e))) := by rw [hX]
       _ = X % Exp.exp (w*(n-e)) * Exp.exp (w*e) +
-          X / Exp.exp (w*(n-e)) * (Exp.exp (w*(n-e)) * Exp.exp (w*e)) := by ring
-      _ = X % Exp.exp (w*(n-e)) * Exp.exp (w*e) +
-          X / Exp.exp (w*(n-e)) * ((Exp.exp (w*n) - 1) + 1) := by rw [← hc, ← hPM]
+          X / Exp.exp (w*(n-e)) * ((Exp.exp (w*n) - 1) + 1) := by
+            rw [← hPM, hc]; ring
       _ = _ := by ring
   rw [e1, mod_add_mul _ _ hM]
 
