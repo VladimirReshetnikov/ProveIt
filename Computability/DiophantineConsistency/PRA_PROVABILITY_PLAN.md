@@ -27,6 +27,10 @@ is also proved for Σ₁ side formulas and arbitrary parameters. These are
 noncomputable proof transformers, not conditional collection axioms or
 PRA-internal transformations. The complete cut-free translation and
 witnessing remain open.
+The [principal logical cases](reviews/parsons-logical-cases-root.md) now
+provide the existential, universal, disjunction and conjunction transformers
+with explicit strictly smaller local recursive hypotheses. Nonprincipal cases,
+contraction and a global cut-free recursion remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
