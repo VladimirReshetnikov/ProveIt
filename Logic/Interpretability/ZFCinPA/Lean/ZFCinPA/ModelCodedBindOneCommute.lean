@@ -20,26 +20,10 @@ lemma bindOneAt_isUFormula {p : V} (hp : IsUFormula L p) :
     ∀ chosen depth : V, IsUFormula L (bindOneAt L chosen depth p) := by
   apply IsUFormula.ISigma1.pi1_succ_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
-  · intro arity R terms hR ht a d
-    rw [bindOneAt_rel a d hR ht]
-    simp [hR,termBindOneVecAt_isUTerm a d ht]
-  · intro arity R terms hR ht a d
-    rw [bindOneAt_nrel a d hR ht]
-    simp [hR,termBindOneVecAt_isUTerm a d ht]
-  · intro a d; simp
-  · intro a d; simp
-  · intro p q hp hq ihp ihq a d
-    rw [bindOneAt_and a d hp hq]
-    simp [ihp a d,ihq a d]
-  · intro p q hp hq ihp ihq a d
-    rw [bindOneAt_or a d hp hq]
-    simp [ihp a d,ihq a d]
-  · intro p hp ih a d
-    rw [bindOneAt_all a d hp]
-    simp [ih a (d+1)]
-  · intro p hp ih a d
-    rw [bindOneAt_exs a d hp]
-    simp [ih a (d+1)]
+  all_goals
+    intros
+    simp_all [bindOneAt_rel, bindOneAt_nrel, bindOneAt_and, bindOneAt_or,
+      bindOneAt_all, bindOneAt_exs, termBindOneVecAt_isUTerm]
 
 /-- Binding different free labels commutes when each keeps its own depth.
 This is raw syntax; no claim swaps two quantified slots without substitution. -/
@@ -95,43 +79,10 @@ lemma bindOneAt_commute {p : V} (hp : IsUFormula L p) :
       bindOneAt L b e (bindOneAt L a d p) := by
   apply IsUFormula.ISigma1.pi1_succ_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
-  · intro arity R terms hR ht a b d e hab
-    rw [bindOneAt_rel b e hR ht,
-      bindOneAt_rel a d hR (termBindOneVecAt_isUTerm b e ht),
-      termBindOneVecAt_commute ht a b d e hab,
-      bindOneAt_rel a d hR ht,
-      bindOneAt_rel b e hR (termBindOneVecAt_isUTerm a d ht)]
-  · intro arity R terms hR ht a b d e hab
-    rw [bindOneAt_nrel b e hR ht,
-      bindOneAt_nrel a d hR (termBindOneVecAt_isUTerm b e ht),
-      termBindOneVecAt_commute ht a b d e hab,
-      bindOneAt_nrel a d hR ht,
-      bindOneAt_nrel b e hR (termBindOneVecAt_isUTerm a d ht)]
-  · intro a b d e hab; simp
-  · intro a b d e hab; simp
-  · intro p q hp hq ihp ihq a b d e hab
-    rw [bindOneAt_and b e hp hq,
-      bindOneAt_and a d (bindOneAt_isUFormula hp b e) (bindOneAt_isUFormula hq b e),
-      bindOneAt_and a d hp hq,
-      bindOneAt_and b e (bindOneAt_isUFormula hp a d) (bindOneAt_isUFormula hq a d),
-      ihp a b d e hab,ihq a b d e hab]
-  · intro p q hp hq ihp ihq a b d e hab
-    rw [bindOneAt_or b e hp hq,
-      bindOneAt_or a d (bindOneAt_isUFormula hp b e) (bindOneAt_isUFormula hq b e),
-      bindOneAt_or a d hp hq,
-      bindOneAt_or b e (bindOneAt_isUFormula hp a d) (bindOneAt_isUFormula hq a d),
-      ihp a b d e hab,ihq a b d e hab]
-  · intro p hp ih a b d e hab
-    rw [bindOneAt_all b e hp,
-      bindOneAt_all a d (bindOneAt_isUFormula hp b (e+1)),
-      bindOneAt_all a d hp,
-      bindOneAt_all b e (bindOneAt_isUFormula hp a (d+1)),
-      ih a b (d+1) (e+1) hab]
-  · intro p hp ih a b d e hab
-    rw [bindOneAt_exs b e hp,
-      bindOneAt_exs a d (bindOneAt_isUFormula hp b (e+1)),
-      bindOneAt_exs a d hp,
-      bindOneAt_exs b e (bindOneAt_isUFormula hp a (d+1)),
-      ih a b (d+1) (e+1) hab]
+  all_goals
+    intros
+    simp_all [bindOneAt_rel, bindOneAt_nrel, bindOneAt_and, bindOneAt_or,
+      bindOneAt_all, bindOneAt_exs, termBindOneVecAt_isUTerm,
+      bindOneAt_isUFormula] <;> aesop (add safe termBindOneVecAt_commute)
 
 end LeanProofs.ZFCinPA.ModelCodedBindOneCommute
