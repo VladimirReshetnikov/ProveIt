@@ -29,10 +29,10 @@ abbrev neqAtom {n : ℕ} (i j : Fin n) : SF (V := V) n :=
 abbrev nmemAtom {n : ℕ} (i j : Fin n) : SF (V := V) n :=
   Bootstrapping.Semiformula.nrel (Language.Mem.mem : (ℒₛₑₜ).Rel 2) ![bv i,bv j]
 
-lemma encode_eqAtom {n : ℕ} (F B s : V) (i j : Fin n) :
-    encode F B s (eqAtom (V := V) i j).val = Eind B.[(i : V)] B.[(j : V)] := by
-  have hu := (eqAtom (V := V) i j).isUFormula
-  simp only [eqAtom] at hu ⊢
+private lemma encode_pair {n : ℕ} (F B s : V) (R : (ℒₛₑₜ).Rel 2) (i j : Fin n) :
+    encode F B s (Bootstrapping.Semiformula.rel R ![bv i,bv j]).val =
+      if R=(Language.Eq.eq : (ℒₛₑₜ).Rel 2) then Eind B.[(i : V)] B.[(j : V)] else wel B.[(i : V)] B.[(j : V)] := by
+  have hu := (Bootstrapping.Semiformula.rel R ![bv (V := V) i,bv j]).isUFormula
   rw [Bootstrapping.Semiformula.rel_val] at hu
   rw [Bootstrapping.Semiformula.rel_val,
     encode_rel F B s (IsUFormula.rel.mp hu).1 (IsUFormula.rel.mp hu).2]
@@ -40,22 +40,22 @@ lemma encode_eqAtom {n : ℕ} (F B s : V) (i j : Fin n) :
   have h0 := ValidatorEnvironmentLabels254.TermLabels.vec_nth F B hv (show (0 : V) < ↑(2 : ℕ) by simp)
   have h1 := ValidatorEnvironmentLabels254.TermLabels.vec_nth F B hv (show (1 : V) < ↑(2 : ℕ) by simp)
   simp only [atom,nth_adjoin_zero,nth_adjoin_one]
-  rw [if_pos (by change ((0 : ℕ) : V)=0; simp),h0,h1]
-  simp [Matrix.vecHead,Matrix.vecTail]
+  rw [h0,h1]
+  cases R with
+  | eq =>
+    rw [if_pos (by change ((0 : ℕ) : V)=0; simp), if_pos (by rfl)]
+    simp [Matrix.vecHead,Matrix.vecTail]
+  | mem =>
+    rw [if_neg (by change ((1 : ℕ) : V)≠0; simp), if_neg (by intro he; cases he)]
+    simp [Matrix.vecHead,Matrix.vecTail]
+
+lemma encode_eqAtom {n : ℕ} (F B s : V) (i j : Fin n) :
+    encode F B s (eqAtom (V := V) i j).val = Eind B.[(i : V)] B.[(j : V)] := by
+  simpa [eqAtom] using encode_pair F B s (Language.Eq.eq : (ℒₛₑₜ).Rel 2) i j
 
 lemma encode_memAtom {n : ℕ} (F B s : V) (i j : Fin n) :
     encode F B s (memAtom (V := V) i j).val = wel B.[(i : V)] B.[(j : V)] := by
-  have hu := (memAtom (V := V) i j).isUFormula
-  simp only [memAtom] at hu ⊢
-  rw [Bootstrapping.Semiformula.rel_val] at hu
-  rw [Bootstrapping.Semiformula.rel_val,
-    encode_rel F B s (IsUFormula.rel.mp hu).1 (IsUFormula.rel.mp hu).2]
-  have hv := (IsUFormula.rel.mp hu).2
-  have h0 := ValidatorEnvironmentLabels254.TermLabels.vec_nth F B hv (show (0 : V) < ↑(2 : ℕ) by simp)
-  have h1 := ValidatorEnvironmentLabels254.TermLabels.vec_nth F B hv (show (1 : V) < ↑(2 : ℕ) by simp)
-  simp only [atom,nth_adjoin_zero,nth_adjoin_one]
-  rw [if_neg (by change ((1 : ℕ) : V)≠0; simp),h0,h1]
-  simp [Matrix.vecHead,Matrix.vecTail]
+  simpa [memAtom] using encode_pair F B s (Language.Mem.mem : (ℒₛₑₜ).Rel 2) i j
 
 private lemma encode_nrelT {k n : ℕ} (F B s : V) (R : (ℒₛₑₜ).Rel k)
     (v : Bootstrapping.SemitermVec V ℒₛₑₜ k n) :
