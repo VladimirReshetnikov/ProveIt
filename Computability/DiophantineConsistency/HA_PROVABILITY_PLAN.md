@@ -2599,3 +2599,8 @@ now follows from the literal adaptive zero: `(2n) mod q⁴ = R+1`, with
 explicit lower bounds and the original classified-root coordinates. The
 exact first/main index comparison and the full internal equivalence remain
 open.
+
+The [first/main Pell-index comparison](reviews/adaptive-index-comparison2011-root.md)
+now derives `13 ≤ n < m`, `14 ≤ m`, and `2R < c` from the literal adaptive
+zero, retaining the rank residue and both root representations. The exact
+index equality and full internal equivalence still require proof.
