@@ -25,7 +25,7 @@ namespace LeanProofs.ZFCinPA.SizedPlaceholderCongruence
 
 open LO LO.FirstOrder LO.FirstOrder.SetTheory LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
 open scoped LO.FirstOrder.Arithmetic
-open LeanProofs.BoundedPAConsistency.SizedDerivation
+open LeanProofs.BoundedPAConsistency.SizedDerivation LeanProofs.BoundedPAConsistency.SubstBound
 open LeanProofs.ZFCinPA.SetCodeLevels LeanProofs.ZFCinPA.LevelDerivation
 open LeanProofs.ZFCinPA.SizedCongruence LeanProofs.ZFCinPA.SizedCongruenceAtoms
 
@@ -339,5 +339,495 @@ theorem symcut {x y Γ c W : V} (hx : IsSemiterm ℒₛₑₜ 0 x) (hy : IsSemit
     (lt_lvB_of (lEq ly lx) (by simpa [add_assoc] using up (1 + 3 + 3 + 1))) dΓ' ?_
   rw [neg_eq_atom hy hx]
   exact h.mono (le_of_add_eq (y := 8) (by ring))
+
+/-! ## Taking the context apart -/
+
+/-- `S` with the negations `∼f j` adjoined. -/
+def negsIns : {a : ℕ} → (Fin a → Bootstrapping.Formula V ℒₛₑₜ) → V → V
+  | 0, _, S => S
+  | _ + 1, f, S => insert (∼f 0).val (negsIns (Matrix.vecTail f) S)
+
+theorem mem_negsIns : ∀ {a : ℕ} (f : Fin a → Bootstrapping.Formula V ℒₛₑₜ) (S y : V),
+    y ∈ negsIns f S ↔ (∃ j, y = (∼f j).val) ∨ y ∈ S
+  | 0, f, S, y => by simp [negsIns]
+  | a + 1, f, S, y => by
+      simp only [negsIns, mem_bitInsert_iff, mem_negsIns (Matrix.vecTail f)]
+      constructor
+      · rintro (rfl | ⟨j, rfl⟩ | h)
+        · exact Or.inl ⟨0, rfl⟩
+        · exact Or.inl ⟨j.succ, rfl⟩
+        · exact Or.inr h
+      · rintro (⟨j, rfl⟩ | h)
+        · cases j using Fin.cases with
+          | zero => exact Or.inl rfl
+          | succ j => exact Or.inr (Or.inl ⟨j, rfl⟩)
+        · exact Or.inr (Or.inr h)
+
+theorem negsIns_le {a : ℕ} {f : Fin a → Bootstrapping.Formula V ℒₛₑₜ} {S m : V}
+    (hf : ∀ j, (∼f j).val ≤ lvB m) (hS : SeqLe S m) : SeqLe (negsIns f S) m := by
+  intro y hy
+  rcases (mem_negsIns f S y).mp hy with ⟨j, rfl⟩ | h
+  · exact hf j
+  · exact hS y h
+
+theorem negsIns_formulaSet {a : ℕ} {f : Fin a → Bootstrapping.Formula V ℒₛₑₜ} {S : V}
+    (hS : IsFormulaSet ℒₛₑₜ S) : IsFormulaSet ℒₛₑₜ (negsIns f S) := by
+  intro y hy
+  rcases (mem_negsIns f S y).mp hy with ⟨j, rfl⟩ | h
+  · exact (∼f j).isSemiformula
+  · exact hS y h
+
+theorem conj_succ {n a : ℕ} (f : Fin (a + 1) → Bootstrapping.Semiformula V ℒₛₑₜ n) :
+    Matrix.conj f = f 0 ⋏ Matrix.conj (Matrix.vecTail f) := rfl
+
+/-- **Unpacking a negated conjunction.** -/
+theorem unpack : ∀ {a : ℕ} (f : Fin a → Bootstrapping.Formula V ℒₛₑₜ) (S W m : V), 4 ≤ W →
+    m + 1 ≤ W → (∼Matrix.conj f).val ∈ S → (∼Matrix.conj f).val ≤ lvB m →
+    (∀ j, (∼f j).val ≤ lvB m) → SeqLe S m → IsFormulaSet ℒₛₑₜ S →
+    DLv 𝗭𝗙 (negsIns f S) W → DLv 𝗭𝗙 S (W + 2 * a)
+  | 0, f, S, W, m, _, _, _, _, _, _, _, h => by simpa [negsIns] using h
+  | a + 1, f, S, W, m, hW4, hmW, hmem, hl, hf, hS, hfs, h => by
+      have ev : (∼Matrix.conj f).val = (∼f 0).val ^⋎ (∼Matrix.conj (Matrix.vecTail f)).val := by
+        rw [conj_succ]; simp
+      set S' := insert (∼f 0).val (insert (∼Matrix.conj (Matrix.vecTail f)).val S) with hS'
+      have l1 : (∼Matrix.conj (Matrix.vecTail f)).val ≤ lvB m :=
+        le_trans (le_of_lt (lt_or_right _ _)) (ev ▸ hl)
+      have lS' : SeqLe S' m := (hS.insert l1).insert (hf 0)
+      have fS' : IsFormulaSet ℒₛₑₜ S' := formulaSet_insert (formulaSet_insert hfs)
+      have hft : ∀ j, (∼(Matrix.vecTail f) j).val ≤ lvB m := fun j => hf j.succ
+      have h' : DLv 𝗭𝗙 (negsIns (Matrix.vecTail f) S') (W + 1) := by
+        refine DLv.wk hW4 ((negsIns_le hft lS').toLt hmW) (negsIns_formulaSet fS') ?_ h
+        intro y hy
+        simp only [negsIns, mem_bitInsert_iff] at hy
+        rw [mem_negsIns]
+        rcases hy with rfl | hy
+        · exact Or.inr (by simp [hS'])
+        · rcases (mem_negsIns _ S y).mp hy with ⟨j, rfl⟩ | hy
+          · exact Or.inl ⟨j, rfl⟩
+          · exact Or.inr (by simp [hS', hy])
+      have ih := unpack (Matrix.vecTail f) S' (W + 1) m (le_trans hW4 le_self_add)
+        (le_trans hmW le_self_add) (by simp [hS']) l1 hft lS' fS' h'
+      have hWa : W ≤ W + 1 + 2 * (a : V) := le_trans le_self_add le_self_add
+      have d := DLv.or_m (le_trans hW4 hWa) (hS.toLt (le_trans hmW hWa))
+        (p := (∼f 0).val) (q := (∼Matrix.conj (Matrix.vecTail f)).val) (ev ▸ hmem) ih
+      have e : W + 1 + 2 * (a : V) + 1 = W + 2 * ((a + 1 : ℕ) : V) := by push_cast; ring
+      rw [← e]
+      exact d
+
+/-! ## The shape of the stripped body -/
+
+theorem shs_imp {n : ℕ} (φ ψ : Bootstrapping.Semiformula V ℒₛₑₜ n) :
+    ∀ k : ℕ, shs k (φ 🡒 ψ) = shs k φ 🡒 shs k ψ
+  | 0 => rfl
+  | k + 1 => by rw [shs_succ, shs_succ, shs_succ, shs_imp φ ψ k, Bootstrapping.Semiformula.shift_imp]
+
+theorem shs_and {n : ℕ} (φ ψ : Bootstrapping.Semiformula V ℒₛₑₜ n) :
+    ∀ k : ℕ, shs k (φ ⋏ ψ) = shs k φ ⋏ shs k ψ
+  | 0 => rfl
+  | k + 1 => by rw [shs_succ, shs_succ, shs_succ, shs_and φ ψ k, Bootstrapping.Semiformula.shift_and]
+
+theorem shs_verum {n : ℕ} : ∀ k : ℕ, shs k (⊤ : Bootstrapping.Semiformula V ℒₛₑₜ n) = ⊤
+  | 0 => rfl
+  | k + 1 => by rw [shs_succ, shs_verum k, Bootstrapping.Semiformula.shift_verum]
+
+theorem shs_eqAtom {n : ℕ} (t u : Bootstrapping.Semiterm V ℒₛₑₜ n) :
+    ∀ k : ℕ, shs k (t ≐ₛ u) =
+      ((Bootstrapping.Semiterm.shift)^[k] t ≐ₛ (Bootstrapping.Semiterm.shift)^[k] u)
+  | 0 => rfl
+  | k + 1 => by
+      rw [shs_succ, shs_eqAtom t u k, SetCongruence.eqAtom_shift, Function.iterate_succ_apply',
+        Function.iterate_succ_apply']
+
+theorem shs_conj {n : ℕ} : ∀ {a : ℕ} (f : Fin a → Bootstrapping.Semiformula V ℒₛₑₜ n) (k : ℕ),
+    shs k (Matrix.conj f) = Matrix.conj (fun j => shs k (f j))
+  | 0, _, k => shs_verum k
+  | a + 1, f, k => by
+      rw [conj_succ, shs_and, shs_conj (Matrix.vecTail f) k, conj_succ]
+      rfl
+
+theorem subst_conj {n m : ℕ} (w : Bootstrapping.SemitermVec V ℒₛₑₜ n m) :
+    ∀ {a : ℕ} (f : Fin a → Bootstrapping.Semiformula V ℒₛₑₜ n),
+      (Matrix.conj f).subst w = Matrix.conj (fun j => (f j).subst w)
+  | 0, _ => by simp [Matrix.conj]
+  | a + 1, f => by
+      rw [conj_succ, Bootstrapping.Semiformula.substs_and, subst_conj w (Matrix.vecTail f), conj_succ]
+      rfl
+
+theorem shs_subst {a m : ℕ} (K : Bootstrapping.Semiformula V ℒₛₑₜ a)
+    (w : Bootstrapping.SemitermVec V ℒₛₑₜ a m) :
+    ∀ k : ℕ, shs k (K.subst w) = (shs k K).subst (fun j => (Bootstrapping.Semiterm.shift)^[k] (w j))
+  | 0 => rfl
+  | k + 1 => by
+      rw [shs_succ, shs_subst K w k, Bootstrapping.Semiformula.shift_substs, shs_succ]
+      congr 1
+      funext j
+      simp [Function.iterate_succ_apply']
+
+theorem shift_iter_bvar {n : ℕ} (i : Fin n) :
+    ∀ k : ℕ, (Bootstrapping.Semiterm.shift)^[k] (Bootstrapping.Semiterm.bvar i : Bootstrapping.Semiterm V ℒₛₑₜ n) =
+      Bootstrapping.Semiterm.bvar i
+  | 0 => rfl
+  | k + 1 => by rw [Function.iterate_succ_apply', shift_iter_bvar i k]; simp
+
+/-- The left and right variables after stripping: `&j` and `&(j + a)`. -/
+def xVec (a : ℕ) : Bootstrapping.SemitermVec V ℒₛₑₜ a 0 :=
+  fun j => Bootstrapping.Semiterm.fvar ((j : ℕ) : V)
+
+def yVec (a : ℕ) : Bootstrapping.SemitermVec V ℒₛₑₜ a 0 :=
+  fun j => Bootstrapping.Semiterm.fvar (((j : ℕ) + a : ℕ) : V)
+
+theorem body_shape (a : ℕ) (K : Bootstrapping.Semiformula V ℒₛₑₜ a) :
+    (shs (a + a) (SetCongruence.congruenceContext a 🡒 K.subst (SetCongruence.leftTuple a) 🡒
+        K.subst (SetCongruence.rightTuple a))).subst (fvVec (a + a)) =
+      Matrix.conj (fun j : Fin a => xVec a j ≐ₛ yVec a j) 🡒
+        (shs (a + a) K).subst (xVec a) 🡒 (shs (a + a) K).subst (yVec a) := by
+  rw [shs_imp, shs_imp, Bootstrapping.Semiformula.substs_imp, Bootstrapping.Semiformula.substs_imp]
+  congr 1
+  · unfold SetCongruence.congruenceContext
+    rw [shs_conj, subst_conj]
+    congr 1
+    funext j
+    rw [shs_eqAtom, SetCongruence.eqAtom_subst]
+    simp [SetCongruence.leftTuple, SetCongruence.rightTuple, shift_iter_bvar, fvVec, xVec, yVec]
+  · congr 1
+    · rw [shs_subst, Bootstrapping.Semiformula.substs_substs]
+      congr 1
+      funext j
+      simp [SetCongruence.leftTuple, shift_iter_bvar, fvVec, xVec]
+    · rw [shs_subst, Bootstrapping.Semiformula.substs_substs]
+      congr 1
+      funext j
+      simp [SetCongruence.rightTuple, shift_iter_bvar, fvVec, yVec]
+
+/-! ## Dropping all reversed hypotheses -/
+
+theorem symcuts : ∀ {a : ℕ} (f g : Fin a → Bootstrapping.Formula V ℒₛₑₜ) (T W c : V), 1 ≤ c →
+    sW c ≤ W →
+    (∀ j, ∃ x y, IsSemiterm ℒₛₑₜ 0 x ∧ IsSemiterm ℒₛₑₜ 0 y ∧ x ≤ lvB c ∧ y ≤ lvB c ∧
+      (∼f j).val = neR x y ∧ (∼g j).val = neR y x) →
+    (∀ j, (∼f j).val ∈ T) → SeqLe T (10 * (10 * ((symmN : V) + 1) + c + 1)) →
+    IsFormulaSet ℒₛₑₜ T → (∀ j, (∼g j).val ≤ lvB (10 * (10 * ((symmN : V) + 1) + c + 1))) →
+    DLv 𝗭𝗙 (negsIns g T) W → DLv 𝗭𝗙 T (W + 9 * a)
+  | 0, _, _, T, W, _, _, _, _, _, _, _, _, h => by simpa [negsIns] using h
+  | a + 1, f, g, T, W, c, hc, hW, hfg, hfT, hT, hfs, hgb, h => by
+      obtain ⟨x, y, hx, hy, lx, ly, ef, eg⟩ := hfg 0
+      have hgb' : ∀ j, (∼(Matrix.vecTail g) j).val ≤ lvB (10 * (10 * ((symmN : V) + 1) + c + 1)) :=
+        fun j => hgb j.succ
+      have hxy : neR x y ∈ negsIns (Matrix.vecTail g) T :=
+        (mem_negsIns _ T _).mpr (Or.inr (ef ▸ hfT 0))
+      have h' : DLv 𝗭𝗙 (insert (neR y x) (negsIns (Matrix.vecTail g) T)) W := by
+        rw [← eg]; exact h
+      have d1 := symcut hx hy lx ly hc hW (negsIns_le hgb' hT) (negsIns_formulaSet hfs) hxy h'
+      have ih := symcuts (Matrix.vecTail f) (Matrix.vecTail g) T (W + 1 + 3 + 3 + 1 + 1) c hc
+        (le_trans hW (le_trans le_self_add (le_trans le_self_add (le_trans le_self_add
+          (le_trans le_self_add le_self_add)))))
+        (fun j => hfg j.succ) (fun j => hfT j.succ) hT hfs hgb' d1
+      have e : W + 1 + 3 + 3 + 1 + 1 + 9 * (a : V) = W + 9 * ((a + 1 : ℕ) : V) := by
+        push_cast; ring
+      rw [e] at ih
+      exact ih
+
+/-! ## Level bounds for the pieces -/
+
+theorem conn_le {tag p q m : V} (hm : 2 ≤ m) (ht : tag ≤ 16) (hp : p ≤ lvB m) (hq : q ≤ lvB m) :
+    ⟪tag, ⟪p, q⟫⟫ + 1 ≤ lvB (m + 4) :=
+  pair_lvB_le (le_trans hm le_self_add) (le_of_eq (by ring)) (tag_le_lvB ht (le_trans hm le_self_add))
+    (pair_lvB' hm hp hq)
+
+theorem verum_le {m : V} (hm : 2 ≤ m) : (^⊤ : V) ≤ lvB m :=
+  le_trans (show (^⊤ : V) ≤ 16 by simp [qqVerum, pair]; norm_num) (le_trans (le_of_eq lvB_two.symm)
+    (lvB_mono hm))
+
+theorem conj_le {n : ℕ} : ∀ {a : ℕ} (f : Fin a → Bootstrapping.Semiformula V ℒₛₑₜ n) {m : V},
+    2 ≤ m → (∀ j, (f j).val ≤ lvB m) → (Matrix.conj f).val ≤ lvB (m + 4 * a)
+  | 0, _, m, hm, _ => by simpa [Matrix.conj] using verum_le hm
+  | a + 1, f, m, hm, hf => by
+      rw [conj_succ, Bootstrapping.Semiformula.val_and]
+      have ih := conj_le (Matrix.vecTail f) hm (fun j => hf j.succ)
+      have h2 : 2 ≤ m + 4 * (a : V) := le_trans hm le_self_add
+      have := conn_le (tag := 4) h2 (by norm_num) (lift_lvB (hf 0) le_self_add) ih
+      refine le_trans this (le_of_eq ?_)
+      congr 1
+      push_cast
+      ring
+
+theorem bvar_small : ∀ j : ℕ, j ≤ 6 → (^#(j : V) : V) ≤ lvB 3
+  | 0, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
+  | 1, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
+  | 2, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
+  | 3, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
+  | 4, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
+  | 5, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
+  | 6, _ => by rw [lvB_three]; simp [qqBvar, pair] <;> norm_num
+  | j + 7, h => absurd h (by omega)
+
+/-- Substitution of variable terms, for typed vectors with bound variables. -/
+theorem tsubst_le_var {k m : ℕ} (ψ : Bootstrapping.Semiformula V ℒₛₑₜ k)
+    (v : Bootstrapping.SemitermVec V ℒₛₑₜ k m) {u c : V} (hψ : ψ.val ≤ lvB u) (hc : 1 ≤ c)
+    (hv : ∀ i, (v i).val ≤ lvB c) (hvar : ∀ i, IsVarTerm (v i).val) :
+    (ψ.subst v).val ≤ lvB (10 * (u + 1) + c) := by
+  rw [Bootstrapping.Semiformula.val_substs]
+  refine subst_level u ψ.val hψ ψ.isSemiformula.isUFormula c k m v.val hc
+    (by simpa using v.isSemitermVec) ?_ ?_
+  · intro i hi
+    obtain ⟨j, rfl⟩ := eq_fin_of_lt_nat hi
+    rw [Bootstrapping.SemitermVec.val_nth_eq]; exact hv j
+  · intro i hi
+    obtain ⟨j, rfl⟩ := eq_fin_of_lt_nat hi
+    rw [Bootstrapping.SemitermVec.val_nth_eq]; exact hvar j
+
+/-! ## The placeholder congruence leaf -/
+
+/-- The member level of the leaf. -/
+def mBig (u : V) : V := 100 * u + 748
+
+/-- The level of the replacement core. -/
+def coreL (u : V) : V := cW congA (u + 6) (u + 6) 14
+
+/-- The level after the symmetry cuts start. -/
+def lW₁ (u : V) : V := coreL u + 1 + sW (mBig u)
+
+/-- **The level of the placeholder congruence leaf**, linear in `u`. -/
+def congL (u : V) : V := lW₁ u + 47
+
+theorem atom14 {tag R x y : V} (ht : tag ≤ 1) (hR : R = 0 ∨ R = 1) (hx : x ≤ lvB 3)
+    (hy : y ≤ lvB 3) : ⟪tag, 2, R, x ∷ y ∷ 0⟫ + 1 ≤ lvB 14 := by
+  have := atom_le (c := 3) (by norm_num) ht hR hx hy
+  rwa [show (3 : V) + 1 + 10 = 14 by norm_num] at this
+
+theorem four_a_le {a : ℕ} (ha : a ≤ 3) : 4 * (a : V) ≤ 12 := by
+  have haV : (a : V) ≤ 3 := by exact_mod_cast ha
+  have := mul_le_mul_of_nonneg_left haV (show (0 : V) ≤ 4 by norm_num)
+  simpa using this.trans (le_of_eq (by norm_num))
+
+theorem conj_atoms_le {n a : ℕ} (ha : a ≤ 3) (f : Fin a → Bootstrapping.Semiformula V ℒₛₑₜ n)
+    (hf : ∀ j, (f j).val ≤ lvB 14) : (∼Matrix.conj f).val ≤ lvB 270 := by
+  have h := lift_lvB (conj_le f (by norm_num) hf) (_root_.add_le_add le_rfl (four_a_le ha))
+  rw [Bootstrapping.Semiformula.val_neg]
+  have := neg_level _ _ h (Matrix.conj f).isSemiformula.isUFormula
+  rwa [show 10 * ((14 : V) + 12 + 1) = 270 by norm_num] at this
+
+set_option maxHeartbeats 4000000 in
+/-- **The placeholder congruence leaf, bounded.** For every internal `K` of
+arity `a ≤ 3` at level `u ≥ 2`, the congruence law `congruenceFormula a K`
+has a `𝗭𝗙`-derivation with code at most `2^(lvB (congL u))`, and `congL u`
+is linear in `u` with standard coefficients. -/
+theorem cong_leaf (a : ℕ) (ha : a ≤ 3) (K : Bootstrapping.Semiformula V ℒₛₑₜ a) {u : V}
+    (hu : 2 ≤ u) (hK : K.val ≤ lvB u) :
+    DLv 𝗭𝗙 (insert (SetCongruence.congruenceFormula a K).val ∅) (congL u) := by
+  have hn6 : a + a ≤ 6 := by omega
+  have hnV : ((a + a : ℕ) : V) ≤ 6 := by exact_mod_cast hn6
+  have haV : (a : V) ≤ 3 := by exact_mod_cast ha
+  set K' := shs (a + a) K with hK'def
+  have hK' : K'.val ≤ lvB (u + 6) := lift_lvB (shs_level K hK (a + a)) (_root_.add_le_add le_rfl hnV)
+  set xv := xVec (V := V) a with hxvd
+  set yv := yVec (V := V) a with hyvd
+  have hxv : ∀ j, (xv j).val ≤ lvB 3 := fun j => by
+    simpa [hxvd, xVec] using fvar_small j (by omega)
+  have hyv : ∀ j, (yv j).val ≤ lvB 3 := fun j => by
+    simpa [hyvd, yVec] using fvar_small (j + a) (by omega)
+  have cx : ∀ j, IsSemiterm ℒₛₑₜ 0 (xv j).val := fun j => by simpa using (xv j).isSemiterm
+  have cy : ∀ j, IsSemiterm ℒₛₑₜ 0 (yv j).val := fun j => by simpa using (yv j).isSemiterm
+  set f : Fin a → Bootstrapping.Formula V ℒₛₑₜ := fun j => xv j ≐ₛ yv j with hf
+  set g : Fin a → Bootstrapping.Formula V ℒₛₑₜ := fun j => yv j ≐ₛ xv j with hg
+  have nf : ∀ j, (∼f j).val = neR (xv j).val (yv j).val := fun j => by
+    rw [Bootstrapping.Semiformula.val_neg, hf, eqAtom_val]; exact neg_eq_atom (cx j) (cy j)
+  have ng : ∀ j, (∼g j).val = neR (yv j).val (xv j).val := fun j => by
+    rw [Bootstrapping.Semiformula.val_neg, hg, eqAtom_val]; exact neg_eq_atom (cy j) (cx j)
+  have lf : ∀ j, (f j).val ≤ lvB 14 := fun j => by
+    rw [hf, eqAtom_val]; exact atom14 (by simp) (Or.inl rfl) (hxv j) (hyv j)
+  have lnf : ∀ j, (∼f j).val ≤ lvB 14 := fun j => by
+    rw [nf]; exact atom14 le_rfl (Or.inl rfl) (hxv j) (hyv j)
+  have lng : ∀ j, (∼g j).val ≤ lvB 14 := fun j => by
+    rw [ng]; exact atom14 le_rfl (Or.inl rfl) (hyv j) (hxv j)
+  -- the replacement core
+  set E₀ := negsIns f (negsIns g (∅ : V)) with hE₀
+  have hE₀l : SeqLe E₀ 14 :=
+    negsIns_le lnf (negsIns_le lng (fun y hy => by simp at hy))
+  have hE₀f : IsFormulaSet ℒₛₑₜ E₀ :=
+    negsIns_formulaSet (negsIns_formulaSet (fun y hy => by simp at hy))
+  have l314 : (3 : V) ≤ 14 := by norm_num
+  have inp : Inp (a : V) xv.val yv.val E₀ 14 := by
+    refine ⟨by simpa using xv.isSemitermVec, by simpa using yv.isSemitermVec, by norm_num,
+      (tvec_entries xv (fun j => lift_lvB (hxv j) l314)).1,
+      (tvec_entries yv (fun j => lift_lvB (hyv j) l314)).1, hE₀f, hE₀l, ?_⟩
+    intro i hi
+    obtain ⟨j, rfl⟩ := eq_fin_of_lt_nat hi
+    rw [Bootstrapping.SemitermVec.val_nth_eq, Bootstrapping.SemitermVec.val_nth_eq]
+    right
+    constructor
+    · rw [← nf]; exact (mem_negsIns _ _ _).mpr (Or.inl ⟨j, rfl⟩)
+    · rw [← ng]; exact (mem_negsIns _ _ _).mpr (Or.inr ((mem_negsIns _ _ _).mpr (Or.inl ⟨j, rfl⟩)))
+  have D0 := replace_le (u + 6) (u + 6) K'.val (a : V) xv.val yv.val E₀ 14
+    (complexity_le _ _ hK' K'.isSemiformula.isUFormula) (by simpa using K'.isSemiformula) hK' inp
+  -- the pieces of the stripped body
+  set Kx := K'.subst xv with hKx
+  set Ky := K'.subst yv with hKy
+  have eKx : neg ℒₛₑₜ (subst ℒₛₑₜ xv.val K'.val) = (∼Kx).val := by
+    rw [Bootstrapping.Semiformula.val_neg, Bootstrapping.Semiformula.val_substs]
+  have eKy : subst ℒₛₑₜ yv.val K'.val = Ky.val := (Bootstrapping.Semiformula.val_substs _ _).symm
+  set Lk := 10 * (10 * (u + 6 + 1) + 3 + 1) with hLk
+  have lKx : Kx.val ≤ lvB (10 * (u + 6 + 1) + 3) := tsubst_le K' xv hK' (by norm_num) hxv
+  have lKy : Ky.val ≤ lvB (10 * (u + 6 + 1) + 3) := tsubst_le K' yv hK' (by norm_num) hyv
+  have lnKx : (∼Kx).val ≤ lvB Lk := by
+    rw [Bootstrapping.Semiformula.val_neg]; exact neg_level _ _ lKx Kx.isSemiformula.isUFormula
+  have hKyLk : 10 * (u + 6 + 1) + 3 ≤ Lk :=
+    le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num))
+  have hLk2 : (2 : V) ≤ Lk := le_of_add_eq (y := 100 * u + 738) (by rw [hLk]; ring)
+  set ctx := Matrix.conj f with hctx
+  set R := Kx 🡒 Ky with hR
+  set B' := ctx 🡒 R with hB'
+  have eR : R.val = (∼Kx).val ^⋎ Ky.val := by
+    rw [hR, Bootstrapping.Semiformula.imp_def, Bootstrapping.Semiformula.val_or]
+  have eB : B'.val = (∼ctx).val ^⋎ R.val := by
+    rw [hB', Bootstrapping.Semiformula.imp_def, Bootstrapping.Semiformula.val_or]
+  have lR : R.val ≤ lvB (Lk + 4) := by
+    rw [eR]; exact conn_le (tag := 5) hLk2 (by norm_num) lnKx (lift_lvB lKy hKyLk)
+  have lnctx : (∼ctx).val ≤ lvB (Lk + 4) :=
+    lift_lvB (conj_atoms_le ha f lf) (le_of_add_eq (y := 100 * u + 474) (by rw [hLk]; ring))
+  have lB : B'.val ≤ lvB (mBig u) := by
+    rw [eB]
+    refine lift_lvB (conn_le (tag := 5) (le_trans hLk2 le_self_add) (by norm_num) lnctx lR) ?_
+    exact le_of_eq (by rw [hLk]; unfold mBig; ring)
+  have hLkM : Lk + 4 ≤ mBig u := le_of_add_eq (y := 4) (by rw [hLk]; unfold mBig; ring)
+  have fctx := (∼ctx).isSemiformula
+  have fR := R.isSemiformula
+  have fB := B'.isSemiformula
+  have fnKx := (∼Kx).isSemiformula
+  have fKy := Ky.isSemiformula
+  -- the sequents
+  set S₂ := insert (∼ctx).val (insert R.val (insert B'.val (∅ : V))) with hS₂
+  set S₁ := insert (∼Kx).val (insert Ky.val S₂) with hS₁
+  set T₀ := negsIns f S₁ with hT₀
+  set T₁ := negsIns g T₀ with hT₁
+  have lS₂ : SeqLe S₂ (mBig u) :=
+    ((SeqLe.insert lB (fun y hy => by simp at hy)).insert (lift_lvB lR hLkM)).insert
+      (lift_lvB lnctx hLkM)
+  have lS₁ : SeqLe S₁ (mBig u) :=
+    (lS₂.insert (lift_lvB lKy (le_trans hKyLk (le_trans le_self_add hLkM)))).insert
+      (lift_lvB lnKx (le_trans le_self_add hLkM))
+  have h14 : (14 : V) ≤ mBig u := le_of_add_eq (y := 100 * u + 734) (by unfold mBig; ring)
+  have lT₀ : SeqLe T₀ (mBig u) := negsIns_le (fun j => lift_lvB (lnf j) h14) lS₁
+  have lT₁ : SeqLe T₁ (mBig u) := negsIns_le (fun j => lift_lvB (lng j) h14) lT₀
+  have fS₂ : IsFormulaSet ℒₛₑₜ S₂ := by simp [hS₂, fctx, fR, fB]
+  have fS₁ : IsFormulaSet ℒₛₑₜ S₁ := by simp [hS₁, fnKx, fKy, fS₂]
+  have fT₀ : IsFormulaSet ℒₛₑₜ T₀ := negsIns_formulaSet fS₁
+  have fT₁ : IsFormulaSet ℒₛₑₜ T₁ := negsIns_formulaSet fT₀
+  -- D1: weaken the core into `T₁`
+  have hcore4 : 4 ≤ coreL u := cW_four _ _ _ _
+  have hcoreM : mBig u + 1 ≤ coreL u :=
+    le_of_add_eq (y := 30 * u + 371 + congA) (by unfold mBig coreL cW; ring)
+  have D1 : DLv 𝗭𝗙 T₁ (coreL u + 1) := by
+    refine DLv.wk hcore4 (lT₁.toLt hcoreM) fT₁ ?_ D0
+    intro z hz
+    unfold Cseq at hz
+    rw [eKx, eKy] at hz
+    have hS₁T₁ : ∀ {y : V}, y ∈ S₁ → y ∈ T₁ := fun hy =>
+      (mem_negsIns _ _ _).mpr (Or.inr ((mem_negsIns _ _ _).mpr (Or.inr hy)))
+    rcases mem_bitInsert_iff.mp hz with rfl | hz
+    · exact hS₁T₁ (by simp [hS₁])
+    rcases mem_bitInsert_iff.mp hz with rfl | hz
+    · exact hS₁T₁ (by simp [hS₁])
+    rcases (mem_negsIns _ _ _).mp hz with ⟨j, rfl⟩ | hz
+    · exact (mem_negsIns _ _ _).mpr (Or.inr ((mem_negsIns _ _ _).mpr (Or.inl ⟨j, rfl⟩)))
+    rcases (mem_negsIns _ _ _).mp hz with ⟨j, rfl⟩ | hz
+    · exact (mem_negsIns _ _ _).mpr (Or.inl ⟨j, rfl⟩)
+    · simp at hz
+  -- D2: the symmetry cuts
+  have hM1 : (1 : V) ≤ mBig u := le_trans (by norm_num) h14
+  have hMs : mBig u ≤ 10 * (10 * ((symmN : V) + 1) + mBig u + 1) :=
+    le_trans (le_trans le_add_self le_self_add)
+      (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num))
+  have hsW : sW (mBig u) ≤ lW₁ u := le_add_self
+  have D2 := symcuts f g T₀ (lW₁ u) (mBig u) hM1 hsW
+    (fun j => ⟨(xv j).val, (yv j).val, cx j, cy j, lift_lvB (hxv j) (le_trans l314 h14),
+      lift_lvB (hyv j) (le_trans l314 h14), nf j, ng j⟩)
+    (fun j => (mem_negsIns _ _ _).mpr (Or.inl ⟨j, rfl⟩)) (lT₀.mono hMs) fT₀
+    (fun j => lift_lvB (lng j) (le_trans h14 hMs))
+    (D1.mono le_self_add)
+  -- D3: unpack the context
+  have hW₁M : mBig u + 1 ≤ lW₁ u :=
+    le_trans (le_of_add_eq (y := (symmD : V) + 100 * symmN + 9 * mBig u + 110) (by unfold sW; ring)) hsW
+  have hW₁4 : 4 ≤ lW₁ u := le_trans (le_trans (by norm_num : (4 : V) ≤ 14) (le_trans h14 le_self_add)) hW₁M
+  have D3 := unpack f S₁ (lW₁ u + 9 * (a : V)) (mBig u) (le_trans hW₁4 le_self_add)
+    (le_trans hW₁M le_self_add) (by simp [hS₁, hS₂, hctx]) (lift_lvB lnctx hLkM)
+    (fun j => lift_lvB (lnf j) h14) lS₁ fS₁ D2
+  -- D4, D5: the two disjunctions
+  set W₂ := lW₁ u + 9 * (a : V) + 2 * (a : V) with hW₂
+  have hW₂1 : lW₁ u ≤ W₂ := le_trans le_self_add le_self_add
+  have D4 : DLv 𝗭𝗙 S₂ (W₂ + 1) :=
+    DLv.or_m (le_trans hW₁4 hW₂1) (lS₂.toLt (le_trans hW₁M hW₂1)) (p := (∼Kx).val) (q := Ky.val)
+      (by rw [← eR]; simp [hS₂]) D3
+  have D5 : DLv 𝗭𝗙 (insert B'.val ∅) (W₂ + 1 + 1) :=
+    DLv.or_m (le_trans hW₁4 (le_trans hW₂1 le_self_add))
+      (((SeqLe.insert lB (fun y hy => by simp at hy))).toLt (le_trans hW₁M (le_trans hW₂1 le_self_add)))
+      (p := (∼ctx).val) (q := R.val) (by rw [← eB]; simp) D4
+  -- D6: restore the binders
+  set body := SetCongruence.congruenceContext a 🡒 K.subst (SetCongruence.leftTuple a) 🡒
+    K.subst (SetCongruence.rightTuple a) with hbody
+  have hshape : (shs (a + a) body).subst (fvVec (a + a)) = B' := by
+    rw [hbody]; exact body_shape a K
+  have lbody : body.val ≤ lvB (100 * u + 300) := by
+    have lt : ∀ j, ((SetCongruence.leftTuple (V := V) a) j).val ≤ lvB 3 ∧
+        IsVarTerm ((SetCongruence.leftTuple (V := V) a) j).val := fun j => by
+      refine ⟨by simpa [SetCongruence.leftTuple] using bvar_small j (by omega), ?_⟩
+      simpa [SetCongruence.leftTuple] using isVarTerm_bvar ((j : ℕ) : V)
+    have rt : ∀ j, ((SetCongruence.rightTuple (V := V) a) j).val ≤ lvB 3 ∧
+        IsVarTerm ((SetCongruence.rightTuple (V := V) a) j).val := fun j => by
+      refine ⟨by simpa [SetCongruence.rightTuple] using bvar_small (j + a) (by omega), ?_⟩
+      simpa [SetCongruence.rightTuple] using isVarTerm_bvar (((j : ℕ) + a : ℕ) : V)
+    have lKl := tsubst_le_var K (SetCongruence.leftTuple a) hK (by norm_num) (fun j => (lt j).1)
+      (fun j => (lt j).2)
+    have lKr := tsubst_le_var K (SetCongruence.rightTuple a) hK (by norm_num) (fun j => (rt j).1)
+      (fun j => (rt j).2)
+    have lnKl : (∼(K.subst (SetCongruence.leftTuple a))).val ≤ lvB (10 * (10 * (u + 1) + 3 + 1)) := by
+      rw [Bootstrapping.Semiformula.val_neg]
+      exact neg_level _ _ lKl (K.subst _).isSemiformula.isUFormula
+    set m₁ := 10 * (10 * (u + 1) + 3 + 1) with hm₁
+    have hm₁2 : (2 : V) ≤ m₁ := le_of_add_eq (y := 100 * u + 138) (by rw [hm₁]; ring)
+    have lin : (K.subst (SetCongruence.leftTuple a) 🡒 K.subst (SetCongruence.rightTuple a)).val ≤
+        lvB (m₁ + 4) := by
+      rw [Bootstrapping.Semiformula.imp_def, Bootstrapping.Semiformula.val_or]
+      exact conn_le (tag := 5) hm₁2 (by norm_num) lnKl (lift_lvB lKr
+        (le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num))))
+    have latoms : ∀ j, (SetCongruence.leftTuple (V := V) a j ≐ₛ SetCongruence.rightTuple a j).val ≤ lvB 14 :=
+      fun j => by
+        rw [SetCongruence.val_eqAtom, SetCongruence.coe_setEqIndex_eq]
+        exact atom14 (by simp) (Or.inl rfl) (lt j).1 (rt j).1
+    have lnc : (∼SetCongruence.congruenceContext (V := V) a).val ≤ lvB (m₁ + 4) :=
+      lift_lvB (conj_atoms_le ha _ latoms) (by
+        calc (270 : V) ≤ 100 * 2 + 144 := by norm_num
+          _ ≤ 100 * u + 144 := _root_.add_le_add (mul_le_mul_of_nonneg_left hu (by norm_num)) le_rfl
+          _ = m₁ + 4 := by rw [hm₁]; ring)
+    rw [hbody, Bootstrapping.Semiformula.imp_def, Bootstrapping.Semiformula.val_or]
+    exact lift_lvB (conn_le (tag := 5) (le_trans hm₁2 le_self_add) (by norm_num) lnc lin)
+      (le_of_add_eq (y := 152) (by rw [hm₁]; ring))
+  have hstrip : sβ (100 * u + 300 + 3 * ((a + a : ℕ) : V)) + 1 ≤ W₂ + 1 + 1 := by
+    have h3n : 3 * ((a + a : ℕ) : V) ≤ 18 := by
+      have := mul_le_mul_of_nonneg_left hnV (show (0 : V) ≤ 3 by norm_num)
+      exact this.trans (le_of_eq (by norm_num))
+    calc sβ (100 * u + 300 + 3 * ((a + a : ℕ) : V)) + 1 ≤ sβ (100 * u + 300 + 18) + 1 := by
+          unfold sβ
+          exact _root_.add_le_add (_root_.add_le_add (mul_le_mul_of_nonneg_left
+            (_root_.add_le_add (_root_.add_le_add le_rfl h3n) le_rfl) (by norm_num)) le_rfl) le_rfl
+      _ ≤ sW (mBig u) :=
+          le_of_add_eq (y := (symmD : V) + 100 * symmN + 4377) (by unfold sβ sW mBig; ring)
+      _ ≤ lW₁ u := hsW
+      _ ≤ W₂ + 1 + 1 := le_trans hW₂1 (le_trans le_self_add le_self_add)
+  have D6 := strip (a + a) body (100 * u + 300) (W₂ + 1 + 1) hn6
+    (le_trans hu (le_trans (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num)) le_self_add))
+    lbody (le_trans hW₁4 (le_trans hW₂1 (le_trans le_self_add le_self_add))) hstrip
+    (by rw [hshape]; exact D5)
+  have hcf : SetCongruence.congruenceFormula a K = ∀⁰* body := rfl
+  rw [hcf]
+  refine D6.mono ?_
+  have h15 : 15 * (a : V) ≤ 45 := by
+    have := mul_le_mul_of_nonneg_left haV (show (0 : V) ≤ 15 by norm_num)
+    exact this.trans (le_of_eq (by norm_num))
+  unfold congL
+  calc W₂ + 1 + 1 + 2 * ((a + a : ℕ) : V) = lW₁ u + (15 * (a : V) + 2) := by
+        rw [hW₂]; push_cast; ring
+    _ ≤ lW₁ u + 47 := _root_.add_le_add le_rfl (le_trans (_root_.add_le_add h15 le_rfl)
+        (le_of_eq (by norm_num)))
 
 end LeanProofs.ZFCinPA.SizedPlaceholderCongruence
