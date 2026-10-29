@@ -1,3 +1,4 @@
+import ZFCinPA.SetRelativization
 import ZFCinPA.ValidatorSourceDerivation222
 
 set_option autoImplicit false
@@ -155,25 +156,13 @@ theorem relExt_eq_image (F s : V) :
 noncomputable abbrev equalityDelta : (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁ :=
   Theory.Δ₁.ofFinite _ Theory.EqAxiom.finite
 
-theorem mem_ch_ofList {p : V} : ∀ (l : List SetTheorySentence),
-    V ⊧/![p] (Theory.Δ₁.ofList l).ch.val → ∃ σ ∈ l, p=⌜σ⌝
-  | [], h => by
-      change V ⊧/![p] (⊥ : 𝚫₁.Semisentence 1).val at h
-      simp at h
-  | φ::l, h => by
-      change V ⊧/![p] ((Theory.Δ₁.singleton φ).ch ⋎ (Theory.Δ₁.ofList l).ch).val at h
-      simp only [HierarchySymbol.Semiformula.val_or,LogicalConnective.HomClass.map_or,
-        LogicalConnective.Prop.or_eq] at h
-      rcases h with h | h
-      · refine ⟨φ,by simp,?_⟩
-        have h' : p=ORingStructure.numeral (Encodable.encode φ) := by simpa using h
-        rw [h',numeral_eq_natCast_app,LO.FirstOrder.Sentence.quote_eq_encode]
-      · obtain ⟨σ,hσ,rfl⟩ := mem_ch_ofList l h
-        exact ⟨σ,by simp [hσ],rfl⟩
+theorem mem_ch_ofList {p : V} (l : List SetTheorySentence)
+    (h : V ⊧/![p] (Theory.Δ₁.ofList l).ch.val) : ∃ σ ∈ l, p=⌜σ⌝ :=
+  LeanProofs.ZFCinPA.SetRelativization.finite_mem_ch_ofList l h
+
 theorem mem_ch_ofFinite (T : SetTheory) (hT : Set.Finite T) {p : V}
-    (h : V ⊧/![p] (Theory.Δ₁.ofFinite T hT).ch.val) : ∃ σ ∈ T, p=⌜σ⌝ := by
-  obtain ⟨σ,hσ,rfl⟩ := mem_ch_ofList hT.toFinset.toList h
-  exact ⟨σ,by simpa using hσ,rfl⟩
+    (h : V ⊧/![p] (Theory.Δ₁.ofFinite T hT).ch.val) : ∃ σ ∈ T, p=⌜σ⌝ :=
+  LeanProofs.ZFCinPA.SetRelativization.finite_mem_ch_ofFinite T hT h
 
 /-- No image premise, freshness, parity or standardness hypothesis is supplied. -/
 theorem axOK_equality :

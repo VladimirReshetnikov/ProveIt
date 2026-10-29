@@ -556,26 +556,13 @@ lemma mem_ZFC_class {p : W} (h : p ∈ (𝗭𝗙𝗖 : SetTheory).Δ₁Class) :
   · exact Or.inr (Or.inr (Or.inl h))
 
 /-- A code in the class of a finite list theory is one of the listed codes. -/
-lemma mem_ch_ofList {p : W} : ∀ (l : List SetTheorySentence),
-    W ⊧/![p] (Theory.Δ₁.ofList l).ch.val → ∃ σ ∈ l, p = ⌜σ⌝
-  | [], h => by
-      change W ⊧/![p] (⊥ : 𝚫₁.Semisentence 1).val at h
-      simp at h
-  | φ :: l, h => by
-      change W ⊧/![p] ((Theory.Δ₁.singleton φ).ch ⋎ (Theory.Δ₁.ofList l).ch).val at h
-      simp only [HierarchySymbol.Semiformula.val_or, LogicalConnective.HomClass.map_or,
-        LogicalConnective.Prop.or_eq] at h
-      rcases h with h | h
-      · refine ⟨φ, by simp, ?_⟩
-        have h' : p = ORingStructure.numeral (Encodable.encode φ) := by simpa using h
-        rw [h', numeral_eq_natCast_app, LO.FirstOrder.Sentence.quote_eq_encode]
-      · obtain ⟨σ, hσ, rfl⟩ := mem_ch_ofList l h
-        exact ⟨σ, by simp [hσ], rfl⟩
+lemma mem_ch_ofList {p : W} (l : List SetTheorySentence)
+    (h : W ⊧/![p] (Theory.Δ₁.ofList l).ch.val) : ∃ σ ∈ l, p=⌜σ⌝ :=
+  LeanProofs.ZFCinPA.SetRelativization.finite_mem_ch_ofList l h
 
 lemma mem_ch_ofFinite (T : SetTheory) (hT : Set.Finite T) {p : W}
-    (h : W ⊧/![p] (Theory.Δ₁.ofFinite T hT).ch.val) : ∃ σ ∈ T, p = ⌜σ⌝ := by
-  obtain ⟨σ, hσ, rfl⟩ := mem_ch_ofList hT.toFinset.toList h
-  exact ⟨σ, by simpa using hσ, rfl⟩
+    (h : W ⊧/![p] (Theory.Δ₁.ofFinite T hT).ch.val) : ∃ σ ∈ T, p=⌜σ⌝ :=
+  LeanProofs.ZFCinPA.SetRelativization.finite_mem_ch_ofFinite T hT h
 
 lemma standard_of_mem_class {p : W}
     (hp : p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁Class ∨ p ∈ zfFixed.Δ₁Class ∨
