@@ -162,11 +162,10 @@ in the universal theory, yielding a candidate-PRA proof at one PR witness.
 The [existential-sequent structure](reviews/herbrand-existential-sequents-root.md)
 shows the relevant cut-free proofs contain no universal-rule nodes and collects
 their existential terms. [Finite extraction](reviews/herbrand-finite-extraction-root.md)
-now derives a disjunction for a prepared existential sequent. Preparing a
-general ∀∃ proof and translating the extracted terms to appropriately
-parameterized PR codes remain open. The [prepared-sequent parameterized witness](reviews/herbrand-parameterized-witness-root.md)
-now provides the latter step for its exact prepared input; the general ∀∃
-preparation remains open.
+now derives a disjunction for a prepared existential sequent. The
+[prepared-sequent parameterized witness](reviews/herbrand-parameterized-witness-root.md)
+translates the extracted terms into appropriately parameterized PR codes for
+that input. Preparing a general ∀∃ proof remains open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
