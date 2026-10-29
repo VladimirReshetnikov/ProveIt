@@ -73,23 +73,11 @@ theorem common_unit_setup (a R f : V) (hR : 0<R) (hf : 0<f)
     ArithmeticPellKnownUnit.known_unit_classification s (a+2) d hsp hA hdp hseed
   obtain ⟨e,_,he,hed⟩ := hclass (a+2) d hseed
   obtain ⟨n,_,hfn,htn⟩ := hclass f t hfsol
-  have hep : 0<e := by
-    by_contra hn
-    have hz : e=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le e)
-    simp [hz] at hed
-    simp [hed] at hdp
-  have hnp : 0<n := by
-    by_contra hn
-    have hz : n=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le n)
-    simp [hz] at htn
-    simp [htn] at htp
+  have hep : 0<e := pos_iff_ne_zero.mpr (fun he => (ne_of_gt hdp) (by simpa [he] using hed))
+  have hnp : 0<n := pos_iff_ne_zero.mpr (fun hn => (ne_of_gt htp) (by simpa [hn] using htn))
   let S := ycoord e b
   change d=v*S at hed
-  have hSp : 0<S := by
-    by_contra hn
-    have hz : S=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le S)
-    simp [hz] at hed
-    simp [hed] at hdp
+  have hSp : 0<S := pos_of_mul_pos_right (by rw [← hed]; exact hdp) (by simp)
   have hdb : delta b=s*v*v := by
     apply add_left_cancel (a := (1:V))
     calc
