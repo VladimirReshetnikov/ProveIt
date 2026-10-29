@@ -176,25 +176,11 @@ theorem seam_lt942 (H k : V) : seamIdx H k < 942 := by
   unfold seamIdx; repeat (first | split | norm_num)
 
 theorem seam_vertical (H k k' : V) : southC (seamIdx H k) = northC (seamIdx H k') := by
-  have hs : southC (seamIdx H k) = 437 := by
+  have hc (t : V) : southC (seamIdx H t) = 437 ∧ northC (seamIdx H t) = 437 := by
     unfold seamIdx
-    split
-    · exact c938.south
-    · split
-      · exact c939.south
-      · split
-        · exact c934.south
-        · exact c933.south
-  have hn : northC (seamIdx H k') = 437 := by
-    unfold seamIdx
-    split
-    · exact c938.north
-    · split
-      · exact c939.north
-      · split
-        · exact c934.north
-        · exact c933.north
-  rw [hs, hn]
+    split_ifs <;> simp only [c938.south, c939.south, c934.south, c933.south,
+      c938.north, c939.north, c934.north, c933.north, true_and]
+  exact (hc k).1.trans (hc k').2.symm
 
 end fixed
 
