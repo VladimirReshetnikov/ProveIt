@@ -112,15 +112,7 @@ def inS (j : V) : Prop := j < 951 ∨ (960 ≤ j ∧ j < 986) ∨ j = 1004
 
 theorem inS_cast (j : ℕ) : inS (j:V) ↔ (j < 951 ∨ (960 ≤ j ∧ j < 986) ∨ j = 1004) := by
   unfold inS
-  constructor
-  · rintro (h | ⟨h1, h2⟩ | h)
-    · exact Or.inl (by exact_mod_cast h)
-    · exact Or.inr (Or.inl ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩)
-    · exact Or.inr (Or.inr (by exact_mod_cast h))
-  · rintro (h | ⟨h1, h2⟩ | h)
-    · exact Or.inl (by exact_mod_cast h)
-    · exact Or.inr (Or.inl ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩)
-    · exact Or.inr (Or.inr (by exact_mod_cast h))
+  norm_cast
 
 theorem inS_zero : inS (0:V) := Or.inl (by simp)
 
