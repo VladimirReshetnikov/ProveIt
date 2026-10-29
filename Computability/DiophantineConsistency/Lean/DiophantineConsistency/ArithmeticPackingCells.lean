@@ -130,9 +130,7 @@ instance physV_definable : 𝚺₀-Function₁ (physV : V → V) := (tab_defined
 
 theorem physV_cast (m : ℕ) : physV (m : V) = (physN m : V) := by
   rw [physV, tab_cast, physList, List.getD_eq_getElem?_getD, List.getElem?_ofFn]
-  by_cases hm : m < 942
-  · simp [physN, hm]
-  · simp [physN, hm]
+  by_cases hm : m < 942 <;> simp [physN, hm]
 
 /-- Internal `Σ_{i<n} bit_i(x)·ρ^{b+i}`. -/
 def spreadV (b : ℕ) : ℕ → V → V
@@ -303,12 +301,10 @@ theorem packing_of_marked (hL : LocalNormalization) {a δ : V → V} [𝚺₁-Fu
     rw [hB]
     exact_mod_cast (hL.block mc mp mt dc uc dp up dt hmc hmp hmt hdc huc hdp hup hdt he hs').2.1
   · obtain ⟨m, d, u, -, hd, hu, ha, hX, -⟩ := cell_std 0 hN0
-    have hm0 : m = 0 := by
-      have : (m : V) = 0 := by rw [← ha]; exact hM.marker
-      exact_mod_cast this
+    have hm0 : m = 0 := by exact_mod_cast (ha.symm.trans hM.marker)
     subst hm0
     have e1 : ((cellN 0 d u : ℕ) : V) - 1 = ((cellN 0 d u - 1 : ℕ) : V) := by
-      have h := sub_cast (V := V) (cellN_pos 0 d u); rwa [Nat.cast_one] at h
+      simpa only [Nat.cast_one] using sub_cast (V := V) (cellN_pos 0 d u)
     rw [hX, e1, show (CurrentMasks2011.lowPort : V) + 1 =
       ((CurrentMasks2011.lowPort + 1 : ℕ) : V) by push_cast; rfl]
     exact noCarry_cast (hL.low_origin d u hd hu)
@@ -317,12 +313,10 @@ theorem packing_of_marked (hL : LocalNormalization) {a δ : V → V} [𝚺₁-Fu
     rw [hX]; exact noCarry_cast (hL.low m d u hm hd hu)
   · obtain ⟨mc, dc, uc, mp, dp, up, mt, dt, hmc, hmp, hmt, hdc, huc, hdp, hup, hdt, hac, he, hs',
       -, hB⟩ := blk_std 0 hN0
-    have hm0 : mc = 0 := by
-      have : (mc : V) = 0 := by rw [← hac]; exact hM.marker
-      exact_mod_cast this
+    have hm0 : mc = 0 := by exact_mod_cast (hac.symm.trans hM.marker)
     have hb := (hL.block mc mp mt dc uc dp up dt hmc hmp hmt hdc huc hdp hup hdt he hs').2.2.2 hm0
     rw [hB, show (CurrentMasks2011.highPort : V) - 1 = ((CurrentMasks2011.highPort - 1 : ℕ) : V) by
-      have h := sub_cast (V := V) hL.highPort_bound.1; rwa [Nat.cast_one] at h]
+      simpa only [Nat.cast_one] using sub_cast (V := V) hL.highPort_bound.1]
     exact noCarry_cast hb
   · intro j hj _
     obtain ⟨mc, dc, uc, mp, dp, up, mt, dt, hmc, hmp, hmt, hdc, huc, hdp, hup, hdt, -, he, hs',
