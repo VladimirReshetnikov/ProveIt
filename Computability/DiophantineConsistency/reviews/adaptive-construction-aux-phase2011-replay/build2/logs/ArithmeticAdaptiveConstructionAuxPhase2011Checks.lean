@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAuxPhase2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAuxPhase2011.ordinate_bound

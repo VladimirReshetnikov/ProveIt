@@ -14,3 +14,7 @@ identical source, object and complete-log hashes. Both axiom reports contain
 provider inventories and states](adaptive-construction-aux2011-replay/) are
 preserved. Foundation/packages and inherited project objects remain cache
 boundaries, not a fresh transitive source audit.
+
+A subsequent upstream merge changed `ArithmeticCarrierRadix2011.lean`. This
+receipt authenticates the earlier dependency snapshot; the affected
+source-current downstream replay is pending.

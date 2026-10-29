@@ -27,3 +27,7 @@ and the author receipts for [refresh](adaptive-window-refresh2011-author.md),
 [ports](adaptive-port-values2011-author.md), and [window](adaptive-window2011-author.md)
 are preserved. Foundation/package/toolchain interiors and unchanged project
 objects remain inherited cache boundaries, not a full transitive source audit.
+
+A subsequent upstream merge changed `ArithmeticCarrierRadix2011.lean`. This
+receipt authenticates the earlier dependency snapshot; the affected
+source-current downstream replay is pending.
