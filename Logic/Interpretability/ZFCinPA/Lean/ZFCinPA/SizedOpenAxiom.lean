@@ -29,6 +29,7 @@ open LeanProofs.BoundedPAConsistency.SizedDerivation LeanProofs.BoundedPAConsist
 open LeanProofs.ZFCinPA.SetCodeLevels LeanProofs.ZFCinPA.LevelDerivation
 open LeanProofs.ZFCinPA.SizedCongruence LeanProofs.ZFCinPA.ModelCodedSpecialization
 open LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms LeanProofs.ZFCinPA.ModelCodedBindFree
+open LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
@@ -370,5 +371,104 @@ theorem bindFreeAt_level {C D : V} (hC : 2 ≤ C) (hD : D ≤ lvB C) :
       rw [← hfin]
       exact lift_lvB (pair_lvB hm2 (tag_le_lvB (by norm_num) hm2) ihp)
         (_root_.add_le_add le_rfl (by norm_num))
+
+/-! ## The identity vector of bound variables -/
+
+theorem bvarId_semitermVec (m : V) : IsSemitermVec ℒₛₑₜ m m (qVecIter ℒₛₑₜ m 0) := by
+  simpa using qVecIter_isSemitermVec (L := ℒₛₑₜ) (show IsSemitermVec (V := V) ℒₛₑₜ 0 0 0 by simp) m
+
+theorem bvarId_nth : ∀ m : V, ∀ i < m, (qVecIter ℒₛₑₜ m 0).[i] = ^#i := by
+  intro m
+  induction m using ISigma1.pi1_succ_induction
+  · definability
+  · intro i hi; simp at hi
+  · case succ m ih =>
+    intro i hi
+    rw [qVecIter_succ]
+    have hw := bvarId_semitermVec (V := V) m
+    rcases zero_or_succ i with rfl | ⟨j, rfl⟩
+    · simp [qVec]
+    · have hj : j < m := by simpa using hi
+      simp only [qVec, nth_adjoin_succ]
+      rw [hw.lh, nth_termBShiftVec hw.isUTerm hj, ih j hj]
+      simp
+
+/-! ## The bounded open axiom -/
+
+/-- The level of the closed body `bindFreeAt 0 q`, for `q` at level `u`. -/
+def openL (u : V) : V := 10 * (u + 1) + u + 13
+
+/-- **The level of a bounded open schema axiom proof.** -/
+def openW (u : V) : V :=
+  spcW (openL u) (openL u + 2) (lvB (openL u)) + 3 * lvB (openL u)
+
+set_option maxHeartbeats 2000000 in
+/-- **Open schema axioms, bounded.** If the universal closure of `q` is a
+`𝗭𝗙` axiom, then `q` itself, at level `u`, has a `𝗭𝗙`-derivation at level
+`openW u`: the explicit `openAxiomProofCode q`. -/
+theorem open_axiom_le {q u : V} (hq : IsFormula ℒₛₑₜ q) (hqu : q ≤ lvB u) (hu : 2 ≤ u)
+    (hclosed : closeFormulaCode ℒₛₑₜ q ∈ (𝗭𝗙 : SetTheory).Δ₁Class) :
+    DLv 𝗭𝗙 (insert q ∅) (openW u) := by
+  set b := bindFreeAt ℒₛₑₜ 0 q with hbdef
+  obtain ⟨hbU, -, -⟩ := bindFreeAt_closing hq
+  set m := bv ℒₛₑₜ b with hmdef
+  have hbm : IsSemiformula ℒₛₑₜ m b := ⟨hbU, le_rfl⟩
+  set l₀ := openL u with hl₀
+  have lb : b ≤ lvB l₀ := bindFreeAt_level hu (le_lvB_self u) u q hqu hq.isUFormula 0 (by simp)
+  have hm : m ≤ lvB l₀ := le_trans (bv_le_self hbU) lb
+  have hl2 : (2 : V) ≤ l₀ := le_trans hu (le_trans (le_add_self : u ≤ 10 * (u + 1) + u) le_self_add)
+  set c := l₀ + 2 with hc
+  have hc1 : (1 : V) ≤ c := le_trans (by norm_num) (le_add_self : (2 : V) ≤ l₀ + 2)
+  have hvar : ∀ z ≤ m, (^#z : V) ≤ lvB c ∧ (^&z : V) ≤ lvB c := fun z hz => by
+    have hz' : z ≤ lvB l₀ := le_trans hz hm
+    exact ⟨pair_lvB hl2 (Arithmetic.zero_le _) hz',
+      pair_lvB hl2 (le_trans (by norm_num) (two_le_lvB l₀)) hz'⟩
+  have hι := bvarId_semitermVec (V := V) m
+  have hιb : ∀ i < m, (qVecIter ℒₛₑₜ m 0).[i] ≤ lvB c ∧ IsVarTerm (qVecIter ℒₛₑₜ m 0).[i] :=
+    fun i hi => by
+      rw [bvarId_nth m i hi]
+      exact ⟨(hvar i (le_of_lt hi)).1, isVarTerm_bvar i⟩
+  have hsubst : subst ℒₛₑₜ (qVecIter ℒₛₑₜ m 0) b = b :=
+    Bootstrapping.subst_eq_self hbm hι (bvarId_nth m)
+  -- the axiom node
+  set A := closeFormulaCode ℒₛₑₜ q with hA
+  have hAq : A = qqAlls b m := rfl
+  have lA : A ≤ lvB (l₀ + 2 * m) := hAq ▸ qqAlls_level hl2 lb m
+  have hw4 : (4 : V) ≤ l₀ + 2 * m + 1 :=
+    le_trans (le_of_add_eq (y := 10 * u + u + 19) (by rw [hl₀]; unfold openL; ring))
+      (le_trans le_self_add le_self_add)
+  have hAe : A < lvB (l₀ + 2 * m + 1) := lt_lvB_succ lA
+  have hP0 : axiomCode A ≤ Exp.exp (lvB (spcW l₀ c m)) := by
+    have hax := axm_le (four_le_lvB' hw4)
+      (DerivableLe.seq_le le_rfl (DerivableLe.insert_lt hAe (fun y (hy : y ∈ (∅ : V)) => by simp at hy)))
+      (le_trans (le_of_lt hAe) (le_of_lt (lt_exp _)))
+    refine le_trans hax (le_trans (step_le hw4) (exp_monotone_le.mpr (lvB_mono ?_)))
+    exact le_of_add_eq (y := 99 * l₀ + 18 * m + 10 * c + 138) (by unfold spcW; ring)
+  have hspc := spc_le hbm lb hc1 hvar m le_rfl _ _ _ hι hιb hP0 le_rfl
+  rw [hsubst] at hspc
+  have hcode : openAxiomProofCode ℒₛₑₜ q = specializedProofCode ℒₛₑₜ m b (axiomCode A) := rfl
+  have hproof := openAxiomProofCode_isProof (𝗭𝗙 : SetTheory) hq hclosed
+  refine ⟨openAxiomProofCode ℒₛₑₜ q, ?_, by rw [← singleton_eq_insert]; exact hproof⟩
+  rw [hcode]
+  refine le_trans hspc (exp_monotone_le.mpr (lvB_mono ?_))
+  unfold openW spcW
+  rw [← hl₀, ← hc]
+  exact _root_.add_le_add (_root_.add_le_add (mul_le_mul_of_nonneg_left
+    (_root_.add_le_add (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hm (by norm_num))) le_rfl)
+    (by norm_num)) le_rfl) (mul_le_mul_of_nonneg_left hm (by norm_num))
+
+/-- **Open separation instances, bounded.** -/
+theorem open_sep_le (K : Bootstrapping.Semiformula V ℒₛₑₜ 1) {u : V}
+    (hK : (sepBody K).val ≤ lvB u) (hu : 2 ≤ u) :
+    DLv 𝗭𝗙 (insert (sepBody K).val ∅) (openW u) :=
+  open_axiom_le (sepBody K).isSemiformula hK hu
+    (by simpa only [closedSeparation, ← sepBodyVal_eq K] using closedSeparation_mem_zf K)
+
+/-- **Open replacement instances, bounded.** -/
+theorem open_rep_le (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) {u : V}
+    (hK : (repBody K).val ≤ lvB u) (hu : 2 ≤ u) :
+    DLv 𝗭𝗙 (insert (repBody K).val ∅) (openW u) :=
+  open_axiom_le (repBody K).isSemiformula hK hu
+    (by simpa only [closedReplacement, ← repBodyVal_eq K] using closedReplacement_mem_zf K)
 
 end LeanProofs.ZFCinPA.SizedOpenAxiom
