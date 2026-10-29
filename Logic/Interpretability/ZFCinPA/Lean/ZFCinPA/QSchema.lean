@@ -143,25 +143,13 @@ theorem repl_base {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K) :
 
 /-- **Every internal separation axiom is interpreted-derivable.** -/
 theorem sep_obligation {p : V} (hp : SepR p) :
-    ∃ e, Derivable qTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) e)) := by
-  obtain ⟨m, -, b, -, rfl, hbU, hbs, hbv, K, -, hK, hKb⟩ := hp
-  have hb : IsSemiformula ℒₛₑₜ m b := by simpa [hbv] using hbU.isSemiformula
-  have hK' : IsSemiformula ℒₛₑₜ 1 K := by simpa using hK
-  obtain ⟨e, he⟩ := sep_base hK'
-  refine ⟨e, peel good_PN hb hbs ?_⟩
-  rw [hKb]
-  exact derivable_domSet_mono le_add_self (he.isFormulaSet.insert.1) he
+    ∃ e, Derivable qTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) e)) :=
+  NativePeel.schema_obligation good_PN sepBodyVal (fun _ hK => sep_base (by simpa using hK)) hp
 
 /-- **Every internal replacement axiom is interpreted-derivable.** -/
 theorem repl_obligation {p : V} (hp : RepR p) :
-    ∃ e, Derivable qTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) e)) := by
-  obtain ⟨m, -, b, -, rfl, hbU, hbs, hbv, K, -, hK, hKb⟩ := hp
-  have hb : IsSemiformula ℒₛₑₜ m b := by simpa [hbv] using hbU.isSemiformula
-  have hK' : IsSemiformula ℒₛₑₜ 2 K := by simpa using hK
-  obtain ⟨e, he⟩ := repl_base hK'
-  refine ⟨e, peel good_PN hb hbs ?_⟩
-  rw [hKb]
-  exact derivable_domSet_mono le_add_self (he.isFormulaSet.insert.1) he
+    ∃ e, Derivable qTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) e)) :=
+  NativePeel.schema_obligation good_PN repBodyVal (fun _ hK => repl_base (by simpa using hK)) hp
 
 /-! ## The axiom class of `𝗭𝗙` -/
 
