@@ -88,10 +88,7 @@ theorem cell_room {N b : V} (hb : b < 2011 * N) (hb0 : b % 2011 = 0) : b + 2011 
   have hd := div_add_mod b 2011
   rw [hb0, add_zero] at hd
   rw [← hd] at hb ⊢
-  have hlt : b / 2011 < N := by
-    by_contra hc
-    exact absurd (mul_le_mul_of_nonneg_left (le_of_not_gt hc) (Arithmetic.zero_le (2011:V)))
-      (not_le.mpr hb)
+  have hlt : b / 2011 < N := lt_of_mul_lt_mul_left hb (by simp)
   have := mul_le_mul_of_nonneg_left (lt_iff_succ_le.mp hlt) (Arithmetic.zero_le (2011:V))
   rwa [mul_add, mul_one] at this
 
