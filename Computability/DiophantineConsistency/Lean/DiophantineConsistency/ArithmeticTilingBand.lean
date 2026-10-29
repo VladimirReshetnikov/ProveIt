@@ -118,10 +118,8 @@ section fixed
 variable {L X : V}
 
 theorem init_lt (h : X < L) : initIdx L X = 927 := by rw [initIdx, if_pos h]
-theorem init_eq : initIdx L L = 0 := by rw [initIdx, if_neg (_root_.lt_irrefl L), if_pos rfl]
-theorem init_succ : initIdx L (L + 1) = 928 := by
-  rw [initIdx, if_neg (not_lt.mpr (le_add_of_nonneg_right (Arithmetic.zero_le 1))),
-    if_neg (by simp), if_pos rfl]
+theorem init_eq : initIdx L L = 0 := by simp [initIdx]
+theorem init_succ : initIdx L (L + 1) = 928 := by simp [initIdx]
 theorem init_gt (h : L + 1 < X) : initIdx L X = 929 := by
   have h1 : L < X := lt_trans (lt_add_one L) h
   rw [initIdx, if_neg (not_lt.mpr h1.le), if_neg (ne_of_gt h1), if_neg (ne_of_gt h)]
@@ -187,10 +185,8 @@ theorem init_south_row1 (L X : V) :
     rw [init_lt h, c927.south, if_neg hn1, if_neg hn2]
     obtain ⟨j, hj⟩ : ∃ j, L + 1 - X - 1 = j + 1 := by
       refine ⟨L - X - 1, ?_⟩
-      have e1 : L + 1 - X - 1 = L - X := by
-        rw [tsub_right_comm, add_tsub_cancel_right]
-      have e2 : 1 ≤ L - X := pos_iff_one_le.mp (tsub_pos_of_lt h)
-      rw [e1, tsub_add_cancel_of_le e2]
+      rw [tsub_right_comm, add_tsub_cancel_right,
+        tsub_add_cancel_of_le (pos_iff_one_le.mp (tsub_pos_of_lt h))]
     have hb : fbit (1 : V) (j + 1) = 0 := by simpa using fbit_mul_two_add_one_mul (0 : V) j
     rw [hj, hb]
   · have hb : fbit (1 : V) 0 = 1 := by simpa using fbit_two_mul_add_one_zero_eq_one (0 : V)
