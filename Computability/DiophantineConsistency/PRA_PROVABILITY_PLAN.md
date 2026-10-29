@@ -197,3 +197,10 @@ derives the exact mapped Foundation addition-commutativity, additive-order
 witness, addition-zero and multiplication-zero axioms in candidate PRA.
 The remaining PA-minus axioms, formula compilation and the full
 conservation argument remain open.
+
+The [open-semisentence characteristic theorem](reviews/pra-equality-code-root.md)
+is now unconditional: a concrete finite equality code discharges both
+certificates, so every Foundation open semisentence with finitely many bound
+inputs has a PR characteristic and a candidate-PRA proof of correctness.
+Free-parameter packing, bounded formulas, universal presentation and
+general Σ₁ witnessing remain open.

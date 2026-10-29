@@ -1,0 +1,53 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRASubSuccessorInvariant.lean:28:8: warning: automatically included section variable(s) unused in theorem `_private.Computability.DiophantineConsistency.Lean.DiophantineConsistency.PRASubSuccessorInvariant.0.DiophantineConsistency.PRASubSuccessorInvariant.val_pair`:
+  [Structure.Eq language M]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Structure.Eq language M] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRASubSuccessorInvariant.lean:36:8: warning: automatically included section variable(s) unused in theorem `_private.Computability.DiophantineConsistency.Lean.DiophantineConsistency.PRASubSuccessorInvariant.0.DiophantineConsistency.PRASubSuccessorInvariant.val_one`:
+  [Structure.Eq language M]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Structure.Eq language M] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRASubSuccessorInvariant.lean:58:13: warning: This simp argument is unused:
+  Function.comp_apply
+
+Hint: Omit it from the simp argument list.
+  simp only [F̵u̵n̵c̵t̵i̵o̵n̵.̵c̵o̵m̵p̵_̵a̵p̵p̵l̵y̵,̵ ̵Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  ̵  ̵ ̵ ̵A, B, Z,
+  ̲  ̲ ̲ ̲Semiterm.val_func, Semiterm.val_bvar, Semiterm.val_fvar, val_pair, val_one, hz]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRASubSuccessorInvariant.lean:58:77: warning: This simp argument is unused:
+  Matrix.head_cons
+
+Hint: Omit it from the simp argument list.
+  simp only [Function.comp_apply, Matrix.cons_val_zero, Matrix.cons_val_one, M̵a̵t̵r̵i̵x̵.̵h̵e̵a̵d̵_̵c̵o̵n̵s̵,̵
+  ̵ ̵ ̵ ̵ ̵A, B, Z,
+  ̲  ̲ ̲ ̲Semiterm.val_func, Semiterm.val_bvar, Semiterm.val_fvar, val_pair, val_one, hz]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRASubSuccessorInvariant.lean:93:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Structure.func predCode fun x => Structure.func Code.succ fun x => ?x
+in the target expression
+  p (s (d x t)) = s (p (d x t)) ∨ p (s (d x t)) = z ∧ p (d x t) = z
+
+case hSucc.inl
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x y : M
+z : M := Structure.func (Code.zero 0) Fin.elim0
+s : M → M := fun x => Structure.func Code.succ fun x_1 => x
+p : M → M := fun x => Structure.func predCode fun x_1 => x
+d : M → M → M := fun x y => Structure.func subCode ![x, y]
+e : ℕ → M := fun x_1 => x
+t : M
+ht : (Semiformula.Eval ![t] e) invariantBody
+hu : d (s x) (s t) = p (d (s x) t)
+hv : d x (s t) = p (d x t)
+ih : d (s x) t = s (d x t)
+⊢ p (s (d x t)) = s (p (d x t)) ∨ p (s (d x t)) = z ∧ p (d x t) = z
