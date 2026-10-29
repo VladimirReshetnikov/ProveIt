@@ -72,16 +72,10 @@ theorem modelTermCorrect {n : ℕ} (c : Code (n+1)) (φ : Semisentence language 
 theorem modelTermBit {n : ℕ} (c : Code (n+1)) (t : TermN n)
     (h : M↓[language] ⊧ bitSentence (universalCode c)) :
     M↓[language] ⊧ bitSentence (termUniversalCode c t) := by
-  simp only [models_iff, bitSentence, Semiformula.eval_allClosure] at h ⊢
+  apply (PRACharacteristicBit.bitSentence_iff _).mpr
   intro e
-  let args : Fin (n+1) → M := Fin.cases (Semiterm.val e Empty.elim t) e
-  have hc := h args
-  have hargs : (Semiterm.val (L := language) args Empty.elim ∘ vars (n+1)) = args := by funext i; rfl
-  have hzargs : (Semiterm.val (L := language) args Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars n) = e := by funext i; rfl
-  have hz : (Semiterm.val (L := language) e Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  simp [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hargs, hzargs] at hc
-  simpa [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hv, hz, modelTermUniversalCode, args] using hc
+  rw [modelTermUniversalCode]
+  exact (PRACharacteristicBit.bitSentence_iff _).mp h _
 
 end models
 
