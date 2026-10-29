@@ -2081,5 +2081,13 @@ reports and sampled registrations match, though most client objects differ.
 The wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-mod-nested-share.md)
 records hashes and external paths without raw logs or objects.
 
+The least Pell unit abscissa positivity simplification `1d38d9fc07` removes
+three net Lean lines, bringing the reviewed series to 10355. Positive-product
+cancellation replaces an indirect zero contradiction. Paired target and all
+three direct-client builds pass against the refreshed recurrence provider chain;
+client objects match byte-for-byte, as do checked reports and sampled
+registrations. The wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-known-unit-positive.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
