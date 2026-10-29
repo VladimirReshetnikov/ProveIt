@@ -174,3 +174,8 @@ The [Parsons open-rule adapter](reviews/pra-parsons-open-rule-root.md)
 connects candidate PRA’s quantifier-free induction rule to the exact
 `ParsonsRule.base` and `step` definitions. The general Σ₁ rule and its
 witnessing reduction are still open.
+
+The [explicit order witness](reviews/pra-q-witness-root.md) supplies a
+closed candidate-PRA proof using `pred(y-x)` as the witness for strict
+order. The subtraction-to-Q provider chain was rebuilt after the upstream
+source merge. General Σ₁ witnessing and conservation remain open.

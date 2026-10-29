@@ -1,0 +1,12 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQOrderWitness.lean:39:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 2 → M
+⊢ (¬Structure.rel Language.ORing.Rel.lt fun i => Semiterm.val e Empty.elim (![#0, #1] i)) ∨
+    (Structure.func addCode fun x =>
+        Semiterm.val e Empty.elim
+          (![#0, Semiterm.func Code.succ fun x => Semiterm.func predCode fun x => Semiterm.func subCode ![#1, #0]] x)) =
+      e 1
