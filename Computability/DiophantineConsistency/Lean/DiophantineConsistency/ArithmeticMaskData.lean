@@ -22,16 +22,15 @@ theorem G_succ (b n : ℕ) : G b (n+1) = 1 + b * G b n := by
 
 theorem G_zero (b : ℕ) : G b 0 = 0 := by simp [G]
 
-theorem G_one (b : ℕ) : G b 1 = 1 := by simp [G, Nat.ofDigits]
+theorem G_one (b : ℕ) : G b 1 = 1 := by simp [G]
 
 theorem G_succ' (b n : ℕ) : G b (n+1) = G b n + b^n := by
   induction n with
   | zero => simp [G_succ, G_zero]
   | succ n ih =>
-    calc G b (n+1+1) = 1 + b * G b (n+1) := G_succ _ _
-      _ = 1 + b * (G b n + b^n) := by rw [ih]
-      _ = (1 + b * G b n) + b^(n+1) := by ring
-      _ = G b (n+1) + b^(n+1) := by rw [← G_succ]
+    conv_lhs => rw [G_succ, ih]
+    conv_rhs => rw [G_succ, pow_succ]
+    ring
 
 theorem G_geom (b t n : ℕ) (hb : t + 2 = b) : (t+1) * G b n + 1 = b^n := by
   induction n with
