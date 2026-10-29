@@ -41,10 +41,7 @@ theorem body_eval (x : M) (e : ℕ → M) : exhaustionBody.Eval ![x] e ↔
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have hp : (Semiterm.val ![x] e ∘ fun _ : Fin 1 =>
       (Semiterm.func (predCode : language.Func 1) (fun _ => .bvar 0) : Semiterm language ℕ 1)) =
-      fun _ => Structure.func (L := language) predCode (fun _ => x) := by
-    funext i
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) i
-    rfl
+      fun _ => Structure.func (L := language) predCode (fun _ => x) := rfl
   simp [h0, hp]
 
 

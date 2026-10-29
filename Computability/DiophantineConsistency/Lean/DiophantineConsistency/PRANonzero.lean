@@ -80,10 +80,8 @@ theorem modelNonzeroZeroSentence : M↓[language] ⊧ nonzeroZeroSentence := by
   have ha : (Semiterm.val e Empty.elim ∘ fun _ : Fin 1 =>
       applyCode (.zero 0) Fin.elim0) =
       fun _ => Structure.func (L := language) (Code.zero 0) Fin.elim0 := by
-    funext i
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) i
-    change Structure.func (L := language) (Code.zero 0)
-      (Semiterm.val e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN 0)) = _
+    change (fun _ : Fin 1 => Structure.func (L := language) (Code.zero 0)
+      (Semiterm.val e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN 0))) = _
     rw [hz]
   simp only [applyCode] at ha
   rw [ha, hz]
@@ -97,10 +95,7 @@ theorem modelNonzeroSuccSentence : M↓[language] ⊧ nonzeroSuccSentence := by
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have ha : (Semiterm.val e Empty.elim ∘ fun _ : Fin 1 =>
       applyCode Code.succ (fun _ => .bvar 0)) =
-      fun _ => Structure.func (L := language) Code.succ (fun _ => e 0) := by
-    funext i
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) i
-    rfl
+      fun _ => Structure.func (L := language) Code.succ (fun _ => e 0) := rfl
   simp only [applyCode] at ha
   rw [ha, hz]
   exact modelNonzeroSucc (e 0)
