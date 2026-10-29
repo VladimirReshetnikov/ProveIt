@@ -1192,5 +1192,17 @@ Ordinary Foundation Matrix co-import fails identically in both phases; MF
 co-import succeeds. Independent graph, receipt, bridge and removal reviews pass.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-word-origin-sharing-evidence/BUNDLE.json).
 
+The word high-mask proof reuse `ee22e984d8` removes 24 net lines,
+bringing the reviewed series to 9365. Paired targets, maintained checks and
+the CurrentDummyMutation client pass; six old theorem reports match. Two
+private bridges preserve the three MarkedWord and six Facts fields, checked in
+both directions. Eight generated proof auxiliaries disappear without tracked
+qualified references or default simp registrations. Twelve pinned runs check
+167 non-target local and 65 direct external inputs; 27 historical local objects
+and transitive external packages remain precompiled. Ordinary Foundation Matrix
+co-import fails identically in both phases; MF co-import succeeds in the tested
+order. Independent graph, input, bridge and receipt audits pass. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-high-mask-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
