@@ -2229,5 +2229,14 @@ exploratory build was stopped with observed memory above 8 GiB; the umbrella and
 wider closure remain unbuilt or cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-selector-pos.md)
 records hashes and external paths without raw logs or objects.
 
+The annotated row-lookup simplification `d3baf45019` removes twelve net Lean
+lines, bringing the reviewed series to 10467. Direct list simplification replaces
+two duplicate private lookup lemmas. Paired builds of both targets and seven
+clients pass with identical client objects; the standalone Bound check passes.
+Checked common declarations and sampled registrations match, with four private
+helper/proof names removed. The umbrella and wider closure remain unbuilt or
+cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-annotated-lookup-simp.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
