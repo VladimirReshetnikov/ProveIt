@@ -116,17 +116,11 @@ theorem current_rank_forcing (v : Fin 14 → V) (N C : V) (hN : 0<N)
   rw [←hJ] at hmask
   -- residue of the low summand
   have hM4 : ((CurrentMasks2011.lowPort:V)*v 0+1)%4=3 := by
-    have hd : 4*((CurrentMasks2011.lowPort:V)/4)+(CurrentMasks2011.lowPort:V)%4=
-        (CurrentMasks2011.lowPort:V) := div_add_mod _ 4
-    rw [lowPort_mod_four] at hd
-    have he : (CurrentMasks2011.lowPort:V)*v 0+1=
-        ((CurrentMasks2011.lowPort:V)/4*(8*j+1)+4*j)*4+3 := by
-      calc
-        (CurrentMasks2011.lowPort:V)*v 0+1=
-            (4*((CurrentMasks2011.lowPort:V)/4)+2)*(8*j+1)+1 := by rw [hd,hJ,hj]
-        _=_ := by ring
-    rw [he]
-    exact mod_mul_add_of_lt _ _ (by exact_mod_cast (show (3:ℕ)<4 by decide))
+    have hJ4 : v 0 % 4 = 1 := by
+      rw [hJ, hj, show (8:V)*j+1 = 1+4*(2*j) by ring,
+        mod_add_mul' _ _ (by norm_num), mod_eq_self_of_lt (by norm_num : (1:V)<4)]
+    rw [mod_add (by norm_num : (0:V)<4), mod_mul (by norm_num : (0:V)<4), lowPort_mod_four, hJ4]
+    norm_num
   have hu2 : 2≤(CurrentMasks2011.width:V)*N := le_trans (le_trans (by norm_num) hW3)
     (le_mul_of_one_le_right (by simp) (one_le_of_pos hN))
   refine ⟨hq,hrank,?_,?_,?_⟩
