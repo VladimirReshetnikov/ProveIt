@@ -98,14 +98,16 @@ theorem variation {d K MC HP N s ρ : V} {X0 X1 δ : V → V}
   have hC : Cw d N X1 = Cw d N X0 + ρ * bsum d δ N := by rw [hC1, hP]
   refine ⟨hC, ?_⟩
   -- the wrap terms agree
-  have htail (k : V) (hk : k ≤ N) (hs : ∀ j, δ j ≠ 0 → j + k < N)
-      (j : V) : δ (N - k + j) = 0 := by
-    by_contra hn
-    have hlt := hs (N - k + j) hn
-    have hge : N ≤ N - k + j + k := by
-      calc N = N - k + k := (tsub_add_cancel_of_le hk).symm
-        _ ≤ N - k + j + k := add_le_add (le_add_of_nonneg_right (Arithmetic.zero_le j)) le_rfl
-    exact (not_lt.mpr hge) hlt
+  have hXtail (k : V) (hk : k ≤ N) (hs : ∀ j, δ j ≠ 0 → j + k < N)
+      (j : V) (hj : j < N - (N - k)) : X1 (N - k + j) = X0 (N - k + j) := by
+    have hz : δ (N - k + j) = 0 := by
+      by_contra hn
+      have hlt := hs (N - k + j) hn
+      have hge : N ≤ N - k + j + k := by
+        calc N = N - k + k := (tsub_add_cancel_of_le hk).symm
+          _ ≤ N - k + j + k := add_le_add (le_add_of_nonneg_right (Arithmetic.zero_le j)) le_rfl
+      exact (not_lt.mpr hge) hlt
+    rw [hX (N - k + j) (lt_tsub_iff_left.mp hj), hz, mul_zero, add_zero]
   have hwrapH : bsum d (hi d K X1) N / Exp.exp (d * (N - 1)) =
       bsum d (hi d K X0) N / Exp.exp (d * (N - 1)) := by
     have hb1 : ∀ j < N, hi d K X1 j < Exp.exp d := fun j hj => by
@@ -117,10 +119,9 @@ theorem variation {d K MC HP N s ρ : V} {X0 X1 δ : V → V}
     haveI : 𝚺₁-Function₁ (fun j => hi d K X0 (N - 1 + j)) := by definability
     apply bsum_congr (fun j hj => hb1 _ (lt_tsub_iff_left.mp hj))
     intro j hj
-    have hlt : N - 1 + j < N := lt_tsub_iff_left.mp hj
-    have hz : δ (N - 1 + j) = 0 := htail 1 h0.N_gt.le (fun j hj => (hsafe j hj).1) j
-    show K * X1 (N - 1 + j) / Exp.exp d = K * X0 (N - 1 + j) / Exp.exp d
-    rw [hX _ hlt, hz, mul_zero, add_zero]
+    unfold hi
+    rw [show X1 (N - 1 + j) = X0 (N - 1 + j) from
+      hXtail 1 h0.N_gt.le (fun j hj => (hsafe j hj).1) j hj]
   have hwrapC : Cw d N X1 / Exp.exp (d * (N - s)) = Cw d N X0 / Exp.exp (d * (N - s)) := by
     unfold Cw
     rw [bsum_div tsub_le_self hX1, bsum_div tsub_le_self (X_lt h0)]
@@ -128,9 +129,7 @@ theorem variation {d K MC HP N s ρ : V} {X0 X1 δ : V → V}
     haveI : 𝚺₁-Function₁ (fun j => X0 (N - s + j)) := by definability
     apply bsum_congr (fun j hj => hX1 _ (lt_tsub_iff_left.mp hj))
     intro j hj
-    have hlt : N - s + j < N := lt_tsub_iff_left.mp hj
-    have hz : δ (N - s + j) = 0 := htail s h0.s_lt.le (fun j hj => (hsafe j hj).2) j
-    rw [hX _ hlt, hz, mul_zero, add_zero]
+    exact hXtail s h0.s_lt.le (fun j hj => (hsafe j hj).2) j hj
   have f1 := F_formula h1
   have f0 := F_formula h0
   rw [hwrapH, hwrapC, hC] at f1
