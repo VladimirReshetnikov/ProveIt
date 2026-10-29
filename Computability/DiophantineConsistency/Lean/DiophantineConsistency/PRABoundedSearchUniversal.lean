@@ -111,8 +111,9 @@ theorem modelBoundedFormula {n : ℕ} (good : Code (n+1)) (bound : M) (params : 
   intro x
   have ha : (Semiterm.val (L := language) (x :> Fin.cases bound params) Empty.elim ∘
       Fin.cases (.bvar 0) (fun i : Fin n => .bvar i.succ.succ)) = Fin.cases x params := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
+    simpa [Function.comp_def, Semiterm.val_bvar] using
+      val_cases (.bvar 0) (fun i : Fin n => .bvar i.succ.succ)
+        (x :> Fin.cases bound params) Empty.elim
   have hz : (Semiterm.val (L := language) (x :> Fin.cases bound params) Empty.elim ∘ Fin.elim0) =
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   simp [ha,hz]

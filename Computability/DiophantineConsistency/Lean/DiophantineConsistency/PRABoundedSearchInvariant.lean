@@ -39,19 +39,16 @@ private theorem invariantBody_eval {n : ℕ} (good : Code (n+1)) (x : M) (e : �
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have hsearch : (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (parameters n)) =
       Fin.cases x (fun i : Fin n => e i.val) := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    rfl
+    simpa only [Function.comp_def, Semiterm.val_bvar, Semiterm.val_fvar,
+      Matrix.cons_val_zero, parameters] using
+      val_cases (.bvar 0) (parameters n) ![x] e
   have hgood : (Semiterm.val ![x] e ∘ Fin.cases (searchTerm good) (parameters n)) =
       Fin.cases (Structure.func (L := language) (searchCode good)
         (Fin.cases x (fun i : Fin n => e i.val))) (fun i : Fin n => e i.val) := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · change Structure.func (L := language) (searchCode good)
-        (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (parameters n)) = _
-      rw [hsearch]
-      rfl
-    · rfl
+    have hsearch' : (fun i => Semiterm.val ![x] e (Fin.cases (.bvar 0) (parameters n) i)) =
+        Fin.cases x (fun i : Fin n => e i.val) := hsearch
+    simpa [Semiterm.val_func, searchTerm, parameters, Function.comp_def, hsearch'] using
+      val_cases (searchTerm good) (parameters n) ![x] e
   change (Structure.func (L := language) good
       (Semiterm.val ![x] e ∘ Fin.cases (searchTerm good) (parameters n)) =
       Structure.func (L := language) (Code.zero 0)
