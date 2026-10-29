@@ -122,3 +122,14 @@ now handles arbitrary open semipropositions by appending all free indices
 below the formula’s finite support to the bound arguments. Its exact semantic
 identity and candidate-PRA characteristic proof are independently replayed.
 Bounded quantifiers, universal presentation and Σ₁ witnessing remain open.
+
+## Source-current candidate-PRA witnessing update
+
+The [reviewed Lean theorem](../reviews/herbrand-all-instantiation-root.md) now
+extracts a fixed parameterized primitive-recursive witness from a candidate
+PRA proof of a universally closed existential with an open matrix and proves
+that witness instance in the candidate theory. It uses the explicit universal
+presentation and cut-free finite-term extraction. This is a Lean metatheorem
+about the repository's candidate PRA; its identification with standard PRA,
+IΣ₁-to-PRA conservation, and the requested equation-specific PRA endpoint
+remain open. Earlier entries in this note record historical checkpoints.

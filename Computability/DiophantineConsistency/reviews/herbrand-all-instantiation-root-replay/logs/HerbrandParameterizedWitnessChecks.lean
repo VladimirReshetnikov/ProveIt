@@ -1,0 +1,8 @@
+import DiophantineConsistency.HerbrandParameterizedWitness
+
+open DiophantineConsistency.HerbrandParameterizedWitness
+#print axioms modelParameterTerm
+#print axioms modelParameterCode
+#print axioms modelParameterInstance
+#print axioms modelExtractedParameterList
+#print axioms PRA_parameterizedPreparedWitness

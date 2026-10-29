@@ -23,3 +23,7 @@ warnings or `sorryAx`. The driver verifies frozen parent sources and objects.
 and the [author packet](herbrand-finite-extraction-author-replay/) are
 preserved. Historical failed probes are evidence only; Foundation, Mathlib
 and unchanged local objects remain inherited cache boundaries.
+
+A later [source-current 43-module refresh](herbrand-all-instantiation-root.md)
+rechecked the affected downstream theorem chain after the eleven-prerequisite
+upstream refactor.
