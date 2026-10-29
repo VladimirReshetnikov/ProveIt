@@ -134,10 +134,6 @@ theorem relaxed_auxiliary_tsub (a c p i f : V)
     (hbig : (a+2)*delta a*delta a<c) :
     ∃ m : V, 0<m ∧ f=xcoord m a ∧ p∣m ∧ c∣m ∧
       i*c*c=delta a*ycoord m a := by
-  obtain ⟨m,hm,hpm,hf',hr⟩ := integral_solution_tsub a c p i f hp hi hf hcp hnorm hbig
-  have hdiv : c*c∣delta a*ycoord m a := ⟨i,by rw [←hr]; ring⟩
-  have hcm : c∣m := by
-    rw [hcp] at hdiv ⊢
-    exact ordinate_divides_index a p m hpm hdiv
-  exact ⟨m,hm,hf',hpm,hcm,hr⟩
+  exact relaxed_auxiliary a c p i f hp hi hf hcp
+    (norm_tsub_to_add (delta a) f (i*c*c) hf hnorm) hbig
 end DiophantineConsistency.ArithmeticPellIndexDivisibility

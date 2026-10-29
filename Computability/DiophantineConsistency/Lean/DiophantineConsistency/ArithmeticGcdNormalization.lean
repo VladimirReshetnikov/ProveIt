@@ -180,17 +180,21 @@ theorem norm_normalization (R D f : V)
     ring
   · rw [hRt,hgs]
 
+/-- Positivity makes the truncated square norm equivalent to the additive norm. -/
+theorem norm_tsub_to_add (D f R : V) (hf : 0 < f) (hnorm : R*R = D*(f*f-1)) :
+    R*R + D = D*(f*f) := by
+  have hf1 : 1 ≤ f := by simpa using lt_iff_succ_le.mp hf
+  have hs : f*f-1+1 = f*f := tsub_add_cancel_of_le (one_le_mul hf1 hf1)
+  calc
+    R*R+D = D*(f*f-1)+D := by rw [hnorm]
+    _ = D*(f*f-1+1) := by ring
+    _ = D*(f*f) := by rw [hs]
+
 /-- The literal truncated norm is converted only after f>0 justifies the
 subtraction. No new index or source premise is introduced. -/
 theorem norm_normalization_tsub (R D f : V)
     (hR : 0<R) (hD : 0<D) (hf : 0<f) (hnorm : R*R=D*(f*f-1)) :
     ∃ d s t : V, 0<d ∧ 0<s ∧ 0<t ∧
       D=d*d*s ∧ R=d*s*t ∧ f*f=1+s*t*t := by
-  have hf1 : 1≤f := by simpa using lt_iff_succ_le.mp hf
-  have hs : f*f-1+1=f*f := tsub_add_cancel_of_le (one_le_mul hf1 hf1)
-  apply norm_normalization R D f hR hD hf
-  calc
-    R*R+D=D*(f*f-1)+D := by rw [hnorm]
-    _=D*(f*f-1+1) := by ring
-    _=D*(f*f) := by rw [hs]
+  exact norm_normalization R D f hR hD hf (norm_tsub_to_add D f R hf hnorm)
 end DiophantineConsistency.ArithmeticGcdNormalization

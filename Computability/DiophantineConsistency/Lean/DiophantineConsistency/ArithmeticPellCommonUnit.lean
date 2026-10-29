@@ -138,11 +138,6 @@ theorem common_unit_tsub (a R f : V) (hR : 0<R) (hf : 0<f)
       delta a=delta b*S*S ∧ R=delta b*S*ycoord n b ∧
       ∀ p : V, xcoord p a=xcoord (e*p) b ∧
         ycoord p a*S=ycoord (e*p) b := by
-  have hf1 : 1≤f := by simpa using lt_iff_succ_le.mp hf
-  have hsub : f*f-1+1=f*f := tsub_add_cancel_of_le (one_le_mul hf1 hf1)
-  apply common_unit_composition a R f hR hf
-  calc
-    R*R+delta a=delta a*(f*f-1)+delta a := by rw [hn]
-    _=delta a*(f*f-1+1) := by ring
-    _=delta a*(f*f) := by rw [hsub]
+  exact common_unit_composition a R f hR hf
+    (ArithmeticGcdNormalization.norm_tsub_to_add (delta a) f R hf hn)
 end DiophantineConsistency.ArithmeticPellCommonUnit

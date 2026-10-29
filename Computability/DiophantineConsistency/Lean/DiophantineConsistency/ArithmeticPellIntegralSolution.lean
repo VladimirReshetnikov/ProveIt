@@ -159,11 +159,6 @@ theorem integral_solution_tsub (a c p i f : V)
     (hbig : (a+2)*delta a*delta a<c) :
     ∃ m : V, 0<m ∧ p∣m ∧ f=xcoord m a ∧
       i*c*c=delta a*ycoord m a := by
-  have hf1 : 1≤f := by simpa using lt_iff_succ_le.mp hf
-  have hsub : f*f-1+1=f*f := tsub_add_cancel_of_le (one_le_mul hf1 hf1)
-  apply integral_solution a c p i f hp hi hf hcp _ hbig
-  calc
-    (i*c*c)*(i*c*c)+delta a=delta a*(f*f-1)+delta a := by rw [hnorm]
-    _=delta a*(f*f-1+1) := by ring
-    _=delta a*(f*f) := by rw [hsub]
+  exact integral_solution a c p i f hp hi hf hcp
+    (norm_tsub_to_add (delta a) f (i*c*c) hf hnorm) hbig
 end DiophantineConsistency.ArithmeticPellIntegralSolution
