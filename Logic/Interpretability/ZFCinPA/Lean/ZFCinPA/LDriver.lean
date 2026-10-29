@@ -1,3 +1,4 @@
+import ZFCinPA.SetRelativization
 import ZFCinPA.LDriverSteps
 import ZFCinPA.LTransVal
 
@@ -203,14 +204,8 @@ theorem atomT_val_eq (a b : V) :
 
 /-! ## The induction -/
 
-theorem isRel_set {k R : V} (hR : (ℒₛₑₜ).IsRel k R) : k = 2 ∧ (R = 0 ∨ R = 1) := by
-  have hr' : V ⊧/![k, R] (LeanProofs.ZFCinPA.instLORDefinableSet.rel).val := hR
-  rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.rel : 𝚺₀.Semisentence 2) =
-    .mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)” from rfl] at hr'
-  have hc : (k = 2 ∧ R = 0) ∨ (k = 2 ∧ R = 1) := by simpa using hr'
-  rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩
-  · exact ⟨h1, Or.inl h2⟩
-  · exact ⟨h1, Or.inr h2⟩
+theorem isRel_set {k R : V} (hR : (ℒₛₑₜ).IsRel k R) : k = 2 ∧ (R = 0 ∨ R = 1) :=
+  LeanProofs.ZFCinPA.SetRelativization.set_isRel hR
 
 /-- **The driver**: for every internal semiformula code `p` of level `n`, some
 function code `f` makes the reflection invariant of `envForm n p` an internal
