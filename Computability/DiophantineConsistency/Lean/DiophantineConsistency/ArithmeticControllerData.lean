@@ -91,6 +91,14 @@ theorem C0_gt : (1 : V) < 94517 * 120199 := by norm_num
 
 theorem C0_pos : (0 : V) < 94517 * 120199 := lt_trans _root_.zero_lt_one C0_gt
 
+private theorem coordinate_lt {P z : V} (hz : z < P) :
+    1 + 94517 * 120199 * z < 94517 * 120199 * P := by
+  calc 1 + 94517 * 120199 * z < 94517 * 120199 + 94517 * 120199 * z :=
+        add_lt_add_of_lt_of_le C0_gt le_rfl
+    _ = 94517 * 120199 * (z + 1) := by ring
+    _ ≤ 94517 * 120199 * P :=
+      mul_le_mul_of_nonneg_left (lt_iff_succ_le.mp hz) (Arithmetic.zero_le _)
+
 /-- The coordinate `zc P e = (g^e mod C0·P) / C0`. -/
 def zc (P e : V) : V := (power gV e % (94517 * 120199 * P)) / (94517 * 120199)
 
@@ -104,12 +112,7 @@ theorem zc_spec {P : V} (hP : 0 < P) (e : V) :
     power (gV : V) e % (94517 * 120199 * P) = 1 + 94517 * 120199 * zc P e ∧ zc P e < P := by
   obtain ⟨t, ht⟩ := power_gV (V := V) e
   have hr : t % P < P := mod_lt t hP
-  have hlt : 1 + 94517 * 120199 * (t % P) < 94517 * 120199 * P := by
-    have h1 : t % P + 1 ≤ P := lt_iff_succ_le.mp hr
-    calc 1 + 94517 * 120199 * (t % P) < 94517 * 120199 + 94517 * 120199 * (t % P) :=
-          add_lt_add_of_lt_of_le C0_gt le_rfl
-      _ = 94517 * 120199 * (t % P + 1) := by ring
-      _ ≤ 94517 * 120199 * P := mul_le_mul_of_nonneg_left h1 (Arithmetic.zero_le _)
+  have hlt := coordinate_lt hr
   have hm : power (gV : V) e % (94517 * 120199 * P) = 1 + 94517 * 120199 * (t % P) := by
     rw [ht]
     have he : 1 + 94517 * 120199 * t =
@@ -134,12 +137,7 @@ theorem zc_surj (m z : V) (hz : z < power 120199 m) :
   refine ⟨e, he, ?_⟩
   have h1 := (zc_spec hP e).1
   rw [← g_eq] at hQ
-  have hlt : 1 + 94517 * 120199 * z < 94517 * 120199 * power 120199 m := by
-    have h1 : z + 1 ≤ power 120199 m := lt_iff_succ_le.mp hz
-    calc 1 + 94517 * 120199 * z < 94517 * 120199 + 94517 * 120199 * z :=
-          add_lt_add_of_lt_of_le C0_gt le_rfl
-      _ = 94517 * 120199 * (z + 1) := by ring
-      _ ≤ 94517 * 120199 * power 120199 m := mul_le_mul_of_nonneg_left h1 (Arithmetic.zero_le _)
+  have hlt := coordinate_lt hz
   rw [hQ, show (94517 : V) * 120199 * power 120199 m * Q + 1 + 94517 * 120199 * z =
       (1 + 94517 * 120199 * z) + 94517 * 120199 * power 120199 m * Q by ring,
     mod_add_mul' _ _ (mul_pos C0_pos hP), mod_eq_self_of_lt hlt] at h1
