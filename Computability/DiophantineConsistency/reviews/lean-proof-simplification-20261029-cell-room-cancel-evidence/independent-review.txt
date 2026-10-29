@@ -1,0 +1,9 @@
+Independent review of the cell_room candidate, 2026-10-29
+
+The candidate replaces the contradiction proof of b / 2011 < N with the existing multiplication-cancellation lemma. The surrounding definition, theorem statement, assumptions and imports are unchanged. The baseline equals the current worktree at review time. Git blame traces the changed proof to f79467f5448, whose commit message credits Claude Opus 5.5.
+
+I reran the author's audit and wrote /tmp/cell-room-cancel-peer-audit.py to separately check baseline source, the targeted diff, four successful build records, their logs, first-path direct and sampled extra object/source hashes, the four target and eight client object-pinned probe records, equal declaration/type/axiom reports, and equal sampled default simp and instance registrations. The target has 59 namespace entries and the client 71. The output is /tmp/cell-room-cancel-peer-audit.log. Successful prior producer rows match the current sources and object hashes of four target direct providers and three sampled extra providers. The only tracked direct Lean client is ArithmeticCellDecoding. The paired client objects differ in bytes; the interface reports match but are not a proof of body equality or full persistent-extension equality.
+
+The target logs contain no warnings. Both client builds report the same pre-existing unused-section-variable warning for H in cell_digit; no new warning appears in the final client log after normalizing the phase path. I corrected README.txt, which previously claimed that no warnings occurred. Other dependencies and wider downstream clients remain cached or untested; this is not a full source-current closure build. No other concern found.
+
+Postcommit check: commit 8f6f17c148 and its parent match the tested final and baseline source snapshots, respectively.

@@ -1946,5 +1946,14 @@ NativeAdaptiveCurrent2011 and the umbrella were not rebuilt, and the wider
 transitive closure remains cached. The compact archive omits large environment
 logs but records their external paths and hashes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-beta-int-sharing-evidence/BUNDLE.json).
 
+The cell-room multiplication cancellation `8f6f17c148` removes three net Lean
+lines, bringing the reviewed series to 10248. The affected proof came from
+Claude-coauthored commit `f79467f544`. Strict multiplication cancellation
+replaces an indirect contradiction. Paired target and direct-client builds pass;
+client objects differ, but checked declarations and sampled registrations match.
+Both client builds report the same pre-existing warning. Direct providers and
+three further sampled dependencies have source-matched receipts; the wider
+closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-room-cancel-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
