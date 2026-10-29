@@ -79,12 +79,7 @@ private theorem root_bound (n x y : V) (h : x*x+1=n*(n+1)*y*y) : x≤(n+1)*y := 
 theorem consecutive_negative_descent (n x y : V) (hn : 2≤n)
     (h : x*x+1=n*(n+1)*y*y) :
     ∃ u v : V, 0<v ∧ v<y ∧ u≤(n+1)*v ∧ u*u+1=n*(n+1)*v*v := by
-  have hy : 0<y := by
-    by_contra hy
-    have he : y=0 := le_antisymm (le_of_not_gt hy) (Arithmetic.zero_le y)
-    have hb := h
-    simp only [he,mul_zero] at hb
-    exact (ne_of_gt (by simp : (0:V)<x*x+1)) hb
+  have hy : 0<y := pos_of_mul_pos_right (by rw [← h]; simp) (by simp)
   have hy1 := pos_iff_one_le.mp hy
   have h2 : (2:V)≤n*y*y := calc
     2≤n := hn
