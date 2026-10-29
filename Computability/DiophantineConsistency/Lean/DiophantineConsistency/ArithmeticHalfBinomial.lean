@@ -55,6 +55,9 @@ private theorem dvd_of_add {d C b : V} (hd : 0<d) (hsum : d∣C+b) (hb : d∣b) 
 private theorem cancel_lt {m x y : V} (h : m*x<m*y) : x<y :=
   lt_of_mul_lt_mul_left h (by simp)
 
+private theorem exp_dvd_exp_of_le {a b : V} (h : a≤b) : Exp.exp a∣Exp.exp b :=
+  ⟨Exp.exp (b-a), by rw [←exp_add,add_tsub_cancel_of_le h]⟩
+
 /-- **Half-binomial extraction (soundness).** From the actual doubled Pell
 coordinates and the interval `c = k*Y+η`, `k = η+ζ`, `η,ζ > 0`:
 `2*Y = binom (2r) r + w*X`. -/
@@ -119,12 +122,8 @@ theorem population_lower (X Y r w h : V) (hX : X=Exp.exp (2*r+1))
   have h2Y : Exp.exp (3*h+1)∣2*Y := by
     rcases hYq with ⟨y,rfl⟩
     exact ⟨y,by rw [exp_succ]; ring⟩
-  have hXd : Exp.exp (3*h+1)∣w*X := by
-    refine ⟨w*Exp.exp (2*r+1-(3*h+1)),?_⟩
-    have hsplit : Exp.exp (2*r+1)=Exp.exp (3*h+1)*Exp.exp (2*r+1-(3*h+1)) := by
-      rw [←exp_add,add_tsub_cancel_of_le hh]
-    rw [hX,hsplit]
-    ring
+  have hXd : Exp.exp (3*h+1)∣w*X :=
+    dvd_mul_of_dvd_right (by rw [hX]; exact exp_dvd_exp_of_le hh) w
   rw [hbin] at h2Y
   have hC := dvd_of_add (exp_pos _) h2Y hXd
   have hle := le_population_of_exp_dvd_central r (3*h+1) hC
@@ -147,13 +146,10 @@ theorem binomial_floor (X r u : V) (hr : 1≤r) (hX : X=Exp.exp (2*r+1))
   have hbig : 3*u+1≤2*r+1 := le_trans hu (le_trans hpr (by
     rw [two_mul,add_assoc]; exact le_add_of_nonneg_right (by simp)))
   -- 2^(3u+1) divides the binomial and X
-  obtain ⟨o,ho⟩ := exp_population_dvd_central r
-  have hCd : Exp.exp (3*u+1)∣binom (2*r) r := by
-    refine ⟨Exp.exp (population r-(3*u+1))*o,?_⟩
-    rw [ho,←mul_assoc,←exp_add,add_tsub_cancel_of_le hu]
-  have hXd : Exp.exp (3*u+1)∣X*w := by
-    refine ⟨Exp.exp (2*r+1-(3*u+1))*w,?_⟩
-    rw [hX,←mul_assoc,←exp_add,add_tsub_cancel_of_le hbig]
+  have hCd : Exp.exp (3*u+1)∣binom (2*r) r :=
+    dvd_trans (exp_dvd_exp_of_le hu) (exp_population_dvd_central r)
+  have hXd : Exp.exp (3*u+1)∣X*w :=
+    dvd_mul_of_dvd_left (by rw [hX]; exact exp_dvd_exp_of_le hbig) w
   obtain ⟨α,hα⟩ := hCd
   obtain ⟨β,hβ⟩ := hXd
   obtain ⟨m,hm⟩ : ∃ m, binom (2*r) r+X*w=Exp.exp (3*u+1)*m := ⟨α+β,by rw [hα,hβ]; ring⟩
