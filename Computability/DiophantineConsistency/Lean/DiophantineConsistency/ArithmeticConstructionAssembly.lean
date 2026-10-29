@@ -152,35 +152,22 @@ theorem Wb_mono (q : V) {R R' : V} (h : R ≤ R') : Wb q R ≤ Wb q R' := by
 section members
 variable {q R x : V}
 
-theorem le_Wb_1 (h : x ≤ q) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_rfl | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_2 (h : x ≤ (q + Exp.exp R + 1) * q) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_3 (h : x ≤ Exp.exp R) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_4 (h : x ≤ Ys R) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_5 (h : x ≤ Ps R + R) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_6 (h : x ≤ 2 * Ps R) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_7 (h : x ≤ Gs R) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_8 (h : x ≤ Fs R) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_9 (h : x ≤ Us R) : x ≤ Wb q R := by
-  unfold Wb; refine le_trans h ?_
-  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
-theorem le_Wb_10 (h : x ≤ Us R + Gs R + Fs R * Fs R * R) : x ≤ Wb q R := by
-  unfold Wb; exact le_trans h (le_add_of_nonneg_left (by simp))
+/-- Bound a summand by repeatedly adding nonnegative terms. -/
+local macro "wb_bound " h:ident : tactic =>
+  `(tactic| (unfold Wb <;> (refine le_trans $h ?_ <;>
+    (repeat (first | exact le_rfl | exact le_add_of_nonneg_left (by simp) |
+      refine le_add_of_le_of_nonneg ?_ (by simp))))))
+
+theorem le_Wb_1 (h : x ≤ q) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_2 (h : x ≤ (q + Exp.exp R + 1) * q) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_3 (h : x ≤ Exp.exp R) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_4 (h : x ≤ Ys R) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_5 (h : x ≤ Ps R + R) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_6 (h : x ≤ 2 * Ps R) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_7 (h : x ≤ Gs R) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_8 (h : x ≤ Fs R) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_9 (h : x ≤ Us R) : x ≤ Wb q R := by wb_bound h
+theorem le_Wb_10 (h : x ≤ Us R + Gs R + Fs R * Fs R * R) : x ≤ Wb q R := by wb_bound h
 
 end members
 
