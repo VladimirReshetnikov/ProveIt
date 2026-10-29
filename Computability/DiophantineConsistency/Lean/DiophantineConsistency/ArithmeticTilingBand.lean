@@ -58,11 +58,7 @@ def SeamRel (y H k : V) : Prop :=
 
 theorem seamRel_iff (y H k : V) : SeamRel y H k ↔ y = seamIdx H k := by
   unfold SeamRel seamIdx
-  by_cases h0 : k = 0
-  · simp [h0]
-  · by_cases h1 : k = 1
-    · simp [h1]
-    · by_cases h2 : k + 1 = H <;> simp [h0, h1, h2]
+  split_ifs <;> simp_all
 
 instance seamIdx_definable : 𝚺₁-Function₂ (seamIdx : V → V → V) :=
   fun2_of_rel (by unfold SeamRel; definability) seamRel_iff
@@ -105,13 +101,7 @@ def BandRel (T H y X k : V) : Prop :=
 
 theorem bandRel_iff (T H y X k : V) : BandRel T H y X k ↔ y = bandIdx T H X k := by
   unfold BandRel bandIdx
-  by_cases hX : X = 0
-  · simp [hX]
-  · by_cases h0 : k = 0
-    · simp [hX, h0]
-    · by_cases h1 : k + 1 = H
-      · simp [hX, h0, h1]
-      · by_cases h2 : k + 2 = H <;> simp [hX, h0, h1, h2]
+  split_ifs <;> simp_all
 
 instance bandIdx_definable (T H : V) : 𝚺₁-Function₂ (bandIdx T H) :=
   fun2_of_rel (R := BandRel T H) (by unfold BandRel; definability) (bandRel_iff T H)
