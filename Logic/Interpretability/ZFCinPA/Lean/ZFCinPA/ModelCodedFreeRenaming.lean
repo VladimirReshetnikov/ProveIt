@@ -128,26 +128,6 @@ lemma nth_termRenameVec (chosen level offset : V) {arity terms i : V}
       termRename L chosen level offset terms.[i] :=
   TermRenamer.construction.nth_resultVec L ![chosen,level,offset] ht hi
 
-lemma termRename_isUTerm (chosen level offset : V) {term : V} (ht : IsUTerm L term) :
-    IsUTerm L (termRename L chosen level offset term) := by
-  apply IsUTerm.induction 𝚺 ?_ ?_ ?_ ?_ term ht
-  · definability
-  · intro z; simp
-  · intro x; simp
-  · intro arity f terms hf hv ih
-    rw [termRename_func chosen level offset hf hv]
-    refine IsUTerm.func hf ⟨(termRenameVec_lh chosen level offset hv).symm,?_⟩
-    intro i hi
-    rw [nth_termRenameVec chosen level offset hv hi]
-    exact ih i hi
-lemma termRenameVec_isUTerm (chosen level offset : V) {arity terms : V}
-    (ht : IsUTermVec L arity terms) :
-    IsUTermVec L arity (termRenameVec L chosen level offset arity terms) := by
-  refine ⟨(termRenameVec_lh chosen level offset ht).symm,?_⟩
-  intro i hi
-  rw [nth_termRenameVec chosen level offset ht hi]
-  exact termRename_isUTerm chosen level offset (ht.nth hi)
-
 lemma termRename_isSemiterm (chosen level offset : V) {depth term : V}
     (ht : IsSemiterm L depth term) :
     IsSemiterm L depth (termRename L chosen level offset term) := by
@@ -171,6 +151,17 @@ lemma termRenameVec_isSemiterm (chosen level offset : V) {depth arity terms : V}
   intro i hi
   rw [nth_termRenameVec chosen level offset ht.isUTerm hi]
   exact termRename_isSemiterm chosen level offset (ht.nth hi)
+
+lemma termRename_isUTerm (chosen level offset : V) {term : V} (ht : IsUTerm L term) :
+    IsUTerm L (termRename L chosen level offset term) :=
+  (termRename_isSemiterm chosen level offset ht.isSemiterm).isUTerm
+lemma termRenameVec_isUTerm (chosen level offset : V) {arity terms : V}
+    (ht : IsUTermVec L arity terms) :
+    IsUTermVec L arity (termRenameVec L chosen level offset arity terms) := by
+  refine ⟨(termRenameVec_lh chosen level offset ht).symm,?_⟩
+  intro i hi
+  rw [nth_termRenameVec chosen level offset ht hi]
+  exact termRename_isUTerm chosen level offset (ht.nth hi)
 
 namespace FormulaRenamer
 noncomputable def blueprint (L : Language) [L.Encodable] [L.LORDefinable] :
