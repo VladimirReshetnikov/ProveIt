@@ -77,8 +77,9 @@ natural zero. The [first-root divisibility client](reviews/adaptive-first-divisi
 now derives a positive internal quotient `Y/q³` from the actual natural zero.
 The [transport theorem](reviews/adaptive-transport2011-root.md) now derives
 the actual positive transport and gap. The [transport quotient theorem](reviews/adaptive-transport-quotient2011-root.md)
-now derives the exact positive transport multiple. Main-root orientation,
-index recovery and the full zero-existence equivalence remain open.
+now derives the exact positive transport multiple. The [main-root orientation theorem](reviews/adaptive-main-orientation2011-root.md)
+now derives its positive signed representation. Index recovery and the full
+zero-existence equivalence remain open.
 
 The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
 now proves in Lean that both maintained source sentences are Π₁ and their
@@ -93,7 +94,15 @@ same axiom list. [Height-preserving conjunction inversion](reviews/parsons-selec
 is now established for arbitrary cut-free contexts. Induction-axiom reduction
 and the PRA witnessing theorem remain open. The [guard syntax](reviews/parsons-guard-independent.md)
 now preserves Σ₁ complexity and side parameters under substitution, preparing
-the intended induction-rule case.
+the intended induction-rule case. The [guarded three-premise transformer](reviews/parsons-rule-independent.md)
+now constructs that isolated case in an explicit Σ₁-rule calculus; the whole
+cut-free reduction and PRA witnessing are not yet established.
+
+The [mapped Robinson Q result](reviews/pra-q-compatibility-root.md) now
+proves that all actual Foundation Q axioms except its strict-order definition
+map to theorems of the candidate PRA. The [subtraction recursion clauses](reviews/pra-subtraction-root.md) are
+also proved in the candidate theory, as preparation for the order clause.
+That clause and full compatibility remain open.
 
 ## Concrete bridge to formalize
 

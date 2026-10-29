@@ -1,0 +1,27 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:24:82: error: unsolved goals
+⊢ {
+        toTr :=
+          Semiformula.lMapAux
+            {
+              func := fun {n} f =>
+                match n, f with
+                | 0, Language.ORing.Func.zero => Language.Zero.zero
+                | 0, Language.ORing.Func.one => Language.One.one
+                | 2, Language.ORing.Func.add => Language.Add.add
+                | 2, Language.ORing.Func.mul => Language.Mul.mul,
+              rel := fun {n} r =>
+                match n, r with
+                | 2, Language.ORing.Rel.eq => op(=)
+                | 2, Language.ORing.Rel.lt => op(<) },
+        map_top' := ⋯, map_bot' := ⋯, map_neg' := ⋯, map_imply' := ⋯, map_and' := ⋯, map_or' := ⋯ }
+      (“∀⁰ (#0 + 0) = #0”) =
+    ∀⁰* Semiformula.rel Language.ORing.Rel.eq ![Semiterm.func addCode ![#0, Semiterm.func (Code.zero 0) Fin.elim0], #0]
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:26:48: warning: This simp argument is unused:
+  Semiterm.lMap
+
+Hint: Omit it from the simp argument list.
+  simp [qAddZero, addZeroSentence, equalClosure, applyCode, embedding,
+  ̵  ̵ ̵ ̵Language.ORing.embedding,
+  ̲  ̲ ̲ ̲Semiformula.lMap,̵ ̵S̵e̵m̵i̵t̵e̵r̵m̵.̵l̵M̵a̵p̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

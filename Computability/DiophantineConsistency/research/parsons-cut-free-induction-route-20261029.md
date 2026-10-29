@@ -48,6 +48,14 @@ introduction, not merely produce arbitrary cut-free derivations of unknown
 height. Nested conjunctions are inverted one at a time; contractions and
 weakening must preserve the relevant multiset/list invariant.
 
+## Guarded rule client proved
+
+[`ParsonsRule.three_disjunctions`](../Lean/DiophantineConsistency/ParsonsRule.lean)
+now constructs the isolated guarded-rule conclusion from the three described
+premise proofs in an explicit Σ₁ induction-rule calculus. See its
+[independent replay](../reviews/parsons-rule-independent.md). The full
+translation of cut-free derivations and the PRA witnessing step remain open.
+
 ## The actual induction-axiom case
 
 After a precise normal-form translation, the negation of an induction axiom
