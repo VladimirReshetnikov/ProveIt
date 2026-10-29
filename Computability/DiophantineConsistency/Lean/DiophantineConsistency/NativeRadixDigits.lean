@@ -1,3 +1,4 @@
+import DiophantineConsistency.MFNativeRadixDigits
 import DiophantineConsistency.NativeCyclicConvolution
 import Mathlib.Logic.Equiv.Fin.Basic
 
@@ -29,9 +30,8 @@ theorem word_digitArray {r g : ℕ} (hr : 1 < r) (hg : g < r ^ n) :
   rw [← he, ofDigits_digitsPad]
 
 theorem word_origin (r : ℕ) (a : ℕ) :
-    word r (fun k : ZMod n => if k = 0 then a else 0) = a := by
-  classical
-  simp [word, ite_mul]
+    word r (fun k : ZMod n => if k = 0 then a else 0) = a :=
+  MF.NativeRadixDigits.word_origin (n := n) r a
 
 /-- Every exponent is a fixed digit capacity. At the origin the mask
 forbids even its low bit before the source's final increment. -/
@@ -85,20 +85,7 @@ theorem decode_originMask {v C : ℕ} (hv : 1 ≤ v) (hC : 0 < C)
 omit [NeZero n] in
 theorem periodic_sum (r L N : ℕ) (hL : 0 < L) (a : Fin L → ℕ) :
     (∑ i : Fin (N * L), a ⟨i.val % L, Nat.mod_lt _ hL⟩ * r ^ i.val) =
-      (∑ j : Fin L, a j * r ^ j.val) * (∑ k : Fin N, (r ^ L) ^ k.val) := by
-  have he : (∑ p : Fin N × Fin L, a p.2 * r ^ (p.2.val + L * p.1.val)) =
-      ∑ i : Fin (N * L), a ⟨i.val % L, Nat.mod_lt _ hL⟩ * r ^ i.val := by
-    apply Fintype.sum_equiv finProdFinEquiv
-    intro p
-    simp only [finProdFinEquiv_apply_val, Nat.add_mul_mod_self_left,
-      Nat.mod_eq_of_lt p.2.isLt]
-  rw [← he, Fintype.sum_prod_type, Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro k _
-  rw [Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro j _
-  rw [pow_add, ← pow_mul]
-  ring
+      (∑ j : Fin L, a j * r ^ j.val) * (∑ k : Fin N, (r ^ L) ^ k.val) :=
+  MF.NativeRadixDigits.periodic_sum r L N hL a
 
 end DiophantineConsistency.NativeRadixDigits
