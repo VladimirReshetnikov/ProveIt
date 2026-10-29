@@ -28,21 +28,10 @@ theorem three_h_lt_rank (v : Fin 14 → V) (hv : ∀j,0<v j) (h : V)
       (16:V)=15*1+1 := by ring
       _≤(CurrentMasks2011.beta:V)*v 0+1 :=
         add_le_add (mul_le_mul hb (pos_iff_one_le.mp (hv 0)) (by simp) (by simp)) le_rfl
-  have hR : (q v)^2-1≤rank v := by
-    unfold rank
-    have h1 : 1≤(q v-1)*(q v-v 1)+v 2 :=
-      le_trans (pos_iff_one_le.mp (hv 2)) (le_add_of_nonneg_left (by simp))
-    exact le_trans (le_mul_of_one_le_left (by simp) h1) (le_add_of_nonneg_right (by simp))
-  have hhq : h+1≤q v := by rw [hq]; exact lt_iff_succ_le.mp (lt_exp h)
-  have hsq : 3*h+1+1≤(q v)^2 := calc
-    3*h+1+1≤3*(h+1)+(16:V) := by
-      have : 3*h+1+1+(3+14:V)=3*(h+1)+16 := by ring
-      rw [←this]; exact le_add_of_nonneg_right (by simp)
-    _≤3*q v+q v := add_le_add (mul_le_mul_of_nonneg_left hhq (by simp)) hq16
-    _=4*q v := by ring
-    _≤q v*q v := mul_le_mul_of_nonneg_right (le_trans (by norm_num : (4:V)≤16) hq16) (by simp)
-    _=(q v)^2 := by ring
-  exact le_trans (le_tsub_of_add_le_right hsq) hR
+  simpa only [rank] using
+    ArithmeticHalfBinomial.rank_lower_of_radix (q v) (v 1) (v 2) (v 0)
+      (CurrentMasks2011.lowPort:V) ((CurrentMasks2011.highPort+CurrentMasks2011.beta:ℕ):V)
+      h hq16 (hv 2) hq
 
 /-- The core: actual equations, the recovered power and the radix exponent
 `q = 2^h` give `3h+2 ≤ σ(rank v)`. -/
