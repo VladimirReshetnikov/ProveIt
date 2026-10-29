@@ -320,24 +320,22 @@ theorem bindFreeAt_level {C D : V} (hC : 2 ≤ C) (hD : D ≤ lvB C) :
     have hatom : u + C + 3 + 10 ≤ 10 * (u + 1 + 1) + C + 13 :=
       le_of_add_eq (y := 9 * u + 20) (by ring)
     have hC3 : (2 : V) ≤ u + C + 3 := le_trans hC (le_trans (le_add_self : C ≤ u + C) le_self_add)
+    have atom_case (tag k R v : V) (htag : tag ≤ 1) (hR : Language.IsRel ℒₛₑₜ k R)
+        (hv : IsUTermVec ℒₛₑₜ k v) (hx : ⟪tag, k, R, v⟫ + 1 ≤ lvB (u + 1)) :
+        ⟪tag, k, R, termBindFreeVecAt ℒₛₑₜ d k v⟫ + 1 ≤
+          lvB (10 * (u + 1 + 1) + C + 13) := by
+      obtain ⟨rfl, hR01⟩ := isRel_set hR
+      obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
+      rw [vec2_bindFree d ht₁ ht₂]
+      obtain ⟨h₁, h₂⟩ := atom_children hx
+      have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
+      exact lift_lvB (atom_rebuild hC3 htag hR1 (tbf_le hC ht₁ h₁ hd) (tbf_le hC ht₂ h₂ hd)) hatom
     rcases hxF.case with ⟨k, R, v, hR, hv, rfl⟩ | ⟨k, R, v, hR, hv, rfl⟩ | rfl | rfl |
         ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ | ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
-    · obtain ⟨rfl, hR01⟩ := isRel_set hR
-      obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
-      rw [bindFreeAt_rel d hR hv, vec2_bindFree d ht₁ ht₂]
-      have hx' : ⟪(0 : V), 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1) := hx
-      obtain ⟨h₁, h₂⟩ := atom_children hx'
-      have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
-      exact lift_lvB (atom_rebuild hC3 (by simp) hR1 (tbf_le hC ht₁ h₁ hd) (tbf_le hC ht₂ h₂ hd))
-        hatom
-    · obtain ⟨rfl, hR01⟩ := isRel_set hR
-      obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
-      rw [bindFreeAt_nrel d hR hv, vec2_bindFree d ht₁ ht₂]
-      have hx' : ⟪(1 : V), 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1) := hx
-      obtain ⟨h₁, h₂⟩ := atom_children hx'
-      have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
-      exact lift_lvB (atom_rebuild hC3 le_rfl hR1 (tbf_le hC ht₁ h₁ hd) (tbf_le hC ht₂ h₂ hd))
-        hatom
+    · rw [bindFreeAt_rel d hR hv]
+      exact atom_case 0 k R v (by simp) hR hv hx
+    · rw [bindFreeAt_nrel d hR hv]
+      exact atom_case 1 k R v le_rfl hR hv hx
     · rw [bindFreeAt_verum]
       exact lift_lvB hx (le_of_add_eq (y := 9 * u + 32 + C) (by ring))
     · rw [bindFreeAt_falsum]
