@@ -15,9 +15,10 @@ window, and reverse-construction suffix has since [passed two current-source
 replays](reviews/adaptive-sandwich-postmerge2011-author.md), with the inherited
 provider boundary documented there. A subsequent merge moved the rank-lower
 proof into `ArithmeticHalfBinomial` and updated `ArithmeticAdaptivePopulation2011`
-and `ArithmeticHalfBinomial2011`; those replay receipts now cover the preceding
-snapshot, and affected clients need another rebuild. The later CellWindow
-continuation is still pending.
+and `ArithmeticHalfBinomial2011`. The adaptive affected suffix has now [passed
+two more source-current replays](reviews/adaptive-ranklower-postmerge2011-author.md);
+the 14-variable wrapper is outside their scope. The later CellWindow
+continuation and AuxBind client still need current-source replays.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
