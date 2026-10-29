@@ -47,9 +47,8 @@ theorem tick_extend_succ (right raw w : V) :
     tickValue (extendValue right (liveValue (raw+1) w)) =
       extendValue right (tickValue (liveValue (raw+1) w)) := by
   rw [extend_live, appendValue_succ, tick_live_succ, tick_live_succ]
-  by_cases hs : ArithmeticCommandStepPerm222.stepValue raw w = 0
-  · simp [nextValue, step_replace, hs]
-  · simp [nextValue, step_replace, tail_replace, hs]
+  simp only [nextValue, step_replace, tail_replace]
+  split <;> simp
 
 /-- The local commuting law is needed only while the left evaluator is active.
 After left completion, the appended continuation is allowed to progress. -/
@@ -107,10 +106,7 @@ theorem terminal_append (left right w : V) :
       simpa only [h0,extend_zero] using hp
     have hbstop : Stopped (run t (liveValue (appendValue left right) w)) := Or.inl hb
     rw [if_pos h0,terminal_eq_run _ _ t hbstop,hb]
-  · have hw : remaining (terminal left w) = 0 := by
-      rcases terminal_stopped left w with hh | hh
-      · exact False.elim (h0 hh)
-      · exact hh
+  · have hw := (terminal_stopped left w).resolve_left h0
     have hleft : liveValue 0 (working (terminal left w)) = terminal left w := by
       simpa only [hw] using live_decode (terminal left w) h0
     have hb : run t (liveValue (appendValue left right) w) =
