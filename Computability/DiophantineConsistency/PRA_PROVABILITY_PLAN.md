@@ -64,6 +64,13 @@ The [factor-unit theorem](reviews/adaptive-factor-units2011-root.md) now
 excludes the negative units by internal modulo-four reasoning and derives all
 four positive units. Pell recovery and zero-existence equivalence remain open.
 
+The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
+now proves in Lean that both maintained source sentences are Π₁ and their
+literal biconditional is Π₂. Its source-current replay was performed at the
+recorded prior snapshot; subsequent upstream commits changed some prerequisite
+sources. The certificate supplies a conservation input, not conservation or
+PRA derivability itself.
+
 ## Concrete bridge to formalize
 
 1. Choose and define a precise PRA language and proof calculus, including its
