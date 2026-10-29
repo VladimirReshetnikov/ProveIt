@@ -8,8 +8,9 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
-Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean` and
-`ArithmeticBinomLegendre.lean`. The adaptive population, window and reverse
+Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean`,
+`ArithmeticBinomLegendre.lean`, and `ArithmeticHalfBinomial.lean`. The adaptive
+population, window and reverse
 replays below authenticate their earlier source snapshots; a source-current
 downstream rebuild is required.
 
