@@ -26,11 +26,6 @@ private theorem marked_toMF {s : ℤ} {a : ZMod N → Fin 942} (h : MarkedWord N
     MF.WangTiles942Periodic.MarkedWord N s a :=
   ⟨h.start_at_zero, h.horizontal, h.temporal⟩
 
-private theorem facts_toMF {n : ℕ} [NeZero n] (c : ZMod n → ℕ) (W : ℕ)
-    (k digits : ZMod n → ℕ) (hf : CurrentCarryConstruction2011.Facts c W k digits) :
-    MF.CurrentCarryConstruction2011.Facts c W k digits :=
-  ⟨hf.carry_bound, hf.digit_bound, hf.recurrence, hf.decomposition, hf.word_bound, hf.transport⟩
-
 /-- Every physical index has its actual quotient cell and remainder field. -/
 theorem cell_representation (i : ZMod (N*2011)) :
     base ((i.val/2011 : ℕ) : ZMod N)+((i.val%2011 : ℕ) : ZMod (N*2011)) = i := by
@@ -50,14 +45,14 @@ theorem cell_mask_pass (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (j : ZMod N) (e : ℕ) (he : e < 2011) :
     digits (base j+(e : ZMod (N*2011))) &&&
       CurrentHighDigits2011.maskDigits (base j+(e : ZMod (N*2011))) = 0 := by
-  exact MF.CurrentWordHighMask2011.cell_mask_pass a dummy hd s (marked_toMF ha) k digits (facts_toMF _ _ _ _ hf) j e he
+  exact MF.CurrentWordHighMask2011.cell_mask_pass a dummy hd s (marked_toMF ha) k digits (hf.toMF) j e he
 
 theorem all_mask_digits (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (s : ℕ) (ha : MarkedWord N (s : ℤ) a)
     (k digits : ZMod (N*2011) → ℕ)
     (hf : CurrentCarryConstruction2011.Facts (constructedWord a dummy s) (displacement s) k digits)
     (i : ZMod (N*2011)) : digits i &&& CurrentHighDigits2011.maskDigits i = 0 := by
-  exact MF.CurrentWordHighMask2011.all_mask_digits a dummy hd s (marked_toMF ha) k digits (facts_toMF _ _ _ _ hf) i
+  exact MF.CurrentWordHighMask2011.all_mask_digits a dummy hd s (marked_toMF ha) k digits (hf.toMF) i
 
 /-- The literal scalar high mask, with its exact origin subtraction. -/
 theorem scalar_high_mask (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
@@ -65,7 +60,7 @@ theorem scalar_high_mask (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (k digits : ZMod (N*2011) → ℕ)
     (hf : CurrentCarryConstruction2011.Facts (constructedWord a dummy s) (displacement s) k digits) :
     word radix digits &&& (highPort*NativeMaskPopulation.repunit width N-1) = 0 := by
-  exact MF.CurrentWordHighMask2011.scalar_high_mask a dummy hd s (marked_toMF ha) k digits (facts_toMF _ _ _ _ hf)
+  exact MF.CurrentWordHighMask2011.scalar_high_mask a dummy hd s (marked_toMF ha) k digits (hf.toMF)
 
 /-- No carries or mask tests are supplied at this construction endpoint.
 The same actual normalization has the scalar mask and a positive short word. -/

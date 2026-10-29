@@ -72,11 +72,6 @@ theorem rotation_clause_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N →
       (base j+1005) = 0 := by
   exact MF.CurrentWordClause2011.rotation_clause_zero a dummy marker hd hm s j
 
-private theorem facts_toMF {n : ℕ} [NeZero n] (c : ZMod n → ℕ) (W : ℕ)
-    (k digits : ZMod n → ℕ) (hf : CurrentCarryConstruction2011.Facts c W k digits) :
-    MF.CurrentCarryConstruction2011.Facts c W k digits :=
-  ⟨hf.carry_bound, hf.digit_bound, hf.recurrence, hf.decomposition, hf.word_bound, hf.transport⟩
-
 /-- Every bounded normalization of the constructed word resets the complete
 low band, even before assuming any particular temporal phase. -/
 theorem low_carry_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
@@ -85,7 +80,7 @@ theorem low_carry_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hf : CurrentCarryConstruction2011.Facts
       (CurrentWordConstruction2011.word a dummy marker) W k digits)
     (j : ZMod N) (e : ℕ) (he : e ≤ 1004) : k (base j+(e : ZMod (N*2011))) = 0 := by
-  exact MF.CurrentWordClause2011.low_carry_zero a dummy marker hd hm W k digits (facts_toMF _ _ _ _ hf) j e he
+  exact MF.CurrentWordClause2011.low_carry_zero a dummy marker hd hm W k digits (hf.toMF) j e he
 
 /-- The normalized clause is derived from the constructed word and its
 actual carry recurrence. No high-mask or incoming-zero premise is given. -/
@@ -96,7 +91,7 @@ theorem normalized_clause (a : ZMod N → Fin 942) (dummy marker : ZMod N → �
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits)
     (j : ZMod N) :
     digits (base j+1005) = 2^45+2+localDigit (a j) 1 ∧ k (base j+1005) = 0 := by
-  exact MF.CurrentWordClause2011.normalized_clause a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf) j
+  exact MF.CurrentWordClause2011.normalized_clause a dummy marker hd hm s k digits (hf.toMF) j
 
 /-- This is the actual high-mask digit at the clause, not an assumed
 global mask condition. -/
@@ -107,7 +102,7 @@ theorem clause_mask_pass (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits)
     (j : ZMod N) :
     digits (base j+1005) &&& CurrentHighDigits2011.maskDigits (base j+1005) = 0 := by
-  exact MF.CurrentWordClause2011.clause_mask_pass a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf) j
+  exact MF.CurrentWordClause2011.clause_mask_pass a dummy marker hd hm s k digits (hf.toMF) j
 
 /-- A single constructed clause proves both positivity and strictness of
 the same normalized transport word, without a top-field assumption. -/
@@ -118,7 +113,7 @@ theorem normalized_word_strict (a : ZMod N → Fin 942) (dummy marker : ZMod N �
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits) :
     0 < NativeCyclicConvolution.word radix digits ∧
       NativeCyclicConvolution.word radix digits < radix^(N*2011)-1 := by
-  exact MF.CurrentWordClause2011.normalized_word_strict a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf)
+  exact MF.CurrentWordClause2011.normalized_word_strict a dummy marker hd hm s k digits (hf.toMF)
 
 /-- Construct the actual transport representative first, then derive
 its strict positive window and every local clause mask. -/

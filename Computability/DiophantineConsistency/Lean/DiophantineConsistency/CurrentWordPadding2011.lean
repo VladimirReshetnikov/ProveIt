@@ -91,11 +91,6 @@ theorem assembled_raw_residue (a : ZMod N → Fin 942) (dummy marker : ZMod N �
       (displacement s) (base j+(h : ZMod (N*2011)))%2048 ≤ 5 :=
   MF.CurrentWordPadding2011.assembled_raw_residue a dummy marker hd hm s j h hh
 
-private theorem facts_toMF {n : ℕ} [NeZero n] (c : ZMod n → ℕ) (W : ℕ)
-    (k digits : ZMod n → ℕ) (hf : CurrentCarryConstruction2011.Facts c W k digits) :
-    MF.CurrentCarryConstruction2011.Facts c W k digits :=
-  ⟨hf.carry_bound, hf.digit_bound, hf.recurrence, hf.decomposition, hf.word_bound, hf.transport⟩
-
 /-- The actual normalization preserves the residue: incoming carry resets,
 and the outgoing carry is multiplied by the actual radix, divisible by2048. -/
 theorem normalized_padding_residue (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
@@ -105,7 +100,7 @@ theorem normalized_padding_residue (a : ZMod N → Fin 942) (dummy marker : ZMod
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits)
     (j : ZMod N) (h : ℕ) (hh : 1 ≤ h ∧ h ≤ 916) :
     digits (base j+(h : ZMod (N*2011)))%2048 ≤ 5 :=
-  MF.CurrentWordPadding2011.normalized_padding_residue a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf) j h hh
+  MF.CurrentWordPadding2011.normalized_padding_residue a dummy marker hd hm s k digits (hf.toMF) j h hh
 
 theorem padding_mask_pass (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ)
@@ -115,7 +110,7 @@ theorem padding_mask_pass (a : ZMod N → Fin 942) (dummy marker : ZMod N → �
     (j : ZMod N) (h : ℕ) (hh : 1 ≤ h ∧ h ≤ 916) :
     digits (base j+(h : ZMod (N*2011))) &&&
       CurrentHighDigits2011.maskDigits (base j+(h : ZMod (N*2011))) = 0 :=
-  MF.CurrentWordPadding2011.padding_mask_pass a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf) j h hh
+  MF.CurrentWordPadding2011.padding_mask_pass a dummy marker hd hm s k digits (hf.toMF) j h hh
 
 /-- All916 actual local masks for an actually constructed carry solution;
 the input tile word need not satisfy any matching or marked-origin premise. -/

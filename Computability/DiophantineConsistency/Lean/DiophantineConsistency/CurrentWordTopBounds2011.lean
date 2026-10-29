@@ -94,18 +94,13 @@ theorem raw_2010_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
       (displacement s) (base j+2010) = 0 := by
   exact MF.CurrentWordTopBounds2011.raw_2010_zero a dummy marker hd hm s j
 
-private theorem facts_toMF {n : ℕ} [NeZero n] (c : ZMod n → ℕ) (W : ℕ)
-    (k digits : ZMod n → ℕ) (hf : CurrentCarryConstruction2011.Facts c W k digits) :
-    MF.CurrentCarryConstruction2011.Facts c W k digits :=
-  ⟨hf.carry_bound, hf.digit_bound, hf.recurrence, hf.decomposition, hf.word_bound, hf.transport⟩
-
 theorem top_carry_digits (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ)
     (k digits : ZMod (N*2011) → ℕ)
     (hf : CurrentCarryConstruction2011.Facts
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits)
     (j : ZMod N) : k (base j+2009) = 0 ∧ k (base j+2010) = 0 ∧ digits (base j+2010) = 0 := by
-  exact MF.CurrentWordTopBounds2011.top_carry_digits a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf) j
+  exact MF.CurrentWordTopBounds2011.top_carry_digits a dummy marker hd hm s k digits (hf.toMF) j
 
 /-- The final field of the final cell is the actual highest canonical index. -/
 theorem last_top_val :
@@ -118,7 +113,7 @@ theorem normalized_word_top_bound (a : ZMod N → Fin 942) (dummy marker : ZMod 
     (hf : CurrentCarryConstruction2011.Facts
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits) :
     NativeCyclicConvolution.word radix digits < radix^(N*2011-1) := by
-  exact MF.CurrentWordTopBounds2011.normalized_word_top_bound a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf)
+  exact MF.CurrentWordTopBounds2011.normalized_word_top_bound a dummy marker hd hm s k digits (hf.toMF)
 
 theorem normalized_word_div_bound (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ)
@@ -126,7 +121,7 @@ theorem normalized_word_div_bound (a : ZMod N → Fin 942) (dummy marker : ZMod 
     (hf : CurrentCarryConstruction2011.Facts
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits) :
     NativeCyclicConvolution.word radix digits < radix^(N*2011)/radix := by
-  exact MF.CurrentWordTopBounds2011.normalized_word_div_bound a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf)
+  exact MF.CurrentWordTopBounds2011.normalized_word_div_bound a dummy marker hd hm s k digits (hf.toMF)
 
 /-- The separate source word has no fields above the last marker1004. -/
 theorem source_word_bound (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)

@@ -35,6 +35,11 @@ structure Facts (c : ZMod n → ℕ) (W : ℕ) (k digits : ZMod n → ℕ) : Pro
   word_bound : word radix digits ≤ radix^n-1
   transport : (K+2^W)*word radix c ≡ word radix digits [MOD radix^n-1]
 
+/-- View a carry construction through the shared mathematical foundation interface. -/
+theorem Facts.toMF {c k digits : ZMod n → ℕ} {W : ℕ}
+    (h : Facts c W k digits) : MF.CurrentCarryConstruction2011.Facts c W k digits :=
+  ⟨h.carry_bound, h.digit_bound, h.recurrence, h.decomposition, h.word_bound, h.transport⟩
+
 /-- Every Boolean word has an actual bounded normalization, even at a
 fractional binary phase. The complete cyclic predecessor is retained. -/
 theorem exists_normalization (c : ZMod n → ℕ) (hc : ∀ i, c i ≤ 1) (W : ℕ) :
@@ -53,10 +58,7 @@ The slack digit must be established by the subsequent local construction. -/
 theorem Facts.word_lt {c k digits : ZMod n → ℕ} {W : ℕ}
     (h : Facts c W k digits) (i : ZMod n) (hi : digits i < radix-1) :
     word radix digits < radix^n-1 := by
-  have hmf : MF.CurrentCarryConstruction2011.Facts c W k digits :=
-    ⟨h.carry_bound, h.digit_bound, h.recurrence, h.decomposition,
-      h.word_bound, h.transport⟩
-  exact hmf.word_lt i hi
+  exact h.toMF.word_lt i hi
 
 /-- Instantiate normalization at the assembled tile word. Its independent
 Boolean controls are the only additional hypotheses. -/

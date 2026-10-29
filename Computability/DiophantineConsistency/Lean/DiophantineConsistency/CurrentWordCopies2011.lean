@@ -32,11 +32,6 @@ private theorem marked_toMF {s : ℤ} {a : ZMod N → Fin 942} (h : MarkedWord N
     MF.WangTiles942Periodic.MarkedWord N s a :=
   ⟨h.start_at_zero, h.horizontal, h.temporal⟩
 
-private theorem facts_toMF {n : ℕ} [NeZero n] (c : ZMod n → ℕ) (W : ℕ)
-    (k digits : ZMod n → ℕ) (hf : CurrentCarryConstruction2011.Facts c W k digits) :
-    MF.CurrentCarryConstruction2011.Facts c W k digits :=
-  ⟨hf.carry_bound, hf.digit_bound, hf.recurrence, hf.decomposition, hf.word_bound, hf.transport⟩
-
 omit [NeZero N] in
 theorem constructed_boolean (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (s : ℕ) (k : ZMod (N*2011)) :
@@ -101,7 +96,7 @@ theorem normalized_low_digit (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     digits (base j+(e : ZMod (N*2011))) =
       CurrentCarryConstruction2011.raw (constructedWord a dummy s) (displacement s)
         (base j+(e : ZMod (N*2011))) :=
-  MF.CurrentWordCopies2011.normalized_low_digit a dummy hd s k digits (facts_toMF _ _ _ _ hf) j e he
+  MF.CurrentWordCopies2011.normalized_low_digit a dummy hd s k digits (hf.toMF) j e he
 
 theorem south_mask_pass (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (s : ℕ) (ha : MarkedWord N (s : ℤ) a)
@@ -110,7 +105,7 @@ theorem south_mask_pass (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (j : ZMod N) (i : Fin 9) :
     digits (base j+((960+i.val : ℕ) : ZMod (N*2011))) &&&
       CurrentHighDigits2011.maskDigits (base j+((960+i.val : ℕ) : ZMod (N*2011))) = 0 :=
-  MF.CurrentWordCopies2011.south_mask_pass a dummy hd s (marked_toMF ha) k digits (facts_toMF _ _ _ _ hf) j i
+  MF.CurrentWordCopies2011.south_mask_pass a dummy hd s (marked_toMF ha) k digits (hf.toMF) j i
 
 theorem horizontal_mask_pass (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (s : ℕ) (ha : MarkedWord N (s : ℤ) a)
@@ -119,7 +114,7 @@ theorem horizontal_mask_pass (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (j : ZMod N) (i : Fin 8) :
     digits (base j+((987+i.val : ℕ) : ZMod (N*2011))) &&&
       CurrentHighDigits2011.maskDigits (base j+((987+i.val : ℕ) : ZMod (N*2011))) = 0 :=
-  MF.CurrentWordCopies2011.horizontal_mask_pass a dummy hd s (marked_toMF ha) k digits (facts_toMF _ _ _ _ hf) j i
+  MF.CurrentWordCopies2011.horizontal_mask_pass a dummy hd s (marked_toMF ha) k digits (hf.toMF) j i
 
 theorem marker_mask_pass (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (s : ℕ)
@@ -127,7 +122,7 @@ theorem marker_mask_pass (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (hf : CurrentCarryConstruction2011.Facts (constructedWord a dummy s) (displacement s) k digits)
     (j : ZMod N) :
     digits (base j+1004) &&& CurrentHighDigits2011.maskDigits (base j+1004) = 0 :=
-  MF.CurrentWordCopies2011.marker_mask_pass a dummy hd s k digits (facts_toMF _ _ _ _ hf) j
+  MF.CurrentWordCopies2011.marker_mask_pass a dummy hd s k digits (hf.toMF) j
 
 /-- All seventeen copies and the shifted marker pass their actual local
 high-mask tests in the same bounded normalization. -/
@@ -140,7 +135,7 @@ theorem copy_masks (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (∀ j (i : Fin 8), digits (base j+((987+i.val : ℕ) : ZMod (N*2011))) &&&
       CurrentHighDigits2011.maskDigits (base j+((987+i.val : ℕ) : ZMod (N*2011))) = 0) ∧
     (∀ j, digits (base j+1004) &&& CurrentHighDigits2011.maskDigits (base j+1004) = 0) :=
-  MF.CurrentWordCopies2011.copy_masks a dummy hd s (marked_toMF ha) k digits (facts_toMF _ _ _ _ hf)
+  MF.CurrentWordCopies2011.copy_masks a dummy hd s (marked_toMF ha) k digits (hf.toMF)
 
 /-- The carry solution is constructed rather than supplied at this endpoint.
 Only the actual marked word and independent Boolean dummy choices are inputs. -/

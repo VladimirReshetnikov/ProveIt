@@ -28,11 +28,6 @@ private theorem marked_toMF {s : ℤ} {a : ZMod N → Fin 942} (h : MarkedWord N
     MF.WangTiles942Periodic.MarkedWord N s a :=
   ⟨h.start_at_zero, h.horizontal, h.temporal⟩
 
-private theorem facts_toMF {n : ℕ} [NeZero n] (c : ZMod n → ℕ) (W : ℕ)
-    (k digits : ZMod n → ℕ) (hf : CurrentCarryConstruction2011.Facts c W k digits) :
-    MF.CurrentCarryConstruction2011.Facts c W k digits :=
-  ⟨hf.carry_bound, hf.digit_bound, hf.recurrence, hf.decomposition, hf.word_bound, hf.transport⟩
-
 theorem origin_bare_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (j : ZMod N) (d : ℕ) (hd : d = 18 ∨ d = 1004 ∨ d = 2020) :
     CurrentWordConstruction2011.word a dummy marker
@@ -57,7 +52,7 @@ theorem normalized_origin (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (hf : CurrentCarryConstruction2011.Facts (constructedWord a dummy s) (displacement s) k digits)
     (j : ZMod N) :
     digits (base j) = if a (j-(s : ZMod N)) = 0 then 1 else 0 := by
-  exact MF.CurrentWordOrigin2011.normalized_origin a dummy hd s k digits (facts_toMF _ _ _ _ hf) j
+  exact MF.CurrentWordOrigin2011.normalized_origin a dummy hd s k digits (hf.toMF) j
 
 /-- Temporal matching alone forbids Start immediately before the marked origin. -/
 theorem predecessor_not_start (a : ZMod N → Fin 942) (s : ℕ)
@@ -69,6 +64,6 @@ theorem origin_masks (a : ZMod N → Fin 942) (dummy : ZMod N → ℕ)
     (k digits : ZMod (N*2011) → ℕ)
     (hf : CurrentCarryConstruction2011.Facts (constructedWord a dummy s) (displacement s) k digits)
     (j : ZMod N) : digits (base j) &&& CurrentHighDigits2011.maskDigits (base j) = 0 := by
-  exact MF.CurrentWordOrigin2011.origin_masks a dummy hd s (marked_toMF ha) k digits (facts_toMF _ _ _ _ hf) j
+  exact MF.CurrentWordOrigin2011.origin_masks a dummy hd s (marked_toMF ha) k digits (hf.toMF) j
 
 end DiophantineConsistency.CurrentWordOrigin2011
