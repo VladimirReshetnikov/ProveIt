@@ -138,18 +138,14 @@ theorem reset_south_init (L X : V) : southC (resetIdx L X) = northC (initIdx L X
 
 theorem reset_sides (L X : V) : westC (resetIdx L X) = 1 ∧ eastC (resetIdx L X) = 1 := by
   unfold resetIdx
-  split
-  · exact ⟨c930.west, c930.east⟩
-  · split
-    · exact ⟨c931.west, c931.east⟩
-    · exact ⟨c932.west, c932.east⟩
+  split_ifs <;> simp only [c930.west, c930.east, c931.west, c931.east,
+    c932.west, c932.east, true_and]
 
 theorem init_east (hL : 1 ≤ L) (X : V) : eastC (initIdx L X) = westC (initIdx L (X + 1)) := by
   rcases lt_trichotomy (X + 1) L with h | h | h
   · rw [init_lt (lt_trans (lt_add_one X) h), init_lt h, c927.east, c927.west]
   · rw [init_lt (by rw [← h]; exact lt_add_one X), h, init_eq, c927.east, c0.west]
-  · have hX : L ≤ X := by
-      have := lt_iff_succ_le.mp h; exact le_of_add_le_add_right this
+  · have hX : L ≤ X := lt_succ_iff_le.mp h
     rcases eq_or_lt_of_le hX with e | e
     · rw [← e, init_eq, init_succ, c0.east, c928.west]
     · rcases eq_or_lt_of_le (lt_iff_succ_le.mp e) with e' | e'
