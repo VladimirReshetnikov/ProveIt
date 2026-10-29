@@ -96,10 +96,8 @@ theorem minimal_unit_descent (D F v x y : V)
   have he : e+1=F := tsub_add_cancel_of_le (le_of_lt hFpos)
   have hd : D*v*v=e*e+2*e := by
     apply add_left_cancel (a := (1:V))
-    calc
-      1+D*v*v=F*F := hF.symm
-      _=(e+1)*(e+1) := by rw [he]
-      _=1+(e*e+2*e) := by ring
+    rw [←hF,←he]
+    ring
   have hlow : e*y<v*x := by
     apply lt_of_mul_self_lt_mul_self₀ (by simp)
     have hid : (v*x)*(v*x)=(e*y)*(e*y)+(v*v+2*e*y*y) := by
@@ -135,10 +133,7 @@ theorem minimal_unit_descent (D F v x y : V)
       _=v*(F*x)+F*(F*y) := by rw [hux,hzy]
       _=F*v*x+(F*F)*y := by ring
       _=y+(D*v*v*y+F*v*x) := by rw [hF]; ring
-  have hun : u*u=1+D*z*z := by
-    apply (advance_iff D F v u z hF).mp
-    rw [hix,hiy]
-    exact hn
+  have hun : u*u=1+D*z*z := (advance_iff D F v u z hF).mp (by simpa only [hix,hiy] using hn)
   exact ⟨u,z,hu,hz,hun,hix.symm,hiy.symm⟩
 
 /-- The bounded-universal invariant is Sigma1, including its internal index. -/
