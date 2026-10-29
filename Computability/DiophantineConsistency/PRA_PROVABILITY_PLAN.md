@@ -138,6 +138,12 @@ preserved through ordinary logical and contraction premises, while the
 [strict-block invariant](reviews/parsons-strict-invariant-root.md) preserves
 finite-prefix induction blocks and their generated side descriptors. These
 do not establish the remaining base-terminal cases or global recursion.
+The [restricted counterexample case](reviews/parsons-counter-strict-root.md)
+requires its smaller derivations only for tree-side, strict-block contexts.
+A separate [actual PA-minus axiom certificate](reviews/parsons-base-positive-root.md)
+now supplies Tree descriptors for terminal base reclassification, including
+the axiom with an unbounded existential. Integrating that base certificate
+into the restricted induction hypothesis and proving the recursion remain.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 

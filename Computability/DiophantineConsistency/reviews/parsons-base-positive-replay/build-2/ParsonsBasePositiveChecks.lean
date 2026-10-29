@@ -1,0 +1,7 @@
+import DiophantineConsistency.ParsonsBasePositive
+#print axioms DiophantineConsistency.ParsonsBasePositive.negative_tree
+#print axioms DiophantineConsistency.ParsonsBasePositive.paminus_prefix_sentence
+#print axioms DiophantineConsistency.ParsonsBasePositive.paminus_prefix
+#print axioms DiophantineConsistency.ParsonsBasePositive.open_state
+#print axioms DiophantineConsistency.ParsonsBasePositive.shift_state
+#print axioms DiophantineConsistency.ParsonsBasePositive.terminal_tree
