@@ -1833,5 +1833,12 @@ clients and the focused check pass; all three client objects and target reports
 match. The umbrella importer was not rebuilt and some client inputs lack
 source-matched receipts. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-residual-square-symmetry-evidence/BUNDLE.json).
 
+The gcd-normalization positivity simplification `c0fb426562` removes sixteen
+net Lean lines, bringing the reviewed series to 10131. Positivity of recorded
+products replaces four repeated zero-contradiction arguments. Paired target and
+three direct clients pass with identical client objects; all 29 target
+declaration reports and sampled registrations match. The wider Pell and
+construction closure was not rebuilt. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-gcd-product-positivity-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
