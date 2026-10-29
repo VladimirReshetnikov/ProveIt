@@ -52,9 +52,8 @@ lemma enum_embed_succ (np raw w : V) :
       embedValue np (ArithmeticCommandTickPerm222.tickValue
         (ArithmeticCommandTickPerm222.liveValue (raw+1) w)) := by
   rw [embed_live, enum_active, ArithmeticCommandTickPerm222.tick_live_succ]
-  by_cases hs : stepValue raw w = 0
-  · simp [execValue, ArithmeticCommandTickPerm222.nextValue, hs]
-  · simp [execValue, ArithmeticCommandTickPerm222.nextValue, hs]
+  by_cases hs : stepValue raw w = 0 <;>
+    simp [execValue, ArithmeticCommandTickPerm222.nextValue, hs]
 
 /-- Local conjugacy is asserted only while the word is active. -/
 lemma enum_embed_active (np config : V) (hc : ¬ Stopped config) :
@@ -138,9 +137,7 @@ theorem drain_boundary (c w : V) : ∃ t ≤ c+1,
       simpa [execValue, hs] using hfirst
     obtain ⟨t, ht, he⟩ := drain (tailValue c) (c+1) (stepValue c w-1)
     refine ⟨1+t, ?_, ?_⟩
-    · calc
-        1+t ≤ 1+c := _root_.add_le_add le_rfl (le_trans ht (tail_le c))
-        _ = c+1 := add_comm _ _
+    · simpa only [add_comm] using _root_.add_le_add (le_refl (1 : V)) (le_trans ht (tail_le c))
     · rw [run_add, hf, he, ArithmeticCommandEvaluationPerm222.eval_succ]
       simp only [hs, if_false]
 
