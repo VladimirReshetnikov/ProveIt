@@ -1468,5 +1468,14 @@ match; some compiled client objects differ. One public balance theorem is
 added. External and further transitive providers remain cached; see [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-balance-evidence/BUNDLE.json).
 
+The modular-offset cancellation `9c55a5db20` removes 22 net Lean lines,
+bringing the reviewed series to 9828. The original module was introduced in
+Claude-coauthored commit `f79467f544`. Adding the offset's modular complement
+replaces the quotient comparison and case analysis. Paired target and decoding
+client builds pass with identical client objects; all 60 target declaration
+reports and 33,296 global simp entries match. Direct project providers match
+current-source receipts; the transitive closure remains cached. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-cell-mod-cancel-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
