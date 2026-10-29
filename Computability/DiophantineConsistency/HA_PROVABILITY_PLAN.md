@@ -2056,5 +2056,99 @@ The last row composes four bounded layers:
 rho8 circuit is chosen with `Classical.choose`.
 
 The C222 ⇄ Foundation-ZFC link needs
-proof-size bounds for the source-bridge proof transformations and is not
-yet attempted.
+proof-size bounds for the source-bridge proof transformations; its scope is
+the next section.
+
+## C222 ⇄ Foundation-ZFC witness bounds: scope (2026-10-28)
+
+**Target.** Two bounded Π₁ theorems, each proved in every model of IΣ₁.
+
+```
+upper : value code = 2 → ∃ d ≤ Bup code, Proof 𝗭𝗙𝗖 d ⊥
+lower : Proof 𝗭𝗙𝗖 d ⊥ → ∃ code ≤ Blow d, value code = 2
+```
+
+With the four rows above, they make every witness map between Foundation
+ZFC-refutations and positive zeros of the current equation elementary.
+
+**Where the witnesses are lost.** Foundation's typed derivations
+(`TDerivation`, `T ⊢!ᵈᵉʳ Γ`) are data: they carry their code `val : V`.
+The ten rule constructors (`axL … axm`, `Proof/Basic.lean`) are explicit
+pairing terms `⟪s, k, …⟫ + 1`, and `pair_polybound` bounds them. So any proof
+assembled from typed combinators builds an explicit code. Witnesses vanish
+only where a step returns the Prop-level `Provable`/`Derivable` (`∃ d, …`).
+The decisive places are the inductions whose invariant is "∃ derivation";
+`InternalRelativization.derivable_relSet` is one.
+
+**ZF → ZFC is free.** `ValidatorConsistencyForward254.zfc_provable_of_zf`
+reuses the same code `d` (`Derivation.of_ss`), so the bound is the identity.
+
+**Measured cone** (Python audit of the import closures; "internal" means the
+module works over models of IΣ₁):
+
+| Direction | Modules / lines | Internal modules / lines | Derivation-producing inductions |
+|---|---|---|---|
+| upper (C222 ⇒ ZF) | 136 / 40.0k | 76 / 24.0k | 9 |
+| lower (ZFC ⇒ C222) | 219 / 60.5k | 102 / 35.9k | 18 |
+| shared by both | 94 / 33.1k | | 6 of the above |
+
+That is 21 distinct inductions. The remaining derivation-producing
+declarations (about 230 upper and 400 lower, an overcount) do not induct: each
+is a fixed composition of rules, typed combinators and standard `compiled`
+derivations. They need bounded statements but no new bound design.
+
+Purely semantic modules (the `L`-step set-structure arguments, the Tarski
+calculus, `TaggedValid` model checks) feed `compiled` meta-proofs. Those
+proofs are fixed standard numerals, constants inside V, so they need no
+change.
+
+The 21 inductions:
+- *shared:* `derivable_relSet`, `derivable_of_domSet` (InternalRelativization),
+  `replace_aux`, `term_replace_aux` (SetCongruence),
+  `provable_numChainOmegaCode`, `zfcProofSelectorIn_of_package`;
+- *upper:* `rejected_or_decoded_provable` (decoders 254 and 222),
+  `derivable_rename_bounded`;
+- *lower, ZFC → ZF (L):* `peel`, `glue`, `fun_MT`, `slot_MT`, `numOK`;
+- *lower, ZF → qTheory:* `derivable_iSet`, `NativePeel.peel`;
+- *lower, qTheory → seed:* `derivable_tagged_bounded`, `discharge_all`,
+  `fixed_image_all`, `close_guarded`;
+- *lower, seed → C222:* `translate_main`. Iteration 2 already gave its
+  context parameter a Σ₁ bound; the output word still needs one.
+
+**Bound shape.** Use `E k x = 2^(2^(k·(x+1)))`. A node of a tree-shaped
+derivation adds a pairing polynomial of fixed degree (≤ 2⁵ for six-tuples),
+and `E k (x+1) = E k x ^ (2^k)` absorbs it. So one height-2 tower per
+transformation survives the induction step.
+
+The C222 decoder is the exception. It reuses earlier rows as a DAG, so the
+tree it decodes to can be exponentially larger. That adds one more
+exponential, which is still elementary. Composing the four lower stages gives
+a fixed tower height, an estimated 8–10. The bound shape is a design estimate
+and has not been checked in Lean.
+
+**Work, staged by leverage.**
+
+| Stage | Content | Estimated size |
+|---|---|---|
+| 0 | `SizedDerivation`: `DerivableLe`/`ProvableLe`, bounded twins of the ten rules and of the typed combinators the cone uses (`⨀`, `K!_intro`, …), size lemmas for the set/formula operations (`insert`, `∪`, `setShift`, `neg`, `substs`, `relativize`), and `E`-closure lemmas | 2 modules, ~1.5k lines |
+| 1 | the shared inductions, starting with the generic relativization engine `derivable_relSet` + `derivable_of_domSet` | 3–4 modules, ~2k lines |
+| 2 | upper: both decoder inductions, row soundness (rho1/6, container, collection, equality, growG, bundle), proof renaming; gives `upper` | ~8 modules, ~3–4k lines |
+| 3 | lower, ZFC → ZF: the L obligations (`peel`, `glue`, `driverT`, `numOK`) | ~6 modules, ~3k lines |
+| 4 | lower, ZF → qTheory → seed: interpretation engine, marker relativization, discharge, axiom images | ~6 modules, ~3k lines |
+| 5 | lower, seed → C222: bounded `translate_main`; gives `lower` | ~3 modules, ~1.5k lines |
+
+The total is about 30 new modules and 14k lines, written as bounded twins
+beside the accepted modules. As in iteration 3, the accepted modules stay
+untouched, because the peer actively edits this tree.
+
+Stage 2 alone closes the upper row. Stages 0–1 are prerequisites for both
+directions and are reusable Foundation-level infrastructure.
+
+**Main risks.**
+1. Set-coded sequents are exponential in their largest formula, so bounds must
+   be stated on `fstIdx` sizes as well as on derivation codes.
+2. Lemmas that end in `Provable` and are reused through `.get`
+   (`Classical.choose`) are opaque. Each one on the path needs a typed or
+   bounded restatement, not a wrapper.
+3. `Classical.choose`-picked fixed objects, such as the rho8 circuit in
+   `Bword`, leave constants unevaluated but still fixed.
