@@ -2628,3 +2628,8 @@ recovery itself and the internal converse remain open.
 The [current adaptive X bound](reviews/adaptive-power-lower2011-root.md)
 now derives `16 ≤ X` from the literal zero and fixed radix-47 port. This
 supplies a growth-theorem premise, not the power representation itself.
+
+The [adaptive Pell growth theorem](reviews/adaptive-power-growth2011-root.md)
+now derives `Exp.exp R < Y` from an actual current zero, using the exact
+indices and X bound. Its two current-source prerequisites were independently
+rebuilt; power identity and radix alignment are separate clients.
