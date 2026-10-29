@@ -25,10 +25,7 @@ def gcdDef : 𝚺₁.Semisentence 3 := .mkSigma
 private theorem bez_swap {a b g : V} (h : Bez a b g) : Bez b a g := by
   obtain ⟨u,v,w,z,he⟩ := h
   refine ⟨v,u,z,w,?_⟩
-  calc
-    g+b*v+a*u=g+a*u+b*v := by ring
-    _=a*w+b*z := he
-    _=b*z+a*w := by ring
+  simpa only [add_assoc,add_comm,add_left_comm] using he
 
 private theorem bez_remainder {a b g q r : V}
     (h : Bez a b g) (ha : a=g*q+r) : Bez a b r := by
@@ -51,7 +48,7 @@ theorem bez_divisor {a b g h : V} (hc : Bez a b g) (ha : h∣a) (hb : h∣b) :
     have hb0 : b=0 := by simpa using hb
     have hg0 : g=0 := by simpa [ha0,hb0] using he
     simp [hg0]
-  · have hp : 0<h := lt_of_le_of_ne (Arithmetic.zero_le h) (Ne.symm hh)
+  · have hp : 0<h := pos_iff_ne_zero.mpr hh
     obtain ⟨A,hA⟩ := ha
     obtain ⟨B,hB⟩ := hb
     apply mod_eq_zero_iff_dvd.mp
@@ -67,7 +64,7 @@ theorem gcd_certificate_exists (a b : V) : ∃ g : V, GcdCert a b g := by
     have hb : b=0 := le_antisymm
       (le_trans (by simp : b≤a+b) (le_of_eq hz)) (Arithmetic.zero_le b)
     refine ⟨0,?_,?_,0,0,0,0,?_⟩ <;> simp [ha,hb]
-  · have hab : 0<a+b := lt_of_le_of_ne (Arithmetic.zero_le (a+b)) (Ne.symm hz)
+  · have hab : 0<a+b := pos_iff_ne_zero.mpr hz
     let P : V → Prop := fun g => 0<g ∧ g≤a+b ∧ Bez a b g
     have hP : 𝚺₁-Predicate P := by dsimp [P,Bez]; definability
     have hs : P (a+b) := ⟨hab,le_rfl,0,0,1,1,by simp⟩
@@ -76,7 +73,7 @@ theorem gcd_certificate_exists (a b : V) : ∃ g : V, GcdCert a b g := by
     have divides_of_remainder (x : V) (hrem : Bez a b (x%g)) : g∣x := by
       apply mod_eq_zero_iff_dvd.mp
       by_contra hn
-      have hr : 0<x%g := lt_of_le_of_ne (Arithmetic.zero_le (x%g)) (Ne.symm hn)
+      have hr : 0<x%g := pos_iff_ne_zero.mpr hn
       have hlt : x%g<g := mod_lt x hgp
       exact hmin (x%g) hlt ⟨hr,le_trans (le_of_lt hlt) hgb,hrem⟩
     have hda : g∣a := divides_of_remainder a (bez_remainder hbez (div_add_mod a g).symm)
@@ -167,7 +164,7 @@ theorem norm_normalization (R D f : V)
 /-- Positivity makes the truncated square norm equivalent to the additive norm. -/
 theorem norm_tsub_to_add (D f R : V) (hf : 0 < f) (hnorm : R*R = D*(f*f-1)) :
     R*R + D = D*(f*f) := by
-  have hf1 : 1 ≤ f := by simpa using lt_iff_succ_le.mp hf
+  have hf1 : 1 ≤ f := pos_iff_one_le.mp hf
   have hs : f*f-1+1 = f*f := tsub_add_cancel_of_le (one_le_mul hf1 hf1)
   calc
     R*R+D = D*(f*f-1)+D := by rw [hnorm]
