@@ -54,6 +54,8 @@ The [candidate PRA theory](Lean/DiophantineConsistency/PRATheory.lean)
 now defines its full axiom families and proves standard-natural-model validity;
 its [independent replay](reviews/pra-theory-root.md) passed. A closed [object-theoretic add-one theorem](reviews/pra-add-one-root.md)
 now connects the designated addition and successor symbols in that theory.
+The [predecessor exhaustion theorem](reviews/pra-exhaustion-root.md) is also
+a closed derivation using its recursion and open-induction axioms.
 Compatibility with a standard PRA presentation, further arithmetic bridges,
 primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
 

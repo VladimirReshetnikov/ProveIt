@@ -1,0 +1,12 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:86:4: error: Type mismatch: After simplification, term
+  h e
+ has type
+  (Semiformula.Eval ![Semiterm.Operator.val ![] 0] e) exhaustionBody →
+    (∀ (x : M),
+        (Semiformula.Eval ![x] e) exhaustionBody →
+          (Semiformula.Eval ![x + Semiterm.Operator.val ![] 1] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
+but is expected to have type
+  (Semiformula.Eval ![0] e) exhaustionBody →
+    (∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody → (Semiformula.Eval ![x + 1] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
