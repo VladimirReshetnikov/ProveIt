@@ -1,0 +1,99 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveFactorMagnitude2011.lean:133:2: error: Type mismatch: After simplification, term
+  hz
+ has type
+  NatExpr.evalSemiring v (e - 1).splitNatural.1 = NatExpr.evalSemiring v (e - 1).splitNatural.2
+but is expected to have type
+  NatExpr.evalSemiring v e.splitNatural.1 = NatExpr.evalSemiring v e.splitNatural.2 + 1
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveFactorMagnitude2011.lean:151:50: error: unsolved goals
+case fst
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 13 → V
+hz : InternalZero ((factors p).2.2.2 * ((factors p).2.2.1 * ((factors p).1 * (factors p).2.1)) - 1) v
+a : Pair V := pairEval (factors p).1 v
+b : Pair V := pairEval (factors p).2.1 v
+c : Pair V := pairEval (factors p).2.2.1 v
+d : Pair V := pairEval (factors p).2.2.2 v
+h :
+  Equivalent
+    (multiply (pairEval (factors p).2.2.2 v)
+      (multiply (pairEval (factors p).2.2.1 v) (multiply (pairEval (factors p).1 v) (pairEval (factors p).2.1 v))))
+    (natural 1)
+⊢ a.1 * b.1 * c.1 * d.1 * (natural 1).1 + a.1 * b.1 * c.1 * d.2 * (natural 1).2 +
+                                a.1 * b.1 * c.2 * d.1 * (natural 1).2 +
+                              a.1 * b.1 * c.2 * d.2 * (natural 1).1 +
+                            a.1 * b.2 * c.1 * d.1 * (natural 1).2 +
+                          a.1 * b.2 * c.1 * d.2 * (natural 1).1 +
+                        a.1 * b.2 * c.2 * d.1 * (natural 1).1 +
+                      a.1 * b.2 * c.2 * d.2 * (natural 1).2 +
+                    b.1 * a.2 * c.1 * d.1 * (natural 1).2 +
+                  b.1 * a.2 * c.1 * d.2 * (natural 1).1 +
+                b.1 * a.2 * c.2 * d.1 * (natural 1).1 +
+              b.1 * a.2 * c.2 * d.2 * (natural 1).2 +
+            a.2 * b.2 * c.1 * d.1 * (natural 1).1 +
+          a.2 * b.2 * c.1 * d.2 * (natural 1).2 +
+        a.2 * b.2 * c.2 * d.1 * (natural 1).2 +
+      a.2 * b.2 * c.2 * d.2 * (natural 1).1 =
+    a.1 * b.1 * c.1 * d.1 + a.1 * b.1 * c.2 * d.2 + a.1 * b.2 * c.1 * d.2 + a.1 * b.2 * c.2 * d.1 +
+            b.1 * a.2 * c.1 * d.2 +
+          b.1 * a.2 * c.2 * d.1 +
+        a.2 * b.2 * c.1 * d.1 +
+      a.2 * b.2 * c.2 * d.2
+
+case snd
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 13 → V
+hz : InternalZero ((factors p).2.2.2 * ((factors p).2.2.1 * ((factors p).1 * (factors p).2.1)) - 1) v
+a : Pair V := pairEval (factors p).1 v
+b : Pair V := pairEval (factors p).2.1 v
+c : Pair V := pairEval (factors p).2.2.1 v
+d : Pair V := pairEval (factors p).2.2.2 v
+h :
+  Equivalent
+    (multiply (pairEval (factors p).2.2.2 v)
+      (multiply (pairEval (factors p).2.2.1 v) (multiply (pairEval (factors p).1 v) (pairEval (factors p).2.1 v))))
+    (natural 1)
+⊢ a.1 * b.1 * c.1 * d.1 * (natural 1).2 + a.1 * b.1 * c.1 * d.2 * (natural 1).1 +
+                                a.1 * b.1 * c.2 * d.1 * (natural 1).1 +
+                              a.1 * b.1 * c.2 * d.2 * (natural 1).2 +
+                            a.1 * b.2 * c.1 * d.1 * (natural 1).1 +
+                          a.1 * b.2 * c.1 * d.2 * (natural 1).2 +
+                        a.1 * b.2 * c.2 * d.1 * (natural 1).2 +
+                      a.1 * b.2 * c.2 * d.2 * (natural 1).1 +
+                    b.1 * a.2 * c.1 * d.1 * (natural 1).1 +
+                  b.1 * a.2 * c.1 * d.2 * (natural 1).2 +
+                b.1 * a.2 * c.2 * d.1 * (natural 1).2 +
+              b.1 * a.2 * c.2 * d.2 * (natural 1).1 +
+            a.2 * b.2 * c.1 * d.1 * (natural 1).2 +
+          a.2 * b.2 * c.1 * d.2 * (natural 1).1 +
+        a.2 * b.2 * c.2 * d.1 * (natural 1).1 +
+      a.2 * b.2 * c.2 * d.2 * (natural 1).2 =
+    a.1 * b.1 * c.1 * d.2 + a.1 * b.1 * c.2 * d.1 + a.1 * b.2 * c.1 * d.1 + a.1 * b.2 * c.2 * d.2 +
+            b.1 * a.2 * c.1 * d.1 +
+          b.1 * a.2 * c.2 * d.2 +
+        a.2 * b.2 * c.1 * d.2 +
+      a.2 * b.2 * c.2 * d.1
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveFactorMagnitude2011.lean:152:45: warning: This simp argument is unused:
+  multiply_one
+
+Hint: Omit it from the simp argument list.
+  simp only [̵p̵r̵o̵d̵u̵c̵t̵5̵,̵m̵u̵l̵t̵i̵p̵l̵y̵_̵o̵n̵e̵,̵m̵u̵l̵t̵i̵p̵l̵y̵]̵[̲p̲r̲o̲d̲u̲c̲t̲5̲,̲ ̲m̲u̲l̲t̲i̲p̲l̲y̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

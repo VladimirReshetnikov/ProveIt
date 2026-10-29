@@ -1,0 +1,32 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveFactorMagnitude2011.lean:132:2: error: 'change' tactic failed, pattern
+  NatExpr.evalSemiring v e.splitNatural.1 + 0 = NatExpr.evalSemiring v e.splitNatural.2 + 1
+is not definitionally equal to target
+  InternalZero (e - 1) v
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveFactorMagnitude2011.lean:152:4: error: Tactic `apply` failed: could not unify the conclusion of `@equivalent_refl`
+  Equivalent ?p ?p
+with the goal
+  Equivalent (product5 a b c d (natural 1))
+    (multiply (pairEval (factors p).2.2.2 v)
+      (multiply (pairEval (factors p).2.2.1 v) (multiply (pairEval (factors p).1 v) (pairEval (factors p).2.1 v))))
+
+Note: The full type of `@equivalent_refl` is
+  ∀ {V : Type ?u.113} [inst : ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Pair V), Equivalent p p
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 13 → V
+hz : InternalZero ((factors p).2.2.2 * ((factors p).2.2.1 * ((factors p).1 * (factors p).2.1)) - 1) v
+a : Pair V := ⋯
+b : Pair V := ⋯
+c : Pair V := ⋯
+d : Pair V := ⋯
+h :
+  Equivalent
+    (multiply (pairEval (factors p).2.2.2 v)
+      (multiply (pairEval (factors p).2.2.1 v) (multiply (pairEval (factors p).1 v) (pairEval (factors p).2.1 v))))
+    (natural 1)
+⊢ Equivalent (product5 a b c d (natural 1))
+    (multiply (pairEval (factors p).2.2.2 v)
+      (multiply (pairEval (factors p).2.2.1 v) (multiply (pairEval (factors p).1 v) (pairEval (factors p).2.1 v))))

@@ -1,0 +1,11 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRATheory.lean:101:54: error: unsolved goals
+n : ℕ
+f : Code n
+g : Code (n + 2)
+e : Fin (n + 1) → ℕ
+⊢ PRAFunctionCodes.eval (forget g)
+      (e 0 ::ᵥ PRAFunctionCodes.eval (forget (f.prec g)) (List.Vector.ofFn e) ::ᵥ (List.Vector.ofFn e).tail) =
+    PRAFunctionCodes.eval (forget g)
+      (List.Vector.ofFn fun i =>
+        Fin.cases (e 0)
+          (fun i => Fin.cases (PRAFunctionCodes.eval (forget (f.prec g)) (List.Vector.ofFn e)) (fun i => e i.succ) i) i)
