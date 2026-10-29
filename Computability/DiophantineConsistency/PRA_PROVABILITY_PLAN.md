@@ -50,7 +50,8 @@ theorem. The comparison with standard PRA and the conservation argument
 remain open.
 Subsequent upstream merges changed `PRAQCompatibility`, `PRAPeanoMinusBasic`,
 `PRAPeanoMinusOrderBasic`, `PRAQOrder`, and several addition and subtraction
-providers. The [24-module refresh](reviews/pra-peanominus-current-refresh-root.md)
+providers, followed by `PRAEqualityDifference` and
+`PRASubSuccessorInvariant`. The [24-module refresh](reviews/pra-peanominus-current-refresh-root.md)
 and later [seven-module suffix](reviews/pra-peanominus-suffix-refresh-root.md)
 each passed independent replays for their respective earlier source snapshots.
 Rebuilding the affected chain against the latest merged sources is in progress.
