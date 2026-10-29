@@ -2046,5 +2046,14 @@ sampled registrations match; the wider closure remains cached. The compact
 [evidence manifest](../../reviews/lean-proof-simplification-20261029-pell-y-six-evidence/BUNDLE.json)
 records hashes and external paths without retaining raw logs or objects.
 
+The shared boot-halt bound `3912eef436` removes four net Lean lines and a
+duplicated argument, bringing the reviewed series to 10342. The RuntimeBound
+argument came from Claude-coauthored commit `91686596976`. The shared bound is
+a new public theorem. Paired builds of both targets and both direct clients pass;
+a replay with a source-matched provider reproduces the target objects. Checked
+common declarations and sampled registrations match; one client object differs.
+The wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-boot-share.md)
+records hashes and external paths without retaining raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
