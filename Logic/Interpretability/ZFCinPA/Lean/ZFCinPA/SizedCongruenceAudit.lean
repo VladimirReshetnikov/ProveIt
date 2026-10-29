@@ -6,6 +6,7 @@ import ZFCinPA.SizedPlaceholderCongruence
 import ZFCinPA.SizedSchemaLeaves
 import ZFCinPA.SizedLTemplate
 import ZFCinPA.SizedOpenAxiom
+import ZFCinPA.SizedOpenTemplateLeaves
 
 /-! Axiom audit for the bounded template axiom leaves and bounded equality replacement. -/
 
@@ -39,3 +40,6 @@ import ZFCinPA.SizedOpenAxiom
 #print axioms LeanProofs.ZFCinPA.SizedOpenAxiom.open_axiom_le
 #print axioms LeanProofs.ZFCinPA.SizedOpenAxiom.open_sep_le
 #print axioms LeanProofs.ZFCinPA.SizedOpenAxiom.open_rep_le
+#print axioms LeanProofs.ZFCinPA.SizedOpenTemplateLeaves.oschema_leaf
+#print axioms LeanProofs.ZFCinPA.SizedOpenTemplateLeaves.templ_leaf_gen
+#print axioms LeanProofs.ZFCinPA.SizedOpenTemplateLeaves.sized_compileT_gen

@@ -2516,3 +2516,35 @@ shift-fixed placeholders (arity ≤ 3, level `u ≥ 2`) within
 
 Each `L` induction must also check that its placeholder families are
 shift-fixed and bounded in level. `envForm` is shift-fixed (`LGlue2`).
+
+**Update (2026-10-29, evening): template compilation is bounded at
+arbitrary placeholders.** The `L` application compiles at placeholders that
+are *not* shift-fixed: `LSepBase.sep_base` uses `rel K`, whose free
+variables are the separation parameters. So the schema leaves now go through
+the explicit open axioms:
+- `ZFCinPA.SizedOpenAxiom` bounds `specializeCode`, the `specializedProofCode`
+  iterator (`spc_le`) and `bindFreeAt` (`bindFreeAt_level`), and proves
+  `open_sep_le`/`open_rep_le`;
+- `ZFCinPA.SizedOpenTemplateLeaves` proves `strip_gen`, `oschema_leaf`,
+  `templ_leaf_gen` and `sized_compileT_gen`.
+
+`sized_compileT_gen` is the bounded twin of `compileT` with no premise on the
+placeholders (arity ≤ 3). Its leaf level `leafG` is exponential in the
+placeholder level `u`, because closing over `m` free variables costs `3m`
+levels and `m` can be as large as the code. The bound remains a fixed-height
+tower.
+
+**Next: the `L` inductions**, in dependency order:
+- `fun_MT`/`slot_MT` and `LMatch` (`mVal`);
+- `LNumOK`;
+- the driver steps (`LDriverSteps`: `compiled` + Hilbert combinators) and
+  `driverT` (induction over formula structure);
+- `glue` (`LGlue1–4`, induction on complexity) and `qPremise`;
+- `peel`/`peel_close`;
+- `sep_base`/`repl_base` and the obligations.
+
+The pattern for each: replace `compiled` by `sized_compileT_gen` at an
+explicit placeholder level, and `⨀`/`K!_intro` by the `SizedProof`
+combinators.
+
+**Drop-in for the L inductions.** `ZFCinPA.SizedLPlumbing.compiledLe` is the bounded replacement for `LDriverSteps.compiled`/`LGlue1.compiledG`. A template `h : templTheory ⊢ σ` compiles at arbitrary placeholders of level `u ≥ 2` within level `cExpG (tmA h) (tmB h) u + tmK h + 1` on the `DLv` scale. The constants are read off `h.get.toProof2`. `stg_lvB` collapses the compiler's stage tower into one level per stage.
