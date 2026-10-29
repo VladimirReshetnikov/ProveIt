@@ -1,3 +1,4 @@
+import DiophantineConsistency.MFCurrentWordTopBounds2011
 import DiophantineConsistency.CurrentWordClause2011
 
 /-!
@@ -23,54 +24,27 @@ set_option maxRecDepth 10000
 /-- Reindex an actual cyclic word by its complete canonical natural range. -/
 theorem word_eq_range {n : ℕ} [NeZero n] (ρ : ℕ) (c : ZMod n → ℕ) :
     NativeCyclicConvolution.word ρ c = ∑ i ∈ Finset.range n, c (i : ZMod n)*ρ^i := by
-  rw [← Fin.sum_univ_eq_sum_range]
-  symm
-  apply Fintype.sum_equiv (ZMod.finEquiv n).toEquiv
-  intro i
-  have he : (i.val : ZMod n) = ZMod.finEquiv n i := by
-    rw [← finEquiv_val i,ZMod.natCast_zmod_val]
-  change c (i.val : ZMod n)*ρ^i.val = c (ZMod.finEquiv n i)*ρ^(ZMod.finEquiv n i).val
-  simp only [he,finEquiv_val]
+  exact MF.CurrentWordTopBounds2011.word_eq_range ρ c
 
 /-- Bounded natural radix digits in a finite prefix have the usual strict bound. -/
 theorem range_word_lt {ρ : ℕ} (_hρ : 1 < ρ) (f : ℕ → ℕ) (L : ℕ)
     (hf : ∀ i, i < L → f i < ρ) :
     (∑ i ∈ Finset.range L, f i*ρ^i) < ρ^L := by
-  induction L with
-  | zero => simp
-  | succ L ih =>
-      have hi := ih (fun i h => hf i (by omega))
-      have hb := hf L (by omega)
-      have hm := Nat.mul_le_mul_right (ρ^L) (show f L+1 ≤ ρ by omega)
-      rw [Finset.sum_range_succ,pow_succ]
-      nlinarith
+  exact MF.CurrentWordTopBounds2011.range_word_lt _hρ f L hf
 
 /-- A zero suffix removes those fields from the word bound exactly. -/
 theorem word_lt_prefix {n : ℕ} [NeZero n] {ρ : ℕ} (hρ : 1 < ρ)
     (c : ZMod n → ℕ) (L : ℕ) (hL : L ≤ n) (hc : ∀ i, c i < ρ)
     (hz : ∀ i, L ≤ i.val → c i = 0) :
     NativeCyclicConvolution.word ρ c < ρ^L := by
-  rw [word_eq_range]
-  have he : (∑ i ∈ Finset.range L, c (i : ZMod n)*ρ^i) =
-      ∑ i ∈ Finset.range n, c (i : ZMod n)*ρ^i := by
-    apply Finset.sum_subset (Finset.range_mono hL)
-    intro i hi hn
-    have hin := Finset.mem_range.mp hi
-    have hiL : L ≤ i := by simpa only [Finset.mem_range,not_lt] using hn
-    rw [hz _ (by simpa only [ZMod.val_natCast_of_lt hin] using hiL),zero_mul]
-  rw [← he]
-  exact range_word_lt hρ _ L (fun i _ => hc _)
+  exact MF.CurrentWordTopBounds2011.word_lt_prefix hρ c L hL hc hz
 
 variable {N : ℕ} [NeZero N]
 
 theorem word_zero_high (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (j : ZMod N) (e : ℕ) (hl : 1004 < e) (hh : e < 2011) :
     CurrentWordConstruction2011.word a dummy marker (base j+(e : ZMod (N*2011))) = 0 := by
-  apply word_support
-  intro hs
-  have hle := support_le hs
-  rw [base_add_field j e hh] at hle
-  omega
+  exact MF.CurrentWordTopBounds2011.word_zero_high a dummy marker j e hl hh
 
 /-- Eliminate the three bare sources at either final field by their
 actual residues, including the spatial term from the preceding cell. -/
@@ -79,113 +53,51 @@ theorem top_bare_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : d = 18 ∨ d = 1004 ∨ d = 2020) :
     CurrentWordConstruction2011.word a dummy marker
       (base j+(h : ZMod (N*2011))-(d : ZMod (N*2011))) = 0 := by
-  apply word_support
-  intro hs
-  have hle := support_le hs
-  have hr := subtraction_residue (base j+(h : ZMod (N*2011))) d
-  have ht := base_add_field j h (by omega)
-  rw [ht] at hr
-  have hm :
-      (((base j+(h : ZMod (N*2011))-(d : ZMod (N*2011))).val%2011)+d)%2011 = h := by
-    simpa only [Nat.add_mod,Nat.mod_mod] using hr
-  rcases hh with rfl | rfl <;> rcases hd with rfl | rfl | rfl <;> omega
+  exact MF.CurrentWordTopBounds2011.top_bare_zero a dummy marker j h d hh hd
 
 omit [NeZero N] in
 theorem top_reflected_source (j : ZMod N) (h : ℕ) (hh : 1005 ≤ h) (e : Entry) :
     base j+(h : ZMod (N*2011))-((1005-position e : ℕ) : ZMod (N*2011)) =
       base j+((h-1005+position e : ℕ) : ZMod (N*2011)) := by
-  have hp := position_le e
-  rw [Nat.cast_sub (by omega : position e ≤ 1005),Nat.cast_add,Nat.cast_sub hh]
-  ring
+  exact MF.CurrentWordTopBounds2011.top_reflected_source j h hh e
 
 /-- Exact highest product coefficient, for arbitrary numeric control maps. -/
 theorem convolution_2009 (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (j : ZMod N) :
     convolution folded (CurrentWordConstruction2011.word a dummy marker) (base j+2009) =
       2*weight (.inl (0 : Fin 942))*marker j := by
-  classical
-  rw [convolution_eq]
-  have hz (d : ℕ) (hd : d = 18 ∨ d = 1004 ∨ d = 2020) :=
-    top_bare_zero a dummy marker j 2009 d (Or.inl rfl) hd
-  have h18 := hz 18 (Or.inl rfl)
-  have h1004 := hz 1004 (Or.inr (Or.inl rfl))
-  have h2020 := hz 2020 (Or.inr (Or.inr rfl))
-  simp only [Nat.cast_ofNat] at h18 h1004 h2020
-  rw [h18,h1004,h2020,zero_add,zero_add,zero_add]
-  rw [Finset.sum_eq_single (.inl (0 : Fin 942))]
-  · rw [show position (.inl (0 : Fin 942)) = 0 from physicalPosition_zero]
-    have he : base j+(2009 : ZMod (N*2011))-((1005-0 : ℕ) : ZMod (N*2011)) =
-        base j+1004 := by norm_num; ring
-    rw [he,word_marker]
-  · intro e _ hne
-    have hp := position_le e
-    have hp0 : position e ≠ 0 := by
-      intro he
-      apply hne
-      apply position_injective
-      simpa only [position,physicalPosition_zero] using he
-    have he := top_reflected_source j 2009 (by decide) e
-    simp only [Nat.cast_ofNat] at he
-    rw [he]
-    rw [word_zero_high a dummy marker j _ (by omega) (by omega),mul_zero]
-  · simp
+  exact MF.CurrentWordTopBounds2011.convolution_2009 a dummy marker j
 
 /-- There is no surviving kernel input at the top field. -/
 theorem convolution_2010 (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (j : ZMod N) :
     convolution folded (CurrentWordConstruction2011.word a dummy marker) (base j+2010) = 0 := by
-  rw [convolution_eq]
-  have hz (d : ℕ) (hd : d = 18 ∨ d = 1004 ∨ d = 2020) :=
-    top_bare_zero a dummy marker j 2010 d (Or.inr rfl) hd
-  have h18 := hz 18 (Or.inl rfl)
-  have h1004 := hz 1004 (Or.inr (Or.inl rfl))
-  have h2020 := hz 2020 (Or.inr (Or.inr rfl))
-  simp only [Nat.cast_ofNat] at h18 h1004 h2020
-  rw [h18,h1004,h2020,zero_add,zero_add,zero_add]
-  apply Finset.sum_eq_zero
-  intro e _
-  have hp := position_le e
-  have he := top_reflected_source j 2010 (by decide) e
-  simp only [Nat.cast_ofNat] at he
-  rw [he,
-    word_zero_high a dummy marker j _ (by omega) (by omega),mul_zero]
+  exact MF.CurrentWordTopBounds2011.convolution_2010 a dummy marker j
 
 theorem rotation_high_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ)
     (j : ZMod N) (e : ℕ) (hl : 1004 < e) (hh : e < 2011) :
     binaryRotation 47 (displacement s) (CurrentWordConstruction2011.word a dummy marker)
       (base j+(e : ZMod (N*2011))) = 0 := by
-  rw [rotation_whole a dummy marker hd hm]
-  apply word_support
-  intro hs
-  have hle := support_le hs
-  have hr := (subtraction_residue (base j+(e : ZMod (N*2011))) (2011*s)).trans
-    (base_add_field j e hh)
-  simp only [Nat.add_mod,Nat.mul_mod,Nat.mod_self,Nat.zero_mul,Nat.zero_mod,
-    add_zero,Nat.mod_mod] at hr
-  omega
+  exact MF.CurrentWordTopBounds2011.rotation_high_zero a dummy marker hd hm s j e hl hh
 
 /-- A bound is derived from the actual sole coefficient and Boolean marker. -/
 theorem raw_2009_budget (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ) (j : ZMod N) :
     CurrentCarryConstruction2011.raw (CurrentWordConstruction2011.word a dummy marker)
       (displacement s) (base j+2009)+57 < radix := by
-  have ht := rotation_high_zero a dummy marker hd hm s j 2009 (by decide) (by decide)
-  simp only [Nat.cast_ofNat] at ht
-  rw [CurrentCarryConstruction2011.raw,convolution_2009,ht,add_zero]
-  have hb := Nat.mul_le_mul_left (2*weight (.inl (0 : Fin 942))) (hm j)
-  have hw := doubled_weight_lt (.inl (0 : Fin 942))
-  simp only [mul_one] at hb
-  change _ < 2^47
-  omega
+  exact MF.CurrentWordTopBounds2011.raw_2009_budget a dummy marker hd hm s j
 
 theorem raw_2010_zero (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ) (j : ZMod N) :
     CurrentCarryConstruction2011.raw (CurrentWordConstruction2011.word a dummy marker)
       (displacement s) (base j+2010) = 0 := by
-  have ht := rotation_high_zero a dummy marker hd hm s j 2010 (by decide) (by decide)
-  simp only [Nat.cast_ofNat] at ht
-  rw [CurrentCarryConstruction2011.raw,convolution_2010,ht,add_zero]
+  exact MF.CurrentWordTopBounds2011.raw_2010_zero a dummy marker hd hm s j
+
+private theorem facts_toMF {n : ℕ} [NeZero n] (c : ZMod n → ℕ) (W : ℕ)
+    (k digits : ZMod n → ℕ) (hf : CurrentCarryConstruction2011.Facts c W k digits) :
+    MF.CurrentCarryConstruction2011.Facts c W k digits :=
+  ⟨hf.carry_bound, hf.digit_bound, hf.recurrence, hf.decomposition, hf.word_bound, hf.transport⟩
 
 theorem top_carry_digits (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ)
@@ -193,23 +105,12 @@ theorem top_carry_digits (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ
     (hf : CurrentCarryConstruction2011.Facts
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits)
     (j : ZMod N) : k (base j+2009) = 0 ∧ k (base j+2010) = 0 ∧ digits (base j+2010) = 0 := by
-  have hz := (NativeCyclicCarry.reset_of_bound _ (fun i => i-1) k
-    hf.carry_bound hf.recurrence (base j+2009)
-    (raw_2009_budget a dummy marker hd hm s j)).1
-  have he : base j+(2010 : ZMod (N*2011))-1 = base j+2009 := by ring
-  have hr := hf.recurrence (base j+2010)
-  have hh := hf.decomposition (base j+2010)
-  rw [raw_2010_zero a dummy marker hd hm s j,he,hz,zero_add,Nat.zero_div] at hr
-  rw [raw_2010_zero a dummy marker hd hm s j,he,hz,hr,zero_add,mul_zero,add_zero] at hh
-  exact ⟨hz,hr,hh.symm⟩
+  exact MF.CurrentWordTopBounds2011.top_carry_digits a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf) j
 
 /-- The final field of the final cell is the actual highest canonical index. -/
 theorem last_top_val :
     (base ((N-1 : ℕ) : ZMod N)+(2010 : ZMod (N*2011))).val = N*2011-1 := by
-  rw [show (2010 : ZMod (N*2011)) = ((2010 : ℕ) : ZMod (N*2011)) from rfl,
-    base_add_val _ 2010 (by decide),ZMod.val_natCast_of_lt (by have := NeZero.pos N; omega)]
-  have := NeZero.pos N
-  omega
+  exact MF.CurrentWordTopBounds2011.last_top_val (N := N)
 
 theorem normalized_word_top_bound (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ)
@@ -217,15 +118,7 @@ theorem normalized_word_top_bound (a : ZMod N → Fin 942) (dummy marker : ZMod 
     (hf : CurrentCarryConstruction2011.Facts
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits) :
     NativeCyclicConvolution.word radix digits < radix^(N*2011-1) := by
-  apply word_lt_prefix (by decide : 1 < radix) digits (N*2011-1) (by omega) hf.digit_bound
-  intro i hi
-  have hiv := ZMod.val_lt i
-  have he : i = base ((N-1 : ℕ) : ZMod N)+2010 := by
-    apply ZMod.val_injective
-    rw [last_top_val]
-    omega
-  rw [he]
-  exact (top_carry_digits a dummy marker hd hm s k digits hf _).2.2
+  exact MF.CurrentWordTopBounds2011.normalized_word_top_bound a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf)
 
 theorem normalized_word_div_bound (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) (s : ℕ)
@@ -233,27 +126,13 @@ theorem normalized_word_div_bound (a : ZMod N → Fin 942) (dummy marker : ZMod 
     (hf : CurrentCarryConstruction2011.Facts
       (CurrentWordConstruction2011.word a dummy marker) (displacement s) k digits) :
     NativeCyclicConvolution.word radix digits < radix^(N*2011)/radix := by
-  have hn : N*2011 = (N*2011-1)+1 := by have := wordLength_pos (N := N); omega
-  have he : radix^(N*2011)/radix = radix^(N*2011-1) := by
-    conv_lhs => rw [hn,pow_succ]
-    exact Nat.mul_div_cancel _ (by decide : 0 < radix)
-  rw [he]
-  exact normalized_word_top_bound a dummy marker hd hm s k digits hf
+  exact MF.CurrentWordTopBounds2011.normalized_word_div_bound a dummy marker hd hm s k digits (facts_toMF _ _ _ _ hf)
 
 /-- The separate source word has no fields above the last marker1004. -/
 theorem source_word_bound (a : ZMod N → Fin 942) (dummy marker : ZMod N → ℕ)
     (hd : ∀ j, dummy j ≤ 1) (hm : ∀ j, marker j ≤ 1) :
     NativeCyclicConvolution.word radix (CurrentWordConstruction2011.word a dummy marker) <
       radix^(N*2011-1006) := by
-  apply word_lt_prefix (by decide : 1 < radix) _ (N*2011-1006) (by omega)
-    (fun i => lt_of_le_of_lt (word_boolean a dummy marker hd hm i) (by decide))
-  intro i hi
-  apply word_support
-  intro hs
-  have hh := support_le hs
-  have hiv := ZMod.val_lt i
-  have hn := NeZero.pos N
-  have hm := Nat.mod_add_div i.val 2011
-  omega
+  exact MF.CurrentWordTopBounds2011.source_word_bound a dummy marker hd hm
 
 end DiophantineConsistency.CurrentWordTopBounds2011
