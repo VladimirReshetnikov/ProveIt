@@ -75,14 +75,12 @@ theorem signal_row (d : Bool) {q b : ℕ} (hq : q ∈ targetList d) (hb : b < 2)
   · exact List.mem_append_left _ hm
 
 theorem action_target_mem' (j : Fin 430) : (action j).2.2 ∈ targetList (action j).2.1 := by
-  have h : (action j).2.2 ∈ targets (action j).2.1 := by
-    rw [targets_eq_cache]
-    apply List.mem_toFinset.mpr
-    apply List.mem_map.mpr
-    refine ⟨action j, ?_, rfl⟩
-    apply List.mem_filter.mpr
-    exact ⟨List.mem_ofFn.mpr ⟨j, rfl⟩, by simp⟩
-  exact List.mem_toFinset.mp h
+  apply List.mem_toFinset.mp
+  change (action j).2.2 ∈ targets (action j).2.1
+  rw [targets_eq_cache]
+  apply List.mem_toFinset.mpr
+  apply List.mem_map.mpr
+  exact ⟨action j, List.mem_filter.mpr ⟨List.mem_ofFn.mpr ⟨j, rfl⟩, by simp⟩, rfl⟩
 
 /-- The transition tile of input `j` and the receiver of its rail with bit `b`:
 the receiver has the head's side colours exchanged. -/
@@ -230,9 +228,9 @@ theorem head_receiver {st b0 : V} (hst0 : st ≠ 0) (hst : st ≤ 215) (hb0 : b0
       eastC (423 + 2 * (eastC (2 * st + b0 - 1) + westC (2 * st + b0 - 1)) + b) =
         westC (2 * st + b0 - 1) := by
   obtain ⟨p, hp, rfl⟩ := standard_of_lt (n := 216) (i := st)
-    (lt_of_le_of_lt hst (by simpa using (Nat.cast_lt (α := V)).mpr (by decide : (215 : ℕ) < 216)))
+    (lt_of_le_of_lt hst (by norm_num))
   obtain ⟨β, hβ, rfl⟩ := standard_of_lt (n := 2) (i := b0)
-    (lt_of_le_of_lt hb0 (by simpa using (Nat.cast_lt (α := V)).mpr (by decide : (1 : ℕ) < 2)))
+    (lt_of_le_of_lt hb0 (by norm_num))
   have hp0 : p ≠ 0 := by rintro rfl; exact hst0 (by simp)
   obtain ⟨q, rfl⟩ : ∃ q, p = q + 1 := ⟨p - 1, by omega⟩
   have hi : (2 * ((q + 1 : ℕ) : V) + (β : V) - 1) = (((2 * q + β) + 1 : ℕ) : V) := by
@@ -247,7 +245,7 @@ theorem head_receiver {st b0 : V} (hst0 : st ≠ 0) (hst : st ≤ 215) (hb0 : b0
     rw [northC_cast, hT']; push_cast; ring
   · intro b hb
     obtain ⟨γ, hγ, rfl⟩ := standard_of_lt (n := 2) (i := b)
-      (lt_of_le_of_lt hb (by simpa using (Nat.cast_lt (α := V)).mpr (by decide : (1 : ℕ) < 2)))
+      (lt_of_le_of_lt hb (by norm_num))
     obtain ⟨E, W, hT, hlt, hR⟩ := trans_shape j γ hγ
     have hT' : tileN (2 * q + β + 1) = ⟨W, 2 * q + β + 2, E, (action j).1.toNat⟩ := hT
     rw [eastC_cast, westC_cast, hT']
