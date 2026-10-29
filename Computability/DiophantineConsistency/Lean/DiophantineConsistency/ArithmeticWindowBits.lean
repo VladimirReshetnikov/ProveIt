@@ -25,8 +25,7 @@ structure LowDecoded (w n C : V) (S : V → Prop) (m : V) : Prop where
 
 private theorem exp_two_le {w : V} (hw : 0 < w) : ∃ e, Exp.exp w = e + 2 := by
   have h2 : (2:V) ≤ Exp.exp w := by
-    have := exp_monotone_le.mpr (pos_iff_one_le.mp hw)
-    simpa using this
+    simpa using exp_monotone_le.mpr (pos_iff_one_le.mp hw)
   exact ⟨Exp.exp w - 2, (tsub_add_cancel_of_le h2).symm⟩
 
 /-- **Low-mask decoding** (spec A8). -/
@@ -52,16 +51,14 @@ theorem low_mask_decode (w m N C MC : V) (S : V → Prop) (hw : 0 < w) (hm : 0 <
   -- digit 0 of C - 1
   have hz : dig w (C - 1) 0 = 0 := by
     apply noCarry_ones w _ (dig_lt w _ 0)
-    have := noCarry_dig w _ _ 0 hnc
-    rwa [hinc0, h0, ← hρ1] at this
+    simpa only [hinc0, h0, ← hρ1] using noCarry_dig w _ _ 0 hnc
   have hC1 : C - 1 + 1 = C := tsub_add_cancel_of_le hC
   obtain ⟨hc0, hck⟩ := dig_add_one w (C - 1)
     (by rw [hz, zero_add, he]; exact lt_of_lt_of_le one_lt_two (le_add_of_nonneg_left (by simp)))
   rw [hC1] at hc0 hck
   have digit_pos : ∀ k < m*N, 0 < k → NoCarry (dig w C k) (dig w MC (k % m)) := by
     intro k hk hk0
-    have := noCarry_dig w _ _ k hnc
-    rwa [hinck k hk0, hJ k hk, ← hck k hk0] at this
+    simpa only [hinck k hk0, hJ k hk, ← hck k hk0] using noCarry_dig w _ _ k hnc
   have hw1 : w - 1 + 1 = w := tsub_add_cancel_of_le (pos_iff_one_le.mp hw)
   refine ⟨fun k hk => ?_, by rw [hc0, hz, zero_add], fun k hk hS => ?_⟩
   · rcases zero_or_succ k with rfl | ⟨j, rfl⟩
@@ -92,10 +89,8 @@ theorem high_mask_digits (w m N F HP : V) (hm : 0 < m) (hN : 0 < N)
   have h0 : dig w (HP * rep (w*m) N) 0 = dig w HP 0 := by rw [hJ 0 hmN, zero_mod]
   obtain ⟨hs0, hsk⟩ := dig_sub_one w (HP * rep (w*m) N) (by rw [h0]; exact hd0)
   constructor
-  · have := noCarry_dig w _ _ 0 hnc
-    rwa [hs0, h0] at this
+  · simpa only [hs0, h0] using noCarry_dig w _ _ 0 hnc
   · intro k hk hk0
-    have := noCarry_dig w _ _ k hnc
-    rwa [hsk k hk0, hJ k hk] at this
+    simpa only [hsk k hk0, hJ k hk] using noCarry_dig w _ _ k hnc
 
 end DiophantineConsistency.ArithmeticWindowBits
