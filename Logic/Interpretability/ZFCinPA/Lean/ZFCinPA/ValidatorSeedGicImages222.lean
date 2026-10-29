@@ -108,6 +108,16 @@ private theorem proof_to_provable {p : Formula V ℒₛₑₜ} (h : Source V ⊢
   simpa only [Source,Theory.internalize,Proof,Sequent.val_insert,Sequent.val_empty,singleton_eq_insert]
     using h.get.derivationOf
 
+private theorem guarded_generalize (j : V) (X : Semiformula V ℒₛₑₜ 1)
+    (h : Source V ⊢ (emptyAt (Bootstrapping.Semiterm.fvar j)).shift 🡒
+      (guard j 0 🡒 tagged j X).free) :
+    Provable seedTheory (imp ℒₛₑₜ (emptyCode j) (tagRel j (^∀X.val))) := by
+  have hg := TProof.generalizeAux h.get
+  have hp : Source V ⊢ emptyAt (Bootstrapping.Semiterm.fvar j) 🡒 tagged j (∀⁰ X) := by
+    simpa only [tagged_all] using (show Source V ⊢ _ from ⟨hg⟩)
+  simpa only [Bootstrapping.Semiformula.val_imp,empty_binding,tagged_val,
+    Bootstrapping.Semiformula.val_all] using proof_to_provable hp
+
 /-- Every internally typed GIC body has its actual guarded source proof. -/
 theorem gic_body_image (K : Semiformula V ℒₛₑₜ 2) (j : V) :
     Provable seedTheory (imp ℒₛₑₜ (emptyCode j) (tagRel j (gicBodyVal K.val))) := by
@@ -117,11 +127,9 @@ theorem gic_body_image (K : Semiformula V ℒₛₑₜ 2) (j : V) :
       (guard j 0 🡒 tagged j (inner K)).free := by
     rw [gic_open_binding]
     simpa [emptyAt,memTerm] using hc
-  have hg := TProof.generalizeAux hf.get
-  have hp : Source V ⊢ emptyAt (Bootstrapping.Semiterm.fvar j) 🡒 tagged j (gicBody K) := by
-    simpa only [gicBody,inner,tagged_all] using (show Source V ⊢ _ from ⟨hg⟩)
-  simpa only [Bootstrapping.Semiformula.val_imp,empty_binding,tagged_val,←gicBodyVal_eq] using
-    proof_to_provable hp
+  rw [gicBodyVal_eq K]
+  simpa only [gicBody,inner,Bootstrapping.Semiformula.val_all] using
+    guarded_generalize j (inner K) hf
 
 /-- Close one guarded universal while shifting the free marker correctly. -/
 theorem close_step {j x : V} (hx : IsSemiformula ℒₛₑₜ 1 x)
@@ -138,11 +146,7 @@ theorem close_step {j x : V} (hx : IsSemiformula ℒₛₑₜ 1 x)
     simp only [Bootstrapping.Semiformula.free,Bootstrapping.Semiformula.shift_imp,
       Bootstrapping.Semiformula.substs_imp] at ht ⊢
     cl_prover [ht]
-  have hall := TProof.generalizeAux hweaken.get
-  have hp : Source V ⊢ E 🡒 tagged j (∀⁰X) := by
-    simpa only [tagged_all] using (show Source V ⊢ _ from ⟨hall⟩)
-  simpa only [Bootstrapping.Semiformula.val_imp,E,empty_binding,tagged_val,
-    Bootstrapping.Semiformula.val_all,X] using proof_to_provable hp
+  simpa only [X] using guarded_generalize j X hweaken
 
 /-- The original body is shift-fixed; the marker is not. The induction
 motive has only a bounded antecedent and actual Sigma1 proof existence. -/
