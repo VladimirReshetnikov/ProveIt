@@ -1,0 +1,108 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedCharacteristic.lean:38:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  fun i => Semiterm.val e Empty.elim i.elim0
+in the target expression
+  Structure.func c (Semiterm.val e Empty.elim ∘ vars n) =
+      Structure.func (Code.zero 0) (Semiterm.val e Empty.elim ∘ Fin.elim0) ∨
+    Structure.func c (Semiterm.val e Empty.elim ∘ vars n) =
+      Structure.func oneCode (Semiterm.val e Empty.elim ∘ Fin.elim0)
+
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+c : Code n
+φ : Semisentence language n
+hbit :
+  ∀ (e' : Fin n → M),
+    (Semiformula.Eval e' Empty.elim)
+      (Semiformula.rel Language.ORing.Rel.eq ![applyCode c (vars n), applyCode (Code.zero 0) Fin.elim0] ⋎
+        Semiformula.rel Language.ORing.Rel.eq ![applyCode c (vars n), applyCode oneCode Fin.elim0])
+hcorrect :
+  ∀ (e' : Fin n → M),
+    (Semiformula.Eval e' Empty.elim)
+      ((Semiformula.rel Language.ORing.Rel.eq ![applyCode c (vars n), applyCode oneCode Fin.elim0] 🡒 φ) ⋏
+        (φ 🡒 Semiformula.rel Language.ORing.Rel.eq ![applyCode c (vars n), applyCode oneCode Fin.elim0]))
+e : Fin n → M
+hb :
+  Structure.func c (Semiterm.val e Empty.elim ∘ vars n) =
+      Structure.func (Code.zero 0) (Semiterm.val e Empty.elim ∘ Fin.elim0) ∨
+    Structure.func c (Semiterm.val e Empty.elim ∘ vars n) =
+      Structure.func oneCode (Semiterm.val e Empty.elim ∘ Fin.elim0)
+hc :
+  (Structure.func c (Semiterm.val e Empty.elim ∘ vars n) =
+        Structure.func oneCode (Semiterm.val e Empty.elim ∘ Fin.elim0) →
+      (Semiformula.Eval e Empty.elim) φ) ∧
+    ((Semiformula.Eval e Empty.elim) φ →
+      Structure.func c (Semiterm.val e Empty.elim ∘ vars n) =
+        Structure.func oneCode (Semiterm.val e Empty.elim ∘ Fin.elim0))
+hz : (fun i => Semiterm.val e Empty.elim i.elim0) = Fin.elim0
+⊢ (¬Structure.func c (Semiterm.val e Empty.elim ∘ vars n) =
+          Structure.func (Code.zero 0) (Semiterm.val e Empty.elim ∘ Fin.elim0) →
+      (Semiformula.Eval e Empty.elim) φ) ∧
+    ((Semiformula.Eval e Empty.elim) φ →
+      ¬Structure.func c (Semiterm.val e Empty.elim ∘ vars n) =
+          Structure.func (Code.zero 0) (Semiterm.val e Empty.elim ∘ Fin.elim0))
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    c
+  has type
+    Code n
+  but is expected to have type
+    language.Func n
+  in the application
+    Structure.func c
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedCharacteristic.lean:36:90: warning: This simp argument is unused:
+  vars
+
+Hint: Omit it from the simp argument list.
+  simp [Semiformula.eval_rel, Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func,̵ ̵v̵a̵r̵s̵] at hb hc ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedCharacteristic.lean:51:0: warning: automatically included section variable(s) unused in theorem `DiophantineConsistency.PRABoundedCharacteristic.modelBoundedBy`:
+  [Structure.Eq language M]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Structure.Eq language M] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedCharacteristic.lean:84:8: error: unexpected token '∀'; expected ':=' or '|'
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedCharacteristic.lean:84:7: error: Missing cases:
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedCharacteristic.lean:70:73: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+c : Code (n + 1)
+φ : Semisentence language (n + 1)
+hcorrect :
+  ∀ (e' : Fin (n + 1) → M),
+    (Semiformula.Eval e' Empty.elim)
+      ((Semiformula.nrel Language.ORing.Rel.eq ![applyCode c (vars (n + 1)), applyCode (Code.zero 0) Fin.elim0] 🡒 φ) ⋏
+        (φ 🡒 Semiformula.nrel Language.ORing.Rel.eq ![applyCode c (vars (n + 1)), applyCode (Code.zero 0) Fin.elim0]))
+e : Fin (n + 1) → M
+hp : (fun i => Fin.cases (e 0) (fun i => e i.succ) i) = e
+hb :
+  (Semiformula.Eval e Empty.elim) (boundedBy φ) ↔
+    ∀ (x : M),
+      Structure.rel Language.ORing.Rel.lt ![x, e 0] →
+        (Semiformula.Eval (fun i => Fin.cases x (fun i => e i.succ) i) Empty.elim) φ
+hu :
+  have params := fun i => e i.succ;
+  have value := Structure.func (universalCode c) fun i => Fin.cases (e 0) params i;
+  IsBit value ∧
+    (value = Structure.func oneCode Fin.elim0 ↔
+      ∀ (x : M),
+        Structure.rel Language.ORing.Rel.lt ![x, e 0] →
+          (Structure.func c fun i => Fin.cases x params i) ≠ Structure.func (Code.zero 0) Fin.elim0)
+he : (fun i => if h : ↑i < n then e ⟨↑i + 1, ⋯⟩ else e 0) = fun i => e i.succ
+⊢ (Semiformula.Eval e Empty.elim)
+    ((Semiformula.rel Language.ORing.Rel.eq ![applyCode (universalCode c) (vars (n + 1)), applyCode oneCode Fin.elim0] 🡒
+        boundedBy φ) ⋏
+      (boundedBy φ 🡒
+        Semiformula.rel Language.ORing.Rel.eq
+          ![applyCode (universalCode c) (vars (n + 1)), applyCode oneCode Fin.elim0]))

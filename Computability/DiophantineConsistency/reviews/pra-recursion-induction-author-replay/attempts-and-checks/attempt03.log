@@ -1,0 +1,86 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAPrimitiveRecursionInduction.lean:118:55: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+pred : Code (n + 2)
+base : Code n
+step : Code (n + 2)
+e : ℕ → M
+hr :
+  (Structure.func pred fun i =>
+        Fin.cases (Structure.func (Code.zero 0) Fin.elim0)
+          (fun i => Fin.cases (Structure.func base fun i => e ↑i) (fun i => e ↑i) i) i) =
+      Structure.func oneCode Fin.elim0 →
+    (∀ (x y : M),
+        (Structure.func pred fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i) =
+            Structure.func oneCode Fin.elim0 →
+          (Structure.func pred fun i =>
+              Fin.cases (Structure.func Code.succ fun x_1 => x)
+                (fun i =>
+                  Fin.cases (Structure.func step fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i)
+                    (fun i => e ↑i) i)
+                i) =
+            Structure.func oneCode Fin.elim0) →
+      ∀ (x : M),
+        (Structure.func pred fun i =>
+            Fin.cases x
+              (fun i =>
+                Fin.cases (Structure.func (iterateCode base step) fun i => Fin.cases x (fun i => e ↑i) i)
+                  (fun i => e ↑i) i)
+              i) =
+          Structure.func oneCode Fin.elim0
+⊢ Structure.func pred
+        (Semiterm.val ![] e ∘ fun i =>
+          Fin.cases (Semiterm.func (Code.zero 0) Fin.elim0)
+            (fun i => Fin.cases (Semiterm.func base (params0 n)) (params0 n) i) i) =
+      Structure.func oneCode (Semiterm.val ![] e ∘ Fin.elim0) →
+    (∀ (x x_1 : M),
+        Structure.func pred
+              (Semiterm.val ![x_1, x] e ∘ fun i => Fin.cases (#1) (fun i => Fin.cases (#0) (params2 n) i) i) =
+            Structure.func oneCode (Semiterm.val ![x_1, x] e ∘ Fin.elim0) →
+          Structure.func pred
+              (Semiterm.val ![x_1, x] e ∘ fun i =>
+                Fin.cases (Semiterm.func Code.succ ![#1])
+                  (fun i =>
+                    Fin.cases (Semiterm.func step fun i => Fin.cases (#1) (fun i => Fin.cases (#0) (params2 n) i) i)
+                      (params2 n) i)
+                  i) =
+            Structure.func oneCode (Semiterm.val ![x_1, x] e ∘ Fin.elim0)) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) (recursiveBody pred base step)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAPrimitiveRecursionInduction.lean:123:34: warning: This simp argument is unused:
+  Semiformula.eval_substs
+
+Hint: Omit it from the simp argument list.
+  simp [baseFormula, stepFormula, S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵e̵v̵a̵l̵_̵s̵u̵b̵s̵t̵s̵,̵ ̵Semiformula.eval_rel, eqRel, Semiterm.val_func, params0, params1,
+  ̲  ̲ ̲ ̲params2] at hr ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAPrimitiveRecursionInduction.lean:124:30: warning: This simp argument is unused:
+  params0
+
+Hint: Omit it from the simp argument list.
+  simp [baseFormula, stepFormula, Semiformula.eval_substs, Semiformula.eval_rel,
+  ̵  ̵ ̵ ̵eqRel,
+  ̲  ̲ ̲ ̲Semiterm.val_func, params0̵,̵ ̵p̵a̵r̵a̵m̵s̵1, params2] at hr ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAPrimitiveRecursionInduction.lean:124:39: warning: This simp argument is unused:
+  params1
+
+Hint: Omit it from the simp argument list.
+  simp [baseFormula, stepFormula, Semiformula.eval_substs, Semiformula.eval_rel,
+  ̵  ̵ ̵ ̵eqRel,
+  ̲  ̲ ̲ ̲Semiterm.val_func, params0, params1̵,̵ ̵p̵a̵r̵a̵m̵s̵2] at hr ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAPrimitiveRecursionInduction.lean:124:48: warning: This simp argument is unused:
+  params2
+
+Hint: Omit it from the simp argument list.
+  simp [baseFormula, stepFormula, Semiformula.eval_substs, Semiformula.eval_rel, ̲e̲q̲R̲e̲l̲,̲
+      e̵q̵R̵e̵l̵,̵ ̵Semiterm.val_func, params0, params1,̵ ̵p̵a̵r̵a̵m̵s̵2̵] at hr ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

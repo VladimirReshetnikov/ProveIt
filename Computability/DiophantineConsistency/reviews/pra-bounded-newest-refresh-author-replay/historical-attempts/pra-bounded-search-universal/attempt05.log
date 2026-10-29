@@ -1,0 +1,84 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:107:68: error: unsolved goals
+M : Type
+inst✝¹ : Structure language M
+inst✝ : Structure.Eq language M
+n : ℕ
+good : Code (n + 1)
+bound : M
+params : Fin n → M
+⊢ (∀ (x : M),
+      Structure.rel Language.ORing.Rel.lt ![x, bound] →
+        ¬Structure.func good
+              (Semiterm.val (x :> fun i => Fin.cases bound params i) Empty.elim ∘ fun i =>
+                Fin.cases (#0) (fun i => #i.succ.succ) i) =
+            Structure.func (Code.zero 0)
+              (Semiterm.val (x :> fun i => Fin.cases bound params i) Empty.elim ∘ Fin.elim0)) ↔
+    ∀ (x : M),
+      Structure.rel Language.ORing.Rel.lt ![x, bound] →
+        ¬(Structure.func good fun i => Fin.cases x params i) = Structure.func (Code.zero 0) Fin.elim0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:118:37: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+good : Code (n + 1)
+e : Fin (n + 1) → M
+hc :
+  have params := fun i => if h : ↑i < n then e ⟨↑i + 1, ⋯⟩ else e 0;
+  have value := Structure.func (universalCode good) fun i => Fin.cases (e 0) params i;
+  IsBit value ∧
+    (value = Structure.func oneCode Fin.elim0 ↔
+      ∀ (x : M),
+        Structure.rel Language.ORing.Rel.lt ![x, e 0] →
+          (Structure.func good fun i => Fin.cases x params i) ≠ Structure.func (Code.zero 0) Fin.elim0)
+i : Fin n
+⊢ e ⟨↑i + 1, ⋯⟩ = e i.succ
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:123:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  fun i => Fin.cases (e 0) (fun i => e i.succ) i
+in the target expression
+  have params := fun i => e i.succ;
+  have value := Structure.func (universalCode good) fun i => Fin.cases (e 0) params i;
+  IsBit value ∧
+    (value = Structure.func oneCode Fin.elim0 ↔
+      ∀ (x : M),
+        Structure.rel Language.ORing.Rel.lt ![x, e 0] →
+          (Structure.func good fun i => Fin.cases x params i) ≠ Structure.func (Code.zero 0) Fin.elim0)
+
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+good : Code (n + 1)
+e : Fin (n + 1) → M
+hc :
+  have params := fun i => e i.succ;
+  have value := Structure.func (universalCode good) fun i => Fin.cases (e 0) params i;
+  IsBit value ∧
+    (value = Structure.func oneCode Fin.elim0 ↔
+      ∀ (x : M),
+        Structure.rel Language.ORing.Rel.lt ![x, e 0] →
+          (Structure.func good fun i => Fin.cases x params i) ≠ Structure.func (Code.zero 0) Fin.elim0)
+hp : (fun i => if h : ↑i < n then e ⟨↑i + 1, ⋯⟩ else e 0) = fun i => e i.succ
+he : (fun i => Fin.cases (e 0) (fun i => e i.succ) i) = e
+⊢ (Semiformula.Eval e Empty.elim)
+    ((Semiformula.rel Language.ORing.Rel.eq
+          ![applyCode (universalCode good) (vars (n + 1)), applyCode oneCode Fin.elim0] 🡒
+        boundedFormula good) ⋏
+      (boundedFormula good 🡒
+        Semiformula.rel Language.ORing.Rel.eq
+          ![applyCode (universalCode good) (vars (n + 1)), applyCode oneCode Fin.elim0]))
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    universalCode good
+  has type
+    Code (n + 1)
+  but is expected to have type
+    language.Func (n + 1)
+  in the application
+    Structure.func (universalCode good)

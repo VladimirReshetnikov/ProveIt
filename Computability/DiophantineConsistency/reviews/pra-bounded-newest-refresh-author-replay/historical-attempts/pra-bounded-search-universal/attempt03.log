@@ -1,0 +1,42 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchUniversal.lean:83:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Structure.func (universalCode good) args
+in the target expression
+  let params := fun i => e ↑i;
+  let value := Structure.func (universalCode good) fun i => Fin.cases bound params i;
+  IsBit value ∧
+    (value = Structure.func oneCode Fin.elim0 ↔
+      ∀ (x : M),
+        Structure.rel Language.ORing.Rel.lt ![x, bound] →
+          (Structure.func good fun i => Fin.cases x params i) ≠ Structure.func (Code.zero 0) Fin.elim0)
+
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+good : Code (n + 1)
+bound : M
+e : ℕ → M
+params : Fin n → M := fun i => e ↑i
+args : Fin (n + 1) → M := fun i => Fin.cases bound params i
+hv :
+  Structure.func (universalCode good) args = Structure.func equalityCode ![Structure.func (searchCode good) args, bound]
+⊢ let params := fun i => e ↑i;
+  let value := Structure.func (universalCode good) fun i => Fin.cases bound params i;
+  IsBit value ∧
+    (value = Structure.func oneCode Fin.elim0 ↔
+      ∀ (x : M),
+        Structure.rel Language.ORing.Rel.lt ![x, bound] →
+          (Structure.func good fun i => Fin.cases x params i) ≠ Structure.func (Code.zero 0) Fin.elim0)
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    universalCode good
+  has type
+    Code (n + 1)
+  but is expected to have type
+    language.Func (n + 1)
+  in the application
+    Structure.func (universalCode good)

@@ -1,0 +1,13 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchBound.lean:42:4: error: unsolved goals
+case refine_1
+M : Type
+inst✝¹ : Structure language M
+inst✝ : Structure.Eq language M
+n : ℕ
+good : Code (n + 1)
+x : M
+e : ℕ → M
+hs : (Semiterm.val ![x] e ∘ fun i => Fin.cases (#0) (parameters n) i) = fun i => Fin.cases x (fun i => e ↑i) i
+i : Fin (Nat.succ 0).succ
+⊢ (Structure.func (searchCode good) fun i => Fin.cases x (fun i => e ↑i) i) =
+    ![Structure.func (searchCode good) fun i => Fin.cases x (fun i => e ↑i) i, x] 0

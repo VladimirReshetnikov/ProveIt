@@ -1,0 +1,8 @@
+import DiophantineConsistency.ParsonsBoundedComparison
+import DiophantineConsistency.ParsonsISigmaZeroComparison
+#print axioms DiophantineConsistency.ParsonsHierarchyMap.hierarchy
+#print axioms DiophantineConsistency.ParsonsMapInduction.map_succInd
+#print axioms DiophantineConsistency.ParsonsBoundedProof.toRule
+#print axioms DiophantineConsistency.ParsonsBoundedProof.sound
+#print axioms DiophantineConsistency.ParsonsBoundedComparison.comparison
+#print axioms DiophantineConsistency.ParsonsISigmaZeroComparison.comparison

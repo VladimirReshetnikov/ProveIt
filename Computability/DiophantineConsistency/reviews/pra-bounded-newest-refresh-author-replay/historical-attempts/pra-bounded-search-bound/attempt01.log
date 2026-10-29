@@ -1,0 +1,43 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchBound.lean:30:84: error: unsolved goals
+M : Type
+inst✝¹ : Structure language M
+inst✝ : Structure.Eq language M
+n : ℕ
+good : Code (n + 1)
+x : M
+e : ℕ → M
+hs : (Semiterm.val ![x] e ∘ fun i => Fin.cases (#0) (parameters n) i) = fun i => Fin.cases x (fun i => e ↑i) i
+⊢ (Structure.rel Language.ORing.Rel.lt fun i =>
+        Semiterm.val ![x] e (![Semiterm.func (searchCode good) fun i => Fin.cases (#0) (parameters n) i, #0] i)) ∨
+      Semiterm.val ![x] e (![Semiterm.func (searchCode good) fun i => Fin.cases (#0) (parameters n) i, #0] 0) =
+        Semiterm.val ![x] e (![Semiterm.func (searchCode good) fun i => Fin.cases (#0) (parameters n) i, #0] 1) ↔
+    Structure.rel Language.ORing.Rel.lt ![Structure.func (searchCode good) fun i => Fin.cases x (fun i => e ↑i) i, x] ∨
+      (Structure.func (searchCode good) fun i => Fin.cases x (fun i => e ↑i) i) = x
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchBound.lean:38:25: warning: This simp argument is unused:
+  Semiterm.val_func
+
+Hint: Omit it from the simp argument list.
+  simp only [searchTerm, Semiterm.val_f̵u̵n̵c̵,̵ ̵S̵e̵m̵i̵t̵e̵r̵m̵.̵v̵a̵l̵_̵bvar, val_term_pair, hs]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchBound.lean:38:44: warning: This simp argument is unused:
+  Semiterm.val_bvar
+
+Hint: Omit it from the simp argument list.
+  simp only [searchTerm, Semiterm.val_func, S̵e̵m̵i̵t̵e̵r̵m̵.̵v̵a̵l̵_̵b̵v̵a̵r̵,̵ ̵val_term_pair, hs]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchBound.lean:38:63: warning: This simp argument is unused:
+  val_term_pair
+
+Hint: Omit it from the simp argument list.
+  simp only [searchTerm, Semiterm.val_func, Semiterm.val_bvar, v̵a̵l̵_̵t̵e̵r̵m̵_̵p̵a̵i̵r̵,̵ ̵hs]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRABoundedSearchBound.lean:38:78: warning: This simp argument is unused:
+  hs
+
+Hint: Omit it from the simp argument list.
+  simp only [searchTerm, Semiterm.val_func, Semiterm.val_bvar, val_term_pair,̵ ̵h̵s̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

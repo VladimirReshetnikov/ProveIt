@@ -1,0 +1,27 @@
+'DiophantineConsistency.PRABoundedSearchUniversal.universalCode_primrec' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedSearchUniversal.modelSearchUniversal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedSearchUniversal.modelUniversalCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedSearchUniversal.modelBoundedFormula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedSearchUniversal.modelUniversalCorrectSentence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedSearchUniversal.PRA_proves_universalBitSentence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedSearchUniversal.PRA_proves_universalCorrectSentence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedSearchUniversal.PRA_proves_universalBitSentence {n : ℕ}
+  (good : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence (universalCode good)
+DiophantineConsistency.PRABoundedSearchUniversal.PRA_proves_universalCorrectSentence {n : ℕ}
+  (good : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ universalCorrectSentence good

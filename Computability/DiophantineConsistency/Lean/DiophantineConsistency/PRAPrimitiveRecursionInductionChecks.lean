@@ -1,0 +1,8 @@
+import DiophantineConsistency.PRAPrimitiveRecursionInduction
+open DiophantineConsistency.PRAPrimitiveRecursionInduction
+#print axioms iterateCode_primrec
+#print axioms recursiveBody_open
+#print axioms modelRecursiveWitness
+#print axioms modelRecursiveSentence
+#print axioms PRA_proves_recursiveSentence
+#check PRA_proves_recursiveSentence
