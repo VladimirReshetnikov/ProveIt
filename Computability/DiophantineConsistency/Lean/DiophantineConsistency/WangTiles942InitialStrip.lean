@@ -61,8 +61,7 @@ theorem left_wall_exists (T : ℤ → Tile) (hallowed : ∀ x, Allowed (T x))
   have hinside (j : ℕ) (hj : 1 ≤ j) (hjl : j < L) :
       T (-(j : ℤ)) = (⟨2,434,2,0⟩ : Tile) := by
     by_contra hnot
-    have hh : L ≤ j := Nat.find_min' hex ⟨hj,hnot⟩
-    omega
+    exact Nat.find_min hex hjl ⟨hj,hnot⟩
   have hright : (T (-(L : ℤ)+1)).west = 2 := by
     by_cases he : L = 1
     · rw [he]
@@ -74,9 +73,8 @@ theorem left_wall_exists (T : ℤ → Tile) (hallowed : ∀ x, Allowed (T x))
       rw [heq] at hi
       rw [hi]
   have heast : (T (-(L : ℤ))).east = 2 := (hH (-(L : ℤ))).symm.trans hright
-  rcases (east_2_iff_initLeft_or_seam (hallowed (-(L : ℤ)))).mp heast with hl | hs
-  · exact False.elim (hL.2 hl)
-  · exact ⟨L, hL.1, hLN, hs, hinside⟩
+  have hs := ((east_2_iff_initLeft_or_seam (hallowed (-(L : ℤ)))).mp heast).resolve_left hL.2
+  exact ⟨L, hL.1, hLN, hs, hinside⟩
 
 /-- First non-initRight after the head. Periodic head supplies a witness byN+1. -/
 theorem right_wall_exists (T : ℤ → Tile) (hallowed : ∀ x, Allowed (T x))
@@ -99,8 +97,7 @@ theorem right_wall_exists (T : ℤ → Tile) (hallowed : ∀ x, Allowed (T x))
   have hinside (j : ℕ) (hj : 2 ≤ j) (hjr : j < R) :
       T (j : ℤ) = (⟨4,436,4,0⟩ : Tile) := by
     by_contra hnot
-    have hh : R ≤ j := Nat.find_min' hex ⟨hj,hnot⟩
-    omega
+    exact Nat.find_min hex hjr ⟨hj,hnot⟩
   have hleft : (T ((R : ℤ)-1)).east = 4 := by
     by_cases he : R = 2
     · rw [he]
@@ -114,9 +111,8 @@ theorem right_wall_exists (T : ℤ → Tile) (hallowed : ∀ x, Allowed (T x))
     have hh := hH ((R : ℤ)-1)
     rw [sub_add_cancel] at hh
     exact hh.trans hleft
-  rcases (west_4_iff_initRight_or_seam (hallowed (R : ℤ))).mp hwest with hr | hs
-  · exact False.elim (hR.2 hr)
-  · exact ⟨R, hR.1, hRN, hs, hinside⟩
+  have hs := ((west_4_iff_initRight_or_seam (hallowed (R : ℤ))).mp hwest).resolve_left hR.2
+  exact ⟨R, hR.1, hRN, hs, hinside⟩
 
 /-- A horizontally periodic allowed row containing Start has exact finite
 seam walls and a complete blank-initialization segment between them. -/
