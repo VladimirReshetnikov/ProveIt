@@ -1,0 +1,7 @@
+import DiophantineConsistency.ParsonsMarkedBlock
+#print axioms DiophantineConsistency.ParsonsMarkedBlock.parameter_root
+#print axioms DiophantineConsistency.ParsonsMarkedBlock.parameter_case
+#print axioms DiophantineConsistency.ParsonsMarkedBlock.baseEntry
+#print axioms DiophantineConsistency.ParsonsMarkedBlock.stepEntry
+#print axioms DiophantineConsistency.ParsonsMarkedBlock.negativeEntry
+#print axioms DiophantineConsistency.ParsonsMarkedBlock.counter_case

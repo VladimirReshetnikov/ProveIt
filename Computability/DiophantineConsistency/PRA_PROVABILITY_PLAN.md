@@ -41,6 +41,15 @@ under any fixed projection and discharges actual PA-minus base axioms.
 The [base-only branch](reviews/parsons-fold-root.md) now folds an arbitrary
 side sequent and discharges any finite set of actual PA-minus axioms, without
 a cut-free or recursive-hypothesis requirement.
+The [marked-context invariant](reviews/parsons-invariant-root.md) now starts
+from the actual normalized cut-free proof, retains occurrence-specific tags,
+handles its base-only and contraction branches, and recovers the original
+conclusion from a marked-output proof. The output proof and global induction
+remain open.
+The [marked induction-block cases](reviews/parsons-marked-block-root.md)
+handle parameter opening and the final counter-witness under an explicit Σ₁
+side-guard hypothesis and smaller local recursive proofs. Deriving that guard
+from a general Π₂ context and assembling the global induction remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
@@ -53,7 +62,11 @@ is now independently replayed for every internal exponent matching the radix.
 The [actual-zero window theorem](reviews/adaptive-window2011-root.md) now
 assembles these inputs in arbitrary IΣ₁ models. The window-to-machine halt
 client, internal converse and final HA/PRA proof-existence endpoints remain
-open.
+open. The [reverse transport identity](reviews/adaptive-construction-transport2011-root.md)
+is now proved from the positive 14-coordinate equation system, but the other
+reverse witnesses and adaptive zero construction remain open. The
+[strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
+now follows from the maintained strong norm with the scaled multiplier.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
