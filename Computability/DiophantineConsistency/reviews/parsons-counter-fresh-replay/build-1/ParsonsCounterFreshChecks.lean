@@ -1,0 +1,2 @@
+import DiophantineConsistency.ParsonsCounterFresh
+#print axioms DiophantineConsistency.ParsonsCounterFresh.counter_one_universal
