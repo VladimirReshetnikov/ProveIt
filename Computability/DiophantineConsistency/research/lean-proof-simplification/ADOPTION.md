@@ -2134,5 +2134,14 @@ registrations match. Four project providers have source-matched receipts; the
 wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-power-y-upper.md)
 records hashes and external paths without raw logs or objects.
 
+The first-norm solution-index positivity simplification `8ed12b630d` removes
+four net Lean lines, bringing the reviewed series to 10372. The positive
+ordinate and index-zero recurrence show the index is nonzero directly. Paired
+target and both direct-client builds pass with identical client objects; checked
+declarations and sampled registrations match. Three project providers have
+source-matched receipts; the wider closure remains cached. The compact [evidence
+note](../../reviews/lean-proof-simplification-20261029-firstnorm-time-positive.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
