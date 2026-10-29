@@ -71,24 +71,6 @@ theorem modelSubSucc (x y : M) :
       ![y, Structure.func (L := language) subCore ![y,x], x] at hs
   exact hs.trans hg
 
-omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem eqRel (v : Fin 2 → M) :
-    Structure.rel (L := language) Language.ORing.Rel.eq v ↔ v 0 = v 1 := by
-  change Structure.rel (L := language) Language.Eq.eq v ↔ _
-  exact Structure.eq_lang
-
-omit [M↓[language] ⊧* PRA] in
-private theorem eqClosureModels {n : ℕ} (a b : TermN n) :
-    (M↓[language] ⊧ equalClosure a b) ↔
-      ∀ e : Fin n → M, Semiterm.val e Empty.elim a = Semiterm.val e Empty.elim b := by
-  simp only [models_iff, equalClosure, Semiformula.eval_allClosure, Semiformula.eval_rel]
-  constructor
-  · intro h e
-    have h' := (eqRel _).mp (h e)
-    simpa [Function.comp_def] using h'
-  · intro h e
-    apply (eqRel _).mpr
-    simpa [Function.comp_def] using h e
 
 theorem modelSubZeroSentence : M↓[language] ⊧ subZeroSentence := by
   apply (eqClosureModels _ _).mpr
