@@ -1,5 +1,6 @@
 import DiophantineConsistency.PRAPeanoMinusMulComm
 import DiophantineConsistency.PRAEqualityDifference
+import DiophantineConsistency.PRAPeanoMinusPartial
 
 /-! Basic strict-order axioms of Foundation PA-minus inside candidate PRA. -/
 set_option autoImplicit false
@@ -85,11 +86,8 @@ theorem modelAddEqOfLt (x y : M) (h : x < y) : ∃ z, x + z = y := by
   obtain ⟨c,hc⟩ := (ltWitness x y).mp h
   exact ⟨succ c,hc⟩
 
-theorem modelMappedAddEqOfLt : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus.Axiom.addEqOfLt := by
-  apply mapped_of_standard
-  simp [PeanoMinus.Axiom.addEqOfLt]
-  intro x y h
-  exact modelAddEqOfLt x y h
+theorem modelMappedAddEqOfLt : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus.Axiom.addEqOfLt :=
+  PRAPeanoMinusPartial.model_addEqOfLt
 
 theorem modelMappedZeroLe : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus.Axiom.zeroLe := by
   apply mapped_of_standard
@@ -119,10 +117,8 @@ theorem modelMappedLtTri : M↓[language] ⊧ Semiformula.lMap embedding PeanoMi
 
 end models
 
-theorem PRA_proves_addEqOfLt : PRA ⊢ Semiformula.lMap embedding PeanoMinus.Axiom.addEqOfLt := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ _
-  exact modelMappedAddEqOfLt
+theorem PRA_proves_addEqOfLt : PRA ⊢ Semiformula.lMap embedding PeanoMinus.Axiom.addEqOfLt :=
+  PRAPeanoMinusPartial.PRA_proves_addEqOfLt
 
 theorem PRA_proves_zeroLe : PRA ⊢ Semiformula.lMap embedding PeanoMinus.Axiom.zeroLe := by
   apply Theory.Proof.complete_on_eq_models.{0,0}
