@@ -69,12 +69,8 @@ theorem x_reflection_add (l r b : V) :
 
 theorem x_reflection (n m b : V) (hm : m≤n) :
     xcoord (n+m) b+xcoord (n-m) b=2*xcoord n b*xcoord m b := by
-  have h := x_reflection_add (n-m) m b
-  have he : n-m+m=n := tsub_add_cancel_of_le hm
-  have he' : n-m+2*m=n+m := by calc
-    n-m+2*m=(n-m+m)+m := by ring
-    _=n+m := by rw [he]
-  rwa [he,he'] at h
+  simpa only [two_mul, ← add_assoc, tsub_add_cancel_of_le hm] using
+    x_reflection_add (n-m) m b
 
 theorem x_antiperiod (n t b : V) :
     (xcoord (2*n+t) b+xcoord t b)%xcoord n b=0 := by

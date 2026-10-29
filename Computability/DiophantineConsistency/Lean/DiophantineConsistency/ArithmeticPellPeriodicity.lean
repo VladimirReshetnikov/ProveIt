@@ -47,12 +47,8 @@ theorem reflection_add (left right b : V) :
 
 theorem reflection (n m b : V) (hm : m≤n) :
     ycoord (n+m) b=ycoord (n-m) b+2*xcoord n b*ycoord m b := by
-  have h := reflection_add (n-m) m b
-  have he : n-m+m=n := tsub_add_cancel_of_le hm
-  have he' : n-m+2*m=n+m := by calc
-    n-m+2*m=(n-m+m)+m := by ring
-    _=n+m := by rw [he]
-  rwa [he,he'] at h
+  simpa only [two_mul, ← add_assoc, tsub_add_cancel_of_le hm] using
+    reflection_add (n-m) m b
 
 /-- Explicit nonnegative quotients for the whole state at index4n. -/
 theorem four_quotients (n b : V) :
