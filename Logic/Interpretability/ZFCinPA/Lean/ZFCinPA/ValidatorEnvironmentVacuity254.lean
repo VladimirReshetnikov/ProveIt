@@ -72,17 +72,14 @@ lemma atom_vac {n arity R terms : V} (hr : (ℒₛₑₜ).IsRel arity R)
     have hc : (arity=2 ∧ R=0) ∨ (arity=2 ∧ R=1) := by simpa using hr'
     exact hc.elim And.left And.left
   subst arity
-  have hleft : z≠(TermLabels.vec F B 2 terms).[0] := by
-    rw [TermLabels.vec_nth F B ht.isUTerm (by simp)]
-    exact term_label_avoids (ht.nth (by simp)) F B z hlen hF hB
-  have hright : z≠(TermLabels.vec F B 2 terms).[1] := by
-    rw [TermLabels.vec_nth F B ht.isUTerm (by simp)]
-    exact term_label_avoids (ht.nth (by simp)) F B z hlen hF hB
+  have hlabel (i : V) (hi : i<2) : z≠(TermLabels.vec F B 2 terms).[i] := by
+    rw [TermLabels.vec_nth F B ht.isUTerm hi]
+    exact term_label_avoids (ht.nth hi) F B z hlen hF hB
   classical
   simp only [Formulas.atom,nth_adjoin_zero,nth_adjoin_one]
   split
-  · exact vac_eq _ _ z hleft hright
-  · exact vac_rel _ _ z hleft hright
+  · exact vac_eq _ _ z (hlabel 0 (by simp)) (hlabel 1 (by simp))
+  · exact vac_rel _ _ z (hlabel 0 (by simp)) (hlabel 1 (by simp))
 
 /-! The induction predicate is genuinely Pi-two, not Pi-one. -/
 private instance len_delta : 𝚫₁-Function₁[V] (len : V→V) :=
