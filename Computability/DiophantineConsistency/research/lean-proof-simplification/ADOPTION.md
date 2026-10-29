@@ -2219,5 +2219,15 @@ providers were rebuilt from current source; the umbrella and wider closure remai
 unbuilt or cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-context-drop-shared.md)
 records hashes and external paths without raw logs or objects.
 
+The selector-existence simplification `b82c51d3da` removes three net Lean
+lines, bringing the reviewed series to 10455. `Finset.sum_pos_iff` replaces a
+contradiction through an all-zero sum. Paired target builds and the tracked check
+pass, including a source-current provider replay. One generated public proof
+type changes; a tracked and nonignored untracked Lean/Python search found no
+references. The untracked NativeCellRecipe54 client remains untested after an
+exploratory build was stopped with observed memory above 8 GiB; the umbrella and
+wider closure remain unbuilt or cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-selector-pos.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
