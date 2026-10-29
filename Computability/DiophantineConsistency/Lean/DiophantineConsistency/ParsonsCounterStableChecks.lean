@@ -1,0 +1,3 @@
+import DiophantineConsistency.ParsonsCounterStable
+#print axioms DiophantineConsistency.ParsonsCounterStable.counter_stable
+#print axioms DiophantineConsistency.ParsonsCounterStable.counter_stable_unbounded

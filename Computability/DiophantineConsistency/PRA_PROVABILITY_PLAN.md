@@ -145,8 +145,10 @@ A separate [actual PA-minus axiom certificate](reviews/parsons-base-positive-roo
 now supplies Tree descriptors for terminal base reclassification, including
 the axiom with an unbounded existential. The [marked base invariant](reviews/parsons-base-invariant-root.md)
 preserves that certificate through initial contexts, shifts, contraction,
-opening and terminal reclassification. Integrating it into the restricted
-induction hypothesis and proving the recursion remain.
+opening and terminal reclassification. The [strengthened counterexample
+case](reviews/parsons-counter-stable-root.md) now incorporates this base
+certificate into the restricted smaller-derivation hypothesis. The global
+recursion remains open.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
