@@ -80,24 +80,10 @@ theorem abs_coeff_combined_le {m r : ℕ} (w : Fin (m + 1) → ℕ)
       E k - pairWeight w p = E l - pairWeight w q → k = l ∧ p = q)
     (n : ℕ) : |(combined w s a E).coeff n| ≤ H := by
   classical
-  simp only [combined, complementary, finsetSum_coeff, coeff_monomial]
   by_cases hex : ∃ k p, p ∈ s k ∧ E k - pairWeight w p = n
   · obtain ⟨k, p, hp, he⟩ := hex
-    rw [Finset.sum_eq_single k]
-    · rw [Finset.sum_eq_single p]
-      · simpa [he] using hc k p hp
-      · intro q hq hqp
-        apply if_neg
-        intro hqE
-        exact hqp ((hinj k k q p hq hp (hqE.trans he.symm)).2)
-      · exact fun h => False.elim (h hp)
-    · intro l _ hlk
-      apply Finset.sum_eq_zero
-      intro q hq
-      apply if_neg
-      intro hqE
-      exact hlk ((hinj l k q p hq hp (hqE.trans he.symm)).1)
-    · exact fun h => False.elim (h (mem_univ k))
+    rw [← he, coeff_combined_at_entry w s a E hinj k p hp]
+    exact hc k p hp
   · have hz : (∑ k, ∑ p ∈ s k,
         if E k - pairWeight w p = n then QuadraticCoding.correction p * a k p else 0) = 0 := by
       apply Finset.sum_eq_zero
@@ -107,7 +93,7 @@ theorem abs_coeff_combined_le {m r : ℕ} (w : Fin (m + 1) → ℕ)
       apply if_neg
       intro he
       exact hex ⟨k, p, hp, he⟩
-    rw [hz, abs_zero]
+    simp only [combined, complementary, finsetSum_coeff, coeff_monomial, hz, abs_zero]
     exact hH
 
 theorem abs_coeff_monomial_mul_le (p : ℤ[X]) (H : ℤ) (hH : 0 ≤ H)
