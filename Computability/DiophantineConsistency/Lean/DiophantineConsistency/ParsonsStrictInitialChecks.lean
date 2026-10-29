@@ -1,0 +1,5 @@
+import DiophantineConsistency.ParsonsStrictInitial
+#print axioms DiophantineConsistency.ParsonsStrictInitial.initial_good
+#print axioms DiophantineConsistency.ParsonsStrictInitial.initial_strict
+#print axioms DiophantineConsistency.ParsonsStrictInitial.normalized
+#print axioms DiophantineConsistency.ParsonsStrictInitial.strict_fragment
