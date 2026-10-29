@@ -20,7 +20,10 @@ are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
 now proves that step under arbitrary assignments, yielding an unconditional
 collection-rule transformer when the exact implication is parameter-free.
-The arbitrary-parameter specialization and guarded-context version remain open.
+The [arbitrary-parameter collection rule](reviews/parsons-specialize-root.md)
+is now proved as a noncomputable proof transformer by specializing the closed
+finite-extension theorem. The guarded-context version and a PRA-internal or
+primitive-recursive transformer remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),

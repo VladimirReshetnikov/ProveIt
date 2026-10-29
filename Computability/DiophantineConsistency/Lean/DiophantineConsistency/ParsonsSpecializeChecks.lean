@@ -1,0 +1,5 @@
+import DiophantineConsistency.ParsonsSpecialize
+#print axioms DiophantineConsistency.ParsonsSpecialize.subst_qpow_last
+#print axioms DiophantineConsistency.ParsonsSpecialize.specialize_closure
+#print axioms DiophantineConsistency.ParsonsSpecialize.specialize_univCl
+#print axioms DiophantineConsistency.ParsonsSpecialize.collect
