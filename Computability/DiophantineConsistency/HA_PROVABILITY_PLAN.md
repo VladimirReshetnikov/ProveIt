@@ -2546,3 +2546,5 @@ tower.
 The pattern for each: replace `compiled` by `sized_compileT_gen` at an
 explicit placeholder level, and `⨀`/`K!_intro` by the `SizedProof`
 combinators.
+
+**Drop-in for the L inductions.** `ZFCinPA.SizedLPlumbing.compiledLe` is the bounded replacement for `LDriverSteps.compiled`/`LGlue1.compiledG`. A template `h : templTheory ⊢ σ` compiles at arbitrary placeholders of level `u ≥ 2` within level `cExpG (tmA h) (tmB h) u + tmK h + 1` on the `DLv` scale. The constants are read off `h.get.toProof2`. `stg_lvB` collapses the compiler's stage tower into one level per stage.
