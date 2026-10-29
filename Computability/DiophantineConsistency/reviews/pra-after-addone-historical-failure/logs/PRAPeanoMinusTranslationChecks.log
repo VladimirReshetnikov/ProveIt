@@ -1,0 +1,12 @@
+'DiophantineConsistency.PRAPeanoMinusTranslation.PRA_proves_peanoMinusAxiom' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPeanoMinusTranslation.PRA_proves_peanoMinusTheorem' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAPeanoMinusTranslation.PRA_proves_peanoMinusAxiom {σ : LO.FirstOrder.Sentence ℒₒᵣ}
+  (h : 𝗣𝗔⁻ σ) :
+  DiophantineConsistency.PRATheory.PRA ⊢ (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) σ
+DiophantineConsistency.PRAPeanoMinusTranslation.PRA_proves_peanoMinusTheorem {σ : LO.FirstOrder.Sentence ℒₒᵣ}
+  (h : 𝗣𝗔⁻ ⊢ σ) :
+  DiophantineConsistency.PRATheory.PRA ⊢ (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) σ

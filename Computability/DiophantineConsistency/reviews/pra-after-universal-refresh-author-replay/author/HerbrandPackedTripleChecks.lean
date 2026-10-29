@@ -1,0 +1,7 @@
+import DiophantineConsistency.HerbrandPackedTriple
+open DiophantineConsistency.HerbrandPackedTriple
+#print axioms packedTriple_open
+#print axioms modelPackedTriple
+#print axioms candidate_proves_packedTriple
+#print axioms counterexample_finiteDefeat
+#check counterexample_finiteDefeat

@@ -29,11 +29,18 @@ Both results produce proofs in the candidate universal theory. Neither
 eliminates the disjunction, translates arbitrary Σ₁ induction, or establishes
 PRA conservation.
 
-The three-challenge extractor still has only one outer witness per round. The
-intended Ferreira normal form has four outer witnesses; applying it needs a
-verified four-witness generalization or a pairing and decoding reduction. Its
-inner existential witness may also depend on the three challenge variables,
-which must be preserved by the prenex adapter.
+The three-challenge extractor above has one outer witness per round. The
+intended Ferreira normal form has four outer witnesses, and its inner
+existential witness may also depend on the three challenge variables.
+
+`HerbrandInteractiveFourTriple` now supplies the unpaired four-witness,
+three-challenge staged extraction, and `HerbrandFourTriplePrenexAdapter`
+preserves an inner existential matrix depending on all challenges. The
+contextual extraction and selection clients preserve an existential side
+while choosing a primitive-recursive witness. A 21-module author build and
+two isolated replays matched all source, object and full-log hashes against
+the checked provider snapshot. Construction of the induction-derived premise
+and successive stage elimination remain open.
 
 For the separate pure-existential route, `HerbrandPackedTriple` applies the
 coded counterexample-defeat theorem to finite triple extraction, packing all

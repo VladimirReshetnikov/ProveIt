@@ -1,0 +1,24 @@
+'DiophantineConsistency.PRABoundedSearchFreeze.freezeBody_open' depends on axioms: [propext]
+'DiophantineConsistency.PRABoundedSearchFreeze.modelSearchStepBad' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedSearchFreeze.modelSearchFreeze' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedSearchFreeze.modelSearchFreeze {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] {n : ℕ}
+  (good : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1)) (start shift : M) (e : ℕ → M)
+  (hbad :
+    (LO.FirstOrder.Structure.func good fun i =>
+        Fin.cases
+          (LO.FirstOrder.Structure.func (DiophantineConsistency.PRABoundedSearchCode.searchCode good) fun i =>
+            Fin.cases start (fun i => e ↑i) i)
+          (fun i => e ↑i) i) =
+      LO.FirstOrder.Structure.func (DiophantineConsistency.PRAFiniteFunctionCodes.Code.zero 0) Fin.elim0) :
+  (LO.FirstOrder.Structure.func (DiophantineConsistency.PRABoundedSearchCode.searchCode good) fun i =>
+      Fin.cases (LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.addCode ![start, shift])
+        (fun i => e ↑i) i) =
+    LO.FirstOrder.Structure.func (DiophantineConsistency.PRABoundedSearchCode.searchCode good) fun i =>
+      Fin.cases start (fun i => e ↑i) i

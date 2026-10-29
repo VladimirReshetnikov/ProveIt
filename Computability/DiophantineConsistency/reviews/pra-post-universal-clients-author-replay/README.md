@@ -1,0 +1,5 @@
+# Source-current candidate-PRA clients
+
+Replay `python Computability/DiophantineConsistency/reviews/pra-post-universal-clients-author-replay/replay.py --parent /tmp/pra-after-universal-refresh-rw_a1ip4/lib`, or an independently rebuilt byte-identical provider. The private replay PASSed at `/tmp/pra-post-universal-clients-independent-s2iji0k2`. It matches all eight objects and full logs and authenticates all parent local source/object hashes before and after compilation. The 108-module parent has passed its author audit; independent parent replay remains pending at the time of this receipt. Foundation/mathlib are inherited. Terminal errors record FAILED and the exact cause.
+
+This checks the two Q-order witness clients, the contextual finite witness selector with arbitrary side formula, and three PR challenges for a fixed coded induction counterexample. The last result does not choose q while preserving an existential context, and this packet does not prove iterative stage elimination or conservation.

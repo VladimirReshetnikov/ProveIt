@@ -29,3 +29,11 @@ Two further AuxBind builds against that refreshed provider passed at
 source, object and complete-log hashes. The [18-file refresh evidence](adaptive-construction-aux-bind-ranklower-evidence/FILES.json)
 has SHA-256 `a374249454f69f2a64fba5772842a5b369dbb434bf2c88aa0ed7f9135e7b8cda`.
 The prior inherited-provider and theorem-scope qualifications still apply.
+
+After the later half-index refactor, two further builds against the accepted
+current half-index provider passed at
+`/tmp/adaptive13-construction-aux-bind-halfindex-h64ql856` and
+`/tmp/adaptive13-construction-aux-bind-halfindex-lfg1akb6`, with matching
+source, object and full-log hashes. The [18-file evidence](adaptive-construction-aux-bind-halfindex-evidence/FILES.json)
+has SHA-256 `b2a6bd53a90dc8e8aaff695c581f5d80c5f4647fc6bc5f4634db5cc48bdc7c97`.
+The theorem still assumes the phase and Pell ordinate identity.

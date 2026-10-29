@@ -23,7 +23,9 @@ continuation still needs a current-source replay.
 Another subsequent merge changed HalfBinomial, AdaptivePopulation2011 and the
 14-variable HalfBinomial wrapper. The affected adaptive suffix has now
 [passed author and independent replays](reviews/adaptive-halfindex-postmerge2011-author.md).
-The separate Pell rebase and the 14-variable wrapper remain outside that replay.
+The separate Pell rebase and AuxBind client also passed independent replays
+against the refreshed provider; the 14-variable wrapper remains outside that
+suffix.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
@@ -84,6 +86,9 @@ A further upstream merge changed `PRAAddOne`, bounded-search and order-witness
 modules, and `PRASubReconstruct`. The 92-module and interactive extraction
 replays therefore cover the preceding source snapshot; their affected
 dependency graphs require another current-source rebuild.
+The subsequent 108-module rebuild has now passed two independent replays,
+including the candidate-PRA triple-witness client. Foundation and Mathlib
+remain inherited boundaries; this does not establish the missing comparison.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
