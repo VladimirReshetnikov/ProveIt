@@ -1314,5 +1314,17 @@ objects differ by bytes, although their checked declaration reports match.
 Transitive inputs remain precompiled; the first superseded interface probe was
 overwritten and is excluded. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-enum-fair-sharing-evidence/BUNDLE.json).
 
+The generated kernel port-bound sharing `5093f59cd6` removes 11 net Lean
+lines, bringing the reviewed series to 9547; the accompanying generator edits
+make the four-file total a three-line reduction. Gap's three coefficient
+bounds now reuse the same Split estimate instead of copying its proof. Both
+generators reproduce their outputs, with coefficient and position data
+unchanged. Paired coherent kernel builds and wrapper checks pass after
+rebuilding a stale SelectiveCarry dependency chain. All 81 common public
+declaration reports, 55,118 global simp entries and 23,324 instances match.
+One public alias is added; Gap's private helper and five generated auxiliaries
+are removed. The earlier stale-cache client failure is retained and excluded,
+and other transitive providers remain precompiled. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-generated-box-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

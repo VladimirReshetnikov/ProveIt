@@ -1,0 +1,64 @@
+Independent review: generated split/gap kernel bound sharing, 28 October 2026
+
+I compared the two candidate generator scripts and generated data modules in
+/dev/shm/shared-box-prototype with the workspace originals. The only split
+generator/data change adds public `SplitKernelData59.port_box_facts`, which
+applies the existing private `SplitKernelData59.box_facts` with exactly the
+same hypotheses and result. The gap generator no longer copies that private
+proof from the split source and instead makes the three coefficient proofs
+call the new public theorem. Its generated GapKernelData66 removes the old
+private helper and changes those same three calls. The two original private
+helper statements and proof bodies were byte-identical (834 bytes after
+trimming surrounding whitespace); no changed guard or inequality was found.
+No import statements were changed.
+
+The full multiline `positions0..2` and `coefficients0..2` declarations in
+both generated data modules are byte-identical to their workspace originals
+(12 compared declaration blocks). All six input JSON files in data/split59
+and candidates/gap2082-compact54/data/H2082 match workspace SHA-256 hashes.
+The two certificate generator dependencies are also byte-identical to their
+workspace originals. The generated SplitKernels59 and GapKernels66 wrapper
+sources match the workspace originals byte-for-byte.
+
+For an independent regeneration, I copied the two changed generators, their
+two certificate-script dependencies, all six input JSON files, and the four
+generated outputs to a separate regular-file tree under
+/tmp/shared-box-independent-regeneration. I ran:
+  python /tmp/shared-box-independent-regeneration/replay.py
+which invokes generate_split_kernels59.py, generate_gap_kernels66.py, and the
+latter's --check mode. All returned zero; input and output hashes were
+unchanged by regeneration and all four output files match the candidate
+byte-for-byte. Commands and hashes are in that tree's records.json. This run
+did not write to the repository or the candidate tree.
+
+The coherent source-pinned replay compiled SplitKernelData59 and GapKernelData66
+in both phases and separately checked both unchanged SplitKernels59 and
+GapKernels66 wrapper sources in both phases. All four target builds and four
+wrapper checks report status zero. I verified the source, output where present,
+and log hashes, all 24 recorded direct input before/after hashes, and the
+first-provider resolutions across these records plus four rebuilt common
+prerequisites (12 records total). Wrapper checks were elaboration checks with
+no `-o` output; they are not compiled wrapper artifacts. An earlier incoherent
+SplitKernels59 client attempt failed with unknown
+`SelectiveCarry.encoded_degree_le`; the coherent run rebuilt SelectiveCarry,
+SelectiveCoefficientBounds, PolynomialRangeBounds and SplitWordBounds and
+then both wrapper checks passed. Both wrapper baseline/final logs match.
+
+The completed coherent probe reports 93 baseline and 88 final relevant names:
+the added public `SplitKernelData59.port_box_facts`, and the removed private
+`GapKernelData66.box_facts` plus five of its generated `_proof_` declarations.
+No existing public declaration was removed; I found no tracked Lean/Python
+reference to the removed qualified private helper via git grep. Type and axiom
+reports for 81 common non-private declarations are byte-identical. The saved
+global default-simp logs (55,118 entries) and instance logs (23,324 entries)
+are also byte-identical. I independently verified the source, two target
+object and output-log hashes in all eight coherent probe records. Full record
+files are under /dev/shm/shared-box-prototype/coherent-*.json.
+
+The coherent checks reuse cached Mathlib and project prerequisites beyond the
+four rebuilt common modules. The direct-input hashes and provider paths show
+what was loaded in the recorded runs; they do not establish a clean rebuild of
+all transitive dependencies or validate every downstream client. The original
+failed incoherent attempt must not be counted as a successful client check.
+Within these stated limits, I found no refactor-specific correctness or
+generation-fidelity blocker. No repository files were modified by this review.
