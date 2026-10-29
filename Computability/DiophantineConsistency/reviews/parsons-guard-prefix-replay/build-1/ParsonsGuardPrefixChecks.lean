@@ -1,0 +1,3 @@
+import DiophantineConsistency.ParsonsGuardPrefix
+#print axioms DiophantineConsistency.ParsonsGuardPrefix.Guard.pi
+#print axioms DiophantineConsistency.ParsonsGuardPrefix.counter_prefix
