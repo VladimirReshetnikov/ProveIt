@@ -1,0 +1,7 @@
+Independent archive audit: window remainder bound
+
+The archive CRC and SHA-256 pass; all 42 manifest members match their declared sizes and hashes, and the archive contains no compiled objects. The standalone review matches its archived copy and declared hash. Commit 94638c37e5 and parent 6197757022 match the final and baseline target snapshots byte-for-byte.
+
+The four successful target/client records, 18 direct-input occurrences and six probes are internally consistent with archived source, logs, timings and provider receipts. The three direct provider source hashes match the source commit; the other five source/object pairs match the archived prior independent provider audit summary and current source, and their listed underlying historical receipts are outside this archive. The two WindowZero client object hashes agree. All 43 target declaration/type/axiom reports, 35,447 simp entries and 15,617 instances match.
+
+No discrepancy found. Object bytes are excluded, so the archive alone does not independently recompute object hashes or first-provider resolution. The other direct source client ArithmeticCellWindow was not rebuilt; probes pin the target object rather than the entire closure, which includes documented pre-adoption HalfBinomial, BinomLegendre and PellRecurrence objects. Other environment registrations and untested clients remain outside scope; single-pair timing on shared infrastructure is not a general performance claim. Reproduce from the repository root with /tmp/window-rem-bundle-audit.py; output is /tmp/window-rem-bundle-audit.log.

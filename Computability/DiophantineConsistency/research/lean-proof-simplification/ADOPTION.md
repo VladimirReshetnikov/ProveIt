@@ -1553,5 +1553,14 @@ proof are added; two unregistered generated endpoint proofs disappear. An
 older SignedPellResidue object and the wider transitive closure remain cached.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-packing-positive-sharing-evidence/BUNDLE.json).
 
+The window remainder bound `94638c37e5` removes four net Lean lines, bringing
+the reviewed series to 9885. Its original proof was introduced in
+Claude-coauthored commit `d2a666efce`. A direct strict-to-weak inequality
+replaces the contradiction while preserving the modulus and bound. Paired
+target and WindowZero builds pass with identical client objects; all 43 target
+reports, 35,447 simp entries and 15,617 instances match. The other direct
+client was not rebuilt and older project objects remain in the cached
+transitive closure. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-window-rem-bound-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
