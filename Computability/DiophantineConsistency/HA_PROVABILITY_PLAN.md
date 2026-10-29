@@ -2661,3 +2661,32 @@ now derives `m=R`, `2n=R+1`, and `k=R+1+4Q·t` from the literal current
 zero in arbitrary IΣ₁ models, retaining both actual root representations.
 Its half-index prerequisite chain was independently rebuilt from current
 source. Power recovery, internal converse and HA transfer remain open.
+
+The [adaptive power projection](reviews/adaptive-power-projection2011-root.md)
+now derives `q | 3X` and `q ≤ 3X` from the literal current zero. Power
+recovery itself and the internal converse remain open.
+
+The [current adaptive X bound](reviews/adaptive-power-lower2011-root.md)
+now derives `16 ≤ X` from the literal zero and fixed radix-47 port. This
+supplies a growth-theorem premise, not the power representation itself.
+
+The [adaptive Pell growth theorem](reviews/adaptive-power-growth2011-root.md)
+now derives `Exp.exp R < Y` from an actual current zero, using the exact
+indices and X bound. Its two current-source prerequisites were independently
+rebuilt; power identity and radix alignment are separate clients.
+
+The [adaptive power recovery](reviews/adaptive-power-finish2011-root.md)
+now derives `X = Exp.exp R` from the actual current natural zero in every
+selected IΣ₁ model. It does not assume `q | X`; radix alignment, full
+soundness, the converse and the HA/PRA transfers remain open.
+
+The [adaptive Mersenne cancellation](reviews/adaptive-mersenne2011-root.md)
+now removes the factor three from `q | 3·2^R` for the actual Mersenne-port
+shape, including arbitrary internal exponents. The actual radix client is
+a separate binding.
+
+The [actual adaptive radix theorem](reviews/adaptive-radix2011-root.md)
+now derives positive internal `N` and `w` with `q=2^(width·N)`,
+`width·N≤R`, `w=2^(R−width·N)`, and `X=q·w` from the literal current
+zero, retaining both exponential graphs. Transport/window soundness,
+the internal converse and the HA/PRA transfers remain open.

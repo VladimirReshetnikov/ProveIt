@@ -42,15 +42,9 @@ open scoped LO.FirstOrder.Arithmetic
 
 variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-/-- Literal relation arity, copied from `LDriver.isRel_set` to avoid that broad import. -/
-private theorem isRel_set {k R : V} (hR : (ℒₛₑₜ).IsRel k R) : k = 2 ∧ (R = 0 ∨ R = 1) := by
-  have hr' : V ⊧/![k, R] (LeanProofs.ZFCinPA.instLORDefinableSet.rel).val := hR
-  rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.rel : 𝚺₀.Semisentence 2) =
-    .mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)” from rfl] at hr'
-  have hc : (k = 2 ∧ R = 0) ∨ (k = 2 ∧ R = 1) := by simpa using hr'
-  rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩
-  · exact ⟨h1, Or.inl h2⟩
-  · exact ⟨h1, Or.inr h2⟩
+/-- Internal set-language relation symbols are binary equality or membership. -/
+private theorem isRel_set {k R : V} (hR : (ℒₛₑₜ).IsRel k R) : k = 2 ∧ (R = 0 ∨ R = 1) :=
+  LeanProofs.ZFCinPA.SetRelativization.set_isRel hR
 
 /-- The domain component of the parameter. -/
 abbrev dom (P : V) : V := π₁ P

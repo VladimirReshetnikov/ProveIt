@@ -179,3 +179,19 @@ The [strict prenex collection obligation](parsons-prenex-collection-obligation-2
 identifies a bounded-universal Σ₁ case requiring finite witness collection.
 Foundation hierarchy membership alone does not supply the strict Π₂ side
 form or a rule-calculus derivation of the collection implication.
+
+The [strict Σ₁ prenex fragment](../reviews/parsons-prenex-root.md) now
+proves both rule-calculus transformations between `E ∨ ∃x Q(x)` and
+`∃x(Q(x) ∨ E)`, preserving parameter shifts and bounded matrices. The
+bounded collection case and complete strict Π₂ adapter remain open.
+
+The [two-witness prenex fragment](../reviews/parsons-prenex-pair-root.md)
+converts a disjunction of two strict Σ₁ formulas in both directions to an
+explicit two-variable existential block with bounded matrix. No pairing
+function is assumed. Arbitrary blocks, finite collection and the complete
+strict Π₂ adapter remain open.
+
+The [universal prenex step](../reviews/parsons-prenex-all-root.md) now
+proves both same-theory transformations between `E ∨ ∀x Q(x)` and
+`∀x(Q(x) ∨ E)`, preserving parameters. This does not establish the
+complete strict Π₂ adapter or finite collection.

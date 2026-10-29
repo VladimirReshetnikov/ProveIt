@@ -82,3 +82,43 @@ primitive toward compiling open formulas. That compiler remains open.
 The [Boolean operations](../reviews/pra-boolean-ops-root.md) now prove
 bit closure, conjunction and negation in all candidate-PRA equality models.
 The equality-atom code and full open-formula compiler remain open.
+
+The [conditional formula compiler](../reviews/pra-open-formula-compiler-root.md)
+now maps Boolean combinations of equality and order atoms to finite PR
+characteristic codes and yields candidate-PRA correctness proofs assuming
+two explicit equality-code certificates. The later coverage and equality
+results below discharge these particular outstanding conditions.
+
+The [Foundation open-formula coverage](../reviews/pra-open-formula-coverage-root.md)
+now parses every open semisentence with finitely many bound inputs and
+composes the conditional characteristic theorem. The two equality-bit
+certificates were subsequently supplied by the theorem below.
+
+## Open-formula characteristic codes
+
+The [independent replay](../reviews/pra-equality-code-root.md) checks this
+unconditional bound-variable result against the current source chain.
+
+`PRATermCompilation` compiles each candidate-language semisentence term to one
+finite function code, with a closed candidate-PRA equality proof for all its
+arguments. `PRAOpenFormulaCompiler` composes term codes with Boolean operations;
+`PRAOpenFormulaCoverage` proves that every actual Foundation open
+`Semisentence language n` is covered, rather than merely a custom syntax.
+
+The equality-bit certificates initially required by that compiler have now been
+discharged: `PRAEqualityCode` constructs a finite equality code and proves its
+bitness and correctness as closed candidate-PRA theorems. Its proof uses
+parameterized open-induction subtraction invariants in arbitrary candidate
+models. Thus `PRAEqualityCode.PRA_proves_openCharacteristic` states, without
+certificate assumptions, that every such Foundation open semisentence has a
+fixed primitive-recursive characteristic code and a candidate-PRA proof of its
+universal correctness. The original statement covers finitely many *bound* variables. The later
+parameter-packing theorem below extends this to free numerical parameters.
+It does not handle bounded quantifiers or prove a
+universal presentation, Σ₁ witnessing, or conservation.
+
+The [parameter packing theorem](../reviews/pra-formula-parameters-root.md)
+now handles arbitrary open semipropositions by appending all free indices
+below the formula’s finite support to the bound arguments. Its exact semantic
+identity and candidate-PRA characteristic proof are independently replayed.
+Bounded quantifiers, universal presentation and Σ₁ witnessing remain open.

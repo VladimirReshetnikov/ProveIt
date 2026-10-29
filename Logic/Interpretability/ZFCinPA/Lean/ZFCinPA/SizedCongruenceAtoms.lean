@@ -443,18 +443,16 @@ theorem atom_for (r : (ℒₛₑₜ).Rel 2) (R : V) (hR : R = 0 ∨ R = 1)
   have dP₁ := eq_leaf ha₁ hb₁ la₁ hP₁ (fun z hz => by simp [hS₀, hz]) lS₀ fS₀ lP₁ fP₁
   have dP₂ := eq_leaf ha₂ hb₂ la₂ hP₂ (fun z hz => by simp [hS₁, hS₀, hz]) lS₁ fS₁ lP₂ fP₂
   -- the two atom leaves
-  have dRa : DLv 𝗭𝗙 (insert Ra S₂) (w + 1) := by
-    refine DLv.em hw4 ((lS₂.insert lRa).toLt hMw) (by simp [fRa, fS₂]) Ra (by simp) ?_
-    have : neg ℒₛₑₜ Ra = ^nrel 2 R (a₁ ∷ a₂ ∷ 0) :=
-      neg_rel (isRel_R hR) (by simp [ha₁.isUTerm, ha₂.isUTerm])
-    rw [this]
-    exact mem_bitInsert_iff.mpr (Or.inr (sΓ₂ (by simp [hΓdef])))
-  have dnRb : DLv 𝗭𝗙 (insert nRb S₂) (w + 1) := by
-    refine DLv.em hw4 ((lS₂.insert lnRb).toLt hMw) (by simp [fnRb, fS₂]) nRb (by simp) ?_
-    have : neg ℒₛₑₜ nRb = ^rel 2 R (b₁ ∷ b₂ ∷ 0) :=
-      neg_nrel (isRel_R hR) (by simp [hb₁.isUTerm, hb₂.isUTerm])
-    rw [this]
-    exact mem_bitInsert_iff.mpr (Or.inr (sΓ₂ (by simp [hΓdef])))
+  have atom_leaf (p : V) (hl : p ≤ lvB MM) (hf : IsFormula ℒₛₑₜ p)
+      (hneg : neg ℒₛₑₜ p ∈ Γ) : DLv 𝗭𝗙 (insert p S₂) (w + 1) := by
+    refine DLv.em hw4 ((lS₂.insert hl).toLt hMw) (by simp [hf, fS₂]) p (by simp) ?_
+    exact mem_bitInsert_iff.mpr (Or.inr (sΓ₂ hneg))
+  have dRa : DLv 𝗭𝗙 (insert Ra S₂) (w + 1) := atom_leaf Ra lRa fRa (by
+    rw [neg_rel (isRel_R hR) (by simp [ha₁.isUTerm, ha₂.isUTerm])]
+    simp [hΓdef])
+  have dnRb : DLv 𝗭𝗙 (insert nRb S₂) (w + 1) := atom_leaf nRb lnRb fnRb (by
+    rw [neg_nrel (isRel_R hR) (by simp [hb₁.isUTerm, hb₂.isUTerm])]
+    simp [hΓdef])
   have hw4' : ∀ k : V, 4 ≤ w + k := fun k => le_trans hw4 le_self_add
   have hMk : ∀ k : V, MM + 1 ≤ w + k := fun k => le_trans hMw le_self_add
   have m13 : w + 1 ≤ w + 1 + 3 := le_self_add

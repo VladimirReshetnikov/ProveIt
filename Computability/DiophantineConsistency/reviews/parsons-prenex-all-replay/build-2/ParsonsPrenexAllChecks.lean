@@ -1,0 +1,7 @@
+import DiophantineConsistency.ParsonsPrenexAll
+#print axioms DiophantineConsistency.ParsonsPrenexAll.guard_free
+#print axioms DiophantineConsistency.ParsonsPrenexAll.disjunction_to_all
+#print axioms DiophantineConsistency.ParsonsPrenexAll.all_to_disjunction
+#print axioms DiophantineConsistency.ParsonsPrenexAll.prove_disjunction_to_all
+#print axioms DiophantineConsistency.ParsonsPrenexAll.prove_all_to_disjunction
+#print axioms DiophantineConsistency.ParsonsPrenexAll.provability_equiv

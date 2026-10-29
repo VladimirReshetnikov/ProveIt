@@ -1,0 +1,12 @@
+'DiophantineConsistency.PRAOpenFormulaCompiler.formulaHolds_eval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAOpenFormulaCompiler.modelCompileFormula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAOpenFormulaCompiler.PRA_proves_formulaCorrect' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAOpenFormulaCompiler.PRA_proves_formulaCorrect {n : ℕ} (eqCode : Code 2) (p : OpenFormula n)
+  (hBit : PRA ⊢ eqBitSentence eqCode) (hCorrect : PRA ⊢ eqCorrectSentence eqCode) :
+  PRA ⊢ formulaCorrectSentence eqCode p

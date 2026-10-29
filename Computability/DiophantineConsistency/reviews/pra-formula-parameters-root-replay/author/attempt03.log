@@ -1,0 +1,18 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAFormulaParameters.lean:62:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Semiformula.Evalb ?m.53) (((Rewriting.app (Rew.fixitr n (Semiformula.fvSup φ))) φ).toEmpty ⋯)
+in the target expression
+  (Semiformula.Eval v Empty.elim) (packParameters φ) ↔
+    (Semiformula.Eval (fun i => v (Fin.castAdd (Semiformula.fvSup φ) i)) fun i =>
+        if hi : i < Semiformula.fvSup φ then v (Fin.natAdd n ⟨i, hi⟩) else fallback (i - Semiformula.fvSup φ))
+      φ
+
+M : Type
+inst✝ : Structure language M
+n : ℕ
+φ : Semiproposition language n
+v : Fin (n + Semiformula.fvSup φ) → M
+fallback : ℕ → M
+⊢ (Semiformula.Eval v Empty.elim) (packParameters φ) ↔
+    (Semiformula.Eval (fun i => v (Fin.castAdd (Semiformula.fvSup φ) i)) fun i =>
+        if hi : i < Semiformula.fvSup φ then v (Fin.natAdd n ⟨i, hi⟩) else fallback (i - Semiformula.fvSup φ))
+      φ

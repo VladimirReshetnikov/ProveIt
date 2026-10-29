@@ -1,0 +1,126 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptivePowerGrowth2011.lean:51:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+    (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0
+in the target expression
+  c = ycoord R (Y * (X + 1))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 13 → V
+hv : ∀ (j : Fin 13), 0 < v j
+hX : 16 ≤ v 6
+q : V := 1 + v 0 * ↑(p 0)
+X : V := v 6
+Y : V := v 7
+Q : V := X * Y * Y
+k : V := v 9 + v 10
+c : V := v 9 + Y * k
+a : V := X * Y + Y
+R : V := ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0
+first main n m t : V
+left✝⁷ : 0 < first
+left✝⁶ : 0 < main
+hn13 : 13 ≤ n
+left✝⁵ : n < m
+hmR :
+  m =
+    ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+      (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0
+hnR :
+  2 * n =
+    ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+        (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0 +
+      1
+left✝⁴ :
+  v 9 + v 10 =
+    ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+          (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0 +
+        1 +
+      4 * (v 6 * v 7 * v 7) * t
+left✝³ :
+  ArithmeticSignedPairs.magnitude
+      (ArithmeticAdaptiveFactorMagnitude2011.pairEval
+        (rootTerm (ArithmeticAdaptiveFactorMagnitude2011.factors fun j => ↑(p j)).1) v) =
+    (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * (v 0 * ↑(p 0)) * first
+left✝² :
+  ArithmeticSignedPairs.Equivalent
+    (ArithmeticAdaptiveFactorMagnitude2011.pairEval
+      (rootTerm (ArithmeticAdaptiveFactorMagnitude2011.factors fun j => ↑(p j)).2.1) v)
+    (ArithmeticSignedPairs.natural (v 7 * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * main))
+left✝¹ : xcoord n (2 * (v 6 * v 7 * v 7 - 1) + 1) = first
+hny : 2 * ycoord n (2 * (v 6 * v 7 * v 7 - 1) + 1) = v 9 + v 10
+left✝ : xcoord m (v 6 * v 7 + v 7) = main
+r : V := n - 1
+hn1 : 1 ≤ n
+hrplus : r + 1 = n
+hr2 : 2 ≤ r
+hR : R = 2 * r + 1
+hbase : a = Y * (X + 1)
+hmy : ycoord m a = c
+⊢ c = ycoord R (Y * (X + 1))
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptivePowerGrowth2011.lean:59:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  R
+in the target expression
+  PowerGrowth p v
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 13 → V
+hv : ∀ (j : Fin 13), 0 < v j
+hX : 16 ≤ v 6
+q : V := 1 + v 0 * ↑(p 0)
+X : V := v 6
+Y : V := v 7
+Q : V := X * Y * Y
+k : V := v 9 + v 10
+c : V := v 9 + Y * k
+a : V := X * Y + Y
+R : V := ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0
+first main n m t : V
+left✝⁷ : 0 < first
+left✝⁶ : 0 < main
+hn13 : 13 ≤ n
+left✝⁵ : n < m
+hmR :
+  m =
+    ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+      (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0
+hnR :
+  2 * n =
+    ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+        (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0 +
+      1
+left✝⁴ :
+  v 9 + v 10 =
+    ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+          (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0 +
+        1 +
+      4 * (v 6 * v 7 * v 7) * t
+left✝³ :
+  ArithmeticSignedPairs.magnitude
+      (ArithmeticAdaptiveFactorMagnitude2011.pairEval
+        (rootTerm (ArithmeticAdaptiveFactorMagnitude2011.factors fun j => ↑(p j)).1) v) =
+    (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * (v 0 * ↑(p 0)) * first
+left✝² :
+  ArithmeticSignedPairs.Equivalent
+    (ArithmeticAdaptiveFactorMagnitude2011.pairEval
+      (rootTerm (ArithmeticAdaptiveFactorMagnitude2011.factors fun j => ↑(p j)).2.1) v)
+    (ArithmeticSignedPairs.natural (v 7 * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * main))
+left✝¹ : xcoord n (2 * (v 6 * v 7 * v 7 - 1) + 1) = first
+hny : 2 * ycoord n (2 * (v 6 * v 7 * v 7 - 1) + 1) = v 9 + v 10
+left✝ : xcoord m (v 6 * v 7 + v 7) = main
+hmy : ycoord m (v 6 * v 7 + v 7) = v 9 + v 7 * (v 9 + v 10)
+r : V := n - 1
+hn1 : 1 ≤ n
+hrplus : r + 1 = n
+hr2 : 2 ≤ r
+hR : R = 2 * r + 1
+hbase : a = Y * (X + 1)
+hc : c = ycoord (2 * r + 1) (Y * (X + 1))
+hk : k = 2 * ycoord (r + 1) (2 * (X * Y * Y - 1) + 1)
+hg : Exp.exp (2 * r + 1) < Y
+⊢ PowerGrowth p v

@@ -1,0 +1,12 @@
+'DiophantineConsistency.PRACharacteristicBit.PRA_proves_compiledBit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRACharacteristicBit.PRA_proves_openBooleanCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRACharacteristicBit.PRA_proves_packedOpenBooleanCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRACharacteristicBit.PRA_proves_packedOpenBooleanCharacteristic {n : ℕ}
+  (φ : Semiproposition language n) (h : Semiformula.Open φ) :
+  ∃ c, Primrec (eval c) ∧ PRA ⊢ bitSentence c ∧ PRA ⊢ characteristicSentence c (packParameters φ)

@@ -29,6 +29,16 @@ lemma set_not_isFunc (k f : V) : ¬ (ℒₛₑₜ).IsFunc k f := by
   rw [show (instLORDefinableSet.func : 𝚺₀.Semisentence 2) = .mkSigma “k f. ⊥” from rfl] at h'
   simp at h'
 
+/-- The internal set-language relation codes are binary equality or membership. -/
+lemma set_isRel {k R : V} (hR : (ℒₛₑₜ).IsRel k R) : k = 2 ∧ (R = 0 ∨ R = 1) := by
+  have hr' : V ⊧/![k, R] (LeanProofs.ZFCinPA.instLORDefinableSet.rel).val := hR
+  rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.rel : 𝚺₀.Semisentence 2) =
+    .mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)” from rfl] at hr'
+  have hc : (k = 2 ∧ R = 0) ∨ (k = 2 ∧ R = 1) := by simpa using hr'
+  rcases hc with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact ⟨h1, Or.inl h2⟩
+  · exact ⟨h1, Or.inr h2⟩
+
 /-- **Every closed internal term of `ℒₛₑₜ` is a free variable.** -/
 lemma isTerm_eq_fvar {t : V} (ht : IsTerm ℒₛₑₜ t) : ∃ j, t = ^&j :=
   IsSemiterm.induction 𝚺 (P := fun t : V => ∃ j, t = ^&j) (by definability)

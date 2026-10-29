@@ -1,0 +1,28 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAOpenFormulaCompiler.lean:161:0: warning: automatically included section variable(s) unused in theorem `DiophantineConsistency.PRAOpenFormulaCompiler.modelEqCertificate`:
+  [M↓[language] ⊧* PRA]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [M↓[language] ⊧* PRA] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAOpenFormulaCompiler.lean:194:2: error: Tactic `tauto` failed
+
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+eqCode : Code 2
+p : OpenFormula n
+hEq :
+  ∀ (x y : M),
+    IsBit (Structure.func eqCode ![x, y]) ∧ (Structure.func eqCode ![x, y] = Structure.func oneCode Fin.elim0 ↔ x = y)
+e : Fin n → M
+h :
+  Structure.func (compileFormula eqCode p) e = Structure.func oneCode Fin.elim0 ↔
+    (Semiformula.Eval e Empty.elim) (asFormula p)
+hz : (fun i => Semiterm.val e Empty.elim i.elim0) = Fin.elim0
+⊢ (¬(Structure.func (compileFormula eqCode p) fun x => e x) = Structure.func oneCode Fin.elim0 ∨
+      Semiformula.EvalAux inferInstance Empty.elim e (asFormula p)) ∧
+    (Semiformula.EvalAux inferInstance Empty.elim e (Semiformula.neg (asFormula p)) ∨
+      (Structure.func (compileFormula eqCode p) fun x => e x) = Structure.func oneCode Fin.elim0)

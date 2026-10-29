@@ -1,0 +1,8 @@
+import DiophantineConsistency.ParsonsPrenex
+#print axioms DiophantineConsistency.ParsonsPrenex.exists_mono
+#print axioms DiophantineConsistency.ParsonsPrenex.disjunction_to_exs
+#print axioms DiophantineConsistency.ParsonsPrenex.exs_to_disjunction
+#print axioms DiophantineConsistency.ParsonsPrenex.prove_disjunction_to_exs
+#print axioms DiophantineConsistency.ParsonsPrenex.prove_exs_to_disjunction
+#print axioms DiophantineConsistency.ParsonsPrenex.provability_equiv
+#print axioms DiophantineConsistency.ParsonsPrenex.strict_matrix

@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRASubSuccessorInvariant
+#print axioms DiophantineConsistency.PRASubSuccessorInvariant.modelSubSuccessorInvariant
+#print axioms DiophantineConsistency.PRASubSuccessorInvariant.modelSubSuccZero
+#check DiophantineConsistency.PRASubSuccessorInvariant.modelSubSuccZero

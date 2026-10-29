@@ -53,3 +53,7 @@ tuple variables avoid silently assuming that one arithmetic variable codes an
 arbitrary tuple. The cut-free translation then has to show that the resulting
 side form is stable under each LK rule and under opening parameter blocks.
 Neither this adapter nor the complete cut-free translation has been proved.
+
+The [reverse implication](../reviews/parsons-collection-root.md) is now an
+actual rule-calculus proof for arbitrary D, n and free parameters. The
+forward finite-collection implication remains open.

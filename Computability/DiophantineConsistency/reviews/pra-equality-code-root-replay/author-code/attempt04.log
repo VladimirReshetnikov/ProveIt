@@ -1,0 +1,11 @@
+'DiophantineConsistency.PRAEqualityCode.PRA_proves_equalityBit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAEqualityCode.PRA_proves_equalityCorrect' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAEqualityCode.PRA_proves_openCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAEqualityCode.PRA_proves_openCharacteristic {n : ℕ} (φ : Semisentence language n)
+  (h : Semiformula.Open φ) : ∃ c, Primrec (eval c) ∧ PRA ⊢ characteristicSentence c φ

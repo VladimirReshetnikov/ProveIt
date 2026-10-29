@@ -1,0 +1,9 @@
+'DiophantineConsistency.PRAOpenFormulaCoverage.parseFormula_open' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAOpenFormulaCoverage.PRA_proves_openCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAOpenFormulaCoverage.PRA_proves_openCharacteristic {n : ℕ} (eqCode : Code 2)
+  (hBit : PRA ⊢ eqBitSentence eqCode) (hCorrect : PRA ⊢ eqCorrectSentence eqCode) (φ : Semisentence language n)
+  (hOpen : Semiformula.Open φ) : ∃ c, Primrec (eval c) ∧ PRA ⊢ characteristicSentence c φ

@@ -6,6 +6,36 @@ primitive recursive arithmetic (PRA). The earlier request for an HA derivation
 also remains relevant. Existence of an object-theory proof is enough; a
 printed proof is not required.
 
+## Current scope and open endpoints
+
+The 14-variable equation in `equation.pdf` has closed IΣ₁ and HA
+proof-existence theorems, but no Lean theorem producing the requested PRA
+derivation. The candidate PRA development now includes an actual proof
+calculus, an ordered-ring embedding, and characteristic codes for open
+formulas with finitely many packed parameters. The formal conservation and
+witnessing arguments remain open; the candidate's comparison with a standard
+PRA presentation also remains to be proved.
+The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
+are proved for Σ₁ relations, but assembling the inference still assumes a
+proof of its finite-extension step. This is not a completed collection rule.
+
+For the selected 13-variable adaptive equation, the actual-zero arithmetic
+now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
+[power recovery](reviews/adaptive-power-finish2011-root.md), and the
+[aligned radix](reviews/adaptive-radix2011-root.md) in arbitrary IΣ₁ models.
+The machine-window soundness, internal converse and final HA/PRA
+proof-existence endpoints remain open.
+
+Lower-variable forms are also part of the objective. The existing
+[`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
+and [`SplitNineSource59`](Lean/DiophantineConsistency/SplitNineSource59.lean)
+give nine-coordinate standard-natural existence comparisons to parameterized
+source rows, under their stated validity bounds. These source comparisons do
+not themselves identify the fixed equation with ZFC consistency or produce
+an internal IΣ₁, HA, or PRA proof of that equivalence. They do not discharge
+the other selected compact or quartic forms. Later entries record historical
+checkpoints and should be read in light of this current scope.
+
 ## What is already proved
 
 For the maintained 14-positive-variable equation,
@@ -80,7 +110,8 @@ the actual positive transport and gap. The [transport quotient theorem](reviews/
 now derives the exact positive transport multiple. The [main-root orientation theorem](reviews/adaptive-main-orientation2011-root.md)
 now derives its positive signed representation. The [Pell index client](reviews/adaptive-pell-indices2011-root.md)
 constructs positive bounded indices for both recurrences from the actual zero.
-Their relation, power recovery and the full zero-existence equivalence remain open.
+Their exact relation and power recovery have since been established as linked
+above; the full zero-existence equivalence remains open.
 
 The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
 now proves in Lean that both maintained source sentences are Π₁ and their
@@ -197,3 +228,35 @@ derives the exact mapped Foundation addition-commutativity, additive-order
 witness, addition-zero and multiplication-zero axioms in candidate PRA.
 The remaining PA-minus axioms, formula compilation and the full
 conservation argument remain open.
+
+The [open-semisentence characteristic theorem](reviews/pra-equality-code-root.md)
+is now unconditional: a concrete finite equality code discharges both
+certificates, so every Foundation open semisentence with finitely many bound
+inputs has a PR characteristic and a candidate-PRA proof of correctness.
+Free-parameter packing, bounded formulas, universal presentation and
+general Σ₁ witnessing remain open.
+
+The [formula-parameter packing](reviews/pra-formula-parameters-root.md)
+extends the open characteristic result to arbitrary free numerical parameters
+by explicit finite argument packing with an exact evaluation theorem.
+Bounded formulas, universal presentation and Σ₁ witnessing remain open.
+
+The [characteristic bit theorem](reviews/pra-characteristic-bit-root.md)
+now supplies actual candidate-PRA proofs of both Boolean range and formula
+correctness for every open formula after packing its free parameters.
+Bounded formulas and Σ₁ witnessing remain open.
+
+The [selection code](reviews/pra-select-code-root.md) has both defining
+equations as closed candidate-PRA derivations and an all-model composition
+interface. A bounded search invariant and universal presentation remain open.
+
+The [bounded-search code](reviews/pra-bounded-search-code-root.md) now has
+its all-model zero and step equations for arbitrary fixed predicates and
+parameters. Its search correctness and universal presentation are still open.
+
+The [bounded-search invariants](reviews/pra-search-invariants-root.md) now
+provide closed candidate-PRA candidate and predecessor conditions for any
+fixed predicate code. A separate logical lemma derives Boolean induction
+from these conditions, bitness, successor exhaustion and base/step. The
+actual universal theory, presentation equivalence and general Σ₁ witnessing
+remain open.

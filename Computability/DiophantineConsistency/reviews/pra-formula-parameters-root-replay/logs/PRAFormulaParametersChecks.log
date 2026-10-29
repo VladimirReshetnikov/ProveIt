@@ -1,0 +1,12 @@
+'DiophantineConsistency.PRAFormulaParameters.packParameters_eval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFormulaParameters.PRA_proves_packedOpenCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAFormulaParameters.packParameters_eval {M : Type} [Structure language M] {n : ℕ}
+  (φ : Semiproposition language n) (v : Fin (n + Semiformula.fvSup φ) → M) (fallback : ℕ → M) :
+  (Semiformula.Eval v Empty.elim) (packParameters φ) ↔
+    (Semiformula.Eval (fun i => v (Fin.castAdd (Semiformula.fvSup φ) i)) fun i =>
+        if hi : i < Semiformula.fvSup φ then v (Fin.natAdd n ⟨i, hi⟩) else fallback (i - Semiformula.fvSup φ))
+      φ
