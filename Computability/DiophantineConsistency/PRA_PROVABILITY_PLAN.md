@@ -57,7 +57,8 @@ now connects the designated addition and successor symbols in that theory.
 The [predecessor exhaustion theorem](reviews/pra-exhaustion-root.md) is also
 a closed derivation using its recursion and open-induction axioms. The
 [addition clauses](reviews/pra-addition-root.md) are also derived in the
-candidate object theory.
+candidate object theory; the [multiplication clauses](reviews/pra-multiplication-root.md)
+have likewise been derived.
 Compatibility with a standard PRA presentation, further arithmetic bridges,
 primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
 
