@@ -21,4 +21,8 @@ unchanged local objects remain inherited cache boundaries.
 
 After this replay, an upstream merge simplified two case proofs in
 `PRAUniversalAxiomSyntax.lean`. The replay above authenticates the prior source
-snapshot, not the newly merged file; a source-current replay is pending.
+snapshot. A [source-current replay](pra-universal-syntax-current-replay/)
+against the independently rebuilt equivalence provider has now passed twice,
+with matching sources, objects and complete logs for all four syntax modules.
+The updated `PRAUniversalAxiomSyntax` source SHA-256 is
+`fe89529a11f6d0c5c816885234fe4947da0285a71f8a3cd90a981e897fa12f3a`.
