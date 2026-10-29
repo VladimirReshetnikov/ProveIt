@@ -46,6 +46,10 @@ theorem one_le_two_mul_add_two (b : V) : 1 ≤ 2 * (b + 2) :=
   le_trans (by simp : (1:V) ≤ 2) (le_mul_of_one_le_right (by simp)
     (le_trans (by simp : (1:V) ≤ 2) (le_add_of_nonneg_left (by simp))))
 
+private theorem pell_pmono {a b m n : V} (hab : a ≤ b) (hmn : m ≤ n) :
+    power (2 * (a + 2)) m ≤ power (2 * (b + 2)) n :=
+  pmono (one_le_two_mul_add_two _) (mm le_rfl (add_le_add hab le_rfl)) hmn
+
 theorem le_self_mul {x y : V} (hy : 1 ≤ y) : x ≤ x * y := le_mul_of_one_le_right (by simp) hy
 
 /-! ### Pell growth from above at every index -/
@@ -91,20 +95,20 @@ theorem Bs_mono : Bs R ≤ Bs R' :=
   mm (mm (mm le_rfl (exp_monotone_le.mpr h)) (Ys_mono h)) (Ys_mono h)
 
 theorem Ps_mono : Ps R ≤ Ps R' :=
-  pmono (one_le_two_mul_add_two _) (mm le_rfl (add_le_add (Bs_mono h) le_rfl)) h
+  pell_pmono (Bs_mono h) h
 
 theorem Gs_mono : Gs R ≤ Gs R' :=
-  pmono (one_le_two_mul_add_two _) (mm le_rfl (add_le_add (As_mono h) le_rfl)) h
+  pell_pmono (As_mono h) h
 
 theorem Fs_mono : Fs R ≤ Fs R' :=
-  pmono (one_le_two_mul_add_two _) (mm le_rfl (add_le_add (As_mono h) le_rfl)) (mm h (Gs_mono h))
+  pell_pmono (As_mono h) (mm h (Gs_mono h))
 
 theorem Is_mono : Is R ≤ Is R' :=
   mm (mm (mm (mm (add_le_add (As_mono h) le_rfl) (add_le_add (As_mono h) le_rfl)) (Fs_mono h))
     (Gs_mono h)) (Gs_mono h)
 
 theorem Us_mono : Us R ≤ Us R' :=
-  pmono (one_le_two_mul_add_two _) (mm le_rfl (add_le_add (Is_mono h) le_rfl)) h
+  pell_pmono (Is_mono h) h
 
 end mono
 
@@ -146,13 +150,13 @@ theorem seed_bounds (u R s n eta zeta gamma : V) (hs0 : 0 < s)
           rw [show 2*Exp.exp R*Ys R*Ys R = 2*(X*Ys R*Ys R) by rw [hXdef]; ring]
           exact mm le_rfl (mm (mm le_rfl hs) hs)
   have hPs : power (2*((2*(X*Y*Y-1)+1)+2)) (r+1) ≤ Ps R :=
-    pmono (one_le_two_mul_add_two _) (mm le_rfl (add_le_add hBle le_rfl)) hrR
+    pell_pmono hBle hrR
   have htauP : xcoord (r+1) (2*(X*Y*Y-1)+1) ≤ Ps R := le_trans (x_le _ _) hPs
   have hkP : eta+zeta ≤ 2*Ps R := by rw [hk]; exact mm le_rfl (le_trans (y_le _ _) hPs)
   -- the main base and ordinate
   have hA : X*Y+Y ≤ As R := add_le_add (mm le_rfl hs) hs
   have hG : ∀ t, t ≤ R → power (2*((X*Y+Y)+2)) t ≤ Gs R := fun t ht =>
-    pmono (one_le_two_mul_add_two _) (mm le_rfl (add_le_add hA le_rfl)) ht
+    pell_pmono hA ht
   refine ⟨?_, le_trans (le_add_of_nonneg_right (by simp)) hkP,
     le_trans (le_add_of_nonneg_left (by simp)) hkP, ?_, hA, le_trans (y_le _ _) (hG R le_rfl)⟩
   · -- `X*Y*n + k - R = τ`
@@ -183,11 +187,10 @@ theorem aux_bounds (a R f i T u y : V) (hR : 0 < R) (ha : a ≤ As R)
     f ≤ Fs R ∧ i ≤ Fs R ∧ y ≤ Us R ∧ T ≤ Us R + Gs R + Fs R * Fs R * R := by
   set c := ycoord R a with hcdef
   have hc1 : 1 ≤ c := le_trans (pos_iff_one_le.mp hR) (time_le_y R a)
-  have hbase : 2*(a+2) ≤ 2*(As R+2) := mm le_rfl (add_le_add ha le_rfl)
   have hcG : c ≤ Gs R :=
-    le_trans (y_le _ _) (pmono (one_le_two_mul_add_two _) hbase le_rfl)
+    le_trans (y_le _ _) (pell_pmono ha le_rfl)
   have hF : power (2*(a+2)) (R*c) ≤ Fs R :=
-    pmono (one_le_two_mul_add_two _) hbase (mm le_rfl hcG)
+    pell_pmono ha (mm le_rfl hcG)
   have hfF : f ≤ Fs R := by rw [hfx]; exact le_trans (x_le _ _) hF
   have hiF : i ≤ Fs R := by
     calc i ≤ i*c*c := le_trans (le_self_mul hc1) (le_self_mul hc1)
@@ -198,8 +201,7 @@ theorem aux_bounds (a R f i T u y : V) (hR : 0 < R) (ha : a ≤ As R)
     rw [hIdef, Is, delta]
     exact mm (mm (mm (mm (add_le_add ha le_rfl) (add_le_add ha le_rfl)) hiF) hcG) hcG
   have hU : power (2*((I-2)+2)) R ≤ Us R :=
-    pmono (one_le_two_mul_add_two _) (mm le_rfl (add_le_add (le_trans tsub_le_self hI) le_rfl))
-      le_rfl
+    pell_pmono (le_trans tsub_le_self hI) le_rfl
   have hyU : y ≤ Us R := by rw [hy]; exact le_trans (y_le _ _) hU
   have hI1 : 1 ≤ I := by
     have hd1 : 1 ≤ delta a := one_le_mul (le_add_of_nonneg_left (by simp))
