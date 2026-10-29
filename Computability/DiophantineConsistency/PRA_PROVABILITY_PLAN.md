@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A later upstream merge generalized `PRAFormulaParameters.qr_rew` and updated
+`PRAUniversalSyntax` to use it. The affected universal-presentation, syntax
+and Herbrand replays below authenticate their earlier source snapshots; a
+source-current downstream rebuild is in progress.
+
 The 14-variable equation in `equation.pdf` has closed IΣ₁ and HA
 proof-existence theorems, but no Lean theorem producing the requested PRA
 derivation. The candidate PRA development now includes an actual proof
@@ -130,6 +135,9 @@ witness. Extraction of that disjunction from a general proof remains open.
 The [open-matrix selection bridge](reviews/pra-herbrand-selection-root.md)
 now accepts the actual Foundation open formula and a finite-disjunction proof
 in the universal theory, yielding a candidate-PRA proof at one PR witness.
+The [existential-sequent structure](reviews/herbrand-existential-sequents-root.md)
+shows the relevant cut-free proofs contain no universal-rule nodes and collects
+their existential terms. The disjunction extraction itself remains open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive

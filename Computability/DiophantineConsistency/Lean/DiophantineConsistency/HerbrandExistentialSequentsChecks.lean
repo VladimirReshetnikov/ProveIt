@@ -1,0 +1,5 @@
+import DiophantineConsistency.HerbrandExistentialSequents
+#print axioms DiophantineConsistency.HerbrandExistentialSequents.noUniversal_rew_iff
+#print axioms DiophantineConsistency.HerbrandExistentialSequents.noUniversal_neg_of_prefix
+#print axioms DiophantineConsistency.HerbrandExistentialSequents.cutFree_noUniversalRule
+#check DiophantineConsistency.HerbrandExistentialSequents.cutFree_noUniversalRule

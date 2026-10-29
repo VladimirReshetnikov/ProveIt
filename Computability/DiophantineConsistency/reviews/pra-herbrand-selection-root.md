@@ -17,3 +17,7 @@ driver, state and logs](pra-herbrand-selection-root-replay/) and the
 [author packet](pra-herbrand-selection-author-replay/) are retained. Historical
 failed attempts are evidence only, not compiled proof inputs. Foundation,
 Mathlib and unchanged local objects remain inherited cache boundaries.
+
+A subsequent upstream merge changed `PRAFormulaParameters.lean` and
+`PRAUniversalSyntax.lean`. This receipt authenticates the earlier snapshot;
+the affected downstream source-current replay is pending.
