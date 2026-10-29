@@ -54,7 +54,7 @@ theorem outer_seed_with_size (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop 
   have hpr : population r=3*u+1 := by
     rw [population_odd] at hpop
     exact add_right_cancel (hpop.trans (by ring))
-  have hu1 : 1≤u := by simpa using lt_iff_succ_le.mp hu
+  have hu1 : 1≤u := pos_iff_one_le.mp hu
   have hr4 : 4≤r := by
     have h4 : (4:V)≤3*u+1 := by
       have : (3:V)*1≤3*u := mul_le_mul_of_nonneg_left hu1 (by simp)
@@ -128,11 +128,8 @@ theorem outer_seed_with_size (u R : V) (hu : 0<u) (hodd : ∃ r, R=2*r+1) (hpop 
   have hnρ : n+2*σ=ρ := by
     rw [hn_def]; exact tsub_add_cancel_of_le (le_trans (le_add_of_nonneg_right (by simp)) hρ)
   have hn : 0<n := by
-    have : 2*σ+0<2*σ+n := by
-      calc 2*σ+0<2*σ+2 := add_lt_add_of_le_of_lt le_rfl (by simp)
-        _≤ρ := hρ
-        _=2*σ+n := by rw [←hnρ]; ring
-    exact lt_of_add_lt_add_left this
+    rw [hn_def]
+    exact tsub_pos_of_lt (lt_of_lt_of_le (by simp : 2*σ<2*σ+2) hρ)
   obtain ⟨gamma,hgamma⟩ := projection_quotient (X*Y+Y) (2*r+1)
   have hYX : Y*(X+1)=X*Y+Y := by ring
   rw [hYX] at hcd
