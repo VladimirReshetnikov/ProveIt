@@ -49,13 +49,9 @@ theorem seventy_two_lt_exp (r : V) (hr : 4≤r) : 72*r<Exp.exp (2*r+1) := by
   rwa [add_tsub_cancel_of_le hr] at h
 
 private theorem dvd_of_add {d C b : V} (hd : 0<d) (hsum : d∣C+b) (hb : d∣b) : d∣C := by
-  rcases hsum with ⟨α,hα⟩
-  rcases hb with ⟨β,rfl⟩
-  have hle : d*β≤d*α := by rw [←hα]; exact le_add_of_nonneg_left (by simp)
-  have hβα : β≤α := le_of_mul_le_mul_left hle hd
-  refine ⟨α-β,?_⟩
-  have h1 : d*(α-β)+d*β=d*α := by rw [←mul_add,tsub_add_cancel_of_le hβα]
-  exact add_right_cancel (hα.trans h1.symm)
+  apply mod_eq_zero_iff_dvd.mp
+  have hz : (C+b)%d = 0 := mod_eq_zero_iff_dvd.mpr hsum
+  rwa [mod_add_remove_right_of_dvd hb hd] at hz
 
 private theorem cancel_lt {m x y : V} (h : m*x<m*y) : x<y :=
   lt_of_mul_lt_mul_left h (by simp)
