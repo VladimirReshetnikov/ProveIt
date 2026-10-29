@@ -2624,3 +2624,7 @@ source. Power recovery, internal converse and HA transfer remain open.
 The [adaptive power projection](reviews/adaptive-power-projection2011-root.md)
 now derives `q | 3X` and `q ≤ 3X` from the literal current zero. Power
 recovery itself and the internal converse remain open.
+
+The [current adaptive X bound](reviews/adaptive-power-lower2011-root.md)
+now derives `16 ≤ X` from the literal zero and fixed radix-47 port. This
+supplies a growth-theorem premise, not the power representation itself.
