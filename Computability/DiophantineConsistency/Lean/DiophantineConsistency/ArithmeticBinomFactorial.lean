@@ -106,9 +106,7 @@ private theorem bounded_factorial (n : V) :
     · rw [zero_add] at h
       subst h
       simp
-    · have hkj : k+j=n := by
-        have h' : (k+j)+1=n+1 := by rw [←h]; ring
-        exact add_right_cancel h'
+    · have hkj : k+j=n := add_right_cancel (by rw [←h]; ring)
       have hkn : k≤n := by rw [←hkj]; exact le_add_of_nonneg_right (by simp)
       have hjn : j≤n := by rw [←hkj]; exact le_add_of_nonneg_left (by simp)
       have T1 : binom n k*fact (k+1)*fact j=(k+1)*fact n := by
@@ -139,7 +137,6 @@ theorem binom_mul_fact (k j : V) : binom (k+j) k*fact k*fact j=fact (k+j) :=
 
 /-- The central case `binom (2r) r * r! * r! = (2r)!`. -/
 theorem central_binom_mul_fact (r : V) : binom (2*r) r*fact r*fact r=fact (2*r) := by
-  have h := binom_mul_fact r r
-  rwa [show r+r=2*r by ring] at h
+  simpa only [←two_mul] using binom_mul_fact r r
 
 end DiophantineConsistency.ArithmeticBinomFactorial
