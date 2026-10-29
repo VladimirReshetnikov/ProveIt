@@ -1543,5 +1543,15 @@ clients pass with identical client objects; all 11 existing target reports,
 direct providers match current-source receipts and the wider closure remains
 cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-binom-odd-sharing-evidence/BUNDLE.json).
 
+The packing-to-positive-zero sharing `c54276ca56` removes six net Lean
+lines, bringing the reviewed series to 9881. An actual packing now supplies
+both the inconsistency and blank-halting endpoints through one shared theorem.
+Paired targets and check clients pass over a refreshed carrier/seed/provider
+chain, with identical client objects; existing named endpoint reports, 55,579
+simp entries and 23,485 instances match. One public helper and its generated
+proof are added; two unregistered generated endpoint proofs disappear. An
+older SignedPellResidue object and the wider transitive closure remain cached.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-packing-positive-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
