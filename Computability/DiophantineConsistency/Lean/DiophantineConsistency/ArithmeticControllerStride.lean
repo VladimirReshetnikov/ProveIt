@@ -35,18 +35,11 @@ theorem stride (d N s R : V) (hd : 0 < d) (hs0 : 0 < s) (hsN : s < N)
   have hRd : d * N * (R / (d * N)) + d * s = R := by
     have := div_add_mod R (d * N); rwa [hR] at this
   set q := R / (d * N)
-  -- q ≥ 2
   have hq2 : 2 ≤ q := by
-    by_contra hc
-    have hq1 : q ≤ 1 := by
-      have : q < 1 + 1 := by rw [one_add_one_eq_two]; exact lt_of_not_ge hc
-      exact le_iff_lt_succ.mpr this
-    have : R < 2 * (d * N) := by
-      calc R = d * N * q + d * s := hRd.symm
-        _ < d * N * 1 + d * N := add_lt_add_of_le_of_lt
-            (mul_le_mul_of_nonneg_left hq1 (Arithmetic.zero_le _)) hds
-        _ = 2 * (d * N) := by ring
-    exact absurd hbig (not_lt.mpr this.le)
+    have hmul : (2:V) * (d*N) < (q+1) * (d*N) := by
+      have h := lt_trans hbig (lt_mul_div R hM)
+      simpa only [mul_comm (d*N)] using h
+    exact le_iff_lt_succ.mpr (Arithmetic.lt_of_mul_lt_mul_right hmul)
   obtain ⟨r, hr⟩ : ∃ r, q = r + 1 + 1 := ⟨q - 2, by
     rw [add_assoc, one_add_one_eq_two, tsub_add_cancel_of_le hq2]⟩
   have hRform : R = d * (N * (r + 1) + s) + d * N := by
@@ -66,14 +59,12 @@ theorem stride (d N s R : V) (hd : 0 < d) (hs0 : 0 < s) (hsN : s < N)
           (le_add_of_nonneg_left (Arithmetic.zero_le r))) le_rfl
   · rw [hdiv, add_comm, mod_add_mul' _ _ hN, mod_eq_self_of_lt hsN]
   · rw [← exp_add, tsub_add_cancel_of_le hle]
-  · have hq0 : (1 : V) ≤ Exp.exp (d * N) := one_le_exp _
-    have hq1 : (0 : V) < Exp.exp (d * N) - 1 := tsub_pos_of_lt (one_lt_exp hM)
-    obtain ⟨t', ht'⟩ := power_one_add_mul (Exp.exp (d * N) - 1) (r + 1)
-    rw [add_tsub_cancel_of_le hq0, ← power_two, power_iterate] at ht'
-    simp only [power_two] at ht'
-    rw [hRu, mul_add, exp_add, show d * (N * (r + 1)) = d * N * (r + 1) by ring, ht',
-      show (1 + (Exp.exp (d * N) - 1) * t') * Exp.exp (d * s) =
-        Exp.exp (d * s) + (Exp.exp (d * N) - 1) * (t' * Exp.exp (d * s)) by ring,
-      mod_add_mul' _ _ hq1]
+  · have hq1 : (0 : V) < Exp.exp (d * N) - 1 := tsub_pos_of_lt (one_lt_exp hM)
+    rw [hRu]
+    have hm : (N*(r+1)+s) % N = s := by
+      rw [show N*(r+1)+s = s+N*(r+1) by ring, mod_add_mul' _ _ hN,
+        mod_eq_self_of_lt hsN]
+    simpa only [mul_one, hm] using
+      ArithmeticCyclicWord.exp_mod_period d N (N*(r+1)+s) (1:V) hN hq1
 
 end DiophantineConsistency.ArithmeticControllerStride
