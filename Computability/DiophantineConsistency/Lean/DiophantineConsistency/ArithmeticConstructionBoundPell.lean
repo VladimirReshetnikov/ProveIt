@@ -50,16 +50,13 @@ theorem le_self_mul {x y : V} (hy : 1 ≤ y) : x ≤ x * y := le_mul_of_one_le_r
 
 /-! ### Pell growth from above at every index -/
 
-theorem y_le (t b : V) : ycoord t b ≤ power (2 * (b + 2)) t := by
-  rcases zero_or_succ t with rfl | ⟨t, rfl⟩
-  · simp
-  · exact le_trans (ycoord_le_power b t)
-      (power_mono_exponent _ _ _ (one_le_two_mul_add_two b) (le_add_of_nonneg_right (by simp)))
-
 theorem x_le (t b : V) : xcoord t b ≤ power (2 * (b + 2)) t := by
   have h := ycoord_le_power b t
   rw [y_succ] at h
   exact le_trans (le_add_of_nonneg_right (by simp)) h
+
+theorem y_le (t b : V) : ycoord t b ≤ power (2 * (b + 2)) t :=
+  le_trans (le_of_lt (ordinate_lt_abscissa b t)) (x_le t b)
 
 /-! ### The bound functions -/
 
