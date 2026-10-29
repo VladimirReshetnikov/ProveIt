@@ -49,9 +49,8 @@ theorem modelCodeWitnessSentence : M↓[language] ⊧ codeWitnessSentence := by
   simp [Semiformula.EvalAux, Semiformula.neg, eqRel, applyCode, Function.comp_def]
   have hrel : (fun i : Fin 2 => Semiterm.val e Empty.elim (![.bvar 0, .bvar 1] i : TermN 2)) =
       ![e 0, e 1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Function.comp_def, Semiterm.val_bvar] using
+      val_term_pair e (.bvar 0) (.bvar 1)
   have hadd : (fun i : Fin 2 => Semiterm.val e Empty.elim
       (![.bvar 0, .func Code.succ (fun _ => .func witnessCode ![.bvar 0, .bvar 1])] i : TermN 2)) =
       ![e 0, Structure.func (L := language) Code.succ (fun _ =>
