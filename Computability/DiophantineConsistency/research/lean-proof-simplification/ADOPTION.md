@@ -1856,5 +1856,12 @@ builds pass; client objects differ for an unknown reason, while the checked
 declaration and registration reports match. The transitive closure remains
 cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-tiling-band-fixed-evidence/BUNDLE.json).
 
+The Pell coordinate-positivity simplification `477b3197a1` removes six net
+Lean lines, bringing the reviewed series to 10147. Both norm proofs derive
+positivity directly from their positive square. Coherent paired target and five
+direct client builds pass with identical client objects; target declaration and
+registration reports match. An older transitive Pell/GCD chain remains cached.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-positive-reflect-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
