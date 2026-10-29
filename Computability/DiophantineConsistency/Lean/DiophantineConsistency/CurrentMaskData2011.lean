@@ -17,6 +17,23 @@ def beta : ℕ := radix ^ 2011 - 1
 
 irreducible_def lowSupport : Finset ℕ := Finset.range 951 ∪ Finset.Ico 960 986 ∪ {1004}
 
+/-- The two nontrivial components of the low-mask support are disjoint. -/
+theorem lowSupport_range_Ico_disjoint :
+    Disjoint (Finset.range 951) (Finset.Ico 960 986) := by
+  apply Finset.disjoint_left.mpr
+  intro j hj hk
+  simp only [Finset.mem_range, Finset.mem_Ico] at hj hk
+  omega
+
+/-- The marker is outside both preceding support intervals. -/
+theorem lowSupport_marker_disjoint :
+    Disjoint (Finset.range 951 ∪ Finset.Ico 960 986) ({1004} : Finset ℕ) := by
+  apply Finset.disjoint_left.mpr
+  intro j hj hk
+  simp only [Finset.mem_union, Finset.mem_range, Finset.mem_Ico,
+    Finset.mem_singleton] at hj hk
+  omega
+
 def lowPort : ℕ := mask radix 2 2011 lowSupport
 
 /-- All nonzero high-mask digits occur in this1006-digit prefix. -/

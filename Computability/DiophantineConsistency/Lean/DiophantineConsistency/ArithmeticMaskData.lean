@@ -59,17 +59,8 @@ theorem sum_Ico_pow (b a n : ℕ) : (∑ j ∈ Finset.Ico a (a+n), b^j) = b^a * 
 
 theorem support_value :
     (∑ j ∈ lowSupport, radix^j) = G radix 951 + radix^960 * G radix 26 + radix^1004 := by
-  have h1 : Disjoint (Finset.range 951) (Finset.Ico 960 986) := by
-    apply Finset.disjoint_left.mpr
-    intro j hj hk
-    simp only [Finset.mem_range, Finset.mem_Ico] at hj hk
-    omega
-  have h2 : Disjoint (Finset.range 951 ∪ Finset.Ico 960 986) ({1004} : Finset ℕ) := by
-    apply Finset.disjoint_left.mpr
-    intro j hj hk
-    simp only [Finset.mem_union, Finset.mem_range, Finset.mem_Ico,
-      Finset.mem_singleton] at hj hk
-    omega
+  have h1 := lowSupport_range_Ico_disjoint
+  have h2 := lowSupport_marker_disjoint
   rw [lowSupport_def, Finset.sum_union h2, Finset.sum_union h1, Finset.sum_singleton,
     sum_range_pow, show (986:ℕ) = 960 + 26 by rfl, sum_Ico_pow]
 

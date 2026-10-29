@@ -28,17 +28,8 @@ theorem lowSupport_lt : lowSupport ⊆ Finset.range 2011 := by
   omega
 
 theorem lowSupport_card : lowSupport.card = 978 := by
-  have h1 : Disjoint (Finset.range 951) (Finset.Ico 960 986) := by
-    apply Finset.disjoint_left.mpr
-    intro j hj hk
-    simp only [Finset.mem_range, Finset.mem_Ico] at hj hk
-    omega
-  have h2 : Disjoint (Finset.range 951 ∪ Finset.Ico 960 986) ({1004} : Finset ℕ) := by
-    apply Finset.disjoint_left.mpr
-    intro j hj hk
-    simp only [Finset.mem_union, Finset.mem_range, Finset.mem_Ico,
-      Finset.mem_singleton] at hj hk
-    omega
+  have h1 := lowSupport_range_Ico_disjoint
+  have h2 := lowSupport_marker_disjoint
   rw [lowSupport_def, Finset.card_union_of_disjoint h2, Finset.card_union_of_disjoint h1]
   norm_num
 
