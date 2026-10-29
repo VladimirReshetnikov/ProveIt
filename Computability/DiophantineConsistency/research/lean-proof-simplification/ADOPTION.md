@@ -2143,5 +2143,15 @@ source-matched receipts; the wider closure remains cached. The compact [evidence
 note](../../reviews/lean-proof-simplification-20261029-firstnorm-time-positive.md)
 records hashes and external paths without raw logs or objects.
 
+The annotated local-check case analyses `a234909040` remove 30 net Lean lines,
+bringing the reviewed series to 10402. Uniform bounds replace separate tag
+inequalities in two proofs. Paired builds of both targets and five tested clients
+pass with identical client objects; sampled registrations match. Of 297 common
+declaration reports, 293 match and four generated reports change; 18 other
+generated public proof names disappear. Searches found no references in tracked
+or nonignored untracked Lean/Python files. The umbrella and wider closure remain
+unbuilt or cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-annotated-cases.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
