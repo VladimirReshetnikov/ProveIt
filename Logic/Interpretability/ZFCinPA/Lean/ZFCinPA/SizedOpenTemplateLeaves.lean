@@ -247,16 +247,12 @@ theorem templ_leaf_gen (harity : ∀ i, arities i ≤ 3) (σ : Sentence (setTemp
     {u : V} (hu : 2 ≤ u) (hK : ∀ i, (Ks i).val ≤ lvB u) :
     DLv 𝗭𝗙 (insert (translateFormula Ks (Rewriting.emb σ)).val ∅)
       (leafG (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities))) u) := by
-  set t : V := (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V) with ht
+  set t : V := (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V)
   have hx := translate_level (Rewriting.emb σ) u Ks hK
   have hge1 : t * (u + 1) + 5 ≤ leafG (tA (Rewriting.emb σ : Proposition _)) u := by
-    unfold leafG
-    rw [← ht]
-    refine le_trans ?_ (le_self_add)
-    refine le_trans ?_ (_root_.add_le_add (_root_.add_le_add le_rfl (Arithmetic.zero_le (congL u)))
-      le_rfl)
-    exact _root_.add_le_add (le_trans (mul_le_mul_of_nonneg_left (_root_.add_le_add le_rfl
-      (by norm_num : (1 : V) ≤ 2)) (Arithmetic.zero_le _)) (by simp)) le_rfl
+    refine le_trans (le_trans le_self_add (SizedLTemplate.leafW_ge σ u)) ?_
+    unfold SizedLTemplate.leafW leafG
+    exact le_self_add
   rcases SizedTemplateAxioms.templ_lifted_or_congruence σ h with hl | ⟨i, rfl⟩ | ⟨p, rfl⟩ | ⟨p, rfl⟩
   · have hw4 : (4 : V) ≤ t * (u + 1) + 4 := le_add_self
     refine (DLv.by_axm hw4 ((SeqLt.empty _).insert (lt_lvB_of hx (_root_.add_le_add le_rfl
