@@ -68,10 +68,8 @@ theorem squared_ordinate (R a : V) :
   · obtain ⟨r,s,_,hy⟩ := doubled_quotients n R a
     change ycoord (2*n*R) a=2*n*d*c+c*c*s at hy
     refine ⟨d+s,?_⟩
-    rw [show R*c=2*n*R by rw [h]; ring,hy]
-    calc
-      2*n*d*c+c*c*s=d*(2*n)*c+c*c*s := by ring
-      _=(d+s)*c*c := by rw [←h]; ring
+    rw [show R*c=2*n*R by rw [h]; ring,hy,←h]
+    ring
   · obtain ⟨s,hy⟩ := odd_quotient n R a
     change ycoord ((2*n+1)*R) a=(2*n+1)*c+c*c*s at hy
     refine ⟨1+s,?_⟩
@@ -97,8 +95,6 @@ theorem strong_seed (R a : V) (hR : 0<R) :
     exact hy
   have hf : 0<xcoord (R*c) a := lt_of_lt_of_le (by simp : (0:V)<1) (one_le_x (R*c) a)
   refine ⟨xcoord (R*c) a,i,hf,hi0,rfl,hi,?_⟩
-  have he := norm (R*c) a
-  rw [hi] at he
-  exact he
+  simpa only [hi] using norm (R*c) a
 
 end DiophantineConsistency.ArithmeticPellSquaredSeed
