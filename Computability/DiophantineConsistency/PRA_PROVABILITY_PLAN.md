@@ -96,6 +96,11 @@ and the PRA witnessing theorem remain open. The [guard syntax](reviews/parsons-g
 now preserves Σ₁ complexity and side parameters under substitution, preparing
 the intended induction-rule case.
 
+The [mapped Robinson Q result](reviews/pra-q-compatibility-root.md) now
+proves that all actual Foundation Q axioms except its strict-order definition
+map to theorems of the candidate PRA. The order clause and full compatibility
+remain open.
+
 ## Concrete bridge to formalize
 
 1. Choose and define a precise PRA language and proof calculus, including its
