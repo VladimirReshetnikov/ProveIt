@@ -162,10 +162,7 @@ theorem minimal_unit_classification (D b v : V)
       · subst y
         have hx1 : x=1 := by
           apply le_antisymm (by simpa using hx)
-          have hxpos : 0<x := by
-            by_contra hnot
-            have hx0 : x=0 := le_antisymm (le_of_not_gt hnot) (Arithmetic.zero_le x)
-            simp [hx0] at hn
+          have hxpos : 0<x := pos_of_mul_pos_left (by rw [hn]; simp) (by simp)
           simpa using lt_iff_succ_le.mp hxpos
         exact ⟨0,by simp,by simpa using hx1,by simp⟩
       · have hyp : 0<y := lt_of_le_of_ne (Arithmetic.zero_le y) (Ne.symm hy)
