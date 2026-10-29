@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorLabelAvoidance
 import ZFCinPA.ValidatorAtomicTransport222
 
 set_option autoImplicit false
@@ -30,41 +31,17 @@ def FreshPair (F B B' s t : V) : Prop :=
   StreamEnv s B ∧ StreamEnv s B' ∧
   StreamEnv t B ∧ StreamEnv t B' ∧ Apart s t
 
-private lemma next_label (s k : V) : (s+2)+2*k=s+2*(k+1) := by ring
 
-lemma streamFree_next {s F : V} (h : StreamFree s F) : StreamFree (s+2) F := by
-  intro k
-  rw [next_label]
-  exact h (k+1)
+lemma streamFree_next {s F : V} (h : StreamFree s F) : StreamFree (s+2) F :=
+  ValidatorLabelAvoidance.streamFree_next h
 
 lemma streamEnv_cons_next {s B x : V} (h : StreamEnv s B)
-    (hx : ∀ k : V, (s+2)+2*k≠x) : StreamEnv (s+2) (x∷B) := by
-  intro k
-  apply avoid_cons _ (hx k)
-  rw [next_label]
-  exact h (k+1)
+    (hx : ∀ k : V, (s+2)+2*k≠x) : StreamEnv (s+2) (x∷B) :=
+  ValidatorLabelAvoidance.streamEnv_cons_next h hx
 
 lemma freshPair_next {F B B' s t : V} (h : FreshPair F B B' s t) :
-    FreshPair F (s∷B) (t∷B') (s+2) (t+2) := by
-  rcases h with ⟨hsF,htF,hsB,hsB',htB,htB',hap⟩
-  have hss : ∀ k : V, (s+2)+2*k≠s := fun k =>
-    ((stream_of_lt (z := s) (fresh := s+2) (by simp)) k).symm
-  have htt : ∀ k : V, (t+2)+2*k≠t := fun k =>
-    ((stream_of_lt (z := t) (fresh := t+2) (by simp)) k).symm
-  have hst : ∀ k : V, (s+2)+2*k≠t := by
-    intro k
-    rw [next_label]
-    simpa using hap (k+1) 0
-  have hts : ∀ k : V, (t+2)+2*k≠s := by
-    intro k
-    rw [next_label]
-    simpa using (hap 0 (k+1)).symm
-  refine ⟨streamFree_next hsF,streamFree_next htF,
-    streamEnv_cons_next hsB hss,streamEnv_cons_next hsB' hst,
-    streamEnv_cons_next htB hts,streamEnv_cons_next htB' htt,?_⟩
-  intro i j
-  rw [next_label,next_label]
-  exact hap (i+1) (j+1)
+    FreshPair F (s∷B) (t∷B') (s+2) (t+2) :=
+  ValidatorLabelAvoidance.freshPair_next h
 
 /-- Both cross-body vacuity arguments, with no assertion that a binder is
 vacuous in its own body. The right side still has the left-to-right context. -/
@@ -72,22 +49,10 @@ lemma cross_body_vac {n p : V}
     (hp : IsSemiformula ℒₛₑₜ (n+1) p) (F B B' s t : V)
     (hB : len B=n) (hB' : len B'=n) (h : FreshPair F B B' s t) :
     Vac s (encode F (t∷B') (t+2) p) ∧
-    Vac t (encode F (s∷B) (s+2) p) := by
-  rcases h with ⟨hsF,htF,hsB,hsB',htB,htB',hap⟩
-  have hst : s≠t := by simpa using hap 0 0
-  constructor
-  · apply encode_vac hp F (t∷B') (t+2) s (by simp [hB'])
-    · simpa using hsF 0
-    · exact avoid_cons (by simpa using hsB' 0) hst
-    · intro k
-      rw [next_label]
-      simpa using hap 0 (k+1)
-  · apply encode_vac hp F (s∷B) (s+2) t (by simp [hB])
-    · simpa using htF 0
-    · exact avoid_cons (by simpa using htB 0) hst.symm
-    · intro k
-      rw [next_label]
-      simpa using (hap (k+1) 0).symm
+    Vac t (encode F (s∷B) (s+2) p) :=
+  ValidatorLabelAvoidance.cross_body_vac (P := Vac) (enc := encode)
+    (fun hp F B fresh z hlen hF hB hs => encode_vac hp F B fresh z hlen hF hB hs)
+    hp F B B' s t hB hB' h
 
 private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
 private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head

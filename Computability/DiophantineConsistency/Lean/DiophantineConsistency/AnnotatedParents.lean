@@ -53,10 +53,8 @@ theorem check_raw_iff (fuel : Nat) (history expected : List Nat) (parents : Nat)
         indices.map (fun i => history[i]?)=expected.map some := by
   constructor
   · intro h
-    obtain ⟨rows, hr⟩ :=
-      AnnotatedRenameScan.decodeTable_total parents parents (Nat.le_refl _)
-    have he : AnnotatedCodeArithmetic.listCode (rows.map AnnotatedRename.rowCode) = parents :=
-      AnnotatedRenameScan.tableCode_of_decode hr
+    obtain ⟨rows, he⟩ := AnnotatedRenameScan.tableCode_surjective parents
+    change listCode (rows.map AnnotatedRename.rowCode) = parents at he
     refine ⟨rows.map AnnotatedRename.rowCode, he.symm, ?_⟩
     exact (check_lists fuel history expected _ hf).mp (by simpa only [he] using h)
   · rintro ⟨indices, rfl, h⟩

@@ -72,12 +72,17 @@ theorem start_column_not_seam (x t₀ : ℤ) (hStart : T x t₀ = start) (t : �
   have h₀ := (seam_iff_time hAllowed hTime x t t₀).mp hs
   norm_num [SeamAt, hStart, start] at h₀
 
-theorem start_column_vertical_ne (x t₀ : ℤ) (hStart : T x t₀ = start) (t : ℤ) :
+/-- A column that is non-seam at one time is non-seam on both edges at every time. -/
+theorem column_vertical_ne (x t₀ : ℤ) (hn₀ : (T x t₀).north ≠ 437) (t : ℤ) :
     (T x t).north ≠ 437 ∧ (T x t).south ≠ 437 := by
-  have hn := start_column_not_seam hAllowed hTime x t₀ hStart t
-  refine ⟨hn, ?_⟩
-  intro hs
-  exact hn ((seam_at_iff_south hAllowed x t).mpr hs)
+  have hn : (T x t).north ≠ 437 := fun hs =>
+    hn₀ ((seam_iff_time hAllowed hTime x t t₀).mp hs)
+  exact ⟨hn, fun hs => hn ((seam_at_iff_south hAllowed x t).mpr hs)⟩
+
+theorem start_column_vertical_ne (x t₀ : ℤ) (hStart : T x t₀ = start) (t : ℤ) :
+    (T x t).north ≠ 437 ∧ (T x t).south ≠ 437 :=
+  column_vertical_ne hAllowed hTime x t₀
+    (start_column_not_seam hAllowed hTime x t₀ hStart t₀) t
 
 end Generic
 

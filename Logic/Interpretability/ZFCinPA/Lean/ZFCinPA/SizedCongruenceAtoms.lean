@@ -37,15 +37,11 @@ local infix:46 " ≐ₛ " => eqAtom
 theorem tvec_entries {k : ℕ} (v : Bootstrapping.SemitermVec V ℒₛₑₜ k 0) {c : V}
     (h : ∀ i, (v i).val ≤ lvB c) :
     (∀ i < (k : V), v.val.[i] ≤ lvB c) ∧ (∀ i < (k : V), IsVarTerm v.val.[i]) := by
-  constructor
-  · intro i hi
+  have entry (i : V) (hi : i < (k : V)) : v.val.[i] ≤ lvB c ∧ IsVarTerm v.val.[i] := by
     obtain ⟨j, rfl⟩ := eq_fin_of_lt_nat hi
     rw [Bootstrapping.SemitermVec.val_nth_eq]
-    exact h j
-  · intro i hi
-    obtain ⟨j, rfl⟩ := eq_fin_of_lt_nat hi
-    rw [Bootstrapping.SemitermVec.val_nth_eq]
-    exact closed_isVar (by simpa using (v j).isSemiterm)
+    exact ⟨h j, closed_isVar (by simpa using (v j).isSemiterm)⟩
+  exact ⟨fun i hi => (entry i hi).1, fun i hi => (entry i hi).2⟩
 
 theorem tsubst_le {k : ℕ} (ψ : Bootstrapping.Semiformula V ℒₛₑₜ k)
     (v : Bootstrapping.SemitermVec V ℒₛₑₜ k 0) {u c : V} (hψ : ψ.val ≤ lvB u) (hc : 1 ≤ c)
@@ -130,32 +126,32 @@ theorem ext_quote (r : (ℒₛₑₜ).Rel 2) :
   rw [Sentence.typed_quote_def]
   simp [extSent, extBody, sEq, eqAtom, Rew.q_emb, Rew.emb_bvar, quote_vec2_eta]
 
+private theorem quote_proof_dlv (σ : SetTheorySentence) (d : 𝗭𝗙 ⊢! σ) :
+    DLv 𝗭𝗙 (insert (⌜σ⌝ : Bootstrapping.Formula V ℒₛₑₜ).val ∅) ((⌜d⌝ : ℕ) : V) := by
+  have hp : Proof 𝗭𝗙 (⌜d⌝ : V) ⌜σ⌝ := proof_of_quote_proof d
+  rw [Sentence.quote_eq] at hp
+  rw [← singleton_eq_insert, coe_quote_proof_eq]
+  exact DLv.of_derivationOf hp
+
+private theorem quote_sentence_le (σ : SetTheorySentence) :
+    (⌜σ⌝ : Bootstrapping.Formula V ℒₛₑₜ).val ≤ lvB ((⌜σ⌝ : ℕ) : V) := by
+  rw [← Sentence.quote_eq, Sentence.coe_quote_eq_quote]
+  exact le_lvB_self _
+
 theorem refl_dlv : DLv 𝗭𝗙 (insert (∀⁰ reflBody : Bootstrapping.Formula V ℒₛₑₜ).val ∅)
     (reflD : V) := by
-  have hp : Proof 𝗭𝗙 (⌜reflProof⌝ : V) ⌜reflSent⌝ := proof_of_quote_proof reflProof
-  rw [Sentence.quote_eq, refl_quote] at hp
-  rw [← singleton_eq_insert]
-  unfold reflD
-  rw [coe_quote_proof_eq]
-  exact DLv.of_derivationOf hp
+  simpa only [reflD, refl_quote] using quote_proof_dlv (V := V) reflSent reflProof
 
 theorem ext_dlv (r : (ℒₛₑₜ).Rel 2) :
     DLv 𝗭𝗙 (insert (∀⁰ ∀⁰ ∀⁰ ∀⁰ extBody r : Bootstrapping.Formula V ℒₛₑₜ).val ∅) (extD r : V) := by
-  have hp : Proof 𝗭𝗙 (⌜extProof r⌝ : V) ⌜extSent r⌝ := proof_of_quote_proof (extProof r)
-  rw [Sentence.quote_eq, ext_quote] at hp
-  rw [← singleton_eq_insert]
-  unfold extD
-  rw [coe_quote_proof_eq]
-  exact DLv.of_derivationOf hp
+  simpa only [extD, ext_quote] using quote_proof_dlv (V := V) (extSent r) (extProof r)
 
 theorem refl_le : (∀⁰ reflBody : Bootstrapping.Formula V ℒₛₑₜ).val ≤ lvB (reflN : V) := by
-  rw [← refl_quote, ← Sentence.quote_eq, reflN, Sentence.coe_quote_eq_quote]
-  exact le_lvB_self _
+  simpa only [reflN, refl_quote] using quote_sentence_le (V := V) reflSent
 
 theorem ext_le (r : (ℒₛₑₜ).Rel 2) :
     (∀⁰ ∀⁰ ∀⁰ ∀⁰ extBody r : Bootstrapping.Formula V ℒₛₑₜ).val ≤ lvB (extN r : V) := by
-  rw [← ext_quote, ← Sentence.quote_eq, extN, Sentence.coe_quote_eq_quote]
-  exact le_lvB_self _
+  simpa only [extN, ext_quote] using quote_sentence_le (V := V) (extSent r)
 
 theorem body_le {k : ℕ} {φ : Bootstrapping.Semiformula V ℒₛₑₜ (k + 1)} {u : V}
     (h : (∀⁰ φ).val ≤ lvB u) : φ.val ≤ lvB u :=

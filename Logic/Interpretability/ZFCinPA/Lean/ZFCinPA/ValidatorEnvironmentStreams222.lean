@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorLabelAvoidance
 import ZFCinPA.ValidatorEnvironmentAlpha222
 
 set_option autoImplicit false
@@ -42,90 +43,44 @@ instance alternateStart_defined : 𝚺₀-Function₂[V] alternateStart via alte
 instance alternateStart_sigma1 : 𝚺₁-Function₂[V] alternateStart :=
   alternateStart_defined.to_definable₀
 
-lemma streamEnv_of_lt {s B : V} (hB : B<s) : StreamEnv s B := by
-  intro k i _hi
-  exact ne_of_gt (lt_of_le_of_lt (nth_le B i)
-    (lt_of_lt_of_le hB (le_add_of_nonneg_right (Arithmetic.zero_le _))))
-
-lemma streamFree_of_bounds {s F : V} (hF : F<s) (h1 : 1<s) : StreamFree s F := by
-  intro k
-  exact ⟨ne_of_gt (lt_of_lt_of_le h1 (le_add_of_nonneg_right (Arithmetic.zero_le _))),
-    streamEnv_of_lt hF k⟩
-
-lemma apart_of_mod_ne {s t : V} (h : s % 2≠t % 2) : Apart s t := by
-  intro i j hij
-  apply h
-  simpa using congrArg (fun x : V => x % 2) hij
-
-private lemma double_bound (bound : V) : bound+2≤2*(bound+2) := by
-  simp
-
-private lemma double_le_alternateStart (bound seed : V) :
-    2*(bound+2)≤alternateStart bound seed := by
-  classical
-  unfold alternateStart
-  split <;> simp
-
+lemma streamEnv_of_lt {s B : V} (hB : B<s) : StreamEnv s B :=
+  ValidatorLabelAvoidance.streamEnv_of_lt hB
+lemma streamFree_of_bounds {s F : V} (hF : F<s) (h1 : 1<s) : StreamFree s F :=
+  ValidatorLabelAvoidance.streamFree_of_bounds hF h1
+lemma apart_of_mod_ne {s t : V} (h : s % 2≠t % 2) : Apart s t :=
+  ValidatorLabelAvoidance.apart_of_mod_ne h
 lemma bound_lt_alternateStart (bound seed : V) : bound<alternateStart bound seed :=
-  lt_of_lt_of_le (lt_of_lt_of_le (by simp) (double_bound bound))
-    (double_le_alternateStart bound seed)
-
+  ValidatorLabelAvoidance.bound_lt_alternateStart bound seed
 lemma one_lt_alternateStart (bound seed : V) : 1<alternateStart bound seed :=
-  lt_of_lt_of_le (lt_of_lt_of_le (by simp : (1:V)<2) (by simp))
-    (le_trans (double_bound bound) (double_le_alternateStart bound seed))
-
-lemma alternateStart_mod_ne (bound seed : V) : seed % 2≠alternateStart bound seed % 2 := by
-  classical
-  by_cases hs : seed % 2=0
-  · simp [alternateStart,hs]
-  · have hs1 : seed % 2=1 := mod_two_not_zero_iff.mp hs
-    simp [alternateStart,hs1]
-
+  ValidatorLabelAvoidance.one_lt_alternateStart bound seed
+lemma alternateStart_mod_ne (bound seed : V) : seed % 2≠alternateStart bound seed % 2 :=
+  ValidatorLabelAvoidance.alternateStart_mod_ne bound seed
 lemma alternateStart_apart (bound seed : V) : Apart seed (alternateStart bound seed) :=
-  apart_of_mod_ne (alternateStart_mod_ne bound seed)
-
+  ValidatorLabelAvoidance.alternateStart_apart bound seed
 lemma alternateStart_env (bound seed B : V) (hB : B≤bound) :
     StreamEnv (alternateStart bound seed) B :=
-  streamEnv_of_lt (lt_of_le_of_lt hB (bound_lt_alternateStart bound seed))
-
+  ValidatorLabelAvoidance.alternateStart_env bound seed B hB
 lemma alternateStart_free (bound seed F : V) (hF : F≤bound) :
     StreamFree (alternateStart bound seed) F :=
-  streamFree_of_bounds (lt_of_le_of_lt hF (bound_lt_alternateStart bound seed))
-    (one_lt_alternateStart bound seed)
-
-/-- A concrete stream avoiding F, fallback1 and both bound stacks. The sum
-bound uses existing nth_le, and requires no new maximum-fold computation. -/
+  ValidatorLabelAvoidance.alternateStart_free bound seed F hF
+/-- A concrete stream avoiding the free labels, fallback and both bound stacks. -/
 lemma alternateStart_resources (F B B' seed : V) :
     StreamFree (alternateStart (F+B+B') seed) F ∧
     StreamEnv (alternateStart (F+B+B') seed) B ∧
     StreamEnv (alternateStart (F+B+B') seed) B' ∧
-    Apart seed (alternateStart (F+B+B') seed) := by
-  refine ⟨alternateStart_free _ _ _ ?_,alternateStart_env _ _ _ ?_,
-    alternateStart_env _ _ _ ?_,alternateStart_apart _ _⟩
-  · exact le_trans (le_add_of_nonneg_right (Arithmetic.zero_le B))
-      (le_add_of_nonneg_right (Arithmetic.zero_le B'))
-  · exact le_trans (le_add_of_nonneg_left (Arithmetic.zero_le F))
-      (le_add_of_nonneg_right (Arithmetic.zero_le B'))
-  · exact le_add_of_nonneg_left (Arithmetic.zero_le (F+B))
+    Apart seed (alternateStart (F+B+B') seed) :=
+  ValidatorLabelAvoidance.alternateStart_resources F B B' seed
 
 /-- Compare arbitrary free-safe starts. When their residues agree, compose
 through the explicit fresh stream of the opposite parity. -/
 theorem encode_formula_relabel {p : V} (hp : IsFormula ℒₛₑₜ p)
     (F s t : V) (hs : StreamFree s F) (ht : StreamFree t F) :
     CProv (wim (encode F 0 s p) (encode F 0 t p)) ∧
-    CProv (wim (encode F 0 t p) (encode F 0 s p)) := by
-  classical
-  by_cases hmod : s % 2=t % 2
-  · let u := alternateStart F s
-    have hu : StreamFree u F := alternateStart_free F s F (le_refl F)
-    have hsu : Apart s u := alternateStart_apart F s
-    have htu : Apart t u := apart_of_mod_ne (by
-      rw [← hmod]
-      exact alternateStart_mod_ne F s)
-    have hsu' := encode_formula_alpha hp F s u hs hu hsu
-    have htu' := encode_formula_alpha hp F t u ht hu htu
-    exact ⟨compose hsu'.1 htu'.2,compose htu'.1 hsu'.2⟩
-  · exact encode_formula_alpha hp F s t hs ht (apart_of_mod_ne hmod)
+    CProv (wim (encode F 0 t p) (encode F 0 s p)) :=
+  ValidatorLabelAvoidance.stream_relabel
+    (R := fun a b => CProv (wim (encode F 0 a p) (encode F 0 b p))) F s t
+    (fun h₁ h₂ => compose h₁ h₂)
+    (fun a b ha hb hab => encode_formula_alpha hp F a b ha hb hab) hs ht
 
 /-- The overlapping next-stream case needed after one binder allocation. -/
 lemma encode_formula_next {p : V} (hp : IsFormula ℒₛₑₜ p)

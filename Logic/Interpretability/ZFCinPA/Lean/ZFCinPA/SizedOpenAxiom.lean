@@ -320,56 +320,52 @@ theorem bindFreeAt_level {C D : V} (hC : 2 ≤ C) (hD : D ≤ lvB C) :
     have hatom : u + C + 3 + 10 ≤ 10 * (u + 1 + 1) + C + 13 :=
       le_of_add_eq (y := 9 * u + 20) (by ring)
     have hC3 : (2 : V) ≤ u + C + 3 := le_trans hC (le_trans (le_add_self : C ≤ u + C) le_self_add)
+    have atom_case (tag k R v : V) (htag : tag ≤ 1) (hR : Language.IsRel ℒₛₑₜ k R)
+        (hv : IsUTermVec ℒₛₑₜ k v) (hx : ⟪tag, k, R, v⟫ + 1 ≤ lvB (u + 1)) :
+        ⟪tag, k, R, termBindFreeVecAt ℒₛₑₜ d k v⟫ + 1 ≤
+          lvB (10 * (u + 1 + 1) + C + 13) := by
+      obtain ⟨rfl, hR01⟩ := isRel_set hR
+      obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
+      rw [vec2_bindFree d ht₁ ht₂]
+      obtain ⟨h₁, h₂⟩ := atom_children hx
+      have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
+      exact lift_lvB (atom_rebuild hC3 htag hR1 (tbf_le hC ht₁ h₁ hd) (tbf_le hC ht₂ h₂ hd)) hatom
+    have binary_case (tag p q : V) (htag : tag ≤ 16)
+        (hp : IsUFormula ℒₛₑₜ p) (hq : IsUFormula ℒₛₑₜ q)
+        (hx : ⟪tag, ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1)) :
+        ⟪tag, ⟪bindFreeAt ℒₛₑₜ d p, bindFreeAt ℒₛₑₜ d q⟫⟫ + 1 ≤
+          lvB (10 * (u + 1 + 1) + C + 13) := by
+      have hY := (pair_children hx).2
+      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp d hdu
+      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq d hdu
+      rw [← hfin]
+      exact pair_lvB_le (le_trans hm2 le_self_add) (slack4 _)
+        (tag_le_lvB htag (le_trans hm2 le_self_add)) (pair_lvB' hm2 ihp ihq)
+    have binder_case (tag p : V) (htag : tag ≤ 16) (hp : IsUFormula ℒₛₑₜ p)
+        (hx : ⟪tag, p⟫ + 1 ≤ lvB (u + 1)) :
+        ⟪tag, bindFreeAt ℒₛₑₜ (d + 1) p⟫ + 1 ≤ lvB (10 * (u + 1 + 1) + C + 13) := by
+      have ihp := ih p (pair_children hx).2 hp (d + 1) hdu1
+      rw [← hfin]
+      exact lift_lvB (pair_lvB hm2 (tag_le_lvB htag hm2) ihp)
+        (_root_.add_le_add le_rfl (by norm_num))
     rcases hxF.case with ⟨k, R, v, hR, hv, rfl⟩ | ⟨k, R, v, hR, hv, rfl⟩ | rfl | rfl |
         ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ | ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
-    · obtain ⟨rfl, hR01⟩ := isRel_set hR
-      obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
-      rw [bindFreeAt_rel d hR hv, vec2_bindFree d ht₁ ht₂]
-      have hx' : ⟪(0 : V), 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1) := hx
-      obtain ⟨h₁, h₂⟩ := atom_children hx'
-      have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
-      exact lift_lvB (atom_rebuild hC3 (by simp) hR1 (tbf_le hC ht₁ h₁ hd) (tbf_le hC ht₂ h₂ hd))
-        hatom
-    · obtain ⟨rfl, hR01⟩ := isRel_set hR
-      obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
-      rw [bindFreeAt_nrel d hR hv, vec2_bindFree d ht₁ ht₂]
-      have hx' : ⟪(1 : V), 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1) := hx
-      obtain ⟨h₁, h₂⟩ := atom_children hx'
-      have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
-      exact lift_lvB (atom_rebuild hC3 le_rfl hR1 (tbf_le hC ht₁ h₁ hd) (tbf_le hC ht₂ h₂ hd))
-        hatom
+    · rw [bindFreeAt_rel d hR hv]
+      exact atom_case 0 k R v (by simp) hR hv hx
+    · rw [bindFreeAt_nrel d hR hv]
+      exact atom_case 1 k R v le_rfl hR hv hx
     · rw [bindFreeAt_verum]
       exact lift_lvB hx (le_of_add_eq (y := 9 * u + 32 + C) (by ring))
     · rw [bindFreeAt_falsum]
       exact lift_lvB hx (le_of_add_eq (y := 9 * u + 32 + C) (by ring))
     · rw [bindFreeAt_and d hp hq]
-      have hx' : ⟪(4 : V), ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1) := hx
-      have hY := (pair_children hx').2
-      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp d hdu
-      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq d hdu
-      rw [← hfin]
-      exact pair_lvB_le (le_trans hm2 le_self_add) (slack4 _)
-        (tag_le_lvB (by norm_num) (le_trans hm2 le_self_add)) (pair_lvB' hm2 ihp ihq)
+      exact binary_case 4 p q (by norm_num) hp hq hx
     · rw [bindFreeAt_or d hp hq]
-      have hx' : ⟪(5 : V), ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1) := hx
-      have hY := (pair_children hx').2
-      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp d hdu
-      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq d hdu
-      rw [← hfin]
-      exact pair_lvB_le (le_trans hm2 le_self_add) (slack4 _)
-        (tag_le_lvB (by norm_num) (le_trans hm2 le_self_add)) (pair_lvB' hm2 ihp ihq)
+      exact binary_case 5 p q (by norm_num) hp hq hx
     · rw [bindFreeAt_all d hp]
-      have hx' : ⟪(6 : V), p⟫ + 1 ≤ lvB (u + 1) := hx
-      have ihp := ih p (pair_children hx').2 hp (d + 1) hdu1
-      rw [← hfin]
-      exact lift_lvB (pair_lvB hm2 (tag_le_lvB (by norm_num) hm2) ihp)
-        (_root_.add_le_add le_rfl (by norm_num))
+      exact binder_case 6 p (by norm_num) hp hx
     · rw [bindFreeAt_exs d hp]
-      have hx' : ⟪(7 : V), p⟫ + 1 ≤ lvB (u + 1) := hx
-      have ihp := ih p (pair_children hx').2 hp (d + 1) hdu1
-      rw [← hfin]
-      exact lift_lvB (pair_lvB hm2 (tag_le_lvB (by norm_num) hm2) ihp)
-        (_root_.add_le_add le_rfl (by norm_num))
+      exact binder_case 7 p (by norm_num) hp hx
 
 /-! ## The identity vector of bound variables -/
 
