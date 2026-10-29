@@ -86,21 +86,13 @@ theorem modelSearchCandidateInvariant {n : ℕ} (good : Code (n+1)) (x : M) (e :
   · intro t _
     apply (invariantBody_eval good (s t) e).mpr
     change g (find (s t)) = z ∨ find (s t) = s t
-    have hs := modelSearchStepEquation good (Fin.cases t params)
-    change find (s t) = Structure.func (L := language) (searchStep good)
-      (Fin.cases t (Fin.cases (find t) params)) at hs
-    rw [modelSearchStep] at hs
-    change find (s t) = Structure.func (L := language) selectCode ![g (find t), s t, find t] at hs
+    have hs := modelSearchStepCases good t params
+    change (g (find t) = z → find (s t) = find t) ∧
+      (g (find t) ≠ z → find (s t) = s t) at hs
     by_cases hg : g (find t) = z
-    · rw [hg, modelSelectZero] at hs
-      left
-      rw [hs]
-      exact hg
-    · have he := modelZeroOrSuccPred (g (find t))
-      have hp := he.resolve_left hg
-      change s (Structure.func (L := language) predCode (fun _ => g (find t))) = g (find t) at hp
-      rw [←hp, modelSelectSucc] at hs
-      exact Or.inr hs
+    · rw [hs.1 hg]
+      exact Or.inl hg
+    · exact Or.inr (hs.2 hg)
 
 /-- If the current input is bad, the search output is bad. -/
 theorem modelSearchFindsBad {n : ℕ} (good : Code (n+1)) (x : M) (e : ℕ → M)

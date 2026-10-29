@@ -72,5 +72,35 @@ theorem modelSearchStepEquation {n : ℕ} (good : Code (n+1)) (e : Fin (n+1) →
         (Fin.cases (e 0) (Fin.cases (Structure.func (L := language) (searchCode good) e)
           (fun i => e i.succ))) := modelStep (.zero n) (searchStep good) e
 
+/-- A search step keeps an already bad candidate and otherwise advances. -/
+theorem modelSearchStepCases {n : ℕ} (good : Code (n+1)) (x : M) (params : Fin n → M) :
+    let find : M → M := fun y => Structure.func (L := language) (searchCode good) (Fin.cases y params)
+    let value := Structure.func (L := language) good (Fin.cases (find x) params)
+    (value = Structure.func (L := language) (Code.zero 0) Fin.elim0 →
+      find (Structure.func (L := language) Code.succ (fun _ => x)) = find x) ∧
+    (value ≠ Structure.func (L := language) (Code.zero 0) Fin.elim0 →
+      find (Structure.func (L := language) Code.succ (fun _ => x)) =
+        Structure.func (L := language) Code.succ (fun _ => x)) := by
+  let find : M → M := fun y => Structure.func (L := language) (searchCode good) (Fin.cases y params)
+  let value := Structure.func (L := language) good (Fin.cases (find x) params)
+  let succ := Structure.func (L := language) Code.succ (fun _ => x)
+  have hs := modelSearchStepEquation good (Fin.cases x params)
+  change find succ = Structure.func (L := language) (searchStep good)
+    (Fin.cases x (Fin.cases (find x) params)) at hs
+  rw [modelSearchStep] at hs
+  change find succ = Structure.func (L := language) selectCode ![value,succ,find x] at hs
+  constructor
+  · intro h
+    change value = Structure.func (L := language) (Code.zero 0) Fin.elim0 at h
+    change find succ = find x
+    rw [h, modelSelectZero] at hs
+    exact hs
+  · intro h
+    change value ≠ Structure.func (L := language) (Code.zero 0) Fin.elim0 at h
+    change find succ = succ
+    have hp := (PRAExhaustion.modelZeroOrSuccPred value).resolve_left h
+    rw [←hp, modelSelectSucc] at hs
+    exact hs
+
 end models
 end DiophantineConsistency.PRABoundedSearchCode

@@ -99,21 +99,14 @@ theorem modelSearchPredecessorGood {n : ℕ} (good : Code (n+1)) (x : M) (e : �
   · intro t ht
     apply (minimalBody_eval good (s t) e).mpr
     change find (s t) = z ∨ g (p (find (s t))) ≠ z
-    have hs := modelSearchStepEquation good (Fin.cases t params)
-    change find (s t) = Structure.func (L := language) (searchStep good)
-      (Fin.cases t (Fin.cases (find t) params)) at hs
-    rw [modelSearchStep] at hs
-    change find (s t) = Structure.func (L := language) selectCode ![g (find t), s t, find t] at hs
+    have hs := modelSearchStepCases good t params
+    change (g (find t) = z → find (s t) = find t) ∧
+      (g (find t) ≠ z → find (s t) = s t) at hs
     by_cases hg : g (find t) = z
-    · rw [hg, modelSelectZero] at hs
-      rw [hs]
+    · rw [hs.1 hg]
       exact (minimalBody_eval good t e).mp ht
-    · have he := modelZeroOrSuccPred (g (find t))
-      have hsucc := he.resolve_left hg
-      change s (Structure.func (L := language) predCode (fun _ => g (find t))) = g (find t) at hsucc
-      rw [←hsucc, modelSelectSucc] at hs
-      right
-      rw [hs]
+    · right
+      rw [hs.2 hg]
       have hp : p (s t) = t := modelPredSucc t
       rw [hp]
       have hinv := modelSearchCandidateInvariant good t e
