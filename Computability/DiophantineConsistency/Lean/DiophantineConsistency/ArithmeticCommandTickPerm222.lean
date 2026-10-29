@@ -108,6 +108,13 @@ theorem tick_live_succ (raw w : V) :
 /-- Stopped is a control condition; it does not identify halt with completion. -/
 def Stopped (config : V) : Prop := config = 0 ∨ remaining config = 0
 
+/-- Decode an active evaluator after restoring the predecessor of its word. -/
+theorem live_decode_active (config : V) (hc : ¬ Stopped config) :
+    liveValue ((remaining config - 1) + 1) (working config) = config := by
+  obtain ⟨h0, hw⟩ := not_or.mp hc
+  rw [pred_add_one (remaining config) hw]
+  exact live_decode config h0
+
 lemma tick_stopped {config : V} (hc : Stopped config) : tickValue config = config := by
   rcases hc with hc | hw
   · subst config; exact tick_zero

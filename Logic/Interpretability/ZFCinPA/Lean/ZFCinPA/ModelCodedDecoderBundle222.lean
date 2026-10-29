@@ -1,5 +1,6 @@
 import ZFCinPA.SeedBundleTemplates222
 import ZFCinPA.ModelCodedDecoderCollection254
+import ZFCinPA.ModelCodedBinderAbsorption
 import BusyBeaver.ZFC.ArithmeticSeedTemplates222
 
 set_option autoImplicit false
@@ -57,74 +58,14 @@ private instance bindOneAt_delta' : 𝚫₁-Function₃[V] (bindOneAt ℒₛₑ�
 lemma termBindOneAt_absorb_any {depth term : V} (ht : IsSemiterm ℒₛₑₜ depth term) :
     ∀ chosen e : V,
     termBindOneAt ℒₛₑₜ chosen e (termBindOneAt ℒₛₑₜ chosen depth term) =
-      termBindOneAt ℒₛₑₜ chosen depth term := by
-  apply IsSemiterm.induction 𝚷 ?_ ?_ ?_ ?_ term ht
-  · definability
-  · intro z hz chosen e; simp
-  · intro x chosen e
-    classical
-    by_cases h : x = chosen
-    · simp [h]
-    · simp [termBindOneAt_fvar, h]
-  · intro arity f terms hf hv ih chosen e
-    rw [termBindOneAt_func chosen depth hf hv.isUTerm,
-      termBindOneAt_func chosen e hf (termBindOneVecAt_isUTerm chosen depth hv.isUTerm)]
-    apply congrArg (fun args => ^func arity f args)
-    apply nth_ext' arity
-    · simp [termBindOneVecAt_isUTerm chosen depth hv.isUTerm]
-    · simp [hv.isUTerm]
-    · intro i hi
-      rw [nth_termBindOneVecAt chosen e (termBindOneVecAt_isUTerm chosen depth hv.isUTerm) hi,
-        nth_termBindOneVecAt chosen depth hv.isUTerm hi]
-      exact ih i hi chosen e
+      termBindOneAt ℒₛₑₜ chosen depth term :=
+  LeanProofs.ZFCinPA.ModelCodedBinderAbsorption.termBindOneAt_absorb_any ht
 
 /-- A label bound once is absent: binding it again, at any index, is the identity. -/
 theorem bindOneAt_absorb_any {depth p : V} (hp : IsSemiformula ℒₛₑₜ depth p) :
     ∀ chosen e : V,
-    bindOneAt ℒₛₑₜ chosen e (bindOneAt ℒₛₑₜ chosen depth p) = bindOneAt ℒₛₑₜ chosen depth p := by
-  apply IsSemiformula.pi1_structural_induction (P := fun depth p =>
-    ∀ chosen e : V,
-    bindOneAt ℒₛₑₜ chosen e (bindOneAt ℒₛₑₜ chosen depth p) = bindOneAt ℒₛₑₜ chosen depth p)
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
-  · definability
-  · intro depth arity R terms hR ht chosen e
-    rw [bindOneAt_rel chosen depth hR ht.isUTerm,
-      bindOneAt_rel chosen e hR (termBindOneVecAt_isUTerm chosen depth ht.isUTerm)]
-    congr 1
-    apply nth_ext' arity
-    · simp [termBindOneVecAt_isUTerm chosen depth ht.isUTerm]
-    · simp [ht.isUTerm]
-    · intro i hi
-      rw [nth_termBindOneVecAt chosen e (termBindOneVecAt_isUTerm chosen depth ht.isUTerm) hi,
-        nth_termBindOneVecAt chosen depth ht.isUTerm hi]
-      exact termBindOneAt_absorb_any (ht.nth hi) chosen e
-  · intro depth arity R terms hR ht chosen e
-    rw [bindOneAt_nrel chosen depth hR ht.isUTerm,
-      bindOneAt_nrel chosen e hR (termBindOneVecAt_isUTerm chosen depth ht.isUTerm)]
-    congr 1
-    apply nth_ext' arity
-    · simp [termBindOneVecAt_isUTerm chosen depth ht.isUTerm]
-    · simp [ht.isUTerm]
-    · intro i hi
-      rw [nth_termBindOneVecAt chosen e (termBindOneVecAt_isUTerm chosen depth ht.isUTerm) hi,
-        nth_termBindOneVecAt chosen depth ht.isUTerm hi]
-      exact termBindOneAt_absorb_any (ht.nth hi) chosen e
-  · intro depth chosen e; simp
-  · intro depth chosen e; simp
-  · intro depth p q hp hq ihp ihq chosen e
-    rw [bindOneAt_and chosen depth hp.isUFormula hq.isUFormula,
-      bindOneAt_and chosen e (bindOneAt_isSemiformula hp chosen).isUFormula
-        (bindOneAt_isSemiformula hq chosen).isUFormula, ihp chosen e, ihq chosen e]
-  · intro depth p q hp hq ihp ihq chosen e
-    rw [bindOneAt_or chosen depth hp.isUFormula hq.isUFormula,
-      bindOneAt_or chosen e (bindOneAt_isSemiformula hp chosen).isUFormula
-        (bindOneAt_isSemiformula hq chosen).isUFormula, ihp chosen e, ihq chosen e]
-  · intro depth p hp ih chosen e
-    rw [bindOneAt_all chosen depth hp.isUFormula,
-      bindOneAt_all chosen e (bindOneAt_isSemiformula hp chosen).isUFormula, ih chosen (e+1)]
-  · intro depth p hp ih chosen e
-    rw [bindOneAt_exs chosen depth hp.isUFormula,
-      bindOneAt_exs chosen e (bindOneAt_isSemiformula hp chosen).isUFormula, ih chosen (e+1)]
+    bindOneAt ℒₛₑₜ chosen e (bindOneAt ℒₛₑₜ chosen depth p) = bindOneAt ℒₛₑₜ chosen depth p :=
+  LeanProofs.ZFCinPA.ModelCodedBinderAbsorption.bindOneAt_absorb_any hp
 
 /-! ## Named pieces of the interpreted circuit -/
 
