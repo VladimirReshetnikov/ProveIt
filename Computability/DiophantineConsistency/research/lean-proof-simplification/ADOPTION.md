@@ -1221,5 +1221,22 @@ are warning-free. Initial probe failures and the limited scope of the broader
 reference search are retained. Independent graph, witness and receipt audits
 pass. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-claude-ax-sharing-evidence/BUNDLE.json).
 
+The exact packing transport sharing `9aee4917b7` removes 25 net lines,
+bringing the reviewed series to 9414. Its original Packing and Variation
+proofs were in Claude-coauthored commits `5fcd5632b3` and `16bbf50270`.
+The earlier exact identity is now proved in Packing and also yields the
+modular residue; both old theorem statements remain. Paired Packing, Variation,
+PackingCells and actual Assembly builds pass; 67 old target declaration reports
+and all 39 materialized Assembly/Bound declaration reports match, together with
+their forced equations. Two named theorems and one generated congruence name
+are added; the new generated name is not a default simp rule. Six Assembly
+dependencies were rebuilt, 20 reused with matching direct-input receipts, and
+each phase pins 111 local and 43 direct external inputs. Historical local and
+transitive package objects remain precompiled. Packing emits five and
+PackingCells four matching warnings per phase; one shared preparation warning
+lacks a paired baseline. Initial failed prototypes and an incomplete audit
+observation are retained. Independent proof, graph and receipt reviews pass.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-claude-transport-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
