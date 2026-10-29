@@ -96,7 +96,10 @@ and the PRA witnessing theorem remain open. The [guard syntax](reviews/parsons-g
 now preserves Σ₁ complexity and side parameters under substitution, preparing
 the intended induction-rule case. The [guarded three-premise transformer](reviews/parsons-rule-independent.md)
 now constructs that isolated case in an explicit Σ₁-rule calculus; the whole
-cut-free reduction and PRA witnessing are not yet established.
+cut-free reduction and PRA witnessing are not yet established. A
+[finite-context bridge](reviews/parsons-rule-embedding-independent.md) now
+embeds Foundation proofs into the rule calculus over the same base theory;
+it does not remove any induction axioms.
 
 The [mapped Robinson Q result](reviews/pra-q-compatibility-root.md) now
 proves that all actual Foundation Q axioms except its strict-order definition
