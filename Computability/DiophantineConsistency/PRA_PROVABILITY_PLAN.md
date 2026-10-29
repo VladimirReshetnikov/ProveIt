@@ -204,3 +204,17 @@ certificates, so every Foundation open semisentence with finitely many bound
 inputs has a PR characteristic and a candidate-PRA proof of correctness.
 Free-parameter packing, bounded formulas, universal presentation and
 general Σ₁ witnessing remain open.
+
+The [formula-parameter packing](reviews/pra-formula-parameters-root.md)
+extends the open characteristic result to arbitrary free numerical parameters
+by explicit finite argument packing with an exact evaluation theorem.
+Bounded formulas, universal presentation and Σ₁ witnessing remain open.
+
+The [characteristic bit theorem](reviews/pra-characteristic-bit-root.md)
+now supplies actual candidate-PRA proofs of both Boolean range and formula
+correctness for every open formula after packing its free parameters.
+Bounded formulas and Σ₁ witnessing remain open.
+
+The [selection code](reviews/pra-select-code-root.md) has both defining
+equations as closed candidate-PRA derivations and an all-model composition
+interface. A bounded search invariant and universal presentation remain open.

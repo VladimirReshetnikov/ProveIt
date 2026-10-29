@@ -1,0 +1,27 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAFormulaParameters.lean:67:2: error: Tactic `apply` failed: could not unify the conclusion of `@funext`
+  ?f = ?g
+with the goal
+  (Semiformula.Eval (fun x => v (Fin.castAdd (Semiformula.fvSup φ) x)) fun x =>
+        Semiterm.val v fallback
+          (if h : x < Semiformula.fvSup φ then #(Fin.natAdd n ⟨x, h⟩) else &(x - Semiformula.fvSup φ)))
+      φ ↔
+    (Semiformula.Eval (fun x => v (Fin.castAdd (Semiformula.fvSup φ) x)) fun i =>
+        if hi : i < Semiformula.fvSup φ then v (Fin.natAdd n ⟨i, hi⟩) else fallback (i - Semiformula.fvSup φ))
+      φ
+
+Note: The full type of `@funext` is
+  ∀ {α : Sort ?u.64} {β : α → Sort ?u.63} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g
+
+M : Type
+inst✝ : Structure language M
+n : ℕ
+φ : Semiproposition language n
+v : Fin (n + Semiformula.fvSup φ) → M
+fallback : ℕ → M
+⊢ (Semiformula.Eval (fun x => v (Fin.castAdd (Semiformula.fvSup φ) x)) fun x =>
+        Semiterm.val v fallback
+          (if h : x < Semiformula.fvSup φ then #(Fin.natAdd n ⟨x, h⟩) else &(x - Semiformula.fvSup φ)))
+      φ ↔
+    (Semiformula.Eval (fun x => v (Fin.castAdd (Semiformula.fvSup φ) x)) fun i =>
+        if hi : i < Semiformula.fvSup φ then v (Fin.natAdd n ⟨i, hi⟩) else fallback (i - Semiformula.fvSup φ))
+      φ

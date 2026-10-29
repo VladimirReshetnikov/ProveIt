@@ -1,0 +1,9 @@
+import DiophantineConsistency.ParsonsCollection
+#print axioms DiophantineConsistency.ParsonsCollection.all_mono
+#print axioms DiophantineConsistency.ParsonsCollection.erase_bound
+#print axioms DiophantineConsistency.ParsonsCollection.guarded_mono
+#print axioms DiophantineConsistency.ParsonsCollection.fixed_bound_reverse
+#print axioms DiophantineConsistency.ParsonsCollection.fixed_bound_proof
+#print axioms DiophantineConsistency.ParsonsCollection.body_open
+#print axioms DiophantineConsistency.ParsonsCollection.collection_reverse
+#print axioms DiophantineConsistency.ParsonsCollection.prove_collection_reverse

@@ -112,7 +112,13 @@ parameterized open-induction subtraction invariants in arbitrary candidate
 models. Thus `PRAEqualityCode.PRA_proves_openCharacteristic` states, without
 certificate assumptions, that every such Foundation open semisentence has a
 fixed primitive-recursive characteristic code and a candidate-PRA proof of its
-universal correctness. The statement covers finitely many *bound* variables;
-it does not yet show how an arbitrary formula with free parameters is packed
-into those arguments. It also does not handle bounded quantifiers or prove a
+universal correctness. The original statement covers finitely many *bound* variables. The later
+parameter-packing theorem below extends this to free numerical parameters.
+It does not handle bounded quantifiers or prove a
 universal presentation, Σ₁ witnessing, or conservation.
+
+The [parameter packing theorem](../reviews/pra-formula-parameters-root.md)
+now handles arbitrary open semipropositions by appending all free indices
+below the formula’s finite support to the bound arguments. Its exact semantic
+identity and candidate-PRA characteristic proof are independently replayed.
+Bounded quantifiers, universal presentation and Σ₁ witnessing remain open.

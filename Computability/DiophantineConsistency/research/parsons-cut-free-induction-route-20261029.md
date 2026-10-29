@@ -190,3 +190,8 @@ converts a disjunction of two strict Σ₁ formulas in both directions to an
 explicit two-variable existential block with bounded matrix. No pairing
 function is assumed. Arbitrary blocks, finite collection and the complete
 strict Π₂ adapter remain open.
+
+The [universal prenex step](../reviews/parsons-prenex-all-root.md) now
+proves both same-theory transformations between `E ∨ ∀x Q(x)` and
+`∀x(Q(x) ∨ E)`, preserving parameters. This does not establish the
+complete strict Π₂ adapter or finite collection.
