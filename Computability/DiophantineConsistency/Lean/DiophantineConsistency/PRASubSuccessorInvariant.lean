@@ -25,14 +25,6 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
   [M↓[language] ⊧* PRA]
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
-private theorem val_pair {ξ : Type} {n : ℕ} (b : Fin n → M) (f : ξ → M)
-    (u v : Semiterm language ξ n) :
-    (Semiterm.val b f ∘ ![u,v]) = ![Semiterm.val b f u, Semiterm.val b f v] := by
-  funext i
-  refine Fin.cases rfl (fun j => ?_) i
-  exact Fin.cases rfl (fun k => Fin.elim0 k) j
-
-omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 private theorem val_one {ξ : Type} {n : ℕ} (b : Fin n → M) (f : ξ → M)
     (u : Semiterm language ξ n) :
     (Semiterm.val b f ∘ fun _ : Fin 1 => u) = fun _ => Semiterm.val b f u := by
