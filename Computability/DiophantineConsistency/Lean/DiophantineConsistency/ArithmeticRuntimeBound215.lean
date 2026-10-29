@@ -117,18 +117,7 @@ open ArithmeticMachineTape215 ArithmeticControlFrame215
 /-- `blank_halts_iff_boot`, forward direction, with the explicit time `t-95714`. -/
 theorem boot_halts_le_of_blank (t : V) (ht : first (ArithmeticMachineRun215.run t) = 0) :
     ∃ t' ≤ t, first (runFrom t' (bootCode : V)) = 0 := by
-  have hle : (95714 : V) ≤ t := by
-    by_contra hn
-    have hlt : t < 95714 := lt_of_not_ge hn
-    have he : t + (95714 - t) = 95714 := add_tsub_cancel_of_le (le_of_lt hlt)
-    have hz : first (ArithmeticMachineRun215.run (95714 : V)) = 0 := by
-      rw [← runFrom_blank, ← he, runFrom_add, runFrom_blank, runFrom_halted _ _ ht]
-      exact ht
-    rw [internal_boot, bootCode_state] at hz
-    exact (by simp : (24 : V) ≠ 0) hz
-  refine ⟨t - 95714, tsub_le_self, ?_⟩
-  rw [← continuation, add_tsub_cancel_of_le hle]
-  exact ht
+  exact ArithmeticMachineTape215.boot_halts_le_of_blank t ht
 
 /-- Blank decimal215 halt at `t` ⇒ p215 control halt from the seed at `n ≤ t`. -/
 theorem control_halts_le_of_blank (t : V) (ht : first (ArithmeticMachineRun215.run t) = 0) :
