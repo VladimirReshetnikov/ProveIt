@@ -1,0 +1,51 @@
+Independent review: ArithmeticTilingBand conditional relation proofs
+
+No correctness defect found in the tested change, now committed as `e579fb28da`. The source diff replaces only the explicit case
+splits in `seamRel_iff` and `bandRel_iff` with `split_ifs <;> simp_all`.
+The unchanged `seamIdx` and `bandIdx` definitions determine the case order;
+the tactic splits those actual conditions and simplifies the corresponding
+unchanged guarded disjunctions. In particular, seam (X = 0), initializer,
+reset and finish priority are retained even when guards overlap. Both iff
+statements remain unconditional: no new positivity or size hypothesis is
+introduced. All definitions, guards, other proof bodies, imports and data
+are byte-identical. The more compact proof leaves the branch-by-branch mapping
+implicit in the definitions; both old and new proofs use the ambient simp set.
+
+The tested baseline source matches commit `e579fb28da`'s parent; tested
+final matches that commit and the current workspace. Baseline build results
+are historical isolated samples, not post-commit workspace builds.
+
+Independent audit `/tmp/tiling-band-independent-audit.py` verifies exact
+source substitution, both target/client build source/object/log/timing hashes,
+first direct-input resolution and matching earlier source/object receipts for
+ArithmeticTilingRows and ArithmeticPow. The paired target and the direct
+ArithmeticTilingWord client builds pass. Their client object hashes differ
+(baseline `12897b88…`, final `fbc52af7…`), for an undetermined reason. This
+is not represented as byte equality.
+
+The paired target probes show all 57 target namespace declarations and their
+types/axioms match, with 29,730 simp and 13,394 instance entries identical.
+The client probes show all 18 client namespace declaration/type/axiom reports
+and 29,733 simp / 13,397 instance entries match. A later set of eight client
+probes pins both target and client objects before and after each probe, and
+its output is identical to the original client probe output. These reports do
+not establish equality of all compiled client proof terms, every environment
+extension, or untested transitive clients.
+
+Target user CPU baseline/final was 25.83/25.49 s; TilingWord was 8.94/8.94 s.
+One shared-load pair is not a general performance benchmark. Target and client
+logs include warnings on unchanged statements in both phases; target warning
+line numbers shift because of the shorter proof. The earlier exploratory final
+build's copied log/time match its receipt, but its original object path was
+later reused by the paired final build.
+
+The Rows and Pow direct provider pairs match prior source-current receipts;
+the wider project and package closure is cached and was not rebuilt. A later
+sample of the target's recorded search path resolves earlier BinaryCarry,
+HalfBinomial, BinomLegendre and PellRecurrence objects. Those transitive paths
+were not pinned at target build time; the later sample does not prove their
+historical bytes or that each was loaded. No repository source files were
+modified for this review.
+
+Audit script/log: `/tmp/tiling-band-independent-audit.py` and
+`/tmp/tiling-band-independent-audit.log`.

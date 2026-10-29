@@ -1668,5 +1668,14 @@ builds pass with identical client objects; all 70 existing declaration reports,
 cached; the evidence distinguishes historical provider objects from later
 search-path samples. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-occupation-selector-sharing-evidence/BUNDLE.json).
 
+The tiling band conditional simplification `e579fb28da` removes ten net Lean
+lines, bringing the reviewed series to 10002. `split_ifs` and `simp_all`
+follow the existing conditional priority and guards. The affected proof came
+from Claude-coauthored commit `3cd04ac37f`. Paired target and
+TilingWord client builds pass, and all 57 target and 18 client declaration
+reports and sampled registrations match. The client object bytes differ for an
+unknown reason; transitive dependencies remain cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-tiling-band-dispatch-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
