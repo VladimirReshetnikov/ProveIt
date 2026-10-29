@@ -1659,5 +1659,14 @@ declaration reports, 32,692 simp entries and 14,590 instances match. The
 directly importing umbrella was not rebuilt, and provider inputs remain cached
 without current-source receipts. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-object-natural-semiring-evidence/BUNDLE.json).
 
+The occupation selector sharing `f46e22674a` consolidates the repeated
+selector-to-held-tile argument in a private helper. It adds one net Lean line,
+bringing the reviewed series to 9992 net lines removed, but makes the two callers
+shorter and names their common fact. Paired target and ArithmeticCellWindow
+builds pass with identical client objects; all 70 existing declaration reports,
+33,463 simp entries and 14,822 instances match. The transitive closure remains
+cached; the evidence distinguishes historical provider objects from later
+search-path samples. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-occupation-selector-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
