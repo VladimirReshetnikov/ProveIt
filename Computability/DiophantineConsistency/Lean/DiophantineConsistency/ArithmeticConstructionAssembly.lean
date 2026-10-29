@@ -6,6 +6,7 @@ import DiophantineConsistency.ArithmeticConstructionUnit
 import DiophantineConsistency.ArithmeticConstructionVariation
 import DiophantineConsistency.ArithmeticOuterSeed
 import DiophantineConsistency.ArithmeticPellAuxiliarySeed
+import DiophantineConsistency.ArithmeticConstructionBoundPell
 
 /-! **K7d — assembling the fourteen coordinates** (construction spec §9 X and
 assembly), in every model of IΣ1, from an internal halting time.
@@ -104,15 +105,91 @@ theorem equations_of (β K MC MF : V) (v : Fin 14 → V) (q R : V)
 
 
 
-section main
-variable (hL : LocalNormalization) (T : V) (hT : first (ArithmeticMachineRun215.run T) = 0)
-include hL hT
+end DiophantineConsistency.ArithmeticConstructionAssembly
 
-theorem construction :
+namespace DiophantineConsistency.ArithmeticConstructionBound
+open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticPow ArithmeticWindowDigits ArithmeticPackingBlocks ArithmeticPacking
+  ArithmeticPackingCells ArithmeticWangTable ArithmeticWangPlane ArithmeticRepunit
+  ArithmeticBinaryPopulation ArithmeticPellRecurrence ArithmeticConstructionAssembly
+  ArithmeticConstructionBoundPell
+open ArithmeticCantor (first)
+open ArithmeticMachineRun215 (run)
+attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix CurrentMasks2011.beta
+  CurrentMasks2011.lowPort CurrentMasks2011.highPort
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-! ## The explicit bound -/
+
+/-- The tiling size `N = w*H = 120199^(2T+4)`. -/
+def Nb (T : V) : V := power 120199 (2 * T + 4)
+/-- The radix `q = 2^(94517*N)`. -/
+def Q (T : V) : V := Exp.exp (94517 * Nb T)
+/-- The rank bound in terms of the radix. -/
+def Rq (q : V) : V := (q * q + q) * (q * q) + (q + q * (q + q)) * q
+/-- The sum of the fourteen coordinate bounds at radix `q` and rank `R`. -/
+def Wb (q R : V) : V :=
+  q + (q + Exp.exp R + 1) * q + Exp.exp R + Ys R + (Ps R + R) + 2 * Ps R + Gs R + Fs R +
+    Us R + (Us R + Gs R + Fs R * Fs R * R)
+
+/-- **The witness bound**: an explicit term in `T` built from `+`, `*`, `Exp.exp`
+and `power` only. -/
+def zeroBound (T : V) : V := Wb (Q T) (Rq (Q T))
+
+theorem Wb_mono (q : V) {R R' : V} (h : R ≤ R') : Wb q R ≤ Wb q R' := by
+  have he := exp_monotone_le.mpr h
+  have hA : (q + Exp.exp R + 1) * q ≤ (q + Exp.exp R' + 1) * q :=
+    mm (add_le_add (add_le_add le_rfl he) le_rfl) le_rfl
+  unfold Wb
+  exact add_le_add (add_le_add (add_le_add (add_le_add (add_le_add (add_le_add (add_le_add
+    (add_le_add (add_le_add le_rfl hA) he) (Ys_mono h)) (add_le_add (Ps_mono h) h))
+    (mm le_rfl (Ps_mono h))) (Gs_mono h)) (Fs_mono h)) (Us_mono h))
+    (add_le_add (add_le_add (Us_mono h) (Gs_mono h)) (mm (mm (Fs_mono h) (Fs_mono h)) h))
+
+section members
+variable {q R x : V}
+
+theorem le_Wb_1 (h : x ≤ q) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_rfl | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_2 (h : x ≤ (q + Exp.exp R + 1) * q) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_3 (h : x ≤ Exp.exp R) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_4 (h : x ≤ Ys R) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_5 (h : x ≤ Ps R + R) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_6 (h : x ≤ 2 * Ps R) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_7 (h : x ≤ Gs R) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_8 (h : x ≤ Fs R) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_9 (h : x ≤ Us R) : x ≤ Wb q R := by
+  unfold Wb; refine le_trans h ?_
+  repeat (first | exact le_add_of_nonneg_left (by simp) | refine le_add_of_le_of_nonneg ?_ (by simp))
+theorem le_Wb_10 (h : x ≤ Us R + Gs R + Fs R * Fs R * R) : x ≤ Wb q R := by
+  unfold Wb; exact le_trans h (le_add_of_nonneg_left (by simp))
+
+end members
+
+theorem construction_below_hL (hL : LocalNormalization) (T : V) (hT : first (ArithmeticMachineRun215.run T) = 0) :
     ∃ v : Fin 14 → V, (∀ j, 0 < v j) ∧ v 1 ≤ (CurrentMasks2011.beta : V) * v 0 + 1 ∧
       ArithmeticCarrierSoundness2011.Equations (CurrentMasks2011.beta : V)
         (CurrentKernel2011.K : V) (CurrentMasks2011.lowPort : V)
-        ((CurrentMasks2011.highPort + CurrentMasks2011.beta : ℕ) : V) v := by
+        ((CurrentMasks2011.highPort + CurrentMasks2011.beta : ℕ) : V) v ∧
+      ∀ j, v j ≤ zeroBound T := by
   -- K2: the marked word at the tiling dimensions
   obtain ⟨hw5, hH2, hH4, hwH⟩ := ArithmeticTilingWord.dimensions T
   have hM := ArithmeticTilingWord.marked_word hT hw5 hH2 hH4
@@ -185,7 +262,7 @@ theorem construction :
   set w' := Exp.exp (R - 94517 * N) with hw'def
   have htr := packing_transport h1 w' hwmod
   set z := zq 94517 (CurrentKernel2011.K : V) N w' X1 with hzdef
-  -- K6: the outer seed
+  -- K6: the outer seed, with the size of its ordinate
   have hu : (0 : V) < 94517 * N := mul_pos (by norm_num) hN0
   have hodd : ∃ r, R = 2 * r + 1 := by
     refine ⟨2 * (R / 4) + 1, ?_⟩
@@ -193,13 +270,17 @@ theorem construction :
     rw [hR4] at hd
     calc R = 4 * (R / 4) + 3 := hd.symm
       _ = 2 * (2 * (R / 4) + 1) + 1 := by ring
-  obtain ⟨sY, n, η, ζ, γ, hsY, hn, hη, hζ, hγ, hseed⟩ :=
-    ArithmeticOuterSeed.outer_seed (94517 * N) R hu hodd hpop
+  obtain ⟨sY, n, η, ζ, γ, hsY, hn, hη, hζ, hγ, hseed, hYb⟩ :=
+    outer_seed_bound (94517 * N) R hu hodd hpop
+  obtain ⟨hnb, hηb, hζb, hγb, hab, hcb⟩ := seed_bounds _ _ _ _ _ _ _ hsY hYb hseed
   obtain ⟨hτ, hdn, hc, -, -⟩ := hseed
   -- Stage X: the auxiliary seed
-  obtain ⟨f, i, T', u', y, hf, hi, hT', -, hy, -, -, hfn, -, -, -, -, -, -, habs, hlast⟩ :=
+  obtain ⟨f, i, T', u', y, hf, hi, hT', -, hy, hfx, hyic, hfn, hyd, hux, -, -, -, hlit, habs,
+      hlast⟩ :=
     ArithmeticPellAuxiliarySeed.auxiliary_seed
       (Exp.exp R * (sY * q ^ 3) + sY * q ^ 3) R hR4
+  have hRpos : 0 < R := (ArithmeticPellAuxiliarySeed.phase_indices R hR4).1
+  obtain ⟨hfb, hib, hyb, hTb⟩ := aux_bounds _ R f i T' u' y hRpos hab hf hi hfx hyic hyd hux hlit
   have hsum1 : C1 + F1 + α1 = q := (packing_alpha h1).2
   have hFq : F1 ≤ q := by
     rw [← hsum1]
@@ -218,19 +299,79 @@ theorem construction :
     rw [hzdef, zq]
     exact lt_of_lt_of_le _root_.zero_lt_one (le_add_of_nonneg_left (Arithmetic.zero_le _))
   -- the transport equation
+  have e1 : ((CurrentKernel2011.K : V) + w') * C1 + q = z * (q - 1) + 1 + F1 := by
+    rw [← htr, add_assoc, tsub_add_cancel_of_le hFq]
   have hW : ((CurrentKernel2011.K : V) + w') * q + q =
       ((CurrentKernel2011.K : V) + w') * (F1 + α1) + F1 + z * (q - 1) + 1 := by
-    have e1 : ((CurrentKernel2011.K : V) + w') * C1 + q = z * (q - 1) + 1 + F1 := by
-      rw [← htr, add_assoc, tsub_add_cancel_of_le hFq]
     calc ((CurrentKernel2011.K : V) + w') * q + q =
           ((CurrentKernel2011.K : V) + w') * (C1 + F1 + α1) + q := by rw [hsum1]
       _ = ((CurrentKernel2011.K : V) + w') * (F1 + α1) +
           (((CurrentKernel2011.K : V) + w') * C1 + q) := by ring
       _ = _ := by rw [e1]; ring
+  /- ### Sizes of the K-stage coordinates and of the rank -/
+  have hN2 : (2 : V) ≤ N := by simpa [one_add_one_eq_two] using lt_iff_succ_le.mp hN1
+  have hQ : q = Q T := by
+    rw [hqdef, hNp, Q, Nb, show (2 : V) * T + 3 + 1 = 2 * T + 4 by ring]
+  have hq1 : (1 : V) < q := ArithmeticControllerData.one_lt_exp hu
+  have hE : Exp.exp (94517 : V) ≤ q :=
+    exp_monotone_le.mpr (le_mul_of_one_le_right (by simp) (le_trans (by simp) hN2))
+  have hLq : (CurrentMasks2011.lowPort : V) ≤ q := by
+    refine le_trans ArithmeticMaskConstants.lowPort_lt_exp.le ?_
+    rw [show (47 : V) * 2011 = 94517 by norm_num]; exact hE
+  have hMFq : MF ≤ q + q := by
+    rw [hMF, Nat.cast_add]
+    refine add_le_add ?_ ?_
+    · refine le_trans ArithmeticMaskConstants.highPort_lt_exp.le ?_
+      rw [show (47 : V) * 2011 = 94517 by norm_num]; exact hE
+    · rw [ArithmeticCarrierRadix2011.current_beta_exp, hwd]
+      exact le_trans tsub_le_self hE
+  have hKq : (CurrentKernel2011.K : V) ≤ q := by
+    have hprodK := hL.product 0 0 0 (by norm_num) (by norm_num) (by norm_num)
+    have hKN : CurrentKernel2011.K < 2 ^ (94517 + 94517) := by
+      have hle : CurrentKernel2011.K ≤ CurrentKernel2011.K * cellN 0 0 0 :=
+        Nat.le_mul_of_pos_right _ (cellN_pos 0 0 0)
+      have h2 : BN * BN = 2 ^ (94517 + 94517) := by unfold BN; exact (pow_add 2 94517 94517).symm
+      rw [← h2]
+      exact lt_of_le_of_lt hle hprodK
+    have hV : (CurrentKernel2011.K : V) < ((2 ^ (94517 + 94517) : ℕ) : V) := Nat.cast_lt.mpr hKN
+    rw [← ArithmeticMaskConstants.cast_exp] at hV
+    refine le_trans hV.le (exp_monotone_le.mpr ?_)
+    rw [Nat.cast_add]
+    calc ((94517 : ℕ) : V) + ((94517 : ℕ) : V) = 94517 * 2 := by norm_num
+      _ ≤ 94517 * N := mul_le_mul_of_nonneg_left hN2 (by simp)
+  have hJq : J ≤ q := by
+    have hrep : (Exp.exp 94517 - 1) * J + 1 = q := packing_repunit h1
+    have h2 : (1 : V) + 1 ≤ Exp.exp 94517 := le_trans (by norm_num) (lt_exp (94517 : V)).le
+    rw [← hrep]
+    exact le_trans (le_mul_of_one_le_left (by simp) (le_tsub_of_add_le_left h2))
+      (le_add_of_nonneg_right (by simp))
+  have hC1q : C1 ≤ q := by
+    rw [← hsum1, add_assoc]; exact le_add_of_nonneg_right (by simp)
+  have hαq : α1 ≤ q := by
+    rw [← hsum1]; exact le_add_of_nonneg_left (by simp)
+  have hRle : R ≤ Rq q := by
+    rw [hRdef, hcJ, Rq]
+    refine add_le_add (mm (add_le_add (mm tsub_le_self tsub_le_self) hαq) ?_) ?_
+    · rw [sq]; exact tsub_le_self
+    · exact mm (add_le_add hLq (mm le_rfl hMFq)) hJq
+  have hw' : w' ≤ Exp.exp R := exp_monotone_le.mpr tsub_le_self
+  have hzb : z ≤ (q + Exp.exp R + 1) * q := by
+    have hq1' : (1 : V) ≤ q - 1 :=
+      le_tsub_of_add_le_left (by simpa [one_add_one_eq_two] using lt_iff_succ_le.mp hq1)
+    calc z ≤ z * (q - 1) := le_self_mul hq1'
+      _ ≤ z * (q - 1) + 1 + F1 := by
+          rw [add_assoc]; exact le_add_of_nonneg_right (by simp)
+      _ = ((CurrentKernel2011.K : V) + w') * C1 + q := e1.symm
+      _ ≤ (q + Exp.exp R) * q + q := add_le_add (mm (add_le_add hKq hw') hC1q) le_rfl
+      _ = (q + Exp.exp R + 1) * q := by ring
+  have hsYb : sY ≤ Ys R :=
+    le_trans (le_self_mul (one_le_pow₀ (one_le_exp _))) hYb
+  have hWfin : Wb q R ≤ zeroBound T := by
+    rw [zeroBound, ← hQ]; exact Wb_mono q hRle
   -- the auxiliary facts in terms of the seed coordinate c
   rw [← hc] at hfn habs hlast
   rw [habs] at hlast
-  refine ⟨![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ], ?_, ?_, ?_⟩
+  refine ⟨![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ], ?_, ?_, ?_, ?_⟩
   · intro j
     fin_cases j
     exacts [hJ0, F_pos h1, (packing_alpha h1).1, hz0, hf, hi, hT', hsY, exp_pos _, hn, hη, hζ,
@@ -238,7 +379,45 @@ theorem construction :
   · show F1 ≤ (CurrentMasks2011.beta : V) * J + 1
     rw [hqE]; exact hFq
   · exact equations_of _ _ _ _ _ q R hqE hprod rfl hW hτ hdn hfn hlast
+  · intro j
+    refine le_trans ?_ hWfin
+    fin_cases j
+    · exact le_Wb_1 hJq
+    · exact le_Wb_1 hFq
+    · exact le_Wb_1 hαq
+    · exact le_Wb_2 hzb
+    · exact le_Wb_8 hfb
+    · exact le_Wb_8 hib
+    · exact le_Wb_10 hTb
+    · exact le_Wb_4 hsYb
+    · exact le_Wb_3 hw'
+    · exact le_Wb_5 hnb
+    · exact le_Wb_6 hηb
+    · exact le_Wb_6 hζb
+    · exact le_Wb_9 hyb
+    · exact le_Wb_7 hγb
+
+end DiophantineConsistency.ArithmeticConstructionBound
+
+namespace DiophantineConsistency.ArithmeticConstructionAssembly
+open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticCantor (first)
+open ArithmeticPackingCells
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+section main
+variable (hL : LocalNormalization) (T : V) (hT : first (ArithmeticMachineRun215.run T) = 0)
+include hL hT
+
+theorem construction :
+    ∃ v : Fin 14 → V, (∀ j, 0 < v j) ∧ v 1 ≤ (CurrentMasks2011.beta : V) * v 0 + 1 ∧
+      ArithmeticCarrierSoundness2011.Equations (CurrentMasks2011.beta : V)
+        (CurrentKernel2011.K : V) (CurrentMasks2011.lowPort : V)
+        ((CurrentMasks2011.highPort + CurrentMasks2011.beta : ℕ) : V) v := by
+  obtain ⟨v, hv, hF, heq, _⟩ :=
+    ArithmeticConstructionBound.construction_below_hL hL T hT
+  exact ⟨v, hv, hF, heq⟩
 
 end main
-
 end DiophantineConsistency.ArithmeticConstructionAssembly
