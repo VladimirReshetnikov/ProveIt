@@ -48,10 +48,12 @@ The [PA-minus translation](Lean/DiophantineConsistency/PRAPeanoMinusTranslation.
 now assembles them into a candidate-PRA derivation of every mapped PA-minus
 theorem. The comparison with standard PRA and the conservation argument
 remain open.
-An upstream merge subsequently changed `PRAQCompatibility` and
-`PRAPeanoMinusBasic`; the translation replay authenticates the preceding
-source snapshot. Rebuilding the affected chain against the merged sources is
-in progress.
+Subsequent upstream merges changed `PRAQCompatibility`, `PRAPeanoMinusBasic`,
+`PRAPeanoMinusOrderBasic`, `PRAQOrder`, and several addition and subtraction
+providers. The [24-module refresh](reviews/pra-peanominus-current-refresh-root.md)
+and later [seven-module suffix](reviews/pra-peanominus-suffix-refresh-root.md)
+each passed independent replays for their respective earlier source snapshots.
+Rebuilding the affected chain against the latest merged sources is in progress.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
