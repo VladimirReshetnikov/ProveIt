@@ -43,37 +43,13 @@ theorem base_mono (a b : V) (hab : a≤b) (t : V) :
 
 theorem y_six (a : V) :
     ycoord 6 a=32*(a+2)*delta a*delta a+32*(a+2)*delta a+6*(a+2) := by
-  have hn : (a+2)*(a+2)=1+delta a := by unfold delta; ring
   have hx1 : xcoord 1 a=a+2 := by simpa using x_succ (0:V) a
   have hy1 : ycoord 1 a=1 := by simpa using y_succ (0:V) a
-  have hx2 : xcoord 2 a=2*delta a+1 := by
-    rw [show (2:V)=1+1 by ring,x_succ,hx1,hy1,mul_one,hn]; ring
-  have hy2 : ycoord 2 a=2*(a+2) := by
-    rw [show (2:V)=1+1 by ring,y_succ,hx1,hy1]; ring
-  have hx3 : xcoord 3 a=(a+2)*(4*delta a+1) := by
-    rw [show (3:V)=2+1 by ring,x_succ,hx2,hy2]; ring
-  have hy3 : ycoord 3 a=4*delta a+3 := by
-    rw [show (3:V)=2+1 by ring,y_succ,hx2,hy2]
-    calc
-      2*delta a+1+(a+2)*(2*(a+2))=2*delta a+1+2*((a+2)*(a+2)) := by ring
-      _=4*delta a+3 := by rw [hn]; ring
-  have hx4 : xcoord 4 a=8*delta a*delta a+8*delta a+1 := by
-    rw [show (4:V)=3+1 by ring,x_succ,hx3,hy3]
-    calc
-      (a+2)*((a+2)*(4*delta a+1))+delta a*(4*delta a+3)=
-        ((a+2)*(a+2))*(4*delta a+1)+delta a*(4*delta a+3) := by ring
-      _=8*delta a*delta a+8*delta a+1 := by rw [hn]; ring
-  have hy4 : ycoord 4 a=(a+2)*(8*delta a+4) := by
-    rw [show (4:V)=3+1 by ring,y_succ,hx3,hy3]; ring
-  have hx5 : xcoord 5 a=(a+2)*(16*delta a*delta a+12*delta a+1) := by
-    rw [show (5:V)=4+1 by ring,x_succ,hx4,hy4]; ring
-  have hy5 : ycoord 5 a=16*delta a*delta a+20*delta a+5 := by
-    rw [show (5:V)=4+1 by ring,y_succ,hx4,hy4]
-    calc
-      8*delta a*delta a+8*delta a+1+(a+2)*((a+2)*(8*delta a+4))=
-        8*delta a*delta a+8*delta a+1+((a+2)*(a+2))*(8*delta a+4) := by ring
-      _=16*delta a*delta a+20*delta a+5 := by rw [hn]; ring
-  rw [show (6:V)=5+1 by ring,y_succ,hx5,hy5]
+  conv_lhs =>
+    simp only [show (6:V)=5+1 by ring, show (5:V)=4+1 by ring,
+      show (4:V)=3+1 by ring, show (3:V)=2+1 by ring,
+      show (2:V)=1+1 by ring, y_succ, x_succ, hx1, hy1]
+  unfold delta
   ring
 
 private theorem large_of_six (a p : V) (hp : 6≤p) :
