@@ -2108,5 +2108,13 @@ source-matched receipts; the wider closure remains cached. The compact [evidence
 note](../../reviews/lean-proof-simplification-20261029-pell-half-p-pos.md)
 records hashes and external paths without raw logs or objects.
 
+The first-index lower-bound cancellation `d3b30c1953` removes two net Lean
+lines, bringing the reviewed series to 10364. Strict multiplication cancellation
+replaces an indirect upper-bound contradiction. Paired target and all three
+direct-client builds pass against the current HalfIndex provider, with identical
+client objects. Checked declarations and sampled registrations match; the wider
+closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-firstindex-bound.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
