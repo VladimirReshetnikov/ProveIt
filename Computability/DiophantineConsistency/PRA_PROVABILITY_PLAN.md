@@ -78,6 +78,9 @@ is now proved from the positive 14-coordinate equation system, but the other
 reverse witnesses and adaptive zero construction remain open. The
 [strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
 now follows from the maintained strong norm with the scaled multiplier.
+The [auxiliary witness positivity lemma](reviews/adaptive-construction-aux2011-root.md)
+proves `y-u>0` from the auxiliary norm when `y ≥ 2`; this bound and the rest
+of the adaptive witness map still need binding to the actual construction.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
