@@ -1779,5 +1779,13 @@ give the sum comparison directly. Paired target and three direct clients pass
 with identical client objects; target declaration and registration reports
 match. The transitive closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-y-add-evidence/BUNDLE.json).
 
+The power perturbation identity simplification `a37047cc30` removes one net
+Lean line, bringing the reviewed series to 10068. The affected proof came from
+Claude-coauthored commit `90f67cbdd9`; a rewrite and cancellation replace its
+three-step polynomial calculation. Paired target and four direct clients pass;
+two client objects match and two differ for unknown reasons despite matching
+checked interfaces. The transitive closure remains cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-pow-perturbation-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
