@@ -2265,5 +2265,14 @@ source-matched receipts; the wider closure remains cached. The compact [evidence
 note](../../reviews/lean-proof-simplification-20261029-window-carry-product.md)
 records hashes and external paths without raw logs or objects.
 
+The shifted-source product positivity simplification `726bb505a9` removes two
+net Lean lines, bringing the reviewed series to 10484. Positive-product
+cancellation replaces a zero contradiction. Paired target and direct-check builds
+pass, including a source-matched provider replay; check objects match. One
+generated public proof declaration disappears and another changes type; no
+tracked or nonignored untracked Lean/Python references were found. The wider
+closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-native-z-positive.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
