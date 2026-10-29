@@ -2182,5 +2182,14 @@ source-matched receipts; the wider closure remains cached. The compact [evidence
 note](../../reviews/lean-proof-simplification-20261029-annotated-rename-construct.md)
 records hashes and external paths without raw logs or objects.
 
+The shared two-step Pell ordinate `b876051618` removes six net Lean lines,
+bringing the reviewed series to 10433. One public theorem replaces three
+separate calculations. Paired builds of both targets and all five direct clients
+pass; three client objects match and two differ. Checked common declarations
+and sampled registrations match, and seven external project providers have
+source-matched receipts. The wider closure remains cached. The compact [evidence
+note](../../reviews/lean-proof-simplification-20261029-pell-y-two-shared.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
