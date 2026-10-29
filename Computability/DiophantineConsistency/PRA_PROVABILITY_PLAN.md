@@ -103,6 +103,9 @@ proves `y-u>0` from the auxiliary norm when `y ≥ 2`; the
 [coordinate client](reviews/adaptive-construction-aux-client2011-root.md)
 binds this to the actual 14-coordinate equations. The ordinate bound and
 the rest of the witness map still need binding to the actual construction.
+The [Pell phase bound](reviews/adaptive-construction-aux-phase2011-root.md)
+now proves `ycoord R b ≥ 2` for `R % 4 = 3`; binding the construction's
+actual ordinate identity to the client remains open.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
