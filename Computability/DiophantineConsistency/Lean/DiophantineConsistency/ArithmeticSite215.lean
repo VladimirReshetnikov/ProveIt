@@ -33,12 +33,12 @@ theorem source_not_node {Q : List Bool} {r : Nat} :
   have hh := source_checked h
   simp only [KSim.checkEdge,Bool.false_eq_true] at hh
 
-private theorem checked_inc {Q : List Bool} {r : Nat}
+theorem checked_inc {Q : List Bool} {r : Nat}
     (h : KSim.checkEdge KTableCore.tm215 Q (.inc r)=true) :
     Q.length≤48 ∧ r<9 ∧ KSim.runTo KTableCore.tm215 none Q
       (KSim.tgtConf (incPath Q) (KSim.allOnes Q) (.plain (.inc (KSim.physOf r))))=true := by
   simpa only [KSim.checkEdge,Bool.and_eq_true_iff,decide_eq_true_eq,and_assoc] using h
-private theorem checked_decnz {Q : List Bool} {r : Nat}
+theorem checked_decnz {Q : List Bool} {r : Nat}
     (h : KSim.checkEdge KTableCore.tm215 Q (.decnz r)=true) :
     Q.length≤48 ∧ r<9 ∧
       KSim.runTo KTableCore.tm215 (some (KSim.physOf r,true)) Q

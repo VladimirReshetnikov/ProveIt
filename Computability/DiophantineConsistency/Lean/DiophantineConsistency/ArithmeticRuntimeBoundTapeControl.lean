@@ -28,7 +28,7 @@ open ArithmeticCantor ArithmeticControlFile ArithmeticControlTable ArithmeticCon
 open ArithmeticMachineTape215 ArithmeticRegisterBoxes215 ArithmeticSymbolicCore215
 open ArithmeticRuntimeBoundTape ArithmeticRuntimeBoundTapeBoxes ArithmeticRuntimeBoundTapeSymbolic
 open ArithmeticControlFrame215
-open ArithmeticSite215 (startValue targetValue)
+open ArithmeticSite215 (startValue targetValue checked_inc checked_decnz)
 open KRuntimeCore (BoxSt Branch SConf Seg)
 
 theorem wA_bits (Q : List Bool) : wA (Q.map Seg.bit) = 0 := by
@@ -46,20 +46,6 @@ theorem start_weights (Q : List Bool) (hQ : Q.length ≤ 64) :
     wA_nil, wC_nil, segA, segC]
   rw [wA_bits, wC_bits]
   omega
-
-private theorem checked_inc {Q : List Bool} {r : Nat}
-    (h : KSim.checkEdge KTableCore.tm215 Q (.inc r)=true) :
-    Q.length≤48 ∧ r<9 ∧ KSim.runTo KTableCore.tm215 none Q
-      (KSim.tgtConf (incPath Q) (KSim.allOnes Q) (.plain (.inc (KSim.physOf r))))=true := by
-  simpa only [KSim.checkEdge,Bool.and_eq_true_iff,decide_eq_true_eq,and_assoc] using h
-private theorem checked_decnz {Q : List Bool} {r : Nat}
-    (h : KSim.checkEdge KTableCore.tm215 Q (.decnz r)=true) :
-    Q.length≤48 ∧ r<9 ∧
-      KSim.runTo KTableCore.tm215 (some (KSim.physOf r,true)) Q
-        (KSim.tgtConf (breakPath 1 Q) (KSim.allOnes (stripPath false 1 Q)) (.plain .none))=true ∧
-      KSim.runTo KTableCore.tm215 (some (KSim.physOf r,false)) Q
-        (KSim.tgtConf (incPath Q) (KSim.allOnes Q) (.plain (.dec (KSim.physOf r))))=true := by
-  simpa only [KSim.checkEdge,Bool.and_eq_true_iff,decide_eq_true_eq,and_assoc] using h
 
 section Internal
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
