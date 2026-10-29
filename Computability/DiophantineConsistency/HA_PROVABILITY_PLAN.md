@@ -2567,3 +2567,12 @@ explicit placeholder level, and `⨀`/`K!_intro` by the `SizedProof`
 combinators.
 
 **Drop-in for the L inductions.** `ZFCinPA.SizedLPlumbing.compiledLe` is the bounded replacement for `LDriverSteps.compiled`/`LGlue1.compiledG`. A template `h : templTheory ⊢ σ` compiles at arbitrary placeholders of level `u ≥ 2` within level `cExpG (tmA h) (tmB h) u + tmK h + 1` on the `DLv` scale. The constants are read off `h.get.toProof2`. `stg_lvB` collapses the compiler's stage tower into one level per stage.
+
+## Internal rank window for the smaller adaptive equation
+
+The [rank-window client](reviews/adaptive-rank-window2011-root.md) derives
+`24 ≤ R` and `R+q³+q+1 ≤ q⁴` in arbitrary IΣ₁ models directly from a zero
+of the actual current 13-variable expression. The first-carrier gap and
+current mask bounds are discharged; no index relationship or input power is
+assumed. Strong-index recovery, full internal converse and the HA transfer
+for this smaller equation remain open.
