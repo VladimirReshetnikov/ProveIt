@@ -182,15 +182,21 @@ lemma reduct_standard :
         (Sum.inl Language.Set.Rel.mem) v = (v 0 ∈ v 1)
       exact propext (Structure.mem_lang (L := setTemplateLanguage k arities) (M := M) (v := v))
 
-/-- The `ℒₛₑₜ` reduct of a model of the template theory is a model of `𝗭𝗙`. -/
-lemma pure_models [M↓[setTemplateLanguage k arities] ⊧* templTheory k arities] :
-    M↓[ℒₛₑₜ] ⊧* (𝗭𝗙 : SetTheory) := by
-  have h : (s.lMap (setHom k arities)).toStruc ⊧* (𝗭𝗙 : SetTheory) := by
+/-- A model of an enlarged theory models every theory lifted into it. -/
+lemma pure_models_of_subset (T : SetTheory) (S : Theory (setTemplateLanguage k arities))
+    [M↓[setTemplateLanguage k arities] ⊧* S]
+    (hTS : Theory.lMap (setHom k arities) T ⊆ S) : M↓[ℒₛₑₜ] ⊧* T := by
+  have h : (s.lMap (setHom k arities)).toStruc ⊧* T := by
     constructor
     intro p hp
     apply Semiformula.models_lMap.mp
-    exact LO.FirstOrder.Theory.models M (templTheory k arities) (Or.inl ⟨p, hp, rfl⟩)
+    exact LO.FirstOrder.Theory.models M S (hTS ⟨p, hp, rfl⟩)
   simpa only [reduct_standard] using h
+
+/-- The `ℒₛₑₜ` reduct of a model of the template theory is a model of `𝗭𝗙`. -/
+lemma pure_models [M↓[setTemplateLanguage k arities] ⊧* templTheory k arities] :
+    M↓[ℒₛₑₜ] ⊧* (𝗭𝗙 : SetTheory) :=
+  pure_models_of_subset 𝗭𝗙 (templTheory k arities) (fun _ hp => Or.inl hp)
 
 omit [Structure.Eq (setTemplateLanguage k arities) M] in
 /-- Separation for every enlarged matrix. -/
@@ -219,6 +225,26 @@ end Semantics
 
 /-- **Completeness for template sentences**: it suffices to check the sentence
 in every model of the template theory whose equality is genuine. -/
+theorem provable_of_standard_models (T : Theory (setTemplateLanguage k arities))
+    [𝗘𝗤 (setTemplateLanguage k arities) ⪯ T]
+    (σ : Sentence (setTemplateLanguage k arities))
+    (H : ∀ (M : Type) [Nonempty M] [SetStructure M]
+      [Structure (setTemplateLanguage k arities) M]
+      [Structure.Eq (setTemplateLanguage k arities) M]
+      [Structure.Mem (setTemplateLanguage k arities) M]
+      [M↓[setTemplateLanguage k arities] ⊧* T],
+      M↓[setTemplateLanguage k arities] ⊧ σ) :
+    T ⊢ σ := by
+  apply LO.FirstOrder.Theory.Proof.complete.{0,0}
+  apply consequence_iff_eq.{0,0}.mpr
+  intro M _ s _ hT
+  letI : SetStructure M := ⟨fun y x =>
+    Structure.rel (L := setTemplateLanguage k arities) (Sum.inl Language.Set.Rel.mem) ![x, y]⟩
+  letI : Structure.Mem (setTemplateLanguage k arities) M := ⟨fun _ _ => Iff.rfl⟩
+  letI : M↓[setTemplateLanguage k arities] ⊧* T := hT
+  exact H M
+
+/-- Completeness for template sentences with genuine equality and membership. -/
 theorem templ_provable (σ : Sentence (setTemplateLanguage k arities))
     (H : ∀ (M : Type) [Nonempty M] [SetStructure M]
       [Structure (setTemplateLanguage k arities) M]
@@ -226,14 +252,7 @@ theorem templ_provable (σ : Sentence (setTemplateLanguage k arities))
       [Structure.Mem (setTemplateLanguage k arities) M]
       [M↓[setTemplateLanguage k arities] ⊧* templTheory k arities],
       M↓[setTemplateLanguage k arities] ⊧ σ) :
-    templTheory k arities ⊢ σ := by
-  apply LO.FirstOrder.Theory.Proof.complete.{0,0}
-  apply consequence_iff_eq.{0,0}.mpr
-  intro M _ s _ hT
-  letI : SetStructure M := ⟨fun y x =>
-    Structure.rel (L := setTemplateLanguage k arities) (Sum.inl Language.Set.Rel.mem) ![x, y]⟩
-  letI : Structure.Mem (setTemplateLanguage k arities) M := ⟨fun _ _ => Iff.rfl⟩
-  letI : M↓[setTemplateLanguage k arities] ⊧* templTheory k arities := hT
-  exact H M
+    templTheory k arities ⊢ σ :=
+  provable_of_standard_models (templTheory k arities) σ H
 
 end LeanProofs.ZFCinPA.LTemplate

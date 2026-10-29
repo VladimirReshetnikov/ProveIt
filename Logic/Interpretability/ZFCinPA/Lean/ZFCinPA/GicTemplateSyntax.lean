@@ -68,4 +68,25 @@ lemma translate_gicBodySource
 
 end Internal
 
+section Semantics
+
+variable {M : Type*} [Nonempty M] [SetStructure M]
+variable [Structure (setTemplateLanguage k arities) M]
+variable [Structure.Mem (setTemplateLanguage k arities) M]
+
+/-- A model of a closed GIC instance satisfies the corresponding matrix condition. -/
+lemma gic_iff_of_mem (T : Theory (setTemplateLanguage k arities))
+    [M↓[setTemplateLanguage k arities] ⊧* T]
+    (p : Semiproposition (setTemplateLanguage k arities) 2)
+    (hp : (gicBodySource p).univCl ∈ T) (f : ℕ → M) (a : M) :
+    ∃ b : M, (∀ y, y ∈ b → ∃ x, p.Eval ![x, y] f) ∧
+      (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) := by
+  have h := LO.FirstOrder.Theory.models M T hp
+  have h' : ∀ f : ℕ → M, ∀ a : M, ∃ b : M, (∀ y, y ∈ b → ∃ x, p.Eval ![x, y] f) ∧
+      (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) := by
+    simpa [models_iff, gicBodySource] using h
+  exact h' f a
+
+end Semantics
+
 end LeanProofs.ZFCinPA.GicTemplateSyntax

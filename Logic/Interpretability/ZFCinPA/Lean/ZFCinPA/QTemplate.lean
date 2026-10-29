@@ -221,25 +221,16 @@ variable [Structure.Mem (setTemplateLanguage k arities) M]
 
 /-- The `ℒₛₑₜ` reduct of a model of `templN` is a model of `qTheory`. -/
 lemma pure_modelsN [M↓[setTemplateLanguage k arities] ⊧* templN k arities] :
-    M↓[ℒₛₑₜ] ⊧* qTheory := by
-  have h : (s.lMap (setHom k arities)).toStruc ⊧* qTheory := by
-    constructor
-    intro p hp
-    apply Semiformula.models_lMap.mp
-    exact LO.FirstOrder.Theory.models M (templN k arities) (Or.inl ⟨p, hp, rfl⟩)
-  simpa only [LTemplate.reduct_standard] using h
+    M↓[ℒₛₑₜ] ⊧* qTheory :=
+  LTemplate.pure_models_of_subset qTheory (templN k arities) (fun _ hp => Or.inl hp)
 
 omit [Structure.Eq (setTemplateLanguage k arities) M] in
 /-- Global image collection for every enlarged matrix. -/
 lemma gic_iffN [M↓[setTemplateLanguage k arities] ⊧* templN k arities]
     (p : Semiproposition (setTemplateLanguage k arities) 2) (f : ℕ → M) (a : M) :
     ∃ b : M, (∀ y, y ∈ b → ∃ x, p.Eval ![x, y] f) ∧
-      (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) := by
-  have h := LO.FirstOrder.Theory.models M (templN k arities) (Or.inr (Or.inr ⟨p, rfl⟩))
-  have h' : ∀ f : ℕ → M, ∀ a : M, ∃ b : M, (∀ y, y ∈ b → ∃ x, p.Eval ![x, y] f) ∧
-      (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) := by
-    simpa [models_iff, gicBodySource, GicTemplateSyntax.gicBodySource] using h
-  exact h' f a
+      (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) :=
+  GicTemplateSyntax.gic_iff_of_mem (templN k arities) p (Or.inr (Or.inr ⟨p, rfl⟩)) f a
 
 end Semantics
 
@@ -251,14 +242,7 @@ theorem templ_provableN (σ : Sentence (setTemplateLanguage k arities))
       [Structure.Mem (setTemplateLanguage k arities) M]
       [M↓[setTemplateLanguage k arities] ⊧* templN k arities],
       M↓[setTemplateLanguage k arities] ⊧ σ) :
-    templN k arities ⊢ σ := by
-  apply LO.FirstOrder.Theory.Proof.complete.{0,0}
-  apply consequence_iff_eq.{0,0}.mpr
-  intro M _ s _ hT
-  letI : SetStructure M := ⟨fun y x =>
-    Structure.rel (L := setTemplateLanguage k arities) (Sum.inl Language.Set.Rel.mem) ![x, y]⟩
-  letI : Structure.Mem (setTemplateLanguage k arities) M := ⟨fun _ _ => Iff.rfl⟩
-  letI : M↓[setTemplateLanguage k arities] ⊧* templN k arities := hT
-  exact H M
+    templN k arities ⊢ σ :=
+  LTemplate.provable_of_standard_models (templN k arities) σ H
 
 end LeanProofs.ZFCinPA.QTemplate
