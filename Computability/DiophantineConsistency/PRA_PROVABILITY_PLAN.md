@@ -154,7 +154,9 @@ base certificates yield PA-minus rule proofs. The [strict-fragment
 endpoint](reviews/parsons-strict-initial-root.md) connects an actual
 Foundation proof with strict induction and a Tree conclusion to the rule
 calculus. Handling arbitrary Σ₁ induction and eliminating the rule calculus
-into candidate PRA remain separate requirements.
+into candidate PRA remain separate requirements. A [strict Π₂ client](reviews/parsons-strict-pi-two-root.md)
+constructs the Tree certificate for a universally closed existential with a
+Σ₀ matrix; it still concludes in the intermediate rule calculus.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 

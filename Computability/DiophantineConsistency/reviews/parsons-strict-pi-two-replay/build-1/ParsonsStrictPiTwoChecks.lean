@@ -1,0 +1,4 @@
+import DiophantineConsistency.ParsonsStrictPiTwo
+#print axioms DiophantineConsistency.ParsonsStrictPiTwo.tree
+#print axioms DiophantineConsistency.ParsonsStrictPiTwo.sentence_tree
+#print axioms DiophantineConsistency.ParsonsStrictPiTwo.strict_fragment

@@ -27,3 +27,6 @@ The four Wang-independent Pell prerequisites, with their available checks,
 have since [passed two source-current replays](../reviews/adaptive-assembly-pell2011-author.md)
 against the authenticated adaptive provider. The remaining assembly sources
 and cross-namespace boundaries still require the scoped audit described above.
+Seven further [packing, rank and controller prerequisites](../reviews/adaptive-assembly-independent2011-author.md)
+also passed author and independent replays, with existing linter warnings
+retained and the two Lake-cache boundaries recorded.
