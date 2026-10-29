@@ -1,0 +1,13 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:142:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x : M
+h :
+  (Structure.func ((Code.zero 0).prec (Code.proj 0)) fun i =>
+      Fin.cases (Structure.func Code.succ fun x_1 => ![x] 0) (fun i => ![x] i.succ) i) =
+    Fin.cases (![x] 0)
+      (fun i => Fin.cases (Structure.func ((Code.zero 0).prec (Code.proj 0)) ![x]) (fun i => ![x] i.succ) i) 0
+⊢ (Structure.func predCode fun x_1 => Structure.func Code.succ fun x_2 => x) = x

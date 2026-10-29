@@ -1,0 +1,24 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:60:9: error: typeclass instance problem is stuck
+  Structure language ?m.29
+
+Note: Lean will not try to resolve this typeclass instance problem because the second type argument to `Structure` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:66:9: error: typeclass instance problem is stuck
+  Structure language ?m.25
+
+Note: Lean will not try to resolve this typeclass instance problem because the second type argument to `Structure` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:82:4: error: Type mismatch
+  h e
+has type
+  (Semiformula.Eval ![Semiterm.Operator.val ![] 0] e) exhaustionBody →
+    (∀ (x : M),
+        (Semiformula.Eval ![x] e) exhaustionBody →
+          (Semiformula.Eval ![x + Semiterm.Operator.val ![] 1] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
+but is expected to have type
+  (Semiformula.Eval ![0] e) exhaustionBody →
+    (∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody → (Semiformula.Eval ![x + 1] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody

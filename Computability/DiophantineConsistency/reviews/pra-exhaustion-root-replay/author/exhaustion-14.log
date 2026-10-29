@@ -1,0 +1,20 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:60:2: error: 'change' tactic failed, pattern
+  Structure.func (Code.zero 0) ![] = Structure.func (Code.zero 0) Fin.elim0
+is not definitionally equal to target
+  Semiterm.Operator.val ![] op(0) = 0
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:66:2: error: 'change' tactic failed, pattern
+  Structure.func oneCode ![] = Structure.func oneCode Fin.elim0
+is not definitionally equal to target
+  Semiterm.Operator.val ![] op(1) = 1
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:82:4: error: Type mismatch
+  h e
+has type
+  (Semiformula.Eval ![Semiterm.Operator.val ![] 0] e) exhaustionBody →
+    (∀ (x : M),
+        (Semiformula.Eval ![x] e) exhaustionBody →
+          (Semiformula.Eval ![x + Semiterm.Operator.val ![] 1] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
+but is expected to have type
+  (Semiformula.Eval ![0] e) exhaustionBody →
+    (∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody → (Semiformula.Eval ![x + 1] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody

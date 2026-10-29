@@ -1,0 +1,52 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:59:47: error: Application type mismatch: The argument
+  rfl
+has type
+  ?m.17 = ?m.17
+but is expected to have type
+  Semiterm.Operator.val ![] op(0) = 0
+in the application
+  { zero := rfl }
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:60:46: error: Application type mismatch: The argument
+  rfl
+has type
+  ?m.17 = ?m.17
+but is expected to have type
+  Semiterm.Operator.val ![] op(1) = 1
+in the application
+  { one := rfl }
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:73:4: error: Type mismatch
+  h e
+has type
+  (Semiformula.Eval ![Semiterm.Operator.val ![] 0] e) exhaustionBody →
+    (∀ (x : M),
+        (Semiformula.Eval ![x] e) exhaustionBody →
+          (Semiformula.Eval ![x + Semiterm.Operator.val ![] 1] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
+but is expected to have type
+  (Semiformula.Eval ![0] e) exhaustionBody →
+    (∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody → (Semiformula.Eval ![x + 1] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:78:2: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+hInd : M↓[language] ⊧ Semiformula.univCl (succInd exhaustionBody)
+inductionRule :
+  ∀ (e : ℕ → M),
+    (Semiformula.Eval ![0] e) exhaustionBody →
+      (∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody → (Semiformula.Eval ![x + 1] e) exhaustionBody) →
+        ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
+e : ℕ → M
+x y : M
+a✝ : (Semiformula.Eval ![y] e) exhaustionBody
+⊢ (Structure.func Code.succ fun x => y) = y + 1
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:72:6: warning: This simp argument is unused:
+  Matrix.constant_eq_singleton
+
+Hint: Omit it from the simp argument list.
+  simp [models_iff, Semiformula.eval_univCl, succInd, Semiformula.eval_substs,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵M̵a̵t̵r̵i̵x̵.̵c̵o̵n̵s̵t̵a̵n̵t̵_̵e̵q̵_̵s̵i̵n̵g̵l̵e̵t̵o̵n̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

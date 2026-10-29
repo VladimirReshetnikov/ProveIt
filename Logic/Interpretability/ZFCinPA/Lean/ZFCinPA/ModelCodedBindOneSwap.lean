@@ -1,3 +1,4 @@
+import ZFCinPA.ModelCodedBindOneCommute
 import ZFCinPA.ModelCodedBindOne
 import ZFCinPA.ModelCodedBindTwoSlots
 
@@ -58,46 +59,10 @@ lemma termBindOneAt_swap {depth term : V} (ht : IsSemiterm L depth term) :
     termSubst L (swapVec L depth)
       (termBindOneAt L a (depth+1) (termBindOneAt L b depth term)) =
       termBindOneAt L b (depth+1) (termBindOneAt L a depth term) := by
-  apply IsSemiterm.induction 𝚷 ?_ ?_ ?_ ?_ term ht
-  · definability
-  · intro z hz a b hab
-    rw [termBindOneAt_bvar,termBindOneAt_bvar,termBindOneAt_bvar,
-      termBindOneAt_bvar,termSubst_bvar]
-    exact (swapVec_spec depth).1 z hz
-  · intro x a b hab
-    classical
-    by_cases hxb : x = b
-    · subst x
-      rw [termBindOneAt_chosen,termBindOneAt_bvar,termSubst_bvar,
-        (swapVec_spec depth).2.1,termBindOneAt_other a depth b hab.symm,
-        termBindOneAt_chosen]
-    · by_cases hxa : x = a
-      · subst x
-        rw [termBindOneAt_other b depth a hab,termBindOneAt_chosen,
-          termSubst_bvar,(swapVec_spec depth).2.2,
-          termBindOneAt_chosen,termBindOneAt_bvar]
-      · rw [termBindOneAt_other b depth x hxb,termBindOneAt_other a (depth+1) x hxa,
-          termSubst_fvar,termBindOneAt_other a depth x hxa,
-          termBindOneAt_other b (depth+1) x hxb]
-  · intro arity f terms hf hv ih a b hab
-    have hvb := termBindOneVecAt_isUTerm b depth hv.isUTerm
-    have hva := termBindOneVecAt_isUTerm a depth hv.isUTerm
-    have hvba := termBindOneVecAt_isUTerm a (depth+1) hvb
-    rw [termBindOneAt_func b depth hf hv.isUTerm,
-      termBindOneAt_func a (depth+1) hf hvb,
-      termSubst_func hf hvba,
-      termBindOneAt_func a depth hf hv.isUTerm,
-      termBindOneAt_func b (depth+1) hf hva]
-    apply congrArg (fun args => ^func arity f args)
-    apply nth_ext' arity
-    · simp [hvba]
-    · simp [hva]
-    · intro i hi
-      rw [nth_termSubstVec hvba hi,nth_termBindOneVecAt a (depth+1) hvb hi,
-        nth_termBindOneVecAt b depth hv.isUTerm hi,
-        nth_termBindOneVecAt b (depth+1) hva hi,
-        nth_termBindOneVecAt a depth hv.isUTerm hi]
-      exact ih i hi a b hab
+  intro a b hab
+  have h := ModelCodedBindTwoSlots.termBindTwo_reindex ht b a (1 : V) 0 hab.symm
+  rw [add_zero, ModelCodedBindOneCommute.termBindOneAt_commute ht.isUTerm a b depth (depth+1) hab] at h
+  simpa only [swapVec,ModelCodedBindTwoSlots.twoSlotVec,add_zero] using h
 
 lemma termBindOneVecAt_swap {depth arity terms : V}
     (ht : IsSemitermVec L arity depth terms) (a b : V) (hab : a ≠ b) :
@@ -121,57 +86,9 @@ lemma bindOneAt_swap {depth p : V} (hp : IsSemiformula L depth p) :
     ∀ a b : V, a ≠ b →
     subst L (swapVec L depth) (bindOneAt L a (depth+1) (bindOneAt L b depth p)) =
       bindOneAt L b (depth+1) (bindOneAt L a depth p) := by
-  apply IsSemiformula.pi1_structural_induction (P := fun depth p =>
-    ∀ a b : V, a ≠ b →
-    subst L (swapVec L depth) (bindOneAt L a (depth+1) (bindOneAt L b depth p)) =
-      bindOneAt L b (depth+1) (bindOneAt L a depth p))
-    ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
-  · definability
-  · intro depth arity R terms hR ht a b hab
-    rw [bindOneAt_rel b depth hR ht.isUTerm,
-      bindOneAt_rel a (depth+1) hR (termBindOneVecAt_isUTerm b depth ht.isUTerm),
-      substs_rel hR (termBindOneVecAt_isUTerm a (depth+1)
-        (termBindOneVecAt_isUTerm b depth ht.isUTerm)),
-      termBindOneVecAt_swap ht a b hab,bindOneAt_rel a depth hR ht.isUTerm,
-      bindOneAt_rel b (depth+1) hR (termBindOneVecAt_isUTerm a depth ht.isUTerm)]
-  · intro depth arity R terms hR ht a b hab
-    rw [bindOneAt_nrel b depth hR ht.isUTerm,
-      bindOneAt_nrel a (depth+1) hR (termBindOneVecAt_isUTerm b depth ht.isUTerm),
-      substs_nrel hR (termBindOneVecAt_isUTerm a (depth+1)
-        (termBindOneVecAt_isUTerm b depth ht.isUTerm)),
-      termBindOneVecAt_swap ht a b hab,bindOneAt_nrel a depth hR ht.isUTerm,
-      bindOneAt_nrel b (depth+1) hR (termBindOneVecAt_isUTerm a depth ht.isUTerm)]
-  · intro depth a b hab; simp
-  · intro depth a b hab; simp
-  · intro depth p q hp hq ihp ihq a b hab
-    rw [bindOneAt_and b depth hp.isUFormula hq.isUFormula,
-      bindOneAt_and a (depth+1) (bindOneAt_isSemiformula hp b).isUFormula
-        (bindOneAt_isSemiformula hq b).isUFormula,
-      substs_and (bindOneAt_isSemiformula (bindOneAt_isSemiformula hp b) a).isUFormula
-        (bindOneAt_isSemiformula (bindOneAt_isSemiformula hq b) a).isUFormula,
-      ihp a b hab,ihq a b hab,bindOneAt_and a depth hp.isUFormula hq.isUFormula,
-      bindOneAt_and b (depth+1) (bindOneAt_isSemiformula hp a).isUFormula
-        (bindOneAt_isSemiformula hq a).isUFormula]
-  · intro depth p q hp hq ihp ihq a b hab
-    rw [bindOneAt_or b depth hp.isUFormula hq.isUFormula,
-      bindOneAt_or a (depth+1) (bindOneAt_isSemiformula hp b).isUFormula
-        (bindOneAt_isSemiformula hq b).isUFormula,
-      substs_or (bindOneAt_isSemiformula (bindOneAt_isSemiformula hp b) a).isUFormula
-        (bindOneAt_isSemiformula (bindOneAt_isSemiformula hq b) a).isUFormula,
-      ihp a b hab,ihq a b hab,bindOneAt_or a depth hp.isUFormula hq.isUFormula,
-      bindOneAt_or b (depth+1) (bindOneAt_isSemiformula hp a).isUFormula
-        (bindOneAt_isSemiformula hq a).isUFormula]
-  · intro depth p hp ih a b hab
-    rw [bindOneAt_all b depth hp.isUFormula,
-      bindOneAt_all a (depth+1) (bindOneAt_isSemiformula hp b).isUFormula,
-      substs_all (bindOneAt_isSemiformula (bindOneAt_isSemiformula hp b) a).isUFormula,
-      ←swapVec_succ,ih a b hab,bindOneAt_all a depth hp.isUFormula,
-      bindOneAt_all b (depth+1) (bindOneAt_isSemiformula hp a).isUFormula]
-  · intro depth p hp ih a b hab
-    rw [bindOneAt_exs b depth hp.isUFormula,
-      bindOneAt_exs a (depth+1) (bindOneAt_isSemiformula hp b).isUFormula,
-      substs_ex (bindOneAt_isSemiformula (bindOneAt_isSemiformula hp b) a).isUFormula,
-      ←swapVec_succ,ih a b hab,bindOneAt_exs a depth hp.isUFormula,
-      bindOneAt_exs b (depth+1) (bindOneAt_isSemiformula hp a).isUFormula]
+  intro a b hab
+  have h := ModelCodedBindTwoSlots.bindTwo_reindex hp b a (1 : V) 0 hab.symm
+  rw [add_zero, ModelCodedBindOneCommute.bindOneAt_commute hp.isUFormula a b depth (depth+1) hab] at h
+  simpa only [swapVec,ModelCodedBindTwoSlots.twoSlotVec,add_zero] using h
 
 end LeanProofs.ZFCinPA.ModelCodedBindOneSwap

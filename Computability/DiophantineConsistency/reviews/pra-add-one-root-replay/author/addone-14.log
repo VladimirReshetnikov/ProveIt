@@ -1,0 +1,43 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddOne.lean:131:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Structure.func addCode ![x, Structure.func Code.succ fun x => z]
+in the target expression
+  Structure.func addCode ![x, Structure.func oneCode Fin.elim0] = Structure.func Code.succ fun x_1 => x
+
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x : M
+z : M := Structure.func (Code.zero 0) Fin.elim0
+hg :
+  Structure.func (Code.succ.comp (Codes.cons (Code.proj 1) (Codes.nil 3))) ![z, Structure.func addCore ![z, x], x] =
+    Structure.func Code.succ fun i =>
+      Structure.func (getCode (Codes.cons (Code.proj 1) (Codes.nil 3)) i) ![z, Structure.func addCore ![z, x], x]
+hOneArg : (fun i => Structure.func (getCode (Codes.cons (Code.zero 0) (Codes.nil 0)) i) Fin.elim0) = fun x => z
+hone : Structure.func oneCode Fin.elim0 = Structure.func Code.succ fun x => z
+harg :
+  (fun i =>
+      Structure.func (getCode (Codes.cons (Code.proj 1) (Codes.cons (Code.proj 0) (Codes.nil 2))) i)
+        ![x, Structure.func oneCode Fin.elim0]) =
+    ![Structure.func oneCode Fin.elim0, x]
+ha :
+  Structure.func addCode ![x, Structure.func Code.succ fun x => z] =
+    Structure.func addCore ![Structure.func Code.succ fun x => z, x]
+hbArg : (fun i => Fin.cases (Structure.func (Code.zero 0) Fin.elim0) ![x] i) = ![z, x]
+hb : Structure.func addCore ![z, x] = x
+hs :
+  Structure.func addCore ![Structure.func Code.succ fun x => z, x] =
+    Structure.func (Code.succ.comp (Codes.cons (Code.proj 1) (Codes.nil 3))) ![z, Structure.func addCore ![z, x], x]
+⊢ Structure.func addCode ![x, Structure.func oneCode Fin.elim0] = Structure.func Code.succ fun x_1 => x
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    addCode
+  has type
+    Code 2
+  but is expected to have type
+    language.Func 2
+  in the application
+    Structure.func addCode

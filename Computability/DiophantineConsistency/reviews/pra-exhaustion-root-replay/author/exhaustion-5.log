@@ -1,0 +1,13 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:35:79: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x : M
+e : ℕ → M
+eqRel : ∀ (v : Fin 2 → M), Structure.rel Language.ORing.Rel.eq v ↔ v 0 = v 1
+⊢ x = Structure.func (Code.zero 0) (Semiterm.val ![x] e ∘ Fin.elim0) ∨
+      Structure.func Code.succ (Semiterm.val ![x] e ∘ fun x => Semiterm.func predCode fun x => #0) = x ↔
+    x = Structure.func (Code.zero 0) Fin.elim0 ∨
+      (Structure.func Code.succ fun x_1 => Structure.func predCode fun x_2 => x) = x

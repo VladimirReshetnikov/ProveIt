@@ -538,47 +538,51 @@ theorem atom_vec {n R t₁ t₂ : V} (h : IsSemiformula ℒₛₑₜ n (^rel 2 R
     · exact (IsSemiformula.nrel.mp h).2
   exact ⟨hvec, by simpa using hvec.nth (i := 0) (by simp), by simpa using hvec.nth (i := 1) (by simp)⟩
 
+private theorem inp_swap {n w₁ w₂ E c : V} (inp : Inp n w₁ w₂ E c) : Inp n w₂ w₁ E c := by
+  obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
+  exact ⟨hw₂, hw₁, hc, hb₂, hb₁, hE, hEb, fun i hi => pair1_symm (hP i hi)⟩
+
+private theorem atom_subst {A : V} (hA : AtomOK A) {n w₁ w₂ E c v R t₁ t₂ : V}
+    (hR : R = 0 ∨ R = 1) (ht₁ : IsSemiterm ℒₛₑₜ n t₁) (ht₂ : IsSemiterm ℒₛₑₜ n t₂)
+    (hl₁ : t₁ ≤ lvB v) (hl₂ : t₂ ≤ lvB v) (inp : Inp n w₁ w₂ E c) :
+    DLv 𝗭𝗙 (insert (^nrel 2 R (termSubst ℒₛₑₜ w₁ t₁ ∷ termSubst ℒₛₑₜ w₁ t₂ ∷ 0))
+      (insert (^rel 2 R (termSubst ℒₛₑₜ w₂ t₁ ∷ termSubst ℒₛₑₜ w₂ t₂ ∷ 0)) E)) (A + 10 * (v + c)) := by
+  obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
+  exact hA R _ _ _ _ E (v + c) hR (le_trans hc le_add_self)
+    (termSubst_closed_semiterm hw₁ ht₁) (termSubst_closed_semiterm hw₁ ht₂)
+    (termSubst_closed_semiterm hw₂ ht₁) (termSubst_closed_semiterm hw₂ ht₂)
+    (termSubst_var_le hw₁.lh hb₁ ht₁.isUTerm hl₁)
+    (termSubst_var_le hw₁.lh hb₁ ht₂.isUTerm hl₂)
+    (termSubst_var_le hw₂.lh hb₂ ht₁.isUTerm hl₁)
+    (termSubst_var_le hw₂.lh hb₂ ht₂.isUTerm hl₂)
+    hE (fun y hy => lift_lvB (hEb y hy) le_add_self) (term_pair hP ht₁) (term_pair hP ht₂)
+
 theorem step_rel {A : V} (hA : AtomOK A) {n w₁ w₂ E c v R t₁ t₂ : V} (hR : R = 0 ∨ R = 1)
     (hχ : IsSemiformula ℒₛₑₜ n (^rel 2 R (t₁ ∷ t₂ ∷ 0))) (hv : ^rel 2 R (t₁ ∷ t₂ ∷ 0) ≤ lvB v)
     (inp : Inp n w₁ w₂ E c) :
     DLv 𝗭𝗙 (Cseq w₁ w₂ (^rel 2 R (t₁ ∷ t₂ ∷ 0)) E) (A + 10 * (v + c)) := by
-  obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
+  have hw₁ := inp.1
   obtain ⟨hvec, ht₁, ht₂⟩ := atom_vec (Or.inl hχ)
   obtain ⟨hl₁, hl₂⟩ := atom_terms 0 R t₁ t₂
   unfold Cseq
   rw [substs_rel (isRel_R hR) hvec.isUTerm, substs_rel (isRel_R hR) hvec.isUTerm,
     neg_rel (isRel_R hR) (hw₁.termSubstVec hvec).isUTerm,
     termSubstVec_cons₂ ht₁.isUTerm ht₂.isUTerm, termSubstVec_cons₂ ht₁.isUTerm ht₂.isUTerm]
-  exact hA R _ _ _ _ E (v + c) hR (le_trans hc le_add_self)
-    (termSubst_closed_semiterm hw₁ ht₁) (termSubst_closed_semiterm hw₁ ht₂)
-    (termSubst_closed_semiterm hw₂ ht₁) (termSubst_closed_semiterm hw₂ ht₂)
-    (termSubst_var_le hw₁.lh hb₁ ht₁.isUTerm (le_trans hl₁ hv))
-    (termSubst_var_le hw₁.lh hb₁ ht₂.isUTerm (le_trans hl₂ hv))
-    (termSubst_var_le hw₂.lh hb₂ ht₁.isUTerm (le_trans hl₁ hv))
-    (termSubst_var_le hw₂.lh hb₂ ht₂.isUTerm (le_trans hl₂ hv))
-    hE (fun y hy => lift_lvB (hEb y hy) le_add_self) (term_pair hP ht₁) (term_pair hP ht₂)
+  exact atom_subst hA hR ht₁ ht₂ (le_trans hl₁ hv) (le_trans hl₂ hv) inp
 
 theorem step_nrel {A : V} (hA : AtomOK A) {n w₁ w₂ E c v R t₁ t₂ : V} (hR : R = 0 ∨ R = 1)
     (hχ : IsSemiformula ℒₛₑₜ n (^nrel 2 R (t₁ ∷ t₂ ∷ 0))) (hv : ^nrel 2 R (t₁ ∷ t₂ ∷ 0) ≤ lvB v)
     (inp : Inp n w₁ w₂ E c) :
     DLv 𝗭𝗙 (Cseq w₁ w₂ (^nrel 2 R (t₁ ∷ t₂ ∷ 0)) E) (A + 10 * (v + c)) := by
-  obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
+  have hw₁ := inp.1
   obtain ⟨hvec, ht₁, ht₂⟩ := atom_vec (Or.inr hχ)
   obtain ⟨hl₁, hl₂⟩ := atom_terms 1 R t₁ t₂
   unfold Cseq
   rw [substs_nrel (isRel_R hR) hvec.isUTerm, substs_nrel (isRel_R hR) hvec.isUTerm,
     neg_nrel (isRel_R hR) (hw₁.termSubstVec hvec).isUTerm,
     termSubstVec_cons₂ ht₁.isUTerm ht₂.isUTerm, termSubstVec_cons₂ ht₁.isUTerm ht₂.isUTerm]
-  refine DLv.ofSetEq (fun x => by simp only [mem_bitInsert_iff]; tauto)
-    (hA R _ _ _ _ E (v + c) hR (le_trans hc le_add_self)
-    (termSubst_closed_semiterm hw₂ ht₁) (termSubst_closed_semiterm hw₂ ht₂)
-    (termSubst_closed_semiterm hw₁ ht₁) (termSubst_closed_semiterm hw₁ ht₂)
-    (termSubst_var_le hw₂.lh hb₂ ht₁.isUTerm (le_trans hl₁ hv))
-    (termSubst_var_le hw₂.lh hb₂ ht₂.isUTerm (le_trans hl₂ hv))
-    (termSubst_var_le hw₁.lh hb₁ ht₁.isUTerm (le_trans hl₁ hv))
-    (termSubst_var_le hw₁.lh hb₁ ht₂.isUTerm (le_trans hl₂ hv))
-    hE (fun y hy => lift_lvB (hEb y hy) le_add_self)
-    (pair1_symm (term_pair hP ht₁)) (pair1_symm (term_pair hP ht₂)))
+  exact DLv.ofSetEq (fun x => by simp only [mem_bitInsert_iff]; tauto)
+    (atom_subst hA hR ht₁ ht₂ (le_trans hl₁ hv) (le_trans hl₂ hv) (inp_swap inp))
 
 /-! ## The induction on formula complexity -/
 
