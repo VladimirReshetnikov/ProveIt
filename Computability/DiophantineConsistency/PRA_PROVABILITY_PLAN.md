@@ -15,9 +15,10 @@ window, and reverse-construction suffix has since [passed two current-source
 replays](reviews/adaptive-sandwich-postmerge2011-author.md), with the inherited
 provider boundary documented there. A subsequent merge moved the rank-lower
 proof into `ArithmeticHalfBinomial` and updated `ArithmeticAdaptivePopulation2011`
-and `ArithmeticHalfBinomial2011`; those replay receipts now cover the preceding
-snapshot, and affected clients need another rebuild. The later CellWindow
-continuation is still pending.
+and `ArithmeticHalfBinomial2011`. The adaptive affected suffix has now [passed
+two more source-current replays](reviews/adaptive-ranklower-postmerge2011-author.md);
+the 14-variable wrapper is outside their scope. The later CellWindow
+continuation and AuxBind client still need current-source replays.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
@@ -122,6 +123,11 @@ would therefore not suffice without an adapter that preserves the height bound.
 The [finite guarded-context counterexample case](reviews/parsons-counter-context-root.md)
 now handles any number of descriptor-bearing sides, using a separate
 decreasing formula-complexity measure and the explicit `Below H` hypothesis.
+The [Boolean-tree version](reviews/parsons-counter-tree-root.md) extends that
+local case to finite positive Boolean trees, with an additive node measure.
+For strict Σ₁ predicates with bounded matrices, [step descriptors](reviews/parsons-step-tree-root.md)
+now cover the actual generated step and negative sides. Arbitrary Foundation
+Σ₁ syntax and the global induction remain open.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 

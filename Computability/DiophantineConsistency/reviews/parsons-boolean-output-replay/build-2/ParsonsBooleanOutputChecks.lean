@@ -1,0 +1,4 @@
+import DiophantineConsistency.ParsonsBooleanOutput
+#print axioms DiophantineConsistency.ParsonsBooleanOutput.eval_append
+#print axioms DiophantineConsistency.ParsonsBooleanOutput.collapse_or
+#print axioms DiophantineConsistency.ParsonsBooleanOutput.collapse_and

@@ -1,0 +1,3 @@
+import DiophantineConsistency.ParsonsCounterTree
+#print axioms DiophantineConsistency.ParsonsCounterTree.counter_tree
+#print axioms DiophantineConsistency.ParsonsCounterTree.counter_tree_unbounded

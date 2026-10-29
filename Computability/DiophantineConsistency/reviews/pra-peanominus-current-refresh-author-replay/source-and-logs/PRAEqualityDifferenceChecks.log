@@ -1,0 +1,14 @@
+'DiophantineConsistency.PRAEqualityDifference.modelBothDifferencesZero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAEqualityDifference.modelBothDifferencesZero {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] (x y : M)
+  (hxy :
+    LO.FirstOrder.Structure.func DiophantineConsistency.PRATheory.subCode ![x, y] =
+      LO.FirstOrder.Structure.func (DiophantineConsistency.PRAFiniteFunctionCodes.Code.zero 0) Fin.elim0)
+  (hyx :
+    LO.FirstOrder.Structure.func DiophantineConsistency.PRATheory.subCode ![y, x] =
+      LO.FirstOrder.Structure.func (DiophantineConsistency.PRAFiniteFunctionCodes.Code.zero 0) Fin.elim0) :
+  x = y
