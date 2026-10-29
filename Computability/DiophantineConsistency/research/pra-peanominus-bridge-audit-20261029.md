@@ -28,3 +28,7 @@ Foundation's `PeanoMinus` has equality plus these 17 non-equality families. An e
 The existing `PRAQOrder.PRA_proves_all_Q` discharges every **Robinson Q axiom**, including its strict-order clause, under the same embedding, and `PRAQProofTranslation.PRA_proves_qTheorem` transports Q theorems via soundness and completeness. PA-minus has additional ordered semiring and trichotomy axioms, so the Q theorem cannot be substituted for the desired PA-minus theorem. The mapped PA-minus axiom proofs use open induction, subtraction, and the order-witness characterization in arbitrary candidate-PRA equality models.
 
 The proof route takes place in classical Lean metatheory and must not be confused with an internal HA proof. Even a complete PA-minus interpretation would not eliminate the Σ₁ induction rule or establish the required PRA equivalence. The HA equivalence for the maintained 14-variable PDF equation is already established separately.
+
+After the independent translation replay, an upstream merge changed
+`PRAQCompatibility` and `PRAPeanoMinusBasic`. The replay covers the preceding
+source snapshot; the affected chain needs a current-source rebuild.
