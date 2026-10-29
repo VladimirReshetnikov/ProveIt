@@ -55,32 +55,28 @@ lemma apart_of_mod_ne {s t : V} (h : s % 2≠t % 2) : Apart s t := by
   simpa using congrArg (fun x : V => x % 2) hij
 
 private lemma double_bound (bound : V) : bound+2≤2*(bound+2) := by
-  simpa using mul_le_mul_of_nonneg_right (show (1 : V)≤2 by simp)
-    (Arithmetic.zero_le (bound+2))
+  simp
 
-lemma bound_lt_alternateStart (bound seed : V) : bound<alternateStart bound seed := by
-  have hb : bound<2*(bound+2) := lt_of_lt_of_le (by simp) (double_bound bound)
+private lemma double_le_alternateStart (bound seed : V) :
+    2*(bound+2)≤alternateStart bound seed := by
   classical
   unfold alternateStart
-  split
-  · exact lt_of_lt_of_le hb (le_add_of_nonneg_right (Arithmetic.zero_le _))
-  · exact hb
+  split <;> simp
 
-lemma one_lt_alternateStart (bound seed : V) : 1<alternateStart bound seed := by
-  have hb : (1 : V)<2*(bound+2) :=
-    lt_of_lt_of_le (lt_of_lt_of_le (show (1 : V)<2 by simp) (by simp)) (double_bound bound)
-  classical
-  unfold alternateStart
-  split
-  · exact lt_of_lt_of_le hb (le_add_of_nonneg_right (Arithmetic.zero_le _))
-  · exact hb
+lemma bound_lt_alternateStart (bound seed : V) : bound<alternateStart bound seed :=
+  lt_of_lt_of_le (lt_of_lt_of_le (by simp) (double_bound bound))
+    (double_le_alternateStart bound seed)
+
+lemma one_lt_alternateStart (bound seed : V) : 1<alternateStart bound seed :=
+  lt_of_lt_of_le (lt_of_lt_of_le (by simp : (1:V)<2) (by simp))
+    (le_trans (double_bound bound) (double_le_alternateStart bound seed))
 
 lemma alternateStart_mod_ne (bound seed : V) : seed % 2≠alternateStart bound seed % 2 := by
   classical
   by_cases hs : seed % 2=0
   · simp [alternateStart,hs]
   · have hs1 : seed % 2=1 := mod_two_not_zero_iff.mp hs
-    simp [alternateStart,hs,hs1]
+    simp [alternateStart,hs1]
 
 lemma alternateStart_apart (bound seed : V) : Apart seed (alternateStart bound seed) :=
   apart_of_mod_ne (alternateStart_mod_ne bound seed)
