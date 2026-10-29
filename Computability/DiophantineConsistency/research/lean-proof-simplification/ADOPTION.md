@@ -1525,5 +1525,23 @@ and Assembly builds pass with identical client objects; all six target reports,
 controller and Wang-plane providers were refreshed; older Pell, HalfBinomial
 and tiling objects remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-variation-tail-sharing-evidence/BUNDLE.json).
 
+The bounded DAG linear estimate sharing `934bd5397f` removes six net Lean
+lines, bringing the reviewed series to 9868. The replaced proof came from
+Claude-coauthored commit `ca0c31b62d5`. The plus-one bound now instantiates the
+existing general bound, which is visible one module earlier. Paired macro and
+RootA builds pass with identical checked client objects; existing B-boundary
+declaration reports and global simp/instance censuses match. Direct inputs
+match current-source receipts; the transitive closure remains cached. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-linear-bound-evidence/BUNDLE.json).
+
+The odd-factor exponent sharing `4c1dbc5ea9` removes seven net Lean lines,
+bringing the reviewed series to 9875. The module originated in Claude-coauthored
+commit `90f67cbdd9`. A private comparison replaces duplicated arguments in
+exponent uniqueness and the binomial valuation bound. Paired target and three
+clients pass with identical client objects; all 11 existing target reports,
+29,039 simp entries and 13,232 instances match. One private helper is added;
+direct providers match current-source receipts and the wider closure remains
+cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-binom-odd-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
