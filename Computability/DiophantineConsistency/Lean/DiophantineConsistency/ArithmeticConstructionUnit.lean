@@ -32,8 +32,7 @@ attribute [local irreducible] CurrentKernel2011.K
 
 theorem nat_mod_of_zmod {m : ℕ} [NeZero m] (a b : ℕ) (h : (a : ZMod m) = b) (hb : b < m) :
     a % m = b := by
-  have hv := congrArg ZMod.val h
-  simpa only [ZMod.val_natCast, Nat.mod_eq_of_lt hb] using hv
+  simpa only [ZMod.val_natCast, Nat.mod_eq_of_lt hb] using congrArg ZMod.val h
 
 theorem B_nat : 2 ^ 94517 % 11360848883 = 10287028452 := by
   apply nat_mod_of_zmod _ _ _ (by norm_num)
@@ -165,8 +164,7 @@ theorem Gamma_res (m e : V) :
   have hqK := mul_res hq hKs
   have h1 := add_res one_res hqK
   have hr := mul_res (mul_res rho_res hq21) h1
-  unfold Gamma
-  rw [hr]
+  exact hr
 
 /-- **Γ is a unit modulo `d·N`**, with an explicit inverse. -/
 theorem gamma_unit (m e : V) :
@@ -181,11 +179,9 @@ theorem gamma_unit (m e : V) :
       show (600990 : V) = ((600990 : ℕ) : V) by simp, power_natCast, ← Nat.cast_pow,
       show (11360848883 : V) = ((11360848883 : ℕ) : V) by simp, cast_mod_eq gamma_order_nat]
     simp
-  have h := div_add_mod (power G 600990) (94517 * 120199)
-  rw [show power G 600990 % (94517 * 120199) = 1 by
-    rw [show (94517 : V) * 120199 = 11360848883 by norm_num]; exact hpow] at h
   obtain ⟨v1, hd⟩ : ∃ v1, power G 600990 = 1 + 94517 * 120199 * v1 :=
-    ⟨_, h.symm.trans (add_comm _ _)⟩
+    ⟨_, by simpa only [show (94517 : V) * 120199 = 11360848883 by norm_num, hpow, add_comm]
+      using (div_add_mod (power G 600990) (94517 * 120199)).symm⟩
   obtain ⟨w, _, hw⟩ := lte (c := (94517 : V)) (v := v1) p_odd m
   refine ⟨power G (600990 * power 120199 m - 1), ?_⟩
   have hpos : 1 ≤ 600990 * power (120199 : V) m :=
