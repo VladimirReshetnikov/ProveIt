@@ -28,13 +28,11 @@ theorem square_discriminant_ne_negative (A x t : V) :
     x*x+t*t+1 ≠ A*A*t*t := by
   intro he
   have h4 : (0:V)<4 := by simp
-  have h12 : (1:V)<2 := by simpa only [one_add_one_eq_two] using lt_add_one (1:V)
-  have h23 : (2:V)<3 := by simpa only [show (2:V)+1=3 by ring] using lt_add_one (2:V)
-  have h34 : (3:V)<4 := by simpa only [show (3:V)+1=4 by ring] using lt_add_one (3:V)
-  have h13 := lt_trans h12 h23
-  have h1m : (1:V)%4=1 := mod_eq_self_of_lt (lt_trans h13 h34)
-  have h2m : (2:V)%4=2 := mod_eq_self_of_lt (lt_trans h23 h34)
-  have h3m : (3:V)%4=3 := mod_eq_self_of_lt h34
+  have h12 : (1:V)<2 := by norm_num
+  have h13 : (1:V)<3 := by norm_num
+  have h1m : (1:V)%4=1 := by norm_num
+  have h2m : (2:V)%4=2 := by norm_num
+  have h3m : (3:V)%4=3 := by norm_num
   have hm := congrArg (fun z : V => z%4) he
   rw [show A*A*t*t=(A*A)*(t*t) by ring,
     mod_add (a:=x*x+t*t) (b:=1) h4,mod_add (a:=x*x) (b:=t*t) h4,
@@ -152,10 +150,8 @@ theorem consecutive_ne_negative (n x y : V) (hn : 2≤n) : x*x+1≠n*(n+1)*y*y :
 theorem main_ne_negative (a x t : V) : x*x+1≠((a+1)*(a+3))*t*t := by
   intro h
   apply square_discriminant_ne_negative (a+2) x t
-  calc
-    x*x+t*t+1=(x*x+1)+t*t := by ring
-    _=((a+1)*(a+3))*t*t+t*t := by rw [h]
-    _=(a+2)*(a+2)*t*t := by ring
+  rw [show (a+2)*(a+2)*t*t=((a+1)*(a+3))*t*t+t*t by ring, ←h]
+  ring
 
 /-- No positivity of the strong square root is required. -/
 theorem strong_ne_negative (a f i c : V) :
