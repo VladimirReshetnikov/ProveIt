@@ -1,0 +1,4 @@
+import DiophantineConsistency.ParsonsFold
+#print axioms DiophantineConsistency.ParsonsFold.fold_context
+#print axioms DiophantineConsistency.ParsonsFold.logical_leaf
+#print axioms DiophantineConsistency.ParsonsFold.base_leaf
