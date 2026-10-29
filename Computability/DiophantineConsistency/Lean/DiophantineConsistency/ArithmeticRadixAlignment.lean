@@ -76,15 +76,11 @@ theorem aligned_exponent (d u J : V) (hd : 2≤d) (hJ : 0<J)
   have hrem := aligned_remainder d u J hd he
   have hu : u=d*(u/d) := by
     simpa only [hrem,add_zero] using (div_add_mod u d).symm
-  have hN : 0<u/d := by
-    by_contra hn
-    have hz : u/d=0 := le_antisymm (le_of_not_gt hn) (by simp)
-    have hu0 : u=0 := by simpa [hz] using hu
-    have hp : 0<(Exp.exp d-1)*J :=
-      mul_pos (lt_trans (by simp) (radix_gt_one hd)) hJ
-    have hgt : 1<(Exp.exp d-1)*J+1 := by simpa using hp
-    rw [←he,hu0,exp_zero] at hgt
-    exact (Arithmetic.lt_irrefl (1:V)) hgt
+  have hgt : (1:V)<Exp.exp u := by
+    rw [he]
+    exact lt_add_of_pos_left 1 (mul_pos (lt_trans (by simp) (radix_gt_one hd)) hJ)
+  have hup : 0<u := exp_monotone.mp (by simpa only [exp_zero] using hgt)
+  have hN : 0<u/d := pos_of_mul_pos_right (by rw [←hu]; exact hup) (by simp)
   exact ⟨u/d,hN,hu⟩
 
 /-- Every divisor here is an actual internal exponential, without an
@@ -102,11 +98,7 @@ theorem factor_alignment (d J R w : V) (hd : 2≤d) (hJ : 0<J)
       d*N≤R ∧ w=Exp.exp (R-d*N) := by
   let q:V := (Exp.exp d-1)*J+1
   have hq : 0<q := by dsimp [q]; simp
-  have hw : 0<w := by
-    by_contra h
-    have hz : w=0 := le_antisymm (le_of_not_gt h) (by simp)
-    have hzero : Exp.exp R=0 := by simpa [hz] using he
-    exact (ne_of_gt (exp_pos R)) hzero
+  have hw : 0<w := pos_of_mul_pos_left (by rw [←he]; exact exp_pos R) (by simp)
   have hdvd : q∣Exp.exp R := ⟨w,by simpa [q,mul_comm] using he⟩
   have hpower : q=Exp.exp (log q) := exponential_factor R q hdvd
   obtain ⟨N,hN,hu⟩ := aligned_exponent d (log q) J hd hJ hpower.symm
