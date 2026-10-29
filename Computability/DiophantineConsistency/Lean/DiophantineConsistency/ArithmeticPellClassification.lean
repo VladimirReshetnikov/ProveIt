@@ -35,17 +35,11 @@ theorem x_bound (b x y : V) (h : x*x=1+delta b*y*y) : x≤(b+2)*y+1 := by
 theorem norm_advance_iff (b x y : V) :
     ((b+2)*x+delta b*y)*((b+2)*x+delta b*y)=
       1+delta b*(x+(b+2)*y)*(x+(b+2)*y) ↔ x*x=1+delta b*y*y := by
-  let common := delta b*x*x+2*(b+2)*delta b*x*y+delta b*delta b*y*y
-  have hl : ((b+2)*x+delta b*y)*((b+2)*x+delta b*y)=x*x+common := by
-    dsimp [common,delta]
-    ring
-  have hr : 1+delta b*(x+(b+2)*y)*(x+(b+2)*y)=(1+delta b*y*y)+common := by
-    dsimp [common,delta]
-    ring
   constructor
   · intro h
-    rw [hl,hr] at h
-    exact add_right_cancel h
+    have he := norm_advance_balance b x y
+    rw [h] at he
+    exact (add_left_cancel he).symm
   · exact norm_step b x y
 
 /-- Every positive-ordinate solution has a strictly smaller solution and

@@ -77,18 +77,20 @@ theorem y_succ (time b : V) :
 
 theorem run_total (time b : V) : ∃! out, runDef.val.Evalb ![out,time,b] := by simp
 
+/-- The forward Pell step preserves the norm in a subtraction-free form. -/
+theorem norm_advance_balance (b x y : V) :
+    ((b+2)*x+delta b*y)*((b+2)*x+delta b*y) + (1+delta b*y*y) =
+      (1+delta b*(x+(b+2)*y)*(x+(b+2)*y)) + x*x := by
+  unfold delta
+  ring
+
 /-- A polynomial identity proves preservation without signed subtraction. -/
 theorem norm_step (b x y : V) (h : x*x=1+delta b*y*y) :
     ((b+2)*x+delta b*y)*((b+2)*x+delta b*y)=
       1+delta b*(x+(b+2)*y)*(x+(b+2)*y) := by
-  let common := delta b*x*x+2*(b+2)*delta b*x*y+delta b*delta b*y*y
-  have hl : ((b+2)*x+delta b*y)*((b+2)*x+delta b*y)=x*x+common := by
-    dsimp [common,delta]
-    ring
-  have hr : 1+delta b*(x+(b+2)*y)*(x+(b+2)*y)=(1+delta b*y*y)+common := by
-    dsimp [common,delta]
-    ring
-  rw [hl,hr,h]
+  have he := norm_advance_balance b x y
+  rw [h] at he
+  exact add_right_cancel he
 
 theorem norm (time b : V) :
     xcoord time b*xcoord time b=1+delta b*ycoord time b*ycoord time b := by
