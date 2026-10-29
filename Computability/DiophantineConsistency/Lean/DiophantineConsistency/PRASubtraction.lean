@@ -22,19 +22,8 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
 
 theorem modelSubExpand (x y : M) :
     Structure.func (L := language) subCode ![x,y] =
-      Structure.func (L := language) subCore ![y,x] := by
-  have h := modelComposition (M := M) subCore
-    (.cons (.proj 1) (.cons (.proj 0) (.nil 2))) ![x,y]
-  have harg : (fun i => Structure.func (L := language)
-      (getCode (.cons (.proj 1) (.cons (.proj 0) (.nil 2))) i) ![x,y]) = ![y,x] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · exact modelProjection (M := M) 1 _
-    · refine Fin.cases ?_ (fun j => Fin.elim0 j) j
-      exact modelProjection (M := M) 0 _
-  change Structure.func (L := language) subCode ![x,y] = _ at h
-  rw [harg] at h
-  exact h
+      Structure.func (L := language) subCore ![y,x] :=
+  modelSwapComposition subCore x y
 
 theorem modelSubZero (x : M) :
     Structure.func (L := language) subCode
@@ -80,14 +69,10 @@ theorem modelSubZeroSentence : M↓[language] ⊧ subZeroSentence := by
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have hv : (Semiterm.val e Empty.elim ∘ ![.bvar 0, applyCode (.zero 0) Fin.elim0]) =
       ![e 0, Structure.func (L := language) (Code.zero 0) Fin.elim0] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · rfl
-    · refine Fin.cases ?_ (fun k => Fin.elim0 k) j
-      change Structure.func (L := language) (Code.zero 0)
-        (Semiterm.val e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN 1)) = _
-      rw [hz]
-      rfl
+    have hz' : (fun i : Fin 0 => Semiterm.val e Empty.elim (Fin.elim0 i : TermN 1)) =
+        (Fin.elim0 : Fin 0 → M) := hz
+    simpa [applyCode, Function.comp_def, hz'] using
+      val_term_pair e (.bvar 0) (applyCode (.zero 0) Fin.elim0)
   simp only [applyCode] at hv
   rw [hv]
   exact modelSubZero (e 0)
@@ -97,15 +82,11 @@ theorem modelSubSuccSentence : M↓[language] ⊧ subSuccSentence := by
   intro e
   simp only [applyCode, Semiterm.val_func]
   have hpair : (Semiterm.val e Empty.elim ∘ ![(.bvar 0 : TermN 2), .bvar 1]) = ![e 0, e 1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_bvar] using val_term_pair e (.bvar 0) (.bvar 1)
   have hleft : (Semiterm.val e Empty.elim ∘ ![.bvar 0, applyCode Code.succ (fun _ => .bvar 1)]) =
       ![e 0, Structure.func (L := language) Code.succ (fun _ => e 1)] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases ?_ (fun k => Fin.elim0 k) j
-    rfl
+    simpa [applyCode, Function.comp_def] using
+      val_term_pair e (.bvar 0) (applyCode Code.succ (fun _ => .bvar 1))
   have hright : (Semiterm.val e Empty.elim ∘ fun _ : Fin 1 => applyCode subCode ![.bvar 0, .bvar 1]) =
       fun _ => Structure.func (L := language) subCode ![e 0, e 1] := by
     funext i
