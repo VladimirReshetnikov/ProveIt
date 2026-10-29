@@ -18,30 +18,6 @@ local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode !
 local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
 local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
 
-omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem reduct_eq :
-    (inferInstance : Structure language M).lMap embedding = Arithmetic.standardModel M := by
-  apply Structure.ext
-  · funext k f v
-    cases f with
-    | zero =>
-      have hv : v = Fin.elim0 := Subsingleton.elim _ _
-      rw [hv]
-      rfl
-    | one =>
-      have hv : v = Fin.elim0 := Subsingleton.elim _ _
-      rw [hv]
-      rfl
-    | add => rw [Matrix.fun_eq_vec_two v]; rfl
-    | mul => rw [Matrix.fun_eq_vec_two v]; rfl
-  · funext k r v
-    cases r with
-    | eq =>
-      apply propext
-      change Structure.rel (L := language) Language.Eq.eq v ↔ v 0 = v 1
-      exact Structure.eq_lang
-    | lt => rw [Matrix.fun_eq_vec_two v]; rfl
-
 theorem model_addComm : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus.Axiom.addComm := by
   have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim PeanoMinus.Axiom.addComm := by
     simp [PeanoMinus.Axiom.addComm]
@@ -49,7 +25,7 @@ theorem model_addComm : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus
     exact modelAddComm x y
   simp only [models_iff, Semiformula.eval_lMap]
   change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim _
-  rw [reduct_eq]
+  rw [PRAQCompatibility.reduct_eq]
   exact h
 
 theorem model_addEqOfLt : M↓[language] ⊧ Semiformula.lMap embedding PeanoMinus.Axiom.addEqOfLt := by
@@ -60,7 +36,7 @@ theorem model_addEqOfLt : M↓[language] ⊧ Semiformula.lMap embedding PeanoMin
     exact ⟨Structure.func (L := language) Code.succ (fun _ => c), hc⟩
   simp only [models_iff, Semiformula.eval_lMap]
   change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim _
-  rw [reduct_eq]
+  rw [PRAQCompatibility.reduct_eq]
   exact h
 
 end models

@@ -42,7 +42,7 @@ local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode !
 local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
 
 omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem reduct_eq :
+theorem reduct_eq :
     (inferInstance : Structure language M).lMap embedding = Arithmetic.standardModel M := by
   apply Structure.ext
   · funext k f v
