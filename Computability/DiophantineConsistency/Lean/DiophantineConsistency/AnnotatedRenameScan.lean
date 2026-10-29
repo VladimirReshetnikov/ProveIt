@@ -143,12 +143,17 @@ theorem decodeTable_total (fuel code : Nat) (h : code≤fuel) :
       simp only [decodeTable,hrows]
       rfl
 
+/-- Every natural number is the code of a finite annotated table. -/
+theorem tableCode_surjective : Function.Surjective tableCode := by
+  intro code
+  obtain ⟨rows, hr⟩ := decodeTable_total code code le_rfl
+  exact ⟨rows, tableCode_of_decode hr⟩
+
 /-- Agreement with the frozen checker holds at every natural input, including
 all untrusted row and list codes; no formula parser is assumed. -/
 theorem checkNat_eq_checkCode (mode k depth input output code : Nat) :
     checkNat mode k depth input output code=truth (checkCode mode k depth input output code) := by
-  obtain ⟨rows,hr⟩ := decodeTable_total code code (Nat.le_refl _)
-  have he := tableCode_of_decode hr
+  obtain ⟨rows,he⟩ := tableCode_surjective code
   rw [←he,checkNat_tableCode,checkCode_tableCode]
 
 end DiophantineConsistency.AnnotatedRenameScan

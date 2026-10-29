@@ -98,8 +98,7 @@ theorem checkNat_tableCode (input output : Nat) (rows : List Row) :
 
 theorem checkNat_eq_checkCode (input output code : Nat) :
     checkNat input output code=truth (checkCode input output code) := by
-  obtain ⟨rows,hr⟩ := AnnotatedRenameScan.decodeTable_total code code (Nat.le_refl _)
-  have he := AnnotatedRenameScan.tableCode_of_decode hr
+  obtain ⟨rows,he⟩ := AnnotatedRenameScan.tableCode_surjective code
   rw [←he,checkNat_tableCode,checkCode_tableCode]
 
 attribute [local irreducible] localCheck step scan
