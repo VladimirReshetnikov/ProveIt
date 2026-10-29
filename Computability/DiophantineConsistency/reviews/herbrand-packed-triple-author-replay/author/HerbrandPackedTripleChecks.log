@@ -1,0 +1,24 @@
+'DiophantineConsistency.HerbrandPackedTriple.packedTriple_open' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandPackedTriple.modelPackedTriple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandPackedTriple.candidate_proves_packedTriple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandPackedTriple.counterexample_finiteDefeat' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandPackedTriple.counterexample_finiteDefeat {n : ℕ}
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 2))
+  (base stop : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (q : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 3)) :
+  let φ := DiophantineConsistency.PRAInductionCounterexample.counterexampleMatrix pred base stop q;
+  ∃ p,
+    DiophantineConsistency.PRATheory.PRA ⊢
+      LO.FirstOrder.Semiformula.univCl
+        (DiophantineConsistency.HerbrandTripleExtraction.tripleDisjunction
+          (DiophantineConsistency.HerbrandTripleParameterized.parameterTripleMatrix (packedTriple φ))
+          (DiophantineConsistency.HerbrandExistentialSequents.existentialTerms
+            (DiophantineConsistency.HerbrandTripleParameterized.prepareAllTriple (packedTriple φ) ⋯ p).derivation))

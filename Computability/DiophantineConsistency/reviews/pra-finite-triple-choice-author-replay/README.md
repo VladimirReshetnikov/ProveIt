@@ -1,0 +1,5 @@
+# Coordinated finite triple selection
+
+Replay: `python Computability/DiophantineConsistency/reviews/pra-finite-triple-choice-author-replay/replay.py --parent /tmp/pra-after-exhaustion-independent-cjf9jou7/lib`. Private replay PASS `/tmp/pra-finite-triple-choice-independent-yb1k9zqm`, matching both object and full log hashes and authenticating all local sources and objects from the 92-module provider. Foundation and mathlib are inherited. The driver has the previously tested terminal failure recording.
+
+Given a candidate-PRA proof that a code `good` is Boolean and a candidate-PRA proof of a finite disjunction of coded triple instances, the theorem constructs three coordinated primitive-recursive functions and proves their joint instance. The disjunction and Booleanity are explicit hypotheses. Connecting the extracted syntactic term triples to these coded hypotheses and the subsequent interactive-stage substitution remain open. The checks report `propext`, `Classical.choice` and `Quot.sound` without `sorryAx`.

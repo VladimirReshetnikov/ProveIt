@@ -23,3 +23,12 @@ the independent replay is `/tmp/herbrand-interactive-triple-independent-xk8q_fea
 Both results produce proofs in the candidate universal theory. Neither
 eliminates the disjunction, translates arbitrary Σ₁ induction, or establishes
 PRA conservation.
+
+For the separate pure-existential route, `HerbrandPackedTriple` applies the
+coded counterexample-defeat theorem to finite triple extraction, packing all
+occurring parameters and producing an actual candidate-PRA disjunction.
+`PRAFiniteTripleChoice` turns a provably Boolean coded finite disjunction into
+three coordinated primitive-recursive choice functions and a proof of their
+joint predicate instance. Both focused author and independent replays match.
+These results do not yet translate the staged interactive disjunction into the
+selector's input or perform successive disjunct elimination.

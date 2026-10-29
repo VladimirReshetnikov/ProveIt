@@ -1,0 +1,5 @@
+# Finite counterexample-defeat disjunction
+
+Replay with `python Computability/DiophantineConsistency/reviews/herbrand-packed-triple-author-replay/replay.py --parent /tmp/herbrand-triple-parameterized-independent-nlo92d96/lib`. A byte-identical independently replayed provider may be substituted. Private replay PASS at `/tmp/herbrand-packed-triple-independent-4k7z_im8`, matching both object and full log hashes after authenticating the 92-module local source refresh and both triple-extraction predecessor pairs. Foundation and mathlib are inherited. This replay uses the tested failure-recording driver from the preceding triple packet.
+
+`counterexample_finiteDefeat` combines the actual candidate-PRA coded induction-counterexample sentence with the finite term-triple extractor. It packs all occurring free parameters and produces an actual candidate-PRA finite disjunction of instances. Classical metatheory is used; this does not prove the interactive ∃∀∃ extraction, iterative disjunct elimination, Parsons conservation, or the HA equivalence. The focused checks report `propext`, `Classical.choice` and `Quot.sound` without `sorryAx`.

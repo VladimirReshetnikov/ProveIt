@@ -1,0 +1,8 @@
+import DiophantineConsistency.PRAFiniteTripleChoice
+open DiophantineConsistency.PRAFiniteTripleChoice
+#print axioms modelApplyTriple
+#print axioms modelChooseTriple
+#print axioms modelChooseList
+#print axioms PRA_proves_tripleListChoice
+#print axioms PRA_exists_tripleListChoice
+#check PRA_exists_tripleListChoice
