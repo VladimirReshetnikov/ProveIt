@@ -140,16 +140,16 @@ theorem first_main_indices (E Y k eta N d f i R y T : V)
     _≤2*k := mul_le_mul_of_nonneg_left hRk (by simp)
     _≤k*Y := by simpa only [mul_comm] using mul_le_mul_of_nonneg_left hY (Arithmetic.zero_le k)
     _<k*Y+eta := lt_add_of_pos_right _ heta
+  have hB : B+2=2*Q+1 := by
+    dsimp [B]
+    calc
+      2*(Q-1)+1+2=2*(Q-1+1)+1 := by ring
+      _=2*Q+1 := by rw [hQ1]
   have hab : a≤B := by
     have hEsub : E-1+1=E := tsub_add_cancel_of_le hE1
     have hYsub : Y-2+2=Y := tsub_add_cancel_of_le hY
-    have hb : B+2=2*Q+1 := by
-      dsimp [B]
-      calc
-        2*(Q-1)+1+2=2*(Q-1+1)+1 := by ring
-        _=2*Q+1 := by rw [hQ1]
     have he : a+2+(E-1)*(2*(Y-2)+3)+(Y-2)=B+2 := by
-      rw [hb]
+      rw [hB]
       calc
         a+2+(E-1)*(2*(Y-2)+3)+(Y-2)=
           (E-1+1)+(Y-2+2)+2+(E-1)*(2*(Y-2)+3)+(Y-2) := by rw [hEsub,hYsub]
@@ -197,10 +197,7 @@ theorem first_main_indices (E Y k eta N d f i R y T : V)
     E≤Q := hE_Q
     _<2*Q+1 := lt_of_le_of_lt (le_mul_of_one_le_left (by simp) (by simp : (1:V)≤2)) (lt_add_one _)
     _≤4*(B+2) := by
-      have hb : B+2=2*Q+1 := by dsimp [B]; calc
-        2*(Q-1)+1+2=2*(Q-1+1)+1 := by ring
-        _=2*Q+1 := by rw [hQ1]
-      rw [hb]
+      rw [hB]
       exact le_mul_of_one_le_left (by simp) (by simp)
     _=2*ycoord 2 B := by
       rw [y_two]; ring
