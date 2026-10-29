@@ -157,82 +157,73 @@ theorem reachB_trans {c₁ c₂ : Nat} {x y : V} {t₁ B₁ : V} (ht : t₁ ≤ 
     exact ⟨t₁ + t, _root_.add_le_add ht h, by rw [run_add, h₁, ht']⟩
 
 omit run_one spec in
-theorem run_seqB {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y z A B : V}
-    (ha : IRunB p rows run a x .normal y A) (hb : IRunB p rows run b y .normal z B) :
-    IRunB p rows run (.node n) x .normal z (A + B) := by
+private theorem run_cdrB_core {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b))
+    {x y z A B : V} {X Y : Exit}
+    (ha : IRunB p rows run a x .normal y A) (hb : IRunB p rows run b y X z B)
+    (relabel : ∀ c d E, ReachB run d (cdrExit c E) y X z B → ReachB run d E y Y z B) :
+    IRunB p rows run (.node n) x Y z (A + B) := by
   intro f c E h
   obtain ⟨f', rfl, hca, hcd⟩ := occ_node h
   simp only [hn] at hca hcd
   obtain ⟨t₁, ht₁, h₁⟩ := ha f' c (carExit c (size p f' a) E) hca
   exact reachB_trans run_add (c₂ := c + size p f' a) ht₁ h₁
-    (hb f' (c + size p f' a) (cdrExit c E) hcd)
+    (relabel c _ E (hb f' (c + size p f' a) (cdrExit c E) hcd))
+
+omit run_add run_one spec in
+private theorem run_carB_core {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b))
+    {x y A : V} {X Y : Exit} (ha : IRunB p rows run a x X y A)
+    (relabel : ∀ c d E, ReachB run c (carExit c d E) x X y A → ReachB run c E x Y y A) :
+    IRunB p rows run (.node n) x Y y A := by
+  intro f c E h
+  obtain ⟨f', rfl, hca, _⟩ := occ_node h
+  simp only [hn] at hca
+  exact relabel c (size p f' a) E (ha f' c (carExit c (size p f' a) E) hca)
+
+omit run_one spec in
+theorem run_seqB {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y z A B : V}
+    (ha : IRunB p rows run a x .normal y A) (hb : IRunB p rows run b y .normal z B) :
+    IRunB p rows run (.node n) x .normal z (A + B) := by
+  exact run_cdrB_core run_add hn ha hb (fun _ _ _ h => h)
 
 omit run_add run_one spec in
 theorem run_skipB {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y A : V}
     (ha : IRunB p rows run a x (.brk 1) y A) : IRunB p rows run (.node n) x .normal y A := by
-  intro f c E h
-  obtain ⟨f', rfl, hca, _⟩ := occ_node h
-  simp only [hn] at hca
-  exact ha f' c (carExit c (size p f' a) E) hca
+  exact run_carB_core hn ha (fun _ _ _ h => h)
 
 omit run_add run_one spec in
 theorem run_halt_carB {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y A : V}
     (ha : IRunB p rows run a x .halt y A) : IRunB p rows run (.node n) x .halt y A := by
-  intro f c E h
-  obtain ⟨f', rfl, hca, _⟩ := occ_node h
-  simp only [hn] at hca
-  exact ha f' c (carExit c (size p f' a) E) hca
+  exact run_carB_core hn ha (fun _ _ _ h => h)
 
 omit run_one spec in
 theorem run_halt_cdrB {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y z A B : V}
     (ha : IRunB p rows run a x .normal y A) (hb : IRunB p rows run b y .halt z B) :
     IRunB p rows run (.node n) x .halt z (A + B) := by
-  intro f c E h
-  obtain ⟨f', rfl, hca, hcd⟩ := occ_node h
-  simp only [hn] at hca hcd
-  obtain ⟨t₁, ht₁, h₁⟩ := ha f' c (carExit c (size p f' a) E) hca
-  exact reachB_trans run_add (c₂ := c + size p f' a) ht₁ h₁
-    (hb f' (c + size p f' a) (cdrExit c E) hcd)
+  exact run_cdrB_core run_add hn ha hb (fun _ _ _ h => h)
 
 omit run_one spec in
 theorem run_brk_cdrB {n k : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y z A B : V}
     (ha : IRunB p rows run a x .normal y A) (hb : IRunB p rows run b y (.brk (k+1)) z B) :
     IRunB p rows run (.node n) x (.brk (k+1)) z (A + B) := by
-  intro f c E h
-  obtain ⟨f', rfl, hca, hcd⟩ := occ_node h
-  simp only [hn] at hca hcd
-  obtain ⟨t₁, ht₁, h₁⟩ := ha f' c (carExit c (size p f' a) E) hca
-  exact reachB_trans run_add (c₂ := c + size p f' a) ht₁ h₁
-    (hb f' (c + size p f' a) (cdrExit c E) hcd)
+  exact run_cdrB_core run_add hn ha hb (fun _ _ _ h => h)
 
 omit run_add run_one spec in
 theorem run_brk_carB {n k : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y A : V}
     (ha : IRunB p rows run a x (.brk (k+2)) y A) :
     IRunB p rows run (.node n) x (.brk (k+1)) y A := by
-  intro f c E h
-  obtain ⟨f', rfl, hca, _⟩ := occ_node h
-  simp only [hn] at hca
-  exact ha f' c (carExit c (size p f' a) E) hca
+  exact run_carB_core hn ha (fun _ _ _ h => h)
 
 omit run_add run_one spec in
 theorem run_cont_carB {n k : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y A : V}
     (ha : IRunB p rows run a x (.cont (k+1)) y A) :
     IRunB p rows run (.node n) x (.cont (k+1)) y A := by
-  intro f c E h
-  obtain ⟨f', rfl, hca, _⟩ := occ_node h
-  simp only [hn] at hca
-  exact ha f' c (carExit c (size p f' a) E) hca
+  exact run_carB_core hn ha (fun _ _ _ h => h)
 
 omit run_one spec in
 theorem run_cont_cdrB {n k : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y z A B : V}
     (ha : IRunB p rows run a x .normal y A) (hb : IRunB p rows run b y (.cont (k+2)) z B) :
     IRunB p rows run (.node n) x (.cont (k+1)) z (A + B) := by
-  intro f c E h
-  obtain ⟨f', rfl, hca, hcd⟩ := occ_node h
-  simp only [hn] at hca hcd
-  obtain ⟨t₁, ht₁, h₁⟩ := ha f' c (carExit c (size p f' a) E) hca
-  exact reachB_trans run_add (c₂ := c + size p f' a) ht₁ h₁
-    (hb f' (c + size p f' a) (cdrExit c E) hcd)
+  exact run_cdrB_core run_add hn ha hb (fun _ _ _ h => h)
 
 omit run_one spec in
 theorem run_restartB {n : Nat} {a b : RMDag.Edge} (hn : p.nodes n = (a, b)) {x y z w A B C : V}
