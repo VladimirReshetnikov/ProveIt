@@ -1,0 +1,6 @@
+import DiophantineConsistency.ParsonsMarkedLogical
+#print axioms DiophantineConsistency.ParsonsMarkedLogical.pi_body_of_exists
+#print axioms DiophantineConsistency.ParsonsMarkedLogical.existsInstance
+#print axioms DiophantineConsistency.ParsonsMarkedLogical.marked_or
+#print axioms DiophantineConsistency.ParsonsMarkedLogical.marked_and
+#print axioms DiophantineConsistency.ParsonsMarkedLogical.marked_exs
