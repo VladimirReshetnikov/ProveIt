@@ -1863,5 +1863,12 @@ direct client builds pass with identical client objects; target declaration and
 registration reports match. An older transitive Pell/GCD chain remains cached.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-positive-reflect-evidence/BUNDLE.json).
 
+The radix alignment positivity simplification `3f01d661e2` removes eight net
+Lean lines, bringing the reviewed series to 10155. Exponential monotonicity and
+product positivity replace two zero-contradiction arguments. Paired target and
+both direct clients pass with identical client objects; eight target declaration
+reports and sampled registrations match. An older transitive Pell chain remains
+cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-radix-positivity-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
