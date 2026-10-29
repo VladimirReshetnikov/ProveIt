@@ -2089,5 +2089,15 @@ client objects match byte-for-byte, as do checked reports and sampled
 registrations. The wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-known-unit-positive.md)
 records hashes and external paths without raw logs or objects.
 
+The construction Pell ordinate bound simplification `530dc224fb` removes three
+net Lean lines, bringing the reviewed series to 10358. The affected proof came
+from a Claude-coauthored commit. The shared ordinate-below-abscissa theorem and
+existing abscissa bound replace a zero/successor split. Paired target and both
+direct-client builds pass with identical client objects; a source-matched
+provider replay reproduces those outputs. Checked declarations and sampled
+registrations match; the wider closure remains cached. The compact [evidence
+note](../../reviews/lean-proof-simplification-20261029-pell-bound-coord.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
