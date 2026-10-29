@@ -26,18 +26,12 @@ theorem quotient_alternatives (a j : V) :
   case succ j ih =>
     rcases ih with ⟨u,v,hx,hy⟩|⟨u,v,hx,hy⟩
     · refine Or.inr ⟨(a+2)*u+(a+2)*j+delta a*v,u+j+(a+2)*v,?_,?_⟩
-      · rw [x_succ,hx,hy]
-        unfold delta
-        ring
-      · rw [y_succ,hx,hy]
-        unfold delta
+      all_goals
+        simp only [x_succ, y_succ, hx, hy, delta]
         ring
     · refine Or.inl ⟨1+(a+2)*u+j+delta a*v,u+(a+2)*v,?_,?_⟩
-      · rw [x_succ,hx,hy]
-        unfold delta
-        ring
-      · rw [y_succ,hx,hy]
-        unfold delta
+      all_goals
+        simp only [x_succ, y_succ, hx, hy, delta]
         ring
 
 /-- An actual natural Bezout certificate at every index, including zero. -/
@@ -77,11 +71,11 @@ theorem ordinate_divides_index (a p m : V) (hpm : p∣m)
   by_cases hp0 : p=0
   · have hm : m=0 := by simpa [hp0] using hpm
     simp [hp0,hm]
-  have hp : 0<p := lt_of_le_of_ne (Arithmetic.zero_le p) (Ne.symm hp0)
+  have hp : 0<p := pos_iff_ne_zero.mpr hp0
   let c := ycoord p a
   let F := xcoord p a
   have hc : 0<c := lt_of_lt_of_le hp (time_le_y p a)
-  have hc1 : 1≤c := by simpa using lt_iff_succ_le.mp hc
+  have hc1 : 1≤c := pos_iff_one_le.mp hc
   have hF1 : 1<F := lt_of_le_of_lt hc1 (y_lt_x a p)
   have hF2 : 2≤F := by simpa only [one_add_one_eq_two] using lt_iff_succ_le.mp hF1
   let B := F-2
