@@ -15,10 +15,7 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 private theorem eq_of_sum_le {a b c d : V} (hab : a ≤ b) (hcd : c ≤ d) (h : b + d ≤ a + c) :
     a = b := by
-  apply le_antisymm hab
-  by_contra hn
-  have := add_lt_add_of_lt_of_le (lt_of_not_ge hn) hcd
-  exact absurd h (not_le.mpr this)
+  exact le_antisymm hab (le_of_add_le_add_right (le_trans ((add_le_add_iff_left b).mpr hcd) h))
 
 theorem population_mul_exp (Z u : V) : population (Z * Exp.exp u) = population Z := by
   simpa using concatenate Z u 0 (exp_pos u)
@@ -74,9 +71,8 @@ theorem four_block (q beta J F alpha MC HP : V) (hq : q = beta*J + 1)
       (q-F-alpha-1) + (MC*J+1) + q*(F + (HP*J-1)) + q^2*(q-1-(q-F-alpha-1)) +
         q^3*(q-1-F) := by
   have hle : F + alpha < q := by
-    by_contra hn
-    rw [tsub_tsub, tsub_eq_zero_of_le (le_of_not_gt hn)] at hgap
-    exact _root_.lt_irrefl _ hgap
+    rw [tsub_tsub] at hgap
+    exact tsub_pos_iff_lt.mp hgap
   obtain ⟨c, hc⟩ : ∃ c, q - F - alpha = c + 1 :=
     ⟨q - F - alpha - 1, (tsub_add_cancel_of_le (pos_iff_one_le.mp hgap)).symm⟩
   obtain ⟨h, hh⟩ : ∃ h, HP*J = h + 1 := ⟨HP*J - 1, (tsub_add_cancel_of_le hHP).symm⟩
