@@ -105,12 +105,9 @@ theorem execValue_nat (raw np : ℕ) (s : EnumPerm.St) :
     execValue raw np (encodeW (EnumPerm.toW s))=
       encodeStateResult (EnumPerm.execAt raw np s) := by
   rw [execValue, stepValue_nat, tail_nat, EnumPerm.execAt]
-  cases h : EnumPerm.cstep (EnumPerm.decode raw).1 (EnumPerm.toW s) with
-  | none => simp [encodeResult, encodeStateResult]
-  | some w =>
-      rcases w with ⟨t,ws,d,h⟩
-      simp [encodeResult, encodeStateResult, liveValue, encodeState, EnumPerm.toW,
-        encodeW, cantor_nat]
+  cases h : EnumPerm.cstep (EnumPerm.decode raw).1 (EnumPerm.toW s) <;>
+    simp [encodeResult, encodeStateResult, liveValue, encodeState, EnumPerm.toW,
+      encodeW, cantor_nat]
 
 /-- Literal agreement with actual fetch/execAt for every ordinary state. -/
 theorem enumValue_nat (s : EnumPerm.St) :
@@ -121,8 +118,6 @@ theorem enumValue_nat (s : EnumPerm.St) :
 theorem enumValue_nat_eq_zero_iff (s : EnumPerm.St) :
     enumValue (encodeState s)=0 ↔ EnumPerm.enumStep s=none := by
   rw [enumValue_nat]
-  cases EnumPerm.enumStep s with
-  | none => simp [encodeStateResult]
-  | some s' => simp [encodeStateResult, encodeState]
+  cases EnumPerm.enumStep s <;> simp [encodeStateResult, encodeState]
 
 end DiophantineConsistency.ArithmeticEnumStepPerm222
