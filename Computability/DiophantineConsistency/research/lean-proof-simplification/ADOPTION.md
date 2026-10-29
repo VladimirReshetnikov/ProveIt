@@ -1410,5 +1410,34 @@ names are added. One paired repeat used 35.28s baseline versus 36.94s final
 user CPU, a small local sample. The slower v1 and Lean-internal v2 are retained
 as superseded; transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-native-row-sharing-evidence/BUNDLE.json).
 
+The selective coefficient sharing `dcba8839c3` removes 14 net Lean lines,
+bringing the reviewed series to 9771. It reuses the exact-coefficient theorem
+in the occupied branch. The target and three direct clients pass paired builds,
+with identical client objects; all 11 target type/axiom reports, 55,118 global
+simp entries and 23,324 instances match. Direct providers match prior
+source/object receipts, while transitive dependencies remain cached. Failed
+setup and interrupted probes and the limitations of timing are recorded in
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-coefficient-sharing-evidence/BUNDLE.json).
+
+The bounded DAG branch sharing `74e80544e2` removes nine net Lean lines,
+bringing the reviewed series to 9780. The original module was introduced in
+Claude-coauthored commit `3b818a8127`. Two private helpers factor the repeated
+node occurrence decompositions while preserving the eight exit and clock
+statements. Paired target and two direct clients pass, with identical client
+objects; all 35 existing declaration reports and 29,223 global simp entries
+match. A sequential target repeat used 29.12s versus 29.17s user CPU under
+shared load. Two private helper names are added, and transitive inputs remain
+cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-run-sharing-evidence/BUNDLE.json).
+
+The cell-support cast normalization `97a7679281` removes eight net Lean
+lines, bringing the reviewed series to 9788. The original module was added in
+Claude-coauthored commit `f79467f544`. After refreshing an outdated CellLocal
+provider, paired target and decoding-client builds pass, with identical client
+objects; all 59 existing declaration reports and 33,296 global simp entries
+match. One generated public auxiliary is added without global simp registration.
+Direct project providers match prior source/object receipts; the transitive
+closure remains cached. The initial stale-provider run and corrected overlay
+setup are described in [the evidence bundle](../../reviews/lean-proof-simplification-20261028-support-cast-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
