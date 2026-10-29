@@ -1787,5 +1787,14 @@ two client objects match and two differ for unknown reasons despite matching
 checked interfaces. The transitive closure remains cached. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261029-pow-perturbation-evidence/BUNDLE.json).
 
+The four-module positivity cleanup `75c50fe733` removes twelve net Lean lines,
+bringing the reviewed series to 10080. Four private wrappers are removed and
+their seven uses replaced with the imported positivity equivalence; two of the
+wrappers came from Claude-coauthored commit `90f67cbdd9`. A coherent paired
+replay covers the five direct clients and updated Pell, power and binomial
+providers; unchanged client objects match. The 46 retained declaration reports
+and sampled registrations match. A stale-provider lane was superseded and the
+wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-four-positive-wrappers-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
