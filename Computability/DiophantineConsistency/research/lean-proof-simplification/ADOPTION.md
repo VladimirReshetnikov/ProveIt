@@ -1505,5 +1505,15 @@ entries and 11,807 instances match. The slower initial tactic variant was
 superseded. The changed branch bodies predate a Claude-coauthored adjacent edit;
 the remaining transitive closure is cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-annotated-bound-witness-evidence/BUNDLE.json).
 
+The controller stride reuse `61116bd1db` removes nine net Lean lines,
+bringing the reviewed series to 9860. Git blame attributes the replaced proof
+to Claude-coauthored commit `172621966a2d`. Existing quotient and periodicity
+lemmas replace a contradiction and a power-witness calculation. Paired target
+and direct Controller builds pass with identical client objects; target
+reports, 38,766 simp entries and 16,545 instances match. Direct providers
+match current-source receipts, with a historical workspace-source sampling
+exception recorded; the broader closure remains cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-controller-stride-period-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
