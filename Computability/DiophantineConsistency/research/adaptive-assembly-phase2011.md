@@ -30,3 +30,10 @@ and cross-namespace boundaries still require the scoped audit described above.
 Seven further [packing, rank and controller prerequisites](../reviews/adaptive-assembly-independent2011-author.md)
 also passed author and independent replays, with existing linter warnings
 retained and the two Lake-cache boundaries recorded.
+
+A subsequent merge changed HalfBinomial and AdaptivePopulation2011. The
+accepted provider branches above cover the preceding snapshot and must be
+refreshed before using them as current-source prerequisites. A provider
+composition reported `PASS` but did not recheck inherited audit-source hashes
+at the end; those sources changed during the run, so that state does not
+certify a current-source composition.

@@ -7,3 +7,7 @@ The upstream update moved the existing rank-lower proof into the new `Arithmetic
 All modules exited successfully without source warnings; their checks report `propext`, `Classical.choice`, and `Quot.sound`. The [58-file author evidence manifest](adaptive-ranklower-postmerge2011-author-evidence/FILES.json) has SHA256 `2fd39a6081dcfc931cbe2bc7464909e2b2d8f46024c6258823d57ae230b2a802`. It preserves all rebuilt sources, complete logs and timing records, driver, provider manifest, and earlier state records. The author provider is `/tmp/adaptive13-ranklower-postmerge-tdfnxwn4/lib`; package and toolchain interiors remain inherited boundaries.
 
 AuxBind and the machine-halting/CellWindow closure require separate source-current replays. This result does not establish existence of a syntactic HA proof.
+
+A later upstream merge again changed HalfBinomial and AdaptivePopulation2011.
+This packet covers the preceding source snapshot; the affected adaptive and
+assembly descendants require rebuilding against the merged sources.

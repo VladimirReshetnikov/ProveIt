@@ -43,3 +43,8 @@ An independent replay at `/tmp/parsons-bounded-bridge-build-tyibxsz4` passed
 with matching sources, objects and complete logs. Its bounded-induction
 provider and the eighty-two-module candidate chain have also since been
 independently replayed. The inherited Foundation/Mathlib boundary remains.
+
+A later upstream merge changed candidate-PRA prerequisites, including
+`PRAExhaustion`, `PRANonzero`, and `PRAPeanoMinusBasic`. The above replay is
+for the preceding snapshot; the affected provider and comparison chain must
+be rebuilt for the merged sources.

@@ -20,6 +20,9 @@ two more source-current replays](reviews/adaptive-ranklower-postmerge2011-author
 the 14-variable wrapper is outside their scope. The AuxBind client has also
 been replayed twice against the refreshed provider; the later CellWindow
 continuation still needs a current-source replay.
+Another subsequent merge changed HalfBinomial, AdaptivePopulation2011 and the
+14-variable HalfBinomial wrapper. The adaptive replays again describe the
+preceding snapshot; their affected descendants need rebuilding.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
@@ -64,6 +67,10 @@ has since passed an author run and two isolated replays, including the complete
 candidate-PRA Σ₀ characteristic compiler and bounded-matrix witness theorem.
 These witnessing results start with a candidate-PRA proof; they do not provide
 the missing rule-to-PRA comparison.
+After those replays, an upstream merge changed `PRAExhaustion`, `PRANonzero`,
+and `PRAPeanoMinusBasic`. The affected candidate-PRA compiler, witnessing and
+comparison chains require a fresh dependency-aware rebuild before claiming
+coverage of the merged sources.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
