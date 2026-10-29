@@ -28,9 +28,9 @@ theorem packParameters_emb {n : ℕ} (φ : Semiproposition language n) :
       Rew.fixitr n φ.fvSup ▹ φ := by
   simp [packParameters]
 
-theorem qr_rew {n m : ℕ} (φ : Semiproposition language n) (w : SyntacticRew language n m) :
-    (w ▹ φ).qr = φ.qr := by
-  induction φ using Semiformula.rec' generalizing m with
+theorem qr_rew {ξ η : Type} {n m : ℕ} (φ : Semiformula language ξ n)
+    (w : Rew language ξ n η m) : (w ▹ φ).qr = φ.qr := by
+  induction φ using Semiformula.rec' generalizing η m with
   | hverum => rfl
   | hfalsum => rfl
   | hrel r v => rfl
@@ -44,11 +44,9 @@ theorem packParameters_open {n : ℕ} (φ : Semiproposition language n) (h : φ.
     (packParameters φ).Open := by
   have he := packParameters_emb φ
   have hq := congrArg Semiformula.qr he
-  have hb : ∀ {k : ℕ} (p : Semisentence language k),
-      (Rewriting.emb p : Semiproposition language k).qr = p.qr := by
-    intro k p
-    induction p using Semiformula.rec' <;> simp [*, Semiformula.qr]
-  have hb' := hb (packParameters φ)
+  have hb' : (Rewriting.emb (packParameters φ) : Semiproposition language _).qr =
+      (packParameters φ).qr :=
+    qr_rew (packParameters φ) (Rew.emb : Rew language Empty _ ℕ _)
   rw [hb', qr_rew] at hq
   exact hq.trans h
 

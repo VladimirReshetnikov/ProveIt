@@ -12,18 +12,6 @@ def UniversalPrefix {ξ : Type} : {n : ℕ} → Semiformula language ξ n → Pr
   | _, ∀⁰ φ => UniversalPrefix φ
   | _, φ => φ.Open
 
-private theorem qr_rew {ξ η : Type} {n m : ℕ} (φ : Semiformula language ξ n)
-    (w : Rew language ξ n η m) : (w ▹ φ).qr = φ.qr := by
-  induction φ using Semiformula.rec' generalizing η m with
-  | hverum => rfl
-  | hfalsum => rfl
-  | hrel r v => rfl
-  | hnrel r v => rfl
-  | hand p q ihp ihq => simp [ihp, ihq]
-  | hor p q ihp ihq => simp [ihp, ihq]
-  | hall p ih => simp [ih]
-  | hexs p ih => simp [ih]
-
 theorem universalPrefix_rew_iff {ξ η : Type} {n m : ℕ}
     (φ : Semiformula language ξ n) (w : Rew language ξ n η m) :
     UniversalPrefix (w ▹ φ) ↔ UniversalPrefix φ := by
@@ -32,8 +20,8 @@ theorem universalPrefix_rew_iff {ξ η : Type} {n m : ℕ}
   | hfalsum => simp [UniversalPrefix, Semiformula.Open]
   | hrel r v => simp [UniversalPrefix, Semiformula.Open]
   | hnrel r v => simp [UniversalPrefix, Semiformula.Open]
-  | hand p q ihp ihq => simp [UniversalPrefix, Semiformula.Open, qr_rew]
-  | hor p q ihp ihq => simp [UniversalPrefix, Semiformula.Open, qr_rew]
+  | hand p q ihp ihq => simp [UniversalPrefix, Semiformula.Open, PRAFormulaParameters.qr_rew]
+  | hor p q ihp ihq => simp [UniversalPrefix, Semiformula.Open, PRAFormulaParameters.qr_rew]
   | hall p ih => simpa [UniversalPrefix] using ih w.q
   | hexs p ih => simp [UniversalPrefix, Semiformula.Open]
 
