@@ -130,26 +130,22 @@ theorem perturbation_coefficient (a e r : V) (h : 2*r*e≤a) :
 `a e r` including `r=0`, `a=0` and `e=0`. -/
 theorem perturbation (a e r : V) (h : 2*r*e≤a) :
     a*power (a+e) r≤(a+2*r*e)*power a r := by
-  have all : ∀ r : V, 2*r*e≤a → a*power (a+e) r≤(a+2*r*e)*power a r := by
-    intro r
-    induction r using ISigma1.sigma1_succ_induction
-    · definability
-    case zero => intro _; simp
-    case succ r ih =>
-      intro hr
-      have hr0 : 2*r*e≤a := le_trans (by
+  induction r using ISigma1.sigma1_succ_induction with
+  | hP => definability
+  | zero => simp
+  | succ r ih =>
+    have hr0 : 2*r*e≤a := le_trans (by
         have : 2*r*e≤2*(r+1)*e := mul_le_mul_of_nonneg_right
           (mul_le_mul_of_nonneg_left (by simp) (by simp)) (by simp)
-        exact this) hr
-      have ih' := ih hr0
-      rw [power_succ,power_succ]
-      calc
+        exact this) h
+    have ih' := ih hr0
+    rw [power_succ,power_succ]
+    calc
         a*((a+e)*power (a+e) r)=(a+e)*(a*power (a+e) r) := by ring
         _≤(a+e)*((a+2*r*e)*power a r) := mul_le_mul_of_nonneg_left ih' (by simp)
         _=((a+2*r*e)*(a+e))*power a r := by ring
         _≤(a*(a+2*(r+1)*e))*power a r :=
           mul_le_mul_of_nonneg_right (perturbation_coefficient a e r hr0) (by simp)
         _=(a+2*(r+1)*e)*(a*power a r) := by ring
-  exact all r h
 
 end DiophantineConsistency.ArithmeticPow
