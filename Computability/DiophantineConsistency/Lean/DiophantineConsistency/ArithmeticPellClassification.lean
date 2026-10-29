@@ -11,9 +11,6 @@ open scoped LO.FirstOrder.Arithmetic
 open ArithmeticPellRecurrence
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem one_le {z : V} (hz : 0<z) : 1≤z := by
-  simpa using lt_iff_succ_le.mp hz
-
 theorem positive_x (b x y : V) (h : x*x=1+delta b*y*y) : 0<x := by
   exact pos_of_mul_pos_left (b := x) (by rw [h]; simp) (Arithmetic.zero_le x)
 
@@ -57,7 +54,7 @@ theorem descent (b x y : V) (hy : 0<y) (h : x*x=1+delta b*y*y) :
       x*x=1+d*y*y := h
       _≤y*y+d*y*y := by
         simpa only [add_comm] using
-          _root_.add_le_add_right (one_le_mul (one_le hy) (one_le hy)) (d*y*y)
+          _root_.add_le_add_right (one_le_mul (pos_iff_one_le.mp hy) (pos_iff_one_le.mp hy)) (d*y*y)
       _=(a*y)*(a*y) := by dsimp [a,d,delta]; ring
   have hxlow : (b+1)*y<x := by
     apply lt_of_mul_self_lt_mul_self₀ (by simp)
@@ -112,13 +109,10 @@ theorem solution_index (b x y : V) (h : x*x=1+delta b*y*y) :
       by_cases hy : y=0
       · subst y
         have hx1 : x=1 := le_antisymm (by simpa using hx)
-          (one_le (positive_x b x 0 hn))
+          (pos_iff_one_le.mp (positive_x b x 0 hn))
         subst x
         exact ⟨0,le_refl _,by simp,by simp⟩
-      · have hyp : 0<y := by
-          rcases Arithmetic.zero_le y with he|hp
-          · exact False.elim (hy he.symm)
-          · exact hp
+      · have hyp : 0<y := pos_iff_ne_zero.mpr hy
         obtain ⟨u,v,_,hv,hu,hix,hiy⟩ := descent b x y hyp hn
         obtain ⟨time,ht,hxv,hyv⟩ := ih v hv u (x_bound b u v hu) hu
         refine ⟨time+1,lt_iff_succ_le.mp (lt_of_le_of_lt ht hv),?_,?_⟩
