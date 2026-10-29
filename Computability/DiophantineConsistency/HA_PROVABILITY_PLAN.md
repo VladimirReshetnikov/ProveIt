@@ -2301,3 +2301,63 @@ negated formulas.
    `slot_MT`.
 5. `sep_obligation`/`repl_obligation` → `hSchema` → an unconditional bounded
    ZFC → ZF transport.
+
+## Stage 3b: substitution and code levels (2026-10-28)
+
+**Generic substitution bound** (`BoundedPAConsistency.SubstBound`). If the
+entries of `w` are variables at most `2^c`, then
+`subst L w p ≤ 2^(2^((c+12)(p+1)))`.
+
+**Why value bounds are not enough.** `LMatch.mVal j`, the matching code for
+`j` free variables, is an internal recursion of length `j`: each step
+substitutes into `shift (mVal (j-1))`. A bound that is double exponential in
+the previous code turns `j` steps into a tower of height `≈ 2j`, which is not
+elementary. Iterated constructions therefore need **level** bounds:
+- write `lvB u = 2^(2^u)`;
+- a code `x` has level `u` when `x ≤ lvB u`;
+- the operations must multiply the level by a constant, not the value.
+
+**`ZFCinPA.SetCodeLevels`** proves these for `ℒₛₑₜ`, in every model of IΣ₁:
+
+| Lemma | Effect on the level |
+|---|---|
+| `shift_level` | `u ↦ u+1` |
+| `neg_level` | `u ↦ 10(u+1)` |
+| `subst_level` | `u ↦ 10(u+1)+c₀`, for variable entries at level `c₀` |
+
+The proofs are inductions on the level, not on formula structure:
+- a Cantor pair at least squares each entry (`sq_le_pair_left/right`), so
+  the subformulas of a level-`(u+1)` code have level `u` (`pair_children`);
+- rebuilding a node with at most five pairings costs at most `+10` levels
+  (`pair_lvB`);
+- no `ℒₛₑₜ` formula has code below `3` (`three_le_formula`), so level `0` is
+  vacuous.
+
+**First payoff** (`ZFCinPA.LMatchLevel.mVal_le`).
+
+```
+mVal j ≤ lvB (Cm · 16^j) = 2^(2^(Cm·16^j))
+```
+
+Here `Cm = ⌜funcS⌝ + zT + eT + 40` is a fixed standard code. This is a
+fixed-height tower in `j`, the first internal iteration of the `L`
+obligations with an explicit elementary bound. `#print axioms` gives
+`propext`, `Classical.choice` and `Quot.sound` (`SetCodeLevelsAudit`,
+`SubstBoundAudit`).
+
+**Consequence for the engine.** A glue step composes level bounds a fixed
+number of times, and the induction over formula complexity `C` multiplies
+levels `C` times. So the obligations should be about triple exponential in
+the schema code `p`, followed by the `exp`s of the derivation codes. The
+engine's axiom-bound shape `2^(2^(2^(a(p+1))))` will need one or two more
+exponentials (a mechanical change to `towerB` and `ax_le`).
+
+**Still to do in Stage 3b:**
+- level bounds for `envForm`, `relativize`, `gVal` and the other `L` formula
+  families;
+- sized template compilation (`compileDerivation` by meta induction;
+  translated-formula levels through `subst_level`);
+- the template axiom leaves, including `SetCongruence`;
+- the `L` inductions (`glue`, `peel`, `driverT`, `numOK`, `fun_MT`,
+  `slot_MT`) restated with `SizedProof`;
+- the `sep`/`repl` assembly.
