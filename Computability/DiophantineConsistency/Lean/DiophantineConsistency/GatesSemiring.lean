@@ -79,26 +79,13 @@ theorem semiring_complete (e : NatExpr σ) (v : σ → R) :
   | var i =>
     intro k
     exact (Expr.semiringZero_var_var _ _ _).mpr rfl
-  | add p q hp hq =>
+  | add p q hp hq | mul p q hp hq =>
     intro k
     cases k with
     | inl j =>
-      exact (Expr.semiringZero_var_add _ _ _ _).mpr (by simp [semiringAssignment,semiringValues])
-    | inr k =>
-      cases k with
-      | inl k =>
-        rw [residualSyntax,Expr.semiringZero_rename,assignment_comp]
-        convert hp k using 1
-        congr 1
-      | inr k =>
-        rw [residualSyntax,Expr.semiringZero_rename,assignment_comp]
-        convert hq k using 1
-        congr 1
-  | mul p q hp hq =>
-    intro k
-    cases k with
-    | inl j =>
-      exact (Expr.semiringZero_var_mul _ _ _ _).mpr (by simp [semiringAssignment,semiringValues])
+      first
+      | exact (Expr.semiringZero_var_add _ _ _ _).mpr (by simp [semiringAssignment,semiringValues])
+      | exact (Expr.semiringZero_var_mul _ _ _ _).mpr (by simp [semiringAssignment,semiringValues])
     | inr k =>
       cases k with
       | inl k =>
@@ -116,7 +103,7 @@ theorem semiring_sound (e : NatExpr σ) (v : σ → R) (w : Wire e → R)
   induction e with
   | constant n => exact (Expr.semiringZero_var_nat _ _ _).mp (h 0)
   | var i => exact (Expr.semiringZero_var_var _ _ _).mp (h 0)
-  | add p q hp hq =>
+  | add p q hp hq | mul p q hp hq =>
     have hl := hp (fun j => w (Sum.inr (Sum.inl j))) (fun k => by
       have hh := h (Sum.inr (Sum.inl k))
       rw [residualSyntax,Expr.semiringZero_rename,assignment_comp] at hh
@@ -125,17 +112,9 @@ theorem semiring_sound (e : NatExpr σ) (v : σ → R) (w : Wire e → R)
       have hh := h (Sum.inr (Sum.inr k))
       rw [residualSyntax,Expr.semiringZero_rename,assignment_comp] at hh
       simpa only [Function.comp_def] using hh)
-    exact ((Expr.semiringZero_var_add _ _ _ _).mp (h (Sum.inl 0))).trans (congrArg₂ (·+·) hl hr)
-  | mul p q hp hq =>
-    have hl := hp (fun j => w (Sum.inr (Sum.inl j))) (fun k => by
-      have hh := h (Sum.inr (Sum.inl k))
-      rw [residualSyntax,Expr.semiringZero_rename,assignment_comp] at hh
-      simpa only [Function.comp_def] using hh)
-    have hr := hq (fun j => w (Sum.inr (Sum.inr j))) (fun k => by
-      have hh := h (Sum.inr (Sum.inr k))
-      rw [residualSyntax,Expr.semiringZero_rename,assignment_comp] at hh
-      simpa only [Function.comp_def] using hh)
-    exact ((Expr.semiringZero_var_mul _ _ _ _).mp (h (Sum.inl 0))).trans (congrArg₂ (·*·) hl hr)
+    first
+    | exact ((Expr.semiringZero_var_add _ _ _ _).mp (h (Sum.inl 0))).trans (congrArg₂ (·+·) hl hr)
+    | exact ((Expr.semiringZero_var_mul _ _ _ _).mp (h (Sum.inl 0))).trans (congrArg₂ (·*·) hl hr)
 
 end QuarticCompiler.Gates
 end DiophantineConsistency
