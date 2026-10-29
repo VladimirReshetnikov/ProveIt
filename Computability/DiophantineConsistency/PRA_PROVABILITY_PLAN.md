@@ -79,7 +79,9 @@ guard, and the global recursion remains open. The [strict Π₂ disjunction
 normalizer](reviews/parsons-prenex-pi2-or-root.md) supplies a bounded-matrix
 tupled prenex form for a pair of strict ∀∃ side formulas. The corresponding
 [strict conjunction normalizer](reviews/parsons-prenex-pi2-and-root.md) has
-also been proved. General Π₂ normalization remains open. The [identity and truth leaves](reviews/parsons-leaves-root.md)
+also been proved. General Π₂ normalization remains open. [Height-preserving universal inversion](reviews/parsons-all-invert-root.md)
+now opens selected side occurrences at arbitrary terms while retaining
+cut-freeness and the strict bound below an existential inference. The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
