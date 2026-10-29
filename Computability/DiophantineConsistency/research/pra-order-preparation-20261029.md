@@ -47,3 +47,7 @@ proof of standard PRA equivalence or Parsons conservation.
 
 The [left-successor law](../reviews/pra-addition-succ-left-root.md) is now
 a closed candidate-PRA derivation, with an independent current-source replay.
+
+The [addition commutativity law](../reviews/pra-addition-commutativity-root.md)
+is also a closed candidate-PRA derivation. The subtraction and additive
+witness arguments needed for the Q order clause are still separate work.
