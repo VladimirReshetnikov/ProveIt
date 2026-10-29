@@ -247,6 +247,16 @@ theorem subset_insert_insert {x y s : V} : s ⊆ insert x (insert y s) := by
   intro z hz
   simp [hz]
 
+private theorem cseq_parts {n w₁ w₂ E c v p : V} (hp : IsSemiformula ℒₛₑₜ n p)
+    (hv : p ≤ lvB v) (inp : Inp n w₁ w₂ E c) :
+    neg ℒₛₑₜ (subst ℒₛₑₜ w₁ p) ≤ lvB (mB v c) ∧ subst ℒₛₑₜ w₂ p ≤ lvB (mB v c) ∧
+      IsFormula ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ w₁ p)) ∧ IsFormula ℒₛₑₜ (subst ℒₛₑₜ w₂ p) := by
+  have hb := cseq_le hp hv inp
+  have hf := cseq_formulaSet hp inp
+  exact ⟨hb _ (by simp [Cseq]), hb _ (by simp [Cseq]),
+    hf _ (by simp [Cseq]), hf _ (by simp [Cseq])⟩
+
+
 theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n + 1) p)
     (inp : Inp n w₁ w₂ E c) (hpv : ^∀ p ≤ lvB v) (hspv : shift ℒₛₑₜ p ≤ lvB v)
     (hW : mB v (c + 1) + 1 ≤ W) (hW4 : 4 ≤ W)
@@ -256,8 +266,6 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
   have hS0 := cseq_le hall hpv inp
   have hSf := cseq_formulaSet hall inp
   have inp' := inp_succ inp
-  have hS1 := cseq_le hp.shift hspv inp'
-  have hSf1 := cseq_formulaSet hp.shift inp'
   obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
   have hP₁ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) := by simpa using hp.subst hw₁.qVec
   have hP₂ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) := by simpa using hp.subst hw₂.qVec
@@ -283,14 +291,13 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
   have hSS : SeqLe (setShift ℒₛₑₜ S) (mB v (c + 1)) := by
     rw [mB_succ]
     exact (SeqLe.setShift hS0).mono (_root_.add_le_add le_rfl (by norm_num))
-  have hF : neg ℒₛₑₜ F₁ ≤ lvB (mB v (c + 1)) ∧ F₂ ≤ lvB (mB v (c + 1)) :=
-    ⟨hS1 _ (by simp [Cseq, F₁]), hS1 _ (by simp [Cseq, F₂])⟩
-  have hFf : IsFormula ℒₛₑₜ (neg ℒₛₑₜ F₁) ∧ IsFormula ℒₛₑₜ F₂ :=
-    ⟨hSf1 _ (by simp [Cseq, F₁]), hSf1 _ (by simp [Cseq, F₂])⟩
+  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv inp'
+  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ F₁) at hFf₁
+  change IsFormula ℒₛₑₜ F₂ at hFf₂
   -- weakening of the induction hypothesis
   have d1 : DLv 𝗭𝗙 (insert (neg ℒₛₑₜ F₁) (insert F₂ (setShift ℒₛₑₜ S))) (W + 1) := by
-    refine DLv.wk hW4 ((hSS.insert hF.2).insert hF.1 |>.toLt hW)
-      (by simp [hFf.1, hFf.2, hSf.setShift]) ?_ ih
+    refine DLv.wk hW4 ((hSS.insert hF₂).insert hF₁ |>.toLt hW)
+      (by simp [hFf₁, hFf₂, hSf.setShift]) ?_ ih
     intro z hz
     simp only [Cseq, mem_bitInsert_iff] at hz ⊢
     rcases hz with h | h | h
@@ -299,7 +306,7 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
     · exact Or.inr (Or.inr (hsub h))
   -- the existential side at `&0`
   have d2 : DLv 𝗭𝗙 (insert F₂ (setShift ℒₛₑₜ S)) (W + 1 + 1) := by
-    refine DLv.ex_m (le_trans hW4 le_self_add) ((hSS.insert hF.2).toLt (le_trans hW le_self_add))
+    refine DLv.ex_m (le_trans hW4 le_self_add) ((hSS.insert hF₂).toLt (le_trans hW le_self_add))
       (p := shift ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p)))
       (fvar0_lt (le_trans (by norm_num) hW4)) (mem_bitInsert_iff.mpr (Or.inr hsh)) (by simp) ?_
     rw [hf₁]
@@ -320,8 +327,6 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
   have hS0 := cseq_le hex hpv inp
   have hSf := cseq_formulaSet hex inp
   have inp' := inp_succ inp
-  have hS1 := cseq_le hp.shift hspv inp'
-  have hSf1 := cseq_formulaSet hp.shift inp'
   obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
   have hP₁ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) := by simpa using hp.subst hw₁.qVec
   have hP₂ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) := by simpa using hp.subst hw₂.qVec
@@ -345,13 +350,12 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
   have hSS : SeqLe (setShift ℒₛₑₜ S) (mB v (c + 1)) := by
     rw [mB_succ]
     exact (SeqLe.setShift hS0).mono (_root_.add_le_add le_rfl (by norm_num))
-  have hF : neg ℒₛₑₜ F₁ ≤ lvB (mB v (c + 1)) ∧ F₂ ≤ lvB (mB v (c + 1)) :=
-    ⟨hS1 _ (by simp [Cseq, F₁]), hS1 _ (by simp [Cseq, F₂])⟩
-  have hFf : IsFormula ℒₛₑₜ (neg ℒₛₑₜ F₁) ∧ IsFormula ℒₛₑₜ F₂ :=
-    ⟨hSf1 _ (by simp [Cseq, F₁]), hSf1 _ (by simp [Cseq, F₂])⟩
+  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv inp'
+  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ F₁) at hFf₁
+  change IsFormula ℒₛₑₜ F₂ at hFf₂
   have d1 : DLv 𝗭𝗙 (insert F₂ (insert (neg ℒₛₑₜ F₁) (setShift ℒₛₑₜ S))) (W + 1) := by
-    refine DLv.wk hW4 ((hSS.insert hF.1).insert hF.2 |>.toLt hW)
-      (by simp [hFf.1, hFf.2, hSf.setShift]) ?_ ih
+    refine DLv.wk hW4 ((hSS.insert hF₁).insert hF₂ |>.toLt hW)
+      (by simp [hFf₁, hFf₂, hSf.setShift]) ?_ ih
     intro z hz
     simp only [Cseq, mem_bitInsert_iff] at hz ⊢
     rcases hz with h | h | h
@@ -359,7 +363,7 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
     · exact Or.inl h
     · exact Or.inr (Or.inr (hsub h))
   have d2 : DLv 𝗭𝗙 (insert (neg ℒₛₑₜ F₁) (setShift ℒₛₑₜ S)) (W + 1 + 1) := by
-    refine DLv.ex_m (le_trans hW4 le_self_add) ((hSS.insert hF.1).toLt (le_trans hW le_self_add))
+    refine DLv.ex_m (le_trans hW4 le_self_add) ((hSS.insert hF₁).toLt (le_trans hW le_self_add))
       (p := shift ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p))
       (fvar0_lt (le_trans (by norm_num) hW4)) (mem_bitInsert_iff.mpr (Or.inr hsh)) (by simp) ?_
     rw [hf₂]
@@ -373,14 +377,6 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
 
 /-! ## The propositional steps -/
 
-private theorem cseq_parts {n w₁ w₂ E c v p : V} (hp : IsSemiformula ℒₛₑₜ n p)
-    (hv : p ≤ lvB v) (inp : Inp n w₁ w₂ E c) :
-    neg ℒₛₑₜ (subst ℒₛₑₜ w₁ p) ≤ lvB (mB v c) ∧ subst ℒₛₑₜ w₂ p ≤ lvB (mB v c) ∧
-      IsFormula ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ w₁ p)) ∧ IsFormula ℒₛₑₜ (subst ℒₛₑₜ w₂ p) := by
-  have hb := cseq_le hp hv inp
-  have hf := cseq_formulaSet hp inp
-  exact ⟨hb _ (by simp [Cseq]), hb _ (by simp [Cseq]),
-    hf _ (by simp [Cseq]), hf _ (by simp [Cseq])⟩
 
 theorem step_and {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ n p)
     (hq : IsSemiformula ℒₛₑₜ n q) (inp : Inp n w₁ w₂ E c) (hpqv : p ^⋏ q ≤ lvB v)
