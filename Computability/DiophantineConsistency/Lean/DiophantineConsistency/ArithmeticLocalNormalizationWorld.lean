@@ -139,10 +139,7 @@ theorem sum_origin (g : ℕ → ℕ) (a : ℕ) (n : ℕ) :
       (∑ e ∈ Finset.range (n + 1), g e * radix ^ e) + a := by
   rw [Finset.sum_range_succ' (fun e => (if e = 0 then a else g e) * radix ^ e) n,
     Finset.sum_range_succ' (fun e => g e * radix ^ e) n]
-  have hs : ∑ i ∈ Finset.range n, (if i + 1 = 0 then a else g (i + 1)) * radix ^ (i + 1) =
-      ∑ i ∈ Finset.range n, g (i + 1) * radix ^ (i + 1) :=
-    Finset.sum_congr rfl fun i _ => by rw [if_neg (Nat.succ_ne_zero i)]
-  rw [hs, if_pos rfl, pow_zero, mul_one, mul_one]
+  simp only [Nat.succ_ne_zero, if_false, if_pos, pow_zero, mul_one]
   omega
 
 theorem sum_origin_2011 (g : ℕ → ℕ) (a : ℕ) :
