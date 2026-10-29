@@ -1991,5 +1991,14 @@ match. Private helper names and two private reports change. Four direct project
 providers have source-matched receipts; the wider closure remains cached. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-selector-unit-evidence/BUNDLE.json).
 
+The Pell unit-advance sharing `e9c6492417` removes nine net Lean lines, bringing
+the reviewed series to 10289. The existing private generic equivalence is now
+public and replaces the specialized polynomial derivation. Both changed modules
+and all four direct clients pass paired builds with source-matched external
+providers. Three client objects are identical; the fourth differs but checked
+declaration reports and sampled registrations match. The old private theorem
+name is replaced by a public name of the same type and axioms; the wider
+closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-advance-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

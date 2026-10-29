@@ -1,0 +1,340 @@
+{
+  "schema": "lean-proof-simplification-evidence-v1",
+  "source_commit": "e9c6492417e77da5ce8ba13386e16671a0685f2f",
+  "source_parent": "447ef32fa439a45d80bf536d923c353c7d36c615",
+  "scope": "Reuse the generic Pell unit-advance equivalence",
+  "validation": "Paired KnownUnit, FirstNorm and four direct client builds succeed with four source-matched external project providers. Three client objects are identical; FirstIndex differs. Six-object-pinned probes give 38 common declaration/type/axiom reports and equal default simp/instance registrations. The generic equivalence changes from private to public with the same type and axioms.",
+  "limitations": [
+    "Source-matched direct provider receipts and selected direct clients do not establish a source-current transitive closure; broader downstream clients were not rebuilt.",
+    "Reports and sampled registrations do not establish equality of proof bodies or all persistent extensions. One client object differs.",
+    "Compiled objects are excluded; full replay requires the original external build environment and object dependencies. Earlier exploratory baseline-only builds using an older Classification object are not part of this refreshed lane."
+  ],
+  "archive": "inputs-and-logs.zip",
+  "archive_sha256": "e3762fdf69dde701d39f956a825086cee1ca78ad0c6bbf2077cc4fa63f2440c8",
+  "independent_review": {
+    "path": "independent-review.txt",
+    "sha256": "0e743ed942ec5a136b2718a98be87a399225cb8e2699c134bf7a8fa29db09bda"
+  },
+  "members": {
+    "commit/baseline/ArithmeticPellFirstNorm.lean": {
+      "bytes": 7649,
+      "sha256": "f507089adc7dbd6a0d72ac6f893903585a6226cb344e2779542bb74755b18055"
+    },
+    "commit/baseline/ArithmeticPellKnownUnit.lean": {
+      "bytes": 8595,
+      "sha256": "79c023a33c83f2eac7e6a8e387159895835ff69ddd89016ac5f2eb74d2aa485a"
+    },
+    "commit/final/ArithmeticPellFirstNorm.lean": {
+      "bytes": 7408,
+      "sha256": "1a28867ced88fb1b56b872bf900052c3035a4a42502ea024b1f4a7ef5347b816"
+    },
+    "commit/final/ArithmeticPellKnownUnit.lean": {
+      "bytes": 8587,
+      "sha256": "84908d9195b688f1e1c0b121b412c47706cebb94ca8fe722a6c29bd02bf1ec92"
+    },
+    "independent/audit.log": {
+      "bytes": 824,
+      "sha256": "4b78f0c3211f8100986a4a12d3bb86079b4a3f467529435f15c1c16174149ab2"
+    },
+    "independent/audit.py": {
+      "bytes": 4519,
+      "sha256": "702ee8a6c58cb09947b64eb47b0114a8aafc936efc4275059877b38dea5fd15c"
+    },
+    "independent/review.txt": {
+      "bytes": 2044,
+      "sha256": "0e743ed942ec5a136b2718a98be87a399225cb8e2699c134bf7a8fa29db09bda"
+    },
+    "prototype/README.txt": {
+      "bytes": 2059,
+      "sha256": "57e7812602820634c2d4a78e17a376b8ed33a7b4c344d1b5a6d8e8b06071cdcd"
+    },
+    "prototype/audit.log": {
+      "bytes": 1016,
+      "sha256": "4ddd72f9510aaccc9f33a1e90350848f059297726e78e05e38872f47eb0970bd"
+    },
+    "prototype/audit.py": {
+      "bytes": 3400,
+      "sha256": "bd1fcb2a52efe729ee54cf7207ec3e2730272c621c9c5b061196121ce81e55ba"
+    },
+    "prototype/baseline-ArithmeticPellCommonUnit.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticPellCommonUnit.time": {
+      "bytes": 50,
+      "sha256": "543426e84ff9d06cb70cb1695e4c0fed549cc33f1015b47a81f3ce59f1177aa0"
+    },
+    "prototype/baseline-ArithmeticPellFirstIndex.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticPellFirstIndex.time": {
+      "bytes": 52,
+      "sha256": "7bf9650b8b6c1751e94ee491321b0fe99deb7fad9abd037591c6fb70e97c5146"
+    },
+    "prototype/baseline-ArithmeticPellFirstNorm.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticPellFirstNorm.time": {
+      "bytes": 52,
+      "sha256": "57f2b43484661ddb39e1546f134a6f2cd14bf5b73f4d54ccdeee08e0114b7f84"
+    },
+    "prototype/baseline-ArithmeticPellFirstNormChecks.log": {
+      "bytes": 1378,
+      "sha256": "5c47903dd1459d42f0d4915d4c7f2b1e8f7e580c542db465f423616834612f69"
+    },
+    "prototype/baseline-ArithmeticPellFirstNormChecks.time": {
+      "bytes": 50,
+      "sha256": "780a1133df9c35348e3d523ba05cf5f6fada178d9978689d23e26c8b999c641d"
+    },
+    "prototype/baseline-ArithmeticPellKnownUnit.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticPellKnownUnit.time": {
+      "bytes": 52,
+      "sha256": "9159b49d38ea7a5e7702d0f823e0572c7b15f399bbdd5946638c0c27e75be4d3"
+    },
+    "prototype/baseline-ArithmeticPellKnownUnitChecks.log": {
+      "bytes": 524,
+      "sha256": "f0b57716af46e90ae3a58b2088969cd46238395fc5a584dcb78076a682aff899"
+    },
+    "prototype/baseline-ArithmeticPellKnownUnitChecks.time": {
+      "bytes": 50,
+      "sha256": "25b4ee49f9534774c9101773a6d34b96876855608401a1d29af2d976ca6f2875"
+    },
+    "prototype/baseline-instances.log": {
+      "bytes": 721639,
+      "sha256": "e28e1c1803e0859325238647862ce48f47eef5734ba6af240cf8bdcfa40c3326"
+    },
+    "prototype/baseline-instances.time": {
+      "bytes": 50,
+      "sha256": "510e1a7b5131a04dbcf4a5614d7357a510e66fe012687300becc0d3f309b31f0"
+    },
+    "prototype/baseline-interfaces.log": {
+      "bytes": 27515,
+      "sha256": "6f7f57cddd83ab82b521934582db7650d6578d304bbb5dc53649abe33e7a17a9"
+    },
+    "prototype/baseline-interfaces.time": {
+      "bytes": 50,
+      "sha256": "6b914cb67a7f75eb3b7a9645c49082ff007cd5b831bb8fb17927a80e003ff0ce"
+    },
+    "prototype/baseline-names.log": {
+      "bytes": 3179,
+      "sha256": "a8dad1301917c3224ccfd3c81ddb4529d2b727bad4cf59bd71a7dc459cc0b6b9"
+    },
+    "prototype/baseline-names.time": {
+      "bytes": 50,
+      "sha256": "7d1f932d29db07f571eda94810890add725745524b352ce5cb4db776c3073605"
+    },
+    "prototype/baseline-probes.json": {
+      "bytes": 14739,
+      "sha256": "1b7e9ef0582b7ee783f4737b6103264544ca3f2c36012c4ac985dd1b5abb05e5"
+    },
+    "prototype/baseline-records.json": {
+      "bytes": 22270,
+      "sha256": "1add3dddf61d8f99aec1fcc6a49ccef2ad58337e0953b3e330b6bcf7299890a2"
+    },
+    "prototype/baseline-simp.log": {
+      "bytes": 1605581,
+      "sha256": "1155a4269c860037b3b1a73a73fa0e86719a8ae5829b2c3c2cfa353b7dfe03b4"
+    },
+    "prototype/baseline-simp.time": {
+      "bytes": 50,
+      "sha256": "af50465f38976c05f4c3ac84dfb71a34904b9e4548c98de7ed8ae91bf94459f8"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticPellCommonUnit.lean": {
+      "bytes": 6023,
+      "sha256": "4611699ee28a5aac8a900395ecc965e570675607851be24de450f04af0f45734"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticPellFirstIndex.lean": {
+      "bytes": 19078,
+      "sha256": "86e3a3698a1a78e713e80d876f8ccee0067dd8900854dcf6958cbe78abf96631"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticPellFirstNorm.lean": {
+      "bytes": 7649,
+      "sha256": "f507089adc7dbd6a0d72ac6f893903585a6226cb344e2779542bb74755b18055"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticPellFirstNormChecks.lean": {
+      "bytes": 1622,
+      "sha256": "a929efefd0979ee66b6fcc3e0f0521c95aaae54bd39fbf1dd32701995054d2ed"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticPellKnownUnit.lean": {
+      "bytes": 8595,
+      "sha256": "79c023a33c83f2eac7e6a8e387159895835ff69ddd89016ac5f2eb74d2aa485a"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticPellKnownUnitChecks.lean": {
+      "bytes": 2352,
+      "sha256": "9fd672d63abffe7011298c5d2323d2fdb82a204e5709a21ac9eaaba64ea0f12d"
+    },
+    "prototype/build.py": {
+      "bytes": 2765,
+      "sha256": "ac3728d80d26d3bb7fefba47db0fdb648863d02047cc3c1c2cd2215428897c9a"
+    },
+    "prototype/final-ArithmeticPellCommonUnit.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticPellCommonUnit.time": {
+      "bytes": 50,
+      "sha256": "64dd1f79eb98d750f0dff79be0be9dbc6dbad8ccfd0f4e541515547505ee80f9"
+    },
+    "prototype/final-ArithmeticPellFirstIndex.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticPellFirstIndex.time": {
+      "bytes": 52,
+      "sha256": "4d206e749250e426317a55e9c03bebb22e07597a1557ef487e7916ab0c994fc3"
+    },
+    "prototype/final-ArithmeticPellFirstNorm.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticPellFirstNorm.time": {
+      "bytes": 52,
+      "sha256": "f3ec6fd37a84d933abf6f2f362057776c3b246c7713f93897a89216b75e173ae"
+    },
+    "prototype/final-ArithmeticPellFirstNormChecks.log": {
+      "bytes": 1378,
+      "sha256": "5c47903dd1459d42f0d4915d4c7f2b1e8f7e580c542db465f423616834612f69"
+    },
+    "prototype/final-ArithmeticPellFirstNormChecks.time": {
+      "bytes": 50,
+      "sha256": "ea685f400e4987635411305422a2a7549198e2a99753aefb69358f6d4d2db157"
+    },
+    "prototype/final-ArithmeticPellKnownUnit.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticPellKnownUnit.time": {
+      "bytes": 52,
+      "sha256": "c29224a0bef77202d2ce5ca33f3d5c89a9a1136162fba2d449eacc0acbba25b0"
+    },
+    "prototype/final-ArithmeticPellKnownUnitChecks.log": {
+      "bytes": 524,
+      "sha256": "f0b57716af46e90ae3a58b2088969cd46238395fc5a584dcb78076a682aff899"
+    },
+    "prototype/final-ArithmeticPellKnownUnitChecks.time": {
+      "bytes": 50,
+      "sha256": "dc4d3a2a28ff019b81e990d4bd6b437c28f0554e041040692a9e048ba8a646ac"
+    },
+    "prototype/final-instances.log": {
+      "bytes": 721639,
+      "sha256": "e28e1c1803e0859325238647862ce48f47eef5734ba6af240cf8bdcfa40c3326"
+    },
+    "prototype/final-instances.time": {
+      "bytes": 50,
+      "sha256": "f726863c257a1ce000d14a09e3b40378805bd2bab9e0ec151a36e1e23ffa476a"
+    },
+    "prototype/final-interfaces.log": {
+      "bytes": 27457,
+      "sha256": "aa7aa542083eee1256081bd5c5aeee81fcc0114f9d93b0a11d9c82a4bee78846"
+    },
+    "prototype/final-interfaces.time": {
+      "bytes": 50,
+      "sha256": "5bad8b07385ff2e7eacf1a54c1fb20d31d12af2b7d04a339b3be62a7df991d59"
+    },
+    "prototype/final-names.log": {
+      "bytes": 3121,
+      "sha256": "e0c78283dea7a1ead2a365875b744d979f88275a843cffa97f15cbb62664d922"
+    },
+    "prototype/final-names.time": {
+      "bytes": 50,
+      "sha256": "c05d7e5deafbdbad3952b2b185c068808da3c50942ecb67fdb2d69e3a9685a04"
+    },
+    "prototype/final-probes.json": {
+      "bytes": 14607,
+      "sha256": "0c50fb277e81666e41157368cef89a1f8a67c93f199d0a9f1f29045d915221c0"
+    },
+    "prototype/final-records.json": {
+      "bytes": 22051,
+      "sha256": "a0c6a29bb6c7ebe332801023213f7d935db2d1bf959269fb36702ccfb4319a35"
+    },
+    "prototype/final-simp.log": {
+      "bytes": 1605581,
+      "sha256": "1155a4269c860037b3b1a73a73fa0e86719a8ae5829b2c3c2cfa353b7dfe03b4"
+    },
+    "prototype/final-simp.time": {
+      "bytes": 50,
+      "sha256": "69ac3bd677a9ccb1c97f5bf74954fedafdb400f152367eb8fe42fdc0fc14c119"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticPellCommonUnit.lean": {
+      "bytes": 6023,
+      "sha256": "4611699ee28a5aac8a900395ecc965e570675607851be24de450f04af0f45734"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticPellFirstIndex.lean": {
+      "bytes": 19078,
+      "sha256": "86e3a3698a1a78e713e80d876f8ccee0067dd8900854dcf6958cbe78abf96631"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticPellFirstNorm.lean": {
+      "bytes": 7408,
+      "sha256": "1a28867ced88fb1b56b872bf900052c3035a4a42502ea024b1f4a7ef5347b816"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticPellFirstNormChecks.lean": {
+      "bytes": 1622,
+      "sha256": "a929efefd0979ee66b6fcc3e0f0521c95aaae54bd39fbf1dd32701995054d2ed"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticPellKnownUnit.lean": {
+      "bytes": 8587,
+      "sha256": "84908d9195b688f1e1c0b121b412c47706cebb94ca8fe722a6c29bd02bf1ec92"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticPellKnownUnitChecks.lean": {
+      "bytes": 2352,
+      "sha256": "9fd672d63abffe7011298c5d2323d2fdb82a204e5709a21ac9eaaba64ea0f12d"
+    },
+    "prototype/instances.lean": {
+      "bytes": 588,
+      "sha256": "e8836d857a3c2cede73b3da117245d86a0acb8b2403ce7de8349e0f364bf3e9e"
+    },
+    "prototype/interfaces.lean": {
+      "bytes": 1569,
+      "sha256": "e41d7d2dbf3f903aa6fefecd509677562b91bb096119a598eb1c59f1f6fdd774"
+    },
+    "prototype/names.lean": {
+      "bytes": 1421,
+      "sha256": "f5adb5ced2b2e5c7997e2025d5e0056dfdca0d872e7178f7a12d97d84733e217"
+    },
+    "prototype/probe.py": {
+      "bytes": 1483,
+      "sha256": "cd21558da45a0697a38ef4248480c742ddee46d79bb383efaade061a0245afb6"
+    },
+    "prototype/simp.lean": {
+      "bytes": 802,
+      "sha256": "bded45114c2292241304b151a8c6d4c7f4a59c64f6df8ea803cfc18a79473c20"
+    },
+    "providers/four-positive-wrappers-upstream-records.json": {
+      "bytes": 21298,
+      "sha256": "5b1b5ebe522817d7c56c3c8f4f17ce53f375b3891daad87bf9423a6d412a5789"
+    },
+    "providers/gcd-product-positivity-final-records.json": {
+      "bytes": 14777,
+      "sha256": "d1bf4bae9291e2d871f9b2f03ec17bfe3471b424c628e36fa38b2b52699a92c9"
+    },
+    "providers/pell-positive-reflect-final-records.json": {
+      "bytes": 22912,
+      "sha256": "816d25eef398ee5d18e5dad250a7c846e31343dc4ae7d26752cb2e3cf800597b"
+    },
+    "providers/pell-y-add-final-records.json": {
+      "bytes": 11173,
+      "sha256": "8fa50fafc5845f062cd6b78c7b660b2cf83f07616daede73dc487f17af9555b8"
+    },
+    "sources/ArithmeticGcdNormalization.lean": {
+      "bytes": 7959,
+      "sha256": "bd203be2a1cf32efa43c3809a50fdef104963b3dd9b430b59417c4257bc6d456"
+    },
+    "sources/ArithmeticPellClassification.lean": {
+      "bytes": 5370,
+      "sha256": "cc069bb389454028a91b2485615086c81f7e88d36d1da346d330ef56d7391198"
+    },
+    "sources/ArithmeticPellCongruences.lean": {
+      "bytes": 4096,
+      "sha256": "afdb16050ac37d0c213d7124f1821ea4ef8aa2137253a120fb1d517781e1b157"
+    },
+    "sources/ArithmeticPellHalfIndex.lean": {
+      "bytes": 22965,
+      "sha256": "6b9b17bafac0d909d68dec84f67dfe314059bf673e15ef2945bbfe8de93853ef"
+    }
+  }
+}
