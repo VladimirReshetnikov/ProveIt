@@ -44,16 +44,8 @@ def inSupport (j : V) : Prop := j < 951 ∨ (960 ≤ j ∧ j < 986) ∨ j = 1004
 
 theorem inSupport_cast (j : ℕ) : inSupport (j:V) ↔ j ∈ CurrentMasks2011.lowSupport := by
   rw [CurrentMasks2011.lowSupport_def]
-  simp only [inSupport, Finset.mem_union, Finset.mem_range, Finset.mem_Ico, Finset.mem_singleton]
-  constructor
-  · rintro (h | ⟨h1, h2⟩ | h)
-    · exact Or.inl (Or.inl (by exact_mod_cast h))
-    · exact Or.inl (Or.inr ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩)
-    · exact Or.inr (by exact_mod_cast h)
-  · rintro ((h | ⟨h1, h2⟩) | h)
-    · exact Or.inl (by exact_mod_cast h)
-    · exact Or.inr (Or.inl ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩)
-    · exact Or.inr (Or.inr (by exact_mod_cast h))
+  simp only [inSupport, Finset.mem_union, Finset.mem_range, Finset.mem_Ico, Finset.mem_singleton, or_assoc]
+  norm_cast
 
 /-! ### Modular arithmetic -/
 
