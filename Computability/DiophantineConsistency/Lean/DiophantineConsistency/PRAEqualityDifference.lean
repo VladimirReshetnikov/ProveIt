@@ -90,9 +90,7 @@ theorem modelBothDifferencesZero (x y : M)
             rw [ha] at hh
             have he : s z = z := hh.symm.trans h1
             exact False.elim (modelSuccNeZero z he)
-          · have hex := modelExhaustion (M := M)
-            simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
-            have hd := (PRAExhaustion.body_eval (d y t) e).mp (hex e (d y t))
+          · have hd := modelZeroOrSuccPred (d y t)
             have hs := hd.resolve_left h4
             change s (p (d y t)) = d y t at hs
             rw [hpred] at hs

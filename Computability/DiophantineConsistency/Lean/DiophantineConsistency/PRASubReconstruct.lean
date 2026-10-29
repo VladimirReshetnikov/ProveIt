@@ -96,9 +96,7 @@ theorem modelReconstruct (x y : M) :
       have ih : a t (d t) = y := by
         have hh := (reconstructBody_eval t e).mp ht
         exact hh.resolve_left hdt
-      have hex := modelExhaustion (M := M)
-      simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
-      have h := (body_eval (d t) e).mp (hex e (d t))
+      have h := modelZeroOrSuccPred (d t)
       have hsucc : s (p (d t)) = d t := h.resolve_left hdt
       change Structure.func (L := language) addCode ![s t, p (d t)] = y
       rw [modelSuccLeft, ←modelAddSucc]

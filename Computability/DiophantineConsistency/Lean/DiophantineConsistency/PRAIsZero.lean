@@ -36,9 +36,7 @@ theorem modelIsZeroCharacter (x : M) :
     Structure.func (L := language) isZeroCode (fun _ => x) =
       Structure.func (L := language) oneCode Fin.elim0 ↔
       x = Structure.func (L := language) (Code.zero 0) Fin.elim0 := by
-  have hex := modelExhaustion (M := M)
-  simp only [models_iff, exhaustionSentence, Semiformula.eval_univCl, Semiformula.eval_all] at hex
-  have h := (body_eval x (fun _ => x)).mp (hex (fun _ => x) x)
+  have h := modelZeroOrSuccPred x
   constructor
   · intro hb
     rcases h with hz | hs
