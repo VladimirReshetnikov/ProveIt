@@ -1458,5 +1458,15 @@ added without global registration. An earlier client replay used a stale
 provider and is superseded; the wider transitive closure remains cached. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-reflection-evidence/BUNDLE.json).
 
+The Pell norm balance sharing `4b7de916da` removes four net Lean lines,
+bringing the reviewed series to 9806. A subtraction-free identity replaces
+duplicated polynomial decompositions in norm preservation and its converse.
+Paired targets, four direct clients and both combined seven-module chains
+through HalfIndex pass with pinned project inputs. All 78 old target reports
+and 38 endpoint declaration reports and both global registration censuses
+match; some compiled client objects differ. One public balance theorem is
+added. External and further transitive providers remain cached; see [the
+evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-balance-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
