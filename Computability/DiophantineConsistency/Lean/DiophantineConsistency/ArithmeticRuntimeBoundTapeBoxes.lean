@@ -60,16 +60,6 @@ lemma carry_fileB (vs : List V) (L R : V) :
   | nil => exact ReachB.refl _
   | cons v vs ih =>
     exact (show ReachB _ _ (v+2) from ⟨v+2,le_rfl,carry_block v L (file vs R)⟩).trans (ih _)
-lemma return_fileB {ones exit : Nat}
-    (h1 : KTableCore.tm215 exit true=some (true,false,ones))
-    (hs : KTableCore.tm215 ones true=some (true,false,ones))
-    (h0 : KTableCore.tm215 ones false=some (false,false,exit)) (vs : List V) (L R : V) :
-    ReachB (leftFrame exit (reverseFile vs L) R) (leftFrame exit L (file vs R)) (fileCost vs) := by
-  induction vs generalizing L R with
-  | nil => exact ReachB.refl _
-  | cons v vs ih =>
-    rw [fileCost_cons, add_comm]
-    exact (ih _ _).trans ⟨v+2,le_rfl,return_block h1 hs h0 v L (file vs R)⟩
 lemma return_nonemptyB {entry ones exit : Nat}
     (he : KTableCore.tm215 entry true=some (true,false,ones))
     (h1 : KTableCore.tm215 exit true=some (true,false,ones))
@@ -85,6 +75,15 @@ lemma return_nonemptyB {entry ones exit : Nat}
     | cons w ws =>
       rw [fileCost_cons, add_comm]
       exact (ih (by simp) _ _).trans ⟨v+2,le_rfl,return_block h1 hs h0 v L (file (w::ws) R)⟩
+lemma return_fileB {ones exit : Nat}
+    (h1 : KTableCore.tm215 exit true=some (true,false,ones))
+    (hs : KTableCore.tm215 ones true=some (true,false,ones))
+    (h0 : KTableCore.tm215 ones false=some (false,false,exit)) (vs : List V) (L R : V) :
+    ReachB (leftFrame exit (reverseFile vs L) R) (leftFrame exit L (file vs R)) (fileCost vs) := by
+  cases vs with
+  | nil => exact ReachB.refl _
+  | cons v vs =>
+    exact return_nonemptyB h1 h1 hs h0 (v::vs) (by simp) L R
 lemma rollback_fileB (vs : List V) (L R : V) :
     ReachB (leftFrame 97 (reverseCarry vs L) R) (leftFrame 97 L (file vs R)) (fileCost vs) := by
   induction vs generalizing L R with
