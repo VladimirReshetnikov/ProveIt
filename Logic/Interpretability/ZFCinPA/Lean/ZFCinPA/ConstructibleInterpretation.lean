@@ -458,23 +458,38 @@ lemma isUFormula_quote {n : ℕ} (ψ : SetTheorySemiproposition n) :
     IsUFormula ℒₛₑₜ (⌜ψ⌝ : W) :=
   (LO.FirstOrder.Semiformula.quote_isSemiformula ψ).isUFormula
 
+lemma shift_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) : shift ℒₛₑₜ (⌜σ⌝ : W) = ⌜σ⌝ := by
+  rw [LO.FirstOrder.Sentence.quote_def, ← LO.FirstOrder.Semiformula.quote_shift]
+  congr 1
+  rw [Rewriting.shift, ← TransitiveRewriting.comp_app, Rew.shift_comp_emb]
+
+lemma isSemiformula_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) :
+    IsSemiformula ℒₛₑₜ (k : W) (⌜σ⌝ : W) := by
+  rw [LO.FirstOrder.Sentence.quote_def]
+  simpa using LO.FirstOrder.Semiformula.quote_isSemiformula (V := W)
+    (Rewriting.emb σ : SetTheorySemiproposition k)
+
+lemma embSubsts_eq_comp_general {ξ : Type*} {n k : ℕ} (v : Fin k → Semiterm ℒₛₑₜ ξ n) :
+    (Rew.embSubsts v : Rew ℒₛₑₜ Empty k ξ n) = (Rew.subst v).comp Rew.emb := by
+  ext x
+  · simp [Rew.comp_app]
+  · exact x.elim
+
+lemma quote_embSubsts {k n : ℕ} (σ : Semisentence ℒₛₑₜ k) (v : Fin k → SyntacticSemiterm ℒₛₑₜ n) :
+    (⌜(Rew.embSubsts v ▹ σ : SetTheorySemiproposition n)⌝ : W) =
+      subst ℒₛₑₜ (SemitermVec.val fun i ↦ (⌜v i⌝ : Bootstrapping.Semiterm W ℒₛₑₜ n)) ⌜σ⌝ := by
+  rw [embSubsts_eq_comp_general, TransitiveRewriting.comp_app, LO.FirstOrder.Semiformula.quote_def,
+    LO.FirstOrder.Semiformula.typed_quote_substs, Bootstrapping.Semiformula.val_substs,
+    LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+
 lemma embSubsts_eq_comp {ξ : Type*} {n : ℕ} :
     (Rew.embSubsts ![(#0 : Semiterm ℒₛₑₜ ξ (n + 1))] : Rew ℒₛₑₜ Empty 1 ξ (n + 1)) =
-      (Rew.subst ![#0]).comp Rew.emb := by
-  ext x
-  · rw [Fin.fin_one_eq_zero x]
-    simp [Rew.comp_app]
-  · exact x.elim
+      (Rew.subst ![#0]).comp Rew.emb := embSubsts_eq_comp_general _
 
 /-- The domain formula has the same code at every binder depth. -/
 lemma quote_domAt (n : ℕ) :
     (⌜(domAt domL n : SetTheorySemiproposition (n + 1))⌝ : W) = ⌜domL⌝ := by
-  have h : (domAt domL n : SetTheorySemiproposition (n + 1)) =
-      (Rewriting.emb domL : SetTheorySemiproposition 1) ⇜ ![#0] := by
-    rw [domAt, embSubsts_eq_comp, TransitiveRewriting.comp_app]
-  rw [h, LO.FirstOrder.Semiformula.quote_def, LO.FirstOrder.Semiformula.typed_quote_substs,
-    Bootstrapping.Semiformula.val_substs, LO.FirstOrder.Sentence.quote_def,
-    LO.FirstOrder.Semiformula.quote_def]
+  rw [domAt, quote_embSubsts]
   refine subst_eq_self_of_prefix (k := 1) (by simp) (SemitermVec.isSemitermVec _) (by simp) ?_
   intro i hi
   have : i = 0 := by simpa using hi
@@ -522,10 +537,7 @@ theorem quote_relF_sentence (σ : SetTheorySentence) :
 
 lemma isSemiformula_quote_domL : IsSemiformula ℒₛₑₜ 1 (⌜domL⌝ : W) := by simp
 
-lemma shift_quote_domL : shift ℒₛₑₜ (⌜domL⌝ : W) = ⌜domL⌝ := by
-  rw [LO.FirstOrder.Sentence.quote_def, ← LO.FirstOrder.Semiformula.quote_shift]
-  congr 1
-  rw [Rewriting.shift, ← TransitiveRewriting.comp_app, Rew.shift_comp_emb]
+lemma shift_quote_domL : shift ℒₛₑₜ (⌜domL⌝ : W) = ⌜domL⌝ := shift_quote_sen domL
 
 /-- `Prov_ZF(∃x (x ∈ L))`. -/
 theorem provable_exists_L : Provable 𝗭𝗙 (^∃ (⌜domL⌝ : W)) := by
