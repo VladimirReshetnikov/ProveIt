@@ -204,15 +204,12 @@ theorem boundCodeRel_atom_inv (H : ZFAxioms mem) (t : Nat) (ht : t ≤ 1)
   rcases hs with ⟨x, y, _, _, hc, ha⟩ | ⟨x, y, _, _, hc, ha⟩ | ⟨hc, _⟩ |
     ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ |
     ⟨_, hc, _⟩ | ⟨_, hc, _⟩
-  · obtain ⟨_, hp⟩ := kpair_inj H _ _ _ _ hc
-    obtain ⟨hi, hj⟩ := kpair_inj H _ _ _ _ hp
-    rw [hi, hj]
-    exact ha
-  · obtain ⟨_, hp⟩ := kpair_inj H _ _ _ _ hc
-    obtain ⟨hi, hj⟩ := kpair_inj H _ _ _ _ hp
-    rw [hi, hj]
-    exact ha
-  all_goals exact absurd hc (formCode_tag_ne H (by omega) _ _)
+  all_goals first
+    | exact absurd hc (formCode_tag_ne H (by omega) _ _)
+    | obtain ⟨_, hp⟩ := kpair_inj H _ _ _ _ hc
+      obtain ⟨hi, hj⟩ := kpair_inj H _ _ _ _ hp
+      rw [hi, hj]
+      exact ha
 
 theorem boundCodeRel_bot_inv (H : ZFAxioms mem) {b : V}
     (h : BoundCodeRel H (formCode H fBot) b) : b = vempty H := by
@@ -235,25 +232,13 @@ theorem boundCodeRel_binary_inv (H : ZFAxioms mem) (t : Nat)
   rcases hs with ⟨_, _, _, _, hc, _⟩ | ⟨_, _, _, _, hc, _⟩ | ⟨hc, _⟩ |
     ⟨x, y, a', d', hc, m1, m2, ha⟩ | ⟨x, y, a', d', hc, m1, m2, ha⟩ |
     ⟨x, y, a', d', hc, m1, m2, ha⟩ | ⟨_, hc, _⟩ | ⟨_, hc, _⟩
-  · exact absurd hc (formCode_tag_ne H (by omega) _ _)
-  · exact absurd hc (formCode_tag_ne H (by omega) _ _)
-  · exact absurd hc (formCode_tag_ne H (by omega) _ _)
-  · obtain ⟨_, hp⟩ := kpair_inj H _ _ _ _ hc
-    obtain ⟨h1, h2⟩ := kpair_inj H _ _ _ _ hp
-    rw [← h1] at m1
-    rw [← h2] at m2
-    exact ⟨a', d', ⟨S, hS, m1⟩, ⟨S, hS, m2⟩, ha⟩
-  · obtain ⟨_, hp⟩ := kpair_inj H _ _ _ _ hc
-    obtain ⟨h1, h2⟩ := kpair_inj H _ _ _ _ hp
-    rw [← h1] at m1
-    rw [← h2] at m2
-    exact ⟨a', d', ⟨S, hS, m1⟩, ⟨S, hS, m2⟩, ha⟩
-  · obtain ⟨_, hp⟩ := kpair_inj H _ _ _ _ hc
-    obtain ⟨h1, h2⟩ := kpair_inj H _ _ _ _ hp
-    rw [← h1] at m1
-    rw [← h2] at m2
-    exact ⟨a', d', ⟨S, hS, m1⟩, ⟨S, hS, m2⟩, ha⟩
-  all_goals exact absurd hc (formCode_tag_ne H (by omega) _ _)
+  all_goals first
+    | exact absurd hc (formCode_tag_ne H (by omega) _ _)
+    | obtain ⟨_, hp⟩ := kpair_inj H _ _ _ _ hc
+      obtain ⟨h1, h2⟩ := kpair_inj H _ _ _ _ hp
+      rw [← h1] at m1
+      rw [← h2] at m2
+      exact ⟨a', d', ⟨S, hS, m1⟩, ⟨S, hS, m2⟩, ha⟩
 
 theorem boundCodeRel_quantifier_inv (H : ZFAxioms mem) (t : Nat)
     (ht : 6 ≤ t ∧ t ≤ 7) {a b : V}
