@@ -1911,5 +1911,14 @@ Lean/Python search found no references to the affected names. One cached provide
 lacks a matched producer receipt; raw environment logs are omitted from the
 compact archive. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-high-digits-module-sharing-evidence/BUNDLE.json).
 
+The cell-label selector bound `a31bd9dc8c` removes five net Lean lines,
+bringing the reviewed series to 10205. The affected proof came from
+Claude-coauthored commit `f79467f5448`. A direct product bound replaces the
+zero/one selector split. Paired target and CellTransfer builds pass with
+identical client objects; non-generated declaration reports and sampled
+registrations match. Two generated public proof names disappear and one changes
+type; no tracked Lean/Python references were found. The wider closure remains
+cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-label-bound-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
