@@ -1,0 +1,2 @@
+import DiophantineConsistency.ParsonsCounterContext
+#print axioms DiophantineConsistency.ParsonsCounterContext.counter_guarded

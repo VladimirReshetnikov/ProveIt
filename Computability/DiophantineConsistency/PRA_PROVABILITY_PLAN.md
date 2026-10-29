@@ -109,6 +109,9 @@ global recursion are not yet discharged by these conditional lemmas.
 In particular, a generated step mark can itself be non-prenex Π₂ and need
 not carry a guard descriptor; a recursion restricted to guarded contexts
 would therefore not suffice without an adapter that preserves the height bound.
+The [finite guarded-context counterexample case](reviews/parsons-counter-context-root.md)
+now handles any number of descriptor-bearing sides, using a separate
+decreasing formula-complexity measure and the explicit `Below H` hypothesis.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
