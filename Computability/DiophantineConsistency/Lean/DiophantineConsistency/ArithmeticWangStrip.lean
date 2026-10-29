@@ -82,8 +82,7 @@ theorem right_wall : ∃ R : V, 2 ≤ R ∧
   have hN : 1 ≤ N := one_le h
   have hwit : 2 ≤ N + 1 ∧ N + 1 ≤ N + 1 ∧
       ¬(northC (pl a N s (N + (N + 1)) 0) = 436 ∧ westC (pl a N s (N + (N + 1)) 0) = 4) := by
-    refine ⟨by have := add_le_add hN (le_refl (1 : V)); rwa [one_add_one_eq_two] at this,
-      le_rfl, ?_⟩
+    refine ⟨by simpa only [one_add_one_eq_two] using add_le_add hN (le_refl (1 : V)), le_rfl, ?_⟩
     rw [show N + (N + 1) = (N + 1) + N by ring, pl_period_x h, (head_tile h).1]
     intro hc; exact absurd hc.2 (by norm_num)
   obtain ⟨R, ⟨hR2, hRN, hR⟩, hmin⟩ := InductionOnHierarchy.least_number 𝚺 1 hdef hwit
@@ -97,9 +96,8 @@ theorem right_wall : ∃ R : V, 2 ≤ R ∧
     obtain ⟨R', rfl⟩ : ∃ R', R = R' + 1 := ⟨R - 1, (tsub_add_cancel_of_le
       (le_trans (by norm_num) hR2)).symm⟩
     rw [← add_assoc, ← pl_east h]
-    have hR' : 1 ≤ R' := by
-      have : (1 : V) + 1 ≤ R' + 1 := by rw [one_add_one_eq_two]; exact hR2
-      exact le_of_add_le_add_right this
+    have hR' : 1 ≤ R' := le_of_add_le_add_right
+      (show (1 : V) + 1 ≤ R' + 1 by simpa only [one_add_one_eq_two] using hR2)
     rcases eq_or_lt_of_le hR' with h1 | h1
     · rw [← h1]; exact (head_tile h).2.2.1
     · have h2 : 2 ≤ R' := by simpa [one_add_one_eq_two] using lt_iff_succ_le.mp h1
