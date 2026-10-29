@@ -164,3 +164,8 @@ The [Q theorem translation](reviews/pra-q-translation-root.md) now proves
 that every actual Foundation Q theorem has a candidate-PRA proof of its
 mapped sentence. It is an existence theorem by soundness and completeness,
 not a primitive-recursive proof transformer or a conservation theorem.
+
+The [parameterized open induction rule](reviews/pra-induction-rule-root.md)
+is admissible in the candidate PRA theory: closed proofs of the base and
+step yield a closed proof of the induction conclusion. This does not yet
+admit the Σ₁ rule required for Parsons conservation.
