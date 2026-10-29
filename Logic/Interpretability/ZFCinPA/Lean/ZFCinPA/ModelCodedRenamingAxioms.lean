@@ -1,4 +1,5 @@
 import ZFCinPA.ModelCodedFreeRenaming
+import ZFCinPA.OpenedClosure
 
 /-!
 Actual ZF/ZFC axiom invariance under represented free renaming. The finite
@@ -16,12 +17,8 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 variable {L : Language} [L.Encodable] [L.LORDefinable]
 
 lemma shift_qqAlls {body : V} (hb : IsUFormula L body) (count : V) :
-    shift L (qqAlls body count) = qqAlls (shift L body) count := by
-  induction count using ISigma1.sigma1_succ_induction
-  · definability
-  case zero => simp
-  case succ count ih =>
-    rw [qqAlls_succ,shift_all (isUFormula_qqAlls.mpr hb),ih,qqAlls_succ]
+    shift L (qqAlls body count) = qqAlls (shift L body) count :=
+  OpenedClosure.shift_qqAlls hb count
 
 lemma sentence_quote_shift_fixed (sentence : Sentence L) :
     shift L (⌜sentence⌝ : V) = ⌜sentence⌝ := by

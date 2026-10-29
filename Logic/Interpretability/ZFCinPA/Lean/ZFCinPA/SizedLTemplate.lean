@@ -112,26 +112,15 @@ theorem axOK_of {T₁ : Theory (setTemplateLanguage k arities)}
     ∀ {Γ : Finset (Proposition (setTemplateLanguage k arities))} (d : T₁ ⟹₂ Γ),
       derMax d ≤ A → AxOK P d := by
   intro Γ d
-  induction d with
-  | closed Δ p hp hn => intro _; trivial
-  | axm σ hσ hΓ =>
-      intro hA
-      simp only [AxOK]
-      refine hP σ hσ (le_trans (le_seqMax hΓ) (le_trans (seqMax_le_derMax _) hA))
-  | verum h => intro _; trivial
-  | and h dp dq ihp ihq =>
-      intro hA
-      simp only [derMax, max_le_iff] at hA
-      exact ⟨ihp hA.2.1, ihq hA.2.2⟩
-  | or h dp ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2
-  | all h dp ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2
-  | exs h t dp ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2.2
-  | wk dp hsub ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2
-  | shift dp ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2
-  | cut dp dq ihp ihq =>
-      intro hA
-      simp only [derMax, max_le_iff] at hA
-      exact ⟨ihp hA.2.1, ihq hA.2.2⟩
+  induction d <;> intro hA <;> simp only [AxOK] <;> simp only [derMax, max_le_iff] at hA
+  case axm σ hσ hΓ => exact hP σ hσ (le_trans (le_seqMax hΓ) hA.1)
+  case and _ _ _ ihp ihq => exact ⟨ihp hA.2.1, ihq hA.2.2⟩
+  case or _ _ ih => exact ih hA.2
+  case all _ _ ih => exact ih hA.2
+  case exs _ _ _ ih => exact ih hA.2.2
+  case wk _ _ ih => exact ih hA.2
+  case shift _ ih => exact ih hA.2
+  case cut _ _ ihp ihq => exact ⟨ihp hA.2.1, ihq hA.2.2⟩
 
 /-! ## Bounded compilation -/
 
