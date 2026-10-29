@@ -74,17 +74,12 @@ theorem blocks_unique {w n Y Y' : V} {f : V → V} (h : Blocks w f n Y) (h' : Bl
 
 theorem blocks_exists (w : V) (f : V → V) [𝚺₁-Function₁ f] (n : V)
     (hf : ∀ j < n, f j < Exp.exp w) : ∃ Y, Blocks w f n Y := by
-  have : ∀ m, m ≤ n → ∃ Y, Blocks w f m Y := by
-    intro m
-    induction m using ISigma1.sigma1_succ_induction
-    · definability
-    case zero => intro _; exact ⟨0, blocks_zero w f⟩
-    case succ m ih =>
-      intro hm
-      have hm' : m < n := lt_of_lt_of_le (lt_add_one m) hm
-      obtain ⟨Y, hY⟩ := ih hm'.le
-      exact ⟨_, blocks_succ hY (hf m hm')⟩
-  exact this n le_rfl
+  induction n using ISigma1.sigma1_succ_induction with
+  | hP => definability
+  | zero => exact ⟨0, blocks_zero w f⟩
+  | succ n ih =>
+    obtain ⟨Y, hY⟩ := ih (fun j hj => hf j (lt_trans hj (lt_add_one n)))
+    exact ⟨_, blocks_succ hY (hf n (lt_add_one n))⟩
 
 /-! ## The block sum -/
 
