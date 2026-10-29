@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRASubSuccCancel
+
+#print axioms DiophantineConsistency.PRASubSuccCancel.modelSubSuccCancel
+#print axioms DiophantineConsistency.PRASubSuccCancel.PRA_proves_subSuccCancel
+#check DiophantineConsistency.PRASubSuccCancel.PRA_proves_subSuccCancel
