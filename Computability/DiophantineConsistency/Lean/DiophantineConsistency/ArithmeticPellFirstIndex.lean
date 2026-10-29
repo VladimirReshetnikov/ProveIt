@@ -183,15 +183,13 @@ theorem first_main_indices (E Y k eta N d f i R y T : V)
       simpa only [two_mul,add_assoc] using add_lt_add_of_lt_of_le hlt hle
   have hdiv : (2*n)/E=0 := by
     by_contra hz
-    have hd : 1≤(2*n)/E := one_le_of_pos (lt_of_le_of_ne (by simp) (Ne.symm hz))
+    have hd : 1≤(2*n)/E := one_le_of_pos (pos_iff_ne_zero.mpr hz)
     have he : E+(R+1)≤2*n := calc
       E+(R+1)≤E*((2*n)/E)+(R+1) := add_le_right (le_mul_of_one_le_right (by simp) hd) _
       _=2*n := by rw [←hnrem]; exact div_add_mod _ _
     exact (not_le_of_gt hsmall) he
   have hnR1 : 2*n=R+1 := by
-    have he := div_add_mod (2*n) E
-    rw [hdiv,mul_zero,zero_add,hnrem] at he
-    exact he.symm
+    simpa only [hdiv,mul_zero,zero_add,hnrem] using (div_add_mod (2*n) E).symm
   have hE_Q : E≤Q := le_mul_of_one_le_right (by simp) (le_trans (by simp : (1:V)≤2) hY)
   have hE_k : E<k := calc
     E≤Q := hE_Q
