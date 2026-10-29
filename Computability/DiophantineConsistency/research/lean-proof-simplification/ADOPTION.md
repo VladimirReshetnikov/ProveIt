@@ -1581,5 +1581,15 @@ client object hashes differ after the added imports. The new helper is not a
 global simp lemma or instance. Direct providers match current-source receipts;
 the broader closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-shared-modular-cancel-evidence/BUNDLE.json).
 
+The generated kernel range projection sharing `784c1c2775` removes 48 net
+Lean lines, bringing the reviewed series to 9945; its generator edits remove
+16 additional lines. Six generated proofs pass the existing conjunction
+projections directly to `nlinarith`. Both generator replays and paired targets
+and wrappers pass; all 88 target and 36 wrapper declaration reports, 55,118
+simp entries and 23,324 instances match, though object hashes differ. An older
+SelectiveCoefficientBounds object remains in the cached transitive closure;
+prior old/current-provider builds of its PolynomialRangeBounds client produced
+identical objects. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-kernel-range-projections-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
