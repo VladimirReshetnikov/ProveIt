@@ -271,16 +271,12 @@ variable {W : Type} [ORingStructure W] [W↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 /-- **The interpretation parameter** `⟪domain, ⟪equality, membership⟫⟫`. -/
 def PN : W := ⟪(⌜domS⌝ : W), ⟪(⌜eqS⌝ : W), (⌜memS⌝ : W)⟫⟫
 
-lemma shift_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) : shift ℒₛₑₜ (⌜σ⌝ : W) = ⌜σ⌝ := by
-  rw [LO.FirstOrder.Sentence.quote_def, ← LO.FirstOrder.Semiformula.quote_shift]
-  congr 1
-  rw [Rewriting.shift, ← TransitiveRewriting.comp_app, Rew.shift_comp_emb]
+lemma shift_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) : shift ℒₛₑₜ (⌜σ⌝ : W) = ⌜σ⌝ :=
+  ConstructibleInterpretation.shift_quote_sen σ
 
 lemma isSemiformula_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) :
-    IsSemiformula ℒₛₑₜ (k : W) (⌜σ⌝ : W) := by
-  rw [LO.FirstOrder.Sentence.quote_def]
-  simpa using LO.FirstOrder.Semiformula.quote_isSemiformula (V := W)
-    (Rewriting.emb σ : SetTheorySemiproposition k)
+    IsSemiformula ℒₛₑₜ (k : W) (⌜σ⌝ : W) :=
+  ConstructibleInterpretation.isSemiformula_quote_sen σ
 
 @[simp] lemma dom_PN : dom (PN : W) = ⌜domS⌝ := by simp [PN, dom]
 
@@ -298,17 +294,13 @@ lemma good_PN : Good (PN : W) where
   atomShift R := by rw [atomOf_PN]; split_ifs <;> exact shift_quote_sen _
 
 lemma embSubsts_eq_comp' {ξ : Type*} {n k : ℕ} (v : Fin k → Semiterm ℒₛₑₜ ξ n) :
-    (Rew.embSubsts v : Rew ℒₛₑₜ Empty k ξ n) = (Rew.subst v).comp Rew.emb := by
-  ext x
-  · simp [Rew.comp_app]
-  · exact x.elim
+    (Rew.embSubsts v : Rew ℒₛₑₜ Empty k ξ n) = (Rew.subst v).comp Rew.emb :=
+  ConstructibleInterpretation.embSubsts_eq_comp_general v
 
 lemma quote_embSubsts {k n : ℕ} (σ : Semisentence ℒₛₑₜ k) (v : Fin k → SyntacticSemiterm ℒₛₑₜ n) :
     (⌜(Rew.embSubsts v ▹ σ : SetTheorySemiproposition n)⌝ : W) =
-      subst ℒₛₑₜ (SemitermVec.val fun i ↦ (⌜v i⌝ : Bootstrapping.Semiterm W ℒₛₑₜ n)) ⌜σ⌝ := by
-  rw [embSubsts_eq_comp', TransitiveRewriting.comp_app, LO.FirstOrder.Semiformula.quote_def,
-    LO.FirstOrder.Semiformula.typed_quote_substs, Bootstrapping.Semiformula.val_substs,
-    LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+      subst ℒₛₑₜ (SemitermVec.val fun i ↦ (⌜v i⌝ : Bootstrapping.Semiterm W ℒₛₑₜ n)) ⌜σ⌝ :=
+  ConstructibleInterpretation.quote_embSubsts σ v
 
 lemma quote_domAtS (n : ℕ) : (⌜(domAtS n : SetTheorySemiproposition (n + 1))⌝ : W) = ⌜domS⌝ := by
   rw [domAtS, quote_embSubsts]
