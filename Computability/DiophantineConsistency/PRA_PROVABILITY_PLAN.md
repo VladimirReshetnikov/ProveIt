@@ -29,6 +29,11 @@ calculus or formalized Parsons theorem. Thus the requested Lean PRA endpoint
 remains open, even for the maintained equation. The previous HA progress
 estimate predates the closed HA endpoint and does not estimate the PRA work.
 
+The [source audit](research/pra-conservation-source-audit-20261029.md)
+identifies Foundation's existing cut-elimination theorem and explains the
+remaining arithmetic reduction and witnessing work. It also examines a direct
+primitive-recursive witness route; neither route is already formalized.
+
 ## Concrete bridge to formalize
 
 1. Choose and define a precise PRA language and proof calculus, including its
