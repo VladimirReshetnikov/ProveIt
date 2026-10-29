@@ -650,21 +650,9 @@ lemma rename_neg (chosen level offset : V) {p : V} (hp : IsUFormula L p) :
     rename L chosen level offset (neg L p) = neg L (rename L chosen level offset p) := by
   apply IsUFormula.ISigma1.sigma1_succ_induction ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
-  · intro arity R terms hR ht
-    simp [hR,ht,rename_rel,rename_nrel,termRenameVec_isUTerm]
-  · intro arity R terms hR ht
-    simp [hR,ht,rename_rel,rename_nrel,termRenameVec_isUTerm]
-  · simp
-  · simp
-  · intro p q hp hq ihp ihq
-    simp [hp,hq,hp.neg,hq.neg,rename_and,rename_or,
-      rename_isUFormula,ihp,ihq]
-  · intro p q hp hq ihp ihq
-    simp [hp,hq,hp.neg,hq.neg,rename_and,rename_or,
-      rename_isUFormula,ihp,ihq]
-  · intro p hp ih
-    simp [hp,hp.neg,rename_all,rename_exs,rename_isUFormula,ih]
-  · intro p hp ih
-    simp [hp,hp.neg,rename_all,rename_exs,rename_isUFormula,ih]
+  all_goals
+    intros
+    simp_all [rename_rel, rename_nrel, termRenameVec_isUTerm,
+      rename_and, rename_or, rename_isUFormula, rename_all, rename_exs]
 
 end LeanProofs.ZFCinPA.ModelCodedFreeRenaming
