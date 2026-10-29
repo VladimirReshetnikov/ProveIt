@@ -23,3 +23,7 @@ local source hashes and unchanged inherited object hashes. Its
 Foundation, Mathlib and unchanged local objects remain inherited cache
 boundaries, not a fresh complete transitive rebuild. The axiom checks report
 only `propext`, `Classical.choice`, and `Quot.sound`.
+
+A subsequent upstream merge changed `PRAFormulaParameters.lean` and
+`PRAUniversalSyntax.lean`. This receipt authenticates the earlier snapshot;
+the affected downstream source-current replay is pending.

@@ -15,3 +15,7 @@ frozen parent sources and objects. [Independent driver, state and logs](herbrand
 and the [author packet](herbrand-existential-sequents-author-replay/) are
 retained. Historical failed/warning attempts are evidence only. Foundation,
 Mathlib and unchanged local objects remain inherited cache boundaries.
+
+A subsequent upstream merge changed `PRAFormulaParameters.lean` and
+`PRAUniversalSyntax.lean`. This receipt authenticates the earlier snapshot;
+the affected downstream source-current replay is pending.
