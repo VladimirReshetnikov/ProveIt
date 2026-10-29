@@ -178,9 +178,7 @@ theorem eval_ltBitCode (x y : ℕ) :
     eval ltBitCode (x ::ᵥ y ::ᵥ List.Vector.nil) = if x < y then 1 else 0 := by
   change eval nonzeroCode (eval subCode (y ::ᵥ x ::ᵥ List.Vector.nil) ::ᵥ List.Vector.nil) = _
   rw [eval_subCode, eval_nonzeroCode]
-  by_cases h : x < y
-  · simp [h, Nat.sub_ne_zero_of_lt h]
-  · simp [h, Nat.sub_eq_zero_of_le (Nat.le_of_not_gt h)]
+  simp only [Nat.sub_eq_zero_iff_le, ← not_lt, ite_not]
 
 def succNonzero : Sentence language :=
   ∀⁰* (Semiformula.nrel Language.ORing.Rel.eq
