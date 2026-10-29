@@ -1,0 +1,24 @@
+'DiophantineConsistency.PRAFiniteTripleChoice.modelApplyTriple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFiniteTripleChoice.modelChooseTriple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFiniteTripleChoice.modelChooseList' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFiniteTripleChoice.PRA_proves_tripleListChoice' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFiniteTripleChoice.PRA_exists_tripleListChoice' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAFiniteTripleChoice.PRA_exists_tripleListChoice {n : ℕ}
+  (good : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 3)) (fallback : Triple n) (ts : List (Triple n))
+  (hBit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence good)
+  (hEither : DiophantineConsistency.PRATheory.PRA ⊢ listSentence good fallback ts) :
+  ∃ t,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.first) ∧
+      Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.second) ∧
+        Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.third) ∧
+          DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* tripleFormula good t

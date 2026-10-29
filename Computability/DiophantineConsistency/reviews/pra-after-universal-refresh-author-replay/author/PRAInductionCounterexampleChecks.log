@@ -1,0 +1,18 @@
+'DiophantineConsistency.PRAInductionCounterexample.counterexampleMatrix_open' depends on axioms: [propext]
+'DiophantineConsistency.PRAInductionCounterexample.modelFixedZeroStep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAInductionCounterexample.modelCounterexampleDefeat' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAInductionCounterexample.modelCounterexampleSentence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAInductionCounterexample.PRA_proves_counterexampleSentence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAInductionCounterexample.PRA_proves_counterexampleSentence {n : ℕ}
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 2))
+  (base stop : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (q : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 3)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ counterexampleSentence pred base stop q

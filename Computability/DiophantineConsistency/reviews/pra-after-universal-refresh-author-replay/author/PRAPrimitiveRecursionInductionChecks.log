@@ -1,0 +1,18 @@
+'DiophantineConsistency.PRAPrimitiveRecursionInduction.iterateCode_primrec' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPrimitiveRecursionInduction.recursiveBody_open' depends on axioms: [propext, Quot.sound]
+'DiophantineConsistency.PRAPrimitiveRecursionInduction.modelRecursiveWitness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPrimitiveRecursionInduction.modelRecursiveSentence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPrimitiveRecursionInduction.PRA_proves_recursiveSentence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAPrimitiveRecursionInduction.PRA_proves_recursiveSentence {n : ℕ}
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 2))
+  (base : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (step : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 2)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ recursiveSentence pred base step

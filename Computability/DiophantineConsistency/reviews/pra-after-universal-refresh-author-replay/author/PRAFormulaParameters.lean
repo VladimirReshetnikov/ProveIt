@@ -1,0 +1,80 @@
+import DiophantineConsistency.PRAEqualityCode
+
+/-! Pack the finitely many free parameters of a syntactic formula as bound arguments. -/
+set_option autoImplicit false
+namespace DiophantineConsistency.PRAFormulaParameters
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory PRAOpenFormulaCoverage PRAEqualityCode
+
+private theorem fixed_no_free {n : ℕ} (φ : Semiproposition language n) :
+    (Rew.fixitr n φ.fvSup ▹ φ).freeVariables = ∅ := by
+  ext x
+  simp only [Finset.notMem_empty, iff_false]
+  rw [Rew.eq_bind (Rew.fixitr n φ.fvSup)]
+  simp only [Function.comp_def, Rew.fixitr_bvar, Rew.fixitr_fvar, Fin.natAdd_mk]
+  intro h
+  rcases Semiformula.fvar?_rew h with (⟨z,hz⟩ | ⟨z,hz,hx⟩)
+  · simp at hz
+  · have hz' : z < φ.fvSup := Semiformula.lt_fvSup_of_fvar? hz
+    simp [hz'] at hx
+
+def packParameters {n : ℕ} (φ : Semiproposition language n) :
+    Semisentence language (n + φ.fvSup) :=
+  (Rew.fixitr n φ.fvSup ▹ φ).toEmpty (fixed_no_free φ)
+
+theorem packParameters_emb {n : ℕ} (φ : Semiproposition language n) :
+    (Rewriting.emb (packParameters φ) : Semiproposition language (n + φ.fvSup)) =
+      Rew.fixitr n φ.fvSup ▹ φ := by
+  simp [packParameters]
+
+theorem qr_rew {ξ η : Type} {n m : ℕ} (φ : Semiformula language ξ n)
+    (w : Rew language ξ n η m) : (w ▹ φ).qr = φ.qr := by
+  induction φ using Semiformula.rec' generalizing η m with
+  | hverum => rfl
+  | hfalsum => rfl
+  | hrel r v => rfl
+  | hnrel r v => rfl
+  | hand p q ihp ihq => simp [ihp, ihq]
+  | hor p q ihp ihq => simp [ihp, ihq]
+  | hall p ih => simp [ih]
+  | hexs p ih => simp [ih]
+
+theorem packParameters_open {n : ℕ} (φ : Semiproposition language n) (h : φ.Open) :
+    (packParameters φ).Open := by
+  have he := packParameters_emb φ
+  have hq := congrArg Semiformula.qr he
+  have hb' : (Rewriting.emb (packParameters φ) : Semiproposition language _).qr =
+      (packParameters φ).qr :=
+    qr_rew (packParameters φ) (Rew.emb : Rew language Empty _ ℕ _)
+  rw [hb', qr_rew] at hq
+  exact hq.trans h
+
+/-- Packed arguments evaluate as the original bound variables followed by the
+free parameters occurring below the formula's finite free-variable bound. -/
+theorem packParameters_eval {M : Type} [Structure language M] {n : ℕ}
+    (φ : Semiproposition language n) (v : Fin (n + φ.fvSup) → M) (fallback : ℕ → M) :
+    (packParameters φ).Eval v Empty.elim ↔
+      φ.Eval (fun i => v (i.castAdd φ.fvSup))
+        (fun i => if hi : i < φ.fvSup then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i - φ.fvSup)) := by
+  unfold packParameters
+  rw [←Semiformula.eval_toEmpty (f := fallback) (fixed_no_free φ)]
+  rw [Semiformula.eval_rew]
+  simp only [Function.comp_def, Rew.fixitr_bvar, Semiterm.val_bvar, Rew.fixitr_fvar]
+  have heq : (fun i => Semiterm.val v fallback
+      (if hi : i < φ.fvSup then (#(Fin.natAdd n ⟨i,hi⟩) : SyntacticSemiterm language (n + φ.fvSup))
+        else &(i - φ.fvSup))) =
+      (fun i => if hi : i < φ.fvSup then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i - φ.fvSup)) := by
+    funext i
+    split <;> rfl
+  rw [heq]
+
+/-- Every open formula with free numerical parameters has, after their explicit
+packing into bound argument positions, a certified PR characteristic. -/
+theorem PRA_proves_packedOpenCharacteristic {n : ℕ} (φ : Semiproposition language n)
+    (h : φ.Open) :
+    ∃ c : Code (n + φ.fvSup), Primrec (eval c) ∧
+      PRA ⊢ characteristicSentence c (packParameters φ) :=
+  PRAEqualityCode.PRA_proves_openCharacteristic (packParameters φ) (packParameters_open φ h)
+
+end DiophantineConsistency.PRAFormulaParameters

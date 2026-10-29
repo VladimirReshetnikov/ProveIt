@@ -86,6 +86,9 @@ A further upstream merge changed `PRAAddOne`, bounded-search and order-witness
 modules, and `PRASubReconstruct`. The 92-module and interactive extraction
 replays therefore cover the preceding source snapshot; their affected
 dependency graphs require another current-source rebuild.
+The subsequent 108-module rebuild has now passed two independent replays,
+including the candidate-PRA triple-witness client. Foundation and Mathlib
+remain inherited boundaries; this does not establish the missing comparison.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
