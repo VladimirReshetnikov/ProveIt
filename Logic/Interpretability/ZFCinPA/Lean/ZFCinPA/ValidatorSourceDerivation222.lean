@@ -102,6 +102,11 @@ private theorem translate_main (hAx : AxOK T V) (s0 : V) : ∀ d F : V,
     obtain ⟨K,hK,hc⟩ := ih0 d' hd' F' hF' hder hs'
     exact (seqC_enum_iff F' s0 hK hL').1 hc
   clear ih0
+  have ih_cons (d' p : V) (hd' : d'<d) (hder : Derivation T d')
+      (hseq : fstIdx d'=insert p (fstIdx d)) :
+      Der (negEnc F s0 L) (encode F 0 s0 p) :=
+    (seqC_cons_iff_der F s0 L p).mp
+      (ih d' hd' hder F hFle (p∷L) hs (by rw [hseq]; exact enum_cons hL))
   have hmem : ∀ A, A ∈ fstIdx d → codeNeg (encode F 0 s0 A) ∈ᵥ negEnc F s0 L :=
     fun A hA => (mem_negEnc F s0 L _).2 ⟨A,hL.mem.2 hA,rfl⟩
   have hform : ∀ A, A ∈ᵥ L → IsFormula ℒₛₑₜ A :=
@@ -131,15 +136,11 @@ private theorem translate_main (hAx : AxOK T V) (s0 : V) : ∀ d F : V,
     rw [encode_verum] at h
     exact der_mp (der_mem h) (der_of cProv_truth)
   -- conjunction
-  · simp only [fstIdx_andIntro] at hmem hds hL
+  · simp only [fstIdx_andIntro] at hmem hds hL ih_cons
     have hf := hds _ hpq
     simp only [IsSemiformula.and] at hf
-    have Hp : Der (negEnc F s0 L) (encode F 0 s0 p) := by
-      apply (seqC_cons_iff_der F s0 L p).mp
-      exact ih dp (by simp) h₁.2 F hFle (p∷L) hs (by rw [h₁.1]; exact enum_cons hL)
-    have Hq : Der (negEnc F s0 L) (encode F 0 s0 q) := by
-      apply (seqC_cons_iff_der F s0 L q).mp
-      exact ih dq (by simp) h₂.2 F hFle (q∷L) hs (by rw [h₂.1]; exact enum_cons hL)
+    have Hp := ih_cons dp p (by simp) h₁.2 h₁.1
+    have Hq := ih_cons dq q (by simp) h₂.2 h₂.1
     have Hpq := der_mp (der_mp (der_of (conj_rule _ _)) Hp) Hq
     have hm := hmem _ hpq
     rw [encode_and F 0 s0 hf.1.isUFormula hf.2.isUFormula] at hm
@@ -191,15 +192,10 @@ private theorem translate_main (hAx : AxOK T V) (s0 : V) : ∀ d F : V,
     rw [hsh]
     exact mem_setShift_iff.mpr ⟨B,hM.mem.1 hB,rfl⟩
   -- cut
-  · simp only [fstIdx_cutRule] at hmem hL
+  · simp only [fstIdx_cutRule] at hmem hL ih_cons
     have hp : IsFormula ℒₛₑₜ p := (h₁.isFormulaSet.insert).1
-    have H1 : Der (negEnc F s0 L) (encode F 0 s0 p) := by
-      apply (seqC_cons_iff_der F s0 L p).mp
-      exact ih d₁ (by simp) h₁.2 F hFle (p∷L) hs (by rw [h₁.1]; exact enum_cons hL)
-    have H2 : Der (negEnc F s0 L) (encode F 0 s0 (Bootstrapping.neg ℒₛₑₜ p)) := by
-      apply (seqC_cons_iff_der F s0 L _).mp
-      exact ih d₂ (by simp) h₂.2 F hFle (Bootstrapping.neg ℒₛₑₜ p∷L) hs
-        (by rw [h₂.1]; exact enum_cons hL)
+    have H1 := ih_cons d₁ p (by simp) h₁.2 h₁.1
+    have H2 := ih_cons d₂ (Bootstrapping.neg ℒₛₑₜ p) (by simp) h₂.2 h₂.1
     exact der_mp (der_mp (der_of (encode_neg hp F 0 s0).1) H2) H1
   -- actual theory axiom: the explicit modular boundary is used here only.
   · simp only [fstIdx_axm] at hmem hds
