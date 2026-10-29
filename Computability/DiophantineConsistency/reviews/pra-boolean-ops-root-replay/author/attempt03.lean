@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRABooleanOps
+
+#print axioms DiophantineConsistency.PRABooleanOps.modelNonzeroBit
+#print axioms DiophantineConsistency.PRABooleanOps.modelIsZeroBit
+#print axioms DiophantineConsistency.PRABooleanOps.modelMulBit
+#print axioms DiophantineConsistency.PRABooleanOps.modelNotBit
+#check DiophantineConsistency.PRABooleanOps.modelMulBit

@@ -1,0 +1,8 @@
+import DiophantineConsistency.ParsonsParameters
+#print axioms DiophantineConsistency.ParsonsParameters.neg_ind
+#print axioms DiophantineConsistency.ParsonsParameters.neg_closed_ind
+#print axioms DiophantineConsistency.ParsonsParameters.parameterBody_subst_terms
+#print axioms DiophantineConsistency.ParsonsParameters.rewrite_ind
+#print axioms DiophantineConsistency.ParsonsParameters.parameterBody_instance
+#print axioms DiophantineConsistency.ParsonsParameters.parameter_instance_sigma
+#print axioms DiophantineConsistency.ParsonsParameters.instance_normalization

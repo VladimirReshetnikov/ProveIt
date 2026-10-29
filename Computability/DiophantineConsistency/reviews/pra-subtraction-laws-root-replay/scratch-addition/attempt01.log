@@ -1,0 +1,33 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRASubAddition.lean:68:37: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Structure.func predCode fun x => Structure.func Code.succ fun x => ?x
+in the target expression
+  (Structure.func predCode fun x =>
+      Structure.func subCode ![Structure.func Code.succ fun x => Structure.func addCode ![t, y], t]) =
+    y
+
+case hSucc
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x y : M
+z : M := Structure.func (Code.zero 0) Fin.elim0
+s : M → M := fun x => Structure.func Code.succ fun x_1 => x
+e : ℕ → M := fun x => y
+t : M
+ht : (Semiformula.Eval ![t] e) subAddBody
+⊢ (Structure.func predCode fun x =>
+      Structure.func subCode ![Structure.func Code.succ fun x => Structure.func addCode ![t, y], t]) =
+    y
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    predCode
+  has type
+    Code 1
+  but is expected to have type
+    language.Func 1
+  in the application
+    Structure.func predCode

@@ -1,0 +1,41 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRASubReconstruct.lean:102:40: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  s (p (d t))
+in the target expression
+  Structure.func addCode ![t, Structure.func Code.succ fun x => p (d t)] = y
+
+case neg
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x y : M
+z : M := Structure.func (Code.zero 0) Fin.elim0
+s : M → M := fun x => Structure.func Code.succ fun x_1 => x
+p : M → M := fun x => Structure.func predCode fun x_1 => x
+d : M → M := fun x => Structure.func subCode ![y, x]
+a : M → M → M := fun x y => Structure.func addCode ![x, y]
+e : ℕ → M := fun x => y
+t : M
+ht : (Semiformula.Eval ![t] e) reconstructBody
+hds : d (s t) = p (d t)
+hp : ¬p (d t) = z
+hdt : d t ≠ z
+ih : a t (d t) = y
+hex : ∀ (f : ℕ → M) (x : M), (Semiformula.Eval ![x] f) exhaustionBody
+h :
+  d t = Structure.func (Code.zero 0) Fin.elim0 ∨
+    (Structure.func Code.succ fun x => Structure.func predCode fun x => d t) = d t
+hsucc : s (p (d t)) = d t
+⊢ Structure.func addCode ![t, Structure.func Code.succ fun x => p (d t)] = y
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    addCode
+  has type
+    Code 2
+  but is expected to have type
+    language.Func 2
+  in the application
+    Structure.func addCode

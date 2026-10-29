@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRASubAddition
+
+#print axioms DiophantineConsistency.PRASubAddition.modelSubAdd
+#print axioms DiophantineConsistency.PRASubAddition.PRA_proves_subAdd
+#check DiophantineConsistency.PRASubAddition.PRA_proves_subAdd

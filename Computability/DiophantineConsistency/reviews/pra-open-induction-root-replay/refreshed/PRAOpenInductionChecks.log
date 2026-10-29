@@ -1,0 +1,17 @@
+'DiophantineConsistency.PRAOpenInduction.modelOpenInduction' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.PRAOpenInduction.modelOpenInduction {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (φ : LO.FirstOrder.Semiformula DiophantineConsistency.PRALanguage.language ℕ 1) (hOpen : φ.Open) (e : ℕ → M)
+  (hZero :
+    (LO.FirstOrder.Semiformula.Eval
+        ![LO.FirstOrder.Structure.func (DiophantineConsistency.PRAFiniteFunctionCodes.Code.zero 0) Fin.elim0] e)
+      φ)
+  (hSucc :
+    ∀ (x : M),
+      (LO.FirstOrder.Semiformula.Eval ![x] e) φ →
+        (LO.FirstOrder.Semiformula.Eval
+            ![LO.FirstOrder.Structure.func DiophantineConsistency.PRAFiniteFunctionCodes.Code.succ fun x_1 => x] e)
+          φ)
+  (x : M) : (LO.FirstOrder.Semiformula.Eval ![x] e) φ

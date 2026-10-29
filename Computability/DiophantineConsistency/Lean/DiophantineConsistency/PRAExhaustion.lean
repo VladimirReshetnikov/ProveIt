@@ -34,16 +34,11 @@ theorem body_eval (x : M) (e : ℕ → M) : exhaustionBody.Eval ![x] e ↔
     x = Structure.func (L := language) (Code.zero 0) Fin.elim0 ∨
       Structure.func (L := language) Code.succ
         (fun _ => Structure.func (L := language) predCode (fun _ => x)) = x := by
-  have eqRel (v : Fin 2 → M) : Structure.rel (L := language) Language.ORing.Rel.eq v ↔ v 0 = v 1 := by
-    change Structure.rel (L := language) Language.Eq.eq v ↔ _
-    exact Structure.eq_lang
   change Semiformula.EvalAux (inferInstance : Structure language M) e ![x] exhaustionBody ↔ _
   dsimp only [exhaustionBody, Semiformula.EvalAux]
   rw [eqRel, eqRel]
   have h0 : (Semiterm.val ![x] e ∘ (Fin.elim0 : Fin 0 → Semiterm language ℕ 1)) =
-      (Fin.elim0 : Fin 0 → M) := by
-    funext i
-    exact Fin.elim0 i
+      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have hp : (Semiterm.val ![x] e ∘ fun _ : Fin 1 =>
       (Semiterm.func (predCode : language.Func 1) (fun _ => .bvar 0) : Semiterm language ℕ 1)) =
       fun _ => Structure.func (L := language) predCode (fun _ => x) := by
@@ -59,17 +54,13 @@ local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode !
 local instance : Structure.Zero language M := ⟨by
   simp only [Semiterm.Operator.val, Semiterm.Operator.Zero.zero, Semiterm.val_func]
   have h : (Semiterm.val ![] Empty.elim ∘ (![] : Fin 0 → Semiterm language Empty 0)) =
-      (Fin.elim0 : Fin 0 → M) := by
-    funext i
-    exact Fin.elim0 i
+      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   rw [h]
   rfl⟩
 local instance : Structure.One language M := ⟨by
   simp only [Semiterm.Operator.val, Semiterm.Operator.One.one, Semiterm.val_func]
   have h : (Semiterm.val ![] Empty.elim ∘ (![] : Fin 0 → Semiterm language Empty 0)) =
-      (Fin.elim0 : Fin 0 → M) := by
-    funext i
-    exact Fin.elim0 i
+      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   rw [h]
   rfl⟩
 local instance : Structure.Add language M := ⟨fun _ _ => rfl⟩

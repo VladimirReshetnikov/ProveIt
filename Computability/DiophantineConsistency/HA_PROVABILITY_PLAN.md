@@ -11,15 +11,22 @@ synchronization with origin/main continue.
 
 ## Current status, 29 October 2026
 
-The maintained 14-variable equation now has closed Lean IΣ₁ and HA
-proof-existence endpoints; see the later 28 October entries and
-[`HACurrentEquation2011`](Lean/DiophantineConsistency/HACurrentEquation2011.lean).
+For the maintained 14-variable equation in `equation.pdf`, the HA
+proof-existence target is **complete**: the unconditional theorem
+[`ha_current_iff_consistency`](Lean/DiophantineConsistency/HACurrentEquation2011.lean)
+establishes an HA derivation of both implications between absence of a
+positive solution and the formal ZFC consistency sentence. This is not a
+proof of either side separately. The same file also has a closed Lean IΣ₁
+proof-existence endpoint. See the later 28 October entries for the
+construction and its axiom audit.
 The 27 October estimate and earlier checkpoint descriptions below are
 historical, not the current status. The strengthened active objective also
 requires a Lean proof of PRA provability. The [PRA plan](PRA_PROVABILITY_PLAN.md)
 records why the external Parsons-theorem argument is not yet such a Lean
-proof and identifies the missing formal interfaces. The other small equations
-still require their own internal proof-existence transfers.
+proof and identifies the missing formal interfaces. The smaller 13-variable,
+degree-51 adaptive equation has an external equivalence but still requires its
+own internal proof-existence transfer. There is no reliable percentage or
+completion-time estimate for that remaining mathematical work.
 
 ## Exact target and established results
 
@@ -2601,3 +2608,56 @@ composition.
 **Next:** the driver steps (`LDriverSteps`) and `driverT`; then `glue`
 (`LGlue1–4`) and `qPremise`; `peel`/`peel_close`; `sep_base`/`repl_base` and
 the obligations.
+
+## Internal rank window for the smaller adaptive equation
+
+The [rank-window client](reviews/adaptive-rank-window2011-root.md) derives
+`24 ≤ R` and `R+q³+q+1 ≤ q⁴` in arbitrary IΣ₁ models directly from a zero
+of the actual current 13-variable expression. The first-carrier gap and
+current mask bounds are discharged; no index relationship or input power is
+assumed. Strong-index recovery, full internal converse and the HA transfer
+for this smaller equation remain open.
+
+The companion [main-root congruence](reviews/adaptive-main-congruence2011-root.md)
+uses the actual positive `q³` quotient for Y and the oriented main root to
+establish an exact additive congruence modulo `q⁵`, with the same canonical
+rank. It does not cancel the variable factor or establish an index relation;
+those remain necessary for the smaller equation's internal equivalence.
+
+The generic [factor-three cancellation](reviews/adaptive-factor-three2011-root.md)
+now works in every selected IΣ₁ model even when three divides the modulus:
+from `q³ | Y` and `q⁵ | (3+4Y(X+1))t` it derives `q⁴ | t`. Applying
+this to the literal rank difference requires a separate client.
+
+The [literal rank congruence](reviews/adaptive-rank-congruence2011-root.md)
+now binds factor-three cancellation to an actual current adaptive zero and
+derives `q⁴ | magnitude(R+1,k)` in arbitrary IΣ₁ models, without assuming
+a sign for the difference or coprimality with three. Exact index recovery,
+the converse, and the HA transfer remain open.
+
+The [first Pell-index residue](reviews/adaptive-early-index2011-root.md)
+now follows from the literal adaptive zero: `(2n) mod q⁴ = R+1`, with
+explicit lower bounds and the original classified-root coordinates. The
+exact first/main index comparison and the full internal equivalence remain
+open.
+
+The [first/main Pell-index comparison](reviews/adaptive-index-comparison2011-root.md)
+now derives `13 ≤ n < m`, `14 ≤ m`, and `2R < c` from the literal adaptive
+zero, retaining the rank residue and both root representations. The exact
+index equality and full internal equivalence still require proof.
+
+The [adaptive strong norm](reviews/adaptive-strong-norm2011-root.md) now
+derives `I²+Δ=Δf²` from the literal zero, matching the generic half-index
+theorem’s normalized strong equation. The auxiliary norm, signed residues
+and full half-index application are separate obligations.
+
+The [adaptive auxiliary norm](reviews/adaptive-aux-norm2011-root.md) now
+derives `I²z²+y²=1+I²y²` from the literal zero, using the magnitudes of
+the actual signed auxiliary pair. The signed congruences and generic
+half-index application remain separate obligations.
+
+The [exact adaptive Pell-index theorem](reviews/adaptive-exact-indices2011-root.md)
+now derives `m=R`, `2n=R+1`, and `k=R+1+4Q·t` from the literal current
+zero in arbitrary IΣ₁ models, retaining both actual root representations.
+Its half-index prerequisite chain was independently rebuilt from current
+source. Power recovery, internal converse and HA transfer remain open.

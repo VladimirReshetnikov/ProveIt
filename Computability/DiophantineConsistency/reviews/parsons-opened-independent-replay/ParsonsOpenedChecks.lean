@@ -1,0 +1,7 @@
+import DiophantineConsistency.ParsonsOpened
+#print axioms DiophantineConsistency.ParsonsOpened.counterexample_support
+#print axioms DiophantineConsistency.ParsonsOpened.counterexample_open
+#print axioms DiophantineConsistency.ParsonsOpened.rewrite_counterexample
+#print axioms DiophantineConsistency.ParsonsOpened.normalized_shape
+#print axioms DiophantineConsistency.ParsonsOpened.normalized_instance
+#print axioms DiophantineConsistency.ParsonsOpened.selected_principal

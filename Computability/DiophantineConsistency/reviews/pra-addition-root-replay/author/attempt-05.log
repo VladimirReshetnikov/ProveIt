@@ -1,0 +1,24 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddition.lean:94:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 1 → M
+⊢ Structure.func addCode (Semiterm.val e Empty.elim ∘ ![#0, Semiterm.func (Code.zero 0) Fin.elim0]) = e 0
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddition.lean:101:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 2 → M
+⊢ Structure.func addCode (Semiterm.val e Empty.elim ∘ ![#0, Semiterm.func Code.succ fun x => #1]) =
+    Structure.func Code.succ (Semiterm.val e Empty.elim ∘ fun x => Semiterm.func addCode ![#0, #1])
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAAddition.lean:104:43: warning: This simp argument is unused:
+  Semiterm.val_bvar
+
+Hint: Omit it from the simp argument list.
+  simp only [applyCode, Semiterm.val_func,̵ ̵S̵e̵m̵i̵t̵e̵r̵m̵.̵v̵a̵l̵_̵b̵v̵a̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

@@ -1,0 +1,25 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ParsonsRuleEmbeddingChecks.lean:13:40: error(nested.lean.propRecLargeElim): Tactic `cases` failed with a nested error:
+Tactic `induction` failed: recursor `Or.casesOn` can only eliminate into `Prop`
+
+L : Language
+inst✝ : L.ORing
+T : Theory L
+P Q χ : Proposition L
+hP : Proof T P
+hQ : Proof T Q
+d : ⊢ᴸᴷ¹ χ :: ∼[P, Q, P]
+ψ : Proposition L
+h : ψ = P ∨ ψ = Q ∨ ψ = P ∨ ψ ∈ []
+⊢ Proof T ψ
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ParsonsRuleEmbeddingChecks.lean:12:63: warning: This simp argument is unused:
+  List.mem_singleton
+
+Hint: Omit it from the simp argument list.
+  simp only [List.mem_cons,̵ ̵L̵i̵s̵t̵.̵m̵e̵m̵_̵s̵i̵n̵g̵l̵e̵t̵o̵n̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ParsonsRuleEmbeddingChecks.lean:15:0: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'embedCutFree', which is 'noncomputable'
+'DiophantineConsistency.ParsonsRuleEmbedding.fromContext' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsRuleEmbedding.embedTheory' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsRuleEmbedding.embedCutFree' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsRuleEmbedding.provable_embeds' depends on axioms: [propext, Classical.choice, Quot.sound]

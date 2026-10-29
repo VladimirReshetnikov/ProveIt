@@ -1,0 +1,57 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzero.lean:64:11: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  fun i => Fin.cases (![x] 0) (fun i => Fin.cases (Structure.func nonzeroCode ![x]) (fun i => ![x] i.succ) i) i
+in the target expression
+  (Structure.func ((Code.zero 0).prec (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2)))) fun x_1 =>
+      Structure.func Code.succ fun x_2 => x) =
+    Structure.func (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2))) fun i =>
+      Fin.cases (![x] 0)
+        (fun i =>
+          Fin.cases (Structure.func ((Code.zero 0).prec (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2)))) ![x])
+            (fun i => ![x] i.succ) i)
+        i
+
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x : M
+hs :
+  (Structure.func ((Code.zero 0).prec (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2)))) fun x_1 =>
+      Structure.func Code.succ fun x_2 => x) =
+    Structure.func (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2))) fun i =>
+      Fin.cases (![x] 0)
+        (fun i =>
+          Fin.cases (Structure.func ((Code.zero 0).prec (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2)))) ![x])
+            (fun i => ![x] i.succ) i)
+        i
+hg :
+  Structure.func (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2))) ![x, Structure.func nonzeroCode ![x]] =
+    Structure.func Code.succ fun x => Structure.func (Code.zero 0) Fin.elim0
+ho :
+  Structure.func (Code.succ.comp (Codes.cons (Code.zero 0) (Codes.nil 0))) Fin.elim0 =
+    Structure.func Code.succ fun x => Structure.func (Code.zero 0) Fin.elim0
+hgArg :
+  (fun i => Structure.func (getCode (Codes.cons (Code.zero 2) (Codes.nil 2)) i) ![x, Structure.func nonzeroCode ![x]]) =
+    fun x => Structure.func (Code.zero 0) Fin.elim0
+hoArg :
+  (fun i => Structure.func (getCode (Codes.cons (Code.zero 0) (Codes.nil 0)) i) Fin.elim0) = fun x =>
+    Structure.func (Code.zero 0) Fin.elim0
+hvL :
+  (fun i => Fin.cases (Structure.func Code.succ fun x_1 => ![x] 0) (fun i => ![x] i.succ) i) = fun x_1 =>
+    Structure.func Code.succ fun x_2 => x
+hvR :
+  (fun i => Fin.cases (![x] 0) (fun i => Fin.cases (Structure.func nonzeroCode ![x]) (fun i => ![x] i.succ) i) i) =
+    ![x, Structure.func nonzeroCode ![x]]
+⊢ (Structure.func nonzeroCode fun x_1 => Structure.func Code.succ fun x_2 => x) = Structure.func oneCode Fin.elim0
+
+Note: The target expression is not type-correct under the `instances` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    (Code.zero 0).prec (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2)))
+  has type
+    Code (0 + 1)
+  but is expected to have type
+    language.Func (0 + 1)
+  in the application
+    Structure.func ((Code.zero 0).prec (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2))))

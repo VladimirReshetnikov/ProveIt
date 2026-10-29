@@ -1,0 +1,15 @@
+'DiophantineConsistency.PRABooleanOps.modelNonzeroBit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRABooleanOps.modelIsZeroBit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRABooleanOps.modelMulBit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRABooleanOps.modelNotBit' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.PRABooleanOps.modelMulBit {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] (x y : M)
+  (hx : DiophantineConsistency.PRABooleanOps.IsBit x) (hy : DiophantineConsistency.PRABooleanOps.IsBit y) :
+  DiophantineConsistency.PRABooleanOps.IsBit
+      (LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.mulCode ![x, y]) ∧
+    (LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.mulCode ![x, y] =
+        LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.oneCode Fin.elim0 ↔
+      x = LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.oneCode Fin.elim0 ∧
+        y = LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.oneCode Fin.elim0)

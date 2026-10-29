@@ -114,22 +114,17 @@ theorem axOK_of {T₁ : Theory (setTemplateLanguage k arities)}
   | verum h => intro _; trivial
   | and h dp dq ihp ihq =>
       intro hA
-      simp only [derMax] at hA
-      have h2 := le_trans (le_max_right _ _) hA
-      exact ⟨ihp (le_trans (le_max_left _ _) h2), ihq (le_trans (le_max_right _ _) h2)⟩
-  | or h dp ih => intro hA; simp only [derMax] at hA; exact ih (le_trans (le_max_right _ _) hA)
-  | all h dp ih => intro hA; simp only [derMax] at hA; exact ih (le_trans (le_max_right _ _) hA)
-  | exs h t dp ih =>
-      intro hA
-      simp only [derMax] at hA
-      exact ih (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) hA))
-  | wk dp hsub ih => intro hA; simp only [derMax] at hA; exact ih (le_trans (le_max_right _ _) hA)
-  | shift dp ih => intro hA; simp only [derMax] at hA; exact ih (le_trans (le_max_right _ _) hA)
+      simp only [derMax, max_le_iff] at hA
+      exact ⟨ihp hA.2.1, ihq hA.2.2⟩
+  | or h dp ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2
+  | all h dp ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2
+  | exs h t dp ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2.2
+  | wk dp hsub ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2
+  | shift dp ih => intro hA; simp only [derMax, max_le_iff] at hA; exact ih hA.2
   | cut dp dq ihp ihq =>
       intro hA
-      simp only [derMax] at hA
-      have h2 := le_trans (le_max_right _ _) hA
-      exact ⟨ihp (le_trans (le_max_left _ _) h2), ihq (le_trans (le_max_right _ _) h2)⟩
+      simp only [derMax, max_le_iff] at hA
+      exact ⟨ihp hA.2.1, ihq hA.2.2⟩
 
 /-! ## Bounded compilation -/
 

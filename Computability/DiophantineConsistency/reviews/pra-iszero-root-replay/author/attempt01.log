@@ -1,0 +1,15 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAIsZero.lean:32:6: error(lean.unknownIdentifier): Unknown identifier `modelZero`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAIsZero.lean:30:62: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x : M
+h :
+  (Structure.func (oneCode.prec (Code.zero 2)) fun i =>
+      Fin.cases (Structure.func Code.succ fun x_1 => ![x] 0) (fun i => ![x] i.succ) i) =
+    Structure.func (Code.zero 2) fun i =>
+      Fin.cases (![x] 0)
+        (fun i => Fin.cases (Structure.func (oneCode.prec (Code.zero 2)) ![x]) (fun i => ![x] i.succ) i) i
+⊢ (Structure.func isZeroCode fun x_1 => Structure.func Code.succ fun x_2 => x) = Structure.func (Code.zero 0) Fin.elim0

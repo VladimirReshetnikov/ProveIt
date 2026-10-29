@@ -41,16 +41,9 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 /-! ## Substitution facts -/
 
 theorem subst_closed {p n m w : V} (hp : IsSemiformula ℒₛₑₜ 0 p) (hw : IsSemitermVec ℒₛₑₜ n m w) :
-    subst ℒₛₑₜ w p = p := by
-  have h0 : subst ℒₛₑₜ (0 : V) p = p := Bootstrapping.subst_eq_self hp (by simp) (by simp)
-  have hv : IsSemitermVec ℒₛₑₜ 0 n (0 : V) := by simp
-  calc subst ℒₛₑₜ w p = subst ℒₛₑₜ w (subst ℒₛₑₜ 0 p) := by rw [h0]
-    _ = subst ℒₛₑₜ (termSubstVec ℒₛₑₜ 0 w 0) p := Bootstrapping.substs_substs hp hw hv
-    _ = subst ℒₛₑₜ 0 p := by
-        congr 1
-        apply nth_ext' 0 (by simp [len_termSubstVec hv.isUTerm]) (by simp)
-        intro i hi; simp at hi
-    _ = p := h0
+    subst ℒₛₑₜ w p = p :=
+  LeanProofs.BoundedPAConsistency.InternalRelativization.subst_eq_self_of_prefix
+    hp hw (Arithmetic.zero_le n) (by simp)
 
 theorem free_closed {p : V} (hp : IsSemiformula ℒₛₑₜ 0 p) (hs : shift ℒₛₑₜ p = p) :
     free ℒₛₑₜ p = p := by
@@ -196,11 +189,8 @@ theorem vac_gen {X w : V} (hX : IsSemiformula ℒₛₑₜ 0 X) (hs : shift ℒ�
 
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
 theorem union_class_iff' (T U : Theory ℒₛₑₜ) [T.Δ₁] [U.Δ₁] (p : V) :
-    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := by
-  change (V ⊧/![p] (T.Δ₁ch ⋎ U.Δ₁ch).val) ↔
-    (V ⊧/![p] T.Δ₁ch.val) ∨ (V ⊧/![p] U.Δ₁ch.val)
-  rw [HierarchySymbol.Semiformula.val_or]
-  simp only [LogicalConnective.HomClass.map_or, LogicalConnective.Prop.or_eq]
+    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class :=
+  ModelCodedRenamingAxioms.union_class_iff T U p
 
 theorem sepR_mem_zf {p : V} (h : SepR p) : p ∈ (𝗭𝗙 : SetTheory).Δ₁Class := by
   change p ∈ (((𝗘𝗤 ℒₛₑₜ ∪ zfFixed) ∪ separationTheory) ∪ replacementTheory).Δ₁Class

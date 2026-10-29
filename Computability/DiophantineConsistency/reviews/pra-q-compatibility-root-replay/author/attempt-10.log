@@ -1,0 +1,27 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:72:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x : M
+h :
+  ∀ (e' : Fin 1 → M),
+    ¬Structure.rel Language.ORing.Rel.eq
+        ![Semiterm.val e' Empty.elim (applyCode Code.succ fun x => #0),
+          Semiterm.val e' Empty.elim (applyCode (Code.zero 0) Fin.elim0)]
+⊢ (Structure.func Code.succ fun x_1 => x) ≠ Structure.func (Code.zero 0) Fin.elim0
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:80:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+x y : M
+h :
+  ∀ (e' : Fin 2 → M),
+    Structure.rel Language.ORing.Rel.eq
+        ![Semiterm.val e' Empty.elim (applyCode Code.succ fun x => #0),
+          Semiterm.val e' Empty.elim (applyCode Code.succ fun x => #1)] →
+      Structure.rel Language.ORing.Rel.eq ![e' 0, e' 1]
+⊢ ((Structure.func Code.succ fun x_1 => x) = Structure.func Code.succ fun x => y) → x = y

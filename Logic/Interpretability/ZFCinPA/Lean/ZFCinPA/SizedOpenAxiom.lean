@@ -204,12 +204,13 @@ theorem spc_le {body₀ n₀ l₀ c R : V} (hb₀ : IsSemiformula ℒₛₑₜ n
     -- levels of the chain's formulas
     set S := 10 * (l₀ + 1) + c with hS
     have hS2 : (2 : V) ≤ S := two_le_m l₀ c
-    have lB : subst ℒₛₑₜ W body₀ ≤ lvB S :=
-      subst_level l₀ body₀ hl₀ hb₀.isUFormula c n₀ (r + 1) W hc hW (fun i hi => (hWb i hi).1)
-        (fun i hi => (hWb i hi).2)
-    have lB' : subst ℒₛₑₜ (termSubstVec ℒₛₑₜ n₀ v W) body₀ ≤ lvB S :=
-      subst_level l₀ body₀ hl₀ hb₀.isUFormula c n₀ r _ hc hW' (fun i hi => (hW'b i hi).1)
-        (fun i hi => (hW'b i hi).2)
+    have body_level {depth vector : V} (hvec : IsSemitermVec ℒₛₑₜ n₀ depth vector)
+        (hentries : ∀ i < n₀, vector.[i] ≤ lvB c ∧ IsVarTerm vector.[i]) :
+        subst ℒₛₑₜ vector body₀ ≤ lvB S :=
+      subst_level l₀ body₀ hl₀ hb₀.isUFormula c n₀ depth vector hc hvec
+        (fun i hi => (hentries i hi).1) (fun i hi => (hentries i hi).2)
+    have lB := body_level hW hWb
+    have lB' := body_level hW' hW'b
     have lQ := qqAlls_level hS2 lB r
     have lQ1 := qqAlls_level hS2 lB (r + 1)
     have lQ' := qqAlls_level hS2 lB' r
@@ -234,14 +235,15 @@ theorem spc_le {body₀ n₀ l₀ c R : V} (hb₀ : IsSemiformula ℒₛₑₜ n
         qqAlls (subst ℒₛₑₜ (termSubstVec ℒₛₑₜ n₀ v W) body₀) r := by
       rw [← hcomp]
       exact subst_qqAlls r 1 0 _ (^&r ∷ 0) (by simpa [add_comm] using hbody) (by simp)
-    have lt1 : ∀ {x j : V}, x ≤ lvB (S + 2 * j) → j ≤ R + 1 → x < lvB w := fun hx hj =>
-      lt_of_le_of_lt (lift_lvB hx (le_trans (hR2 _ hj) hMM))
+    have below : ∀ {x level : V}, x ≤ lvB level → level ≤ 10 * (M + 1) → x < lvB w :=
+      fun hx hlevel => lt_of_le_of_lt (lift_lvB hx hlevel)
         (lt_of_lt_of_le (lt_lvB_succ le_rfl) (lvB_mono hMw))
+    have lt1 : ∀ {x j : V}, x ≤ lvB (S + 2 * j) → j ≤ R + 1 → x < lvB w := fun hx hj =>
+      below hx (le_trans (hR2 _ hj) hMM)
     have ltn : ∀ {x j : V}, x ≤ lvB (S + 2 * j) → j ≤ R + 1 → IsUFormula ℒₛₑₜ x →
         neg ℒₛₑₜ x < lvB w := fun hx hj hxF =>
-      lt_of_le_of_lt (lift_lvB (neg_level _ _ hx hxF)
-        (mul_le_mul_of_nonneg_left (_root_.add_le_add (hR2 _ hj) le_rfl) (by norm_num)))
-        (lt_of_lt_of_le (lt_lvB_succ le_rfl) (lvB_mono hMw))
+      below (neg_level _ _ hx hxF)
+        (mul_le_mul_of_nonneg_left (_root_.add_le_add (hR2 _ hj) le_rfl) (by norm_num))
     have hr1 : r ≤ R + 1 := le_trans hr le_self_add
     have hr1' : r + 1 ≤ R + 1 := _root_.add_le_add hr le_rfl
     have fQ1 : IsUFormula ℒₛₑₜ (qqAlls (subst ℒₛₑₜ W body₀) (r + 1)) :=
@@ -257,8 +259,7 @@ theorem spc_le {body₀ n₀ l₀ c R : V} (hb₀ : IsSemiformula ℒₛₑₜ n
           Bootstrapping.substs_neg fQ (by simp : IsSemitermVec ℒₛₑₜ 1 0 (^&r ∷ 0 : V)), hnext]
         exact ltn lQ' hr1 fQ')
       (ltn lQ hr1 fQ.isUFormula)
-      (lt_of_le_of_lt (lift_lvB (hvar r hr).2 (le_trans hcS (le_trans hSM hMM)))
-        (lt_of_lt_of_le (lt_lvB_succ le_rfl) (lvB_mono hMw)))
+      (below (hvar r hr).2 (le_trans hcS (le_trans hSM hMM)))
     have ih' := ih hr (termSubstVec ℒₛₑₜ n₀ v W) _ (w + 1 + 1 + 1) hW' hW'b hspc
       (le_trans hw (le_trans le_self_add (le_trans le_self_add le_self_add)))
     rw [show w + 1 + 1 + 1 + 3 * r = w + 3 * (r + 1) by ring] at ih'
@@ -372,21 +373,8 @@ theorem bindFreeAt_level {C D : V} (hC : 2 ≤ C) (hD : D ≤ lvB C) :
 theorem bvarId_semitermVec (m : V) : IsSemitermVec ℒₛₑₜ m m (qVecIter ℒₛₑₜ m 0) := by
   simpa using qVecIter_isSemitermVec (L := ℒₛₑₜ) (show IsSemitermVec (V := V) ℒₛₑₜ 0 0 0 by simp) m
 
-theorem bvarId_nth : ∀ m : V, ∀ i < m, (qVecIter ℒₛₑₜ m 0).[i] = ^#i := by
-  intro m
-  induction m using ISigma1.pi1_succ_induction
-  · definability
-  · intro i hi; simp at hi
-  · case succ m ih =>
-    intro i hi
-    rw [qVecIter_succ]
-    have hw := bvarId_semitermVec (V := V) m
-    rcases zero_or_succ i with rfl | ⟨j, rfl⟩
-    · simp [qVec]
-    · have hj : j < m := by simpa using hi
-      simp only [qVec, nth_adjoin_succ]
-      rw [hw.lh, nth_termBShiftVec hw.isUTerm hj, ih j hj]
-      simp
+theorem bvarId_nth : ∀ m : V, ∀ i < m, (qVecIter ℒₛₑₜ m 0).[i] = ^#i :=
+  fun m => qVecIter_prefix (show IsSemitermVec (V := V) ℒₛₑₜ 0 0 0 by simp) m
 
 /-! ## The bounded open axiom -/
 

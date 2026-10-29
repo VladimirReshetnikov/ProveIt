@@ -1,0 +1,5 @@
+import DiophantineConsistency.ParsonsTheoryNormalize
+#print axioms DiophantineConsistency.ParsonsTheoryNormalize.partition
+#print axioms DiophantineConsistency.ParsonsTheoryNormalize.normalizeTheory
+#print axioms DiophantineConsistency.ParsonsTheoryNormalize.normalizeISigma
+#print axioms DiophantineConsistency.ParsonsTheoryNormalize.isigma_has_normalized

@@ -24,10 +24,32 @@ theorem modelDefiningEquation {φ : Sentence language} (h : DefiningEquation φ)
   Theory.models (T := PRA) M (Or.inl (Or.inl (Or.inr h)))
 
 omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem eqRel (v : Fin 2 → M) :
+theorem eqRel (v : Fin 2 → M) :
     Structure.rel (L := language) Language.ORing.Rel.eq v ↔ v 0 = v 1 := by
   change Structure.rel (L := language) Language.Eq.eq v ↔ _
   exact Structure.eq_lang
+
+omit [M↓[language] ⊧* PRA] in
+theorem eqClosureModels {n : ℕ} (a b : TermN n) :
+    (M↓[language] ⊧ equalClosure a b) ↔
+      ∀ e : Fin n → M, Semiterm.val e Empty.elim a = Semiterm.val e Empty.elim b := by
+  simp only [models_iff, equalClosure, Semiformula.eval_allClosure, Semiformula.eval_rel]
+  constructor
+  · intro h e
+    have h' := (eqRel _).mp (h e)
+    simpa [Function.comp_def] using h'
+  · intro h e
+    apply (eqRel _).mpr
+    simpa [Function.comp_def] using h e
+
+
+omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
+theorem val_term_pair {n : ℕ} (e : Fin n → M) (a b : TermN n) :
+    (Semiterm.val e Empty.elim ∘ ![a, b]) =
+      ![Semiterm.val e Empty.elim a, Semiterm.val e Empty.elim b] := by
+  apply funext
+  exact Fin.forall_fin_two.mpr ⟨rfl, rfl⟩
+
 
 theorem modelComposition {m n : ℕ} (f : Code m) (g : Codes n m) (e : Fin n → M) :
     Structure.func (L := language) (Code.comp f g) e =
@@ -46,6 +68,23 @@ theorem modelProjection {n : ℕ} (i : Fin n) (e : Fin n → M) :
     Semiformula.eval_rel] at h
   have h' := (eqRel _).mp (h e)
   simpa [applyCode, vars, Function.comp_def] using h'
+
+/-- Composition with the two projections swaps its two arguments. -/
+theorem modelSwapComposition (f : Code 2) (x y : M) :
+    Structure.func (L := language)
+      (Code.comp f (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))) ![x,y] =
+      Structure.func (L := language) f ![y,x] := by
+  have h := modelComposition (M := M) f
+    (.cons (.proj 1) (.cons (.proj 0) (.nil 2))) ![x,y]
+  have harg : (fun i => Structure.func (L := language)
+      (getCode (.cons (.proj 1) (.cons (.proj 0) (.nil 2))) i) ![x,y]) = ![y,x] := by
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · exact modelProjection (M := M) 1 _
+    · refine Fin.cases ?_ (fun j => Fin.elim0 j) j
+      exact modelProjection (M := M) 0 _
+  rw [harg] at h
+  exact h
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 private theorem val_cases {n k : ℕ} (a : TermN k) (b : Fin n → TermN k) (e : Fin k → M) :
@@ -87,8 +126,11 @@ theorem modelAddOne (x : M) :
     Structure.func (L := language) Code.succ (fun _ => x) := by
   let z : M := Structure.func (L := language) (Code.zero 0) Fin.elim0
   have hone := modelComposition (M := M) Code.succ (.cons (.zero 0) (.nil 0)) Fin.elim0
-  have ha := modelComposition (M := M) addCore (.cons (.proj 1) (.cons (.proj 0) (.nil 2)))
-    ![x, Structure.func (L := language) oneCode Fin.elim0]
+  have ha : Structure.func (L := language) addCode
+      ![x, Structure.func (L := language) oneCode Fin.elim0] =
+      Structure.func (L := language) addCore
+        ![Structure.func (L := language) oneCode Fin.elim0, x] :=
+    modelSwapComposition addCore x _
   have hb := modelBase (M := M) (Code.proj (0 : Fin 1))
     (Code.comp Code.succ (.cons (.proj (1 : Fin 3)) (.nil 3))) ![x]
   have hs := modelStep (M := M) (Code.proj (0 : Fin 1))
@@ -102,19 +144,6 @@ theorem modelAddOne (x : M) :
   rw [hOneArg] at hone
   change Structure.func (L := language) oneCode Fin.elim0 =
     Structure.func (L := language) Code.succ (fun _ => z) at hone
-  have harg : (fun i => Structure.func (L := language)
-      (getCode (.cons (.proj 1) (.cons (.proj 0) (.nil 2))) i)
-      ![x, Structure.func (L := language) oneCode Fin.elim0]) =
-      ![Structure.func (L := language) oneCode Fin.elim0, x] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · exact modelProjection (M := M) 1 _
-    · refine Fin.cases ?_ (fun j => Fin.elim0 j) j
-      exact modelProjection (M := M) 0 _
-  change Structure.func (L := language) addCode
-      ![x, Structure.func (L := language) oneCode Fin.elim0] =
-    Structure.func (L := language) addCore _ at ha
-  rw [harg] at ha
   have hbArg : Fin.cases (Structure.func (L := language) (Code.zero 0) Fin.elim0) ![x] = ![z,x] := by
     rfl
   rw [hbArg, modelProjection] at hb

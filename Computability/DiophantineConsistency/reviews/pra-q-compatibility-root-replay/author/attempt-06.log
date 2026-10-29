@@ -1,0 +1,21 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:34:8: warning: automatically included section variable(s) unused in theorem `_private.Computability.DiophantineConsistency.Lean.DiophantineConsistency.PRAQCompatibility.0.DiophantineConsistency.PRAQCompatibility.reduct_eq`:
+  [Nonempty M]
+  [M↓[language] ⊧* PRA]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Nonempty M] [M↓[language] ⊧* PRA] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:63:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+⊢ ∀ (x : M), Semiformula.Operator.val ![Semiterm.Operator.val ![x, Semiterm.Operator.val ![] 0] op(+), x] op(=)
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:64:43: warning: This simp argument is unused:
+  reduct_eq
+
+Hint: Omit it from the simp argument list.
+  simp [models_iff, Semiformula.eval_lMap, r̵e̵d̵u̵c̵t̵_̵e̵q̵,̵ ̵qAddZero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

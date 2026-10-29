@@ -1,0 +1,22 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:24:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+⊢ ∀ (x : M),
+    Structure.rel (embedding.rel op(=))
+      (Semiterm.val
+          ![Structure.func (embedding.func Language.Add.add)
+              (Semiterm.val ![x, Semiterm.val ![] Empty.elim 0.term] Empty.elim ∘ Semiterm.bvar),
+            x]
+          Empty.elim ∘
+        Semiterm.bvar)
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAQCompatibility.lean:29:31: warning: This simp argument is unused:
+  Semiterm.Operator.Zero.zero
+
+Hint: Omit it from the simp argument list.
+  simp [Semiformula.Operator.val, Semiterm.Operator.val, Semiformula.Operator.Eq.eq,
+      Semiterm.Operator.Add.add,̵ ̵S̵e̵m̵i̵t̵e̵r̵m̵.̵O̵p̵e̵r̵a̵t̵o̵r̵.̵Z̵e̵r̵o̵.̵z̵e̵r̵o̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

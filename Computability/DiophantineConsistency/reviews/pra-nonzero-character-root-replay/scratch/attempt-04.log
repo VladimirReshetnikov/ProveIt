@@ -1,0 +1,22 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzeroCharacter.lean:61:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 1 → M
+⊢ (Semiformula.EvalAux inferInstance Empty.elim e
+        (Semiformula.rel Language.ORing.Rel.eq ![applyCode nonzeroCode fun x => #0, applyCode oneCode Fin.elim0]).neg ∨
+      ¬Semiterm.val e Empty.elim (![#0, applyCode (Code.zero 0) Fin.elim0] 0) =
+          Semiterm.val e Empty.elim (![#0, applyCode (Code.zero 0) Fin.elim0] 1)) ∧
+    (Semiformula.EvalAux inferInstance Empty.elim e
+        (Semiformula.nrel Language.ORing.Rel.eq ![#0, applyCode (Code.zero 0) Fin.elim0]).neg ∨
+      Semiterm.val e Empty.elim (![applyCode nonzeroCode fun x => #0, applyCode oneCode Fin.elim0] 0) =
+        Semiterm.val e Empty.elim (![applyCode nonzeroCode fun x => #0, applyCode oneCode Fin.elim0] 1))
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzeroCharacter.lean:65:34: warning: This simp argument is unused:
+  Semiformula.EvalAux_neg
+
+Hint: Omit it from the simp argument list.
+  simp only [Semiformula.EvalAux, S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵E̵v̵a̵l̵A̵u̵x̵_̵n̵e̵g̵,̵ ̵eqRel]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
