@@ -292,6 +292,15 @@ theorem dig_succ_zero (w Q r : V) (hr : r < Exp.exp w) :
     dig w (Q * Exp.exp w + r) 0 = r := by
   simp [mod_mul_add_of_lt _ _ hr]
 
+/-- Replacing the low digit by a value below the radix leaves higher digits unchanged. -/
+private theorem dig_replace_low (w X s : V) (hs : s < Exp.exp w) :
+    dig w ((X / Exp.exp w) * Exp.exp w + s) 0 = s ∧
+      ∀ k, 0 < k → dig w ((X / Exp.exp w) * Exp.exp w + s) k = dig w X k := by
+  refine ⟨dig_succ_zero _ _ _ hs, fun k hk => ?_⟩
+  rw [dig_succ_pos _ _ _ _ hs hk]
+  conv_rhs => rw [← div_add_mod X (Exp.exp w), mul_comm (Exp.exp w) (X / Exp.exp w)]
+  rw [dig_succ_pos _ _ _ _ (mod_lt X (exp_pos w)) hk]
+
 /-- Subtracting one from a number with a nonzero least digit touches only that digit. -/
 theorem dig_sub_one (w X : V) (h : 1 ≤ dig w X 0) :
     dig w (X - 1) 0 = dig w X 0 - 1 ∧ ∀ k, 0 < k → dig w (X - 1) k = dig w X k := by
@@ -300,33 +309,23 @@ theorem dig_sub_one (w X : V) (h : 1 ≤ dig w X 0) :
   set r := X % ρ
   have hr : r < ρ := mod_lt X hρ
   have h1 : 1 ≤ r := by simpa using h
-  have hX : X = (X/ρ) * ρ + r := by rw [mul_comm]; exact (div_add_mod X ρ).symm
   have hX1 : X - 1 = (X/ρ) * ρ + (r - 1) := by
-    conv_lhs => rw [hX]
-    rw [add_tsub_assoc_of_le h1]
+    conv_lhs => rw [← div_add_mod X ρ, mul_comm ρ (X/ρ), add_tsub_assoc_of_le h1]
   have hr1 : r - 1 < ρ := lt_of_le_of_lt tsub_le_self hr
-  refine ⟨?_, fun k hk => ?_⟩
-  · rw [hX1, dig_succ_zero _ _ _ hr1, dig_zero_index]
-  · rw [hX1, dig_succ_pos _ _ _ _ hr1 hk]
-    conv_rhs => rw [hX]
-    rw [dig_succ_pos _ _ _ _ hr hk]
+  rw [hX1]
+  simpa only [dig_zero_index] using dig_replace_low w X (r - 1) hr1
 
 /-- Adding one below a non-saturated least digit touches only that digit. -/
 theorem dig_add_one (w X : V) (h : dig w X 0 + 1 < Exp.exp w) :
     dig w (X + 1) 0 = dig w X 0 + 1 ∧ ∀ k, 0 < k → dig w (X + 1) k = dig w X k := by
   set ρ := Exp.exp w
   set r := X % ρ
-  have hr : r < ρ := mod_lt X (exp_pos w)
   have hr1 : r + 1 < ρ := by simpa using h
-  have hX : X = (X/ρ) * ρ + r := by rw [mul_comm]; exact (div_add_mod X ρ).symm
   have hX1 : X + 1 = (X/ρ) * ρ + (r + 1) := by
-    conv_lhs => rw [hX]
+    nth_rewrite 1 [← div_add_mod X ρ]
     ring
-  refine ⟨?_, fun k hk => ?_⟩
-  · rw [hX1, dig_succ_zero _ _ _ hr1, dig_zero_index]
-  · rw [hX1, dig_succ_pos _ _ _ _ hr1 hk]
-    conv_rhs => rw [hX]
-    rw [dig_succ_pos _ _ _ _ hr hk]
+  rw [hX1]
+  simpa only [dig_zero_index] using dig_replace_low w X (r + 1) hr1
 
 /-! ### Bits inside a digit -/
 
