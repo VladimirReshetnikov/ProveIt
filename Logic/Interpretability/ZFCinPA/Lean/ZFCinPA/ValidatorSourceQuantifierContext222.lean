@@ -98,23 +98,12 @@ theorem negEnc_member_vacuous (F s L : V) (hs : StreamFree s F)
   obtain ⟨j,hj,rfl⟩ := ha
   exact negEnc_vacuous F s L hs hL j hj
 
-/-- This fold's invariant is Σ₁: the typed-list antecedent is Δ₁. -/
+/-- Generalization through the encoded context uses its vacuity certificates. -/
 theorem cProv_gen_source_context (F s g : V) (hs : StreamFree s F) : ∀ L : V,
     (∀ j < len L, IsFormula ℒₛₑₜ L.[j]) →
     CProv (wim (wal (eigen F s) (imps (negEnc F s L) g))
-      (imps (negEnc F s L) (wal (eigen F s) g))) := by
-  intro L
-  induction L using adjoin_ISigma1.sigma1_succ_induction
-  · definability
-  case nil => intro _; simpa using self_imp (wal (eigen F s) g)
-  case adjoin a L ih =>
-    intro hL
-    have ha : IsFormula ℒₛₑₜ a := by simpa using hL 0 (by simp)
-    have ht : ∀ j < len L, IsFormula ℒₛₑₜ L.[j] := fun j hj => by
-      simpa using hL (j+1) (by simpa using hj)
-    have hr := fresh_resources F s hs
-    have va := vac_neg (encode_formula_vac ha F s (eigen F s) hr.1 hr.2.1)
-    simpa only [negEnc_cons] using gen_cons va (ih ht)
+      (imps (negEnc F s L) (wal (eigen F s) g))) := fun L hL =>
+  cProv_gen_context (eigen F s) g (negEnc F s L) (negEnc_vacuous F s L hs hL)
 
 /-- ALL introduction through the unchanged base source context. -/
 theorem all_intro_opened {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
