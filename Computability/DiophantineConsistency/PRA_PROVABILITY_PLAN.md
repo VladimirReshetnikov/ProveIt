@@ -218,3 +218,7 @@ Bounded formulas and Σ₁ witnessing remain open.
 The [selection code](reviews/pra-select-code-root.md) has both defining
 equations as closed candidate-PRA derivations and an all-model composition
 interface. A bounded search invariant and universal presentation remain open.
+
+The [bounded-search code](reviews/pra-bounded-search-code-root.md) now has
+its all-model zero and step equations for arbitrary fixed predicates and
+parameters. Its search correctness and universal presentation are still open.
