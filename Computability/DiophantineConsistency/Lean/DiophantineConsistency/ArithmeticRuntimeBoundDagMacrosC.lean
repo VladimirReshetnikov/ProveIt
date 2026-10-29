@@ -93,12 +93,21 @@ theorem body154B (st : AS V) (hs : sz st ≤ tower j L) :
   calc (1 : V) + tower j (L+3) + 1 = 2 + tower j (L+3) := by ring
     _ ≤ tower j (L+4) := const_add_le (by omega) le_rfl (by norm_num)
 
-/-- `loop115` (unpair `pl`) within `tower j (L+13)` steps. -/
-theorem loop115M (st : AS V) (hs : sz st ≤ tower j L) :
-    Mac (.node 115) st (unpairAS st (cantor st.s1 st.s2 + st.pl)).withPLZero j L 13 := by
+/-- Both unpair loops have the same bounded walk; only the source register differs. -/
+private theorem unpair_loopM (useWS : Bool) (st : AS V) (hs : sz st ≤ tower j L) :
+    Mac (.node (if useWS then 116 else 115)) st
+      (if useWS then (unpairAS st (cantor st.s1 st.s2 + st.ws)).withWSZero
+       else (unpairAS st (cantor st.s1 st.s2 + st.pl)).withPLZero) j L 13 := by
   set M := cantor st.s1 st.s2
-  set v := st.pl
-  have hv : v ≤ tower j L := le_trans (field_le_sz st 8) hs
+  set v := if useWS then st.ws else st.pl
+  set r : Nat := if useWS then 2 else 8
+  set n : Nat := if useWS then 116 else 115
+  have hr : r < 9 := by cases useWS <;> decide
+  have hn : DagPerm.dagPerm.nodes n = (.decnz r, .node 154) := by cases useWS <;> rfl
+  have hv : v ≤ tower j L := by
+    cases useWS with
+    | false => exact le_trans (field_le_sz st 8) hs
+    | true => exact le_trans (field_le_sz st 2) hs
   have hM : M ≤ tower j (L+2) :=
     cantor_le_tower hL (le_trans (field_le_sz st 6) hs) (le_trans (field_le_sz st 7) hs)
   have hMv : M + v ≤ tower j (L+3) := add_le_tower_of (c := L+2) (by omega) le_rfl (by omega) hM hv
@@ -107,59 +116,77 @@ theorem loop115M (st : AS V) (hs : sz st ≤ tower j L) :
     have h2 : v + (M + v) + (M + v) ≤ tower j (L+5) :=
       add_le_tower_of (c := L+4) (by omega) le_rfl (by omega) h1 hMv
     exact add_le_tower_of (c := L+5) (by omega) (by omega) le_rfl hs h2
-  let Wr : V → AS V := fun t => { st with pl := v - t, s1 := first (M + t), s2 := second (M + t) }
-  have hWr : ∀ t, t ≤ v → ∀ w, w ≤ v →
-      sz ({ (Wr t) with pl := w } : AS V) ≤ tower j (L+6) := by
+  let Wr : V → AS V := fun t =>
+    if useWS then { st with ws := v - t, s1 := first (M + t), s2 := second (M + t) }
+    else { st with pl := v - t, s1 := first (M + t), s2 := second (M + t) }
+  have hfield : ∀ t, field (Wr t) r = v-t := by intro t; cases useWS <;> rfl
+  have hWr : ∀ t, t ≤ v → ∀ w, w ≤ v → sz (updAS (Wr t) r w) ≤ tower j (L+6) := by
     intro t ht w hw
     refine le_trans ?_ hQ
-    refine sz_le_of_split (st.np + st.tw + st.ws + st.ac + st.p1 + st.p2)
-      (w + first (M + t) + second (M + t)) (st.s1 + st.s2 + st.pl) _
-      (by simp only [sz, Wr]; ring) (by simp only [sz]; ring) ?_
+    have hspl : sz (updAS (Wr t) r w) ≤ sz st + (w + first (M+t) + second (M+t)) := by
+      cases useWS with
+      | false =>
+        refine sz_le_of_split (st.np + st.tw + st.ws + st.ac + st.p1 + st.p2)
+          (w + first (M+t) + second (M+t)) (st.s1 + st.s2 + st.pl) _
+          (by simp [sz, Wr, updAS, r]; ring) (by simp only [sz]; ring) ?_
+        exact le_rfl
+      | true =>
+        refine sz_le_of_split (st.np + st.tw + st.pl + st.ac + st.p1 + st.p2)
+          (w + first (M+t) + second (M+t)) (st.ws + st.s1 + st.s2) _
+          (by simp [sz, Wr, updAS, r]; ring) (by simp only [sz]; ring) ?_
+        exact le_rfl
+    refine le_trans hspl (_root_.add_le_add le_rfl ?_)
     exact _root_.add_le_add (_root_.add_le_add hw
       (le_trans (first_le _) (_root_.add_le_add le_rfl ht)))
       (le_trans (second_le _) (_root_.add_le_add le_rfl ht))
   let x0 : V := enc st
-  let G : V → V := fun t => writeValue ((1 : Nat) : V) (v - t)
+  let G : V → V := fun t => writeValue (((if useWS then 0 else 1) : Nat) : V) (v - t)
     (writeValue ((5 : Nat) : V) (second (M + t)) (writeValue ((8 : Nat) : V) (first (M + t)) x0))
   have hG : ∀ t, G t = enc (Wr t) := by
     intro t
-    show lupd (lupd (lupd (enc st) 6 (first (M + t))) 7 (second (M + t))) 8 (v - t) = enc (Wr t)
-    rw [lupd_enc _ 6 (by omega), lupd_enc _ 7 (by omega), lupd_enc _ 8 (by omega)]
-    rfl
+    cases useWS with
+    | false =>
+      show lupd (lupd (lupd (enc st) 6 (first (M+t))) 7 (second (M+t))) 8 (v-t) = enc (Wr t)
+      rw [lupd_enc _ 6 (by omega), lupd_enc _ 7 (by omega), lupd_enc _ 8 (by omega)]
+      rfl
+    | true =>
+      show lupd (lupd (lupd (enc st) 6 (first (M+t))) 7 (second (M+t))) 2 (v-t) = enc (Wr t)
+      rw [lupd_enc _ 6 (by omega), lupd_enc _ 7 (by omega), lupd_enc _ 2 (by omega)]
+      rfl
   haveI : 𝚺₁-Function₁[V] G :=
     write3_definable _ _ _ (fun t => v - t) (fun t => second (M + t)) (fun t => first (M + t)) x0
       (sub_definable v) (second_add_definable M) (first_add_definable M)
-  have hpass : ∀ t, t < v → IRB (.decnz 8) (G t) .normal (enc { (Wr t) with pl := v - t - 1 }) 1 ∧
-      IRB (.node 154) (enc { (Wr t) with pl := v - t - 1 }) (.cont 1) (G (t+1))
+  have hpass : ∀ t, t < v → IRB (.decnz r) (G t) .normal (enc (updAS (Wr t) r (v-t-1))) 1 ∧
+      IRB (.node 154) (enc (updAS (Wr t) r (v-t-1))) (.cont 1) (G (t+1))
         (tower j (L+6+4)) := by
     intro t ht
     refine ⟨?_, ?_⟩
     · rw [hG]
-      exact decPos_ASB 8 (by omega) (Wr t) (v - t - 1)
-        (tsub_add_cancel_of_le (one_le_of_pos (tsub_pos_of_lt ht))).symm
+      exact decPos_ASB r hr (Wr t) (v-t-1) (by rw [hfield]; exact
+        (tsub_add_cancel_of_le (one_le_of_pos (tsub_pos_of_lt ht))).symm)
     · rw [hG]
-      have h := body154B (L := L+6) (by omega) { (Wr t) with pl := v - t - 1 }
+      have h := body154B (L := L+6) (by omega) (updAS (Wr t) r (v-t-1))
         (hWr t (le_of_lt ht) _ (le_trans tsub_le_self tsub_le_self))
-      have e : walkStep { (Wr t) with pl := v - t - 1 } = Wr (t+1) := by
-        rw [walkStep_fields]
-        simp only [Wr, cantor_projections, add_assoc, tsub_tsub]
+      have e : walkStep (updAS (Wr t) r (v-t-1)) = Wr (t+1) := by
+        cases useWS <;> rw [walkStep_fields] <;>
+          simp [Wr, updAS, r, cantor_projections, add_assoc, tsub_tsub]
       rwa [e] at h
-  have hfin : IRB (.node 115) (G v) .normal (G v) 1 := by
+  have hfin : IRB (.node n) (G v) .normal (G v) 1 := by
     rw [hG]
-    exact RB.skip (n := 115) rfl (decZero_ASB 8 (by omega) (Wr v) (by simp only [Wr, tsub_self]; rfl))
-  have hit := RB.iterate (n := 115) rfl G (fun t => enc { (Wr t) with pl := v - t - 1 }) v _ _
-    hpass hfin
+    exact RB.skip hn (decZero_ASB r hr (Wr v) (by rw [hfield, tsub_self]))
+  have hit := RB.iterate hn G (fun t => enc (updAS (Wr t) r (v-t-1))) v _ _ hpass hfin
   have hG0 : G 0 = enc st := by
     rw [hG]
     congr 1
-    simp only [Wr, add_zero, tsub_zero, M, first_cantor, second_cantor, v]
+    cases useWS <;> simp [Wr, M, v, first_cantor, second_cantor]
   have hszv : sz (Wr v) ≤ tower j (L+6) := by
-    have := hWr v le_rfl (v - v) tsub_le_self
-    simpa only [Wr] using this
+    have := hWr v le_rfl (v-v) tsub_le_self
+    cases useWS <;> simpa [Wr, updAS, r] using this
   rw [hG0, hG v] at hit
-  have hres : RnB (.node 115) st (Wr v) (v * (1 + tower j (L+6+4)) + 1) := hit
-  have e : Wr v = (unpairAS st (cantor st.s1 st.s2 + st.pl)).withPLZero := by
-    simp only [Wr, tsub_self, unpairAS, AS.withPLZero, M, v]
+  have hres : RnB (.node n) st (Wr v) (v * (1 + tower j (L+6+4)) + 1) := hit
+  have e : Wr v = (if useWS then (unpairAS st (cantor st.s1 st.s2 + st.ws)).withWSZero
+       else (unpairAS st (cantor st.s1 st.s2 + st.pl)).withPLZero) := by
+    cases useWS <;> simp [Wr, unpairAS, AS.withPLZero, AS.withWSZero, M, v]
   rw [e] at hres hszv
   refine ⟨irunB_mono hres ?_, le_tower_of hszv (by omega)⟩
   have h1 : 1 + tower j (L+6+4) ≤ tower j (L+11) := const_add_le (by omega) le_rfl (by norm_num)
@@ -167,78 +194,14 @@ theorem loop115M (st : AS V) (hs : sz st ≤ tower j L) :
     mul_le_tower (le_tower_of hv (by omega)) h1
   exact le_trans (succ_le_tower (by omega) h2) le_rfl
 
+/-- `loop115` (unpair `pl`) within `tower j (L+13)` steps. -/
+theorem loop115M (st : AS V) (hs : sz st ≤ tower j L) :
+    Mac (.node 115) st (unpairAS st (cantor st.s1 st.s2 + st.pl)).withPLZero j L 13 :=
+  unpair_loopM hL false st hs
+
 /-- `loop116` (unpair `ws`) within `tower j (L+13)` steps. -/
 theorem loop116M (st : AS V) (hs : sz st ≤ tower j L) :
-    Mac (.node 116) st (unpairAS st (cantor st.s1 st.s2 + st.ws)).withWSZero j L 13 := by
-  set M := cantor st.s1 st.s2
-  set v := st.ws
-  have hv : v ≤ tower j L := le_trans (field_le_sz st 2) hs
-  have hM : M ≤ tower j (L+2) :=
-    cantor_le_tower hL (le_trans (field_le_sz st 6) hs) (le_trans (field_le_sz st 7) hs)
-  have hMv : M + v ≤ tower j (L+3) := add_le_tower_of (c := L+2) (by omega) le_rfl (by omega) hM hv
-  have hQ : sz st + (v + (M + v) + (M + v)) ≤ tower j (L+6) := by
-    have h1 : v + (M + v) ≤ tower j (L+4) := add_le_tower_of (c := L+3) (by omega) (by omega) le_rfl hv hMv
-    have h2 : v + (M + v) + (M + v) ≤ tower j (L+5) :=
-      add_le_tower_of (c := L+4) (by omega) le_rfl (by omega) h1 hMv
-    exact add_le_tower_of (c := L+5) (by omega) (by omega) le_rfl hs h2
-  let Wr : V → AS V := fun t => { st with ws := v - t, s1 := first (M + t), s2 := second (M + t) }
-  have hWr : ∀ t, t ≤ v → ∀ w, w ≤ v →
-      sz ({ (Wr t) with ws := w } : AS V) ≤ tower j (L+6) := by
-    intro t ht w hw
-    refine le_trans ?_ hQ
-    refine sz_le_of_split (st.np + st.tw + st.pl + st.ac + st.p1 + st.p2)
-      (w + first (M + t) + second (M + t)) (st.ws + st.s1 + st.s2) _
-      (by simp only [sz, Wr]; ring) (by simp only [sz]; ring) ?_
-    exact _root_.add_le_add (_root_.add_le_add hw
-      (le_trans (first_le _) (_root_.add_le_add le_rfl ht)))
-      (le_trans (second_le _) (_root_.add_le_add le_rfl ht))
-  let x0 : V := enc st
-  let G : V → V := fun t => writeValue ((0 : Nat) : V) (v - t)
-    (writeValue ((5 : Nat) : V) (second (M + t)) (writeValue ((8 : Nat) : V) (first (M + t)) x0))
-  have hG : ∀ t, G t = enc (Wr t) := by
-    intro t
-    show lupd (lupd (lupd (enc st) 6 (first (M + t))) 7 (second (M + t))) 2 (v - t) = enc (Wr t)
-    rw [lupd_enc _ 6 (by omega), lupd_enc _ 7 (by omega), lupd_enc _ 2 (by omega)]
-    rfl
-  haveI : 𝚺₁-Function₁[V] G :=
-    write3_definable _ _ _ (fun t => v - t) (fun t => second (M + t)) (fun t => first (M + t)) x0
-      (sub_definable v) (second_add_definable M) (first_add_definable M)
-  have hpass : ∀ t, t < v → IRB (.decnz 2) (G t) .normal (enc { (Wr t) with ws := v - t - 1 }) 1 ∧
-      IRB (.node 154) (enc { (Wr t) with ws := v - t - 1 }) (.cont 1) (G (t+1))
-        (tower j (L+6+4)) := by
-    intro t ht
-    refine ⟨?_, ?_⟩
-    · rw [hG]
-      exact decPos_ASB 2 (by omega) (Wr t) (v - t - 1)
-        (tsub_add_cancel_of_le (one_le_of_pos (tsub_pos_of_lt ht))).symm
-    · rw [hG]
-      have h := body154B (L := L+6) (by omega) { (Wr t) with ws := v - t - 1 }
-        (hWr t (le_of_lt ht) _ (le_trans tsub_le_self tsub_le_self))
-      have e : walkStep { (Wr t) with ws := v - t - 1 } = Wr (t+1) := by
-        rw [walkStep_fields]
-        simp only [Wr, cantor_projections, add_assoc, tsub_tsub]
-      rwa [e] at h
-  have hfin : IRB (.node 116) (G v) .normal (G v) 1 := by
-    rw [hG]
-    exact RB.skip (n := 116) rfl (decZero_ASB 2 (by omega) (Wr v) (by simp only [Wr, tsub_self]; rfl))
-  have hit := RB.iterate (n := 116) rfl G (fun t => enc { (Wr t) with ws := v - t - 1 }) v _ _
-    hpass hfin
-  have hG0 : G 0 = enc st := by
-    rw [hG]
-    congr 1
-    simp only [Wr, add_zero, tsub_zero, M, first_cantor, second_cantor, v]
-  have hszv : sz (Wr v) ≤ tower j (L+6) := by
-    have := hWr v le_rfl (v - v) tsub_le_self
-    simpa only [Wr] using this
-  rw [hG0, hG v] at hit
-  have hres : RnB (.node 116) st (Wr v) (v * (1 + tower j (L+6+4)) + 1) := hit
-  have e : Wr v = (unpairAS st (cantor st.s1 st.s2 + st.ws)).withWSZero := by
-    simp only [Wr, tsub_self, unpairAS, AS.withWSZero, M, v]
-  rw [e] at hres hszv
-  refine ⟨irunB_mono hres ?_, le_tower_of hszv (by omega)⟩
-  have h1 : 1 + tower j (L+6+4) ≤ tower j (L+11) := const_add_le (by omega) le_rfl (by norm_num)
-  have h2 : v * (1 + tower j (L+6+4)) ≤ tower j (L+12) :=
-    mul_le_tower (le_tower_of hv (by omega)) h1
-  exact le_trans (succ_le_tower (by omega) h2) le_rfl
+    Mac (.node 116) st (unpairAS st (cantor st.s1 st.s2 + st.ws)).withWSZero j L 13 :=
+  unpair_loopM hL true st hs
 
 end DiophantineConsistency.ArithmeticRuntimeBoundDagMacros
