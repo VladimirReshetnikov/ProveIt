@@ -172,9 +172,8 @@ theorem referenceCheck_judgments (seen : List Judgment) (i : Nat) (j : Judgment)
     referenceCheck (Nat.pair (listCode (seen.map judgmentCode))
       (Nat.pair i (judgmentCode j)))=1 ↔ seen[i]?=some j := by
   rw [referenceCheck_listCode,List.getElem?_map]
-  cases h : seen[i]? with
-  | none => simp
-  | some k => simp [judgmentCode_injective.eq_iff]
+  change Option.map judgmentCode seen[i]? = Option.map judgmentCode (some j) ↔ _
+  exact (Option.map_injective judgmentCode_injective).eq_iff
 
 /-- Each literal supplied program is certified primitive recursive by the
 constructor theorem, without extracting program data from that proposition. -/
