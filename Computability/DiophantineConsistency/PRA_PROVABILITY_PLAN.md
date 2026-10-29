@@ -13,8 +13,11 @@ Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean`,
 `ArithmeticHalfBinomialSandwich.lean`. The affected adaptive population,
 window, and reverse-construction suffix has since [passed two current-source
 replays](reviews/adaptive-sandwich-postmerge2011-author.md), with the inherited
-provider boundary documented there. The later CellWindow continuation is
-still pending.
+provider boundary documented there. A subsequent merge moved the rank-lower
+proof into `ArithmeticHalfBinomial` and updated `ArithmeticAdaptivePopulation2011`
+and `ArithmeticHalfBinomial2011`; those replay receipts now cover the preceding
+snapshot, and affected clients need another rebuild. The later CellWindow
+continuation is still pending.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
@@ -39,8 +42,10 @@ The [PA-minus bridge audit](research/pra-peanominus-bridge-audit-20261029.md)
 tracks the exact mapped equality axioms and all 17 non-equality axiom
 families. Closed candidate-PRA derivations now cover all seventeen families,
 including associativity, commutativity, distributivity, and the order axioms.
-Their assembly into a theory-level translation, the comparison with standard
-PRA, and the conservation argument remain open.
+The [PA-minus translation](Lean/DiophantineConsistency/PRAPeanoMinusTranslation.lean)
+now assembles them into a candidate-PRA derivation of every mapped PA-minus
+theorem. The comparison with standard PRA and the conservation argument
+remain open.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
