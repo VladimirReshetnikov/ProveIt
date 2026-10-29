@@ -1,0 +1,6 @@
+import DiophantineConsistency.ParsonsStructure
+#print axioms DiophantineConsistency.ParsonsStructure.eval_disjoin
+#print axioms DiophantineConsistency.ParsonsStructure.weakening
+#print axioms DiophantineConsistency.ParsonsStructure.projected_weakening
+#print axioms DiophantineConsistency.ParsonsStructure.contraction_case
+#print axioms DiophantineConsistency.ParsonsStructure.remove_base

@@ -30,7 +30,9 @@ witnessing remain open.
 The [principal logical cases](reviews/parsons-logical-cases-root.md) now
 provide the existential, universal, disjunction and conjunction transformers
 with explicit strictly smaller local recursive hypotheses. Nonprincipal cases,
-contraction and a global cut-free recursion remain open.
+a fixed global projection and a global cut-free recursion remain open. The
+[structural case](reviews/parsons-structure-root.md) now handles contraction
+under any fixed projection and discharges actual PA-minus base axioms.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
