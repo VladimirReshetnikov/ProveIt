@@ -74,13 +74,8 @@ theorem modelBoundedCharacteristic {n : ℕ} (c : Code (n+1)) (φ : Semisentence
   have hp : Fin.cases (e 0) (fun i : Fin n => e i.succ) = e := by funext i; exact Fin.cases rfl (fun _ => rfl) i
   have hb := modelBoundedBy φ (e 0) (fun i : Fin n => e i.succ)
   rw [hp] at hb
-  have hu := modelUniversalCode c (e 0) (fun i => if h : i < n then e ⟨i+1, by omega⟩ else e 0)
-  have he : (fun i : Fin n => (if h : i.val < n then e ⟨i.val+1, by omega⟩ else e 0)) =
-      (fun i : Fin n => e i.succ) := by
-    funext i
-    simp only [i.isLt, ↓reduceDIte]
-    congr 1
-  rw [he] at hu
+  have hgood := modelBoundedFormula c (e 0) (fun i : Fin n => e i.succ)
+  rw [hp] at hgood
   have hAll : (∀ x, Structure.rel (L := language) Language.ORing.Rel.lt ![x,e 0] →
       Structure.func (L := language) c (Fin.cases x (fun i : Fin n => e i.succ)) ≠
         Structure.func (L := language) (Code.zero 0) Fin.elim0) ↔
@@ -96,8 +91,8 @@ theorem modelBoundedCharacteristic {n : ℕ} (c : Code (n+1)) (φ : Semisentence
     have hz : (Semiterm.val (L := language) args Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
     simpa [Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func, hv, hz, iff_def, args] using hc
   have hcode : Structure.func (L := language) (universalCode c) e =
-      Structure.func (L := language) oneCode Fin.elim0 ↔ (boundedBy φ).Eval e Empty.elim := by
-    simpa only [hp] using (hu.2.trans hAll)
+      Structure.func (L := language) oneCode Fin.elim0 ↔ (boundedBy φ).Eval e Empty.elim :=
+    (modelUniversalCode_eval c e).2.trans (hgood.trans hAll)
   have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars (n+1)) = e := by funext i; rfl
   have hz : (Semiterm.val (L := language) e Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   simpa [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hv, hz, iff_def] using hcode

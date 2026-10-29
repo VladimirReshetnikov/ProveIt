@@ -68,14 +68,8 @@ variable {d : V}
 /-- `{¬d(&i) | i < k + 1}` lies in `¬d(&0)` together with the shift of
 `{¬d(&i) | i < k}`. -/
 lemma domSet_succ_subset (hd : IsSemiformula ℒₛₑₜ 1 d) (hds : shift ℒₛₑₜ d = d) (k : V) :
-    domSet ℒₛₑₜ d (k + 1) ⊆ insert (domF ℒₛₑₜ d 0) (setShift ℒₛₑₜ (domSet ℒₛₑₜ d k)) := by
-  intro y hy
-  obtain ⟨i, hi, rfl⟩ := mem_domSet_iff.mp hy
-  rcases zero_or_succ i with (rfl | ⟨j, rfl⟩)
-  · simp
-  · refine mem_bitInsert_iff.mpr (Or.inr (mem_setShift_iff.mpr ⟨domF ℒₛₑₜ d j, ?_, ?_⟩))
-    · exact domF_mem_domSet (by simpa using hi)
-    · exact (shift_domF hd hds j).symm
+    domSet ℒₛₑₜ d (k + 1) ⊆ insert (domF ℒₛₑₜ d 0) (setShift ℒₛₑₜ (domSet ℒₛₑₜ d k)) :=
+  fun _ hy => (domSet_succ hd hds k) ▸ hy
 
 /-! ## The opened closure -/
 
