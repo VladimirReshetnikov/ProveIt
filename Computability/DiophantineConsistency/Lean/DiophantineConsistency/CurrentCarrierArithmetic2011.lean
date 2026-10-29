@@ -97,26 +97,19 @@ theorem positive_zero_69_iff_70 (K : ℤ) :
   have hb : 0 < ports K 0 := by
     change 0 < (beta : ℤ)
     exact_mod_cast beta_pos
-  constructor
-  · rintro ⟨u, hu, hz⟩
-    have he := ThirteenCarrier.positive_polynomial_zero_sets (ports K) u hb hu
-    exact ⟨u, hu, he.2.mpr (he.1.mp hz)⟩
-  · rintro ⟨u, hu, hz⟩
-    have he := ThirteenCarrier.positive_polynomial_zero_sets (ports K) u hb hu
-    exact ⟨u, hu, he.1.mpr (he.2.mp hz)⟩
+  unfold PositiveZero polynomial69 polynomial70
+  exact exists_congr fun u => and_congr_right fun hu =>
+    let he := ThirteenCarrier.positive_polynomial_zero_sets (ports K) u hb hu
+    he.1.trans he.2.symm
 
 theorem positive_zero_70_iff_71 (K : ℤ) :
     PositiveZero (polynomial70 K) ↔ PositiveZero (polynomial71 K) := by
   have hb : 0 < ports K 0 := by
     change 0 < (beta : ℤ)
     exact_mod_cast beta_pos
-  constructor
-  · rintro ⟨u, hu, hz⟩
-    exact ⟨u, hu,
-      (ThirteenCarrier.positive_polynomial_zero_sets (ports K) u hb hu).2.mp hz⟩
-  · rintro ⟨u, hu, hz⟩
-    exact ⟨u, hu,
-      (ThirteenCarrier.positive_polynomial_zero_sets (ports K) u hb hu).2.mpr hz⟩
+  unfold PositiveZero polynomial70 polynomial71
+  exact exists_congr fun u => and_congr_right fun hu =>
+    (ThirteenCarrier.positive_polynomial_zero_sets (ports K) u hb hu).2
 
 /-- One chain of equivalences for all four literal polynomials, with the
 entire masks fixed and only K positive. This does not bind K to a tableau. -/
