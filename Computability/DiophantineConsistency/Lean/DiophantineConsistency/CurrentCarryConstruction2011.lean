@@ -1,3 +1,4 @@
+import DiophantineConsistency.MFCurrentCarryConstruction2011
 import DiophantineConsistency.CurrentKernel2011
 import DiophantineConsistency.NativeBooleanRotation
 import DiophantineConsistency.CurrentWordConstruction2011
@@ -38,51 +39,24 @@ structure Facts (c : ZMod n → ℕ) (W : ℕ) (k digits : ZMod n → ℕ) : Pro
 fractional binary phase. The complete cyclic predecessor is retained. -/
 theorem exists_normalization (c : ZMod n → ℕ) (hc : ∀ i, c i ≤ 1) (W : ℕ) :
     ∃ k digits : ZMod n → ℕ, Facts c W k digits := by
-  have hr : ∀ i, binaryRotation 47 W c i ≤ 2^46 :=
-    rotation_le_half (by decide : 0 < 47) W c hc
-  have hb : ∀ i, raw c W i + 57 < (57+1)*radix :=
-    carry_budget c (binaryRotation 47 W c) hc hr
-  obtain ⟨k,hk,hrec⟩ := NativeCyclicCarry.exists_bounded_carries
-    radix 57 (by decide) (raw c W) (fun i => i-1) hb
-  let digits := NativeCyclicCarry.digit radix (raw c W) (fun i => i-1) k
-  have hd : ∀ i, digits i < radix :=
-    NativeCyclicCarry.digit_lt (by decide) (raw c W) (fun i => i-1) k
-  refine ⟨k,digits,hk,hd,hrec,?_,?_,?_⟩
-  · exact NativeCyclicCarry.carry_decomposition radix (raw c W) (fun i => i-1) k hrec
-  · exact NativeCyclicCarryWord.digit_word_le (by decide) digits hd
-  · have hconv : word radix (fun i => convolution folded c i) ≡
-        K*word radix c [MOD radix^n-1] :=
-      (word_convolution (by decide) folded c).trans
-        ((folded_word (n := n)).mul_right (word radix c))
-    have hrot : word radix (binaryRotation 47 W c) ≡
-        2^W*word radix c [MOD radix^n-1] := word_binaryRotation 47 W c
-    have hp := hconv.add hrot
-    rw [← word_add] at hp
-    have he : K*word radix c + 2^W*word radix c = (K+2^W)*word radix c := by ring
-    rw [he] at hp
-    exact hp.symm.trans (NativeCyclicCarryWord.word_congruent_of_recurrence
-      (by decide) (raw c W) k hrec)
+  obtain ⟨k, digits, hf⟩ := MF.CurrentCarryConstruction2011.exists_normalization c hc W
+  exact ⟨k, digits, ⟨hf.carry_bound, hf.digit_bound, hf.recurrence,
+    hf.decomposition, hf.word_bound, hf.transport⟩⟩
 
 /-- A single positive digit suffices for positivity of the actual word. -/
 theorem word_pos_of_digit (digits : ZMod n → ℕ) (i : ZMod n) (hi : 0 < digits i) :
     0 < word radix digits := by
-  change 0 < ∑ j : ZMod n, digits j*radix^j.val
-  have hp : 0 < digits i*radix^i.val := Nat.mul_pos hi (pow_pos (by decide) _)
-  exact hp.trans_le (Finset.single_le_sum
-    (fun j _ => Nat.zero_le (digits j*radix^j.val)) (Finset.mem_univ i))
+  exact MF.CurrentCarryConstruction2011.word_pos_of_digit digits i hi
 
 /-- One nonmaximum normalized digit excludes the all-maximum zero residue.
 The slack digit must be established by the subsequent local construction. -/
 theorem Facts.word_lt {c k digits : ZMod n → ℕ} {W : ℕ}
     (h : Facts c W k digits) (i : ZMod n) (hi : digits i < radix-1) :
     word radix digits < radix^n-1 := by
-  rw [← word_max (by decide : 1 ≤ radix)]
-  apply Finset.sum_lt_sum
-  · intro j _
-    have hj := h.digit_bound j
-    exact Nat.mul_le_mul_right _ (by omega : digits j ≤ radix-1)
-  · exact ⟨i,Finset.mem_univ i,
-      Nat.mul_lt_mul_of_pos_right hi (pow_pos (by decide) _)⟩
+  have hmf : MF.CurrentCarryConstruction2011.Facts c W k digits :=
+    ⟨h.carry_bound, h.digit_bound, h.recurrence, h.decomposition,
+      h.word_bound, h.transport⟩
+  exact hmf.word_lt i hi
 
 /-- Instantiate normalization at the assembled tile word. Its independent
 Boolean controls are the only additional hypotheses. -/
