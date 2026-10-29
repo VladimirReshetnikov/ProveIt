@@ -90,20 +90,19 @@ theorem drain_bound (time word w : V) :
   case zero => right; simp
   case succ time ih =>
     rw [run_succ]
-    rcases ih with hs | hb
-    · left; exact stopped_tick hs
-    · by_cases hs : Stopped (run time (liveValue word w))
-      · left; exact stopped_tick hs
-      · rcases tick_decreases hs with hz | hd
-        · left; exact Or.inl hz
-        · right
-          calc
-            remaining (tickValue (run time (liveValue word w))) + (time + 1) =
-                (remaining (tickValue (run time (liveValue word w))) + 1) + time := by
-                  ac_rfl
-            _ ≤ remaining (run time (liveValue word w)) + time :=
-              _root_.add_le_add hd le_rfl
-            _ ≤ word := hb
+    by_cases hs : Stopped (run time (liveValue word w))
+    · exact Or.inl (stopped_tick hs)
+    · have hb := ih.resolve_left hs
+      rcases tick_decreases hs with hz | hd
+      · left; exact Or.inl hz
+      · right
+        calc
+          remaining (tickValue (run time (liveValue word w))) + (time + 1) =
+              (remaining (tickValue (run time (liveValue word w))) + 1) + time := by
+                ac_rfl
+          _ ≤ remaining (run time (liveValue word w)) + time :=
+            _root_.add_le_add hd le_rfl
+          _ ≤ word := hb
 
 /-- Every internal shifted word is halted or completed by its own numerical
 code bound. Completed configurations remain positive; this does not conflate

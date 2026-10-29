@@ -61,10 +61,10 @@ theorem strip_gen {c : V} (hc : 1 ≤ c) : ∀ (n : ℕ) (φ : Bootstrapping.Sem
         unfold sβc
         rw [hcast]
         exact le_of_add_eq (y := 11) (by ring)
+      have hχ : ∀⁰ χ = (shs n (∀⁰ φ)).subst (fvVec n) := by
+        rw [shs_all, Bootstrapping.Semiformula.substs_all]
       have hAv : (∀⁰ χ).val ≤ lvB (sβc c (u + n)) := by
-        have e : ∀⁰ χ = (shs n (∀⁰ φ)).subst (fvVec n) := by
-          rw [shs_all, Bootstrapping.Semiformula.substs_all]
-        rw [e]
+        rw [hχ]
         refine lift_lvB (tsubst_le _ _ (shs_level _ hAφ n) hc hent) ?_
         unfold sβc
         exact le_of_eq (by ring)
@@ -74,9 +74,7 @@ theorem strip_gen {c : V} (hc : 1 ≤ c) : ∀ (n : ℕ) (φ : Bootstrapping.Sem
         rw [hcast]
         exact le_of_add_eq (y := 20 * (n : V) + 29) (by ring)
       have d1 := all_step hW4 hAv hFv hmW (by rw [free_fvVec]; exact h)
-      have e2 : ∀⁰ χ = (shs n (∀⁰ φ)).subst (fvVec n) := by
-        rw [shs_all, Bootstrapping.Semiformula.substs_all]
-      rw [e2] at d1
+      rw [hχ] at d1
       have ih := strip_gen hc n (∀⁰ φ) (u + 2) (W + 1 + 1) hfv' (le_trans hu le_self_add) hAφ
         (le_trans hW4 (le_trans le_self_add le_self_add)) (by
           refine le_trans ?_ (le_trans hW (le_trans le_self_add le_self_add))
@@ -105,6 +103,10 @@ theorem fvar_le_of_le {N : ℕ} : ∀ j : ℕ, j ≤ N → (^&(j : V) : V) ≤ l
   exact this
 
 /-! ## Monotonicity of the level functions -/
+
+theorem sβc_mono {c c' x x' : V} (hc : c ≤ c') (hx : x ≤ x') : sβc c x ≤ sβc c' x' := by
+  unfold sβc
+  exact _root_.add_le_add (mul_le_mul_of_nonneg_left (_root_.add_le_add hx le_rfl) (by norm_num)) hc
 
 theorem spcW_mono {a a' c c' R R' : V} (ha : a ≤ a') (hc : c ≤ c') (hR : R ≤ R') :
     spcW a c R ≤ spcW a' c' R' := by
@@ -186,10 +188,9 @@ theorem oschema_leaf {a : ℕ}
     le_trans (by norm_num : (2 : V) ≤ 4) (le_trans le_add_self le_add_self)
   have dO := hopen _ hO' hu'
   set W : V := openW U + sβc ((t : V) + 4) ((t : V) * (u + 1) + 3 * t) + 1 with hW
-  have hsβ : sβc ((N : V) + 4) ((t : V) * (u + 1) + 3 * N) ≤ sβc ((t : V) + 4) ((t : V) * (u + 1) + 3 * t) := by
-    unfold sβc
-    exact _root_.add_le_add (mul_le_mul_of_nonneg_left (_root_.add_le_add (_root_.add_le_add le_rfl
-      (mul_le_mul_of_nonneg_left hNt (by norm_num))) le_rfl) (by norm_num)) (_root_.add_le_add hNt le_rfl)
+  have hsβ : sβc ((N : V) + 4) ((t : V) * (u + 1) + 3 * N) ≤ sβc ((t : V) + 4) ((t : V) * (u + 1) + 3 * t) :=
+    sβc_mono (_root_.add_le_add hNt le_rfl)
+      (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hNt (by norm_num)))
   have hWs : sβc ((N : V) + 4) ((t : V) * (u + 1) + 3 * N) + 1 ≤ W :=
     le_trans (_root_.add_le_add hsβ le_rfl) (by rw [hW, add_assoc]; exact le_add_self)
   have h4s : (4 : V) ≤ sβc ((N : V) + 4) ((t : V) * (u + 1) + 3 * N) :=
@@ -224,13 +225,13 @@ theorem oschW_mono {t A : ℕ} {u U : V} (ht : t ≤ A) (hu : u ≤ U) : oschW t
   have htA : (t : V) ≤ A := by exact_mod_cast ht
   have hm : (t : V) * (u + 1) ≤ (A : V) * (U + 1) :=
     mul_le_mul htA (_root_.add_le_add hu le_rfl) (Arithmetic.zero_le _) (Arithmetic.zero_le _)
-  unfold oschW sβc
+  unfold oschW
   refine _root_.add_le_add (_root_.add_le_add (_root_.add_le_add (openW_mono ?_) ?_) le_rfl)
     (mul_le_mul_of_nonneg_left htA (by norm_num))
   · exact _root_.add_le_add (_root_.add_le_add (mul_le_mul_of_nonneg_left
       (_root_.add_le_add (_root_.add_le_add hm htA) le_rfl) (by norm_num)) htA) le_rfl
-  · exact _root_.add_le_add (mul_le_mul_of_nonneg_left (_root_.add_le_add (_root_.add_le_add hm
-      (mul_le_mul_of_nonneg_left htA (by norm_num))) le_rfl) (by norm_num)) (_root_.add_le_add htA le_rfl)
+  · exact sβc_mono (_root_.add_le_add htA le_rfl)
+      (_root_.add_le_add hm (mul_le_mul_of_nonneg_left htA (by norm_num)))
 
 theorem leafG_mono {t A : ℕ} {u U : V} (ht : t ≤ A) (hu : u ≤ U) : leafG t u ≤ leafG A U := by
   have htA : (t : V) ≤ A := by exact_mod_cast ht
@@ -246,16 +247,12 @@ theorem templ_leaf_gen (harity : ∀ i, arities i ≤ 3) (σ : Sentence (setTemp
     {u : V} (hu : 2 ≤ u) (hK : ∀ i, (Ks i).val ≤ lvB u) :
     DLv 𝗭𝗙 (insert (translateFormula Ks (Rewriting.emb σ)).val ∅)
       (leafG (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities))) u) := by
-  set t : V := (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V) with ht
+  set t : V := (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V)
   have hx := translate_level (Rewriting.emb σ) u Ks hK
   have hge1 : t * (u + 1) + 5 ≤ leafG (tA (Rewriting.emb σ : Proposition _)) u := by
-    unfold leafG
-    rw [← ht]
-    refine le_trans ?_ (le_self_add)
-    refine le_trans ?_ (_root_.add_le_add (_root_.add_le_add le_rfl (Arithmetic.zero_le (congL u)))
-      le_rfl)
-    exact _root_.add_le_add (le_trans (mul_le_mul_of_nonneg_left (_root_.add_le_add le_rfl
-      (by norm_num : (1 : V) ≤ 2)) (Arithmetic.zero_le _)) (by simp)) le_rfl
+    refine le_trans (le_trans le_self_add (SizedLTemplate.leafW_ge σ u)) ?_
+    unfold SizedLTemplate.leafW leafG
+    exact le_self_add
   rcases SizedTemplateAxioms.templ_lifted_or_congruence σ h with hl | ⟨i, rfl⟩ | ⟨p, rfl⟩ | ⟨p, rfl⟩
   · have hw4 : (4 : V) ≤ t * (u + 1) + 4 := le_add_self
     refine (DLv.by_axm hw4 ((SeqLt.empty _).insert (lt_lvB_of hx (_root_.add_le_add le_rfl
