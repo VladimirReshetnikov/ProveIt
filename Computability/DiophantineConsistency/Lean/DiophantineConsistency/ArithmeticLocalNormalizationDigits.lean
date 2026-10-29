@@ -55,6 +55,10 @@ theorem localDigits_sum (i : Fin 942) :
     show (1042 : ℕ) = 8 + 1034 from rfl, Finset.sum_range_add _ 8 1034,
     show (1034 : ℕ) = 1 + 1033 from rfl, Finset.sum_range_add _ 1 1033,
     show (1033 : ℕ) = 8 + 1025 from rfl, Finset.sum_range_add _ 8 1025]
+  have hgap (b n : ℕ) (hb : ∀ q < n, (951 ≤ b + q ∧ b + q < 960) ∨ b + q = 977 ∨ 986 ≤ b + q) :
+      ∑ q ∈ Finset.range n, L (b + q) = 0 :=
+    Finset.sum_eq_zero fun q hq => by
+      simp only [hL, localDigit_gap i _ (hb q (Finset.mem_range.mp hq)), zero_mul]
   have h0 : ∑ q ∈ Finset.range 942, L q = radix ^ physicalPosition i := by
     have hp := WangTiles942.physicalPosition_lt i
     rw [Finset.sum_eq_single_of_mem (physicalPosition i) (Finset.mem_range.mpr hp)]
@@ -64,10 +68,8 @@ theorem localDigits_sum (i : Fin 942) :
   have hS : ∑ q ∈ Finset.range 9, L (942 + q) = spreadN 942 9 (511 - (tile i).south) := by
     rw [spreadN_eq]; apply Finset.sum_congr rfl; intro q hq
     simp only [hL, localDigit_south i q (Finset.mem_range.mp hq)]
-  have hG1 : ∑ q ∈ Finset.range 9, L (942 + (9 + q)) = 0 :=
-    Finset.sum_eq_zero fun q hq => by
-      have := Finset.mem_range.mp hq
-      simp only [hL, localDigit_gap i (942 + (9 + q)) (by omega), zero_mul]
+  have hG1 : ∑ q ∈ Finset.range 9, L (942 + (9 + q)) = 0 := by
+    simpa only [← add_assoc] using hgap 951 9 (by intro q hq; omega)
   have hN : ∑ q ∈ Finset.range 9, L (942 + (9 + (9 + q))) = spreadN 960 9 (511 - (tile i).north) := by
     rw [spreadN_eq]; apply Finset.sum_congr rfl; intro q hq
     simp only [hL, show 942 + (9 + (9 + q)) = 960 + q by omega,
@@ -77,19 +79,15 @@ theorem localDigits_sum (i : Fin 942) :
     rw [spreadN_eq]; apply Finset.sum_congr rfl; intro q hq
     simp only [hL, show 942 + (9 + (9 + (9 + q))) = 969 + q by omega,
       localDigit_east i q (Finset.mem_range.mp hq)]
-  have hG2 : ∑ q ∈ Finset.range 1, L (942 + (9 + (9 + (9 + (8 + q))))) = 0 :=
-    Finset.sum_eq_zero fun q hq => by
-      have := Finset.mem_range.mp hq
-      simp only [hL, localDigit_gap i (942 + (9 + (9 + (9 + (8 + q))))) (by omega), zero_mul]
+  have hG2 : ∑ q ∈ Finset.range 1, L (942 + (9 + (9 + (9 + (8 + q))))) = 0 := by
+    simpa only [← add_assoc] using hgap 977 1 (by intro q hq; omega)
   have hW : ∑ q ∈ Finset.range 8, L (942 + (9 + (9 + (9 + (8 + (1 + q)))))) =
       spreadN 978 8 (255 - (tile i).west) := by
     rw [spreadN_eq]; apply Finset.sum_congr rfl; intro q hq
     simp only [hL, show 942 + (9 + (9 + (9 + (8 + (1 + q))))) = 978 + q by omega,
       localDigit_west i q (Finset.mem_range.mp hq)]
-  have hG3 : ∑ q ∈ Finset.range 1025, L (942 + (9 + (9 + (9 + (8 + (1 + (8 + q))))))) = 0 :=
-    Finset.sum_eq_zero fun q hq => by
-      simp only [hL, localDigit_gap i (942 + (9 + (9 + (9 + (8 + (1 + (8 + q))))))) (by omega),
-        zero_mul]
+  have hG3 : ∑ q ∈ Finset.range 1025, L (942 + (9 + (9 + (9 + (8 + (1 + (8 + q))))))) = 0 := by
+    simpa only [← add_assoc] using hgap 986 1025 (by intro q hq; omega)
   rw [h0, hS, hG1, hN, hE, hG2, hW, hG3]
   ring
 
