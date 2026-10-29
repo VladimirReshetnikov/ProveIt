@@ -947,5 +947,15 @@ The target object shrinks by 346904 bytes. Foundation, Mathlib and other
 inputs remain precompiled, and clients beyond the tested chain were not
 rebuilt. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-firstnorm-sharing-evidence/BUNDLE.json).
 
+The standard radix bound reuse `2b254d6c2e` removes five lines, bringing
+the reviewed series to 8538. Both targets and the direct RankForcing client
+pass with matching empty logs. All 31 existing declaration types and axiom
+reports, plus the materialized `inS` equation, match. The base-one case is
+checked separately; direct prerequisite hashes match prior or freshly
+refreshed receipts. Interface probe logs are retained without separate command
+receipts. Transitive dependencies remain cached or partly refreshed, and no
+full clean build is claimed. The target and client records and logs were
+independently checked. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-mask-digit-bound-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
