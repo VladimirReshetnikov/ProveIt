@@ -204,12 +204,13 @@ theorem spc_le {body₀ n₀ l₀ c R : V} (hb₀ : IsSemiformula ℒₛₑₜ n
     -- levels of the chain's formulas
     set S := 10 * (l₀ + 1) + c with hS
     have hS2 : (2 : V) ≤ S := two_le_m l₀ c
-    have lB : subst ℒₛₑₜ W body₀ ≤ lvB S :=
-      subst_level l₀ body₀ hl₀ hb₀.isUFormula c n₀ (r + 1) W hc hW (fun i hi => (hWb i hi).1)
-        (fun i hi => (hWb i hi).2)
-    have lB' : subst ℒₛₑₜ (termSubstVec ℒₛₑₜ n₀ v W) body₀ ≤ lvB S :=
-      subst_level l₀ body₀ hl₀ hb₀.isUFormula c n₀ r _ hc hW' (fun i hi => (hW'b i hi).1)
-        (fun i hi => (hW'b i hi).2)
+    have body_level {depth vector : V} (hvec : IsSemitermVec ℒₛₑₜ n₀ depth vector)
+        (hentries : ∀ i < n₀, vector.[i] ≤ lvB c ∧ IsVarTerm vector.[i]) :
+        subst ℒₛₑₜ vector body₀ ≤ lvB S :=
+      subst_level l₀ body₀ hl₀ hb₀.isUFormula c n₀ depth vector hc hvec
+        (fun i hi => (hentries i hi).1) (fun i hi => (hentries i hi).2)
+    have lB := body_level hW hWb
+    have lB' := body_level hW' hW'b
     have lQ := qqAlls_level hS2 lB r
     have lQ1 := qqAlls_level hS2 lB (r + 1)
     have lQ' := qqAlls_level hS2 lB' r
