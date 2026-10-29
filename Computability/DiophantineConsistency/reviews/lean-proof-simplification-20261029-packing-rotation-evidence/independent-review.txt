@@ -1,0 +1,47 @@
+Independent review: ArithmeticPacking rotation identity
+
+No correctness defect found in the tested change, now committed as `2fd68625e5`. The rotation definition
+and original `e ≤ n` premise are unchanged. The proof still derives the
+exponent factorization using truncated-subtraction cancellation, and uses the
+same quotient/remainder identity for X. The new intermediate equality is
+`exp (w*n) - 1 + 1 = exp (w*n)`, justified by `one_le_exp`; ring rearrangement
+then factors the quotient term before applying the existing identities. It
+imposes no new bound on X, w or n, including zero cases. The source comparison
+confirms the edit is confined to the arithmetic body of `rot_identity`; its
+statement, imports, definitions and remaining source are unchanged.
+
+The tested baseline source matches commit `2fd68625e5`'s parent; the tested
+final source matches that commit and the current workspace. Baseline builds
+are historical isolated samples, not post-commit workspace builds.
+
+`/tmp/packing-rotation-peer-audit.py` and `.log` check target and both directly
+importing project clients ArithmeticPackingCells and
+ArithmeticConstructionVariation, including source, first direct-input path,
+object, log and timing hashes. The direct PackingBlocks object matches an
+earlier successful source-built producer receipt. Other client provider pairs
+match the current source and previous Variation provider mappings; the audit
+also checks the linked producer/mapping records. Their wider project and
+package closure remains cached, so this is not a full current-source closure
+rebuild. Both client builds pass. Variation objects match byte-for-byte;
+PackingCells objects differ (baseline 64b4afbf…, final 463c6d28…), for an
+undetermined reason.
+
+All 63 target namespace declaration/type/axiom reports match, as do 29,064
+simp and 13,177 instance lines. Stronger client probes pin both target and
+client objects before/after each invocation. They show all 88 PackingCells
+and six Variation declaration/type/axiom reports match, together with their
+29,791/13,431 and 38,804/16,567 simp/instance reports, respectively. These
+checks do not establish equality of all client proof bodies, serialized
+objects, other extensions or transitive clients.
+
+Target baseline/final user CPU was 19.06/19.85 s; PackingCells 40.43/40.42 s;
+Variation 33.50/33.35 s. A single shared-load pair is not a general benchmark.
+Target logs contain the same pre-existing warnings at shifted lines; PackingCells
+also has existing warnings in both phases. The initial baseline build failed
+because an incomplete overlay shadowed the PackingBlocks object; its copied
+receipt, source hash, log and time match, and paired builds used the corrected
+overlay. An earlier standalone probe's unknown-identifier error log survives,
+but its exact pre-fix source was overwritten. Two initial independent-audit
+attempts misread the old PackingBlocks receipt's schema; their error logs are
+preserved and the corrected audit passes. These failures do not affect the
+paired Lean builds. No repository files were edited for this review.

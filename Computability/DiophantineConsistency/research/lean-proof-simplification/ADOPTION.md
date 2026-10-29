@@ -1710,5 +1710,13 @@ pass with identical client objects; nine retained declaration reports and the
 sampled registrations match. The wrappers were unregistered, and transitive
 dependencies remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-rank-order-cleanup-evidence/BUNDLE.json).
 
+The rotation identity simplification `2fd68625e5` removes six net Lean lines,
+bringing the reviewed series to 10028. It factors the quotient term before
+using the existing exponent and quotient-remainder identities. Paired Packing
+and both direct client builds pass; the checked declarations and registrations
+match. ConstructionVariation objects match, while PackingCells objects differ
+for an unknown reason; transitive dependencies remain cached. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261029-packing-rotation-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
