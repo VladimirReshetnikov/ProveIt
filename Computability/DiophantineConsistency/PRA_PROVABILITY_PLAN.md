@@ -45,7 +45,10 @@ Mathlib's primitive-recursive vector functions. Its [independent replay](reviews
 passed. The [finite syntax](Lean/DiophantineConsistency/PRAFiniteFunctionCodes.lean)
 has decidable equality and a surjective semantics-preserving conversion; its
 [independent replay](reviews/pra-finite-function-codes-root.md) also passed.
-Numerical encoding, the PRA theory and conservation remain open. This is not a uniform primitive-recursive evaluator.
+A [numeric codec](Lean/DiophantineConsistency/PRACodeEncoding.lean) now
+has a proved arity-checked roundtrip and an [independent replay](reviews/pra-code-encoding-root.md).
+Primitive-recursive bounds on the codec, the PRA theory and conservation
+remain open. This is not a uniform primitive-recursive evaluator.
 
 ## Concrete bridge to formalize
 
