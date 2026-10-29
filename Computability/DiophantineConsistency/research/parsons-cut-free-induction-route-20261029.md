@@ -174,3 +174,8 @@ invokes an explicit local hypothesis on the actual witness premise with a
 strictly smaller height within the cut-free derivation. The
 [independent replay](../reviews/parsons-block-root.md) checks the invariant.
 Other LK cases, strict Π₂ side normalization and PRA witnessing remain open.
+
+The [strict prenex collection obligation](parsons-prenex-collection-obligation-20261029.md)
+identifies a bounded-universal Σ₁ case requiring finite witness collection.
+Foundation hierarchy membership alone does not supply the strict Π₂ side
+form or a rule-calculus derivation of the collection implication.
