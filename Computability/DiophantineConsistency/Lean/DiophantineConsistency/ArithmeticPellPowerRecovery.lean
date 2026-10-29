@@ -12,12 +12,6 @@ open scoped LO.FirstOrder.Arithmetic
 open ArithmeticPellRecurrence ArithmeticPellFirstIndex ArithmeticPellHalfIndex
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem one_le_of_pos {x : V} (h : 0<x) : 1≤x := by
-  simpa using lt_iff_succ_le.mp h
-
-private theorem add_le_right {x y : V} (h : x≤y) (z : V) : x+z≤y+z :=
-  _root_.add_le_add h (le_refl z)
-
 /-- The strict lower step includes time zero. -/
 theorem y_lower (b t : V) : (2*b+3)*ycoord t b<ycoord (t+1) b := by
   have hx : (b+1)*ycoord t b<xcoord t b := by
@@ -36,19 +30,19 @@ theorem y_lower (b t : V) : (2*b+3)*ycoord t b<ycoord (t+1) b := by
 
 /-- Positive time is necessary for this upper step. -/
 theorem y_upper (b t : V) (ht : 0<t) : ycoord (t+1) b≤2*(b+2)*ycoord t b := by
-  have hy : 1≤ycoord t b := le_trans (one_le_of_pos ht) (time_le_y t b)
+  have hy : 1≤ycoord t b := le_trans (pos_iff_one_le.mp ht) (time_le_y t b)
   have hx : xcoord t b≤(b+2)*ycoord t b := by
     by_contra hn
     have hs := mul_self_lt_mul_self (by simp) (lt_of_not_ge hn)
     have he : xcoord t b*xcoord t b≤((b+2)*ycoord t b)*((b+2)*ycoord t b) := calc
       xcoord t b*xcoord t b=1+delta b*ycoord t b*ycoord t b := norm t b
       _≤ycoord t b*ycoord t b+delta b*ycoord t b*ycoord t b :=
-        add_le_right (one_le_mul hy hy) _
+        add_le_add_left (one_le_mul hy hy) _
       _=((b+2)*ycoord t b)*((b+2)*ycoord t b) := by unfold delta; ring
     exact (not_lt_of_ge he) hs
   rw [y_succ]
   calc
-    xcoord t b+(b+2)*ycoord t b≤(b+2)*ycoord t b+(b+2)*ycoord t b := add_le_right hx _
+    xcoord t b+(b+2)*ycoord t b≤(b+2)*ycoord t b+(b+2)*ycoord t b := add_le_add_left hx _
     _=2*(b+2)*ycoord t b := by ring
 
 private theorem exp_four_succ (r : V) : Exp.exp (4*(r+1))=16*Exp.exp (4*r) := by
@@ -120,7 +114,7 @@ theorem coefficient_gap (X Y : V) (hX : 16≤X) (hY : 1≤Y) :
     _≤(X+1)*(X+1) := mul_le_mul (by simp) (by simp) (by simp) (by simp)
   have h17 : (17:V)≤Y*(X+1) := calc
     17=1*(16+1) := by ring
-    _≤Y*(X+1) := mul_le_mul hY (add_le_right hX 1) (by simp) (by simp)
+    _≤Y*(X+1) := mul_le_mul hY (add_le_add_left hX 1) (by simp) (by simp)
   have h204 : (204:V)≤12*Y*(X+1) := calc
     204=12*17 := by ring
     _≤12*(Y*(X+1)) := mul_le_mul_of_nonneg_left h17 (by simp)
@@ -128,7 +122,7 @@ theorem coefficient_gap (X Y : V) (hX : 16≤X) (hY : 1≤Y) :
   have hlarge : 64*X*Y*Y+204+9≤(2*(Y*(X+1))+3)*(2*(Y*(X+1))+3) := calc
     64*X*Y*Y+204+9=4*Y*Y*(16*X)+204+9 := by ring
     _≤4*Y*Y*((X+1)*(X+1))+12*Y*(X+1)+9 :=
-      add_le_right (add_le_add (mul_le_mul_of_nonneg_left hsq (by simp)) h204) 9
+      add_le_add_left (add_le_add (mul_le_mul_of_nonneg_left hsq (by simp)) h204) 9
     _=(2*(Y*(X+1))+3)*(2*(Y*(X+1))+3) := by ring
   apply lt_of_lt_of_le _ hlarge
   have hnum : (32:V)<204+9 := by
@@ -268,14 +262,14 @@ theorem maintained_power (beta K MC MF J F alpha z f i T s w N eta zeta y gamma 
   change 2*n=R+1 at hnR
   have hq16 : (16:V)≤q := calc
     16=15+1 := by ring
-    _≤beta+1 := add_le_right hbeta 1
-    _≤beta*J+1 := add_le_right (le_mul_of_one_le_right (by simp) (one_le_of_pos hJ)) 1
-  have hX : (16:V)≤X := le_trans hq16 (le_mul_of_one_le_left (by simp) (one_le_of_pos hw))
+    _≤beta+1 := add_le_add_left hbeta 1
+    _≤beta*J+1 := add_le_add_left (le_mul_of_one_le_right (by simp) (pos_iff_one_le.mp hJ)) 1
+  have hX : (16:V)≤X := le_trans hq16 (le_mul_of_one_le_left (by simp) (pos_iff_one_le.mp hw))
   have hq1 : 1≤q := le_trans (by simp : (1:V)≤16) hq16
   have hY : 1≤Y := by
     dsimp [Y]
     have hq3 : 1≤q^3 := by simpa only [show q^3=q*q*q by ring] using one_le_mul (one_le_mul hq1 hq1) hq1
-    exact one_le_mul (one_le_of_pos hs) hq3
+    exact one_le_mul (pos_iff_one_le.mp hs) hq3
   let r:=n-1
   have hn1 : 1≤n := le_trans (by simp : (1:V)≤5) hn5
   have hrn : r+1=n := tsub_add_cancel_of_le hn1
