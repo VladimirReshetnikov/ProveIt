@@ -63,7 +63,9 @@ logical cases have now been completed for side-tagged occurrences in the
 negative base-axiom decomposition and the single global recursion remain open.
 The separate [negative-base state](reviews/parsons-base-state-root.md) now
 handles universal opening and terminal resolution when its explicit Π₂/Σ₁
-shape hypotheses hold. Initial axiom classification, integration and a
+shape hypotheses hold. The [base-axiom shape theorem](reviews/parsons-base-shape-root.md)
+now establishes the required universal-prefix/Σ₁ shape for every PA-minus
+axiom and preserves it under opening and shifting. Integration and a
 secondary recursion measure remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
