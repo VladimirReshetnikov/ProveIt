@@ -191,3 +191,9 @@ candidate-language term with finitely many bound inputs to one finite PR
 code and proves its equality to that term inside candidate PRA. This is a
 definitional-extension ingredient; formula normalization and general Σ₁
 witnessing remain open.
+
+The [selected PA-minus bridge](reviews/pra-peano-minus-partial-root.md)
+derives the exact mapped Foundation addition-commutativity, additive-order
+witness, addition-zero and multiplication-zero axioms in candidate PRA.
+The remaining PA-minus axioms, formula compilation and the full
+conservation argument remain open.
