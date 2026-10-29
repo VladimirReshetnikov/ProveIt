@@ -90,19 +90,19 @@ lemma rep_body_shift_fixed (K : Semiformula V ℒₛₑₜ 2) (hK : K.shift = K)
   simp
 
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
-private lemma union_class_iff (T U : Theory ℒₛₑₜ) [T.Δ₁] [U.Δ₁] (p : V) :
+lemma union_class_iff (T U : Theory ℒₛₑₜ) [T.Δ₁] [U.Δ₁] (p : V) :
     p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := by
   change (V ⊧/![p] (T.Δ₁ch ⋎ U.Δ₁ch).val) ↔
     (V ⊧/![p] T.Δ₁ch.val) ∨ (V ⊧/![p] U.Δ₁ch.val)
   rw [HierarchySymbol.Semiformula.val_or]
   simp only [LogicalConnective.HomClass.map_or, LogicalConnective.Prop.or_eq]
 
-private lemma separation_class_iff (p : V) :
+lemma separation_class_iff (p : V) :
     p ∈ separationTheory.Δ₁Class ↔ SepR p := by
   change (V ⊧/![p] sepCh.val) ↔ _
   simp
 
-private lemma replacement_class_iff (p : V) :
+lemma replacement_class_iff (p : V) :
     p ∈ replacementTheory.Δ₁Class ↔ RepR p := by
   change (V ⊧/![p] repCh.val) ↔ _
   simp

@@ -33,14 +33,12 @@ theorem two_adic (b : V) (hb : 0<b) : ∃ j o, (∃ z, o=2*z+1) ∧ b=Exp.exp j*
   | hP => definability
   | ind b ih =>
     rcases even_or_odd b with ⟨x,hx|hx⟩
-    · have hx0 : 0<x := by
-        rcases zero_or_succ x with rfl|⟨y,rfl⟩
-        · simp [hx] at hb
-        · simp
+    · have hx0 : 0<x :=
+        pos_of_mul_pos_right (by rw [←hx]; exact hb) (by simp)
       have hxb : x<b := by
         rw [hx]
-        have := add_lt_add_left hx0 x
-        simpa [two_mul] using this
+        simpa [mul_comm] using
+          (mul_lt_mul_of_pos_right (show (1:V)<2 by simp) hx0)
       rcases ih x hxb hx0 with ⟨j,o,ho,hxo⟩
       exact ⟨j+1,o,ho,by rw [hx,hxo,exp_succ]; ring⟩
     · exact ⟨0,b,⟨x,hx⟩,by simp⟩
@@ -151,14 +149,12 @@ theorem population_pos (r : V) (hr : 0<r) : 0<population r := by
   | hP => definability
   | ind r ih =>
     rcases even_or_odd r with ⟨m,hm|hm⟩
-    · have hm0 : 0<m := by
-        rcases zero_or_succ m with rfl|⟨y,rfl⟩
-        · simp [hm] at hr
-        · simp
+    · have hm0 : 0<m :=
+        pos_of_mul_pos_right (by rw [←hm]; exact hr) (by simp)
       have hmr : m<r := by
         rw [hm]
-        have := add_lt_add_left hm0 m
-        simpa [two_mul] using this
+        simpa [mul_comm] using
+          (mul_lt_mul_of_pos_right (show (1:V)<2 by simp) hm0)
       rw [hm,population_even]
       exact ih m hmr hm0
     · rw [hm,population_odd]

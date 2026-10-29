@@ -76,20 +76,13 @@ theorem closedReplacement_recognized (K : Semiformula V ℒₛₑₜ 2) :
 
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
 private lemma union_class_iff (T U : Theory ℒₛₑₜ) [T.Δ₁] [U.Δ₁] (p : V) :
-    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := by
-  change (V ⊧/![p] (T.Δ₁ch ⋎ U.Δ₁ch).val) ↔
-    (V ⊧/![p] T.Δ₁ch.val) ∨ (V ⊧/![p] U.Δ₁ch.val)
-  rw [HierarchySymbol.Semiformula.val_or]
-  simp only [LogicalConnective.HomClass.map_or, LogicalConnective.Prop.or_eq]
+    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := ModelCodedSchemaAxioms.union_class_iff T U p
 
 private lemma separation_class_iff (p : V) :
-    p ∈ separationTheory.Δ₁Class ↔ SepR p := by
-  change (V ⊧/![p] sepCh.val) ↔ _
-  simp
+    p ∈ separationTheory.Δ₁Class ↔ SepR p := ModelCodedSchemaAxioms.separation_class_iff p
+
 private lemma replacement_class_iff (p : V) :
-    p ∈ replacementTheory.Δ₁Class ↔ RepR p := by
-  change (V ⊧/![p] repCh.val) ↔ _
-  simp
+    p ∈ replacementTheory.Δ₁Class ↔ RepR p := ModelCodedSchemaAxioms.replacement_class_iff p
 
 theorem closedSeparation_mem_zf (K : Semiformula V ℒₛₑₜ 1) :
     (closedSeparation K).val ∈ (𝗭𝗙 : SetTheory).Δ₁Class := by
