@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAOpenInduction
+
+#print axioms DiophantineConsistency.PRAOpenInduction.modelOpenInduction
+#check DiophantineConsistency.PRAOpenInduction.modelOpenInduction

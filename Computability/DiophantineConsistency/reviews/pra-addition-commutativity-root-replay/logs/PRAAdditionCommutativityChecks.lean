@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAAdditionCommutativity
+
+#print axioms DiophantineConsistency.PRAAdditionCommutativity.modelAddComm
+#print axioms DiophantineConsistency.PRAAdditionCommutativity.PRA_proves_addComm
+#check DiophantineConsistency.PRAAdditionCommutativity.PRA_proves_addComm

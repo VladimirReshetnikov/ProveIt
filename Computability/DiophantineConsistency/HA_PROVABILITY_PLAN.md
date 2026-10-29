@@ -2582,3 +2582,14 @@ uses the actual positive `q³` quotient for Y and the oriented main root to
 establish an exact additive congruence modulo `q⁵`, with the same canonical
 rank. It does not cancel the variable factor or establish an index relation;
 those remain necessary for the smaller equation's internal equivalence.
+
+The generic [factor-three cancellation](reviews/adaptive-factor-three2011-root.md)
+now works in every selected IΣ₁ model even when three divides the modulus:
+from `q³ | Y` and `q⁵ | (3+4Y(X+1))t` it derives `q⁴ | t`. Applying
+this to the literal rank difference requires a separate client.
+
+The [literal rank congruence](reviews/adaptive-rank-congruence2011-root.md)
+now binds factor-three cancellation to an actual current adaptive zero and
+derives `q⁴ | magnitude(R+1,k)` in arbitrary IΣ₁ models, without assuming
+a sign for the difference or coprimality with three. Exact index recovery,
+the converse, and the HA transfer remain open.

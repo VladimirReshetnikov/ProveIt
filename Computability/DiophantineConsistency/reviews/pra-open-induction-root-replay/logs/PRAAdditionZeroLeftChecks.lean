@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAAdditionZeroLeft
+
+#print axioms DiophantineConsistency.PRAAdditionZeroLeft.modelZeroLeft
+#print axioms DiophantineConsistency.PRAAdditionZeroLeft.PRA_proves_zeroLeft
+#check DiophantineConsistency.PRAAdditionZeroLeft.PRA_proves_zeroLeft
