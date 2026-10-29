@@ -9,9 +9,9 @@ printed proof is not required.
 ## Current scope and open endpoints
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
-Boolean, exhaustion, search and order modules. The relevant later PRA and
-Herbrand receipts authenticate their preceding snapshots; a new downstream
-source-current refresh is required.
+Boolean, exhaustion, search and order modules. The [43-module downstream
+refresh](reviews/herbrand-all-instantiation-root.md) has now passed twice
+alongside the new candidate-PRA witnessing theorem.
 
 A later upstream merge generalized `PRAFormulaParameters.qr_rew` and updated
 `PRAUniversalSyntax` to use it. The affected universal-presentation, syntax
@@ -23,9 +23,10 @@ The 14-variable equation in `equation.pdf` has closed IΣ₁ and HA
 proof-existence theorems, but no Lean theorem producing the requested PRA
 derivation. The candidate PRA development now includes an actual proof
 calculus, an ordered-ring embedding, and characteristic codes for open
-formulas with finitely many packed parameters. The formal conservation and
-witnessing arguments remain open; the candidate's comparison with a standard
-PRA presentation also remains to be proved.
+formulas with finitely many packed parameters. Lean now proves [candidate-PRA
+witnessing for open ∀∃ formulas](reviews/herbrand-all-instantiation-root.md).
+The formal IΣ₁-to-PRA conservation argument and the candidate's comparison
+with a standard PRA presentation remain open.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
@@ -37,7 +38,7 @@ finite-extension theorem. The [positive-guarded bounded rule](reviews/parsons-gu
 is also proved for Σ₁ side formulas and arbitrary parameters. These are
 noncomputable proof transformers, not conditional collection axioms or
 PRA-internal transformations. The complete cut-free translation and
-witnessing remain open.
+IΣ₁-to-PRA witnessing remain open.
 The [principal logical cases](reviews/parsons-logical-cases-root.md) now
 provide the existential, universal, disjunction and conjunction transformers
 with explicit strictly smaller local recursive hypotheses. Nonprincipal cases,
@@ -67,6 +68,10 @@ shape hypotheses hold. The [base-axiom shape theorem](reviews/parsons-base-shape
 now establishes the required universal-prefix/Σ₁ shape for every PA-minus
 axiom and preserves it under opening and shifting. Integration and a
 secondary recursion measure remain open.
+The [unified marked context](reviews/parsons-unified-root.md) now integrates
+these cases and proves a decreasing secondary base count for terminal
+reclassification. Its final counter-witness case still assumes a Σ₁ side
+guard, and the leaf analysis and global recursion remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
@@ -176,7 +181,8 @@ their existential terms. [Finite extraction](reviews/herbrand-finite-extraction-
 now derives a disjunction for a prepared existential sequent. The
 [prepared-sequent parameterized witness](reviews/herbrand-parameterized-witness-root.md)
 translates the extracted terms into appropriately parameterized PR codes for
-that input. Preparing a general ∀∃ proof remains open.
+that input. The [general ∀∃ preparation and candidate-PRA witnessing](reviews/herbrand-all-instantiation-root.md)
+are now proved for open matrices.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive

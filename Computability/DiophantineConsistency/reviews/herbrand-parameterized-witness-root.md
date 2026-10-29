@@ -21,3 +21,7 @@ An upstream merge after these builds changed eleven PRA prerequisites,
 including Boolean, equality, exhaustion, search and order modules. This
 receipt authenticates the earlier snapshot; a source-current downstream
 refresh is required.
+
+A later [source-current 43-module refresh](herbrand-all-instantiation-root.md)
+rechecked the affected downstream theorem chain after the eleven-prerequisite
+upstream refactor.

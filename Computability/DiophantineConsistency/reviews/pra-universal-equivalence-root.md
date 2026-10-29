@@ -28,3 +28,7 @@ A subsequent upstream merge changed `PRAFormulaParameters.lean` and
 `PRAUniversalSyntax.lean`. This receipt authenticates the earlier snapshot;
 the affected downstream [source-current replay](pra-parameter-current-root.md)
 has since passed.
+
+A later [source-current 43-module refresh](herbrand-all-instantiation-root.md)
+rechecked the affected downstream theorem chain after the eleven-prerequisite
+upstream refactor.
