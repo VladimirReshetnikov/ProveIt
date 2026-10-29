@@ -23,6 +23,8 @@ For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
 [power recovery](reviews/adaptive-power-finish2011-root.md), and the
 [aligned radix](reviews/adaptive-radix2011-root.md) in arbitrary IΣ₁ models.
+The [normalized transport](reviews/adaptive-transport-restoration2011-root.md)
+has also been recovered from the actual adaptive zero and independently replayed.
 The machine-window soundness, internal converse and final HA/PRA
 proof-existence endpoints remain open.
 
