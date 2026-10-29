@@ -1,0 +1,45 @@
+Independent audit: word-bound evidence archive
+
+Scope: audited /tmp/word-bound-evidence-20261028.zip, its README, manifests,
+benchmark receipts, saved sources, patch files and representative build records.
+Archive SHA-256 at review: d93e6e997756c859fb082c50cfa8be1494b25e7213102624ac6e4dc139f14c6b.
+I made no repository changes. The machine-readable audit script and output are
+/tmp/word-bound-archive-audit.py and /tmp/word-bound-archive-audit.log.
+
+Integrity: ZIP CRC validation passed for every member. There are 140 files,
+no duplicate member names, 139 manifest entries and no missing, unexpected or
+unlisted files other than the manifest itself. Every listed SHA-256 matches.
+
+Source snapshots and patches: the archived baseline, split_ifs and single_split
+sources match all associated benchmark before/after hashes. Both patch files
+apply successfully to copies of the baseline and reproduce their corresponding
+archived alternative byte-for-byte. The split_ifs patch has 11 insertions and
+37 deletions; single_split has 19 insertions and 37 deletions, as the README
+states. All 15 archived dependency/client snapshots match the applicable saved
+source-before and source-after build/preparation/client receipts. Fourteen
+match current workspace files; ArithmeticRuntimeBoundDagMacrosA differs because
+the workspace subsequently advanced, consistent with the README's explanation.
+
+Benchmarks: all eight recorded benchmark runs report status 0. Their source
+hashes, saved log hashes and exact saved time files match the receipts. User CPU
+seconds are baseline 7.03 and 6.89 versus split_ifs 23.35 and 21.47, and
+baseline 6.60 and 7.05 versus single_split 17.72 and 18.16. These values match
+the README. At audit time all eight original benchmark output objects were still
+present outside the archive, and their hashes matched the receipts. They are
+not included in the archive, as the README says.
+
+Scope of correctness: the archive includes the previously performed independent
+review of split_ifs, the paired interface/simp comparisons and the representative
+client replay. The saved single_split build and benchmark succeeded; the archive
+does not claim the same client/census comparison for that variant. The two
+retained failed setup records are explicitly distinguished from successful
+builds. No archive inconsistency or misleading benchmark value was found.
+
+Limitations: benchmarks are two local paired measurements per alternative on a
+cached environment, not evidence of universal compile-time ratios. The cached
+Foundation, Lean and other project objects are not included; direct input pins
+and source snapshots do not establish a fresh complete transitive-source build.
+The original scripts and absolute paths depend on the original environment, so
+the archive is evidence rather than a standalone replay. Hashes and CRC show
+internal consistency, not independent cryptographic provenance or a guarantee
+that all downstream clients were checked.
