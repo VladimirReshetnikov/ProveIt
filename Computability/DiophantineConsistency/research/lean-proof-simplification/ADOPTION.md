@@ -2029,5 +2029,13 @@ have source-matched receipts; the wider closure remains cached. The compact
 [evidence note](../../reviews/lean-proof-simplification-20261029-pell-common-positive.md)
 records hashes and external paths but does not include raw logs or objects.
 
+The negative-norm ordinate positivity simplification `68cfd1dde1` removes five
+net Lean lines, bringing the reviewed series to 10314. Product positivity
+replaces an indirect zero contradiction. Paired target and direct-client builds
+pass with identical client objects; a production client replay also passes with
+source-matched providers. Checked target reports and sampled registrations
+match; the wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-negative-norm-positive.md)
+records hashes and external paths without retaining raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
