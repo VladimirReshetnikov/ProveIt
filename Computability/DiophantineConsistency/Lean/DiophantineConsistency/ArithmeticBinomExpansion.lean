@@ -33,8 +33,7 @@ noncomputable def construction : PR.Construction V blueprint where
 noncomputable def bsum (X n j : V) : V := construction.result ![X,n] j
 def bsumDef : 𝚺₁.Semisentence 4 := blueprint.resultDef |>.rew (Rew.subst ![#0,#3,#1,#2])
 instance bsum_defined : 𝚺₁-Function₃[V] bsum via bsumDef := .mk fun v ↦ by
-  simp [construction.result_defined_iff,bsumDef,bsum] <;>
-    first | rfl | (congr 2; funext i; cases i using Fin.cases <;> rfl) | skip
+  simp [construction.result_defined_iff,bsumDef,bsum]
 instance bsum_definable : 𝚺₁-Function₃[V] bsum := bsum_defined.to_definable
 
 @[simp] theorem bsum_zero (X n : V) : bsum X n 0=0 := by simp [bsum,construction]
@@ -103,9 +102,8 @@ theorem bsum_scaled_le (X n j : V) (hX : 1≤X) : X*bsum X n j≤bsum 1 n j*powe
       simpa using mul_le_mul_of_nonneg_right hX (by simp : (0:V)≤power X j)
     calc
       X*(bsum X n j+binom n j*power X j)=X*bsum X n j+binom n j*(X*power X j) := by ring
-      _≤bsum 1 n j*power X j+binom n j*(X*power X j) := add_le_add ih le_rfl
       _≤bsum 1 n j*(X*power X j)+binom n j*(X*power X j) :=
-        add_le_add (mul_le_mul_of_nonneg_left hp (by simp)) le_rfl
+        add_le_add (le_trans ih (mul_le_mul_of_nonneg_left hp (by simp))) le_rfl
       _=(bsum 1 n j+binom n j)*(X*power X j) := by ring
 
 /-- Splitting the sum at degree `r`. -/
