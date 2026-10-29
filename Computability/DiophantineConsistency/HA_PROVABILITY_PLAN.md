@@ -2171,7 +2171,7 @@ They hold in every model of IΣ₁. `#print axioms` gives `propext`,
 
 **`InternalRelativizationBound`** (978 lines). All bounds take one numeric
 parameter `a`, which bounds `d`, `¬d`, and the side formulas
-`¬δ(&i)`/`δ(&i) ≤ 2^(a(i+1))`.
+`¬δ(&i)`/`δ(&i) ≤ 2^(2^(a(i+1)))` (widened in Stage 3a).
 - `relativize_le`: `relativize L d p ≤ relB a p = 2^(2^((a+12)(p+1)))`, by
   formula induction.
 - `derivableLe_relSet`: a `T`-derivation with code `n` yields the relativized
@@ -2207,6 +2207,58 @@ quotient chain reuses `derivable_of_domSet`.
   That change is mechanical: `towerB` gets another exponential, and so does
   `ax_le`.
 - *Substitution bounds for `⌜domL⌝`.* The side-formula hypotheses
-  `domF L d i ≤ 2^(a(i+1))` need a substitution-size lemma for the fixed
+  `domF L d i ≤ 2^(2^(a(i+1)))` needed a substitution-size lemma (done in Stage 3a, `ShiftBound`) for the fixed
   domain formula. This is a polynomial bound for a standard formula, but it
   is not yet proved.
+
+## Stage 3a: bounded ZFC → ZF transport, up to the schemata (2026-10-28)
+
+```
+ConstructibleInterpretationBound.provableLe_falsum_ZF_of_ZFC
+  (hSchema : bounded separation/replacement obligations)
+  (h : Proof 𝗭𝗙𝗖 n ⊥) : ProvableLe 𝗭𝗙 ⊥ (provB aL n)
+```
+
+This holds in every model of IΣ₁. It mirrors the original
+`ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`, which also takes
+the schema obligations as its one premise. `#print axioms` gives `propext`,
+`Classical.choice` and `Quot.sound`.
+
+**Discharged here, all at one standard numeral `aL`:**
+- *Standard obligations.* The equality axioms, the seven fixed axioms and
+  `𝗔𝗖` are fixed meta-level proofs. Under D1 their internal codes are the
+  numerals `⌜b⌝` (`proof_of_quote_proof`, `coe_quote_proof_eq`).
+  `stdN = sup` over the finite set bounds all of them.
+- *`𝗭𝗙 ⊢ ∃x (x ∈ L)`.* Its code is likewise a numeral.
+- *Domain-formula constants.* `⌜domL⌝`, `¬⌜domL⌝`, `δ(&0)` and `¬δ(&0)` are
+  numerals computed in ℕ, by Σ₁ absoluteness of `neg` and `substs1`
+  (`DefinedFunction.shigmaOne_absolute_func`).
+- *Side formulas* `¬δ(&i)` and `δ(&i)` are below `2^(2^(aL(i+1)))`. The new
+  generic module **`ShiftBound`** proves `shift q ≤ q²` for every internal
+  term and formula, because Cantor pairing preserves "each entry ≤ its
+  square". Since `¬δ(&(i+1)) = shift (¬δ(&i))`, `domF_le` and
+  `substs1_fvar_le` follow by induction on `i`. For this, the engine's
+  side-formula hypotheses were widened to this double-exponential shape;
+  `bat` still absorbs it.
+
+`aL` is defined from these codes and is not evaluated, the same situation as
+`cb rho8Circuit`.
+
+**Stage 3b, remaining: the schema obligations** (`LSepBase.sep_obligation`,
+`LReplBase.repl_obligation`).
+- *Template compilation.* Both obligations go through
+  `LTemplate.compileT`, which is `compileOpenTemplate`, a **meta-level**
+  recursion over a fixed template derivation. Its size bound is a Lean
+  induction on that standard derivation.
+- *Congruence proofs.* Its axiom leaves include the `SetCongruence`
+  congruence proofs. These are internal inductions (`replace_aux`,
+  `term_replace_aux`), already on the Stage 1 list.
+- *The `L` inductions* chain these with typed `⊢`-combinators: `glue`
+  (formula complexity), `peel` (opened variables), `driverT`, `numOK`,
+  `fun_MT` and `slot_MT`. Two things are needed:
+  - sized twins of the combinators they use (`⨀`, `K!_intro`, `K!_left/right`,
+    `all_iff_self`, …);
+  - bounded twins of each induction.
+- *Risk.* The engine accepts obligations up to `2^(2^(2^(aL(p+1))))`. If the
+  glue tower is taller, the engine needs one more exponential, which is a
+  mechanical change.
