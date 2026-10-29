@@ -92,18 +92,12 @@ theorem rot_identity (w n X e : V) (he : e ≤ n) :
   have hX := div_add_mod X (Exp.exp (w * (n - e)))
   have hn : Exp.exp (w * n) = Exp.exp (w * (n - e)) * Exp.exp (w * e) := by
     rw [← exp_mul_add, tsub_add_cancel_of_le he]
-  have h1 : (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) + X / Exp.exp (w * (n - e)) =
-      Exp.exp (w * n) * (X / Exp.exp (w * (n - e))) := by
-    rw [show (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) + X / Exp.exp (w * (n - e)) =
-      (Exp.exp (w * n) - 1 + 1) * (X / Exp.exp (w * (n - e))) by ring,
-      tsub_add_cancel_of_le (one_le_exp _)]
-  calc X % Exp.exp (w * (n - e)) * Exp.exp (w * e) + X / Exp.exp (w * (n - e)) +
-        (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e)))
-      = X % Exp.exp (w * (n - e)) * Exp.exp (w * e) +
-          ((Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) +
-            X / Exp.exp (w * (n - e))) := by ring
+  have h1 : Exp.exp (w * n) - 1 + 1 = Exp.exp (w * n) := tsub_add_cancel_of_le (one_le_exp _)
+  calc
+    _ = X % Exp.exp (w * (n - e)) * Exp.exp (w * e) +
+        (Exp.exp (w * n) - 1 + 1) * (X / Exp.exp (w * (n - e))) := by ring
     _ = Exp.exp (w * e) * (Exp.exp (w * (n - e)) * (X / Exp.exp (w * (n - e))) +
-          X % Exp.exp (w * (n - e))) := by rw [h1, hn]; ring
+        X % Exp.exp (w * (n - e))) := by rw [h1, hn]; ring
     _ = _ := by rw [hX]
 
 section main
