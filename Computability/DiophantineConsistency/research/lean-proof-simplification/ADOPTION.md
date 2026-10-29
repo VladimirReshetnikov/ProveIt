@@ -2153,5 +2153,15 @@ or nonignored untracked Lean/Python files. The umbrella and wider closure remain
 unbuilt or cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-annotated-cases.md)
 records hashes and external paths without raw logs or objects.
 
+The witness-bound summand proof sharing `a58822e2ff` removes 13 net Lean
+lines, bringing the reviewed series to 10415. Ten proofs from Claude-coauthored
+commit `f1463077445` use one section-local tactic macro. Paired target and both
+direct clients pass with identical client objects; the refreshed provider replay
+reproduces those outputs. Checked common declarations and sampled registrations
+match; two private macro declarations are added. The specific macro syntax is
+unavailable after import in tested probes. The wider closure remains cached.
+The compact [evidence note](../../reviews/lean-proof-simplification-20261029-wb-member-macro.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
