@@ -1,0 +1,16 @@
+'DiophantineConsistency.PRAInductionChallengeWitness.PRA_exists_inductionChallenges' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAInductionChallengeWitness.PRA_exists_inductionChallenges {n : ℕ}
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 2))
+  (base stop : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (q : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 3)) :
+  have φ := DiophantineConsistency.PRAInductionCounterexample.counterexampleMatrix pred base stop q;
+  ∃ t,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.first) ∧
+      Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.second) ∧
+        Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.third) ∧
+          DiophantineConsistency.PRATheory.PRA ⊢
+            ∀⁰*
+              DiophantineConsistency.PRAHerbrandTripleSelection.matrixAt
+                (DiophantineConsistency.HerbrandPackedTriple.packedTriple φ) t
