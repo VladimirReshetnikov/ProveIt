@@ -1,0 +1,18 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzero.lean:26:16: error: typeclass instance problem is stuck
+  Structure language ?m.27
+
+Note: Lean will not try to resolve this typeclass instance problem because the second type argument to `Structure` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzero.lean:56:2: error: 'change' tactic failed, pattern
+  (Structure.func nonzeroCode fun x_1 => Structure.func Code.succ fun x_2 => x) =
+    Structure.func (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2))) ![x, Structure.func nonzeroCode ![x]]
+is not definitionally equal to target
+  (Structure.func ((Code.zero 0).prec (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2)))) fun i =>
+      Fin.cases (Structure.func Code.succ fun x_1 => ![x] 0) (fun i => ![x] i.succ) i) =
+    Structure.func (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2))) fun i =>
+      Fin.cases (![x] 0)
+        (fun i =>
+          Fin.cases (Structure.func ((Code.zero 0).prec (Code.succ.comp (Codes.cons (Code.zero 2) (Codes.nil 2)))) ![x])
+            (fun i => ![x] i.succ) i)
+        i
