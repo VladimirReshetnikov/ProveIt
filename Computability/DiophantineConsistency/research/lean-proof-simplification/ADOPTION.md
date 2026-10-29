@@ -2037,5 +2037,14 @@ source-matched providers. Checked target reports and sampled registrations
 match; the wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-negative-norm-positive.md)
 records hashes and external paths without retaining raw logs or objects.
 
+The six-step Pell ordinate normalization `cd872a66a3` removes 24 net Lean
+lines, bringing the reviewed series to 10338. Recurrence expansion and ring
+normalization replace the intermediate coordinate calculations. Paired target
+and all three direct-client builds pass with identical client objects; a carrier
+replay with current-source providers also passes. Checked target reports and
+sampled registrations match; the wider closure remains cached. The compact
+[evidence manifest](../../reviews/lean-proof-simplification-20261029-pell-y-six-evidence/BUNDLE.json)
+records hashes and external paths without retaining raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

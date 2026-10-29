@@ -1,0 +1,266 @@
+{
+  "source_commit": "cd872a66a331b8a71fc4678a12761548f08090b4",
+  "source_parent": "83a8662888f0ba40a0ec68af7b73e80296e89655",
+  "source_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticPellFirstIndex.lean",
+  "source_snapshots": {
+    "baseline": {
+      "sha256": "86e3a3698a1a78e713e80d876f8ccee0067dd8900854dcf6958cbe78abf96631",
+      "temporary_path": "/dev/shm/pell-y-six/baseline/DiophantineConsistency/ArithmeticPellFirstIndex.lean",
+      "bytes": 19078
+    },
+    "final": {
+      "sha256": "b345506fef9ec078f8fa801967685fa93adba99b5b16d277aa9ebb1998a899e0",
+      "temporary_path": "/dev/shm/pell-y-six/final/DiophantineConsistency/ArithmeticPellFirstIndex.lean",
+      "bytes": 17819
+    }
+  },
+  "scope": "Replace a manual six-step Pell ordinate calculation by recurrence simplification and ring normalization; 24 net lines removed.",
+  "validation": "Paired target and three direct clients pass, with byte-identical client objects. Eight object-pinned target probes report equal names, types, axioms and sampled simp/instance registrations. A second carrier replay used source-matched updated NegativeNorms, SignedPairs and equation-syntax objects; both phase objects equal the initial client object.",
+  "limitations": [
+    "No raw logs or compiled objects are included. External records, logs, source samples and scripts are available only at the recorded temporary paths and may expire. Full replay requires those artifacts and their dependencies.",
+    "The target and direct clients were checked, not the full current-source transitive closure. Reports do not show equality of proof bodies or every persistent extension.",
+    "An early provider refresh failed before elaboration due to an incomplete overlay and was followed by two successful source-matched replays. The first successful replay predated a subsequent NegativeNorms source update; the second includes that update."
+  ],
+  "independent_review": {
+    "path": "independent-review.txt",
+    "sha256": "d06424dedaa9504e141802712dd4cb764664e6fb98158fcbf16b96d35d4dee6f"
+  },
+  "external_evidence": {
+    "/dev/shm/pell-y-six/README.txt": {
+      "sha256": "c8af495c683a0fb9672dba98e0368b1fa6d6351b5957a601bc6c1b9251b742c9",
+      "bytes": 3543
+    },
+    "/dev/shm/pell-y-six/audit.py": {
+      "sha256": "c320fd1a29d9cd5bc82a5eb27173715f7ee7f6b4ac2ac270383308c7142d1712",
+      "bytes": 2972
+    },
+    "/dev/shm/pell-y-six/audit.log": {
+      "sha256": "d23231681c877b8a03c07eb19ff7fe006364d92968077f808b994cca3465ffa3",
+      "bytes": 779
+    },
+    "/dev/shm/pell-y-six/build.py": {
+      "sha256": "c9d85264a684588779bd8a83b5866ade88c6e9b99b28934f6096f1e86da057c3",
+      "bytes": 2411
+    },
+    "/dev/shm/pell-y-six/probe.py": {
+      "sha256": "3b57be0dcd8ac13df5f79c66a6883e6fca38c58d0ef9af1adc9b50651d8ed321",
+      "bytes": 1182
+    },
+    "/dev/shm/pell-y-six/refresh.py": {
+      "sha256": "3323d391e6bb560b28b3b521fb2641a8ea4bc968381664743720ee69c80913fe",
+      "bytes": 2767
+    },
+    "/dev/shm/pell-y-six/refresh-v2.py": {
+      "sha256": "f1f0b1005fd9f6463b5efaacac2714ec6813b0a9371e554c6ca745a101deee44",
+      "bytes": 3052
+    },
+    "/dev/shm/pell-y-six/baseline-records.json": {
+      "sha256": "fda579767e68444f967a0ab8703a7904f4c338f05f2a073a28149188595d09ab",
+      "bytes": 15608
+    },
+    "/dev/shm/pell-y-six/final-records.json": {
+      "sha256": "1fb4645b84e3dee57eece0a49b7d4c2120ebe25057761bd11bf1d2f383c77e35",
+      "bytes": 15458
+    },
+    "/dev/shm/pell-y-six/probe-records.json": {
+      "sha256": "cae13a01052d2fd4b857269d29401a6c7aa61279414859ea3bd39a51a98c0f32",
+      "bytes": 14883
+    },
+    "/dev/shm/pell-y-six/refresh-records.json": {
+      "sha256": "df1c5feb927b72f4fb44dd99f68df064ca5682d66bcf3d1937c955e7d2a8b345",
+      "bytes": 3905
+    },
+    "/dev/shm/pell-y-six/refresh2-records.json": {
+      "sha256": "121901f4d33ff9160a9f4aa377096a751c5f504851cf67c203dd7b8cd7f99d3c",
+      "bytes": 15020
+    },
+    "/dev/shm/pell-y-six-refresh3/build.py": {
+      "sha256": "89893954c63170dd9933d65d9fab8edba0838ad08950323373406df7c75b9e0d",
+      "bytes": 2371
+    },
+    "/dev/shm/pell-y-six-refresh3/records.json": {
+      "sha256": "f819dc316d3fa7255bf01dfc9dec0aab3771aaec3aa11afb0e0f635297cdbd06",
+      "bytes": 10889
+    },
+    "/tmp/pell-y-six-peer-audit.py": {
+      "sha256": "65aac82877a31f42c39fceab31e81343c25d436f0bb8f250c77198c9881f06a2",
+      "bytes": 3993
+    },
+    "/tmp/pell-y-six-peer-audit.log": {
+      "sha256": "0ccbabbd15c7ca929fab058a988a69581cc034ca67e999c6239f1adcdafbc58a",
+      "bytes": 140
+    },
+    "/tmp/pell-y-six-refresh3-peer-audit.py": {
+      "sha256": "814e0eba9a075c2ab76c1d1687b62ea1f748e572a39e96fd3131cc4f48b93106",
+      "bytes": 1930
+    },
+    "/tmp/pell-y-six-refresh3-peer-audit.log": {
+      "sha256": "bdca55876408b9a59588086853be94c07360a7906b560cffb52a082f1ef91321",
+      "bytes": 124
+    },
+    "/tmp/four-positive-wrappers/upstream-records.json": {
+      "sha256": "5b1b5ebe522817d7c56c3c8f4f17ce53f375b3891daad87bf9423a6d412a5789",
+      "bytes": 21298
+    },
+    "/dev/shm/pell-unit-advance-sharing-refresh/final-records.json": {
+      "sha256": "a0c6a29bb6c7ebe332801023213f7d935db2d1bf959269fb36702ccfb4319a35",
+      "bytes": 22051
+    },
+    "/tmp/signed-pairs-factors/final-records.json": {
+      "sha256": "bb15b29690d49eef61b2f4f18a995c497db65fa1cfd9f0c9441899be5000e843",
+      "bytes": 15532
+    },
+    "/dev/shm/neg-norm-y/final-records.json": {
+      "sha256": "ddb1e58e069c9c8a4d7ddae7c2557d5fda55df877df35926b687d1e023227a2b",
+      "bytes": 14436
+    },
+    "/dev/shm/pell-y-six/baseline-ArithmeticCarrierSoundness2011.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/baseline-ArithmeticPellFirstIndex.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/baseline-ArithmeticPellFirstIndexChecks.log": {
+      "sha256": "9b7daa5a779ff7b578385c198870c8cb4774fe3e9fe0ee6d93256261a9e9a49b",
+      "bytes": 625
+    },
+    "/dev/shm/pell-y-six/baseline-ArithmeticPellPowerRecovery.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/baseline-instances.log": {
+      "sha256": "e28e1c1803e0859325238647862ce48f47eef5734ba6af240cf8bdcfa40c3326",
+      "bytes": 721639
+    },
+    "/dev/shm/pell-y-six/baseline-interfaces.log": {
+      "sha256": "efc12ae857eaaa04dc7866d65ae2de7f3ac8f453f02a116918277e9e46c01d1b",
+      "bytes": 11505
+    },
+    "/dev/shm/pell-y-six/baseline-names.log": {
+      "sha256": "f86c96913d7f3dea2c97030a498543ff79c51a2da2696689b4ba9b7f4b207556",
+      "bytes": 966
+    },
+    "/dev/shm/pell-y-six/baseline-simp.log": {
+      "sha256": "1155a4269c860037b3b1a73a73fa0e86719a8ae5829b2c3c2cfa353b7dfe03b4",
+      "bytes": 1605581
+    },
+    "/dev/shm/pell-y-six/final-ArithmeticCarrierSoundness2011.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/final-ArithmeticPellFirstIndex.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/final-ArithmeticPellFirstIndexChecks.log": {
+      "sha256": "9b7daa5a779ff7b578385c198870c8cb4774fe3e9fe0ee6d93256261a9e9a49b",
+      "bytes": 625
+    },
+    "/dev/shm/pell-y-six/final-ArithmeticPellPowerRecovery.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/final-instances.log": {
+      "sha256": "e28e1c1803e0859325238647862ce48f47eef5734ba6af240cf8bdcfa40c3326",
+      "bytes": 721639
+    },
+    "/dev/shm/pell-y-six/final-interfaces.log": {
+      "sha256": "efc12ae857eaaa04dc7866d65ae2de7f3ac8f453f02a116918277e9e46c01d1b",
+      "bytes": 11505
+    },
+    "/dev/shm/pell-y-six/final-names.log": {
+      "sha256": "f86c96913d7f3dea2c97030a498543ff79c51a2da2696689b4ba9b7f4b207556",
+      "bytes": 966
+    },
+    "/dev/shm/pell-y-six/final-simp.log": {
+      "sha256": "1155a4269c860037b3b1a73a73fa0e86719a8ae5829b2c3c2cfa353b7dfe03b4",
+      "bytes": 1605581
+    },
+    "/dev/shm/pell-y-six/refresh-provider-CurrentEquationSyntax2011.log": {
+      "sha256": "7020dcc733189784891fd202b0e6846327969efefe7daf21bf8d6a0632ca5dde",
+      "bytes": 266
+    },
+    "/dev/shm/pell-y-six/refresh2-baseline-ArithmeticCarrierSoundness2011.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/refresh2-final-ArithmeticCarrierSoundness2011.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/refresh2-provider-CurrentEquationSyntax2011.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/try.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six/baseline-ArithmeticCarrierSoundness2011.time": {
+      "sha256": "2009a5c184946d99ab2fea87856df8882072cc538f424e700954e012ddec782b",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six/baseline-ArithmeticPellFirstIndex.time": {
+      "sha256": "86fcd1866efb0b194e092ea7563dea08dd581a4bf4c589be4a071c1766645f74",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six/baseline-ArithmeticPellFirstIndexChecks.time": {
+      "sha256": "f7f1a19a884a1a2304e39c28da33354e6f511ed3d1c2ba11968b7e51ba81da2f",
+      "bytes": 50
+    },
+    "/dev/shm/pell-y-six/baseline-ArithmeticPellPowerRecovery.time": {
+      "sha256": "52f419b5246676d1860c70c8509d0afc02424139ac2142539e8fd2bc128555a5",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six/final-ArithmeticCarrierSoundness2011.time": {
+      "sha256": "3dbffcff627402d667b741e648579aea634e3643de025d38bbdc3eeb23d42c3f",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six/final-ArithmeticPellFirstIndex.time": {
+      "sha256": "17ccbf94c9202cef4ead7cb2d98c266e406a058d0a59ce1bad5c5e0e9d07cc23",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six/final-ArithmeticPellFirstIndexChecks.time": {
+      "sha256": "77716cb77d55ac9a380f53189e66caf14fb2c4c0fb1499cf7fcf0d00efffd334",
+      "bytes": 50
+    },
+    "/dev/shm/pell-y-six/final-ArithmeticPellPowerRecovery.time": {
+      "sha256": "9079fbad27e5b081ded891ee8c1adf2b08187dfdd4f8b0225bdc8ff521deb177",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six/refresh-provider-CurrentEquationSyntax2011.time": {
+      "sha256": "29fedadfef6b15bbf272a93fbda8340711541df844051b72f31ef341344d1471",
+      "bytes": 87
+    },
+    "/dev/shm/pell-y-six/refresh2-baseline-ArithmeticCarrierSoundness2011.time": {
+      "sha256": "318812d1b0b3873d058b0311cd587ac63669497950f4f9f6dce0ee5b2b4636a9",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six/refresh2-final-ArithmeticCarrierSoundness2011.time": {
+      "sha256": "d1f59dc174902f0463117ee9f4657350f87dcbe1e0962b280f90a8da7c99ef7a",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six/refresh2-provider-CurrentEquationSyntax2011.time": {
+      "sha256": "1303cf9f16fa63229dab9f4e36f321eca0b95b8121c10a57ee0460271a676a39",
+      "bytes": 50
+    },
+    "/dev/shm/pell-y-six-refresh3/baseline.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six-refresh3/final.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/dev/shm/pell-y-six-refresh3/baseline.time": {
+      "sha256": "3c49c1b13c48899846ecc5d49df7f88ee362520c4a06bc46e78b6dfb34f1a34d",
+      "bytes": 52
+    },
+    "/dev/shm/pell-y-six-refresh3/final.time": {
+      "sha256": "0464813d24e022f7f5f20d063cefc166edf2feaf5e09491275a4827e91a36210",
+      "bytes": 52
+    }
+  }
+}

@@ -1,0 +1,9 @@
+Independent review: Pell sixth ordinate recurrence expansion
+
+The candidate replaces intermediate recurrence polynomial identities with x_succ/y_succ expansions at indices 6 through 2, followed by the index-one identities and ring normalization after unfolding delta. Statements, assumptions, definitions and imports remain unchanged. The baseline target snapshot matches the worktree at review. Git blame attributes the old proof to 531058ae33; no Claude coauthor is claimed.
+
+/tmp/pell-y-six-peer-audit.py independently verifies eight paired target/client builds, source snapshots and first object paths, eight target object-pinned probes, matching target reports and registrations, identical client objects, and the earlier three-build provider/client refresh. Matching producer rows establish the documented associations at build time. The target logs and production clients are empty; both check-client logs contain the same five expected #print axioms outputs. The earlier refresh pins an old NegativeNorms source/object pair which was current when built but was superseded by commit 68cfd1dde1.
+
+I ran a further source-matched NegativeNorms replay under /dev/shm/pell-y-six-refresh3, using the newly compiled NegativeNorms object and the refreshed SignedPairs and equation-syntax providers. Both phase builds succeed with empty logs and produce the same client object as each other and the initial client. /tmp/pell-y-six-refresh3-peer-audit.py checks source and object pins, actual first paths and the producer associations. This strengthens the earlier lane without proving a source-current transitive closure: other project/Foundation/Mathlib dependencies remain cached. README.txt was updated to disclose the additional replay and the earlier historical boundary. No other concern found.
+
+Postcommit check: cd872a66a3 and its parent match the tested final and baseline source snapshots.
