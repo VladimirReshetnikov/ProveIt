@@ -34,6 +34,11 @@ identifies Foundation's existing cut-elimination theorem and explains the
 remaining arithmetic reduction and witnessing work. It also examines a direct
 primitive-recursive witness route; neither route is already formalized.
 
+A [first-order PRA design](research/pra-first-order-language-design-20261029.md)
+specifies arity-indexed primitive-recursive codes, defining equations, full
+language equality, parameterized quantifier-free induction and the exact
+ordered-ring embedding. It is a design, not yet a Lean implementation.
+
 ## Concrete bridge to formalize
 
 1. Choose and define a precise PRA language and proof calculus, including its
