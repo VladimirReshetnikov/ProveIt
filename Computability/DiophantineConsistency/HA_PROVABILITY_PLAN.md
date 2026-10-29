@@ -2643,3 +2643,9 @@ The [adaptive Mersenne cancellation](reviews/adaptive-mersenne2011-root.md)
 now removes the factor three from `q | 3·2^R` for the actual Mersenne-port
 shape, including arbitrary internal exponents. The actual radix client is
 a separate binding.
+
+The [actual adaptive radix theorem](reviews/adaptive-radix2011-root.md)
+now derives positive internal `N` and `w` with `q=2^(width·N)`,
+`width·N≤R`, `w=2^(R−width·N)`, and `X=q·w` from the literal current
+zero, retaining both exponential graphs. Transport/window soundness,
+the internal converse and the HA/PRA transfers remain open.
