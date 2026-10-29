@@ -56,27 +56,12 @@ theorem localCheck_correct (r : Row) (seen : List Row) :
     localCheck (rowCode r) (listCode (seen.map rowCode))=1 ↔ valid r seen=true := by
   have ht : r.tag=0 ∨ r.tag=1 ∨ r.tag=2 ∨ r.tag=3 ∨ r.tag=4 ∨ r.tag=5 ∨
       r.tag=6 ∨ r.tag=7 ∨ 8≤r.tag := by omega
-  rcases ht with h | h | h | h | h | h | h | h | h
-  · simp [localCheck,decodeRow_rowCode,h,valid,atomicCheck_correct]
-  · simp [localCheck,decodeRow_rowCode,h,valid,atomicCheck_correct]
-  · simp [localCheck,decodeRow_rowCode,h,valid,bottomCheck]
-  · simp [localCheck,decodeRow_rowCode,h,valid,binaryCheck_correct]
-  · simp [localCheck,decodeRow_rowCode,h,valid,binaryCheck_correct]
-  · simp [localCheck,decodeRow_rowCode,h,valid,binaryCheck_correct]
-  · simp [localCheck,decodeRow_rowCode,h,valid,unaryCheck_correct]
-  · simp [localCheck,decodeRow_rowCode,h,valid,unaryCheck_correct]
-  · have h0 : r.tag≠0 := by omega
-    have h1 : r.tag≠1 := by omega
-    have h2 : r.tag≠2 := by omega
-    have h3 : r.tag≠3 := by omega
-    have h4 : r.tag≠4 := by omega
-    have h5 : r.tag≠5 := by omega
-    have h6 : r.tag≠6 := by omega
-    have h7 : r.tag≠7 := by omega
-    have hs1 : r.tag-1≠0 := by omega
-    have hs5 : r.tag-5≠0 := by omega
-    have hs7 : r.tag-7≠0 := by omega
-    simp [localCheck,decodeRow_rowCode,hs1,hs5,hs7,h0,h1,h2,h3,h4,h5,h6,h7,valid]
+  rcases ht with h | h | h | h | h | h | h | h | h <;>
+    simp [localCheck,decodeRow_rowCode,valid,atomicCheck_correct,h,
+      bottomCheck,binaryCheck_correct,unaryCheck_correct]
+  have high : ∀ k ≤ 7, r.tag ≠ k := by omega
+  have hsub : ∀ k ≤ 7, r.tag - k ≠ 0 := by omega
+  simp [high,hsub]
 
 theorem localCheck_boolean (code history : Nat) :
     localCheck code history=0 ∨ localCheck code history=1 := by
