@@ -2573,6 +2573,47 @@ combinators.
 
 **Drop-in for the L inductions.** `ZFCinPA.SizedLPlumbing.compiledLe` is the bounded replacement for `LDriverSteps.compiled`/`LGlue1.compiledG`. A template `h : templTheory ⊢ σ` compiles at arbitrary placeholders of level `u ≥ 2` within level `cExpG (tmA h) (tmB h) u + tmK h + 1` on the `DLv` scale. The constants are read off `h.get.toProof2`. `stg_lvB` collapses the compiler's stage tower into one level per stage.
 
+## Stage 3b: the first bounded `L` inductions (2026-10-29)
+
+Three internal inductions of the constructible-universe interpretation now
+have bounded twins on the `DLv` scale, axioms `propext`, `Classical.choice`,
+`Quot.sound` (`ZFCinPA.SizedLAudit`):
+
+| Bounded twin | Source | Level |
+| --- | --- | --- |
+| `SizedLGlue1.fun_MT_leJ` | `LGlue1.fun_MT` | `wF J + 10 i` for `i ≤ J` |
+| `SizedLNumOK.numOK_leJ` | `LNumOK.numOK` | `wN J + 10 i` for `i ≤ J` |
+| `SizedLNumOK.numOK_right_leJ` | `LGlue1.numOK_right` | `wN J + 10 a + 3` |
+| `SizedLSlot.slot_MT_leJ` | `LGlue1.slot_MT` | `wSl J + 20 j` for `a < j ≤ J` |
+
+**The fixed-target pattern.** Each induction fixes its target `J` first and
+bounds every placeholder up to `J` by one level: `uM J = Cm·2^(4J) + Cm + 2`
+for the matching codes, `uN J = Cn + 6J` for numeral chains
+(`numChain_le`: one chain step is three pairings, six levels), and
+`uS J = uM J + uN J + Ce + J + 6` for the slot tuples, which also hold
+`x = &a` (`xT_le`, linear in `a`). The templates then compile at one fixed
+level, `compiledLe` at `u J`, and each induction step adds a constant number
+of levels. The motive is a `Σ₁` predicate with the base level abstracted as
+a variable `W0`.
+
+**Combinators driven by levels** (`SizedLNumOK`): `imp_ante_le` (the
+antecedent of an implication of level `m` has level `10(m+1)`), `dmdpL`,
+`dk_introL`, `dk_rightL` (∧-elimination by a cut on the conjunction; its
+negation costs the factor `10`), `K6_le`, `top_le`, and `K8_le`
+(`SizedLSlot`).
+
+**Definability trap.** `definability` (aesop) fails with "goal was not
+normalised" on a motive applying the two-argument `slotVal`, whether or not a
+bounded quantifier is present. `slot_MT_leJ` therefore inducts along the
+diagonal `j = b + 1 + d` for each fixed `d`, the recursion `slot_MT` actually
+uses (slot `b+1` of `M_{j+1}` from slot `b` of `M_j`), with the sequent
+packaged as the unary `diagSeq d` whose definability instance is an explicit
+composition.
+
+**Next:** the driver steps (`LDriverSteps`) and `driverT`; then `glue`
+(`LGlue1–4`) and `qPremise`; `peel`/`peel_close`; `sep_base`/`repl_base` and
+the obligations.
+
 ## Internal rank window for the smaller adaptive equation
 
 The [rank-window client](reviews/adaptive-rank-window2011-root.md) derives
