@@ -1,4 +1,5 @@
 import ZFCinPA.ValidatorEnvironmentOpening254
+import ZFCinPA.ValidatorEnvironmentSubstitution254
 
 set_option autoImplicit false
 noncomputable section
@@ -104,60 +105,13 @@ private instance len_delta : 𝚫₁-Function₁[V] (len : V→V) :=
 lemma encode_instantiateAt {d p : V} (hp : IsSemiformula ℒₛₑₜ (d+1) p)
     (F B B' index fresh : V) (hB : Ext d B B' (freeLabel F index)) :
     encode F B fresh (instantiateAt d index p)=encode F B' fresh p := by
-  have main : ∀ n p : V, IsSemiformula ℒₛₑₜ n p →
-      ∀ d : V, n=d+1 → ∀ F B B' index fresh : V, Ext d B B' (freeLabel F index) →
-        encode F B fresh (instantiateAt d index p)=encode F B' fresh p := by
-    intro n p hp
-    apply IsSemiformula.pi1_structural_induction (P := fun n p =>
-      ∀ d : V, n=d+1 → ∀ F B B' index fresh : V, Ext d B B' (freeLabel F index) →
-        encode F B fresh (instantiateAt d index p)=encode F B' fresh p)
-      ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
-    · unfold Ext instantiateAt instantiationVec; definability
-    · intro n arity R terms hr ht d hn F B B' index s hB
-      subst n
-      have hv := (instantiationVec_typed d index).termSubstVec ht
-      rw [instantiateAt_rel d index hr ht.isUTerm,encode_rel F B s hr hv.isUTerm,
-        encode_rel F B' s hr ht.isUTerm]
-      simp only [ValidatorEnvironmentLabels254.Formulas.atom,nth_adjoin_zero,nth_adjoin_one,
-        vec_labels_instantiate ht F B B' index hB]
-    · intro n arity R terms hr ht d hn F B B' index s hB
-      subst n
-      have hv := (instantiationVec_typed d index).termSubstVec ht
-      rw [instantiateAt_nrel d index hr ht.isUTerm,encode_nrel F B s hr hv.isUTerm,
-        encode_nrel F B' s hr ht.isUTerm]
-      simp only [ValidatorEnvironmentLabels254.Formulas.atom,nth_adjoin_zero,nth_adjoin_one,
-        vec_labels_instantiate ht F B B' index hB]
-    · intro n d hn F B B' index s hB; simp
-    · intro n d hn F B B' index s hB; simp
-    · intro n p q hp hq ihp ihq d hn F B B' index s hB
-      subst n
-      rw [instantiateAt_and d index hp.isUFormula hq.isUFormula,
-        encode_and F B s (instantiateAt_isSemiformula index hp).isUFormula
-          (instantiateAt_isSemiformula index hq).isUFormula,
-        encode_and F B' s hp.isUFormula hq.isUFormula,
-        ihp d rfl F B B' index s hB,ihq d rfl F B B' index s hB]
-    · intro n p q hp hq ihp ihq d hn F B B' index s hB
-      subst n
-      rw [instantiateAt_or d index hp.isUFormula hq.isUFormula,
-        encode_or F B s (instantiateAt_isSemiformula index hp).isUFormula
-          (instantiateAt_isSemiformula index hq).isUFormula,
-        encode_or F B' s hp.isUFormula hq.isUFormula,
-        ihp d rfl F B B' index s hB,ihq d rfl F B B' index s hB]
-    · intro n p hp ih d hn F B B' index s hB
-      subst n
-      rw [instantiateAt_all d index hp.isUFormula,
-        encode_all F B s (instantiateAt_isSemiformula index hp).isUFormula,
-        encode_all F B' s hp.isUFormula]
-      exact congrArg (fun body => _root_.SetTheory.BusyBeaver.ZFC.ArithmeticCode254.wal s body)
-        (ih (d+1) rfl F (s∷B) (s∷B') index (s+2) (ext_cons hB s))
-    · intro n p hp ih d hn F B B' index s hB
-      subst n
-      rw [instantiateAt_exs d index hp.isUFormula,
-        encode_exs F B s (instantiateAt_isSemiformula index hp).isUFormula,
-        encode_exs F B' s hp.isUFormula,
-        ih (d+1) rfl F (s∷B) (s∷B') index (s+2) (ext_cons hB s)]
-  exact main (d+1) p hp d rfl F B B' index fresh hB
-
+  have hm : ValidatorEnvironmentSubstitution254.Matches F B B' (d+1) (instantiationVec d index) := by
+    intro i hi
+    have hv : IsSemiterm ℒₛₑₜ (d+1) (^#i) := by simpa using hi
+    have h := term_labels_instantiate hv F B B' index hB
+    simpa only [termInstantiateAt,termSubst_bvar,TermLabels.term_bvar] using h
+  exact ValidatorEnvironmentSubstitution254.encode_subst hp (instantiationVec_typed d index)
+    F B B' fresh hm
 
 /-- Actual single-variable source substitution at depth zero. -/
 lemma encode_substs1_fvar {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
