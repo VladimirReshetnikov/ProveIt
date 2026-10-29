@@ -1370,5 +1370,14 @@ generated auxiliaries appear; four public and two private generated proof
 names disappear. Preliminary overwritten or failed attempts are retained as
 historical evidence, and transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-near-isolation-sharing-evidence/BUNDLE.json).
 
+The bounded tape-return sharing `c6960dfa9a` removes a duplicate induction
+and one net Lean line, bringing the reviewed series to 9626. The source was
+introduced in Claude-coauthored commit `11f7ea173b`. The nonempty case now
+uses the existing stronger return theorem with the same `fileCost` bound; the
+empty case remains reflexive. Paired target and clients through the tape-run
+endpoint pass. The 38 target names, 24 public type/axiom reports, 29,189 global
+simp entries and bounded endpoint reports match. Two initial malformed-overlay
+attempts are excluded, and transitive providers remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-tape-return-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

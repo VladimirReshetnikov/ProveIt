@@ -1,0 +1,18 @@
+Independent review of bounded tape-return sharing, 28 October 2026
+
+The empty file remains the reflexive zero-cost case. For a nonempty file,
+return_nonemptyB specializes with entry=exit, so the original exit/ones
+transition hypothesis supplies both entry and exit transitions. Its conclusion
+has the same start, finish and fileCost clock as return_fileB. The stronger
+lemma is moved earlier unchanged; no data, imports or theorem statements change.
+
+I checked the eight paired target and client build statuses, source, output and
+log hashes and all 14 recorded direct inputs against the retained paths. The
+Btape endpoint reports match, as do the recorded declaration and global simp
+comparisons. The archive passes CRC and all 67 manifest checks, and its source
+snapshots equal the parent and source of commit c6960dfa9a. The two initial
+malformed-overlay failures are excluded from successful results; their time
+files were overwritten, with values retained in the receipts. Historical
+provider builds did not capture all their own inputs at compile time, and
+transitive project and package objects remain cached, so this does not prove a
+clean full-closure build. No repository files were changed during the review.
