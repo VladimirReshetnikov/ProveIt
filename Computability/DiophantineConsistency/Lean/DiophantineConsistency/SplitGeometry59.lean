@@ -181,6 +181,19 @@ def quadraticIndices : Fin 22 → Finset (Fin 39) :=
 def quadraticSupport (k : Fin 22) : Finset (PairIndex 30) :=
   (quadraticIndices k).image activePair
 
+/-- A cross target is isolated globally if nearby targets are isolated. -/
+theorem target_cross_of_near {t u a b d : ℕ} (ha : a ≤ d) (hb : b ≤ d)
+    (near : t ≤ u + d → u ≤ t + d → b + (t - a) ≠ u) :
+    b + (t - a) ≠ u := by
+  by_cases h : t ≤ u + d
+  · by_cases h' : u ≤ t + d
+    · exact near h h'
+    · intro he
+      have hs := Nat.sub_le t a
+      omega
+  · intro he
+    omega
+
 theorem linear_span : ∀ k i, i ∈ linearSupport k → weights i ≤ targets k := by decide +kernel
 
 private theorem linear_cross_near : ∀ k l, k ≠ l →
@@ -191,16 +204,8 @@ private theorem linear_cross_near : ∀ k l, k ≠ l →
 theorem linear_cross (k l : Fin 22) (hkl : k ≠ l) (i : Fin 31)
     (hi : i ∈ linearSupport k) (j : Fin 31) :
     weights j + (targets k - weights i) ≠ targets l := by
-  have hw := maximum_weight i
-  have hwj := maximum_weight j
-  by_cases h1 : targets k ≤ targets l+116
-  · by_cases h2 : targets l ≤ targets k+116
-    · exact linear_cross_near k l hkl h1 h2 i hi j
-    · intro he
-      have hs := Nat.sub_le (targets k) (weights i)
-      omega
-  · intro he
-    omega
+  exact SplitCertificate59.target_cross_of_near (maximum_weight i) (maximum_weight j)
+    (fun h1 h2 => linear_cross_near k l hkl h1 h2 i hi j)
 
 private theorem quadratic_span_indices : ∀ k i, i ∈ quadraticIndices k →
     pairWeight weights (activePair i) ≤ targets k := by decide +kernel
@@ -222,14 +227,9 @@ private theorem quadratic_cross_indices (k l : Fin 22) (hkl : k ≠ l)
   have hp : pairWeight weights (activePair a) ≤ 232 := by
     dsimp only [SelectiveQuadraticCoding.pairWeight]
     omega
-  by_cases h1 : targets k ≤ targets l+232
-  · by_cases h2 : targets l ≤ targets k+232
-    · exact quadratic_cross_near k l hkl h1 h2 a ha i j
-    · intro he
-      have hs := Nat.sub_le (targets k) (pairWeight weights (activePair a))
-      omega
-  · intro he
-    omega
+  have hb : weights i + weights j ≤ 232 := by omega
+  exact SplitCertificate59.target_cross_of_near hp hb
+    (fun h1 h2 => quadratic_cross_near k l hkl h1 h2 a ha i j)
 
 theorem quadratic_span (k : Fin 22) (p : PairIndex 30) (hp : p ∈ quadraticSupport k) :
     pairWeight weights p ≤ targets k := by
