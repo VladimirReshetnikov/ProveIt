@@ -1893,5 +1893,12 @@ unknown reasons while their checked interfaces match; the other checked client
 objects match. The umbrella was not rebuilt and two external cached inputs lack
 matched producer receipts. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-current-carry-to-mf-evidence/BUNDLE.json).
 
+The carrier square-magnitude simplification `c110faf349` removes five net Lean
+lines, bringing the reviewed series to 10193. Pair swapping reduces both order
+cases to the same ring calculation. Paired target and three direct clients pass
+with identical client objects; all 65 target declaration reports and sampled
+registrations match. The historical transitive Pell chain and wider closure
+remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-carrier-square-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
