@@ -360,9 +360,7 @@ theorem twice_index_lt_y (a p : V) (hp : 3≤p) : 2*p<ycoord p a := by
       have h16 : (16:V)≤ycoord 3 a+1 := by
         rw [y_three]
         simpa only [show (4:V)*4=16 by ring,mul_assoc] using mul_le_mul_of_nonneg_left hsq (by simp : (0:V)≤4)
-      have h716 : (7:V)<16 := by
-        have he := lt_add_of_pos_right (7:V) (show (0:V)<9 by simp)
-        simpa only [show (7:V)+9=16 by ring] using he
+      have h716 : (7:V)<16 := by norm_num
       have h7 : (7:V)<ycoord 3 a+1 := lt_of_lt_of_le h716 h16
       have h6 : (6:V)<ycoord 3 a := by
         have hh : (6:V)+1<ycoord 3 a+1 := by simpa only [show (6:V)+1=7 by ring] using h7
@@ -373,10 +371,8 @@ theorem twice_index_lt_y (a p : V) (hp : 3≤p) : 2*p<ycoord p a := by
         exact le_trans (by simp : (1:V)≤3) (by simp)
       have he0 : 2*(t+3)+2<ycoord (t+3) a+2 := by
         simpa only [add_comm] using _root_.add_lt_add_right ih 2
-      have he := lt_of_lt_of_le he0 (y_step_two a (t+3) hj)
-      rw [show 2*(t+3)+2=2*(t+1+3) by ring,
-        show t+3+1=t+1+3 by ring] at he
-      exact he
+      simpa only [show 2*(t+3)+2=2*(t+1+3) by ring,
+        show t+3+1=t+1+3 by ring] using lt_of_lt_of_le he0 (y_step_two a (t+3) hj)
   have h := all (p-3)
   simpa only [tsub_add_cancel_of_le hp] using h
 
