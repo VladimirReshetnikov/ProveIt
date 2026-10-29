@@ -1615,5 +1615,22 @@ objects; all 46 declaration reports, 55,579 simp entries and 23,485 instances
 match. A restored docstring is retained; older SignedPellResidue and other
 transitive objects remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-nonzero-sphere-sharing-evidence/BUNDLE.json).
 
+The binary formula-code uniqueness sharing `3148a695af` removes four net
+Lean lines, bringing the reviewed series to 9974. One private lemma handles the
+same inversion and child uniqueness argument for all three binary tags. Paired
+target and ObjectCodeSeal builds pass with identical client objects; all 88
+existing declaration reports, 12,375 simp entries and 5,184 instances match.
+One private helper is added; the broader closure remains cached. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261029-object-binary-unique-evidence/BUNDLE.json).
+
+The DAG zero-register skip `4e897bac04` removes two net Lean lines, bringing
+the reviewed series to 9976. The affected proof was introduced in
+Claude-coauthored commit `ca0c31b62d5`. The empty clear uses the existing
+zero-test and skip rules directly with the original guard and clock bound.
+Paired RootA/B/C builds pass with identical client objects; all 324 checked
+names, 294 public/generated reports, private reports, 29,279 simp entries and
+13,370 instances match. Direct providers are source-pinned and the wider
+closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-dag-zero-skip-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
