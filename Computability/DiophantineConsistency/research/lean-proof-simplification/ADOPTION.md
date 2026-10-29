@@ -1796,5 +1796,12 @@ providers; unchanged client objects match. The 46 retained declaration reports
 and sampled registrations match. A stale-provider lane was superseded and the
 wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-four-positive-wrappers-evidence/BUNDLE.json).
 
+The signed-pair unit-factor simplification `f37a2aad85` removes ten net Lean
+lines, bringing the reviewed series to 10090. Positivity of the product and
+divisibility of one replace two contradiction arguments and a multiplication
+comparison. Paired target and three direct clients pass with identical client
+objects; checked declaration and registration reports match. The wider closure
+remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-signed-pairs-factors-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
