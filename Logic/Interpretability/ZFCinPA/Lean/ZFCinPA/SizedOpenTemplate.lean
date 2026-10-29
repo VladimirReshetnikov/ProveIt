@@ -127,67 +127,64 @@ theorem good_open (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ
   | closed Δ p hp hn =>
       intro hA _
       unfold Good
-      simp only [derMax] at hA
-      exact ⟨here _ (le_trans (le_max_left _ _) hA), trivial⟩
+      simp only [derMax, max_le_iff] at hA
+      exact ⟨here _ hA.1, trivial⟩
   | axm σ hσ hΓ =>
       intro hA hax
       unfold Good
-      simp only [derMax] at hA
+      simp only [derMax, max_le_iff] at hA
       simp only [AxOK] at hax
-      exact ⟨here _ (le_trans (le_max_left _ _) hA), hax⟩
+      exact ⟨here _ hA.1, hax⟩
   | verum h =>
       intro hA _
       unfold Good
-      simp only [derMax] at hA
-      exact ⟨here _ (le_trans (le_max_left _ _) hA), trivial⟩
+      simp only [derMax, max_le_iff] at hA
+      exact ⟨here _ hA.1, trivial⟩
   | and h dp dq ihp ihq =>
       intro hA hax
       unfold Good
-      simp only [derMax] at hA
+      simp only [derMax, max_le_iff] at hA
       simp only [AxOK] at hax
-      have h2 := le_trans (le_max_right _ _) hA
-      exact ⟨here _ (le_trans (le_max_left _ _) hA),
-        ihp (le_trans (le_max_left _ _) h2) hax.1, ihq (le_trans (le_max_right _ _) h2) hax.2⟩
+      exact ⟨here _ hA.1,
+        ihp hA.2.1 hax.1, ihq hA.2.2 hax.2⟩
   | or h dp ih =>
       intro hA hax
       unfold Good
-      simp only [derMax] at hA
+      simp only [derMax, max_le_iff] at hA
       simp only [AxOK] at hax
-      exact ⟨here _ (le_trans (le_max_left _ _) hA), ih (le_trans (le_max_right _ _) hA) hax⟩
+      exact ⟨here _ hA.1, ih hA.2 hax⟩
   | all h dp ih =>
       intro hA hax
       unfold Good
-      simp only [derMax] at hA
+      simp only [derMax, max_le_iff] at hA
       simp only [AxOK] at hax
-      exact ⟨here _ (le_trans (le_max_left _ _) hA), ih (le_trans (le_max_right _ _) hA) hax⟩
+      exact ⟨here _ hA.1, ih hA.2 hax⟩
   | exs h t dp ih =>
       intro hA hax
       unfold Good
-      simp only [derMax] at hA
+      simp only [derMax, max_le_iff] at hA
       simp only [AxOK] at hax
-      have h2 := le_trans (le_max_right _ _) hA
-      refine ⟨here _ (le_trans (le_max_left _ _) hA), ?_, ih (le_trans (le_max_right _ _) h2) hax⟩
-      exact le_trans (translateTerm_le t) (le_trans (lvB_mono (cast_le (le_trans (le_max_left _ _) h2))) hT)
+      refine ⟨here _ hA.1, ?_, ih hA.2.2 hax⟩
+      exact le_trans (translateTerm_le t) (le_trans (lvB_mono (cast_le hA.2.1)) hT)
   | wk dp hsub ih =>
       intro hA hax
       unfold Good
-      simp only [derMax] at hA
+      simp only [derMax, max_le_iff] at hA
       simp only [AxOK] at hax
-      exact ⟨here _ (le_trans (le_max_left _ _) hA), ih (le_trans (le_max_right _ _) hA) hax⟩
+      exact ⟨here _ hA.1, ih hA.2 hax⟩
   | shift dp ih =>
       intro hA hax
       unfold Good
-      simp only [derMax] at hA
+      simp only [derMax, max_le_iff] at hA
       simp only [AxOK] at hax
-      exact ⟨here _ (le_trans (le_max_left _ _) hA), ih (le_trans (le_max_right _ _) hA) hax⟩
+      exact ⟨here _ hA.1, ih hA.2 hax⟩
   | cut dp dq ihp ihq =>
       intro hA hax
       unfold Good
-      simp only [derMax] at hA
+      simp only [derMax, max_le_iff] at hA
       simp only [AxOK] at hax
-      have h2 := le_trans (le_max_right _ _) hA
-      exact ⟨here _ (le_trans (le_max_left _ _) hA),
-        ihp (le_trans (le_max_left _ _) h2) hax.1, ihq (le_trans (le_max_right _ _) h2) hax.2⟩
+      exact ⟨here _ hA.1,
+        ihp hA.2.1 hax.1, ihq hA.2.2 hax.2⟩
 
 /-! ## The bounded open compiler -/
 
