@@ -24,10 +24,9 @@ theorem noCarry_iff (a b : V) : NoCarry a b ↔ ∀ i, fbit a i + fbit b i ≤ 1
   · intro h i
     by_cases hi : i < a + b + 1
     · exact h i hi
-    · have hai : ‖a‖ ≤ i := le_trans (length_le a)
-        (le_trans (le_add_right le_rfl) (le_of_lt (lt_of_lt_of_le (lt_add_one _) (not_lt.mp hi))))
-      have hbi : ‖b‖ ≤ i := le_trans (length_le b)
-        (le_trans (le_add_left le_rfl) (le_of_lt (lt_of_lt_of_le (lt_add_one _) (not_lt.mp hi))))
+    · have habi : a + b ≤ i := le_trans le_self_add (not_lt.mp hi)
+      have hai : ‖a‖ ≤ i := le_trans (length_le a) (le_trans (le_add_right le_rfl) habi)
+      have hbi : ‖b‖ ≤ i := le_trans (length_le b) (le_trans (le_add_left le_rfl) habi)
       rw [fbit_eq_zero_of_le hai, fbit_eq_zero_of_le hbi]
       simp
   · intro h i _; exact h i
@@ -95,11 +94,8 @@ theorem population_add (a b : V) :
     case ind N ih =>
       intro a _ b _ hab
       rcases zero_or_succ N with rfl | ⟨N', hN'⟩
-      · have ha : a = 0 := by
-          rcases zero_or_succ a with h | ⟨x, rfl⟩
-          · exact h
-          · exfalso; simp at hab
-        have hb : b = 0 := by subst ha; simpa using hab
+      · have ha : a = 0 := le_antisymm (by rw [← hab]; exact le_add_right le_rfl) (Arithmetic.zero_le _)
+        have hb : b = 0 := le_antisymm (by rw [← hab]; exact le_add_left le_rfl) (Arithmetic.zero_le _)
         subst ha; subst hb
         refine ⟨by simp, ⟨fun _ => ?_, fun _ => by simp⟩⟩
         rw [noCarry_iff]; intro i; simp
