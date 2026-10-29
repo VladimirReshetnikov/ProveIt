@@ -53,10 +53,8 @@ theorem mul_mod_mul {k a b : V} (hk : 0 < k) (hb : 0 < b) : (k * a) % (k * b) = 
   have hr : k * (a % b) < k * b := mul_lt_mul_of_pos_left (mod_lt _ hb) hk
   rw [he, mod_mul_add' _ _ (mul_pos hk hb), mod_eq_self_of_lt hr]
 
-theorem mod_of_mul_mod (a : V) {M q : V} (hM : 0 < M) : (a % (M * q)) % M = a % M := by
-  conv_rhs => rw [← div_add_mod a (M * q)]
-  rw [show M * q * (a / (M * q)) + a % (M * q) = a % (M * q) + M * (q * (a / (M * q))) by ring,
-    mod_add_mul' _ _ hM]
+theorem mod_of_mul_mod (a : V) {M q : V} (hM : 0 < M) : (a % (M * q)) % M = a % M :=
+  ArithmeticModularCancellation.mod_mod_of_dvd hM (dvd_mul_right M q) a
 
 theorem add_cancel_mod {M a x y : V} (hM : 0 < M) (h : (a + x) % M = (a + y) % M) :
     x % M = y % M := by
