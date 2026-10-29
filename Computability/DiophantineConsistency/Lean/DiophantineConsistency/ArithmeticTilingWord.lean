@@ -222,15 +222,11 @@ theorem cellOf_east (y : V) : eastC (cellOf T w H y) = westC (cellOf T w H (y + 
   have hy : w * (y / w) + y % w = y := div_add_mod y w
   have hk : y / w % H < H := mod_lt _ hH0
   unfold cellOf
+  have hy1 : y + 1 = w * (y / w) + (y % w + 1) := by rw [← add_assoc, hy]
   rcases lt_or_eq_of_le (lt_iff_succ_le.mp (mod_lt y hw0)) with h | h
-  · have e : y + 1 = w * (y / w) + (y % w + 1) := by rw [← add_assoc, hy]
-    rw [e, mod_mul_add' _ _ hw0, mod_eq_self_of_lt h, div_mul_add' _ _ h]
+  · rw [hy1, mod_mul_add' _ _ hw0, mod_eq_self_of_lt h, div_mul_add' _ _ h]
     exact band_east hT hw hH hH4 _ _ hk h
-  · have e : y + 1 = w * (y / w + 1) := by
-      calc y + 1 = (w * (y / w) + y % w) + 1 := by rw [hy]
-        _ = w * (y / w) + (y % w + 1) := by ring
-        _ = w * (y / w) + w := by rw [h]
-        _ = w * (y / w + 1) := by ring
+  · have e : y + 1 = w * (y / w + 1) := by rw [hy1, h]; ring
     have e2 : w * (y / w + 1) / w = y / w + 1 := by
       simpa using div_mul_add' (y / w + 1) w hw0
     have e3 : y % w = w - 1 := eq_tsub_of_add_eq h
