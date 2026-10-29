@@ -1,0 +1,16 @@
+'DiophantineConsistency.PRAFiniteWitnessList.PRA_proves_listWitnessChoice' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFiniteWitnessList.PRA_exists_listWitness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAFiniteWitnessList.PRA_exists_listWitness {n : ℕ}
+  (good : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1))
+  (fallback : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (ws : List (DiophantineConsistency.PRAFiniteFunctionCodes.Code n))
+  (hBit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence good)
+  (hEither :
+    DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRAFiniteWitnessList.listSentence good fallback ws) :
+  ∃ c,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval c) ∧
+      DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* DiophantineConsistency.PRAFiniteWitnessList.witnessFormula good c

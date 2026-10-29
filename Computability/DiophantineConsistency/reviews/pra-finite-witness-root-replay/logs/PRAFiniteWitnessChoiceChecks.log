@@ -1,0 +1,15 @@
+'DiophantineConsistency.PRAFiniteWitnessChoice.modelChooseWitness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFiniteWitnessChoice.PRA_proves_twoWitnessChoice' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAFiniteWitnessChoice.PRA_proves_twoWitnessChoice {n : ℕ}
+  (good : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1))
+  (left right : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (hBit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence good)
+  (hEither :
+    DiophantineConsistency.PRATheory.PRA ⊢
+      DiophantineConsistency.PRAFiniteWitnessChoice.twoWitnessSentence good left right) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    DiophantineConsistency.PRAFiniteWitnessChoice.selectedWitnessSentence good left right

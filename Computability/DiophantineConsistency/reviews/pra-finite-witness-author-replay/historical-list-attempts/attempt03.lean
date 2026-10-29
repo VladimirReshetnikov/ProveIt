@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAFiniteWitnessList
+#print axioms DiophantineConsistency.PRAFiniteWitnessList.PRA_proves_listWitnessChoice
+#print axioms DiophantineConsistency.PRAFiniteWitnessList.PRA_exists_listWitness
+#check DiophantineConsistency.PRAFiniteWitnessList.PRA_exists_listWitness

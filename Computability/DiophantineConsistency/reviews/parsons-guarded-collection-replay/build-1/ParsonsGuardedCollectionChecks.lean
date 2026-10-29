@@ -1,0 +1,9 @@
+import DiophantineConsistency.ParsonsGuardedCollection
+#print axioms DiophantineConsistency.ParsonsGuardedCollection.guard_sigma
+#print axioms DiophantineConsistency.ParsonsGuardedCollection.guard_semantics
+#print axioms DiophantineConsistency.ParsonsGuardedCollection.unguard_semantics
+#print axioms DiophantineConsistency.ParsonsGuardedCollection.of_semantics
+#print axioms DiophantineConsistency.ParsonsGuardedCollection.guarded_collect
+#print axioms DiophantineConsistency.ParsonsGuardedCollection.restricted_outer
+#print axioms DiophantineConsistency.ParsonsGuardedCollection.strip_to_collection
+#print axioms DiophantineConsistency.ParsonsGuardedCollection.guarded_bounded

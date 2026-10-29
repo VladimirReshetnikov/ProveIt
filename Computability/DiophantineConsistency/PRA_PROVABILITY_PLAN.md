@@ -22,8 +22,11 @@ now proves that step under arbitrary assignments, yielding an unconditional
 collection-rule transformer when the exact implication is parameter-free.
 The [arbitrary-parameter collection rule](reviews/parsons-specialize-root.md)
 is now proved as a noncomputable proof transformer by specializing the closed
-finite-extension theorem. The guarded-context version and a PRA-internal or
-primitive-recursive transformer remain open.
+finite-extension theorem. The [positive-guarded bounded rule](reviews/parsons-guarded-collection-root.md)
+is also proved for Σ₁ side formulas and arbitrary parameters. These are
+noncomputable proof transformers, not conditional collection axioms or
+PRA-internal transformations. The complete cut-free translation and
+witnessing remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
@@ -110,6 +113,9 @@ with standard PRA or establish a witnessing or conservation theorem.
 The [universal syntax certificate](reviews/pra-universal-syntax-root.md) now
 proves that every axiom in that presentation has a universal prefix and an
 open matrix. An effective recognition theorem is still required.
+The [finite witness selector](reviews/pra-finite-witness-root.md) collapses a
+provable finite disjunction of explicit candidate witnesses to one fixed PR
+witness. Extraction of that disjunction from a general proof remains open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive

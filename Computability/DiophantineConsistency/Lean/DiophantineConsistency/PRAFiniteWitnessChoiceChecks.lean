@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAFiniteWitnessChoice
+#print axioms DiophantineConsistency.PRAFiniteWitnessChoice.modelChooseWitness
+#print axioms DiophantineConsistency.PRAFiniteWitnessChoice.PRA_proves_twoWitnessChoice
+#check DiophantineConsistency.PRAFiniteWitnessChoice.PRA_proves_twoWitnessChoice
