@@ -121,3 +121,12 @@ context normalization precedes cut elimination and carries no height claim.
 The [independent replay](../reviews/parsons-induction-case-root.md) agrees
 with the author builds. Actual universal closure, the remaining derivation
 cases, and rule-to-PRA witnessing are still needed for conservation.
+
+## Universal induction parameters
+
+[`ParsonsParameters`](../Lean/DiophantineConsistency/ParsonsParameters.lean)
+identifies the exact existential block obtained from Foundation’s universally
+closed induction axiom and proves that arbitrary term instances recover a
+rewritten Σ₁ induction axiom. The [independent replay](../reviews/parsons-parameters-root.md)
+also checks its LK normalization once the block is opened. Eliminating the
+whole block within the decreasing cut-free recursion remains open.
