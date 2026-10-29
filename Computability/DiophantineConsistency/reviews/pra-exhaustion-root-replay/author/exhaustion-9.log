@@ -1,0 +1,34 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:32:0: warning: automatically included section variable(s) unused in theorem `DiophantineConsistency.PRAExhaustion.body_eval`:
+  [Nonempty M]
+  [M↓[language] ⊧* PRA]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Nonempty M] [M↓[language] ⊧* PRA] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:55:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+hInd :
+  ∀ (f : ℕ → M),
+    (Semiformula.Evalf f)
+      (exhaustionBody/[↑0] 🡒 ∀⁰ (exhaustionBody/[#0] 🡒 exhaustionBody/[‘(#0 + 1)’]) 🡒 ∀⁰ exhaustionBody/[#0])
+⊢ M↓[language] ⊧ exhaustionSentence
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:58:59: warning: This simp argument is unused:
+  Semiformula.eval_substs
+
+Hint: Omit it from the simp argument list.
+  simp only [models_iff, Semiformula.eval_univCl, succInd, S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵.̵e̵v̵a̵l̵_̵s̵u̵b̵s̵t̵s̵,̵
+  ̵ ̵ ̵ ̵ ̵Matrix.constant_eq_singleton] at hInd
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:59:4: warning: This simp argument is unused:
+  Matrix.constant_eq_singleton
+
+Hint: Omit it from the simp argument list.
+  simp only [models_iff, Semiformula.eval_univCl, succInd, Semiformula.eval_substs,̵
+  ̵ ̵ ̵ ̵ ̵M̵a̵t̵r̵i̵x̵.̵c̵o̵n̵s̵t̵a̵n̵t̵_̵e̵q̵_̵s̵i̵n̵g̵l̵e̵t̵o̵n̵] at hInd
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

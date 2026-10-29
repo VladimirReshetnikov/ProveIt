@@ -1,0 +1,29 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAExhaustion.lean:65:4: error: Type mismatch: After simplification, term
+  hInd
+ has type
+  ∀ (f : ℕ → M),
+    (Semiformula.Eval ![Semiterm.Operator.val ![] 0] f) exhaustionBody →
+      (∀ (x : M),
+          (Semiformula.Eval ![x] f) exhaustionBody →
+            (Semiformula.Eval ![Semiterm.Operator.val ![x, Semiterm.Operator.val ![] 1] op(+)] f) exhaustionBody) →
+        ∀ (x : M), (Semiformula.Eval ![x] f) exhaustionBody
+but is expected to have type
+  (Semiformula.Eval ![Structure.func (Code.zero 0) Fin.elim0] e) exhaustionBody →
+    (∀ (x : M),
+        (Semiformula.Eval ![x] e) exhaustionBody →
+          (Semiformula.Eval ![Structure.func addCode ![x, Structure.func oneCode Fin.elim0]] e) exhaustionBody) →
+      ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+hInd : M↓[language] ⊧ Semiformula.univCl (succInd exhaustionBody)
+inductionRule :
+  ∀ (e : ℕ → M),
+    (Semiformula.Eval ![Structure.func (Code.zero 0) Fin.elim0] e) exhaustionBody →
+      (∀ (x : M),
+          (Semiformula.Eval ![x] e) exhaustionBody →
+            (Semiformula.Eval ![Structure.func addCode ![x, Structure.func oneCode Fin.elim0]] e) exhaustionBody) →
+        ∀ (x : M), (Semiformula.Eval ![x] e) exhaustionBody
+⊢ M↓[language] ⊧ exhaustionSentence

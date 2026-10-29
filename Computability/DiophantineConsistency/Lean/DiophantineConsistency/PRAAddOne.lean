@@ -135,13 +135,6 @@ theorem modelAddOne (x : M) :
   rw [ha, hs, hg, hb]
 
 
-theorem modelPredSucc (x : M) :
-    Structure.func (L := language) predCode
-      (fun _ => Structure.func (L := language) Code.succ (fun _ => x)) = x := by
-  have h := modelStep (M := M) (Code.zero 0) (Code.proj (0 : Fin 2)) ![x]
-  rw [modelProjection] at h
-  simpa [predCode, Matrix.fun_eq_vec_one] using h
-
 end models
 
 /-- A closed proof in the candidate PRA calculus, obtained from all equality
