@@ -71,8 +71,8 @@ theorem equations_zero (p : Fin 4 → ℕ) (v : Fin 14 → V) (hv : ∀ j, 0 < v
     (expressionAt (fun j => (p j:ℤ))).splitNatural.1.evalSemiring v=
       (expressionAt (fun j => (p j:ℤ))).splitNatural.2.evalSemiring v := by
   have hq : (2:V) ≤ (p 0:V)*v 0+1 := by
-    have h := add_le_add (one_le_mul hb1 (pos_iff_one_le.mp (hv 0))) (le_refl (1:V))
-    simpa only [one_add_one_eq_two] using h
+    simpa only [one_add_one_eq_two] using
+      add_le_add (one_le_mul hb1 (pos_iff_one_le.mp (hv 0))) (le_refl (1:V))
   obtain ⟨ht, hP, hQ, hZ, hU⟩ := heq
   let b:=(p 0:V)*v 0; let q:=b+1; let X:=v 8*q; let Y:=v 7*q^3
   let E:=X*Y; let k:=v 10+v 11; let c:=k*Y+v 10; let a:=E+Y
@@ -107,8 +107,7 @@ theorem equations_zero (p : Fin 4 → ℕ) (v : Fin 14 → V) (hv : ∀ j, 0 < v
   · exact hQ.trans (add_comm _ _)
   · rw [hmagU]; exact hU.trans (add_comm _ _)
   · change ((p 1:V)+v 8)*q+q=((p 1:V)+v 8)*(v 1+v 2)+v 1+v 3*(q-1)+1 at ht
-    rw [hb] at ht
-    exact ht
+    simpa only [hb] using ht
   · exact hZ.trans (add_comm _ _)
 
 /-- Ports given as natural parameters (no evaluation of the actual numerals). -/
@@ -121,9 +120,7 @@ theorem vector_zero (beta K MC high : ℕ) (v : Fin 14 → V) (hv : ∀ j, 0 < v
   have hpe : (fun j => (p j:ℤ)) = ![(beta:ℤ),(K:ℤ),(MC:ℤ),(high:ℤ)+(beta:ℤ)] := by
     funext j
     fin_cases j <;> simp [p, Nat.cast_add]
-  have hz := equations_zero p v hv hb1 hF heq
-  rw [hpe] at hz
-  exact hz
+  simpa only [hpe] using equations_zero p v hv hb1 hF heq
 
 /-- **The actual polynomial vanishes on a positive solution of the five equations.** -/
 theorem current_zero (v : Fin 14 → V) (hv : ∀ j, 0 < v j)
