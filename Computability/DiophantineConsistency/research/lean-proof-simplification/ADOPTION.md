@@ -1250,5 +1250,19 @@ the builds. An invalid initial interface receipt is retained, with fresh stable
 reruns replacing it. Independent proof review confirms the branch conditions
 and bound. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-oracle-sharing-evidence/BUNDLE.json).
 
+The bounded DAG transfer and copy sharing `ba484e92b4` removes 35 net lines,
+bringing the reviewed series to 9473. The original macro module was introduced
+in the Claude-coauthored commit `ca0c31b62d`. Private general lemmas now
+share the 17 loop proofs, preserving each node and register check, size bound
+and tower clock. Paired builds from Macros A through DAG Halt pass, and all
+67 target-namespace declaration type and axiom reports match, including
+generated auxiliaries; the two Halt objects are identical. Forcing equations
+also reveals two new private helpers and 22 private matcher declarations.
+Independent whole-environment simp and instance censuses match. The builds use
+precompiled upstream dependencies, though direct imports were hashed before
+and after compilation. The initial failed setup's compiler log was overwritten;
+its reconstructed transcript is excluded from the successful evidence. See
+[the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-macro-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

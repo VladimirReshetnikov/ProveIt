@@ -1,0 +1,100 @@
+Independent review: bounded DAG transfer/copy macro sharing
+
+Scope: compared the original ArithmeticRuntimeBoundDagMacrosA.lean at the start
+of review (SHA-256 ec41e2d21f7546fe1d0211cf0614d7939905f523203c76566e50232269b881a3)
+with /tmp/dag-macro-sharing/sources/final-v2/DiophantineConsistency/ArithmeticRuntimeBoundDagMacrosA.lean
+(SHA-256 0ddf0d9e14460946f485d828f04d353016867c1703200279cf0b205eac2080ec),
+reviewed the build and probe records, and inspected /tmp/dag-macro-sharing-evidence.zip.
+The workspace advanced during review to ba484e92b4; its current macro source
+now matches V2. The archived baseline and sources/baseline remain available
+for a historical comparison. No repository files were modified in this review.
+
+Finding: no correctness issue found. All 17 public loop theorem statements and
+each node/register tuple match the original. The 11 transfer loops are
+201:(202,6,3), 203:(204,6,0), 205:(206,6,4), 207:(191,6,5),
+208:(186,6,1), 209:(210,7,8), 211:(185,7,6), 212:(213,7,2),
+216:(185,1,6), 217:(186,2,1), and 197:(191,4,5), where tuples are
+(m, src, dst). The six copy loops are 193:(189,190,3,6,1),
+194:(195,196,0,8,6), 198:(189,190,4,6,1), 200:(189,190,5,6,1),
+215:(187,188,1,6,7), and 192:(187,188,3,6,7), where tuples are
+(m, m', src, d1, d2).
+
+The transfer helper preserves the two node equalities, phys src != phys dst,
+register-index bounds, encoded register/updated-record rewrites, and the
+transferB clock field(src)*3+1. The copy helper preserves all three node
+equalities, pairwise physical-register distinctness, register bounds, both
+updates followed by clearing the source, and the copy2B clock field(src)*4+1.
+Both call the same mac_intro with the original 2 <= L and size prerequisites;
+the resulting clock and size bound remains tower j (L+1). The caller-specific
+proofs still establish size(output) <= sz st + sz st; no loop statement or
+clock bound was weakened.
+
+Build and input checks: eight baseline and eight V2 target/client builds report
+status 0. I recomputed their source, output-object, log and all 24 direct-import
+object hashes and checked each module's listed direct imports against the source
+and its recorded LEAN_PATH resolution. No discrepancy was found at the time of
+that check. The two DagHalt output objects were recorded with the same hash.
+Saved check: /tmp/dag-macro-sharing/independent-receipts.py and
+/tmp/dag-macro-sharing/independent-receipts.log. Because the workspace has since
+advanced, baseline source paths in historical receipts now refer to the new file;
+the baseline archive preserves the verified earlier source bytes.
+
+Namespace-level probes found the same 67 names, identical #check/#print axioms
+output for those names (including generated _proof_ names), and no target-
+namespace simp declarations in either version. That census concerns the target
+namespace, not the complete set of private generated names. My independent
+probe forcing equations for IRB, RnB, sz and Mac found their equations equal,
+no removed declarations, and 24 additional private declarations: transferMacro,
+copyMacro, and 22 matcher equations/splitters generated for field and updAS.
+The complete default simp census is unchanged, with 29,279 entries on each
+side. The global instance census (13,370) and registered attribute-kind names
+(321) also match. The attribute-kind test does not enumerate every application
+of every attribute or all arbitrary persistent environment extensions.
+
+Independent probe sources and paired logs:
+/tmp/dag-macro-sharing/independent-force.lean
+/tmp/dag-macro-sharing/baseline-independent-force.log
+/tmp/dag-macro-sharing/final-v2-independent-force.log
+/tmp/dag-macro-sharing/independent-global-simp.lean
+/tmp/dag-macro-sharing/baseline-global-simp.log
+/tmp/dag-macro-sharing/final-v2-global-simp.log
+/tmp/dag-macro-sharing/independent-instances.lean
+/tmp/dag-macro-sharing/baseline-instances.log
+/tmp/dag-macro-sharing/final-v2-instances.log
+/tmp/dag-macro-sharing/independent-attribute-kinds.lean
+/tmp/dag-macro-sharing/baseline-attribute-kinds.log
+/tmp/dag-macro-sharing/final-v2-attribute-kinds.log
+
+Archive: at SHA-256 6fa9682c93e567f5fb8c9cd36d00b6375c8ea7f033543f762f6d89e0bfda6456,
+the ZIP CRC check passed, all 108 manifest entries matched, and every file was
+covered except the manifest itself. Archived baseline, candidate and seven
+client sources matched the reviewed files when checked. The README accurately
+limits its 67-name census to the target namespace; it does not describe the 24
+additional private matcher/helper declarations or the global simp comparison.
+The above independent probe files are outside the original archive.
+
+Limits: the comparison uses cached upstream objects, and matching direct-input
+hashes do not prove the entire transitive dependency closure was freshly built
+from current source. The eight-module replay is representative, not a replay of
+all downstream clients. ZIP integrity checks establish internal consistency,
+not an independently signed provenance.
+
+Recorded independent replay: the initial independent probes did not separately
+record their per-run commands, LEAN_PATH or source-before/source-after hashes.
+All four probes were therefore replayed for both baseline and V2. The replay
+records exact commands, LEAN_PATH, per-probe source and input-object hashes
+before/after, statuses, log hashes and timings; all eight status codes are zero
+and the comparisons reproduce the results above. Replay artifacts:
+/tmp/dag-macro-sharing/independent-replay.py
+/tmp/dag-macro-sharing/independent-replay-records.json
+/tmp/dag-macro-sharing/baseline-replay-force.log
+/tmp/dag-macro-sharing/final-v2-replay-force.log
+/tmp/dag-macro-sharing/baseline-replay-global-simp.log
+/tmp/dag-macro-sharing/final-v2-replay-global-simp.log
+/tmp/dag-macro-sharing/baseline-replay-instances.log
+/tmp/dag-macro-sharing/final-v2-replay-instances.log
+/tmp/dag-macro-sharing/baseline-replay-attribute-kinds.log
+/tmp/dag-macro-sharing/final-v2-replay-attribute-kinds.log
+Each log has an adjacent .time file. The replay source files are the four
+independent probe sources listed above. Replay LEAN_PATH and SHA-256 values are
+in independent-replay-records.json; upstream transitive objects remain cached.
