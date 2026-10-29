@@ -68,14 +68,8 @@ lemma twoSlotVec_spec (i j depth : V) :
   case succ depth ih =>
     have hv := twoSlotVec_isSemitermVec (L := L) depth i j
     refine ⟨?_,?_,?_⟩
-    · intro z hz
-      rcases zero_or_succ z with rfl | ⟨z,rfl⟩
-      · simp [twoSlotVec_succ,Bootstrapping.qVec]
-      · have hz' : z < depth := by simpa using hz
-        rw [twoSlotVec_succ]
-        simp only [Bootstrapping.qVec,nth_adjoin_succ,hv.lh]
-        rw [nth_termBShiftVec hv.isUTerm (lt_trans hz' (by simp)),ih.1 z hz']
-        simp
+    · exact qVecIter_prefix (show IsSemitermVec (V := V) L 2 (i+j+1) (^#i ∷ ^#j ∷ 0) by
+        simpa only [twoSlotVec_zero,zero_add] using (twoSlotVec_isSemitermVec (L := L) 0 i j)) _
     · rw [twoSlotVec_succ]
       simp only [Bootstrapping.qVec,nth_adjoin_succ,hv.lh]
       rw [nth_termBShiftVec hv.isUTerm (by simp),ih.2.1]

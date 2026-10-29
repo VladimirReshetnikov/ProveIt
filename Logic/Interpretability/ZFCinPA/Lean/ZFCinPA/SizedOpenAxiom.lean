@@ -372,21 +372,8 @@ theorem bindFreeAt_level {C D : V} (hC : 2 ≤ C) (hD : D ≤ lvB C) :
 theorem bvarId_semitermVec (m : V) : IsSemitermVec ℒₛₑₜ m m (qVecIter ℒₛₑₜ m 0) := by
   simpa using qVecIter_isSemitermVec (L := ℒₛₑₜ) (show IsSemitermVec (V := V) ℒₛₑₜ 0 0 0 by simp) m
 
-theorem bvarId_nth : ∀ m : V, ∀ i < m, (qVecIter ℒₛₑₜ m 0).[i] = ^#i := by
-  intro m
-  induction m using ISigma1.pi1_succ_induction
-  · definability
-  · intro i hi; simp at hi
-  · case succ m ih =>
-    intro i hi
-    rw [qVecIter_succ]
-    have hw := bvarId_semitermVec (V := V) m
-    rcases zero_or_succ i with rfl | ⟨j, rfl⟩
-    · simp [qVec]
-    · have hj : j < m := by simpa using hi
-      simp only [qVec, nth_adjoin_succ]
-      rw [hw.lh, nth_termBShiftVec hw.isUTerm hj, ih j hj]
-      simp
+theorem bvarId_nth : ∀ m : V, ∀ i < m, (qVecIter ℒₛₑₜ m 0).[i] = ^#i :=
+  fun m => qVecIter_prefix (show IsSemitermVec (V := V) ℒₛₑₜ 0 0 0 by simp) m
 
 /-! ## The bounded open axiom -/
 
