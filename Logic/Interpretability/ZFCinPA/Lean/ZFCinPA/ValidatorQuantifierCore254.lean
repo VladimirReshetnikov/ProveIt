@@ -103,8 +103,9 @@ lemma conj_right (a b : V) : CProv (wim (conj a b) b) := by
 lemma conj_intro {a b : V} (ha : CProv a) (hb : CProv b) : CProv (conj a b) :=
   ded1 (.mp (.mp h0 (.ax ha)) (.ax hb))
 
-/-- Only the two gated atomic projections of the original bundle are used. -/
-lemma vac_rel (a b i : V) (ha : i≠a) (hb : i≠b) : Vac i (wel a b) := by
+/-- The two gated atomic projections share the same bundle certificate. -/
+private lemma vac_atoms (a b i : V) (ha : i≠a) (hb : i≠b) :
+    Vac i (wel a b) ∧ Vac i (weq a b) := by
   let m : V := wim (wel a b) (wal i (wel a b))
   let e : V := wim (weq a b) (wal i (weq a b))
   have hall : CProv (conj
@@ -113,17 +114,12 @@ lemma vac_rel (a b i : V) (ha : i≠a) (hb : i≠b) : Vac i (wel a b) := by
     change CProv (ArithmeticTemplates254.bundle a b i)
     exact cProv_bundle a b i ha hb
   have hv := cProv_mp (conj_right _ _) hall
-  exact cProv_mp (conj_left m e) hv
-lemma vac_eq (a b i : V) (ha : i≠a) (hb : i≠b) : Vac i (weq a b) := by
-  let m : V := wim (wel a b) (wal i (wel a b))
-  let e : V := wim (weq a b) (wal i (weq a b))
-  have hall : CProv (conj
-      (conj (ArithmeticTemplates254.bundleC a b i) (ArithmeticTemplates254.bundleG a b i))
-      (conj m e)) := by
-    change CProv (ArithmeticTemplates254.bundle a b i)
-    exact cProv_bundle a b i ha hb
-  have hv := cProv_mp (conj_right _ _) hall
-  exact cProv_mp (conj_right m e) hv
+  exact ⟨cProv_mp (conj_left m e) hv, cProv_mp (conj_right m e) hv⟩
+
+lemma vac_rel (a b i : V) (ha : i≠a) (hb : i≠b) : Vac i (wel a b) :=
+  (vac_atoms a b i ha hb).1
+lemma vac_eq (a b i : V) (ha : i≠a) (hb : i≠b) : Vac i (weq a b) :=
+  (vac_atoms a b i ha hb).2
 
 lemma vac_truth (i : V) : Vac i (0 : V) :=
   cProv_mp (cProv_k (wal i 0) 0) (cProv_gen i cProv_truth)
