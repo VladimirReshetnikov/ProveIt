@@ -51,19 +51,18 @@ theorem stride (d N s R : V) (hd : 0 < d) (hs0 : 0 < s) (hsN : s < N)
     rw [hRform, add_tsub_cancel_right]
   have hle : d * N ≤ R := le_of_lt (lt_of_le_of_lt (le_mul_of_one_le_left (Arithmetic.zero_le _)
     (by norm_num : (1 : V) ≤ 2)) hbig)
+  have hm : (N*(r+1)+s) % N = s := by
+    rw [add_comm, mod_add_mul' _ _ hN, mod_eq_self_of_lt hsN]
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
   · rw [hdiv, hRform]
   · rw [hdiv]
     calc N < N + s := lt_add_of_pos_right N hs0
       _ ≤ N * (r + 1) + s := add_le_add (le_mul_of_one_le_right (Arithmetic.zero_le _)
           (le_add_of_nonneg_left (Arithmetic.zero_le r))) le_rfl
-  · rw [hdiv, add_comm, mod_add_mul' _ _ hN, mod_eq_self_of_lt hsN]
+  · rw [hdiv, hm]
   · rw [← exp_add, tsub_add_cancel_of_le hle]
   · have hq1 : (0 : V) < Exp.exp (d * N) - 1 := tsub_pos_of_lt (one_lt_exp hM)
     rw [hRu]
-    have hm : (N*(r+1)+s) % N = s := by
-      rw [show N*(r+1)+s = s+N*(r+1) by ring, mod_add_mul' _ _ hN,
-        mod_eq_self_of_lt hsN]
     simpa only [mul_one, hm] using
       ArithmeticCyclicWord.exp_mod_period d N (N*(r+1)+s) (1:V) hN hq1
 
