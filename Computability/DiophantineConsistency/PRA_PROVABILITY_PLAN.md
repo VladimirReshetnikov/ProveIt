@@ -55,8 +55,10 @@ remain open. This is not a uniform primitive-recursive evaluator.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
-shift over arbitrary commutative semirings. The internal factor extraction,
-Pell recovery and zero-existence equivalence are still open.
+shift over arbitrary commutative semirings. The [internal factor-magnitude theorem](reviews/adaptive-factor-magnitude2011-root.md)
+now derives magnitude one for the four actual factors from the literal zero.
+Negative-unit exclusions, Pell recovery and zero-existence equivalence remain
+open.
 
 ## Concrete bridge to formalize
 
