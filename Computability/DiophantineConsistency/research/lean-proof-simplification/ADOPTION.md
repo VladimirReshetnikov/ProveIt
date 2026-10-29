@@ -936,5 +936,16 @@ and transitive package inputs remain precompiled, and Bridge, ExplicitZFC and
 NativeZFC were not rebuilt in the focused refresh. Independent reviews pass.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-enumerator-recursion-evidence/BUNDLE.json).
 
+The first-norm Pell descent reuse `6d9e6e43a7` removes 54 net lines,
+bringing the reviewed series to 8533. Paired target builds, FirstIndex and
+PowerRecovery clients and their focused checks pass; 32 public and 17 private
+declaration type and axiom reports match. All 30 phase-local source/object
+pins and their prior dependency receipts were independently checked. Eight
+generated-auxiliary warnings match per public axiom probe; an unsuccessful
+private-name text probe is retained alongside the successful metadata probe.
+The target object shrinks by 346904 bytes. Foundation, Mathlib and other
+inputs remain precompiled, and clients beyond the tested chain were not
+rebuilt. Independent review passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-pell-firstnorm-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
