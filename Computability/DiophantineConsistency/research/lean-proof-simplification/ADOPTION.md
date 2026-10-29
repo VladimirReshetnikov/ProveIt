@@ -1734,5 +1734,13 @@ WindowInterface builds pass with identical client objects; declarations and
 sampled registrations match. The transitive closure remains cached. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261029-saturation-order-evidence/BUNDLE.json).
 
+The binary half bound `55ddd54db0` removes three net Lean lines, bringing the
+reviewed series to 10038. The proof applies the existing division inequality
+directly. Paired target and all five tracked direct clients pass; the current
+Saturation proof also passes against each phase's rebuilt Carry. Carry and
+BinomLegendre object bytes differ for an unknown reason, while their checked
+declarations and registrations match. The transitive closure remains cached.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-binary-half-direct-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
