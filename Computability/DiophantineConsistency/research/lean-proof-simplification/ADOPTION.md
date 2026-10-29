@@ -1591,5 +1591,29 @@ SelectiveCoefficientBounds object remains in the cached transitive closure;
 prior old/current-provider builds of its PolynomialRangeBounds client produced
 identical objects. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-kernel-range-projections-evidence/BUNDLE.json).
 
+The low-mask residue simplification `92cfb70d2d` removes six net Lean
+lines, bringing the reviewed series to 9951. The affected proof is attributed
+to Claude-coauthored commit `f4920e87b3e`. Modular laws replace quotient
+reconstruction. Paired target and Assembly builds pass with identical client
+objects; all five target reports, 35,447 simp entries and 15,616 instances
+match. Direct providers match receipts; older ControllerLift, HalfBinomial,
+Legendre and Pell objects remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-rank-mask-residue-evidence/BUNDLE.json).
+
+The one-term binomial sum sharing `a5beca5e0f` removes five net Lean lines,
+bringing the reviewed series to 9956. The affected proof originated in
+Claude-coauthored commit `90f67cbdd9`. One private base-case lemma replaces two
+repeated arguments. Paired target and HalfBinomial builds pass with identical
+client objects; all 40 existing target reports, 29,034 simp entries and 13,227
+instances match. One private helper is added; the wider closure remains cached.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-binom-expansion-zero-evidence/BUNDLE.json).
+
+The positive sphere equivalence simplification `6f53b13909` removes 14 net
+Lean lines, bringing the reviewed series to 9970. Pointwise equivalences are
+lifted through the same positive witness rather than reconstructed separately
+in both directions. Paired target and check builds pass with identical client
+objects; all 46 declaration reports, 55,579 simp entries and 23,485 instances
+match. A restored docstring is retained; older SignedPellResidue and other
+transitive objects remain cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-nonzero-sphere-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

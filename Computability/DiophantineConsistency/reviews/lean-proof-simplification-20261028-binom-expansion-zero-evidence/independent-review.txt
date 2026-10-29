@@ -1,0 +1,51 @@
+Independent review: ArithmeticBinomExpansion zero cases
+
+No proof or data defect found in the tested candidate, now committed as `a5beca5e0f`. The new private
+`bsum_one X n` is the zero-index instance of `bsum_succ`: bsum at zero is
+zero, the zero-index binomial coefficient and power are one, and simplification
+gives bsum X n 1 = 1. The two substitutions are precisely the zero cases of
+`pascal_sum` and `binomial_theorem`; their quantified statements, induction
+rules/definability obligations, successor cases, definitions and imports are
+unchanged. The helper is not globally tagged simp. The exact source-only diff
+is checked in `/tmp/binom-expansion-independent-audit.py`.
+
+The exact tested baseline and final source snapshots match commit
+`a5beca5e0f`'s parent and that commit respectively; the workspace source now
+matches the final snapshot. The baseline build is a historical sample and was
+not performed against the post-commit workspace.
+
+The paired target and actual direct `ArithmeticHalfBinomial` client builds
+succeeded, and the client object SHA-256 is byte-identical across phases
+(5213cd5dbfaefcab5f47a14d1e0fe4cb40ec522be4e37e1f05af92f043ea507d). My
+script checks source/object/log/time hashes, direct input resolution, source
+matching against the workspace, and matching earlier successful provider
+receipts for ArithmeticPow, ArithmeticBinomPascal, ArithmeticHalfBinomialSandwich,
+and ArithmeticBinomLegendre. ArithmeticPow's selected summary receipt points
+to its fuller successful `/tmp/outer-seed-bound-sharing/prereq-records.json`.
+The wider transitive Foundation/Mathlib/project closure remains cached: these
+receipts do not establish a clean source rebuild of that closure.
+
+All 40 prior generated/public/private declaration reports, including printed
+types and axioms, match. The sole added declaration is private
+`_private.DiophantineConsistency.ArithmeticBinomExpansion.0.DiophantineConsistency.ArithmeticBinomExpansion.bsum_one`,
+whose printed axioms are propext, Classical.choice and Quot.sound. Global simp
+reports (29,034 entries) and instance reports (13,227 entries) are byte-identical.
+The probes pin the target object; they do not establish equality for every
+persistent extension or other clients. The identical client objects narrow the
+observable downstream difference.
+
+One target sample is 14.53/14.73 seconds user CPU baseline/final and the client
+sample is 9.70/9.85 seconds; shared load and one sample prevent a general
+performance conclusion. Both target logs contain the same pre-existing linter
+warnings in `bsum_defined`. The unsuccessful initial `simp [bsum_succ,...]`
+attempt leaves the two base goals unsolved because the numeral does not match
+the successor expression syntactically; its saved source and log match its
+failed receipt. The historical receipt's original paths were later reused,
+so the copied `failed-simp/` artifacts, not the current files at those paths,
+represent that attempt. A successful preliminary final log was overwritten and
+is not treated as another timing sample.
+
+Audit script: `/tmp/binom-expansion-independent-audit.py`.
+Audit log: `/tmp/binom-expansion-independent-audit.log`.
+Scope: recorded isolated builds plus the post-commit source check; no fresh
+whole-closure replay or repository edits were made for this review.
