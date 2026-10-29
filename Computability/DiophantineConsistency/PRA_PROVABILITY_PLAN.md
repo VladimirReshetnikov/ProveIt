@@ -50,6 +50,11 @@ has a proved arity-checked roundtrip and an [independent replay](reviews/pra-cod
 Primitive-recursive bounds on the codec, the PRA theory and conservation
 remain open. This is not a uniform primitive-recursive evaluator.
 
+The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
+now identifies the exact accepted polynomial and proves its single positive
+shift over arbitrary commutative semirings. The internal factor extraction,
+Pell recovery and zero-existence equivalence are still open.
+
 ## Concrete bridge to formalize
 
 1. Choose and define a precise PRA language and proof calculus, including its
