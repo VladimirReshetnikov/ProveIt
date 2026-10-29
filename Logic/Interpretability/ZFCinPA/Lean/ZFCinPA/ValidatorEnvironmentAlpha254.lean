@@ -128,17 +128,11 @@ lemma eqUnder_ex_of_cons (B B' p q x y : V)
 
 lemma term_eq_under {n u : V} (hu : IsSemiterm ℒₛₑₜ n u)
     (F B B' : V) (hB : len B=n) :
-    CProv (wim (eqContext B B') (weq (TermLabels.term F B u) (TermLabels.term F B' u))) := by
-  rcases hu.case with (⟨i,hi,rfl⟩ | ⟨i,rfl⟩ | ⟨k,f,args,hf,_,rfl⟩)
-  · rw [TermLabels.term_bvar,TermLabels.term_bvar]
-    exact eqContext_projection B B' i (by rwa [hB])
-  · rw [TermLabels.term_fvar,TermLabels.term_fvar]
-    exact cProv_mp (cProv_k (weq (freeLabel F i) (freeLabel F i)) (eqContext B B'))
-      (eq_refl (freeLabel F i))
-  · have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
-    rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
-      .mkSigma “k f. ⊥” from rfl] at hf'
-    simp at hf'
+    CProv (wim (eqContext B B') (weq (TermLabels.term F B u) (TermLabels.term F B' u))) :=
+  ValidatorLabelAvoidance.term_labels_related
+    (P := fun x y => CProv (wim (eqContext B B') (weq x y))) hu F B B' hB
+    (fun i hi => eqContext_projection B B' i hi)
+    (fun x => cProv_mp (cProv_k (weq x x) (eqContext B B')) (eq_refl x))
 
 lemma atom_eq_under {n arity R terms : V} (hr : (ℒₛₑₜ).IsRel arity R)
     (ht : IsSemitermVec ℒₛₑₜ arity n terms) (F B B' s t : V) (hB : len B=n) :
