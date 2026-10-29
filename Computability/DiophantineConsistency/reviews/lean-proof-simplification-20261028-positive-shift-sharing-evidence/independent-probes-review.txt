@@ -1,0 +1,42 @@
+Independent audit: supplementary positive-shift evidence
+
+Scope: checked /tmp/positive-shift-independent-evidence.zip, README, source
+snapshots and all six fresh object/combined-import probe receipts. Archive
+SHA-256 at audit:
+8d29de5a112b44b027c98224701dbc8ed2bdbade6eb060749a83b7744f4b69dc.
+No repository files were modified. The audit script and output are
+/tmp/positive-shift-independent-archive-audit.py and
+/tmp/positive-shift-independent-archive-audit.log.
+
+Integrity: all 79 ZIP files passed CRC, no duplicate member names were found,
+and all 78 manifest entries match with no missing or unlisted file other than
+the manifest. All four baseline and four final source snapshots match the
+corresponding files in 0b19c1af58^ and 0b19c1af58, respectively.
+
+Fresh probes: the baseline/final object namespace censuses and interface
+probes all report status 0. Namespace logs are byte-identical, with 29 names;
+the complete object-only interface/axiom logs are byte-identical. The two
+combined-import probes both report status 1 and have byte-identical failure
+logs: Mathlib.LinearAlgebra.Matrix.Defs encounters Matrix.map already supplied
+by Foundation.Vorspiel.Matrix. Both phases use the same combined-import order;
+these results do not test the reverse order. The failed combined probes did
+not check a combined declaration interface.
+
+I checked all six probe source hashes before/after against archived scripts,
+all saved log hashes and time files, and each syntactic direct import against
+its recorded path and before/after object hash. At review time all those paths
+were available and their current hashes matched the records; each was the
+first existing object along its recorded LEAN_PATH. In the failed combined
+probes those paths are candidate direct imports, not evidence that Lean loaded
+every one before failing, as the README correctly states.
+
+Limits: this confirms matching object-only reports and the recorded combined
+failure in these particular pinned overlays; it does not establish behavior in
+other provider environments or a successful combined import. The empty probe
+created after the prior failed census checks no declarations. Three cached
+object-lane prerequisites, CurrentPolynomialWindow2011, ObjectNaturalDiscrete
+and WeightedExpressionDegree, lack matching current-source/object receipts.
+Neither matching input hashes nor archive integrity establishes a fresh full
+transitive source closure. Scripts use the original absolute paths and Lean
+installation, and compiled objects are not included. CRC and SHA-256 establish
+internal archive consistency, not independent signed provenance.

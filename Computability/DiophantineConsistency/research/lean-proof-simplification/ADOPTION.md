@@ -1264,5 +1264,20 @@ and after compilation. The initial failed setup's compiler log was overwritten;
 its reconstructed transcript is excluded from the successful evidence. See
 [the evidence bundle](../../reviews/lean-proof-simplification-20261028-dag-macro-sharing-evidence/BUNDLE.json).
 
+The positive-shift sharing `0b19c1af58` removes 33 net lines, bringing the
+reviewed series to 9506. The arithmetic sentence proof originated in the
+Claude-coauthored commit `e7dc22a493`. Three existing declarations move
+verbatim to their already-imported syntax owner, preserving their qualified
+names and exposing them earlier; both arithmetic proofs now reuse the same
+shift equivalence. Forty-eight paired-lane source builds pass, including the
+construction, window, object-equation and HA-stability clients. Existing
+type and axiom reports and the 33,211 checked simp entries match; three new
+generated `PositiveZero._proof` names appear. Three cached direct object
+prerequisites lack matching source/object receipts, and not all 36 reverse
+clients were replayed. Earlier mixed-provider and missing-Pell attempts are
+retained but excluded. Object and arithmetic imports are checked separately:
+their combined import encounters the same existing Matrix conflict in both
+phases. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-positive-shift-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

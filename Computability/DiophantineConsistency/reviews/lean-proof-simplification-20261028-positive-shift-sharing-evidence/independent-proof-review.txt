@@ -1,0 +1,65 @@
+Independent review: positive-shift proof sharing, 28 October 2026
+
+Scope: compared the four candidate sources in /tmp/positive-shift-sharing/src/
+DiophantineConsistency against the workspace baseline, read the changed proofs
+and import boundaries, checked saved paired reports and replay receipts, and
+ran additional object-namespace interface probes. No repository files were
+changed for this review.
+
+Finding: no correctness issue or change to the existing theorem statements was
+found. The exact 963-byte block defining `split_positiveShift`, `InternalZero`,
+and `internalZero_positiveShift`, including statements and proof bodies, moves
+byte-for-byte from ObjectCurrentEquation2011 to CurrentEquationSyntax2011.
+Both declarations sites are inside the same fully qualified
+DiophantineConsistency.ObjectCurrentEquation2011 namespace; the former already
+imports the latter. No import line changes and no dependency cycle is added.
+The syntax-level module gains these three declarations earlier in the import
+graph; it does not add a simp rule or instance.
+
+The arithmetic sentence proof specializes the existing equivalence at
+`expression` and `v`, with exactly one shift `fun j => v j + 1`. The carrier
+soundness proof applies the forward direction of the same equivalence to the
+original zero hypothesis before passing the shifted valuation to the original
+`current_equations` result. The previous private helper and, in the sentence
+module, its now-unused private pair/plus/minus definitions are removed. Neither
+positive-input guard nor the zero equation is weakened or changed.
+
+The saved clean-provider public type/axiom reports for previously enumerated
+arithmetic declarations compare byte-for-byte. Its baseline/final name sets
+preserve all 33 original names and add three Lean-generated
+`ArithmeticCurrentSentence2011.PositiveZero._proof_{1,2,3}` auxiliaries. The
+33,211 default simp entries in each recorded syntax-import environment are
+identical as sets. My separate probe importing ObjectCurrentEquation2011 found
+29 namespace declarations in each paired pinned environment, with byte-identical
+`#check` and `#print axioms` output for all 29, including the moved declarations.
+Probe source and logs are /tmp/positive-shift-independent-object-*.lean and
+/tmp/positive-shift-independent-{baseline,final}-object-*.log.
+
+The initial source-clean attempt compiled 14 modules per phase and then failed
+at ObjectCurrentEquation2011 in both phases because a transitive
+`Diophantine.Paper1980.PellHalf90.olean` provider was absent. This is a failed
+attempt, not a passing object check. After the provider setup was corrected,
+`source-clean/object-retry-{baseline,final}.json` records successful builds of
+ObjectCurrentEquation2011, its checks, and ArithmeticCurrentEquation2011 in
+both phases. The five window modules and two HA-stability modules/checks also
+passed in each phase. I checked each retry/window/stability source and output
+hash, all recorded direct-import before/after hashes, and current first-provider
+resolution for retry/window imports; these matched the saved receipts. The
+arithmetic replay also has 28 successful source-clean records, and the separate
+source-pinned baseline/final replays and object checks have status zero.
+
+The direct-input pin audit documents three cached object prerequisites with no
+matching source/object receipt: CurrentPolynomialWindow2011,
+ObjectNaturalDiscrete, and WeightedExpressionDegree. Their actual object hashes
+were equal before/after and identical across phases, but this does not establish
+that they were freshly built from the recorded sources. Nor does the replay
+rebuild every transitive dependency from source. My attempt to import the full
+object and arithmetic modules together failed before elaboration in both pinned
+phases with the existing Mathlib/Foundation `Matrix.map` provider conflict;
+the successful object-only and arithmetic checks therefore demonstrate the two
+import boundaries separately. This pre-existing environment limitation does not
+by itself indicate a regression in this refactor.
+
+Conclusion: no refactor-specific blocker found for adoption, subject to the
+explicit cached-closure and import-boundary limits above. The clean-provider
+retry should not be represented as a clean build of the complete project.

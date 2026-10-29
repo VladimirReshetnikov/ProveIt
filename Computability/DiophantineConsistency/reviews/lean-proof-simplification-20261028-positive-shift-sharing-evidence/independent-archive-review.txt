@@ -1,0 +1,52 @@
+Independent archive audit: positive-shift proof sharing
+
+Scope: checked /tmp/positive-shift-sharing-evidence-20261028.zip and its README,
+manifest, saved sources, patch, clean build/probe records and provider summary;
+compared source snapshots with commit 0b19c1af58 and its parent. This is an
+audit of the saved evidence, not a fresh full Lean build. No repository files
+were modified. Archive SHA-256 at audit:
+b7f086903a8578cd82fefa80a203f6d3665a6a6ca9e2965cb28dd06979a3ad29.
+The integrity/source audit script and output are
+/tmp/positive-shift-archive-audit.py and /tmp/positive-shift-archive-audit.log.
+
+Integrity and commit comparison: all 200 ZIP members passed CRC, with no
+duplicate names. The manifest covers all 199 other files, with no missing or
+unlisted entries and no SHA-256 mismatch. All 24 baseline source snapshots
+match the corresponding files in 0b19c1af58^ (d898b9a504e0), and all 24 final
+snapshots match 0b19c1af58. Applying prototype.patch to temporary copies of the
+baseline files succeeded and reproduced all four changed final files exactly.
+The README was written before adoption and correctly identifies the baseline
+HEAD at packaging; its statement that the archive records a candidate is a
+historical description, since the refactor is now committed.
+
+Build and probe receipts: the recorded clean sources contain 48 successful
+builds and two explicitly retained failed initial object builds, as described.
+I compared all 50 source hashes to the corresponding archived source snapshots,
+all saved build log hashes and timing-file contents to their receipts, and all
+134 recorded direct-input before/after hashes; no discrepancy was found. All
+134 resolved object paths were available at review time and matched their
+recorded hashes. The successful builds account for the 126 direct inputs in the
+pin audit. The six not backed by a same-phase fresh build or matching provider
+receipt are exactly CurrentPolynomialWindow2011, ObjectNaturalDiscrete and
+WeightedExpressionDegree in each phase, as the README states.
+
+All six clean probe receipts report success, their logged hashes match, and the
+recorded probe input hashes are unchanged. The baseline and final 33-declaration
+public interface logs are byte-identical. The public name census has exactly
+three additional PositiveZero._proof_1 through _proof_3 names and no removals.
+The 33,211 global default simp entries and flags compare as equal sets. The
+provider audit has 108 entries with matching saved source/object hashes, and the
+referenced transport-sharing evidence ZIP has the README's stated SHA-256.
+
+Limitations: the six cached direct object-lane prerequisites have no matching
+current-source/object receipt, and the historical provider closure includes
+other precompiled inputs. Hash consistency therefore does not establish a
+fresh complete source or Foundation closure build. The reverse-client scan is
+not a replay of every downstream user. The changed availability of the three
+moved declarations and generated auxiliary names remains an interface change;
+identical checked types/axioms and simp entries do not rule out every possible
+name-resolution or persistent-environment effect. The source-pinned broad
+client checks and generic rfl evidence have the scope described in the README;
+the scripts rely on the original temporary paths and installed Lean setup, and
+compiled objects are omitted. ZIP hashes establish internal consistency, not
+independent signatures or provenance.
