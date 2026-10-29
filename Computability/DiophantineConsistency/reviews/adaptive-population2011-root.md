@@ -20,3 +20,7 @@ and `Quot.sound`. Both author manifests were checked (55 and 34 files).
 [client receipt](adaptive-population2011-author.md) preserve the details.
 Foundation, packages and unchanged upstream objects remain inherited cache
 boundaries rather than a fresh transitive source audit.
+
+A later upstream merge changed the `ArithmeticBinomLegendre.lean` dependency.
+This receipt authenticates its earlier population-provider snapshot; a
+source-current downstream replay is required.

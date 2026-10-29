@@ -1,0 +1,2 @@
+import DiophantineConsistency.ParsonsFreshOpen
+#print axioms DiophantineConsistency.ParsonsFreshOpen.fresh_open

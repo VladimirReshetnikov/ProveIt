@@ -1,0 +1,9 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ParsonsPrenexTreeChecks.lean:13:0: error(lean.dependsOnNoncomputable): failed to compile definition, consider marking it as 'noncomputable' because it depends on 'forward', which is 'noncomputable'
+'DiophantineConsistency.ParsonsPrenexTree.matrix_bounded' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTree.semantic' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTree.forward' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPrenexTree.backward' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.ParsonsPrenexTree.forward {n k : ℕ} (t : Tree n k) (h : Proof 𝗣𝗔⁻ (source t)) :
+  Proof 𝗣𝗔⁻ (DiophantineConsistency.ParsonsPrenexTuple.block (matrix t))
+DiophantineConsistency.ParsonsPrenexTree.backward {n k : ℕ} (t : Tree n k)
+  (h : Proof 𝗣𝗔⁻ (DiophantineConsistency.ParsonsPrenexTuple.block (matrix t))) : Proof 𝗣𝗔⁻ (source t)

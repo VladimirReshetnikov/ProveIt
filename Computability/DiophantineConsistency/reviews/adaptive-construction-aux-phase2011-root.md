@@ -15,3 +15,7 @@ are retained. An upstream merge changed `ArithmeticCarrierRadix2011.lean`
 after that provider was built; this receipt authenticates the earlier
 dependency snapshot and requires a source-current downstream replay.
 Foundation/packages and inherited project objects remain cache boundaries.
+
+A later upstream merge changed the `ArithmeticBinomLegendre.lean` dependency.
+This receipt authenticates its earlier population-provider snapshot; a
+source-current downstream replay is required.

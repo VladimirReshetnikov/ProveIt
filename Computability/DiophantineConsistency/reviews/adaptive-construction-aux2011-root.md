@@ -18,3 +18,7 @@ boundaries, not a fresh transitive source audit.
 A subsequent upstream merge changed `ArithmeticCarrierRadix2011.lean`. This
 receipt authenticates the earlier dependency snapshot; the affected
 source-current downstream replay is pending.
+
+A later upstream merge changed the `ArithmeticBinomLegendre.lean` dependency.
+This receipt authenticates its earlier population-provider snapshot; a
+source-current downstream replay is required.

@@ -8,9 +8,10 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
-A subsequent upstream merge changed `ArithmeticCarrierRadix2011.lean`. The
-adaptive window and reverse-construction replays below authenticate their
-earlier source snapshots; a source-current downstream rebuild is required.
+Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean` and
+`ArithmeticBinomLegendre.lean`. The adaptive population, window and reverse
+replays below authenticate their earlier source snapshots; a source-current
+downstream rebuild is required.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
@@ -79,9 +80,16 @@ guard, and the global recursion remains open. The [strict Π₂ disjunction
 normalizer](reviews/parsons-prenex-pi2-or-root.md) supplies a bounded-matrix
 tupled prenex form for a pair of strict ∀∃ side formulas. The corresponding
 [strict conjunction normalizer](reviews/parsons-prenex-pi2-and-root.md) has
-also been proved. General Π₂ normalization remains open. [Height-preserving universal inversion](reviews/parsons-all-invert-root.md)
+also been proved. The [tuple normalizers](reviews/parsons-prenex-tuple-root.md)
+extend both connectives to arbitrary finite universal and existential blocks.
+The [mixed-tree normalizer](reviews/parsons-prenex-tree-root.md) handles any
+finite conjunction/disjunction tree of such blocks. The source-derivation
+adapter and general Π₂ normalization remain open. [Height-preserving universal inversion](reviews/parsons-all-invert-root.md)
 now opens selected side occurrences at arbitrary terms while retaining
-cut-freeness and the strict bound below an existential inference. The [identity and truth leaves](reviews/parsons-leaves-root.md)
+cut-freeness and the strict bound below an existential inference. The
+[fresh-variable client](reviews/parsons-fresh-open-root.md) opens a selected
+universal side under the same strict bound while shifting the entire context.
+The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
