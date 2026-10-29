@@ -11,7 +11,8 @@ printed proof is not required.
 A later upstream merge generalized `PRAFormulaParameters.qr_rew` and updated
 `PRAUniversalSyntax` to use it. The affected universal-presentation, syntax
 and Herbrand replays below authenticate their earlier source snapshots; a
-source-current downstream rebuild is in progress.
+[source-current downstream rebuild](reviews/pra-parameter-current-root.md)
+has now passed twice for the 17 affected committed modules.
 
 The 14-variable equation in `equation.pdf` has closed IΣ₁ and HA
 proof-existence theorems, but no Lean theorem producing the requested PRA
