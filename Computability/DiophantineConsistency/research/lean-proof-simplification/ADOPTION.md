@@ -2256,5 +2256,14 @@ registrations match; the umbrella and wider closure remain unbuilt or cached.
 The compact [evidence note](../../reviews/lean-proof-simplification-20261029-axiom-context-iterate.md)
 records hashes and external paths without raw logs or objects.
 
+The window-carry bound cancellation `c78ee90e4b` removes one net Lean line,
+bringing the reviewed series to 10482. A direct product inequality replaces a
+contradiction in a proof from Claude-coauthored commit `5fcd5632b3b`. Paired
+target and direct-client builds pass with identical client objects; checked
+declarations and sampled registrations match. Six project providers have
+source-matched receipts; the wider closure remains cached. The compact [evidence
+note](../../reviews/lean-proof-simplification-20261029-window-carry-product.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
