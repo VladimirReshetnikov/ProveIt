@@ -1,0 +1,3 @@
+import DiophantineConsistency.ParsonsFreshContext
+#print axioms DiophantineConsistency.ParsonsFreshContext.keep_prefix
+#print axioms DiophantineConsistency.ParsonsFreshContext.fresh_open_at
