@@ -157,11 +157,8 @@ lemma termRename_isUTerm (chosen level offset : V) {term : V} (ht : IsUTerm L te
   (termRename_isSemiterm chosen level offset ht.isSemiterm).isUTerm
 lemma termRenameVec_isUTerm (chosen level offset : V) {arity terms : V}
     (ht : IsUTermVec L arity terms) :
-    IsUTermVec L arity (termRenameVec L chosen level offset arity terms) := by
-  refine ⟨(termRenameVec_lh chosen level offset ht).symm,?_⟩
-  intro i hi
-  rw [nth_termRenameVec chosen level offset ht hi]
-  exact termRename_isUTerm chosen level offset (ht.nth hi)
+    IsUTermVec L arity (termRenameVec L chosen level offset arity terms) :=
+  (termRenameVec_isSemiterm chosen level offset ht.isSemitermVec).isUTerm
 
 namespace FormulaRenamer
 noncomputable def blueprint (L : Language) [L.Encodable] [L.LORDefinable] :
