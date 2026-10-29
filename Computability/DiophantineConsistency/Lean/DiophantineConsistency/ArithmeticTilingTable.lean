@@ -190,30 +190,24 @@ theorem bit_cases' {b : V} (hb : b ≤ 1) : b = 0 ∨ b = 1 := le_one_iff_eq_zer
 theorem pass_colours {b : V} (hb : b ≤ 1) : Colours (433 + b) 0 b 0 b := by
   rcases bit_cases' hb with rfl | rfl
   · simpa using c433 (V := V)
-  · have h : (433 : V) + 1 = 434 := by norm_num
-    rw [h]; exact c434
+  · convert c434 (V := V) using 1; norm_num
 
 /-- Halted head pass tile `431+b`. -/
 theorem halt_colours {b : V} (hb : b ≤ 1) : Colours (431 + b) 0 (432 + b) 0 (432 + b) := by
   rcases bit_cases' hb with rfl | rfl
   · simpa using c431 (V := V)
-  · have h : (431 : V) + 1 = 432 := by norm_num
-    have h2 : (432 : V) + 1 = 433 := by norm_num
-    rw [h, h2]; exact c432
+  · convert c432 (V := V) using 1 <;> norm_num
 
 /-- Finish tiles `923+b` and `925+b`. -/
 theorem finish_colours {b : V} (hb : b ≤ 1) : Colours (923 + b) 0 b 0 438 := by
   rcases bit_cases' hb with rfl | rfl
   · simpa using c923 (V := V)
-  · have h : (923 : V) + 1 = 924 := by norm_num
-    rw [h]; exact c924
+  · convert c924 (V := V) using 1; norm_num
 
 theorem finish_head_colours {b : V} (hb : b ≤ 1) : Colours (925 + b) 0 (432 + b) 0 438 := by
   rcases bit_cases' hb with rfl | rfl
   · simpa using c925 (V := V)
-  · have h : (925 : V) + 1 = 926 := by norm_num
-    have h2 : (432 : V) + 1 = 433 := by norm_num
-    rw [h, h2]; exact c926
+  · convert c926 (V := V) using 1 <;> norm_num
 
 theorem pass_lt {b : V} (hb : b ≤ 1) : (433 : V) + b < 942 :=
   lt_of_le_of_lt (add_le_add le_rfl hb) (by norm_num)
