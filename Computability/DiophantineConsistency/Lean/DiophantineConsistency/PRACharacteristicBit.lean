@@ -18,18 +18,24 @@ section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* PRA]
 
-theorem modelCompiledBit {n : ℕ} (p : OpenFormula n) :
-    M↓[language] ⊧ bitSentence (compileFormula equalityCode p) := by
+omit [M↓[language] ⊧* PRA] in
+theorem bitSentence_iff {n : ℕ} (c : Code n) :
+    M↓[language] ⊧ bitSentence c ↔
+      ∀ e : Fin n → M, IsBit (Structure.func (L := language) c e) := by
   simp only [models_iff, bitSentence, Semiformula.eval_allClosure]
+  apply forall_congr'
   intro e
-  have heq := modelEqualityCode (M := M)
-  have h := (modelCompileFormula equalityCode heq p e).1
-  change Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim e _
-  simp [Semiformula.EvalAux, eqRel, applyCode, vars, Function.comp_def]
+  change Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim e _ ↔ _
+  simp [Semiformula.EvalAux, eqRel, applyCode, vars, Function.comp_def, IsBit]
   have hz : (fun i : Fin 0 => Semiterm.val e Empty.elim (Fin.elim0 i : TermN n)) =
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   rw [hz]
-  exact h
+
+theorem modelCompiledBit {n : ℕ} (p : OpenFormula n) :
+    M↓[language] ⊧ bitSentence (compileFormula equalityCode p) := by
+  apply (bitSentence_iff _).mpr
+  intro e
+  exact (modelCompileFormula equalityCode (modelEqualityCode (M := M)) p e).1
 
 end models
 

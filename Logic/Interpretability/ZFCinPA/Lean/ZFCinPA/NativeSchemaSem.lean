@@ -1,3 +1,4 @@
+import ZFCinPA.SchemaSourceSyntax
 import ZFCinPA.NTInterp
 
 set_option autoImplicit false
@@ -291,13 +292,13 @@ abbrev SL := setTemplateLanguage 1 ar1
 local instance : Language.Mem SL := ⟨Sum.inl Language.Set.Rel.mem⟩
 
 /-- The placeholder atom `R(#0)`. -/
-def R1 : Semisentence SL 1 := .rel (placeholderRel (arities := ar1) 0) ![#0]
+def R1 : Semisentence SL 1 := SchemaSourceSyntax.R1
 
 /-- The congruence law of `R`. -/
 def cong1 : Sentence SL := setPlaceholderCongruenceSentence 1 ar1 0
 
 /-- The separation body for `R`. -/
-def sepS : Sentence SL := “∀ x, ∃ y, ∀ z, z ∈ y ↔ z ∈ x ∧ !R1 z”
+def sepS : Sentence SL := SchemaSourceSyntax.sepS
 
 /-- **The separation template.** -/
 def sepT : Sentence SL := intT cong1 🡒 intT sepS
@@ -338,13 +339,13 @@ abbrev ar2 : Fin 1 → ℕ := fun _ ↦ 2
 abbrev RL := setTemplateLanguage 1 ar2
 
 /-- The placeholder atom `R(#0, #1)`. -/
-def R2 : Semisentence RL 2 := .rel (placeholderRel (arities := ar2) 0) ![#0, #1]
+def R2 : Semisentence RL 2 := SchemaSourceSyntax.R2
 
 /-- The congruence law of `R`. -/
 def cong2 : Sentence RL := setPlaceholderCongruenceSentence 1 ar2 0
 
 /-- The (globally total) replacement body for `R`. -/
-def repS : Sentence RL := “(∀ x, ∃! y, !R2 x y) → ∀ X, ∃ Y, ∀ y, y ∈ Y ↔ ∃ x ∈ X, !R2 x y”
+def repS : Sentence RL := SchemaSourceSyntax.repS
 
 /-- **The replacement template.** -/
 def replT : Sentence RL := intT cong2 🡒 intT repS

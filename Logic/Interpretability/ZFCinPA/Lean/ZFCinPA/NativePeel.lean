@@ -145,4 +145,17 @@ theorem peel (hP : Good P) {m b e : V} (hb : IsSemiformula ℒₛₑₜ m b) (hs
   have hc : IsSemiformula ℒₛₑₜ 0 (qqAlls b m) := IsSemiformula.qqAlls (by simpa using hb)
   rwa [subst_eq_self hc (ModelCodedBindFree.fvarVec_isTermVec (L := ℒₛₑₜ) 0) (by simp)] at h
 
+/-- An interpretation of each schema body extends to every recognized closure. -/
+theorem schema_obligation (hP : Good P) {a : ℕ} (Fval : V → V)
+    (hbase : ∀ K : V, IsSemiformula ℒₛₑₜ (a : V) K →
+      ∃ e, Derivable U (insert (interp P (Fval K)) (domSet ℒₛₑₜ (dom P) e)))
+    {p : V} (hp : SchemaRecognizer ℒₛₑₜ a Fval p) :
+    ∃ e, Derivable U (insert (interp P p) (domSet ℒₛₑₜ (dom P) e)) := by
+  obtain ⟨m, -, b, -, rfl, hbU, hbs, hbv, K, -, hK, hKb⟩ := hp
+  have hb : IsSemiformula ℒₛₑₜ m b := by simpa [hbv] using hbU.isSemiformula
+  obtain ⟨e, he⟩ := hbase K hK
+  refine ⟨e, peel hP hb hbs ?_⟩
+  rw [hKb]
+  exact InternalInterpretation.derivable_domSet_mono hP.isDom le_add_self (he.isFormulaSet.insert.1) he
+
 end LeanProofs.ZFCinPA.NativePeel

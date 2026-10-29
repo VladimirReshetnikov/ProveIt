@@ -17,30 +17,22 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
   [M↓[language] ⊧* PRA]
 
 theorem modelNegateBit {n : ℕ} (c : Code n) : M↓[language] ⊧ bitSentence (notCode c) := by
-  simp only [models_iff, bitSentence, Semiformula.eval_allClosure]
+  apply (PRACharacteristicBit.bitSentence_iff _).mpr
   intro e
-  have h : IsBit (Structure.func (L := language) (notCode c) e) := by
-    rw [modelNotCode]
-    exact modelIsZeroBit _
-  change Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim e _
-  simp [Semiformula.EvalAux, eqRel, applyCode, vars, Function.comp_def]
-  have hz : (fun i : Fin 0 => Semiterm.val e Empty.elim (Fin.elim0 i : TermN n)) =
-      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  rw [hz]
-  exact h
+  rw [modelNotCode]
+  exact modelIsZeroBit _
 
 theorem modelNegateCorrect {n : ℕ} (c : Code n) (φ : Semisentence language n)
     (h : M↓[language] ⊧ nonzeroCorrectSentence c φ) :
     M↓[language] ⊧ oneCorrectSentence (notCode c) (∼φ) := by
-  simp only [models_iff, nonzeroCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff] at h
-  simp only [models_iff, oneCorrectSentence, Semiformula.eval_allClosure, LogicalConnective.iff]
+  apply (oneCorrectSentence_iff _ _).mpr
   intro e
-  have hc := h e
-  have hv : (Semiterm.val (L := language) e Empty.elim ∘ vars n) = e := by funext i; rfl
-  have hz : (Semiterm.val (L := language) e Empty.elim ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  simp [Semiformula.eval_nrel, eqRel, applyCode, Semiterm.val_func, hv, hz] at hc
-  simp [Semiformula.eval_rel, eqRel, applyCode, Semiterm.val_func, hv, hz, modelNotCode,
-    modelIsZeroCharacter] at hc ⊢
+  rw [modelNotCode, modelIsZeroCharacter]
+  have hc := (nonzeroCorrectSentence_iff c φ).mp h e
+  change (Structure.func (L := language) c e =
+    Structure.func (L := language) (Code.zero 0) Fin.elim0 ↔
+      Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim e (∼φ))
+  rw [Semiformula.EvalAux_neg]
   tauto
 
 end models

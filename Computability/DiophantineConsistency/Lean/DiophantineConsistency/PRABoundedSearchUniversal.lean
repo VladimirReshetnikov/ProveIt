@@ -146,15 +146,9 @@ theorem modelUniversalCorrectSentence {n : ℕ} (good : Code (n+1)) :
 
 theorem modelUniversalBitSentence {n : ℕ} (good : Code (n+1)) :
     M↓[language] ⊧ PRACharacteristicBit.bitSentence (universalCode good) := by
-  simp only [models_iff, PRACharacteristicBit.bitSentence, Semiformula.eval_allClosure]
+  apply (PRACharacteristicBit.bitSentence_iff _).mpr
   intro e
-  have hbit := (modelUniversalCode_eval good e).1
-  change Semiformula.EvalAux (inferInstance : Structure language M) Empty.elim e _
-  simp [Semiformula.EvalAux, eqRel, applyCode, vars, Function.comp_def]
-  have hz : (fun i : Fin 0 => Semiterm.val e Empty.elim (Fin.elim0 i : TermN (n+1))) =
-      (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  rw [hz]
-  exact hbit
+  exact (modelUniversalCode_eval good e).1
 
 end models
 

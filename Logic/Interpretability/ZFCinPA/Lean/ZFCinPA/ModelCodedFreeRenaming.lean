@@ -157,11 +157,8 @@ lemma termRename_isUTerm (chosen level offset : V) {term : V} (ht : IsUTerm L te
   (termRename_isSemiterm chosen level offset ht.isSemiterm).isUTerm
 lemma termRenameVec_isUTerm (chosen level offset : V) {arity terms : V}
     (ht : IsUTermVec L arity terms) :
-    IsUTermVec L arity (termRenameVec L chosen level offset arity terms) := by
-  refine ⟨(termRenameVec_lh chosen level offset ht).symm,?_⟩
-  intro i hi
-  rw [nth_termRenameVec chosen level offset ht hi]
-  exact termRename_isUTerm chosen level offset (ht.nth hi)
+    IsUTermVec L arity (termRenameVec L chosen level offset arity terms) :=
+  (termRenameVec_isSemiterm chosen level offset ht.isSemitermVec).isUTerm
 
 namespace FormulaRenamer
 noncomputable def blueprint (L : Language) [L.Encodable] [L.LORDefinable] :
@@ -265,26 +262,13 @@ lemma rename_isSemiformula (chosen level offset : V) {depth p : V}
     IsSemiformula L depth (rename L chosen level offset p))
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
   · definability
-  · intro depth arity R terms hR ht
-    rw [rename_rel chosen level offset hR ht.isUTerm]
-    exact IsSemiformula.rel.mpr ⟨hR,termRenameVec_isSemiterm chosen level offset ht⟩
-  · intro depth arity R terms hR ht
-    rw [rename_nrel chosen level offset hR ht.isUTerm]
-    exact IsSemiformula.nrel.mpr ⟨hR,termRenameVec_isSemiterm chosen level offset ht⟩
-  · intro depth; simp
-  · intro depth; simp
-  · intro depth p q hp hq ihp ihq
-    rw [rename_and chosen level offset hp.isUFormula hq.isUFormula]
-    exact IsSemiformula.and.mpr ⟨ihp,ihq⟩
-  · intro depth p q hp hq ihp ihq
-    rw [rename_or chosen level offset hp.isUFormula hq.isUFormula]
-    exact IsSemiformula.or.mpr ⟨ihp,ihq⟩
-  · intro depth p hp ih
-    rw [rename_all chosen level offset hp.isUFormula]
-    simpa using ih
-  · intro depth p hp ih
-    rw [rename_exs chosen level offset hp.isUFormula]
-    simpa using ih
+  all_goals
+    intros
+    simp (discharger := aesop (add safe [IsSemitermVec.isUTerm, IsSemiformula.isUFormula]))
+      [*, rename_rel, rename_nrel, termRenameVec_isSemiterm,
+        rename_and, rename_or, rename_all, rename_exs,
+        IsSemiformula.rel, IsSemiformula.nrel, IsSemiformula.and, IsSemiformula.or]
+
 lemma rename_isUFormula (chosen level offset : V) {p : V} (hp : IsUFormula L p) :
     IsUFormula L (rename L chosen level offset p) :=
   (rename_isSemiformula chosen level offset hp.isSemiformula).isUFormula
@@ -471,44 +455,14 @@ lemma rename_subst (chosen level offset : V) {n p : V} (hp : IsSemiformula L n p
         (rename L chosen level offset p))
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
   · definability
-  · intro n arity R terms hR ht m vector hw
-    rw [substs_rel hR ht.isUTerm,
-      rename_rel chosen level offset hR (hw.termSubstVec ht).isUTerm,
-      rename_rel chosen level offset hR ht.isUTerm,
-      substs_rel hR (termRenameVec_isUTerm chosen level offset ht.isUTerm),
-      termRenameVec_subst chosen level offset ht hw]
-  · intro n arity R terms hR ht m vector hw
-    rw [substs_nrel hR ht.isUTerm,
-      rename_nrel chosen level offset hR (hw.termSubstVec ht).isUTerm,
-      rename_nrel chosen level offset hR ht.isUTerm,
-      substs_nrel hR (termRenameVec_isUTerm chosen level offset ht.isUTerm),
-      termRenameVec_subst chosen level offset ht hw]
-  · intro n m vector hw; simp
-  · intro n m vector hw; simp
-  · intro n p q hp hq ihp ihq m vector hw
-    rw [substs_and hp.isUFormula hq.isUFormula,
-      rename_and chosen level offset (hp.subst hw).isUFormula (hq.subst hw).isUFormula,
-      rename_and chosen level offset hp.isUFormula hq.isUFormula,
-      substs_and (rename_isUFormula chosen level offset hp.isUFormula)
-        (rename_isUFormula chosen level offset hq.isUFormula),ihp m vector hw,ihq m vector hw]
-  · intro n p q hp hq ihp ihq m vector hw
-    rw [substs_or hp.isUFormula hq.isUFormula,
-      rename_or chosen level offset (hp.subst hw).isUFormula (hq.subst hw).isUFormula,
-      rename_or chosen level offset hp.isUFormula hq.isUFormula,
-      substs_or (rename_isUFormula chosen level offset hp.isUFormula)
-        (rename_isUFormula chosen level offset hq.isUFormula),ihp m vector hw,ihq m vector hw]
-  · intro n p hp ih m vector hw
-    rw [substs_all hp.isUFormula,
-      rename_all chosen level offset (hp.subst hw.qVec).isUFormula,
-      rename_all chosen level offset hp.isUFormula,
-      substs_all (rename_isUFormula chosen level offset hp.isUFormula),
-      ih (m+1) (qVec L vector) hw.qVec,termRename_qVec chosen level offset hw]
-  · intro n p hp ih m vector hw
-    rw [substs_ex hp.isUFormula,
-      rename_exs chosen level offset (hp.subst hw.qVec).isUFormula,
-      rename_exs chosen level offset hp.isUFormula,
-      substs_ex (rename_isUFormula chosen level offset hp.isUFormula),
-      ih (m+1) (qVec L vector) hw.qVec,termRename_qVec chosen level offset hw]
+  all_goals
+    intros
+    simp (discharger := aesop (add safe [IsSemitermVec.isUTerm, IsSemiformula.isUFormula,
+      IsSemiformula.subst, IsSemitermVec.qVec, IsSemitermVec.termSubstVec,
+      termRenameVec_isUTerm, rename_isUFormula]))
+      [*, substs_rel, substs_nrel, substs_and, substs_or, substs_all, substs_ex,
+        rename_rel, rename_nrel, rename_and, rename_or, rename_all, rename_exs,
+        termRenameVec_subst, termRename_qVec]
 
 lemma termRenameVec_singleton (chosen level offset : V) {term : V} (ht : IsUTerm L term) :
     termRenameVec L chosen level offset 1 (term ∷ 0) =
