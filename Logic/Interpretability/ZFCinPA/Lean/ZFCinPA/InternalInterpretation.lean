@@ -430,24 +430,10 @@ theorem derivable_iSet (hP : Good P)
       rw [← interp_and hp.isUFormula hq.isUFormula]
       exact mem_cup_iff.mpr (Or.inl (interp_mem_iSet hpq))
     refine Derivable.and_m hmem ?_ ?_
-    · refine Derivable.wk (by simp [hFS s _ hs, isSemiformula_interp hP hp]) ?_ ih₁
-      intro y hy
-      rcases mem_cup_iff.mp hy with hy | hy
-      · rw [iSet_insert] at hy
-        rcases mem_bitInsert_iff.mp hy with rfl | hy
-        · simp
-        · exact mem_bitInsert_iff.mpr (Or.inr (mem_cup_iff.mpr (Or.inl hy)))
-      · exact mem_bitInsert_iff.mpr (Or.inr (mem_cup_iff.mpr
-          (Or.inr (domSet_subset (le_max_left m₁ m₂) hy))))
-    · refine Derivable.wk (by simp [hFS s _ hs, isSemiformula_interp hP hq]) ?_ ih₂
-      intro y hy
-      rcases mem_cup_iff.mp hy with hy | hy
-      · rw [iSet_insert] at hy
-        rcases mem_bitInsert_iff.mp hy with rfl | hy
-        · simp
-        · exact mem_bitInsert_iff.mpr (Or.inr (mem_cup_iff.mpr (Or.inl hy)))
-      · exact mem_bitInsert_iff.mpr (Or.inr (mem_cup_iff.mpr
-          (Or.inr (domSet_subset (le_max_right m₁ m₂) hy))))
+    · exact derivable_insert_of_iSet (le_max_left m₁ m₂)
+        (by simp [hFS s _ hs, isSemiformula_interp hP hp]) ih₁
+    · exact derivable_insert_of_iSet (le_max_right m₁ m₂)
+        (by simp [hFS s _ hs, isSemiformula_interp hP hq]) ih₂
   -- or
   · intro s hs p q dp hpq hdp ⟨m, ih⟩
     rw [hdp.1] at ih
