@@ -2055,5 +2055,14 @@ common declarations and sampled registrations match; one client object differs.
 The wider closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-boot-share.md)
 records hashes and external paths without retaining raw logs or objects.
 
+The construction first-norm positivity simplification `e400133f9b` removes
+four net Lean lines, bringing the reviewed series to 10346. The affected proof
+came from Claude-coauthored commit `16bbf502706`. The positive square yields the
+strict bound directly. Paired target and both direct-client builds pass with
+identical client objects; checked target reports and sampled registrations
+match. Five project providers have source-matched receipts; the wider closure
+remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-construction-tau-positive.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
