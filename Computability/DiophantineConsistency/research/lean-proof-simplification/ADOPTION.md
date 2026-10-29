@@ -909,5 +909,17 @@ were not tested. The first paired prototype and graph target source hash are
 superseded by the final receipt. Independent review passes. See [the evidence
 bundle](../../reviews/lean-proof-simplification-20261028-wang-permutation-sharing-evidence/BUNDLE.json).
 
+The joint bisimulation clock induction `2e5b3dba2e` removes 31 net lines,
+bringing the reviewed series to 8468. Both targets, compatibility examples,
+the reverse production module, the forward ArithmeticRuntimeBound215 client
+and its six declaration reports pass; 13 old namespace declaration and axiom
+reports match. The forward check rebuilt 25 affected prerequisites, with 113
+borrowed project objects and 405 compiled companions authenticated. The
+broader ArithmeticRefutationHaltBound client remains unverified after initial
+attempts lacked ArithmeticProofWordBound. Earlier missing dependency and
+companion failures, and the interrupted refresh, are retained. Foundation,
+Mathlib and other authenticated inputs remain precompiled. Independent review
+passes. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-bisim-joint-clock-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
