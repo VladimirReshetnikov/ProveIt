@@ -107,7 +107,9 @@ proves that all actual Foundation Q axioms except its strict-order definition
 map to theorems of the candidate PRA. The [subtraction recursion clauses](reviews/pra-subtraction-root.md) are
 also proved in the candidate theory, as preparation for the order clause.
 The [nonzero-bit recursion](reviews/pra-nonzero-root.md) is also proved.
-The order clause and full compatibility remain open.
+The [nonzero-bit characterization](reviews/pra-nonzero-character-root.md)
+is now an object-theory derivation in all models. The order clause and full
+compatibility remain open.
 
 ## Concrete bridge to formalize
 

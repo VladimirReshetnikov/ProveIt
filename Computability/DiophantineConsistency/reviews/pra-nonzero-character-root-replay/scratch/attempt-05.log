@@ -1,0 +1,11 @@
+Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRANonzeroCharacter.lean:61:8: warning: declaration uses `sorry`
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+e : Fin 1 → M
+⊢ ((¬(Structure.func nonzeroCode fun x => e 0) = Structure.func oneCode fun x => Semiterm.val e Empty.elim x.elim0) ∨
+      ¬e 0 = Structure.func (Code.zero 0) fun x => Semiterm.val e Empty.elim x.elim0) ∧
+    ((e 0 = Structure.func (Code.zero 0) fun x => Semiterm.val e Empty.elim x.elim0) ∨
+      (Structure.func nonzeroCode fun x => e 0) = Structure.func oneCode fun x => Semiterm.val e Empty.elim x.elim0)
