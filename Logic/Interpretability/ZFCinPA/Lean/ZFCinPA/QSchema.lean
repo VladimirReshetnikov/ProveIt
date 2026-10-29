@@ -77,16 +77,13 @@ lemma hTermSet : ∀ t : V, IsTerm ℒₛₑₜ t → ∃ j, t = ^&j :=
   fun _ ht ↦ SetRelativization.isTerm_eq_fvar ht
 
 lemma domSet_zero_empty : domSet ℒₛₑₜ (dom (PN : V)) 0 = ∅ :=
-  mem_ext fun y => by simp [mem_domSet_iff]
+  NativePeel.domSet_zero _
 
 /-- Every internal equality axiom is interpreted-derivable. -/
 lemma eq_obligation {p : V} (h : p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁Class) :
-    ∃ m, Derivable qTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
-  obtain ⟨σ, hσ, rfl⟩ :=
-    ConstructibleInterpretation.mem_ch_ofFinite (𝗘𝗤 ℒₛₑₜ) Theory.EqAxiom.finite h
-  refine ⟨0, ?_⟩
-  rw [domSet_zero_empty]
-  exact (QFixed.provable_interp_fixed σ (Or.inl hσ)).toDerivable
+    ∃ m, Derivable qTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) m)) :=
+  NativePeel.finite_obligation (𝗘𝗤 ℒₛₑₜ) Theory.EqAxiom.finite
+    (fun σ hσ => QFixed.provable_interp_fixed σ (Or.inl hσ)) h
 
 /-- **Equality-logic theorems transport**: the interpretation of an internal
 `𝗘𝗤`-theorem is derivable in `qTheory` with domain side formulas. -/
@@ -163,13 +160,11 @@ lemma mem_ZF_class {p : V} (h : p ∈ (𝗭𝗙 : SetTheory).Δ₁Class) :
 
 /-- Every internal fixed axiom of `𝗭𝗙` is interpreted-derivable. -/
 lemma fixed_obligation {p : V} (h : p ∈ zfFixed.Δ₁Class) :
-    ∃ m, Derivable qTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) m)) := by
-  obtain ⟨σ, hσ, rfl⟩ := ConstructibleInterpretation.mem_ch_ofList
+    ∃ m, Derivable qTheory (insert (interp (PN : V) p) (domSet ℒₛₑₜ (dom (PN : V)) m)) :=
+  NativePeel.list_obligation
     [Axiom.empty, Axiom.extentionality, Axiom.pairing, Axiom.union,
-      Axiom.power, Axiom.infinity, Axiom.foundation] h
-  refine ⟨0, ?_⟩
-  rw [domSet_zero_empty]
-  exact (QFixed.provable_interp_fixed σ (Or.inr (by simpa [zfFixed] using hσ))).toDerivable
+      Axiom.power, Axiom.infinity, Axiom.foundation]
+    (fun σ hσ => QFixed.provable_interp_fixed σ (Or.inr (by simpa [zfFixed] using hσ))) h
 
 /-- **Every internal axiom of `𝗭𝗙` is interpreted-derivable in `qTheory`.** -/
 theorem zf_obligation (p : V) (_ : IsFormula ℒₛₑₜ p) (h : p ∈ (𝗭𝗙 : SetTheory).Δ₁Class) :
