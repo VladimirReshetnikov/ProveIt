@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRABoundedSearchUniversalRule
+#print axioms DiophantineConsistency.PRABoundedSearchUniversalRule.inductionFromSearch
+#check DiophantineConsistency.PRABoundedSearchUniversalRule.inductionFromSearch

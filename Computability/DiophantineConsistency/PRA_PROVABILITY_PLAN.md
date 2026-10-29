@@ -6,6 +6,46 @@ primitive recursive arithmetic (PRA). The earlier request for an HA derivation
 also remains relevant. Existence of an object-theory proof is enough; a
 printed proof is not required.
 
+## Current scope and open endpoints
+
+The 14-variable equation in `equation.pdf` has closed IΣ₁ and HA
+proof-existence theorems, but no Lean theorem producing the requested PRA
+derivation. The candidate PRA development now includes an actual proof
+calculus, an ordered-ring embedding, and characteristic codes for open
+formulas with finitely many packed parameters. The formal conservation and
+witnessing arguments remain open; the candidate's comparison with a standard
+PRA presentation also remains to be proved.
+The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
+are proved for Σ₁ relations, but assembling the inference still assumes a
+proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
+now proves that step under arbitrary assignments, yielding an unconditional
+collection-rule transformer when the exact implication is parameter-free.
+The [arbitrary-parameter collection rule](reviews/parsons-specialize-root.md)
+is now proved as a noncomputable proof transformer by specializing the closed
+finite-extension theorem. The guarded-context version and a PRA-internal or
+primitive-recursive transformer remain open.
+
+For the selected 13-variable adaptive equation, the actual-zero arithmetic
+now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
+[power recovery](reviews/adaptive-power-finish2011-root.md), and the
+[aligned radix](reviews/adaptive-radix2011-root.md) in arbitrary IΣ₁ models.
+The [normalized transport](reviews/adaptive-transport-restoration2011-root.md)
+has also been recovered from the actual adaptive zero and independently replayed.
+The corresponding [rank-population lower bound](reviews/adaptive-population2011-root.md)
+is now independently replayed for every internal exponent matching the radix.
+The machine-window soundness, internal converse and final HA/PRA
+proof-existence endpoints remain open.
+
+Lower-variable forms are also part of the objective. The existing
+[`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
+and [`SplitNineSource59`](Lean/DiophantineConsistency/SplitNineSource59.lean)
+give nine-coordinate standard-natural existence comparisons to parameterized
+source rows, under their stated validity bounds. These source comparisons do
+not themselves identify the fixed equation with ZFC consistency or produce
+an internal IΣ₁, HA, or PRA proof of that equivalence. They do not discharge
+the other selected compact or quartic forms. Later entries record historical
+checkpoints and should be read in light of this current scope.
+
 ## What is already proved
 
 For the maintained 14-positive-variable equation,
@@ -62,6 +102,12 @@ have likewise been derived.
 Compatibility with a standard PRA presentation, further arithmetic bridges,
 primitive-recursive axiom recognition and conservation remain open. This is not a uniform primitive-recursive evaluator.
 
+The [candidate universal-presentation equivalence](reviews/pra-universal-equivalence-root.md)
+now proves the same sentence-level theorems in the explicitly defined universal
+axiom family and candidate PRA, with arbitrary open-induction parameters. The
+result uses completeness externally and does not yet identify the candidate
+with standard PRA or establish a witnessing or conservation theorem.
+
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
 shift over arbitrary commutative semirings. The [internal factor-magnitude theorem](reviews/adaptive-factor-magnitude2011-root.md)
@@ -80,7 +126,8 @@ the actual positive transport and gap. The [transport quotient theorem](reviews/
 now derives the exact positive transport multiple. The [main-root orientation theorem](reviews/adaptive-main-orientation2011-root.md)
 now derives its positive signed representation. The [Pell index client](reviews/adaptive-pell-indices2011-root.md)
 constructs positive bounded indices for both recurrences from the actual zero.
-Their relation, power recovery and the full zero-existence equivalence remain open.
+Their exact relation and power recovery have since been established as linked
+above; the full zero-existence equivalence remains open.
 
 The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
 now proves in Lean that both maintained source sentences are Π₁ and their
@@ -222,3 +269,10 @@ interface. A bounded search invariant and universal presentation remain open.
 The [bounded-search code](reviews/pra-bounded-search-code-root.md) now has
 its all-model zero and step equations for arbitrary fixed predicates and
 parameters. Its search correctness and universal presentation are still open.
+
+The [bounded-search invariants](reviews/pra-search-invariants-root.md) now
+provide closed candidate-PRA candidate and predecessor conditions for any
+fixed predicate code. A separate logical lemma derives Boolean induction
+from these conditions, bitness, successor exhaustion and base/step. The
+actual universal theory, presentation equivalence and general Σ₁ witnessing
+remain open.

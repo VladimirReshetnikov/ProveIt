@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAUniversalCandidate
+#print axioms DiophantineConsistency.PRAUniversalCandidate.PRA_proves_universalAxiom
+#check DiophantineConsistency.PRAUniversalCandidate.PRA_proves_universalAxiom

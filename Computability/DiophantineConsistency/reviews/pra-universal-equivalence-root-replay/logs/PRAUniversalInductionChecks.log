@@ -1,0 +1,11 @@
+'DiophantineConsistency.PRAUniversalInduction.modelOpenInductionAxiom' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAUniversalInduction.modelOpenInductionAxiom {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom]
+  (φ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (hφ : LO.FirstOrder.Semiformula.Open φ) :
+  M↓[DiophantineConsistency.PRALanguage.language] ⊧
+    LO.FirstOrder.Semiformula.univCl (LO.FirstOrder.Arithmetic.succInd φ)
