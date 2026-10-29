@@ -100,19 +100,11 @@ theorem fourBlocks_mod_four (u A M F H alpha : V) (hu : 2≤u)
   obtain ⟨e,rfl⟩ : ∃ e, u=2+e := ⟨u-2,(add_tsub_cancel_of_le hu).symm⟩
   have hq : Exp.exp (2+e)=4*Exp.exp e := by
     rw [exp_add,show (2:V)=1+1 by ring,exp_add,exp_one]; ring
-  have hda : 4*(A/4)+A%4=A := div_add_mod A 4
-  have hdm : 4*(M/4)+M%4=M := div_add_mod M 4
-  rw [hA,add_zero] at hda
-  rw [hM] at hdm
-  have key : A+M=(A/4+M/4)*4+3 := by
-    calc
-      A+M=4*(A/4)+(4*(M/4)+3) := by rw [hda,hdm]
-      _=(A/4+M/4)*4+3 := by ring
-  have he : fourBlocks (2+e) A M F H alpha=
-      (A/4+M/4+Exp.exp e*(F+H)+4*Exp.exp e^2*(F+alpha)+16*Exp.exp e^3*(A+alpha))*4+3 := by
-    unfold fourBlocks; rw [hq,key]; ring
-  rw [he]
-  exact mod_mul_add_of_lt _ _ (by exact_mod_cast (show (3:ℕ)<4 by decide))
+  unfold fourBlocks
+  rw [hq]
+  have h4 : (0:V)<4 := by norm_num
+  simp [pow_succ, mod_add h4, mod_mul h4, hA, hM,
+    mod_eq_self_of_lt (show (3:V)<4 by exact_mod_cast (show (3:ℕ)<4 by decide))]
 
 /-- **Size.** `2u < q^3 ≤ fourBlocks` once `α > 0`. -/
 theorem fourBlocks_gt (u A M F H alpha : V) (halpha : 0<alpha) :
