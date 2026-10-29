@@ -165,10 +165,8 @@ theorem minimal_unit_classification (D b v : V)
           have hxpos : 0<x := pos_of_mul_pos_left (by rw [hn]; simp) (by simp)
           simpa using lt_iff_succ_le.mp hxpos
         exact ⟨0,by simp,by simpa using hx1,by simp⟩
-      · have hyp : 0<y := lt_of_le_of_ne (Arithmetic.zero_le y) (Ne.symm hy)
-        have hbase : 1<b+2 := by
-          calc (1:V)<2 := by simp
-               _≤b+2 := by simp
+      · have hyp : 0<y := pos_iff_ne_zero.mpr hy
+        have hbase : 1<b+2 := lt_of_lt_of_le (by simp : (1:V)<2) (by simp)
         obtain ⟨u,z,_,hz,hu,hix,hiy⟩ :=
           minimal_unit_descent D (b+2) v x y hD hbase hv hF hmin hyp hn
         obtain ⟨n,hnz,hux,hzy⟩ := ih z hz u (norm_x_bound D u z hu) hu
