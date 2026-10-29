@@ -261,13 +261,13 @@ theorem symcut {x y Γ c W : V} (hx : IsSemiterm ℒₛₑₜ 0 x) (hy : IsSemit
     rw [Bootstrapping.Semiformula.val_neg, e_yx]; exact neg_eq_atom hy hx
   have n_xy : (∼(tx ≐ₛ ty)).val = neR x y := by
     rw [Bootstrapping.Semiformula.val_neg, e_xy]; exact neg_eq_atom hx hy
+  have lAtom : ∀ {tag a b : V}, tag ≤ 1 → a ≤ lvB c → b ≤ lvB c →
+      ⟪tag, 2, 0, a ∷ b ∷ 0⟫ + 1 ≤ lvB (10 * (m + 1)) := fun ht ha hb =>
+    lift_lvB (atom_le hc ht (Or.inl rfl) ha hb)
+      (le_of_add_eq (y := 100 * (symmN : V) + 9 * c + 99) (by rw [hm]; ring))
   have lEq : ∀ {a b : V}, a ≤ lvB c → b ≤ lvB c →
-      ^rel 2 (0 : V) (a ∷ b ∷ 0) ≤ lvB (10 * (m + 1)) := fun ha hb =>
-    lift_lvB (atom_le hc (by simp) (Or.inl rfl) ha hb)
-      (le_of_add_eq (y := 100 * (symmN : V) + 9 * c + 99) (by rw [hm]; ring))
-  have lNe : ∀ {a b : V}, a ≤ lvB c → b ≤ lvB c → neR a b ≤ lvB (10 * (m + 1)) := fun ha hb =>
-    lift_lvB (atom_le hc le_rfl (Or.inl rfl) ha hb)
-      (le_of_add_eq (y := 100 * (symmN : V) + 9 * c + 99) (by rw [hm]; ring))
+      ^rel 2 (0 : V) (a ∷ b ∷ 0) ≤ lvB (10 * (m + 1)) := lAtom (by simp)
+  have lNe : ∀ {a b : V}, a ≤ lvB c → b ≤ lvB c → neR a b ≤ lvB (10 * (m + 1)) := lAtom le_rfl
   -- `Γ' := y = x, Γ`, and the instance `I := x = y → y = x` on it
   set Γ' := insert (^rel 2 (0 : V) (y ∷ x ∷ 0)) Γ with hΓ'
   have lΓ' : SeqLe Γ' (10 * (m + 1)) := hΓ.insert (lEq ly lx)
