@@ -123,17 +123,21 @@ theorem tag_nonempty_provable (j : V) : Provable seedTheory (^∃ domainCode j) 
       using p.derivationOf
   simpa only [Bootstrapping.Semiformula.val_exs,domain_binding] using hp
 
+private theorem insert_provable {p Γ : V} (hΓ : IsFormulaSet ℒₛₑₜ (insert p Γ))
+    (hp : Provable seedTheory p) : Derivable seedTheory (insert p Γ) := by
+  refine Derivable.wk hΓ ?_ hp.toDerivable
+  intro y hy
+  rcases mem_bitInsert_iff.mp hy with rfl | hy
+  · simp
+  · simp at hy
+
 /-- Remove one side formula, changing the marker from j+1 to j. -/
 theorem discharge_succ (j : V) (h : Derivable seedTheory (residual (j+1))) :
     Derivable seedTheory (residual j) := by
   rw [residual_succ] at h
   have hall := Derivable.all (domain_typed j).neg h
-  have hex : Derivable seedTheory (insert (^∃ domainCode j) (residual j)) := by
-    refine Derivable.wk (by simp [domain_typed,residual_typed]) ?_ (tag_nonempty_provable j).toDerivable
-    intro y hy
-    rcases mem_bitInsert_iff.mp hy with rfl | hy
-    · simp
-    · simp at hy
+  have hex : Derivable seedTheory (insert (^∃ domainCode j) (residual j)) :=
+    insert_provable (by simp [domain_typed,residual_typed]) (tag_nonempty_provable j)
   refine Derivable.cut (^∀ (Bootstrapping.neg ℒₛₑₜ (domainCode j))) hall ?_
   rw [neg_all (domain_typed j).isUFormula.neg,(domain_typed j).isUFormula.neg_neg]
   exact hex
@@ -190,13 +194,8 @@ theorem discharge_zero (h : Derivable seedTheory (residual (0:V))) :
     simpa only [Nat.cast_one] using (emptyBody : Semiformula V ℒₛₑₜ 1).isSemiformula
   have hall := Derivable.all hb.neg h'
   have hex : Derivable seedTheory
-      (insert (^∃ (emptyBody : Semiformula V ℒₛₑₜ 1).val) (insert (^⊥) (∅ : V))) := by
-    refine Derivable.wk (by simp) ?_
-      empty_object_provable.toDerivable
-    intro y hy
-    rcases mem_bitInsert_iff.mp hy with rfl | hy
-    · simp
-    · simp at hy
+      (insert (^∃ (emptyBody : Semiformula V ℒₛₑₜ 1).val) (insert (^⊥) (∅ : V))) :=
+    insert_provable (by simp) empty_object_provable
   apply Derivable.toProvable
   refine Derivable.cut (^∀ (Bootstrapping.neg ℒₛₑₜ (emptyBody : Semiformula V ℒₛₑₜ 1).val)) hall ?_
   rw [neg_all (emptyBody : Semiformula V ℒₛₑₜ 1).isSemiformula.isUFormula.neg,
