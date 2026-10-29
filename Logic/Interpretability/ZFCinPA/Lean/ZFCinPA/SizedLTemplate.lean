@@ -65,6 +65,21 @@ theorem leafW_ge (σ : Sentence (setTemplateLanguage k arities)) (u : V) :
         (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V) ≤ leafW σ u :=
   le_of_add_eq (y := congL u) (by unfold leafW; ring)
 
+/-- A lifted ZF axiom requires one bounded axiom rule. -/
+theorem lifted_leaf (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
+    {u : V} (hK : ∀ i, (Ks i).val ≤ lvB u) (σ : Sentence (setTemplateLanguage k arities))
+    (h : σ ∈ Theory.lMap (setHom k arities) (𝗭𝗙 : SetTheory)) :
+    DLv 𝗭𝗙 (insert (translateFormula Ks (Rewriting.emb σ)).val ∅)
+      ((tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V) * (u + 1) + 5) := by
+  have hx := translate_level (Rewriting.emb σ) u Ks hK
+  have hw4 : (4 : V) ≤ (tA (Rewriting.emb σ : Proposition _) : V) * (u + 1) + 4 := le_add_self
+  refine (DLv.by_axm hw4 ((SeqLt.empty _).insert (lt_lvB_of hx (_root_.add_le_add le_rfl
+    (by norm_num)))) (singleton_formulaSet _) (translateFormula Ks (Rewriting.emb σ)).val
+    (by simp) ?_).mono (le_of_eq (by ring))
+  rcases h with ⟨τ, hτ, rfl⟩
+  rw [translateFormula_lMap_set_emb]
+  exact (Bootstrapping.Δ₁Class.mem_iff'' (T := (𝗭𝗙 : SetTheory))).mpr hτ
+
 /-- **Every template axiom leaf is bounded.** -/
 theorem templ_leaf (harity : ∀ i, arities i ≤ 3) (σ : Sentence (setTemplateLanguage k arities))
     (h : σ ∈ LTemplate.templTheory k arities)
@@ -73,17 +88,9 @@ theorem templ_leaf (harity : ∀ i, arities i ≤ 3) (σ : Sentence (setTemplate
     DLv 𝗭𝗙 (insert (translateFormula Ks (Rewriting.emb σ)).val ∅) (leafW σ u) := by
   set t : V := (tA (Rewriting.emb σ : Proposition (setTemplateLanguage k arities)) : V) with ht
   have hge := leafW_ge σ u
-  have hx := translate_level (Rewriting.emb σ) u Ks hK
   rcases templ_lifted_or_congruence σ h with hl | ⟨i, rfl⟩ | ⟨p, rfl⟩ | ⟨p, rfl⟩
   · -- a lifted `𝗭𝗙` axiom: one `axm` rule
-    have hw4 : (4 : V) ≤ t * (u + 1) + 4 := le_add_self
-    refine (DLv.by_axm hw4 ((SeqLt.empty _).insert (lt_lvB_of hx (_root_.add_le_add le_rfl
-      (by norm_num)))) (singleton_formulaSet _) (translateFormula Ks (Rewriting.emb σ)).val
-      (by simp) ?_).mono
-      (le_trans (le_of_add_eq (y := t) (by ring)) hge)
-    rcases hl with ⟨τ, hτ, rfl⟩
-    rw [translateFormula_lMap_set_emb]
-    exact (Bootstrapping.Δ₁Class.mem_iff'' (T := (𝗭𝗙 : SetTheory))).mpr hτ
+    exact (lifted_leaf Ks hK σ hl).mono (le_trans le_self_add hge)
   · -- placeholder congruence
     rw [SetCongruence.translate_setPlaceholderCongruenceSentence]
     exact (cong_leaf (arities i) (harity i) (Ks i) hu (hK i)).mono

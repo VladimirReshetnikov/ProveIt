@@ -555,6 +555,29 @@ theorem derivable_iSet (hP : Good P)
     · exact mem_cup_iff.mpr (Or.inl (interp_mem_iSet hp))
     · exact mem_cup_iff.mpr (Or.inr hy)
 
+lemma derivable_interp_of_provable (hP : Good P)
+    (hTerm : ∀ t : V, IsTerm ℒₛₑₜ t → ∃ j, t = ^&j)
+    (hAx : ∀ p : V, IsFormula ℒₛₑₜ p → p ∈ T.Δ₁Class →
+      ∃ m, Derivable U (insert (interp P p) (domSet ℒₛₑₜ (dom P) m)))
+    {φ : V} (h : Provable T φ) :
+    ∃ m, Derivable U (insert (interp P φ) (domSet ℒₛₑₜ (dom P) m)) := by
+  obtain ⟨der, hder⟩ := h.toDerivable
+  obtain ⟨m, hm⟩ := derivable_iSet hP hTerm hAx hder.2
+  rw [hder.1, iSet_insert] at hm
+  have hrelempty : iSet P (∅ : V) = ∅ := mem_ext fun y => by simp [mem_iSet_iff]
+  rw [hrelempty] at hm
+  exact ⟨m, Derivable.ofSetEq (fun x => by simp) hm⟩
+
+lemma derivable_domSet_mono {δ x m m' : V} (hδ : IsSemiformula ℒₛₑₜ 1 δ)
+    (hm : m ≤ m') (hx : IsFormula ℒₛₑₜ x)
+    (h : Derivable U (insert x (domSet ℒₛₑₜ δ m))) :
+    Derivable U (insert x (domSet ℒₛₑₜ δ m')) := by
+  refine Derivable.wk (by simp [hx, isFormulaSet_domSet hδ m']) ?_ h
+  intro y hy
+  rcases mem_bitInsert_iff.mp hy with rfl | hy
+  · simp
+  · exact mem_bitInsert_iff.mpr (Or.inr (domSet_subset hm hy))
+
 end Transport
 
 section Interpretation
@@ -576,13 +599,7 @@ theorem provable_interp (hP : Good P)
     have := hder.2.isFormulaSet
     rw [hder.1] at this
     simpa using this
-  obtain ⟨m, hm⟩ := derivable_iSet hP hTerm hAx hder.2
-  rw [hder.1, iSet_insert] at hm
-  have hrelempty : iSet P (∅ : V) = ∅ := mem_ext fun y => by simp [mem_iSet_iff]
-  rw [hrelempty] at hm
-  have hm' : Derivable U (insert (interp P φ) (domSet ℒₛₑₜ (dom P) m)) := by
-    refine Derivable.ofSetEq (fun x => ?_) hm
-    simp
+  obtain ⟨m, hm'⟩ := derivable_interp_of_provable hP hTerm hAx hφ
   apply Derivable.toProvable
   exact derivable_of_domSet hP.isDom hP.domShift hne.toDerivable (isSemiformula_interp hP hφF)
     (by rw [interp_shift hP hφF, hφs]) m hm'

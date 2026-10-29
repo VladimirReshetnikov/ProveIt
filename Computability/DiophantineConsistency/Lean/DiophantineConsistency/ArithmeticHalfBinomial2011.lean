@@ -118,10 +118,8 @@ theorem current_natural_population_lower (v : Fin 14 → V)
       Exponential ((CurrentMasks2011.width:V)*L) (q u) ∧
       Exponential (rank u-(CurrentMasks2011.width:V)*L) (u 8) ∧
       3*((CurrentMasks2011.width:V)*L)+2≤population (rank u) := by
-  intro u
-  have hu : ∀j,0<u j := fun j => lt_of_le_of_lt (Arithmetic.zero_le (v j)) (lt_add_one _)
-  obtain ⟨⟨hp,_,_⟩,L,hL,hq,hle,h8,he1,he2⟩ := current_natural_radix v hz
-  exact ⟨L,hL,hq,hle,h8,he1,he2,
-    population_of_equations u hu (current_natural_equations v hz) hp _ hq⟩
+  exact current_population_lower (fun j => v j+1)
+    (fun j => lt_of_le_of_lt (Arithmetic.zero_le (v j)) (lt_add_one _))
+    ((internalZero_positiveShift expression v).mp hz)
 
 end DiophantineConsistency.ArithmeticHalfBinomial2011
