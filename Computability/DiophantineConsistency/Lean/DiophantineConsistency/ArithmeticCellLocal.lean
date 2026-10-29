@@ -1,5 +1,5 @@
 import DiophantineConsistency.ArithmeticCellPhysical
-import DiophantineConsistency.ListGetDCases
+import DiophantineConsistency.CurrentHighDigitFacts2011
 import DiophantineConsistency.NativePreliminaryCount2011
 import Mathlib.Algebra.BigOperators.ModEq
 
@@ -34,23 +34,11 @@ set_option maxHeartbeats 4000000
 /-- The radix digit of `highPort` at cell sub-position `j`. -/
 def maskDigit (j : ℕ) : ℕ := highDigits.getD j 0
 
-private theorem highDigits_blocks : highDigits =
-    List.replicate 1 4 ++ List.replicate 916 8 ++ List.replicate 43 0 ++
-      List.replicate 9 1 ++ List.replicate 18 0 ++ List.replicate 8 1 ++
-      List.replicate 9 0 ++ List.replicate 1 1 ++
-      List.replicate 1 (2^45-4) ++ List.replicate 1005 0 := by
-  simp only [highDigits, highPrefix, List.replicate_one,
-    List.append_assoc, List.cons_append, List.nil_append]
-
 theorem maskDigit_formula (j : ℕ) : maskDigit j =
     if j = 0 then 4 else if j < 917 then 8 else if j < 960 then 0 else
       if j < 969 then 1 else if j < 987 then 0 else if j < 995 then 1 else
       if j < 1004 then 0 else if j = 1004 then 1 else if j = 1005 then 2^45-4 else 0 := by
-  unfold maskDigit
-  rw [highDigits_blocks]
-  simp only [List.append_assoc, ListGetDCases.append, List.length_replicate,
-    ListGetDCases.replicate]
-  repeat' first | omega | split
+  exact DiophantineConsistency.CurrentHighDigitFacts2011.highDigits_getD j
 
 theorem maskDigit_padding {j : ℕ} (hj : 1 ≤ j ∧ j ≤ 916) : maskDigit j = 8 := by
   rw [maskDigit_formula]; split_ifs <;> omega

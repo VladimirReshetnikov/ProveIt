@@ -1,5 +1,5 @@
 import DiophantineConsistency.CurrentCarrierArithmetic2011
-import DiophantineConsistency.ListGetDCases
+import DiophantineConsistency.CurrentHighDigitFacts2011
 import DiophantineConsistency.NativeVariableMask
 
 /-!
@@ -22,24 +22,12 @@ set_option Elab.async false
 
 def cellDigit (j : ℕ) : ℕ := highDigits.getD j 0
 
-private theorem highDigits_blocks : highDigits =
-    List.replicate 1 4 ++ List.replicate 916 8 ++ List.replicate 43 0 ++
-      List.replicate 9 1 ++ List.replicate 18 0 ++ List.replicate 8 1 ++
-      List.replicate 9 0 ++ List.replicate 1 1 ++
-      List.replicate 1 (2^45-4) ++ List.replicate 1005 0 := by
-  simp only [highDigits, highPrefix, List.replicate_one,
-    List.append_assoc, List.cons_append, List.nil_append]
-
 /-- All fields are determined symbolically from ten constant list blocks. -/
 theorem cellDigit_formula (j : ℕ) : cellDigit j =
     if j = 0 then 4 else if j < 917 then 8 else if j < 960 then 0 else
       if j < 969 then 1 else if j < 987 then 0 else if j < 995 then 1 else
       if j < 1004 then 0 else if j = 1004 then 1 else if j = 1005 then 2^45-4 else 0 := by
-  unfold cellDigit
-  rw [highDigits_blocks]
-  simp only [List.append_assoc, ListGetDCases.append, List.length_replicate,
-    ListGetDCases.replicate]
-  repeat' first | omega | split
+  exact DiophantineConsistency.CurrentHighDigitFacts2011.highDigits_getD j
 
 theorem cellDigit_zero : cellDigit 0 = 4 := by rw [cellDigit_formula]; decide
 
