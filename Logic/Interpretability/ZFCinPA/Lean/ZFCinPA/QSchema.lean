@@ -153,25 +153,13 @@ theorem repl_obligation {p : V} (hp : RepR p) :
 
 /-! ## The axiom class of `𝗭𝗙` -/
 
-lemma separation_class_iff (p : V) : p ∈ separationTheory.Δ₁Class ↔ SepR p := by
-  change (V ⊧/![p] sepCh.val) ↔ _
-  simp
+lemma separation_class_iff (p : V) : p ∈ separationTheory.Δ₁Class ↔ SepR p := ModelCodedSchemaAxioms.separation_class_iff p
 
-lemma replacement_class_iff (p : V) : p ∈ replacementTheory.Δ₁Class ↔ RepR p := by
-  change (V ⊧/![p] repCh.val) ↔ _
-  simp
+lemma replacement_class_iff (p : V) : p ∈ replacementTheory.Δ₁Class ↔ RepR p := ModelCodedSchemaAxioms.replacement_class_iff p
 
 /-- The internal `𝗭𝗙` axiom class splits into four parts. -/
 lemma mem_ZF_class {p : V} (h : p ∈ (𝗭𝗙 : SetTheory).Δ₁Class) :
-    p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁Class ∨ p ∈ zfFixed.Δ₁Class ∨ SepR p ∨ RepR p := by
-  have h' : p ∈ (𝗘𝗤 ℒₛₑₜ ∪ zfFixed ∪ separationTheory ∪ replacementTheory : SetTheory).Δ₁Class := h
-  rcases ConstructibleInterpretation.mem_class_union.mp h' with h' | h'
-  · rcases ConstructibleInterpretation.mem_class_union.mp h' with h' | h'
-    · rcases ConstructibleInterpretation.mem_class_union.mp h' with h' | h'
-      · exact Or.inl h'
-      · exact Or.inr (Or.inl h')
-    · exact Or.inr (Or.inr (Or.inl ((separation_class_iff p).1 h')))
-  · exact Or.inr (Or.inr (Or.inr ((replacement_class_iff p).1 h')))
+    p ∈ (𝗘𝗤 ℒₛₑₜ : SetTheory).Δ₁Class ∨ p ∈ zfFixed.Δ₁Class ∨ SepR p ∨ RepR p := ModelCodedSchemaAxioms.mem_ZF_class h
 
 /-- Every internal fixed axiom of `𝗭𝗙` is interpreted-derivable. -/
 lemma fixed_obligation {p : V} (h : p ∈ zfFixed.Δ₁Class) :

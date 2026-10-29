@@ -305,32 +305,13 @@ theorem bindOneAt_inverse {depth p : V} (hp : IsSemiformula L depth p) :
     subst L (qVecIter L depth (^&chosen ∷ 0)) (bindOneAt L chosen depth p) = p)
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
   · definability
-  · intro depth k R terms hR ht chosen
-    rw [bindOneAt_rel chosen depth hR ht.isUTerm,
-      substs_rel hR (termBindOneVecAt_isUTerm chosen depth ht.isUTerm),
-      termBindOneVecAt_inverse ht chosen]
-  · intro depth k R terms hR ht chosen
-    rw [bindOneAt_nrel chosen depth hR ht.isUTerm,
-      substs_nrel hR (termBindOneVecAt_isUTerm chosen depth ht.isUTerm),
-      termBindOneVecAt_inverse ht chosen]
-  · intro depth chosen; simp
-  · intro depth chosen; simp
-  · intro depth p q hp hq ihp ihq chosen
-    rw [bindOneAt_and chosen depth hp.isUFormula hq.isUFormula,
-      substs_and (bindOneAt_isSemiformula hp chosen).isUFormula
-        (bindOneAt_isSemiformula hq chosen).isUFormula,
-      ihp chosen,ihq chosen]
-  · intro depth p q hp hq ihp ihq chosen
-    rw [bindOneAt_or chosen depth hp.isUFormula hq.isUFormula,
-      substs_or (bindOneAt_isSemiformula hp chosen).isUFormula
-        (bindOneAt_isSemiformula hq chosen).isUFormula,
-      ihp chosen,ihq chosen]
-  · intro depth p hp ih chosen
-    rw [bindOneAt_all chosen depth hp.isUFormula,
-      substs_all (bindOneAt_isSemiformula hp chosen).isUFormula,←qVecIter_succ,ih chosen]
-  · intro depth p hp ih chosen
-    rw [bindOneAt_exs chosen depth hp.isUFormula,
-      substs_ex (bindOneAt_isSemiformula hp chosen).isUFormula,←qVecIter_succ,ih chosen]
+  all_goals
+    intros
+    simp (discharger := aesop (add safe [IsSemiformula.isUFormula, IsSemitermVec.isUTerm,
+      bindOneAt_isSemiformula, termBindOneVecAt_isUTerm]))
+      [*, bindOneAt_rel, bindOneAt_nrel, bindOneAt_and, bindOneAt_or, bindOneAt_all, bindOneAt_exs,
+        substs_rel, substs_nrel, substs_and, substs_or, substs_all, substs_ex,
+        termBindOneVecAt_inverse, ← qVecIter_succ]
 
 /-- Syntax for a future decoder's named universal binder; not a GEN proof rule. -/
 noncomputable def namedAll (L : Language) [L.Encodable] [L.LORDefinable]
