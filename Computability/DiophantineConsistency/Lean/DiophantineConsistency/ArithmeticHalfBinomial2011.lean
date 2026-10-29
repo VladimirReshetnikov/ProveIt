@@ -54,15 +54,7 @@ theorem population_of_equations (v : Fin 14 → V) (hv : ∀j,0<v j)
   change v 10+v 11=2*ycoord n (2*(X v*Y v*Y v-1)+1) at hk
   change (v 10+v 11)*Y v+v 10=ycoord (rank v) (X v*Y v+Y v) at hc
   change 2*n=rank v+1 at hnR
-  -- the half index
-  have hn1 : 1≤n := le_trans (by simp) hn5
-  obtain ⟨r,hrn⟩ : ∃ r, r+1=n := ⟨n-1,tsub_add_cancel_of_le hn1⟩
-  have hr4 : 4≤r := by
-    have : (4:V)+1≤r+1 := by rw [hrn]; simpa only [show (4:V)+1=5 by ring] using hn5
-    exact (add_le_add_iff_right 1).mp this
-  have hR : rank v=2*r+1 := by
-    apply add_right_cancel (b:=(1:V))
-    rw [←hnR,←hrn]; ring
+  obtain ⟨r,hrn,hr4,hR⟩ := half_index_of_ge_five n (rank v) hn5 hnR
   have hXe : X v=Exp.exp (2*r+1) := by rw [hp,hR]
   have hY : 1≤Y v := by
     unfold Y
