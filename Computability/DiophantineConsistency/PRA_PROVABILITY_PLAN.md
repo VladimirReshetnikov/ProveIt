@@ -17,7 +17,10 @@ witnessing arguments remain open; the candidate's comparison with a standard
 PRA presentation also remains to be proved.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
-proof of its finite-extension step. This is not a completed collection rule.
+proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
+now proves that step under arbitrary assignments, yielding an unconditional
+collection-rule transformer when the exact implication is parameter-free.
+The arbitrary-parameter specialization and guarded-context version remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),

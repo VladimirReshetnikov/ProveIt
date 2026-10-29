@@ -1,0 +1,5 @@
+import DiophantineConsistency.ParsonsCollectionSemantic
+#print axioms DiophantineConsistency.ParsonsCollectionSemantic.semantic_step
+#print axioms DiophantineConsistency.ParsonsCollectionSemantic.step_closed
+#print axioms DiophantineConsistency.ParsonsCollectionSemantic.step_proof_closed
+#print axioms DiophantineConsistency.ParsonsCollectionSemantic.collect_closed
