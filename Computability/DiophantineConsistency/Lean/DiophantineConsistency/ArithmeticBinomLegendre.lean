@@ -19,16 +19,10 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 theorem two_mul_ne_odd (t z : V) : 2*t≠2*z+1 := by
   intro h
-  rcases le_or_gt t z with hle|hlt
-  · have : 2*t<2*z+1 := lt_of_le_of_lt (mul_le_mul_of_nonneg_left hle (by simp)) (by simp)
-    exact (ne_of_lt this) h
-  · have h1 : z+1≤t := lt_iff_succ_le.mp hlt
-    have : 2*z+1<2*t := lt_of_lt_of_le (by
-      have : 2*z+1<2*z+2 := by
-        have := add_lt_add_left (show (1:V)<2 by simp) (2*z)
-        simpa using this
-      simpa [mul_add,two_mul] using this) (mul_le_mul_of_nonneg_left h1 (by simp))
-    exact (ne_of_lt this) h.symm
+  have hm := congrArg (fun x : V => x % 2) h
+  rw [mod_mul_self_right, show (2*z+1) % 2=1 from by
+    simpa only [mul_comm] using mod_mul_add_of_lt z 2 (by simp : (1:V)<2)] at hm
+  exact zero_ne_one hm
 
 theorem cancel_left {c x y : V} (hc : 0<c) (h : c*x=c*y) : x=y :=
   le_antisymm (le_of_mul_le_mul_left h.le hc) (le_of_mul_le_mul_left h.ge hc)
