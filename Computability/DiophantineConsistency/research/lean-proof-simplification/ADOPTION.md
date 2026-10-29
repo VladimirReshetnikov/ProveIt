@@ -2116,5 +2116,15 @@ client objects. Checked declarations and sampled registrations match; the wider
 closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-firstindex-bound.md)
 records hashes and external paths without raw logs or objects.
 
+The stronger Pell coordinate-bound sharing `7388945528` removes two net Lean
+lines, bringing the reviewed series to 10366. A new public PowerRecovery theorem
+replaces duplicate reasoning in that module and OuterSeed; the latter proof came
+from Claude-coauthored commit `5fcd5632b3b`. Paired builds of both targets and all
+five direct clients pass, including a replay with source-matched inputs. Three
+client objects match and two differ; checked common declarations and sampled
+registrations match. The wider closure remains cached. The compact [evidence
+note](../../reviews/lean-proof-simplification-20261029-pell-x-gt-share.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
