@@ -1,4 +1,5 @@
 import ZFCinPA.Instances
+import ZFCinPA.FiniteTheoryRecognizer
 import BoundedPAConsistency.InternalRelativization
 
 /-!
@@ -41,21 +42,10 @@ lemma set_isRel {k R : V} (hR : (ℒₛₑₜ).IsRel k R) : k = 2 ∧ (R = 0 ∨
 
 open LO.FirstOrder.SetTheory
 
-lemma finite_mem_ch_ofList {p : V} : ∀ (l : List SetTheorySentence),
-    V ⊧/![p] (Theory.Δ₁.ofList l).ch.val → ∃ σ ∈ l, p=⌜σ⌝
-  | [], h => by
-      change V ⊧/![p] (⊥ : 𝚫₁.Semisentence 1).val at h
-      simp at h
-  | φ::l, h => by
-      change V ⊧/![p] ((Theory.Δ₁.singleton φ).ch ⋎ (Theory.Δ₁.ofList l).ch).val at h
-      simp only [HierarchySymbol.Semiformula.val_or,LogicalConnective.HomClass.map_or,
-        LogicalConnective.Prop.or_eq] at h
-      rcases h with h | h
-      · refine ⟨φ,by simp,?_⟩
-        have h' : p=ORingStructure.numeral (Encodable.encode φ) := by simpa using h
-        rw [h',numeral_eq_natCast_app,LO.FirstOrder.Sentence.quote_eq_encode]
-      · obtain ⟨σ,hσ,rfl⟩ := finite_mem_ch_ofList l h
-        exact ⟨σ,by simp [hσ],rfl⟩
+lemma finite_mem_ch_ofList {p : V} (l : List SetTheorySentence)
+    (h : V ⊧/![p] (Theory.Δ₁.ofList l).ch.val) : ∃ σ ∈ l, p=⌜σ⌝ :=
+  (FiniteTheoryRecognizer.ofList_class_iff l p).mp h
+
 lemma finite_mem_ch_ofFinite (T : SetTheory) (hT : Set.Finite T) {p : V}
     (h : V ⊧/![p] (Theory.Δ₁.ofFinite T hT).ch.val) : ∃ σ ∈ T, p=⌜σ⌝ := by
   obtain ⟨σ,hσ,rfl⟩ := finite_mem_ch_ofList hT.toFinset.toList h
