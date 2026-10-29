@@ -274,14 +274,9 @@ theorem construction_below_hL (hL : LocalNormalization) (T : V) (hT : first (Ari
     exact le_trans (le_add_of_nonneg_left (Arithmetic.zero_le C1))
       (le_add_of_nonneg_right (Arithmetic.zero_le α1))
   have hJ0 : 0 < J := by
-    have hrep : (Exp.exp 94517 - 1) * J + 1 = q := packing_repunit h1
-    rcases (Arithmetic.zero_le J).lt_or_eq with h | h
-    · exact h
-    · exfalso
-      rw [← h, mul_zero, zero_add] at hrep
-      have := ArithmeticControllerData.one_lt_exp hu
-      rw [← hqdef, ← hrep] at this
-      exact _root_.lt_irrefl _ this
+    rcases zero_or_succ N with hN | ⟨k, hN⟩
+    · rw [hN] at hN0; exact absurd hN0 (_root_.lt_irrefl 0)
+    · rw [hJdef, hN, rep_succ]; simp
   have hz0 : 0 < z := by
     rw [hzdef, zq]
     exact lt_of_lt_of_le _root_.zero_lt_one (le_add_of_nonneg_left (Arithmetic.zero_le _))
