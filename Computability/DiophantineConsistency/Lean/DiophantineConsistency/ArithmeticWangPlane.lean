@@ -134,14 +134,12 @@ theorem fbit_push_zero (x w : V) (hw : w ≤ 1) : fbit (2 * x + w) 0 = w := by
   rcases bit_cases hw with rfl | rfl <;> simp
 
 theorem push_div (x w : V) (hw : w ≤ 1) : (w + 2 * x) / 2 = x := by
-  rcases bit_cases hw with rfl | rfl
-  · simp
-  · rw [add_comm]; exact two_mul_add_one_div_two x
+  have hw2 : w < 2 := lt_of_le_of_lt hw (by norm_num)
+  rw [show w + 2*x = x*2 + w by ring, div_mul_add _ _ hw2]
 
 theorem push_mod (x w : V) (hw : w ≤ 1) : (w + 2 * x) % 2 = w := by
-  rcases bit_cases hw with rfl | rfl
-  · simp
-  · rw [add_comm]; simp [mod_mul_add' _ _ (by simp : (0:V) < 2)]
+  have hw2 : w < 2 := lt_of_le_of_lt hw (by norm_num)
+  rw [mod_add_mul' _ _ (by norm_num : (0:V) < 2), mod_eq_self_of_lt hw2]
 
 /-- The tape bit at column `X` of halves `l, r` with head column `H`. -/
 def tb (l r H X : V) : V := if H ≤ X then fbit r (X - H) else fbit l (H - X - 1)
@@ -185,8 +183,7 @@ theorem le_add_self' (x y : V) : x ≤ x + y := le_add_of_nonneg_right (Arithmet
 
 theorem tb_left (l r w H X : V) (hw : w ≤ 1) (hX : X ≠ H + 1) :
     tb (l / 2) (l % 2 + 2 * (w + 2 * (r / 2))) H X = tb l r (H + 1) X := by
-  have hm : l % 2 ≤ 1 := by
-    rcases mod_two l with h | h <;> simp [h]
+  have hm : l % 2 ≤ 1 := lt_two_iff_le_one.mp (by simp)
   unfold tb
   rcases lt_trichotomy X H with hlt | heq | hgt
   · rw [if_neg (not_le.mpr hlt), if_neg (not_le.mpr (lt_trans hlt (lt_add_one H)))]
@@ -216,8 +213,7 @@ theorem tb_left (l r w H X : V) (hw : w ≤ 1) (hX : X ≠ H + 1) :
 theorem tb_left_old (l r w H : V) (hw : w ≤ 1) :
     tb (l / 2) (l % 2 + 2 * (w + 2 * (r / 2))) H (H + 1) = w := by
   unfold tb
-  have hm : l % 2 ≤ 1 := by
-    rcases mod_two l with h | h <;> simp [h]
+  have hm : l % 2 ≤ 1 := lt_two_iff_le_one.mp (by simp)
   rw [if_pos (by simp), add_tsub_cancel_left, show (1 : V) = 0 + 1 by simp, fbit_succ,
     push_div _ _ hm, fbit_zero_eq, push_mod _ _ hw]
 
