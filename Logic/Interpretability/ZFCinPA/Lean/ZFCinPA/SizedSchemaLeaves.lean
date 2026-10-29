@@ -95,14 +95,12 @@ theorem subst_congr {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
   · intro n p q hp hq ihp ihq l M w l' M' w' hw hw' hl hl' H
     rw [substs_or hp.isUFormula hq.isUFormula, substs_or hp.isUFormula hq.isUFormula,
       ihp l M w l' M' w' hw hw' hl hl' H, ihq l M w l' M' w' hw hw' hl hl' H]
-  · intro n p hp ih l M w l' M' w' hw hw' hl hl' H
-    rw [substs_all hp.isUFormula, substs_all hp.isUFormula]
-    congr 1
-    refine ih (l + 1) (M + 1) (qVec ℒₛₑₜ w) (l' + 1) (M' + 1) (qVec ℒₛₑₜ w') hw.qVec hw'.qVec
-      (_root_.add_le_add hl le_rfl) (_root_.add_le_add hl' le_rfl) ?_
-    exact qVec_congr hw hw' hl hl' H
-  · intro n p hp ih l M w l' M' w' hw hw' hl hl' H
-    rw [substs_ex hp.isUFormula, substs_ex hp.isUFormula]
+  -- Both quantifiers lift the substitution vectors in the same way.
+  all_goals
+    intro n p hp ih l M w l' M' w' hw hw' hl hl' H
+    first
+    | rw [substs_all hp.isUFormula, substs_all hp.isUFormula]
+    | rw [substs_ex hp.isUFormula, substs_ex hp.isUFormula]
     congr 1
     refine ih (l + 1) (M + 1) (qVec ℒₛₑₜ w) (l' + 1) (M' + 1) (qVec ℒₛₑₜ w') hw.qVec hw'.qVec
       (_root_.add_le_add hl le_rfl) (_root_.add_le_add hl' le_rfl) ?_
