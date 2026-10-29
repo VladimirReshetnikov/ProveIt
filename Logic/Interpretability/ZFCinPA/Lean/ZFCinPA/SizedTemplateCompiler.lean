@@ -118,18 +118,15 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       b + h₁ ≤ B ∧ b + h₂ ≤ B := by
     constructor <;> omega
   intro Γ d
-  induction d with
-  | closed Δ p hp hn =>
-      intro b _ hbB hg
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
+  induction d <;> intro b hbb hbB hg <;>
+    have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
+  case closed Δ p hp hn =>
       refine DerivableLe.em he (seq_bound tr hb (Good.here tr hg) hFe) (translateSequent (tr.formula b) Δ).val_formulaSet
         (tr.formula b p).val (translated_mem hp) ?_
       have := translated_mem (b := b) hn
       rw [tr.neg] at this
       simpa using this
-  | axm σ hT hΓ =>
-      intro b _ hbB hg
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
+  case axm σ hT hΓ =>
       unfold Good at hg
       refine DerivableLe.wk he (seq_bound tr hb hg.1 hFe)
         (translateSequent (tr.formula b) _).val_formulaSet ?_ (hg.2 b hb)
@@ -137,20 +134,16 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       rcases mem_bitInsert_iff.mp hy with rfl | hy
       · exact translated_mem hΓ
       · simp at hy
-  | verum h =>
-      intro b _ hbB hg
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
+  case verum h =>
       refine DerivableLe.verum he (seq_bound tr hb (Good.here tr hg) hFe)
         (translateSequent (tr.formula b) _).val_formulaSet ?_
       have := translated_mem (b := b) h
       rw [tr.verum] at this
       simpa using this
-  | @and Δ φ ψ h dp dq ihp ihq =>
-      intro b hbb hbB hg
+  case and Δ φ ψ h dp dq ihp ihq =>
       unfold Good at hg
       obtain ⟨hh, gp, gq⟩ := hg
       simp only [height] at hbB ⊢
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       simp only [bufferBound, max_le_iff] at hbb
       have hhgt := child_heights hbB
       have hp := ihp b hbb.1 hhgt.1 gp
@@ -166,12 +159,10 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e)) hm
         (hp.mono (exp_monotone_le.mpr (stg_mono (le_max_left _ _) e)))
         (hq.mono (exp_monotone_le.mpr (stg_mono (le_max_right _ _) e)))
-  | @or Δ φ ψ h dp ih =>
-      intro b hbb hbB hg
+  case or Δ φ ψ h dp ih =>
       unfold Good at hg
       obtain ⟨hh, gp⟩ := hg
       simp only [height] at hbB ⊢
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       simp only [bufferBound] at hbb
       have hp := ih b hbb (le_trans (Nat.add_le_add_left (Nat.le_succ _) b) hbB) gp
       rw [translateSequent_insert, translateSequent_insert] at hp
@@ -183,12 +174,10 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
         simpa using this
       exact DerivableLe.or_m (four_le_stg he _)
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e)) hm hp
-  | @all Δ φ h dp ih =>
-      intro b hbb hbB hg
+  case all Δ φ h dp ih =>
       unfold Good at hg
       obtain ⟨hh, gp⟩ := hg
       simp only [height] at hbB ⊢
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       simp only [bufferBound] at hbb
       have hp := ih (b + 1) (le_trans hbb (Nat.le_succ b))
         (by rw [Nat.add_right_comm]; exact hbB) gp
@@ -200,12 +189,10 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
         simpa using this
       exact DerivableLe.all_m (four_le_stg he _)
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e)) hm hp
-  | @exs Δ φ h t dp ih =>
-      intro b hbb hbB hg
+  case exs Δ φ h t dp ih =>
       unfold Good at hg
       obtain ⟨hh, ht, gp⟩ := hg
       simp only [height] at hbB ⊢
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       simp only [bufferBound] at hbb
       have hp := ih b hbb (le_trans (Nat.add_le_add_left (Nat.le_succ _) b) hbB) gp
       rw [translateSequent_insert, tr.subst₁] at hp
@@ -218,24 +205,20 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e))
         (le_exp_of_le ht (le_stg _ e)) hm (tr.term t).isSemiterm
         (by simpa [substs1] using hp)
-  | wk dp hsub ih =>
-      intro b hbb hbB hg
+  case wk dp hsub ih =>
       unfold Good at hg
       obtain ⟨hh, gp⟩ := hg
       simp only [height] at hbB ⊢
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       simp only [bufferBound] at hbb
       have hp := ih b hbb (le_trans (Nat.add_le_add_left (Nat.le_succ _) b) hbB) gp
       exact DerivableLe.wk (four_le_stg he _)
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e))
         (translateSequent (tr.formula b) _).val_formulaSet
         (Bootstrapping.Sequent.subset_iff.mp (translateSequent_mono (tr.formula b) hsub)) hp
-  | @shift Δ dp ih =>
-      intro b hbb hbB hg
+  case shift Δ dp ih =>
       unfold Good at hg
       obtain ⟨hh, gp⟩ := hg
       simp only [height] at hbB ⊢
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       simp only [bufferBound] at hbb
       obtain ⟨b', rfl⟩ : ∃ b', b = b' + 1 := ⟨b - 1, by omega⟩
       have hp := ih b' (by omega) (by omega) gp
@@ -251,12 +234,10 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       simp only [Bootstrapping.Sequent.shift] at this
       rw [← this] at hD
       exact hD
-  | @cut Δ φ dp dq ihp ihq =>
-      intro b hbb hbB hg
+  case cut Δ φ dp dq ihp ihq =>
       unfold Good at hg
       obtain ⟨hh, gp, gq⟩ := hg
       simp only [height] at hbB ⊢
-      have hb : b ≤ B := le_trans (Nat.le_add_right b _) hbB
       simp only [bufferBound, max_le_iff] at hbb
       have hhgt := child_heights hbB
       have hp := ihp b hbb.1 hhgt.1 gp
