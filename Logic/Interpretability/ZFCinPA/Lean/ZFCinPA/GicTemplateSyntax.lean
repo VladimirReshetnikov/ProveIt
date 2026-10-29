@@ -1,0 +1,71 @@
+import ZFCinPA.LTemplate
+import ZFCinPA.NativeGicDelta1
+
+set_option autoImplicit false
+noncomputable section
+
+/-! Common syntax and translation for global-image collection templates. -/
+
+namespace LeanProofs.ZFCinPA.GicTemplateSyntax
+
+open LO LO.FirstOrder LO.FirstOrder.SetTheory
+open LeanProofs.ZFCinPA LeanProofs.ZFCinPA.SetPlaceholders
+open LeanProofs.ZFCinPA.SetPlaceholderQuotient
+
+variable {k : ℕ} {arities : Fin k → ℕ}
+
+local instance : Language.Mem (setTemplateLanguage k arities) := ⟨Sum.inl Language.Set.Rel.mem⟩
+
+/-! ## The source GIC body -/
+
+/-- The GIC body over the enlarged language. -/
+def gicBodySource (ψ : Semiproposition (setTemplateLanguage k arities) 2) :
+    Proposition (setTemplateLanguage k arities) :=
+  “∀ a, ∃ b, (∀ y, (y ∈ b → ∃ x, !ψ x y)) ∧
+    (∀ x, (x ∈ a → ((∃ y, !ψ x y) → ∃ y, (y ∈ b ∧ !ψ x y))))”
+
+/-- `y ∈ b` (level 3; `y = #0`, `b = #1`). -/
+def srcYB3 : Semiproposition (setTemplateLanguage k arities) 3 :=
+  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #1]
+
+/-- `x ∈ a` (level 3; `x = #0`, `a = #2`). -/
+def srcXA3 : Semiproposition (setTemplateLanguage k arities) 3 :=
+  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #2]
+
+/-- `y ∈ b` (level 4; `y = #0`, `b = #2`). -/
+def srcYB4 : Semiproposition (setTemplateLanguage k arities) 4 :=
+  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #2]
+
+lemma gicBodySource_eq (ψ : Semiproposition (setTemplateLanguage k arities) 2) :
+    gicBodySource ψ =
+      ∀⁰ ∃⁰ ((∀⁰ (srcYB3 🡒 ∃⁰ (ψ ⇜ ![(#0 : SyntacticSemiterm (setTemplateLanguage k arities) 4), #1]))) ⋏
+        (∀⁰ (srcXA3 🡒 ((∃⁰ (ψ ⇜ ![(#1 : SyntacticSemiterm (setTemplateLanguage k arities) 4), #0])) 🡒
+          ∃⁰ (srcYB4 ⋏ (ψ ⇜ ![(#1 : SyntacticSemiterm (setTemplateLanguage k arities) 4), #0])))))) := by
+  simp [gicBodySource, srcYB3, srcXA3, srcYB4, FirstOrder.Semiformula.Operator.mem_def]
+
+/-! ## Internal proofs of the translated GIC instances -/
+
+section Internal
+
+open LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
+open LeanProofs.ZFCinPA.OpenSetTemplateCompiler LeanProofs.ZFCinPA.OpenTemplateClosure
+open LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms LeanProofs.ZFCinPA.ModelCodedOpenSchemaAxioms
+open scoped LO.FirstOrder.Arithmetic
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+lemma translate_gicBodySource
+    (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
+    (p : Semiproposition (setTemplateLanguage k arities) 2) :
+    translateFormula Ks (gicBodySource p) = gicBody (translateFormula Ks p) := by
+  rw [gicBodySource_eq]
+  simp only [translateFormula_neg', translateFormula,
+    translateFormula_subst, gicBody, srcYB3, srcXA3, srcYB4, gicAtomYB3, gicAtomXA3, gicAtomYB4,
+    FirstOrder.Semiformula.typed_quote_rel, Semiterm.typed_quote_bvar,
+    translateTerm_bvar, Bootstrapping.Semiformula.imp_def, Matrix.comp_vecCons', Matrix.empty_eq]
+  all_goals rfl
+
+
+end Internal
+
+end LeanProofs.ZFCinPA.GicTemplateSyntax

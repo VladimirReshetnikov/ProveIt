@@ -130,8 +130,9 @@ lemma nth_termBindFreeVecAt (depth : V) {k terms i : V}
     (termBindFreeVecAt L depth k terms).[i] = termBindFreeAt L depth terms.[i] :=
   TermBinder.construction.nth_resultVec L ![depth] ht hi
 
-lemma termBindFreeAt_isUTerm (depth : V) {term : V} (ht : IsUTerm L term) :
-    IsUTerm L (termBindFreeAt L depth term) := by
+private lemma termBindFreeAt_wf_shift (depth : V) {term : V} (ht : IsUTerm L term) :
+    IsUTerm L (termBindFreeAt L depth term) ∧
+      termShift L (termBindFreeAt L depth term) = termBindFreeAt L depth term := by
   apply IsUTerm.induction 𝚺 ?_ ?_ ?_ ?_ term ht
   · definability
   · intro z; simp
@@ -141,9 +142,22 @@ lemma termBindFreeAt_isUTerm (depth : V) {term : V} (ht : IsUTerm L term) :
       refine ⟨(termBindFreeVecAt_lh depth hv).symm, ?_⟩
       intro i hi
       rw [nth_termBindFreeVecAt depth hv hi]
-      exact ih i hi
+      exact (ih i hi).1
+    have hshift : termShiftVec L k (termBindFreeVecAt L depth k terms) =
+        termBindFreeVecAt L depth k terms := by
+      apply nth_ext' k
+      · simp [hargs]
+      · simp [hv]
+      · intro i hi
+        rw [nth_termShiftVec hargs hi, nth_termBindFreeVecAt depth hv hi]
+        exact (ih i hi).2
     rw [termBindFreeAt_func depth hf hv]
-    exact IsUTerm.func_iff.mpr ⟨hf,hargs⟩
+    constructor
+    · exact IsUTerm.func_iff.mpr ⟨hf, hargs⟩
+    · rw [termShift_func hf hargs, hshift]
+
+lemma termBindFreeAt_isUTerm (depth : V) {term : V} (ht : IsUTerm L term) :
+    IsUTerm L (termBindFreeAt L depth term) := (termBindFreeAt_wf_shift depth ht).1
 
 lemma termBindFreeVecAt_isUTerm (depth : V) {k terms : V}
     (ht : IsUTermVec L k terms) : IsUTermVec L k (termBindFreeVecAt L depth k terms) := by
@@ -153,22 +167,8 @@ lemma termBindFreeVecAt_isUTerm (depth : V) {k terms : V}
   exact termBindFreeAt_isUTerm depth (ht.nth hi)
 
 lemma termBindFreeAt_shift_fixed (depth : V) {term : V} (ht : IsUTerm L term) :
-    termShift L (termBindFreeAt L depth term) = termBindFreeAt L depth term := by
-  apply IsUTerm.induction 𝚺 ?_ ?_ ?_ ?_ term ht
-  · definability
-  · intro z; simp
-  · intro x; simp
-  · intro k f terms hf hv ih
-    rw [termBindFreeAt_func depth hf hv,
-      termShift_func hf (termBindFreeVecAt_isUTerm depth hv)]
-    apply congrArg (fun args => ^func k f args)
-    apply nth_ext' k
-    · simp [termBindFreeVecAt_isUTerm depth hv]
-    · simp [hv]
-    · intro i hi
-      rw [nth_termShiftVec (termBindFreeVecAt_isUTerm depth hv) hi,
-        nth_termBindFreeVecAt depth hv hi]
-      exact ih i hi
+    termShift L (termBindFreeAt L depth term) = termBindFreeAt L depth term :=
+  (termBindFreeAt_wf_shift depth ht).2
 
 lemma termBindFreeVecAt_shift_fixed (depth : V) {k terms : V}
     (ht : IsUTermVec L k terms) :
@@ -207,58 +207,58 @@ lemma bindFreeAt_exs (depth : V) {p : V} (hp : IsUFormula L p) :
     bindFreeAt L depth (^∃ p) = ^∃ (bindFreeAt L (depth+1) p) := by
   simp [bindFreeAt,FormulaBinder.construction,hp]
 
-lemma bindFreeAt_isUFormula {p : V} (hp : IsUFormula L p) :
-    ∀ depth : V, IsUFormula L (bindFreeAt L depth p) := by
-  apply IsUFormula.ISigma1.pi1_succ_induction (P := fun p =>
-    ∀ depth : V, IsUFormula L (bindFreeAt L depth p)) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
-  · definability
-  · intro k R terms hR ht depth
-    rw [bindFreeAt_rel depth hR ht]
-    simp [hR,termBindFreeVecAt_isUTerm depth ht]
-  · intro k R terms hR ht depth
-    rw [bindFreeAt_nrel depth hR ht]
-    simp [hR,termBindFreeVecAt_isUTerm depth ht]
-  · intro depth; simp
-  · intro depth; simp
-  · intro p q hp hq ihp ihq depth
-    rw [bindFreeAt_and depth hp hq]
-    simp [ihp depth,ihq depth]
-  · intro p q hp hq ihp ihq depth
-    rw [bindFreeAt_or depth hp hq]
-    simp [ihp depth,ihq depth]
-  · intro p hp ih depth
-    rw [bindFreeAt_all depth hp]
-    simpa using ih (depth+1)
-  · intro p hp ih depth
-    rw [bindFreeAt_exs depth hp]
-    simpa using ih (depth+1)
-
-lemma bindFreeAt_shift_fixed {p : V} (hp : IsUFormula L p) :
-    ∀ depth : V, shift L (bindFreeAt L depth p) = bindFreeAt L depth p := by
-  apply IsUFormula.ISigma1.pi1_succ_induction (P := fun p =>
-    ∀ depth : V, shift L (bindFreeAt L depth p) = bindFreeAt L depth p)
+private lemma bindFreeAt_wf_shift {p : V} (hp : IsUFormula L p) :
+    ∀ depth : V, IsUFormula L (bindFreeAt L depth p) ∧
+      shift L (bindFreeAt L depth p) = bindFreeAt L depth p := by
+  apply IsUFormula.ISigma1.pi1_succ_induction (P := fun p => ∀ depth : V,
+    IsUFormula L (bindFreeAt L depth p) ∧ shift L (bindFreeAt L depth p) = bindFreeAt L depth p)
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · definability
   · intro k R terms hR ht depth
-    rw [bindFreeAt_rel depth hR ht,shift_rel hR (termBindFreeVecAt_isUTerm depth ht),
-      termBindFreeVecAt_shift_fixed depth ht]
+    rw [bindFreeAt_rel depth hR ht]
+    constructor
+    · simp [hR, termBindFreeVecAt_isUTerm depth ht]
+    · rw [shift_rel hR (termBindFreeVecAt_isUTerm depth ht), termBindFreeVecAt_shift_fixed depth ht]
   · intro k R terms hR ht depth
-    rw [bindFreeAt_nrel depth hR ht,shift_nrel hR (termBindFreeVecAt_isUTerm depth ht),
-      termBindFreeVecAt_shift_fixed depth ht]
+    rw [bindFreeAt_nrel depth hR ht]
+    constructor
+    · simp [hR, termBindFreeVecAt_isUTerm depth ht]
+    · rw [shift_nrel hR (termBindFreeVecAt_isUTerm depth ht), termBindFreeVecAt_shift_fixed depth ht]
   · intro depth; simp
   · intro depth; simp
   · intro p q hp hq ihp ihq depth
-    rw [bindFreeAt_and depth hp hq,
-      shift_and (bindFreeAt_isUFormula hp depth) (bindFreeAt_isUFormula hq depth),
-      ihp depth,ihq depth]
+    obtain ⟨hpu, hps⟩ := ihp depth
+    obtain ⟨hqu, hqs⟩ := ihq depth
+    rw [bindFreeAt_and depth hp hq]
+    constructor
+    · simp [hpu, hqu]
+    · rw [shift_and hpu hqu, hps, hqs]
   · intro p q hp hq ihp ihq depth
-    rw [bindFreeAt_or depth hp hq,
-      shift_or (bindFreeAt_isUFormula hp depth) (bindFreeAt_isUFormula hq depth),
-      ihp depth,ihq depth]
+    obtain ⟨hpu, hps⟩ := ihp depth
+    obtain ⟨hqu, hqs⟩ := ihq depth
+    rw [bindFreeAt_or depth hp hq]
+    constructor
+    · simp [hpu, hqu]
+    · rw [shift_or hpu hqu, hps, hqs]
   · intro p hp ih depth
-    rw [bindFreeAt_all depth hp,shift_all (bindFreeAt_isUFormula hp (depth+1)),ih (depth+1)]
+    obtain ⟨hpu, hps⟩ := ih (depth + 1)
+    rw [bindFreeAt_all depth hp]
+    constructor
+    · simpa using hpu
+    · rw [shift_all hpu, hps]
   · intro p hp ih depth
-    rw [bindFreeAt_exs depth hp,shift_exs (bindFreeAt_isUFormula hp (depth+1)),ih (depth+1)]
+    obtain ⟨hpu, hps⟩ := ih (depth + 1)
+    rw [bindFreeAt_exs depth hp]
+    constructor
+    · simpa using hpu
+    · rw [shift_exs hpu, hps]
+
+lemma bindFreeAt_isUFormula {p : V} (hp : IsUFormula L p) :
+    ∀ depth : V, IsUFormula L (bindFreeAt L depth p) := fun depth => (bindFreeAt_wf_shift hp depth).1
+
+lemma bindFreeAt_shift_fixed {p : V} (hp : IsUFormula L p) :
+    ∀ depth : V, shift L (bindFreeAt L depth p) = bindFreeAt L depth p :=
+  fun depth => (bindFreeAt_wf_shift hp depth).2
 
 /-- Preserve existing bound slots and reopen new slots to their original free labels.
 All ranges are internal bounded ranges; none is a metatheoretic Fin arity. -/

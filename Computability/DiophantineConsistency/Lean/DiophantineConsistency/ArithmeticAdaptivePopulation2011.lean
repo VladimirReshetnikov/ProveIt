@@ -44,21 +44,8 @@ theorem population_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V) (h : V)
   change m=R at hmR
   change 2*n=R+1 at hnR
   change X=Exp.exp R at hp
-  let r : V := n-1
-  have hn1 : 1≤n := le_trans (by simpa only [show (1:V)+12=13 by ring] using
-    (show (1:V)≤1+12 by simp)) hn13
-  have hrplus : r+1=n := tsub_add_cancel_of_le hn1
-  have hr4 : 4≤r := by
-    apply (add_le_add_iff_right (1:V)).mp
-    rw [hrplus]
-    have h5 : (5:V)≤13 := by simpa only [show (5:V)+8=13 by ring] using (show (5:V)≤5+8 by simp)
-    simpa only [show (4:V)+1=5 by ring] using le_trans h5 hn13
-  have hR : R=2*r+1 := by
-    apply add_right_cancel (b:=(1:V))
-    calc
-      R+1=2*n := hnR.symm
-      _=2*(r+1) := by rw [hrplus]
-      _=(2*r+1)+1 := by ring
+  have hn5 : 5≤n := le_trans (by norm_num) hn13
+  obtain ⟨r,hrplus,hr4,hR⟩ := half_index_of_ge_five n R hn5 hnR
   have hXe : X=Exp.exp (2*r+1) := by rw [←hR]; exact hp
   have hY1 : 1≤Y := pos_iff_one_le.mp (hv 7)
   have hbase : a=Y*(X+1) := by dsimp [a,X,Y]; ring

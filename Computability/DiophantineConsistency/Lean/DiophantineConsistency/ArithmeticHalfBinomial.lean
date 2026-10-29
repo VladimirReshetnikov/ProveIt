@@ -77,6 +77,21 @@ theorem rank_lower_of_radix (q F alpha J MC MF h : V)
     _=q^2 := by ring
   exact le_trans (le_tsub_of_add_le_right hsq) hR
 
+/-- Recover a half-index at least four from a doubled index at least five. -/
+theorem half_index_of_ge_five (n R : V) (hn5 : 5≤n) (hnR : 2*n=R+1) :
+    ∃ r, r+1=n ∧ 4≤r ∧ R=2*r+1 := by
+  have hn1 : 1≤n := le_trans (by simp) hn5
+  let r : V := n-1
+  have hrn : r+1=n := tsub_add_cancel_of_le hn1
+  have hr4 : 4≤r := by
+    apply (add_le_add_iff_right (1:V)).mp
+    rw [hrn]
+    simpa only [show (4:V)+1=5 by ring] using hn5
+  have hR : R=2*r+1 := by
+    apply add_right_cancel (b:=(1:V))
+    rw [←hnR,←hrn]; ring
+  exact ⟨r,hrn,hr4,hR⟩
+
 /-- **Half-binomial extraction (soundness).** From the actual doubled Pell
 coordinates and the interval `c = k*Y+η`, `k = η+ζ`, `η,ζ > 0`:
 `2*Y = binom (2r) r + w*X`. -/

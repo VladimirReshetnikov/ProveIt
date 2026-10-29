@@ -58,29 +58,30 @@ instance : 𝗘𝗤 (setTemplateLanguage k arities) ⪯ templTheory k arities :=
 
 /-! ## Equality axioms -/
 
-/-- An equality axiom of the enlarged language is a lifted `𝗭𝗙` axiom or a
-placeholder congruence law. -/
-lemma equality_cases (σ : Sentence (setTemplateLanguage k arities))
+/-- An enlarged equality axiom lifts from a theory containing equality or is
+a placeholder congruence law. -/
+lemma equality_cases_of_subset (T : SetTheory) (hT : (𝗘𝗤 ℒₛₑₜ : SetTheory) ⊆ T)
+    (σ : Sentence (setTemplateLanguage k arities))
     (h : σ ∈ 𝗘𝗤 (setTemplateLanguage k arities)) :
-    σ ∈ FirstOrder.Theory.lMap (setHom k arities) (𝗭𝗙 : SetTheory) ∨
+    σ ∈ FirstOrder.Theory.lMap (setHom k arities) T ∨
       ∃ i : Fin k, σ = setPlaceholderCongruenceSentence k arities i := by
   cases h with
   | refl =>
       left
       refine ⟨Theory.Eq.refl ℒₛₑₜ,
-        ZermeloFraenkel.axiom_of_equality _ Theory.eqAxiom.refl, ?_⟩
+        hT Theory.eqAxiom.refl, ?_⟩
       simp [Theory.Eq.refl, FirstOrder.Semiformula.Operator.eq_def]
       rfl
   | symm =>
       left
       refine ⟨Theory.Eq.symm ℒₛₑₜ,
-        ZermeloFraenkel.axiom_of_equality _ Theory.eqAxiom.symm, ?_⟩
+        hT Theory.eqAxiom.symm, ?_⟩
       simp [Theory.Eq.symm, FirstOrder.Semiformula.Operator.eq_def]
       rfl
   | trans =>
       left
       refine ⟨Theory.Eq.trans ℒₛₑₜ,
-        ZermeloFraenkel.axiom_of_equality _ Theory.eqAxiom.trans, ?_⟩
+        hT Theory.eqAxiom.trans, ?_⟩
       simp [Theory.Eq.trans, FirstOrder.Semiformula.Operator.eq_def]
       rfl
   | funcExt f =>
@@ -91,13 +92,20 @@ lemma equality_cases (σ : Sentence (setTemplateLanguage k arities))
       rcases r with r | ⟨i, hi⟩
       · left
         refine ⟨Theory.Eq.relExt r,
-          ZermeloFraenkel.axiom_of_equality _ (Theory.eqAxiom.relExt r), ?_⟩
+          hT (Theory.eqAxiom.relExt r), ?_⟩
         cases r <;> simp [Theory.Eq.relExt, Matrix.conj,
           FirstOrder.Semiformula.Operator.eq_def, Matrix.comp_vecCons', Function.comp_def,
           Matrix.vecTail, Matrix.constant_eq_singleton]
         all_goals rfl
       · subst hi
         exact Or.inr ⟨i, rfl⟩
+
+/-- Equality axioms are lifted ZF axioms or placeholder congruence laws. -/
+lemma equality_cases (σ : Sentence (setTemplateLanguage k arities))
+    (h : σ ∈ 𝗘𝗤 (setTemplateLanguage k arities)) :
+    σ ∈ FirstOrder.Theory.lMap (setHom k arities) (𝗭𝗙 : SetTheory) ∨
+      ∃ i : Fin k, σ = setPlaceholderCongruenceSentence k arities i :=
+  equality_cases_of_subset 𝗭𝗙 (fun τ hτ => ZermeloFraenkel.axiom_of_equality τ hτ) σ h
 
 /-! ## Translated axioms and compilation -/
 
@@ -107,14 +115,18 @@ open scoped LO.FirstOrder.Arithmetic
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-/-- The congruence law of a placeholder of arity at most `3`. -/
-lemma congruenceProof_le3 : ∀ (a : ℕ), a ≤ 3 → (K : Bootstrapping.Semiformula V ℒₛₑₜ a) →
-    (𝗭𝗙 : SetTheory).internalize V ⊢ SetCongruence.congruenceFormula a K
-  | 0, _, K => SetCongruence.congruenceProof₀ 𝗭𝗙 K
-  | 1, _, K => SetCongruence.congruenceProof₁ 𝗭𝗙 K
-  | 2, _, K => SetCongruence.congruenceProof₂ 𝗭𝗙 K
-  | 3, _, K => SetCongruence.congruenceProof₃ 𝗭𝗙 K
+/-- A theory containing equality proves congruence for arity at most `3`. -/
+lemma congruenceProof_le3_of_eq (T : SetTheory) [T.Δ₁] [𝗘𝗤 ℒₛₑₜ ⪯ T] : ∀ (a : ℕ), a ≤ 3 → (K : Bootstrapping.Semiformula V ℒₛₑₜ a) →
+    T.internalize V ⊢ SetCongruence.congruenceFormula a K
+  | 0, _, K => SetCongruence.congruenceProof₀ T K
+  | 1, _, K => SetCongruence.congruenceProof₁ T K
+  | 2, _, K => SetCongruence.congruenceProof₂ T K
+  | 3, _, K => SetCongruence.congruenceProof₃ T K
   | n + 4, h, _ => absurd h (by omega)
+
+lemma congruenceProof_le3 : ∀ (a : ℕ), a ≤ 3 → (K : Bootstrapping.Semiformula V ℒₛₑₜ a) →
+    (𝗭𝗙 : SetTheory).internalize V ⊢ SetCongruence.congruenceFormula a K :=
+  congruenceProof_le3_of_eq 𝗭𝗙
 
 /-- **Every source axiom has an internal `𝗭𝗙` proof** at every interpretation. -/
 lemma translated_axiom (harity : ∀ i, arities i ≤ 3)
