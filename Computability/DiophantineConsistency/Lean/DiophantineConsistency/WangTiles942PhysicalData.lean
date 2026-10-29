@@ -1,3 +1,4 @@
+import DiophantineConsistency.MFWangTiles942PhysicalData
 import DiophantineConsistency.WangTiles942Permutation
 import Mathlib.Order.Fin.Basic
 import Mathlib.Data.List.Chain
@@ -1257,67 +1258,8 @@ def rows : List (ℕ × ℕ) :=
 
 theorem rows_length : rows.length = 941 := by decide +kernel
 
-theorem rows_good : ∀ r ∈ rows, rowGood r := by
-  simp only [rows, List.forall_mem_append, and_assoc]
-  exact ⟨chunk00_good,
-    chunk01_good,
-    chunk02_good,
-    chunk03_good,
-    chunk04_good,
-    chunk05_good,
-    chunk06_good,
-    chunk07_good,
-    chunk08_good,
-    chunk09_good,
-    chunk10_good,
-    chunk11_good,
-    chunk12_good,
-    chunk13_good,
-    chunk14_good,
-    chunk15_good,
-    chunk16_good,
-    chunk17_good,
-    chunk18_good,
-    chunk19_good,
-    chunk20_good,
-    chunk21_good,
-    chunk22_good,
-    chunk23_good,
-    chunk24_good,
-    chunk25_good,
-    chunk26_good,
-    chunk27_good,
-    chunk28_good,
-    chunk29_good,
-    chunk30_good,
-    chunk31_good,
-    chunk32_good,
-    chunk33_good,
-    chunk34_good,
-    chunk35_good,
-    chunk36_good,
-    chunk37_good,
-    chunk38_good,
-    chunk39_good,
-    chunk40_good,
-    chunk41_good,
-    chunk42_good,
-    chunk43_good,
-    chunk44_good,
-    chunk45_good,
-    chunk46_good,
-    chunk47_good,
-    chunk48_good,
-    chunk49_good,
-    chunk50_good,
-    chunk51_good,
-    chunk52_good,
-    chunk53_good,
-    chunk54_good,
-    chunk55_good,
-    chunk56_good,
-    chunk57_good,
-    chunk58_good⟩
+theorem rows_good : ∀ r ∈ rows, rowGood r :=
+  MF.WangTiles942PhysicalData.rows_good
 
 theorem rows_descending : rows.IsChain (fun a b => b.2 < a.2) := by decide +kernel
 

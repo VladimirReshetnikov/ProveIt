@@ -2,9 +2,8 @@ import DiophantineConsistency.MFWangTiles942Permutation
 import Mathlib.Order.Fin.Basic
 import Mathlib.Data.List.Chain
 
-/-! Matrix-free clone of `DiophantineConsistency.WangTiles942PhysicalData`: all declarations are kept,
-proof bodies verbatim; namespaces are prefixed by `DiophantineConsistency.MF` and
-imports retargeted to the Matrix-free clones. -/
+/-! Matrix-free physical-order certificate over the same literal data.
+The ordinary physical-data module reuses its `rows_good` proof. -/
 /-! Literal non-Start physical-order certificate. Every index and coefficient
 is checked against the actual decoded table; generated numerals are data only. -/
 namespace DiophantineConsistency.MF.WangTiles942PhysicalData
