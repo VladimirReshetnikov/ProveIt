@@ -97,6 +97,12 @@ def encodeStateResult : Option EnumPerm.St → ℕ
   | none => 0
   | some s => encodeState s
 
+@[simp] theorem encodeStateResult_eq_zero_iff (s : Option EnumPerm.St) :
+    encodeStateResult s = 0 ↔ s = none := by
+  cases s with
+  | none => simp [encodeStateResult]
+  | some s => simp [encodeStateResult, encodeState]
+
 @[simp] theorem liveValue_nat (s : EnumPerm.St) :
     liveValue s.pl s.np (encodeW (EnumPerm.toW s))=encodeState s := by
   simp only [liveValue, cantor_nat, encodeState]
@@ -117,7 +123,6 @@ theorem enumValue_nat (s : EnumPerm.St) :
 
 theorem enumValue_nat_eq_zero_iff (s : EnumPerm.St) :
     enumValue (encodeState s)=0 ↔ EnumPerm.enumStep s=none := by
-  rw [enumValue_nat]
-  cases EnumPerm.enumStep s <;> simp [encodeStateResult, encodeState]
+  rw [enumValue_nat, encodeStateResult_eq_zero_iff]
 
 end DiophantineConsistency.ArithmeticEnumStepPerm222

@@ -72,10 +72,8 @@ lemma run_succ_first (time initial : V) :
   rw [add_comm time 1, run_add, run_one]
 
 @[simp] theorem encodeStateResult_eq_zero (s : Option EnumPerm.St) :
-    encodeStateResult s = 0 ↔ s = none := by
-  cases s with
-  | none => simp [encodeStateResult]
-  | some s => simp [encodeStateResult, encodeState]
+    encodeStateResult s = 0 ↔ s = none :=
+  ArithmeticEnumStepPerm222.encodeStateResult_eq_zero_iff s
 
 /-- Exact agreement for all ordinary times and arbitrary dirty registers. -/
 theorem run_encode_nat (time : ℕ) (s : EnumPerm.St) :
