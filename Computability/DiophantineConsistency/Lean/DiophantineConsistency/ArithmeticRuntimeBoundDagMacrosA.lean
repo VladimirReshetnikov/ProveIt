@@ -59,15 +59,19 @@ theorem field_le_sz (st : AS V) : ∀ r, field st r ≤ sz st
 
 /-! ## Tower arithmetic -/
 
-theorem lin_le {x c j : V} {L : ℕ} (hL : 2 ≤ L) (hx : x ≤ tower j L) (hc : c ≤ 15) :
-    x * c + 1 ≤ tower j (L+1) := by
+theorem lin_le' {x c d j : V} {L : ℕ} (hL : 2 ≤ L) (hx : x ≤ tower j L) (hc : c ≤ 15)
+    (hd : d ≤ 15) : x * c + d ≤ tower j (L+1) := by
   have h16 := sixteen_le_tower_of j hL
-  have h1 : (1 : V) ≤ tower j L := le_trans (by norm_num) h16
   rw [tower_succ]
-  calc x * c + 1 ≤ tower j L * 15 + tower j L :=
-        _root_.add_le_add (mul_le_mul hx hc (Arithmetic.zero_le _) (Arithmetic.zero_le _)) h1
+  calc x * c + d ≤ tower j L * 15 + tower j L :=
+        _root_.add_le_add (mul_le_mul hx hc (Arithmetic.zero_le _) (Arithmetic.zero_le _))
+          (le_trans hd (le_trans (by norm_num) h16))
     _ = 16 * tower j L := by ring
     _ ≤ tower j L * tower j L := mul_le_sq h16
+
+theorem lin_le {x c j : V} {L : ℕ} (hL : 2 ≤ L) (hx : x ≤ tower j L) (hc : c ≤ 15) :
+    x * c + 1 ≤ tower j (L+1) :=
+  lin_le' hL hx hc (by norm_num)
 
 theorem mul_le_tower {x y j : V} {L : ℕ} (hx : x ≤ tower j L) (hy : y ≤ tower j L) :
     x * y ≤ tower j (L+1) := by

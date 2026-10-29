@@ -27,16 +27,6 @@ theorem const_add_le {x c j : V} {a : ℕ} (ha : 2 ≤ a) (hx : x ≤ tower j a)
     c + x ≤ tower j (a+1) :=
   add_le_tower' ha (le_trans hc (sixteen_le_tower_of j ha)) hx
 
-theorem lin_le' {x c d j : V} {L : ℕ} (hL : 2 ≤ L) (hx : x ≤ tower j L) (hc : c ≤ 15)
-    (hd : d ≤ 15) : x * c + d ≤ tower j (L+1) := by
-  have h16 := sixteen_le_tower_of j hL
-  rw [tower_succ]
-  calc x * c + d ≤ tower j L * 15 + tower j L :=
-        _root_.add_le_add (mul_le_mul hx hc (Arithmetic.zero_le _) (Arithmetic.zero_le _))
-          (le_trans hd (le_trans (by norm_num) h16))
-    _ = 16 * tower j L := by ring
-    _ ≤ tower j L * tower j L := mul_le_sq h16
-
 /-- The six registers untouched by the pairing and walk loops. -/
 def rest6 (st : AS V) : V := st.np + st.ws + st.ac + st.p1 + st.p2 + st.pl
 
