@@ -2247,5 +2247,14 @@ Checked declarations and sampled registrations match; the wider closure remains
 cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-window-interface-gap.md)
 records hashes and external paths without raw logs or objects.
 
+The annotated axiom-context iteration reuse `18c65e4c11` removes eleven net
+Lean lines, bringing the reviewed series to 10481. Existing NatIterate recursion
+and fixed-point lemmas replace three inductions. Paired target, direct client
+and check builds pass with identical client objects, including a replay with
+rebuilt current-source direct providers. Checked target declarations and sampled
+registrations match; the umbrella and wider closure remain unbuilt or cached.
+The compact [evidence note](../../reviews/lean-proof-simplification-20261029-axiom-context-iterate.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
