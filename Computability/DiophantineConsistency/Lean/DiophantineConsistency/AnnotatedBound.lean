@@ -61,16 +61,9 @@ theorem binary_sound (r : Row) (seen : List Row)
       obtain ⟨f,hfi,hfo⟩ := hs a (List.mem_of_getElem? ha)
       obtain ⟨g,hgi,hgo⟩ := hs b (List.mem_of_getElem? hb)
       rcases h with ⟨hi,ho⟩
-      rcases ht with h3 | h4 | h5
-      · refine ⟨fImp f g,?_,?_⟩
-        · simpa only [h3,hfi,hgi,code_imp] using hi
-        · simpa only [hfo,hgo,bound] using ho
-      · refine ⟨fAnd f g,?_,?_⟩
-        · simpa only [h4,hfi,hgi,code_and] using hi
-        · simpa only [hfo,hgo,bound] using ho
-      · refine ⟨fOr f g,?_,?_⟩
-        · simpa only [h5,hfi,hgi,code_or] using hi
-        · simpa only [hfo,hgo,bound] using ho
+      refine ⟨binaryForm r.tag f g, ?_, ?_⟩
+      · rcases ht with ht | ht | ht <;> simpa [binaryForm, ht, hfi, hgi] using hi
+      · rcases ht with ht | ht | ht <;> simpa [binaryForm, ht, hfo, hgo, bound] using ho
 
 theorem unary_sound (r : Row) (seen : List Row)
     (hs : ∀ a∈seen,Good a) (ht : r.tag=6 ∨ r.tag=7)
@@ -82,13 +75,9 @@ theorem unary_sound (r : Row) (seen : List Row)
     simp only [ha,unaryEquations,decide_eq_true_eq] at h
     obtain ⟨f,hfi,hfo⟩ := hs a (List.mem_of_getElem? ha)
     rcases h with ⟨_,hi,ho⟩
-    rcases ht with h6 | h7
-    · refine ⟨fAll f,?_,?_⟩
-      · simpa only [h6,hfi,code_all] using hi
-      · simpa only [hfo,bound] using ho
-    · refine ⟨fEx f,?_,?_⟩
-      · simpa only [h7,hfi,code_ex] using hi
-      · simpa only [hfo,bound] using ho
+    refine ⟨unaryForm r.tag f, ?_, ?_⟩
+    · rcases ht with ht | ht <;> simpa [unaryForm, ht, hfi] using hi
+    · rcases ht with ht | ht <;> simpa [unaryForm, ht, hfo, bound] using ho
 
 theorem row_sound (r : Row) (seen : List Row)
     (hs : ∀ a∈seen,Good a) (h : valid r seen=true) : Good r := by
