@@ -307,6 +307,17 @@ private theorem uniqueAtForm_spec (H : ZFAxioms mem) (c : V) :
     exact h b b' ((boundCodeForm_spec H _ 1 2).mp hb)
       ((boundCodeForm_spec H _ 0 2).mp hb')
 
+private theorem binary_unique (H : ZFAxioms mem) (t : Nat) (ht : 3 ≤ t ∧ t ≤ 5)
+    {a d b b' : V} (ha : UniqueAt H a) (hd : UniqueAt H d)
+    (hb : BoundCodeRel H (kpair H (natV H t) (kpair H a d)) b)
+    (hb' : BoundCodeRel H (kpair H (natV H t) (kpair H a d)) b') : b = b' := by
+  obtain ⟨a1, d1, ha1, hd1, hab⟩ := boundCodeRel_binary_inv H t ht hb
+  obtain ⟨a2, d2, ha2, hd2, hab'⟩ := boundCodeRel_binary_inv H t ht hb'
+  have hea := ha a1 a2 ha1 ha2
+  have hed := hd d1 d2 hd1 hd2
+  rw [← hea, ← hed] at hab'
+  exact addRel_unique H hab hab'
+
 /-- The bound is single-valued on the whole internal formula-code predicate. -/
 theorem boundCodeRel_unique (H : ZFAxioms mem) :
     ∀ c, IsFormCodeSem H c → ∀ b b', BoundCodeRel H c b → BoundCodeRel H c b' → b = b' := by
@@ -321,26 +332,11 @@ theorem boundCodeRel_unique (H : ZFAxioms mem) :
   · intro b b' hb hb'
     exact (boundCodeRel_bot_inv H hb).trans (boundCodeRel_bot_inv H hb').symm
   · intro a d ha hd b b' hb hb'
-    obtain ⟨a1, d1, ha1, hd1, hab⟩ := boundCodeRel_binary_inv H 3 (by decide) hb
-    obtain ⟨a2, d2, ha2, hd2, hab'⟩ := boundCodeRel_binary_inv H 3 (by decide) hb'
-    have hea := ha a1 a2 ha1 ha2
-    have hed := hd d1 d2 hd1 hd2
-    rw [← hea, ← hed] at hab'
-    exact addRel_unique H hab hab'
+    exact binary_unique H 3 (by decide) ha hd hb hb'
   · intro a d ha hd b b' hb hb'
-    obtain ⟨a1, d1, ha1, hd1, hab⟩ := boundCodeRel_binary_inv H 4 (by decide) hb
-    obtain ⟨a2, d2, ha2, hd2, hab'⟩ := boundCodeRel_binary_inv H 4 (by decide) hb'
-    have hea := ha a1 a2 ha1 ha2
-    have hed := hd d1 d2 hd1 hd2
-    rw [← hea, ← hed] at hab'
-    exact addRel_unique H hab hab'
+    exact binary_unique H 4 (by decide) ha hd hb hb'
   · intro a d ha hd b b' hb hb'
-    obtain ⟨a1, d1, ha1, hd1, hab⟩ := boundCodeRel_binary_inv H 5 (by decide) hb
-    obtain ⟨a2, d2, ha2, hd2, hab'⟩ := boundCodeRel_binary_inv H 5 (by decide) hb'
-    have hea := ha a1 a2 ha1 ha2
-    have hed := hd d1 d2 hd1 hd2
-    rw [← hea, ← hed] at hab'
-    exact addRel_unique H hab hab'
+    exact binary_unique H 5 (by decide) ha hd hb hb'
   · intro a ha b b' hb hb'
     exact ha b b' (boundCodeRel_quantifier_inv H 6 (by decide) hb)
       (boundCodeRel_quantifier_inv H 6 (by decide) hb')
