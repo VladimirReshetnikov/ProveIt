@@ -1,0 +1,1 @@
+Root independent replay passed at `/tmp/pra-after-exhaustion-independent-cjf9jou7/lib`; all 92 source, object and complete log hashes match the frozen author manifest. Foundation and mathlib are inherited. The replay driver remains the original frozen historical artifact, including the previously documented failure-status limitation.

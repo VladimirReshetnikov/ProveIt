@@ -3,8 +3,9 @@
 This note concerns the first-order **candidate** theory `PRA` defined in this directory. The Σ₀ characteristic compiler and bounded-witness theorem have passed an 82-module source-current author rebuild and two isolated replays with matching sources, objects and complete logs. The independent root replay is `/tmp/pra-bounded-newest-independent-2eqcdk_c`; Foundation and Mathlib remain inherited boundaries. None of the results in this note is an internal HA proof or a PA/HA conservation theorem.
 
 After those builds, an upstream merge changed `PRAExhaustion`, `PRANonzero`,
-and `PRAPeanoMinusBasic`. The recorded results cover the preceding source
-snapshot; a dependency-aware downstream rebuild is required for the merge.
+and `PRAPeanoMinusBasic`. A subsequent 92-module dependency-aware rebuild and
+two independent replays passed with matching sources, objects and full logs.
+Their parent and Foundation/Mathlib qualifications remain explicit.
 
 A bounded search code already provided its recursion equations and two open-induction invariants. `PRABoundedSearchBound` proves in arbitrary candidate-PRA equality models that its output is below or equal to the input bound. `PRABoundedSearchFreeze` proves, using open induction, that once search finds a counterexample, the output remains fixed at all later inputs. Consequently `PRABoundedSearchUniversal` proves that equality of the search output and its input characterizes the absence of counterexamples below the bound. Composing search with the equality-characteristic code gives a fixed primitive-recursive Boolean code. `PRA_proves_universalBitSentence` and `PRA_proves_universalCorrectSentence` are closed candidate-PRA proofs of its bitness and of its exact bounded-universal meaning.
 
@@ -17,3 +18,9 @@ A bounded search code already provided its recursion equations and two open-indu
 The same characteristic construction also yields `PRABoundedInduction.PRA_proves_boundedInduction`: for any candidate-language Σ₀ formula with one induction variable and arbitrary free parameters, candidate PRA proves the universally closed successor-induction axiom. The proof packs the finitely many parameters, compiles the resulting Σ₀ formula, and applies the candidate's open induction to the resulting characteristic equation. This is bounded induction, not Σ₁ induction; focused independent replays passed against the accepted current provider.
 
 `PRAPrimitiveRecursionInduction.PRA_proves_recursiveSentence` separately proves a closed candidate-PRA sentence expressing primitive-recursive witness iteration from a coded base and successor step, with arbitrary parameters. This is one ingredient toward the induction-counterexample argument; it does not provide the required interactive ∃∀∃ Herbrand extraction. Focused independent replays passed against the accepted current provider.
+
+`PRAInductionCounterexample.PRA_proves_counterexampleSentence` uses that
+recursive witness to prove a closed candidate-PRA counterexample-defeat
+sentence for the explicitly coded predicate and base, target and update
+functions. It is an ingredient, not a conservation theorem; interactive
+Herbrand extraction and elimination of the resulting disjunction remain.

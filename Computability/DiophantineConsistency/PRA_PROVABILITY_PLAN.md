@@ -69,9 +69,10 @@ candidate-PRA Σ₀ characteristic compiler and bounded-matrix witness theorem.
 These witnessing results start with a candidate-PRA proof; they do not provide
 the missing rule-to-PRA comparison.
 After those replays, an upstream merge changed `PRAExhaustion`, `PRANonzero`,
-and `PRAPeanoMinusBasic`. The affected candidate-PRA compiler, witnessing and
-comparison chains require a fresh dependency-aware rebuild before claiming
-coverage of the merged sources.
+and `PRAPeanoMinusBasic`. A dependency-aware 92-module author rebuild and two
+independent replays have since matched all source, object and full-log hashes,
+including the bounded compiler, witness and induction-counterexample modules.
+The bounded-only comparison client still needs a replay against that provider.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)

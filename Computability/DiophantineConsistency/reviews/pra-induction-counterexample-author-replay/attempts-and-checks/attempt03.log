@@ -1,0 +1,53 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAInductionCounterexample.lean:97:62: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* PRA
+n : ℕ
+pred : Code (n + 2)
+base stop : Code n
+q : Code (n + 3)
+e : ℕ → M
+x y w : M
+h :
+  (Structure.func pred fun i =>
+        Fin.cases (Structure.func (Code.zero 0) Fin.elim0)
+          (fun i => Fin.cases (Structure.func base fun i => e ↑i) (fun i => e ↑i) i) i) =
+      Structure.func oneCode Fin.elim0 →
+    ((Structure.func pred fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i) =
+          Structure.func oneCode Fin.elim0 →
+        (Structure.func pred fun i =>
+            Fin.cases (Structure.func Code.succ fun x_1 => x)
+              (fun i =>
+                Fin.cases
+                  (Structure.func q fun i =>
+                    Fin.cases x (fun i => Fin.cases y (fun i => Fin.cases w (fun i => e ↑i) i) i) i)
+                  (fun i => e ↑i) i)
+              i) =
+          Structure.func oneCode Fin.elim0) →
+      (Structure.func pred fun i =>
+          Fin.cases (Structure.func stop fun i => e ↑i) (fun i => Fin.cases w (fun i => e ↑i) i) i) =
+        Structure.func oneCode Fin.elim0
+⊢ ¬Structure.func pred
+          (Semiterm.val ![w, y, x] e ∘ fun i =>
+            Fin.cases (Semiterm.func (Code.zero 0) Fin.elim0)
+              (fun i => Fin.cases (Semiterm.func base (params3 n)) (params3 n) i) i) =
+        Structure.func oneCode (Semiterm.val ![w, y, x] e ∘ Fin.elim0) ∨
+    Structure.func pred
+            (Semiterm.val ![w, y, x] e ∘ fun i => Fin.cases (#2) (fun i => Fin.cases (#1) (params3 n) i) i) =
+          Structure.func oneCode (Semiterm.val ![w, y, x] e ∘ Fin.elim0) ∧
+        ¬Structure.func pred
+              (Semiterm.val ![w, y, x] e ∘ fun i =>
+                Fin.cases (Semiterm.func Code.succ ![#2])
+                  (fun i =>
+                    Fin.cases
+                      (Semiterm.func q fun i =>
+                        Fin.cases (#2) (fun i => Fin.cases (#1) (fun i => Fin.cases (#0) (params3 n) i) i) i)
+                      (params3 n) i)
+                  i) =
+            Structure.func oneCode (Semiterm.val ![w, y, x] e ∘ Fin.elim0) ∨
+      Structure.func pred
+          (Semiterm.val ![w, y, x] e ∘ fun i =>
+            Fin.cases (Semiterm.func stop (params3 n)) (fun i => Fin.cases (#0) (params3 n) i) i) =
+        Structure.func oneCode (Semiterm.val ![w, y, x] e ∘ Fin.elim0)

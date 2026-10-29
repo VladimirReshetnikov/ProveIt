@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRABoundedExistential
+open DiophantineConsistency.PRABoundedExistential
+#print axioms neg_termBoundedBy
+#print axioms PRA_negateCharacteristic
+#print axioms PRA_boundedTermExistentialStep
+#check PRA_boundedTermExistentialStep

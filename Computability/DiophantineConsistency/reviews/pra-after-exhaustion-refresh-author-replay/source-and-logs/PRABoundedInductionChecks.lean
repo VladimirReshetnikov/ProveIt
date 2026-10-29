@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRABoundedInduction
+open DiophantineConsistency.PRABoundedInduction
+#print axioms packParameters_bounded
+#print axioms modelBoundedInductionAxiom
+#print axioms PRA_proves_boundedInduction
+#check PRA_proves_boundedInduction

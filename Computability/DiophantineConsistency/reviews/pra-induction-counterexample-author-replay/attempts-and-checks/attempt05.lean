@@ -1,0 +1,8 @@
+import DiophantineConsistency.PRAInductionCounterexample
+open DiophantineConsistency.PRAInductionCounterexample
+#print axioms counterexampleMatrix_open
+#print axioms modelFixedZeroStep
+#print axioms modelCounterexampleDefeat
+#print axioms modelCounterexampleSentence
+#print axioms PRA_proves_counterexampleSentence
+#check PRA_proves_counterexampleSentence
