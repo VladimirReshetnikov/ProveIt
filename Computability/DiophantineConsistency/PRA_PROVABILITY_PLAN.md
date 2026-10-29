@@ -68,7 +68,10 @@ excludes the negative units by internal modulo-four reasoning and derives all
 four positive units. The [scaled-norm theorem](reviews/adaptive-scaled-norms2011-root.md)
 derives both actual scaled Pell equations and positive scales. An [internal square-divisibility theorem](reviews/arithmetic-square-divisibility-root.md)
 now proves the required positive-scale cancellation, including zero roots.
-Its application and the full zero-existence equivalence remain open.
+The [adaptive quotient client](reviews/adaptive-quotients2011-root.md)
+now applies it to construct both positive unscaled roots from the actual
+natural zero. Root orientation, transport, index recovery and the full
+zero-existence equivalence remain open.
 
 The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
 now proves in Lean that both maintained source sentences are Π₁ and their
