@@ -75,7 +75,10 @@ secondary recursion measure remain open.
 The [unified marked context](reviews/parsons-unified-root.md) now integrates
 these cases and proves a decreasing secondary base count for terminal
 reclassification. Its final counter-witness case still assumes a Σ₁ side
-guard, and the global recursion remains open. The [identity and truth leaves](reviews/parsons-leaves-root.md)
+guard, and the global recursion remains open. The [strict Π₂ disjunction
+normalizer](reviews/parsons-prenex-pi2-or-root.md) supplies a bounded-matrix
+tupled prenex form for a pair of strict ∀∃ side formulas; general Π₂
+normalization remains open. The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
