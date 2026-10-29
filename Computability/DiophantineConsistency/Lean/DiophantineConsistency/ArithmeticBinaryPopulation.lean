@@ -1,4 +1,4 @@
-import Foundation.FirstOrder.Arithmetic.HFS.PRF
+import DiophantineConsistency.ArithmeticUnaryRecursion
 import Mathlib.Tactic.Ring
 
 /-! Total represented binary population at arbitrary internal lengths.
@@ -28,17 +28,8 @@ noncomputable def prefixCount (n a : V) : V := construction.result ![a] n
 def prefixDef : 𝚺₁.Semisentence 3 := blueprint.resultDef
 def prefixDeltaDef : 𝚫₁.Semisentence 3 := blueprint.resultDeltaDef
 
-instance prefix_defined : 𝚺₁-Function₂[V] prefixCount via prefixDef := .mk fun e => by
-  have he : (fun i : Fin 1 => e i.succ.succ) = ![e 2] := by
-    funext i
-    have hi : i=0 := Subsingleton.elim _ _
-    subst i
-    rfl
-  have h := (construction (V:=V)).result_defined.df e
-  change blueprint.resultDef.val.Evalb e ↔
-    e 0=construction.result (fun i : Fin 1 => e i.succ.succ) (e 1) at h
-  rw [he] at h
-  exact h
+instance prefix_defined : 𝚺₁-Function₂[V] prefixCount via prefixDef :=
+  ArithmeticUnaryRecursion.result_defined blueprint construction
 instance prefix_defined_delta : 𝚫₁-Function₂[V] prefixCount via prefixDeltaDef := prefix_defined.graph_delta
 instance prefix_definable : 𝚺₁-Function₂[V] prefixCount := prefix_defined.to_definable
 
