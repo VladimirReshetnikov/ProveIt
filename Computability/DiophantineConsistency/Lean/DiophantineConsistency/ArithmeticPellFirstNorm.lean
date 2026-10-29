@@ -38,24 +38,22 @@ theorem two_le_ordinate (q x k : V) (hk : 0<k)
     (h : x*x=1+discriminant q*k*k) : 2≤k := by
   by_contra hn
   have hle : k≤1 := lt_two_iff_le_one.mp (lt_of_not_ge hn)
-  rcases le_one_iff_eq_zero_or_one.mp hle with hz|ho
-  · rw [hz] at hk
-    exact (_root_.lt_irrefl (0:V)) hk
-  · subst k
-    simp only [mul_one] at h
-    have hlo : q+1<x := by
-      apply lt_of_mul_self_lt_mul_self₀ (by simp)
-      calc
-        (q+1)*(q+1)<(q+1)*(q+1)+(q+2) := by simp
-        _=x*x := by rw [h]; unfold discriminant; ring
-    have hhi : x<q+2 := by
-      apply lt_of_mul_self_lt_mul_self₀ (by simp)
-      calc
-        x*x<x*x+(q+1) := by simp
-        _=(q+2)*(q+2) := by rw [h]; unfold discriminant; ring
-    have hge := lt_iff_succ_le.mp hlo
-    rw [show q+1+1=q+2 by ring] at hge
-    exact (not_lt_of_ge hge) hhi
+  have ho : k=1 := le_antisymm hle (pos_iff_one_le.mp hk)
+  subst k
+  simp only [mul_one] at h
+  have hlo : q+1<x := by
+    apply lt_of_mul_self_lt_mul_self₀ (by simp)
+    calc
+      (q+1)*(q+1)<(q+1)*(q+1)+(q+2) := by simp
+      _=x*x := by rw [h]; unfold discriminant; ring
+  have hhi : x<q+2 := by
+    apply lt_of_mul_self_lt_mul_self₀ (by simp)
+    calc
+      x*x<x*x+(q+1) := by simp
+      _=(q+2)*(q+2) := by rw [h]; unfold discriminant; ring
+  have hge := lt_iff_succ_le.mp hlo
+  rw [show q+1+1=q+2 by ring] at hge
+  exact (not_lt_of_ge hge) hhi
 
 theorem norm_advance_iff (q x k : V) :
     ((2*q+3)*x+2*discriminant q*k)*((2*q+3)*x+2*discriminant q*k)=
