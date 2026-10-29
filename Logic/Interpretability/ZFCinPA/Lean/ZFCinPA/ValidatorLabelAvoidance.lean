@@ -124,4 +124,75 @@ lemma cross_body_vac {P : V → V → Prop} {enc : V → V → V → V → V}
       rw [next_label]
       simpa using (hap (k+1) 0).symm
 
+
+noncomputable def alternateStart (bound seed : V) : V := by
+  classical
+  exact if seed % 2=0 then 2*(bound+2)+1 else 2*(bound+2)
+
+lemma streamEnv_of_lt {s B : V} (hB : B<s) : StreamEnv s B := by
+  intro k i _hi
+  exact ne_of_gt (lt_of_le_of_lt (nth_le B i)
+    (lt_of_lt_of_le hB (le_add_of_nonneg_right (Arithmetic.zero_le _))))
+
+lemma streamFree_of_bounds {s F : V} (hF : F<s) (h1 : 1<s) : StreamFree s F := by
+  intro k
+  exact ⟨ne_of_gt (lt_of_lt_of_le h1 (le_add_of_nonneg_right (Arithmetic.zero_le _))),
+    streamEnv_of_lt hF k⟩
+
+lemma apart_of_mod_ne {s t : V} (h : s % 2≠t % 2) : Apart s t := by
+  intro i j hij
+  apply h
+  simpa using congrArg (fun x : V => x % 2) hij
+
+private lemma double_bound (bound : V) : bound+2≤2*(bound+2) := by
+  simp
+
+private lemma double_le_alternateStart (bound seed : V) :
+    2*(bound+2)≤alternateStart bound seed := by
+  classical
+  unfold alternateStart
+  split <;> simp
+
+lemma bound_lt_alternateStart (bound seed : V) : bound<alternateStart bound seed :=
+  lt_of_lt_of_le (lt_of_lt_of_le (by simp) (double_bound bound))
+    (double_le_alternateStart bound seed)
+
+lemma one_lt_alternateStart (bound seed : V) : 1<alternateStart bound seed :=
+  lt_of_lt_of_le (lt_of_lt_of_le (by simp : (1:V)<2) (by simp))
+    (le_trans (double_bound bound) (double_le_alternateStart bound seed))
+
+lemma alternateStart_mod_ne (bound seed : V) : seed % 2≠alternateStart bound seed % 2 := by
+  classical
+  by_cases hs : seed % 2=0
+  · simp [alternateStart,hs]
+  · have hs1 : seed % 2=1 := mod_two_not_zero_iff.mp hs
+    simp [alternateStart,hs1]
+
+lemma alternateStart_apart (bound seed : V) : Apart seed (alternateStart bound seed) :=
+  apart_of_mod_ne (alternateStart_mod_ne bound seed)
+
+lemma alternateStart_env (bound seed B : V) (hB : B≤bound) :
+    StreamEnv (alternateStart bound seed) B :=
+  streamEnv_of_lt (lt_of_le_of_lt hB (bound_lt_alternateStart bound seed))
+
+lemma alternateStart_free (bound seed F : V) (hF : F≤bound) :
+    StreamFree (alternateStart bound seed) F :=
+  streamFree_of_bounds (lt_of_le_of_lt hF (bound_lt_alternateStart bound seed))
+    (one_lt_alternateStart bound seed)
+
+/-- A concrete stream avoiding F, fallback1 and both bound stacks. The sum
+bound uses existing nth_le, and requires no new maximum-fold computation. -/
+lemma alternateStart_resources (F B B' seed : V) :
+    StreamFree (alternateStart (F+B+B') seed) F ∧
+    StreamEnv (alternateStart (F+B+B') seed) B ∧
+    StreamEnv (alternateStart (F+B+B') seed) B' ∧
+    Apart seed (alternateStart (F+B+B') seed) := by
+  refine ⟨alternateStart_free _ _ _ ?_,alternateStart_env _ _ _ ?_,
+    alternateStart_env _ _ _ ?_,alternateStart_apart _ _⟩
+  · exact le_trans (le_add_of_nonneg_right (Arithmetic.zero_le B))
+      (le_add_of_nonneg_right (Arithmetic.zero_le B'))
+  · exact le_trans (le_add_of_nonneg_left (Arithmetic.zero_le F))
+      (le_add_of_nonneg_right (Arithmetic.zero_le B'))
+  · exact le_add_of_nonneg_left (Arithmetic.zero_le (F+B))
+
 end LeanProofs.ZFCinPA.ValidatorLabelAvoidance
