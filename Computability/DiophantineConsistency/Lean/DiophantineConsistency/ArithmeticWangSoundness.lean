@@ -49,7 +49,7 @@ variable {a : V → V} [𝚺₁-Function₁ a] {N s : V} (h : MarkedWord a N s)
 include h
 
 theorem row_one (X : V) : northC (pl a N s X 1) = southC (pl a N s X 0) := by
-  have := pl_south h X 0; rw [zero_add] at this; exact this.symm
+  simpa only [zero_add] using (pl_south h X 0).symm
 
 /-- Row 1 encodes `run 1` between the two seam walls. -/
 theorem base_row {L R : V} (hL1 : 1 ≤ L) (hLN : L ≤ N)
@@ -124,20 +124,15 @@ theorem marked_halts : ∃ t < N, first (run t) = 0 := by
     apply HierarchySymbol.Definable.and (by definability)
     apply HierarchySymbol.Definable.and (by definability)
     definability
-  have rows' : ∀ k, 1 ≤ k → k ≤ N → RowInv a N s (N - L) (N + R) k := by
+  have rows : ∀ k, k + 1 ≤ N → RowInv a N s (N - L) (N + R) (k + 1) := by
     intro k
-    induction k using ISigma1.sigma1_succ_induction
-    · definability
-    case zero => intro h0; exact absurd h0 (by simp)
-    case succ k ih =>
-      intro _ hk
-      rcases eq_or_ne k 0 with hk0 | hk0
-      · rw [hk0, zero_add]; exact base
-      · have hk1 : 1 ≤ k := pos_iff_one_le.mp (pos_iff_ne_zero.mpr hk0)
-        exact row_step h k (ih hk1 (le_trans (le_of_lt (lt_add_one _)) hk))
-          (live k (lt_of_lt_of_le (lt_add_one _) hk))
-  have rows : ∀ k, k + 1 ≤ N → RowInv a N s (N - L) (N + R) (k + 1) :=
-    fun k hk => rows' (k + 1) (le_add_self' 1 k |>.trans_eq (add_comm _ _)) hk
+    induction k using ISigma1.sigma1_succ_induction with
+    | hP => definability
+    | zero => intro _; simpa using base
+    | succ k ih =>
+      intro hk
+      exact row_step h (k + 1) (ih (le_trans (le_of_lt (lt_add_one _)) hk))
+        (live (k + 1) (lt_of_lt_of_le (lt_add_one _) hk))
   have hN : 1 ≤ N := one_le h
   obtain ⟨M, hM⟩ : ∃ M, N = M + 1 := ⟨N - 1, (tsub_add_cancel_of_le hN).symm⟩
   obtain ⟨_, _, hst, H, hHr, hHl, hcol⟩ := rows M (le_of_eq hM.symm)
