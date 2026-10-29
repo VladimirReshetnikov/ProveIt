@@ -1,0 +1,46 @@
+Independent review: ArithmeticCellLocal weight congruence sharing
+
+No correctness defect found in the tested change, now committed as `68500896e1`. `selectorUnit16` and `selectorUnit2048` have
+identical branches and are definitionally equal. The existing
+`weight_mod_2048` congruence therefore implies the original modulo-16 theorem
+because 16 divides 2048. The diff replaces and moves only the private
+`weight_mod_sixteen` proof below `weight_mod_2048`; the public
+`shifted_suffix_sum` theorem remains in its original position. All original
+theorem statements, selector definitions, guarded cases, imports, constants,
+and unrelated source are unchanged. Kernel-checked paired builds cover both
+selector/control alternatives and the divisibility proof.
+
+The tested baseline source matches commit `68500896e1`'s parent; the tested
+final source matches that commit and the current workspace. Baseline build
+results are historical isolated samples, not post-commit workspace builds.
+
+`/tmp/cell-weight-independent-audit.py` and `.log` independently verify the
+exact source transformation, paired target and direct ArithmeticCellLabels
+builds, first-input resolution, source/object/log/timing hashes and matching
+prior source-built receipts for ArithmeticCellPhysical, ListGetDCases,
+NativePreliminaryCount2011 and MFDoubledClause2011. The CellLabels output
+objects match byte-for-byte. The wider project/Foundation/Mathlib closure is
+cached; direct provider receipts do not prove all their transitive inputs are
+current-source builds.
+
+Target namespace probes show 232 common declaration/type/axiom blocks
+unchanged. Two generated private names disappear:
+`weight_mod_sixteen._proof_2` and `weight_mod_2048._proof_1`; the generated
+private `weight_mod_2048._proof_2` is added. Full names are recorded in the
+audit log and author README. The removed/added 2048 blocks match after name
+normalization, while the eliminated modulo-16 auxiliary belonged to the
+removed finite computation. Global simp (31,283 lines) and instances (13,779
+lines) are byte-identical, and none of those three names is registered in
+either census. The author's completed git-grep search of tracked Lean/Python
+code under Computability/DiophantineConsistency found no references to the two
+removed suffixes; its broader Lean/Python/Markdown/JSON search was interrupted
+and is not exhaustive. Dynamic name construction, untracked files, other
+extensions and other downstream clients are outside that search/probe scope.
+
+Target baseline/final user CPU was 139.04/134.92 s; CellLabels was 4.81/4.86 s.
+One shared-load pair is not a general performance benchmark. Both target logs
+contain the same three pre-existing unused-section-variable warnings at
+unchanged declarations. The earlier `prototype-v1.lean` moved the public
+shifted-suffix theorem as well and has a successful provisional log/time; it
+is superseded, and its input/output hashes were not recorded before/after.
+No repository files were modified for this independent review.

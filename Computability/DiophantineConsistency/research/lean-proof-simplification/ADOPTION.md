@@ -1686,5 +1686,13 @@ existing declaration reports, 28,973 simp entries and 13,172 instances match.
 CyclicWord and MaskConstants were not rebuilt and the transitive closure remains
 cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-window-digit-replacement-evidence/BUNDLE.json).
 
+The cell-weight congruence simplification `68500896e1` removes five net Lean
+lines, bringing the reviewed series to 10008. The affected proof originated in
+Claude-coauthored commit `f79467f5448`. The modulo-16 fact follows from the
+existing modulo-2048 fact. Paired CellLocal and CellLabels builds pass with
+identical client objects; 232 common declaration reports and the sampled
+registrations match. Two generated private names disappear and one is added;
+the wider dependency closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-weight-congruence-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
