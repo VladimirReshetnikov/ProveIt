@@ -12,7 +12,7 @@ transport with an explicit elementary bound on the output code
 
 Everything is measured by one numeric parameter `a`, which must bound the
 domain formula `d`, its negation, and the domain side formulas
-`¬δ(&i)`/`δ(&i)` (below `2^(a·(i+1))`); the bounded axiom obligations are
+`¬δ(&i)`/`δ(&i)` (below `2^(2^(a·(i+1)))`, see `ShiftBound`); the bounded axiom obligations are
 also stated with `a`.
 
 * `relativize_le`: `relativize L d p ≤ relB a p = 2^(2^((a+12)·(p+1)))`, by
@@ -247,10 +247,9 @@ theorem rel_le_bat (hda : d ≤ a) (hna : neg L d ≤ a) {x n : V} (hx : x ≤ n
   unfold relB bat
   exact exp_exp_mono (mul_le_mul_of_nonneg_right (a12_le_kc a) (Arithmetic.zero_le _))
 
-theorem dom_le_bat {X i n : V} (hi : i ≤ n + a) (h : X ≤ Exp.exp (a * (i + 1))) : X ≤ bat a n := by
+theorem dom_le_bat {X i n : V} (hi : i ≤ n + a) (h : X ≤ Exp.exp (Exp.exp (a * (i + 1)))) : X ≤ bat a n := by
   unfold bat
-  exact le_trans h (le_trans (exp_monotone_le.mpr (dom_index_le a hi))
-    (exp_monotone_le.mpr (le_exp_self _)))
+  exact le_trans h (exp_exp_mono (dom_index_le a hi))
 
 theorem bat_lt_memB (a n : V) : bat a n < memB a n := by
   unfold bat memB
@@ -364,7 +363,7 @@ theorem relSet_lt (hda : d ≤ a) (hna : neg L d ≤ a) {s n : V} (hs : ∀ x �
   obtain ⟨x, hx, rfl⟩ := mem_relSet_iff.mp hy
   exact lt_of_le_of_lt (rel_le_bat hda hna (hs x hx)) (bat_lt_memB a n)
 
-theorem domSet_lt (hdom : ∀ i, domF L d i ≤ Exp.exp (a * (i + 1))) {m n : V} (hm : m ≤ n + a + 1) :
+theorem domSet_lt (hdom : ∀ i, domF L d i ≤ Exp.exp (Exp.exp (a * (i + 1)))) {m n : V} (hm : m ≤ n + a + 1) :
     ∀ y ∈ domSet L d m, y < memB a n := by
   intro y hy
   obtain ⟨i, hi, rfl⟩ := mem_domSet_iff.mp hy
@@ -406,8 +405,8 @@ sequent with at most `der + a` domain side formulas and code at most
 theorem derivableLe_relSet (hd : IsSemiformula L 1 d) (hds : shift L d = d)
     (hTerm : ∀ t : V, IsTerm L t → ∃ j, t = ^&j)
     (hda : d ≤ a) (hna : neg L d ≤ a)
-    (hdom : ∀ i, domF L d i ≤ Exp.exp (a * (i + 1)))
-    (hsubd : ∀ i, substs1 L ^&i d ≤ Exp.exp (a * (i + 1)))
+    (hdom : ∀ i, domF L d i ≤ Exp.exp (Exp.exp (a * (i + 1))))
+    (hsubd : ∀ i, substs1 L ^&i d ≤ Exp.exp (Exp.exp (a * (i + 1))))
     (hAx : ∀ p : V, IsFormula L p → p ∈ T.Δ₁Class →
       ∃ m, m ≤ p + a ∧ DerivableLe U (insert (relativize L d p) (domSet L d m))
         (Exp.exp (Exp.exp (Exp.exp (a * (p + 1))))))
@@ -915,8 +914,8 @@ with code at most `provB a n`, an explicit elementary function of `n`. -/
 theorem provableLe_relativize (hd : IsSemiformula L 1 d) (hds : shift L d = d)
     (hTerm : ∀ t : V, IsTerm L t → ∃ j, t = ^&j)
     (hda : d ≤ a) (hna : neg L d ≤ a)
-    (hdom : ∀ i, domF L d i ≤ Exp.exp (a * (i + 1)))
-    (hsubd : ∀ i, substs1 L ^&i d ≤ Exp.exp (a * (i + 1)))
+    (hdom : ∀ i, domF L d i ≤ Exp.exp (Exp.exp (a * (i + 1))))
+    (hsubd : ∀ i, substs1 L ^&i d ≤ Exp.exp (Exp.exp (a * (i + 1))))
     (hAx : ∀ p : V, IsFormula L p → p ∈ T.Δ₁Class →
       ∃ m, m ≤ p + a ∧ DerivableLe U (insert (relativize L d p) (domSet L d m))
         (Exp.exp (Exp.exp (Exp.exp (a * (p + 1))))))
@@ -964,8 +963,8 @@ yields a `U`-refutation with code at most `provB a n`. -/
 theorem provableLe_falsum_of_relativize (hd : IsSemiformula L 1 d) (hds : shift L d = d)
     (hTerm : ∀ t : V, IsTerm L t → ∃ j, t = ^&j)
     (hda : d ≤ a) (hna : neg L d ≤ a)
-    (hdom : ∀ i, domF L d i ≤ Exp.exp (a * (i + 1)))
-    (hsubd : ∀ i, substs1 L ^&i d ≤ Exp.exp (a * (i + 1)))
+    (hdom : ∀ i, domF L d i ≤ Exp.exp (Exp.exp (a * (i + 1))))
+    (hsubd : ∀ i, substs1 L ^&i d ≤ Exp.exp (Exp.exp (a * (i + 1))))
     (hAx : ∀ p : V, IsFormula L p → p ∈ T.Δ₁Class →
       ∃ m, m ≤ p + a ∧ DerivableLe U (insert (relativize L d p) (domSet L d m))
         (Exp.exp (Exp.exp (Exp.exp (a * (p + 1))))))
