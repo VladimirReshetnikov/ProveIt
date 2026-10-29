@@ -2202,5 +2202,13 @@ registrations match; the umbrella and wider closure remain unbuilt or cached.
 The compact [evidence note](../../reviews/lean-proof-simplification-20261029-native-outer-positive.md)
 records hashes and external paths without raw logs or objects.
 
+The first-index base identity sharing `c0097510a1` removes three net Lean
+lines, bringing the reviewed series to 10444. One local calculation replaces
+two independent derivations. Paired target and all three direct clients pass
+with identical client objects; checked declarations and sampled registrations
+match. Five project providers have source-matched receipts; the wider closure
+remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-firstindex-base-shared.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
