@@ -126,29 +126,6 @@ private theorem source_symm (t u : Term V ℒₛₑₜ) : Source V ⊢ eqTerm t 
     simpa [eqTerm,Bootstrapping.Semiformula.imp_def] using h
   simpa [eqTerm] using (show Source V ⊢ _ from ⟨TProof.specialize₂ h' u t⟩)
 
-private theorem source_mem_congr (t u c : Term V ℒₛₑₜ) :
-    Source V ⊢ eqTerm t u 🡒 memTerm t c 🡒 memTerm u c := by
-  have hm : (⌜(Theory.Eq.relExt Language.Mem.mem : SetTheorySentence)⌝ : V)∈seedTheory.Δ₁Class :=
-    Δ₁Class.mem_iff.mpr (Or.inl (Or.inl (Theory.eqAxiom.relExt _)))
-  have h : Source V ⊢! (⌜(Rewriting.emb (Theory.Eq.relExt Language.Mem.mem) : SetTheoryProposition)⌝ : Formula V ℒₛₑₜ) := TProof.byAxm hm
-  have hq : (⌜(Rewriting.emb (Theory.Eq.relExt Language.Mem.mem) : SetTheoryProposition)⌝ : Formula V ℒₛₑₜ)=
-      ∀⁰ ∀⁰ ∀⁰ ∀⁰
-      ((Bootstrapping.Semiformula.nrel Language.Eq.eq ![Bootstrapping.Semiterm.bvar 0,Bootstrapping.Semiterm.bvar 2] ⋎
-        (Bootstrapping.Semiformula.nrel Language.Eq.eq ![Bootstrapping.Semiterm.bvar 1,Bootstrapping.Semiterm.bvar 3] ⋎ ⊥)) ⋎
-        (Bootstrapping.Semiformula.nrel Language.Mem.mem ![Bootstrapping.Semiterm.bvar 0,Bootstrapping.Semiterm.bvar 1] ⋎
-        memTerm (Bootstrapping.Semiterm.bvar 2) (Bootstrapping.Semiterm.bvar 3))) := rfl
-  rw [hq] at h
-  have h' : Source V ⊢! ∀⁰ ∀⁰ ∀⁰ ∀⁰
-      ((eqTerm (Bootstrapping.Semiterm.bvar 0) (Bootstrapping.Semiterm.bvar 2) ⋏
-        (eqTerm (Bootstrapping.Semiterm.bvar 1) (Bootstrapping.Semiterm.bvar 3) ⋏ ⊤)) 🡒
-        memTerm (Bootstrapping.Semiterm.bvar 0) (Bootstrapping.Semiterm.bvar 1) 🡒
-        memTerm (Bootstrapping.Semiterm.bvar 2) (Bootstrapping.Semiterm.bvar 3)) := by
-    simpa [eqTerm,memTerm,Bootstrapping.Semiformula.imp_def] using h
-  have hh : Source V ⊢ (eqTerm t u ⋏ (eqTerm c c ⋏ ⊤)) 🡒 memTerm t c 🡒 memTerm u c := by
-    simpa [eqTerm,memTerm] using (show Source V ⊢ _ from ⟨TProof.specialize₄ h' t c u c⟩)
-  have hr : Source V ⊢ eqTerm c c := ⟨source_refl c⟩
-  cl_prover [hh,hr]
-
 private theorem source_mem_ext (t u c d : Term V ℒₛₑₜ) :
     Source V ⊢ eqTerm t u 🡒 eqTerm c d 🡒 memTerm t c 🡒 memTerm u d := by
   have hm : (⌜(Theory.Eq.relExt Language.Mem.mem : SetTheorySentence)⌝ : V)∈seedTheory.Δ₁Class :=
@@ -170,6 +147,11 @@ private theorem source_mem_ext (t u c d : Term V ℒₛₑₜ) :
   have hh : Source V ⊢ (eqTerm t u ⋏ (eqTerm c d ⋏ ⊤)) 🡒 memTerm t c 🡒 memTerm u d := by
     simpa [eqTerm,memTerm] using (show Source V ⊢ _ from ⟨TProof.specialize₄ h' t c u d⟩)
   cl_prover [hh]
+
+private theorem source_mem_congr (t u c : Term V ℒₛₑₜ) :
+    Source V ⊢ eqTerm t u 🡒 memTerm t c 🡒 memTerm u c := by
+  have hr : Source V ⊢ eqTerm c c := ⟨source_refl c⟩
+  cl_prover [source_mem_ext t u c c,hr]
 
 private theorem source_trans (t u v : Term V ℒₛₑₜ) :
     Source V ⊢ eqTerm t u 🡒 eqTerm u v 🡒 eqTerm t v := by
