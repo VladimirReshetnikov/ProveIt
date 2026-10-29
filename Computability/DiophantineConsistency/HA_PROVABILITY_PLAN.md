@@ -2495,3 +2495,24 @@ Three design points:
 - *Expected cost.* The closure over `m` free variables costs `+2m` levels,
   and `m` can be as large as the code. For placeholders without free
   variables, `m` is the template's `fvSup`, a meta-level constant.
+
+**Update (2026-10-29, later).** The separation/replacement leaf did not need
+the plan above. For shift-fixed placeholders, the translated closed instance
+`∀^N T` contains the recognized `𝗭𝗙` axiom `∀^m T`, with `m = bv T`
+(`SchemaRecognizer`; `subst_congr` moves the opening from `N` to `m`). So
+the leaf is one `axm` rule plus `N − m` vacuous generalizations
+(`ZFCinPA.SizedSchemaLeaves`).
+
+`ZFCinPA.SizedLTemplate.sized_compileT` is the bounded twin of
+`LTemplate.compileT`: every fixed derivation over `templTheory` compiles at
+shift-fixed placeholders (arity ≤ 3, level `u ≥ 2`) within
+`2^(stg (4b₀) (stg h (cE A B u)))`, with no conditional leaves.
+
+**Remaining:**
+- the `L` inductions (item 2), now on top of `sized_compileT`, `SizedProof`
+  and `DLv`;
+- the assembly (item 3);
+- the engine change.
+
+Each `L` induction must also check that its placeholder families are
+shift-fixed and bounded in level. `envForm` is shift-fixed (`LGlue2`).
