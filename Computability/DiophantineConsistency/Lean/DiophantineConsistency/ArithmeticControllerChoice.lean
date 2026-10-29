@@ -87,6 +87,14 @@ instance dmap_definable₁ (P o ε last i : V) : 𝚺₁-Function₁ (dmap P o �
 theorem dmap_le (P o ε last i j : V) : dmap P o ε last i j ≤ 1 := by
   unfold dmap; split <;> simp
 
+private theorem dmap_added_zero {P o ε ε' last i i' j : V}
+    (h : dmap P o ε' last i' j = dmap P o ε last i j + pt j j) :
+    dmap P o ε last i j = 0 := by
+  have hle := dmap_le P o ε' last i' j
+  rw [h] at hle
+  have hle' : dmap P o ε last i j + 1 ≤ 0 + 1 := by simpa [pt] using hle
+  exact le_antisymm (le_of_add_le_add_right hle') (Arithmetic.zero_le _)
+
 theorem pos_lt (e : V) : 2 ≤ pos e := by unfold pos; exact le_add_self'' 2 _
 
 theorem isPos_pos {P e : V} (he : e < P) : IsPos P (pos e) ∧ (pos e - 2) / 120198 = e := by
@@ -209,13 +217,7 @@ theorem prog_sum (m o last : V) :
       (fun e' he' h => zc_inj m e' e he' he h)
     have hq : pos e < 120199 * power 120199 m :=
       lt_of_le_of_lt (le_add_self'' _ _) (pos_lt_N he)
-    have hfq : dmap (power 120199 m) o 0 last i (pos e) = 0 := by
-      have h1 := hadd (pos e)
-      have h2 := dmap_le (power 120199 m) o 0 last (i + 1) (pos e)
-      rw [show pt (pos e) (pos e) = 1 by unfold pt; rw [if_pos rfl]] at h1
-      rw [h1] at h2
-      have h3 : dmap (power 120199 m) o 0 last i (pos e) + 1 ≤ 0 + 1 := by rw [zero_add]; exact h2
-      exact le_antisymm (le_of_add_le_add_right h3) (Arithmetic.zero_le _)
+    have hfq := dmap_added_zero (hadd (pos e))
     have hsum := bsum_add_pt hw (f := dmap (power 120199 m) o 0 last i)
       (f' := dmap (power 120199 m) o 0 last (i + 1)) hq
       (fun j _ => dmap_le _ _ _ _ _ _) hfq (fun j _ => hadd j)
@@ -258,14 +260,7 @@ theorem full_sum (m o last k : V) (hk : 1 ≤ k) (hok : o + (k - 1) ≤ power 12
     (fun e' he' h => zc_inj m e' e he' he h)
   have hq : pos e < 120199 * power 120199 m :=
     lt_of_le_of_lt (le_add_self'' _ _) (pos_lt_N he)
-  have hfq : dmap (power 120199 m) o 0 last (k - 1) (pos e) = 0 := by
-    have h1 := hadd (pos e)
-    have h2 := dmap_le (power 120199 m) o 1 last (k - 1) (pos e)
-    rw [show pt (pos e) (pos e) = 1 by unfold pt; rw [if_pos rfl]] at h1
-    rw [h1] at h2
-    have h3 : dmap (power 120199 m) o 0 last (k - 1) (pos e) + 1 ≤ 0 + 1 := by
-      rw [zero_add]; exact h2
-    exact le_antisymm (le_of_add_le_add_right h3) (Arithmetic.zero_le _)
+  have hfq := dmap_added_zero (hadd (pos e))
   have hsum := bsum_add_pt hw (f := dmap (power 120199 m) o 0 last (k - 1))
     (f' := dmap (power 120199 m) o 1 last (k - 1)) hq
     (fun j _ => dmap_le _ _ _ _ _ _) hfq (fun j _ => hadd j)
