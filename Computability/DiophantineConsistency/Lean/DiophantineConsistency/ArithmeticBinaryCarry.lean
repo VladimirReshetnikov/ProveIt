@@ -32,14 +32,12 @@ theorem noCarry_iff (a b : V) : NoCarry a b ↔ ∀ i, fbit a i + fbit b i ≤ 1
   · intro h i _; exact h i
 
 theorem fbit_binary_zero (a r : V) (hr : r ≤ 1) : fbit (2*a+r) 0 = r := by
-  rcases le_one_iff_eq_zero_or_one.mp hr with h | h
-  · simp [h, fbit_two_mul_zero_eq_zero]
-  · simp [h, fbit_two_mul_add_one_zero_eq_one]
+  rcases le_one_iff_eq_zero_or_one.mp hr with rfl | rfl <;>
+    simp [fbit_two_mul_zero_eq_zero, fbit_two_mul_add_one_zero_eq_one]
 
 theorem fbit_binary_succ (a r j : V) (hr : r ≤ 1) : fbit (2*a+r) (j+1) = fbit a j := by
-  rcases le_one_iff_eq_zero_or_one.mp hr with h | h
-  · simpa [h] using fbit_mul_two_mul a j
-  · simpa [h] using fbit_mul_two_add_one_mul a j
+  rcases le_one_iff_eq_zero_or_one.mp hr with rfl | rfl <;>
+    simp [fbit_mul_two_mul, fbit_mul_two_add_one_mul]
 
 theorem noCarry_binary (a b r s : V) (hr : r ≤ 1) (hs : s ≤ 1) :
     NoCarry (2*a+r) (2*b+s) ↔ r + s ≤ 1 ∧ NoCarry a b := by
@@ -147,13 +145,9 @@ theorem population_add (a b : V) :
             · rintro ⟨-, h⟩
               rw [ih'.2.mpr h]; ring
         · have hr1 : r = 1 := by
-            rcases le_one_iff_eq_zero_or_one.mp hr with h | h
-            · exfalso; apply hrs; rw [h]; simpa using hs
-            · exact h
+            exact (le_one_iff_eq_zero_or_one.mp hr).resolve_left (fun h => hrs (by simpa [h] using hs))
           have hs1 : s = 1 := by
-            rcases le_one_iff_eq_zero_or_one.mp hs with h | h
-            · exfalso; apply hrs; rw [h]; simpa using hr
-            · exact h
+            exact (le_one_iff_eq_zero_or_one.mp hs).resolve_left (fun h => hrs (by simpa [h] using hr))
           have hp : population (a+b) = population (H+1) := by
             rw [hsum, hr1, hs1, show (2:V)*H+(1+1) = 2*(H+1)+0 by ring]
             simpa using population_binary (H+1) 0 (by simp)
@@ -162,9 +156,8 @@ theorem population_add (a b : V) :
             calc population (H+1) ≤ population H + 1 := population_succ_le H
               _ ≤ population A + population B + 1 := by simpa using add_le_add_right ih'.1 1
               _ < population A + 1 + (population B + 1) := by
-                have : population A + population B + 1 < population A + population B + 1 + 1 :=
-                  lt_add_one _
-                simpa [add_assoc, add_comm, add_left_comm] using this
+                simpa [add_assoc, add_comm, add_left_comm] using
+                  lt_add_one (population A + population B + 1)
           refine ⟨le_of_lt hlt, ⟨fun he => absurd he (ne_of_lt hlt), fun h => ?_⟩⟩
           exact absurd (hnc.mp h).1 hrs
   exact key (a+b) a (le_add_right le_rfl) b (le_add_left le_rfl) rfl
