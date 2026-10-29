@@ -267,10 +267,8 @@ theorem dig_mul_rep (w m a : V) (ha : a < Exp.exp (w*m)) (N : V) :
     by_cases hkm : k < m
     · rw [dig_mul_add_low _ _ _ _ _ hkm, mod_eq_self_of_lt hkm]
     · have hmk : m ≤ k := not_lt.mp hkm
-      have hm : 0 < m := by
-        by_contra hz
-        have hm0 : m = 0 := le_antisymm (not_lt.mp hz) (Arithmetic.zero_le m)
-        rw [hm0] at hk; simp at hk
+      have hm : 0 < m :=
+        pos_of_mul_pos_left (lt_of_le_of_lt (Arithmetic.zero_le k) hk) (by simp)
       rw [dig_mul_add_high _ _ _ _ _ ha hmk]
       have hk' : k - m < m*N := by
         have hkk : k - m + m = k := tsub_add_cancel_of_le hmk
