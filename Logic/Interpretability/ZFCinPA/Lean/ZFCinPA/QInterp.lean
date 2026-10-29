@@ -304,11 +304,7 @@ lemma quote_embSubsts {k n : ℕ} (σ : Semisentence ℒₛₑₜ k) (v : Fin k 
 
 lemma quote_domAtS (n : ℕ) : (⌜(domAtS n : SetTheorySemiproposition (n + 1))⌝ : W) = ⌜domS⌝ := by
   rw [domAtS, quote_embSubsts]
-  refine subst_eq_self_of_prefix (k := 1) (by simp) (SemitermVec.isSemitermVec _) (by simp) ?_
-  intro i hi
-  have : i = 0 := by simpa using hi
-  subst this
-  simp
+  exact ConstructibleInterpretation.subst_unary_bvar0 _ (by simp) (by simp)
 
 /-- **The code of the meta interpretation is the internal interpretation.** -/
 theorem quote_intF : ∀ {n : ℕ} (φ : SetTheorySemiproposition n),

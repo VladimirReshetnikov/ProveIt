@@ -205,11 +205,7 @@ lemma translate_domT (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑ
     (translateFormula Ks (domT n : Semiproposition (setTemplateLanguage k arities) (n + 1))).val =
       (⌜domS⌝ : V) := by
   rw [domT, translate_embSubsts_liftSet]
-  refine subst_eq_self_of_prefix (k := 1) (by simp) (SemitermVec.isSemitermVec _) (by simp) ?_
-  intro i hi
-  have : i = 0 := by simpa using hi
-  subst this
-  simp
+  exact ConstructibleInterpretation.subst_unary_bvar0 _ (by simp) (by simp)
 
 lemma translate_atomT_eq (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
     {n : ℕ} (v : Fin 2 → SyntacticSemiterm (setTemplateLanguage k arities) n) :

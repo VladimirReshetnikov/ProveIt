@@ -2,6 +2,7 @@ import ZFCinPA.NativeZFContainers254
 import Foundation.FirstOrder.Bootstrapping.DerivabilityCondition.D1
 import ZFCinPA.ZFDelta1
 import ZFCinPA.SetRelativization
+import ZFCinPA.SubstIdentity
 import BusyBeaver.ZFC.ConstructibleOrder
 
 /-!
@@ -497,15 +498,21 @@ lemma embSubsts_eq_comp {ξ : Type*} {n : ℕ} :
     (Rew.embSubsts ![(#0 : Semiterm ℒₛₑₜ ξ (n + 1))] : Rew ℒₛₑₜ Empty 1 ξ (n + 1)) =
       (Rew.subst ![#0]).comp Rew.emb := embSubsts_eq_comp_general _
 
+lemma subst_unary_bvar0 {p : W} {n : ℕ} (w : SemitermVec W ℒₛₑₜ 1 n)
+    (hp : IsSemiformula ℒₛₑₜ 1 p) (hw0 : (w 0).val = ^#0) :
+    subst ℒₛₑₜ (SemitermVec.val w) p = p := by
+  have h := SubstIdentity.Semiformula.subst_bvarVec_val
+    (⟨p, by simpa using hp⟩ : Bootstrapping.Semiformula W ℒₛₑₜ 1) w (by
+      intro i
+      rw [Fin.fin_one_eq_zero i]
+      exact hw0)
+  simpa only [Bootstrapping.Semiformula.val_substs] using h
+
 /-- The domain formula has the same code at every binder depth. -/
 lemma quote_domAt (n : ℕ) :
     (⌜(domAt domL n : SetTheorySemiproposition (n + 1))⌝ : W) = ⌜domL⌝ := by
   rw [domAt, quote_embSubsts]
-  refine subst_eq_self_of_prefix (k := 1) (by simp) (SemitermVec.isSemitermVec _) (by simp) ?_
-  intro i hi
-  have : i = 0 := by simpa using hi
-  subst this
-  simp
+  exact subst_unary_bvar0 _ (by simp) (by simp)
 
 /-- **The code of the external relativization is the internal relativization
 of the code.** -/
