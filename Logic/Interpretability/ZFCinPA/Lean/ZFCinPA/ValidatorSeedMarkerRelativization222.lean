@@ -163,6 +163,9 @@ theorem derivable_tagged_bounded (B : V) (hAx : AxiomImages T V) :
     apply HierarchySymbol.Definable.imp (by definability)
     definability
   · intro der ih hd j hjB hdj hb
+    have ih_same (child : V) (hc : child<der) (hdchild : Derivation T child) :
+        Derivable seedTheory (taggedSeq j (fstIdx child)) :=
+      ih child hc hdchild j hjB (lt_trans hc hdj) (budget_mono (le_of_lt hc) hb)
     rcases hd.case with ⟨hseq,
       (⟨s,p,rfl,hp,hn⟩ | ⟨s,rfl,hv⟩ |
        ⟨s,p,q,dp,dq,rfl,hpq,hdp,hdq⟩ |
@@ -190,8 +193,8 @@ theorem derivable_tagged_bounded (B : V) (hAx : AxiomImages T V) :
       have hpqF := IsSemiformula.and.mp (hs _ hpq)
       have hcp := dp_lt_andIntro s p q dp dq
       have hcq := dq_lt_andIntro s p q dp dq
-      have ihp := ih dp hcp hdp.2 j hjB (lt_trans hcp hdj) (budget_mono (le_of_lt hcp) hb)
-      have ihq := ih dq hcq hdq.2 j hjB (lt_trans hcq hdj) (budget_mono (le_of_lt hcq) hb)
+      have ihp := ih_same dp hcp hdp.2
+      have ihq := ih_same dq hcq hdq.2
       rw [hdp.1,taggedSeq_insert] at ihp
       rw [hdq.1,taggedSeq_insert] at ihq
       have hm : tagRel j p ^⋏ tagRel j q∈taggedSeq j s := by
@@ -201,7 +204,7 @@ theorem derivable_tagged_bounded (B : V) (hAx : AxiomImages T V) :
     · have hs : IsFormulaSet ℒₛₑₜ s := by simpa only [fstIdx_orIntro] using hseq
       have hpqF := IsSemiformula.or.mp (hs _ hpq)
       have hc := d_lt_orIntro s p q dp
-      have ihp := ih dp hc hdp.2 j hjB (lt_trans hc hdj) (budget_mono (le_of_lt hc) hb)
+      have ihp := ih_same dp hc hdp.2
       rw [hdp.1,taggedSeq_insert,taggedSeq_insert] at ihp
       have hm : tagRel j p ^⋎ tagRel j q∈taggedSeq j s := by
         simpa only [tagRel,relativize_or hpqF.1.isUFormula hpqF.2.isUFormula] using tagRel_mem_seq j hpq
@@ -232,7 +235,7 @@ theorem derivable_tagged_bounded (B : V) (hAx : AxiomImages T V) :
       obtain ⟨i,rfl⟩ := term_eq_fvar ht
       have hij : i<j := exs_label_bound hdj
       have hc := d_lt_exsIntro s p (^&i) dp
-      have ihp := ih dp hc hdp.2 j hjB (lt_trans hc hdj) (budget_mono (le_of_lt hc) hb)
+      have ihp := ih_same dp hc hdp.2
       rw [hdp.1,taggedSeq_insert] at ihp
       have hm : ^∃ (domainCode j ^⋏ tagRel j p)∈taggedSeq j s := by
         simpa only [tagRel,relativize_exs hp1.isUFormula] using tagRel_mem_seq j hp
@@ -254,7 +257,7 @@ theorem derivable_tagged_bounded (B : V) (hAx : AxiomImages T V) :
     -- Weakening.
     · have hs : IsFormulaSet ℒₛₑₜ s := by simpa only [fstIdx_wkRule] using hseq
       have hc := d_lt_wkRule s dp
-      have ihp := ih dp hc hdp j hjB (lt_trans hc hdj) (budget_mono (le_of_lt hc) hb)
+      have ihp := ih_same dp hc hdp
       simpa only [fstIdx_wkRule] using
         Derivable.wk (taggedSeq_typed j hs) (taggedSeq_mono j hsub) ihp
     -- SHIFT uses an actual predecessor, justified by parent<j.
@@ -277,8 +280,8 @@ theorem derivable_tagged_bounded (B : V) (hAx : AxiomImages T V) :
     · have hp0 : IsFormula ℒₛₑₜ p := hdp.isFormulaSet p (by simp)
       have hcp := d₁_lt_cutRule s p dp dn
       have hcn := d₂_lt_cutRule s p dp dn
-      have ihp := ih dp hcp hdp.2 j hjB (lt_trans hcp hdj) (budget_mono (le_of_lt hcp) hb)
-      have ihn := ih dn hcn hdn.2 j hjB (lt_trans hcn hdj) (budget_mono (le_of_lt hcn) hb)
+      have ihp := ih_same dp hcp hdp.2
+      have ihn := ih_same dn hcn hdn.2
       rw [hdp.1,taggedSeq_insert] at ihp
       rw [hdn.1,taggedSeq_insert,←tagRel_neg j hp0.isUFormula] at ihn
       simpa only [fstIdx_cutRule] using Derivable.cut (tagRel j p) ihp ihn
