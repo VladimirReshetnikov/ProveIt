@@ -51,16 +51,11 @@ theorem raw_lt_radix {n W u k t b : ℕ}
     (hn : n ≤ 1) (hW : W < wordBase) (hu : u < wordBase)
     (hk : k ≤ 57) (ht : t ≤ 1) (hb : b ≤ 1) :
     raw n W u k t b < 2 ^ 47 := by
-  by_cases hn0 : n = 0
-  · subst n
-    simp only [raw, Nat.mul_zero, Nat.zero_add]
-    norm_num [wordBase] at hW hu ⊢
-    omega
-  · have hn1 : n = 1 := by omega
-    subst n
-    simp only [raw, Nat.mul_one]
-    norm_num [wordBase] at hW hu ⊢
-    omega
+  have hu' := Nat.sub_add_cancel (Nat.le_of_lt hu)
+  have hm := Nat.mul_le_mul_left (wordBase-u) hn
+  simp only [raw]
+  norm_num [wordBase] at hm hu' hW ⊢
+  omega
 
 theorem digit_eq_raw {n W u k t b : ℕ}
     (hn : n ≤ 1) (hW : W < wordBase) (hu : u < wordBase)
