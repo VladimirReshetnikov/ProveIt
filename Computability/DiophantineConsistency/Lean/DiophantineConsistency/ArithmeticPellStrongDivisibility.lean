@@ -99,30 +99,22 @@ theorem strong_divisibility (b m n : V) :
       · subst m; simp
       by_cases hn0 : n=0
       · subst n; simp
-      have hmp : 0<m := lt_of_le_of_ne (Arithmetic.zero_le m) (Ne.symm hm0)
-      have hnp : 0<n := lt_of_le_of_ne (Arithmetic.zero_le n) (Ne.symm hn0)
+      have step (u v : V) (huv : u≤v) (hup : 0<u) (hvsum : u+v≤k) :
+          gcdValue (ycoord u b) (ycoord v b)=ycoord (gcdValue u v) b := by
+        have hvk : v<k := lt_of_lt_of_le
+          (by simpa only [add_comm] using lt_add_of_pos_right v hup) hvsum
+        have he : u+(v-u)=v := add_tsub_cancel_of_le huv
+        have hi := ih v hvk u huv (v-u) tsub_le_self (by rw [he])
+        calc
+          gcdValue (ycoord u b) (ycoord v b)=
+              gcdValue (ycoord u b) (ycoord (u+(v-u)) b) := by rw [he]
+          _=gcdValue (ycoord u b) (ycoord (v-u) b) := gcd_y_add b u (v-u)
+          _=ycoord (gcdValue u (v-u)) b := hi
+          _=ycoord (gcdValue u v) b := by rw [←gcd_add_right u (v-u),he]
       rcases le_total m n with hmn|hnm
-      · have hnk : n<k := lt_of_lt_of_le
-          (by simpa only [add_comm] using lt_add_of_pos_right n hmp) hsum
-        have he : m+(n-m)=n := add_tsub_cancel_of_le hmn
-        have hi := ih n hnk m hmn (n-m) tsub_le_self (by rw [he])
-        calc
-          gcdValue (ycoord m b) (ycoord n b)=
-              gcdValue (ycoord m b) (ycoord (m+(n-m)) b) := by rw [he]
-          _=gcdValue (ycoord m b) (ycoord (n-m) b) := gcd_y_add b m (n-m)
-          _=ycoord (gcdValue m (n-m)) b := hi
-          _=ycoord (gcdValue m n) b := by rw [←gcd_add_right m (n-m),he]
-      · have hmk : m<k := lt_of_lt_of_le (lt_add_of_pos_right m hnp) hsum
-        have he : n+(m-n)=m := add_tsub_cancel_of_le hnm
-        have hi := ih m hmk n hnm (m-n) tsub_le_self (by rw [he])
-        calc
-          gcdValue (ycoord m b) (ycoord n b)=
-              gcdValue (ycoord n b) (ycoord m b) := gcd_comm _ _
-          _=gcdValue (ycoord n b) (ycoord (n+(m-n)) b) := by rw [he]
-          _=gcdValue (ycoord n b) (ycoord (m-n) b) := gcd_y_add b n (m-n)
-          _=ycoord (gcdValue n (m-n)) b := hi
-          _=ycoord (gcdValue n m) b := by rw [←gcd_add_right n (m-n),he]
-          _=ycoord (gcdValue m n) b := by rw [gcd_comm n m]
+      · exact step m n hmn (pos_iff_ne_zero.mpr hm0) hsum
+      · simpa only [gcd_comm (ycoord n b) (ycoord m b),gcd_comm n m] using
+          step n m hnm (pos_iff_ne_zero.mpr hn0) (by simpa only [add_comm] using hsum)
   exact bounded (m+n) m (by simp) n (by simp) le_rfl
 
 /-- Actual growth, with no positive-modulus or standard-index assumption. -/
