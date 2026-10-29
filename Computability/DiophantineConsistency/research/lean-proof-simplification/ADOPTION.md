@@ -1562,5 +1562,14 @@ reports, 35,447 simp entries and 15,617 instances match. The other direct
 client was not rebuilt and older project objects remain in the cached
 transitive closure. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-window-rem-bound-evidence/BUNDLE.json).
 
+The input-tile impossible-case sharing `ffe53fb10a` removes 12 net Lean
+lines, bringing the reviewed series to 9897. Three input classifications
+share the discharge of impossible constructors while retaining each substantive
+case. Paired target, Signals and maintained check builds pass with identical
+client objects; all 37 named/generated declaration reports, 55,111 simp entries
+and 23,348 instances match. Earlier variants were superseded; the direct
+provider matches a source/object receipt and the wider closure remains cached.
+See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-wang-input-cases-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
