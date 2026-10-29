@@ -94,14 +94,13 @@ theorem excess_le (h : CarryInput w n F b a X) : excess w n a X ≤ b := by
           _ = _ := by ring
       exact (add_le_add_iff_right _).mp this
     exact lt_of_lt_of_le (lt_of_lt_of_le (lt_add_one _) ((add_le_add_iff_left _).mpr hU)) h2
-  by_contra hn
-  have hbE : b + 1 ≤ E := lt_iff_succ_le.mp (lt_of_not_ge hn)
-  have : (b+1) * M ≤ ∑ i, a i * X i := by
-    rw [total_eq h]
-    calc (b+1) * M ≤ E * M := mul_le_mul_of_nonneg_right hbE (by simp)
-      _ = M * E := mul_comm _ _
-      _ ≤ M * E + F := le_add_of_nonneg_right (by simp)
-  exact absurd (lt_of_le_of_lt this (lt_of_le_of_lt hT hlt)) (_root_.lt_irrefl _)
+  have hME : M * E < M * (b+1) := by
+    calc M * E ≤ M * E + F := le_add_of_nonneg_right (by simp)
+      _ = ∑ i, a i * X i := (total_eq h).symm
+      _ ≤ (∑ i, a i) * U := hT
+      _ < (b+1) * M := hlt
+      _ = M * (b+1) := mul_comm _ _
+  exact le_iff_lt_succ.mpr (lt_of_mul_lt_mul_left hME (by simp))
 
 theorem prefix_zero : prefixValue w n a X 0 = excess w n a X := by
   simp [prefixValue]
