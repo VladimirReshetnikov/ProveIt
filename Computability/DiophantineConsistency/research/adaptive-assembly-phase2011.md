@@ -37,3 +37,11 @@ refreshed before using them as current-source prerequisites. A provider
 composition reported `PASS` but did not recheck inherited audit-source hashes
 at the end; those sources changed during the run, so that state does not
 certify a current-source composition.
+
+The affected adaptive suffix and Pell branch have since passed independent
+[half-index](../reviews/adaptive-halfindex-postmerge2011-author.md) and
+[Pell-rebase](../reviews/adaptive-assembly-pell-rebase2011-author.md) replays.
+A corrected [source-guarded composition](../reviews/adaptive-assembly-recomposed2011.md)
+and [seven-module continuation preflight](../reviews/adaptive-cell-recomposed-preflight2011.md)
+also passed independently. The preflight does not compile WangTable or
+CellWindow, and the previously stated cache and package boundaries remain.

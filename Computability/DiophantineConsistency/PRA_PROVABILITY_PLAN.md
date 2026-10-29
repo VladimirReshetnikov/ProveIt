@@ -59,8 +59,11 @@ also permits Σ₁ induction, so this does not yet translate the strict Π₂
 endpoint.
 The finite Herbrand machinery now extracts disjunctions of unpaired term
 triples from triple-existential candidate-theory proofs, with a separate
-universally parameterized client. This does not yet give the interactive
-existential-universal-existential extraction required by the Σ₁ comparison.
+universally parameterized client. Separately checked [interactive
+extractors](research/herbrand-interactive-20261029.md) produce
+actual finite staged disjunction proofs with explicit parameter separation,
+for one or three challenges per round. Successive disjunct elimination remains
+necessary for the Σ₁ comparison.
 Subsequent upstream merges changed `PRAQCompatibility`, `PRAPeanoMinusBasic`,
 `PRAPeanoMinusOrderBasic`, `PRAQOrder`, and several addition and subtraction
 providers, followed by `PRAEqualityDifference` and
