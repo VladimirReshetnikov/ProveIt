@@ -108,18 +108,8 @@ theorem magnitude_multiply (p q : Pair V) :
         magnitude_multiply_positive (swap p) (swap q) hp hq
 
 private theorem factors_one {a b : V} (h : a*b=1) : a=1 ∧ b=1 := by
-  have hp : 0<a := by
-    by_contra hn
-    have hz : a=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le a)
-    simp [hz] at h
-  have hq : 0<b := by
-    by_contra hn
-    have hz : b=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le b)
-    simp [hz] at h
-  have ha : a≤1 := calc
-    a=a*1 := by ring
-    _≤a*b := mul_le_mul_of_nonneg_left (pos_iff_one_le.mp hq) (by simp)
-    _=1 := h
+  have hp : 0<a := pos_of_mul_pos_left (by rw [h]; simp) (Arithmetic.zero_le b)
+  have ha : a≤1 := le_of_dvd (by simp) ⟨b,h.symm⟩
   have he : a=1 := le_antisymm ha (pos_iff_one_le.mp hp)
   exact ⟨he,by simpa only [he,one_mul] using h⟩
 
