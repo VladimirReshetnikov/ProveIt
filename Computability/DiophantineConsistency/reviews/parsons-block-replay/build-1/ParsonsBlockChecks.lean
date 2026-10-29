@@ -1,0 +1,7 @@
+import DiophantineConsistency.ParsonsBlock
+#print axioms DiophantineConsistency.ParsonsBlock.closure_outer
+#print axioms DiophantineConsistency.ParsonsBlock.start
+#print axioms DiophantineConsistency.ParsonsBlock.opening
+#print axioms DiophantineConsistency.ParsonsBlock.step
+#print axioms DiophantineConsistency.ParsonsBlock.finish
+#print axioms DiophantineConsistency.ParsonsBlock.principal_parameter

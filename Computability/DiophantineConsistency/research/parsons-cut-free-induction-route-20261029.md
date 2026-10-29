@@ -164,3 +164,13 @@ with the three smaller recursive premises explicit. The supplied local
 derivation is not yet shown to be a descendant of the normalized proof.
 The [independent replay](../reviews/parsons-opened-root.md) checks the
 bridge; the full cut-free recursion and PRA witnessing remain open.
+
+## Partially opened parameter blocks
+
+[`ParsonsBlock`](../Lean/DiophantineConsistency/ParsonsBlock.lean) tracks
+simultaneous substitutions while an actual normalized induction parameter
+block is opened one existential at a time. Its principal parameter case
+invokes an explicit local hypothesis on the actual witness premise with a
+strictly smaller height within the cut-free derivation. The
+[independent replay](../reviews/parsons-block-root.md) checks the invariant.
+Other LK cases, strict Π₂ side normalization and PRA witnessing remain open.
