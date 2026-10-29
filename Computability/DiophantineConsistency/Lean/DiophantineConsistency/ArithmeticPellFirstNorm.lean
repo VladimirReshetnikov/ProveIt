@@ -90,20 +90,11 @@ theorem solution_index (q x k : V) (h : x*x=1+discriminant q*k*k) :
         obtain ⟨u,v,_,hv,hu,hix,hik⟩ := descent q x k hkp hn
         obtain ⟨time,ht,hxu,hyv⟩ := ih v hv u (x_bound q u v hu) hu
         refine ⟨time+1,lt_iff_succ_le.mp (lt_of_le_of_lt ht hv),?_,?_⟩
-        · rw [x_succ,hxu]
-          calc
-            ((2*q+1)+2)*u+delta (2*q+1)*ycoord time (2*q+1)=
-                (2*q+3)*u+2*discriminant q*(2*ycoord time (2*q+1)) := by
-              unfold delta discriminant
-              ring
-            _=(2*q+3)*u+2*discriminant q*v := by rw [hyv]
-            _=x := hix.symm
-        · rw [y_succ,hxu]
-          calc
-            2*(u+((2*q+1)+2)*ycoord time (2*q+1))=
-                2*u+(2*q+3)*(2*ycoord time (2*q+1)) := by ring
-            _=2*u+(2*q+3)*v := by rw [hyv]
-            _=k := hik.symm
+        · rw [x_succ,hxu,hix,←hyv]
+          unfold delta discriminant
+          ring
+        · rw [y_succ,hxu,hik,←hyv]
+          ring
   exact bounded k x (x_bound q x k h) h
 
 theorem norm_iff_index (q x k : V) :
