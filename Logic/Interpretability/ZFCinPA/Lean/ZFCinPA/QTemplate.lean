@@ -1,4 +1,5 @@
 import ZFCinPA.LTemplate
+import ZFCinPA.ModelCodedSchemaAxioms
 import ZFCinPA.ValidatorSeedQTheory222
 
 set_option autoImplicit false
@@ -87,22 +88,14 @@ lemma translate_gicBodySource
 /-- The support substitution is the raw identity on the core. -/
 lemma gic_core_subst_identity (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
     subst ℒₛₑₜ ((gicSubst01Const : ℕ) : V) K.val = K.val := by
-  have hv : ((gicSubst01Const : ℕ) : V) = (^#0 ∷ (^#1 ∷ 0)) := by
-    rw [val_gicSubst01Const]
-    simp
-  rw [hv]
-  apply Bootstrapping.subst_eq_self K.isSemiformula (by simp)
-  intro i hi
-  have hi' : i < (2 : V) := by simpa using hi
-  rcases le_one_iff_eq_zero_or_one.mp (lt_two_iff_le_one.mp hi') with rfl | rfl <;> simp
+  have h : ((gicSubst01Const : ℕ) : V) = (repSubst3Const : V) := by
+    rw [val_gicSubst01Const, val_repSubst3Const]
+  rw [h]
+  exact ModelCodedSchemaAxioms.rep_core_subst_identity K
 
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
 lemma union_class_iff (T U : SetTheory) [T.Δ₁] [U.Δ₁] (p : V) :
-    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := by
-  change (V ⊧/![p] (T.Δ₁ch ⋎ U.Δ₁ch).val) ↔
-    (V ⊧/![p] T.Δ₁ch.val) ∨ (V ⊧/![p] U.Δ₁ch.val)
-  rw [HierarchySymbol.Semiformula.val_or]
-  simp only [LogicalConnective.HomClass.map_or, LogicalConnective.Prop.or_eq]
+    p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := ModelCodedSchemaAxioms.union_class_iff T U p
 
 lemma gic_class_iff (p : V) : p ∈ gicTheory.Δ₁Class ↔ GicR p := by
   change (V ⊧/![p] gicCh.val) ↔ _

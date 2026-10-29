@@ -123,68 +123,22 @@ theorem good_open (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ
     exact mul_le_mul htA (_root_.add_le_add (_root_.add_le_add le_rfl hbB) le_rfl)
       (Arithmetic.zero_le _) (Arithmetic.zero_le _)
   intro Γ d
-  induction d with
-  | closed Δ p hp hn =>
-      intro hA _
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      exact ⟨here _ hA.1, trivial⟩
-  | axm σ hσ hΓ =>
-      intro hA hax
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      simp only [AxOK] at hax
-      exact ⟨here _ hA.1, hax⟩
-  | verum h =>
-      intro hA _
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      exact ⟨here _ hA.1, trivial⟩
-  | and h dp dq ihp ihq =>
-      intro hA hax
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      simp only [AxOK] at hax
-      exact ⟨here _ hA.1,
-        ihp hA.2.1 hax.1, ihq hA.2.2 hax.2⟩
-  | or h dp ih =>
-      intro hA hax
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      simp only [AxOK] at hax
-      exact ⟨here _ hA.1, ih hA.2 hax⟩
-  | all h dp ih =>
-      intro hA hax
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      simp only [AxOK] at hax
-      exact ⟨here _ hA.1, ih hA.2 hax⟩
-  | exs h t dp ih =>
-      intro hA hax
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      simp only [AxOK] at hax
-      refine ⟨here _ hA.1, ?_, ih hA.2.2 hax⟩
-      exact le_trans (translateTerm_le t) (le_trans (lvB_mono (cast_le hA.2.1)) hT)
-  | wk dp hsub ih =>
-      intro hA hax
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      simp only [AxOK] at hax
-      exact ⟨here _ hA.1, ih hA.2 hax⟩
-  | shift dp ih =>
-      intro hA hax
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      simp only [AxOK] at hax
-      exact ⟨here _ hA.1, ih hA.2 hax⟩
-  | cut dp dq ihp ihq =>
-      intro hA hax
-      unfold Good
-      simp only [derMax, max_le_iff] at hA
-      simp only [AxOK] at hax
-      exact ⟨here _ hA.1,
-        ihp hA.2.1 hax.1, ihq hA.2.2 hax.2⟩
+  induction d <;> intro hA hax <;>
+    simp only [derMax, max_le_iff] at hA <;>
+    simp only [AxOK] at hax <;>
+    unfold Good
+  case closed => exact ⟨here _ hA.1, trivial⟩
+  case axm => exact ⟨here _ hA.1, hax⟩
+  case verum => exact ⟨here _ hA.1, trivial⟩
+  case and _ _ _ ihp ihq => exact ⟨here _ hA.1, ihp hA.2.1 hax.1, ihq hA.2.2 hax.2⟩
+  case or _ _ ih => exact ⟨here _ hA.1, ih hA.2 hax⟩
+  case all _ _ ih => exact ⟨here _ hA.1, ih hA.2 hax⟩
+  case exs _ t _ ih =>
+    refine ⟨here _ hA.1, ?_, ih hA.2.2 hax⟩
+    exact le_trans (translateTerm_le t) (le_trans (lvB_mono (cast_le hA.2.1)) hT)
+  case wk _ _ ih => exact ⟨here _ hA.1, ih hA.2 hax⟩
+  case shift _ ih => exact ⟨here _ hA.1, ih hA.2 hax⟩
+  case cut _ _ ihp ihq => exact ⟨here _ hA.1, ihp hA.2.1 hax.1, ihq hA.2.2 hax.2⟩
 
 /-! ## The bounded open compiler -/
 
