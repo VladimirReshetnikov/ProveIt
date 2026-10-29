@@ -100,4 +100,28 @@ lemma freshPair_next {F B B' s t : V} (h : FreshPair F B B' s t) :
   rw [next_label,next_label]
   exact hap (i+1) (j+1)
 
+/-- Avoidance assumptions for the two cross-bound bodies, uniformly for any
+encoder whose vacuity follows from the three label-avoidance conditions. -/
+lemma cross_body_vac {P : V → V → Prop} {enc : V → V → V → V → V}
+    (hv : ∀ {n p : V}, IsSemiformula ℒₛₑₜ n p → ∀ F B fresh z : V,
+      len B=n → FreeAvoid z F → Avoid z B → StreamAvoid z fresh → P z (enc F B fresh p))
+    {n p : V} (hp : IsSemiformula ℒₛₑₜ (n+1) p) (F B B' s t : V)
+    (hB : len B=n) (hB' : len B'=n) (h : FreshPair F B B' s t) :
+    P s (enc F (t∷B') (t+2) p) ∧ P t (enc F (s∷B) (s+2) p) := by
+  rcases h with ⟨hsF,htF,hsB,hsB',htB,htB',hap⟩
+  have hst : s≠t := by simpa using hap 0 0
+  constructor
+  · apply hv hp F (t∷B') (t+2) s (by simp [hB'])
+    · simpa using hsF 0
+    · exact avoid_cons (by simpa using hsB' 0) hst
+    · intro k
+      rw [next_label]
+      simpa using hap 0 (k+1)
+  · apply hv hp F (s∷B) (s+2) t (by simp [hB])
+    · simpa using htF 0
+    · exact avoid_cons (by simpa using htB 0) hst.symm
+    · intro k
+      rw [next_label]
+      simpa using (hap (k+1) 0).symm
+
 end LeanProofs.ZFCinPA.ValidatorLabelAvoidance

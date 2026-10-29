@@ -31,7 +31,6 @@ def FreshPair (F B B' s t : V) : Prop :=
   StreamEnv s B ∧ StreamEnv s B' ∧
   StreamEnv t B ∧ StreamEnv t B' ∧ Apart s t
 
-private lemma next_label (s k : V) : (s+2)+2*k=s+2*(k+1) := by ring
 
 lemma streamFree_next {s F : V} (h : StreamFree s F) : StreamFree (s+2) F :=
   ValidatorLabelAvoidance.streamFree_next h
@@ -50,22 +49,10 @@ lemma cross_body_vac [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2] {n p : V}
     (hp : IsSemiformula ℒₛₑₜ (n+1) p) (F B B' s t : V)
     (hB : len B=n) (hB' : len B'=n) (h : FreshPair F B B' s t) :
     Vac s (encode F (t∷B') (t+2) p) ∧
-    Vac t (encode F (s∷B) (s+2) p) := by
-  rcases h with ⟨hsF,htF,hsB,hsB',htB,htB',hap⟩
-  have hst : s≠t := by simpa using hap 0 0
-  constructor
-  · apply encode_vac hp F (t∷B') (t+2) s (by simp [hB'])
-    · simpa using hsF 0
-    · exact avoid_cons (by simpa using hsB' 0) hst
-    · intro k
-      rw [next_label]
-      simpa using hap 0 (k+1)
-  · apply encode_vac hp F (s∷B) (s+2) t (by simp [hB])
-    · simpa using htF 0
-    · exact avoid_cons (by simpa using htB 0) hst.symm
-    · intro k
-      rw [next_label]
-      simpa using (hap (k+1) 0).symm
+    Vac t (encode F (s∷B) (s+2) p) :=
+  ValidatorLabelAvoidance.cross_body_vac (P := Vac) (enc := encode)
+    (fun hp F B fresh z hlen hF hB hs => encode_vac hp F B fresh z hlen hF hB hs)
+    hp F B B' s t hB hB' h
 
 /-- Both directions deliberately share the same left-to-right context. -/
 def EqUnder (h p q : V) : Prop :=
