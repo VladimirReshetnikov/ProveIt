@@ -54,9 +54,7 @@ theorem current_beta_exp :
 
 theorem current_width : (CurrentMasks2011.width:V)=94517 ∧
     (2:V)≤(CurrentMasks2011.width:V) := by
-  have he : CurrentMasks2011.width=94517 := by decide
-  have hb : 2≤CurrentMasks2011.width := by decide
-  exact ⟨by exact_mod_cast he,by exact_mod_cast hb⟩
+  constructor <;> norm_num [CurrentMasks2011.width]
 
 private theorem power_of_equations (v : Fin 14 → V) (hv : ∀j,0<v j)
     (he : Equations (CurrentMasks2011.beta:V) (CurrentKernel2011.K:V)
@@ -89,8 +87,7 @@ def Radix (v : Fin 14 → V) : Prop :=
 private theorem radix_of_power (v : Fin 14 → V) (hJ : 0<v 0)
     (hp : X v=Exp.exp (rank v)) : Radix v := by
   have he : Exp.exp (rank v)=v 8*((Exp.exp (CurrentMasks2011.width:V)-1)*v 0+1) := by
-    rw [←current_beta_exp (V:=V)]
-    exact hp.symm
+    simpa only [X, q, current_beta_exp (V:=V)] using hp.symm
   obtain ⟨_,L,hL,hq,hbound,hw⟩:=ArithmeticRadixAlignment.factor_alignment
     (CurrentMasks2011.width:V) (v 0) (rank v) (v 8) (current_width (V:=V)).2 hJ he
   have hq' : q v=Exp.exp ((CurrentMasks2011.width:V)*L) := by
