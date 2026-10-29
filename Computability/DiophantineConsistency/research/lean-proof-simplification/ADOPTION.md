@@ -977,5 +977,16 @@ no separate command/status receipts; early failed probe outputs were
 overwritten. Target and client records and logs were independently checked.
 See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-object-code-bound-evidence/BUNDLE.json).
 
+The object expression evaluation sharing `b060afcaaf` removes eight net
+lines, bringing the reviewed series to 8582. Paired targets and the direct
+ObjectPolynomial client pass; all 36 existing declaration types and axiom
+reports, and 11 materialized equation theorems, match. ObjectMultiplication
+is a precompiled direct input without a matched receipt; an earlier
+NaturalExpression receipt matches its source but a different object. Other
+transitive inputs remain cached. Interface and equation probes have matching
+logs but no separate command/status receipts. The target/client records and
+interface logs were independently checked; the separate equation comparison
+was performed by the prototype author. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-object-expression-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
