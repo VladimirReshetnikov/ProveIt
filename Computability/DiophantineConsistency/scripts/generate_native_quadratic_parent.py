@@ -190,7 +190,15 @@ theorem rowSupport_subset : ∀ k p, p ∈ rowSupport k →
   obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hp
   exact Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩
 '''
-    out += '\nattribute [local irreducible] sourceRows shiftedRows rowCoefficient\n\n'
+    out += '''
+attribute [local irreducible] sourceRows shiftedRows rowCoefficient
+
+/-- Resolve a padded coordinate uniformly, including the constant coordinate. -/
+private theorem padded_formula (x : Fin 31 → R) (i : Fin 32) :
+    padded x i = if i.val = 0 then 1 else x ⟨i.val - 1, by omega⟩ := by
+  fin_cases i <;> rfl
+
+'''
     exprs = {}
     def source_atom(a):
         if type(a) is int: return str(a)
@@ -204,7 +212,6 @@ theorem rowSupport_subset : ∀ k p, p ∈ rowSupport k →
         a, b = source['comparisons'][row['original_row_one_based'] - 1]
         source_value = f'({source_atom(a)} - {source_atom(b)})'
         support = '{' + ', '.join(pair_literal(pair(t['alpha'])) for t in row['terms']) + '}'
-        coordinates = sorted({v for t in row['terms'] for v in pair(t['alpha'])})
         out += f'''private theorem rowIdentity_{i} (ports : Fin 4 → R) (x : Fin 31 → R) :
     rowValue (rowSupport {i}) (rowCoefficient ports {i}) (padded x) = shiftedRows ports x {i} := by
   have hsupport : rowSupport {i} = {support} := by rfl
@@ -216,11 +223,8 @@ theorem rowSupport_subset : ∀ k p, p ∈ rowSupport k →
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
 '''
-        for j in coordinates:
-            rhs = '1' if j == 0 else f'x {j-1}'
-            out += f'  have hp{j} : padded x {j} = {rhs} := rfl\n'
-        out += '  norm_num ['
-        out += ', '.join('hp'+str(j) for j in coordinates) + ']\n'
+        out += '  norm_num [padded_formula]\n'
+        out += '  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]\n'
         out += '  try simp (config := { decide := true }) only [ite_false]\n'
         out += '  all_goals ring\n\n'
     out += '''/-- Exact equality with the literal60-gate source, for all port values.

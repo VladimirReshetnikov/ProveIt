@@ -185,6 +185,11 @@ theorem rowSupport_subset : ∀ k p, p ∈ rowSupport k →
 
 attribute [local irreducible] sourceRows shiftedRows rowCoefficient
 
+/-- Resolve a padded coordinate uniformly, including the constant coordinate. -/
+private theorem padded_formula (x : Fin 31 → R) (i : Fin 32) :
+    padded x i = if i.val = 0 then 1 else x ⟨i.val - 1, by omega⟩ := by
+  fin_cases i <;> rfl
+
 private theorem rowIdentity_0 (ports : Fin 4 → R) (x : Fin 31 → R) :
     rowValue (rowSupport 0) (rowCoefficient ports 0) (padded x) = shiftedRows ports x 0 := by
   have hsupport : rowSupport 0 = {⟨(1, 1), by decide⟩, ⟨(0, 1), by decide⟩, ⟨(0, 25), by decide⟩, ⟨(0, 0), by decide⟩} := by rfl
@@ -195,10 +200,8 @@ private theorem rowIdentity_0 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp1 : padded x 1 = x 0 := rfl
-  have hp25 : padded x 25 = x 24 := rfl
-  norm_num [hp0, hp1, hp25]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -212,11 +215,8 @@ private theorem rowIdentity_1 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp1 : padded x 1 = x 0 := rfl
-  have hp17 : padded x 17 = x 16 := rfl
-  have hp25 : padded x 25 = x 24 := rfl
-  norm_num [hp0, hp1, hp17, hp25]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -230,11 +230,8 @@ private theorem rowIdentity_2 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp1 : padded x 1 = x 0 := rfl
-  have hp11 : padded x 11 = x 10 := rfl
-  have hp22 : padded x 22 = x 21 := rfl
-  norm_num [hp0, hp1, hp11, hp22]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -248,12 +245,8 @@ private theorem rowIdentity_3 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp10 : padded x 10 = x 9 := rfl
-  have hp17 : padded x 17 = x 16 := rfl
-  have hp18 : padded x 18 = x 17 := rfl
-  have hp21 : padded x 21 = x 20 := rfl
-  norm_num [hp0, hp10, hp17, hp18, hp21]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -267,13 +260,8 @@ private theorem rowIdentity_4 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp13 : padded x 13 = x 12 := rfl
-  have hp14 : padded x 14 = x 13 := rfl
-  have hp18 : padded x 18 = x 17 := rfl
-  have hp20 : padded x 20 = x 19 := rfl
-  have hp21 : padded x 21 = x 20 := rfl
-  norm_num [hp0, hp13, hp14, hp18, hp20, hp21]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -287,13 +275,8 @@ private theorem rowIdentity_5 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp13 : padded x 13 = x 12 := rfl
-  have hp14 : padded x 14 = x 13 := rfl
-  have hp18 : padded x 18 = x 17 := rfl
-  have hp19 : padded x 19 = x 18 := rfl
-  have hp20 : padded x 20 = x 19 := rfl
-  norm_num [hp0, hp13, hp14, hp18, hp19, hp20]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -307,12 +290,8 @@ private theorem rowIdentity_6 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp12 : padded x 12 = x 11 := rfl
-  have hp13 : padded x 13 = x 12 := rfl
-  have hp14 : padded x 14 = x 13 := rfl
-  have hp19 : padded x 19 = x 18 := rfl
-  norm_num [hp0, hp12, hp13, hp14, hp19]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -326,13 +305,8 @@ private theorem rowIdentity_7 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp16 : padded x 16 = x 15 := rfl
-  have hp20 : padded x 20 = x 19 := rfl
-  have hp21 : padded x 21 = x 20 := rfl
-  have hp22 : padded x 22 = x 21 := rfl
-  have hp23 : padded x 23 = x 22 := rfl
-  norm_num [hp0, hp16, hp20, hp21, hp22, hp23]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -346,10 +320,8 @@ private theorem rowIdentity_8 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp21 : padded x 21 = x 20 := rfl
-  have hp31 : padded x 31 = x 30 := rfl
-  norm_num [hp0, hp21, hp31]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -363,10 +335,8 @@ private theorem rowIdentity_9 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp20 : padded x 20 = x 19 := rfl
-  have hp24 : padded x 24 = x 23 := rfl
-  norm_num [hp0, hp20, hp24]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -380,11 +350,8 @@ private theorem rowIdentity_10 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp23 : padded x 23 = x 22 := rfl
-  have hp24 : padded x 24 = x 23 := rfl
-  have hp31 : padded x 31 = x 30 := rfl
-  norm_num [hp0, hp23, hp24, hp31]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -398,15 +365,8 @@ private theorem rowIdentity_11 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp6 : padded x 6 = x 5 := rfl
-  have hp9 : padded x 9 = x 8 := rfl
-  have hp13 : padded x 13 = x 12 := rfl
-  have hp14 : padded x 14 = x 13 := rfl
-  have hp18 : padded x 18 = x 17 := rfl
-  have hp20 : padded x 20 = x 19 := rfl
-  have hp27 : padded x 27 = x 26 := rfl
-  norm_num [hp0, hp6, hp9, hp13, hp14, hp18, hp20, hp27]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -420,16 +380,8 @@ private theorem rowIdentity_12 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp1 : padded x 1 = x 0 := rfl
-  have hp2 : padded x 2 = x 1 := rfl
-  have hp3 : padded x 3 = x 2 := rfl
-  have hp9 : padded x 9 = x 8 := rfl
-  have hp17 : padded x 17 = x 16 := rfl
-  have hp20 : padded x 20 = x 19 := rfl
-  have hp25 : padded x 25 = x 24 := rfl
-  have hp27 : padded x 27 = x 26 := rfl
-  norm_num [hp0, hp1, hp2, hp3, hp9, hp17, hp20, hp25, hp27]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -443,13 +395,8 @@ private theorem rowIdentity_13 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp1 : padded x 1 = x 0 := rfl
-  have hp2 : padded x 2 = x 1 := rfl
-  have hp3 : padded x 3 = x 2 := rfl
-  have hp4 : padded x 4 = x 3 := rfl
-  have hp11 : padded x 11 = x 10 := rfl
-  norm_num [hp0, hp1, hp2, hp3, hp4, hp11]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -463,10 +410,8 @@ private theorem rowIdentity_14 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp5 : padded x 5 = x 4 := rfl
-  have hp26 : padded x 26 = x 25 := rfl
-  norm_num [hp0, hp5, hp26]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -480,12 +425,8 @@ private theorem rowIdentity_15 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp5 : padded x 5 = x 4 := rfl
-  have hp8 : padded x 8 = x 7 := rfl
-  have hp20 : padded x 20 = x 19 := rfl
-  have hp27 : padded x 27 = x 26 := rfl
-  norm_num [hp0, hp5, hp8, hp20, hp27]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -499,11 +440,8 @@ private theorem rowIdentity_16 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp15 : padded x 15 = x 14 := rfl
-  have hp27 : padded x 27 = x 26 := rfl
-  have hp28 : padded x 28 = x 27 := rfl
-  norm_num [hp0, hp15, hp27, hp28]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -517,11 +455,8 @@ private theorem rowIdentity_17 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp7 : padded x 7 = x 6 := rfl
-  have hp24 : padded x 24 = x 23 := rfl
-  have hp29 : padded x 29 = x 28 := rfl
-  norm_num [hp0, hp7, hp24, hp29]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -535,10 +470,8 @@ private theorem rowIdentity_18 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp29 : padded x 29 = x 28 := rfl
-  have hp30 : padded x 30 = x 29 := rfl
-  norm_num [hp0, hp29, hp30]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -552,11 +485,8 @@ private theorem rowIdentity_19 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp26 : padded x 26 = x 25 := rfl
-  have hp30 : padded x 30 = x 29 := rfl
-  have hp31 : padded x 31 = x 30 := rfl
-  norm_num [hp0, hp26, hp30, hp31]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -570,11 +500,8 @@ private theorem rowIdentity_20 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp15 : padded x 15 = x 14 := rfl
-  have hp28 : padded x 28 = x 27 := rfl
-  have hp30 : padded x 30 = x 29 := rfl
-  norm_num [hp0, hp15, hp28, hp30]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
@@ -588,11 +515,8 @@ private theorem rowIdentity_21 (ports : Fin 4 → R) (x : Fin 31 → R) :
   repeat' rw [Finset.sum_insert]
   rw [Finset.sum_singleton]
   all_goals first | decide | skip
-  have hp0 : padded x 0 = 1 := rfl
-  have hp18 : padded x 18 = x 17 := rfl
-  have hp21 : padded x 21 = x 20 := rfl
-  have hp22 : padded x 22 = x 21 := rfl
-  norm_num [hp0, hp18, hp21, hp22]
+  norm_num [padded_formula]
+  all_goals simp only [← Fin.natCast_eq_mk, Nat.cast_ofNat]
   try simp (config := { decide := true }) only [ite_false]
   all_goals ring
 
