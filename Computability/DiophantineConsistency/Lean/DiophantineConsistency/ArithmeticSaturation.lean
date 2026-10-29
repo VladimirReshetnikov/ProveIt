@@ -44,8 +44,7 @@ theorem saturation (u A F M H R : V) (hA : A < Exp.exp u) (hF : F < Exp.exp u)
     rw [hR']; exact population_subadditive _ _
   have hs2 : population ((A + M) + (F + H) * Exp.exp u) ≤
       population (A + M) + population (F + H) := by
-    have := population_subadditive (A + M) ((F + H) * Exp.exp u)
-    rwa [population_mul_exp] at this
+    simpa only [population_mul_exp] using population_subadditive (A + M) ((F + H) * Exp.exp u)
   rw [population_mul_exp, concatenate Y3 u Y2 hY2] at hs1
   have hsum : (population A + population M) + (population F + population H) +
       (population Y3 + population Y2) ≤
@@ -61,7 +60,7 @@ theorem saturation (u A F M H R : V) (hA : A < Exp.exp u) (hF : F < Exp.exp u)
       _ ≤ _ := le_trans hs1 ((add_le_add_iff_right _).mpr hs2)
   have hcore := (add_le_add_iff_right _).mp hsum
   have e0 := eq_of_sum_le hX0 hX1 hcore
-  have e1 := eq_of_sum_le hX1 hX0 (by rw [add_comm, add_comm (population (F+H))]; exact hcore)
+  have e1 := eq_of_sum_le hX1 hX0 (by simpa only [add_comm] using hcore)
   exact ⟨(population_add_eq_iff A M).mp e0, (population_add_eq_iff F H).mp e1⟩
 
 /-- **The four-block rank identity**, with every truncated subtraction justified. -/
