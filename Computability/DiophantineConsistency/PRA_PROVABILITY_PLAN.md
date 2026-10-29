@@ -100,8 +100,9 @@ cut-free reduction and PRA witnessing are not yet established.
 
 The [mapped Robinson Q result](reviews/pra-q-compatibility-root.md) now
 proves that all actual Foundation Q axioms except its strict-order definition
-map to theorems of the candidate PRA. The order clause and full compatibility
-remain open.
+map to theorems of the candidate PRA. The [subtraction recursion clauses](reviews/pra-subtraction-root.md) are
+also proved in the candidate theory, as preparation for the order clause.
+That clause and full compatibility remain open.
 
 ## Concrete bridge to formalize
 
