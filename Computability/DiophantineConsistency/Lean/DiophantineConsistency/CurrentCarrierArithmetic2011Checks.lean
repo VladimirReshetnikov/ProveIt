@@ -14,7 +14,7 @@ example (K : ℤ) : ports K 3 - ports K 0 = (highPort : ℤ) := by
 example (K : ℤ) : ports K 3 ≠ (highPort : ℤ) := by
   change ((highPort + beta : ℕ) : ℤ) ≠ (highPort : ℤ)
   rw [Nat.cast_add]
-  have hb : 0 < (beta : ℤ) := by exact_mod_cast beta_pos
+  have hb : 0 < (beta : ℤ) := CurrentMasks2011.beta_pos_int
   omega
 
 -- Positive K is a genuine premise of the fourteen-variable port box.

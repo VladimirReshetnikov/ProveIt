@@ -127,9 +127,7 @@ theorem current_positive_zero_source
     (Carrier65.polynomial (CurrentMasks2011.ports (CurrentKernel2011.K : ℤ))) = 0 at hzero
   rw [Carrier65.eval_polynomial] at hzero
   have hK : (0 : ℤ) < CurrentKernel2011.K := by exact_mod_cast CurrentKernel2011.K_pos
-  have hb : 0 < CurrentMasks2011.ports (CurrentKernel2011.K : ℤ) 0 := by
-    change (0 : ℤ) < CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : 0 < CurrentMasks2011.ports (CurrentKernel2011.K : ℤ) 0 := CurrentMasks2011.beta_pos_int
   obtain ⟨n,_,hn,hcanonical⟩ := Carrier66.positive_zero_restores_canonical
     (CurrentMasks2011.ports (CurrentKernel2011.K : ℤ))
     (CurrentCarrierArithmetic2011.portBounds _ hK) v hv hzero

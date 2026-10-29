@@ -75,9 +75,7 @@ theorem restores (K : ℤ) (u : Fin 13 → ℤ) (hu : ∀ j, 0 < u j)
     (∀ j, 0 < ThirteenCarrierSoundness.restored (ports K) u j) ∧
       MvPolynomial.eval (ThirteenCarrierSoundness.restored (ports K) u)
         (polynomial65 K) = 0 := by
-  have hb : 0 < ports K 0 := by
-    change 0 < (beta : ℤ)
-    exact_mod_cast beta_pos
+  have hb : 0 < ports K 0 := CurrentMasks2011.beta_pos_int
   exact ThirteenCarrierSoundness.polynomial_zero_restores (ports K) u hb hu hz
 
 theorem positive_zero_65_iff_69 (K : ℤ) (hK : 0 < K) :
@@ -94,9 +92,7 @@ theorem positive_zero_65_iff_69 (K : ℤ) (hK : 0 < K) :
 assignment; they need no positivity premise on K. -/
 theorem positive_zero_69_iff_70 (K : ℤ) :
     PositiveZero (polynomial69 K) ↔ PositiveZero (polynomial70 K) := by
-  have hb : 0 < ports K 0 := by
-    change 0 < (beta : ℤ)
-    exact_mod_cast beta_pos
+  have hb : 0 < ports K 0 := CurrentMasks2011.beta_pos_int
   unfold PositiveZero polynomial69 polynomial70
   exact exists_congr fun u => and_congr_right fun hu =>
     let he := ThirteenCarrier.positive_polynomial_zero_sets (ports K) u hb hu
@@ -104,9 +100,7 @@ theorem positive_zero_69_iff_70 (K : ℤ) :
 
 theorem positive_zero_70_iff_71 (K : ℤ) :
     PositiveZero (polynomial70 K) ↔ PositiveZero (polynomial71 K) := by
-  have hb : 0 < ports K 0 := by
-    change 0 < (beta : ℤ)
-    exact_mod_cast beta_pos
+  have hb : 0 < ports K 0 := CurrentMasks2011.beta_pos_int
   unfold PositiveZero polynomial70 polynomial71
   exact exists_congr fun u => and_congr_right fun hu =>
     (ThirteenCarrier.positive_polynomial_zero_sets (ports K) u hb hu).2

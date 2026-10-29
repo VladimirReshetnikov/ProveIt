@@ -70,9 +70,7 @@ theorem packing_positive_zero (hpacking : CurrentHaltPacking2011.ExistsPacking 0
     (by omega) hR hw
   have hu : 0 < width*CurrentControllerData2011.auxiliary^(k+1) :=
     Nat.mul_pos (by decide) (pow_pos (NeZero.pos CurrentControllerData2011.auxiliary) _)
-  have hb : 0 < (ports (CurrentKernel2011.K : ℤ)) 0 := by
-    change (0 : ℤ) < beta
-    exact_mod_cast beta_pos
+  have hb : 0 < (ports (CurrentKernel2011.K : ℤ)) 0 := CurrentMasks2011.beta_pos_int
   obtain ⟨v,hv,hzero,_⟩ := NativePositiveSourceConstruction.population_positive_polynomial_zero
     hb d hu hpop hmod
   exact ⟨v,hv,hzero⟩

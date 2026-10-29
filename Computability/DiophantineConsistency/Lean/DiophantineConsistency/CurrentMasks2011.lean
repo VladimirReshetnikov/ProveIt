@@ -75,6 +75,9 @@ theorem beta_pos : 0 < beta := by
   unfold beta
   omega
 
+theorem beta_pos_int : (0 : ℤ) < (beta : ℤ) := by
+  exact_mod_cast beta_pos
+
 theorem lowPort_lt : lowPort < beta := by
   have hm : 0 ∈ lowSupport := by simp [lowSupport_def]
   have hs : 1 ≤ supportValue radix lowSupport := by

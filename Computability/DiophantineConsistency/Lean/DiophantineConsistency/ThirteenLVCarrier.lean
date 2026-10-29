@@ -314,9 +314,7 @@ This theorem is not an HA derivation or an exact-degree theorem. -/
 theorem no_current_positive_zero_iff_conZFC :
     (¬ CurrentCarrierArithmetic2011.PositiveZero currentPolynomial) ↔
       DiophantineConsistency.ConZFC := by
-  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := by
-    change (0 : ℤ) < CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := CurrentMasks2011.beta_pos_int
   exact (not_congr (exists_positive_zero_iff _ hb)).trans
     ThirteenCorrectedStrong.no_current_positive_zero_iff_conZFC
 
@@ -403,9 +401,7 @@ noncomputable def currentPolynomial72 : MvPolynomial (Fin 13) ℤ :=
 theorem no_current_positive72_zero_iff_conZFC :
     (¬ CurrentCarrierArithmetic2011.PositiveZero currentPolynomial72) ↔
       DiophantineConsistency.ConZFC := by
-  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := by
-    change (0 : ℤ) < CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := CurrentMasks2011.beta_pos_int
   exact (not_congr (exists_positive72_zero_iff _ hb)).trans
     CurrentPositiveZero2011.no_thirteen_positive_zero_iff_conZFC.2.2
 

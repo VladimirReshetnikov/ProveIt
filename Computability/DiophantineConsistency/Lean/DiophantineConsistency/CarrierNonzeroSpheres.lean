@@ -234,9 +234,7 @@ noncomputable def currentPolynomial72 : MvPolynomial (Fin 14) ℤ :=
 theorem current_positive_zero71_iff :
     CurrentCarrierArithmetic2011.PositiveZero currentPolynomial71 ↔
       CurrentCarrierArithmetic2011.PositiveZero CurrentPolynomialWindow2011.polynomial := by
-  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := by
-    change (0 : ℤ) < CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := CurrentMasks2011.beta_pos_int
   unfold CurrentCarrierArithmetic2011.PositiveZero currentPolynomial71
     CurrentPolynomialWindow2011.polynomial
   simp only [eval_polynomial71, Carrier65.eval_polynomial]
@@ -245,9 +243,7 @@ theorem current_positive_zero71_iff :
 theorem current_positive_zero72_iff :
     CurrentCarrierArithmetic2011.PositiveZero currentPolynomial72 ↔
       CurrentCarrierArithmetic2011.PositiveZero CurrentPolynomialWindow2011.polynomial := by
-  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := by
-    change (0 : ℤ) < CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := CurrentMasks2011.beta_pos_int
   unfold CurrentCarrierArithmetic2011.PositiveZero currentPolynomial72
     CurrentPolynomialWindow2011.polynomial
   simp only [eval_polynomial72, Carrier65.eval_polynomial]

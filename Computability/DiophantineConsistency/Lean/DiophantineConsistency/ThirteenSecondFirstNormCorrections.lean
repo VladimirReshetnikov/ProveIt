@@ -87,9 +87,7 @@ noncomputable def currentPolynomial (sharp : Bool) : MvPolynomial (Fin 13) ℤ :
 theorem no_current_positive_zero_iff_conZFC (sharp : Bool) :
     (¬ CurrentCarrierArithmetic2011.PositiveZero (currentPolynomial sharp)) ↔
       DiophantineConsistency.ConZFC := by
-  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := by
-    change (0 : ℤ) < CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := CurrentMasks2011.beta_pos_int
   exact (not_congr (exists_positive_zero_iff75 sharp _ hb)).trans
     ThirteenUnitSphere96.no_current_positive_zero_iff_conZFC
 

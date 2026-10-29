@@ -33,7 +33,7 @@ theorem same_assignment_current (v : Fin 13 → ℤ) (hv : ∀ j, 0 < v j) :
     eval_polynomial, ThirteenLVCarrier.eval_polynomial72]
   apply positive_zero_iff72 _ v _ hv
   change (0 : ℤ) < CurrentMasks2011.beta
-  exact_mod_cast CurrentMasks2011.beta_pos
+  exact CurrentMasks2011.beta_pos_int
 
 #print axioms three_squares_zero_iff
 #print axioms value_zero_iff_residuals

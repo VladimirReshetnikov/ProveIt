@@ -85,9 +85,7 @@ noncomputable def currentPolynomial : MvPolynomial (Fin 14) ℤ :=
 theorem current_positive_zero_iff :
     CurrentCarrierArithmetic2011.PositiveZero currentPolynomial ↔
       CurrentCarrierArithmetic2011.PositiveZero CurrentPolynomialWindow2011.polynomial := by
-  have hb : (0 : ℤ)<CurrentWindowCarry2011.ports 0 := by
-    change (0 : ℤ)<CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : (0 : ℤ)<CurrentWindowCarry2011.ports 0 := CurrentMasks2011.beta_pos_int
   constructor <;> rintro ⟨v,hv,hz⟩ <;> refine ⟨v,hv,?_⟩
   · exact (positive_polynomial_zero_sets _ v hb hv).mp hz
   · exact (positive_polynomial_zero_sets _ v hb hv).mpr hz

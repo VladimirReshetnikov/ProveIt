@@ -146,9 +146,7 @@ noncomputable def currentPolynomial : MvPolynomial (Fin 13) ℤ :=
 theorem no_current_positive_zero_iff_conZFC :
     (¬ CurrentCarrierArithmetic2011.PositiveZero currentPolynomial) ↔
       DiophantineConsistency.ConZFC := by
-  have hb : 0 < CurrentMasks2011.ports (CurrentKernel2011.K : ℤ) 0 := by
-    change (0 : ℤ) < CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : 0 < CurrentMasks2011.ports (CurrentKernel2011.K : ℤ) 0 := CurrentMasks2011.beta_pos_int
   exact (not_congr (exists_positive_zero_iff _ hb)).trans
     CurrentPositiveZero2011.no_thirteen_positive_zero_iff_conZFC.2.2
 

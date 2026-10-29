@@ -195,9 +195,7 @@ No internal HA/PA/ZFC proof is asserted. -/
 theorem no_current_positive_zero_iff_conZFC :
     (¬ CurrentCarrierArithmetic2011.PositiveZero currentPolynomial) ↔
       DiophantineConsistency.ConZFC := by
-  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := by
-    change (0 : ℤ) < CurrentMasks2011.beta
-    exact_mod_cast CurrentMasks2011.beta_pos
+  have hb : (0 : ℤ) < CurrentWindowCarry2011.ports 0 := CurrentMasks2011.beta_pos_int
   exact (not_congr (exists_positive_zero_iff88 _ hb)).trans
     (ThirteenSecondFirstNormCorrections.no_current_positive_zero_iff_conZFC true)
 end DiophantineConsistency.ThirteenScaledNormSyzygy86
