@@ -66,11 +66,7 @@ theorem persistent_of_initial {T : ℤ → ℤ → Tile} {N L R : ℕ}
   · exact column_seam_tuples hA hTime (-(L : ℤ)) 0 h.wall_north.1
   · exact column_seam_tuples hA hTime (R : ℤ) 0 h.wall_north.2
   · intro x hl hr t
-    have hn := (initial_vertical_nonseam h x hl hr).1
-    have ht : (T x t).north ≠ 437 := by
-      intro hs
-      exact hn ((seam_iff_zero hA hTime x t).mp hs)
-    exact ⟨ht, fun hs => ht ((seam_at_iff_south hA x t).mpr hs)⟩
+    exact column_vertical_ne hA hTime x 0 (initial_vertical_nonseam h x hl hr).1 t
 
 /-- A marked cyclic word supplies finite fixed strip walls and a seam-free
 interior at every integer time, with only its three actual matching fields. -/
