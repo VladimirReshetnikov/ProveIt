@@ -90,15 +90,14 @@ theorem strong_seed (R a : V) (hR : 0<R) :
   have ht : 0<R*c := mul_pos hR hc
   have hy : 0<ycoord (R*c) a := lt_of_lt_of_le ht (time_le_y (R*c) a)
   obtain ⟨i,hi⟩ := squared_ordinate R a
+  change ycoord (R*c) a=i*c*c at hi
   have hi0 : 0<i := by
-    by_contra h
-    have hz : i=0 := le_antisymm (le_of_not_gt h) (by simp)
-    rw [hz,zero_mul,zero_mul] at hi
-    exact (ne_of_gt hy) hi
+    apply pos_of_mul_pos_left (b := c*c) _ (by simp)
+    rw [←mul_assoc, ←hi]
+    exact hy
   have hf : 0<xcoord (R*c) a := lt_of_lt_of_le (by simp : (0:V)<1) (one_le_x (R*c) a)
   refine ⟨xcoord (R*c) a,i,hf,hi0,rfl,hi,?_⟩
   have he := norm (R*c) a
-  change ycoord (R*c) a=i*c*c at hi
   rw [hi] at he
   exact he
 
