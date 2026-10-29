@@ -166,37 +166,8 @@ placeholder congruence law. -/
 lemma equality_casesN (σ : Sentence (setTemplateLanguage k arities))
     (h : σ ∈ 𝗘𝗤 (setTemplateLanguage k arities)) :
     σ ∈ FirstOrder.Theory.lMap (setHom k arities) qTheory ∨
-      ∃ i : Fin k, σ = setPlaceholderCongruenceSentence k arities i := by
-  cases h with
-  | refl =>
-      left
-      refine ⟨Theory.Eq.refl ℒₛₑₜ, Or.inl (Or.inl (Or.inl Theory.eqAxiom.refl)), ?_⟩
-      simp [Theory.Eq.refl, FirstOrder.Semiformula.Operator.eq_def]
-      rfl
-  | symm =>
-      left
-      refine ⟨Theory.Eq.symm ℒₛₑₜ, Or.inl (Or.inl (Or.inl Theory.eqAxiom.symm)), ?_⟩
-      simp [Theory.Eq.symm, FirstOrder.Semiformula.Operator.eq_def]
-      rfl
-  | trans =>
-      left
-      refine ⟨Theory.Eq.trans ℒₛₑₜ, Or.inl (Or.inl (Or.inl Theory.eqAxiom.trans)), ?_⟩
-      simp [Theory.Eq.trans, FirstOrder.Semiformula.Operator.eq_def]
-      rfl
-  | funcExt f =>
-      rcases f with f | f
-      · exact f.elim
-      · exact f.elim
-  | relExt r =>
-      rcases r with r | ⟨i, hi⟩
-      · left
-        refine ⟨Theory.Eq.relExt r, Or.inl (Or.inl (Or.inl (Theory.eqAxiom.relExt r))), ?_⟩
-        cases r <;> simp [Theory.Eq.relExt, Matrix.conj,
-          FirstOrder.Semiformula.Operator.eq_def, Matrix.comp_vecCons', Function.comp_def,
-          Matrix.vecTail, Matrix.constant_eq_singleton]
-        all_goals rfl
-      · subst hi
-        exact Or.inr ⟨i, rfl⟩
+      ∃ i : Fin k, σ = setPlaceholderCongruenceSentence k arities i :=
+  LTemplate.equality_cases_of_subset _ (fun _ hτ => Or.inl (Or.inl (Or.inl (hτ)))) σ h
 
 section Compile
 
@@ -208,12 +179,8 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-- The congruence law of a placeholder of arity at most `3`, in `qTheory`. -/
 lemma congruenceProofN_le3 : ∀ (a : ℕ), a ≤ 3 → (K : Bootstrapping.Semiformula V ℒₛₑₜ a) →
-    qTheory.internalize V ⊢ SetCongruence.congruenceFormula a K
-  | 0, _, K => SetCongruence.congruenceProof₀ qTheory K
-  | 1, _, K => SetCongruence.congruenceProof₁ qTheory K
-  | 2, _, K => SetCongruence.congruenceProof₂ qTheory K
-  | 3, _, K => SetCongruence.congruenceProof₃ qTheory K
-  | n + 4, h, _ => absurd h (by omega)
+    qTheory.internalize V ⊢ SetCongruence.congruenceFormula a K :=
+  LTemplate.congruenceProof_le3_of_eq qTheory
 
 /-- **Every source axiom has an internal `qTheory` proof.** -/
 lemma translated_axiomN (harity : ∀ i, arities i ≤ 3)
