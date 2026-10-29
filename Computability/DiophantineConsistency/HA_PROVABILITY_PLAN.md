@@ -2620,3 +2620,7 @@ now derives `m=R`, `2n=R+1`, and `k=R+1+4Q·t` from the literal current
 zero in arbitrary IΣ₁ models, retaining both actual root representations.
 Its half-index prerequisite chain was independently rebuilt from current
 source. Power recovery, internal converse and HA transfer remain open.
+
+The [adaptive power projection](reviews/adaptive-power-projection2011-root.md)
+now derives `q | 3X` and `q ≤ 3X` from the literal current zero. Power
+recovery itself and the internal converse remain open.
