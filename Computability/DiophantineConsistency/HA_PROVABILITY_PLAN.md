@@ -26,7 +26,8 @@ records why the external Parsons-theorem argument is not yet such a Lean
 proof and identifies the missing formal interfaces. The smaller 13-variable,
 degree-51 adaptive equation has an external equivalence but still requires its
 own internal proof-existence transfer. Its [normalized transport](reviews/adaptive-transport-restoration2011-root.md)
-now follows from an actual adaptive zero in arbitrary IΣ₁ models; the machine
+and [rank-population lower bound](reviews/adaptive-population2011-root.md)
+now follow from an actual adaptive zero in arbitrary IΣ₁ models; the machine
 window, reverse witnesses and final internal equivalence remain open. There is no reliable percentage or
 completion-time estimate for that remaining mathematical work.
 

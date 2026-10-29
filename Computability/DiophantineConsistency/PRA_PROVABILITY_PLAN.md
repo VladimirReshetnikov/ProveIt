@@ -28,6 +28,8 @@ now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
 [aligned radix](reviews/adaptive-radix2011-root.md) in arbitrary IΣ₁ models.
 The [normalized transport](reviews/adaptive-transport-restoration2011-root.md)
 has also been recovered from the actual adaptive zero and independently replayed.
+The corresponding [rank-population lower bound](reviews/adaptive-population2011-root.md)
+is now independently replayed for every internal exponent matching the radix.
 The machine-window soundness, internal converse and final HA/PRA
 proof-existence endpoints remain open.
 
