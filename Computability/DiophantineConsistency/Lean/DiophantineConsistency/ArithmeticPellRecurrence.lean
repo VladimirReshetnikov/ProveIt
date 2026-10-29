@@ -88,9 +88,7 @@ theorem norm_advance_balance (b x y : V) :
 theorem norm_step (b x y : V) (h : x*x=1+delta b*y*y) :
     ((b+2)*x+delta b*y)*((b+2)*x+delta b*y)=
       1+delta b*(x+(b+2)*y)*(x+(b+2)*y) := by
-  have he := norm_advance_balance b x y
-  rw [h] at he
-  exact add_right_cancel he
+  exact add_right_cancel (by simpa only [h] using norm_advance_balance b x y)
 
 theorem norm (time b : V) :
     xcoord time b*xcoord time b=1+delta b*ycoord time b*ycoord time b := by
@@ -135,19 +133,12 @@ theorem addition (left right b : V) :
     definability
   case zero => simp
   case succ right ih =>
-    constructor
-    · rw [←add_assoc,x_succ,ih.1,ih.2,x_succ,y_succ]
-      dsimp [delta]
-      ring
-    · rw [←add_assoc,y_succ,ih.1,ih.2,x_succ,y_succ]
-      dsimp [delta]
-      ring
+    constructor <;>
+      simp only [←add_assoc,x_succ,y_succ,ih.1,ih.2,delta] <;> ring
 
 /-- Every represented Pell ordinate is strictly below its abscissa. -/
 theorem ordinate_lt_abscissa (b j : V) : ycoord j b<xcoord j b := by
-  have hd : 1≤delta b := by
-    have hp : 0<delta b := by unfold delta; exact mul_pos (by simp) (by simp)
-    simpa using lt_iff_succ_le.mp hp
+  have hd : 1≤delta b := pos_iff_one_le.mp (by unfold delta; exact mul_pos (by simp) (by simp))
   apply lt_of_mul_self_lt_mul_self₀ (Arithmetic.zero_le (xcoord j b))
   calc
     ycoord j b*ycoord j b<1+ycoord j b*ycoord j b := by
@@ -171,9 +162,8 @@ theorem ordinate_strictMono (b : V) : StrictMono (fun time : V => ycoord time b)
   intro left right h
   have hlt : ycoord left b<ycoord left b+(right-left) :=
     lt_add_of_pos_right _ (tsub_pos_iff_lt.mpr h)
-  have hle := ordinate_add_ge left (right-left) b
-  rw [add_tsub_cancel_of_le (le_of_lt h)] at hle
-  exact lt_of_lt_of_le hlt hle
+  exact lt_of_lt_of_le hlt (by
+    simpa only [add_tsub_cancel_of_le (le_of_lt h)] using ordinate_add_ge left (right-left) b)
 
 
 end DiophantineConsistency.ArithmeticPellRecurrence
