@@ -207,27 +207,26 @@ theorem refl_leaf {a Γ c w : V} (ha : IsSemiterm ℒₛₑₜ 0 a) (hac : a ≤
 theorem vec1_le {t₁ : Bootstrapping.Term V ℒₛₑₜ} {c : V} (h₁ : t₁.val ≤ lvB c) :
     ∀ i, (![t₁] i).val ≤ lvB c := fun i => by rcases Fin.eq_zero i with rfl; exact h₁
 
+private theorem vec_cons_le {k : ℕ} {t : Bootstrapping.Term V ℒₛₑₜ}
+    {v : Bootstrapping.SemitermVec V ℒₛₑₜ k 0} {c : V}
+    (ht : t.val ≤ lvB c) (hv : ∀ i, (v i).val ≤ lvB c) :
+    ∀ i, ((t :> v) i).val ≤ lvB c := by
+  intro i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · simpa using ht
+  · simpa using hv j
+
 theorem vec2_le {t₁ t₂ : Bootstrapping.Term V ℒₛₑₜ} {c : V} (h₁ : t₁.val ≤ lvB c)
-    (h₂ : t₂.val ≤ lvB c) : ∀ i, (![t₁, t₂] i).val ≤ lvB c := fun i => by
-  match i with
-  | 0 => exact h₁
-  | 1 => exact h₂
+    (h₂ : t₂.val ≤ lvB c) : ∀ i, (![t₁, t₂] i).val ≤ lvB c :=
+  vec_cons_le h₁ (vec1_le h₂)
 
 theorem vec3_le {t₁ t₂ t₃ : Bootstrapping.Term V ℒₛₑₜ} {c : V} (h₁ : t₁.val ≤ lvB c)
-    (h₂ : t₂.val ≤ lvB c) (h₃ : t₃.val ≤ lvB c) : ∀ i, (![t₁, t₂, t₃] i).val ≤ lvB c := fun i => by
-  match i with
-  | 0 => exact h₁
-  | 1 => exact h₂
-  | 2 => exact h₃
+    (h₂ : t₂.val ≤ lvB c) (h₃ : t₃.val ≤ lvB c) : ∀ i, (![t₁, t₂, t₃] i).val ≤ lvB c :=
+  vec_cons_le h₁ (vec2_le h₂ h₃)
 
 theorem vec4_le {t₁ t₂ t₃ t₄ : Bootstrapping.Term V ℒₛₑₜ} {c : V} (h₁ : t₁.val ≤ lvB c)
     (h₂ : t₂.val ≤ lvB c) (h₃ : t₃.val ≤ lvB c) (h₄ : t₄.val ≤ lvB c) :
-    ∀ i, (![t₁, t₂, t₃, t₄] i).val ≤ lvB c := fun i => by
-  match i with
-  | 0 => exact h₁
-  | 1 => exact h₂
-  | 2 => exact h₃
-  | 3 => exact h₄
+    ∀ i, (![t₁, t₂, t₃, t₄] i).val ≤ lvB c := vec_cons_le h₁ (vec3_le h₂ h₃ h₄)
 
 theorem le_ext_m (r : (ℒₛₑₜ).Rel 2) (c : V) : (extN r : V) ≤ 10 * ((extN r : V) + 1) + c :=
   le_trans (le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num)))
