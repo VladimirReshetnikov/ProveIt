@@ -1,0 +1,7 @@
+# HalfBinomial affected-suffix attempt after the Legendre update
+
+This attempt compiled all 17 modules successfully, but its overall status is **FAILED**. During the run, the inherited `ArithmeticHalfBinomialSandwich` source changed; final reauthentication detected that it no longer matched the earlier population refresh. The outputs therefore describe the earlier Sandwich snapshot and do not establish current-source coverage.
+
+The updated HalfBinomial source added a private exponential-divisibility helper and used it in three proof bodies, without changing public theorem statements. The attempt compiled HalfBinomial, the population and actual-zero window clients and checks, and all six reverse-construction clients and checks. Its inherited new BinomLegendre object was subsequently matched by an independent 18-module replay whose own final authentication also failed on the later HalfBinomial source change. These historical replay results must not be reported as source-current passes.
+
+The [57-file attempt evidence manifest](adaptive-halfbinomial-postmerge2011-attempt-evidence/FILES.json) has SHA256 `dade2091f47ebb6f166fce54e666f587f9532dff904c6ba8d1e8eadd19428e4f`. It preserves the sources, module logs, timing records, driver, provider manifest, previous state records, and the final authentication failure. A new replay beginning at the updated Sandwich source is required. The output provider from this failed attempt can be reused only for unaffected objects after explicit hash and source checks; affected objects must be rebuilt.
