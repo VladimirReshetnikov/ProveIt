@@ -20,9 +20,6 @@ open scoped LO.FirstOrder.Arithmetic
 open ArithmeticBinaryPopulation ArithmeticBinaryCarry
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem one_le_of_pos {x : V} (h : 0<x) : 1≤x := by
-  simpa using lt_iff_succ_le.mp h
-
 /-- A carry-free sum of two `u`-bit numbers is a `u`-bit number. -/
 theorem noCarry_add_lt (u : V) : ∀ a<Exp.exp u, ∀ b<Exp.exp u, NoCarry a b → a+b<Exp.exp u := by
   induction u using ISigma1.sigma1_succ_induction
@@ -57,8 +54,6 @@ theorem noCarry_add_lt (u : V) : ∀ a<Exp.exp u, ∀ b<Exp.exp u, NoCarry a b �
 def fourBlocks (u A M F H alpha : V) : V :=
   (A+M)+Exp.exp u*(F+H)+Exp.exp u^2*(F+alpha)+Exp.exp u^3*(A+alpha)
 
-private theorem le_split (x y : V) : x≤x+y := le_add_of_nonneg_right (by simp)
-
 /-- **Population of the four-block rank.** -/
 theorem fourBlocks_population (u A M F H alpha : V)
     (hsum : A+1+F+alpha=Exp.exp u) (hM : M<Exp.exp u) (hH : H<Exp.exp u)
@@ -66,13 +61,13 @@ theorem fourBlocks_population (u A M F H alpha : V)
     population (fourBlocks u A M F H alpha)=2*u+(population M+population H) := by
   have hAq : A<Exp.exp u := by
     rw [←hsum,show A+1+F+alpha=(A+1)+(F+alpha) by ring]
-    exact lt_of_lt_of_le (lt_add_one A) (le_split _ _)
+    exact lt_of_lt_of_le (lt_add_one A) (le_add_right le_rfl)
   have hFq : F<Exp.exp u := by
     rw [←hsum,show A+1+F+alpha=(F+1)+(A+alpha) by ring]
-    exact lt_of_lt_of_le (lt_add_one F) (le_split _ _)
+    exact lt_of_lt_of_le (lt_add_one F) (le_add_right le_rfl)
   have hb3 : F+alpha<Exp.exp u := by
     rw [←hsum,show A+1+F+alpha=(F+alpha+1)+A by ring]
-    exact lt_of_lt_of_le (lt_add_one _) (le_split _ _)
+    exact lt_of_lt_of_le (lt_add_one _) (le_add_right le_rfl)
   have hb1 : A+M<Exp.exp u := noCarry_add_lt u A hAq M hM hAM
   have hb2 : F+H<Exp.exp u := noCarry_add_lt u F hFq H hH hFH
   have hc1 : Exp.exp u-1-A=F+alpha := by
@@ -137,7 +132,7 @@ theorem fourBlocks_gt (u A M F H alpha : V) (halpha : 0<alpha) :
         _≤Exp.exp (w+1)*Exp.exp (w+1) := mul_le_mul_of_nonneg_right h2 (by simp)
         _≤Exp.exp (w+1)*Exp.exp (w+1)*Exp.exp (w+1) := le_mul_of_one_le_right (by simp) hq1
         _=Exp.exp (w+1)^3 := by ring
-  have h1 : 1≤A+alpha := le_trans (one_le_of_pos halpha) (le_add_of_nonneg_left (by simp))
+  have h1 : 1≤A+alpha := le_trans (pos_iff_one_le.mp halpha) (le_add_of_nonneg_left (by simp))
   calc
     2*u<Exp.exp u^3 := hcube
     _≤Exp.exp u^3*(A+alpha) := le_mul_of_one_le_right (by simp) h1
