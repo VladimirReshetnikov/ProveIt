@@ -53,10 +53,8 @@ theorem large_index_multiple (b n M S T A D c : V)
   have hgn : g∣n := (gcd_spec n M).1
   have hgM : g∣M := (gcd_spec n M).2.1
   have hgp : 0<g := by
-    by_contra hng
-    have hz : g=0 := le_antisymm (le_of_not_gt hng) (Arithmetic.zero_le g)
-    have hnz : n=0 := by simpa [hz] using hgn
-    exact (ne_of_gt hn) hnz
+    obtain ⟨k, hk⟩ := hgn
+    exact pos_of_mul_pos_left (by rw [← hk]; exact hn) (by simp)
   have hygp : 0<ycoord g b := lt_of_lt_of_le hgp (time_le_y g b)
   have hcM : c∣T*ycoord M b := ⟨T*S,by rw [hYM]; ring⟩
   have hcg : c∣T*ycoord g b := scaled_common_divisor b n M T c hcN hcM
@@ -130,11 +128,8 @@ theorem integral_solution (a c p i f : V)
   obtain ⟨k,hk⟩ := hepN
   let m := p*k
   have hnm : n=e*m := by rw [hk]; dsimp [m]; ring
-  have hmp : 0<m := by
-    by_contra hm
-    have hz : m=0 := le_antisymm (le_of_not_gt hm) (Arithmetic.zero_le m)
-    simp [hz] at hnm
-    exact (ne_of_gt hnp) hnm
+  have hmp : 0<m :=
+    pos_of_mul_pos_right (by rw [← hnm]; exact hnp) (by simp)
   refine ⟨m,hmp,⟨k,rfl⟩,?_,?_⟩
   · rw [hf',hnm,←(hcomp m).1]
   · calc
