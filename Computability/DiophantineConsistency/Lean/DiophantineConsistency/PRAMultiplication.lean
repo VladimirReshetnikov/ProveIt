@@ -21,24 +21,6 @@ section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* PRA]
 
-omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem eqRel (v : Fin 2 → M) :
-    Structure.rel (L := language) Language.ORing.Rel.eq v ↔ v 0 = v 1 := by
-  change Structure.rel (L := language) Language.Eq.eq v ↔ _
-  exact Structure.eq_lang
-
-omit [M↓[language] ⊧* PRA] in
-private theorem eqClosureModels {n : ℕ} (a b : TermN n) :
-    (M↓[language] ⊧ equalClosure a b) ↔
-      ∀ e : Fin n → M, Semiterm.val e Empty.elim a = Semiterm.val e Empty.elim b := by
-  simp only [models_iff, equalClosure, Semiformula.eval_allClosure, Semiformula.eval_rel]
-  constructor
-  · intro h e
-    have h' := (eqRel _).mp (h e)
-    simpa [Function.comp_def] using h'
-  · intro h e
-    apply (eqRel _).mpr
-    simpa [Function.comp_def] using h e
 
 theorem modelZero {n : ℕ} (v : Fin n → M) :
     Structure.func (L := language) (Code.zero n) v =
@@ -53,19 +35,8 @@ theorem modelZero {n : ℕ} (v : Fin n → M) :
 
 theorem modelMulExpand (x y : M) :
     Structure.func (L := language) mulCode ![x,y] =
-      Structure.func (L := language) mulCore ![y,x] := by
-  have h := modelComposition (M := M) mulCore
-    (.cons (.proj 1) (.cons (.proj 0) (.nil 2))) ![x,y]
-  have harg : (fun i => Structure.func (L := language)
-      (getCode (.cons (.proj 1) (.cons (.proj 0) (.nil 2))) i) ![x,y]) = ![y,x] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · exact modelProjection (M := M) 1 _
-    · refine Fin.cases ?_ (fun j => Fin.elim0 j) j
-      exact modelProjection (M := M) 0 _
-  change Structure.func (L := language) mulCode ![x,y] = _ at h
-  rw [harg] at h
-  exact h
+      Structure.func (L := language) mulCore ![y,x] :=
+  modelSwapComposition mulCore x y
 
 theorem modelMulZero (x : M) :
     Structure.func (L := language) mulCode
