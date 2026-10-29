@@ -9,10 +9,12 @@ printed proof is not required.
 ## Current scope and open endpoints
 
 Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean`,
-`ArithmeticBinomLegendre.lean`, and `ArithmeticHalfBinomial.lean`. The adaptive
-population, window and reverse
-replays below authenticate their earlier source snapshots; a source-current
-downstream rebuild is required.
+`ArithmeticBinomLegendre.lean`, `ArithmeticHalfBinomial.lean`, and
+`ArithmeticHalfBinomialSandwich.lean`. The affected adaptive population,
+window, and reverse-construction suffix has since [passed two current-source
+replays](reviews/adaptive-sandwich-postmerge2011-author.md), with the inherited
+provider boundary documented there. The later CellWindow continuation is
+still pending.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
@@ -104,6 +106,9 @@ preserves such descriptors under term substitution, and [fresh context
 opening](reviews/parsons-fresh-context-root.md) selects a universal at any
 side position without consuming the height margin. Multiple guards and the
 global recursion are not yet discharged by these conditional lemmas.
+In particular, a generated step mark can itself be non-prenex Π₂ and need
+not carry a guard descriptor; a recursion restricted to guarded contexts
+would therefore not suffice without an adapter that preserves the height bound.
 The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
