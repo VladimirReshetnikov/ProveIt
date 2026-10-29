@@ -1,0 +1,67 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HerbrandParameterizedWitness.lean:35:2: error: unsolved goals
+case e_f.isFalse
+M : Type
+inst✝ : Structure language M
+n : ℕ
+t : SyntacticTerm language
+e : Fin n → M
+i : ℕ
+h✝ : n ≤ i
+⊢ Semiterm.val e Empty.elim (if h : i < n then #⟨i, ⋯⟩ else Semiterm.func (Code.zero 0) Fin.elim0) =
+    Structure.func (Code.zero 0) Fin.elim0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HerbrandParameterizedWitness.lean:55:4: error: unsolved goals
+case refine_1
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* UniversalAxiom
+n : ℕ
+φ : Semisentence language (n + 1)
+t : SyntacticTerm language
+e : Fin n → M
+h :
+  (Semiformula.Eval
+      (Semiterm.val (Semiterm.val ![] (parameterEnv n e) ∘ ![t]) (parameterEnv n e) ∘
+        ⇑(Rew.embSubsts fun i => Fin.cases (#0) (fun i => &↑i) i) ∘ Semiterm.bvar)
+      (Semiterm.val (Semiterm.val ![] (parameterEnv n e) ∘ ![t]) (parameterEnv n e) ∘
+        ⇑(Rew.embSubsts fun i => Fin.cases (#0) (fun i => &↑i) i) ∘ Semiterm.fvar))
+    φ
+i : Fin (n + 1)
+hv : Semiterm.val e Empty.elim ∘ vars n = e
+⊢ Semiterm.val ![] (parameterEnv n e) t = Fin.cases (Semiterm.val ![] (parameterEnv n e) t) e 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HerbrandParameterizedWitness.lean:46:62: error: unsolved goals
+M : Type
+inst✝³ : Nonempty M
+inst✝² : Structure language M
+inst✝¹ : Structure.Eq language M
+inst✝ : M↓[language] ⊧* UniversalAxiom
+n : ℕ
+φ : Semisentence language (n + 1)
+t : SyntacticTerm language
+e : Fin n → M
+h :
+  (Semiformula.Eval
+      (Semiterm.val (Semiterm.val ![] (parameterEnv n e) ∘ ![t]) (parameterEnv n e) ∘
+        ⇑(Rew.embSubsts fun i => Fin.cases (#0) (fun i => &↑i) i) ∘ Semiterm.bvar)
+      (Semiterm.val (Semiterm.val ![] (parameterEnv n e) ∘ ![t]) (parameterEnv n e) ∘
+        ⇑(Rew.embSubsts fun i => Fin.cases (#0) (fun i => &↑i) i) ∘ Semiterm.fvar))
+    φ
+hc :
+  (Semiterm.val e Empty.elim ∘ fun i => Fin.cases (applyCode (parameterCode n t) (vars n)) (vars n) i) = fun i =>
+    Fin.cases (Semiterm.val ![] (parameterEnv n e) t) e i
+⊢ Semiformula.Eval (fun i => Fin.cases (Semiterm.val ![] (parameterEnv n e) t) e i) Empty.elim =
+    Semiformula.Eval
+      (fun x =>
+        Semiterm.val (fun x => Semiterm.val ![] (parameterEnv n e) t) (parameterEnv n e)
+          (Fin.cases (#0) (fun i => &↑i) x))
+      fun x =>
+      Semiterm.val (fun x => Semiterm.val ![] (parameterEnv n e) t) (parameterEnv n e)
+        ((Rew.embSubsts fun i => Fin.cases (#0) (fun i => &↑i) i) &x)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/HerbrandParameterizedWitness.lean:60:49: warning: This simp argument is unused:
+  parameterEnv
+
+Hint: Omit it from the simp argument list.
+  simp [Function.comp_def,̵ ̵p̵a̵r̵a̵m̵e̵t̵e̵r̵E̵n̵v̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

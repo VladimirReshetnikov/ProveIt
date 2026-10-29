@@ -1,0 +1,10 @@
+import DiophantineConsistency.ParsonsBaseState
+#print axioms DiophantineConsistency.ParsonsBaseState.ofAxiom
+#print axioms DiophantineConsistency.ParsonsBaseState.openUniversal
+#print axioms DiophantineConsistency.ParsonsBaseState.negative_instance
+#print axioms DiophantineConsistency.ParsonsBaseState.openState
+#print axioms DiophantineConsistency.ParsonsBaseState.shiftState
+#print axioms DiophantineConsistency.ParsonsBaseState.terminal
+#print axioms DiophantineConsistency.ParsonsBaseState.discharge
+#print axioms DiophantineConsistency.ParsonsBaseState.open_case
+#print axioms DiophantineConsistency.ParsonsBaseState.terminal_case

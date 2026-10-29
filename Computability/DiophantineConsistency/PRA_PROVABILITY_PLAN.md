@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A subsequent upstream merge changed eleven PRA prerequisites, including the
+Boolean, exhaustion, search and order modules. The relevant later PRA and
+Herbrand receipts authenticate their preceding snapshots; a new downstream
+source-current refresh is required.
+
 A later upstream merge generalized `PRAFormulaParameters.qr_rew` and updated
 `PRAUniversalSyntax` to use it. The affected universal-presentation, syntax
 and Herbrand replays below authenticate their earlier source snapshots; a
@@ -56,6 +61,10 @@ nonprincipal marked entry coherently under the eigenvariable. Other marked
 logical cases have now been completed for side-tagged occurrences in the
 [marked logical cases](reviews/parsons-marked-logical-root.md). Principal
 negative base-axiom decomposition and the single global recursion remain open.
+The separate [negative-base state](reviews/parsons-base-state-root.md) now
+handles universal opening and terminal resolution when its explicit Π₂/Σ₁
+shape hypotheses hold. Initial axiom classification, integration and a
+secondary recursion measure remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
@@ -73,6 +82,9 @@ is now proved from the positive 14-coordinate equation system, but the other
 reverse witnesses and adaptive zero construction remain open. The
 [strong-factor identity](reviews/adaptive-construction-strong2011-root.md)
 now follows from the maintained strong norm with the scaled multiplier.
+The [auxiliary witness positivity lemma](reviews/adaptive-construction-aux2011-root.md)
+proves `y-u>0` from the auxiliary norm when `y ≥ 2`; this bound and the rest
+of the adaptive witness map still need binding to the actual construction.
 
 Lower-variable forms are also part of the objective. The existing
 [`GapSourceExistence66`](Lean/DiophantineConsistency/GapSourceExistence66.lean)
@@ -157,9 +169,10 @@ in the universal theory, yielding a candidate-PRA proof at one PR witness.
 The [existential-sequent structure](reviews/herbrand-existential-sequents-root.md)
 shows the relevant cut-free proofs contain no universal-rule nodes and collects
 their existential terms. [Finite extraction](reviews/herbrand-finite-extraction-root.md)
-now derives a disjunction for a prepared existential sequent. Preparing a
-general ∀∃ proof and translating the extracted terms to appropriately
-parameterized PR codes remain open.
+now derives a disjunction for a prepared existential sequent. The
+[prepared-sequent parameterized witness](reviews/herbrand-parameterized-witness-root.md)
+translates the extracted terms into appropriately parameterized PR codes for
+that input. Preparing a general ∀∃ proof remains open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
