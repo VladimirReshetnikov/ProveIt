@@ -1477,5 +1477,14 @@ reports and 33,296 global simp entries match. Direct project providers match
 current-source receipts; the transitive closure remains cached. See [the
 evidence bundle](../../reviews/lean-proof-simplification-20261028-cell-mod-cancel-evidence/BUNDLE.json).
 
+The half-binomial divisor cancellation `00971db686` removes four net Lean
+lines, bringing the reviewed series to 9832. The module was introduced in
+Claude-coauthored commit `90f67cbdd9`. Existing zero-remainder and modular
+removal lemmas replace the manual quotient comparison in a private proof.
+Paired target and two direct-client builds pass with identical client objects;
+all seven target declaration reports and 29,056 global simp entries match.
+Direct project providers match prior current-source receipts; the transitive
+closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-halfbinom-cancel-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
