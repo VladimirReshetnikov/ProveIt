@@ -1,0 +1,7 @@
+import DiophantineConsistency.ParsonsLeaves
+#print axioms DiophantineConsistency.ParsonsLeaves.closure_has_exists
+#print axioms DiophantineConsistency.ParsonsLeaves.block_has_exists
+#print axioms DiophantineConsistency.ParsonsLeaves.identity_no_block
+#print axioms DiophantineConsistency.ParsonsLeaves.verum_no_block
+#print axioms DiophantineConsistency.ParsonsLeaves.identity_leaf
+#print axioms DiophantineConsistency.ParsonsLeaves.verum_leaf
