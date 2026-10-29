@@ -27,9 +27,7 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 private theorem val_one {ξ : Type} {n : ℕ} (b : Fin n → M) (f : ξ → M)
     (u : Semiterm language ξ n) :
-    (Semiterm.val b f ∘ fun _ : Fin 1 => u) = fun _ => Semiterm.val b f u := by
-  funext i
-  exact Fin.cases rfl (fun j => Fin.elim0 j) i
+    (Semiterm.val b f ∘ fun _ : Fin 1 => u) = fun _ => Semiterm.val b f u := rfl
 
 omit [Nonempty M] [M↓[language] ⊧* PRA] in
 private theorem invariantBody_eval (x : M) (e : ℕ → M) : invariantBody.Eval ![x] e ↔

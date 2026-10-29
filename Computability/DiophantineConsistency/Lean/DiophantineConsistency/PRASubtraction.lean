@@ -89,10 +89,8 @@ theorem modelSubSuccSentence : M↓[language] ⊧ subSuccSentence := by
       val_term_pair e (.bvar 0) (applyCode Code.succ (fun _ => .bvar 1))
   have hright : (Semiterm.val e Empty.elim ∘ fun _ : Fin 1 => applyCode subCode ![.bvar 0, .bvar 1]) =
       fun _ => Structure.func (L := language) subCode ![e 0, e 1] := by
-    funext i
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) i
-    change Structure.func (L := language) subCode
-      (Semiterm.val e Empty.elim ∘ ![(.bvar 0 : TermN 2), .bvar 1]) = _
+    change (fun _ : Fin 1 => Structure.func (L := language) subCode
+      (Semiterm.val e Empty.elim ∘ ![(.bvar 0 : TermN 2), .bvar 1])) = _
     rw [hpair]
   simp only [applyCode] at hleft hright
   rw [hleft, hright]
