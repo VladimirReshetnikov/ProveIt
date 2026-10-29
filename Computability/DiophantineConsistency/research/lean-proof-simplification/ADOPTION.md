@@ -2064,5 +2064,14 @@ match. Five project providers have source-matched receipts; the wider closure
 remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-construction-tau-positive.md)
 records hashes and external paths without raw logs or objects.
 
+The shared Pell coordinate bound `7d85310ff9` removes six net Lean lines,
+bringing the reviewed series to 10352. Two proofs become wrappers around one
+new ordinary public recurrence theorem, with no added imports or registrations.
+Paired builds of 12 modules pass; 147 common declaration reports and sampled
+registrations match, though several client objects differ. The recurrence has
+51 tracked transitive consumers, including the two changed wrappers; the wider
+closure remains cached. The compact [evidence note](../../reviews/lean-proof-simplification-20261029-shared-pell-recurrence.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
