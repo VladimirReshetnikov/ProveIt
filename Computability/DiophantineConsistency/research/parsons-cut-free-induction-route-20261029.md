@@ -10,6 +10,15 @@ input finite theory-axiom list and giving a cut-free derivation of exactly the
 same embedded end sequent. The converse forgets the cut-free certificate.
 No arithmetic axiom has yet been removed.
 
+## Height-preserving conjunction inversion proved
+
+[`ParsonsSelection`](../Lean/DiophantineConsistency/ParsonsSelection.lean)
+now proves both displayed inversion directions, simultaneous replacement of
+selected occurrences and the nested three-conjunct corollary. The proof and
+independent replay are recorded [here](../reviews/parsons-selection-independent.md).
+The following design discussion describes the original obligation and its
+motivation; induction-axiom elimination and witnessing remain open.
+
 ## Required logical inversion
 
 For Foundation's one-sided list calculus, prove a height-preserving inversion
