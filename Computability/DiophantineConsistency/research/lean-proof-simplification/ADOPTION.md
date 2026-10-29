@@ -1885,5 +1885,13 @@ replace four bit case analyses. Paired target and five direct clients pass;
 one client object matches and four differ for unknown reasons, while checked
 interfaces match. The wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-wang-push-direct-evidence/BUNDLE.json).
 
+The shared carry conversion `e8e12903c2` removes 28 net Lean lines, bringing
+the reviewed series to 10188. One public `Facts.toMF` theorem replaces six
+private wrappers and one inline conversion. Paired 18-module lanes pass,
+including seven checks and four other clients. Two client objects differ for
+unknown reasons while their checked interfaces match; the other checked client
+objects match. The umbrella was not rebuilt and two external cached inputs lack
+matched producer receipts. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-current-carry-to-mf-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
