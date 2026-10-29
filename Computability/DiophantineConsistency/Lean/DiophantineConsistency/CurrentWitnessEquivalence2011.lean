@@ -23,20 +23,9 @@ attribute [local irreducible] CurrentKernel2011.K
 construction as the accepted external equivalence, without an outer DNE. -/
 theorem blank_halts_positive_zero
     (hh : KDenseBridge.BlankHalts DecimalMachine215.machine) :
-    PositiveZero polynomial := by
-  obtain ⟨k,_,_,_,_,_,a,_,_,S,carry,digits,R,_,t,_,_,_,_,hf,hR,hpop,hmod,_,hbound,hw⟩ :=
-    CurrentHaltPacking2011.blank_halts_constructs_packing 0 hh
-  let d := CurrentPositiveZero2011.packingData a
-    (CurrentFiniteDummyMutation2011.enabled S) t carry digits hf R
-    (by omega) hR hw
-  have hu : 0 < width*CurrentControllerData2011.auxiliary^(k+1) :=
-    Nat.mul_pos (by decide) (pow_pos (NeZero.pos CurrentControllerData2011.auxiliary) _)
-  have hb : 0 < (ports (CurrentKernel2011.K : ℤ)) 0 := by
-    change (0 : ℤ) < beta
-    exact_mod_cast beta_pos
-  obtain ⟨v,hv,hzero,_⟩ := NativePositiveSourceConstruction.population_positive_polynomial_zero
-    hb d hu hpop hmod
-  exact ⟨v,hv,hzero⟩
+    PositiveZero polynomial :=
+  CurrentPositiveZero2011.packing_positive_zero
+    (CurrentHaltPacking2011.blank_halts_constructs_packing 0 hh)
 
 /-- Direct use of the actual syntactic refutation predicate. No inconsistency
 double negation, native calibration, or desired solution is a premise. -/

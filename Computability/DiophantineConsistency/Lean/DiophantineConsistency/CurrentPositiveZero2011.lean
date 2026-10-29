@@ -61,12 +61,11 @@ def packingData {N : ℕ} [NeZero N] (a : ZMod N → Fin 942) (dummy : ZMod N �
     rw [← q_binary]
     exact hR.symm
 
-/-- An actual inconsistency constructs positive coordinates of the literal
-polynomial. No masks, tiling, calibrated rank or Pell seed is supplied. -/
-theorem not_conZFC_positive_zero (hnot : ¬ DiophantineConsistency.ConZFC) :
+/-- A rank-forced packing supplies positive coordinates of the literal polynomial. -/
+theorem packing_positive_zero (hpacking : CurrentHaltPacking2011.ExistsPacking 0) :
     PositiveZero polynomial := by
   obtain ⟨k,_,_,_,_,_,a,_,_,S,carry,digits,R,_,t,_,_,_,_,hf,hR,hpop,hmod,_,hbound,hw⟩ :=
-    CurrentHaltPacking2011.not_conZFC_constructs_packing 0 hnot
+    hpacking
   let d := packingData a (CurrentFiniteDummyMutation2011.enabled S) t carry digits hf R
     (by omega) hR hw
   have hu : 0 < width*CurrentControllerData2011.auxiliary^(k+1) :=
@@ -77,6 +76,12 @@ theorem not_conZFC_positive_zero (hnot : ¬ DiophantineConsistency.ConZFC) :
   obtain ⟨v,hv,hzero,_⟩ := NativePositiveSourceConstruction.population_positive_polynomial_zero
     hb d hu hpop hmod
   exact ⟨v,hv,hzero⟩
+
+/-- An actual inconsistency constructs positive coordinates of the literal
+polynomial. No masks, tiling, calibrated rank or Pell seed is supplied. -/
+theorem not_conZFC_positive_zero (hnot : ¬ DiophantineConsistency.ConZFC) :
+    PositiveZero polynomial :=
+  packing_positive_zero (CurrentHaltPacking2011.not_conZFC_constructs_packing 0 hnot)
 
 /-- External equivalence for the actual fixed fourteen-variable polynomial. -/
 theorem positive_zero_iff_not_conZFC :
