@@ -133,11 +133,7 @@ theorem positive_solution_index (q x k : V) (hk : 0<k)
     (h : x*x=1+discriminant q*k*k) :
     ∃ time : V, 0<time ∧ time≤k ∧ xcoord time (2*q+1)=x ∧ 2*ycoord time (2*q+1)=k := by
   obtain ⟨time,ht,hx,hy⟩ := solution_index q x k h
-  have hp : 0<time := by
-    by_contra hn
-    have ht0 : time=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le time)
-    have hk0 : k=0 := by simpa [ht0] using hy.symm
-    exact (ne_of_gt hk) hk0
+  have hp : 0<time := pos_iff_ne_zero.mpr (fun ht0 => (ne_of_gt hk) (by simpa [ht0] using hy.symm))
   exact ⟨time,hp,ht,hx,hy⟩
 
 /-- The literal first-norm parameter Q is arbitrary positive internal data.
