@@ -118,7 +118,7 @@ theorem modelBoundedFormula {n : ℕ} (good : Code (n+1)) (bound : M) (params : 
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   simp [ha,hz]
 
-private theorem modelUniversalCode_eval {n : ℕ} (good : Code (n+1)) (e : Fin (n+1) → M) :
+theorem modelUniversalCode_eval {n : ℕ} (good : Code (n+1)) (e : Fin (n+1) → M) :
     IsBit (Structure.func (L := language) (universalCode good) e) ∧
       (Structure.func (L := language) (universalCode good) e =
         Structure.func (L := language) oneCode Fin.elim0 ↔
