@@ -78,3 +78,7 @@ recursive. Formula normalization and Σ₁ witnessing remain open.
 The [is-zero code](../reviews/pra-iszero-root.md) now has an actual
 candidate-PRA correctness derivation, supplying a Boolean complement
 primitive toward compiling open formulas. That compiler remains open.
+
+The [Boolean operations](../reviews/pra-boolean-ops-root.md) now prove
+bit closure, conjunction and negation in all candidate-PRA equality models.
+The equality-atom code and full open-formula compiler remain open.
