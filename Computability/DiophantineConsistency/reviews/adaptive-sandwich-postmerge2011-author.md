@@ -9,4 +9,9 @@ The replay exited successfully with no source warnings; the checks report `prope
 The independent replay has the same explicitly authenticated
 historical-provider and package boundaries as the author replay.
 
-The in-progress AuxBind client is outside this replay. CellWindow and the adaptive machine-halting wrapper still require a current-source continuation. This result does not establish existence of a syntactic HA proof.
+After these replays, an upstream merge moved the rank-lower proof into
+`ArithmeticHalfBinomial` and updated `ArithmeticAdaptivePopulation2011`.
+These passes therefore cover the preceding source snapshot; the affected
+suffix must be rebuilt again for the merged sources.
+
+The subsequently checked AuxBind client is outside this replay. CellWindow and the adaptive machine-halting wrapper still require a current-source continuation. This result does not establish existence of a syntactic HA proof.

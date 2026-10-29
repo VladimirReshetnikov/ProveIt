@@ -1,0 +1,2 @@
+import DiophantineConsistency.ParsonsAndContext
+#print axioms DiophantineConsistency.ParsonsAndContext.invert_below_exs

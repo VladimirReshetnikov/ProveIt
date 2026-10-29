@@ -17,3 +17,7 @@ log hashes match. The builds report only `propext`, `Classical.choice` and
 has SHA-256 `f63d5dfe46a6aa2f451876fe76b2e2cb4f58bb0017744c9c08de51d636dde4d5`.
 The inherited provider and package qualifications in the [Sandwich replay](adaptive-sandwich-postmerge2011-author.md)
 continue to apply; this is not a fresh transitive rebuild.
+
+After these builds, an upstream merge changed HalfBinomial and adaptive
+population. The recorded provider is the preceding snapshot and must be
+refreshed before claiming current-source coverage.
