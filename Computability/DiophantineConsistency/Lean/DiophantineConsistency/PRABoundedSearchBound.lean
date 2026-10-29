@@ -33,17 +33,14 @@ private theorem boundBody_eval {n : ℕ} (good : Code (n+1)) (x : M) (e : ℕ �
   rw [eqRel]
   have hs : (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (parameters n)) =
       Fin.cases x (fun i : Fin n => e i.val) := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
+    simpa [Function.comp_def, parameters] using
+      val_cases (.bvar 0) (parameters n) ![x] e
   have hp : (Semiterm.val ![x] e ∘ ![(searchTerm good), (.bvar 0 : Semiterm language ℕ 1)]) =
       ![Structure.func (L := language) (searchCode good) (Fin.cases x (fun i : Fin n => e i.val)), x] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · change Structure.func (L := language) (searchCode good)
-        (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (parameters n)) = _
-      rw [hs]
-      rfl
-    · exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    have hs' : (fun i => Semiterm.val ![x] e (Fin.cases (.bvar 0) (parameters n) i)) =
+        Fin.cases x (fun i : Fin n => e i.val) := hs
+    simpa [Semiterm.val_func, searchTerm, parameters, Function.comp_def, hs'] using
+      val_pair ![x] e (searchTerm good) (.bvar 0)
   change (Structure.rel (L := language) Language.ORing.Rel.lt
       (Semiterm.val ![x] e ∘ ![searchTerm good, .bvar 0]) ∨
     (Semiterm.val ![x] e ∘ ![searchTerm good, .bvar 0]) 0 =
