@@ -73,21 +73,11 @@ theorem solution_residues (b x y m : V) (hn : x*x=1+delta b*y*y) (hm : m∣b+1) 
   obtain ⟨r,s,hr,hs⟩ := residue_quotients time b m hm
   exact ⟨time,r,s,ht,hx,hy,by rwa [←hx],by rwa [←hy]⟩
 
-theorem y_add_ge (left right b : V) : ycoord left b+right≤ycoord (left+right) b := by
-  rw [(addition left right b).2]
-  calc
-    ycoord left b+right ≤ ycoord left b*xcoord right b+xcoord left b*ycoord right b :=
-      _root_.add_le_add (le_mul_of_one_le_right (Arithmetic.zero_le _) (one_le_x right b))
-        (le_trans (time_le_y right b) (le_mul_of_one_le_left (Arithmetic.zero_le _) (one_le_x left b)))
-    _ = _ := add_comm _ _
+theorem y_add_ge (left right b : V) : ycoord left b+right≤ycoord (left+right) b :=
+  ArithmeticPellRecurrence.ordinate_add_ge left right b
 
-theorem y_strictMono (b : V) : StrictMono (fun time : V => ycoord time b) := by
-  intro left right h
-  have hlt : ycoord left b<ycoord left b+(right-left) :=
-    lt_add_of_pos_right _ (tsub_pos_iff_lt.mpr h)
-  have hle := y_add_ge left (right-left) b
-  rw [add_tsub_cancel_of_le (le_of_lt h)] at hle
-  exact lt_of_lt_of_le hlt hle
+theorem y_strictMono (b : V) : StrictMono (fun time : V => ycoord time b) :=
+  ArithmeticPellRecurrence.ordinate_strictMono b
 
 theorem index_unique (b left right : V) (h : ycoord left b=ycoord right b) : left=right :=
   (y_strictMono b).injective h

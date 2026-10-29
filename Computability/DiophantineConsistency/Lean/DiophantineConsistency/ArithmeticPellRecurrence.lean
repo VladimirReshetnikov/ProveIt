@@ -159,4 +159,21 @@ theorem ordinate_lt_abscissa (b j : V) : ycoord j b<xcoord j b := by
     _=xcoord j b*xcoord j b := (norm j b).symm
 
 
+theorem ordinate_add_ge (left right b : V) : ycoord left b+right≤ycoord (left+right) b := by
+  rw [(addition left right b).2]
+  calc
+    ycoord left b+right ≤ ycoord left b*xcoord right b+xcoord left b*ycoord right b :=
+      _root_.add_le_add (le_mul_of_one_le_right (Arithmetic.zero_le _) (one_le_x right b))
+        (le_trans (time_le_y right b) (le_mul_of_one_le_left (Arithmetic.zero_le _) (one_le_x left b)))
+    _ = _ := add_comm _ _
+
+theorem ordinate_strictMono (b : V) : StrictMono (fun time : V => ycoord time b) := by
+  intro left right h
+  have hlt : ycoord left b<ycoord left b+(right-left) :=
+    lt_add_of_pos_right _ (tsub_pos_iff_lt.mpr h)
+  have hle := ordinate_add_ge left (right-left) b
+  rw [add_tsub_cancel_of_le (le_of_lt h)] at hle
+  exact lt_of_lt_of_le hlt hle
+
+
 end DiophantineConsistency.ArithmeticPellRecurrence

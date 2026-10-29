@@ -125,27 +125,9 @@ theorem strong_divisibility (b m n : V) :
           _=ycoord (gcdValue m n) b := by rw [gcd_comm n m]
   exact bounded (m+n) m (by simp) n (by simp) le_rfl
 
-private theorem y_add_ge (m r b : V) : ycoord m b+r≤ycoord (m+r) b := by
-  have h₁ : ycoord r b≤xcoord m b*ycoord r b := by
-    simpa only [one_mul] using mul_le_mul_of_nonneg_right (one_le_x m b)
-      (Arithmetic.zero_le (ycoord r b))
-  have h₂ : ycoord m b≤ycoord m b*xcoord r b := by
-    simpa only [mul_one] using mul_le_mul_of_nonneg_left (one_le_x r b)
-      (Arithmetic.zero_le (ycoord m b))
-  rw [(addition m r b).2]
-  calc
-    ycoord m b+r≤ycoord m b+ycoord r b := add_le_add le_rfl (time_le_y r b)
-    _≤ycoord m b*xcoord r b+xcoord m b*ycoord r b := add_le_add h₂ h₁
-    _=xcoord m b*ycoord r b+ycoord m b*xcoord r b := add_comm _ _
-
 /-- Actual growth, with no positive-modulus or standard-index assumption. -/
-theorem y_strictMono (b : V) : StrictMono (fun m : V => ycoord m b) := by
-  intro m n hmn
-  have hlt : ycoord m b<ycoord m b+(n-m) :=
-    lt_add_of_pos_right _ (tsub_pos_iff_lt.mpr hmn)
-  have hle := y_add_ge m (n-m) b
-  rw [add_tsub_cancel_of_le (le_of_lt hmn)] at hle
-  exact lt_of_lt_of_le hlt hle
+theorem y_strictMono (b : V) : StrictMono (fun m : V => ycoord m b) :=
+  ArithmeticPellRecurrence.ordinate_strictMono b
 
 theorem y_dvd_iff (b m n : V) : ycoord m b∣ycoord n b ↔ m∣n := by
   constructor
