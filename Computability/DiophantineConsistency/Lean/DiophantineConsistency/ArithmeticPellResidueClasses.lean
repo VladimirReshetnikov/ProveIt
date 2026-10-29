@@ -1,4 +1,5 @@
 import DiophantineConsistency.ArithmeticPellPeriodicity
+import DiophantineConsistency.ArithmeticModularCancellation
 
 /-! Complete first-coordinate residue classes at arbitrary internal indices.
 All arithmetic is in the IΣ1 model. The local positive target excludes the
@@ -17,15 +18,7 @@ theorem mod_add_congr (a b c m : V) (hm : 0<m) (h : a%m=b%m) :
 
 theorem mod_add_cancel (a b c m : V) (hm : 0<m)
     (h : (a+c)%m=(b+c)%m) : a%m=b%m := by
-  have hr := le_of_lt (mod_lt c hm)
-  have hc : c+(m-c%m)=m*(c/m+1) := by
-    calc
-      c+(m-c%m)=(m*(c/m)+c%m)+(m-c%m) := by rw [div_add_mod]
-      _=m*(c/m)+(c%m+(m-c%m)) := by ring
-      _=m*(c/m)+m := by rw [add_tsub_cancel_of_le hr]
-      _=m*(c/m+1) := by ring
-  have hh := mod_add_congr (a+c) (b+c) (m-c%m) m hm h
-  simpa only [add_assoc,hc,mod_add_mul' _ _ hm] using hh
+  exact ArithmeticModularCancellation.add_cancel hm h
 
 theorem mod_reduce (a m n : V) (hm : 0<m) (hdiv : m∣n) :
     (a%n)%m=a%m := by

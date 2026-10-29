@@ -1,4 +1,5 @@
 import DiophantineConsistency.ArithmeticStandardCasts
+import DiophantineConsistency.ArithmeticModularCancellation
 import DiophantineConsistency.ArithmeticCyclicWord
 import DiophantineConsistency.ArithmeticCellLabels
 
@@ -61,22 +62,11 @@ theorem mod_mod_of_dvd' {m n : V} (hm : 0 < m) (h : m ∣ n) (a : V) : a % n % m
 theorem eq_of_add_mod_eq {n x y e : V} (hx : x < n) (hy : y < n)
     (h : (x + e) % n = (y + e) % n) : x = y := by
   have hn : 0 < n := lt_of_le_of_lt (Arithmetic.zero_le x) hx
-  have hr := le_of_lt (mod_lt e hn)
-  have hc : e + (n - e % n) = n * (e / n + 1) := by
-    calc
-      e + (n - e % n) = (n * (e / n) + e % n) + (n - e % n) := by rw [div_add_mod]
-      _ = n * (e / n) + (e % n + (n - e % n)) := by ring
-      _ = n * (e / n) + n := by rw [add_tsub_cancel_of_le hr]
-      _ = n * (e / n + 1) := by ring
-  have hh : ((x + e) + (n - e % n)) % n = ((y + e) + (n - e % n)) % n := by
-    rw [mod_add (a := x + e) hn, mod_add (a := y + e) hn, h]
-  simpa only [add_assoc, hc, mod_add_mul' _ _ hn, mod_eq_self_of_lt hx,
-    mod_eq_self_of_lt hy] using hh
+  have he := ArithmeticModularCancellation.add_cancel hn h
+  simpa only [mod_eq_self_of_lt hx, mod_eq_self_of_lt hy] using he
 
 theorem mod_add_cancel {n a c d : V} (hn : 0 < n) (h : (a + d) % n = (c + d) % n) :
-    a % n = c % n := by
-  apply eq_of_add_mod_eq (e := d) (mod_lt a hn) (mod_lt c hn)
-  rw [mod_add_mod' hn, mod_add_mod' hn, h]
+    a % n = c % n := ArithmeticModularCancellation.add_cancel hn h
 
 theorem cyc_add_mod {n : V} (hn : 0 < n) (k e : V) : (cyc n k e + e) % n = k % n := by
   unfold cyc

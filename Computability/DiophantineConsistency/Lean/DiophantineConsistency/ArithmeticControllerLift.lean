@@ -1,4 +1,5 @@
 import DiophantineConsistency.ArithmeticPow
+import DiophantineConsistency.ArithmeticModularCancellation
 import Mathlib.Tactic.Ring
 
 /-! **K5a — p-adic lifting for the controller** (construction spec §7 K3 and
@@ -59,16 +60,8 @@ theorem mod_of_mul_mod (a : V) {M q : V} (hM : 0 < M) : (a % (M * q)) % M = a % 
 
 theorem add_cancel_mod {M a x y : V} (hM : 0 < M) (h : (a + x) % M = (a + y) % M) :
     x % M = y % M := by
-  have hlt : a % M ≤ M := (mod_lt a hM).le
-  have key : ∀ z, z % M = ((a + z) % M + (M - a % M)) % M := by
-    intro z
-    rw [mod_add_mod_left _ _ hM]
-    have he : a + z + (M - a % M) = z + M * (a / M + 1) := by
-      calc a + z + (M - a % M) = (M * (a / M) + a % M) + z + (M - a % M) := by rw [div_add_mod]
-        _ = z + M * (a / M) + (a % M + (M - a % M)) := by ring
-        _ = z + M * (a / M + 1) := by rw [add_tsub_cancel_of_le hlt]; ring
-    rw [he, mod_add_mul' _ _ hM]
-  rw [key x, h, ← key y]
+  exact ArithmeticModularCancellation.add_cancel (a := x) (b := y) (c := a) hM
+    (by simpa only [add_comm] using h)
 
 theorem mul_cancel_left {k a b : V} (hk : 0 < k) (h : k * a = k * b) : a = b :=
   le_antisymm (le_of_mul_le_mul_left h.le hk) (le_of_mul_le_mul_left h.ge hk)
