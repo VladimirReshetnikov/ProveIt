@@ -2099,5 +2099,14 @@ registrations match; the wider closure remains cached. The compact [evidence
 note](../../reviews/lean-proof-simplification-20261029-pell-bound-coord.md)
 records hashes and external paths without raw logs or objects.
 
+The half-index positivity simplification `d2be49222c` removes four net Lean
+lines, bringing the reviewed series to 10362. The positive ordinate shows the
+classification index is nonzero, replacing a zero contradiction. Paired target
+and three direct-client builds pass with identical client objects; checked
+declarations and sampled registrations match. Ten project providers have
+source-matched receipts; the wider closure remains cached. The compact [evidence
+note](../../reviews/lean-proof-simplification-20261029-pell-half-p-pos.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
