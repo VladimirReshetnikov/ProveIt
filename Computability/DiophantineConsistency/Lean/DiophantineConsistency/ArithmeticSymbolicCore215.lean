@@ -368,9 +368,7 @@ lemma flatTok_normL (gap : V) (v : Fin 9 → V) (k : V) (xs : List Seg) :
     cases t with
     | box x => rfl
     | run b a c =>
-      cases b with
-      | true => rfl
-      | false => simp [List.reverse_cons,flatTok_append,flatTok,tokValue,bitPrefix]
+      cases b <;> simp [List.reverse_cons,flatTok_append,flatTok,tokValue,bitPrefix]
 theorem matches_actual (gap : V) (v : Fin 9 → V) (k : V) {s t : SConf}
     (h : KRuntimeCore.sMatches s t=true) : interpret gap v k s=interpret gap v k t := by
   obtain ⟨q,onl,l,r⟩ := s
@@ -401,10 +399,8 @@ lemma file_nat (vs : List Nat) (xs : List Bool) :
   | cons v vs ih =>
     simp only [KRuntimeCore.sepsR,List.flatMap_cons,List.cons_append,List.append_assoc,
       bitsCode,Bool.toNat_false,zero_add,file,block]
-    rw [bitsCode_prefix]
-    change 2*bitPrefix true (v+1) (file vs (bitsCode xs))=
-      2*bitPrefix true (v+1) (bitsCode (KRuntimeCore.sepsR vs++xs))
-    rw [ih]
+    rw [bitsCode_prefix, ih]
+    rfl
 lemma repeat3_nat (k : Nat) (xs : List Bool) :
     repeat3 6 k (bitsCode xs)=bitsCode (KRuntimeCore.sepsR (List.replicate k 1)++xs) := by
   induction k with
