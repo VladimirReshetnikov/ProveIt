@@ -23,7 +23,9 @@ continuation still needs a current-source replay.
 Another subsequent merge changed HalfBinomial, AdaptivePopulation2011 and the
 14-variable HalfBinomial wrapper. The affected adaptive suffix has now
 [passed author and independent replays](reviews/adaptive-halfindex-postmerge2011-author.md).
-The separate Pell rebase and the 14-variable wrapper remain outside that replay.
+The separate Pell rebase and AuxBind client also passed independent replays
+against the refreshed provider; the 14-variable wrapper remains outside that
+suffix.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream
