@@ -1694,5 +1694,13 @@ identical client objects; 232 common declaration reports and the sampled
 registrations match. Two generated private names disappear and one is added;
 the wider dependency closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-weight-congruence-evidence/BUNDLE.json).
 
+The run-trace head-step simplification `3735d55690` removes nine net Lean
+lines, bringing the reviewed series to 10017. The affected proofs originated
+in Claude-coauthored commit `5fcd5632b3`. The existing conditional cases use
+the order simplifier and subtraction bound directly. Paired RunTrace and
+TilingTable builds pass; 79 target and 73 client declaration reports and
+sampled registrations match. Client object bytes differ for an unknown reason,
+and the transitive closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-runtrace-step-bound-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
