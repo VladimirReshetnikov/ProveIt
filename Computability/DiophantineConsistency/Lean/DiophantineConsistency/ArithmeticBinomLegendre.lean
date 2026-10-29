@@ -29,25 +29,21 @@ theorem cancel_left {c x y : V} (hc : 0<c) (h : c*x=c*y) : x=y :=
 
 /-- Every positive element is a power of two times an odd element. -/
 theorem two_adic (b : V) (hb : 0<b) : ∃ j o, (∃ z, o=2*z+1) ∧ b=Exp.exp j*o := by
-  have all : ∀ b : V, 0<b → ∃ j o, (∃ z, o=2*z+1) ∧ b=Exp.exp j*o := by
-    intro b
-    induction b using ISigma1.sigma1_order_induction
-    · definability
-    case ind b ih =>
-      intro hb
-      rcases even_or_odd b with ⟨x,hx|hx⟩
-      · have hx0 : 0<x := by
-          rcases zero_or_succ x with rfl|⟨y,rfl⟩
-          · simp [hx] at hb
-          · simp
-        have hxb : x<b := by
-          rw [hx]
-          have := add_lt_add_left hx0 x
-          simpa [two_mul] using this
-        rcases ih x hxb hx0 with ⟨j,o,ho,hxo⟩
-        exact ⟨j+1,o,ho,by rw [hx,hxo,exp_succ]; ring⟩
-      · exact ⟨0,b,⟨x,hx⟩,by simp⟩
-  exact all b hb
+  induction b using ISigma1.sigma1_order_induction with
+  | hP => definability
+  | ind b ih =>
+    rcases even_or_odd b with ⟨x,hx|hx⟩
+    · have hx0 : 0<x := by
+        rcases zero_or_succ x with rfl|⟨y,rfl⟩
+        · simp [hx] at hb
+        · simp
+      have hxb : x<b := by
+        rw [hx]
+        have := add_lt_add_left hx0 x
+        simpa [two_mul] using this
+      rcases ih x hxb hx0 with ⟨j,o,ho,hxo⟩
+      exact ⟨j+1,o,ho,by rw [hx,hxo,exp_succ]; ring⟩
+    · exact ⟨0,b,⟨x,hx⟩,by simp⟩
 
 /-- An odd factor prevents an additional power of two. -/
 private theorem exp_odd_ge {j p o t : V} (ho : ∃ z, o=2*z+1)
@@ -151,26 +147,22 @@ theorem le_population_of_exp_dvd_central (r m : V) (h : Exp.exp m∣binom (2*r) 
   rw [←hv,ht]
 
 theorem population_pos (r : V) (hr : 0<r) : 0<population r := by
-  have all : ∀ r : V, 0<r → 0<population r := by
-    intro r
-    induction r using ISigma1.sigma1_order_induction
-    · definability
-    case ind r ih =>
-      intro hr
-      rcases even_or_odd r with ⟨m,hm|hm⟩
-      · have hm0 : 0<m := by
-          rcases zero_or_succ m with rfl|⟨y,rfl⟩
-          · simp [hm] at hr
-          · simp
-        have hmr : m<r := by
-          rw [hm]
-          have := add_lt_add_left hm0 m
-          simpa [two_mul] using this
-        rw [hm,population_even]
-        exact ih m hmr hm0
-      · rw [hm,population_odd]
-        simp
-  exact all r hr
+  induction r using ISigma1.sigma1_order_induction with
+  | hP => definability
+  | ind r ih =>
+    rcases even_or_odd r with ⟨m,hm|hm⟩
+    · have hm0 : 0<m := by
+        rcases zero_or_succ m with rfl|⟨y,rfl⟩
+        · simp [hm] at hr
+        · simp
+      have hmr : m<r := by
+        rw [hm]
+        have := add_lt_add_left hm0 m
+        simpa [two_mul] using this
+      rw [hm,population_even]
+      exact ih m hmr hm0
+    · rw [hm,population_odd]
+      simp
 
 /-- The central binomial coefficient is even at positive `r`. -/
 theorem two_dvd_central (r : V) (hr : 0<r) : 2∣binom (2*r) r := by
