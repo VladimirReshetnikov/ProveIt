@@ -1,0 +1,5 @@
+import DiophantineConsistency.ParsonsGlobalStrict
+#print axioms DiophantineConsistency.ParsonsGlobalStrict.stable_shift
+#print axioms DiophantineConsistency.ParsonsGlobalStrict.stable_select
+#print axioms DiophantineConsistency.ParsonsGlobalStrict.translate_aux
+#print axioms DiophantineConsistency.ParsonsGlobalStrict.translate
