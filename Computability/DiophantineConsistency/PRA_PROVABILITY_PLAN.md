@@ -46,6 +46,10 @@ from the actual normalized cut-free proof, retains occurrence-specific tags,
 handles its base-only and contraction branches, and recovers the original
 conclusion from a marked-output proof. The output proof and global induction
 remain open.
+The [marked induction-block cases](reviews/parsons-marked-block-root.md)
+handle parameter opening and the final counter-witness under an explicit Σ₁
+side-guard hypothesis and smaller local recursive proofs. Deriving that guard
+from a general Π₂ context and assembling the global induction remain open.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
 now reaches [exact Pell indices](reviews/adaptive-exact-indices2011-root.md),
