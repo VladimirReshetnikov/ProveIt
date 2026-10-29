@@ -111,45 +111,19 @@ theorem dmap_add {P o ε ε' last i i' e : V} (he : e < P)
     (hdisj : ¬ Sel o ε last i (zc P e))
     (hinj : ∀ e' < P, zc P e' = zc P e → e' = e) (j : V) :
     dmap P o ε' last i' j = dmap P o ε last i j + pt (pos e) j := by
-  have hpe := isPos_pos he
   by_cases hj : IsPos P j
-  · obtain ⟨e', he'⟩ : ∃ e', (j - 2) / 120198 = e' := ⟨_, rfl⟩
-    have hje : j = pos e' := by rw [← he']; exact pos_decode hj
-    have he'P : e' < P := by rw [← he']; exact hj.2.2
-    have hd : ∀ ε0 i0, dmap P o ε0 last i0 j = if Sel o ε0 last i0 (zc P e') then 1 else 0 := by
-      intro ε0 i0
-      unfold dmap
-      rw [he']
-      exact if_congr (and_iff_right hj) rfl rfl
-    rw [hd, hd]
-    by_cases h1 : Sel o ε last i (zc P e')
-    · have hne : j ≠ pos e := by
-        intro hc
-        rw [hje] at hc
-        exact hdisj (pos_inj hc ▸ h1)
-      have hpt : pt (pos e) j = 0 := by unfold pt; rw [if_neg hne]
-      rw [if_pos ((hiff _).mpr (Or.inl h1)), if_pos h1, hpt, add_zero]
-    · by_cases h2 : zc P e' = zc P e
-      · have hee : e' = e := hinj e' he'P h2
-        have hpt : pt (pos e) j = 1 := by unfold pt; rw [if_pos (by rw [hje, hee])]
-        rw [if_pos ((hiff _).mpr (Or.inr h2)), if_neg h1, hpt, zero_add]
-      · have hne : j ≠ pos e := by
-          intro hc
-          rw [hje] at hc
-          exact h2 (by rw [pos_inj hc])
-        have h3 : ¬ Sel o ε' last i' (zc P e') := fun hs => by
-          rcases (hiff _).mp hs with h | h
-          · exact h1 h
-          · exact h2 h
-        have hpt : pt (pos e) j = 0 := by unfold pt; rw [if_neg hne]
-        rw [if_neg h3, if_neg h1, hpt, add_zero]
-  · have hne : j ≠ pos e := fun hc => hj (hc ▸ hpe.1)
-    have hd : ∀ ε0 i0, dmap P o ε0 last i0 j = 0 := by
-      intro ε0 i0
-      unfold dmap
-      rw [if_neg (fun h => hj h.1)]
-    have hpt : pt (pos e) j = 0 := by unfold pt; rw [if_neg hne]
-    rw [hd, hd, hpt, add_zero]
+  · have hdecode : zc P ((j - 2) / 120198) = zc P e ↔ j = pos e := by
+      constructor
+      · intro h
+        rw [pos_decode hj, hinj _ hj.2.2 h]
+      · intro h
+        rw [h, (isPos_pos he).2]
+    by_cases h : j = pos e
+    · subst j
+      simp [dmap, pt, (isPos_pos he).1, (isPos_pos he).2, hiff, hdisj]
+    · simp [dmap, pt, hj, hiff, hdecode, h]
+  · have hne : j ≠ pos e := fun h => hj (h ▸ (isPos_pos he).1)
+    simp [dmap, pt, hj, hne]
 
 /-! ## The progression sum, by induction -/
 
