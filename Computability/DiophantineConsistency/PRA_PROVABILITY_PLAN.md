@@ -21,8 +21,9 @@ the 14-variable wrapper is outside their scope. The AuxBind client has also
 been replayed twice against the refreshed provider; the later CellWindow
 continuation still needs a current-source replay.
 Another subsequent merge changed HalfBinomial, AdaptivePopulation2011 and the
-14-variable HalfBinomial wrapper. The adaptive replays again describe the
-preceding snapshot; their affected descendants need rebuilding.
+14-variable HalfBinomial wrapper. The affected adaptive suffix has now
+[passed author and independent replays](reviews/adaptive-halfindex-postmerge2011-author.md).
+The separate Pell rebase and the 14-variable wrapper remain outside that replay.
 
 A subsequent upstream merge changed eleven PRA prerequisites, including the
 Boolean, exhaustion, search and order modules. The [43-module downstream

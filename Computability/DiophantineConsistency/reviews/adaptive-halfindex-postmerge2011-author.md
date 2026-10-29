@@ -1,0 +1,9 @@
+# Adaptive clients after the half-index refactor
+
+An author replay passed the 17-module affected suffix from the updated `ArithmeticHalfBinomial` through the adaptive population, actual-zero window, and six reverse-construction clients with their checks. It uses the independently accepted prior rank-lower provider; this is a suffix replay, not a fresh build of the full transitive closure. Independent replay at `/tmp/adaptive13-halfindex-postmerge-o966bwvc` passed with all seventeen source, object and complete-log hashes matching the author run.
+
+The upstream update adds `ArithmeticHalfBinomial.half_index_of_ge_five` and changes the adaptive population proof to use it. Existing adaptive theorem statements are unchanged. The 14-variable HalfBinomial2011 wrapper also changed upstream but is outside this adaptive suffix. The replay excludes all 17 affected inherited objects, checks unchanged prior population/window-refresh source records and Pell recurrence provenance, snapshots every rebuilt source, and rechecks the inherited provider hashes and current sources at completion.
+
+All modules exited successfully without source warnings; the check modules report `propext`, `Classical.choice`, and `Quot.sound`. The [58-file author evidence manifest](adaptive-halfindex-postmerge2011-author-evidence/FILES.json) has SHA256 `d87c8d379c684652e0f0139cbb35b899fd0c94fc1b9318d285bf6ea5a909e23a`. It preserves the driver, provider manifest, prior state records, rebuilt sources, complete logs and timing records. The author provider is `/tmp/adaptive13-halfindex-postmerge-7yq1jla9/lib`; package and toolchain interiors remain inherited boundaries.
+
+The OuterSeed and ConstructionBoundPell branch, AuxBind, and the machine-halting/CellWindow closure require separate source-current replays. This result does not establish existence of a syntactic HA proof.
