@@ -1,3 +1,4 @@
+import ZFCinPA.SchemaSourceSyntax
 import ZFCinPA.NativeSchemaSem
 import ZFCinPA.NativePeel
 import ZFCinPA.SubstIdentity
@@ -46,12 +47,9 @@ local instance {k : ℕ} {arities : Fin k → ℕ} : Language.Mem (setTemplateLa
 
 /-! ## The source bodies as template translations -/
 
-lemma emb_sepS : (Rewriting.emb sepS : Proposition SL) = sepBodySource (Rewriting.emb R1) := by
-  simp [sepS, sepBodySource, R1]
+lemma emb_sepS : (Rewriting.emb sepS : Proposition SL) = sepBodySource (Rewriting.emb R1) := SchemaSourceSyntax.emb_sepS
 
-lemma emb_repS : (Rewriting.emb repS : Proposition RL) = repBodySource (Rewriting.emb R2) := by
-  simp [repS, repBodySource, R2, FirstOrder.Semiformula.existsUnique,
-    FirstOrder.Semiformula.bexsMem, LO.FirstOrder.bexs]
+lemma emb_repS : (Rewriting.emb repS : Proposition RL) = repBodySource (Rewriting.emb R2) := SchemaSourceSyntax.emb_repS
 
 section Internal
 
@@ -59,36 +57,19 @@ variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 lemma subst_bvar0 (K : Bootstrapping.Semiformula V ℒₛₑₜ 1)
     (w : Bootstrapping.SemitermVec V ℒₛₑₜ 1 1) (hw : w 0 = .bvar 0) :
-    (K.subst w).val = K.val := by
-  apply SubstIdentity.Semiformula.subst_bvarVec_val K w
-  intro i
-  rw [Fin.fin_one_eq_zero i, hw]
-  rfl
+    (K.subst w).val = K.val := SchemaSourceSyntax.subst_bvar0 K w hw
 
 lemma subst_bvar01 (K : Bootstrapping.Semiformula V ℒₛₑₜ 2)
     (w : Bootstrapping.SemitermVec V ℒₛₑₜ 2 2) (hw0 : w 0 = .bvar 0) (hw1 : w 1 = .bvar 1) :
-    (K.subst w).val = K.val := by
-  apply SubstIdentity.Semiformula.subst_bvarVec_val K w
-  intro i
-  match i with
-  | 0 => rw [hw0]; rfl
-  | 1 => rw [hw1]; rfl
+    (K.subst w).val = K.val := SchemaSourceSyntax.subst_bvar01 K w hw0 hw1
 
 lemma translate_sepS (K : Bootstrapping.Semiformula V ℒₛₑₜ 1) :
     (translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb sepS : Proposition SL)).val =
-      sepBodyVal K.val := by
-  rw [emb_sepS, translate_sepBodySource]
-  have e : translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb R1 : Semiproposition SL 1) = K :=
-    Bootstrapping.Semiformula.ext (subst_bvar0 K _ rfl)
-  rw [e, sepBodyVal_eq K]
+      sepBodyVal K.val := SchemaSourceSyntax.translate_sepS K
 
 lemma translate_repS (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
     (translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb repS : Proposition RL)).val =
-      repBodyVal K.val := by
-  rw [emb_repS, translate_repBodySource]
-  have e : translateFormula (fun _ : Fin 1 ↦ K) (Rewriting.emb R2 : Semiproposition RL 2) = K :=
-    Bootstrapping.Semiformula.ext (subst_bvar01 K _ rfl rfl)
-  rw [e, repBodyVal_eq K]
+      repBodyVal K.val := SchemaSourceSyntax.translate_repS K
 
 /-! ## Transport of equality-logic theorems -/
 
