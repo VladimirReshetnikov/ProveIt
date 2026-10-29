@@ -84,6 +84,28 @@ def alpha (d K N s : V) (X : V → V) : V := Exp.exp (d * N) - Cw d N X - Fw d K
 /-- The transport quotient for multiplier `W`. -/
 def zq (d K N W : V) (X : V → V) : V := (K + W) * Cw d N X / (Exp.exp (d * N) - 1) + 1
 
+/-- `rot X e + (B^n − 1)·(X / B^(n−e)) = B^e·X`. -/
+theorem rot_identity (w n X e : V) (he : e ≤ n) :
+    rot w n X e + (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) =
+      Exp.exp (w * e) * X := by
+  unfold rot
+  have hX := div_add_mod X (Exp.exp (w * (n - e)))
+  have hn : Exp.exp (w * n) = Exp.exp (w * (n - e)) * Exp.exp (w * e) := by
+    rw [← exp_mul_add, tsub_add_cancel_of_le he]
+  have h1 : (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) + X / Exp.exp (w * (n - e)) =
+      Exp.exp (w * n) * (X / Exp.exp (w * (n - e))) := by
+    rw [show (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) + X / Exp.exp (w * (n - e)) =
+      (Exp.exp (w * n) - 1 + 1) * (X / Exp.exp (w * (n - e))) by ring,
+      tsub_add_cancel_of_le (one_le_exp _)]
+  calc X % Exp.exp (w * (n - e)) * Exp.exp (w * e) + X / Exp.exp (w * (n - e)) +
+        (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e)))
+      = X % Exp.exp (w * (n - e)) * Exp.exp (w * e) +
+          ((Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) +
+            X / Exp.exp (w * (n - e))) := by ring
+    _ = Exp.exp (w * e) * (Exp.exp (w * (n - e)) * (X / Exp.exp (w * (n - e))) +
+          X % Exp.exp (w * (n - e))) := by rw [h1, hn]; ring
+    _ = _ := by rw [hX]
+
 section main
 variable {d K MC HP N s : V} {X : V → V} [𝚺₁-Function₁ X]
   (h : PackingInput d K MC HP N s X)
@@ -141,10 +163,10 @@ theorem F_lt_M : Fw d K N s X < Exp.exp (d * N) - 1 := by
   apply lt_tsub_of_add_lt_left
   exact lt_of_le_of_lt (add_le_add (pos_iff_one_le.mp hC) le_rfl) hlt
 
-/-- The transport residue: `(K + B^s)·C ≡ F (mod q-1)`. -/
-theorem transport_residue :
-    ((K + Exp.exp (d * s)) * Cw d N X) % (Exp.exp (d * N) - 1) = Fw d K N s X := by
-  have hM := q_pos' h
+theorem transport_formula :
+    Fw d K N s X + (Exp.exp (d * N) - 1) *
+        (bsum d (hi d K X) N / Exp.exp (d * (N - 1)) + Cw d N X / Exp.exp (d * (N - s))) =
+      (K + Exp.exp (d * s)) * Cw d N X := by
   have hX := X_lt h
   have hB := blk_lt h
   have hlo : ∀ j < N, lo d K X j < Exp.exp d := fun j _ => mod_lt _ (exp_pos d)
@@ -152,13 +174,7 @@ theorem transport_residue :
     div_lt_of_lt_mul (h.hi_lt j hj)
   have hsplit : ∀ j < N, K * X j = lo d K X j + Exp.exp d * hi d K X j := fun j _ => by
     rw [lo, hi, add_comm]; exact (div_add_mod _ _).symm
-  -- K·C = Σ lo + B·Σ hi
   have e1 := bsum_mul_split (w := d) (f := X) K (lo := lo d K X) (hi := hi d K X) hX hlo hhi hsplit
-  -- B·Σ hi ≡ Σ hi∘cyc1 and B^s·C ≡ Σ X∘cycs
-  have e2 := bsum_cyc_mod (w := d) (f := hi d K X) (e := 1) h.N_gt hhi hM
-  have e3 := bsum_cyc_mod (w := d) (f := X) (e := s) h.s_lt hX hM
-  rw [mul_one] at e2
-  -- F = Σ lo + Σ hi∘cyc1 + Σ X∘cycs
   haveI : 𝚺₁-Function₁ (fun j => hi d K X (cyc N j 1)) := by definability
   haveI : 𝚺₁-Function₁ (fun j => X (cyc N j s)) := by definability
   haveI : 𝚺₁-Function₁ (fun j => lo d K X j + hi d K X (cyc N j 1)) := by definability
@@ -169,22 +185,32 @@ theorem transport_residue :
       bsum d (lo d K X) N + bsum d (fun j => hi d K X (cyc N j 1)) N :=
     bsum_add (fun j hj => lt_of_le_of_lt (le_add_of_nonneg_right (Arithmetic.zero_le _)) (hB j hj))
       (fun _ _ => rfl)
-  have hadd : ∀ x y x' y' : V, x % (Exp.exp (d * N) - 1) = x' % (Exp.exp (d * N) - 1) →
-      y % (Exp.exp (d * N) - 1) = y' % (Exp.exp (d * N) - 1) →
-      (x + y) % (Exp.exp (d * N) - 1) = (x' + y') % (Exp.exp (d * N) - 1) := by
-    intro x y x' y' hx hy
-    rw [mod_add hM, hx, hy, ← mod_add hM]
-  have hres : ((K + Exp.exp (d * s)) * Cw d N X) % (Exp.exp (d * N) - 1) =
-      Fw d K N s X % (Exp.exp (d * N) - 1) := by
-    calc ((K + Exp.exp (d * s)) * Cw d N X) % (Exp.exp (d * N) - 1)
-        = ((bsum d (lo d K X) N + Exp.exp d * bsum d (hi d K X) N) +
-            Exp.exp (d * s) * bsum d X N) % (Exp.exp (d * N) - 1) := by
-          rw [add_mul, Cw, e1]
-      _ = ((bsum d (lo d K X) N + bsum d (fun j => hi d K X (cyc N j 1)) N) +
-            bsum d (fun j => X (cyc N j s)) N) % (Exp.exp (d * N) - 1) :=
-          hadd _ _ _ _ (hadd _ _ _ _ rfl e2) e3
-      _ = Fw d K N s X % (Exp.exp (d * N) - 1) := by rw [hF1, hF2]
-  rw [hres, mod_eq_self_of_lt (F_lt_M h)]
+  have hc1 := bsum_cyc (w := d) (f := hi d K X) (e := 1) h.N_gt hhi
+  have hcs := bsum_cyc (w := d) (f := X) (e := s) h.s_lt hX
+  have r1 := rot_identity d N (bsum d (hi d K X) N) 1 h.N_gt.le
+  have rs := rot_identity d N (bsum d X N) s h.s_lt.le
+  rw [mul_one] at r1
+  rw [hF1, hF2, hc1, hcs, Cw]
+  calc bsum d (lo d K X) N + rot d N (bsum d (hi d K X) N) 1 + rot d N (bsum d X N) s +
+        (Exp.exp (d * N) - 1) * (bsum d (hi d K X) N / Exp.exp (d * (N - 1)) +
+          bsum d X N / Exp.exp (d * (N - s)))
+      = bsum d (lo d K X) N + (rot d N (bsum d (hi d K X) N) 1 +
+          (Exp.exp (d * N) - 1) * (bsum d (hi d K X) N / Exp.exp (d * (N - 1)))) +
+        (rot d N (bsum d X N) s + (Exp.exp (d * N) - 1) * (bsum d X N / Exp.exp (d * (N - s)))) := by
+        ring
+    _ = bsum d (lo d K X) N + Exp.exp d * bsum d (hi d K X) N +
+        Exp.exp (d * s) * bsum d X N := by rw [r1, rs]
+    _ = _ := by rw [← e1]; ring
+
+
+/-- The transport residue: `(K + B^s)·C ≡ F (mod q-1)`. -/
+theorem transport_residue :
+    ((K + Exp.exp (d * s)) * Cw d N X) % (Exp.exp (d * N) - 1) = Fw d K N s X := by
+  have hM := q_pos' h
+  have hm := congrArg (fun z : V => z % (Exp.exp (d * N) - 1)) (transport_formula h)
+  rw [mod_add hM, mod_mul hM, mod_self, zero_mul, zero_mod, add_zero,
+    mod_eq_self_of_lt (F_lt_M h)] at hm
+  simpa only [mod_eq_self_of_lt (F_lt_M h)] using hm.symm
 
 /-- **Transport.** For every multiplier `W ≡ B^s (mod q-1)`,
 `(K+W)·C + (q-F) = z·(q-1) + 1` with `z = ⌊(K+W)C/(q-1)⌋ + 1`. -/

@@ -55,24 +55,7 @@ theorem bsum_div {w : V} {f : V → V} [𝚺₁-Function₁ f] {n k : V} (hk : k
 /-- `rot X e + (B^n − 1)·(X / B^(n−e)) = B^e·X`. -/
 theorem rot_identity (w n X e : V) (he : e ≤ n) :
     rot w n X e + (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) =
-      Exp.exp (w * e) * X := by
-  unfold rot
-  have hX := div_add_mod X (Exp.exp (w * (n - e)))
-  have hn : Exp.exp (w * n) = Exp.exp (w * (n - e)) * Exp.exp (w * e) := by
-    rw [← exp_mul_add, tsub_add_cancel_of_le he]
-  have h1 : (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) + X / Exp.exp (w * (n - e)) =
-      Exp.exp (w * n) * (X / Exp.exp (w * (n - e))) := by
-    rw [show (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) + X / Exp.exp (w * (n - e)) =
-      (Exp.exp (w * n) - 1 + 1) * (X / Exp.exp (w * (n - e))) by ring,
-      tsub_add_cancel_of_le (one_le_exp _)]
-  calc X % Exp.exp (w * (n - e)) * Exp.exp (w * e) + X / Exp.exp (w * (n - e)) +
-        (Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e)))
-      = X % Exp.exp (w * (n - e)) * Exp.exp (w * e) +
-          ((Exp.exp (w * n) - 1) * (X / Exp.exp (w * (n - e))) +
-            X / Exp.exp (w * (n - e))) := by ring
-    _ = Exp.exp (w * e) * (Exp.exp (w * (n - e)) * (X / Exp.exp (w * (n - e))) +
-          X % Exp.exp (w * (n - e))) := by rw [h1, hn]; ring
-    _ = _ := by rw [hX]
+      Exp.exp (w * e) * X := ArithmeticPacking.rot_identity w n X e he
 
 /-! ## The exact transport identity -/
 
@@ -84,41 +67,7 @@ include h
 theorem F_formula :
     Fw d K N s X + (Exp.exp (d * N) - 1) *
         (bsum d (hi d K X) N / Exp.exp (d * (N - 1)) + Cw d N X / Exp.exp (d * (N - s))) =
-      (K + Exp.exp (d * s)) * Cw d N X := by
-  have hX := X_lt h
-  have hB := blk_lt h
-  have hlo : ∀ j < N, lo d K X j < Exp.exp d := fun j _ => mod_lt _ (exp_pos d)
-  have hhi : ∀ j < N, hi d K X j < Exp.exp d := fun j hj =>
-    div_lt_of_lt_mul (h.hi_lt j hj)
-  have hsplit : ∀ j < N, K * X j = lo d K X j + Exp.exp d * hi d K X j := fun j _ => by
-    rw [lo, hi, add_comm]; exact (div_add_mod _ _).symm
-  have e1 := bsum_mul_split (w := d) (f := X) K (lo := lo d K X) (hi := hi d K X) hX hlo hhi hsplit
-  haveI : 𝚺₁-Function₁ (fun j => hi d K X (cyc N j 1)) := by definability
-  haveI : 𝚺₁-Function₁ (fun j => X (cyc N j s)) := by definability
-  haveI : 𝚺₁-Function₁ (fun j => lo d K X j + hi d K X (cyc N j 1)) := by definability
-  have hF1 : Fw d K N s X = bsum d (fun j => lo d K X j + hi d K X (cyc N j 1)) N +
-      bsum d (fun j => X (cyc N j s)) N :=
-    bsum_add (fun j hj => hB j hj) (fun _ _ => rfl)
-  have hF2 : bsum d (fun j => lo d K X j + hi d K X (cyc N j 1)) N =
-      bsum d (lo d K X) N + bsum d (fun j => hi d K X (cyc N j 1)) N :=
-    bsum_add (fun j hj => lt_of_le_of_lt (le_add_of_nonneg_right (Arithmetic.zero_le _)) (hB j hj))
-      (fun _ _ => rfl)
-  have hc1 := bsum_cyc (w := d) (f := hi d K X) (e := 1) h.N_gt hhi
-  have hcs := bsum_cyc (w := d) (f := X) (e := s) h.s_lt hX
-  have r1 := rot_identity d N (bsum d (hi d K X) N) 1 h.N_gt.le
-  have rs := rot_identity d N (bsum d X N) s h.s_lt.le
-  rw [mul_one] at r1
-  rw [hF1, hF2, hc1, hcs, Cw]
-  calc bsum d (lo d K X) N + rot d N (bsum d (hi d K X) N) 1 + rot d N (bsum d X N) s +
-        (Exp.exp (d * N) - 1) * (bsum d (hi d K X) N / Exp.exp (d * (N - 1)) +
-          bsum d X N / Exp.exp (d * (N - s)))
-      = bsum d (lo d K X) N + (rot d N (bsum d (hi d K X) N) 1 +
-          (Exp.exp (d * N) - 1) * (bsum d (hi d K X) N / Exp.exp (d * (N - 1)))) +
-        (rot d N (bsum d X N) s + (Exp.exp (d * N) - 1) * (bsum d X N / Exp.exp (d * (N - s)))) := by
-        ring
-    _ = bsum d (lo d K X) N + Exp.exp d * bsum d (hi d K X) N +
-        Exp.exp (d * s) * bsum d X N := by rw [r1, rs]
-    _ = _ := by rw [← e1]; ring
+      (K + Exp.exp (d * s)) * Cw d N X := ArithmeticPacking.transport_formula h
 
 end formula
 
