@@ -1757,5 +1757,13 @@ target and two direct clients pass with identical client objects. The combined
 replay through the adopted PowerRecovery proof passes with identical objects;
 the wider dependency closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-first-positive-evidence/BUNDLE.json).
 
+The cyclic rotation modulo simplification `5c94a5dd2d` removes three net Lean
+lines, bringing the reviewed series to 10049. The affected proof originated in
+Claude-coauthored commit `5fcd5632b3`. It uses the quotient-remainder identity
+without an intermediate reordered decomposition. Paired target and three direct
+clients pass; two client objects match, while WindowCarry objects differ for an
+unknown reason despite matching checked interfaces. The transitive closure
+remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cyclic-rot-mod-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
