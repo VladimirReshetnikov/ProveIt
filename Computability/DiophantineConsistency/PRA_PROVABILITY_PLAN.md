@@ -113,6 +113,9 @@ with standard PRA or establish a witnessing or conservation theorem.
 The [universal syntax certificate](reviews/pra-universal-syntax-root.md) now
 proves that every axiom in that presentation has a universal prefix and an
 open matrix. An effective recognition theorem is still required.
+The [finite witness selector](reviews/pra-finite-witness-root.md) collapses a
+provable finite disjunction of explicit candidate witnesses to one fixed PR
+witness. Extraction of that disjunction from a general proof remains open.
 
 The [adaptive 13-variable expression binding](reviews/adaptive-expression2011-root.md)
 now identifies the exact accepted polynomial and proves its single positive
