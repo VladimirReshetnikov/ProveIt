@@ -51,11 +51,8 @@ private theorem subst01_quote (K : SetTheorySemiproposition 2) :
     subst ℒₛₑₜ ((^#0∷^#1∷0) : ℕ) (⌜K⌝ : ℕ) = ⌜K⌝ := by
   apply Bootstrapping.subst_eq_self (FirstOrder.Semiformula.quote_isSemiformula K) (by simp)
   intro i hi
-  rcases zero_or_succ i with rfl | ⟨j,rfl⟩
-  · simp
-  · have : j=0 := by omega
-    subst j
-    simp
+  have : i=0 ∨ i=1 := by omega
+  rcases this with rfl | rfl <;> simp
 
 private theorem negative_core_le_body (k : V) :
     Bootstrapping.neg ℒₛₑₜ (subst ℒₛₑₜ (^#0∷^#1∷0) k) ≤ fullSeedBodyVal k := by
@@ -74,9 +71,7 @@ theorem recognizerBody_quote_bound (K : SetTheorySemiproposition 2) :
   rw [subst01_quote,quote_negative] at h
   have hk := FirstOrder.Semiformula.quote_isSemiformula (V := ℕ) K
   rw [hk.isUFormula.neg_neg] at h
-  rcases le_def.mp h with h|h
-  · exact Nat.le_of_eq h
-  · exact Nat.le_of_lt h
+  exact (le_def.mp h).elim Nat.le_of_eq Nat.le_of_lt
 
 private def mem01Code : ℕ := ⌜seedMem 3 0 1⌝
 private def mem05Code : ℕ := ⌜seedMem 7 0 5⌝
