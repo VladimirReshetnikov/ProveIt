@@ -1,0 +1,7 @@
+import DiophantineConsistency.ParsonsGuardTree
+#print axioms DiophantineConsistency.ParsonsGuardTree.rewrite
+#print axioms DiophantineConsistency.ParsonsGuardTree.choose
+#print axioms DiophantineConsistency.ParsonsGuardTree.nodes_rew
+#print axioms DiophantineConsistency.ParsonsGuardTree.nodes_all
+#print axioms DiophantineConsistency.ParsonsGuardTree.nodes_or
+#print axioms DiophantineConsistency.ParsonsGuardTree.nodes_and
