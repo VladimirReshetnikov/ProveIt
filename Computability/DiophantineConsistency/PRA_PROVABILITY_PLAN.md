@@ -84,7 +84,10 @@ also been proved. The [tuple normalizers](reviews/parsons-prenex-tuple-root.md)
 extend both connectives to arbitrary finite universal and existential blocks;
 the source-derivation adapter and general Π₂ normalization remain open. [Height-preserving universal inversion](reviews/parsons-all-invert-root.md)
 now opens selected side occurrences at arbitrary terms while retaining
-cut-freeness and the strict bound below an existential inference. The [identity and truth leaves](reviews/parsons-leaves-root.md)
+cut-freeness and the strict bound below an existential inference. The
+[fresh-variable client](reviews/parsons-fresh-open-root.md) opens a selected
+universal side under the same strict bound while shifting the entire context.
+The [identity and truth leaves](reviews/parsons-leaves-root.md)
 are now proved for arbitrary unified contexts.
 
 For the selected 13-variable adaptive equation, the actual-zero arithmetic
