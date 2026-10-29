@@ -83,8 +83,6 @@ theorem base_eq' (X Y : V) (hX : 1≤X) (hY : 1≤Y) : 2*(2*(X*Y*Y-1)+1)+3=4*X*Y
     2*(2*(X*Y*Y-1)+1)+3=4*(X*Y*Y-1+1)+1 := by ring
     _=4*X*Y*Y+1 := by rw [he]; ring
 
-private theorem num_le {m n : ℕ} (h : m≤n) : (m:V)≤(n:V) := by exact_mod_cast h
-
 /-- Finite coefficient comparison for the lower estimate. -/
 theorem lower_coefficient (X Y : V) (hX : 1≤X) (hY : 1≤Y) :
     2*(2*X*Y*Y+1)*((X+1)*(X+1))<(2*(Y*(X+1))+3)*(2*(Y*(X+1))+3)*X := by
@@ -96,9 +94,7 @@ theorem lower_coefficient (X Y : V) (hX : 1≤X) (hY : 1≤Y) :
       _=X*Y*(X+1) := by ring
   have h12 : 12*(X*X+X)≤12*(X*Y*(X+1)) := mul_le_mul_of_nonneg_left hXY (by simp)
   have h9 : (9:V)≤9*X := by
-    calc
-      (9:V)=9*1 := by ring
-      _≤9*X := mul_le_mul_of_nonneg_left hX (by simp)
+    simpa using mul_le_mul_of_nonneg_left hX (by simp : (0:V)≤9)
   have hsmall : 2*(X*X)+4*X+2<12*(X*Y*(X+1))+9*X := calc
     2*(X*X)+4*X+2<2*(X*X)+4*X+2+(10*(X*X)+8*X+7) := lt_add_of_pos_right _ (by
       exact lt_of_lt_of_le (by simp) (le_add_of_nonneg_left (by simp)))
@@ -115,15 +111,13 @@ theorem upper_coefficient (X Y : V) (hX : 1≤X) (hY : 1≤Y) :
       (4*X*Y*Y+1)*((X+1)*(X+1))*(Y*(X+1)+9) := by
   have hX1 : 1≤X+1 := le_trans hX (le_add_of_nonneg_right (by simp))
   have ha1 : 1≤Y*(X+1) := one_le_mul hY hX1
-  have hsq : Y*(X+1)≤(Y*(X+1))*(Y*(X+1)) := by
-    calc
-      Y*(X+1)=(Y*(X+1))*1 := by ring
-      _≤(Y*(X+1))*(Y*(X+1)) := mul_le_mul_of_nonneg_left ha1 (by simp)
+  have hsq : Y*(X+1)≤(Y*(X+1))*(Y*(X+1)) :=
+    le_mul_of_one_le_right (by simp) ha1
   have h16 : 16*X*(Y*(X+1))≤20*X*((Y*(X+1))*(Y*(X+1))) := by
     have h1 : 16*X*(Y*(X+1))≤16*X*((Y*(X+1))*(Y*(X+1))) :=
       mul_le_mul_of_nonneg_left hsq (by simp)
     have h2 : 16*X*((Y*(X+1))*(Y*(X+1)))≤20*X*((Y*(X+1))*(Y*(X+1))) := by
-      have : (16:V)≤20 := by simpa using num_le (V:=V) (show 16≤20 by decide)
+      have : (16:V)≤20 := by norm_num
       exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right this (by simp)) (by simp)
     exact le_trans h1 h2
   calc
@@ -153,7 +147,6 @@ theorem sandwich_lower (X Y r : V) (hX : 1≤X) (hY : 1≤Y) (hr : 1≤r) :
   have hstrict := power_strict_base _ _ r (lower_coefficient X Y hX hY) hr0
   rw [power_mul_base (2*(2*X*Y*Y+1)) ((X+1)*(X+1)) r,
     power_mul_base ((2*(Y*(X+1))+3)*(2*(Y*(X+1))+3)) X r] at hstrict
-  have hD : 0<power X r := power_pos X r (lt_of_lt_of_le (by simp) hX)
   calc
     2*ycoord (r+1) (2*(X*Y*Y-1)+1)*power (X+1) (2*r)≤2*power (2*(2*X*Y*Y+1)) r*power ((X+1)*(X+1)) r := by
       rw [hN]; exact mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hK (by simp)) (by simp)
