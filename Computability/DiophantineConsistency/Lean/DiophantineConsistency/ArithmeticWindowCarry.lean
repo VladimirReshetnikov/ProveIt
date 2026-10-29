@@ -169,11 +169,8 @@ private theorem prefix_tail (h : CarryInput w n F b a X) {k : V} (hk : k < n) :
       a i * (X i % Exp.exp (w*(k+1))) +
         a i * (X i % Exp.exp (w*n) / Exp.exp (w*(k+1))) * Exp.exp (w*(k+1)) := by
     intro i
-    have hx := mod_eq_mod_add w (X i) (k+1) n hk1
-    calc a i * (X i % Exp.exp (w*n)) = a i * (X i % Exp.exp (w*(k+1)) +
-          Exp.exp (w*(k+1)) * (X i % Exp.exp (w*n) / Exp.exp (w*(k+1)))) :=
-          congrArg (fun t => a i * t) hx
-      _ = _ := by ring
+    conv_lhs => rw [mod_eq_mod_add w (X i) (k+1) n hk1]
+    ring
   simp only [this, Finset.sum_add_distrib, Finset.sum_mul]
   ring
 
