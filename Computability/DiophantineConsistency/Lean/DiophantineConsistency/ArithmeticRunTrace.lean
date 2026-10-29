@@ -1,3 +1,4 @@
+import DiophantineConsistency.ArithmeticUnaryRecursion
 import DiophantineConsistency.ArithmeticWangPlane
 
 /-! **K1 — the represented run with its absolute head** (construction spec §3,
@@ -100,13 +101,8 @@ def hdResultDef : 𝚺₁.Semisentence 3 := blueprint.resultDef
 def hdDef : 𝚺₁.Semisentence 3 := .mkSigma “out o τ. !hdResultDef out τ o”
 
 private theorem hd_result_defined :
-    𝚺₁-Function₂[V] (fun τ o => hd o τ) via hdResultDef := .mk fun e => by
-  have he : (fun i : Fin 1 => e i.succ.succ) = ![e 2] := funext <| Fin.forall_fin_one.mpr rfl
-  have h := (construction (V := V)).result_defined.df e
-  change blueprint.resultDef.val.Evalb e ↔
-    e 0 = construction.result (fun i : Fin 1 => e i.succ.succ) (e 1) at h
-  rw [he] at h
-  exact h
+    𝚺₁-Function₂[V] (fun τ o => hd o τ) via hdResultDef :=
+  ArithmeticUnaryRecursion.result_defined blueprint construction
 
 instance hd_defined : 𝚺₁-Function₂[V] hd via hdDef := .mk fun e => by
   have h := (hd_result_defined (V := V)).df ![e 0, e 2, e 1]

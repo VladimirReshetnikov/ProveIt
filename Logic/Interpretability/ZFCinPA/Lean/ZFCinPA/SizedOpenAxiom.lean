@@ -45,22 +45,21 @@ theorem vec_le_rel (tag k R v : V) : v ≤ ⟪tag, k, R, v⟫ + 1 :=
   le_trans (le_pair_right R _) (le_trans (le_pair_right k _) (le_trans (le_pair_right tag _) le_self_add))
 
 theorem bv_le_self {p : V} (hp : IsUFormula ℒₛₑₜ p) : bv ℒₛₑₜ p ≤ p := by
+  have atom_bound (tag k R v : V) (hv : IsUTermVec ℒₛₑₜ k v) :
+      listMax (termBVVec ℒₛₑₜ k v) ≤ ⟪tag, k, R, v⟫ + 1 := by
+    refine listMaxss_le fun i hi => ?_
+    have hik : i < k := by simpa [len_termBVVec hv] using hi
+    rw [nth_termBVVec hv hik]
+    exact le_trans (termBV_le (hv.nth hik)) (le_trans (le_of_lt (nth_lt_self (by simpa [hv.lh] using hik)))
+      (vec_le_rel tag k R v))
   refine IsUFormula.ISigma1.sigma1_succ_induction (P := fun p => bv ℒₛₑₜ p ≤ p) (by definability)
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ p hp
   · intro k R v hR hv
     rw [bv_rel hR hv]
-    refine listMaxss_le fun i hi => ?_
-    have hik : i < k := by simpa [len_termBVVec hv] using hi
-    rw [nth_termBVVec hv hik]
-    exact le_trans (termBV_le (hv.nth hik)) (le_trans (le_of_lt (nth_lt_self (by simpa [hv.lh] using hik)))
-      (vec_le_rel 0 k R v))
+    exact atom_bound 0 k R v hv
   · intro k R v hR hv
     rw [bv_nrel hR hv]
-    refine listMaxss_le fun i hi => ?_
-    have hik : i < k := by simpa [len_termBVVec hv] using hi
-    rw [nth_termBVVec hv hik]
-    exact le_trans (termBV_le (hv.nth hik)) (le_trans (le_of_lt (nth_lt_self (by simpa [hv.lh] using hik)))
-      (vec_le_rel 1 k R v))
+    exact atom_bound 1 k R v hv
   · simp
   · simp
   · intro p q hp hq ihp ihq

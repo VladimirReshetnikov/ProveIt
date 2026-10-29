@@ -1,3 +1,4 @@
+import DiophantineConsistency.ArithmeticUnaryRecursion
 import DiophantineConsistency.ArithmeticMachineRun215
 import BusyBeaver.ZFC.KBoot215
 import Foundation.FirstOrder.Arithmetic.Definability.Absoluteness
@@ -183,13 +184,9 @@ noncomputable def construction : PR.Construction V blueprint where
 noncomputable def runFrom (time initial : V) : V := construction.result ![initial] time
 def runFromDef : 𝚺₁.Semisentence 3 := blueprint.resultDef
 def runFromDeltaDef : 𝚫₁.Semisentence 3 := blueprint.resultDeltaDef
-instance runFrom_defined : 𝚺₁-Function₂[V] runFrom via runFromDef := .mk fun e => by
-  have he : (fun i : Fin 1 => e i.succ.succ)=![e 2] := funext <| Fin.forall_fin_one.mpr rfl
-  have h := (construction (V:=V)).result_defined.df e
-  change blueprint.resultDef.val.Evalb e ↔
-    e 0=construction.result (fun i : Fin 1 => e i.succ.succ) (e 1) at h
-  change blueprint.resultDef.val.Evalb e ↔ e 0=construction.result ![e 2] (e 1)
-  simpa only [he] using h
+instance runFrom_defined : 𝚺₁-Function₂[V] runFrom via runFromDef :=
+  ArithmeticUnaryRecursion.result_defined blueprint construction
+
 instance runFrom_defined_delta : 𝚫₁-Function₂[V] runFrom via runFromDeltaDef :=
   runFrom_defined.graph_delta
 instance runFrom_definable : 𝚺₁-Function₂[V] runFrom := runFrom_defined.to_definable
