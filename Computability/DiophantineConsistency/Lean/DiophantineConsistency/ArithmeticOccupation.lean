@@ -37,12 +37,8 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-! ### Elementary residues -/
 
-theorem mul_mod_mul {m a c : V} (hm : 0 < m) (hc : 0 < c) : (m * a) % (m * c) = m * (a % c) := by
-  have hd := div_add_mod a c
-  have hlt : m * (a % c) < m * c := mul_lt_mul_of_pos_left (mod_lt a hc) hm
-  conv_lhs => rw [← hd]
-  rw [show m * (c * (a / c) + a % c) = m * (a % c) + m * c * (a / c) by ring,
-    mod_add_mul' _ _ (mul_pos hm hc), mod_eq_self_of_lt hlt]
+theorem mul_mod_mul {m a c : V} (hm : 0 < m) (hc : 0 < c) : (m * a) % (m * c) = m * (a % c) :=
+  ArithmeticModularCancellation.mul_mod_mul hm hc
 
 theorem cell_of_index {N j : V} (hj : j < N) : IsCell N (2011 * j) :=
   ⟨mul_lt_mul_of_pos_left hj (by norm_num), by simp⟩
