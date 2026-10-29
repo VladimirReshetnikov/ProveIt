@@ -11,15 +11,22 @@ synchronization with origin/main continue.
 
 ## Current status, 29 October 2026
 
-The maintained 14-variable equation now has closed Lean IΣ₁ and HA
-proof-existence endpoints; see the later 28 October entries and
-[`HACurrentEquation2011`](Lean/DiophantineConsistency/HACurrentEquation2011.lean).
+For the maintained 14-variable equation in `equation.pdf`, the HA
+proof-existence target is **complete**: the unconditional theorem
+[`ha_current_iff_consistency`](Lean/DiophantineConsistency/HACurrentEquation2011.lean)
+establishes an HA derivation of both implications between absence of a
+positive solution and the formal ZFC consistency sentence. This is not a
+proof of either side separately. The same file also has a closed Lean IΣ₁
+proof-existence endpoint. See the later 28 October entries for the
+construction and its axiom audit.
 The 27 October estimate and earlier checkpoint descriptions below are
 historical, not the current status. The strengthened active objective also
 requires a Lean proof of PRA provability. The [PRA plan](PRA_PROVABILITY_PLAN.md)
 records why the external Parsons-theorem argument is not yet such a Lean
-proof and identifies the missing formal interfaces. The other small equations
-still require their own internal proof-existence transfers.
+proof and identifies the missing formal interfaces. The smaller 13-variable,
+degree-51 adaptive equation has an external equivalence but still requires its
+own internal proof-existence transfer. There is no reliable percentage or
+completion-time estimate for that remaining mathematical work.
 
 ## Exact target and established results
 
