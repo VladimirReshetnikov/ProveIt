@@ -42,20 +42,19 @@ local instance : Language.Mem (setTemplateLanguage k arities) := ⟨Sum.inl Lang
 /-- The GIC body over the enlarged language. -/
 def gicBodySource (ψ : Semiproposition (setTemplateLanguage k arities) 2) :
     Proposition (setTemplateLanguage k arities) :=
-  “∀ a, ∃ b, (∀ y, (y ∈ b → ∃ x, !ψ x y)) ∧
-    (∀ x, (x ∈ a → ((∃ y, !ψ x y) → ∃ y, (y ∈ b ∧ !ψ x y))))”
+  GicTemplateSyntax.gicBodySource ψ
 
 /-- `y ∈ b` (level 3; `y = #0`, `b = #1`). -/
 def srcYB3 : Semiproposition (setTemplateLanguage k arities) 3 :=
-  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #1]
+  GicTemplateSyntax.srcYB3
 
 /-- `x ∈ a` (level 3; `x = #0`, `a = #2`). -/
 def srcXA3 : Semiproposition (setTemplateLanguage k arities) 3 :=
-  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #2]
+  GicTemplateSyntax.srcXA3
 
 /-- `y ∈ b` (level 4; `y = #0`, `b = #2`). -/
 def srcYB4 : Semiproposition (setTemplateLanguage k arities) 4 :=
-  FirstOrder.Semiformula.rel Language.Mem.mem ![#0, #2]
+  GicTemplateSyntax.srcYB4
 
 lemma gicBodySource_eq (ψ : Semiproposition (setTemplateLanguage k arities) 2) :
     gicBodySource ψ =
@@ -239,7 +238,7 @@ lemma gic_iffN [M↓[setTemplateLanguage k arities] ⊧* templN k arities]
   have h := LO.FirstOrder.Theory.models M (templN k arities) (Or.inr (Or.inr ⟨p, rfl⟩))
   have h' : ∀ f : ℕ → M, ∀ a : M, ∃ b : M, (∀ y, y ∈ b → ∃ x, p.Eval ![x, y] f) ∧
       (∀ x, x ∈ a → (∃ y, p.Eval ![x, y] f) → ∃ y, y ∈ b ∧ p.Eval ![x, y] f) := by
-    simpa [models_iff, gicBodySource] using h
+    simpa [models_iff, gicBodySource, GicTemplateSyntax.gicBodySource] using h
   exact h' f a
 
 end Semantics
