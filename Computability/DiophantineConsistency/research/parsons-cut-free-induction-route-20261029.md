@@ -134,3 +134,12 @@ whole block within the decreasing cut-free recursion remains open.
 The [side-complexity check](../reviews/parsons-side-root.md) classifies all
 three principal-case side disjunctions as Π₂ in Foundation’s non-prenex
 hierarchy. It does not produce the required strict prenex normal form.
+
+## Closed-axiom normalization and cut elimination
+
+[`ParsonsClosure.normalized_cut_free`](../Lean/DiophantineConsistency/ParsonsClosure.lean)
+now normalizes every negative universally closed induction axiom in a finite
+sequent to its parameter-closed counterexample matrix and then cut-eliminates
+the resulting sequent. The [independent replay](../reviews/parsons-closure-root.md)
+checks this preprocessing transformer. Translating the resulting cut-free
+proof and proving PRA witnessing remain open.
