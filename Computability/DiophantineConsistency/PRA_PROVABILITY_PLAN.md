@@ -75,8 +75,9 @@ The [adaptive quotient client](reviews/adaptive-quotients2011-root.md)
 now applies it to construct both positive unscaled roots from the actual
 natural zero. The [first-root divisibility client](reviews/adaptive-first-divisibility2011-root.md)
 now derives a positive internal quotient `Y/q³` from the actual natural zero.
-Root orientation, transport, index recovery and the full zero-existence
-equivalence remain open.
+The [transport theorem](reviews/adaptive-transport2011-root.md) now derives
+the actual positive transport and gap. Transport divisibility, main-root
+orientation, index recovery and the full zero-existence equivalence remain open.
 
 The [exact hierarchy certificate](reviews/arithmetic-current-hierarchy2011-root.md)
 now proves in Lean that both maintained source sentences are Π₁ and their
