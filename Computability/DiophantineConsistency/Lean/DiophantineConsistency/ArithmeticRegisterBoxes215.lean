@@ -133,29 +133,17 @@ theorem stLL {q q' : Nat} {b w : Bool} {L R X : V}
 theorem scan_right (q : Nat) (b w : Bool)
     (h : KTableCore.tm215 q b=some (w,true,q)) (n L R : V) :
     runFrom n (frameSparse q L (bitPrefix b n R))=frameSparse q (bitPrefix w n L) R := by
-  have all : ∀ n : V, ∀ L R : V,
-      runFrom n (frameSparse q L (bitPrefix b n R))=frameSparse q (bitPrefix w n L) R := by
-    intro n
-    induction n using ISigma1.pi1_succ_induction
-    · definability
-    case zero => intro L R; simp
-    case succ n ih =>
-      intro L R
-      rw [run_first,bitPrefix_succ,step_right h,ih,bitPrefix_push]
-  exact all n L R
+  induction n using ISigma1.pi1_succ_induction generalizing L R with
+  | hP => definability
+  | zero => simp
+  | succ n ih => rw [run_first,bitPrefix_succ,step_right h,ih,bitPrefix_push]
 theorem scan_left (q : Nat) (b w : Bool)
     (h : KTableCore.tm215 q b=some (w,false,q)) (n L R : V) :
     runFrom n (leftFrame q (bitPrefix b n L) R)=leftFrame q L (bitPrefix w n R) := by
-  have all : ∀ n : V, ∀ L R : V,
-      runFrom n (leftFrame q (bitPrefix b n L) R)=leftFrame q L (bitPrefix w n R) := by
-    intro n
-    induction n using ISigma1.pi1_succ_induction
-    · definability
-    case zero => intro L R; simp
-    case succ n ih =>
-      intro L R
-      rw [run_first,bitPrefix_succ,step_left_facing h,ih,bitPrefix_push]
-  exact all n L R
+  induction n using ISigma1.pi1_succ_induction generalizing L R with
+  | hP => definability
+  | zero => simp
+  | succ n ih => rw [run_first,bitPrefix_succ,step_left_facing h,ih,bitPrefix_push]
 
 def repeatZeroDef : 𝚺₁.Semisentence 3 := .mkSigma “out d z. out=z”
 def repeatSuccDef : 𝚺₁.Semisentence 5 := .mkSigma “out prev n d z. out=d+8*prev”
