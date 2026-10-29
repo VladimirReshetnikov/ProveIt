@@ -3,6 +3,7 @@ import ZFCinPA.LevelDerivation
 import ZFCinPA.SizedCongruence
 import ZFCinPA.SizedCongruenceAtoms
 import ZFCinPA.SizedPlaceholderCongruence
+import ZFCinPA.SizedSchemaLeaves
 
 /-! Axiom audit for the bounded template axiom leaves and bounded equality replacement. -/
 
@@ -25,3 +26,7 @@ import ZFCinPA.SizedPlaceholderCongruence
 #print axioms LeanProofs.ZFCinPA.SizedPlaceholderCongruence.unpack
 #print axioms LeanProofs.ZFCinPA.SizedPlaceholderCongruence.body_shape
 #print axioms LeanProofs.ZFCinPA.SizedPlaceholderCongruence.cong_leaf
+#print axioms LeanProofs.ZFCinPA.SizedSchemaLeaves.subst_congr
+#print axioms LeanProofs.ZFCinPA.SizedSchemaLeaves.vac_gen
+#print axioms LeanProofs.ZFCinPA.SizedSchemaLeaves.sep_leaf
+#print axioms LeanProofs.ZFCinPA.SizedSchemaLeaves.rep_leaf
