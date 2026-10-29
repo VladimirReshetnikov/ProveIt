@@ -2400,3 +2400,51 @@ All of the following hold in every model of IΣ₁; `#print axioms` gives
      bounded twins.
 3. With those, `compiled`/`compiledG` get explicit bounds, and the `L`
    inductions can be restated on top of `SizedProof`.
+
+## Stage 3b status after the 2026-10-28 autonomous run
+
+**Proved** (all in every model of IΣ₁, axioms `propext`/`Classical.choice`/
+`Quot.sound`):
+
+| Module | Result |
+|---|---|
+| `BoundedPAConsistency.SizedProof` | the six Hilbert combinators with bounds; `neg_code_le` |
+| `BoundedPAConsistency.SubstBound` | value bound for variable substitution |
+| `ZFCinPA.SetCodeLevels` | level calculus: shift `+1`, neg `×10`, subst `×10 + c₀` |
+| `ZFCinPA.LMatchLevel` | `mVal j ≤ 2^(2^(Cm·16^j))` |
+| `ZFCinPA.SizedTemplateCompiler` | bounded buffered compiler (meta induction on `d`) |
+| `ZFCinPA.SizedShiftCancel` | bounded shift cancellation and its iteration |
+| `ZFCinPA.TemplateTranslateLevel` | `translate_level`, with meta constants `tA` |
+| `ZFCinPA.SizedOpenTemplate` | `sized_open_compile`: end to end, up to the axiom leaves |
+
+**Remaining for an unconditional bounded ZFC → ZF transport.**
+
+1. *Template axiom leaves*, i.e. the `translated_axiom` cases.
+   - **Lifted ZF axioms and equality axioms** are `byAxm`, so the code is
+     explicit. `DerivableLe.by_axm` plus `translate_level` is enough; this
+     is a small lemma.
+   - **Placeholder congruence** (`SetCongruence.congruenceProof₀..₃`) gives
+     Prop-level proofs. Their internal inductions (`replace_aux`,
+     `term_replace_aux`) need bounded twins with level bounds.
+   - **Separation/replacement template instances** go through
+     `OpenTemplateClosure.closeTemplate` and
+     `ModelCodedOpenSchemaAxioms.openAxiomProofCode`.
+     - `closeTemplate` uses `generalizeAll`, whose codes are chosen.
+     - `openAxiomProofCode` is explicit, but its `specializedProofCode` runs
+       an internal state machine (`runState`/`advance`) for `binders`
+       steps; a level analysis of one `advance` step is needed.
+2. *The `L` inductions*: `glue` (`LGlue1–4`), `peel` (`LPeel`), `driverT`
+   (`LDriver`), `numOK` (`LNumOK`), `fun_MT`/`slot_MT`. Each must be restated
+   as a `DerivableLe` induction, using:
+   - `SizedProof` for `⨀`/`K!_intro`/…;
+   - `sized_open_compile` for every `compiled`/`compiledG` template;
+   - level bounds for the formula families (`mVal` done; `envForm`, `rel`,
+     `gVal`, `pVal`, … to do).
+3. *Assembly*:
+   `sep_obligation`/`repl_obligation` → `hSchema` →
+   `ConstructibleInterpretationBound.provableLe_falsum_ZF_of_ZFC`.
+
+**Required change to the engine.** The obligations will be about triple
+exponential in `p`, followed by derivation exponentials. So `towerB`/`ax_le`
+in `InternalRelativizationBound` need one or two more exponentials before
+the assembly.
