@@ -58,6 +58,29 @@ theorem free_closed {p : V} (hp : IsSemiformula ℒₛₑₜ 0 p) (hs : shift �
   rw [hs]
   exact subst_closed hp (by simp : IsSemitermVec ℒₛₑₜ 1 0 (^&0 ∷ 0 : V))
 
+private theorem termSubstVec_congr {n k v w w' : V} (hv : IsSemitermVec ℒₛₑₜ k n v)
+    (H : ∀ i < n, w.[i] = w'.[i]) :
+    termSubstVec ℒₛₑₜ k w v = termSubstVec ℒₛₑₜ k w' v := by
+  apply nth_ext' k (by simp [hv.isUTerm]) (by simp [hv.isUTerm])
+  intro i hi
+  rw [nth_termSubstVec hv.isUTerm hi, nth_termSubstVec hv.isUTerm hi]
+  rcases term_var (hv.nth hi).isUTerm with ⟨z, hz⟩ | ⟨x, hx⟩
+  · have hzn : z < n := by simpa [hz] using hv.nth hi
+    rw [hz, termSubst_bvar, termSubst_bvar, H z hzn]
+  · rw [hx, termSubst_fvar, termSubst_fvar]
+
+private theorem qVec_congr {n l M w l' M' w' : V}
+    (hw : IsSemitermVec ℒₛₑₜ l M w) (hw' : IsSemitermVec ℒₛₑₜ l' M' w')
+    (hl : n ≤ l) (hl' : n ≤ l') (H : ∀ i < n, w.[i] = w'.[i]) :
+    ∀ i < n + 1, (qVec ℒₛₑₜ w).[i] = (qVec ℒₛₑₜ w').[i] := by
+  intro i hi
+  rcases zero_or_succ i with rfl | ⟨j, rfl⟩
+  · simp [qVec]
+  · have hj : j < n := by simpa using hi
+    simp only [qVec, nth_adjoin_succ]
+    rw [hw.lh, hw'.lh, nth_termBShiftVec hw.isUTerm (lt_of_lt_of_le hj hl),
+      nth_termBShiftVec hw'.isUTerm (lt_of_lt_of_le hj hl'), H j hj]
+
 set_option maxHeartbeats 1000000 in
 /-- Substitution only reads the entries below the bound-variable count. -/
 theorem subst_congr {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
@@ -67,22 +90,10 @@ theorem subst_congr {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
   · definability
   · intro n k R v hR hv l M w l' M' w' hw hw' hl hl' H
     simp only [substs_rel hR hv.isUTerm, qqRel_inj, true_and]
-    apply nth_ext' k (by simp [hv.isUTerm]) (by simp [hv.isUTerm])
-    intro i hi
-    rw [nth_termSubstVec hv.isUTerm hi, nth_termSubstVec hv.isUTerm hi]
-    rcases term_var (hv.nth hi).isUTerm with ⟨z, hz⟩ | ⟨x, hx⟩
-    · have hzn : z < n := by simpa [hz] using hv.nth hi
-      rw [hz, termSubst_bvar, termSubst_bvar, H z hzn]
-    · rw [hx, termSubst_fvar, termSubst_fvar]
+    exact termSubstVec_congr hv H
   · intro n k R v hR hv l M w l' M' w' hw hw' hl hl' H
     simp only [substs_nrel hR hv.isUTerm, qqNRel_inj, true_and]
-    apply nth_ext' k (by simp [hv.isUTerm]) (by simp [hv.isUTerm])
-    intro i hi
-    rw [nth_termSubstVec hv.isUTerm hi, nth_termSubstVec hv.isUTerm hi]
-    rcases term_var (hv.nth hi).isUTerm with ⟨z, hz⟩ | ⟨x, hx⟩
-    · have hzn : z < n := by simpa [hz] using hv.nth hi
-      rw [hz, termSubst_bvar, termSubst_bvar, H z hzn]
-    · rw [hx, termSubst_fvar, termSubst_fvar]
+    exact termSubstVec_congr hv H
   · intro n l M w l' M' w' _ _ _ _ _; simp
   · intro n l M w l' M' w' _ _ _ _ _; simp
   · intro n p q hp hq ihp ihq l M w l' M' w' hw hw' hl hl' H
@@ -96,25 +107,13 @@ theorem subst_congr {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
     congr 1
     refine ih (l + 1) (M + 1) (qVec ℒₛₑₜ w) (l' + 1) (M' + 1) (qVec ℒₛₑₜ w') hw.qVec hw'.qVec
       (_root_.add_le_add hl le_rfl) (_root_.add_le_add hl' le_rfl) ?_
-    intro i hi
-    rcases zero_or_succ i with rfl | ⟨j, rfl⟩
-    · simp [qVec]
-    · have hj : j < n := by simpa using hi
-      simp only [qVec, nth_adjoin_succ]
-      rw [hw.lh, hw'.lh, nth_termBShiftVec hw.isUTerm (lt_of_lt_of_le hj hl),
-        nth_termBShiftVec hw'.isUTerm (lt_of_lt_of_le hj hl'), H j hj]
+    exact qVec_congr hw hw' hl hl' H
   · intro n p hp ih l M w l' M' w' hw hw' hl hl' H
     rw [substs_ex hp.isUFormula, substs_ex hp.isUFormula]
     congr 1
     refine ih (l + 1) (M + 1) (qVec ℒₛₑₜ w) (l' + 1) (M' + 1) (qVec ℒₛₑₜ w') hw.qVec hw'.qVec
       (_root_.add_le_add hl le_rfl) (_root_.add_le_add hl' le_rfl) ?_
-    intro i hi
-    rcases zero_or_succ i with rfl | ⟨j, rfl⟩
-    · simp [qVec]
-    · have hj : j < n := by simpa using hi
-      simp only [qVec, nth_adjoin_succ]
-      rw [hw.lh, hw'.lh, nth_termBShiftVec hw.isUTerm (lt_of_lt_of_le hj hl),
-        nth_termBShiftVec hw'.isUTerm (lt_of_lt_of_le hj hl'), H j hj]
+    exact qVec_congr hw hw' hl hl' H
 
 theorem subst_fvarVec_trunc {m N b : V} (hb : IsSemiformula ℒₛₑₜ m b) (hm : m ≤ N) :
     subst ℒₛₑₜ (fvarVec m) b = subst ℒₛₑₜ (fvarVec N) b :=
