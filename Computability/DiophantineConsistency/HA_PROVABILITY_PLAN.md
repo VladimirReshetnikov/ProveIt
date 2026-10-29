@@ -9,6 +9,18 @@ This supersedes encoded ZFC derivation as the primary remaining target.
 Equation-size reduction, frequent detailed commits and normal fast-forward
 synchronization with origin/main continue.
 
+## Current status, 29 October 2026
+
+The maintained 14-variable equation now has closed Lean IΣ₁ and HA
+proof-existence endpoints; see the later 28 October entries and
+[`HACurrentEquation2011`](Lean/DiophantineConsistency/HACurrentEquation2011.lean).
+The 27 October estimate and earlier checkpoint descriptions below are
+historical, not the current status. The strengthened active objective also
+requires a Lean proof of PRA provability. The [PRA plan](PRA_PROVABILITY_PLAN.md)
+records why the external Parsons-theorem argument is not yet such a Lean
+proof and identifies the missing formal interfaces. The other small equations
+still require their own internal proof-existence transfers.
+
 ## Exact target and established results
 
 Progress estimate on 27 October 2026: **roughly 40–60% of the full HA
