@@ -130,8 +130,9 @@ lemma nth_termBindFreeVecAt (depth : V) {k terms i : V}
     (termBindFreeVecAt L depth k terms).[i] = termBindFreeAt L depth terms.[i] :=
   TermBinder.construction.nth_resultVec L ![depth] ht hi
 
-lemma termBindFreeAt_isUTerm (depth : V) {term : V} (ht : IsUTerm L term) :
-    IsUTerm L (termBindFreeAt L depth term) := by
+private lemma termBindFreeAt_wf_shift (depth : V) {term : V} (ht : IsUTerm L term) :
+    IsUTerm L (termBindFreeAt L depth term) ∧
+      termShift L (termBindFreeAt L depth term) = termBindFreeAt L depth term := by
   apply IsUTerm.induction 𝚺 ?_ ?_ ?_ ?_ term ht
   · definability
   · intro z; simp
@@ -141,9 +142,22 @@ lemma termBindFreeAt_isUTerm (depth : V) {term : V} (ht : IsUTerm L term) :
       refine ⟨(termBindFreeVecAt_lh depth hv).symm, ?_⟩
       intro i hi
       rw [nth_termBindFreeVecAt depth hv hi]
-      exact ih i hi
+      exact (ih i hi).1
+    have hshift : termShiftVec L k (termBindFreeVecAt L depth k terms) =
+        termBindFreeVecAt L depth k terms := by
+      apply nth_ext' k
+      · simp [hargs]
+      · simp [hv]
+      · intro i hi
+        rw [nth_termShiftVec hargs hi, nth_termBindFreeVecAt depth hv hi]
+        exact (ih i hi).2
     rw [termBindFreeAt_func depth hf hv]
-    exact IsUTerm.func_iff.mpr ⟨hf,hargs⟩
+    constructor
+    · exact IsUTerm.func_iff.mpr ⟨hf, hargs⟩
+    · rw [termShift_func hf hargs, hshift]
+
+lemma termBindFreeAt_isUTerm (depth : V) {term : V} (ht : IsUTerm L term) :
+    IsUTerm L (termBindFreeAt L depth term) := (termBindFreeAt_wf_shift depth ht).1
 
 lemma termBindFreeVecAt_isUTerm (depth : V) {k terms : V}
     (ht : IsUTermVec L k terms) : IsUTermVec L k (termBindFreeVecAt L depth k terms) := by
@@ -153,22 +167,8 @@ lemma termBindFreeVecAt_isUTerm (depth : V) {k terms : V}
   exact termBindFreeAt_isUTerm depth (ht.nth hi)
 
 lemma termBindFreeAt_shift_fixed (depth : V) {term : V} (ht : IsUTerm L term) :
-    termShift L (termBindFreeAt L depth term) = termBindFreeAt L depth term := by
-  apply IsUTerm.induction 𝚺 ?_ ?_ ?_ ?_ term ht
-  · definability
-  · intro z; simp
-  · intro x; simp
-  · intro k f terms hf hv ih
-    rw [termBindFreeAt_func depth hf hv,
-      termShift_func hf (termBindFreeVecAt_isUTerm depth hv)]
-    apply congrArg (fun args => ^func k f args)
-    apply nth_ext' k
-    · simp [termBindFreeVecAt_isUTerm depth hv]
-    · simp [hv]
-    · intro i hi
-      rw [nth_termShiftVec (termBindFreeVecAt_isUTerm depth hv) hi,
-        nth_termBindFreeVecAt depth hv hi]
-      exact ih i hi
+    termShift L (termBindFreeAt L depth term) = termBindFreeAt L depth term :=
+  (termBindFreeAt_wf_shift depth ht).2
 
 lemma termBindFreeVecAt_shift_fixed (depth : V) {k terms : V}
     (ht : IsUTermVec L k terms) :
