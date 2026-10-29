@@ -325,6 +325,60 @@ theorem regular_of_modelsZF : SetTheory.BusyBeaver.ZFC.InternalOrd.Regular (memR
 
 end ZFModel
 
+/-- **The fixed axioms from a bundle**: equality axioms and the seven fixed
+axioms of `𝗭𝗙` hold in any set structure with the six-field bundle, power
+sets and regularity. -/
+theorem fixed_models {S : Type*} [Nonempty S] [SetStructure S]
+    (HL : _root_.SetTheory.ZFAxioms (memRel S))
+    (hPow : ∀ x : S, ∃ p : S, ∀ z, z ∈ p ↔ ∀ u, u ∈ z → u ∈ x)
+    (hReg : ∀ x : S, (∃ z, z ∈ x) → ∃ m, m ∈ x ∧ ¬∃ z, z ∈ m ∧ z ∈ x)
+    (σ : SetTheorySentence) (hσ : σ ∈ 𝗘𝗤 ℒₛₑₜ ∪ zfFixed) : S↓[ℒₛₑₜ] ⊧ σ := by
+  rcases hσ with hσ | hσ
+  · exact models_of_mem (T := (𝗘𝗤 ℒₛₑₜ : SetTheory)) hσ
+  · simp only [zfFixed, Set.mem_insert_iff, Set.mem_singleton_iff] at hσ
+    rcases hσ with rfl | rfl | rfl | rfl | rfl | rfl | rfl
+    · suffices ∃ x : S, ∀ y, y ∉ x by simpa [models_iff, Axiom.empty]
+      obtain ⟨_, ⟨e0, -, he0⟩, -⟩ := HL.inf
+      exact ⟨e0, he0⟩
+    · suffices ∀ x y : S, x = y ↔ ∀ z, z ∈ x ↔ z ∈ y by
+        simpa [models_iff, Axiom.extentionality]
+      intro x y
+      exact ⟨fun h => h ▸ fun _ => Iff.rfl, HL.ext x y⟩
+    · suffices ∀ x y : S, ∃ z, ∀ v, v ∈ z ↔ v = x ∨ v = y by
+        simpa [models_iff, Axiom.pairing]
+      exact HL.pair
+    · suffices ∀ x : S, ∃ y, ∀ z, z ∈ y ↔ ∃ v ∈ x, z ∈ v by
+        simpa [models_iff, Axiom.union]
+      intro x
+      obtain ⟨w, hw⟩ := HL.union x
+      refine ⟨w, fun z => (hw z).trans ?_⟩
+      constructor <;> rintro ⟨v, h1, h2⟩ <;> exact ⟨v, h2, h1⟩
+    · suffices ∀ x : S, ∃ y : S, ∀ z : S, z ∈ y ↔ ∀ u : S, u ∈ z → u ∈ x by
+        simpa [models_iff, Axiom.power, isSubsetOf]
+      exact hPow
+    · suffices ∃ ω : S, (∀ e, (∀ z, z ∉ e) → e ∈ ω) ∧
+          ∀ x ∈ ω, ∀ y, (∀ z, z ∈ y ↔ z = x ∨ z ∈ x) → y ∈ ω by
+        simpa [models_iff, Axiom.infinity, isEmpty, isSucc, Rew.q_subst,
+          Semiterm.val_substs, Function.comp_def]
+      obtain ⟨I, ⟨e0, he0I, he0⟩, hsucc⟩ := HL.inf
+      refine ⟨I, fun e he => ?_, fun x hx y hy => ?_⟩
+      · have : e = e0 := HL.ext e e0 fun z =>
+          ⟨fun h => absurd h (he z), fun h => absurd h (he0 z)⟩
+        rw [this]
+        exact he0I
+      · obtain ⟨sx, hsxI, hsx⟩ := hsucc x hx
+        have : y = sx := HL.ext y sx fun t => by
+          rw [hsx t]
+          exact (hy t).trans or_comm
+        rw [this]
+        exact hsxI
+    · suffices ∀ x : S, (∃ z, z ∈ x) → ∃ y ∈ x, ∀ z ∈ x, z ∉ y by
+        simpa [models_iff, Axiom.foundation, isNonempty]
+      intro x hx
+      obtain ⟨m, hm, hmin⟩ := hReg x hx
+      exact ⟨m, hm, fun z hz hzm => hmin ⟨z, hzm, hz⟩⟩
+
+
 /-! ## The constructible class of a model of `𝗭𝗙` -/
 
 section LModel
@@ -352,54 +406,11 @@ theorem L_models (σ : SetTheorySentence) (hσ : σ ∈ 𝗘𝗤 ℒₛₑₜ �
   have hR := regular_of_modelsZF (V := V)
   have hP := power_of_modelsZF (V := V)
   have HL := L_zfAxioms H hR hP
-  rcases hσ with (hσ | hσ) | hσ
-  · exact models_of_mem (T := (𝗘𝗤 ℒₛₑₜ : SetTheory)) hσ
-  · simp only [zfFixed, Set.mem_insert_iff, Set.mem_singleton_iff] at hσ
-    rcases hσ with rfl | rfl | rfl | rfl | rfl | rfl | rfl
-    · suffices ∃ x : {x : V // InLV x}, ∀ y, y ∉ x by simpa [models_iff, Axiom.empty]
-      obtain ⟨_, ⟨e0, -, he0⟩, -⟩ := HL.inf
-      exact ⟨e0, he0⟩
-    · suffices ∀ x y : {x : V // InLV x}, x = y ↔ ∀ z, z ∈ x ↔ z ∈ y by
-        simpa [models_iff, Axiom.extentionality]
-      intro x y
-      exact ⟨fun h => h ▸ fun _ => Iff.rfl, HL.ext x y⟩
-    · suffices ∀ x y : {x : V // InLV x}, ∃ z, ∀ v, v ∈ z ↔ v = x ∨ v = y by
-        simpa [models_iff, Axiom.pairing, -Subtype.exists]
-      exact HL.pair
-    · suffices ∀ x : {x : V // InLV x}, ∃ y, ∀ z, z ∈ y ↔ ∃ v ∈ x, z ∈ v by
-        simpa [models_iff, Axiom.union, -Subtype.exists]
-      intro x
-      obtain ⟨w, hw⟩ := HL.union x
-      refine ⟨w, fun z => (hw z).trans ?_⟩
-      constructor <;> rintro ⟨v, h1, h2⟩ <;> exact ⟨v, h2, h1⟩
-    · suffices ∀ x : {x : V // InLV x}, ∃ y : {x : V // InLV x},
-          ∀ z : {x : V // InLV x}, z ∈ y ↔ ∀ u : {x : V // InLV x}, u ∈ z → u ∈ x by
-        simpa [models_iff, Axiom.power, isSubsetOf, -Subtype.exists]
-      intro x
-      obtain ⟨p, hp⟩ := L_power H hR hP x
-      exact ⟨p, fun z => (hp z).trans Iff.rfl⟩
-    · suffices ∃ ω : {x : V // InLV x}, (∀ e, (∀ z, z ∉ e) → e ∈ ω) ∧
-          ∀ x ∈ ω, ∀ y, (∀ z, z ∈ y ↔ z = x ∨ z ∈ x) → y ∈ ω by
-        simpa [models_iff, Axiom.infinity, isEmpty, isSucc, Rew.q_subst,
-          Semiterm.val_substs, Function.comp_def]
-      obtain ⟨I, ⟨e0, he0I, he0⟩, hsucc⟩ := HL.inf
-      refine ⟨I, fun e he => ?_, fun x hx y hy => ?_⟩
-      · have : e = e0 := HL.ext e e0 fun z =>
-          ⟨fun h => absurd h (he z), fun h => absurd h (he0 z)⟩
-        rw [this]
-        exact he0I
-      · obtain ⟨sx, hsxI, hsx⟩ := hsucc x hx
-        have : y = sx := HL.ext y sx fun t => by
-          rw [hsx t]
-          exact (hy t).trans or_comm
-        rw [this]
-        exact hsxI
-    · suffices ∀ x : {x : V // InLV x}, (∃ z, z ∈ x) →
-          ∃ y ∈ x, ∀ z ∈ x, z ∉ y by
-        simpa [models_iff, Axiom.foundation, isNonempty]
-      intro x hx
-      obtain ⟨m, hm, hmin⟩ := L_regular H hR hP x hx
-      exact ⟨m, hm, fun z hz hzm => hmin ⟨z, hzm, hz⟩⟩
+  rcases hσ with hσ | hσ
+  · apply fixed_models HL ?_ (L_regular H hR hP) σ hσ
+    intro x
+    obtain ⟨p, hp⟩ := L_power H hR hP x
+    exact ⟨p, fun z => (hp z).trans Iff.rfl⟩
   · rcases hσ
     suffices ∀ 𝓧 : {x : V // InLV x},
         (∀ X ∈ 𝓧, ∃ z, z ∈ X) →
