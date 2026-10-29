@@ -988,5 +988,21 @@ logs but no separate command/status receipts. The target/client records and
 interface logs were independently checked; the separate equation comparison
 was performed by the prototype author. See [the evidence bundle](../../reviews/lean-proof-simplification-20261028-object-expression-sharing-evidence/BUNDLE.json).
 
+The bounded construction sharing `1b2d29dded` removes 91 net lines,
+bringing the reviewed series to 8673. Both Assembly and Bound targets and the
+CurrentConstruction production client pass in paired pinned replays. All 56
+existing declaration, equation and axiom reports match, including five forced
+equations; the sole new bounded helper uses the standard three axioms. The
+current-source refresh rebuilt 93 local prerequisites, authenticated 12 peer
+and 76 borrowed objects, and corrected a superseded mask/RankForcing input.
+Each replay pins 182 non-target local source/object pairs and 73 direct
+external objects before and after; transitive external dependencies remain
+precompiled. Ninety refresh warnings and 11 peer warnings lack paired
+preparation baselines; 22 generated-auxiliary probe warnings match. Assembly
+now imports BoundPell and exposes the formerly Bound-only declarations earlier.
+Earlier missing-object failures and stale-Fol preliminary results are retained.
+Independent graph, proof and pinned-replay reviews pass. See [the evidence
+bundle](../../reviews/lean-proof-simplification-20261028-construction-sharing-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
