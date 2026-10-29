@@ -160,13 +160,10 @@ theorem phase_zero : W % 47 = 0 := by
   have hc : cw 4022 = 1 := by exact_mod_cast h0.symm
   have hm := marker_parity HL
   rw [hc] at hm
-  have ht := HL.tbool 1004 (by omega)
   have : φ = 0 := by
     by_contra hne
     obtain ⟨k, rfl⟩ : ∃ k, φ = k + 1 := ⟨φ - 1, by omega⟩
-    rw [pow_succ] at hm
-    have : 2 ^ k * 2 * tw 1004 = 2 * (2 ^ k * tw 1004) := by ring
-    omega
+    simp [pow_succ, Nat.add_mod, Nat.mul_mod] at hm
   rw [hφ, this, Nat.cast_zero]
 
 /-- The snapshot of any cell has phase 0. -/
