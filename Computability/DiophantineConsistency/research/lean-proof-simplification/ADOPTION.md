@@ -1955,5 +1955,15 @@ Both client builds report the same pre-existing warning. Direct providers and
 three further sampled dependencies have source-matched receipts; the wider
 closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-room-cancel-evidence/BUNDLE.json).
 
+The selected-cell sum characterization `2e364c3e91` removes 17 net Lean lines,
+bringing the reviewed series to 10265. The affected proof came from
+Claude-coauthored commit `f79467f544`. Mathlib's `Finset.sum_le_one_iff`
+replaces a separate existence and erased-sum argument. Paired target and direct
+client builds pass with identical client objects; common declaration reports
+and sampled registrations match. Six generated public proof names disappear;
+a tracked Lean/Python search found no references. Direct providers have
+source-matched receipts, while the wider closure remains cached. See [the
+evidence bundle](../../reviews/lean-proof-simplification-20261029-cell-sum-unique-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.

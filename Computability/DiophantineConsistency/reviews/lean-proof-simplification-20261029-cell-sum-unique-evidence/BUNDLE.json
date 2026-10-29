@@ -1,0 +1,260 @@
+{
+  "schema": "lean-proof-simplification-evidence-v1",
+  "source_commit": "2e364c3e91187efa5c11432b03c6101916d8f446",
+  "source_parent": "716b67e56b3a24d96155d1063f1020456e4fff46",
+  "scope": "Use finite-sum characterization for selected cell",
+  "validation": "Paired target and sole tracked direct client ArithmeticCellTransfer builds pass with identical client objects and empty logs. Object-pinned probes report 76 common target declarations with identical types and axioms, six generated target proof names removed, and 59 identical client declarations; sampled global simp and instance registrations match. All five unchanged direct target/client provider source/object pairs have matching successful producer records.",
+  "limitations": [
+    "The target, direct client, and selected prior producer receipts do not establish a source-current transitive closure. Wider downstream clients were not rebuilt.",
+    "The six removed generated public proof names have no references in tracked Lean/Python search, but declaration reports and sampled registrations do not prove equality of proof bodies or all persistent extensions.",
+    "Compiled objects are omitted. Recorded build and probe paths refer to original temporary directories; full replay requires the external environment and object dependencies."
+  ],
+  "archive": "inputs-and-logs.zip",
+  "archive_sha256": "ec03246c0f7872beaae3245074b3b95a4de7f61305868d49913b0cc69867b22b",
+  "independent_review": {
+    "path": "independent-review.txt",
+    "sha256": "7e5036c85330307dfa7df8afed7c27e0efe184b0e9bd254aae20961d0bce93ec"
+  },
+  "members": {
+    "commit/baseline/ArithmeticCellLabels.lean": {
+      "bytes": 11528,
+      "sha256": "436ead71af0c4bda26845e380136ef97f70c986b59fa56af352a07d1d6c2c347"
+    },
+    "commit/final/ArithmeticCellLabels.lean": {
+      "bytes": 10821,
+      "sha256": "096f4d71694efd27060a23e979b0a2cf2736fc1abad641fadbf8663433cc025d"
+    },
+    "independent/audit.log": {
+      "bytes": 145,
+      "sha256": "30266f89b0159199f792ac343c9376ad4bd1a7390227d8825b97fa5798aefb43"
+    },
+    "independent/audit.py": {
+      "bytes": 3785,
+      "sha256": "a3bbc426e6850a0400735eb99a317fa6bef7de064ceed8821f0a536dcb2b4779"
+    },
+    "independent/review.txt": {
+      "bytes": 1602,
+      "sha256": "7e5036c85330307dfa7df8afed7c27e0efe184b0e9bd254aae20961d0bce93ec"
+    },
+    "prototype/README.txt": {
+      "bytes": 2082,
+      "sha256": "1361b4c893a943b3d75163fb4f3e36572b456b0a2e854df5aec9c85c535c0a93"
+    },
+    "prototype/audit.log": {
+      "bytes": 556,
+      "sha256": "38f6fd7e8efb4fa9f2851c75e2a7367f669df3aca5e140d512f0a3a29f9c928b"
+    },
+    "prototype/audit.py": {
+      "bytes": 3331,
+      "sha256": "af8f31707d173d779495033fb2c0dfea7a3e8b38578548d489d416512216ae01"
+    },
+    "prototype/baseline-ArithmeticCellLabels.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticCellLabels.time": {
+      "bytes": 50,
+      "sha256": "b8dc8592f25786bdb551a7b99fca5bf594ee4aa837d0b66730f53bf14627c8ac"
+    },
+    "prototype/baseline-ArithmeticCellTransfer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/baseline-ArithmeticCellTransfer.time": {
+      "bytes": 51,
+      "sha256": "5c8cadcc20bc3eafc8a9fcc0f7777c059964df540ec8a37c3c56fd2402c587f3"
+    },
+    "prototype/baseline-client-instances.log": {
+      "bytes": 797520,
+      "sha256": "44c0b62b3bb109a7abd668a4cd4d952e044567767f871f9ffbfea89332c42f82"
+    },
+    "prototype/baseline-client-interfaces.log": {
+      "bytes": 26762,
+      "sha256": "8c0e872b58e3ce4688e07d1279ef32de35077c1b216ac8c222d4470fc6d2cb6c"
+    },
+    "prototype/baseline-client-names.log": {
+      "bytes": 3932,
+      "sha256": "230f2c3605f112fa7954fe820c89f6ffd740ef8f4c81039a808e326053fde162"
+    },
+    "prototype/baseline-client-simp.log": {
+      "bytes": 1834388,
+      "sha256": "8cb8c409daac7ef52097c83b748841b89dc7e2c9bc067e36ed513aee058e49bb"
+    },
+    "prototype/baseline-instances.log": {
+      "bytes": 738450,
+      "sha256": "e1820d77fe5f587faebce43ba1d1b2bb45e397bd44cbfa37ea68a2b745b6345a"
+    },
+    "prototype/baseline-interfaces.log": {
+      "bytes": 29324,
+      "sha256": "a892bf2440e7396d24e28404023ede03587bfd531f57328b9cfc86d6b0fa98e8"
+    },
+    "prototype/baseline-names.log": {
+      "bytes": 5866,
+      "sha256": "c789aa3e4ee4abc2b810879efa0cf71cdbf75f05bdffa227ee36039a416f46c1"
+    },
+    "prototype/baseline-records.json": {
+      "bytes": 9403,
+      "sha256": "076a3e3cda7b3008ed2fb9d791469a0503bba7b14fdea9d2ad4115df737a241b"
+    },
+    "prototype/baseline-simp.log": {
+      "bytes": 1711474,
+      "sha256": "2eef4eea5eb61b269aab6b5b19a616f12e46b8ce1e199df5fcfe2deace28121a"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticCellLabels.lean": {
+      "bytes": 11528,
+      "sha256": "436ead71af0c4bda26845e380136ef97f70c986b59fa56af352a07d1d6c2c347"
+    },
+    "prototype/baseline/DiophantineConsistency/ArithmeticCellTransfer.lean": {
+      "bytes": 14083,
+      "sha256": "d972455d407d7efc87307928949b735ee4d0cadf814e39f715fbc1e891e0b49b"
+    },
+    "prototype/build.py": {
+      "bytes": 2118,
+      "sha256": "c4ed13575091751ac138036ff298df9326739375d930a6b275404cfe964556cf"
+    },
+    "prototype/client-instances.lean": {
+      "bytes": 303,
+      "sha256": "741b0d28d7f50b903345ffd10b7e119dbce11cde544f699c1454626d2863de7b"
+    },
+    "prototype/client-interfaces.lean": {
+      "bytes": 499,
+      "sha256": "d460dd52ac72d7868b4fb06f07c00cee633264de11fde509d2067717b3cda7e6"
+    },
+    "prototype/client-names.lean": {
+      "bytes": 351,
+      "sha256": "65bfa7a4e479fb54a4664a92045f8d12e1e5144e3f6960a55aaf38e0c58a8477"
+    },
+    "prototype/client-simp.lean": {
+      "bytes": 517,
+      "sha256": "2bec995669cb71a976e52e8c2c70c0cdc876f669fee62675b8bf48b024569557"
+    },
+    "prototype/final-ArithmeticCellLabels.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticCellLabels.time": {
+      "bytes": 50,
+      "sha256": "a1b029a73ffe138a6095cf813dfc50531abfa311b35c72767cb2f4b0a122e06a"
+    },
+    "prototype/final-ArithmeticCellTransfer.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "prototype/final-ArithmeticCellTransfer.time": {
+      "bytes": 50,
+      "sha256": "b0688081102dde6929655a6bc45e66f4c0104b6d155d368e38821061069e4455"
+    },
+    "prototype/final-client-instances.log": {
+      "bytes": 797520,
+      "sha256": "44c0b62b3bb109a7abd668a4cd4d952e044567767f871f9ffbfea89332c42f82"
+    },
+    "prototype/final-client-interfaces.log": {
+      "bytes": 26762,
+      "sha256": "8c0e872b58e3ce4688e07d1279ef32de35077c1b216ac8c222d4470fc6d2cb6c"
+    },
+    "prototype/final-client-names.log": {
+      "bytes": 3932,
+      "sha256": "230f2c3605f112fa7954fe820c89f6ffd740ef8f4c81039a808e326053fde162"
+    },
+    "prototype/final-client-simp.log": {
+      "bytes": 1834388,
+      "sha256": "8cb8c409daac7ef52097c83b748841b89dc7e2c9bc067e36ed513aee058e49bb"
+    },
+    "prototype/final-instances.log": {
+      "bytes": 738450,
+      "sha256": "e1820d77fe5f587faebce43ba1d1b2bb45e397bd44cbfa37ea68a2b745b6345a"
+    },
+    "prototype/final-interfaces.log": {
+      "bytes": 27647,
+      "sha256": "ada74e4cbeb8f76c8e8a96f368e13495796d8f40aba9c5bdfc4a51ec579b2321"
+    },
+    "prototype/final-names.log": {
+      "bytes": 5416,
+      "sha256": "5d72423ee8dbb6a64d260c82b0ab2bd6e8ced16498acb8e599830bcd24658af5"
+    },
+    "prototype/final-records.json": {
+      "bytes": 9324,
+      "sha256": "0059e8f9d33be7004819e0d4b9193bb9a6fd256fdaf31c52ea2e415c67700afd"
+    },
+    "prototype/final-simp.log": {
+      "bytes": 1711474,
+      "sha256": "2eef4eea5eb61b269aab6b5b19a616f12e46b8ce1e199df5fcfe2deace28121a"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticCellLabels.lean": {
+      "bytes": 10821,
+      "sha256": "096f4d71694efd27060a23e979b0a2cf2736fc1abad641fadbf8663433cc025d"
+    },
+    "prototype/final/DiophantineConsistency/ArithmeticCellTransfer.lean": {
+      "bytes": 14083,
+      "sha256": "d972455d407d7efc87307928949b735ee4d0cadf814e39f715fbc1e891e0b49b"
+    },
+    "prototype/instances.lean": {
+      "bytes": 301,
+      "sha256": "504898025c1ba16f58c50735b3f54e14f8a87ecda390ea2d1539b385ae7b75a7"
+    },
+    "prototype/interfaces.lean": {
+      "bytes": 493,
+      "sha256": "305bda947467c74ea8d5b1f9c8c7d449537da3c4c161a13d6bd80c656ad7d3de"
+    },
+    "prototype/names.lean": {
+      "bytes": 345,
+      "sha256": "c7acc22cb3d2f78ff0feb9b80c23df443b9fff5ae584da2f468546cb521646c5"
+    },
+    "prototype/probe-records.json": {
+      "bytes": 33935,
+      "sha256": "d7093464ec38c6fbe8cc7145710b8f8a8c74627bb1054ded023b8e03c1df20c9"
+    },
+    "prototype/probe.py": {
+      "bytes": 1320,
+      "sha256": "b7995f8bbafa3b43f81d4bc815fb1f8cb6c94e5df12ff45043de88573e1ad782"
+    },
+    "prototype/simp.lean": {
+      "bytes": 515,
+      "sha256": "c0902b84e08ec0f80eb35c6d9c0f9a169337a4bca346f3ceb9c2e046237ec54e"
+    },
+    "providers/binary-half-direct-final-supplement-records.json": {
+      "bytes": 11251,
+      "sha256": "bf3d64a68448f7a2abe9e293027d7dc945a65cbd95feb825b715f32665a83354"
+    },
+    "providers/cell-no-carry-refresh-records.json": {
+      "bytes": 11453,
+      "sha256": "c05475e92a223e367788649d7d701c74992840e3ef8864ac48160be16f45f882"
+    },
+    "providers/construction-share-bound-refresh-records.json": {
+      "bytes": 357995,
+      "sha256": "cbfd3d03e804f7893827e48560bf30baa886676b059aff126c2cef9404398150"
+    },
+    "providers/high-digits-module-sharing-final-records.json": {
+      "bytes": 157569,
+      "sha256": "c7864ea8c85fa4285ae309c987bca8e2e6e372dc5cd6a45cd779f6ddf4c88722"
+    },
+    "providers/shared-modular-cancel-records.json": {
+      "bytes": 55095,
+      "sha256": "dbcffd99ff983fb26550f3098bb801fb3f5f11dcb44c425b21b74d80ec2a5062"
+    },
+    "sources/ArithmeticCellLocal.lean": {
+      "bytes": 17716,
+      "sha256": "26c27cf4de975942ef6b0389648d5c18a806176f5299f92369f2e0fc0db77d16"
+    },
+    "sources/ArithmeticCellTransfer.lean": {
+      "bytes": 14083,
+      "sha256": "d972455d407d7efc87307928949b735ee4d0cadf814e39f715fbc1e891e0b49b"
+    },
+    "sources/ArithmeticCyclicWord.lean": {
+      "bytes": 8513,
+      "sha256": "890bb35639daad00a18c22c38679fb9bceb3e3bd84c2090e9a785f19e32e1926"
+    },
+    "sources/ArithmeticModularCancellation.lean": {
+      "bytes": 1012,
+      "sha256": "2b519d5cc333065c8db60db2b75f460ce42bbc856aefb9920da20095f329e29b"
+    },
+    "sources/ArithmeticStandardCasts.lean": {
+      "bytes": 1452,
+      "sha256": "8f7014e3f71cae1b7afb3d0ca97eaba73965b544bbc95fd8f7887e71ae46417b"
+    },
+    "sources/MFDoubledClause2011.lean": {
+      "bytes": 1864,
+      "sha256": "fb7bb65322a96fc0557e0066b921039b008b9f1882e0f283e92dc10af198e8a5"
+    }
+  }
+}

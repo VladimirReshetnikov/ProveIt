@@ -1,0 +1,25 @@
+Independent review of /dev/shm/cell-sum-unique, precommit
+
+The replacement of the split on total sum by a split on pointwise vanishing
+correctly applies Finset.sum_le_one_iff to a nonzero witness and to each other
+index. The theorem statement and imports are unchanged. The current workspace
+target equals the baseline snapshot and the current ArithmeticCellTransfer
+source equals both client snapshots. Both source-ordered target/client builds
+pass, with identical client object bytes and empty build logs.
+
+I independently checked all 16 probe receipts against both exact phase objects;
+76 common target declaration/type/axiom blocks and all 59 client names/reports
+match, as do the recorded target and client global simp/instance registrations.
+The target loses six generated public names sum_le_one_cases._proof_1 through
+_proof_6; git grep over tracked Lean and Python files finds no references.
+These checks do not establish equality of proof bodies or all Lean extensions.
+
+I verified both phases' source and first-provider pins and log hashes, and
+checked direct source/object associations to the recorded successful producers
+for CellLocal, MFDoubledClause2011, StandardCasts, ModularCancellation and
+CyclicWord. The final client uses the new phase-local CellLabels object. The
+broader transitive source closure and untested downstream clients remain cached.
+Reproducible independent checks: /tmp/cell-sum-unique-peer-audit.py and .log.
+
+Postcommit check: source commit 2e364c3e91 and its parent contain byte-for-byte
+identical final and baseline ArithmeticCellLabels snapshots, respectively.
