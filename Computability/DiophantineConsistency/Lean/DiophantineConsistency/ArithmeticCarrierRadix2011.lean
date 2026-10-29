@@ -109,16 +109,16 @@ theorem current_natural_power (v : Fin 14 → V)
       naturalExpression.splitNatural.2.evalSemiring v) :
     let u:=fun j => v j+1
     X u=Exp.exp (rank u) ∧ Exponential (rank u) (X u) ∧ Exp.exp (rank u)<Y u :=
-  power_of_equations _ (fun j => lt_of_le_of_lt (Arithmetic.zero_le (v j)) (lt_add_one _))
-    (current_natural_equations v hz)
+  current_power _ (fun j => lt_of_le_of_lt (Arithmetic.zero_le (v j)) (lt_add_one _))
+    ((internalZero_positiveShift expression v).mp hz)
 
 theorem current_natural_radix (v : Fin 14 → V)
     (hz : naturalExpression.splitNatural.1.evalSemiring v=
       naturalExpression.splitNatural.2.evalSemiring v) :
     let u:=fun j => v j+1
     (X u=Exp.exp (rank u) ∧ Exponential (rank u) (X u) ∧ Exp.exp (rank u)<Y u) ∧
-      Radix u := by
-  have hp:=current_natural_power v hz
-  exact ⟨hp,radix_of_power _ (lt_of_le_of_lt (Arithmetic.zero_le (v 0)) (lt_add_one _)) hp.1⟩
+      Radix u :=
+  current_radix _ (fun j => lt_of_le_of_lt (Arithmetic.zero_le (v j)) (lt_add_one _))
+    ((internalZero_positiveShift expression v).mp hz)
 
 end DiophantineConsistency.ArithmeticCarrierRadix2011
