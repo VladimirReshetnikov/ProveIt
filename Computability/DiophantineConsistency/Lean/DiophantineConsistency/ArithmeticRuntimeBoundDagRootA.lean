@@ -111,11 +111,9 @@ theorem eqR_zeroT (st : AS V) (hp : st.p2 = 0) (hs : sz st ≤ tower j L) :
   haveI : 𝚺₁-Function₁[V] G := write2_definable _ _ _ _ _ (by definability) (sub_definable _)
   have hZ : ∀ u : AS V, u.p2 = 0 → RnB (.node 465) u {u with p2 := 0} (0 * (1 + 1) + 1) := by
     intro u hu
-    have h := clearB (p := DagPerm.dagPerm) R.run_zero R.run_add R.run_one
-      ArithmeticDagControlPerm222.spec (n := 465) (r := 5) rfl (enc u)
-    rw [lupd_enc _ 5 (by omega), lreg_enc _ 5 (by omega),
-      show field u 5 = (0 : V) from hu] at h
-    exact h
+    have he : ({u with p2 := 0} : AS V) = u := by cases u; simp_all
+    simpa only [zero_mul, zero_add, he] using
+      RB.skip (n := 465) rfl (decZero_ASB 5 (by omega) u hu)
   have hpass : ∀ t, t < st.s1 → IRB (.node 465) (G t) .normal (G t) (0 * (1 + 1) + 1) ∧
       IRB (.node 462) (G t) (.cont 1) (G (t+1)) (1 + 1) := by
     intro t ht
