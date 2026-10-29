@@ -32,10 +32,7 @@ theorem three_h_lt_rank (v : Fin 14 → V) (hv : ∀j,0<v j) (h : V)
     unfold rank
     have h1 : 1≤(q v-1)*(q v-v 1)+v 2 :=
       le_trans (pos_iff_one_le.mp (hv 2)) (le_add_of_nonneg_left (by simp))
-    calc
-      (q v)^2-1=1*((q v)^2-1) := (one_mul _).symm
-      _≤((q v-1)*(q v-v 1)+v 2)*((q v)^2-1) := mul_le_mul_of_nonneg_right h1 (by simp)
-      _≤_ := le_add_of_nonneg_right (by simp)
+    exact le_trans (le_mul_of_one_le_left (by simp) h1) (le_add_of_nonneg_right (by simp))
   have hhq : h+1≤q v := by rw [hq]; exact lt_iff_succ_le.mp (lt_exp h)
   have hsq : 3*h+1+1≤(q v)^2 := calc
     3*h+1+1≤3*(h+1)+(16:V) := by
@@ -43,9 +40,7 @@ theorem three_h_lt_rank (v : Fin 14 → V) (hv : ∀j,0<v j) (h : V)
       rw [←this]; exact le_add_of_nonneg_right (by simp)
     _≤3*q v+q v := add_le_add (mul_le_mul_of_nonneg_left hhq (by simp)) hq16
     _=4*q v := by ring
-    _≤16*q v := mul_le_mul_of_nonneg_right (by
-      exact_mod_cast (show (4:ℕ)≤16 by decide)) (by simp)
-    _≤q v*q v := mul_le_mul_of_nonneg_right hq16 (by simp)
+    _≤q v*q v := mul_le_mul_of_nonneg_right (le_trans (by norm_num : (4:V)≤16) hq16) (by simp)
     _=(q v)^2 := by ring
   exact le_trans (le_tsub_of_add_le_right hsq) hR
 
