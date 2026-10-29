@@ -24,32 +24,7 @@ local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.OR
 omit [Nonempty M] [M↓[language] ⊧* PRA] in
 theorem reduct_eq :
     (inferInstance : Structure language M).lMap embedding = Arithmetic.standardModel M := by
-  apply Structure.ext
-  · funext k f v
-    cases f with
-    | zero =>
-      have hv : v = Fin.elim0 := Subsingleton.elim _ _
-      rw [hv]
-      rfl
-    | one =>
-      have hv : v = Fin.elim0 := Subsingleton.elim _ _
-      rw [hv]
-      rfl
-    | add =>
-      rw [Matrix.fun_eq_vec_two v]
-      rfl
-    | mul =>
-      rw [Matrix.fun_eq_vec_two v]
-      rfl
-  · funext k r v
-    cases r with
-    | eq =>
-      apply propext
-      change Structure.rel (L := language) Language.Eq.eq v ↔ v 0 = v 1
-      exact Structure.eq_lang
-    | lt =>
-      rw [Matrix.fun_eq_vec_two v]
-      rfl
+  exact PRAQCompatibility.reduct_eq
 
 omit [M↓[language] ⊧* PRA] in
 theorem mapped_of_standard (σ : Sentence ℒₒᵣ)
