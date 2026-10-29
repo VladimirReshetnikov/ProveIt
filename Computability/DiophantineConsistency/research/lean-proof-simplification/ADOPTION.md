@@ -2191,5 +2191,16 @@ source-matched receipts. The wider closure remains cached. The compact [evidence
 note](../../reviews/lean-proof-simplification-20261029-pell-y-two-shared.md)
 records hashes and external paths without raw logs or objects.
 
+The native outer-seed witness positivity simplification `d13f06b257` removes
+eight net Lean lines, bringing the reviewed series to 10441. Positive natural
+differences give both witness bounds directly. Paired target and both direct
+clients pass, including a source-matched provider replay; client objects match
+within each lane. Of the checked reports, 196 common reports match, 12 generated
+public reports change and four generated names disappear. Searches of tracked
+and nonignored untracked Lean/Python sources found no references. Sampled
+registrations match; the umbrella and wider closure remain unbuilt or cached.
+The compact [evidence note](../../reviews/lean-proof-simplification-20261029-native-outer-positive.md)
+records hashes and external paths without raw logs or objects.
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
