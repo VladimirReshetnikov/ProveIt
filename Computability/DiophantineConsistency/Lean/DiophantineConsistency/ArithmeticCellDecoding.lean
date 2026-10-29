@@ -146,9 +146,8 @@ theorem one_selector {b : V} (hb : IsCell N b) {p q : V} (hp : p < 942) (hq : q 
   obtain ⟨cw, tw, kw, dw, kin, φ, HL, hcw, -, -, -, -⟩ := snapshot H hb.1 hb.2
   rw [cell_digit H hb hcw (q := p') (by omega)] at h1
   rw [cell_digit H hb hcw (q := q') (by omega)] at h2
-  have e := prefix_unique (fun f => cw (4022 + f)) (count_le_one HL) hp' hq'
+  exact_mod_cast prefix_unique (fun f => cw (4022 + f)) (count_le_one HL) hp' hq'
     (by exact_mod_cast h1) (by exact_mod_cast h2)
-  rw [e]
 
 /-- **Fractional phase zero (B2).** -/
 theorem phase_zero : W % 47 = 0 := by
@@ -211,10 +210,8 @@ theorem spatial_parity {b : V} (hb : IsCell N b) {j : ℕ} (hj : j < 8) :
     ← win_prev H.N_pos hb (q := 978 + j) (by omega), hcw (2011 + (978 + j)) (by omega)]
   have hp := ArithmeticCellLocal.spatial_parity HL rfl hj
   rw [show 4022 + (969 + j) = 4991 + j by omega, show 2011 + (978 + j) = 2989 + j by omega]
-  have hc : ((cw (4991 + j) + cw (2989 + j) + tw (987 + j)) % 2 : ℕ) = 0 := hp
-  have := congrArg (fun x : ℕ => (x : V)) hc
-  simp only [natCast_mod, Nat.cast_add, Nat.cast_zero] at this
-  simpa using this
+  simpa only [natCast_mod, Nat.cast_add, Nat.cast_zero, Nat.cast_ofNat] using
+    congrArg (fun x : ℕ => (x : V)) hp
 
 private theorem label_bits {b : V} (hb : IsCell N b) {cw : ℕ → ℕ}
     (hcw : ∀ p : ℕ, p < 6033 → dig 47 C (win (2011 * N) b p) = cw p)
