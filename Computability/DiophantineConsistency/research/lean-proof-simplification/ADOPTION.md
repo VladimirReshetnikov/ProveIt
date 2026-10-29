@@ -1773,5 +1773,11 @@ all twelve unchanged downstream objects match. The 32 retained declaration
 reports and sampled registrations match, and exactly three unregistered private
 wrappers disappear. The wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-square-direct-evidence/BUNDLE.json).
 
+The Pell ordinate sum bound `20eb14ccb9` removes six net Lean lines, bringing
+the reviewed series to 10067. Existing product lower bounds and `time_le_y`
+give the sum comparison directly. Paired target and three direct clients pass
+with identical client objects; target declaration and registration reports
+match. The transitive closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-y-add-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
