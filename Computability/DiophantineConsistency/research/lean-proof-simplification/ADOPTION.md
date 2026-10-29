@@ -1765,5 +1765,13 @@ clients pass; two client objects match, while WindowCarry objects differ for an
 unknown reason despite matching checked interfaces. The transitive closure
 remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-cyclic-rot-mod-evidence/BUNDLE.json).
 
+The Pell square-order cleanup `c66364f0e2` removes twelve net Lean lines,
+bringing the reviewed series to 10061. Three private duplicate proofs are
+replaced with an imported nonnegative square-order lemma. Coherent paired
+15-module replays cover all affected direct clients and both dependency paths;
+all twelve unchanged downstream objects match. The 32 retained declaration
+reports and sampled registrations match, and exactly three unregistered private
+wrappers disappear. The wider closure remains cached. See [the evidence bundle](../../reviews/lean-proof-simplification-20261029-pell-square-direct-evidence/BUNDLE.json).
+
 The degree certificates of `ShortSystem`, `ShortFrontier` and `ShortReducedStrong` were replaced
 independently of these packets, by the `total_degree_bound` tactic in `TotalDegreeBound`.
