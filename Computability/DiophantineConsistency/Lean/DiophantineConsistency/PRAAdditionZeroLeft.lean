@@ -34,13 +34,8 @@ theorem zeroLeftBody_eval (x : M) (e : ℕ → M) : zeroLeftBody.Eval ![x] e ↔
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have hv : (Semiterm.val ![x] e ∘ ![(.func (Code.zero 0) Fin.elim0 : Semiterm language ℕ 1), .bvar 0]) =
       ![Structure.func (L := language) (Code.zero 0) Fin.elim0, x] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · change Structure.func (L := language) (Code.zero 0)
-        (Semiterm.val ![x] e ∘ (Fin.elim0 : Fin 0 → Semiterm language ℕ 1)) = _
-      rw [hz]
-      rfl
-    · exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [Semiterm.val_func, Semiterm.val_bvar, Matrix.cons_val_zero, hz] using
+      val_pair ![x] e (.func (Code.zero 0) Fin.elim0) (.bvar 0)
   change Structure.func (L := language) addCode
     (Semiterm.val ![x] e ∘ ![(.func (Code.zero 0) Fin.elim0 : Semiterm language ℕ 1), .bvar 0]) = x ↔ _
   rw [hv]
@@ -68,13 +63,8 @@ theorem modelZeroLeftSentence : M↓[language] ⊧ zeroLeftSentence := by
       (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   have hv : (Semiterm.val e Empty.elim ∘ ![applyCode (.zero 0) Fin.elim0, .bvar 0]) =
       ![Structure.func (L := language) (Code.zero 0) Fin.elim0, e 0] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · change Structure.func (L := language) (Code.zero 0)
-        (Semiterm.val e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN 1)) = _
-      rw [hz]
-      rfl
-    · exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa only [applyCode, Semiterm.val_func, Semiterm.val_bvar, hz] using
+      val_term_pair e (applyCode (.zero 0) Fin.elim0) (.bvar 0)
   simp only [applyCode] at hv
   rw [hv]
   exact modelZeroLeft (e 0)

@@ -39,10 +39,8 @@ theorem succLeftBody_eval (x : M) (e : ℕ → M) : succLeftBody.Eval ![x] e ↔
   have hleft : (Semiterm.val ![x] e ∘
       ![(.func Code.succ (fun _ => .fvar 0) : Semiterm language ℕ 1), .bvar 0]) =
       ![Structure.func (L := language) Code.succ (fun _ => e 0), x] := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · rfl
-    · exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa [Semiterm.val_func, Semiterm.val_bvar, Semiterm.val_fvar, Function.comp_def] using
+      val_pair ![x] e (.func Code.succ (fun _ => .fvar 0)) (.bvar 0)
   have hright : (Semiterm.val ![x] e ∘ fun _ : Fin 1 =>
       (.func addCode ![.fvar 0, .bvar 0] : Semiterm language ℕ 1)) =
       fun _ => Structure.func (L := language) addCode ![e 0, x] := by
@@ -86,9 +84,8 @@ theorem modelSuccLeftSentence : M↓[language] ⊧ succLeftSentence := by
       val_term_pair e (.bvar 0) (.bvar 1)
   have hleft : (Semiterm.val e Empty.elim ∘ ![applyCode Code.succ (fun _ => .bvar 0), .bvar 1]) =
       ![Structure.func (L := language) Code.succ (fun _ => e 0), e 1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa [applyCode, Semiterm.val_func, Semiterm.val_bvar, Function.comp_def] using
+      val_term_pair e (applyCode Code.succ (fun _ => .bvar 0)) (.bvar 1)
   have hright : (Semiterm.val e Empty.elim ∘ fun _ : Fin 1 => applyCode addCode ![.bvar 0, .bvar 1]) =
       fun _ => Structure.func (L := language) addCode ![e 0, e 1] := by
     funext i

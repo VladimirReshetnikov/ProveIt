@@ -42,9 +42,8 @@ theorem cancelBody_eval (x : M) (e : ℕ → M) : cancelBody.Eval ![x] e ↔
         .func Code.succ (fun _ => .bvar 0)]) =
       ![Structure.func (L := language) Code.succ (fun _ => e 0),
         Structure.func (L := language) Code.succ (fun _ => x)] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa [Semiterm.val_func, Semiterm.val_bvar, Semiterm.val_fvar, Function.comp_def] using
+      val_pair ![x] e (.func Code.succ (fun _ => .fvar 0)) (.func Code.succ (fun _ => .bvar 0))
   change Structure.func (L := language) subCode (Semiterm.val ![x] e ∘
       ![(.func Code.succ (fun _ => .fvar 0) : Semiterm language ℕ 1), .func Code.succ (fun _ => .bvar 0)]) =
     Structure.func (L := language) subCode (Semiterm.val ![x] e ∘
@@ -82,9 +81,8 @@ theorem modelCancelSentence : M↓[language] ⊧ cancelSentence := by
       applyCode Code.succ (fun _ => .bvar 1)]) =
       ![Structure.func (L := language) Code.succ (fun _ => e 0),
         Structure.func (L := language) Code.succ (fun _ => e 1)] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun k => Fin.elim0 k) j
+    simpa [applyCode, Semiterm.val_func, Semiterm.val_bvar, Function.comp_def] using
+      val_term_pair e (applyCode Code.succ (fun _ => .bvar 0)) (applyCode Code.succ (fun _ => .bvar 1))
   simp only [applyCode] at hq
   rw [hq, hp]
   exact modelSubSuccCancel (e 0) (e 1)
