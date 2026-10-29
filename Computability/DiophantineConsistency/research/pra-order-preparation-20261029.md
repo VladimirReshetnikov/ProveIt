@@ -35,3 +35,12 @@ are in `/tmp/pra-nonzero-character-author-sn02ocqx/logs`; attempts 2–5 were
 admitted goal-inspection probes, not accepted evidence. Foundation and Mathlib
 remain inherited provider boundaries. Independent review and replay of the
 new pairs are separate.
+
+## Open induction and left addition zero
+
+The [independent replay](../reviews/pra-open-induction-root.md) validates an
+open-induction interface for arbitrary parameters in candidate-PRA equality
+models and a closed candidate-PRA derivation of `0+x=x`. Addition
+commutativity and the additive-witness definition of order remain to be
+derived; these are prerequisites for the full Q compatibility route, not
+proof of standard PRA equivalence or Parsons conservation.
