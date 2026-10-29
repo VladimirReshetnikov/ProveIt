@@ -162,14 +162,9 @@ theorem binomial_floor (X r u : V) (hr : 1≤r) (hX : X=Exp.exp (2*r+1))
   · -- the central coefficient is positive, hence so is m
     have hCpos : 0<binom (2*r) r := binom_pos _ _ (by
       rw [two_mul]; exact le_add_of_nonneg_left (by simp))
-    have hm0 : 0<m := by
-      rcases zero_or_succ m with h0|⟨m',hm'⟩
-      · rw [h0,mul_zero] at hm
-        have : binom (2*r) r=0 := le_antisymm (by rw [←hm]; exact le_add_of_nonneg_right (by simp))
-          (by simp)
-        exact absurd this (ne_of_gt hCpos)
-      · rw [hm']; simp
-    exact one_le_mul (one_le_exp _) (by simpa using lt_iff_succ_le.mp hm0)
+    have hm0 : 0<m := pos_of_mul_pos_right
+      (lt_of_lt_of_le hCpos (by rw [←hm]; exact le_add_of_nonneg_right (by simp))) (by simp)
+    exact one_le_mul (one_le_exp _) (pos_iff_one_le.mp hm0)
   · rw [mul_comm w X,hm,exp_succ]; ring
 
 /-- **Pell interval (construction).** If `(X+1)^(2r) = 2*Y*X^r + v` with
