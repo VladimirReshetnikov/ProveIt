@@ -387,11 +387,7 @@ theorem half_index (a c d f i R y u : V)
     (huf : SignMod f u c) (huc : SignMod c u R) :
     d=xcoord R a ∧ c=ycoord R a := by
   obtain ⟨p,_,hd,hcp⟩ := solution_index a d c hmain
-  have hp : 0<p := by
-    by_contra hn
-    have hz : p=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
-    rw [hz,y_zero] at hcp
-    exact (ne_of_gt hc) hcp.symm
+  have hp : 0<p := pos_iff_ne_zero.mpr (fun hz => (ne_of_gt hc) (by simpa [hz] using hcp.symm))
   have hdelta : (3:V)≤delta a := by
     unfold delta
     simpa only [one_mul] using mul_le_mul (show (1:V)≤a+1 by simp)
