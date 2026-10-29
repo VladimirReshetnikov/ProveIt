@@ -317,11 +317,7 @@ theorem fixed_image (σ : SetTheorySentence) (h : TaggedValid seedTheory σ) (j 
 /-- The `AxiomImages` form of a fixed image. -/
 theorem fixed_image_derivable (σ : SetTheorySentence) (h : TaggedValid seedTheory σ) (j : W) :
     Derivable seedTheory (insert (tagRel j (⌜σ⌝ : W)) (insert (emptyGuard j) (sideSet j))) := by
-  have hσ : IsFormula ℒₛₑₜ (⌜σ⌝ : W) := by simp
-  have he : Derivable seedTheory (insert (emptyCode j) (insert (emptyGuard j) (sideSet j))) :=
-    Derivable.em (by simp [empty_typed, emptyGuard_typed, sideSet,
-      isFormulaSet_domSet (domain_typed j)]) (emptyCode j) (by simp) (by simp [emptyGuard])
-  exact NativePeel.derivable_mp (tagRel_typed j hσ) (fixed_image σ h j) he
+  exact ValidatorSeedGicImages222.derivable_of_tagged_imp (by simp) (fixed_image σ h j)
 
 end Internal
 
