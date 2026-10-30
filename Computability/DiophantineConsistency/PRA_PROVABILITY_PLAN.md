@@ -101,6 +101,10 @@ The [fixed-sentence bound-certificate interface](reviews/pra-strict-con-reverse-
 has independently replayed proofs that such a certificate implies the
 surrogate-to-original direction and hence the full mapped equivalence. No
 certificate has yet been constructed for Foundation's ZFC refutation sentence.
+The [Foundation refutation-bound audit](research/pra-foundation-refutation-bound-audit-20261029.md)
+traces the actual nested proof, sequence, formula and schema recognizers and
+identifies the remaining model-uniform primitive-recursive majorant; it is an
+analysis of the obligation, not a constructed certificate.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
