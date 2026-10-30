@@ -36,7 +36,7 @@ theorem closure_support (a b k m : V) (hm : Vac a m) :
     compose (not_all_imp_ex_conj a m U).1
       (compose (ex_mono a (conj_left m U)) (ex_elim_of_vac hm))
   have point : CProv (wim (wim (wel b k) I) (wim (wel b k) m)) :=
-    ded2 (.mp (.ax inner) (.mp h1 h0))
+    imp_mono (ded1 h0) inner
   exact all_mono b point
 
 /-- This projection retains the literal seed gates, including legal c=0

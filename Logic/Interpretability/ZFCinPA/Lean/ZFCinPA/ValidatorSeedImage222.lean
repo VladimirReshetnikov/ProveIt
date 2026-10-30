@@ -21,9 +21,7 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
 local notation "h0" => (ValidatorImplicationContext.h0 CProv)
-local notation "h1" => (ValidatorImplicationContext.h1 CProv)
 local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
-local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 
 def subset (a b k : V) : V := wal k (wim (wel k a) (wel k b))
 def support (a b k p : V) : V := wal b (wim (wel b k) (ex a p))
@@ -38,7 +36,7 @@ theorem closure_support_exists (a b k p : V) :
     CProv (wim (clos a b k p) (support a b k p)) := by
   let U := wal a (wim (subset a b k) (req b k p))
   have inner := compose (not_all_imp_ex_conj a p U).1 (ex_mono a (conj_left p U))
-  exact all_mono b (ded2 (.mp (.ax inner) (.mp h1 h0)))
+  exact all_mono b (imp_mono (ded1 h0) inner)
 
 /-- The universal right component is eliminated by the actual rho6
 certificate. The input label a remains free in the resulting clause;
@@ -49,7 +47,7 @@ theorem closure_coverage (a b k p : V) :
   have inner := compose (not_all_imp_ex_conj a p U).1
     (compose (ex_mono a (conj_right p U))
       (ex_all_elim a (wim (subset a b k) (req b k p))))
-  exact all_mono b (ded2 (.mp (.ax inner) (.mp h1 h0)))
+  exact all_mono b (imp_mono (ded1 h0) inner)
 
 theorem pair_image (a b k p : V) :
     CProv (wim (conj (clos a b k p) (req b k p)) (imageBody a b k p)) := by

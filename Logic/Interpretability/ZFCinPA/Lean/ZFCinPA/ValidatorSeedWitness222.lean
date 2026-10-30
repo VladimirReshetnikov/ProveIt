@@ -20,9 +20,7 @@ open ArithmeticSeedTemplates222 (req clos nks vrel)
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 local notation "h0" => (ValidatorImplicationContext.h0 CProv)
-local notation "h1" => (ValidatorImplicationContext.h1 CProv)
 local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
-local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 
 /-- The inner negation of `ex i (conj p q)` adds two negations to
 `p → ¬q`; both directions are actual C222 certificates. -/
@@ -63,7 +61,7 @@ theorem request_eind_member (b p k : V) (hbp : b ≠ p) (hbk : b ≠ k) :
     compose (not_all_imp_ex_conj b M (wel b k)).1
       (compose (ex_mono b hconj) (ex_elim_of_vac vQ))
   have hpoint : CProv (wim (wim M I) (wim M Q)) :=
-    ded2 (.mp (.ax hinner) (.mp h1 h0))
+    imp_mono (ded1 h0) hinner
   have hex : CProv (wim (wal b (wim M Q)) (ex b Q)) :=
     ded1 (.mp (.mp (.ax (all_imp_ex b M Q)) h0) (.ax (Eind_ex b p)))
   exact compose (all_mono b hpoint) (compose hex (ex_elim_of_vac vQ))
