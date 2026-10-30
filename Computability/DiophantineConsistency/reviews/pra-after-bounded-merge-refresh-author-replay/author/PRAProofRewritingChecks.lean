@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRAProofRewriting
+open DiophantineConsistency.PRAProofRewriting
+#print axioms PRA_proves_rewrite_univCl
+#print axioms fvSup_le_of_fvar_lt
+#print axioms rewrite_fvSup_le
+#check PRA_proves_rewrite_univCl
+#check rewrite_fvSup_le

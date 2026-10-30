@@ -81,7 +81,6 @@ After those replays, an upstream merge changed `PRAExhaustion`, `PRANonzero`,
 and `PRAPeanoMinusBasic`. A dependency-aware 92-module author rebuild and two
 independent replays have since matched all source, object and full-log hashes,
 including the bounded compiler, witness and induction-counterexample modules.
-The bounded-only comparison client still needs a replay against that provider.
 A further upstream merge changed `PRAAddOne`, bounded-search and order-witness
 modules, and `PRASubReconstruct`. The 92-module and interactive extraction
 replays therefore cover the preceding source snapshot; their affected
@@ -89,6 +88,11 @@ dependency graphs require another current-source rebuild.
 The subsequent 108-module rebuild has now passed two independent replays,
 including the candidate-PRA triple-witness client. Foundation and Mathlib
 remain inherited boundaries; this does not establish the missing comparison.
+A further merge changed bounded-formula and characteristic modules. The
+affected candidate-PRA graph has since passed a 68-module author rebuild and
+two independent replays with matching source, object and full-log hashes;
+the separate extraction and bounded-comparison clients have also been rebuilt
+and independently replayed against that provider.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)

@@ -1,0 +1,17 @@
+'DiophantineConsistency.PRAContextualWitnessChoice.PRA_proves_contextualListChoice' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAContextualWitnessChoice.PRA_exists_contextualWitness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAContextualWitnessChoice.PRA_exists_contextualWitness {n : ℕ}
+  (side : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language n)
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language (n + 1))
+  (hOpen : LO.FirstOrder.Semiformula.Open φ) (fallback : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (ws : List (DiophantineConsistency.PRAFiniteFunctionCodes.Code n))
+  (h :
+    DiophantineConsistency.PRATheory.PRA ⊢
+      ∀⁰* side ⋎ DiophantineConsistency.PRAHerbrandSelection.openMatrixList φ fallback ws) :
+  ∃ c,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval c) ∧
+      DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* side ⋎ DiophantineConsistency.PRAHerbrandSelection.openMatrixAt φ c

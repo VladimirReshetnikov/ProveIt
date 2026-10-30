@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAStageSubstitution
+open DiophantineConsistency.PRAStageSubstitution
+#print axioms stageSub_preserves
+#print axioms stageSub_fvSup_le
+#print axioms PRA_proves_stageSubstitution
+#check PRA_proves_stageSubstitution

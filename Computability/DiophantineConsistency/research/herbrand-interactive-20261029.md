@@ -18,7 +18,10 @@ remain inherited boundaries.
 A later upstream merge changed `PRAAddOne`, `PRASubReconstruct`,
 `PRABoundedSearchInvariant`, and `PRABoundedSearchMinimal`, which are in the
 extractors' transitive import graph. The recorded replays cover the preceding
-source snapshot and must be refreshed before claiming current-source coverage.
+source snapshot. A subsequent 68-module candidate-provider refresh and a
+21-module extraction/selection refresh have now each passed author and
+independent replays with matching source, object and full-log hashes.
+Foundation and Mathlib remain inherited boundaries.
 
 `HerbrandInteractiveTriple.separated_interactive` extends the construction to
 three separate challenges per round, reserving distinct indices and proving

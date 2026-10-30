@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRABoundedCharacteristic
+open DiophantineConsistency.PRABoundedCharacteristic
+#print axioms PRA_proves_nonzeroCorrect
+#print axioms PRA_proves_boundedCharacteristic
+#print axioms PRA_boundedUniversalStep
+#check PRA_boundedUniversalStep
