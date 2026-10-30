@@ -8,6 +8,13 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A separate [87-operation adaptive output candidate](research/adaptive-first-root-factor87/README.md)
+factors one root of the 88-operation thirteen-variable circuit. The finite
+schedule audit and local signed-pair/`Expr.splitNatural` Lean lemmas have
+[independent replays](reviews/adaptive-first-root-factor87-independent.md).
+The full revised literal has not yet been bound to the maintained equation in
+Lean, and the candidate has no separate HA or PRA endpoint.
+
 The later upstream merges through `166728f64b` changed ZFC validator modules
 reachable from the maintained HA endpoint. Its earlier checked derivation is
 snapshot evidence; a dependency-aware source-current replay of that endpoint
