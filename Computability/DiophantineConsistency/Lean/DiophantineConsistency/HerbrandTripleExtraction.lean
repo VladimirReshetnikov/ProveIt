@@ -25,16 +25,8 @@ noncomputable def prepareTriple (φ : Semiproposition language 3) (hOpen : φ.Op
     Prepared (∃⁰ ∃⁰ φ) axioms := by
   let dd := Derivation.Canonical.hauptsatz d
   have hn : NoUniversal φ := noUniversal_of_open φ hOpen
-  have hg : ∀ ψ ∈ (∃⁰ ∃⁰ ∃⁰ φ) :: ∼Sequent.embed axioms, NoUniversal ψ := by
-    intro ψ hψ
-    simp only [List.mem_cons] at hψ
-    rcases hψ with rfl | hψ
-    · exact hn
-    · simp only [List.tilde_def, Sequent.embed, List.mem_map] at hψ
-      obtain ⟨χ,hχ,hψ⟩ := hψ
-      obtain ⟨σ,hσ,rfl⟩ := hχ
-      subst ψ
-      exact negatedAxiom_noUniversal σ (hAxioms σ hσ)
+  have hg : ∀ ψ ∈ (∃⁰ ∃⁰ ∃⁰ φ) :: ∼Sequent.embed axioms, NoUniversal ψ :=
+    sequent_noUniversal (∃⁰ ∃⁰ ∃⁰ φ) hn axioms hAxioms
   exact ⟨dd.val, dd.property, cutFree_noUniversalRule dd.val dd.property hg⟩
 
 /-- Prepare the concrete proof of a closed triple-existential theorem. -/
