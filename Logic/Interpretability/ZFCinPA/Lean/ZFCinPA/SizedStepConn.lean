@@ -3,7 +3,7 @@ import ZFCinPA.SizedDriverLevels
 /-!
 # Bounded driver steps: `∧` and `∨`
 
-`and_step_le` and `or_step_le`, the bounded twins of
+`conn_step_le true` and `conn_step_le false`, the bounded twins of
 `LDriverSteps.and_step` and `LDriverSteps.or_step`.
 
 Part of the bounded `hSchema` driver (`SizedDriver`), split out of one
@@ -99,17 +99,5 @@ theorem conn_step_le (isAnd : Bool) {P₀ P₂ : SF V 1} {F₁ F₃ : SF V 2} {u
     have d := dmpW (u4 13) lt (uA 13) hc (le_trans (le_trans hcl (wD_c hw)) (up 13)) c1
       (le_of_eq (by ring))
     exact d.mono (le_of_add_eq (y := 14) (by ring))
-
-theorem and_step_le {P₀ P₂ : SF V 1} {F₁ F₃ : SF V 2} {u w : V} (hu : 2 ≤ u)
-    (hK : ∀ i, (K6 P₀ F₁ P₂ F₃ (P₀ ⋏ P₂) (MaxT F₁ F₃) i).val ≤ lvB u) (hw : wD u ≤ w)
-    (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w) (h₃ : DLv 𝗭𝗙 (insert (InvT P₂ F₃).val ∅) w) :
-    DLv 𝗭𝗙 (insert (InvT (P₀ ⋏ P₂) (MaxT F₁ F₃)).val ∅) (w + 30) :=
-  conn_step_le true hu hK hw h₁ h₃
-
-theorem or_step_le {P₀ P₂ : SF V 1} {F₁ F₃ : SF V 2} {u w : V} (hu : 2 ≤ u)
-    (hK : ∀ i, (K6 P₀ F₁ P₂ F₃ (P₀ ⋎ P₂) (MaxT F₁ F₃) i).val ≤ lvB u) (hw : wD u ≤ w)
-    (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w) (h₃ : DLv 𝗭𝗙 (insert (InvT P₂ F₃).val ∅) w) :
-    DLv 𝗭𝗙 (insert (InvT (P₀ ⋎ P₂) (MaxT F₁ F₃)).val ∅) (w + 30) :=
-  conn_step_le false hu hK hw h₁ h₃
 
 end LeanProofs.ZFCinPA.SizedDriverSteps

@@ -22,12 +22,9 @@ import ZFCinPA.SizedDriver
 #print axioms LeanProofs.ZFCinPA.SizedEnvForm.envForm_le
 #print axioms LeanProofs.ZFCinPA.SizedDriverSteps.dall2_iff
 #print axioms LeanProofs.ZFCinPA.SizedDriverSteps.dall2_swap
-#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.and_step_le
-#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.or_step_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.conn_step_le
 #print axioms LeanProofs.ZFCinPA.SizedDriverSteps.neg_step_le
-#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.top_base_le
-#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.bot_base_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.base_step_le
 #print axioms LeanProofs.ZFCinPA.SizedDriverSteps.atom_step_le
-#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.ex_step_le
-#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.all_step_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.quant_step_le
 #print axioms LeanProofs.ZFCinPA.SizedDriver.driver_le

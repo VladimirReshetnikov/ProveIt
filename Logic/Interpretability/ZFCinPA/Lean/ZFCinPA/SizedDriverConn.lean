@@ -78,7 +78,7 @@ theorem case_and (M : V) :
     ∀ n p q, IsSemiformula ℒₛₑₜ n p → IsSemiformula ℒₛₑₜ n q →
     ΘB (Ad M) Kd (Wd M + 60) M n p → ΘB (Ad M) Kd (Wd M + 60) M n q →
     ΘB (Ad M) Kd (Wd M + 60) M n (p ^⋏ q) :=
-  case_bin M (cop := (· ^⋏ ·)) (t := 4) (fun _ _ => rfl) (· ⋏ ·) and_step_le lt_K!_left
+  case_bin M (cop := (· ^⋏ ·)) (t := 4) (fun _ _ => rfl) (· ⋏ ·) (conn_step_le true) lt_K!_left
     lt_K!_right (fun hp hq => by simp [hp, hq])
     (fun hp hq => by simp [envFormT, envForm_and hp.isUFormula hq.isUFormula])
 
@@ -86,7 +86,7 @@ theorem case_or (M : V) :
     ∀ n p q, IsSemiformula ℒₛₑₜ n p → IsSemiformula ℒₛₑₜ n q →
     ΘB (Ad M) Kd (Wd M + 60) M n p → ΘB (Ad M) Kd (Wd M + 60) M n q →
     ΘB (Ad M) Kd (Wd M + 60) M n (p ^⋎ q) :=
-  case_bin M (cop := (· ^⋎ ·)) (t := 5) (fun _ _ => rfl) (· ⋎ ·) or_step_le lt_or_left
+  case_bin M (cop := (· ^⋎ ·)) (t := 5) (fun _ _ => rfl) (· ⋎ ·) (conn_step_le false) lt_or_left
     lt_or_right (fun hp hq => by simp [hp, hq])
     (fun hp hq => by simp [envFormT, envForm_or hp.isUFormula hq.isUFormula])
 
