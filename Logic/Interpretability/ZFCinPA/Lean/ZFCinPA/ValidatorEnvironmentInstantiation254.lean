@@ -111,10 +111,7 @@ lemma term_is_fvar {t : V} (ht : IsTerm ℒₛₑₜ t) : ∃ index : V, t=^&ind
   rcases ht.case with (⟨i,hi,rfl⟩ | ⟨index,rfl⟩ | ⟨k,f,args,hf,_,rfl⟩)
   · simp at hi
   · exact ⟨index,rfl⟩
-  · have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
-    rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
-      .mkSigma “k f. ⊥” from rfl] at hf'
-    simp at hf'
+  · exact hf.elim
 
 /-- The source EXS rule's arbitrary internally typed term is interpreted by
 its actual free label, including the environment's fallback label. -/
