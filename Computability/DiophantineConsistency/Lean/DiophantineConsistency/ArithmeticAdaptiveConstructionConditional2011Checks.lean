@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionConditional2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionConditional2011.shifted_zero_of_enriched_witness

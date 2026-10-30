@@ -18,7 +18,7 @@ The [chosen-coordinate main and auxiliary factors](reviews/adaptive-construction
 have matching author and independent builds. They establish their respective
 literal units for the same witness when the stated correction and orientation
 equalities are supplied, allowing those coordinates to be chosen separately.
-The common witness, first factor and complete zero remain open.
+Their connection to a source-current halting construction remains open.
 
 The [concrete witness projections](reviews/adaptive-construction-witness-projection2011-independent.md)
 also pass an independent replay. These named coordinate equalities avoid
@@ -33,8 +33,14 @@ zero constructions are separate clients.
 
 The [concrete first-factor unit](reviews/adaptive-construction-first-witness-projected2011-independent.md)
 now also has an independent replay. It uses those first-carrier data and
-retains their explicit common-witness hypotheses; assembly of a full zero and
-the machine-halting bridge are separate results.
+retains their explicit common-witness hypotheses.
+
+The [conditional full shifted zero](reviews/adaptive-construction-conditional-zero2011-independent.md)
+now has an independent twelve-module replay. In every stated IΣ₁ model it
+chooses all three positive new coordinates and constructs a 13-variable
+zero from one old witness satisfying the explicit equation, seed, phase,
+rank, ordinate and orientation assumptions. Deriving that enriched witness
+from the source-current halting construction remains open.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -101,7 +107,8 @@ IΣ₁; its converse inclusion and general conservation remain open.
 
 The [first-factor reverse bridge](reviews/adaptive-construction-first-factor2011-independent.md)
 derives its literal unit from the explicit additive carrier identity and first
-norm. Binding these to the common concrete witness remains separate.
+norm; the later concrete client and conditional zero bind it to the common
+witness under the stated hypotheses.
 
 The [concrete main-factor client](reviews/adaptive-construction-main-witness2011-independent.md)
 now proves the main factor of the explicit adaptive witness is +1 under the
@@ -109,7 +116,8 @@ common seed and Assembly facts. Together with the strong factor, two of the
 four literal factor units are established for that witness. The [auxiliary
 witness client](reviews/adaptive-construction-aux-witness2011-independent.md)
 now establishes a third under explicit phase, ordinate and orientation
-hypotheses; the first factor and the common Assembly witness remain open.
+hypotheses. The later conditional zero assembles all four units; the common
+source-current Assembly witness remains open.
 
 The [strict Σ₁ certificate](reviews/pra-strict-sigma-certificate-author-replay/README.md)
 now supplies the conditional normalizer for every arithmetic induction
