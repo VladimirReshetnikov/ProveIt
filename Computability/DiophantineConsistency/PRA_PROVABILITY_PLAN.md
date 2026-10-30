@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [paired two-instance theorem](reviews/pra-paired-bounded-current-author-replay/README.md)
+now eliminates two closed Σ₁ induction instances with arbitrary bounded
+matrices depending on their shared induction parameter. It uses the internal
+bounded pairing graph and actual candidate-PRA proofs; extra external
+predicate parameters and general conservation are not covered.
+
 A [current-source pairing graph](reviews/pra-pair-graph-current-author-replay/README.md)
 now proves existence, unique component recovery and boundedness inside every
 candidate-PRA model, through its IOpen reduct. It is a model-level bounded

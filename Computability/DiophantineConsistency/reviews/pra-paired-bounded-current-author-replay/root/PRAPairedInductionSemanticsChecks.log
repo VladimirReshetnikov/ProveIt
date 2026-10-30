@@ -1,0 +1,40 @@
+'DiophantineConsistency.PRAPairedInductionSemantics.modelPairedZero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPairedInductionSemantics.modelPairedOne' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPairedInductionSemantics.modelPairedSuccInd_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPairedInductionSemantics.modelPairedSuccInd_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAPairedInductionSemantics.modelPairedSuccInd_zero {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (ψ₀ ψ₁ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3)
+  (h :
+    M↓[DiophantineConsistency.PRALanguage.language] ⊧
+      LO.FirstOrder.Semiformula.univCl
+        (LO.FirstOrder.Arithmetic.succInd
+          (DiophantineConsistency.PRAOpenOneInduction.openSigma
+            (DiophantineConsistency.PRAPairedInductionMatrix.pairedMatrix ψ₀ ψ₁)))) :
+  M↓[DiophantineConsistency.PRALanguage.language] ⊧
+    LO.FirstOrder.Semiformula.univCl
+      (LO.FirstOrder.Arithmetic.succInd (DiophantineConsistency.PRAOpenOneInduction.openSigma ψ₀))
+DiophantineConsistency.PRAPairedInductionSemantics.modelPairedSuccInd_one {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (ψ₀ ψ₁ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3)
+  (h :
+    M↓[DiophantineConsistency.PRALanguage.language] ⊧
+      LO.FirstOrder.Semiformula.univCl
+        (LO.FirstOrder.Arithmetic.succInd
+          (DiophantineConsistency.PRAOpenOneInduction.openSigma
+            (DiophantineConsistency.PRAPairedInductionMatrix.pairedMatrix ψ₀ ψ₁)))) :
+  M↓[DiophantineConsistency.PRALanguage.language] ⊧
+    LO.FirstOrder.Semiformula.univCl
+      (LO.FirstOrder.Arithmetic.succInd (DiophantineConsistency.PRAOpenOneInduction.openSigma ψ₁))
