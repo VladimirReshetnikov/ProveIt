@@ -8,6 +8,14 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The merge pushed as `d53db22f9a` changed `HerbrandFixedGoalExtraction`,
+`HerbrandFixedGoalExtractionBound`, `HerbrandFixedGoalWeakening`, and
+`HerbrandStageSupport`. Previously recorded dependent replay results cover
+the preceding source snapshot; a source-current rebuild of their downstream
+PRA and finite-dispatcher clients is in progress. The merge also changed ZFC
+interpretation and proof-context sources, so the maintained HA endpoint still
+requires its separately scoped source-current replay.
+
 Two closed coded Σ₁ induction instances can now be eliminated together for
 [predicate bodies that ignore the induction parameter](reviews/pra-two-parameter-free-author-replay/README.md).
 The code supplies concrete zero/one tags and proves their substitution laws
