@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [first-Pell correction quotient](reviews/adaptive-construction-correction2011-independent.md)
+is now derived in every stated IΣ₁ model from explicit seed-index and ordinate
+hypotheses and the constructed scaling. Establishing those hypotheses in the
+full construction and positivity of the final correction remain open.
+
 The [enriched-assembly adapter](reviews/adaptive-assembly-bridge2011-independent.md)
 now derives transport, a strong-factor identity and a positive auxiliary
 coordinate from the exact 14-coordinate assembly conclusion with explicit
