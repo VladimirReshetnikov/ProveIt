@@ -266,7 +266,7 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
   have hS0 := cseq_le hall hpv inp
   have hSf := cseq_formulaSet hall inp
   have inp' := inp_succ inp
-  obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
+  obtain ⟨hw₁, hw₂, -⟩ := inp
   have hP₁ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) := by simpa using hp.subst hw₁.qVec
   have hP₂ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) := by simpa using hp.subst hw₂.qVec
   have hS : Cseq w₁ w₂ (^∀ p) E = insert (^∃ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))
@@ -323,7 +323,7 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
   have hS0 := cseq_le hex hpv inp
   have hSf := cseq_formulaSet hex inp
   have inp' := inp_succ inp
-  obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
+  obtain ⟨hw₁, hw₂, -⟩ := inp
   have hP₁ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) := by simpa using hp.subst hw₁.qVec
   have hP₂ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) := by simpa using hp.subst hw₂.qVec
   have hS : Cseq w₁ w₂ (^∃ p) E = insert (^∀ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))
