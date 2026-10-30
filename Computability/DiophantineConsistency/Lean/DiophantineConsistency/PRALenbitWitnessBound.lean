@@ -77,47 +77,7 @@ def boundSentence : Sentence language := ∀⁰* boundBody
 
 /-- Candidate PRA proves the universally closed graph-bound sentence. -/
 theorem candidate_proves_lenbit_bound : PRA ⊢ boundSentence := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
-  letI : M↓[language] ⊧* PRA := hM
-  simp only [models_iff, boundSentence, Semiformula.eval_allClosure]
-  intro e
-  simp only [boundBody, LogicalConnective.HomClass.map_imply]
-  intro he
-  letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
-  letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
-  letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
-  letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
-  letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  have he' : (Semiformula.lMap embedding lenbitDef.val).Eval ![e 0,e 1] Empty.elim := by
-    have hv : ![e 0,e 1] = e := by
-      funext i
-      refine Fin.cases rfl (fun j => ?_) i
-      exact Fin.cases rfl (fun j => Fin.elim0 j) j
-    rw [hv]
-    exact he
-  have hb := candidate_lenbit_bound (e 0) (e 1) he'
-  simp only [Semiformula.eval_rew]
-  have hv : (Semiterm.val e Empty.elim ∘
-        (Rew.subst ![#0, #1, applyCode addCode ![#1, applyCode oneCode Fin.elim0]]) ∘ Semiterm.bvar) =
-      ![e 0, e 1, e 1+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) j
-    simp [Function.comp_def, Rew.subst, applyCode, Semiterm.val_func]
-    congr 1
-    funext k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases ?_ (fun k => Fin.elim0 k) k
-    change Structure.func (L := language) oneCode
-      (Semiterm.val e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN 2)) =
-      Structure.func (L := language) oneCode Fin.elim0
-    congr 1
-    exact Subsingleton.elim _ _
-  have hf : (Semiterm.val e Empty.elim ∘
-        (Rew.subst ![#0, #1, applyCode addCode ![#1, applyCode oneCode Fin.elim0]]) ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [hv,hf]
-  exact hb
+  apply PRASuccBoundCompleteness.proves_succ_bound lenbitDef.val (bnd lenbitDef.val)
+  intro M _ _ x p
+  exact lenbit_bound x p
 end DiophantineConsistency.PRALenbitWitnessBound
