@@ -193,24 +193,17 @@ theorem pair_request (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛ�
 
 private theorem empty_from_pair (a c : Term V ℒₛₑₜ) :
     Source V ⊢ pairAt ⊥ a c 🡒 emptyAt c := by
-  apply deduct'!
-  unfold emptyAt
-  apply TProof.generalize!
-  have hp : [pairAt ⊥ a c].map Bootstrapping.Semiformula.shift ⊢[Source V]
-      pairAt ⊥ a.shift c.shift := by
-    simpa only [List.map_cons,List.map_nil,pairAt_shift,Bootstrapping.Semiformula.shift_falsum]
-      using (by_axm₀! (𝓢 := Source V) (Γ := []) (φ := (pairAt ⊥ a c).shift))
-  have hs := FiniteContext.of'! (Γ := [pairAt ⊥ a c].map Bootstrapping.Semiformula.shift)
-    (pair_support ⊥ a.shift c.shift (Bootstrapping.Semiterm.fvar 0))
+  have hs := pair_support ⊥ a.shift c.shift (Bootstrapping.Semiterm.fvar 0)
   have he : Source V ⊢ (∃⁰ (⊥ : Semiformula V ℒₛₑₜ 1)) 🡒 ⊥ :=
     exists_elim (by simp [Bootstrapping.Semiformula.free])
-  have he' := FiniteContext.of'! (Γ := [pairAt ⊥ a c].map Bootstrapping.Semiformula.shift) he
   simp only [Bootstrapping.Semiformula.substs_falsum] at hs
-  change [pairAt ⊥ a c].map Bootstrapping.Semiformula.shift ⊢[Source V]
-    (memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift 🡒 ⊥).free
-  have hh : [pairAt ⊥ a c].map Bootstrapping.Semiformula.shift ⊢[Source V]
-      memTerm (Bootstrapping.Semiterm.fvar 0) c.shift 🡒 ⊥ := by cl_prover [hp,hs,he']
-  simpa [memTerm,Bootstrapping.Semiformula.free,←Bootstrapping.Semiterm.bShift_shift_comm] using hh
+  have hh : Source V ⊢ (pairAt ⊥ a c).shift 🡒
+      (memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift 🡒 ⊥).free := by
+    simpa [pairAt_shift, Bootstrapping.Semiformula.shift_falsum, memTerm,
+      Bootstrapping.Semiformula.free, ←Bootstrapping.Semiterm.bShift_shift_comm] using
+      (show Source V ⊢ pairAt ⊥ a.shift c.shift 🡒
+        memTerm (Bootstrapping.Semiterm.fvar 0) c.shift 🡒 ⊥ from by cl_prover [hs,he])
+  exact ⟨TProof.generalizeAux hh.get⟩
 
 theorem source_symm (t u : Term V ℒₛₑₜ) : Source V ⊢ eqTerm t u 🡒 eqTerm u t := by
   have hm : (⌜(Theory.Eq.symm ℒₛₑₜ : SetTheorySentence)⌝ : V)∈seedTheory.Δ₁Class :=
@@ -324,20 +317,19 @@ private theorem singleton_cover (a c t y : Term V ℒₛₑₜ) :
 
 private theorem singleton_from_pair (a c t : Term V ℒₛₑₜ) :
     Source V ⊢ pairAt (singletonMatrix t) a c 🡒 singletonAt c t := by
-  apply deduct'!
-  unfold singletonAt
-  apply TProof.generalize!
-  let Γ := [pairAt (singletonMatrix t) a c].map Bootstrapping.Semiformula.shift
-  have hp : Γ ⊢[Source V] pairAt (singletonMatrix t.shift) a.shift c.shift := by
-    simpa only [Γ,List.map_cons,List.map_nil,pairAt_shift,singletonMatrix_shift] using (by_axm₀! (𝓢 := Source V) (Γ := []) (φ := (pairAt (singletonMatrix t) a c).shift))
-  have hc := FiniteContext.of'! (Γ := Γ) (singleton_cover a.shift c.shift t.shift (Bootstrapping.Semiterm.fvar 0))
-  have hm := FiniteContext.of'! (Γ := Γ) (singleton_member a.shift c.shift t.shift)
-  have hs := FiniteContext.of'! (Γ := Γ) (source_symm (Bootstrapping.Semiterm.fvar 0) t.shift)
-  have ht := FiniteContext.of'! (Γ := Γ) (source_mem_congr t.shift (Bootstrapping.Semiterm.fvar 0) c.shift)
-  have hh : Γ ⊢[Source V] memTerm (Bootstrapping.Semiterm.fvar 0) c.shift 🡘
-      eqTerm (Bootstrapping.Semiterm.fvar 0) t.shift := by cl_prover [hp,hc,hm,hs,ht]
-  simpa [Γ,memTerm,eqTerm,Bootstrapping.Semiformula.free,
-    ←Bootstrapping.Semiterm.bShift_shift_comm] using hh
+  have hc := singleton_cover a.shift c.shift t.shift (Bootstrapping.Semiterm.fvar 0)
+  have hm := singleton_member a.shift c.shift t.shift
+  have hs := source_symm (Bootstrapping.Semiterm.fvar 0) t.shift
+  have ht := source_mem_congr t.shift (Bootstrapping.Semiterm.fvar 0) c.shift
+  have hh : Source V ⊢ (pairAt (singletonMatrix t) a c).shift 🡒
+      (memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift 🡘
+        eqTerm (Bootstrapping.Semiterm.bvar 0) t.bShift).free := by
+    simpa [pairAt_shift,singletonMatrix_shift,memTerm,eqTerm,Bootstrapping.Semiformula.free,
+      ←Bootstrapping.Semiterm.bShift_shift_comm] using
+      (show Source V ⊢ pairAt (singletonMatrix t.shift) a.shift c.shift 🡒
+        (memTerm (Bootstrapping.Semiterm.fvar 0) c.shift 🡘
+          eqTerm (Bootstrapping.Semiterm.fvar 0) t.shift) from by cl_prover [hc,hm,hs,ht])
+  exact ⟨TProof.generalizeAux hh.get⟩
 
 /-- A literal source formula; the inner index0 is the tested member. -/
 def emptyBody : Semiformula V ℒₛₑₜ 1 :=
