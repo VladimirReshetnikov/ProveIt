@@ -20,36 +20,8 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 theorem expressionAt_main_congruence86 (p : Fin 4 → ℕ) (v : Fin 13 → V)
     (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
     (hz : InternalZero (expressionAt86 (fun j => (p j:ℤ))) v) : MainCongruence p v := by
-  let b : V := v 0*(p 0:V)
-  let q : V := 1+b
-  let U : V := v 7*(q*q)
-  let E : V := v 6*v 7
-  let k : V := v 9+v 10
-  let c : V := v 9+v 7*k
-  let a : V := E+v 7
-  let H : V := 3+4*a
-  let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
-  let R' : V := (v 2+(q-v 1)*b)*(q*q-1)+v 0*((p 2:V)+(p 3:V)*q)
-  have hq : 1≤q := by dsimp [q]; simp
-  have hgap : v 1+v 2<q := tsub_pos_iff_lt.mp (expressionAt_transport_positive86 p v hb hv hz).2
-  have hF : v 1≤q := le_trans (by simp : v 1≤v 1+v 2) (le_of_lt hgap)
-  have hbq : q-1=b := by dsimp [q]; rw [add_comm]; simp
-  have hR : R=R' := by dsimp [R,R']; rw [hbq]; simp only [pow_two]; ring
-  obtain ⟨s,hs,hsY⟩ := expressionAt_Y_quotient86 p v hb hv hz
-  have hY : v 7=q^3*s := by simpa only [pow_succ,pow_zero,one_mul,mul_assoc] using hsY
-  have hU : U=q^5*s := by dsimp [U]; rw [hY]; ring
-  obtain ⟨main,hm,horient,_⟩ := expressionAt_main_oriented86 p v hb hv hz
-  have hrep := main_root_rep p v hq hF
-  have he := equivalent_trans (equivalent_symm hrep) horient
-  change (U*(v 6+a*c)+H*(U*v 12+E*q+R'+1))+0 = H*k+U*main at he
-  simp only [add_zero] at he
-  rw [←hR,hU] at he
-  refine ⟨s,main,hs,hm,hY,?_⟩
-  calc
-    H*(E*q+R+1)+q^5*(s*(v 6+a*c+H*v 12)) =
-        q^5*s*(v 6+a*c)+H*(q^5*s*v 12+E*q+R+1) := by ring
-    _=H*k+q^5*s*main := he
-    _=H*k+q^5*(s*main) := by ring
+  exact main_congruence_of_facts p v (expressionAt_transport_positive86 p v hb hv hz)
+    (expressionAt_Y_quotient86 p v hb hv hz) (expressionAt_main_oriented86 p v hb hv hz)
 
 private theorem congruence_divides_difference {x y m : V} (hm : 0<m)
     (hyx : y≤x) (h : x%m=y%m) : m∣x-y := by

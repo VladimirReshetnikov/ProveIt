@@ -25,9 +25,12 @@ def MainCongruence (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
   ∃ s main : V, 0<s ∧ 0<main ∧ v 7=q^3*s ∧
     H*(E*q+R+1)+q^5*(s*(v 6+a*c+H*v 12)) = H*k+q^5*(s*main)
 
-theorem expressionAt_main_congruence (p : Fin 4 → ℕ) (v : Fin 13 → V)
-    (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
-    (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : MainCongruence p v := by
+/-- Positive transport, the Y quotient, and main orientation give the additive congruence. -/
+theorem main_congruence_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (htransport : TransportPositive p v)
+    (hYquotient : ∃ s : V, 0<s ∧ v 7 =
+      ((1+v 0*(p 0:V))*((1+v 0*(p 0:V))*(1+v 0*(p 0:V))))*s)
+    (horientation : MainOriented p v) : MainCongruence p v := by
   let b : V := v 0*(p 0:V)
   let q : V := 1+b
   let U : V := v 7*(q*q)
@@ -39,14 +42,14 @@ theorem expressionAt_main_congruence (p : Fin 4 → ℕ) (v : Fin 13 → V)
   let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
   let R' : V := (v 2+(q-v 1)*b)*(q*q-1)+v 0*((p 2:V)+(p 3:V)*q)
   have hq : 1≤q := by dsimp [q]; simp
-  have hgap : v 1+v 2<q := tsub_pos_iff_lt.mp (expressionAt_transport_positive p v hb hv hz).2
+  have hgap : v 1+v 2<q := tsub_pos_iff_lt.mp htransport.2
   have hF : v 1≤q := le_trans (by simp : v 1≤v 1+v 2) (le_of_lt hgap)
   have hbq : q-1=b := by dsimp [q]; rw [add_comm]; simp
   have hR : R=R' := by dsimp [R,R']; rw [hbq]; simp only [pow_two]; ring
-  obtain ⟨s,hs,hsY⟩ := expressionAt_Y_quotient p v hb hv hz
+  obtain ⟨s,hs,hsY⟩ := hYquotient
   have hY : v 7=q^3*s := by simpa only [pow_succ,pow_zero,one_mul,mul_assoc] using hsY
   have hU : U=q^5*s := by dsimp [U]; rw [hY]; ring
-  obtain ⟨main,hm,horient,_⟩ := expressionAt_main_oriented p v hb hv hz
+  obtain ⟨main,hm,horient,_⟩ := horientation
   have hrep := main_root_rep p v hq hF
   have he := equivalent_trans (equivalent_symm hrep) horient
   change (U*(v 6+a*c)+H*(U*v 12+E*q+R'+1))+0 = H*k+U*main at he
@@ -58,6 +61,13 @@ theorem expressionAt_main_congruence (p : Fin 4 → ℕ) (v : Fin 13 → V)
         q^5*s*(v 6+a*c)+H*(q^5*s*v 12+E*q+R+1) := by ring
     _=H*k+q^5*s*main := he
     _=H*k+q^5*(s*main) := by ring
+
+
+theorem expressionAt_main_congruence (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
+    (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : MainCongruence p v :=
+  main_congruence_of_facts p v (expressionAt_transport_positive p v hb hv hz)
+    (expressionAt_Y_quotient p v hb hv hz) (expressionAt_main_oriented p v hb hv hz)
 
 private theorem beta_positive_nat : 0<CurrentMasks2011.beta := by
   have hr : 1<CurrentMasks2011.radix := by unfold CurrentMasks2011.radix; norm_num
