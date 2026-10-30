@@ -1,3 +1,4 @@
+import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRAMappingWitnessBound
 import DiophantineConsistency.PRANegDomainWitnessBound
 set_option autoImplicit false
@@ -159,17 +160,7 @@ theorem negMappingBoundBody_model (e : Fin 1 → V) : negMappingBoundBody.Eval e
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 noncomputable def negMappingBoundSentence : Sentence language := ∀⁰* Semiformula.lMap embedding negMappingBoundBody
 theorem candidate_proves_neg_mapping_bound : PRA ⊢ negMappingBoundSentence := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
-  letI : M↓[language] ⊧* PRA := hM
-  letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
-  letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
-  letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
-  letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
-  letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
-  simp only [models_iff, negMappingBoundSentence, Semiformula.eval_allClosure]
-  intro e
-  rw [Semiformula.eval_lMap, reduct_eq_standard]
+  apply PRAIOpenCompleteness.proves_allClosure
+  intro M _ _ e
   exact negMappingBoundBody_model e
 end DiophantineConsistency.PRANegMappingWitnessBound
