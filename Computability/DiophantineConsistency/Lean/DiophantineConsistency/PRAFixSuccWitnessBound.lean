@@ -21,18 +21,8 @@ theorem bnd_rew_succ (ψ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2
     (hb : (bnd ψ).Evalb ![a,b,w]) :
     (bnd (ω ▹ ψ)).Evalb ![x,u,ih,s,w] := by
   have hn := PRABndRewriting.natural ψ ω ![x,u,ih,s] w
-  have hs : Fin.snoc ![x,u,ih,s] w = ![x,u,ih,s,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![x,u,ih,s] w = ![x,u,ih,s,w] := by simp
+  have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
   rw [hv,hs,hs'] at hn
   exact hn.mpr hb
 
@@ -60,17 +50,9 @@ theorem succ_bound_of_core (u ih s w : V)
           have hf : (∼bitDef.val).Evalb ![x,u] := by
             simpa [Semiformula.Operator.val, operator_mem_def] using hbit
           have hm := PRANegBitFullWitnessBound.negBit_bound x u hf
-          have hs : Fin.snoc ![x,u] (PRANegBitFullWitnessBound.negBitMajorant u) = ![x,u,PRANegBitFullWitnessBound.negBitMajorant u] := by
-            funext j
-            refine Fin.cases rfl (fun k => ?_) j
-            refine Fin.cases rfl (fun k => ?_) k
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
+          have hs : Fin.snoc ![x,u] (PRANegBitFullWitnessBound.negBitMajorant u) = ![x,u,PRANegBitFullWitnessBound.negBitMajorant u] := by simp
           have hm' := eval_bnd_mono (∼bitDef.val) ![x,u] (Empty.elim : Empty → V) hneg (by rw [hs]; exact hm)
-          have hs' : Fin.snoc ![x,u] w = ![x,u,w] := by
-            funext j
-            refine Fin.cases rfl (fun k => ?_) j
-            refine Fin.cases rfl (fun k => ?_) k
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
+          have hs' : Fin.snoc ![x,u] w = ![x,u,w] := by simp
           rw [hs'] at hm'
           let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#1]
           have hv : (fun j => (ω #j).val ![x,u,ih,s] Empty.elim) = ![x,u] := by
@@ -108,17 +90,9 @@ theorem succ_bound_of_core (u ih s w : V)
           have hf : bitDef.val.Evalb ![x,u] := by
             simpa [Semiformula.Operator.val, operator_mem_def] using hbit
           have hm := PRABitFullWitnessBound.bit_bound x u hf
-          have hs : Fin.snoc ![x,u] (PRABitFullWitnessBound.bitMajorant u) = ![x,u,PRABitFullWitnessBound.bitMajorant u] := by
-            funext j
-            refine Fin.cases rfl (fun k => ?_) j
-            refine Fin.cases rfl (fun k => ?_) k
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
+          have hs : Fin.snoc ![x,u] (PRABitFullWitnessBound.bitMajorant u) = ![x,u,PRABitFullWitnessBound.bitMajorant u] := by simp
           have hm' := eval_bnd_mono bitDef.val ![x,u] (Empty.elim : Empty → V) hpos (by rw [hs]; exact hm)
-          have hs' : Fin.snoc ![x,u] w = ![x,u,w] := by
-            funext j
-            refine Fin.cases rfl (fun k => ?_) j
-            refine Fin.cases rfl (fun k => ?_) k
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
+          have hs' : Fin.snoc ![x,u] w = ![x,u,w] := by simp
           rw [hs'] at hm'
           let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#1]
           have hv : (fun j => (ω #j).val ![x,u,ih,s] Empty.elim) = ![x,u] := by

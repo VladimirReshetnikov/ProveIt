@@ -254,14 +254,14 @@ lemma mem_shiftList (L y : V) : y ∈ᵥ shiftList L ↔ ∃ p, p ∈ᵥ L ∧ y
 /-- Shifting the listed formulas is tailing the free environment. -/
 lemma negEnc_shiftList (F s : V) : ∀ L : V, (∀ p, p ∈ᵥ L → IsUFormula ℒₛₑₜ p) →
     negEnc F s (shiftList L) = negEnc (tail F) s L := by
-  intro L
-  induction L using adjoin_ISigma1.sigma1_succ_induction
-  · definability
-  case nil => intro _; simp
-  case adjoin p L ih =>
-    intro hL
-    rw [shiftList_cons, negEnc_cons, negEnc_cons,
-      encode_shift (hL p (by simp)) F 0 s, ih (fun q hq ↦ hL q (memVec_adjoin_iff.mpr (Or.inr hq)))]
+  intro L hL
+  apply nth_ext' (len L)
+  · simpa [(shiftList_len_nth L).1] using (negEnc_len_nth F s (shiftList L)).1
+  · exact (negEnc_len_nth (tail F) s L).1
+  · intro i hi
+    rw [(negEnc_len_nth F s (shiftList L)).2 i (by simpa [(shiftList_len_nth L).1] using hi),
+      (shiftList_len_nth L).2 i hi, (negEnc_len_nth (tail F) s L).2 i hi,
+      encode_shift (hL _ (nth_mem_memVec hi)) F 0 s]
 
 /-! ## Enumerations of sets -/
 
