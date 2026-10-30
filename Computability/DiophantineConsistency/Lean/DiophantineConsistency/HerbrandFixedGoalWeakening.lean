@@ -24,20 +24,7 @@ theorem current_eval {M : Type} [Structure language M] (r j : ℕ)
       ![e (r+3*j+2), e (r+3*j+1), e (r+3*j), Semiterm.val ![] e (candidate j 3),
         Semiterm.val ![] e (candidate j 2), Semiterm.val ![] e (candidate j 1),
         Semiterm.val ![] e (candidate j 0)] e := by
-  have he : (Semiterm.val ![] e ∘ ![&(r+3*j+2), &(r+3*j+1), &(r+3*j),
-      candidate j 3, candidate j 2, candidate j 1, candidate j 0]) =
-      ![e (r+3*j+2), e (r+3*j+1), e (r+3*j), Semiterm.val ![] e (candidate j 3),
-        Semiterm.val ![] e (candidate j 2), Semiterm.val ![] e (candidate j 1), Semiterm.val ![] e (candidate j 0)] := by
-    funext k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  simp only [current, Semiformula.eval_substs]
-  rw [he]
+  exact HerbrandInteractiveFourTriple.bad_eval r j (∃⁰ β) e
 
 theorem chiOutput_eval {M : Type} [Structure language M] (r : ℕ)
     (β : Semiproposition language 8) (js : List ℕ) (e : ℕ → M) :
