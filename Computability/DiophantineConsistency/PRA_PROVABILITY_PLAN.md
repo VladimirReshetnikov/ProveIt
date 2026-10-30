@@ -38,6 +38,9 @@ The [full revised literal is now bound](reviews/adaptive-first-root-factor87-lit
 to the maintained adaptive expression in Lean, including equality of split
 values and the positive-shifted zero test in every commutative semiring. The
 13-variable candidate still has no completed HA or PRA consistency endpoint.
+The [87-gate arithmetic no-zero sentence](reviews/adaptive-factor87-sentence.md)
+is closed and semantically equivalent to its parent over every commutative
+semiring; an object-theory proof of that equivalence remains to be constructed.
 
 The later upstream merges through `166728f64b` changed ZFC validator modules
 reachable from the maintained HA endpoint. Its earlier checked derivation is
