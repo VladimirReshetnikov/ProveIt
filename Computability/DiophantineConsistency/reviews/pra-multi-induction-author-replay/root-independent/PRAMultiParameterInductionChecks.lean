@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAMultiParameterInduction
+open DiophantineConsistency.PRAMultiParameterInduction
+#print axioms modelMultiSigma
+#print axioms modelMultiInduction
+#print axioms PRA_proves_goal_of_finite_parameter_induction

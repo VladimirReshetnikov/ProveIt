@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [finite multi-parameter induction theorem](reviews/pra-multi-induction-author-replay/README.md)
+now eliminates any finite list of strict Σ₁ induction instances with bounded
+matrices and independently chosen finite parameter arities, for the stated
+open-existential goals. It still does not normalize arbitrary Foundation Σ₁
+formulas or establish the exact consistency equivalence.
+
 The [arbitrary-tail packing adapter](reviews/pra-arbitrary-packing-author-replay/README.md)
 has passed source-current replays. It preserves boundedness while packing two
 parameter slots and gives a uniform model-equivalence certificate with any
