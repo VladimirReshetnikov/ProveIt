@@ -124,9 +124,11 @@ analysis of the obligation, not a constructed certificate.
 The [primitive-recursive witness fold](reviews/pra-witness-fold-current-author-replay/README.md)
 has independently replayed proofs that the sum of any supplied coded local
 majorant bounds every value below a given index in candidate-PRA models. A
-special case covers the proposed `p+1` local bound. The actual Foundation
-decoder lemma, the other local majorants and the certificate for `ρ` remain
-separate obligations.
+special case covers `p+1`. The [exact Foundation first-index bound](reviews/pra-fstidx-witness-bound-author-replay/README.md)
+has also independently replayed: candidate PRA proves its standalone graph
+implies its syntactic bounded transformation at `p+1`. Binding that graph
+inside the full refutation formula, finding the other local majorants and
+constructing the certificate for `ρ` remain separate obligations.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
