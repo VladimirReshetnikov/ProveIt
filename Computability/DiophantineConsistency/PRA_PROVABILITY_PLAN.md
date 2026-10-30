@@ -55,6 +55,10 @@ and [negative](reviews/pra-negunder-witness-bound-author-replay/README.md)
 forms, each with matching author and independent replays. These discharge
 local components of `seqDef`; they do not construct the sequence history or
 a bound for the complete ZFC refutation predicate.
+An independently replayed [positive `seqDef` client](reviews/pra-seqdef-witness-bound-author-replay/README.md)
+extracts its sequence witnesses and uses the positive `underDef` bound. It
+still assumes bounded mapping and domain graphs and a common bound for the
+under-graph polynomials; it does not provide a sequence-history bound.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
