@@ -92,6 +92,10 @@ equivalence with bounded `conB π` and of the original implication
 `¬π → no-zero`. The literal current-equation instantiation, the reverse
 implication to the original consistency sentence, and standard PRA comparison
 remain open.
+The [fixed-sentence bound-certificate interface](reviews/pra-strict-con-reverse-current-author-replay/README.md)
+has independently replayed proofs that such a certificate implies the
+surrogate-to-original direction and hence the full mapped equivalence. No
+certificate has yet been constructed for Foundation's ZFC refutation sentence.
 
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,
