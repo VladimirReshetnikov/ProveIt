@@ -1,3 +1,4 @@
+import DiophantineConsistency.ArithmeticPellResidueAux
 import DiophantineConsistency.ArithmeticAdaptiveAuxNorm2011
 import DiophantineConsistency.ArithmeticAdaptiveIndexComparison2011
 import DiophantineConsistency.ArithmeticPellHalfIndex
@@ -13,39 +14,12 @@ open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticAdaptiveFactorMa
 open ArithmeticAdaptiveScaledNorms2011 ArithmeticAdaptivePellIndices2011
 open ArithmeticAdaptiveRankWindow2011 ArithmeticAdaptiveIndexComparison2011
 open ArithmeticAdaptiveStrongNorm2011 ArithmeticAdaptiveAuxNorm2011
+open ArithmeticPellResidueAux
 open ArithmeticPellRecurrence ArithmeticPellCongruences ArithmeticPellClassification
 open ArithmeticPellStrongDivisibility ArithmeticPellIndexDivisibility ArithmeticPellHalfIndex
 attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix CurrentMasks2011.beta
   CurrentMasks2011.lowPort CurrentMasks2011.highPort xcoord ycoord
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-private theorem y_six (a : V) :
-    ycoord 6 a=32*(a+2)*delta a*delta a+32*(a+2)*delta a+6*(a+2) := by
-  have hx1 : xcoord 1 a=a+2 := by simpa using x_succ (0:V) a
-  have hy1 : ycoord 1 a=1 := by simpa using y_succ (0:V) a
-  conv_lhs =>
-    simp only [show (6:V)=5+1 by ring, show (5:V)=4+1 by ring,
-      show (4:V)=3+1 by ring, show (3:V)=2+1 by ring,
-      show (2:V)=1+1 by ring, y_succ, x_succ, hx1, hy1]
-  unfold delta
-  ring
-
-private theorem large_of_six (a p : V) (hp : 6≤p) :
-    (a+2)*delta a*delta a<ycoord p a := by
-  have hx : (a+2)*delta a*delta a≤32*(a+2)*delta a*delta a+32*(a+2)*delta a := by
-    calc
-      (a+2)*delta a*delta a≤32*((a+2)*delta a*delta a) :=
-        le_mul_of_one_le_left (by simp) (by simp)
-      _=32*(a+2)*delta a*delta a := by ring
-      _≤32*(a+2)*delta a*delta a+32*(a+2)*delta a := by simp
-  have hpos : 0<6*(a+2) := mul_pos (by simp) (by simp)
-  have h := lt_of_le_of_lt hx (lt_add_of_pos_right _ hpos)
-  rw [←y_six] at h
-  exact lt_of_lt_of_le h ((ArithmeticPellCongruences.y_strictMono a).monotone hp)
-
-private theorem same_mul {m x y z w : V} (hm : 0<m)
-    (h : x%m=y%m) (h' : z%m=w%m) : (x*z)%m=(y*w)%m := by
-  rw [mod_mul hm,mod_mul (a:=y) hm,h,h']
-
 def ExactIndices (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
   let q : V := 1+v 0*(p 0:V)
   let M : V := (q*(q*q))*(v 0*(p 0:V))
@@ -115,16 +89,9 @@ theorem exact_indices_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V)
     main*main=xcoord m a*xcoord m a := by rw [hmx]
     _=1+delta a*ycoord m a*ycoord m a := norm m a
     _=1+delta a*c*c := by rw [hmy]
-  obtain ⟨j,_,hfj,hmj,_,_⟩ := relaxed_auxiliary a c m i f hm hi hf hmy.symm hs hbig
-  have hcY : c∣ycoord j a := by
-    rw [←hmy]
-    exact (y_dvd_iff a m j).mpr hmj
-  obtain ⟨w,hw⟩ := hcY
-  have hfnorm : f*f=1+c*(delta a*c*w*w) := calc
-    f*f=xcoord j a*xcoord j a := by rw [hfj]
-    _=1+delta a*ycoord j a*ycoord j a := norm j a
-    _=1+c*(delta a*c*w*w) := by rw [hw]; ring
-  have hfmod : (f*f)%c=(1:V)%c := by rw [hfnorm,mod_add_mul' _ _ hc]
+  have hfmod : (f*f)%c=(1:V)%c :=
+    square_mod_one_of_relaxed_auxiliary a c m i f hm hi hf hc hmy hs hbig
+
   have huf : SignMod f z c := by
     change SignMod f (absdiff L N) c
     apply absdiff_residue f L N c hf
