@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRABitFullWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRABitFullWitnessBound.majorant_mono
+#print axioms DiophantineConsistency.PRABitFullWitnessBound.bit_bound
+#print axioms DiophantineConsistency.PRABitFullWitnessBound.candidate_proves_bit_bound
+#check DiophantineConsistency.PRABitFullWitnessBound.candidate_proves_bit_bound

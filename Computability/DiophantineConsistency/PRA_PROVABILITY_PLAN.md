@@ -34,7 +34,12 @@ bound `X+Y+2*y+1`, with two matching independent replays. The positive
 `exponentialDef` graph also has an explicit polynomial bound and a closed
 candidate-PRA proof on a pre-merge snapshot, with two matching independent
 frozen-source replays; the affected current-source graph is being refreshed.
-The swapped `expDef` and ZFC refutation sentence remain open.
+The swapped `expDef` and positive `bitDef` have since been bounded in a
+six-module post-merge author build and two matching independent client
+replays. Its 67-module parent graph remains under independent replay. The
+derivation fixpoint client uses that bit bound but retains the bounded
+`limSeqDef` conjunct as an explicit hypothesis; the ZFC refutation sentence
+remains open.
 The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
 remains open.
