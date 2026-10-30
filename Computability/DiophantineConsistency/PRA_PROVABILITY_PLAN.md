@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [literal factor-to-zero bridge](reviews/adaptive-construction-factor-independent.md)
+now derives the adaptive zero from four explicit factor-unit hypotheses and
+supplies a strong-unit and generic square-factor lemma. The individual units
+still need to be proved for one concrete witness.
+
 The [coded Joosten rule client](reviews/pra-joosten-rule-current-author-replay/README.md)
 now extracts primitive-recursive base and step witnesses from the stated actual
 candidate-PRA premises and proves the coded existential induction conclusion.
