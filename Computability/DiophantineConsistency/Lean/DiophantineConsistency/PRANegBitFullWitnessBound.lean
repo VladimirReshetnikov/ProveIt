@@ -1,3 +1,4 @@
+import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRANegExpWitnessBound
 import DiophantineConsistency.PRANegLenbitRewritingBound
 /-! A polynomial bound for negative Foundation bitDef. The full
@@ -98,17 +99,7 @@ open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 def negBitBoundSentence : Sentence language := ∀⁰* Semiformula.lMap embedding negBitBoundBody
 
 theorem candidate_proves_negBit_bound : PRA ⊢ negBitBoundSentence := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
-  letI : M↓[language] ⊧* PRA := hM
-  letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
-  letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
-  letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
-  letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
-  letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
-  simp only [models_iff, negBitBoundSentence, Semiformula.eval_allClosure]
-  intro e
-  rw [Semiformula.eval_lMap, reduct_eq_standard]
+  apply PRAIOpenCompleteness.proves_allClosure
+  intro M _ _ e
   exact negBitBoundBody_model e
 end DiophantineConsistency.PRANegBitFullWitnessBound
