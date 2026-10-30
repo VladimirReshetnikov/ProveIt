@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRASeqFullWitnessBound
+#print axioms DiophantineConsistency.PRASeqFullWitnessBound.seq_bound_explicit
+#print axioms DiophantineConsistency.PRASeqFullWitnessBound.candidate_proves_seq_bound

@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRANegMappingWitnessBound
+#print axioms DiophantineConsistency.PRANegMappingWitnessBound.neg_mapping_bound
+#print axioms DiophantineConsistency.PRANegMappingWitnessBound.neg_mapping_bound_explicit
+#print axioms DiophantineConsistency.PRANegMappingWitnessBound.candidate_proves_neg_mapping_bound

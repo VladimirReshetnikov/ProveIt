@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAMappingWitnessBound
+#print axioms DiophantineConsistency.PRAMappingWitnessBound.mapping_bound
+#print axioms DiophantineConsistency.PRAMappingWitnessBound.mapping_bound_explicit
+#print axioms DiophantineConsistency.PRAMappingWitnessBound.candidate_proves_mapping_bound

@@ -87,8 +87,10 @@ also has an independently replayed polynomial bound on a pre-merge snapshot.
 A source refresh and the positive bound's connection to
 the sequence client have now yielded an independently replayed
 [unconditional positive sequence-graph bound](reviews/pra-seqfull-postmerge-author-replay/README.md)
-with an explicit polynomial. This does not construct a recursive computation
-history or establish the full refutation bound.
+with an explicit polynomial. The [negative sequence graph](reviews/pra-negseq-postmerge-author-replay/README.md)
+also has an independently replayed polynomial bound. These results do not
+construct a recursive computation history or establish the full refutation
+bound.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
