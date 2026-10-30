@@ -29,7 +29,12 @@ a [candidate-PRA bound](reviews/pra-ppow2-witness-bound-author-replay/README.md)
 of `2*i+1`, with matching author and two independent replays. The negative
 `sppow2Def` and `ppow2Def` graphs also have candidate-PRA bounds of `m+1`
 and `2*i+1` respectively, each with matching author and two independent
-replays. The enclosing `expDef` and ZFC refutation sentence remain unbounded.
+replays. The bounded-universal `Exponential.Seqₛ.def` has a candidate-PRA
+bound `X+Y+2*y+1`, with two matching independent replays. The positive
+`exponentialDef` graph also has an explicit polynomial bound and a closed
+candidate-PRA proof on a pre-merge snapshot, with two matching independent
+frozen-source replays; the affected current-source graph is being refreshed.
+The swapped `expDef` and ZFC refutation sentence remain open.
 The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
 remains open.

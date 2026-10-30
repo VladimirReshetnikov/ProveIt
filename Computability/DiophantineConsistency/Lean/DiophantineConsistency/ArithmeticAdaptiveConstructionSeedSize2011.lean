@@ -29,7 +29,7 @@ theorem seed_ordinate_le_k (q X Y sY k time : V)
     ring
   have hytime : ycoord (2:V) b≤ycoord time b := by
     have hr : 2+(time-2)=time := add_tsub_cancel_of_le ht
-    have h := ordinate_add_ge (2:V) (time-2) b
+    have h := ArithmeticPellOrdinateCompat.ordinate_add_ge (2:V) (time-2) b
     rw [hr] at h
     exact le_trans (le_add_of_nonneg_right (Arithmetic.zero_le (time-2))) h
   have hqpow : (1:V)≤q^3 := pos_iff_one_le.mp (pow_pos hq _)

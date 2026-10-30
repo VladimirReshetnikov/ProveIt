@@ -1,4 +1,5 @@
 import DiophantineConsistency.ArithmeticAdaptiveConstructionCorrection2011
+import DiophantineConsistency.ArithmeticPellOrdinateCompat
 
 /-! The seed correction is large enough to absorb the deleted multiplier.
 The seed index and divisibility relations remain explicit hypotheses. -/
@@ -22,7 +23,7 @@ theorem time_lt_ordinate (time b : V) (ht : 2≤time) : time<ycoord time b := by
       simpa only [show (2:V)*2=4 by norm_num] using mul_le_mul_of_nonneg_left hb (by simp : (0:V)≤2)
     exact lt_of_lt_of_le (by norm_num) hm
   have hr : 2+(time-2)=time := add_tsub_cancel_of_le ht
-  have h := ordinate_add_ge (2:V) (time-2) b
+  have h := ArithmeticPellOrdinateCompat.ordinate_add_ge (2:V) (time-2) b
   rw [hr] at h
   calc time = 2+(time-2) := hr.symm
        _ < ycoord 2 b+(time-2) := by simpa only [add_comm] using add_lt_add_right h2 (time-2)

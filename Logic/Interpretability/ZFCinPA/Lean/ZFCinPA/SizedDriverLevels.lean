@@ -169,6 +169,13 @@ theorem wD_c {u w : V} (h : wD u ≤ w) : cD u ≤ w :=
 theorem wD_ante {u w : V} (h : wD u ≤ w) : 10 * (mD u + 1) + 1 ≤ w :=
   le_trans (le_of_add_eq (y := 60) (by ring)) (wD_m h)
 
+/-- The bounds every step proof uses at its offsets `w + k`. -/
+theorem wD_up {u w : V} (h : wD u ≤ w) :
+    (∀ k : V, w ≤ w + k) ∧ (∀ k : V, (4 : V) ≤ w + k) ∧
+      ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k :=
+  ⟨fun _ => le_self_add, fun _ => le_trans (wD_4 h) le_self_add,
+    fun _ => le_trans (wD_ante h) le_self_add⟩
+
 /-- The level of the reflection invariant. -/
 theorem invT_le {P : SF V 1} {F : SF V 2} {u : V} (hu : 2 ≤ u) (hP : P.val ≤ lvB u)
     (hF : F.val ≤ lvB u) : (InvT P F).val ≤ lvB (mD u + 6) := by

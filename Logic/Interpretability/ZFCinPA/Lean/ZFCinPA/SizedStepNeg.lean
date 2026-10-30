@@ -40,9 +40,7 @@ theorem neg_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
     DLv 𝗭𝗙 (insert (InvT (∼P₀) F₁).val ∅) (w + 30) := by
   have hw4 := wD_4 hw
   have hmI := wD_m hw
-  have up : ∀ k : V, w ≤ w + k := fun k => le_self_add
-  have u4 : ∀ k : V, (4 : V) ≤ w + k := fun k => le_trans hw4 (up k)
-  have uA : ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k := fun k => le_trans (wD_ante hw) (up k)
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   have hc := compiledLe (by decide) negTemplate_provable _ hu hK
   have lt := trD_le negTemplate tD_neg _ hK
   obtain ⟨T, hT⟩ : ∃ T,
@@ -74,9 +72,7 @@ theorem top_base_le {u w : V} (hu : 2 ≤ u)
     (hK : ∀ i, (K6 ⊤ ⊤ ⊤ ⊤ ⊤ (succT (V := V)) i).val ≤ lvB u) (hw : wD u ≤ w) :
     DLv 𝗭𝗙 (insert (InvT (⊤ : SF V 1) succT).val ∅) (w + 30) := by
   have hw4 := wD_4 hw
-  have up : ∀ k : V, w ≤ w + k := fun k => le_self_add
-  have u4 : ∀ k : V, (4 : V) ≤ w + k := fun k => le_trans hw4 (up k)
-  have uA : ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k := fun k => le_trans (wD_ante hw) (up k)
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   have hc := compiledLe (by decide) topBase_provable _ hu hK
   have lt := trD_le topBase tD_top _ hK
   obtain ⟨T, hT⟩ : ∃ T,
@@ -101,9 +97,7 @@ theorem bot_base_le {u w : V} (hu : 2 ≤ u)
     (hK : ∀ i, (K6 ⊤ ⊤ ⊤ ⊤ ⊥ (succT (V := V)) i).val ≤ lvB u) (hw : wD u ≤ w) :
     DLv 𝗭𝗙 (insert (InvT (⊥ : SF V 1) succT).val ∅) (w + 30) := by
   have hw4 := wD_4 hw
-  have up : ∀ k : V, w ≤ w + k := fun k => le_self_add
-  have u4 : ∀ k : V, (4 : V) ≤ w + k := fun k => le_trans hw4 (up k)
-  have uA : ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k := fun k => le_trans (wD_ante hw) (up k)
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   have hc := compiledLe (by decide) botBase_provable _ hu hK
   have lt := trD_le botBase tD_bot _ hK
   obtain ⟨T, hT⟩ : ∃ T,

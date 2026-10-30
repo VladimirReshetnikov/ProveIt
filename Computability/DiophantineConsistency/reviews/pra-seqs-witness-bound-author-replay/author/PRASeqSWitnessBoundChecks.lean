@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRASeqSWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRASeqSWitnessBound.seqS_bound_of_common
+#print axioms DiophantineConsistency.PRASeqSWitnessBound.seqS_bound
+#print axioms DiophantineConsistency.PRASeqSWitnessBound.candidate_proves_seqS_bound
+#print axioms DiophantineConsistency.PRASeqSWitnessBound.candidate_proves_seqS_explicit_bound
+#check DiophantineConsistency.PRASeqSWitnessBound.candidate_proves_seqS_explicit_bound

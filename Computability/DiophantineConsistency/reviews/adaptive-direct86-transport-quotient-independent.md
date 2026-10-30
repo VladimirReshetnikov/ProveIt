@@ -1,0 +1,3 @@
+# Direct-ordinate 86 transport quotient: independent replay
+
+The root independently replayed the author driver and obtained `PASS` at `/tmp/adaptive-direct86-transport-quotient-8d14tsqh`, state SHA-256 `5d59bb2f600346e70d38501b2ab147ce3cb071b3fd33f9e2569bfd262a55b4fb`. Both source/object hashes match the author table; both complete logs are empty, SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. State, driver, snapshots, full logs and timings are in `adaptive-direct86-transport-quotient-independent-evidence`; manifest SHA-256 `16c2b531244cfeda85b623b7be21586e0a4a2ad95a2b154b63fd8358d511faa8`. Scope and historical boundaries are those of the author receipt.
