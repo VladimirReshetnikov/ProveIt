@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryPairCode
+
+#print axioms DiophantineConsistency.PRAHistoryPairCode.modelPairCode
+#print axioms DiophantineConsistency.PRAHistoryPairCode.PRA_proves_pairCodeGraph
