@@ -1,0 +1,10 @@
+# Conditional positive-shift witness directions for direct ordinate
+
+`AdaptiveDirectOrdinate86Lift` reindexes the checked 14-slot literal context into ordinary 13-coordinate valuations. `AdaptiveDirectOrdinate86Witness` proves both existential directions in arbitrary IΣ₁ models, with the arithmetic premises kept explicit:
+
+- From a positive unshifted 86-literal zero, if `I ≥ 2`, `R ≥ 2`, `2*R < c`, `SignMod c |V| R`, and the displayed auxiliary norm hold, it reconstructs a strictly positive old offset and obtains a natural zero of the positive-shifted 87 literal.
+- From a positive unshifted 87-literal zero, if `I ≥ 2` and the displayed old auxiliary norm hold, it takes the magnitude of the old signed ordinate as a strictly positive new ordinate and obtains a natural zero of the positive-shifted 86 literal.
+
+The source gives the exact norms in the theorem statements. Signed-square and valuation-update lemmas ensure both directions use the actual literal expressions and preserve all other coordinates. These are **conditional witness constructions**: the changed 86 equation has not yet been shown to imply the required factor/unit, norm, rank-window and signed-residue hypotheses; no natural zero-set equivalence or 86-operation equivalent equation is claimed.
+
+Scoped build `/tmp/adaptive-direct86-witness-o6hm79ol` **PASS**, with both source, object and full-log records rechecked after compilation. The exact current source slice, five replayed literal dependencies and 1,717 selected base objects were authenticated; Foundation/Mathlib inherited boundaries and the unrelated stale Population guard remain qualified. Source and log hashes are in the eight-file `adaptive-direct86-witness-author-evidence/FILES.json` manifest, SHA-256 `b2df4fd7317a60c30e79399bd4f157ad7d1df5a859453f60d59b05cdd1e3c3b7`. Reproduce with `python3 Computability/DiophantineConsistency/research/wang-chunk-full/build_direct_ordinate_witness.py`. A preliminary concern that the in-flight build had snapshotted an older source was checked against its actual snapshot, compiled record and final source hashes; all match the frozen final bytes.
