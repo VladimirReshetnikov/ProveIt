@@ -83,6 +83,14 @@ lemma imp_cases (a b c : V) :
             (.mp (.hyp (a := wim a b) (by simp)) (h0 P))))
     exact .mp (.hyp (a := wim (neg a) c) (by simp)) na
   exact .mp (.ax (hc.peirce c 1)) (Kalmar.deduction hc inner)
+include hc in
+lemma contra_under {h p q : V} (hpq : P (wim h (wim p q))) :
+    P (wim h (wim (neg q) (neg p))) :=
+  ded3 P hc (.mp (h1 P) (.mp (.mp (.ax hpq) (h2 P)) (h0 P)))
+include hc in
+lemma imp_under {h p p' q q' : V} (hp : P (wim h (wim p' p)))
+    (hq : P (wim h (wim q q'))) : P (wim h (wim (wim p q) (wim p' q'))) :=
+  ded3 P hc (.mp (.mp (.ax hq) (h2 P)) (.mp (h1 P) (.mp (.mp (.ax hp) (h2 P)) (h0 P))))
 variable (hgen : ∀ i {p}, P p → P (wal i p))
 variable (hdist : ∀ i p q, P (wim (wal i (wim p q)) (wim (wal i p) (wal i q))))
 variable (himp_ex : ∀ i p q, P (wim (wal i (wim p q))

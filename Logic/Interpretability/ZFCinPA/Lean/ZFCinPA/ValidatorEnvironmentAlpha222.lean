@@ -1,6 +1,8 @@
 import ZFCinPA.ValidatorLabelAvoidance
 import ZFCinPA.ValidatorAtomicTransport222
 
+import ZFCinPA.ValidatorImplicationContext
+
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
@@ -54,22 +56,9 @@ lemma cross_body_vac {n p : V}
     (fun hp F B fresh z hlen hF hB hs => encode_vac hp F B fresh z hlen hF hB hs)
     hp F B B' s t hB hB' h
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma h2 {G : List V} {a b c : V} : D (c::b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
-private lemma ofDer {p : V} (d : D [] p) : CProv p :=
-  d.sound cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
-private lemma ded3 {a b c p : V} (d : D [c,b,a] p) :
-    CProv (wim a (wim b (wim c p))) :=
-  ofDer (Kalmar.deduction cProv_classical
-    (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d)))
-
 lemma contra_under {h p q : V} (hpq : CProv (wim h (wim p q))) :
     CProv (wim h (wim (ValidatorRelationalCore222.neg q) (ValidatorRelationalCore222.neg p))) :=
-  ded3 (.mp h1 (.mp (.mp (.ax hpq) h2) h0))
+  ValidatorImplicationContext.contra_under CProv cProv_classical hpq
 
 lemma eqUnder_neg {h p q : V} (he : EqUnder h p q) : EqUnder h (ValidatorRelationalCore222.neg p) (ValidatorRelationalCore222.neg q) :=
   ⟨contra_under he.2,contra_under he.1⟩
@@ -77,7 +66,7 @@ lemma eqUnder_neg {h p q : V} (he : EqUnder h p q) : EqUnder h (ValidatorRelatio
 lemma imp_under {h p p' q q' : V}
     (hp : CProv (wim h (wim p' p))) (hq : CProv (wim h (wim q q'))) :
     CProv (wim h (wim (wim p q) (wim p' q'))) :=
-  ded3 (.mp (.mp (.ax hq) h2) (.mp h1 (.mp (.mp (.ax hp) h2) h0)))
+  ValidatorImplicationContext.imp_under CProv cProv_classical hp hq
 
 lemma eqUnder_imp {h p p' q q' : V} (hp : EqUnder h p p') (hq : EqUnder h q q') :
     EqUnder h (wim p q) (wim p' q') :=
