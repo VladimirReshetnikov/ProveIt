@@ -1,0 +1,7 @@
+# Isolated-source 85-row HA peer PASS
+
+The fresh peer `/tmp/ha87-focused-validator-rebase-q6geuvc7` finished PASS after compiling all 85 focused modules from scratch, with zero prefix reuse. It used the separate 732-file source tree `/tmp/ha87-frozen-peer-mys9nrrb/tree`, whose source hashes were matched to the final pre-merge author state before launch. The exact peer state and all 85 full logs are included; author state, logs, source deltas, frozen driver/graph and source manifest are in `../ha87-frozen-source-peer/`.
+
+The separate `verify.py` rechecked all 85 author/peer source, direct dependency, available companion, output-object and full-log hashes; no differences were found. It rehashed all 732 frozen sources, the 1,136 inherited project objects, five model-only inherited objects, and the pinned `ZF.Zf` object, and checked the state/driver/graph/plan anchors. `comparison.json` and `verify.log` record the PASS. The peer's exact HA endpoint and checks thus have matching objects and report only `propext`, `Classical.choice`, and `Quot.sound`.
+
+This is a successful independent replay of the frozen pre-merge focused source snapshot, not a current-workspace replay after later origin merges. The historical HA/ZF/Foundation and package-transitive object/source ancestry remains inherited; this receipt does not claim a fully source-current project closure. The separately running full project build addresses that stronger remaining task, subject to its own recorded transitive-reconstruction limitations.
