@@ -18,6 +18,13 @@ def parameterCode (n : ℕ) (t : SyntacticTerm language) : Code n := compileTerm
 def parameterMatrix {n : ℕ} (φ : Semisentence language (n+1)) : Semiproposition language 1 :=
   Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin n => .fvar i.val)) ▹ φ
 
+theorem parameterMatrix_open {n : ℕ} (φ : Semisentence language (n+1))
+    (hφ : φ.Open) : (parameterMatrix φ).Open := by
+  change (parameterMatrix φ).qr = 0
+  unfold parameterMatrix
+  rw [PRAFormulaParameters.qr_rew]
+  exact hφ
+
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* UniversalAxiom]
@@ -97,11 +104,7 @@ theorem modelExtractedParameterList {n : ℕ} (φ : Semisentence language (n+1))
     (p : Prepared (parameterMatrix φ) axioms) :
     M↓[language] ⊧ (∀⁰* openMatrixList φ (.zero n)
       ((existentialTerms p.derivation).map (parameterCode n))) := by
-  have hOpenEmb : (parameterMatrix φ).Open := by
-    change (parameterMatrix φ).qr = 0
-    unfold parameterMatrix
-    rw [PRAFormulaParameters.qr_rew]
-    exact hOpen
+  have hOpenEmb := parameterMatrix_open φ hOpen
   simp only [models_iff, Semiformula.eval_allClosure]
   intro e
   have ht := modelPreparedWitness (M := M) (parameterMatrix φ) hOpenEmb axioms hAxioms

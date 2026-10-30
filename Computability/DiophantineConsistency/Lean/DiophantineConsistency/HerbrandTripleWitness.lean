@@ -118,11 +118,7 @@ theorem modelExtractedTripleList {n : ℕ} (φ : Semisentence language (n+3)) (h
     (p : Prepared (∃⁰ ∃⁰ parameterTripleMatrix φ) axioms) :
     M↓[language] ⊧ (∀⁰* matrixList φ ⟨.zero n,.zero n,.zero n⟩
       (tripleCodes n (existentialTerms p.derivation))) := by
-  have hopen : (parameterTripleMatrix φ).Open := by
-    change (parameterTripleMatrix φ).qr = 0
-    unfold parameterTripleMatrix
-    rw [PRAFormulaParameters.qr_rew]
-    exact hOpen
+  have hopen := parameterTripleMatrix_open φ hOpen
   simp only [models_iff, Semiformula.eval_allClosure]
   intro e
   obtain ⟨t,ht,u,hu,v,hv,hm⟩ := modelTripleWitness (M := M) (parameterTripleMatrix φ) hopen

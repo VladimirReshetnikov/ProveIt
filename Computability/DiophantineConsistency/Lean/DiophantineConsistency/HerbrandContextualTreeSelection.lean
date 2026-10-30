@@ -38,11 +38,7 @@ theorem PRA_exists_contextualSelection {n : ℕ} (side : Semisentence language n
     (hside : UniversalTree (∼(parameterSide side)))
     (p : UniversalAxiom ⊢ ((parameterSide side) ⋎ (∃⁰ (parameterMatrix φ))).univCl) :
     ∃ c : Code n, Primrec (eval c) ∧ PRA ⊢ (∀⁰* (side ⋎ openMatrixAt φ c)) := by
-  have hmatrix : (parameterMatrix φ).Open := by
-    change (parameterMatrix φ).qr = 0
-    unfold parameterMatrix
-    rw [PRAFormulaParameters.qr_rew]
-    exact hφ
+  have hmatrix := parameterMatrix_open φ hφ
   have p' : UniversalAxiom ⊢ ((∼(∼parameterSide side)) ⋎ (∃⁰ (parameterMatrix φ))).univCl := by
     simpa using p
   obtain ⟨k,hk⟩ := HerbrandContextualTreeWitness.universal_proves_contextual (∼parameterSide side) hside
