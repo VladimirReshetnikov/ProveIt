@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRABVGraphZeroBound
+#print axioms DiophantineConsistency.PRABVGraphZeroBound.bvGraph_zero_bound
+#print axioms DiophantineConsistency.PRABVGraphZeroBound.candidate_proves_bv_graph_zero_bound
