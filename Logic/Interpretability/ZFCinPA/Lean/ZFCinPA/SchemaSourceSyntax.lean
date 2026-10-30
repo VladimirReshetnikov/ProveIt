@@ -72,6 +72,35 @@ theorem separation_witness {M : Type*} (mem : M → M → Prop) (D : M → Prop)
     have hRu := cong z u hz (member_domain hx hu) hzu hR
     exact ⟨u, hb2 u hu hRu, hzu⟩
 
+/-- Construct a replacement witness from the GIC matrix bounds. -/
+theorem replacement_witness {M : Type*} (mem : M → M → Prop) (D : M → Prop)
+    (E R : M → M → Prop) {X b : M}
+    (member_domain : ∀ {y z}, D z → mem y z → D y)
+    (domain_closed : ∀ {z}, (∀ y, mem y z → D y) → D z)
+    (refl : ∀ u, E u u) (symm : ∀ {u v}, E u v → E v u)
+    (trans : ∀ {u v w}, E u v → E v w → E u w)
+    (cong : ∀ x1 x2 y1 y2, D x1 → D x2 → D y1 → D y2 → E x1 y1 → E x2 y2 → R x1 x2 → R y1 y2)
+    (hfun : ∀ u, D u → ∃ y, R u y ∧ D y ∧ ∀ z, D z → R u z → E z y)
+    (hX : D X)
+    (hb1 : ∀ v, mem v b → ∃ u, mem u X ∧ D v ∧ R u v)
+    (hb2 : ∀ u, mem u X → (∃ y, mem u X ∧ D y ∧ R u y) →
+      ∃ v, mem v b ∧ mem u X ∧ D v ∧ R u v) :
+    D b ∧ ∀ y, D y →
+      ((∃ v, mem v b ∧ E y v) ↔ ∃ x, (∃ u, mem u X ∧ E x u) ∧ D x ∧ R x y) := by
+  have hbD : ∀ v, mem v b → D v := fun v hv ↦ (hb1 v hv).choose_spec.2.1
+  refine ⟨domain_closed hbD, fun y hy ↦ ⟨?_, ?_⟩⟩
+  · rintro ⟨v, hv, hyv⟩
+    obtain ⟨u, hu, hvD, hR⟩ := hb1 v hv
+    have huD := member_domain hX hu
+    exact ⟨u, ⟨u, hu, refl u⟩, huD,
+      cong u v u y huD hvD huD hy (refl u) (symm hyv) hR⟩
+  · rintro ⟨x, ⟨u, hu, hxu⟩, hxD, hR⟩
+    have huD := member_domain hX hu
+    have hRu := cong x y u y hxD hy huD hy hxu (refl y) hR
+    obtain ⟨v, hv, -, hvD, hRv⟩ := hb2 u hu ⟨y, hu, hy, hRu⟩
+    obtain ⟨y0, -, -, huniq⟩ := hfun u huD
+    exact ⟨v, hv, trans (huniq y hy hRu) (symm (huniq v hvD hRv))⟩
+
 lemma emb_sepS : (Rewriting.emb sepS : Proposition SL) = sepBodySource (Rewriting.emb R1) := by
   simp [sepS, sepBodySource, R1]
 
