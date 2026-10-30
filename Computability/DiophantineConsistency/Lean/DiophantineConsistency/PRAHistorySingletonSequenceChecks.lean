@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistorySingletonSequence
+
+#print axioms DiophantineConsistency.PRAHistorySingletonSequence.singleton_sequence
+#print axioms DiophantineConsistency.PRAHistorySingletonSequence.candidate_singleton_sequence

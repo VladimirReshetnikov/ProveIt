@@ -135,9 +135,12 @@ An [independently replayed domain-extension theorem](reviews/pra-history-domain-
 characterizes actual domain membership and proves its preservation when a
 relation pair is appended.
 The [singleton base membership theorem](reviews/pra-history-singleton-membership-author-replay/README.md)
-proves the initial append has precisely the entry `(0,x)`; its sequence
-validity and length still need separate proofs.
-Sequence validity, length evolution and the full recursive-history
+proves the initial append has precisely the entry `(0,x)`. A separate
+[singleton theorem](reviews/pra-history-singleton-sequence-author-replay/README.md)
+proves that this append is a sequence of length one. The
+[under-extension theorem](reviews/pra-history-under-extension-author-replay/README.md)
+proves that inserting the endpoint extends an initial segment by one.
+General sequence validity, length evolution and the full recursive-history
 verification remain open. An [independently replayed primitive-recursive
 iterator](reviews/pra-history-iterator-author-replay/README.md) supplies the
 history code's base and step equations for supplied function codes; the
