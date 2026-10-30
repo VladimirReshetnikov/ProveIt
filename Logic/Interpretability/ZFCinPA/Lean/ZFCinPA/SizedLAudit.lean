@@ -2,6 +2,8 @@ import ZFCinPA.SizedLPlumbing
 import ZFCinPA.SizedLGlue1
 import ZFCinPA.SizedLNumOK
 import ZFCinPA.SizedLSlot
+import ZFCinPA.SizedDriverSteps
+import ZFCinPA.SizedDriver
 
 /-! Axiom audit for the bounded `L` inductions. -/
 
@@ -17,3 +19,15 @@ import ZFCinPA.SizedLSlot
 #print axioms LeanProofs.ZFCinPA.SizedLSlot.xT_le
 #print axioms LeanProofs.ZFCinPA.SizedLSlot.slot_MT_leJ
 #print axioms LeanProofs.ZFCinPA.SizedLSlot.slot_MT_le
+#print axioms LeanProofs.ZFCinPA.SizedEnvForm.envForm_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.dall2_iff
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.dall2_swap
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.and_step_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.or_step_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.neg_step_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.top_base_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.bot_base_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.atom_step_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.ex_step_le
+#print axioms LeanProofs.ZFCinPA.SizedDriverSteps.all_step_le
+#print axioms LeanProofs.ZFCinPA.SizedDriver.driver_le
