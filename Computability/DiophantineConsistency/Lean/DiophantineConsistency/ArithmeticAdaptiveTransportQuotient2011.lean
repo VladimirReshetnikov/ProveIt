@@ -15,49 +15,6 @@ attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix Current
   CurrentMasks2011.lowPort CurrentMasks2011.highPort
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem mod_cancel {a b c m : V} (hm : 0<m) (h : (a+c)%m=(b+c)%m) : a%m=b%m := by
-  have hr := le_of_lt (mod_lt c hm)
-  have hc : c+(m-c%m)=m*(c/m+1) := by
-    calc
-      c+(m-c%m)=(m*(c/m)+c%m)+(m-c%m) := by rw [div_add_mod]
-      _=m*(c/m)+(c%m+(m-c%m)) := by ring
-      _=m*(c/m)+m := by rw [add_tsub_cancel_of_le hr]
-      _=m*(c/m+1) := by ring
-  have hh : ((a+c)+(m-c%m))%m=((b+c)+(m-c%m))%m := by
-    rw [mod_add (a:=a+c) hm,mod_add (a:=b+c) hm,h]
-  simpa only [add_assoc,hc,mod_add_mul' _ _ hm] using hh
-
-private theorem magnitude_mod (p : Pair V) (m : V) (hm : 0<m)
-    (hd : m∣magnitude p) : p.1%m=p.2%m := by
-  have hz : magnitude p%m=0 := mod_eq_zero_iff_dvd.mpr hd
-  rcases le_total p.2 p.1 with h|h
-  · have he : p.1=p.2+(p.1-p.2) := by rw [add_comm,tsub_add_cancel_of_le h]
-    have hg := magnitude_of_add he
-    have hs : (p.1-p.2)%m=0 := by rw [←hg]; exact hz
-    rw [he,mod_add hm,hs,add_zero,mod_eq_self_of_lt (mod_lt _ hm)]
-  · have he : p.2=p.1+(p.2-p.1) := by rw [add_comm,tsub_add_cancel_of_le h]
-    have hg : magnitude p=p.2-p.1 := by
-      have h' := magnitude_of_add he
-      change magnitude (swap p)=p.2-p.1 at h'
-      simpa only [magnitude_swap] using h'
-    have hs : (p.2-p.1)%m=0 := by rw [←hg]; exact hz
-    rw [he,mod_add hm,hs,add_zero,mod_eq_self_of_lt (mod_lt _ hm)]
-
-private theorem equivalent_mod {p q : Pair V} {m : V} (hm : 0<m)
-    (he : Equivalent p q) (hp : p.1%m=p.2%m) : q.1%m=q.2%m := by
-  have hh := congrArg (fun t : V => t%m) he
-  change (p.1+q.2)%m=(p.2+q.1)%m at hh
-  rw [mod_add (a:=p.1) (b:=q.2) hm,mod_add (a:=p.2) (b:=q.1) hm,←hp] at hh
-  have hh' : (q.2+p.2)%m=(q.1+p.2)%m := by
-    rw [mod_add (a:=q.2) (b:=p.2) hm,mod_add (a:=q.1) (b:=p.2) hm,←hp]
-    simpa only [add_comm] using hh
-  exact (mod_cancel hm hh').symm
-
-private theorem mod_mod_dvd {m n : V} (hm : 0<m) (h : m∣n) (a : V) :
-    a%n%m=a%m := by
-  conv_rhs => rw [← div_add_mod a n]
-  rw [mod_add_remove_left_of_dvd (dvd_mul_of_dvd_left h _) hm]
-
 private theorem congruence_divides_difference {x y m : V} (hm : 0<m)
     (hyx : y≤x) (h : x%m=y%m) : m∣x-y := by
   apply mod_eq_zero_iff_dvd.mp
