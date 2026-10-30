@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRANegMemRelWitnessBound
+#print axioms DiophantineConsistency.PRANegMemRelWitnessBound.neg_memRel_bound
+#print axioms DiophantineConsistency.PRANegMemRelWitnessBound.candidate_proves_neg_memRel_bound
