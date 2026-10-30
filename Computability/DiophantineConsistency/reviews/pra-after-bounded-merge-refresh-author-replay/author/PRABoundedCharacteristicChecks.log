@@ -1,0 +1,18 @@
+'DiophantineConsistency.PRABoundedCharacteristic.PRA_proves_nonzeroCorrect' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedCharacteristic.PRA_proves_boundedCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedCharacteristic.PRA_boundedUniversalStep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedCharacteristic.PRA_boundedUniversalStep {n : ℕ}
+  (c : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1))
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language (n + 1))
+  (hbit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence c)
+  (hcorrect : DiophantineConsistency.PRATheory.PRA ⊢ oneCorrectSentence c φ) :
+  ∃ d,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval d) ∧
+      DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence d ∧
+        DiophantineConsistency.PRATheory.PRA ⊢ oneCorrectSentence d (boundedBy φ)

@@ -1,0 +1,30 @@
+'DiophantineConsistency.PRABoundedBoolean.PRA_andCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedBoolean.PRA_orCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedBoolean.PRA_andCharacteristic {n : ℕ}
+  (c d : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (φ ψ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language n)
+  (hcbit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence c)
+  (hdbit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence d)
+  (hc : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence c φ)
+  (hd : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence d ψ) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+      DiophantineConsistency.PRACharacteristicBit.bitSentence
+        (DiophantineConsistency.PRAOpenFormulaCompiler.andCode c d) ∧
+    DiophantineConsistency.PRATheory.PRA ⊢
+      DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence
+        (DiophantineConsistency.PRAOpenFormulaCompiler.andCode c d) (φ ⋏ ψ)
+DiophantineConsistency.PRABoundedBoolean.PRA_orCharacteristic {n : ℕ}
+  (c d : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (φ ψ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language n)
+  (hcbit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence c)
+  (hdbit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence d)
+  (hc : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence c φ)
+  (hd : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence d ψ) :
+  ∃ k,
+    DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence k ∧
+      DiophantineConsistency.PRATheory.PRA ⊢
+        DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence k (φ ⋎ ψ)

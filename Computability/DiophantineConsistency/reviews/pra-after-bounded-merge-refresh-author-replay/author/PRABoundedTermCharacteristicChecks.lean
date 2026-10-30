@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRABoundedTermCharacteristic
+open DiophantineConsistency.PRABoundedTermCharacteristic
+#print axioms termBoundedBy_eq
+#print axioms modelTermUniversalCode
+#print axioms PRA_boundedTermStep
+#check PRA_boundedTermStep

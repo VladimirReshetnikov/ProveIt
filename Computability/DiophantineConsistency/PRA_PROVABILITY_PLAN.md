@@ -89,6 +89,10 @@ dependency graphs require another current-source rebuild.
 The subsequent 108-module rebuild has now passed two independent replays,
 including the candidate-PRA triple-witness client. Foundation and Mathlib
 remain inherited boundaries; this does not establish the missing comparison.
+A further merge changed bounded-formula and characteristic modules. The
+affected candidate-PRA graph has since passed a 68-module author rebuild and
+two independent replays with matching source, object and full-log hashes;
+the separate extraction and bounded-comparison clients require their own refresh.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)

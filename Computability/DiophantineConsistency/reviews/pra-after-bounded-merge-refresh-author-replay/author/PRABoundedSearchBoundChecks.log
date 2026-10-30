@@ -1,0 +1,13 @@
+'DiophantineConsistency.PRABoundedSearchBound.boundBody_open' depends on axioms: [propext, Quot.sound]
+'DiophantineConsistency.PRABoundedSearchBound.modelSearchBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedSearchBound.modelSearchBound {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] {n : ℕ}
+  (good : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1)) (x : M) (e : ℕ → M) :
+  have found :=
+    LO.FirstOrder.Structure.func (DiophantineConsistency.PRABoundedSearchCode.searchCode good) fun i =>
+      Fin.cases x (fun i => e ↑i) i;
+  LO.FirstOrder.Structure.rel LO.FirstOrder.Language.ORing.Rel.lt ![found, x] ∨ found = x

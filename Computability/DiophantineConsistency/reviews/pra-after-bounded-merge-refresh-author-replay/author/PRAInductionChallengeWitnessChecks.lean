@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAInductionChallengeWitness
+open DiophantineConsistency.PRAInductionChallengeWitness
+#print axioms PRA_exists_inductionChallenges
+#check PRA_exists_inductionChallenges

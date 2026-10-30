@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAHerbrandTripleSelection
+open DiophantineConsistency.PRAHerbrandTripleSelection
+#print axioms modelMatrixAt
+#print axioms modelMatrixList
+#print axioms PRA_exists_triple_of_openDisjunction
+#check PRA_exists_triple_of_openDisjunction
