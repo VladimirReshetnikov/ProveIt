@@ -68,60 +68,29 @@ lemma encT_falsum {n : ℕ} (F B s : V) : encode F B s (⊥ : SF (V := V) n).val
 
 /-! ## The equality axioms -/
 
-section Taut
-open Kalmar.PF
-local notation "⊥'" => Kalmar.PF.bot
-local infixr:60 " ⟹ " => Kalmar.PF.imp
-local notation "x0" => Kalmar.PF.var 0
-local notation "x1" => Kalmar.PF.var 1
-local notation "x2" => Kalmar.PF.var 2
-local notation "x3" => Kalmar.PF.var 3
-
 lemma taut2 {a b : V} (f : Kalmar.PF) (hb : f.Bounded 2) (ht : f.Tautology)
     (he : f.eval wim 1 (sig [a, b]) = wim (wim a b) (wim (wim (wim a 1) 1) b)) :
     CProv (wim (wim a b) (wim (wim (wim a 1) 1) b)) := by rw [← he]; exact taut f 2 hb ht _
 
-lemma glue_symm {E R : V} (h : CProv (wim E R)) : CProv (wim (wim (wim E 1) 1) R) := by
-  have t := taut ((x0 ⟹ x1) ⟹ (((x0 ⟹ ⊥') ⟹ ⊥') ⟹ x1)) 2
-    (by repeat' (first | exact trivial | decide | constructor)) (by
-      intro v; simp only [truth]
-      generalize v 0 = a0; generalize v 1 = a1
-      revert a0 a1; decide) (sig [E, R])
-  simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-  exact cProv_mp t h
+lemma glue_symm {E R : V} (h : CProv (wim E R)) : CProv (wim (wim (wim E 1) 1) R) :=
+  compose (double_neg_elim E) h
 
 lemma glue_trans {E1 E2 E3 : V} (h : CProv (wim E1 (wim E2 E3))) :
-    CProv (wim (wim (wim E1 1) 1) (wim (wim (wim E2 1) 1) E3)) := by
-  have t := taut ((x0 ⟹ x1 ⟹ x2) ⟹ (((x0 ⟹ ⊥') ⟹ ⊥') ⟹ (((x1 ⟹ ⊥') ⟹ ⊥') ⟹ x2))) 3
-    (by repeat' (first | exact trivial | decide | constructor)) (by
-      intro v; simp only [truth]
-      generalize v 0 = a0; generalize v 1 = a1; generalize v 2 = a2
-      revert a0 a1 a2; decide) (sig [E1, E2, E3])
-  simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-  exact cProv_mp t h
+    CProv (wim (wim (wim E1 1) 1) (wim (wim (wim E2 1) 1) E3)) :=
+  ded2 (.mp (.mp (.ax h) (.mp (.ax (double_neg_elim E1)) h1))
+    (.mp (.ax (double_neg_elim E2)) h0))
 
 lemma glue_ext {E0 E1 R R' : V} (h : CProv (wim E0 (wim E1 (wim R R')))) :
     CProv (wim (wim (wim (wim (wim E0 1) 1) (wim (wim (wim E1 1) 1) 1)) 1)
-      (wim (wim (wim R 1) 1) R')) := by
-  have t := taut ((x0 ⟹ x1 ⟹ x2 ⟹ x3) ⟹
-      (((((x0 ⟹ ⊥') ⟹ ⊥') ⟹ (((x1 ⟹ ⊥') ⟹ ⊥') ⟹ ⊥')) ⟹ ⊥') ⟹ (((x2 ⟹ ⊥') ⟹ ⊥') ⟹ x3))) 4
-    (by repeat' (first | exact trivial | decide | constructor)) (by
-      intro v; simp only [truth]
-      generalize v 0 = a0; generalize v 1 = a1; generalize v 2 = a2; generalize v 3 = a3
-      revert a0 a1 a2 a3; decide) (sig [E0, E1, R, R'])
-  simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-  exact cProv_mp t h
+      (wim (wim (wim R 1) 1) R')) :=
+  ded2 (.mp (.mp (.mp (.ax h)
+    (.mp (.ax (double_neg_elim E0)) (.mp (.ax (conj_left _ _)) h1)))
+    (.mp (.ax (double_neg_elim E1)) (.mp (.ax (conj_right _ _)) h1)))
+    (.mp (.ax (double_neg_elim R)) h0))
 
-lemma glue_irr {A : V} (h : CProv (wim A 1)) : CProv (wim (wim (wim A 1) 1) 1) := by
-  have t := taut ((x0 ⟹ ⊥') ⟹ (((x0 ⟹ ⊥') ⟹ ⊥') ⟹ ⊥')) 1
-    (by repeat' (first | exact trivial | decide | constructor)) (by
-      intro v; simp only [truth]
-      generalize v 0 = a0
-      revert a0; decide) (sig [A])
-  simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-  exact cProv_mp t h
+lemma glue_irr {A : V} (h : CProv (wim A 1)) : CProv (wim (wim (wim A 1) 1) 1) :=
+  compose (double_neg_elim A) h
 
-end Taut
 
 lemma nth_three_cons (a b c d e : V) : (a ∷ b ∷ c ∷ d ∷ e).[3] = d := by
   rw [show (3 : V) = 2 + 1 by norm_num, nth_adjoin_succ, nth_two_cons]
@@ -212,22 +181,9 @@ lemma bundleC_eq (a b c : V) : ArithmeticTemplates254.bundleC a b c =
     ex b (conj (wal a (wim (wel a b) (conj (ex c (conj (wal b (wim (wal c (wim (wel c b) (wel c a)))
       (wel b c))) (wel c b))) (wal c (wim (wel c a) (wel c b)))))) (wel c b)) := rfl
 
-section NegEx
-open Kalmar.PF
-local notation "⊥'" => Kalmar.PF.bot
-local infixr:60 " ⟹ " => Kalmar.PF.imp
-local notation "x0" => Kalmar.PF.var 0
-local notation "x1" => Kalmar.PF.var 1
-
-lemma neg_conj_neg (A B : V) : CProv (wim (neg (conj A (neg B))) (wim A B)) := by
-  have t := taut ((((x0 ⟹ ((x1 ⟹ ⊥') ⟹ ⊥')) ⟹ ⊥') ⟹ ⊥') ⟹ (x0 ⟹ x1)) 2
-    (by repeat' (first | exact trivial | decide | constructor)) (by
-      intro v; simp only [truth]
-      generalize v 0 = a0; generalize v 1 = a1
-      revert a0 a1; decide) (sig [A, B])
-  simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-  exact t
-end NegEx
+lemma neg_conj_neg (A B : V) : CProv (wim (neg (conj A (neg B))) (wim A B)) :=
+  compose (double_neg_elim (wim A (neg (neg B))))
+    (ded2 (.mp (.ax (double_neg_elim B)) (.mp h1 h0)))
 
 /-- `¬∃w (w ∈ z ∧ ¬ w ∈ y) → ∀w (w ∈ z → w ∈ y)`. -/
 lemma negEx_all (W Z Y : V) :

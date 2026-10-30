@@ -61,7 +61,7 @@ theorem case_all (M : V) :
     (top_le hu) (lift_lvB lW (Gd_le_uD hxM))
     (hall.trans_le (lift_lvB (envF_le hsem hnM) (A0_le_uD M)))
     (lift_lvB lMax (Gd_le_uD hcM))
-  have d := all_step_le hu hK (wD_le_W M ⟪6, p⟫) (hF₁.mono (upW M _ _ hpx))
+  have d := quant_step_le false hu hK (wD_le_W M ⟪6, p⟫) (hF₁.mono (upW M _ _ hpx))
   exact ΘB_of_typed _ hall _ lMax
     (d.mono (by rw [hx1]; exact le_of_add_eq (y := 10) (by ring)))
 
@@ -95,7 +95,7 @@ theorem case_exs (M : V) :
     (top_le hu) (lift_lvB lW (Gd_le_uD hxM))
     (hex.trans_le (lift_lvB (envF_le hsem hnM) (A0_le_uD M)))
     (lift_lvB lMax (Gd_le_uD hcM))
-  have d := ex_step_le hu hK (wD_le_W M ⟪7, p⟫) (hF₁.mono (upW M _ _ hpx))
+  have d := quant_step_le true hu hK (wD_le_W M ⟪7, p⟫) (hF₁.mono (upW M _ _ hpx))
   exact ΘB_of_typed _ hex _ lMax
     (d.mono (by rw [hx1]; exact le_of_add_eq (y := 10) (by ring)))
 

@@ -108,7 +108,7 @@ theorem case_verum (M : V) :
   unfold ΘB
   intro n _
   have hK := K6_le (top_le hu) (top_le hu) (top_le hu) (top_le hu) (top_le hu) (succT_le_uD M)
-  have d := top_base_le hu hK (wD_le_Wd M)
+  have d := base_step_le true hu hK (wD_le_Wd M)
   exact ΘB_of_typed ⊤ (by simp) succT (succT_le_Gd M _)
     (d.mono (le_of_add_eq (y := 30 + 40 * ^⊤) (by ring)))
 
@@ -120,7 +120,7 @@ theorem case_falsum (M : V) :
   intro n _
   have hK := K6_le (top_le hu) (top_le hu) (top_le hu) (top_le hu)
     (show (⊥ : SF V 1).val ≤ lvB (uD M) by simpa using falsum_le hu) (succT_le_uD M)
-  have d := bot_base_le hu hK (wD_le_Wd M)
+  have d := base_step_le false hu hK (wD_le_Wd M)
   exact ΘB_of_typed ⊥ (by simp) succT (succT_le_Gd M _)
     (d.mono (le_of_add_eq (y := 30 + 40 * ^⊥) (by ring)))
 
