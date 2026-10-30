@@ -126,13 +126,6 @@ noncomputable def canonicalContainer (c : V) : Formula V ℒₛₑₜ :=
       (∀⁰ (memAtom (#'0) (#'1) 🡒 memAtom (#'0) (#'2)))))) ⋏
     memAtom (&'c) (#'0))
 
-private lemma quote_vec2 {n : Nat} (t u : SyntacticSemiterm ℒₛₑₜ n) :
-    (fun i => (⌜(![t,u]) i⌝ : Bootstrapping.Semiterm V ℒₛₑₜ n)) = ![⌜t⌝,⌜u⌝] := by
-  funext i
-  match i with
-  | 0 => rfl
-  | 1 => rfl
-
 lemma canonicalContainer_quote_subst (c : V) :
     (⌜containerRowMatrix⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 1).subst ![&'c] =
       canonicalContainer c := by

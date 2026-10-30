@@ -75,13 +75,6 @@ def reflexivitySentence : SetTheorySentence :=
 @[simp] private lemma standard_rel_eq {M : Type*} [SetStructure M] (v : Fin 2 → M) :
     Structure.rel (L := ℒₛₑₜ) (M := M) Language.Set.Rel.eq v ↔ v 0 = v 1 := Iff.rfl
 
-private lemma quote_vec2 {n : Nat} (t u : SyntacticSemiterm ℒₛₑₜ n) :
-    (fun i => (⌜(![t,u]) i⌝ : Bootstrapping.Semiterm V ℒₛₑₜ n)) = ![⌜t⌝,⌜u⌝] := by
-  funext i
-  match i with
-  | 0 => rfl
-  | 1 => rfl
-
 theorem equality_reflexive (T : SetTheory) [T.Δ₁] [𝗘𝗤 ℒₛₑₜ ⪯ T] (b : V) :
     T.internalize V ⊢ eqAtom (&'b) (&'b) := by
   have ho : T ⊢ reflexivitySentence := by

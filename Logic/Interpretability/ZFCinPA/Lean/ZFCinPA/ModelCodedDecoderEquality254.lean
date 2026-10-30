@@ -32,7 +32,7 @@ noncomputable def memAtom {n : Nat} (t u : Bootstrapping.Semiterm V ℒₛₑₜ
     Bootstrapping.Semiformula V ℒₛₑₜ n :=
   Bootstrapping.Semiformula.rel Language.Set.Rel.mem ![t,u]
 
-private lemma quote_vec2 {n : Nat} (t u : SyntacticSemiterm ℒₛₑₜ n) :
+lemma quote_vec2 {n : Nat} (t u : SyntacticSemiterm ℒₛₑₜ n) :
     (fun i => (⌜(![t,u]) i⌝ : Bootstrapping.Semiterm V ℒₛₑₜ n)) = ![⌜t⌝,⌜u⌝] := by
   funext i
   match i with
