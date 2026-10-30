@@ -40,12 +40,8 @@ theorem matrix_second_transport (θ : Semiformula V ℒₛₑₜ 2)
     Matrix.vecHead,Matrix.vecTail] using h
 
 private theorem all_under (H : Formula V ℒₛₑₜ) (p : Semiformula V ℒₛₑₜ 1)
-    (h : Source V ⊢ H.shift 🡒 p.free) : Source V ⊢ H 🡒 ∀⁰ p := by
-  apply deduct'!
-  apply TProof.generalize!
-  have hh : [H].map Bootstrapping.Semiformula.shift ⊢[Source V] H.shift := by
-    simp only [List.map_cons,List.map_nil]; exact by_axm₀!
-  exact ⟨(FiniteContext.of'! (Γ := [H].map Bootstrapping.Semiformula.shift) h).get ⨀ hh.get⟩
+    (h : Source V ⊢ H.shift 🡒 p.free) : Source V ⊢ H 🡒 ∀⁰ p :=
+  ⟨TProof.generalizeAux h.get⟩
 
 private def imageCore (θ : Semiformula V ℒₛₑₜ 2) (t p y : Term V ℒₛₑₜ) :
     Semiformula V ℒₛₑₜ 1 :=
