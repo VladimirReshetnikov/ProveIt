@@ -48,6 +48,16 @@ estimate of time. Integration and source-current replay may uncover additional
 work. The 14-variable HA theorem itself is complete on its checked snapshot,
 subject to the current-source replay qualification above.
 
+A newer 86-operation direct-ordinate candidate now has a Lean theorem, with
+matching author and independent scoped replays, that its fixed-port no-zero
+sentence is equivalent to the 87-operation candidate's no-zero sentence in
+every IΣ₁ model. See the [independent receipt](reviews/adaptive-direct86-fixed-equivalence-independent.md).
+The candidate's proof provider and the independently checked 87-operation
+machine provider have differing shared compiled objects; a coherent combined
+rebuild is required before claiming that the 86-operation equation has the
+machine or ZFC consistency equivalence. An HA or PRA proof-existence theorem
+for this candidate is likewise not yet established.
+
 ## Exact target and established results
 
 Progress estimate on 27 October 2026: **roughly 40–60% of the full HA
