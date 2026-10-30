@@ -1,0 +1,9 @@
+# Three-operation serial screening for an 86-gate output
+
+[`screen-three-serial.py`](screen-three-serial.py) screens replacements in which the first new gate uses two earlier nodes, the second combines that result with an earlier node, and the third combines the second result with an earlier node. It tries `+`, `-` and `*`, including both subtraction orientations. The script pins the same 87-gate candidate JSON and uses the three field samples, prime, seed and available literals described in [SCREENING.md](SCREENING.md).
+
+As in the [fork-shaped screen](SCREENING-THREE.md), it checks the 25 target rows for which replacing the target by `0+0` can make at least three old rows dead, because the serial replacement adds two intermediate gates. It matches intermediate signatures against all stored one-operation representations, inserts the three gates for every match, and recounts the live output DAG. The saved [run output](screen-three-serial.out) reports those 25 targets and no candidate with fewer than 87 live operations. Script SHA256 is `0103d1a2fa6db5ee79f0fc02a51927e8a60c63ffcdbf972fc2c054ec6217c628`; output SHA256 is `4868462c44f434c89e86f36854b83d88ea29cc40da83e09ab05864b1bdd941a6`.
+
+This is **heuristic screening**, not a proof of minimality. It replaces one row, retains the earlier-node order, restricts the replacement to the specified serial shape and available literals, and uses only three modular signatures. Multiplicative matching skips operands with a zero sample. It does not search multi-target changes, four or more gates, other constants, or alternative equations. A matching signature would still require exact polynomial identity and liveness checks followed by Lean binding. No 86-gate equation is claimed.
+
+Reproduce from the repository root with `python3 Computability/DiophantineConsistency/research/adaptive-first-root-factor87/screen-three-serial.py`.

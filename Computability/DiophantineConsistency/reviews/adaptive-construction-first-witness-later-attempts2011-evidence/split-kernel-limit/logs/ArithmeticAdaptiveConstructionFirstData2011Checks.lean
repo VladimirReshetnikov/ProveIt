@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionFirstData2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionFirstData2011.actual_first_data

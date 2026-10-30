@@ -1,0 +1,9 @@
+# Literal fourteen-variable no-zero unary representation
+
+`PRACurrentNoZeroUnary.current_unary_open` supplies a unary open candidate-PRA predicate and an actual candidate-PRA proof equating its universal closure with the language-mapped `FoundationHACurrentNoZero2011.classicalSentence`. It specializes the generic finite-equation theorem to the exact fourteen source terms. This proves neither side and does not establish the Foundation ZFC consistency predicate's unary representation or the equation/consistency equivalence in candidate PRA.
+
+The author and private runs passed at `/tmp/pra-literal-current-nozero-author-jz54tghi` and `/tmp/pra-literal-current-nozero-independent-zm0ltnuv`, using the accepted unary PRA provider `/tmp/pra-isigma-pione-independent-d6taz7w6/lib` and peer-rebuilt no-zero source closure `/tmp/pra-current-nozero-closure-peer-resume-llv_5qtb/lib`. The root independent replay `/tmp/pra-literal-current-nozero-independent-_enbhnj9` also passed, using the same PRA provider and the independently rebuilt closure `/tmp/pra-current-nozero-closure-samepath-independent-vpvwoq8y/lib`. Both checkpoints predate any subsequent upstream merge affecting their dependencies. The manifest SHA-256 is `9aade73f3269573ff5833da982c301a26d2b303ad89b468939972e83f1c917e9` and authenticates every one of the 26 local source/object pairs plus the generic unary module; Foundation, Mathlib and the historical PAHF transitive objects remain inherited. Author, private, and root independent snapshots, full logs and states are retained.
+
+```sh
+python Computability/DiophantineConsistency/reviews/pra-literal-current-nozero-author-replay/replay.py --parent /tmp/pra-isigma-pione-independent-d6taz7w6/lib --closure /tmp/pra-current-nozero-closure-peer-resume-llv_5qtb/lib --ha-parent /tmp/hacurrent-client-audit-20261029/lib
+```

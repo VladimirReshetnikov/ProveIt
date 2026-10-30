@@ -41,6 +41,10 @@ chooses all three positive new coordinates and constructs a 13-variable
 zero from one old witness satisfying the explicit equation, seed, phase,
 rank, ordinate and orientation assumptions. Deriving that enriched witness
 from the source-current halting construction remains open.
+The [enriched-Assembly conclusion adapter](reviews/adaptive-construction-conditional-exists2011-independent.md)
+is independently replayed as well: it takes the proposed strengthened
+Assembly conclusion, including its bound, as an explicit premise and yields
+the shifted zero. It does not itself establish that premise.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -68,6 +72,11 @@ finite-variable arithmetic no-zero sentence as an equivalent unary open
 candidate-PRA predicate, and transfer an IΣ₁ proof to a unary Π₁ equivalence
 when the required candidate-PRA implication is supplied. The corresponding
 representation of Foundation's actual ZFC consistency predicate remains open.
+The [literal fourteen-variable client](reviews/pra-literal-current-nozero-author-replay/README.md)
+specializes this equivalence to the maintained no-zero sentence. Its 26 local
+source dependencies and the client were independently rebuilt; the PRA
+provider is a pre-Herbrand-merge snapshot, and Foundation, Mathlib and the
+historical PAHF transitive graph are inherited as documented.
 
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,

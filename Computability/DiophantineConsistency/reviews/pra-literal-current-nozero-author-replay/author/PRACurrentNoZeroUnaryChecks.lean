@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRACurrentNoZeroUnary
+open DiophantineConsistency.PRACurrentNoZeroUnary
+#print axioms current_unary_open

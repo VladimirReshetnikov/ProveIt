@@ -97,20 +97,25 @@ theorem strict_nf_current := strict_nf isigma1_current
 theorem nf_rule_proof_current := StrictPiTwoParsons2011.nf_rule_proof isigma1_current
 ```
 
-## 4. Why the PRA statement should use `strictCon`
+## 4. A bounded consistency surrogate for the PRA statement
 
 The planned end statement has the form "PRA proves the equation's
-unsolvability ↔ Con(ZFC)". Its PRA-level consistency sentence should be
-`strictCon`, not Foundation's `consistent` itself, for two reasons:
+unsolvability ↔ Con(ZFC)". `strictCon` is a useful bounded surrogate for
+Foundation's `consistent`, with an important remaining distinction:
 
 * The direction `consistent → strictCon` is pure logic, since bounded witnesses
   imply unbounded ones.
-* The converse direction needs collection for `Σ₁` formulas with inner bounded
-  universals. That is a Π₃-type principle, and PRA does not prove it in general.
+* The available converse proof uses collection for `Σ₁` formulas with inner
+  bounded universals. No candidate-PRA proof of that converse for this
+  particular proof predicate has yet been established.
 
-`strictCon` is the standard PRA formalization of Con(ZFC): a universal sentence
-over a bounded matrix of the same proof predicate. Its equivalence with
-Foundation's sentence is recorded at the IΣ₁ level (`isigma1_strictCon`).
+`strictCon` is a universal sentence over a bounded transformation of the same
+proof predicate. Its equivalence with Foundation's sentence is recorded at the
+IΣ₁ level (`isigma1_strictCon`). A proof that it is equivalent in candidate PRA
+to Foundation's literal consistency sentence, or to an independently specified
+standard primitive-recursive proof checker, is still required before either
+identification can be used as a PRA-level endpoint. An equivalence proved only
+in IΣ₁ does not supply that candidate-PRA bridge.
 
 ## 5. Status and what remains
 
