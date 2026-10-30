@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAStrictConReverse
+open DiophantineConsistency.PRAStrictConReverse
+#print axioms original_of_surrogate
+#print axioms comparison_if_bound
+#check BoundCertificate
+#check comparison_if_bound

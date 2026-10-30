@@ -1,0 +1,15 @@
+'DiophantineConsistency.PRAISigmaOneOriginalEquivalence.comparison' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAISigmaOneOriginalEquivalence.comparison (α β : LO.FirstOrder.ArithmeticSentence)
+  (h : 𝗜𝚺₁ ⊢ α 🡘 β) (p q : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 1)
+  (hp : LO.FirstOrder.Semiformula.Open p) (hq : LO.FirstOrder.Semiformula.Open q)
+  (hα :
+    DiophantineConsistency.PRATheory.PRA ⊢
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) α 🡘 ∀⁰ p)
+  (hβ :
+    DiophantineConsistency.PRATheory.PRA ⊢
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) β 🡘 ∀⁰ q) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) α 🡘
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) β

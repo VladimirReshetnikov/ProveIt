@@ -1,0 +1,130 @@
+import DiophantineConsistency.PRAFoundationOneInduction
+import DiophantineConsistency.PRABoundedWitness
+/-! One induction instance with an arbitrary open matrix on x,y,c. -/
+set_option autoImplicit false
+set_option maxHeartbeats 1500000
+namespace DiophantineConsistency.PRAOpenOneInduction
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory PRAEqualityCode PRAOpenFormulaCoverage
+  PRABoundedCharacteristic PRABoundedWitness PRAStageInductionSchema PRAFoundationOneInduction
+  PRAAddOne PRATermCompilation
+
+/-- For ψ with inputs `[x,y,c]`, use c as the only free predicate parameter. -/
+def openSigma (ψ : Semisentence language 3) : Semiproposition language 1 :=
+  ∃⁰ (Rew.embSubsts ![#1,#0,&0] ▹ ψ)
+
+section models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
+  [M↓[language] ⊧* PRA]
+
+omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
+theorem modelOpenSigma (ψ : Semisentence language 3) (e : ℕ → M) (x : M) :
+    (openSigma ψ).Eval ![x] e ↔ ∃ y : M, ψ.Eval ![x,y,e 0] Empty.elim := by
+  simp only [openSigma, Semiformula.eval_ex, Semiformula.eval_rew]
+  apply exists_congr
+  intro y
+  have hb : (Semiterm.val (L := language) ![y,x] e ∘
+      Rew.embSubsts ![#1,#0,&0] ∘ Semiterm.bvar) = ![x,y,e 0] := by
+    funext i
+    refine Fin.cases rfl (fun j => ?_) i
+    refine Fin.cases rfl (fun k => ?_) j
+    exact Fin.cases rfl (fun l => Fin.elim0 l) k
+  have hf : (Semiterm.val (L := language) ![y,x] e ∘
+      Rew.embSubsts ![#1,#0,&0] ∘ Semiterm.fvar) = (Empty.elim : Empty → M) := Subsingleton.elim _ _
+  rw [hb,hf]
+
+omit [M↓[language] ⊧* PRA] in
+theorem modelSigmaCharacteristic (ψ : Semisentence language 3) (c : Code 3)
+    (hc : M↓[language] ⊧ characteristicSentence c ψ) (e : ℕ → M) (x : M) :
+    (openSigma ψ).Eval ![x] e ↔ (codedSigma c).Eval ![x] e := by
+  rw [modelOpenSigma, modelCodedSigma]
+  apply exists_congr
+  intro y
+  have hh : M↓[language] ⊧ oneCorrectSentence c ψ := hc
+  have hm := modelCharacteristicMatrix c ψ hh ![x,y,e 0]
+  have he : (characteristicMatrix c).Eval ![x,y,e 0] Empty.elim ↔
+      Structure.func (L := language) c ![x,y,e 0] = Structure.func (L := language) oneCode Fin.elim0 := by
+    simp [characteristicMatrix, Semiformula.eval_rel, eqRel, applyCode, vars, Function.comp_def]
+    have hz : (fun i : Fin 0 => Semiterm.val ![x,y,e 0] Empty.elim (Fin.elim0 i : TermN 3)) =
+        (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
+    rw [hz]
+  have hv : Fin.cases x (Fin.cases y (Fin.cases (e 0) (fun i : Fin 0 => e i.val))) = ![x,y,e 0] := by
+    funext i
+    refine Fin.cases rfl (fun j => ?_) i
+    refine Fin.cases rfl (fun k => ?_) j
+    exact Fin.cases rfl (fun l => Fin.elim0 l) k
+  rw [hv]
+  exact hm.symm.trans he
+
+omit [Structure.Eq language M] [M↓[language] ⊧* PRA] in
+theorem modelSuccInd_congr (φ ψ : Semiproposition language 1)
+    (h : ∀ (e : ℕ → M) (x : M), φ.Eval ![x] e ↔ ψ.Eval ![x] e) :
+    M↓[language] ⊧ (succInd φ).univCl ↔ M↓[language] ⊧ (succInd ψ).univCl := by
+  simp only [models_iff, Semiformula.eval_univCl]
+  apply forall_congr'
+  intro e
+  simp [succInd, Semiformula.eval_substs, h e]
+end models
+/-- Replace a family of extra axioms by another family that implies them in
+every candidate-PRA model. -/
+theorem PRA_proof_of_model_theory_replacement (S U : Theory language) (goal : Sentence language)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA], M↓[language] ⊧* U → M↓[language] ⊧* S)
+    (p : (PRA ∪ S) ⊢ goal) : (PRA ∪ U) ⊢ goal := by
+  letI : 𝗘𝗤 language ⪯ (PRA ∪ U) :=
+    Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
+  apply Theory.Proof.complete_on_eq_models.{0,0}
+  intro M _ _ _ hBoth
+  letI : M↓[language] ⊧* PRA := by
+    constructor
+    intro σ hσ
+    exact hBoth.models _ (Or.inl hσ)
+  have hU : M↓[language] ⊧* U := ⟨fun σ hσ => hBoth.models _ (Or.inr hσ)⟩
+  have hs := h M hU
+  have hPlus : M↓[language] ⊧* (PRA ∪ S) := by
+    constructor
+    intro σ hσ
+    exact hσ.elim (fun h => (inferInstance : M↓[language] ⊧* PRA).models _ h)
+      (fun h => hs.models _ h)
+  exact models_of_provable hPlus p
+
+
+/-- Replace a family of extra axioms by one sentence that implies them in
+every candidate-PRA model. -/
+theorem PRA_proof_of_model_axiom_replacement (S : Theory language) (a goal : Sentence language)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA], M↓[language] ⊧ a → M↓[language] ⊧* S)
+    (p : (PRA ∪ S) ⊢ goal) : (PRA ∪ {a}) ⊢ goal := by
+  apply PRA_proof_of_model_theory_replacement S {a} goal ?_ p
+  intro M _ _ _ _ hU
+  exact h M (hU.models _ rfl)
+
+/-- Eliminate an induction instance when its matrix has a certified
+characteristic code. -/
+theorem PRA_proves_goal_of_characteristicSuccInd (ψ : Semisentence language 3) (c : Code 3)
+    (hc : PRA ⊢ characteristicSentence c ψ) (θ : Semiproposition language 1) (hθ : θ.Open)
+    (p : (PRA ∪ {(succInd (openSigma ψ)).univCl}) ⊢ (∃⁰ θ).univCl) :
+    PRA ⊢ (∃⁰ θ).univCl := by
+  have hp : (PRA ∪ {(succInd (codedSigma c)).univCl}) ⊢ (∃⁰ θ).univCl := by
+    apply PRA_proof_of_model_axiom_replacement _ _ _ ?_ p
+    intro M _ _ _ _ hcode
+    constructor
+    intro σ hσ
+    simp only [Set.mem_singleton_iff] at hσ
+    subst σ
+    have hchar := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hc
+    exact (modelSuccInd_congr (openSigma ψ) (codedSigma c)
+      (fun e x => modelSigmaCharacteristic ψ c hchar e x)).mpr hcode
+  exact PRA_proves_goal_of_succInd c θ hθ hp
+
+/-- Eliminate one actual successor-induction instance whose Σ₁ predicate has
+an arbitrary open matrix ψ(x,y,c), with no external predicate parameters. -/
+theorem PRA_proves_goal_of_openSuccInd (ψ : Semisentence language 3) (hψ : ψ.Open)
+    (θ : Semiproposition language 1) (hθ : θ.Open)
+    (p : (PRA ∪ {(succInd (openSigma ψ)).univCl}) ⊢ (∃⁰ θ).univCl) :
+    PRA ⊢ (∃⁰ θ).univCl := by
+  obtain ⟨c,_,hc⟩ := PRA_proves_openCharacteristic ψ hψ
+  exact PRA_proves_goal_of_characteristicSuccInd ψ c hc θ hθ p
+
+end DiophantineConsistency.PRAOpenOneInduction
