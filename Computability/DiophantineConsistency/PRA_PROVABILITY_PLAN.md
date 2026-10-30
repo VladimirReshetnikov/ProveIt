@@ -51,6 +51,10 @@ unscaled transport assumptions, which still require Assembly instantiation.
 The [actual-equations client](reviews/adaptive-construction-transport-actual2011-independent.md)
 derives the unscaled transport and port/gap bounds from the old equations,
 leaving the common Assembly radix, multiplier and rank facts explicit.
+The [combined actual first-carrier theorem](reviews/adaptive-construction-first-actual2011-independent.md)
+now derives the positive first carrier from the old equations and outer seed
+with those same Assembly facts, without separately assuming the earlier size
+bounds. Producing the common witness remains open.
 
 The [first-Pell correction quotient](reviews/adaptive-construction-correction2011-independent.md)
 is now derived in every stated IΣ₁ model from explicit seed-index and ordinate
