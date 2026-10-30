@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRABoundedPairGraph
+set_option autoImplicit false
+namespace DiophantineConsistency.PRABoundedPairGraphChecks
+open DiophantineConsistency.PRABoundedPairGraph
+#print axioms modelPairGraphBounded
+end DiophantineConsistency.PRABoundedPairGraphChecks

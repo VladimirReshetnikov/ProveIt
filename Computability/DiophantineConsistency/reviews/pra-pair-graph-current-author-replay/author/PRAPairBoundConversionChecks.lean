@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAPairBoundConversion
+set_option autoImplicit false
+namespace DiophantineConsistency.PRAPairBoundConversionChecks
+open DiophantineConsistency.PRAPairBoundConversion
+#print axioms modelBoundSucc
+end DiophantineConsistency.PRAPairBoundConversionChecks

@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A [current-source pairing graph](reviews/pra-pair-graph-current-author-replay/README.md)
+now proves existence, unique component recovery and boundedness inside every
+candidate-PRA model, through its IOpen reduct. It is a model-level bounded
+relation, not a claimed primitive-recursive pairing code.
+
 A [post-merge finite-list theorem](reviews/pra-after-fixed-merge-refresh-author-replay/README.md)
 now eliminates any finite list of closed coded induction instances whose
 `Code 2` predicate bodies ignore the induction parameter. Its 31-module
