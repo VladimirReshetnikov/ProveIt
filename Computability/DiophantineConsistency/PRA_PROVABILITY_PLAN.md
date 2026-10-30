@@ -78,8 +78,11 @@ recursive-history bounds remain separate work.
 The exact positive and negative `memRel` graphs also have independently
 replayed candidate-PRA polynomial bounds; see the
 [relation receipt](reviews/pra-memrel-witness-bound-author-replay/README.md).
-These are components of the mapping graph, not a bound for that graph or a
-construction of the recursive history.
+They contribute to an independently replayed [positive bound for the full
+mapping graph](reviews/pra-mapping-witness-bound-author-replay/README.md),
+checked on a pre-merge source snapshot. A source refresh and its connection to
+the sequence client are underway. Neither result constructs a recursive
+computation history.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
