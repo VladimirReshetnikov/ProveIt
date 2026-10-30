@@ -52,6 +52,9 @@ def bnd : {n : ℕ} → ArithmeticSemiformula ξ n → ArithmeticSemiformula ξ 
 
 /-! ## `bnd φ` is bounded -/
 
+@[simp] theorem lastVar_positive (n : ℕ) : (lastVar (ξ := ξ) n).Positive := by
+  simp [lastVar, Fin.lt_def]
+
 /-- On open formulas `bnd` is the plain embedding. -/
 theorem bnd_open : ∀ {n : ℕ} (φ : ArithmeticSemiformula ξ n), φ.Open →
     bnd φ = Rew.castLE (Nat.le_succ n) ▹ φ
@@ -107,21 +110,15 @@ theorem hierarchy_bnd {Γ : Polarity} {s n : ℕ} {φ : ArithmeticSemiformula ξ
       simpa [hpos] using ih hs hΓ
   | @bexs Γ s n φ t ht _ ih =>
       intro hs hΓ
-      rw [bnd_bexs _ _ (by simp)]
-      have hpos : (lastVar (ξ := ξ) n).Positive := by simp [lastVar, Fin.lt_def]
-      simp only [Hierarchy.bexs_iff hpos]
+      rw [bnd_bexs _ _ (by simp), Hierarchy.bexs_iff (lastVar_positive n)]
       exact Hierarchy.and (Hierarchy.rew _ (by simp)) (ih hs hΓ)
   | @exs s n φ _ ih =>
       intro hs _
-      have hpos : (lastVar (ξ := ξ) n).Positive := by simp [lastVar, Fin.lt_def]
-      simp only [bnd, Hierarchy.bexs_iff hpos]
-      exact ih hs (fun _ => rfl)
+      simpa [bnd, Hierarchy.bexs_iff (lastVar_positive n)] using ih hs (fun _ => rfl)
   | @all s n φ _ _ => intro hs hΓ; cases hΓ (by omega)
   | @sigma s n φ _ ih =>
       intro hs _
-      have hpos : (lastVar (ξ := ξ) n).Positive := by simp [lastVar, Fin.lt_def]
-      simp only [bnd, Hierarchy.bexs_iff hpos]
-      exact ih (by omega) (fun h => by omega)
+      simpa [bnd, Hierarchy.bexs_iff (lastVar_positive n)] using ih (by omega) (fun h => by omega)
   | @pi s n φ _ _ => intro hs hΓ; cases hΓ (by omega)
   | dummy_sigma => intro hs; omega
   | dummy_pi => intro hs; omega
@@ -213,6 +210,16 @@ theorem eval_bnd_mono : ∀ {n : ℕ} (φ : ArithmeticSemiformula ξ n) (e : Fin
       · rw [cons_snoc] at hx ⊢
         exact eval_bnd_mono φ (x :> e) f hw hx
 
+/-- **An existential witness gives a bound.** -/
+theorem eval_bnd_ex {n : ℕ} (φ : ArithmeticSemiformula ξ (n + 1)) (e : Fin n → M) (f : ξ → M)
+    (x w : M) (hw : (bnd φ).Eval (Fin.snoc (x :> e) w) f) :
+    ∃ w', (bnd (∃⁰ φ)).Eval (Fin.snoc e w') f := by
+  refine ⟨max w (x + 1), ?_⟩
+  simp only [bnd, Semiformula.eval_bexs]
+  refine ⟨x, by simp, ?_⟩
+  rw [cons_snoc]
+  exact eval_bnd_mono φ (x :> e) f (le_max_left _ _) hw
+
 end monotone
 
 /-! ## Strict induction and collection in models -/
@@ -273,16 +280,12 @@ theorem collection {R : M → M → Prop} (D : Semiformula ℒₒᵣ M 2) (hD : 
       simp [hx, hR]
     · exact ⟨0, fun x hx => absurd hx (by simp)⟩
     · rintro a ⟨b, hb⟩
-      by_cases haT : a < T
-      · obtain ⟨c, hc⟩ := h a haT
-        refine ⟨max b c, fun x hx hxT => ?_⟩
-        rcases lt_or_eq_of_le (le_iff_lt_succ.mpr hx) with hlt | rfl
-        · exact mono x b _ (le_max_left _ _) (hb x hlt hxT)
-        · exact mono x c _ (le_max_right _ _) hc
-      · refine ⟨b, fun x hx hxT => hb x ?_ hxT⟩
-        rcases lt_or_eq_of_le (le_iff_lt_succ.mpr hx) with hlt | rfl
-        · exact hlt
-        · exact absurd hxT haT
+      obtain ⟨c, hc⟩ : ∃ c, a < T → R a c :=
+        if haT : a < T then (h a haT).imp fun _ hc _ => hc else ⟨b, fun h => absurd h haT⟩
+      refine ⟨max b c, fun x hx hxT => ?_⟩
+      rcases lt_or_eq_of_le (le_iff_lt_succ.mpr hx) with hlt | rfl
+      · exact mono x b _ (le_max_left _ _) (hb x hlt hxT)
+      · exact mono x c _ (le_max_right _ _) (hc hxT)
   obtain ⟨b, hb⟩ := key T
   exact ⟨b, fun x hx => hb x hx hx⟩
 
@@ -370,38 +373,23 @@ theorem eval_bnd_of {Γ : Polarity} {s n : ℕ} {φ : ArithmeticSemiformula ξ n
       exact hb x (by simpa [hTv] using hxt)
   | @bexs Γ s n φ t ht hφ ih =>
       intro hs hΓ e f h
-      simp only [Semiformula.eval_bexs] at h
-      obtain ⟨x, hxt, hx⟩ := h
+      obtain ⟨x, hxt, hx⟩ := Semiformula.eval_bexs.mp h
       obtain ⟨w, hw⟩ := ih hs hΓ (x :> e) f hx
-      refine ⟨max w (x + 1), ?_⟩
-      rw [bnd_bexs _ _ (by simp)]
-      simp only [Semiformula.eval_bexs, LogicalConnective.HomClass.map_and,
-        Semiformula.eval_castLE]
-      refine ⟨x, ?_, ?_, ?_⟩
-      · simp
-      · rw [cons_snoc, snoc_castLE]; exact hxt
-      · rw [cons_snoc]; exact eval_bnd_mono φ (x :> e) f (le_max_left _ _) hw
+      refine eval_bnd_ex (“x. x < !!t” ⋏ φ) e f x w ?_
+      simp only [bnd, LogicalConnective.HomClass.map_and, bnd_open _ (by simp : (“x. x < !!t” :
+        ArithmeticSemiformula ξ (n + 1)).Open), eval_bnd_atom]
+      exact ⟨hxt, hw⟩
   | @exs s n φ hφ ih =>
       intro hs _ e f h
-      simp only [Semiformula.eval_ex] at h
-      obtain ⟨x, hx⟩ := h
+      obtain ⟨x, hx⟩ := Semiformula.eval_ex.mp h
       obtain ⟨w, hw⟩ := ih hs (fun _ => rfl) (x :> e) f hx
-      refine ⟨max w (x + 1), ?_⟩
-      simp only [bnd, Semiformula.eval_bexs]
-      refine ⟨x, ?_, ?_⟩
-      · simp
-      · rw [cons_snoc]; exact eval_bnd_mono φ (x :> e) f (le_max_left _ _) hw
+      exact eval_bnd_ex φ e f x w hw
   | @all s n φ _ _ => intro hs hΓ; cases hΓ (by omega)
   | @sigma s n φ hφ ih =>
       intro hs _ e f h
-      simp only [Semiformula.eval_ex] at h
-      obtain ⟨x, hx⟩ := h
+      obtain ⟨x, hx⟩ := Semiformula.eval_ex.mp h
       obtain ⟨w, hw⟩ := ih (by omega) (fun h => by omega) (x :> e) f hx
-      refine ⟨max w (x + 1), ?_⟩
-      simp only [bnd, Semiformula.eval_bexs]
-      refine ⟨x, ?_, ?_⟩
-      · simp
-      · rw [cons_snoc]; exact eval_bnd_mono φ (x :> e) f (le_max_left _ _) hw
+      exact eval_bnd_ex φ e f x w hw
   | @pi s n φ _ _ => intro hs hΓ; cases hΓ (by omega)
   | dummy_sigma => intro hs; omega
   | dummy_pi => intro hs; omega

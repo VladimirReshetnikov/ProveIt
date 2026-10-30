@@ -87,10 +87,6 @@ theorem matrix_sigma0 (hθ : Hierarchy 𝚺 0 θ) (hπ : Hierarchy 𝚺 1 π) :
   have hb' : Hierarchy 𝚷 0 (bnd π) := Hierarchy.zero_iff.mp hb
   simp [matrix, thetaE, thetaU, betaE, betaU, hθ, hθ', hb, hb']
 
-theorem normalForm_sigma1 (hθ : Hierarchy 𝚺 0 θ) (hπ : Hierarchy 𝚺 1 π) :
-    Hierarchy 𝚺 1 (∃⁰^[k + 1] matrix θ π) :=
-  Hierarchy.exsItr_iff.mpr ((matrix_sigma0 θ π hθ hπ).mono (by decide))
-
 /-! ## Semantics -/
 
 section semantics
@@ -114,22 +110,28 @@ theorem eval_conB : (conB π).Evalb (M := M) ![] ↔ ∀ w : M, ¬(bnd π).Evalb
 theorem eval_noZero : (∀⁰* θ).Evalb (M := M) ![] ↔ ∀ x : Fin k → M, θ.Evalb x := by
   simp
 
-/-- **The normal form gives the equivalence with the strict consistency form**,
+/-- **The normal form is the equivalence with the strict consistency form**,
 in every structure. -/
-theorem normalForm_imp (h : (normalForm θ π).Evalb (M := M) ![]) :
-    (∀ x : Fin k → M, θ.Evalb x) ↔ ∀ w : M, ¬(bnd π).Evalb ![w] := by
-  rw [eval_normalForm] at h
+theorem eval_normalForm_iff : (normalForm θ π).Evalb (M := M) ![] ↔
+    ((∀ x : Fin k → M, θ.Evalb x) ↔ ∀ w : M, ¬(bnd π).Evalb ![w]) := by
+  rw [eval_normalForm]
   constructor
-  · intro hA w hw
-    obtain ⟨e, h₁, -⟩ := h (w :> fun _ => 0)
-    rcases h₁ with h₁ | h₁
-    · exact h₁ (hA _)
-    · exact h₁ (by simpa using hw)
-  · intro hB x
-    obtain ⟨e, -, h₂⟩ := h (0 :> x)
-    rcases h₂ with h₂ | h₂
-    · exact absurd h₂ (hB _)
-    · simpa using h₂
+  · intro h
+    constructor
+    · intro hA w hw
+      obtain ⟨e, h₁, -⟩ := h (w :> fun _ => 0)
+      exact h₁.elim (· (hA _)) (· (by simpa using hw))
+    · intro hB x
+      obtain ⟨e, -, h₂⟩ := h (0 :> x)
+      exact h₂.elim (absurd · (hB _)) (by simpa using ·)
+  · intro hE u
+    by_cases hb : (bnd π).Evalb ![u 0]
+    · obtain ⟨x, hx⟩ := not_forall.mp fun hA => hE.mp hA _ hb
+      exact ⟨u 0 :> x, Or.inl (by simpa using hx), Or.inl (by simpa using hb)⟩
+    · by_cases hθ : θ.Evalb (fun j => u j.succ)
+      · exact ⟨0, Or.inr hb, Or.inr hθ⟩
+      · obtain ⟨w, hw⟩ := not_forall_not.mp fun hB => hθ (hE.mpr hB _)
+        exact ⟨w :> 0, Or.inr hb, Or.inl (by simpa using hw)⟩
 
 end semantics
 
@@ -165,22 +167,8 @@ theorem isigma1_normalForm (hπ : Hierarchy 𝚺 1 π) (h : 𝗜𝚺₁ ⊢ (∀
   have hE := models_of_provable hM h
   simp only [models_iff, LogicalConnective.HomClass.map_iff,
     LogicalConnective.HomClass.map_neg] at hE
-  have hP := eval_bnd_iff (M := M) hπ
-  rw [models_iff, eval_normalForm]
-  intro u
-  by_cases hb : (bnd π).Evalb ![u 0]
-  · have hnA : ¬∀ x : Fin k → M, θ.Evalb x := by
-      intro hA
-      exact hE.1 ((eval_noZero θ).mpr hA) (hP.mpr ⟨_, hb⟩)
-    obtain ⟨x, hx⟩ := not_forall.mp hnA
-    exact ⟨u 0 :> x, Or.inl (by simpa using hx), Or.inl (by simpa using hb)⟩
-  · by_cases hθ : θ.Evalb (fun j => u j.succ)
-    · exact ⟨0, Or.inr hb, Or.inr hθ⟩
-    · have hπv : π.Evalb (M := M) ![] := by
-        by_contra hn
-        exact hθ ((eval_noZero θ).mp (hE.2 hn) _)
-      obtain ⟨w, hw⟩ := hP.mp hπv
-      exact ⟨w :> 0, Or.inr hb, Or.inl (by simpa using hw)⟩
+  rw [models_iff, eval_normalForm_iff, ← eval_noZero, ← not_exists, ← eval_bnd_iff hπ]
+  exact ⟨hE.1, hE.2⟩
 
 /-- **Transport back**: `normalForm θ π → ((∀ x̄, θ) ↔ conB π)` in pure equality logic. -/
 theorem normalForm_valid : 𝗘𝗤 ℒₒᵣ ⊢ normalForm θ π 🡒 ((∀⁰* θ) 🡘 conB π) := by
@@ -188,7 +176,7 @@ theorem normalForm_valid : 𝗘𝗤 ℒₒᵣ ⊢ normalForm θ π 🡒 ((∀⁰
   simp only [models_iff, LogicalConnective.HomClass.map_imply, LogicalConnective.HomClass.map_iff]
   intro h
   rw [eval_noZero, eval_conB]
-  exact ⟨(normalForm_imp θ π h).mp, (normalForm_imp θ π h).mpr⟩
+  exact ⟨((eval_normalForm_iff θ π).mp h).mp, ((eval_normalForm_iff θ π).mp h).mpr⟩
 
 /-- **`¬π` and its strict `Π₁` form are `𝗜𝚺₁`-equivalent.** -/
 theorem isigma1_conB (hπ : Hierarchy 𝚺 1 π) : 𝗜𝚺₁ ⊢ ∼π 🡘 conB π := by
