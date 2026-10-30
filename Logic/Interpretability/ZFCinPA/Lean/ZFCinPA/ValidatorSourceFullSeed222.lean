@@ -36,11 +36,7 @@ theorem bounded_seed_pair (bound P a b : V) (ha : a≤bound) (hb : b≤bound) :
       (conj (clos a b (seedLabel bound P) P) (req b (seedLabel bound P) P))) := by
   let c := seedLabel bound P
   have hP := seedLabel_equiv bound P
-  have point : CProv (wim (conj (clos a b c c) (req b c c))
-      (conj (clos a b c P) (req b c P))) := by
-    apply conj_under
-    · exact compose (conj_left _ _) (closure_congr a b c c P hP.1 hP.2).1
-    · exact compose (conj_right _ _) (request_congr b c c P hP.1 hP.2).1
+  have point := closure_request_congr a b c c P hP.1 hP.2
   exact cProv_mp (ex_mono c point)
     (seed_pair a b c (ne_of_gt (lt_of_le_of_lt ha (bound_lt_seedLabel bound P)))
       (ne_of_gt (lt_of_le_of_lt hb (bound_lt_seedLabel bound P))))
