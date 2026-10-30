@@ -37,3 +37,24 @@ inherited boundaries, not freshly rebuilt by this client. An earlier author
 attempt failed because the isolated output directory did not contain the
 inherited module tree; it created no accepted object and was replaced by a
 fresh symlinked-provider build.
+
+## Bounded induction matrix
+
+`PRAPiOneBoundedInduction.eliminate_one_from_equivalence` replaces the
+open induction-matrix hypothesis by Foundation's Σ₀ classification, while
+retaining unary open matrices for the two Π₁ sides and exactly one closed
+induction instance. The two isolated builds used the independently replayed
+bounded providers `/tmp/pra-bounded-one-induction-independent-xaltmla0/lib`
+and `/tmp/pra-bounded-one-induction-independent-r5ddrfvn/lib`, together with
+the independently matching previous client objects. Both main and check builds
+passed without warnings; corresponding source, object and full-log hashes
+matched:
+
+| Module | Source SHA-256 | Object SHA-256 | Log SHA-256 |
+| --- | --- | --- | --- |
+| `PRAPiOneBoundedInduction` | `653d0d1427d9494d5b8a9340051007f6804c34593a7fb25a983a5918f6793d2f` | `f627c86f189c2c82499c5fcae8e55ceaf9de5dc7c20603a20bec41ffcf0e9913` | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `PRAPiOneBoundedInductionChecks` | `2b374409ed78281c115badce24c0804984076858fbf1e8555cd915d0c69e11cf` | `16d2b5324cf907d99d81dbc04de4010b714f91b5c2ef637208a9d1d8f6626b9c` | `c4e260ff9397841ed344849dcfc4b50a7f13bd806fbce81c53aa34f952fbf1bf` |
+
+The [retained logs](pra-pi-one-bounded-replay/) report only `propext`,
+`Classical.choice` and `Quot.sound` as Lean metatheory axioms. The earlier
+literal-sentence, finite-induction and standard-PRA limitations still apply.

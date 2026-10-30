@@ -22,7 +22,8 @@ induction instances.
 A [bounded-matrix extension](reviews/pra-bounded-one-induction-current-author-replay/README.md)
 now removes one closed Σ₁-induction instance with any Σ₀ matrix on its
 three stated arguments, using the candidate-PRA bounded characteristic
-compiler. It still does not handle extra predicate parameters or an arbitrary
+compiler. The unary Π₁ equivalence transfer has the same bounded-induction
+extension. It still does not handle extra predicate parameters or an arbitrary
 finite collection of induction instances.
 
 Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean`,

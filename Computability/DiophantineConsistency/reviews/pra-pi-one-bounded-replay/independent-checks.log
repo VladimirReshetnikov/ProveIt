@@ -1,0 +1,14 @@
+'DiophantineConsistency.PRAPiOneBoundedInduction.eliminate_one_from_equivalence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAPiOneBoundedInduction.eliminate_one_from_equivalence
+  (ψ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3)
+  (hψ : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0 ψ)
+  (p q : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 1)
+  (hp : LO.FirstOrder.Semiformula.Open p) (hq : LO.FirstOrder.Semiformula.Open q)
+  (h :
+    DiophantineConsistency.PRATheory.PRA ∪
+        {LO.FirstOrder.Semiformula.univCl
+            (LO.FirstOrder.Arithmetic.succInd (DiophantineConsistency.PRAOpenOneInduction.openSigma ψ))} ⊢
+      ∀⁰ p 🡘 ∀⁰ q) :
+  DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰ p 🡘 ∀⁰ q
