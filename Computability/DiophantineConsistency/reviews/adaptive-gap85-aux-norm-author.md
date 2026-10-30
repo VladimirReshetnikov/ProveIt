@@ -1,0 +1,7 @@
+# Actual 85 zero: signed auxiliary Pell norm, scoped author replay
+
+The guarded author run `/tmp/adaptive-gap85-aux-norm-e92xyxxt` passed. `expressionAt_aux_norm85` derives the actual auxiliary Pell norm in every IΣ₁ model directly from the strong and auxiliary units, for arbitrary integer ports. The signed auxiliary root is retained as a pair magnitude; no rank sign, root orientation or coordinate positivity is assumed. No reverse bound or 85/Con(ZFC) equivalence is asserted.
+
+The module defines its own signed-pair helpers, because the historical inherited object does not contain the later helper namespace; it does not replace that provider. The replay authenticates the new source, independently replayed unit and magnitude parents, literal and factor source/generators/candidate, 507 selected inherited objects and 28 v13 output/log records before and after. Historical project, Foundation and package boundaries remain inherited; no full current-source closure is claimed. Independent replay is required.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-aux-norm.py`. Source SHA-256 `dcc75fbba683a5a6dfdd3f4c2c9fb09db30927861431731d805d3318f3738ed0`, object `0f217ba1cb6351498690595512616d49535a7103beee9b309bb376b2538da383`, full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, state `be967bd988114120c0f58b0a2ff2e08c55d3c7467b2aaf51bfe037994781b653`, evidence manifest `6805eb2782c17fbf662cea915cf1f19b1873b12d2bc96b2af6009ec5c59376b5`.

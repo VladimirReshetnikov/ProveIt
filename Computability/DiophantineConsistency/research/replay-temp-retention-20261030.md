@@ -24,3 +24,10 @@ its interrupted 13-row state, source snapshots, logs and output hashes were
 frozen in `reviews/ha87-post-residue-focused-stop/`. It was not an ancestor of
 the active isolated build or accepted peers. Its raw temporary objects can no
 longer be rehashed in place; the preserved checkpoint is not a completed proof.
+
+Ten completed gap85 author overlays (arithmetic, literal, holes, lift,
+exists, machine, example, weak-family, factors and family-general), plus the
+generic HA-implication author overlay, were removed to recover additional
+space. Their author states and logs are frozen in their committed review
+packets; their raw temporary author objects cannot be rehashed in place. The
+independent peer objects and active provider parents were retained.
