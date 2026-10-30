@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryTermCoreCode
+
+#print axioms DiophantineConsistency.PRAHistoryTermCoreCode.PRA_has_termCoreCode
+#print axioms DiophantineConsistency.PRAHistoryTermCoreCode.PRA_has_termSuccCode
