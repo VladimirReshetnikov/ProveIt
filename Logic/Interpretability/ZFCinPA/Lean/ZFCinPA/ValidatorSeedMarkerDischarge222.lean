@@ -116,12 +116,8 @@ theorem residual_succ (j : V) : residual (j+1)=
   tauto
 
 theorem tag_nonempty_provable (j : V) : Provable seedTheory (^∃ domainCode j) := by
-  let p := (tagged_nonempty (Bootstrapping.Semiterm.fvar j : Term V ℒₛₑₜ)).get
-  refine ⟨p.val,?_⟩
-  have hp : Proof seedTheory p.val (∃⁰ tagBody (Bootstrapping.Semiterm.fvar j)).val := by
-    simpa only [Source,Theory.internalize,Proof,Sequent.val_insert,Sequent.val_empty,singleton_eq_insert]
-      using p.derivationOf
-  simpa only [Bootstrapping.Semiformula.val_exs,domain_binding] using hp
+  simpa only [Bootstrapping.Semiformula.val_exs,domain_binding] using
+    (tprovable_iff_provable.mp (tagged_nonempty (Bootstrapping.Semiterm.fvar j : Term V ℒₛₑₜ)))
 
 private theorem insert_provable {p Γ : V} (hΓ : IsFormulaSet ℒₛₑₜ (insert p Γ))
     (hp : Provable seedTheory p) : Derivable seedTheory (insert p Γ) := by
@@ -173,12 +169,8 @@ private theorem empty_free_negative :
 
 theorem empty_object_provable :
     Provable seedTheory (^∃ (emptyBody : Semiformula V ℒₛₑₜ 1).val) := by
-  let p := (empty_object (V:=V)).get
-  refine ⟨p.val,?_⟩
-  have hp : Proof seedTheory p.val (∃⁰ (emptyBody : Semiformula V ℒₛₑₜ 1)).val := by
-    simpa only [Source,Theory.internalize,Proof,Sequent.val_insert,Sequent.val_empty,singleton_eq_insert]
-      using p.derivationOf
-  simpa only [Bootstrapping.Semiformula.val_exs] using hp
+  simpa only [Bootstrapping.Semiformula.val_exs] using
+    (tprovable_iff_provable.mp (empty_object (V:=V)))
 
 /-- The source empty-object proof removes the final negative marker guard. -/
 theorem discharge_zero (h : Derivable seedTheory (residual (0:V))) :
