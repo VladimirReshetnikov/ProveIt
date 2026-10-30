@@ -143,8 +143,10 @@ proves that inserting the endpoint extends an initial segment by one.
 [Canonical under membership](reviews/pra-history-under-canonical-author-replay/README.md)
 now characterizes the exact initial-segment graph without IΣ₁. A
 [sequence-extension theorem](reviews/pra-history-sequence-extension-author-replay/README.md)
-proves validity after append and provides an incremented length witness;
-length uniqueness and the full recursive-history verification remain open.
+proves validity after append and provides an incremented length witness.
+A [length-uniqueness and strengthened append theorem](reviews/pra-history-length-unique-author-replay/README.md)
+now aligns that witness with any supplied actual prior length. The full
+recursive-history verification remains open.
 An [independently replayed primitive-recursive
 iterator](reviews/pra-history-iterator-author-replay/README.md) supplies the
 history code's base and step equations for supplied function codes; the
