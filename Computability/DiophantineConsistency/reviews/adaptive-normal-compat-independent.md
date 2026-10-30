@@ -1,0 +1,5 @@
+# Independent local-normalization proof replay
+
+Root peer `/tmp/adaptive-normal-compat-jh46wr7x` **PASS** against independently rebuilt Assembly and 40-module prerequisite providers. All three current-source normalization module source, object and complete-log hashes match the author run exactly; complete Assembly and prerequisite provider audits passed before and after, and all new outputs were rehashed. The existing theorem `ArithmeticLocalNormalization.localNormalization` proves the finite `ArithmeticPackingCells.LocalNormalization` proposition on this private current-source closure.
+
+The 19-file `adaptive-normal-compat-independent-evidence/FILES.json` manifest has SHA-256 `035fa3143e8f989958ac0d9eba30514c8d7bf599f5968d062e632a8e0a610cb2`. The World unused-variable and final exponentiation-threshold warnings are retained. This is a private source-current proof, not by itself an HA proof-existence theorem or canonical integration; the historical original-object comparison remains provenance-qualified.
