@@ -203,6 +203,10 @@ The [length-bit local bound](reviews/pra-lenbit-witness-bound-author-replay/READ
 independently proves `y+1` for Foundation's exact standalone `lenbitDef` and
 constructs its candidate-PRA sentence. The separate exponential graph and
 the full membership/history witnesses remain open.
+The [bit-graph binding](reviews/pra-bit-witness-bound-author-replay/README.md)
+transports that bound to the actual inlined `lenbitDef` occurrence and proves
+a candidate-PRA conditional sentence. It retains the bounded exponential
+conjunct, its witness and the common-bound assumptions explicitly.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
