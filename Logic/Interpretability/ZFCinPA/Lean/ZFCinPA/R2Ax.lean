@@ -55,13 +55,6 @@ theorem gic_body (K : SF (V := V) 2) {F s : V} (hF : OddEnv F) (hs : s % 2 = 0) 
 /-- The opened closure code peeled to `i` binders. -/
 noncomputable def pc (s m b F i : V) : V := encode F 0 s (subst ℒₛₑₜ (fvarVec (m - i)) (qqAlls b i))
 
-private lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k → V) → Prop}
-    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
-  rcases h with ⟨φ, hφ⟩
-  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)), ?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
-
 private instance cProv_pi2 : 𝚷-[2]-Predicate[V] CProv := sigma1_to_pi2 cProv_definable
 private instance oddEnv_pi2 : 𝚷-[2]-Predicate[V] OddEnv := R2Main.oddEnv_definable.of_deltaOne
 

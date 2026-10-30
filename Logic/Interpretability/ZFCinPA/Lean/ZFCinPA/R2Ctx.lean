@@ -34,7 +34,16 @@ open LeanProofs.ZFCinPA.ValidatorProvability254 LeanProofs.ZFCinPA.ValidatorQuan
 open LeanProofs.ZFCinPA.ValidatorEnvironmentLabels254
 open scoped LO.FirstOrder.Arithmetic
 
-variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+variable {V : Type*} [ORingStructure V]
+
+lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k → V) → Prop}
+    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
+  rcases h with ⟨φ, hφ⟩
+  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)), ?_⟩
+  intro v
+  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
+
+variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 instance wim_sigma1 : 𝚺₁-Function₂[V] wim := wim_defined.to_definable₀
 instance wal_sigma1 : 𝚺₁-Function₂[V] wal := wal_defined.to_definable₀
