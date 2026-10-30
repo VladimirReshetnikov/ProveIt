@@ -1,5 +1,6 @@
 import ZFCinPA.ValidatorFormulaEncoder222
 import ZFCinPA.ValidatorImplicationContext
+import ZFCinPA.ValidatorVectorMap
 
 set_option autoImplicit false
 set_option Elab.async false
@@ -190,25 +191,14 @@ instance negEnc_definable : 𝚺₁-Function₃[V] negEnc := negEnc_defined.to_d
 
 lemma negEnc_len_nth (F s : V) : ∀ L : V, len (negEnc F s L) = len L ∧
     ∀ i < len L, (negEnc F s L).[i] = neg (encode F 0 s L.[i]) := by
-  intro L
-  induction L using adjoin_ISigma1.sigma1_succ_induction
-  · definability
-  case nil => simp
-  case adjoin p L ih =>
-    refine ⟨by simp [ih.1], fun i hi ↦ ?_⟩
-    rcases zero_or_succ i with (rfl | ⟨j, rfl⟩)
-    · simp
-    · simpa using ih.2 j (by simpa using hi)
+  letI : 𝚺₁-Function₁[V] (fun p ↦ neg (encode F 0 s p)) := by definability
+  letI : 𝚺₁-Function₁[V] (negEnc F s) := by definability
+  exact ValidatorVectorMap.len_nth (fun p ↦ neg (encode F 0 s p)) (negEnc F s)
+    (negEnc_nil F s) (negEnc_cons F s)
 
 lemma mem_negEnc (F s L y : V) :
-    y ∈ᵥ negEnc F s L ↔ ∃ p, p ∈ᵥ L ∧ y = neg (encode F 0 s p) := by
-  obtain ⟨hl, hn⟩ := negEnc_len_nth F s L
-  constructor
-  · rintro ⟨i, hi, rfl⟩
-    rw [hl] at hi
-    exact ⟨L.[i], nth_mem_memVec hi, hn i hi⟩
-  · rintro ⟨p, ⟨i, hi, rfl⟩, rfl⟩
-    exact ⟨i, by rw [hl]; exact hi, (hn i hi).symm⟩
+    y ∈ᵥ negEnc F s L ↔ ∃ p, p ∈ᵥ L ∧ y = neg (encode F 0 s p) :=
+  ValidatorVectorMap.mem _ _ L y (negEnc_len_nth F s L)
 
 /-- The validator code of a sequent listed by `L`. -/
 noncomputable def seqC (F s L : V) : V := imps (negEnc F s L) 1
@@ -258,24 +248,10 @@ instance shiftList_definable : 𝚺₁-Function₁[V] shiftList := shiftList_def
 
 lemma shiftList_len_nth : ∀ L : V, len (shiftList L) = len L ∧
     ∀ i < len L, (shiftList L).[i] = shift ℒₛₑₜ L.[i] := by
-  intro L
-  induction L using adjoin_ISigma1.sigma1_succ_induction
-  · definability
-  case nil => simp
-  case adjoin p L ih =>
-    refine ⟨by simp [ih.1], fun i hi ↦ ?_⟩
-    rcases zero_or_succ i with (rfl | ⟨j, rfl⟩)
-    · simp
-    · simpa using ih.2 j (by simpa using hi)
+  exact ValidatorVectorMap.len_nth (shift ℒₛₑₜ) shiftList shiftList_nil shiftList_cons
 
-lemma mem_shiftList (L y : V) : y ∈ᵥ shiftList L ↔ ∃ p, p ∈ᵥ L ∧ y = shift ℒₛₑₜ p := by
-  obtain ⟨hl, hn⟩ := shiftList_len_nth L
-  constructor
-  · rintro ⟨i, hi, rfl⟩
-    rw [hl] at hi
-    exact ⟨L.[i], nth_mem_memVec hi, hn i hi⟩
-  · rintro ⟨p, ⟨i, hi, rfl⟩, rfl⟩
-    exact ⟨i, by rw [hl]; exact hi, (hn i hi).symm⟩
+lemma mem_shiftList (L y : V) : y ∈ᵥ shiftList L ↔ ∃ p, p ∈ᵥ L ∧ y = shift ℒₛₑₜ p :=
+  ValidatorVectorMap.mem _ _ L y (shiftList_len_nth L)
 
 /-- Shifting the listed formulas is tailing the free environment. -/
 lemma negEnc_shiftList (F s : V) : ∀ L : V, (∀ p, p ∈ᵥ L → IsUFormula ℒₛₑₜ p) →
