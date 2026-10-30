@@ -22,6 +22,9 @@ derives one of its size bounds from explicit first-Pell seed hypotheses.
 The [actual-seed first-carrier client](reviews/adaptive-construction-first-seed2011-independent.md)
 now derives that bound and the first norm from `SeedRelations` and phase;
 the Assembly radix and nonzero transport assumptions remain explicit.
+The [transport positivity bridge](reviews/adaptive-construction-transport-positive2011-independent.md)
+derives the nonzero transport contribution from explicit rank-growth and
+unscaled transport assumptions, which still require Assembly instantiation.
 
 The [first-Pell correction quotient](reviews/adaptive-construction-correction2011-independent.md)
 is now derived in every stated IΣ₁ model from explicit seed-index and ordinate
