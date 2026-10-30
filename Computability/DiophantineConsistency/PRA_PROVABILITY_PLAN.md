@@ -47,6 +47,14 @@ The negative `exponentialDef` and `expDef` graphs now also have closed
 candidate-PRA bounds, with matching author and two independent replays. The
 negative bit graph also has a closed candidate-PRA bound with matching author
 and two independent replays. The recursive history still requires a bound.
+A later 103-module current-source project graph has passed two matching fresh
+replays, subject to its documented inherited Foundation and package boundary.
+On that parent, the exact Foundation `underDef` graph has unconditional
+polynomial witness bounds in both its [positive](reviews/pra-under-witness-bound-author-replay/README.md)
+and [negative](reviews/pra-negunder-witness-bound-author-replay/README.md)
+forms, each with matching author and independent replays. These discharge
+local components of `seqDef`; they do not construct the sequence history or
+a bound for the complete ZFC refutation predicate.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
