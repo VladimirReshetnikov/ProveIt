@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [exact auxiliary-orientation theorem](reviews/adaptive-construction-aux-exact2011-independent.md)
+now derives the needed signed difference and auxiliary norm from the explicit
+seed linear identity and old norm. The common Assembly witness still has to
+expose that identity for the full adaptive construction.
+
 The upstream merge at `5135b718b9` changed five Herbrand proof sources and
 `PRAOpenOneInductionClassification`, as well as ZFC interpretation and context
 sources. The dependent finite-induction, pairing, tuple and candidate-PRA

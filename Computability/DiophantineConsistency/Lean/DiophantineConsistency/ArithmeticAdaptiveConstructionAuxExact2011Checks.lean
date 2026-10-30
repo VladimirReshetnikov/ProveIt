@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAuxExact2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAuxExact2011.auxiliary_cut_exact
