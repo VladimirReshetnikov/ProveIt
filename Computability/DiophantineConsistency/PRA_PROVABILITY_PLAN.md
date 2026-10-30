@@ -82,7 +82,9 @@ replayed candidate-PRA polynomial bounds; see the
 [relation receipt](reviews/pra-memrel-witness-bound-author-replay/README.md).
 They contribute to an independently replayed [positive bound for the full
 mapping graph](reviews/pra-mapping-witness-bound-author-replay/README.md),
-checked on a pre-merge source snapshot. A source refresh and its connection to
+checked on a pre-merge source snapshot. The [negative mapping graph](reviews/pra-negmapping-witness-bound-author-replay/README.md)
+also has an independently replayed polynomial bound on a pre-merge snapshot.
+A source refresh and the positive bound's connection to
 the sequence client have now yielded an independently replayed
 [unconditional positive sequence-graph bound](reviews/pra-seqfull-postmerge-author-replay/README.md)
 with an explicit polynomial. This does not construct a recursive computation
