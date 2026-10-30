@@ -108,11 +108,11 @@ are separate from that generic theorem.
 The [literal 14-variable forward client](reviews/pra-literal-forward-focused-author-replay/README.md)
 has since passed a focused author build and independent replay: it produces a
 candidate-PRA proof of mapped `Con(ZFC) → no-zero`, and an equivalence with
-the bounded consistency surrogate. The client inherits the historical IΣ₁
-endpoint and transitive closure; a subsequent merge also changed PRA inputs.
-Both dependencies require current-source refresh. The reverse implication to
-Foundation's literal consistency sentence and standard PRA comparison remain
-open.
+the bounded consistency surrogate. A [post-induction-merge replay](reviews/pra-literal-forward-post-open-author-replay/README.md)
+refreshed the PRA inputs and passed twice independently. The client still
+inherits the historical IΣ₁ endpoint and its transitive closure, which require
+current-source refresh. The reverse implication to Foundation's literal
+consistency sentence and standard PRA comparison remain open.
 The [fixed-sentence bound-certificate interface](reviews/pra-strict-con-reverse-current-author-replay/README.md)
 has independently replayed proofs that such a certificate implies the
 surrogate-to-original direction and hence the full mapped equivalence. No
