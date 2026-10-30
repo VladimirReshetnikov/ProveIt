@@ -90,6 +90,12 @@ The independently replayed [87-operation soundness client](reviews/adaptive-redu
 transfers this result to the exact reduced natural expression using the
 checked literal equivalence. Its private providers and historical table
 comparison boundary remain as above.
+The generic [HA expression assembler](reviews/ha-expression-assembly-author-replay/README.md)
+has also passed two focused replays: given an explicit all-IΣ₁-model
+no-zero/machine bridge, it produces actual IΣ₁ and HA proof equivalences for
+that expression and Foundation consistency. Its direct imports and transitive
+HA/ZFC closure are inherited historical objects, and the 87-operation bridge
+and normalization premise are not discharged by this generic theorem.
 The independently replayed [compatibility overlay audit](reviews/adaptive-wang-compat-overlay-audit-independent.md)
 checks that its 367 canonical project objects are byte-identical and that its
 27 additions are the authenticated table and chunk objects. This does not

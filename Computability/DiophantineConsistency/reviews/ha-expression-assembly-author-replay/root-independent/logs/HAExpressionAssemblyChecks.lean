@@ -1,0 +1,5 @@
+import DiophantineConsistency.HAExpressionAssembly
+#print axioms DiophantineConsistency.HAExpressionAssembly.classicalNoZero_iff
+#print axioms DiophantineConsistency.HAExpressionAssembly.isigma1_equivalence
+#print axioms DiophantineConsistency.HAExpressionAssembly.ha_equivalence
+#check DiophantineConsistency.HAExpressionAssembly.ha_equivalence
