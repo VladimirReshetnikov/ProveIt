@@ -88,27 +88,6 @@ theorem updated_bad_eval (r j : ℕ) (ψ : Semiproposition language 7)
   intro i hi
   have hlt := Semiformula.lt_fvSup_of_fvar? hi
   exact (he i (by omega)).symm
-/-- One semantic stage can be removed if its current bad instance can be
-forced by changing only the current challenge triple. -/
-theorem eliminate_last_of_bad (r j : ℕ) (ψ : Semiproposition language 7)
-    (hψ : ψ.fvSup ≤ r)
-    (hFull : ∀ e : ℕ → M, (output r ψ (List.range (j+1))).Eval ![] e)
-    (hBad : ∀ e : ℕ → M, ∃ a b c,
-      (bad r j ψ).Eval ![] (updateChallenges r j e a b c)) :
-    ∀ e : ℕ → M, (output r ψ (List.range j)).Eval ![] e := by
-  intro e
-  obtain ⟨a,b,c,hbad⟩ := hBad e
-  have h := (output_eval r ψ _ _).mp (hFull (updateChallenges r j e a b c))
-  obtain ⟨i,hi,hnot⟩ := h
-  have hi' := List.mem_range.mp hi
-  have hij : i < j := by
-    by_contra hn
-    have : i = j := by omega
-    subst i
-    exact hnot hbad
-  have hearly : (output r ψ (List.range j)).Eval ![] (updateChallenges r j e a b c) :=
-    (output_eval r ψ _ _).mpr ⟨i,List.mem_range.mpr hij,hnot⟩
-  exact ((updateChallenges_preserves r j ψ hψ e a b c).1).mpr hearly
 /-- A stage can also be removed relative to a goal that already succeeds:
 when both the goal and the earlier output fail, the current bad instance is forced by challenge choice. -/
 theorem eliminate_last_or_goal (r j : ℕ) (ψ : Semiproposition language 7)
@@ -136,6 +115,17 @@ theorem eliminate_last_or_goal (r j : ℕ) (ψ : Semiproposition language 7)
       have hearly : (output r ψ (List.range j)).Eval ![] (updateChallenges r j e a b c) :=
         (output_eval r ψ _ _).mpr ⟨i,List.mem_range.mpr hij,hnot⟩
       exact ((updateChallenges_preserves r j ψ hψ e a b c).1).mpr hearly
+
+/-- One semantic stage can be removed if its current bad instance can be
+forced by changing only the current challenge triple. -/
+theorem eliminate_last_of_bad (r j : ℕ) (ψ : Semiproposition language 7)
+    (hψ : ψ.fvSup ≤ r)
+    (hFull : ∀ e : ℕ → M, (output r ψ (List.range (j+1))).Eval ![] e)
+    (hBad : ∀ e : ℕ → M, ∃ a b c,
+      (bad r j ψ).Eval ![] (updateChallenges r j e a b c)) :
+    ∀ e : ℕ → M, (output r ψ (List.range j)).Eval ![] e := by
+  simpa using eliminate_last_or_goal r j ψ hψ (fun _ => False) hFull
+    (fun e _ _ => hBad e)
 end models
 
 /-- A model-uniform challenge construction turns an actual candidate-PRA
