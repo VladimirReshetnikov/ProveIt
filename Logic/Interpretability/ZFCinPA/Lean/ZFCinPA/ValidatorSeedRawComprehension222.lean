@@ -25,27 +25,27 @@ def singTerm {n : ℕ} (p y : Semiterm V ℒₛₑₜ n) : Semiformula V ℒₛ�
   ∀⁰ (memTerm (Bootstrapping.Semiterm.bvar 0) p.bShift 🡘
     eqTerm (Bootstrapping.Semiterm.bvar 0) y.bShift)
 
-private def closureTerm {n : ℕ} (K : Semiformula V ℒₛₑₜ 2)
+def closureTerm {n : ℕ} (K : Semiformula V ℒₛₑₜ 2)
     (c y : Semiterm V ℒₛₑₜ n) : Semiformula V ℒₛₑₜ n :=
   ∀⁰ (subsetTerm (Bootstrapping.Semiterm.bvar 0) y.bShift 🡒
     ∀⁰ (K.subst ![Bootstrapping.Semiterm.bvar 0,Bootstrapping.Semiterm.bvar 1] 🡒
       ∃⁰ (K.subst ![Bootstrapping.Semiterm.bvar 0,Bootstrapping.Semiterm.bvar 2] ⋏
         memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift.bShift.bShift)))
 
-private def supportBody (K : Semiformula V ℒₛₑₜ 2) (c y : Term V ℒₛₑₜ) : Semiformula V ℒₛₑₜ 1 :=
+def supportBody (K : Semiformula V ℒₛₑₜ 2) (c y : Term V ℒₛₑₜ) : Semiformula V ℒₛₑₜ 1 :=
   K.subst ![y.bShift,Bootstrapping.Semiterm.bvar 0] ⋏ closureTerm K c.bShift y.bShift
 
-private def hitBody (K : Semiformula V ℒₛₑₜ 2) (p c : Term V ℒₛₑₜ) : Semiformula V ℒₛₑₜ 1 :=
+def hitBody (K : Semiformula V ℒₛₑₜ 2) (p c : Term V ℒₛₑₜ) : Semiformula V ℒₛₑₜ 1 :=
   K.subst ![Bootstrapping.Semiterm.bvar 0,p.bShift] ⋏
     memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift
 
-@[simp] private theorem closureTerm_shift {n : ℕ} (K : Semiformula V ℒₛₑₜ 2)
+@[simp] theorem closureTerm_shift {n : ℕ} (K : Semiformula V ℒₛₑₜ 2)
     (c y : Semiterm V ℒₛₑₜ n) :
     (closureTerm K c y).shift=closureTerm K.shift c.shift y.shift := by
   simp [closureTerm,subsetTerm,memTerm,Bootstrapping.Semiformula.shift_substs,
     ←Bootstrapping.Semiterm.bShift_shift_comm]
 
-@[simp] private theorem supportBody_free (K : Semiformula V ℒₛₑₜ 2) (c y : Term V ℒₛₑₜ) :
+@[simp] theorem supportBody_free (K : Semiformula V ℒₛₑₜ 2) (c y : Term V ℒₛₑₜ) :
     (supportBody K c y).free=
       (K.shift.subst ![y.shift,Bootstrapping.Semiterm.fvar 0] ⋏ closureTerm K.shift c.shift y.shift) := by
   rcases term_is_fvar c with ⟨c,rfl⟩
@@ -54,7 +54,7 @@ private def hitBody (K : Semiformula V ℒₛₑₜ 2) (p c : Term V ℒₛₑ�
     Bootstrapping.Semiformula.shift_substs,Bootstrapping.Semiformula.substs_substs,
     SemitermVec.q,Matrix.vecHead,Matrix.vecTail]
 
-@[simp] private theorem hitBody_free (K : Semiformula V ℒₛₑₜ 2) (p c : Term V ℒₛₑₜ) :
+@[simp] theorem hitBody_free (K : Semiformula V ℒₛₑₜ 2) (p c : Term V ℒₛₑₜ) :
     (hitBody K p c).free=(K.shift.subst ![Bootstrapping.Semiterm.fvar 0,p.shift] ⋏
       memTerm (Bootstrapping.Semiterm.fvar 0) c.shift) := by
   rcases term_is_fvar p with ⟨p,rfl⟩
@@ -77,7 +77,7 @@ private theorem pair_support_full (K : Semiformula V ℒₛₑₜ 2) (a c y : Te
   simpa [pairAt,pairMatrix,supportBody,closureTerm,subsetTerm,memTerm,seedMem,seedSubset,
     Bootstrapping.Semiformula.substs_substs,SemitermVec.q,Matrix.comp_vecCons',Matrix.vecHead,Matrix.vecTail] using hx
 
-private theorem pair_closure (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
+theorem pair_closure (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
     Source V ⊢ pairAt K a c 🡒 memTerm y c 🡒 closureTerm K c y := by
   have h : Source V ⊢ (∃⁰ supportBody K c y) 🡒 closureTerm K c y := by
     apply exists_elim
@@ -93,7 +93,7 @@ theorem full_member_closure (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V �
     Source V ⊢ seedPairAt K a c 🡒 memTerm y c 🡒 memberClosure K c y :=
   pair_closure K a c y
 
-private theorem closure_step (K : Semiformula V ℒₛₑₜ 2) (c y p v : Term V ℒₛₑₜ) :
+theorem closure_step (K : Semiformula V ℒₛₑₜ 2) (c y p v : Term V ℒₛₑₜ) :
     Source V ⊢ closureTerm K c y 🡒 subsetTerm p y 🡒 K.subst ![v,p] 🡒 ∃⁰ hitBody K p c := by
   rcases term_is_fvar c with ⟨c,rfl⟩
   rcases term_is_fvar y with ⟨y,rfl⟩
@@ -118,20 +118,20 @@ private theorem closure_step (K : Semiformula V ℒₛₑₜ 2) (c y p v : Term 
   simpa [closureTerm,subsetTerm,hitBody,memTerm,Bootstrapping.Semiformula.substs_substs,SemitermVec.q,
     Matrix.vecHead,Matrix.vecTail] using hv
 
-private theorem singleton_spec (p z w : Term V ℒₛₑₜ) :
+theorem singleton_spec (p z w : Term V ℒₛₑₜ) :
     Source V ⊢ singletonAt p z 🡒 (memTerm w p 🡘 eqTerm w z) := by
   apply deduct'!
   have h : [singletonAt p z] ⊢[Source V] singletonAt p z := by_axm₀!
   unfold singletonAt at h
   simpa [singletonAt,eqTerm,memTerm] using TProof.specialize_with_ctx! h w
 
-private theorem singleton_mem (p z : Term V ℒₛₑₜ) :
+theorem singleton_mem (p z : Term V ℒₛₑₜ) :
     Source V ⊢ singletonAt p z 🡒 memTerm z p := by
   have h := singleton_spec p z z
   have hr : Source V ⊢ eqTerm z z := ⟨source_refl z⟩
   cl_prover [h,hr]
 
-private theorem singleton_unique (p r z a : Term V ℒₛₑₜ) :
+theorem singleton_unique (p r z a : Term V ℒₛₑₜ) :
     Source V ⊢ eqTerm p r 🡒 singletonAt p z 🡒 singletonAt r a 🡒 eqTerm z a := by
   have hz := singleton_mem p z
   have ha := singleton_spec r a z
@@ -143,15 +143,15 @@ private theorem singleton_unique (p r z a : Term V ℒₛₑₜ) :
     cl_prover [hm',hz]
   cl_prover [hz',ha]
 
-@[simp] private theorem singletonAt_shift (p z : Term V ℒₛₑₜ) :
+@[simp] theorem singletonAt_shift (p z : Term V ℒₛₑₜ) :
     (singletonAt p z).shift=singletonAt p.shift z.shift := by
   simp [singletonAt,eqTerm,memTerm,←Bootstrapping.Semiterm.bShift_shift_comm]
 
-@[simp] private theorem subsetTerm_shift {n : ℕ} (p y : Semiterm V ℒₛₑₜ n) :
+@[simp] theorem subsetTerm_shift {n : ℕ} (p y : Semiterm V ℒₛₑₜ n) :
     (subsetTerm p y).shift=subsetTerm p.shift y.shift := by
   simp [subsetTerm,memTerm,←Bootstrapping.Semiterm.bShift_shift_comm]
 
-@[simp] private theorem singletonBody_free' (t : Term V ℒₛₑₜ) :
+@[simp] theorem singletonBody_free' (t : Term V ℒₛₑₜ) :
     (singletonBody t).free=singletonAt (Bootstrapping.Semiterm.fvar 0) t.shift := by
   rcases term_is_fvar t with ⟨t,rfl⟩
   simp [singletonBody,singletonAt,eqTerm,memTerm,Bootstrapping.Semiformula.free,
@@ -159,7 +159,7 @@ private theorem singleton_unique (p r z a : Term V ℒₛₑₜ) :
 
 attribute [local irreducible] singletonAt subsetTerm closureTerm supportBody hitBody
 
-private theorem singleton_subset (p z a : Term V ℒₛₑₜ) :
+theorem singleton_subset (p z a : Term V ℒₛₑₜ) :
     Source V ⊢ singletonAt p z 🡒 memTerm z a 🡒 subsetTerm p a := by
   apply deduct'!
   apply FiniteContext.deduct!

@@ -18,117 +18,12 @@ variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 attribute [local irreducible] pairAt pairExists pairMatrix
 
-private def closureTerm {n : ℕ} (K : Semiformula V ℒₛₑₜ 2)
-    (c y : Semiterm V ℒₛₑₜ n) : Semiformula V ℒₛₑₜ n :=
-  ∀⁰ (subsetTerm (Bootstrapping.Semiterm.bvar 0) y.bShift 🡒
-    ∀⁰ (K.subst ![Bootstrapping.Semiterm.bvar 0,Bootstrapping.Semiterm.bvar 1] 🡒
-      ∃⁰ (K.subst ![Bootstrapping.Semiterm.bvar 0,Bootstrapping.Semiterm.bvar 2] ⋏
-        memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift.bShift.bShift)))
-
-private def hitBody (K : Semiformula V ℒₛₑₜ 2) (p c : Term V ℒₛₑₜ) : Semiformula V ℒₛₑₜ 1 :=
-  K.subst ![Bootstrapping.Semiterm.bvar 0,p.bShift] ⋏
-    memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift
-
-@[simp] private theorem closureTerm_shift {n : ℕ} (K : Semiformula V ℒₛₑₜ 2)
-    (c y : Semiterm V ℒₛₑₜ n) :
-    (closureTerm K c y).shift=closureTerm K.shift c.shift y.shift := by
-  simp [closureTerm,subsetTerm,memTerm,Bootstrapping.Semiformula.shift_substs,
-    ←Bootstrapping.Semiterm.bShift_shift_comm]
-
-@[simp] private theorem hitBody_free (K : Semiformula V ℒₛₑₜ 2) (p c : Term V ℒₛₑₜ) :
-    (hitBody K p c).free=(K.shift.subst ![Bootstrapping.Semiterm.fvar 0,p.shift] ⋏
-      memTerm (Bootstrapping.Semiterm.fvar 0) c.shift) := by
-  rcases term_is_fvar p with ⟨p,rfl⟩
-  rcases term_is_fvar c with ⟨c,rfl⟩
-  simp [hitBody,memTerm,Bootstrapping.Semiformula.free,
-    Bootstrapping.Semiformula.shift_substs,Bootstrapping.Semiformula.substs_substs]
-
-
-private theorem pair_closure (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
-    Source V ⊢ pairAt K a c 🡒 memTerm y c 🡒 closureTerm K c y := by
-  unfold closureTerm
-  exact full_member_closure K a c y
-
-private theorem closure_step (K : Semiformula V ℒₛₑₜ 2) (c y p v : Term V ℒₛₑₜ) :
-    Source V ⊢ closureTerm K c y 🡒 subsetTerm p y 🡒 K.subst ![v,p] 🡒 ∃⁰ hitBody K p c := by
-  rcases term_is_fvar c with ⟨c,rfl⟩
-  rcases term_is_fvar y with ⟨y,rfl⟩
-  rcases term_is_fvar p with ⟨p,rfl⟩
-  rcases term_is_fvar v with ⟨v,rfl⟩
-  apply deduct'!
-  apply FiniteContext.deduct!
-  have hc : [subsetTerm (Bootstrapping.Semiterm.fvar p) (Bootstrapping.Semiterm.fvar y),
-      closureTerm K (Bootstrapping.Semiterm.fvar c) (Bootstrapping.Semiterm.fvar y)] ⊢[Source V]
-      closureTerm K (Bootstrapping.Semiterm.fvar c) (Bootstrapping.Semiterm.fvar y) := by_axm!
-  unfold closureTerm at hc
-  have hs := TProof.specialize_with_ctx! hc (Bootstrapping.Semiterm.fvar p)
-  simp [subsetTerm,memTerm,Bootstrapping.Semiformula.substs_substs,SemitermVec.q,
-    Matrix.vecHead,Matrix.vecTail] at hs
-  have hp : [subsetTerm (Bootstrapping.Semiterm.fvar p) (Bootstrapping.Semiterm.fvar y),
-      closureTerm K (Bootstrapping.Semiterm.fvar c) (Bootstrapping.Semiterm.fvar y)] ⊢[Source V]
-      subsetTerm (Bootstrapping.Semiterm.fvar p) (Bootstrapping.Semiterm.fvar y) := by_axm₀!
-  have hp' := hp
-  simp [closureTerm,subsetTerm,memTerm] at hp'
-  have ha := show _ ⊢[Source V] _ from ⟨hs.get ⨀ hp'.get⟩
-  have hv := TProof.specialize_with_ctx! ha (Bootstrapping.Semiterm.fvar v)
-  simpa [closureTerm,subsetTerm,hitBody,memTerm,Bootstrapping.Semiformula.substs_substs,SemitermVec.q,
-    Matrix.vecHead,Matrix.vecTail] using hv
-
-private theorem singleton_spec (p z w : Term V ℒₛₑₜ) :
-    Source V ⊢ singletonAt p z 🡒 (memTerm w p 🡘 eqTerm w z) := by
-  apply deduct'!
-  have h : [singletonAt p z] ⊢[Source V] singletonAt p z := by_axm₀!
-  unfold singletonAt at h
-  simpa [singletonAt,eqTerm,memTerm] using TProof.specialize_with_ctx! h w
-
-private theorem singleton_mem (p z : Term V ℒₛₑₜ) :
-    Source V ⊢ singletonAt p z 🡒 memTerm z p := by
-  have h := singleton_spec p z z
-  have hr : Source V ⊢ eqTerm z z := ⟨source_refl z⟩
-  cl_prover [h,hr]
-
 private theorem singleton_unique (p z a : Term V ℒₛₑₜ) :
     Source V ⊢ singletonAt p z 🡒 singletonAt p a 🡒 eqTerm z a := by
   cl_prover [singleton_mem p z,singleton_spec p a z]
 
-@[simp] private theorem singletonAt_shift (p z : Term V ℒₛₑₜ) :
-    (singletonAt p z).shift=singletonAt p.shift z.shift := by
-  simp [singletonAt,eqTerm,memTerm,←Bootstrapping.Semiterm.bShift_shift_comm]
-
-@[simp] private theorem subsetTerm_shift {n : ℕ} (p y : Semiterm V ℒₛₑₜ n) :
-    (subsetTerm p y).shift=subsetTerm p.shift y.shift := by
-  simp [subsetTerm,memTerm,←Bootstrapping.Semiterm.bShift_shift_comm]
-
-@[simp] private theorem singletonBody_free' (t : Term V ℒₛₑₜ) :
-    (singletonBody t).free=singletonAt (Bootstrapping.Semiterm.fvar 0) t.shift := by
-  rcases term_is_fvar t with ⟨t,rfl⟩
-  simp [singletonBody,singletonAt,eqTerm,memTerm,Bootstrapping.Semiformula.free,
-    SemitermVec.q]
-
 attribute [local irreducible] singletonAt subsetTerm closureTerm hitBody
 
-private theorem singleton_subset (p z a : Term V ℒₛₑₜ) :
-    Source V ⊢ singletonAt p z 🡒 memTerm z a 🡒 subsetTerm p a := by
-  apply deduct'!
-  apply FiniteContext.deduct!
-  unfold subsetTerm
-  apply TProof.generalize!
-  have hs := FiniteContext.of'! (Γ := [memTerm z a,singletonAt p z].map Bootstrapping.Semiformula.shift)
-    (singleton_spec p.shift z.shift (Bootstrapping.Semiterm.fvar 0))
-  have hm := FiniteContext.of'! (Γ := [memTerm z a,singletonAt p z].map Bootstrapping.Semiformula.shift)
-    (source_mem_congr z.shift (Bootstrapping.Semiterm.fvar 0) a.shift)
-  have he := FiniteContext.of'! (Γ := [memTerm z a,singletonAt p z].map Bootstrapping.Semiformula.shift)
-    (source_symm (Bootstrapping.Semiterm.fvar 0) z.shift)
-  have hp : [memTerm z a,singletonAt p z].map Bootstrapping.Semiformula.shift ⊢[Source V]
-      singletonAt p.shift z.shift := by simp only [List.map_cons,List.map_nil,singletonAt_shift]; exact by_axm!
-  have hz : [memTerm z a,singletonAt p z].map Bootstrapping.Semiformula.shift ⊢[Source V]
-      memTerm z.shift a.shift := by simp [memTerm] ; exact by_axm₀!
-  simpa [memTerm,Bootstrapping.Semiformula.free,←Bootstrapping.Semiterm.bShift_shift_comm] using
-    (show [memTerm z a,singletonAt p z].map Bootstrapping.Semiformula.shift ⊢[Source V]
-      memTerm (Bootstrapping.Semiterm.fvar 0) p.shift 🡒 memTerm (Bootstrapping.Semiterm.fvar 0) a.shift from by
-        cl_prover [hs,hm,he,hp,hz])
-
-/-- Slot zero is the output; slot one is its singleton input. -/
 def transitiveMatrix : Semiformula V ℒₛₑₜ 2 :=
   singTerm (Bootstrapping.Semiterm.bvar 1) (Bootstrapping.Semiterm.bvar 0)
 
