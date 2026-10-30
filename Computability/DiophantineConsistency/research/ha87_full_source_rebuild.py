@@ -102,8 +102,8 @@ try:
                 if name in libs and name!='Foundation':continue
                 namespace_dirs.setdefault(name,[])
                 if child.resolve() not in namespace_dirs[name]:namespace_dirs[name].append(child.resolve())
-            elif name.endswith('.olean'):
-                top=name[:-6]
+            elif '.olean' in name or name.endswith('.ir'):
+                top=name.split('.olean',1)[0] if '.olean' in name else name[:-3]
                 if top in libs and top!='Foundation':continue
                 top_files.setdefault(name,child.resolve())
     for name,dirs in namespace_dirs.items():
@@ -131,16 +131,22 @@ try:
         if not hit.is_file():raise RuntimeError(f'external imported object missing from package-only mirror: {name}')
         external_paths[name]=str(hit.resolve())
     external_hashes={m:sha(p) for m,p in external_paths.items()}
+    external_companions={}
+    for name in sorted(external):
+        main=pkg/(name.replace('.','/')+'.olean')
+        for q in (Path(str(main)+'.server'),Path(str(main)+'.private'),main.with_suffix('.ir')):
+            if q.is_file():external_companions[str(q.relative_to(pkg))]={'path':str(q.resolve()),'sha256':sha(q)}
     anchors={'lakefile':sha(cfgpath),'lean_binary':sha(lean_path),
              'lean_version':subprocess.check_output([str(lean_path),'--version'],text=True).strip()}
     graph={'sources':sources,'edges':edges,'external_paths':external_paths,'order':order,
-           'source_hashes':source_hashes,'external_hashes':external_hashes,'anchors':anchors}
+           'source_hashes':source_hashes,'external_hashes':external_hashes,
+           'external_companions':external_companions,'anchors':anchors}
     if args.audit_only:
         state.update(status='AUDIT_PASS', phase='audit-only', graph=graph, module=None)
         save();print('AUDIT_PASS',root,'project_modules',len(order),'direct_external_objects',len(external),flush=True)
         raise AuditComplete
     if args.resume:
-        for key in ('sources','edges','external_paths','order','source_hashes','external_hashes','anchors'):
+        for key in ('sources','edges','external_paths','order','source_hashes','external_hashes','external_companions','anchors'):
             if state['graph'][key]!=graph[key]: raise RuntimeError(f'frozen graph changed: {key}; use --rebase')
     else:
         state['graph']=graph
@@ -254,6 +260,8 @@ try:
         require(ROOT/f,source_hashes[m],'final current source')
         require(root/'source-snapshots'/(m.replace('.','_')+'.lean'),source_hashes[m],'saved source snapshot')
     for m,p in external_paths.items():require(Path(p),external_hashes[m],'direct package object')
+    for rel,row in external_companions.items():
+        require(Path(row['path']),row['sha256'],'direct package companion');require(pkg/rel,row['sha256'],'mirrored package companion')
     for rec in state['records']:
         if rec.get('verified'):
             require(lib/(rec['module'].replace('.','/')+'.olean'),rec['object_sha256'],'verified output')

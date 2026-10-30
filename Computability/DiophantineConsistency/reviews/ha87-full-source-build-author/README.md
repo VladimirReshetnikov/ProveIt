@@ -1,0 +1,3 @@
+# Isolated full-source author build: first failure
+
+The first build attempted the 725-module current project-source graph with an isolated package-only mirror, but failed at the first module, `FirstOrder.Fol`: the mirror contained `Init.olean` but omitted the required top-level companion `Init.olean.server`. No project module passed. The exact driver, terminal state, all source snapshots and full failure log are retained. A corrected mirror must include companion package artifacts; this is not an HA proof or independent replay. Foundation/Mathlib and their transitive package closures remain inherited.
