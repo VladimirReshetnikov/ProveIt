@@ -307,14 +307,12 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
     refine DLv.ex_m (le_trans hW4 le_self_add) ((hSS.insert hF₂).toLt (le_trans hW le_self_add))
       (p := shift ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p)))
       (fvar0_lt (le_trans (by norm_num) hW4)) (mem_bitInsert_iff.mpr (Or.inr hsh)) (by simp) ?_
-    rw [hf₁]
-    exact d1
+    rwa [hf₁]
   have hc10 : mB v c + 1 ≤ W + 1 + 1 :=
     le_trans (mB_step v c) (le_trans hW (le_trans le_self_add le_self_add))
   refine DLv.all_m (le_trans hW4 (le_trans le_self_add le_self_add)) (hS0.toLt hc10)
     (p := subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) (by simp [hSdef]) ?_
-  rw [hf₂]
-  exact d2
+  rwa [hf₂]
 
 theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n + 1) p)
     (inp : Inp n w₁ w₂ E c) (hpv : ^∃ p ≤ lvB v) (hspv : shift ℒₛₑₜ p ≤ lvB v)
@@ -362,14 +360,12 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
     refine DLv.ex_m (le_trans hW4 le_self_add) ((hSS.insert hF₁).toLt (le_trans hW le_self_add))
       (p := shift ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p))
       (fvar0_lt (le_trans (by norm_num) hW4)) (mem_bitInsert_iff.mpr (Or.inr hsh)) (by simp) ?_
-    rw [hf₂]
-    exact d1
+    rwa [hf₂]
   have hc10 : mB v c + 1 ≤ W + 1 + 1 :=
     le_trans (mB_step v c) (le_trans hW (le_trans le_self_add le_self_add))
   refine DLv.all_m (le_trans hW4 (le_trans le_self_add le_self_add)) (hS0.toLt hc10)
     (p := neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p)) (by simp [hSdef]) ?_
-  rw [hf₁]
-  exact d2
+  rwa [hf₁]
 
 /-! ## The propositional steps -/
 
@@ -629,6 +625,9 @@ theorem quant_child {p v : V} (_hp : IsUFormula ℒₛₑₜ p) {tag : V}
   · exact absurd rfl (formula_level_pos hv hF)
   · exact shift_level (pair_children hv).2
 
+theorem or4_left {A B C D R : Prop} (h : A ∨ B ∨ C ∨ D ∨ R) : (A ∨ B ∨ C ∨ D) ∨ R := by
+  tauto
+
 set_option maxHeartbeats 4000000 in
 /-- **Bounded equality replacement.** -/
 theorem core {A : V} (hA : AtomOK A) (v : V) : ∀ h : V, ∀ χ n w₁ w₂ E c : V,
@@ -639,24 +638,18 @@ theorem core {A : V} (hA : AtomOK A) (v : V) : ∀ h : V, ∀ χ n w₁ w₂ E c
   · simp only [DLv, DerivableLe, Cseq, Inp, Paired, Pair1, neR, lvB, cW]
     definability
   · intro χ n w₁ w₂ E c hcx hχ hv inp
-    rcases hχ.isUFormula.case with ⟨k, R, u, hR, hu, rfl⟩ | ⟨k, R, u, hR, hu, rfl⟩ | rfl | rfl |
-        ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ | ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
-    · exact core_base hA hχ hv inp (Or.inl ⟨k, R, u, hR, hu, rfl⟩)
-    · exact core_base hA hχ hv inp (Or.inr (Or.inl ⟨k, R, u, hR, hu, rfl⟩))
-    · exact core_base hA hχ hv inp (Or.inr (Or.inr (Or.inl rfl)))
-    · exact core_base hA hχ hv inp (Or.inr (Or.inr (Or.inr rfl)))
+    rcases or4_left hχ.isUFormula.case with hb | ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ |
+        ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
+    · exact core_base hA hχ hv inp hb
     · rw [formulaComplexity_and hp hq] at hcx; exact absurd hcx not_succ_le_zero'
     · rw [formulaComplexity_or hp hq] at hcx; exact absurd hcx not_succ_le_zero'
     · rw [formulaComplexity_all hp] at hcx; exact absurd hcx not_succ_le_zero'
     · rw [formulaComplexity_ex hp] at hcx; exact absurd hcx not_succ_le_zero'
   · case succ h ih =>
     intro χ n w₁ w₂ E c hcx hχ hv inp
-    rcases hχ.isUFormula.case with ⟨k, R, u, hR, hu, rfl⟩ | ⟨k, R, u, hR, hu, rfl⟩ | rfl | rfl |
-        ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ | ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
-    · exact core_base hA hχ hv inp (Or.inl ⟨k, R, u, hR, hu, rfl⟩)
-    · exact core_base hA hχ hv inp (Or.inr (Or.inl ⟨k, R, u, hR, hu, rfl⟩))
-    · exact core_base hA hχ hv inp (Or.inr (Or.inr (Or.inl rfl)))
-    · exact core_base hA hχ hv inp (Or.inr (Or.inr (Or.inr rfl)))
+    rcases or4_left hχ.isUFormula.case with hb | ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ |
+        ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
+    · exact core_base hA hχ hv inp hb
     · rw [formulaComplexity_and hp hq] at hcx
       have hm := le_of_succ_le_succ' hcx
       obtain ⟨hp', hq'⟩ := IsSemiformula.and.mp hχ
