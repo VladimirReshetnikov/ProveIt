@@ -308,15 +308,10 @@ theorem sepT_provable : templN 1 ar1 ⊢ sepT := by
   intro x hx
   obtain ⟨b, hb1, hb2⟩ := gic_iffN (k := 1) (arities := ar1) sepMat (fun _ ↦ x) x
   simp [sepMat, SchemaSourceSyntax.sepMat] at hb1 hb2
-  have hbD : ∀ v, v ∈ b → D v := fun v hv ↦ D_mem hx (hb1 v hv).1
-  refine ⟨b, D_closed hbD, fun z hz ↦ ?_⟩
-  constructor
-  · rintro ⟨v, hv, hzv⟩
-    obtain ⟨hu, hR⟩ := hb1 v hv
-    exact ⟨⟨v, hu, hzv⟩, cong v z (D_mem hx hu) hz (eqv_symm hzv) hR⟩
-  · rintro ⟨⟨u, hu, hzu⟩, hR⟩
-    have hRu := cong z u hz (D_mem hx hu) hzu hR
-    exact ⟨u, (hb2 u hu hRu).1, hzu⟩
+  exact ⟨b, SchemaSourceSyntax.separation_witness (memRel M) D Eqv
+    (fun v ↦ Structure.rel (L := SL) (placeholderRel 0) ![v])
+    (fun h hv ↦ D_mem h hv) (fun h ↦ D_closed h) (fun h ↦ eqv_symm h)
+    cong hx hb1 (fun u hu hR ↦ (hb2 u hu hR).1)⟩
 
 /-! ## The binary template -/
 

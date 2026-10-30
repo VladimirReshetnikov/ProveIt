@@ -51,6 +51,27 @@ theorem eval_repMat {M : Type} [Nonempty M] [SetStructure M]
     Semiformula.eval_embSubsts, liftSet, LTemplate.eval_set_lMap]
   simp
 
+/-- Construct a separation witness from the GIC matrix bounds. -/
+theorem separation_witness {M : Type*} (mem : M → M → Prop) (D : M → Prop)
+    (E : M → M → Prop) (R : M → Prop) {x b : M}
+    (member_domain : ∀ {y z}, D z → mem y z → D y)
+    (domain_closed : ∀ {z}, (∀ y, mem y z → D y) → D z)
+    (symm : ∀ {u v}, E u v → E v u)
+    (cong : ∀ u v, D u → D v → E u v → R u → R v)
+    (hx : D x) (hb1 : ∀ y, mem y b → mem y x ∧ R y)
+    (hb2 : ∀ u, mem u x → R u → mem u b) :
+    D b ∧ ∀ z, D z →
+      ((∃ v, mem v b ∧ E z v) ↔ (∃ u, mem u x ∧ E z u) ∧ R z) := by
+  have hbD : ∀ v, mem v b → D v := fun v hv ↦ member_domain hx (hb1 v hv).1
+  refine ⟨domain_closed hbD, fun z hz ↦ ?_⟩
+  constructor
+  · rintro ⟨v, hv, hzv⟩
+    obtain ⟨hu, hR⟩ := hb1 v hv
+    exact ⟨⟨v, hu, hzv⟩, cong v z (member_domain hx hu) hz (symm hzv) hR⟩
+  · rintro ⟨⟨u, hu, hzu⟩, hR⟩
+    have hRu := cong z u hz (member_domain hx hu) hzu hR
+    exact ⟨u, hb2 u hu hRu, hzu⟩
+
 lemma emb_sepS : (Rewriting.emb sepS : Proposition SL) = sepBodySource (Rewriting.emb R1) := by
   simp [sepS, sepBodySource, R1]
 
