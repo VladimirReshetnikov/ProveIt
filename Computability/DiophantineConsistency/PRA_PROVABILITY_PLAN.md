@@ -104,6 +104,11 @@ bounds, while retaining the positive and negative core-graph and rule-tail
 obligations. Foundation's existing existence proof for a computation history
 uses Σ₁ induction; a candidate-PRA construction and verification of the
 history code is still required.
+An [independently replayed fixpoint collector](reviews/pra-history-fixpoint-collector-author-replay/README.md)
+proves the exact membership invariant for a supplied certified Boolean core
+code. The concrete derivation core characteristic, including formula-set and
+rule-tail checks, is not yet supplied; deriving it from the target bound
+would be circular.
 An independently replayed [primitive-recursive pairing code](reviews/pra-history-pair-code-author-replay/README.md)
 now computes Foundation's exact pairing graph in candidate-PRA models. This
 supplies one part of a potential sequence-code construction. A second
