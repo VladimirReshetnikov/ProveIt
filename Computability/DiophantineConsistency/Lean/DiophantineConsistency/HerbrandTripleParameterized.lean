@@ -12,7 +12,10 @@ def parameterTripleMatrix {n : ℕ} (φ : Semisentence language (n+3)) : Semipro
 
 theorem parameterTripleMatrix_open {n : ℕ} (φ : Semisentence language (n+3))
     (hφ : φ.Open) : (parameterTripleMatrix φ).Open := by
-  simpa only [parameterTripleMatrix, Semiformula.rew_open_iff] using hφ
+  change (parameterTripleMatrix φ).qr = 0
+  unfold parameterTripleMatrix
+  rw [PRAFormulaParameters.qr_rew]
+  exact hφ
 
 noncomputable def prepareAllTriple {n : ℕ} (φ : Semisentence language (n+3)) (hOpen : φ.Open)
     (p : Theory.Proof UniversalAxiom (∀⁰* ∃⁰ ∃⁰ ∃⁰ φ)) :
