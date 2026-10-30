@@ -1,0 +1,9 @@
+'DiophantineConsistency.PRAISigmaOneFiniteTranslation.finite_translation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAISigmaOneFiniteTranslation.finite_translation {σ : LO.FirstOrder.ArithmeticSentence}
+  (p : LO.FirstOrder.Theory.Proof 𝗜𝚺₁ σ) :
+  ∃ Φ,
+    (∀ φ ∈ Φ, LO.FirstOrder.Arithmetic.Hierarchy 𝚺 1 φ) ∧
+      DiophantineConsistency.PRATheory.PRA ∪ mappedInductions Φ ⊢
+        (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) σ

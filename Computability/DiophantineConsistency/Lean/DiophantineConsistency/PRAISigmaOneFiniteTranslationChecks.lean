@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAISigmaOneFiniteTranslation
+open DiophantineConsistency.PRAISigmaOneFiniteTranslation
+#print axioms finite_translation
+#check finite_translation

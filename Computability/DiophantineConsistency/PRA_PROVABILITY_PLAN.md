@@ -23,11 +23,13 @@ The upstream merge at `5135b718b9` changed five Herbrand proof sources and
 `PRAOpenOneInductionClassification`, as well as ZFC interpretation and context
 sources. The dependent finite-induction, pairing, tuple and candidate-PRA
 replays above are evidence for their preceding snapshots; a dependency-aware
-post-merge rebuild is underway. The separate maintained HA endpoint also
-requires its own source-current replay.
+post-merge 49-module rebuild has now passed two independent replays; the
+tuple and arbitrary-parameter suffix still requires its own replay. The separate
+maintained HA endpoint also requires its own source-current replay.
 
-The extraction of a finite set of induction instances from an actual IΣ₁
-proof has a provisional Lean implementation. A separate normalization gap
+The [finite extraction](research/pra-isigma-one-finite-extraction-20261029.md)
+of induction instances from an actual IΣ₁ proof has passed the source-current
+49-module build and two independent replays. A separate normalization gap
 remains: Foundation's Σ₁ hierarchy permits bounded universals over Σ₁
 bodies, so replacing an arbitrary such predicate by a single existential with
 a bounded matrix requires a coding or collection argument. The existing
