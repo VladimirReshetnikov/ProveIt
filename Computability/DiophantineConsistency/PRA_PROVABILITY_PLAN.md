@@ -101,6 +101,10 @@ also with two independent replays. A subsequent `PRAPiOneImplication` merge
 was covered by the 15-module strict-surrogate replay, and the later open and
 bounded induction changes by the [34-module refresh](reviews/pra-after-open-bound-merge-refresh-author-replay/README.md),
 each independently replayed twice.
+The later five induction-source changes have also been rebuilt in the
+[35-module refresh](reviews/pra-after-five-induction-refresh-author-replay/README.md)
+and independently replayed twice; it includes the generic strict-surrogate
+comparison, conditional reverse and index-bound clients.
 
 `PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
 universally closed open-existential goal from an IΣ₁ proof and an explicit
@@ -162,9 +166,9 @@ also constructs an actual candidate-PRA proof of the corresponding universally
 closed implication; it is independently replayed and retains the same scope.
 The [second-index local bound](reviews/pra-sndidx-bound-author-replay/README.md)
 likewise proves the exact standalone `sndIdxDef` witnesses bounded by `p+1`
-in candidate PRA. Its two independent replays precede the latest induction
-merge; the affected provider graph and the graph's occurrence in the coded
-history still need refreshing and binding respectively.
+in candidate PRA. Its original receipt precedes the latest induction merge;
+the local source is included in the later independently replayed 35-module
+refresh. The graph's occurrence in the coded history still needs binding.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
