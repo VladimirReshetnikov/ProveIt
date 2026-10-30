@@ -1,0 +1,3 @@
+# Fixed-port 86→87 zero direction: independent replay
+
+The root independently replayed the scoped driver and obtained `PASS` at `/tmp/adaptive-direct86-fixed-forward-d05sl32l`, state SHA-256 `e52cc3ee187d3a1f8d075df8274d81d97fd78ba133019ffae67b9dd5e4171c4f`. Source `067c27c1e977a88c9a11f646ebfaaaa327f67e8a36646b768eafbaa7f1053477`, object `d601b9bf6ac11ac2527d56f9fb904a885e8cdb3fcc0415b002012054616b6e23`, and empty complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` match the author. State, driver, source snapshot, log and timing are in `adaptive-direct86-fixed-forward-independent-evidence`; manifest SHA-256 `6c5dabf9590e421c912aafcdc611ff141743dd0f8321fa0d27b8151ec8cb6d0c`. Scope and historical boundaries are those of the author receipt.

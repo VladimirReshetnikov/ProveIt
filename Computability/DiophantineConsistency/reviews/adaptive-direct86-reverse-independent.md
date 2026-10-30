@@ -1,0 +1,3 @@
+# Generic 87→86 zero direction: independent replay
+
+The root independently replayed the scoped driver and obtained `PASS` at `/tmp/adaptive-direct86-reverse-zlceo2yx`, state SHA-256 `7f21f7857b6b330f95646ccc593ae97d3d1c98df003c7b3f4c77d067fa8ffac4`. Both source/object hashes match the author table; both complete logs are empty, SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. State, driver, source snapshots, full logs and timings are in `adaptive-direct86-reverse-independent-evidence`; manifest SHA-256 `a74176ce5dcc345534f9b0ed9affb2c0acd736444f2a8523ccd0eb3273a6585d`. Scope and historical boundaries are those of the author receipt.
