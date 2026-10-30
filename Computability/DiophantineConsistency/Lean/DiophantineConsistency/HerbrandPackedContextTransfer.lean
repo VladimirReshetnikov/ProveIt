@@ -99,14 +99,11 @@ theorem packed_proof (side : Proposition language) (θ : Semiproposition languag
   have hm := models_of_provable hTheory p
   simp only [models_iff, Semiformula.eval_univCl] at hm ⊢
   intro e
-  have he := hm e
-  change side.Eval ![] e ∨ (∃⁰ θ).Eval ![] e at he
   change (parameterSide (packedSide side r hs)).Eval ![] e ∨
     (∃⁰ (parameterMatrix (packedMatrix θ r ht))).Eval ![] e
-  rw [Semiformula.eval_ex] at he ⊢
-  rcases he with h | ⟨v,hv⟩
-  · exact Or.inl ((side_eval side r hs e).mpr h)
-  · exact Or.inr ⟨v,(matrix_eval θ r ht e v).mpr hv⟩
+  rw [side_eval, Semiformula.eval_ex]
+  simp only [matrix_eval]
+  exact hm e
 
 /-- Common packing composes the actual U-proof with existential-side PR
 selection, with all shared parameter bounds explicit. -/
