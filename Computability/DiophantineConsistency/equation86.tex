@@ -1,0 +1,251 @@
+\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=.38in]{geometry}
+\usepackage{amsmath,amssymb,multicol}
+\pdfinfoomitdate=1\pdftrailerid{}
+\pagestyle{empty}\setlength{\parindent}{0pt}\setlength{\parskip}{2pt}
+\setlength{\columnsep}{13pt}\setlength{\jot}{0pt}
+\setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{3pt}
+\let\bigsum\sum\renewcommand{\sum}{\bigsum\nolimits}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\begin{document}
+\begin{center}
+{\large\bfseries A thirteen-variable consistency equation}\\[-1pt]
+{\small Positive integer unknowns; an 86-operation evaluator.}
+\end{center}\vspace{-8pt}
+\begin{multicols}{2}
+\fontsize{8.6}{9.1}\selectfont
+% BEGIN VERIFIED DISPLAY
+The only unknowns are the thirteen distinct positive integers
+\[
+J,F,\alpha,f,g,T,X,Y,\xi,\eta,\zeta,\upsilon,\gamma\in\mathbb Z_{>0}.
+\]
+All other symbols below are polynomial abbreviations:
+\[
+\begin{gathered}
+b=\beta J,\quad q=1+b,\quad C=q-F-\alpha,\quad U=Yq^2,\\
+E=XY,\quad k=\eta+\zeta,\quad \ell=EYk,\quad c=\eta+Yk,\\
+a=E+Y,\quad H=3+4a,\quad\Delta=H+a^2,\quad L=X+ac,\\
+M=q^3b,\quad W=C(X+Kq)-Fq,\\
+R=[\alpha+(q-F)b](q^2-1)+J(\mu+\omega q),\\
+Z=M(\ell+k+\xi-kW)+Yb-Wq^3,\\
+D=UL+H(U\gamma+Eq+R+1-k),\\
+I=c^2g,\quad Q=\Delta(f^2-1),\quad V=f^2(Tc-R)-c.
+\end{gathered}
+\]
+The single Diophantine equation is
+\[
+\boxed{\begin{aligned}
+&[1+Z^2-M^2(1+\ell(\ell+k))]\\
+&\quad\cdot[1+D^2-U^2(1+\Delta c^2)]\\
+&\quad\cdot[\upsilon^2-Q(\upsilon^2-V^2)]
+[1+I^2-Q]=1.
+\end{aligned}}
+\]
+% END VERIFIED DISPLAY
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\begin{gathered}
+\rho=2^{47},\quad B=\rho^{2011},\quad\beta=B-1,\\
+G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
+\Lambda=\rho^{1005}.
+\end{gathered}
+\]
+\begin{align*}
+\mu={}&\beta-G_{951}(\rho)\\
+&-\rho^{960}G_{26}(\rho)-\rho^{1004},\\
+\omega={}&\beta+8G_{917}(\rho)-4+(2^{45}-4)\Lambda\\
+&+\rho^{960}G_9(\rho)+\rho^{987}G_8(\rho)
+  +\rho^{1004},\\
+K={}&\rho^{18}+\rho^{1004}+\rho^{2020}\\
+&+2\Lambda\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{gathered}
+\chi_i=1+2^{10}(1+w_i+2^8n_i\\
+\qquad+2^{17}p_i+2^{25}s_i)\quad(0\le i\le941),\\
+\pi(0)=0,\quad\pi(i)=1+\sum_{j=1}^{941}
+\fl{\frac{2^{44}-1+\chi_j-\chi_i}{2^{44}}}\quad(1\le i\le941).
+\end{gathered}
+\]
+\[
+\begin{split}
+\Phi(x)={}&\sum_{i=0}^{941}\chi_i x^{\pi(i)}\\
+&+2^{10}x^{969}(x^9+2^{17})G_8(2x)\\
+&+2^{18}x^{942}(x^{18}+2^{17})G_9(2x).
+\end{split}
+\]
+The rational intermediate in K cancels exactly; all four results are positive integers.
+
+\textbf{The 942 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. For $d=0,1$, let
+\[
+\begin{gathered}
+h(q,b)=2q+b+2,\quad
+\mathcal S_d=\{u_j:d_j=d,\ 0\le j<430\},\\
+r_{d,q}=205-199d+|\mathcal S_d\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le941$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w_i,n_i,p_i,s_i)\\\hline
+0&(2,435,3,1)\\
+j+1\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
+433-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\
+\substack{423+2r_{d,q}+b\\q\in\mathcal S_d,\ d,b=0,1}&(dr_{d,q},b,(1-d)r_{d,q},h(q,b))\\
+923+2a+b\ (a,b=0,1)&(0,432a+b,0,438)\\
+927&(2,434,2,0)\\
+928&(3,436,4,4)\\
+929&(4,436,4,0)\\
+496+t\ (t=434,435,436)&(1,438,1,t)\\
+933+3a+b\ (a,b=0,1,2)&(a^2,437,b,437)
+\end{array}
+\]
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+\mathcal N=\mathcal A\bmod2^{636},\quad
+\mathcal T=\fl{\mathcal A/2^{636}},\\
+\nu_j=D_2(\mathcal N,j),\quad \kappa_j=(\sigma_j+2)^{1-\nu_j}\quad(0\le j<430),\\
+\sigma_j=\sum_{k=0}^{j-1}\nu_k,\quad
+\Pi_j=\prod_{k=0}^{j-1}\kappa_k\quad(0\le j\le430),\\
+m_q=D_2(\mathcal N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14+m_q(D_{16}(\fl{\mathcal T/\Pi_{430}},\tau_q)-14),\\
+u_j=(\sigma_{j+1}-(\fl{\mathcal T/\Pi_j}\bmod\kappa_j))\bmod216,\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums/products are $0/1$. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+
+\textbf{The integer $\mathcal A$ in base 10.}
+Its complete decimal expansion is the concatenation of these lines:\par
+\begingroup\fontsize{7.7}{8.2}\selectfont\ttfamily
+12889260410359561746736540743515845134244260640012702033212621\par
+95398074180784058571518488282119861023093355389406939414042892\par
+97455773992193784795705001618777025966369137954859764532832722\par
+75411843410809038713502633204617333246733616940964578272360901\par
+56186216508504953649192752154519268024509952082950238865468307\par
+22999632482769253980274091217460707829023970817244790340704449\par
+09085581271192071656170732004937337082171141082486384269072884\par
+72778087419663417942892520175630649792329265834490253035577533\par
+96449689808375788457488971017043689875433162972390177936123032\par
+89025657757489526342497438772045714099661532481123050235898973\par
+27443609903800541199351405985754278307227777584454508422717998\par
+334113564409335346074892680328437\par
+\endgroup
+\normalfont\fontsize{7.7}{8.2}\selectfont
+The fixed integer $\mathcal A$ above is written in base 10. A Lean theorem
+establishes the existence of an HA derivation of both directions between
+this no-solution sentence and the formalized consistency of ZFC. The theorem
+was independently replayed on a checked pre-merge source snapshot; historical
+HA, ZF, Foundation and package inputs remain inherited boundaries. A later
+source refresh is in progress. The circuit count is not a minimality or degree
+claim.
+\end{multicols}
+\clearpage
+\begin{center}{\large\bfseries Exact 86-operation circuit}\end{center}
+Each numbered line defines one gate over the integers; the inputs are the
+thirteen unknowns and the four fixed integers above. The circuit uses the
+ASCII names \texttt{alpha, xi, eta, zeta, upsilon, gamma, beta, mu, omega,}
+\texttt{ell, Delta} for their displayed counterparts; \texttt{g} is the
+unknown named $g$. Its last gate is zero
+exactly when the displayed equation holds. Intermediate gate names below are
+local names, not additional unknowns.
+\begin{multicols}{3}
+\raggedright\ttfamily\fontsize{7.2}{8.4}\selectfont
+1. b = J * beta\\
+2. q = 1 + b\\
+3. q2 = q * q\\
+4. q3 = q * q2\\
+5. U = Y * q2\\
+6. qF = q - F\\
+7. C = qF - alpha\\
+8. E = X * Y\\
+9. k = eta + zeta\\
+10. kY = Y * k\\
+11. c = eta + kY\\
+12. c2 = c * c\\
+13. a = E + Y\\
+14. g15 = 4 * a\\
+15. H = 3 + g15\\
+16. g17 = a * a\\
+17. Delta = H + g17\\
+18. g19 = a * c\\
+19. L = X + g19\\
+20. ell = E * kY\\
+21. M = q3 * b\\
+22. g25 = K * q\\
+23. g26 = X + g25\\
+24. g27 = C * g26\\
+25. g28 = F * q\\
+26. W = g27 - g28\\
+27. g30 = ell + k\\
+28. g31 = g30 + xi\\
+29. root\_skew = k * W\\
+30. root\_inner = g31 - root\_skew\\
+31. root\_scaled = M * root\_inner\\
+32. g33 = Y * b\\
+33. root\_btq3 = W * q3\\
+34. root\_sum = root\_scaled + g33\\
+35. Z = root\_sum - root\_btq3\\
+36. g38 = Z * Z\\
+37. g39 = M * M\\
+38. g40 = ell * g30\\
+39. g41 = 1 + g40\\
+40. g42 = g39 * g41\\
+41. A0 = g38 - g42\\
+42. g44 = qF * b\\
+43. rankseed = alpha + g44\\
+44. g46 = q2 - 1\\
+45. g47 = rankseed * g46\\
+46. g48 = omega * q\\
+47. g49 = mu + g48\\
+48. g50 = J * g49\\
+49. R = g47 + g50\\
+50. g52 = k - R\\
+51. r0 = g52 - 1\\
+52. g54 = U * gamma\\
+53. g55 = E * q\\
+54. g56 = g54 + g55\\
+55. shift = g56 - r0\\
+56. g58 = U * L\\
+57. g59 = H * shift\\
+58. D = g58 + g59\\
+59. g61 = D * D\\
+60. g62 = U * U\\
+61. g63 = Delta * c2\\
+62. g64 = 1 + g63\\
+63. g65 = g62 * g64\\
+64. A1 = g61 - g65\\
+65. f2 = f * f\\
+66. rho = f2 - 1\\
+67. Q = Delta * rho\\
+68. I = c2 * g\\
+69. g71 = I * I\\
+70. g72 = g71 - Q\\
+71. strong = 1 + g72\\
+72. g74 = T * c\\
+73. g75 = g74 - R\\
+74. g76 = f2 * g75\\
+75. V = g76 - c\\
+76. y2 = upsilon * upsilon\\
+77. g80 = V * V\\
+78. g81 = y2 - g80\\
+79. g82 = Q * g81\\
+80. aux = y2 - g82\\
+81. first = 1 + A0\\
+82. main = 1 + A1\\
+83. g86 = first * main\\
+84. g87 = aux * g86\\
+85. g88 = strong * g87\\
+86. P = g88 - 1\\
+\end{multicols}
+\end{document}
