@@ -1,0 +1,3 @@
+# Direct-ordinate 86 signed residue: independent replay
+
+The root independently replayed the scoped driver and obtained `PASS` at `/tmp/adaptive-direct86-residue-5nsszmcb`, state SHA-256 `6149c365c2481ba36d2de969405e684b29f8ffbfd453c586be580b2834fa6f99`. Source `14f3517713676060d36c0c9f2ace6f150949dc855f525466daf9baaa9788685a`, object `99e660b586ebe92884fd88e94704a2f6b65c7fa8f846326e0c2606b44e2bb8bb`, and empty full log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` match the author. State, driver, source snapshot, log and timing are in `adaptive-direct86-residue-independent-evidence`; manifest SHA-256 `0182bfffea545ab13295db7609948c08f4f947772bf25d714098bd3d3ef70f7e`. Scope and historical boundaries are those of the author receipt.

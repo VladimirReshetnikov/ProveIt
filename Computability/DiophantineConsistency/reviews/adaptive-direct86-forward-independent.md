@@ -1,0 +1,3 @@
+# Direct-ordinate 86→87 witness direction: independent replay
+
+The root independently replayed the scoped driver and obtained `PASS` at `/tmp/adaptive-direct86-forward-hfxu284w`, state SHA-256 `45900e364b255d56c196b119772130d6c9b61b5422f39b38440677623bd2a3ad`. Source `7e3d0c30f0fba5c8fa8686cfd7dc96a5b7331577dbaa5eabce84a778b377b592`, object `31e293e71e73cc4262a0763ae64dc9888d171337153547264c33d1a424312677`, and empty full log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` match the author. State, driver, source snapshot, log and timing are in `adaptive-direct86-forward-independent-evidence`; manifest SHA-256 `574e88793f11278e256ec7b63dcf5628ee7523f55c092fe0ef83b0ac7e3070e3`. Scope and historical boundaries are those of the author receipt.
