@@ -41,11 +41,7 @@ noncomputable def instantiateAll : (n : ℕ) → (χ : Semisentence language n) 
 existential sequent with the original finite universal-axiom list. -/
 noncomputable def prepareAllExists {n : ℕ} (φ : Semisentence language (n+1)) (hOpen : φ.Open)
     (p : Theory.Proof UniversalAxiom (∀⁰* ∃⁰ φ)) : Prepared (parameterMatrix φ) p.axioms := by
-  have hopen : (parameterMatrix φ).Open := by
-    change (parameterMatrix φ).qr = 0
-    unfold parameterMatrix
-    rw [PRAFormulaParameters.qr_rew]
-    exact hOpen
+  have hopen := parameterMatrix_open φ hOpen
   apply prepare (parameterMatrix φ) hopen p.axioms p.axioms_mem
   have d := p.derivation
   change Derivation (((∀⁰* ∃⁰ φ) :: ∼p.axioms).map Rewriting.emb) at d

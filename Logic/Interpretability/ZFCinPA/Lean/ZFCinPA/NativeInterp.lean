@@ -143,21 +143,16 @@ def cls (x : {x : M // D x}) : WQ M := ⟨cl x.1, (eval_domS x.1 Empty.elim).mp 
 theorem term_cases {ξ : Type*} {n : ℕ} (t : Semiterm ℒₛₑₜ ξ n) (b : Fin n → {x : M // D x})
     (f : ξ → {x : M // D x}) :
     ∃ u : {x : M // D x}, t.val (Subtype.val ∘ b) (Subtype.val ∘ f) = u.1 ∧
-      t.val (cls ∘ b) (cls ∘ f) = cls u := by
-  cases t with
-  | bvar i => exact ⟨b i, by simp, by simp⟩
-  | fvar x => exact ⟨f x, by simp, by simp⟩
-  | func g v => cases g
+      t.val (cls ∘ b) (cls ∘ f) = cls u :=
+  ConstructibleInterpretation.term_cases_between Subtype.val cls t b f
 
 theorem val_cons {n : ℕ} (x : {x : M // D x}) (b : Fin n → {x : M // D x}) :
-    Subtype.val ∘ (x :> b) = (x.1 :> Subtype.val ∘ b) := by
-  funext i
-  cases i using Fin.cases <;> simp
+    Subtype.val ∘ (x :> b) = (x.1 :> Subtype.val ∘ b) :=
+  Matrix.comp_vecCons Subtype.val x b
 
 theorem cls_cons {n : ℕ} (x : {x : M // D x}) (b : Fin n → {x : M // D x}) :
-    cls ∘ (x :> b) = (cls x :> cls ∘ b) := by
-  funext i
-  cases i using Fin.cases <;> simp
+    cls ∘ (x :> b) = (cls x :> cls ∘ b) :=
+  Matrix.comp_vecCons cls x b
 
 theorem eval_domAtS {ξ : Type*} {n : ℕ} (x : M) (e : Fin n → M) (ε : ξ → M) :
     (domAtS n : Semiformula ℒₛₑₜ ξ (n + 1)).Eval (x :> e) ε ↔ D x := by

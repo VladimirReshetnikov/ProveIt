@@ -92,6 +92,45 @@ open LO LO.FirstOrder LO.FirstOrder.SetTheory
 open NativeZFContainers254 (memRel toSet eval_toSet)
 open SetTheory.BusyBeaver.ZFC.Constructible (InL)
 
+/-- A set-language term selects the same source variable under two maps. -/
+theorem term_cases_between {S A B ξ : Type*} [Structure ℒₛₑₜ A] [Structure ℒₛₑₜ B]
+    (g : S → A) (h : S → B) {n : ℕ} (t : Semiterm ℒₛₑₜ ξ n)
+    (b : Fin n → S) (f : ξ → S) :
+    ∃ u : S, t.val (g ∘ b) (g ∘ f) = g u ∧ t.val (h ∘ b) (h ∘ f) = h u := by
+  cases t with
+  | bvar i => exact ⟨b i, rfl, rfl⟩
+  | fvar x => exact ⟨f x, rfl, rfl⟩
+  | func g v => cases g
+
+/-- Embedding commutes with substituting a vector of terms into a sentence. -/
+lemma emb_comp_embSubsts_language {L : Language} {ξ ο : Type*} [IsEmpty ο] {n k : ℕ}
+    (v : Fin k → Semiterm L ο n) :
+    ((Rew.emb : Rew L ο n ξ n).comp (Rew.embSubsts v)) =
+      Rew.embSubsts (fun i ↦ Rew.emb (v i)) := by
+  ext x
+  · simp [Rew.comp_app]
+  · exact x.elim
+
+lemma emb_comp_embSubsts {ξ ο : Type*} [IsEmpty ο] {n k : ℕ}
+    (v : Fin k → Semiterm ℒₛₑₜ ο n) :
+    ((Rew.emb : Rew ℒₛₑₜ ο n ξ n).comp (Rew.embSubsts v)) =
+      Rew.embSubsts (fun i ↦ Rew.emb (v i)) :=
+  emb_comp_embSubsts_language v
+
+/-- A one-variable domain guard commutes with embedding. -/
+lemma emb_guard {L : Language} {ξ ο : Type*} [IsEmpty ο] {n : ℕ}
+    (δ : Semiformula L Empty 1) :
+    (Rew.emb ▹ (Rew.embSubsts ![#0] ▹ δ : Semiformula L ο (n + 1)) :
+      Semiformula L ξ (n + 1)) = Rew.embSubsts ![#0] ▹ δ := by
+  have h : ((Rew.emb : Rew L ο (n + 1) ξ (n + 1)).comp (Rew.embSubsts ![#0])) =
+      Rew.embSubsts ![#0] := by
+    rw [emb_comp_embSubsts_language]
+    congr 1
+    funext i
+    rw [Fin.fin_one_eq_zero i]
+    simp
+  rw [← TransitiveRewriting.comp_app, h]
+
 /-! ## The domain formula -/
 
 /-- `x ∈ L` as a Foundation semisentence in one variable. -/
@@ -151,15 +190,8 @@ variable {ξ : Type*} {n : ℕ}
 /-- The domain formula commutes with embedding sentences into formulas. -/
 lemma emb_domAt {ο : Type*} [IsEmpty ο] :
     (Rew.emb ▹ (domAt δ n : Semiformula ℒₛₑₜ ο (n + 1)) : Semiformula ℒₛₑₜ ξ (n + 1)) =
-      domAt δ n := by
-  have h : ((Rew.emb : Rew ℒₛₑₜ ο (n + 1) ξ (n + 1)).comp (Rew.embSubsts ![#0])) =
-      Rew.embSubsts ![#0] := by
-    ext x
-    · rw [Fin.fin_one_eq_zero x]
-      simp [Rew.comp_app]
-    · exact x.elim
-  unfold domAt
-  rw [← TransitiveRewriting.comp_app, h]
+      domAt δ n :=
+  emb_guard δ
 
 /-- Relativization commutes with embedding sentences into formulas. -/
 lemma emb_relF {ο : Type*} [IsEmpty ο] :
@@ -198,10 +230,9 @@ variable (P : V → Prop)
 lemma val_subtype {ξ : Type*} {n : ℕ} (t : Semiterm ℒₛₑₜ ξ n) (b : Fin n → {x // P x})
     (f : ξ → {x // P x}) :
     t.val (Subtype.val ∘ b) (Subtype.val ∘ f) = (t.val b f).1 := by
-  cases t with
-  | bvar x => rfl
-  | fvar x => rfl
-  | func g v => exact g.elim
+  obtain ⟨u, hu, hv⟩ := term_cases_between Subtype.val id t b f
+  change t.val b f = u at hv
+  exact hu.trans (congrArg Subtype.val hv.symm)
 
 variable (δ : SetTheorySemisentence 1) (hδ : ∀ (x : V) (ε : Empty → V), δ.Eval ![x] ε ↔ P x)
 include hδ

@@ -59,4 +59,45 @@ theorem valuation_compact (S : Set (Proposition language))
     intro i hi
     exact (W i).satisfies φ hi
   exact ⟨⟨N, inferInstance, inferInstance, hN, v, hv⟩⟩
+/-- Compactness for a fixed side set and a countable family of propositions. -/
+theorem valuation_compact_sequence (S : Set (Proposition language))
+    (f : ℕ → Proposition language)
+    (h : ∀ n, Nonempty (ModelValuation (S ∪ {φ | ∃ j < n, f j = φ}))) :
+    Nonempty (ModelValuation (S ∪ Set.range f)) := by
+  classical
+  let T := Set.range f
+  let index : Proposition language → ℕ := fun φ => if h : φ ∈ T then Classical.choose h else 0
+  have hindex : ∀ φ ∈ T, f (index φ) = φ := by
+    intro φ hφ
+    simp only [index, dif_pos hφ]
+    exact Classical.choose_spec hφ
+  apply valuation_compact
+  intro F hF
+  let n := F.sup index + 1
+  let W := (h n).some
+  have hsub : (↑F : Set (Proposition language)) ⊆ S ∪ {φ | ∃ j < n, f j = φ} := by
+    intro φ hφ
+    rcases hF hφ with hs | ht
+    · exact Or.inl hs
+    · right
+      refine ⟨index φ, ?_, hindex φ ht⟩
+      have := Finset.le_sup (f := index) hφ
+      dsimp [n]
+      omega
+  exact ⟨⟨W.Carrier, W.nonempty, W.struc, W.models, W.valuation,
+    fun φ hφ => W.satisfies φ (hsub hφ)⟩⟩
+/-- Prove a universally closed proposition when its failure would satisfy an
+inconsistent family of open propositions. -/
+theorem proves_univCl_of_no_valuation (S : Set (Proposition language))
+    (φ : Proposition language) (hn : ¬Nonempty (ModelValuation S))
+    (hbad : ∀ {M : Type} [Structure language M] (e : ℕ → M),
+      ¬φ.Eval ![] e → ∀ ψ ∈ S, ψ.Eval ![] e) :
+    UniversalAxiom ⊢ φ.univCl := by
+  classical
+  apply Theory.Proof.complete_on_eq_models.{0,0}
+  intro M hM0 hM hEq hTheory
+  simp only [models_iff, Semiformula.eval_univCl]
+  intro e
+  by_contra h
+  exact hn ⟨⟨M, hM0, hM, hTheory, e, hbad e h⟩⟩
 end DiophantineConsistency.HerbrandValuationCompact

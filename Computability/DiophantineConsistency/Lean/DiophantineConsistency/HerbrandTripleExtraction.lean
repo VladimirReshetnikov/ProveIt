@@ -89,38 +89,27 @@ theorem modelTripleWitness (φ : Semiproposition language 3) (hOpen : φ.Open)
     ∃ t ∈ existentialTerms p.derivation, ∃ u ∈ existentialTerms p.derivation,
       ∃ v ∈ existentialTerms p.derivation, (tripleInstance φ t u v).Eval ![] e := by
   let ts := existentialTerms p.derivation
-  obtain ⟨ψ,hψ,hval⟩ := boundedSound p.derivation p.cutFree p.noAll ts (fun _ h => h) e
-  simp only [List.mem_cons] at hψ
-  rcases hψ with rfl | hψ
-  · change boundedEval ts e (∃⁰ ∃⁰ ∃⁰ φ) at hval
-    have hx := boundedEval.eq_8 ts e (∃⁰ ∃⁰ φ)
-    have hval' := (Iff.of_eq hx).mp hval
-    obtain ⟨t,ht,h₁⟩ := hval'
-    have h₁' : boundedEval ts e (∃⁰ ∃⁰ afterFirst φ t) := by
-      simpa [afterFirst, Rewriting.subst, Rew.qpow_succ] using h₁
-    change boundedEval ts e (Semiformula.exs (∃⁰ afterFirst φ t)) at h₁'
-    have h₁'' := (Iff.of_eq (boundedEval.eq_8 ts e (∃⁰ afterFirst φ t))).mp h₁'
-    obtain ⟨u,hu,h₂⟩ := h₁''
-    have h₂' : boundedEval ts e (∃⁰ afterSecond φ t u) := by
-      simpa [afterSecond, Rewriting.subst] using h₂
-    change boundedEval ts e (Semiformula.exs (afterSecond φ t u)) at h₂'
-    have h₂'' := (Iff.of_eq (boundedEval.eq_8 ts e (afterSecond φ t u))).mp h₂'
-    obtain ⟨v,hv,h₃⟩ := h₂''
-    refine ⟨t,ht,u,hu,v,hv,?_⟩
-    apply (bounded_open_iff ts e (tripleInstance φ t u v) ?_).mp
-    · exact h₃
-    · change (Rew.subst ![v] ▹ ((Rew.subst ![u]).q ▹ ((Rew.subst ![t]).qpow 2 ▹ φ))).qr = 0
-      rw [PRAFormulaParameters.qr_rew, PRAFormulaParameters.qr_rew, PRAFormulaParameters.qr_rew]
-      exact hOpen
-  · simp only [List.tilde_def, Sequent.embed, List.mem_map] at hψ
-    obtain ⟨χ,hχ,hψ⟩ := hψ
-    obtain ⟨σ,hσ,rfl⟩ := hχ
-    subst ψ
-    have hσmodel := Theory.models (T := UniversalAxiom) M (hAxioms σ hσ)
-    have hσeval : (Rewriting.emb σ : Proposition language).Eval ![] e := by
-      simpa [models_iff] using hσmodel
-    have hneg : ¬(∼(Rewriting.emb σ : Proposition language)).Eval ![] e := by simpa using hσeval
-    exact False.elim (hneg (bounded_implies_truth ts e _ hval))
+  have hval := HerbrandFiniteExtraction.modelPreparedBounded (∃⁰ ∃⁰ φ) axioms hAxioms p e
+  change boundedEval ts e (∃⁰ ∃⁰ ∃⁰ φ) at hval
+  have hx := boundedEval.eq_8 ts e (∃⁰ ∃⁰ φ)
+  have hval' := (Iff.of_eq hx).mp hval
+  obtain ⟨t,ht,h₁⟩ := hval'
+  have h₁' : boundedEval ts e (∃⁰ ∃⁰ afterFirst φ t) := by
+    simpa [afterFirst, Rewriting.subst, Rew.qpow_succ] using h₁
+  change boundedEval ts e (Semiformula.exs (∃⁰ afterFirst φ t)) at h₁'
+  have h₁'' := (Iff.of_eq (boundedEval.eq_8 ts e (∃⁰ afterFirst φ t))).mp h₁'
+  obtain ⟨u,hu,h₂⟩ := h₁''
+  have h₂' : boundedEval ts e (∃⁰ afterSecond φ t u) := by
+    simpa [afterSecond, Rewriting.subst] using h₂
+  change boundedEval ts e (Semiformula.exs (afterSecond φ t u)) at h₂'
+  have h₂'' := (Iff.of_eq (boundedEval.eq_8 ts e (afterSecond φ t u))).mp h₂'
+  obtain ⟨v,hv,h₃⟩ := h₂''
+  refine ⟨t,ht,u,hu,v,hv,?_⟩
+  apply (bounded_open_iff ts e (tripleInstance φ t u v) ?_).mp
+  · exact h₃
+  · change (Rew.subst ![v] ▹ ((Rew.subst ![u]).q ▹ ((Rew.subst ![t]).qpow 2 ▹ φ))).qr = 0
+    rw [PRAFormulaParameters.qr_rew, PRAFormulaParameters.qr_rew, PRAFormulaParameters.qr_rew]
+    exact hOpen
 
 omit [Structure.Eq language M] in
 theorem modelTripleDisjunction (φ : Semiproposition language 3) (hOpen : φ.Open)
@@ -153,8 +142,7 @@ theorem universal_proves_tripleDisjunction (φ : Semisentence language 3) (hOpen
     change (Rewriting.emb φ : Semiproposition language 3).qr = 0
     rw [PRAFormulaParameters.qr_rew]
     exact hOpen
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ _
-  exact modelTripleDisjunction (Rewriting.emb φ) hopen p.axioms p.axioms_mem (prepareTripleClosed φ hOpen p)
+  exact universal_proves_preparedTripleDisjunction (Rewriting.emb φ) hopen
+    p.axioms p.axioms_mem (prepareTripleClosed φ hOpen p)
 
 end DiophantineConsistency.HerbrandTripleExtraction

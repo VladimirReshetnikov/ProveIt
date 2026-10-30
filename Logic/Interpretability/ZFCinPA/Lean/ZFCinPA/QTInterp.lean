@@ -116,10 +116,8 @@ variable {ξ : Type*}
 lemma emb_comp_embSubstsT {ο : Type*} [IsEmpty ο] {n m : ℕ}
     (v : Fin m → Semiterm (setTemplateLanguage k arities) ο n) :
     ((Rew.emb : Rew (setTemplateLanguage k arities) ο n ξ n).comp (Rew.embSubsts v)) =
-      Rew.embSubsts (fun i ↦ Rew.emb (v i)) := by
-  ext x
-  · simp [Rew.comp_app]
-  · exact x.elim
+      Rew.embSubsts (fun i ↦ Rew.emb (v i)) :=
+  ConstructibleInterpretation.emb_comp_embSubsts_language v
 
 lemma emb_atomT {ο : Type*} [IsEmpty ο] {n m : ℕ} (R : (ℒₛₑₜ).Rel m)
     (v : Fin m → Semiterm (setTemplateLanguage k arities) ο n) :
@@ -131,14 +129,8 @@ lemma emb_atomT {ο : Type*} [IsEmpty ο] {n m : ℕ} (R : (ℒₛₑₜ).Rel m)
 
 lemma emb_domT {ο : Type*} [IsEmpty ο] {n : ℕ} :
     (Rew.emb ▹ (domT n : Semiformula (setTemplateLanguage k arities) ο (n + 1)) :
-      Semiformula (setTemplateLanguage k arities) ξ (n + 1)) = domT n := by
-  rw [domT, domT, ← TransitiveRewriting.comp_app, emb_comp_embSubstsT]
-  have e : (fun i : Fin 1 ↦ (Rew.emb ((![#0] : Fin 1 → Semiterm (setTemplateLanguage k arities) ο (n + 1)) i) :
-      Semiterm (setTemplateLanguage k arities) ξ (n + 1))) = ![#0] := by
-    funext i
-    rw [Fin.fin_one_eq_zero i]
-    simp
-  rw [e]
+      Semiformula (setTemplateLanguage k arities) ξ (n + 1)) = domT n :=
+  ConstructibleInterpretation.emb_guard (liftSet domS)
 
 /-- The interpretation commutes with embedding sentences into formulas. -/
 lemma emb_intT {ο : Type*} [IsEmpty ο] :

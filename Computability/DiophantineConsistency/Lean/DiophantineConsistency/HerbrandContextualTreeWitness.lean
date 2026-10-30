@@ -56,32 +56,10 @@ theorem finite_failure (side : Proposition language) (hs : UniversalTree side)
   classical
   by_contra hn
   push Not at hn
-  let T : Set (Proposition language) := Set.range (absent θ)
-  let S : Set (Proposition language) := {side} ∪ T
-  let index : Proposition language → ℕ := fun φ => if h : φ ∈ T then Classical.choose h else 0
-  have hindex : ∀ φ ∈ T, absent θ (index φ) = φ := by
-    intro φ hφ
-    simp only [index, dif_pos hφ]
-    exact Classical.choose_spec hφ
-  have hfin : ∀ F : Finset (Proposition language), (↑F : Set (Proposition language)) ⊆ S →
-      Nonempty (ModelValuation (↑F : Set (Proposition language))) := by
-    intro F hF
-    let n := F.sup index + 1
-    let W := (hn n).some
-    have hsub : (↑F : Set (Proposition language)) ⊆ failures side θ n := by
-      intro φ hφ
-      have hf := hF hφ
-      rcases hf with h | h
-      · left
-        exact h
-      · right
-        refine ⟨index φ, ?_, hindex φ h⟩
-        have := Finset.le_sup (f := index) hφ
-        dsimp [n]
-        omega
-    exact ⟨⟨W.Carrier, W.nonempty, W.struc, W.models, W.valuation,
-      fun φ hφ => W.satisfies φ (hsub hφ)⟩⟩
-  let W := (valuation_compact S hfin).some
+  have hw : ∀ n, Nonempty (ModelValuation ({side} ∪ {φ | ∃ j < n, absent θ j = φ})) := by
+    intro n
+    exact hn n
+  let W := (valuation_compact_sequence {side} (absent θ) hw).some
   letI : Nonempty W.Carrier := W.nonempty
   letI : Structure language W.Carrier := W.struc
   apply no_contextual_countermodel W.models W.valuation side hs θ ht p
@@ -112,26 +90,14 @@ theorem universal_proves_contextual (side : Proposition language) (hs : Universa
   classical
   obtain ⟨n,hn⟩ := finite_failure side hs θ ht p
   refine ⟨n, ?_⟩
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M hM0 hM hEq hTheory
-  simp only [models_iff, Semiformula.eval_univCl]
-  intro e
-  change ((∼side).Eval ![] e ∨ (termOutput θ (List.range n)).Eval ![] e)
-  rw [LogicalConnective.HomClass.map_neg, output_eval]
-  by_contra h
-  have hside : side.Eval ![] e := by
-    by_contra hs
-    exact h (Or.inl hs)
-  have hbad : ∀ j < n, (absent θ j).Eval ![] e := by
-    intro j hj
-    simp only [absent, LogicalConnective.HomClass.map_neg]
-    intro hjt
-    apply h
-    exact Or.inr ⟨j, List.mem_range.mpr hj, hjt⟩
-  apply hn
-  refine ⟨⟨M, hM0, hM, hTheory, e, ?_⟩⟩
-  intro φ hφ
+  apply proves_univCl_of_no_valuation (failures side θ n) _ hn
+  intro M hM e hbad φ hφ
+  change ¬((∼side).Eval ![] e ∨ (termOutput θ (List.range n)).Eval ![] e) at hbad
+  rw [LogicalConnective.HomClass.map_neg, output_eval] at hbad
   rcases hφ with rfl | ⟨j,hj,rfl⟩
-  · exact hside
-  · exact hbad j hj
+  · by_contra hs
+    exact hbad (Or.inl hs)
+  · simp only [absent, LogicalConnective.HomClass.map_neg]
+    intro hjt
+    exact hbad (Or.inr ⟨j, List.mem_range.mpr hj, hjt⟩)
 end DiophantineConsistency.HerbrandContextualTreeWitness
