@@ -169,6 +169,10 @@ likewise proves the exact standalone `sndIdxDef` witnesses bounded by `p+1`
 in candidate PRA. Its original receipt precedes the latest induction merge;
 the local source is included in the later independently replayed 35-module
 refresh. The graph's occurrence in the coded history still needs binding.
+The [second-index family clients](reviews/pra-sndidx-family-author-replay/README.md)
+also bound all indices below a limit by one primitive-recursive fold and
+construct the corresponding candidate-PRA sentence; both were independently
+replayed against the refreshed graph.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
