@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRACurrentConsistencyForward
+open DiophantineConsistency.PRACurrentConsistencyForward
+#print axioms consistency_implies_noZero
