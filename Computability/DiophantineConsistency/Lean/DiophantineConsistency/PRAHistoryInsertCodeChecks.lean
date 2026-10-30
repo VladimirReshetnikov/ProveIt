@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryInsertCode
+
+#print axioms DiophantineConsistency.PRAHistoryInsertCode.modelInsertCode
+#print axioms DiophantineConsistency.PRAHistoryInsertCode.PRA_has_insertCode
