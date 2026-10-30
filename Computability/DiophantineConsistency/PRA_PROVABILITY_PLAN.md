@@ -178,6 +178,9 @@ The [second-index family clients](reviews/pra-sndidx-family-author-replay/README
 also bound all indices below a limit by one primitive-recursive fold and
 construct the corresponding candidate-PRA sentence; both were independently
 replayed against the refreshed graph.
+The independently replayed [triple-pair local bound](reviews/pra-pair3-bound-author-replay/README.md)
+gives `p+1` for Foundation's exact `pair₃Def` graph, which appears in the
+Nth blueprint. The enclosing Nth core, fixpoint and `ρ` bound remain open.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
