@@ -127,16 +127,22 @@ private theorem insert_provable {p Γ : V} (hΓ : IsFormulaSet ℒₛₑₜ (ins
   · simp
   · simp at hy
 
+private theorem discharge_nonempty {d Γ : V} (hd : IsSemiformula ℒₛₑₜ 1 d)
+    (hΓ : IsFormulaSet ℒₛₑₜ Γ) (hne : Provable seedTheory (^∃ d))
+    (h : Derivable seedTheory (insert (free ℒₛₑₜ (Bootstrapping.neg ℒₛₑₜ d))
+      (setShift ℒₛₑₜ Γ))) : Derivable seedTheory Γ := by
+  have hall := Derivable.all hd.neg h
+  have hex : Derivable seedTheory (insert (^∃ d) Γ) :=
+    insert_provable (by simp [hd,hΓ]) hne
+  refine Derivable.cut (^∀ (Bootstrapping.neg ℒₛₑₜ d)) hall ?_
+  rw [neg_all hd.isUFormula.neg,hd.isUFormula.neg_neg]
+  exact hex
+
 /-- Remove one side formula, changing the marker from j+1 to j. -/
 theorem discharge_succ (j : V) (h : Derivable seedTheory (residual (j+1))) :
     Derivable seedTheory (residual j) := by
   rw [residual_succ] at h
-  have hall := Derivable.all (domain_typed j).neg h
-  have hex : Derivable seedTheory (insert (^∃ domainCode j) (residual j)) :=
-    insert_provable (by simp [domain_typed,residual_typed]) (tag_nonempty_provable j)
-  refine Derivable.cut (^∀ (Bootstrapping.neg ℒₛₑₜ (domainCode j))) hall ?_
-  rw [neg_all (domain_typed j).isUFormula.neg,(domain_typed j).isUFormula.neg_neg]
-  exact hex
+  exact discharge_nonempty (domain_typed j) (residual_typed j) (tag_nonempty_provable j) h
 
 theorem discharge_all (N : V) (h : Derivable seedTheory (residual N)) :
     Derivable seedTheory (residual (0:V)) := by
@@ -184,15 +190,8 @@ theorem discharge_zero (h : Derivable seedTheory (residual (0:V))) :
     tauto
   have hb : IsSemiformula ℒₛₑₜ 1 (emptyBody : Semiformula V ℒₛₑₜ 1).val := by
     simpa only [Nat.cast_one] using (emptyBody : Semiformula V ℒₛₑₜ 1).isSemiformula
-  have hall := Derivable.all hb.neg h'
-  have hex : Derivable seedTheory
-      (insert (^∃ (emptyBody : Semiformula V ℒₛₑₜ 1).val) (insert (^⊥) (∅ : V))) :=
-    insert_provable (by simp) empty_object_provable
   apply Derivable.toProvable
-  refine Derivable.cut (^∀ (Bootstrapping.neg ℒₛₑₜ (emptyBody : Semiformula V ℒₛₑₜ 1).val)) hall ?_
-  rw [neg_all (emptyBody : Semiformula V ℒₛₑₜ 1).isSemiformula.isUFormula.neg,
-    (emptyBody : Semiformula V ℒₛₑₜ 1).isSemiformula.isUFormula.neg_neg]
-  exact hex
+  exact discharge_nonempty hb (by simp) empty_object_provable h'
 
 /-- Conditional elimination for every internal counter, including zero. -/
 theorem provable_falsum_of_residual (N : V) (h : Derivable seedTheory (residual N)) :
