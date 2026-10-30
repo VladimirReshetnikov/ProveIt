@@ -50,6 +50,10 @@ halt under the explicit `LocalNormalization` hypothesis, yielding an
 87-operation zero. Discharging normalization and producing the syntactic HA
 endpoint remain separate; the compatibility provider and historical table
 provenance boundaries are retained.
+The [40 normalization prerequisites](reviews/adaptive-normal-independent-independent.md)
+have now passed an independent source/object/log replay on the private
+CellWindow provider. The three compatibility-dependent normalization modules
+and their independent replay remain separate gates.
 The [conditional model-equivalence client](reviews/adaptive-equivalence-client-independent.md)
 has independently replayed the composition: given `LocalNormalization`, the
 87-operation expression has no zero iff the represented machine never halts
