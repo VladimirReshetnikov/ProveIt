@@ -20,13 +20,13 @@ attribute [local irreducible] pairAt pairExists pairMatrix
 
 attribute [local irreducible] singletonAt subsetTerm closureTerm supportBody hitBody
 
-private theorem source_mem_right (z a b : Term V ℒₛₑₜ) :
+theorem source_mem_right (z a b : Term V ℒₛₑₜ) :
     Source V ⊢ eqTerm a b 🡒 memTerm z a 🡒 memTerm z b := by
   have h := source_mem_ext z z a b
   have hr : Source V ⊢ eqTerm z z := ⟨source_refl z⟩
   cl_prover [h,hr]
 
-private theorem source_irrefl (t : Term V ℒₛₑₜ) : Source V ⊢ ∼memTerm t t := by
+theorem source_irrefl (t : Term V ℒₛₑₜ) : Source V ⊢ ∼memTerm t t := by
   have hm : (⌜irreflexiveSentence⌝ : V)∈seedTheory.Δ₁Class :=
     Δ₁Class.mem_iff.mpr (Or.inl (Or.inr (by simp)))
   have h : Source V ⊢! (⌜(Rewriting.emb irreflexiveSentence : SetTheoryProposition)⌝ : Formula V ℒₛₑₜ) :=
@@ -43,11 +43,11 @@ private theorem source_irrefl (t : Term V ℒₛₑₜ) : Source V ⊢ ∼memTer
     simpa [memTerm] using (show Source V ⊢ _ from ⟨TProof.specialize h' t⟩)
   cl_prover [ht]
 
-@[simp] private theorem emptyAt_shift (t : Term V ℒₛₑₜ) :
+@[simp] theorem emptyAt_shift (t : Term V ℒₛₑₜ) :
     (emptyAt t).shift=emptyAt t.shift := by
   simp [emptyAt,memTerm,←Bootstrapping.Semiterm.bShift_shift_comm]
 
-private theorem empty_spec (t z : Term V ℒₛₑₜ) :
+theorem empty_spec (t z : Term V ℒₛₑₜ) :
     Source V ⊢ emptyAt t 🡒 ∼memTerm z t := by
   apply deduct'!
   have h : [emptyAt t] ⊢[Source V] emptyAt t := by_axm₀!
@@ -56,7 +56,7 @@ private theorem empty_spec (t z : Term V ℒₛₑₜ) :
     simpa [emptyAt,memTerm] using TProof.specialize_with_ctx! h z
   cl_prover [hz]
 
-private theorem empty_subset (t a : Term V ℒₛₑₜ) :
+theorem empty_subset (t a : Term V ℒₛₑₜ) :
     Source V ⊢ emptyAt t 🡒 subsetTerm t a := by
   apply deduct'!
   unfold subsetTerm
@@ -71,22 +71,22 @@ private theorem empty_subset (t a : Term V ℒₛₑₜ) :
       memTerm (Bootstrapping.Semiterm.fvar 0) t.shift 🡒
         memTerm (Bootstrapping.Semiterm.fvar 0) a.shift from by cl_prover [he,hh])
 
-private theorem singleton_ne_empty (t r z : Term V ℒₛₑₜ) :
+theorem singleton_ne_empty (t r z : Term V ℒₛₑₜ) :
     Source V ⊢ emptyAt t 🡒 singletonAt r z 🡒 ∼eqTerm r t := by
   have hm := singleton_mem r z
   have hx := source_mem_right z r t
   have he := empty_spec t z
   cl_prover [hm,hx,he]
 
-private def supportCore (K : Semiformula V ℒₛₑₜ 2) (z : Term V ℒₛₑₜ) :
+def supportCore (K : Semiformula V ℒₛₑₜ 2) (z : Term V ℒₛₑₜ) :
     Semiformula V ℒₛₑₜ 1 := K.subst ![z.bShift,Bootstrapping.Semiterm.bvar 0]
-@[simp] private theorem supportCore_free (K : Semiformula V ℒₛₑₜ 2) (z : Term V ℒₛₑₜ) :
+@[simp] theorem supportCore_free (K : Semiformula V ℒₛₑₜ 2) (z : Term V ℒₛₑₜ) :
     (supportCore K z).free=K.shift.subst ![z.shift,Bootstrapping.Semiterm.fvar 0] := by
   rcases term_is_fvar z with ⟨z,rfl⟩
   simp [supportCore,Bootstrapping.Semiformula.free,Bootstrapping.Semiformula.shift_substs,
     Bootstrapping.Semiformula.substs_substs,Matrix.vecHead,Matrix.vecTail]
 
-private theorem hit_member (K : Semiformula V ℒₛₑₜ 2) (p c z : Term V ℒₛₑₜ)
+theorem hit_member (K : Semiformula V ℒₛₑₜ 2) (p c z : Term V ℒₛₑₜ)
     (H : Formula V ℒₛₑₜ)
     (h : Source V ⊢ H.shift 🡒
       K.shift.subst ![Bootstrapping.Semiterm.fvar 0,p.shift] 🡒
@@ -137,7 +137,7 @@ def rawPairAt (x y c : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ :=
   rcases term_is_fvar y with ⟨y,rfl⟩
   simp [rawPairMatrix,eqTerm]
 
-private theorem rawPairAt_spec (x y c z : Term V ℒₛₑₜ) :
+theorem rawPairAt_spec (x y c z : Term V ℒₛₑₜ) :
     Source V ⊢ rawPairAt x y c 🡒 (memTerm z c 🡘 (eqTerm z x ⋎ eqTerm z y)) := by
   rcases term_is_fvar x with ⟨x,rfl⟩
   rcases term_is_fvar y with ⟨y,rfl⟩
@@ -308,7 +308,7 @@ def twoRootBody (θ : Semiformula V ℒₛₑₜ 1) (B t : Term V ℒₛₑₜ) 
           θ.subst ![Bootstrapping.Semiterm.bvar 0]))))
 def twoRootAt (θ : Semiformula V ℒₛₑₜ 1) (B t c : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ :=
   (twoRootBody θ B t).subst ![c]
-private def rootCondition (B t r : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ :=
+def rootCondition (B t r : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ :=
   emptyAt t ⋏ (∼eqTerm B t ⋏ rawPairAt B t r)
 
 @[simp] theorem twoRootMatrix_shift (θ : Semiformula V ℒₛₑₜ 1) (B t r : Term V ℒₛₑₜ) :
@@ -325,7 +325,7 @@ private def rootCondition (B t r : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ
 @[simp] theorem twoRootBody_free (θ : Semiformula V ℒₛₑₜ 1) (B t : Term V ℒₛₑₜ) :
     (twoRootBody θ B t).free=twoRootAt θ.shift B.shift t.shift (Bootstrapping.Semiterm.fvar 0) := by
   simp [Bootstrapping.Semiformula.free,twoRootAt]
-@[simp] private theorem rootCondition_shift (B t r : Term V ℒₛₑₜ) :
+@[simp] theorem rootCondition_shift (B t r : Term V ℒₛₑₜ) :
     (rootCondition B t r).shift=rootCondition B.shift t.shift r.shift := by
   simp [rootCondition,eqTerm]
 @[simp] theorem twoRootMatrix_subst (θ : Semiformula V ℒₛₑₜ 1) (B t r z p : Term V ℒₛₑₜ) :
@@ -342,7 +342,7 @@ private def rootCondition (B t r : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ
 
 attribute [local irreducible] twoRootMatrix twoRootBody twoRootAt rootCondition
 
-private theorem root_ne_empty (B t r : Term V ℒₛₑₜ) :
+theorem root_ne_empty (B t r : Term V ℒₛₑₜ) :
     Source V ⊢ rootCondition B t r 🡒 ∼eqTerm r t := by
   have hs := rawPairAt_spec B t r B
   have hb : Source V ⊢ eqTerm B B := ⟨source_refl B⟩
@@ -351,7 +351,7 @@ private theorem root_ne_empty (B t r : Term V ℒₛₑₜ) :
   unfold rootCondition
   cl_prover [hs,hb,hm,he]
 
-private theorem root_not_singleton (B t r p z : Term V ℒₛₑₜ) :
+theorem root_not_singleton (B t r p z : Term V ℒₛₑₜ) :
     Source V ⊢ rootCondition B t r 🡒 singletonAt p z 🡒 ∼eqTerm p r := by
   have hB := rawPairAt_spec B t r B
   have ht := rawPairAt_spec B t r t
@@ -375,7 +375,7 @@ private theorem root_not_singleton (B t r p z : Term V ℒₛₑₜ) :
   unfold rootCondition
   cl_prover 48 [hBz,htz,hsz,htr]
 
-private theorem empty_not_singleton (t z : Term V ℒₛₑₜ) :
+theorem empty_not_singleton (t z : Term V ℒₛₑₜ) :
     Source V ⊢ emptyAt t 🡒 ∼singletonAt t z := by
   cl_prover [empty_spec t z,singleton_mem t z]
 
@@ -640,7 +640,7 @@ private def envelopeCondition (U t E : Term V ℒₛₑₜ) : Formula V ℒₛ�
 @[simp] theorem guardedBody_free (θ : Semiformula V ℒₛₑₜ 1) (U t : Term V ℒₛₑₜ) :
     (guardedBody θ U t).free=guardedAt θ.shift U.shift t.shift (Bootstrapping.Semiterm.fvar 0) := by
   simp [Bootstrapping.Semiformula.free,guardedAt]
-@[simp] private theorem rawAugAt_shift' (θ : Semiformula V ℒₛₑₜ 1) (a c : Term V ℒₛₑₜ) :
+@[simp] theorem rawAugAt_shift' (θ : Semiformula V ℒₛₑₜ 1) (a c : Term V ℒₛₑₜ) :
     (rawAugAt θ a c).shift=rawAugAt θ.shift a.shift c.shift := by
   simp [rawAugAt,Bootstrapping.Semiformula.shift_substs,Matrix.vecHead,Matrix.vecTail]
 @[simp] private theorem envelopeCondition_shift (U t E : Term V ℒₛₑₜ) :
@@ -655,7 +655,7 @@ private theorem guardedAt_eq (θ : Semiformula V ℒₛₑₜ 1) (U t c : Term V
   simp [guardedAt,guardedBody,guardedAll,memTerm,Bootstrapping.Semiformula.substs_substs,
     SemitermVec.q,Matrix.vecHead,Matrix.vecTail]
 
-private theorem aug_spec (θ : Semiformula V ℒₛₑₜ 1) (U E z : Term V ℒₛₑₜ) :
+theorem aug_spec (θ : Semiformula V ℒₛₑₜ 1) (U E z : Term V ℒₛₑₜ) :
     Source V ⊢ rawAugAt θ U E 🡒 (memTerm z E 🡘 (eqTerm z U ⋎ (memTerm z U ⋏ θ.subst ![z]))) := by
   rcases term_is_fvar U with ⟨U,rfl⟩
   rcases term_is_fvar E with ⟨E,rfl⟩
