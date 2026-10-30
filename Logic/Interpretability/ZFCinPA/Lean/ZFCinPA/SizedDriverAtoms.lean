@@ -35,6 +35,20 @@ local notation "Fm" => Bootstrapping.Formula V ℒₛₑₜ
 theorem succT_le_Gd (M q : V) : (succT (V := V)).val ≤ lvB (Gd M q) :=
   lift_lvB (le_lvB_self _) (le_trans (succT_le_Ad M) (Ad_le_Gd M q))
 
+/-- The numeral-slot derivations and bounds of a binary atom, shared by `case_rel`
+and `case_nrel`. -/
+theorem atom_slots {M n R v : V} (hR : (ℒₛₑₜ).IsRel 2 R) (hv : IsSemitermVec ℒₛₑₜ 2 n v)
+    (hX : n + ⟪(2 : V), R, v⟫ ≤ M) :
+    DLv 𝗭𝗙 (insert (NumOKT (numChainQ (idx n v.[0]))).val ∅) (Wd M) ∧
+      DLv 𝗭𝗙 (insert (NumOKT (numChainQ (idx n v.[1]))).val ∅) (Wd M) ∧
+      (numChainQ (idx n v.[0])).val ≤ lvB (uD M) ∧
+      (numChainQ (idx n v.[1])).val ≤ lvB (uD M) ∧ atomOf n R v ≤ lvB (uD M) := by
+  have s₀ := slot_idx hv (show (0 : V) < 2 by norm_num) hX
+  have s₁ := slot_idx hv (show (1 : V) < 2 by norm_num) hX
+  exact ⟨(numOK_leJ s₀).mono (numOK_W s₀), (numOK_leJ s₁).mono (numOK_W s₁),
+    lift_lvB (numQ_le_A0 s₀) (A0_le_uD M), lift_lvB (numQ_le_A0 s₁) (A0_le_uD M),
+    lift_lvB (atom_le_A0 hR hv hX) (A0_le_uD M)⟩
+
 set_option maxHeartbeats 4000000 in
 theorem case_rel (M : V) :
     ∀ n k r v, (ℒₛₑₜ).IsRel k r → IsSemitermVec ℒₛₑₜ k n v →
@@ -47,13 +61,7 @@ theorem case_rel (M : V) :
   have hrel := envForm_rel (d := n) hR hv.isUTerm
   have hX : n + ⟪(2 : V), R, v⟫ ≤ M :=
     le_trans (_root_.add_le_add le_rfl (le_trans (le_pair_right 0 _) le_self_add)) hnM
-  have s₀ := slot_idx hv (show (0 : V) < 2 by norm_num) hX
-  have s₁ := slot_idx hv (show (1 : V) < 2 by norm_num) hX
-  have h₀ := (numOK_leJ s₀).mono (numOK_W s₀)
-  have h₂ := (numOK_leJ s₁).mono (numOK_W s₁)
-  have lN₀ := lift_lvB (numQ_le_A0 s₀) (A0_le_uD M)
-  have lN₂ := lift_lvB (numQ_le_A0 s₁) (A0_le_uD M)
-  have lAt := lift_lvB (atom_le_A0 hR' hv hX) (A0_le_uD M)
+  obtain ⟨h₀, h₂, lN₀, lN₂, lAt⟩ := atom_slots hR' hv hX
   rcases hR01 with rfl | rfl
   · have hval : (AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
         atomOf n 0 v := by rw [atomT_val_eq, atomOf]
@@ -82,13 +90,7 @@ theorem case_nrel (M : V) :
   have lN := lift_lvB (envF_le hsem hnM) (A0_le_uD M)
   have hX : n + ⟪(2 : V), R, v⟫ ≤ M :=
     le_trans (_root_.add_le_add le_rfl (le_trans (le_pair_right 1 _) le_self_add)) hnM
-  have s₀ := slot_idx hv (show (0 : V) < 2 by norm_num) hX
-  have s₁ := slot_idx hv (show (1 : V) < 2 by norm_num) hX
-  have h₀ := (numOK_leJ s₀).mono (numOK_W s₀)
-  have h₂ := (numOK_leJ s₁).mono (numOK_W s₁)
-  have lN₀ := lift_lvB (numQ_le_A0 s₀) (A0_le_uD M)
-  have lN₂ := lift_lvB (numQ_le_A0 s₁) (A0_le_uD M)
-  have lAt := lift_lvB (atom_le_A0 hR' hv hX) (A0_le_uD M)
+  obtain ⟨h₀, h₂, lN₀, lN₂, lAt⟩ := atom_slots hR' hv hX
   rcases hR01 with rfl | rfl
   · have hval : (AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
         atomOf n 0 v := by rw [atomT_val_eq, atomOf]
