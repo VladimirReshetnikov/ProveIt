@@ -33,40 +33,30 @@ theorem PRA_proves_goal_of_certificates
     obtain ⟨x,hx,rfl⟩ := List.mem_map.mp hd
     exact (Classical.choose_spec (hcert x.val x.property)).1
   have hp : (PRA ∪ PRAFiniteMultiParameterInduction.inductionAxioms fs) ⊢ (∃⁰ θ).univCl := by
-    letI : 𝗘𝗤 language ⪯ (PRA ∪ PRAFiniteMultiParameterInduction.inductionAxioms fs) :=
-      Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
-    apply Theory.Proof.complete_on_eq_models.{0,0}
-    intro M _ _ _ hBoth
-    letI : M↓[language] ⊧* PRA := by
+    apply PRAOpenOneInduction.PRA_proof_of_model_theory_replacement _ _ _ ?_ p
+    intro M _ _ _ _ hU
+    constructor
+    intro σ hσ
+    obtain ⟨φ,hφ,rfl⟩ := hσ
+    let x : {φ // φ ∈ Φ} := ⟨φ,hφ⟩
+    let d := choose x
+    have hd : d ∈ fs := by
+      apply List.mem_map.mpr
+      refine ⟨x,?_,rfl⟩
+      simp
+    have hproof : (PRA ∪ {strictAxiom d}) ⊢ mappedInduction φ :=
+      (Classical.choose_spec (hcert x.val x.property)).2
+    have hstrict : M↓[language] ⊧ strictAxiom d :=
+      hU.models _ ⟨d,hd,rfl⟩
+    have hSub : M↓[language] ⊧* (PRA ∪ {strictAxiom d}) := by
       constructor
-      intro σ hσ
-      exact hBoth.models _ (Or.inl hσ)
-    have hPlus : M↓[language] ⊧* (PRA ∪ mappedInductions Φ) := by
-      constructor
-      intro σ hσ
-      rcases hσ with hσ | hσ
-      · exact (inferInstance : M↓[language] ⊧* PRA).models _ hσ
-      · obtain ⟨φ,hφ,rfl⟩ := hσ
-        let x : {φ // φ ∈ Φ} := ⟨φ,hφ⟩
-        let d := choose x
-        have hd : d ∈ fs := by
-          apply List.mem_map.mpr
-          refine ⟨x,?_,rfl⟩
-          simp
-        have hproof : (PRA ∪ {strictAxiom d}) ⊢ mappedInduction φ :=
-          (Classical.choose_spec (hcert x.val x.property)).2
-        have hstrict : M↓[language] ⊧ strictAxiom d :=
-          hBoth.models _ (Or.inr ⟨d,hd,rfl⟩)
-        have hSub : M↓[language] ⊧* (PRA ∪ {strictAxiom d}) := by
-          constructor
-          intro τ hτ
-          rcases hτ with hτ | hτ
-          · exact (inferInstance : M↓[language] ⊧* PRA).models _ hτ
-          · simp only [Set.mem_singleton_iff] at hτ
-            subst τ
-            exact hstrict
-        exact models_of_provable hSub hproof
-    exact models_of_provable hPlus p
+      intro τ hτ
+      rcases hτ with hτ | hτ
+      · exact (inferInstance : M↓[language] ⊧* PRA).models _ hτ
+      · simp only [Set.mem_singleton_iff] at hτ
+        subst τ
+        exact hstrict
+    exact models_of_provable hSub hproof
   exact PRA_proves_goal_of_finite_induction fs hfs θ hθ hp
 /-- A finite IΣ₁ proof yields the candidate-PRA goal provided a certificate
 exists for every Σ₁ induction formula. The normalization hypothesis remains

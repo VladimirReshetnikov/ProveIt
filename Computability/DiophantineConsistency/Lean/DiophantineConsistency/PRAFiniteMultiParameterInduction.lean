@@ -36,23 +36,13 @@ theorem PRA_proves_goal_of_finite_induction
     PRA ⊢ (∃⁰ θ).univCl := by
   have hp : (PRA ∪ PRAPairedFiniteInduction.inductionAxioms (packedMatrices fs)) ⊢
       (∃⁰ θ).univCl := by
-    letI : 𝗘𝗤 language ⪯ (PRA ∪ PRAPairedFiniteInduction.inductionAxioms (packedMatrices fs)) :=
-      Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
-    apply Theory.Proof.complete_on_eq_models.{0,0}
-    intro M _ _ _ hBoth
-    letI : M↓[language] ⊧* PRA := by
-      constructor
-      intro σ hσ
-      exact hBoth.models _ (Or.inl hσ)
-    have hPlus : M↓[language] ⊧* (PRA ∪ inductionAxioms fs) := by
-      constructor
-      intro σ hσ
-      rcases hσ with hσ | hσ
-      · exact (inferInstance : M↓[language] ⊧* PRA).models _ hσ
-      · obtain ⟨d,hd,rfl⟩ := hσ
-        have hp' : M↓[language] ⊧ (succInd (openSigma (packAll d.arity d.matrix))).univCl :=
-          hBoth.models _ (Or.inr ⟨packAll d.arity d.matrix, List.mem_map.mpr ⟨d,hd,rfl⟩,rfl⟩)
-        exact modelMultiInduction d.arity d.matrix hp'
-    exact models_of_provable hPlus p
+    apply PRAOpenOneInduction.PRA_proof_of_model_theory_replacement _ _ _ ?_ p
+    intro M _ _ _ _ hU
+    constructor
+    intro σ hσ
+    obtain ⟨d,hd,rfl⟩ := hσ
+    have hp' : M↓[language] ⊧ (succInd (openSigma (packAll d.arity d.matrix))).univCl :=
+      hU.models _ ⟨packAll d.arity d.matrix, List.mem_map.mpr ⟨d,hd,rfl⟩,rfl⟩
+    exact modelMultiInduction d.arity d.matrix hp'
   exact PRA_proves_goal_of_finite_boundedSuccInd (packedMatrices fs) (packedMatrices_bounded fs hfs) θ hθ hp
 end DiophantineConsistency.PRAFiniteMultiParameterInduction
