@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAConditionalSigmaNormalization
+open DiophantineConsistency.PRAConditionalSigmaNormalization
+#print axioms PRA_proves_goal_of_certificates
+#print axioms PRA_proves_goal_of_isigmaOne_certificates

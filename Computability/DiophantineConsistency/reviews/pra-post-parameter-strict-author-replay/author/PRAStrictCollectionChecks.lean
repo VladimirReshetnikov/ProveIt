@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAStrictCollection
+open DiophantineConsistency.PRAStrictCollection
+#print axioms collector_strict
+#print axioms total_collect
+#print axioms bounded_collect
+#print axioms bounded_collect_iff

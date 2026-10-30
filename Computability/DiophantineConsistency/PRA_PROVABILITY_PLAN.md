@@ -49,6 +49,11 @@ The [87-operation reduced-output client](reviews/adaptive-construction-reduced-z
 independently replays the exact literal zero transfer from the same enriched
 Assembly premise to the reduced shifted expression. The premise and the final
 HA/PRA consistency endpoints remain open.
+The [Wang-table chunk pilot](reviews/adaptive-wang-chunk-pilot-independent.md)
+independently checks the first 128 rows of each of the three existing finite
+predicates in a private overlay. Full 942-row coverage, interface equivalence,
+and the source-current CellWindow/Assembly builds remain to be established;
+the original WangTable worker continues independently.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -91,11 +96,29 @@ for Σ₁ `π`, they produce a candidate-PRA proof both of the no-zero
 equivalence with bounded `conB π` and of the original implication
 `¬π → no-zero`. The literal current-equation instantiation, the reverse
 implication to the original consistency sentence, and standard PRA comparison
-remain open.
+are separate from that generic theorem.
+The [literal 14-variable forward client](reviews/pra-literal-forward-focused-author-replay/README.md)
+has since passed a focused author build and independent replay: it produces a
+candidate-PRA proof of mapped `Con(ZFC) → no-zero`, and an equivalence with
+the bounded consistency surrogate. The client inherits the historical IΣ₁
+endpoint and transitive closure; a subsequent merge also changed PRA inputs.
+Both dependencies require current-source refresh. The reverse implication to
+Foundation's literal consistency sentence and standard PRA comparison remain
+open.
 The [fixed-sentence bound-certificate interface](reviews/pra-strict-con-reverse-current-author-replay/README.md)
 has independently replayed proofs that such a certificate implies the
 surrogate-to-original direction and hence the full mapped equivalence. No
 certificate has yet been constructed for Foundation's ZFC refutation sentence.
+The [Foundation refutation-bound audit](research/pra-foundation-refutation-bound-audit-20261029.md)
+traces the actual nested proof, sequence, formula and schema recognizers and
+identifies the remaining model-uniform primitive-recursive majorant; it is an
+analysis of the obligation, not a constructed certificate.
+
+The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
+also has two matching replays. It proves bounded collection in the stated
+strict source theory and composes finite induction supports; it does not
+assume collection in candidate PRA. Later Herbrand merges make its inherited
+provider historical until a dependent current-source replay is completed.
 
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,

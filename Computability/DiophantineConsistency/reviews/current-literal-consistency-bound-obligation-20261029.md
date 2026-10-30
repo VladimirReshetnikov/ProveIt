@@ -8,10 +8,20 @@ proved implication `bnd ρ(b) → ρ` in every arithmetic structure. Consequentl
 mapped implication `¬ρ → conB ρ`. The generic theorem was independently
 replayed in the accepted 15-module post-merge provider
 `/tmp/pra-strict-surrogate-postmerge-independent-vhkj_kj6/lib`; its receipt is
-`pra-strict-surrogate-postmerge-author-replay`. The literal current-equation
-client using the historical IΣ₁ endpoint provider is still compiling and has
-not been independently replayed. The converse `conB ρ → ¬ρ` has **not** been
-proved.
+`pra-strict-surrogate-postmerge-author-replay`. The literal current-equation forward client compiled provisionally against a
+mixed historical provider, with exact source and object hashes recorded in
+`current-strictcon-provisional-20261029/forward-provisional-state.json`. A
+focused author build and independent replay against the checked generic
+provider and no-zero closure passed; the historical IΣ₁ endpoint and its
+transitive closure remain inherited. A subsequent merge changed PRA provider
+dependencies as well. The receipt is `pra-literal-forward-focused-author-replay`.
+The converse `conB ρ → ¬ρ` has **not** been proved.
+
+The generic `PRAStrictConReverse.comparison_if_bound` has independently
+replayed at `/tmp/pra-strict-con-reverse-independent-u5pz4i7x/lib`: an actual
+candidate-PRA proof of `π → ∃ b, bnd π(b)` supplies the reverse implication
+and the full no-zero equivalence for that `π`. No such certificate has been
+constructed for Foundation’s `ρ`.
 
 The concrete remaining task is to prove in candidate PRA that any actual
 Foundation refutation supplies a common bound for *every* existential witness

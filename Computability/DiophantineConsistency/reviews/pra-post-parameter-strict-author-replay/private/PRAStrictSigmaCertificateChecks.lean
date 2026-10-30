@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAStrictSigmaCertificate
+open DiophantineConsistency.PRAStrictSigmaCertificate
+#print axioms parameter_projection
+#print axioms matrix_eval
+#print axioms modelStrictInduction
+#print axioms strict_certificate
