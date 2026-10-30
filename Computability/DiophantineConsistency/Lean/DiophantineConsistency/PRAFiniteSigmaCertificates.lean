@@ -26,34 +26,24 @@ theorem combine_support
     obtain ⟨x,hx,hd⟩ := List.mem_flatMap.mp hd
     exact (Classical.choose_spec (hc x.val x.property)).1 d hd
   refine ⟨fs,hfs,?_⟩
-  letI : 𝗘𝗤 language ⪯ (PRA ∪ PRAFiniteMultiParameterInduction.inductionAxioms fs) :=
-    Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hBoth
-  letI : M↓[language] ⊧* PRA := by
+  apply PRAOpenOneInduction.PRA_proof_of_model_theory_replacement _ _ _ ?_ p
+  intro M _ _ _ _ hInductions
+  constructor
+  intro τ hτ
+  obtain ⟨φ,hφ,rfl⟩ := hτ
+  let x : {φ // φ ∈ Φ} := ⟨φ,hφ⟩
+  have hproof : (PRA ∪ PRAFiniteMultiParameterInduction.inductionAxioms (choose x)) ⊢
+      mappedInduction φ := (Classical.choose_spec (hc x.val x.property)).2
+  have hSub : M↓[language] ⊧* (PRA ∪ PRAFiniteMultiParameterInduction.inductionAxioms (choose x)) := by
     constructor
-    intro τ hτ
-    exact hBoth.models _ (Or.inl hτ)
-  have hPlus : M↓[language] ⊧* (PRA ∪ mappedInductions Φ) := by
-    constructor
-    intro τ hτ
-    rcases hτ with hτ | hτ
-    · exact (inferInstance : M↓[language] ⊧* PRA).models _ hτ
-    · obtain ⟨φ,hφ,rfl⟩ := hτ
-      let x : {φ // φ ∈ Φ} := ⟨φ,hφ⟩
-      have hproof : (PRA ∪ PRAFiniteMultiParameterInduction.inductionAxioms (choose x)) ⊢
-          mappedInduction φ := (Classical.choose_spec (hc x.val x.property)).2
-      have hSub : M↓[language] ⊧* (PRA ∪ PRAFiniteMultiParameterInduction.inductionAxioms (choose x)) := by
-        constructor
-        intro ρ hρ
-        rcases hρ with hρ | ⟨d,hd,rfl⟩
-        · exact (inferInstance : M↓[language] ⊧* PRA).models _ hρ
-        · have hdf : d ∈ fs := by
-            apply List.mem_flatMap.mpr
-            exact ⟨x,by simp,hd⟩
-          exact hBoth.models _ (Or.inr ⟨d,hdf,rfl⟩)
-      exact models_of_provable hSub hproof
-  exact models_of_provable hPlus p
+    intro ρ hρ
+    rcases hρ with hρ | ⟨d,hd,rfl⟩
+    · exact (inferInstance : M↓[language] ⊧* PRA).models _ hρ
+    · have hdf : d ∈ fs := by
+        apply List.mem_flatMap.mpr
+        exact ⟨x,by simp,hd⟩
+      exact hInductions.models _ ⟨d,hdf,rfl⟩
+  exact models_of_provable hSub hproof
 
 theorem PRA_proves_goal_of_finite_certificates
     (Φ : List (ArithmeticSemiformula ℕ 1)) (hc : ∀ φ ∈ Φ, FiniteCertificate φ)
