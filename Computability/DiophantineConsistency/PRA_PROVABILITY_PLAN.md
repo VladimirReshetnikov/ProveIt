@@ -142,6 +142,9 @@ The [first-index family client](reviews/pra-fstidx-family-author-replay/README.m
 combines that bound with the fold in every candidate-PRA model, supplying one
 primitive-recursive bound for all first-index codes below a given limit. It
 does not yet establish bounds for the other components of `ρ`.
+The [family-sentence client](reviews/pra-fstidx-family-sentence-author-replay/README.md)
+also constructs an actual candidate-PRA proof of the corresponding universally
+closed implication; it is independently replayed and retains the same scope.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
