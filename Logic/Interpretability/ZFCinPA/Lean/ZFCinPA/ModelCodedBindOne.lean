@@ -237,26 +237,12 @@ lemma bindOneAt_isSemiformula {depth p : V} (hp : IsSemiformula L depth p) :
     ∀ chosen : V, IsSemiformula L (depth+1) (bindOneAt L chosen depth p))
     ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
   · definability
-  · intro depth k R terms hR ht chosen
-    rw [bindOneAt_rel chosen depth hR ht.isUTerm]
-    exact IsSemiformula.rel.mpr ⟨hR,termBindOneVecAt_isSemiterm ht chosen⟩
-  · intro depth k R terms hR ht chosen
-    rw [bindOneAt_nrel chosen depth hR ht.isUTerm]
-    exact IsSemiformula.nrel.mpr ⟨hR,termBindOneVecAt_isSemiterm ht chosen⟩
-  · intro depth chosen; simp
-  · intro depth chosen; simp
-  · intro depth p q hp hq ihp ihq chosen
-    rw [bindOneAt_and chosen depth hp.isUFormula hq.isUFormula]
-    exact IsSemiformula.and.mpr ⟨ihp chosen,ihq chosen⟩
-  · intro depth p q hp hq ihp ihq chosen
-    rw [bindOneAt_or chosen depth hp.isUFormula hq.isUFormula]
-    exact IsSemiformula.or.mpr ⟨ihp chosen,ihq chosen⟩
-  · intro depth p hp ih chosen
-    rw [bindOneAt_all chosen depth hp.isUFormula]
-    simpa using ih chosen
-  · intro depth p hp ih chosen
-    rw [bindOneAt_exs chosen depth hp.isUFormula]
-    simpa using ih chosen
+  all_goals
+    intros
+    simp (discharger := aesop (add safe [IsSemitermVec.isUTerm, IsSemiformula.isUFormula]))
+      [*, bindOneAt_rel, bindOneAt_nrel, termBindOneVecAt_isSemiterm,
+        bindOneAt_and, bindOneAt_or, bindOneAt_all, bindOneAt_exs,
+        IsSemiformula.rel, IsSemiformula.nrel, IsSemiformula.and, IsSemiformula.or]
 
 lemma termBindOneAt_inverse {depth term : V} (ht : IsSemiterm L depth term) :
     ∀ chosen : V,

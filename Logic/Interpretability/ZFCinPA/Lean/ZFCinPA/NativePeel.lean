@@ -158,4 +158,26 @@ theorem schema_obligation (hP : Good P) {a : ℕ} (Fval : V → V)
   rw [hKb]
   exact InternalInterpretation.derivable_domSet_mono hP.isDom le_add_self (he.isFormulaSet.insert.1) he
 
+lemma domSet_zero (d : V) : domSet ℒₛₑₜ d 0 = ∅ :=
+  mem_ext fun y => by simp [mem_domSet_iff]
+
+/-- A recognized member of a finite list inherits its interpreted proof. -/
+theorem list_obligation (l : List SetTheorySentence)
+    (hAx : ∀ σ ∈ l, Provable U (interp P ⌜σ⌝)) {p : V}
+    (hp : V ⊧/![p] (Theory.Δ₁.ofList l).ch.val) :
+    ∃ e, Derivable U (insert (interp P p) (domSet ℒₛₑₜ (dom P) e)) := by
+  obtain ⟨σ, hσ, rfl⟩ := (FiniteTheoryRecognizer.ofList_class_iff l p).mp hp
+  refine ⟨0, ?_⟩
+  rw [domSet_zero]
+  exact (hAx σ hσ).toDerivable
+
+/-- The same obligation for a finite theory's canonical recognizer. -/
+theorem finite_obligation (T : SetTheory) (hT : T.Finite)
+    (hAx : ∀ σ ∈ T, Provable U (interp P ⌜σ⌝)) {p : V}
+    (hp : V ⊧/![p] (Theory.Δ₁.ofFinite T hT).ch.val) :
+    ∃ e, Derivable U (insert (interp P p) (domSet ℒₛₑₜ (dom P) e)) := by
+  apply list_obligation hT.toFinset.toList ?_ hp
+  intro σ hσ
+  exact hAx σ (by simpa using hσ)
+
 end LeanProofs.ZFCinPA.NativePeel

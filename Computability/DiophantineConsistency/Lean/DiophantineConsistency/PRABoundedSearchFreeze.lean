@@ -53,16 +53,7 @@ theorem modelSearchStepBad {n : ℕ} (good : Code (n+1)) (x : M) (e : ℕ → M)
     Structure.func (L := language) (searchCode good)
       (Fin.cases (Structure.func (L := language) Code.succ (fun _ => x)) (fun i : Fin n => e i.val)) =
     Structure.func (L := language) (searchCode good) (Fin.cases x (fun i : Fin n => e i.val)) := by
-  let params : Fin n → M := fun i => e i.val
-  let find : M → M := fun x => Structure.func (L := language) (searchCode good) (Fin.cases x params)
-  let g : M → M := fun x => Structure.func (L := language) good (Fin.cases x params)
-  have hs := modelSearchStepEquation good (Fin.cases x params)
-  rw [modelSearchStep] at hs
-  change find (Structure.func (L := language) Code.succ (fun _ => x)) =
-    Structure.func (L := language) selectCode ![g (find x), Structure.func (L := language) Code.succ (fun _ => x),find x] at hs
-  change g (find x) = Structure.func (L := language) (Code.zero 0) Fin.elim0 at hbad
-  rw [hbad, modelSelectZero] at hs
-  exact hs
+  exact (modelSearchStepCases good x (fun i => e i.val)).1 hbad
 
 theorem modelSearchFreeze {n : ℕ} (good : Code (n+1)) (start shift : M) (e : ℕ → M)
     (hbad : Structure.func (L := language) good
