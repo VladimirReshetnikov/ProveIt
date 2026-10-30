@@ -8,6 +8,17 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The later upstream merges through `166728f64b` changed ZFC validator modules
+reachable from the maintained HA endpoint. Its earlier checked derivation is
+snapshot evidence; a dependency-aware source-current replay of that endpoint
+is still required. This does not assert a defect in the proof.
+
+The candidate-PRA development also has a [unary Π₁ equivalence transfer](reviews/pra-pi-one-implication-root.md):
+it eliminates one closed open-matrix Σ₁ induction instance from a proof of an
+equivalence of two unary open-matrix Π₁ sentences. It does not yet bind the
+actual equation or refutation sentences, and does not handle arbitrary finite
+induction instances.
+
 Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean`,
 `ArithmeticBinomLegendre.lean`, `ArithmeticHalfBinomial.lean`, and
 `ArithmeticHalfBinomialSandwich.lean`. The affected adaptive population,

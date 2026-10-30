@@ -1,0 +1,18 @@
+'DiophantineConsistency.PRAPiOneImplication.matrix_open' depends on axioms: [propext, Quot.sound]
+'DiophantineConsistency.PRAPiOneImplication.model_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAPiOneImplication.proves_equivalence_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPiOneImplication.eliminate_one_from_equivalence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAPiOneImplication.eliminate_one_from_equivalence
+  (ψ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3) (hψ : LO.FirstOrder.Semiformula.Open ψ)
+  (p q : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 1)
+  (hp : LO.FirstOrder.Semiformula.Open p) (hq : LO.FirstOrder.Semiformula.Open q)
+  (h :
+    DiophantineConsistency.PRATheory.PRA ∪
+        {LO.FirstOrder.Semiformula.univCl
+            (LO.FirstOrder.Arithmetic.succInd (DiophantineConsistency.PRAOpenOneInduction.openSigma ψ))} ⊢
+      ∀⁰ p 🡘 ∀⁰ q) :
+  DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰ p 🡘 ∀⁰ q
