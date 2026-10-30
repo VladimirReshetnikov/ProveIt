@@ -1,0 +1,13 @@
+DiophantineConsistency.HAExpressionImplication.isigma1_implication {n : ℕ} (e : DiophantineConsistency.Expr (Fin n))
+  (hp : DiophantineConsistency.HAExpressionImplication.PolynomialImplication e) :
+  𝗜𝚺₁ ⊢
+    DiophantineConsistency.FoundationHANoZero.classicalNoZero e 🡒
+      DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence
+DiophantineConsistency.HAExpressionImplication.ha_implication {n : ℕ} (e : DiophantineConsistency.Expr (Fin n))
+  (hp : DiophantineConsistency.HAExpressionImplication.PolynomialImplication e) :
+  DiophantineConsistency.HA.Proves
+    ((DiophantineConsistency.ArithmeticExpression.noZeroSentence e).imp
+      DiophantineConsistency.FoundationHAConsistencyNormalization.ordinaryConsistency)
+'DiophantineConsistency.HAExpressionImplication.ha_implication' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
