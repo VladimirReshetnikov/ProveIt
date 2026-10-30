@@ -38,3 +38,5 @@ about the literal binding being absent describe the prior checkpoint.
 The bounded one- and two-operation modular-signature scans, their saved outputs,
 and their important exclusions are recorded in [SCREENING.md](SCREENING.md).
 They found no candidate in the screened subset and do not prove minimality.
+The separate [three-operation fork screen](SCREENING-THREE.md) records an
+additional restricted search and its exclusions.
