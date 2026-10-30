@@ -204,12 +204,14 @@ lemma translate_atomT_mem (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒ�
       subst ℒₛₑₜ (SemitermVec.val fun i ↦ translateTerm (V := V) (v i)) (⌜memS⌝ : V) := by
   rw [atomT, translate_embSubsts_liftSet]
 
-/-- **Interpretation commutes with template translation.** -/
-theorem interp_translate (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i)) :
-    ∀ {n : ℕ} (φ : Semiproposition (setTemplateLanguage k arities) n),
-      interp (PN : V) (translateFormula Ks φ).val =
-        (translateFormula (fun i ↦ IK (Ks i)) (intT φ)).val
-  | _, .rel (Sum.inl R) v => by
+private theorem interp_translate_rel
+    (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
+    {n m : ℕ} (R : (setTemplateLanguage k arities).Rel m)
+    (v : Fin m → SyntacticSemiterm (setTemplateLanguage k arities) n) :
+    interp (PN : V) (translateFormula Ks (Semiformula.rel R v)).val =
+      (translateFormula (fun i ↦ IK (Ks i)) (intT (Semiformula.rel R v))).val := by
+  cases R with
+  | inl R =>
       have hu := (Bootstrapping.Semiformula.rel R
         (fun i ↦ translateTerm (V := V) (v i))).isSemiformula.isUFormula
       rw [Bootstrapping.Semiformula.rel_val] at hu
@@ -220,30 +222,25 @@ theorem interp_translate (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒ�
       cases R with
       | eq => rw [if_pos (by change ((0 : ℕ) : V) = 0; simp), translate_atomT_eq]
       | mem => rw [if_neg (by change ((1 : ℕ) : V) ≠ 0; simp), translate_atomT_mem]
-  | _, .rel (Sum.inr r) v => by
+  | inr r =>
       change interp (PN : V) ((Ks r.1).subst fun j ↦ translateTerm (v (Fin.cast r.2 j))).val =
         ((IK (Ks r.1)).subst fun j ↦ translateTerm (v (Fin.cast r.2 j))).val
       rw [Bootstrapping.Semiformula.val_substs, Bootstrapping.Semiformula.val_substs, IK_val,
         interp_subst good_PN (Ks r.1).isSemiformula (SemitermVec.isSemitermVec _)]
-  | _, .nrel (Sum.inl R) v => by
-      have hu := (Bootstrapping.Semiformula.nrel R
-        (fun i ↦ translateTerm (V := V) (v i))).isSemiformula.isUFormula
-      rw [Bootstrapping.Semiformula.nrel_val] at hu
-      change interp (PN : V) (Bootstrapping.Semiformula.nrel R
-        (fun i ↦ translateTerm (V := V) (v i))).val = _
-      rw [Bootstrapping.Semiformula.nrel_val,
-        interp_nrel (IsUFormula.nrel.mp hu).1 (IsUFormula.nrel.mp hu).2, intT_nrel_inl,
-        translateFormula_neg, Bootstrapping.Semiformula.val_neg, atomOf_PN]
-      cases R with
-      | eq => rw [if_pos (by change ((0 : ℕ) : V) = 0; simp), translate_atomT_eq]
-      | mem => rw [if_neg (by change ((1 : ℕ) : V) ≠ 0; simp), translate_atomT_mem]
-  | _, .nrel (Sum.inr r) v => by
-      change interp (PN : V) (∼(Ks r.1).subst fun j ↦ translateTerm (v (Fin.cast r.2 j))).val =
-        (∼(IK (Ks r.1)).subst fun j ↦ translateTerm (v (Fin.cast r.2 j))).val
-      rw [Bootstrapping.Semiformula.val_neg, Bootstrapping.Semiformula.val_neg,
-        ← interp_neg good_PN ((Ks r.1).subst fun j ↦ translateTerm (v (Fin.cast r.2 j))).isSemiformula,
-        Bootstrapping.Semiformula.val_substs, Bootstrapping.Semiformula.val_substs, IK_val,
-        interp_subst good_PN (Ks r.1).isSemiformula (SemitermVec.isSemitermVec _)]
+
+/-- **Interpretation commutes with template translation.** -/
+theorem interp_translate (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i)) :
+    ∀ {n : ℕ} (φ : Semiproposition (setTemplateLanguage k arities) n),
+      interp (PN : V) (translateFormula Ks φ).val =
+        (translateFormula (fun i ↦ IK (Ks i)) (intT φ)).val
+  | _, .rel R v => interp_translate_rel Ks R v
+  | _, .nrel R v => by
+      change interp (PN : V) (translateFormula Ks (∼Semiformula.rel R v)).val =
+        (translateFormula (fun i ↦ IK (Ks i)) (intT (∼Semiformula.rel R v))).val
+      rw [intT_neg, translateFormula_neg, translateFormula_neg,
+        Bootstrapping.Semiformula.val_neg, Bootstrapping.Semiformula.val_neg,
+        ← interp_neg good_PN (translateFormula Ks (Semiformula.rel R v)).isSemiformula,
+        interp_translate_rel Ks R v]
   | _, ⊤ => by simp [translateFormula]
   | _, ⊥ => by simp [translateFormula]
   | _, φ ⋏ ψ => by
