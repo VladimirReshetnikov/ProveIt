@@ -1,0 +1,5 @@
+# Source drift during pinned-ZF rebase
+
+The focused run `/tmp/ha87-focused-validator-rebase-hfdylw0l` failed its own source-before-compile guard for `ArithmeticAdaptiveMainCongruence2011` after 14 verified rows. It was not manually interrupted. The full run `/tmp/ha87-full-source-n4gn0k78` was externally stopped at a safe boundary with FAILED/KeyboardInterrupt and 112 verified, reused rows. It had no active Lean child. Both states and all four changed-source before/after snapshots and hashes are included. The earlier 81-row focused prefix, 129-row full prefix, driver, graph, pinned historical `ZF.Zf` object and earlier source/log ancestry are in `../ha87-zf-fallback-failure-and-rebase/` and its predecessors. All four updated sources have unchanged direct imports.
+
+Fresh author rebases are `/tmp/ha87-focused-validator-rebase-txwf5fe7`, which uses the earlier 81-row prefix, and `/tmp/ha87-full-source-35rx1zl8`, which uses the earlier 129-row prefix. Each reauthenticates every reused row against its current sources and direct dependency objects. Neither is a completed independent proof replay; focused HA and package ancestry remains historical.
