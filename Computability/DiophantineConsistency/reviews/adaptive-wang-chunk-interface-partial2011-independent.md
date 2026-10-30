@@ -1,0 +1,5 @@
+# Independent partial Wang-table interface comparison
+
+The independent run `/tmp/adaptive-wang-chunk-interface-yt0xkovh` passed against the independently rebuilt full-chunk provider. Its historical and split query source/log hashes, comparison JSON, original-source hash, canonical-guard hash and historical-object hash match the author audit. The [8-file peer evidence manifest](adaptive-wang-chunk-interface-partial2011-independent-evidence/FILES.json) has SHA256 `b0bec709396b8c2591e09cce0583d68d07bf55aa036417eafde1afb6623b4723` and preserves the driver, query sources and outputs, comparison, finalized state and peer full-provider state.
+
+The audit covers eleven declarations and exact source-prefix/three-statement equality. The original compiled comparison object is historical and its source-to-object provenance is not re-established here. This is not a full-export comparison or a source-current original WangTable build; see the [author receipt](adaptive-wang-chunk-interface-partial2011-author.md).

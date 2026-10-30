@@ -56,6 +56,9 @@ has independently replayed all 24 chunks and their three take/drop
 recombinations. Rebuilding the original module, checking all relevant
 interfaces, and the source-current CellWindow/Assembly builds remain to be
 established; the original WangTable worker continues independently.
+An [11-declaration interface comparison](reviews/adaptive-wang-chunk-interface-partial2011-independent.md)
+also passed independently against a historical original object; it is a
+partial comparison and does not establish that object's source provenance.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
