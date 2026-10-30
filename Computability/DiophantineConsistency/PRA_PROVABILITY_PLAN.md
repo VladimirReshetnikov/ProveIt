@@ -41,6 +41,10 @@ chooses all three positive new coordinates and constructs a 13-variable
 zero from one old witness satisfying the explicit equation, seed, phase,
 rank, ordinate and orientation assumptions. Deriving that enriched witness
 from the source-current halting construction remains open.
+The [enriched-Assembly conclusion adapter](reviews/adaptive-construction-conditional-exists2011-independent.md)
+is independently replayed as well: it takes the proposed strengthened
+Assembly conclusion, including its bound, as an explicit premise and yields
+the shifted zero. It does not itself establish that premise.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)

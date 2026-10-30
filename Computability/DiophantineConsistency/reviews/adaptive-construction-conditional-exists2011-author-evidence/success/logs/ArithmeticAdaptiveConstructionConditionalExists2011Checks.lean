@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionConditionalExists2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionConditionalExists2011.shifted_zero_of_enriched_assembly
