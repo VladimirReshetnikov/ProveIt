@@ -103,13 +103,33 @@ theorem term_cases_between {S A B ξ : Type*} [Structure ℒₛₑₜ A] [Struct
   | func g v => cases g
 
 /-- Embedding commutes with substituting a vector of terms into a sentence. -/
-lemma emb_comp_embSubsts {ξ ο : Type*} [IsEmpty ο] {n k : ℕ}
-    (v : Fin k → Semiterm ℒₛₑₜ ο n) :
-    ((Rew.emb : Rew ℒₛₑₜ ο n ξ n).comp (Rew.embSubsts v)) =
+lemma emb_comp_embSubsts_language {L : Language} {ξ ο : Type*} [IsEmpty ο] {n k : ℕ}
+    (v : Fin k → Semiterm L ο n) :
+    ((Rew.emb : Rew L ο n ξ n).comp (Rew.embSubsts v)) =
       Rew.embSubsts (fun i ↦ Rew.emb (v i)) := by
   ext x
   · simp [Rew.comp_app]
   · exact x.elim
+
+lemma emb_comp_embSubsts {ξ ο : Type*} [IsEmpty ο] {n k : ℕ}
+    (v : Fin k → Semiterm ℒₛₑₜ ο n) :
+    ((Rew.emb : Rew ℒₛₑₜ ο n ξ n).comp (Rew.embSubsts v)) =
+      Rew.embSubsts (fun i ↦ Rew.emb (v i)) :=
+  emb_comp_embSubsts_language v
+
+/-- A one-variable domain guard commutes with embedding. -/
+lemma emb_guard {L : Language} {ξ ο : Type*} [IsEmpty ο] {n : ℕ}
+    (δ : Semiformula L Empty 1) :
+    (Rew.emb ▹ (Rew.embSubsts ![#0] ▹ δ : Semiformula L ο (n + 1)) :
+      Semiformula L ξ (n + 1)) = Rew.embSubsts ![#0] ▹ δ := by
+  have h : ((Rew.emb : Rew L ο (n + 1) ξ (n + 1)).comp (Rew.embSubsts ![#0])) =
+      Rew.embSubsts ![#0] := by
+    rw [emb_comp_embSubsts_language]
+    congr 1
+    funext i
+    rw [Fin.fin_one_eq_zero i]
+    simp
+  rw [← TransitiveRewriting.comp_app, h]
 
 /-! ## The domain formula -/
 
@@ -170,16 +190,8 @@ variable {ξ : Type*} {n : ℕ}
 /-- The domain formula commutes with embedding sentences into formulas. -/
 lemma emb_domAt {ο : Type*} [IsEmpty ο] :
     (Rew.emb ▹ (domAt δ n : Semiformula ℒₛₑₜ ο (n + 1)) : Semiformula ℒₛₑₜ ξ (n + 1)) =
-      domAt δ n := by
-  have h : ((Rew.emb : Rew ℒₛₑₜ ο (n + 1) ξ (n + 1)).comp (Rew.embSubsts ![#0])) =
-      Rew.embSubsts ![#0] := by
-    rw [emb_comp_embSubsts]
-    congr 1
-    funext i
-    rw [Fin.fin_one_eq_zero i]
-    simp
-  unfold domAt
-  rw [← TransitiveRewriting.comp_app, h]
+      domAt δ n :=
+  emb_guard δ
 
 /-- Relativization commutes with embedding sentences into formulas. -/
 lemma emb_relF {ο : Type*} [IsEmpty ο] :
