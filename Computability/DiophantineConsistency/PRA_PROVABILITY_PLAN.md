@@ -86,6 +86,10 @@ The [adaptive natural-zero soundness client](reviews/adaptive-halt-client-indepe
 also passed independent replay: in each stated IΣ₁ model a zero of the
 13-variable natural expression yields a bounded represented-machine halt.
 It is not yet a syntactic HA proof or the complete converse construction.
+The independently replayed [87-operation soundness client](reviews/adaptive-reduced-halt-client-independent.md)
+transfers this result to the exact reduced natural expression using the
+checked literal equivalence. Its private providers and historical table
+comparison boundary remain as above.
 The independently replayed [compatibility overlay audit](reviews/adaptive-wang-compat-overlay-audit-independent.md)
 checks that its 367 canonical project objects are byte-identical and that its
 27 additions are the authenticated table and chunk objects. This does not
