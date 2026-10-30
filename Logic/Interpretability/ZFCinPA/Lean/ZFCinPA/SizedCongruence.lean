@@ -631,48 +631,46 @@ theorem core {A : V} (hA : AtomOK A) (v : V) : ∀ h : V, ∀ χ n w₁ w₂ E c
   induction h using ISigma1.pi1_succ_induction
   · simp only [DLv, DerivableLe, Cseq, Inp, Paired, Pair1, neR, lvB, cW]
     definability
-  · intro χ n w₁ w₂ E c hcx hχ hv inp
-    rcases or4_left hχ.isUFormula.case with hb | ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ |
-        ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
-    · exact core_base hA hχ hv inp hb
-    all_goals simp [formulaComplexity_and, formulaComplexity_or, formulaComplexity_all,
-      formulaComplexity_ex, *] at hcx
-  · case succ h ih =>
+  all_goals
     intro χ n w₁ w₂ E c hcx hχ hv inp
     rcases or4_left hχ.isUFormula.case with hb | ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ |
         ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
     · exact core_base hA hχ hv inp hb
-    · rw [formulaComplexity_and hp hq] at hcx
-      have hm := le_of_succ_le_succ' hcx
-      obtain ⟨hp', hq'⟩ := IsSemiformula.and.mp hχ
-      have hpv := le_trans (le_of_lt (lt_K!_left p q)) hv
-      have hqv := le_trans (le_of_lt (lt_K!_right p q)) hv
-      exact (step_and hp' hq' inp hv (cW_mB A v h c) (cW_four A v h c)
-        (ih p n w₁ w₂ E c (le_trans (le_max_left _ _) hm) hp' hpv inp)
-        (ih q n w₁ w₂ E c (le_trans (le_max_right _ _) hm) hq' hqv inp)).mono (cW_prop A v h c)
-    · rw [formulaComplexity_or hp hq] at hcx
-      have hm := le_of_succ_le_succ' hcx
-      obtain ⟨hp', hq'⟩ := IsSemiformula.or.mp hχ
-      have hpv := le_trans (le_of_lt (lt_or_left p q)) hv
-      have hqv := le_trans (le_of_lt (lt_or_right p q)) hv
-      exact (step_or hp' hq' inp hv (cW_mB A v h c) (cW_four A v h c)
-        (ih p n w₁ w₂ E c (le_trans (le_max_left _ _) hm) hp' hpv inp)
-        (ih q n w₁ w₂ E c (le_trans (le_max_right _ _) hm) hq' hqv inp)).mono (cW_prop A v h c)
-    · rw [formulaComplexity_all hp] at hcx
-      have hm := le_of_succ_le_succ' hcx
-      have hp' : IsSemiformula ℒₛₑₜ (n + 1) p := IsSemiformula.all.mp hχ
-      have hspv := quant_child (tag := 6) hp hv hχ.isUFormula
-      have ih' := ih (shift ℒₛₑₜ p) (n + 1) (qFree n w₁) (qFree n w₂) (setShift ℒₛₑₜ E) (c + 1)
-        (by rw [formulaComplexity_shift hp]; exact hm) hp'.shift hspv (inp_succ inp)
-      exact (step_all hp' inp hv hspv (cW_mB_succ A v h c) (cW_four A v h (c + 1)) ih').mono
-        (cW_quant A v h c)
-    · rw [formulaComplexity_ex hp] at hcx
-      have hm := le_of_succ_le_succ' hcx
-      have hp' : IsSemiformula ℒₛₑₜ (n + 1) p := IsSemiformula.exs.mp hχ
-      have hspv := quant_child (tag := 7) hp hv hχ.isUFormula
-      have ih' := ih (shift ℒₛₑₜ p) (n + 1) (qFree n w₁) (qFree n w₂) (setShift ℒₛₑₜ E) (c + 1)
-        (by rw [formulaComplexity_shift hp]; exact hm) hp'.shift hspv (inp_succ inp)
-      exact (step_ex hp' inp hv hspv (cW_mB_succ A v h c) (cW_four A v h (c + 1)) ih').mono
-        (cW_quant A v h c)
+  -- at complexity zero the composite cases are impossible
+  iterate 4 simp [formulaComplexity_and, formulaComplexity_or, formulaComplexity_all,
+    formulaComplexity_ex, *] at hcx
+  all_goals rename_i h ih
+  · rw [formulaComplexity_and hp hq] at hcx
+    have hm := le_of_succ_le_succ' hcx
+    obtain ⟨hp', hq'⟩ := IsSemiformula.and.mp hχ
+    have hpv := le_trans (le_of_lt (lt_K!_left p q)) hv
+    have hqv := le_trans (le_of_lt (lt_K!_right p q)) hv
+    exact (step_and hp' hq' inp hv (cW_mB A v h c) (cW_four A v h c)
+      (ih p n w₁ w₂ E c (le_trans (le_max_left _ _) hm) hp' hpv inp)
+      (ih q n w₁ w₂ E c (le_trans (le_max_right _ _) hm) hq' hqv inp)).mono (cW_prop A v h c)
+  · rw [formulaComplexity_or hp hq] at hcx
+    have hm := le_of_succ_le_succ' hcx
+    obtain ⟨hp', hq'⟩ := IsSemiformula.or.mp hχ
+    have hpv := le_trans (le_of_lt (lt_or_left p q)) hv
+    have hqv := le_trans (le_of_lt (lt_or_right p q)) hv
+    exact (step_or hp' hq' inp hv (cW_mB A v h c) (cW_four A v h c)
+      (ih p n w₁ w₂ E c (le_trans (le_max_left _ _) hm) hp' hpv inp)
+      (ih q n w₁ w₂ E c (le_trans (le_max_right _ _) hm) hq' hqv inp)).mono (cW_prop A v h c)
+  · rw [formulaComplexity_all hp] at hcx
+    have hm := le_of_succ_le_succ' hcx
+    have hp' : IsSemiformula ℒₛₑₜ (n + 1) p := IsSemiformula.all.mp hχ
+    have hspv := quant_child (tag := 6) hp hv hχ.isUFormula
+    have ih' := ih (shift ℒₛₑₜ p) (n + 1) (qFree n w₁) (qFree n w₂) (setShift ℒₛₑₜ E) (c + 1)
+      (by rw [formulaComplexity_shift hp]; exact hm) hp'.shift hspv (inp_succ inp)
+    exact (step_all hp' inp hv hspv (cW_mB_succ A v h c) (cW_four A v h (c + 1)) ih').mono
+      (cW_quant A v h c)
+  · rw [formulaComplexity_ex hp] at hcx
+    have hm := le_of_succ_le_succ' hcx
+    have hp' : IsSemiformula ℒₛₑₜ (n + 1) p := IsSemiformula.exs.mp hχ
+    have hspv := quant_child (tag := 7) hp hv hχ.isUFormula
+    have ih' := ih (shift ℒₛₑₜ p) (n + 1) (qFree n w₁) (qFree n w₂) (setShift ℒₛₑₜ E) (c + 1)
+      (by rw [formulaComplexity_shift hp]; exact hm) hp'.shift hspv (inp_succ inp)
+    exact (step_ex hp' inp hv hspv (cW_mB_succ A v h c) (cW_four A v h (c + 1)) ih').mono
+      (cW_quant A v h c)
 
 end LeanProofs.ZFCinPA.SizedCongruence
