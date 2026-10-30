@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAFormulaSetWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRAFormulaSetWitnessBound.isFormulaSet_bound_of_core
+#print axioms DiophantineConsistency.PRAFormulaSetWitnessBound.candidate_proves_formulaSet_bound
+#check DiophantineConsistency.PRAFormulaSetWitnessBound.candidate_proves_formulaSet_bound
