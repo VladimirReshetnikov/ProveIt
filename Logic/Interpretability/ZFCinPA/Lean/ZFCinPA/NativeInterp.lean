@@ -82,20 +82,12 @@ theorem eval_closeS {k : ℕ} (φ : SetTheorySemiproposition (k + 1)) (b : Fin (
 theorem eval_eqS (x y : M) (ε : Empty → M) :
     eqS.Eval ![x, y] ε ↔ ProfileCollection.Eqv (memRel M) x y := by
   rw [eqS, eval_closeS]
-  exact (eval_toSet (ProfileSyntax.eqvForm 0 1) 2 ![x, y] _
-    (SetTheory.scons x (SetTheory.scons y (fun _ ↦ x))) (fun i ↦ by
-      match i with
-      | 0 => rfl
-      | 1 => rfl) (fun j ↦ by rw [show 2 + j = j + 2 from Nat.add_comm 2 j]; rfl)).trans (ProfileSyntax.sat_eqvForm _ _ 0 1)
+  exact (eval_toSet_pair (ProfileSyntax.eqvForm 0 1) x y (fun _ ↦ x)).trans (ProfileSyntax.sat_eqvForm _ _ 0 1)
 
 theorem eval_memS (x y : M) (ε : Empty → M) :
     memS.Eval ![x, y] ε ↔ ProfileComposition.Member (memRel M) x y := by
   rw [memS, eval_closeS]
-  exact (eval_toSet (QuotientModel.memberForm 0 1) 2 ![x, y] _
-    (SetTheory.scons x (SetTheory.scons y (fun _ ↦ x))) (fun i ↦ by
-      match i with
-      | 0 => rfl
-      | 1 => rfl) (fun j ↦ by rw [show 2 + j = j + 2 from Nat.add_comm 2 j]; rfl)).trans (QuotientModel.sat_memberForm _ _ 0 1)
+  exact (eval_toSet_pair (QuotientModel.memberForm 0 1) x y (fun _ ↦ x)).trans (QuotientModel.sat_memberForm _ _ 0 1)
 
 /-- The native CP/GIC structure of `M` and an explicit inhabitant. -/
 abbrev hM : ProfileModel.ModelsCPGIC (memRel M) := NativeSet.models_cpgic.1
@@ -111,9 +103,8 @@ abbrev cl (x : M) : QuotientModel.Domain (memRel M) wM hM := QuotientModel.mk (m
 theorem eval_domS (x : M) (ε : Empty → M) :
     domS.Eval ![x] ε ↔ WellFoundedPart.WF (qm (M := M)) (cl x) := by
   rw [domS, eval_closeS]
-  refine (eval_toSet _ 1 ![x] _ (SetTheory.scons x (fun _ ↦ x)) (fun i ↦ by
-      match i with
-      | 0 => rfl) (fun j ↦ by rw [show 1 + j = j + 1 from Nat.add_comm 1 j]; rfl)).trans ?_
+  simp only [Matrix.cons_val_zero]
+  refine (eval_toSet_single _ x (fun _ ↦ x)).trans ?_
   rw [QuotientModel.sat_translate, ← QuotientModel.sat_quotient (memRel M) wM hM,
     WellFoundedPart.sat_wfForm]
   rfl
