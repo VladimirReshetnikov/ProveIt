@@ -35,6 +35,13 @@ local notation "Fm" => Bootstrapping.Formula V ℒₛₑₜ
 theorem succT_le_Gd (M q : V) : (succT (V := V)).val ≤ lvB (Gd M q) :=
   lift_lvB (le_lvB_self _) (le_trans (succT_le_Ad M) (Ad_le_Gd M q))
 
+/-- The two set atoms `=` (tag 0) and `∈` (tag 1) as `AtomT` codes. -/
+theorem atom_val {n R v : V} (hR : R = 0 ∨ R = 1) :
+    ∃ b, (AtomT b (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val = atomOf n R v := by
+  rcases hR with rfl | rfl
+  · exact ⟨true, by rw [atomT_val_eq, atomOf]⟩
+  · exact ⟨false, by rw [atomT_val_mem _ _ 1 _root_.one_ne_zero, atomOf]⟩
+
 /-- The numeral-slot derivations and bounds of a binary atom, shared by `case_rel`
 and `case_nrel`. -/
 theorem atom_slots {M n R v : V} (hR : (ℒₛₑₜ).IsRel 2 R) (hv : IsSemitermVec ℒₛₑₜ 2 n v)
@@ -62,19 +69,11 @@ theorem case_rel (M : V) :
   have hX : n + ⟪(2 : V), R, v⟫ ≤ M :=
     le_trans (_root_.add_le_add le_rfl (le_trans (le_pair_right 0 _) le_self_add)) hnM
   obtain ⟨h₀, h₂, lN₀, lN₂, lAt⟩ := atom_slots hR' hv hX
-  rcases hR01 with rfl | rfl
-  · have hval : (AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
-        atomOf n 0 v := by rw [atomT_val_eq, atomOf]
-    have hK := K6_le lN₀ (top_le hu) lN₂ (top_le hu) (hval.trans_le lAt) (succT_le_uD M)
-    have d := atom_step_le true hu hK (wD_le_Wd M) h₀ h₂
-    exact ΘB_of_typed _ (hval.trans hrel.symm) succT (succT_le_Gd M _)
-      (d.mono (le_of_add_eq (y := 30 + 40 * ^rel 2 0 v) (by ring)))
-  · have hval : (AtomT false (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
-        atomOf n 1 v := by rw [atomT_val_mem _ _ 1 _root_.one_ne_zero, atomOf]
-    have hK := K6_le lN₀ (top_le hu) lN₂ (top_le hu) (hval.trans_le lAt) (succT_le_uD M)
-    have d := atom_step_le false hu hK (wD_le_Wd M) h₀ h₂
-    exact ΘB_of_typed _ (hval.trans hrel.symm) succT (succT_le_Gd M _)
-      (d.mono (le_of_add_eq (y := 30 + 40 * ^rel 2 1 v) (by ring)))
+  obtain ⟨b, hval⟩ := atom_val hR01
+  have hK := K6_le lN₀ (top_le hu) lN₂ (top_le hu) (hval.trans_le lAt) (succT_le_uD M)
+  have d := atom_step_le b hu hK (wD_le_Wd M) h₀ h₂
+  exact ΘB_of_typed _ (hval.trans hrel.symm) succT (succT_le_Gd M _)
+    (d.mono (le_of_add_eq (y := 30 + 40 * ^rel 2 R v) (by ring)))
 
 set_option maxHeartbeats 4000000 in
 theorem case_nrel (M : V) :
@@ -91,29 +90,16 @@ theorem case_nrel (M : V) :
   have hX : n + ⟪(2 : V), R, v⟫ ≤ M :=
     le_trans (_root_.add_le_add le_rfl (le_trans (le_pair_right 1 _) le_self_add)) hnM
   obtain ⟨h₀, h₂, lN₀, lN₂, lAt⟩ := atom_slots hR' hv hX
-  rcases hR01 with rfl | rfl
-  · have hval : (AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
-        atomOf n 0 v := by rw [atomT_val_eq, atomOf]
-    have hK := K6_le lN₀ (top_le hu) lN₂ (top_le hu) (hval.trans_le lAt) (succT_le_uD M)
-    have d₁ := atom_step_le true hu hK (wD_le_Wd M) h₀ h₂
-    have hnv : (∼AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
-        envForm n (^nrel 2 0 v) := by rw [Bootstrapping.Semiformula.val_neg, hval, hnrel]
-    have hKn := K6_le (hval.trans_le lAt) (succT_le_uD M) (top_le hu) (top_le hu)
-      (hnv.trans_le lN) (succT_le_uD M)
-    have d₂ := neg_step_le hu hKn (le_trans (wD_le_Wd M) le_self_add) d₁
-    exact ΘB_of_typed _ hnv succT (succT_le_Gd M _)
-      (d₂.mono (le_of_add_eq (y := 40 * ^nrel 2 0 v) (by ring)))
-  · have hval : (AtomT false (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
-        atomOf n 1 v := by rw [atomT_val_mem _ _ 1 _root_.one_ne_zero, atomOf]
-    have hK := K6_le lN₀ (top_le hu) lN₂ (top_le hu) (hval.trans_le lAt) (succT_le_uD M)
-    have d₁ := atom_step_le false hu hK (wD_le_Wd M) h₀ h₂
-    have hnv : (∼AtomT false (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
-        envForm n (^nrel 2 1 v) := by rw [Bootstrapping.Semiformula.val_neg, hval, hnrel]
-    have hKn := K6_le (hval.trans_le lAt) (succT_le_uD M) (top_le hu) (top_le hu)
-      (hnv.trans_le lN) (succT_le_uD M)
-    have d₂ := neg_step_le hu hKn (le_trans (wD_le_Wd M) le_self_add) d₁
-    exact ΘB_of_typed _ hnv succT (succT_le_Gd M _)
-      (d₂.mono (le_of_add_eq (y := 40 * ^nrel 2 1 v) (by ring)))
+  obtain ⟨b, hval⟩ := atom_val hR01
+  have hK := K6_le lN₀ (top_le hu) lN₂ (top_le hu) (hval.trans_le lAt) (succT_le_uD M)
+  have d₁ := atom_step_le b hu hK (wD_le_Wd M) h₀ h₂
+  have hnv : (∼AtomT b (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
+      envForm n (^nrel 2 R v) := by rw [Bootstrapping.Semiformula.val_neg, hval, hnrel]
+  have hKn := K6_le (hval.trans_le lAt) (succT_le_uD M) (top_le hu) (top_le hu)
+    (hnv.trans_le lN) (succT_le_uD M)
+  have d₂ := neg_step_le hu hKn (le_trans (wD_le_Wd M) le_self_add) d₁
+  exact ΘB_of_typed _ hnv succT (succT_le_Gd M _)
+    (d₂.mono (le_of_add_eq (y := 40 * ^nrel 2 R v) (by ring)))
 
 set_option maxHeartbeats 4000000 in
 theorem case_verum (M : V) :
