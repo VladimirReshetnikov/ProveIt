@@ -1,4 +1,5 @@
 import ZFCinPA.ValidatorEnvironmentVacuity222
+import ZFCinPA.ValidatorPrefixContext
 
 set_option autoImplicit false
 set_option Elab.async false
@@ -123,17 +124,9 @@ lemma conj_interchange (a b c : V) :
 /-- A bounded family of Sigma1 proof witnesses, so IΣ1 induction suffices.
 No equal-length hypothesis is needed: the raw nth operation is total. -/
 lemma prefix_projection (n B B' : V) :
-    ∀ i<n, CProv (wim (prefixContext n B B') (Eind B.[i] B'.[i])) := by
-  induction n using ISigma1.sigma1_succ_induction
-  · definability
-  case zero => intro i hi; simp at hi
-  case succ n ih =>
-    intro i hi
-    rcases lt_or_eq_of_le (lt_succ_iff_le.mp hi) with hit | rfl
-    · rw [prefixContext_succ]
-      exact compose (conj_right _ _) (ih i hit)
-    · rw [prefixContext_succ]
-      exact conj_left _ _
+    ∀ i<n, CProv (wim (prefixContext n B B') (Eind B.[i] B'.[i])) :=
+  ValidatorPrefixContext.projection CProv Eind prefixContext prefixContext_succ
+    conj_left conj_right (fun h₁ h₂ => compose h₁ h₂) n B B'
 
 lemma eindContext_projection (B B' i : V) (hi : i<len B) :
     CProv (wim (eindContext B B') (Eind B.[i] B'.[i])) :=
@@ -145,20 +138,10 @@ lemma prefix_cons_equiv (n B B' x y : V) :
     CProv (wim (prefixContext (n+1) (x∷B) (y∷B'))
       (conj (Eind x y) (prefixContext n B B'))) ∧
     CProv (wim (conj (Eind x y) (prefixContext n B B'))
-      (prefixContext (n+1) (x∷B) (y∷B'))) := by
-  induction n using ISigma1.sigma1_succ_induction
-  · definability
-  case zero =>
-    constructor <;> simpa only [prefixContext_succ,prefixContext_zero,nth_adjoin_zero] using
-      (Kalmar.self_imp cProv_classical (conj (Eind x y) (0 : V)))
-  case succ n ih =>
-    constructor
-    · simpa only [prefixContext_succ,nth_adjoin_succ] using
-        compose (conj_mono_right (Eind B.[n] B'.[n]) ih.1)
-          (conj_interchange (Eind B.[n] B'.[n]) (Eind x y) (prefixContext n B B'))
-    · simpa only [prefixContext_succ,nth_adjoin_succ] using
-        compose (conj_interchange (Eind x y) (Eind B.[n] B'.[n]) (prefixContext n B B'))
-          (conj_mono_right (Eind B.[n] B'.[n]) ih.2)
+      (prefixContext (n+1) (x∷B) (y∷B'))) :=
+  ValidatorPrefixContext.cons_equiv CProv Eind prefixContext prefixContext_zero prefixContext_succ
+    (fun h₁ h₂ => compose h₁ h₂) (Kalmar.self_imp cProv_classical)
+    (fun a {_b _c} h => conj_mono_right a h) conj_interchange n B B' x y
 
 lemma eindContext_cons_forward (B B' x y : V) :
     CProv (wim (eindContext (x∷B) (y∷B')) (conj (Eind x y) (eindContext B B'))) := by
