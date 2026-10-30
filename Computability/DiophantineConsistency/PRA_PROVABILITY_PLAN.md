@@ -12,6 +12,8 @@ A separate [87-operation adaptive output candidate](research/adaptive-first-root
 factors one root of the 88-operation thirteen-variable circuit. The finite
 schedule audit and local signed-pair/`Expr.splitNatural` Lean lemmas have
 [independent replays](reviews/adaptive-first-root-factor87-independent.md).
+A separate [checked context lemma](reviews/adaptive-first-root-factor87-context-independent.md)
+extends the rewrite to arbitrary actual one-hole expression substitutions.
 The full revised literal has not yet been bound to the maintained equation in
 Lean, and the candidate has no separate HA or PRA endpoint.
 
