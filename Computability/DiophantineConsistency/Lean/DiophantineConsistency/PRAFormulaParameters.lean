@@ -56,6 +56,23 @@ theorem packParameters_open {n : ℕ} (φ : Semiproposition language n) (h : φ.
   rw [hb', qr_rew] at hq
   exact hq.trans h
 
+/-- Evaluation of a formula whose free parameters are fixed below a bound. -/
+theorem fixed_pack_eval {M : Type} [Structure language M] {n : ℕ}
+    (φ : Semiproposition language n) (r : ℕ) (hr : φ.fvSup ≤ r)
+    (v : Fin (n+r) → M) (fallback : ℕ → M) :
+    ((Rew.fixitr n r ▹ φ).toEmpty (fixed_no_free_of_le φ r hr)).Eval v Empty.elim ↔
+      φ.Eval (fun i => v (i.castAdd r))
+        (fun i => if hi : i < r then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i-r)) := by
+  rw [←Semiformula.eval_toEmpty (f := fallback) (fixed_no_free_of_le φ r hr)]
+  rw [Semiformula.eval_rew]
+  simp only [Function.comp_def, Rew.fixitr_bvar, Semiterm.val_bvar, Rew.fixitr_fvar]
+  have heq : (fun i => Semiterm.val v fallback
+      (if hi : i < r then (#(Fin.natAdd n ⟨i,hi⟩) : SyntacticSemiterm language (n+r)) else &(i-r))) =
+      (fun i => if hi : i < r then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i-r)) := by
+    funext i
+    split <;> rfl
+  rw [heq]
+
 /-- Packed arguments evaluate as the original bound variables followed by the
 free parameters occurring below the formula's finite free-variable bound. -/
 theorem packParameters_eval {M : Type} [Structure language M] {n : ℕ}
@@ -63,17 +80,7 @@ theorem packParameters_eval {M : Type} [Structure language M] {n : ℕ}
     (packParameters φ).Eval v Empty.elim ↔
       φ.Eval (fun i => v (i.castAdd φ.fvSup))
         (fun i => if hi : i < φ.fvSup then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i - φ.fvSup)) := by
-  unfold packParameters
-  rw [←Semiformula.eval_toEmpty (f := fallback) (fixed_no_free φ)]
-  rw [Semiformula.eval_rew]
-  simp only [Function.comp_def, Rew.fixitr_bvar, Semiterm.val_bvar, Rew.fixitr_fvar]
-  have heq : (fun i => Semiterm.val v fallback
-      (if hi : i < φ.fvSup then (#(Fin.natAdd n ⟨i,hi⟩) : SyntacticSemiterm language (n + φ.fvSup))
-        else &(i - φ.fvSup))) =
-      (fun i => if hi : i < φ.fvSup then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i - φ.fvSup)) := by
-    funext i
-    split <;> rfl
-  rw [heq]
+  exact fixed_pack_eval φ φ.fvSup le_rfl v fallback
 
 /-- Every open formula with free numerical parameters has, after their explicit
 packing into bound argument positions, a certified PR characteristic. -/

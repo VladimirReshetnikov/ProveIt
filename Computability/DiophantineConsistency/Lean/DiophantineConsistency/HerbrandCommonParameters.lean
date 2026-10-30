@@ -34,14 +34,6 @@ theorem pack_eval {M : Type} [Structure language M] {n : ℕ}
     (pack φ r hr).Eval v Empty.elim ↔
       φ.Eval (fun i => v (i.castAdd r))
         (fun i => if hi : i < r then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i-r)) := by
-  unfold pack
-  rw [←Semiformula.eval_toEmpty (f := fallback) (fixed_no_free_of_le φ r hr)]
-  rw [Semiformula.eval_rew]
-  simp only [Function.comp_def, Rew.fixitr_bvar, Semiterm.val_bvar, Rew.fixitr_fvar]
-  have heq : (fun i => Semiterm.val v fallback
-      (if hi : i < r then (#(Fin.natAdd n ⟨i,hi⟩) : SyntacticSemiterm language (n+r)) else &(i-r))) =
-      (fun i => if hi : i < r then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i-r)) := by
-    funext i
-    split <;> rfl
-  rw [heq]
+  exact fixed_pack_eval φ r hr v fallback
+
 end DiophantineConsistency.HerbrandCommonParameters
