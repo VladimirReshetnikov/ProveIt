@@ -100,6 +100,19 @@ variable (hex_vac : ∀ {i p}, P (wim p (wal i p)) → P (wim (neg (wal i (neg p
 include hc hgen hdist in
 private lemma all_mono (i : V) {p q : V} (h : P (wim p q)) :
     P (wim (wal i p) (wal i q)) := hc.mp (hdist i p q) (hgen i h)
+include hc hex_vac in
+lemma vac_neg {i p : V} (h : P (wim p (wal i p))) :
+    P (wim (neg p) (wal i (neg p))) :=
+  compose P hc (hc.mp (contrapose P hc _ _) (hex_vac h)) (double_neg_elim P hc _)
+include hc hgen hdist hex_vac in
+lemma vac_imp {i a b : V} (ha : P (wim a (wal i a))) (hb : P (wim b (wal i b))) :
+    P (wim (wim a b) (wal i (wim a b))) := by
+  have hna : P (wim (neg a) (wal i (wim a b))) :=
+    compose P hc (vac_neg P hc hex_vac ha)
+      (all_mono P hc hgen hdist i (ded2 P hc (.mp (.ax (hc.efq b)) (.mp (h1 P) (h0 P)))))
+  have hbb : P (wim b (wal i (wim a b))) :=
+    compose P hc hb (all_mono P hc hgen hdist i (hc.k b a))
+  exact hc.mp (hc.mp (imp_cases P hc a b (wal i (wim a b))) hna) hbb
 include hc hgen hdist in
 lemma all_under_two (i : V) {h p q : V}
     (hpq : P (wim h (wim p q))) (hh : P (wim h (wal i h)))

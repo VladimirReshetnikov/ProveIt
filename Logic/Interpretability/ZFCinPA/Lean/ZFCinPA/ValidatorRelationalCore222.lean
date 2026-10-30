@@ -30,7 +30,6 @@ def Vac (i p : V) : Prop := CProv (wim p (wal i p))
 local notation "h0" => (ValidatorImplicationContext.h0 CProv)
 local notation "h1" => (ValidatorImplicationContext.h1 CProv)
 local notation "h2" => (ValidatorImplicationContext.h2 CProv)
-local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 local notation "ded3" => (ValidatorImplicationContext.ded3 CProv cProv_classical)
 
 lemma compose {a b c : V} (hab : CProv (wim a b)) (hbc : CProv (wim b c)) :
@@ -71,7 +70,7 @@ lemma ex_mono (i : V) {p q : V} (h : CProv (wim p q)) :
 lemma ex_elim_of_vac {i p : V} (h : Vac i p) : CProv (wim (ex i p) p) :=
   compose (ex_mono i h) (ex_all_elim i p)
 lemma vac_neg {i p : V} (h : Vac i p) : Vac i (neg p) :=
-  compose (contrapose_of (ex_elim_of_vac h)) (double_neg_elim (wal i (neg p)))
+  ValidatorImplicationContext.vac_neg CProv cProv_classical ex_elim_of_vac h
 
 lemma conj_left (a b : V) : CProv (wim (conj a b) a) :=
   ValidatorImplicationContext.conj_left CProv cProv_classical a b
@@ -92,17 +91,9 @@ lemma vac_truth (i : V) : Vac i (0 : V) :=
   cProv_mp (cProv_k (wal i 0) 0) (cProv_gen i cProv_truth)
 lemma vac_falsum (i : V) : Vac i (1 : V) := cProv_ex_falso (wal i 1)
 
-private lemma imp_cases (a b c : V) :
-    CProv (wim (wim (neg a) c) (wim (wim b c) (wim (wim a b) c))) :=
-  ValidatorImplicationContext.imp_cases CProv cProv_classical a b c
-
-lemma vac_imp {i a b : V} (ha : Vac i a) (hb : Vac i b) : Vac i (wim a b) := by
-  have hna : CProv (wim (neg a) (wal i (wim a b))) :=
-    compose (vac_neg ha)
-      (all_mono i (ded2 (.mp (.ax (cProv_ex_falso b)) (.mp h1 h0))))
-  have hbb : CProv (wim b (wal i (wim a b))) :=
-    compose hb (all_mono i (cProv_k b a))
-  exact cProv_mp (cProv_mp (imp_cases a b (wal i (wim a b))) hna) hbb
+lemma vac_imp {i a b : V} (ha : Vac i a) (hb : Vac i b) : Vac i (wim a b) :=
+  ValidatorImplicationContext.vac_imp CProv cProv_classical cProv_gen all_distribution
+    ex_elim_of_vac ha hb
 lemma vac_all (j : V) {i p : V} (hp : Vac i p) : Vac i (wal j p) :=
   compose (all_mono j hp) (all_swap j i p)
 
