@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAFixBitUFormulaBound
+#print axioms DiophantineConsistency.PRAFixBitUFormulaBound.uformula_bound_of_witness
+#print axioms DiophantineConsistency.PRAFixBitUFormulaBound.candidate_proves_uformula_bound

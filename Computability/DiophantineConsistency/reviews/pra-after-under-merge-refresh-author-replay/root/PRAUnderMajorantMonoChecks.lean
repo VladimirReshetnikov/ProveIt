@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAUnderMajorantMono
+#print axioms DiophantineConsistency.PRAUnderMajorantMono.expMajorant_mono
+#print axioms DiophantineConsistency.PRAUnderMajorantMono.seq_bound_of_common_under
+#print axioms DiophantineConsistency.PRAUnderMajorantMono.candidate_proves_seq_common_bound

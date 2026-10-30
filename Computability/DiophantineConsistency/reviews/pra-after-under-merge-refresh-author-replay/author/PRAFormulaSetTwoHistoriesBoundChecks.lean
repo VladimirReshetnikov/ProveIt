@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAFormulaSetTwoHistoriesBound
+#print axioms DiophantineConsistency.PRAFormulaSetTwoHistoriesBound.formulaSet_bound_of_two_histories
+#print axioms DiophantineConsistency.PRAFormulaSetTwoHistoriesBound.candidate_proves_formulaSet_two_histories_bound
