@@ -36,6 +36,12 @@ lemma compose {a b c : V} (hab : CProv (wim a b)) (hbc : CProv (wim b c)) :
     CProv (wim a c) :=
   ValidatorImplicationContext.compose CProv cProv_classical hab hbc
 
+/-- Implication is contravariant in its antecedent and covariant in its consequent. -/
+lemma imp_mono {p p' q q' : V} (hp : CProv (wim p' p)) (hq : CProv (wim q q')) :
+    CProv (wim (wim p q) (wim p' q')) :=
+  ValidatorImplicationContext.ded2 CProv cProv_classical
+    (.mp (.ax hq) (.mp h1 (.mp (.ax hp) h0)))
+
 lemma contrapose (a b : V) :
     CProv (wim (wim a b) (wim (neg b) (neg a))) :=
   ValidatorImplicationContext.contrapose CProv cProv_classical a b

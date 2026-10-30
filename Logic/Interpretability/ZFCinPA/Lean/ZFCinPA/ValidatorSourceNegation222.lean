@@ -16,7 +16,7 @@ namespace LeanProofs.ZFCinPA.ValidatorSourceNegation222
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
 open _root_.SetTheory.BusyBeaver.ZFC ArithmeticCode254
 open ValidatorProvability222 ValidatorFormulaEncoder222
-open ValidatorRelationalCore222 (compose contrapose_of double_neg_intro double_neg_elim all_mono)
+open ValidatorRelationalCore222 (compose imp_mono contrapose_of double_neg_intro double_neg_elim all_mono)
 open scoped LO.FirstOrder.Arithmetic
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
@@ -28,9 +28,7 @@ def NegEq (F B s p : V) : Prop :=
   CodeIff (encode F B s (Bootstrapping.neg ℒₛₑₜ p)) (codeNeg (encode F B s p))
 
 local notation "h0" => (ValidatorImplicationContext.h0 CProv)
-local notation "h1" => (ValidatorImplicationContext.h1 CProv)
 local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
-local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 private lemma self_imp (a : V) : CProv (wim a a) := ded1 h0
 
 theorem codeIff_refl (a : V) : CodeIff a a := ⟨self_imp a, self_imp a⟩
@@ -41,8 +39,7 @@ theorem codeIff_trans {a b c : V} (h₁ : CodeIff a b) (h₂ : CodeIff b c) :
 /-- The antecedent implication is reversed in each direction. -/
 theorem codeIff_imp {a a' b b' : V} (ha : CodeIff a a') (hb : CodeIff b b') :
     CodeIff (wim a b) (wim a' b') :=
-  ⟨ded2 (.mp (.ax hb.1) (.mp h1 (.mp (.ax ha.2) h0))),
-   ded2 (.mp (.ax hb.2) (.mp h1 (.mp (.ax ha.1) h0)))⟩
+  ⟨imp_mono ha.2 hb.1, imp_mono ha.1 hb.2⟩
 
 theorem codeIff_neg {a b : V} (h : CodeIff a b) :
     CodeIff (codeNeg a) (codeNeg b) := ⟨contrapose_of h.2, contrapose_of h.1⟩

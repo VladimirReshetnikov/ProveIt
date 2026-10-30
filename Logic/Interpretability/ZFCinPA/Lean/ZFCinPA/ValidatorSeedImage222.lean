@@ -68,14 +68,10 @@ theorem seed_image (a b c : V) (hca : c ≠ a) (hcb : c ≠ b) :
 
 private abbrev Equivalent (p q : V) := CProv (wim p q) ∧ CProv (wim q p)
 private lemma eq_refl (p : V) : Equivalent p p := ⟨ded1 h0, ded1 h0⟩
-private lemma imp_map {p p' q q' : V}
-    (hp : CProv (wim p' p)) (hq : CProv (wim q q')) :
-    CProv (wim (wim p q) (wim p' q')) :=
-  ded2 (.mp (.ax hq) (.mp h1 (.mp (.ax hp) h0)))
 private lemma eq_imp {p p' q q' : V}
     (hp : Equivalent p p') (hq : Equivalent q q') :
     Equivalent (wim p q) (wim p' q') :=
-  ⟨imp_map hp.2 hq.1, imp_map hp.1 hq.2⟩
+  ⟨imp_mono hp.2 hq.1, imp_mono hp.1 hq.2⟩
 private lemma eq_neg {p q : V} (h : Equivalent p q) : Equivalent (neg p) (neg q) :=
   ⟨contrapose_of h.2, contrapose_of h.1⟩
 private lemma eq_all (i : V) {p q : V} (h : Equivalent p q) :
