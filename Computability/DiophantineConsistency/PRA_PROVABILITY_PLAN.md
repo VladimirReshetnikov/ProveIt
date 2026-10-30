@@ -8,6 +8,13 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The upstream merge at `e5d166e20f` changed `PRAFormulaParameters` and five
+Herbrand parameter/context modules, plus ZFC interpretation and validator
+sources. Dependent PRA, pairing, normalization and positive-rule replays below
+cover their preceding snapshots until their affected source graphs are rebuilt.
+The separate 14-variable HA endpoint also needs a current-source replay of its
+changed ZFC dependencies.
+
 The [positive-rule clients](reviews/parsons-positive-clients-current-author-replay/README.md)
 now prove the guarded induction case in the restricted calculus and define a
 certificate that restricts an existing Parsons proof. Their candidate-PRA
