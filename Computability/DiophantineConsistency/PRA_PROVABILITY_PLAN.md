@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [first-carrier scalar reassociation](reviews/adaptive-construction-first-scalar2011-independent.md)
+now has matching author and independent source, object, and full-log hashes.
+It rewrites the supplied first norm and carrier identities into the literal
+adaptive graph's grouping. The hypotheses remain explicit: this does not yet
+construct the first-factor witness or establish the full zero.
+
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
 identifies the actual theorem associated with each affected snapshot. Module
