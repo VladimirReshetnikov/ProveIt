@@ -90,6 +90,10 @@ The independently replayed [compatibility overlay audit](reviews/adaptive-wang-c
 checks that its 367 canonical project objects are byte-identical and that its
 27 additions are the authenticated table and chunk objects. This does not
 authenticate the historical original table object or substitute a provider.
+The independently replayed [reduced-provider overlap audit](reviews/adaptive-reduced-provider-audit-independent.md)
+also matches all 367 canonical objects and authenticates the 40 additional
+reduced-equation objects against eight recorded providers. It does not itself
+create a combined provider or establish the Assembly premise.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
