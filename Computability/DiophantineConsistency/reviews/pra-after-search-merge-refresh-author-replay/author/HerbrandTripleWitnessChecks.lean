@@ -1,0 +1,6 @@
+import DiophantineConsistency.HerbrandTripleWitness
+open DiophantineConsistency.HerbrandTripleWitness
+#print axioms modelParameterTripleInstance
+#print axioms modelExtractedTripleList
+#print axioms PRA_exists_tripleWitness
+#check PRA_exists_tripleWitness

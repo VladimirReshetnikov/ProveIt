@@ -1,0 +1,19 @@
+'DiophantineConsistency.PRAHerbrandTripleSelection.modelMatrixAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAHerbrandTripleSelection.modelMatrixList' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAHerbrandTripleSelection.PRA_exists_triple_of_openDisjunction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAHerbrandTripleSelection.PRA_exists_triple_of_openDisjunction {n : ℕ}
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language (n + 3))
+  (hOpen : LO.FirstOrder.Semiformula.Open φ) (fallback : DiophantineConsistency.PRAFiniteTripleChoice.Triple n)
+  (ts : List (DiophantineConsistency.PRAFiniteTripleChoice.Triple n))
+  (hEither : DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* matrixList φ fallback ts) :
+  ∃ t,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.first) ∧
+      Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.second) ∧
+        Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.third) ∧
+          DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* matrixAt φ t

@@ -1,0 +1,19 @@
+'DiophantineConsistency.PRABoundedTermCharacteristic.termBoundedBy_eq' depends on axioms: [propext, Quot.sound]
+'DiophantineConsistency.PRABoundedTermCharacteristic.modelTermUniversalCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedTermCharacteristic.PRA_boundedTermStep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedTermCharacteristic.PRA_boundedTermStep {n : ℕ}
+  (c : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1))
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language (n + 1))
+  (t : DiophantineConsistency.PRATheory.TermN n)
+  (hbit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence c)
+  (hcorrect :
+    DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence c φ) :
+  ∃ d,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval d) ∧
+      DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence d ∧
+        DiophantineConsistency.PRATheory.PRA ⊢
+          DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence d (termBoundedBy φ t)

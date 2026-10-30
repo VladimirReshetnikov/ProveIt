@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRABoundedSearchMinimal
+#print axioms DiophantineConsistency.PRABoundedSearchMinimal.modelSearchPredecessorGood
+#print axioms DiophantineConsistency.PRABoundedSearchMinimal.PRA_proves_minimalSentence
+#check DiophantineConsistency.PRABoundedSearchMinimal.PRA_proves_minimalSentence

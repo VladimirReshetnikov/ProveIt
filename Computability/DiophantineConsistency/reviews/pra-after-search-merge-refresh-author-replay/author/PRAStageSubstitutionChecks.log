@@ -1,0 +1,18 @@
+'DiophantineConsistency.PRAStageSubstitution.stageSub_preserves' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStageSubstitution.stageSub_fvSup_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStageSubstitution.PRA_proves_stageSubstitution' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAStageSubstitution.PRA_proves_stageSubstitution (base : ℕ)
+  (φ : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language)
+  (a b c : LO.FirstOrder.SyntacticTerm DiophantineConsistency.PRALanguage.language)
+  (h : DiophantineConsistency.PRATheory.PRA ⊢ LO.FirstOrder.Semiformula.univCl φ)
+  (hφ : LO.FirstOrder.Semiformula.fvSup φ ≤ base + 3) (ha : ∀ (k : ℕ), LO.FirstOrder.Semiterm.FVar? a k → k < base)
+  (hb : ∀ (k : ℕ), LO.FirstOrder.Semiterm.FVar? b k → k < base)
+  (hc : ∀ (k : ℕ), LO.FirstOrder.Semiterm.FVar? c k → k < base) :
+  DiophantineConsistency.PRATheory.PRA ⊢ ((LO.FirstOrder.Rewriting.app (stageSub base a b c)) φ).univCl ∧
+    ((LO.FirstOrder.Rewriting.app (stageSub base a b c)) φ).fvSup ≤ base
