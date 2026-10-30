@@ -1,0 +1,5 @@
+# Focused post-second-validator rebase inputs
+
+Author run `/tmp/ha87-focused-validator-rebase-6qpfw2_p` is live; this is an input packet, not a successful proof receipt. The driver preserves the historical HA boundary and rebuilds affected adaptive sources. It reuses only previously verified focused outputs from `/tmp/ha87-focused-compat-rebuild-wc7u_7ot` after checking each source, direct dependency, companion object, old object, old log, and inherited boundary. The zero-record intervening stop is documented in `../ha87-validator-second-drift-stops/`.
+
+The source graph follows the same three roots as the preceding graph. It incorporates the only changed import edge in their common project graph, `ZFCinPA.ValidatorEind222` importing `ValidatorImplicationContext`, as independently discovered by the current full-source DAG run `/tmp/ha87-full-source-1_n8gnuo`. Recomputing reachability yielded unchanged HA, model and normalization node sets. The other changed source has unchanged direct imports. This is a focused provisional graph, with the historical HA source/object ancestry and transitive package provenance still inherited.
