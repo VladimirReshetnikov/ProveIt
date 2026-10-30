@@ -32,3 +32,9 @@ unshifted output DAG and excludes the shift. This transfers the parent
 equation's zero set, but it does not itself prove an HA or PRA consistency
 equivalence for the 13-variable equation. Earlier statements in this proposal
 about the literal binding being absent describe the prior checkpoint.
+
+## Further screening
+
+The bounded one- and two-operation modular-signature scans, their saved outputs,
+and their important exclusions are recorded in [SCREENING.md](SCREENING.md).
+They found no candidate in the screened subset and do not prove minimality.
