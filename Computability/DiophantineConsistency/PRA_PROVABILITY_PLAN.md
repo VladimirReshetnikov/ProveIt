@@ -72,6 +72,11 @@ finite-variable arithmetic no-zero sentence as an equivalent unary open
 candidate-PRA predicate, and transfer an IΣ₁ proof to a unary Π₁ equivalence
 when the required candidate-PRA implication is supplied. The corresponding
 representation of Foundation's actual ZFC consistency predicate remains open.
+The [literal fourteen-variable client](reviews/pra-literal-current-nozero-author-replay/README.md)
+specializes this equivalence to the maintained no-zero sentence. Its 26 local
+source dependencies and the client were independently rebuilt; the PRA
+provider is a pre-Herbrand-merge snapshot, and Foundation, Mathlib and the
+historical PAHF transitive graph are inherited as documented.
 
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,
