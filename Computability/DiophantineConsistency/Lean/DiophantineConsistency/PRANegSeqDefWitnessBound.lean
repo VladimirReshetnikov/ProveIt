@@ -24,12 +24,8 @@ theorem bnd_neg_rew3 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2
  (hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![a,b])
  (h : (bnd (∼φ)).Evalb ![a,b,w]) : (bnd (∼(ω ▹ φ))).Evalb ![d,l,s,w] := by
   have hn := PRABndRewriting.natural (∼φ) ω ![d,l,s] w
-  have hs : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by simp
+  have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
   rw [hv,hs,hs'] at hn
   have hh := hn.mpr h
   have heq : (ω ▹ (∼φ)) = ∼(ω ▹ φ) := by
@@ -48,11 +44,9 @@ theorem bnd_neg_rew3 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2
     letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hmap' : (∼isMappingDef.val).Evalb ![s] := by simpa using hm
     have hb := PRANegMappingWitnessBound.neg_mapping_bound_explicit s hmap'
-    have hs : Fin.snoc ![s] (PRANegMappingWitnessBound.negMappingMajorant s) = ![s,PRANegMappingWitnessBound.negMappingMajorant s] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![s] (PRANegMappingWitnessBound.negMappingMajorant s) = ![s,PRANegMappingWitnessBound.negMappingMajorant s] := by simp
     have hh := eval_bnd_mono (∼isMappingDef.val) ![s] (Empty.elim : Empty → V) hmap (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![s] w = ![s,w] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs' : Fin.snoc ![s] w = ![s,w] := by simp
     rw [hs'] at hh
     exact hh
   · right
@@ -74,13 +68,9 @@ theorem bnd_neg_rew3 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2
             have hd0 : (∼domainDef.val).Evalb ![d,s] := by simpa using hd''
             have hb := PRANegDomainWitnessBound.neg_domain_bound_explicit d s hd0
             have hsize := le_trans (PRANegMappingWitnessBound.negDomainMajorant_mono_left d (2*s) s hd') hdom
-            have hs : Fin.snoc ![d,s] (PRANegDomainWitnessBound.negDomainMajorant d s) = ![d,s,PRANegDomainWitnessBound.negDomainMajorant d s] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hs : Fin.snoc ![d,s] (PRANegDomainWitnessBound.negDomainMajorant d s) = ![d,s,PRANegDomainWitnessBound.negDomainMajorant d s] := by simp
             have hbounded := eval_bnd_mono (∼domainDef.val) ![d,s] (Empty.elim : Empty → V) hsize (by rw [hs]; exact hb)
-            have hs' : Fin.snoc ![d,s] w = ![d,s,w] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hs' : Fin.snoc ![d,s] w = ![d,s,w] := by simp
             rw [hs'] at hbounded
             let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#2]
             have hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![d,s] := by
@@ -92,13 +82,9 @@ theorem bnd_neg_rew3 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2
             have hb := PRANegUnderWitnessBound.neg_under_bound d l hu0
             have hadd : d+1 ≤ 2*s+1 := by simpa [add_comm] using add_le_add_right hd' 1
             have hsize := le_trans (negExpMajorant_mono (d+1) (2*s+1) hadd) hunder
-            have hs : Fin.snoc ![d,l] (PRANegExponentialWitnessBound.negExponentialMajorant (d+1)) = ![d,l,PRANegExponentialWitnessBound.negExponentialMajorant (d+1)] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hs : Fin.snoc ![d,l] (PRANegExponentialWitnessBound.negExponentialMajorant (d+1)) = ![d,l,PRANegExponentialWitnessBound.negExponentialMajorant (d+1)] := by simp
             have hbounded := eval_bnd_mono (∼underDef.val) ![d,l] (Empty.elim : Empty → V) hsize (by rw [hs]; exact hb)
-            have hs' : Fin.snoc ![d,l] w = ![d,l,w] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hs' : Fin.snoc ![d,l] w = ![d,l,w] := by simp
             rw [hs'] at hbounded
             let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
             have hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![d,l] := by
