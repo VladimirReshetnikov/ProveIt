@@ -48,6 +48,13 @@ estimate of time. Integration and source-current replay may uncover additional
 work. The 14-variable HA theorem itself is complete on its checked snapshot,
 subject to the current-source replay qualification above.
 
+The exact 87-operation HA client has since passed a guarded 83-module author
+build and final input audit; its two endpoint axiom checks report only
+`propext`, `Classical.choice`, and `Quot.sound`. An independent full replay is
+running. This is provisional snapshot evidence using the pinned historical
+HA and `ZF` objects and inherited package ancestry, not a complete
+current-source provenance audit. See the [author receipt](reviews/ha87-focused-pinned-zf-author-pass/README.md).
+
 A newer 86-operation direct-ordinate candidate now has a Lean theorem, with
 matching author and independent scoped replays, that its fixed-port no-zero
 sentence is equivalent to the 87-operation candidate's no-zero sentence in
