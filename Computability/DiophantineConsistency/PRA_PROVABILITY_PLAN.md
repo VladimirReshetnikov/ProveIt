@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A [bounded finite-tuple decoding graph](reviews/pra-tuple-graph-author-replay/README.md)
+now supplies existence, unique component recovery and bounds in arbitrary
+candidate-PRA models. This supports future external-parameter packing, but
+the corresponding induction adapter is not yet proved.
+
 The [finite paired-induction theorem](reviews/pra-paired-finite-current-author-replay/README.md)
 now eliminates any finite list of closed Σ₁ induction instances with bounded
 matrices `ψ(x,y,c)` that may depend on the induction parameter `c`, from a
