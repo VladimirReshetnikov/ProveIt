@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [coded Joosten rule client](reviews/pra-joosten-rule-current-author-replay/README.md)
+now extracts primitive-recursive base and step witnesses from the stated actual
+candidate-PRA premises and proves the coded existential induction conclusion.
+Connecting arbitrary `ParsonsRule.Proof` premises and preserving the restricted
+guarded formula shape remain open; this is not general conservation.
+
 The [finite multi-parameter induction theorem](reviews/pra-multi-induction-author-replay/README.md)
 now eliminates any finite list of strict Σ₁ induction instances with bounded
 matrices and independently chosen finite parameter arities, for the stated
