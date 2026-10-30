@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A [conditional IΣ₁ client](reviews/pra-conditional-normalization-author-replay/README.md)
+now composes finite proof extraction with multi-parameter strict induction
+elimination. It explicitly requires a proof-producing normalization certificate
+for every used Σ₁ predicate and an equality identifying the mapped conclusion
+with an open-existential goal; neither premise is discharged.
+
 The [literal factor-to-zero bridge](reviews/adaptive-construction-factor-independent.md)
 now derives the adaptive zero from four explicit factor-unit hypotheses and
 supplies a strong-unit and generic square-factor lemma. A [concrete witness](reviews/adaptive-construction-witness-independent.md)
