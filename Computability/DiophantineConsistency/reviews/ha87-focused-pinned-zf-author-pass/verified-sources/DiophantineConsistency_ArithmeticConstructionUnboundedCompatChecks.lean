@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticConstructionUnboundedCompat
+#print axioms DiophantineConsistency.ArithmeticConstructionUnboundedCompat.construction_unbounded_seed_phase_hL

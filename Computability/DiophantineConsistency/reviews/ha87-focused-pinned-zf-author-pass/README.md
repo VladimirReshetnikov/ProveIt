@@ -1,0 +1,7 @@
+# 87-gate HA focused author PASS
+
+Author `/tmp/ha87-focused-validator-rebase-8o6bp_pm` finished PASS after final source, direct-dependency, output/log, historical-object and pinned-ZF authentication. Its 83 rows include 78 authenticated reused author-prefix records. The included full state, all 83 compiler logs and per-module source snapshots retain their hashes and exact inputs. `HAAdaptiveFactor87Checks` prints the exact `ProofEquiv` statement and reports only `propext`, `Classical.choice` and `Quot.sound` for both endpoint theorems.
+
+This is a focused author build, not an independent replay and not a proof of source-current ancestry for the inherited historical HA and ZF objects or the transitive Foundation/Mathlib/package boundary. Current HA source hashes were guarded throughout but do not establish how the historical objects were produced. Prior failure, graph changes and ancestry are documented in `../ha87-client-namespace-fix/`, `../ha87-zf-fallback-failure-and-rebase/` and predecessor packets. The separate full source rebuild is still ongoing.
+
+From the repository root, run the included `driver.py` with no rebase to build a fresh focused peer; compare every row's source, direct dependencies, object and complete log hashes to the author state, and separately reauthenticate the inherited boundaries. A fresh author or peer compilation alone is not an independent authentication of those historical boundaries.
