@@ -17,6 +17,43 @@ def afterSecond (φ : Semiproposition language 3) (t u : SyntacticTerm language)
 def tripleInstance (φ : Semiproposition language 3) (t u v : SyntacticTerm language) : Proposition language :=
   (afterSecond φ t u)/[v]
 
+/-- Evaluation of the three successive term instances. -/
+theorem tripleInstance_eval {M : Type} [Structure language M] (φ : Semiproposition language 3)
+    (t u v : SyntacticTerm language) (e : ℕ → M) :
+    (tripleInstance φ t u v).Eval ![] e ↔
+      φ.Eval ![Semiterm.val ![] e v, Semiterm.val ![] e u, Semiterm.val ![] e t] e := by
+  unfold tripleInstance
+  rw [Semiformula.eval_substs]
+  have hv : (Semiterm.val ![] e ∘ ![v]) = ![Semiterm.val ![] e v] := by
+    funext i
+    exact Fin.cases rfl (fun i => Fin.elim0 i) i
+  rw [hv]
+  unfold afterSecond afterFirst
+  rw [Rew.qpow_succ]
+  rw [Semiformula.eval_rew_q]
+  simp only [Function.comp_def, Rew.subst_bvar, Rew.subst_fvar, Semiterm.val_fvar]
+  have hu : (fun x : Fin 1 => Semiterm.val ![] e (![u] x)) = ![Semiterm.val ![] e u] := by
+    funext i
+    exact Fin.cases rfl (fun i => Fin.elim0 i) i
+  rw [hu]
+  simp only [Rew.qpow_succ, Rew.qpow_zero]
+  rw [Semiformula.eval_rew_q]
+  simp only [Function.comp_def, Rew.q_fvar, Semiterm.val_bShift,
+    Rew.subst_fvar, Semiterm.val_fvar]
+  have ht : (fun x : Fin 2 => Semiterm.val ![Semiterm.val ![] e u] e ((Rew.subst ![t]).q #x)) =
+      ![Semiterm.val ![] e u, Semiterm.val ![] e t] := by
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · simp
+    · refine Fin.cases ?_ (fun k => Fin.elim0 k) j
+      change Semiterm.val _ _ ((Rew.subst ![t]).q #((0 : Fin 1).succ)) = _
+      rw [Rew.q_bvar_succ, Rew.subst_bvar]
+      change Semiterm.val (Semiterm.val ![] e u :> Fin.elim0) e (Rew.bShift t) = _
+      rw [Semiterm.val_bShift]
+      rfl
+  rw [ht]
+
+
 /-- Cut elimination for a triple-existential sequent preserves the finite
 universal axioms and contains no universal-rule nodes. -/
 noncomputable def prepareTriple (φ : Semiproposition language 3) (hOpen : φ.Open)
