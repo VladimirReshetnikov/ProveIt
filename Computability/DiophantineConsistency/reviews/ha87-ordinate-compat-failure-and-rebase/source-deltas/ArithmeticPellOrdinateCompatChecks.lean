@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticPellOrdinateCompat
+#print axioms DiophantineConsistency.ArithmeticPellOrdinateCompat.ordinate_add_ge
