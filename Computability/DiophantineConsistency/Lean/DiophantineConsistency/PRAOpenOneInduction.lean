@@ -66,13 +66,12 @@ theorem modelSuccInd_congr (φ ψ : Semiproposition language 1)
   intro e
   simp [succInd, Semiformula.eval_substs, h e]
 end models
-/-- Eliminate one actual successor-induction instance whose Σ₁ predicate has
-an arbitrary open matrix ψ(x,y,c), with no external predicate parameters. -/
-theorem PRA_proves_goal_of_openSuccInd (ψ : Semisentence language 3) (hψ : ψ.Open)
-    (θ : Semiproposition language 1) (hθ : θ.Open)
+/-- Eliminate an induction instance when its matrix has a certified
+characteristic code. -/
+theorem PRA_proves_goal_of_characteristicSuccInd (ψ : Semisentence language 3) (c : Code 3)
+    (hc : PRA ⊢ characteristicSentence c ψ) (θ : Semiproposition language 1) (hθ : θ.Open)
     (p : (PRA ∪ {(succInd (openSigma ψ)).univCl}) ⊢ (∃⁰ θ).univCl) :
     PRA ⊢ (∃⁰ θ).univCl := by
-  obtain ⟨c,_,hc⟩ := PRA_proves_openCharacteristic ψ hψ
   have hp : (PRA ∪ {(succInd (codedSigma c)).univCl}) ⊢ (∃⁰ θ).univCl := by
     letI : 𝗘𝗤 language ⪯ (PRA ∪ {(succInd (codedSigma c)).univCl}) :=
       Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
@@ -84,7 +83,7 @@ theorem PRA_proves_goal_of_openSuccInd (ψ : Semisentence language 3) (hψ : ψ.
       exact hBoth.models _ (Or.inl hσ)
     have hchar := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hc
     have hcode : M↓[language] ⊧ (succInd (codedSigma c)).univCl := hBoth.models _ (Or.inr rfl)
-    have hopen : M↓[language] ⊧ (succInd (openSigma ψ)).univCl := by
+    have hψ : M↓[language] ⊧ (succInd (openSigma ψ)).univCl := by
       apply (modelSuccInd_congr (openSigma ψ) (codedSigma c)
         (fun e x => modelSigmaCharacteristic ψ c hchar e x)).mpr
       exact hcode
@@ -95,7 +94,17 @@ theorem PRA_proves_goal_of_openSuccInd (ψ : Semisentence language 3) (hψ : ψ.
       · exact (inferInstance : M↓[language] ⊧* PRA).models _ hσ
       · simp only [Set.mem_singleton_iff] at hσ
         subst σ
-        exact hopen
+        exact hψ
     exact models_of_provable hPlus p
   exact PRA_proves_goal_of_succInd c θ hθ hp
+
+/-- Eliminate one actual successor-induction instance whose Σ₁ predicate has
+an arbitrary open matrix ψ(x,y,c), with no external predicate parameters. -/
+theorem PRA_proves_goal_of_openSuccInd (ψ : Semisentence language 3) (hψ : ψ.Open)
+    (θ : Semiproposition language 1) (hθ : θ.Open)
+    (p : (PRA ∪ {(succInd (openSigma ψ)).univCl}) ⊢ (∃⁰ θ).univCl) :
+    PRA ⊢ (∃⁰ θ).univCl := by
+  obtain ⟨c,_,hc⟩ := PRA_proves_openCharacteristic ψ hψ
+  exact PRA_proves_goal_of_characteristicSuccInd ψ c hc θ hθ p
+
 end DiophantineConsistency.PRAOpenOneInduction
