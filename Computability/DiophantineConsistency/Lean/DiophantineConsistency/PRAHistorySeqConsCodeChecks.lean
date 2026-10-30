@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistorySeqConsCode
+
+#print axioms DiophantineConsistency.PRAHistorySeqConsCode.modelSeqConsCode
+#print axioms DiophantineConsistency.PRAHistorySeqConsCode.PRA_has_seqConsCode
