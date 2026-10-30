@@ -80,28 +80,20 @@ lemma translate_gicBodySource
 
 /-- The support substitution is the raw identity on the core. -/
 lemma gic_core_subst_identity (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
-    subst ℒₛₑₜ ((gicSubst01Const : ℕ) : V) K.val = K.val := by
-  have h : ((gicSubst01Const : ℕ) : V) = (repSubst3Const : V) := by
-    rw [val_gicSubst01Const, val_repSubst3Const]
-  rw [h]
-  exact ModelCodedSchemaAxioms.rep_core_subst_identity K
+    subst ℒₛₑₜ ((gicSubst01Const : ℕ) : V) K.val = K.val :=
+  GicTemplateSyntax.gic_core_subst_identity K
 
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
 lemma union_class_iff (T U : SetTheory) [T.Δ₁] [U.Δ₁] (p : V) :
     p ∈ (T ∪ U).Δ₁Class ↔ p ∈ T.Δ₁Class ∨ p ∈ U.Δ₁Class := ModelCodedSchemaAxioms.union_class_iff T U p
 
-lemma gic_class_iff (p : V) : p ∈ gicTheory.Δ₁Class ↔ GicR p := by
-  change (V ⊧/![p] gicCh.val) ↔ _
-  simp
+lemma gic_class_iff (p : V) : p ∈ gicTheory.Δ₁Class ↔ GicR p :=
+  GicTemplateSyntax.gic_class_iff p
 
 /-- The closing code of an open GIC body is recognized. -/
 theorem closedGic_recognized (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
-    GicR (closeFormulaCode ℒₛₑₜ (gicBodyVal K.val)) := by
-  apply closeFormulaCode_schemaRecognizer gicBodyVal K
-  · rw [gicBodyVal_eq K]; exact (gicBody K).isSemiformula
-  · have h := subst01_le_gicBodyVal K.val
-    rw [gic_core_subst_identity K] at h
-    exact h
+    GicR (closeFormulaCode ℒₛₑₜ (gicBodyVal K.val)) :=
+  GicTemplateSyntax.closedGic_recognized K
 
 theorem closedGic_mem_native (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
     closeFormulaCode ℒₛₑₜ (gicBodyVal K.val) ∈ nativeTheory.Δ₁Class := by
