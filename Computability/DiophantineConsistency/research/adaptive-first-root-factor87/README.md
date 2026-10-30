@@ -50,3 +50,5 @@ The [four-operation scaled-product screen](SCREENING-FOUR-SCALED-PRODUCTS.md)
 examines another restricted shape; its negative result is not a minimality claim.
 The [four-operation affine-scaled screen](SCREENING-FOUR-AFFINE-SCALED.md)
 checks a different bounded shape and likewise proves no minimality result.
+The [four-operation affine-product screen](SCREENING-FOUR-AFFINE-PRODUCT.md)
+checks another restricted family with no minimality claim.
