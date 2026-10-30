@@ -53,8 +53,9 @@ The [Wang-table chunk pilot](reviews/adaptive-wang-chunk-pilot-independent.md)
 independently checks the first 128 rows of each of the three existing finite
 predicates in a private overlay. The subsequent [full chunked predicate build](reviews/adaptive-wang-chunk-full-independent.md)
 has independently replayed all 24 chunks and their three take/drop
-recombinations. Rebuilding the original module, checking all relevant
-interfaces, and the source-current CellWindow/Assembly builds remain to be
+recombinations. A [private replacement module](reviews/adaptive-wang-table-split-independent.md)
+also passed an independent rebuild using those chunk facts. A full export
+comparison and the source-current CellWindow/Assembly builds remain to be
 established; the original WangTable worker continues independently.
 An [11-declaration interface comparison](reviews/adaptive-wang-chunk-interface-partial2011-independent.md)
 also passed independently against a historical original object; it is a
