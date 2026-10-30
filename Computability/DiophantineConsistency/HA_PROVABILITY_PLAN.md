@@ -75,9 +75,10 @@ An exact 86-operation HA client and its independent extension replay have
 compiled 27 modules and checked a theorem asserting existence of an HA
 derivation of the equivalence to ordinary Foundation ZFC consistency. Both
 extensions use the original 87 author provider, whose reused prefix has the
-transitive-environment gap described above. A new extension against the fresh
-87 peer is needed, in addition to the historical HA, ZF, Foundation and
-package provenance qualification. See the
+transitive-environment gap described above. A separate 27-module extension
+against the fresh 87 peer has now passed its author build and final audit;
+an independent extension replay is running. Historical HA, ZF, Foundation and
+package provenance remains inherited. See the
 [86 author receipt](reviews/ha86-focused-extension-author.md).
 
 ## Exact target and established results
