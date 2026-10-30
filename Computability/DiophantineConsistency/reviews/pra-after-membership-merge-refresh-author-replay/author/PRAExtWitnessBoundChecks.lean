@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAExtWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRAExtWitnessBound.ext_bound
+#print axioms DiophantineConsistency.PRAExtWitnessBound.candidate_ext_bound
+#print axioms DiophantineConsistency.PRAExtWitnessBound.candidate_proves_ext_bound
+#check DiophantineConsistency.PRAExtWitnessBound.candidate_proves_ext_bound

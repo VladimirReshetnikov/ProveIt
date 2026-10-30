@@ -1,0 +1,14 @@
+'DiophantineConsistency.PRAStrictConReverse.original_of_surrogate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStrictConReverse.comparison_if_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAStrictConReverse.BoundCertificate (π : LO.FirstOrder.ArithmeticSentence) : Prop
+DiophantineConsistency.PRAStrictConReverse.comparison_if_bound (n : ℕ) (a b : LO.FirstOrder.Semiterm ℒₒᵣ Empty n)
+  (π : LO.FirstOrder.ArithmeticSentence) (hπ : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 1 π)
+  (h : 𝗜𝚺₁ ⊢ DiophantineConsistency.PRANoZeroUnary.noZero n a b 🡘 ∼π) (hbound : BoundCertificate π) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+        (DiophantineConsistency.PRANoZeroUnary.noZero n a b) 🡘
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) (∼π)

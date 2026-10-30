@@ -6,4 +6,4 @@ The positive formula-set graph now has a candidate-PRA client that expands both 
 
 The final closed sentence is proved in candidate PRA through all-model IOpen reasoning and completeness. For every relevant formula index it still assumes suitable universal-formula and BV history codes, bounds on both actual `limSeqDef` graphs, and the listed size and bit-membership conditions. It does not construct or bound either recursive history uniformly. Further derivation-rule and refutation predicate obligations also remain, so this is not the requested HA equivalence proof.
 
-The source-current eight-module validation packet is `reviews/pra-two-histories-explicit-pair-author-replay`. Its parent includes the post-merge 103-module graph; the packet records whether that parent has completed independent replays and names inherited Foundation boundaries.
+The source-current eight-module validation packet is `reviews/pra-two-histories-explicit-pair-author-replay`. Its parent includes the post-merge 103-module graph; the packet records the completed independent parent replays and names inherited Foundation boundaries.

@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAStrictConForward
+open DiophantineConsistency.PRAStrictConForward
+#print axioms original_implies_noZero
+#check original_implies_noZero

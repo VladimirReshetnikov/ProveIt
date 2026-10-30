@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRASemiFormulaSigmaBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRASemiFormulaSigmaBound.semiformula_sigma_zero_bound
+#print axioms DiophantineConsistency.PRASemiFormulaSigmaBound.candidate_proves_semiSigmaZero_bound
+#check DiophantineConsistency.PRASemiFormulaSigmaBound.candidate_proves_semiSigmaZero_bound

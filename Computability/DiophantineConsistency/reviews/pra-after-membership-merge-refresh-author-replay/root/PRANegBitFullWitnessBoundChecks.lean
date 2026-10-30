@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRANegBitFullWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRANegBitFullWitnessBound.negBit_bound
+#print axioms DiophantineConsistency.PRANegBitFullWitnessBound.candidate_proves_negBit_bound
+#check DiophantineConsistency.PRANegBitFullWitnessBound.candidate_proves_negBit_bound

@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRANegExtWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRANegExtWitnessBound.neg_ext_bound
+#print axioms DiophantineConsistency.PRANegExtWitnessBound.candidate_proves_negExt_bound
+#check DiophantineConsistency.PRANegExtWitnessBound.candidate_proves_negExt_bound

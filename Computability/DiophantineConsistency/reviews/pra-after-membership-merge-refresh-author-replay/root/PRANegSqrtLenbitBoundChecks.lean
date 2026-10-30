@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRANegSqrtLenbitBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRANegSqrtLenbitBound.negSqrtLenbit_bound
+#print axioms DiophantineConsistency.PRANegSqrtLenbitBound.negSqrtLenbitBoundBody_model
+#print axioms DiophantineConsistency.PRANegSqrtLenbitBound.candidate_proves_negSqrtLenbit_bound
+#check DiophantineConsistency.PRANegSqrtLenbitBound.candidate_proves_negSqrtLenbit_bound

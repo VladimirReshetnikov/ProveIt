@@ -1,0 +1,5 @@
+# Post-merge membership graph refresh
+
+An upstream merge interrupted the initial source-guarded build. Its FAILED receipt is preserved. A dependency-closed subset of 79 completed rows was reauthenticated against current local sources and reused provisionally in a 24-module rebased suffix. The combined author graph contains all 103 rebuilt modules in topological order. The root and private full replays from the original accepted parent have both passed, with all 103 source, object, and log hashes matching the combined author manifest. External package and unlisted Foundation transitives are inherited; listed Foundation source/object boundaries are checked. The target graph includes the positive/negative formula-set syntax and UFormula/history clients, with their explicit history and BV assumptions. No full recursive-history majorant or rho/HA certificate is supplied.
+
+Full peer replay: `python3 Computability/DiophantineConsistency/reviews/pra-after-membership-merge-refresh-author-replay/replay.py --parent /tmp/pra-formulaset-uhistory-independent-g80hq8xp/lib`.
