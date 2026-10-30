@@ -53,27 +53,25 @@ instance weq_sigma1 : 𝚺₁-Function₂[V] weq := weq_defined.to_definable₀
 /-! ## Finite propositional reasoning -/
 
 abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
+lemma h0 {G : List V} {a : V} : D (a::G) a := ValidatorImplicationContext.h0 CProv
 lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
+  ValidatorImplicationContext.h1 CProv
 lemma h2 {G : List V} {a b c : V} : D (c::b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
+  ValidatorImplicationContext.h2 CProv
 lemma h3 {G : List V} {a b c e : V} : D (e::c::b::a::G) a :=
   .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_of_mem _
     (List.mem_cons_self ..))))
 lemma ofDer {p : V} (d : D [] p) : CProv p :=
   d.sound cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
 lemma ded1 {a p : V} (d : D [a] p) : CProv (wim a p) :=
-  ofDer (Kalmar.deduction cProv_classical d)
+  ValidatorImplicationContext.ded1 CProv cProv_classical d
 lemma ded2 {a b p : V} (d : D [b,a] p) : CProv (wim a (wim b p)) :=
-  ofDer (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d))
+  ValidatorImplicationContext.ded2 CProv cProv_classical d
 lemma ded3 {a b c p : V} (d : D [c,b,a] p) : CProv (wim a (wim b (wim c p))) :=
-  ofDer (Kalmar.deduction cProv_classical
-    (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d)))
+  ValidatorImplicationContext.ded3 CProv cProv_classical d
 lemma ded4 {a b c e p : V} (d : D [e,c,b,a] p) :
     CProv (wim a (wim b (wim c (wim e p)))) :=
-  ofDer (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical
-    (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d))))
+  ValidatorImplicationContext.ded3 CProv cProv_classical (Kalmar.deduction cProv_classical d)
 
 lemma self_imp (a : V) : CProv (wim a a) := ded1 h0
 

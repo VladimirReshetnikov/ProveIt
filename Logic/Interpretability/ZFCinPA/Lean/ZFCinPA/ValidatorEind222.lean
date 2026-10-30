@@ -170,16 +170,9 @@ theorem Eind_el_l (a b c : V) : CProv (wim (Eind c a) (wim (wel c b) (wel a b)))
 
 theorem biff_euclid (p q r : V) :
     CProv (wim (biff p q) (wim (biff p r) (biff q r))) := by
-  apply ded2
-  have pq : D [biff p r, biff p q] (wim p q) := .mp (.ax (conj_left _ _)) h1
-  have qp : D [biff p r, biff p q] (wim q p) := .mp (.ax (conj_right _ _)) h1
-  have pr : D [biff p r, biff p q] (wim p r) := .mp (.ax (conj_left _ _)) h0
-  have rp : D [biff p r, biff p q] (wim r p) := .mp (.ax (conj_right _ _)) h0
-  have qr : D [biff p r, biff p q] (wim q r) :=
-    Kalmar.deduction cProv_classical (.mp pr.weaken (.mp qp.weaken h0))
-  have rq : D [biff p r, biff p q] (wim r q) :=
-    Kalmar.deduction cProv_classical (.mp pq.weaken (.mp rp.weaken h0))
-  exact .mp (.mp (.ax (conj_rule _ _)) qr) rq
+  have hr : CProv (wim (biff p q) (wim r r)) :=
+    cProv_mp (cProv_k (wim r r) (biff p q)) (self_imp r)
+  exact biff_transport _ _ _ _ _ (conj_left _ _) (conj_right _ _) hr hr
 
 theorem all_mono2 (i : V) {a b c : V} (h : CProv (wim a (wim b c))) :
     CProv (wim (wal i a) (wim (wal i b) (wal i c))) :=
