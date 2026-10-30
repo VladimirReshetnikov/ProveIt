@@ -180,13 +180,6 @@ theorem zf_nativeG_distinct (a b c : V) (p : Formula V ℒₛₑₜ)
 private lemma zf_empty_sentence : (𝗭𝗙 : SetTheory) ⊢ Axiom.empty := by
   exact LO.Entailment.Axiomatized.by_axm ZermeloFraenkel.axiom_of_empty_set
 
-private lemma quote_vec2 {n : Nat} (t u : SyntacticSemiterm ℒₛₑₜ n) :
-    (fun i => (⌜(![t,u]) i⌝ : Bootstrapping.Semiterm V ℒₛₑₜ n)) = ![⌜t⌝,⌜u⌝] := by
-  funext i
-  match i with
-  | 0 => rfl
-  | 1 => rfl
-
 private lemma zf_named_empty (a c : V) (hca : c ≠ a) :
     (𝗭𝗙 : SetTheory).internalize V ⊢
       namedExists c (namedFormula a (∼memNamed a c)) := by
