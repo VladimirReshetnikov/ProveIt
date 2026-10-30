@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [main-factor reverse bridge](reviews/adaptive-construction-main-factor2011-independent.md)
+derives the actual literal factor unit from explicit additive carrier and
+old-norm hypotheses. Binding those hypotheses to the common witness is still
+required.
+
 A [conditional IΣ₁ client](reviews/pra-conditional-normalization-author-replay/README.md)
 now composes finite proof extraction with multi-parameter strict induction
 elimination. It explicitly requires a proof-producing normalization certificate
