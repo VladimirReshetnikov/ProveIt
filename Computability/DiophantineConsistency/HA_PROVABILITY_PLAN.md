@@ -59,7 +59,9 @@ provider. The [independent compatibility replay](reviews/adaptive86-machine-comp
 checks its fixed-port no-zero equivalence with represented-machine nonhalting
 in every IΣ₁ model. It inherits the historical machine provider and uses four
 private additive helper declarations, with one extra import in the
-main-orientation module; it is not a full current-source closure. A coherent
+main-orientation module. A later upstream merge refactored its rank client, so
+this too is a checked source snapshot rather than a replay of the latest
+source tree; it is not a full current-source closure. A coherent
 connection to the ZFC consistency bridge, and HA and PRA proof-existence
 theorems for this candidate, remain to be established.
 
