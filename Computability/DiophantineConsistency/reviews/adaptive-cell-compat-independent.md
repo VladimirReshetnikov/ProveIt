@@ -1,0 +1,5 @@
+# Independent compatibility-based CellWindow rebuild
+
+Root replay `/tmp/adaptive13-cell-compat-complete-y4d89y9u` **PASS**: all six dependency-ordered source modules from WangPlane through CellWindow have source, object and complete-log hashes identical to the author run. The full logs retain the same deprecation and unused-variable warnings. The independent driver checks the 356 canonical guards, 1,717 selected base objects, authenticated compatibility/chunk inputs, 46 source snapshots and 36 prefix source/object/log/time records before and after the build. The author run's separately audited postcheck and original historical attempt remain preserved in its receipt.
+
+The 21-file `adaptive-cell-compat-independent-evidence/FILES.json` manifest has SHA-256 `c24f3c653a87c13935035d07f567b3e72bfce7a39492221e5c84bf2d8c3f6213`. This is a source-current private CellWindow build using the compatibility replacement, not canonical integration. The original historical comparison object lacks established current-source provenance, the complete elaborator interface audit is not claimed, and no HA provability theorem follows from this build alone.

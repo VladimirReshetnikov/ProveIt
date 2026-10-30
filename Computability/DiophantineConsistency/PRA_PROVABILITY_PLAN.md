@@ -55,8 +55,8 @@ predicates in a private overlay. The subsequent [full chunked predicate build](r
 has independently replayed all 24 chunks and their three take/drop
 recombinations. A [private replacement module](reviews/adaptive-wang-table-split-independent.md)
 also passed an independent rebuild using those chunk facts. A full export
-comparison and the source-current CellWindow/Assembly builds remain to be
-established; the original WangTable worker continues independently.
+comparison and the source-current Assembly build remain to be established;
+the original WangTable worker continues independently.
 An [11-declaration interface comparison](reviews/adaptive-wang-chunk-interface-partial2011-independent.md)
 also passed independently against a historical original object; it is a
 partial comparison and does not establish that object's source provenance.
@@ -78,12 +78,26 @@ replays; theorem proof bodies and other metadata remain outside its scope.
 The direct importer [WangPlane](reviews/adaptive-wang-plane-split-independent.md)
 has independently rebuilt against the initial private split table. This is a
 single downstream client with two retained deprecation warnings; it does not
-resolve the full interface comparison or rebuild the remaining CellWindow
-and Assembly chain.
+resolve the full interface comparison. A later [private CellWindow continuation](reviews/adaptive-cell-compat-independent.md)
+rebuilt all six downstream modules against the compatibility table and passed
+an independent complete source/provider replay. The Assembly chain and the
+historical table object's current-source provenance remain open.
+The [adaptive natural-zero soundness client](reviews/adaptive-halt-client-independent.md)
+also passed independent replay: in each stated IΣ₁ model a zero of the
+13-variable natural expression yields a bounded represented-machine halt.
+It is not yet a syntactic HA proof or the complete converse construction.
+The independently replayed [87-operation soundness client](reviews/adaptive-reduced-halt-client-independent.md)
+transfers this result to the exact reduced natural expression using the
+checked literal equivalence. Its private providers and historical table
+comparison boundary remain as above.
 The independently replayed [compatibility overlay audit](reviews/adaptive-wang-compat-overlay-audit-independent.md)
 checks that its 367 canonical project objects are byte-identical and that its
 27 additions are the authenticated table and chunk objects. This does not
 authenticate the historical original table object or substitute a provider.
+The independently replayed [reduced-provider overlap audit](reviews/adaptive-reduced-provider-audit-independent.md)
+also matches all 367 canonical objects and authenticates the 40 additional
+reduced-equation objects against eight recorded providers. It does not itself
+create a combined provider or establish the Assembly premise.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -178,6 +192,9 @@ The [second-index family clients](reviews/pra-sndidx-family-author-replay/README
 also bound all indices below a limit by one primitive-recursive fold and
 construct the corresponding candidate-PRA sentence; both were independently
 replayed against the refreshed graph.
+The independently replayed [triple-pair local bound](reviews/pra-pair3-bound-author-replay/README.md)
+gives `p+1` for Foundation's exact `pair₃Def` graph, which appears in the
+Nth blueprint. The enclosing Nth core, fixpoint and `ρ` bound remain open.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated

@@ -1,0 +1,7 @@
+# Actual 13-variable natural zero implies machine halt
+
+`ArithmeticAdaptiveHalt2011.natural_zero_halts` proves in every model of IΣ₁ that a zero of the actual 13-variable `naturalExpression` yields a bound `N` and a represented machine halting time `t < N`. It composes the checked `current_natural_window` for the actual expression with `ArithmeticCellWindow.window_halts`; the result assumes the zero and does not assume a window or a halt.
+
+Authenticated author build `/tmp/adaptive-halt-client-9uszegm7` **PASS**, Lean exit 0 with empty log; object SHA-256 `3ad77213d16aca7c77404a80111697676df58a39eed38f93968392539757e69a`. Complete CellWindow, 46-source snapshot, 36-prefix record and inherited-provider reauthentication passed both before and after compilation. This uses the private compatibility WangTable provider, whose historical-original object source provenance remains unestablished and whose complete elaborator interface comparison is not claimed. No provider is integrated into the canonical overlay.
+
+Reproduce with `python3 Computability/DiophantineConsistency/research/wang-chunk-full/build_adaptive_halt.py` and the recorded private inputs, or set `CELL_COMPAT_BUILD` to an independently authenticated CellWindow provider. The nine-file `adaptive-halt-client-author-evidence/FILES.json` SHA-256 is `621e5bca4d1410b27959fea61d496407d5d406d7b12b33422f71e48db7609504`. This is a model-theoretic IΣ₁ statement, not a Lean proof that HA proves the consistency equivalence; the 87-gate transfer is a separate client.

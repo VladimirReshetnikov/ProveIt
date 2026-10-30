@@ -1,0 +1,5 @@
+# Reduced-zero provider: current-source overlap audit
+
+Read-only audit `/tmp/adaptive-reduced-provider-audit-7l3w83ts` **PASS**: all 367 canonical project objects match the independently replayed reduced-zero provider byte-for-byte. Its 40 extra project objects resolve to eight recorded PASS provider states; the audit checks current source, compiled object and complete log hashes for their recorded builds. It authenticates the eight provider manifests and their 1,753 deduplicated inherited objects, plus all 356 canonical source guards and 1,717 selected canonical provider objects before and after. Full path-to-record and overlap maps are preserved in `result.json`.
+
+Reproduce with `python3 Computability/DiophantineConsistency/research/wang-chunk-full/audit_reduced_provider.py`. The three-file `adaptive-reduced-provider-audit-author-evidence/FILES.json` manifest has SHA-256 `0e6fa0078aea8e5cbc63325194a44ac27488650b931d472a28a46fb4b94c15ba`. The audit creates no combined overlay. It checks provenance for the conditional 87-gate zero chain and does not compile the strengthened Assembly, prove its premise, or establish an HA endpoint.
