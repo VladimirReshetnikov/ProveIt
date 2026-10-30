@@ -1,0 +1,7 @@
+# Direct-ordinate 86 signed V: author replay
+
+`AdaptiveDirectOrdinate86SignedV.signedV_rep` proves that the literal signed expression V represents the pair `(f²Tc, f²R+c)` in any IΣ₁ model under the displayed orientation `F≤q`. It assumes no equation zero; the separate actual-zero transport proof supplies that orientation. This establishes the expression-to-rank binding used by the later residue argument, but not the residue, 86/87 equivalence, or HA proof-existence itself.
+
+The scoped author run `/tmp/adaptive-direct86-signedv-t0szmkpl` passed; state SHA-256 `558c19c465e038bf3fe1b866b82fd4af4be2bcef8b5debe6e0a4717cf58cf41e`, source `e2614035302939e6d41a09f36672e1b4bd478a266fd050e98a41203cc08bfb7c`, object `dd77b981a429c75d7992d4076e9c5f50784c5b5ea2956e01314ff36af3bcbb01`, empty full log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. Reproduce using `python3 Computability/DiophantineConsistency/research/wang-chunk-full/build_direct_ordinate_signedv.py`. It binds the independently replayed auxiliary-norm object with the byte-identically replayed author strong-norm/transport chain, authenticating selected source/object/full-log and narrow graph guards before and after. Wider canonical and Foundation/Mathlib boundaries remain historical, not a complete source-current closure.
+
+State, driver, source snapshot, full log and timing are in `adaptive-direct86-signedv-author-evidence`; manifest SHA-256 `40410dbe987d7c86b84907481eeec3ae55585ed64bf3b512d151f8a0be34f901`.

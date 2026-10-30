@@ -1,0 +1,3 @@
+# Direct-ordinate 86 signed V: independent replay
+
+The root independently replayed the scoped driver and obtained `PASS` at `/tmp/adaptive-direct86-signedv-qg93nwf3`, state SHA-256 `24c8de09ba0ac5c6c70cafd361c927ed08044c8f5f2f90d0eb362ca37640c30b`. Source `e2614035302939e6d41a09f36672e1b4bd478a266fd050e98a41203cc08bfb7c`, object `dd77b981a429c75d7992d4076e9c5f50784c5b5ea2956e01314ff36af3bcbb01` and empty full log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` match the author. State, driver, source snapshot, full log and timing are in `adaptive-direct86-signedv-independent-evidence`; manifest SHA-256 `029116865107bc538988722e647024c4b2a86cbe97f6ddc6ee129acce2ce4c1c`. Scope and historical boundaries are those of the author receipt.
