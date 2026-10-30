@@ -593,9 +593,6 @@ theorem cW_prop (A v h c : V) : cW A v h c + 1 + 1 + 1 ≤ cW A v (h + 1) c :=
 theorem cW_mono (A v h c : V) : cW A v h c ≤ cW A v (h + 1) c :=
   le_of_add_eq (y := 30) (by unfold cW; ring)
 
-theorem not_succ_le_zero' {x : V} : ¬x + 1 ≤ 0 := fun h =>
-  (not_lt.mpr (Arithmetic.zero_le x)) (lt_of_lt_of_le (lt_add_one x) h)
-
 theorem le_of_succ_le_succ' {x h : V} (hx : x + 1 ≤ h + 1) : x ≤ h :=
   (add_le_add_iff_right 1).mp hx
 
@@ -638,10 +635,8 @@ theorem core {A : V} (hA : AtomOK A) (v : V) : ∀ h : V, ∀ χ n w₁ w₂ E c
     rcases or4_left hχ.isUFormula.case with hb | ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ |
         ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
     · exact core_base hA hχ hv inp hb
-    · rw [formulaComplexity_and hp hq] at hcx; exact absurd hcx not_succ_le_zero'
-    · rw [formulaComplexity_or hp hq] at hcx; exact absurd hcx not_succ_le_zero'
-    · rw [formulaComplexity_all hp] at hcx; exact absurd hcx not_succ_le_zero'
-    · rw [formulaComplexity_ex hp] at hcx; exact absurd hcx not_succ_le_zero'
+    all_goals simp [formulaComplexity_and, formulaComplexity_or, formulaComplexity_all,
+      formulaComplexity_ex, *] at hcx
   · case succ h ih =>
     intro χ n w₁ w₂ E c hcx hχ hv inp
     rcases or4_left hχ.isUFormula.case with hb | ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ |
