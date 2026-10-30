@@ -877,53 +877,6 @@ theorem guardedProof_isProof (θ : Semiformula V ℒₛₑₜ 1) (U t : Term V �
 
 
 /-! Fixed total raw syntax graphs. No whole proof-search graph is asserted. -/
-private def eqMeta : SetTheorySemiproposition 2 :=
-  FirstOrder.Semiformula.rel Language.Eq.eq ![#0,#1]
-private def singMeta : SetTheorySemiproposition 2 :=
-  ∀⁰ (seedMem 3 0 2 🡘 FirstOrder.Semiformula.rel Language.Eq.eq ![#0,#1])
-private def eqCode : ℕ := ⌜eqMeta⌝
-private def memCode : ℕ := ⌜seedMem 2 0 1⌝
-private def singCode : ℕ := ⌜singMeta⌝
-private def b0Code : ℕ := ⌜(#0 : SyntacticSemiterm ℒₛₑₜ 2)⌝
-private def b1Code : ℕ := ⌜(#1 : SyntacticSemiterm ℒₛₑₜ 2)⌝
-private def at2Code (u v k : V) : V := subst ℒₛₑₜ (u∷v∷0) k
-private def at1Code (u k : V) : V := subst ℒₛₑₜ (u∷0) k
-private def at2Graph : 𝚺₁.Semisentence 4 := .mkSigma
-  “out u v k. ∃ tail vec, !adjoinDef tail v 0 ∧ !adjoinDef vec u tail ∧
-    !(Bootstrapping.substsGraph ℒₛₑₜ) out vec k”
-private def at1Graph : 𝚺₁.Semisentence 3 := .mkSigma
-  “out u k. ∃ vec, !adjoinDef vec u 0 ∧ !(Bootstrapping.substsGraph ℒₛₑₜ) out vec k”
-private instance at2_defined : 𝚺₁-Function₃ (at2Code : V→V→V→V) via at2Graph :=
-  .mk fun v => by simp [at2Graph,at2Code]
-private instance at1_defined : 𝚺₁-Function₂ (at1Code : V→V→V) via at1Graph :=
-  .mk fun v => by simp [at1Graph,at1Code]
-
-private lemma b0_cast : (b0Code : V)=(^#0 : V) := by
-  rw [b0Code,FirstOrder.Semiterm.coe_quote_eq_quote]
-  rfl
-private lemma b1_cast : (b1Code : V)=(^#1 : V) := by
-  rw [b1Code,FirstOrder.Semiterm.coe_quote_eq_quote]
-  simp [FirstOrder.Semiterm.quote_def]
-private lemma eq_cast : (eqCode : V)=(⌜eqMeta⌝ : V) :=
-  FirstOrder.Semiformula.coe_quote_eq_quote eqMeta
-private lemma mem_cast : (memCode : V)=(⌜seedMem 2 0 1⌝ : V) :=
-  FirstOrder.Semiformula.coe_quote_eq_quote (seedMem 2 0 1)
-private lemma sing_cast : (singCode : V)=(⌜singMeta⌝ : V) :=
-  FirstOrder.Semiformula.coe_quote_eq_quote singMeta
-
-private theorem at2_eq {n : ℕ} (u v : Semiterm V ℒₛₑₜ n) :
-    at2Code u.val v.val eqCode=(eqTerm u v).val := by
-  rw [eq_cast]
-  change (((⌜eqMeta⌝ : Semiformula V ℒₛₑₜ 2).subst ![u,v]).val)=(eqTerm u v).val
-  congr 1
-  simp [eqMeta,eqTerm,Matrix.vecHead,Matrix.vecTail]
-private theorem at2_mem {n : ℕ} (u v : Semiterm V ℒₛₑₜ n) :
-    at2Code u.val v.val memCode=(memTerm u v).val := by
-  rw [mem_cast]
-  change (((⌜seedMem 2 0 1⌝ : Semiformula V ℒₛₑₜ 2).subst ![u,v]).val)=(memTerm u v).val
-  congr 1
-  simp [seedMem,memTerm,Matrix.vecHead,Matrix.vecTail]
-
 /-- Ambient arguments are raw term codes, never bare free-variable labels. -/
 def rawPairMatrixCode (t r x y : V) : V :=
   (at2Code b1Code r eqCode ^⋏ at2Code b0Code x eqCode) ^⋎
