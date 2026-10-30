@@ -140,8 +140,12 @@ proves the initial append has precisely the entry `(0,x)`. A separate
 proves that this append is a sequence of length one. The
 [under-extension theorem](reviews/pra-history-under-extension-author-replay/README.md)
 proves that inserting the endpoint extends an initial segment by one.
-General sequence validity, length evolution and the full recursive-history
-verification remain open. An [independently replayed primitive-recursive
+[Canonical under membership](reviews/pra-history-under-canonical-author-replay/README.md)
+now characterizes the exact initial-segment graph without IΣ₁. A
+[sequence-extension theorem](reviews/pra-history-sequence-extension-author-replay/README.md)
+proves validity after append and provides an incremented length witness;
+length uniqueness and the full recursive-history verification remain open.
+An [independently replayed primitive-recursive
 iterator](reviews/pra-history-iterator-author-replay/README.md) supplies the
 history code's base and step equations for supplied function codes; the
 actual blueprint step code and `cseqDef` invariant remain open. An
