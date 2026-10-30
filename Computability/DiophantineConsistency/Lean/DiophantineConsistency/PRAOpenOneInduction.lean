@@ -66,6 +66,30 @@ theorem modelSuccInd_congr (φ ψ : Semiproposition language 1)
   intro e
   simp [succInd, Semiformula.eval_substs, h e]
 end models
+/-- Replace a family of extra axioms by one sentence that implies them in
+every candidate-PRA model. -/
+theorem PRA_proof_of_model_axiom_replacement (S : Theory language) (a goal : Sentence language)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA], M↓[language] ⊧ a → M↓[language] ⊧* S)
+    (p : (PRA ∪ S) ⊢ goal) : (PRA ∪ {a}) ⊢ goal := by
+  letI : 𝗘𝗤 language ⪯ (PRA ∪ {a}) :=
+    Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
+  apply Theory.Proof.complete_on_eq_models.{0,0}
+  intro M _ _ _ hBoth
+  letI : M↓[language] ⊧* PRA := by
+    constructor
+    intro σ hσ
+    exact hBoth.models _ (Or.inl hσ)
+  have ha : M↓[language] ⊧ a := hBoth.models _ (Or.inr rfl)
+  have hs := h M ha
+  have hPlus : M↓[language] ⊧* (PRA ∪ S) := by
+    constructor
+    intro σ hσ
+    exact hσ.elim (fun h => (inferInstance : M↓[language] ⊧* PRA).models _ h)
+      (fun h => hs.models _ h)
+  exact models_of_provable hPlus p
+
+
 /-- Eliminate an induction instance when its matrix has a certified
 characteristic code. -/
 theorem PRA_proves_goal_of_characteristicSuccInd (ψ : Semisentence language 3) (c : Code 3)
@@ -73,29 +97,15 @@ theorem PRA_proves_goal_of_characteristicSuccInd (ψ : Semisentence language 3) 
     (p : (PRA ∪ {(succInd (openSigma ψ)).univCl}) ⊢ (∃⁰ θ).univCl) :
     PRA ⊢ (∃⁰ θ).univCl := by
   have hp : (PRA ∪ {(succInd (codedSigma c)).univCl}) ⊢ (∃⁰ θ).univCl := by
-    letI : 𝗘𝗤 language ⪯ (PRA ∪ {(succInd (codedSigma c)).univCl}) :=
-      Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
-    apply Theory.Proof.complete_on_eq_models.{0,0}
-    intro M _ _ _ hBoth
-    letI : M↓[language] ⊧* PRA := by
-      constructor
-      intro σ hσ
-      exact hBoth.models _ (Or.inl hσ)
+    apply PRA_proof_of_model_axiom_replacement _ _ _ ?_ p
+    intro M _ _ _ _ hcode
+    constructor
+    intro σ hσ
+    simp only [Set.mem_singleton_iff] at hσ
+    subst σ
     have hchar := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hc
-    have hcode : M↓[language] ⊧ (succInd (codedSigma c)).univCl := hBoth.models _ (Or.inr rfl)
-    have hψ : M↓[language] ⊧ (succInd (openSigma ψ)).univCl := by
-      apply (modelSuccInd_congr (openSigma ψ) (codedSigma c)
-        (fun e x => modelSigmaCharacteristic ψ c hchar e x)).mpr
-      exact hcode
-    have hPlus : M↓[language] ⊧* (PRA ∪ {(succInd (openSigma ψ)).univCl}) := by
-      constructor
-      intro σ hσ
-      rcases hσ with hσ | hσ
-      · exact (inferInstance : M↓[language] ⊧* PRA).models _ hσ
-      · simp only [Set.mem_singleton_iff] at hσ
-        subst σ
-        exact hψ
-    exact models_of_provable hPlus p
+    exact (modelSuccInd_congr (openSigma ψ) (codedSigma c)
+      (fun e x => modelSigmaCharacteristic ψ c hchar e x)).mpr hcode
   exact PRA_proves_goal_of_succInd c θ hθ hp
 
 /-- Eliminate one actual successor-induction instance whose Σ₁ predicate has
