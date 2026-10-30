@@ -20,23 +20,33 @@ proof of either side separately. The same file also has a closed Lean IΣ₁
 proof-existence endpoint. See the later 28 October entries for the
 construction and its axiom audit.
 That checked endpoint is snapshot evidence: later upstream merges changed
-ZFC interpretation modules reachable from it, and the in-progress
-`ArithmeticConstructionAssembly` edit is also in its source dependency graph.
-A dependency-aware current-source replay is still needed. This qualification
+ZFC interpretation modules reachable from it, and
+`ArithmeticConstructionAssembly` was subsequently changed. A dependency-aware
+current-source replay is still needed. This qualification
 does not identify a defect in the previously checked theorem.
 The 27 October estimate and earlier checkpoint descriptions below are
 historical, not the current status. The strengthened active objective also
 requires a Lean proof of PRA provability. The [PRA plan](PRA_PROVABILITY_PLAN.md)
 records why the external Parsons-theorem argument is not yet such a Lean
-proof and identifies the missing formal interfaces. The smaller 13-variable,
-degree-51 adaptive equation has an external equivalence but still requires its
-own internal proof-existence transfer. Its [normalized transport](reviews/adaptive-transport-restoration2011-root.md)
-and [rank-population lower bound](reviews/adaptive-population2011-root.md)
-now follow from an actual adaptive zero in arbitrary IΣ₁ models, and the
-[window theorem](reviews/adaptive-window2011-root.md) assembles them. The
-window-to-halt client, reverse witnesses and final internal equivalence remain
-open. There is no reliable percentage or
-completion-time estimate for that remaining mathematical work.
+proof and identifies the missing formal interfaces.
+
+For the smaller 13-variable, 87-operation adaptive candidate, the
+[unconditional model theorem](reviews/adaptive-unconditional-equivalence-independent.md)
+now proves both directions between no zero and no represented machine halt in
+every IΣ₁ model, with local normalization discharged. A separately checked
+[`HAExpressionAssembly`](Lean/DiophantineConsistency/HAExpressionAssembly.lean)
+turns an appropriate all-model bridge into an actual HA derivation of the
+equivalence to ordinary ZFC consistency. Their compatible integration has not
+yet been checked: the historical HA provider and the adaptive model provider
+have many shared paths with differing compiled objects. A focused coherent
+rebuild and a complete current-source provenance audit remain. The model
+equivalence alone is not an HA proof-existence theorem.
+
+A rough judgment is that 70–85% of the 87-operation candidate's proof
+architecture is assembled; this is neither a measured fraction nor an
+estimate of time. Integration and source-current replay may uncover additional
+work. The 14-variable HA theorem itself is complete on its checked snapshot,
+subject to the current-source replay qualification above.
 
 ## Exact target and established results
 
