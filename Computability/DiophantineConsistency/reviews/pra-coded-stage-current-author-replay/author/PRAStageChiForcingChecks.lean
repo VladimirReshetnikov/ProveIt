@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAStageChiForcing
+open DiophantineConsistency.PRAStageChiForcing
+#print axioms modelForceCurrent
+#check modelForceCurrent

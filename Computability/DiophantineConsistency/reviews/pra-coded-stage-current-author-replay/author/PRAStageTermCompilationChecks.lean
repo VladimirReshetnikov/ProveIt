@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAStageTermCompilation
+open DiophantineConsistency.PRAStageTermCompilation
+#print axioms modelParameterCode_of_support
+#print axioms modelCandidateCode
+#check modelCandidateCode

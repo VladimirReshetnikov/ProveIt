@@ -57,5 +57,12 @@ occurring parameters and producing an actual candidate-PRA disjunction.
 `PRAFiniteTripleChoice` turns a provably Boolean coded finite disjunction into
 three coordinated primitive-recursive choice functions and a proof of their
 joint predicate instance. Both focused author and independent replays match.
-These results do not yet translate the staged interactive disjunction into the
-selector's input or perform successive disjunct elimination.
+The [coded-stage chain](../reviews/pra-coded-stage-current-author-replay/README.md)
+now connects contextual selection, challenge-variable permutation, the coded
+induction counterexample and retained-side stability to remove every finite
+stage. `PRAFourWitnessCodedGoal.PRA_proves_goal` consequently derives an
+actual candidate-PRA proof of the open existential goal from the specific
+four-witness universal-theory premise in its statement. The 32-module author
+build and two independent replays match source, object and complete-log
+hashes. Deriving that premise from an arbitrary induction proof, handling
+multiple induction instances, and comparison with standard PRA remain open.

@@ -1,0 +1,22 @@
+'DiophantineConsistency.PRAStageCodedChi.chiMatrix_open' depends on axioms: [propext]
+'DiophantineConsistency.PRAStageCodedChi.modelFixPredicate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAStageCodedChi.modelChiMatrix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAStageCodedChi.modelChiDefeat' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.PRAStageCodedChi.modelChiDefeat {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] {n : ℕ}
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 3))
+  (c base stop : DiophantineConsistency.PRAFiniteFunctionCodes.Code n)
+  (qCode : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 3)) (e : ℕ → M) (v : M) :
+  have params := fun i => e ↑i;
+  have cv := LO.FirstOrder.Structure.func c params;
+  have y₀ := LO.FirstOrder.Structure.func base params;
+  have z := LO.FirstOrder.Structure.func stop params;
+  ∃ x y w,
+    ¬(LO.FirstOrder.Semiformula.Eval
+          ![LO.FirstOrder.Structure.func qCode fun i =>
+              Fin.cases x (fun i => Fin.cases y (fun i => Fin.cases w params i) i) i,
+            w, y, x, y₀, z, cv, v]
+          e)
+        (chiMatrix pred)

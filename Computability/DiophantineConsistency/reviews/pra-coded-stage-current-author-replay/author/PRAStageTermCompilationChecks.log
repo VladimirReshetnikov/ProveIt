@@ -1,0 +1,16 @@
+'DiophantineConsistency.PRAStageTermCompilation.modelParameterCode_of_support' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStageTermCompilation.modelCandidateCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAStageTermCompilation.modelCandidateCode {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] (r j : ℕ) (k : Fin 4)
+  (e : ℕ → M) :
+  (LO.FirstOrder.Structure.func
+      (DiophantineConsistency.HerbrandParameterizedWitness.parameterCode (r + 3 * j)
+        (DiophantineConsistency.HerbrandTupleSchedule.candidate j k))
+      fun i => e ↑i) =
+    LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j k)
