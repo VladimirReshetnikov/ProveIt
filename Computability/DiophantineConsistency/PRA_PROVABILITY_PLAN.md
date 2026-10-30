@@ -44,7 +44,17 @@ from the source-current halting construction remains open.
 The [enriched-Assembly conclusion adapter](reviews/adaptive-construction-conditional-exists2011-independent.md)
 is independently replayed as well: it takes the proposed strengthened
 Assembly conclusion, including its bound, as an explicit premise and yields
-the shifted zero. It does not itself establish that premise.
+the shifted zero. The later [Assembly/direct-run branch](reviews/adaptive-assembly-compat-independent.md)
+has independently replayed a construction of that premise from a represented
+halt under the explicit `LocalNormalization` hypothesis, yielding an
+87-operation zero. Discharging normalization and producing the syntactic HA
+endpoint remain separate; the compatibility provider and historical table
+provenance boundaries are retained.
+The [conditional model-equivalence client](reviews/adaptive-equivalence-client-independent.md)
+has independently replayed the composition: given `LocalNormalization`, the
+87-operation expression has no zero iff the represented machine never halts
+in each stated IΣ₁ model. The premise and the syntactic HA transfer are not
+discharged by that client.
 The [87-operation reduced-output client](reviews/adaptive-construction-reduced-zero2011-independent.md)
 independently replays the exact literal zero transfer from the same enriched
 Assembly premise to the reduced shifted expression. The premise and the final
@@ -90,6 +100,12 @@ The independently replayed [87-operation soundness client](reviews/adaptive-redu
 transfers this result to the exact reduced natural expression using the
 checked literal equivalence. Its private providers and historical table
 comparison boundary remain as above.
+The generic [HA expression assembler](reviews/ha-expression-assembly-author-replay/README.md)
+has also passed two focused replays: given an explicit all-IΣ₁-model
+no-zero/machine bridge, it produces actual IΣ₁ and HA proof equivalences for
+that expression and Foundation consistency. Its direct imports and transitive
+HA/ZFC closure are inherited historical objects, and the 87-operation bridge
+and normalization premise are not discharged by this generic theorem.
 The independently replayed [compatibility overlay audit](reviews/adaptive-wang-compat-overlay-audit-independent.md)
 checks that its 367 canonical project objects are byte-identical and that its
 27 additions are the authenticated table and chunk objects. This does not
@@ -207,6 +223,10 @@ The [bit-graph binding](reviews/pra-bit-witness-bound-author-replay/README.md)
 transports that bound to the actual inlined `lenbitDef` occurrence and proves
 a candidate-PRA conditional sentence. It retains the bounded exponential
 conjunct, its witness and the common-bound assumptions explicitly.
+The independently replayed [extDef local bound](reviews/pra-ext-witness-bound-author-replay/README.md)
+gives `c+1` for Foundation's exact extension graph and its candidate-PRA
+sentence. The remaining exponential sequence and power graphs are not bounded
+by that theorem.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated

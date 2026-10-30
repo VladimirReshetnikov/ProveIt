@@ -1,0 +1,12 @@
+'DiophantineConsistency.HAExpressionAssembly.classicalNoZero_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HAExpressionAssembly.isigma1_equivalence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HAExpressionAssembly.ha_equivalence' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.HAExpressionAssembly.ha_equivalence {n : ℕ} (e : DiophantineConsistency.Expr (Fin n))
+  (hp : DiophantineConsistency.HAExpressionAssembly.PolynomialBridge e) :
+  DiophantineConsistency.FoundationHADeltaZeroGG.ProofEquiv
+    (DiophantineConsistency.ArithmeticExpression.noZeroSentence e)
+    DiophantineConsistency.FoundationHAConsistencyNormalization.ordinaryConsistency
