@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRASeqDomainBound
+#print axioms DiophantineConsistency.PRASeqDomainBound.domainMajorant_mono_left
+#print axioms DiophantineConsistency.PRASeqDomainBound.seq_bound_of_domain
+#print axioms DiophantineConsistency.PRASeqDomainBound.candidate_proves_seq_domain_bound

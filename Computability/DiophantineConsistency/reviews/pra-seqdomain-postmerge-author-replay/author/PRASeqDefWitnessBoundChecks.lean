@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRASeqDefWitnessBound
+#print axioms DiophantineConsistency.PRASeqDefWitnessBound.seq_bound_of_witness
+#print axioms DiophantineConsistency.PRASeqDefWitnessBound.seq_bound_of_components
+#print axioms DiophantineConsistency.PRASeqDefWitnessBound.candidate_proves_seq_bound
+#print axioms DiophantineConsistency.PRASeqDefWitnessBound.candidate_proves_seq_components_bound

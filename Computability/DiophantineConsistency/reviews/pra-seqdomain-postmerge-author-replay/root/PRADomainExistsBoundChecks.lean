@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRADomainExistsBound
+#print axioms DiophantineConsistency.PRADomainExistsBound.exists_bound
+#print axioms DiophantineConsistency.PRADomainExistsBound.candidate_proves_exists_bound

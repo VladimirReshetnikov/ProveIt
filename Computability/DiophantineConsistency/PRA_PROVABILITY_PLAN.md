@@ -72,8 +72,14 @@ forms. The positive case uses an upper bound on the set code and the positive
 bit majorant; the negative case uses the negative bit majorant. Together with
 the two outer membership bounds, they yield an independently replayed
 [positive bound for the full domain graph](reviews/pra-domain-witness-bound-author-replay/README.md)
-at an explicit polynomial. Connecting that bound to the sequence client and
-bounding the mapping graph and recursive history remain separate work.
+at an explicit polynomial. A [replayed sequence client](reviews/pra-seqdomain-postmerge-author-replay/README.md)
+now uses it to discharge the domain-graph premise. The mapping graph and
+recursive-history bounds remain separate work.
+The exact positive and negative `memRel` graphs also have independently
+replayed candidate-PRA polynomial bounds; see the
+[relation receipt](reviews/pra-memrel-witness-bound-author-replay/README.md).
+These are components of the mapping graph, not a bound for that graph or a
+construction of the recursive history.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.

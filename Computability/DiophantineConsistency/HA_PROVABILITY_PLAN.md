@@ -57,6 +57,13 @@ fresh build's provenance is being audited; both retain pinned historical HA
 and `ZF` objects and inherited package ancestry. See the
 [author receipt](reviews/ha87-focused-pinned-zf-author-pass/README.md).
 
+A later zero-reuse 85-module author build has a matching
+[isolated-source independent replay](reviews/ha87-isolated-peer-pass/README.md):
+all source, direct-input, object and full-log hashes agree. This is evidence
+for its frozen pre-merge snapshot. Subsequent workspace source changes require
+a new current-source rebuild, and the historical HA, ZF, Foundation and
+transitive package ancestry remain inherited.
+
 A newer 86-operation direct-ordinate candidate now has a Lean theorem, with
 matching author and independent scoped replays, that its fixed-port no-zero
 sentence is equivalent to the 87-operation candidate's no-zero sentence in

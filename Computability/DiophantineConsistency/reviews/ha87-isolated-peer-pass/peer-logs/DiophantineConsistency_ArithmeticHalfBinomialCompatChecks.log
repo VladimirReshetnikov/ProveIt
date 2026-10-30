@@ -1,0 +1,11 @@
+'DiophantineConsistency.ArithmeticHalfBinomialCompat.rank_lower_of_radix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.ArithmeticHalfBinomialCompat.half_index_of_ge_five' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.ArithmeticHalfBinomialCompat.rank_lower_of_radix.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (q F alpha J MC MF h : V) (hq16 : 16 ≤ q) (halpha : 0 < alpha) (hq : q = LO.Exp.exp h) :
+  3 * h + 1 ≤ ((q - 1) * (q - F) + alpha) * (q ^ 2 - 1) + (MC + q * MF) * J
+DiophantineConsistency.ArithmeticHalfBinomialCompat.half_index_of_ge_five.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (n R : V) (hn5 : 5 ≤ n) (hnR : 2 * n = R + 1) : ∃ r, r + 1 = n ∧ 4 ≤ r ∧ R = 2 * r + 1
