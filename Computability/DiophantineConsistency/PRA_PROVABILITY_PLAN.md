@@ -58,7 +58,11 @@ a bound for the complete ZFC refutation predicate.
 An independently replayed [positive `seqDef` client](reviews/pra-seqdef-witness-bound-author-replay/README.md)
 extracts its sequence witnesses and uses the positive `underDef` bound. It
 still assumes bounded mapping and domain graphs and a common bound for the
-under-graph polynomials; it does not provide a sequence-history bound.
+under-graph polynomials; it does not provide a sequence-history bound. A
+separate [monotonicity client](reviews/pra-under-majorant-mono-author-replay/README.md)
+replaces the family of polynomial assumptions with the single explicit bound
+`exponentialMajorant (2*s+1) ≤ w`, while retaining the mapping and domain
+premises.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
