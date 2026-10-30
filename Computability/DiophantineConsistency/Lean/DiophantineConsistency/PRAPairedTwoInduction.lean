@@ -19,28 +19,16 @@ theorem PRA_proves_goal_of_two_boundedSuccInd
     (p : (PRA ∪ twoAxioms ψ₀ ψ₁) ⊢ (∃⁰ θ).univCl) :
     PRA ⊢ (∃⁰ θ).univCl := by
   have hp : (PRA ∪ {(succInd (openSigma (pairedMatrix ψ₀ ψ₁))).univCl}) ⊢ (∃⁰ θ).univCl := by
-    letI : 𝗘𝗤 language ⪯ (PRA ∪ {(succInd (openSigma (pairedMatrix ψ₀ ψ₁))).univCl}) :=
-      Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
-    apply Theory.Proof.complete_on_eq_models.{0,0}
-    intro M _ _ _ hBoth
-    letI : M↓[language] ⊧* PRA := by
-      constructor
-      intro σ hσ
-      exact hBoth.models _ (Or.inl hσ)
-    have hpair : M↓[language] ⊧ (succInd (openSigma (pairedMatrix ψ₀ ψ₁))).univCl :=
-      hBoth.models _ (Or.inr rfl)
-    have hPlus : M↓[language] ⊧* (PRA ∪ twoAxioms ψ₀ ψ₁) := by
-      constructor
-      intro σ hσ
-      rcases hσ with hσ | hσ
-      · exact (inferInstance : M↓[language] ⊧* PRA).models _ hσ
-      · simp only [twoAxioms, Set.mem_insert_iff, Set.mem_singleton_iff] at hσ
-        rcases hσ with hσ | hσ
-        · subst σ
-          exact modelPairedSuccInd_zero ψ₀ ψ₁ hpair
-        · subst σ
-          exact modelPairedSuccInd_one ψ₀ ψ₁ hpair
-    exact models_of_provable hPlus p
+    apply PRA_proof_of_model_axiom_replacement _ _ _ ?_ p
+    intro M _ _ _ _ hpair
+    constructor
+    intro σ hσ
+    simp only [twoAxioms, Set.mem_insert_iff, Set.mem_singleton_iff] at hσ
+    rcases hσ with hσ | hσ
+    · subst σ
+      exact modelPairedSuccInd_zero ψ₀ ψ₁ hpair
+    · subst σ
+      exact modelPairedSuccInd_one ψ₀ ψ₁ hpair
   exact PRA_proves_goal_of_boundedSuccInd (pairedMatrix ψ₀ ψ₁)
     (pairedMatrix_bounded ψ₀ ψ₁ h₀ h₁) θ hθ hp
 end DiophantineConsistency.PRAPairedTwoInduction

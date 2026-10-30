@@ -99,25 +99,13 @@ theorem PRA_proves_goal_of_two_parameter_induction
     (p : (PRA ∪ {(succInd (twoSigma ψ)).univCl}) ⊢ (∃⁰ θ).univCl) :
     PRA ⊢ (∃⁰ θ).univCl := by
   have hp : (PRA ∪ {(succInd (openSigma packed)).univCl}) ⊢ (∃⁰ θ).univCl := by
-    letI : 𝗘𝗤 language ⪯ (PRA ∪ {(succInd (openSigma packed)).univCl}) :=
-      Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
-    apply Theory.Proof.complete_on_eq_models.{0,0}
-    intro M _ _ _ hBoth
-    letI : M↓[language] ⊧* PRA := by
-      constructor
-      intro σ hσ
-      exact hBoth.models _ (Or.inl hσ)
-    have hpacked : M↓[language] ⊧ (succInd (openSigma packed)).univCl :=
-      hBoth.models _ (Or.inr rfl)
+    apply PRA_proof_of_model_axiom_replacement _ _ _ ?_ p
+    intro M _ _ _ _ hpacked
     have horig := modelPackedInduction ψ packed (hpack M) hpacked
-    have hPlus : M↓[language] ⊧* (PRA ∪ {(succInd (twoSigma ψ)).univCl}) := by
-      constructor
-      intro σ hσ
-      rcases hσ with hσ | hσ
-      · exact (inferInstance : M↓[language] ⊧* PRA).models _ hσ
-      · simp only [Set.mem_singleton_iff] at hσ
-        subst σ
-        exact horig
-    exact models_of_provable hPlus p
+    constructor
+    intro σ hσ
+    simp only [Set.mem_singleton_iff] at hσ
+    subst σ
+    exact horig
   exact PRA_proves_goal_of_boundedSuccInd packed hbounded θ hθ hp
 end DiophantineConsistency.PRATwoParameterInductionTransfer
