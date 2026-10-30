@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [strict Σ₁ certificate](reviews/pra-strict-sigma-certificate-author-replay/README.md)
+now supplies the conditional normalizer for every arithmetic induction
+predicate syntactically `∃ D` with bounded `D` and any finitely many free
+parameters. It does not handle arbitrary Σ₁ syntax, including bounded universal
+quantification over Σ₁ bodies.
+
 The [main-factor reverse bridge](reviews/adaptive-construction-main-factor2011-independent.md)
 derives the actual literal factor unit from explicit additive carrier and
 old-norm hypotheses. Binding those hypotheses to the common witness is still
