@@ -1,0 +1,3 @@
+# Direct-ordinate 86 main orientation: independent replay
+
+The root independently replayed the scoped author driver and obtained `PASS` at `/tmp/adaptive-direct86-main-orientation-6_oqkdhf`, state SHA-256 `9aebcbad7dbcf9e89d892c1fdd671fa3b6bd2534eb7ea774a19f9506ae84b06a`. Both source/object hashes match the author table; both complete logs are empty, SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. State, driver, source snapshots, full logs and timings are in `adaptive-direct86-main-orientation-independent-evidence`; manifest SHA-256 `aa92a39c176cfb6dd1c9b331f655b23a4435dcfea1f48d9dff639cc1eb8461a3`. Scope and historical boundaries are those of the author receipt.
