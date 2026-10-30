@@ -1,0 +1,7 @@
+# HA assembler and adaptive model provider: object overlap
+
+Read-only scan `/tmp/adaptive-ha-model-overlap-6x1wsjyw` **PASS** as an observation: `/tmp/adaptive-equivalence-client-55isyt4n/lib` contains 463 project objects, the independently replayed generic HA assembler overlay `/tmp/ha-expression-assembly-vgttkwsl/lib` contains 687, and 119 paths occur in both. Of those 119 common paths, **118 have different SHA-256 hashes**. The complete list includes `HAProofs`, `ArithmeticExpression`, the machine run, PackingCells, CellWindow, Assembly and WangTable. `result.json` preserves both resolved paths and both hashes for every common object. The two provider state files and all observed common objects were rehashed after the scan.
+
+These differing bytes do not by themselves prove a semantic inconsistency. They do mean that selecting either complete overlay as a namespace-wide provider would silently replace many objects against which the other result was built. A dependency-directed source rebuild or a separately audited compatible closure is required before using the two results together. The generic HA assembler's inherited historical inputs and the compatibility WangTable's historical-original comparison remain provenance-qualified.
+
+Reproduce with `python3 Computability/DiophantineConsistency/research/wang-chunk-full/audit_ha_model_overlap.py`. The three-file `adaptive-ha-model-overlap-author-evidence/FILES.json` manifest SHA-256 is `9ee18341793bbceb0261a54a3f889e883996125a36f92c2e942ad710d61bec38`. The scan did not combine or alter any provider.

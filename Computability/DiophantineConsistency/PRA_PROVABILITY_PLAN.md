@@ -50,11 +50,20 @@ halt under the explicit `LocalNormalization` hypothesis, yielding an
 87-operation zero. Discharging normalization and producing the syntactic HA
 endpoint remain separate; the compatibility provider and historical table
 provenance boundaries are retained.
+The [40 normalization prerequisites](reviews/adaptive-normal-independent-independent.md)
+have now passed an independent source/object/log replay on the private
+CellWindow provider. The three compatibility-dependent modules have also
+passed an [independent normalization replay](reviews/adaptive-normal-compat-independent.md),
+including the existing `LocalNormalization` theorem. This remains a private
+provider with the documented historical table-comparison boundary.
 The [conditional model-equivalence client](reviews/adaptive-equivalence-client-independent.md)
 has independently replayed the composition: given `LocalNormalization`, the
 87-operation expression has no zero iff the represented machine never halts
-in each stated IΣ₁ model. The premise and the syntactic HA transfer are not
-discharged by that client.
+in each stated IΣ₁ model. The [unconditional model-equivalence client](reviews/adaptive-unconditional-equivalence-independent.md)
+now discharges that premise with the independently rebuilt normalization
+theorem and has also passed an independent replay. The compatibility provider
+and historical table-comparison boundaries remain documented; this result by
+itself is not a syntactic HA proof of the consistency equivalence.
 The [87-operation reduced-output client](reviews/adaptive-construction-reduced-zero2011-independent.md)
 independently replays the exact literal zero transfer from the same enriched
 Assembly premise to the reduced shifted expression. The premise and the final
@@ -106,6 +115,12 @@ no-zero/machine bridge, it produces actual IΣ₁ and HA proof equivalences for
 that expression and Foundation consistency. Its direct imports and transitive
 HA/ZFC closure are inherited historical objects, and the 87-operation bridge
 and normalization premise are not discharged by this generic theorem.
+An independently replayed [HA/model provider overlap audit](reviews/adaptive-ha-model-overlap-independent.md)
+found 118 unequal object hashes among 119 shared project paths. Differing
+bytes do not by themselves imply semantic inequivalence, but neither full
+overlay can be assumed to preserve the other's authenticated boundary; a
+dependency-directed unified rebuild or independently authenticated closure is
+needed before composing the 87-operation HA endpoint.
 The independently replayed [compatibility overlay audit](reviews/adaptive-wang-compat-overlay-audit-independent.md)
 checks that its 367 canonical project objects are byte-identical and that its
 27 additions are the authenticated table and chunk objects. This does not
@@ -227,6 +242,10 @@ The independently replayed [extDef local bound](reviews/pra-ext-witness-bound-au
 gives `c+1` for Foundation's exact extension graph and its candidate-PRA
 sentence. The remaining exponential sequence and power graphs are not bounded
 by that theorem.
+The [rewritten extDef client](reviews/pra-ext-rewriting-bound-author-replay/README.md)
+transports the local bound through arithmetic substitutions and proves a
+candidate-PRA bound for the concrete `extDef 1 4 X` occurrence. The rest of
+the exponential definition and the full refutation certificate remain open.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
