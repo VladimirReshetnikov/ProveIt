@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistorySingletonMembership
+
+#print axioms DiophantineConsistency.PRAHistorySingletonMembership.seq_zero
+#print axioms DiophantineConsistency.PRAHistorySingletonMembership.candidate_singleton_memRel

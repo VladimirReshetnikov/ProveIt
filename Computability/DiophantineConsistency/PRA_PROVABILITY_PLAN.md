@@ -131,6 +131,9 @@ and the exponential code, without assuming IΣ₁. An
 now composes length, pairing and insertion to satisfy the actual `seqConsDef`
 graph. An [independently replayed membership theorem](reviews/pra-history-seqcons-membership-author-replay/README.md)
 also describes exactly which relation pairs are present after append.
+The [singleton base membership theorem](reviews/pra-history-singleton-membership-author-replay/README.md)
+proves the initial append has precisely the entry `(0,x)`; its sequence
+validity and length still need separate proofs.
 Sequence validity, length evolution and the full recursive-history
 verification remain open. An [independently replayed primitive-recursive
 iterator](reviews/pra-history-iterator-author-replay/README.md) supplies the
