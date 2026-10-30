@@ -72,6 +72,16 @@ source tree; it is not a full current-source closure. A coherent
 connection to the ZFC consistency bridge, and HA and PRA proof-existence
 theorems for this candidate, remain to be established.
 
+An exact 86-operation HA client has now passed a guarded 27-module author
+extension of the 87 HA provider, proving the existence of an HA derivation
+of the equivalence to ordinary Foundation ZFC consistency. Its independent
+extension replay is running. The separate 87 parent peer passed, and its
+final endpoint and checks match the author, but 15 intermediate object or
+dependency hashes differ and are under investigation. The author extension
+uses the original 87 author provider; it inherits historical HA, ZF,
+Foundation and package ancestry, so this is not a fully source-current
+provenance result. See the [86 author receipt](reviews/ha86-focused-extension-author.md).
+
 ## Exact target and established results
 
 Progress estimate on 27 October 2026: **roughly 40–60% of the full HA
