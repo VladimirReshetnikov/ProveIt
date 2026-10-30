@@ -49,6 +49,11 @@ The [87-operation reduced-output client](reviews/adaptive-construction-reduced-z
 independently replays the exact literal zero transfer from the same enriched
 Assembly premise to the reduced shifted expression. The premise and the final
 HA/PRA consistency endpoints remain open.
+The [Wang-table chunk pilot](reviews/adaptive-wang-chunk-pilot-independent.md)
+independently checks the first 128 rows of each of the three existing finite
+predicates in a private overlay. Full 942-row coverage, interface equivalence,
+and the source-current CellWindow/Assembly builds remain to be established;
+the original WangTable worker continues independently.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
