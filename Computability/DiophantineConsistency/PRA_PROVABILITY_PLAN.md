@@ -8,6 +8,13 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [finite paired-induction theorem](reviews/pra-paired-finite-current-author-replay/README.md)
+now eliminates any finite list of closed Σ₁ induction instances with bounded
+matrices `ψ(x,y,c)` that may depend on the induction parameter `c`, from a
+candidate-PRA proof of a universally closed open-existential goal. Additional
+external predicate parameters, the passage from arbitrary IΣ₁ proofs, and the
+standard-PRA comparison remain open.
+
 The [paired two-instance theorem](reviews/pra-paired-bounded-current-author-replay/README.md)
 now eliminates two closed Σ₁ induction instances with arbitrary bounded
 matrices depending on their shared induction parameter. It uses the internal

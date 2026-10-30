@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAPairedFiniteInduction
+open DiophantineConsistency.PRAPairedFiniteInduction
+#print axioms dispatch_bounded
+#print axioms modelDispatchSuccInd
+#print axioms PRA_proves_goal_of_finite_boundedSuccInd
+#check PRA_proves_goal_of_finite_boundedSuccInd
