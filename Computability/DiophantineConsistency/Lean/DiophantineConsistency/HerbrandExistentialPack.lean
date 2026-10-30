@@ -12,12 +12,10 @@ theorem toEmpty_tree {ξ : Type} [DecidableEq ξ] {n : ℕ} {φ : Semiformula la
   induction h with
   | @base k φ h =>
     apply ExistentialTree.base
-    have hqr : ((Rewriting.emb (φ.toEmpty hf) : Semiformula language ξ _)).qr = φ.qr := by
+    have he : (Rewriting.emb (φ.toEmpty hf) : Semiformula language ξ _).Open := by
       rw [Semiformula.emb_toEmpty]
-    rw [PRAFormulaParameters.qr_rew] at hqr
-    change (φ.toEmpty hf).qr = 0
-    rw [hqr]
-    exact h
+      exact h
+    exact Semiformula.rew_open_iff.mp he
   | and hp hq ihp ihq =>
     rw [Semiformula.toEmpty_and]
     apply ExistentialTree.and
