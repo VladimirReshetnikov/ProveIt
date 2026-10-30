@@ -90,13 +90,10 @@ theorem tripleDisjunction_eval {M : Type} [Structure language M]
       (xs.foldr (fun p acc => tripleInstance φ p.1 p.2.1 p.2.2 ⋎ acc) ⊥).Eval ![] e ↔
         ∃ p ∈ xs, (tripleInstance φ p.1 p.2.1 p.2.2).Eval ![] e := by
     intro xs
-    induction xs with
-    | nil => simp [Semiformula.Eval]
-    | cons p ps ih =>
-      change ((tripleInstance φ p.1 p.2.1 p.2.2).Eval ![] e ∨
-        (ps.foldr (fun p acc => tripleInstance φ p.1 p.2.1 p.2.2 ⋎ acc) ⊥).Eval ![] e) ↔ _
-      rw [ih]
-      simp
+    exact HerbrandDisjunctionSemantics.eval_list_disjunction
+      (fun p => tripleInstance φ p.1 p.2.1 p.2.2)
+      (fun xs => xs.foldr (fun p acc => tripleInstance φ p.1 p.2.1 p.2.2 ⋎ acc) ⊥)
+      rfl (fun _ _ => rfl) xs e
   rw [tripleDisjunction, hfold]
   simp [triples]
   constructor
