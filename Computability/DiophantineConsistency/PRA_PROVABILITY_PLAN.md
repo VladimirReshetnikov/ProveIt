@@ -47,6 +47,9 @@ The negative `exponentialDef` and `expDef` graphs now also have closed
 candidate-PRA bounds, with matching author and two independent replays. The
 negative bit graph also has a closed candidate-PRA bound with matching author
 and two independent replays. The recursive history still requires a bound.
+A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
+also handles both bit polarities in Foundation's actual `succDef`; bounded
+sigma and negated-pi blueprint core formulas remain explicit premises.
 The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
 remains open.
