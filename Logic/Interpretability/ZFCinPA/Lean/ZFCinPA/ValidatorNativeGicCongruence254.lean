@@ -20,14 +20,9 @@ open scoped LO.FirstOrder.Arithmetic
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a :: G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b :: a :: G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma ofDer {p : V} (d : D [] p) : CProv p :=
-  d.sound cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
-private lemma ded2 {a b p : V} (d : D [b, a] p) : CProv (wim a (wim b p)) :=
-  ofDer (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d))
+local notation "h0" => (ValidatorImplicationContext.h0 CProv)
+local notation "h1" => (ValidatorImplicationContext.h1 CProv)
+local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 
 /-- Implication is contravariant in its antecedent and covariant in its consequent. -/
 lemma cProv_imp_mono {p p' q q' : V}
