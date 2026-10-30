@@ -27,18 +27,9 @@ private instance vac_sigma1 : 𝚺₁-Relation[V] Vac := by
 /-- Pointwise avoidance through the internal prefix length suffices, regardless
 of the actual lengths of either stack, since vector lookup is total. -/
 lemma prefixContext_vac (n B B' z : V) :
-    (∀ i<n, z≠B.[i]) → (∀ i<n, z≠B'.[i]) → Vac z (prefixContext n B B') := by
-  induction n using ISigma1.sigma1_succ_induction
-  · definability
-  case zero =>
-    intro _ _
-    simpa using vac_truth z
-  case succ n ih =>
-    intro hB hB'
-    rw [prefixContext_succ]
-    exact vac_neg (vac_imp (vac_eq _ _ z (hB n (by simp)) (hB' n (by simp)))
-      (vac_neg (ih (fun i hi => hB i (lt_succ_iff_le.mpr (le_of_lt hi)))
-        (fun i hi => hB' i (lt_succ_iff_le.mpr (le_of_lt hi))))))
+    (∀ i<n, z≠B.[i]) → (∀ i<n, z≠B'.[i]) → Vac z (prefixContext n B B') :=
+  ValidatorPrefixContext.vac weq prefixContext prefixContext_zero prefixContext_succ Vac
+    vac_truth vac_eq (fun {_z _a _b} ha hb => vac_neg (vac_imp ha (vac_neg hb))) n B B' z
 
 /-- Equal-length stacks allow both prefix avoidance premises to be expressed
 using the shared public `Avoid` predicate. -/
