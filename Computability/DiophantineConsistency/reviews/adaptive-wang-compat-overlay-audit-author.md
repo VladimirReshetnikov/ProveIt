@@ -1,0 +1,5 @@
+# Read-only compatibility overlay overlap audit
+
+Audit `/tmp/adaptive-wang-compat-overlay-audit-fl27uyzy` **PASS**. The private compatibility overlay retains all 367 canonical project `.olean` objects byte-for-byte, with no missing or changed canonical objects. Its 27 additional objects are exactly the independently built compatibility WangTable and the 26 authenticated chunk modules, with hashes matching their recorded outputs. The audit reauthenticated the 356 source guards, 1,717 selected base provider objects and all chunk source/object/log records before and after. It created no overlay and changed no provider.
+
+Reproduce with `python3 Computability/DiophantineConsistency/research/wang-chunk-full/audit_compat_overlay.py`; the required private providers are recorded in the driver. Evidence `adaptive-wang-compat-overlay-audit-author-evidence/FILES.json` covers three files and has SHA-256 `883fffa432955a883f2963f02ed0cf3927366ed456c7c9928fdd115bdafa5201`. This checks object overlap, not all elaborator extension metadata, historical original-object provenance, or canonical integration.
