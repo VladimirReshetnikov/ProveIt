@@ -58,17 +58,9 @@ theorem packedMatrix_eval {M : Type} [Structure language M]
 theorem side_eval {M : Type} [Structure language M]
     (side : Proposition language) (r : ℕ) (hr : side.fvSup ≤ r)
     (e : ℕ → M) : (parameterSide (packedSide side r hr)).Eval ![] e ↔ side.Eval ![] e := by
-  unfold parameterSide
-  rw [Semiformula.eval_rew]
-  have hb : (Semiterm.val (L := language) ![] e ∘
-      Rew.embSubsts (fun i : Fin r => .fvar i.val) ∘ Semiterm.bvar) = (fun i : Fin r => e i.val) := by
-    funext i
-    rfl
-  have hf : (Semiterm.val (L := language) ![] e ∘
-      Rew.embSubsts (fun i : Fin r => .fvar i.val) ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [hb,hf]
+  rw [parameterSide_eval]
   exact packedSide_eval side r hr e
+
 theorem matrix_eval {M : Type} [Structure language M]
     (θ : Semiproposition language 1) (r : ℕ) (hr : θ.fvSup ≤ r)
     (e : ℕ → M) (v : M) :

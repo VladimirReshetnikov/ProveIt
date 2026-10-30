@@ -12,6 +12,22 @@ open PRAFiniteFunctionCodes PRALanguage PRATheory PRAUniversalSyntax PRAUniversa
 def parameterSide {n : ℕ} (side : Semisentence language n) : Proposition language :=
   Rew.embSubsts (fun i : Fin n => .fvar i.val) ▹ side
 
+/-- The embedded side reads its parameters from the corresponding free variables. -/
+theorem parameterSide_eval {M : Type} [Structure language M] {n : ℕ}
+    (side : Semisentence language n) (e : ℕ → M) :
+    (parameterSide side).Eval ![] e ↔ side.Eval (fun i : Fin n => e i.val) Empty.elim := by
+  unfold parameterSide
+  rw [Semiformula.eval_rew]
+  have hb : (Semiterm.val (L := language) ![] e ∘
+      Rew.embSubsts (fun i : Fin n => .fvar i.val) ∘ Semiterm.bvar) =
+      (fun i : Fin n => e i.val) := by
+    funext i
+    rfl
+  have hf : (Semiterm.val (L := language) ![] e ∘
+      Rew.embSubsts (fun i : Fin n => .fvar i.val) ∘ Semiterm.fvar) =
+      (Empty.elim : Empty → M) := Subsingleton.elim _ _
+  rw [hb,hf]
+
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* UniversalAxiom]
@@ -19,16 +35,12 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* UniversalAxiom] in
 theorem modelParameterSide {n : ℕ} (side : Semisentence language n) (e : Fin n → M) :
     (parameterSide side).Eval ![] (parameterEnv n e) ↔ side.Eval e Empty.elim := by
-  unfold parameterSide
-  rw [Semiformula.eval_rew]
-  have hb : (Semiterm.val (L := language) ![] (parameterEnv n e) ∘
-      Rew.embSubsts (fun i : Fin n => .fvar i.val) ∘ Semiterm.bvar) = e := by
+  rw [parameterSide_eval]
+  have he : (fun i : Fin n => parameterEnv n e i.val) = e := by
     funext i
-    simp [Function.comp_def, parameterEnv]
-  have hf : (Semiterm.val (L := language) ![] (parameterEnv n e) ∘
-      Rew.embSubsts (fun i : Fin n => .fvar i.val) ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [hb,hf]
+    simp [parameterEnv]
+  rw [he]
+
 end models
 
 /-- Convert contextual syntactic term instances into a finite code list and
