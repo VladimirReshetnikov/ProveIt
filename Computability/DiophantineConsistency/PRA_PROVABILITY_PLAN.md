@@ -20,6 +20,11 @@ literal units for the same witness when the stated correction and orientation
 equalities are supplied, allowing those coordinates to be chosen separately.
 The common witness, first factor and complete zero remain open.
 
+The [concrete witness projections](reviews/adaptive-construction-witness-projection2011-independent.md)
+also pass an independent replay. These named coordinate equalities avoid
+unfolding the entire witness and large fixed port when building the remaining
+first-factor input; they do not themselves prove that input or a zero.
+
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
 identifies the actual theorem associated with each affected snapshot. Module
