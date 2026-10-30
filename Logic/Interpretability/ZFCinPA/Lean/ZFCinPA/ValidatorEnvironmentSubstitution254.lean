@@ -27,10 +27,7 @@ lemma term_labels_bShift {n t : V} (ht : IsSemiterm ℒₛₑₜ n t)
   rcases ht.case with (⟨i,_hi,rfl⟩ | ⟨i,rfl⟩ | ⟨k,f,args,hf,_,rfl⟩)
   · simp
   · simp
-  · have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
-    rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
-      .mkSigma “k f. ⊥” from rfl] at hf'
-    simp at hf'
+  · exact hf.elim
 
 lemma matches_qVec {n m F B B' w : V}
     (hw : IsSemitermVec ℒₛₑₜ n m w) (he : Matches F B B' n w) (label : V) :
@@ -50,10 +47,7 @@ lemma term_labels_subst {n t F B B' w : V} (ht : IsSemiterm ℒₛₑₜ n t)
   · rw [termSubst_bvar,TermLabels.term_bvar]
     exact he i hi
   · simp
-  · have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
-    rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
-      .mkSigma “k f. ⊥” from rfl] at hf'
-    simp at hf'
+  · exact hf.elim
 
 lemma vec_labels_subst {n m arity terms F B B' w : V}
     (ht : IsSemitermVec ℒₛₑₜ arity n terms) (hw : IsSemitermVec ℒₛₑₜ n m w)

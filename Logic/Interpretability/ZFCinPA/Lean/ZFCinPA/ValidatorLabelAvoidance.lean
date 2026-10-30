@@ -49,10 +49,7 @@ lemma term_label_avoids {n t : V} (ht : IsSemiterm ℒₛₑₜ n t)
     exact hB i (by rwa [hlen])
   · rw [TermLabels.term_fvar]
     exact free_label_avoids hF i
-  · have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
-    rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
-      .mkSigma “k f. ⊥” from rfl] at hf'
-    simp at hf'
+  · exact hf.elim
 
 
 def StreamEnv (s B : V) : Prop := ∀ k : V, Avoid (s+2*k) B
@@ -237,10 +234,7 @@ lemma term_labels_related {P : V → V → Prop} {n u : V}
     exact hcoord i (by rwa [hB])
   · rw [TermLabels.term_fvar,TermLabels.term_fvar]
     exact hrefl _
-  · have hf' : V ⊧/![k,f] (LeanProofs.ZFCinPA.instLORDefinableSet.func).val := hf
-    rw [show (LeanProofs.ZFCinPA.instLORDefinableSet.func : 𝚺₀.Semisentence 2) =
-      .mkSigma “k f. ⊥” from rfl] at hf'
-    simp at hf'
+  · exact hf.elim
 
 
 /-- Every internal relation symbol of the set language has arity two. -/
