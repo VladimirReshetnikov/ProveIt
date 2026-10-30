@@ -1,0 +1,6 @@
+import DiophantineConsistency.AdaptiveFirstRootFactor87Literal
+
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Literal.maintained_as_context
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Literal.candidate_as_context
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Literal.split_expression_eq
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Literal.current_natural_zero_iff

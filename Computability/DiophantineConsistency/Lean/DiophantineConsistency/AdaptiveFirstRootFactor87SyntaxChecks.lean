@@ -1,0 +1,4 @@
+import DiophantineConsistency.AdaptiveFirstRootFactor87Syntax
+
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Syntax.split_root_identity
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Syntax.contextual_zero_iff

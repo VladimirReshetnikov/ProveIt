@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAOpenOneInductionClassification
+open DiophantineConsistency.PRAOpenOneInductionClassification
+#print axioms openSigma_sigma
+#check openSigma_sigma

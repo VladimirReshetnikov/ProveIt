@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveFirstRootFactor87Context
+
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Context.splitEval_subst_congr
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Context.root_context_split
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87Context.root_context_zero_iff

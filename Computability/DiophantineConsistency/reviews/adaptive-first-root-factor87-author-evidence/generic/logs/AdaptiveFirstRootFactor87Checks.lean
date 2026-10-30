@@ -1,0 +1,4 @@
+import DiophantineConsistency.AdaptiveFirstRootFactor87
+
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87.signed_root_identity
+#print axioms DiophantineConsistency.AdaptiveFirstRootFactor87.context_identity

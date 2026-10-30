@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRAOpenOneInduction
+open DiophantineConsistency.PRAOpenOneInduction
+#print axioms modelOpenSigma
+#print axioms modelSigmaCharacteristic
+#print axioms modelSuccInd_congr
+#print axioms PRA_proves_goal_of_openSuccInd
+#check PRA_proves_goal_of_openSuccInd

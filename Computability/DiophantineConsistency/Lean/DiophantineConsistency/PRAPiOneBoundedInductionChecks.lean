@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAPiOneBoundedInduction
+#print axioms DiophantineConsistency.PRAPiOneBoundedInduction.eliminate_one_from_equivalence
+#check DiophantineConsistency.PRAPiOneBoundedInduction.eliminate_one_from_equivalence

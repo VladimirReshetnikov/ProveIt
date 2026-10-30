@@ -1,0 +1,36 @@
+'DiophantineConsistency.HerbrandTripleExtraction.prepareTriple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleExtraction.prepareTripleClosed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleExtraction.tripleDisjunction_eval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleExtraction.modelTripleWitness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleExtraction.universal_proves_preparedTripleDisjunction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleExtraction.universal_proves_tripleDisjunction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandTripleExtraction.universal_proves_preparedTripleDisjunction
+  (φ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 3)
+  (hOpen : LO.FirstOrder.Semiformula.Open φ)
+  (axioms : List (LO.FirstOrder.Sentence DiophantineConsistency.PRALanguage.language))
+  (hAxioms : ∀ σ ∈ axioms, DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom σ)
+  (p : DiophantineConsistency.HerbrandUniversalPreparation.Prepared (∃⁰ ∃⁰ φ) axioms) :
+  DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom ⊢
+    LO.FirstOrder.Semiformula.univCl
+      (tripleDisjunction φ (DiophantineConsistency.HerbrandExistentialSequents.existentialTerms p.derivation))
+DiophantineConsistency.HerbrandTripleExtraction.universal_proves_tripleDisjunction
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3)
+  (hOpen : LO.FirstOrder.Semiformula.Open φ)
+  (p : DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom.Proof (∃⁰ ∃⁰ ∃⁰ φ)) :
+  DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom ⊢
+    LO.FirstOrder.Semiformula.univCl
+      (tripleDisjunction (LO.FirstOrder.Rewriting.emb φ)
+        (DiophantineConsistency.HerbrandExistentialSequents.existentialTerms
+          (prepareTripleClosed φ hOpen p).derivation))

@@ -8,6 +8,55 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The merge pushed as `d53db22f9a` changed `HerbrandFixedGoalExtraction`,
+`HerbrandFixedGoalExtractionBound`, `HerbrandFixedGoalWeakening`, and
+`HerbrandStageSupport`. Previously recorded dependent replay results cover
+the preceding source snapshot; a source-current rebuild of their downstream
+PRA and finite-dispatcher clients is in progress. The merge also changed ZFC
+interpretation and proof-context sources, so the maintained HA endpoint still
+requires its separately scoped source-current replay.
+
+Two closed coded Σ₁ induction instances can now be eliminated together for
+[predicate bodies that ignore the induction parameter](reviews/pra-two-parameter-free-author-replay/README.md).
+The code supplies concrete zero/one tags and proves their substitution laws
+inside candidate PRA. Parameter-dependent predicates and arbitrary finite
+sets of induction instances are not covered by this theorem.
+
+Candidate-PRA models now have a checked arithmetic reduct satisfying both
+IΣ₀ and IOpen, via the [refreshed bounded comparison](reviews/parsons-bounded-post-preparation-replay/README.md)
+and [model-reduct theorem](reviews/pra-model-isigma-zero-author-replay/README.md).
+This is a prerequisite for pairing in arbitrary models; candidate primitive
+recursive pairing and projection codes and their correctness proofs remain open.
+
+A separate [87-operation adaptive output candidate](research/adaptive-first-root-factor87/README.md)
+factors one root of the 88-operation thirteen-variable circuit. The finite
+schedule audit and local signed-pair/`Expr.splitNatural` Lean lemmas have
+[independent replays](reviews/adaptive-first-root-factor87-independent.md).
+A separate [checked context lemma](reviews/adaptive-first-root-factor87-context-independent.md)
+extends the rewrite to arbitrary actual one-hole expression substitutions.
+The [full revised literal is now bound](reviews/adaptive-first-root-factor87-literal-independent.md)
+to the maintained adaptive expression in Lean, including equality of split
+values and the positive-shifted zero test in every commutative semiring. The
+13-variable candidate still has no completed HA or PRA consistency endpoint.
+
+The later upstream merges through `166728f64b` changed ZFC validator modules
+reachable from the maintained HA endpoint. Its earlier checked derivation is
+snapshot evidence; a dependency-aware source-current replay of that endpoint
+is still required. This does not assert a defect in the proof.
+
+The candidate-PRA development also has a [unary Π₁ equivalence transfer](reviews/pra-pi-one-implication-root.md):
+it eliminates one closed open-matrix Σ₁ induction instance from a proof of an
+equivalence of two unary open-matrix Π₁ sentences. It does not yet bind the
+actual equation or refutation sentences, and does not handle arbitrary finite
+induction instances.
+
+A [bounded-matrix extension](reviews/pra-bounded-one-induction-current-author-replay/README.md)
+now removes one closed Σ₁-induction instance with any Σ₀ matrix on its
+three stated arguments, using the candidate-PRA bounded characteristic
+compiler. The unary Π₁ equivalence transfer has the same bounded-induction
+extension. It still does not handle extra predicate parameters or an arbitrary
+finite collection of induction instances.
+
 Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean`,
 `ArithmeticBinomLegendre.lean`, `ArithmeticHalfBinomial.lean`, and
 `ArithmeticHalfBinomialSandwich.lean`. The affected adaptive population,

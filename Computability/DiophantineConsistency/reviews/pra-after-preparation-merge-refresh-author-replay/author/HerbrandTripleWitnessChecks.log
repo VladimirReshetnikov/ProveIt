@@ -1,0 +1,17 @@
+'DiophantineConsistency.HerbrandTripleWitness.modelParameterTripleInstance' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleWitness.modelExtractedTripleList' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandTripleWitness.PRA_exists_tripleWitness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandTripleWitness.PRA_exists_tripleWitness {n : ℕ}
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language (n + 3))
+  (hOpen : LO.FirstOrder.Semiformula.Open φ) (h : DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* ∃⁰ ∃⁰ ∃⁰ φ) :
+  ∃ t,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.first) ∧
+      Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.second) ∧
+        Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval t.third) ∧
+          DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* DiophantineConsistency.PRAHerbrandTripleSelection.matrixAt φ t
