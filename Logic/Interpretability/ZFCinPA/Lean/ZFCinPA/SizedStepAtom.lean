@@ -39,9 +39,7 @@ theorem atom_step_le (isEq : Bool) {N₀ N₂ : SF V 1} {u w : V} (hu : 2 ≤ u)
     (h₀ : DLv 𝗭𝗙 (insert (NumOKT N₀).val ∅) w) (h₂ : DLv 𝗭𝗙 (insert (NumOKT N₂).val ∅) w) :
     DLv 𝗭𝗙 (insert (InvT (AtomT isEq N₀ N₂) succT).val ∅) (w + 30) := by
   have hw4 := wD_4 hw
-  have up : ∀ k : V, w ≤ w + k := fun k => le_self_add
-  have u4 : ∀ k : V, (4 : V) ≤ w + k := fun k => le_trans hw4 (up k)
-  have uA : ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k := fun k => le_trans (wD_ante hw) (up k)
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   have pA := dall_iff (AtomT isEq N₀ N₂) (hK 4) hu
   have pF := dall2_swap (succT (V := V)) (hK 5) hu
   cases isEq with

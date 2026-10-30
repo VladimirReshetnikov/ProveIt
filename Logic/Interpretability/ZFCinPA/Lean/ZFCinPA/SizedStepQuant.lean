@@ -40,9 +40,7 @@ theorem ex_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
     DLv 𝗭𝗙 (insert (InvT (ExT P₀) (MaxT F₁ (WbT P₀))).val ∅) (w + 30) := by
   have hw4 := wD_4 hw
   have hmI := wD_m hw
-  have up : ∀ k : V, w ≤ w + k := fun k => le_self_add
-  have u4 : ∀ k : V, (4 : V) ≤ w + k := fun k => le_trans hw4 (up k)
-  have uA : ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k := fun k => le_trans (wD_ante hw) (up k)
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   have hc := compiledLe (by decide) exTemplate_provable _ hu hK
   have lt := trD_le exTemplate tD_ex _ hK
   obtain ⟨T, hT⟩ : ∃ T,
@@ -79,9 +77,7 @@ theorem all_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
     DLv 𝗭𝗙 (insert (InvT (AllT P₀) (MaxT F₁ (WbNT P₀))).val ∅) (w + 30) := by
   have hw4 := wD_4 hw
   have hmI := wD_m hw
-  have up : ∀ k : V, w ≤ w + k := fun k => le_self_add
-  have u4 : ∀ k : V, (4 : V) ≤ w + k := fun k => le_trans hw4 (up k)
-  have uA : ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k := fun k => le_trans (wD_ante hw) (up k)
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   have hc := compiledLe (by decide) allTemplate_provable _ hu hK
   have lt := trD_le allTemplate tD_all _ hK
   obtain ⟨T, hT⟩ : ∃ T,
