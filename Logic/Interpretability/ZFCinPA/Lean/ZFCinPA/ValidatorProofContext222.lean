@@ -29,22 +29,8 @@ instance wim_sigma1 : 𝚺₁-Function₂[V] wim := wim_defined.to_definable₀
 
 /-! ## Finite propositional reasoning -/
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma h2 {G : List V} {a b c : V} : D (c::b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
-private lemma ofDer {p : V} (d : D [] p) : CProv p :=
-  d.sound cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
-private lemma ded1 {a p : V} (d : D [a] p) : CProv (wim a p) :=
-  ofDer (Kalmar.deduction cProv_classical d)
-private lemma ded2 {a b p : V} (d : D [b,a] p) : CProv (wim a (wim b p)) :=
-  ofDer (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d))
-private lemma ded3 {a b c p : V} (d : D [c,b,a] p) : CProv (wim a (wim b (wim c p))) :=
-  ofDer (Kalmar.deduction cProv_classical
-    (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d)))
-lemma self_imp (a : V) : CProv (wim a a) := ded1 h0
+lemma self_imp (a : V) : CProv (wim a a) :=
+  ValidatorImplicationContext.ded1 CProv cProv_classical (ValidatorImplicationContext.h0 CProv)
 
 /-! ## Implication chains -/
 

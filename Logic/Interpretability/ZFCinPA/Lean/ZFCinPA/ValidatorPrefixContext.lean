@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorImplicationContext
 import BusyBeaver.ZFC.ArithmeticCode254
 import Foundation.FirstOrder.Arithmetic.HFS.Vec
 
@@ -17,6 +18,36 @@ abbrev conj (p q : V) : V := wim (wim p (wim q 1)) 1
 private instance conj_sigma1 : 𝚺₁-Function₂[V] conj := by
   unfold conj
   definability
+/- Finite conjunction certificates shared by both validator encodings. -/
+section Conjunction
+variable (P : V → Prop)
+variable (hc : Kalmar.Classical (wim : V → V → V) 1 P)
+include hc in
+lemma conj_intro_imp (a b : V) : P (wim a (wim b (conj a b))) :=
+  ValidatorImplicationContext.ded3 P hc
+    (.mp (.mp (ValidatorImplicationContext.h0 P) (ValidatorImplicationContext.h2 P))
+      (ValidatorImplicationContext.h1 P))
+include hc in
+lemma conj_under {h a b : V} (ha : P (wim h a)) (hb : P (wim h b)) :
+    P (wim h (conj a b)) :=
+  ValidatorImplicationContext.ded1 P hc
+    (.mp (.mp (.ax (conj_intro_imp P hc a b)) (.mp (.ax ha) (ValidatorImplicationContext.h0 P)))
+      (.mp (.ax hb) (ValidatorImplicationContext.h0 P)))
+include hc in
+lemma conj_mono_right (a : V) {b c : V} (h : P (wim b c)) :
+    P (wim (conj a b) (conj a c)) :=
+  conj_under P hc (ValidatorImplicationContext.conj_left P hc a b)
+    (ValidatorImplicationContext.compose P hc (ValidatorImplicationContext.conj_right P hc a b) h)
+include hc in
+lemma conj_interchange (a b c : V) : P (wim (conj a (conj b c)) (conj b (conj a c))) :=
+  conj_under P hc
+    (ValidatorImplicationContext.compose P hc (ValidatorImplicationContext.conj_right P hc a (conj b c))
+      (ValidatorImplicationContext.conj_left P hc b c))
+    (conj_under P hc (ValidatorImplicationContext.conj_left P hc a (conj b c))
+      (ValidatorImplicationContext.compose P hc (ValidatorImplicationContext.conj_right P hc a (conj b c))
+        (ValidatorImplicationContext.conj_right P hc b c)))
+end Conjunction
+
 variable (P : V → Prop) [𝚺₁-Predicate[V] P]
 variable (atom : V → V → V) [𝚺₁-Function₂[V] atom]
 variable (ctx : V → V → V → V) [𝚺₁-Function₃[V] ctx]

@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorQuantifierRules222
 
 set_option autoImplicit false
@@ -22,28 +23,20 @@ open ValidatorQuantifierRules222
 open scoped LO.FirstOrder.Arithmetic
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma ofDer {p : V} (d : D [] p) : CProv p :=
-  d.sound cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
-private lemma ded1 {a p : V} (d : D [a] p) : CProv (wim a p) :=
-  ofDer (Kalmar.deduction cProv_classical d)
-private lemma ded2 {a b p : V} (d : D [b,a] p) : CProv (wim a (wim b p)) :=
-  ofDer (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d))
-
 /-- Finite actual quantifier deduction. Only P is generalized under a
 vacuity certificate; neither primitive equality nor Q is assumed vacuous. -/
 lemma ex_intro_relational (x z P Q : V)
     (h : CProv (wim (weq x z) (wim P Q))) (hP : Vac x P) :
     CProv (wim P (ex x Q)) := by
   have hc : CProv (wim P (wim (weq x z) Q)) :=
-    ded2 (.mp (.mp (.ax h) h0) h1)
+    ValidatorImplicationContext.ded2 CProv cProv_classical
+      (.mp (.mp (.ax h) (ValidatorImplicationContext.h0 CProv))
+        (ValidatorImplicationContext.h1 CProv))
   have hg := compose hP (all_mono x hc)
   have he : CProv (wim (wal x (wim (weq x z) Q)) (ex x Q)) :=
-    ded1 (.mp (.mp (.ax (all_imp_ex x (weq x z) Q)) h0)
-      (.ax (ex_equality x z)))
+    ValidatorImplicationContext.ded1 CProv cProv_classical
+      (.mp (.mp (.ax (all_imp_ex x (weq x z) Q))
+        (ValidatorImplicationContext.h0 CProv)) (.ax (ex_equality x z)))
   exact compose hg he
 
 private lemma stream_term {t F s : V} (ht : IsTerm ℒₛₑₜ t)
