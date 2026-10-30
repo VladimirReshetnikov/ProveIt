@@ -46,18 +46,25 @@ noncomputable def termOpenAt (d source : V) : V :=
 noncomputable def openAt (d source : V) : V :=
   subst ℒₛₑₜ (openingVec d) (shift ℒₛₑₜ source)
 
-private lemma opening_matches (d F B B' x : V) (hB : Ext d B B' x) :
-    ValidatorEnvironmentSubstitution254.Matches (x∷F) B B' (d+1) (openingVec d) := by
+/-- The first d slots are preserved; the final slot names a free label. -/
+lemma matches_free (d F B B' index : V) (hB : Ext d B B' (freeLabel F index)) :
+    ValidatorEnvironmentSubstitution254.Matches F B B' (d+1)
+      (qVecIter ℒₛₑₜ d (^&index∷0)) := by
   intro i hi
   by_cases hid : i<d
-  · rw [show (openingVec d).[i]=(^#i : V) from
-      (qVecIter_free_spec (L := ℒₛₑₜ) d 0).1 i hid]
+  · rw [show (qVecIter ℒₛₑₜ d (^&index∷0)).[i]=(^#i : V) from
+      (qVecIter_free_spec (L := ℒₛₑₜ) d index).1 i hid]
     rw [TermLabels.term_bvar,hB.2.2.1 i hid]
   · have he : i=d := le_antisymm (lt_succ_iff_le.mp hi) (le_of_not_gt hid)
     subst i
-    rw [show (openingVec d).[d]=(^&0 : V) from
-      (qVecIter_free_spec (L := ℒₛₑₜ) d 0).2]
-    rw [TermLabels.term_fvar,freeLabel_cons_zero,hB.2.2.2]
+    rw [show (qVecIter ℒₛₑₜ d (^&index∷0)).[d]=(^&index : V) from
+      (qVecIter_free_spec (L := ℒₛₑₜ) d index).2]
+    rw [TermLabels.term_fvar,hB.2.2.2]
+
+private lemma opening_matches (d F B B' x : V) (hB : Ext d B B' x) :
+    ValidatorEnvironmentSubstitution254.Matches (x∷F) B B' (d+1) (openingVec d) := by
+  simpa only [openingVec,freeLabel_cons_zero] using
+    matches_free d (x∷F) B B' 0 (by simpa only [freeLabel_cons_zero] using hB)
 
 lemma term_labels_open {d source : V} (ht : IsSemiterm ℒₛₑₜ (d+1) source)
     (F B B' x : V) (hB : Ext d B B' x) :

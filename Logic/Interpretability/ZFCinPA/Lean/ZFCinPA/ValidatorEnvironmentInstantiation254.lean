@@ -31,17 +31,8 @@ noncomputable def instantiateAt (d index source : V) : V :=
 
 private lemma instantiation_matches (d F B B' index : V)
     (hB : Ext d B B' (freeLabel F index)) :
-    ValidatorEnvironmentSubstitution254.Matches F B B' (d+1) (instantiationVec d index) := by
-  intro i hi
-  by_cases hid : i<d
-  · rw [show (instantiationVec d index).[i]=(^#i : V) from
-      (qVecIter_free_spec (L := ℒₛₑₜ) d index).1 i hid]
-    rw [TermLabels.term_bvar,hB.2.2.1 i hid]
-  · have he : i=d := le_antisymm (lt_succ_iff_le.mp hi) (le_of_not_gt hid)
-    subst i
-    rw [show (instantiationVec d index).[d]=(^&index : V) from
-      (qVecIter_free_spec (L := ℒₛₑₜ) d index).2]
-    rw [TermLabels.term_fvar,hB.2.2.2]
+    ValidatorEnvironmentSubstitution254.Matches F B B' (d+1) (instantiationVec d index) :=
+  matches_free d F B B' index hB
 
 lemma term_labels_instantiate {d source : V} (ht : IsSemiterm ℒₛₑₜ (d+1) source)
     (F B B' index : V) (hB : Ext d B B' (freeLabel F index)) :
