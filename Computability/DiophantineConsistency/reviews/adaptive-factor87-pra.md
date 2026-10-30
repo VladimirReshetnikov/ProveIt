@@ -25,3 +25,15 @@ The retained [logs](adaptive-factor87-pra-replay/) report only `propext`,
 Mathlib are inherited boundaries of this final client; their separate replay
 receipts give the scope of their authentication. A source reviewer checked the
 mapping and the theorem's stated limits.
+
+## Post-merge client replay
+
+After the upstream Herbrand changes, the bounded comparison was rebuilt as
+part of the 49-module source-current chain. This final client was rebuilt at
+`/tmp/adaptive-factor87-pra-postmerge-bg2ztj7d` and
+`/tmp/adaptive-factor87-pra-postmerge-heeciy8o` against the author and
+independent 49-module providers, respectively, and the two matching IΣ₀/HA
+providers. Both source, object and complete log hashes match the table above.
+The [post-merge logs](adaptive-factor87-pra-postmerge-replay/) retain the
+checks. This refresh does not prove a consistency equivalence or standard-PRA
+comparison.
