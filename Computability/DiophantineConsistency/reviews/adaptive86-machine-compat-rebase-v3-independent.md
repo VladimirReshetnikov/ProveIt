@@ -1,0 +1,5 @@
+# Direct-ordinate 86 machine equivalence: independent hardened compatibility replay
+
+The root independently replayed the v3 scoped driver and obtained `PASS` at `/tmp/adaptive86-machine-compat-rebase-v3-74pv7ppc`, state SHA-256 `06c5eaa3f97c80c8a6bdd3c2c792dd9cb8168cf64ce617e57034c93fc12652c0`. All 26 source/object/full-log hashes match the author run, as does the 507-object selected provider inventory; the sole nonempty log retains the previously documented `unusedSimpArgs` warning. The final 86-to-machine theorem object SHA-256 is `b2b66114c1bb8046d26e5c6c0803d785d91813cc17d0ebe2f79d43c06925f790`.
+
+State, driver, provider inventory, source snapshots, complete logs and timings are in `adaptive86-machine-compat-rebase-v3-independent-evidence`; manifest SHA-256 `ceb50ada17371e68b0bfab6fe779a2113592596ecd5ec1c02eb66a99950da99c`. This is the same arbitrary-IΣ₁-model theorem, private additive-helper import and historical 87-provider scope as the author receipt; it is not a complete current-source closure, an HA/PRA proof-existence result, or a Con(ZFC) equivalence.
