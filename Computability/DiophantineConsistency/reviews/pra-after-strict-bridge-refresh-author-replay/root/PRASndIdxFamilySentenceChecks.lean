@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRASndIdxFamilySentence
+#print axioms DiophantineConsistency.PRASndIdxFamilySentence.candidate_proves_sndIdx_family
+#check DiophantineConsistency.PRASndIdxFamilySentence.candidate_proves_sndIdx_family

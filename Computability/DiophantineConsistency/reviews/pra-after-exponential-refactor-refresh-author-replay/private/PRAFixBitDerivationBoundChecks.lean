@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAFixBitDerivationBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRAFixBitDerivationBound.body_bound
+#print axioms DiophantineConsistency.PRAFixBitDerivationBound.derivation_bound_of_witness
+#print axioms DiophantineConsistency.PRAFixBitDerivationBound.candidate_proves_derivation_bound
+#check DiophantineConsistency.PRAFixBitDerivationBound.candidate_proves_derivation_bound
