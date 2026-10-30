@@ -21,19 +21,9 @@ theorem cast_eval {M : Type} [Structure language M] {a b : ℕ} (h : a = b)
   cases h
   rfl
 
-theorem side_eval {M : Type} [Structure language M]
-    (side : Proposition language) (r : ℕ) (hr : side.fvSup ≤ r)
-    (e : ℕ → M) : (parameterSide (packedSide side r hr)).Eval ![] e ↔ side.Eval ![] e := by
-  unfold parameterSide
-  rw [Semiformula.eval_rew]
-  have hb : (Semiterm.val (L := language) ![] e ∘
-      Rew.embSubsts (fun i : Fin r => .fvar i.val) ∘ Semiterm.bvar) = (fun i : Fin r => e i.val) := by
-    funext i
-    rfl
-  have hf : (Semiterm.val (L := language) ![] e ∘
-      Rew.embSubsts (fun i : Fin r => .fvar i.val) ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [hb,hf]
+theorem packedSide_eval {M : Type} [Structure language M]
+    (side : Proposition language) (r : ℕ) (hr : side.fvSup ≤ r) (e : ℕ → M) :
+    (packedSide side r hr).Eval (fun i : Fin r => e i.val) Empty.elim ↔ side.Eval ![] e := by
   unfold packedSide
   rw [cast_eval (Nat.zero_add r), HerbrandCommonParameters.pack_eval (fallback := e)]
   have hb0 : (fun i : Fin 0 => e ((Fin.cast (Nat.zero_add r) (Fin.castAdd r i)).val)) = ![] := Subsingleton.elim _ _
@@ -42,21 +32,12 @@ theorem side_eval {M : Type} [Structure language M]
   intro i hi
   have hir : i < r := lt_of_lt_of_le (Semiformula.lt_fvSup_of_fvar? hi) hr
   simp [hir]
-theorem matrix_eval {M : Type} [Structure language M]
+
+theorem packedMatrix_eval {M : Type} [Structure language M]
     (θ : Semiproposition language 1) (r : ℕ) (hr : θ.fvSup ≤ r)
     (e : ℕ → M) (v : M) :
-    (parameterMatrix (packedMatrix θ r hr)).Eval ![v] e ↔ θ.Eval ![v] e := by
-  unfold parameterMatrix
-  rw [Semiformula.eval_rew]
-  have hb : (Semiterm.val (L := language) ![v] e ∘
-      Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin r => .fvar i.val)) ∘ Semiterm.bvar) =
-      Fin.cases v (fun i : Fin r => e i.val) := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
-  have hf : (Semiterm.val (L := language) ![v] e ∘
-      Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin r => .fvar i.val)) ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [hb,hf]
+    (packedMatrix θ r hr).Eval (Fin.cases v (fun i : Fin r => e i.val)) Empty.elim ↔
+      θ.Eval ![v] e := by
   unfold packedMatrix
   rw [cast_eval (Nat.add_comm 1 r), HerbrandCommonParameters.pack_eval (fallback := e)]
   have hb1 : (fun i : Fin 1 => Fin.cases v (fun k : Fin r => e k.val)
@@ -73,6 +54,20 @@ theorem matrix_eval {M : Type} [Structure language M]
     simp [Nat.add_comm]
   rw [hc]
   rfl
+
+theorem side_eval {M : Type} [Structure language M]
+    (side : Proposition language) (r : ℕ) (hr : side.fvSup ≤ r)
+    (e : ℕ → M) : (parameterSide (packedSide side r hr)).Eval ![] e ↔ side.Eval ![] e := by
+  rw [parameterSide_eval]
+  exact packedSide_eval side r hr e
+
+theorem matrix_eval {M : Type} [Structure language M]
+    (θ : Semiproposition language 1) (r : ℕ) (hr : θ.fvSup ≤ r)
+    (e : ℕ → M) (v : M) :
+    (parameterMatrix (packedMatrix θ r hr)).Eval ![v] e ↔ θ.Eval ![v] e := by
+  rw [parameterMatrix_eval]
+  exact packedMatrix_eval θ r hr e v
+
 theorem cast_tree {a b : ℕ} (h : a = b) (φ : Semisentence language a)
     (ht : ExistentialTree φ) : ExistentialTree (cast (congrArg (Semisentence language) h) φ) := by
   cases h

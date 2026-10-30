@@ -113,7 +113,7 @@ theorem exists_elim {T : InternalTheory V ℒₛₑₜ} {p : Semiformula V ℒ�
   have ha' : T ⊢ ∼q 🡒 ∼(∃⁰ p) := by simpa using (show T ⊢ _ from ⟨ha⟩)
   cl_prover [ha']
 
-private theorem exists_project {T : InternalTheory V ℒₛₑₜ} {Γ : List (Formula V ℒₛₑₜ)}
+theorem exists_project {T : InternalTheory V ℒₛₑₜ} {Γ : List (Formula V ℒₛₑₜ)}
     {p q : Semiformula V ℒₛₑₜ 1} {r : Formula V ℒₛₑₜ}
     (h : Γ ⊢[T] r 🡒 ∃⁰ (p ⋏ q)) : Γ ⊢[T] r 🡒 ∃⁰ p := by
   have he : Γ ⊢[T] (∃⁰ (p ⋏ q)) 🡒 ∃⁰ p := by
@@ -131,7 +131,7 @@ def source_refl (t : Term V ℒₛₑₜ) : Source V ⊢! eqTerm t t := by
   change Source V ⊢! ∀⁰ eqTerm (Bootstrapping.Semiterm.bvar 0) (Bootstrapping.Semiterm.bvar 0) at h
   simpa [eqTerm] using TProof.specialize h t
 
-private def pairMatrix (K : Semiformula V ℒₛₑₜ 2) : Semiformula V ℒₛₑₜ 2 :=
+def pairMatrix (K : Semiformula V ℒₛₑₜ 2) : Semiformula V ℒₛₑₜ 2 :=
   ((∀⁰ ((⌜seedMem 3 0 1⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 3) 🡒 ∃⁰
       ((K.subst ![⌜(#1 : SyntacticSemiterm ℒₛₑₜ 4)⌝,⌜(#0 : SyntacticSemiterm ℒₛₑₜ 4)⌝]) ⋏
         (∀⁰ ((⌜seedSubset⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 5) 🡒 ∀⁰
@@ -142,18 +142,18 @@ private def pairMatrix (K : Semiformula V ℒₛₑₜ 2) : Semiformula V ℒₛ
       ∃⁰ ((K.subst ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 4)⌝,⌜(#3 : SyntacticSemiterm ℒₛₑₜ 4)⌝]) ⋏
         (⌜seedMem 4 0 2⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 4)))))
 
-private def pairAt (K : Semiformula V ℒₛₑₜ 2) (a c : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ :=
+def pairAt (K : Semiformula V ℒₛₑₜ 2) (a c : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ :=
   (pairMatrix K).subst ![c,a]
-private def pairExists (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) : Semiformula V ℒₛₑₜ 1 :=
+def pairExists (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) : Semiformula V ℒₛₑₜ 1 :=
   (pairMatrix K).subst ![Bootstrapping.Semiterm.bvar 0,a.bShift]
-private theorem pair_exists (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) :
+theorem pair_exists (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) :
     Source V ⊢ ∃⁰ pairExists K a := by
   simpa [fullSeedBody,pairExists,pairMatrix,SemitermVec.q] using
     TProof.specialize! (⟨openSeedProof K⟩) a
 
 attribute [local irreducible] pairAt pairExists pairMatrix
 
-private theorem pair_support (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
+theorem pair_support (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
     Source V ⊢ pairAt K a c 🡒 (memTerm y c 🡒 ∃⁰ K.subst ![y.bShift,Bootstrapping.Semiterm.bvar 0]) := by
   rcases term_is_fvar a with ⟨a,rfl⟩
   rcases term_is_fvar c with ⟨c,rfl⟩
@@ -170,7 +170,7 @@ private theorem pair_support (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V 
   simpa [pairAt,pairMatrix,memTerm,seedMem,SemitermVec.q,Bootstrapping.Semiformula.substs_substs,
     Matrix.comp_vecCons',Matrix.vecHead,Matrix.vecTail] using hx'
 
-private theorem pair_request (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
+theorem pair_request (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
     Source V ⊢ pairAt K a c 🡒 (K.subst ![y,a] 🡒
       ∃⁰ (K.subst ![Bootstrapping.Semiterm.bvar 0,a.bShift] ⋏ memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift)) := by
   rcases term_is_fvar a with ⟨a,rfl⟩
@@ -185,14 +185,14 @@ private theorem pair_request (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V 
   simpa [pairAt,pairMatrix,memTerm,seedMem,SemitermVec.q,Bootstrapping.Semiformula.substs_substs,
     Matrix.comp_vecCons',Matrix.vecHead,Matrix.vecTail] using hx
 
-@[simp] private theorem pairAt_shift (K : Semiformula V ℒₛₑₜ 2) (a c : Term V ℒₛₑₜ) :
+@[simp] theorem pairAt_shift (K : Semiformula V ℒₛₑₜ 2) (a c : Term V ℒₛₑₜ) :
     (pairAt K a c).shift=pairAt K.shift a.shift c.shift := by
   rcases term_is_fvar a with ⟨a,rfl⟩
   rcases term_is_fvar c with ⟨c,rfl⟩
   simp [pairAt,pairMatrix,seedMem,seedSubset,Bootstrapping.Semiformula.shift_substs,
     SemitermVec.q,Matrix.comp_vecCons',Matrix.vecHead,Matrix.vecTail]
 
-@[simp] private theorem pairExists_free (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) :
+@[simp] theorem pairExists_free (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) :
     (pairExists K a).free=pairAt K.shift a.shift (Bootstrapping.Semiterm.fvar 0) := by
   rcases term_is_fvar a with ⟨a,rfl⟩
   simp [pairExists,pairAt,pairMatrix,seedMem,seedSubset,Bootstrapping.Semiformula.free,
@@ -234,29 +234,6 @@ theorem source_symm (t u : Term V ℒₛₑₜ) : Source V ⊢ eqTerm t u 🡒 e
     simpa [eqTerm,Bootstrapping.Semiformula.imp_def] using h
   simpa [eqTerm] using (show Source V ⊢ _ from ⟨TProof.specialize₂ h' u t⟩)
 
-theorem source_mem_congr (t u c : Term V ℒₛₑₜ) :
-    Source V ⊢ eqTerm t u 🡒 memTerm t c 🡒 memTerm u c := by
-  have hm : (⌜(Theory.Eq.relExt Language.Mem.mem : SetTheorySentence)⌝ : V)∈seedTheory.Δ₁Class :=
-    Δ₁Class.mem_iff.mpr (Or.inl (Or.inl (Theory.eqAxiom.relExt _)))
-  have h : Source V ⊢! (⌜(Rewriting.emb (Theory.Eq.relExt Language.Mem.mem) : SetTheoryProposition)⌝ : Formula V ℒₛₑₜ) := TProof.byAxm hm
-  have hq : (⌜(Rewriting.emb (Theory.Eq.relExt Language.Mem.mem) : SetTheoryProposition)⌝ : Formula V ℒₛₑₜ)=
-      ∀⁰ ∀⁰ ∀⁰ ∀⁰
-      ((Bootstrapping.Semiformula.nrel Language.Eq.eq ![Bootstrapping.Semiterm.bvar 0,Bootstrapping.Semiterm.bvar 2] ⋎
-        (Bootstrapping.Semiformula.nrel Language.Eq.eq ![Bootstrapping.Semiterm.bvar 1,Bootstrapping.Semiterm.bvar 3] ⋎ ⊥)) ⋎
-        (Bootstrapping.Semiformula.nrel Language.Mem.mem ![Bootstrapping.Semiterm.bvar 0,Bootstrapping.Semiterm.bvar 1] ⋎
-        memTerm (Bootstrapping.Semiterm.bvar 2) (Bootstrapping.Semiterm.bvar 3))) := rfl
-  rw [hq] at h
-  have h' : Source V ⊢! ∀⁰ ∀⁰ ∀⁰ ∀⁰
-      ((eqTerm (Bootstrapping.Semiterm.bvar 0) (Bootstrapping.Semiterm.bvar 2) ⋏
-        (eqTerm (Bootstrapping.Semiterm.bvar 1) (Bootstrapping.Semiterm.bvar 3) ⋏ ⊤)) 🡒
-        memTerm (Bootstrapping.Semiterm.bvar 0) (Bootstrapping.Semiterm.bvar 1) 🡒
-        memTerm (Bootstrapping.Semiterm.bvar 2) (Bootstrapping.Semiterm.bvar 3)) := by
-    simpa [eqTerm,memTerm,Bootstrapping.Semiformula.imp_def] using h
-  have hh : Source V ⊢ (eqTerm t u ⋏ (eqTerm c c ⋏ ⊤)) 🡒 memTerm t c 🡒 memTerm u c := by
-    simpa [eqTerm,memTerm] using (show Source V ⊢ _ from ⟨TProof.specialize₄ h' t c u c⟩)
-  have hr : Source V ⊢ eqTerm c c := ⟨source_refl c⟩
-  cl_prover [hh,hr]
-
 theorem source_mem_ext (t u c d : Term V ℒₛₑₜ) :
     Source V ⊢ eqTerm t u 🡒 eqTerm c d 🡒 memTerm t c 🡒 memTerm u d := by
   have hm : (⌜(Theory.Eq.relExt Language.Mem.mem : SetTheorySentence)⌝ : V)∈seedTheory.Δ₁Class :=
@@ -278,6 +255,11 @@ theorem source_mem_ext (t u c d : Term V ℒₛₑₜ) :
   have hh : Source V ⊢ (eqTerm t u ⋏ (eqTerm c d ⋏ ⊤)) 🡒 memTerm t c 🡒 memTerm u d := by
     simpa [eqTerm,memTerm] using (show Source V ⊢ _ from ⟨TProof.specialize₄ h' t c u d⟩)
   cl_prover [hh]
+
+theorem source_mem_congr (t u c : Term V ℒₛₑₜ) :
+    Source V ⊢ eqTerm t u 🡒 memTerm t c 🡒 memTerm u c := by
+  have hr : Source V ⊢ eqTerm c c := ⟨source_refl c⟩
+  cl_prover [source_mem_ext t u c c,hr]
 
 theorem source_trans (t u v : Term V ℒₛₑₜ) :
     Source V ⊢ eqTerm t u 🡒 eqTerm u v 🡒 eqTerm t v := by

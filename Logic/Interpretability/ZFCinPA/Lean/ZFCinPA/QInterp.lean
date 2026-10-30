@@ -237,15 +237,8 @@ lemma isSemiformula_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) :
 lemma atomOf_PN (R : W) : atomOf (PN : W) R = if R = 0 then ⌜eqS⌝ else ⌜memS⌝ := by
   simp [atomOf, PN]
 
-lemma good_PN : Good (PN : W) where
-  isDom := by rw [dom_PN]; simpa using isSemiformula_quote_sen (W := W) domS
-  domShift := by rw [dom_PN]; exact shift_quote_sen domS
-  isAtom R := by
-    rw [atomOf_PN]
-    split_ifs
-    · simpa using isSemiformula_quote_sen (W := W) eqS
-    · simpa using isSemiformula_quote_sen (W := W) memS
-  atomShift R := by rw [atomOf_PN]; split_ifs <;> exact shift_quote_sen _
+lemma good_PN : Good (PN : W) :=
+  ConstructibleInterpretation.good_quoted_parameter domS eqS memS
 
 lemma embSubsts_eq_comp' {ξ : Type*} {n k : ℕ} (v : Fin k → Semiterm ℒₛₑₜ ξ n) :
     (Rew.embSubsts v : Rew ℒₛₑₜ Empty k ξ n) = (Rew.subst v).comp Rew.emb :=
@@ -260,10 +253,9 @@ lemma quote_domAtS (n : ℕ) : (⌜(domAtS n : SetTheorySemiproposition (n + 1))
   rw [domAtS, quote_embSubsts]
   exact ConstructibleInterpretation.subst_unary_bvar0 _ (by simp) (by simp)
 
-/-- **The code of the meta interpretation is the internal interpretation.** -/
-theorem quote_intF : ∀ {n : ℕ} (φ : SetTheorySemiproposition n),
-    (⌜intF φ⌝ : W) = interp (PN : W) ⌜φ⌝
-  | _, .rel R v => by
+private theorem quote_intF_rel {n k : ℕ} (R : (ℒₛₑₜ).Rel k)
+    (v : Fin k → SyntacticSemiterm ℒₛₑₜ n) :
+    (⌜intF (Semiformula.rel R v)⌝ : W) = interp (PN : W) ⌜Semiformula.rel R v⌝ := by
       have h := ConstructibleInterpretation.isUFormula_quote (W := W) (.rel R v : SetTheorySemiproposition _)
       rw [LO.FirstOrder.Semiformula.quote_rel] at h
       rw [intF_rel, LO.FirstOrder.Semiformula.quote_rel,
@@ -271,14 +263,17 @@ theorem quote_intF : ∀ {n : ℕ} (φ : SetTheorySemiproposition n),
       cases R with
       | eq => rw [if_pos (by change ((0 : ℕ) : W) = 0; simp)]; exact quote_embSubsts (W := W) eqS v
       | mem => rw [if_neg (by change ((1 : ℕ) : W) ≠ 0; simp)]; exact quote_embSubsts (W := W) memS v
+
+/-- **The code of the meta interpretation is the internal interpretation.** -/
+theorem quote_intF : ∀ {n : ℕ} (φ : SetTheorySemiproposition n),
+    (⌜intF φ⌝ : W) = interp (PN : W) ⌜φ⌝
+  | _, .rel R v => quote_intF_rel R v
   | _, .nrel R v => by
-      have h := ConstructibleInterpretation.isUFormula_quote (W := W) (.nrel R v : SetTheorySemiproposition _)
-      rw [LO.FirstOrder.Semiformula.quote_nrel] at h
-      rw [intF_nrel, ConstructibleInterpretation.quote_neg_set, LO.FirstOrder.Semiformula.quote_nrel,
-        interp_nrel (IsUFormula.nrel.mp h).1 (IsUFormula.nrel.mp h).2, atomOf_PN]
-      cases R with
-      | eq => rw [if_pos (by change ((0 : ℕ) : W) = 0; simp)]; congr 1; exact quote_embSubsts (W := W) eqS v
-      | mem => rw [if_neg (by change ((1 : ℕ) : W) ≠ 0; simp)]; congr 1; exact quote_embSubsts (W := W) memS v
+      change (⌜∼intF (Semiformula.rel R v)⌝ : W) =
+        interp (PN : W) ⌜∼(Semiformula.rel R v : SetTheorySemiproposition _)⌝
+      rw [ConstructibleInterpretation.quote_neg_set, ConstructibleInterpretation.quote_neg_set,
+        ← interp_neg good_PN (LO.FirstOrder.Semiformula.quote_isSemiformula
+          (Semiformula.rel R v : SetTheorySemiproposition _)), quote_intF_rel]
   | _, ⊤ => by simp
   | _, ⊥ => by simp
   | _, φ ⋏ ψ => by

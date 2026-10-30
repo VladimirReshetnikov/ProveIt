@@ -8,14 +8,7 @@ open PRAFiniteFunctionCodes PRALanguage PRATheory PRAHerbrandSelection HerbrandC
 theorem packedSide_eval {M : Type} [Structure language M]
     (side : Proposition language) (r : ℕ) (hr : side.fvSup ≤ r) (e : ℕ → M) :
     (packedSide side r hr).Eval (fun i : Fin r => e i.val) Empty.elim ↔ side.Eval ![] e := by
-  unfold packedSide
-  rw [cast_eval (Nat.zero_add r), HerbrandCommonParameters.pack_eval (fallback := e)]
-  have hb0 : (fun i : Fin 0 => e ((Fin.cast (Nat.zero_add r) (Fin.castAdd r i)).val)) = ![] := Subsingleton.elim _ _
-  rw [hb0]
-  apply Semiformula.eval_iff_of_funEqOn
-  intro i hi
-  have hir : i < r := lt_of_lt_of_le (Semiformula.lt_fvSup_of_fvar? hi) hr
-  simp [hir]
+  exact HerbrandPackedContextTransfer.packedSide_eval side r hr e
 
 theorem packedMatrix_code_eval {M : Type} [Structure language M]
     (θ : Semiproposition language 1) (r : ℕ) (hr : θ.fvSup ≤ r) (c : Code r) (e : ℕ → M) :
@@ -35,23 +28,7 @@ theorem packedMatrix_code_eval {M : Type} [Structure language M]
     rw [hv]
     rfl
   rw [hb]
-  unfold packedMatrix
-  rw [cast_eval (Nat.add_comm 1 r), HerbrandCommonParameters.pack_eval (fallback := e)]
-  have hb1 : (fun i : Fin 1 => Fin.cases (Structure.func (L := language) c (fun i : Fin r => e i.val))
-      (fun k : Fin r => e k.val) (Fin.cast (Nat.add_comm 1 r) (Fin.castAdd r i))) =
-      ![Structure.func (L := language) c (fun i : Fin r => e i.val)] := by
-    funext i
-    exact Fin.cases rfl (fun i => Fin.elim0 i) i
-  rw [hb1]
-  apply Semiformula.eval_iff_of_funEqOn
-  intro i hi
-  have hir : i < r := lt_of_lt_of_le (Semiformula.lt_fvSup_of_fvar? hi) hr
-  simp only [hir, ↓reduceDIte]
-  have hc : Fin.cast (Nat.add_comm 1 r) (Fin.natAdd 1 ⟨i,hir⟩) = (⟨i,hir⟩ : Fin r).succ := by
-    apply Fin.ext
-    simp [Nat.add_comm]
-  rw [hc]
-  rfl
+  exact HerbrandPackedContextTransfer.packedMatrix_eval θ r hr e _
 
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]

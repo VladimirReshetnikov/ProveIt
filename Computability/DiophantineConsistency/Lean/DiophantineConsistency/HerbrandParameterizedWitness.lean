@@ -25,6 +25,24 @@ theorem parameterMatrix_open {n : ℕ} (φ : Semisentence language (n+1))
   rw [PRAFormulaParameters.qr_rew]
   exact hφ
 
+/-- The embedded matrix reads the witness from its bound slot and the
+parameters from the corresponding free variables. -/
+theorem parameterMatrix_eval {M : Type} [Structure language M] {n : ℕ}
+    (φ : Semisentence language (n+1)) (e : ℕ → M) (v : M) :
+    (parameterMatrix φ).Eval ![v] e ↔
+      φ.Eval (Fin.cases v (fun i : Fin n => e i.val)) Empty.elim := by
+  unfold parameterMatrix
+  rw [Semiformula.eval_rew]
+  have hb : (Semiterm.val (L := language) ![v] e ∘
+      Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin n => .fvar i.val)) ∘ Semiterm.bvar) =
+      Fin.cases v (fun i : Fin n => e i.val) := by
+    funext i
+    exact Fin.cases rfl (fun _ => rfl) i
+  have hf : (Semiterm.val (L := language) ![v] e ∘
+      Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin n => .fvar i.val)) ∘ Semiterm.fvar) =
+      (Empty.elim : Empty → M) := Subsingleton.elim _ _
+  rw [hb,hf]
+
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* UniversalAxiom]
@@ -58,8 +76,15 @@ theorem modelParameterInstance {n : ℕ} (φ : Semisentence language (n+1)) (t :
     (e : Fin n → M) (h : ((parameterMatrix φ)/[t]).Eval ![] (parameterEnv n e)) :
     (openMatrixAt φ (parameterCode n t)).Eval e Empty.elim := by
   simp only [Semiformula.eval_substs] at h
-  unfold parameterMatrix at h
-  rw [Semiformula.eval_rew] at h
+  have hargs : (Semiterm.val ![] (parameterEnv n e) ∘ ![t]) =
+      ![Semiterm.val ![] (parameterEnv n e) t] := by
+    funext i
+    exact Fin.cases rfl (fun i => Fin.elim0 i) i
+  rw [hargs, parameterMatrix_eval] at h
+  have henv : (fun i : Fin n => parameterEnv n e i.val) = e := by
+    funext i
+    simp [parameterEnv]
+  rw [henv] at h
   rw [openMatrixAt, Semiformula.eval_substs]
   have hc : (Semiterm.val e Empty.elim ∘ Fin.cases (applyCode (parameterCode n t) (vars n)) (vars n)) =
       Fin.cases (Semiterm.val ![] (parameterEnv n e) t) e := by
@@ -71,18 +96,6 @@ theorem modelParameterInstance {n : ℕ} (φ : Semisentence language (n+1)) (t :
       rfl
     · rfl
   rw [hc]
-  have hb : (Semiterm.val (L := language) (Semiterm.val ![] (parameterEnv n e) ∘ ![t]) (parameterEnv n e) ∘
-      (Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin n => .fvar i.val))) ∘ Semiterm.bvar) =
-      Fin.cases (Semiterm.val ![] (parameterEnv n e) t) e := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · rfl
-    · simp [Function.comp_def, parameterEnv]
-  rw [hb] at h
-  have he : (Semiterm.val (L := language) (Semiterm.val ![] (parameterEnv n e) ∘ ![t]) (parameterEnv n e) ∘
-      (Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin n => .fvar i.val))) ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [he] at h
   exact h
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* UniversalAxiom] in

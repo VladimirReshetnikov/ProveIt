@@ -1,4 +1,5 @@
 import ZFCinPA.NativeZFContainers254
+import ZFCinPA.InternalInterpretation
 import Foundation.FirstOrder.Bootstrapping.DerivabilityCondition.D1
 import ZFCinPA.ZFDelta1
 import ZFCinPA.SetRelativization
@@ -571,6 +572,26 @@ lemma isSemiformula_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) :
   rw [LO.FirstOrder.Sentence.quote_def]
   simpa using LO.FirstOrder.Semiformula.quote_isSemiformula (V := W)
     (Rewriting.emb σ : SetTheorySemiproposition k)
+
+/-- A quoted domain and two quoted relations form a good interpretation parameter. -/
+lemma good_quoted_parameter {U : Type} [ORingStructure U] [U↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+    (D : Semisentence ℒₛₑₜ 1) (E F : Semisentence ℒₛₑₜ 2) :
+    InternalInterpretation.Good (⟪(⌜D⌝ : U), ⟪(⌜E⌝ : U), (⌜F⌝ : U)⟫⟫ : U) := by
+  have hd : InternalInterpretation.dom (⟪(⌜D⌝ : U), ⟪(⌜E⌝ : U), (⌜F⌝ : U)⟫⟫ : U) = ⌜D⌝ := by
+    simp [InternalInterpretation.dom]
+  have ha (R : U) : InternalInterpretation.atomOf (⟪(⌜D⌝ : U), ⟪(⌜E⌝ : U), (⌜F⌝ : U)⟫⟫ : U) R =
+      if R = 0 then ⌜E⌝ else ⌜F⌝ := by simp [InternalInterpretation.atomOf]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [hd]; simpa only [Nat.cast_one] using isSemiformula_quote_sen (W := U) D
+  · rw [hd]; exact shift_quote_sen (W := U) D
+  · intro R
+    rw [ha]
+    split_ifs
+    · simpa using isSemiformula_quote_sen (W := U) E
+    · simpa using isSemiformula_quote_sen (W := U) F
+  · intro R
+    rw [ha]
+    split_ifs <;> exact shift_quote_sen _
 
 lemma embSubsts_eq_comp_general {ξ : Type*} {n k : ℕ} (v : Fin k → Semiterm ℒₛₑₜ ξ n) :
     (Rew.embSubsts v : Rew ℒₛₑₜ Empty k ξ n) = (Rew.subst v).comp Rew.emb := by
