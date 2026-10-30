@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRANegSeqDefWitnessBound
+#print axioms DiophantineConsistency.PRANegSeqDefWitnessBound.neg_seq_bound
+#print axioms DiophantineConsistency.PRANegSeqDefWitnessBound.neg_seq_bound_explicit
+#print axioms DiophantineConsistency.PRANegSeqDefWitnessBound.candidate_proves_neg_seq_bound

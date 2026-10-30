@@ -91,6 +91,11 @@ with an explicit polynomial. The [negative sequence graph](reviews/pra-negseq-po
 also has an independently replayed polynomial bound. These results do not
 construct a recursive computation history or establish the full refutation
 bound.
+Both polarities of Foundation's actual length predicate `lhDef` now also have
+[independently replayed polynomial witness bounds](reviews/pra-lh-postmerge-author-replay/README.md).
+They supply components of the computation-sequence graph; the blueprint's
+zero and successor clauses and the existential history code still require
+bounds.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.

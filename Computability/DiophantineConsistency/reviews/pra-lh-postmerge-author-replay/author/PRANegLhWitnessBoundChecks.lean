@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRANegLhWitnessBound
+#print axioms DiophantineConsistency.PRANegLhWitnessBound.neg_lh_bound_explicit
+#print axioms DiophantineConsistency.PRANegLhWitnessBound.candidate_proves_neg_lh_bound
