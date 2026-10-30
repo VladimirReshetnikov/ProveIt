@@ -44,9 +44,7 @@ theorem conn_step_le (isAnd : Bool) {P₀ P₂ : SF V 1} {F₁ F₃ : SF V 2} {u
     (hw : wD u ≤ w) (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w)
     (h₃ : DLv 𝗭𝗙 (insert (InvT P₂ F₃).val ∅) w) :
     DLv 𝗭𝗙 (insert (InvT (cond isAnd (P₀ ⋏ P₂) (P₀ ⋎ P₂)) (MaxT F₁ F₃)).val ∅) (w + 30) := by
-  have hw4 := wD_4 hw
-  have hmI := wD_m hw
-  obtain ⟨up, u4, uA⟩ := wD_up hw
+  obtain ⟨hw4, hmI, up, u4, uA⟩ := wD_up hw
   cases isAnd
   case' true =>
       simp only [cond_true] at hK ⊢

@@ -38,8 +38,7 @@ theorem atom_step_le (isEq : Bool) {N₀ N₂ : SF V 1} {u w : V} (hu : 2 ≤ u)
     (hK : ∀ i, (K6 N₀ ⊤ N₂ ⊤ (AtomT isEq N₀ N₂) (succT (V := V)) i).val ≤ lvB u) (hw : wD u ≤ w)
     (h₀ : DLv 𝗭𝗙 (insert (NumOKT N₀).val ∅) w) (h₂ : DLv 𝗭𝗙 (insert (NumOKT N₂).val ∅) w) :
     DLv 𝗭𝗙 (insert (InvT (AtomT isEq N₀ N₂) succT).val ∅) (w + 30) := by
-  have hw4 := wD_4 hw
-  obtain ⟨up, u4, uA⟩ := wD_up hw
+  obtain ⟨hw4, -, up, u4, uA⟩ := wD_up hw
   have pA := dall_iff (AtomT isEq N₀ N₂) (hK 4) hu
   have pF := dall2_swap (succT (V := V)) (hK 5) hu
   cases isEq
