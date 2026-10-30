@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAStrictTheoryPairing
+open DiophantineConsistency.PRAStrictTheoryPairing
+#print axioms isigmaZero_subset_strict
+#print axioms modelIOpen
+#print axioms modelPairGraph

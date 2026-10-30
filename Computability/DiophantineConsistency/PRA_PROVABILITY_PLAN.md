@@ -102,6 +102,12 @@ has independently replayed proofs that such a certificate implies the
 surrogate-to-original direction and hence the full mapped equivalence. No
 certificate has yet been constructed for Foundation's ZFC refutation sentence.
 
+The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
+also has two matching replays. It proves bounded collection in the stated
+strict source theory and composes finite induction supports; it does not
+assume collection in candidate PRA. Later Herbrand merges make its inherited
+provider historical until a dependent current-source replay is completed.
+
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,
 and input proofs carry the stated positivity hypotheses. Its focused replay

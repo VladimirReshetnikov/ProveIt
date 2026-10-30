@@ -1,0 +1,5 @@
+# Post-parameter strict source comparison snapshot
+
+The 24-module author build and two replays passed, including actual strict-theory bounded collection, finite-support certificate composition and source-language pairing. The peer replay `/tmp/pra-post-parameter-strict-independent-gb282nab` used the independently accepted 89-module provider; author and private used its author provider. A later upstream merge changed transitive Herbrand dependencies, so this packet is a historical snapshot, not evidence that those artifacts are current at the merged head.
+
+Manifest SHA-256: `9323b5f4a68e338890c22f2a3d7de9a8e56be4b4539b5af3352493345e0f1957`. Twelve listed direct parent source/object pairs are authenticated. Foundation, Mathlib and the remaining transitive provider graph are inherited. The bounded-collection theorem and finite-support composition do not by themselves establish general Σ₁ normalization or the literal candidate-PRA ZFC-consistency equivalence. Full source snapshots, logs and state records are retained in the three run directories.

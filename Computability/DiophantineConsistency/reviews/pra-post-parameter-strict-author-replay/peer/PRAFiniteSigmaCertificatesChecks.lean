@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRAFiniteSigmaCertificates
+open DiophantineConsistency.PRAFiniteSigmaCertificates
+#print axioms combine_support
+#print axioms PRA_proves_goal_of_finite_certificates
+#print axioms finite_support_of_strictProof
+#print axioms finiteCertificate_of_strictProof
+#print axioms PRA_proves_goal_of_strict_induction_normalization

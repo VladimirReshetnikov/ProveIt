@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAStrictTheoryComparison
+open DiophantineConsistency.PRAStrictTheoryComparison
+#print axioms strictTheory_subset_isigmaOne
+#print axioms finite_translation
+#print axioms comparison
