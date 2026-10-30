@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A strengthened Assembly helper has passed a [historical-overlay exploratory
+build](reviews/adaptive-assembly-seed-historical2011.md), exposing the common
+seed, radix, multiplier, rank-growth and auxiliary orientation while preserving
+the older APIs. Its source edit remains uncommitted and does not yet have a
+source-current closure replay; it is not an accepted full adaptive construction.
+
 The [exact auxiliary-orientation theorem](reviews/adaptive-construction-aux-exact2011-independent.md)
 now derives the needed signed difference and auxiliary norm from the explicit
 seed linear identity and old norm. The common Assembly witness still has to
