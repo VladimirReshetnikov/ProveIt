@@ -48,6 +48,9 @@ the Assembly radix and nonzero transport assumptions remain explicit.
 The [transport positivity bridge](reviews/adaptive-construction-transport-positive2011-independent.md)
 derives the nonzero transport contribution from explicit rank-growth and
 unscaled transport assumptions, which still require Assembly instantiation.
+The [actual-equations client](reviews/adaptive-construction-transport-actual2011-independent.md)
+derives the unscaled transport and port/gap bounds from the old equations,
+leaving the common Assembly radix, multiplier and rank facts explicit.
 
 The [first-Pell correction quotient](reviews/adaptive-construction-correction2011-independent.md)
 is now derived in every stated IΣ₁ model from explicit seed-index and ordinate
