@@ -1,0 +1,148 @@
+{
+  "BusyBeaver.ZFC.FramedWindow": {
+    "imports": [
+      "Init"
+    ],
+    "kind": "project",
+    "sha256": "8606929c2315413e2543f292ac9a010f6c67d4ff5ece76c3e1357c2d79aa157a"
+  },
+  "BusyBeaver.ZFC.KBoot": {
+    "imports": [
+      "BusyBeaver.ZFC.KZip"
+    ],
+    "kind": "project",
+    "sha256": "9501b285bfcba341e89e1fa3a166261a0281c6ba57eefff5ed77dbf00ee260e5"
+  },
+  "BusyBeaver.ZFC.KFast215": {
+    "imports": [
+      "BusyBeaver.ZFC.KBoot",
+      "BusyBeaver.ZFC.KTable215"
+    ],
+    "kind": "project",
+    "sha256": "60022a25e6db9dfe406a0e03d9c11c699eb29dd4f813d9782949941bee793566"
+  },
+  "BusyBeaver.ZFC.KFastSites215": {
+    "imports": [
+      "BusyBeaver.ZFC.KFast215",
+      "BusyBeaver.ZFC.KSim"
+    ],
+    "kind": "project",
+    "sha256": "4e6b1a75c96024e8f1e1b983b5bb5ded11344c8b650fd6f251d5e6a27bed223a"
+  },
+  "BusyBeaver.ZFC.KHome": {
+    "imports": [
+      "BusyBeaver.ZFC.KRuntimeCore"
+    ],
+    "kind": "project",
+    "sha256": "5b7badd96a08845477f586aa500a0c80f58a9d74bf4cc0529015de16ca695388"
+  },
+  "BusyBeaver.ZFC.KHomeReady": {
+    "imports": [
+      "BusyBeaver.ZFC.KHome",
+      "BusyBeaver.ZFC.KZipTape"
+    ],
+    "kind": "project",
+    "sha256": "317ce6ebbdd23626c59321ad97de329240a351237af569ca3266ced772026381"
+  },
+  "BusyBeaver.ZFC.KRuntimeCore": {
+    "imports": [
+      "BusyBeaver.ZFC.KZip"
+    ],
+    "kind": "project",
+    "sha256": "25f1900304b659b19d32501c2aa277a5436c6cb1f99f81b72f731130f2ef826d"
+  },
+  "BusyBeaver.ZFC.KSim": {
+    "imports": [
+      "BusyBeaver.ZFC.KHomeReady",
+      "BusyBeaver.ZFC.RegisterPathClean",
+      "BusyBeaver.ZFC.SiteCoverage"
+    ],
+    "kind": "project",
+    "sha256": "f35dcb57d2c37a1f578a339a35289e7765645790ab8001c0a1520c832a127e0e"
+  },
+  "BusyBeaver.ZFC.KSource215Program": {
+    "imports": [
+      "BusyBeaver.ZFC.RMBisim"
+    ],
+    "kind": "project",
+    "sha256": "8cd5fb4b0e1dc4a21368aba001db51310a1e9c2a1e888172ed0796fe3275c2a8"
+  },
+  "BusyBeaver.ZFC.KTable215": {
+    "imports": [
+      "BusyBeaver.ZFC.KTableCore"
+    ],
+    "kind": "project",
+    "sha256": "9f60db270878803653e87249bcf861b03a38e300be810dd7f68de5cc2f600b3c"
+  },
+  "BusyBeaver.ZFC.KTableCore": {
+    "imports": [
+      "BusyBeaver.ZFC.KZip"
+    ],
+    "kind": "project",
+    "sha256": "8574e99ed8e030dc0801ad544cb672554a72a5e7d5a3632d3b91dbb433225461"
+  },
+  "BusyBeaver.ZFC.KZip": {
+    "imports": [],
+    "kind": "project",
+    "sha256": "3665683141bc9986e40bb023a80d928fb6a64e8cd9ab2152b81f16de94d9a0ee"
+  },
+  "BusyBeaver.ZFC.KZipTape": {
+    "imports": [
+      "BusyBeaver.ZFC.KZip",
+      "BusyBeaver.ZFC.FramedWindow"
+    ],
+    "kind": "project",
+    "sha256": "9b4321f5cffaf94a30e1731cd7cea7f7bb8ef1b08ed7bee140f3d2fcc17b6310"
+  },
+  "BusyBeaver.ZFC.RMBisim": {
+    "imports": [
+      "BusyBeaver.ZFC.RMEquiv"
+    ],
+    "kind": "project",
+    "sha256": "a5fb666e4f5764ddeece79bafbc3ce20ef73f56ce0cd8bdcad38de164c189510"
+  },
+  "BusyBeaver.ZFC.RMDag": {
+    "imports": [],
+    "kind": "project",
+    "sha256": "ed3ad25ddc24406fbbfe8fb1803c4be2adfdcdc0eefe2aecacda0cd9ca793a6e"
+  },
+  "BusyBeaver.ZFC.RMEquiv": {
+    "imports": [
+      "BusyBeaver.ZFC.RegisterPath",
+      "BusyBeaver.ZFC.RMDag"
+    ],
+    "kind": "project",
+    "sha256": "5512e15bce8fb25c3bbe918c25f985e935f57d39be22a965555671ecdde0818a"
+  },
+  "BusyBeaver.ZFC.RegisterPath": {
+    "imports": [
+      "Init"
+    ],
+    "kind": "project",
+    "sha256": "3f899f08c2b856f6ede1599763bf5e0dbe0e7ca0ff489976554c76ca1fc02014"
+  },
+  "BusyBeaver.ZFC.RegisterPathClean": {
+    "imports": [
+      "BusyBeaver.ZFC.RMEquiv"
+    ],
+    "kind": "project",
+    "sha256": "1e305e746ae89226bc2e68d791a67a34459845e63414d4255e35e493a558bd8c"
+  },
+  "BusyBeaver.ZFC.SiteCoverage": {
+    "imports": [
+      "BusyBeaver.ZFC.RMBisim",
+      "BusyBeaver.ZFC.RMEquiv"
+    ],
+    "kind": "project",
+    "sha256": "a690493e69ad612c4ee967eff1294b1f702a17f1adf831a1bc659de6fb9781f3"
+  },
+  "Init": {
+    "companions": {
+      "Init.ir": "3999556bf5ced08a0ae2b6f5972283fb01cc4a9b1a5e01d39f2720fa915ffb2b",
+      "Init.olean.private": "ee2465850125d8857c69cee947e7416dc1569eb22dc9f9bcb98bd9f8224ace5b",
+      "Init.olean.server": "69b6bef637350cb34abdfdd40748de5f5098567cf21673d74497b700344954bd"
+    },
+    "kind": "external",
+    "sha256": "d2e85d72099f9d869c9582aad5fb13079968d9d121ac6061e8326b00800b306e"
+  }
+}

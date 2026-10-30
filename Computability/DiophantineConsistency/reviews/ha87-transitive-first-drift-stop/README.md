@@ -1,0 +1,5 @@
+# First transitive-guard full rebase stopped after source drift
+
+`/tmp/ha87-full-transitive-pmncycwh` was externally stopped at a safe child boundary after a merge changed guarded project sources. Its terminal state is FAILED/KeyboardInterrupt while compiling `ArithmeticDagControlPerm222`; it had authenticated 129 reused prefix rows and no new verified outputs. This is not a source-guard failure or a proof result. The 129 per-module transitive manifests are included and their hashes match the state. The immediately prior and latest merged graphs and source deltas are recorded in `../ha87-transitive-postmerge-audit/` and `../ha87-transitive-latest-merge-audit/`; older prefix source/object/log ancestry is in `../ha87-zf-fallback-failure-and-rebase/` and predecessor packets.
+
+The next author rebase `/tmp/ha87-full-transitive-m4qs93qz` is live on the latest graph. The historical transitive inputs checked by its guard are reconstructed from surviving origin objects, so the check cannot rule out unrecorded mutation during original compilation. Dynamic-import and transitive package ancestry remain outside this source-declared project audit.
