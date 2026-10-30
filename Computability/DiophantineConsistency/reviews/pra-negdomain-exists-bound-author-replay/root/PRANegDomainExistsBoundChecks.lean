@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRANegDomainExistsBound
+#print axioms DiophantineConsistency.PRANegDomainExistsBound.neg_exists_bound
+#print axioms DiophantineConsistency.PRANegDomainExistsBound.candidate_proves_neg_exists_bound

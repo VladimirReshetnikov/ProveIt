@@ -63,10 +63,12 @@ separate [monotonicity client](reviews/pra-under-majorant-mono-author-replay/REA
 replaces the family of polynomial assumptions with the single explicit bound
 `exponentialMajorant (2*s+1) ≤ w`, while retaining the mapping and domain
 premises.
-The exact positive existential subformula of Foundation `domainDef` has an
-[independently replayed bound](reviews/pra-domain-exists-bound-author-replay/README.md)
-using an upper bound on the set code and the positive bit majorant. This is
-one component of the domain graph, not yet a bound for the whole graph.
+The exact existential subformula of Foundation `domainDef` has independently
+replayed bounds for its [positive](reviews/pra-domain-exists-bound-author-replay/README.md)
+and [negative](reviews/pra-negdomain-exists-bound-author-replay/README.md)
+forms. The positive case uses an upper bound on the set code and the positive
+bit majorant; the negative case uses the negative bit majorant. These bound
+one component of the domain graph, not the whole graph.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
