@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionWitnessPositive2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionWitnessPositive2011.witness_positive

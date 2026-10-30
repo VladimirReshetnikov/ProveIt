@@ -1,0 +1,3 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionWitness2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionWitness2011.witness_strong_norm
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionWitness2011.witness_strong_unit

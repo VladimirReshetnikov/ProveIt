@@ -10,8 +10,9 @@ printed proof is not required.
 
 The [literal factor-to-zero bridge](reviews/adaptive-construction-factor-independent.md)
 now derives the adaptive zero from four explicit factor-unit hypotheses and
-supplies a strong-unit and generic square-factor lemma. The individual units
-still need to be proved for one concrete witness.
+supplies a strong-unit and generic square-factor lemma. A [concrete witness](reviews/adaptive-construction-witness-independent.md)
+now has its strong factor proved +1 and is positive when the old vector and
+three new coordinates are positive. Its other factor units remain to be proved.
 
 The [coded Joosten rule client](reviews/pra-joosten-rule-current-author-replay/README.md)
 now extracts primitive-recursive base and step witnesses from the stated actual
