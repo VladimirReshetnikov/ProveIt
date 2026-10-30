@@ -24,8 +24,10 @@ has passed in the updated source tree with two matching independent replays.
 Its immediate [five-bound parent](reviews/pra-after-five-bound-refresh-author-replay/README.md)
 also has two matching independent replays from hash-verified frozen historical
 sources. These are constituents of
-the refutation-bound construction, not bounds for `ppow2Def`, `expDef`, or the
-ZFC refutation sentence. The replay providers inherit their documented
+the refutation-bound construction. The positive `ppow2Def` graph now also has
+a [candidate-PRA bound](reviews/pra-ppow2-witness-bound-author-replay/README.md)
+of `2*i+1`, with matching author and two independent replays. Negative
+`ppow2Def`, `expDef`, and the ZFC refutation sentence remain unbounded. The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
 remains open.
 
