@@ -5,21 +5,9 @@ open LO LO.FirstOrder
 open scoped LO.FirstOrder
 open PRALanguage PRAFormulaParameters HerbrandUniversalTree HerbrandExistentialTreeRew HerbrandExistentialPack
 
-private theorem fixed_no_free {n : ℕ} (φ : Semiproposition language n) (r : ℕ) (hr : φ.fvSup ≤ r) :
-    (Rew.fixitr n r ▹ φ).freeVariables = ∅ := by
-  ext x
-  simp only [Finset.notMem_empty, iff_false]
-  rw [Rew.eq_bind (Rew.fixitr n r)]
-  simp only [Function.comp_def, Rew.fixitr_bvar, Rew.fixitr_fvar, Fin.natAdd_mk]
-  intro h
-  rcases Semiformula.fvar?_rew h with (⟨z,hz⟩ | ⟨z,hz,hx⟩)
-  · simp at hz
-  · have hz' : z < r := lt_of_lt_of_le (Semiformula.lt_fvSup_of_fvar? hz) hr
-    simp [hz'] at hx
-
 def pack {n : ℕ} (φ : Semiproposition language n) (r : ℕ) (hr : φ.fvSup ≤ r) :
     Semisentence language (n + r) :=
-  (Rew.fixitr n r ▹ φ).toEmpty (fixed_no_free φ r hr)
+  (Rew.fixitr n r ▹ φ).toEmpty (fixed_no_free_of_le φ r hr)
 
 theorem pack_emb {n : ℕ} (φ : Semiproposition language n) (r : ℕ) (hr : φ.fvSup ≤ r) :
     (Rewriting.emb (pack φ r hr) : Semiproposition language (n+r)) = Rew.fixitr n r ▹ φ := by
@@ -47,7 +35,7 @@ theorem pack_eval {M : Type} [Structure language M] {n : ℕ}
       φ.Eval (fun i => v (i.castAdd r))
         (fun i => if hi : i < r then v (Fin.natAdd n ⟨i,hi⟩) else fallback (i-r)) := by
   unfold pack
-  rw [←Semiformula.eval_toEmpty (f := fallback) (fixed_no_free φ r hr)]
+  rw [←Semiformula.eval_toEmpty (f := fallback) (fixed_no_free_of_le φ r hr)]
   rw [Semiformula.eval_rew]
   simp only [Function.comp_def, Rew.fixitr_bvar, Semiterm.val_bvar, Rew.fixitr_fvar]
   have heq : (fun i => Semiterm.val v fallback

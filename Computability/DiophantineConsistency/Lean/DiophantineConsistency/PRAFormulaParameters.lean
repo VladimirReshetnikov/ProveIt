@@ -7,17 +7,23 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAOpenFormulaCoverage PRAEqualityCode
 
-private theorem fixed_no_free {n : ℕ} (φ : Semiproposition language n) :
-    (Rew.fixitr n φ.fvSup ▹ φ).freeVariables = ∅ := by
+/-- Fixing all parameters below an upper bound leaves no free variables. -/
+theorem fixed_no_free_of_le {n : ℕ} (φ : Semiproposition language n)
+    (r : ℕ) (hr : φ.fvSup ≤ r) :
+    (Rew.fixitr n r ▹ φ).freeVariables = ∅ := by
   ext x
   simp only [Finset.notMem_empty, iff_false]
-  rw [Rew.eq_bind (Rew.fixitr n φ.fvSup)]
+  rw [Rew.eq_bind (Rew.fixitr n r)]
   simp only [Function.comp_def, Rew.fixitr_bvar, Rew.fixitr_fvar, Fin.natAdd_mk]
   intro h
   rcases Semiformula.fvar?_rew h with (⟨z,hz⟩ | ⟨z,hz,hx⟩)
   · simp at hz
-  · have hz' : z < φ.fvSup := Semiformula.lt_fvSup_of_fvar? hz
+  · have hz' : z < r := lt_of_lt_of_le (Semiformula.lt_fvSup_of_fvar? hz) hr
     simp [hz'] at hx
+
+private theorem fixed_no_free {n : ℕ} (φ : Semiproposition language n) :
+    (Rew.fixitr n φ.fvSup ▹ φ).freeVariables = ∅ :=
+  fixed_no_free_of_le φ φ.fvSup le_rfl
 
 def packParameters {n : ℕ} (φ : Semiproposition language n) :
     Semisentence language (n + φ.fvSup) :=
