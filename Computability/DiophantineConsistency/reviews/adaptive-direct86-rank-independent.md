@@ -1,0 +1,3 @@
+# Direct-ordinate 86 rank facts: independent replay
+
+The root independently replayed the scoped author driver and obtained `PASS` at `/tmp/adaptive-direct86-rank-_b740u8s`, state SHA-256 `8dc9ad071bddbda42ac4ae208573a0eb39b065df060b95a2f81f4c8139da6601`. All five source/object hashes match the author table; all complete logs are empty, SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. State, driver, source snapshots, full logs and timings are in `adaptive-direct86-rank-independent-evidence`; manifest SHA-256 `23eb9f07769355b1005515bb1bd6a66bf665862a3baafdcc257efd1889c1bd80`. Scope and historical boundaries are those of the author receipt.
