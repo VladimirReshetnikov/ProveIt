@@ -99,6 +99,16 @@ theorem closure_congr (a b k p q : V)
     (eq_imp ⟨hpq,hqp⟩ (eq_neg (eq_all a
       (eq_imp (eq_refl (subset a b k)) (request_congr b k p q hpq hqp))))))))
 
+/-- Transport the closure and request together along a matrix equivalence. -/
+theorem closure_request_congr (a b k p q : V)
+    (hpq : CProv (wim p q)) (hqp : CProv (wim q p)) :
+    CProv (wim (conj (clos a b k p) (req b k p))
+      (conj (clos a b k q) (req b k q))) := by
+  apply ded1
+  exact .mp (.mp (.ax (conj_rule _ _))
+    (.mp (.ax (closure_congr a b k p q hpq hqp).1) (.mp (.ax (conj_left _ _)) h0)))
+    (.mp (.ax (request_congr b k p q hpq hqp).1) (.mp (.ax (conj_right _ _)) h0))
+
 def pad (p : V) : V := neg (neg p)
 
 theorem pad_gt_three (p : V) : (3 : V) < pad p := by
@@ -115,14 +125,7 @@ at that label or an arbitrary semantic/represented-formula interpretation. -/
 theorem matrix_image (p : V) : CProv (ex (pad p) (imageBody 1 3 (pad p) p)) := by
   have hp : CProv (wim (pad p) p) := double_neg_elim p
   have ph : CProv (wim p (pad p)) := double_neg_intro p
-  have point : CProv (wim (conj (clos 1 3 (pad p) (pad p)) (req 3 (pad p) (pad p)))
-      (conj (clos 1 3 (pad p) p) (req 3 (pad p) p))) := by
-    apply ded1
-    exact .mp (.mp (.ax (conj_rule _ _))
-      (.mp (.ax (closure_congr 1 3 (pad p) (pad p) p hp ph).1)
-        (.mp (.ax (conj_left _ _)) h0)))
-      (.mp (.ax (request_congr 3 (pad p) (pad p) p hp ph).1)
-        (.mp (.ax (conj_right _ _)) h0))
+  have point := closure_request_congr 1 3 (pad p) (pad p) p hp ph
   exact cProv_mp (ex_mono (pad p) (compose point (pair_image 1 3 (pad p) p)))
     (seed_pair 1 3 (pad p)
       (ne_of_gt (lt_of_le_of_lt (by simp) (pad_gt_three p))) (ne_of_gt (pad_gt_three p)))

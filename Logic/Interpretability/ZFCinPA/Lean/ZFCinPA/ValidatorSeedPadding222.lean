@@ -58,14 +58,7 @@ theorem bounded_seed_image (bound p a b : V) (ha : a≤bound) (hb : b≤bound) :
     CProv (ex (seedLabel bound p) (imageBody a b (seedLabel bound p) p)) := by
   let c := seedLabel bound p
   have hp := seedLabel_equiv bound p
-  have point : CProv (wim (conj (ArithmeticSeedTemplates222.clos a b c c)
-      (ArithmeticSeedTemplates222.req b c c))
-      (conj (ArithmeticSeedTemplates222.clos a b c p)
-        (ArithmeticSeedTemplates222.req b c p))) := by
-    apply ded1
-    exact .mp (.mp (.ax (conj_rule _ _))
-      (.mp (.ax (closure_congr a b c c p hp.1 hp.2).1) (.mp (.ax (conj_left _ _)) h0)))
-      (.mp (.ax (request_congr b c c p hp.1 hp.2).1) (.mp (.ax (conj_right _ _)) h0))
+  have point := closure_request_congr a b c c p hp.1 hp.2
   exact cProv_mp (ex_mono c (compose point (pair_image a b c p)))
     (seed_pair a b c (ne_of_gt (lt_of_le_of_lt ha (bound_lt_seedLabel bound p)))
       (ne_of_gt (lt_of_le_of_lt hb (bound_lt_seedLabel bound p))))
