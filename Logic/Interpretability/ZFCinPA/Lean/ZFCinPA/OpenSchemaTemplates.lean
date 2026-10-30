@@ -137,14 +137,22 @@ noncomputable def replacementProof
   rw [translate_repBodySource]
   exact zfReplacementProof _
 
+/-- A lifted axiom of any definable set theory translates to an internal proof. -/
+noncomputable def liftedTheoryProof (T : SetTheory) [T.Δ₁]
+    (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
+    (σ : Sentence (setTemplateLanguage k arities))
+    (h : σ ∈ Theory.lMap (setHom k arities) T) :
+    T.internalize V ⊢! translateFormula Ks (Rewriting.emb σ) := by
+  apply TProof.byAxm
+  rcases h with ⟨τ,hτ,rfl⟩
+  rw [translateFormula_lMap_set_emb]
+  exact (Bootstrapping.Δ₁Class.mem_iff'' (T := T)).mpr hτ
+
 noncomputable def liftedZFProof
     (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
     (σ : Sentence (setTemplateLanguage k arities))
     (h : σ ∈ Theory.lMap (setHom k arities) (𝗭𝗙 : SetTheory)) :
-    (𝗭𝗙 : SetTheory).internalize V ⊢! translateFormula Ks (Rewriting.emb σ) := by
-  apply TProof.byAxm
-  rcases h with ⟨τ,hτ,rfl⟩
-  rw [translateFormula_lMap_set_emb]
-  exact (Bootstrapping.Δ₁Class.mem_iff'' (T := (𝗭𝗙 : SetTheory))).mpr hτ
+    (𝗭𝗙 : SetTheory).internalize V ⊢! translateFormula Ks (Rewriting.emb σ) :=
+  liftedTheoryProof 𝗭𝗙 Ks σ h
 
 end LeanProofs.ZFCinPA.OpenSchemaTemplates

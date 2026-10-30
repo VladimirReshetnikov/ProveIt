@@ -102,10 +102,8 @@ theorem closedGic_mem_native (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
   exact Or.inl (Or.inr ((gic_class_iff _).mpr (closedGic_recognized K)))
 
 theorem nativeGic_isProof (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
-    Proof qTheory (openAxiomProofCode ℒₛₑₜ (gicBody K).val) (gicBody K).val := by
-  apply openAxiomProofCode_isProof _ (gicBody K).isSemiformula
-  rw [← gicBodyVal_eq K]
-  exact closedGic_mem_native K
+    Proof qTheory (openAxiomProofCode ℒₛₑₜ (gicBody K).val) (gicBody K).val :=
+  GicTemplateSyntax.gicIsProofOf qTheory K (closedGic_mem_native K)
 
 /-- **Every internal GIC body is an internal theorem of `qTheory`.** -/
 noncomputable def nativeGicProof (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
@@ -116,21 +114,15 @@ noncomputable def gicProof
     (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
     (p : Semiproposition (setTemplateLanguage k arities) 2) :
     qTheory.internalize V ⊢!
-      translateFormula Ks (Rewriting.emb (gicBodySource p).univCl) := by
-  apply closeTemplate Ks _ (gicBodySource p)
-  intro b
-  rw [translate_gicBodySource]
-  exact nativeGicProof _
+      translateFormula Ks (Rewriting.emb (gicBodySource p).univCl) :=
+  GicTemplateSyntax.gicProofOf qTheory nativeGicProof Ks p
 
 noncomputable def liftedNProof
     (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
     (σ : Sentence (setTemplateLanguage k arities))
     (h : σ ∈ Theory.lMap (setHom k arities) qTheory) :
-    qTheory.internalize V ⊢! translateFormula Ks (Rewriting.emb σ) := by
-  apply TProof.byAxm
-  rcases h with ⟨τ, hτ, rfl⟩
-  rw [translateFormula_lMap_set_emb]
-  exact (Bootstrapping.Δ₁Class.mem_iff'' (T := qTheory)).mpr hτ
+    qTheory.internalize V ⊢! translateFormula Ks (Rewriting.emb σ) :=
+  OpenSchemaTemplates.liftedTheoryProof qTheory Ks σ h
 
 end Internal
 

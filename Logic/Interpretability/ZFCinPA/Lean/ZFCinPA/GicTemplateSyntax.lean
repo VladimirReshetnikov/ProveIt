@@ -88,6 +88,22 @@ theorem closedGic_recognized (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
     rw [gic_core_subst_identity K] at h
     exact h
 
+noncomputable def gicProofOf (T : SetTheory) [T.Δ₁]
+    (hGic : ∀ K : Bootstrapping.Semiformula V ℒₛₑₜ 2, T.internalize V ⊢! gicBody K)
+    (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
+    (p : Semiproposition (setTemplateLanguage k arities) 2) :
+    T.internalize V ⊢! translateFormula Ks (Rewriting.emb (gicBodySource p).univCl) := by
+  apply closeTemplate Ks _ (gicBodySource p)
+  intro b
+  rw [translate_gicBodySource]
+  exact hGic _
+theorem gicIsProofOf (T : SetTheory) [T.Δ₁] (K : Bootstrapping.Semiformula V ℒₛₑₜ 2)
+    (hK : closeFormulaCode ℒₛₑₜ (gicBodyVal K.val) ∈ T.Δ₁Class) :
+    Proof T (openAxiomProofCode ℒₛₑₜ (gicBody K).val) (gicBody K).val := by
+  apply openAxiomProofCode_isProof _ (gicBody K).isSemiformula
+  rw [← gicBodyVal_eq K]
+  exact hK
+
 end Internal
 
 section Semantics
