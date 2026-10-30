@@ -102,12 +102,6 @@ theorem gic_open_binding (j : V) (K : Semiformula V ℒₛₑₜ 2) :
     Bootstrapping.Semiformula.free,Bootstrapping.Semiformula.shift_substs,
     Bootstrapping.Semiformula.substs_substs,SemitermVec.q,Matrix.vecHead,Matrix.vecTail]
 
-private theorem proof_to_provable {p : Formula V ℒₛₑₜ} (h : Source V ⊢ p) :
-    Provable seedTheory p.val := by
-  refine ⟨h.get.val,?_⟩
-  simpa only [Source,Theory.internalize,Proof,Sequent.val_insert,Sequent.val_empty,singleton_eq_insert]
-    using h.get.derivationOf
-
 private theorem guarded_generalize (j : V) (X : Semiformula V ℒₛₑₜ 1)
     (h : Source V ⊢ (emptyAt (Bootstrapping.Semiterm.fvar j)).shift 🡒
       (guard j 0 🡒 tagged j X).free) :
@@ -116,7 +110,7 @@ private theorem guarded_generalize (j : V) (X : Semiformula V ℒₛₑₜ 1)
   have hp : Source V ⊢ emptyAt (Bootstrapping.Semiterm.fvar j) 🡒 tagged j (∀⁰ X) := by
     simpa only [tagged_all] using (show Source V ⊢ _ from ⟨hg⟩)
   simpa only [Bootstrapping.Semiformula.val_imp,empty_binding,tagged_val,
-    Bootstrapping.Semiformula.val_all] using proof_to_provable hp
+    Bootstrapping.Semiformula.val_all] using (tprovable_iff_provable.mp hp)
 
 /-- Every internally typed GIC body has its actual guarded source proof. -/
 theorem gic_body_image (K : Semiformula V ℒₛₑₜ 2) (j : V) :

@@ -1,3 +1,4 @@
+import DiophantineConsistency.ArithmeticSignedPairExpressions
 import DiophantineConsistency.ArithmeticAdaptiveFactorUnits2011
 
 /-! Literal first and main adaptive scaled norms from the actual split zero.
@@ -10,6 +11,7 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder.Arithmetic
 open AdaptiveEquationSyntax2011 ArithmeticSignedPairs
 open ArithmeticAdaptiveFactorMagnitude2011 ArithmeticAdaptiveFactorUnits2011
+open ArithmeticSignedPairExpressions
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-- Select the root in the literal `1+(root*root-rhs)` factor shape. -/
@@ -26,18 +28,6 @@ theorem first_shape (p : Fin 4 → ℤ) :
 
 theorem main_shape (p : Fin 4 → ℤ) :
     (factors p).2.1 = 1 + (rootTerm (factors p).2.1 * rootTerm (factors p).2.1 - rightTerm (factors p).2.1) := rfl
-
-private theorem square_magnitude (p : Pair V) :
-    Equivalent (multiply p p) (natural (magnitude p*magnitude p)) := by
-  wlog h : p.2 ≤ p.1 generalizing p
-  · have hh := this (swap p) (le_of_not_ge h)
-    rw [multiply_swap_left, multiply_swap_right, magnitude_swap] at hh
-    simpa only [swap, Prod.eta] using hh
-  let u := p.1-p.2
-  have hu : p.1=p.2+u := by rw [add_comm,tsub_add_cancel_of_le h]
-  rw [magnitude_of_add hu]
-  change p.1*p.1+p.2*p.2+0=(p.1*p.2+p.2*p.1)+u*u
-  rw [hu]; ring
 
 /-- A positive signed unit of the displayed square-minus-right factor forces
 an equality of its actual natural split, with no sign of the root assumed. -/

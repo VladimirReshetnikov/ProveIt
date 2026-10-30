@@ -1,3 +1,4 @@
+import DiophantineConsistency.ArithmeticSignedPairExpressions
 import DiophantineConsistency.ArithmeticAdaptivePellIndices2011
 
 /-! The actual adaptive strong factor yields its normalized additive norm. -/
@@ -11,6 +12,7 @@ open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticAdaptiveFactorMa
 open ArithmeticAdaptiveFactorUnits2011 ArithmeticAdaptiveScaledNorms2011
 attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix CurrentMasks2011.beta
   CurrentMasks2011.lowPort CurrentMasks2011.highPort
+open ArithmeticSignedPairExpressions
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-- Exact additive pair for the literal strong factor, before using its unit. -/
@@ -33,16 +35,6 @@ theorem strong_rep (p : Fin 4 → ℕ) (v : Fin 13 → V) :
   simp [eK,eC,eA,eD,eI,eF,pairEval,Expr.splitNatural,NatExpr.evalSemiring,
     Equivalent]
   ring
-
-private theorem represented_unit {p : Pair V} {a b : V}
-    (hu : p.1=p.2+1) (hr : Equivalent p (a,b)) : a=b+1 := by
-  change p.1+b=p.2+a at hr
-  have h : p.2+(1+b)=p.2+a := calc
-    _=(p.2+1)+b := by ring
-    _=p.1+b := by rw [hu]
-    _=p.2+a := hr
-  have h' := add_left_cancel h
-  simpa only [add_comm] using h'.symm
 
 def StrongNorm (v : Fin 13 → V) : Prop :=
   let k : V := v 9+v 10
