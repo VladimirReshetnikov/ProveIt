@@ -64,6 +64,9 @@ The [private compatibility draft](reviews/adaptive-wang-table-compat-independent
 restores the three generated names missing from the initial split and has an
 independent matching build. Full export and attribute checks, historical
 object provenance, and downstream integration remain open.
+The original split's independently reproduced [export differences](reviews/adaptive-wang-export-enumeration-independent.md)
+record the three missing generated names and eleven raw type/universe
+differences; they are not a result for the later compatibility draft.
 The independently replayed [124-name displayed-type](reviews/adaptive-wang-compat-124-independent.md)
 and [selected registration](reviews/adaptive-wang-compat-124-registration-independent.md)
 comparisons match against the historical object. They do not establish
