@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryExpCode
+
+#print axioms DiophantineConsistency.PRAHistoryExpCode.modelExpCode
+#print axioms DiophantineConsistency.PRAHistoryExpCode.PRA_proves_expCodeGraph

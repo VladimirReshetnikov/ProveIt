@@ -1,0 +1,9 @@
+# Constructing the primitive-recursive history code
+
+The remaining witness for Foundation's `PR.Blueprint.resultDef` is a code `s` satisfying the actual `cseqDef` and the requested `memRel` entry. The existing bounded `cseqDef` theorems assume this code and the local blueprint bounds; they do not construct it. Foundation's `PR.Construction.CSeq.exists` obtains the history using IΣ₁ induction, so that theorem cannot simply be used for arbitrary candidate-PRA models.
+
+`PRAHistoryPairCode.lean` supplies the first concrete component of the intended constructor. Its explicit `pairCode` uses the candidate-PRA less-than characteristic, addition, multiplication, and selection to compute Foundation's exact `pair` in every candidate-PRA model. The proved sentence `PRA_proves_pairCodeGraph` asserts that the result satisfies the actual mapped Foundation `pairDef`; the theorem does not depend on IΣ₁.
+
+`PRAHistoryExpCode.lean` supplies a second component: its explicit primitive-recursive code starts at one and doubles at each step. Candidate PRA proves that its value satisfies Foundation's exact `exponentialDef`. The proof uses Foundation's IΣ₀ base and successor properties, the candidate-PRA bounded-formula characteristic compiler, and open induction applied to the recursive code. Foundation's IΣ₁ existential-totality theorem is not used. In particular, this is all-model correctness for the actual graph rather than only standard-natural computation.
+
+These components are not yet a sequence constructor. Foundation `seqConsDef` also calls `lhDef`, bit membership, and `insertDef`; a usable construction must provide their corresponding primitive-recursive behavior in all candidate-PRA models and preserve the actual `cseqDef` invariant along the recursion. The blueprint's zero and successor graphs, its size bounds, and the concrete refutation predicate remain separate obligations. No proof of the complete history witness or HA equivalence is claimed here.

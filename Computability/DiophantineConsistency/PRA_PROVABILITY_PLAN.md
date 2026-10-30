@@ -106,8 +106,11 @@ uses Σ₁ induction; a candidate-PRA construction and verification of the
 history code is still required.
 An independently replayed [primitive-recursive pairing code](reviews/pra-history-pair-code-author-replay/README.md)
 now computes Foundation's exact pairing graph in candidate-PRA models. This
-supplies one part of a potential sequence-code construction; insertion,
-exponentiation and the recursive history remain to be verified.
+supplies one part of a potential sequence-code construction. A second
+[independently replayed code](reviews/pra-history-exp-code-author-replay/README.md)
+iterates doubling and satisfies Foundation's exact exponential graph in
+candidate-PRA models without assuming IΣ₁. Sequence insertion and the
+recursive history remain to be verified.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
