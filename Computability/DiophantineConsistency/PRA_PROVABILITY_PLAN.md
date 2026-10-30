@@ -45,6 +45,10 @@ The [enriched-Assembly conclusion adapter](reviews/adaptive-construction-conditi
 is independently replayed as well: it takes the proposed strengthened
 Assembly conclusion, including its bound, as an explicit premise and yields
 the shifted zero. It does not itself establish that premise.
+The [87-operation reduced-output client](reviews/adaptive-construction-reduced-zero2011-independent.md)
+independently replays the exact literal zero transfer from the same enriched
+Assembly premise to the reduced shifted expression. The premise and the final
+HA/PRA consistency endpoints remain open.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -56,8 +60,10 @@ passed author and two independent builds with matching source, object and
 full-log hashes. The subsequent merge at `1abcfbde84` changed further
 Herbrand sources in the graph. Those affected sources and their dependents
 were subsequently rebuilt in the [60-module comparison graph](reviews/pra-isigma-final-merge-refresh-author-replay/README.md),
-with two independent replays. A newer upstream change to
-`HerbrandPackedContextTransfer` still needs to be merged and replayed.
+with two independent replays. The later `HerbrandPackedContextTransfer`
+change and its affected graph were rebuilt in the [74-module refresh](reviews/pra-after-unary-merge-refresh-author-replay/README.md),
+also with two independent replays. A subsequent `PRAPiOneImplication` merge
+still requires a focused refresh of the affected unary clients.
 
 `PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
 universally closed open-existential goal from an IΣ₁ proof and an explicit

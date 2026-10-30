@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionReduced2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionReduced2011.reduced_zero_of_enriched_assembly

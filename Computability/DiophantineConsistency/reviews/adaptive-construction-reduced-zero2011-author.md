@@ -1,0 +1,7 @@
+# Conditional zero for the 87-gate output
+
+`reduced_zero_of_enriched_assembly` proves in every model of the stated `IΣ₁` assumptions that the exact strengthened Assembly conclusion, with an arbitrary bound, implies a zero of the actual shifted 87-gate adaptive expression at the maintained ports. It applies the conditional 88-gate construction and the checked literal 87/88 split-zero equivalence. Lean reports `[propext, Classical.choice, Quot.sound]`.
+
+The enriched Assembly conclusion is an explicit premise. This theorem does not import or establish the source-current Assembly, prove the machine-halting equivalence, or establish the existence of an HA proof. The 87 count describes the unshifted output DAG; the shift is not counted as a graph operation here.
+
+The author run `/tmp/adaptive-construction-reduced-zero-ackn79sf` rebuilt the four 87-gate syntax and literal-binding prerequisites on `/tmp/adaptive-construction-conditional-exists-w1srf47g`, then built the reduced client and check; all six modules and final guards passed. The [24-file evidence manifest](adaptive-construction-reduced-zero2011-author-evidence/FILES.json) has SHA256 `cb52159399d1e795e152ed344e47b7ca662f6f9a0bb8c97ea013afeb8b5da640`. It includes source snapshots, full logs and timings, driver, provider metadata, input state and guards. For replay set `ADAPTIVE_ASSEMBLY_BASE` to the independently replayed conditional-exists provider and run `success/driver.py`; canonical and package boundaries remain inherited. The driver records the specific reduced conditional scope.
