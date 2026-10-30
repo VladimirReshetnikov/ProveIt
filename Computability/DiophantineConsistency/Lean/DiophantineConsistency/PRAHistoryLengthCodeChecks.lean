@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryLengthCode
+
+#print axioms DiophantineConsistency.PRAHistoryLengthCode.length_total
+#print axioms DiophantineConsistency.PRAHistoryLengthCode.PRA_has_lengthCode

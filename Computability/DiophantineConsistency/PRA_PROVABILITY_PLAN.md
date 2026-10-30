@@ -112,7 +112,10 @@ iterates doubling and satisfies Foundation's exact exponential graph in
 candidate-PRA models without assuming IΣ₁. An [independently replayed insertion
 code](reviews/pra-history-insert-code-author-replay/README.md) now supplies
 the exact Foundation insertion graph in candidate PRA. A sequence append
-code and the full recursive-history verification remain open.
+code and the full recursive-history verification remain open. An
+[independently replayed length code](reviews/pra-history-length-code-author-replay/README.md)
+computes the actual `lhDef` graph with output at most `2*s`, without assuming
+IΣ₁.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
