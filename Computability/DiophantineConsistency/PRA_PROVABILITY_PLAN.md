@@ -8,6 +8,10 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [auxiliary-factor reverse bridge](reviews/adaptive-construction-aux-factor2011-independent.md)
+derives its literal unit from explicit strong and auxiliary norm assumptions
+and the port bound. These still need to be connected to the common witness.
+
 The upstream merge at `e5d166e20f` changed `PRAFormulaParameters` and five
 Herbrand parameter/context modules, plus ZFC interpretation and validator
 sources. Dependent PRA, pairing, normalization and positive-rule replays below
