@@ -1,0 +1,12 @@
+# Local screens for an 85-operation candidate
+
+These four scripts adapt the previously recorded 87-graph local screens to the pinned 86-operation candidate (`candidate.json` SHA-256 `e9889a81a491b85491dde749e82158109ea98ff94ed41fc0f05dc810ec58b91f`). Each evaluates expressions at three deterministic samples in the prime field modulo `2305843009213693951`, seed `80281234`, using earlier nodes and literals 0 through 4. A modular match is only a screening signal; it is not an exact integer-polynomial identity.
+
+- `screen-one-op.py` replaces one target gate with one operation on earlier values and recounts live output gates. No candidate below 86 gates was printed.
+- `screen-two-op.py` screens two-gate replacements by matching inverse signatures against stored one-gate expressions, skipping division by zero and excluding a first intermediate whose signature already occurs among known earlier values. No candidate below 86 was printed.
+- `screen-three-serial.py` screens three-gate serial chains, where each successive gate combines the previous result with an earlier value. It checked the 28 rows with enough potentially dead gates and printed no candidate below 86.
+- `screen-three-shared.py` screens a three-gate shape in which the first intermediate is reused by the final gate. It checked the same 28 eligible rows and printed no candidate below 86. Its modular root matching discards zero-sample divisions and samples for which the root is unconstrained or absent.
+
+The initial adaptations of the three-gate scripts accidentally retained the parent graph's hard-coded 87-gate liveness threshold. The exact initial scripts and outputs are preserved with `-initial` names; their printed 86-gate candidates are **not** reductions. The corrected scripts use `len(rows)` consistently, and their saved `.out` files are the reruns described above. No output here is a minimality proof or a claim that all rewrites of any broader family were exhausted: these searches retain earlier-node order, replace one target row at a time, use only the stated shapes and literals, and apply probabilistic modular signatures with the noted exclusions. A prospective match would still need exact identity, liveness and Lean binding.
+
+Reproduce, for example, with `python3 Computability/DiophantineConsistency/research/adaptive-direct-ordinate86/screen-three-serial.py`; each script has a same-named `.out` transcript.
