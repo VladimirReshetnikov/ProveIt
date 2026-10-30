@@ -128,6 +128,32 @@ theorem falsum_le {m : V} (hm : 2 ≤ m) : (^⊥ : V) ≤ lvB m :=
 theorem two_le_Eb (n p : V) : (2 : V) ≤ Eb + 100 * n + 200 * p :=
   le_trans (le_of_add_eq (y := 10 * Ef0 + 198) (by unfold Eb; ring)) (le_trans le_self_add le_self_add)
 
+/-- The quantifier case of `envForm_le`: `Q Q (A ⊙ (B ⊙ e))` with outer tag `k`,
+inner connective tag `j` and two constants bounded by `Ef0`. -/
+theorem quant_le {n p e a b k j : V} (hk : k ≤ 16) (hj : j ≤ 16) (ha : a ≤ Ef0) (hb : b ≤ Ef0)
+    (ih : e ≤ lvB (Eb + 100 * (n + 1) + 200 * p)) :
+    ⟪k, ⟪k, ⟪j, ⟪a, ⟪j, ⟪b, e⟫⟫ + 1⟫⟫ + 1⟫ + 1⟫ + 1 ≤
+      lvB (Eb + 100 * n + 200 * (⟪k, p⟫ + 1)) := by
+  have hpx : p ≤ ⟪k, p⟫ := le_pair_right k p
+  set u := Eb + 100 * n + 200 * ⟪k, p⟫ + 100 with hu
+  have h2 : (2 : V) ≤ u := le_trans (two_le_Eb n ⟪k, p⟫) le_self_add
+  have hEu : Ef0 ≤ u := le_trans (show Ef0 ≤ Eb from le_of_add_eq (y := 9 * Ef0 + 200) (by unfold Eb; ring))
+    (show Eb ≤ u by rw [hu]; exact le_trans le_self_add (le_trans le_self_add le_self_add))
+  have hc : ∀ {c : V}, c ≤ Ef0 → c ≤ lvB u := fun h => le_trans (le_trans h hEu) (le_lvB_self u)
+  have ihu : e ≤ lvB u := lift_lvB ih (by
+    rw [hu]
+    exact le_trans (le_of_eq (by ring))
+      (_root_.add_le_add (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hpx (by norm_num)))
+        le_rfl))
+  have b1 := conn_le (tag := j) h2 hj (hc hb) ihu
+  have b2 := conn_le (tag := j) (le_trans h2 le_self_add) hj (lift_lvB (hc ha) le_self_add) b1
+  have b3 := pair_lvB (le_trans h2 (le_trans le_self_add le_self_add))
+    (tag_le_lvB (k := k) hk (le_trans h2 (le_trans le_self_add le_self_add))) b2
+  have b4 := pair_lvB (le_trans h2 (le_trans le_self_add (le_trans le_self_add le_self_add)))
+    (tag_le_lvB (k := k) hk (le_trans h2 (le_trans le_self_add (le_trans le_self_add le_self_add))))
+    b3
+  exact le_trans b4 (lvB_mono (le_of_add_eq (y := 88) (by rw [hu]; ring)))
+
 set_option maxHeartbeats 4000000 in
 /-- **The environment transform grows linearly in depth and code.** -/
 theorem envForm_le {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
@@ -180,48 +206,10 @@ theorem envForm_le {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
   · -- universal quantifier
     intro n p hp ih
     rw [envForm_all hp.isUFormula, show (^∀ p : V) = ⟪6, p⟫ + 1 from rfl]
-    have hpx : p ≤ ⟪6, p⟫ := le_pair_right 6 p
-    set u := Eb + 100 * n + 200 * ⟪6, p⟫ + 100 with hu
-    have h2 : (2 : V) ≤ u := le_trans (two_le_Eb n ⟪6, p⟫) le_self_add
-    have hEu : Ef0 ≤ u := le_trans (show Ef0 ≤ Eb from le_of_add_eq (y := 9 * Ef0 + 200) (by unfold Eb; ring))
-      (show Eb ≤ u by rw [hu]; exact le_trans le_self_add (le_trans le_self_add le_self_add))
-    have hc : ∀ {c : V}, c ≤ Ef0 → c ≤ lvB u := fun h => le_trans (le_trans h hEu) (le_lvB_self u)
-    have ihu : envForm (n + 1) p ≤ lvB u := lift_lvB ih (by
-      rw [hu]
-      exact le_trans (le_of_eq (by ring))
-        (_root_.add_le_add (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hpx (by norm_num)))
-          le_rfl))
-    have b1 := conn_le (tag := 5) h2 (by norm_num) (hc ndomY_le) ihu
-    have b2 := conn_le (tag := 5) (le_trans h2 le_self_add) (by norm_num)
-      (lift_lvB (hc necons_le) le_self_add) b1
-    have b3 := pair_lvB (le_trans h2 (le_trans le_self_add le_self_add))
-      (tag_le_lvB (k := 6) (by norm_num) (le_trans h2 (le_trans le_self_add le_self_add))) b2
-    have b4 := pair_lvB (le_trans h2 (le_trans le_self_add (le_trans le_self_add le_self_add)))
-      (tag_le_lvB (k := 6) (by norm_num)
-        (le_trans h2 (le_trans le_self_add (le_trans le_self_add le_self_add)))) b3
-    exact le_trans b4 (lvB_mono (le_of_add_eq (y := 88) (by rw [hu]; ring)))
+    exact quant_le (k := 6) (j := 5) (by norm_num) (by norm_num) necons_le ndomY_le ih
   · -- existential quantifier
     intro n p hp ih
     rw [envForm_exs hp.isUFormula, show (^∃ p : V) = ⟪7, p⟫ + 1 from rfl]
-    have hpx : p ≤ ⟪7, p⟫ := le_pair_right 7 p
-    set u := Eb + 100 * n + 200 * ⟪7, p⟫ + 100 with hu
-    have h2 : (2 : V) ≤ u := le_trans (two_le_Eb n ⟪7, p⟫) le_self_add
-    have hEu : Ef0 ≤ u := le_trans (show Ef0 ≤ Eb from le_of_add_eq (y := 9 * Ef0 + 200) (by unfold Eb; ring))
-      (show Eb ≤ u by rw [hu]; exact le_trans le_self_add (le_trans le_self_add le_self_add))
-    have hc : ∀ {c : V}, c ≤ Ef0 → c ≤ lvB u := fun h => le_trans (le_trans h hEu) (le_lvB_self u)
-    have ihu : envForm (n + 1) p ≤ lvB u := lift_lvB ih (by
-      rw [hu]
-      exact le_trans (le_of_eq (by ring))
-        (_root_.add_le_add (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hpx (by norm_num)))
-          le_rfl))
-    have b1 := conn_le (tag := 4) h2 (by norm_num) (hc domY_le) ihu
-    have b2 := conn_le (tag := 4) (le_trans h2 le_self_add) (by norm_num)
-      (lift_lvB (hc econs_le) le_self_add) b1
-    have b3 := pair_lvB (le_trans h2 (le_trans le_self_add le_self_add))
-      (tag_le_lvB (k := 7) (by norm_num) (le_trans h2 (le_trans le_self_add le_self_add))) b2
-    have b4 := pair_lvB (le_trans h2 (le_trans le_self_add (le_trans le_self_add le_self_add)))
-      (tag_le_lvB (k := 7) (by norm_num)
-        (le_trans h2 (le_trans le_self_add (le_trans le_self_add le_self_add)))) b3
-    exact le_trans b4 (lvB_mono (le_of_add_eq (y := 88) (by rw [hu]; ring)))
+    exact quant_le (k := 7) (j := 4) (by norm_num) (by norm_num) econs_le domY_le ih
 
 end LeanProofs.ZFCinPA.SizedEnvForm
