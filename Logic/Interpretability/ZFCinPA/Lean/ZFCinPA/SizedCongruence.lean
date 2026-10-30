@@ -271,10 +271,7 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
   have hall : IsSemiformula ℒₛₑₜ n (^∀ p) := by simpa using hp
   have hS0 := cseq_le hall hpv inp
   have hSf := cseq_formulaSet hall inp
-  have inp' := inp_succ inp
-  obtain ⟨hw₁, hw₂, -⟩ := inp
-  have hP₁ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) := by simpa using hp.subst hw₁.qVec
-  have hP₂ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) := by simpa using hp.subst hw₂.qVec
+  have hP₁ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) := by simpa using hp.subst inp.1.qVec
   have hS : Cseq w₁ w₂ (^∀ p) E = insert (^∃ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))
       (insert (^∀ subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) E) := by
     unfold Cseq
@@ -282,12 +279,12 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
   rw [hS] at hS0 hSf ⊢
   set S := insert (^∃ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))
       (insert (^∀ subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) E) with hSdef
-  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv inp'
+  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv (inp_succ inp)
   set F₁ := subst ℒₛₑₜ (qFree n w₁) (shift ℒₛₑₜ p)
   set F₂ := subst ℒₛₑₜ (qFree n w₂) (shift ℒₛₑₜ p)
-  have hf₂ : free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) = F₂ := free_subst_qVec hp hw₂
+  have hf₂ : free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) = F₂ := free_subst_qVec hp inp.2.1
   have hf₁ : substs1 ℒₛₑₜ ^&0 (shift ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))) = neg ℒₛₑₜ F₁ := by
-    rw [show F₁ = free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) from (free_subst_qVec hp hw₁).symm,
+    rw [show F₁ = free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) from (free_subst_qVec hp inp.1).symm,
       ← free_neg hP₁]
     rfl
   have hsh : ^∃ shift ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p)) ∈ setShift ℒₛₑₜ S := by
@@ -323,10 +320,8 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
   have hex : IsSemiformula ℒₛₑₜ n (^∃ p) := by simpa using hp
   have hS0 := cseq_le hex hpv inp
   have hSf := cseq_formulaSet hex inp
-  have inp' := inp_succ inp
-  obtain ⟨hw₁, hw₂, -⟩ := inp
-  have hP₁ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) := by simpa using hp.subst hw₁.qVec
-  have hP₂ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) := by simpa using hp.subst hw₂.qVec
+  have hP₁ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) := by simpa using hp.subst inp.1.qVec
+  have hP₂ : IsSemiformula ℒₛₑₜ 1 (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) := by simpa using hp.subst inp.2.1.qVec
   have hS : Cseq w₁ w₂ (^∃ p) E = insert (^∀ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))
       (insert (^∃ subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) E) := by
     unfold Cseq
@@ -334,13 +329,13 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
   rw [hS] at hS0 hSf ⊢
   set S := insert (^∀ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))
       (insert (^∃ subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) E) with hSdef
-  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv inp'
+  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv (inp_succ inp)
   set F₁ := subst ℒₛₑₜ (qFree n w₁) (shift ℒₛₑₜ p)
   set F₂ := subst ℒₛₑₜ (qFree n w₂) (shift ℒₛₑₜ p)
   have hf₁ : free ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p)) = neg ℒₛₑₜ F₁ := by
-    rw [free_neg hP₁, free_subst_qVec hp hw₁]
+    rw [free_neg hP₁, free_subst_qVec hp inp.1]
   have hf₂ : substs1 ℒₛₑₜ ^&0 (shift ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p)) = F₂ :=
-    free_subst_qVec hp hw₂
+    free_subst_qVec hp inp.2.1
   have hsh : ^∃ shift ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) ∈ setShift ℒₛₑₜ S := by
     have := shift_mem_setShift (L := ℒₛₑₜ) (show ^∃ subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p ∈ S by simp [hSdef])
     rwa [Bootstrapping.shift_exs hP₂.isUFormula] at this

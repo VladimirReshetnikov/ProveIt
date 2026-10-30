@@ -56,7 +56,7 @@ theorem driver_le {M n p : V} (hp : IsSemiformula ℒₛₑₜ n p) (hM : n + p 
       DLv 𝗭𝗙 (insert (InvT (envFormT n hp) F).val ∅) (Wd M + 60 + 40 * p) := by
   have key : ΘB (Ad M) Kd (Wd M + 60) M n p :=
     IsSemiformula.sigma1_structural_induction (L := ℒₛₑₜ) (P := ΘB (Ad M) Kd (Wd M + 60) M)
-      (ΘB_definable _ _ _ _) (case_rel M) (case_nrel M) (case_verum M) (case_falsum M)
+      (ΘB_definable _ _ _ _) (case_atom false M) (case_atom true M) (case_verum M) (case_falsum M)
       (case_and M) (case_or M) (case_all M) (case_exs M) hp
   exact typed_of_ΘB hp (key hM)
 
