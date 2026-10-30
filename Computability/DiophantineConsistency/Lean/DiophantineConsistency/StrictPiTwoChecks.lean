@@ -1,0 +1,17 @@
+import DiophantineConsistency.StrictPiTwoCurrent2011
+import DiophantineConsistency.StrictPiTwoParsons2011
+
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic DiophantineConsistency
+
+#print axioms StrictPiTwoBridge.matrix_sigma0
+#print axioms StrictPiTwoBridge.isigma1_normalForm
+#print axioms StrictPiTwoBridge.normalForm_valid
+#print axioms StrictPiTwoBridge.isigma1_conB
+#print axioms StrictPiTwoCurrent2011.nf_shape
+#print axioms StrictPiTwoCurrent2011.isigma1_nf
+#print axioms StrictPiTwoCurrent2011.strict_nf
+#print axioms StrictPiTwoCurrent2011.nf_valid
+#print axioms StrictPiTwoCurrent2011.isigma1_strictCon
+#print axioms StrictPiTwoParsons2011.strict_eq
+#print axioms StrictPiTwoParsons2011.rule_proof_of_isigma1
+#print axioms StrictPiTwoParsons2011.nf_rule_proof
