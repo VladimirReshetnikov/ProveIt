@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryFixpointSuccCode
+
+#print axioms DiophantineConsistency.PRAHistoryFixpointSuccCode.modelFixSuccGraph
+#print axioms DiophantineConsistency.PRAHistoryFixpointSuccCode.PRA_has_fixSuccCode

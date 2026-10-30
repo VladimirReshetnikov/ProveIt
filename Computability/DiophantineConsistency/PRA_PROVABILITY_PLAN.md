@@ -108,7 +108,10 @@ An [independently replayed fixpoint collector](reviews/pra-history-fixpoint-coll
 proves the exact membership invariant for a supplied certified Boolean core
 code. The concrete derivation core characteristic, including formula-set and
 rule-tail checks, is not yet supplied; deriving it from the target bound
-would be circular.
+would be circular. An independently replayed [successor-code bridge](reviews/pra-history-fixpoint-succ-code-author-replay/README.md)
+constructs the actual Foundation `succDef` code once a Boolean characteristic
+is certified for both core formulas; those core certificates remain explicit
+premises.
 An independently replayed [primitive-recursive pairing code](reviews/pra-history-pair-code-author-replay/README.md)
 now computes Foundation's exact pairing graph in candidate-PRA models. This
 supplies one part of a potential sequence-code construction. A second
