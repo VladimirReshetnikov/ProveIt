@@ -1,0 +1,7 @@
+# One bounded-matrix induction instance
+
+Replay `python Computability/DiophantineConsistency/reviews/pra-bounded-one-induction-current-author-replay/replay.py --parent /tmp/pra-after-preparation-merge-refresh-o2iil0it/lib`, or a byte-identical independent provider. The two-module author build passed its full local graph/source/provider audit; the two-module Σ₁ classification suffix was then built against it. This replay rebuilds all four modules, authenticates all local parent sources/objects before and after, and matches full logs. The 47-module parent has since passed two independent replays. Foundation/mathlib are inherited; failures record the exact cause. The endpoint sets `maxHeartbeats 1500000`.
+
+`PRA_proves_goal_of_boundedSuccInd` eliminates one closed Foundation successor-induction instance for `∃y ψ(x,y,c)` with bounded/Σ₀ candidate-language matrix `ψ` on exactly those three inputs, from an actual candidate-PRA proof of a universally closed open-existential goal. It handles no external predicate parameters and only one induction instance. The classification client proves this predicate is syntactically Σ₁. No general IΣ₁ conservation or multi-instance elimination is asserted. The separately maintained HA proof-existence theorem for the 14-variable equation is already complete.
+
+Two independent bounded-extension replays PASSed at `/tmp/pra-bounded-one-induction-independent-r5ddrfvn` and `/tmp/pra-bounded-one-induction-independent-xaltmla0`, matching all four source, object and full-log records and authenticating the parent graph.

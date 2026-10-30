@@ -19,6 +19,12 @@ equivalence of two unary open-matrix Π₁ sentences. It does not yet bind the
 actual equation or refutation sentences, and does not handle arbitrary finite
 induction instances.
 
+A [bounded-matrix extension](reviews/pra-bounded-one-induction-current-author-replay/README.md)
+now removes one closed Σ₁-induction instance with any Σ₀ matrix on its
+three stated arguments, using the candidate-PRA bounded characteristic
+compiler. It still does not handle extra predicate parameters or an arbitrary
+finite collection of induction instances.
+
 Subsequent upstream merges changed `ArithmeticCarrierRadix2011.lean`,
 `ArithmeticBinomLegendre.lean`, `ArithmeticHalfBinomial.lean`, and
 `ArithmeticHalfBinomialSandwich.lean`. The affected adaptive population,
