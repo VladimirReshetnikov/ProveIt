@@ -137,7 +137,7 @@ private theorem two_power_bound (r n m : ℕ) (hr : 2≤r) (hn : n+1≤m) :
 
 private theorem pow_extends (r n : ℕ) (hn : n≠0) : r≤r^n := Nat.le_self_pow hn r
 
-private theorem current_bounds_nat :
+theorem current_bounds_nat :
     15≤CurrentMasks2011.beta ∧ CurrentMasks2011.lowPort<CurrentMasks2011.beta ∧
       CurrentMasks2011.highPort+CurrentMasks2011.beta<2*CurrentMasks2011.beta := by
   have hr : 16≤CurrentMasks2011.radix:=by unfold CurrentMasks2011.radix; decide
