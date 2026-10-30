@@ -96,18 +96,14 @@ lemma atom_eq_under {n arity R terms : V} (hr : (ℒₛₑₜ).IsRel arity R)
       (atom ?[F,B',t] arity R terms) := by
   have harity : arity=2 := ValidatorLabelAvoidance.set_relation_arity hr
   subst arity
-  have hleft : CProv (wim (eindContext B B')
-      (Eind (ValidatorEnvironmentLabels254.TermLabels.vec F B 2 terms).[0]
-        (ValidatorEnvironmentLabels254.TermLabels.vec F B' 2 terms).[0])) := by
-    rw [ValidatorEnvironmentLabels254.TermLabels.vec_nth F B ht.isUTerm (by simp),
-      ValidatorEnvironmentLabels254.TermLabels.vec_nth F B' ht.isUTerm (by simp)]
-    exact term_eind_under (ht.nth (by simp)) F B B' hB
-  have hright : CProv (wim (eindContext B B')
-      (Eind (ValidatorEnvironmentLabels254.TermLabels.vec F B 2 terms).[1]
-        (ValidatorEnvironmentLabels254.TermLabels.vec F B' 2 terms).[1])) := by
-    rw [ValidatorEnvironmentLabels254.TermLabels.vec_nth F B ht.isUTerm (by simp),
-      ValidatorEnvironmentLabels254.TermLabels.vec_nth F B' ht.isUTerm (by simp)]
-    exact term_eind_under (ht.nth (by simp)) F B B' hB
+  have coord (i : V) (hi : i<2) : CProv (wim (eindContext B B')
+      (Eind (ValidatorEnvironmentLabels254.TermLabels.vec F B 2 terms).[i]
+        (ValidatorEnvironmentLabels254.TermLabels.vec F B' 2 terms).[i])) := by
+    rw [ValidatorEnvironmentLabels254.TermLabels.vec_nth F B ht.isUTerm hi,
+      ValidatorEnvironmentLabels254.TermLabels.vec_nth F B' ht.isUTerm hi]
+    exact term_eind_under (ht.nth hi) F B B' hB
+  have hleft := coord 0 (by simp)
+  have hright := coord 1 (by simp)
   have hleft' := compose hleft (eind_symm _ _)
   have hright' := compose hright (eind_symm _ _)
   classical
