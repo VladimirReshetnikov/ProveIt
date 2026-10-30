@@ -32,13 +32,14 @@ variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 local notation "Fm" => Bootstrapping.Formula V ℒₛₑₜ
 
+theorem succT_le_Gd (M q : V) : (succT (V := V)).val ≤ lvB (Gd M q) :=
+  lift_lvB (le_lvB_self _) (le_trans (succT_le_Ad M) (Ad_le_Gd M q))
+
 set_option maxHeartbeats 4000000 in
 theorem case_rel (M : V) :
     ∀ n k r v, (ℒₛₑₜ).IsRel k r → IsSemitermVec ℒₛₑₜ k n v →
     ΘB (Ad M) Kd (Wd M + 60) M n (^rel k r v) := by
   have hu := two_le_uD M
-  have hsucc : ∀ q : V, (succT (V := V)).val ≤ lvB (Gd M q) := fun q =>
-    lift_lvB (le_lvB_self _) (le_trans (succT_le_Ad M) (Ad_le_Gd M q))
   unfold ΘB
   intro n k R v hR hv hnM
   have hR' := hR
@@ -46,25 +47,25 @@ theorem case_rel (M : V) :
   have hrel := envForm_rel (d := n) hR hv.isUTerm
   have hX : n + ⟪(2 : V), R, v⟫ ≤ M :=
     le_trans (_root_.add_le_add le_rfl (le_trans (le_pair_right 0 _) le_self_add)) hnM
-  have h₀ := (numOK_leJ (slot_idx hv (show (0 : V) < 2 by norm_num) hX)).mono
-    (numOK_W (slot_idx hv (show (0 : V) < 2 by norm_num) hX))
-  have h₂ := (numOK_leJ (slot_idx hv (show (1 : V) < 2 by norm_num) hX)).mono
-    (numOK_W (slot_idx hv (show (1 : V) < 2 by norm_num) hX))
-  have lN₀ := lift_lvB (numQ_le_A0 (slot_idx hv (show (0 : V) < 2 by norm_num) hX)) (A0_le_uD M)
-  have lN₂ := lift_lvB (numQ_le_A0 (slot_idx hv (show (1 : V) < 2 by norm_num) hX)) (A0_le_uD M)
+  have s₀ := slot_idx hv (show (0 : V) < 2 by norm_num) hX
+  have s₁ := slot_idx hv (show (1 : V) < 2 by norm_num) hX
+  have h₀ := (numOK_leJ s₀).mono (numOK_W s₀)
+  have h₂ := (numOK_leJ s₁).mono (numOK_W s₁)
+  have lN₀ := lift_lvB (numQ_le_A0 s₀) (A0_le_uD M)
+  have lN₂ := lift_lvB (numQ_le_A0 s₁) (A0_le_uD M)
   have lAt := lift_lvB (atom_le_A0 hR' hv hX) (A0_le_uD M)
   rcases hR01 with rfl | rfl
   · have hval : (AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
         atomOf n 0 v := by rw [atomT_val_eq, atomOf]
     have hK := K6_le lN₀ (top_le hu) lN₂ (top_le hu) (hval.trans_le lAt) (succT_le_uD M)
     have d := atom_step_le true hu hK (wD_le_Wd M) h₀ h₂
-    exact ΘB_of_typed _ (hval.trans hrel.symm) succT (hsucc _)
+    exact ΘB_of_typed _ (hval.trans hrel.symm) succT (succT_le_Gd M _)
       (d.mono (le_of_add_eq (y := 30 + 40 * ^rel 2 0 v) (by ring)))
   · have hval : (AtomT false (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
         atomOf n 1 v := by rw [atomT_val_mem _ _ 1 _root_.one_ne_zero, atomOf]
     have hK := K6_le lN₀ (top_le hu) lN₂ (top_le hu) (hval.trans_le lAt) (succT_le_uD M)
     have d := atom_step_le false hu hK (wD_le_Wd M) h₀ h₂
-    exact ΘB_of_typed _ (hval.trans hrel.symm) succT (hsucc _)
+    exact ΘB_of_typed _ (hval.trans hrel.symm) succT (succT_le_Gd M _)
       (d.mono (le_of_add_eq (y := 30 + 40 * ^rel 2 1 v) (by ring)))
 
 set_option maxHeartbeats 4000000 in
@@ -72,8 +73,6 @@ theorem case_nrel (M : V) :
     ∀ n k r v, (ℒₛₑₜ).IsRel k r → IsSemitermVec ℒₛₑₜ k n v →
     ΘB (Ad M) Kd (Wd M + 60) M n (^nrel k r v) := by
   have hu := two_le_uD M
-  have hsucc : ∀ q : V, (succT (V := V)).val ≤ lvB (Gd M q) := fun q =>
-    lift_lvB (le_lvB_self _) (le_trans (succT_le_Ad M) (Ad_le_Gd M q))
   unfold ΘB
   intro n k R v hR hv hnM
   have hR' := hR
@@ -83,12 +82,12 @@ theorem case_nrel (M : V) :
   have lN := lift_lvB (envF_le hsem hnM) (A0_le_uD M)
   have hX : n + ⟪(2 : V), R, v⟫ ≤ M :=
     le_trans (_root_.add_le_add le_rfl (le_trans (le_pair_right 1 _) le_self_add)) hnM
-  have h₀ := (numOK_leJ (slot_idx hv (show (0 : V) < 2 by norm_num) hX)).mono
-    (numOK_W (slot_idx hv (show (0 : V) < 2 by norm_num) hX))
-  have h₂ := (numOK_leJ (slot_idx hv (show (1 : V) < 2 by norm_num) hX)).mono
-    (numOK_W (slot_idx hv (show (1 : V) < 2 by norm_num) hX))
-  have lN₀ := lift_lvB (numQ_le_A0 (slot_idx hv (show (0 : V) < 2 by norm_num) hX)) (A0_le_uD M)
-  have lN₂ := lift_lvB (numQ_le_A0 (slot_idx hv (show (1 : V) < 2 by norm_num) hX)) (A0_le_uD M)
+  have s₀ := slot_idx hv (show (0 : V) < 2 by norm_num) hX
+  have s₁ := slot_idx hv (show (1 : V) < 2 by norm_num) hX
+  have h₀ := (numOK_leJ s₀).mono (numOK_W s₀)
+  have h₂ := (numOK_leJ s₁).mono (numOK_W s₁)
+  have lN₀ := lift_lvB (numQ_le_A0 s₀) (A0_le_uD M)
+  have lN₂ := lift_lvB (numQ_le_A0 s₁) (A0_le_uD M)
   have lAt := lift_lvB (atom_le_A0 hR' hv hX) (A0_le_uD M)
   rcases hR01 with rfl | rfl
   · have hval : (AtomT true (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
@@ -100,7 +99,7 @@ theorem case_nrel (M : V) :
     have hKn := K6_le (hval.trans_le lAt) (succT_le_uD M) (top_le hu) (top_le hu)
       (hnv.trans_le lN) (succT_le_uD M)
     have d₂ := neg_step_le hu hKn (le_trans (wD_le_Wd M) le_self_add) d₁
-    exact ΘB_of_typed _ hnv succT (hsucc _)
+    exact ΘB_of_typed _ hnv succT (succT_le_Gd M _)
       (d₂.mono (le_of_add_eq (y := 40 * ^nrel 2 0 v) (by ring)))
   · have hval : (AtomT false (numChainQ (idx n v.[0])) (numChainQ (idx n v.[1]))).val =
         atomOf n 1 v := by rw [atomT_val_mem _ _ 1 _root_.one_ne_zero, atomOf]
@@ -111,34 +110,30 @@ theorem case_nrel (M : V) :
     have hKn := K6_le (hval.trans_le lAt) (succT_le_uD M) (top_le hu) (top_le hu)
       (hnv.trans_le lN) (succT_le_uD M)
     have d₂ := neg_step_le hu hKn (le_trans (wD_le_Wd M) le_self_add) d₁
-    exact ΘB_of_typed _ hnv succT (hsucc _)
+    exact ΘB_of_typed _ hnv succT (succT_le_Gd M _)
       (d₂.mono (le_of_add_eq (y := 40 * ^nrel 2 1 v) (by ring)))
 
 set_option maxHeartbeats 4000000 in
 theorem case_verum (M : V) :
     ∀ n, ΘB (Ad M) Kd (Wd M + 60) M n ^⊤ := by
   have hu := two_le_uD M
-  have hsucc : ∀ q : V, (succT (V := V)).val ≤ lvB (Gd M q) := fun q =>
-    lift_lvB (le_lvB_self _) (le_trans (succT_le_Ad M) (Ad_le_Gd M q))
   unfold ΘB
   intro n _
   have hK := K6_le (top_le hu) (top_le hu) (top_le hu) (top_le hu) (top_le hu) (succT_le_uD M)
   have d := top_base_le hu hK (wD_le_Wd M)
-  exact ΘB_of_typed ⊤ (by simp) succT (hsucc _)
+  exact ΘB_of_typed ⊤ (by simp) succT (succT_le_Gd M _)
     (d.mono (le_of_add_eq (y := 30 + 40 * ^⊤) (by ring)))
 
 set_option maxHeartbeats 4000000 in
 theorem case_falsum (M : V) :
     ∀ n, ΘB (Ad M) Kd (Wd M + 60) M n ^⊥ := by
   have hu := two_le_uD M
-  have hsucc : ∀ q : V, (succT (V := V)).val ≤ lvB (Gd M q) := fun q =>
-    lift_lvB (le_lvB_self _) (le_trans (succT_le_Ad M) (Ad_le_Gd M q))
   unfold ΘB
   intro n _
   have hK := K6_le (top_le hu) (top_le hu) (top_le hu) (top_le hu)
     (show (⊥ : SF V 1).val ≤ lvB (uD M) by simpa using falsum_le hu) (succT_le_uD M)
   have d := bot_base_le hu hK (wD_le_Wd M)
-  exact ΘB_of_typed ⊥ (by simp) succT (hsucc _)
+  exact ΘB_of_typed ⊥ (by simp) succT (succT_le_Gd M _)
     (d.mono (le_of_add_eq (y := 30 + 40 * ^⊥) (by ring)))
 
 end LeanProofs.ZFCinPA.SizedDriver
