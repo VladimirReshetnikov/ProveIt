@@ -1,0 +1,5 @@
+import DiophantineConsistency.ParsonsPositiveGuardCertificate
+open DiophantineConsistency.ParsonsPositiveGuardCertificate
+#print axioms positive_cast
+#print axioms three_disjunctions_positive
+#check three_disjunctions_positive

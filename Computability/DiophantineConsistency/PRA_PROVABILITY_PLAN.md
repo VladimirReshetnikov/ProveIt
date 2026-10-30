@@ -25,6 +25,12 @@ full-log hashes. The subsequent merge at `1abcfbde84` changed further
 Herbrand sources in the graph, so this is pre-merge evidence and its affected
 dependents require another source-current rebuild.
 
+The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
+preserves the positive-proof certificate when its predicate, side formula,
+and input proofs carry the stated positivity hypotheses. Its focused replay
+passed twice independently. This does not establish positivity of the global
+cut-free translation.
+
 The [auxiliary-factor reverse bridge](reviews/adaptive-construction-aux-factor2011-independent.md)
 derives its literal unit from explicit strong and auxiliary norm assumptions
 and the port bound. These still need to be connected to the common witness.
