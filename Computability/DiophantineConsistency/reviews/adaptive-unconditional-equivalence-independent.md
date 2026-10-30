@@ -1,0 +1,5 @@
+# Independent unconditional 87-gate model equivalence replay
+
+Root peer `/tmp/adaptive-unconditional-equivalence-ptaobui4` **PASS** against the independently replayed local-normalization and conditional model-equivalence providers. Source, object and complete empty log match the author build byte-for-byte; complete normalization, Assembly, CellWindow and inherited-provider audits passed before and after. The resulting object SHA-256 is `5ae537c28682c791f41bb5418c29101cea92692ec2099e7e4741ffbbd0f7a6bc`.
+
+The nine-file `adaptive-unconditional-equivalence-independent-evidence/FILES.json` manifest has SHA-256 `27931b555526cc19121d2ee6ec030aa643679d3857b2bbecfe48404f1ff3e8f8`. The theorem establishes, in every IΣ₁ model, the maintained 87-gate expression's no-zero iff no represented-machine-halt equivalence, with the finite normalization premise discharged. It does not itself establish that HA proves equivalence to `Con(ZFC)`. Combining this model bridge with the generic HA proof assembler requires a separately source-authenticated compatible provider; their previously recorded full overlays have substantial object mismatches.

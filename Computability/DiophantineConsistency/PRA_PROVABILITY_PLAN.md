@@ -59,8 +59,11 @@ provider with the documented historical table-comparison boundary.
 The [conditional model-equivalence client](reviews/adaptive-equivalence-client-independent.md)
 has independently replayed the composition: given `LocalNormalization`, the
 87-operation expression has no zero iff the represented machine never halts
-in each stated IΣ₁ model. The premise and the syntactic HA transfer are not
-discharged by that client.
+in each stated IΣ₁ model. The [unconditional model-equivalence client](reviews/adaptive-unconditional-equivalence-independent.md)
+now discharges that premise with the independently rebuilt normalization
+theorem and has also passed an independent replay. The compatibility provider
+and historical table-comparison boundaries remain documented; this result by
+itself is not a syntactic HA proof of the consistency equivalence.
 The [87-operation reduced-output client](reviews/adaptive-construction-reduced-zero2011-independent.md)
 independently replays the exact literal zero transfer from the same enriched
 Assembly premise to the reduced shifted expression. The premise and the final
