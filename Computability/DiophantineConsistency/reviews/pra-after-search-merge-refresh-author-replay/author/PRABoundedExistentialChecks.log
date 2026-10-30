@@ -1,0 +1,22 @@
+'DiophantineConsistency.PRABoundedExistential.neg_termBoundedBy' depends on axioms: [propext, Quot.sound]
+'DiophantineConsistency.PRABoundedExistential.PRA_negateCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRABoundedExistential.PRA_boundedTermExistentialStep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedExistential.PRA_boundedTermExistentialStep {n : ℕ}
+  (c : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 1))
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language (n + 1))
+  (t : DiophantineConsistency.PRATheory.TermN n)
+  (hbit : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence c)
+  (hcorrect :
+    DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence c φ) :
+  ∃ d,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval d) ∧
+      DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence d ∧
+        DiophantineConsistency.PRATheory.PRA ⊢
+          DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence d
+            (∃⁰[LO.FirstOrder.Semiformula.rel LO.FirstOrder.Language.ORing.Rel.lt
+                ![LO.FirstOrder.Semiterm.bvar 0, LO.FirstOrder.Rew.bShift t]]
+              φ)

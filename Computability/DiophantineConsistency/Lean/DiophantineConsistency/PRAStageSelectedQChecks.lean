@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAStageSelectedQ
+open DiophantineConsistency.PRAStageSelectedQ
+#print axioms modelQ_update
+#check modelQ_update

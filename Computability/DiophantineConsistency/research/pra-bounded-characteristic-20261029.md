@@ -13,6 +13,11 @@ passed two independent replays, matching all source, object and full-log
 hashes. A further merge changed bounded-formula and characteristic modules;
 their affected 68-module graph has since passed an author rebuild and two
 independent replays. Foundation and Mathlib remain inherited boundaries.
+A later merge changed bounded-search Code, Freeze, Invariant and Minimal;
+the recorded provider is the preceding snapshot. A 62-module affected-graph
+rebuild has since passed an author run and two independent replays with
+matching source, object and full-log hashes; Foundation and Mathlib remain
+inherited boundaries.
 
 A bounded search code already provided its recursion equations and two open-induction invariants. `PRABoundedSearchBound` proves in arbitrary candidate-PRA equality models that its output is below or equal to the input bound. `PRABoundedSearchFreeze` proves, using open induction, that once search finds a counterexample, the output remains fixed at all later inputs. Consequently `PRABoundedSearchUniversal` proves that equality of the search output and its input characterizes the absence of counterexamples below the bound. Composing search with the equality-characteristic code gives a fixed primitive-recursive Boolean code. `PRA_proves_universalBitSentence` and `PRA_proves_universalCorrectSentence` are closed candidate-PRA proofs of its bitness and of its exact bounded-universal meaning.
 

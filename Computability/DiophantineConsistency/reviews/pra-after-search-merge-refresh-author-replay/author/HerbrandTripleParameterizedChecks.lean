@@ -1,0 +1,7 @@
+import DiophantineConsistency.HerbrandTripleParameterized
+open DiophantineConsistency.HerbrandTripleParameterized
+#print axioms prepareAllTriple
+#print axioms universal_proves_parameterTripleDisjunction
+#print axioms candidate_proves_parameterTripleDisjunction
+#check universal_proves_parameterTripleDisjunction
+#check candidate_proves_parameterTripleDisjunction

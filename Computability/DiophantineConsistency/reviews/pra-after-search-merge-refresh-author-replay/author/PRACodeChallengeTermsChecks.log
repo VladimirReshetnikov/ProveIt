@@ -1,0 +1,8 @@
+'DiophantineConsistency.PRACodeChallengeTerms.challengeTerm_support' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRACodeChallengeTerms.challengeTerm_eval' depends on axioms: [propext]
+DiophantineConsistency.PRACodeChallengeTerms.challengeTerm_eval {M : Type}
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M] {n : ℕ}
+  (c : DiophantineConsistency.PRAFiniteFunctionCodes.Code n) (e : ℕ → M) :
+  LO.FirstOrder.Semiterm.val ![] e (challengeTerm c) = LO.FirstOrder.Structure.func c fun i => e ↑i

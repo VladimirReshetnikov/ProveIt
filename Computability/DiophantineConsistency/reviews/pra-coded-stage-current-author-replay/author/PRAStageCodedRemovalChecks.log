@@ -1,0 +1,18 @@
+'DiophantineConsistency.PRAStageCodedRemoval.PRA_proves_removeCodedStage' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStageCodedRemoval.PRA_proves_codedGoal_of_stages' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAStageCodedRemoval.PRA_proves_codedGoal_of_stages {m : ℕ} (r n : ℕ)
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code (m + 3))
+  (θ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (hθ : LO.FirstOrder.Semiformula.Open θ) (hθr : LO.FirstOrder.Semiformula.fvSup θ ≤ r)
+  (hβr : LO.FirstOrder.Semiformula.fvSup (DiophantineConsistency.PRAStageCodedChi.chiMatrix pred) ≤ r) (hmr : m ≤ r)
+  (hFull :
+    DiophantineConsistency.PRATheory.PRA ⊢
+      LO.FirstOrder.Semiformula.univCl
+        ((∃⁰ θ) ⋎
+          DiophantineConsistency.HerbrandFixedGoalWeakening.chiOutput r
+            (DiophantineConsistency.PRAStageCodedChi.chiMatrix pred) (List.range n))) :
+  DiophantineConsistency.PRATheory.PRA ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)

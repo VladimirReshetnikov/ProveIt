@@ -1,0 +1,4 @@
+import DiophantineConsistency.HerbrandFixedGoalExtractionBound
+open DiophantineConsistency.HerbrandFixedGoalExtractionBound
+#print axioms extractBound
+#check extractBound

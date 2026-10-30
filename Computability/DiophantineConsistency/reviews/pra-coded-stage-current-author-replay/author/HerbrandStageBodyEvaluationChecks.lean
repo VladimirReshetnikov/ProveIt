@@ -1,0 +1,5 @@
+import DiophantineConsistency.HerbrandStageBodyEvaluation
+open DiophantineConsistency.HerbrandStageBodyEvaluation
+#print axioms stageBody_eval
+#print axioms stageBody_updated_eval
+#check stageBody_updated_eval

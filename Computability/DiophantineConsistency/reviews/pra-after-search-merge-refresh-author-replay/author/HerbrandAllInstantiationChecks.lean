@@ -1,0 +1,8 @@
+import DiophantineConsistency.HerbrandAllInstantiation
+
+open DiophantineConsistency.HerbrandAllInstantiation
+#print axioms specializeDerivation
+#print axioms instantiateAll
+#print axioms prepareAllExists
+#print axioms PRA_witness_of_universal_exists
+#print axioms PRA_witness_of_exists

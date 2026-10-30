@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRACodeChallengeTerms
+open DiophantineConsistency.PRACodeChallengeTerms
+#print axioms challengeTerm_support
+#print axioms challengeTerm_eval
+#check challengeTerm_eval

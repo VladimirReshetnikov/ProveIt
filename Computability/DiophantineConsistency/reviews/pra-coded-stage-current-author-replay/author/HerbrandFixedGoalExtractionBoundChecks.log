@@ -1,0 +1,25 @@
+'DiophantineConsistency.HerbrandFixedGoalExtractionBound.extractBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandFixedGoalExtractionBound.extractBound (r : ℕ)
+  (θ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (β : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 8)
+  (hθ : LO.FirstOrder.Semiformula.Open θ) (hβ : LO.FirstOrder.Semiformula.Open β)
+  (p :
+    DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom ⊢
+      LO.FirstOrder.Semiformula.univCl
+        (∃⁰
+          ∃⁰
+            ∃⁰
+              ∃⁰
+                ∀⁰
+                  ∀⁰
+                    ∀⁰
+                      DiophantineConsistency.HerbrandFourTriplePrenexAdapter.sourceMatrix β
+                        (DiophantineConsistency.HerbrandFixedGoalWeakening.liftGoal θ))) :
+  ∃ n,
+    DiophantineConsistency.PRAUniversalCandidate.UniversalAxiom ⊢
+        LO.FirstOrder.Semiformula.univCl
+          ((∃⁰ θ) ⋎ DiophantineConsistency.HerbrandFixedGoalWeakening.chiOutput r β (List.range n)) ∧
+      ∀ (j : ℕ) (k : Fin 4) (i : ℕ),
+        LO.FirstOrder.Semiterm.FVar? (DiophantineConsistency.HerbrandTupleSchedule.candidate j k) i → i < r + 3 * j

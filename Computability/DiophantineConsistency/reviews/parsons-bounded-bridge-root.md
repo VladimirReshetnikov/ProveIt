@@ -54,3 +54,9 @@ bounded comparison were rebuilt and independently replayed. The comparison
 replay at `/tmp/parsons-bounded-post-merge-independent-6ewca3lh` matched the
 separate replay's six source, object and full-log hashes. The prior scope and
 inherited Parsons/Foundation/Mathlib boundaries remain.
+
+After the search-module refactor, the six-module bounded comparison also
+passed independent replays at `/tmp/parsons-bounded-post-search-independent-1femtzr7`
+and `/tmp/parsons-bounded-post-search-independent-r2009hi4`, with matching
+source, object and full-log hashes. The same scope and inherited boundaries
+apply.

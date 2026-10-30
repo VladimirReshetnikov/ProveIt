@@ -1,0 +1,24 @@
+'DiophantineConsistency.PRAStageChiForcing.modelForceCurrent' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.PRAStageChiForcing.modelForceCurrent {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] {r j : ℕ}
+  (pred qCode : DiophantineConsistency.PRAFiniteFunctionCodes.Code (r + 3 * j + 3)) (e : ℕ → M)
+  (hSelect :
+    ∀ (x y w : M),
+      (LO.FirstOrder.Semiformula.Eval ![] (DiophantineConsistency.HerbrandStageSupport.updateChallenges r j e x y w))
+          (DiophantineConsistency.HerbrandFixedGoalWeakening.current r j
+            (DiophantineConsistency.PRAStageCodedChi.chiMatrix pred)) →
+        (LO.FirstOrder.Semiformula.Eval
+            ![LO.FirstOrder.Structure.func qCode fun i =>
+                Fin.cases x (fun i => Fin.cases y (fun i => Fin.cases w (fun i => e ↑i) i) i) i,
+              w, y, x, LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j 3),
+              LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j 2),
+              LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j 1),
+              LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j 0)]
+            e)
+          (DiophantineConsistency.PRAStageCodedChi.chiMatrix pred)) :
+  ∃ x y w,
+    ¬(LO.FirstOrder.Semiformula.Eval ![] (DiophantineConsistency.HerbrandStageSupport.updateChallenges r j e x y w))
+        (DiophantineConsistency.HerbrandFixedGoalWeakening.current r j
+          (DiophantineConsistency.PRAStageCodedChi.chiMatrix pred))

@@ -1,0 +1,19 @@
+'DiophantineConsistency.HerbrandStageBodyEvaluation.stageBody_eval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.HerbrandStageBodyEvaluation.stageBody_updated_eval' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.HerbrandStageBodyEvaluation.stageBody_updated_eval {M : Type}
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M] (r j : ℕ)
+  (β : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 8)
+  (hβ : LO.FirstOrder.Semiformula.fvSup β ≤ r) (e : ℕ → M) (q x y w : M) :
+  (LO.FirstOrder.Semiformula.Eval ![q] (DiophantineConsistency.HerbrandStageSupport.updateChallenges r j e x y w))
+      (DiophantineConsistency.HerbrandChiStageContext.stageBody r j β) ↔
+    (LO.FirstOrder.Semiformula.Eval
+        ![q, w, y, x, LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j 3),
+          LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j 2),
+          LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j 1),
+          LO.FirstOrder.Semiterm.val ![] e (DiophantineConsistency.HerbrandTupleSchedule.candidate j 0)]
+        e)
+      β

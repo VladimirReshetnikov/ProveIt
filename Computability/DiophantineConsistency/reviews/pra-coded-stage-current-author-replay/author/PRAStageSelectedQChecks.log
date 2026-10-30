@@ -1,0 +1,9 @@
+'DiophantineConsistency.PRAStageSelectedQ.modelQ_update' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.PRAStageSelectedQ.modelQ_update {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] (r j : ℕ)
+  (q : DiophantineConsistency.PRAFiniteFunctionCodes.Code (r + 3 * j + 3)) (e : ℕ → M) (x y w : M) :
+  (LO.FirstOrder.Structure.func (DiophantineConsistency.PRAChallengePermutation.challengeFirst q) fun i =>
+      Fin.cases x (fun i => Fin.cases y (fun i => Fin.cases w (fun i => e ↑i) i) i) i) =
+    LO.FirstOrder.Structure.func q fun i => DiophantineConsistency.HerbrandStageSupport.updateChallenges r j e x y w ↑i

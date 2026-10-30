@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAStageCodedRemoval
+open DiophantineConsistency.PRAStageCodedRemoval
+#print axioms PRA_proves_removeCodedStage
+#print axioms PRA_proves_codedGoal_of_stages
+#check PRA_proves_codedGoal_of_stages

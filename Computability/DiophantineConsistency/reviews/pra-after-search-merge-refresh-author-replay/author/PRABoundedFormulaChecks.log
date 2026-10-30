@@ -1,0 +1,7 @@
+'DiophantineConsistency.PRABoundedFormula.represent' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRABoundedFormula.hasCharacteristic' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRABoundedFormula.PRA_proves_boundedBooleanCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRABoundedFormula.PRA_proves_boundedBooleanCharacteristic {n : ℕ} (φ : Semisentence language n)
+  (h : Hierarchy 𝚺 0 φ) : ∃ c, Primrec (eval c) ∧ PRA ⊢ bitSentence c ∧ PRA ⊢ oneCorrectSentence c φ
