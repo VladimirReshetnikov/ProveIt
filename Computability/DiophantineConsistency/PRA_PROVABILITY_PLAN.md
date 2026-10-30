@@ -34,8 +34,10 @@ schedule audit and local signed-pair/`Expr.splitNatural` Lean lemmas have
 [independent replays](reviews/adaptive-first-root-factor87-independent.md).
 A separate [checked context lemma](reviews/adaptive-first-root-factor87-context-independent.md)
 extends the rewrite to arbitrary actual one-hole expression substitutions.
-The full revised literal has not yet been bound to the maintained equation in
-Lean, and the candidate has no separate HA or PRA endpoint.
+The [full revised literal is now bound](reviews/adaptive-first-root-factor87-literal-independent.md)
+to the maintained adaptive expression in Lean, including equality of split
+values and the positive-shifted zero test in every commutative semiring. The
+13-variable candidate still has no completed HA or PRA consistency endpoint.
 
 The later upstream merges through `166728f64b` changed ZFC validator modules
 reachable from the maintained HA endpoint. Its earlier checked derivation is

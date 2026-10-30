@@ -20,3 +20,15 @@ The difference is identically zero over a commutative ring. The previous root bl
 The [stdlib-only finite audit](audit.py) checks the exact parent JSON pin, the actual 88-row schedules in both `AdaptiveEquationSyntax2011` and `NativeAdaptiveGraph`, topology and complete output liveness, the exact local sparse-polynomial identity evaluated from the parent and candidate gates, the unchanged surrounding rows, and a deliberately altered sign. It passes under normal Python and `python -O`. The generated [candidate DAG](candidate.json) uses the same witness and port names; its coefficient metadata is deliberately not substituted into the maintained current2011 binding.
 
 The [generic Lean lemma](../../Lean/DiophantineConsistency/AdaptiveFirstRootFactor87.lean) proves that the two root forms have exactly equal formal signed pairs for arbitrary signed inputs over every commutative semiring. Its arbitrary-context corollary makes no positivity assumption on `Bt`. This is stronger locally than an integer-only calculation and applies to nonstandard semiring models. The [syntax-level lemma](../../Lean/DiophantineConsistency/AdaptiveFirstRootFactor87Syntax.lean) compiled against the repository's `Expr.splitNatural` evaluator and proves equality of the local split values in every commutative semiring, including under any later contextual zero test. Neither local lemma by itself binds the complete new 87-row DAG to the maintained 88-row expression in Lean, proves an HA derivation, or changes the inherited consistency calibration. Those bindings and independent review are required before adopting the candidate.
+
+## Literal binding update
+
+The [independently replayed literal theorem](../../reviews/adaptive-first-root-factor87-literal-independent.md)
+now identifies both complete expressions as substitutions into the same
+actual one-hole context. It proves their split values equal for arbitrary
+ports and their positive-shifted internal-zero tests equivalent at the
+maintained ports, over every commutative semiring. The count is for the
+unshifted output DAG and excludes the shift. This transfers the parent
+equation's zero set, but it does not itself prove an HA or PRA consistency
+equivalence for the 13-variable equation. Earlier statements in this proposal
+about the literal binding being absent describe the prior checkpoint.
