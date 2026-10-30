@@ -2614,6 +2614,56 @@ composition.
 (`LGlue1–4`) and `qPremise`; `peel`/`peel_close`; `sep_base`/`repl_base` and
 the obligations.
 
+## Stage 3b: the bounded `hSchema` driver (2026-10-29)
+
+`SizedDriver.driver_le` is the bounded twin of `LDriver.driver`: for a target
+`M` and every semiformula `p` of level `n` with `n + p ≤ M`, a function code
+`F` with `F.val ≤ lvB (Gd M p)` makes the reflection invariant of
+`envForm n p` derivable within `Wd M + 60 + 40 p` on the `DLv` scale. The
+axioms are `propext`, `Classical.choice`, `Quot.sound` (`SizedLAudit`).
+
+**Levels.** The placeholders are environment transforms
+(`SizedEnvForm.envForm_le`: `envForm n p ≤ lvB (Eb + 100 n + 200 p)`) and
+numeral chains, all at level `A0 M`. A compound function code is a fixed
+translation of the codes of its parts, which multiplies the level by `tB`, so
+the codes live at `Gd M q = Ad M · 2^(Kd q)` with `Kd = 2 tB + 2`;
+`Gd_grow` (`tB (Gd x + 1) ≤ Gd (x + 1)`) absorbs one compound step. Every
+step therefore compiles at the single level `uD M = Gd M M`, and each of the
+eight step lemmas (`and/or/neg/top_base/bot_base/atom/ex/all_step_le`; the
+atom lemma covers both the membership and the equality template) adds 30
+derivation levels above the working level `wD (uD M)`.
+
+**The swapped premise.** The function-code definitions `maxDefF`, `eqDefF`,
+`succDefF` translate to `∀∀(F₅[swap] ↔ G[swap])`, so the closing premise of a
+step is `∀∀(A[swap] ↔ A[swap])`, not `∀∀(A ↔ A)`. The unbounded proof's
+generic `all₂_iff_self _` hid this; the bounded `dall2_swap` (level
+`10000 a + 16000`) bounds `A.subst swapV` by `tsubst_le_n`.
+
+**Module split.** The driver is split for memory: `SizedDriverComb`
+(combinators, `dall2_iff`), `SizedDriverLevels` (`tD`, `cD`, `wD`,
+`invT_le`, `dall2_swap`), `SizedStepConn/Neg/Atom/Quant` (the steps, facade
+`SizedDriverSteps`), `SizedDriverBase` (constants, the predicate `ΘB` and its
+definability), `SizedDriverAtoms/Conn/Quant` (the eight induction cases as
+standalone lemmas about `ΘB (Ad M) Kd (Wd M + 60) M`), and `SizedDriver`
+(the induction itself). Every module elaborates at the import baseline
+(about 3.4 GB here) within 30 s.
+
+**Trap: never let `Nat` defeq see `tA (emb template)`.** The first version
+summed eleven `tA (Rewriting.emb σ)` terms into `tD` and proved
+`tA (emb σ) ≤ tD` by `unfold tD; omega`. One declaration passed 28 GB. Both
+`omega`'s atom lookup (`isDefEq` against every earlier atom) and plain
+unification of `tA X + ?k =?= tD` make the elaborator `whnf` a summand while
+looking for a numeral, which evaluates the translation size of a whole
+template. The fix is `irreducible_def` summands (`sD_*`, `sB_*`) in a
+right-nested sum, with each bound proved as
+`rw [← sD_x_def]; unfold tD; exact sumR (… (Nat.le_add_right _ _))`. The same
+pattern with three or four summands in `SizedLGlue1`, `SizedLNumOK` and
+`SizedLSlot` was cheap enough to go unnoticed.
+
+**Next:** `glue` (`LGlue1–4`) and `qPremise`; `peel`/`peel_close`;
+`sep_base`/`repl_base` and the obligations; the assembly into
+`ConstructibleInterpretationBound.provableLe_falsum_ZF_of_ZFC`.
+
 ## Internal rank window for the smaller adaptive equation
 
 The [rank-window client](reviews/adaptive-rank-window2011-root.md) derives
