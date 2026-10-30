@@ -169,13 +169,13 @@ theorem subst_mem_le {n w χ c v : V} (hχ : IsSemiformula ℒₛₑₜ n χ) (h
     (hc : 1 ≤ c) (hw : IsSemitermVec ℒₛₑₜ n 0 w) (hb : ∀ i < n, w.[i] ≤ lvB c) :
     subst ℒₛₑₜ w χ ≤ lvB (mB v c) :=
   lift_lvB (subst_level v χ hv hχ.isUFormula c n 0 w hc hw hb
-    (fun i hi => closed_isVar (hw.nth hi))) (le_mB_left v c)
+    (fun _ hi => closed_isVar (hw.nth hi))) (le_mB_left v c)
 
 theorem neg_subst_mem_le {n w χ c v : V} (hχ : IsSemiformula ℒₛₑₜ n χ) (hv : χ ≤ lvB v)
     (hc : 1 ≤ c) (hw : IsSemitermVec ℒₛₑₜ n 0 w) (hb : ∀ i < n, w.[i] ≤ lvB c) :
     neg ℒₛₑₜ (subst ℒₛₑₜ w χ) ≤ lvB (mB v c) :=
   neg_level _ _ (subst_level v χ hv hχ.isUFormula c n 0 w hc hw hb
-    (fun i hi => closed_isVar (hw.nth hi))) (hχ.subst hw).isUFormula
+    (fun _ hi => closed_isVar (hw.nth hi))) (hχ.subst hw).isUFormula
 
 theorem cseq_le {n w₁ w₂ χ E c v : V} (hχ : IsSemiformula ℒₛₑₜ n χ) (hv : χ ≤ lvB v)
     (inp : Inp n w₁ w₂ E c) : SeqLe (Cseq w₁ w₂ χ E) (mB v c) := by
@@ -276,6 +276,7 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
   rw [hS] at hS0 hSf ⊢
   set S := insert (^∃ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))
       (insert (^∀ subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) E) with hSdef
+  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv inp'
   set F₁ := subst ℒₛₑₜ (qFree n w₁) (shift ℒₛₑₜ p)
   set F₂ := subst ℒₛₑₜ (qFree n w₂) (shift ℒₛₑₜ p)
   have hf₂ : free ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) = F₂ := free_subst_qVec hp hw₂
@@ -291,9 +292,6 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
   have hSS : SeqLe (setShift ℒₛₑₜ S) (mB v (c + 1)) := by
     rw [mB_succ]
     exact (SeqLe.setShift hS0).mono (_root_.add_le_add le_rfl (by norm_num))
-  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv inp'
-  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ F₁) at hFf₁
-  change IsFormula ℒₛₑₜ F₂ at hFf₂
   -- weakening of the induction hypothesis
   have d1 : DLv 𝗭𝗙 (insert (neg ℒₛₑₜ F₁) (insert F₂ (setShift ℒₛₑₜ S))) (W + 1) := by
     refine DLv.wk hW4 ((hSS.insert hF₂).insert hF₁ |>.toLt hW)
@@ -337,6 +335,7 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
   rw [hS] at hS0 hSf ⊢
   set S := insert (^∀ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p))
       (insert (^∃ subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) E) with hSdef
+  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv inp'
   set F₁ := subst ℒₛₑₜ (qFree n w₁) (shift ℒₛₑₜ p)
   set F₂ := subst ℒₛₑₜ (qFree n w₂) (shift ℒₛₑₜ p)
   have hf₁ : free ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p)) = neg ℒₛₑₜ F₁ := by
@@ -350,9 +349,6 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
   have hSS : SeqLe (setShift ℒₛₑₜ S) (mB v (c + 1)) := by
     rw [mB_succ]
     exact (SeqLe.setShift hS0).mono (_root_.add_le_add le_rfl (by norm_num))
-  obtain ⟨hF₁, hF₂, hFf₁, hFf₂⟩ := cseq_parts hp.shift hspv inp'
-  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ F₁) at hFf₁
-  change IsFormula ℒₛₑₜ F₂ at hFf₂
   have d1 : DLv 𝗭𝗙 (insert F₂ (insert (neg ℒₛₑₜ F₁) (setShift ℒₛₑₜ S))) (W + 1) := by
     refine DLv.wk hW4 ((hSS.insert hF₁).insert hF₂ |>.toLt hW)
       (by simp [hFf₁, hFf₂, hSf.setShift]) ?_ ih
@@ -388,6 +384,8 @@ theorem step_and {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ 
   have hSf := cseq_formulaSet hpq inp
   have hw₁ := inp.1
   have hw₂ := inp.2.1
+  obtain ⟨mA₁, mA₂, fA₁, fA₂⟩ := cseq_parts hp (le_trans (le_of_lt (lt_K!_left p q)) hpqv) inp
+  obtain ⟨mB₁, mB₂, fB₁, fB₂⟩ := cseq_parts hq (le_trans (le_of_lt (lt_K!_right p q)) hpqv) inp
   set A₁ := subst ℒₛₑₜ w₁ p
   set B₁ := subst ℒₛₑₜ w₁ q
   set A₂ := subst ℒₛₑₜ w₂ p
@@ -398,12 +396,6 @@ theorem step_and {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ 
       neg_and (hp.subst hw₁).isUFormula (hq.subst hw₁).isUFormula]
   rw [hS] at hS0 hSf ⊢
   set S := insert (neg ℒₛₑₜ A₁ ^⋎ neg ℒₛₑₜ B₁) (insert (A₂ ^⋏ B₂) E) with hSdef
-  obtain ⟨mA₁, mA₂, fA₁, fA₂⟩ := cseq_parts hp (le_trans (le_of_lt (lt_K!_left p q)) hpqv) inp
-  obtain ⟨mB₁, mB₂, fB₁, fB₂⟩ := cseq_parts hq (le_trans (le_of_lt (lt_K!_right p q)) hpqv) inp
-  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ A₁) at fA₁
-  change IsFormula ℒₛₑₜ A₂ at fA₂
-  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ B₁) at fB₁
-  change IsFormula ℒₛₑₜ B₂ at fB₂
   have hW1 : mB v c + 1 ≤ W + 1 := le_trans hW le_self_add
   have hW2 : mB v c + 1 ≤ W + 1 + 1 := le_trans hW1 le_self_add
   have side : ∀ (X Y : V), X ≤ lvB (mB v c) → IsFormula ℒₛₑₜ X →
@@ -438,6 +430,8 @@ theorem step_or {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ n
   have hSf := cseq_formulaSet hpq inp
   have hw₁ := inp.1
   have hw₂ := inp.2.1
+  obtain ⟨mA₁, mA₂, fA₁, fA₂⟩ := cseq_parts hp (le_trans (le_of_lt (lt_or_left p q)) hpqv) inp
+  obtain ⟨mB₁, mB₂, fB₁, fB₂⟩ := cseq_parts hq (le_trans (le_of_lt (lt_or_right p q)) hpqv) inp
   set A₁ := subst ℒₛₑₜ w₁ p
   set B₁ := subst ℒₛₑₜ w₁ q
   set A₂ := subst ℒₛₑₜ w₂ p
@@ -448,12 +442,6 @@ theorem step_or {n w₁ w₂ E c v p q W : V} (hp : IsSemiformula ℒₛₑₜ n
       neg_or (hp.subst hw₁).isUFormula (hq.subst hw₁).isUFormula]
   rw [hS] at hS0 hSf ⊢
   set S := insert (neg ℒₛₑₜ A₁ ^⋏ neg ℒₛₑₜ B₁) (insert (A₂ ^⋎ B₂) E) with hSdef
-  obtain ⟨mA₁, mA₂, fA₁, fA₂⟩ := cseq_parts hp (le_trans (le_of_lt (lt_or_left p q)) hpqv) inp
-  obtain ⟨mB₁, mB₂, fB₁, fB₂⟩ := cseq_parts hq (le_trans (le_of_lt (lt_or_right p q)) hpqv) inp
-  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ A₁) at fA₁
-  change IsFormula ℒₛₑₜ A₂ at fA₂
-  change IsFormula ℒₛₑₜ (neg ℒₛₑₜ B₁) at fB₁
-  change IsFormula ℒₛₑₜ B₂ at fB₂
   have hW1 : mB v c + 1 ≤ W + 1 := le_trans hW le_self_add
   have hW2 : mB v c + 1 ≤ W + 1 + 1 := le_trans hW1 le_self_add
   set S₂ := insert A₂ (insert B₂ S) with hS₂
@@ -634,7 +622,7 @@ theorem core_base {A : V} (hA : AtomOK A) {v h χ n w₁ w₂ E c : V}
   · exact (step_verum inp hv le_rfl (four_le_mB v c)).mono (cW_const A v h c)
   · exact (step_falsum inp hv le_rfl (four_le_mB v c)).mono (cW_const A v h c)
 
-theorem quant_child {p v : V} (hp : IsUFormula ℒₛₑₜ p) {tag : V}
+theorem quant_child {p v : V} (_hp : IsUFormula ℒₛₑₜ p) {tag : V}
     (hv : ⟪tag, p⟫ + 1 ≤ lvB v) (hF : IsUFormula ℒₛₑₜ (⟪tag, p⟫ + 1)) :
     shift ℒₛₑₜ p ≤ lvB v := by
   rcases zero_or_succ v with rfl | ⟨v', rfl⟩

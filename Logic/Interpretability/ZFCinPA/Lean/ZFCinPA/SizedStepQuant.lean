@@ -42,9 +42,7 @@ theorem quant_step_le (isEx : Bool) {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (h
     (hw : wD u ≤ w) (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w) :
     DLv 𝗭𝗙 (insert (InvT (cond isEx (ExT P₀) (AllT P₀)) (MaxT F₁ (cond isEx (WbT P₀) (WbNT P₀)))).val ∅)
       (w + 30) := by
-  have hw4 := wD_4 hw
-  have hmI := wD_m hw
-  obtain ⟨up, u4, uA⟩ := wD_up hw
+  obtain ⟨hw4, hmI, up, u4, uA⟩ := wD_up hw
   cases isEx
   case' true =>
       simp only [cond_true] at hK ⊢
