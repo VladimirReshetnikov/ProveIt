@@ -201,35 +201,38 @@ lemma val_cons' {n : ℕ} (x : SD M) (b : Fin n → SD M) :
 variable [Structure.Eq (setTemplateLanguage k arities) M]
 variable [Structure.Mem (setTemplateLanguage k arities) M]
 
+private theorem eval_intT_rel {ξ : Type*} {n m : ℕ}
+    (R : (setTemplateLanguage k arities).Rel m)
+    (v : Fin m → Semiterm (setTemplateLanguage k arities) ξ n)
+    (b : Fin n → SD M) (f : ξ → SD M) :
+    (intT (.rel R v)).Eval (Subtype.val ∘ b) (Subtype.val ∘ f) ↔ (Semiformula.rel R v).Eval b f := by
+  cases R with
+  | inl R =>
+      cases R with
+      | eq =>
+          change (atomT Language.Set.Rel.eq v).Eval _ _ ↔ _
+          rw [eval_atomT_eq, val_term, val_term]
+          rfl
+      | mem =>
+          change (atomT Language.Set.Rel.mem v).Eval _ _ ↔ _
+          rw [eval_atomT_mem, val_term, val_term]
+          rfl
+  | inr r =>
+      change s.rel (Sum.inr r) (fun i ↦ (v i).val (Subtype.val ∘ b) (Subtype.val ∘ f)) ↔
+        s.rel (Sum.inr r) (fun i ↦ ((v i).val b f).1)
+      simp only [val_term]
+
 /-- **Evaluation of the interpretation in a template model**: `intT φ` at
 domain elements holds in `M` iff `φ` holds in the domain structure. -/
 theorem eval_intT {ξ : Type*} :
     ∀ {n : ℕ} (φ : Semiformula (setTemplateLanguage k arities) ξ n) (b : Fin n → SD M) (f : ξ → SD M),
       (intT φ).Eval (Subtype.val ∘ b) (Subtype.val ∘ f) ↔ φ.Eval b f
-  | _, .rel (Sum.inl Language.Set.Rel.eq) v, b, f => by
-      change (atomT Language.Set.Rel.eq v).Eval _ _ ↔ _
-      rw [eval_atomT_eq, val_term, val_term]
-      rfl
-  | _, .rel (Sum.inl Language.Set.Rel.mem) v, b, f => by
-      change (atomT Language.Set.Rel.mem v).Eval _ _ ↔ _
-      rw [eval_atomT_mem, val_term, val_term]
-      rfl
-  | _, .rel (Sum.inr r) v, b, f => by
-      change s.rel (Sum.inr r) (fun i ↦ (v i).val (Subtype.val ∘ b) (Subtype.val ∘ f)) ↔
-        s.rel (Sum.inr r) (fun i ↦ ((v i).val b f).1)
-      simp only [val_term]
-  | _, .nrel (Sum.inl Language.Set.Rel.eq) v, b, f => by
-      change (∼atomT Language.Set.Rel.eq v).Eval _ _ ↔ ¬ _
-      rw [LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq, eval_atomT_eq, val_term, val_term]
-      rfl
-  | _, .nrel (Sum.inl Language.Set.Rel.mem) v, b, f => by
-      change (∼atomT Language.Set.Rel.mem v).Eval _ _ ↔ ¬ _
-      rw [LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq, eval_atomT_mem, val_term, val_term]
-      rfl
-  | _, .nrel (Sum.inr r) v, b, f => by
-      change ¬ s.rel (Sum.inr r) (fun i ↦ (v i).val (Subtype.val ∘ b) (Subtype.val ∘ f)) ↔
-        ¬ s.rel (Sum.inr r) (fun i ↦ ((v i).val b f).1)
-      simp only [val_term]
+  | _, .rel R v, b, f => eval_intT_rel R v b f
+  | _, .nrel R v, b, f => by
+      change (intT (∼Semiformula.rel R v)).Eval _ _ ↔ (∼Semiformula.rel R v).Eval _ _
+      rw [intT_neg, LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq,
+        LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq]
+      exact not_congr (eval_intT_rel R v b f)
   | _, ⊤, b, f => by simp
   | _, ⊥, b, f => by simp
   | _, φ ⋏ ψ, b, f => by
