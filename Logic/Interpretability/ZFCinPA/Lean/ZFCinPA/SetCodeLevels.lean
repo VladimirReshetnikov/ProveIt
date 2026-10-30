@@ -125,17 +125,8 @@ theorem term_var {t : V} (ht : IsUTerm ℒₛₑₜ t) : (∃ z, t = ^#z) ∨ (�
 /-- A vector of two terms is `?[v.[0], v.[1]]`. -/
 theorem vec_two {v : V} (hv : IsUTermVec ℒₛₑₜ 2 v) :
     ∃ t₁ t₂, v = t₁ ∷ t₂ ∷ 0 ∧ IsUTerm ℒₛₑₜ t₁ ∧ IsUTerm ℒₛₑₜ t₂ := by
-  have hl : len v = 2 := hv.1.symm
-  rcases adjoin_cases v with rfl | ⟨t₁, v₁, rfl⟩
-  · simp at hl
-  rcases adjoin_cases v₁ with rfl | ⟨t₂, v₂, rfl⟩
-  · simp at hl
-  rcases adjoin_cases v₂ with rfl | ⟨t₃, v₃, rfl⟩
-  · refine ⟨t₁, t₂, rfl, by simpa using hv.2 0 (by simp), by simpa using hv.2 1 (by simp)⟩
-  · exfalso
-    simp only [len_adjoin] at hl
-    have : len v₃ + 1 + 1 + 1 = 0 + 1 + 1 := by rw [hl]; norm_num
-    simp at this
+  obtain ⟨t₁, t₂, rfl⟩ := eq_doubleton_of_len_eq_two.mp hv.1.symm
+  exact ⟨t₁, t₂, rfl, by simpa using hv.2 0 (by simp), by simpa using hv.2 1 (by simp)⟩
 
 /-- No `ℒₛₑₜ` formula has code below `3`. -/
 theorem three_le_formula {x : V} (hx : IsUFormula ℒₛₑₜ x) : 3 ≤ x := by
