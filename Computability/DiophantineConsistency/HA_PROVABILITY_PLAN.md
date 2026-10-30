@@ -36,16 +36,16 @@ now proves both directions between no zero and no represented machine halt in
 every IΣ₁ model, with local normalization discharged. A separately checked
 [`HAExpressionAssembly`](Lean/DiophantineConsistency/HAExpressionAssembly.lean)
 turns an appropriate all-model bridge into an actual HA derivation of the
-equivalence to ordinary ZFC consistency. Their compatible integration has not
-yet been checked: the historical HA provider and the adaptive model provider
-have many shared paths with differing compiled objects. A focused coherent
-rebuild and a complete current-source provenance audit remain. The model
-equivalence alone is not an HA proof-existence theorem.
+equivalence to ordinary ZFC consistency. The two providers have shared paths
+with differing compiled objects; a focused integration and fresh replay have
+since checked the HA client as described below. A complete current-source
+provenance audit remains. The model equivalence alone is not an HA
+proof-existence theorem.
 
-A rough judgment is that 70–85% of the 87-operation candidate's proof
-architecture is assembled; this is neither a measured fraction nor an
-estimate of time. Integration and source-current replay may uncover additional
-work. The 14-variable HA theorem itself is complete on its checked snapshot,
+A prior rough estimate of 70–85% concerned the 87-operation proof architecture
+before the focused HA builds described below. It is not a time estimate or a
+measurement of the remaining source-provenance work. The 14-variable HA
+theorem itself is complete on its checked snapshot,
 subject to the current-source replay qualification above.
 
 The exact 87-operation HA client has passed an 83-module author build and a
@@ -76,9 +76,10 @@ compiled 27 modules and checked a theorem asserting existence of an HA
 derivation of the equivalence to ordinary Foundation ZFC consistency. Both
 extensions use the original 87 author provider, whose reused prefix has the
 transitive-environment gap described above. A separate 27-module extension
-against the fresh 87 peer has now passed its author build and final audit;
-an independent extension replay is running. Historical HA, ZF, Foundation and
-package provenance remains inherited. See the
+against the fresh 87 peer has now passed its author build and a matching
+independent replay, both with final audits. A later upstream merge changed
+guarded dependencies, so this is checked snapshot evidence. Historical HA,
+ZF, Foundation and package provenance remains inherited. See the
 [86 author receipt](reviews/ha86-focused-extension-author.md).
 
 ## Exact target and established results
