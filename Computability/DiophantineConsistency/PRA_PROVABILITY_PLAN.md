@@ -14,7 +14,8 @@ source, object and complete-log hashes. They provide candidate-PRA proofs for
 specific subformulas occurring in Foundation's `sppow2Def`, with the input
 bound explicit where needed. The full positive `sppow2Def` graph has now also
 passed an author build and two independent replays, with the explicit common
-bound `m+1`, yielding a closed candidate-PRA proof. These are constituents of
+bound `m+1`, yielding a closed candidate-PRA proof on the checked pre-merge
+provider snapshot. These are constituents of
 the refutation-bound construction, not bounds for `ppow2Def`, `expDef`, or the
 ZFC refutation sentence. The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
