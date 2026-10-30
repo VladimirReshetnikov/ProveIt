@@ -1,0 +1,16 @@
+'DiophantineConsistency.PRAPairedFiniteInduction.dispatch_bounded' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPairedFiniteInduction.modelDispatchSuccInd' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPairedFiniteInduction.PRA_proves_goal_of_finite_boundedSuccInd' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAPairedFiniteInduction.PRA_proves_goal_of_finite_boundedSuccInd
+  (fs : List (LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3))
+  (hfs : ∀ ψ ∈ fs, LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0 ψ)
+  (θ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (hθ : LO.FirstOrder.Semiformula.Open θ)
+  (p : DiophantineConsistency.PRATheory.PRA ∪ inductionAxioms fs ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)

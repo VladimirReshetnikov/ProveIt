@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRATwoParameterPacking
+open DiophantineConsistency.PRATwoParameterPacking
+#print axioms packed_bounded
+#print axioms packed_eval
+#print axioms modelPacking

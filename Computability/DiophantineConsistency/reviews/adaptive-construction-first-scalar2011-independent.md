@@ -1,0 +1,3 @@
+# Independent first-carrier scalar replay
+
+The independent run `/tmp/adaptive-construction-first-scalar-_rqwzwpk` passed both current-source modules on the independently replayed first-factor provider. Its source, object and full-log hashes match the author run for both the scalar lemma and its axiom check. The saved [peer state](adaptive-construction-first-scalar2011-independent-evidence/state.json) records commands and hashes; its existing driver carries the correct scalar-lemma scope. The theorem remains the conditional scalar reassociation described in the [author receipt](adaptive-construction-first-scalar2011-author.md), not a constructed witness or HA proof.
