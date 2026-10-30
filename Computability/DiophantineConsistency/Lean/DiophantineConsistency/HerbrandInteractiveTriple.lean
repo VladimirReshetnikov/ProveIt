@@ -58,26 +58,13 @@ theorem finite_failure (r : ℕ) (ψ : Semiproposition language 4) (hψ : Univer
   classical
   by_contra hn
   push Not at hn
-  let S : Set (Proposition language) := Set.range (fun j => bad r j ψ)
-  let index : Proposition language → ℕ := fun φ => if h : φ ∈ S then Classical.choose h else 0
-  have hindex : ∀ φ ∈ S, bad r (index φ) ψ = φ := by
-    intro φ hφ
-    simp only [index, dif_pos hφ]
-    exact Classical.choose_spec hφ
-  have hfin : ∀ F : Finset (Proposition language), (↑F : Set (Proposition language)) ⊆ S →
-      Nonempty (ModelValuation (↑F : Set (Proposition language))) := by
-    intro F hF
-    let n := F.sup index + 1
-    let W := (hn n).some
-    have hsub : (↑F : Set (Proposition language)) ⊆ failures r n ψ := by
-      intro φ hφ
-      refine ⟨index φ, ?_, hindex φ (hF hφ)⟩
-      have := Finset.le_sup (f := index) hφ
-      dsimp [n]
-      omega
-    exact ⟨⟨W.Carrier, W.nonempty, W.struc, W.models, W.valuation,
-      fun φ hφ => W.satisfies φ (hsub hφ)⟩⟩
-  let W := (valuation_compact S hfin).some
+  have hw : ∀ n, Nonempty (ModelValuation ((∅ : Set (Proposition language)) ∪
+      {φ | ∃ j < n, bad r j ψ = φ})) := by
+    intro n
+    simpa only [Set.empty_union, failures] using hn n
+  have hW : Nonempty (ModelValuation (Set.range (fun j => bad r j ψ))) := by
+    simpa only [Set.empty_union] using valuation_compact_sequence ∅ (fun j => bad r j ψ) hw
+  let W := hW.some
   letI : Nonempty W.Carrier := W.nonempty
   letI : Structure language W.Carrier := W.struc
   apply no_triple_countermodel W.models W.valuation ψ hψ p

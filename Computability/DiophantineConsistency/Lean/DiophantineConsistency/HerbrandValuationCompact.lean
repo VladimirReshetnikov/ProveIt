@@ -59,4 +59,31 @@ theorem valuation_compact (S : Set (Proposition language))
     intro i hi
     exact (W i).satisfies φ hi
   exact ⟨⟨N, inferInstance, inferInstance, hN, v, hv⟩⟩
+/-- Compactness for a fixed side set and a countable family of propositions. -/
+theorem valuation_compact_sequence (S : Set (Proposition language))
+    (f : ℕ → Proposition language)
+    (h : ∀ n, Nonempty (ModelValuation (S ∪ {φ | ∃ j < n, f j = φ}))) :
+    Nonempty (ModelValuation (S ∪ Set.range f)) := by
+  classical
+  let T := Set.range f
+  let index : Proposition language → ℕ := fun φ => if h : φ ∈ T then Classical.choose h else 0
+  have hindex : ∀ φ ∈ T, f (index φ) = φ := by
+    intro φ hφ
+    simp only [index, dif_pos hφ]
+    exact Classical.choose_spec hφ
+  apply valuation_compact
+  intro F hF
+  let n := F.sup index + 1
+  let W := (h n).some
+  have hsub : (↑F : Set (Proposition language)) ⊆ S ∪ {φ | ∃ j < n, f j = φ} := by
+    intro φ hφ
+    rcases hF hφ with hs | ht
+    · exact Or.inl hs
+    · right
+      refine ⟨index φ, ?_, hindex φ ht⟩
+      have := Finset.le_sup (f := index) hφ
+      dsimp [n]
+      omega
+  exact ⟨⟨W.Carrier, W.nonempty, W.struc, W.models, W.valuation,
+    fun φ hφ => W.satisfies φ (hsub hφ)⟩⟩
 end DiophantineConsistency.HerbrandValuationCompact
