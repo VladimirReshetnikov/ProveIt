@@ -8,4 +8,8 @@ The saved output records 20 eligible target rows and no candidate with fewer tha
 python3 Computability/DiophantineConsistency/research/adaptive-direct-ordinate86/screen-five-three-products.py
 ```
 
+A separate full rerun completed with byte-identical output to the saved
+transcript. It independently repeats this same restricted algorithm; it does
+not remove any of the exclusions or establish minimality.
+
 This is a restricted modular screen, not exhaustive search or a minimality proof. Product intermediates with signatures equal to an earlier node are excluded; recomputing such a node can affect liveness, so those cases are not covered. Three-sample signature collisions may produce false matches or exclude cases, and only the indicated five-operation shapes and one-row substitutions are searched. Even a reported match would require exact integer-polynomial verification and a Lean binding, including both directions of the relevant zero-set equivalence. The complete unoptimized run took substantial CPU time and may take many minutes to reproduce.
