@@ -17,7 +17,8 @@ parameter-dependent instances and arbitrary external parameters remain open.
 A [conditional positive first-carrier theorem](reviews/adaptive-construction-first-positive2011-independent.md)
 now supplies the carrier identity from the first norm and explicit size bounds.
 The key remaining input is a stronger actual-Assembly transport-quotient bound;
-the 13-variable zero is not yet constructed.
+the 13-variable zero is not yet constructed. The [seed-size theorem](reviews/adaptive-construction-seed-size2011-independent.md)
+derives one of its size bounds from explicit first-Pell seed hypotheses.
 
 The [first-Pell correction quotient](reviews/adaptive-construction-correction2011-independent.md)
 is now derived in every stated IΣ₁ model from explicit seed-index and ordinate

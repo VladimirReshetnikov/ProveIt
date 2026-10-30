@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionSeedSize2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionSeedSize2011.seed_ordinate_le_k
