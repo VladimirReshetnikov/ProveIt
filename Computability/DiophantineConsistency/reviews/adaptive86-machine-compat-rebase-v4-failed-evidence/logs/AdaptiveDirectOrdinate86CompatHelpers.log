@@ -1,0 +1,30 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/wang-chunk-full/machine-rebase-compat-helpers-v4.lean:120:40: error(lean.unknownIdentifier): Unknown identifier `MainCongruence`
+
+Note: It is not possible to treat `MainCongruence` as an implicitly bound variable here because the `autoImplicit` option is set to `false`.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/wang-chunk-full/machine-rebase-compat-helpers-v4.lean:136:9: error(nested.lean.propRecLargeElim): Tactic `cases` failed with a nested error:
+Tactic `induction` failed: recursor `Exists.casesOn` can only eliminate into `Prop`
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 13 → V
+htransport : TransportPositive p v
+horientation : MainOriented p v
+b : V := v 0 * ↑(p 0)
+q : V := 1 + b
+U : V := v 7 * (q * q)
+E : V := v 6 * v 7
+k : V := v 9 + v 10
+c : V := v 9 + v 7 * k
+a : V := E + v 7
+H : V := 3 + 4 * a
+R : V := ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0
+R' : V := (v 2 + (q - v 1) * b) * (q * q - 1) + v 0 * (↑(p 2) + ↑(p 3) * q)
+hq : 1 ≤ q
+hgap : v 1 + v 2 < q
+hF : v 1 ≤ q
+hbq : q - 1 = b
+hR : R = R'
+hYquotient : ∃ s, 0 < s ∧ v 7 = (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * s
+⊢ sorry
