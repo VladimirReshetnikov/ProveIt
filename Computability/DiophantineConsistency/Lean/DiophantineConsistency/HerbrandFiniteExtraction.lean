@@ -30,25 +30,17 @@ variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M
   [M↓[language] ⊧* UniversalAxiom]
 
 omit [Structure.Eq language M] in
-/-- In every universal-theory model, the collected existential-rule terms
-contain a witness for the open target matrix, for every free-variable valuation. -/
-theorem modelPreparedWitness (φ : Semiproposition language 1) (hOpen : φ.Open)
+/-- In a model of the axioms, bounded soundness must select the existential
+head of a prepared derivation. -/
+theorem modelPreparedBounded (φ : Semiproposition language 1)
     (axioms : List (Sentence language)) (hAxioms : ∀ σ ∈ axioms, UniversalAxiom σ)
     (p : Prepared φ axioms) (e : ℕ → M) :
-    ∃ t ∈ existentialTerms p.derivation, (φ/[t]).Eval ![] e := by
+    boundedEval (existentialTerms p.derivation) e (∃⁰ φ) := by
   let ts := existentialTerms p.derivation
   obtain ⟨ψ,hψ,hval⟩ := boundedSound p.derivation p.cutFree p.noAll ts (fun _ h => h) e
   simp only [List.mem_cons] at hψ
   rcases hψ with rfl | hψ
-  · change boundedEval ts e (Semiformula.exs φ) at hval
-    rw [boundedEval.eq_8] at hval
-    obtain ⟨t,ht,htval⟩ := hval
-    refine ⟨t,ht,?_⟩
-    have hopen' : (φ/[t]).Open := by
-      change (Rew.subst ![t] ▹ φ).qr = 0
-      rw [PRAFormulaParameters.qr_rew]
-      exact hOpen
-    exact (bounded_open_iff ts e (φ/[t]) hopen').mp htval
+  · exact hval
   · simp only [List.tilde_def, Sequent.embed, List.mem_map] at hψ
     obtain ⟨χ,hχ,hψ⟩ := hψ
     obtain ⟨σ,hσ,rfl⟩ := hχ
@@ -59,6 +51,25 @@ theorem modelPreparedWitness (φ : Semiproposition language 1) (hOpen : φ.Open)
     have hneg : ¬(∼(Rewriting.emb σ : Proposition language)).Eval ![] e := by
       simpa using hσeval
     exact False.elim (hneg (bounded_implies_truth ts e _ hval))
+
+omit [Structure.Eq language M] in
+/-- In every universal-theory model, the collected existential-rule terms
+contain a witness for the open target matrix, for every free-variable valuation. -/
+theorem modelPreparedWitness (φ : Semiproposition language 1) (hOpen : φ.Open)
+    (axioms : List (Sentence language)) (hAxioms : ∀ σ ∈ axioms, UniversalAxiom σ)
+    (p : Prepared φ axioms) (e : ℕ → M) :
+    ∃ t ∈ existentialTerms p.derivation, (φ/[t]).Eval ![] e := by
+  let ts := existentialTerms p.derivation
+  have hval := modelPreparedBounded φ axioms hAxioms p e
+  change boundedEval ts e (Semiformula.exs φ) at hval
+  rw [boundedEval.eq_8] at hval
+  obtain ⟨t,ht,htval⟩ := hval
+  refine ⟨t,ht,?_⟩
+  have hopen' : (φ/[t]).Open := by
+    change (Rew.subst ![t] ▹ φ).qr = 0
+    rw [PRAFormulaParameters.qr_rew]
+    exact hOpen
+  exact (bounded_open_iff ts e (φ/[t]) hopen').mp htval
 
 omit [Structure.Eq language M] in
 theorem modelPreparedDisjunction (φ : Semiproposition language 1) (hOpen : φ.Open)
