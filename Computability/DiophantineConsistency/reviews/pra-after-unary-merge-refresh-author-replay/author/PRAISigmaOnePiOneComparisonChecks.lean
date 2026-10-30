@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAISigmaOnePiOneComparison
+open DiophantineConsistency.PRAISigmaOnePiOneComparison
+#print axioms comparison
+#check comparison
