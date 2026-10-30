@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryIterator
+
+#print axioms DiophantineConsistency.PRAHistoryIterator.modelHistoryBase
+#print axioms DiophantineConsistency.PRAHistoryIterator.modelHistoryStep

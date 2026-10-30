@@ -120,7 +120,10 @@ now composes length, pairing and insertion to satisfy the actual `seqConsDef`
 graph. An [independently replayed membership theorem](reviews/pra-history-seqcons-membership-author-replay/README.md)
 also describes exactly which relation pairs are present after append.
 Sequence validity, length evolution and the full recursive-history
-verification remain open. An
+verification remain open. An [independently replayed primitive-recursive
+iterator](reviews/pra-history-iterator-author-replay/README.md) supplies the
+history code's base and step equations for supplied function codes; the
+actual blueprint step code and `cseqDef` invariant remain open. An
 [independently replayed length code](reviews/pra-history-length-code-author-replay/README.md)
 computes the actual `lhDef` graph with output at most `2*s`, without assuming
 IΣ₁.
