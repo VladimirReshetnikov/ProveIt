@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionFirstWitness2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionFirstWitness2011.witness_first_unit
