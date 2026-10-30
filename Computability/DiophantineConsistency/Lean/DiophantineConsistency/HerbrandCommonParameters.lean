@@ -15,12 +15,7 @@ theorem pack_emb {n : ℕ} (φ : Semiproposition language n) (r : ℕ) (hr : φ.
 
 theorem pack_open {n : ℕ} (φ : Semiproposition language n) (r : ℕ) (hr : φ.fvSup ≤ r)
     (h : φ.Open) : (pack φ r hr).Open := by
-  have he := pack_emb φ r hr
-  have hq := congrArg Semiformula.qr he
-  have hb : (Rewriting.emb (pack φ r hr) : Semiproposition language _).qr = (pack φ r hr).qr :=
-    qr_rew (pack φ r hr) (Rew.emb : Rew language Empty _ ℕ _)
-  rw [hb, qr_rew] at hq
-  exact hq.trans h
+  exact fixed_pack_open φ r hr h
 
 theorem pack_tree {n : ℕ} (φ : Semiproposition language n) (r : ℕ) (hr : φ.fvSup ≤ r)
     (h : ExistentialTree φ) : ExistentialTree (pack φ r hr) := by

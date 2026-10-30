@@ -46,15 +46,22 @@ theorem qr_rew {ξ η : Type} {n m : ℕ} (φ : Semiformula language ξ n)
   | hall p ih => simp [ih]
   | hexs p ih => simp [ih]
 
+/-- Fixing free parameters preserves an open formula. -/
+theorem fixed_pack_open {n : ℕ} (φ : Semiproposition language n)
+    (r : ℕ) (hr : φ.fvSup ≤ r) (h : φ.Open) :
+    ((Rew.fixitr n r ▹ φ).toEmpty (fixed_no_free_of_le φ r hr)).Open := by
+  let packed := (Rew.fixitr n r ▹ φ).toEmpty (fixed_no_free_of_le φ r hr)
+  have he : (Rewriting.emb packed : Semiproposition language (n+r)) = Rew.fixitr n r ▹ φ := by
+    simp [packed]
+  have hq := congrArg Semiformula.qr he
+  have hb : (Rewriting.emb packed : Semiproposition language _).qr = packed.qr :=
+    qr_rew packed (Rew.emb : Rew language Empty _ ℕ _)
+  rw [hb, qr_rew] at hq
+  exact hq.trans h
+
 theorem packParameters_open {n : ℕ} (φ : Semiproposition language n) (h : φ.Open) :
     (packParameters φ).Open := by
-  have he := packParameters_emb φ
-  have hq := congrArg Semiformula.qr he
-  have hb' : (Rewriting.emb (packParameters φ) : Semiproposition language _).qr =
-      (packParameters φ).qr :=
-    qr_rew (packParameters φ) (Rew.emb : Rew language Empty _ ℕ _)
-  rw [hb', qr_rew] at hq
-  exact hq.trans h
+  exact fixed_pack_open φ φ.fvSup le_rfl h
 
 /-- Evaluation of a formula whose free parameters are fixed below a bound. -/
 theorem fixed_pack_eval {M : Type} [Structure language M] {n : ℕ}
