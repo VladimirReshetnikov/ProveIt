@@ -129,14 +129,12 @@ lemma atom_eq_under {n arity R terms : V} (hr : (ℒₛₑₜ).IsRel arity R)
       (Formulas.atom ?[F,B',t] arity R terms) := by
   have harity : arity=2 := ValidatorLabelAvoidance.set_relation_arity hr
   subst arity
-  have hleft : CProv (wim (eqContext B B')
-      (weq (TermLabels.vec F B 2 terms).[0] (TermLabels.vec F B' 2 terms).[0])) := by
-    rw [TermLabels.vec_nth F B ht.isUTerm (by simp),TermLabels.vec_nth F B' ht.isUTerm (by simp)]
-    exact term_eq_under (ht.nth (by simp)) F B B' hB
-  have hright : CProv (wim (eqContext B B')
-      (weq (TermLabels.vec F B 2 terms).[1] (TermLabels.vec F B' 2 terms).[1])) := by
-    rw [TermLabels.vec_nth F B ht.isUTerm (by simp),TermLabels.vec_nth F B' ht.isUTerm (by simp)]
-    exact term_eq_under (ht.nth (by simp)) F B B' hB
+  have coord (i : V) (hi : i<2) : CProv (wim (eqContext B B')
+      (weq (TermLabels.vec F B 2 terms).[i] (TermLabels.vec F B' 2 terms).[i])) := by
+    rw [TermLabels.vec_nth F B ht.isUTerm hi,TermLabels.vec_nth F B' ht.isUTerm hi]
+    exact term_eq_under (ht.nth hi) F B B' hB
+  have hleft := coord 0 (by simp)
+  have hright := coord 1 (by simp)
   have hleft' := compose hleft (eq_symm _ _)
   have hright' := compose hright (eq_symm _ _)
   classical
