@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRANoZeroUnary
+open DiophantineConsistency.PRANoZeroUnary
+#print axioms positive_exsClosure
+#print axioms noZero_refutation_positive
+#print axioms noZero_unary_open

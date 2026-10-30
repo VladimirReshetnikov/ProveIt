@@ -1,0 +1,3 @@
+# Independent conditional 87-gate zero replay
+
+The independent run `/tmp/adaptive-construction-reduced-zero-u6gt_026` passed all six modules on the independently replayed conditional-Assembly adapter provider. Every source, object and full-log hash matches the author run. The saved [peer state](adaptive-construction-reduced-zero2011-independent-evidence/state.json) records commands and hashes with the specific reduced conditional-zero scope. The explicit enriched-Assembly premise and remaining current-source Assembly and HA proof-existence obligations are described in the [author receipt](adaptive-construction-reduced-zero2011-author.md).

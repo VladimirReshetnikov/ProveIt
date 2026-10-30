@@ -42,3 +42,7 @@ The separate [three-operation fork screen](SCREENING-THREE.md) records an
 additional restricted search and its exclusions.
 The [three-operation serial screen](SCREENING-THREE-SERIAL.md) records another
 restricted search, also without a minimality claim.
+The [shared-intermediate screen](SCREENING-THREE-SHARED.md) covers a third
+restricted three-operation shape with its own explicit exclusions.
+The [self-reuse screen](SCREENING-THREE-SELF.md) examines selected doubling
+and squaring forms, again without a minimality claim.

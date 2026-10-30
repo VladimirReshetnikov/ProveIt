@@ -45,6 +45,10 @@ The [enriched-Assembly conclusion adapter](reviews/adaptive-construction-conditi
 is independently replayed as well: it takes the proposed strengthened
 Assembly conclusion, including its bound, as an explicit premise and yields
 the shifted zero. It does not itself establish that premise.
+The [87-operation reduced-output client](reviews/adaptive-construction-reduced-zero2011-independent.md)
+independently replays the exact literal zero transfer from the same enriched
+Assembly premise to the reduced shifted expression. The premise and the final
+HA/PRA consistency endpoints remain open.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -56,8 +60,10 @@ passed author and two independent builds with matching source, object and
 full-log hashes. The subsequent merge at `1abcfbde84` changed further
 Herbrand sources in the graph. Those affected sources and their dependents
 were subsequently rebuilt in the [60-module comparison graph](reviews/pra-isigma-final-merge-refresh-author-replay/README.md),
-with two independent replays. A newer upstream change to
-`HerbrandPackedContextTransfer` still needs to be merged and replayed.
+with two independent replays. The later `HerbrandPackedContextTransfer`
+change and its affected graph were rebuilt in the [74-module refresh](reviews/pra-after-unary-merge-refresh-author-replay/README.md),
+also with two independent replays. A subsequent `PRAPiOneImplication` merge
+still requires a focused refresh of the affected unary clients.
 
 `PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
 universally closed open-existential goal from an IΣ₁ proof and an explicit
@@ -77,6 +83,19 @@ specializes this equivalence to the maintained no-zero sentence. Its 26 local
 source dependencies and the client were independently rebuilt; the PRA
 provider is a pre-Herbrand-merge snapshot, and Foundation, Mathlib and the
 historical PAHF transitive graph are inherited as documented.
+
+The [strict-surrogate comparison and generic forward implication](reviews/pra-strict-surrogate-postmerge-author-replay/README.md)
+have passed a 15-module post-merge build and two independent replays. Given
+an actual IΣ₁ proof that a finite no-zero sentence is equivalent to `¬π`
+for Σ₁ `π`, they produce a candidate-PRA proof both of the no-zero
+equivalence with bounded `conB π` and of the original implication
+`¬π → no-zero`. The literal current-equation instantiation, the reverse
+implication to the original consistency sentence, and standard PRA comparison
+remain open.
+The [fixed-sentence bound-certificate interface](reviews/pra-strict-con-reverse-current-author-replay/README.md)
+has independently replayed proofs that such a certificate implies the
+surrogate-to-original direction and hence the full mapped equivalence. No
+certificate has yet been constructed for Foundation's ZFC refutation sentence.
 
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,

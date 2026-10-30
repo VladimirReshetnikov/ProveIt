@@ -1,0 +1,9 @@
+# Three-operation self-reuse screening
+
+[`screen-three-self.py`](screen-three-self.py) screens three-operation replacements that reuse a newly computed intermediate as both operands. The first new gate is any binary operation over earlier nodes. The screen considers a second gate that doubles or squares that intermediate, followed by a final operation combining it with an earlier node or the first intermediate; it also considers a second gate combining the first intermediate with an earlier node, followed by a final doubling or square. It tries both subtraction orientations wherever a subtraction is used.
+
+The script pins the same candidate JSON and uses the field samples, prime, seed, available literals and 25 dead-row-potential target rows described in [SCREENING.md](SCREENING.md) and [SCREENING-THREE.md](SCREENING-THREE.md). It matches intermediate signatures, inserts the three replacement gates and recounts the live output DAG. The [saved output](screen-three-self.out) reports all 25 targets and no candidate below 87 live operations. Script SHA256 is `143abbf85324cb302fa509a78c437514afde92fb0337ad277c2d858f295aa6f4`; output SHA256 is `4868462c44f434c89e86f36854b83d88ea29cc40da83e09ab05864b1bdd941a6`.
+
+This is **heuristic screening**, not an exhaustion or a minimality proof. Self-subtraction gates are omitted, and multiplicative inverse matching skips a zero sample. It replaces one row while retaining earlier-node order, considers only the stated self-reuse shapes and literals, and uses three modular signatures. It does not search multi-target rewrites, longer circuits, other constants or alternative equations. A reported candidate would still require exact polynomial and liveness verification and Lean binding. No 86-gate equation is claimed.
+
+Reproduce from the repository root with `python3 Computability/DiophantineConsistency/research/adaptive-first-root-factor87/screen-three-self.py`.

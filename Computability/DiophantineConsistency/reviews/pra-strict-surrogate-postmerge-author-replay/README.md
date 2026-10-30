@@ -1,0 +1,9 @@
+# Generic strict-surrogate candidate-PRA comparison
+
+The author and two independent 15-module replays passed with identical source, object and complete-log hashes, authenticating 186 unchanged local source/object parents. Root provider `/tmp/pra-strict-surrogate-postmerge-independent-vhkj_kj6/lib`; private provider `/tmp/pra-strict-surrogate-postmerge-independent-x688j50x/lib`. Author/root source snapshots, complete logs and terminal states are preserved. Foundation and Mathlib are inherited.
+
+New authored sources and checks are `PRABoundedPiOneUnary{,Checks}.lean`, `PRAISigmaOneOriginalEquivalence{,Checks}.lean`, `PRAStrictConComparison{,Checks}.lean`, `PRAConBForward{,Checks}.lean`, and `PRAStrictConForward{,Checks}.lean`. The post-merge build also refreshes tracked `PRAPiOneImplication` and its downstream clients and builds the already tracked upstream `StrictPiTwoBridge`.
+
+`PRAStrictConComparison.comparison` takes an actual IΣ₁ proof that a finite arithmetic no-zero sentence is equivalent to `¬π`, with `π` Σ₁, and yields candidate PRA's mapped no-zero ↔ mapped bounded surrogate `conB π`. `PRAStrictConForward.original_implies_noZero` additionally yields mapped `¬π → noZero`. It does not prove the reverse implication to the original `¬π`, nor does it instantiate the maintained equation or assert a candidate-PRA equivalence with Foundation's literal Con(ZFC). That equation's separate HA proof-existence theorem was checked at an earlier snapshot; its full current-source replay remains pending.
+
+The preceding attempted accepted-parent original-equivalence replay and 11-module author build failed their final source audits when a merge changed or temporarily replaced a source file; their exact terminal failures are retained in `reviews/pra-original-equivalence-current-author-replay/merge-failure-state.json` and `reviews/pra-strict-surrogate-merge-failure/`. Neither is a source-current PASS.

@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAISigmaOneOpenComparison
+open DiophantineConsistency.PRAISigmaOneOpenComparison
+#print axioms finite_strict_translation
+#print axioms comparison

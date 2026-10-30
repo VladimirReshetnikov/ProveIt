@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAConBForward
+open DiophantineConsistency.PRAConBForward
+#print axioms model_forward
+#print axioms PRA_proves_forward
+#print axioms PRA_proves_literal_direction
