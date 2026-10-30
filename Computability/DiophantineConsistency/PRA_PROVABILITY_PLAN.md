@@ -61,8 +61,10 @@ values and the positive-shifted zero test in every commutative semiring. The
 The [87-gate arithmetic no-zero sentence](reviews/adaptive-factor87-sentence.md)
 is closed and semantically equivalent to its parent over every commutative
 semiring. A [checked HA derivation](reviews/adaptive-factor87-ha.md) now proves
-the parent/reduced sentence equivalence, with an IΣ₀ proof as well; neither
-sentence is yet internally connected to `Con(ZFC)`.
+the parent/reduced sentence equivalence, with an IΣ₀ proof as well. A
+[candidate-PRA proof](reviews/adaptive-factor87-pra.md) now transfers that
+IΣ₀ equivalence through the bounded comparison. Neither sentence is yet
+internally connected to `Con(ZFC)`.
 
 The later upstream merges through `166728f64b` changed ZFC validator modules
 reachable from the maintained HA endpoint. Its earlier checked derivation is

@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveFactor87PRA
+#print axioms DiophantineConsistency.AdaptiveFactor87PRA.candidate_proves_equivalence
+#check DiophantineConsistency.AdaptiveFactor87PRA.candidate_proves_equivalence
