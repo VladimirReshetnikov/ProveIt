@@ -157,6 +157,11 @@ has also independently replayed: candidate PRA proves its standalone graph
 implies its syntactic bounded transformation at `p+1`. Binding that graph
 inside the full refutation formula, finding the other local majorants and
 constructing the certificate for `ρ` remain separate obligations.
+The [actual derivationOf binding](reviews/pra-fstidx-derivation-bound-author-replay/README.md)
+now identifies and bounds the first-index occurrence inside Foundation's
+sigma formula, with an actual candidate-PRA proof of the conditional sentence.
+It still assumes a bounded derivation/fixpoint conjunct and an adequate common
+bound; it does not construct the full refutation certificate.
 The [first-index family client](reviews/pra-fstidx-family-author-replay/README.md)
 combines that bound with the fold in every candidate-PRA model, supplying one
 primitive-recursive bound for all first-index codes below a given limit. It
