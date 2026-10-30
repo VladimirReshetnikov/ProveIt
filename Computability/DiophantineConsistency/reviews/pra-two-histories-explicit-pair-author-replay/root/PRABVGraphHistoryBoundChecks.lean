@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRABVGraphHistoryBound
+#print axioms DiophantineConsistency.PRABVGraphHistoryBound.bvGraph_zero_bound_of_history
+#print axioms DiophantineConsistency.PRABVGraphHistoryBound.candidate_proves_bv_graph_history_bound
