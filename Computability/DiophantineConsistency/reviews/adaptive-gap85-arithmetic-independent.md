@@ -1,0 +1,7 @@
+# Conditional gap-coordinate arithmetic: independent replay
+
+The independent run `/tmp/adaptive-gap85-arithmetic-l7ciechc` finished `PASS` on the same independently replayed v13 model provider as the [author run](adaptive-gap85-arithmetic-author.md). Source, object, full-log, parent-state, provider-inventory and boundary-state hashes all match. Both runs authenticated 507 selected inherited objects and 28 parent output/log records before and after. Historical 87 model and project/Foundation/package boundaries remain inherited.
+
+`forward_gap`, `reverse_gap` and `rank_seed_identity` establish the two conditional positive-coordinate transformations and rank identity in arbitrary IΣ₁ models. This module does not bind the 85 literal or derive the reverse inequality from its zeros, so it is not an unconditional 85 zero-set, machine, HA or Con(ZFC) theorem.
+
+Replay with `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-arithmetic.py` against the specified provider. Source SHA-256 `9e51786b11fe0d01376f6c38ee58646cc67b40f785550057e36594dee7201446`, object `2b2d657012f6a23d7c004d254f8650a94fd3ebf9a38a90d90c31ffb611d0cf3a`, empty full log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, peer state `518f8d925096b163d35b98f763cf901baf42eebb9776dadf342662b387f6121f`. Source snapshot, driver, full log, timing and state are in `adaptive-gap85-arithmetic-independent-evidence`; manifest SHA-256 `ac9d2b5d9e3bd8ea605fc6739fce3ad0af6fec55862eb2a22b47ff1b5cf50ba8`.
