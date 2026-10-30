@@ -18,3 +18,9 @@ The deterministic literal generator was separately run as described in `ha86-foc
 State, driver, 1,322-object inventory, all 27 source snapshots, full logs and timings are in `ha86-fresh-parent-extension-author-evidence`; `FILES.json` SHA-256 `20a167157a7deaab469fcb4b1b91c8faaead6891d7a21e0f040b615d9aec78d7`.
 
 **Subsequent source drift:** a later merge changed the guarded 86 input `AdaptiveDirectOrdinate86Comparison`, its guarded 87-parent source `ArithmeticAdaptiveIndexComparison2011`, and the inherited current-HA source guards `ZFCinPA.R2Ctx`, `ZFCinPA.ValidatorEind222`, and `ZFCinPA.ValidatorSeedSourceBasis222`. This PASS is therefore a pre-merge source snapshot, not a replay of the resulting current source graph. The same merge changed Sized and PRA files outside these recorded guards; no source-current claim is made for the historical boundary. The original state and proof objects are preserved.
+
+A further merge also changed guarded `AdaptiveDirectOrdinate86StrongNorm`, its parent `ArithmeticAdaptiveStrongNorm2011`, and guarded `ZFCinPA.ValidatorEind222`, `ValidatorRelationalCore222`, `ValidatorSeedImage222`, and `ValidatorSourceNegation222`. The proof remains the recorded earlier snapshot; no current-source refresh is implied. The other PRA/Sized files in that merge are outside the recorded 730 parent guards and 27 new source snapshots.
+
+A subsequent merge changed the guarded `AdaptiveDirectOrdinate86Residue` and the 87 parent source `ArithmeticAdaptiveExactIndices2011`; it also added `ArithmeticPellResidueAux` to the current residue import graph. This is a further source drift beyond the recorded PASS, not a refreshed endpoint.
+
+A later merge also changed the guarded `AdaptiveDirectOrdinate86AuxNorm` and parent `ArithmeticAdaptiveAuxNorm2011`, adding `ArithmeticSignedPairExpressions` to their current import graph. The preserved endpoint remains the earlier snapshot.

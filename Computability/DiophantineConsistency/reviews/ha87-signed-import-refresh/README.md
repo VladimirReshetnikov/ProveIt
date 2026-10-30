@@ -1,0 +1,7 @@
+# Signed-pair import refresh
+
+A merged AuxNorm change added a direct import of `ArithmeticSignedPairExpressions`, which was absent from both historical focused providers. The included graph and driver compile it explicitly; fresh focused build `/tmp/ha87-focused-validator-rebase-85slsco9` expects 85 rows and remains live. Historical HA/ZF/Foundation and package ancestry is still inherited.
+
+The preceding focused build `/tmp/ha87-focused-validator-rebase-mjkn7d92` was externally stopped at a safe child boundary for the source change. Its actual terminal state is FAILED/KeyboardInterrupt with 19 verified fresh rows; the state and their complete logs are included. Before/after AuxNorm sources and the new signed-pair source are included. Earlier boundary, source and object provenance are referenced in `../ha87-residue-import-refresh/` and predecessor packets.
+
+The separate full audit-only run `/tmp/ha87-full-transitive-fv808y89` returned AUDIT_PASS with 729 project modules, 93 direct external objects and 279 companions. A source postcheck found no drift. Relative to the previous full graph, it adds the signed-pair module, changes AuxNorm and Eind source hashes, and adds the AuxNorm import edge. No Lean module was compiled by this audit. Fresh transitive-guard full author rebase `/tmp/ha87-full-transitive-uqj917sj` is live; original reuse environments are reconstructed from surviving prior objects and do not rule out unrecorded historical mutation.

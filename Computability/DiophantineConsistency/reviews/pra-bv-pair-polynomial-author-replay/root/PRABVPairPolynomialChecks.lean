@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRABVPairPolynomial
+#print axioms DiophantineConsistency.PRABVPairPolynomial.bvPair_eq
+#print axioms DiophantineConsistency.PRABVPairPolynomial.candidate_proves_bv_pair_polynomial

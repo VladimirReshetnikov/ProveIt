@@ -15,7 +15,7 @@ header=r'''\documentclass[10pt]{article}
 \begin{document}
 \begin{center}
 {\large\bfseries A thirteen-variable consistency equation}\\[-1pt]
-{\small Positive integer unknowns; an 86-operation evaluator.}
+{\small Positive integer unknowns; exact degree 56; an 86-operation evaluator.}
 \end{center}\vspace{-8pt}
 \begin{multicols}{2}
 \fontsize{8.6}{9.1}\selectfont
@@ -27,8 +27,9 @@ establishes the existence of an HA derivation of both directions between
 this no-solution sentence and the formalized consistency of ZFC. The theorem
 was independently replayed on a checked pre-merge source snapshot; historical
 HA, ZF, Foundation and package inputs remain inherited boundaries. A later
-source refresh is in progress. The circuit count is not a minimality or degree
-claim.
+source refresh is in progress. Exact degree 56 is certified by integer-polynomial expansion. Its 87-operation
+parent has degree 51: one fewer gate trades against a higher degree. Neither
+count is a minimality claim.
 \end{multicols}
 \clearpage
 \begin{center}{\large\bfseries Exact 86-operation circuit}\end{center}

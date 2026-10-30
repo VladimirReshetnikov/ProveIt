@@ -1,0 +1,7 @@
+# Residue import refresh
+
+A merged change added `ArithmeticPellResidueAux` as a direct import of `ArithmeticAdaptiveExactIndices2011`. The new source object was absent from both historical focused providers, so the included focused graph and driver compile it explicitly. The fresh focused run `/tmp/ha87-focused-validator-rebase-f7u7wyte` has 84 expected rows and is live; it is not proof evidence. Its inherited historical HA/ZF/Foundation/package boundary remains qualified.
+
+The preceding zero-reuse focused run `/tmp/ha87-focused-validator-rebase-5zvm8dzr` was stopped externally after this source drift, once its active Lean child exited. Its actual terminal state is FAILED/KeyboardInterrupt with 74 verified fresh rows; the state and all 74 full logs are included. Before/after exact-index sources and the new residue source are included. Earlier current-source deltas and historical boundary ancestry are in `../ha87-transitive-latest-merge-audit/` and predecessor packets.
+
+The separate full-source audit-only run `/tmp/ha87-full-transitive-r61_2inj` returned AUDIT_PASS for 728 project modules, 93 direct external objects and 279 companions. A separate all-source hash postcheck found no drift. Relative to the previous graph, the residue source was added, the exact-index source hash changed and its import edge gained that module. No Lean modules were compiled by the audit. The full build supervisor remains stopped while its active child finishes; reconstructed historical transitive and external package qualifications continue to apply.
