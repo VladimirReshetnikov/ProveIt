@@ -1,0 +1,9 @@
+import DiophantineConsistency.PRAStageInductionSchema
+open DiophantineConsistency.PRAStageInductionSchema
+#print axioms modelCodedSigma
+#print axioms modelCodedSuccInd
+#print axioms modelClosedInduction_iff
+#print axioms PRA_proves_inductionFormula_to_succInd
+#print axioms PRA_proves_succInd_to_inductionFormula
+#check PRA_proves_inductionFormula_to_succInd
+#check PRA_proves_succInd_to_inductionFormula
