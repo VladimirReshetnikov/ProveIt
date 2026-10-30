@@ -117,7 +117,10 @@ proves its bit-membership behavior in candidate PRA using the IΣ₀ reduct
 and the exponential code, without assuming IΣ₁. An
 [independently replayed sequence append code](reviews/pra-history-seqcons-code-author-replay/README.md)
 now composes length, pairing and insertion to satisfy the actual `seqConsDef`
-graph. The full recursive-history verification remains open. An
+graph. An [independently replayed membership theorem](reviews/pra-history-seqcons-membership-author-replay/README.md)
+also describes exactly which relation pairs are present after append.
+Sequence validity, length evolution and the full recursive-history
+verification remain open. An
 [independently replayed length code](reviews/pra-history-length-code-author-replay/README.md)
 computes the actual `lhDef` graph with output at most `2*s`, without assuming
 IΣ₁.

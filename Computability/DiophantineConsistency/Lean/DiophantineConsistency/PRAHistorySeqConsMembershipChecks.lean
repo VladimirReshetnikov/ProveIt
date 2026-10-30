@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistorySeqConsMembership
+
+#print axioms DiophantineConsistency.PRAHistorySeqConsMembership.seqCons_membership
+#print axioms DiophantineConsistency.PRAHistorySeqConsMembership.candidate_seqCons_membership
