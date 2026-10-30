@@ -26,11 +26,7 @@ theorem neg_exists_bound (x u s w : V) (hnegs : PRANegBitFullWitnessBound.negBit
       letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
       have hb : (∼bitDef.val).Evalb ![z,s] := by simpa [Semiformula.Operator.val, operator_mem_def] using hz
       have hh := PRANegBitFullWitnessBound.negBit_bound z s hb
-      have hs' : Fin.snoc ![z,s] (PRANegBitFullWitnessBound.negBitMajorant s) = ![z,s,PRANegBitFullWitnessBound.negBitMajorant s] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs' : Fin.snoc ![z,s] (PRANegBitFullWitnessBound.negBitMajorant s) = ![z,s,PRANegBitFullWitnessBound.negBitMajorant s] := by simp
       have hm := eval_bnd_mono (∼bitDef.val) ![z,s] (Empty.elim : Empty → V) hnegs (by rw [hs']; exact hh)
       let ω : Rew ℒₒᵣ Empty 2 Empty 5 := Rew.subst ![#0,#4]
       have hn := PRABndRewriting.natural (∼bitDef.val) ω ![z,y,x,u,s] w
@@ -38,19 +34,8 @@ theorem neg_exists_bound (x u s w : V) (hnegs : PRANegBitFullWitnessBound.negBit
         funext j
         refine Fin.cases rfl (fun k => ?_) j
         exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hsn : Fin.snoc ![z,y,x,u,s] w = ![z,y,x,u,s,w] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        refine Fin.cases rfl (fun k => ?_) k
-        refine Fin.cases rfl (fun k => ?_) k
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hs'' : Fin.snoc ![z,s] w = ![z,s,w] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hsn : Fin.snoc ![z,y,x,u,s] w = ![z,y,x,u,s,w] := by simp
+      have hs'' : Fin.snoc ![z,s] w = ![z,s,w] := by simp
       rw [hv,hsn,hs''] at hn
       rw [hs''] at hm
       have hrew := hn.mpr hm

@@ -21,7 +21,6 @@ open scoped LO.FirstOrder.Arithmetic
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
 local notation "h0" => (ValidatorImplicationContext.h0 CProv)
 local notation "h1" => (ValidatorImplicationContext.h1 CProv)
 local notation "h2" => (ValidatorImplicationContext.h2 CProv)
@@ -41,13 +40,9 @@ lemma eind_trans (a b c : V) :
 
 /-- No restrictions on the four labels or on their internal auxiliary codes. -/
 lemma eind_congr (a a' b b' : V) :
-    CProv (wim (Eind a a') (wim (Eind b b') (wim (Eind a b) (Eind a' b')))) := by
-  apply ded3
-  have ha : D [Eind a b,Eind b b',Eind a a'] (Eind a' a) :=
-    .mp (.ax (eind_symm a a')) h2
-  have hab : D [Eind a b,Eind b b',Eind a a'] (Eind a' b) :=
-    .mp (.mp (.ax (eind_trans a' a b)) ha) h0
-  exact .mp (.mp (.ax (eind_trans a' b b')) hab) h1
+    CProv (wim (Eind a a') (wim (Eind b b') (wim (Eind a b) (Eind a' b')))) :=
+  ded3 (.mp (.mp (.ax (eind_trans a' b b'))
+    (.mp (.mp (.ax (Eind_euclid a' b a)) h2) h0)) h1)
 
 lemma rel_congr (a a' b b' : V) :
     CProv (wim (Eind a a') (wim (Eind b b') (wim (wel a b) (wel a' b')))) :=
