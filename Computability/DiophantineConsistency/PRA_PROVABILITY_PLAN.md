@@ -171,6 +171,10 @@ has also independently replayed: candidate PRA proves its standalone graph
 implies its syntactic bounded transformation at `p+1`. Binding that graph
 inside the full refutation formula, finding the other local majorants and
 constructing the certificate for `ρ` remain separate obligations.
+The independently replayed [bounding/rewriting naturality lemma](reviews/pra-bnd-rewriting-author-replay/README.md)
+relates `bnd` before and after arbitrary bound-variable rewriting in
+ordered-ring structures on `Type`. It permits local witness bounds to be
+transported through syntactic substitutions, but supplies no majorant itself.
 The [actual derivationOf binding](reviews/pra-fstidx-derivation-bound-author-replay/README.md)
 now identifies and bounds the first-index occurrence inside Foundation's
 sigma formula, with an actual candidate-PRA proof of the conditional sentence.
@@ -195,6 +199,14 @@ replayed against the refreshed graph.
 The independently replayed [triple-pair local bound](reviews/pra-pair3-bound-author-replay/README.md)
 gives `p+1` for Foundation's exact `pair₃Def` graph, which appears in the
 Nth blueprint. The enclosing Nth core, fixpoint and `ρ` bound remain open.
+The [length-bit local bound](reviews/pra-lenbit-witness-bound-author-replay/README.md)
+independently proves `y+1` for Foundation's exact standalone `lenbitDef` and
+constructs its candidate-PRA sentence. The separate exponential graph and
+the full membership/history witnesses remain open.
+The [bit-graph binding](reviews/pra-bit-witness-bound-author-replay/README.md)
+transports that bound to the actual inlined `lenbitDef` occurrence and proves
+a candidate-PRA conditional sentence. It retains the bounded exponential
+conjunct, its witness and the common-bound assumptions explicitly.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated

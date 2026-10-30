@@ -1,0 +1,8 @@
+'DiophantineConsistency.PRABndRewriting.natural' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.PRABndRewriting.natural {M : Type} [LO.ORingStructure M] {n m : ℕ}
+  (φ : LO.FirstOrder.ArithmeticSemisentence n) (ω : LO.FirstOrder.Rew ℒₒᵣ Empty n Empty m) (e : Fin m → M) (w : M) :
+  (LO.FirstOrder.Semiformula.Evalb (Fin.snoc e w))
+      (DiophantineConsistency.StrictSigmaOneInduction.bnd ((LO.FirstOrder.Rewriting.app ω) φ)) ↔
+    (LO.FirstOrder.Semiformula.Evalb
+        (Fin.snoc (fun i => LO.FirstOrder.Semiterm.val e Empty.elim (ω (LO.FirstOrder.Semiterm.bvar i))) w))
+      (DiophantineConsistency.StrictSigmaOneInduction.bnd φ)

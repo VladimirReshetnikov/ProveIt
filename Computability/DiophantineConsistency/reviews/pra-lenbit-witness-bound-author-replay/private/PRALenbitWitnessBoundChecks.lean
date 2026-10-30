@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRALenbitWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRALenbitWitnessBound.lenbit_bound
+#print axioms DiophantineConsistency.PRALenbitWitnessBound.candidate_lenbit_bound
+#print axioms DiophantineConsistency.PRALenbitWitnessBound.candidate_proves_lenbit_bound
+#check DiophantineConsistency.PRALenbitWitnessBound.candidate_proves_lenbit_bound
