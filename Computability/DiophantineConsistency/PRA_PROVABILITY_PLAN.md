@@ -44,7 +44,12 @@ from the source-current halting construction remains open.
 The [enriched-Assembly conclusion adapter](reviews/adaptive-construction-conditional-exists2011-independent.md)
 is independently replayed as well: it takes the proposed strengthened
 Assembly conclusion, including its bound, as an explicit premise and yields
-the shifted zero. It does not itself establish that premise.
+the shifted zero. The later [Assembly/direct-run branch](reviews/adaptive-assembly-compat-independent.md)
+has independently replayed a construction of that premise from a represented
+halt under the explicit `LocalNormalization` hypothesis, yielding an
+87-operation zero. Discharging normalization and producing the syntactic HA
+endpoint remain separate; the compatibility provider and historical table
+provenance boundaries are retained.
 The [87-operation reduced-output client](reviews/adaptive-construction-reduced-zero2011-independent.md)
 independently replays the exact literal zero transfer from the same enriched
 Assembly premise to the reduced shifted expression. The premise and the final

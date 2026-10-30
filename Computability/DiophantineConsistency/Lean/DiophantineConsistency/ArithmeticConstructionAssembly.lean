@@ -171,12 +171,28 @@ theorem le_Wb_10 (h : x ≤ Us R + Gs R + Fs R * Fs R * R) : x ≤ Wb q R := by 
 
 end members
 
-theorem construction_below_hL (hL : LocalNormalization) (T : V) (hT : first (ArithmeticMachineRun215.run T) = 0) :
+/-- The bounded construction records the common outer seed, rank/radix
+facts, and the exact orientation of the chosen auxiliary seed. -/
+theorem construction_below_seed_phase_hL (hL : LocalNormalization) (T : V) (hT : first (ArithmeticMachineRun215.run T) = 0) :
     ∃ v : Fin 14 → V, (∀ j, 0 < v j) ∧ v 1 ≤ (CurrentMasks2011.beta : V) * v 0 + 1 ∧
       ArithmeticCarrierSoundness2011.Equations (CurrentMasks2011.beta : V)
         (CurrentKernel2011.K : V) (CurrentMasks2011.lowPort : V)
         ((CurrentMasks2011.highPort + CurrentMasks2011.beta : ℕ) : V) v ∧
-      ∀ j, v j ≤ zeroBound T := by
+      (∀ j, v j ≤ zeroBound T) ∧
+      ArithmeticCarrierRadix2011.rank v % 4 = 3 ∧
+      (∃ b, v 12 = ycoord (ArithmeticCarrierRadix2011.rank v) b) ∧
+      ∃ u, ArithmeticCarrierRadix2011.q v = Exp.exp u ∧
+        Exp.exp (ArithmeticCarrierRadix2011.rank v) = ArithmeticCarrierRadix2011.q v * v 8 ∧
+        2*u ≤ ArithmeticCarrierRadix2011.rank v ∧
+        ArithmeticOuterSeed.SeedRelations u (ArithmeticCarrierRadix2011.rank v)
+          (v 7) (v 9) (v 10) (v 11) (v 13) ∧
+        let q := ArithmeticCarrierRadix2011.q v
+        let Y := v 7*q^3
+        let c := (v 10+v 11)*Y+v 10
+        let R := ArithmeticCarrierRadix2011.rank v
+        let a := v 4*v 4*c*v 6
+        let b := v 4*v 4*R+c
+        a=(a-b)+(b-a)+c+v 4*v 4*R := by
   -- K2: the marked word at the tiling dimensions
   obtain ⟨hw5, hH2, hH4, hwH⟩ := ArithmeticTilingWord.dimensions T
   have hM := ArithmeticTilingWord.marked_word hT hw5 hH2 hH4
@@ -260,6 +276,7 @@ theorem construction_below_hL (hL : LocalNormalization) (T : V) (hT : first (Ari
   obtain ⟨sY, n, η, ζ, γ, hsY, hn, hη, hζ, hγ, hseed, hYb⟩ :=
     outer_seed_bound (94517 * N) R hu hodd hpop
   obtain ⟨hnb, hηb, hζb, hγb, hab, hcb⟩ := seed_bounds _ _ _ _ _ _ _ hsY hYb hseed
+  have hseed_saved := hseed
   obtain ⟨hτ, hdn, hc, -, -⟩ := hseed
   -- Stage X: the auxiliary seed
   obtain ⟨f, i, T', u', y, hf, hi, hT', -, hy, hfx, hyic, hfn, hyd, hux, -, -, -, hlit, habs,
@@ -353,7 +370,16 @@ theorem construction_below_hL (hL : LocalNormalization) (T : V) (hT : first (Ari
   -- the auxiliary facts in terms of the seed coordinate c
   rw [← hc] at hfn habs hlast
   rw [habs] at hlast
-  refine ⟨![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ], ?_, ?_, ?_, ?_⟩
+  have hqfull : ArithmeticCarrierRadix2011.q
+      ![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ] = q := by
+    change (CurrentMasks2011.beta : V) * J + 1 = q
+    exact hqE
+  have hrank_full : ArithmeticCarrierRadix2011.rank
+      ![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ] = R := by
+    unfold ArithmeticCarrierRadix2011.rank
+    rw [hqfull]
+    rfl
+  refine ⟨![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ], ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro j
     fin_cases j
     exacts [hJ0, F_pos h1, (packing_alpha h1).1, hz0, hf, hi, hT', hsY, exp_pos _, hn, hη, hζ,
@@ -378,6 +404,58 @@ theorem construction_below_hL (hL : LocalNormalization) (T : V) (hT : first (Ari
     · exact le_Wb_6 hζb
     · exact le_Wb_9 hyb
     · exact le_Wb_7 hγb
+  · rw [hrank_full]
+    exact hR4
+  · let a := Exp.exp R * (sY * q ^ 3) + sY * q ^ 3
+    let c := ycoord R a
+    refine ⟨delta a * i * c * c - 2, ?_⟩
+    rw [hrank_full]
+    exact hyd
+  · refine ⟨94517*N, ?_, ?_, ?_, ?_, ?_⟩
+    · rw [hqfull, hqdef]
+    · change Exp.exp (ArithmeticCarrierRadix2011.rank
+        ![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ]) =
+          ArithmeticCarrierRadix2011.q ![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ] * w'
+      rw [hrank_full, hqfull]
+      simpa only [mul_comm] using hprod.symm
+    · rw [hrank_full]
+      exact le_of_lt hbig
+    · change ArithmeticOuterSeed.SeedRelations (94517*N)
+        (ArithmeticCarrierRadix2011.rank ![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ])
+        sY n η ζ γ
+      rw [hrank_full]
+      exact hseed_saved
+    · change f*f*((η+ζ)*(sY*(ArithmeticCarrierRadix2011.q
+        ![J, F1, α1, z, f, i, T', sY, w', n, η, ζ, y, γ])^3)+η)*T' = _
+      rw [hqfull, hrank_full]
+      let C := (η+ζ)*(sY*q^3)+η
+      change f*f*C*T' = (f*f*C*T'-(f*f*R+C))+(f*f*R+C-f*f*C*T')+C+f*f*R
+      have hh := hlit
+      rw [←hc, habs] at hh
+      change f*f*C*T' = (f*f*C*T'-(f*f*R+C))+(f*f*R+C-f*f*C*T')+C+f*f*R at hh
+      exact hh
+
+/-- The previous phase and auxiliary-ordinate interface is preserved. -/
+theorem construction_below_phase_hL (hL : LocalNormalization) (T : V) (hT : first (ArithmeticMachineRun215.run T) = 0) :
+    ∃ v : Fin 14 → V, (∀ j, 0 < v j) ∧ v 1 ≤ (CurrentMasks2011.beta : V) * v 0 + 1 ∧
+      ArithmeticCarrierSoundness2011.Equations (CurrentMasks2011.beta : V)
+        (CurrentKernel2011.K : V) (CurrentMasks2011.lowPort : V)
+        ((CurrentMasks2011.highPort + CurrentMasks2011.beta : ℕ) : V) v ∧
+      (∀ j, v j ≤ zeroBound T) ∧
+      ArithmeticCarrierRadix2011.rank v % 4 = 3 ∧
+      ∃ b, v 12 = ycoord (ArithmeticCarrierRadix2011.rank v) b := by
+  obtain ⟨v, hv, hF, heq, hb, hphase, hy, _⟩ := construction_below_seed_phase_hL hL T hT
+  exact ⟨v, hv, hF, heq, hb, hphase, hy⟩
+
+/-- The original bounded construction interface. -/
+theorem construction_below_hL (hL : LocalNormalization) (T : V) (hT : first (ArithmeticMachineRun215.run T) = 0) :
+    ∃ v : Fin 14 → V, (∀ j, 0 < v j) ∧ v 1 ≤ (CurrentMasks2011.beta : V) * v 0 + 1 ∧
+      ArithmeticCarrierSoundness2011.Equations (CurrentMasks2011.beta : V)
+        (CurrentKernel2011.K : V) (CurrentMasks2011.lowPort : V)
+        ((CurrentMasks2011.highPort + CurrentMasks2011.beta : ℕ) : V) v ∧
+      ∀ j, v j ≤ zeroBound T := by
+  obtain ⟨v, hv, hF, heq, hb, _, _⟩ := construction_below_phase_hL hL T hT
+  exact ⟨v, hv, hF, heq, hb⟩
 
 end DiophantineConsistency.ArithmeticConstructionBound
 
