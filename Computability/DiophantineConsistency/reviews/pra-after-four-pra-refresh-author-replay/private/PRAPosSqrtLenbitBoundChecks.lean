@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAPosSqrtLenbitBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRAPosSqrtLenbitBound.posSqrtLenbit_bound
+#print axioms DiophantineConsistency.PRAPosSqrtLenbitBound.posSqrtLenbitBoundBody_model
+#print axioms DiophantineConsistency.PRAPosSqrtLenbitBound.candidate_proves_posSqrtLenbit_bound
+#check DiophantineConsistency.PRAPosSqrtLenbitBound.candidate_proves_posSqrtLenbit_bound
