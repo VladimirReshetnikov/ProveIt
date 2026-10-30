@@ -20,9 +20,10 @@ passed two independent replays and authenticated the unchanged `sppow2Def`
 source/object pair and its reachable local dependency pairs. Other Foundation
 and Mathlib transitive package ancestry remains inherited. Following two more
 upstream changes, a [targeted `sppow2Def` replay](reviews/pra-after-sppow2-merge-refresh-author-replay/README.md)
-has passed in the updated source tree with two matching independent replays;
-its immediate five-bound parent currently has one author build, with frozen
-historical-source peer replays underway. These are constituents of
+has passed in the updated source tree with two matching independent replays.
+Its immediate [five-bound parent](reviews/pra-after-five-bound-refresh-author-replay/README.md)
+also has two matching independent replays from hash-verified frozen historical
+sources. These are constituents of
 the refutation-bound construction, not bounds for `ppow2Def`, `expDef`, or the
 ZFC refutation sentence. The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
