@@ -145,6 +145,11 @@ does not yet establish bounds for the other components of `ρ`.
 The [family-sentence client](reviews/pra-fstidx-family-sentence-author-replay/README.md)
 also constructs an actual candidate-PRA proof of the corresponding universally
 closed implication; it is independently replayed and retains the same scope.
+The [second-index local bound](reviews/pra-sndidx-bound-author-replay/README.md)
+likewise proves the exact standalone `sndIdxDef` witnesses bounded by `p+1`
+in candidate PRA. Its two independent replays precede the latest induction
+merge; the affected provider graph and the graph's occurrence in the coded
+history still need refreshing and binding respectively.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated

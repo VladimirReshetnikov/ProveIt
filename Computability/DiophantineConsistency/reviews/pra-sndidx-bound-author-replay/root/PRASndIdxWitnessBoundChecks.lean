@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRASndIdxWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRASndIdxWitnessBound.sndIdx_bnd_succ
+#print axioms DiophantineConsistency.PRASndIdxWitnessBound.candidate_sndIdx_bound
+#print axioms DiophantineConsistency.PRASndIdxWitnessBound.candidate_proves_sndIdx_bound
+#check DiophantineConsistency.PRASndIdxWitnessBound.candidate_proves_sndIdx_bound
