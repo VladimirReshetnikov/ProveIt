@@ -91,35 +91,22 @@ private instance conj_sigma1 : 𝚺₁-Function₂[V] conj := by
 @[simp] lemma eindContext_nil (B' : V) : eindContext (0 : V) B'=0 := by
   simp [eindContext]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma h2 {G : List V} {a b c : V} : D (c::b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
-private lemma ofDer {p : V} (d : D [] p) : CProv p :=
-  d.sound cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
-private lemma ded1 {a p : V} (d : D [a] p) : CProv (wim a p) :=
-  ofDer (Kalmar.deduction cProv_classical d)
-private lemma ded2 {a b p : V} (d : D [b,a] p) : CProv (wim a (wim b p)) :=
-  ofDer (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d))
+local notation "h0" => (ValidatorImplicationContext.h0 CProv)
+local notation "h1" => (ValidatorImplicationContext.h1 CProv)
+local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
+local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 
 lemma conj_intro_imp (a b : V) : CProv (wim a (wim b (conj a b))) :=
-  ded2 (Kalmar.deduction cProv_classical (.mp (.mp h0 h2) h1))
-
+  ValidatorPrefixContext.conj_intro_imp CProv cProv_classical a b
 lemma conj_under {h a b : V} (ha : CProv (wim h a)) (hb : CProv (wim h b)) :
     CProv (wim h (conj a b)) :=
-  ded1 (.mp (.mp (.ax (conj_intro_imp a b)) (.mp (.ax ha) h0)) (.mp (.ax hb) h0))
-
+  ValidatorPrefixContext.conj_under CProv cProv_classical ha hb
 lemma conj_mono_right (a : V) {b c : V} (h : CProv (wim b c)) :
     CProv (wim (conj a b) (conj a c)) :=
-  conj_under (conj_left a b) (compose (conj_right a b) h)
-
+  ValidatorPrefixContext.conj_mono_right CProv cProv_classical a h
 lemma conj_interchange (a b c : V) :
     CProv (wim (conj a (conj b c)) (conj b (conj a c))) :=
-  conj_under (compose (conj_right a (conj b c)) (conj_left b c))
-    (conj_under (conj_left a (conj b c))
-      (compose (conj_right a (conj b c)) (conj_right b c)))
+  ValidatorPrefixContext.conj_interchange CProv cProv_classical a b c
 
 /-- A bounded family of Sigma1 proof witnesses, so IΣ1 induction suffices.
 No equal-length hypothesis is needed: the raw nth operation is total. -/
