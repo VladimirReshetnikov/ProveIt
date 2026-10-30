@@ -291,9 +291,7 @@ def sepS : Sentence SL := SchemaSourceSyntax.sepS
 def sepT : Sentence SL := intT cong1 🡒 intT sepS
 
 /-- The GIC matrix `u ∈ &0 ∧ v = u ∧ R u` (`u = #0`, `v = #1`). -/
-def sepMat : Semiproposition SL 2 :=
-  Semiformula.rel Language.Mem.mem ![#0, &0] ⋏
-    (Semiformula.rel Language.Eq.eq ![#1, #0] ⋏ (Rewriting.emb R1 ⇜ ![(#0 : SyntacticSemiterm SL 2)]))
+def sepMat : Semiproposition SL 2 := SchemaSourceSyntax.sepMat
 
 theorem sepT_provable : templN 1 ar1 ⊢ sepT := by
   apply templ_provableN
@@ -309,7 +307,7 @@ theorem sepT_provable : templN 1 ar1 ⊢ sepT := by
   simp [models_iff, sepS, R1, Semiformula.Operator.mem_def, Matrix.constant_eq_singleton]
   intro x hx
   obtain ⟨b, hb1, hb2⟩ := gic_iffN (k := 1) (arities := ar1) sepMat (fun _ ↦ x) x
-  simp [sepMat, R1] at hb1 hb2
+  simp [sepMat, SchemaSourceSyntax.sepMat] at hb1 hb2
   have hbD : ∀ v, v ∈ b → D v := fun v hv ↦ D_mem hx (hb1 v hv).1
   refine ⟨b, D_closed hbD, fun z hz ↦ ?_⟩
   constructor
@@ -338,19 +336,13 @@ def repS : Sentence RL := SchemaSourceSyntax.repS
 def replT : Sentence RL := intT cong2 🡒 intT repS
 
 /-- The GIC matrix `u ∈ &0 ∧ D v ∧ R u v` (`u = #0`, `v = #1`). -/
-def repMat : Semiproposition RL 2 :=
-  Semiformula.rel Language.Mem.mem ![#0, &0] ⋏
-    ((Rew.embSubsts ![(#1 : SyntacticSemiterm RL 2)] ▹ liftSet domS) ⋏
-      (Rewriting.emb R2 ⇜ ![(#0 : SyntacticSemiterm RL 2), #1]))
+def repMat : Semiproposition RL 2 := SchemaSourceSyntax.repMat domS
 
 lemma eval_repMat {M : Type} [Nonempty M] [SetStructure M]
     [s : Structure RL M] [Structure.Eq RL M] [Structure.Mem RL M] [M↓[ℒₛₑₜ] ⊧* qTheory]
     (f : ℕ → M) (u v : M) :
-    repMat.Eval ![u, v] f ↔ u ∈ f 0 ∧ D v ∧ Structure.rel (L := RL) (placeholderRel 0) ![u, v] := by
-  simp only [repMat, R2, LogicalConnective.HomClass.map_and, LogicalConnective.Prop.and_eq,
-    Semiformula.eval_embSubsts, eval_liftSet]
-  rw [eval_domS_any]
-  simp
+    repMat.Eval ![u, v] f ↔ u ∈ f 0 ∧ D v ∧ Structure.rel (L := RL) (placeholderRel 0) ![u, v] :=
+  SchemaSourceSyntax.eval_repMat domS f u v
 
 lemma vec2_val {M : Type} [Nonempty M] [SetStructure M] [M↓[ℒₛₑₜ] ⊧* qTheory] (p q : SD M) :
     (fun j ↦ ((![p, q] : Fin 2 → SD M) j).1) = ![p.1, q.1] :=

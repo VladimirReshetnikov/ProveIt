@@ -1,5 +1,6 @@
 import ZFCinPA.OpenSchemaTemplates
 import ZFCinPA.SubstIdentity
+import ZFCinPA.LTemplate
 
 set_option autoImplicit false
 noncomputable section
@@ -28,6 +29,27 @@ abbrev RL := setTemplateLanguage 1 ar2
 
 abbrev R2 : Semisentence RL 2 := .rel (placeholderRel (arities := ar2) 0) ![#0, #1]
 abbrev repS : Sentence RL := “(∀ x, ∃! y, !R2 x y) → ∀ X, ∃ Y, ∀ y, y ∈ Y ↔ ∃ x ∈ X, !R2 x y”
+
+/-- The separation witness matrix `u ∈ &0 ∧ v = u ∧ R u`. -/
+def sepMat : Semiproposition SL 2 :=
+  Semiformula.rel Language.Mem.mem ![#0, &0] ⋏
+    (Semiformula.rel Language.Eq.eq ![#1, #0] ⋏ (Rewriting.emb R1 ⇜ ![(#0 : SyntacticSemiterm SL 2)]))
+
+/-- The replacement witness matrix, guarded by the supplied domain. -/
+def repMat (δ : SetTheorySemisentence 1) : Semiproposition RL 2 :=
+  Semiformula.rel Language.Mem.mem ![#0, &0] ⋏
+    ((Rew.embSubsts ![(#1 : SyntacticSemiterm RL 2)] ▹ liftSet δ) ⋏
+      (Rewriting.emb R2 ⇜ ![(#0 : SyntacticSemiterm RL 2), #1]))
+
+/-- Evaluate the replacement witness matrix in a template structure. -/
+theorem eval_repMat {M : Type} [Nonempty M] [SetStructure M]
+    [s : Structure RL M] [Structure.Eq RL M] [Structure.Mem RL M]
+    (δ : SetTheorySemisentence 1) (f : ℕ → M) (u v : M) :
+    (repMat δ).Eval ![u, v] f ↔ u ∈ f 0 ∧ δ.Eval ![v] Empty.elim ∧
+      Structure.rel (L := RL) (placeholderRel 0) ![u, v] := by
+  simp only [repMat, R2, LogicalConnective.HomClass.map_and, LogicalConnective.Prop.and_eq,
+    Semiformula.eval_embSubsts, liftSet, LTemplate.eval_set_lMap]
+  simp
 
 lemma emb_sepS : (Rewriting.emb sepS : Proposition SL) = sepBodySource (Rewriting.emb R1) := by
   simp [sepS, sepBodySource, R1]
