@@ -47,9 +47,11 @@ The negative `exponentialDef` and `expDef` graphs now also have closed
 candidate-PRA bounds, with matching author and two independent replays. The
 negative bit graph also has a closed candidate-PRA bound with matching author
 and two independent replays. The recursive history still requires a bound.
-A later 103-module current-source project graph has passed two matching fresh
-replays, subject to its documented inherited Foundation and package boundary.
-On that parent, the exact Foundation `underDef` graph has unconditional
+A later 103-module project-source graph passed two matching fresh replays,
+subject to its documented inherited Foundation and package boundary. A
+subsequent upstream merge changed several of those project sources; a
+post-merge refresh is in progress. On the earlier checked parent, the exact
+Foundation `underDef` graph has unconditional
 polynomial witness bounds in both its [positive](reviews/pra-under-witness-bound-author-replay/README.md)
 and [negative](reviews/pra-negunder-witness-bound-author-replay/README.md)
 forms, each with matching author and independent replays. These discharge
