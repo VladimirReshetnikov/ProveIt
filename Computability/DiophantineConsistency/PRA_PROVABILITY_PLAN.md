@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [strict source-theory comparison](reviews/pra-strict-theory-author-replay/README.md)
+now translates proofs over PA-minus plus bounded or syntactic existential-bounded
+induction into candidate PRA for the stated open-existential goals, with the
+mapped-goal equality explicit. The strict source theory is a subtheory of
+IΣ₁; its converse inclusion and general conservation remain open.
+
 The [first-factor reverse bridge](reviews/adaptive-construction-first-factor2011-independent.md)
 derives its literal unit from the explicit additive carrier identity and first
 norm. Binding these to the common concrete witness remains separate.
