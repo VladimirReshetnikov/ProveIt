@@ -79,21 +79,10 @@ theorem expressionAt_signed_residue86 (p : Fin 4 → ℕ) (v : Fin 13 → V)
     change ((c*c)*i)*((c*c)*i)+((3+4*a)+a*a)=((3+4*a)+a*a)*(f*f) at hstrong
     rw [hD,hI] at hstrong
     exact hstrong
-  have hfmod : (f*f)%c=(1:V)%c :=
-    square_mod_one_of_relaxed_auxiliary a c m i f hm hi hf hc hmy hs hbig
 
   have huc : SignMod c z R := by
     change SignMod c (absdiff L N) R
-    apply absdiff_residue c L N R hc
-    have hd : c∣L := ⟨f*f*v 5,by dsimp [L]; ring⟩
-    have hmul : (f*f*R)%c=R%c := by
-      have hh := same_mul hc hfmod (show R%c=R%c from rfl)
-      simpa only [one_mul] using hh
-    calc
-      (L+R)%c=R%c := mod_add_remove_left_of_dvd hd hc
-      _=(f*f*R)%c := hmul.symm
-      _=(f*f*R+c)%c := (mod_add_remove_right hc).symm
-      _=N%c := rfl
+    exact signed_residue_of_relaxed_auxiliary a c m i f (v 5) R hm hi hf hc hmy hs hbig
   have hc2 : 2≤c := by
     have h := add_le_add (pos_iff_one_le.mp (hv 9))
       (one_le_mul (pos_iff_one_le.mp (hv 7)) (pos_iff_one_le.mp hk))

@@ -131,11 +131,10 @@ theorem close_step {j x : V} (hx : IsSemiformula ℒₛₑₜ 1 x)
     Provable seedTheory (imp ℒₛₑₜ (emptyCode j) (tagRel j (^∀x))) := by
   let X : Semiformula V ℒₛₑₜ 1 := ⟨x,by simpa using hx⟩
   let E : Formula V ℒₛₑₜ := emptyAt (Bootstrapping.Semiterm.fvar j)
-  obtain ⟨d,hd⟩ := h
-  have ht : Source V ⊢ E.shift 🡒 (tagged j X).free := by
-    refine ⟨ModelCodedOpenSchemaAxioms.typedProofOfCode seedTheory _ d ?_⟩
-    simpa only [Bootstrapping.Semiformula.val_imp,Bootstrapping.Semiformula.val_shift,
-      Bootstrapping.Semiformula.free_val,tagged_val,tagRel_free j hx,E,empty_binding,shift_empty,X] using hd
+  have ht : Source V ⊢ E.shift 🡒 (tagged j X).free :=
+    tprovable_iff_provable.mpr (by
+      simpa only [Bootstrapping.Semiformula.val_imp,Bootstrapping.Semiformula.val_shift,
+        Bootstrapping.Semiformula.free_val,tagged_val,tagRel_free j hx,E,empty_binding,shift_empty,X] using h)
   have hweaken : Source V ⊢ E.shift 🡒 (guard j 0 🡒 tagged j X).free := by
     simp only [Bootstrapping.Semiformula.free,Bootstrapping.Semiformula.shift_imp,
       Bootstrapping.Semiformula.substs_imp] at ht ⊢
