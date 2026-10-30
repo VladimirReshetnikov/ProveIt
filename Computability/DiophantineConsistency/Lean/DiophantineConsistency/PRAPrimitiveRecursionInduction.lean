@@ -115,7 +115,7 @@ theorem modelRecursiveWitness {n : ℕ} (pred : Code (n+2)) (base : Code n) (ste
     exact (recursiveBody_eval pred base step t e).mp ht
 
 omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem baseFormula_eval {n : ℕ} (pred : Code (n+2)) (base : Code n) (e : ℕ → M) :
+theorem baseFormula_eval {n : ℕ} (pred : Code (n+2)) (base : Code n) (e : ℕ → M) :
     (baseFormula pred base).Eval ![] e ↔
       Structure.func (L := language) pred (Fin.cases
         (Structure.func (L := language) (Code.zero 0) Fin.elim0)
@@ -143,7 +143,7 @@ private theorem baseFormula_eval {n : ℕ} (pred : Code (n+2)) (base : Code n) (
   rw [hp,hz]
 
 omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem stepFormula_eval {n : ℕ} (pred : Code (n+2)) (step : Code (n+2)) (e : ℕ → M) :
+theorem stepFormula_eval {n : ℕ} (pred : Code (n+2)) (step : Code (n+2)) (e : ℕ → M) :
     (stepFormula pred step).Eval ![] e ↔ ∀ x y,
       Structure.func (L := language) pred (Fin.cases x (Fin.cases y (fun i : Fin n => e i.val))) =
           Structure.func (L := language) oneCode Fin.elim0 →
