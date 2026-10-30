@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAExtRewritingBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRAExtRewritingBound.ext_rew_bound
+#print axioms DiophantineConsistency.PRAExtRewritingBound.initialX_bound
+#print axioms DiophantineConsistency.PRAExtRewritingBound.candidate_proves_initialX_bound
+#check DiophantineConsistency.PRAExtRewritingBound.candidate_proves_initialX_bound

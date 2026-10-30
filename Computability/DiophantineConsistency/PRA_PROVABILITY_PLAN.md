@@ -231,6 +231,10 @@ The independently replayed [extDef local bound](reviews/pra-ext-witness-bound-au
 gives `c+1` for Foundation's exact extension graph and its candidate-PRA
 sentence. The remaining exponential sequence and power graphs are not bounded
 by that theorem.
+The [rewritten extDef client](reviews/pra-ext-rewriting-bound-author-replay/README.md)
+transports the local bound through arithmetic substitutions and proves a
+candidate-PRA bound for the concrete `extDef 1 4 X` occurrence. The rest of
+the exponential definition and the full refutation certificate remain open.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
