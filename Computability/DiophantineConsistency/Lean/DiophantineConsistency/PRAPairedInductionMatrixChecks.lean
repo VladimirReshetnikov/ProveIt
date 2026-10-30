@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAPairedInductionMatrix
+open DiophantineConsistency.PRAPairedInductionMatrix
+#print axioms pairedMatrix_bounded
+#print axioms branch_eval
+#check pairedMatrix_bounded
+#check branch_eval

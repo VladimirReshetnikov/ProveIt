@@ -1,0 +1,8 @@
+import DiophantineConsistency.PRAPairedInductionSemantics
+open DiophantineConsistency.PRAPairedInductionSemantics
+#print axioms modelPairedZero
+#print axioms modelPairedOne
+#print axioms modelPairedSuccInd_zero
+#print axioms modelPairedSuccInd_one
+#check modelPairedSuccInd_zero
+#check modelPairedSuccInd_one

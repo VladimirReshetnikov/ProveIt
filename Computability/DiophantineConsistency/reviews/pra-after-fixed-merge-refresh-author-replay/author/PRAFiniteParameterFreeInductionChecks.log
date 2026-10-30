@@ -1,0 +1,12 @@
+'DiophantineConsistency.PRAFiniteParameterFreeInduction.candidate_proves_with_finite_dispatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFiniteParameterFreeInduction.PRA_proves_goal_of_finite_parameterFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAFiniteParameterFreeInduction.PRA_proves_goal_of_finite_parameterFree
+  (fs : List (DiophantineConsistency.PRAFiniteFunctionCodes.Code 2))
+  (θ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (hθ : LO.FirstOrder.Semiformula.Open θ)
+  (p : DiophantineConsistency.PRATheory.PRA ∪ inductionAxioms fs ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)

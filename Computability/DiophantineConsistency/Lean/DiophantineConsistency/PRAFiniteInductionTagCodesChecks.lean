@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAFiniteInductionTagCodes
+open DiophantineConsistency.PRAFiniteInductionTagCodes
+#print axioms modelDispatch_get
+#print axioms PRA_proves_dispatch_substitution
+#check PRA_proves_dispatch_substitution

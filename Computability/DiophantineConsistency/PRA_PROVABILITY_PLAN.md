@@ -8,6 +8,89 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The upstream merge at `5135b718b9` changed five Herbrand proof sources and
+`PRAOpenOneInductionClassification`, as well as ZFC interpretation and context
+sources. The dependent finite-induction, pairing, tuple and candidate-PRA
+replays above are evidence for their preceding snapshots; a dependency-aware
+post-merge rebuild is underway. The separate maintained HA endpoint also
+requires its own source-current replay.
+
+The extraction of a finite set of induction instances from an actual IΣ₁
+proof has a provisional Lean implementation. A separate normalization gap
+remains: Foundation's Σ₁ hierarchy permits bounded universals over Σ₁
+bodies, so replacing an arbitrary such predicate by a single existential with
+a bounded matrix requires a coding or collection argument. The existing
+Parsons guarded-collection rule is not by itself a candidate-PRA proof of
+that normalization.
+
+The [exact main-carrier factorization](reviews/adaptive-construction-main-exact2011-independent.md)
+now derives the adaptive shift and scaled main norm from explicit additive
+correction, multiplier and old-norm equalities. Instantiating those hypotheses
+from the common Assembly witness and completing the 13-variable zero remain open.
+
+A [bounded finite-tuple decoding graph](reviews/pra-tuple-graph-author-replay/README.md)
+now supplies existence, unique component recovery and bounds in arbitrary
+candidate-PRA models. This supports future external-parameter packing, but
+the corresponding induction adapter is not yet proved.
+
+The [finite paired-induction theorem](reviews/pra-paired-finite-current-author-replay/README.md)
+now eliminates any finite list of closed Σ₁ induction instances with bounded
+matrices `ψ(x,y,c)` that may depend on the induction parameter `c`, from a
+candidate-PRA proof of a universally closed open-existential goal. Additional
+external predicate parameters, the passage from arbitrary IΣ₁ proofs, and the
+standard-PRA comparison remain open.
+
+The [paired two-instance theorem](reviews/pra-paired-bounded-current-author-replay/README.md)
+now eliminates two closed Σ₁ induction instances with arbitrary bounded
+matrices depending on their shared induction parameter. It uses the internal
+bounded pairing graph and actual candidate-PRA proofs; extra external
+predicate parameters and general conservation are not covered.
+
+A [current-source pairing graph](reviews/pra-pair-graph-current-author-replay/README.md)
+now proves existence, unique component recovery and boundedness inside every
+candidate-PRA model, through its IOpen reduct. It is a model-level bounded
+relation, not a claimed primitive-recursive pairing code.
+
+A [post-merge finite-list theorem](reviews/pra-after-fixed-merge-refresh-author-replay/README.md)
+now eliminates any finite list of closed coded induction instances whose
+`Code 2` predicate bodies ignore the induction parameter. Its 31-module
+source-current chain has passed two independent replays. General
+parameter-dependent instances and arbitrary external parameters remain open.
+
+A [conditional positive first-carrier theorem](reviews/adaptive-construction-first-positive2011-independent.md)
+now supplies the carrier identity from the first norm and explicit size bounds.
+The key remaining input is a stronger actual-Assembly transport-quotient bound;
+the 13-variable zero is not yet constructed. The [seed-size theorem](reviews/adaptive-construction-seed-size2011-independent.md)
+derives one of its size bounds from explicit first-Pell seed hypotheses.
+The [actual-seed first-carrier client](reviews/adaptive-construction-first-seed2011-independent.md)
+now derives that bound and the first norm from `SeedRelations` and phase;
+the Assembly radix and nonzero transport assumptions remain explicit.
+The [transport positivity bridge](reviews/adaptive-construction-transport-positive2011-independent.md)
+derives the nonzero transport contribution from explicit rank-growth and
+unscaled transport assumptions, which still require Assembly instantiation.
+The [actual-equations client](reviews/adaptive-construction-transport-actual2011-independent.md)
+derives the unscaled transport and port/gap bounds from the old equations,
+leaving the common Assembly radix, multiplier and rank facts explicit.
+The [combined actual first-carrier theorem](reviews/adaptive-construction-first-actual2011-independent.md)
+now derives the positive first carrier from the old equations and outer seed
+with those same Assembly facts, without separately assuming the earlier size
+bounds. Producing the common witness remains open.
+
+The [first-Pell correction quotient](reviews/adaptive-construction-correction2011-independent.md)
+is now derived in every stated IΣ₁ model from explicit seed-index and ordinate
+hypotheses and the constructed scaling. A [positive-correction theorem](reviews/adaptive-construction-correction-positive2011-independent.md)
+now also derives the required positive correction under explicit index,
+scaling and positivity hypotheses. Establishing those hypotheses in the full
+construction remains open. A further [actual-seed client](reviews/adaptive-construction-correction-seed2011-independent.md)
+derives the index and ordinate hypotheses from the outer seed and rank phase,
+while retaining the Assembly multiplier and positivity assumptions.
+
+The [enriched-assembly adapter](reviews/adaptive-assembly-bridge2011-independent.md)
+now derives transport, a strong-factor identity and a positive auxiliary
+coordinate from the exact 14-coordinate assembly conclusion with explicit
+phase and ordinate premises, preserving its bound. Constructing that assembly
+conclusion and the final 13-coordinate zero remain open.
+
 The merge pushed as `d53db22f9a` changed `HerbrandFixedGoalExtraction`,
 `HerbrandFixedGoalExtractionBound`, `HerbrandFixedGoalWeakening`, and
 `HerbrandStageSupport`. Previously recorded dependent replay results cover
@@ -38,6 +121,13 @@ The [full revised literal is now bound](reviews/adaptive-first-root-factor87-lit
 to the maintained adaptive expression in Lean, including equality of split
 values and the positive-shifted zero test in every commutative semiring. The
 13-variable candidate still has no completed HA or PRA consistency endpoint.
+The [87-gate arithmetic no-zero sentence](reviews/adaptive-factor87-sentence.md)
+is closed and semantically equivalent to its parent over every commutative
+semiring. A [checked HA derivation](reviews/adaptive-factor87-ha.md) now proves
+the parent/reduced sentence equivalence, with an IΣ₀ proof as well. A
+[candidate-PRA proof](reviews/adaptive-factor87-pra.md) now transfers that
+IΣ₀ equivalence through the bounded comparison. Neither sentence is yet
+internally connected to `Con(ZFC)`.
 
 The later upstream merges through `166728f64b` changed ZFC validator modules
 reachable from the maintained HA endpoint. Its earlier checked derivation is

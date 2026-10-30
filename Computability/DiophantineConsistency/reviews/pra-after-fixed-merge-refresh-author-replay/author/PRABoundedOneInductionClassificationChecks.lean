@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRABoundedOneInductionClassification
+open DiophantineConsistency.PRABoundedOneInductionClassification
+#print axioms boundedSigma_sigma
+#check boundedSigma_sigma

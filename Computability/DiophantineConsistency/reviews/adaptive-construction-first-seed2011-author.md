@@ -1,0 +1,7 @@
+# Positive first carrier from the actual outer seed
+
+`positive_first_of_seed` works in every model of the stated `IΣ₁` assumptions. It extracts the norm and first index from the actual `ArithmeticOuterSeed.SeedRelations`, uses rank phase `R % 4 = 3` to establish index at least two, and derives the seed-size premise. Given positive `s`, `2 ≤ exp u - 1` and `1 ≤ b`, it constructs a positive `r` satisfying the exact additive first-carrier relation and the scaled first-root identity. Lean reports `[propext, Classical.choice, Quot.sound]`.
+
+The actual assembly, radix bound, and the positive transport quotient `b` remain explicit obligations; no full thirteen-variable zero or HA proof-existence result is claimed. The separate first-positive module was refreshed on the seed-size provider before building this client, avoiding a mixed-overlay precedence assumption.
+
+The author run `/tmp/adaptive-construction-first-seed-ahxp_qi5` passed four modules: the first-positive source and checks, followed by this client and checks. The [18-file evidence manifest](adaptive-construction-first-seed2011-author-evidence/FILES.json) has SHA256 `2b5997f0d8d654ed1a366f2e4bc99cc6437643ee95ea600396d3057bd5e96d4f`. It includes source snapshots, full logs and timings, driver, providers and input state and guards. To replay, set `ADAPTIVE_ASSEMBLY_BASE` to the independently replayed seed-size provider and run `success/driver.py`. The underlying canonical composition and package boundaries remain inherited.

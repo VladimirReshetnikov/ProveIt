@@ -1,0 +1,6 @@
+import DiophantineConsistency.AdaptiveFactor87HA
+#print axioms DiophantineConsistency.AdaptiveFactor87HA.modelEquivalence
+#print axioms DiophantineConsistency.AdaptiveFactor87HA.isigma0_proves_equivalence
+#print axioms DiophantineConsistency.AdaptiveFactor87HA.peano_proves_equivalence
+#print axioms DiophantineConsistency.AdaptiveFactor87HA.ha_proves_equivalence
+#check DiophantineConsistency.AdaptiveFactor87HA.ha_proves_equivalence

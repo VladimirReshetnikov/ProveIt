@@ -1,0 +1,7 @@
+# First-Pell quotient for the adaptive main correction
+
+`ArithmeticAdaptiveConstructionCorrection2011.correction_quotient` proves in every model of the stated `IΣ₁` assumptions that the first-Pell seed's index and ordinate identities, together with `Y = sY*q^3` and positive `X,Y`, supply a nonnegative witness `t` satisfying `k = R + 1 + (Y*q^2)*t`. The additive equality rules out truncation in this quotient. The proof applies the existing all-model `first_transport` residue witness and gives `t` explicitly as `4*X*(sY*q)*s` for the residue quotient `s`.
+
+The first-Pell identities remain explicit hypotheses: the theorem does not yet extract them from the full construction. In particular it does not prove that the eventual `gamma` correction is positive or that a thirteen-variable zero exists. It reports `[propext, Classical.choice, Quot.sound]` in Lean.
+
+The author build passed at `/tmp/adaptive-construction-correction-5b08scd8` against `/tmp/adaptive13-assembly-recomposed-q9s50zdl`. The [18-file evidence manifest](adaptive-construction-correction2011-author-evidence/FILES.json) has SHA256 `6cfb673b6082598cf22b11ca8315fbc6a78e47955c1a86f3c7882b9ad3689961`; it includes the initial failed attempt caused by a `.mp`/`.mpr` typo, the corrected run, snapshots, provider metadata, logs, timings, canonical state and guards. For independent replay set `ADAPTIVE_ASSEMBLY_BASE` to the accepted composition and run `success/driver.py`. Package and canonical base boundaries remain inherited.

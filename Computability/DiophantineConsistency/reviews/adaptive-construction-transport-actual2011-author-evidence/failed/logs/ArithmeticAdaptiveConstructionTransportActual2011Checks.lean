@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionTransportActual2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionTransportActual2011.actual_transport_quotient_positive

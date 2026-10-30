@@ -1,0 +1,7 @@
+# Nonzero transport quotient from the actual equations
+
+`actual_transport_quotient_positive` proves `1 ≤ q*(v 3-1)` in every model of the stated `IΣ₁` assumptions, from a positive fourteen-coordinate vector satisfying the actual old equations and the explicit facts `q=exp u`, `exp(rank v)=q*v 8`, and `2*u≤rank v`. The proof derives the positive transport gap and scaled equation from the actual equation client, obtains `v 1<q`, cancels the positive radix to recover the unscaled equation, and applies the preceding rank-growth and transport positivity lemmas. Lean reports `[propext, Classical.choice, Quot.sound]`.
+
+The three additional facts appear inside the uncommitted Assembly proof but are still explicit hypotheses here. This theorem does not invoke Assembly, produce a thirteen-variable zero or establish an HA proof-existence theorem.
+
+The author build passed at `/tmp/adaptive-construction-transport-actual-71n94_uj` against `/tmp/adaptive-construction-transport-positive-12u3bo39`. The [19-file evidence manifest](adaptive-construction-transport-actual2011-author-evidence/FILES.json) has SHA256 `d5e353eeeef6746aef686b539690e522809a4982fe6f6ba65aa09ff450ae0d6a`. It preserves the initial failed proof due to rewriting a local abbreviation, the corrected build, sources, full logs and timings, driver, providers and input state and guards. To replay, set `ADAPTIVE_ASSEMBLY_BASE` to the independently replayed transport-positive provider and run `success/driver.py`; the underlying canonical and package boundaries remain inherited.

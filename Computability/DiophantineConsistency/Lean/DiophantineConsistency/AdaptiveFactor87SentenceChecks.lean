@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveFactor87Sentence
+#print axioms DiophantineConsistency.AdaptiveFactor87Sentence.source_closed
+#print axioms DiophantineConsistency.AdaptiveFactor87Sentence.reduced_closed
+#print axioms DiophantineConsistency.AdaptiveFactor87Sentence.semantic_equivalence
+#check DiophantineConsistency.AdaptiveFactor87Sentence.semantic_equivalence

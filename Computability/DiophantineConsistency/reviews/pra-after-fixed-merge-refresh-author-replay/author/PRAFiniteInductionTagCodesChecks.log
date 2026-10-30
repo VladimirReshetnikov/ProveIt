@@ -1,0 +1,11 @@
+'DiophantineConsistency.PRAFiniteInductionTagCodes.modelDispatch_get' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAFiniteInductionTagCodes.PRA_proves_dispatch_substitution' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAFiniteInductionTagCodes.PRA_proves_dispatch_substitution
+  (fs : List (DiophantineConsistency.PRAFiniteFunctionCodes.Code 2)) (i : Fin fs.length) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    DiophantineConsistency.PRATwoInductionTagCodes.substitutionEquation (dispatch fs)
+      (DiophantineConsistency.PRATwoInductionTagCodes.liftTwo (fs.get i)) (tagCode ↑i)

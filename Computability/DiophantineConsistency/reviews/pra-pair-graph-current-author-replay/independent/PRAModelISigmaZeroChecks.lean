@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRAModelISigmaZero
+set_option autoImplicit false
+namespace DiophantineConsistency.PRAModelISigmaZeroChecks
+open DiophantineConsistency.PRAModelISigmaZero
+#print axioms modelReductISigmaZero
+#print axioms modelReductIOpen
+end DiophantineConsistency.PRAModelISigmaZeroChecks

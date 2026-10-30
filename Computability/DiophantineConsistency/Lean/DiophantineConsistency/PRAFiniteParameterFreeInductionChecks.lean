@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAFiniteParameterFreeInduction
+open DiophantineConsistency.PRAFiniteParameterFreeInduction
+#print axioms candidate_proves_with_finite_dispatch
+#print axioms PRA_proves_goal_of_finite_parameterFree
+#check PRA_proves_goal_of_finite_parameterFree

@@ -1,0 +1,10 @@
+import DiophantineConsistency.PRAModelIOpenPairing
+set_option autoImplicit false
+namespace DiophantineConsistency.PRAModelIOpenPairingChecks
+open DiophantineConsistency.PRAModelIOpenPairing
+#print axioms reduct_eq_standard
+#print axioms standardModelIOpen
+#print axioms modelPairing
+#print axioms pairGraph_spec
+#print axioms modelPairGraph
+end DiophantineConsistency.PRAModelIOpenPairingChecks

@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAPairedTwoInduction
+open DiophantineConsistency.PRAPairedTwoInduction
+#print axioms PRA_proves_goal_of_two_boundedSuccInd
+#check PRA_proves_goal_of_two_boundedSuccInd

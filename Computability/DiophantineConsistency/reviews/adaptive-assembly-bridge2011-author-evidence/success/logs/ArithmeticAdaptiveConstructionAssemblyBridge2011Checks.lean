@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAssemblyBridge2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAssemblyBridge2011.adaptive_facts_of_enriched_assembly

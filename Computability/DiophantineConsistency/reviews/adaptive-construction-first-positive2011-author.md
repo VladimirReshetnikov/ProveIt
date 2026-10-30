@@ -1,0 +1,7 @@
+# Conditional positive first carrier
+
+`positive_first_carrier` works in every model of the stated `IΣ₁` assumptions. From the first Pell norm, `2 ≤ q-1`, `1 ≤ b`, and `sY ≤ k`, it constructs positive `r` satisfying the exact additive first-carrier relation and the scaled first-root equation. The separate `leading_lt_first_root` lemma establishes that the first norm's root strictly exceeds `Q*k`; the size hypotheses make the transport contribution large enough to absorb the remaining summands. Both theorems report `[propext, Classical.choice, Quot.sound]` in Lean.
+
+The size hypotheses are explicit and have not been bound to the actual Assembly: in particular, the Assembly currently proves `z>0`, while this application would use `b=q*(z-1)≥1`. This is not yet a complete reverse construction or an HA proof-existence theorem.
+
+The author build passed at `/tmp/adaptive-construction-first-positive-xuqcluje` against `/tmp/adaptive13-assembly-recomposed-q9s50zdl`. The [11-file evidence manifest](adaptive-construction-first-positive2011-author-evidence/FILES.json) has SHA256 `85aac320a716342fd9e92f546225ffeb1531dd537df44e1e88afa679bc79ef12`. It contains the source snapshots, full logs, timings, driver, provider metadata, canonical state and guards. To replay, set `ADAPTIVE_ASSEMBLY_BASE` to the authenticated composition and run `success/driver.py`; the canonical and package boundaries remain inherited.

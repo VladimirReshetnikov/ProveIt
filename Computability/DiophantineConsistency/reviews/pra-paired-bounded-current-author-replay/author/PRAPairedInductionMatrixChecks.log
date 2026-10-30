@@ -1,0 +1,20 @@
+'DiophantineConsistency.PRAPairedInductionMatrix.pairedMatrix_bounded' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPairedInductionMatrix.branch_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.PRAPairedInductionMatrix.pairedMatrix_bounded
+  (ψ₀ ψ₁ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3)
+  (h₀ : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0 ψ₀) (h₁ : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0 ψ₁) :
+  LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0 (pairedMatrix ψ₀ ψ₁)
+DiophantineConsistency.PRAPairedInductionMatrix.branch_eval {M : Type}
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  (ψ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3)
+  (tag : DiophantineConsistency.PRAFiniteFunctionCodes.Code 0) (x y t : M) :
+  (LO.FirstOrder.Semiformula.Eval ![x, y, t] Empty.elim) (branch ψ tag) ↔
+    ∃ c,
+      LO.FirstOrder.Structure.rel LO.FirstOrder.Language.ORing.Rel.lt
+          ![c,
+            LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.addCode
+              ![t, LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.oneCode Fin.elim0]] ∧
+        (LO.FirstOrder.Semiformula.Eval ![t, LO.FirstOrder.Structure.func tag Fin.elim0, c] Empty.elim) pairGraph ∧
+          (LO.FirstOrder.Semiformula.Eval ![x, y, c] Empty.elim) ψ

@@ -1,0 +1,19 @@
+'DiophantineConsistency.PRAOpenOneInduction.modelOpenSigma' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAOpenOneInduction.modelSigmaCharacteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAOpenOneInduction.modelSuccInd_congr' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAOpenOneInduction.PRA_proves_goal_of_openSuccInd' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAOpenOneInduction.PRA_proves_goal_of_openSuccInd
+  (ψ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3) (hψ : LO.FirstOrder.Semiformula.Open ψ)
+  (θ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (hθ : LO.FirstOrder.Semiformula.Open θ)
+  (p :
+    DiophantineConsistency.PRATheory.PRA ∪
+        {LO.FirstOrder.Semiformula.univCl (LO.FirstOrder.Arithmetic.succInd (openSigma ψ))} ⊢
+      LO.FirstOrder.Semiformula.univCl (∃⁰ θ)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)

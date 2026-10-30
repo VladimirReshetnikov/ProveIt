@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionCorrection2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionCorrection2011.correction_quotient

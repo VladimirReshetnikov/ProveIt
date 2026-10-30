@@ -1,0 +1,10 @@
+'DiophantineConsistency.PRAPairedTwoInduction.PRA_proves_goal_of_two_boundedSuccInd' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAPairedTwoInduction.PRA_proves_goal_of_two_boundedSuccInd
+  (ψ₀ ψ₁ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3)
+  (h₀ : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0 ψ₀) (h₁ : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0 ψ₁)
+  (θ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (hθ : LO.FirstOrder.Semiformula.Open θ)
+  (p : DiophantineConsistency.PRATheory.PRA ∪ twoAxioms ψ₀ ψ₁ ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)
