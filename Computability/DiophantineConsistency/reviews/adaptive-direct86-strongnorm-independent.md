@@ -1,0 +1,3 @@
+# Direct-ordinate 86 strong norm: independent replay
+
+The root independently replayed the scoped author driver and obtained `PASS` at `/tmp/adaptive-direct86-strongnorm-flp65jxa`, state SHA-256 `e3fd3488cee352e43cc4e792381882d4b8c54a81fd0f97425c072ad2f386a507`. Both source/object hashes match the author table; both complete logs are empty, SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. State, driver, source snapshots, full logs and timings are in `adaptive-direct86-strongnorm-independent-evidence`; manifest SHA-256 `868ed0a56ce03d9df30af8e4d374142723139de4de555389b58e94e50a3396a1`. Scope and historical boundaries are those of the author receipt.
