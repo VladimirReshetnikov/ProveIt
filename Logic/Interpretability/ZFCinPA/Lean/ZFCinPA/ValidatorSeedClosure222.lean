@@ -1,4 +1,4 @@
-import ZFCinPA.ValidatorImplicationContext
+import ZFCinPA.ValidatorPrefixContext
 import ZFCinPA.ValidatorSeedWitness222
 
 set_option autoImplicit false
@@ -20,7 +20,6 @@ open ArithmeticSeedTemplates222 (req clos)
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
 local notation "h0" => (ValidatorImplicationContext.h0 CProv)
 local notation "h1" => (ValidatorImplicationContext.h1 CProv)
 local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
@@ -75,19 +74,13 @@ theorem seed_singleton (a b p k : V) (hbp : b ≠ p) (hbk : b ≠ k)
   have backAll := compose (vac_rel p k b hbp hbk) (all_mono b back)
   have combine := all_mono2 b (conj_rule (wim (wel b k) (Eind b p))
     (wim (Eind b p) (wel b k)))
-  apply ded1
-  have hc : D [conj (clos a b k (Eind b p)) (req b k (Eind b p))]
-      (clos a b k (Eind b p)) := .mp (.ax (conj_left _ _)) h0
-  have hr : D [conj (clos a b k (Eind b p)) (req b k (Eind b p))]
-      (req b k (Eind b p)) := .mp (.ax (conj_right _ _)) h0
-  have member : D [conj (clos a b k (Eind b p)) (req b k (Eind b p))] (wel p k) :=
-    .mp (.ax (request_eind_member b p k hbp hbk)) hr
-  have forward : D [conj (clos a b k (Eind b p)) (req b k (Eind b p))]
-      (wal b (wim (wel b k) (Eind b p))) :=
-    .mp (.ax (closure_support a b k (Eind b p) hm)) hc
-  have reverse : D [conj (clos a b k (Eind b p)) (req b k (Eind b p))]
-      (wal b (wim (Eind b p) (wel b k))) := .mp (.ax backAll) member
-  exact .mp (.mp (.ax (conj_rule _ _)) member) (.mp (.mp (.ax combine) forward) reverse)
+  let C := clos a b k (Eind b p)
+  let R := req b k (Eind b p)
+  have member := compose (conj_right C R) (request_eind_member b p k hbp hbk)
+  have forward := compose (conj_left C R) (closure_support a b k (Eind b p) hm)
+  have reverse := compose member backAll
+  have both := ded1 (.mp (.mp (.ax combine) (.mp (.ax forward) h0)) (.mp (.ax reverse) h0))
+  exact ValidatorPrefixContext.conj_under CProv cProv_classical member both
 
 def singletonBody (p : V) : V :=
   conj (wel p (containerLabel p))

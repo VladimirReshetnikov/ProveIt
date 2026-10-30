@@ -19,7 +19,6 @@ open ArithmeticSeedTemplates222 (req clos)
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
 local notation "h0" => (ValidatorImplicationContext.h0 CProv)
 local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
 
@@ -51,13 +50,12 @@ theorem closure_coverage (a b k p : V) :
 
 theorem pair_image (a b k p : V) :
     CProv (wim (conj (clos a b k p) (req b k p)) (imageBody a b k p)) := by
-  apply ded1
-  have hc : D [conj (clos a b k p) (req b k p)] (clos a b k p) :=
-    .mp (.ax (conj_left _ _)) h0
-  exact .mp (.mp (.ax (conj_rule _ _))
-    (.mp (.ax (closure_support_exists a b k p)) hc))
-    (.mp (.mp (.ax (conj_rule _ _)) (.mp (.ax (conj_right _ _)) h0))
-      (.mp (.ax (closure_coverage a b k p)) hc))
+  let C := clos a b k p
+  let R := req b k p
+  exact ValidatorPrefixContext.conj_under CProv cProv_classical
+    (compose (conj_left C R) (closure_support_exists a b k p))
+    (ValidatorPrefixContext.conj_under CProv cProv_classical (conj_right C R)
+      (compose (conj_left C R) (closure_coverage a b k p)))
 
 /-- Preserve exactly the two literal seed gates, with no Vac a c or Vac c c. -/
 theorem seed_image (a b c : V) (hca : c ≠ a) (hcb : c ≠ b) :
