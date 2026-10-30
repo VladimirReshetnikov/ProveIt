@@ -1,0 +1,6 @@
+'DiophantineConsistency.ParsonsPositiveComparison.comparison' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.ParsonsPositiveComparison.PositiveAdmissible : Prop
+DiophantineConsistency.ParsonsPositiveComparison.comparison (hadmit : PositiveAdmissible)
+  {φ : LO.FirstOrder.Proposition ℒₒᵣ} (p : DiophantineConsistency.ParsonsPositiveRule.Proof 𝗣𝗔⁻ φ) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) φ).univCl

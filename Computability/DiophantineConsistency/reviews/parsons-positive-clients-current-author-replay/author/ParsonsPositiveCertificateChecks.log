@@ -1,0 +1,10 @@
+'DiophantineConsistency.ParsonsPositiveCertificate.restrict' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPositiveCertificate.toRule_allPositive' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.ParsonsPositiveCertificate.restrict_roundtrip' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.ParsonsPositiveCertificate.restrict_roundtrip {T : LO.FirstOrder.Theory ℒₒᵣ}
+  {φ : LO.FirstOrder.Proposition ℒₒᵣ} (p : DiophantineConsistency.ParsonsRule.Proof T φ) (h : AllPositive p) :
+  DiophantineConsistency.ParsonsPositiveRule.toRule (restrict p h) = p

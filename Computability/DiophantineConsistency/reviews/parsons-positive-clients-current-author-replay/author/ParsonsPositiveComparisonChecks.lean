@@ -1,0 +1,5 @@
+import DiophantineConsistency.ParsonsPositiveComparison
+open DiophantineConsistency.ParsonsPositiveComparison
+#print axioms comparison
+#check PositiveAdmissible
+#check comparison

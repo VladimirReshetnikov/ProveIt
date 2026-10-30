@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [positive-rule clients](reviews/parsons-positive-clients-current-author-replay/README.md)
+now prove the guarded induction case in the restricted calculus and define a
+certificate that restricts an existing Parsons proof. Their candidate-PRA
+comparison explicitly assumes positive-rule admissibility; neither that
+assumption nor the certificate for the full cut-free translator is proved.
+
 The [positive-rule calculus](reviews/parsons-positive-rule-current-author-replay/README.md)
 restricts induction predicates to the positive bounded/existential syntax and
 embeds into the existing Parsons rule calculus. Strict prefixes and the local
