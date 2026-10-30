@@ -15,18 +15,6 @@ open ArithmeticPellRecurrence ArithmeticPellPowerRecovery
 attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix CurrentMasks2011.beta
   CurrentMasks2011.lowPort CurrentMasks2011.highPort xcoord ycoord
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-private theorem mod_cancel {a b c m : V} (hm : 0<m) (h : (a+c)%m=(b+c)%m) : a%m=b%m := by
-  have hr := le_of_lt (mod_lt c hm)
-  have hc : c+(m-c%m)=m*(c/m+1) := by
-    calc
-      c+(m-c%m)=(m*(c/m)+c%m)+(m-c%m) := by rw [div_add_mod]
-      _=m*(c/m)+(c%m+(m-c%m)) := by ring
-      _=m*(c/m)+m := by rw [add_tsub_cancel_of_le hr]
-      _=m*(c/m+1) := by ring
-  have hh : ((a+c)+(m-c%m))%m=((b+c)+(m-c%m))%m := by
-    rw [mod_add (a:=a+c) hm,mod_add (a:=b+c) hm,h]
-  simpa only [add_assoc,hc,mod_add_mul' _ _ hm] using hh
-
 def PowerFinish (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
   let q : V := 1+v 0*(p 0:V)
   let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0

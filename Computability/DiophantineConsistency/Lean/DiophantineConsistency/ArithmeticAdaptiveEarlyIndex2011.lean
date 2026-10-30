@@ -15,22 +15,6 @@ open ArithmeticPellRecurrence ArithmeticPellCongruences
 attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix CurrentMasks2011.beta
   CurrentMasks2011.lowPort CurrentMasks2011.highPort
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-private theorem magnitude_mod (p : Pair V) (m : V) (hm : 0<m)
-    (hd : m∣magnitude p) : p.1%m=p.2%m := by
-  have hz : magnitude p%m=0 := mod_eq_zero_iff_dvd.mpr hd
-  rcases le_total p.2 p.1 with h|h
-  · have he : p.1=p.2+(p.1-p.2) := by rw [add_comm,tsub_add_cancel_of_le h]
-    have hg := magnitude_of_add he
-    have hs : (p.1-p.2)%m=0 := by rw [←hg]; exact hz
-    rw [he,mod_add hm,hs,add_zero,mod_eq_self_of_lt (mod_lt _ hm)]
-  · have he : p.2=p.1+(p.2-p.1) := by rw [add_comm,tsub_add_cancel_of_le h]
-    have hg : magnitude p=p.2-p.1 := by
-      have h' := magnitude_of_add he
-      change magnitude (swap p)=p.2-p.1 at h'
-      simpa only [magnitude_swap] using h'
-    have hs : (p.2-p.1)%m=0 := by rw [←hg]; exact hz
-    rw [he,mod_add hm,hs,add_zero,mod_eq_self_of_lt (mod_lt _ hm)]
-
 def EarlyIndex (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
   let q : V := 1+v 0*(p 0:V)
   let M : V := (q*(q*q))*(v 0*(p 0:V))

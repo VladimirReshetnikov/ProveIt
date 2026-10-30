@@ -9,38 +9,10 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder.Arithmetic
 open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticAdaptiveFactorMagnitude2011
 open ArithmeticAdaptiveScaledNorms2011 ArithmeticAdaptiveMainCongruence2011
-open ArithmeticAdaptiveFactorThree2011
+open ArithmeticAdaptiveFactorThree2011 ArithmeticAdaptiveFirstDivisibility2011
 attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix CurrentMasks2011.beta
   CurrentMasks2011.lowPort CurrentMasks2011.highPort
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-private theorem mod_cancel {a b c m : V} (hm : 0<m) (h : (a+c)%m=(b+c)%m) : a%m=b%m := by
-  have hr := le_of_lt (mod_lt c hm)
-  have hc : c+(m-c%m)=m*(c/m+1) := by
-    calc
-      c+(m-c%m)=(m*(c/m)+c%m)+(m-c%m) := by rw [div_add_mod]
-      _=m*(c/m)+(c%m+(m-c%m)) := by ring
-      _=m*(c/m)+m := by rw [add_tsub_cancel_of_le hr]
-      _=m*(c/m+1) := by ring
-  have hh : ((a+c)+(m-c%m))%m=((b+c)+(m-c%m))%m := by
-    rw [mod_add (a:=a+c) hm,mod_add (a:=b+c) hm,h]
-  simpa only [add_assoc,hc,mod_add_mul' _ _ hm] using hh
-
-private theorem magnitude_mod (p : Pair V) (m : V) (hm : 0<m)
-    (hd : m∣magnitude p) : p.1%m=p.2%m := by
-  have hz : magnitude p%m=0 := mod_eq_zero_iff_dvd.mpr hd
-  rcases le_total p.2 p.1 with h|h
-  · have he : p.1=p.2+(p.1-p.2) := by rw [add_comm,tsub_add_cancel_of_le h]
-    have hg := magnitude_of_add he
-    have hs : (p.1-p.2)%m=0 := by rw [←hg]; exact hz
-    rw [he,mod_add hm,hs,add_zero,mod_eq_self_of_lt (mod_lt _ hm)]
-  · have he : p.2=p.1+(p.2-p.1) := by rw [add_comm,tsub_add_cancel_of_le h]
-    have hg : magnitude p=p.2-p.1 := by
-      have h' := magnitude_of_add he
-      change magnitude (swap p)=p.2-p.1 at h'
-      simpa only [magnitude_swap] using h'
-    have hs : (p.2-p.1)%m=0 := by rw [←hg]; exact hz
-    rw [he,mod_add hm,hs,add_zero,mod_eq_self_of_lt (mod_lt _ hm)]
-
 private theorem congruence_divides_difference {x y m : V} (hm : 0<m)
     (hyx : y≤x) (h : x%m=y%m) : m∣x-y := by
   apply mod_eq_zero_iff_dvd.mp
