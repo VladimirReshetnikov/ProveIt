@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+Several construction replay states inherited an incorrect generic scope label;
+the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
+identifies the actual theorem associated with each affected snapshot. Module
+names, proof outputs, hashes and exit statuses are unchanged.
+
 The [auxiliary-factor reverse bridge](reviews/adaptive-construction-aux-factor2011-independent.md)
 derives its literal unit from explicit strong and auxiliary norm assumptions
 and the port bound. These still need to be connected to the common witness.
