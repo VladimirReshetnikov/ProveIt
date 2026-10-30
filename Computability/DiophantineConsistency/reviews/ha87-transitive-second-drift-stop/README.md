@@ -1,0 +1,5 @@
+# Second transitive full rebase stopped after source drift
+
+`/tmp/ha87-full-transitive-m4qs93qz` was externally stopped at a safe child boundary after merged project sources changed. Its terminal state is FAILED/KeyboardInterrupt on `ArithmeticDagControlPerm222`, with 129 reused rows and no newly verified output. The state and all 129 hashed per-module transitive manifests are included. Earlier source/object/log ancestry is referenced in `../ha87-transitive-first-drift-stop/` and its predecessor packets; the residue and signed import updates are in `../ha87-residue-import-refresh/` and `../ha87-signed-import-refresh/`.
+
+The subsequent author rebase `/tmp/ha87-full-transitive-uqj917sj` later stopped for source drift; its terminal state and manifests are frozen in `../ha87-transitive-third-drift-stop/`. Its transitive reuse evidence reconstructs original environments from surviving objects and cannot rule out unrecorded mutation during historical compilation; dynamic imports and transitive package ancestry remain outside the audit. Neither run is an independently replayed proof.

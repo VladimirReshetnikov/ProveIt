@@ -1,0 +1,5 @@
+# Post-seed-merge fresh 87 HA author PASS
+
+The author build `/tmp/ha87-focused-validator-rebase-iuk2m5rb` compiled all 83 focused modules from source with zero prefix reuse and finished PASS after its full final source, object, direct-input and inherited-boundary checks. Its full state and all compiler logs are included. `HAAdaptiveFactor87Checks` reports the exact `ProofEquiv` statement and only `propext`, `Classical.choice`, and `Quot.sound` for both endpoint theorems. This is an author build, not an independently replayed proof receipt.
+
+The recorded source snapshot precedes the next queued origin merge. `source-deltas.json` and `changed-sources/` capture the differences from the earlier fresh peer `../ha87-focused-peer-mismatch-audit/`; unchanged prior source snapshots, driver, package/object anchors, and historical provenance are referenced through that packet and `../ha87-focused-pinned-zf-author-pass/`. The focused build retains the historical HA/ZF/Foundation/package boundary; it does not authenticate that boundary's source ancestry.
