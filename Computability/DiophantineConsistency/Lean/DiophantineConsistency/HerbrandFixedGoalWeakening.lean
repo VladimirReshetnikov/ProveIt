@@ -29,12 +29,8 @@ theorem current_eval {M : Type} [Structure language M] (r j : ℕ)
 theorem chiOutput_eval {M : Type} [Structure language M] (r : ℕ)
     (β : Semiproposition language 8) (js : List ℕ) (e : ℕ → M) :
     (chiOutput r β js).Eval ![] e ↔ ∃ j ∈ js, (current r j β).Eval ![] e := by
-  induction js with
-  | nil => simp [chiOutput, Semiformula.Eval]
-  | cons j js ih =>
-    change ((current r j β).Eval ![] e ∨ (chiOutput r β js).Eval ![] e) ↔ _
-    rw [ih]
-    simp
+  exact HerbrandValuationCompact.eval_list_disjunction (current r · β) (chiOutput r β)
+    rfl (fun _ _ => rfl) js e
 
 theorem goal_eval {M : Type} [Structure language M] (θ : Semiproposition language 1)
     (b : Fin 7 → M) (e : ℕ → M) : (liftGoal θ).Eval b e ↔ θ.Eval ![b 6] e := by

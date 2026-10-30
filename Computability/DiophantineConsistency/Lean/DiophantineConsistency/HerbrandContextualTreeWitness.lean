@@ -74,13 +74,7 @@ def termOutput (θ : Semiproposition language 1) : List ℕ → Proposition lang
 theorem output_eval {M : Type} [Structure language M] (θ : Semiproposition language 1)
     (js : List ℕ) (e : ℕ → M) :
     (termOutput θ js).Eval ![] e ↔ ∃ j ∈ js, (θ/[candidate j]).Eval ![] e := by
-  induction js with
-  | nil => simp [termOutput, Semiformula.Eval]
-  | cons j js ih =>
-    change ((θ/[candidate j]).Eval ![] e ∨ (termOutput θ js).Eval ![] e) ↔ _
-    rw [ih]
-    simp
-
+  exact eval_list_disjunction (fun j => θ/[candidate j]) (termOutput θ) rfl (fun _ _ => rfl) js e
 /-- Finite contextual Herbrand extraction, retaining an existential side
 formula `∼side` rather than assuming it false globally. -/
 theorem universal_proves_contextual (side : Proposition language) (hs : UniversalTree side)
