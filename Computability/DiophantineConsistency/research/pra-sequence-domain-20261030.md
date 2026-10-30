@@ -1,0 +1,9 @@
+# Sequence and domain witness bounds
+
+Foundation's positive `seqDef s` contains an `isMappingDef s` graph and bounded witnesses `l,d ≤ 2*s` with `domainDef d s` and `underDef d l`. The positive and negative `underDef` graphs have explicit candidate-PRA witness bounds, using their exact substitution into the already bounded exponential graph. The positive bound is `exponentialMajorant (d+1)`, and monotonicity gives one common bound `exponentialMajorant (2*s+1)` for all relevant `d`.
+
+`PRASeqDefWitnessBound` proves candidate-PRA sentences for the actual positive sequence graph, first with supplied witnesses and then by extracting Foundation's witnesses from `seqDef`. `PRAUnderMajorantMono` replaces the latter's per-index under-polynomial condition with the single common bound above. These sequence sentences still assume appropriately bounded mapping and domain graphs.
+
+For `domainDef u s`, both polarities of its actual existential pair/membership subformula have now been bounded in candidate PRA. `PRADomainWitnessBound` combines these with the positive and negative bit bounds to give an explicit witness majorant for the entire positive domain graph: `s + bitMajorant(u) + negBitMajorant(u) + bitMajorant(s) + negBitMajorant(s)`. The only graph premise is the actual positive `domainDef` graph; all majorants in this expression are explicit polynomials. This domain result has not yet been composed into the sequence client.
+
+The bounded `isMappingDef` graph and the recursive sequence history remain open. These results do not supply the full ZFC refutation witness certificate or the requested internal HA equivalence proof. Exact proof and replay scopes are recorded in the corresponding under, sequence, and domain review packets; external package and unlisted Foundation transitive provenance are inherited as described there.

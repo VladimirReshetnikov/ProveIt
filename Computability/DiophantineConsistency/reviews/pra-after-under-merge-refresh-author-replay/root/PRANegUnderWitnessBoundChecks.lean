@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRANegUnderWitnessBound
+#print axioms DiophantineConsistency.PRANegUnderWitnessBound.neg_under_bound
+#print axioms DiophantineConsistency.PRANegUnderWitnessBound.candidate_proves_neg_under_bound

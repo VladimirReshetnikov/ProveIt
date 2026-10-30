@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRABVPairFamilyBound
+#print axioms DiophantineConsistency.PRABVPairFamilyBound.bvPair_poly_mono
+#print axioms DiophantineConsistency.PRABVPairFamilyBound.candidate_proves_bv_pair_poly_mono
