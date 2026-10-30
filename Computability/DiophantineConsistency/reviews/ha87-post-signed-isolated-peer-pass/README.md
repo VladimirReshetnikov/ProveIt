@@ -1,0 +1,7 @@
+# Post-signed-import isolated 87 HA peer PASS
+
+Fresh peer `/tmp/ha87-focused-validator-rebase-wk12r5tv` finished PASS after compiling all 85 focused modules from scratch, with zero prefix reuse. It used the 732-file isolated source tree `/tmp/ha87-frozen-peer-l2xdsyfv/tree`, whose hashes were checked against the final author state before launch. Its complete state and 85 full logs are included; the author state, logs, source deltas, frozen driver/graph and source manifest are in `../ha87-post-signed-frozen-peer/`.
+
+The separate `verify.py` rechecked all 85 author/peer source, direct dependency, available companion, object and full-log hashes; no differences were found. It also rehashed all 732 frozen sources, 1,136 inherited project objects, five model-only inherited objects and the pinned `ZF.Zf` object, and rechecked state/driver/graph/plan anchors. `comparison.json` and `verify.log` record the PASS. The exact 87-gate HA endpoint and bridge use only `propext`, `Classical.choice`, and `Quot.sound` as Lean axioms.
+
+This is an independent replay of the fixed pre-merge focused source snapshot. It does not cover the later workspace changes recorded in `../ha87-isolated-workspace-drift/`, and it does not authenticate the historical HA/ZF/Foundation or transitive package source/object ancestry. The separate fully fresh project-source build uses another fixed snapshot and retains its own package-boundary qualification.

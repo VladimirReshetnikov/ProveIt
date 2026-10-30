@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRALhWitnessBound
+#print axioms DiophantineConsistency.PRALhWitnessBound.lh_bound_explicit
+#print axioms DiophantineConsistency.PRALhWitnessBound.candidate_proves_lh_bound
