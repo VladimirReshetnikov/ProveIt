@@ -1,4 +1,5 @@
 import DiophantineConsistency.HerbrandUniversalPreparation
+import DiophantineConsistency.HerbrandDisjunctionSemantics
 import DiophantineConsistency.HerbrandBoundedSoundness
 import DiophantineConsistency.HerbrandBoundedTruth
 
@@ -18,12 +19,8 @@ def termDisjunction (φ : Semiproposition language 1) : List (SyntacticTerm lang
 theorem termDisjunction_eval {M : Type} [Structure language M]
     (φ : Semiproposition language 1) (ts : List (SyntacticTerm language)) (e : ℕ → M) :
     (termDisjunction φ ts).Eval ![] e ↔ ∃ t ∈ ts, (φ/[t]).Eval ![] e := by
-  induction ts with
-  | nil => simp [termDisjunction, Semiformula.Eval]
-  | cons t ts ih =>
-      change ((φ/[t]).Eval ![] e ∨ (termDisjunction φ ts).Eval ![] e) ↔ _
-      rw [ih]
-      simp
+  exact HerbrandDisjunctionSemantics.eval_list_disjunction
+    (fun t => φ/[t]) (termDisjunction φ) rfl (fun _ _ => rfl) ts e
 
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
