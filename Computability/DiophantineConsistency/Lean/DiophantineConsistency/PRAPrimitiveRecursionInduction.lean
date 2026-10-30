@@ -73,6 +73,20 @@ private theorem recursiveBody_eval {n : ℕ} (pred : Code (n+2)) (base : Code n)
   have hz : (Semiterm.val (L := language) ![x] e ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
   simp [Semiterm.val_func, hp, hz]
 
+-- Evaluation of the recursive witness formula in any equality structure.
+omit [Nonempty M] [M↓[language] ⊧* PRA] in
+theorem recursiveFormula_eval {n : ℕ} (pred : Code (n+2)) (base : Code n) (step : Code (n+2))
+    (x : M) (e : ℕ → M) :
+    (Semiformula.rel Language.ORing.Rel.eq
+      ![.func pred (Fin.cases (.bvar 0) (Fin.cases
+        (.func (iterateCode base step) (Fin.cases (.bvar 0) (fun i : Fin n => .fvar i.val)))
+        (fun i : Fin n => .fvar i.val))), .func oneCode Fin.elim0] : Semiproposition language 1).Eval ![x] e ↔
+      let params := fun i : Fin n => e i.val
+      let iterate := Structure.func (L := language) (iterateCode base step) (Fin.cases x params)
+      Structure.func (L := language) pred (Fin.cases x (Fin.cases iterate params)) =
+        Structure.func (L := language) oneCode Fin.elim0 :=
+  recursiveBody_eval pred base step x e
+
 /-- If a PR predicate has a PR base witness and a PR successor update,
 open induction proves that its recursively generated witnesses work at every
 index, in every candidate-PRA model and for every parameter valuation. -/
