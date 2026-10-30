@@ -25,39 +25,6 @@ def witnessedBody {n : ℕ} (pred : Code (n+2)) (base : Code n) (step : Code (n+
       .func oneCode Fin.elim0]
 
 private def params0 (n : ℕ) : Fin n → Term language ℕ := fun i => .fvar i.val
-section models
-variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
-  [M↓[language] ⊧* PRA]
-omit [Nonempty M] [M↓[language] ⊧* PRA] in
-private theorem witnessedBody_eval {n : ℕ} (pred : Code (n+2)) (base : Code n) (step : Code (n+2))
-    (x : M) (e : ℕ → M) : (witnessedBody pred base step).Eval ![x] e ↔
-    let params := fun i : Fin n => e i.val
-    let iterate := Structure.func (L := language) (iterateCode base step) (Fin.cases x params)
-    Structure.func (L := language) pred (Fin.cases x (Fin.cases iterate params)) =
-      Structure.func (L := language) oneCode Fin.elim0 := by
-  change Semiformula.EvalAux (inferInstance : Structure language M) e ![x] (witnessedBody pred base step) ↔ _
-  dsimp only [witnessedBody, Semiformula.EvalAux]
-  rw [eqRel]
-  have hi : (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (params1 n)) =
-      Fin.cases x (fun i : Fin n => e i.val) := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
-  have hp : (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (Fin.cases
-      (.func (iterateCode base step) (Fin.cases (.bvar 0) (params1 n))) (params1 n))) =
-      Fin.cases x (Fin.cases (Structure.func (L := language) (iterateCode base step)
-        (Fin.cases x (fun i : Fin n => e i.val))) (fun i : Fin n => e i.val)) := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases ?_ (fun _ => rfl) j
-    change Structure.func (L := language) (iterateCode base step)
-      (Semiterm.val ![x] e ∘ Fin.cases (.bvar 0) (params1 n)) = _
-    rw [hi]
-    rfl
-  have hz : (Semiterm.val (L := language) ![x] e ∘ Fin.elim0) = (Fin.elim0 : Fin 0 → M) := Subsingleton.elim _ _
-  simp [Semiterm.val_func, hp, hz]
-
-
-end models
 
 theorem modelWitnessedBody {M : Type} [Structure language M] [Structure.Eq language M]
     {n : ℕ} (pred : Code (n+2)) (base : Code n) (step : Code (n+2)) (e : ℕ → M) (x : M) :
@@ -109,7 +76,7 @@ theorem PRA_proves_witnessed_rule {n : ℕ} (pred : Code (n+2)) (base : Code n) 
   intro e
   have hall : ∀ x : M, (witnessedBody pred base step).Eval ![x] e := by
     intro x
-    apply (witnessedBody_eval pred base step x e).mpr
+    apply (recursiveFormula_eval pred base step x e).mpr
     exact modelRecursiveWitness pred base step e ((baseFormula_eval pred base e).mp (hbase e))
       ((stepFormula_eval pred step e).mp (hstep e)) x
   simp only [Semiformula.eval_all]

@@ -24,37 +24,27 @@ open scoped LO.FirstOrder.Arithmetic
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private lemma encode_subst01 {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K)
-    (F B s : V) :
-    encode F B s (subst ℒₛₑₜ ((gicSubst01Const : ℕ) : V) K) =
-      encode F (B.[0]∷B.[1]∷0) s K := by
-  rw [val_gicSubst01Const]
-  simpa using encode_subst_pair hK
-    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (0 : Fin 4)).isSemiterm
-    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (1 : Fin 4)).isSemiterm F B s
-
-private lemma encode_subst10 {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K)
-    (F B s : V) :
-    encode F B s (subst ℒₛₑₜ ((gicSubst10Const : ℕ) : V) K) =
-      encode F (B.[1]∷B.[0]∷0) s K := by
-  rw [val_gicSubst10Const]
-  simpa using encode_subst_pair hK
-    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (1 : Fin 4)).isSemiterm
-    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (0 : Fin 4)).isSemiterm F B s
-
 /-- Support uses the innermost variable first, then the next variable. -/
 theorem encode_gic_support_slots {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K) (F t : V) :
     encode F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
       (subst ℒₛₑₜ ((gicSubst01Const : ℕ) : V) K) =
         encode F ((t+6)∷(t+4)∷0) (t+8) K := by
-  simpa using encode_subst01 hK F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
+  rw [val_gicSubst01Const]
+  simpa using encode_subst_pair hK
+    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (0 : Fin 4)).isSemiterm
+    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (1 : Fin 4)).isSemiterm
+    F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
 
 /-- Coverage reverses those slots. The internal matrix is unchanged. -/
 theorem encode_gic_coverage_slots {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K) (F t : V) :
     encode F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
       (subst ℒₛₑₜ ((gicSubst10Const : ℕ) : V) K) =
         encode F ((t+4)∷(t+6)∷0) (t+8) K := by
-  simpa using encode_subst10 hK F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
+  rw [val_gicSubst10Const]
+  simpa using encode_subst_pair hK
+    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (1 : Fin 4)).isSemiterm
+    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (0 : Fin 4)).isSemiterm
+    F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
 
 /-- Every stored free label is odd; the encoder's fallback label is already 1. -/
 def OddEnv (F : V) : Prop := ∀ i<len F, F.[i] % 2=1
