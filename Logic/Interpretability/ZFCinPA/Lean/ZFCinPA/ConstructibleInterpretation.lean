@@ -102,6 +102,15 @@ theorem term_cases_between {S A B ξ : Type*} [Structure ℒₛₑₜ A] [Struct
   | fvar x => exact ⟨f x, rfl, rfl⟩
   | func g v => cases g
 
+/-- Embedding commutes with substituting a vector of terms into a sentence. -/
+lemma emb_comp_embSubsts {ξ ο : Type*} [IsEmpty ο] {n k : ℕ}
+    (v : Fin k → Semiterm ℒₛₑₜ ο n) :
+    ((Rew.emb : Rew ℒₛₑₜ ο n ξ n).comp (Rew.embSubsts v)) =
+      Rew.embSubsts (fun i ↦ Rew.emb (v i)) := by
+  ext x
+  · simp [Rew.comp_app]
+  · exact x.elim
+
 /-! ## The domain formula -/
 
 /-- `x ∈ L` as a Foundation semisentence in one variable. -/
@@ -164,10 +173,11 @@ lemma emb_domAt {ο : Type*} [IsEmpty ο] :
       domAt δ n := by
   have h : ((Rew.emb : Rew ℒₛₑₜ ο (n + 1) ξ (n + 1)).comp (Rew.embSubsts ![#0])) =
       Rew.embSubsts ![#0] := by
-    ext x
-    · rw [Fin.fin_one_eq_zero x]
-      simp [Rew.comp_app]
-    · exact x.elim
+    rw [emb_comp_embSubsts]
+    congr 1
+    funext i
+    rw [Fin.fin_one_eq_zero i]
+    simp
   unfold domAt
   rw [← TransitiveRewriting.comp_app, h]
 

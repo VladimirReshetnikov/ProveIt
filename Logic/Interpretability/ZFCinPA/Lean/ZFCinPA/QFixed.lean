@@ -98,10 +98,8 @@ section Embedding
 variable {ξ : Type*}
 
 lemma emb_comp_embSubsts {ο : Type*} [IsEmpty ο] {n k : ℕ} (v : Fin k → Semiterm ℒₛₑₜ ο n) :
-    ((Rew.emb : Rew ℒₛₑₜ ο n ξ n).comp (Rew.embSubsts v)) = Rew.embSubsts (fun i ↦ Rew.emb (v i)) := by
-  ext x
-  · simp [Rew.comp_app]
-  · exact x.elim
+    ((Rew.emb : Rew ℒₛₑₜ ο n ξ n).comp (Rew.embSubsts v)) = Rew.embSubsts (fun i ↦ Rew.emb (v i)) :=
+  ConstructibleInterpretation.emb_comp_embSubsts v
 
 lemma emb_atomI {ο : Type*} [IsEmpty ο] {n k : ℕ} (R : (ℒₛₑₜ).Rel k) (v : Fin k → Semiterm ℒₛₑₜ ο n) :
     (Rew.emb ▹ atomI R v : Semiformula ℒₛₑₜ ξ n) = atomI R (fun i ↦ Rew.emb (v i)) := by
@@ -110,14 +108,8 @@ lemma emb_atomI {ο : Type*} [IsEmpty ο] {n k : ℕ} (R : (ℒₛₑₜ).Rel k)
   | mem => rw [atomI, atomI, ← TransitiveRewriting.comp_app, emb_comp_embSubsts]
 
 lemma emb_domAtS {ο : Type*} [IsEmpty ο] {n : ℕ} :
-    (Rew.emb ▹ (domAtS n : Semiformula ℒₛₑₜ ο (n + 1)) : Semiformula ℒₛₑₜ ξ (n + 1)) = domAtS n := by
-  rw [domAtS, domAtS, ← TransitiveRewriting.comp_app, emb_comp_embSubsts]
-  have e : (fun i : Fin 1 ↦ (Rew.emb ((![#0] : Fin 1 → Semiterm ℒₛₑₜ ο (n + 1)) i) :
-      Semiterm ℒₛₑₜ ξ (n + 1))) = ![#0] := by
-    funext i
-    rw [Fin.fin_one_eq_zero i]
-    simp
-  rw [e]
+    (Rew.emb ▹ (domAtS n : Semiformula ℒₛₑₜ ο (n + 1)) : Semiformula ℒₛₑₜ ξ (n + 1)) = domAtS n :=
+  ConstructibleInterpretation.emb_domAt domS
 
 /-- The interpretation commutes with embedding sentences into formulas. -/
 lemma emb_intF {ο : Type*} [IsEmpty ο] :
