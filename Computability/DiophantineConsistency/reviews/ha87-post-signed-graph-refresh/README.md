@@ -1,0 +1,5 @@
+# Post-signed-import graph refresh
+
+Full graph audit-only `/tmp/ha87-full-transitive-uaaz_0pf` passed on 729 source-declared project modules and 93 direct external objects; a separate all-source postcheck found no drift. Relative to `../ha87-signed-import-refresh/`, eight guarded source hashes changed and the only changed focused project import lists add the already-present `ArithmeticSignedPairExpressions` module to `ArithmeticAdaptiveMainOrientation2011` and `ArithmeticAdaptiveConstructionAuxFactor2011`. Recomputing reachable HA, model and normalization node sets produced no additions or removals. No Lean proof module was compiled by this audit.
+
+The included updated focused graph and driver are used by fresh zero-reuse current-source author build `/tmp/ha87-focused-validator-rebase-qzmw9m5q`, which is running concurrently with the isolated-source peer. The full author rebase `/tmp/ha87-full-transitive-ypddlu9w` is live. Neither audit nor live build is an independent proof receipt; historical HA/ZF/Foundation and transitive package ancestry remain qualified.
