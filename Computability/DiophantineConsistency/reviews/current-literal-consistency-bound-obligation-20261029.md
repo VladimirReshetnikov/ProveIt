@@ -4,9 +4,14 @@ Write `ρ` for `FoundationHAConsistencyNormalization.rho`, the actual Foundation
 ZFC refutation sentence, and `conB ρ` for
 `StrictPiTwoBridge.conB ρ = ∀ b, ¬ bnd ρ(b)`. The bounded transformation has a
 proved implication `bnd ρ(b) → ρ` in every arithmetic structure. Consequently,
-`PRAConBForward.PRA_proves_forward` has compiled provisionally as an actual
-candidate-PRA proof of the mapped implication `¬ρ → conB ρ`. This is the easy
-direction of the comparison; the converse has **not** been proved.
+`PRAConBForward.PRA_proves_forward` is an actual candidate-PRA proof of the
+mapped implication `¬ρ → conB ρ`. The generic theorem was independently
+replayed in the accepted 15-module post-merge provider
+`/tmp/pra-strict-surrogate-postmerge-independent-vhkj_kj6/lib`; its receipt is
+`pra-strict-surrogate-postmerge-author-replay`. The literal current-equation
+client using the historical IΣ₁ endpoint provider is still compiling and has
+not been independently replayed. The converse `conB ρ → ¬ρ` has **not** been
+proved.
 
 The concrete remaining task is to prove in candidate PRA that any actual
 Foundation refutation supplies a common bound for *every* existential witness

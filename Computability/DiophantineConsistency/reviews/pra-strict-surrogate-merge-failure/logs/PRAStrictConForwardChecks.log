@@ -1,0 +1,10 @@
+'DiophantineConsistency.PRAStrictConForward.original_implies_noZero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAStrictConForward.original_implies_noZero (n : ℕ) (a b : LO.FirstOrder.Semiterm ℒₒᵣ Empty n)
+  (π : LO.FirstOrder.ArithmeticSentence) (hπ : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 1 π)
+  (h : 𝗜𝚺₁ ⊢ DiophantineConsistency.PRANoZeroUnary.noZero n a b 🡘 ∼π) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) (∼π) 🡒
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+        (DiophantineConsistency.PRANoZeroUnary.noZero n a b)

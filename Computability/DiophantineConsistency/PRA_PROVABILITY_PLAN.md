@@ -84,6 +84,15 @@ source dependencies and the client were independently rebuilt; the PRA
 provider is a pre-Herbrand-merge snapshot, and Foundation, Mathlib and the
 historical PAHF transitive graph are inherited as documented.
 
+The [strict-surrogate comparison and generic forward implication](reviews/pra-strict-surrogate-postmerge-author-replay/README.md)
+have passed a 15-module post-merge build and two independent replays. Given
+an actual IΣ₁ proof that a finite no-zero sentence is equivalent to `¬π`
+for Σ₁ `π`, they produce a candidate-PRA proof both of the no-zero
+equivalence with bounded `conB π` and of the original implication
+`¬π → no-zero`. The literal current-equation instantiation, the reverse
+implication to the original consistency sentence, and standard PRA comparison
+remain open.
+
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,
 and input proofs carry the stated positivity hypotheses. Its focused replay
