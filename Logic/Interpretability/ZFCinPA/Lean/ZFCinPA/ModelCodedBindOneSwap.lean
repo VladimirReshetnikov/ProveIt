@@ -69,18 +69,9 @@ lemma termBindOneVecAt_swap {depth arity terms : V}
     termSubstVec L arity (swapVec L depth)
       (termBindOneVecAt L a (depth+1) arity (termBindOneVecAt L b depth arity terms)) =
       termBindOneVecAt L b (depth+1) arity (termBindOneVecAt L a depth arity terms) := by
-  have hvb := termBindOneVecAt_isUTerm b depth ht.isUTerm
-  have hva := termBindOneVecAt_isUTerm a depth ht.isUTerm
-  have hvba := termBindOneVecAt_isUTerm a (depth+1) hvb
-  apply nth_ext' arity
-  · simp [hvba]
-  · simp [hva]
-  · intro i hi
-    rw [nth_termSubstVec hvba hi,nth_termBindOneVecAt a (depth+1) hvb hi,
-      nth_termBindOneVecAt b depth ht.isUTerm hi,
-      nth_termBindOneVecAt b (depth+1) hva hi,
-      nth_termBindOneVecAt a depth ht.isUTerm hi]
-    exact termBindOneAt_swap (ht.nth hi) a b hab
+  have h := ModelCodedBindTwoSlots.termBindTwoVec_reindex ht b a (1 : V) 0 hab.symm
+  rw [add_zero, ModelCodedBindOneCommute.termBindOneVecAt_commute ht.isUTerm a b depth (depth+1) hab] at h
+  simpa only [swapVec,ModelCodedBindTwoSlots.twoSlotVec,add_zero] using h
 
 lemma bindOneAt_swap {depth p : V} (hp : IsSemiformula L depth p) :
     ∀ a b : V, a ≠ b →
