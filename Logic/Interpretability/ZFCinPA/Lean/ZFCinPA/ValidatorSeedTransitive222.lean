@@ -40,17 +40,7 @@ attribute [local irreducible] transitiveMatrix
 
 private theorem singleton_transfer (p v z c : Term V ℒₛₑₜ) :
     Source V ⊢ singletonAt p v 🡒 singletonAt p z 🡒 memTerm v c 🡒 memTerm z c := by
-  apply deduct'!
-  apply FiniteContext.deduct!
-  apply FiniteContext.deduct!
-  let Γ := [memTerm v c,singletonAt p z,singletonAt p v]
-  have hv : Γ ⊢[Source V] singletonAt p v := by simp only [Γ]; exact by_axm!
-  have hz : Γ ⊢[Source V] singletonAt p z := by simp only [Γ]; exact by_axm!
-  have hm : Γ ⊢[Source V] memTerm v c := by_axm₀!
-  have hu := FiniteContext.of'! (Γ := Γ) (singleton_unique p v z)
-  have he : Γ ⊢[Source V] eqTerm v z := ⟨(hu.get ⨀ hv.get) ⨀ hz.get⟩
-  have ht := FiniteContext.of'! (Γ := Γ) (source_mem_congr v z c)
-  exact ⟨(ht.get ⨀ he.get) ⨀ hm.get⟩
+  cl_prover [singleton_unique p v z, source_mem_congr v z c]
 
 private theorem singleton_hit (p z c : Term V ℒₛₑₜ) :
     Source V ⊢ (∃⁰ hitBody transitiveMatrix p c) 🡒 singletonAt p z 🡒 memTerm z c := by
@@ -73,25 +63,13 @@ private theorem pair_contains (s a c : Term V ℒₛₑₜ) :
 private theorem pair_closed_singleton (s c y z p : Term V ℒₛₑₜ) :
     Source V ⊢ singletonAt p z 🡒 pairAt transitiveMatrix s c 🡒
       memTerm y c 🡒 memTerm z y 🡒 memTerm z c := by
-  apply deduct'!
-  apply FiniteContext.deduct!
-  apply FiniteContext.deduct!
-  apply FiniteContext.deduct!
-  let Γ := [memTerm z y,memTerm y c,pairAt transitiveMatrix s c,singletonAt p z]
-  have hp : Γ ⊢[Source V] singletonAt p z := by simp only [Γ]; exact by_axm!
-  have hpair : Γ ⊢[Source V] pairAt transitiveMatrix s c := by simp only [Γ]; exact by_axm!
-  have hy : Γ ⊢[Source V] memTerm y c := by simp only [Γ]; exact by_axm!
-  have hz : Γ ⊢[Source V] memTerm z y := by_axm₀!
-  have hcl := FiniteContext.of'! (Γ := Γ) (pair_closure (transitiveMatrix (V := V)) s c y)
-  have hc : Γ ⊢[Source V] closureTerm transitiveMatrix c y := ⟨(hcl.get ⨀ hpair.get) ⨀ hy.get⟩
-  have hsub := FiniteContext.of'! (Γ := Γ) (singleton_subset p z y)
-  have hpy : Γ ⊢[Source V] subsetTerm p y := ⟨(hsub.get ⨀ hp.get) ⨀ hz.get⟩
   have hstep := closure_step (transitiveMatrix (V := V)) c y p z
   rw [transitiveMatrix_subst] at hstep
-  have hs := FiniteContext.of'! (Γ := Γ) hstep
-  have hex : Γ ⊢[Source V] ∃⁰ hitBody transitiveMatrix p c := ⟨((hs.get ⨀ hc.get) ⨀ hpy.get) ⨀ hp.get⟩
-  have hhit := FiniteContext.of'! (Γ := Γ) (singleton_hit p z c)
-  exact ⟨(hhit.get ⨀ hex.get) ⨀ hp.get⟩
+  have hex : Source V ⊢ singletonAt p z 🡒 pairAt transitiveMatrix s c 🡒
+      memTerm y c 🡒 memTerm z y 🡒 ∃⁰ hitBody transitiveMatrix p c := by
+    cl_prover [pair_closure (transitiveMatrix (V := V)) s c y,
+      singleton_subset p z y, hstep]
+  cl_prover [hex, singleton_hit p z c]
 
 private theorem pair_closed_point (s c y z : Term V ℒₛₑₜ) :
     Source V ⊢ pairAt transitiveMatrix s c 🡒 memTerm y c 🡒 memTerm z y 🡒 memTerm z c := by
