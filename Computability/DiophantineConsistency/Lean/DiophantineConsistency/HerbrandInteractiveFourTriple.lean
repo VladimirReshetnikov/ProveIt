@@ -126,22 +126,12 @@ theorem universal_proves_interactive (r : ℕ) (ψ : Semiproposition language 7)
   classical
   obtain ⟨n,hn⟩ := finite_failure r ψ hψ p
   refine ⟨n, ?_⟩
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M hM0 hM hEq hTheory
-  simp only [models_iff, Semiformula.eval_univCl]
-  intro e
-  apply (output_eval r ψ _ e).mpr
-  by_contra h
-  have hbad : ∀ j < n, (bad r j ψ).Eval ![] e := by
-    intro j hj
-    by_contra hjbad
-    apply h
-    exact ⟨j, List.mem_range.mpr hj, hjbad⟩
-  apply hn
-  refine ⟨⟨M, hM0, hM, hTheory, e, ?_⟩⟩
-  intro φ hφ
+  apply proves_univCl_of_no_valuation (failures r n ψ) _ hn
+  intro M hM e hbad φ hφ
   obtain ⟨j,hj,rfl⟩ := hφ
-  exact hbad j hj
+  by_contra hjbad
+  apply hbad
+  exact (output_eval r ψ _ e).mpr ⟨j, List.mem_range.mpr hj, hjbad⟩
 /-- Extraction with explicit separation of the parameters of ψ from all
 counterexample variables, and the matching term/matrix support guarantees. -/
 theorem separated_interactive (ψ : Semiproposition language 7)

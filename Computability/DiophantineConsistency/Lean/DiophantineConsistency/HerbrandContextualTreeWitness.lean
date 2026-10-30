@@ -90,26 +90,14 @@ theorem universal_proves_contextual (side : Proposition language) (hs : Universa
   classical
   obtain ⟨n,hn⟩ := finite_failure side hs θ ht p
   refine ⟨n, ?_⟩
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M hM0 hM hEq hTheory
-  simp only [models_iff, Semiformula.eval_univCl]
-  intro e
-  change ((∼side).Eval ![] e ∨ (termOutput θ (List.range n)).Eval ![] e)
-  rw [LogicalConnective.HomClass.map_neg, output_eval]
-  by_contra h
-  have hside : side.Eval ![] e := by
-    by_contra hs
-    exact h (Or.inl hs)
-  have hbad : ∀ j < n, (absent θ j).Eval ![] e := by
-    intro j hj
-    simp only [absent, LogicalConnective.HomClass.map_neg]
-    intro hjt
-    apply h
-    exact Or.inr ⟨j, List.mem_range.mpr hj, hjt⟩
-  apply hn
-  refine ⟨⟨M, hM0, hM, hTheory, e, ?_⟩⟩
-  intro φ hφ
+  apply proves_univCl_of_no_valuation (failures side θ n) _ hn
+  intro M hM e hbad φ hφ
+  change ¬((∼side).Eval ![] e ∨ (termOutput θ (List.range n)).Eval ![] e) at hbad
+  rw [LogicalConnective.HomClass.map_neg, output_eval] at hbad
   rcases hφ with rfl | ⟨j,hj,rfl⟩
-  · exact hside
-  · exact hbad j hj
+  · by_contra hs
+    exact hbad (Or.inl hs)
+  · simp only [absent, LogicalConnective.HomClass.map_neg]
+    intro hjt
+    exact hbad (Or.inr ⟨j, List.mem_range.mpr hj, hjt⟩)
 end DiophantineConsistency.HerbrandContextualTreeWitness

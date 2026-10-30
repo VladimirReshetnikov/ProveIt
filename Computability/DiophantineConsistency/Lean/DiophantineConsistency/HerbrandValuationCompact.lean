@@ -86,4 +86,18 @@ theorem valuation_compact_sequence (S : Set (Proposition language))
       omega
   exact ⟨⟨W.Carrier, W.nonempty, W.struc, W.models, W.valuation,
     fun φ hφ => W.satisfies φ (hsub hφ)⟩⟩
+/-- Prove a universally closed proposition when its failure would satisfy an
+inconsistent family of open propositions. -/
+theorem proves_univCl_of_no_valuation (S : Set (Proposition language))
+    (φ : Proposition language) (hn : ¬Nonempty (ModelValuation S))
+    (hbad : ∀ {M : Type} [Structure language M] (e : ℕ → M),
+      ¬φ.Eval ![] e → ∀ ψ ∈ S, ψ.Eval ![] e) :
+    UniversalAxiom ⊢ φ.univCl := by
+  classical
+  apply Theory.Proof.complete_on_eq_models.{0,0}
+  intro M hM0 hM hEq hTheory
+  simp only [models_iff, Semiformula.eval_univCl]
+  intro e
+  by_contra h
+  exact hn ⟨⟨M, hM0, hM, hTheory, e, hbad e h⟩⟩
 end DiophantineConsistency.HerbrandValuationCompact
