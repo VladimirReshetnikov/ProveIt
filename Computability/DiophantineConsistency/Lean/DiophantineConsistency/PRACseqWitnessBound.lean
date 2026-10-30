@@ -23,11 +23,9 @@ attribute [local irreducible] seqDef lhDef memRel
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
   have hsw : s ≤ w := le_trans (by simp [two_mul,add_assoc] : s ≤ 2*s+1) hsize
   have hseqb := PRASeqFullWitnessBound.seq_bound_explicit s h.1
-  have hs : Fin.snoc ![s] (PRASeqFullWitnessBound.seqMajorant s) = ![s,PRASeqFullWitnessBound.seqMajorant s] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![s] (PRASeqFullWitnessBound.seqMajorant s) = ![s,PRASeqFullWitnessBound.seqMajorant s] := by simp
   have hsq := eval_bnd_mono seqDef.val ![s] (Empty.elim : Empty → V) hseq (by rw [hs]; exact hseqb)
-  have hs' : Fin.snoc ![s] w = ![s,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs' : Fin.snoc ![s] w = ![s,w] := by simp
   rw [hs'] at hsq
   constructor
   · exact hsq
@@ -41,21 +39,15 @@ attribute [local irreducible] seqDef lhDef memRel
     · have hr : memRel.val.Evalb ![s,0,z] := by simpa [Semiformula.Operator.val,memRelOpr] using hzr
       have hb := PRAMemRelWitnessBound.memRel_bound_explicit s 0 z hr
       have hrelw := hrel 0 z zero_le (le_of_lt hz)
-      have hv0 : Fin.snoc ![s,0,z] (PRAMemRelWitnessBound.memRelMajorant s 0 z) = ![s,0,z,PRAMemRelWitnessBound.memRelMajorant s 0 z] := by
-        funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-        refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hv0 : Fin.snoc ![s,0,z] (PRAMemRelWitnessBound.memRelMajorant s 0 z) = ![s,0,z,PRAMemRelWitnessBound.memRelMajorant s 0 z] := by simp
       have hm := eval_bnd_mono memRel.val ![s,0,z] (Empty.elim : Empty → V) hrelw (by rw [hv0]; exact hb)
       let ω : Rew ℒₒᵣ Empty 3 Empty 2 := Rew.subst ![#1,Semiterm.numeral 0,#0]
       have hn := PRABndRewriting.natural memRel.val ω ![z,s] w
       have hv : (fun j => (ω #j).val ![z,s] Empty.elim) = ![s,0,z] := by
         funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
         exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hv1 : Fin.snoc ![z,s] w = ![z,s,w] := by
-        funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hv2 : Fin.snoc ![s,0,z] w = ![s,0,z,w] := by
-        funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-        refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hv1 : Fin.snoc ![z,s] w = ![z,s,w] := by simp
+      have hv2 : Fin.snoc ![s,0,z] w = ![s,0,z,w] := by simp
       rw [hv,hv1,hv2] at hn
       rw [hv2] at hm
       simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hn.mpr hm
@@ -77,13 +69,9 @@ attribute [local irreducible] seqDef lhDef memRel
           · left
             have hn : (∼lhDef.val).Evalb ![l,s] := by simpa using hp
             have hb := PRANegLhWitnessBound.neg_lh_bound_explicit l s hn
-            have hs : Fin.snoc ![l,s] (PRANegLhWitnessBound.negLhMajorant s) = ![l,s,PRANegLhWitnessBound.negLhMajorant s] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hs : Fin.snoc ![l,s] (PRANegLhWitnessBound.negLhMajorant s) = ![l,s,PRANegLhWitnessBound.negLhMajorant s] := by simp
             have hm := eval_bnd_mono (∼lhDef.val) ![l,s] (Empty.elim : Empty → V) hlh (by rw [hs]; exact hb)
-            have hs' : Fin.snoc ![l,s] w = ![l,s,w] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hs' : Fin.snoc ![l,s] w = ![l,s,w] := by simp
             rw [hs'] at hm
             let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#2]
             have hv : (fun j => (ω #j).val ![l,i,s] Empty.elim) = ![l,s] := by
@@ -108,12 +96,8 @@ attribute [local irreducible] seqDef lhDef memRel
             have hv : (fun j => (ω #j).val ![z,i,s] Empty.elim) = ![s,i,z] := by
               funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
               exact Fin.cases rfl (fun k => Fin.elim0 k) k
-            have hv1 : Fin.snoc ![z,i,s] w = ![z,i,s,w] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-            have hv2 : Fin.snoc ![s,i,z] w = ![s,i,z,w] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hv1 : Fin.snoc ![z,i,s] w = ![z,i,s,w] := by simp
+            have hv2 : Fin.snoc ![s,i,z] w = ![s,i,z,w] := by simp
             rw [hv,hv1,hv2] at hn
             have hh := hn.mpr hb
             have heq : (ω ▹ (∼memRel.val)) = ∼(ω ▹ memRel.val) := by
@@ -128,35 +112,23 @@ attribute [local irreducible] seqDef lhDef memRel
               have hv : (fun j => (ω #j).val ![u,z,i,s] Empty.elim) = ![u,z,i] := by
                 funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
                 exact Fin.cases rfl (fun k => Fin.elim0 k) k
-              have hv1 : Fin.snoc ![u,z,i,s] w = ![u,z,i,s,w] := by
-                funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k; refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
-              have hv2 : Fin.snoc ![u,z,i] w = ![u,z,i,w] := by
-                funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hv1 : Fin.snoc ![u,z,i,s] w = ![u,z,i,s,w] := by simp
+              have hv2 : Fin.snoc ![u,z,i] w = ![u,z,i,w] := by simp
               rw [hv,hv1,hv2] at hn
               exact hn.mpr (hsucc u z i hu hz' hi' hus)
             · have hr : memRel.val.Evalb ![s,i+1,u] := by simpa [Semiformula.Operator.val,memRelOpr] using hur
               have hb := PRAMemRelWitnessBound.memRel_bound_explicit s (i+1) u hr
               have hi2 : i+1 ≤ 2*s+1 := by simpa [add_comm] using add_le_add_right (le_of_lt hi') 1
               have hrelw := hrel (i+1) u hi2 (le_of_lt hu)
-              have hv0 : Fin.snoc ![s,i+1,u] (PRAMemRelWitnessBound.memRelMajorant s (i+1) u) = ![s,i+1,u,PRAMemRelWitnessBound.memRelMajorant s (i+1) u] := by
-                funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hv0 : Fin.snoc ![s,i+1,u] (PRAMemRelWitnessBound.memRelMajorant s (i+1) u) = ![s,i+1,u,PRAMemRelWitnessBound.memRelMajorant s (i+1) u] := by simp
               have hm := eval_bnd_mono memRel.val ![s,i+1,u] (Empty.elim : Empty → V) hrelw (by rw [hv0]; exact hb)
               let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![#3,‘#2+1’,#0]
               have hn := PRABndRewriting.natural memRel.val ω ![u,z,i,s] w
               have hv : (fun j => (ω #j).val ![u,z,i,s] Empty.elim) = ![s,i+1,u] := by
                 funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
                 exact Fin.cases rfl (fun k => Fin.elim0 k) k
-              have hv1 : Fin.snoc ![u,z,i,s] w = ![u,z,i,s,w] := by
-                funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k; refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
-              have hv2 : Fin.snoc ![s,i+1,u] w = ![s,i+1,u,w] := by
-                funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hv1 : Fin.snoc ![u,z,i,s] w = ![u,z,i,s,w] := by simp
+              have hv2 : Fin.snoc ![s,i+1,u] w = ![s,i+1,u,w] := by simp
               rw [hv,hv1,hv2] at hn
               rw [hv2] at hm
               simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hn.mpr hm

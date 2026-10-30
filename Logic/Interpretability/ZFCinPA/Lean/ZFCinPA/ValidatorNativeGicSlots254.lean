@@ -30,10 +30,8 @@ theorem encode_gic_support_slots {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K) (
       (subst ℒₛₑₜ ((gicSubst01Const : ℕ) : V) K) =
         encode F ((t+6)∷(t+4)∷0) (t+8) K := by
   rw [val_gicSubst01Const]
-  simpa using encode_subst_pair hK
-    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (0 : Fin 4)).isSemiterm
-    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (1 : Fin 4)).isSemiterm
-    F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
+  simpa using encode_subst_two_bvars hK (m := (4 : V)) (i := 0) (j := 1)
+    (by simp) (by simp) F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
 
 /-- Coverage reverses those slots. The internal matrix is unchanged. -/
 theorem encode_gic_coverage_slots {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K) (F t : V) :
@@ -41,10 +39,8 @@ theorem encode_gic_coverage_slots {K : V} (hK : IsSemiformula ℒₛₑₜ 2 K) 
       (subst ℒₛₑₜ ((gicSubst10Const : ℕ) : V) K) =
         encode F ((t+4)∷(t+6)∷0) (t+8) K := by
   rw [val_gicSubst10Const]
-  simpa using encode_subst_pair hK
-    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (1 : Fin 4)).isSemiterm
-    (Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ) (0 : Fin 4)).isSemiterm
-    F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
+  simpa using encode_subst_two_bvars hK (m := (4 : V)) (i := 1) (j := 0)
+    (by simp) (by simp) F ((t+6)∷(t+4)∷(t+2)∷t∷0) (t+8)
 
 /-- Every stored free label is odd; the encoder's fallback label is already 1. -/
 def OddEnv (F : V) : Prop := ∀ i<len F, F.[i] % 2=1
