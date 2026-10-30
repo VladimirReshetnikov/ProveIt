@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [exact main-carrier factorization](reviews/adaptive-construction-main-exact2011-independent.md)
+now derives the adaptive shift and scaled main norm from explicit additive
+correction, multiplier and old-norm equalities. Instantiating those hypotheses
+from the common Assembly witness and completing the 13-variable zero remain open.
+
 A [bounded finite-tuple decoding graph](reviews/pra-tuple-graph-author-replay/README.md)
 now supplies existence, unique component recovery and bounds in arbitrary
 candidate-PRA models. This supports future external-parameter packing, but

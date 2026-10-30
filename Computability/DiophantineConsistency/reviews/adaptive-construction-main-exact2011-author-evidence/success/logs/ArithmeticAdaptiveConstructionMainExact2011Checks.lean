@@ -1,0 +1,3 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionMainExact2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionMainExact2011.main_shift_exact
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionMainExact2011.main_norm_exact
