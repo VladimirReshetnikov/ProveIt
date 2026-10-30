@@ -36,9 +36,6 @@ def noZeroBody {n : ℕ} (e : Expr (Fin n)) : Semisentence ℒₒᵣ n :=
     ![FoundationHANoZero.sourceTerm n (ArithmeticExpression.term Fin.val e.splitNatural.1),
       FoundationHANoZero.sourceTerm n (ArithmeticExpression.term Fin.val e.splitNatural.2)]
 
-theorem classicalNoZero_eq {n : ℕ} (e : Expr (Fin n)) :
-    FoundationHANoZero.classicalNoZero e = ∀⁰* noZeroBody e := rfl
-
 theorem noZeroBody_sigma0 {n : ℕ} (e : Expr (Fin n)) : Hierarchy 𝚺 0 (noZeroBody e) := by
   simp [noZeroBody]
 
