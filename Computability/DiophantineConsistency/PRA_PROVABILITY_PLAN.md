@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+Two closed coded Σ₁ induction instances can now be eliminated together for
+[predicate bodies that ignore the induction parameter](reviews/pra-two-parameter-free-author-replay/README.md).
+The code supplies concrete zero/one tags and proves their substitution laws
+inside candidate PRA. Parameter-dependent predicates and arbitrary finite
+sets of induction instances are not covered by this theorem.
+
 Candidate-PRA models now have a checked arithmetic reduct satisfying both
 IΣ₀ and IOpen, via the [refreshed bounded comparison](reviews/parsons-bounded-post-preparation-replay/README.md)
 and [model-reduct theorem](reviews/pra-model-isigma-zero-author-replay/README.md).
