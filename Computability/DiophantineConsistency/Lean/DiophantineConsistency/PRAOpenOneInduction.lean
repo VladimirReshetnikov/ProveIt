@@ -66,13 +66,13 @@ theorem modelSuccInd_congr (φ ψ : Semiproposition language 1)
   intro e
   simp [succInd, Semiformula.eval_substs, h e]
 end models
-/-- Replace a family of extra axioms by one sentence that implies them in
+/-- Replace a family of extra axioms by another family that implies them in
 every candidate-PRA model. -/
-theorem PRA_proof_of_model_axiom_replacement (S : Theory language) (a goal : Sentence language)
+theorem PRA_proof_of_model_theory_replacement (S U : Theory language) (goal : Sentence language)
     (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
-      [M↓[language] ⊧* PRA], M↓[language] ⊧ a → M↓[language] ⊧* S)
-    (p : (PRA ∪ S) ⊢ goal) : (PRA ∪ {a}) ⊢ goal := by
-  letI : 𝗘𝗤 language ⪯ (PRA ∪ {a}) :=
+      [M↓[language] ⊧* PRA], M↓[language] ⊧* U → M↓[language] ⊧* S)
+    (p : (PRA ∪ S) ⊢ goal) : (PRA ∪ U) ⊢ goal := by
+  letI : 𝗘𝗤 language ⪯ (PRA ∪ U) :=
     Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
   apply Theory.Proof.complete_on_eq_models.{0,0}
   intro M _ _ _ hBoth
@@ -80,8 +80,8 @@ theorem PRA_proof_of_model_axiom_replacement (S : Theory language) (a goal : Sen
     constructor
     intro σ hσ
     exact hBoth.models _ (Or.inl hσ)
-  have ha : M↓[language] ⊧ a := hBoth.models _ (Or.inr rfl)
-  have hs := h M ha
+  have hU : M↓[language] ⊧* U := ⟨fun σ hσ => hBoth.models _ (Or.inr hσ)⟩
+  have hs := h M hU
   have hPlus : M↓[language] ⊧* (PRA ∪ S) := by
     constructor
     intro σ hσ
@@ -89,6 +89,16 @@ theorem PRA_proof_of_model_axiom_replacement (S : Theory language) (a goal : Sen
       (fun h => hs.models _ h)
   exact models_of_provable hPlus p
 
+
+/-- Replace a family of extra axioms by one sentence that implies them in
+every candidate-PRA model. -/
+theorem PRA_proof_of_model_axiom_replacement (S : Theory language) (a goal : Sentence language)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA], M↓[language] ⊧ a → M↓[language] ⊧* S)
+    (p : (PRA ∪ S) ⊢ goal) : (PRA ∪ {a}) ⊢ goal := by
+  apply PRA_proof_of_model_theory_replacement S {a} goal ?_ p
+  intro M _ _ _ _ hU
+  exact h M (hU.models _ rfl)
 
 /-- Eliminate an induction instance when its matrix has a certified
 characteristic code. -/
