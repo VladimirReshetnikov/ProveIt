@@ -50,11 +50,8 @@ theorem termSubst_closed {w t : V} (ht : IsSemiterm ℒₛₑₜ 0 t) : termSubs
   simp
 
 theorem termSubst_closed_semiterm {n w t : V} (hw : IsSemitermVec ℒₛₑₜ n 0 w)
-    (ht : IsSemiterm ℒₛₑₜ n t) : IsSemiterm ℒₛₑₜ 0 (termSubst ℒₛₑₜ w t) := by
-  rcases term_var ht.isUTerm with ⟨z, rfl⟩ | ⟨x, rfl⟩
-  · rw [termSubst_bvar]
-    exact hw.nth (by simpa using ht)
-  · simp
+    (ht : IsSemiterm ℒₛₑₜ n t) : IsSemiterm ℒₛₑₜ 0 (termSubst ℒₛₑₜ w t) :=
+  hw.termSubst ht
 
 /-- `^&0 ∷ shift w`, the substitution vector under one more binder. -/
 def qFree (n w : V) : V := ^&0 ∷ termShiftVec ℒₛₑₜ n w
