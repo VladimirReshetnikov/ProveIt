@@ -1,0 +1,7 @@
+# Literal first factor for the concrete witness
+
+`first_unit_of_data` proves that the actual literal first factor of the explicit thirteen-coordinate witness represents `+1` from the separately checked `FirstData` identities. `witness_first_unit` derives a positive first coordinate and that factor unit from the actual old vector and equations, common outer seed, phase and explicit radix/multiplier/rank facts. Both hold in every model of the stated `IΣ₁` assumptions and report `[propext, Classical.choice, Quot.sound]` in Lean.
+
+The common enriched old witness remains explicit; this module does not invoke the Assembly or establish the complete adaptive zero or HA proof existence. The named-projection route avoids the earlier high-memory full-vector reduction.
+
+The author build passed at `/tmp/adaptive-construction-first-witness-projected-sil04y6n` against `/tmp/adaptive-construction-first-input-projected-h6rd94pb`. The [12-file evidence manifest](adaptive-construction-first-witness-projected2011-author-evidence/FILES.json) has SHA256 `1c0d83a550bb225a8dd8ffb0cc50b87a5916c9a79f2f6320b3d100a2dae0203e`. It preserves source snapshots, full logs and timings, driver, provider metadata, input state and guards. For replay set `ADAPTIVE_ASSEMBLY_BASE` to the independently replayed projected-input provider and run `success/driver.py`; canonical and package boundaries remain inherited. Earlier high-memory attempts are documented separately in the [attempt record](adaptive-construction-first-witness-attempts2011.md).

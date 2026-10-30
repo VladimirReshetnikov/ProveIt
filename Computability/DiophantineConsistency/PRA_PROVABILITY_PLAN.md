@@ -31,6 +31,11 @@ coordinate and the required carrier and norm identities from the explicitly
 stated old-vector, seed, phase and rank hypotheses. The complete factor and
 zero constructions are separate clients.
 
+The [concrete first-factor unit](reviews/adaptive-construction-first-witness-projected2011-independent.md)
+now also has an independent replay. It uses those first-carrier data and
+retains their explicit common-witness hypotheses; assembly of a full zero and
+the machine-halting bridge are separate results.
+
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
 identifies the actual theorem associated with each affected snapshot. Module
