@@ -1,3 +1,4 @@
+import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRABndRewriting
 import DiophantineConsistency.PRAPairTripleWitnessBound
 import Foundation.FirstOrder.Bootstrapping.Syntax.Formula.Basic
@@ -81,17 +82,7 @@ theorem bvRecGraphBoundBody_model (e : Fin 4 → V) : (bvRecGraphBoundBody (L :=
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 noncomputable def bvRecGraphBoundSentence : Sentence language := ∀⁰* Semiformula.lMap embedding (bvRecGraphBoundBody (L := L))
 theorem candidate_proves_bv_rec_graph_bound : PRA ⊢ bvRecGraphBoundSentence (L := L) := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
-  letI : M↓[language] ⊧* PRA := hM
-  letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
-  letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
-  letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
-  letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
-  letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
-  simp only [models_iff, bvRecGraphBoundSentence, Semiformula.eval_allClosure]
-  intro e
-  rw [Semiformula.eval_lMap, reduct_eq_standard]
+  apply PRAIOpenCompleteness.proves_allClosure
+  intro M _ _ e
   exact bvRecGraphBoundBody_model e
 end DiophantineConsistency.PRABVRecGraphBound
