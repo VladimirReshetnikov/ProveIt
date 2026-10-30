@@ -218,6 +218,10 @@ The [bit-graph binding](reviews/pra-bit-witness-bound-author-replay/README.md)
 transports that bound to the actual inlined `lenbitDef` occurrence and proves
 a candidate-PRA conditional sentence. It retains the bounded exponential
 conjunct, its witness and the common-bound assumptions explicitly.
+The independently replayed [extDef local bound](reviews/pra-ext-witness-bound-author-replay/README.md)
+gives `c+1` for Foundation's exact extension graph and its candidate-PRA
+sentence. The remaining exponential sequence and power graphs are not bounded
+by that theorem.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
