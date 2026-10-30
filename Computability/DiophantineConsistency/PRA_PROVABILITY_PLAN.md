@@ -45,7 +45,8 @@ fixpoint client uses that bit bound but retains the bounded
 remains open.
 The negative `exponentialDef` and `expDef` graphs now also have closed
 candidate-PRA bounds, with matching author and two independent replays. The
-negative bit graph and the recursive history still require verification.
+negative bit graph also has a closed candidate-PRA bound with matching author
+and two independent replays. The recursive history still requires a bound.
 The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
 remains open.
