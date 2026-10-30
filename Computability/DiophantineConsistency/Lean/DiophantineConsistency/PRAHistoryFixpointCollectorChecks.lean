@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryFixpointCollector
+
+#print axioms DiophantineConsistency.PRAHistoryFixpointCollector.modelCollectInvariant
+#print axioms DiophantineConsistency.PRAHistoryFixpointCollector.modelCollectMembershipStep
