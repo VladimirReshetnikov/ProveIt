@@ -171,6 +171,10 @@ has also independently replayed: candidate PRA proves its standalone graph
 implies its syntactic bounded transformation at `p+1`. Binding that graph
 inside the full refutation formula, finding the other local majorants and
 constructing the certificate for `ρ` remain separate obligations.
+The independently replayed [bounding/rewriting naturality lemma](reviews/pra-bnd-rewriting-author-replay/README.md)
+relates `bnd` before and after arbitrary bound-variable rewriting in
+ordered-ring structures on `Type`. It permits local witness bounds to be
+transported through syntactic substitutions, but supplies no majorant itself.
 The [actual derivationOf binding](reviews/pra-fstidx-derivation-bound-author-replay/README.md)
 now identifies and bounds the first-index occurrence inside Foundation's
 sigma formula, with an actual candidate-PRA proof of the conditional sentence.
