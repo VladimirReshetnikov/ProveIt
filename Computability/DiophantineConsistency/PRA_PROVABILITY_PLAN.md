@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+Candidate-PRA models now have a checked arithmetic reduct satisfying both
+IΣ₀ and IOpen, via the [refreshed bounded comparison](reviews/parsons-bounded-post-preparation-replay/README.md)
+and [model-reduct theorem](reviews/pra-model-isigma-zero-author-replay/README.md).
+This is a prerequisite for pairing in arbitrary models; candidate primitive
+recursive pairing and projection codes and their correctness proofs remain open.
+
 A separate [87-operation adaptive output candidate](research/adaptive-first-root-factor87/README.md)
 factors one root of the 88-operation thirteen-variable circuit. The finite
 schedule audit and local signed-pair/`Expr.splitNatural` Lean lemmas have
