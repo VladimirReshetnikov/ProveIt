@@ -119,10 +119,9 @@ theorem taggedSeq_succ (j : V) {s : V} (hs : IsFormulaSet ℒₛₑₜ s) :
   simp only [mem_bitInsert_iff,mem_cup_iff]
   tauto
 
-/-- A raw-code adapter to the already proved typed source term theorem. -/
-theorem term_eq_fvar {t : V} (ht : IsTerm ℒₛₑₜ t) : ∃ i : V, t=^&i := by
-  obtain ⟨i,hi⟩ := term_is_fvar (⟨t,ht⟩ : Term V ℒₛₑₜ)
-  exact ⟨i,congrArg (fun t : Term V ℒₛₑₜ => t.val) hi⟩
+/-- Every internal term of the set language is a free variable. -/
+theorem term_eq_fvar {t : V} (ht : IsTerm ℒₛₑₜ t) : ∃ i : V, t=^&i :=
+  SetRelativization.isTerm_eq_fvar ht
 
 theorem exs_label_bound {s p i dp j : V} (hj : exsIntro s p (^&i) dp<j) : i<j :=
   lt_trans (var_lt_qqFvar i) (lt_trans (t_lt_exsIntro s p (^&i) dp) hj)
