@@ -66,3 +66,17 @@ four-witness universal-theory premise in its statement. The 32-module author
 build and two independent replays match source, object and complete-log
 hashes. Deriving that premise from an arbitrary induction proof, handling
 multiple induction instances, and comparison with standard PRA remain open.
+
+After the 32-module replay, an upstream merge refactored finite and interactive
+Herbrand extraction, contextual tree witness/selection, and valuation
+compactness. The coded-stage proof covers the preceding snapshot; the affected
+chain has since passed a 45-module author rebuild and two independent replays
+with matching source, object and full-log hashes. This also checks a U-theory
+bridge for one closed coded induction axiom with no external predicate
+parameters. Arbitrary and multiple induction instances remain open.
+
+`PRAFoundationOneInduction.PRA_proves_goal_of_succInd` lifts the result to a
+candidate-PRA proof using one actual Foundation successor-induction instance
+for `codedSigma pred`, where `pred : Code 3`. Its author and independent
+replays match source, object and full-log hashes. It does not cover external
+predicate parameters or multiple induction instances.

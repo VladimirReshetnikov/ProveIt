@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAStageSigmaClassification
+open DiophantineConsistency.PRAStageSigmaClassification
+#print axioms codedSigma_sigma
+#check codedSigma_sigma

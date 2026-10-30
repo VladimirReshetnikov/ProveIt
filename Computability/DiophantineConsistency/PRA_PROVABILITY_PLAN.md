@@ -102,6 +102,17 @@ graph has since passed a 62-module author rebuild and two independent replays
 with matching source, object and full-log hashes. The reordered 21-module
 contextual extraction and six-module bounded-comparison descendants have also
 passed independent replays against that provider.
+A later upstream merge refactored finite and interactive Herbrand extraction,
+contextual tree witness/selection, and valuation compactness. The checked
+coded-stage chain covers the preceding snapshot. Its affected descendants and
+a one-closed-coded-induction-axiom U-theory bridge have since passed a
+45-module author rebuild and two independent replays. Arbitrary and multiple
+induction instances remain open.
+The [Foundation one-instance endpoint](Lean/DiophantineConsistency/PRAFoundationOneInduction.lean)
+also eliminates one actual successor-induction instance for `codedSigma pred`
+with `pred : Code 3` from a candidate-PRA proof of a universally closed open
+existential goal. This is one closed instance with no external predicate
+parameters; it is not arbitrary or multiple-instance IΣ₁ conservation.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)
