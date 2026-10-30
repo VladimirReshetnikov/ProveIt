@@ -48,3 +48,9 @@ A later upstream merge changed candidate-PRA prerequisites, including
 `PRAExhaustion`, `PRANonzero`, and `PRAPeanoMinusBasic`. The above replay is
 for the preceding snapshot; the affected provider and comparison chain must
 be rebuilt for the merged sources.
+
+Following subsequent provider changes, the 68-module candidate chain and
+bounded comparison were rebuilt and independently replayed. The comparison
+replay at `/tmp/parsons-bounded-post-merge-independent-6ewca3lh` matched the
+separate replay's six source, object and full-log hashes. The prior scope and
+inherited Parsons/Foundation/Mathlib boundaries remain.
