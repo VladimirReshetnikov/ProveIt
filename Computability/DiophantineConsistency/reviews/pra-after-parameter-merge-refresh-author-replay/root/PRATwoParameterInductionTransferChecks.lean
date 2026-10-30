@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRATwoParameterInductionTransfer
+open DiophantineConsistency.PRATwoParameterInductionTransfer
+#print axioms modelTwoSigma
+#print axioms modelPackedInduction
+#print axioms PRA_proves_goal_of_two_parameter_induction
+#check PRA_proves_goal_of_two_parameter_induction

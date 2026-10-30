@@ -1,0 +1,7 @@
+# First-witness attempts and termination record
+
+The first literal first-factor client attempt, `/tmp/adaptive-construction-first-witness-k6sxypcs`, failed with Lean's kernel excessive-memory error under `-M6000`. Its component first-carrier and generic first-factor theorems are separate successful results; this attempt did not establish the concrete first unit.
+
+A retry, `/tmp/adaptive-construction-first-witness-2diigwh2`, reduced some explicit unfolding but stayed in `wait_on_page_bit_common` near 6 GB RSS for several minutes. The author sent SIGTERM only to that retry's Lean PID `1993091`; the worker returned exit 143 after 255.76 seconds and its driver recorded failure. The original WangTable worker was not signaled. This termination was an author decision to release the stalled retry, not a Lean proof failure or completed check. Future slow or I/O-blocked live builds should remain untouched while independent work continues when resources permit.
+
+The [32-file evidence manifest](adaptive-construction-first-witness-attempts2011-evidence/FILES.json) has SHA256 `39f41a6027a3f16a0d8646c5ac70b8f56af6640ec7fce9ff66d126f732e373b1`, preserving both drivers, states, provider manifests, source snapshots, full logs and timings. The copied driver states carry an inaccurate inherited correction-quotient scope label; see the [scope correction inventory](adaptive-construction-driver-scope-correction.md). No first-witness success is claimed here.

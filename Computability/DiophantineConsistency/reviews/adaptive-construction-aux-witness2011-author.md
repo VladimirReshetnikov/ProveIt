@@ -1,0 +1,7 @@
+# Literal auxiliary factor for the explicit witness
+
+`witness_aux_unit` proves in every model of the stated `IΣ₁` assumptions that the actual old vector and equations, radix bound, rank phase, auxiliary Pell ordinate identity, and exact auxiliary orientation supply a positive `aux` making the literal auxiliary factor of the explicit thirteen-coordinate witness represent `+1`. The proof obtains the positive auxiliary coordinate, translates the old norm to the witness's signed magnitudes, and applies the checked reverse auxiliary-factor theorem. Lean reports `[propext, Classical.choice, Quot.sound]`.
+
+The phase, ordinate and orientation remain explicit premises until the enriched Assembly is supplied. The first factor, full adaptive zero and HA proof existence are not established by this theorem.
+
+The author run `/tmp/adaptive-construction-aux-witness-6rlnpry0` refreshed three prerequisites on `/tmp/adaptive-construction-aux-factor-74r30okr`, then built this client and its check; all five passed. The [37-file evidence manifest](adaptive-construction-aux-witness2011-author-evidence/FILES.json) has SHA256 `8820ba3caf19e9259b78adee5d17774193116579049156bd1a5313262b42d5a4`. It preserves the failed old/new multiplication-order attempt and corrected build, source snapshots, full logs and timings, driver, provider metadata, state and guards. For replay set `ADAPTIVE_ASSEMBLY_BASE` to the independently replayed auxiliary-factor provider and run `success/driver.py`; the canonical and package boundaries remain inherited.

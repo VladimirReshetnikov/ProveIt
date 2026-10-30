@@ -8,6 +8,23 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [first-carrier scalar reassociation](reviews/adaptive-construction-first-scalar2011-independent.md)
+now has matching author and independent source, object, and full-log hashes.
+It rewrites the supplied first norm and carrier identities into the literal
+adaptive graph's grouping. The hypotheses remain explicit: this does not yet
+construct the first-factor witness or establish the full zero.
+
+Several construction replay states inherited an incorrect generic scope label;
+the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
+identifies the actual theorem associated with each affected snapshot. Module
+names, proof outputs, hashes and exit statuses are unchanged.
+
+The [89-module parameter refresh](reviews/pra-after-parameter-merge-refresh-author-replay/README.md)
+passed author and two independent builds with matching source, object and
+full-log hashes. The subsequent merge at `1abcfbde84` changed further
+Herbrand sources in the graph, so this is pre-merge evidence and its affected
+dependents require another source-current rebuild.
+
 The [auxiliary-factor reverse bridge](reviews/adaptive-construction-aux-factor2011-independent.md)
 derives its literal unit from explicit strong and auxiliary norm assumptions
 and the port bound. These still need to be connected to the common witness.
@@ -44,7 +61,10 @@ norm. Binding these to the common concrete witness remains separate.
 The [concrete main-factor client](reviews/adaptive-construction-main-witness2011-independent.md)
 now proves the main factor of the explicit adaptive witness is +1 under the
 common seed and Assembly facts. Together with the strong factor, two of the
-four literal factor units are established for that witness.
+four literal factor units are established for that witness. The [auxiliary
+witness client](reviews/adaptive-construction-aux-witness2011-independent.md)
+now establishes a third under explicit phase, ordinate and orientation
+hypotheses; the first factor and the common Assembly witness remain open.
 
 The [strict Σ₁ certificate](reviews/pra-strict-sigma-certificate-author-replay/README.md)
 now supplies the conditional normalizer for every arithmetic induction
