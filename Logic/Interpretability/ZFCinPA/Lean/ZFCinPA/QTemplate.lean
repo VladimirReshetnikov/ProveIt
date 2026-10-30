@@ -126,11 +126,8 @@ noncomputable def liftedNProof
     (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
     (σ : Sentence (setTemplateLanguage k arities))
     (h : σ ∈ Theory.lMap (setHom k arities) qTheory) :
-    qTheory.internalize V ⊢! translateFormula Ks (Rewriting.emb σ) := by
-  apply TProof.byAxm
-  rcases h with ⟨τ, hτ, rfl⟩
-  rw [translateFormula_lMap_set_emb]
-  exact (Bootstrapping.Δ₁Class.mem_iff'' (T := qTheory)).mpr hτ
+    qTheory.internalize V ⊢! translateFormula Ks (Rewriting.emb σ) :=
+  OpenSchemaTemplates.liftedTheoryProof qTheory Ks σ h
 
 end Internal
 
