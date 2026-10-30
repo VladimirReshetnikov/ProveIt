@@ -116,9 +116,7 @@ lemma all_imp_ex (i p q : V) :
   have h1' : CProv (wim (wal i (wim p q)) (wal i (wim (neg q) (neg p)))) :=
     all_mono i (contrapose p q)
   have h3 := compose h1' (all_distribution i (neg q) (neg p))
-  apply ded2
-  apply Kalmar.deduction cProv_classical
-  exact .mp h1 (.mp (.mp (.ax h3) h2) h0)
+  exact ValidatorImplicationContext.contra_under CProv cProv_classical h3
 
 /-- Generalize a theorem under two assumptions whose vacuity is supplied. -/
 lemma all_under_two (i : V) {h p q : V}
