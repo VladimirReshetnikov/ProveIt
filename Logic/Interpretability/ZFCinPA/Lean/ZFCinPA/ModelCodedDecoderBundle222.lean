@@ -119,37 +119,20 @@ noncomputable def termBindT {n : Nat} (chosen : V)
 @[simp] lemma namedBody_bindT (chosen : V) (p : Formula V ℒₛₑₜ) :
     namedBody chosen p = bindT chosen p := rfl
 @[simp] lemma bindT_imp {n : Nat} (chosen : V) (p q : Bootstrapping.Semiformula V ℒₛₑₜ n) :
-    bindT chosen (p 🡒 q) = bindT chosen p 🡒 bindT chosen q := by
-  apply Bootstrapping.Semiformula.ext
-  exact bindOneAt_imp p.isSemiformula q.isSemiformula chosen
+    bindT chosen (p 🡒 q) = bindT chosen p 🡒 bindT chosen q := ModelCodedDecoderContainer254.bindT_imp chosen p q
 @[simp] lemma bindT_all {n : Nat} (chosen : V) (p : Bootstrapping.Semiformula V ℒₛₑₜ (n+1)) :
-    bindT chosen (∀⁰ p) = ∀⁰ bindT chosen p := by
-  apply Bootstrapping.Semiformula.ext
-  simpa only [bindT,Bootstrapping.Semiformula.val_all,Nat.cast_add,Nat.cast_one] using
-    bindOneAt_all chosen (n : V) p.isSemiformula.isUFormula
+    bindT chosen (∀⁰ p) = ∀⁰ bindT chosen p := ModelCodedDecoderContainer254.bindT_all chosen p
 @[simp] lemma bindT_bot {n : Nat} (chosen : V) :
     bindT chosen (⊥ : Bootstrapping.Semiformula V ℒₛₑₜ n) = ⊥ := by
   apply Bootstrapping.Semiformula.ext
   simp [bindT]
 @[simp] lemma termBindT_bvar {n : Nat} (chosen : V) (i : Fin n) :
-    termBindT chosen (Bootstrapping.Semiterm.bvar i) = Bootstrapping.Semiterm.bvar i.castSucc := by
-  apply Bootstrapping.Semiterm.ext
-  simp [termBindT,Bootstrapping.Semiterm.bvar]
+    termBindT chosen (Bootstrapping.Semiterm.bvar i) = Bootstrapping.Semiterm.bvar i.castSucc := ModelCodedDecoderContainer254.termBindT_bvar chosen i
 @[simp] lemma termBindT_fvar {n : Nat} (chosen x : V) :
     termBindT chosen (Bootstrapping.Semiterm.fvar x : Bootstrapping.Semiterm V ℒₛₑₜ n) =
-      if x = chosen then Bootstrapping.Semiterm.bvar (Fin.last n) else Bootstrapping.Semiterm.fvar x := by
-  classical
-  apply Bootstrapping.Semiterm.ext
-  by_cases h : x = chosen <;> simp [termBindT,termBindOneAt_fvar,h,Bootstrapping.Semiterm.bvar]
+      if x = chosen then Bootstrapping.Semiterm.bvar (Fin.last n) else Bootstrapping.Semiterm.fvar x := ModelCodedDecoderContainer254.termBindT_fvar chosen x
 @[simp] lemma bindT_mem {n : Nat} (chosen : V) (t u : Bootstrapping.Semiterm V ℒₛₑₜ n) :
-    bindT chosen (memAtom t u) = memAtom (termBindT chosen t) (termBindT chosen u) := by
-  apply Bootstrapping.Semiformula.ext
-  change bindOneAt ℒₛₑₜ chosen n (^rel 2 ((1 : Nat) : V) ?[t.val,u.val]) =
-    ^rel 2 ((1 : Nat) : V) ?[(termBindT chosen t).val,(termBindT chosen u).val]
-  rw [Nat.cast_one,bindOneAt_rel chosen n (by simpa using mem_symbol (V := V)) (by simp),
-    termBindOneVecAt_pair chosen n t.val u.val t.isUTerm u.isUTerm]
-  rfl
-
+    bindT chosen (memAtom t u) = memAtom (termBindT chosen t) (termBindT chosen u) := ModelCodedDecoderContainer254.bindT_mem chosen t u
 /-! ## Leaf identities -/
 
 section Leaves

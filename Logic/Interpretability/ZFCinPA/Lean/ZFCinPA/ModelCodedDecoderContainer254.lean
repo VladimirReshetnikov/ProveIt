@@ -170,51 +170,51 @@ private lemma mem_symbol : (ℒₛₑₜ).IsRel (2 : V) ((1 : Nat) : V) := by
 
 /-- Typed views keep the already checked formation proof attached during the
 finite calculation, rather than repeatedly rediscovering it from a raw code. -/
-private noncomputable def bindT {n : Nat} (chosen : V)
+noncomputable def bindT {n : Nat} (chosen : V)
     (p : Bootstrapping.Semiformula V ℒₛₑₜ n) : Bootstrapping.Semiformula V ℒₛₑₜ (n+1) :=
   ⟨bindOneAt ℒₛₑₜ chosen n p.val, by
     simpa only [Nat.cast_add,Nat.cast_one] using bindOneAt_isSemiformula p.isSemiformula chosen⟩
-private noncomputable def termBindT {n : Nat} (chosen : V)
+noncomputable def termBindT {n : Nat} (chosen : V)
     (t : Bootstrapping.Semiterm V ℒₛₑₜ n) : Bootstrapping.Semiterm V ℒₛₑₜ (n+1) :=
   ⟨termBindOneAt ℒₛₑₜ chosen n t.val, by
     simpa only [Nat.cast_add,Nat.cast_one] using termBindOneAt_isSemiterm t.isSemiterm chosen⟩
-@[simp] private lemma namedBody_bindT (chosen : V) (p : Formula V ℒₛₑₜ) :
+@[simp] lemma namedBody_bindT (chosen : V) (p : Formula V ℒₛₑₜ) :
     namedBody chosen p = bindT chosen p := rfl
-@[simp] private lemma bindT_and {n : Nat} (chosen : V)
+@[simp] lemma bindT_and {n : Nat} (chosen : V)
     (p q : Bootstrapping.Semiformula V ℒₛₑₜ n) :
     bindT chosen (p ⋏ q) = bindT chosen p ⋏ bindT chosen q := by
   apply Bootstrapping.Semiformula.ext
   exact bindOneAt_and chosen n p.isSemiformula.isUFormula q.isSemiformula.isUFormula
-@[simp] private lemma bindT_imp {n : Nat} (chosen : V)
+@[simp] lemma bindT_imp {n : Nat} (chosen : V)
     (p q : Bootstrapping.Semiformula V ℒₛₑₜ n) :
     bindT chosen (p 🡒 q) = bindT chosen p 🡒 bindT chosen q := by
   apply Bootstrapping.Semiformula.ext
   exact bindOneAt_imp p.isSemiformula q.isSemiformula chosen
-@[simp] private lemma bindT_all {n : Nat} (chosen : V)
+@[simp] lemma bindT_all {n : Nat} (chosen : V)
     (p : Bootstrapping.Semiformula V ℒₛₑₜ (n+1)) :
     bindT chosen (∀⁰ p) = ∀⁰ bindT chosen p := by
   apply Bootstrapping.Semiformula.ext
   simpa only [bindT,Bootstrapping.Semiformula.val_all,Nat.cast_add,Nat.cast_one] using
     bindOneAt_all chosen (n : V) p.isSemiformula.isUFormula
-@[simp] private lemma bindT_ex {n : Nat} (chosen : V)
+@[simp] lemma bindT_ex {n : Nat} (chosen : V)
     (p : Bootstrapping.Semiformula V ℒₛₑₜ (n+1)) :
     bindT chosen (∃⁰ p) = ∃⁰ bindT chosen p := by
   apply Bootstrapping.Semiformula.ext
   simpa only [bindT,Bootstrapping.Semiformula.val_exs,Nat.cast_add,Nat.cast_one] using
     bindOneAt_exs chosen (n : V) p.isSemiformula.isUFormula
-@[simp] private lemma termBindT_bvar {n : Nat} (chosen : V) (i : Fin n) :
+@[simp] lemma termBindT_bvar {n : Nat} (chosen : V) (i : Fin n) :
     termBindT chosen (Bootstrapping.Semiterm.bvar i) =
       Bootstrapping.Semiterm.bvar i.castSucc := by
   apply Bootstrapping.Semiterm.ext
   simp [termBindT,Bootstrapping.Semiterm.bvar]
-@[simp] private lemma termBindT_fvar {n : Nat} (chosen x : V) :
+@[simp] lemma termBindT_fvar {n : Nat} (chosen x : V) :
     termBindT chosen (Bootstrapping.Semiterm.fvar x : Bootstrapping.Semiterm V ℒₛₑₜ n) =
       if x = chosen then Bootstrapping.Semiterm.bvar (Fin.last n) else Bootstrapping.Semiterm.fvar x := by
   classical
   apply Bootstrapping.Semiterm.ext
   by_cases h : x = chosen <;>
     simp [termBindT,termBindOneAt_fvar,h,Bootstrapping.Semiterm.bvar]
-@[simp] private lemma bindT_mem {n : Nat} (chosen : V)
+@[simp] lemma bindT_mem {n : Nat} (chosen : V)
     (t u : Bootstrapping.Semiterm V ℒₛₑₜ n) :
     bindT chosen (memAtom t u) = memAtom (termBindT chosen t) (termBindT chosen u) := by
   apply Bootstrapping.Semiformula.ext
