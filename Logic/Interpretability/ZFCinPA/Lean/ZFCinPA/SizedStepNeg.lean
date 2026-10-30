@@ -38,7 +38,7 @@ theorem neg_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
     (hK : ∀ i, (K6 P₀ F₁ ⊤ ⊤ (∼P₀) F₁ i).val ≤ lvB u) (hw : wD u ≤ w)
     (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w) :
     DLv 𝗭𝗙 (insert (InvT (∼P₀) F₁).val ∅) (w + 30) := by
-  obtain ⟨hw4, hmI, up, u4, uA⟩ := wD_up hw
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   have hc := compiledLe (by decide) negTemplate_provable _ hu hK
   have lt := trD_le negTemplate tD_neg _ hK
   obtain ⟨T, hT⟩ : ∃ T,
@@ -53,9 +53,7 @@ theorem neg_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
   have hA := imp_ante_le lt
   have hA2 := and_right_le hA
   have hA3 := and_right_le hA2
-  have l0 := invT_le (P := P₀) (F := F₁) hu (hK 0) (hK 1)
-  have t1 := dleftW hw4 l0 hmI h₁ le_rfl
-  have r1 := drightW hw4 l0 hmI h₁ le_rfl
+  obtain ⟨t1, r1⟩ := inv_halves (P := P₀) (F := F₁) hu hw (hK 0) (hK 1) h₁
   have pA := dall_iff (∼P₀) (hK 4) hu
   have pF := dall2_swap F₁ (hK 5) hu
   have c3 := dandW (u4 3) hA3 (uA 3) pA (le_trans (wD_i hw) (up 3)) pF (le_trans (wD_s hw) (up 3))
@@ -70,7 +68,7 @@ set_option maxHeartbeats 4000000 in
 theorem base_step_le (isTop : Bool) {u w : V} (hu : 2 ≤ u)
     (hK : ∀ i, (K6 ⊤ ⊤ ⊤ ⊤ (cond isTop ⊤ ⊥) (succT (V := V)) i).val ≤ lvB u) (hw : wD u ≤ w) :
     DLv 𝗭𝗙 (insert (InvT (cond isTop ⊤ ⊥ : SF V 1) succT).val ∅) (w + 30) := by
-  obtain ⟨-, -, up, u4, uA⟩ := wD_up hw
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   cases isTop
   case' true =>
       simp only [cond_true] at hK ⊢

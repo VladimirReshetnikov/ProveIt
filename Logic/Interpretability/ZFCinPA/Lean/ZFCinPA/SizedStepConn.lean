@@ -44,7 +44,7 @@ theorem conn_step_le (isAnd : Bool) {P₀ P₂ : SF V 1} {F₁ F₃ : SF V 2} {u
     (hw : wD u ≤ w) (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w)
     (h₃ : DLv 𝗭𝗙 (insert (InvT P₂ F₃).val ∅) w) :
     DLv 𝗭𝗙 (insert (InvT (cond isAnd (P₀ ⋏ P₂) (P₀ ⋎ P₂)) (MaxT F₁ F₃)).val ∅) (w + 30) := by
-  obtain ⟨hw4, hmI, up, u4, uA⟩ := wD_up hw
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   cases isAnd
   case' true =>
       simp only [cond_true] at hK ⊢
@@ -82,12 +82,8 @@ theorem conn_step_le (isAnd : Bool) {P₀ P₂ : SF V 1} {F₁ F₃ : SF V 2} {u
     have hA3 := and_right_le hA2
     have hA4 := and_right_le hA3
     have hA5 := and_right_le hA4
-    have l0 := invT_le (P := P₀) (F := F₁) hu (hK 0) (hK 1)
-    have l2 := invT_le (P := P₂) (F := F₃) hu (hK 2) (hK 3)
-    have t1 := dleftW hw4 l0 hmI h₁ le_rfl
-    have r1 := drightW hw4 l0 hmI h₁ le_rfl
-    have t3 := dleftW hw4 l2 hmI h₃ le_rfl
-    have r3 := drightW hw4 l2 hmI h₃ le_rfl
+    obtain ⟨t1, r1⟩ := inv_halves (P := P₀) (F := F₁) hu hw (hK 0) (hK 1) h₁
+    obtain ⟨t3, r3⟩ := inv_halves (P := P₂) (F := F₃) hu hw (hK 2) (hK 3) h₃
     have pF := dall2_swap (MaxT F₁ F₃) (hK 5) hu
     have c5 := dandW (u4 3) hA5 (uA 3) pA (le_trans (wD_i hw) (up 3)) pF (le_trans (wD_s hw) (up 3))
     have c4 := dandW (u4 5) hA4 (uA 5) r3 (le_of_add_eq (y := 2) (by ring)) c5 (le_of_eq (by ring))
