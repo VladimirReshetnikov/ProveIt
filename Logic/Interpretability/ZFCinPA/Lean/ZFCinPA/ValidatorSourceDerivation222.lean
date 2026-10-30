@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorSourceNegation222
 import ZFCinPA.ValidatorSourceQuantifierContext222
 
@@ -42,15 +43,10 @@ theorem enum_shift {L S : V} (hL : Enum L S) :
     Enum (shiftList L) (setShift ℒₛₑₜ S) :=
   enum_of_mem fun y => by simp only [mem_shiftList,mem_setShift_iff,hL.mem]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma h2 {G : List V} {a b c : V} : D (c::b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_of_mem _ (List.mem_cons_self ..)))
-private lemma ded2 {a b p : V} (h : D [b,a] p) : CProv (wim a (wim b p)) :=
-  (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical h)).sound
-    cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
+local notation "h0" => (ValidatorImplicationContext.h0 CProv)
+local notation "h1" => (ValidatorImplicationContext.h1 CProv)
+local notation "h2" => (ValidatorImplicationContext.h2 CProv)
+local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 
 private lemma or_lemma (a b : V) :
     CProv (wim (wim (codeNeg b) (wim (codeNeg a) 1)) (wim (codeNeg a) b)) :=

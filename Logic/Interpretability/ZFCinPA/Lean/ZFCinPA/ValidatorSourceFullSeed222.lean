@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorSeedPadding222
 import ZFCinPA.ValidatorSourceNegation222
 import ZFCinPA.ValidatorExistentialRules222
@@ -24,14 +25,9 @@ open ArithmeticSeedTemplates222 (req clos)
 open scoped LO.FirstOrder.Arithmetic
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma ofDer {p : V} (h : D [] p) : CProv p :=
-  h.sound cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
-private lemma ded2 {a b p : V} (h : D [b,a] p) : CProv (wim a (wim b p)) :=
-  ofDer (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical h))
+local notation "d0" => (ValidatorImplicationContext.h0 CProv)
+local notation "d1" => (ValidatorImplicationContext.h1 CProv)
+local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 private lemma lift {p : V} (h : V) (hp : CProv p) : CProv (wim h p) :=
   cProv_mp (cProv_k p h) hp
 
@@ -58,17 +54,17 @@ private lemma under_of_iff (h : V) {p q : V} (hpq : CodeIff p q) : EqUnder h p q
   ⟨lift h hpq.1,lift h hpq.2⟩
 private lemma under_trans {h p q r : V} (hpq : EqUnder h p q) (hqr : EqUnder h q r) :
     EqUnder h p r :=
-  ⟨ded2 (.mp (.mp (.ax hqr.1) h1) (.mp (.mp (.ax hpq.1) h1) h0)),
-   ded2 (.mp (.mp (.ax hpq.2) h1) (.mp (.mp (.ax hqr.2) h1) h0))⟩
+  ⟨ded2 (.mp (.mp (.ax hqr.1) d1) (.mp (.mp (.ax hpq.1) d1) d0)),
+   ded2 (.mp (.mp (.ax hpq.2) d1) (.mp (.mp (.ax hqr.2) d1) d0))⟩
 private lemma under_pre {h h' p q : V} (hh : CProv (wim h h')) (hpq : EqUnder h' p q) :
     EqUnder h p q := ⟨compose hh hpq.1,compose hh hpq.2⟩
 private lemma under_all (x : V) {h p q : V} (hv : Vac x h) (hpq : EqUnder h p q) :
     EqUnder h (wal x p) (wal x q) := by
   constructor
   · exact ded2 (.mp (.mp (.ax (all_distribution x p q))
-      (.mp (.ax (compose hv (all_mono x hpq.1))) h1)) h0)
+      (.mp (.ax (compose hv (all_mono x hpq.1))) d1)) d0)
   · exact ded2 (.mp (.mp (.ax (all_distribution x q p))
-      (.mp (.ax (compose hv (all_mono x hpq.2))) h1)) h0)
+      (.mp (.ax (compose hv (all_mono x hpq.2))) d1)) d0)
 private lemma under_ex (x : V) {h p q : V} (hv : Vac x h) (hpq : EqUnder h p q) :
     EqUnder h (ex x p) (ex x q) := eqUnder_neg (under_all x hv (eqUnder_neg hpq))
 private lemma under_member {h x x' y y' : V}
@@ -76,10 +72,10 @@ private lemma under_member {h x x' y y' : V}
     EqUnder h (wel x y) (wel x' y') := by
   constructor
   · exact ded2 (.mp (.mp (.mp (.ax (rel_congr x x' y y'))
-      (.mp (.ax hx) h1)) (.mp (.ax hy) h1)) h0)
+      (.mp (.ax hx) d1)) (.mp (.ax hy) d1)) d0)
   · exact ded2 (.mp (.mp (.mp (.ax (rel_congr x' x y' y))
-      (.mp (.ax (compose hx (eind_symm x x'))) h1))
-      (.mp (.ax (compose hy (eind_symm y y'))) h1)) h0)
+      (.mp (.ax (compose hx (eind_symm x x'))) d1))
+      (.mp (.ax (compose hy (eind_symm y y'))) d1)) d0)
 
 /-- Finite binder conversion from actual Eind certificates. Cross-body
 vacuity is explicit; neither binder is claimed vacuous in its own body. -/
