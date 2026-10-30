@@ -1,0 +1,51 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AdaptiveDirectOrdinate86Rank.lean:61:13: error(lean.unknownIdentifier): Unknown identifier `mod_cancel`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AdaptiveDirectOrdinate86Rank.lean:55:41: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+x y m : V
+hm : 0 < m
+hyx : y ≤ x
+h : x % m = y % m
+he : x - y + y = x
+hh : (x - y + y) % m = (0 + y) % m
+⊢ (x - y) % m = 0
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AdaptiveDirectOrdinate86Rank.lean:106:16: error(lean.unknownIdentifier): Unknown identifier `magnitude_mod`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/AdaptiveDirectOrdinate86Rank.lean:80:86: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 13 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 13), 0 < v j
+hz : InternalZero (expressionAt86 fun j => ↑(p j)) v
+q : V := 1 + v 0 * ↑(p 0)
+E : V := v 6 * v 7
+k : V := v 9 + v 10
+a : V := E + v 7
+H : V := 3 + 4 * a
+R : V := ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0
+T : V := E * q + R + 1
+hq : 0 < q
+hm5 : 0 < q ^ 5
+hm4 : 0 < q ^ 4
+s main : V
+left✝¹ : 0 < s
+left✝ : 0 < main
+hy : v 7 = (1 + v 0 * ↑(p 0)) ^ 3 * s
+he :
+  (3 + 4 * (v 6 * v 7 + v 7)) *
+        (v 6 * v 7 * (1 + v 0 * ↑(p 0)) +
+            (((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+              (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0) +
+          1) +
+      (1 + v 0 * ↑(p 0)) ^ 5 *
+        (s * (v 6 + (v 6 * v 7 + v 7) * (v 9 + v 7 * (v 9 + v 10)) + (3 + 4 * (v 6 * v 7 + v 7)) * v 12)) =
+    (3 + 4 * (v 6 * v 7 + v 7)) * (v 9 + v 10) + (1 + v 0 * ↑(p 0)) ^ 5 * (s * main)
+hemod : H * T % q ^ 5 = H * k % q ^ 5
+hdiv : q ^ 5 ∣ (3 + 4 * v 7 * (v 6 + 1)) * magnitude (T, k)
+hcoef : H = 3 + 4 * v 7 * (v 6 + 1)
+hY : q ^ 3 ∣ v 7
+hT : q ^ 4 ∣ magnitude (T, k)
+⊢ RankCongruence p v
