@@ -129,6 +129,10 @@ has also independently replayed: candidate PRA proves its standalone graph
 implies its syntactic bounded transformation at `p+1`. Binding that graph
 inside the full refutation formula, finding the other local majorants and
 constructing the certificate for `ρ` remain separate obligations.
+The [first-index family client](reviews/pra-fstidx-family-author-replay/README.md)
+combines that bound with the fold in every candidate-PRA model, supplying one
+primitive-recursive bound for all first-index codes below a given limit. It
+does not yet establish bounds for the other components of `ρ`.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated

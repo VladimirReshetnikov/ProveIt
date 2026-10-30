@@ -1,0 +1,2 @@
+import DiophantineConsistency.PRAFstIdxFamilyBound
+#print axioms DiophantineConsistency.PRAFstIdxFamilyBound.modelFstIdxFoldBound
