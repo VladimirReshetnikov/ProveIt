@@ -31,6 +31,9 @@ build](reviews/adaptive-assembly-seed-historical2011.md), exposing the common
 seed, radix, multiplier, rank-growth and auxiliary orientation while preserving
 the older APIs. Its source edit remains uncommitted and does not yet have a
 source-current closure replay; it is not an accepted full adaptive construction.
+A [separate guarded projection check](reviews/adaptive-assembly-seed-projection2011.md)
+verifies the enriched vector projections from explicit premises, without
+importing or proving the modified Assembly helper.
 
 The [exact auxiliary-orientation theorem](reviews/adaptive-construction-aux-exact2011-independent.md)
 now derives the needed signed difference and auxiliary norm from the explicit
