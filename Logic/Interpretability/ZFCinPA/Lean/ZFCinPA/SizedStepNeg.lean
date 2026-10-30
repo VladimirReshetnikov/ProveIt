@@ -38,9 +38,7 @@ theorem neg_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
     (hK : ∀ i, (K6 P₀ F₁ ⊤ ⊤ (∼P₀) F₁ i).val ≤ lvB u) (hw : wD u ≤ w)
     (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w) :
     DLv 𝗭𝗙 (insert (InvT (∼P₀) F₁).val ∅) (w + 30) := by
-  have hw4 := wD_4 hw
-  have hmI := wD_m hw
-  obtain ⟨up, u4, uA⟩ := wD_up hw
+  obtain ⟨hw4, hmI, up, u4, uA⟩ := wD_up hw
   have hc := compiledLe (by decide) negTemplate_provable _ hu hK
   have lt := trD_le negTemplate tD_neg _ hK
   obtain ⟨T, hT⟩ : ∃ T,
@@ -72,7 +70,7 @@ set_option maxHeartbeats 4000000 in
 theorem base_step_le (isTop : Bool) {u w : V} (hu : 2 ≤ u)
     (hK : ∀ i, (K6 ⊤ ⊤ ⊤ ⊤ (cond isTop ⊤ ⊥) (succT (V := V)) i).val ≤ lvB u) (hw : wD u ≤ w) :
     DLv 𝗭𝗙 (insert (InvT (cond isTop ⊤ ⊥ : SF V 1) succT).val ∅) (w + 30) := by
-  obtain ⟨up, u4, uA⟩ := wD_up hw
+  obtain ⟨-, -, up, u4, uA⟩ := wD_up hw
   cases isTop
   case' true =>
       simp only [cond_true] at hK ⊢

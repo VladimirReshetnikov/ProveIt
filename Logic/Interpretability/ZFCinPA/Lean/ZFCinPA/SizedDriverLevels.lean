@@ -171,9 +171,9 @@ theorem wD_ante {u w : V} (h : wD u ≤ w) : 10 * (mD u + 1) + 1 ≤ w :=
 
 /-- The bounds every step proof uses at its offsets `w + k`. -/
 theorem wD_up {u w : V} (h : wD u ≤ w) :
-    (∀ k : V, w ≤ w + k) ∧ (∀ k : V, (4 : V) ≤ w + k) ∧
-      ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k :=
-  ⟨fun _ => le_self_add, fun _ => le_trans (wD_4 h) le_self_add,
+    (4 : V) ≤ w ∧ 10 * (mD u + 6 + 1) + 1 ≤ w ∧ (∀ k : V, w ≤ w + k) ∧
+      (∀ k : V, (4 : V) ≤ w + k) ∧ ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k :=
+  ⟨wD_4 h, wD_m h, fun _ => le_self_add, fun _ => le_trans (wD_4 h) le_self_add,
     fun _ => le_trans (wD_ante h) le_self_add⟩
 
 /-- The level of the reflection invariant. -/

@@ -71,23 +71,15 @@ theorem request_eind_member (b p k : V) (hbp : b ≠ p) (hbk : b ≠ k) :
 private lemma neg_ge (p : V) : p ≤ neg p := (tagged_components 0 p 1).1
 private lemma conj_left_ge (p q : V) : p ≤ conj p q :=
   le_trans (tagged_components 0 p (neg q)).1 (neg_ge _)
-private lemma biff_arguments_le (p q : V) : p ≤ biff p q ∧ q ≤ biff p q := by
-  have hw : wim p q ≤ biff p q := conj_left_ge _ _
-  exact ⟨le_trans (tagged_components 0 p q).1 hw,
-    le_trans (tagged_components 0 p q).2 hw⟩
-private lemma wel_gt_right (a b : V) : b < wel a b := by
-  have hb : b ≤ 4 * ArithmeticCantor.cantor a b := by
-    simpa only [tagged, add_zero] using (tagged_components (0 : V) a b).2
-  exact lt_of_le_of_lt hb (lt_add_one _)
-
-/-- Literal code bounds, obtained from constructor component bounds only. -/
+/-- Literal code bounds, obtained from the auxiliary label in the outer constructor. -/
 theorem eind_gt_arguments (a b : V) : a < Eind a b ∧ b < Eind a b := by
-  have hbin : Bin (aux a b) a b ≤ Eind a b :=
-    le_trans (tagged_components 2 (aux a b) (Bin (aux a b) a b)).2
+  have haux : aux a b ≤ Eind a b :=
+    le_trans (tagged_components 2 (aux a b) (Bin (aux a b) a b)).1
       (conj_left_ge _ _)
-  have hargs := biff_arguments_le (wel (aux a b) a) (wel (aux a b) b)
-  exact ⟨lt_of_lt_of_le (wel_gt_right _ a) (le_trans hargs.1 hbin),
-    lt_of_lt_of_le (wel_gt_right _ b) (le_trans hargs.2 hbin)⟩
+  have ha : a ≤ a + b := le_add_of_nonneg_right (Arithmetic.zero_le b)
+  have hb : b ≤ a + b := le_add_of_nonneg_left (Arithmetic.zero_le a)
+  exact ⟨lt_of_lt_of_le (lt_of_le_of_lt ha (lt_add_one _)) haux,
+    lt_of_lt_of_le (lt_of_le_of_lt hb (lt_add_one _)) haux⟩
 
 def containerLabel (p : V) : V := Eind (p + 1) p
 
