@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAPairTripleWitnessBound
+#print axioms DiophantineConsistency.PRAPairTripleWitnessBound.pair3_bnd_succ
+#print axioms DiophantineConsistency.PRAPairTripleWitnessBound.candidate_pair3_bound
+#print axioms DiophantineConsistency.PRAPairTripleWitnessBound.candidate_proves_pair3_bound
+#check DiophantineConsistency.PRAPairTripleWitnessBound.candidate_proves_pair3_bound

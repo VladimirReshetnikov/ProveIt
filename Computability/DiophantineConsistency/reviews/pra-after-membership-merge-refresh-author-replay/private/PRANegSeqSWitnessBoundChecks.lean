@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRANegSeqSWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRANegSeqSWitnessBound.neg_ext_rew_bound
+#print axioms DiophantineConsistency.PRANegSeqSWitnessBound.negSeq_bound
+#print axioms DiophantineConsistency.PRANegSeqSWitnessBound.candidate_proves_negSeq_bound
+#check DiophantineConsistency.PRANegSeqSWitnessBound.candidate_proves_negSeq_bound

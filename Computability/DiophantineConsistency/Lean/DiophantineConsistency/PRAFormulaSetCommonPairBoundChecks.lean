@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAFormulaSetCommonPairBound
+#print axioms DiophantineConsistency.PRAFormulaSetCommonPairBound.formulaSet_bound_of_common_pair
+#print axioms DiophantineConsistency.PRAFormulaSetCommonPairBound.candidate_proves_formulaSet_common_pair_bound

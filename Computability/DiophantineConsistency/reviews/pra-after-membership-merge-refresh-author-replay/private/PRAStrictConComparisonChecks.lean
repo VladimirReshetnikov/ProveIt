@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAStrictConComparison
+open DiophantineConsistency.PRAStrictConComparison
+#print axioms comparison
+#check comparison

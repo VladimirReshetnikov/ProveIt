@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAFixSuccWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRAFixSuccWitnessBound.succ_bound_of_core
+#print axioms DiophantineConsistency.PRAFixSuccWitnessBound.succBoundBody_model
+#print axioms DiophantineConsistency.PRAFixSuccWitnessBound.candidate_proves_succ_bound
+#check DiophantineConsistency.PRAFixSuccWitnessBound.candidate_proves_succ_bound
