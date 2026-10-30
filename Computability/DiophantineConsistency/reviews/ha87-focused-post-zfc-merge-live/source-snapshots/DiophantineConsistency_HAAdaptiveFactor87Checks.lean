@@ -1,0 +1,4 @@
+import DiophantineConsistency.HAAdaptiveFactor87
+#print axioms DiophantineConsistency.HAAdaptiveFactor87.polynomialBridge
+#print axioms DiophantineConsistency.HAAdaptiveFactor87.ha_equivalence
+#check DiophantineConsistency.HAAdaptiveFactor87.ha_equivalence
