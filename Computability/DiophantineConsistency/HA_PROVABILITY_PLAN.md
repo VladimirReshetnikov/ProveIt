@@ -89,6 +89,21 @@ guarded dependencies, so this is checked snapshot evidence. Historical HA,
 ZF, Foundation and package provenance remains inherited. See the
 [86 author receipt](reviews/ha86-focused-extension-author.md).
 
+A conditional 13-variable, 85-operation gap-coordinate candidate now has an
+independently replayed [one-sided HA endpoint](reviews/ha85-implication-snapshot-independent.md):
+Lean proves existence of an HA derivation from its exact fixed-port shifted
+no-zero sentence to Foundation's ordinary ZFC consistency sentence. The
+replay rebuilt the 85/model/HA suffix in one overlay on an independently
+checked historical 86 HA parent; its HA/ZF/Foundation/Mathlib/package and
+unlisted transitive source ancestry remains historical, not a complete
+current-source closure. The converse is **not** proved. The 85-to-86 witness
+transfer still requires `F+C<q` for every 85 zero, and that bound is open.
+The independently checked [weak-factor family](reviews/adaptive-gap85-family-general-independent.md)
+shows first and auxiliary factor units alone cannot yield that bound, even
+for arbitrary positive beta and K; its complete polynomial is nonzero, so
+it is not a full-zero counterexample. No 85-operation HA equivalence or
+minimality claim is made.
+
 ## Exact target and established results
 
 Progress estimate on 27 October 2026: **roughly 40–60% of the full HA
