@@ -1,6 +1,8 @@
 import ZFCinPA.R2Main
 import ZFCinPA.ValidatorNativeGicCongruence254
 
+import ZFCinPA.ValidatorImplicationContext
+
 set_option autoImplicit false
 noncomputable section
 
@@ -227,7 +229,7 @@ lemma ex_under {h x A B : V} (vh : Vac x h) (H : CProv (wim h (wim A B))) :
 
 lemma imp_under {h A A' B B' : V} (HA : CProv (wim h (wim A' A))) (HB : CProv (wim h (wim B B'))) :
     CProv (wim h (wim (wim A B) (wim A' B'))) :=
-  ded3 (.mp (.mp (.ax HB) h2) (.mp h1 (.mp (.mp (.ax HA) h2) h0)))
+  ValidatorImplicationContext.imp_under CProv cProv_classical HA HB
 
 lemma conj_under' {h A A' B B' : V} (HA : CProv (wim h (wim A A'))) (HB : CProv (wim h (wim B B'))) :
     CProv (wim h (wim (conj A B) (conj A' B'))) := by
