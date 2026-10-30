@@ -31,11 +31,8 @@ theorem earlier_output_unchanged (r j : ℕ) (ψ : Semiproposition language 7)
     (e e' : ℕ → M) (he : ∀ k < r+3*j, e k = e' k) :
     (output r ψ stages).Eval ![] e ↔ (output r ψ stages).Eval ![] e' := by
   rw [output_eval, output_eval]
-  constructor
-  · rintro ⟨i,hi,hbad⟩
-    exact ⟨i,hi, fun h => hbad ((earlier_bad_unchanged r i j ψ hψ (hStages i hi) e e' he).mpr h)⟩
-  · rintro ⟨i,hi,hbad⟩
-    exact ⟨i,hi, fun h => hbad ((earlier_bad_unchanged r i j ψ hψ (hStages i hi) e e' he).mp h)⟩
+  exact exists_congr fun i => and_congr_right fun hi =>
+    not_congr (earlier_bad_unchanged r i j ψ hψ (hStages i hi) e e' he)
 /-- Replace the three challenges at stage j, leaving all earlier indices alone. -/
 def updateChallenges (r j : ℕ) (e : ℕ → M) (a b c : M) : ℕ → M :=
   fun i => if i = r+3*j then a else if i = r+3*j+1 then b else
