@@ -1,0 +1,7 @@
+# Guarded rebase runs stopped for a second validator merge
+
+The runs were interrupted at safe boundaries after `ValidatorEind222` and `ValidatorNativeGicCongruence254` changed in the merge. Neither run passed final authentication. Their terminal states record `FAILED` with `KeyboardInterrupt`; the source drift was an externally observed reason to stop, not an internal guard failure. The unrelated WangTable worker was untouched.
+
+The focused run `/tmp/ha87-focused-validator-rebase-a88xpkx7` stopped during overlay preparation with zero records. Its frozen input driver and graph are in `../ha87-focused-validator-rebase-live/`; its source baseline is the focused snapshot in `../ha87-focused-compat-rebuild-live/`, with the five first-merge validator replacements in `source-deltas/` here.
+
+The full run `/tmp/ha87-full-source-04ufmfyj` stopped while `BusyBeaver.ZFC.RMDag` was active, with 95 verified rows, including 72 reused from `/tmp/ha87-full-source-vkynsi51`. The 72 earlier rows, original source snapshots and logs are frozen in `../ha87-full-source-build-author2/`; this packet preserves terminal state and logs for the 23 new rows. The five first-merge source replacements are provided here, as are both before/after snapshots of the two second-merge changes. State files contain all source, dependency, object and log hashes. The runtime objects and ancestry are in the recorded `/tmp` roots; they are not source-current proof acceptance.

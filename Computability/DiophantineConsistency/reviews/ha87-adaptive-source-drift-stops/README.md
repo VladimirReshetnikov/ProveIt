@@ -1,0 +1,5 @@
+# Drift stops after two adaptive source changes
+
+After two adaptive modules changed in a sync merge, both in-flight source guards were invalidated. The focused run `/tmp/ha87-focused-validator-rebase-6qpfw2_p` stopped with FAILED/KeyboardInterrupt during historical-boundary authentication and had no compiled records. The full run `/tmp/ha87-full-source-1_n8gnuo` stopped with FAILED/KeyboardInterrupt on `KSites215Batch000` after its Lean child exited; 103 rows were verified, 95 inherited from the immediately previous run and eight new. These are externally requested stops, not source-check failures.
+
+The previous full state, 23 newer logs, and earlier source deltas are in `../ha87-validator-second-drift-stops/`; the original 72-prefix source snapshots and logs are in `../ha87-full-source-build-author2/`. This packet contains the eight further logs, both current terminal states and the before/after adaptive source deltas. State rows carry source, direct dependency, object and log hashes. Runtime objects and their parent chain remain in the recorded `/tmp` roots; they are not an independently replayed full proof. The unrelated WangTable worker was untouched.
