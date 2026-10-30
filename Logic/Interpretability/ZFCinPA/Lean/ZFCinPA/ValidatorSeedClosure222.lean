@@ -45,11 +45,8 @@ theorem seed_supported_request (a b c : V) (hca : c ≠ a) (hcb : c ≠ b)
     (hc : Vac a c) :
     CProv (ex c (conj (wal b (wim (wel b c) c)) (req b c c))) := by
   have point : CProv (wim (conj (clos a b c c) (req b c c))
-      (conj (wal b (wim (wel b c) c)) (req b c c))) := by
-    apply ded1
-    exact .mp (.mp (.ax (conj_rule _ _))
-      (.mp (.ax (closure_support a b c c hc)) (.mp (.ax (conj_left _ _)) h0)))
-      (.mp (.ax (conj_right _ _)) h0)
+      (conj (wal b (wim (wel b c) c)) (req b c c))) :=
+    contrapose_of (imp_mono (closure_support a b c c hc) (ded1 h0))
   exact cProv_mp (ex_mono c point) (seed_pair a b c hca hcb)
 
 /-- The false matrix has code1. Both input/output roles are0, so its
