@@ -3,7 +3,7 @@ import ZFCinPA.SizedDriverLevels
 /-!
 # Bounded driver steps: `¬`, `⊤`, `⊥`
 
-`neg_step_le`, `top_base_le` and `bot_base_le`.
+`neg_step_le` and `base_step_le` (`⊤`, `⊥`).
 
 Part of the bounded `hSchema` driver (`SizedDriver`), split out of one
 module so that each Lean process elaborates only a few step proofs.
@@ -68,53 +68,44 @@ theorem neg_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
   exact d.mono (le_of_add_eq (y := 18) (by ring))
 
 set_option maxHeartbeats 4000000 in
-theorem top_base_le {u w : V} (hu : 2 ≤ u)
-    (hK : ∀ i, (K6 ⊤ ⊤ ⊤ ⊤ ⊤ (succT (V := V)) i).val ≤ lvB u) (hw : wD u ≤ w) :
-    DLv 𝗭𝗙 (insert (InvT (⊤ : SF V 1) succT).val ∅) (w + 30) := by
-  have hw4 := wD_4 hw
+/-- The `⊤` (`isTop = true`) and `⊥` base cases. -/
+theorem base_step_le (isTop : Bool) {u w : V} (hu : 2 ≤ u)
+    (hK : ∀ i, (K6 ⊤ ⊤ ⊤ ⊤ (cond isTop ⊤ ⊥) (succT (V := V)) i).val ≤ lvB u) (hw : wD u ≤ w) :
+    DLv 𝗭𝗙 (insert (InvT (cond isTop ⊤ ⊥ : SF V 1) succT).val ∅) (w + 30) := by
   obtain ⟨up, u4, uA⟩ := wD_up hw
-  have hc := compiledLe (by decide) topBase_provable _ hu hK
-  have lt := trD_le topBase tD_top _ hK
-  obtain ⟨T, hT⟩ : ∃ T,
-      translateFormula (K6 ⊤ ⊤ ⊤ ⊤ ⊤ (succT (V := V)))
-        (Rewriting.emb topBase) = T :=
-    ⟨_, rfl⟩
-  rw [hT] at hc lt
-  simp only [topBase, LogicalConnective.HomClass.map_imply,
-    LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_topDefP, tr_succDefF,
-    tr_tot₅, tr_refl₄₅] at hT
-  subst hT
-  have hA := imp_ante_le lt
-  have pA := dall_iff (⊤ : SF V 1) (hK 4) hu
-  have pF := dall2_swap (succT (V := V)) (hK 5) hu
-  have c1 := dandW (u4 0) hA (uA 0) pA (le_trans (wD_i hw) (up 0)) pF (le_trans (wD_s hw) (up 0))
-  have d := dmpW (u4 2) lt (uA 2) hc (le_trans (le_trans (c_top_le u) (wD_c hw)) (up 2)) c1
-    (le_of_eq (by ring))
-  exact d.mono (le_of_add_eq (y := 25) (by ring))
-
-set_option maxHeartbeats 4000000 in
-theorem bot_base_le {u w : V} (hu : 2 ≤ u)
-    (hK : ∀ i, (K6 ⊤ ⊤ ⊤ ⊤ ⊥ (succT (V := V)) i).val ≤ lvB u) (hw : wD u ≤ w) :
-    DLv 𝗭𝗙 (insert (InvT (⊥ : SF V 1) succT).val ∅) (w + 30) := by
-  have hw4 := wD_4 hw
-  obtain ⟨up, u4, uA⟩ := wD_up hw
-  have hc := compiledLe (by decide) botBase_provable _ hu hK
-  have lt := trD_le botBase tD_bot _ hK
-  obtain ⟨T, hT⟩ : ∃ T,
-      translateFormula (K6 ⊤ ⊤ ⊤ ⊤ ⊥ (succT (V := V)))
-        (Rewriting.emb botBase) = T :=
-    ⟨_, rfl⟩
-  rw [hT] at hc lt
-  simp only [botBase, LogicalConnective.HomClass.map_imply,
-    LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_botDefP, tr_succDefF,
-    tr_tot₅, tr_refl₄₅] at hT
-  subst hT
-  have hA := imp_ante_le lt
-  have pA := dall_iff (⊥ : SF V 1) (hK 4) hu
-  have pF := dall2_swap (succT (V := V)) (hK 5) hu
-  have c1 := dandW (u4 0) hA (uA 0) pA (le_trans (wD_i hw) (up 0)) pF (le_trans (wD_s hw) (up 0))
-  have d := dmpW (u4 2) lt (uA 2) hc (le_trans (le_trans (c_bot_le u) (wD_c hw)) (up 2)) c1
-    (le_of_eq (by ring))
-  exact d.mono (le_of_add_eq (y := 25) (by ring))
+  cases isTop
+  case' true =>
+      simp only [cond_true] at hK ⊢
+      have hc := compiledLe (by decide) topBase_provable _ hu hK
+      have lt := trD_le topBase tD_top _ hK
+      obtain ⟨T, hT⟩ : ∃ T,
+          translateFormula (K6 ⊤ ⊤ ⊤ ⊤ ⊤ (succT (V := V))) (Rewriting.emb topBase) = T :=
+        ⟨_, rfl⟩
+      rw [hT] at hc lt
+      simp only [topBase, LogicalConnective.HomClass.map_imply,
+        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_topDefP, tr_succDefF,
+        tr_tot₅, tr_refl₄₅] at hT
+      subst hT
+      have pA := dall_iff (⊤ : SF V 1) (hK 4) hu
+      have hcl := c_top_le u
+  case' false =>
+      simp only [cond_false] at hK ⊢
+      have hc := compiledLe (by decide) botBase_provable _ hu hK
+      have lt := trD_le botBase tD_bot _ hK
+      obtain ⟨T, hT⟩ : ∃ T,
+          translateFormula (K6 ⊤ ⊤ ⊤ ⊤ ⊥ (succT (V := V))) (Rewriting.emb botBase) = T :=
+        ⟨_, rfl⟩
+      rw [hT] at hc lt
+      simp only [botBase, LogicalConnective.HomClass.map_imply,
+        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_botDefP, tr_succDefF,
+        tr_tot₅, tr_refl₄₅] at hT
+      subst hT
+      have pA := dall_iff (⊥ : SF V 1) (hK 4) hu
+      have hcl := c_bot_le u
+  all_goals
+    have c1 := dandW (u4 0) (imp_ante_le lt) (uA 0) pA (le_trans (wD_i hw) (up 0))
+      (dall2_swap (succT (V := V)) (hK 5) hu) (le_trans (wD_s hw) (up 0))
+    exact (dmpW (u4 2) lt (uA 2) hc (le_trans (le_trans hcl (wD_c hw)) (up 2)) c1
+      (le_of_eq (by ring))).mono (le_of_add_eq (y := 25) (by ring))
 
 end LeanProofs.ZFCinPA.SizedDriverSteps

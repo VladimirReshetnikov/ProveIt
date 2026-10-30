@@ -3,7 +3,7 @@ import ZFCinPA.SizedDriverLevels
 /-!
 # Bounded driver steps: `∃` and `∀`
 
-`ex_step_le` and `all_step_le`.
+`quant_step_le true` (`∃`) and `quant_step_le false` (`∀`).
 
 Part of the bounded `hSchema` driver (`SizedDriver`), split out of one
 module so that each Lean process elaborates only a few step proofs.
@@ -95,17 +95,5 @@ theorem quant_step_le (isEx : Bool) {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (h
     have d := dmpW (u4 11) lt (uA 11) hc (le_trans (le_trans hcl (wD_c hw)) (up 11)) c1
       (le_of_eq (by ring))
     exact d.mono (le_of_add_eq (y := 16) (by ring))
-
-theorem ex_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
-    (hK : ∀ i, (K6 P₀ F₁ ⊤ (WbT P₀) (ExT P₀) (MaxT F₁ (WbT P₀)) i).val ≤ lvB u) (hw : wD u ≤ w)
-    (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w) :
-    DLv 𝗭𝗙 (insert (InvT (ExT P₀) (MaxT F₁ (WbT P₀))).val ∅) (w + 30) :=
-  quant_step_le true hu hK hw h₁
-
-theorem all_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
-    (hK : ∀ i, (K6 P₀ F₁ ⊤ (WbNT P₀) (AllT P₀) (MaxT F₁ (WbNT P₀)) i).val ≤ lvB u)
-    (hw : wD u ≤ w) (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w) :
-    DLv 𝗭𝗙 (insert (InvT (AllT P₀) (MaxT F₁ (WbNT P₀))).val ∅) (w + 30) :=
-  quant_step_le false hu hK hw h₁
 
 end LeanProofs.ZFCinPA.SizedDriverSteps
