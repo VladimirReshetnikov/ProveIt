@@ -1,0 +1,7 @@
+# Successor-ordinate strong Pell seed: independent replay
+
+The independent run `/tmp/adaptive-gap85-strong-seed-1ifyw4hw` finished `PASS` on the same independently replayed v13 model snapshot provider as the [author run](adaptive-gap85-strong-seed-author.md). Source, Lean object, full log, parent/provider/boundary state and provider-inventory hashes match. Both builds authenticated 507 selected inherited objects and 28 model-parent output/log records before and after. Historical 87 model and project/Foundation/package boundaries remain inherited.
+
+In every IΣ₁ model, `strong_seed_at_successor` constructs positive `f,i` satisfying `(c²i)²+delta(a)=delta(a)f²` for `c=a+1`. This is an arithmetic seed only; it does not by itself bind an actual 85 factor or establish a full zero, reverse bound, HA or Con(ZFC) equivalence.
+
+Replay with `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-strong-seed.py` against the specified provider. Source SHA-256 `4b559f90c725fba971c29544172b5734b399d4e89bdba304e11b278c9bb4d9bd`, object `595810d39e494fdcd37ca64e5d90f075ceda2c1be39576cbafcb78655d658fd5`, empty full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, peer state `8881a3ab7724684b027dbe2b68298adb78a56fdf28e16306f043683b1671e0b1`. Source snapshot, driver, full log, timing and state are in `adaptive-gap85-strong-seed-independent-evidence`; manifest SHA-256 `98d730b7bf257458394d928d58e3d150b44bd80f7004294436310940706782c6`.
