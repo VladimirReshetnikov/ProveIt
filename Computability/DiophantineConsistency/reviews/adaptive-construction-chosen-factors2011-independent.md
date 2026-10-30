@@ -1,0 +1,3 @@
+# Independent chosen-coordinate factor replay
+
+The independent run `/tmp/adaptive-construction-chosen-factors-abpuk85a` passed all eight modules on the independently replayed auxiliary-witness provider. Its source, object and full-log hashes match the author run for every module, including the recorded `ring_nf` suggestion in the main client. The saved [peer state](adaptive-construction-chosen-factors2011-independent-evidence/state.json) records commands and hashes with the accurate chosen-factor scope. The theorem scopes and remaining Assembly and complete-zero obligations are described in the [author receipt](adaptive-construction-chosen-factors2011-author.md).

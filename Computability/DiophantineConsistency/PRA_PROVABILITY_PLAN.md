@@ -14,6 +14,12 @@ It rewrites the supplied first norm and carrier identities into the literal
 adaptive graph's grouping. The hypotheses remain explicit: this does not yet
 construct the first-factor witness or establish the full zero.
 
+The [chosen-coordinate main and auxiliary factors](reviews/adaptive-construction-chosen-factors2011-independent.md)
+have matching author and independent builds. They establish their respective
+literal units for the same witness when the stated correction and orientation
+equalities are supplied, allowing those coordinates to be chosen separately.
+The common witness, first factor and complete zero remain open.
+
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
 identifies the actual theorem associated with each affected snapshot. Module
