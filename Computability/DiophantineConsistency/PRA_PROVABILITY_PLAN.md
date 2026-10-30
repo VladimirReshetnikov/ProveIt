@@ -73,7 +73,9 @@ were subsequently rebuilt in the [60-module comparison graph](reviews/pra-isigma
 with two independent replays. The later `HerbrandPackedContextTransfer`
 change and its affected graph were rebuilt in the [74-module refresh](reviews/pra-after-unary-merge-refresh-author-replay/README.md),
 also with two independent replays. A subsequent `PRAPiOneImplication` merge
-still requires a focused refresh of the affected unary clients.
+was covered by the 15-module strict-surrogate replay, and the later open and
+bounded induction changes by the [34-module refresh](reviews/pra-after-open-bound-merge-refresh-author-replay/README.md),
+each independently replayed twice.
 
 `PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
 universally closed open-existential goal from an IΣ₁ proof and an explicit
