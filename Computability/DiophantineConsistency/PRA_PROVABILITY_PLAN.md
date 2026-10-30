@@ -10,8 +10,10 @@ printed proof is not required.
 
 The [first-Pell correction quotient](reviews/adaptive-construction-correction2011-independent.md)
 is now derived in every stated IΣ₁ model from explicit seed-index and ordinate
-hypotheses and the constructed scaling. Establishing those hypotheses in the
-full construction and positivity of the final correction remain open.
+hypotheses and the constructed scaling. A [positive-correction theorem](reviews/adaptive-construction-correction-positive2011-independent.md)
+now also derives the required positive correction under explicit index,
+scaling and positivity hypotheses. Establishing those hypotheses in the full
+construction remains open.
 
 The [enriched-assembly adapter](reviews/adaptive-assembly-bridge2011-independent.md)
 now derives transport, a strong-factor identity and a positive auxiliary
