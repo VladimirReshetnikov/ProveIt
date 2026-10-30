@@ -36,8 +36,11 @@ candidate-PRA proof on a pre-merge snapshot, with two matching independent
 frozen-source replays; the affected current-source graph is being refreshed.
 The swapped `expDef` and positive `bitDef` have since been bounded in a
 six-module post-merge author build and two matching independent client
-replays. Its 67-module parent graph remains under independent replay. The
-derivation fixpoint client uses that bit bound but retains the bounded
+replays. Its 67-module parent graph also passed two matching independent
+replays. Later upstream changes were followed by an 18-module frozen-source
+refresh and a 12-module post-refactor refresh, both with matching peers; the
+latter additionally bounds negative `Seqₛ` by `2*y+1`. The derivation
+fixpoint client uses that bit bound but retains the bounded
 `limSeqDef` conjunct as an explicit hypothesis; the ZFC refutation sentence
 remains open.
 The replay providers inherit their documented

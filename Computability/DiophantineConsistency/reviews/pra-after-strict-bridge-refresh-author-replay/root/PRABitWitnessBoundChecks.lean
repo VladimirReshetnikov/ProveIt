@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRABitWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRABitWitnessBound.lenbit_in_bit_bound
+#print axioms DiophantineConsistency.PRABitWitnessBound.bit_bnd_of_witness
+#print axioms DiophantineConsistency.PRABitWitnessBound.bitBoundBody_model
+#print axioms DiophantineConsistency.PRABitWitnessBound.candidate_proves_bitBoundSentence
+#check DiophantineConsistency.PRABitWitnessBound.candidate_proves_bitBoundSentence

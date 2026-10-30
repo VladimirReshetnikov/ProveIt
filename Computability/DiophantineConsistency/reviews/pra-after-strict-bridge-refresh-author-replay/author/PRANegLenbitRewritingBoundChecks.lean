@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRANegLenbitRewritingBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRANegLenbitRewritingBound.neg_lenbit_rew_bound
+#print axioms DiophantineConsistency.PRANegLenbitRewritingBound.negFirst_bound
+#print axioms DiophantineConsistency.PRANegLenbitRewritingBound.candidate_proves_negFirst_bound
+#check DiophantineConsistency.PRANegLenbitRewritingBound.candidate_proves_negFirst_bound

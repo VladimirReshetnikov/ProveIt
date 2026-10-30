@@ -52,6 +52,8 @@ A newer 86-operation direct-ordinate candidate now has a Lean theorem, with
 matching author and independent scoped replays, that its fixed-port no-zero
 sentence is equivalent to the 87-operation candidate's no-zero sentence in
 every IΣ₁ model. See the [independent receipt](reviews/adaptive-direct86-fixed-equivalence-independent.md).
+Subsequent upstream merges changed source modules in that theorem's dependency
+chain, so this is checked snapshot evidence, not a current-source replay.
 The candidate's proof provider and the independently checked 87-operation
 machine provider have differing shared compiled objects; a coherent combined
 rebuild is required before claiming that the 86-operation equation has the

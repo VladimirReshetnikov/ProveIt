@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRANegPpow2WitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRANegPpow2WitnessBound.neg_sppow2_rew_bound_at
+#print axioms DiophantineConsistency.PRANegPpow2WitnessBound.neg_ppow2_bound
+#print axioms DiophantineConsistency.PRANegPpow2WitnessBound.candidate_proves_negPpow2_bound
+#check DiophantineConsistency.PRANegPpow2WitnessBound.candidate_proves_negPpow2_bound

@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRABndRewriting
+#print axioms DiophantineConsistency.PRABndRewriting.natural
+#check DiophantineConsistency.PRABndRewriting.natural
