@@ -12,10 +12,14 @@ The local negative and positive square-root/length-bit existential bounds
 have each passed an author build and two independent replays with matching
 source, object and complete-log hashes. They provide candidate-PRA proofs for
 specific subformulas occurring in Foundation's `sppow2Def`, with the input
-bound explicit where needed. These are constituents of the refutation-bound
-construction, not a bound for `sppow2Def`, `expDef`, or the ZFC refutation
-sentence. The replay providers inherit their documented Foundation and
-package boundaries; the complete consistency reverse direction remains open.
+bound explicit where needed. The full positive `sppow2Def` graph has now also
+passed an author build and two independent replays, with the explicit common
+bound `m+1`, yielding a closed candidate-PRA proof on the checked pre-merge
+provider snapshot. These are constituents of
+the refutation-bound construction, not bounds for `ppow2Def`, `expDef`, or the
+ZFC refutation sentence. The replay providers inherit their documented
+Foundation and package boundaries; the complete consistency reverse direction
+remains open.
 
 The milestones in this section are recorded in construction order. Later
 results below discharge several assumptions stated in the earlier milestones;
