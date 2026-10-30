@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAPow2WitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRAPow2WitnessBound.pow2_bound
+#print axioms DiophantineConsistency.PRAPow2WitnessBound.pow2BoundBody_model
+#print axioms DiophantineConsistency.PRAPow2WitnessBound.candidate_proves_pow2_bound
+#check DiophantineConsistency.PRAPow2WitnessBound.candidate_proves_pow2_bound

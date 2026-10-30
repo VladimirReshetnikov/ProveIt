@@ -248,6 +248,11 @@ The independently replayed [extDef local bound](reviews/pra-ext-witness-bound-au
 gives `c+1` for Foundation's exact extension graph and its candidate-PRA
 sentence. The remaining exponential sequence and power graphs are not bounded
 by that theorem.
+The independently replayed [negative length-bit and positive power-of-two bounds](reviews/pra-neglenbit-pow2-bound-author-replay/README.md)
+and [negative power-of-two bound](reviews/pra-negpow2-bound-author-replay/README.md)
+cover further exact standalone graphs, including a substituted negative
+`lenbitDef` occurrence. They do not yet bound the full `sppow2Def`,
+exponential graph, history or refutation sentence.
 The [rewritten extDef client](reviews/pra-ext-rewriting-bound-author-replay/README.md)
 transports the local bound through arithmetic substitutions and proves a
 candidate-PRA bound for the concrete `extDef 1 4 X` occurrence. The rest of
