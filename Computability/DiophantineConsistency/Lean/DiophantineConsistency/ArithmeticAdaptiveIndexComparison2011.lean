@@ -109,11 +109,9 @@ theorem comparison_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V)
     _=c := by dsimp [c]; ring
   exact ⟨first,main,n,m,hfirst,hmain,hn13,hnm,hm14,hhalf,hroot,horient,hnx,hny,hmx,hmy,hnmod⟩
 
-theorem expressionAt_comparison (p : Fin 4 → ℕ) (v : Fin 13 → V)
-    (hb : 0<(p 0:V)) (hl : (p 2:V)<(p 0:V)) (hh : (p 3:V)<2*(p 0:V))
-    (hv : ∀j,0<v j) (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : Comparison p v := by
-  let q : V := 1+v 0*(p 0:V)
-  have hq : 1<q := (scaled_parameters_positive p v hb hv).1
+/-- A positive q³ quotient gives Y ≥ 2 when q > 1. -/
+theorem two_le_of_positive_cube_quotient {q y : V} (hq : 1<q)
+    (hY : ∃ s : V, 0<s ∧ y=q*(q*q)*s) : 2≤y := by
   have hq2 : 2≤q := by simpa only [one_add_one_eq_two] using lt_iff_succ_le.mp hq
   have hq1 : 1≤q := le_of_lt hq
   have hq3 : 2≤q^3 := calc
@@ -121,30 +119,24 @@ theorem expressionAt_comparison (p : Fin 4 → ℕ) (v : Fin 13 → V)
     _≤q*q := le_mul_of_one_le_right (by simp) hq1
     _≤q*q*q := le_mul_of_one_le_right (by simp) hq1
     _=q^3 := by ring
-  obtain ⟨s,hs,hsY⟩ := expressionAt_Y_quotient p v hb hv hz
-  have hY : 2≤v 7 := calc
+  obtain ⟨s,hs,hsY⟩ := hY
+  calc
     2≤q^3 := hq3
     _≤q^3*s := le_mul_of_one_le_right (by simp) (pos_iff_one_le.mp hs)
-    _=v 7 := by simpa only [pow_succ,pow_zero,one_mul,mul_assoc] using hsY.symm
+    _=y := by simpa only [pow_succ,pow_zero,one_mul,mul_assoc] using hsY.symm
+
+theorem expressionAt_comparison (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hb : 0<(p 0:V)) (hl : (p 2:V)<(p 0:V)) (hh : (p 3:V)<2*(p 0:V))
+    (hv : ∀j,0<v j) (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : Comparison p v := by
+  have hY : 2≤v 7 := two_le_of_positive_cube_quotient
+    (scaled_parameters_positive p v hb hv).1 (expressionAt_Y_quotient p v hb hv hz)
   exact comparison_of_facts p v hv hY (expressionAt_indices p v hb hv hz)
     (expressionAt_early_index p v hb hl hh hv hz)
 
 theorem current_comparison (v : Fin 13 → V) (hv : ∀j,0<v j)
     (hz : InternalZero expression v) : Comparison currentPorts v := by
-  let q : V := 1+v 0*(CurrentMasks2011.beta:V)
-  have hq : 1<q := (current_parameters_positive v hv).1
-  have hq2 : 2≤q := by simpa only [one_add_one_eq_two] using lt_iff_succ_le.mp hq
-  have hq1 : 1≤q := le_of_lt hq
-  have hq3 : 2≤q^3 := calc
-    2≤q := hq2
-    _≤q*q := le_mul_of_one_le_right (by simp) hq1
-    _≤q*q*q := le_mul_of_one_le_right (by simp) hq1
-    _=q^3 := by ring
-  obtain ⟨s,hs,hsY⟩ := current_Y_quotient v hv hz
-  have hY : 2≤v 7 := calc
-    2≤q^3 := hq3
-    _≤q^3*s := le_mul_of_one_le_right (by simp) (pos_iff_one_le.mp hs)
-    _=v 7 := by simpa only [pow_succ,pow_zero,one_mul,mul_assoc] using hsY.symm
+  have hY : 2≤v 7 := two_le_of_positive_cube_quotient
+    (current_parameters_positive v hv).1 (current_Y_quotient v hv hz)
   exact comparison_of_facts currentPorts v hv hY (current_indices v hv hz) (current_early_index v hv hz)
 
 theorem current_natural_comparison (v : Fin 13 → V) (hz : InternalZero naturalExpression v) :
