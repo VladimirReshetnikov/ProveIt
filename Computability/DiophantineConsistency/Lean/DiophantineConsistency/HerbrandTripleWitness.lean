@@ -24,8 +24,15 @@ theorem modelParameterTripleInstance {n : ℕ} (φ : Semisentence language (n+3)
     (h : (tripleInstance (parameterTripleMatrix φ) t u v).Eval ![] (parameterEnv n e)) :
     (matrixAt φ (tripleCode n t u v)).Eval e Empty.elim := by
   letI : M↓[language] ⊧* PRA := modelCandidatePRA
-  unfold tripleInstance afterSecond afterFirst parameterTripleMatrix at h
-  simp only [Semiformula.eval_rew] at h
+  have htriple := (tripleInstance_eval (parameterTripleMatrix φ) t u v (parameterEnv n e)).mp h
+  have heval := (parameterTripleMatrix_eval φ (parameterEnv n e)
+    (Semiterm.val ![] (parameterEnv n e) v)
+    (Semiterm.val ![] (parameterEnv n e) u)
+    (Semiterm.val ![] (parameterEnv n e) t)).mp htriple
+  have henv : (fun i : Fin n => parameterEnv n e i.val) = e := by
+    funext i
+    simp [parameterEnv]
+  rw [henv] at heval
   rw [matrixAt, Semiformula.eval_substs]
   simp only [tripleCode]
   have hv : (Semiterm.val e Empty.elim ∘ Fin.cases (applyCode (parameterCode n v) (vars n))
@@ -46,60 +53,8 @@ theorem modelParameterTripleInstance {n : ℕ} (φ : Semisentence language (n+3)
         change Structure.func (L := language) (parameterCode n t) (Semiterm.val e Empty.elim ∘ vars n) = _
         rw [hv, modelParameterCode]; rfl
   rw [hv]
-  simp [Function.comp_def, Rew.qpow_succ] at h
-  have hb : (fun x =>
-        Semiterm.val
-          (fun x => Semiterm.val
-            (fun x => Semiterm.val
-              (fun x => Semiterm.val ![] (parameterEnv n e) v)
-              (parameterEnv n e) ((Rew.subst ![u]).q #x))
-            (parameterEnv n e) ((Rew.subst ![t]).q.q #x))
-          (parameterEnv n e) ((Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language))).q.q.q #x)) =
-      Fin.cases (Semiterm.val ![] (parameterEnv n e) v)
-        (Fin.cases (Semiterm.val ![] (parameterEnv n e) u)
-          (Fin.cases (Semiterm.val ![] (parameterEnv n e) t) e)) := by
-    funext i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · simp
-    · refine Fin.cases ?_ (fun k => ?_) j
-      · change Semiterm.val _ _ ((Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language))).q.q.q #((0 : Fin (n+2)).succ)) = _
-        simp only [Rew.q_bvar_succ, Rew.q_bvar_zero, Rew.bShift_bvar, Semiterm.val_bvar, Rew.subst_bvar]
-        have heq : (fun _ : Fin 1 => Semiterm.val ![] (parameterEnv n e) v) =
-            (Semiterm.val ![] (parameterEnv n e) v :> (Fin.elim0 : Fin 0 → M)) := by
-          funext x; exact Fin.cases rfl (fun i => Fin.elim0 i) x
-        rw [heq, Semiterm.val_bShift]
-        rfl
-      · refine Fin.cases ?_ (fun l => ?_) k
-        · change Semiterm.val _ _ ((Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language))).q.q.q #((0 : Fin (n+1)).succ.succ)) = _
-          simp only [Rew.q_bvar_succ, Rew.q_bvar_zero, Rew.bShift_bvar, Semiterm.val_bvar, Rew.subst_bvar]
-          have heq : (fun x : Fin 2 => Semiterm.val
-              (fun x => Semiterm.val ![] (parameterEnv n e) v)
-              (parameterEnv n e) ((Rew.subst ![u]).q #x)) =
-              (Semiterm.val ![] (parameterEnv n e) v :>
-                Semiterm.val ![] (parameterEnv n e) u :> Fin.elim0) := by
-            funext x
-            refine Fin.cases rfl (fun y => ?_) x
-            refine Fin.cases ?_ (fun z => Fin.elim0 z) y
-            change Semiterm.val _ _ ((Rew.subst ![u]).q #((0 : Fin 1).succ)) = _
-            simp only [Rew.q_bvar_succ, Rew.subst_bvar]
-            have hv1 : (fun _ : Fin 1 => Semiterm.val ![] (parameterEnv n e) v) =
-                (Semiterm.val ![] (parameterEnv n e) v :> (Fin.elim0 : Fin 0 → M)) := by
-              funext x; exact Fin.cases rfl (fun i => Fin.elim0 i) x
-            rw [hv1, Semiterm.val_bShift]
-            rfl
-          rw [heq, Semiterm.val_bShift, Semiterm.val_bShift]
-          rfl
-        · simp [Rew.q_bvar_succ, parameterEnv]
-  rw [hb] at h
-  have he : (fun x =>
-      Semiterm.val
-        (fun x => Semiterm.val
-          (fun x => Semiterm.val (fun x => Semiterm.val ![] (parameterEnv n e) v) (parameterEnv n e) ((Rew.subst ![u]).q #x))
-          (parameterEnv n e) ((Rew.subst ![t]).q.q #x))
-        (parameterEnv n e) (Rew.bShift (Rew.bShift (Rew.bShift ((Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language))) &x))))) =
-      (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [he] at h
-  exact h
+  exact heval
+
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* UniversalAxiom] in
 theorem modelListMember {n : ℕ} (φ : Semisentence language (n+3)) (fallback : Triple n)
     (ts : List (Triple n)) (t : Triple n) (ht : t ∈ ts) (e : Fin n → M)

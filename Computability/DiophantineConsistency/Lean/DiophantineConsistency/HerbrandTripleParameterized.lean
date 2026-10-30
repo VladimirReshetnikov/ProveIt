@@ -10,6 +10,33 @@ open PRALanguage PRAUniversalCandidate HerbrandUniversalPreparation HerbrandTrip
 def parameterTripleMatrix {n : ℕ} (φ : Semisentence language (n+3)) : Semiproposition language 3 :=
   (((Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language))).q).q).q ▹ φ
 
+/-- The three bound slots are followed by the free parameter values. -/
+theorem parameterTripleMatrix_eval {M : Type} [Structure language M] {n : ℕ}
+    (φ : Semisentence language (n+3)) (e : ℕ → M) (x y z : M) :
+    (parameterTripleMatrix φ).Eval ![x,y,z] e ↔
+      φ.Eval (Fin.cases x (Fin.cases y (Fin.cases z (fun i : Fin n => e i.val)))) Empty.elim := by
+  unfold parameterTripleMatrix
+  rw [Semiformula.eval_rew_q]
+  simp only [Function.comp_def, Rew.q_fvar, Semiterm.val_bShift]
+  have hb : (fun i => Semiterm.val ![y,z] e
+      ((Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language))).q.q #i)) =
+      Fin.cases y (Fin.cases z (fun i : Fin n => e i.val)) := by
+    funext i
+    refine Fin.cases ?_ (fun j => ?_) i
+    · simp
+    · refine Fin.cases ?_ (fun k => ?_) j
+      · change Semiterm.val _ _ ((Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language))).q.q #((0 : Fin (n+1)).succ)) = _
+        simp only [Rew.q_bvar_succ, Rew.q_bvar_zero, Semiterm.val_bShift, Semiterm.val_bvar]
+        rfl
+      · change Semiterm.val _ _ ((Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language))).q.q #(k.succ.succ)) = _
+        simp only [Rew.q_bvar_succ, Rew.embSubsts_bvar, Semiterm.val_bShift, Semiterm.val_fvar]
+        rfl
+  have hf : (fun i : Empty => Semiterm.val ![] e (Rew.embSubsts (fun i : Fin n => (&i.val : SyntacticTerm language)) &i)) =
+      (Empty.elim : Empty → M) := Subsingleton.elim _ _
+  rw [hb,hf]
+  rfl
+
+
 theorem parameterTripleMatrix_open {n : ℕ} (φ : Semisentence language (n+3))
     (hφ : φ.Open) : (parameterTripleMatrix φ).Open := by
   change (parameterTripleMatrix φ).qr = 0

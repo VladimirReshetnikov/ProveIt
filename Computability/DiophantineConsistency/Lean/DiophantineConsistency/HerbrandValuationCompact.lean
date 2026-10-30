@@ -100,4 +100,18 @@ theorem proves_univCl_of_no_valuation (S : Set (Proposition language))
   intro e
   by_contra h
   exact hn ⟨⟨M, hM0, hM, hTheory, e, hbad e h⟩⟩
+/-- A recursively formed finite disjunction holds exactly when one of its
+listed disjuncts holds. -/
+theorem eval_list_disjunction {M : Type} [Structure language M] {α : Type}
+    (item : α → Proposition language) (out : List α → Proposition language)
+    (hnil : out [] = ⊥) (hcons : ∀ a as, out (a :: as) = item a ⋎ out as)
+    (xs : List α) (e : ℕ → M) :
+    (out xs).Eval ![] e ↔ ∃ a ∈ xs, (item a).Eval ![] e := by
+  induction xs with
+  | nil => rw [hnil]; simp [Semiformula.Eval]
+  | cons a as ih =>
+    rw [hcons]
+    change ((item a).Eval ![] e ∨ (out as).Eval ![] e) ↔ _
+    rw [ih]
+    simp
 end DiophantineConsistency.HerbrandValuationCompact

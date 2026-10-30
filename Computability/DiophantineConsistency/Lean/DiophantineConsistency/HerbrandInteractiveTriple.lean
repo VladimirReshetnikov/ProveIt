@@ -81,13 +81,8 @@ def output (r : ℕ) (ψ : Semiproposition language 4) : List ℕ → Propositio
 theorem output_eval {M : Type} [Structure language M] (r : ℕ)
     (ψ : Semiproposition language 4) (js : List ℕ) (e : ℕ → M) :
     (output r ψ js).Eval ![] e ↔ ∃ j ∈ js, ¬(bad r j ψ).Eval ![] e := by
-  induction js with
-  | nil => simp [output, Semiformula.Eval]
-  | cons j js ih =>
-    change ((∼(bad r j ψ)).Eval ![] e ∨ (output r ψ js).Eval ![] e) ↔ _
-    rw [LogicalConnective.HomClass.map_neg, ih]
-    simp
-
+  simpa [LogicalConnective.HomClass.map_neg] using
+    eval_list_disjunction (fun j => ∼(bad r j ψ)) (output r ψ) rfl (fun _ _ => rfl) js e
 /-- Actual universal-theory proof of a finite interactive disjunction. Terms at
 stage j use variables only before j; the first r positions are reserved for
 parameters and the three counterexamples at round j occupy positions r+3j through r+3j+2. -/
