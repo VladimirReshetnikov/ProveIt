@@ -26,11 +26,11 @@ also has two matching independent replays from hash-verified frozen historical
 sources. These are constituents of
 the refutation-bound construction. The positive `ppow2Def` graph now also has
 a [candidate-PRA bound](reviews/pra-ppow2-witness-bound-author-replay/README.md)
-of `2*i+1`, with matching author and two independent replays. Negative
-`ppow2Def`, `expDef`, and the ZFC refutation sentence remain unbounded. The
-negative `sppow2Def` graph also has a candidate-PRA bound of `m+1`, with
-matching author and two independent replays; this handles the opposite
-polarity needed by the enclosing graphs. The replay providers inherit their documented
+of `2*i+1`, with matching author and two independent replays. The negative
+`sppow2Def` and `ppow2Def` graphs also have candidate-PRA bounds of `m+1`
+and `2*i+1` respectively, each with matching author and two independent
+replays. The enclosing `expDef` and ZFC refutation sentence remain unbounded.
+The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
 remains open.
 
