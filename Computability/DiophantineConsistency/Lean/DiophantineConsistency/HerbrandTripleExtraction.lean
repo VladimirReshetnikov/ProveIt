@@ -82,6 +82,7 @@ section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* UniversalAxiom]
 
+set_option linter.unusedVariables false in
 omit [Structure.Eq language M] in
 theorem modelTripleWitness (φ : Semiproposition language 3) (hOpen : φ.Open)
     (axioms : List (Sentence language)) (hAxioms : ∀ σ ∈ axioms, UniversalAxiom σ)
@@ -105,11 +106,7 @@ theorem modelTripleWitness (φ : Semiproposition language 3) (hOpen : φ.Open)
   have h₂'' := (Iff.of_eq (boundedEval.eq_8 ts e (afterSecond φ t u))).mp h₂'
   obtain ⟨v,hv,h₃⟩ := h₂''
   refine ⟨t,ht,u,hu,v,hv,?_⟩
-  apply (bounded_open_iff ts e (tripleInstance φ t u v) ?_).mp
-  · exact h₃
-  · change (Rew.subst ![v] ▹ ((Rew.subst ![u]).q ▹ ((Rew.subst ![t]).qpow 2 ▹ φ))).qr = 0
-    rw [PRAFormulaParameters.qr_rew, PRAFormulaParameters.qr_rew, PRAFormulaParameters.qr_rew]
-    exact hOpen
+  exact bounded_implies_truth ts e (tripleInstance φ t u v) h₃
 
 omit [Structure.Eq language M] in
 theorem modelTripleDisjunction (φ : Semiproposition language 3) (hOpen : φ.Open)
