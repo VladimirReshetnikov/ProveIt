@@ -240,31 +240,19 @@ theorem eval_intT {ξ : Type*} :
         eval_intT φ b f, eval_intT ψ b f]
   | n, ∀⁰ φ, b, f => by
       simp only [intT_all, Semiformula.eval_all, LogicalConnective.HomClass.map_or,
-        LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.or_eq, LogicalConnective.Prop.neg_eq]
-      constructor
-      · intro h x
-        have h1 := (h x.1).resolve_left (not_not.mpr ((eval_domT x.1 _ _).mpr x.2))
-        rw [← val_cons' x b, eval_intT φ (x :> b) f] at h1
-        exact h1
-      · intro h x
-        by_cases hx : D x
-        · right
-          rw [← val_cons' ⟨x, hx⟩ b, eval_intT φ (⟨x, hx⟩ :> b) f]
-          exact h _
-        · left
-          exact fun h' ↦ hx ((eval_domT x _ _).mp h')
+        LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.or_eq,
+        LogicalConnective.Prop.neg_eq, eval_domT]
+      apply ConstructibleInterpretation.forall_guard id Function.surjective_id
+      intro u
+      rw [← val_cons' u b, eval_intT φ (u :> b) f]
+      rfl
   | n, ∃⁰ φ, b, f => by
       simp only [intT_exs, Semiformula.eval_ex, LogicalConnective.HomClass.map_and,
-        LogicalConnective.Prop.and_eq]
-      constructor
-      · rintro ⟨x, hx, h1⟩
-        have hx' : D x := (eval_domT x _ _).mp hx
-        rw [← val_cons' ⟨x, hx'⟩ b, eval_intT φ (⟨x, hx'⟩ :> b) f] at h1
-        exact ⟨_, h1⟩
-      · rintro ⟨x, h1⟩
-        refine ⟨x.1, (eval_domT x.1 _ _).mpr x.2, ?_⟩
-        rw [← val_cons' x b, eval_intT φ (x :> b) f]
-        exact h1
+        LogicalConnective.Prop.and_eq, eval_domT]
+      apply ConstructibleInterpretation.exists_guard id Function.surjective_id
+      intro u
+      rw [← val_cons' u b, eval_intT φ (u :> b) f]
+      rfl
 
 /-- A sentence's interpretation holds in `M` iff the sentence holds in the domain. -/
 theorem models_intT_iff (σ : Sentence (setTemplateLanguage k arities)) :
