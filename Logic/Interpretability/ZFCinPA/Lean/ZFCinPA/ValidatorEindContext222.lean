@@ -195,18 +195,9 @@ private instance vac_sigma1 : 𝚺₁-Relation[V] Vac := by
 /-- A bounded endpoint-avoidance predicate, not an arbitrary-binder rule
 for primitive equality. Eind_vac also handles collision with its auxiliary. -/
 lemma prefixContext_vac (n B B' z : V) :
-    (∀ i<n, z≠B.[i]) → (∀ i<n, z≠B'.[i]) → Vac z (prefixContext n B B') := by
-  induction n using ISigma1.sigma1_succ_induction
-  · definability
-  case zero =>
-    intro _ _
-    simpa using vac_truth z
-  case succ n ih =>
-    intro hB hB'
-    rw [prefixContext_succ]
-    exact vac_conj (Eind_vac _ _ z (hB n (by simp)) (hB' n (by simp)))
-      (ih (fun i hi => hB i (lt_succ_iff_le.mpr (le_of_lt hi)))
-        (fun i hi => hB' i (lt_succ_iff_le.mpr (le_of_lt hi))))
+    (∀ i<n, z≠B.[i]) → (∀ i<n, z≠B'.[i]) → Vac z (prefixContext n B B') :=
+  ValidatorPrefixContext.vac Eind prefixContext prefixContext_zero prefixContext_succ Vac
+    vac_truth Eind_vac vac_conj n B B' z
 
 lemma eindContext_vac (B B' z : V) (hlen : len B=len B')
     (hB : Avoid z B) (hB' : Avoid z B') : Vac z (eindContext B B') :=
