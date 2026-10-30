@@ -42,7 +42,7 @@ theorem quant_step_le (isEx : Bool) {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (h
     (hw : wD u ≤ w) (h₁ : DLv 𝗭𝗙 (insert (InvT P₀ F₁).val ∅) w) :
     DLv 𝗭𝗙 (insert (InvT (cond isEx (ExT P₀) (AllT P₀)) (MaxT F₁ (cond isEx (WbT P₀) (WbNT P₀)))).val ∅)
       (w + 30) := by
-  obtain ⟨hw4, hmI, up, u4, uA⟩ := wD_up hw
+  obtain ⟨up, u4, uA⟩ := wD_up hw
   cases isEx
   case' true =>
       simp only [cond_true] at hK ⊢
@@ -83,9 +83,7 @@ theorem quant_step_le (isEx : Bool) {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (h
     have hA2 := and_right_le hA
     have hA3 := and_right_le hA2
     have hA4 := and_right_le hA3
-    have l0 := invT_le (P := P₀) (F := F₁) hu (hK 0) (hK 1)
-    have t1 := dleftW hw4 l0 hmI h₁ le_rfl
-    have r1 := drightW hw4 l0 hmI h₁ le_rfl
+    obtain ⟨t1, r1⟩ := inv_halves (P := P₀) (F := F₁) hu hw (hK 0) (hK 1) h₁
     have c4 := dandW (u4 3) hA4 (uA 3) pW (le_trans (wD_a hw) (up 3)) pM (le_trans (wD_s hw) (up 3))
     have c3 := dandW (u4 5) hA3 (uA 5) pE (le_trans (wD_i hw) (up 5)) c4 (le_of_eq (by ring))
     have c2 := dandW (u4 7) hA2 (uA 7) r1 (le_of_add_eq (y := 4) (by ring)) c3 (le_of_eq (by ring))

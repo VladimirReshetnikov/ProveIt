@@ -171,9 +171,8 @@ theorem wD_ante {u w : V} (h : wD u ≤ w) : 10 * (mD u + 1) + 1 ≤ w :=
 
 /-- The bounds every step proof uses at its offsets `w + k`. -/
 theorem wD_up {u w : V} (h : wD u ≤ w) :
-    (4 : V) ≤ w ∧ 10 * (mD u + 6 + 1) + 1 ≤ w ∧ (∀ k : V, w ≤ w + k) ∧
-      (∀ k : V, (4 : V) ≤ w + k) ∧ ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k :=
-  ⟨wD_4 h, wD_m h, fun _ => le_self_add, fun _ => le_trans (wD_4 h) le_self_add,
+    (∀ k : V, w ≤ w + k) ∧ (∀ k : V, (4 : V) ≤ w + k) ∧ ∀ k : V, 10 * (mD u + 1) + 1 ≤ w + k :=
+  ⟨fun _ => le_self_add, fun _ => le_trans (wD_4 h) le_self_add,
     fun _ => le_trans (wD_ante h) le_self_add⟩
 
 /-- The level of the reflection invariant. -/
@@ -187,6 +186,13 @@ theorem invT_le {P : SF V 1} {F : SF V 2} {u : V} (hu : 2 ≤ u) (hP : P.val ≤
   show (TotT F ⋏ ReflT P F).val ≤ _
   rw [Bootstrapping.Semiformula.val_and]
   exact le_trans (conn_le (tag := 4) le_add_self (by norm_num) l1 l2) (lvB_mono (le_of_eq (by ring)))
+
+/-- The two halves of an input invariant, recovered at `w + 3`. -/
+theorem inv_halves {P : SF V 1} {F : SF V 2} {u w : V} (hu : 2 ≤ u) (hw : wD u ≤ w)
+    (hP : P.val ≤ lvB u) (hF : F.val ≤ lvB u) (h : DLv 𝗭𝗙 (insert (InvT P F).val ∅) w) :
+    DLv 𝗭𝗙 (insert (TotT F).val ∅) (w + 3) ∧ DLv 𝗭𝗙 (insert (ReflT P F).val ∅) (w + 3) :=
+  ⟨dleftW (wD_4 hw) (invT_le hu hP hF) (wD_m hw) h le_rfl,
+    drightW (wD_4 hw) (invT_le hu hP hF) (wD_m hw) h le_rfl⟩
 
 /-! ## The swapped function-code premise
 
