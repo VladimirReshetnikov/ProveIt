@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRANegDomainWitnessBound
+#print axioms DiophantineConsistency.PRANegDomainWitnessBound.neg_domain_bound
+#print axioms DiophantineConsistency.PRANegDomainWitnessBound.neg_domain_bound_explicit
+#print axioms DiophantineConsistency.PRANegDomainWitnessBound.candidate_proves_neg_domain_bound
