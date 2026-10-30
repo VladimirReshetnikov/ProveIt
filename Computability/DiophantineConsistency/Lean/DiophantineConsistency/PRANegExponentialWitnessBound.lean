@@ -63,13 +63,7 @@ theorem negExponential_bound_common (x y w : V)
         let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![Semiterm.numeral 1,Semiterm.numeral 4,#1]
         have hf : (ω ▹ (∼extDef.val)).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he1
         have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![B,A,x,y] w hf
-        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
         rw [hh] at hb
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -79,13 +73,7 @@ theorem negExponential_bound_common (x y w : V)
         let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![Semiterm.numeral 2,Semiterm.numeral 4,#0]
         have hf : (ω ▹ (∼extDef.val)).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he2
         have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![B,A,x,y] w hf
-        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
         rw [hh] at hb
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -96,13 +84,7 @@ theorem negExponential_bound_common (x y w : V)
         have hf : (ω ▹ (∼Exponential.Seqₛ.def.val)).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using hseq
         have hw : 2*(ω #0).val ![B,A,x,y] Empty.elim+1 ≤ w := hy
         have hb := negSeq_rew_bound_at ω ![B,A,x,y] w hw hf
-        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
         rw [hh] at hb
         have heq : (ω ▹ (∼Exponential.Seqₛ.def.val)) = ∼(ω ▹ Exponential.Seqₛ.def.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) Exponential.Seqₛ.def.val
@@ -122,14 +104,7 @@ theorem negExponential_bound_common (x y w : V)
             have hp0 : 2*u ≤ 2*(y^2) := mul_le_mul_left hu0
             have hw : 2*(ω #0).val ![u,B,A,x,y] Empty.elim+1 ≤ w := le_trans (by simpa [ω,add_comm] using add_le_add_right hp0 1) h2
             have hb := PRASeqSWitnessBound.neg_ppow2_rew_bound_at ω ![u,B,A,x,y] w hw hf
-            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by
-              funext j
-              refine Fin.cases rfl (fun k => ?_) j
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
             rw [hh] at hb
             have heq : (ω ▹ (∼ppow2Def.val)) = ∼(ω ▹ ppow2Def.val) := by
               exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) ppow2Def.val
@@ -139,14 +114,7 @@ theorem negExponential_bound_common (x y w : V)
             let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#3,#0,#2]
             have hf : (ω ▹ (∼extDef.val)).Evalb ![u,B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he3
             have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![u,B,A,x,y] w hf
-            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by
-              funext j
-              refine Fin.cases rfl (fun k => ?_) j
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
             rw [hh] at hb
             have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
               exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -156,14 +124,7 @@ theorem negExponential_bound_common (x y w : V)
             let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#4,#0,#1]
             have hf : (ω ▹ (∼extDef.val)).Evalb ![u,B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he4
             have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![u,B,A,x,y] w hf
-            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by
-              funext j
-              refine Fin.cases rfl (fun k => ?_) j
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
+            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
             rw [hh] at hb
             have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
               exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
