@@ -52,17 +52,6 @@ lemma all_rename {x y A B : V} (hL : CProv (wim (weq x y) (wim A B)))
   cProv_mp (all_relational 0 A B x y (cProv_mp (cProv_k _ 0) hL) (vac_truth x) vxB
     (vac_truth y) vy) cProv_truth
 
-/-- `∃x A → ∃y B` from Leibniz at `x = y`, with `y` not free in `A` and `x` not
-free in `∃y B`. -/
-lemma ex_rename {x y A B : V} (hL : CProv (wim (weq x y) (wim A B)))
-    (vyA : Vac y A) (vx : Vac x (ex y B)) : CProv (wim (ex x A) (ex y B)) := by
-  have s0 : CProv (wim A (wim (weq y x) B)) :=
-    ded2 (.mp (.mp (.ax hL) (.mp (.ax (eq_symm y x)) h0)) h1)
-  have s1 : CProv (wim A (wal y (wim (weq y x) B))) := compose vyA (all_mono y s0)
-  have s2 : CProv (wim (wal y (wim (weq y x) B)) (ex y B)) :=
-    ded1 (.mp (.mp (.ax (all_imp_ex y (weq y x) B)) h0) (.ax (ex_equality y x)))
-  exact compose (ex_mono x (compose s1 s2)) (ex_elim_of_vac vx)
-
 /-- The two-slot equality context from its two equations. -/
 lemma ctx2_intro (u v u' v' : V) :
     CProv (wim (weq u u') (wim (weq v v') (eqContext (u ∷ v ∷ 0) (u' ∷ v' ∷ 0)))) := by
@@ -232,13 +221,8 @@ lemma imp_under {h A A' B B' : V} (HA : CProv (wim h (wim A' A))) (HB : CProv (w
   ValidatorImplicationContext.imp_under CProv cProv_classical HA HB
 
 lemma conj_under' {h A A' B B' : V} (HA : CProv (wim h (wim A A'))) (HB : CProv (wim h (wim B B'))) :
-    CProv (wim h (wim (conj A B) (conj A' B'))) := by
-  have t1 : CProv (wim h (wim (conj A B) A')) :=
-    ded2 (.mp (.mp (.ax HA) h1) (.mp (.ax (conj_left A B)) h0))
-  have t2 : CProv (wim h (wim (conj A B) B')) :=
-    ded2 (.mp (.mp (.ax HB) h1) (.mp (.ax (conj_right A B)) h0))
-  exact ded2 (.mp (.mp (.ax (conj_intro_imp A' B')) (.mp (.mp (.ax t1) h1) h0))
-    (.mp (.mp (.ax t2) h1) h0))
+    CProv (wim h (wim (conj A B) (conj A' B'))) :=
+  contra_under (imp_under HA (contra_under HB))
 
 lemma all_rename_ctx {h x y A B : V} (hL : CProv (wim h (wim (weq x y) (wim A B))))
     (vxh : Vac x h) (vyh : Vac y h) (vxB : Vac x B) (vy : Vac y (wal x A)) :
@@ -255,6 +239,13 @@ lemma ex_rename_ctx {h x y A B : V} (hL : CProv (wim h (wim (weq x y) (wim A B))
     ded1 (.mp (.mp (.ax (all_imp_ex y (weq y x) B)) h0) (.ax (ex_equality y x)))
   have s3 : CProv (wim h (wim A (ex y B))) := ded2 (.mp (.ax s2) (.mp (.mp (.ax s1) h1) h0))
   exact ded2 (.mp (.ax (ex_elim_of_vac vx)) (.mp (.mp (.ax (ex_under vxh s3)) h1) h0))
+
+/-- `∃x A → ∃y B` from Leibniz at `x = y`, with `y` not free in `A` and `x` not
+free in `∃y B`. -/
+lemma ex_rename {x y A B : V} (hL : CProv (wim (weq x y) (wim A B)))
+    (vyA : Vac y A) (vx : Vac x (ex y B)) : CProv (wim (ex x A) (ex y B)) :=
+  cProv_mp (ex_rename_ctx (cProv_mp (cProv_k _ 0) hL) (vac_truth x)
+    (vac_truth y) vyA vx) cProv_truth
 
 /-- A theorem holds under any hypothesis. -/
 lemma under {h A : V} (H : CProv A) : CProv (wim h A) := cProv_mp (cProv_k A h) H
