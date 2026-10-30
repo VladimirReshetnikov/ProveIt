@@ -13,7 +13,9 @@ is now derived in every stated IΣ₁ model from explicit seed-index and ordinat
 hypotheses and the constructed scaling. A [positive-correction theorem](reviews/adaptive-construction-correction-positive2011-independent.md)
 now also derives the required positive correction under explicit index,
 scaling and positivity hypotheses. Establishing those hypotheses in the full
-construction remains open.
+construction remains open. A further [actual-seed client](reviews/adaptive-construction-correction-seed2011-independent.md)
+derives the index and ordinate hypotheses from the outer seed and rank phase,
+while retaining the Assembly multiplier and positivity assumptions.
 
 The [enriched-assembly adapter](reviews/adaptive-assembly-bridge2011-independent.md)
 now derives transport, a strong-factor identity and a positive auxiliary
