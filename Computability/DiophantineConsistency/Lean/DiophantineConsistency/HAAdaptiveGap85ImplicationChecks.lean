@@ -1,0 +1,5 @@
+import DiophantineConsistency.HAAdaptiveGap85Implication
+
+#check DiophantineConsistency.HAAdaptiveGap85Implication.polynomialImplication
+#check DiophantineConsistency.HAAdaptiveGap85Implication.ha_implication
+#print axioms DiophantineConsistency.HAAdaptiveGap85Implication.ha_implication
