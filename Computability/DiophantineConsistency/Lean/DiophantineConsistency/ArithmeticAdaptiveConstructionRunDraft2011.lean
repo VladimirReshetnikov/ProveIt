@@ -1,9 +1,8 @@
-import DiophantineConsistency.ArithmeticConstructionAssembly
+import DiophantineConsistency.ArithmeticConstructionUnboundedCompat
 import DiophantineConsistency.ArithmeticAdaptiveConstructionReduced2011
 
-/-! Draft direct link from the strengthened Assembly to the 87-gate zero.
-This source is intentionally uncompiled until the current-source Assembly
-closure has been rebuilt and independently authenticated. -/
+/-! Direct link from an unbounded assembly to the 87-gate zero.
+The finite witness vector supplies the bound required by the reduced construction. -/
 set_option autoImplicit false
 set_option Elab.async false
 noncomputable section
@@ -21,6 +20,11 @@ theorem reduced_zero_of_run (hL : LocalNormalization) (T : V)
     (hT : first (ArithmeticMachineRun215.run T)=0) :
     ∃ x : Fin 13 → V,
       AdaptiveEquationSyntax2011.InternalZero AdaptiveFirstRootFactor87Literal.naturalExpression87 x := by
-  exact reduced_zero_of_enriched_assembly (zeroBound T)
-    (construction_below_seed_phase_hL hL T hT)
+  obtain ⟨v, hv, hf, heq, hphase, hy, hseed⟩ :=
+    ArithmeticConstructionUnboundedCompat.construction_unbounded_seed_phase_hL hL T hT
+  let B : V := ∑ j : Fin 14, v j
+  have hb : ∀ j, v j ≤ B := by
+    intro j
+    exact Finset.single_le_sum (fun _ _ => Arithmetic.zero_le _) (Finset.mem_univ j)
+  exact reduced_zero_of_enriched_assembly B ⟨v, hv, hf, heq, hb, hphase, hy, hseed⟩
 end DiophantineConsistency.ArithmeticAdaptiveConstructionRunDraft2011
