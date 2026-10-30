@@ -84,9 +84,8 @@ theorem ex_opened_equiv {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
     F (eigen F s) s (fresh_resources F s hs).2.2.2.2 hs
   have hf := ex_mono (eigen F s) hb.1
   have hg := ex_mono (eigen F s) hb.2
-  change CProv (wim (ex (eigen F s) _) (ex (eigen F s) _)) at hf hg
-  rw [show ex (eigen F s) (encode (eigen F s∷F) 0 (eigen F s+2) (free ℒₛₑₜ p))=
-    encode F 0 (eigen F s) (^∃ p) from (encode_exs_opened hp F (eigen F s)).symm] at hf hg
+  simp only [ValidatorRelationalCore222.ex, ValidatorRelationalCore222.neg,
+    ←encode_exs_opened hp F (eigen F s)] at hf hg
   exact ⟨compose hf hr.1,compose hr.2 hg⟩
 
 /-- Generalization of an actual theorem, with no undischarged hypothesis. -/
