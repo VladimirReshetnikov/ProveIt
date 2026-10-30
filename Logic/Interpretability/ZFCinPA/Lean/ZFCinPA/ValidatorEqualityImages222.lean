@@ -83,12 +83,9 @@ private lemma enc_bot {n : ℕ} (F B s : V) :
     encode F B s (⊥ : SF (V := V) n).val = 1 := by simp
 
 private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b::a::G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma ded2 {a b p : V} (h : D [b,a] p) : CProv (wim a (wim b p)) :=
-  (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical h)).sound
-    cProv_classical (fun _ hm => absurd hm List.not_mem_nil)
+local notation "h0" => (ValidatorImplicationContext.h0 CProv)
+local notation "h1" => (ValidatorImplicationContext.h1 CProv)
+local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 private abbrev dn (p : V) := wim (wim p 1) 1
 private lemma glue_trans {a b c : V} (h : CProv (wim a (wim b c))) :
     CProv (wim (dn a) (wim (dn b) c)) :=
@@ -183,8 +180,8 @@ theorem axOK_equality :
 
 lemma wel_zero_zero : wel (0 : V) 0=1 := by
   have h := ArithmeticCantor.triangle_double (0 : V)
-  have h0 : ArithmeticCantor.triangle (0 : V)=0 := by simpa using h
-  simp [wel,tagged,ArithmeticCantor.cantor,h0]
+  have hzero : ArithmeticCantor.triangle (0 : V)=0 := by simpa using h
+  simp [wel,tagged,ArithmeticCantor.cantor,hzero]
 
 /-- Existential Eind plus relational vacuity; no Eind-to-weq identification. -/
 theorem not_mem_self (s : V) : CProv (wim (wel s s) 1) := by
