@@ -38,10 +38,8 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-! ## Closed terms and the quantifier identity -/
 
-theorem closed_fvar {t : V} (ht : IsSemiterm ℒₛₑₜ 0 t) : ∃ x, t = ^&x := by
-  rcases term_var ht.isUTerm with ⟨z, rfl⟩ | ⟨x, rfl⟩
-  · simp at ht
-  · exact ⟨x, rfl⟩
+theorem closed_fvar {t : V} (ht : IsSemiterm ℒₛₑₜ 0 t) : ∃ x, t = ^&x :=
+  SetRelativization.isTerm_eq_fvar ht
 
 theorem closed_isVar {t : V} (ht : IsSemiterm ℒₛₑₜ 0 t) : IsVarTerm t := by
   obtain ⟨x, rfl⟩ := closed_fvar ht
