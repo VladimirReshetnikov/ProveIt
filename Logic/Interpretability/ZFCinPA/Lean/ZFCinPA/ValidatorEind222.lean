@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorRelationalCore222
 
 set_option autoImplicit false
@@ -56,18 +57,11 @@ private lemma biff_transport (h p p' q q' : V)
     (hp : CProv (wim h (wim p p'))) (hp' : CProv (wim h (wim p' p)))
     (hq : CProv (wim h (wim q q'))) (hq' : CProv (wim h (wim q' q))) :
     CProv (wim h (wim (biff p q) (biff p' q'))) := by
-  apply ded2
-  have pp : D [biff p q, h] (wim p' p) := .mp (.ax hp') h1
-  have pq : D [biff p q, h] (wim p q) := .mp (.ax (conj_left _ _)) h0
-  have qq : D [biff p q, h] (wim q q') := .mp (.ax hq) h1
-  have qp : D [biff p q, h] (wim q p) := .mp (.ax (conj_right _ _)) h0
-  have qr : D [biff p q, h] (wim q' q) := .mp (.ax hq') h1
-  have pr : D [biff p q, h] (wim p p') := .mp (.ax hp) h1
-  have f : D [biff p q, h] (wim p' q') :=
-    Kalmar.deduction cProv_classical (.mp qq.weaken (.mp pq.weaken (.mp pp.weaken h0)))
-  have g : D [biff p q, h] (wim q' p') :=
-    Kalmar.deduction cProv_classical (.mp pr.weaken (.mp qp.weaken (.mp qr.weaken h0)))
-  exact .mp (.mp (.ax (conj_rule _ _)) f) g
+  have forward := ValidatorImplicationContext.imp_under CProv cProv_classical hp' hq
+  have backward := ValidatorImplicationContext.imp_under CProv cProv_classical hq' hp
+  exact ValidatorImplicationContext.contra_under CProv cProv_classical
+    (ValidatorImplicationContext.imp_under CProv cProv_classical forward
+      (ValidatorImplicationContext.contra_under CProv cProv_classical backward))
 
 theorem bin_congr (v w a b : V) :
     CProv (wim (weq v w) (wim (Bin v a b) (Bin w a b))) :=
