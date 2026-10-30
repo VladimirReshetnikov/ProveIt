@@ -153,30 +153,13 @@ theorem eval_atomI {ξ : Type*} {n k : ℕ} (R : (ℒₛₑₜ).Rel k) (v : Fin 
     (b : Fin n → {x : M // D x}) (f : ξ → {x : M // D x}) :
     (atomI R v).Eval (Subtype.val ∘ b) (Subtype.val ∘ f) ↔
       (Semiformula.rel R v).Eval (cls ∘ b) (cls ∘ f) := by
-  cases R with
-  | eq =>
-      obtain ⟨u0, h0, h0'⟩ := term_cases (v 0) b f
-      obtain ⟨u1, h1, h1'⟩ := term_cases (v 1) b f
-      simp only [atomI, Semiformula.eval_embSubsts]
-      rw [eval_eqS']
-      simp only [Function.comp_apply]
-      have e : (Semiformula.rel Language.Set.Rel.eq v : Semiformula ℒₛₑₜ ξ _).Eval (cls ∘ b) (cls ∘ f) ↔
-          (v 0).val (cls ∘ b) (cls ∘ f) = (v 1).val (cls ∘ b) (cls ∘ f) :=
-        Iff.rfl
-      rw [h0, h1, ← KQ1Model.mk_eq_iff (memRel M) wM hM, e, h0', h1']
-      exact ⟨fun h ↦ Subtype.ext h, fun h ↦ congrArg Subtype.val h⟩
-  | mem =>
-      obtain ⟨u0, h0, h0'⟩ := term_cases (v 0) b f
-      obtain ⟨u1, h1, h1'⟩ := term_cases (v 1) b f
-      simp only [atomI, Semiformula.eval_embSubsts]
-      rw [eval_memS']
-      simp only [Function.comp_apply]
-      rw [h0, h1]
-      have e : (Semiformula.rel Language.Set.Rel.mem v : Semiformula ℒₛₑₜ ξ _).Eval (cls ∘ b) (cls ∘ f) ↔
-          (v 0).val (cls ∘ b) (cls ∘ f) ∈ (v 1).val (cls ∘ b) (cls ∘ f) :=
-        Iff.rfl
-      rw [e, h0', h1']
-      rfl
+  refine ConstructibleInterpretation.eval_paramAtom cls eqS memS (ProfileCollection.Eqv (memRel M))
+    (ProfileComposition.Member (memRel M)) eval_eqS' eval_memS' ?_ ?_ R v b f
+  · intro u w
+    rw [← KQ1Model.mk_eq_iff (memRel M) wM hM]
+    exact ⟨fun h ↦ Subtype.ext h, fun h ↦ congrArg Subtype.val h⟩
+  · intro u w
+    rfl
 
 /-- **Evaluation of the interpretation**: in a model of the native theory, the
 interpretation of `φ` at domain elements holds iff `φ` holds at their classes

@@ -131,6 +131,39 @@ lemma emb_guard {L : Language} {ξ ο : Type*} [IsEmpty ο] {n : ℕ}
     simp
   rw [← TransitiveRewriting.comp_app, h]
 
+/-- An atomic set interpretation parameterized by equality and membership formulas. -/
+def paramAtom (E F : SetTheorySemisentence 2) {ξ : Type*} {n k : ℕ} :
+    (ℒₛₑₜ).Rel k → (Fin k → Semiterm ℒₛₑₜ ξ n) → Semiformula ℒₛₑₜ ξ n
+  | .eq, v => Rew.embSubsts v ▹ E
+  | .mem, v => Rew.embSubsts v ▹ F
+
+/-- Atomic evaluation from preservation of the two interpreted relations. -/
+theorem eval_paramAtom {M S ξ : Type*} [SetStructure M] [SetStructure S] {P : M → Prop}
+    (g : {x // P x} → S) (E F : SetTheorySemisentence 2) (rE rF : M → M → Prop)
+    (hE : ∀ (w : Fin 2 → M) (ε : Empty → M), E.Eval w ε ↔ rE (w 0) (w 1))
+    (hF : ∀ (w : Fin 2 → M) (ε : Empty → M), F.Eval w ε ↔ rF (w 0) (w 1))
+    (hEq : ∀ u v : {x // P x}, rE u.1 v.1 ↔ g u = g v)
+    (hMem : ∀ u v : {x // P x}, rF u.1 v.1 ↔ g u ∈ g v)
+    {n k : ℕ} (R : (ℒₛₑₜ).Rel k) (v : Fin k → Semiterm ℒₛₑₜ ξ n)
+    (b : Fin n → {x // P x}) (f : ξ → {x // P x}) :
+    (paramAtom E F R v).Eval (Subtype.val ∘ b) (Subtype.val ∘ f) ↔
+      (Semiformula.rel R v).Eval (g ∘ b) (g ∘ f) := by
+  cases R with
+  | eq =>
+      obtain ⟨u0, h0, h0'⟩ := ConstructibleInterpretation.term_cases_between Subtype.val g (v 0) b f
+      obtain ⟨u1, h1, h1'⟩ := ConstructibleInterpretation.term_cases_between Subtype.val g (v 1) b f
+      simp only [paramAtom, Semiformula.eval_embSubsts, hE, Function.comp_apply]
+      change rE _ _ ↔ (v 0).val (g ∘ b) (g ∘ f) = (v 1).val (g ∘ b) (g ∘ f)
+      rw [h0, h1, h0', h1']
+      exact hEq u0 u1
+  | mem =>
+      obtain ⟨u0, h0, h0'⟩ := ConstructibleInterpretation.term_cases_between Subtype.val g (v 0) b f
+      obtain ⟨u1, h1, h1'⟩ := ConstructibleInterpretation.term_cases_between Subtype.val g (v 1) b f
+      simp only [paramAtom, Semiformula.eval_embSubsts, hF, Function.comp_apply]
+      change rF _ _ ↔ (v 0).val (g ∘ b) (g ∘ f) ∈ (v 1).val (g ∘ b) (g ∘ f)
+      rw [h0, h1, h0', h1']
+      exact hMem u0 u1
+
 /-! ## The domain formula -/
 
 /-- `x ∈ L` as a Foundation semisentence in one variable. -/
