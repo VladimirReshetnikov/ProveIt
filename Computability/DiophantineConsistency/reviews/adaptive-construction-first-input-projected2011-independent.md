@@ -1,0 +1,3 @@
+# Independent actual first-data and projected-input replay
+
+The independent run `/tmp/adaptive-construction-first-input-projected-dpuxd96_` passed all nine modules on the independently replayed first-actual provider. The source, object and full-log hashes match the author run for every module, including both first-data and projected-input checks. The saved [peer state](adaptive-construction-first-input-projected2011-independent-evidence/state.json) records commands and hashes with the specific projected-input scope. The conditional theorem scopes and inherited boundaries are described in the [author receipt](adaptive-construction-first-input-projected2011-author.md).

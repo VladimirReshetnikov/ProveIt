@@ -25,6 +25,12 @@ also pass an independent replay. These named coordinate equalities avoid
 unfolding the entire witness and large fixed port when building the remaining
 first-factor input; they do not themselves prove that input or a zero.
 
+The [actual first-carrier data and projected factor inputs](reviews/adaptive-construction-first-input-projected2011-independent.md)
+now pass an independent nine-module replay. They derive a positive first
+coordinate and the required carrier and norm identities from the explicitly
+stated old-vector, seed, phase and rank hypotheses. The complete factor and
+zero constructions are separate clients.
+
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
 identifies the actual theorem associated with each affected snapshot. Module
