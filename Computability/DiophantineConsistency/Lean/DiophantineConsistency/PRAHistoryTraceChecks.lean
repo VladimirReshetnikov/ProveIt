@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryTrace
+
+#print axioms DiophantineConsistency.PRAHistoryTrace.modelTraceHistory
+#print axioms DiophantineConsistency.PRAHistoryTrace.PRA_has_trace

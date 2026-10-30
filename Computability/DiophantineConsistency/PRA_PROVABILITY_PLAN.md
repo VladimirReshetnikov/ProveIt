@@ -149,8 +149,11 @@ now aligns that witness with any supplied actual prior length. The full
 recursive-history verification remains open.
 An [independently replayed primitive-recursive
 iterator](reviews/pra-history-iterator-author-replay/README.md) supplies the
-history code's base and step equations for supplied function codes; the
-actual blueprint step code and `cseqDef` invariant remain open. An
+history code's base and step equations for supplied function codes. An
+[independently replayed trace theorem](reviews/pra-history-trace-author-replay/README.md)
+now proves actual sequence validity, length and indexed membership for that
+recursive history. Its connection to Foundation's `cseqDef` and the actual
+blueprint step code remain open. An
 [independently replayed length code](reviews/pra-history-length-code-author-replay/README.md)
 computes the actual `lhDef` graph with output at most `2*s`, without assuming
 IΣ₁.

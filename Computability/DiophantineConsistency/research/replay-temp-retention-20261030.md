@@ -18,3 +18,9 @@ so those objects cannot now be rehashed in place; the recorded hashes remain
 historical evidence, not an independent replay. The six zero-record attempts
 had no verified objects. Live builds and accepted provider parents were not
 removed.
+
+Later, `/tmp/ha87-focused-validator-rebase-u0c4bogj` was also removed after
+its interrupted 13-row state, source snapshots, logs and output hashes were
+frozen in `reviews/ha87-post-residue-focused-stop/`. It was not an ancestor of
+the active isolated build or accepted peers. Its raw temporary objects can no
+longer be rehashed in place; the preserved checkpoint is not a completed proof.
