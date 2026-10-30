@@ -69,12 +69,11 @@ theorem proves_normal_iff (p q : Semisentence language 1) :
     intro M _ _ _ hM
     exact (model_equiv p q).mpr (models_of_provable hM h)
 
-/-- Classical PRA proves the equivalence exactly when it proves both
-open-existential normalizations. This does not itself establish either proof. -/
-theorem proves_equivalence_iff (p q : Semisentence language 1) :
-    (PRA ⊢ ((∀⁰ p) 🡘 (∀⁰ q))) ↔
-      (PRA ⊢ normal p q) ∧ (PRA ⊢ normal q p) := by
-  letI : 𝗘𝗤 language ⪯ PRA := Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl h)))
+/-- A theory extending equality proves the equivalence exactly when it proves
+both open-existential normalizations. -/
+theorem theory_proves_equivalence_iff (T : Theory language) [𝗘𝗤 language ⪯ T] (p q : Semisentence language 1) :
+    (T ⊢ ((∀⁰ p) 🡘 (∀⁰ q))) ↔
+      (T ⊢ normal p q) ∧ (T ⊢ normal q p) := by
   constructor
   · intro h
     constructor <;> apply Theory.Proof.complete_on_eq_models.{0,0}
@@ -97,6 +96,14 @@ theorem proves_equivalence_iff (p q : Semisentence language 1) :
     have hmq := (model_equiv q p).mpr (models_of_provable hM hq)
     simpa only [models_iff, LogicalConnective.iff, Semantics.And.models_and, implication] using ⟨hmp,hmq⟩
 
+/-- Classical PRA proves the equivalence exactly when it proves both
+open-existential normalizations. This does not itself establish either proof. -/
+theorem proves_equivalence_iff (p q : Semisentence language 1) :
+    (PRA ⊢ ((∀⁰ p) 🡘 (∀⁰ q))) ↔
+      (PRA ⊢ normal p q) ∧ (PRA ⊢ normal q p) := by
+  letI : 𝗘𝗤 language ⪯ PRA := Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl h)))
+  exact theory_proves_equivalence_iff PRA p q
+
 /-- Eliminate one closed open-Σ₁ induction instance from the equivalence of
  two unary, open-matrix Π₁ sentences. No use is made of standard-model truth. -/
 theorem eliminate_one_from_equivalence (ψ : Semisentence language 3) (hψ : ψ.Open)
@@ -105,18 +112,7 @@ theorem eliminate_one_from_equivalence (ψ : Semisentence language 3) (hψ : ψ.
       ((∀⁰ p) 🡘 (∀⁰ q))) : PRA ⊢ ((∀⁰ p) 🡘 (∀⁰ q)) := by
   let T := PRA ∪ {(succInd (PRAOpenOneInduction.openSigma ψ)).univCl}
   letI : 𝗘𝗤 language ⪯ T := Entailment.WeakerThan.ofSubset (fun _ h => Or.inl (Or.inl (Or.inl (Or.inl h))))
-  have hn₁ : T ⊢ normal p q := by
-    apply Theory.Proof.complete_on_eq_models.{0,0}
-    intro M _ _ _ hM
-    have hm := models_of_provable hM h
-    simp only [LogicalConnective.iff, Semantics.And.models_and] at hm
-    exact (model_equiv p q).mp hm.1
-  have hn₂ : T ⊢ normal q p := by
-    apply Theory.Proof.complete_on_eq_models.{0,0}
-    intro M _ _ _ hM
-    have hm := models_of_provable hM h
-    simp only [LogicalConnective.iff, Semantics.And.models_and] at hm
-    exact (model_equiv q p).mp hm.2
+  obtain ⟨hn₁, hn₂⟩ := (theory_proves_equivalence_iff T p q).mp h
   apply (proves_equivalence_iff p q).mpr
   exact ⟨PRAOpenOneInduction.PRA_proves_goal_of_openSuccInd ψ hψ (matrix p q) (matrix_open p q hp hq) hn₁,
     PRAOpenOneInduction.PRA_proves_goal_of_openSuccInd ψ hψ (matrix q p) (matrix_open q p hq hp) hn₂⟩
