@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAPositiveStrictCertificate
+open DiophantineConsistency.PRAPositiveStrictCertificate
+#print axioms codeMatrix_bounded
+#print axioms modelCodeInduction
+#print axioms positive_certificate
+#check positive_certificate

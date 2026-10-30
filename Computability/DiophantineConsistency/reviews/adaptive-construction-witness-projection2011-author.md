@@ -1,0 +1,5 @@
+# Concrete witness coordinate projections
+
+The checked source gives named projection equalities for the eight concrete witness coordinates used by the literal first-factor input. It reuses the existing current-port projection module, which avoids reducing the large K numeral. The checked projections report `[propext, Classical.choice, Quot.sound]` in Lean. These are coordinate identities only; they do not establish a factor unit or a zero.
+
+The author build passed at `/tmp/adaptive-construction-witness-projection-fy5dr_ek` on `/tmp/adaptive-construction-witness-gc6rejgd`. The [19-file evidence manifest](adaptive-construction-witness-projection2011-author-evidence/FILES.json) has SHA256 `a81ccc1080278c61d71ceb3731fd1f1ff7a58f122d18fcadaa29e010e43a3c6f`. It preserves the failed initial attempt, in which a direct K-port `rfl` hit Lean's kernel memory limit, and the corrected build, snapshots, logs, timings, driver and provider/guard metadata. For replay set `ADAPTIVE_ASSEMBLY_BASE` to the independently replayed witness provider and run `success/driver.py`; canonical and package boundaries remain inherited. The driver scope is specific to this result.

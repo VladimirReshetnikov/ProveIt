@@ -18,7 +18,29 @@ The [chosen-coordinate main and auxiliary factors](reviews/adaptive-construction
 have matching author and independent builds. They establish their respective
 literal units for the same witness when the stated correction and orientation
 equalities are supplied, allowing those coordinates to be chosen separately.
-The common witness, first factor and complete zero remain open.
+Their connection to a source-current halting construction remains open.
+
+The [concrete witness projections](reviews/adaptive-construction-witness-projection2011-independent.md)
+also pass an independent replay. These named coordinate equalities avoid
+unfolding the entire witness and large fixed port when building the remaining
+first-factor input; they do not themselves prove that input or a zero.
+
+The [actual first-carrier data and projected factor inputs](reviews/adaptive-construction-first-input-projected2011-independent.md)
+now pass an independent nine-module replay. They derive a positive first
+coordinate and the required carrier and norm identities from the explicitly
+stated old-vector, seed, phase and rank hypotheses. The complete factor and
+zero constructions are separate clients.
+
+The [concrete first-factor unit](reviews/adaptive-construction-first-witness-projected2011-independent.md)
+now also has an independent replay. It uses those first-carrier data and
+retains their explicit common-witness hypotheses.
+
+The [conditional full shifted zero](reviews/adaptive-construction-conditional-zero2011-independent.md)
+now has an independent twelve-module replay. In every stated IΣ₁ model it
+chooses all three positive new coordinates and constructs a 13-variable
+zero from one old witness satisfying the explicit equation, seed, phase,
+rank, ordinate and orientation assumptions. Deriving that enriched witness
+from the source-current halting construction remains open.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -28,8 +50,24 @@ names, proof outputs, hashes and exit statuses are unchanged.
 The [89-module parameter refresh](reviews/pra-after-parameter-merge-refresh-author-replay/README.md)
 passed author and two independent builds with matching source, object and
 full-log hashes. The subsequent merge at `1abcfbde84` changed further
-Herbrand sources in the graph, so this is pre-merge evidence and its affected
-dependents require another source-current rebuild.
+Herbrand sources in the graph. Those affected sources and their dependents
+were subsequently rebuilt in the [60-module comparison graph](reviews/pra-isigma-final-merge-refresh-author-replay/README.md),
+with two independent replays. A newer upstream change to
+`HerbrandPackedContextTransfer` still needs to be merged and replayed.
+
+`PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
+universally closed open-existential goal from an IΣ₁ proof and an explicit
+candidate-PRA implication from its mapped conclusion to that goal. Its proof
+combines strict-prefix induction, positive-predicate certificates, and finite
+induction elimination. The literal equation/consistency goal is not yet bound
+to this interface, and comparison with a standard PRA presentation remains open.
+
+The [unary no-zero and Π₁ clients](reviews/pra-isigma-pione-current-author-replay/README.md)
+have also passed independent replays on that provider. They encode every
+finite-variable arithmetic no-zero sentence as an equivalent unary open
+candidate-PRA predicate, and transfer an IΣ₁ proof to a unary Π₁ equivalence
+when the required candidate-PRA implication is supplied. The corresponding
+representation of Foundation's actual ZFC consistency predicate remains open.
 
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,
@@ -49,10 +87,11 @@ The separate 14-variable HA endpoint also needs a current-source replay of its
 changed ZFC dependencies.
 
 The [positive-rule clients](reviews/parsons-positive-clients-current-author-replay/README.md)
-now prove the guarded induction case in the restricted calculus and define a
-certificate that restricts an existing Parsons proof. Their candidate-PRA
-comparison explicitly assumes positive-rule admissibility; neither that
-assumption nor the certificate for the full cut-free translator is proved.
+prove the guarded induction case in the restricted calculus and define a
+certificate that restricts an existing Parsons proof. The later 60-module
+comparison graph proves the positive-rule admissibility needed by this
+restricted comparison. The certificate for the full cut-free translator is
+still not proved.
 
 The [positive-rule calculus](reviews/parsons-positive-rule-current-author-replay/README.md)
 restricts induction predicates to the positive bounded/existential syntax and
@@ -68,7 +107,8 @@ IΣ₁; its converse inclusion and general conservation remain open.
 
 The [first-factor reverse bridge](reviews/adaptive-construction-first-factor2011-independent.md)
 derives its literal unit from the explicit additive carrier identity and first
-norm. Binding these to the common concrete witness remains separate.
+norm; the later concrete client and conditional zero bind it to the common
+witness under the stated hypotheses.
 
 The [concrete main-factor client](reviews/adaptive-construction-main-witness2011-independent.md)
 now proves the main factor of the explicit adaptive witness is +1 under the
@@ -76,7 +116,8 @@ common seed and Assembly facts. Together with the strong factor, two of the
 four literal factor units are established for that witness. The [auxiliary
 witness client](reviews/adaptive-construction-aux-witness2011-independent.md)
 now establishes a third under explicit phase, ordinate and orientation
-hypotheses; the first factor and the common Assembly witness remain open.
+hypotheses. The later conditional zero assembles all four units; the common
+source-current Assembly witness remains open.
 
 The [strict Σ₁ certificate](reviews/pra-strict-sigma-certificate-author-replay/README.md)
 now supplies the conditional normalizer for every arithmetic induction

@@ -19,6 +19,11 @@ positive solution and the formal ZFC consistency sentence. This is not a
 proof of either side separately. The same file also has a closed Lean IΣ₁
 proof-existence endpoint. See the later 28 October entries for the
 construction and its axiom audit.
+That checked endpoint is snapshot evidence: later upstream merges changed
+ZFC interpretation modules reachable from it, and the in-progress
+`ArithmeticConstructionAssembly` edit is also in its source dependency graph.
+A dependency-aware current-source replay is still needed. This qualification
+does not identify a defect in the previously checked theorem.
 The 27 October estimate and earlier checkpoint descriptions below are
 historical, not the current status. The strengthened active objective also
 requires a Lean proof of PRA provability. The [PRA plan](PRA_PROVABILITY_PLAN.md)

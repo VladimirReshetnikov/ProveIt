@@ -1,0 +1,3 @@
+# Independent literal first-witness replay
+
+The independent run `/tmp/adaptive-construction-first-witness-projected-96do67ey` passed the concrete first-factor client and its check on the independently replayed projected-input provider. Both source, object and full-log hashes match the author run. The saved [peer state](adaptive-construction-first-witness-projected2011-independent-evidence/state.json) records commands and hashes with the specific first-witness scope. The hypotheses and remaining Assembly and HA obligations are described in the [author receipt](adaptive-construction-first-witness-projected2011-author.md).

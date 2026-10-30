@@ -1,0 +1,3 @@
+# Independent conditional adaptive-zero replay
+
+The independent run `/tmp/adaptive-construction-conditional-zero-vl1ab4lp` passed all twelve modules on the independently replayed first-witness provider. Every source, object and full-log hash matches the author run, including the retained `ring_nf` suggestion in the main chosen-factor client. The saved [peer state](adaptive-construction-conditional-zero2011-independent-evidence/state.json) records commands, hashes and the precise conditional-zero scope. The explicit enriched-witness premise and remaining source-current Assembly and HA proof-existence obligations are described in the [author receipt](adaptive-construction-conditional-zero2011-author.md).

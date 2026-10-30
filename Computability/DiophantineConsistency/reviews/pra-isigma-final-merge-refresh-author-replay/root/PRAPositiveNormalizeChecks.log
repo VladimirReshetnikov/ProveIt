@@ -1,0 +1,25 @@
+'DiophantineConsistency.PRAPositiveNormalization.normalBounded' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPositiveNormalization.normalOr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAPositivePairMatrix.normalAnd' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAPositiveExistential.normalEx' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAPositiveNormalize.exists_normal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAPositiveMapPack.mapped' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAPositiveMapPack.packed' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAPositivePackedNormal.exists_packed_normal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAPositiveCode.modelSwapCode' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAPositiveCode.positive_has_code' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.PRAPositiveCode.positive_has_code (φ : LO.FirstOrder.ArithmeticSemiformula ℕ 1)
+  (hφ : DiophantineConsistency.ParsonsBasePositive.Positive φ) :
+  ∃ pred,
+    ∀ (M : Type) [inst : Nonempty M] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+      [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] (x : M) (e : ℕ → M),
+      (LO.FirstOrder.Semiformula.Eval ![x] e)
+          ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding) φ) ↔
+        ∃ y,
+          (LO.FirstOrder.Structure.func pred fun i => Fin.cases x (fun i => Fin.cases y (fun i => e ↑i) i) i) =
+            LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.oneCode Fin.elim0
