@@ -55,8 +55,8 @@ predicates in a private overlay. The subsequent [full chunked predicate build](r
 has independently replayed all 24 chunks and their three take/drop
 recombinations. A [private replacement module](reviews/adaptive-wang-table-split-independent.md)
 also passed an independent rebuild using those chunk facts. A full export
-comparison and the source-current CellWindow/Assembly builds remain to be
-established; the original WangTable worker continues independently.
+comparison and the source-current Assembly build remain to be established;
+the original WangTable worker continues independently.
 An [11-declaration interface comparison](reviews/adaptive-wang-chunk-interface-partial2011-independent.md)
 also passed independently against a historical original object; it is a
 partial comparison and does not establish that object's source provenance.
@@ -82,6 +82,10 @@ resolve the full interface comparison. A later [private CellWindow continuation]
 rebuilt all six downstream modules against the compatibility table and passed
 an independent complete source/provider replay. The Assembly chain and the
 historical table object's current-source provenance remain open.
+The [adaptive natural-zero soundness client](reviews/adaptive-halt-client-independent.md)
+also passed independent replay: in each stated IΣ₁ model a zero of the
+13-variable natural expression yields a bounded represented-machine halt.
+It is not yet a syntactic HA proof or the complete converse construction.
 The independently replayed [compatibility overlay audit](reviews/adaptive-wang-compat-overlay-audit-independent.md)
 checks that its 367 canonical project objects are byte-identical and that its
 27 additions are the authenticated table and chunk objects. This does not
