@@ -1,0 +1,295 @@
+{
+  "status": "PASS",
+  "root": "/tmp/parsons-positive-guard-cert-refresh-a16p0dmb",
+  "parent": "/tmp/pra-after-parameter-merge-refresh-itf5cry9/lib",
+  "phase": "complete",
+  "module": null,
+  "records": [
+    {
+      "module": "ParsonsPositiveGuardCertificate",
+      "exit": 0,
+      "seconds": 3.8343095295131207,
+      "source_sha256": "fd175136dbfd6da3b689b713417f5cf85fdf6f3ad6606d754bf4d4f4ac4f33a5",
+      "object_sha256": "c698d205f2af0d2b0043de95a5afebfaa4425d5cb4725a3a10687984246db849",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "command": [
+        "lean",
+        "-M6000",
+        "-j1",
+        "-DElab.async=false",
+        "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ParsonsPositiveGuardCertificate.lean",
+        "-o",
+        "/tmp/parsons-positive-guard-cert-refresh-a16p0dmb/lib/DiophantineConsistency/ParsonsPositiveGuardCertificate.olean"
+      ]
+    },
+    {
+      "module": "ParsonsPositiveGuardCertificateChecks",
+      "exit": 0,
+      "seconds": 11.978798316791654,
+      "source_sha256": "908e1f76259dde24443824cfb0610d56803d7c27c2dd0f85e062d1eb880be0e6",
+      "object_sha256": "b3736184efc473b02944b389043a662954a02faad6c9068c7ac00d37e9ed77a1",
+      "log_sha256": "2ca501df8ff69dccb49d6d1de5803abeaa754b6e8a27e7270ae56f0ae9ac1aa2",
+      "command": [
+        "lean",
+        "-M6000",
+        "-j1",
+        "-DElab.async=false",
+        "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ParsonsPositiveGuardCertificateChecks.lean",
+        "-o",
+        "/tmp/parsons-positive-guard-cert-refresh-a16p0dmb/lib/DiophantineConsistency/ParsonsPositiveGuardCertificateChecks.olean"
+      ]
+    }
+  ],
+  "order": [
+    "ParsonsPositiveGuardCertificate",
+    "ParsonsPositiveGuardCertificateChecks"
+  ],
+  "allorder": [
+    "ParsonsGuard",
+    "ParsonsRule",
+    "ParsonsSelection",
+    "ParsonsInductionCase",
+    "ParsonsClosure",
+    "ParsonsParameters",
+    "ParsonsTheoryNormalize",
+    "ParsonsOpened",
+    "ParsonsBlock",
+    "ParsonsPrenex",
+    "ParsonsCollection",
+    "ParsonsCutFree",
+    "ParsonsRuleEmbedding",
+    "ParsonsCollectionRule",
+    "ParsonsCollectionSemantic",
+    "ParsonsSpecialize",
+    "ParsonsGuardedCollection",
+    "ParsonsStructure",
+    "ParsonsFold",
+    "ParsonsInvariant",
+    "ParsonsBaseState",
+    "ParsonsBaseShape",
+    "ParsonsPrenexAll",
+    "ParsonsLogicalCases",
+    "ParsonsShift",
+    "ParsonsMarkedLogical",
+    "ParsonsSide",
+    "ParsonsMarkedBlock",
+    "ParsonsUnified",
+    "ParsonsLeaves",
+    "ParsonsAllInvert",
+    "ParsonsFreshOpen",
+    "ParsonsGuardPrefix",
+    "ParsonsGuardRewrite",
+    "ParsonsGuardContext",
+    "ParsonsGuardTree",
+    "ParsonsGuardClosure",
+    "ParsonsStrictPrefixTree",
+    "ParsonsStrictInvariant",
+    "ParsonsBasePositive",
+    "ParsonsPositiveRule",
+    "ParsonsPositiveCertificate",
+    "ParsonsPositiveGuard",
+    "ParsonsPositiveGuardCertificate",
+    "ParsonsPositiveGuardCertificateChecks"
+  ],
+  "deps": {
+    "ParsonsGuard": [],
+    "ParsonsRule": [
+      "ParsonsGuard"
+    ],
+    "ParsonsSelection": [],
+    "ParsonsInductionCase": [
+      "ParsonsRule",
+      "ParsonsSelection"
+    ],
+    "ParsonsClosure": [
+      "ParsonsInductionCase"
+    ],
+    "ParsonsParameters": [
+      "ParsonsInductionCase"
+    ],
+    "ParsonsTheoryNormalize": [
+      "ParsonsClosure"
+    ],
+    "ParsonsOpened": [
+      "ParsonsClosure",
+      "ParsonsParameters",
+      "ParsonsTheoryNormalize"
+    ],
+    "ParsonsBlock": [
+      "ParsonsOpened"
+    ],
+    "ParsonsPrenex": [
+      "ParsonsRule"
+    ],
+    "ParsonsCollection": [
+      "ParsonsPrenex"
+    ],
+    "ParsonsCutFree": [],
+    "ParsonsRuleEmbedding": [
+      "ParsonsRule",
+      "ParsonsCutFree"
+    ],
+    "ParsonsCollectionRule": [
+      "ParsonsCollection",
+      "ParsonsRuleEmbedding"
+    ],
+    "ParsonsCollectionSemantic": [
+      "ParsonsCollectionRule"
+    ],
+    "ParsonsSpecialize": [
+      "ParsonsCollectionSemantic"
+    ],
+    "ParsonsGuardedCollection": [
+      "ParsonsSpecialize"
+    ],
+    "ParsonsStructure": [
+      "ParsonsGuardedCollection"
+    ],
+    "ParsonsFold": [
+      "ParsonsStructure",
+      "ParsonsRuleEmbedding"
+    ],
+    "ParsonsInvariant": [
+      "ParsonsBlock",
+      "ParsonsFold"
+    ],
+    "ParsonsBaseState": [
+      "ParsonsInvariant"
+    ],
+    "ParsonsBaseShape": [
+      "ParsonsBaseState"
+    ],
+    "ParsonsPrenexAll": [
+      "ParsonsCollection"
+    ],
+    "ParsonsLogicalCases": [
+      "ParsonsGuardedCollection",
+      "ParsonsPrenexAll"
+    ],
+    "ParsonsShift": [
+      "ParsonsInvariant",
+      "ParsonsLogicalCases"
+    ],
+    "ParsonsMarkedLogical": [
+      "ParsonsShift"
+    ],
+    "ParsonsSide": [
+      "ParsonsRule"
+    ],
+    "ParsonsMarkedBlock": [
+      "ParsonsInvariant",
+      "ParsonsSide"
+    ],
+    "ParsonsUnified": [
+      "ParsonsBaseShape",
+      "ParsonsShift",
+      "ParsonsFold",
+      "ParsonsMarkedLogical",
+      "ParsonsMarkedBlock"
+    ],
+    "ParsonsLeaves": [
+      "ParsonsUnified"
+    ],
+    "ParsonsAllInvert": [
+      "ParsonsLeaves"
+    ],
+    "ParsonsFreshOpen": [
+      "ParsonsAllInvert"
+    ],
+    "ParsonsGuardPrefix": [
+      "ParsonsFreshOpen"
+    ],
+    "ParsonsGuardRewrite": [
+      "ParsonsGuardPrefix"
+    ],
+    "ParsonsGuardContext": [
+      "ParsonsGuardRewrite"
+    ],
+    "ParsonsGuardTree": [
+      "ParsonsGuardContext"
+    ],
+    "ParsonsGuardClosure": [
+      "ParsonsGuardRewrite",
+      "ParsonsSpecialize"
+    ],
+    "ParsonsStrictPrefixTree": [
+      "ParsonsGuardTree",
+      "ParsonsGuardClosure"
+    ],
+    "ParsonsStrictInvariant": [
+      "ParsonsStrictPrefixTree"
+    ],
+    "ParsonsBasePositive": [
+      "ParsonsStrictInvariant"
+    ],
+    "ParsonsPositiveRule": [
+      "ParsonsBasePositive",
+      "ParsonsRule"
+    ],
+    "ParsonsPositiveCertificate": [
+      "ParsonsPositiveRule"
+    ],
+    "ParsonsPositiveGuard": [
+      "ParsonsPositiveRule"
+    ],
+    "ParsonsPositiveGuardCertificate": [
+      "ParsonsPositiveCertificate",
+      "ParsonsPositiveGuard"
+    ],
+    "ParsonsPositiveGuardCertificateChecks": [
+      "ParsonsPositiveGuardCertificate"
+    ]
+  },
+  "changed_or_new": [
+    "ParsonsPositiveGuardCertificate",
+    "ParsonsPositiveGuardCertificateChecks"
+  ],
+  "initial_source_sha256": {
+    "ParsonsPositiveGuardCertificateChecks": "908e1f76259dde24443824cfb0610d56803d7c27c2dd0f85e062d1eb880be0e6",
+    "ParsonsPositiveGuardCertificate": "fd175136dbfd6da3b689b713417f5cf85fdf6f3ad6606d754bf4d4f4ac4f33a5",
+    "ParsonsPositiveCertificate": "c6b2e324427513b4ccba17ccca797a08bdf9290c3dab1280e29bd7348b5bafcf",
+    "ParsonsPositiveRule": "109fc59b014e55f08377f42f4e4da8738d580e7cb490db8e5b40f4a485109d0a",
+    "ParsonsBasePositive": "125471eb5ab19723c3b6c78bf823278a5cf35b81f267c1c0619121b291df4026",
+    "ParsonsStrictInvariant": "e8f9c582dea832533e80f5a29d067f0cc507931a4f0347ec68c3c06719ad8f3d",
+    "ParsonsStrictPrefixTree": "a6bd711242b19d4aaf3d321aebb392c8a67beb67d0fb04b4aa71fb100fdbda00",
+    "ParsonsGuardTree": "409662779f56e90637900537dfbc78276f87362eb30f9a520c6aaf2f33e5b9c0",
+    "ParsonsGuardContext": "b99064b9dcb6bfcaa28e7ee4386dcb5f7ff7c3990beaeb7c0854feca4e6a266b",
+    "ParsonsGuardRewrite": "b8d4b86e32ed5a2fe28d0602eb070d436cbfa109ae9caf3e95907a9562210463",
+    "ParsonsGuardPrefix": "9a3731f3e23aaf4b8ea22c5c98f7c0856bb0622afb2d8b8ffc93172018c9e3cf",
+    "ParsonsFreshOpen": "3dd42344fdd5a16be931ef094b5ad9d10996688c0aa9e4dcec435b6642785ae1",
+    "ParsonsAllInvert": "5ba857ee492335e85d94abab70b5a93434294af088afe58784d71937323e11a8",
+    "ParsonsLeaves": "52c72156de467be271f42cf40089520b887e33c25f3bc8eba7284077b52fb51b",
+    "ParsonsUnified": "5683bd12a9012bdb1f904b8e8d1a1597b399143db8952f28d311c8ac390df6a6",
+    "ParsonsBaseShape": "b6ae9e2163bfec9c891a6a042596b35036e69b64ea7fecc318add0291139f6f2",
+    "ParsonsBaseState": "f5df92a77427263307dd5196e57c78fdd0744aa0c84e28a6d0b7c8357a38f1e6",
+    "ParsonsInvariant": "39afa448679b7bc1b8f4d42b7d5a8611e9a9469172adaa3ca48eb3ce6d96f0be",
+    "ParsonsBlock": "fe4b12db6a838a20a7b0bc0b091c6358ab7b8416344bd1b14008205304e597fb",
+    "ParsonsOpened": "f568802977c03117b42aa5ddc6843ad89d300e8cffe144090910aaa5ecaad955",
+    "ParsonsClosure": "11f46ea800677b6edf843fd1211c48c23095b9f8ad5cce760cc4f8218e73b083",
+    "ParsonsInductionCase": "85063ab888b72982d57edbcc278f09a68545b6064694bdc03b989a88d2b68a03",
+    "ParsonsRule": "7fe1dd093fa3ff9585fa37968e0bf75d483b743c9b18fa33c4587a677bb15325",
+    "ParsonsGuard": "ba4d334d660d7438a1cfda46fb1b654fc870e0d16965c6d18e677ed11ff6497d",
+    "ParsonsSelection": "2dbaf2b23983b72ee09f490f59413dff98be5bcdd271190a1ab5c6e25d471910",
+    "ParsonsParameters": "748b92875d91e9d9797ef6d6ae36bfa7dcd05f209742905e6569e8cc1b5db196",
+    "ParsonsTheoryNormalize": "f2f0bf31b6fe11114bd5784f9eb5e390ca30ddeb49a75dcbd8000109a26cfc16",
+    "ParsonsFold": "c176115407aabd79ea2e39ade1a3818f5d0233a7dba15253eb4b66b16a61d402",
+    "ParsonsStructure": "d9e2735b67c4b01fb1aea0d223bcf194c800d8fa29673078634ef0d095876c83",
+    "ParsonsGuardedCollection": "f96d84833ba37cb112e46dffdaf2a835f7af7be806d1bb1a9010911a7c299d03",
+    "ParsonsSpecialize": "db9cde51d8b0bc611d68f2732c3d8b52b005b18883ab038fba400ce7d08c8a6e",
+    "ParsonsCollectionSemantic": "afb46628b179088dc386e035b434be079ce9f46ded009f47bc10d42ae129503d",
+    "ParsonsCollectionRule": "2a00fe7e6368cd05cf57477021fe4f311228727896892f8f287aed06d12787df",
+    "ParsonsCollection": "e4d1811c4b6644006f14ea321fc2c236c3824d2bf89068b83c7748794a4a3a6b",
+    "ParsonsPrenex": "2c8a2b3682493560b0681df701fd6744374e7113241b84f3dbb94bfc6b035bb6",
+    "ParsonsRuleEmbedding": "076a1d32a29e9bf4e257bb3f2d6e9965677e786dfca0c12720cc58afc26847a1",
+    "ParsonsCutFree": "45c6c35b16faa01ffe9e6e021844a41d1df740677d7c4be2e523d61891a2e087",
+    "ParsonsShift": "cae209be8847f09d58ee5b142114a6fecf3d42f2230879f8ecb779c7f1a537f0",
+    "ParsonsLogicalCases": "f00188fca71f773461419202fc212f99f036d42dc5ce6e171b6bb7f758266b68",
+    "ParsonsPrenexAll": "8dd536e5a0c384c280fcf8405dbb70aeda14eabc45104e4e94f371e12508bc94",
+    "ParsonsMarkedLogical": "13d52850378acfb270efbb2bfdabc2fc596523dc4ab6a3356490990210476c32",
+    "ParsonsMarkedBlock": "689a419acb80f4eeeb27038695aff2633d5c55bf6c31ed7aeeaa489b22769a4c",
+    "ParsonsSide": "194177f493841a8c493907737cf4599a33ff8f8baa7cd6c8851039474722e450",
+    "ParsonsGuardClosure": "91c14fd441ce5421f7e2adc7e7d4ba5b3f490992b24f2998b0005df61d41a20f",
+    "ParsonsPositiveGuard": "ea4296c4d213e00776d9d7d0175464b84d2613b5ab304d9f2f134d3c08768c7d"
+  },
+  "LEAN_PATH": "/tmp/parsons-positive-guard-cert-refresh-a16p0dmb/lib:/home/codex/src/Proofs/.lake/packages/Cli/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/.codex/worktrees/46be/Proofs/.lake/build/lib/lean:/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean"
+}

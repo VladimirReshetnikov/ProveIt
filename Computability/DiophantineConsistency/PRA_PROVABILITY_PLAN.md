@@ -14,6 +14,12 @@ It rewrites the supplied first norm and carrier identities into the literal
 adaptive graph's grouping. The hypotheses remain explicit: this does not yet
 construct the first-factor witness or establish the full zero.
 
+The [chosen-coordinate main and auxiliary factors](reviews/adaptive-construction-chosen-factors2011-independent.md)
+have matching author and independent builds. They establish their respective
+literal units for the same witness when the stated correction and orientation
+equalities are supplied, allowing those coordinates to be chosen separately.
+The common witness, first factor and complete zero remain open.
+
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
 identifies the actual theorem associated with each affected snapshot. Module
@@ -24,6 +30,12 @@ passed author and two independent builds with matching source, object and
 full-log hashes. The subsequent merge at `1abcfbde84` changed further
 Herbrand sources in the graph, so this is pre-merge evidence and its affected
 dependents require another source-current rebuild.
+
+The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
+preserves the positive-proof certificate when its predicate, side formula,
+and input proofs carry the stated positivity hypotheses. Its focused replay
+passed twice independently. This does not establish positivity of the global
+cut-free translation.
 
 The [auxiliary-factor reverse bridge](reviews/adaptive-construction-aux-factor2011-independent.md)
 derives its literal unit from explicit strong and auxiliary norm assumptions

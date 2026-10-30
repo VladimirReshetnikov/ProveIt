@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionMainChosen2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionMainChosen2011.main_unit_of_correction

@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAuxChosen2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAuxChosen2011.aux_unit_of_coordinate
