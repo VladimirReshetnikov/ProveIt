@@ -53,10 +53,8 @@ theorem all_ex (r a b : V) :
   have h1 : CProv (wim (wal r (wim a b)) (wal r (wim (neg b) (neg a)))) :=
     cProv_mp (all_distribution r (wim a b) (wim (neg b) (neg a)))
       (cProv_gen r (contrapose a b))
-  apply ded1
-  have h2 : D [wal r (wim a b)] (wim (wal r (neg b)) (wal r (neg a))) :=
-    .mp (.ax (all_distribution r (neg b) (neg a))) (.mp (.ax h1) d0)
-  exact .mp (.ax (contrapose (wal r (neg b)) (wal r (neg a)))) h2
+  exact ValidatorImplicationContext.contra_under CProv cProv_classical
+    (ValidatorImplicationContext.compose CProv cProv_classical h1 (all_distribution r (neg b) (neg a)))
 
 theorem ex_mono (r : V) {a b : V} (h : CProv (wim a b)) :
     CProv (wim (ex r a) (ex r b)) :=
