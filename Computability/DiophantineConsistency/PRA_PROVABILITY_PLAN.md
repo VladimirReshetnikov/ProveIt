@@ -81,8 +81,10 @@ replayed candidate-PRA polynomial bounds; see the
 They contribute to an independently replayed [positive bound for the full
 mapping graph](reviews/pra-mapping-witness-bound-author-replay/README.md),
 checked on a pre-merge source snapshot. A source refresh and its connection to
-the sequence client are underway. Neither result constructs a recursive
-computation history.
+the sequence client have now yielded an independently replayed
+[unconditional positive sequence-graph bound](reviews/pra-seqfull-postmerge-author-replay/README.md)
+with an explicit polynomial. This does not construct a recursive computation
+history or establish the full refutation bound.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
