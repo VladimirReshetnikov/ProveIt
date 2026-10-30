@@ -56,13 +56,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
     have hf : (ω ▹ ppow2Def.val).Evalb ![u,y,X,Y] := by simpa [ω, Semiformula.eval_substs] using hpow
     have hw : 2*(ω #0).val ![u,y,X,Y] Empty.elim+1 ≤ 2*y+1 := hpw
     have hb := PRAExponentialWitnessBound.ppow2_rew_bound_at ω ![u,y,X,Y] (2*y+1) hw hf
-    have hh : Fin.snoc ![u,y,X,Y] (2*y+1) = ![u,y,X,Y,2*y+1] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hh : Fin.snoc ![u,y,X,Y] (2*y+1) = ![u,y,X,Y,2*y+1] := by simp
     rw [hh] at hb
     exact hb
   · rcases heven with hx | hy
@@ -75,14 +69,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
         have hf : (ω ▹ (∼extDef.val)).Evalb ![a,u,y,X,Y] := by
           simpa [ω, Semiformula.eval_substs] using ha1
         have hr := neg_ext_rew_bound ω ![a,u,y,X,Y] (2*y+1) hf
-        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by simp
         rw [hh] at hr
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -93,14 +80,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
         have hf : (ω ▹ (∼extDef.val)).Evalb ![a,u,y,X,Y] := by
           simpa [ω, Semiformula.eval_substs] using ha2
         have hr := neg_ext_rew_bound ω ![a,u,y,X,Y] (2*y+1) hf
-        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by simp
         rw [hh] at hr
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -115,14 +95,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
         have hf : (ω ▹ (∼extDef.val)).Evalb ![a,u,y,X,Y] := by
           simpa [ω, Semiformula.eval_substs] using ha1
         have hr := neg_ext_rew_bound ω ![a,u,y,X,Y] (2*y+1) hf
-        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by simp
         rw [hh] at hr
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -133,14 +106,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
         have hf : (ω ▹ (∼extDef.val)).Evalb ![a,u,y,X,Y] := by
           simpa [ω, Semiformula.eval_substs] using ha2
         have hr := neg_ext_rew_bound ω ![a,u,y,X,Y] (2*y+1) hf
-        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by simp
         rw [hh] at hr
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -156,14 +122,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
         have hf : (ω ▹ (∼extDef.val)).Evalb ![a,u,y,X,Y] := by
           simpa [ω, Semiformula.eval_substs] using ha1
         have hr := neg_ext_rew_bound ω ![a,u,y,X,Y] (2*y+1) hf
-        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by simp
         rw [hh] at hr
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -174,14 +133,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
         have hf : (ω ▹ (∼extDef.val)).Evalb ![a,u,y,X,Y] := by
           simpa [ω, Semiformula.eval_substs] using ha2
         have hr := neg_ext_rew_bound ω ![a,u,y,X,Y] (2*y+1) hf
-        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by simp
         rw [hh] at hr
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -196,14 +148,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
         have hf : (ω ▹ (∼extDef.val)).Evalb ![a,u,y,X,Y] := by
           simpa [ω, Semiformula.eval_substs] using ha1
         have hr := neg_ext_rew_bound ω ![a,u,y,X,Y] (2*y+1) hf
-        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by simp
         rw [hh] at hr
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
@@ -214,14 +159,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
         have hf : (ω ▹ (∼extDef.val)).Evalb ![a,u,y,X,Y] := by
           simpa [ω, Semiformula.eval_substs] using ha2
         have hr := neg_ext_rew_bound ω ![a,u,y,X,Y] (2*y+1) hf
-        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hh : Fin.snoc ![a,u,y,X,Y] (2*y+1) = ![a,u,y,X,Y,2*y+1] := by simp
         rw [hh] at hr
         have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
           exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
