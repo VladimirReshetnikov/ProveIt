@@ -115,13 +115,11 @@ theorem hierarchy_bnd {Γ : Polarity} {s n : ℕ} {φ : ArithmeticSemiformula ξ
   | @exs s n φ _ ih =>
       intro hs _
       simpa [bnd, Hierarchy.bexs_iff (lastVar_positive n)] using ih hs (fun _ => rfl)
-  | @all s n φ _ _ => intro hs hΓ; cases hΓ (by omega)
   | @sigma s n φ _ ih =>
       intro hs _
       simpa [bnd, Hierarchy.bexs_iff (lastVar_positive n)] using ih (by omega) (fun h => by omega)
-  | @pi s n φ _ _ => intro hs hΓ; cases hΓ (by omega)
-  | dummy_sigma => intro hs; omega
-  | dummy_pi => intro hs; omega
+  | all _ _ | pi _ _ => intro hs hΓ; cases hΓ (by omega)
+  | dummy_sigma | dummy_pi => intro hs; omega
 
 section semantics
 
@@ -384,15 +382,13 @@ theorem eval_bnd_of {Γ : Polarity} {s n : ℕ} {φ : ArithmeticSemiformula ξ n
       obtain ⟨x, hx⟩ := Semiformula.eval_ex.mp h
       obtain ⟨w, hw⟩ := ih hs (fun _ => rfl) (x :> e) f hx
       exact eval_bnd_ex φ e f x w hw
-  | @all s n φ _ _ => intro hs hΓ; cases hΓ (by omega)
   | @sigma s n φ hφ ih =>
       intro hs _ e f h
       obtain ⟨x, hx⟩ := Semiformula.eval_ex.mp h
       obtain ⟨w, hw⟩ := ih (by omega) (fun h => by omega) (x :> e) f hx
       exact eval_bnd_ex φ e f x w hw
-  | @pi s n φ _ _ => intro hs hΓ; cases hΓ (by omega)
-  | dummy_sigma => intro hs; omega
-  | dummy_pi => intro hs; omega
+  | all _ _ | pi _ _ => intro hs hΓ; cases hΓ (by omega)
+  | dummy_sigma | dummy_pi => intro hs; omega
 
 include hT in
 /-- **Models of strict induction satisfy `𝗜𝚺₁`.** -/

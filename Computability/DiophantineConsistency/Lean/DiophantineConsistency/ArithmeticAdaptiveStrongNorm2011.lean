@@ -52,9 +52,10 @@ def StrongNorm (v : Fin 13 → V) : Prop :=
   let I : V := (c*c)*v 4
   I*I+D=D*(v 3*v 3)
 
-theorem expressionAt_strong_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
-    (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : StrongNorm v := by
-  have hu := (expressionAt_factor_units (fun j => (p j:ℤ)) v hz).2.2.2
+/-- A positive unit at the strong factor gives the strong norm. -/
+theorem strong_norm_of_unit (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hu : (pairEval (factors (fun j => (p j:ℤ))).2.2.2 v).1 =
+      (pairEval (factors (fun j => (p j:ℤ))).2.2.2 v).2+1) : StrongNorm v := by
   have hr := strong_rep p v
   have h := represented_unit hu hr
   have h' : 1+((v 9+v 7*(v 9+v 10))*(v 9+v 7*(v 9+v 10))*v 4*
@@ -67,6 +68,11 @@ theorem expressionAt_strong_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
         ((3+4*(v 6*v 7+v 7))+(v 6*v 7+v 7)*(v 6*v 7+v 7))) := by ring
       _=_ := by rw [h]; ring
   exact add_left_cancel h'
+
+
+theorem expressionAt_strong_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : StrongNorm v :=
+  strong_norm_of_unit p v (expressionAt_factor_units (fun j => (p j:ℤ)) v hz).2.2.2
 
 theorem current_strong_norm (v : Fin 13 → V) (hz : InternalZero expression v) : StrongNorm v := by
   apply expressionAt_strong_norm currentPorts v

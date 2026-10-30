@@ -257,6 +257,12 @@ private theorem cseq_parts {n w₁ w₂ E c v p : V} (hp : IsSemiformula ℒₛ�
     hf _ (by simp [Cseq]), hf _ (by simp [Cseq])⟩
 
 
+/-- The two level facts of the quantifier steps. -/
+theorem quant_levels {S v c W : V} (hS0 : SeqLe S (mB v c)) (hW : mB v (c + 1) + 1 ≤ W) :
+    SeqLe (setShift ℒₛₑₜ S) (mB v (c + 1)) ∧ mB v c + 1 ≤ W + 1 + 1 :=
+  ⟨by rw [mB_succ]; exact (SeqLe.setShift hS0).mono (_root_.add_le_add le_rfl (by norm_num)),
+    le_trans (mB_step v c) (le_trans hW (le_trans le_self_add le_self_add))⟩
+
 theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n + 1) p)
     (inp : Inp n w₁ w₂ E c) (hpv : ^∀ p ≤ lvB v) (hspv : shift ℒₛₑₜ p ≤ lvB v)
     (hW : mB v (c + 1) + 1 ≤ W) (hW4 : 4 ≤ W)
@@ -288,10 +294,7 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
     have := shift_mem_setShift (L := ℒₛₑₜ) (show ^∃ neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p) ∈ S by simp [hSdef])
     rwa [Bootstrapping.shift_exs hP₁.neg.isUFormula] at this
   have hsub : setShift ℒₛₑₜ E ⊆ setShift ℒₛₑₜ S := setShift_mono subset_insert_insert
-  -- members of the shifted sequent are at level `mB v c + 1 ≤ mB v (c + 1)`
-  have hSS : SeqLe (setShift ℒₛₑₜ S) (mB v (c + 1)) := by
-    rw [mB_succ]
-    exact (SeqLe.setShift hS0).mono (_root_.add_le_add le_rfl (by norm_num))
+  obtain ⟨hSS, hc10⟩ := quant_levels hS0 hW
   -- weakening of the induction hypothesis
   have d1 : DLv 𝗭𝗙 (insert (neg ℒₛₑₜ F₁) (insert F₂ (setShift ℒₛₑₜ S))) (W + 1) := by
     refine DLv.wk hW4 ((hSS.insert hF₂).insert hF₁ |>.toLt hW)
@@ -308,8 +311,6 @@ theorem step_all {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n
       (p := shift ℒₛₑₜ (neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p)))
       (fvar0_lt (le_trans (by norm_num) hW4)) (mem_bitInsert_iff.mpr (Or.inr hsh)) (by simp) ?_
     rwa [hf₁]
-  have hc10 : mB v c + 1 ≤ W + 1 + 1 :=
-    le_trans (mB_step v c) (le_trans hW (le_trans le_self_add le_self_add))
   refine DLv.all_m (le_trans hW4 (le_trans le_self_add le_self_add)) (hS0.toLt hc10)
     (p := subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p) (by simp [hSdef]) ?_
   rwa [hf₂]
@@ -344,9 +345,7 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
     have := shift_mem_setShift (L := ℒₛₑₜ) (show ^∃ subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p ∈ S by simp [hSdef])
     rwa [Bootstrapping.shift_exs hP₂.isUFormula] at this
   have hsub : setShift ℒₛₑₜ E ⊆ setShift ℒₛₑₜ S := setShift_mono subset_insert_insert
-  have hSS : SeqLe (setShift ℒₛₑₜ S) (mB v (c + 1)) := by
-    rw [mB_succ]
-    exact (SeqLe.setShift hS0).mono (_root_.add_le_add le_rfl (by norm_num))
+  obtain ⟨hSS, hc10⟩ := quant_levels hS0 hW
   have d1 : DLv 𝗭𝗙 (insert F₂ (insert (neg ℒₛₑₜ F₁) (setShift ℒₛₑₜ S))) (W + 1) := by
     refine DLv.wk hW4 ((hSS.insert hF₁).insert hF₂ |>.toLt hW)
       (by simp [hFf₁, hFf₂, hSf.setShift]) ?_ ih
@@ -361,8 +360,6 @@ theorem step_ex {n w₁ w₂ E c v p W : V} (hp : IsSemiformula ℒₛₑₜ (n 
       (p := shift ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₂) p))
       (fvar0_lt (le_trans (by norm_num) hW4)) (mem_bitInsert_iff.mpr (Or.inr hsh)) (by simp) ?_
     rwa [hf₂]
-  have hc10 : mB v c + 1 ≤ W + 1 + 1 :=
-    le_trans (mB_step v c) (le_trans hW (le_trans le_self_add le_self_add))
   refine DLv.all_m (le_trans hW4 (le_trans le_self_add le_self_add)) (hS0.toLt hc10)
     (p := neg ℒₛₑₜ (subst ℒₛₑₜ (qVec ℒₛₑₜ w₁) p)) (by simp [hSdef]) ?_
   rwa [hf₁]

@@ -128,6 +128,17 @@ theorem falsum_le {m : V} (hm : 2 ≤ m) : (^⊥ : V) ≤ lvB m :=
 theorem two_le_Eb (n p : V) : (2 : V) ≤ Eb + 100 * n + 200 * p :=
   le_trans (le_of_add_eq (y := 10 * Ef0 + 198) (by unfold Eb; ring)) (le_trans le_self_add le_self_add)
 
+/-- The binary-connective case of `envForm_le`, for connective tag `k`. -/
+theorem bin_le {n p q a b k : V} (hk : k ≤ 16) (ha : a ≤ lvB (Eb + 100 * n + 200 * p))
+    (hb : b ≤ lvB (Eb + 100 * n + 200 * q)) :
+    ⟪k, ⟪a, b⟫⟫ + 1 ≤ lvB (Eb + 100 * n + 200 * (⟪k, p, q⟫ + 1)) := by
+  have hpx : p ≤ ⟪k, p, q⟫ := le_trans (le_pair_left p q) (le_pair_right k _)
+  have hqx : q ≤ ⟪k, p, q⟫ := le_trans (le_pair_right p q) (le_pair_right k _)
+  exact le_trans (conn_le (tag := k) (two_le_Eb n ⟪k, p, q⟫) hk
+    (lift_lvB ha (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hpx (by norm_num))))
+    (lift_lvB hb (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hqx (by norm_num)))))
+    (lvB_mono (le_of_add_eq (y := 196) (by ring)))
+
 /-- The quantifier case of `envForm_le`: `Q Q (A ⊙ (B ⊙ e))` with outer tag `k`,
 inner connective tag `j` and two constants bounded by `Ef0`. -/
 theorem quant_le {n p e a b k j : V} (hk : k ≤ 16) (hj : j ≤ 16) (ha : a ≤ Ef0) (hb : b ≤ Ef0)
@@ -185,24 +196,12 @@ theorem envForm_le {n p : V} (hp : IsSemiformula ℒₛₑₜ n p) :
     exact falsum_le (two_le_Eb n _)
   · -- conjunction
     intro n p q hp hq ihp ihq
-    rw [envForm_and hp.isUFormula hq.isUFormula,
-      show (p ^⋏ q : V) = ⟪4, p, q⟫ + 1 from rfl]
-    have hpx : p ≤ ⟪4, p, q⟫ := le_trans (le_pair_left p q) (le_pair_right 4 _)
-    have hqx : q ≤ ⟪4, p, q⟫ := le_trans (le_pair_right p q) (le_pair_right 4 _)
-    have l := conn_le (tag := 4) (two_le_Eb n ⟪4, p, q⟫) (by norm_num)
-      (lift_lvB ihp (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hpx (by norm_num))))
-      (lift_lvB ihq (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hqx (by norm_num))))
-    exact le_trans l (lvB_mono (le_of_add_eq (y := 196) (by ring)))
+    rw [envForm_and hp.isUFormula hq.isUFormula]
+    exact bin_le (k := 4) (by norm_num) ihp ihq
   · -- disjunction
     intro n p q hp hq ihp ihq
-    rw [envForm_or hp.isUFormula hq.isUFormula,
-      show (p ^⋎ q : V) = ⟪5, p, q⟫ + 1 from rfl]
-    have hpx : p ≤ ⟪5, p, q⟫ := le_trans (le_pair_left p q) (le_pair_right 5 _)
-    have hqx : q ≤ ⟪5, p, q⟫ := le_trans (le_pair_right p q) (le_pair_right 5 _)
-    have l := conn_le (tag := 5) (two_le_Eb n ⟪5, p, q⟫) (by norm_num)
-      (lift_lvB ihp (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hpx (by norm_num))))
-      (lift_lvB ihq (_root_.add_le_add le_rfl (mul_le_mul_of_nonneg_left hqx (by norm_num))))
-    exact le_trans l (lvB_mono (le_of_add_eq (y := 196) (by ring)))
+    rw [envForm_or hp.isUFormula hq.isUFormula]
+    exact bin_le (k := 5) (by norm_num) ihp ihq
   · -- universal quantifier
     intro n p hp ih
     rw [envForm_all hp.isUFormula, show (^∀ p : V) = ⟪6, p⟫ + 1 from rfl]
