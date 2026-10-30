@@ -44,9 +44,9 @@ def RankCongruence (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
   let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
   q^4∣magnitude (R+1,k)
 
-theorem expressionAt_rank_congruence (p : Fin 4 → ℕ) (v : Fin 13 → V)
-    (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
-    (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : RankCongruence p v := by
+/-- The main-root congruence implies the signed rank congruence. -/
+theorem rank_congruence_of_main (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hmain : MainCongruence p v) : RankCongruence p v := by
   let q : V := 1+v 0*(p 0:V)
   let E : V := v 6*v 7
   let k : V := v 9+v 10
@@ -54,10 +54,10 @@ theorem expressionAt_rank_congruence (p : Fin 4 → ℕ) (v : Fin 13 → V)
   let H : V := 3+4*a
   let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
   let T : V := E*q+R+1
-  have hq : 0<q := lt_trans (by simp : (0:V)<1) (scaled_parameters_positive p v hb hv).1
+  have hq : 0<q := by dsimp [q]; simp
   have hm5 : 0<q^5 := pow_pos hq _
   have hm4 : 0<q^4 := pow_pos hq _
-  obtain ⟨s,main,_,_,hy,he⟩ := expressionAt_main_congruence p v hb hv hz
+  obtain ⟨s,main,_,_,hy,he⟩ := hmain
   have hemod : (H*T)%(q^5)=(H*k)%(q^5) := by
     have h := congrArg (fun z : V => z%(q^5)) he
     rw [mod_add_mul' _ _ hm5,mod_add_mul' _ _ hm5] at h
@@ -79,6 +79,12 @@ theorem expressionAt_rank_congruence (p : Fin 4 → ℕ) (v : Fin 13 → V)
   have hTR : T=E*q+(R+1) := by dsimp [T]; ring
   rw [hTR,mod_add_remove_left_of_dvd hEq hm4] at hTmod
   exact dvd_magnitude_of_mod hm4 hTmod
+
+
+theorem expressionAt_rank_congruence (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
+    (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : RankCongruence p v :=
+  rank_congruence_of_main p v (expressionAt_main_congruence p v hb hv hz)
 
 private theorem beta_positive_nat : 0<CurrentMasks2011.beta := by
   have hr : 1<CurrentMasks2011.radix := by unfold CurrentMasks2011.radix; norm_num
