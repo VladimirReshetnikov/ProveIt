@@ -64,6 +64,11 @@ The [private compatibility draft](reviews/adaptive-wang-table-compat-independent
 restores the three generated names missing from the initial split and has an
 independent matching build. Full export and attribute checks, historical
 object provenance, and downstream integration remain open.
+The direct importer [WangPlane](reviews/adaptive-wang-plane-split-independent.md)
+has independently rebuilt against the initial private split table. This is a
+single downstream client with two retained deprecation warnings; it does not
+resolve the full interface comparison or rebuild the remaining CellWindow
+and Assembly chain.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
