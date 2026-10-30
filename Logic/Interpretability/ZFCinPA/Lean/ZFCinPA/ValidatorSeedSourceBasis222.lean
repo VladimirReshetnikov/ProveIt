@@ -41,13 +41,8 @@ theorem seedInstanceCode_eq {k : V} (hk : IsSemiformula ℒₛₑₜ 2 k) :
 
 private theorem subst01 {k : V} (hk : IsSemiformula ℒₛₑₜ 2 k) :
     subst ℒₛₑₜ (^#0∷^#1∷0) k=k := by
-  apply Bootstrapping.subst_eq_self hk (by simp)
-  intro i hi
-  rcases zero_or_succ i with rfl | ⟨j,rfl⟩
-  · simp
-  · have : j=0 := by simpa [←one_add_one_eq_two] using hi
-    subst j
-    simp
+  simpa [val_repSubst3Const] using
+    ModelCodedSchemaAxioms.rep_core_subst_identity (⟨k,hk⟩ : Semiformula V ℒₛₑₜ 2)
 
 theorem recognizer_parameter_bound (K : Semiformula V ℒₛₑₜ 2) :
     K.val ≤ seedRecognizerBodyVal K.val := by
