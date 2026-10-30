@@ -1,0 +1,21 @@
+'DiophantineConsistency.PRAJoostenWitnessedRule.PRA_proves_witnessed_rule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAJoostenWitnessedRule.PRA_exists_base_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAJoostenWitnessedRule.PRA_exists_step_witness' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAJoostenWitnessedRule.PRA_proves_rule_of_contextual_step' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAJoostenWitnessedRule.PRA_proves_rule_of_contextual_step {n : ℕ}
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 2))
+  (hbase : DiophantineConsistency.PRATheory.PRA ⊢ ∀⁰* ∃⁰ baseMatrix pred)
+  (hstep :
+    DiophantineConsistency.PRATheory.PRA ⊢
+      LO.FirstOrder.Semiformula.univCl
+        (DiophantineConsistency.HerbrandContextualTreeSelection.parameterSide (stepSide pred) ⋎
+          (∃⁰ DiophantineConsistency.HerbrandParameterizedWitness.parameterMatrix (stepMatrix pred)))) :
+  DiophantineConsistency.PRATheory.PRA ⊢ LO.FirstOrder.Semiformula.univCl (∀⁰ existentialBody pred)

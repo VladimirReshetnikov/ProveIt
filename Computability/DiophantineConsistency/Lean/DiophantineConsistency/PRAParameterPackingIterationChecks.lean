@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAParameterPackingIteration
+open DiophantineConsistency.PRAParameterPackingIteration
+#print axioms modelPacking_parameters
+#print axioms modelPackAll

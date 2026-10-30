@@ -1,0 +1,22 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticAdaptiveConstructionMainWitness2011.lean:76:4: error: 'change' tactic failed, pattern
+  U * gamma + X * Y * q +
+        ((v 2 + (q - v 1) * (v 0 * ↑CurrentMasks2011.beta)) * (q * q - 1) +
+          v 0 * (↑CurrentMasks2011.lowPort + ↑(CurrentMasks2011.highPort + CurrentMasks2011.beta) * q)) +
+      1 =
+    k + U * v 13
+is not definitionally equal to target
+  have b := witness v r aux gamma 0 * ↑(currentPorts 0);
+  have q := 1 + b;
+  have U := witness v r aux gamma 7 * (q * q);
+  have E := witness v r aux gamma 6 * witness v r aux gamma 7;
+  have k := witness v r aux gamma 9 + witness v r aux gamma 10;
+  have R :=
+    (witness v r aux gamma 2 + (q - witness v r aux gamma 1) * b) * (q * q - 1) +
+      witness v r aux gamma 0 * (↑(currentPorts 2) + ↑(currentPorts 3) * q);
+  U * witness v r aux gamma 12 + E * q + R + 1 = k + U * v 13

@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAStrictSigmaFiniteClient
+open DiophantineConsistency.PRAStrictSigmaFiniteClient
+#print axioms bounded_certificate
+#print axioms case_certificate
+#print axioms PRA_proves_goal_of_finite_strict

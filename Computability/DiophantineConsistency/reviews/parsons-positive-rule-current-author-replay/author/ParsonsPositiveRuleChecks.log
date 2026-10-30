@@ -1,0 +1,12 @@
+'DiophantineConsistency.ParsonsPositiveRule.positive_exsItr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPositiveRule.strict_positive' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPositiveRule.positive_guard' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPositiveRule.toRule' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.ParsonsPositiveRule.strict_positive {φ : LO.FirstOrder.ArithmeticSemiformula ℕ 1}
+  (h : DiophantineConsistency.ParsonsStrictInvariant.Strict φ) : DiophantineConsistency.ParsonsBasePositive.Positive φ
+DiophantineConsistency.ParsonsPositiveRule.positive_guard {φ : LO.FirstOrder.ArithmeticSemiformula ℕ 1}
+  {E : LO.FirstOrder.Proposition ℒₒᵣ} (hφ : DiophantineConsistency.ParsonsBasePositive.Positive φ)
+  (hE : DiophantineConsistency.ParsonsBasePositive.Positive E) :
+  DiophantineConsistency.ParsonsBasePositive.Positive (DiophantineConsistency.ParsonsGuard.guard φ E)
+DiophantineConsistency.ParsonsPositiveRule.toRule {T : LO.FirstOrder.Theory ℒₒᵣ} {φ : LO.FirstOrder.Proposition ℒₒᵣ} :
+  Proof T φ → DiophantineConsistency.ParsonsRule.Proof T φ

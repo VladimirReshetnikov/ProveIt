@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAModelTupleCoding
+open DiophantineConsistency.PRAModelTupleCoding
+#print axioms projection_le
+#print axioms tupleGraph_spec
+#print axioms modelTupleGraph

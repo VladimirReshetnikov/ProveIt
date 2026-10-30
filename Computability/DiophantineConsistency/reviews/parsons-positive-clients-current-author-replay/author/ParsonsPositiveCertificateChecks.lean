@@ -1,0 +1,6 @@
+import DiophantineConsistency.ParsonsPositiveCertificate
+open DiophantineConsistency.ParsonsPositiveCertificate
+#print axioms restrict
+#print axioms toRule_allPositive
+#print axioms restrict_roundtrip
+#check restrict_roundtrip

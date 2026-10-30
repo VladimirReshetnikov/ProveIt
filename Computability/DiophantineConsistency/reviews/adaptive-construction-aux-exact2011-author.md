@@ -1,0 +1,5 @@
+# Exact auxiliary orientation
+
+`auxiliary_cut_exact` proves in every model of the stated `IΣ₁` assumptions that the actual seed's linear identity `f*f*c*T=a+c+f*f*R`, with `f>0`, forces `R≤c*T` and makes the adaptive difference `f*f*(c*T-R)-c` exactly `a`. Given the positive auxiliary-coordinate relation and old auxiliary norm, it also rewrites the norm in the adaptive variables. The linear identity and norm remain explicit premises; this is neither a full adaptive zero nor an HA proof-existence theorem. Lean reports `[propext, Classical.choice, Quot.sound]`.
+
+The author build passed at `/tmp/adaptive-construction-aux-exact-01cqsaxs` against `/tmp/adaptive13-assembly-recomposed-q9s50zdl`. The [11-file evidence manifest](adaptive-construction-aux-exact2011-author-evidence/FILES.json) has SHA256 `4d03443778d9be6d8af123f61112282d524e401c983f4abf9275cd73bf9364b3` and preserves source snapshots, full logs and timings, driver, provider metadata, canonical state and guards. For independent replay set `ADAPTIVE_ASSEMBLY_BASE` to the authenticated composition and run `success/driver.py`; the canonical and package boundaries remain inherited.

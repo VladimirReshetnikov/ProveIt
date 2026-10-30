@@ -8,15 +8,110 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [auxiliary-factor reverse bridge](reviews/adaptive-construction-aux-factor2011-independent.md)
+derives its literal unit from explicit strong and auxiliary norm assumptions
+and the port bound. These still need to be connected to the common witness.
+
+The upstream merge at `e5d166e20f` changed `PRAFormulaParameters` and five
+Herbrand parameter/context modules, plus ZFC interpretation and validator
+sources. Dependent PRA, pairing, normalization and positive-rule replays below
+cover their preceding snapshots until their affected source graphs are rebuilt.
+The separate 14-variable HA endpoint also needs a current-source replay of its
+changed ZFC dependencies.
+
+The [positive-rule clients](reviews/parsons-positive-clients-current-author-replay/README.md)
+now prove the guarded induction case in the restricted calculus and define a
+certificate that restricts an existing Parsons proof. Their candidate-PRA
+comparison explicitly assumes positive-rule admissibility; neither that
+assumption nor the certificate for the full cut-free translator is proved.
+
+The [positive-rule calculus](reviews/parsons-positive-rule-current-author-replay/README.md)
+restricts induction predicates to the positive bounded/existential syntax and
+embeds into the existing Parsons rule calculus. Strict prefixes and the local
+guard preserve this syntax. The full cut-free translator has not yet been shown
+to produce proofs in the restricted calculus.
+
+The [strict source-theory comparison](reviews/pra-strict-theory-author-replay/README.md)
+now translates proofs over PA-minus plus bounded or syntactic existential-bounded
+induction into candidate PRA for the stated open-existential goals, with the
+mapped-goal equality explicit. The strict source theory is a subtheory of
+IΣ₁; its converse inclusion and general conservation remain open.
+
+The [first-factor reverse bridge](reviews/adaptive-construction-first-factor2011-independent.md)
+derives its literal unit from the explicit additive carrier identity and first
+norm. Binding these to the common concrete witness remains separate.
+
+The [concrete main-factor client](reviews/adaptive-construction-main-witness2011-independent.md)
+now proves the main factor of the explicit adaptive witness is +1 under the
+common seed and Assembly facts. Together with the strong factor, two of the
+four literal factor units are established for that witness.
+
+The [strict Σ₁ certificate](reviews/pra-strict-sigma-certificate-author-replay/README.md)
+now supplies the conditional normalizer for every arithmetic induction
+predicate syntactically `∃ D` with bounded `D` and any finitely many free
+parameters. It does not handle arbitrary Σ₁ syntax, including bounded universal
+quantification over Σ₁ bodies.
+
+The [main-factor reverse bridge](reviews/adaptive-construction-main-factor2011-independent.md)
+derives the actual literal factor unit from explicit additive carrier and
+old-norm hypotheses. Binding those hypotheses to the common witness is still
+required.
+
+A [conditional IΣ₁ client](reviews/pra-conditional-normalization-author-replay/README.md)
+now composes finite proof extraction with multi-parameter strict induction
+elimination. It explicitly requires a proof-producing normalization certificate
+for every used Σ₁ predicate and an equality identifying the mapped conclusion
+with an open-existential goal; neither premise is discharged.
+
+The [literal factor-to-zero bridge](reviews/adaptive-construction-factor-independent.md)
+now derives the adaptive zero from four explicit factor-unit hypotheses and
+supplies a strong-unit and generic square-factor lemma. A [concrete witness](reviews/adaptive-construction-witness-independent.md)
+now has its strong factor proved +1 and is positive when the old vector and
+three new coordinates are positive. Its other factor units remain to be proved.
+
+The [coded Joosten rule client](reviews/pra-joosten-rule-current-author-replay/README.md)
+now extracts primitive-recursive base and step witnesses from the stated actual
+candidate-PRA premises and proves the coded existential induction conclusion.
+Connecting arbitrary `ParsonsRule.Proof` premises and preserving the restricted
+guarded formula shape remain open; this is not general conservation.
+
+The [finite multi-parameter induction theorem](reviews/pra-multi-induction-author-replay/README.md)
+now eliminates any finite list of strict Σ₁ induction instances with bounded
+matrices and independently chosen finite parameter arities, for the stated
+open-existential goals. It still does not normalize arbitrary Foundation Σ₁
+formulas or establish the exact consistency equivalence.
+
+The [arbitrary-tail packing adapter](reviews/pra-arbitrary-packing-author-replay/README.md)
+has passed source-current replays. It preserves boundedness while packing two
+parameter slots and gives a uniform model-equivalence certificate with any
+finite remaining parameter tail. It is not itself an induction-elimination
+or general Σ₁ normalization theorem.
+
+A strengthened Assembly helper has passed a [historical-overlay exploratory
+build](reviews/adaptive-assembly-seed-historical2011.md), exposing the common
+seed, radix, multiplier, rank-growth and auxiliary orientation while preserving
+the older APIs. Its source edit remains uncommitted and does not yet have a
+source-current closure replay; it is not an accepted full adaptive construction.
+A [separate guarded projection check](reviews/adaptive-assembly-seed-projection2011.md)
+verifies the enriched vector projections from explicit premises, without
+importing or proving the modified Assembly helper.
+
+The [exact auxiliary-orientation theorem](reviews/adaptive-construction-aux-exact2011-independent.md)
+now derives the needed signed difference and auxiliary norm from the explicit
+seed linear identity and old norm. The common Assembly witness still has to
+expose that identity for the full adaptive construction.
+
 The upstream merge at `5135b718b9` changed five Herbrand proof sources and
 `PRAOpenOneInductionClassification`, as well as ZFC interpretation and context
 sources. The dependent finite-induction, pairing, tuple and candidate-PRA
 replays above are evidence for their preceding snapshots; a dependency-aware
-post-merge rebuild is underway. The separate maintained HA endpoint also
-requires its own source-current replay.
+post-merge 49-module rebuild has now passed two independent replays; the
+tuple and arbitrary-parameter suffix still requires its own replay. The separate
+maintained HA endpoint also requires its own source-current replay.
 
-The extraction of a finite set of induction instances from an actual IΣ₁
-proof has a provisional Lean implementation. A separate normalization gap
+The [finite extraction](research/pra-isigma-one-finite-extraction-20261029.md)
+of induction instances from an actual IΣ₁ proof has passed the source-current
+49-module build and two independent replays. A separate normalization gap
 remains: Foundation's Σ₁ hierarchy permits bounded universals over Σ₁
 bodies, so replacing an arbitrary such predicate by a single existential with
 a bounded matrix requires a coding or collection argument. The existing
@@ -27,6 +122,9 @@ The [exact main-carrier factorization](reviews/adaptive-construction-main-exact2
 now derives the adaptive shift and scaled main norm from explicit additive
 correction, multiplier and old-norm equalities. Instantiating those hypotheses
 from the common Assembly witness and completing the 13-variable zero remain open.
+The [actual-seed main-carrier client](reviews/adaptive-construction-main-seed2011-independent.md)
+now derives a positive main coordinate and its complete scaled norm from the
+outer seed and the explicit Assembly multiplier relation.
 
 A [bounded finite-tuple decoding graph](reviews/pra-tuple-graph-author-replay/README.md)
 now supplies existence, unique component recovery and bounds in arbitrary

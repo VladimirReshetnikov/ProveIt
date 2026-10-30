@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAuxFactor2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionAuxFactor2011.auxiliary_unit_of_norm

@@ -1,0 +1,7 @@
+# Explicit adaptive vector and strong factor
+
+`witness` defines all thirteen adaptive coordinates from the positive old fourteen-coordinate vector and three new coordinates `r`, `u`, and `gamma`. In particular the adaptive `i` coordinate is `delta` times the old `i`; `X` and `Y` are the old scaled coordinates. `witness_strong_norm` derives the adaptive strong norm from the actual old equations and vector positivity in every model of the stated `IΣ₁` assumptions. `witness_strong_unit` then proves the literal strong factor represents `+1`, for arbitrary natural ports. Both report `[propext, Classical.choice, Quot.sound]` in Lean.
+
+Only one of the four factor units is established for this witness; positivity of all adaptive coordinates, the other factor units, the full zero, the actual Assembly instantiation and HA proof existence remain open.
+
+The author build passed at `/tmp/adaptive-construction-witness-gc6rejgd` against `/tmp/adaptive-construction-factor-lemmas-pzpozysr`. The [19-file evidence manifest](adaptive-construction-witness2011-author-evidence/FILES.json) has SHA256 `6ca86f2d304814aa9ed89cb6fba05ae1828e5a8c42e6ad8d154ae7e31e991c72`. It preserves the initial failed algebra rewrite and ambiguous name, the corrected build, source snapshots, full logs and timings, driver, provider metadata and guards. For replay set `ADAPTIVE_ASSEMBLY_BASE` to the independently replayed factor-lemmas provider and run `success/driver.py`; the underlying canonical and package boundaries remain inherited.

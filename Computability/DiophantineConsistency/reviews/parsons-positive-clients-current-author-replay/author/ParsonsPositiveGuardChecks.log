@@ -1,0 +1,12 @@
+'DiophantineConsistency.ParsonsPositiveGuard.guard_result' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.ParsonsPositiveGuard.three_disjunctions' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.ParsonsPositiveGuard.three_disjunctions {T : LO.FirstOrder.Theory ℒₒᵣ}
+  (φ : LO.FirstOrder.ArithmeticSemiformula ℕ 1) (E : LO.FirstOrder.Proposition ℒₒᵣ)
+  (t : LO.FirstOrder.SyntacticTerm ℒₒᵣ) (hφ : DiophantineConsistency.ParsonsBasePositive.Positive φ)
+  (hE : DiophantineConsistency.ParsonsBasePositive.Positive E)
+  (hb : DiophantineConsistency.ParsonsPositiveRule.Proof T (DiophantineConsistency.ParsonsRule.base φ ⋎ E))
+  (hs : DiophantineConsistency.ParsonsPositiveRule.Proof T (DiophantineConsistency.ParsonsRule.step φ ⋎ E))
+  (hn : DiophantineConsistency.ParsonsPositiveRule.Proof T (∼φ/[t] ⋎ E)) :
+  DiophantineConsistency.ParsonsPositiveRule.Proof T E

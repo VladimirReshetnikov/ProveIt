@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAFiniteMultiParameterInduction
+open DiophantineConsistency.PRAFiniteMultiParameterInduction
+#print axioms packedMatrices_bounded
+#print axioms PRA_proves_goal_of_finite_induction

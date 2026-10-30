@@ -1,0 +1,7 @@
+# Historical exploratory build of enriched Assembly
+
+The uncommitted `construction_below_seed_phase_hL` strengthens the witness conclusion with a common outer seed, radix and multiplier equalities, rank-growth bound, and the exact auxiliary orientation identity. The earlier `construction_below_phase_hL` and `construction_below_hL` signatures remain projection wrappers. The added facts are the ones available inside the existing assembly construction; this does not yet instantiate the adaptive zero or establish a current-source Assembly theorem.
+
+The first historical-overlay attempt failed because the outer seed had been consumed by destructuring and the auxiliary vector projections had not reduced. After retaining the seed and explicitly projecting the final vector, the corrected historical build passed with empty Lean diagnostics at `/tmp/adaptive-assembly-seed-exploratory-0p53tcnq`. The [11-file evidence manifest](adaptive-assembly-seed-historical2011-evidence/FILES.json) has SHA256 `462c9c8cc81c85fe4be529c4ad178fab87fce3ee897b0460816ce683c4bb6387`; it retains both source snapshots, drivers, full diagnostics, timings and states, plus the prior Assembly snapshot.
+
+This build inherits the historical pinned overlay and is not a current-source replay. The modified Assembly remains uncommitted; source-current closure, including the still-live original WangTable worker, remains outstanding.

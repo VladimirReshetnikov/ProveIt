@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionMainSeed2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionMainSeed2011.positive_main_of_seed
