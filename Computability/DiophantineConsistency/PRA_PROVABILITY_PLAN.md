@@ -32,6 +32,9 @@ The [exact main-carrier factorization](reviews/adaptive-construction-main-exact2
 now derives the adaptive shift and scaled main norm from explicit additive
 correction, multiplier and old-norm equalities. Instantiating those hypotheses
 from the common Assembly witness and completing the 13-variable zero remain open.
+The [actual-seed main-carrier client](reviews/adaptive-construction-main-seed2011-independent.md)
+now derives a positive main coordinate and its complete scaled norm from the
+outer seed and the explicit Assembly multiplier relation.
 
 A [bounded finite-tuple decoding graph](reviews/pra-tuple-graph-author-replay/README.md)
 now supplies existence, unique component recovery and bounds in arbitrary
