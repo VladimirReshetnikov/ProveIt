@@ -144,11 +144,9 @@ private lemma fixed_spec (v c p q : V)
     CProv (wim (wal v p) q) := by
   have hs : CProv (wim p (wim (weq v c) q)) :=
     ded2 (.mp (.mp (.ax h) h0) h1)
-  apply ded1
-  have hi : D [wal v p] (wal v (wim (weq v c) q)) := .mp (.ax (all_mono v hs)) h0
-  have he : D [wal v p] (ex v q) :=
-    .mp (.mp (.ax (all_imp_ex v (weq v c) q)) hi) (.ax (ex_equality v c))
-  exact .mp (.ax (ex_elim_of_vac hvq)) he
+  have he : CProv (wim (wal v (wim (weq v c) q)) (ex v q)) :=
+    ded1 (.mp (.mp (.ax (all_imp_ex v (weq v c) q)) h0) (.ax (ex_equality v c)))
+  exact compose (compose (all_mono v hs) he) (ex_elim_of_vac hvq)
 
 theorem bin_spec (v a b c : V) (hvc : v ≠ c) (hva : v ≠ a) (hvb : v ≠ b) :
     CProv (wim (wal v (Bin v a b)) (Bin c a b)) :=
