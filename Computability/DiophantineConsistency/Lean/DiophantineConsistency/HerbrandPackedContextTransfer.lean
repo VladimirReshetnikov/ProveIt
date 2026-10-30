@@ -65,18 +65,9 @@ theorem matrix_eval {M : Type} [Structure language M]
     (θ : Semiproposition language 1) (r : ℕ) (hr : θ.fvSup ≤ r)
     (e : ℕ → M) (v : M) :
     (parameterMatrix (packedMatrix θ r hr)).Eval ![v] e ↔ θ.Eval ![v] e := by
-  unfold parameterMatrix
-  rw [Semiformula.eval_rew]
-  have hb : (Semiterm.val (L := language) ![v] e ∘
-      Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin r => .fvar i.val)) ∘ Semiterm.bvar) =
-      Fin.cases v (fun i : Fin r => e i.val) := by
-    funext i
-    exact Fin.cases rfl (fun _ => rfl) i
-  have hf : (Semiterm.val (L := language) ![v] e ∘
-      Rew.embSubsts (Fin.cases (.bvar 0) (fun i : Fin r => .fvar i.val)) ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [hb,hf]
+  rw [parameterMatrix_eval]
   exact packedMatrix_eval θ r hr e v
+
 theorem cast_tree {a b : ℕ} (h : a = b) (φ : Semisentence language a)
     (ht : ExistentialTree φ) : ExistentialTree (cast (congrArg (Semisentence language) h) φ) := by
   cases h
