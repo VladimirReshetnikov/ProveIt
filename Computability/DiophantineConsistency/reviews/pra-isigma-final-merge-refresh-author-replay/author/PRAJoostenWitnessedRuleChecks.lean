@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRAJoostenWitnessedRule
+open DiophantineConsistency.PRAJoostenWitnessedRule
+#print axioms PRA_proves_witnessed_rule
+#print axioms PRA_exists_base_witness
+#print axioms PRA_exists_step_witness
+#print axioms PRA_proves_rule_of_contextual_step
+#check PRA_proves_rule_of_contextual_step

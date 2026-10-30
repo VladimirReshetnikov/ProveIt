@@ -1,0 +1,8 @@
+import DiophantineConsistency.ParsonsPositiveCandidate
+open DiophantineConsistency.PRAPositiveAdmissible DiophantineConsistency.ParsonsPositiveCandidate
+#print axioms admissible
+#print axioms comparison
+#print axioms comparison_certified
+#check admissible
+#check comparison
+#check comparison_certified

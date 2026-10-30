@@ -33,8 +33,17 @@ names, proof outputs, hashes and exit statuses are unchanged.
 The [89-module parameter refresh](reviews/pra-after-parameter-merge-refresh-author-replay/README.md)
 passed author and two independent builds with matching source, object and
 full-log hashes. The subsequent merge at `1abcfbde84` changed further
-Herbrand sources in the graph, so this is pre-merge evidence and its affected
-dependents require another source-current rebuild.
+Herbrand sources in the graph. Those affected sources and their dependents
+were subsequently rebuilt in the [60-module comparison graph](reviews/pra-isigma-final-merge-refresh-author-replay/README.md),
+with two independent replays. A newer upstream change to
+`HerbrandPackedContextTransfer` still needs to be merged and replayed.
+
+`PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
+universally closed open-existential goal from an IΣ₁ proof and an explicit
+candidate-PRA implication from its mapped conclusion to that goal. Its proof
+combines strict-prefix induction, positive-predicate certificates, and finite
+induction elimination. The literal equation/consistency goal is not yet bound
+to this interface, and comparison with a standard PRA presentation remains open.
 
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,
@@ -54,10 +63,11 @@ The separate 14-variable HA endpoint also needs a current-source replay of its
 changed ZFC dependencies.
 
 The [positive-rule clients](reviews/parsons-positive-clients-current-author-replay/README.md)
-now prove the guarded induction case in the restricted calculus and define a
-certificate that restricts an existing Parsons proof. Their candidate-PRA
-comparison explicitly assumes positive-rule admissibility; neither that
-assumption nor the certificate for the full cut-free translator is proved.
+prove the guarded induction case in the restricted calculus and define a
+certificate that restricts an existing Parsons proof. The later 60-module
+comparison graph proves the positive-rule admissibility needed by this
+restricted comparison. The certificate for the full cut-free translator is
+still not proved.
 
 The [positive-rule calculus](reviews/parsons-positive-rule-current-author-replay/README.md)
 restricts induction predicates to the positive bounded/existential syntax and
