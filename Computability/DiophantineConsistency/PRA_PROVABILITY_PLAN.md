@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A [conditional positive first-carrier theorem](reviews/adaptive-construction-first-positive2011-independent.md)
+now supplies the carrier identity from the first norm and explicit size bounds.
+The key remaining input is a stronger actual-Assembly transport-quotient bound;
+the 13-variable zero is not yet constructed.
+
 The [first-Pell correction quotient](reviews/adaptive-construction-correction2011-independent.md)
 is now derived in every stated IΣ₁ model from explicit seed-index and ordinate
 hypotheses and the constructed scaling. A [positive-correction theorem](reviews/adaptive-construction-correction-positive2011-independent.md)
