@@ -44,7 +44,10 @@ norm. Binding these to the common concrete witness remains separate.
 The [concrete main-factor client](reviews/adaptive-construction-main-witness2011-independent.md)
 now proves the main factor of the explicit adaptive witness is +1 under the
 common seed and Assembly facts. Together with the strong factor, two of the
-four literal factor units are established for that witness.
+four literal factor units are established for that witness. The [auxiliary
+witness client](reviews/adaptive-construction-aux-witness2011-independent.md)
+now establishes a third under explicit phase, ordinate and orientation
+hypotheses; the first factor and the common Assembly witness remain open.
 
 The [strict Σ₁ certificate](reviews/pra-strict-sigma-certificate-author-replay/README.md)
 now supplies the conditional normalizer for every arithmetic induction
