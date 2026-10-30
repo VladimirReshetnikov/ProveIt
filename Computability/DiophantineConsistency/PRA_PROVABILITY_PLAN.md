@@ -60,7 +60,9 @@ values and the positive-shifted zero test in every commutative semiring. The
 13-variable candidate still has no completed HA or PRA consistency endpoint.
 The [87-gate arithmetic no-zero sentence](reviews/adaptive-factor87-sentence.md)
 is closed and semantically equivalent to its parent over every commutative
-semiring; an object-theory proof of that equivalence remains to be constructed.
+semiring. A [checked HA derivation](reviews/adaptive-factor87-ha.md) now proves
+the parent/reduced sentence equivalence, with an IΣ₀ proof as well; neither
+sentence is yet internally connected to `Con(ZFC)`.
 
 The later upstream merges through `166728f64b` changed ZFC validator modules
 reachable from the maintained HA endpoint. Its earlier checked derivation is
