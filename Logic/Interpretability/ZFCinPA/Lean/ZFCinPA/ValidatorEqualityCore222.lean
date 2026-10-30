@@ -1,4 +1,5 @@
 import ZFCinPA.ValidatorProvability222
+import ZFCinPA.ValidatorImplicationContext
 
 set_option autoImplicit false
 set_option Elab.async false
@@ -21,25 +22,14 @@ abbrev neg (p : V) : V := wim p 1
 abbrev ex (i p : V) : V := neg (wal i (neg p))
 
 private abbrev D (G : List V) (p : V) : Prop := Kalmar.Der wim CProv G p
-private lemma d0 {G : List V} {a : V} : D (a :: G) a := .cons_head
-private lemma d1 {G : List V} {a b : V} : D (b :: a :: G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma thm0 {a : V} (d : D [] a) : CProv a :=
-  d.sound cProv_classical (fun _ h => absurd h List.not_mem_nil)
-private lemma ded1 {a p : V} (d : D [a] p) : CProv (wim a p) :=
-  thm0 (Kalmar.deduction cProv_classical d)
-private lemma ded2 {a b p : V} (d : D [b, a] p) : CProv (wim a (wim b p)) :=
-  thm0 (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d))
+local notation "d0" => (ValidatorImplicationContext.h0 CProv)
+local notation "d1" => (ValidatorImplicationContext.h1 CProv)
+local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
+local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 
 /-- A fixed finite contraposition certificate, not a semantic implication. -/
-theorem contrapose (a b : V) : CProv (wim (wim a b) (wim (neg b) (neg a))) := by
-  apply thm0
-  apply Kalmar.deduction cProv_classical
-  apply Kalmar.deduction cProv_classical
-  apply Kalmar.deduction cProv_classical
-  have hb : D [a, neg b, wim a b] (wim b 1) := .hyp (by simp [neg])
-  have hab : D [a, neg b, wim a b] (wim a b) := .hyp (by simp)
-  exact .mp hb (.mp hab d0)
+theorem contrapose (a b : V) : CProv (wim (wim a b) (wim (neg b) (neg a))) :=
+  ValidatorImplicationContext.contrapose CProv cProv_classical a b
 
 private lemma all_distribution (i p q : V) :
     CProv (wim (wal i (wim p q)) (wim (wal i p) (wal i q))) := by
