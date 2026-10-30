@@ -19,10 +19,7 @@ theorem current_eq (r j : ℕ) (β : Semiproposition language 8) : current r j �
 
 theorem stageBody_open (r j : ℕ) (β : Semiproposition language 8) (hβ : β.Open) :
     (stageBody r j β).Open := by
-  change (stageBody r j β).qr = 0
-  unfold stageBody
-  rw [PRAFormulaParameters.qr_rew]
-  exact hβ
+  simpa only [stageBody, Semiformula.rew_open_iff] using hβ
 
 theorem current_tree (r j : ℕ) (β : Semiproposition language 8) (hβ : β.Open) :
     ExistentialTree (current r j β) := by

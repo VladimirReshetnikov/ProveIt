@@ -20,10 +20,7 @@ def parameterMatrix {n : ℕ} (φ : Semisentence language (n+1)) : Semipropositi
 
 theorem parameterMatrix_open {n : ℕ} (φ : Semisentence language (n+1))
     (hφ : φ.Open) : (parameterMatrix φ).Open := by
-  change (parameterMatrix φ).qr = 0
-  unfold parameterMatrix
-  rw [PRAFormulaParameters.qr_rew]
-  exact hφ
+  simpa only [parameterMatrix, Semiformula.rew_open_iff] using hφ
 
 section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]

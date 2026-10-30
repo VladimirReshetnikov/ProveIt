@@ -63,14 +63,8 @@ noncomputable def prepare (φ : Semiproposition language 1) (hOpen : φ.Open)
 sequent required by `prepare`. -/
 noncomputable def prepareClosed (φ : Semisentence language 1) (hOpen : φ.Open)
     (p : Theory.Proof UniversalAxiom (∃⁰ φ)) : Prepared (Rewriting.emb φ) p.axioms := by
-  have hqr : ∀ {n : ℕ} (ψ : Semisentence language n),
-      (Rewriting.emb ψ : Semiproposition language n).qr = ψ.qr := by
-    intro n ψ
-    induction ψ using Semiformula.rec' <;> simp [*, Semiformula.qr]
   have hopen' : (Rewriting.emb φ : Semiproposition language 1).Open := by
-    change (Rewriting.emb φ : Semiproposition language 1).qr = 0
-    rw [hqr]
-    exact hOpen
+    simpa only [Semiformula.rew_open_iff] using hOpen
   apply prepare (Rewriting.emb φ) hopen' p.axioms p.axioms_mem
   have d := p.derivation
   change Derivation (((∃⁰ φ) :: ∼p.axioms).map Rewriting.emb) at d
