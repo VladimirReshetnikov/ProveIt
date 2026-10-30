@@ -174,10 +174,13 @@ def MainOriented (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
     Equivalent (pairEval (rootTerm (factors (fun j => (p j:ℤ))).2.1) v) (natural (U*main)) ∧
     main*main=1+delta*(c*c)
 
-/-- An actual adaptive zero orients the main root and constructs its quotient. -/
-theorem expressionAt_main_oriented (p : Fin 4 → ℕ) (v : Fin 13 → V)
+/-- Positive transport and Pell quotients orient the main root. -/
+theorem main_oriented_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V)
     (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
-    (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : MainOriented p v := by
+    (hquotients : Quotients p v) (htransport : TransportPositive p v)
+    (hY : ∃ s : V, 0<s ∧ v 7 =
+      ((1+v 0*(p 0:V))*((1+v 0*(p 0:V))*(1+v 0*(p 0:V))))*s) :
+    MainOriented p v := by
   let b : V := v 0*(p 0:V)
   let q : V := 1+b
   let Q : V := q*(q*q)
@@ -197,10 +200,9 @@ theorem expressionAt_main_oriented (p : Fin 4 → ℕ) (v : Fin 13 → V)
   have hq2 : (2:V)≤q := by simpa only [one_add_one_eq_two] using lt_iff_succ_le.mp hq
   have hU : 0<U := hp.2.2.1
   have hk : 0<k := hp.2.2.2.1
-  have htransport := expressionAt_transport_positive p v hb hv hz
   have hsum : v 1+v 2<q := tsub_pos_iff_lt.mp htransport.2
   have hF : v 1≤q := le_trans (by simp : v 1≤v 1+v 2) (le_of_lt hsum)
-  obtain ⟨s,hs,hsY⟩ := expressionAt_Y_quotient p v hb hv hz
+  obtain ⟨s,hs,hsY⟩ := hY
   have hQ8 : (8:V)≤Q := calc
     8=2*(2*2) := by norm_num
     _≤q*(q*q) := mul_le_mul hq2 (mul_le_mul hq2 hq2 (by simp) (by simp)) (by simp) (by simp)
@@ -209,7 +211,7 @@ theorem expressionAt_main_oriented (p : Fin 4 → ℕ) (v : Fin 13 → V)
     _≤Q*s := le_mul_of_one_le_right (by simp) (pos_iff_one_le.mp hs)
     _=v 7 := hsY.symm
   have hpos : dn<dp := main_parts_positive U (v 6) (v 7) k (v 9) (v 12) q R hU hY8 hk
-  obtain ⟨first,main,_,hmainp,_,_,hmain,hnorm⟩ := expressionAt_quotients p v hb hv hz
+  obtain ⟨first,main,_,hmainp,_,_,hmain,hnorm⟩ := hquotients
   have hre : Equivalent z (dp,dn) := main_root_rep p v hq1 hF
   have hmag : magnitude z=magnitude (dp,dn) := magnitude_equivalent hre
   have heq : dp=dn+(dp-dn) := by rw [add_comm,tsub_add_cancel_of_le (le_of_lt hpos)]
@@ -220,6 +222,14 @@ theorem expressionAt_main_oriented (p : Fin 4 → ℕ) (v : Fin 13 → V)
     simpa only [add_zero,hdiff] using heq
   refine ⟨main,hmainp,equivalent_trans hre hpart,?_⟩
   exact hnorm
+
+
+/-- An actual adaptive zero orients the main root and constructs its quotient. -/
+theorem expressionAt_main_oriented (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
+    (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) : MainOriented p v :=
+  main_oriented_of_facts p v hb hv (expressionAt_quotients p v hb hv hz)
+    (expressionAt_transport_positive p v hb hv hz) (expressionAt_Y_quotient p v hb hv hz)
 
 private theorem beta_positive_nat : 0<CurrentMasks2011.beta := by
   have hr : 1<CurrentMasks2011.radix := by unfold CurrentMasks2011.radix; norm_num

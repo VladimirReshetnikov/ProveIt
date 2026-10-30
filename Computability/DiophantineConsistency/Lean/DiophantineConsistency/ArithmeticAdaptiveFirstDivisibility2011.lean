@@ -134,19 +134,26 @@ theorem quotient_forces_Y_divisible (p : Fin 4 → ℕ) (v : Fin 13 → V)
     ring
   exact unit_certificate_cancel hunit hby
 
+/-- Positive first quotient and positive Y give a positive quotient of Y by q³. -/
+theorem positive_Y_quotient_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hM : 0<(1+v 0*(p 0:V))*((1+v 0*(p 0:V))*(1+v 0*(p 0:V)))*(v 0*(p 0:V)))
+    (hY : 0<v 7) (hquotients : Quotients p v) :
+    ∃ s : V, 0<s ∧ v 7 =
+      ((1+v 0*(p 0:V))*((1+v 0*(p 0:V))*(1+v 0*(p 0:V))))*s := by
+  have hq : 0<1+v 0*(p 0:V) := by simp
+  have hQ := mul_pos hq (mul_pos hq hq)
+  obtain ⟨t,d,_,_,ht,_,_,_⟩ := hquotients
+  obtain ⟨s,hs⟩ := quotient_forces_Y_divisible p v hM hQ t ht
+  exact ⟨s,pos_of_mul_pos_right (by rw [←hs]; exact hY) (by simp),hs⟩
+
 /-- A literal positive zero constructs the positive block quotient of Y. -/
 theorem expressionAt_Y_quotient (p : Fin 4 → ℕ) (v : Fin 13 → V)
     (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
     (hz : InternalZero (expressionAt (fun j => (p j:ℤ))) v) :
     ∃ s : V, 0<s ∧ v 7 =
       ((1+v 0*(p 0:V))*((1+v 0*(p 0:V))*(1+v 0*(p 0:V))))*s := by
-  have hparams := scaled_parameters_positive p v hb hv
-  obtain ⟨t,d,_,_,ht,_,_,_⟩ := expressionAt_quotients p v hb hv hz
-  have hq : 0<1+v 0*(p 0:V) := lt_trans (by simp : (0:V)<1) hparams.1
-  have hQ : 0<(1+v 0*(p 0:V))*((1+v 0*(p 0:V))*(1+v 0*(p 0:V))) :=
-    mul_pos hq (mul_pos hq hq)
-  obtain ⟨s,hs⟩ := quotient_forces_Y_divisible p v hparams.2.1 hQ t ht
-  exact ⟨s,pos_of_mul_pos_right (by rw [←hs]; exact hv 7) (by simp),hs⟩
+  exact positive_Y_quotient_of_facts p v (scaled_parameters_positive p v hb hv).2.1
+    (hv 7) (expressionAt_quotients p v hb hv hz)
 
 /-- The fixed displayed zero yields Y=q³*s for an actual positive s. -/
 theorem current_Y_quotient (v : Fin 13 → V) (hv : ∀j,0<v j)
@@ -154,21 +161,12 @@ theorem current_Y_quotient (v : Fin 13 → V) (hv : ∀j,0<v j)
     ∃ s : V, 0<s ∧ v 7 =
       ((1+v 0*(CurrentMasks2011.beta:V))*
         ((1+v 0*(CurrentMasks2011.beta:V))*(1+v 0*(CurrentMasks2011.beta:V))))*s := by
-  have hp := current_parameters_positive v hv
-  obtain ⟨t,d,_,_,ht,_,_,_⟩ := current_quotients v hv hz
-  have hq : 0<1+v 0*(CurrentMasks2011.beta:V) := lt_trans (by simp : (0:V)<1) hp.1
-  have hQ : 0<(1+v 0*(CurrentMasks2011.beta:V))*
-      ((1+v 0*(CurrentMasks2011.beta:V))*(1+v 0*(CurrentMasks2011.beta:V))) :=
-    mul_pos hq (mul_pos hq hq)
-  have hM := hp.2.1
-  have hd := quotient_forces_Y_divisible currentPorts v
-    (by simpa only [currentPorts,Matrix.cons_val_zero] using hM)
-    (by simpa only [currentPorts,Matrix.cons_val_zero] using hQ) t ht
-  obtain ⟨s,hs⟩ := hd
-  have hs' : v 7 = ((1+v 0*(CurrentMasks2011.beta:V))*
-      ((1+v 0*(CurrentMasks2011.beta:V))*(1+v 0*(CurrentMasks2011.beta:V))))*s := by
-    simpa only [currentPorts,Matrix.cons_val_zero] using hs
-  exact ⟨s,pos_of_mul_pos_right (by rw [←hs']; exact hv 7) (by simp),hs'⟩
+  have hM := (current_parameters_positive v hv).2.1
+  have hM' : 0<(1+v 0*(currentPorts 0:V))*
+      ((1+v 0*(currentPorts 0:V))*(1+v 0*(currentPorts 0:V)))*(v 0*(currentPorts 0:V)) := by
+    simpa only [currentPorts,Matrix.cons_val_zero] using hM
+  simpa only [currentPorts,Matrix.cons_val_zero] using
+    positive_Y_quotient_of_facts currentPorts v hM' (hv 7) (current_quotients v hv hz)
 
 theorem current_natural_Y_quotient (v : Fin 13 → V) (hz : InternalZero naturalExpression v) :
     let w := fun j => v j+1
