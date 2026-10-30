@@ -188,9 +188,8 @@ def fullSeedBodyMeta (K : SetTheorySemiproposition 2) : SetTheoryProposition :=
     (∀⁰ ((K ⇜ ![(#0 : SyntacticSemiterm ℒₛₑₜ 3),#2]) 🡒
       ∃⁰ ((K ⇜ ![(#0 : SyntacticSemiterm ℒₛₑₜ 4),#3]) ⋏ seedMem 4 0 2))))
 
-def fullSeedBody (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
-    Bootstrapping.Semiformula V ℒₛₑₜ 0 :=
-  ∀⁰ ∃⁰ ((∀⁰ ((⌜seedMem 3 0 1⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 3) 🡒 ∃⁰
+abbrev seedPairMatrix (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) : Bootstrapping.Semiformula V ℒₛₑₜ 2 :=
+  ((∀⁰ ((⌜seedMem 3 0 1⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 3) 🡒 ∃⁰
       ((K.subst ![⌜(#1 : SyntacticSemiterm ℒₛₑₜ 4)⌝,⌜(#0 : SyntacticSemiterm ℒₛₑₜ 4)⌝]) ⋏
         (∀⁰ ((⌜seedSubset⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 5) 🡒 ∀⁰
           ((K.subst ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 6)⌝,⌜(#1 : SyntacticSemiterm ℒₛₑₜ 6)⌝]) 🡒
@@ -200,9 +199,13 @@ def fullSeedBody (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
       ∃⁰ ((K.subst ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 4)⌝,⌜(#3 : SyntacticSemiterm ℒₛₑₜ 4)⌝]) ⋏
         (⌜seedMem 4 0 2⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 4)))))
 
+def fullSeedBody (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
+    Bootstrapping.Semiformula V ℒₛₑₜ 0 :=
+  ∀⁰ ∃⁰ seedPairMatrix K
+
 theorem fullSeedBody_quote (K : SetTheorySemiproposition 2) :
     (⌜fullSeedBodyMeta K⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 0) = fullSeedBody ⌜K⌝ := by
-  unfold fullSeedBodyMeta fullSeedBody
+  unfold fullSeedBodyMeta fullSeedBody seedPairMatrix
   simp [Matrix.comp_vecCons',Matrix.constant_eq_singleton]
 
 def fullSeedBodyVal (k : V) : V :=
@@ -216,7 +219,7 @@ def fullSeedBodyVal (k : V) : V :=
 
 theorem fullSeedBodyVal_eq (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
     fullSeedBodyVal K.val = (fullSeedBody K).val := by
-  simp [fullSeedBodyVal,fullSeedBody,FirstOrder.Semiformula.quote_def]
+  simp [fullSeedBodyVal,fullSeedBody,seedPairMatrix,FirstOrder.Semiformula.quote_def]
 
 /-- Exact raw-code binding for the meta-level body, including all five
 substitution vectors. This is syntax equality, not a semantic equivalence. -/
@@ -611,7 +614,7 @@ private lemma source_body_code (K : SF (V := V) 2) (F s : V) (hs : StreamFree s 
     (by simpa [stack,nth_three] using role_lt s (show 0<7 by decide))
   simp [stack,nth_three] at c4 c6 c7 c3 c4'
   dsimp only [pairBody,closure,request,subcode,canonicalLayout,typedFrame,role]
-  unfold fullSeedBody
+  unfold fullSeedBody seedPairMatrix
   apply enc_allIff
   apply enc_exIff
   apply enc_conjIff
