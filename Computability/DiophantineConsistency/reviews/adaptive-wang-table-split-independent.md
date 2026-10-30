@@ -1,0 +1,5 @@
+# Private split Wang-table replacement: independent replay
+
+The root independently replayed the private replacement build at `/tmp/adaptive-wang-table-split-sf1x174v`: **PASS**, exit 0. Its source, resulting object and complete empty log match the author build byte-for-byte; the original source, peer chunk provider state and inherited guard/provider hashes also match. Both builds used the separately replayed chunk provider `/tmp/adaptive-wang-chunk-full-042v1clo` and authenticated the 26 source/object/log records and 356 inherited source guards / 1,717 selected objects before and after.
+
+The replacement object SHA-256 is `6006dc15ea57fb14fd9cab2e7d3388eed879fe55524487e45cc8dfff77352dee`. Evidence in `adaptive-wang-table-split-independent-evidence/` has 8-file `FILES.json` SHA-256 `b2bf6e78ee60382b24eedd22c5765c1138377e3bdef6215ab7c8cb58a8de2730`. The independently replayed object is still private: no canonical integration, full-export comparison, current-source Assembly result, or HA proof is claimed. The historical original WangTable worker and source remain untouched.

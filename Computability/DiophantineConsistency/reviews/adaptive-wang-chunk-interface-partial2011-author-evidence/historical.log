@@ -1,0 +1,15 @@
+DiophantineConsistency.ArithmeticWangTable.tileN : ℕ → DiophantineConsistency.WangTiles942.Tile
+DiophantineConsistency.ArithmeticWangTable.hcN : ℕ → ℕ → ℕ
+DiophantineConsistency.ArithmeticWangTable.rcvCode : Bool → ℕ → ℕ
+DiophantineConsistency.ArithmeticWangTable.actCode : ℕ → ℕ
+DiophantineConsistency.ArithmeticWangTable.actCode_spec : ∀ (j : ℕ),
+  ∃ c d w, c ≤ 215 ∧ d ≤ 1 ∧ w ≤ 1 ∧ DiophantineConsistency.ArithmeticWangTable.actCode j = 1 + 4 * c + 2 * d + w
+DiophantineConsistency.ArithmeticWangTable.GoodA : DiophantineConsistency.WangTiles942.Tile → Prop
+DiophantineConsistency.ArithmeticWangTable.GoodB : DiophantineConsistency.WangTiles942.Tile → Prop
+DiophantineConsistency.ArithmeticWangTable.GoodC : DiophantineConsistency.WangTiles942.Tile → Prop
+DiophantineConsistency.ArithmeticWangTable.rows_goodA : ∀ row ∈ DiophantineConsistency.WangTiles942.orderedRows,
+  DiophantineConsistency.ArithmeticWangTable.GoodA row.2
+DiophantineConsistency.ArithmeticWangTable.rows_goodB : ∀ row ∈ DiophantineConsistency.WangTiles942.orderedRows,
+  DiophantineConsistency.ArithmeticWangTable.GoodB row.2
+DiophantineConsistency.ArithmeticWangTable.rows_goodC : ∀ row ∈ DiophantineConsistency.WangTiles942.orderedRows,
+  DiophantineConsistency.ArithmeticWangTable.GoodC row.2

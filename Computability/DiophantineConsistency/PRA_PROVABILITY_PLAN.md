@@ -51,9 +51,15 @@ Assembly premise to the reduced shifted expression. The premise and the final
 HA/PRA consistency endpoints remain open.
 The [Wang-table chunk pilot](reviews/adaptive-wang-chunk-pilot-independent.md)
 independently checks the first 128 rows of each of the three existing finite
-predicates in a private overlay. Full 942-row coverage, interface equivalence,
-and the source-current CellWindow/Assembly builds remain to be established;
-the original WangTable worker continues independently.
+predicates in a private overlay. The subsequent [full chunked predicate build](reviews/adaptive-wang-chunk-full-independent.md)
+has independently replayed all 24 chunks and their three take/drop
+recombinations. A [private replacement module](reviews/adaptive-wang-table-split-independent.md)
+also passed an independent rebuild using those chunk facts. A full export
+comparison and the source-current CellWindow/Assembly builds remain to be
+established; the original WangTable worker continues independently.
+An [11-declaration interface comparison](reviews/adaptive-wang-chunk-interface-partial2011-independent.md)
+also passed independently against a historical original object; it is a
+partial comparison and does not establish that object's source provenance.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -68,7 +74,9 @@ were subsequently rebuilt in the [60-module comparison graph](reviews/pra-isigma
 with two independent replays. The later `HerbrandPackedContextTransfer`
 change and its affected graph were rebuilt in the [74-module refresh](reviews/pra-after-unary-merge-refresh-author-replay/README.md),
 also with two independent replays. A subsequent `PRAPiOneImplication` merge
-still requires a focused refresh of the affected unary clients.
+was covered by the 15-module strict-surrogate replay, and the later open and
+bounded induction changes by the [34-module refresh](reviews/pra-after-open-bound-merge-refresh-author-replay/README.md),
+each independently replayed twice.
 
 `PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
 universally closed open-existential goal from an IΣ₁ proof and an explicit
@@ -113,6 +121,12 @@ The [Foundation refutation-bound audit](research/pra-foundation-refutation-bound
 traces the actual nested proof, sequence, formula and schema recognizers and
 identifies the remaining model-uniform primitive-recursive majorant; it is an
 analysis of the obligation, not a constructed certificate.
+The [primitive-recursive witness fold](reviews/pra-witness-fold-current-author-replay/README.md)
+has independently replayed proofs that the sum of any supplied coded local
+majorant bounds every value below a given index in candidate-PRA models. A
+special case covers the proposed `p+1` local bound. The actual Foundation
+decoder lemma, the other local majorants and the certificate for `ρ` remain
+separate obligations.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated

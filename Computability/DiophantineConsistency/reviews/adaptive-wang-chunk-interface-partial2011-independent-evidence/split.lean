@@ -1,0 +1,12 @@
+import DiophantineConsistency.ArithmeticWangTableChunkFacts
+#check @DiophantineConsistency.ArithmeticWangTable.tileN
+#check @DiophantineConsistency.ArithmeticWangTable.hcN
+#check @DiophantineConsistency.ArithmeticWangTable.rcvCode
+#check @DiophantineConsistency.ArithmeticWangTable.actCode
+#check @DiophantineConsistency.ArithmeticWangTable.actCode_spec
+#check @DiophantineConsistency.ArithmeticWangTable.GoodA
+#check @DiophantineConsistency.ArithmeticWangTable.GoodB
+#check @DiophantineConsistency.ArithmeticWangTable.GoodC
+#check @DiophantineConsistency.ArithmeticWangTable.rows_goodA
+#check @DiophantineConsistency.ArithmeticWangTable.rows_goodB
+#check @DiophantineConsistency.ArithmeticWangTable.rows_goodC

@@ -1,0 +1,5 @@
+# Post-merge strict-consistency comparison refresh
+
+The author run rebuilt 34 affected modules after the changes to `PRAOpenOneInduction` and `PRABoundedOneInduction`, authenticated 169 unchanged local parent sources and objects, and passed final graph authentication. The private independent replay `/tmp/pra-after-open-bound-merge-independent-ntpmh0d_` also passed with matching source, object and complete-log hashes. Root's independent replay `/tmp/pra-after-open-bound-merge-independent-vc0ixiig` also passed with the same source, object and full-log hashes; author/root snapshots and all three terminal states are recorded. Foundation and Mathlib are inherited. The later ZFC-only merge did not change any source in this graph.
+
+This refresh covers the generic strict-surrogate comparison, the generic original-consistency-to-no-zero implication, and the conditional reverse theorem. The reverse theorem still requires an explicit fixed-sentence bound certificate; that certificate is not proved for Foundation's ZFC refutation sentence. The 14-variable equation's HA proof-existence theorem is a separate result; its full current-source replay is separate.
