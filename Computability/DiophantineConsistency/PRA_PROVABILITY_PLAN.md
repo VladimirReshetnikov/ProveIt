@@ -43,6 +43,9 @@ latter additionally bounds negative `Seqₛ` by `2*y+1`. The derivation
 fixpoint client uses that bit bound but retains the bounded
 `limSeqDef` conjunct as an explicit hypothesis; the ZFC refutation sentence
 remains open.
+The negative `exponentialDef` and `expDef` graphs now also have closed
+candidate-PRA bounds, with matching author and two independent replays. The
+negative bit graph and the recursive history still require verification.
 The replay providers inherit their documented
 Foundation and package boundaries; the complete consistency reverse direction
 remains open.
