@@ -8,6 +8,19 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The local negative and positive square-root/length-bit existential bounds
+have each passed an author build and two independent replays with matching
+source, object and complete-log hashes. They provide candidate-PRA proofs for
+specific subformulas occurring in Foundation's `sppow2Def`, with the input
+bound explicit where needed. These are constituents of the refutation-bound
+construction, not a bound for `sppow2Def`, `expDef`, or the ZFC refutation
+sentence. The replay providers inherit their documented Foundation and
+package boundaries; the complete consistency reverse direction remains open.
+
+The milestones in this section are recorded in construction order. Later
+results below discharge several assumptions stated in the earlier milestones;
+the unconditional model theorem does not by itself supply a PRA derivation.
+
 The [first-carrier scalar reassociation](reviews/adaptive-construction-first-scalar2011-independent.md)
 now has matching author and independent source, object, and full-log hashes.
 It rewrites the supplied first norm and carrier identities into the literal
@@ -40,7 +53,8 @@ now has an independent twelve-module replay. In every stated IΣ₁ model it
 chooses all three positive new coordinates and constructs a 13-variable
 zero from one old witness satisfying the explicit equation, seed, phase,
 rank, ordinate and orientation assumptions. Deriving that enriched witness
-from the source-current halting construction remains open.
+from the halting construction was subsequently supplied by the enriched
+Assembly/direct-run branch described below.
 The [enriched-Assembly conclusion adapter](reviews/adaptive-construction-conditional-exists2011-independent.md)
 is independently replayed as well: it takes the proposed strengthened
 Assembly conclusion, including its bound, as an explicit premise and yields
@@ -66,8 +80,9 @@ and historical table-comparison boundaries remain documented; this result by
 itself is not a syntactic HA proof of the consistency equivalence.
 The [87-operation reduced-output client](reviews/adaptive-construction-reduced-zero2011-independent.md)
 independently replays the exact literal zero transfer from the same enriched
-Assembly premise to the reduced shifted expression. The premise and the final
-HA/PRA consistency endpoints remain open.
+Assembly premise to the reduced shifted expression. The enriched Assembly
+construction and normalization have since discharged that premise for the
+model equivalence; the final HA/PRA consistency endpoints remain separate.
 The [Wang-table chunk pilot](reviews/adaptive-wang-chunk-pilot-independent.md)
 independently checks the first 128 rows of each of the three existing finite
 predicates in a private overlay. The subsequent [full chunked predicate build](reviews/adaptive-wang-chunk-full-independent.md)
@@ -113,8 +128,10 @@ The generic [HA expression assembler](reviews/ha-expression-assembly-author-repl
 has also passed two focused replays: given an explicit all-IΣ₁-model
 no-zero/machine bridge, it produces actual IΣ₁ and HA proof equivalences for
 that expression and Foundation consistency. Its direct imports and transitive
-HA/ZFC closure are inherited historical objects, and the 87-operation bridge
-and normalization premise are not discharged by this generic theorem.
+HA/ZFC closure are inherited historical objects. The generic theorem assumes
+its bridge; the separate unconditional 87-operation model theorem above
+discharges that bridge mathematically, but their coherent combined build and
+current-source provenance are still being checked.
 An independently replayed [HA/model provider overlap audit](reviews/adaptive-ha-model-overlap-independent.md)
 found 118 unequal object hashes among 119 shared project paths that its scan
 traversed. That scan did not follow symlinked namespace directories and is
