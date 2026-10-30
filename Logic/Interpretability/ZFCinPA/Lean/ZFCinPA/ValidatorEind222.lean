@@ -110,13 +110,9 @@ theorem all_bout_alpha (v w a b : V) (hva : v ≠ a) (hvb : v ≠ b)
       (vac_bout v w a b (Ne.symm hwv) hva hvb) (vac_bout w v a b hwv hwa hwb)
 
 theorem ev_alpha (v w a b : V) (hva : v ≠ a) (hvb : v ≠ b)
-    (hwa : w ≠ a) (hwb : w ≠ b) : CProv (wim (Ev v a b) (Ev w a b)) := by
-  apply ded1
-  have hi : D [Ev v a b] (wal w (Bin w a b)) :=
-    .mp (.ax (all_bin_alpha v w a b hva hvb hwa hwb)) (.mp (.ax (conj_left _ _)) h0)
-  have ho : D [Ev v a b] (wal w (Bout w a b)) :=
-    .mp (.ax (all_bout_alpha v w a b hva hvb hwa hwb)) (.mp (.ax (conj_right _ _)) h0)
-  exact .mp (.mp (.ax (conj_rule _ _)) hi) ho
+    (hwa : w ≠ a) (hwb : w ≠ b) : CProv (wim (Ev v a b) (Ev w a b)) :=
+  contrapose_of (imp_mono (all_bin_alpha v w a b hva hvb hwa hwb)
+    (contrapose_of (all_bout_alpha v w a b hva hvb hwa hwb)))
 
 theorem aux_ne (a b : V) : aux a b ≠ a ∧ aux a b ≠ b := by
   constructor
