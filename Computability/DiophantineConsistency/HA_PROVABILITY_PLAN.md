@@ -54,11 +54,16 @@ sentence is equivalent to the 87-operation candidate's no-zero sentence in
 every IΣ₁ model. See the [independent receipt](reviews/adaptive-direct86-fixed-equivalence-independent.md).
 Subsequent upstream merges changed source modules in that theorem's dependency
 chain, so this is checked snapshot evidence, not a current-source replay.
-The candidate's proof provider and the independently checked 87-operation
-machine provider have differing shared compiled objects; a coherent combined
-rebuild is required before claiming that the 86-operation equation has the
-machine or ZFC consistency equivalence. An HA or PRA proof-existence theorem
-for this candidate is likewise not yet established.
+The 86 branch has since been rebuilt on the historical 87-operation machine
+provider. The [independent compatibility replay](reviews/adaptive86-machine-compat-rebase-v3-independent.md)
+checks its fixed-port no-zero equivalence with represented-machine nonhalting
+in every IΣ₁ model. It inherits the historical machine provider and uses four
+private additive helper declarations, with one extra import in the
+main-orientation module. A later upstream merge refactored its rank client, so
+this too is a checked source snapshot rather than a replay of the latest
+source tree; it is not a full current-source closure. A coherent
+connection to the ZFC consistency bridge, and HA and PRA proof-existence
+theorems for this candidate, remain to be established.
 
 ## Exact target and established results
 
