@@ -237,15 +237,8 @@ lemma isSemiformula_quote_sen {k : ℕ} (σ : Semisentence ℒₛₑₜ k) :
 lemma atomOf_PN (R : W) : atomOf (PN : W) R = if R = 0 then ⌜eqS⌝ else ⌜memS⌝ := by
   simp [atomOf, PN]
 
-lemma good_PN : Good (PN : W) where
-  isDom := by rw [dom_PN]; simpa using isSemiformula_quote_sen (W := W) domS
-  domShift := by rw [dom_PN]; exact shift_quote_sen domS
-  isAtom R := by
-    rw [atomOf_PN]
-    split_ifs
-    · simpa using isSemiformula_quote_sen (W := W) eqS
-    · simpa using isSemiformula_quote_sen (W := W) memS
-  atomShift R := by rw [atomOf_PN]; split_ifs <;> exact shift_quote_sen _
+lemma good_PN : Good (PN : W) :=
+  ConstructibleInterpretation.good_quoted_parameter domS eqS memS
 
 lemma embSubsts_eq_comp' {ξ : Type*} {n k : ℕ} (v : Fin k → Semiterm ℒₛₑₜ ξ n) :
     (Rew.embSubsts v : Rew ℒₛₑₜ Empty k ξ n) = (Rew.subst v).comp Rew.emb :=
