@@ -1,0 +1,5 @@
+# Stage substitution and PR-code terms
+
+Replay `python Computability/DiophantineConsistency/reviews/pra-stage-terms-current-author-replay/replay.py --parent /tmp/pra-after-bounded-merge-refresh-8bi550w8/lib` or use a byte-identical independently replayed provider. Private replay PASS `/tmp/pra-stage-terms-current-independent-hto3ozb_` with all four objects and logs matched and all local parent sources/objects authenticated. The 68-module base has passed its author audit and independent base replay is pending at this writing; Foundation/mathlib are inherited. Terminal failures record exact causes.
+
+For three terms supported before a stage, rewriting preserves actual candidate-PRA proofs, leaves earlier-supported formulas unchanged, and lowers support of a substituted formula by three variables. A PR code gives a term with the required finite-prefix support and correct interpretation in arbitrary structures. These are bookkeeping results, not a construction of stage challenges or a conservation theorem.
