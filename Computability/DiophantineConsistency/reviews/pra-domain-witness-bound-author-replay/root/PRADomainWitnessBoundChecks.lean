@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRADomainWitnessBound
+#print axioms DiophantineConsistency.PRADomainWitnessBound.domain_bound
+#print axioms DiophantineConsistency.PRADomainWitnessBound.domain_bound_explicit
+#print axioms DiophantineConsistency.PRADomainWitnessBound.candidate_proves_domain_bound

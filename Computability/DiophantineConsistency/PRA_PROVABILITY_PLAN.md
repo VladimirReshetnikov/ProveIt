@@ -69,8 +69,11 @@ The exact existential subformula of Foundation `domainDef` has independently
 replayed bounds for its [positive](reviews/pra-domain-exists-bound-author-replay/README.md)
 and [negative](reviews/pra-negdomain-exists-bound-author-replay/README.md)
 forms. The positive case uses an upper bound on the set code and the positive
-bit majorant; the negative case uses the negative bit majorant. These bound
-one component of the domain graph, not the whole graph.
+bit majorant; the negative case uses the negative bit majorant. Together with
+the two outer membership bounds, they yield an independently replayed
+[positive bound for the full domain graph](reviews/pra-domain-witness-bound-author-replay/README.md)
+at an explicit polynomial. Connecting that bound to the sequence client and
+bounding the mapping graph and recursive history remain separate work.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
