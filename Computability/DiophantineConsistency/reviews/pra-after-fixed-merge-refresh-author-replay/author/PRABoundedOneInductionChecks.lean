@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRABoundedOneInduction
+open DiophantineConsistency.PRABoundedOneInduction
+#print axioms PRA_proves_goal_of_characteristicSuccInd
+#print axioms PRA_proves_goal_of_boundedSuccInd
+#check PRA_proves_goal_of_boundedSuccInd

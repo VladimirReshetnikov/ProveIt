@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+A [post-merge finite-list theorem](reviews/pra-after-fixed-merge-refresh-author-replay/README.md)
+now eliminates any finite list of closed coded induction instances whose
+`Code 2` predicate bodies ignore the induction parameter. Its 31-module
+source-current chain has passed two independent replays. General
+parameter-dependent instances and arbitrary external parameters remain open.
+
 A [conditional positive first-carrier theorem](reviews/adaptive-construction-first-positive2011-independent.md)
 now supplies the carrier identity from the first norm and explicit size bounds.
 The key remaining input is a stronger actual-Assembly transport-quotient bound;
