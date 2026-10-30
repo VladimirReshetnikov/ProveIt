@@ -1,0 +1,5 @@
+# One coded induction instance and Foundation schema
+
+Replay `python Computability/DiophantineConsistency/reviews/pra-one-induction-schema-current-author-replay/replay.py --parent /tmp/pra-after-herbrand-merge-refresh-2auadi0n/lib`, or an independently replayed byte-identical provider. Private replay PASS `/tmp/pra-one-induction-schema-independent-gg7p2oax` with all four source/object/full-log hashes and the entire local parent graph authenticated; the 45-module independent parent replay is pending at this receipt. Foundation/mathlib are inherited; terminal failures record exact causes.
+
+The Foundation successor-induction axiom for the explicit `codedSigma pred` is candidate-PRA-provably equivalent in both directions to the closed coded χ-dual induction axiom, for `pred : Code 3` with zero external predicate parameters. The candidate-plus transfer handles a single such closed induction instance. Multiple instances, arbitrary Σ₁ formula normalization, and the general IΣ₁ conservation theorem remain open. The separately maintained HA proof-existence theorem for the 14-variable equation is already complete.

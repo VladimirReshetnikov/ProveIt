@@ -1,0 +1,25 @@
+'DiophantineConsistency.PRAStageInductionSchema.modelCodedSigma' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStageInductionSchema.modelCodedSuccInd' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStageInductionSchema.modelClosedInduction_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStageInductionSchema.PRA_proves_inductionFormula_to_succInd' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAStageInductionSchema.PRA_proves_succInd_to_inductionFormula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAStageInductionSchema.PRA_proves_inductionFormula_to_succInd
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code 3) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    LO.FirstOrder.Semiformula.univCl (DiophantineConsistency.PRAStageCodedInduction.inductionFormula pred) 🡒
+      LO.FirstOrder.Semiformula.univCl (LO.FirstOrder.Arithmetic.succInd (codedSigma pred))
+DiophantineConsistency.PRAStageInductionSchema.PRA_proves_succInd_to_inductionFormula
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code 3) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    LO.FirstOrder.Semiformula.univCl (LO.FirstOrder.Arithmetic.succInd (codedSigma pred)) 🡒
+      LO.FirstOrder.Semiformula.univCl (DiophantineConsistency.PRAStageCodedInduction.inductionFormula pred)
