@@ -1,0 +1,7 @@
+# Actual 85 main root: signed rank representation, scoped author replay
+
+The guarded author run `/tmp/adaptive-gap85-signed-rank-bynq84km` passed. `main_root_signed85` gives an exact representation of the actual 85 signed main root in every IΣ₁ model for natural ports, without assuming a zero or the sign of the rank seed. It uses `rp=q⁴+(qF+C)+J*(MC+MF*q)` and `rn=q²+(qF+C)*q²`, so the rank is represented as their formal difference. The main root is the formal difference between `U*(X+a*c)+H*(U*gamma+E*q+rp+1)` and `H*(k+rn)`. No root orientation, reverse bound or 85/Con(ZFC) equivalence is asserted.
+
+The replay authenticates the new source, literal and factor source/generators/candidate, 507 selected inherited objects and 28 v13 output/log records before and after. Extra weak-family parents are authenticated but not logically used. Historical project, Foundation and package boundaries remain inherited; no full current-source closure is claimed. Independent replay is required.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-signed-rank.py`. Source SHA-256 `cbd71f0bbda28233e1995d006528cb29419e28ddc58988847ae38bf729e38f0b`, object `7c09521c5b7c60329388f94bc404bf571835f6601d762092b8a2ea64ba294763`, full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, state `0595e35da9d9a797fce7e6ee2819d8613bedb13a91f91aac823b3e3996240df4`, evidence manifest `74823940350c63c54a597435d42ad25d3535f93854c37db5829f6a457bb25bf6`.
