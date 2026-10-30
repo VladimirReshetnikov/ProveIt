@@ -66,3 +66,8 @@ four-witness universal-theory premise in its statement. The 32-module author
 build and two independent replays match source, object and complete-log
 hashes. Deriving that premise from an arbitrary induction proof, handling
 multiple induction instances, and comparison with standard PRA remain open.
+
+After the 32-module replay, an upstream merge refactored finite and interactive
+Herbrand extraction, contextual tree witness/selection, and valuation
+compactness. The coded-stage proof covers the preceding snapshot; the affected
+chain must be rebuilt against the merged sources.
