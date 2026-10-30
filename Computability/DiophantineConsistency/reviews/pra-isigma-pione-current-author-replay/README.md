@@ -1,0 +1,9 @@
+# Unary no-zero and IΣ₁ Π₁ comparison
+
+The seven-module author run and private replay against the audited 60-module author provider matched all source, object and full-log hashes, with 184 unchanged local parents authenticated. The 60-module parent subsequently passed two independent replays. Foundation and Mathlib are inherited. Author source snapshots, complete logs and the private terminal state are preserved here.
+
+`PRANoZeroUnary.noZero_unary_open` converts any finite arithmetic no-zero sentence into a candidate-PRA-equivalent unary open predicate. `PRAISigmaOnePiOneComparison.comparison` turns an actual IΣ₁ proof into candidate-PRA equivalence of two unary open-matrix Π₁ statements, given an actual candidate-PRA implication from the mapped source sentence to that equivalence. The suffix also checks the zero-free-parameter and one-free-parameter certificate examples and rebuilds the existing Π₁ implication normalizer.
+
+This is a generic client. It does not yet prove that Foundation's actual ZFC consistency sentence is candidate-PRA equivalent to a unary open predicate or supply the concrete equation's mapped-source implication. The literal equation client has an additional historical HA provider whose full transitive source closure is not yet authenticated. The maintained equation's separate HA proof-existence theorem was checked at an earlier snapshot; its full current-source replay remains pending.
+
+After acceptance of the 60-module parent, independent accepted-parent replays also PASSed at `/tmp/pra-isigma-pione-independent-c10nxicy/lib` and `/tmp/pra-isigma-pione-independent-d6taz7w6/lib`, with matching seven source/object/full-log records and parent authentication. Root source/log snapshots and both terminal states are included. A subsequent upstream merge would make these pre-merge snapshot receipts until the changed graph is rebuilt.

@@ -1,0 +1,7 @@
+import DiophantineConsistency.PRAPiOneImplication
+
+#print axioms DiophantineConsistency.PRAPiOneImplication.matrix_open
+#print axioms DiophantineConsistency.PRAPiOneImplication.model_equiv
+#print axioms DiophantineConsistency.PRAPiOneImplication.proves_equivalence_iff
+#print axioms DiophantineConsistency.PRAPiOneImplication.eliminate_one_from_equivalence
+#check DiophantineConsistency.PRAPiOneImplication.eliminate_one_from_equivalence

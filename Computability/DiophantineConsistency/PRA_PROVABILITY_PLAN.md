@@ -45,6 +45,13 @@ combines strict-prefix induction, positive-predicate certificates, and finite
 induction elimination. The literal equation/consistency goal is not yet bound
 to this interface, and comparison with a standard PRA presentation remains open.
 
+The [unary no-zero and Π₁ clients](reviews/pra-isigma-pione-current-author-replay/README.md)
+have also passed independent replays on that provider. They encode every
+finite-variable arithmetic no-zero sentence as an equivalent unary open
+candidate-PRA predicate, and transfer an IΣ₁ proof to a unary Π₁ equivalence
+when the required candidate-PRA implication is supplied. The corresponding
+representation of Foundation's actual ZFC consistency predicate remains open.
+
 The [existing guarded Parsons reducer](reviews/parsons-positive-guard-cert-current-author-replay/README.md)
 preserves the positive-proof certificate when its predicate, side formula,
 and input proofs carry the stated positivity hypotheses. Its focused replay
