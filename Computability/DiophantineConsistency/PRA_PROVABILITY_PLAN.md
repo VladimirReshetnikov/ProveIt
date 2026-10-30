@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [arbitrary-tail packing adapter](reviews/pra-arbitrary-packing-author-replay/README.md)
+has passed source-current replays. It preserves boundedness while packing two
+parameter slots and gives a uniform model-equivalence certificate with any
+finite remaining parameter tail. It is not itself an induction-elimination
+or general Σ₁ normalization theorem.
+
 A strengthened Assembly helper has passed a [historical-overlay exploratory
 build](reviews/adaptive-assembly-seed-historical2011.md), exposing the common
 seed, radix, multiplier, rank-growth and auxiliary orientation while preserving
