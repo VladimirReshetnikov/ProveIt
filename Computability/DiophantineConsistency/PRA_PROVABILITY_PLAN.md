@@ -19,6 +19,12 @@ the original records are preserved, and the [scope correction inventory](reviews
 identifies the actual theorem associated with each affected snapshot. Module
 names, proof outputs, hashes and exit statuses are unchanged.
 
+The [89-module parameter refresh](reviews/pra-after-parameter-merge-refresh-author-replay/README.md)
+passed author and two independent builds with matching source, object and
+full-log hashes. The subsequent merge at `1abcfbde84` changed further
+Herbrand sources in the graph, so this is pre-merge evidence and its affected
+dependents require another source-current rebuild.
+
 The [auxiliary-factor reverse bridge](reviews/adaptive-construction-aux-factor2011-independent.md)
 derives its literal unit from explicit strong and auxiliary norm assumptions
 and the port bound. These still need to be connected to the common witness.

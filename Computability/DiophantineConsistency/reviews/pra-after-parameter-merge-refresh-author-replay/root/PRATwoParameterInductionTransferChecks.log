@@ -1,0 +1,28 @@
+'DiophantineConsistency.PRATwoParameterInductionTransfer.modelTwoSigma' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRATwoParameterInductionTransfer.modelPackedInduction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRATwoParameterInductionTransfer.PRA_proves_goal_of_two_parameter_induction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRATwoParameterInductionTransfer.PRA_proves_goal_of_two_parameter_induction
+  (ψ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 4)
+  (packed : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language 3)
+  (hbounded : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0 packed)
+  (hpack :
+    ∀ (M : Type) [inst : Nonempty M] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+      [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] (a b : M),
+      ∃ t,
+        ∀ (x y : M),
+          (LO.FirstOrder.Semiformula.Eval ![x, y, t] Empty.elim) packed ↔
+            (LO.FirstOrder.Semiformula.Eval ![x, y, a, b] Empty.elim) ψ)
+  (θ : LO.FirstOrder.Semiproposition DiophantineConsistency.PRALanguage.language 1)
+  (hθ : LO.FirstOrder.Semiformula.Open θ)
+  (p :
+    DiophantineConsistency.PRATheory.PRA ∪
+        {LO.FirstOrder.Semiformula.univCl (LO.FirstOrder.Arithmetic.succInd (twoSigma ψ))} ⊢
+      LO.FirstOrder.Semiformula.univCl (∃⁰ θ)) :
+  DiophantineConsistency.PRATheory.PRA ⊢ LO.FirstOrder.Semiformula.univCl (∃⁰ θ)
