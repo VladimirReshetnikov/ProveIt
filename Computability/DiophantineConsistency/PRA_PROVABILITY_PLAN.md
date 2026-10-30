@@ -60,6 +60,23 @@ established; the original WangTable worker continues independently.
 An [11-declaration interface comparison](reviews/adaptive-wang-chunk-interface-partial2011-independent.md)
 also passed independently against a historical original object; it is a
 partial comparison and does not establish that object's source provenance.
+The [private compatibility draft](reviews/adaptive-wang-table-compat-independent.md)
+restores the three generated names missing from the initial split and has an
+independent matching build. Full export and attribute checks, historical
+object provenance, and downstream integration remain open.
+The independently replayed [124-name displayed-type](reviews/adaptive-wang-compat-124-independent.md)
+and [selected registration](reviews/adaptive-wang-compat-124-registration-independent.md)
+comparisons match against the historical object. They do not establish
+kernel-level structural identity, all extension registrations or historical
+source-to-object provenance.
+The [29-definition body audit](reviews/adaptive-wang-compat-definition-values-independent.md)
+also matches raw expressions, reducibility hints and safety flags in two
+replays; theorem proof bodies and other metadata remain outside its scope.
+The direct importer [WangPlane](reviews/adaptive-wang-plane-split-independent.md)
+has independently rebuilt against the initial private split table. This is a
+single downstream client with two retained deprecation warnings; it does not
+resolve the full interface comparison or rebuild the remaining CellWindow
+and Assembly chain.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -108,11 +125,11 @@ are separate from that generic theorem.
 The [literal 14-variable forward client](reviews/pra-literal-forward-focused-author-replay/README.md)
 has since passed a focused author build and independent replay: it produces a
 candidate-PRA proof of mapped `Con(ZFC) → no-zero`, and an equivalence with
-the bounded consistency surrogate. The client inherits the historical IΣ₁
-endpoint and transitive closure; a subsequent merge also changed PRA inputs.
-Both dependencies require current-source refresh. The reverse implication to
-Foundation's literal consistency sentence and standard PRA comparison remain
-open.
+the bounded consistency surrogate. A [post-induction-merge replay](reviews/pra-literal-forward-post-open-author-replay/README.md)
+refreshed the PRA inputs and passed twice independently. The client still
+inherits the historical IΣ₁ endpoint and its transitive closure, which require
+current-source refresh. The reverse implication to Foundation's literal
+consistency sentence and standard PRA comparison remain open.
 The [fixed-sentence bound-certificate interface](reviews/pra-strict-con-reverse-current-author-replay/README.md)
 has independently replayed proofs that such a certificate implies the
 surrogate-to-original direction and hence the full mapped equivalence. No
@@ -124,9 +141,23 @@ analysis of the obligation, not a constructed certificate.
 The [primitive-recursive witness fold](reviews/pra-witness-fold-current-author-replay/README.md)
 has independently replayed proofs that the sum of any supplied coded local
 majorant bounds every value below a given index in candidate-PRA models. A
-special case covers the proposed `p+1` local bound. The actual Foundation
-decoder lemma, the other local majorants and the certificate for `ρ` remain
-separate obligations.
+special case covers `p+1`. The [exact Foundation first-index bound](reviews/pra-fstidx-witness-bound-author-replay/README.md)
+has also independently replayed: candidate PRA proves its standalone graph
+implies its syntactic bounded transformation at `p+1`. Binding that graph
+inside the full refutation formula, finding the other local majorants and
+constructing the certificate for `ρ` remain separate obligations.
+The [first-index family client](reviews/pra-fstidx-family-author-replay/README.md)
+combines that bound with the fold in every candidate-PRA model, supplying one
+primitive-recursive bound for all first-index codes below a given limit. It
+does not yet establish bounds for the other components of `ρ`.
+The [family-sentence client](reviews/pra-fstidx-family-sentence-author-replay/README.md)
+also constructs an actual candidate-PRA proof of the corresponding universally
+closed implication; it is independently replayed and retains the same scope.
+The [second-index local bound](reviews/pra-sndidx-bound-author-replay/README.md)
+likewise proves the exact standalone `sndIdxDef` witnesses bounded by `p+1`
+in candidate PRA. Its two independent replays precede the latest induction
+merge; the affected provider graph and the graph's occurrence in the coded
+history still need refreshing and binding respectively.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated

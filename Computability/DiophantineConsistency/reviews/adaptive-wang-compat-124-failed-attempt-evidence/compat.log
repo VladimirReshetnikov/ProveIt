@@ -1,0 +1,564 @@
+@DiophantineConsistency.ArithmeticMachineGraph215.actionLookup.eq_1 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻] (q bit : V),
+  DiophantineConsistency.ArithmeticMachineGraph215.actionLookup q bit =
+    SetTheory.BusyBeaver.ZFC.ArithmeticMachineGraphPerm252.lookupValue
+      DiophantineConsistency.ArithmeticMachineGraph215.literalRows 0 q bit
+DiophantineConsistency.ArithmeticWangTable.GoodA : DiophantineConsistency.WangTiles942.Tile → Prop
+DiophantineConsistency.ArithmeticWangTable.GoodB : DiophantineConsistency.WangTiles942.Tile → Prop
+DiophantineConsistency.ArithmeticWangTable.GoodC : DiophantineConsistency.WangTiles942.Tile → Prop
+DiophantineConsistency.ArithmeticWangTable.actCode : ℕ → ℕ
+DiophantineConsistency.ArithmeticWangTable.actCode_spec : ∀ (j : ℕ),
+  ∃ c d w, c ≤ 215 ∧ d ≤ 1 ∧ w ≤ 1 ∧ DiophantineConsistency.ArithmeticWangTable.actCode j = 1 + 4 * c + 2 * d + w
+DiophantineConsistency.ArithmeticWangTable.actCode_spec._proof_1 : ∀ (j : ℕ),
+  (DiophantineConsistency.WangTiles942.actionNat j).2.2 < 215 →
+    ¬(DiophantineConsistency.WangTiles942.actionNat j).2.2 + 1 ≤ 215 → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:8:8: warning: `DiophantineConsistency.ArithmeticWangTable.actCode_spec._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.actCode_spec._proof_2 : ∀ (j : ℕ), ¬0 ≤ 215 → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:9:8: warning: `DiophantineConsistency.ArithmeticWangTable.actCode_spec._proof_2` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.colList : (DiophantineConsistency.WangTiles942.Tile → ℕ) → List ℕ
+DiophantineConsistency.ArithmeticWangTable.colList.eq_1 : ∀ (f : DiophantineConsistency.WangTiles942.Tile → ℕ),
+  DiophantineConsistency.ArithmeticWangTable.colList f =
+    List.ofFn fun i => f (DiophantineConsistency.WangTiles942.tile i)
+DiophantineConsistency.ArithmeticWangTable.colList_getD : ∀ (f : DiophantineConsistency.WangTiles942.Tile → ℕ),
+  f { west := 0, north := 0, east := 0, south := 0 } = 0 →
+    ∀ (m : ℕ),
+      (DiophantineConsistency.ArithmeticWangTable.colList f).getD m 0 =
+        f (DiophantineConsistency.ArithmeticWangTable.tileN m)
+@DiophantineConsistency.ArithmeticWangTable.eastC : {V : Type u_1} →
+  [inst : LO.ORingStructure V] → [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] → V → V
+@DiophantineConsistency.ArithmeticWangTable.eastC.congr_simp : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (i i_1 : V),
+  i = i_1 → DiophantineConsistency.ArithmeticWangTable.eastC i = DiophantineConsistency.ArithmeticWangTable.eastC i_1
+@DiophantineConsistency.ArithmeticWangTable.eastC.eq_1 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (i : V),
+  DiophantineConsistency.ArithmeticWangTable.eastC i =
+    DiophantineConsistency.ArithmeticWangTable.tabValue
+      (DiophantineConsistency.ArithmeticWangTable.colList DiophantineConsistency.WangTiles942.Tile.east) 0 i
+@DiophantineConsistency.ArithmeticWangTable.eastC_cast : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (m : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.eastC ↑m = ↑(DiophantineConsistency.ArithmeticWangTable.tileN m).east
+@DiophantineConsistency.ArithmeticWangTable.eastC_definable : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], 𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.eastC
+@DiophantineConsistency.ArithmeticWangTable.eastC_defined : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+  𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.eastC via DiophantineConsistency.ArithmeticWangTable.eastDef
+@DiophantineConsistency.ArithmeticWangTable.eastC_zero : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], DiophantineConsistency.ArithmeticWangTable.eastC 0 = 3
+DiophantineConsistency.ArithmeticWangTable.eastDef : 𝚺₀.Semisentence 2
+@DiophantineConsistency.ArithmeticWangTable.east_one : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.eastC i = 1 →
+      DiophantineConsistency.ArithmeticWangTable.northC i = 438 ∨
+        DiophantineConsistency.ArithmeticWangTable.northC i = 437
+@DiophantineConsistency.ArithmeticWangTable.east_two : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.eastC i = 2 →
+      DiophantineConsistency.ArithmeticWangTable.northC i = 434 ∨
+        DiophantineConsistency.ArithmeticWangTable.northC i = 437
+DiophantineConsistency.ArithmeticWangTable.hcN : ℕ → ℕ → ℕ
+@DiophantineConsistency.ArithmeticWangTable.hcV : {V : Type u_1} →
+  [inst : LO.ORingStructure V] → [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] → V → V → V
+DiophantineConsistency.ArithmeticWangTable.hcV._proof_1 : (431 + 1).AtLeastTwo
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:25:8: warning: `DiophantineConsistency.ArithmeticWangTable.hcV._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.hcV._proof_2 : (1 + 1).AtLeastTwo
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:26:8: warning: `DiophantineConsistency.ArithmeticWangTable.hcV._proof_2` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.hcV_cast : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (st b : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.hcV ↑st ↑b = ↑(DiophantineConsistency.ArithmeticWangTable.hcN st b)
+@DiophantineConsistency.ArithmeticWangTable.head_step : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i st b : V},
+  i < 942 →
+    st ≠ 0 →
+      st ≤ 215 →
+        b ≤ 1 →
+          DiophantineConsistency.ArithmeticWangTable.northC i = 2 * st + b →
+            ∃ st' d w,
+              st' ≤ 215 ∧
+                d ≤ 1 ∧
+                  w ≤ 1 ∧
+                    DiophantineConsistency.ArithmeticMachineGraph215.actionLookup st b = 1 + 4 * st' + 2 * d + w ∧
+                      DiophantineConsistency.ArithmeticWangTable.southC i = w ∧
+                        (d = 1 →
+                            DiophantineConsistency.ArithmeticWangTable.westC i = 0 ∧
+                              6 ≤ DiophantineConsistency.ArithmeticWangTable.eastC i ∧
+                                ∀ i' < 942,
+                                  DiophantineConsistency.ArithmeticWangTable.northC i' ≤ 1 →
+                                    DiophantineConsistency.ArithmeticWangTable.westC i' =
+                                        DiophantineConsistency.ArithmeticWangTable.eastC i →
+                                      DiophantineConsistency.ArithmeticWangTable.southC i' =
+                                        DiophantineConsistency.ArithmeticWangTable.hcV st'
+                                          (DiophantineConsistency.ArithmeticWangTable.northC i')) ∧
+                          (d = 0 →
+                            DiophantineConsistency.ArithmeticWangTable.eastC i = 0 ∧
+                              205 ≤ DiophantineConsistency.ArithmeticWangTable.westC i ∧
+                                ∀ i' < 942,
+                                  DiophantineConsistency.ArithmeticWangTable.northC i' ≤ 1 →
+                                    DiophantineConsistency.ArithmeticWangTable.eastC i' =
+                                        DiophantineConsistency.ArithmeticWangTable.westC i →
+                                      DiophantineConsistency.ArithmeticWangTable.southC i' =
+                                        DiophantineConsistency.ArithmeticWangTable.hcV st'
+                                          (DiophantineConsistency.ArithmeticWangTable.northC i'))
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_1 : ∀ (m p : ℕ),
+  p < 216 → ∀ (β : ℕ), p ≠ 0 → ¬p = p - 1 + 1 → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:29:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_10 : ∀ (m β q c d w : ℕ),
+  205 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).west →
+    ∀ (m' : ℕ),
+      (DiophantineConsistency.ArithmeticWangTable.tileN m').east =
+          (DiophantineConsistency.ArithmeticWangTable.tileN m).west →
+        (DiophantineConsistency.ArithmeticWangTable.tileN m').east = 0 → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:30:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_10` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_2 : ∀ (m β : ℕ),
+  β < 2 →
+    ∀ (q : ℕ),
+      q + 1 < 216 →
+        (DiophantineConsistency.ArithmeticWangTable.tileN m).north = 2 * (q + 1) + β →
+          ¬2 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).north → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:31:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_2` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_3 : ∀ (m β : ℕ),
+  β < 2 →
+    ∀ (q : ℕ),
+      q + 1 < 216 →
+        (DiophantineConsistency.ArithmeticWangTable.tileN m).north = 2 * (q + 1) + β →
+          ¬(DiophantineConsistency.ArithmeticWangTable.tileN m).north < 432 → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:32:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_3` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_4 : ∀ (m β : ℕ),
+  β < 2 →
+    ∀ (q : ℕ),
+      q + 1 < 216 →
+        (DiophantineConsistency.ArithmeticWangTable.tileN m).north = 2 * (q + 1) + β →
+          ¬(DiophantineConsistency.ArithmeticWangTable.tileN m).north - 2 = 2 * q + β → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:33:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_4` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_5 : ∀ (m β q c d w : ℕ),
+  (1 + 4 * c + 2 * d + w - 1) % 2 = (DiophantineConsistency.ArithmeticWangTable.tileN m).south ∧
+      ((1 + 4 * c + 2 * d + w - 1) / 2 % 2 = 1 →
+          (DiophantineConsistency.ArithmeticWangTable.tileN m).west = 0 ∧
+            6 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).east ∧
+              DiophantineConsistency.ArithmeticWangTable.rcvCode true
+                  (DiophantineConsistency.ArithmeticWangTable.tileN m).east =
+                (1 + 4 * c + 2 * d + w - 1) / 4) ∧
+        ((1 + 4 * c + 2 * d + w - 1) / 2 % 2 = 0 →
+          (DiophantineConsistency.ArithmeticWangTable.tileN m).east = 0 ∧
+            205 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).west ∧
+              DiophantineConsistency.ArithmeticWangTable.rcvCode false
+                  (DiophantineConsistency.ArithmeticWangTable.tileN m).west =
+                (1 + 4 * c + 2 * d + w - 1) / 4) →
+    c ≤ 215 →
+      d ≤ 1 →
+        w ≤ 1 →
+          DiophantineConsistency.ArithmeticWangTable.actCode (2 * q + β) = 1 + 4 * c + 2 * d + w →
+            ¬(1 + 4 * c + 2 * d + w - 1) % 2 = w → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:34:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_5` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_6 : ∀ (m β q c d w : ℕ),
+  (1 + 4 * c + 2 * d + w - 1) % 2 = (DiophantineConsistency.ArithmeticWangTable.tileN m).south ∧
+      ((1 + 4 * c + 2 * d + w - 1) / 2 % 2 = 1 →
+          (DiophantineConsistency.ArithmeticWangTable.tileN m).west = 0 ∧
+            6 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).east ∧
+              DiophantineConsistency.ArithmeticWangTable.rcvCode true
+                  (DiophantineConsistency.ArithmeticWangTable.tileN m).east =
+                (1 + 4 * c + 2 * d + w - 1) / 4) ∧
+        ((1 + 4 * c + 2 * d + w - 1) / 2 % 2 = 0 →
+          (DiophantineConsistency.ArithmeticWangTable.tileN m).east = 0 ∧
+            205 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).west ∧
+              DiophantineConsistency.ArithmeticWangTable.rcvCode false
+                  (DiophantineConsistency.ArithmeticWangTable.tileN m).west =
+                (1 + 4 * c + 2 * d + w - 1) / 4) →
+    c ≤ 215 →
+      d ≤ 1 →
+        DiophantineConsistency.ArithmeticWangTable.actCode (2 * q + β) = 1 + 4 * c + 2 * d + w →
+          (1 + 4 * c + 2 * d + w - 1) % 2 = w → ¬(1 + 4 * c + 2 * d + w - 1) / 2 % 2 = d → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:35:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_6` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_7 : ∀ (m β q c d w : ℕ),
+  (1 + 4 * c + 2 * d + w - 1) % 2 = (DiophantineConsistency.ArithmeticWangTable.tileN m).south ∧
+      ((1 + 4 * c + 2 * d + w - 1) / 2 % 2 = 1 →
+          (DiophantineConsistency.ArithmeticWangTable.tileN m).west = 0 ∧
+            6 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).east ∧
+              DiophantineConsistency.ArithmeticWangTable.rcvCode true
+                  (DiophantineConsistency.ArithmeticWangTable.tileN m).east =
+                (1 + 4 * c + 2 * d + w - 1) / 4) ∧
+        ((1 + 4 * c + 2 * d + w - 1) / 2 % 2 = 0 →
+          (DiophantineConsistency.ArithmeticWangTable.tileN m).east = 0 ∧
+            205 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).west ∧
+              DiophantineConsistency.ArithmeticWangTable.rcvCode false
+                  (DiophantineConsistency.ArithmeticWangTable.tileN m).west =
+                (1 + 4 * c + 2 * d + w - 1) / 4) →
+    c ≤ 215 →
+      d ≤ 1 →
+        DiophantineConsistency.ArithmeticWangTable.actCode (2 * q + β) = 1 + 4 * c + 2 * d + w →
+          (1 + 4 * c + 2 * d + w - 1) % 2 = w →
+            (1 + 4 * c + 2 * d + w - 1) / 2 % 2 = d → ¬(1 + 4 * c + 2 * d + w - 1) / 4 = c → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:36:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_7` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_8 : ∀ (m β q : ℕ),
+  q + 1 < 216 → ∀ (c d w : ℕ), ¬q < 215 → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:37:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_8` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.head_step._proof_9 : ∀ (m β q c d w : ℕ),
+  6 ≤ (DiophantineConsistency.ArithmeticWangTable.tileN m).east →
+    ∀ (m' : ℕ),
+      (DiophantineConsistency.ArithmeticWangTable.tileN m').west =
+          (DiophantineConsistency.ArithmeticWangTable.tileN m).east →
+        (DiophantineConsistency.ArithmeticWangTable.tileN m').west = 0 → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:38:8: warning: `DiophantineConsistency.ArithmeticWangTable.head_step._proof_9` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.instDecidablePredTileGoodA : DecidablePred
+  DiophantineConsistency.ArithmeticWangTable.GoodA
+DiophantineConsistency.ArithmeticWangTable.instDecidablePredTileGoodB : DecidablePred
+  DiophantineConsistency.ArithmeticWangTable.GoodB
+DiophantineConsistency.ArithmeticWangTable.instDecidablePredTileGoodC : DecidablePred
+  DiophantineConsistency.ArithmeticWangTable.GoodC
+@DiophantineConsistency.ArithmeticWangTable.lookupValue_cast : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (rows : List (ℕ × ℕ)) (first q bit : ℕ),
+  SetTheory.BusyBeaver.ZFC.ArithmeticMachineGraphPerm252.lookupValue rows first ↑q ↑bit =
+    ↑(SetTheory.BusyBeaver.ZFC.ArithmeticMachineGraphPerm252.lookupNat rows first q bit)
+DiophantineConsistency.ArithmeticWangTable.lookup_eq_actCode : ∀ (q b : ℕ),
+  q < 215 →
+    b < 2 →
+      SetTheory.BusyBeaver.ZFC.ArithmeticMachineGraphPerm252.lookupNat
+          DiophantineConsistency.ArithmeticMachineGraph215.literalRows 0 (q + 1) b =
+        DiophantineConsistency.ArithmeticWangTable.actCode (2 * q + b)
+DiophantineConsistency.ArithmeticWangTable.lookup_eq_actCode._proof_1 : ∀ (q b : ℕ),
+  q < 215 → b < 2 → ¬(b = 0 ∨ b = 1) → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:44:8: warning: `DiophantineConsistency.ArithmeticWangTable.lookup_eq_actCode._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.lookup_eq_actCode._proof_2 : ∀ (q b : ℕ),
+  q < 215 → b < 2 → (decide (b = 1)).toNat = b → ¬2 * q + b < 430 → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:45:8: warning: `DiophantineConsistency.ArithmeticWangTable.lookup_eq_actCode._proof_2` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.northC : {V : Type u_1} →
+  [inst : LO.ORingStructure V] → [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] → V → V
+@DiophantineConsistency.ArithmeticWangTable.northC.congr_simp : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (i i_1 : V),
+  i = i_1 → DiophantineConsistency.ArithmeticWangTable.northC i = DiophantineConsistency.ArithmeticWangTable.northC i_1
+@DiophantineConsistency.ArithmeticWangTable.northC.eq_1 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (i : V),
+  DiophantineConsistency.ArithmeticWangTable.northC i =
+    DiophantineConsistency.ArithmeticWangTable.tabValue
+      (DiophantineConsistency.ArithmeticWangTable.colList DiophantineConsistency.WangTiles942.Tile.north) 0 i
+@DiophantineConsistency.ArithmeticWangTable.northC_cast : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (m : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.northC ↑m = ↑(DiophantineConsistency.ArithmeticWangTable.tileN m).north
+@DiophantineConsistency.ArithmeticWangTable.northC_definable : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], 𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.northC
+@DiophantineConsistency.ArithmeticWangTable.northC_defined : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+  𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.northC via DiophantineConsistency.ArithmeticWangTable.northDef
+@DiophantineConsistency.ArithmeticWangTable.northC_zero : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], DiophantineConsistency.ArithmeticWangTable.northC 0 = 435
+DiophantineConsistency.ArithmeticWangTable.northDef : 𝚺₀.Semisentence 2
+@DiophantineConsistency.ArithmeticWangTable.north_434 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.northC i = 434 →
+      DiophantineConsistency.ArithmeticWangTable.westC i = 2 ∧
+        DiophantineConsistency.ArithmeticWangTable.eastC i = 2 ∧ DiophantineConsistency.ArithmeticWangTable.southC i = 0
+@DiophantineConsistency.ArithmeticWangTable.north_436 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.northC i = 436 → DiophantineConsistency.ArithmeticWangTable.eastC i = 4
+@DiophantineConsistency.ArithmeticWangTable.north_438 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.northC i = 438 →
+      DiophantineConsistency.ArithmeticWangTable.westC i = 1 ∧ DiophantineConsistency.ArithmeticWangTable.eastC i = 1
+@DiophantineConsistency.ArithmeticWangTable.plain_pass : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.northC i ≤ 1 →
+      DiophantineConsistency.ArithmeticWangTable.westC i = 0 →
+        DiophantineConsistency.ArithmeticWangTable.eastC i = 0 →
+          DiophantineConsistency.ArithmeticWangTable.southC i = DiophantineConsistency.ArithmeticWangTable.northC i ∨
+            DiophantineConsistency.ArithmeticWangTable.southC i = 438
+@DiophantineConsistency.ArithmeticWangTable.plain_sides : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.northC i ≤ 1 →
+      (DiophantineConsistency.ArithmeticWangTable.westC i = 0 ∨
+          6 ≤ DiophantineConsistency.ArithmeticWangTable.westC i ∧
+            DiophantineConsistency.ArithmeticWangTable.westC i < 205) ∧
+        (DiophantineConsistency.ArithmeticWangTable.eastC i = 0 ∨
+          205 ≤ DiophantineConsistency.ArithmeticWangTable.eastC i ∧
+            DiophantineConsistency.ArithmeticWangTable.eastC i < 250)
+DiophantineConsistency.ArithmeticWangTable.rcvCode : Bool → ℕ → ℕ
+DiophantineConsistency.ArithmeticWangTable.rows_goodA : ∀ row ∈ DiophantineConsistency.WangTiles942.orderedRows,
+  DiophantineConsistency.ArithmeticWangTable.GoodA row.2
+DiophantineConsistency.ArithmeticWangTable.rows_goodA._proof_1 : ∀
+  row ∈ DiophantineConsistency.WangTiles942.orderedRows, DiophantineConsistency.ArithmeticWangTable.GoodA row.2
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:61:8: warning: `DiophantineConsistency.ArithmeticWangTable.rows_goodA._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.rows_goodB : ∀ row ∈ DiophantineConsistency.WangTiles942.orderedRows,
+  DiophantineConsistency.ArithmeticWangTable.GoodB row.2
+DiophantineConsistency.ArithmeticWangTable.rows_goodB._proof_1 : ∀
+  row ∈ DiophantineConsistency.WangTiles942.orderedRows, DiophantineConsistency.ArithmeticWangTable.GoodB row.2
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:63:8: warning: `DiophantineConsistency.ArithmeticWangTable.rows_goodB._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.rows_goodC : ∀ row ∈ DiophantineConsistency.WangTiles942.orderedRows,
+  DiophantineConsistency.ArithmeticWangTable.GoodC row.2
+DiophantineConsistency.ArithmeticWangTable.rows_goodC._proof_1 : ∀
+  row ∈ DiophantineConsistency.WangTiles942.orderedRows, DiophantineConsistency.ArithmeticWangTable.GoodC row.2
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:65:8: warning: `DiophantineConsistency.ArithmeticWangTable.rows_goodC._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.seam_iff : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    (DiophantineConsistency.ArithmeticWangTable.northC i = 437 ↔
+      DiophantineConsistency.ArithmeticWangTable.southC i = 437)
+@DiophantineConsistency.ArithmeticWangTable.seam_sides : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.northC i = 437 →
+      DiophantineConsistency.ArithmeticWangTable.westC i ≤ 4 ∧ DiophantineConsistency.ArithmeticWangTable.eastC i ≤ 2
+@DiophantineConsistency.ArithmeticWangTable.southC : {V : Type u_1} →
+  [inst : LO.ORingStructure V] → [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] → V → V
+@DiophantineConsistency.ArithmeticWangTable.southC.congr_simp : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (i i_1 : V),
+  i = i_1 → DiophantineConsistency.ArithmeticWangTable.southC i = DiophantineConsistency.ArithmeticWangTable.southC i_1
+@DiophantineConsistency.ArithmeticWangTable.southC.eq_1 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (i : V),
+  DiophantineConsistency.ArithmeticWangTable.southC i =
+    DiophantineConsistency.ArithmeticWangTable.tabValue
+      (DiophantineConsistency.ArithmeticWangTable.colList DiophantineConsistency.WangTiles942.Tile.south) 0 i
+@DiophantineConsistency.ArithmeticWangTable.southC_cast : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (m : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.southC ↑m = ↑(DiophantineConsistency.ArithmeticWangTable.tileN m).south
+@DiophantineConsistency.ArithmeticWangTable.southC_definable : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], 𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.southC
+@DiophantineConsistency.ArithmeticWangTable.southC_defined : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+  𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.southC via DiophantineConsistency.ArithmeticWangTable.southDef
+@DiophantineConsistency.ArithmeticWangTable.southC_zero : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], DiophantineConsistency.ArithmeticWangTable.southC 0 = 1
+DiophantineConsistency.ArithmeticWangTable.southDef : 𝚺₀.Semisentence 2
+@DiophantineConsistency.ArithmeticWangTable.standard_of_lt : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V} {n : ℕ}, i < ↑n → ∃ m < n, i = ↑m
+DiophantineConsistency.ArithmeticWangTable.tabDef : List ℕ → ℕ → 𝚺₀.Semisentence 2
+DiophantineConsistency.ArithmeticWangTable.tabDef._f : (x : List ℕ) →
+  List.below (motive := fun x => ℕ → 𝚺₀.Semisentence 2) x → ℕ → 𝚺₀.Semisentence 2
+DiophantineConsistency.ArithmeticWangTable.tabDef._proof_1 : NeZero (1 + 1)
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:79:8: warning: `DiophantineConsistency.ArithmeticWangTable.tabDef._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.tabDef._proof_2 : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0
+  (“!!(LO.FirstOrder.Semiterm.bvar 0) = 0”)
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:80:8: warning: `DiophantineConsistency.ArithmeticWangTable.tabDef._proof_2` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.tabDef._proof_3 : ∀ (v : ℕ) (vs : List ℕ) (k : ℕ),
+  LO.FirstOrder.Arithmetic.Hierarchy 𝚺 0
+    (“((!!(LO.FirstOrder.Semiterm.bvar 1) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ k) ∧
+              !!(LO.FirstOrder.Semiterm.bvar 0) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ v)) ∨
+          (¬!!(LO.FirstOrder.Semiterm.bvar 1) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ k) ∧
+              !(↑(DiophantineConsistency.ArithmeticWangTable.tabDef vs (k + 1))/[LO.FirstOrder.Semiterm.bvar 0,
+                  LO.FirstOrder.Semiterm.bvar 1])))”)
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:81:8: warning: `DiophantineConsistency.ArithmeticWangTable.tabDef._proof_3` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.tabDef._sunfold : List ℕ → ℕ → 𝚺₀.Semisentence 2
+DiophantineConsistency.ArithmeticWangTable.tabDef._unsafe_rec : List ℕ → ℕ → 𝚺₀.Semisentence 2
+DiophantineConsistency.ArithmeticWangTable.tabDef.eq_1 : ∀ (x : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.tabDef [] x =
+    LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.mkSigma (“!!(LO.FirstOrder.Semiterm.bvar 0) = 0”)
+      DiophantineConsistency.ArithmeticWangTable.tabDef._proof_2
+DiophantineConsistency.ArithmeticWangTable.tabDef.eq_2 : ∀ (x v : ℕ) (vs : List ℕ),
+  DiophantineConsistency.ArithmeticWangTable.tabDef (v :: vs) x =
+    LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.mkSigma
+      (“((!!(LO.FirstOrder.Semiterm.bvar 1) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ x) ∧
+                !!(LO.FirstOrder.Semiterm.bvar 0) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ v)) ∨
+            (¬!!(LO.FirstOrder.Semiterm.bvar 1) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ x) ∧
+                !(↑(DiophantineConsistency.ArithmeticWangTable.tabDef vs (x + 1))/[LO.FirstOrder.Semiterm.bvar 0,
+                    LO.FirstOrder.Semiterm.bvar 1])))”)
+      ⋯
+DiophantineConsistency.ArithmeticWangTable.tabDef.eq_def : ∀ (x : List ℕ) (x_1 : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.tabDef x x_1 =
+    match x, x_1 with
+    | [], x =>
+      LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.mkSigma (“!!(LO.FirstOrder.Semiterm.bvar 0) = 0”)
+        DiophantineConsistency.ArithmeticWangTable.tabDef._proof_2
+    | v :: vs, k =>
+      LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.mkSigma
+        (“((!!(LO.FirstOrder.Semiterm.bvar 1) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ k) ∧
+                  !!(LO.FirstOrder.Semiterm.bvar 0) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ v)) ∨
+              (¬!!(LO.FirstOrder.Semiterm.bvar 1) = !!↑(LO.FirstOrder.Semiterm.Operator.numeral ℒₒᵣ k) ∧
+                  !(↑(DiophantineConsistency.ArithmeticWangTable.tabDef vs (k + 1))/[LO.FirstOrder.Semiterm.bvar 0,
+                      LO.FirstOrder.Semiterm.bvar 1])))”)
+        ⋯
+DiophantineConsistency.ArithmeticWangTable.tabDef.match_1 : (motive : List ℕ → ℕ → Sort u_1) →
+  (x : List ℕ) →
+    (x_1 : ℕ) → ((x : ℕ) → motive [] x) → ((v : ℕ) → (vs : List ℕ) → (k : ℕ) → motive (v :: vs) k) → motive x x_1
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:87:8: warning: `DiophantineConsistency.ArithmeticWangTable.tabDef.match_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.tabValue : {V : Type u_1} →
+  [inst : LO.ORingStructure V] → [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] → List ℕ → ℕ → V → V
+@DiophantineConsistency.ArithmeticWangTable.tabValue._f : {V : Type u_1} →
+  [inst : LO.ORingStructure V] →
+    [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] → (x : List ℕ) → List.below (motive := fun x => ℕ → V → V) x → ℕ → V → V
+@DiophantineConsistency.ArithmeticWangTable.tabValue._proof_1 : ∀ {V : Type u_1} [LO.ORingStructure V], Nonempty V
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:90:8: warning: `DiophantineConsistency.ArithmeticWangTable.tabValue._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.tabValue._proof_2 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], Nonempty V
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:91:8: warning: `DiophantineConsistency.ArithmeticWangTable.tabValue._proof_2` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.tabValue._proof_3 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:92:8: warning: `DiophantineConsistency.ArithmeticWangTable.tabValue._proof_3` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.tabValue._sunfold : {V : Type u_1} →
+  [inst : LO.ORingStructure V] → [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] → List ℕ → ℕ → V → V
+@DiophantineConsistency.ArithmeticWangTable.tabValue.congr_simp : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (a a_1 : List ℕ),
+  a = a_1 →
+    ∀ (a_2 a_3 : ℕ),
+      a_2 = a_3 →
+        ∀ (a_4 a_5 : V),
+          a_4 = a_5 →
+            DiophantineConsistency.ArithmeticWangTable.tabValue a a_2 a_4 =
+              DiophantineConsistency.ArithmeticWangTable.tabValue a_1 a_3 a_5
+@DiophantineConsistency.ArithmeticWangTable.tabValue.eq_1 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (x : ℕ) (x_1 : V), DiophantineConsistency.ArithmeticWangTable.tabValue [] x x_1 = 0
+@DiophantineConsistency.ArithmeticWangTable.tabValue.eq_2 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (x : ℕ) (x_1 : V) (v : ℕ) (vs : List ℕ),
+  DiophantineConsistency.ArithmeticWangTable.tabValue (v :: vs) x x_1 =
+    if x_1 = LO.ORingStructure.numeral x then LO.ORingStructure.numeral v
+    else DiophantineConsistency.ArithmeticWangTable.tabValue vs (x + 1) x_1
+@DiophantineConsistency.ArithmeticWangTable.tabValue.eq_def : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (x : List ℕ) (x_1 : ℕ) (x_2 : V),
+  DiophantineConsistency.ArithmeticWangTable.tabValue x x_1 x_2 =
+    match x, x_1, x_2 with
+    | [], x, x_3 => 0
+    | v :: vs, k, i =>
+      if i = LO.ORingStructure.numeral k then LO.ORingStructure.numeral v
+      else DiophantineConsistency.ArithmeticWangTable.tabValue vs (k + 1) i
+@DiophantineConsistency.ArithmeticWangTable.tabValue.match_1 : {V : Type u_2} →
+  (motive : List ℕ → ℕ → V → Sort u_1) →
+    (x : List ℕ) →
+      (x_1 : ℕ) →
+        (x_2 : V) →
+          ((x : ℕ) → (x_3 : V) → motive [] x x_3) →
+            ((v : ℕ) → (vs : List ℕ) → (k : ℕ) → (i : V) → motive (v :: vs) k i) → motive x x_1 x_2
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:98:8: warning: `DiophantineConsistency.ArithmeticWangTable.tabValue.match_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.tab_cast : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (l : List ℕ) (m : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.tabValue l 0 ↑m = ↑(l.getD m 0)
+@DiophantineConsistency.ArithmeticWangTable.tab_cast_aux : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (l : List ℕ) (k m : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.tabValue l k ↑(k + m) = ↑(l.getD m 0)
+DiophantineConsistency.ArithmeticWangTable.tab_cast_aux._proof_1 : ∀ (k m : ℕ), k + (m + 1) = k → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:101:8: warning: `DiophantineConsistency.ArithmeticWangTable.tab_cast_aux._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+DiophantineConsistency.ArithmeticWangTable.tab_cast_aux._proof_2 : ∀ (k m : ℕ), ¬k + (m + 1) = k + 1 + m → False
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:102:8: warning: `DiophantineConsistency.ArithmeticWangTable.tab_cast_aux._proof_2` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.tab_cast_aux._simp_1 : ∀ {R : Type u_1} [inst : AddMonoidWithOne R]
+  [CharZero R] {m n : ℕ}, (↑m = ↑n) = (m = n)
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:103:8: warning: `DiophantineConsistency.ArithmeticWangTable.tab_cast_aux._simp_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.tab_defined : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (l : List ℕ) (k : ℕ),
+  𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.tabValue l k via
+    DiophantineConsistency.ArithmeticWangTable.tabDef l k
+DiophantineConsistency.ArithmeticWangTable.tileN : ℕ → DiophantineConsistency.WangTiles942.Tile
+DiophantineConsistency.ArithmeticWangTable.tileN.eq_1 : ∀ (m : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.tileN m =
+    if h : m < 942 then DiophantineConsistency.WangTiles942.tile ⟨m, h⟩
+    else { west := 0, north := 0, east := 0, south := 0 }
+DiophantineConsistency.ArithmeticWangTable.tileN_goodA : ∀ m < 942,
+  DiophantineConsistency.ArithmeticWangTable.GoodA (DiophantineConsistency.ArithmeticWangTable.tileN m)
+DiophantineConsistency.ArithmeticWangTable.tileN_goodB : ∀ m < 942,
+  DiophantineConsistency.ArithmeticWangTable.GoodB (DiophantineConsistency.ArithmeticWangTable.tileN m)
+DiophantineConsistency.ArithmeticWangTable.tileN_goodC : ∀ m < 942,
+  DiophantineConsistency.ArithmeticWangTable.GoodC (DiophantineConsistency.ArithmeticWangTable.tileN m)
+DiophantineConsistency.ArithmeticWangTable.tileN_mem : ∀ m < 942,
+  ∃ row ∈ DiophantineConsistency.WangTiles942.orderedRows, row.2 = DiophantineConsistency.ArithmeticWangTable.tileN m
+DiophantineConsistency.ArithmeticWangTable.tileN_zero : DiophantineConsistency.ArithmeticWangTable.tileN 0 =
+  { west := 2, north := 435, east := 3, south := 1 }
+DiophantineConsistency.ArithmeticWangTable.tileN_zero._proof_1 : DiophantineConsistency.ArithmeticWangTable.tileN 0 =
+  { west := 2, north := 435, east := 3, south := 1 }
+/tmp/adaptive-wang-compat-124-check-ag__29fc/compat.lean:112:8: warning: `DiophantineConsistency.ArithmeticWangTable.tileN_zero._proof_1` refers to an auto-generated auxiliary declaration. These are not stable across refactors; consider using a different approach.
+
+Note: This linter can be disabled with `set_option linter.auxLemma false`
+@DiophantineConsistency.ArithmeticWangTable.tile_index : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V}, i < 942 → ∃ m < 942, i = ↑m
+@DiophantineConsistency.ArithmeticWangTable.westC : {V : Type u_1} →
+  [inst : LO.ORingStructure V] → [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] → V → V
+@DiophantineConsistency.ArithmeticWangTable.westC.congr_simp : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (i i_1 : V),
+  i = i_1 → DiophantineConsistency.ArithmeticWangTable.westC i = DiophantineConsistency.ArithmeticWangTable.westC i_1
+@DiophantineConsistency.ArithmeticWangTable.westC.eq_1 : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (i : V),
+  DiophantineConsistency.ArithmeticWangTable.westC i =
+    DiophantineConsistency.ArithmeticWangTable.tabValue
+      (DiophantineConsistency.ArithmeticWangTable.colList DiophantineConsistency.WangTiles942.Tile.west) 0 i
+@DiophantineConsistency.ArithmeticWangTable.westC_cast : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (m : ℕ),
+  DiophantineConsistency.ArithmeticWangTable.westC ↑m = ↑(DiophantineConsistency.ArithmeticWangTable.tileN m).west
+@DiophantineConsistency.ArithmeticWangTable.westC_definable : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], 𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.westC
+@DiophantineConsistency.ArithmeticWangTable.westC_defined : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+  𝚺₀-Function₁ DiophantineConsistency.ArithmeticWangTable.westC via DiophantineConsistency.ArithmeticWangTable.westDef
+@DiophantineConsistency.ArithmeticWangTable.westC_zero : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], DiophantineConsistency.ArithmeticWangTable.westC 0 = 2
+DiophantineConsistency.ArithmeticWangTable.westDef : 𝚺₀.Semisentence 2
+@DiophantineConsistency.ArithmeticWangTable.west_four : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.westC i = 4 →
+      DiophantineConsistency.ArithmeticWangTable.northC i = 436 ∧
+          DiophantineConsistency.ArithmeticWangTable.southC i = 0 ∨
+        DiophantineConsistency.ArithmeticWangTable.northC i = 437
+@DiophantineConsistency.ArithmeticWangTable.west_one : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.westC i = 1 →
+      DiophantineConsistency.ArithmeticWangTable.northC i = 438 ∨
+        DiophantineConsistency.ArithmeticWangTable.northC i = 437
+@DiophantineConsistency.ArithmeticWangTable.west_three : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {i : V},
+  i < 942 →
+    DiophantineConsistency.ArithmeticWangTable.westC i = 3 →
+      DiophantineConsistency.ArithmeticWangTable.northC i = 436 ∧
+        DiophantineConsistency.ArithmeticWangTable.eastC i = 4 ∧ DiophantineConsistency.ArithmeticWangTable.southC i = 4
+DiophantineConsistency.WangTiles942.tile.eq_1 : ∀ (i : Fin 942),
+  DiophantineConsistency.WangTiles942.tile i = DiophantineConsistency.WangTiles942.orderedRows[↑i].2

@@ -1,0 +1,22 @@
+"""Check every enumerated historical declaration against the private compat table."""
+from pathlib import Path
+import hashlib,json,os,shutil,subprocess,tempfile,time
+R=Path(__file__).resolve().parents[2];B=Path(os.environ.get('WANG_COMPAT_TABLE','/tmp/adaptive-wang-table-compat-3n1xfmf_'));E=Path('/tmp/adaptive-wang-export-enumeration-j8u8nv42');C=Path('/tmp/adaptive13-assembly-recomposed-q9s50zdl');H=Path('/tmp/construction-share/pinned-final/DiophantineConsistency/ArithmeticWangTable.olean');T='/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean';Q=Path('/tmp/adaptive-wang-chunk-full-src/DiophantineConsistency')
+sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();read=lambda p:json.loads(Path(p).read_text());bs=read(B/'state.json');es=read(E/'state.json');cs=read(C/'state.json');hsfile=R/'reviews/adaptive-assembly-historical2011-evidence/state.json';hs=read(hsfile);chunk=Path(bs['chunk_provider']);ck=read(chunk/'state.json');g=read(C/'guards.json');providers=read(C/'providers.json');comp=read(E/'comparison.json');names=comp['historical_names'];assert bs['status']==cs['status']==ck['status']=='PASS' and es['status']=='DIFFERENCES' and len(names)==len(set(names))==124 and sha(E/'comparison.json')==es['comparison_sha256']
+assert sha(H)==es['historical_object_sha256'];assert sha(C/'guards.json')==bs['guards_sha256']==cs['guards_sha256'] and sha(C/'providers.json')==bs['providers_sha256']==cs['providers_sha256'];bh=sha(B/'state.json');eh=sha(E/'state.json');hh=sha(H);hsh=sha(hsfile);ch=sha(chunk/'state.json');obj=B/'lib/DiophantineConsistency/ArithmeticWangTable.olean';assert ch==bs['chunk_state_sha256'] and sha(obj)==bs['object_sha256']
+def auth():
+ return (sha(B/'state.json')==bh and sha(E/'state.json')==eh and sha(E/'comparison.json')==es['comparison_sha256'] and sha(H)==hh and sha(hsfile)==hsh and sha(chunk/'state.json')==ch and sha(obj)==bs['object_sha256']
+  and sha(C/'guards.json')==bs['guards_sha256'] and sha(C/'providers.json')==bs['providers_sha256'] and all(sha(p)==v for p,v in g.items()) and all(sha(x['path'])==x['sha256'] for x in providers.values())
+  and all(sha(Q/(x['name']+'.lean'))==x['source_sha256'] and sha(chunk/'lib/DiophantineConsistency'/(x['name']+'.olean'))==x['object_sha256'] and sha(chunk/'logs'/(x['name']+'.log'))==x['log_sha256'] for x in ck['records']))
+assert auth();w=Path(tempfile.mkdtemp(prefix='adaptive-wang-compat-124-check-'));shutil.copyfile(__file__,w/'driver.py');shutil.copyfile(E/'comparison.json',w/'enumerated-inventory.json')
+body='import DiophantineConsistency.ArithmeticWangTable\n'+''.join('#check @'+n+'\n' for n in names);paths={'historical':hs['LEAN_PATH'],'compat':':'.join([str(B/'lib'),*bs['boundary']])};state={'status':'RUNNING','private':str(w),'compat_provider':str(B),'compat_state_sha256':bh,'compat_object_sha256':bs['object_sha256'],'historical_object_sha256':hh,'enumeration_state_sha256':eh,'inventory_sha256':es['comparison_sha256'],'guard_sha256':bs['guards_sha256'],'provider_sha256':bs['providers_sha256'],'query_count':len(names),'scope':'All 124 historically module-attributed non-private names are #checked against a historical object and private compatibility object, with byte-identical printed types required; does not compare all elaborator registration, definition values, or establish historical source provenance.'}
+def save():(w/'state.json').write_text(json.dumps(state,indent=2)+'\n')
+save();print('PRIVATE',w,flush=True)
+try:
+ for label,path in paths.items():
+  src=w/'query.lean';src.write_text(body);log=w/(label+'.log');tim=w/(label+'.time');env=dict(os.environ,LEAN_PATH=path,LEAN_NUM_THREADS='1');env.pop('LEAN_SRC_PATH',None);cmd=['/usr/bin/ionice','-c','3','/usr/bin/nice','-n','10',T,'-M6000','-j1','-DElab.async=false','-R',str(w),str(src)];start=time.monotonic();print('START',label,flush=True)
+  with log.open('w') as f:code=subprocess.run(['/usr/bin/time','-v','-o',str(tim),*cmd],cwd=R,env=env,stdout=f,stderr=subprocess.STDOUT).returncode
+  state[label]={'exit':code,'seconds':time.monotonic()-start,'source_sha256':sha(src),'log_sha256':sha(log),'time_sha256':sha(tim),'command':cmd};save();print('DONE',label,code,flush=True)
+  if code:raise RuntimeError(label)
+ state['outputs_equal']=(w/'historical.log').read_bytes()==(w/'compat.log').read_bytes();assert state['outputs_equal'];assert auth();state['status']='PASS';save();print('PASS',w,flush=True)
+except BaseException as e:state.update(status='FAILED',failure=str(e));save();raise

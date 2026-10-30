@@ -1,0 +1,5 @@
+# Independent compatibility 124-name displayed-type check
+
+Root peer `/tmp/adaptive-wang-compat-124-check-i5umast1` **PASS**: the historical and private compatibility providers both accepted all 124 pinned names and their complete outputs match within that run. The query source, inventory, compatibility object and provider hashes match the author run. Across runs the full-log hashes differ because each log records its own private query directory in 31 auxiliary-name warning paths; replacing only the directory prefixes makes both corresponding full logs byte-identical. The initial failed distinct-query-path attempt remains preserved in the author receipt.
+
+The eight-file evidence manifest `adaptive-wang-compat-124-independent-evidence/FILES.json` has SHA-256 `b7fdc1b458ee4f528ccb088ce5af51a868d6acd4bc56bff39133edef9f27515a`. This checks printed types and availability against a historical object, whose current-source provenance is not established; it does not establish all registration properties, definition bodies, or canonical integration.

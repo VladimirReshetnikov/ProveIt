@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAFstIdxWitnessBound
+set_option autoImplicit false
+#print axioms DiophantineConsistency.PRAFstIdxWitnessBound.fstIdx_bnd_succ
+#print axioms DiophantineConsistency.PRAFstIdxWitnessBound.candidate_fstIdx_bound
+#print axioms DiophantineConsistency.PRAFstIdxWitnessBound.candidate_proves_fstIdx_bound
+#check DiophantineConsistency.PRAFstIdxWitnessBound.candidate_proves_fstIdx_bound
