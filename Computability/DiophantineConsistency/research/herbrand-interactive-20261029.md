@@ -70,4 +70,7 @@ multiple induction instances, and comparison with standard PRA remain open.
 After the 32-module replay, an upstream merge refactored finite and interactive
 Herbrand extraction, contextual tree witness/selection, and valuation
 compactness. The coded-stage proof covers the preceding snapshot; the affected
-chain must be rebuilt against the merged sources.
+chain has since passed a 45-module author rebuild and two independent replays
+with matching source, object and full-log hashes. This also checks a U-theory
+bridge for one closed coded induction axiom with no external predicate
+parameters. Arbitrary and multiple induction instances remain open.

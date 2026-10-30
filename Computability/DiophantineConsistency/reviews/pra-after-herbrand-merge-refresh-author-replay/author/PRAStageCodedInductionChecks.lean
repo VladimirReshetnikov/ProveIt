@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAStageCodedInduction
+open DiophantineConsistency.PRAStageCodedInduction
+#print axioms modelChiInd
+#print axioms modelInductionFormula
+#check modelInductionFormula

@@ -104,8 +104,10 @@ contextual extraction and six-module bounded-comparison descendants have also
 passed independent replays against that provider.
 A later upstream merge refactored finite and interactive Herbrand extraction,
 contextual tree witness/selection, and valuation compactness. The checked
-coded-stage chain covers the preceding snapshot; its affected descendants need
-a fresh dependency-aware rebuild.
+coded-stage chain covers the preceding snapshot. Its affected descendants and
+a one-closed-coded-induction-axiom U-theory bridge have since passed a
+45-module author rebuild and two independent replays. Arbitrary and multiple
+induction instances remain open.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)

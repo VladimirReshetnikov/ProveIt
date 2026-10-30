@@ -1,0 +1,24 @@
+'DiophantineConsistency.PRAStageCodedInduction.modelChiInd' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.PRAStageCodedInduction.modelInductionFormula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRAStageCodedInduction.modelInductionFormula {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M] {n : ℕ}
+  (pred : DiophantineConsistency.PRAFiniteFunctionCodes.Code (n + 3)) (e : ℕ → M) :
+  (LO.FirstOrder.Semiformula.Eval ![] e) (inductionFormula pred) ↔
+    ∀ (c z : M),
+      have params := fun i => e ↑i;
+      have zero := LO.FirstOrder.Structure.func (DiophantineConsistency.PRAFiniteFunctionCodes.Code.zero 0) Fin.elim0;
+      have one := LO.FirstOrder.Structure.func DiophantineConsistency.PRALanguage.oneCode Fin.elim0;
+      have p := fun x y =>
+        (LO.FirstOrder.Structure.func pred fun i =>
+            Fin.cases x (fun i => Fin.cases y (fun i => Fin.cases c params i) i) i) =
+          one;
+      ((∃ y₀, p zero y₀) ∧
+          ∀ (x : M),
+            (∃ y, p x y) →
+              ∃ q,
+                p (LO.FirstOrder.Structure.func DiophantineConsistency.PRAFiniteFunctionCodes.Code.succ fun x_1 => x)
+                  q) →
+        ∃ w, p z w
