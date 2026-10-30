@@ -44,6 +44,19 @@ variable {k : ℕ} {arities : Fin k → ℕ}
 /-- Membership of the enlarged language (the `ℒₛₑₜ` summand's symbol). -/
 local instance : Language.Mem (setTemplateLanguage k arities) := ⟨Sum.inl Language.Set.Rel.mem⟩
 
+/-- Terms in the template language commute with subtype projection, because
+that language has no function symbols. -/
+theorem val_template_subtype {M ξ : Type*} {P : M → Prop}
+    [Structure (setTemplateLanguage k arities) M]
+    [Structure (setTemplateLanguage k arities) {x // P x}]
+    {n : ℕ} (t : Semiterm (setTemplateLanguage k arities) ξ n)
+    (b : Fin n → {x // P x}) (f : ξ → {x // P x}) :
+    t.val (Subtype.val ∘ b) (Subtype.val ∘ f) = (t.val b f).1 := by
+  cases t with
+  | bvar i => rfl
+  | fvar x => rfl
+  | func g v => rcases g with g | g <;> exact g.elim
+
 /-- The template theory over `k` placeholders. -/
 def templTheory (k : ℕ) (arities : Fin k → ℕ) : FirstOrder.Theory (setTemplateLanguage k arities) :=
   FirstOrder.Theory.lMap (setHom k arities) (𝗭𝗙 : SetTheory) ∪

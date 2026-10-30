@@ -1,5 +1,6 @@
 import ZFCinPA.LTemplate
 import ZFCinPA.NativeGicDelta1
+import ZFCinPA.ModelCodedSchemaAxioms
 
 set_option autoImplicit false
 noncomputable section
@@ -65,6 +66,27 @@ lemma translate_gicBodySource
     translateTerm_bvar, Bootstrapping.Semiformula.imp_def, Matrix.comp_vecCons', Matrix.empty_eq]
   all_goals rfl
 
+
+/-- The support substitution is the raw identity on the core. -/
+lemma gic_core_subst_identity (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
+    subst ℒₛₑₜ ((gicSubst01Const : ℕ) : V) K.val = K.val := by
+  have h : ((gicSubst01Const : ℕ) : V) = (repSubst3Const : V) := by
+    rw [val_gicSubst01Const, val_repSubst3Const]
+  rw [h]
+  exact ModelCodedSchemaAxioms.rep_core_subst_identity K
+
+lemma gic_class_iff (p : V) : p ∈ gicTheory.Δ₁Class ↔ GicR p := by
+  change (V ⊧/![p] gicCh.val) ↔ _
+  simp
+
+/-- The closing code of an open GIC body is recognized. -/
+theorem closedGic_recognized (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
+    GicR (closeFormulaCode ℒₛₑₜ (gicBodyVal K.val)) := by
+  apply closeFormulaCode_schemaRecognizer gicBodyVal K
+  · rw [gicBodyVal_eq K]; exact (gicBody K).isSemiformula
+  · have h := subst01_le_gicBodyVal K.val
+    rw [gic_core_subst_identity K] at h
+    exact h
 
 end Internal
 

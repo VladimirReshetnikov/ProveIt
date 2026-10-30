@@ -25,18 +25,24 @@ theorem negatedAxiom_noUniversal (σ : Sentence language) (hσ : UniversalAxiom 
   have he := (universalPrefix_rew_iff σ (Rew.emb : Rew language Empty 0 ℕ 0)).mpr hu
   exact noUniversal_neg_of_prefix _ he
 
-theorem existentialSequent_noUniversal (φ : Semiproposition language 1) (hOpen : φ.Open)
+/-- A universal-axiom sequent inherits the no-universal property from its head. -/
+theorem sequent_noUniversal (φ : Proposition language) (hφ : NoUniversal φ)
     (axioms : List (Sentence language)) (hAxioms : ∀ σ ∈ axioms, UniversalAxiom σ) :
-    ∀ ψ ∈ (∃⁰ φ) :: ∼Sequent.embed axioms, NoUniversal ψ := by
+    ∀ ψ ∈ φ :: ∼Sequent.embed axioms, NoUniversal ψ := by
   intro ψ hψ
   simp only [List.mem_cons] at hψ
   rcases hψ with rfl | hψ
-  · exact noUniversal_of_open φ hOpen
+  · exact hφ
   · simp only [List.tilde_def, Sequent.embed, List.mem_map] at hψ
     obtain ⟨χ, hχ, hψ⟩ := hψ
     obtain ⟨σ, hσ, rfl⟩ := hχ
     subst ψ
     exact negatedAxiom_noUniversal σ (hAxioms σ hσ)
+
+theorem existentialSequent_noUniversal (φ : Semiproposition language 1) (hOpen : φ.Open)
+    (axioms : List (Sentence language)) (hAxioms : ∀ σ ∈ axioms, UniversalAxiom σ) :
+    ∀ ψ ∈ (∃⁰ φ) :: ∼Sequent.embed axioms, NoUniversal ψ :=
+  sequent_noUniversal (∃⁰ φ) (noUniversal_of_open φ hOpen) axioms hAxioms
 
 /-- A cut-free proof for an existential goal with the precise finite list of
 universal axioms preserved. It has no universal-rule nodes. -/

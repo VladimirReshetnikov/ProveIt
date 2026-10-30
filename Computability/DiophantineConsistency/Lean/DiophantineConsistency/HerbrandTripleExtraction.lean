@@ -25,16 +25,8 @@ noncomputable def prepareTriple (φ : Semiproposition language 3) (hOpen : φ.Op
     Prepared (∃⁰ ∃⁰ φ) axioms := by
   let dd := Derivation.Canonical.hauptsatz d
   have hn : NoUniversal φ := noUniversal_of_open φ hOpen
-  have hg : ∀ ψ ∈ (∃⁰ ∃⁰ ∃⁰ φ) :: ∼Sequent.embed axioms, NoUniversal ψ := by
-    intro ψ hψ
-    simp only [List.mem_cons] at hψ
-    rcases hψ with rfl | hψ
-    · exact hn
-    · simp only [List.tilde_def, Sequent.embed, List.mem_map] at hψ
-      obtain ⟨χ,hχ,hψ⟩ := hψ
-      obtain ⟨σ,hσ,rfl⟩ := hχ
-      subst ψ
-      exact negatedAxiom_noUniversal σ (hAxioms σ hσ)
+  have hg : ∀ ψ ∈ (∃⁰ ∃⁰ ∃⁰ φ) :: ∼Sequent.embed axioms, NoUniversal ψ :=
+    sequent_noUniversal (∃⁰ ∃⁰ ∃⁰ φ) hn axioms hAxioms
   exact ⟨dd.val, dd.property, cutFree_noUniversalRule dd.val dd.property hg⟩
 
 /-- Prepare the concrete proof of a closed triple-existential theorem. -/
@@ -82,6 +74,7 @@ section models
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
   [M↓[language] ⊧* UniversalAxiom]
 
+set_option linter.unusedVariables false in
 omit [Structure.Eq language M] in
 theorem modelTripleWitness (φ : Semiproposition language 3) (hOpen : φ.Open)
     (axioms : List (Sentence language)) (hAxioms : ∀ σ ∈ axioms, UniversalAxiom σ)
@@ -105,11 +98,7 @@ theorem modelTripleWitness (φ : Semiproposition language 3) (hOpen : φ.Open)
   have h₂'' := (Iff.of_eq (boundedEval.eq_8 ts e (afterSecond φ t u))).mp h₂'
   obtain ⟨v,hv,h₃⟩ := h₂''
   refine ⟨t,ht,u,hu,v,hv,?_⟩
-  apply (bounded_open_iff ts e (tripleInstance φ t u v) ?_).mp
-  · exact h₃
-  · change (Rew.subst ![v] ▹ ((Rew.subst ![u]).q ▹ ((Rew.subst ![t]).qpow 2 ▹ φ))).qr = 0
-    rw [PRAFormulaParameters.qr_rew, PRAFormulaParameters.qr_rew, PRAFormulaParameters.qr_rew]
-    exact hOpen
+  exact bounded_implies_truth ts e (tripleInstance φ t u v) h₃
 
 omit [Structure.Eq language M] in
 theorem modelTripleDisjunction (φ : Semiproposition language 3) (hOpen : φ.Open)

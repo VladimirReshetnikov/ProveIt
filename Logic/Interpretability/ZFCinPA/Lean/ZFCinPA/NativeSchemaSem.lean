@@ -190,17 +190,13 @@ instance sdStructure : Structure (setTemplateLanguage k arities) (SD M) where
 omit [Nonempty M] in
 lemma val_term {ξ : Type*} {n : ℕ} (t : Semiterm (setTemplateLanguage k arities) ξ n)
     (b : Fin n → SD M) (f : ξ → SD M) :
-    t.val (s := s) (Subtype.val ∘ b) (Subtype.val ∘ f) = (t.val b f).1 := by
-  cases t with
-  | bvar i => rfl
-  | fvar x => rfl
-  | func g v => rcases g with g | g <;> exact g.elim
+    t.val (s := s) (Subtype.val ∘ b) (Subtype.val ∘ f) = (t.val b f).1 :=
+  LTemplate.val_template_subtype t b f
 
 omit [Nonempty M] in
 lemma val_cons' {n : ℕ} (x : SD M) (b : Fin n → SD M) :
-    Subtype.val ∘ (x :> b) = (x.1 :> Subtype.val ∘ b) := by
-  funext i
-  cases i using Fin.cases <;> simp
+    Subtype.val ∘ (x :> b) = (x.1 :> Subtype.val ∘ b) :=
+  Matrix.comp_vecCons Subtype.val x b
 
 variable [Structure.Eq (setTemplateLanguage k arities) M]
 variable [Structure.Mem (setTemplateLanguage k arities) M]

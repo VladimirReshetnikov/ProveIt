@@ -52,6 +52,7 @@ theorem modelPreparedBounded (φ : Semiproposition language 1)
       simpa using hσeval
     exact False.elim (hneg (bounded_implies_truth ts e _ hval))
 
+set_option linter.unusedVariables false in
 omit [Structure.Eq language M] in
 /-- In every universal-theory model, the collected existential-rule terms
 contain a witness for the open target matrix, for every free-variable valuation. -/
@@ -65,11 +66,7 @@ theorem modelPreparedWitness (φ : Semiproposition language 1) (hOpen : φ.Open)
   rw [boundedEval.eq_8] at hval
   obtain ⟨t,ht,htval⟩ := hval
   refine ⟨t,ht,?_⟩
-  have hopen' : (φ/[t]).Open := by
-    change (Rew.subst ![t] ▹ φ).qr = 0
-    rw [PRAFormulaParameters.qr_rew]
-    exact hOpen
-  exact (bounded_open_iff ts e (φ/[t]) hopen').mp htval
+  exact bounded_implies_truth ts e (φ/[t]) htval
 
 omit [Structure.Eq language M] in
 theorem modelPreparedDisjunction (φ : Semiproposition language 1) (hOpen : φ.Open)
