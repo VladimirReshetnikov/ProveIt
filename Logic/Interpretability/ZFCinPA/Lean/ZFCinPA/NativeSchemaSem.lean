@@ -372,18 +372,10 @@ theorem replT_provable : templN 1 ar2 ⊢ replT := by
       (by
         convert hr using 2
         rename_i j
-        obtain ⟨n, hn⟩ := j
-        match n, hn with
-        | 0, _ => rfl
-        | 1, _ => rfl
-        | n + 2, hn => exact absurd hn (by show ¬ (n + 2 < 2); omega))
+        match j with | 0 => rfl | 1 => rfl)
     convert key using 2
     rename_i j
-    obtain ⟨n, hn⟩ := j
-    match n, hn with
-    | 0, _ => rfl
-    | 1, _ => rfl
-    | n + 2, hn => exact absurd hn (by show ¬ (n + 2 < 2); omega)
+    match j with | 0 => rfl | 1 => rfl
   simp [models_iff, repS, R2, Semiformula.Operator.mem_def, Semiformula.Operator.eq_def,
     FirstOrder.Semiformula.existsUnique, FirstOrder.Semiformula.bexsMem, LO.FirstOrder.bexs,
     vec2_val]
