@@ -1,0 +1,17 @@
+from pathlib import Path
+import hashlib,json,os,shutil,subprocess,tempfile,time
+R=Path('/home/codex/.codex/worktrees/46be/Proofs');P=Path(os.environ.get('WANG_CHUNK_FULL_SRC','/tmp/adaptive-wang-chunk-full-src'));S=P/'DiophantineConsistency';B=Path('/tmp/adaptive13-assembly-recomposed-q9s50zdl');sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();bs=json.loads((B/'state.json').read_text());g=json.loads((B/'guards.json').read_text());providers=json.loads((B/'providers.json').read_text());gen=json.loads((P/'generation.json').read_text());assert bs['status']=='PASS' and sha(gen['original'])==gen['original_sha256'] and sha(P/'original-snapshot.lean')==gen['original_sha256'];assert sha(B/'guards.json')==bs['guards_sha256'] and sha(B/'providers.json')==bs['providers_sha256'];auth=lambda:all(sha(p)==h for p,h in g.items()) and all(sha(x['path'])==x['sha256'] for x in providers.values());assert auth();names=['ArithmeticWangTableChunkCore']+[f'ArithmeticWangTableChunk{k}{i}' for k in 'ABC' for i in range(8)]+['ArithmeticWangTableChunkFacts'];w=Path(tempfile.mkdtemp(prefix='adaptive-wang-chunk-full-'));lib=w/'lib/DiophantineConsistency';lib.mkdir(parents=True);logs=w/'logs';logs.mkdir()
+for f in (B/'lib').rglob('*'):
+ if f.is_file():
+  rel=f.relative_to(B/'lib');dst=w/'lib'/rel;dst.parent.mkdir(parents=True,exist_ok=True);dst.symlink_to(f.resolve())
+shutil.copyfile(__file__,w/'driver.py');shutil.copyfile(P/'generation.json',w/'generation.json');shutil.copyfile(P/'original-snapshot.lean',w/'original-snapshot.lean')
+for n in names:shutil.copyfile(S/(n+'.lean'),logs/(n+'.lean'))
+state={'status':'RUNNING','private':str(w),'snapshot_sha256':{n:sha(logs/(n+'.lean')) for n in names},'original_sha256':gen['original_sha256'],'base_state_sha256':sha(B/'state.json'),'base_guards_sha256':sha(B/'guards.json'),'base_providers_sha256':sha(B/'providers.json'),'boundary':bs['boundary'],'records':[],'scope':gen['scope']};save=lambda:(w/'state.json').write_text(json.dumps(state,indent=2)+'\n');save();print('PRIVATE',w,flush=True);env=dict(os.environ,LEAN_PATH=':'.join([str(w/'lib'),*bs['boundary']]),LEAN_NUM_THREADS='1');env.pop('LEAN_SRC_PATH',None)
+try:
+ for n in names:
+  src=S/(n+'.lean');assert sha(src)==state['snapshot_sha256'][n];o=lib/(n+'.olean');log=logs/(n+'.log');tim=logs/(n+'.time');cmd=['/usr/bin/ionice','-c','3','/usr/bin/nice','-n','10','/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean','-M6000','-j1','-DElab.async=false','-R',str(P),'-o',str(o),str(src)];print('START',n,flush=True);start=time.monotonic()
+  with log.open('w') as f:code=subprocess.run(['/usr/bin/time','-v','-o',str(tim),*cmd],cwd=R,env=env,stdout=f,stderr=subprocess.STDOUT).returncode
+  rec={'name':n,'exit':code,'seconds':time.monotonic()-start,'source_sha256':sha(src),'log_sha256':sha(log),'time_sha256':sha(tim),'command':cmd};rec.update({'object_sha256':sha(o)} if o.exists() else {});state['records'].append(rec);save();print('DONE',n,code,round(rec['seconds'],2),flush=True);print(log.read_text(),flush=True)
+  if code:raise RuntimeError(n)
+ assert sha(gen['original'])==state['original_sha256'] and sha(B/'state.json')==state['base_state_sha256'] and all(sha(S/(n+'.lean'))==state['snapshot_sha256'][n] for n in names) and auth();state['status']='PASS';save();print('PASS',w,flush=True)
+except BaseException as e:state.update(status='FAILED',failure=str(e));save();raise
