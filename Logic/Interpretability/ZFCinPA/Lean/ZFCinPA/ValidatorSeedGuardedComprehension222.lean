@@ -16,83 +16,7 @@ open ValidatorSeedRawComprehension222
 open scoped LO.FirstOrder.Arithmetic
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem exists_project {T : InternalTheory V ℒₛₑₜ} {Γ : List (Formula V ℒₛₑₜ)}
-    {p q : Semiformula V ℒₛₑₜ 1} {r : Formula V ℒₛₑₜ}
-    (h : Γ ⊢[T] r 🡒 ∃⁰ (p ⋏ q)) : Γ ⊢[T] r 🡒 ∃⁰ p := by
-  have he : Γ ⊢[T] (∃⁰ (p ⋏ q)) 🡒 ∃⁰ p := by
-    apply TProof.exs_imp_exs!
-    simp only [Bootstrapping.Semiformula.free,Bootstrapping.Semiformula.shift_and,
-      Bootstrapping.Semiformula.substs_and]
-    cl_prover
-  cl_prover [h,he]
-
-private def pairMatrix (K : Semiformula V ℒₛₑₜ 2) : Semiformula V ℒₛₑₜ 2 :=
-  ((∀⁰ ((⌜seedMem 3 0 1⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 3) 🡒 ∃⁰
-      ((K.subst ![⌜(#1 : SyntacticSemiterm ℒₛₑₜ 4)⌝,⌜(#0 : SyntacticSemiterm ℒₛₑₜ 4)⌝]) ⋏
-        (∀⁰ ((⌜seedSubset⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 5) 🡒 ∀⁰
-          ((K.subst ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 6)⌝,⌜(#1 : SyntacticSemiterm ℒₛₑₜ 6)⌝]) 🡒
-            ∃⁰ ((K.subst ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 7)⌝,⌜(#2 : SyntacticSemiterm ℒₛₑₜ 7)⌝]) ⋏
-              (⌜seedMem 7 0 5⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 7)))))))) ⋏
-    (∀⁰ ((K.subst ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 3)⌝,⌜(#2 : SyntacticSemiterm ℒₛₑₜ 3)⌝]) 🡒
-      ∃⁰ ((K.subst ![⌜(#0 : SyntacticSemiterm ℒₛₑₜ 4)⌝,⌜(#3 : SyntacticSemiterm ℒₛₑₜ 4)⌝]) ⋏
-        (⌜seedMem 4 0 2⌝ : Bootstrapping.Semiformula V ℒₛₑₜ 4)))))
-
-private def pairAt (K : Semiformula V ℒₛₑₜ 2) (a c : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ :=
-  (pairMatrix K).subst ![c,a]
-private def pairExists (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) : Semiformula V ℒₛₑₜ 1 :=
-  (pairMatrix K).subst ![Bootstrapping.Semiterm.bvar 0,a.bShift]
-private theorem pair_exists (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) :
-    Source V ⊢ ∃⁰ pairExists K a := by
-  simpa [fullSeedBody,pairExists,pairMatrix,SemitermVec.q] using
-    TProof.specialize! (⟨openSeedProof K⟩) a
-
 attribute [local irreducible] pairAt pairExists pairMatrix
-
-private theorem pair_support (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
-    Source V ⊢ pairAt K a c 🡒 (memTerm y c 🡒 ∃⁰ K.subst ![y.bShift,Bootstrapping.Semiterm.bvar 0]) := by
-  rcases term_is_fvar a with ⟨a,rfl⟩
-  rcases term_is_fvar c with ⟨c,rfl⟩
-  rcases term_is_fvar y with ⟨y,rfl⟩
-  apply deduct'!
-  have hp : [pairAt K (Bootstrapping.Semiterm.fvar a) (Bootstrapping.Semiterm.fvar c)] ⊢[Source V] pairAt K (Bootstrapping.Semiterm.fvar a) (Bootstrapping.Semiterm.fvar c) := by_axm₀!
-  simp only [pairAt,pairMatrix,Bootstrapping.Semiformula.substs_and] at hp
-  have hs := K!_left hp
-  simp only [Bootstrapping.Semiformula.substs_all] at hs
-  have hx := TProof.specialize_with_ctx! hs (Bootstrapping.Semiterm.fvar y)
-  simp only [Bootstrapping.Semiformula.substs_substs,Bootstrapping.Semiformula.substs_imp,
-    Bootstrapping.Semiformula.substs_ex,Bootstrapping.Semiformula.substs_and] at hx
-  have hx' := exists_project hx
-  simpa [pairAt,pairMatrix,memTerm,seedMem,SemitermVec.q,Bootstrapping.Semiformula.substs_substs,
-    Matrix.comp_vecCons',Matrix.vecHead,Matrix.vecTail] using hx'
-
-private theorem pair_request (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
-    Source V ⊢ pairAt K a c 🡒 (K.subst ![y,a] 🡒
-      ∃⁰ (K.subst ![Bootstrapping.Semiterm.bvar 0,a.bShift] ⋏ memTerm (Bootstrapping.Semiterm.bvar 0) c.bShift)) := by
-  rcases term_is_fvar a with ⟨a,rfl⟩
-  rcases term_is_fvar c with ⟨c,rfl⟩
-  rcases term_is_fvar y with ⟨y,rfl⟩
-  apply deduct'!
-  have hp : [pairAt K (Bootstrapping.Semiterm.fvar a) (Bootstrapping.Semiterm.fvar c)] ⊢[Source V] pairAt K (Bootstrapping.Semiterm.fvar a) (Bootstrapping.Semiterm.fvar c) := by_axm₀!
-  simp only [pairAt,pairMatrix,Bootstrapping.Semiformula.substs_and] at hp
-  have hs := K!_right hp
-  simp only [Bootstrapping.Semiformula.substs_all] at hs
-  have hx := TProof.specialize_with_ctx! hs (Bootstrapping.Semiterm.fvar y)
-  simpa [pairAt,pairMatrix,memTerm,seedMem,SemitermVec.q,Bootstrapping.Semiformula.substs_substs,
-    Matrix.comp_vecCons',Matrix.vecHead,Matrix.vecTail] using hx
-
-@[simp] private theorem pairAt_shift (K : Semiformula V ℒₛₑₜ 2) (a c : Term V ℒₛₑₜ) :
-    (pairAt K a c).shift=pairAt K.shift a.shift c.shift := by
-  rcases term_is_fvar a with ⟨a,rfl⟩
-  rcases term_is_fvar c with ⟨c,rfl⟩
-  simp [pairAt,pairMatrix,seedMem,seedSubset,Bootstrapping.Semiformula.shift_substs,
-    SemitermVec.q,Matrix.comp_vecCons',Matrix.vecHead,Matrix.vecTail]
-
-@[simp] private theorem pairExists_free (K : Semiformula V ℒₛₑₜ 2) (a : Term V ℒₛₑₜ) :
-    (pairExists K a).free=pairAt K.shift a.shift (Bootstrapping.Semiterm.fvar 0) := by
-  rcases term_is_fvar a with ⟨a,rfl⟩
-  simp [pairExists,pairAt,pairMatrix,seedMem,seedSubset,Bootstrapping.Semiformula.free,
-    Bootstrapping.Semiformula.shift_substs,Bootstrapping.Semiformula.substs_substs,
-    SemitermVec.q,Matrix.comp_vecCons',Matrix.vecHead,Matrix.vecTail]
 
 private def closureTerm {n : ℕ} (K : Semiformula V ℒₛₑₜ 2)
     (c y : Semiterm V ℒₛₑₜ n) : Semiformula V ℒₛₑₜ n :=
@@ -134,7 +58,7 @@ private def hitBody (K : Semiformula V ℒₛₑₜ 2) (p c : Term V ℒₛₑ�
 
 private theorem pair_closure (K : Semiformula V ℒₛₑₜ 2) (a c y : Term V ℒₛₑₜ) :
     Source V ⊢ pairAt K a c 🡒 memTerm y c 🡒 closureTerm K c y := by
-  unfold pairAt pairMatrix closureTerm
+  unfold closureTerm
   exact full_member_closure K a c y
 
 private theorem closure_step (K : Semiformula V ℒₛₑₜ 2) (c y p v : Term V ℒₛₑₜ) :
