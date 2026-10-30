@@ -9,53 +9,34 @@ open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open DiophantineConsistency.StrictSigmaOneInduction
 variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻]
 attribute [local irreducible] bitDef pairDef
-theorem bit_inside_bound (x u s w : V) (hw : PRABitFullWitnessBound.bitMajorant u ≤ w)
- (h : bitDef.val.Evalb ![x,u]) : (bnd “x u s. x ∈ u”).Evalb ![x,u,s,w] := by
+private theorem bnd_rew_inside (ψ : ArithmeticSemisentence 2) (x u s w t : V)
+    (ht : t ≤ w) (hb : (bnd ψ).Evalb ![x,u,t]) :
+    (bnd (Rew.subst ![#0,#1] ▹ ψ)).Evalb ![x,u,s,w] := by
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  have hb := PRABitFullWitnessBound.bit_bound x u h
-  have hs : Fin.snoc ![x,u] (PRABitFullWitnessBound.bitMajorant u) = ![x,u,PRABitFullWitnessBound.bitMajorant u] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hm := eval_bnd_mono bitDef.val ![x,u] (Empty.elim : Empty → V) hw (by rw [hs]; exact hb)
+  have hm := eval_bnd_mono ψ ![x,u] (Empty.elim : Empty → V) ht (by simpa using hb)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
-  have hn := PRABndRewriting.natural bitDef.val ω ![x,u,s] w
+  have hn := PRABndRewriting.natural ψ ω ![x,u,s] w
   have hv : (fun j => (ω #j).val ![x,u,s] Empty.elim) = ![x,u] := by
     funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![x,u,s] w = ![x,u,s,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs'' : Fin.snoc ![x,u] w = ![x,u,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  rw [hv,hs',hs''] at hn
-  rw [hs''] at hm
-  simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hn.mpr hm
+  have hs : Fin.snoc ![x,u,s] w = ![x,u,s,w] := by simp
+  have hs' : Fin.snoc ![x,u] w = ![x,u,w] := by simp
+  rw [hv, hs, hs'] at hn
+  rw [hs'] at hm
+  exact hn.mpr hm
+
+theorem bit_inside_bound (x u s w : V) (hw : PRABitFullWitnessBound.bitMajorant u ≤ w)
+ (h : bitDef.val.Evalb ![x,u]) : (bnd “x u s. x ∈ u”).Evalb ![x,u,s,w] := by
+  have hb := bnd_rew_inside bitDef.val x u s w _ hw (PRABitFullWitnessBound.bit_bound x u h)
+  simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hb
 
 theorem neg_bit_inside_bound (x u s w : V) (hw : PRANegBitFullWitnessBound.negBitMajorant u ≤ w)
  (h : (∼bitDef.val).Evalb ![x,u]) : (bnd (∼“x u s. x ∈ u”)).Evalb ![x,u,s,w] := by
-  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  have hb := PRANegBitFullWitnessBound.negBit_bound x u h
-  have hs : Fin.snoc ![x,u] (PRANegBitFullWitnessBound.negBitMajorant u) = ![x,u,PRANegBitFullWitnessBound.negBitMajorant u] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hm := eval_bnd_mono (∼bitDef.val) ![x,u] (Empty.elim : Empty → V) hw (by rw [hs]; exact hb)
+  have hb := bnd_rew_inside (∼bitDef.val) x u s w _ hw (PRANegBitFullWitnessBound.negBit_bound x u h)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
-  have hn := PRABndRewriting.natural (∼bitDef.val) ω ![x,u,s] w
-  have hv : (fun j => (ω #j).val ![x,u,s] Empty.elim) = ![x,u] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![x,u,s] w = ![x,u,s,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs'' : Fin.snoc ![x,u] w = ![x,u,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  rw [hv,hs',hs''] at hn
-  rw [hs''] at hm
-  have hh := hn.mpr hm
   have heq : (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) := by
     exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val
-  rw [heq] at hh
-  simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
+  rw [heq] at hb
+  simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hb
  theorem domain_bound (u s w : V) (hs : s ≤ w)
  (hposu : PRABitFullWitnessBound.bitMajorant u ≤ w)
  (hnegu : PRANegBitFullWitnessBound.negBitMajorant u ≤ w)
