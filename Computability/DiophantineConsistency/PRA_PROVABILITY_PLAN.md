@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [positive-rule calculus](reviews/parsons-positive-rule-current-author-replay/README.md)
+restricts induction predicates to the positive bounded/existential syntax and
+embeds into the existing Parsons rule calculus. Strict prefixes and the local
+guard preserve this syntax. The full cut-free translator has not yet been shown
+to produce proofs in the restricted calculus.
+
 The [strict source-theory comparison](reviews/pra-strict-theory-author-replay/README.md)
 now translates proofs over PA-minus plus bounded or syntactic existential-bounded
 induction into candidate PRA for the stated open-existential goals, with the
