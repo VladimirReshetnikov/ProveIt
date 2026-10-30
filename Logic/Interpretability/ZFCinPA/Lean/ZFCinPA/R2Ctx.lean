@@ -1,4 +1,5 @@
 import ZFCinPA.ValidatorEnvironmentLabels254
+import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorQuantifierCore254
 
 set_option autoImplicit false
@@ -102,73 +103,35 @@ instance imps_definable : 𝚺₁-Function₂[V] imps := imps_defined.to_definab
 /-- Derivability in a context. -/
 def Der (G g : V) : Prop := CProv (imps G g)
 
-lemma cProv_imps_k (x : V) : ∀ G : V, CProv (wim x (imps G x)) := by
-  intro G
-  induction G using adjoin_ISigma1.sigma1_succ_induction
-  · definability
-  case nil => simpa using self_imp x
-  case adjoin a G ih =>
-    simp only [imps_cons]
-    exact ded1 (.mp (.ax (cProv_k (imps G x) a)) (.mp (.ax ih) h0))
+lemma cProv_imps_k (x : V) : ∀ G : V, CProv (wim x (imps G x)) :=
+  ValidatorImplicationContext.imps_k CProv imps imps_nil imps_cons cProv_classical x
 
 lemma der_of {G x : V} (h : CProv x) : Der G x := cProv_mp (cProv_imps_k x G) h
 
 lemma cProv_imps_mp (a b : V) : ∀ G : V,
-    CProv (wim (imps G (wim a b)) (wim (imps G a) (imps G b))) := by
-  intro G
-  induction G using adjoin_ISigma1.sigma1_succ_induction
-  · definability
-  case nil => simpa using self_imp (wim a b)
-  case adjoin c G ih =>
-    simp only [imps_cons]
-    apply ded3
-    exact .mp (.mp (.ax ih) (.mp h2 h0)) (.mp h1 h0)
+    CProv (wim (imps G (wim a b)) (wim (imps G a) (imps G b))) :=
+  ValidatorImplicationContext.imps_mp CProv imps imps_nil imps_cons cProv_classical a b
 
 lemma der_mp {G a b : V} (hab : Der G (wim a b)) (ha : Der G a) : Der G b :=
   cProv_mp (cProv_mp (cProv_imps_mp a b G) hab) ha
 
-lemma der_hyp : ∀ G : V, ∀ i < len G, Der G G.[i] := by
-  intro G
-  induction G using adjoin_ISigma1.sigma1_succ_induction
-  · unfold Der; definability
-  case nil => intro i hi; simp at hi
-  case adjoin c G ih =>
-    intro i hi
-    rcases zero_or_succ i with (rfl | ⟨j, rfl⟩)
-    · simpa [Der] using cProv_imps_k c G
-    · have hj : j < len G := by simpa using hi
-      have h := ih j hj
-      simp only [Der, nth_adjoin_succ, imps_cons] at h ⊢
-      exact cProv_mp (cProv_k _ c) h
+lemma der_hyp : ∀ G : V, ∀ i < len G, Der G G.[i] :=
+  ValidatorImplicationContext.hyp CProv imps imps_nil imps_cons cProv_classical
 
 lemma der_mem {G x : V} (h : x ∈ᵥ G) : Der G x := by
   obtain ⟨i, hi, rfl⟩ := h
   exact der_hyp G i hi
 
-lemma cProv_ded (a g : V) : ∀ G : V, CProv (wim (wim a (imps G g)) (imps G (wim a g))) := by
-  intro G
-  induction G using adjoin_ISigma1.sigma1_succ_induction
-  · definability
-  case nil => simpa using self_imp (wim a g)
-  case adjoin b G ih =>
-    simp only [imps_cons]
-    apply ded2
-    exact .mp (.ax ih) (Kalmar.deduction cProv_classical (.mp (.mp h2 h0) h1))
+lemma cProv_ded (a g : V) : ∀ G : V, CProv (wim (wim a (imps G g)) (imps G (wim a g))) :=
+  ValidatorImplicationContext.imps_ded CProv imps imps_nil imps_cons cProv_classical a g
 
 lemma der_ded {G a g : V} (h : Der (a ∷ G) g) : Der G (wim a g) := by
   unfold Der at *
   rw [imps_cons] at h
   exact cProv_mp (cProv_ded a g G) h
 
-lemma cProv_undeduct (a g : V) : ∀ G : V, CProv (wim (imps G (wim a g)) (wim a (imps G g))) := by
-  intro G
-  induction G using adjoin_ISigma1.sigma1_succ_induction
-  · definability
-  case nil => simpa using self_imp (wim a g)
-  case adjoin b G ih =>
-    simp only [imps_cons]
-    apply ded3
-    exact .mp (.mp (.ax ih) (.mp h2 h0)) h1
+lemma cProv_undeduct (a g : V) : ∀ G : V, CProv (wim (imps G (wim a g)) (wim a (imps G g))) :=
+  ValidatorImplicationContext.imps_undeduct CProv imps imps_nil imps_cons cProv_classical a g
 
 lemma der_undeduct {G a g : V} (h : Der G (wim a g)) : Der (a ∷ G) g := by
   unfold Der at *
@@ -177,19 +140,8 @@ lemma der_undeduct {G a g : V} (h : Der G (wim a g)) : Der (a ∷ G) g := by
 
 /-- Subsumption, internalized: every member of `G'` is a member of `G`. -/
 lemma cProv_sub (G g : V) : ∀ G' : V, (∀ x, x ∈ᵥ G' → x ∈ᵥ G) →
-    Der G (wim (imps G' g) g) := by
-  intro G'
-  induction G' using adjoin_ISigma1.sigma1_succ_induction
-  · unfold Der; definability
-  case nil => intro _; simpa using der_of (G := G) (self_imp g)
-  case adjoin a G' ih =>
-    intro hsub
-    have ih' := ih (fun x hx ↦ hsub x (memVec_adjoin_iff.mpr (Or.inr hx)))
-    have ha : Der G a := der_mem (hsub a (by simp))
-    simp only [imps_cons]
-    have taut : CProv (wim (wim (imps G' g) g) (wim a (wim (wim a (imps G' g)) g))) :=
-      ded3 (.mp h2 (.mp h0 h1))
-    exact der_mp (der_mp (der_of taut) ih') ha
+    Der G (wim (imps G' g) g) :=
+  ValidatorImplicationContext.sub CProv imps imps_nil imps_cons cProv_classical G g
 
 lemma der_sub {G G' g : V} (hsub : ∀ x, x ∈ᵥ G' → x ∈ᵥ G) (h : Der G' g) : Der G g :=
   der_mp (cProv_sub G g G' hsub) (der_of h)

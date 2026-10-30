@@ -181,6 +181,20 @@ private theorem env2_shift {V : Type*} (x y : V) (e : ℕ → V) (j : ℕ) :
   rw [Nat.add_comm]
   rfl
 
+/-- Satisfaction preservation for a one-variable translation. -/
+theorem eval_toSet_single {V : Type*} [SetStructure V]
+    (φ : SetTheory.Form) (x : V) (e : ℕ → V) :
+    (toSet 1 φ).Eval ![x] e ↔ SetTheory.Sat (memRel V) (SetTheory.scons x e) φ :=
+  eval_toSet φ 1 ![x] e (SetTheory.scons x e) (env1_eq x e) (env1_shift x e)
+
+/-- Satisfaction preservation for a two-variable translation. -/
+theorem eval_toSet_pair {V : Type*} [SetStructure V]
+    (φ : SetTheory.Form) (x y : V) (e : ℕ → V) :
+    (toSet 2 φ).Eval ![x, y] e ↔
+      SetTheory.Sat (memRel V) (SetTheory.scons x (SetTheory.scons y e)) φ :=
+  eval_toSet φ 2 ![x, y] e (SetTheory.scons x (SetTheory.scons y e))
+    (env2_eq x y e) (env2_shift x y e)
+
 /-! ## Bundle extraction
 
 Everything below is relative to a Foundation model of `𝗭𝗙𝗖`: a nonempty
@@ -217,8 +231,7 @@ theorem sep_clause [V↓[ℒₛₑₜ] ⊧* 𝗭] (phi : SetTheory.Form) (e : �
   obtain ⟨s, hs⟩ := separation_exists_eval a ((Rew.rewriteMap e) ▹ (toSet 1 phi))
   refine ⟨s, fun x => (hs x).trans (and_congr_right fun _ => ?_)⟩
   rw [Semiformula.eval_rewriteMap]
-  exact eval_toSet phi 1 ![x] (fun j => id (e j)) (SetTheory.scons x e)
-    (env1_eq x e) (fun j => env1_shift x e j)
+  exact eval_toSet_single phi x e
 
 /-! ### The Replacement schema
 
@@ -311,9 +324,7 @@ theorem repl_clause [V↓[ℒₛₑₜ] ⊧* 𝗭𝗙𝗖] (psi : SetTheory.Form
       ((toSet 2 (totalGraphF psi)).Eval ![xv, yv] e ↔
         (SetTheory.relOf (memRel V) psi e yv xv ∨
           ((¬ ∃ z, SetTheory.relOf (memRel V) psi e z xv) ∧ yv = xv))) := fun xv yv =>
-    (eval_toSet (totalGraphF psi) 2 ![xv, yv] e
-        (SetTheory.scons xv (SetTheory.scons yv e))
-        (env2_eq xv yv e) (fun j => env2_shift xv yv e j)).trans
+    (eval_toSet_pair (totalGraphF psi) xv yv e).trans
       (sat_totalGraphF psi e xv yv)
   -- Totalized functionality: exactly what Foundation's schema demands.
   have htot : ∀ x : V, ∃! y, (toSet 2 (totalGraphF psi)).Eval ![x, y] e := by
