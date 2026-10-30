@@ -64,13 +64,11 @@ every IΣ₁ model. See the [independent receipt](reviews/adaptive-direct86-fixe
 Subsequent upstream merges changed source modules in that theorem's dependency
 chain, so this is checked snapshot evidence, not a current-source replay.
 The 86 branch has since been rebuilt on the historical 87-operation machine
-provider. The [independent compatibility replay](reviews/adaptive86-machine-compat-rebase-v3-independent.md)
+provider. The [independent compatibility replay](reviews/adaptive86-machine-compat-rebase-v6-independent.md)
 checks its fixed-port no-zero equivalence with represented-machine nonhalting
-in every IΣ₁ model. It inherits the historical machine provider and uses four
-private additive helper declarations, with one extra import in the
-main-orientation module. A later upstream merge refactored its rank client, so
-this too is a checked source snapshot rather than a replay of the latest
-source tree; it is not a full current-source closure. That machine theorem
+in every IΣ₁ model. It inherits the historical machine provider and uses six
+private additive helper declarations and two private supports, with extra
+imports in the relevant clients; it is not a full current-source closure. That machine theorem
 alone does not supply the ZFC bridge or an HA or PRA proof-existence theorem.
 
 An exact 86-operation HA client and its independent extension replay have
