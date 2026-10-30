@@ -12,9 +12,9 @@ Foundation's `neg` is the negation-normal-form dual (it swaps `⋏`/`⋎`,
 
 `CProv (enc (neg p) → ¬enc p)` and `CProv (¬enc p → enc (neg p))`
 
-(`encode_neg`), by `Π₂` induction on the code (`IΣ₂`), with every
-propositional step an instance of a checked tautology (`taut`, Kalmár's
-completeness lemma) and the quantifier steps by monotonicity of `∀`.
+(`encode_neg`), by `Π₂` induction on the code (`IΣ₂`), with
+propositional steps given by finite equivalence derivations and the
+quantifier steps by monotonicity of `∀`.
 -/
 
 namespace LeanProofs.ZFCinPA.R2Neg
@@ -52,63 +52,36 @@ def NegEq (F B s p : V) : Prop :=
 
 section Taut
 
-open Kalmar.PF
-
-local notation "⊥'" => Kalmar.PF.bot
-local infixr:60 " ⟹ " => Kalmar.PF.imp
-local notation "x0" => Kalmar.PF.var 0
-local notation "x1" => Kalmar.PF.var 1
-local notation "x2" => Kalmar.PF.var 2
-local notation "x3" => Kalmar.PF.var 3
+private lemma iff2_imp {a a' b b' : V} (ha : Iff2 a a') (hb : Iff2 b b') :
+    Iff2 (wim a b) (wim a' b') :=
+  ⟨ded2 (.mp (.ax hb.1) (.mp h1 (.mp (.ax ha.2) h0))),
+   ded2 (.mp (.ax hb.2) (.mp h1 (.mp (.ax ha.1) h0)))⟩
+private lemma iff2_neg {a b : V} (h : Iff2 a b) : Iff2 (vneg a) (vneg b) :=
+  ⟨ValidatorQuantifierCore254.contrapose_of h.2, ValidatorQuantifierCore254.contrapose_of h.1⟩
+private lemma iff2_dneg_right {a b : V} (h : Iff2 a b) : Iff2 a (vneg (vneg b)) :=
+  ⟨ValidatorQuantifierCore254.compose h.1 (ValidatorQuantifierCore254.double_neg_intro b),
+   ValidatorQuantifierCore254.compose (ValidatorQuantifierCore254.double_neg_elim b) h.2⟩
+private lemma iff2_neg_swap {a b : V} (h : Iff2 a (vneg b)) : Iff2 (vneg a) b :=
+  ⟨ValidatorQuantifierCore254.compose (ValidatorQuantifierCore254.contrapose_of h.2)
+      (ValidatorQuantifierCore254.double_neg_elim b),
+   ValidatorQuantifierCore254.compose (ValidatorQuantifierCore254.double_neg_intro b)
+      (ValidatorQuantifierCore254.contrapose_of h.1)⟩
 
 /-- `a ↔ ¬p`, `b ↔ ¬q` give `((a → ⊥) → b) ↔ ¬¬(p → ¬q)`. -/
 lemma and_case {a b p q : V}
     (ha : Iff2 a (vneg p)) (hb : Iff2 b (vneg q)) :
-    Iff2 (wim (vneg a) b) (vneg (vneg (wim p (vneg q)))) := by
-  constructor
-  · have t := taut ((x0 ⟹ (x2 ⟹ ⊥')) ⟹ ((x2 ⟹ ⊥') ⟹ x0) ⟹ (x1 ⟹ (x3 ⟹ ⊥')) ⟹
-      ((x3 ⟹ ⊥') ⟹ x1) ⟹ (((x0 ⟹ ⊥') ⟹ x1) ⟹ (((x2 ⟹ (x3 ⟹ ⊥')) ⟹ ⊥') ⟹ ⊥'))) 4
-      (by repeat' (first | exact trivial | decide | constructor)) (by
-        intro v; simp only [truth]
-        generalize v 0 = a0; generalize v 1 = a1; generalize v 2 = a2; generalize v 3 = a3
-        revert a0 a1 a2 a3; decide) (sig [a, b, p, q])
-    simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-    exact cProv_mp (cProv_mp (cProv_mp (cProv_mp t ha.1) ha.2) hb.1) hb.2
-  · have t := taut ((x0 ⟹ (x2 ⟹ ⊥')) ⟹ ((x2 ⟹ ⊥') ⟹ x0) ⟹ (x1 ⟹ (x3 ⟹ ⊥')) ⟹
-      ((x3 ⟹ ⊥') ⟹ x1) ⟹ ((((x2 ⟹ (x3 ⟹ ⊥')) ⟹ ⊥') ⟹ ⊥') ⟹ ((x0 ⟹ ⊥') ⟹ x1))) 4
-      (by repeat' (first | exact trivial | decide | constructor)) (by
-        intro v; simp only [truth]
-        generalize v 0 = a0; generalize v 1 = a1; generalize v 2 = a2; generalize v 3 = a3
-        revert a0 a1 a2 a3; decide) (sig [a, b, p, q])
-    simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-    exact cProv_mp (cProv_mp (cProv_mp (cProv_mp t ha.1) ha.2) hb.1) hb.2
+    Iff2 (wim (vneg a) b) (vneg (vneg (wim p (vneg q)))) :=
+  iff2_dneg_right (iff2_imp (iff2_neg_swap ha) hb)
 
 /-- `a ↔ ¬p`, `b ↔ ¬q` give `¬(a → ¬b) ↔ ¬((¬p) → q)`. -/
 lemma or_case {a b p q : V}
     (ha : Iff2 a (vneg p)) (hb : Iff2 b (vneg q)) :
-    Iff2 (vneg (wim a (vneg b))) (vneg (wim (vneg p) q)) := by
-  constructor
-  · have t := taut ((x0 ⟹ (x2 ⟹ ⊥')) ⟹ ((x2 ⟹ ⊥') ⟹ x0) ⟹ (x1 ⟹ (x3 ⟹ ⊥')) ⟹
-      ((x3 ⟹ ⊥') ⟹ x1) ⟹ (((x0 ⟹ (x1 ⟹ ⊥')) ⟹ ⊥') ⟹ (((x2 ⟹ ⊥') ⟹ x3) ⟹ ⊥'))) 4
-      (by repeat' (first | exact trivial | decide | constructor)) (by
-        intro v; simp only [truth]
-        generalize v 0 = a0; generalize v 1 = a1; generalize v 2 = a2; generalize v 3 = a3
-        revert a0 a1 a2 a3; decide) (sig [a, b, p, q])
-    simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-    exact cProv_mp (cProv_mp (cProv_mp (cProv_mp t ha.1) ha.2) hb.1) hb.2
-  · have t := taut ((x0 ⟹ (x2 ⟹ ⊥')) ⟹ ((x2 ⟹ ⊥') ⟹ x0) ⟹ (x1 ⟹ (x3 ⟹ ⊥')) ⟹
-      ((x3 ⟹ ⊥') ⟹ x1) ⟹ ((((x2 ⟹ ⊥') ⟹ x3) ⟹ ⊥') ⟹ ((x0 ⟹ (x1 ⟹ ⊥')) ⟹ ⊥'))) 4
-      (by repeat' (first | exact trivial | decide | constructor)) (by
-        intro v; simp only [truth]
-        generalize v 0 = a0; generalize v 1 = a1; generalize v 2 = a2; generalize v 3 = a3
-        revert a0 a1 a2 a3; decide) (sig [a, b, p, q])
-    simp only [eval, sig, List.getD_cons_zero, List.getD_cons_succ] at t
-    exact cProv_mp (cProv_mp (cProv_mp (cProv_mp t ha.1) ha.2) hb.1) hb.2
+    Iff2 (vneg (wim a (vneg b))) (vneg (wim (vneg p) q)) :=
+  iff2_neg (iff2_imp ha (iff2_neg_swap hb))
 
 /-- `a ↔ b` gives `a ↔ ¬¬b`. -/
 lemma dneg_right {a b : V} (h : Iff2 a b) : Iff2 a (vneg (vneg b)) :=
-  ⟨R2Ctx.ded1 (.mp (.ax (ValidatorQuantifierCore254.double_neg_intro b)) (.mp (.ax h.1) h0)),
-   R2Ctx.ded1 (.mp (.ax h.2) (.mp (.ax (ValidatorQuantifierCore254.double_neg_elim b)) h0))⟩
+  iff2_dneg_right h
 
 end Taut
 
@@ -120,13 +93,11 @@ lemma all_iff2 (i : V) {a b : V} (h : Iff2 a b) : Iff2 (wal i a) (wal i b) :=
 
 /-- `a ↔ ¬b` gives `¬a ↔ b`. -/
 lemma neg_swap {a b : V} (h : Iff2 a (vneg b)) : Iff2 (vneg a) b :=
-  ⟨R2Ctx.ded1 (.mp (.ax (ValidatorQuantifierCore254.double_neg_elim b))
-      (Kalmar.deduction cProv_classical (.mp h1 (.mp (.ax h.2) h0)))),
-   R2Ctx.ded2 (.mp (.mp (.ax h.1) h0) h1)⟩
+  iff2_neg_swap h
 
 /-- `¬` respects provable equivalence. -/
 lemma neg_iff2 {a b : V} (h : Iff2 a b) : Iff2 (vneg a) (vneg b) :=
-  ⟨ValidatorQuantifierCore254.contrapose_of h.2, ValidatorQuantifierCore254.contrapose_of h.1⟩
+  iff2_neg h
 
 /-! ## The induction -/
 
