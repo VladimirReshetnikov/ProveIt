@@ -111,8 +111,10 @@ supplies one part of a potential sequence-code construction. A second
 iterates doubling and satisfies Foundation's exact exponential graph in
 candidate-PRA models without assuming IΣ₁. An [independently replayed insertion
 code](reviews/pra-history-insert-code-author-replay/README.md) now supplies
-the exact Foundation insertion graph in candidate PRA. A sequence append
-code and the full recursive-history verification remain open. An
+the exact Foundation insertion graph in candidate PRA. An
+[independently replayed sequence append code](reviews/pra-history-seqcons-code-author-replay/README.md)
+now composes length, pairing and insertion to satisfy the actual `seqConsDef`
+graph. The full recursive-history verification remains open. An
 [independently replayed length code](reviews/pra-history-length-code-author-replay/README.md)
 computes the actual `lhDef` graph with output at most `2*s`, without assuming
 IΣ₁.
