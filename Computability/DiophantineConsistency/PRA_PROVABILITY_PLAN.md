@@ -93,6 +93,10 @@ affected candidate-PRA graph has since passed a 68-module author rebuild and
 two independent replays with matching source, object and full-log hashes;
 the separate extraction and bounded-comparison clients have also been rebuilt
 and independently replayed against that provider.
+A later merge changed bounded-search Code, Freeze, Invariant and Minimal as
+well as the contextual extraction and selection modules. The 68-module and
+downstream replays cover the preceding snapshot; affected descendants need
+another dependency-aware rebuild for the merged sources.
 The [collection-rule induction predicate and base](reviews/parsons-collection-rule-root.md)
 are proved for Σ₁ relations, but assembling the inference still assumes a
 proof of its finite-extension step. A further [semantic step](reviews/parsons-collection-semantic-root.md)

@@ -22,6 +22,9 @@ source snapshot. A subsequent 68-module candidate-provider refresh and a
 21-module extraction/selection refresh have now each passed author and
 independent replays with matching source, object and full-log hashes.
 Foundation and Mathlib remain inherited boundaries.
+A later merge changed the contextual witness and selection modules as well as
+bounded-search prerequisites. The recorded replays are for the preceding
+snapshot; the affected graph must be rebuilt against the merged sources.
 
 `HerbrandInteractiveTriple.separated_interactive` extends the construction to
 three separate challenges per round, reserving distinct indices and proving
