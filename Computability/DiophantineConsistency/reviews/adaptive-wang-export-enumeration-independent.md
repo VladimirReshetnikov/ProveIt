@@ -1,0 +1,5 @@
+# Independent export enumeration: original split draft
+
+Root peer `/tmp/adaptive-wang-export-enumeration-zwb_hd23` reports **DIFFERENCES**, reproducing the author result for the earlier split replacement: of 124 historical names, three generated `rows_good*._proof_1` names are missing and eleven common generated declarations have different raw type/universe representations. Historical and replacement query source, complete logs and `comparison.json` hashes match the author run exactly. This negative result concerns the earlier split draft; it is not an assessment of the later compatibility draft.
+
+The nine-file `adaptive-wang-export-enumeration-independent-evidence/FILES.json` manifest has SHA-256 `b40e2e976e0ffba9a427d81eea2a470a3974f0f520c28d17ff8c4b7145141cbd`; complete logs are gzip-compressed. The historical object is a comparison reference without established current-source provenance. The audit does not compare all extension metadata or theorem bodies and does not establish canonical integration.

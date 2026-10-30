@@ -64,6 +64,9 @@ The [private compatibility draft](reviews/adaptive-wang-table-compat-independent
 restores the three generated names missing from the initial split and has an
 independent matching build. Full export and attribute checks, historical
 object provenance, and downstream integration remain open.
+The original split's independently reproduced [export differences](reviews/adaptive-wang-export-enumeration-independent.md)
+record the three missing generated names and eleven raw type/universe
+differences; they are not a result for the later compatibility draft.
 The independently replayed [124-name displayed-type](reviews/adaptive-wang-compat-124-independent.md)
 and [selected registration](reviews/adaptive-wang-compat-124-registration-independent.md)
 comparisons match against the historical object. They do not establish
@@ -77,6 +80,10 @@ has independently rebuilt against the initial private split table. This is a
 single downstream client with two retained deprecation warnings; it does not
 resolve the full interface comparison or rebuild the remaining CellWindow
 and Assembly chain.
+The independently replayed [compatibility overlay audit](reviews/adaptive-wang-compat-overlay-audit-independent.md)
+checks that its 367 canonical project objects are byte-identical and that its
+27 additions are the authenticated table and chunk objects. This does not
+authenticate the historical original table object or substitute a provider.
 
 Several construction replay states inherited an incorrect generic scope label;
 the original records are preserved, and the [scope correction inventory](reviews/adaptive-construction-driver-scope-correction.md)
@@ -94,6 +101,10 @@ also with two independent replays. A subsequent `PRAPiOneImplication` merge
 was covered by the 15-module strict-surrogate replay, and the later open and
 bounded induction changes by the [34-module refresh](reviews/pra-after-open-bound-merge-refresh-author-replay/README.md),
 each independently replayed twice.
+The later five induction-source changes have also been rebuilt in the
+[35-module refresh](reviews/pra-after-five-induction-refresh-author-replay/README.md)
+and independently replayed twice; it includes the generic strict-surrogate
+comparison, conditional reverse and index-bound clients.
 
 `PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
 universally closed open-existential goal from an IΣ₁ proof and an explicit
@@ -146,6 +157,11 @@ has also independently replayed: candidate PRA proves its standalone graph
 implies its syntactic bounded transformation at `p+1`. Binding that graph
 inside the full refutation formula, finding the other local majorants and
 constructing the certificate for `ρ` remain separate obligations.
+The [actual derivationOf binding](reviews/pra-fstidx-derivation-bound-author-replay/README.md)
+now identifies and bounds the first-index occurrence inside Foundation's
+sigma formula, with an actual candidate-PRA proof of the conditional sentence.
+It still assumes a bounded derivation/fixpoint conjunct and an adequate common
+bound; it does not construct the full refutation certificate.
 The [first-index family client](reviews/pra-fstidx-family-author-replay/README.md)
 combines that bound with the fold in every candidate-PRA model, supplying one
 primitive-recursive bound for all first-index codes below a given limit. It
@@ -155,9 +171,13 @@ also constructs an actual candidate-PRA proof of the corresponding universally
 closed implication; it is independently replayed and retains the same scope.
 The [second-index local bound](reviews/pra-sndidx-bound-author-replay/README.md)
 likewise proves the exact standalone `sndIdxDef` witnesses bounded by `p+1`
-in candidate PRA. Its two independent replays precede the latest induction
-merge; the affected provider graph and the graph's occurrence in the coded
-history still need refreshing and binding respectively.
+in candidate PRA. Its original receipt precedes the latest induction merge;
+the local source is included in the later independently replayed 35-module
+refresh. The graph's occurrence in the coded history still needs binding.
+The [second-index family clients](reviews/pra-sndidx-family-author-replay/README.md)
+also bound all indices below a limit by one primitive-recursive fold and
+construct the corresponding candidate-PRA sentence; both were independently
+replayed against the refreshed graph.
 
 The [strict-theory collection and finite-support snapshot](reviews/pra-post-parameter-strict-author-replay/README.md)
 also has two matching replays. It proves bounded collection in the stated
