@@ -1,3 +1,4 @@
+import DiophantineConsistency.ArithmeticHalfBinomialCompat
 import DiophantineConsistency.ArithmeticAdaptiveRadix2011
 import DiophantineConsistency.ArithmeticHalfBinomial
 
@@ -19,7 +20,7 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 theorem rank_lower (q F alpha J MC MF h : V)
     (hq16 : 16≤q) (halpha : 0<alpha) (hq : q=Exp.exp h) :
     3*h+1≤((q-1)*(q-F)+alpha)*(q^2-1)+(MC+q*MF)*J :=
-  ArithmeticHalfBinomial.rank_lower_of_radix q F alpha J MC MF h hq16 halpha hq
+  ArithmeticHalfBinomialCompat.rank_lower_of_radix q F alpha J MC MF h hq16 halpha hq
 
 def PopulationBound (p : Fin 4 → ℕ) (v : Fin 13 → V) (h : V) : Prop :=
   let q : V := 1+v 0*(p 0:V)
@@ -45,7 +46,7 @@ theorem population_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V) (h : V)
   change 2*n=R+1 at hnR
   change X=Exp.exp R at hp
   have hn5 : 5≤n := le_trans (by norm_num) hn13
-  obtain ⟨r,hrplus,hr4,hR⟩ := half_index_of_ge_five n R hn5 hnR
+  obtain ⟨r,hrplus,hr4,hR⟩ := ArithmeticHalfBinomialCompat.half_index_of_ge_five n R hn5 hnR
   have hXe : X=Exp.exp (2*r+1) := by rw [←hR]; exact hp
   have hY1 : 1≤Y := pos_iff_one_le.mp (hv 7)
   have hbase : a=Y*(X+1) := by dsimp [a,X,Y]; ring

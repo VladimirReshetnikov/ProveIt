@@ -1,0 +1,5 @@
+import DiophantineConsistency.ArithmeticHalfBinomialCompat
+#print axioms DiophantineConsistency.ArithmeticHalfBinomialCompat.rank_lower_of_radix
+#print axioms DiophantineConsistency.ArithmeticHalfBinomialCompat.half_index_of_ge_five
+#check DiophantineConsistency.ArithmeticHalfBinomialCompat.rank_lower_of_radix
+#check DiophantineConsistency.ArithmeticHalfBinomialCompat.half_index_of_ge_five
