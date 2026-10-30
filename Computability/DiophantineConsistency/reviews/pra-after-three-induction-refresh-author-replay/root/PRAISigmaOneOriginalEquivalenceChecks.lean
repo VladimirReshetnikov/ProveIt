@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAISigmaOneOriginalEquivalence
+open DiophantineConsistency.PRAISigmaOneOriginalEquivalence
+#print axioms comparison
+#check comparison

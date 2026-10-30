@@ -153,6 +153,9 @@ The later five induction-source changes have also been rebuilt in the
 [35-module refresh](reviews/pra-after-five-induction-refresh-author-replay/README.md)
 and independently replayed twice; it includes the generic strict-surrogate
 comparison, conditional reverse and index-bound clients.
+The [post-three-induction refresh](reviews/pra-after-three-induction-refresh-author-replay/README.md)
+subsequently rebuilt 34 affected modules and passed two independent replays;
+the later `PRAFiniteSigmaCertificates` change is outside that packet's graph.
 
 `PRAISigmaOneOpenComparison.comparison` produces a candidate-PRA proof of a
 universally closed open-existential goal from an IΣ₁ proof and an explicit
