@@ -1,0 +1,22 @@
+# Direct-ordinate 86 HA proof-existence: focused author extension
+
+`HAAdaptiveDirectOrdinate86.ha_equivalence` is a Lean theorem of type
+
+```text
+ProofEquiv (ArithmeticExpression.noZeroSentence naturalExpression86)
+           FoundationHAConsistencyNormalization.ordinaryConsistency
+```
+
+Here `ProofEquiv a b` abbreviates HA `Proves ((a → b) ∧ (b → a))`; `ordinaryConsistency` is the formalized negation of the provability predicate for contradiction in Foundation's `ZermeloFraenkelChoice` theory. Thus the theorem establishes existence of an HA derivation of both directions for this exact formalized 86-expression sentence. It does not supply a printed literal HA proof. Lean's `#print axioms` reports `[propext, Classical.choice, Quot.sound]` as metatheory axioms; these are not extra axioms of the object theory HA.
+
+The focused author run `/tmp/ha86-focused-extension-ew9lam45` finished `PASS`: 27 current-source modules (the 86 proof chain, exact HA endpoint and explicit check) compiled directly on the focused 87 HA author provider, without the private machine-compatibility shim. Before and after compilation it reauthenticated 730 distinct parent source guards, 1,322 selected project objects, 83 verified parent outputs/full logs, all new source snapshots, and the focused provider/graph/plan/package anchors. Parent author state is `/tmp/ha87-focused-validator-rebase-8o6bp_pm`; its independent replay was still pending when this extension was built. The parent retains historical HA/ZF/Foundation/Mathlib/package ancestry and unlisted boundaries, so the result is not a full current-source closure claim. The same limitation applies here. Independent replay of this extension is also required before treating this author run as accepted.
+
+Replay command: `python3 Computability/DiophantineConsistency/research/wang-chunk-full/build_ha_direct_ordinate86.py`. State SHA-256 `e177b66f5964726d78323b094722ebf57a9a5e77243ffe8969afc58dc7be8232`. The endpoint source SHA-256 is `c162b434e82681491e565e078ee38a4c72820c6914a865ead11bd4f87628a3be`, object `6af265a51e343b1e8e988f499f10d8160481372500ba2b652d0caed3a6ea9a69`, and empty full log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. The checks source is `8e8ca7c4632ee4ccd76f3c0147876f31dbe3d229bed07f832c74c6e3377ac67e`, object `d711c0e35bc9e4eb62e5947f74393cecdc082c708111800ec0343ee82550a9b7`, and full log `e9bdcac679e8f38b22fef13da4068a55b5e5b6e243b87c5aea7210e7643e77a4`. The only other nonempty log is the previously documented auxiliary-norm-client unused-simp warning.
+
+For the displayed 86-gate candidate, the deterministic literal generator was run separately with `ADAPTIVE_DIRECT86_LEAN_OUT=/tmp/ha86-current-literal-generated.lean`; its output SHA-256 `449650adad654ff14ed7653f04187d7aad4696b2e5fc0b8262a7d96897ebfad5` matches both the current Lean literal source and this run's source snapshot. The candidate JSON SHA-256 is `e9889a81a491b85491dde749e82158109ea98ff94ed41fc0f05dc810ec58b91f`; its separate audit reports 86 live unshifted operations. This generator check is an additional separately run check, not part of the extension driver's pre/post authentication. The graph operation count is not a degree or minimality certificate.
+
+State, driver, selected-project-object inventory, all 27 source snapshots, full logs and timings are in `ha86-focused-extension-author-evidence`; its `FILES.json` SHA-256 is `43c1255eac2e495628fdb5c7b1e9c3701a173dd48ad3a8567f7248ea8ef653b0`.
+
+The separate 87 parent peer `/tmp/ha87-focused-validator-rebase-3tvgyxbr` subsequently finalized `PASS`; its final endpoint and checks match the author, but 15 intermediate object/dependency hashes differ and are under investigation. Therefore this 86 author run still uses the specified 87 **author** provider; the peer result is not yet treated as a byte-matching parent replay or a replacement provider.
+
+**Parent provenance correction:** subsequent investigation identified a transitive imported-object environment mismatch in the reused prefix of the 87 author parent. Its direct-only reuse guard did not authenticate that complete environment. Consequently the 86 author and same-parent peer PASS records remain accurate reports of those runs, but their shared 87 parent is not fully authenticated as a coherent reused compilation. The fresh 87 peer compiled all 83 modules against one overlay and is being assessed separately; an 86 extension on that fresh parent is a separate proof and provenance run.

@@ -1,0 +1,3 @@
+# Transitive-guard driver package-only audit
+
+Audit-only run `/tmp/ha87-full-transitive-u5x2_xjr` returned `AUDIT_PASS`: it enumerated 727 source-declared project modules, 93 direct external package objects and 279 available external companions, using an isolated package-only mirror. No Lean proof modules were compiled. The state records the graph, source and direct-object hashes and compiler/Lake anchors. This audit is a point-in-time snapshot, not a post-build source authentication or an independent replay. Package-transitive sources and objects remain inherited, and the historical-reuse guard's original transitive environment is reconstructed from surviving overlay objects.

@@ -1,0 +1,5 @@
+import DiophantineConsistency.HAAdaptiveDirectOrdinate86
+
+#check DiophantineConsistency.HAAdaptiveDirectOrdinate86.polynomialBridge
+#check DiophantineConsistency.HAAdaptiveDirectOrdinate86.ha_equivalence
+#print axioms DiophantineConsistency.HAAdaptiveDirectOrdinate86.ha_equivalence

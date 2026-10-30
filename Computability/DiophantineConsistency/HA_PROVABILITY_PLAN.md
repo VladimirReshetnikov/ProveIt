@@ -36,24 +36,26 @@ now proves both directions between no zero and no represented machine halt in
 every IΣ₁ model, with local normalization discharged. A separately checked
 [`HAExpressionAssembly`](Lean/DiophantineConsistency/HAExpressionAssembly.lean)
 turns an appropriate all-model bridge into an actual HA derivation of the
-equivalence to ordinary ZFC consistency. Their compatible integration has not
-yet been checked: the historical HA provider and the adaptive model provider
-have many shared paths with differing compiled objects. A focused coherent
-rebuild and a complete current-source provenance audit remain. The model
-equivalence alone is not an HA proof-existence theorem.
+equivalence to ordinary ZFC consistency. The two providers have shared paths
+with differing compiled objects; a focused integration and fresh replay have
+since checked the HA client as described below. A complete current-source
+provenance audit remains. The model equivalence alone is not an HA
+proof-existence theorem.
 
-A rough judgment is that 70–85% of the 87-operation candidate's proof
-architecture is assembled; this is neither a measured fraction nor an
-estimate of time. Integration and source-current replay may uncover additional
-work. The 14-variable HA theorem itself is complete on its checked snapshot,
+A prior rough estimate of 70–85% concerned the 87-operation proof architecture
+before the focused HA builds described below. It is not a time estimate or a
+measurement of the remaining source-provenance work. The 14-variable HA
+theorem itself is complete on its checked snapshot,
 subject to the current-source replay qualification above.
 
-The exact 87-operation HA client has since passed a guarded 83-module author
-build and final input audit; its two endpoint axiom checks report only
-`propext`, `Classical.choice`, and `Quot.sound`. An independent full replay is
-running. This is provisional snapshot evidence using the pinned historical
-HA and `ZF` objects and inherited package ancestry, not a complete
-current-source provenance audit. See the [author receipt](reviews/ha87-focused-pinned-zf-author-pass/README.md).
+The exact 87-operation HA client has passed an 83-module author build and a
+fresh independent build; its endpoint checks report only `propext`,
+`Classical.choice`, and `Quot.sound`. The author reused a prefix whose
+transitive imported-object environment was not fully authenticated: 15
+intermediate object or dependency hashes differ from the fresh build. The
+fresh build's provenance is being audited; both retain pinned historical HA
+and `ZF` objects and inherited package ancestry. See the
+[author receipt](reviews/ha87-focused-pinned-zf-author-pass/README.md).
 
 A newer 86-operation direct-ordinate candidate now has a Lean theorem, with
 matching author and independent scoped replays, that its fixed-port no-zero
@@ -62,15 +64,23 @@ every IΣ₁ model. See the [independent receipt](reviews/adaptive-direct86-fixe
 Subsequent upstream merges changed source modules in that theorem's dependency
 chain, so this is checked snapshot evidence, not a current-source replay.
 The 86 branch has since been rebuilt on the historical 87-operation machine
-provider. The [independent compatibility replay](reviews/adaptive86-machine-compat-rebase-v3-independent.md)
+provider. The [independent compatibility replay](reviews/adaptive86-machine-compat-rebase-v6-independent.md)
 checks its fixed-port no-zero equivalence with represented-machine nonhalting
-in every IΣ₁ model. It inherits the historical machine provider and uses four
-private additive helper declarations, with one extra import in the
-main-orientation module. A later upstream merge refactored its rank client, so
-this too is a checked source snapshot rather than a replay of the latest
-source tree; it is not a full current-source closure. A coherent
-connection to the ZFC consistency bridge, and HA and PRA proof-existence
-theorems for this candidate, remain to be established.
+in every IΣ₁ model. It inherits the historical machine provider and uses six
+private additive helper declarations and two private supports, with extra
+imports in the relevant clients; it is not a full current-source closure. That machine theorem
+alone does not supply the ZFC bridge or an HA or PRA proof-existence theorem.
+
+An exact 86-operation HA client and its independent extension replay have
+compiled 27 modules and checked a theorem asserting existence of an HA
+derivation of the equivalence to ordinary Foundation ZFC consistency. Both
+extensions use the original 87 author provider, whose reused prefix has the
+transitive-environment gap described above. A separate 27-module extension
+against the fresh 87 peer has now passed its author build and a matching
+independent replay, both with final audits. A later upstream merge changed
+guarded dependencies, so this is checked snapshot evidence. Historical HA,
+ZF, Foundation and package provenance remains inherited. See the
+[86 author receipt](reviews/ha86-focused-extension-author.md).
 
 ## Exact target and established results
 

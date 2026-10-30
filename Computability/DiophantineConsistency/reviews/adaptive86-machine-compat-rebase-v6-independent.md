@@ -1,0 +1,5 @@
+# Direct-ordinate 86 machine equivalence: independent post-Rank-refactor replay
+
+The root independently replayed the scoped v6 driver and obtained `PASS` at `/tmp/adaptive86-machine-compat-rebase-v6-d3ekdlp5`, state SHA-256 `12194f83ffb05987eb88c5641160e740bd1644f5924bd05b9451cbdd8651c34a`. All 26 source/object/full-log hashes and the 507-object provider-inventory hash match the author run. The final machine theorem object is `b2b66114c1bb8046d26e5c6c0803d785d91813cc17d0ebe2f79d43c06925f790`; the one nonempty proof log is the documented auxiliary-norm unused-simp warning.
+
+State, driver, provider inventory, all source snapshots, complete logs and timings are in `adaptive86-machine-compat-rebase-v6-independent-evidence`; manifest SHA-256 `c3d39eaecb0dec399d39cda9094d485e53f69f2ef20cb319be539fe9b0728598`. This is the same all-model theorem, private helper import and historical 87-provider scope as the author receipt; it is not a full current-source closure or an HA/PRA proof-existence claim.
