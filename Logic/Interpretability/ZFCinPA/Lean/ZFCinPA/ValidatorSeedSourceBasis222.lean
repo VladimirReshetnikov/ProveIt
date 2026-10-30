@@ -95,14 +95,8 @@ def singletonAt (c t : Term V ℒₛₑₜ) : Formula V ℒₛₑₜ :=
 
 /-- The function-free source language has no closed bound-variable slot. -/
 theorem term_is_fvar (t : Term V ℒₛₑₜ) : ∃ x : V, t=Bootstrapping.Semiterm.fvar x := by
-  rcases t.isSemiterm.case with ⟨z,hz,_⟩ | ⟨x,hx⟩ | ⟨k,f,w,hf,_,_⟩
-  · simp at hz
-  · exact ⟨x,by ext; exact hx⟩
-  · have : ¬(ℒₛₑₜ).IsFunc k f := by
-      rw [isFunc_def]
-      change ¬(V ⊧/![k,f] (⊥ : ArithmeticSemisentence 2))
-      simp
-    exact (this hf).elim
+  obtain ⟨x,hx⟩ := SetRelativization.isTerm_eq_fvar t.isSemiterm
+  exact ⟨x, by ext; exact hx⟩
 
 /-- Ordinary classical source logic, with the eigenvariable shift explicit. -/
 theorem exists_elim {T : InternalTheory V ℒₛₑₜ} {p : Semiformula V ℒₛₑₜ 1}
