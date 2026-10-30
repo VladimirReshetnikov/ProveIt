@@ -201,35 +201,38 @@ lemma val_cons' {n : ℕ} (x : SD M) (b : Fin n → SD M) :
 variable [Structure.Eq (setTemplateLanguage k arities) M]
 variable [Structure.Mem (setTemplateLanguage k arities) M]
 
+private theorem eval_intT_rel {ξ : Type*} {n m : ℕ}
+    (R : (setTemplateLanguage k arities).Rel m)
+    (v : Fin m → Semiterm (setTemplateLanguage k arities) ξ n)
+    (b : Fin n → SD M) (f : ξ → SD M) :
+    (intT (.rel R v)).Eval (Subtype.val ∘ b) (Subtype.val ∘ f) ↔ (Semiformula.rel R v).Eval b f := by
+  cases R with
+  | inl R =>
+      cases R with
+      | eq =>
+          change (atomT Language.Set.Rel.eq v).Eval _ _ ↔ _
+          rw [eval_atomT_eq, val_term, val_term]
+          rfl
+      | mem =>
+          change (atomT Language.Set.Rel.mem v).Eval _ _ ↔ _
+          rw [eval_atomT_mem, val_term, val_term]
+          rfl
+  | inr r =>
+      change s.rel (Sum.inr r) (fun i ↦ (v i).val (Subtype.val ∘ b) (Subtype.val ∘ f)) ↔
+        s.rel (Sum.inr r) (fun i ↦ ((v i).val b f).1)
+      simp only [val_term]
+
 /-- **Evaluation of the interpretation in a template model**: `intT φ` at
 domain elements holds in `M` iff `φ` holds in the domain structure. -/
 theorem eval_intT {ξ : Type*} :
     ∀ {n : ℕ} (φ : Semiformula (setTemplateLanguage k arities) ξ n) (b : Fin n → SD M) (f : ξ → SD M),
       (intT φ).Eval (Subtype.val ∘ b) (Subtype.val ∘ f) ↔ φ.Eval b f
-  | _, .rel (Sum.inl Language.Set.Rel.eq) v, b, f => by
-      change (atomT Language.Set.Rel.eq v).Eval _ _ ↔ _
-      rw [eval_atomT_eq, val_term, val_term]
-      rfl
-  | _, .rel (Sum.inl Language.Set.Rel.mem) v, b, f => by
-      change (atomT Language.Set.Rel.mem v).Eval _ _ ↔ _
-      rw [eval_atomT_mem, val_term, val_term]
-      rfl
-  | _, .rel (Sum.inr r) v, b, f => by
-      change s.rel (Sum.inr r) (fun i ↦ (v i).val (Subtype.val ∘ b) (Subtype.val ∘ f)) ↔
-        s.rel (Sum.inr r) (fun i ↦ ((v i).val b f).1)
-      simp only [val_term]
-  | _, .nrel (Sum.inl Language.Set.Rel.eq) v, b, f => by
-      change (∼atomT Language.Set.Rel.eq v).Eval _ _ ↔ ¬ _
-      rw [LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq, eval_atomT_eq, val_term, val_term]
-      rfl
-  | _, .nrel (Sum.inl Language.Set.Rel.mem) v, b, f => by
-      change (∼atomT Language.Set.Rel.mem v).Eval _ _ ↔ ¬ _
-      rw [LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq, eval_atomT_mem, val_term, val_term]
-      rfl
-  | _, .nrel (Sum.inr r) v, b, f => by
-      change ¬ s.rel (Sum.inr r) (fun i ↦ (v i).val (Subtype.val ∘ b) (Subtype.val ∘ f)) ↔
-        ¬ s.rel (Sum.inr r) (fun i ↦ ((v i).val b f).1)
-      simp only [val_term]
+  | _, .rel R v, b, f => eval_intT_rel R v b f
+  | _, .nrel R v, b, f => by
+      change (intT (∼Semiformula.rel R v)).Eval _ _ ↔ (∼Semiformula.rel R v).Eval _ _
+      rw [intT_neg, LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq,
+        LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq]
+      exact not_congr (eval_intT_rel R v b f)
   | _, ⊤, b, f => by simp
   | _, ⊥, b, f => by simp
   | _, φ ⋏ ψ, b, f => by
@@ -240,31 +243,19 @@ theorem eval_intT {ξ : Type*} :
         eval_intT φ b f, eval_intT ψ b f]
   | n, ∀⁰ φ, b, f => by
       simp only [intT_all, Semiformula.eval_all, LogicalConnective.HomClass.map_or,
-        LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.or_eq, LogicalConnective.Prop.neg_eq]
-      constructor
-      · intro h x
-        have h1 := (h x.1).resolve_left (not_not.mpr ((eval_domT x.1 _ _).mpr x.2))
-        rw [← val_cons' x b, eval_intT φ (x :> b) f] at h1
-        exact h1
-      · intro h x
-        by_cases hx : D x
-        · right
-          rw [← val_cons' ⟨x, hx⟩ b, eval_intT φ (⟨x, hx⟩ :> b) f]
-          exact h _
-        · left
-          exact fun h' ↦ hx ((eval_domT x _ _).mp h')
+        LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.or_eq,
+        LogicalConnective.Prop.neg_eq, eval_domT]
+      apply ConstructibleInterpretation.forall_guard id Function.surjective_id
+      intro u
+      rw [← val_cons' u b, eval_intT φ (u :> b) f]
+      rfl
   | n, ∃⁰ φ, b, f => by
       simp only [intT_exs, Semiformula.eval_ex, LogicalConnective.HomClass.map_and,
-        LogicalConnective.Prop.and_eq]
-      constructor
-      · rintro ⟨x, hx, h1⟩
-        have hx' : D x := (eval_domT x _ _).mp hx
-        rw [← val_cons' ⟨x, hx'⟩ b, eval_intT φ (⟨x, hx'⟩ :> b) f] at h1
-        exact ⟨_, h1⟩
-      · rintro ⟨x, h1⟩
-        refine ⟨x.1, (eval_domT x.1 _ _).mpr x.2, ?_⟩
-        rw [← val_cons' x b, eval_intT φ (x :> b) f]
-        exact h1
+        LogicalConnective.Prop.and_eq, eval_domT]
+      apply ConstructibleInterpretation.exists_guard id Function.surjective_id
+      intro u
+      rw [← val_cons' u b, eval_intT φ (u :> b) f]
+      rfl
 
 /-- A sentence's interpretation holds in `M` iff the sentence holds in the domain. -/
 theorem models_intT_iff (σ : Sentence (setTemplateLanguage k arities)) :
@@ -381,18 +372,10 @@ theorem replT_provable : templN 1 ar2 ⊢ replT := by
       (by
         convert hr using 2
         rename_i j
-        obtain ⟨n, hn⟩ := j
-        match n, hn with
-        | 0, _ => rfl
-        | 1, _ => rfl
-        | n + 2, hn => exact absurd hn (by show ¬ (n + 2 < 2); omega))
+        match j with | 0 => rfl | 1 => rfl)
     convert key using 2
     rename_i j
-    obtain ⟨n, hn⟩ := j
-    match n, hn with
-    | 0, _ => rfl
-    | 1, _ => rfl
-    | n + 2, hn => exact absurd hn (by show ¬ (n + 2 < 2); omega)
+    match j with | 0 => rfl | 1 => rfl
   simp [models_iff, repS, R2, Semiformula.Operator.mem_def, Semiformula.Operator.eq_def,
     FirstOrder.Semiformula.existsUnique, FirstOrder.Semiformula.bexsMem, LO.FirstOrder.bexs,
     vec2_val]

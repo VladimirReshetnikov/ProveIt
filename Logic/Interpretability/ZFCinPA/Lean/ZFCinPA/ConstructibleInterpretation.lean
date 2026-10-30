@@ -164,6 +164,33 @@ theorem eval_paramAtom {M S ξ : Type*} [SetStructure M] [SetStructure S] {P : M
       rw [h0, h1, h0', h1']
       exact hMem u0 u1
 
+/-- Guarded universal quantification descends along a surjection. -/
+theorem forall_guard {A B : Type*} {P : A → Prop} (g : {x // P x} → B)
+    (hg : Function.Surjective g) (F : A → Prop) (G : B → Prop)
+    (h : ∀ u, F u.1 ↔ G (g u)) :
+    (∀ x, ¬P x ∨ F x) ↔ ∀ y, G y := by
+  classical
+  constructor
+  · intro H y
+    obtain ⟨⟨x, hx⟩, rfl⟩ := hg y
+    exact (h ⟨x, hx⟩).mp ((H x).resolve_left (not_not.mpr hx))
+  · intro H x
+    by_cases hx : P x
+    · exact Or.inr ((h ⟨x, hx⟩).mpr (H (g ⟨x, hx⟩)))
+    · exact Or.inl hx
+
+/-- Guarded existential quantification descends along a surjection. -/
+theorem exists_guard {A B : Type*} {P : A → Prop} (g : {x // P x} → B)
+    (hg : Function.Surjective g) (F : A → Prop) (G : B → Prop)
+    (h : ∀ u, F u.1 ↔ G (g u)) :
+    (∃ x, P x ∧ F x) ↔ ∃ y, G y := by
+  constructor
+  · rintro ⟨x, hx, hF⟩
+    exact ⟨g ⟨x, hx⟩, (h ⟨x, hx⟩).mp hF⟩
+  · rintro ⟨y, hG⟩
+    obtain ⟨⟨x, hx⟩, rfl⟩ := hg y
+    exact ⟨x, hx, (h ⟨x, hx⟩).mpr hG⟩
+
 /-! ## The domain formula -/
 
 /-- `x ∈ L` as a Foundation semisentence in one variable. -/

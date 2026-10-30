@@ -161,6 +161,12 @@ theorem eval_atomI {ξ : Type*} {n k : ℕ} (R : (ℒₛₑₜ).Rel k) (v : Fin 
   · intro u w
     rfl
 
+private theorem cls_surj : Function.Surjective (cls (M := M)) := by
+  rintro ⟨q, hq⟩
+  obtain ⟨x, rfl⟩ := Quotient.exists_rep q
+  have hx : D x := (eval_domS x Empty.elim).mpr hq
+  exact ⟨⟨x, hx⟩, rfl⟩
+
 /-- **Evaluation of the interpretation**: in a model of the native theory, the
 interpretation of `φ` at domain elements holds iff `φ` holds at their classes
 in the well-founded part of the quotient. -/
@@ -179,37 +185,16 @@ theorem eval_intF {ξ : Type*} :
   | n, ∀⁰ φ, b, f => by
       simp only [intF, Semiformula.eval_all, LogicalConnective.HomClass.map_or,
         LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.or_eq,
-        LogicalConnective.Prop.neg_eq]
-      constructor
-      · intro h c
-        obtain ⟨q, hq⟩ := c
-        obtain ⟨x, rfl⟩ := Quotient.exists_rep q
-        have hx : D x := (eval_domS x Empty.elim).mpr hq
-        have h1 := (h x).resolve_left (not_not.mpr ((eval_domAtS x _ _).mpr hx))
-        rw [← val_cons ⟨x, hx⟩ b, eval_intF φ (⟨x, hx⟩ :> b) f, cls_cons] at h1
-        exact h1
-      · intro h x
-        by_cases hx : D x
-        · right
-          rw [← val_cons ⟨x, hx⟩ b, eval_intF φ (⟨x, hx⟩ :> b) f, cls_cons]
-          exact h _
-        · left
-          exact fun h' ↦ hx ((eval_domAtS x _ _).mp h')
+        LogicalConnective.Prop.neg_eq, eval_domAtS]
+      apply ConstructibleInterpretation.forall_guard cls cls_surj
+      intro u
+      rw [← val_cons u b, eval_intF φ (u :> b) f, cls_cons]
   | n, ∃⁰ φ, b, f => by
       simp only [intF, Semiformula.eval_ex, LogicalConnective.HomClass.map_and,
-        LogicalConnective.Prop.and_eq]
-      constructor
-      · rintro ⟨x, hx, h1⟩
-        have hx' : D x := (eval_domAtS x _ _).mp hx
-        rw [← val_cons ⟨x, hx'⟩ b, eval_intF φ (⟨x, hx'⟩ :> b) f, cls_cons] at h1
-        exact ⟨_, h1⟩
-      · rintro ⟨c, h1⟩
-        obtain ⟨q, hq⟩ := c
-        obtain ⟨x, rfl⟩ := Quotient.exists_rep q
-        have hx : D x := (eval_domS x Empty.elim).mpr hq
-        refine ⟨x, (eval_domAtS x _ _).mpr hx, ?_⟩
-        rw [← val_cons ⟨x, hx⟩ b, eval_intF φ (⟨x, hx⟩ :> b) f, cls_cons]
-        exact h1
+        LogicalConnective.Prop.and_eq, eval_domAtS]
+      apply ConstructibleInterpretation.exists_guard cls cls_surj
+      intro u
+      rw [← val_cons u b, eval_intF φ (u :> b) f, cls_cons]
 
 end Semantics
 

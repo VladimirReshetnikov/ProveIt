@@ -33,9 +33,7 @@ noncomputable def prepareTriple (φ : Semiproposition language 3) (hOpen : φ.Op
 noncomputable def prepareTripleClosed (φ : Semisentence language 3) (hOpen : φ.Open)
     (p : Theory.Proof UniversalAxiom (∃⁰ ∃⁰ ∃⁰ φ)) : Prepared (∃⁰ ∃⁰ (Rewriting.emb φ)) p.axioms := by
   have hopen : (Rewriting.emb φ : Semiproposition language 3).Open := by
-    change (Rewriting.emb φ : Semiproposition language 3).qr = 0
-    rw [PRAFormulaParameters.qr_rew]
-    exact hOpen
+    simpa only [Semiformula.rew_open_iff] using hOpen
   apply prepareTriple (Rewriting.emb φ) hopen p.axioms p.axioms_mem
   have d := p.derivation
   change Derivation (((∃⁰ ∃⁰ ∃⁰ φ) :: ∼p.axioms).map Rewriting.emb) at d
@@ -128,9 +126,7 @@ theorem universal_proves_tripleDisjunction (φ : Semisentence language 3) (hOpen
     UniversalAxiom ⊢ (tripleDisjunction (Rewriting.emb φ)
       (existentialTerms (prepareTripleClosed φ hOpen p).derivation)).univCl := by
   have hopen : (Rewriting.emb φ : Semiproposition language 3).Open := by
-    change (Rewriting.emb φ : Semiproposition language 3).qr = 0
-    rw [PRAFormulaParameters.qr_rew]
-    exact hOpen
+    simpa only [Semiformula.rew_open_iff] using hOpen
   exact universal_proves_preparedTripleDisjunction (Rewriting.emb φ) hopen
     p.axioms p.axioms_mem (prepareTripleClosed φ hOpen p)
 

@@ -15,10 +15,7 @@ theorem extractAt (r : ℕ) (θ : Semiproposition language 1) (β : Semiproposit
       (∀ j k i, (candidate j k).FVar? i → i < r+3*j) := by
   let ψ := negativePrefix β (liftGoal θ)
   have hgoal : (liftGoal θ).Open := by
-    change (liftGoal θ).qr = 0
-    unfold liftGoal
-    rw [PRAFormulaParameters.qr_rew]
-    exact hθ
+    simpa only [liftGoal, Semiformula.rew_open_iff] using hθ
   have hψ : UniversalPrefix ψ := prefix_normalized β (liftGoal θ) hβ hgoal
   have pp : UniversalAxiom ⊢ (∃⁰ (∃⁰ (∃⁰ (∃⁰ (∀⁰ (∀⁰ (∀⁰ (∼ψ)))))))).univCl :=
     normalize_proof β (liftGoal θ) p

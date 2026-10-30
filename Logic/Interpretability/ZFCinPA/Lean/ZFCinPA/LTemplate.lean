@@ -128,6 +128,28 @@ open scoped LO.FirstOrder.Arithmetic
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
+lemma embSubsts_app {n m : ℕ} (v : Fin m → SyntacticSemiterm (setTemplateLanguage k arities) n)
+    (σ : Semisentence (setTemplateLanguage k arities) m) :
+    (Rew.embSubsts v ▹ σ : Semiproposition (setTemplateLanguage k arities) n) =
+      Rew.subst v ▹ (Rewriting.emb σ : Semiproposition (setTemplateLanguage k arities) m) := by
+  have e : (Rew.embSubsts v : Rew (setTemplateLanguage k arities) Empty m ℕ n) =
+      (Rew.subst v).comp Rew.emb := by
+    ext x
+    · simp [Rew.comp_app]
+    · exact x.elim
+  rw [e, TransitiveRewriting.comp_app]
+
+/-- A translated lifted sentence under a substitution. -/
+lemma translate_embSubsts_liftSet (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))
+    {n m : ℕ} (v : Fin m → SyntacticSemiterm (setTemplateLanguage k arities) n)
+    (σ : SetTheorySemisentence m) :
+    (translateFormula Ks (Rew.embSubsts v ▹ liftSet σ)).val =
+      subst ℒₛₑₜ (SemitermVec.val fun i ↦ translateTerm (V := V) (v i)) (⌜σ⌝ : V) := by
+  rw [embSubsts_app, translateFormula_subst, translateFormula_emb_liftSet,
+    Bootstrapping.Semiformula.val_substs]
+  rfl
+
+
 /-- A theory containing equality proves congruence for arity at most `3`. -/
 lemma congruenceProof_le3_of_eq (T : SetTheory) [T.Δ₁] [𝗘𝗤 ℒₛₑₜ ⪯ T] : ∀ (a : ℕ), a ≤ 3 → (K : Bootstrapping.Semiformula V ℒₛₑₜ a) →
     T.internalize V ⊢ SetCongruence.congruenceFormula a K

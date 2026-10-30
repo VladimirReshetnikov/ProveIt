@@ -11,7 +11,5 @@ theorem openSigma_sigma (ψ : Semisentence language 3) (hψ : ψ.Open) :
   unfold openSigma
   apply Hierarchy.sigma
   apply Hierarchy.of_open
-  change (Rew.embSubsts ![#1,#0,&0] ▹ ψ).qr = 0
-  rw [PRAFormulaParameters.qr_rew]
-  exact hψ
+  exact Semiformula.rew_open_iff.mpr hψ
 end DiophantineConsistency.PRAOpenOneInductionClassification
