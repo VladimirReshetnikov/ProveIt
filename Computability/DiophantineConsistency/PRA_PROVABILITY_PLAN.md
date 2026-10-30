@@ -8,6 +8,12 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [enriched-assembly adapter](reviews/adaptive-assembly-bridge2011-independent.md)
+now derives transport, a strong-factor identity and a positive auxiliary
+coordinate from the exact 14-coordinate assembly conclusion with explicit
+phase and ordinate premises, preserving its bound. Constructing that assembly
+conclusion and the final 13-coordinate zero remain open.
+
 The merge pushed as `d53db22f9a` changed `HerbrandFixedGoalExtraction`,
 `HerbrandFixedGoalExtractionBound`, `HerbrandFixedGoalWeakening`, and
 `HerbrandStageSupport`. Previously recorded dependent replay results cover
