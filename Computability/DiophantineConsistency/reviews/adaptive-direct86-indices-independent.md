@@ -1,0 +1,3 @@
+# Direct-ordinate 86 Pell indices: independent replay
+
+The root independently replayed the author driver and obtained `PASS` at `/tmp/adaptive-direct86-indices-b35r6jh5`, state SHA-256 `e6ad160f5427e2f02ba5e3dfe0de151dd17d3edae09d967771e4a40a97428f9d`. Both source/object hashes match the author table; both complete logs are empty, SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. State, driver, source snapshots, full logs and timings are in `adaptive-direct86-indices-independent-evidence`; manifest SHA-256 `38f7da99335deedd987d34cfe286c34b33d98bf1df8daabcef90b33bb48d31f0`. Scope and historical boundaries are those of the author receipt.
