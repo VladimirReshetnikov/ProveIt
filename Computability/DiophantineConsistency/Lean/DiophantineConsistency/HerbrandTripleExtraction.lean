@@ -153,8 +153,7 @@ theorem universal_proves_tripleDisjunction (φ : Semisentence language 3) (hOpen
     change (Rewriting.emb φ : Semiproposition language 3).qr = 0
     rw [PRAFormulaParameters.qr_rew]
     exact hOpen
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ _
-  exact modelTripleDisjunction (Rewriting.emb φ) hopen p.axioms p.axioms_mem (prepareTripleClosed φ hOpen p)
+  exact universal_proves_preparedTripleDisjunction (Rewriting.emb φ) hopen
+    p.axioms p.axioms_mem (prepareTripleClosed φ hOpen p)
 
 end DiophantineConsistency.HerbrandTripleExtraction
