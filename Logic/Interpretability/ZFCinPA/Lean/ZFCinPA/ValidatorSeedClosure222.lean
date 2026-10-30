@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorSeedWitness222
 
 set_option autoImplicit false
@@ -20,15 +21,10 @@ open ArithmeticSeedTemplates222 (req clos)
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a :: G) a := .cons_head
-private lemma h1 {G : List V} {a b : V} : D (b :: a :: G) a :=
-  .hyp (List.mem_cons_of_mem _ (List.mem_cons_self ..))
-private lemma ofDer {p : V} (d : D [] p) : CProv p :=
-  d.sound cProv_classical (fun _ h => absurd h List.not_mem_nil)
-private lemma ded1 {a p : V} (d : D [a] p) : CProv (wim a p) :=
-  ofDer (Kalmar.deduction cProv_classical d)
-private lemma ded2 {a b p : V} (d : D [b, a] p) : CProv (wim a (wim b p)) :=
-  ofDer (Kalmar.deduction cProv_classical (Kalmar.deduction cProv_classical d))
+local notation "h0" => (ValidatorImplicationContext.h0 CProv)
+local notation "h1" => (ValidatorImplicationContext.h1 CProv)
+local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
+local notation "ded2" => (ValidatorImplicationContext.ded2 CProv cProv_classical)
 
 /-- Every member satisfies an input-independent matrix. The only vacuity
 resource is the explicitly supplied Vac a m; all four codes are arbitrary. -/

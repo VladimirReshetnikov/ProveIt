@@ -134,13 +134,6 @@ section Induction
 
 variable [V↓[ℒₒᵣ] ⊧* 𝗜𝚺 2]
 
-private lemma sigma1_to_pi2 {k : ℕ} {P : (Fin k → V) → Prop}
-    (h : 𝚺₁.Definable P) : (𝚷-[2]).Definable P := by
-  rcases h with ⟨φ, hφ⟩
-  refine ⟨.mkPi φ.val (φ.sigma_prop.strict_mono 𝚷 (by decide)), ?_⟩
-  intro v
-  simpa only [HierarchySymbol.Semiformula.val_mkPi] using (hφ.iff (v := v))
-
 private instance cProv_pi2 : 𝚷-[2]-Predicate[V] CProv := sigma1_to_pi2 cProv_definable
 private instance encode_sigma2 : 𝚺-[2]-Function₄[V] encode :=
   (encode_defined.graph_delta.to_definable).of_deltaOne

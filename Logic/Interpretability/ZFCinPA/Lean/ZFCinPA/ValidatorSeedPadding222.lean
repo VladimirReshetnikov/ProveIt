@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorSeedImage222
 import ZFCinPA.ValidatorEnvironmentStreams222
 
@@ -17,11 +18,8 @@ open ValidatorSeedImage222 ValidatorFormulaEncoder222 ValidatorEnvironmentVacuit
 open scoped LO.FirstOrder.Arithmetic
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private abbrev D (G : List V) (p : V) := Kalmar.Der wim CProv G p
-private lemma h0 {G : List V} {a : V} : D (a::G) a := .cons_head
-private lemma ded1 {a p : V} (h : D [a] p) : CProv (wim a p) :=
-  (Kalmar.deduction cProv_classical h).sound cProv_classical
-    (fun _ hm => absurd hm List.not_mem_nil)
+local notation "h0" => (ValidatorImplicationContext.h0 CProv)
+local notation "ded1" => (ValidatorImplicationContext.ded1 CProv cProv_classical)
 private lemma self_imp (a : V) : CProv (wim a a) := ded1 h0
 
 def raised (bound p : V) : V := wim (wim (bound+1) (bound+1)) p
