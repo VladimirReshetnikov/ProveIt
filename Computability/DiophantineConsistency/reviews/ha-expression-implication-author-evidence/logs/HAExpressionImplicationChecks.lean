@@ -1,0 +1,5 @@
+import DiophantineConsistency.HAExpressionImplication
+
+#check DiophantineConsistency.HAExpressionImplication.isigma1_implication
+#check DiophantineConsistency.HAExpressionImplication.ha_implication
+#print axioms DiophantineConsistency.HAExpressionImplication.ha_implication
