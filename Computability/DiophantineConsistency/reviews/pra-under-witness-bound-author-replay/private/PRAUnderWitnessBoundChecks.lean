@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAUnderWitnessBound
+#print axioms DiophantineConsistency.PRAUnderWitnessBound.under_bound
+#print axioms DiophantineConsistency.PRAUnderWitnessBound.candidate_proves_under_bound
