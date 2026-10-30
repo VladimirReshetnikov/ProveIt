@@ -7,7 +7,7 @@ namespace DiophantineConsistency.ArithmeticPellResidueAux
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder.Arithmetic
 open ArithmeticPellRecurrence ArithmeticPellCongruences ArithmeticPellStrongDivisibility
-open ArithmeticPellIndexDivisibility
+open ArithmeticPellIndexDivisibility ArithmeticPellHalfIndex
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 attribute [local irreducible] xcoord ycoord
 
@@ -55,5 +55,23 @@ theorem square_mod_one_of_relaxed_auxiliary (a c m i f : V)
     _=1+delta a*ycoord j a*ycoord j a := norm j a
     _=1+c*(delta a*c*w*w) := by rw [hw]; ring
   rw [hfnorm,mod_add_mul' _ _ hc]
+
+/-- A relaxed auxiliary solution gives the signed residue of the displayed difference. -/
+theorem signed_residue_of_relaxed_auxiliary (a c m i f t R : V)
+    (hm : 0<m) (hi : 0<i) (hf : 0<f) (hc : 0<c)
+    (hmy : ycoord m a=c)
+    (hs : (i*c*c)*(i*c*c)+delta a=delta a*(f*f))
+    (hbig : (a+2)*delta a*delta a<c) :
+    SignMod c (absdiff (f*f*t*c) (f*f*R+c)) R := by
+  have hfmod := square_mod_one_of_relaxed_auxiliary a c m i f hm hi hf hc hmy hs hbig
+  apply absdiff_residue c (f*f*t*c) (f*f*R+c) R hc
+  have hd : c∣f*f*t*c := ⟨f*f*t,by ring⟩
+  have hmul : (f*f*R)%c=R%c := by
+    have hh := same_mul hc hfmod (show R%c=R%c from rfl)
+    simpa only [one_mul] using hh
+  calc
+    (f*f*t*c+R)%c=R%c := mod_add_remove_left_of_dvd hd hc
+    _=(f*f*R)%c := hmul.symm
+    _=(f*f*R+c)%c := (mod_add_remove_right hc).symm
 
 end DiophantineConsistency.ArithmeticPellResidueAux
