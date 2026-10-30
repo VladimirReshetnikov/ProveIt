@@ -125,9 +125,19 @@ lemma cross_body_vac {P : V → V → Prop} {enc : V → V → V → V → V}
       simpa using (hap (k+1) 0).symm
 
 
+def alternateStartDef : 𝚺₀.Semisentence 3 := .mkSigma
+  “out bound seed. ∃ r < 2, !remDef r seed 2 ∧
+    ((r = 0 ∧ out = 2 * (bound + 2) + 1) ∨
+     (r ≠ 0 ∧ out = 2 * (bound + 2)))”
 noncomputable def alternateStart (bound seed : V) : V := by
   classical
   exact if seed % 2=0 then 2*(bound+2)+1 else 2*(bound+2)
+
+theorem alternateStartGraph : 𝚺₀-Function₂[V] alternateStart via alternateStartDef :=
+  .mk fun v => by
+    classical
+    by_cases hs : v 2 % 2=0 <;>
+      simp [alternateStartDef,alternateStart,hs,mod_lt (v 2) (b := 2) (by simp)]
 
 lemma streamEnv_of_lt {s B : V} (hB : B<s) : StreamEnv s B := by
   intro k i _hi

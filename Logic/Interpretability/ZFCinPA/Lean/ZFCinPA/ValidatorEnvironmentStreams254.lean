@@ -21,10 +21,7 @@ open ValidatorEnvironmentAlpha254
 open scoped LO.FirstOrder.Arithmetic
 
 /-- Graph argument order is output, coarse bound, original stream seed. -/
-def alternateStartDef : 𝚺₀.Semisentence 3 := .mkSigma
-  “out bound seed. ∃ r < 2, !remDef r seed 2 ∧
-    ((r = 0 ∧ out = 2 * (bound + 2) + 1) ∨
-     (r ≠ 0 ∧ out = 2 * (bound + 2)))”
+def alternateStartDef : 𝚺₀.Semisentence 3 := ValidatorLabelAvoidance.alternateStartDef
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
@@ -33,10 +30,8 @@ noncomputable def alternateStart (bound seed : V) : V := by
   exact if seed % 2=0 then 2*(bound+2)+1 else 2*(bound+2)
 
 instance alternateStart_defined : 𝚺₀-Function₂[V] alternateStart via alternateStartDef :=
-  .mk fun v => by
-    classical
-    by_cases hs : v 2 % 2=0 <;>
-      simp [alternateStartDef,alternateStart,hs,mod_lt (v 2) (b := 2) (by simp)]
+  ValidatorLabelAvoidance.alternateStartGraph
+
 instance alternateStart_sigma1 : 𝚺₁-Function₂[V] alternateStart :=
   alternateStart_defined.to_definable₀
 
