@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryFormulaSetCode
+
+#print axioms DiophantineConsistency.PRAHistoryFormulaSetCode.modelScanSigma
+#print axioms DiophantineConsistency.PRAHistoryFormulaSetCode.PRA_has_formulaSetCode

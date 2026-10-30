@@ -112,6 +112,10 @@ would be circular. An independently replayed [successor-code bridge](reviews/pra
 constructs the actual Foundation `succDef` code once a Boolean characteristic
 is certified for both core formulas; those core certificates remain explicit
 premises.
+An independently replayed [formula-set characteristic](reviews/pra-history-formulaset-code-author-replay/README.md)
+constructs both actual Foundation formula-set graph polarities from a
+supplied semiformula characteristic, without assuming the formula-set witness
+majorant. Correctness of the semiformula code itself remains open.
 An independently replayed [primitive-recursive pairing code](reviews/pra-history-pair-code-author-replay/README.md)
 now computes Foundation's exact pairing graph in candidate-PRA models. This
 supplies one part of a potential sequence-code construction. A second
