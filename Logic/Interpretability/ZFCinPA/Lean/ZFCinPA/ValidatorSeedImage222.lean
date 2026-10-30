@@ -97,11 +97,9 @@ theorem closure_congr (a b k p q : V)
 theorem closure_request_congr (a b k p q : V)
     (hpq : CProv (wim p q)) (hqp : CProv (wim q p)) :
     CProv (wim (conj (clos a b k p) (req b k p))
-      (conj (clos a b k q) (req b k q))) := by
-  apply ded1
-  exact .mp (.mp (.ax (conj_rule _ _))
-    (.mp (.ax (closure_congr a b k p q hpq hqp).1) (.mp (.ax (conj_left _ _)) h0)))
-    (.mp (.ax (request_congr b k p q hpq hqp).1) (.mp (.ax (conj_right _ _)) h0))
+      (conj (clos a b k q) (req b k q))) :=
+  contrapose_of (imp_mono (closure_congr a b k p q hpq hqp).1
+    (contrapose_of (request_congr b k p q hpq hqp).1))
 
 def pad (p : V) : V := neg (neg p)
 
