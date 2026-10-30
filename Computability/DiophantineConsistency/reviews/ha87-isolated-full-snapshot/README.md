@@ -1,0 +1,7 @@
+# Fixed full project-source snapshot build
+
+The project source tree `/tmp/ha87-frozen-full-e_jgyudl/tree` contains 729 hash-checked source snapshots and frozen Lake configuration. Its driver and complete source-hash manifest are included. The isolated audit-only run `/tmp/ha87-full-transitive-ko91eid8` returned AUDIT_PASS; `audit-comparison.json` records equality with the workspace audit in project source paths, import edges, order, source hashes, 93 direct external object hashes, 279 external companion hashes and compiler/Lake anchors. No Lean proof module was compiled by that audit.
+
+A fully fresh zero-prefix-reuse full author build `/tmp/ha87-full-transitive-p3xt6wra` is running from that fixed tree. It reads no live workspace project sources and is insulated from future source merges; its eventual result pertains to this snapshot. The 129-row prior prefix was deliberately not reused, so its reconstructed-origin limitation is not applied to this run. Foundation and external-package transitive ancestry remains inherited and is not authenticated here; an independent full replay remains separate.
+
+`source-deltas/` contains every changed or newly added module relative to `../ha87-full-source-build-author2/`; unchanged source snapshots are in that predecessor. Lake configuration, full manifest, driver, freeze script and both audit states are included. The live build output is not part of this input packet.
