@@ -95,7 +95,9 @@ Both polarities of Foundation's actual length predicate `lhDef` now also have
 [independently replayed polynomial witness bounds](reviews/pra-lh-postmerge-author-replay/README.md).
 They supply components of the computation-sequence graph; the blueprint's
 zero and successor clauses and the existential history code still require
-bounds.
+bounds. An independently replayed [conditional `cseqDef` client](reviews/pra-cseq-witness-bound-author-replay/README.md)
+combines the fixed sequence, length and relation components, while keeping
+the blueprint zero and successor bounds as explicit premises.
 A [conditional successor-graph bound](reviews/pra-fixsucc-witness-bound-author-replay/README.md)
 also handles both bit polarities in Foundation's actual `succDef`; bounded
 sigma and negated-pi blueprint core formulas remain explicit premises.
