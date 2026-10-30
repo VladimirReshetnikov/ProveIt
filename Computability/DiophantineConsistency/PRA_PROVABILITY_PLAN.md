@@ -112,6 +112,12 @@ no-zero/machine bridge, it produces actual IΣ₁ and HA proof equivalences for
 that expression and Foundation consistency. Its direct imports and transitive
 HA/ZFC closure are inherited historical objects, and the 87-operation bridge
 and normalization premise are not discharged by this generic theorem.
+An independently replayed [HA/model provider overlap audit](reviews/adaptive-ha-model-overlap-independent.md)
+found 118 unequal object hashes among 119 shared project paths. Differing
+bytes do not by themselves imply semantic inequivalence, but neither full
+overlay can be assumed to preserve the other's authenticated boundary; a
+dependency-directed unified rebuild or independently authenticated closure is
+needed before composing the 87-operation HA endpoint.
 The independently replayed [compatibility overlay audit](reviews/adaptive-wang-compat-overlay-audit-independent.md)
 checks that its 367 canonical project objects are byte-identical and that its
 27 additions are the authenticated table and chunk objects. This does not
