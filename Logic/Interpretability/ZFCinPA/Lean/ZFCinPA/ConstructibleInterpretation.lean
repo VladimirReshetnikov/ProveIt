@@ -92,6 +92,16 @@ open LO LO.FirstOrder LO.FirstOrder.SetTheory
 open NativeZFContainers254 (memRel toSet eval_toSet)
 open SetTheory.BusyBeaver.ZFC.Constructible (InL)
 
+/-- A set-language term selects the same source variable under two maps. -/
+theorem term_cases_between {S A B ξ : Type*} [Structure ℒₛₑₜ A] [Structure ℒₛₑₜ B]
+    (g : S → A) (h : S → B) {n : ℕ} (t : Semiterm ℒₛₑₜ ξ n)
+    (b : Fin n → S) (f : ξ → S) :
+    ∃ u : S, t.val (g ∘ b) (g ∘ f) = g u ∧ t.val (h ∘ b) (h ∘ f) = h u := by
+  cases t with
+  | bvar i => exact ⟨b i, rfl, rfl⟩
+  | fvar x => exact ⟨f x, rfl, rfl⟩
+  | func g v => cases g
+
 /-! ## The domain formula -/
 
 /-- `x ∈ L` as a Foundation semisentence in one variable. -/
@@ -198,10 +208,9 @@ variable (P : V → Prop)
 lemma val_subtype {ξ : Type*} {n : ℕ} (t : Semiterm ℒₛₑₜ ξ n) (b : Fin n → {x // P x})
     (f : ξ → {x // P x}) :
     t.val (Subtype.val ∘ b) (Subtype.val ∘ f) = (t.val b f).1 := by
-  cases t with
-  | bvar x => rfl
-  | fvar x => rfl
-  | func g v => exact g.elim
+  obtain ⟨u, hu, hv⟩ := term_cases_between Subtype.val id t b f
+  change t.val b f = u at hv
+  exact hu.trans (congrArg Subtype.val hv.symm)
 
 variable (δ : SetTheorySemisentence 1) (hδ : ∀ (x : V) (ε : Empty → V), δ.Eval ![x] ε ↔ P x)
 include hδ
