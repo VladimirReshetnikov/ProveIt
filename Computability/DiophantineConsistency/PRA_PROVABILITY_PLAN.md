@@ -8,6 +8,10 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [first-factor reverse bridge](reviews/adaptive-construction-first-factor2011-independent.md)
+derives its literal unit from the explicit additive carrier identity and first
+norm. Binding these to the common concrete witness remains separate.
+
 The [concrete main-factor client](reviews/adaptive-construction-main-witness2011-independent.md)
 now proves the main factor of the explicit adaptive witness is +1 under the
 common seed and Assembly facts. Together with the strong factor, two of the

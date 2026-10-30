@@ -1,0 +1,2 @@
+import DiophantineConsistency.ArithmeticAdaptiveConstructionFirstFactor2011
+#print axioms DiophantineConsistency.ArithmeticAdaptiveConstructionFirstFactor2011.first_factor_of_additive
