@@ -8,6 +8,11 @@ printed proof is not required.
 
 ## Current scope and open endpoints
 
+The [concrete main-factor client](reviews/adaptive-construction-main-witness2011-independent.md)
+now proves the main factor of the explicit adaptive witness is +1 under the
+common seed and Assembly facts. Together with the strong factor, two of the
+four literal factor units are established for that witness.
+
 The [strict Σ₁ certificate](reviews/pra-strict-sigma-certificate-author-replay/README.md)
 now supplies the conditional normalizer for every arithmetic induction
 predicate syntactically `∃ D` with bounded `D` and any finitely many free
