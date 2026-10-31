@@ -350,31 +350,18 @@ theorem eval_relF {ξ : Type*} :
       exact or_congr (eval_relF φ b f) (eval_relF ψ b f)
   | _, ∀⁰ φ, b, f => by
       simp only [relF_all, Semiformula.eval_all, LogicalConnective.HomClass.map_or,
-        LogicalConnective.HomClass.map_neg]
-      constructor
-      · intro h x
-        have := (h x.1).resolve_left (by rw [eval_domAt P δ hδ]; exact not_not.mpr x.2)
-        rw [← comp_vecCons_val] at this
-        exact (eval_relF φ _ f).mp this
-      · intro h x
-        by_cases hx : P x
-        · right
-          have := (eval_relF φ (⟨x, hx⟩ :> b) f).mpr (h ⟨x, hx⟩)
-          rwa [comp_vecCons_val] at this
-        · left
-          rw [eval_domAt P δ hδ]
-          exact hx
+        LogicalConnective.HomClass.map_neg, eval_domAt P δ hδ]
+      apply forall_guard id Function.surjective_id
+      intro x
+      rw [← comp_vecCons_val]
+      exact eval_relF φ _ f
   | _, ∃⁰ φ, b, f => by
-      simp only [relF_exs, Semiformula.eval_ex, LogicalConnective.HomClass.map_and]
-      constructor
-      · rintro ⟨x, hx, h⟩
-        rw [eval_domAt P δ hδ] at hx
-        refine ⟨⟨x, hx⟩, (eval_relF φ _ f).mp ?_⟩
-        rwa [comp_vecCons_val]
-      · rintro ⟨x, h⟩
-        refine ⟨x.1, (eval_domAt P δ hδ _ _ _).mpr x.2, ?_⟩
-        have := (eval_relF φ (x :> b) f).mpr h
-        rwa [comp_vecCons_val] at this
+      simp only [relF_exs, Semiformula.eval_ex, LogicalConnective.HomClass.map_and,
+        eval_domAt P δ hδ]
+      apply exists_guard id Function.surjective_id
+      intro x
+      rw [← comp_vecCons_val]
+      exact eval_relF φ _ f
 
 /-- A sentence holds relativized in `V` iff it holds in the substructure. -/
 theorem models_relF_iff [Nonempty V] [Nonempty {x // P x}] (σ : SetTheorySentence) :
