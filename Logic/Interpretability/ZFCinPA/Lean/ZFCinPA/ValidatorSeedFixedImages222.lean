@@ -118,31 +118,18 @@ theorem eval_relM (t : M) :
       exact or_congr (eval_relM t φ b f hf) (eval_relM t ψ b f hf)
   | _, ∀⁰ φ, b, f, hf => by
       simp only [relM, Semiformula.eval_all, LogicalConnective.HomClass.map_or,
-        LogicalConnective.HomClass.map_neg]
-      constructor
-      · intro h x
-        have := (h x.1).resolve_left (by rw [eval_domM t x.1 _ f hf]; exact not_not.mpr x.2)
-        rw [← comp_vecCons_tag] at this
-        exact (eval_relM t φ _ f hf).mp this
-      · intro h x
-        by_cases hx : t ∈ x
-        · right
-          have := (eval_relM t φ (⟨x, hx⟩ :> b) f hf).mpr (h ⟨x, hx⟩)
-          rwa [comp_vecCons_tag] at this
-        · left
-          rw [eval_domM t x _ f hf]
-          exact hx
+        LogicalConnective.HomClass.map_neg, eval_domM t _ _ f hf]
+      apply ConstructibleInterpretation.forall_guard id Function.surjective_id
+      intro x
+      rw [← comp_vecCons_tag]
+      exact eval_relM t φ _ f hf
   | _, ∃⁰ φ, b, f, hf => by
-      simp only [relM, Semiformula.eval_ex, LogicalConnective.HomClass.map_and]
-      constructor
-      · rintro ⟨x, hx, h⟩
-        rw [eval_domM t x _ f hf] at hx
-        refine ⟨⟨x, hx⟩, (eval_relM t φ _ f hf).mp ?_⟩
-        rwa [comp_vecCons_tag]
-      · rintro ⟨x, h⟩
-        refine ⟨x.1, (eval_domM t x.1 _ f hf).mpr x.2, ?_⟩
-        have := (eval_relM t φ (x :> b) f hf).mpr h
-        rwa [comp_vecCons_tag] at this
+      simp only [relM, Semiformula.eval_ex, LogicalConnective.HomClass.map_and,
+        eval_domM t _ _ f hf]
+      apply ConstructibleInterpretation.exists_guard id Function.surjective_id
+      intro x
+      rw [← comp_vecCons_tag]
+      exact eval_relM t φ _ f hf
 
 theorem eval_emptyM (f : ℕ → M) : emptyM.Evalf f ↔ ∀ z : M, z ∉ f 0 := by
   simp [emptyM]
