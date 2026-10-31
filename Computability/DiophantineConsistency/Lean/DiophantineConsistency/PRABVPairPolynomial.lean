@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAPairTripleWitnessBound
+import DiophantineConsistency.PRAIOpenCompleteness
 set_option autoImplicit false
 namespace DiophantineConsistency.PRABVPairPolynomial
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
@@ -17,18 +18,9 @@ theorem bvPairBody_model (e : Fin 1 → V) : (bvPairBody).Eval e Empty.elim := b
   simp [bvPairBody, Semiformula.eval_substs, bvPair_eq]
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 noncomputable def bvPairSentence : Sentence language := ∀⁰* Semiformula.lMap embedding bvPairBody
-theorem candidate_proves_bv_pair_polynomial : PRA ⊢ bvPairSentence := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
-  letI : M↓[language] ⊧* PRA := hM
-  letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
-  letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
-  letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
-  letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
-  letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
-  simp only [models_iff, bvPairSentence, Semiformula.eval_allClosure]
-  intro e
-  rw [Semiformula.eval_lMap, reduct_eq_standard]
-  exact bvPairBody_model e
+theorem candidate_proves_bv_pair_polynomial : PRA ⊢ bvPairSentence :=
+  PRAIOpenCompleteness.proves_allClosure _ (by
+    intro M _ _ e
+    exact bvPairBody_model e)
+
 end DiophantineConsistency.PRABVPairPolynomial
