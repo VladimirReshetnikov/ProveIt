@@ -1,0 +1,16 @@
+import DiophantineConsistency.PRAWitnessTransfer
+/-! Axiom audit for the IΣ₁-to-PRA witness transfer. -/
+#print axioms DiophantineConsistency.PRAWitnessTransfer.eval_front
+#print axioms DiophantineConsistency.PRAWitnessTransfer.cdef_bounded
+#print axioms DiophantineConsistency.PRAWitnessTransfer.strictSigma_sigma1
+#print axioms DiophantineConsistency.PRAWitnessTransfer.models_prefix
+#print axioms DiophantineConsistency.PRAWitnessTransfer.eval_cdef
+#print axioms DiophantineConsistency.PRAWitnessTransfer.eval_sigmaBody
+#print axioms DiophantineConsistency.PRAWitnessTransfer.isigma1_sigma
+#print axioms DiophantineConsistency.PRAWitnessTransfer.front_bounded
+#print axioms DiophantineConsistency.PRAWitnessTransfer.theta_open
+#print axioms DiophantineConsistency.PRAWitnessTransfer.eval_theta
+#print axioms DiophantineConsistency.PRAWitnessTransfer.eval_dominates
+#print axioms DiophantineConsistency.PRAWitnessTransfer.PRA_goal
+#print axioms DiophantineConsistency.PRAWitnessTransfer.transfer
+#print axioms DiophantineConsistency.PRAISigmaOneOpenComparison.comparison
