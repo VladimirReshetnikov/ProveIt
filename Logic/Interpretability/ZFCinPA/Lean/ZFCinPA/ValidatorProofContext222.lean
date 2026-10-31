@@ -1,4 +1,5 @@
 import ZFCinPA.ValidatorFormulaEncoder222
+import ZFCinPA.ValidatorContextLists
 import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorVectorMap
 
@@ -12,7 +13,8 @@ indices and finite-set codes are internal elements of an arbitrary IΣ1 model.
 Only fixed finite propositional certificates use Lean lists. Adapted from the
 list calculus in R2Ctx, which is not imported: every provability premise and
 witness here is the actual C222 predicate, and equality atoms use Eind through
-the new encoder. No source axiom image, NNF proof interpretation, vacuity,
+the new encoder. The predicate-independent lists (`imps`, `shiftList`, `Enum`)
+are shared with R2Ctx through `ValidatorContextLists` and re-exported here. No source axiom image, NNF proof interpretation, vacuity,
 closed ZF-to-C222 reduction, or HA endpoint is asserted. -/
 
 namespace LeanProofs.ZFCinPA.ValidatorProofContext222
@@ -22,10 +24,13 @@ open _root_.SetTheory.BusyBeaver.ZFC ArithmeticCode254
 open ValidatorProvability222 ValidatorRelationalCore222 ValidatorFormulaEncoder222
 open ValidatorEnvironmentLabels254 (tail)
 open scoped LO.FirstOrder.Arithmetic
+open LeanProofs.ZFCinPA.ValidatorContextLists
+export LeanProofs.ZFCinPA.ValidatorContextLists (imps imps_nil imps_cons impsDef
+  imps_defined imps_definable imps_graph imps_total_unique shiftList shiftList_nil
+  shiftList_cons shiftListDef shiftList_defined shiftList_definable shiftList_len_nth
+  mem_shiftList Enum enum_of_mem enumDef enum_defined enum_definable exists_enum)
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-
-instance wim_sigma1 : 𝚺₁-Function₂[V] wim := wim_defined.to_definable₀
 
 /-! ## Finite propositional reasoning -/
 
@@ -33,37 +38,6 @@ lemma self_imp (a : V) : CProv (wim a a) :=
   ValidatorImplicationContext.ded1 CProv cProv_classical (ValidatorImplicationContext.h0 CProv)
 
 /-! ## Implication chains -/
-
-namespace Imps
-
-def blueprint : VecRec.Blueprint 1 where
-  nil := .mkSigma “y g. y = g”
-  adjoin := .mkSigma “y p ps ih g. !wimDef y p ih”
-
-noncomputable def construction : VecRec.Construction V blueprint where
-  nil param := param 0
-  adjoin _ p _ ih := wim p ih
-  nil_defined := .mk fun v ↦ by simp [blueprint]
-  adjoin_defined := .mk fun v ↦ by simp [blueprint]
-
-end Imps
-
-/-- `imps [g₁, …, gₙ] g = g₁ → (g₂ → ⋯ → (gₙ → g))`. -/
-noncomputable def imps (G g : V) : V := Imps.construction.result ![g] G
-
-@[simp] lemma imps_nil (g : V) : imps (0 : V) g = g := by simp [imps, Imps.construction]
-@[simp] lemma imps_cons (a G g : V) : imps (a ∷ G) g = wim a (imps G g) := by
-  simp [imps, Imps.construction]
-
-def impsDef : 𝚺₁.Semisentence 3 := Imps.blueprint.resultDef
-
-instance imps_defined : 𝚺₁-Function₂[V] imps via impsDef := .mk fun v ↦ by
-  have e : (fun i : Fin 1 ↦ v i.succ.succ) = ![v 2] :=
-    funext fun i ↦ by rw [Fin.fin_one_eq_zero i]; rfl
-  rw [impsDef, (Imps.construction (V := V)).eval_resultDef v, e]
-  rfl
-
-instance imps_definable : 𝚺₁-Function₂[V] imps := imps_defined.to_definable
 
 /-- Derivability in a context. -/
 def Der (G g : V) : Prop := CProv (imps G g)
@@ -78,14 +52,6 @@ theorem der_iff_history (G g : V) :
     Der G g ↔ ∃ d : V, ArithmeticHistory222.value d = imps G g + 1 := Iff.rfl
 
 @[simp] theorem der_nil (g : V) : Der (0 : V) g ↔ CProv g := by simp [Der]
-
-theorem imps_graph (out G g : V) :
-    V ⊧/![out,G,g] impsDef.val ↔ out = imps G g :=
-  (imps_defined (V := V)).df ![out,G,g]
-
-theorem imps_total_unique (G g : V) :
-    ∃! out : V, V ⊧/![out,G,g] impsDef.val :=
-  ⟨imps G g, (imps_graph _ _ _).mpr rfl, fun _ h => (imps_graph _ _ _).mp h⟩
 
 lemma cProv_imps_k (x : V) : ∀ G : V, CProv (wim x (imps G x)) :=
   ValidatorImplicationContext.imps_k CProv imps imps_nil imps_cons cProv_classical x
@@ -203,42 +169,6 @@ theorem seqC_iff_der (F s L : V) : CProv (seqC F s L) ↔ Der (negEnc F s L) 1 :
 
 /-! ## Shifted lists -/
 
-namespace ShiftList
-
-def blueprint : VecRec.Blueprint 0 where
-  nil := .mkSigma “y. y = 0”
-  adjoin := .mkSigma “y p ps ih. ∃ q, !(shiftGraph ℒₛₑₜ) q p ∧ !adjoinDef y q ih”
-
-noncomputable def construction : VecRec.Construction V blueprint where
-  nil _ := 0
-  adjoin _ p _ ih := shift ℒₛₑₜ p ∷ ih
-  nil_defined := .mk fun v ↦ by simp [blueprint]
-  adjoin_defined := .mk fun v ↦ by simp [blueprint]
-
-end ShiftList
-
-noncomputable def shiftList (L : V) : V := ShiftList.construction.result ![] L
-
-@[simp] lemma shiftList_nil : shiftList (0 : V) = 0 := by simp [shiftList, ShiftList.construction]
-@[simp] lemma shiftList_cons (p L : V) : shiftList (p ∷ L) = shift ℒₛₑₜ p ∷ shiftList L := by
-  simp [shiftList, ShiftList.construction]
-
-def shiftListDef : 𝚺₁.Semisentence 2 := ShiftList.blueprint.resultDef
-
-instance shiftList_defined : 𝚺₁-Function₁[V] shiftList via shiftListDef := .mk fun v ↦ by
-  have e : (fun i : Fin 0 ↦ v i.succ.succ) = ![] := funext fun i ↦ i.elim0
-  rw [shiftListDef, (ShiftList.construction (V := V)).eval_resultDef v, e]
-  rfl
-
-instance shiftList_definable : 𝚺₁-Function₁[V] shiftList := shiftList_defined.to_definable
-
-lemma shiftList_len_nth : ∀ L : V, len (shiftList L) = len L ∧
-    ∀ i < len L, (shiftList L).[i] = shift ℒₛₑₜ L.[i] := by
-  exact ValidatorVectorMap.len_nth (shift ℒₛₑₜ) shiftList shiftList_nil shiftList_cons
-
-lemma mem_shiftList (L y : V) : y ∈ᵥ shiftList L ↔ ∃ p, p ∈ᵥ L ∧ y = shift ℒₛₑₜ p :=
-  ValidatorVectorMap.mem _ _ L y (shiftList_len_nth L)
-
 /-- Shifting the listed formulas is tailing the free environment. -/
 lemma negEnc_shiftList (F s : V) : ∀ L : V, (∀ p, p ∈ᵥ L → IsUFormula ℒₛₑₜ p) →
     negEnc F s (shiftList L) = negEnc (tail F) s L := by
@@ -253,38 +183,6 @@ lemma negEnc_shiftList (F s : V) : ∀ L : V, (∀ p, p ∈ᵥ L → IsUFormula 
 
 /-! ## Enumerations of sets -/
 
-/-- `L` lists exactly the members of `s`. -/
-def Enum (L s : V) : Prop := (∀ y ∈ s, y ∈ᵥ L) ∧ ∀ i < len L, L.[i] ∈ s
-
-lemma Enum.mem {L s : V} (h : Enum L s) {y : V} : y ∈ᵥ L ↔ y ∈ s := by
-  constructor
-  · rintro ⟨i, hi, rfl⟩
-    exact h.2 i hi
-  · exact h.1 y
-
-lemma enum_of_mem {L s : V} (h : ∀ y, y ∈ᵥ L ↔ y ∈ s) : Enum L s :=
-  ⟨fun y hy ↦ (h y).2 hy, fun _ hi ↦ (h _).1 (nth_mem_memVec hi)⟩
-
-def enumDef : 𝚺₁.Semisentence 2 := .mkSigma
-  “L s. (∀ y < s, y ∈ s → !memVecDef.sigma y L) ∧ ∃ l, !lenDef l L ∧
-    ∀ i < l, ∃ y, !nthDef y L i ∧ y ∈ s”
-instance enum_defined : 𝚺₁-Relation[V] Enum via enumDef :=
-  .mk fun e => by
-    simp only [enumDef]
-    simp
-    constructor
-    · rintro ⟨h, hl⟩
-      exact ⟨fun y hy => h y (lt_of_mem hy) hy, hl⟩
-    · rintro ⟨h, hl⟩
-      exact ⟨fun y _ hy => h y hy, hl⟩
-instance enum_definable : 𝚫₁-Relation[V] Enum := by unfold Enum; definability
-
-lemma exists_enum : ∀ s : V, ∃ L, Enum L s := by
-  apply insert_induction_sigmaOne
-  · definability
-  · exact ⟨0, enum_of_mem fun y ↦ by simp⟩
-  · rintro a s - ⟨L, hL⟩
-    exact ⟨a ∷ L, enum_of_mem fun y ↦ by simp [hL.mem]⟩
 
 /-- Sequent provability does not depend on the internal enumeration order or
 duplicates. This is context subsumption, not a source-axiom interpretation. -/
