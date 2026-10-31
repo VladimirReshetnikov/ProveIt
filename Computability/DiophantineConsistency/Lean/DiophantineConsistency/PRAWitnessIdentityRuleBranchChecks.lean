@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessIdentityRuleBranch
+#print axioms DiophantineConsistency.PRAWitnessIdentityRuleBranch.actualIdentityBranch_eq
+#print axioms DiophantineConsistency.PRAWitnessIdentityRuleBranch.wb_neg_actualIdentityBranch

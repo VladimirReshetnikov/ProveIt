@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessNegExistential
+#print axioms DiophantineConsistency.PRAWitnessNegExistential.negBoundAt_spec
+#print axioms DiophantineConsistency.PRAWitnessNegExistential.wb_exs_neg
