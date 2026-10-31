@@ -20,5 +20,11 @@ project sources; these two scoped checks are not a current-source closure.
 
 `replay.py` separately performs a guarded merged-source project dependency
 refresh from that parent, rebuilding every changed/new node and its
-descendants; its result must be inspected independently. It still inherits
-its unchanged project objects and external Foundation/package boundary.
+descendants. The author run at `/tmp/pra-witness-bound-certificate-m09y1fhi`
+passed all 50 rebuilt modules, guarded 198 declared project sources and 148
+inherited project objects, and rechecked their hashes at the end. Its 50
+source/log snapshots and terminal state are frozen in `author-evidence/`.
+An independent same-parent replay is in progress. This is not a clean full
+build: unchanged project objects and external Foundation/package ancestry
+remain inherited; the guards establish their stability during this run, not
+their complete provenance.

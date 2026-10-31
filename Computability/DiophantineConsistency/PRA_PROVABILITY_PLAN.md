@@ -27,7 +27,9 @@ compositionally:
 supplies this generic completeness step and composes it with the fixed-sentence
 comparison. Its two conclusions still require explicit all-model witness
 bounds for the particular sentence, and its scoped checks inherit a historical
-dependency boundary; a merged-source dependency replay is in progress.
+dependency boundary. A guarded merged-source refresh of 50 affected modules
+has passed, with 148 unchanged project objects and external package ancestry
+still inherited; an independent replay is in progress.
 
 * [`PRAWitnessCalculus`](Lean/DiophantineConsistency/PRAWitnessCalculus.lean)
   defines `WB M φ` (in `M`, `φ` implies `bnd φ` at a monotone bound) and
