@@ -1,0 +1,7 @@
+# Pell-only small main index: guarded author replay
+
+The guarded author run `/tmp/adaptive-gap85-small-index-qw4m3hj4` passed. `small_main_index` proves in every IΣ₁ model the explicit numerical Pell-index conditions `q=2`, `Y=8=q³`, `X=14`, `n=2`, `m=3`, `eta=2159`, `zeta=5013`, `k=7172`, and `c=59535`. Both Pell ordinate equations and positivity hold, but `m<6`. It establishes that Pell-index classification, positive eta/zeta and `q³∣Y` alone cannot imply `m≥6`. It makes **no claim** about any actual first, main, strong or auxiliary factor unit, a full 85 zero, or the reverse bound.
+
+The exact independent numerical calculation is `research/adaptive-gap85/check-small-index.py`, with saved output `SMALL-INDEX.json`. This is one example, not an exhaustive search or fixed-port/full-equation counterexample. The replay guards its current Lean source, 507 selected inherited objects and 28 v13 output/log records; the Pell/project/Foundation/package object ancestry remains historical. Independent replay is required.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-small-index.py`. Source SHA-256 `764bd881fe0a7cacf69e7af2c5e6115ed86bbbebac6e00178c3c95f871ffba3a`, object `ee87c55b1689dc63d31b81a7ba4d04c6abad1f3ec5cfd2bdf744825f56434418`, full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, state `513aad8cf42ba0b8e09f885767c9ca5bf79732495f3b2166967143604604a5c6`, evidence manifest `6121f89d48025225e4004f69e70e6d1f1813a7ed51b9c4491787f53c19106d00`.
