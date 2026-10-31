@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAWitnessFormulaSet
+#check DiophantineConsistency.PRAWitnessFormulaSet.wb_isFormulaSet_sigma
+#check DiophantineConsistency.PRAWitnessFormulaSet.wb_isFormulaSet_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessFormulaSet.wb_isFormulaSet_sigma
+#print axioms DiophantineConsistency.PRAWitnessFormulaSet.wb_isFormulaSet_neg_pi
