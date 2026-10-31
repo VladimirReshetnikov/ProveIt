@@ -29,7 +29,8 @@ comparison. Its two conclusions still require explicit all-model witness
 bounds for the particular sentence, and its scoped checks inherit a historical
 dependency boundary. A guarded merged-source refresh of 50 affected modules
 has passed, with 148 unchanged project objects and external package ancestry
-still inherited; an independent replay is in progress.
+still inherited; an independent same-parent replay matched all 50 source,
+object and full-log hashes.
 
 * [`PRAWitnessCalculus`](Lean/DiophantineConsistency/PRAWitnessCalculus.lean)
   defines `WB M φ` (in `M`, `φ` implies `bnd φ` at a monotone bound) and

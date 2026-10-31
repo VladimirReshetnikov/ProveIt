@@ -24,7 +24,11 @@ descendants. The author run at `/tmp/pra-witness-bound-certificate-m09y1fhi`
 passed all 50 rebuilt modules, guarded 198 declared project sources and 148
 inherited project objects, and rechecked their hashes at the end. Its 50
 source/log snapshots and terminal state are frozen in `author-evidence/`.
-An independent same-parent replay is in progress. This is not a clean full
-build: unchanged project objects and external Foundation/package ancestry
-remain inherited; the guards establish their stability during this run, not
-their complete provenance.
+An independent same-parent replay at
+`/tmp/pra-witness-bound-certificate-0zthgfxs` also passed. Its 50 source,
+object and full-log hashes match the author run, as do the 198 guarded project
+source hashes and 148 inherited object hashes; the peer state and logs are
+frozen in `independent-evidence/`. This is not a clean full build: unchanged
+project objects and external Foundation/package ancestry remain inherited;
+the guards establish their stability during these runs, not their complete
+provenance.
