@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistorySetTermResult
+
+#print axioms DiophantineConsistency.PRAHistorySetTermResult.PRA_proves_termZero
+#print axioms DiophantineConsistency.PRAHistorySetTermResult.PRA_has_setTermResultCode

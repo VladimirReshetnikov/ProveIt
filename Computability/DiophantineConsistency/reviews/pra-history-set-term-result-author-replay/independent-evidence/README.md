@@ -1,0 +1,1 @@
+Independent same-parent peer `/tmp/pra-history-set-term-result-lh70f470` passed. The packet comparison rehashed all 24 peer outputs and logs, and found all source/object/full-log hashes and all 102 source graph hashes equal to the author. It retains the inherited Foundation/package and Lake path fallback scope described in the parent README.
