@@ -131,18 +131,14 @@ theorem vec_two {v : V} (hv : IsUTermVec ℒₛₑₜ 2 v) :
 /-- No `ℒₛₑₜ` formula has code below `3`. -/
 theorem three_le_formula {x : V} (hx : IsUFormula ℒₛₑₜ x) : 3 ≤ x := by
   have tagged : ∀ t Y : V, 2 ≤ t → 3 ≤ ⟪t, Y⟫ + 1 := fun t Y ht => by
-    have := sq_le_pair_left t Y
-    have h4 : (4 : V) ≤ t * t := le_trans (by norm_num : (4 : V) ≤ 2 * 2)
-      (mul_le_mul ht ht (Arithmetic.zero_le _) (Arithmetic.zero_le _))
-    exact le_trans (by norm_num : (3 : V) ≤ 4) (le_trans h4 (le_trans this le_self_add))
+    have h : (2 : V) ≤ ⟪t, Y⟫ := le_trans ht (le_pair_left t Y)
+    have h' : (2 : V) + 1 ≤ ⟪t, Y⟫ + 1 := add_le_add h le_rfl
+    simpa only [show (2 : V) + 1 = 3 by norm_num] using h'
   have atomic : ∀ t R v : V, 3 ≤ ⟪t, ⟪2, ⟪R, v⟫⟫⟫ + 1 := fun t R v => by
-    have h1 := sq_le_pair_right t ⟪2, ⟪R, v⟫⟫
-    have h2 := sq_le_pair_left 2 ⟪R, v⟫
-    have h4 : (4 : V) ≤ ⟪2, ⟪R, v⟫⟫ := le_trans (by norm_num) h2
-    have h16 : (3 : V) ≤ ⟪2, ⟪R, v⟫⟫ * ⟪2, ⟪R, v⟫⟫ :=
-      le_trans (by norm_num : (3 : V) ≤ 4 * 4) (mul_le_mul h4 h4 (Arithmetic.zero_le _)
-        (Arithmetic.zero_le _))
-    exact le_trans h16 (le_trans h1 le_self_add)
+    have h : (2 : V) ≤ ⟪t, ⟪2, ⟪R, v⟫⟫⟫ :=
+      le_trans (le_pair_left 2 ⟪R, v⟫) (le_pair_right t _)
+    have h' : (2 : V) + 1 ≤ ⟪t, ⟪2, ⟪R, v⟫⟫⟫ + 1 := add_le_add h le_rfl
+    simpa only [show (2 : V) + 1 = 3 by norm_num] using h'
   rcases hx.case with ⟨k, R, v, hR, -, rfl⟩ | ⟨k, R, v, hR, -, rfl⟩ | rfl | rfl |
       ⟨p, q, -, -, rfl⟩ | ⟨p, q, -, -, rfl⟩ | ⟨p, -, rfl⟩ | ⟨p, -, rfl⟩
   · obtain ⟨rfl, -⟩ := isRel_set hR
