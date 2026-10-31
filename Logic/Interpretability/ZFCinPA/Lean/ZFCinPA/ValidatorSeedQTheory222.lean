@@ -127,12 +127,8 @@ theorem models_gic_of_mem {T : SetTheory} [M↓[ℒₛₑₜ] ⊧* T] (hT : gicT
     (models_of_mem (T := T) (hT ⟨toSet 2 phi, rfl⟩)) env
   have key : ∀ x y : M, (toSet 2 phi).Eval ![x, y] env ↔
       DeepPositiveClosure.MatrixRelation (memRel M) phi env x y := fun x y =>
-    eval_toSet phi 2 ![x, y] env _ (fun i => by
-      match i with
-      | 0 => rfl
-      | 1 => rfl) (fun j => by rw [Nat.add_comm]; rfl)
-  simp [gicBodyMeta, gicAtomYB3, gicAtomXA3, gicAtomYB4, Semiformula.eval_substs,
-    Matrix.comp_vecCons', Matrix.constant_eq_singleton] at h
+    eval_toSet_pair phi x y env
+  simp [gicBodyMeta, gicAtomYB3, gicAtomXA3, gicAtomYB4, Semiformula.eval_substs] at h
   intro a
   obtain ⟨b, h1, h2⟩ := h a
   refine ⟨b, fun y hy => ?_, fun x hx ⟨y, hy⟩ => ?_⟩
@@ -173,12 +169,8 @@ theorem seed_formSeed : KLower.FormSeed (memRel M) := by
     (models_of_mem (T := seedTheory) (Or.inr ⟨toSet 2 φ, rfl⟩)) env
   have key : ∀ x y : M, (toSet 2 φ).Eval ![y, x] env ↔
       Sat (memRel M) (scons y (scons x env)) φ := fun x y =>
-    eval_toSet φ 2 ![y, x] env _ (fun i => by
-      match i with
-      | 0 => rfl
-      | 1 => rfl) (fun j => by rw [Nat.add_comm]; rfl)
-  simp [fullSeedBodyMeta, seedSubset, seedMem, Semiformula.eval_substs,
-    Matrix.comp_vecCons', Matrix.constant_eq_singleton] at h
+    eval_toSet_pair φ y x env
+  simp [fullSeedBodyMeta, seedSubset, seedMem, Semiformula.eval_substs] at h
   obtain ⟨C, hclos, hroot⟩ := h A
   refine ⟨C, fun y hy => ?_, fun y hy => ?_⟩
   · obtain ⟨z, hz, hzC⟩ := hroot y ((key A y).2 hy)
