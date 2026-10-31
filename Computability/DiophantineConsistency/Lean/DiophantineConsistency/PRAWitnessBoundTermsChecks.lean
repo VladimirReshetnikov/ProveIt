@@ -1,0 +1,16 @@
+import DiophantineConsistency.PRAWitnessBoundTerms
+/-! Axiom audit for `PRAWitnessBoundTerms`. -/
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.eval_graph_poly
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.eval_graph_add
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.eval_graph_mul
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.eval_graph_exp2
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.eval_graph
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.tau_eq
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.val_term_add
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.val_term_mul
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.val_term_exp2
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.eval_graph_model
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.mono_term
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.dominates_term
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.BoundTerm.vval_tauT
+#print axioms DiophantineConsistency.PRAWitnessBoundTerms.wb_exs_bt
