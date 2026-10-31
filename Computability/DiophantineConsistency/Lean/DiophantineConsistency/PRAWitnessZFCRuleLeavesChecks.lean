@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAWitnessZFCRuleLeaves
+
+#check DiophantineConsistency.PRAWitnessZFCRuleLeaves.zfc_certificate_of_rule_leaves
+#print axioms DiophantineConsistency.PRAWitnessZFCRuleLeaves.zfc_certificate_of_rule_leaves

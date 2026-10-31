@@ -17,6 +17,11 @@ endpoint `noZero ↔ ¬π` for Foundation's actual ZFC-refutation sentence `π`
 needs exactly one more input, `PRAStrictConReverse.BoundCertificate π`:
 candidate PRA proves `π → ∃ w, bnd π (w)`. Its literal 14-variable
 instantiation additionally needs the source-current IΣ₁ equivalence closure.
+For the related 87-operation equation, a [fixed historical project snapshot](reviews/ha87-isolated-full-author-pass/README.md)
+has now passed a fresh 729-module author build and final reauthentication.
+That run is supporting equation-side provenance, not a current-source closure,
+an independently fresh full replay, or a PRA refutation-bound proof; external
+package ancestry is inherited.
 
 `BoundCertificate π` is a statement that the displayed implication has a
 candidate-PRA proof. One way to establish it is to show suitable witness
@@ -68,10 +73,18 @@ The remaining endpoint is a bound for the actual `Derivation.blueprint`
 core. The [outer refutation reduction](reviews/pra-refutation-outer-provisional-replay/README.md)
 now derives the exact fixed ZFC `BoundCertificate` from the two core bounds in
 all candidate-PRA models, and composes the generic version with the no-zero
-comparison. Those bounds remain assumptions, and the outer reduction's replay
-inherits a provisional mixed-project and external provider. The presence of
+comparison. The [formula-set conjuncts](reviews/pra-derivation-core-left-provisional-replay/README.md)
+of those core bounds are now established separately, leaving the positive
+rule disjunction and negated pi rule disjunction. Those bounds remain
+assumptions, and both reductions' replays
+inherit a provisional mixed-project and external provider. The presence of
 the source declarations above does not by itself establish the endpoint or a
 complete current-source replay.
+
+The [rule-leaf collector](reviews/pra-zfc-rule-leaves-provisional-replay/README.md)
+further reduces the exact ZFC certificate to positive and negative bounds for
+the individual top-level derivation-rule disjuncts. It is conditional on all
+of those bounds and shares a provisional inherited-provider limitation.
 
 The detailed history below records how the individual bound and code modules
 were obtained; it predates the calculus.

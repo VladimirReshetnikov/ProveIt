@@ -1,0 +1,5 @@
+# Conditional fixed-port 85 adapters: same-parent replay
+
+The independent process `/tmp/adaptive-gap85-merged-adapters-tsdhi8yd` passed all ten modules against the same 29-module suffix provider as author run `/tmp/adaptive-gap85-merged-adapters-2aaldm9k`. All ten source/object/full-log hashes, parent-state anchors, and 507-object inherited inventory match the author. This verifies a separate build process, **not** independently rebuilt suffix ancestry. All snapshots, logs, driver and state are in `adaptive-gap85-merged-adapters-same-parent-evidence/`; manifest SHA-256 `1a8fe0edfcb48502afece9f5eff3658381278728105283da78c621563432e866`. A separate suffix replay and cross-parent adapter replay remain pending.
+
+The fixed-port shifted-zero endpoint requires the explicit unproved condition `|rank|+2n<q⁴`; it concludes `qF+C<q²+2`, `F≤q`, and `F=q → C=1`. It does not prove that size condition, the reverse bound `F+C<q`, or 85/Con(ZFC) equivalence. The other 40 project graph nodes and the model/Foundation/package ancestry remain historical.

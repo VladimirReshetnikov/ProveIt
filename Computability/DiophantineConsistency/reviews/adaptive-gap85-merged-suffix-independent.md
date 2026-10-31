@@ -1,0 +1,5 @@
+# 85 signed-rank chain after upstream merge: independent replay
+
+The separate run `/tmp/adaptive-gap85-merged-suffix-2tpig005` passed all 29 current-source suffix modules against author replay `/tmp/adaptive-gap85-merged-suffix-eerd10hd`. All 29 source/object/full-log hashes, the 69-source graph and hash maps, original parent anchors, 507-object inherited inventory and 28 v13 parent-output/log checks match. All 69 source snapshots, full logs, driver and state are preserved in `adaptive-gap85-merged-suffix-independent-evidence/`; manifest SHA-256 `f34d9774c34ce8063ef22a020382e93eb36c546e8797c81678b8a703657eb42f`.
+
+Only these 29 nodes were rebuilt. The other 40 project source-graph objects and model/project/Foundation/package ancestry remain inherited from the historical boundary; current source guards do not certify their object provenance. This does not establish the 85 reverse bound or full 85/Con(ZFC) equivalence. A cross-parent replay of the conditional fixed-port adapters is separate.
