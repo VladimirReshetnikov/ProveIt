@@ -23,16 +23,9 @@ theorem ext_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 3 Empty n) (e : Fin n 
   simp only [Semiformula.eval_rew] at h
   rw [hg,hf] at h
   have hv : ![g 0,g 1,g 2] = g := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+    funext i; revert i; simp [Fin.forall_fin_succ]
   have hs : Fin.snoc g (g 2+1) = ![g 0,g 1,g 2,g 2+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+    funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
   have hb := ext_bound (g 0) (g 1) (g 2) (by simpa [hv] using h)
   have hn := PRABndRewriting.natural extDef.val ω e (g 2+1)
   rw [hs] at hn
@@ -40,11 +33,8 @@ theorem ext_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 3 Empty n) (e : Fin n 
 def initialX : ArithmeticSemisentence 1 := “X. !extDef 1 4 X”
 
 theorem initialX_bound (X : V) (h : initialX.Evalb ![X]) :
-    (bnd initialX).Evalb ![X,X+1] := by
-  let ω : Rew ℒₒᵣ Empty 3 Empty 1 := Rew.subst ![Semiterm.numeral 1,Semiterm.numeral 4,#0]
-  have h0 : (ω ▹ extDef.val).Evalb ![X] := by exact h
-  have hb := ext_rew_bound ω ![X] h0
-  exact hb
+    (bnd initialX).Evalb ![X,X+1] :=
+  ext_rew_bound (Rew.subst ![Semiterm.numeral 1,Semiterm.numeral 4,#0]) ![X] h
 def boundedInitialX : ArithmeticSemisentence 2 := bnd initialX
 
 def initialXBoundBody : ArithmeticSemisentence 1 := “X. !initialX X → !boundedInitialX X (X+1)”
