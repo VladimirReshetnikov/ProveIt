@@ -29,20 +29,15 @@ theorem candidate_proves_fstIdx_family : PRA ⊢ familySentence := by
     simpa only [hv] using hp
   have hx' : (Semiformula.lMap embedding fstIdxDef.val).Eval ![e 0,e 1] Empty.elim := by
     have hv : (Semiterm.val e Empty.elim ∘ Rew.subst ![(#0 : TermN 3),#1] ∘ Semiterm.bvar) = ![e 0,e 1] := by
-      funext i
-      refine Fin.cases rfl (fun j => ?_) i
-      exact Fin.cases rfl (fun j => Fin.elim0 j) j
+      funext i; revert i; simp [Fin.forall_fin_succ, Function.comp_def, Rew.subst]
     have hf : (Semiterm.val e Empty.elim ∘ Rew.subst ![(#0 : TermN 3),#1] ∘ Semiterm.fvar) = (Empty.elim : Empty → M) := Subsingleton.elim _ _
     simpa only [hv, hf] using hx
   have hb := modelFstIdxFoldBound (e 2) (e 1) (e 0) hp' hx'
   have hv : (Semiterm.val e Empty.elim ∘
       Rew.subst ![#0,#1,applyCode (foldCode Code.succ) ![#2]] ∘ Semiterm.bvar) =
       ![e 0,e 1,Structure.func (L := language) (foldCode Code.succ) ![e 2]] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) j
-    simp [Function.comp_def, Rew.subst, applyCode, Semiterm.val_func]
+    funext i; revert i
+    simp [Fin.forall_fin_succ, Function.comp_def, Rew.subst, applyCode, Semiterm.val_func]
     congr 1
     funext j
     exact Fin.cases rfl (fun j => Fin.elim0 j) j
