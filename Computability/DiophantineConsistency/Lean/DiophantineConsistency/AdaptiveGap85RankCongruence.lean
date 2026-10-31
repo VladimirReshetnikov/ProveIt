@@ -9,6 +9,7 @@ noncomputable section
 namespace DiophantineConsistency.AdaptiveGap85RankCongruence
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder.Arithmetic
+open ArithmeticAdaptiveFirstDivisibility2011
 open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticAdaptiveFactorMagnitude2011 ArithmeticAdaptiveScaledNorms2011
 open ArithmeticAdaptiveFactorThree2011 AdaptiveGap85Literal AdaptiveGap85FirstDivisibility
 open AdaptiveGap85SignedCongruence
