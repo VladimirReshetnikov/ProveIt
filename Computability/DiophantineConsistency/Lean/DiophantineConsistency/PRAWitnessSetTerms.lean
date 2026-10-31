@@ -25,7 +25,7 @@ theorem not_isFunc (k f : V) : ¬(ℒₛₑₜ).IsFunc k f := by
 
 /-- Over `ℒₛₑₜ` a term-recursion core never queries its argument set: function
 terms are not terms. -/
-theorem termRec_set_rankFinite {β : Language.TermRec.Blueprint 0}
+theorem termRec_set_rankFinite {ar : ℕ} {β : Language.TermRec.Blueprint ar}
     (c : Language.TermRec.Construction V β) :
     PRAFixpointRank.RankFinite (c.construction ℒₛₑₜ) (fun x => x) := by
   intro v C x h

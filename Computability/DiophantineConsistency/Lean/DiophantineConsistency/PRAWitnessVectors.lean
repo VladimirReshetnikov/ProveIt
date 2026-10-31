@@ -77,9 +77,10 @@ theorem wb_nth_core_neg_pi : WB M (∼Nth.blueprint.core.pi.val) := by
 theorem wb_nth_graph : WB M Nth.graphDef.val := by
   refine PRAWitnessFixpointGraph.wb_fixpointDef Nth.blueprint wb_nth_core_sigma wb_nth_core_neg_pi
     ‘#0 + 1’ ?_
-  intro V _ _ x s L hL hx
+  intro V _ _ e s L hL hx
   have h := PRAWitnessFixpointGraph.stage_bound_of_rank (Nth.adjointruction (V := V)) (fun x => x)
-    (fun _ => le_rfl) nth_rankFinite (fun x => x + 1) (fun _ => le_rfl) x s L hL hx
+    (fun _ => le_rfl) nth_rankFinite (fun x => x + 1) (fun _ => le_rfl) (fun i => e i.succ) (e 0)
+    s L hL hx
   exact ⟨_, by simpa using h.1, h.2⟩
 
 /-- The polynomial dominating a triple code `⟪a, b, c⟫` (context `c :> a :> b`). -/
@@ -166,11 +167,11 @@ theorem wb_len_core_neg_pi : WB M (∼Len.blueprint.blueprint.core.pi.val) := by
 theorem wb_len_graph : WB M Len.blueprint.graphDef.val := by
   refine PRAWitnessFixpointGraph.wb_fixpointDef Len.blueprint.blueprint wb_len_core_sigma
     wb_len_core_neg_pi ‘#0 + 1’ ?_
-  intro V _ _ x s L hL hx
+  intro V _ _ e s L hL hx
   have h := PRAWitnessFixpointGraph.stage_bound_of_rank (Len.adjointruction (V := V)).adjointruction
     (fun x => x) (fun _ => le_rfl)
     (vecRec_rankFinite Len.adjointruction (fun _ _ ih => le_of_lt (lt_add_one ih)))
-    (fun x => x + 1) (fun _ => le_rfl) x s L hL hx
+    (fun x => x + 1) (fun _ => le_rfl) (fun i => e i.succ) (e 0) s L hL hx
   exact ⟨_, by simpa using h.1, h.2⟩
 
 /-- **`lenDef` has bounded witnesses.** -/

@@ -1,5 +1,6 @@
 import DiophantineConsistency.PRAHistoryTruncation
 /-! Axiom audit for fixpoint-history truncation. -/
+#print axioms DiophantineConsistency.PRAHistoryTruncation.val_comp_bvar
 #print axioms DiophantineConsistency.PRAHistoryTruncation.lt_exp_of_bits
 #print axioms DiophantineConsistency.PRAHistoryTruncation.cseq_iff
 #print axioms DiophantineConsistency.PRAHistoryTruncation.seq_iff

@@ -23,21 +23,20 @@ open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open StrictSigmaOneInduction PRAWitnessCalculus PRAWitnessArithmetic
 
 /-- **An `𝗜𝚺₁` stage bound from a decreasing rank.** -/
-theorem stage_bound_of_rank {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-    {φ : Fixpoint.Blueprint 0} (c : Fixpoint.Construction V φ)
+theorem stage_bound_of_rank {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {ar : ℕ}
+    {φ : Fixpoint.Blueprint ar} (c : Fixpoint.Construction V φ)
     (ρ : V → V) [𝚺₁-Function₁ ρ] (hge : ∀ x, x ≤ ρ x) (hr : PRAFixpointRank.RankFinite c ρ)
-    (P : V → V) (hP : ∀ x, ρ x + 1 ≤ P x) (x s L : V)
-    (hL : φ.limSeqDef.val.Evalb ![L, s]) (hx : bitDef.val.Evalb ![x, L]) :
-    φ.limSeqDef.val.Evalb ![c.limSeq ![] (P x), P x] ∧
-      bitDef.val.Evalb ![x, c.limSeq ![] (P x)] := by
-  have hL' : L = c.limSeq ![] s := by
-    simpa [Matrix.empty_eq] using (c.eval_limSeqDef ![L, s]).mp hL
+    (P : V → V) (hP : ∀ x, ρ x + 1 ≤ P x) (v : Fin ar → V) (x s L : V)
+    (hL : φ.limSeqDef.val.Evalb (L :> s :> v)) (hx : bitDef.val.Evalb ![x, L]) :
+    φ.limSeqDef.val.Evalb (c.limSeq v (P x) :> P x :> v) ∧
+      bitDef.val.Evalb ![x, c.limSeq v (P x)] := by
+  have hL' : L = c.limSeq v s := by
+    simpa using (c.eval_limSeqDef (L :> s :> v)).mp hL
   have hxL : x ∈ L := by simpa [Semiformula.Operator.val, operator_mem_def] using hx
-  have hmem : x ∈ c.limSeq ![] (ρ x + 1) := by
-    have h := PRAFixpointRank.mem_limSeq_rank ρ hge hr ![] x s (hL' ▸ hxL)
-    exact h
-  refine ⟨by simpa [Matrix.empty_eq] using (c.eval_limSeqDef ![c.limSeq ![] (P x), P x]).mpr rfl, ?_⟩
-  have h := c.limSeq_cumulative (v := ![]) (hP x) hmem
+  have hmem : x ∈ c.limSeq v (ρ x + 1) :=
+    PRAFixpointRank.mem_limSeq_rank ρ hge hr v x s (hL' ▸ hxL)
+  refine ⟨by simpa using (c.eval_limSeqDef (c.limSeq v (P x) :> P x :> v)).mpr (by simp), ?_⟩
+  have h := c.limSeq_cumulative (v := v) (hP x) hmem
   simpa [Semiformula.Operator.val, operator_mem_def] using h
 
 section models
@@ -50,20 +49,22 @@ local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode !
 local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
 local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
 
-/-- The stage formula `∃ L, limSeq L s ∧ x ∈ L`, in context `s :> x`. -/
-noncomputable def stageFormula (φ : Fixpoint.Blueprint 0) : ArithmeticSemisentence 2 :=
-  “s x. ∃ L, !φ.limSeqDef L s ∧ x ∈ L”
+/-- The stage formula `∃ L, limSeq L s ∧ x ∈ L`, in context `s :> x :> params`. -/
+noncomputable def stageFormula {ar : ℕ} (φ : Fixpoint.Blueprint ar) : ArithmeticSemisentence (ar + 2) :=
+  “s x. ∃ L, !φ.limSeqDef L s ⋯ ∧ x ∈ L”
 
-theorem fixpointDef_eq (φ : Fixpoint.Blueprint 0) :
+theorem fixpointDef_eq {ar : ℕ} (φ : Fixpoint.Blueprint ar) :
     φ.fixpointDef.val = ∃⁰ stageFormula φ := by
   simp [Fixpoint.Blueprint.fixpointDef, stageFormula]
 
-/-- **Witness bounds for `fixpointDef`.** -/
-theorem wb_fixpointDef (φ : Fixpoint.Blueprint 0)
-    (hσ : WB M φ.core.sigma.val) (hπ : WB M (∼φ.core.pi.val)) (P : ArithmeticSemiterm Empty 1)
-    (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (x s L : V),
-      φ.limSeqDef.val.Evalb ![L, s] → bitDef.val.Evalb ![x, L] →
-        ∃ L', φ.limSeqDef.val.Evalb ![L', P.val ![x] Empty.elim] ∧ bitDef.val.Evalb ![x, L']) :
+/-- **Witness bounds for `fixpointDef`.** The stage bound `P` may depend on
+the element `e 0` and on the parameters `e i.succ`. -/
+theorem wb_fixpointDef {ar : ℕ} (φ : Fixpoint.Blueprint ar)
+    (hσ : WB M φ.core.sigma.val) (hπ : WB M (∼φ.core.pi.val)) (P : ArithmeticSemiterm Empty (ar + 1))
+    (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin (ar + 1) → V) (s L : V),
+      φ.limSeqDef.val.Evalb (L :> s :> fun i => e i.succ) → bitDef.val.Evalb ![e 0, L] →
+        ∃ L', φ.limSeqDef.val.Evalb (L' :> P.val e Empty.elim :> fun i => e i.succ) ∧
+          bitDef.val.Evalb ![e 0, L']) :
     WB M φ.fixpointDef.val := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
@@ -76,23 +77,24 @@ theorem wb_fixpointDef (φ : Fixpoint.Blueprint 0)
     refine wb_exs (fun e => PRAHistoryTruncation.histBound (e 0))
       (fun e e' h => PRAHistoryTruncation.histBound_mono (h 0)) ?_ (by wb_auto)
     rintro e ⟨L, hL⟩
-    obtain ⟨s, x, rfl⟩ : ∃ s x : M, e = ![s, x] := ⟨e 0, e 1, Matrix.fun_eq_vec_two e⟩
-    have hlim : φ.limSeqDef.val.Evalb ![L, s] := by
+    have hlim : φ.limSeqDef.val.Evalb (L :> e 0 :> fun i => e i.succ.succ) := by
       have h := hL
-      simp [Semiformula.Operator.val] at h
+      simp [Semiformula.Operator.val, Matrix.comp_vecCons'', PRAHistoryTruncation.val_comp_bvar] at h
       exact h.1
-    exact ⟨L, le_of_lt (show L < PRAHistoryTruncation.histBound s from
-      PRAHistoryTruncation.limSeq_value_lt φ hlim), hL⟩
+    exact ⟨L, le_of_lt (show L < PRAHistoryTruncation.histBound (e 0) from
+      PRAHistoryTruncation.limSeq_value_lt φ _ hlim), hL⟩
   rw [fixpointDef_eq]
   refine PRAWitnessTransfer.wb_exs_poly (stageFormula φ) hs P ?_ hWBs
   intro V _ _ e s h
-  obtain ⟨x, rfl⟩ : ∃ x : V, e = ![x] := ⟨e 0, Matrix.fun_eq_vec_one e⟩
-  obtain ⟨L, hL, hx⟩ : ∃ L, φ.limSeqDef.val.Evalb ![L, s] ∧ bitDef.val.Evalb ![x, L] := by
-    simpa [stageFormula, Semiformula.Operator.val, operator_mem_def] using h
-  obtain ⟨L', hL', hx'⟩ := hI V x s L hL hx
-  refine ⟨P.val ![x] Empty.elim, le_rfl, ?_⟩
-  have hx'' : x ∈ L' := by simpa [Semiformula.Operator.val, operator_mem_def] using hx'
-  simpa [stageFormula, Semiformula.Operator.val, operator_mem_def] using ⟨L', hL', hx''⟩
+  obtain ⟨L, hL, hx⟩ : ∃ L, φ.limSeqDef.val.Evalb (L :> s :> fun i => e i.succ) ∧
+      bitDef.val.Evalb ![e 0, L] := by
+    simpa [stageFormula, Semiformula.Operator.val, operator_mem_def, Matrix.comp_vecCons'',
+      PRAHistoryTruncation.val_comp_bvar] using h
+  obtain ⟨L', hL', hx'⟩ := hI V e s L hL hx
+  refine ⟨P.val e Empty.elim, le_rfl, ?_⟩
+  have hx'' : e 0 ∈ L' := by simpa [Semiformula.Operator.val, operator_mem_def] using hx'
+  simpa [stageFormula, Semiformula.Operator.val, operator_mem_def, Matrix.comp_vecCons'',
+    PRAHistoryTruncation.val_comp_bvar] using ⟨L', hL', hx''⟩
 
 end models
 end DiophantineConsistency.PRAWitnessFixpointGraph

@@ -1,0 +1,15 @@
+import DiophantineConsistency.PRAWitnessTermFunctions
+/-! Axiom audit for `PRAWitnessTermFunctions`. -/
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.listMax_le_self
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.termBV_le_self
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_maxDef
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_listMax_core_sigma
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_listMax_core_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_listMax_graph
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_listMaxDef
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.bv_clauses
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_termBVGraph
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_isSemiterm_sigma
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_isSemiterm_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_isSemitermVec_sigma
+#print axioms DiophantineConsistency.PRAWitnessTermFunctions.wb_isSemitermVec_neg_pi

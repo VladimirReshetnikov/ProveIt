@@ -18,17 +18,23 @@ satisfies `succDef`, whose members are syntactically `≤ i`; so every entry is
 below `2^(k+1)` and every member of `s'` is at most `⟪k, 2^(k+1)⟫`.
 
 No property of the blueprint's core is used: the argument is uniform in the
-blueprint. Everything is proved in `𝗜𝚺₀` with a total exponential, the
-arithmetic of every candidate-PRA model; the only further input is the
-characterization of the bits of `under`, which `PRAHistoryUnderCanonical`
-supplies in candidate PRA. -/
+blueprint and in its parameters, which are constant along a history. Everything
+is proved in `𝗜𝚺₀` with a total exponential, the arithmetic of every
+candidate-PRA model; the only further input is the characterization of the
+bits of `under`, which `PRAHistoryUnderCanonical` supplies in candidate PRA. -/
 set_option autoImplicit false
 namespace DiophantineConsistency.PRAHistoryTruncation
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 
 section sigma0
-variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₀]
+variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₀] {ar : ℕ}
+
+/-- Parameter tails `⋯` of a substitution evaluate pointwise. -/
+@[simp] theorem val_comp_bvar {W : Type*} {L : Language} [Structure L W] {n m : ℕ} (w : Fin n → W)
+    (f : Fin m → Fin n) :
+    (Semiterm.val w Empty.elim ∘ fun x => (#(f x) : Semiterm L Empty n)) = fun x => w (f x) := by
+  funext x; simp
 
 /-- **A set whose members are all below `m` is below `2^m`.** -/
 theorem lt_exp_of_bits {a m p : V} (hp : Exponential m p)
@@ -46,16 +52,16 @@ theorem lt_exp_of_bits {a m p : V} (hp : Exponential m p)
   have h2 : Exponential (log a + 1) (2 * y) := Exponential.exponential_succ_mul_two.mpr hL
   exact absurd (lt_of_lt_of_le hay (Exponential.monotone_le h2 hp hlt)) (not_lt.mpr hge)
 
-theorem cseq_iff (φ : Fixpoint.Blueprint 0) (s : V) :
-    φ.prBlueprint.cseqDef.val.Evalb ![s] ↔
+theorem cseq_iff (φ : Fixpoint.Blueprint ar) (s : V) (v : Fin ar → V) :
+    φ.prBlueprint.cseqDef.val.Evalb (s :> v) ↔
       seqDef.val.Evalb ![s] ∧ (0 < s ∧ memRel.val.Evalb ![s,0,0]) ∧
         ∀ x < 2 * s, ∀ l ≤ 2 * s, lhDef.val.Evalb ![l,s] → x + 1 < l →
           ∀ z < s, memRel.val.Evalb ![s,x,z] →
-            ∃ y < s, φ.succDef.val.Evalb ![y,z,x] ∧ memRel.val.Evalb ![s,x+1,y] := by
+            ∃ y < s, φ.succDef.val.Evalb (y :> z :> x :> v) ∧ memRel.val.Evalb ![s,x+1,y] := by
   simp [PR.Blueprint.cseqDef, Fixpoint.Blueprint.prBlueprint, Semiformula.ballLT,
     Semiformula.bexsLT, Semiformula.bexsLTSucc, FirstOrder.ball, FirstOrder.bexs,
     Semiformula.Operator.val, Semiformula.Operator.LT.sentence_eq,
-    Semiformula.Operator.Eq.sentence_eq, lt_succ_iff_le, memRelOpr]
+    Semiformula.Operator.Eq.sentence_eq, lt_succ_iff_le, memRelOpr, Matrix.comp_vecCons'', val_comp_bvar]
 
 theorem seq_iff (s : V) :
     seqDef.val.Evalb ![s] ↔ isMappingDef.val.Evalb ![s] ∧
@@ -73,16 +79,18 @@ theorem lh_iff (l s : V) :
     Semiformula.Operator.Eq.sentence_eq, lt_succ_iff_le]
 
 /-- Members of a stage are below its index. -/
-theorem succ_lt_exp (φ : Fixpoint.Blueprint 0) (hexp : ∀ i : V, ∃ p, Exponential i p)
-    {u z i p : V} (hp : Exponential (i + 1) p) (hs : φ.succDef.val.Evalb ![u,z,i]) : u < p := by
+theorem succ_lt_exp (φ : Fixpoint.Blueprint ar) (v : Fin ar → V) (hexp : ∀ i : V, ∃ p, Exponential i p)
+    {u z i p : V} (hp : Exponential (i + 1) p) (hs : φ.succDef.val.Evalb (u :> z :> i :> v)) :
+    u < p := by
   letI : V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   refine lt_exp_of_bits hp (fun j hj => ?_)
   have hs' : ∀ x < u + (i + 1),
-      (bitDef.val.Evalb ![x,u] → (x = i ∨ x < i) ∧ (φ.core.sigma).val.Evalb ![x,z]) ∧
-        ((x = i ∨ x < i) → (φ.core.pi).val.Evalb ![x,z] → bitDef.val.Evalb ![x,u]) := by
+      (bitDef.val.Evalb ![x,u] → (x = i ∨ x < i) ∧ (φ.core.sigma).val.Evalb (x :> z :> v)) ∧
+        ((x = i ∨ x < i) → (φ.core.pi).val.Evalb (x :> z :> v) → bitDef.val.Evalb ![x,u]) := by
     simpa [Fixpoint.Blueprint.succDef, Semiformula.ballLT, FirstOrder.ball,
       Semiformula.Operator.val, operator_mem_def, Semiformula.Operator.LT.sentence_eq,
-      Semiformula.Operator.LE.sentence_eq, Semiformula.Operator.Eq.sentence_eq] using hs
+      Semiformula.Operator.LE.sentence_eq, Semiformula.Operator.Eq.sentence_eq, Matrix.comp_vecCons'',
+      val_comp_bvar] using hs
   have hju : j < u + (i + 1) := lt_of_lt_of_le (PRAHistoryDomainExtension.bit_lt hexp hj) le_self_add
   rcases ((hs' j hju).1 hj).1 with h | h
   · exact h ▸ lt_add_one i
@@ -90,13 +98,13 @@ theorem succ_lt_exp (φ : Fixpoint.Blueprint 0) (hexp : ∀ i : V, ∃ p, Expone
 
 /-- **The restriction of a fixpoint history to the indices `≤ k` is a history
 ending in the same `⟨k, L⟩`, all of whose members are at most `⟪k, 2^(k+1)⟫`.** -/
-theorem truncate_spec (φ : Fixpoint.Blueprint 0) (hexp : ∀ i : V, ∃ p, Exponential i p)
+theorem truncate_spec (φ : Fixpoint.Blueprint ar) (v : Fin ar → V) (hexp : ∀ i : V, ∃ p, Exponential i p)
     (hunder : ∀ d l i : V, underDef.val.Evalb ![d,l] → (bitDef.val.Evalb ![i,d] ↔ i < l))
     {s s' k L E : V} (hE : Exponential (k + 1) E)
-    (hs : φ.prBlueprint.cseqDef.val.Evalb ![s])
+    (hs : φ.prBlueprint.cseqDef.val.Evalb (s :> v))
     (hkL : memRel.val.Evalb ![s,k,L])
     (hs' : ∀ y, bitDef.val.Evalb ![y,s'] ↔ bitDef.val.Evalb ![y,s] ∧ π₁ y ≤ k) :
-    φ.prBlueprint.cseqDef.val.Evalb ![s'] ∧ memRel.val.Evalb ![s',k,L] ∧
+    φ.prBlueprint.cseqDef.val.Evalb (s' :> v) ∧ memRel.val.Evalb ![s',k,L] ∧
       ∀ y, bitDef.val.Evalb ![y,s'] → y ≤ ⟪k, E⟫ := by
   letI : V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have vlt {t i y : V} (h : memRel.val.Evalb ![t,i,y]) : y < t :=
@@ -104,7 +112,7 @@ theorem truncate_spec (φ : Fixpoint.Blueprint 0) (hexp : ∀ i : V, ∃ p, Expo
   have rel' (i z : V) : memRel.val.Evalb ![s',i,z] ↔ memRel.val.Evalb ![s,i,z] ∧ i ≤ k := by
     rw [PRAHistorySeqConsMembership.memRel_iff, PRAHistorySeqConsMembership.memRel_iff, hs',
       pi₁_pair]
-  obtain ⟨hseq, ⟨-, h00⟩, hsucc⟩ := (cseq_iff φ s).mp hs
+  obtain ⟨hseq, ⟨-, h00⟩, hsucc⟩ := (cseq_iff φ s v).mp hs
   obtain ⟨hmap, l, hl, d, hd, hdom, hund⟩ := (seq_iff s).mp hseq
   have hdomi := (PRAHistoryDomainExtension.domain_iff hexp d s).mp hdom
   have entry (i : V) (hi : i < l) : ∃ y < s, memRel.val.Evalb ![s,i,y] :=
@@ -131,7 +139,7 @@ theorem truncate_spec (φ : Fixpoint.Blueprint 0) (hexp : ∀ i : V, ∃ p, Expo
         (lt_of_le_of_lt hik hkl) zj (vlt hzj) hzj
       obtain ⟨pj, hpj⟩ := hexp (j + 1)
       rw [uniq hy hz]
-      exact lt_of_lt_of_le (succ_lt_exp φ hexp hpj hsy)
+      exact lt_of_lt_of_le (succ_lt_exp φ v hexp hpj hsy)
         (Exponential.monotone_le hpj hE (le_trans hik (le_of_lt (lt_add_one k))))
   have hkL' : memRel.val.Evalb ![s',k,L] := (rel' k L).mpr ⟨hkL, le_rfl⟩
   have hpair' : bitDef.val.Evalb ![⟪k,L⟫,s'] := (PRAHistorySeqConsMembership.memRel_iff s' k L).mp hkL'
@@ -184,7 +192,7 @@ theorem truncate_spec (φ : Fixpoint.Blueprint 0) (hexp : ∀ i : V, ∃ p, Expo
     · exact absurd ((same l').mpr h) (_root_.lt_irrefl l')
     · exact h
     · exact absurd ((same (k + 1)).mp h) (_root_.lt_irrefl _)
-  refine ⟨(cseq_iff φ s').mpr ⟨hseq', ⟨lt_of_le_of_lt (by simp)
+  refine ⟨(cseq_iff φ s' v).mpr ⟨hseq', ⟨lt_of_le_of_lt (by simp)
     (PRAHistoryDomainExtension.bit_lt hexp hpair'), (rel' 0 0).mpr ⟨h00, by simp⟩⟩, ?_⟩,
     hkL', ?_⟩
   · intro x _ l' _ hl' hxl z _ hz
@@ -255,10 +263,10 @@ theorem exponential_expF (x : M) :
   exact (PRAHistoryExpCode.graph_iff x _).mp (PRAHistoryExpCode.modelExpCode x)
 
 /-- **Every history has a truncation of size `2^(⟪k, 2^(k+1)⟫+1)`.** -/
-theorem modelTruncate (φ : Fixpoint.Blueprint 0) {s k L : M} :
+theorem modelTruncate {ar : ℕ} (φ : Fixpoint.Blueprint ar) (v : Fin ar → M) {s k L : M} :
     letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
-    φ.prBlueprint.cseqDef.val.Evalb ![s] → memRel.val.Evalb ![s,k,L] →
-      ∃ s', φ.prBlueprint.cseqDef.val.Evalb ![s'] ∧ memRel.val.Evalb ![s',k,L] ∧
+    φ.prBlueprint.cseqDef.val.Evalb (s :> v) → memRel.val.Evalb ![s,k,L] →
+      ∃ s', φ.prBlueprint.cseqDef.val.Evalb (s' :> v) ∧ memRel.val.Evalb ![s',k,L] ∧
         s' < expF (⟪k, expF (k + 1)⟫ + 1) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
@@ -282,7 +290,7 @@ theorem modelTruncate (φ : Fixpoint.Blueprint 0) {s k L : M} :
     constructor
     · rintro ⟨-, h⟩; exact h
     · rintro ⟨h1, h2⟩; exact ⟨PRAHistoryDomainExtension.bit_lt hexp h1, h1, h2⟩
-  obtain ⟨hcs, hkL', hle⟩ := truncate_spec φ hexp
+  obtain ⟨hcs, hkL', hle⟩ := truncate_spec φ v hexp
     (fun d l i hd => PRAHistoryUnderCanonical.modelUnderBits d l i hd)
     (exponential_expF (k + 1)) hs hkL hs'
   exact ⟨s', hcs, hkL', lt_exp_of_bits (exponential_expF _)
@@ -308,8 +316,9 @@ open PRAWitnessCalculus PRAWitnessArithmetic
 
 /-- **Fixpoint stages have bounded witnesses** once the blueprint's core has:
 the history is truncated, and every other witness sits below a bounded
-universal of `cseqDef`, where the core bounds apply. -/
-theorem wb_limSeqDef (φ : Fixpoint.Blueprint 0)
+universal of `cseqDef`, where the core bounds apply. The parameters are
+constant along the history. -/
+theorem wb_limSeqDef {ar : ℕ} (φ : Fixpoint.Blueprint ar)
     (hσ : WB M φ.core.sigma.val) (hπ : WB M (∼φ.core.pi.val)) :
     WB M φ.limSeqDef.val := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
@@ -331,27 +340,28 @@ theorem wb_limSeqDef (φ : Fixpoint.Blueprint 0)
     HierarchySymbol.Semiformula.val_mkSigma]
   refine wb_exs (fun e => histBound (e 1)) (fun e e' h => histBound_mono (h 1)) ?_ (by wb_auto)
   rintro e ⟨x, hx⟩
-  obtain ⟨L, k, rfl⟩ : ∃ L k : M, e = ![L, k] := ⟨e 0, e 1, Matrix.fun_eq_vec_two e⟩
-  have hx' : φ.prBlueprint.cseqDef.val.Evalb ![x] ∧ memRel.val.Evalb ![x, k, L] := by
-    simpa [Semiformula.Operator.val, memRelOpr] using hx
-  obtain ⟨s', h1, h2, h3⟩ := modelTruncate φ hx'.1 hx'.2
-  refine ⟨s', le_of_lt (show s' < histBound k from h3), ?_⟩
-  simpa [Semiformula.Operator.val, memRelOpr] using And.intro h1 h2
+  have hx' : φ.prBlueprint.cseqDef.val.Evalb (x :> fun i => e i.succ.succ) ∧
+      memRel.val.Evalb ![x, e 1, e 0] := by
+    simpa [Semiformula.Operator.val, memRelOpr, Matrix.comp_vecCons'', val_comp_bvar] using hx
+  obtain ⟨s', h1, h2, h3⟩ := modelTruncate φ _ hx'.1 hx'.2
+  refine ⟨s', le_of_lt (show s' < histBound (e 1) from h3), ?_⟩
+  simpa [Semiformula.Operator.val, memRelOpr, Matrix.comp_vecCons'', val_comp_bvar] using
+    And.intro h1 h2
 
-theorem limSeq_value_lt (φ : Fixpoint.Blueprint 0) {L k : M} :
+theorem limSeq_value_lt {ar : ℕ} (φ : Fixpoint.Blueprint ar) (v : Fin ar → M) {L k : M} :
     letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
-    φ.limSeqDef.val.Evalb ![L,k] → L < histBound k := by
+    φ.limSeqDef.val.Evalb (L :> k :> v) → L < histBound k := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   intro h
   have hexp (i : M) : ∃ p, Exponential i p := ⟨_, exponential_expF i⟩
-  obtain ⟨s, hs, hkL⟩ : ∃ s, φ.prBlueprint.cseqDef.val.Evalb ![s] ∧ memRel.val.Evalb ![s,k,L] := by
+  obtain ⟨s, hs, hkL⟩ : ∃ s, φ.prBlueprint.cseqDef.val.Evalb (s :> v) ∧ memRel.val.Evalb ![s,k,L] := by
     simpa [Fixpoint.Blueprint.limSeqDef, PR.Blueprint.resultDef, Semiformula.Operator.val,
-      memRelOpr] using h
-  obtain ⟨s', -, hkL', h3⟩ := modelTruncate φ hs hkL
+      memRelOpr, Matrix.comp_vecCons'', val_comp_bvar] using h
+  obtain ⟨s', -, hkL', h3⟩ := modelTruncate φ v hs hkL
   exact lt_trans (PRAHistoryDomainExtension.memRel_value_lt hexp hkL') h3
 
 /-- **Fixpoint membership has bounded witnesses**, positively. -/
-theorem wb_fixpoint_sigma (φ : Fixpoint.Blueprint 0)
+theorem wb_fixpoint_sigma {ar : ℕ} (φ : Fixpoint.Blueprint ar)
     (hσ : WB M φ.core.sigma.val) (hπ : WB M (∼φ.core.pi.val)) :
     WB M φ.fixpointDefΔ₁.sigma.val := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
@@ -363,16 +373,15 @@ theorem wb_fixpoint_sigma (φ : Fixpoint.Blueprint 0)
   refine wb_exs (fun e => histBound (e 0 + 1)) (fun e e' h => histBound_mono (add_le_add (h 0) le_rfl))
     ?_ (by wb_auto)
   rintro e ⟨L, hL⟩
-  obtain ⟨x, rfl⟩ : ∃ x : M, e = ![x] := ⟨e 0, Matrix.fun_eq_vec_one e⟩
-  have hlim : φ.limSeqDef.val.Evalb ![L, x + 1] := by
+  have hlim : φ.limSeqDef.val.Evalb (L :> (e 0 + 1) :> fun i => e i.succ) := by
     have h := hL
-    simp [Semiformula.Operator.val] at h
+    simp [Semiformula.Operator.val, Matrix.comp_vecCons'', val_comp_bvar] at h
     exact h.1
-  exact ⟨L, le_of_lt (show L < histBound (x + 1) from limSeq_value_lt φ hlim), hL⟩
+  exact ⟨L, le_of_lt (show L < histBound (e 0 + 1) from limSeq_value_lt φ _ hlim), hL⟩
 
 /-- **Fixpoint non-membership has bounded witnesses**: the negated `Π` form is
 `∃ L, limSeq L (x+1) ∧ x ∉ L`, with the same witness. -/
-theorem wb_fixpoint_neg_pi (φ : Fixpoint.Blueprint 0)
+theorem wb_fixpoint_neg_pi {ar : ℕ} (φ : Fixpoint.Blueprint ar)
     (hσ : WB M φ.core.sigma.val) (hπ : WB M (∼φ.core.pi.val)) :
     WB M (∼φ.fixpointDefΔ₁.pi.val) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
@@ -385,12 +394,11 @@ theorem wb_fixpoint_neg_pi (φ : Fixpoint.Blueprint 0)
   refine wb_exs (fun e => histBound (e 0 + 1)) (fun e e' h => histBound_mono (add_le_add (h 0) le_rfl))
     ?_ (by wb_auto)
   rintro e ⟨L, hL⟩
-  obtain ⟨x, rfl⟩ : ∃ x : M, e = ![x] := ⟨e 0, Matrix.fun_eq_vec_one e⟩
-  have hlim : φ.limSeqDef.val.Evalb ![L, x + 1] := by
+  have hlim : φ.limSeqDef.val.Evalb (L :> (e 0 + 1) :> fun i => e i.succ) := by
     have h := hL
-    simp [Semiformula.Operator.val] at h
+    simp [Semiformula.Operator.val, Matrix.comp_vecCons'', val_comp_bvar] at h
     exact h.1
-  exact ⟨L, le_of_lt (show L < histBound (x + 1) from limSeq_value_lt φ hlim), hL⟩
+  exact ⟨L, le_of_lt (show L < histBound (e 0 + 1) from limSeq_value_lt φ _ hlim), hL⟩
 
 end models
 end DiophantineConsistency.PRAHistoryTruncation
