@@ -1,0 +1,7 @@
+# Formula-set witness bounds
+
+The Foundation set-language formula-set predicate is part of the derivation-code syntax. To bound the expanded refutation predicate in candidate PRA, one must handle both the positive sigma occurrence and the negated pi occurrence, including their bounded membership tests.
+
+`PRAWitnessFormulaSet.wb_isFormulaSet_sigma` proves in Lean that, in every arithmetic model of PA-minus, a witness bound for the actual `isSemiformula ℒₛₑₜ` sigma formula yields a witness bound for the corresponding `isFormulaSet ℒₛₑₜ` sigma formula. `wb_isFormulaSet_neg_pi` gives the analogous result for negated pi formulas. Both use the independently available positive and negative bit bounds; the appropriate semiformula bound remains an explicit hypothesis.
+
+The [conditional author and private same-parent replays](../reviews/pra-witness-formulaset-conditional-author-replay/README.md) pass and have identical source, object and full-log hashes. They pin selected provisional provider objects but do not authenticate those objects back to current source or cover their complete Foundation/package ancestry. The required next step is to specialize the two lemmas using `PRAWitnessFormulaFunctions.wb_isSemiformula_sigma` and `.wb_isSemiformula_neg_pi`, then replay the resulting clients on the coherent source-current provider now being built. This local bridge does not establish a complete bound for the Foundation ZFC refutation predicate or the intended PRA equivalence.
