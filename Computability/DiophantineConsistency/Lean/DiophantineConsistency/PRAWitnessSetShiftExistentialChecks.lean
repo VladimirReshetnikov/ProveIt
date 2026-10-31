@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessSetShiftExistential
+#print axioms DiophantineConsistency.PRAWitnessSetShiftExistential.setShiftBoundAt_spec
+#print axioms DiophantineConsistency.PRAWitnessSetShiftExistential.wb_exs_setShift
