@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessSetShiftOutput
+#print axioms DiophantineConsistency.PRAWitnessSetShiftOutput.setShiftBound_spec
+#print axioms DiophantineConsistency.PRAWitnessSetShiftOutput.wb_neg_setShiftGraphDelta_pi
