@@ -1,0 +1,49 @@
+DiophantineConsistency.PRAWitnessDerivationCoreLeft.coreSigma_eq (T : LO.FirstOrder.SetTheory)
+  [LO.FirstOrder.Theory.Δ₁ T] :
+  ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+        (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core) =
+    DiophantineConsistency.PRAWitnessDerivationCoreLeft.sigmaLeft ⋏
+      DiophantineConsistency.PRAWitnessDerivationCoreLeft.sigmaTail T
+DiophantineConsistency.PRAWitnessDerivationCoreLeft.corePi_eq (T : LO.FirstOrder.SetTheory)
+  [LO.FirstOrder.Theory.Δ₁ T] :
+  ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.pi
+        (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core) =
+    DiophantineConsistency.PRAWitnessDerivationCoreLeft.piLeft ⋏
+      DiophantineConsistency.PRAWitnessDerivationCoreLeft.piTail T
+DiophantineConsistency.PRAWitnessDerivationCoreLeft.wb_actualSigmaLeft {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (T : LO.FirstOrder.SetTheory) [LO.FirstOrder.Theory.Δ₁ T] :
+  DiophantineConsistency.PRAWitnessCalculus.WB M (DiophantineConsistency.PRAWitnessDerivationCoreLeft.actualSigmaLeft T)
+DiophantineConsistency.PRAWitnessDerivationCoreLeft.wb_neg_actualPiLeft {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (T : LO.FirstOrder.SetTheory) [LO.FirstOrder.Theory.Δ₁ T] :
+  DiophantineConsistency.PRAWitnessCalculus.WB M (∼DiophantineConsistency.PRAWitnessDerivationCoreLeft.actualPiLeft T)
+DiophantineConsistency.PRAWitnessDerivationCoreLeft.wb_coreSigma_of_tail {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (T : LO.FirstOrder.SetTheory) [LO.FirstOrder.Theory.Δ₁ T]
+  (h :
+    DiophantineConsistency.PRAWitnessCalculus.WB M (DiophantineConsistency.PRAWitnessDerivationCoreLeft.sigmaTail T)) :
+  DiophantineConsistency.PRAWitnessCalculus.WB M
+    ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+        (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core)
+DiophantineConsistency.PRAWitnessDerivationCoreLeft.wb_neg_corePi_of_tail {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (T : LO.FirstOrder.SetTheory) [LO.FirstOrder.Theory.Δ₁ T]
+  (h : DiophantineConsistency.PRAWitnessCalculus.WB M (∼DiophantineConsistency.PRAWitnessDerivationCoreLeft.piTail T)) :
+  DiophantineConsistency.PRAWitnessCalculus.WB M
+    (∼↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.pi
+          (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core))
+'DiophantineConsistency.PRAWitnessDerivationCoreLeft.wb_coreSigma_of_tail' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAWitnessDerivationCoreLeft.wb_neg_corePi_of_tail' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

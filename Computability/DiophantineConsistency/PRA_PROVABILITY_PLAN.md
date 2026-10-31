@@ -73,8 +73,11 @@ The remaining endpoint is a bound for the actual `Derivation.blueprint`
 core. The [outer refutation reduction](reviews/pra-refutation-outer-provisional-replay/README.md)
 now derives the exact fixed ZFC `BoundCertificate` from the two core bounds in
 all candidate-PRA models, and composes the generic version with the no-zero
-comparison. Those bounds remain assumptions, and the outer reduction's replay
-inherits a provisional mixed-project and external provider. The presence of
+comparison. The [formula-set conjuncts](reviews/pra-derivation-core-left-provisional-replay/README.md)
+of those core bounds are now established separately, leaving the positive
+rule disjunction and negated pi rule disjunction. Those bounds remain
+assumptions, and both reductions' replays
+inherit a provisional mixed-project and external provider. The presence of
 the source declarations above does not by itself establish the endpoint or a
 complete current-source replay.
 
