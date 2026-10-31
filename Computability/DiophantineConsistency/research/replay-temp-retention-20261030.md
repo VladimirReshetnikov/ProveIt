@@ -31,3 +31,12 @@ generic HA-implication author overlay, were removed to recover additional
 space. Their author states and logs are frozen in their committed review
 packets; their raw temporary author objects cannot be rehashed in place. The
 independent peer objects and active provider parents were retained.
+
+Twelve further terminal gap85 author overlays were removed after their review
+packets preserved the author states and logs: `magnitudes-_h1elfbn`,
+`units-dw723k17`, `scaled-norms-2ddko5xj`, `quotients-ga76z1xk`,
+`indices-0cdmqsij`, `first-divisibility-0gx9xr8y`, `transport-wljtp402`,
+`signed-rank-bynq84km`, `signed-congruence-619ipvaf`,
+`rank-congruence-69mvx8n1`, `index-order-2vqohydl`, and
+`strong-norm-ap5hdelm`, each under `/tmp/adaptive-gap85-`. Their temporary
+author objects can no longer be rehashed; peer objects were retained.

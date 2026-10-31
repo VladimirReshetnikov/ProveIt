@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryResultGraph
+
+#print axioms DiophantineConsistency.PRAHistoryResultGraph.modelCseqFromTrace
+#print axioms DiophantineConsistency.PRAHistoryResultGraph.PRA_proves_resultGraph
