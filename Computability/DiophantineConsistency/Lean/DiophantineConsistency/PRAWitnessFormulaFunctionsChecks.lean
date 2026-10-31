@@ -1,0 +1,21 @@
+import DiophantineConsistency.PRAWitnessFormulaFunctions
+/-! Axiom audit for `PRAWitnessFormulaFunctions`. -/
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.code2_le
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.code3_le
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.code4_le
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.code4_le_repeatVec
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.termBVVec_le
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.listMax_termBVVec_le
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.bv_le_self
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.le_succ_of_lt
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.neg_clauses
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.neg_shape
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.wb_negGraph
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.shift_clauses
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.shift_shape
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.wb_shiftGraph
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.bv_clauses
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.bv_shape
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.wb_bvGraph
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.wb_isSemiformula_sigma
+#print axioms DiophantineConsistency.PRAWitnessFormulaFunctions.wb_isSemiformula_neg_pi

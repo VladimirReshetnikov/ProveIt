@@ -1,0 +1,14 @@
+import DiophantineConsistency.PRAWitnessFormulaRec
+/-! Axiom audit for `PRAWitnessFormulaRec`. -/
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.le_recRank
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.recRank_pair₃
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.child_lt
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.pair₃_le_sq
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.recRank_succ_le
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.rankFinite
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.wb_core_sigma
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.wb_core_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.wb_fixpoint
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.wb_graph
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.wb_result
+#print axioms DiophantineConsistency.PRAWitnessFormulaRec.recRank_definable

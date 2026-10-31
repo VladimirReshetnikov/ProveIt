@@ -43,6 +43,33 @@ theorem wb_neg_graphDelta_pi {k : ℕ} (φ : 𝚺₁.Semisentence (k + 1)) (hφ 
   simp [Matrix.comp_vecCons'', PRAHistoryTruncation.val_comp_bvar] at h'
   simpa [Semiterm.val_bShift', Function.comp_def] using hI V (fun i => e i.succ) x h'.1
 
+/-- **The exponential variant of `wb_neg_graphDelta_pi`**: the value is below
+`2^(P · 2^Q)` in `𝗜𝚺₁`. -/
+theorem wb_neg_graphDelta_pi_exp {k : ℕ} (φ : 𝚺₁.Semisentence (k + 1)) (hφ : WB M φ.val)
+    (P Q : ArithmeticSemiterm Empty k)
+    (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin k → V) (y : V),
+      φ.val.Evalb (y :> e) → y ≤ Exp.exp (P.val e Empty.elim * Exp.exp (Q.val e Empty.elim))) :
+    WB M (∼φ.graphDelta.pi.val) := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  simp only [HierarchySymbol.Semiformula.graphDelta, HierarchySymbol.Semiformula.pi_mkDelta,
+    HierarchySymbol.Semiformula.val_mkPi]
+  wb_auto
+  refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
+    (expGraph2 (Rew.bShift P) (Rew.bShift Q)) (expBound2 (Rew.bShift P) (Rew.bShift Q))
+    (dominates_expBound2 _ _) (mono_expBound2 _ _) (fun V _ _ e x h => ?_) (by wb_auto)
+  have h' := h
+  simp [Matrix.comp_vecCons'', PRAHistoryTruncation.val_comp_bvar] at h'
+  have hb := hI V (fun i => e i.succ) x h'.1
+  refine ⟨Exp.exp (P.val (fun i => e i.succ) Empty.elim * Exp.exp (Q.val (fun i => e i.succ) Empty.elim)),
+    ?_, x, hb, h⟩
+  rw [eval_expGraph2]
+  refine ⟨Exp.exp (Q.val (fun i => e i.succ) Empty.elim), ?_, ?_⟩
+  · simpa [Semiterm.val_bShift', Function.comp_def] using
+      exponential_exp (Q.val (fun i => e i.succ) Empty.elim)
+  · simpa [Semiterm.val_bShift', Function.comp_def] using
+      exponential_exp (P.val (fun i => e i.succ) Empty.elim * Exp.exp (Q.val (fun i => e i.succ) Empty.elim))
+
 variable {ar : ℕ} (β : Language.TermRec.Blueprint ar)
 
 theorem wb_core_sigma (h1 : WB M β.bvar.val) (h2 : WB M β.fvar.val) (h3 : WB M β.func.val) :
