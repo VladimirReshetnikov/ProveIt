@@ -2,9 +2,11 @@
 
 The active objective requires a Lean proof that the equivalence between each
 selected small equation's unsolvability and `Con(ZFC)` is provable in
-primitive recursive arithmetic (PRA). The earlier request for an HA derivation
-also remains relevant. Existence of an object-theory proof is enough; a
-printed proof is not required.
+primitive recursive arithmetic (PRA). This replaced the earlier HA target;
+existing HA results are background and may supply useful shared dependencies.
+Existence of an object-theory proof is enough; a printed proof is not required.
+The exact language, defining equations, order axiom, and induction scheme are
+spelled out in [PRA_AXIOMATIZATION.md](PRA_AXIOMATIZATION.md).
 
 ## Status summary (2026-10-30)
 
@@ -14,10 +16,12 @@ finite no-zero sentence with an IΣ₁ proof of `noZero ↔ ¬π`. The literal
 endpoint `noZero ↔ ¬π` for Foundation's actual ZFC-refutation sentence `π`
 needs exactly one more input, `PRAStrictConReverse.BoundCertificate π`:
 candidate PRA proves `π → ∃ w, bnd π (w)`. Its literal 14-variable
-instantiation additionally needs the source-current HA endpoint closure.
+instantiation additionally needs the source-current IΣ₁ equivalence closure.
 
-`BoundCertificate π` is a single semantic statement about every
-candidate-PRA model, and it is now attacked compositionally:
+`BoundCertificate π` is a statement that the displayed implication has a
+candidate-PRA proof. One way to establish it is to show suitable witness
+bounds in every candidate-PRA model and use completeness. This is now attacked
+compositionally:
 
 * [`PRAWitnessCalculus`](Lean/DiophantineConsistency/PRAWitnessCalculus.lean)
   defines `WB M φ` (in `M`, `φ` implies `bnd φ` at a monotone bound) and
@@ -36,25 +40,23 @@ candidate-PRA model, and it is now attacked compositionally:
   fixpoint membership (`wb_limSeqDef`, `wb_fixpoint_sigma`,
   `wb_fixpoint_neg_pi`).
 
-What `BoundCertificate π` still needs, in dependency order:
+The subsequent upstream merge added source-level witness-bound developments
+for the following inputs. They require a dependency-aware replay in this
+merged worktree before their proofs are treated as current-source evidence:
 
-1. `WB` of the cores of the term and formula-recognition fixpoints
-   (`FormalizedTerm.blueprint`, `FormalizedFormula.blueprint` for `ℒₛₑₜ`),
-   which yields `isUTerm`, `isUFormula` and `isSemiterm` in both polarities.
-2. The formula recursions (`BV`, `neg`, `shift`, `free`, `substs`, and the
-   `setShift` image). Their `graph` uses `fixpointDef`, whose stage is a
-   further unbounded witness. Bounding it needs stage cumulativity of the
-   recursion core inside candidate PRA, hence Σ/Π agreement of that core,
-   which in turn rests on uniqueness of the term and formula histories.
-   Growth bounds `f(p) ≤ F(p)` are also needed where these values occur
-   negatively (`∃ np, negGraph np p ∧ np ∉ s` in `¬core.pi`).
-3. `WB` of ZFC's axiom recognizer `T.Δ₁ch`: equality and fixed axioms
-   (finite, so Σ₀) and the separation and replacement schema recognizers
-   (`SeparationDelta1`, `ReplacementDelta1`), which use the same recursions.
-4. `WB` of `Derivation.blueprint`'s core from 1–3 by `wb_auto`. Then
-   `wb_fixpoint_sigma` and the outer layers (`derivationOf`, `proof`,
-   `provable`: all automatic) give `WB π`, and `PRAWitnessCalculus.exists_bound`
-   gives `BoundCertificate π` through completeness.
+1. `PRAWitnessSetTerms` and `PRAWitnessFormulas` state bounds for both
+   polarities of the term and formula recognition fixpoints.
+2. Formula-recursion and growth-bound modules include `BV`, `neg`, `shift`,
+   `free` and `substs`; their precise availability for each derivation-rule
+   occurrence, including the `setShift` image, is being checked.
+3. `PRAWitnessZFCAxioms.goodCh_zfc` states bounds for both polarities of the
+   actual ZFC axiom recognizer, including separation and replacement.
+
+The remaining endpoint is a bound for the actual `Derivation.blueprint`
+core, its fixpoint and the surrounding refutation sentence, followed by a
+Lean completeness argument producing `BoundCertificate π`. The presence of
+the source declarations above does not by itself establish that endpoint or a
+complete current-source replay.
 
 The detailed history below records how the individual bound and code modules
 were obtained; it predates the calculus.

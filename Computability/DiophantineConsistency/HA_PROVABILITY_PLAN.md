@@ -1,5 +1,9 @@
 # HA provability of the current consistency equations
 
+**Historical target:** the owner subsequently replaced the HA goal with the
+PRA goal. This document records earlier work and shared proof dependencies;
+the active endpoint is described in [the PRA plan](PRA_PROVABILITY_PLAN.md).
+
 The owner strengthened the goal on26 October2026: prove in Lean both the
 current Diophantine equivalence and that the equivalence is provable in
 intuitionistic Heyting Arithmetic (HA). The owner then clarified that a
