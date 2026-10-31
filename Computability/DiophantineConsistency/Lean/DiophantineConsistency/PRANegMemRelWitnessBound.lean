@@ -26,27 +26,19 @@ attribute [local irreducible] bitDef pairDef
     letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb : (∼bitDef.val).Evalb ![p,r] := by simpa [Semiformula.Operator.val, operator_mem_def] using hp
     have hh := PRANegBitFullWitnessBound.negBit_bound p r hb
-    have hs : Fin.snoc ![p,r] (PRANegBitFullWitnessBound.negBitMajorant r) = ![p,r,PRANegBitFullWitnessBound.negBitMajorant r] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![p,r] (PRANegBitFullWitnessBound.negBitMajorant r) = ![p,r,PRANegBitFullWitnessBound.negBitMajorant r] := by simp
     have hm := eval_bnd_mono (∼bitDef.val) ![p,r] (Empty.elim : Empty → V) hbit (by rw [hs]; exact hh)
     let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#1]
     have hn := PRABndRewriting.natural (∼bitDef.val) ω ![p,r,x,y] w
     have hv : (fun j => (ω #j).val ![p,r,x,y] Empty.elim) = ![p,r] := by
       funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs' : Fin.snoc ![p,r,x,y] w = ![p,r,x,y,w] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k; refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs'' : Fin.snoc ![p,r] w = ![p,r,w] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs' : Fin.snoc ![p,r,x,y] w = ![p,r,x,y,w] := by simp
+    have hs'' : Fin.snoc ![p,r] w = ![p,r,w] := by simp
     rw [hv,hs',hs''] at hn
     rw [hs''] at hm
     have hrew := hn.mpr hm
-    have heq : (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) := by
-      exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val
-    rw [heq] at hrew
+    rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
+      LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hrew
     simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hrew
 noncomputable def negMemRel : ArithmeticSemisentence 3 := ∼memRel.val
 noncomputable def boundedNegMemRel : ArithmeticSemisentence 4 := bnd negMemRel

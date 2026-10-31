@@ -38,11 +38,7 @@ theorem negBit_bound (x y : V) : (∼bitDef.val).Evalb ![x,y] →
       have hw : PRANegExponentialWitnessBound.negExponentialMajorant z ≤ negBitMajorant y := le_trans hpoly hmy
       have hf : (∼expDef.val).Evalb ![z,x] := by simpa using hexp
       have hb := PRANegExpWitnessBound.neg_exp_bound z x hf
-      have hs0 : Fin.snoc ![z,x] (PRANegExponentialWitnessBound.negExponentialMajorant z) = ![z,x,PRANegExponentialWitnessBound.negExponentialMajorant z] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs0 : Fin.snoc ![z,x] (PRANegExponentialWitnessBound.negExponentialMajorant z) = ![z,x,PRANegExponentialWitnessBound.negExponentialMajorant z] := by simp
       have hb' := eval_bnd_mono (∼expDef.val) ![z,x] (Empty.elim : Empty → V) hw (by rw [hs0]; exact hb)
       let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
       have hn := PRABndRewriting.natural (∼expDef.val) ω ![z,x,y] (negBitMajorant y)
@@ -50,35 +46,19 @@ theorem negBit_bound (x y : V) : (∼bitDef.val).Evalb ![x,y] →
         funext j
         refine Fin.cases rfl (fun k => ?_) j
         exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hs : Fin.snoc ![z,x,y] (negBitMajorant y) = ![z,x,y,negBitMajorant y] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs : Fin.snoc ![z,x,y] (negBitMajorant y) = ![z,x,y,negBitMajorant y] := by simp
       rw [hv,hs] at hn
       have hh := hn.mpr hb'
-      have heq : (ω ▹ (∼expDef.val)) = ∼(ω ▹ expDef.val) := by
-        exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) expDef.val
-      rw [heq] at hh
+      rw [show (ω ▹ (∼expDef.val)) = ∼(ω ▹ expDef.val) from
+        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) expDef.val] at hh
       exact hh
     · right; right
       let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#2]
       have hf : (ω ▹ (∼lenbitDef.val)).Evalb ![z,x,y] := by simpa [ω, Semiformula.eval_substs] using hlen
       have hb := PRANegLenbitRewritingBound.neg_lenbit_rew_bound ω ![z,x,y] hf
-      have hs0 : Fin.snoc ![z,x,y] (y+1) = ![z,x,y,y+1] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs0 : Fin.snoc ![z,x,y] (y+1) = ![z,x,y,y+1] := by simp
       have hb' := eval_bnd_mono (ω ▹ (∼lenbitDef.val)) ![z,x,y] (Empty.elim : Empty → V) hyw hb
-      have hs : Fin.snoc ![z,x,y] (negBitMajorant y) = ![z,x,y,negBitMajorant y] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs : Fin.snoc ![z,x,y] (negBitMajorant y) = ![z,x,y,negBitMajorant y] := by simp
       rw [hs] at hb'
       have heq : (ω ▹ (∼lenbitDef.val)) = ∼(ω ▹ lenbitDef.val) := by
         exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) lenbitDef.val

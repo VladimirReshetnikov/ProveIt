@@ -29,23 +29,18 @@ attribute [local irreducible] domainDef bitDef memRel
       have hdom' : (∼domainDef.val).Evalb ![d,m] := by simpa using hh
       have hb := PRANegDomainWitnessBound.neg_domain_bound_explicit d m hdom'
       letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-      have hs : Fin.snoc ![d,m] (PRANegDomainWitnessBound.negDomainMajorant d m) = ![d,m,PRANegDomainWitnessBound.negDomainMajorant d m] := by
-        funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs : Fin.snoc ![d,m] (PRANegDomainWitnessBound.negDomainMajorant d m) = ![d,m,PRANegDomainWitnessBound.negDomainMajorant d m] := by simp
       have hm := eval_bnd_mono (∼domainDef.val) ![d,m] (Empty.elim : Empty → V) (hdom d hd') (by rw [hs]; exact hb)
       let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#0,#1]
       have hn := PRABndRewriting.natural (∼domainDef.val) ω ![d,m] w
       have hv : (fun j => (ω #j).val ![d,m] Empty.elim) = ![d,m] := by
         funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hs' : Fin.snoc ![d,m] w = ![d,m,w] := by
-        funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs' : Fin.snoc ![d,m] w = ![d,m,w] := by simp
       rw [hv,hs'] at hn
       rw [hs'] at hm
       have hh := hn.mpr hm
-      have heq : (ω ▹ (∼domainDef.val)) = ∼(ω ▹ domainDef.val) := by
-        exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) domainDef.val
-      rw [heq] at hh
+      rw [show (ω ▹ (∼domainDef.val)) = ∼(ω ▹ domainDef.val) from
+        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) domainDef.val] at hh
       exact hh
     · right; right
       obtain ⟨x,hx,hbit,hrest⟩ := hh
@@ -67,13 +62,8 @@ attribute [local irreducible] domainDef bitDef memRel
           have hrv : (fun j => (ωr #j).val ![y,x,d,m] Empty.elim) = ![m,x,y] := by
             funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
             exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hrw : Fin.snoc ![y,x,d,m] w = ![y,x,d,m,w] := by
-            funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-            refine Fin.cases rfl (fun k => ?_) k; refine Fin.cases rfl (fun k => ?_) k
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hrw' : Fin.snoc ![m,x,y] w = ![m,x,y,w] := by
-            funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-            refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+          have hrw : Fin.snoc ![y,x,d,m] w = ![y,x,d,m,w] := by simp
+          have hrw' : Fin.snoc ![m,x,y] w = ![m,x,y,w] := by simp
           rw [hrv,hrw,hrw'] at hrn
           have hrb' := hrn.mpr hrb
           have hre : (ωr ▹ (∼memRel.val)) = ∼(ωr ▹ memRel.val) := by
@@ -89,22 +79,15 @@ attribute [local irreducible] domainDef bitDef memRel
           have hrb := PRAMemRelWitnessBound.memRel_bound_explicit m x y' hr
           have hrs : PRAMemRelWitnessBound.memRelMajorant m x y' ≤ w := hrel x y' hx2 (le_of_lt hy')
           letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-          have hsc : Fin.snoc ![m,x,y'] (PRAMemRelWitnessBound.memRelMajorant m x y') = ![m,x,y',PRAMemRelWitnessBound.memRelMajorant m x y'] := by
-            funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-            refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+          have hsc : Fin.snoc ![m,x,y'] (PRAMemRelWitnessBound.memRelMajorant m x y') = ![m,x,y',PRAMemRelWitnessBound.memRelMajorant m x y'] := by simp
           have hrm := eval_bnd_mono memRel.val ![m,x,y'] (Empty.elim : Empty → V) hrs (by rw [hsc]; exact hrb)
           let ωr : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#4,#2,#0]
           have hrn := PRABndRewriting.natural memRel.val ωr ![y',y,x,d,m] w
           have hrv : (fun j => (ωr #j).val ![y',y,x,d,m] Empty.elim) = ![m,x,y'] := by
             funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
             exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hrw : Fin.snoc ![y',y,x,d,m] w = ![y',y,x,d,m,w] := by
-            funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-            refine Fin.cases rfl (fun k => ?_) k; refine Fin.cases rfl (fun k => ?_) k
-            refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hrw' : Fin.snoc ![m,x,y'] w = ![m,x,y',w] := by
-            funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-            refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+          have hrw : Fin.snoc ![y',y,x,d,m] w = ![y',y,x,d,m,w] := by simp
+          have hrw' : Fin.snoc ![m,x,y'] w = ![m,x,y',w] := by simp
           rw [hrv,hrw,hrw'] at hrn
           rw [hrw'] at hrm
           simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hrn.mpr hrm

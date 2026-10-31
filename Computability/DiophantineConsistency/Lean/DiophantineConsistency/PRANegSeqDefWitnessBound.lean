@@ -28,9 +28,8 @@ theorem bnd_neg_rew3 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2
   have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
   rw [hv,hs,hs'] at hn
   have hh := hn.mpr h
-  have heq : (ω ▹ (∼φ)) = ∼(ω ▹ φ) := by
-    exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) φ
-  rw [heq] at hh
+  rw [show (ω ▹ (∼φ)) = ∼(ω ▹ φ) from
+    LogicalConnective.HomClass.map_neg (Semiformula.rew ω) φ] at hh
   exact hh
  theorem neg_seq_bound (s w : V)
  (hmap : PRANegMappingWitnessBound.negMappingMajorant s ≤ w)

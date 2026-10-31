@@ -28,11 +28,7 @@ theorem seq_bound_of_witness (s l d w : V)
   · simpa [bnd_open] using hd'
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb := PRAUnderWitnessBound.under_bound d l hunder
-    have hs : Fin.snoc ![d,l] (PRAExponentialWitnessBound.exponentialMajorant (d+1)) = ![d,l,PRAExponentialWitnessBound.exponentialMajorant (d+1)] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![d,l] (PRAExponentialWitnessBound.exponentialMajorant (d+1)) = ![d,l,PRAExponentialWitnessBound.exponentialMajorant (d+1)] := by simp
     have hm := eval_bnd_mono underDef.val ![d,l] (Empty.elim : Empty → V) hunderSize (by rw [hs]; exact hb)
     let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
     have hn := PRABndRewriting.natural underDef.val ω ![d,l,s] w
@@ -40,17 +36,8 @@ theorem seq_bound_of_witness (s l d w : V)
       funext j
       refine Fin.cases rfl (fun k => ?_) j
       exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs' : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs'' : Fin.snoc ![d,l] w = ![d,l,w] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs' : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by simp
+    have hs'' : Fin.snoc ![d,l] w = ![d,l,w] := by simp
     rw [hv,hs',hs''] at hn
     rw [hs''] at hm
     exact hn.mpr hm

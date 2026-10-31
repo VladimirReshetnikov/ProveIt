@@ -65,9 +65,8 @@ theorem negExponential_bound_common (x y w : V)
         have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![B,A,x,y] w hf
         have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
         rw [hh] at hb
-        have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
-          exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
-        rw [heq] at hb
+        rw [show (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) from
+          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val] at hb
         exact hb
       · right; left; right
         let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![Semiterm.numeral 2,Semiterm.numeral 4,#0]
@@ -75,9 +74,8 @@ theorem negExponential_bound_common (x y w : V)
         have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![B,A,x,y] w hf
         have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
         rw [hh] at hb
-        have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
-          exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
-        rw [heq] at hb
+        rw [show (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) from
+          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val] at hb
         exact hb
       · right; right; left
         let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![#3,#1,#0]
@@ -86,9 +84,8 @@ theorem negExponential_bound_common (x y w : V)
         have hb := negSeq_rew_bound_at ω ![B,A,x,y] w hw hf
         have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
         rw [hh] at hb
-        have heq : (ω ▹ (∼Exponential.Seqₛ.def.val)) = ∼(ω ▹ Exponential.Seqₛ.def.val) := by
-          exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) Exponential.Seqₛ.def.val
-        rw [heq] at hb
+        rw [show (ω ▹ (∼Exponential.Seqₛ.def.val)) = ∼(ω ▹ Exponential.Seqₛ.def.val) from
+          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) Exponential.Seqₛ.def.val] at hb
         exact hb
       · right; right; right
         intro u
@@ -106,9 +103,8 @@ theorem negExponential_bound_common (x y w : V)
             have hb := PRASeqSWitnessBound.neg_ppow2_rew_bound_at ω ![u,B,A,x,y] w hw hf
             have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
             rw [hh] at hb
-            have heq : (ω ▹ (∼ppow2Def.val)) = ∼(ω ▹ ppow2Def.val) := by
-              exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) ppow2Def.val
-            rw [heq] at hb
+            rw [show (ω ▹ (∼ppow2Def.val)) = ∼(ω ▹ ppow2Def.val) from
+              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) ppow2Def.val] at hb
             exact hb
           · right; right; right; left
             let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#3,#0,#2]
@@ -116,9 +112,8 @@ theorem negExponential_bound_common (x y w : V)
             have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![u,B,A,x,y] w hf
             have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
             rw [hh] at hb
-            have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
-              exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
-            rw [heq] at hb
+            rw [show (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) from
+              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val] at hb
             exact hb
           · right; right; right; right
             let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#4,#0,#1]
@@ -126,9 +121,8 @@ theorem negExponential_bound_common (x y w : V)
             have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![u,B,A,x,y] w hf
             have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
             rw [hh] at hb
-            have heq : (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) := by
-              exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val
-            rw [heq] at hb
+            rw [show (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) from
+              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val] at hb
             exact hb
 
 def negExponentialMajorant (y : V) : V := (2*y+1)+(2*(y^2)+1)

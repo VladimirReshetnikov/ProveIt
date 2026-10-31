@@ -21,17 +21,8 @@ theorem inline_fix_bound (pr p w : V)
   have hv : (fun j => (ω #j).val ![pr,0,p,0] Empty.elim) = ![pr] := by
     funext j
     exact Fin.cases rfl (fun k => Fin.elim0 k) j
-  have hs : Fin.snoc ![pr,0,p,0] w = ![pr,0,p,0,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![pr] w = ![pr,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![pr,0,p,0] w = ![pr,0,p,0,w] := by simp
+  have hs' : Fin.snoc ![pr] w = ![pr,w] := by simp
   rw [hv,hs,hs'] at hn
   have heq : bvFixInside (L := L) = ω ▹ (((BV.blueprint L).blueprint L).fixpointDef).val := by
     simp [bvFixInside, fixInside, ω]

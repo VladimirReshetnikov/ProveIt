@@ -20,16 +20,8 @@ theorem exp_bound (e n : V) : expDef.val.Evalb ![e,n] →
     funext j
     refine Fin.cases rfl (fun k => ?_) j
     exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![e,n] (PRAExponentialWitnessBound.exponentialMajorant e) = ![e,n,PRAExponentialWitnessBound.exponentialMajorant e] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![n,e] (PRAExponentialWitnessBound.exponentialMajorant e) = ![n,e,PRAExponentialWitnessBound.exponentialMajorant e] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![e,n] (PRAExponentialWitnessBound.exponentialMajorant e) = ![e,n,PRAExponentialWitnessBound.exponentialMajorant e] := by simp
+  have hs' : Fin.snoc ![n,e] (PRAExponentialWitnessBound.exponentialMajorant e) = ![n,e,PRAExponentialWitnessBound.exponentialMajorant e] := by simp
   rw [hv,hs,hs'] at hn
   exact hn.mpr hb
 def boundedExp : ArithmeticSemisentence 3 := bnd expDef.val

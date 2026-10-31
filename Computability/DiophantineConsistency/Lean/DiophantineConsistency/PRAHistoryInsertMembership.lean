@@ -66,10 +66,7 @@ theorem candidate_insert_membership : PRATheory.PRA ⊢ Semiformula.lMap PRALang
   letI : Add M := ⟨fun x y => Structure.func (L := PRALanguage.language) PRALanguage.addCode ![x,y]⟩
   letI : Mul M := ⟨fun x y => Structure.func (L := PRALanguage.language) PRALanguage.mulCode ![x,y]⟩
   letI : LT M := ⟨fun x y => Structure.rel (L := PRALanguage.language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   have hmodel (t i j s : M) : insertDef.val.Evalb ![t,j,s] →
       (bitDef.val.Evalb ![i,t] ↔ i = j ∨ bitDef.val.Evalb ![i,s]) := by
     intro h

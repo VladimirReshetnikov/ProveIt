@@ -58,11 +58,7 @@ theorem neg_sppow2_bound (m : V) : (∼sppow2Def.val).Evalb ![m] →
       have hf : (ω ▹ pow2Def.val).Evalb ![x,m] := by simpa [ω, Semiformula.eval_substs] using hpow
       have hw : (ω #0).val ![x,m] Empty.elim + 1 ≤ m+1 := by simpa [ω, add_comm] using add_le_add_right hxm 1
       have hb := pow2_rew_bound_at ω ![x,m] (m+1) hw hf
-      have hs : Fin.snoc ![x,m] (m+1) = ![x,m,m+1] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs : Fin.snoc ![x,m] (m+1) = ![x,m,m+1] := by simp
       rw [hs] at hb
       exact hb
     · simp [LogicalConnective.iff, DeMorgan.imply, bnd, bnd_open]

@@ -78,9 +78,8 @@ attribute [local irreducible] seqDef lhDef memRel
             have hv : (fun j => (ω #j).val ![l,i,s] Empty.elim) = ![l,s] := by
               funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
             have hh := PRALhWitnessBound.bnd_rew2 (∼lhDef.val) ω l i s w l s hv hm
-            have heq : (ω ▹ (∼lhDef.val)) = ∼(ω ▹ lhDef.val) := by
-              exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) lhDef.val
-            rw [heq] at hh
+            rw [show (ω ▹ (∼lhDef.val)) = ∼(ω ▹ lhDef.val) from
+              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) lhDef.val] at hh
             exact hh
       · right; right
         intro z
@@ -101,9 +100,8 @@ attribute [local irreducible] seqDef lhDef memRel
             have hv2 : Fin.snoc ![s,i,z] w = ![s,i,z,w] := by simp
             rw [hv,hv1,hv2] at hn
             have hh := hn.mpr hb
-            have heq : (ω ▹ (∼memRel.val)) = ∼(ω ▹ memRel.val) := by
-              exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) memRel.val
-            rw [heq] at hh
+            rw [show (ω ▹ (∼memRel.val)) = ∼(ω ▹ memRel.val) from
+              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) memRel.val] at hh
             simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hh
           · right; right
             obtain ⟨u,hu,hus,hur⟩ := hz

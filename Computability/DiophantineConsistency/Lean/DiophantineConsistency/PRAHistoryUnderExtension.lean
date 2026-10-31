@@ -44,10 +44,7 @@ theorem candidate_append_under : PRATheory.PRA ⊢ Semiformula.lMap PRALanguage.
   letI : Add M := ⟨fun x y => Structure.func (L := PRALanguage.language) PRALanguage.addCode ![x,y]⟩
   letI : Mul M := ⟨fun x y => Structure.func (L := PRALanguage.language) PRALanguage.mulCode ![x,y]⟩
   letI : LT M := ⟨fun x y => Structure.rel (L := PRALanguage.language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   rw [Semiformula.models_lMap, PRAModelIOpenPairing.reduct_eq_standard]
   simp only [models_iff, Semiformula.eval_allClosure]
   intro e

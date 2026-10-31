@@ -44,17 +44,11 @@ theorem modelFixSuccMembership (good ins bit : Code 2)
     (hbit : PRA ⊢ bitSentence good) (hins : PRA ⊢ PRAHistoryInsertCode.graphSentence ins)
     (hcorrect : PRA ⊢ oneCorrectSentence bit PRAHistoryInsertCode.bitGraph)
     (k ih s : M) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     bitDef.val.Evalb ![k,Structure.func (L := language) (fixSuccCode good ins) ![ih,s]] ↔
       k ≤ s ∧ Structure.func (L := language) good ![k,ih] =
         Structure.func (L := language) oneCode Fin.elim0 := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   rw [modelFixSuccValue,modelCollectInvariant good ins bit hbit hins hcorrect]
   rw [←modelAddOne]
   change (k < s+1 ∧ _) ↔ _
@@ -66,10 +60,7 @@ theorem modelFixSuccGraph (φ : Fixpoint.Blueprint 0) (good ins bit : Code 2)
     (hpi : PRA ⊢ oneCorrectSentence good (piCore φ)) (ih s : M) :
     (Semiformula.lMap embedding φ.succDef.val).Eval
       ![Structure.func (L := language) (fixSuccCode good ins) ![ih,s],ih,s] Empty.elim := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   let u := Structure.func (L := language) (fixSuccCode good ins) ![ih,s]
   have core (ψ : Semisentence language 2) (hc : PRA ⊢ oneCorrectSentence good ψ) (x : M) :
       Structure.func (L := language) good ![x,ih] = Structure.func (L := language) oneCode Fin.elim0 ↔

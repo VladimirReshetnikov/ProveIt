@@ -67,15 +67,9 @@ theorem modelUnderMatrix (n d ih : M) :
 theorem modelUnderCollector (ins : Code 2) (pred : Code 3)
     (hins : PRA ⊢ PRAHistoryInsertCode.graphSentence ins)
     (hpred : PRA ⊢ oneCorrectSentence pred underMatrix) (n ih : M) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     underDef.val.Evalb ![Structure.func (L := language) (collectCode alwaysOne ins) ![n,ih],n] := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   have hp (x y : M) : Structure.func (L := language) pred ![x,y,ih] =
       Structure.func (L := language) oneCode Fin.elim0 ↔ underDef.val.Evalb ![y,x] := by
     have hm := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hpred
@@ -135,15 +129,9 @@ theorem modelUnderCollector (ins : Code 2) (pred : Code 3)
       ![n,Structure.func (L := language) (collectCode alwaysOne ins) ![n,ih],ih] = _ at h
   exact (hp n _).mp h
 theorem modelUnderBits (d n i : M) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     underDef.val.Evalb ![d,n] → (bitDef.val.Evalb ![i,d] ↔ i < n) := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   intro hd
   obtain ⟨ins,hins⟩ := PRAHistoryInsertCode.PRA_has_insertCode
   obtain ⟨pred,_,_,hpred⟩ := PRA_proves_boundedBooleanCharacteristic underMatrix underMatrix_bounded
@@ -173,10 +161,7 @@ theorem candidate_under_bits : PRA ⊢ Semiformula.lMap embedding (∀⁰* under
   letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
   letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
   letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   rw [Semiformula.models_lMap, PRAModelIOpenPairing.reduct_eq_standard]
   simp only [models_iff, Semiformula.eval_allClosure]
   intro e

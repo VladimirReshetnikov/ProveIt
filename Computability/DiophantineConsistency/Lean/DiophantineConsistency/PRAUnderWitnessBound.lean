@@ -21,16 +21,8 @@ theorem under_bound (y x : V) : underDef.val.Evalb ![y,x] →
     funext j
     refine Fin.cases rfl (fun k => ?_) j
     exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![y,x] (PRAExponentialWitnessBound.exponentialMajorant (y+1)) = ![y,x,PRAExponentialWitnessBound.exponentialMajorant (y+1)] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![y+1,x] (PRAExponentialWitnessBound.exponentialMajorant (y+1)) = ![y+1,x,PRAExponentialWitnessBound.exponentialMajorant (y+1)] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![y,x] (PRAExponentialWitnessBound.exponentialMajorant (y+1)) = ![y,x,PRAExponentialWitnessBound.exponentialMajorant (y+1)] := by simp
+  have hs' : Fin.snoc ![y+1,x] (PRAExponentialWitnessBound.exponentialMajorant (y+1)) = ![y+1,x,PRAExponentialWitnessBound.exponentialMajorant (y+1)] := by simp
   rw [hv,hs,hs'] at hn
   exact hn.mpr hb
 noncomputable def boundedUnder : ArithmeticSemisentence 3 := bnd underDef.val

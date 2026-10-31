@@ -29,13 +29,7 @@ theorem recGraph_bound_of_pair (β : UformulaRec1.Blueprint) (param p y pr w : V
   apply recGraph_bound β param p y pr w hpr ?_ hfix
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
   have hb := PRAPairTripleWitnessBound.pair3_bnd_succ pr param p y hpair
-  have hs : Fin.snoc ![pr,param,p,y] (pr+1) = ![pr,param,p,y,pr+1] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![pr,param,p,y] (pr+1) = ![pr,param,p,y,pr+1] := by simp
   have hm := eval_bnd_mono pair₃Def.val ![pr,param,p,y] (Empty.elim : Empty → V) hsize (by rw [hs]; exact hb)
   let ω : Rew ℒₒᵣ Empty 4 Empty 4 := Rew.subst ![#0,#1,#2,#3]
   have hn := PRABndRewriting.natural pair₃Def.val ω ![pr,param,p,y] w
@@ -46,13 +40,7 @@ theorem recGraph_bound_of_pair (β : UformulaRec1.Blueprint) (param p y pr w : V
     refine Fin.cases rfl (fun k => ?_) k
     refine Fin.cases rfl (fun k => ?_) k
     exact Fin.elim0 k
-  have hs' : Fin.snoc ![pr,param,p,y] w = ![pr,param,p,y,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs' : Fin.snoc ![pr,param,p,y] w = ![pr,param,p,y,w] := by simp
   rw [hv,hs'] at hn
   have heq : pairInside = ω ▹ pair₃Def.val := by simp [pairInside, ω]
   rw [heq]

@@ -23,17 +23,8 @@ theorem lenbit_in_bit_bound (x i y : V) :
     funext j
     refine Fin.cases rfl (fun k => ?_) j
     exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![x,i,y] (y+1) = ![x,i,y,y+1] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![x,y] (y+1) = ![x,y,y+1] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![x,i,y] (y+1) = ![x,i,y,y+1] := by simp
+  have hs' : Fin.snoc ![x,y] (y+1) = ![x,y,y+1] := by simp
   rw [hv,hs,hs'] at hn
   have h0 : lenbitDef.val.Evalb ![x,y] := by
     simp only [Semiformula.eval_rew] at h

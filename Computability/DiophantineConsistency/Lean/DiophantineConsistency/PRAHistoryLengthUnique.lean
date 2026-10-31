@@ -18,15 +18,9 @@ local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.OR
 
 set_option maxHeartbeats 3000000 in
 theorem modelLengthUnique (s a b : M) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     lhDef.val.Evalb ![a,s] → lhDef.val.Evalb ![b,s] → a = b := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have hexp (i : M) : ∃ p, Exponential i p := by
     let p := Structure.func (L := language) PRAHistoryExpCode.expCode (fun _ => i)
@@ -54,16 +48,10 @@ theorem modelLengthUnique (s a b : M) :
       Semiformula.Operator.LT.sentence_eq, lt_succ_iff_le, hs] at ha hb
     rw [ha,hb]
 theorem modelAppendLength (t s x l : M) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     seqDef.val.Evalb ![s] → lhDef.val.Evalb ![l,s] → seqConsDef.val.Evalb ![t,s,x] →
       seqDef.val.Evalb ![t] ∧ lhDef.val.Evalb ![l+1,t] := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   have hexp (i : M) : ∃ p, Exponential i p := by
     let p := Structure.func (L := language) PRAHistoryExpCode.expCode (fun _ => i)
     exact ⟨p,(PRAHistoryExpCode.graph_iff i p).mp (PRAHistoryExpCode.modelExpCode i)⟩
@@ -85,10 +73,7 @@ theorem candidate_length_unique : PRA ⊢ Semiformula.lMap embedding (∀⁰* le
   letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
   letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
   letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   rw [Semiformula.models_lMap,PRAModelIOpenPairing.reduct_eq_standard]
   simp only [models_iff,Semiformula.eval_allClosure]
   intro e
@@ -107,10 +92,7 @@ theorem candidate_append_length : PRA ⊢ Semiformula.lMap embedding (∀⁰* ap
   letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
   letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
   letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   rw [Semiformula.models_lMap,PRAModelIOpenPairing.reduct_eq_standard]
   simp only [models_iff,Semiformula.eval_allClosure]
   intro e

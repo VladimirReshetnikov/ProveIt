@@ -19,22 +19,16 @@ attribute [local irreducible] underDef domainDef seqDef
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
   have lift1 (φ : ArithmeticSemisentence 1) (a q : V) (hq : q ≤ w)
       (hb : (bnd φ).Evalb ![a,q]) : (bnd φ).Evalb ![a,w] := by
-    have hs : Fin.snoc ![a] q = ![a,q] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![a] q = ![a,q] := by simp
     have hh := eval_bnd_mono φ ![a] (Empty.elim : Empty → V) hq (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![a] w = ![a,w] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs' : Fin.snoc ![a] w = ![a,w] := by simp
     rw [hs'] at hh
     exact hh
   have lift2 (φ : ArithmeticSemisentence 2) (a b q : V) (hq : q ≤ w)
       (hb : (bnd φ).Evalb ![a,b,q]) : (bnd φ).Evalb ![a,b,w] := by
-    have hs : Fin.snoc ![a,b] q = ![a,b,q] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![a,b] q = ![a,b,q] := by simp
     have hh := eval_bnd_mono φ ![a,b] (Empty.elim : Empty → V) hq (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
     rw [hs'] at hh
     exact hh
   rcases h with ⟨hp,hrest⟩ | ⟨hn,hne⟩
@@ -63,9 +57,8 @@ attribute [local irreducible] underDef domainDef seqDef
           have hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![d,l] := by
             funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
           have hh := PRALhWitnessBound.bnd_rew2 (∼underDef.val) ω d l s w d l hv hw
-          have heq : (ω ▹ (∼underDef.val)) = ∼(ω ▹ underDef.val) := by
-            exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) underDef.val
-          rw [heq] at hh
+          rw [show (ω ▹ (∼underDef.val)) = ∼(ω ▹ underDef.val) from
+            LogicalConnective.HomClass.map_neg (Semiformula.rew ω) underDef.val] at hh
           exact hh
         · left
           have hn : (∼domainDef.val).Evalb ![d,s] := by simpa using hde
@@ -76,9 +69,8 @@ attribute [local irreducible] underDef domainDef seqDef
           have hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![d,s] := by
             funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
           have hh := PRALhWitnessBound.bnd_rew2 (∼domainDef.val) ω d l s w d s hv hw
-          have heq : (ω ▹ (∼domainDef.val)) = ∼(ω ▹ domainDef.val) := by
-            exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) domainDef.val
-          rw [heq] at hh
+          rw [show (ω ▹ (∼domainDef.val)) = ∼(ω ▹ domainDef.val) from
+            LogicalConnective.HomClass.map_neg (Semiformula.rew ω) domainDef.val] at hh
           exact hh
   · right; constructor
     · have hn' : (∼seqDef.val).Evalb ![s] := by simpa using hn
@@ -88,9 +80,8 @@ attribute [local irreducible] underDef domainDef seqDef
       have hv : (fun j => (ω #j).val ![l,s] Empty.elim) = ![s] := by
         funext j; exact Fin.cases rfl (fun k => Fin.elim0 k) j
       have hh := PRALhWitnessBound.bnd_rew1 (∼seqDef.val) ω l s w s hv hw
-      have heq : (ω ▹ (∼seqDef.val)) = ∼(ω ▹ seqDef.val) := by
-        exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) seqDef.val
-      rw [heq] at hh
+      rw [show (ω ▹ (∼seqDef.val)) = ∼(ω ▹ seqDef.val) from
+        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) seqDef.val] at hh
       exact hh
     · exact hne
 def negLhMajorant (s : V) : V := PRASeqFullWitnessBound.seqMajorant s +

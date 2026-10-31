@@ -57,11 +57,7 @@ theorem ppow2_bound (i : V) : ppow2Def.val.Evalb ![i] →
       have hf : (ω ▹ sppow2Def.val).Evalb ![m,i] := by
         simpa [ω, Semiformula.eval_substs] using hspp
       have hb := sppow2_rew_bound_at ω ![m,i] (2*i+1) hmw hf
-      have hs : Fin.snoc ![m,i] (2*i+1) = ![m,i,2*i+1] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs : Fin.snoc ![m,i] (2*i+1) = ![m,i,2*i+1] := by simp
       rw [hs] at hb
       exact hb
     · let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#1,#0]

@@ -94,17 +94,10 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
         have hw : 2*(ω #0).val ![u,y,X,Y] Empty.elim + 1 ≤ w := by
           exact le_trans (by simpa [ω,add_comm] using add_le_add_right h2 1) hy
         have hb := neg_ppow2_rew_bound_at ω ![u,y,X,Y] w hw hf
-        have hs : Fin.snoc ![u,y,X,Y] w = ![u,y,X,Y,w] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hs : Fin.snoc ![u,y,X,Y] w = ![u,y,X,Y,w] := by simp
         rw [hs] at hb
-        have heq : (ω ▹ (∼ppow2Def.val)) = ∼(ω ▹ ppow2Def.val) := by
-          exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) ppow2Def.val
-        rw [heq] at hb
+        rw [show (ω ▹ (∼ppow2Def.val)) = ∼(ω ▹ ppow2Def.val) from
+          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) ppow2Def.val] at hb
         exact hb
       · right; right; right
         rcases hcases with ⟨⟨a,ha,ha1,ha2⟩,⟨b,hb,hb1,hb2⟩⟩ | ⟨⟨a,ha,ha1,ha2⟩,⟨b,hb,hb1,hb2⟩⟩
@@ -116,14 +109,7 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
                 simpa [ω, Semiformula.eval_substs] using ha1
               have hw : (ω #2).val ![a,u,y,X,Y] Empty.elim + 1 ≤ w := hX
               have hr := ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by
-                funext j
-                refine Fin.cases rfl (fun k => ?_) j
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by simp
               rw [hs] at hr
               exact hr
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘(2 * #0)’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#3]
@@ -131,14 +117,7 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
                 simpa [ω, Semiformula.eval_substs] using ha2
               have hw : (ω #2).val ![a,u,y,X,Y] Empty.elim + 1 ≤ w := hX
               have hr := ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by
-                funext j
-                refine Fin.cases rfl (fun k => ?_) j
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by simp
               rw [hs] at hr
               exact hr
           · refine ⟨b,lt_of_lt_of_le hb hY,hb,?_,?_⟩
@@ -147,14 +126,7 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
                 simpa [ω, Semiformula.eval_substs] using hb1
               have hw : (ω #2).val ![b,u,y,X,Y] Empty.elim + 1 ≤ w := hY
               have hr := ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by
-                funext j
-                refine Fin.cases rfl (fun k => ?_) j
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by simp
               rw [hs] at hr
               exact hr
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#0],(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#4]
@@ -162,14 +134,7 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
                 simpa [ω, Semiformula.eval_substs] using hb2
               have hw : (ω #2).val ![b,u,y,X,Y] Empty.elim + 1 ≤ w := hY
               have hr := ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by
-                funext j
-                refine Fin.cases rfl (fun k => ?_) j
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by simp
               rw [hs] at hr
               exact hr
         · right
@@ -180,14 +145,7 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
                 simpa [ω, Semiformula.eval_substs] using ha1
               have hw : (ω #2).val ![a,u,y,X,Y] Empty.elim + 1 ≤ w := hX
               have hr := ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by
-                funext j
-                refine Fin.cases rfl (fun k => ?_) j
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by simp
               rw [hs] at hr
               exact hr
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘((2 * #0) + 1)’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#3]
@@ -195,14 +153,7 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
                 simpa [ω, Semiformula.eval_substs] using ha2
               have hw : (ω #2).val ![a,u,y,X,Y] Empty.elim + 1 ≤ w := hX
               have hr := ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by
-                funext j
-                refine Fin.cases rfl (fun k => ?_) j
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by simp
               rw [hs] at hr
               exact hr
           · refine ⟨b,lt_of_lt_of_le hb hY,hb,?_,?_⟩
@@ -211,14 +162,7 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
                 simpa [ω, Semiformula.eval_substs] using hb1
               have hw : (ω #2).val ![b,u,y,X,Y] Empty.elim + 1 ≤ w := hY
               have hr := ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by
-                funext j
-                refine Fin.cases rfl (fun k => ?_) j
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by simp
               rw [hs] at hr
               exact hr
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘(2 * !!((Semiterm.Operator.npow ℒₒᵣ 2).operator ![#0]))’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#4]
@@ -226,14 +170,7 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
                 simpa [ω, Semiformula.eval_substs] using hb2
               have hw : (ω #2).val ![b,u,y,X,Y] Empty.elim + 1 ≤ w := hY
               have hr := ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by
-                funext j
-                refine Fin.cases rfl (fun k => ?_) j
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
+              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by simp
               rw [hs] at hr
               exact hr
 
