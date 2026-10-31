@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessPositiveAndRule
+#print axioms DiophantineConsistency.PRAWitnessPositiveAndRule.actual_eq
+#print axioms DiophantineConsistency.PRAWitnessPositiveAndRule.wb_actual
