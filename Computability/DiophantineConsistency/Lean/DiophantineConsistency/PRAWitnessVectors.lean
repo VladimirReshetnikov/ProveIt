@@ -28,6 +28,18 @@ theorem nth_rankFinite : PRAFixpointRank.RankFinite (Nth.adjointruction (V := V)
 
 instance idDefinable : 𝚺₁-Function₁ (fun x : V => x) := by definability
 
+/-- A vector recursion whose step does not decrease the value queries strictly
+smaller pairs. -/
+theorem vecRec_rankFinite {β : VecRec.Blueprint 0} (c : VecRec.Construction V β)
+    (hadj : ∀ x xs ih, ih ≤ c.adjoin ![] x xs ih) :
+    PRAFixpointRank.RankFinite c.adjointruction (fun x => x) := by
+  rintro v C pr (h | ⟨x, xs, ih, rfl, hC⟩)
+  · exact Or.inl h
+  · refine Or.inr ⟨x, xs, ih, rfl, hC, ?_⟩
+    have hv : v = ![] := funext fun i => i.elim0
+    subst hv
+    exact lt_of_le_of_lt (pair_le_pair_right xs (hadj x xs ih)) (pair_lt_pair_left (lt_adjoin' x xs) _)
+
 end sigma1
 
 section models
@@ -109,6 +121,69 @@ theorem wb_nthDef : WB M nthDef.val := by
     exact h.1
   rw [hpr']
   exact pair3_le_triplePoly v i y
+
+/-! ### Length -/
+
+theorem wb_len_core_sigma : WB M Len.blueprint.blueprint.core.sigma.val := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  have := wb_pairDef (M := M); have := wb_adjoinDef (M := M); have := wb_memRel (M := M)
+  have : WB M memRelOpr.sentence := wb_memRel (M := M)
+  simp only [VecRec.Blueprint.blueprint, Len.blueprint, HierarchySymbol.Semiformula.sigma_mkDelta,
+    HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+  · exact wb_exs_term ‘0’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto)
+  · refine wb_exs_term ‘(#2 + #1 + 1) * (#2 + #1 + 1) + 1’ (fun e y h => ?_) ?_
+    · simp [adjoinDef] at h
+      rw [h.1.2]
+      have hp : ⟪e 2, e 1⟫ ≤ (e 2 + e 1 + 1) * (e 2 + e 1 + 1) := by
+        simpa [sq] using pair_polybound (e 2) (e 1)
+      simpa using add_le_add_right hp 1
+    · refine wb_and (by wb_auto) (wb_exs_term ‘#1 + 1’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto))
+
+theorem wb_len_core_neg_pi : WB M (∼Len.blueprint.blueprint.core.pi.val) := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  have := wb_pairDef (M := M); have := wb_adjoinDef (M := M); have := wb_memRel (M := M)
+  have := wb_neg_pairDef (M := M); have := wb_neg_memRel (M := M)
+  have : WB M memRelOpr.sentence := wb_memRel (M := M)
+  have : WB M (∼memRelOpr.sentence) := wb_neg_memRel (M := M)
+  simp only [VecRec.Blueprint.blueprint, Len.blueprint, HierarchySymbol.Semiformula.pi_mkDelta,
+    HierarchySymbol.Semiformula.val_mkPi, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+  · exact wb_exs_term ‘0’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto)
+  · refine wb_exs_term ‘(#2 + #1 + 1) * (#2 + #1 + 1) + 1’ (fun e y h => ?_) ?_
+    · simp [adjoinDef] at h
+      rw [h.1.2]
+      have hp : ⟪e 2, e 1⟫ ≤ (e 2 + e 1 + 1) * (e 2 + e 1 + 1) := by
+        simpa [sq] using pair_polybound (e 2) (e 1)
+      simpa using add_le_add_right hp 1
+    · refine wb_and (by wb_auto) (wb_exs_term ‘#1 + 1’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto))
+
+/-- **`len`'s graph has bounded witnesses.** -/
+theorem wb_len_graph : WB M Len.blueprint.graphDef.val := by
+  refine PRAWitnessFixpointGraph.wb_fixpointDef Len.blueprint.blueprint wb_len_core_sigma
+    wb_len_core_neg_pi ‘#0 + 1’ ?_
+  intro V _ _ x s L hL hx
+  have h := PRAWitnessFixpointGraph.stage_bound_of_rank (Len.adjointruction (V := V)).adjointruction
+    (fun x => x) (fun _ => le_rfl)
+    (vecRec_rankFinite Len.adjointruction (fun _ _ ih => le_of_lt (lt_add_one ih)))
+    (fun x => x + 1) (fun _ => le_rfl) x s L hL hx
+  exact ⟨_, by simpa using h.1, h.2⟩
+
+/-- **`lenDef` has bounded witnesses.** -/
+theorem wb_lenDef : WB M lenDef.val := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  have hg := wb_len_graph (M := M); have := wb_pairDef (M := M)
+  simp only [lenDef, VecRec.Blueprint.resultDef, HierarchySymbol.Semiformula.val_mkSigma]
+  refine wb_exs_term ‘(#1 + #0 + 1) * (#1 + #0 + 1)’ (fun e y h => ?_) (by wb_auto)
+  simp at h
+  rw [h.1]
+  simpa [sq] using pair_polybound (e 1) (e 0)
 
 end models
 end DiophantineConsistency.PRAWitnessVectors

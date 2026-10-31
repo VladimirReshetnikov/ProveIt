@@ -176,6 +176,12 @@ theorem wb_top_or {n : ℕ} (ψ : ArithmeticSemisentence n) : WB M (⊤ ⋎ ψ) 
 theorem wb_or_top {n : ℕ} (ψ : ArithmeticSemisentence n) : WB M (ψ ⋎ ⊤) :=
   ⟨fun _ => 0, mono_const 0, fun _ _ => by simp [bnd]⟩
 
+/-- **An existential whose witness is below a term**, read off its body. -/
+theorem wb_exs_term {n : ℕ} {ψ : ArithmeticSemisentence (n + 1)} (t : ArithmeticSemiterm Empty n)
+    (hb : ∀ (e : Fin n → M) (y : M), ψ.Eval (y :> e) Empty.elim → y ≤ t.val e Empty.elim)
+    (hψ : WB M ψ) : WB M (∃⁰ ψ) :=
+  wb_exs (fun e => t.val e Empty.elim) (term_mono t) (fun e ⟨y, hy⟩ => ⟨y, hb e y hy, hy⟩) hψ
+
 /-- Foundation's `!ψ t₁ … tₖ` embedding. -/
 theorem wb_subst {k n : ℕ} {ψ : ArithmeticSemisentence k} (v : Fin k → ArithmeticSemiterm Empty n)
     (hψ : WB M ψ) : WB M (Rewriting.subst ψ v) :=

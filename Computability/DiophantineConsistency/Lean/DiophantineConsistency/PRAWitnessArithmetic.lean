@@ -12,7 +12,7 @@ written. This covers pairing (`pairDef`, `pair₃Def` … `pair₆Def`, `pi₁De
 `Seqₛ.def`), bits and sets (`bitDef`, `insertDef`, `bitSubsetDef`), the
 HFS sequence graphs (`underDef`, `memRel`, `memRel₃`, `domainDef`,
 `isMappingDef`, `seqDef`, `lhDef`, `seqConsDef`), the derivation-code index
-graphs (`fstIdxDef`, `sndIdxDef`), the formula constructors (`qq*Def`) and
+graphs (`fstIdxDef`, `sndIdxDef`), the term and formula constructors (`qq*Def`), vector cons (`adjoinDef`) and
 the ten rule graphs of `Derivation.blueprint` (`axLGraph` … `axmGraph`).
 
 Only `𝗣𝗔⁻` is assumed, so every lemma holds in the arithmetic reduct of each
@@ -599,6 +599,76 @@ theorem wb_neg_seqConsDef : WB M (∼(seqConsDef).val) := by
   have := wb_neg_pairDef (M := M)
   have := wb_neg_insertDef (M := M)
   simp only [seqConsDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_qqBvarDef : WB M (qqBvarDef).val := by
+  have := wb_pairDef (M := M)
+  simp only [qqBvarDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_neg_qqBvarDef : WB M (∼(qqBvarDef).val) := by
+  have := wb_neg_pairDef (M := M)
+  simp only [qqBvarDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_qqFvarDef : WB M (qqFvarDef).val := by
+  have := wb_pairDef (M := M)
+  simp only [qqFvarDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_neg_qqFvarDef : WB M (∼(qqFvarDef).val) := by
+  have := wb_neg_pairDef (M := M)
+  simp only [qqFvarDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_qqFuncDef : WB M (qqFuncDef).val := by
+  have := wb_pairDef (M := M)
+  simp only [qqFuncDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_neg_qqFuncDef : WB M (∼(qqFuncDef).val) := by
+  have := wb_neg_pairDef (M := M)
+  simp only [qqFuncDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_qqRelDef : WB M (qqRelDef).val := by
+  have := wb_pair₄Def (M := M)
+  simp only [qqRelDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_neg_qqRelDef : WB M (∼(qqRelDef).val) := by
+  have := wb_neg_pair₄Def (M := M)
+  simp only [qqRelDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_qqNRelDef : WB M (qqNRelDef).val := by
+  have := wb_pair₄Def (M := M)
+  simp only [qqNRelDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_neg_qqNRelDef : WB M (∼(qqNRelDef).val) := by
+  have := wb_neg_pair₄Def (M := M)
+  simp only [qqNRelDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_qqFalsumDef : WB M (qqFalsumDef).val := by
+  have := wb_pairDef (M := M)
+  simp only [qqFalsumDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_neg_qqFalsumDef : WB M (∼(qqFalsumDef).val) := by
+  have := wb_neg_pairDef (M := M)
+  simp only [qqFalsumDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_adjoinDef : WB M (adjoinDef).val := by
+  have := wb_pairDef (M := M)
+  simp only [adjoinDef, HierarchySymbol.Semiformula.val_mkSigma]
+  wb_auto
+
+theorem wb_neg_adjoinDef : WB M (∼(adjoinDef).val) := by
+  have := wb_neg_pairDef (M := M)
+  simp only [adjoinDef, HierarchySymbol.Semiformula.val_mkSigma]
   wb_auto
 
 end DiophantineConsistency.PRAWitnessArithmetic

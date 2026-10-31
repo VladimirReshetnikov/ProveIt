@@ -7,3 +7,8 @@ import DiophantineConsistency.PRAWitnessVectors
 #print axioms DiophantineConsistency.PRAWitnessVectors.wb_nth_core_neg_pi
 #print axioms DiophantineConsistency.PRAWitnessVectors.wb_nth_graph
 #print axioms DiophantineConsistency.PRAWitnessVectors.wb_nthDef
+#print axioms DiophantineConsistency.PRAWitnessVectors.vecRec_rankFinite
+#print axioms DiophantineConsistency.PRAWitnessVectors.wb_len_core_sigma
+#print axioms DiophantineConsistency.PRAWitnessVectors.wb_len_core_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessVectors.wb_len_graph
+#print axioms DiophantineConsistency.PRAWitnessVectors.wb_lenDef

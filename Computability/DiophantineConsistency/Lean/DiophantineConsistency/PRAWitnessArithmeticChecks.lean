@@ -5,6 +5,7 @@ import DiophantineConsistency.PRAWitnessArithmetic
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_or
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_all_guard
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_exs
+#print axioms DiophantineConsistency.PRAWitnessCalculus.wb_exs_term
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_rew
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_subst
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_neg_subst
@@ -19,6 +20,10 @@ import DiophantineConsistency.PRAWitnessArithmetic
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_not_mem
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_operator
 #print axioms DiophantineConsistency.PRAWitnessCalculus.wb_neg_operator
+#print axioms DiophantineConsistency.PRAWitnessCalculus.wb_bot_and
+#print axioms DiophantineConsistency.PRAWitnessCalculus.wb_and_bot
+#print axioms DiophantineConsistency.PRAWitnessCalculus.wb_top_or
+#print axioms DiophantineConsistency.PRAWitnessCalculus.wb_or_top
 #print axioms DiophantineConsistency.PRAWitnessCalculus.term_mono
 #print axioms DiophantineConsistency.PRAWitnessCalculus.exists_bound
 #print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_subDef
@@ -117,3 +122,17 @@ import DiophantineConsistency.PRAWitnessArithmetic
 #print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_lhDef
 #print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_seqConsDef
 #print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_seqConsDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_qqBvarDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_qqBvarDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_qqFvarDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_qqFvarDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_qqFuncDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_qqFuncDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_qqRelDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_qqRelDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_qqNRelDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_qqNRelDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_qqFalsumDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_qqFalsumDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_adjoinDef
+#print axioms DiophantineConsistency.PRAWitnessArithmetic.wb_neg_adjoinDef
