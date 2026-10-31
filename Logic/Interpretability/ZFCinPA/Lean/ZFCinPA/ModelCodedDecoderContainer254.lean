@@ -229,17 +229,11 @@ lemma nativeContainer_distinct (a b c : V) (hab : a ≠ b) (hca : c ≠ a) (hcb 
 internal free label. This is the coincident-label vacuity resource. -/
 theorem zf_not_mem_self (a : V) :
     (𝗭𝗙 : SetTheory).internalize V ⊢ ∼memNamed a a := by
-  have hi := internal_provable_of_outer_provable (V := V)
-    ModelCodedDecoderFalsity254.zf_irreflexivity_outer
-  have hq : (⌜ModelCodedDecoderFalsity254.irreflexivitySentence⌝ : Formula V ℒₛₑₜ) =
-      ∀⁰ ∼memAtom (#'0) (#'0) := by
-    apply Bootstrapping.Semiformula.ext
-    change (⌜ModelCodedDecoderFalsity254.irreflexivitySentence⌝ : V) =
-      ^∀ (neg ℒₛₑₜ (^rel 2 ((1 : Nat) : V) ?[^#0,^#0]))
-    rw [Nat.cast_one,neg_rel (by simpa using mem_symbol (V := V)) (by simp)]
-    exact ModelCodedDecoderFalsity254.quote_irreflexivity (V := V)
-  rw [hq] at hi
-  simpa [memNamed,memAtom] using TProof.specialize! hi (&'a)
+  apply (tprovable_iff_provable).mpr
+  simpa [memNamed,memAtom,Bootstrapping.Semiformula.val_neg,
+    Bootstrapping.Semiformula.rel,atomCode,mem_quote] using
+      (ModelCodedDecoderFalsity254.irreflexivity_internal_at (V := V)
+        (𝗭𝗙 : SetTheory) inferInstance a)
 
 /-- Monotonicity uses the same actual named-GEN resource as the checked
 existential equivalence helper; no closedness premise is added. -/
