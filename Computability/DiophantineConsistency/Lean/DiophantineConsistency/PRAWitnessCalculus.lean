@@ -162,6 +162,20 @@ theorem wb_rew {k n : ℕ} {ψ : ArithmeticSemisentence k} (ω : Rew ℒₒᵣ E
   have hn := PRABndRewriting.natural ψ ω e (B (V e))
   exact hn.mpr (hb (V e) (by simpa [V, Function.comp_def] using he))
 
+/-- A conjunction with `⊥` never holds. -/
+theorem wb_bot_and {n : ℕ} (ψ : ArithmeticSemisentence n) : WB M (⊥ ⋏ ψ) :=
+  ⟨fun _ => 0, mono_const 0, fun _ h => by simp at h⟩
+
+theorem wb_and_bot {n : ℕ} (ψ : ArithmeticSemisentence n) : WB M (ψ ⋏ ⊥) :=
+  ⟨fun _ => 0, mono_const 0, fun _ h => by simp at h⟩
+
+/-- A disjunction with `⊤` keeps `⊤` under `bnd`. -/
+theorem wb_top_or {n : ℕ} (ψ : ArithmeticSemisentence n) : WB M (⊤ ⋎ ψ) :=
+  ⟨fun _ => 0, mono_const 0, fun _ _ => by simp [bnd]⟩
+
+theorem wb_or_top {n : ℕ} (ψ : ArithmeticSemisentence n) : WB M (ψ ⋎ ⊤) :=
+  ⟨fun _ => 0, mono_const 0, fun _ _ => by simp [bnd]⟩
+
 /-- Foundation's `!ψ t₁ … tₖ` embedding. -/
 theorem wb_subst {k n : ℕ} {ψ : ArithmeticSemisentence k} (v : Fin k → ArithmeticSemiterm Empty n)
     (hψ : WB M ψ) : WB M (Rewriting.subst ψ v) :=
@@ -313,6 +327,8 @@ macro "wb_step" : tactic =>
   `(tactic| first
     | with_reducible assumption
     | (apply wb_open; simp; done)
+    | with_reducible apply wb_bot_and | with_reducible apply wb_and_bot
+    | with_reducible apply wb_top_or | with_reducible apply wb_or_top
     | with_reducible apply wb_subst
     | with_reducible apply wb_neg_subst
     | with_reducible apply wb_and | with_reducible apply wb_or
