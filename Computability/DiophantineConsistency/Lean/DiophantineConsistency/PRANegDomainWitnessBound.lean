@@ -54,27 +54,10 @@ def negDomainMajorant (u s : V) : V := u+s+PRADomainWitnessBound.domainMajorant 
 theorem neg_domain_bound_explicit (u s : V) : (∼domainDef.val).Evalb ![u,s] →
  (bnd (∼domainDef.val)).Evalb ![u,s,negDomainMajorant u s] := by
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  let A := PRABitFullWitnessBound.bitMajorant u
-  let B := PRANegBitFullWitnessBound.negBitMajorant u
-  let C := PRABitFullWitnessBound.bitMajorant s
-  let D := PRANegBitFullWitnessBound.negBitMajorant s
-  have hd : PRADomainWitnessBound.domainMajorant u s ≤ negDomainMajorant u s := by
-    exact le_add_of_nonneg_left (zero_le : 0 ≤ u+s)
+  obtain ⟨hs, ha, hb, hc, hdd⟩ := PRADomainWitnessBound.domainMajorant_bounds u s
+  have hd : PRADomainWitnessBound.domainMajorant u s ≤ negDomainMajorant u s :=
+    le_add_of_nonneg_left (zero_le : 0 ≤ u+s)
   have hx : u+s ≤ negDomainMajorant u s := le_add_of_nonneg_right zero_le
-  have hs : s ≤ PRADomainWitnessBound.domainMajorant u s := by
-    simp [PRADomainWitnessBound.domainMajorant,add_assoc]
-  have ha : A ≤ PRADomainWitnessBound.domainMajorant u s := by
-    simpa [PRADomainWitnessBound.domainMajorant,A,B,C,D,add_assoc,add_comm,add_left_comm] using
-      (le_add_of_nonneg_right (a := A) (b := s+B+C+D) (zero_le : 0 ≤ s+B+C+D))
-  have hb : B ≤ PRADomainWitnessBound.domainMajorant u s := by
-    simpa [PRADomainWitnessBound.domainMajorant,A,B,C,D,add_assoc,add_comm,add_left_comm] using
-      (le_add_of_nonneg_right (a := B) (b := s+A+C+D) (zero_le : 0 ≤ s+A+C+D))
-  have hc : C ≤ PRADomainWitnessBound.domainMajorant u s := by
-    simpa [PRADomainWitnessBound.domainMajorant,A,B,C,D,add_assoc,add_comm,add_left_comm] using
-      (le_add_of_nonneg_right (a := C) (b := s+A+B+D) (zero_le : 0 ≤ s+A+B+D))
-  have hdd : D ≤ PRADomainWitnessBound.domainMajorant u s := by
-    simpa [PRADomainWitnessBound.domainMajorant,A,B,C,D,add_assoc,add_comm,add_left_comm] using
-      (le_add_of_nonneg_right (a := D) (b := s+A+B+C) (zero_le : 0 ≤ s+A+B+C))
   exact neg_domain_bound u s (negDomainMajorant u s) hx (le_trans hs hd) (le_trans ha hd)
     (le_trans hb hd) (le_trans hc hd) (le_trans hdd hd)
 noncomputable def negDomain : ArithmeticSemisentence 2 := ∼domainDef.val

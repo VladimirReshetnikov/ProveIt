@@ -48,10 +48,10 @@ lemma quote_irreflexivity : (⌜irreflexivitySentence⌝ : V) =
 
 /-- The fixed finite ZF theorem is internalized before specializing its bound
 variable. Completeness is used only for that ordinary fixed theorem. -/
-lemma zf_irreflexivity_internal :
-    Provable (𝗭𝗙 : SetTheory) (neg ℒₛₑₜ (atomCode 1 (0 : V) 0)) := by
-  have hc : Provable (𝗭𝗙 : SetTheory) (⌜irreflexivitySentence⌝ : V) :=
-    internalize_provability zf_irreflexivity_outer
+lemma irreflexivity_internal (T : SetTheory) [T.Δ₁] (hZF : (𝗭𝗙 : SetTheory) ⪯ T) :
+    Provable T (neg ℒₛₑₜ (atomCode 1 (0 : V) 0)) := by
+  have hc : Provable T (⌜irreflexivitySentence⌝ : V) :=
+    internalize_provability (Entailment.weakening hZF zf_irreflexivity_outer)
   rw [quote_irreflexivity] at hc
   obtain ⟨d,hd⟩ := hc
   have hr : (ℒₛₑₜ).IsRel (2 : V) 1 := by
@@ -59,9 +59,14 @@ lemma zf_irreflexivity_internal :
       ⟨Language.Set.Rel.mem,rfl⟩
   have hb : IsSemiformula ℒₛₑₜ (1 : V) (^nrel 2 1 ?[^#0,^#0]) := by simp [hr]
   refine ⟨specializeCode ℒₛₑₜ d (^nrel 2 1 ?[^#0,^#0]) (^&0),?_⟩
-  have h := specializeCode_isProof (𝗭𝗙 : SetTheory) hb
+  have h := specializeCode_isProof T hb
     (show IsTerm ℒₛₑₜ (^& (0 : V)) by simp) hd
   simpa [substs1,atomCode,hr] using h
+
+
+lemma zf_irreflexivity_internal :
+    Provable (𝗭𝗙 : SetTheory) (neg ℒₛₑₜ (atomCode 1 (0 : V) 0)) :=
+  irreflexivity_internal (𝗭𝗙 : SetTheory) inferInstance
 
 noncomputable def contradictionCode (L : Language) [L.Encodable] [L.LORDefinable]
     (p positiveProof negativeProof : V) : V :=

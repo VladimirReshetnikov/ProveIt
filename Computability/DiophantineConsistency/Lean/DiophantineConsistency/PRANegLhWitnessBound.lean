@@ -17,20 +17,8 @@ attribute [local irreducible] underDef domainDef seqDef
   intro h
   simp [lhDef,DeMorgan.imply,bnd,bnd_open] at h ⊢
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  have lift1 (φ : ArithmeticSemisentence 1) (a q : V) (hq : q ≤ w)
-      (hb : (bnd φ).Evalb ![a,q]) : (bnd φ).Evalb ![a,w] := by
-    have hs : Fin.snoc ![a] q = ![a,q] := by simp
-    have hh := eval_bnd_mono φ ![a] (Empty.elim : Empty → V) hq (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![a] w = ![a,w] := by simp
-    rw [hs'] at hh
-    exact hh
-  have lift2 (φ : ArithmeticSemisentence 2) (a b q : V) (hq : q ≤ w)
-      (hb : (bnd φ).Evalb ![a,b,q]) : (bnd φ).Evalb ![a,b,w] := by
-    have hs : Fin.snoc ![a,b] q = ![a,b,q] := by simp
-    have hh := eval_bnd_mono φ ![a,b] (Empty.elim : Empty → V) hq (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
-    rw [hs'] at hh
-    exact hh
+  have lift1 := PRALhWitnessBound.bnd_lift1 w
+  have lift2 := PRALhWitnessBound.bnd_lift2 w
   rcases h with ⟨hp,hrest⟩ | ⟨hn,hne⟩
   · left; constructor
     · have hb := PRASeqFullWitnessBound.seq_bound_explicit s hp

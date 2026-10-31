@@ -27,6 +27,18 @@ theorem bnd_rew2 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2 Emp
   have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
   rw [hv,hs,hs'] at hn
   exact hn.mpr h
+/-- Increase a witness bound for a one-variable formula. -/
+theorem bnd_lift1 (w : V) (φ : ArithmeticSemisentence 1) (a q : V) (hq : q ≤ w)
+    (hb : (bnd φ).Evalb ![a,q]) : (bnd φ).Evalb ![a,w] := by
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  simpa using (eval_bnd_mono φ ![a] (Empty.elim : Empty → V) hq (by simpa using hb))
+
+/-- Increase a witness bound for a two-variable formula. -/
+theorem bnd_lift2 (w : V) (φ : ArithmeticSemisentence 2) (a b q : V) (hq : q ≤ w)
+    (hb : (bnd φ).Evalb ![a,b,q]) : (bnd φ).Evalb ![a,b,w] := by
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  simpa using (eval_bnd_mono φ ![a,b] (Empty.elim : Empty → V) hq (by simpa using hb))
+
  theorem lh_bound (l s w : V) (hsize : 2*s+1 ≤ w)
  (hseq : PRASeqFullWitnessBound.seqMajorant s ≤ w)
  (hnegseq : PRANegSeqDefWitnessBound.negSeqMajorant s ≤ w)
@@ -36,20 +48,8 @@ theorem bnd_rew2 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2 Emp
   intro h
   simp [lhDef,DeMorgan.imply,bnd,bnd_open] at h ⊢
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  have lift1 (φ : ArithmeticSemisentence 1) (a q : V) (hq : q ≤ w)
-      (hb : (bnd φ).Evalb ![a,q]) : (bnd φ).Evalb ![a,w] := by
-    have hs : Fin.snoc ![a] q = ![a,q] := by simp
-    have hh := eval_bnd_mono φ ![a] (Empty.elim : Empty → V) hq (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![a] w = ![a,w] := by simp
-    rw [hs'] at hh
-    exact hh
-  have lift2 (φ : ArithmeticSemisentence 2) (a b q : V) (hq : q ≤ w)
-      (hb : (bnd φ).Evalb ![a,b,q]) : (bnd φ).Evalb ![a,b,w] := by
-    have hs : Fin.snoc ![a,b] q = ![a,b,q] := by simp
-    have hh := eval_bnd_mono φ ![a,b] (Empty.elim : Empty → V) hq (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
-    rw [hs'] at hh
-    exact hh
+  have lift1 := bnd_lift1 w
+  have lift2 := bnd_lift2 w
   constructor
   · rcases h.1 with hn | ⟨d,hd,hde,hue⟩
     · left
