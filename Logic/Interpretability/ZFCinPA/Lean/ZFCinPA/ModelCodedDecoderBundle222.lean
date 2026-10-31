@@ -52,9 +52,6 @@ local prefix:max "&'" => Bootstrapping.Semiterm.fvar (V := V) (L := ℒₛₑₜ
 
 /-! ## A non-consecutive absorption law -/
 
-private instance bindOneAt_delta' : 𝚫₁-Function₃[V] (bindOneAt ℒₛₑₜ) :=
-  bindOneAt_defined.graph_delta.to_definable
-
 lemma termBindOneAt_absorb_any {depth term : V} (ht : IsSemiterm ℒₛₑₜ depth term) :
     ∀ chosen e : V,
     termBindOneAt ℒₛₑₜ chosen e (termBindOneAt ℒₛₑₜ chosen depth term) =
@@ -275,8 +272,6 @@ end Translate
 section Identities
 
 variable {a b c : V} (P : Formula V ℒₛₑₜ)
-
-private lemma cast_fin {m : Nat} (i : Fin m) : ((i : ℕ) : V) = ((i : ℕ) : V) := rfl
 
 variable (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b)
   (hf : ∀ depth : V, bindOneAt ℒₛₑₜ c depth P.val = P.val)
