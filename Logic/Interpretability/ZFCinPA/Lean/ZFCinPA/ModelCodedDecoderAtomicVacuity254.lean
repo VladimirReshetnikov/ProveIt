@@ -26,18 +26,13 @@ local prefix:max "&'" => Bootstrapping.Semiterm.fvar (V := V) (L := ℒₛₑₜ
 
 lemma namedBody_memAtom (a b c : V) :
     namedBody a (memAtom (&'b) (&'c)) = memAtom (namedVar a b) (namedVar a c) := by
-  classical
   have hr : (ℒₛₑₜ).IsRel (2 : V) 1 := by
     simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 1)).mpr
       ⟨Language.Set.Rel.mem,rfl⟩
-  have hv : IsUTermVec ℒₛₑₜ (2 : V) ?[^&b,^&c] := by simp
   apply Bootstrapping.Semiformula.ext
   change bindOneAt ℒₛₑₜ a 0 (^rel 2 ((1 : Nat) : V) ?[^&b,^&c]) =
     ^rel 2 ((1 : Nat) : V) ?[(namedVar a b).val,(namedVar a c).val]
-  rw [Nat.cast_one]
-  rw [bindOneAt_rel a 0 hr hv,termBindOneVecAt_pair a 0 _ _ (by simp) (by simp)]
-  by_cases hb : b = a <;> by_cases hc : c = a <;>
-    simp [namedVar,termBindOneAt_fvar,hb,hc]
+  simpa only [Nat.cast_one] using bindOneAt_rel_namedVars a b c 1 hr
 
 lemma namedBody_free_of_bindOne (chosen : V) (p : Formula V ℒₛₑₜ)
     (h : bindOneAt ℒₛₑₜ chosen 0 p.val = p.val) :
