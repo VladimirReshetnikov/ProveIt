@@ -115,17 +115,12 @@ theorem ev_alpha (v w a b : V) (hva : v ≠ a) (hvb : v ≠ b)
     (contrapose_of (all_bout_alpha v w a b hva hvb hwa hwb)))
 
 theorem aux_ne (a b : V) : aux a b ≠ a ∧ aux a b ≠ b := by
-  constructor
-  · exact ne_of_gt (lt_of_le_of_lt (show a ≤ a + b by simp) (lt_add_one _))
-  · exact ne_of_gt (lt_of_le_of_lt (show b ≤ a + b by simp) (lt_add_one _))
+  unfold aux
+  constructor <;> apply ne_of_gt <;> apply lt_of_le_of_lt ?_ (lt_add_one _) <;> simp
 
 theorem fresh3_ne (a b c : V) : fresh3 a b c ≠ a ∧ fresh3 a b c ≠ b ∧ fresh3 a b c ≠ c := by
-  have ha : a ≤ a + b + c := by simp
-  have hb : b ≤ a + b + c := le_trans (by simp : b ≤ a + b) (by simp)
-  have hc : c ≤ a + b + c := by simp
-  exact ⟨ne_of_gt (lt_of_le_of_lt ha (lt_add_one _)),
-    ne_of_gt (lt_of_le_of_lt hb (lt_add_one _)),
-    ne_of_gt (lt_of_le_of_lt hc (lt_add_one _))⟩
+  unfold fresh3
+  refine ⟨?_, ?_, ?_⟩ <;> apply ne_of_gt <;> apply lt_of_le_of_lt ?_ (lt_add_one _) <;> simp
 
 theorem eind_to (w a b : V) (ha : w ≠ a) (hb : w ≠ b) :
     CProv (wim (Eind a b) (Ev w a b)) :=
