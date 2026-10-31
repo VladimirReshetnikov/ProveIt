@@ -1,0 +1,18 @@
+DiophantineConsistency.PRAWitnessZFCRuleLeaves.zfc_certificate_of_rule_leaves
+  (hpos :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCoreRules.PositiveLeaves
+        (DiophantineConsistency.PRAWitnessDerivationCoreLeft.sigmaTail 𝗭𝗙𝗖))
+  (hneg :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCoreRules.NegativeLeaves
+        (DiophantineConsistency.PRAWitnessDerivationCoreLeft.piTail 𝗭𝗙𝗖)) :
+  DiophantineConsistency.PRAStrictConReverse.BoundCertificate
+    (LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred 𝗭𝗙𝗖 ⊥)
+'DiophantineConsistency.PRAWitnessZFCRuleLeaves.zfc_certificate_of_rule_leaves' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

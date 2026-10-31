@@ -1,0 +1,8 @@
+import DiophantineConsistency.PRAWitnessCoreRules
+
+#check DiophantineConsistency.PRAWitnessCoreRules.wb_positive_of_leaves
+#check DiophantineConsistency.PRAWitnessCoreRules.wb_negative_of_leaves
+#check DiophantineConsistency.PRAWitnessCoreRules.wb_coreSigma_of_leaves
+#check DiophantineConsistency.PRAWitnessCoreRules.wb_neg_corePi_of_leaves
+#check DiophantineConsistency.PRAWitnessCoreRules.certificate_of_rule_leaves
+#print axioms DiophantineConsistency.PRAWitnessCoreRules.certificate_of_rule_leaves

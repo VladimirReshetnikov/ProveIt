@@ -81,6 +81,11 @@ inherit a provisional mixed-project and external provider. The presence of
 the source declarations above does not by itself establish the endpoint or a
 complete current-source replay.
 
+The [rule-leaf collector](reviews/pra-zfc-rule-leaves-provisional-replay/README.md)
+further reduces the exact ZFC certificate to positive and negative bounds for
+the individual top-level derivation-rule disjuncts. It is conditional on all
+of those bounds and shares a provisional inherited-provider limitation.
+
 The detailed history below records how the individual bound and code modules
 were obtained; it predates the calculus.
 

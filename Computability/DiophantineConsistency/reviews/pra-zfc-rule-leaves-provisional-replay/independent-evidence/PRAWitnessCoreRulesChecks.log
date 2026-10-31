@@ -1,0 +1,47 @@
+DiophantineConsistency.PRAWitnessCoreRules.wb_positive_of_leaves {M : Type} [LO.ORingStructure M] [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻]
+  {n : ℕ} (φ : LO.FirstOrder.ArithmeticSemisentence n) :
+  DiophantineConsistency.PRAWitnessCoreRules.PositiveLeaves φ → DiophantineConsistency.PRAWitnessCalculus.WB M φ
+DiophantineConsistency.PRAWitnessCoreRules.wb_negative_of_leaves {M : Type} [LO.ORingStructure M] [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻]
+  {n : ℕ} (φ : LO.FirstOrder.ArithmeticSemisentence n) :
+  DiophantineConsistency.PRAWitnessCoreRules.NegativeLeaves φ → DiophantineConsistency.PRAWitnessCalculus.WB M (∼φ)
+DiophantineConsistency.PRAWitnessCoreRules.wb_coreSigma_of_leaves {N : Type} [Nonempty N]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+  [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (T : LO.FirstOrder.SetTheory) [LO.FirstOrder.Theory.Δ₁ T]
+  (h :
+    DiophantineConsistency.PRAWitnessCoreRules.PositiveLeaves
+      (DiophantineConsistency.PRAWitnessDerivationCoreLeft.sigmaTail T)) :
+  DiophantineConsistency.PRAWitnessCalculus.WB N
+    ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+        (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core)
+DiophantineConsistency.PRAWitnessCoreRules.wb_neg_corePi_of_leaves {N : Type} [Nonempty N]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+  [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (T : LO.FirstOrder.SetTheory) [LO.FirstOrder.Theory.Δ₁ T]
+  (h :
+    DiophantineConsistency.PRAWitnessCoreRules.NegativeLeaves
+      (DiophantineConsistency.PRAWitnessDerivationCoreLeft.piTail T)) :
+  DiophantineConsistency.PRAWitnessCalculus.WB N
+    (∼↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.pi
+          (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core))
+DiophantineConsistency.PRAWitnessCoreRules.certificate_of_rule_leaves (T : LO.FirstOrder.SetTheory)
+  [LO.FirstOrder.Theory.Δ₁ T] (σ : LO.FirstOrder.SetTheorySentence)
+  (hpos :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCoreRules.PositiveLeaves
+        (DiophantineConsistency.PRAWitnessDerivationCoreLeft.sigmaTail T))
+  (hneg :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCoreRules.NegativeLeaves
+        (DiophantineConsistency.PRAWitnessDerivationCoreLeft.piTail T)) :
+  DiophantineConsistency.PRAStrictConReverse.BoundCertificate
+    (LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred T σ)
+'DiophantineConsistency.PRAWitnessCoreRules.certificate_of_rule_leaves' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
