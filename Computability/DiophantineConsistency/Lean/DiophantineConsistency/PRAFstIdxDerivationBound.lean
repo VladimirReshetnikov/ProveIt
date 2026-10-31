@@ -77,9 +77,7 @@ theorem derivationOf_bnd_of_local (d s w : V)
     simp only [Semiformula.eval_rew]
     have hv : (Semiterm.val ![d,s] Empty.elim ∘
         (Rew.subst (![#1,#0] : Fin 2 → ArithmeticSemiterm Empty 2)) ∘ Semiterm.bvar) = ![s,d] := by
-      funext i
-      refine Fin.cases rfl (fun j => ?_) i
-      exact Fin.cases rfl (fun j => Fin.elim0 j) j
+      funext i; revert i; simp [Fin.forall_fin_succ, Function.comp_def, Rew.subst]
     have hf : (Semiterm.val ![d,s] Empty.elim ∘
         (Rew.subst (![#1,#0] : Fin 2 → ArithmeticSemiterm Empty 2)) ∘ Semiterm.fvar) =
         (Empty.elim : Empty → V) := Subsingleton.elim _ _
@@ -103,20 +101,14 @@ theorem derivationBoundBody_model (e : Fin 3 → V) :
   simp only [derivationBoundBody, LogicalConnective.HomClass.map_imply,
     LogicalConnective.HomClass.map_and]
   intro ⟨hw,hfst,hrest⟩
-  have hv : ![e 0,e 1,e 2] = e := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+  have hv : ![e 0,e 1,e 2] = e := by funext i; revert i; simp [Fin.forall_fin_succ]
   rw [←hv] at hw hfst hrest ⊢
   have hw' : e 0+1 ≤ e 2 := by simpa using hw
   have hfst' : fstIdxDef.val.Evalb ![e 1,e 0] := by
     simp only [Semiformula.eval_rew] at hfst
     have he : (Semiterm.val ![e 0,e 1,e 2] Empty.elim ∘
         (Rew.subst (![#1,#0] : Fin 2 → ArithmeticSemiterm Empty 3)) ∘ Semiterm.bvar) = ![e 1,e 0] := by
-      funext i
-      refine Fin.cases rfl (fun j => ?_) i
-      exact Fin.cases rfl (fun j => Fin.elim0 j) j
+      funext i; revert i; simp [Fin.forall_fin_succ, Function.comp_def, Rew.subst]
     have hf : (Semiterm.val ![e 0,e 1,e 2] Empty.elim ∘
         (Rew.subst (![#1,#0] : Fin 2 → ArithmeticSemiterm Empty 3)) ∘ Semiterm.fvar) =
         (Empty.elim : Empty → V) := Subsingleton.elim _ _
