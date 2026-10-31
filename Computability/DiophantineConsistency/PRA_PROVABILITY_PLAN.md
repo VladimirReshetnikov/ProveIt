@@ -85,6 +85,9 @@ The [rule-leaf collector](reviews/pra-zfc-rule-leaves-provisional-replay/README.
 further reduces the exact ZFC certificate to positive and negative bounds for
 the individual top-level derivation-rule disjuncts. It is conditional on all
 of those bounds and shares a provisional inherited-provider limitation.
+The [negative rule assembly](reviews/pra-negative-rule-assembly-provisional-replay/README.md)
+now discharges the identity, weakening and shift leaves and retains the other
+seven as explicit assumptions; this is not yet the full negative core.
 
 The detailed history below records how the individual bound and code modules
 were obtained; it predates the calculus.
