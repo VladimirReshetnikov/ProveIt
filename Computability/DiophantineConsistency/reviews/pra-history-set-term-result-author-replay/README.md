@@ -13,3 +13,9 @@ The parent and baseline are pinned in the driver and `baseline.json`; compare al
 After it finishes, run `python3 Computability/DiophantineConsistency/reviews/pra-history-set-term-result-author-replay/compare.py /tmp/PEER_ROOT` to compare the 24 source/object/full-log rows, rehash the peer artifacts, and check the reachable source-graph hashes. This comparison does not extend the inherited package boundary.
 
 The driver places its local overlay first and then the Lake-provided `LEAN_PATH`; this is not a package-only environment. The source graph audit follows explicit `import DiophantineConsistency.*` lines, and `ZFCinPA.Instances` is separately pinned. Dynamic imports, other project namespaces reachable through inherited objects, and the transitive package boundary are not fully authenticated by this packet.
+
+A second independently launched same-parent replay at
+`/tmp/pra-history-set-term-result-9pd300bf` also passed; `compare.py` rehashed
+its 24 source/object/full-log rows and 102 source-graph hashes against the
+author. Its terminal state is frozen in `root-state.json`. This additional
+replay does not extend the inherited external-object boundary.
