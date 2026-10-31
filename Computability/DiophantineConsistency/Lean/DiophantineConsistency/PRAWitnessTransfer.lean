@@ -62,9 +62,9 @@ theorem cdef_bounded (ψ : ArithmeticSemisentence (n + 1)) (hψ : Hierarchy 𝚺
   simp [cdef, front, Semiformula.bexsLTSucc, Semiformula.bexsLT, h, pairDef.sigma_prop]
 
 /-- The `𝗜𝚺₁` statement: bounded instances have replacements below `Tg`. Context `x :> w :> e`. -/
-noncomputable def sigmaBody (ψ : ArithmeticSemisentence (n + 1)) (Tg : ArithmeticSemisentence (n + 1)) :
+noncomputable def sigmaBody (ψ φ : ArithmeticSemisentence (n + 1)) (Tg : ArithmeticSemisentence (n + 1)) :
     ArithmeticSemisentence (n + 2) :=
-  “x w. !(front ψ) x w ⋯ → ∃ t, !Tg t ⋯ ∧ ∃ z, !(cdef ψ) z t ⋯”
+  “x w. !(front ψ) x w ⋯ → ∃ t, !Tg t ⋯ ∧ ∃ z, !(cdef φ) z t ⋯”
 
 /-! ## The `𝗜𝚺₁` side -/
 
@@ -96,11 +96,11 @@ theorem eval_cdef {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢�
   simp only [hv, eval_front]
   simp [le_iff_eq_or_lt]
 
-theorem eval_sigmaBody {V : Type*} [ORingStructure V] (ψ Tg : ArithmeticSemisentence (n + 1))
+theorem eval_sigmaBody {V : Type*} [ORingStructure V] (ψ φ Tg : ArithmeticSemisentence (n + 1))
     (x w : V) (e : Fin n → V) :
-    (sigmaBody ψ Tg).Eval (x :> w :> e) Empty.elim ↔
+    (sigmaBody ψ φ Tg).Eval (x :> w :> e) Empty.elim ↔
       ((front ψ).Eval (x :> w :> e) Empty.elim →
-        ∃ t, Tg.Eval (t :> e) Empty.elim ∧ ∃ z, (cdef ψ).Eval (z :> t :> e) Empty.elim) := by
+        ∃ t, Tg.Eval (t :> e) Empty.elim ∧ ∃ z, (cdef φ).Eval (z :> t :> e) Empty.elim) := by
   have h1 : (Semiterm.val (x :> w :> e) Empty.elim ∘
       ((#0 :> #1 :> fun x => #x.succ.succ) : Fin (n + 2) → ArithmeticSemiterm Empty (n + 2))) =
       x :> w :> e := by
@@ -121,11 +121,11 @@ theorem cons_cons_tail {V : Type*} (v : Fin (n + 2) → V) :
   funext i; refine Fin.cases rfl (fun j => Fin.cases rfl (fun k => rfl) j) i
 
 /-- **The `𝗜𝚺₁` statement** follows from its semantic content in `𝗜𝚺₁` models. -/
-theorem isigma1_sigma (ψ Tg : ArithmeticSemisentence (n + 1)) (hψ : Hierarchy 𝚺 1 ψ)
+theorem isigma1_sigma (ψ φ Tg : ArithmeticSemisentence (n + 1)) (hφ : Hierarchy 𝚺 1 φ)
     (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin n → V) (x : V),
       ψ.Eval (x :> e) Empty.elim →
-        ∃ t, Tg.Eval (t :> e) Empty.elim ∧ ∃ x' ≤ t, ψ.Eval (x' :> e) Empty.elim) :
-    𝗜𝚺₁ ⊢ ∀⁰* sigmaBody ψ Tg := by
+        ∃ t, Tg.Eval (t :> e) Empty.elim ∧ ∃ x' ≤ t, φ.Eval (x' :> e) Empty.elim) :
+    𝗜𝚺₁ ⊢ ∀⁰* sigmaBody ψ φ Tg := by
   refine complete.{0} _ _ fun V _ hV => ?_
   haveI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ ∪ InductionScheme ℒₒᵣ StrictSigma := models_prefix
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₁) inferInstance
@@ -137,9 +137,9 @@ theorem isigma1_sigma (ψ Tg : ArithmeticSemisentence (n + 1)) (hψ : Hierarchy 
   have hψx : ψ.Eval (v 0 :> fun i : Fin n => v i.succ.succ) Empty.elim :=
     eval_bnd_imp ψ _ _ Empty.elim ((eval_front ψ _ _ _).mp hf)
   obtain ⟨t, ht, x', hx't, hψ'⟩ := hI V _ _ hψx
-  obtain ⟨w', hw'⟩ := eval_bnd_of hψ le_rfl (fun _ => rfl) (x' :> fun i : Fin n => v i.succ.succ)
+  obtain ⟨w', hw'⟩ := eval_bnd_of hφ le_rfl (fun _ => rfl) (x' :> fun i : Fin n => v i.succ.succ)
     Empty.elim hψ'
-  exact ⟨t, ht, ⟪x', w'⟫, (eval_cdef ψ _ t _).mpr
+  exact ⟨t, ht, ⟪x', w'⟫, (eval_cdef φ _ t _).mpr
     ⟨x', le_pair_left x' w', w', le_pair_right x' w', rfl, hx't, hw'⟩⟩
 
 /-! ## The candidate-PRA side -/
@@ -183,13 +183,13 @@ theorem eval_lMap_std {k : ℕ} (φ : ArithmeticSemisentence k) (v : Fin k → M
 
 omit [M↓[language] ⊧* PRA] in
 /-- What the open matrix says. -/
-theorem eval_theta (ψ : ArithmeticSemisentence (n + 1)) (cA cC : Code (n + 2)) (Tt : TermN n)
+theorem eval_theta (ψ φ : ArithmeticSemisentence (n + 1)) (cA cC : Code (n + 2)) (Tt : TermN n)
     (hA : M↓[language] ⊧ oneCorrectSentence cA (Semiformula.lMap embedding (front ψ)))
-    (hC : M↓[language] ⊧ oneCorrectSentence cC (Semiformula.lMap embedding (cdef ψ)))
+    (hC : M↓[language] ⊧ oneCorrectSentence cC (Semiformula.lMap embedding (cdef φ)))
     (z : M) (f : ℕ → M) :
     (theta cA cC Tt).Eval ![z] f ↔
       ¬(front ψ).Eval (f 0 :> f 1 :> fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim ∨
-        (cdef ψ).Eval (z :> Tt.val (fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim :>
+        (cdef φ).Eval (z :> Tt.val (fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim :>
           fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim := by
   have hA' := modelCharacteristicMatrix cA _ hA
   have hC' := modelCharacteristicMatrix cC _ hC
@@ -249,11 +249,11 @@ theorem eval_dominates (Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
 
 end models
 
-theorem PRA_goal (ψ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
+theorem PRA_goal (ψ φ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
     (hdom : PRA ⊢ dominates Tg Tt) (cA cC : Code (n + 2))
     (hA : PRA ⊢ oneCorrectSentence cA (Semiformula.lMap embedding (front ψ)))
-    (hC : PRA ⊢ oneCorrectSentence cC (Semiformula.lMap embedding (cdef ψ))) :
-    PRA ⊢ (Semiformula.lMap embedding (∀⁰* sigmaBody ψ Tg) 🡒 (∃⁰ theta cA cC Tt).univCl) := by
+    (hC : PRA ⊢ oneCorrectSentence cC (Semiformula.lMap embedding (cdef φ))) :
+    PRA ⊢ (Semiformula.lMap embedding (∀⁰* sigmaBody ψ φ Tg) 🡒 (∃⁰ theta cA cC Tt).univCl) := by
   apply Theory.Proof.complete_on_eq_models.{0,0}
   intro M _ _ _ hM
   letI : M↓[language] ⊧* PRA := hM
@@ -268,7 +268,7 @@ theorem PRA_goal (ψ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
   have hdm := models_of_provable hM hdom
   simp only [Semantics.Imp.models_imply]
   intro hσ
-  have hσ' : ∀ v : Fin (n + 2) → M, (sigmaBody ψ Tg).Eval v Empty.elim := by
+  have hσ' : ∀ v : Fin (n + 2) → M, (sigmaBody ψ φ Tg).Eval v Empty.elim := by
     intro v
     have h := models_iff.mp hσ
     rw [Semiformula.eval_lMap, PRAModelIOpenPairing.reduct_eq_standard] at h
@@ -277,12 +277,12 @@ theorem PRA_goal (ψ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
   intro f
   let e : Fin n → M := fun i => f ((i : ℕ) + 2)
   by_cases hf : (front ψ).Eval (f 0 :> f 1 :> e) Empty.elim
-  · obtain ⟨t, ht, z, hz⟩ := (eval_sigmaBody ψ Tg (f 0) (f 1) e).mp (hσ' _) hf
+  · obtain ⟨t, ht, z, hz⟩ := (eval_sigmaBody ψ φ Tg (f 0) (f 1) e).mp (hσ' _) hf
     have hte := eval_dominates Tg Tt hdm t e ht
-    obtain ⟨x', hx', w', hw', rfl, hxt, hb⟩ := (eval_cdef ψ z t e).mp hz
-    refine ⟨⟪x', w'⟫, (eval_theta ψ cA cC Tt hAm hCm _ f).mpr (Or.inr ?_)⟩
-    exact (eval_cdef ψ _ _ e).mpr ⟨x', hx', w', hw', rfl, le_trans hxt hte, hb⟩
-  · exact ⟨0, (eval_theta ψ cA cC Tt hAm hCm 0 f).mpr (Or.inl hf)⟩
+    obtain ⟨x', hx', w', hw', rfl, hxt, hb⟩ := (eval_cdef φ z t e).mp hz
+    refine ⟨⟪x', w'⟫, (eval_theta ψ φ cA cC Tt hAm hCm _ f).mpr (Or.inr ?_)⟩
+    exact (eval_cdef φ _ _ e).mpr ⟨x', hx', w', hw', rfl, le_trans hxt hte, hb⟩
+  · exact ⟨0, (eval_theta ψ φ cA cC Tt hAm hCm 0 f).mpr (Or.inl hf)⟩
 
 section transfer
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
@@ -296,20 +296,21 @@ local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.OR
 /-- **Witness-replacement transfer.** A replacement bound valid in every `𝗜𝚺₁`
 model, dominated by a candidate-PRA code, holds in every candidate-PRA model for
 every instance whose own witnesses are bounded. -/
-theorem transfer (ψ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n) (hψ : Hierarchy 𝚺 1 ψ)
+theorem transfer (ψ φ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n) (hψ : Hierarchy 𝚺 1 ψ)
+    (hφ : Hierarchy 𝚺 1 φ)
     (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin n → V) (x : V),
       ψ.Eval (x :> e) Empty.elim →
-        ∃ t, Tg.Eval (t :> e) Empty.elim ∧ ∃ x' ≤ t, ψ.Eval (x' :> e) Empty.elim)
+        ∃ t, Tg.Eval (t :> e) Empty.elim ∧ ∃ x' ≤ t, φ.Eval (x' :> e) Empty.elim)
     (hdom : PRA ⊢ dominates Tg Tt) (e : Fin n → M) (x w : M)
     (hb : (bnd ψ).Eval (Fin.snoc (x :> e) w) Empty.elim) :
-    ∃ x' ≤ Tt.val e Empty.elim, ψ.Eval (x' :> e) Empty.elim := by
+    ∃ x' ≤ Tt.val e Empty.elim, φ.Eval (x' :> e) Empty.elim := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
   obtain ⟨cA, -, -, hA⟩ := PRA_proves_boundedBooleanCharacteristic
     (Semiformula.lMap embedding (front ψ)) (ParsonsHierarchyMap.hierarchy (front_bounded ψ hψ))
   obtain ⟨cC, -, -, hC⟩ := PRA_proves_boundedBooleanCharacteristic
-    (Semiformula.lMap embedding (cdef ψ)) (ParsonsHierarchyMap.hierarchy (cdef_bounded ψ hψ))
-  have hG := PRAISigmaOneOpenComparison.comparison (∀⁰* sigmaBody ψ Tg) (isigma1_sigma ψ Tg hψ hI)
-    (theta cA cC Tt) (theta_open cA cC Tt) (PRA_goal ψ Tg Tt hdom cA cC hA hC)
+    (Semiformula.lMap embedding (cdef φ)) (ParsonsHierarchyMap.hierarchy (cdef_bounded φ hφ))
+  have hG := PRAISigmaOneOpenComparison.comparison (∀⁰* sigmaBody ψ φ Tg) (isigma1_sigma ψ φ Tg hφ hI)
+    (theta cA cC Tt) (theta_open cA cC Tt) (PRA_goal ψ φ Tg Tt hdom cA cC hA hC)
   have hGm := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hG
   have hAm := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hA
   have hCm := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hC
@@ -320,10 +321,10 @@ theorem transfer (ψ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n) (hψ : 
     | k + 2 => if h : k < n then e ⟨k, h⟩ else x
   have hfe : (fun i : Fin n => f ((i : ℕ) + 2)) = e := by funext i; simp [f, i.isLt]
   obtain ⟨z, hz⟩ := hGm f
-  rw [eval_theta ψ cA cC Tt hAm hCm z f, hfe] at hz
+  rw [eval_theta ψ φ cA cC Tt hAm hCm z f, hfe] at hz
   have hfr : (front ψ).Eval (f 0 :> f 1 :> e) Empty.elim := (eval_front ψ x w e).mpr hb
-  obtain ⟨x', -, w', -, -, hxT, hb'⟩ := (eval_cdef ψ z _ e).mp (hz.resolve_left (not_not_intro hfr))
-  exact ⟨x', hxT, eval_bnd_imp ψ (x' :> e) w' Empty.elim hb'⟩
+  obtain ⟨x', -, w', -, -, hxT, hb'⟩ := (eval_cdef φ z _ e).mp (hz.resolve_left (not_not_intro hfr))
+  exact ⟨x', hxT, eval_bnd_imp φ (x' :> e) w' Empty.elim hb'⟩
 
 /-! ## Polynomial bounds -/
 
@@ -396,7 +397,7 @@ theorem wb_exs_poly (ψ : ArithmeticSemisentence (n + 1)) (hψ : Hierarchy 𝚺 
     obtain ⟨x', hx', h'⟩ := hI V e x h
     exact ⟨P.val e Empty.elim, by simp [polyGraph, Semiformula.Operator.val,
       Semiformula.Operator.Eq.sentence_eq], x', hx', h'⟩
-  obtain ⟨x', hx', h'⟩ := transfer ψ (polyGraph P) (Semiterm.lMap embedding P) hψ hI'
+  obtain ⟨x', hx', h'⟩ := transfer ψ ψ (polyGraph P) (Semiterm.lMap embedding P) hψ hψ hI'
     (dominates_poly P) e x (B (x :> e)) (hb _ hx)
   exact ⟨x', by rwa [val_lMap_std] at hx', h'⟩
 

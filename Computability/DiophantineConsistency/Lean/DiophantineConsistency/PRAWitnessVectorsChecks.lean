@@ -1,0 +1,9 @@
+import DiophantineConsistency.PRAWitnessVectors
+/-! Axiom audit for fixpoint-graph and vector witness bounds. -/
+#print axioms DiophantineConsistency.PRAWitnessFixpointGraph.stage_bound_of_rank
+#print axioms DiophantineConsistency.PRAWitnessFixpointGraph.wb_fixpointDef
+#print axioms DiophantineConsistency.PRAWitnessVectors.nth_rankFinite
+#print axioms DiophantineConsistency.PRAWitnessVectors.wb_nth_core_sigma
+#print axioms DiophantineConsistency.PRAWitnessVectors.wb_nth_core_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessVectors.wb_nth_graph
+#print axioms DiophantineConsistency.PRAWitnessVectors.wb_nthDef
