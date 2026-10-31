@@ -17,6 +17,11 @@ endpoint `noZero ↔ ¬π` for Foundation's actual ZFC-refutation sentence `π`
 needs exactly one more input, `PRAStrictConReverse.BoundCertificate π`:
 candidate PRA proves `π → ∃ w, bnd π (w)`. Its literal 14-variable
 instantiation additionally needs the source-current IΣ₁ equivalence closure.
+For the related 87-operation equation, a [fixed historical project snapshot](reviews/ha87-isolated-full-author-pass/README.md)
+has now passed a fresh 729-module author build and final reauthentication.
+That run is supporting equation-side provenance, not a current-source closure,
+an independently fresh full replay, or a PRA refutation-bound proof; external
+package ancestry is inherited.
 
 `BoundCertificate π` is a statement that the displayed implication has a
 candidate-PRA proof. One way to establish it is to show suitable witness
