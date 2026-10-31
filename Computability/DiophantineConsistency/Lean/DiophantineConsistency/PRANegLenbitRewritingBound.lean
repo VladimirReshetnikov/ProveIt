@@ -20,15 +20,8 @@ theorem neg_lenbit_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 2 Empty n) (e :
   have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
   simp only [Semiformula.eval_rew] at h
   rw [hg,hf] at h
-  have hv : ![g 0,g 1] = g := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
-  have hs : Fin.snoc g (g 1+1) = ![g 0,g 1,g 1+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+  have hv : ![g 0,g 1] = g := by funext i; revert i; simp [Fin.forall_fin_succ]
+  have hs : Fin.snoc g (g 1+1) = ![g 0,g 1,g 1+1] := by funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
   have hb := neg_lenbit_bound (g 0) (g 1) (by simpa [hv] using h)
   have hn := PRABndRewriting.natural (∼lenbitDef.val) ω e (g 1+1)
   rw [hs] at hn
