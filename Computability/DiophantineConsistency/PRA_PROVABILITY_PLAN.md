@@ -6,6 +6,59 @@ primitive recursive arithmetic (PRA). The earlier request for an HA derivation
 also remains relevant. Existence of an object-theory proof is enough; a
 printed proof is not required.
 
+## Status summary (2026-10-30)
+
+Candidate PRA proves `noZero ↔ conB π` (`PRAStrictConComparison.comparison`)
+and `¬π → noZero` (`PRAStrictConForward.original_implies_noZero`) for every
+finite no-zero sentence with an IΣ₁ proof of `noZero ↔ ¬π`. The literal
+endpoint `noZero ↔ ¬π` for Foundation's actual ZFC-refutation sentence `π`
+needs exactly one more input, `PRAStrictConReverse.BoundCertificate π`:
+candidate PRA proves `π → ∃ w, bnd π (w)`. Its literal 14-variable
+instantiation additionally needs the source-current HA endpoint closure.
+
+`BoundCertificate π` is a single semantic statement about every
+candidate-PRA model, and it is now attacked compositionally:
+
+* [`PRAWitnessCalculus`](Lean/DiophantineConsistency/PRAWitnessCalculus.lean)
+  defines `WB M φ` (in `M`, `φ` implies `bnd φ` at a monotone bound) and
+  proves it closed under every constructor Foundation's `Σ₁` definitions
+  use; `wb_auto` applies the rules. Monotonicity is what lets one bound
+  serve a whole bounded universal.
+* [`PRAWitnessArithmetic`](Lean/DiophantineConsistency/PRAWitnessArithmetic.lean)
+  derives `WB` in both polarities for 48 definitions, with no explicit
+  majorant: pairing, division, the exponential stack, bits and sets, the HFS
+  sequence graphs, the derivation index graphs, the `qq*Def` constructors and
+  all ten rule graphs of `Derivation.blueprint`.
+* [`PRAHistoryTruncation`](Lean/DiophantineConsistency/PRAHistoryTruncation.lean)
+  truncates any fixpoint computation history to the indices `≤ k`, a history
+  below `2^(⟪k, 2^(k+1)⟫+1)`. It is uniform in the blueprint, so `WB` of a
+  blueprint's core gives `WB` of `limSeqDef` and of both polarities of
+  fixpoint membership (`wb_limSeqDef`, `wb_fixpoint_sigma`,
+  `wb_fixpoint_neg_pi`).
+
+What `BoundCertificate π` still needs, in dependency order:
+
+1. `WB` of the cores of the term and formula-recognition fixpoints
+   (`FormalizedTerm.blueprint`, `FormalizedFormula.blueprint` for `ℒₛₑₜ`),
+   which yields `isUTerm`, `isUFormula` and `isSemiterm` in both polarities.
+2. The formula recursions (`BV`, `neg`, `shift`, `free`, `substs`, and the
+   `setShift` image). Their `graph` uses `fixpointDef`, whose stage is a
+   further unbounded witness. Bounding it needs stage cumulativity of the
+   recursion core inside candidate PRA, hence Σ/Π agreement of that core,
+   which in turn rests on uniqueness of the term and formula histories.
+   Growth bounds `f(p) ≤ F(p)` are also needed where these values occur
+   negatively (`∃ np, negGraph np p ∧ np ∉ s` in `¬core.pi`).
+3. `WB` of ZFC's axiom recognizer `T.Δ₁ch`: equality and fixed axioms
+   (finite, so Σ₀) and the separation and replacement schema recognizers
+   (`SeparationDelta1`, `ReplacementDelta1`), which use the same recursions.
+4. `WB` of `Derivation.blueprint`'s core from 1–3 by `wb_auto`. Then
+   `wb_fixpoint_sigma` and the outer layers (`derivationOf`, `proof`,
+   `provable`: all automatic) give `WB π`, and `PRAWitnessCalculus.exists_bound`
+   gives `BoundCertificate π` through completeness.
+
+The detailed history below records how the individual bound and code modules
+were obtained; it predates the calculus.
+
 ## Current scope and open endpoints
 
 The local negative and positive square-root/length-bit existential bounds
