@@ -134,11 +134,8 @@ theorem three_le_formula {x : V} (hx : IsUFormula ℒₛₑₜ x) : 3 ≤ x := b
     have h : (2 : V) ≤ ⟪t, Y⟫ := le_trans ht (le_pair_left t Y)
     have h' : (2 : V) + 1 ≤ ⟪t, Y⟫ + 1 := add_le_add h le_rfl
     simpa only [show (2 : V) + 1 = 3 by norm_num] using h'
-  have atomic : ∀ t R v : V, 3 ≤ ⟪t, ⟪2, ⟪R, v⟫⟫⟫ + 1 := fun t R v => by
-    have h : (2 : V) ≤ ⟪t, ⟪2, ⟪R, v⟫⟫⟫ :=
-      le_trans (le_pair_left 2 ⟪R, v⟫) (le_pair_right t _)
-    have h' : (2 : V) + 1 ≤ ⟪t, ⟪2, ⟪R, v⟫⟫⟫ + 1 := add_le_add h le_rfl
-    simpa only [show (2 : V) + 1 = 3 by norm_num] using h'
+  have atomic : ∀ t R v : V, 3 ≤ ⟪t, ⟪2, ⟪R, v⟫⟫⟫ + 1 := fun t R v =>
+    le_trans (tagged 2 ⟪R, v⟫ le_rfl) (add_le_add (le_pair_right t _) le_rfl)
   rcases hx.case with ⟨k, R, v, hR, -, rfl⟩ | ⟨k, R, v, hR, -, rfl⟩ | rfl | rfl |
       ⟨p, q, -, -, rfl⟩ | ⟨p, q, -, -, rfl⟩ | ⟨p, -, rfl⟩ | ⟨p, -, rfl⟩
   · obtain ⟨rfl, -⟩ := isRel_set hR
