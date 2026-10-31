@@ -24,16 +24,9 @@ theorem seqS_rew_bound_at {n : ℕ} (ω : Rew ℒₒᵣ Empty 3 Empty n) (e : Fi
   simp only [Semiformula.eval_rew] at h
   rw [hg,hf] at h
   have hv : ![g 0,g 1,g 2] = g := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+    funext i; revert i; simp [Fin.forall_fin_succ]
   have hs : Fin.snoc g (g 1+g 2+2*g 0+1) = ![g 0,g 1,g 2,g 1+g 2+2*g 0+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+    funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
   have hw' : g 1+g 2+2*g 0+1 ≤ w := hw
   have hb := PRASeqSWitnessBound.seqS_bound (g 0) (g 1) (g 2) (by simpa [hv] using h)
   have hb' : (bnd Exponential.Seqₛ.def.val).Evalb (Fin.snoc g w) := by
@@ -55,12 +48,9 @@ theorem ppow2_rew_bound_at {n : ℕ} (ω : Rew ℒₒᵣ Empty 1 Empty n) (e : F
   simp only [Semiformula.eval_rew] at h
   rw [hg,hf] at h
   have hv : ![g 0] = g := by
-    funext i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) i
+    funext i; revert i; simp
   have hs : Fin.snoc g (2 * g 0+1) = ![g 0,2 * g 0+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+    funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
   have hw' : 2 * g 0+1 ≤ w := hw
   have hb := PRAPpow2WitnessBound.ppow2_bound (g 0) (by simpa [hv] using h)
   have hb' : (bnd ppow2Def.val).Evalb (Fin.snoc g w) := by
