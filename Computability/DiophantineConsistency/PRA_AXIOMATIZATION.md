@@ -1,0 +1,59 @@
+# The PRA presentation used in the Lean development
+
+The active target is existence of a proof in `PRATheory.PRA`, defined in
+[`PRATheory.lean`](Lean/DiophantineConsistency/PRATheory.lean). It is a
+classical first-order theory with equality, an expanded language of
+primitive-recursive functions, and induction for quantifier-free formulas.
+This replaced the earlier HA target.
+
+## Language
+
+For each finite arity, function symbols are finite construction codes. The
+constructors are zero, successor, projection, composition, and primitive
+recursion; distinct codes are distinct symbols even if they compute the same
+function on the natural numbers. The relations are equality and strict order.
+The definitions are in [`PRAFiniteFunctionCodes.lean`](Lean/DiophantineConsistency/PRAFiniteFunctionCodes.lean)
+and [`PRALanguage.lean`](Lean/DiophantineConsistency/PRALanguage.lean). Lean
+proves that every such code computes a primitive-recursive function on ℕ and
+every primitive-recursive ℕ-valued function of finite arity has a code.
+Addition, multiplication and one are particular codes, not extra independent
+function symbols.
+
+## Axioms
+
+All free variables in the displayed equations are universally closed. In
+addition to first-order equality axioms, the theory has:
+
+* For each arity, the zero code equals the nullary zero code; projection codes
+  return the corresponding argument. For a composition code, the function is
+  equal to its defining composition.
+* For each recursion code `h = prec(f,g)`, the equations
+  `h(0, x̄) = f(x̄)` and `h(S(n), x̄) = g(n, h(n,x̄), x̄)`.
+* `S(x) ≠ 0` and `S(x) = S(y) → x = y`.
+* `x < y ↔ ltBit(x,y) = 1`, where `ltBit` is the constructed
+  primitive-recursive code computing the nonzero test for `y − x`, with
+  truncated subtraction.
+* For every quantifier-free formula `φ(n, x̄)` in the **full expanded
+  language**, the universal closure of
+  `φ(0,x̄) → (∀ n, φ(n,x̄) → φ(S(n),x̄)) → ∀ n, φ(n,x̄)`.
+  Parameters `x̄` are allowed. Quantifier-free here means no quantifiers in
+  `φ`; bounded quantifiers written out as quantifiers are not themselves
+  quantifier-free.
+
+The union is exactly `core ∪ BasicAxiom` in `PRATheory.PRA`. In particular,
+full first-order induction and Σ₁ induction are not added as axioms. The
+proof system is classical; Lean's own metatheoretic principles used to prove
+the existence of a derivation are not additional PRA axioms.
+
+## Scope of the comparison
+
+This is a natural candidate presentation of first-order PRA. The repository
+proves that the usual natural numbers satisfy its axioms, and proves many
+concrete translations and arithmetic consequences. A separate Lean theorem
+identifying this presentation with every standard presentation of PRA, or a
+general IΣ₁-to-PRA conservation theorem, is not currently claimed. See
+[PRA_PROVABILITY_PLAN.md](PRA_PROVABILITY_PLAN.md) for the exact proof target,
+the remaining witness-bound problem and the status of replaying dependencies.
+The intended result is a PRA derivation of the equivalence between no positive
+solution and the chosen formal `Con(ZFC)` sentence, not a PRA proof of either
+side on its own.
