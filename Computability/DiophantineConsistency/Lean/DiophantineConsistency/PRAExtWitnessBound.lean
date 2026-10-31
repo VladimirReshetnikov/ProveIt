@@ -23,21 +23,8 @@ theorem ext_bound (a b c : V) :
   simp [extDef, divDef, remDef, subDef, Semiformula.bexsLTSucc, Semiformula.bexsLT,
     FirstOrder.bexs, bnd, bnd_open, Rew.subst, Rew.q]
   rcases h with ⟨q,hq,⟨hq₁,hq₀⟩,r,hr,⟨hr₁,hr₀⟩,ht₁,ht₀⟩
-  have hs4 : Fin.snoc ![q,a,b,c] (c+1) = ![q,a,b,c,c+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
-  have hs5 : Fin.snoc ![r,q,a,b,c] (c+1) = ![r,q,a,b,c,c+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+  have hs4 : Fin.snoc ![q,a,b,c] (c+1) = ![q,a,b,c,c+1] := by simp
+  have hs5 : Fin.snoc ![r,q,a,b,c] (c+1) = ![r,q,a,b,c,c+1] := by simp
   refine ⟨q,lt_succ_iff_le.mpr hq,⟨?_,?_⟩,r,lt_succ_iff_le.mpr (le_trans hr hq),lt_succ_iff_le.mpr hr,⟨?_,?_⟩,?_,?_⟩
   · by_cases h : 0 < b
     · exact Or.inr (hq₁ h)
