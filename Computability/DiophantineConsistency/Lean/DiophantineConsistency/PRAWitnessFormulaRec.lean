@@ -124,9 +124,9 @@ structure ClauseBounds (M : Type) [Nonempty M] [Structure language M] [Structure
   all_pi : WB M (∼β.all.graphDelta.pi.val)
   exs_pi : WB M (∼β.exs.graphDelta.pi.val)
   allChanges_le : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (a b : V),
-    β.allChanges.val.Evalb ![a, b] → a ≤ b
+    β.allChanges.val.Evalb ![a, b] → a ≤ Exp.exp ((b + 4) * Exp.exp (2 * b + 4))
   exsChanges_le : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (a b : V),
-    β.exsChanges.val.Evalb ![a, b] → a ≤ b
+    β.exsChanges.val.Evalb ![a, b] → a ≤ Exp.exp ((b + 4) * Exp.exp (2 * b + 4))
 
 variable {β}
 
@@ -167,14 +167,24 @@ theorem wb_core_neg_pi (hβ : ClauseBounds β M) : WB M (∼(β.blueprint ℒₛ
   simp only [UformulaRec1.Blueprint.blueprint, HierarchySymbol.Semiformula.pi_mkDelta,
     HierarchySymbol.Semiformula.val_mkPi]
   wb_auto
-  · exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘#4’
-      (fun V _ _ e u h => ⟨u, by
-        have h' := h; simp at h'
-        simpa using hβ.allChanges_le V u (e 4) h'.1, h⟩) (by wb_auto)
-  · exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘#4’
-      (fun V _ _ e u h => ⟨u, by
-        have h' := h; simp at h'
-        simpa using hβ.exsChanges_le V u (e 4) h'.1, h⟩) (by wb_auto)
+  · refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
+      (PRAWitnessExpBounds.expGraph2 ‘#4 + 4’ ‘2 * #4 + 4’)
+      (PRAWitnessExpBounds.expBound2 ‘#4 + 4’ ‘2 * #4 + 4’)
+      (PRAWitnessExpBounds.dominates_expBound2 _ _) (PRAWitnessExpBounds.mono_expBound2 _ _)
+      (fun V _ _ e u h => ?_) (by wb_auto)
+    have h' := h; simp at h'
+    refine ⟨Exp.exp ((e 4 + 4) * Exp.exp (2 * e 4 + 4)), ?_, u, hβ.allChanges_le V u (e 4) h'.1, h⟩
+    rw [PRAWitnessExpBounds.eval_expGraph2]
+    exact ⟨_, by simpa using exponential_exp (2 * e 4 + 4), by simpa using exponential_exp _⟩
+  · refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
+      (PRAWitnessExpBounds.expGraph2 ‘#4 + 4’ ‘2 * #4 + 4’)
+      (PRAWitnessExpBounds.expBound2 ‘#4 + 4’ ‘2 * #4 + 4’)
+      (PRAWitnessExpBounds.dominates_expBound2 _ _) (PRAWitnessExpBounds.mono_expBound2 _ _)
+      (fun V _ _ e u h => ?_) (by wb_auto)
+    have h' := h; simp at h'
+    refine ⟨Exp.exp ((e 4 + 4) * Exp.exp (2 * e 4 + 4)), ?_, u, hβ.exsChanges_le V u (e 4) h'.1, h⟩
+    rw [PRAWitnessExpBounds.eval_expGraph2]
+    exact ⟨_, by simpa using exponential_exp (2 * e 4 + 4), by simpa using exponential_exp _⟩
 
 /-- A construction of the blueprint in every `𝗜𝚺₁` model. -/
 abbrev Constructions (β : UformulaRec1.Blueprint) :=
@@ -191,12 +201,54 @@ theorem wb_fixpoint (c : Constructions β)
     le_recRank (rankFinite (c V) (hc V)) _ recRank_succ_le (fun i => e i.succ) (e 0) s L hL hx
   exact ⟨_, by simpa using h.1, h.2⟩
 
-theorem wb_graph (c : Constructions β)
-    (hc : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], RecShape (c V)) (hβ : ClauseBounds β M) :
+/-- **`wb_fixpointDef` with an exponential stage bound** `2^(P · 2^Q)`. -/
+theorem wb_fixpointDef_exp {ar : ℕ} (φ : Fixpoint.Blueprint ar)
+    (hσ : WB M φ.core.sigma.val) (hπ : WB M (∼φ.core.pi.val)) (P Q : ArithmeticSemiterm Empty (ar + 1))
+    (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin (ar + 1) → V) (s L : V),
+      φ.limSeqDef.val.Evalb (L :> s :> fun i => e i.succ) → bitDef.val.Evalb ![e 0, L] →
+        ∃ L', φ.limSeqDef.val.Evalb
+            (L' :> Exp.exp (P.val e Empty.elim * Exp.exp (Q.val e Empty.elim)) :> fun i => e i.succ) ∧
+          bitDef.val.Evalb ![e 0, L']) :
+    WB M φ.fixpointDef.val := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  have hl := PRAHistoryTruncation.wb_limSeqDef φ hσ hπ
+  have hbit := wb_bitDef (M := M)
+  have hs : Hierarchy 𝚺 1 (PRAWitnessFixpointGraph.stageFormula φ) := by
+    simp [PRAWitnessFixpointGraph.stageFormula, φ.limSeqDef.sigma_prop]
+  have hWBs : WB M (PRAWitnessFixpointGraph.stageFormula φ) := by
+    simp only [PRAWitnessFixpointGraph.stageFormula]
+    refine wb_exs (fun e => PRAHistoryTruncation.histBound (e 0))
+      (fun e e' h => PRAHistoryTruncation.histBound_mono (h 0)) ?_ (by wb_auto)
+    rintro e ⟨L, hL⟩
+    have hlim : φ.limSeqDef.val.Evalb (L :> e 0 :> fun i => e i.succ.succ) := by
+      have h := hL
+      simp [Semiformula.Operator.val, Matrix.comp_vecCons'', PRAHistoryTruncation.val_comp_bvar] at h
+      exact h.1
+    exact ⟨L, le_of_lt (show L < PRAHistoryTruncation.histBound (e 0) from
+      PRAHistoryTruncation.limSeq_value_lt φ _ hlim), hL⟩
+  rw [PRAWitnessFixpointGraph.fixpointDef_eq]
+  refine PRAWitnessTransfer.wb_exs_bound (PRAWitnessFixpointGraph.stageFormula φ) hs
+    (PRAWitnessExpBounds.expGraph2 P Q) (PRAWitnessExpBounds.expBound2 P Q)
+    (PRAWitnessExpBounds.dominates_expBound2 _ _) (PRAWitnessExpBounds.mono_expBound2 _ _) ?_ hWBs
+  intro V _ _ e s h
+  obtain ⟨L, hL, hx⟩ : ∃ L, φ.limSeqDef.val.Evalb (L :> s :> fun i => e i.succ) ∧
+      bitDef.val.Evalb ![e 0, L] := by
+    simpa [PRAWitnessFixpointGraph.stageFormula, Semiformula.Operator.val, operator_mem_def,
+      Matrix.comp_vecCons'', PRAHistoryTruncation.val_comp_bvar] using h
+  obtain ⟨L', hL', hx'⟩ := hI V e s L hL hx
+  refine ⟨Exp.exp (P.val e Empty.elim * Exp.exp (Q.val e Empty.elim)), ?_, _, le_rfl, ?_⟩
+  · rw [PRAWitnessExpBounds.eval_expGraph2]
+    exact ⟨_, exponential_exp _, exponential_exp _⟩
+  · have hx'' : e 0 ∈ L' := by simpa [Semiformula.Operator.val, operator_mem_def] using hx'
+    simpa [PRAWitnessFixpointGraph.stageFormula, Semiformula.Operator.val, operator_mem_def,
+      Matrix.comp_vecCons'', PRAHistoryTruncation.val_comp_bvar] using ⟨L', hL', hx''⟩
+
+theorem wb_graph_of_fixpoint (hfix : WB M (β.blueprint ℒₛₑₜ).fixpointDef.val) :
     WB M (β.graph ℒₛₑₜ).val := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_fixpoint c hc hβ; have := wb_pair₃Def (M := M)
+  have := hfix; have := wb_pair₃Def (M := M)
   simp only [UformulaRec1.Blueprint.graph, HierarchySymbol.Semiformula.val_mkSigma]
   exact PRAWitnessTransfer.wb_exs_poly _ (by simp)
     ‘(#0 + (#1 + #2 + 1) * (#1 + #2 + 1) + 1) * (#0 + (#1 + #2 + 1) * (#1 + #2 + 1) + 1)’
@@ -205,14 +257,24 @@ theorem wb_graph (c : Constructions β)
       rw [h'.1]
       simpa using pair₃_le_sq (le_refl (e 0)) (le_refl (e 1)) (le_refl (e 2)), h⟩) (by wb_auto)
 
-theorem wb_result (c : Constructions β)
-    (hc : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], RecShape (c V)) (hβ : ClauseBounds β M) :
+theorem wb_result_of_fixpoint (hfix : WB M (β.blueprint ℒₛₑₜ).fixpointDef.val) :
     WB M (β.result ℒₛₑₜ).val := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_graph c hc hβ; have := wb_isUFormula_sigma (M := M); have := wb_isUFormula_neg_pi (M := M)
+  have := wb_graph_of_fixpoint hfix; have := wb_isUFormula_sigma (M := M)
+  have := wb_isUFormula_neg_pi (M := M)
   simp only [UformulaRec1.Blueprint.result, HierarchySymbol.Semiformula.val_mkSigma]
   wb_auto
+
+theorem wb_graph (c : Constructions β)
+    (hc : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], RecShape (c V)) (hβ : ClauseBounds β M) :
+    WB M (β.graph ℒₛₑₜ).val :=
+  wb_graph_of_fixpoint (wb_fixpoint c hc hβ)
+
+theorem wb_result (c : Constructions β)
+    (hc : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁], RecShape (c V)) (hβ : ClauseBounds β M) :
+    WB M (β.result ℒₛₑₜ).val :=
+  wb_result_of_fixpoint (wb_fixpoint c hc hβ)
 
 end models
 end DiophantineConsistency.PRAWitnessFormulaRec

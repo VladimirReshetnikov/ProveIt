@@ -53,3 +53,10 @@ import DiophantineConsistency.PRAWitnessCodeGrowth
 #print axioms DiophantineConsistency.PRAWitnessCodeGrowth.mem_of_stage_lt
 #print axioms DiophantineConsistency.PRAWitnessCodeGrowth.subst_stage
 #print axioms DiophantineConsistency.PRAWitnessCodeGrowth.subst_fixpoint_stage
+#print axioms DiophantineConsistency.PRAWitnessCodeGrowth.termSubstVec_le_entries2
+#print axioms DiophantineConsistency.PRAWitnessCodeGrowth.subst_shift_le
+#print axioms DiophantineConsistency.PRAWitnessCodeGrowth.singleton_entries
+#print axioms DiophantineConsistency.PRAWitnessCodeGrowth.free_le
+#print axioms DiophantineConsistency.PRAWitnessCodeGrowth.substs1_le
+#print axioms DiophantineConsistency.PRAWitnessCodeGrowth.exp_six
+#print axioms DiophantineConsistency.PRAWitnessCodeGrowth.setShift_le

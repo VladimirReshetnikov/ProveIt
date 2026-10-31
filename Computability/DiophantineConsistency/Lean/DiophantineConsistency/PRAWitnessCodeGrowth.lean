@@ -595,4 +595,161 @@ theorem subst_fixpoint_stage {x s : V} (hx : x ∈ substFix.limSeq ![] s) :
         rw [zero_add]; exact add_le_add (add_le_add (mul_le_mul' le_rfl hw) (mul_le_mul' le_rfl hp')) le_rfl
     _ = 10 * ⟪w, p, subst ℒₛₑₜ w p⟫ + 12 := by ring
 
+/-! ### `free`, `substs1` and `setShift` -/
+
+theorem termSubstVec_le_entries2 {k w v E F : V} (hw : ∀ j < len w, w.[j] ≤ E)
+    (hv : IsUTermVec ℒₛₑₜ k v) (hF : ∀ i < k, v.[i] ≤ F) :
+    termSubstVec ℒₛₑₜ k w v ≤ repeatVec (E + F) k := by
+  have hl := len_termSubstVec (w := w) hv
+  have h := len_repeatVec_of_nth_le (v := termSubstVec ℒₛₑₜ k w v) (m := E + F)
+    (fun i hi => by
+      rw [hl] at hi
+      rw [nth_termSubstVec hv hi]
+      exact le_trans (termSubst_entry_le hw) (add_le_add le_rfl (hF i hi)))
+  rwa [hl] at h
+
+/-- **Substitution after shift**, bounded through the unshifted formula. -/
+theorem subst_shift_le : ∀ p : V, IsUFormula ℒₛₑₜ p → ∀ w X D : V, (∀ j < len w, w.[j] ≤ tau X D) →
+    subst ℒₛₑₜ w (shift ℒₛₑₜ p) ≤ tau (X + ((p + 2) * (p + 2) + 1) + 8) (D + 4 * p + 6) := by
+  refine IsUFormula.ISigma1.pi1_succ_induction (by definability) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
+  · intro k R v hR hv w X D hw
+    rw [shift_rel hR hv, substs_rel hR hv.termShiftVec]
+    set P := ^rel k R v
+    have hkP : k ≤ P := (arity_lt_rel k R v).le
+    have hRP : R ≤ P := (r_lt_rel k R v).le
+    have hvP : v ≤ P := (v_lt_rel k R v).le
+    have hF : ∀ i < k, (termShiftVec ℒₛₑₜ k v).[i] ≤ (P + 2) * (P + 2) + 1 := fun i hi => by
+      rw [nth_termShiftVec hv hi]; exact le_trans (termShift_le _) (sq2_mono (le_trans (nth_le v i) hvP))
+    have hm : tau X D + ((P + 2) * (P + 2) + 1) ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P) :=
+      le_trans (tau_add_le X D _) (tau_mono le_self_add le_self_add)
+    have hv' : termSubstVec ℒₛₑₜ k w (termShiftVec ℒₛₑₜ k v) ≤
+        tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
+      le_trans (termSubstVec_le_entries2 hw hv.termShiftVec hF)
+        (le_trans (repeatVec_mono_left hm k) (repeatVec_le_tau le_rfl k))
+    have hY {c : V} (h : c ≤ P) : c ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
+      le_tau_of _ c _ (le_trans (le_trans (le_trans h (le_sq2 P)) le_add_self) le_self_add)
+    have h := code4_le_tau (le_tau_of' 0 hv') (hY hkP) (hY hRP) hv'
+    exact le_trans (by simpa [qqRel] using h) (tau_mono le_rfl (sdepth_leaf hkP D))
+  · intro k R v hR hv w X D hw
+    rw [shift_nrel hR hv, substs_nrel hR hv.termShiftVec]
+    set P := ^nrel k R v
+    have hkP : k ≤ P := (arity_lt_nrel k R v).le
+    have hRP : R ≤ P := (r_lt_nrel k R v).le
+    have hvP : v ≤ P := (v_lt_nrel k R v).le
+    have hF : ∀ i < k, (termShiftVec ℒₛₑₜ k v).[i] ≤ (P + 2) * (P + 2) + 1 := fun i hi => by
+      rw [nth_termShiftVec hv hi]; exact le_trans (termShift_le _) (sq2_mono (le_trans (nth_le v i) hvP))
+    have hm : tau X D + ((P + 2) * (P + 2) + 1) ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P) :=
+      le_trans (tau_add_le X D _) (tau_mono le_self_add le_self_add)
+    have hv' : termSubstVec ℒₛₑₜ k w (termShiftVec ℒₛₑₜ k v) ≤
+        tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
+      le_trans (termSubstVec_le_entries2 hw hv.termShiftVec hF)
+        (le_trans (repeatVec_mono_left hm k) (repeatVec_le_tau le_rfl k))
+    have hY {c : V} (h : c ≤ P) : c ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
+      le_tau_of _ c _ (le_trans (le_trans (le_trans h (le_sq2 P)) le_add_self) le_self_add)
+    have h := code4_le_tau (le_tau_of' 1 hv') (hY hkP) (hY hRP) hv'
+    exact le_trans (by simpa [qqNRel] using h) (tau_mono le_rfl (sdepth_leaf hkP D))
+  · intro w X D hw
+    rw [shift_verum, substs_verum]
+    exact le_trans (le_trans (le_trans (le_sq2 _) le_add_self) le_self_add) (le_tau _ _)
+  · intro w X D hw
+    rw [shift_falsum, substs_falsum]
+    exact le_trans (le_trans (le_trans (le_sq2 _) le_add_self) le_self_add) (le_tau _ _)
+  · intro p q hp hq ihp ihq w X D hw
+    rw [shift_and hp hq, substs_and hp.shift hq.shift]
+    set P := p ^⋏ q
+    have hp2 := add_two_le_and_left p q; have hq2 := add_two_le_and_right p q
+    have hnp : subst ℒₛₑₜ w (shift ℒₛₑₜ p) ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 4 * P + 2) :=
+      le_trans (ihp w X D hw) (tau_mono (add_le_add (add_le_add le_rfl
+        (sq2_mono (le_trans le_self_add hp2))) le_rfl) (sdepth_bin hp2 D))
+    have hnq : subst ℒₛₑₜ w (shift ℒₛₑₜ q) ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 4 * P + 2) :=
+      le_trans (ihq w X D hw) (tau_mono (add_le_add (add_le_add le_rfl
+        (sq2_mono (le_trans le_self_add hq2))) le_rfl) (sdepth_bin hq2 D))
+    have h := code3_le_tau (le_tau_of' 4 hnp) hnp hnq
+    exact le_trans (by simpa [qqAnd] using h) (tau_mono le_rfl (le_of_eq (by ring)))
+  · intro p q hp hq ihp ihq w X D hw
+    rw [shift_or hp hq, substs_or hp.shift hq.shift]
+    set P := p ^⋎ q
+    have hp2 := add_two_le_or_left p q; have hq2 := add_two_le_or_right p q
+    have hnp : subst ℒₛₑₜ w (shift ℒₛₑₜ p) ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 4 * P + 2) :=
+      le_trans (ihp w X D hw) (tau_mono (add_le_add (add_le_add le_rfl
+        (sq2_mono (le_trans le_self_add hp2))) le_rfl) (sdepth_bin hp2 D))
+    have hnq : subst ℒₛₑₜ w (shift ℒₛₑₜ q) ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 4 * P + 2) :=
+      le_trans (ihq w X D hw) (tau_mono (add_le_add (add_le_add le_rfl
+        (sq2_mono (le_trans le_self_add hq2))) le_rfl) (sdepth_bin hq2 D))
+    have h := code3_le_tau (le_tau_of' 5 hnp) hnp hnq
+    exact le_trans (by simpa [qqOr] using h) (tau_mono le_rfl (le_of_eq (by ring)))
+  · intro p hp ihp w X D hw
+    rw [shift_all hp, substs_all hp.shift]
+    set P := ^∀ p
+    have hp2 := add_two_le_all p
+    have hnp : subst ℒₛₑₜ (qVec ℒₛₑₜ w) (shift ℒₛₑₜ p) ≤
+        tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 4 * P + 4) :=
+      le_trans (ihp (qVec ℒₛₑₜ w) X (D + 2) (fun j _ => qVec_entries hw j))
+        (tau_mono (add_le_add (add_le_add le_rfl
+          (sq2_mono (le_trans le_self_add hp2))) le_rfl) (sdepth_all hp2 D))
+    have h := code2_le_tau (le_tau_of' 6 hnp) hnp
+    exact le_trans (by simpa [qqAll] using h) (tau_mono le_rfl (le_of_eq (by ring)))
+  · intro p hp ihp w X D hw
+    rw [shift_exs hp, substs_ex hp.shift]
+    set P := ^∃ p
+    have hp2 := add_two_le_exs p
+    have hnp : subst ℒₛₑₜ (qVec ℒₛₑₜ w) (shift ℒₛₑₜ p) ≤
+        tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 4 * P + 4) :=
+      le_trans (ihp (qVec ℒₛₑₜ w) X (D + 2) (fun j _ => qVec_entries hw j))
+        (tau_mono (add_le_add (add_le_add le_rfl
+          (sq2_mono (le_trans le_self_add hp2))) le_rfl) (sdepth_all hp2 D))
+    have h := code2_le_tau (le_tau_of' 7 hnp) hnp
+    exact le_trans (by simpa [qqExs] using h) (tau_mono le_rfl (le_of_eq (by ring)))
+
+theorem singleton_entries {t E : V} (ht : t ≤ E) : ∀ j < len (?[t] : V), (?[t] : V).[j] ≤ E := by
+  intro j _
+  rcases zero_or_succ j with rfl | ⟨i, rfl⟩
+  · simpa using ht
+  · simp
+
+/-- **`free` is doubly exponentially bounded.** -/
+theorem free_le (p : V) : free ℒₛₑₜ p ≤ tau (0 + ((p + 2) * (p + 2) + 1) + 8) (0 + 4 * p + 6) := by
+  unfold free substs1
+  by_cases hp : IsUFormula ℒₛₑₜ p
+  · refine subst_shift_le p hp _ 0 0 (singleton_entries ?_)
+    exact le_trans (by simp [qqFvar, pair]; norm_num) (four_le_tau 0 0)
+  · rw [shift_not_uformula hp, substs_not_uformula (by simp)]; simp
+
+/-- **`substs1` is doubly exponentially bounded.** -/
+theorem substs1_le (t p : V) : substs1 ℒₛₑₜ t p ≤ tau (t + p + 8) (0 + 4 * p + 6) := by
+  unfold substs1
+  by_cases hp : IsUFormula ℒₛₑₜ p
+  · exact subst_le p hp _ t 0 (singleton_entries (le_tau t 0))
+  · rw [substs_not_uformula hp]; simp
+
+theorem exp_six : Exp.exp (6 : V) = 2 * 2 * (2 * 2) * (2 * 2) := by
+  rw [show (6 : V) = 2 + 2 + 2 by norm_num, exp_add, exp_add, exp_two_eq]
+
+/-- **`setShift` is doubly exponentially bounded**: the members of `s` are
+logarithmically small, `2^x ≤ s`. -/
+theorem setShift_le (s : V) :
+    setShift ℒₛₑₜ s ≤ Exp.exp (Exp.exp (((s + 2) * (s + 2) + 1 + 8 + 4) * (s * s * 64) + 1)) := by
+  set K := ((s + 2) * (s + 2) + 1 + 8 + 4) * (s * s * 64)
+  have hel : ∀ y ∈ setShift ℒₛₑₜ s, y < Exp.exp K + 1 := by
+    intro y hy
+    obtain ⟨x, hx, rfl⟩ := mem_setShift_iff.mp hy
+    refine lt_succ_iff_le.mpr ?_
+    by_cases hxf : IsUFormula ℒₛₑₜ x
+    · refine le_trans (shift_le x hxf) (exp_monotone_le.mpr ?_)
+      have hxs : x ≤ s := le_of_lt (lt_of_mem hx)
+      have hex : Exp.exp x ≤ s := exp_le_of_mem hx
+      have h1 : (x + 2) * (x + 2) + 1 + 8 + 4 ≤ (s + 2) * (s + 2) + 1 + 8 + 4 :=
+        add_le_add (add_le_add (sq2_mono hxs) le_rfl) le_rfl
+      have h2 : Exp.exp (2 * x + 6) ≤ s * s * 64 := by
+        rw [show 2 * x + 6 = x + x + 6 by ring, exp_add, exp_add, exp_six]
+        have : (2 : V) * 2 * (2 * 2) * (2 * 2) = 64 := by norm_num
+        rw [this]; exact mul_le_mul' (mul_le_mul' hex hex) le_rfl
+      exact mul_le_mul' h1 h2
+    · rw [shift_not_uformula hxf]; simp
+  have h := lt_exp_iff.mpr hel
+  refine le_trans (le_of_lt h) (exp_monotone_le.mpr ?_)
+  have h1 : (1 : V) ≤ Exp.exp K := pos_iff_one_le.mp (exp_pos K)
+  calc Exp.exp K + 1 ≤ Exp.exp K + Exp.exp K := add_le_add le_rfl h1
+    _ = Exp.exp (K + 1) := by rw [exp_succ]; ring
+
 end DiophantineConsistency.PRAWitnessCodeGrowth
