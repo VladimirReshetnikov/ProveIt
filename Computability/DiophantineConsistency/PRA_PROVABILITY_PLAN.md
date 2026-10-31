@@ -54,7 +54,10 @@ merged worktree before their proofs are treated as current-source evidence:
    polarities of the term and formula recognition fixpoints.
 2. Formula-recursion and growth-bound modules include `BV`, `neg`, `shift`,
    `free` and `substs`; their precise availability for each derivation-rule
-   occurrence, including the `setShift` image, is being checked.
+   occurrence is being checked. A separately replayed conditional
+   [`setShiftGraph` bound](reviews/pra-setshift-graph-provisional-replay/README.md)
+   uses a witness bound for the actual `shiftGraph` as a premise; its parent
+   source/object correspondence and external ancestry remain unauthenticated.
 3. `PRAWitnessZFCAxioms.goodCh_zfc` states bounds for both polarities of the
    actual ZFC axiom recognizer, including separation and replacement.
 
