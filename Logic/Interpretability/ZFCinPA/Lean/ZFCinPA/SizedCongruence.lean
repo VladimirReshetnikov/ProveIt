@@ -38,20 +38,13 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 /-! ## Closed terms and the quantifier identity -/
 
-theorem closed_fvar {t : V} (ht : IsSemiterm ℒₛₑₜ 0 t) : ∃ x, t = ^&x :=
-  SetRelativization.isTerm_eq_fvar ht
-
 theorem closed_isVar {t : V} (ht : IsSemiterm ℒₛₑₜ 0 t) : IsVarTerm t := by
-  obtain ⟨x, rfl⟩ := closed_fvar ht
+  obtain ⟨x, rfl⟩ := SetRelativization.isTerm_eq_fvar ht
   exact ⟨x, by simp [qqFvar, lt_succ_iff_le, le_pair_right], Or.inr rfl⟩
 
 theorem termSubst_closed {w t : V} (ht : IsSemiterm ℒₛₑₜ 0 t) : termSubst ℒₛₑₜ w t = t := by
-  obtain ⟨x, rfl⟩ := closed_fvar ht
+  obtain ⟨x, rfl⟩ := SetRelativization.isTerm_eq_fvar ht
   simp
-
-theorem termSubst_closed_semiterm {n w t : V} (hw : IsSemitermVec ℒₛₑₜ n 0 w)
-    (ht : IsSemiterm ℒₛₑₜ n t) : IsSemiterm ℒₛₑₜ 0 (termSubst ℒₛₑₜ w t) :=
-  hw.termSubst ht
 
 /-- `^&0 ∷ shift w`, the substitution vector under one more binder. -/
 def qFree (n w : V) : V := ^&0 ∷ termShiftVec ℒₛₑₜ n w
@@ -515,8 +508,7 @@ private theorem atom_subst {A : V} (hA : AtomOK A) {n w₁ w₂ E c v R t₁ t�
       (insert (^rel 2 R (termSubst ℒₛₑₜ w₂ t₁ ∷ termSubst ℒₛₑₜ w₂ t₂ ∷ 0)) E)) (A + 10 * (v + c)) := by
   obtain ⟨hw₁, hw₂, hc, hb₁, hb₂, hE, hEb, hP⟩ := inp
   exact hA R _ _ _ _ E (v + c) hR (le_trans hc le_add_self)
-    (termSubst_closed_semiterm hw₁ ht₁) (termSubst_closed_semiterm hw₁ ht₂)
-    (termSubst_closed_semiterm hw₂ ht₁) (termSubst_closed_semiterm hw₂ ht₂)
+    (hw₁.termSubst ht₁) (hw₁.termSubst ht₂) (hw₂.termSubst ht₁) (hw₂.termSubst ht₂)
     (termSubst_var_le hw₁.lh hb₁ ht₁.isUTerm hl₁)
     (termSubst_var_le hw₁.lh hb₁ ht₂.isUTerm hl₂)
     (termSubst_var_le hw₂.lh hb₂ ht₁.isUTerm hl₁)

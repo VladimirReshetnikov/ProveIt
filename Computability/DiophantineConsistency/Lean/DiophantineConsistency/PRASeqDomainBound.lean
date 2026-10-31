@@ -43,20 +43,14 @@ theorem seq_bound_of_domain (s w : V)
   have hb := PRADomainWitnessBound.domain_bound_explicit d s hdomEval
   have hbound : PRADomainWitnessBound.domainMajorant d s ≤ w := le_trans (domainMajorant_mono_left d (2*s) s hd) hdom
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  have hs : Fin.snoc ![d,s] (PRADomainWitnessBound.domainMajorant d s) = ![d,s,PRADomainWitnessBound.domainMajorant d s] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![d,s] (PRADomainWitnessBound.domainMajorant d s) = ![d,s,PRADomainWitnessBound.domainMajorant d s] := by simp
   have hm := eval_bnd_mono domainDef.val ![d,s] (Empty.elim : Empty → V) hbound (by rw [hs]; exact hb)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#2]
   have hn := PRABndRewriting.natural domainDef.val ω ![d,l,s] w
   have hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![d,s] := by
     funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs'' : Fin.snoc ![d,s] w = ![d,s,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs' : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by simp
+  have hs'' : Fin.snoc ![d,s] w = ![d,s,w] := by simp
   rw [hv,hs',hs''] at hn
   rw [hs''] at hm
   have heq : PRASeqDefWitnessBound.domainInside = ω ▹ domainDef.val := by simp [PRASeqDefWitnessBound.domainInside, ω]

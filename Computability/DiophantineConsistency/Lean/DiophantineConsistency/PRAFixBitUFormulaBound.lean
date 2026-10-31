@@ -26,11 +26,7 @@ theorem body_bound (d s w : V) (hw : PRABitFullWitnessBound.bitMajorant s ≤ w)
   · exact hlim
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb := PRABitFullWitnessBound.bit_bound d s hbit
-    have hs0 : Fin.snoc ![d,s] (PRABitFullWitnessBound.bitMajorant s) = ![d,s,PRABitFullWitnessBound.bitMajorant s] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs0 : Fin.snoc ![d,s] (PRABitFullWitnessBound.bitMajorant s) = ![d,s,PRABitFullWitnessBound.bitMajorant s] := by simp
     have hb' := eval_bnd_mono bitDef.val ![d,s] (Empty.elim : Empty → V) hw (by rw [hs0]; exact hb)
     let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#1,#0]
     have hn := PRABndRewriting.natural bitDef.val ω ![s,d] w
@@ -38,11 +34,7 @@ theorem body_bound (d s w : V) (hw : PRABitFullWitnessBound.bitMajorant s ≤ w)
       funext j
       refine Fin.cases rfl (fun k => ?_) j
       exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs : Fin.snoc ![s,d] w = ![s,d,w] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![s,d] w = ![s,d,w] := by simp
     rw [hv,hs] at hn
     simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hn.mpr hb'
 theorem uformula_bound_of_witness (d s w : V) (hs : s < w)

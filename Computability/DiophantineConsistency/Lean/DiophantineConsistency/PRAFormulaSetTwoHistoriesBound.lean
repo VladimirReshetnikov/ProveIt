@@ -19,17 +19,8 @@ theorem inline_bv_bound (p w : V) (h : (bnd (bvGraph L).val).Evalb ![0,p,w]) :
     funext j
     refine Fin.cases rfl (fun k => ?_) j
     exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![0,0,p] w = ![0,0,p,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![0,p] w = ![0,p,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![0,0,p] w = ![0,0,p,w] := by simp
+  have hs' : Fin.snoc ![0,p] w = ![0,p,w] := by simp
   rw [hv,hs,hs'] at hn
   have heq : PRASemiFormulaSigmaBound.bvInside (L := L) = ω ▹ (bvGraph L).val := by
     simp [PRASemiFormulaSigmaBound.bvInside, ω]

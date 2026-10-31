@@ -37,11 +37,7 @@ theorem isFormulaSet_bound_of_core (s w : V)
         simpa [Semiformula.Operator.val, operator_mem_def] using hbit
       letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
       have hb := PRANegBitFullWitnessBound.negBit_bound p s hf
-      have hs0 : Fin.snoc ![p,s] (PRANegBitFullWitnessBound.negBitMajorant s) = ![p,s,PRANegBitFullWitnessBound.negBitMajorant s] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs0 : Fin.snoc ![p,s] (PRANegBitFullWitnessBound.negBitMajorant s) = ![p,s,PRANegBitFullWitnessBound.negBitMajorant s] := by simp
       have hb' := eval_bnd_mono (∼bitDef.val) ![p,s] (Empty.elim : Empty → V) hneg (by rw [hs0]; exact hb)
       let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#0,#1]
       have hn := PRABndRewriting.natural (∼bitDef.val) ω ![p,s] w
@@ -49,17 +45,12 @@ theorem isFormulaSet_bound_of_core (s w : V)
         funext j
         refine Fin.cases rfl (fun k => ?_) j
         exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hs : Fin.snoc ![p,s] w = ![p,s,w] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      have hs : Fin.snoc ![p,s] w = ![p,s,w] := by simp
       rw [hv,hs] at hn
       rw [hs] at hb'
       have hh := hn.mpr hb'
-      have heq : (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) := by
-        exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val
-      rw [heq] at hh
+      rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
+        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hh
       simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
     · right; right
       have hh := hcore p hlt hform

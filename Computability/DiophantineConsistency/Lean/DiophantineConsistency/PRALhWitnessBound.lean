@@ -14,11 +14,8 @@ theorem bnd_rew1 (φ : ArithmeticSemisentence 1) (ω : Rew ℒₒᵣ Empty 1 Emp
  (l s w a : V) (hv : (fun j => (ω #j).val ![l,s] Empty.elim) = ![a])
  (h : (bnd φ).Evalb ![a,w]) : (bnd (ω ▹ φ)).Evalb ![l,s,w] := by
   have hn := PRABndRewriting.natural φ ω ![l,s] w
-  have hs : Fin.snoc ![l,s] w = ![l,s,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![a] w = ![a,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![l,s] w = ![l,s,w] := by simp
+  have hs' : Fin.snoc ![a] w = ![a,w] := by simp
   rw [hv,hs,hs'] at hn
   exact hn.mpr h
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻] in
@@ -26,12 +23,8 @@ theorem bnd_rew2 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2 Emp
  (d l s w a b : V) (hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![a,b])
  (h : (bnd φ).Evalb ![a,b,w]) : (bnd (ω ▹ φ)).Evalb ![d,l,s,w] := by
   have hn := PRABndRewriting.natural φ ω ![d,l,s] w
-  have hs : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by simp
+  have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
   rw [hv,hs,hs'] at hn
   exact hn.mpr h
  theorem lh_bound (l s w : V) (hsize : 2*s+1 ≤ w)
@@ -45,22 +38,16 @@ theorem bnd_rew2 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2 Emp
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
   have lift1 (φ : ArithmeticSemisentence 1) (a q : V) (hq : q ≤ w)
       (hb : (bnd φ).Evalb ![a,q]) : (bnd φ).Evalb ![a,w] := by
-    have hs : Fin.snoc ![a] q = ![a,q] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![a] q = ![a,q] := by simp
     have hh := eval_bnd_mono φ ![a] (Empty.elim : Empty → V) hq (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![a] w = ![a,w] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs' : Fin.snoc ![a] w = ![a,w] := by simp
     rw [hs'] at hh
     exact hh
   have lift2 (φ : ArithmeticSemisentence 2) (a b q : V) (hq : q ≤ w)
       (hb : (bnd φ).Evalb ![a,b,q]) : (bnd φ).Evalb ![a,b,w] := by
-    have hs : Fin.snoc ![a,b] q = ![a,b,q] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![a,b] q = ![a,b,q] := by simp
     have hh := eval_bnd_mono φ ![a,b] (Empty.elim : Empty → V) hq (by rw [hs]; exact hb)
-    have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
     rw [hs'] at hh
     exact hh
   constructor
@@ -73,9 +60,8 @@ theorem bnd_rew2 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2 Emp
       have hv : (fun j => (ω #j).val ![l,s] Empty.elim) = ![s] := by
         funext j; exact Fin.cases rfl (fun k => Fin.elim0 k) j
       have hh := bnd_rew1 (∼seqDef.val) ω l s w s hv hw
-      have heq : (ω ▹ (∼seqDef.val)) = ∼(ω ▹ seqDef.val) := by
-        exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) seqDef.val
-      rw [heq] at hh
+      rw [show (ω ▹ (∼seqDef.val)) = ∼(ω ▹ seqDef.val) from
+        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) seqDef.val] at hh
       exact hh
     · right
       simp [Semiformula.bexsLTSucc,Semiformula.bexsLT,FirstOrder.bexs,bnd,bnd_open]

@@ -38,11 +38,7 @@ theorem coreLeft_bound (d C fst w : V) (hw : d+1 ≤ w)
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
   have hle : fst ≤ d := fst_le fst d hfst
   have hb := PRAFstIdxWitnessBound.fstIdx_bnd_succ fst d hfst
-  have hs0 : Fin.snoc ![fst,d] (d+1) = ![fst,d,d+1] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs0 : Fin.snoc ![fst,d] (d+1) = ![fst,d,d+1] := by simp
   have hb' := eval_bnd_mono fstIdxDef.val ![fst,d] (Empty.elim : Empty → V) hw (by rw [hs0]; exact hb)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
   have hn := PRABndRewriting.natural fstIdxDef.val ω ![fst,d,C] w
@@ -50,12 +46,7 @@ theorem coreLeft_bound (d C fst w : V) (hw : d+1 ≤ w)
     funext j
     refine Fin.cases rfl (fun k => ?_) j
     exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![fst,d,C] w = ![fst,d,C,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![fst,d,C] w = ![fst,d,C,w] := by simp
   rw [hv,hs] at hn
   exact ⟨fst, lt_of_lt_of_le (lt_succ_iff_le.mpr hle) hw, hn.mpr hb', hset⟩
 theorem derivationCoreSigma_bound (d C fst w : V) (hw : d+1 ≤ w)

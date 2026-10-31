@@ -38,10 +38,13 @@ theorem reduct_eq_standard :
     exact eqRel ![x,y]
   · exact ⟨fun _ _ => Iff.rfl⟩
 
-theorem standardModelIOpen : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := by
-  have h := modelReductIOpen (M := M)
+theorem standardModelISigmaZero : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
+  have h := modelReductISigmaZero (M := M)
   rw [reduct_eq_standard] at h
   exact h
+
+theorem standardModelIOpen : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 :=
+  models_of_subtheory (U := 𝗜𝚺₀) standardModelISigmaZero
 /-- Foundation's pairing and both projections satisfy their full round trip
 in every candidate-PRA model, not just the standard naturals. -/
 theorem modelPairing (a b : M) :

@@ -13,31 +13,6 @@ open ArithmeticAdaptiveFactorThree2011 ArithmeticAdaptiveFirstDivisibility2011
 attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix CurrentMasks2011.beta
   CurrentMasks2011.lowPort CurrentMasks2011.highPort
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
-private theorem congruence_divides_difference {x y m : V} (hm : 0<m)
-    (hyx : y≤x) (h : x%m=y%m) : m∣x-y := by
-  apply mod_eq_zero_iff_dvd.mp
-  have he : x-y+y=x := tsub_add_cancel_of_le hyx
-  have hh : ((x-y)+y)%m=(0+y)%m := by
-    rw [he,zero_add]
-    exact h
-  have hc := mod_cancel hm hh
-  simpa only [zero_mod] using hc
-
-private theorem dvd_magnitude_of_mod {m x y : V} (hm : 0<m) (h : x%m=y%m) :
-    m∣magnitude (x,y) := by
-  rcases le_total y x with hle | hle
-  · have he : x=y+(x-y) := by rw [add_comm,tsub_add_cancel_of_le hle]
-    have hg : magnitude (x,y)=x-y := magnitude_of_add he
-    rw [hg]
-    exact congruence_divides_difference hm hle h
-  · have he : y=x+(y-x) := by rw [add_comm,tsub_add_cancel_of_le hle]
-    have hg : magnitude (x,y)=y-x := by
-      have h' := magnitude_of_add he
-      change magnitude (swap (x,y))=y-x at h'
-      simpa only [magnitude_swap] using h'
-    rw [hg]
-    exact congruence_divides_difference hm hle h.symm
-
 def RankCongruence (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
   let q : V := 1+v 0*(p 0:V)
   let k : V := v 9+v 10

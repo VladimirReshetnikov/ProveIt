@@ -15,16 +15,6 @@ attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.radix Current
   CurrentMasks2011.lowPort CurrentMasks2011.highPort
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private theorem congruence_divides_difference {x y m : V} (hm : 0<m)
-    (hyx : y≤x) (h : x%m=y%m) : m∣x-y := by
-  apply mod_eq_zero_iff_dvd.mp
-  have he : x-y+y=x := tsub_add_cancel_of_le hyx
-  have hh : ((x-y)+y)%m=(0+y)%m := by
-    rw [he,zero_add]
-    exact h
-  have hc := mod_cancel hm hh
-  simpa only [zero_mod] using hc
-
 /-- The positive literal transport is a positive multiple of the actual b=q−1. -/
 def TransportQuotient (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
   let b : V := v 0*(p 0:V)

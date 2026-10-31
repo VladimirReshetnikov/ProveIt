@@ -60,15 +60,10 @@ theorem neg_ppow2_bound (i : V) : (∼ppow2Def.val).Evalb ![i] →
         let ω : Rew ℒₒᵣ Empty 1 Empty 2 := Rew.subst ![#0]
         have hf : (ω ▹ (∼sppow2Def.val)).Evalb ![m,i] := by simpa [ω, Semiformula.eval_substs] using hspp
         have hb := neg_sppow2_rew_bound_at ω ![m,i] (2*i+1) hmw hf
-        have hs : Fin.snoc ![m,i] (2*i+1) = ![m,i,2*i+1] := by
-          funext j
-          refine Fin.cases rfl (fun k => ?_) j
-          refine Fin.cases rfl (fun k => ?_) k
-          exact Fin.cases rfl (fun k => Fin.elim0 k) k
+        have hs : Fin.snoc ![m,i] (2*i+1) = ![m,i,2*i+1] := by simp
         rw [hs] at hb
-        have heq : (ω ▹ (∼sppow2Def.val)) = ∼(ω ▹ sppow2Def.val) := by
-          exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) sppow2Def.val
-        rw [heq] at hb
+        rw [show (ω ▹ (∼sppow2Def.val)) = ∼(ω ▹ sppow2Def.val) from
+          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) sppow2Def.val] at hb
         exact hb
       · right; right
         let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#1,#0]

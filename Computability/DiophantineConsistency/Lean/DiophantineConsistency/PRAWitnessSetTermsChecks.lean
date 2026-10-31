@@ -1,0 +1,10 @@
+import DiophantineConsistency.PRAWitnessSetTerms
+/-! Axiom audit for the witness bounds of ℒₛₑₜ terms. -/
+#print axioms DiophantineConsistency.PRAWitnessSetTerms.not_isFunc
+#print axioms DiophantineConsistency.PRAWitnessSetTerms.termRec_set_rankFinite
+#print axioms DiophantineConsistency.PRAWitnessSetTerms.wb_uterm_core_sigma
+#print axioms DiophantineConsistency.PRAWitnessSetTerms.wb_uterm_core_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessSetTerms.wb_isUTerm_sigma
+#print axioms DiophantineConsistency.PRAWitnessSetTerms.wb_isUTerm_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessSetTerms.wb_isUTermVec_sigma
+#print axioms DiophantineConsistency.PRAWitnessSetTerms.wb_isUTermVec_neg_pi

@@ -1,0 +1,10 @@
+import DiophantineConsistency.PRAWitnessRepeatVec
+/-! Axiom audit for repeatVec witness bounds. -/
+#print axioms DiophantineConsistency.PRAWitnessRepeatVec.repeatVec_mono
+#print axioms DiophantineConsistency.PRAWitnessRepeatVec.exp_two_eq
+#print axioms DiophantineConsistency.PRAWitnessRepeatVec.exp_four
+#print axioms DiophantineConsistency.PRAWitnessRepeatVec.repeatVec_lt
+#print axioms DiophantineConsistency.PRAWitnessRepeatVec.history_canonical
+#print axioms DiophantineConsistency.PRAWitnessRepeatVec.wb_repeatVec_cseq
+#print axioms DiophantineConsistency.PRAWitnessRepeatVec.wb_repeatVec_result
+#print axioms DiophantineConsistency.PRAWitnessRepeatVec.wb_repeatVecDef

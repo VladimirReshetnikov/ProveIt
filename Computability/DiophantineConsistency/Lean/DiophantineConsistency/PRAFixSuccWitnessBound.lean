@@ -60,9 +60,8 @@ theorem succ_bound_of_core (u ih s w : V)
             refine Fin.cases rfl (fun k => ?_) j
             exact Fin.cases rfl (fun k => Fin.elim0 k) k
           have hh := bnd_rew_succ (∼bitDef.val) ω x u ih s w x u hv hm'
-          have heq : (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) := by
-            exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val
-          rw [heq] at hh
+          rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
+            LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hh
           simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
         · right
           refine ⟨hxs,?_⟩
@@ -82,9 +81,8 @@ theorem succ_bound_of_core (u ih s w : V)
             refine Fin.cases rfl (fun k => ?_) j
             exact Fin.cases rfl (fun k => Fin.elim0 k) k
           have hh := bnd_rew_succ (∼φ.core.pi.val) ω x u ih s w x ih hv (hcoreNeg x hlt hf)
-          have heq : (ω ▹ (∼φ.core.pi.val)) = ∼(ω ▹ φ.core.pi.val) := by
-            exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) φ.core.pi.val
-          rw [heq] at hh
+          rw [show (ω ▹ (∼φ.core.pi.val)) = ∼(ω ▹ φ.core.pi.val) from
+            LogicalConnective.HomClass.map_neg (Semiformula.rew ω) φ.core.pi.val] at hh
           exact hh
         · right
           have hf : bitDef.val.Evalb ![x,u] := by

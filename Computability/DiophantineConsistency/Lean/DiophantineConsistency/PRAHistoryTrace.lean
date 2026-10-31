@@ -135,16 +135,10 @@ theorem modelSeqCons (cons : Code 2) (hcons : PRA ⊢ PRAHistorySeqConsCode.grap
 set_option maxHeartbeats 3000000 in
 theorem modelTraceBase (cons : Code 2) (base : Code 0) (step : Code 2)
     (hcons : PRA ⊢ PRAHistorySeqConsCode.graphSentence cons) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     (traceMatrix (valueCode base step)).Eval
       ![(0 : M),Structure.func (L := language) (firstHistory cons base) Fin.elim0] Empty.elim := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   let x : M := Structure.func (L := language) base Fin.elim0
   let h : M := Structure.func (L := language) (firstHistory cons base) Fin.elim0
   have hh : h = Structure.func (L := language) cons ![(0 : M),x] := by
@@ -200,17 +194,11 @@ set_option maxHeartbeats 3000000 in
 theorem modelTraceStep (cons : Code 2) (base : Code 0) (step : Code 2)
     (hcons : PRA ⊢ PRAHistorySeqConsCode.graphSentence cons) (n h : M)
     (htrace : (traceMatrix (valueCode base step)).Eval ![n,h] Empty.elim) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     (traceMatrix (valueCode base step)).Eval
       ![Structure.func (L := language) Code.succ (fun _ => n),
         Structure.func (L := language) (historyStep cons base step) ![n,h]] Empty.elim := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   let x : M := Structure.func (L := language) (valueCode base step)
     (fun _ => Structure.func (L := language) Code.succ (fun _ => n))
