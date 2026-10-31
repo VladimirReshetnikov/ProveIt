@@ -72,9 +72,7 @@ theorem rejected_or_decoded_provable : ∀ code : V,
     · left; simp
     · have child (i : V) (hi : i ≤ raw) (hne : ArithmeticHistory222.value i ≠ 0) :
           Provable (𝗭𝗙 : SetTheory) (decode (ArithmeticHistory222.value i-1)) := by
-        rcases ih i (lt_of_le_of_lt hi (lt_add_one raw)) with hz | hp
-        · exact False.elim (hne hz)
-        · exact hp
+        exact (ih i (lt_of_le_of_lt hi (lt_add_one raw))).resolve_left hne
       rw [ArithmeticHistory222.value_succ]
       apply rowKernel_sound
       · by_cases htag : raw % 12 = 2
@@ -86,9 +84,8 @@ theorem rejected_or_decoded_provable : ∀ code : V,
 theorem accepted_conclusion_provable (code conclusion : V)
     (hv : ArithmeticHistory222.value code = conclusion+1) :
     Provable (𝗭𝗙 : SetTheory) (decode conclusion) := by
-  rcases rejected_or_decoded_provable code with hz | hp
-  · rw [hv] at hz; simp at hz
-  · simpa [hv] using hp
+  have hne : ArithmeticHistory222.value code ≠ 0 := by rw [hv]; simp
+  simpa [hv] using (rejected_or_decoded_provable code).resolve_left hne
 
 /-- **An accepted C222 refutation is an internal ZF refutation.** -/
 theorem accepted_falsity_provable_bottom (code : V) (hv : ArithmeticHistory222.value code = 2) :

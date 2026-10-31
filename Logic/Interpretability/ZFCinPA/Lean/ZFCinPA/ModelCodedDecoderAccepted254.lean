@@ -112,9 +112,7 @@ theorem rejected_or_decoded_provable : ∀ code : V,
     · left; simp
     · have child (i : V) (hi : i ≤ raw) (hne : value i ≠ 0) :
           Provable (𝗭𝗙 : SetTheory) (decode (value i-1)) := by
-        rcases ih i (lt_of_le_of_lt hi (lt_add_one raw)) with hz | hp
-        · exact False.elim (hne hz)
-        · exact hp
+        exact (ih i (lt_of_le_of_lt hi (lt_add_one raw))).resolve_left hne
       rw [value_succ]
       apply rowKernel_sound
       · by_cases htag : raw % 12 = 2
