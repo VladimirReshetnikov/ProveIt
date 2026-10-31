@@ -23,15 +23,8 @@ theorem pos_lenbit_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 2 Empty n) (e :
   have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
   simp only [Semiformula.eval_rew] at h
   rw [hg,hf] at h
-  have hv : ![g 0,g 1] = g := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
-  have hs : Fin.snoc g (g 1+1) = ![g 0,g 1,g 1+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+  have hv : ![g 0,g 1] = g := by funext i; revert i; simp [Fin.forall_fin_succ]
+  have hs : Fin.snoc g (g 1+1) = ![g 0,g 1,g 1+1] := by funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
   have hb := PRALenbitWitnessBound.lenbit_bound (g 0) (g 1) (by simpa [hv] using h)
   have hn := PRABndRewriting.natural lenbitDef.val ω e (g 1+1)
   rw [hs] at hn
@@ -47,13 +40,8 @@ theorem neg_pow2_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 1 Empty n) (e : F
   have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
   simp only [Semiformula.eval_rew] at h
   rw [hg,hf] at h
-  have hv : ![g 0] = g := by
-    funext i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) i
-  have hs : Fin.snoc g (g 0+1) = ![g 0,g 0+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+  have hv : ![g 0] = g := by funext i; revert i; simp
+  have hs : Fin.snoc g (g 0+1) = ![g 0,g 0+1] := by funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
   have hb := PRANegPow2WitnessBound.neg_pow2_bound (g 0) (by simpa [hv] using h)
   have hn := PRABndRewriting.natural (∼pow2Def.val) ω e (g 0+1)
   rw [hs] at hn
@@ -133,9 +121,7 @@ theorem sppow2BoundBody_model (e : Fin 1 → V) : sppow2BoundBody.Eval e Empty.e
   simp [sppow2BoundBody, boundedSppow2, Semiformula.eval_substs]
   intro h
   apply sppow2_bound (e 0)
-  have hv : ![e 0] = e := by
-    funext i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) i
+  have hv : ![e 0] = e := by funext i; revert i; simp
   rw [hv]
   exact h
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
