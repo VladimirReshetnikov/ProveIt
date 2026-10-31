@@ -47,6 +47,11 @@ object and full-log hashes.
   majorant: pairing, division, the exponential stack, bits and sets, the HFS
   sequence graphs, the derivation index graphs, the `qq*Def` constructors and
   all ten rule graphs of `Derivation.blueprint`.
+  A [strict local-project source closure](reviews/pra-witness-local-closure-successor-replay/README.md)
+  through `PRAWitnessCodeGrowth` has passed after removing an unused-instance
+  warning: 205 fresh prefix objects are shared by two matching nine-module
+  suffix replays. The direct external anchors are guarded; Foundation and
+  package transitive ancestry remains inherited.
 * [`PRAHistoryTruncation`](Lean/DiophantineConsistency/PRAHistoryTruncation.lean)
   truncates any fixpoint computation history to the indices `≤ k`, a history
   below `2^(⟪k, 2^(k+1)⟫+1)`. It is uniform in the blueprint, so `WB` of a
