@@ -1,0 +1,20 @@
+DiophantineConsistency.PRAWitnessFormulaSetCandidate.wb_isFormulaSet_sigma {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] :
+  DiophantineConsistency.PRAWitnessCalculus.WB M
+    ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+        (LO.FirstOrder.Arithmetic.Bootstrapping.isFormulaSet ℒₛₑₜ))
+DiophantineConsistency.PRAWitnessFormulaSetCandidate.wb_isFormulaSet_neg_pi {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] :
+  DiophantineConsistency.PRAWitnessCalculus.WB M
+    (∼↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.pi
+          (LO.FirstOrder.Arithmetic.Bootstrapping.isFormulaSet ℒₛₑₜ)))
+'DiophantineConsistency.PRAWitnessFormulaSetCandidate.wb_isFormulaSet_sigma' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAWitnessFormulaSetCandidate.wb_isFormulaSet_neg_pi' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

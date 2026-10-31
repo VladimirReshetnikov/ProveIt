@@ -1,0 +1,82 @@
+DiophantineConsistency.PRAWitnessClosedExistential.wb_exs_sentence {M : Type} [LO.ORingStructure M] [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻]
+  {ψ : LO.FirstOrder.ArithmeticSemisentence 1} (hψ : DiophantineConsistency.PRAWitnessCalculus.WB M ψ) :
+  DiophantineConsistency.PRAWitnessCalculus.WB M (∃⁰ ψ)
+DiophantineConsistency.PRAWitnessClosedExistential.wb_exs_exs_sentence {M : Type} [LO.ORingStructure M] [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻]
+  {ψ : LO.FirstOrder.ArithmeticSemisentence 2} (hψ : DiophantineConsistency.PRAWitnessCalculus.WB M ψ) :
+  DiophantineConsistency.PRAWitnessCalculus.WB M (∃⁰ ∃⁰ ψ)
+DiophantineConsistency.PRAWitnessRefutationOuter.wb_provabilityPred.{u_1} {M : Type} [LO.ORingStructure M]
+  [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻] {L : LO.FirstOrder.Language} [L.Encodable] [L.LORDefinable] (T : LO.FirstOrder.Theory L) [T.Δ₁]
+  (σ : LO.FirstOrder.Sentence L)
+  (hd :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+          (LO.FirstOrder.Arithmetic.Bootstrapping.derivation T))) :
+  DiophantineConsistency.PRAWitnessCalculus.WB M (LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred T σ)
+DiophantineConsistency.PRAWitnessRefutationOuter.wb_provabilityPred_of_core.{u_1} {L : LO.FirstOrder.Language}
+  [L.Encodable] [L.LORDefinable] {N : Type} [Nonempty N]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+  [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] (T : LO.FirstOrder.Theory L)
+  [T.Δ₁] (σ : LO.FirstOrder.Sentence L)
+  (hσ :
+    DiophantineConsistency.PRAWitnessCalculus.WB N
+      ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+          (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core))
+  (hπ :
+    DiophantineConsistency.PRAWitnessCalculus.WB N
+      (∼↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.pi
+            (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core))) :
+  DiophantineConsistency.PRAWitnessCalculus.WB N (LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred T σ)
+DiophantineConsistency.PRAWitnessRefutationOuter.certificate_of_core.{u_1} {L : LO.FirstOrder.Language} [L.Encodable]
+  [L.LORDefinable] (T : LO.FirstOrder.Theory L) [T.Δ₁] (σ : LO.FirstOrder.Sentence L)
+  (hσ :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCalculus.WB N
+        ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+            (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core))
+  (hπ :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCalculus.WB N
+        (∼↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.pi
+              (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core))) :
+  DiophantineConsistency.PRAStrictConReverse.BoundCertificate
+    (LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred T σ)
+DiophantineConsistency.PRAWitnessRefutationOuter.comparison_of_core.{u_1} {L : LO.FirstOrder.Language} [L.Encodable]
+  [L.LORDefinable] (T : LO.FirstOrder.Theory L) [T.Δ₁] (σ : LO.FirstOrder.Sentence L) (n : ℕ)
+  (a b : LO.FirstOrder.Semiterm ℒₒᵣ Empty n)
+  (hsigma : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 1 (LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred T σ))
+  (heq :
+    𝗜𝚺₁ ⊢
+      DiophantineConsistency.PRANoZeroUnary.noZero n a b 🡘 ∼LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred T σ)
+  (hσ :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCalculus.WB N
+        ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+            (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core))
+  (hπ :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCalculus.WB N
+        (∼↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.pi
+              (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core))) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+        (DiophantineConsistency.PRANoZeroUnary.noZero n a b) 🡘
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+        (∼LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred T σ)
+'DiophantineConsistency.PRAWitnessClosedExistential.wb_exs_exs_sentence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAWitnessRefutationOuter.certificate_of_core' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAWitnessRefutationOuter.comparison_of_core' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

@@ -1,0 +1,2 @@
+import DiophantineConsistency.PRAWitnessSetShiftCandidate
+#print axioms DiophantineConsistency.PRAWitnessSetShiftCandidate.wb_setShiftGraph
