@@ -1,0 +1,5 @@
+# Positive derivation-rule witness bounds
+
+The positive sigma core of Foundation's derivation blueprint is a disjunction of ten rule leaves. For the identity, verum, weakening and shift leaves, `PRAWitnessPositiveSimpleRules` identifies each literal leaf by a definitional equality and proves a witness bound in every candidate-PRA model. The proofs use bounds for the actual rule and syntax graphs and bound remaining existential witnesses using set membership or first-projection bounds.
+
+The [author and two same-parent peer replays](../reviews/pra-witness-positive-simple-rules-author-replay/README.md) pass with matching source, object and full-log hashes on a pinned experimental provider. That provider's complete source ancestry remains unauthenticated, and its inherited `PRAWitnessSetTerms` predates the subsequent warning-only source fix; a coherent-source replay is needed. `WB` is a monotone bound separately in each model, not a specified uniform primitive-recursive code. The other six positive leaves, the negative pi core, and the full ZFC refutation bound are not established by this checkpoint.
