@@ -1,0 +1,26 @@
+DiophantineConsistency.PRAWitnessFormulaSetCertificate.PRA_proves_of_wb (φ : LO.FirstOrder.ArithmeticSemisentence 1)
+  (h :
+    ∀ (M : Type) [inst : Nonempty M] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+      [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessCalculus.WB M φ) :
+  DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRAWitnessFormulaSetCertificate.boundSentence φ
+DiophantineConsistency.PRAWitnessFormulaSetCertificate.PRA_proves_formulaSet_sigma :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    DiophantineConsistency.PRAWitnessFormulaSetCertificate.boundSentence
+      ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+          (LO.FirstOrder.Arithmetic.Bootstrapping.isFormulaSet ℒₛₑₜ))
+DiophantineConsistency.PRAWitnessFormulaSetCertificate.PRA_proves_formulaSet_neg_pi :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    DiophantineConsistency.PRAWitnessFormulaSetCertificate.boundSentence
+      (∼↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.pi
+            (LO.FirstOrder.Arithmetic.Bootstrapping.isFormulaSet ℒₛₑₜ)))
+'DiophantineConsistency.PRAWitnessFormulaSetCertificate.PRA_proves_of_wb' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAWitnessFormulaSetCertificate.PRA_proves_formulaSet_sigma' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAWitnessFormulaSetCertificate.PRA_proves_formulaSet_neg_pi' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
