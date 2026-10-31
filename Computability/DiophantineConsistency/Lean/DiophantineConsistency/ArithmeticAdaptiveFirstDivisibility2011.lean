@@ -27,6 +27,31 @@ theorem mod_cancel {a b c m : V} (hm : 0<m) (h : (a+c)%m=(b+c)%m) : a%m=b%m := b
     rw [mod_add (a:=a+c) hm,mod_add (a:=b+c) hm,h]
   simpa only [add_assoc,hc,mod_add_mul' _ _ hm] using hh
 
+theorem congruence_divides_difference {x y m : V} (hm : 0<m)
+    (hyx : y≤x) (h : x%m=y%m) : m∣x-y := by
+  apply mod_eq_zero_iff_dvd.mp
+  have he : x-y+y=x := tsub_add_cancel_of_le hyx
+  have hh : ((x-y)+y)%m=(0+y)%m := by
+    rw [he,zero_add]
+    exact h
+  have hc := mod_cancel hm hh
+  simpa only [zero_mod] using hc
+
+theorem dvd_magnitude_of_mod {m x y : V} (hm : 0<m) (h : x%m=y%m) :
+    m∣magnitude (x,y) := by
+  rcases le_total y x with hle | hle
+  · have he : x=y+(x-y) := by rw [add_comm,tsub_add_cancel_of_le hle]
+    have hg : magnitude (x,y)=x-y := magnitude_of_add he
+    rw [hg]
+    exact congruence_divides_difference hm hle h
+  · have he : y=x+(y-x) := by rw [add_comm,tsub_add_cancel_of_le hle]
+    have hg : magnitude (x,y)=y-x := by
+      have h' := magnitude_of_add he
+      change magnitude (swap (x,y))=y-x at h'
+      simpa only [magnitude_swap] using h'
+    rw [hg]
+    exact congruence_divides_difference hm hle h.symm
+
 theorem magnitude_mod (p : Pair V) (m : V) (hm : 0<m)
     (hd : m∣magnitude p) : p.1 % m = p.2 % m := by
   have hz : magnitude p % m = 0 := mod_eq_zero_iff_dvd.mpr hd

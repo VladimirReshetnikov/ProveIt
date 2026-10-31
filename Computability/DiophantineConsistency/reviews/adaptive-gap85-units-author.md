@@ -1,0 +1,7 @@
+# Actual 85 zero: positive factor units, scoped author replay
+
+The guarded author run `/tmp/adaptive-gap85-units-dw723k17` passed. `expressionAt_factor_units85` proves that every actual 85 zero in an arbitrary IΣ₁ model forces all four literal signed factors to be +1. The proof combines the independently replayed magnitude theorem with finite `ZMod 4` sign exclusions transferred from arbitrary internal elements. The actual factors are bound by direct syntactic evaluation; no factor units are assumed.
+
+This does not establish the missing reverse witness bound, the 85 reverse HA implication, or any full equivalence. The replay authenticates the new source, independently replayed magnitude parent, source/generator/candidate and factor parent, 507 selected inherited objects, and 28 v13 output/log records before and after. Historical project, Foundation and package boundaries remain inherited; no full current-source closure is claimed. Independent replay is required.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-units.py`. Source SHA-256 `2fc18d9cb936097eaf6f8bdd2ba039cb8f1f4e3e4023eae81e894dfb0fc9beca`, object `947e0c4747f7f8fbd0f17f47550ae9c975fb9870bd358c3e336ee0c21d49003b`, full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, state `8172837b882cbef42114eaa83f9dd674c7126c886c6f6f479ab7ca3cd277ed2d`, evidence manifest `7d31df731e96b6a9737fe19a8d0cf160a97ca324dc07c6d915275820df4ac190`.

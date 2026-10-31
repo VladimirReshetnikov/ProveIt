@@ -33,11 +33,7 @@ theorem negIsFormulaSet_bound_of_core (s w : V)
   · have hf : bitDef.val.Evalb ![p,s] := by
       simpa [Semiformula.Operator.val, operator_mem_def] using hbit
     have hb := PRABitFullWitnessBound.bit_bound p s hf
-    have hs0 : Fin.snoc ![p,s] (PRABitFullWitnessBound.bitMajorant s) = ![p,s,PRABitFullWitnessBound.bitMajorant s] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs0 : Fin.snoc ![p,s] (PRABitFullWitnessBound.bitMajorant s) = ![p,s,PRABitFullWitnessBound.bitMajorant s] := by simp
     have hb' := eval_bnd_mono bitDef.val ![p,s] (Empty.elim : Empty → V) hpos (by rw [hs0]; exact hb)
     let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#0,#1]
     have hn := PRABndRewriting.natural bitDef.val ω ![p,s] w
@@ -45,11 +41,7 @@ theorem negIsFormulaSet_bound_of_core (s w : V)
       funext j
       refine Fin.cases rfl (fun k => ?_) j
       exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hvw : Fin.snoc ![p,s] w = ![p,s,w] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hvw : Fin.snoc ![p,s] w = ![p,s,w] := by simp
     rw [hv,hvw] at hn
     rw [hvw] at hb'
     have hh := hn.mpr hb'

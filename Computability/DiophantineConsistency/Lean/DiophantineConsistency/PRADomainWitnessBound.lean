@@ -33,9 +33,8 @@ theorem neg_bit_inside_bound (x u s w : V) (hw : PRANegBitFullWitnessBound.negBi
  (h : (∼bitDef.val).Evalb ![x,u]) : (bnd (∼“x u s. x ∈ u”)).Evalb ![x,u,s,w] := by
   have hb := bnd_rew_inside (∼bitDef.val) x u s w _ hw (PRANegBitFullWitnessBound.negBit_bound x u h)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
-  have heq : (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) := by
-    exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val
-  rw [heq] at hb
+  rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
+    LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hb
   simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hb
  theorem domain_bound (u s w : V) (hs : s ≤ w)
  (hposu : PRABitFullWitnessBound.bitMajorant u ≤ w)

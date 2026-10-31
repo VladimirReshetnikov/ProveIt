@@ -1,0 +1,5 @@
+# Actual 85 zero: first-root divisibility, independent replay
+
+Independent run `/tmp/adaptive-gap85-first-divisibility-hzpz7q0q` passed against author replay `/tmp/adaptive-gap85-first-divisibility-0gx9xr8y`. Source, object and full-log hashes, parent anchors, 507 selected inherited-object inventory hash, and 28 v13 output/log checks match. Independent state, source snapshot, driver, logs and timing are preserved in `adaptive-gap85-first-divisibility-independent-evidence/`; manifest SHA-256 `b5217609fa125d37ddea94b9b188a701b98e76ed547dcf8d30aeb0ed0bb36eb3`.
+
+An actual 85 zero in every IΣ₁ model gives a positive `Y=q³*s` quotient with positive first natural port and positive coordinates, without orienting the first root. This does not prove the reverse bound or 85/Con(ZFC) equivalence. In particular, the 85 rank seed `q*(q−F)−C` is signed, and the old 86 main-orientation and index-relation arguments require positivity facts not established here. Historical project/Foundation/package boundaries remain inherited; no full source-current closure is claimed.

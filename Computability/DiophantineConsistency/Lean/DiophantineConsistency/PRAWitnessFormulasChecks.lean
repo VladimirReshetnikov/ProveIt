@@ -1,0 +1,9 @@
+import DiophantineConsistency.PRAWitnessFormulas
+/-! Axiom audit for `PRAWitnessFormulas`. -/
+#print axioms DiophantineConsistency.PRAWitnessFormulas.rel_def_set
+#print axioms DiophantineConsistency.PRAWitnessFormulas.wb_isRel
+#print axioms DiophantineConsistency.PRAWitnessFormulas.wb_neg_isRel
+#print axioms DiophantineConsistency.PRAWitnessFormulas.wb_uformula_core_sigma
+#print axioms DiophantineConsistency.PRAWitnessFormulas.wb_uformula_core_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessFormulas.wb_isUFormula_sigma
+#print axioms DiophantineConsistency.PRAWitnessFormulas.wb_isUFormula_neg_pi

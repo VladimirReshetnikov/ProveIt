@@ -72,19 +72,13 @@ theorem modelCollectStep (good ins : Code 2) (i ih : M) :
 theorem modelCollectMembershipStep (good ins : Code 2)
     (hbit : PRA ⊢ bitSentence good) (hins : PRA ⊢ PRAHistoryInsertCode.graphSentence ins)
     (i ih k : M) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     bitDef.val.Evalb ![k,Structure.func (L := language) (collectCode good ins)
       ![Structure.func (L := language) Code.succ (fun _ => i),ih]] ↔
       (k = i ∧ Structure.func (L := language) good ![i,ih] =
         Structure.func (L := language) oneCode Fin.elim0) ∨
         bitDef.val.Evalb ![k,Structure.func (L := language) (collectCode good ins) ![i,ih]] := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   let a := Structure.func (L := language) (collectCode good ins) ![i,ih]
   let p := Structure.func (L := language) PRAHistoryExpCode.expCode (fun _ => k)
   let q := Structure.func (L := language) PRAHistoryExpCode.expCode (fun _ => i)
@@ -114,17 +108,11 @@ theorem modelCollectInvariant (good ins bit : Code 2)
     (hbit : PRA ⊢ bitSentence good) (hins : PRA ⊢ PRAHistoryInsertCode.graphSentence ins)
     (hcorrect : PRA ⊢ PRABoundedCharacteristic.oneCorrectSentence bit PRAHistoryInsertCode.bitGraph)
     (n k ih : M) :
-    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-      have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-      rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-      exact h
+    letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
     bitDef.val.Evalb ![k,Structure.func (L := language) (collectCode good ins) ![n,ih]] ↔
       k < n ∧ Structure.func (L := language) good ![k,ih] =
         Structure.func (L := language) oneCode Fin.elim0 := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := by
-    have h := PRAModelISigmaZero.modelReductISigmaZero (M := M)
-    rw [PRAModelIOpenPairing.reduct_eq_standard] at h
-    exact h
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   let e : ℕ → M := fun j => if j = 0 then k else ih
   have e0 : e 0 = k := by simp [e]
   have e1 : e 1 = ih := by simp [e]

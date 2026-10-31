@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryUnderExtension
+
+#print axioms DiophantineConsistency.PRAHistoryUnderExtension.under_injective
+#print axioms DiophantineConsistency.PRAHistoryUnderExtension.candidate_append_under

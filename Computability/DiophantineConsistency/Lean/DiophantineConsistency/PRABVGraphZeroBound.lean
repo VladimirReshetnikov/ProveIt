@@ -27,17 +27,8 @@ theorem bvGraph_zero_bound (p w : V)
       refine Fin.cases rfl (fun k => ?_) j
       refine Fin.cases rfl (fun k => ?_) k
       exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs : Fin.snoc ![0,p] w = ![0,p,w] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs' : Fin.snoc ![0,p,0] w = ![0,p,0,w] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs : Fin.snoc ![0,p] w = ![0,p,w] := by simp
+    have hs' : Fin.snoc ![0,p,0] w = ![0,p,0,w] := by simp
     rw [hv,hs,hs'] at hn
     change (bnd (ω₀ ▹ (ω₁ ▹ (((BV.blueprint L).graph L).val)))).Evalb ![0,p,w]
     have heq : ω₀ ▹ (ω₁ ▹ (((BV.blueprint L).graph L).val)) = ω ▹ (((BV.blueprint L).graph L).val) := by

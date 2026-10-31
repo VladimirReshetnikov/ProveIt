@@ -38,11 +38,7 @@ theorem bit_bound (x y : V) : bitDef.val.Evalb ![x,y] →
   have hmy : PRAExponentialWitnessBound.exponentialMajorant y ≤ bitMajorant y := le_trans le_self_add le_self_add
   have hmz : PRAExponentialWitnessBound.exponentialMajorant z ≤ bitMajorant y := le_trans (majorant_mono hzy) hmy
   have hb := PRAExpWitnessBound.exp_bound z x hexp
-  have hs0 : Fin.snoc ![z,x] (PRAExponentialWitnessBound.exponentialMajorant z) = ![z,x,PRAExponentialWitnessBound.exponentialMajorant z] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs0 : Fin.snoc ![z,x] (PRAExponentialWitnessBound.exponentialMajorant z) = ![z,x,PRAExponentialWitnessBound.exponentialMajorant z] := by simp
   have hb' := eval_bnd_mono expDef.val ![z,x] (Empty.elim : Empty → V) hmz (by rw [hs0]; exact hb)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
   have hn := PRABndRewriting.natural expDef.val ω ![z,x,y] (bitMajorant y)
@@ -50,17 +46,8 @@ theorem bit_bound (x y : V) : bitDef.val.Evalb ![x,y] →
     funext j
     refine Fin.cases rfl (fun k => ?_) j
     exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![z,x,y] (bitMajorant y) = ![z,x,y,bitMajorant y] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![z,x] (bitMajorant y) = ![z,x,bitMajorant y] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![z,x,y] (bitMajorant y) = ![z,x,y,bitMajorant y] := by simp
+  have hs' : Fin.snoc ![z,x] (bitMajorant y) = ![z,x,bitMajorant y] := by simp
   rw [hv,hs,hs'] at hn
   rw [hs'] at hb'
   have hbe : (bnd PRABitWitnessBound.expInsideBit).Evalb ![z,x,y,bitMajorant y] := hn.mpr hb'

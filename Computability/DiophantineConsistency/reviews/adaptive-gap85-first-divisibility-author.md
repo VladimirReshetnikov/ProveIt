@@ -1,0 +1,7 @@
+# Actual 85 zero: first-root divisibility, scoped author replay
+
+The guarded author run `/tmp/adaptive-gap85-first-divisibility-0gx9xr8y` passed. `expressionAt_Y_quotient85` derives a positive quotient `Y=q³*s` from an actual 85 zero in any IΣ₁ model when the first natural port and the witness coordinates are positive. It represents the actual signed first root as a pair and derives divisibility without assuming a root orientation or quotient. It does not establish the reverse bound or 85/Con(ZFC) equivalence.
+
+The module locally proves modular cancellation helpers because the historical inherited object does not export the names in the later workspace source. The replay authenticates the new source, independently replayed quotient and earlier parents, literal and factor source/generators/candidate, 507 selected inherited objects and 28 v13 output/log records before and after. Historical project, Foundation and package boundaries remain inherited; no full current-source closure is claimed. Independent replay is required.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-first-divisibility.py`. Source SHA-256 `b71dec0162150c985f1a2d49d8d76422dadcea7ce8dc95e8aed8c14dcd173766`, object `218a42dbdd5e59f29cea45754fd6c0f46718e324471cbc889e698a6971b07bef`, full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, state `293ce2664e02b40f7d9f61084d5085bc91a8ef368851d2488e5d74c49fee73e8`, evidence manifest `174bdd66d8f115d16140b421852c823be71ff2d2d584ed5fd76c60410955ca24`.

@@ -6,6 +6,59 @@ primitive recursive arithmetic (PRA). The earlier request for an HA derivation
 also remains relevant. Existence of an object-theory proof is enough; a
 printed proof is not required.
 
+## Status summary (2026-10-30)
+
+Candidate PRA proves `noZero ↔ conB π` (`PRAStrictConComparison.comparison`)
+and `¬π → noZero` (`PRAStrictConForward.original_implies_noZero`) for every
+finite no-zero sentence with an IΣ₁ proof of `noZero ↔ ¬π`. The literal
+endpoint `noZero ↔ ¬π` for Foundation's actual ZFC-refutation sentence `π`
+needs exactly one more input, `PRAStrictConReverse.BoundCertificate π`:
+candidate PRA proves `π → ∃ w, bnd π (w)`. Its literal 14-variable
+instantiation additionally needs the source-current HA endpoint closure.
+
+`BoundCertificate π` is a single semantic statement about every
+candidate-PRA model, and it is now attacked compositionally:
+
+* [`PRAWitnessCalculus`](Lean/DiophantineConsistency/PRAWitnessCalculus.lean)
+  defines `WB M φ` (in `M`, `φ` implies `bnd φ` at a monotone bound) and
+  proves it closed under every constructor Foundation's `Σ₁` definitions
+  use; `wb_auto` applies the rules. Monotonicity is what lets one bound
+  serve a whole bounded universal.
+* [`PRAWitnessArithmetic`](Lean/DiophantineConsistency/PRAWitnessArithmetic.lean)
+  derives `WB` in both polarities for 48 definitions, with no explicit
+  majorant: pairing, division, the exponential stack, bits and sets, the HFS
+  sequence graphs, the derivation index graphs, the `qq*Def` constructors and
+  all ten rule graphs of `Derivation.blueprint`.
+* [`PRAHistoryTruncation`](Lean/DiophantineConsistency/PRAHistoryTruncation.lean)
+  truncates any fixpoint computation history to the indices `≤ k`, a history
+  below `2^(⟪k, 2^(k+1)⟫+1)`. It is uniform in the blueprint, so `WB` of a
+  blueprint's core gives `WB` of `limSeqDef` and of both polarities of
+  fixpoint membership (`wb_limSeqDef`, `wb_fixpoint_sigma`,
+  `wb_fixpoint_neg_pi`).
+
+What `BoundCertificate π` still needs, in dependency order:
+
+1. `WB` of the cores of the term and formula-recognition fixpoints
+   (`FormalizedTerm.blueprint`, `FormalizedFormula.blueprint` for `ℒₛₑₜ`),
+   which yields `isUTerm`, `isUFormula` and `isSemiterm` in both polarities.
+2. The formula recursions (`BV`, `neg`, `shift`, `free`, `substs`, and the
+   `setShift` image). Their `graph` uses `fixpointDef`, whose stage is a
+   further unbounded witness. Bounding it needs stage cumulativity of the
+   recursion core inside candidate PRA, hence Σ/Π agreement of that core,
+   which in turn rests on uniqueness of the term and formula histories.
+   Growth bounds `f(p) ≤ F(p)` are also needed where these values occur
+   negatively (`∃ np, negGraph np p ∧ np ∉ s` in `¬core.pi`).
+3. `WB` of ZFC's axiom recognizer `T.Δ₁ch`: equality and fixed axioms
+   (finite, so Σ₀) and the separation and replacement schema recognizers
+   (`SeparationDelta1`, `ReplacementDelta1`), which use the same recursions.
+4. `WB` of `Derivation.blueprint`'s core from 1–3 by `wb_auto`. Then
+   `wb_fixpoint_sigma` and the outer layers (`derivationOf`, `proof`,
+   `provable`: all automatic) give `WB π`, and `PRAWitnessCalculus.exists_bound`
+   gives `BoundCertificate π` through completeness.
+
+The detailed history below records how the individual bound and code modules
+were obtained; it predates the calculus.
+
 ## Current scope and open endpoints
 
 The local negative and positive square-root/length-bit existential bounds
@@ -131,11 +184,29 @@ and the exponential code, without assuming IΣ₁. An
 now composes length, pairing and insertion to satisfy the actual `seqConsDef`
 graph. An [independently replayed membership theorem](reviews/pra-history-seqcons-membership-author-replay/README.md)
 also describes exactly which relation pairs are present after append.
-Sequence validity, length evolution and the full recursive-history
-verification remain open. An [independently replayed primitive-recursive
+An [independently replayed domain-extension theorem](reviews/pra-history-domain-extension-author-replay/README.md)
+characterizes actual domain membership and proves its preservation when a
+relation pair is appended.
+The [singleton base membership theorem](reviews/pra-history-singleton-membership-author-replay/README.md)
+proves the initial append has precisely the entry `(0,x)`. A separate
+[singleton theorem](reviews/pra-history-singleton-sequence-author-replay/README.md)
+proves that this append is a sequence of length one. The
+[under-extension theorem](reviews/pra-history-under-extension-author-replay/README.md)
+proves that inserting the endpoint extends an initial segment by one.
+[Canonical under membership](reviews/pra-history-under-canonical-author-replay/README.md)
+now characterizes the exact initial-segment graph without IΣ₁. A
+[sequence-extension theorem](reviews/pra-history-sequence-extension-author-replay/README.md)
+proves validity after append and provides an incremented length witness.
+A [length-uniqueness and strengthened append theorem](reviews/pra-history-length-unique-author-replay/README.md)
+now aligns that witness with any supplied actual prior length. The full
+recursive-history verification remains open.
+An [independently replayed primitive-recursive
 iterator](reviews/pra-history-iterator-author-replay/README.md) supplies the
-history code's base and step equations for supplied function codes; the
-actual blueprint step code and `cseqDef` invariant remain open. An
+history code's base and step equations for supplied function codes. An
+[independently replayed trace theorem](reviews/pra-history-trace-author-replay/README.md)
+now proves actual sequence validity, length and indexed membership for that
+recursive history. Its connection to Foundation's `cseqDef` and the actual
+blueprint step code remain open. An
 [independently replayed length code](reviews/pra-history-length-code-author-replay/README.md)
 computes the actual `lhDef` graph with output at most `2*s`, without assuming
 IΣ₁.

@@ -30,11 +30,9 @@ theorem seq_bound_explicit (s : V) : seqDef.val.Evalb ![s] →
   apply PRASeqDomainBound.seq_bound_of_domain s (seqMajorant s) hA hB hC
   intro hm
   have hb := PRAMappingWitnessBound.mapping_bound_explicit s hm
-  have hs : Fin.snoc ![s] (PRAMappingWitnessBound.mappingMajorant s) = ![s,PRAMappingWitnessBound.mappingMajorant s] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![s] (PRAMappingWitnessBound.mappingMajorant s) = ![s,PRAMappingWitnessBound.mappingMajorant s] := by simp
   have hm' := eval_bnd_mono isMappingDef.val ![s] (Empty.elim : Empty → V) hD (by rw [hs]; exact hb)
-  have hs' : Fin.snoc ![s] (seqMajorant s) = ![s,seqMajorant s] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs' : Fin.snoc ![s] (seqMajorant s) = ![s,seqMajorant s] := by simp
   rw [hs'] at hm'
   exact hm'
 noncomputable def boundedSeq : ArithmeticSemisentence 2 := bnd seqDef.val

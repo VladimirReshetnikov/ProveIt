@@ -39,9 +39,8 @@ theorem neg_exists_bound (x u s w : V) (hnegs : PRANegBitFullWitnessBound.negBit
       rw [hv,hsn,hs''] at hn
       rw [hs''] at hm
       have hrew := hn.mpr hm
-      have heq : (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) := by
-        exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val
-      rw [heq] at hrew
+      rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
+        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hrew
       simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hrew
     · right; right
       by_cases hxy : x < y

@@ -1,0 +1,7 @@
+# Actual 85 zero: rank-congruence, scoped author replay
+
+The guarded author run `/tmp/adaptive-gap85-rank-congruence-69mvx8n1` passed. `expressionAt_rank_congruence85` derives q⁴ divisibility of the magnitude of the signed rank difference `(rp+1,rn+k)` from the actual 85 zero. It uses the q⁵ signed main-root congruence and factor-three cancellation, with no rank or root orientation. Both results hold in every IΣ₁ model for positive first natural port and positive coordinates. No reverse bound or 85/Con(ZFC) equivalence is asserted.
+
+The replay authenticates the new source, independently replayed relevant parents, literal and factor source/generators/candidate, 507 selected inherited objects and 28 v13 output/log records before and after. Historical project, Foundation and package boundaries remain inherited; no full current-source closure is claimed. Independent replay is required.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-rank-congruence.py`. Source SHA-256 `b460b66f46fd7bb015175e12a251569e4f58cc0e4164f802c8d1997ba3513e93`, object `7be887e6d4b70cbaa093f4ab7b3816c58d71a90c87e5d504e79613111dbd6a33`, full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, state `3ceacb3584dd954621ff08515ff10cac78d8de44e5e873e470d70efab5992d46`, evidence manifest `70f9ebf63c1a2b5172c93651ee6b51276289206e9798ea1cca07d2f5b124f0f5`.

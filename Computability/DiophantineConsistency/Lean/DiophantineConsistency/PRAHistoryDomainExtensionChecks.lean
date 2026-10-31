@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryDomainExtension
+
+#print axioms DiophantineConsistency.PRAHistoryDomainExtension.candidate_domain_iff
+#print axioms DiophantineConsistency.PRAHistoryDomainExtension.candidate_append_domain

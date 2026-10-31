@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistorySequenceExtension
+
+#print axioms DiophantineConsistency.PRAHistorySequenceExtension.append_sequence
+#print axioms DiophantineConsistency.PRAHistorySequenceExtension.candidate_append_sequence

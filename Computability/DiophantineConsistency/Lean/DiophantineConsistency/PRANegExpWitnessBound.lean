@@ -22,21 +22,12 @@ theorem neg_exp_bound (e n : V) : (∼expDef.val).Evalb ![e,n] →
     funext j
     refine Fin.cases rfl (fun k => ?_) j
     exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![e,n] (PRANegExponentialWitnessBound.negExponentialMajorant e) = ![e,n,PRANegExponentialWitnessBound.negExponentialMajorant e] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![n,e] (PRANegExponentialWitnessBound.negExponentialMajorant e) = ![n,e,PRANegExponentialWitnessBound.negExponentialMajorant e] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![e,n] (PRANegExponentialWitnessBound.negExponentialMajorant e) = ![e,n,PRANegExponentialWitnessBound.negExponentialMajorant e] := by simp
+  have hs' : Fin.snoc ![n,e] (PRANegExponentialWitnessBound.negExponentialMajorant e) = ![n,e,PRANegExponentialWitnessBound.negExponentialMajorant e] := by simp
   rw [hv,hs,hs'] at hn
   have hrew := hn.mpr hb
-  have heq : (ω ▹ (∼exponentialDef.val)) = ∼(ω ▹ exponentialDef.val) := by
-    exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) exponentialDef.val
-  rw [heq] at hrew
+  rw [show (ω ▹ (∼exponentialDef.val)) = ∼(ω ▹ exponentialDef.val) from
+    LogicalConnective.HomClass.map_neg (Semiformula.rew ω) exponentialDef.val] at hrew
   exact hrew
 def negExp : ArithmeticSemisentence 2 := ∼expDef.val
 

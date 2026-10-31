@@ -1,0 +1,7 @@
+# Actual 85 zero: transport inequality, scoped author replay
+
+The guarded author run `/tmp/adaptive-gap85-transport-wljtp402` passed. `expressionAt_transport85` derives `F*q < C*(X+K*q)` from an actual 85 zero in any IΣ₁ model for a positive first natural port and positive coordinates. It uses the actual first-root signed pair and its positive quotient, without assuming root orientation. This inequality is a lower constraint on C and does not establish the missing `F+C<q` upper bound or 85/Con(ZFC) equivalence.
+
+The replay authenticates the new source, independently replayed first-divisibility, quotient and earlier parents, literal and factor source/generators/candidate, 507 selected inherited objects and 28 v13 output/log records before and after. Historical project, Foundation and package boundaries remain inherited; no full current-source closure is claimed. Independent replay is required.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-transport.py`. Source SHA-256 `d9ee1935bc2adcd080ff46397af47fbc5dfa47d79d35b01e2790d5e01c5578fe`, object `b937c5e48e8836e7c7fb904d2853e797e5909ef8c39c5a14cbef65e71b0a57a6`, full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, state `12a692aa713b81cf8a5bb2419d30df1dead498881312dce9181e6346d8e7505f`, evidence manifest `3c51deec0d6cb057a055bf09cf197b97ef9e2962d64cd710dea14e56cc9f71c8`.

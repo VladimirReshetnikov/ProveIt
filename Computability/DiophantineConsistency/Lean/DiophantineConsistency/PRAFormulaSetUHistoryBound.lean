@@ -20,15 +20,8 @@ theorem inline_u_bound (p w : V) (h : (bnd (isUFormula L).sigma.val).Evalb ![p,w
   have hv : (fun j => (ω #j).val ![0,p] Empty.elim) = ![p] := by
     funext j
     exact Fin.cases rfl (fun k => Fin.elim0 k) j
-  have hs : Fin.snoc ![0,p] w = ![0,p,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![p] w = ![p,w] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+  have hs : Fin.snoc ![0,p] w = ![0,p,w] := by simp
+  have hs' : Fin.snoc ![p] w = ![p,w] := by simp
   rw [hv,hs,hs'] at hn
   have hb := hn.mpr h
   have heq : PRASemiFormulaSigmaBound.uInside (L := L) = ω ▹ (isUFormula L).sigma.val := by

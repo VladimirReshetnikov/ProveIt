@@ -1,0 +1,28 @@
+import DiophantineConsistency.PRAWitnessZFCAxioms
+/-! Axiom audit for `PRAWitnessZFCAxioms`. -/
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.lt_iff_right
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.lt_iff_left
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.neg_le'
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.subst_le'
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.sepBodyVal_le
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.imp_le
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.iff_le
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.all_le_tau
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.exs_le_tau
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.and_le_tau
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.repBodyVal_le
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.wb_impGraph
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.wb_iffGraph
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.wb_sepBodyValGraph
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.wb_sepCh_sigma
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.wb_sepCh_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.wb_repBodyValGraph
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.wb_repCh_sigma
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.wb_repCh_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.goodCh_singleton
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.goodCh_empty
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.goodCh_add
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.goodCh_ofEq
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.goodCh_ofList
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.goodCh_ofFinite
+#print axioms DiophantineConsistency.PRAWitnessZFCAxioms.goodCh_zfc

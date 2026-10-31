@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAHistoryUnderCanonical
+
+#print axioms DiophantineConsistency.PRAHistoryUnderCanonical.modelUnderCollector
+#print axioms DiophantineConsistency.PRAHistoryUnderCanonical.candidate_under_bits

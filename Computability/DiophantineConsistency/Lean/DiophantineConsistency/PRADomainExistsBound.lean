@@ -22,11 +22,7 @@ theorem exists_bound (x u s w : V) (hs : s ≤ w)
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb : bitDef.val.Evalb ![z,s] := by simpa [Semiformula.Operator.val, operator_mem_def, z] using hbit
     have hh := PRABitFullWitnessBound.bit_bound z s hb
-    have hs' : Fin.snoc ![z,s] (PRABitFullWitnessBound.bitMajorant s) = ![z,s,PRABitFullWitnessBound.bitMajorant s] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hs' : Fin.snoc ![z,s] (PRABitFullWitnessBound.bitMajorant s) = ![z,s,PRABitFullWitnessBound.bitMajorant s] := by simp
     have hm := eval_bnd_mono bitDef.val ![z,s] (Empty.elim : Empty → V) hposs (by rw [hs']; exact hh)
     let ω : Rew ℒₒᵣ Empty 2 Empty 5 := Rew.subst ![#0,#4]
     have hn := PRABndRewriting.natural bitDef.val ω ![z,y,x,u,s] w
@@ -34,19 +30,8 @@ theorem exists_bound (x u s w : V) (hs : s ≤ w)
       funext j
       refine Fin.cases rfl (fun k => ?_) j
       exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hsn : Fin.snoc ![z,y,x,u,s] w = ![z,y,x,u,s,w] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs'' : Fin.snoc ![z,s] w = ![z,s,w] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    have hsn : Fin.snoc ![z,y,x,u,s] w = ![z,y,x,u,s,w] := by simp
+    have hs'' : Fin.snoc ![z,s] w = ![z,s,w] := by simp
     rw [hv,hsn,hs''] at hn
     rw [hs''] at hm
     simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hn.mpr hm

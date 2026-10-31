@@ -1,0 +1,7 @@
+# Actual 85 zero: Pell indices, scoped author replay
+
+The guarded author run `/tmp/adaptive-gap85-indices-0cdmqsij` passed. In every IΣ₁ model, `expressionAt_indices85` derives positive first and main Pell indices and their coordinate and rank bounds from the actual 85 zero, assuming positive first natural port and positive witness coordinates. Both signed roots are retained as magnitudes; neither a root orientation nor any relation between the indices is assumed or established. No reverse bound or 85/Con(ZFC) equivalence is asserted.
+
+The replay authenticates the new source, independently replayed quotient, scaled-norm, unit and magnitude parents, literal and factor source/generators/candidate, 507 selected inherited objects and 28 v13 output/log records before and after. Historical project, Foundation and package boundaries remain inherited; no full current-source closure is claimed. Independent replay is required.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-indices.py`. Source SHA-256 `e70b40b6a3bd3612ba5048f6063fd2009d2feb12e45e16fe2bdee875bbe2bb25`, object `94d008225aac1903f40f0d087eecc89f1cba5857db0f8ff443b1e6e59d8616f1`, full Lean log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, state `4fa3efffeee8def67f74139c024003ab4ad1bff337cc04ad2edbe41d78640ba1`, evidence manifest `4c2c27e662cc8d8e49ffb1a4d6ea24d1496f4d5db43be892862818855b727197`.
