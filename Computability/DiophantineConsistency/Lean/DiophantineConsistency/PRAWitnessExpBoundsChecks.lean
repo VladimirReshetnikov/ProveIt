@@ -1,0 +1,12 @@
+import DiophantineConsistency.PRAWitnessExpBounds
+/-! Axiom audit for exponential witness bounds. -/
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.eval_expGraph
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.eval_expGraph2
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.val_expBound
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.val_expBound2
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.mono_expBound
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.mono_expBound2
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.dominates_of_val
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.dominates_expBound
+#print axioms DiophantineConsistency.PRAWitnessExpBounds.dominates_expBound2
+#print axioms DiophantineConsistency.PRAWitnessTransfer.wb_exs_bound

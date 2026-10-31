@@ -401,6 +401,21 @@ theorem wb_exs_poly (ψ : ArithmeticSemisentence (n + 1)) (hψ : Hierarchy 𝚺 
     (dominates_poly P) e x (B (x :> e)) (hb _ hx)
   exact ⟨x', by rwa [val_lMap_std] at hx', h'⟩
 
+/-- **An existential whose `𝗜𝚺₁` replacement lies below the graph of a
+candidate-PRA term**, monotone in candidate PRA. -/
+theorem wb_exs_bound (ψ : ArithmeticSemisentence (n + 1)) (hψ : Hierarchy 𝚺 1 ψ)
+    (Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n) (hdom : PRA ⊢ dominates Tg Tt)
+    (hmono : Mono M (fun e => Tt.val e Empty.elim))
+    (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin n → V) (x : V),
+      ψ.Eval (x :> e) Empty.elim →
+        ∃ t, Tg.Eval (t :> e) Empty.elim ∧ ∃ x' ≤ t, ψ.Eval (x' :> e) Empty.elim)
+    (hWB : WB M ψ) : WB M (∃⁰ ψ) := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  obtain ⟨B, hB, hb⟩ := hWB
+  refine wb_exs (fun e => Tt.val e Empty.elim) hmono (fun e ⟨x, hx⟩ => ?_) ⟨B, hB, hb⟩
+  exact transfer ψ ψ Tg Tt hψ hψ hI hdom e x (B (x :> e)) (hb _ hx)
+
 end poly
 
 
