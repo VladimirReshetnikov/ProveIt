@@ -78,15 +78,19 @@ def domainMajorant (u s : V) : V := s + PRABitFullWitnessBound.bitMajorant u +
  PRANegBitFullWitnessBound.negBitMajorant u + PRABitFullWitnessBound.bitMajorant s +
  PRANegBitFullWitnessBound.negBitMajorant s
 
-theorem domain_bound_explicit (u s : V) : domainDef.val.Evalb ![u,s] →
- (bnd domainDef.val).Evalb ![u,s,domainMajorant u s] := by
+/-- Each term included in the domain majorant is bounded by it. -/
+theorem domainMajorant_bounds (u s : V) :
+    s ≤ domainMajorant u s ∧
+    PRABitFullWitnessBound.bitMajorant u ≤ domainMajorant u s ∧
+    PRANegBitFullWitnessBound.negBitMajorant u ≤ domainMajorant u s ∧
+    PRABitFullWitnessBound.bitMajorant s ≤ domainMajorant u s ∧
+    PRANegBitFullWitnessBound.negBitMajorant s ≤ domainMajorant u s := by
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
   let A := PRABitFullWitnessBound.bitMajorant u
   let B := PRANegBitFullWitnessBound.negBitMajorant u
   let C := PRABitFullWitnessBound.bitMajorant s
   let D := PRANegBitFullWitnessBound.negBitMajorant s
-  apply domain_bound u s (domainMajorant u s)
-  · simp [domainMajorant,add_assoc]
+  refine ⟨by simp [domainMajorant,add_assoc], ?_, ?_, ?_, ?_⟩
   · simpa [domainMajorant,A,B,C,D,add_assoc,add_comm,add_left_comm] using
       (le_add_of_nonneg_right (a := A) (b := s+B+C+D) (zero_le : 0 ≤ s+B+C+D))
   · simpa [domainMajorant,A,B,C,D,add_assoc,add_comm,add_left_comm] using
@@ -95,6 +99,11 @@ theorem domain_bound_explicit (u s : V) : domainDef.val.Evalb ![u,s] →
       (le_add_of_nonneg_right (a := C) (b := s+A+B+D) (zero_le : 0 ≤ s+A+B+D))
   · simpa [domainMajorant,A,B,C,D,add_assoc,add_comm,add_left_comm] using
       (le_add_of_nonneg_right (a := D) (b := s+A+B+C) (zero_le : 0 ≤ s+A+B+C))
+
+theorem domain_bound_explicit (u s : V) : domainDef.val.Evalb ![u,s] →
+ (bnd domainDef.val).Evalb ![u,s,domainMajorant u s] := by
+  obtain ⟨hs, ha, hb, hc, hd⟩ := domainMajorant_bounds u s
+  exact domain_bound u s (domainMajorant u s) hs ha hb hc hd
 noncomputable def boundedDomain : ArithmeticSemisentence 3 := bnd domainDef.val
 noncomputable def domainBoundBody : ArithmeticSemisentence 2 :=
   “u s. !domainDef u s → !boundedDomain u s
