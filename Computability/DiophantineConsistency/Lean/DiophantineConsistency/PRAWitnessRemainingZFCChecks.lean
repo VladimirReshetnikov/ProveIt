@@ -1,0 +1,6 @@
+import DiophantineConsistency.PRAWitnessRemainingZFC
+
+#check DiophantineConsistency.PRAWitnessRemainingZFC.zfc_certificate_of_remaining
+#check DiophantineConsistency.PRAWitnessRemainingZFC.zfc_comparison_of_remaining
+#print axioms DiophantineConsistency.PRAWitnessRemainingZFC.zfc_certificate_of_remaining
+#print axioms DiophantineConsistency.PRAWitnessRemainingZFC.zfc_comparison_of_remaining

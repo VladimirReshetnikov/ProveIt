@@ -1,0 +1,48 @@
+DiophantineConsistency.PRAWitnessPositiveRuleAssembly.positiveLeaves_of_remaining {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (T : LO.FirstOrder.SetTheory) [LO.FirstOrder.Theory.Δ₁ T]
+  (h3 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 3))
+  (h4 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 4))
+  (h5 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 5))
+  (h8 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 8))
+  (h9 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 9)) :
+  DiophantineConsistency.PRAWitnessCoreRules.PositiveLeaves
+    (DiophantineConsistency.PRAWitnessDerivationCoreLeft.sigmaTail T)
+DiophantineConsistency.PRAWitnessPositiveRuleAssembly.wb_coreSigma_of_remaining {M : Type} [Nonempty M]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language M]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language M]
+  [M↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA]
+  (T : LO.FirstOrder.SetTheory) [LO.FirstOrder.Theory.Δ₁ T]
+  (h3 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 3))
+  (h4 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 4))
+  (h5 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 5))
+  (h8 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 8))
+  (h9 :
+    DiophantineConsistency.PRAWitnessCalculus.WB M
+      (DiophantineConsistency.PRAWitnessPositiveRuleAssembly.sigmaRule T 9)) :
+  DiophantineConsistency.PRAWitnessCalculus.WB M
+    ↑(LO.FirstOrder.Arithmetic.HierarchySymbol.Semiformula.sigma
+        (LO.FirstOrder.Arithmetic.Bootstrapping.Derivation.blueprint T).core)
+'DiophantineConsistency.PRAWitnessPositiveRuleAssembly.wb_coreSigma_of_remaining' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

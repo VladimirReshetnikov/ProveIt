@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAWitnessPositiveRuleAssembly
+
+#check DiophantineConsistency.PRAWitnessPositiveRuleAssembly.positiveLeaves_of_remaining
+#check DiophantineConsistency.PRAWitnessPositiveRuleAssembly.wb_coreSigma_of_remaining
+#print axioms DiophantineConsistency.PRAWitnessPositiveRuleAssembly.wb_coreSigma_of_remaining

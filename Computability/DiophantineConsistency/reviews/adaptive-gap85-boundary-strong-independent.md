@@ -1,0 +1,5 @@
+# Artificial-port F=q boundary with first/strong units: independent replay
+
+Independent run `/tmp/adaptive-gap85-boundary-strong-2f91l83a` passed against author replay `/tmp/adaptive-gap85-boundary-strong-n4121ptq`. Source, object and full-log hashes, parent anchors, 507 selected inherited-object inventory hash, and 28 v13 output/log checks match. Independent state, source snapshot, driver, logs and timing are preserved in `adaptive-gap85-boundary-strong-independent-evidence/`; manifest SHA-256 `f334bf0e3a44591bf1f976668d4bf462a3e64f5b12a72b8766c059793a5184b1`.
+
+For artificial ports `(2,4,0,3)` meeting the strict actual-style port inequalities, a positive witness has `F=q=3`, `C=1`, first/strong units and positive exact small rank while the reverse gap fails. Its main factor is always 68720812858, so the full polynomial is nonzero. The auxiliary unit is unasserted; this is not a full-zero or fixed-port counterexample. Historical project/model/Foundation/package boundaries remain inherited.

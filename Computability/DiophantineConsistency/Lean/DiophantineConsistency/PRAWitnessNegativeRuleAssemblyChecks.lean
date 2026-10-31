@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAWitnessNegativeRuleAssembly
+
+#check DiophantineConsistency.PRAWitnessNegativeRuleAssembly.negativeLeaves_of_remaining
+#check DiophantineConsistency.PRAWitnessNegativeRuleAssembly.wb_neg_corePi_of_remaining
+#print axioms DiophantineConsistency.PRAWitnessNegativeRuleAssembly.wb_neg_corePi_of_remaining

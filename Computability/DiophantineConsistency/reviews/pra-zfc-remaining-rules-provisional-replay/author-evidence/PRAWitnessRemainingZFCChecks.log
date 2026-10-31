@@ -1,0 +1,41 @@
+DiophantineConsistency.PRAWitnessRemainingZFC.zfc_certificate_of_remaining
+  (hpos :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessRemainingZFC.PositiveRemainder N)
+  (hneg :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessRemainingZFC.NegativeRemainder N) :
+  DiophantineConsistency.PRAStrictConReverse.BoundCertificate
+    (LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred 𝗭𝗙𝗖 ⊥)
+DiophantineConsistency.PRAWitnessRemainingZFC.zfc_comparison_of_remaining (n : ℕ)
+  (a b : LO.FirstOrder.Semiterm ℒₒᵣ Empty n)
+  (hsigma : LO.FirstOrder.Arithmetic.Hierarchy 𝚺 1 (LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred 𝗭𝗙𝗖 ⊥))
+  (heq :
+    𝗜𝚺₁ ⊢
+      DiophantineConsistency.PRANoZeroUnary.noZero n a b 🡘
+        ∼LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred 𝗭𝗙𝗖 ⊥)
+  (hpos :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessRemainingZFC.PositiveRemainder N)
+  (hneg :
+    ∀ (N : Type) [inst : Nonempty N] [inst_1 : LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+      [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+      [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA],
+      DiophantineConsistency.PRAWitnessRemainingZFC.NegativeRemainder N) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+        (DiophantineConsistency.PRANoZeroUnary.noZero n a b) 🡘
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+        (∼LO.FirstOrder.Arithmetic.Bootstrapping.provabilityPred 𝗭𝗙𝗖 ⊥)
+'DiophantineConsistency.PRAWitnessRemainingZFC.zfc_certificate_of_remaining' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRAWitnessRemainingZFC.zfc_comparison_of_remaining' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
