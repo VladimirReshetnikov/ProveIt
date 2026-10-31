@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAWitnessZFCCertificate
+
+#check DiophantineConsistency.PRAWitnessZFCCertificate.zfc_certificate_of_core
+#print axioms DiophantineConsistency.PRAWitnessZFCCertificate.zfc_certificate_of_core

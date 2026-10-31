@@ -65,9 +65,12 @@ merged worktree before their proofs are treated as current-source evidence:
    actual ZFC axiom recognizer, including separation and replacement.
 
 The remaining endpoint is a bound for the actual `Derivation.blueprint`
-core, its fixpoint and the surrounding refutation sentence, followed by a
-Lean completeness argument producing `BoundCertificate π`. The presence of
-the source declarations above does not by itself establish that endpoint or a
+core. The [outer refutation reduction](reviews/pra-refutation-outer-provisional-replay/README.md)
+now derives the exact fixed ZFC `BoundCertificate` from the two core bounds in
+all candidate-PRA models, and composes the generic version with the no-zero
+comparison. Those bounds remain assumptions, and the outer reduction's replay
+inherits a provisional mixed-project and external provider. The presence of
+the source declarations above does not by itself establish the endpoint or a
 complete current-source replay.
 
 The detailed history below records how the individual bound and code modules
