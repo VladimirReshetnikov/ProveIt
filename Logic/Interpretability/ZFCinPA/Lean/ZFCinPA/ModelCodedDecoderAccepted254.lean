@@ -101,25 +101,40 @@ theorem rowKernel_sound (k payload u v : V)
     · left; simp [rowKernel,h0,h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,h11,hg]
   · left; simp [rowKernel,h0,h1,h2,h3,h4,h5,h6,h7,h8,h9,h10,h11]
 
-/-- One actual Sigma1 invariant; no unbounded universal proof-witness premise. -/
-theorem rejected_or_decoded_provable : ∀ code : V,
-    value code = 0 ∨ Provable (𝗭𝗙 : SetTheory) (decode (value code-1)) := by
+/-- Propagate local row soundness through any represented history with this recurrence. -/
+theorem history_sound (eval : V → V) [𝚫₁-Function₁[V] eval]
+    (kernel : V → V → V → V → V) (hzero : eval 0 = 0)
+    (hstep : ∀ raw : V, eval (raw+1) = kernel (raw % 12) (raw / 12)
+      (if raw % 12 = 2 then eval (second (raw / 12))
+       else eval (first (second (raw / 12))))
+      (eval (second (second (raw / 12)))))
+    (hrow : ∀ k payload u v : V,
+      (u ≠ 0 → Provable (𝗭𝗙 : SetTheory) (decode (u-1))) →
+      (v ≠ 0 → Provable (𝗭𝗙 : SetTheory) (decode (v-1))) →
+      kernel k payload u v = 0 ∨
+        Provable (𝗭𝗙 : SetTheory) (decode (kernel k payload u v-1))) :
+    ∀ code : V, eval code = 0 ∨ Provable (𝗭𝗙 : SetTheory) (decode (eval code-1)) := by
   apply ISigma1.sigma1_order_induction (P := fun code : V =>
-    value code = 0 ∨ Provable (𝗭𝗙 : SetTheory) (decode (value code-1)))
+    eval code = 0 ∨ Provable (𝗭𝗙 : SetTheory) (decode (eval code-1)))
   · definability
   · intro code ih
     rcases zero_or_succ code with rfl | ⟨raw,rfl⟩
-    · left; simp
-    · have child (i : V) (hi : i ≤ raw) (hne : value i ≠ 0) :
-          Provable (𝗭𝗙 : SetTheory) (decode (value i-1)) := by
+    · left; exact hzero
+    · have child (i : V) (hi : i ≤ raw) (hne : eval i ≠ 0) :
+          Provable (𝗭𝗙 : SetTheory) (decode (eval i-1)) := by
         exact (ih i (lt_of_le_of_lt hi (lt_add_one raw))).resolve_left hne
-      rw [value_succ]
-      apply rowKernel_sound
+      rw [hstep]
+      apply hrow
       · by_cases htag : raw % 12 = 2
         · simpa only [htag,ite_true] using child (second (raw/12)) (tail_le raw)
         · simpa only [htag,ite_false] using
             child (first (second (raw/12))) (minor_le raw)
       · exact child (second (second (raw/12))) (major_le raw)
+
+/-- One actual Sigma1 invariant; no unbounded universal proof-witness premise. -/
+theorem rejected_or_decoded_provable : ∀ code : V,
+    value code = 0 ∨ Provable (𝗭𝗙 : SetTheory) (decode (value code-1)) :=
+  history_sound value rowKernel (by simp) value_succ rowKernel_sound
 
 theorem accepted_decoded_provable (code : V) (hv : value code ≠ 0) :
     Provable (𝗭𝗙 : SetTheory) (decode (value code-1)) :=
