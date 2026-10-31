@@ -1,3 +1,4 @@
+import ZFCinPA.ValidatorPrefixContext
 import ZFCinPA.ValidatorImplicationContext
 import ZFCinPA.ValidatorRelationalCore222
 
@@ -200,20 +201,17 @@ private lemma wel_fresh (a b : V) : wel a b ≠ a ∧ wel a b ≠ b := by
 helper binder wel(a,b), followed by fixed relational alpha conversion. -/
 theorem Eq_Eind (a b : V) : CProv (wim (weq a b) (Eind a b)) := by
   let w := wel a b
-  have hi : CProv (wim (weq a b) (Bin w a b)) := by
-    apply ded1
-    exact .mp (.mp (.ax (conj_rule _ _)) (.mp (.ax (eq_mem_right a b w)) h0))
-      (.mp (.ax (eq_mem_right b a w)) (.mp (.ax (eq_symm a b)) h0))
-  have ho : CProv (wim (weq a b) (Bout w a b)) := by
-    apply ded1
-    exact .mp (.mp (.ax (conj_rule _ _)) (.mp (.ax (eq_mem_left a b w)) h0))
-      (.mp (.ax (eq_mem_left b a w)) (.mp (.ax (eq_symm a b)) h0))
-  apply ded1
-  have hall : D [weq a b] (wal w (weq a b)) := .mp (.ax (cProv_helper a b)) h0
-  have di : D [weq a b] (wal w (Bin w a b)) := .mp (.ax (all_mono w hi)) hall
-  have do' : D [weq a b] (wal w (Bout w a b)) := .mp (.ax (all_mono w ho)) hall
-  exact .mp (.ax (eind_of w a b (wel_fresh a b).1 (wel_fresh a b).2))
-    (.mp (.mp (.ax (conj_rule _ _)) di) do')
+  have hi : CProv (wim (weq a b) (Bin w a b)) :=
+    ValidatorPrefixContext.conj_under CProv cProv_classical (eq_mem_right a b w)
+      (compose (eq_symm a b) (eq_mem_right b a w))
+  have ho : CProv (wim (weq a b) (Bout w a b)) :=
+    ValidatorPrefixContext.conj_under CProv cProv_classical (eq_mem_left a b w)
+      (compose (eq_symm a b) (eq_mem_left b a w))
+  have hev : CProv (wim (weq a b) (Ev w a b)) :=
+    ValidatorPrefixContext.conj_under CProv cProv_classical
+      (compose (cProv_helper a b) (all_mono w hi))
+      (compose (cProv_helper a b) (all_mono w ho))
+  exact compose hev (eind_of w a b (wel_fresh a b).1 (wel_fresh a b).2)
 
 theorem Eind_ex (a b : V) : CProv (ex a (Eind a b)) :=
   cProv_mp (ex_mono a (Eq_Eind a b)) (ex_equality a b)
