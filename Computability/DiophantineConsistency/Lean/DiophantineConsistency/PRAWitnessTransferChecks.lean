@@ -14,3 +14,6 @@ import DiophantineConsistency.PRAWitnessTransfer
 #print axioms DiophantineConsistency.PRAWitnessTransfer.PRA_goal
 #print axioms DiophantineConsistency.PRAWitnessTransfer.transfer
 #print axioms DiophantineConsistency.PRAISigmaOneOpenComparison.comparison
+#print axioms DiophantineConsistency.PRAWitnessTransfer.polyGraph
+#print axioms DiophantineConsistency.PRAWitnessTransfer.dominates_poly
+#print axioms DiophantineConsistency.PRAWitnessTransfer.wb_exs_poly

@@ -10,14 +10,14 @@ computation histories, syntax-function values) have small replacements in
 replacement statement into every candidate-PRA model.
 
 Fix a `Σ₁` formula `ψ` in context `x :> e` and a bound: an `ℒₒᵣ` graph `Tg`
-(context `t :> e`) together with a candidate-PRA code `Tc` above every value of
+(context `t :> e`) together with a candidate-PRA term `Tt` above every value of
 `Tg`. If every `𝗜𝚺₁` model satisfies
 
   `ψ(x, e) → ∃ t, Tg(t, e) ∧ ∃ x' ≤ t, ψ(x', e)`,
 
 then every candidate-PRA model `M` satisfies
 
-  `bnd ψ(x, e, w) → ∃ x' ≤ Tc(e), ψ(x', e)` (`transfer`).
+  `bnd ψ(x, e, w) → ∃ x' ≤ Tt(e), ψ(x', e)` (`transfer`).
 
 Phrased with `bnd ψ` the statement is `∀ e x w ∃ z θ` with a bounded matrix,
 so `PRAISigmaOneOpenComparison.comparison` (Parsons' theorem in the form
@@ -151,20 +151,20 @@ theorem front_bounded (ψ : ArithmeticSemisentence (n + 1)) (hψ : Hierarchy �
     Hierarchy 𝚺 0 (front ψ) :=
   Hierarchy.rew _ (hierarchy_bnd hψ le_rfl (fun _ => rfl))
 
-/-- The bound code dominates its graph: `Tg(t, e) → t ≤ Tc(e)`. -/
-noncomputable def dominates (Tg : ArithmeticSemisentence (n + 1)) (Tc : Code n) : Sentence language :=
+/-- The bound term dominates its graph: `Tg(t, e) → t ≤ Tt(e)`. -/
+noncomputable def dominates (Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n) : Sentence language :=
   ∀⁰* (Semiformula.lMap embedding Tg 🡒
-    (Rew.subst ![#0, applyCode Tc (fun i => #i.succ)] ▹
+    (Rew.subst ![#0, Rew.bShift Tt] ▹
       Semiformula.lMap embedding (“x y. x ≤ y” : ArithmeticSemisentence 2)))
 
 /-- The open matrix: free variables `x = &0`, `w = &1`, `e = &2, …`; bound `z`. -/
-noncomputable def theta (cA cC : Code (n + 2)) (Tc : Code n) : Semiproposition language 1 :=
+noncomputable def theta (cA cC : Code (n + 2)) (Tt : TermN n) : Semiproposition language 1 :=
   ∼(Rew.embSubsts (fun i : Fin (n + 2) => (&(i : ℕ) : Semiterm language ℕ 1)) ▹ characteristicMatrix cA) ⋎
     (Rew.embSubsts ((#0 : Semiterm language ℕ 1) :>
-      (Semiterm.func Tc (fun i : Fin n => &((i : ℕ) + 2)) : Semiterm language ℕ 1) :>
+      (Rew.embSubsts (fun i : Fin n => (&((i : ℕ) + 2) : Semiterm language ℕ 1)) Tt) :>
       fun i : Fin n => &((i : ℕ) + 2)) ▹ characteristicMatrix cC)
 
-theorem theta_open (cA cC : Code (n + 2)) (Tc : Code n) : (theta cA cC Tc).Open := by
+theorem theta_open (cA cC : Code (n + 2)) (Tt : TermN n) : (theta cA cC Tt).Open := by
   simp [theta, characteristicMatrix]
 
 section models
@@ -183,13 +183,13 @@ theorem eval_lMap_std {k : ℕ} (φ : ArithmeticSemisentence k) (v : Fin k → M
 
 omit [M↓[language] ⊧* PRA] in
 /-- What the open matrix says. -/
-theorem eval_theta (ψ : ArithmeticSemisentence (n + 1)) (cA cC : Code (n + 2)) (Tc : Code n)
+theorem eval_theta (ψ : ArithmeticSemisentence (n + 1)) (cA cC : Code (n + 2)) (Tt : TermN n)
     (hA : M↓[language] ⊧ oneCorrectSentence cA (Semiformula.lMap embedding (front ψ)))
     (hC : M↓[language] ⊧ oneCorrectSentence cC (Semiformula.lMap embedding (cdef ψ)))
     (z : M) (f : ℕ → M) :
-    (theta cA cC Tc).Eval ![z] f ↔
+    (theta cA cC Tt).Eval ![z] f ↔
       ¬(front ψ).Eval (f 0 :> f 1 :> fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim ∨
-        (cdef ψ).Eval (z :> Structure.func (L := language) Tc (fun i : Fin n => f ((i : ℕ) + 2)) :>
+        (cdef ψ).Eval (z :> Tt.val (fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim :>
           fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim := by
   have hA' := modelCharacteristicMatrix cA _ hA
   have hC' := modelCharacteristicMatrix cC _ hC
@@ -199,55 +199,61 @@ theorem eval_theta (ψ : ArithmeticSemisentence (n + 1)) (cA cC : Code (n + 2)) 
       ⇑(Rew.embSubsts fun i : Fin (n + 2) => (&(i : ℕ) : Semiterm language ℕ 1)) ∘ Semiterm.bvar) =
       (f 0 :> f 1 :> fun i : Fin n => f ((i : ℕ) + 2)) := by
     funext i; refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun k => ?_) j) i <;> simp
+  have ht : ((Rew.embSubsts (fun i : Fin n => (&((i : ℕ) + 2) : Semiterm language ℕ 1))) Tt).val ![z] f =
+      Tt.val (fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim := by
+    rw [Semiterm.val_rew]
+    congr 1
+    funext x
+    exact x.elim
   have v2 : (Semiterm.val ![z] f ∘
       ⇑(Rew.embSubsts ((#0 : Semiterm language ℕ 1) :>
-        (Semiterm.func Tc (fun i : Fin n => &((i : ℕ) + 2)) : Semiterm language ℕ 1) :>
+        (Rew.embSubsts (fun i : Fin n => (&((i : ℕ) + 2) : Semiterm language ℕ 1)) Tt) :>
           fun i : Fin n => &((i : ℕ) + 2))) ∘ Semiterm.bvar) =
-      (z :> Structure.func (L := language) Tc (fun i : Fin n => f ((i : ℕ) + 2)) :>
+      (z :> Tt.val (fun i : Fin n => f ((i : ℕ) + 2)) Empty.elim :>
         fun i : Fin n => f ((i : ℕ) + 2)) := by
     funext i; refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun k => ?_) j) i <;>
-      simp [Semiterm.val_func, Function.comp_def]
+      simp [Function.comp_def, ht]
   have f1 : (Semiterm.val ![z] f ∘
       ⇑(Rew.embSubsts fun i : Fin (n + 2) => (&(i : ℕ) : Semiterm language ℕ 1)) ∘ Semiterm.fvar) =
       (Empty.elim : Empty → M) := Subsingleton.elim _ _
   have f2 : (Semiterm.val ![z] f ∘
       ⇑(Rew.embSubsts ((#0 : Semiterm language ℕ 1) :>
-        (Semiterm.func Tc (fun i : Fin n => &((i : ℕ) + 2)) : Semiterm language ℕ 1) :>
+        (Rew.embSubsts (fun i : Fin n => (&((i : ℕ) + 2) : Semiterm language ℕ 1)) Tt) :>
           fun i : Fin n => &((i : ℕ) + 2))) ∘ Semiterm.fvar) = (Empty.elim : Empty → M) :=
     Subsingleton.elim _ _
   rw [v1, v2, f1, f2, hA', hC', eval_lMap_std, eval_lMap_std]
   exact Iff.rfl
 
-theorem eval_dominates (Tg : ArithmeticSemisentence (n + 1)) (Tc : Code n)
-    (h : M↓[language] ⊧ dominates Tg Tc) (t : M) (e : Fin n → M) :
+theorem eval_dominates (Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
+    (h : M↓[language] ⊧ dominates Tg Tt) (t : M) (e : Fin n → M) :
     letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
-    Tg.Eval (t :> e) Empty.elim → t ≤ Structure.func (L := language) Tc e := by
+    Tg.Eval (t :> e) Empty.elim → t ≤ Tt.val e Empty.elim := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
   simp only [models_iff, dominates, Semiformula.eval_allClosure] at h
   intro ht
   have h' := h (t :> e)
   simp only [LogicalConnective.HomClass.map_imply, Semiformula.eval_rew, eval_lMap_std] at h'
   have hv : (Semiterm.val (t :> e) Empty.elim ∘
-      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), applyCode Tc (fun i => #i.succ)]) ∘
-        Semiterm.bvar) = ![t, Structure.func (L := language) Tc e] := by
+      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift Tt]) ∘
+        Semiterm.bvar) = ![t, Tt.val e Empty.elim] := by
     funext i; refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun k => Fin.elim0 k) j) i <;>
-      simp [applyCode, Semiterm.val_func, Function.comp_def]
+      simp [Function.comp_def]
   have hf : (Semiterm.val (t :> e) Empty.elim ∘
-      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), applyCode Tc (fun i => #i.succ)]) ∘
+      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift Tt]) ∘
         Semiterm.fvar) = (Empty.elim : Empty → M) := Subsingleton.elim _ _
   rw [hv, hf, eval_lMap_std] at h'
-  have hd : t = Structure.func (L := language) Tc e ∨ t < Structure.func (L := language) Tc e := by
+  have hd : t = Tt.val e Empty.elim ∨ t < Tt.val e Empty.elim := by
     simpa [Semiformula.Operator.val, Semiformula.Operator.LE.sentence_eq,
       Semiformula.Operator.Eq.sentence_eq, Semiformula.Operator.LT.sentence_eq] using h' ht
   exact le_iff_eq_or_lt.mpr hd
 
 end models
 
-theorem PRA_goal (ψ Tg : ArithmeticSemisentence (n + 1)) (Tc : Code n)
-    (hdom : PRA ⊢ dominates Tg Tc) (cA cC : Code (n + 2))
+theorem PRA_goal (ψ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
+    (hdom : PRA ⊢ dominates Tg Tt) (cA cC : Code (n + 2))
     (hA : PRA ⊢ oneCorrectSentence cA (Semiformula.lMap embedding (front ψ)))
     (hC : PRA ⊢ oneCorrectSentence cC (Semiformula.lMap embedding (cdef ψ))) :
-    PRA ⊢ (Semiformula.lMap embedding (∀⁰* sigmaBody ψ Tg) 🡒 (∃⁰ theta cA cC Tc).univCl) := by
+    PRA ⊢ (Semiformula.lMap embedding (∀⁰* sigmaBody ψ Tg) 🡒 (∃⁰ theta cA cC Tt).univCl) := by
   apply Theory.Proof.complete_on_eq_models.{0,0}
   intro M _ _ _ hM
   letI : M↓[language] ⊧* PRA := hM
@@ -272,11 +278,11 @@ theorem PRA_goal (ψ Tg : ArithmeticSemisentence (n + 1)) (Tc : Code n)
   let e : Fin n → M := fun i => f ((i : ℕ) + 2)
   by_cases hf : (front ψ).Eval (f 0 :> f 1 :> e) Empty.elim
   · obtain ⟨t, ht, z, hz⟩ := (eval_sigmaBody ψ Tg (f 0) (f 1) e).mp (hσ' _) hf
-    have hte := eval_dominates Tg Tc hdm t e ht
+    have hte := eval_dominates Tg Tt hdm t e ht
     obtain ⟨x', hx', w', hw', rfl, hxt, hb⟩ := (eval_cdef ψ z t e).mp hz
-    refine ⟨⟪x', w'⟫, (eval_theta ψ cA cC Tc hAm hCm _ f).mpr (Or.inr ?_)⟩
+    refine ⟨⟪x', w'⟫, (eval_theta ψ cA cC Tt hAm hCm _ f).mpr (Or.inr ?_)⟩
     exact (eval_cdef ψ _ _ e).mpr ⟨x', hx', w', hw', rfl, le_trans hxt hte, hb⟩
-  · exact ⟨0, (eval_theta ψ cA cC Tc hAm hCm 0 f).mpr (Or.inl hf)⟩
+  · exact ⟨0, (eval_theta ψ cA cC Tt hAm hCm 0 f).mpr (Or.inl hf)⟩
 
 section transfer
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
@@ -290,20 +296,20 @@ local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.OR
 /-- **Witness-replacement transfer.** A replacement bound valid in every `𝗜𝚺₁`
 model, dominated by a candidate-PRA code, holds in every candidate-PRA model for
 every instance whose own witnesses are bounded. -/
-theorem transfer (ψ Tg : ArithmeticSemisentence (n + 1)) (Tc : Code n) (hψ : Hierarchy 𝚺 1 ψ)
+theorem transfer (ψ Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n) (hψ : Hierarchy 𝚺 1 ψ)
     (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin n → V) (x : V),
       ψ.Eval (x :> e) Empty.elim →
         ∃ t, Tg.Eval (t :> e) Empty.elim ∧ ∃ x' ≤ t, ψ.Eval (x' :> e) Empty.elim)
-    (hdom : PRA ⊢ dominates Tg Tc) (e : Fin n → M) (x w : M)
+    (hdom : PRA ⊢ dominates Tg Tt) (e : Fin n → M) (x w : M)
     (hb : (bnd ψ).Eval (Fin.snoc (x :> e) w) Empty.elim) :
-    ∃ x' ≤ Structure.func (L := language) Tc e, ψ.Eval (x' :> e) Empty.elim := by
+    ∃ x' ≤ Tt.val e Empty.elim, ψ.Eval (x' :> e) Empty.elim := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
   obtain ⟨cA, -, -, hA⟩ := PRA_proves_boundedBooleanCharacteristic
     (Semiformula.lMap embedding (front ψ)) (ParsonsHierarchyMap.hierarchy (front_bounded ψ hψ))
   obtain ⟨cC, -, -, hC⟩ := PRA_proves_boundedBooleanCharacteristic
     (Semiformula.lMap embedding (cdef ψ)) (ParsonsHierarchyMap.hierarchy (cdef_bounded ψ hψ))
   have hG := PRAISigmaOneOpenComparison.comparison (∀⁰* sigmaBody ψ Tg) (isigma1_sigma ψ Tg hψ hI)
-    (theta cA cC Tc) (theta_open cA cC Tc) (PRA_goal ψ Tg Tc hdom cA cC hA hC)
+    (theta cA cC Tt) (theta_open cA cC Tt) (PRA_goal ψ Tg Tt hdom cA cC hA hC)
   have hGm := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hG
   have hAm := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hA
   have hCm := models_of_provable (inferInstance : M↓[language] ⊧* PRA) hC
@@ -314,12 +320,87 @@ theorem transfer (ψ Tg : ArithmeticSemisentence (n + 1)) (Tc : Code n) (hψ : H
     | k + 2 => if h : k < n then e ⟨k, h⟩ else x
   have hfe : (fun i : Fin n => f ((i : ℕ) + 2)) = e := by funext i; simp [f, i.isLt]
   obtain ⟨z, hz⟩ := hGm f
-  rw [eval_theta ψ cA cC Tc hAm hCm z f, hfe] at hz
+  rw [eval_theta ψ cA cC Tt hAm hCm z f, hfe] at hz
   have hfr : (front ψ).Eval (f 0 :> f 1 :> e) Empty.elim := (eval_front ψ x w e).mpr hb
   obtain ⟨x', -, w', -, -, hxT, hb'⟩ := (eval_cdef ψ z _ e).mp (hz.resolve_left (not_not_intro hfr))
   exact ⟨x', hxT, eval_bnd_imp ψ (x' :> e) w' Empty.elim hb'⟩
 
+/-! ## Polynomial bounds -/
+
+/-- The graph `t = P(e)` of an `ℒₒᵣ` term. -/
+noncomputable def polyGraph (P : ArithmeticSemiterm Empty n) : ArithmeticSemisentence (n + 1) :=
+  Semiformula.Operator.Eq.eq.operator ![#0, Rew.bShift P]
+
+omit [Nonempty M] [M↓[language] ⊧* PRA] in
+theorem val_lMap_std (P : ArithmeticSemiterm Empty n) (e : Fin n → M) :
+    (Semiterm.lMap embedding P).val e Empty.elim = P.val e Empty.elim := by
+  rw [Semiterm.val_lMap, PRAModelIOpenPairing.reduct_eq_standard]
+
+theorem dominates_poly (P : ArithmeticSemiterm Empty n) :
+    PRA ⊢ dominates (polyGraph P) (Semiterm.lMap embedding P) := by
+  apply Theory.Proof.complete_on_eq_models.{0,0}
+  intro M _ _ _ hM
+  letI : M↓[language] ⊧* PRA := hM
+  letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
+  letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
+  letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
+  letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
+  letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+  simp only [models_iff, dominates, Semiformula.eval_allClosure, LogicalConnective.HomClass.map_imply]
+  intro v hv
+  rw [eval_lMap_std] at hv
+  have hv0 : v 0 = P.val (fun i => v i.succ) Empty.elim := by
+    simpa [polyGraph, Semiformula.Operator.val, Semiformula.Operator.Eq.sentence_eq,
+      Semiterm.val_bShift'] using hv
+  rw [Semiformula.eval_rew]
+  have hvec : (Semiterm.val v Empty.elim ∘
+      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift (Semiterm.lMap embedding P)]) ∘
+        Semiterm.bvar) = ![v 0, P.val (fun i => v i.succ) Empty.elim] := by
+    funext i; refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun k => Fin.elim0 k) j) i <;>
+      simp [Semiterm.val_bShift', val_lMap_std]
+  have hf : (Semiterm.val v Empty.elim ∘
+      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift (Semiterm.lMap embedding P)]) ∘
+        Semiterm.fvar) = (Empty.elim : Empty → M) := Subsingleton.elim _ _
+  rw [hvec, hf, eval_lMap_std]
+  simp [Semiformula.Operator.val, Semiformula.Operator.LE.sentence_eq, Semiformula.Operator.Eq.sentence_eq,
+    Semiformula.Operator.LT.sentence_eq]
+  exact Or.inl hv0
+
 end transfer
+
+section poly
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
+  [M↓[language] ⊧* PRA]
+local instance : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
+local instance : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
+local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
+local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
+local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+open PRAWitnessCalculus
+
+/-- **An existential whose `𝗜𝚺₁` replacement lies below an `ℒₒᵣ` polynomial has
+bounded witnesses in every candidate-PRA model.** -/
+theorem wb_exs_poly (ψ : ArithmeticSemisentence (n + 1)) (hψ : Hierarchy 𝚺 1 ψ)
+    (P : ArithmeticSemiterm Empty n)
+    (hI : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin n → V) (x : V),
+      ψ.Eval (x :> e) Empty.elim → ∃ x' ≤ P.val e Empty.elim, ψ.Eval (x' :> e) Empty.elim)
+    (hWB : WB M ψ) : WB M (∃⁰ ψ) := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  obtain ⟨B, hB, hb⟩ := hWB
+  refine wb_exs (fun e => P.val e Empty.elim) (term_mono P) (fun e ⟨x, hx⟩ => ?_) ⟨B, hB, hb⟩
+  have hI' : ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (e : Fin n → V) (x : V),
+      ψ.Eval (x :> e) Empty.elim → ∃ t, (polyGraph P).Eval (t :> e) Empty.elim ∧
+        ∃ x' ≤ t, ψ.Eval (x' :> e) Empty.elim := by
+    intro V _ _ e x h
+    obtain ⟨x', hx', h'⟩ := hI V e x h
+    exact ⟨P.val e Empty.elim, by simp [polyGraph, Semiformula.Operator.val,
+      Semiformula.Operator.Eq.sentence_eq], x', hx', h'⟩
+  obtain ⟨x', hx', h'⟩ := transfer ψ (polyGraph P) (Semiterm.lMap embedding P) hψ hI'
+    (dominates_poly P) e x (B (x :> e)) (hb _ hx)
+  exact ⟨x', by rwa [val_lMap_std] at hx', h'⟩
+
+end poly
 
 
 end DiophantineConsistency.PRAWitnessTransfer
