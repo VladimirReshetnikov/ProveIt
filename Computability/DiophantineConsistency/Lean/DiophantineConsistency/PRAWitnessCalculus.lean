@@ -162,6 +162,14 @@ theorem wb_rew {k n : ℕ} {ψ : ArithmeticSemisentence k} (ω : Rew ℒₒᵣ E
   have hn := PRABndRewriting.natural ψ ω e (B (V e))
   exact hn.mpr (hb (V e) (by simpa [V, Function.comp_def] using he))
 
+omit [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻] in
+@[simp] theorem subst_bot {k n : ℕ} (v : Fin k → ArithmeticSemiterm Empty n) :
+    Rewriting.subst (⊥ : ArithmeticSemisentence k) v = ⊥ := rfl
+
+omit [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻] in
+@[simp] theorem subst_top {k n : ℕ} (v : Fin k → ArithmeticSemiterm Empty n) :
+    Rewriting.subst (⊤ : ArithmeticSemisentence k) v = ⊤ := rfl
+
 /-- A conjunction with `⊥` never holds. -/
 theorem wb_bot_and {n : ℕ} (ψ : ArithmeticSemisentence n) : WB M (⊥ ⋏ ψ) :=
   ⟨fun _ => 0, mono_const 0, fun _ h => by simp at h⟩
@@ -349,7 +357,8 @@ macro "wb_step" : tactic =>
     | (with_reducible apply wb_operator; assumption)
     | (with_reducible apply wb_neg_operator; assumption)
     | (simp only [Semiformula.imp_eq, Semiformula.iff_eq, DeMorgan.and, DeMorgan.or,
-        DeMorgan.neg, Semiformula.neg_all, Semiformula.neg_ex, ballIn, bexsIn]))
+        DeMorgan.neg, DeMorgan.falsum, DeMorgan.verum, subst_bot, subst_top,
+        Semiformula.neg_all, Semiformula.neg_ex, ballIn, bexsIn]))
 
 macro "wb_auto" : tactic => `(tactic| repeat' wb_step)
 
