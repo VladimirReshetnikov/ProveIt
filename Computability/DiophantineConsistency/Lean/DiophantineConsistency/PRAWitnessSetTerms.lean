@@ -20,6 +20,7 @@ theorem func_def_set : (ℒₛₑₜ).isFunc = .mkSigma “k f. ⊥” := rfl
 section sigma1
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
+omit [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] in
 theorem not_isFunc (k f : V) : ¬(ℒₛₑₜ).IsFunc k f := by
   simp [Language.IsFunc, func_def_set]
 
