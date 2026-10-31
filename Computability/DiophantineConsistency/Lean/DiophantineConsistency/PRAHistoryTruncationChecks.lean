@@ -1,0 +1,16 @@
+import DiophantineConsistency.PRAHistoryTruncation
+/-! Axiom audit for fixpoint-history truncation. -/
+#print axioms DiophantineConsistency.PRAHistoryTruncation.lt_exp_of_bits
+#print axioms DiophantineConsistency.PRAHistoryTruncation.cseq_iff
+#print axioms DiophantineConsistency.PRAHistoryTruncation.seq_iff
+#print axioms DiophantineConsistency.PRAHistoryTruncation.lh_iff
+#print axioms DiophantineConsistency.PRAHistoryTruncation.succ_lt_exp
+#print axioms DiophantineConsistency.PRAHistoryTruncation.truncate_spec
+#print axioms DiophantineConsistency.PRAHistoryTruncation.truncGuard_iff
+#print axioms DiophantineConsistency.PRAHistoryTruncation.modelTruncate
+#print axioms DiophantineConsistency.PRAHistoryTruncation.expF_mono
+#print axioms DiophantineConsistency.PRAHistoryTruncation.histBound_mono
+#print axioms DiophantineConsistency.PRAHistoryTruncation.wb_limSeqDef
+#print axioms DiophantineConsistency.PRAHistoryTruncation.limSeq_value_lt
+#print axioms DiophantineConsistency.PRAHistoryTruncation.wb_fixpoint_sigma
+#print axioms DiophantineConsistency.PRAHistoryTruncation.wb_fixpoint_neg_pi
