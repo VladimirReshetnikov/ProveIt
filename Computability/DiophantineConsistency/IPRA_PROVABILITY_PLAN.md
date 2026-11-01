@@ -58,6 +58,17 @@ author confirmation supplies that observation. This remains a historical
 model-provider result, with full current-source closure and inherited 258/848,
 package-transitive and dynamic-import ancestry limitations.
 
+The [16-variable degree-24 equation](equation24.pdf) uses a 96-operation
+evaluator. Its exact shifted fixed-port literal has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAMainScaleWitness16Native.lean)
+in the candidate theory, using the checked 16-to-15-variable no-zero
+equivalence. Both focused twelve-module suffix replays and independently run
+guarded comparisons match; see the
+[comparison](reviews/ipra-main16-native-verification/README.md). This remains
+a focused historical model-provider result, with full current-source closure
+and inherited 258/848, package-transitive and dynamic-import ancestry
+limitations.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz
