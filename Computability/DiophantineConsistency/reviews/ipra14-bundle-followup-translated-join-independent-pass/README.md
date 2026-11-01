@@ -1,0 +1,3 @@
+# Native 14-variable bundle snapshot: independent replay
+
+The independent same-parent replay passed with all 35 module, source, object, full-log, direct-dependency and warning records matching `../ipra14-bundle-followup-translated-join-author-pass/`. Its fixed parent is `/tmp/pra14-zfc-join-jgav0pv3`; the input packet is `../ipra14-translated-refutation-join-snapshot/`. The theorem is no-zero equivalent to negated translated refutation; ordinary native consistency remains separate. Reused-object original environments and external package-transitive ancestry retain the author packet's qualifications.

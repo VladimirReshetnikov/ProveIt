@@ -99,7 +99,8 @@ consistency comparison remain open.
 The exact 14-variable client in
 [IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
 now has matching guarded author and independent replays on the explicitly
-historical source snapshot. It proves native-theory equivalence of its literal
+historical source snapshot, and matching author/independent bundle-followup
+replays have since passed. It proves native-theory equivalence of its literal
 no-zero sentence with negation of the GG-translated Foundation refutation
 predicate. The comparison with the intended ordinary native consistency
 sentence and a current-source replay remain separate obligations.
@@ -188,7 +189,10 @@ quantifier-free induction on `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Both native ar
 cases remain explicit obligations.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
-with matching author and independent replays. The analogous direct native
+with matching author and independent replays. The companion
+[successor-left identity](Lean/DiophantineConsistency/IPRASuccLeft.lean)
+`S(x)+y=S(x+y)` is also checked natively with parameterized open induction.
+The analogous direct native
 [subtraction equations](Lean/DiophantineConsistency/IPRASubArithmetic.lean)
 `x−0=x`, `x−S(y)=pred(x−y)`, and `pred(0)=0` have also passed matching
 replays; these are positive equalities, not merely their GG images.
