@@ -39,31 +39,16 @@ theorem negExponential_bound_common (x y w : V)
       · right; left; left
         let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![Semiterm.numeral 1,Semiterm.numeral 4,#1]
         have hf : (ω ▹ (∼extDef.val)).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he1
-        have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![B,A,x,y] w hf
-        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
-        rw [hh] at hb
-        rw [show (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) from
-          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val] at hb
-        exact hb
+        simpa [LogicalConnective.HomClass.map_neg] using (PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![B,A,x,y] w hf)
       · right; left; right
         let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![Semiterm.numeral 2,Semiterm.numeral 4,#0]
         have hf : (ω ▹ (∼extDef.val)).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he2
-        have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![B,A,x,y] w hf
-        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
-        rw [hh] at hb
-        rw [show (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) from
-          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val] at hb
-        exact hb
+        simpa [LogicalConnective.HomClass.map_neg] using (PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![B,A,x,y] w hf)
       · right; right; left
         let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![#3,#1,#0]
         have hf : (ω ▹ (∼Exponential.Seqₛ.def.val)).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using hseq
         have hw : 2*(ω #0).val ![B,A,x,y] Empty.elim+1 ≤ w := hy
-        have hb := negSeq_rew_bound_at ω ![B,A,x,y] w hw hf
-        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
-        rw [hh] at hb
-        rw [show (ω ▹ (∼Exponential.Seqₛ.def.val)) = ∼(ω ▹ Exponential.Seqₛ.def.val) from
-          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) Exponential.Seqₛ.def.val] at hb
-        exact hb
+        simpa [LogicalConnective.HomClass.map_neg] using (negSeq_rew_bound_at ω ![B,A,x,y] w hw hf)
       · right; right; right
         intro u
         by_cases hbig : y^2+1 ≤ u
@@ -77,30 +62,15 @@ theorem negExponential_bound_common (x y w : V)
             have hu0 : u ≤ y^2 := lt_succ_iff_le.mp (lt_of_not_ge hbig)
             have hp0 : 2*u ≤ 2*(y^2) := mul_le_mul_left hu0
             have hw : 2*(ω #0).val ![u,B,A,x,y] Empty.elim+1 ≤ w := le_trans (by simpa [ω,add_comm] using add_le_add_right hp0 1) h2
-            have hb := PRASeqSWitnessBound.neg_ppow2_rew_bound_at ω ![u,B,A,x,y] w hw hf
-            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
-            rw [hh] at hb
-            rw [show (ω ▹ (∼ppow2Def.val)) = ∼(ω ▹ ppow2Def.val) from
-              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) ppow2Def.val] at hb
-            exact hb
+            simpa [LogicalConnective.HomClass.map_neg] using (PRASeqSWitnessBound.neg_ppow2_rew_bound_at ω ![u,B,A,x,y] w hw hf)
           · right; right; right; left
             let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#3,#0,#2]
             have hf : (ω ▹ (∼extDef.val)).Evalb ![u,B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he3
-            have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![u,B,A,x,y] w hf
-            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
-            rw [hh] at hb
-            rw [show (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) from
-              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val] at hb
-            exact hb
+            simpa [LogicalConnective.HomClass.map_neg] using (PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![u,B,A,x,y] w hf)
           · right; right; right; right
             let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#4,#0,#1]
             have hf : (ω ▹ (∼extDef.val)).Evalb ![u,B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he4
-            have hb := PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![u,B,A,x,y] w hf
-            have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
-            rw [hh] at hb
-            rw [show (ω ▹ (∼extDef.val)) = ∼(ω ▹ extDef.val) from
-              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) extDef.val] at hb
-            exact hb
+            simpa [LogicalConnective.HomClass.map_neg] using (PRANegSeqSWitnessBound.neg_ext_rew_bound ω ![u,B,A,x,y] w hf)
 
 def negExponentialMajorant (y : V) : V := (2*y+1)+(2*(y^2)+1)
 
