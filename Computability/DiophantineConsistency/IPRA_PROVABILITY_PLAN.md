@@ -193,6 +193,9 @@ native replay pass is claimed. See the [failure evidence](reviews/adaptive-aq29-
 has exact finite residual-substitution and degree checks; its model and native
 transports remain open. The further [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md)
 has the same finite checks, with model and native transports also open. The
+[26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md)
+has finite exact residual and degree checks; its model and native transports
+are also open. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
@@ -258,7 +261,17 @@ independently specified standard intuitionistic PRA presentation and
 revalidating the endpoint with coherent dependencies and current sources
 remain obligations. It is neither classical
 `PRATheory.PRA` nor merely the negative translation of that theory. The
-exact schemes are summarized in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md).
+historical package provider is now partly unavailable. A rebuilt Foundation
+object already differs from its recorded historical hash; a successful replay
+mixing the new objects with historical project objects would not by itself
+establish sound compatibility. The reproducible [mixed-provider counterexample](reviews/lean-mixed-provider-counterexample/README.md)
+shows that even a clean axiom report and direct-import guards can miss an
+incompatible transitive object. Recovery requires authenticated matching
+historical inputs or a coherent rebuild of the affected dependency closure,
+with package-transitive and dynamic ancestry separately accounted for. This
+experiment does not establish an inconsistency in the actual project.
+
+The exact schemes are summarized in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md).
 The induction scheme advances by the syntactic term `n + 1`, whereas the
 language also has a distinct successor code. The project proves their equality
 and [same-language derivability equivalence](Lean/DiophantineConsistency/IPRASuccessorTheoryEquivalence.lean)

@@ -92,6 +92,14 @@ comparison with any broader independently specified standard presentation of
 intuitionistic PRA also remains open; see
 [`IPRA_PROVABILITY_PLAN.md`](IPRA_PROVABILITY_PLAN.md).
 
+The historical package provider has since become partly unavailable, and one
+freshly rebuilt Foundation object differs from its recorded historical hash.
+The [mixed-provider experiment](reviews/lean-mixed-provider-counterexample/README.md)
+demonstrates why successful Lean compilation, direct-import guards and clean
+axiom reports do not establish compatibility with older transitive objects.
+A coherent rebuild or verification of historical compile-time inputs is
+needed; the experiment does not show an inconsistency in this project.
+
 A Lean theorem asserting `nativeTheory ⊢ ψ` is a metatheoretic assertion that
 an object-theory derivation exists. Principles used by Lean in that
 metatheoretic proof do not become additional object-theory axioms.
