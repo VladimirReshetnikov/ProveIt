@@ -1,0 +1,5 @@
+# CertificateFields native 86-operation translated-refutation endpoint
+
+The source-directed 35-module author run explicitly PASSed against `/tmp/pra86-classical-join-x4819_ou`, the authenticated fixed 848+75+111 parent. The exact no-zero formula is equivalent in the specified native intuitionistic candidate to negated Gödel–Gentzen-translated ZFC refutation. Ordinary native intuitionistic consistency remains a separate obligation. Endpoint checks report only the standard Lean axiom trio.
+
+Input `../ipra86-certificatefields-followup-translated-join-snapshot/` pins source and parent hashes. Source, object, log, direct dependency and external-object pre/post guards passed without workspace project-object fallback. Fixed historical snapshot only; original reused-object environments are reconstructed from surviving records, and package-transitive ancestry is inherited. Same-parent independent replay passed with all source/object/log/direct-dependency rows matching; see `../ipra86-certificatefields-followup-translated-join-independent-pass/`.
