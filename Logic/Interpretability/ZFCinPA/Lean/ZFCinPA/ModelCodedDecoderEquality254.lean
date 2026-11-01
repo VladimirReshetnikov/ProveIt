@@ -1,4 +1,5 @@
 import ZFCinPA.ModelCodedDecoderLukasiewicz254
+import ZFCinPA.SetCongruence
 
 set_option autoImplicit false
 
@@ -19,12 +20,6 @@ open ArithmeticCantor
 open scoped LO.FirstOrder.Arithmetic
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
-private def sEq {ξ : Type*} {n : Nat} (t u : FirstOrder.Semiterm ℒₛₑₜ ξ n) :
-    FirstOrder.Semiformula ℒₛₑₜ ξ n :=
-  FirstOrder.Semiformula.rel Language.Set.Rel.eq ![t,u]
-private def sMem {ξ : Type*} {n : Nat} (t u : FirstOrder.Semiterm ℒₛₑₜ ξ n) :
-    FirstOrder.Semiformula ℒₛₑₜ ξ n :=
-  FirstOrder.Semiformula.rel Language.Set.Rel.mem ![t,u]
 noncomputable def eqAtom {n : Nat} (t u : Bootstrapping.Semiterm V ℒₛₑₜ n) :
     Bootstrapping.Semiformula V ℒₛₑₜ n :=
   Bootstrapping.Semiformula.rel Language.Set.Rel.eq ![t,u]
@@ -61,26 +56,17 @@ lemma decoded_wel (a b : V) :
   change (1 : V) = ((1 : Nat) : V)
   simp
 
-@[simp] private lemma standard_rel_eq {M : Type*} [SetStructure M] (v : Fin 2 → M) :
-    Structure.rel (L := ℒₛₑₜ) (M := M) Language.Set.Rel.eq v ↔ v 0 = v 1 := Iff.rfl
-@[simp] private lemma standard_rel_mem {M : Type*} [SetStructure M] (v : Fin 2 → M) :
-    Structure.rel (L := ℒₛₑₜ) (M := M) Language.Set.Rel.mem v ↔ v 0 ∈ v 1 := Iff.rfl
-
 variable (T : SetTheory) [T.Δ₁] [𝗘𝗤 ℒₛₑₜ ⪯ T]
 
 theorem rho7Template (a b c : V) :
     T.internalize V ⊢ eqAtom (&'c) (&'a) 🡒 (eqAtom (&'c) (&'b) 🡒 eqAtom (&'a) (&'b)) := by
-  have houter : T ⊢ ∀⁰ ∀⁰ ∀⁰ (sEq #0 #2 🡒 (sEq #0 #1 🡒 sEq #2 #1)) := by
-    refine SetTheory.provable_of_models.{0} T _ ?_
-    intro M _ _ _
-    simp [models_iff,sEq]
-  have hint := internal_provable_of_outer_provable (V := V) houter
-  have hq : (⌜(∀⁰ ∀⁰ ∀⁰ (sEq #0 #2 🡒 (sEq #0 #1 🡒 sEq #2 #1)) : SetTheorySentence)⌝ :
-      Bootstrapping.Formula V ℒₛₑₜ) = ∀⁰ ∀⁰ ∀⁰ (eqAtom (#'0) (#'2) 🡒 (eqAtom (#'0) (#'1) 🡒 eqAtom (#'2) (#'1))) := by
-    rw [FirstOrder.Sentence.typed_quote_def]
-    simp [sEq,eqAtom,Rew.q_emb,Rew.emb_bvar,quote_vec2]
-  rw [hq] at hint
-  simpa [eqAtom,memAtom] using TProof.specialize₃! hint (&'c) (&'b) (&'a)
+  have hs := SetCongruence.subst_eq T (&'c) (&'a) (&'c) (&'b)
+  have hr := SetCongruence.set_eq_refl T (&'c)
+  change T.internalize V ⊢ eqAtom (&'c) (&'a) 🡒 eqAtom (&'c) (&'b) 🡒
+    eqAtom (&'c) (&'c) 🡒 eqAtom (&'a) (&'b) at hs
+  change T.internalize V ⊢ eqAtom (&'c) (&'c) at hr
+  classical
+  cl_prover [hs,hr]
 
 omit [𝗘𝗤 ℒₛₑₜ ⪯ T] in
 theorem decoded_rho7_equiv (a b c : V) :
@@ -105,17 +91,13 @@ theorem decoded_rho7_provable (a b c : V) :
 
 theorem rho5Template (a b c : V) :
     T.internalize V ⊢ eqAtom (&'c) (&'a) 🡒 (memAtom (&'c) (&'b) 🡒 memAtom (&'a) (&'b)) := by
-  have houter : T ⊢ ∀⁰ ∀⁰ ∀⁰ (sEq #0 #2 🡒 (sMem #0 #1 🡒 sMem #2 #1)) := by
-    refine SetTheory.provable_of_models.{0} T _ ?_
-    intro M _ _ _
-    simp [models_iff,sEq,sMem]
-  have hint := internal_provable_of_outer_provable (V := V) houter
-  have hq : (⌜(∀⁰ ∀⁰ ∀⁰ (sEq #0 #2 🡒 (sMem #0 #1 🡒 sMem #2 #1)) : SetTheorySentence)⌝ :
-      Bootstrapping.Formula V ℒₛₑₜ) = ∀⁰ ∀⁰ ∀⁰ (eqAtom (#'0) (#'2) 🡒 (memAtom (#'0) (#'1) 🡒 memAtom (#'2) (#'1))) := by
-    rw [FirstOrder.Sentence.typed_quote_def]
-    simp [sEq,sMem,eqAtom,memAtom,Rew.q_emb,Rew.emb_bvar,quote_vec2]
-  rw [hq] at hint
-  simpa [eqAtom,memAtom] using TProof.specialize₃! hint (&'c) (&'b) (&'a)
+  have hs := SetCongruence.subst_mem T (&'c) (&'a) (&'b) (&'b)
+  have hr := SetCongruence.set_eq_refl T (&'b)
+  change T.internalize V ⊢ eqAtom (&'c) (&'a) 🡒 eqAtom (&'b) (&'b) 🡒
+    memAtom (&'c) (&'b) 🡒 memAtom (&'a) (&'b) at hs
+  change T.internalize V ⊢ eqAtom (&'b) (&'b) at hr
+  classical
+  cl_prover [hs,hr]
 
 omit [𝗘𝗤 ℒₛₑₜ ⪯ T] in
 theorem decoded_rho5_equiv (a b c : V) :
@@ -140,20 +122,13 @@ theorem decoded_rho5_provable (a b c : V) :
 
 theorem rho3Template (a b c : V) :
     T.internalize V ⊢ eqAtom (&'a) (&'b) 🡒 (memAtom (&'c) (&'a) 🡒 memAtom (&'c) (&'b)) := by
-  have houter : T ⊢ ∀⁰ ∀⁰ ∀⁰ (sEq #2 #1 🡒 (sMem #0 #2 🡒 sMem #0 #1)) := by
-    refine SetTheory.provable_of_models.{0} T _ ?_
-    intro M _ _ _
-    simp [models_iff,sEq,sMem]
-    intro x y z h
-    subst y
-    exact id
-  have hint := internal_provable_of_outer_provable (V := V) houter
-  have hq : (⌜(∀⁰ ∀⁰ ∀⁰ (sEq #2 #1 🡒 (sMem #0 #2 🡒 sMem #0 #1)) : SetTheorySentence)⌝ :
-      Bootstrapping.Formula V ℒₛₑₜ) = ∀⁰ ∀⁰ ∀⁰ (eqAtom (#'2) (#'1) 🡒 (memAtom (#'0) (#'2) 🡒 memAtom (#'0) (#'1))) := by
-    rw [FirstOrder.Sentence.typed_quote_def]
-    simp [sEq,sMem,eqAtom,memAtom,Rew.q_emb,Rew.emb_bvar,quote_vec2]
-  rw [hq] at hint
-  simpa [eqAtom,memAtom] using TProof.specialize₃! hint (&'c) (&'b) (&'a)
+  have hs := SetCongruence.subst_mem T (&'c) (&'c) (&'a) (&'b)
+  have hr := SetCongruence.set_eq_refl T (&'c)
+  change T.internalize V ⊢ eqAtom (&'c) (&'c) 🡒 eqAtom (&'a) (&'b) 🡒
+    memAtom (&'c) (&'a) 🡒 memAtom (&'c) (&'b) at hs
+  change T.internalize V ⊢ eqAtom (&'c) (&'c) at hr
+  classical
+  cl_prover [hs,hr]
 
 omit [𝗘𝗤 ℒₛₑₜ ⪯ T] in
 theorem decoded_rho3_equiv (a b c : V) :
