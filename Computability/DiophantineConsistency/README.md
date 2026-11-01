@@ -57,12 +57,13 @@ degree theorems and no global minimum is claimed.
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),
 a [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md),
+a [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md),
 and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
 Their substitutions and degrees have finite checks. The 29-variable candidate
 has a matched model replay; its native transport is undergoing verification.
 The guarded native replay attempt failed before its first module because a
 historical dependency provider contained broken symlinks; it has not passed.
-The 28-variable and 40-variable candidates' model and native transports remain open.
+The 27-variable, 28-variable and 40-variable candidates' model and native transports remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

@@ -191,7 +191,8 @@ module because its historical package provider contained broken symlinks; no
 native replay pass is claimed. See the [failure evidence](reviews/adaptive-aq29-native-replay/failure.txt). The
 [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md)
 has exact finite residual-substitution and degree checks; its model and native
-transports remain open. The
+transports remain open. The further [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md)
+has the same finite checks, with model and native transports also open. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
