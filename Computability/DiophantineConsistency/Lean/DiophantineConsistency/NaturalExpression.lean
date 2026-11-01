@@ -82,15 +82,7 @@ theorem eval_splitNatural (e : Expr σ) (v : σ → ℕ) :
   induction e with
   | constant a => exact Int.toNat_sub_toNat_neg a
   | var i => simp [splitNatural, NatExpr.eval, eval]
-  | add p q hp hq =>
-      simp only [splitNatural, NatExpr.eval, Nat.cast_add, eval]
-      rw [← hp, ← hq]
-      ring
-  | sub p q hp hq =>
-      simp only [splitNatural, NatExpr.eval, Nat.cast_add, eval]
-      rw [← hp, ← hq]
-      ring
-  | mul p q hp hq =>
+  | add p q hp hq | sub p q hp hq | mul p q hp hq =>
       simp only [splitNatural, NatExpr.eval, Nat.cast_add, Nat.cast_mul, eval]
       rw [← hp, ← hq]
       ring
