@@ -1,0 +1,10 @@
+'template_index_bounds' depends on axioms: [propext, Classical.choice, Quot.sound]
+'second_template_index' depends on axioms: [propext, Classical.choice, Quot.sound]
+template_index_bounds (X Y : ℤ) (hX : 1 ≤ X) (hY : 8 ≤ Y) :
+  have a := Y * (X + 1);
+  have s := X * Y ^ 2;
+  have c := 4 * (a ^ 2 + 4 * a + 3) + 3;
+  2 * (Y + 1) < c ∧ c < Y * (32 * s ^ 2 - 32 * s + 6)
+second_template_index (X Y eta zeta k : ℤ) (hX : 1 ≤ X) (hY : 8 ≤ Y) (he : 0 < eta) (hz : 0 < zeta)
+  (hk : k = eta + zeta) (hc : eta + Y * k = 4 * ((Y * (X + 1)) ^ 2 + 4 * (Y * (X + 1)) + 3) + 3)
+  (hcases : k = 2 ∨ k = 8 * (X * Y ^ 2) + 4 ∨ 32 * (X * Y ^ 2) ^ 2 - 32 * (X * Y ^ 2) + 6 ≤ k) : k = 8 * (X * Y ^ 2) + 4

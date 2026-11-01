@@ -1,0 +1,5 @@
+# Conditional second Pell index in IΣ₁ models
+
+Two focused runs PASS with matching source/object/full-log records. The checked `second_index_of_template_bounds` derives the second Pell index in an arbitrary IΣ₁ model from the displayed positive-parameter Pell equation, the eta/zeta and template equations, positivity, and the two explicitly assumed bounds `2*(Y+1)<c` and `c<Y*(32*Q*Q+32*Q+6)`. The bounds are not discharged by this theorem. It does not construct a special-template representative for an arbitrary 85-zero, nor establish an 85 equivalence.
+
+Input and driver: `research/adaptive-gap85-normalization/AdaptiveGap85PellTemplateConditional.lean` and `replay_pell_template_conditional.py`. The direct project import is the independently replayed trichotomy object; inherited project transitive and external package ancestry are historical. The two failed first attempts `/tmp/gap85-pell-template-conditional-replay-xpwce6qd` and `/tmp/gap85-pell-template-conditional-replay-4iryzx51` used the earlier trichotomy provider predating the parameter theorem; their exact error states remain available, and neither was a successful replay.
