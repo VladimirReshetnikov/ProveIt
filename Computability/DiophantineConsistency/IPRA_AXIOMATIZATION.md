@@ -50,8 +50,13 @@ are arbitrary finite lists.
    syntactically identical to `S(n)`. The candidate proves their equality;
    [`IPRASuccessorInduction.lean`](Lean/DiophantineConsistency/IPRASuccessorInduction.lean)
    uses it to derive the usual `S(n)` quantifier-free induction schema with
-   arbitrary finite parameters. This establishes that schema direction, not
-   a full comparison of independently specified presentations.
+   arbitrary finite parameters. Conversely,
+   [`IPRASuccessorInductionConverse.lean`](Lean/DiophantineConsistency/IPRASuccessorInductionConverse.lean)
+   derives each `n + 1` instance from the corresponding `S(n)` instance in
+   any intuitionistic theory proving the stated defining and equality schemes;
+   it derives `n + 1 = S(n)` there without induction. These results compare
+   the induction step conventions, not complete independently specified
+   presentations.
 
 There is no unrestricted induction scheme, general excluded middle, or Markov
 principle among these axioms. In particular, classical negation-normal
