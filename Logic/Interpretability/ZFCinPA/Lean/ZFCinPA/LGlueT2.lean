@@ -131,6 +131,20 @@ theorem botG_provable : templTheory 8 arG ⊢ botG := by
   intro M _ _ s _ _ _
   simp [botG, G, models_iff]
 
+private theorem qHyp_econs {M : Type} [Nonempty M] [SetStructure M] [Structure GL M]
+    [Structure.Eq GL M] [Structure.Mem GL M]
+    (hq : M↓[GL] ⊧ qHyp) (t : M) (h0 : PH 0 t) (extend : M → M)
+    (he : ∀ y, econsS.Eval ![extend y, y, t] Empty.elim) :
+    ∀ y, PH 1 y ↔ PH 2 (extend y) := by
+  simp [models_iff, qHyp, mp2, G, eq2S, Semiformula.Operator.eq_def] at hq
+  intro y
+  rcases hq y (extend y) with h | h
+  · rcases h t y with h1 | h1 | h1
+    · exact absurd rfl h1
+    · exact absurd (he y) h1
+    · exact absurd h0 h1
+  · exact h
+
 theorem allG_provable : templTheory 8 arG ⊢ allG := by
   apply templ_provable
   intro M _ _ s _ _ _
@@ -140,7 +154,6 @@ theorem allG_provable : templTheory 8 arG ⊢ allG := by
   simp only [allG, Semantics.Imp.models_imply, Semantics.And.models_and]
   rintro ⟨hf, hq⟩
   rw [models_funM] at hf
-  simp [models_iff, qHyp, mp2, G, eq2S, Semiformula.Operator.eq_def] at hq
   simp [models_iff, relAll, envAll, G, ConstructibleInterpretation.eval_domL H hP,
     LStepExT.eval_domYS]
   intro t
@@ -152,15 +165,8 @@ theorem allG_provable : templTheory 8 arG ⊢ allG := by
   have he : ∀ y t' : M, (econsS.Eval ![t', y, t] Empty.elim ↔
       t' = LeanProofs.BoundedZFCConsistency.econs H y t) :=
     fun y t' => LStepExT.eval_econsS t' y t ft
-  have key : ∀ y, (Structure.rel (L := GL) (placeholderRel 1) ![y] ↔
-      Structure.rel (L := GL) (placeholderRel 2) ![LeanProofs.BoundedZFCConsistency.econs H y t]) := by
-    intro y
-    rcases hq y (LeanProofs.BoundedZFCConsistency.econs H y t) with h | h
-    · rcases h t y with h1 | h1 | h1
-      · exact absurd rfl h1
-      · exact absurd ((he y _).2 rfl) h1
-      · exact absurd h0 h1
-    · exact h
+  have key := qHyp_econs hq t h0 (fun y => LeanProofs.BoundedZFCConsistency.econs H y t)
+    (fun y => (he y _).2 rfl)
   constructor
   · intro hR y t'
     by_cases hE : econsS.Eval ![t', y, t] Empty.elim
@@ -244,7 +250,6 @@ theorem exG_provable : templTheory 8 arG ⊢ exG := by
   simp only [exG, Semantics.Imp.models_imply, Semantics.And.models_and]
   rintro ⟨hf, hq⟩
   rw [models_funM] at hf
-  simp [models_iff, qHyp, mp2, G, eq2S, Semiformula.Operator.eq_def] at hq
   simp [models_iff, relEx, envEx, G, ConstructibleInterpretation.eval_domL H hP,
     LStepExT.eval_domYS]
   intro t
@@ -256,15 +261,8 @@ theorem exG_provable : templTheory 8 arG ⊢ exG := by
   have he : ∀ y t' : M, (econsS.Eval ![t', y, t] Empty.elim ↔
       t' = LeanProofs.BoundedZFCConsistency.econs H y t) :=
     fun y t' => LStepExT.eval_econsS t' y t ft
-  have key : ∀ y, (Structure.rel (L := GL) (placeholderRel 1) ![y] ↔
-      Structure.rel (L := GL) (placeholderRel 2) ![LeanProofs.BoundedZFCConsistency.econs H y t]) := by
-    intro y
-    rcases hq y (LeanProofs.BoundedZFCConsistency.econs H y t) with h | h
-    · rcases h t y with h1 | h1 | h1
-      · exact absurd rfl h1
-      · exact absurd ((he y _).2 rfl) h1
-      · exact absurd h0 h1
-    · exact h
+  have key := qHyp_econs hq t h0 (fun y => LeanProofs.BoundedZFCConsistency.econs H y t)
+    (fun y => (he y _).2 rfl)
   constructor
   · rintro ⟨y, hy, hR⟩
     exact ⟨y, _, (he y _).2 rfl, hy, (key y).1 hR⟩
