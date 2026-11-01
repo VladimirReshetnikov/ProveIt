@@ -1,0 +1,5 @@
+# Successor AQ29 source snapshot after PRAWitnessCalculus drift
+
+The running fresh project pair uses the v2 snapshot, whose `DiophantineConsistency.PRAWitnessCalculus` source hash is `995448c1a9b60b10a0d8c31faa2969f6c78175635741be7395c33ca10037c8ca`. After an upstream merge the workspace source hash became `f9fbb6136efefc667dc720fe2247746ad7c199c8c827493cf6560c5a1dfea241`. The running pair therefore concerns the earlier frozen source, and was not interrupted.
+
+A successor v3 snapshot was frozen at `/tmp/ipra-aq29-fresh-source-closure-v3`. Its manifest SHA-256 is `ef7fc982c491faa9115652f9d17d05d91650272638a37242c8c331a4ec8b9117`; all 1,210 source modules and their ordering are unchanged except for this one source's bytes. Its source-audit tool session 82895 exited 0 and found all sources tracked and matching the workspace at that point. This preflight neither compiles v3 nor establishes currentness after later edits. Any successor build needs its own complete source and provider authentication and explicitly recorded object provenance.
