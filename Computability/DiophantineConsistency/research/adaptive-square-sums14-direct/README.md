@@ -23,9 +23,14 @@ ports and 90 Lean literal gates against the pinned graph.
 Two focused model replays match; see
 [the replay receipt](../../reviews/adaptive-square-sums14-direct-model-replay/README.md).
 They reuse the same historical provider and inherit transitive project,
-package and dynamic ancestry. A native iPRA endpoint for this direct variant is
-still to be proved and replayed; the model equivalence alone does not establish
-that endpoint.
+package and dynamic ancestry. The exact literal has a native iPRA endpoint:
+`IPRASquareWitnessDirect14Native.literal_equivalence` asserts a derivation of
+the no-positive-zero/selected ZFC consistency equivalence in the explicitly
+defined native theory. The [two guarded comparisons](../../reviews/ipra-square14-direct-native-verification/README.md)
+match all eight compiled suffix modules and 11,435 guarded files. This is a
+fixed-source result on the inherited historical provider, not a full
+source-current closure; package-transitive and dynamically loaded ancestry
+remain inherited.
 
 The separate [equation30-direct.tex](../../equation30-direct.tex) and
 [equation30-direct.pdf](../../equation30-direct.pdf) present the direct-square
@@ -35,6 +40,5 @@ checks the five-square wiring and all circuit rows against the pinned graph,
 confirms the copied fixed constants and rejects two formula mutations. It is a
 limited parser, not a general TeX interpreter. Normal Python and `python -O`
 pass. Two `pdflatex` runs produced identical PDF SHA-256
-`d6b24e6b070a9f4e26dadcc01567fafdd512d1d69a4d1db86260da36b6489049`;
-both pages were visually inspected. The page separates the checked model
-result from the pending native-iPRA endpoint.
+`d62b9a5232ef12b9bbf26f88823c0560ed6cd3bbe208b46e532e18a10e78357a`;
+both pages were visually inspected. The page states the matched native-iPRA result and its snapshot boundary.
