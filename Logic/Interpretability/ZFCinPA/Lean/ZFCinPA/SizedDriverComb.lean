@@ -47,23 +47,8 @@ theorem dk_leftL {φ ψ : Fm} {w m : V} (hw : 4 ≤ w) (hm : (φ ⋏ ψ).val ≤
 
 /-- The level of `∀(A ↔ A)` at any arity. -/
 theorem allIff_le {n : ℕ} (A : Bootstrapping.Semiformula V ℒₛₑₜ (n + 1)) {a : V}
-    (ha : A.val ≤ lvB a) : (∀⁰ (A 🡘 A)).val ≤ lvB (10 * (a + 1) + 10) := by
-  have lnA : (∼A).val ≤ lvB (10 * (a + 1)) := by
-    rw [Bootstrapping.Semiformula.val_neg]; exact neg_level _ _ ha A.isSemiformula.isUFormula
-  have h2' : (2 : V) ≤ 10 * (a + 1) := le_of_add_eq (y := 10 * a + 8) (by ring)
-  have lI : (∼A ⋎ A).val ≤ lvB (10 * (a + 1) + 4) := by
-    rw [Bootstrapping.Semiformula.val_or]
-    exact conn_le (tag := 5) h2' (by norm_num) lnA
-      (lift_lvB ha (le_of_add_eq (y := 9 * a + 10) (by ring)))
-  have eA : (A 🡘 A) = (∼A ⋎ A) ⋏ (∼A ⋎ A) := by
-    simp [LogicalConnective.iff, Bootstrapping.Semiformula.imp_def]
-  have lAA : (A 🡘 A).val ≤ lvB (10 * (a + 1) + 4 + 4) := by
-    rw [eA, Bootstrapping.Semiformula.val_and]
-    exact conn_le (tag := 4) (le_trans h2' le_self_add) (by norm_num) lI lI
-  rw [Bootstrapping.Semiformula.val_all]
-  exact le_trans (pair_lvB (le_trans h2' (le_trans le_self_add le_self_add))
-      (tag_le_lvB (k := 6) (by norm_num) (le_trans h2' (le_trans le_self_add le_self_add))) lAA)
-    (lvB_mono (le_of_eq (by ring)))
+    (ha : A.val ≤ lvB a) : (∀⁰ (A 🡘 A)).val ≤ lvB (10 * (a + 1) + 10) :=
+  SizedLGlue1.all_iff_level A ha
 
 /-- `∀`-introduction of a derivation of the free instance. -/
 theorem dall_intro {B : SF V 1} {w : V} (hw : 4 ≤ w) (hB : (∀⁰ B : Fm).val < lvB w)

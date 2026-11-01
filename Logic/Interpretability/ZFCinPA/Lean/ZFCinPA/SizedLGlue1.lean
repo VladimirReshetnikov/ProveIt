@@ -175,6 +175,26 @@ theorem dall_em (A : Bootstrapping.Semiformula V ℒₛₑₜ 1) {a : V} (ha : A
     (by simp) (by rw [← Bootstrapping.Semiformula.free_val, free_em]; exact dO)
   exact dA.mono (le_of_add_eq (y := 1) (by rw [hL]; ring))
 
+/-- The level of `∀(A ↔ A)` at any arity. -/
+theorem all_iff_level {n : ℕ} (A : Bootstrapping.Semiformula V ℒₛₑₜ (n + 1)) {a : V}
+    (ha : A.val ≤ lvB a) : (∀⁰ (A 🡘 A)).val ≤ lvB (10 * (a + 1) + 10) := by
+  have lnA : (∼A).val ≤ lvB (10 * (a + 1)) := by
+    rw [Bootstrapping.Semiformula.val_neg]; exact neg_level _ _ ha A.isSemiformula.isUFormula
+  have h2' : (2 : V) ≤ 10 * (a + 1) := le_of_add_eq (y := 10 * a + 8) (by ring)
+  have lI : (∼A ⋎ A).val ≤ lvB (10 * (a + 1) + 4) := by
+    rw [Bootstrapping.Semiformula.val_or]
+    exact conn_le (tag := 5) h2' (by norm_num) lnA
+      (lift_lvB ha (le_of_add_eq (y := 9 * a + 10) (by ring)))
+  have eA : (A 🡘 A) = (∼A ⋎ A) ⋏ (∼A ⋎ A) := by
+    simp [LogicalConnective.iff, Bootstrapping.Semiformula.imp_def]
+  have lAA : (A 🡘 A).val ≤ lvB (10 * (a + 1) + 4 + 4) := by
+    rw [eA, Bootstrapping.Semiformula.val_and]
+    exact conn_le (tag := 4) (le_trans h2' le_self_add) (by norm_num) lI lI
+  rw [Bootstrapping.Semiformula.val_all]
+  exact le_trans (pair_lvB (le_trans h2' (le_trans le_self_add le_self_add))
+      (tag_le_lvB (k := 6) (by norm_num) (le_trans h2' (le_trans le_self_add le_self_add))) lAA)
+    (lvB_mono (le_of_eq (by ring)))
+
 set_option maxHeartbeats 1000000 in
 /-- **`∀(A ↔ A)`, bounded.** -/
 theorem dall_iff (A : Bootstrapping.Semiformula V ℒₛₑₜ 1) {a : V} (ha : A.val ≤ lvB a)
@@ -194,22 +214,7 @@ theorem dall_iff (A : Bootstrapping.Semiformula V ℒₛₑₜ 1) {a : V} (ha : 
     exact conn_le (tag := 4) (le_trans hnb2 le_self_add) (by norm_num) lP lP
   have eQ : (X 🡘 X) = (∼X ⋎ X) ⋏ (∼X ⋎ X) := by
     simp [LogicalConnective.iff, Bootstrapping.Semiformula.imp_def]
-  -- the closed formula
-  have lnA : (∼A).val ≤ lvB (10 * (a + 1)) := by
-    rw [Bootstrapping.Semiformula.val_neg]; exact neg_level _ _ ha A.isSemiformula.isUFormula
-  have h2' : (2 : V) ≤ 10 * (a + 1) := le_of_add_eq (y := 10 * a + 8) (by ring)
-  have lI : (∼A ⋎ A).val ≤ lvB (10 * (a + 1) + 4) := by
-    rw [Bootstrapping.Semiformula.val_or]
-    exact conn_le (tag := 5) h2' (by norm_num) lnA (lift_lvB ha (le_of_add_eq (y := 9 * a + 10) (by ring)))
-  have eA : (A 🡘 A) = (∼A ⋎ A) ⋏ (∼A ⋎ A) := by
-    simp [LogicalConnective.iff, Bootstrapping.Semiformula.imp_def]
-  have lAA : (A 🡘 A).val ≤ lvB (10 * (a + 1) + 4 + 4) := by
-    rw [eA, Bootstrapping.Semiformula.val_and]
-    exact conn_le (tag := 4) (le_trans h2' le_self_add) (by norm_num) lI lI
-  have lF : (∀⁰ (A 🡘 A)).val ≤ lvB (10 * (a + 1) + 4 + 4 + 2) := by
-    rw [Bootstrapping.Semiformula.val_all]
-    exact pair_lvB (le_trans h2' (le_trans le_self_add le_self_add))
-      (tag_le_lvB (k := 6) (by norm_num) (le_trans h2' (le_trans le_self_add le_self_add))) lAA
+  have lF := all_iff_level A ha
   set L : V := 100 * a + 233 with hL
   have hlt : ∀ {x m : V}, x ≤ lvB m → m ≤ 100 * a + 232 → x < lvB L := fun hx hm =>
     lt_of_lt_of_le (lt_lvB_succ (lift_lvB hx hm)) (lvB_mono (le_of_eq (by rw [hL]; ring)))
