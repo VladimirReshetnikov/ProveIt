@@ -59,21 +59,15 @@ theorem localCheck_sound (input output evidence : Nat)
     (h : localCheck input output evidence=1) :
     ∃ f : Form,input=forkCode (formCode f) input.pred.unpair.2 ∧
       output=forkCode (formCode (rename Nat.succ f)) output.pred.unpair.2 := by
-  unfold localCheck at h
-  split at h
-  next he => contradiction
-  next he =>
-    dsimp only at h
-    split at h
-    next hp =>
-      simp only [AnnotatedSchemaMaps.stepValue] at h
-      rw [AnnotatedRenameScan.checkNat_eq_checkCode,truth_eq_one] at h
-      obtain ⟨f,ha,hb⟩ := checkCode_sound 0 0 0 _ _ _ h
-      have hbs : evidence.pred.unpair.1.unpair.2.unpair.1=
-          formCode (rename Nat.succ f) := by simpa only [renamed,index_shift] using hb
-      obtain ⟨hi,ho⟩ := Nat.pair_eq_pair.mp hp
-      exact ⟨f,by simpa only [ha] using hi,by simpa only [hbs] using ho⟩
-    next hp => contradiction
+  simp only [localCheck] at h
+  split_ifs at h with he hp
+  simp only [AnnotatedSchemaMaps.stepValue] at h
+  rw [AnnotatedRenameScan.checkNat_eq_checkCode,truth_eq_one] at h
+  obtain ⟨f,ha,hb⟩ := checkCode_sound 0 0 0 _ _ _ h
+  have hbs : evidence.pred.unpair.1.unpair.2.unpair.1=
+      formCode (rename Nat.succ f) := by simpa only [renamed,index_shift] using hb
+  obtain ⟨hi,ho⟩ := Nat.pair_eq_pair.mp hp
+  exact ⟨f,by simpa only [ha] using hi,by simpa only [hbs] using ho⟩
 
 private theorem fork_ne_one (a b : Nat) : forkCode a b≠1 := by
   have h := Nat.left_le_pair (a+1) b
