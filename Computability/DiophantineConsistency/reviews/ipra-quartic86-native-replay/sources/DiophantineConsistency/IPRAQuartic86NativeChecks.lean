@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAQuartic86Native
+
+#print axioms DiophantineConsistency.IPRAQuartic86Native.equivalence

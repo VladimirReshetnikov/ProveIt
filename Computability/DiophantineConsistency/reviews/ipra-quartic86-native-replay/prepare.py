@@ -1,0 +1,8 @@
+from pathlib import Path
+import re,json,hashlib
+R=Path.cwd();D=R/'Computability/DiophantineConsistency/reviews/ipra-quartic86-native-replay';S=R/'Computability/DiophantineConsistency/Lean';P=R/'Computability/DiophantineConsistency/reviews/ipra-quartic-native-generic-replay';h=lambda x:hashlib.sha256(x).hexdigest();names=['DiophantineConsistency.IPRAQuartic86Native','DiophantineConsistency.IPRAQuartic86NativeChecks'];sources={}
+for n in names:
+ p=S/(n.replace('.','/')+'.lean');raw=p.read_bytes();imports=re.findall(r'^import\s+([A-Z][\w.]*)',raw.decode(),re.M);dest=D/'sources'/(n.replace('.','/')+'.lean');dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(raw);sources[n]={'path':str(p.relative_to(R)),'sha256':h(raw),'imports':imports}
+prev=json.loads((P/'manifest.json').read_text()); retained=dict(prev['retained_parent_sources']);retained.update(prev['sources']);assert len(retained)==37
+for n,row in retained.items():assert h((R/row['path']).read_bytes())==row['sha256'],('retained drift',n)
+out={'status':'FROZEN_FOCUSED_INPUT','sources':sources,'order':names,'retained_parent_sources':retained,'parent_receipt_sha256':h((P/'receipt.json').read_bytes()),'parent_observation_sha256':h((P/'terminal-observation.json').read_bytes()),'boundary':'Focused no-premise tree-quartic native client on the matched generic peer; the generated tree may have hundreds of thousands of wires, and no concrete literal/size is asserted. The 848 ancestor, project transitive, external package and dynamic import provenance remain inherited.'};(D/'manifest.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print('FROZEN',len(names),len(retained),h((D/'manifest.json').read_bytes()))
