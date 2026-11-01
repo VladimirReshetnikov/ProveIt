@@ -23,6 +23,12 @@ parent solutions with `v 24 < v 23`, for arbitrary integer ports in IΣ₁
 models. Its [focused paired replay](../../reviews/adaptive-aq31-oriented-replay/README.md)
 matched; it does not establish existence of an oriented parent solution.
 
+A separate [conditional shifted no-zero theorem](../../reviews/adaptive-aq31-conditional-nozero-replay/README.md)
+shows the 31- and 32-variable no-zero statements are equivalent if existence
+of a positive parent zero implies existence of an oriented one. The proof does
+not require orienting every individual parent zero; the remaining task is to
+discharge this existence hypothesis for the fixed ports.
+
 `verify_degree.py` performs exact integer polynomial arithmetic on the residuals
 and checks degree six after the positive shift; this finite computation is not
 a Lean degree theorem. Its leading homogeneous term argument uses a residual
