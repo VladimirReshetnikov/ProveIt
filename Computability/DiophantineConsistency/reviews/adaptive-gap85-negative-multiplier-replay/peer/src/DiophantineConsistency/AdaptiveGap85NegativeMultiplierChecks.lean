@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85NegativeMultiplier
+#print axioms DiophantineConsistency.AdaptiveGap85NegativeMultiplier.negative_modulus_multiplier
+#check DiophantineConsistency.AdaptiveGap85NegativeMultiplier.negative_modulus_multiplier
