@@ -218,13 +218,22 @@ theorem wb_sepBodyValGraph : WB M sepBodyValGraph.val := by
 /-- The inner tower of `sepBodyVal_le`, in the variable `#0`. -/
 noncomputable def sepT {n : ℕ} : BoundTerm (n + 1) := tauT (poly ‘↑sepC + #0 + 8’) (poly ‘4 * #0 + 10’)
 
-theorem wb_sepCh_sigma : WB M sepCh.sigma.val := by
+/-- The common positive recognizer for a schema with a bounded body graph. -/
+private noncomputable def schemaSigma (arity : ℕ) (G : 𝚺₁.Semisentence 2) : ArithmeticSemisentence 1 :=
+  “p. ∃ m < p + 1, ∃ b < p + 1,
+    !qqAllsDef p b m ∧ !(Bootstrapping.isUFormula ℒₛₑₜ).sigma b
+    ∧ !(Bootstrapping.shiftGraph ℒₛₑₜ) b b ∧ !(Bootstrapping.bvGraph ℒₛₑₜ) m b
+    ∧ ∃ fv, !fvarVecDef fv m ∧ ∃ s, !(Bootstrapping.substsGraph ℒₛₑₜ) s fv b
+      ∧ ∃ K < s + 1, !(Bootstrapping.isSemiformula ℒₛₑₜ).sigma ↑arity K ∧ !G s K”
+
+private theorem wb_schemaSigma (arity : ℕ) (G : 𝚺₁.Semisentence 2) (hG : WB M G.val) :
+    WB M (schemaSigma arity G) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := wb_qqAllsDef (M := M); have := wb_isUFormula_sigma (M := M); have := wb_shiftGraph (M := M)
   have := wb_bvGraph (M := M); have := wb_fvarVecDef (M := M); have := wb_substsGraph (M := M)
-  have := wb_isSemiformula_sigma (M := M); have := wb_sepBodyValGraph (M := M)
-  simp only [sepCh, HierarchySymbol.Semiformula.sigma_mkDelta, HierarchySymbol.Semiformula.val_mkSigma]
+  have := wb_isSemiformula_sigma (M := M); have := hG
+  unfold schemaSigma
   wb_auto
   refine wb_exs_bt' _ (by simp) (tauT (poly ‘(#1 + 2) * (#1 + 2) + 1’) (poly ‘2 * #1’))
     (fun V _ _ e x h => ⟨x, ?_, h⟩) ?_
@@ -236,6 +245,11 @@ theorem wb_sepCh_sigma : WB M sepCh.sigma.val := by
   · have h' := h; simp at h'
     rw [h'.1]; simpa [vval_tauT, vval, numeral_eq_natCast] using subst_le' (e 0) (e 1)
   wb_auto
+
+theorem wb_sepCh_sigma : WB M sepCh.sigma.val := by
+  simpa only [sepCh, HierarchySymbol.Semiformula.sigma_mkDelta,
+    HierarchySymbol.Semiformula.val_mkSigma, schemaSigma] using
+    (wb_schemaSigma (M := M) 1 sepBodyValGraph wb_sepBodyValGraph)
 
 theorem wb_sepCh_neg_pi : WB M (∼sepCh.pi.val) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
@@ -357,23 +371,9 @@ noncomputable def repT2 {n : ℕ} : BoundTerm (n + 1) :=
   tauT (add repT0 (poly ‘8’)) (add (mul (poly ‘2’) repT0) (poly ‘20’))
 
 theorem wb_repCh_sigma : WB M repCh.sigma.val := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
-  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_qqAllsDef (M := M); have := wb_isUFormula_sigma (M := M); have := wb_shiftGraph (M := M)
-  have := wb_bvGraph (M := M); have := wb_fvarVecDef (M := M); have := wb_substsGraph (M := M)
-  have := wb_isSemiformula_sigma (M := M); have := wb_repBodyValGraph (M := M)
-  simp only [repCh, HierarchySymbol.Semiformula.sigma_mkDelta, HierarchySymbol.Semiformula.val_mkSigma]
-  wb_auto
-  refine wb_exs_bt' _ (by simp) (tauT (poly ‘(#1 + 2) * (#1 + 2) + 1’) (poly ‘2 * #1’))
-    (fun V _ _ e x h => ⟨x, ?_, h⟩) ?_
-  · have h' := h; simp at h'
-    rw [h'.1]; simpa [vval_tauT, vval] using fvarVec_le (e 1) (e 1) le_rfl
-  wb_auto
-  refine wb_exs_bt' _ (by simp) (tauT (poly ‘#0 + #1 + 8’) (poly ‘0 + 4 * #1 + 6’))
-    (fun V _ _ e x h => ⟨x, ?_, h⟩) ?_
-  · have h' := h; simp at h'
-    rw [h'.1]; simpa [vval_tauT, vval, numeral_eq_natCast] using subst_le' (e 0) (e 1)
-  wb_auto
+  simpa only [repCh, HierarchySymbol.Semiformula.sigma_mkDelta,
+    HierarchySymbol.Semiformula.val_mkSigma, schemaSigma] using
+    (wb_schemaSigma (M := M) 2 repBodyValGraph wb_repBodyValGraph)
 
 theorem wb_repCh_neg_pi : WB M (∼repCh.pi.val) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
