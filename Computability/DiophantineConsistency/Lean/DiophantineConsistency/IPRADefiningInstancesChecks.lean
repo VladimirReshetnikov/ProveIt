@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRADefiningInstances
+#print axioms DiophantineConsistency.IPRADefiningInstances.composition_instance
+#print axioms DiophantineConsistency.IPRADefiningInstances.projection_instance
+#print axioms DiophantineConsistency.IPRADefiningInstances.recursion_base_instance
+#print axioms DiophantineConsistency.IPRADefiningInstances.recursion_step_instance
