@@ -45,7 +45,11 @@ theorem succ_bound_of_core (u ih s w : V)
     have hlt : x < u+(s+1) := lt_of_not_ge hx
     rcases h x with hx' | ⟨ha,hb⟩
     · exact (hx hx').elim
-    · constructor
+    · let coreRew : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#2]
+      have coreEnv : (fun j => (coreRew #j).val ![x,u,ih,s] Empty.elim) = ![x,ih] := by
+        apply funext
+        simp [Fin.forall_fin_succ, coreRew]
+      constructor
       · rcases ha with hbit | ⟨hxs,hσ⟩
         · left
           have hf : (∼bitDef.val).Evalb ![x,u] := by
@@ -60,25 +64,13 @@ theorem succ_bound_of_core (u ih s w : V)
           simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
         · right
           refine ⟨hxs,?_⟩
-          let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#2]
-          have hv : (fun j => (ω #j).val ![x,u,ih,s] Empty.elim) = ![x,ih] := by
-            funext j
-            refine Fin.cases rfl (fun k => ?_) j
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          exact bnd_rew_succ φ.core.sigma.val ω x u ih s w x ih hv (hcore x hlt hσ)
+          exact bnd_rew_succ φ.core.sigma.val coreRew x u ih s w x ih coreEnv (hcore x hlt hσ)
       · rcases hb with (hxs | hπ) | hbit
         · exact Or.inl (Or.inl hxs)
         · left; right
           have hf : (∼φ.core.pi.val).Evalb ![x,ih] := by simpa using hπ
-          let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#2]
-          have hv : (fun j => (ω #j).val ![x,u,ih,s] Empty.elim) = ![x,ih] := by
-            funext j
-            refine Fin.cases rfl (fun k => ?_) j
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hh := bnd_rew_succ (∼φ.core.pi.val) ω x u ih s w x ih hv (hcoreNeg x hlt hf)
-          rw [show (ω ▹ (∼φ.core.pi.val)) = ∼(ω ▹ φ.core.pi.val) from
-            LogicalConnective.HomClass.map_neg (Semiformula.rew ω) φ.core.pi.val] at hh
-          exact hh
+          simpa [LogicalConnective.HomClass.map_neg] using
+            (bnd_rew_succ (∼φ.core.pi.val) coreRew x u ih s w x ih coreEnv (hcoreNeg x hlt hf))
         · right
           have hf : bitDef.val.Evalb ![x,u] := by
             simpa [Semiformula.Operator.val, operator_mem_def] using hbit
