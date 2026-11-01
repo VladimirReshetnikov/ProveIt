@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRANegExponentialWitnessBound
 /-! Bound the negative Foundation expDef graph by an explicit polynomial. -/
 set_option autoImplicit false
@@ -16,19 +17,15 @@ theorem neg_exp_bound (e n : V) : (∼expDef.val).Evalb ![e,n] →
   simp [expDef] at h ⊢
   let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#1,#0]
   have h' : (∼exponentialDef.val).Evalb ![n,e] := by simpa using h
-  have hb := PRANegExponentialWitnessBound.negExponential_bound n e h'
-  have hn := PRABndRewriting.natural (∼exponentialDef.val) ω ![e,n] (PRANegExponentialWitnessBound.negExponentialMajorant e)
-  have hv : (fun j => (ω #j).val ![e,n] Empty.elim) = ![n,e] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![e,n] (PRANegExponentialWitnessBound.negExponentialMajorant e) = ![e,n,PRANegExponentialWitnessBound.negExponentialMajorant e] := by simp
-  have hs' : Fin.snoc ![n,e] (PRANegExponentialWitnessBound.negExponentialMajorant e) = ![n,e,PRANegExponentialWitnessBound.negExponentialMajorant e] := by simp
-  rw [hv,hs,hs'] at hn
-  have hrew := hn.mpr hb
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  have hrew := PRARewritingWitnessBound.binary_rew_bound_with (∼exponentialDef.val)
+    (fun _ e => PRANegExponentialWitnessBound.negExponentialMajorant e)
+    PRANegExponentialWitnessBound.negExponential_bound ω ![e,n]
+    (PRANegExponentialWitnessBound.negExponentialMajorant e) (by simp [ω])
+    (by simpa [ω, Semiformula.eval_substs] using h')
   rw [show (ω ▹ (∼exponentialDef.val)) = ∼(ω ▹ exponentialDef.val) from
     LogicalConnective.HomClass.map_neg (Semiformula.rew ω) exponentialDef.val] at hrew
-  exact hrew
+  simpa using hrew
 def negExp : ArithmeticSemisentence 2 := ∼expDef.val
 
 def boundedNegExp : ArithmeticSemisentence 3 := bnd negExp
