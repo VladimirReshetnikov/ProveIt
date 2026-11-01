@@ -59,9 +59,10 @@ open. A Lean construction of a positively oriented auxiliary witness and
 conditional transport theorems are being developed to close that gap.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
-dynamically loaded dependency ancestry. A broader source refresh is running;
-subsequent upstream source edits mean its current snapshot is historical as
-well. See the iPRA plan for precise replay boundaries and current status.
+dynamically loaded dependency ancestry. A broader 351-module source refresh
+has matching replays and independent comparisons, but subsequent source edits
+make its snapshot historical as well. See the iPRA plan for precise replay
+boundaries and current status.
 The older progress descriptions below are historical checkpoints.
 
 The [internal binary population package](reviews/arithmetic-binary-population-root.md)
