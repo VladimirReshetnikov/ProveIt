@@ -1,0 +1,15 @@
+DiophantineConsistency.PRAWitnessZFCRefutationBound.wb_refutation (N : Type) [Nonempty N]
+  [LO.FirstOrder.Structure DiophantineConsistency.PRALanguage.language N]
+  [LO.FirstOrder.Structure.Eq DiophantineConsistency.PRALanguage.language N]
+  [N↓[DiophantineConsistency.PRALanguage.language] ⊧* DiophantineConsistency.PRATheory.PRA] :
+  DiophantineConsistency.PRAWitnessCalculus.WB N DiophantineConsistency.PRAWitnessZFCRefutationBound.refutation
+DiophantineConsistency.PRAWitnessZFCRefutationBound.PRA_proves_refutation_bound :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+      (DiophantineConsistency.PRAWitnessZFCRefutationBound.refutation 🡒
+        ∃⁰
+          DiophantineConsistency.StrictSigmaOneInduction.bnd
+            DiophantineConsistency.PRAWitnessZFCRefutationBound.refutation)
+'DiophantineConsistency.PRAWitnessZFCRefutationBound.PRA_proves_refutation_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
