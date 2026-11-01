@@ -1,0 +1,6 @@
+import DiophantineConsistency.AdaptiveQV42
+#print axioms DiophantineConsistency.AdaptiveQV42Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveQV42Context.new_literal
+#print axioms DiophantineConsistency.AdaptiveQV42Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveQV42Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveQV42.oriented_exists_iff
