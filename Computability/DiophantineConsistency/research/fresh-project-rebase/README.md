@@ -37,5 +37,7 @@ dynamic-loading, and possible transient-mutation limits remain inherited.
 
 Run `PYTHONDONTWRITEBYTECODE=1 python3 test_prepare.py` for toy graph, hidden
 direct-import, parent terminal-observation, companion and sibling-isolation
-checks. These tests do not exercise the unfinished 1,210-module parent pair
-or an actual selective successor build.
+checks. `test_real_prepare.py` also constructs and compares a real-Lean toy
+parent pair, prepares sibling seeds, confirms affected modules are excluded,
+and rejects an unobserved parent exit. These tests do not exercise the
+unfinished 1,210-module parent pair or an actual selective successor build.
