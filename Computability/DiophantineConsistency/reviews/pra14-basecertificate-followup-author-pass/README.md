@@ -1,0 +1,3 @@
+# BaseCertificate fixed-source 848-module author
+
+The guarded source rebase explicitly PASSed all 848 modules on `/tmp/pra14-full-transitive-2x6o__to`. Source tree and matching frozen graph audit are in `../pra14-basecertificate-followup-snapshot/`; full logs and transitive reuse manifests are preserved here. Source, object, direct-dependency and direct external inputs were checked without workspace project-object fallback. This is a fixed snapshot; original reused-object environments are reconstructed from surviving recorded providers and package-transitive ancestry remains inherited. The updated witness-transfer 75-module comparison is a separate build.
