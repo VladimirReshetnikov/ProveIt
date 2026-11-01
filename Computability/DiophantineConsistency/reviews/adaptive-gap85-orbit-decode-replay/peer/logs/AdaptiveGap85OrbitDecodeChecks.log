@@ -1,0 +1,22 @@
+'DiophantineConsistency.AdaptiveGap85OrbitDecode.orbit_gap_decode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85OrbitDecode.orbit_positive_gap_candidate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85OrbitDecode.orbit_gap_decode.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v w : Fin 13 → V) (hv : ∀ (j : Fin 13), 0 < v j)
+  (h : Relation.ReflTransGen (DiophantineConsistency.AdaptiveGap85JointResidue.LiteralStep p) v w)
+  (hg : w 1 + w 2 < 1 + w 0 * ↑(p 0)) :
+  have q := 1 + v 0 * ↑(p 0);
+  have N := (v 9 + v 7 * (v 9 + v 10)) * (v 7 * (q * q));
+  have R := (q * v 1 + v 2) % N;
+  w 1 = R / q ∧ w 2 = R % q
+DiophantineConsistency.AdaptiveGap85OrbitDecode.orbit_positive_gap_candidate.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v w : Fin 13 → V) (hv : ∀ (j : Fin 13), 0 < v j)
+  (h : Relation.ReflTransGen (DiophantineConsistency.AdaptiveGap85JointResidue.LiteralStep p) v w) (hwF : 0 < w 1)
+  (hwC : 0 < w 2) (hg : w 1 + w 2 < 1 + w 0 * ↑(p 0)) :
+  have q := 1 + v 0 * ↑(p 0);
+  have N := (v 9 + v 7 * (v 9 + v 10)) * (v 7 * (q * q));
+  have R := (q * v 1 + v 2) % N;
+  0 < R / q ∧ 0 < R % q ∧ R / q + R % q < q

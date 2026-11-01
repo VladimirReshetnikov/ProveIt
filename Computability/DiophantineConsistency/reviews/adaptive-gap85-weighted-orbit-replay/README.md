@@ -1,0 +1,5 @@
+# Weighted code of a normalizing shift endpoint
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked actual-zero joint-congruence provider and guard its state, source, object, 400 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; the replays do not reconstruct or independently audit them.
+
+In every IΣ₁ model, the specified external finite orbit of the three shifts preserves `qF+C` modulo `cU`, with `q=1+Jβ`, `c=η+Y(η+ζ)` and `U=Yq²`. The coordinate relation is broader than literal-zero-preserving moves and is an external finite orbit. For a positive starting tuple, every reverse-gap endpoint has `qF′+C′=(qF+C)%(cU)`, and any two gap endpoints have identical `F′,C′`. A remainder at least `q²` conditionally excludes such an endpoint. These results do not assert that the remainder condition occurs at a full zero, that an endpoint exists, or that other transformations fail; the 85 reverse implication remains open.

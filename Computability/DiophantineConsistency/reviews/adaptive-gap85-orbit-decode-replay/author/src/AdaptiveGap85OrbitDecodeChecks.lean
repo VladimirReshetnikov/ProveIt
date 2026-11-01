@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveGap85OrbitDecode
+#print axioms DiophantineConsistency.AdaptiveGap85OrbitDecode.orbit_gap_decode
+#print axioms DiophantineConsistency.AdaptiveGap85OrbitDecode.orbit_positive_gap_candidate
+#check DiophantineConsistency.AdaptiveGap85OrbitDecode.orbit_gap_decode
+#check DiophantineConsistency.AdaptiveGap85OrbitDecode.orbit_positive_gap_candidate

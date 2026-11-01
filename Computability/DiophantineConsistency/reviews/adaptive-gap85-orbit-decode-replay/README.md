@@ -1,0 +1,5 @@
+# Decoded candidate for a normalizing shift endpoint
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked weighted-orbit provider and guard its state, source, object, 402 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; the replays do not reconstruct or independently audit them.
+
+For the specified external finite three-shift coordinate orbit in any IΣ₁ model, set `q=1+Jβ`, `c=η+Y(η+ζ)`, `U=Yq²`, and `R=(qF+C)%(cU)`. Every reverse-gap endpoint has `F′=R/q` and `C′=R%q`. Thus a positive endpoint can exist only if this explicitly decoded pair is positive and satisfies `F′+C′<q`. The coordinate relation is broader than literal-zero-preserving moves. The proof does not construct a reachable endpoint, establish a full-zero obstruction, or prove the 85 reverse implication.
