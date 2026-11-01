@@ -290,6 +290,23 @@ theorem subst_level : ∀ u : V, ∀ x : V, x ≤ lvB u → IsUFormula ℒₛₑ
       obtain ⟨h₁, h₂⟩ := atom_children hx'
       exact atom_rebuild hm htag hR1 (lift_lvB (termSubst_var_le hlen hwb ht₁ h₁) hstep)
         (lift_lvB (termSubst_var_le hlen hwb ht₂ h₂) hstep)
+    have conn_step {tag p q : V} (htag : tag ≤ 16) (hp : IsUFormula ℒₛₑₜ p)
+        (hq : IsUFormula ℒₛₑₜ q) (hx' : ⟪tag, ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1)) :
+        ⟪tag, ⟪subst ℒₛₑₜ w p, subst ℒₛₑₜ w q⟫⟫ + 1 ≤ lvB (10 * (u + 1) + c₀ + 10) := by
+      have hY := (pair_children hx').2
+      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp c₀ ℓ n w hc₀ hw hwb hwv
+      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq c₀ ℓ n w hc₀ hw hwb hwv
+      exact pair_lvB_le (le_trans hm le_self_add) (slack4 _)
+        (tag_le_lvB htag (le_trans hm le_self_add)) (pair_lvB' hm ihp ihq)
+    have quant_step {tag p : V} (htag : tag ≤ 16) (hp : IsUFormula ℒₛₑₜ p)
+        (hx' : ⟪tag, p⟫ + 1 ≤ lvB (u + 1)) :
+        ⟪tag, subst ℒₛₑₜ (qVec ℒₛₑₜ w) p⟫ + 1 ≤ lvB (10 * (u + 1) + c₀ + 10) := by
+      obtain ⟨hqb, hqv⟩ := qVec_entries hc₀ hw hwb hwv
+      have ihp := ih p (pair_children hx').2 hp (c₀ + 1) (ℓ + 1) (n + 1) (qVec ℒₛₑₜ w)
+        (le_trans hc₀ le_self_add) hw.qVec hqb hqv
+      rw [show 10 * (u + 1) + (c₀ + 1) = 10 * (u + 1) + c₀ + 1 by ring] at ihp
+      exact pair_lvB_le (le_trans hm le_self_add) (slack3 _)
+        (tag_le_lvB htag (le_trans hm le_self_add)) ihp
     rcases hxF.case with ⟨k, R, v, hR, hv, rfl⟩ | ⟨k, R, v, hR, hv, rfl⟩ | rfl | rfl |
         ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ | ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
     · obtain ⟨rfl, hR01⟩ := isRel_set hR
@@ -307,35 +324,13 @@ theorem subst_level : ∀ u : V, ∀ x : V, x ≤ lvB u → IsUFormula ℒₛₑ
     · rw [substs_falsum]
       exact lift_lvB hx hm10
     · rw [substs_and hp hq]
-      have hx' : ⟪(4 : V), ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1) := hx
-      have hY := (pair_children hx').2
-      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp c₀ ℓ n w hc₀ hw hwb hwv
-      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq c₀ ℓ n w hc₀ hw hwb hwv
-      exact pair_lvB_le (le_trans hm le_self_add) (slack4 _)
-        (tag_le_lvB (by norm_num) (le_trans hm le_self_add)) (pair_lvB' hm ihp ihq)
+      exact conn_step (tag := 4) (by norm_num) hp hq hx
     · rw [substs_or hp hq]
-      have hx' : ⟪(5 : V), ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1) := hx
-      have hY := (pair_children hx').2
-      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp c₀ ℓ n w hc₀ hw hwb hwv
-      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq c₀ ℓ n w hc₀ hw hwb hwv
-      exact pair_lvB_le (le_trans hm le_self_add) (slack4 _)
-        (tag_le_lvB (by norm_num) (le_trans hm le_self_add)) (pair_lvB' hm ihp ihq)
+      exact conn_step (tag := 5) (by norm_num) hp hq hx
     · rw [substs_all hp]
-      have hx' : ⟪(6 : V), p⟫ + 1 ≤ lvB (u + 1) := hx
-      obtain ⟨hqb, hqv⟩ := qVec_entries hc₀ hw hwb hwv
-      have ihp := ih p (pair_children hx').2 hp (c₀ + 1) (ℓ + 1) (n + 1) (qVec ℒₛₑₜ w)
-        (le_trans hc₀ le_self_add) hw.qVec hqb hqv
-      rw [show 10 * (u + 1) + (c₀ + 1) = 10 * (u + 1) + c₀ + 1 by ring] at ihp
-      exact pair_lvB_le (le_trans hm le_self_add) (slack3 _)
-        (tag_le_lvB (by norm_num) (le_trans hm le_self_add)) ihp
+      exact quant_step (tag := 6) (by norm_num) hp hx
     · rw [substs_ex hp]
-      have hx' : ⟪(7 : V), p⟫ + 1 ≤ lvB (u + 1) := hx
-      obtain ⟨hqb, hqv⟩ := qVec_entries hc₀ hw hwb hwv
-      have ihp := ih p (pair_children hx').2 hp (c₀ + 1) (ℓ + 1) (n + 1) (qVec ℒₛₑₜ w)
-        (le_trans hc₀ le_self_add) hw.qVec hqb hqv
-      rw [show 10 * (u + 1) + (c₀ + 1) = 10 * (u + 1) + c₀ + 1 by ring] at ihp
-      exact pair_lvB_le (le_trans hm le_self_add) (slack3 _)
-        (tag_le_lvB (by norm_num) (le_trans hm le_self_add)) ihp
+      exact quant_step (tag := 7) (by norm_num) hp hx
 
 set_option maxHeartbeats 2000000 in
 /-- **Negation multiplies levels**: a level-`u` formula has a level-`10·(u+1)`
