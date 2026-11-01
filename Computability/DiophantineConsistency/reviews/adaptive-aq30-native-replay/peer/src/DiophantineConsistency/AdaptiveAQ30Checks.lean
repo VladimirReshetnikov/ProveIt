@@ -1,0 +1,13 @@
+import DiophantineConsistency.AdaptiveAQ30
+#print axioms DiophantineConsistency.AdaptiveAQ30Zeros.sum_zero
+#print axioms DiophantineConsistency.AdaptiveAQ31Zeros.sum_zero
+#print axioms DiophantineConsistency.AdaptiveAQ30Facts.facts
+#print axioms DiophantineConsistency.AdaptiveAQ30Positive.signed_w_positive
+#print axioms DiophantineConsistency.AdaptiveAQ30Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveAQ30Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveAQ30Transport.extend_inputs
+#print axioms DiophantineConsistency.AdaptiveAQ30Transport.extend_zero
+#print axioms DiophantineConsistency.AdaptiveAQ30Transport.project_inputs
+#print axioms DiophantineConsistency.AdaptiveAQ30Transport.project_zero
+#print axioms DiophantineConsistency.AdaptiveAQ30.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveAQ30.current_no_zero_iff
