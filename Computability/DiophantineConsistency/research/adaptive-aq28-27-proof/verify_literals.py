@@ -3,7 +3,7 @@
 import hashlib,json
 from pathlib import Path
 D=Path(__file__).resolve().parent
-configs=[(28,'adaptive-square-sums28-degree8','6ddad50448c27a371e27cd90f860e30ca8632c57d539f91c2f1c08f10ed1fd27'),(27,'adaptive-square-sums27-degree8','1982b2f164b9b72f965050e3a26cec751f7d0839c2da0cbe3cc020b7e6fc0170')]
+configs=[(28,'adaptive-square-sums28-degree8','6ddad50448c27a371e27cd90f860e30ca8632c57d539f91c2f1c08f10ed1fd27'),(27,'adaptive-square-sums27-degree8','1982b2f164b9b72f965050e3a26cec751f7d0839c2da0cbe3cc020b7e6fc0170'),(26,'adaptive-square-sums26-degree8','d8e80e15d74271ba62877e841198a85729c0c4a74a5927927591b9ec2204b1a5')]
 for size,path,pin in configs:
  raw=(D.parent/path/'candidate.json').read_bytes()
  if hashlib.sha256(raw).hexdigest()!=pin:raise ValueError('candidate drift')

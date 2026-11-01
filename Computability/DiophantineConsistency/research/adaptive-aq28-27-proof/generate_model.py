@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Prepare AQ28 and AQ27 literal and zero-decomposition Lean sources."""
+"""Prepare AQ28, AQ27 and AQ26 literal and zero-decomposition Lean sources."""
 import hashlib,json,re
 from pathlib import Path
 D=Path(__file__).resolve().parent
 ROOT=D.parents[1]; SOURCE=ROOT/'Lean/DiophantineConsistency'; LEAN=D/'draft-src'; LEAN.mkdir(exist_ok=True)
-configs=[(28,29,'adaptive-square-sums28-degree8','6ddad50448c27a371e27cd90f860e30ca8632c57d539f91c2f1c08f10ed1fd27','varphiSquareDifference'),(27,28,'adaptive-square-sums27-degree8','1982b2f164b9b72f965050e3a26cec751f7d0839c2da0cbe3cc020b7e6fc0170','ellProductDifference')]
+configs=[(28,29,'adaptive-square-sums28-degree8','6ddad50448c27a371e27cd90f860e30ca8632c57d539f91c2f1c08f10ed1fd27','varphiSquareDifference'),(27,28,'adaptive-square-sums27-degree8','1982b2f164b9b72f965050e3a26cec751f7d0839c2da0cbe3cc020b7e6fc0170','ellProductDifference'),(26,27,'adaptive-square-sums26-degree8','d8e80e15d74271ba62877e841198a85729c0c4a74a5927927591b9ec2204b1a5','scaledIndexDifference')]
 factors=['A0','A1','auxResidual','g72','scaleDifference','mainScaleDifference','rankDifference','cDifference','ellDifference','cSquareDifference','zDifference','dDifference','vDifference','deltaDifference','qSquareDifference','product2Difference','ellProductDifference','varphiSquareDifference','scaledIndexDifference','qSignedDifference']
 base=(SOURCE/'AdaptiveAQ29Zeros.lean').read_text()
 for n,parent,path,pin,removed in configs:

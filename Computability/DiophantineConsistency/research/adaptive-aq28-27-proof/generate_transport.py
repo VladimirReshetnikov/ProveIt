@@ -2,7 +2,7 @@
 """Prepare model witness transport and native bridge sources; Lean replay pending."""
 from pathlib import Path
 D=Path(__file__).resolve().parent; ROOT=D.parents[1]; SOURCE=ROOT/'Lean/DiophantineConsistency'; L=D/'draft-src'; L.mkdir(exist_ok=True)
-configs=[(28,29,26,17,'.var 14 * .var 14','v 14 * v 14','mul_pos (hv 14) (hv 14)'),(27,28,25,16,'.var 17 * (.var 17 + (.var 9 + .var 10))','v 17 * (v 17 + (v 9 + v 10))','mul_pos (hv 17) (add_pos (hv 17) (add_pos (hv 9) (hv 10)))')]
+configs=[(28,29,26,17,'.var 14 * .var 14','v 14 * v 14','mul_pos (hv 14) (hv 14)'),(27,28,25,16,'.var 17 * (.var 17 + (.var 9 + .var 10))','v 17 * (v 17 + (v 9 + v 10))','mul_pos (hv 17) (add_pos (hv 17) (add_pos (hv 9) (hv 10)))'),(26,27,25,16,'.var 18 * .var 4','v 18 * v 4','mul_pos (hv 18) (hv 4)')]
 for n,parent,removed,ri,expr,value,posproof in configs:
  m=n-9; pm=m+1
  project=','.join(f'v {j}' for j in range(parent) if j!=removed)
@@ -36,7 +36,7 @@ end DiophantineConsistency.AdaptiveAQ{n}Maps
  t=(SOURCE/'AdaptiveAQ29Transport.lean').read_text()
  # Preserve the common proof vocabulary and replace the generated bodies below.
  header=t[:t.index('def fill')].replace('AdaptiveAQ29',f'AdaptiveAQ{n}').replace('AdaptiveAQ30',f'AdaptiveAQ{parent}')
- pair=f'(.var 14 * .var 14)' if n==28 else '(.var 17 * (.var 17 + (.var 9 + .var 10)))'
+ pair={28:'(.var 14 * .var 14)',27:'(.var 17 * (.var 17 + (.var 9 + .var 10)))',26:'(.var 18 * .var 4)'}[n]
  head=f'''def fill : Fin {parent} → Expr (Fin {n}) := ![{fill}]
 theorem extend_inputs (v : Fin {n} → V) :
     ∀ i, Equivalent (splitEval (.var i) (extend v)) (splitEval (fill i) v) := by
