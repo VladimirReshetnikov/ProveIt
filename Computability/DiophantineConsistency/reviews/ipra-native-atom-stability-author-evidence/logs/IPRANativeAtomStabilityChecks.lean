@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRANativeAtomStability
+#print axioms DiophantineConsistency.IPRANativeAtomStability.eqStableOpen
+#print axioms DiophantineConsistency.IPRANativeAtomStability.orderStableOpen
+#check DiophantineConsistency.IPRANativeAtomStability.orderStableOpen

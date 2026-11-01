@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAFoundationZFCCandidateFiniteStability
+#print axioms DiophantineConsistency.IPRAFoundationZFCCandidateFiniteStability.candidateEquiv
+#check DiophantineConsistency.IPRAFoundationZFCCandidateFiniteStability.candidateEquiv

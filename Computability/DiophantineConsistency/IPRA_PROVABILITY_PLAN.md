@@ -44,13 +44,13 @@ The classical PRA source-current construction in
 [PRA_PROVABILITY_PLAN.md](PRA_PROVABILITY_PLAN.md) can supply the starting
 proof, but the following further steps are required in Lean:
 
-1. Define the chosen intuitionistic PRA theory and its quantifier-free
-   induction scheme, with the full primitive-recursive language and allowed
-   parameters made explicit.
-2. Prove every translated axiom actually needed by the classical PRA proof
-   is derivable in that theory. This includes equality, defining equations,
-   successor and order axioms, and translated open induction. Decidability and
-   stability facts needed for open formulas must themselves be established.
+1. Identify the defined native candidate with a standard intuitionistic PRA
+   presentation, including its full primitive-recursive language and allowed
+   induction parameters.
+2. Revalidate the checked translated-axiom transfer after the merge and join
+   it to the current equation proof. All classical PRA axiom images have been
+   derived in the candidate; decidability and stability facts for the final
+   consistency comparison remain separate.
 3. Prove that the translated conclusion entails the intended literal
    intuitionistic equivalence, for both the no-zero formula and the selected
    arithmetized ZFC consistency predicate. It is not enough to identify these
@@ -81,11 +81,15 @@ have also passed author and independent suffix replays; these do not discharge
 the equality images. The separate
 [basic-axiom images](Lean/DiophantineConsistency/IPRANativeBasicImages.lean)
 now cover all three basic axioms and have passed author and independent
-suffix replays. Equality remains the only undischarged PRA axiom family;
-its reflexivity, symmetry and transitivity images now have separate guarded
-author and independent replays, while arbitrary-arity function and relation
-congruence remain open. The separate results also need a coherent combined
-build.
+suffix replays. Equality reflexivity, symmetry, transitivity, arbitrary-arity
+function congruence, and relation congruence have now all been translated.
+The [complete GG transfer](Lean/DiophantineConsistency/IPRAFullGGTransfer.lean)
+combines every classical PRA axiom image and has matching guarded suffix
+replays on source/object-matched historical parents. This proves that a
+classical candidate-PRA proof translates to a proof of its GG image in the
+native candidate; it does not identify ordinary intuitionistic consistency
+with that translated image, and the post-merge source closure remains to be
+revalidated.
 The [translated induction body](Lean/DiophantineConsistency/IPRAInductionGGBody.lean)
 has author and independent suffix replays: it proves intuitionistically that
 the GG image of Foundation's exact `succInd` body is equivalent to the

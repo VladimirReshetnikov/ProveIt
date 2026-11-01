@@ -1,0 +1,22 @@
+'DiophantineConsistency.IPRAFoundationZFCFiniteStability.zfcEquivFromFinite' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRAFoundationZFCFiniteStability.zfcEquivFromFinite.{u_1} {L : LO.FirstOrder.Language}
+  [L.DecidableEq] {Λ : LO.FirstOrder.Hilbertᵢ L} {T : LO.FirstOrder.Theoryᵢ L Λ} (f : ℒₒᵣ.Hom L)
+  (hbound :
+    T ⊢!
+      ((LO.FirstOrder.Semiformula.lMap f)
+            DiophantineConsistency.FoundationHAConsistencyNormalization.rho).doubleNegation 🡒
+        ((LO.FirstOrder.Semiformula.lMap f)
+            DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation).doubleNegation)
+  (witnesses :
+    (ψ : LO.FirstOrder.Proposition L) →
+      ψ ∈
+          DiophantineConsistency.IPRAStableBackwardFinite.reachList
+            (DiophantineConsistency.IPRAFoundationZFCReachStability.matrixOpen f) →
+        DiophantineConsistency.IPRAStableBackward.NeedsStability ψ →
+          DiophantineConsistency.IPRAFoundationZFCStabilityWitness.StabilityWitness T ψ) :
+  T ⊢!
+    ((LO.FirstOrder.Semiformula.lMap f)
+          DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence).doubleNegation 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation f

@@ -1,0 +1,7 @@
+# Actual ZFC compound-only stability obligations: author replay
+
+Guarded v2 run `/tmp/ipra-zfc-compound-stability-v2-_sxu0csx` passed. For the exact Foundation ZFC formula in candidate nativeTheory, all positive atomic relation stability cases are discharged using the actual native order-definition axiom under a single explicit universal equality-decidability T-proof. The exact consistency equivalence also requires the translated witness-bound T-proof and finite-parameter stability-schema T-proof witnesses for disjunctions and existentials in a computable finite covering list. No equality-decidability proof, witness-bound proof, compound schema proof or evaluated literal list/count is supplied. Standard-iPRA and PAHF/native identifications remain open.
+
+The v2 driver compares the native source/object inventory, selected external/Foundation/Mathlib anchor inventories and manifest across all three parent overlays; v1 `/tmp/ipra-zfc-compound-stability-vzcgplv6` is a retained weaker pre-hardening observation. Full inherited HA/ZF/Foundation/package transitive source/object provenance remains unverified. Lean metatheory may use classical choice, without adding a classical object-calculus axiom.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-zfc-compound-stability.py`. Independent replay required. State `16ce9de5bc73a4a755a049dd87898ba0c54720594c50d0b27c88b771fa201ccb`; manifest `8df422c75ef42e03904edc74bef879bf0813cdefbe8efacfb8ea66582b1dbd8e`.

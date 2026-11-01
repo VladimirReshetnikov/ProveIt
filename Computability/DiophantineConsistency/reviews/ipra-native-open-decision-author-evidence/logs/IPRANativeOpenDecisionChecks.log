@@ -1,0 +1,9 @@
+'DiophantineConsistency.IPRANativeOpenDecision.openDecision' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRANativeOpenDecision.openStability' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.IPRANativeOpenDecision.openStability
+  (heq :
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      DiophantineConsistency.IPRANativeAtomStability.eqDecSentence)
+  (φ : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language) (h : LO.FirstOrder.Semiformula.Open φ) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ∼∼DiophantineConsistency.IPRANativeFormula.native φ 🡒 DiophantineConsistency.IPRANativeFormula.native φ
