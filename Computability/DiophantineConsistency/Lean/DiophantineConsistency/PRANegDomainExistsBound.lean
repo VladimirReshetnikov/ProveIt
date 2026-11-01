@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRANegBitFullWitnessBound
 import DiophantineConsistency.PRABitFullWitnessBound
 import Foundation.FirstOrder.Arithmetic.HFS.Basic
@@ -25,20 +26,15 @@ theorem neg_exists_bound (x u s w : V) (hnegs : PRANegBitFullWitnessBound.negBit
     · right; left
       letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
       have hb : (∼bitDef.val).Evalb ![z,s] := by simpa [Semiformula.Operator.val, operator_mem_def] using hz
-      have hh := PRANegBitFullWitnessBound.negBit_bound z s hb
-      have hs' : Fin.snoc ![z,s] (PRANegBitFullWitnessBound.negBitMajorant s) = ![z,s,PRANegBitFullWitnessBound.negBitMajorant s] := by simp
-      have hm := eval_bnd_mono (∼bitDef.val) ![z,s] (Empty.elim : Empty → V) hnegs (by rw [hs']; exact hh)
       let ω : Rew ℒₒᵣ Empty 2 Empty 5 := Rew.subst ![#0,#4]
-      have hn := PRABndRewriting.natural (∼bitDef.val) ω ![z,y,x,u,s] w
-      have hv : (fun j => (ω #j).val ![z,y,x,u,s] Empty.elim) = ![z,s] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hsn : Fin.snoc ![z,y,x,u,s] w = ![z,y,x,u,s,w] := by simp
-      have hs'' : Fin.snoc ![z,s] w = ![z,s,w] := by simp
-      rw [hv,hsn,hs''] at hn
-      rw [hs''] at hm
-      have hrew := hn.mpr hm
+      have hf : (ω ▹ (∼bitDef.val)).Evalb ![z,y,x,u,s] := by
+        simpa [ω, Semiformula.eval_substs] using hb
+      have hw : PRANegBitFullWitnessBound.negBitMajorant
+          ((ω #1).val ![z,y,x,u,s] Empty.elim) ≤ w := by
+        simpa [ω] using hnegs
+      have hrew := PRARewritingWitnessBound.binary_rew_bound_with (∼bitDef.val)
+        (fun _ s => PRANegBitFullWitnessBound.negBitMajorant s)
+        PRANegBitFullWitnessBound.negBit_bound ω ![z,y,x,u,s] w hw hf
       rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
         LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hrew
       simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hrew
