@@ -59,6 +59,8 @@ finite graph searches have produced a [29-variable degree-eight candidate](resea
 and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
 Their substitutions and degrees have finite checks. The 29-variable candidate
 has a matched model replay; its native transport is undergoing verification.
+The guarded native replay attempt failed before its first module because a
+historical dependency provider contained broken symlinks; it has not passed.
 The 40-variable candidate's model and native transports remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
