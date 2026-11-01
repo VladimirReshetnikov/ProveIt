@@ -1,0 +1,8 @@
+DiophantineConsistency.IPRABoundedInduction.backward {Γ : LO.Polarity} {n : ℕ}
+  (φ : LO.FirstOrder.Semisentence DiophantineConsistency.PRALanguage.language n)
+  (hφ : LO.FirstOrder.Arithmetic.Hierarchy Γ 0 φ)
+  (e : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ((LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts e)) φ).doubleNegation 🡒
+      DiophantineConsistency.IPRANativeFormula.native ((LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts e)) φ)
+'DiophantineConsistency.IPRABoundedInduction.backward' depends on axioms: [propext, Classical.choice, Quot.sound]
