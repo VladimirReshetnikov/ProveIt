@@ -363,15 +363,7 @@ variable `#i`. -/
 theorem freeVariables_toSet (φ : Form) :
     ∀ k : ℕ, (∀ i, Free i φ → i < k) → (toSet k φ).freeVariables = ∅ := by
   induction φ with
-  | fMem i j =>
-      intro k h
-      have hi : i < k := h i (Or.inl rfl)
-      have hj : j < k := h j (Or.inr rfl)
-      simp only [toSet, toSetVar, dif_pos hi, dif_pos hj,
-        Semiformula.freeVariables_rel]
-      ext x
-      simp [Finset.mem_biUnion, Fin.exists_fin_two]
-  | fEq i j =>
+  | fMem i j | fEq i j =>
       intro k h
       have hi : i < k := h i (Or.inl rfl)
       have hj : j < k := h j (Or.inr rfl)
@@ -380,26 +372,11 @@ theorem freeVariables_toSet (φ : Form) :
       ext x
       simp [Finset.mem_biUnion, Fin.exists_fin_two]
   | fBot => intro k _; rfl
-  | fImp a b iha ihb =>
+  | fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
       intro k h
       simp [toSet, iha k (fun i hi => h i (Or.inl hi)),
         ihb k (fun i hi => h i (Or.inr hi))]
-  | fAnd a b iha ihb =>
-      intro k h
-      simp [toSet, iha k (fun i hi => h i (Or.inl hi)),
-        ihb k (fun i hi => h i (Or.inr hi))]
-  | fOr a b iha ihb =>
-      intro k h
-      simp [toSet, iha k (fun i hi => h i (Or.inl hi)),
-        ihb k (fun i hi => h i (Or.inr hi))]
-  | fAll a ih =>
-      intro k h
-      have := ih (k + 1) (fun i hi => by
-        cases i with
-        | zero => omega
-        | succ m => have := h m hi; omega)
-      simp [toSet, this]
-  | fEx a ih =>
+  | fAll a ih | fEx a ih =>
       intro k h
       have := ih (k + 1) (fun i hi => by
         cases i with
