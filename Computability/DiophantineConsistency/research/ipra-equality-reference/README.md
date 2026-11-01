@@ -168,6 +168,15 @@ This is a concrete candidate for identifying the transported formula with an
 independently defined syntax reader, not a comparison with all alternative
 proof codings, nor yet an elaborated or coherently checked Lean result.
 
+[`IPRAReferenceAQ29Direct.lean`](draft/IPRAReferenceAQ29Direct.lean) is an
+uncompiled assembly of the three preceding drafts. Its proposed theorem has
+type `referenceTheory ⊢ noZero AQ29 🡘 ∼refutation`, where `noZero` is the
+explicit equality-only formula for the fixed positive-shift expression and
+`refutation` is the direct reader applied to Foundation's same ρ. The files
+are kept in the research draft directory, so their imports must be made
+available before any future Lean replay. No elaboration, alternative-coding
+equivalence, or equation proof verification is claimed.
+
 [`IPRAReferenceNoZero.lean`](draft/IPRAReferenceNoZero.lean) is another
 uncompiled source draft spelling out the equality-only no-zero formula from
 the positive-shift expression's two natural-polynomial sides and proposing
