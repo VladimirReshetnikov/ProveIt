@@ -36,6 +36,7 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [36-variable 148-operation degree-6 equation](equation6-36.pdf), the
 [35-variable 145-operation degree-6 equation](equation6-35.pdf), the
 [34-variable 144-operation degree-6 equation](equation6-34.pdf), the
+[33-variable 143-operation degree-6 equation](equation6-33.pdf), the
 [51-variable 187-operation degree-4 equation](equation4.pdf), the
 [50-variable 186-operation degree-4 equation](equation4-50.pdf), the
 [49-variable 185-operation degree-4 equation](equation4-49.pdf), and the
@@ -48,12 +49,14 @@ degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced a [43-variable quartic candidate](research/adaptive-square-sums43/README.md),
-and [33-variable](research/adaptive-square-sums33-degree6/README.md) and
-[32-variable](research/adaptive-square-sums32-degree6/README.md) degree-six candidates.
-Their circuit sizes, substitutions and exact degrees have finite checks. The
-33-variable model equivalence has a matched historical replay;
-their native endpoints and the other model equivalences are still being checked.
+finite graph searches have produced a [43-variable quartic candidate](research/adaptive-square-sums43/README.md)
+and a [32-variable degree-six candidate](research/adaptive-square-sums32-degree6/README.md).
+Their circuit sizes, substitutions and exact degrees have finite checks, and
+both model equivalences have matched historical replays; their native endpoints
+are being checked. Further [42-variable quartic](research/adaptive-square-sums42-quartic/README.md)
+and [31-variable degree-six](research/adaptive-square-sums31-degree6/README.md)
+graphs have finite embedding and degree checks, but their reverse witness
+constructions and native equivalences remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader source refresh is running;
