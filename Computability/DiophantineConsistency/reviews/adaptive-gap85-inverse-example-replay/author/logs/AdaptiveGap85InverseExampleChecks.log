@@ -1,0 +1,20 @@
+'DiophantineConsistency.AdaptiveGap85InverseExample.current_inverse_crossing_nonzero_example' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85InverseExample.current_inverse_crossing_nonzero_example.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] :
+  ∃ v w,
+    (∀ (i : Fin 13), 0 < v i) ∧
+      (∀ (i : Fin 13), 0 < w i) ∧
+        ¬v 1 + v 2 < 1 + v 0 * ↑(DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts 0) ∧
+          w 1 + w 2 < 1 + w 0 * ↑(DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts 0) ∧
+            DiophantineConsistency.AdaptiveGap85InverseEntry.PositiveBiStep
+                DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts v w ∧
+              ¬DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+                    (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j =>
+                      ↑(DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts j))
+                    v ∧
+                ¬DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+                    (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j =>
+                      ↑(DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts j))
+                    w

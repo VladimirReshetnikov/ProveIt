@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85InverseExample
+#print axioms DiophantineConsistency.AdaptiveGap85InverseExample.current_inverse_crossing_nonzero_example
+#check DiophantineConsistency.AdaptiveGap85InverseExample.current_inverse_crossing_nonzero_example
