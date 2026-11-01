@@ -111,22 +111,23 @@ theorem max_closure {F₁ F₃ F₅ : V → V → Prop} (htot₁ : Tot F₁) (ht
     (hdefF : ∀ a g, F₅ a g ↔ ∃ g₁ g₂, F₁ a g₁ ∧ F₃ a g₂ ∧ ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂)
     {b : V} (hb : IsLim (memRel V) b) (hcl : ∀ a, a ∈ b → ∀ g, F₅ a g → g ∈ b) :
     (∀ a, a ∈ b → ∀ g, F₁ a g → g ∈ b) ∧ (∀ a, a ∈ b → ∀ g, F₃ a g → g ∈ b) := by
-  refine ⟨fun a ha g hg => ?_, fun a ha g hg => ?_⟩
-  · have hao := ord_of_mem hb.1 ha
+  have both (a : V) (ha : a ∈ b) :
+      (∀ g, F₁ a g → g ∈ b) ∧ (∀ g, F₃ a g → g ∈ b) := by
+    have hao := ord_of_mem hb.1 ha
     obtain ⟨g₁, ho₁, -, hF₁, u₁⟩ := htot₁ a hao
-    obtain ⟨g₂, -, -, hF₃, -⟩ := htot₃ a hao
-    have hF₅ := (hdefF a _).2 ⟨g₁, g₂, hF₁, hF₃, fun z => _root_.SetTheory.vcup_spec H g₁ g₂ z⟩
-    rw [u₁ g hg]
-    exact mem_of_sub_mem H hR hb.1 (hcl a ha _ hF₅) ho₁
-      fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inl hz)
-  · have hao := ord_of_mem hb.1 ha
-    obtain ⟨g₁, -, -, hF₁, -⟩ := htot₁ a hao
     obtain ⟨g₂, ho₂, -, hF₃, u₃⟩ := htot₃ a hao
     have hF₅ := (hdefF a _).2 ⟨g₁, g₂, hF₁, hF₃, fun z => _root_.SetTheory.vcup_spec H g₁ g₂ z⟩
-    rw [u₃ g hg]
-    exact mem_of_sub_mem H hR hb.1 (hcl a ha _ hF₅) ho₂
-      fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inr hz)
-
+    have hmax := hcl a ha _ hF₅
+    constructor
+    · intro g hg
+      rw [u₁ g hg]
+      exact mem_of_sub_mem H hR hb.1 hmax ho₁
+        fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inl hz)
+    · intro g hg
+      rw [u₃ g hg]
+      exact mem_of_sub_mem H hR hb.1 hmax ho₂
+        fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inr hz)
+  exact ⟨fun a ha => (both a ha).1, fun a ha => (both a ha).2⟩
 
 include hR in
 /-- **The conjunction step.** -/
