@@ -105,6 +105,29 @@ lemma isSetStructure_stage {b S R : V} (hb : IsLim (memRel V) b) (hS : IsL H hP 
   obtain ⟨x, y, hx, hy, -, rfl⟩ := (hR' p).1 hp
   exact ⟨x, y, hx, hy, rfl⟩
 
+include H hR in
+/-- Closure under a pointwise maximum gives closure under both components. -/
+theorem max_closure {F₁ F₃ F₅ : V → V → Prop} (htot₁ : Tot F₁) (htot₃ : Tot F₃)
+    (hdefF : ∀ a g, F₅ a g ↔ ∃ g₁ g₂, F₁ a g₁ ∧ F₃ a g₂ ∧ ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂)
+    {b : V} (hb : IsLim (memRel V) b) (hcl : ∀ a, a ∈ b → ∀ g, F₅ a g → g ∈ b) :
+    (∀ a, a ∈ b → ∀ g, F₁ a g → g ∈ b) ∧ (∀ a, a ∈ b → ∀ g, F₃ a g → g ∈ b) := by
+  refine ⟨fun a ha g hg => ?_, fun a ha g hg => ?_⟩
+  · have hao := ord_of_mem hb.1 ha
+    obtain ⟨g₁, ho₁, -, hF₁, u₁⟩ := htot₁ a hao
+    obtain ⟨g₂, -, -, hF₃, -⟩ := htot₃ a hao
+    have hF₅ := (hdefF a _).2 ⟨g₁, g₂, hF₁, hF₃, fun z => _root_.SetTheory.vcup_spec H g₁ g₂ z⟩
+    rw [u₁ g hg]
+    exact mem_of_sub_mem H hR hb.1 (hcl a ha _ hF₅) ho₁
+      fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inl hz)
+  · have hao := ord_of_mem hb.1 ha
+    obtain ⟨g₁, -, -, hF₁, -⟩ := htot₁ a hao
+    obtain ⟨g₂, ho₂, -, hF₃, u₃⟩ := htot₃ a hao
+    have hF₅ := (hdefF a _).2 ⟨g₁, g₂, hF₁, hF₃, fun z => _root_.SetTheory.vcup_spec H g₁ g₂ z⟩
+    rw [u₃ g hg]
+    exact mem_of_sub_mem H hR hb.1 (hcl a ha _ hF₅) ho₂
+      fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inr hz)
+
+
 include hR in
 /-- **The conjunction step.** -/
 theorem and_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Prop}
@@ -135,25 +158,7 @@ theorem and_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Pro
   · obtain ⟨c₁, hc₁, hr₁⟩ := hrefl₁
     obtain ⟨c₂, hc₂, hr₂⟩ := hrefl₃
     refine ⟨_, isFormCodeSem_and H hc₁ hc₂, fun b hb hcl S hS R hR' a ha U hU t ht => ?_⟩
-    -- closure under the maximum gives closure under both components
-    have hcl' : ∀ a, a ∈ b → ∀ g₁ g₂, F₁ a g₁ → F₃ a g₂ → g₁ ∈ b ∧ g₂ ∈ b := by
-      intro a ha g₁ g₂ hF₁ hF₃
-      have hao : Ord (memRel V) a := ord_of_mem hb.1 ha
-      obtain ⟨g₁', g₂', hF₁', hF₃', ho₁, ho₂, -, hF₅⟩ := hmax a hao
-      obtain ⟨_, _, _, _, u₁⟩ := htot₁ a hao
-      obtain ⟨_, _, _, _, u₃⟩ := htot₃ a hao
-      have e₁ : g₁ = g₁' := (u₁ g₁ hF₁).trans (u₁ g₁' hF₁').symm
-      have e₃ : g₂ = g₂' := (u₃ g₂ hF₃).trans (u₃ g₂' hF₃').symm
-      subst e₁ e₃
-      have hg := hcl a ha _ hF₅
-      exact ⟨mem_of_sub_mem H hR hb.1 hg ho₁ fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inl hz),
-        mem_of_sub_mem H hR hb.1 hg ho₂ fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inr hz)⟩
-    have hcl₁ : ∀ a, a ∈ b → ∀ g, F₁ a g → g ∈ b := fun a ha g hg => by
-      obtain ⟨g₂, -, -, hF₃, -⟩ := htot₃ a (ord_of_mem hb.1 ha)
-      exact (hcl' a ha g g₂ hg hF₃).1
-    have hcl₃ : ∀ a, a ∈ b → ∀ g, F₃ a g → g ∈ b := fun a ha g hg => by
-      obtain ⟨g₁, -, -, hF₁, -⟩ := htot₁ a (ord_of_mem hb.1 ha)
-      exact (hcl' a ha g₁ g hF₁ hg).2
+    obtain ⟨hcl₁, hcl₃⟩ := max_closure H hR htot₁ htot₃ hdefF hb hcl
     rw [hdefP, hr₁ b hb hcl₁ S hS R hR' a ha U hU t ht, hr₂ b hb hcl₃ S hS R hR' a ha U hU t ht,
       satIn_and H (isSetStructure_stage H hR hP hb hS hR') hc₁ hc₂
         (envOn_stage H hR hP hb hS ha hU ht)]

@@ -112,21 +112,7 @@ theorem max_props {F₁ F₃ F₅ : V → V → Prop} (htot₁ : Tot F₁) (htot
   obtain ⟨htot, -⟩ := and_step H hR hP (P₀ := fun _ => False) (P₂ := fun _ => False)
     (P₄ := fun _ => False) htot₁ (LStepBasic.bot_refl H hP) htot₃ (LStepBasic.bot_refl H hP)
     (fun _ => by simp) hdefF
-  refine ⟨htot, fun b hb hcl => ⟨fun a ha g hg => ?_, fun a ha g hg => ?_⟩⟩
-  · have hao := ord_of_mem hb.1 ha
-    obtain ⟨g₁, ho₁, -, hF₁, u₁⟩ := htot₁ a hao
-    obtain ⟨g₂, -, -, hF₃, -⟩ := htot₃ a hao
-    have hF₅ := (hdefF a _).2 ⟨g₁, g₂, hF₁, hF₃, fun z => _root_.SetTheory.vcup_spec H g₁ g₂ z⟩
-    rw [u₁ g hg]
-    exact mem_of_sub_mem H hR hb.1 (hcl a ha _ hF₅) ho₁
-      fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inl hz)
-  · have hao := ord_of_mem hb.1 ha
-    obtain ⟨g₁, -, -, hF₁, -⟩ := htot₁ a hao
-    obtain ⟨g₂, ho₂, -, hF₃, u₃⟩ := htot₃ a hao
-    have hF₅ := (hdefF a _).2 ⟨g₁, g₂, hF₁, hF₃, fun z => _root_.SetTheory.vcup_spec H g₁ g₂ z⟩
-    rw [u₃ g hg]
-    exact mem_of_sub_mem H hR hb.1 (hcl a ha _ hF₅) ho₂
-      fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inr hz)
+  exact ⟨htot, fun _ hb hcl => max_closure H hR htot₁ htot₃ hdefF hb hcl⟩
 
 include hR in
 /-- Extending an environment over an earlier stage by a member of the limit
