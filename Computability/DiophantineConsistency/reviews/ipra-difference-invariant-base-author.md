@@ -1,0 +1,7 @@
+# Native two-difference invariant base: author replay
+
+Guarded author run `/tmp/ipra-difference-invariant-base-yu96bjxm` passed on the independently checked arithmetic prerequisite provider `/tmp/ipra-difference-base-prerequisites-o5wlkrve/lib`. It constructs the actual universally closed native-theory proof of the invariant's `x=0` case. It uses native zero decidability, the directly proved identity `y−0=y`, native equality symmetry, and native Leibniz substitution. Joining the checked invariant client now derives native universal equality decidability with the invariant's successor-step proof as the only explicit premise.
+
+The successor induction case remains unproved by this client. Sources and selected provider objects were reauthenticated before and after compilation; project/Foundation and package transitive ancestry of the parent remains inherited and historical. The Lean axiom report contains the standard `propext`, `Classical.choice`, and `Quot.sound` rather than a classical object-level rule.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-invariant-base.py`. State SHA-256 `425c2e704f35bb0ed830caa56324e1fdb7deda2ddd967f3492e6d319fff8c652`; provider inventory `8ab85bffde339427e14964f7fa7fd49897007870b39e3e0fa56233723b6ab713`. Source snapshots, logs, driver, state and inventory are retained in the matching evidence directory.

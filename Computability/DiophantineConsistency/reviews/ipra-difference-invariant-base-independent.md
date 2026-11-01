@@ -1,0 +1,5 @@
+# Native two-difference invariant base: independent replay
+
+The guarded independent peer `/tmp/ipra-difference-invariant-base-4aieab3_` passed and matches the author `/tmp/ipra-difference-invariant-base-yu96bjxm` in both source/object/full-log rows, parent state hash, and the complete serialized selected-provider inventory. It independently replays the two source modules on the same checked arithmetic prerequisite parent. It proves the actual native base case; the native induction successor step remains the sole explicit proof premise of the equality-decidability client. Parent/Foundation and package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-invariant-base.py`. Peer state SHA-256 `3509434501a29d76dc676d32cb868174d1edfb74bf193e07ed6299ea0bde9810`; provider inventory `8ab85bffde339427e14964f7fa7fd49897007870b39e3e0fa56233723b6ab713`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

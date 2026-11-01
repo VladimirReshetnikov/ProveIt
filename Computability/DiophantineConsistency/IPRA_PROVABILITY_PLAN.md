@@ -185,8 +185,11 @@ difference implication as the explicit premise for general equality
 decidability; inherited package and project ancestry remains historical. A
 [checked invariant client](Lean/DiophantineConsistency/IPRADifferenceInvariant.lean)
 reduces that positive reverse implication to the base and successor cases of
-quantifier-free induction on `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Both native arithmetic
-cases remain explicit obligations.
+quantifier-free induction on `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. The actual native
+[base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
+has matching guarded author and independent replays. The resulting equality
+decision construction has the invariant successor case as its sole explicit
+premise; that case remains unproved, and provider ancestry remains historical.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
 with matching author and independent replays. The companion
