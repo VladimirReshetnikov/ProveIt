@@ -13,3 +13,10 @@ instead of `Fin 19`, due to overlapping textual substitutions. The generator
 and draft have been corrected. These checks do not compile Lean, validate the
 entire positivity or transport proofs, or prove native iPRA equivalence. The
 selected model/native wiring checks are textual and are not a full Lean parser.
+
+A single bounded, low-priority [mixed-provider AQ28 syntax probe](exploratory-probe.json)
+did not produce an elaboration result. Its first invocation exited 1 because
+an empty local namespace shadowed the historical parent; its corrected
+invocation timed out after 30 seconds with exit 124. No output object was
+present afterward. This deliberately mixed historical-project/new-Foundation
+probe cannot establish provider compatibility or any theorem.
