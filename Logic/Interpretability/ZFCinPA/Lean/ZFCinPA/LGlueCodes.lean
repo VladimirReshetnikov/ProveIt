@@ -75,75 +75,58 @@ theorem envForm_open {m p : V} (hp : IsSemiformula ℒₛₑₜ m p) :
   refine IsSemiformula.sigma1_structural_induction (L := ℒₛₑₜ)
     (P := fun m p ↦ m ≠ 0 →
       envForm (m - 1) (subst ℒₛₑₜ (openVec (m - 1)) (shift ℒₛₑₜ p)) = envForm m p)
-    (by definability) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
-  · intro m k R v hR hv hm
+    (by definability) ?hrel ?hnrel ?hverum ?hfalsum ?hand ?hor ?hall ?hexs hp
+  case hrel | hnrel =>
+    intro m k R v hR hv hm
     rcases zero_or_succ m with rfl | ⟨n, rfl⟩
     · exact absurd rfl hm
     obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
     have hsv : IsSemitermVec ℒₛₑₜ 2 n (termSubstVec ℒₛₑₜ 2 (openVec n) (termShiftVec ℒₛₑₜ 2 v)) :=
       IsSemitermVec.termSubstVec (openVec_isSemitermVec n) hv.termShiftVec
     simp only [add_tsub_cancel_right]
-    rw [shift_rel hR hv.isUTerm, substs_rel hR hv.isUTerm.termShiftVec,
-      envForm_rel hR hsv.isUTerm, envForm_rel hR hv.isUTerm, atomOf, atomOf,
-      nth_termSubstVec hv.isUTerm.termShiftVec (by simp),
-      nth_termSubstVec hv.isUTerm.termShiftVec (by simp),
-      nth_termShiftVec hv.isUTerm (by simp), nth_termShiftVec hv.isUTerm (by simp),
-      idx_open (hv.nth (by simp)), idx_open (hv.nth (by simp))]
-  · intro m k R v hR hv hm
-    rcases zero_or_succ m with rfl | ⟨n, rfl⟩
-    · exact absurd rfl hm
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
-    have hsv : IsSemitermVec ℒₛₑₜ 2 n (termSubstVec ℒₛₑₜ 2 (openVec n) (termShiftVec ℒₛₑₜ 2 v)) :=
-      IsSemitermVec.termSubstVec (openVec_isSemitermVec n) hv.termShiftVec
-    simp only [add_tsub_cancel_right]
-    rw [shift_nrel hR hv.isUTerm, substs_nrel hR hv.isUTerm.termShiftVec,
-      envForm_nrel hR hsv.isUTerm, envForm_nrel hR hv.isUTerm, atomOf, atomOf,
-      nth_termSubstVec hv.isUTerm.termShiftVec (by simp),
+    first
+    | rw [shift_rel hR hv.isUTerm, substs_rel hR hv.isUTerm.termShiftVec,
+        envForm_rel hR hsv.isUTerm, envForm_rel hR hv.isUTerm]
+    | rw [shift_nrel hR hv.isUTerm, substs_nrel hR hv.isUTerm.termShiftVec,
+        envForm_nrel hR hsv.isUTerm, envForm_nrel hR hv.isUTerm]
+    rw [atomOf, atomOf, nth_termSubstVec hv.isUTerm.termShiftVec (by simp),
       nth_termSubstVec hv.isUTerm.termShiftVec (by simp),
       nth_termShiftVec hv.isUTerm (by simp), nth_termShiftVec hv.isUTerm (by simp),
       idx_open (hv.nth (by simp)), idx_open (hv.nth (by simp))]
-  · intro m _
+  case hverum | hfalsum =>
+    intro m _
     simp
-  · intro m _
-    simp
-  · intro m p q hp hq ihp ihq hm
+  case hand | hor =>
+    intro m p q hp hq ihp ihq hm
     rcases zero_or_succ m with rfl | ⟨n, rfl⟩
     · exact absurd rfl hm
     have ihp' := ihp hm
     have ihq' := ihq hm
     simp only [add_tsub_cancel_right] at ihp' ihq' ⊢
-    rw [shift_and hp.isUFormula hq.isUFormula,
-      substs_and hp.isUFormula.shift hq.isUFormula.shift,
-      envForm_and (hp.shift.subst (openVec_isSemitermVec n)).isUFormula
-        (hq.shift.subst (openVec_isSemitermVec n)).isUFormula,
-      envForm_and hp.isUFormula hq.isUFormula, ihp', ihq']
-  · intro m p q hp hq ihp ihq hm
-    rcases zero_or_succ m with rfl | ⟨n, rfl⟩
-    · exact absurd rfl hm
-    have ihp' := ihp hm
-    have ihq' := ihq hm
-    simp only [add_tsub_cancel_right] at ihp' ihq' ⊢
-    rw [shift_or hp.isUFormula hq.isUFormula,
-      substs_or hp.isUFormula.shift hq.isUFormula.shift,
-      envForm_or (hp.shift.subst (openVec_isSemitermVec n)).isUFormula
-        (hq.shift.subst (openVec_isSemitermVec n)).isUFormula,
-      envForm_or hp.isUFormula hq.isUFormula, ihp', ihq']
-  · intro m p hp ih hm
+    first
+    | rw [shift_and hp.isUFormula hq.isUFormula,
+        substs_and hp.isUFormula.shift hq.isUFormula.shift,
+        envForm_and (hp.shift.subst (openVec_isSemitermVec n)).isUFormula
+          (hq.shift.subst (openVec_isSemitermVec n)).isUFormula,
+        envForm_and hp.isUFormula hq.isUFormula, ihp', ihq']
+    | rw [shift_or hp.isUFormula hq.isUFormula,
+        substs_or hp.isUFormula.shift hq.isUFormula.shift,
+        envForm_or (hp.shift.subst (openVec_isSemitermVec n)).isUFormula
+          (hq.shift.subst (openVec_isSemitermVec n)).isUFormula,
+        envForm_or hp.isUFormula hq.isUFormula, ihp', ihq']
+  case hall | hexs =>
+    intro m p hp ih hm
     rcases zero_or_succ m with rfl | ⟨n, rfl⟩
     · exact absurd rfl hm
     have ih' := ih (by simp)
     simp only [add_tsub_cancel_right] at ih' ⊢
-    rw [shift_all hp.isUFormula, substs_all hp.isUFormula.shift, openVec_succ,
-      envForm_all (hp.shift.subst (openVec_isSemitermVec (n + 1))).isUFormula, ih',
-      envForm_all hp.isUFormula]
-  · intro m p hp ih hm
-    rcases zero_or_succ m with rfl | ⟨n, rfl⟩
-    · exact absurd rfl hm
-    have ih' := ih (by simp)
-    simp only [add_tsub_cancel_right] at ih' ⊢
-    rw [shift_exs hp.isUFormula, substs_ex hp.isUFormula.shift, openVec_succ,
-      envForm_exs (hp.shift.subst (openVec_isSemitermVec (n + 1))).isUFormula, ih',
-      envForm_exs hp.isUFormula]
+    first
+    | rw [shift_all hp.isUFormula, substs_all hp.isUFormula.shift, openVec_succ,
+        envForm_all (hp.shift.subst (openVec_isSemitermVec (n + 1))).isUFormula, ih',
+        envForm_all hp.isUFormula]
+    | rw [shift_exs hp.isUFormula, substs_ex hp.isUFormula.shift, openVec_succ,
+        envForm_exs (hp.shift.subst (openVec_isSemitermVec (n + 1))).isUFormula, ih',
+        envForm_exs hp.isUFormula]
 
 /-- At depth zero: `envForm 0 (free p) = envForm 1 p`. -/
 theorem envForm_free {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p) :
@@ -183,67 +166,54 @@ theorem bindFreeAt_open {m p : V} (hp : IsSemiformula ℒₛₑₜ m p) :
   refine IsSemiformula.sigma1_structural_induction (L := ℒₛₑₜ)
     (P := fun m p ↦ m ≠ 0 → bindFreeAt ℒₛₑₜ (m - 1)
       (subst ℒₛₑₜ (openVec (m - 1)) (shift ℒₛₑₜ p)) = bindFreeAt ℒₛₑₜ m p)
-    (by definability) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_ hp
-  · intro m k R v hR hv hm
+    (by definability) ?hrel ?hnrel ?hverum ?hfalsum ?hand ?hor ?hall ?hexs hp
+  case hrel | hnrel =>
+    intro m k R v hR hv hm
     rcases zero_or_succ m with rfl | ⟨n, rfl⟩
     · exact absurd rfl hm
     obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
     have hsv : IsSemitermVec ℒₛₑₜ 2 n (termSubstVec ℒₛₑₜ 2 (openVec n) (termShiftVec ℒₛₑₜ 2 v)) :=
       IsSemitermVec.termSubstVec (openVec_isSemitermVec n) hv.termShiftVec
     simp only [add_tsub_cancel_right]
-    rw [shift_rel hR hv.isUTerm, substs_rel hR hv.isUTerm.termShiftVec,
-      bindFreeAt_rel _ hR hsv.isUTerm, bindFreeAt_rel _ hR hv.isUTerm, bindVec_open hv]
-  · intro m k R v hR hv hm
-    rcases zero_or_succ m with rfl | ⟨n, rfl⟩
-    · exact absurd rfl hm
-    obtain ⟨rfl, -⟩ := LDriver.isRel_set hR
-    have hsv : IsSemitermVec ℒₛₑₜ 2 n (termSubstVec ℒₛₑₜ 2 (openVec n) (termShiftVec ℒₛₑₜ 2 v)) :=
-      IsSemitermVec.termSubstVec (openVec_isSemitermVec n) hv.termShiftVec
-    simp only [add_tsub_cancel_right]
-    rw [shift_nrel hR hv.isUTerm, substs_nrel hR hv.isUTerm.termShiftVec,
-      bindFreeAt_nrel _ hR hsv.isUTerm, bindFreeAt_nrel _ hR hv.isUTerm, bindVec_open hv]
-  · intro m _
+    first
+    | rw [shift_rel hR hv.isUTerm, substs_rel hR hv.isUTerm.termShiftVec,
+        bindFreeAt_rel _ hR hsv.isUTerm, bindFreeAt_rel _ hR hv.isUTerm, bindVec_open hv]
+    | rw [shift_nrel hR hv.isUTerm, substs_nrel hR hv.isUTerm.termShiftVec,
+        bindFreeAt_nrel _ hR hsv.isUTerm, bindFreeAt_nrel _ hR hv.isUTerm, bindVec_open hv]
+  case hverum | hfalsum =>
+    intro m _
     simp
-  · intro m _
-    simp
-  · intro m p q hp hq ihp ihq hm
+  case hand | hor =>
+    intro m p q hp hq ihp ihq hm
     rcases zero_or_succ m with rfl | ⟨n, rfl⟩
     · exact absurd rfl hm
     have ihp' := ihp hm
     have ihq' := ihq hm
     simp only [add_tsub_cancel_right] at ihp' ihq' ⊢
-    rw [shift_and hp.isUFormula hq.isUFormula,
-      substs_and hp.isUFormula.shift hq.isUFormula.shift,
-      bindFreeAt_and _ (hp.shift.subst (openVec_isSemitermVec n)).isUFormula
-        (hq.shift.subst (openVec_isSemitermVec n)).isUFormula,
-      bindFreeAt_and _ hp.isUFormula hq.isUFormula, ihp', ihq']
-  · intro m p q hp hq ihp ihq hm
-    rcases zero_or_succ m with rfl | ⟨n, rfl⟩
-    · exact absurd rfl hm
-    have ihp' := ihp hm
-    have ihq' := ihq hm
-    simp only [add_tsub_cancel_right] at ihp' ihq' ⊢
-    rw [shift_or hp.isUFormula hq.isUFormula,
-      substs_or hp.isUFormula.shift hq.isUFormula.shift,
-      bindFreeAt_or _ (hp.shift.subst (openVec_isSemitermVec n)).isUFormula
-        (hq.shift.subst (openVec_isSemitermVec n)).isUFormula,
-      bindFreeAt_or _ hp.isUFormula hq.isUFormula, ihp', ihq']
-  · intro m p hp ih hm
+    first
+    | rw [shift_and hp.isUFormula hq.isUFormula,
+        substs_and hp.isUFormula.shift hq.isUFormula.shift,
+        bindFreeAt_and _ (hp.shift.subst (openVec_isSemitermVec n)).isUFormula
+          (hq.shift.subst (openVec_isSemitermVec n)).isUFormula,
+        bindFreeAt_and _ hp.isUFormula hq.isUFormula, ihp', ihq']
+    | rw [shift_or hp.isUFormula hq.isUFormula,
+        substs_or hp.isUFormula.shift hq.isUFormula.shift,
+        bindFreeAt_or _ (hp.shift.subst (openVec_isSemitermVec n)).isUFormula
+          (hq.shift.subst (openVec_isSemitermVec n)).isUFormula,
+        bindFreeAt_or _ hp.isUFormula hq.isUFormula, ihp', ihq']
+  case hall | hexs =>
+    intro m p hp ih hm
     rcases zero_or_succ m with rfl | ⟨n, rfl⟩
     · exact absurd rfl hm
     have ih' := ih (by simp)
     simp only [add_tsub_cancel_right] at ih' ⊢
-    rw [shift_all hp.isUFormula, substs_all hp.isUFormula.shift, openVec_succ,
-      bindFreeAt_all _ (hp.shift.subst (openVec_isSemitermVec (n + 1))).isUFormula, ih',
-      bindFreeAt_all _ hp.isUFormula]
-  · intro m p hp ih hm
-    rcases zero_or_succ m with rfl | ⟨n, rfl⟩
-    · exact absurd rfl hm
-    have ih' := ih (by simp)
-    simp only [add_tsub_cancel_right] at ih' ⊢
-    rw [shift_exs hp.isUFormula, substs_ex hp.isUFormula.shift, openVec_succ,
-      bindFreeAt_exs _ (hp.shift.subst (openVec_isSemitermVec (n + 1))).isUFormula, ih',
-      bindFreeAt_exs _ hp.isUFormula]
+    first
+    | rw [shift_all hp.isUFormula, substs_all hp.isUFormula.shift, openVec_succ,
+        bindFreeAt_all _ (hp.shift.subst (openVec_isSemitermVec (n + 1))).isUFormula, ih',
+        bindFreeAt_all _ hp.isUFormula]
+    | rw [shift_exs hp.isUFormula, substs_ex hp.isUFormula.shift, openVec_succ,
+        bindFreeAt_exs _ (hp.shift.subst (openVec_isSemitermVec (n + 1))).isUFormula, ih',
+        bindFreeAt_exs _ hp.isUFormula]
 
 /-- All free variables of the formula `q` are below `j`. -/
 def FvLt (j q : V) : Prop := IsSemiformula ℒₛₑₜ j (bindFreeAt ℒₛₑₜ 0 q)

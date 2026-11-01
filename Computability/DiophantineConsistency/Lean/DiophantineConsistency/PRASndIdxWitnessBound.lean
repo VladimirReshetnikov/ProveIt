@@ -33,10 +33,8 @@ theorem sndIdx_bnd_succ (x p : V) :
       rw [bnd_open _ ho]
       simp only [Semiformula.eval_castLE]
       have he : (fun i : Fin 3 => ![a,x,p,p+1] (i.castLE (by omega))) = ![a,x,p] := by
-        funext i
-        refine Fin.cases rfl (fun i => ?_) i
-        refine Fin.cases rfl (fun i => ?_) i
-        exact Fin.cases rfl (fun i => Fin.elim0 i) i
+        apply funext
+        simp [Fin.forall_fin_succ]
       rw [he]
       change ((∼ (“1 ≤ #2” : ArithmeticSemiformula Empty 3)).Eval ![a,x,p] Empty.elim)
       simpa [LogicalConnective.HomClass.map_neg] using hp
@@ -49,10 +47,7 @@ theorem sndIdx_bnd_succ (x p : V) :
       rw [bnd_open _ ho]
       simp only [Semiformula.eval_castLE]
       change ¬ p < 1
-      intro hlt
-      apply hp
-      have hz : p ≤ 0 := lt_succ_iff_le.mp (by simpa using hlt)
-      exact le_antisymm hz (show 0 ≤ p from zero_le)
+      simpa using hp
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 section candidate
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
