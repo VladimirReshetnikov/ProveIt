@@ -119,6 +119,26 @@ uses. It does not assume native induction, but is still only mixed-provider
 syntax-checked. The derivation must be coherently replayed and used to convert
 reference successor-step induction to the erased addition-step schema.
 
+[`IPRAReferenceAddOneOpen.lean`](../../Lean/DiophantineConsistency/IPRAReferenceAddOneOpen.lean)
+and [`IPRAReferenceInductionConversion.lean`](../../Lean/DiophantineConsistency/IPRAReferenceInductionConversion.lean)
+draft that conversion and assemble `nativeToReference`, a native-to-reference
+provability transfer with no remaining explicit axiom-image hypothesis. The
+only Lean invocation so far used the **untrusted mixed provider**, so this is
+candidate source, not an authenticated Lean result. In particular, coherent
+replay is essential, and applying the transfer still requires identifying
+the erased endpoint, including its consistency predicate, with the intended
+reference-language formulas. This direction alone is not a two-way theory
+equivalence.
+
+The exact candidate statement is
+`∀ {σ : Sentenceᵢ PRALanguage.language}, nativeTheory ⊢ σ → referenceTheory ⊢ erase σ`.
+The mixed-provider diagnostic invocation of
+[`IPRAReferenceConversionChecks.lean`](../../Lean/DiophantineConsistency/IPRAReferenceConversionChecks.lean)
+exited 0 and reported `propext`, `Classical.choice`, and `Quot.sound` for the
+conversion and transfer, with no reported `sorryAx`. Those diagnostics do
+not repair the mixed-provider boundary: the known counterexample shows that
+successful checks and benign axiom reports can still be unsound in this setup.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements and candidate derivations; discharge the
 native induction image; transfer the reference axioms

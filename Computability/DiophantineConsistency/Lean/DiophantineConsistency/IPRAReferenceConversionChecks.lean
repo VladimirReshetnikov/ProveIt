@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAReferenceInductionConversion
+
+#print axioms DiophantineConsistency.IPRAReferenceAddOneOpen.addOneOpen
+#print axioms DiophantineConsistency.IPRAReferenceInductionConversion.erasedInductionImage
+#print axioms DiophantineConsistency.IPRAReferenceInductionConversion.nativeToReference
