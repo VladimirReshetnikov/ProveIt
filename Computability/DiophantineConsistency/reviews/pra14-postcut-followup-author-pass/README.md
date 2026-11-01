@@ -1,0 +1,5 @@
+# Post-dependency-cut fixed-source 798-module author
+
+The guarded rebase explicitly PASSed all 798 modules against the 848-module BaseCertificate parent `/tmp/pra14-full-transitive-3lhkiz0t`. Source tree and matching frozen graph audit are in `../pra14-postcut-followup-snapshot/`; full logs and transitive reuse manifests are preserved here. Source, object, direct-dependency and direct external inputs were checked without workspace project-object fallback. This fixed snapshot predates the two MF warning fixes; original reused-object environments are reconstructed from surviving provider records and package-transitive ancestry is inherited. Downstream corrected 75-module comparison and later rebase remain separate.
+
+The driver records ordinary Lean warnings rather than treating them as failures; 64 warning-bearing module records are indexed in `warnings.json`, with full messages in the preserved logs. The MF-cleanup successor addresses two specific warning sources, not every warning in this graph.

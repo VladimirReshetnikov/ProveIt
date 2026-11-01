@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+"""Rebuild six literal 14-variable modules on the matched fixed 13-variable peer."""
+from pathlib import Path
+import hashlib,json,os,re,subprocess,sys,tempfile,time
+D=Path(__file__).resolve().parent;R=D.parents[3];V=R/'Computability/DiophantineConsistency/reviews';M=D/'manifest.json';F=V/'ipra-adaptive-native-fixed-continuation/manifest.json';G=V/'ipra-current-native14-frozen-graph/manifest.json';E=V/'ipra-current-native14-frozen-extra/manifest.json';SNAP=V/'ipra-adaptive-fixed-snapshot-prefix/sources';EXTRA=V/'ipra-current-native14-frozen-extra/sources';PKG=Path('/tmp/pra14-full-transitive-2x6o__to/package-lib');LEAN=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
+h=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();m=json.loads(M.read_text());mh=h(M);dh=h(__file__);assert len(sys.argv)==2 and sys.argv[1]==mh and dh==m['driver_sha256'];P=Path(m['peer']);A=Path(m['author']);f=json.loads(F.read_text());e=json.loads(E.read_text());src=lambda n:(EXTRA if n in m['extra_names'] else SNAP)/(n.replace('.','/')+'.lean')
+def inv():
+ result={}
+ for d,_,fs in os.walk(P/'lib',followlinks=True):
+  for name in fs:
+   if name.endswith(('.olean','.olean.private','.olean.server','.ir')):
+    p=Path(d)/name;result[str(p.relative_to(P/'lib'))]={'sha256':h(p),'resolved_path':str(p.resolve())}
+ return result
+assert h(P/'state.json')==m['peer_state_sha256'] and h(A/'state.json')==m['author_state_sha256'] and json.loads((P/'state.json').read_text())['status']==json.loads((A/'state.json').read_text())['status']=='PASS'
+assert h(F)==m['frozen_13_manifest_sha256'] and h(G)==m['graph_sha256'] and h(E)==m['extra_manifest_sha256'] and h(LEAN)==m['lean_sha256']
+assert all(h(src(n))==v for n,v in m['source_sha256'].items()) and inv()==m['parent_inventory']
+assert all(h(PKG/k)==v['sha256'] and str((PKG/k).resolve())==v['resolved_path'] for k,v in m['external_direct'].items())
+w=Path(tempfile.mkdtemp(prefix='ipra-current-native14-fixed-'));lib=w/'lib';lib.mkdir();logs=w/'logs';logs.mkdir();(w/'driver.py').write_bytes(Path(__file__).read_bytes());(w/'manifest.json').write_bytes(M.read_bytes())
+excluded={n.replace('.','/')+ext for n in m['order'] for ext in ('.olean','.olean.private','.olean.server','.ir')}
+for rel in m['parent_inventory']:
+ if rel not in excluded:
+  dst=lib/rel;dst.parent.mkdir(parents=True,exist_ok=True);dst.symlink_to((P/'lib'/rel).resolve())
+def drift():
+ result=[]
+ for n,expected in m['source_sha256'].items():
+  if n in f['source_files']:p=R/f['source_files'][n]
+  elif n in e['sources'] and e['sources'][n]['workspace_source']:p=R/e['sources'][n]['workspace_source']
+  else:continue
+  actual=h(p) if p.is_file() else None
+  if actual!=expected:result.append({'module':n,'expected':expected,'actual':actual})
+ return result
+state={'status':'RUNNING','manifest_sha256':mh,'driver_sha256':dh,'parent_state_sha256':m['peer_state_sha256'],'records':[],'workspace_drift_before':drift(),'boundary':m['boundary']}
+def save():(w/'state.json').write_text(json.dumps(state,sort_keys=True,indent=2)+'\n')
+def audit():
+ assert h(M)==mh and h(__file__)==dh and h(w/'manifest.json')==mh and h(w/'driver.py')==dh
+ assert h(P/'state.json')==m['peer_state_sha256'] and h(A/'state.json')==m['author_state_sha256'] and h(F)==m['frozen_13_manifest_sha256'] and h(G)==m['graph_sha256'] and h(E)==m['extra_manifest_sha256'] and h(LEAN)==m['lean_sha256']
+ assert all(h(src(n))==v for n,v in m['source_sha256'].items()) and inv()==m['parent_inventory']
+ assert all(h(PKG/k)==v['sha256'] and str((PKG/k).resolve())==v['resolved_path'] for k,v in m['external_direct'].items())
+ assert all(h(lib/rel)==row['sha256'] for rel,row in m['parent_inventory'].items() if rel not in excluded)
+ assert all(h(lib/(r['name'].replace('.','/')+'.olean'))==r['object_sha256'] and h(logs/(r['name'].replace('.','_')+'.log'))==r['log_sha256'] for r in state['records'] if r['exit']==0)
+
+def warnings(s):
+ out=[]
+ for line in s.splitlines():
+  if 'warning:' not in line: continue
+  msg=line.split('warning:',1)[1].strip()
+  tests=[('unused_simp',r'^This simp argument is unused:'),('unused_section',r'^automatically included section variable\(s\) unused in theorem '),('unused_variable',r'^Variable name `[^`]+` is not explicitly referenced\.$'),('simp_suggestion',r"^(?:try 'simp' instead of 'simpa'|Try `simp at this` instead of `simpa using this`)$"),('noop_tactic',r"^'.+' tactic does nothing$"),('unreachable_tactic',r'^this tactic is never executed$'),('deprecation',r'^`[^`]+` has been deprecated(?:[.:].*)?$'),('simp_discrimination',r'^Left-hand side of simp theorem is headed by a `\.other` key in the discrimination tree'),('tactic_sequence',r'^Used `tac1 <;> tac2` where `\(tac1; tac2\)` would suffice$'),('exponent_threshold_notice',r'^exponent [0-9]+ exceeds the threshold [0-9]+, exponentiation operation was not evaluated, use `set_option exponentiation.threshold <num>` to set a new threshold$')]
+  hits=[cat for cat,pat in tests if re.search(pat,msg)]
+  assert len(hits)==1,('unrecognized warning',line)
+  out.append({'category':hits[0],'message':msg,'full_line':line})
+ return out
+
+save();print('PRIVATE',w,flush=True)
+try:
+ audit();env=dict(os.environ,LEAN_PATH=str(lib)+':'+str(PKG),LEAN_NUM_THREADS='1');env.pop('LEAN_SRC_PATH',None)
+ for n in m['order']:
+  obj=lib/(n.replace('.','/')+'.olean');obj.parent.mkdir(parents=True,exist_ok=True);log=logs/(n.replace('.','_')+'.log');direct={};t=time.monotonic()
+  for dep in m['direct_imports'][n]:
+   path=lib/(dep.replace('.','/')+'.olean');assert path.exists(),str(path);direct[dep]={'sha256':h(path),'resolved_path':str(path.resolve())}
+  with log.open('w') as out:r=subprocess.run([str(LEAN),'-M8000','-j1','-DElab.async=false','--root='+str(EXTRA),str(src(n)),'-o',str(obj)],cwd=R,env=env,stdout=out,stderr=subprocess.STDOUT)
+  row={'name':n,'exit':r.returncode,'object_sha256':h(obj) if obj.exists() else None,'log_sha256':h(log),'direct_imports':direct,'seconds':time.monotonic()-t};state['records'].append(row);save();print(n,r.returncode,flush=True)
+  s=log.read_text();assert r.returncode==0 and 'error:' not in s and 'sorryAx' not in s and not re.search(r'\b(?:sorry|admit)\b',s);row['warnings']=warnings(s);save()
+  if n=='DiophantineConsistency.IPRACurrentNativeZFCChecks':
+   blocks=re.findall(r'depends on axioms: \[([^\]]*)\]',s);assert len(blocks)==1 and set(x.strip() for x in blocks[0].split(','))=={'propext','Classical.choice','Quot.sound'},(s,blocks)
+ audit();state['workspace_drift_after']=drift();state['status']='PASS';save();print('PASS',w,flush=True)
+except BaseException as ex:
+ state.update(status='FAILED',failure=repr(ex));save();raise

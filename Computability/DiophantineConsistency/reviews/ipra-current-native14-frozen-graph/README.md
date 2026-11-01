@@ -1,0 +1,5 @@
+# Frozen 14-variable source graph audit
+
+This is a source-level audit, not a Lean replay. Using the fixed 13-variable source snapshot plus the 11 frozen extra files, the intended 14-variable check has a 994-module project source closure, of which 11 files are outside the 13-variable source snapshot (nine existing project files plus the two draft wrapper/check files). Each source was rehashed twice. The four existing affected extra modules and two wrappers still need compilation and independent replay.
+
+For each of the five remaining extra modules, the frozen source hash and selected original base object hash match the recorded 848-module ancestor, and its complete frozen project import closure has no module in the fixed 349-module rebuild set. This supports the proposed six-module suffix; it is not an authentication of package-transitive or dynamic ancestry, and the ancestor remains author-only. Recheck every selected parent object and its source/direct imports after the fixed parent and peer pass.
