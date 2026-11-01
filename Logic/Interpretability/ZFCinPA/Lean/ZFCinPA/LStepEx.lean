@@ -18,8 +18,8 @@ witness-bounding function of `P'`, `P t ↔ ∃ y ∈ L, P' (econs y t)` and
 `⟨7, c'⟩` (`satIn_ex`). At a limit `β` closed under `F`, a member `d` of `L_β`
 lies in an earlier stage (`isL_spec`), so `econs d t` stays an environment
 over an earlier stage, and a constructible witness for an environment over
-`L_α` already lies in `L_{G α} ⊆ L_β`. The universal step is the same with
-`¬P'` and the code `⟨6, c'⟩`.
+`L_α` already lies in `L_{G α} ⊆ L_β`. The universal step follows by
+negating the existential step for `¬P'`.
 -/
 
 namespace LeanProofs.ZFCinPA.LStepEx
@@ -159,24 +159,12 @@ theorem all_step {P' P : V → Prop} {F' G F : V → V → Prop}
     (hdefP : ∀ U t, IsEnvOn H U t → (P t ↔ ∀ y, InL H hP y → P' (econs H y t)))
     (hdefF : ∀ a g, F a g ↔ ∃ g₁ g₂, F' a g₁ ∧ G a g₂ ∧ ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂) :
     Tot F ∧ Refl H hP P F := by
-  obtain ⟨htot, hcl⟩ := max_props H hR hP htot' htotG hdefF
-  refine ⟨htot, ?_⟩
-  obtain ⟨c', hc', hr'⟩ := hrefl'
-  refine ⟨_, isFormCodeSem_all H hc', fun b hb hclF S hS R hR' a ha U hU t ht => ?_⟩
-  obtain ⟨hcl', hclG⟩ := hcl b hb hclF
-  have htS := envOn_stage H hR hP hb hS ha hU ht
-  rw [hdefP U t ht, satIn_all H (isSetStructure_stage H hR hP hb hS hR') hc' htS]
-  constructor
-  · intro h d hdS
-    obtain ⟨a₂, ha₂, U₂, hU₂, hte⟩ := econs_earlier H hR hP hb hS ha hU ht hdS
-    exact (hr' b hb hcl' S hS R hR' a₂ ha₂ U₂ hU₂ _ hte).1 (h d ⟨b, S, hb.1, hS, hdS⟩)
-  · intro h y hy
-    by_contra hQ
-    obtain ⟨g, -, -, hGag, -⟩ := htotG a (ord_of_mem hb.1 ha)
-    obtain ⟨W, hW, y', hy'W, hQ'⟩ := hG a g hGag U hU t ht ⟨y, hy, hQ⟩
-    have hy'S : y' ∈ S := isL_mono H hR hP hb.1 (hclG a ha g hGag) hW hS y' hy'W
-    obtain ⟨a₂, ha₂, U₂, hU₂, hte⟩ := econs_earlier H hR hP hb hS ha hU ht hy'S
-    exact hQ' ((hr' b hb hcl' S hS R hR' a₂ ha₂ U₂ hU₂ _ hte).2 (h y' hy'S))
+  have hneg : Refl H hP (fun t => ¬ P' t) F' :=
+    LStepBasic.neg_step H hR hP hrefl' (fun _ => Iff.rfl)
+  obtain ⟨htot, hex⟩ := ex_step H hR hP htot' hneg htotG hG
+    (P := fun t => ¬ P t)
+    (fun U t ht => by simp only [hdefP U t ht, Classical.not_imp, not_forall]) hdefF
+  exact ⟨htot, LStepBasic.neg_step H hR hP hex (fun _ => not_not.symm)⟩
 
 end Math
 
