@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRANegExpWitnessBound
 /-! Explicit negative bound for the actual Foundation underDef graph. -/
 set_option autoImplicit false
@@ -16,19 +17,15 @@ theorem neg_under_bound (y x : V) : (∼underDef.val).Evalb ![y,x] →
   simp [underDef] at h ⊢
   let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![‘#0+1’,#1]
   have h' : (∼expDef.val).Evalb ![y+1,x] := by simpa using h
-  have hb := PRANegExpWitnessBound.neg_exp_bound (y+1) x h'
-  have hn := PRABndRewriting.natural (∼expDef.val) ω ![y,x] (PRANegExponentialWitnessBound.negExponentialMajorant (y+1))
-  have hv : (fun j => (ω #j).val ![y,x] Empty.elim) = ![y+1,x] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![y,x] (PRANegExponentialWitnessBound.negExponentialMajorant (y+1)) = ![y,x,PRANegExponentialWitnessBound.negExponentialMajorant (y+1)] := by simp
-  have hs' : Fin.snoc ![y+1,x] (PRANegExponentialWitnessBound.negExponentialMajorant (y+1)) = ![y+1,x,PRANegExponentialWitnessBound.negExponentialMajorant (y+1)] := by simp
-  rw [hv,hs,hs'] at hn
-  have hh := hn.mpr hb
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  have hh := PRARewritingWitnessBound.binary_rew_bound_with (∼expDef.val)
+    (fun y _ => PRANegExponentialWitnessBound.negExponentialMajorant y)
+    PRANegExpWitnessBound.neg_exp_bound ω ![y,x]
+    (PRANegExponentialWitnessBound.negExponentialMajorant (y+1)) (by simp [ω])
+    (by simpa [ω, Semiformula.eval_substs] using h')
   rw [show (ω ▹ (∼expDef.val)) = ∼(ω ▹ expDef.val) from
     LogicalConnective.HomClass.map_neg (Semiformula.rew ω) expDef.val] at hh
-  exact hh
+  simpa using hh
 noncomputable def negUnder : ArithmeticSemisentence 2 := ∼underDef.val
 noncomputable def boundedNegUnder : ArithmeticSemisentence 3 := bnd negUnder
 noncomputable def negUnderBoundBody : ArithmeticSemisentence 2 :=
