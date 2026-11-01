@@ -35,3 +35,9 @@ passed a separately matched nine-module replay, recorded under
 negation of the mapped native refutation predicate; the separate identification
 of that predicate with ordinary Con(ZFC) is not established by this endpoint.
 No global minimality is claimed.
+
+The [base-10 equation presentation](../../equation4-47.pdf) has separately
+named positive variables. `generate_equation4_47.py` creates its TeX and
+`verify_display4_47.py` checks the 53 definitions, 33 residuals, 179 gates,
+fixed constants and mutation controls. Two clean PDF builds matched SHA-256
+`9cc0b4f87a1a85ae62595ad6270fbf841e4142f18eb32a9465d4ea25c3911940`.

@@ -139,6 +139,14 @@ matched seven rows and 11,762 guarded files, retaining the same historical
 provider and inherited ancestry qualifications. The display and exact degree
 are checked separately by finite computations.
 
+The [47-variable degree-4 equation](equation4-47.pdf) eliminates two positive
+linear coordinates from the 49-variable graph. Its exact shifted fixed-port
+literal has a no-premise [native endpoint](Lean/DiophantineConsistency/IPRANamedValues47Native.lean),
+and the [focused guarded comparison](reviews/ipra-named47-native-verification/README.md)
+matched nine rows and 11,850 guarded files. This retains the historical
+provider and inherited ancestry qualifications above; the display and exact
+degree have separate finite checks.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz

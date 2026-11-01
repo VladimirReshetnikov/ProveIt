@@ -34,20 +34,19 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [42-variable 164-operation degree-6 equation](equation6.pdf), the
 [40-variable 160-operation degree-6 equation](equation6-40.pdf), the
 [51-variable 187-operation degree-4 equation](equation4.pdf), the
-[50-variable 186-operation degree-4 equation](equation4-50.pdf), and the
-[49-variable 185-operation degree-4 equation](equation4-49.pdf). Each endpoint
+[50-variable 186-operation degree-4 equation](equation4-50.pdf), the
+[49-variable 185-operation degree-4 equation](equation4-49.pdf), and the
+[47-variable 179-operation degree-4 equation](equation4-47.pdf). Each endpoint
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced a [47-variable quartic candidate](research/adaptive-square-sums47/README.md)
-and [36-variable](research/adaptive-square-sums36/README.md) and
+finite graph searches have produced [36-variable](research/adaptive-square-sums36/README.md) and
 [35-variable](research/adaptive-square-sums35/README.md) degree-six candidates.
-Their circuit sizes, substitutions and exact degrees have finite checks. The
-47-variable model equivalence has a matched historical replay; its native
-endpoint and the other candidates' model equivalences are still being checked.
+Their circuit sizes, substitutions and exact degrees have finite checks; their
+model equivalences and native endpoints are still being checked.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader source refresh is running;
