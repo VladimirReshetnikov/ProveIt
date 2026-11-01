@@ -147,7 +147,11 @@ Native open induction yields `∀ x, x = 0 ∨ ¬(x = 0)`. The author and
 independent [guarded replays](reviews/ipra-zero-decidable-native-replay/README.md)
 match, retaining the historical parent-object and external-ancestry boundary
 stated there. This is only equality with zero: general equality, order and
-bounded-formula decidability remain open. A fixed-parameter induction on one
+bounded-formula decidability remain open. Independently, the ordinary positive
+`∀x, x + 1 = S(x)` has now been proved directly from native defining equations
+and Leibniz equality in [IPRAAddOneDirect.lean](Lean/DiophantineConsistency/IPRAAddOneDirect.lean),
+with matching [guarded replays](reviews/ipra-addone-direct-replay/README.md).
+This proof has no object-theory decidability premise. A fixed-parameter induction on one
 argument cannot simply invoke its induction hypothesis at a changed parameter;
 the corresponding quantified induction matrix is not quantifier-free.
 

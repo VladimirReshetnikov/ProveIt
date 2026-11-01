@@ -1,0 +1,1 @@
+This initial run stopped before compilation because two inherited broad workspace source guards changed in the concurrent upstream merge. The proof sources were preserved; the successor manifest excludes those unrelated guards after a source-import audit.
