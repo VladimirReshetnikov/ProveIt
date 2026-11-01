@@ -54,16 +54,19 @@ theorem termBShift_le (t : V) : termBShift ℒₛₑₜ t ≤ (t + 1) * (t + 1) 
     · exact absurd hkf (not_isFunc k f)
   · simp [termBShift, Language.TermRec.Construction.result_prop_not _ _ _ ht]
 
+private theorem le_repeatVec_of_length {k v m : V} (hlen : len v = k)
+    (hbound : ∀ i < k, nth v i ≤ m) : v ≤ repeatVec m k := by
+  have h := len_repeatVec_of_nth_le (v := v) (m := m)
+    (fun i hi => hbound i (by simpa [hlen] using hi))
+  simpa [hlen] using h
+
 theorem termBShiftVec_le (k w : V) :
     termBShiftVec ℒₛₑₜ k w ≤ repeatVec ((w + 1) * (w + 1) + 1) k := by
   by_cases hw : IsUTermVec ℒₛₑₜ k w
-  · have hl := len_termBShiftVec hw
-    have h := len_repeatVec_of_nth_le (v := termBShiftVec ℒₛₑₜ k w) (m := (w + 1) * (w + 1) + 1)
-      (fun i hi => by
-        rw [hl] at hi
-        rw [nth_termBShiftVec hw hi]
-        exact le_trans (termBShift_le _) (sq_succ_mono (nth_le w i)))
-    rwa [hl] at h
+  · apply le_repeatVec_of_length (len_termBShiftVec hw)
+    intro i hi
+    rw [nth_termBShiftVec hw hi]
+    exact le_trans (termBShift_le _) (sq_succ_mono (nth_le w i))
   · simp [termBShiftVec, hw]
 
 theorem sq2_mono {x y : V} (h : x ≤ y) : (x + 2) * (x + 2) + 1 ≤ (y + 2) * (y + 2) + 1 := by
@@ -91,13 +94,10 @@ theorem termShift_le (t : V) : termShift ℒₛₑₜ t ≤ (t + 2) * (t + 2) + 
 theorem termShiftVec_le (k w : V) :
     termShiftVec ℒₛₑₜ k w ≤ repeatVec ((w + 2) * (w + 2) + 1) k := by
   by_cases hw : IsUTermVec ℒₛₑₜ k w
-  · have hl := len_termShiftVec hw
-    have h := len_repeatVec_of_nth_le (v := termShiftVec ℒₛₑₜ k w) (m := (w + 2) * (w + 2) + 1)
-      (fun i hi => by
-        rw [hl] at hi
-        rw [nth_termShiftVec hw hi]
-        exact le_trans (termShift_le _) (sq2_mono (nth_le w i)))
-    rwa [hl] at h
+  · apply le_repeatVec_of_length (len_termShiftVec hw)
+    intro i hi
+    rw [nth_termShiftVec hw hi]
+    exact le_trans (termShift_le _) (sq2_mono (nth_le w i))
   · simp [termShiftVec, hw]
 
 theorem termSubst_le (w t : V) : termSubst ℒₛₑₜ w t ≤ t + w := by
@@ -110,13 +110,10 @@ theorem termSubst_le (w t : V) : termSubst ℒₛₑₜ w t ≤ t + w := by
 
 theorem termSubstVec_le (k w v : V) : termSubstVec ℒₛₑₜ k w v ≤ repeatVec (v + w) k := by
   by_cases hv : IsUTermVec ℒₛₑₜ k v
-  · have hl := len_termSubstVec (w := w) hv
-    have h := len_repeatVec_of_nth_le (v := termSubstVec ℒₛₑₜ k w v) (m := v + w)
-      (fun i hi => by
-        rw [hl] at hi
-        rw [nth_termSubstVec hv hi]
-        exact le_trans (termSubst_le _ _) (add_le_add (nth_le v i) le_rfl))
-    rwa [hl] at h
+  · apply le_repeatVec_of_length (len_termSubstVec (w := w) hv)
+    intro i hi
+    rw [nth_termSubstVec hv hi]
+    exact le_trans (termSubst_le _ _) (add_le_add (nth_le v i) le_rfl)
   · simp [termSubstVec, hv]
 
 theorem repeatVec_mono_left {x x' : V} (h : x ≤ x') : ∀ k, repeatVec x k ≤ repeatVec x' k := by
