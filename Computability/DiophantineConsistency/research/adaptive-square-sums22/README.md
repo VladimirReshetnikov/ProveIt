@@ -5,7 +5,7 @@ constants in base 10. `generate_equation16.py` constructs its TeX from the
 pinned graph, and `verify_display16.py` checks the display, all 112 circuit
 lines, the fixed-constant block, and two negative mutation controls. Two
 `pdflatex` runs produced the same PDF SHA-256
-`98641f0ed05c6884134dce79419b88fb14001c9e4f414e84a6d521fd8d1b27a1`;
+`e18c35015d571ae8fa47ee2f410fda6ea4543c9f0de0e82ac9d00ff92ceec7d2`;
 both rendered pages were inspected.
 
 This 112-operation circuit adds four squared constraints to the 17-variable,
@@ -20,7 +20,7 @@ squares, so all four constraints must vanish at a zero.
 statement as the 17-variable parent for every integer port vector in every
 model of IΣ₁. The reverse construction chooses the positive natural values
 for the first three names and the two signed-pair components plus one for
-`Bt`. The [paired model replays](../../reviews/adaptive-square-sums22-model-replay/README.md) match on a historical provider. The native iPRA endpoint and its own replay remain separate work.
+`Bt`. The [paired model replays](../../reviews/adaptive-square-sums22-model-replay/README.md) match on a historical provider. The [native iPRA endpoint](../../Lean/DiophantineConsistency/IPRANamedValues22Native.lean) has a matching [guarded replay](../../reviews/ipra-named22-native-verification/README.md) on a historical provider. It uses the chosen mapped ZFC-refutation predicate; the shared project, package, and dynamic-import ancestry remains inherited.
 
 `generate.py` deterministically builds the 112-row candidate from the pinned
 17-variable graph and checks graph liveness. `verify_literal.py` matches the
