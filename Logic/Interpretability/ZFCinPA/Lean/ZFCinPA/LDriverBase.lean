@@ -73,26 +73,18 @@ def NoPh {ξ : Type} : {n : ℕ} → Semiformula L6 ξ n → Prop
 theorem noPh_rew {ξ₁ ξ₂ : Type} {n₁ : ℕ} (φ : Semiformula L6 ξ₁ n₁) :
     ∀ {n₂ : ℕ} (ω : Rew L6 ξ₁ n₁ ξ₂ n₂), NoPh (ω ▹ φ) ↔ NoPh φ := by
   induction φ using Semiformula.rec' with
-  | hverum => intros; simp [NoPh]
-  | hfalsum => intros; simp [NoPh]
-  | hrel r v => intro _ ω; rcases r with r | r <;> simp [NoPh]
-  | hnrel r v => intro _ ω; rcases r with r | r <;> simp [NoPh]
-  | hand p q hp hq => intro _ ω; simp [NoPh, hp, hq]
-  | hor p q hp hq => intro _ ω; simp [NoPh, hp, hq]
-  | hall p hp => intro _ ω; simp [NoPh, hp]
-  | hexs p hp => intro _ ω; simp [NoPh, hp]
+  | hverum | hfalsum => intros; simp [NoPh]
+  | hrel r v | hnrel r v => intro _ ω; rcases r with r | r <;> simp [NoPh]
+  | hand p q hp hq | hor p q hp hq => intro _ ω; simp [NoPh, hp, hq]
+  | hall p hp | hexs p hp => intro _ ω; simp [NoPh, hp]
 
 theorem noPh_lMap {ξ : Type} {n : ℕ} (σ : Semiformula ℒₛₑₜ ξ n) :
     NoPh (Semiformula.lMap (setHom 6 ar6) σ) := by
   induction σ using Semiformula.rec' with
-  | hverum => simp [NoPh]
-  | hfalsum => simp [NoPh]
-  | hrel r v => simp [NoPh, Semiformula.lMap_rel]
-  | hnrel r v => simp [NoPh, Semiformula.lMap_nrel]
-  | hand p q hp hq => simp [NoPh, hp, hq]
-  | hor p q hp hq => simp [NoPh, hp, hq]
-  | hall p hp => simp [NoPh, hp]
-  | hexs p hp => simp [NoPh, hp]
+  | hverum | hfalsum => simp [NoPh]
+  | hrel r v | hnrel r v => simp [NoPh, Semiformula.lMap_rel, Semiformula.lMap_nrel]
+  | hand p q hp hq | hor p q hp hq => simp [NoPh, hp, hq]
+  | hall p hp | hexs p hp => simp [NoPh, hp]
 
 @[simp] theorem noPh_lift {n : ℕ} (σ : SetTheorySemisentence n) :
     NoPh (lift σ : Semisentence L6 n) := noPh_lMap σ
@@ -104,10 +96,8 @@ theorem noPh_rewLift {ξ₂ : Type} {n m : ℕ} (σ : SetTheorySemisentence n) (
 theorem translate_noPh (Ks Ks' : (i : Fin 6) → SF V (ar6 i)) {n : ℕ}
     (p : Semiproposition L6 n) (h : NoPh p) : translateFormula Ks p = translateFormula Ks' p := by
   induction p using Semiformula.rec' with
-  | hverum => rfl
-  | hfalsum => rfl
-  | hrel r v => rcases r with r | r <;> first | rfl | exact h.elim
-  | hnrel r v => rcases r with r | r <;> first | rfl | exact h.elim
+  | hverum | hfalsum => rfl
+  | hrel r v | hnrel r v => rcases r with r | r <;> first | rfl | exact h.elim
   | hand p q hp hq => exact congrArg₂ (· ⋏ ·) (hp h.1) (hq h.2)
   | hor p q hp hq => exact congrArg₂ (· ⋎ ·) (hp h.1) (hq h.2)
   | hall p hp => exact congrArg (∀⁰ ·) (hp h)
