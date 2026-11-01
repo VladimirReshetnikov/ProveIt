@@ -220,29 +220,15 @@ def FvLt (j q : V) : Prop := IsSemiformula ℒₛₑₜ j (bindFreeAt ℒₛₑ�
 
 lemma fvLt_free {j p : V} (hp : IsSemiformula ℒₛₑₜ 1 p) (h : FvLt j (^∀ p)) :
     FvLt (j + 1) (free ℒₛₑₜ p) := by
-  have h1 := bindFreeAt_open hp _root_.one_ne_zero
-  simp only [show (1 : V) - 1 = 0 by simp] at h1
-  have h2 : FvLt (j + 1) (free ℒₛₑₜ p) ↔ IsSemiformula ℒₛₑₜ (j + 1) (bindFreeAt ℒₛₑₜ 1 p) := by
-    unfold FvLt
-    rw [← h1]
-    simp [free, substs1, openVec]
-  rw [h2]
-  unfold FvLt at h
-  rw [bindFreeAt_all _ hp.isUFormula] at h
-  simpa using h
+  have hfree : bindFreeAt ℒₛₑₜ 0 (free ℒₛₑₜ p) = bindFreeAt ℒₛₑₜ 1 p := by
+    simpa [free, substs1, openVec] using bindFreeAt_open hp _root_.one_ne_zero
+  simpa [FvLt, hfree, bindFreeAt_all _ hp.isUFormula] using h
 
 lemma fvLt_free_ex {j p : V} (hp : IsSemiformula ℒₛₑₜ 1 p) (h : FvLt j (^∃ p)) :
     FvLt (j + 1) (free ℒₛₑₜ p) := by
-  have h1 := bindFreeAt_open hp _root_.one_ne_zero
-  simp only [show (1 : V) - 1 = 0 by simp] at h1
-  have h2 : FvLt (j + 1) (free ℒₛₑₜ p) ↔ IsSemiformula ℒₛₑₜ (j + 1) (bindFreeAt ℒₛₑₜ 1 p) := by
-    unfold FvLt
-    rw [← h1]
-    simp [free, substs1, openVec]
-  rw [h2]
-  unfold FvLt at h
-  rw [bindFreeAt_exs _ hp.isUFormula] at h
-  simpa using h
+  have hfree : bindFreeAt ℒₛₑₜ 0 (free ℒₛₑₜ p) = bindFreeAt ℒₛₑₜ 1 p := by
+    simpa [free, substs1, openVec] using bindFreeAt_open hp _root_.one_ne_zero
+  simpa [FvLt, hfree, bindFreeAt_exs _ hp.isUFormula] using h
 
 lemma fvLt_and {j p q : V} (hp : IsUFormula ℒₛₑₜ p) (hq : IsUFormula ℒₛₑₜ q)
     (h : FvLt j (p ^⋏ q)) : FvLt j p ∧ FvLt j q := by
