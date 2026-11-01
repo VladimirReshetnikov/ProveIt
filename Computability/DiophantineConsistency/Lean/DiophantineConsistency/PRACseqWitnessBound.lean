@@ -79,19 +79,15 @@ attribute [local irreducible] seqDef lhDef memRel
           · exact (hzbound hz).elim
           · right; left
             have hr : (∼memRel.val).Evalb ![s,i,z] := by simpa [Semiformula.Operator.val,memRelOpr] using hz
-            have hb := PRANegMemRelWitnessBound.neg_memRel_bound s i z w hrelneg hr
             let ω : Rew ℒₒᵣ Empty 3 Empty 3 := Rew.subst ![#2,#1,#0]
-            have hn := PRABndRewriting.natural (∼memRel.val) ω ![z,i,s] w
-            have hv : (fun j => (ω #j).val ![z,i,s] Empty.elim) = ![s,i,z] := by
-              funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-              exact Fin.cases rfl (fun k => Fin.elim0 k) k
-            have hv1 : Fin.snoc ![z,i,s] w = ![z,i,s,w] := by simp
-            have hv2 : Fin.snoc ![s,i,z] w = ![s,i,z,w] := by simp
-            rw [hv,hv1,hv2] at hn
-            have hh := hn.mpr hb
-            rw [show (ω ▹ (∼memRel.val)) = ∼(ω ▹ memRel.val) from
-              LogicalConnective.HomClass.map_neg (Semiformula.rew ω) memRel.val] at hh
-            simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hh
+            simpa [LogicalConnective.HomClass.map_neg, Semiformula.Operator.operator,
+              memRelOpr, Rewriting.emb] using
+              (PRARewritingWitnessBound.ternary_rew_bound_with (∼memRel.val)
+                (fun r _ _ => PRANegBitFullWitnessBound.negBitMajorant r)
+                (fun r x y => PRANegMemRelWitnessBound.neg_memRel_bound r x y
+                  (PRANegBitFullWitnessBound.negBitMajorant r) le_rfl)
+                ω ![z,i,s] w (by simpa [ω] using hrelneg)
+                (by simpa [ω, Semiformula.eval_substs] using hr))
           · right; right
             obtain ⟨u,hu,hus,hur⟩ := hz
             refine ⟨u,lt_of_lt_of_le hu hsw,hu,?_,?_⟩
