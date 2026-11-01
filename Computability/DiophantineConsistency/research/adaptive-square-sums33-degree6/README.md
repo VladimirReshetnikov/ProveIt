@@ -4,4 +4,4 @@ This 143-operation graph replaces the signed `W` pair in the 34-variable degree-
 
 `AdaptiveAQ33.shifted_no_zero_iff` now proves positive-shift no-zero equivalence with the 34-variable parent in every IΣ₁ model for arbitrary natural port vectors. It derives the positivity of signed `W` from the actual first-norm and root residuals, and `AdaptiveAQ33.current_no_zero_iff` specializes the result to the exact fixed ports. Both context/literal bindings are definitional, and the 143 Lean gates are checked against the pinned graph. A focused paired replay matched; its [receipt and scope](../../reviews/adaptive-aq33-model-replay/README.md) retain the inherited historical ancestry.
 
-The fixed-port native endpoint is under separate replay preparation, following the 34-native replay. No global minimality is claimed.
+The fixed-port `IPRAAQ33Native.literal_equivalence` now proves the candidate-native equivalence to mapped Foundation ZFC refutation negation. Its [focused native replay](../../reviews/adaptive-aq33-native-replay/README.md) matched, with inherited historical ancestry. No global minimality is claimed.
