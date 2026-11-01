@@ -161,6 +161,20 @@ theorem le_tau_of' {Y D t : V} (n : ℕ) (_h : t ≤ tau (Y + 8) D) (hn : n ≤ 
     (n : V) ≤ tau (Y + 8) D :=
   le_tau_of Y n D (small_le Y hn)
 
+private theorem lift_tau_bound {p P y : V} {f : V → V} (hf : Monotone f)
+    (hp : p + 2 ≤ P) (hy : y ≤ tau (f p + 8) (2 * p + 6)) :
+    y ≤ tau (f P + 8) (2 * P + 2) :=
+  le_trans hy (tau_mono (add_le_add (hf (le_trans le_self_add hp)) le_rfl) (depth_step hp))
+
+private theorem lift_tau_id {p P y : V} (hp : p + 2 ≤ P)
+    (hy : y ≤ tau (p + 8) (2 * p + 6)) : y ≤ tau (P + 8) (2 * P + 2) :=
+  lift_tau_bound (f := fun x => x) (fun _ _ h => h) hp hy
+
+private theorem lift_tau_sq {p P y : V} (hp : p + 2 ≤ P)
+    (hy : y ≤ tau ((p + 2) * (p + 2) + 1 + 8) (2 * p + 6)) :
+    y ≤ tau ((P + 2) * (P + 2) + 1 + 8) (2 * P + 2) :=
+  lift_tau_bound (f := fun x => (x + 2) * (x + 2) + 1) (fun _ _ h => sq2_mono h) hp hy
+
 /-- **Negation is doubly exponentially bounded.** -/
 theorem neg_le : ∀ p : V, IsUFormula ℒₛₑₜ p → neg ℒₛₑₜ p ≤ tau (p + 8) (2 * p + 6) := by
   refine IsUFormula.ISigma1.sigma1_succ_induction (by definability) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
@@ -193,9 +207,9 @@ theorem neg_le : ∀ p : V, IsUFormula ℒₛₑₜ p → neg ℒₛₑₜ p ≤
     set P := p ^⋏ q
     have hp2 := add_two_le_and_left p q; have hq2 := add_two_le_and_right p q
     have hnp : neg ℒₛₑₜ p ≤ tau (P + 8) (2 * P + 2) :=
-      le_trans ihp (tau_mono (add_le_add (le_trans le_self_add hp2) le_rfl) (depth_step hp2))
+      lift_tau_id hp2 ihp
     have hnq : neg ℒₛₑₜ q ≤ tau (P + 8) (2 * P + 2) :=
-      le_trans ihq (tau_mono (add_le_add (le_trans le_self_add hq2) le_rfl) (depth_step hq2))
+      lift_tau_id hq2 ihq
     have h := code3_le_tau (le_tau_of' 5 hnp) hnp hnq
     exact le_trans (by simpa [qqOr] using h) (tau_mono le_rfl (depth_three P))
   · intro p q hp hq ihp ihq
@@ -203,9 +217,9 @@ theorem neg_le : ∀ p : V, IsUFormula ℒₛₑₜ p → neg ℒₛₑₜ p ≤
     set P := p ^⋎ q
     have hp2 := add_two_le_or_left p q; have hq2 := add_two_le_or_right p q
     have hnp : neg ℒₛₑₜ p ≤ tau (P + 8) (2 * P + 2) :=
-      le_trans ihp (tau_mono (add_le_add (le_trans le_self_add hp2) le_rfl) (depth_step hp2))
+      lift_tau_id hp2 ihp
     have hnq : neg ℒₛₑₜ q ≤ tau (P + 8) (2 * P + 2) :=
-      le_trans ihq (tau_mono (add_le_add (le_trans le_self_add hq2) le_rfl) (depth_step hq2))
+      lift_tau_id hq2 ihq
     have h := code3_le_tau (le_tau_of' 4 hnp) hnp hnq
     exact le_trans (by simpa [qqAnd] using h) (tau_mono le_rfl (depth_three P))
   · intro p hp ihp
@@ -213,7 +227,7 @@ theorem neg_le : ∀ p : V, IsUFormula ℒₛₑₜ p → neg ℒₛₑₜ p ≤
     set P := ^∀ p
     have hp2 := add_two_le_all p
     have hnp : neg ℒₛₑₜ p ≤ tau (P + 8) (2 * P + 2) :=
-      le_trans ihp (tau_mono (add_le_add (le_trans le_self_add hp2) le_rfl) (depth_step hp2))
+      lift_tau_id hp2 ihp
     have h := code2_le_tau (le_tau_of' 7 hnp) hnp
     exact le_trans (by simpa [qqExs] using h) (tau_mono le_rfl (depth_two P))
   · intro p hp ihp
@@ -221,7 +235,7 @@ theorem neg_le : ∀ p : V, IsUFormula ℒₛₑₜ p → neg ℒₛₑₜ p ≤
     set P := ^∃ p
     have hp2 := add_two_le_exs p
     have hnp : neg ℒₛₑₜ p ≤ tau (P + 8) (2 * P + 2) :=
-      le_trans ihp (tau_mono (add_le_add (le_trans le_self_add hp2) le_rfl) (depth_step hp2))
+      lift_tau_id hp2 ihp
     have h := code2_le_tau (le_tau_of' 6 hnp) hnp
     exact le_trans (by simpa [qqAll] using h) (tau_mono le_rfl (depth_two P))
 
@@ -268,9 +282,9 @@ theorem shift_le : ∀ p : V, IsUFormula ℒₛₑₜ p →
     set P := p ^⋏ q
     have hp2 := add_two_le_and_left p q; have hq2 := add_two_le_and_right p q
     have hnp : shift ℒₛₑₜ p ≤ tau ((P + 2) * (P + 2) + 1 + 8) (2 * P + 2) :=
-      le_trans ihp (tau_mono (add_le_add (sq2_mono (le_trans le_self_add hp2)) le_rfl) (depth_step hp2))
+      lift_tau_sq hp2 ihp
     have hnq : shift ℒₛₑₜ q ≤ tau ((P + 2) * (P + 2) + 1 + 8) (2 * P + 2) :=
-      le_trans ihq (tau_mono (add_le_add (sq2_mono (le_trans le_self_add hq2)) le_rfl) (depth_step hq2))
+      lift_tau_sq hq2 ihq
     have h := code3_le_tau (le_tau_of' 4 hnp) hnp hnq
     exact le_trans (by simpa [qqAnd] using h) (tau_mono le_rfl (depth_three P))
   · intro p q hp hq ihp ihq
@@ -278,9 +292,9 @@ theorem shift_le : ∀ p : V, IsUFormula ℒₛₑₜ p →
     set P := p ^⋎ q
     have hp2 := add_two_le_or_left p q; have hq2 := add_two_le_or_right p q
     have hnp : shift ℒₛₑₜ p ≤ tau ((P + 2) * (P + 2) + 1 + 8) (2 * P + 2) :=
-      le_trans ihp (tau_mono (add_le_add (sq2_mono (le_trans le_self_add hp2)) le_rfl) (depth_step hp2))
+      lift_tau_sq hp2 ihp
     have hnq : shift ℒₛₑₜ q ≤ tau ((P + 2) * (P + 2) + 1 + 8) (2 * P + 2) :=
-      le_trans ihq (tau_mono (add_le_add (sq2_mono (le_trans le_self_add hq2)) le_rfl) (depth_step hq2))
+      lift_tau_sq hq2 ihq
     have h := code3_le_tau (le_tau_of' 5 hnp) hnp hnq
     exact le_trans (by simpa [qqOr] using h) (tau_mono le_rfl (depth_three P))
   · intro p hp ihp
@@ -288,7 +302,7 @@ theorem shift_le : ∀ p : V, IsUFormula ℒₛₑₜ p →
     set P := ^∀ p
     have hp2 := add_two_le_all p
     have hnp : shift ℒₛₑₜ p ≤ tau ((P + 2) * (P + 2) + 1 + 8) (2 * P + 2) :=
-      le_trans ihp (tau_mono (add_le_add (sq2_mono (le_trans le_self_add hp2)) le_rfl) (depth_step hp2))
+      lift_tau_sq hp2 ihp
     have h := code2_le_tau (le_tau_of' 6 hnp) hnp
     exact le_trans (by simpa [qqAll] using h) (tau_mono le_rfl (depth_two P))
   · intro p hp ihp
@@ -296,7 +310,7 @@ theorem shift_le : ∀ p : V, IsUFormula ℒₛₑₜ p →
     set P := ^∃ p
     have hp2 := add_two_le_exs p
     have hnp : shift ℒₛₑₜ p ≤ tau ((P + 2) * (P + 2) + 1 + 8) (2 * P + 2) :=
-      le_trans ihp (tau_mono (add_le_add (sq2_mono (le_trans le_self_add hp2)) le_rfl) (depth_step hp2))
+      lift_tau_sq hp2 ihp
     have h := code2_le_tau (le_tau_of' 7 hnp) hnp
     exact le_trans (by simpa [qqExs] using h) (tau_mono le_rfl (depth_two P))
 
