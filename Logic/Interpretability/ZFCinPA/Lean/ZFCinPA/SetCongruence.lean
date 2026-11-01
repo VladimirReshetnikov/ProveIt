@@ -435,6 +435,31 @@ lemma term_replace' (t : Bootstrapping.Semiterm V ℒₛₑₜ 1)
   have := TProof.specialize₂! (term_replace T t) u₂ u₁
   simpa [Bootstrapping.Semiterm.substs_substs] using this
 
+/-- Replacement for any binary atom whose arguments respect equality. -/
+private lemma replace_atomic_open (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1)
+    (A : Bootstrapping.Term V ℒₛₑₜ → Bootstrapping.Term V ℒₛₑₜ →
+      Bootstrapping.Formula V ℒₛₑₜ)
+    (hA : ∀ t₁ t₂ u₁ u₂, T.internalize V ⊢
+      (t₁ ≐ₛ t₂) 🡒 (u₁ ≐ₛ u₂) 🡒 A t₁ u₁ 🡒 A t₂ u₂) :
+    T.internalize V ⊢
+      ((&'1) ≐ₛ (&'0)) 🡒
+      A (t⇞⇞.subst ![&'1]) (u⇞⇞.subst ![&'1]) 🡒
+      A (t⇞⇞.subst ![&'0]) (u⇞⇞.subst ![&'0]) := by
+  let Γ : List (Bootstrapping.Formula V ℒₛₑₜ) :=
+    [A (t⇞⇞.subst ![&'1]) (u⇞⇞.subst ![&'1]), (&'1) ≐ₛ (&'0)]
+  suffices Γ ⊢[T.internalize V] A (t⇞⇞.subst ![&'0]) (u⇞⇞.subst ![&'0]) by
+    apply deduct'!
+    apply deduct!
+    exact this
+  have hh : Γ ⊢[T.internalize V] A (t⇞⇞.subst ![&'1]) (u⇞⇞.subst ![&'1]) :=
+    by_axm₀!
+  have ht : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ≐ₛ t⇞⇞.subst ![&'0] :=
+    of'! (term_replace' T t⇞⇞ &'1 &'0) ⨀ by_axm₁!
+  have hu : Γ ⊢[T.internalize V] u⇞⇞.subst ![&'1] ≐ₛ u⇞⇞.subst ![&'0] :=
+    of'! (term_replace' T u⇞⇞ &'1 &'0) ⨀ by_axm₁!
+  exact of'! (hA (t⇞⇞.subst ![&'1]) (t⇞⇞.subst ![&'0])
+    (u⇞⇞.subst ![&'1]) (u⇞⇞.subst ![&'0])) ⨀ ht ⨀ hu ⨀ hh
+
 /-! ## Replacement at the four atoms -/
 
 lemma replace_eq (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1) :
@@ -448,23 +473,7 @@ lemma replace_eq (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1) :
     apply TProof.all₂!
     simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
       Bootstrapping.Semiterm.shift_substs, Bootstrapping.Semiterm.substs_substs]
-  let Γ : List (Bootstrapping.Formula V ℒₛₑₜ) :=
-    [t⇞⇞.subst ![&'1] ≐ₛ u⇞⇞.subst ![&'1], (&'1) ≐ₛ (&'0)]
-  suffices
-      Γ ⊢[T.internalize V] t⇞⇞.subst ![&'0] ≐ₛ u⇞⇞.subst ![&'0] by
-    apply deduct'!
-    apply deduct!
-    exact this
-  have hh : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ≐ₛ u⇞⇞.subst ![&'1] :=
-    by_axm₀!
-  have ht : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ≐ₛ t⇞⇞.subst ![&'0] :=
-    of'! (term_replace' T t⇞⇞ &'1 &'0) ⨀ by_axm₁!
-  have hu : Γ ⊢[T.internalize V] u⇞⇞.subst ![&'1] ≐ₛ u⇞⇞.subst ![&'0] :=
-    of'! (term_replace' T u⇞⇞ &'1 &'0) ⨀ by_axm₁!
-  exact of'!
-    (subst_eq T (t⇞⇞.subst ![&'1]) (t⇞⇞.subst ![&'0])
-      (u⇞⇞.subst ![&'1]) (u⇞⇞.subst ![&'0]))
-    ⨀ ht ⨀ hu ⨀ hh
+  exact replace_atomic_open T t u (fun t u => t ≐ₛ u) (subst_eq T)
 
 lemma replace_mem (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1) :
     T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
@@ -477,23 +486,7 @@ lemma replace_mem (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1) :
     apply TProof.all₂!
     simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
       Bootstrapping.Semiterm.shift_substs, Bootstrapping.Semiterm.substs_substs]
-  let Γ : List (Bootstrapping.Formula V ℒₛₑₜ) :=
-    [t⇞⇞.subst ![&'1] ∊ₛ u⇞⇞.subst ![&'1], (&'1) ≐ₛ (&'0)]
-  suffices
-      Γ ⊢[T.internalize V] t⇞⇞.subst ![&'0] ∊ₛ u⇞⇞.subst ![&'0] by
-    apply deduct'!
-    apply deduct!
-    exact this
-  have hh : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ∊ₛ u⇞⇞.subst ![&'1] :=
-    by_axm₀!
-  have ht : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ≐ₛ t⇞⇞.subst ![&'0] :=
-    of'! (term_replace' T t⇞⇞ &'1 &'0) ⨀ by_axm₁!
-  have hu : Γ ⊢[T.internalize V] u⇞⇞.subst ![&'1] ≐ₛ u⇞⇞.subst ![&'0] :=
-    of'! (term_replace' T u⇞⇞ &'1 &'0) ⨀ by_axm₁!
-  exact of'!
-    (subst_mem T (t⇞⇞.subst ![&'1]) (t⇞⇞.subst ![&'0])
-      (u⇞⇞.subst ![&'1]) (u⇞⇞.subst ![&'0]))
-    ⨀ ht ⨀ hu ⨀ hh
+  exact replace_atomic_open T t u (fun t u => t ∊ₛ u) (subst_mem T)
 
 lemma replace_ne (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1) :
     T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
@@ -506,23 +499,7 @@ lemma replace_ne (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1) :
     apply TProof.all₂!
     simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
       Bootstrapping.Semiterm.shift_substs, Bootstrapping.Semiterm.substs_substs]
-  let Γ : List (Bootstrapping.Formula V ℒₛₑₜ) :=
-    [t⇞⇞.subst ![&'1] ≉ₛ u⇞⇞.subst ![&'1], (&'1) ≐ₛ (&'0)]
-  suffices
-      Γ ⊢[T.internalize V] t⇞⇞.subst ![&'0] ≉ₛ u⇞⇞.subst ![&'0] by
-    apply deduct'!
-    apply deduct!
-    exact this
-  have hh : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ≉ₛ u⇞⇞.subst ![&'1] :=
-    by_axm₀!
-  have ht : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ≐ₛ t⇞⇞.subst ![&'0] :=
-    of'! (term_replace' T t⇞⇞ &'1 &'0) ⨀ by_axm₁!
-  have hu : Γ ⊢[T.internalize V] u⇞⇞.subst ![&'1] ≐ₛ u⇞⇞.subst ![&'0] :=
-    of'! (term_replace' T u⇞⇞ &'1 &'0) ⨀ by_axm₁!
-  exact of'!
-    (subst_ne T (t⇞⇞.subst ![&'1]) (t⇞⇞.subst ![&'0])
-      (u⇞⇞.subst ![&'1]) (u⇞⇞.subst ![&'0]))
-    ⨀ ht ⨀ hu ⨀ hh
+  exact replace_atomic_open T t u (fun t u => t ≉ₛ u) (subst_ne T)
 
 lemma replace_nmem (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1) :
     T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
@@ -535,23 +512,7 @@ lemma replace_nmem (t u : Bootstrapping.Semiterm V ℒₛₑₜ 1) :
     apply TProof.all₂!
     simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
       Bootstrapping.Semiterm.shift_substs, Bootstrapping.Semiterm.substs_substs]
-  let Γ : List (Bootstrapping.Formula V ℒₛₑₜ) :=
-    [t⇞⇞.subst ![&'1] ∉ₛ u⇞⇞.subst ![&'1], (&'1) ≐ₛ (&'0)]
-  suffices
-      Γ ⊢[T.internalize V] t⇞⇞.subst ![&'0] ∉ₛ u⇞⇞.subst ![&'0] by
-    apply deduct'!
-    apply deduct!
-    exact this
-  have hh : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ∉ₛ u⇞⇞.subst ![&'1] :=
-    by_axm₀!
-  have ht : Γ ⊢[T.internalize V] t⇞⇞.subst ![&'1] ≐ₛ t⇞⇞.subst ![&'0] :=
-    of'! (term_replace' T t⇞⇞ &'1 &'0) ⨀ by_axm₁!
-  have hu : Γ ⊢[T.internalize V] u⇞⇞.subst ![&'1] ≐ₛ u⇞⇞.subst ![&'0] :=
-    of'! (term_replace' T u⇞⇞ &'1 &'0) ⨀ by_axm₁!
-  exact of'!
-    (subst_nmem T (t⇞⇞.subst ![&'1]) (t⇞⇞.subst ![&'0])
-      (u⇞⇞.subst ![&'1]) (u⇞⇞.subst ![&'0]))
-    ⨀ ht ⨀ hu ⨀ hh
+  exact replace_atomic_open T t u (fun t u => t ∉ₛ u) (subst_nmem T)
 
 /-! ## Replacement for arbitrary model-coded formulas
 

@@ -1,6 +1,7 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRAUnderMajorantMono
 import DiophantineConsistency.PRADomainWitnessBound
+import DiophantineConsistency.PRARewritingWitnessBound
 /-! Actual sequence graph with a common explicit domain polynomial; mapping remains explicit. -/
 set_option autoImplicit false
 set_option maxHeartbeats 2000000
@@ -40,22 +41,21 @@ theorem seq_bound_of_domain (s w : V)
   apply PRAUnderMajorantMono.seq_bound_of_common_under s w hsize hunder hmap
   intro d l hd hl h
   have hdomEval : domainDef.val.Evalb ![d,s] := by simpa [PRASeqDefWitnessBound.domainInside] using h
-  have hb := PRADomainWitnessBound.domain_bound_explicit d s hdomEval
   have hbound : PRADomainWitnessBound.domainMajorant d s ≤ w := le_trans (domainMajorant_mono_left d (2*s) s hd) hdom
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  have hs : Fin.snoc ![d,s] (PRADomainWitnessBound.domainMajorant d s) = ![d,s,PRADomainWitnessBound.domainMajorant d s] := by simp
-  have hm := eval_bnd_mono domainDef.val ![d,s] (Empty.elim : Empty → V) hbound (by rw [hs]; exact hb)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#2]
-  have hn := PRABndRewriting.natural domainDef.val ω ![d,l,s] w
-  have hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![d,s] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs' : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by simp
-  have hs'' : Fin.snoc ![d,s] w = ![d,s,w] := by simp
-  rw [hv,hs',hs''] at hn
-  rw [hs''] at hm
+  have hf : (ω ▹ domainDef.val).Evalb ![d,l,s] := by
+    simpa [ω, Semiformula.eval_substs] using hdomEval
+  have hw : PRADomainWitnessBound.domainMajorant
+      ((ω #0).val ![d,l,s] Empty.elim) ((ω #1).val ![d,l,s] Empty.elim) ≤ w := by
+    simpa [ω] using hbound
+  have hb := PRARewritingWitnessBound.binary_rew_bound_with domainDef.val
+    PRADomainWitnessBound.domainMajorant PRADomainWitnessBound.domain_bound_explicit
+    ω ![d,l,s] w hw hf
   have heq : PRASeqDefWitnessBound.domainInside = ω ▹ domainDef.val := by simp [PRASeqDefWitnessBound.domainInside, ω]
   rw [heq]
-  exact hn.mpr hm
+  simpa using hb
+
 noncomputable def seqDomainBody : ArithmeticSemisentence 2 :=
   “s w. 2*s+1 ≤ w ∧
     (((2*s+1)⁴+1)+((2*s+1)²+1)+(2*(2*s+1)²+1)+((2*s+1)⁴+(2*s+1)⁴+2*(2*s+1)+1)) ≤ w ∧
