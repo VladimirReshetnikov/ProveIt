@@ -74,8 +74,14 @@ The exploratory [`IPRAErasedDefiningImages.lean`](../../Lean/DiophantineConsiste
 and [`IPRAErasedEqualityImages.lean`](../../Lean/DiophantineConsistency/IPRAErasedEqualityImages.lean)
 contain candidate erasure images for all primitive-recursive defining
 equations, full Leibniz equality and successor nonzero. Their only invocations
-also used the untrusted mixed provider. Native successor injectivity, the
-order-definition image and native induction remain separate obligations.
+also used the untrusted mixed provider. Native successor injectivity and
+native induction remain separate obligations.
+
+The exploratory [`IPRAErasedOrderImage.lean`](../../Lean/DiophantineConsistency/IPRAErasedOrderImage.lean)
+maps the native order definition to the universal closure of `p ↔ p` and
+contains a candidate intuitionistic reference-theory derivation by identity
+and generalization. Its only invocation likewise used the mixed provider;
+the successful invocation is syntax feedback, not proof authentication.
 
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
