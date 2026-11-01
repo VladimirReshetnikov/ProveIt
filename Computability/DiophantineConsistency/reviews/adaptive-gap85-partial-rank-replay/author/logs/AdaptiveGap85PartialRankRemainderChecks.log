@@ -1,0 +1,33 @@
+'DiophantineConsistency.AdaptiveGap85PartialRankRemainder.actual_partial_family' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85PartialRankRemainder.partial_family_blocks_rank_normalization' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85PartialRankRemainder.partial_family_blocks_rank_normalization (b k mu nu : ℤ)
+  (hb : 1 ≤ b) (hk : 0 ≤ k) :
+  ∃ w,
+    (∀ (i : Fin 13), 0 < w i) ∧
+      DiophantineConsistency.Expr.eval w
+            (DiophantineConsistency.AdaptiveGap85Factors.factors
+                (DiophantineConsistency.AdaptiveGap85FamilyBinding.ports b k mu nu)).1 =
+          1 ∧
+        DiophantineConsistency.Expr.eval w
+              (DiophantineConsistency.AdaptiveGap85Factors.factors
+                      (DiophantineConsistency.AdaptiveGap85FamilyBinding.ports b k mu nu)).2.2.1 =
+            1 ∧
+          DiophantineConsistency.Expr.eval w
+                (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85
+                  (DiophantineConsistency.AdaptiveGap85FamilyBinding.ports b k mu nu)) ≠
+              0 ∧
+            have q := 1 + w 0 * b;
+            ∀ (F' C' : ℤ),
+              0 < F' →
+                0 < C' →
+                  F' + C' < q →
+                    ¬(DiophantineConsistency.AdaptiveGap85PartialRankRemainder.rankPlus q (w 1) (w 2) (w 0) mu nu +
+                            DiophantineConsistency.AdaptiveGap85PartialRankRemainder.rankMinus q F' C') %
+                          q =
+                        (DiophantineConsistency.AdaptiveGap85PartialRankRemainder.rankMinus q (w 1) (w 2) +
+                            DiophantineConsistency.AdaptiveGap85PartialRankRemainder.rankPlus q F' C' (w 0) mu nu) %
+                          q

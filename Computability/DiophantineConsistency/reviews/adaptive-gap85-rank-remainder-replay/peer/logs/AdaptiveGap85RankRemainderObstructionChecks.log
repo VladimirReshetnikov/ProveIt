@@ -1,0 +1,12 @@
+'DiophantineConsistency.AdaptiveGap85RankRemainderObstruction.no_normalized_same_rank_residue' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85RankRemainderObstruction.no_normalized_same_rank_residue.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (q F C F' C' J mu nu : V) (hq : 0 < q) (hC : q ∣ C) (hC' : 0 < C')
+  (hgap : F' + C' < q) :
+  ¬(DiophantineConsistency.AdaptiveGap85RankRemainderObstruction.rankPlus q F C J mu nu +
+          DiophantineConsistency.AdaptiveGap85RankRemainderObstruction.rankMinus q F' C') %
+        q =
+      (DiophantineConsistency.AdaptiveGap85RankRemainderObstruction.rankMinus q F C +
+          DiophantineConsistency.AdaptiveGap85RankRemainderObstruction.rankPlus q F' C' J mu nu) %
+        q
