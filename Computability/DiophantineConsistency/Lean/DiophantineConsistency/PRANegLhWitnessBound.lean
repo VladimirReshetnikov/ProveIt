@@ -40,34 +40,28 @@ attribute [local irreducible] underDef domainDef seqDef
           have hadd : d+1 ≤ 2*s+1 := by simpa [add_comm] using add_le_add_right hd' 1
           have hsize := le_trans (PRANegSeqDefWitnessBound.negExpMajorant_mono (d+1) (2*s+1) hadd) hunder
           let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
-          have hh := PRARewritingWitnessBound.binary_rew_bound_with (∼underDef.val)
+          simpa [LogicalConnective.HomClass.map_neg] using
+            (PRARewritingWitnessBound.binary_rew_bound_with (∼underDef.val)
             (fun d _ => PRANegExponentialWitnessBound.negExponentialMajorant (d+1))
             PRANegUnderWitnessBound.neg_under_bound ω ![d,l,s] w (by simpa [ω] using hsize)
-            (by simpa [ω, Semiformula.eval_substs] using hn)
-          rw [show (ω ▹ (∼underDef.val)) = ∼(ω ▹ underDef.val) from
-            LogicalConnective.HomClass.map_neg (Semiformula.rew ω) underDef.val] at hh
-          simpa using hh
+            (by simpa [ω, Semiformula.eval_substs] using hn))
         · left
           have hn : (∼domainDef.val).Evalb ![d,s] := by simpa using hde
           have hsize := le_trans (PRANegMappingWitnessBound.negDomainMajorant_mono_left d (2*s) s hd') hdom
           let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#2]
-          have hh := PRARewritingWitnessBound.binary_rew_bound_with (∼domainDef.val)
+          simpa [LogicalConnective.HomClass.map_neg] using
+            (PRARewritingWitnessBound.binary_rew_bound_with (∼domainDef.val)
             PRANegDomainWitnessBound.negDomainMajorant PRANegDomainWitnessBound.neg_domain_bound_explicit
             ω ![d,l,s] w (by simpa [ω] using hsize)
-            (by simpa [ω, Semiformula.eval_substs] using hn)
-          rw [show (ω ▹ (∼domainDef.val)) = ∼(ω ▹ domainDef.val) from
-            LogicalConnective.HomClass.map_neg (Semiformula.rew ω) domainDef.val] at hh
-          simpa using hh
+            (by simpa [ω, Semiformula.eval_substs] using hn))
   · right; constructor
     · have hn' : (∼seqDef.val).Evalb ![s] := by simpa using hn
       let ω : Rew ℒₒᵣ Empty 1 Empty 2 := Rew.subst ![#1]
-      have hh := PRAUnaryRewritingBound.rew_bound_with (∼seqDef.val)
+      simpa [LogicalConnective.HomClass.map_neg] using
+        (PRAUnaryRewritingBound.rew_bound_with (∼seqDef.val)
         PRANegSeqDefWitnessBound.negSeqMajorant PRANegSeqDefWitnessBound.neg_seq_bound_explicit
         ω ![l,s] w (by simpa [ω] using hnegseq)
-        (by simpa [ω, Semiformula.eval_substs] using hn')
-      rw [show (ω ▹ (∼seqDef.val)) = ∼(ω ▹ seqDef.val) from
-        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) seqDef.val] at hh
-      simpa using hh
+        (by simpa [ω, Semiformula.eval_substs] using hn'))
     · exact hne
 def negLhMajorant (s : V) : V := PRASeqFullWitnessBound.seqMajorant s +
  PRANegSeqDefWitnessBound.negSeqMajorant s + PRANegDomainWitnessBound.negDomainMajorant (2*s) s +
