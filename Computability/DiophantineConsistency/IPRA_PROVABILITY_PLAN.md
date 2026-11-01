@@ -156,7 +156,11 @@ proves `(Sx − y = 0) → (x − y = 0)` in the native theory without an extra
 arithmetic premise. A second matched replay proves
 `(u − S(v) = 0) → pred(u − v) = 0` natively; see
 [IPRASubPredZeroNative.lean](Lean/DiophantineConsistency/IPRASubPredZeroNative.lean).
-General equality and positive reconstruction remain open.
+A separate [forward difference theorem](Lean/DiophantineConsistency/IPRANativeDifferenceForward.lean)
+derives `x = y → (x − y = 0 ∧ y − x = 0)` from an explicit native
+zero-decidability proof, with matching guarded replays. The positive reverse
+implication and authenticated composition with the unconditional zero proof
+remain open, as do general equality and positive reconstruction.
 
 The theory now proves zero decidability without an additional premise. The
 [checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)
