@@ -1,0 +1,14 @@
+import DiophantineConsistency.AdaptiveZ43FixedPort
+#print axioms DiophantineConsistency.AdaptiveZ43Inequality.main_positive_bound
+#print axioms DiophantineConsistency.AdaptiveZ43Zeros.sum_zero
+#print axioms DiophantineConsistency.AdaptiveZ43Facts.facts
+#print axioms DiophantineConsistency.AdaptiveZ43PositiveActual.signed_d_positive
+#print axioms DiophantineConsistency.AdaptiveZ43Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveZ43Context.new_literal
+#print axioms DiophantineConsistency.AdaptiveZ43Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveZ43Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveZ43Model.project_zero
+#print axioms DiophantineConsistency.AdaptiveZ43Model.extend_zero
+#print axioms DiophantineConsistency.AdaptiveZ43Model.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveZ43FixedPort.beta_ge_two
+#print axioms DiophantineConsistency.AdaptiveZ43FixedPort.fixed_port_bound

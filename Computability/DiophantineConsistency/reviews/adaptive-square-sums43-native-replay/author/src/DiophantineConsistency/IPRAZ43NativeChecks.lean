@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAZ43Native
+#print axioms DiophantineConsistency.IPRAZ43Native.sameNoZero43
+#print axioms DiophantineConsistency.IPRAZ43Native.bridge43
+#print axioms DiophantineConsistency.IPRAZ43Native.literal_equivalence

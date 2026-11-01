@@ -21,5 +21,4 @@ the pinned graph.
 The [paired model replay](../../reviews/adaptive-square-sums43-model-replay/README.md)
 checks nine modules twice on a shared fixed provider, with source/object/log and
 direct dependency guards. It inherits the provider's transitive and dynamic
-ancestry. The fixed-port native iPRA client has compiled exploratorily; its
-guarded paired replay remains pending. No global minimality is claimed.
+ancestry. The [fixed-port native iPRA endpoint](../../reviews/adaptive-square-sums43-native-replay/README.md) has also passed a guarded paired replay. It proves equivalence with the negation of the mapped Foundation ZFC refutation predicate. The inherited ancestry and source-current qualifications remain open. No global minimality is claimed.
