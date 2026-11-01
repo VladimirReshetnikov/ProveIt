@@ -23,42 +23,22 @@ theorem reachListClosed {root ψ : Proposition L} (h : Reach root ψ) :
     ∀ χ, χ ∈ reachList ψ → χ ∈ reachList root := by
   induction h with
   | self => exact fun _ h => h
-  | @andLeft φ ψ _ ih =>
-    intro χ h
+  | @andLeft φ ψ _ ih | @andRight φ ψ _ ih | @orLeft φ ψ _ ih | @orRight φ ψ _ ih =>
+    intro χ hχ
     apply ih
-    change χ ∈ reachList (Semiformula.and φ ψ)
+    first
+    | change χ ∈ reachList (Semiformula.and φ ψ)
+    | change χ ∈ reachList (Semiformula.or φ ψ)
     rw [reachList]
-    exact List.mem_cons_of_mem _ (List.mem_append_left _ h)
-  | @andRight φ ψ _ ih =>
-    intro χ h
+    simp [hχ]
+  | @allFree φ _ ih | @exsFree φ _ ih =>
+    intro χ hχ
     apply ih
-    change χ ∈ reachList (Semiformula.and φ ψ)
+    first
+    | change χ ∈ reachList (Semiformula.all φ)
+    | change χ ∈ reachList (Semiformula.exs φ)
     rw [reachList]
-    exact List.mem_cons_of_mem _ (List.mem_append_right _ h)
-  | @orLeft φ ψ _ ih =>
-    intro χ h
-    apply ih
-    change χ ∈ reachList (Semiformula.or φ ψ)
-    rw [reachList]
-    exact List.mem_cons_of_mem _ (List.mem_append_left _ h)
-  | @orRight φ ψ _ ih =>
-    intro χ h
-    apply ih
-    change χ ∈ reachList (Semiformula.or φ ψ)
-    rw [reachList]
-    exact List.mem_cons_of_mem _ (List.mem_append_right _ h)
-  | @allFree φ _ ih =>
-    intro χ h
-    apply ih
-    change χ ∈ reachList (Semiformula.all φ)
-    rw [reachList]
-    exact List.mem_cons_of_mem _ h
-  | @exsFree φ _ ih =>
-    intro χ h
-    apply ih
-    change χ ∈ reachList (Semiformula.exs φ)
-    rw [reachList]
-    exact List.mem_cons_of_mem _ h
+    exact List.mem_cons_of_mem _ hχ
 
 theorem reachMem {root ψ : Proposition L} (h : Reach root ψ) : ψ ∈ reachList root :=
   reachListClosed h ψ (mem_self ψ)

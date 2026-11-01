@@ -262,12 +262,8 @@ theorem models_intT_iff (σ : Sentence (setTemplateLanguage k arities)) :
     M↓[setTemplateLanguage k arities] ⊧ intT σ ↔ (SD M)↓[setTemplateLanguage k arities] ⊧ σ := by
   simp only [models_iff]
   have h := eval_intT (M := M) (ξ := Empty) σ (![] : Fin 0 → SD M) Empty.elim
-  have e1 : (Subtype.val ∘ (![] : Fin 0 → SD M)) = ![] := funext fun i ↦ i.elim0
-  have e2 : (Subtype.val ∘ (Empty.elim : Empty → SD M)) = Empty.elim := funext fun e ↦ e.elim
-  rw [e1, e2] at h
-  rw [show (![] : Fin 0 → M) = fun i ↦ i.elim0 from funext fun i ↦ i.elim0,
-    show (![] : Fin 0 → SD M) = fun i ↦ i.elim0 from funext fun i ↦ i.elim0] at h
-  exact h
+  simp only [Matrix.comp₀, Empty.eq_elim] at h
+  simpa [Matrix.empty_eq] using h
 
 end SD
 
