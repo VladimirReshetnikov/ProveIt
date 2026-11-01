@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAQF41Native
+#print axioms DiophantineConsistency.IPRAQF41Native.sameNoZero41
+#print axioms DiophantineConsistency.IPRAQF41Native.bridge41
+#print axioms DiophantineConsistency.IPRAQF41Native.literal_equivalence

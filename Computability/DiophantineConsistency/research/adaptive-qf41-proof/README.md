@@ -13,5 +13,6 @@ positive. In the other direction the map reconstructs the old root as
 `scale*t` and the removed square coordinate as `scale²`. The argument makes
 no assumption about the signs of integer ports. The [model replay](../../reviews/adaptive-qf41-model-replay/README.md)
 uses the accepted 42-native peer and inherits its two-provider and transitive
-ancestry; it does not itself prove an iPRA endpoint. A separate fixed-port
-native client and replay are in progress.
+ancestry; it does not itself prove an iPRA endpoint. The separately replayed fixed-port
+`IPRAQF41Native.literal_equivalence` proves the native-theory equivalence with
+the negation of Foundation's mapped ZFC refutation predicate.
