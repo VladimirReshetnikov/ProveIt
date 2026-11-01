@@ -152,7 +152,10 @@ ZFC refutation predicate, with matching source, object and full-log rows. This
 gives the translated implication, not an unnegated intuitionistic witness.
 After the witness-calculus merge, a [58-module source-directed rebuild](reviews/ipra-zfc-bound-postmerge-replay/README.md)
 passed matching author and independent replays against the frozen historical
-parent. Its recorded project and external ancestry is still inherited. The analogous HA normalization also uses
+parent. Its recorded project and external ancestry is still inherited. A later
+upstream refactor changed the bound endpoint and made `PRAConBForward` relevant;
+a [six-module certificate refresh](reviews/ipra-zfc-bound-certificate-replay/README.md)
+is running and is not yet a claimed pass. The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
