@@ -2,8 +2,10 @@
 
 The active target is now existence of a proof in **intuitionistic PRA**; see
 [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md). The intuitionistic theory
-has a candidate native definition, but its standard-presentation comparison
-and connection to the equation remain open. The existing `PRATheory.PRA`, defined in
+has a candidate native definition. Its literal equation endpoint has passed
+matching fixed-snapshot replays with an inherited dependency mismatch; a
+coherent repair and a broader standard-presentation comparison remain open.
+The existing `PRATheory.PRA`, defined in
 [`PRATheory.lean`](Lean/DiophantineConsistency/PRATheory.lean), is a classical
 first-order theory with equality, an expanded language of primitive-recursive
 functions, and induction for quantifier-free formulas. It is an intermediate

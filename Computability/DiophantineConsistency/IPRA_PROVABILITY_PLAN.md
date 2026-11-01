@@ -4,15 +4,18 @@ The active objective is a Lean proof that the chosen literal equation's
 no-positive-solution sentence is equivalent to the chosen formal `Con(ZFC)`
 sentence in **intuitionistic** primitive recursive arithmetic. This is a
 proof-existence statement, not a request to print a proof and not a proof of
-either side separately. No such iPRA endpoint is currently claimed.
+either side separately. Literal iPRA endpoint theorems have passed matching
+fixed-snapshot replays, subject to the dependency and source-current
+qualifications described below.
 
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz
 equality and parameterized quantifier-free induction. Its guarded author and
-independent suffix replays have passed. Identifying this
-candidate with a standard intuitionistic PRA presentation and proving the
-connection to the conclusion remain obligations. It is neither classical
+independent suffix replays have passed. Identifying this candidate with an
+independently specified standard intuitionistic PRA presentation and
+revalidating the endpoint with coherent dependencies and current sources
+remain obligations. It is neither classical
 `PRATheory.PRA` nor merely the negative translation of that theory. The
 existing classical induction scheme advances by
 the syntactic term `n + 1`, whereas the language also has a distinct successor
@@ -42,7 +45,8 @@ sides. It does not identify the translated refutation side with ordinary
 intuitionistic consistency.
 The classical PRA source-current construction in
 [PRA_PROVABILITY_PLAN.md](PRA_PROVABILITY_PLAN.md) can supply the starting
-proof, but the following further steps are required in Lean:
+proof. The following list records the proof plan; later entries record
+progress and remaining replay obligations for its individual steps:
 
 1. Identify the defined native candidate with a standard intuitionistic PRA
    presentation, including its full primitive-recursive language and allowed

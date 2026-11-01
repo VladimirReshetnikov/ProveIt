@@ -6,8 +6,8 @@ in Heyting arithmetic. Its exact definition is in
 [`IPRANativeTheory.lean`](Lean/DiophantineConsistency/IPRANativeTheory.lean),
 with its induction syntax in
 [`IPRANativeInduction.lean`](Lean/DiophantineConsistency/IPRANativeInduction.lean).
-This document describes those definitions; it does not assert that the final
-equation equivalence has been proved.
+This document describes those definitions. The exact equation endpoint and
+its remaining replay qualifications are described below.
 
 ## Logic and language
 
@@ -73,9 +73,16 @@ The classical intermediate `PRATheory.PRA` is described in
 transfers each derivation in that particular classical presentation to a
 native-candidate derivation of its Gödel–Gentzen translation. It does not by
 itself identify the translated consistency sentence with the intended native
-consistency sentence. The exact equation equivalence and a Lean-checked
+consistency sentence. The later theorem
+[`IPRACurrentNativeZFC.equivalence14`](Lean/DiophantineConsistency/IPRACurrentNativeZFC.lean)
+states the literal 14-variable equivalence in this native theory and has passed
+matching fixed-snapshot replays. Those replays inherit a confirmed mismatch in
+two project dependency objects; provenance repair and a coherent current-source
+replay remain in progress. The endpoint uses the native negation of
+Foundation's particular arithmetized ZFC refutation predicate, not an
+unverified identification with every possible proof coding. A Lean-checked
 comparison with any broader independently specified standard presentation of
-intuitionistic PRA remain open; see
+intuitionistic PRA also remains open; see
 [`IPRA_PROVABILITY_PLAN.md`](IPRA_PROVABILITY_PLAN.md).
 
 A Lean theorem asserting `nativeTheory ⊢ ψ` is a metatheoretic assertion that
