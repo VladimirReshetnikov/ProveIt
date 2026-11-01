@@ -143,11 +143,14 @@ uses natural ports and the checked cast at the fixed ports. Historical provider
 and inherited-ancestry qualifications remain; exact degree and display have
 separate finite checks.
 
-The [43-variable quartic model](reviews/adaptive-square-sums43-model-replay/README.md)
-and [32-variable degree-6 model](reviews/adaptive-aq32-model-replay/README.md)
-have matched paired replays. Both require natural ports with first port at least
-2 in the general comparison; their fixed-port corollaries discharge that bound.
-The corresponding native endpoint replays are still in progress.
+The [43-variable quartic equation](equation4-43.pdf) and [32-variable
+degree-6 equation](equation6-32.pdf) have no-premise native endpoints for
+their exact shifted fixed-port literals. Their [quartic](reviews/adaptive-square-sums43-native-replay/README.md)
+and [degree-six](reviews/adaptive-aq32-native-replay/README.md) paired replays
+matched 11 and 12 modules, respectively. Both general model comparisons require
+natural ports with first port at least 2; fixed-port corollaries discharge
+that bound. Historical provider and inherited ancestry qualifications remain;
+exact degree and display have separate finite checks.
 
 A further [42-variable quartic](research/adaptive-square-sums42-quartic/README.md)
 and [31-variable degree-6 graph](research/adaptive-square-sums31-degree6/README.md)
