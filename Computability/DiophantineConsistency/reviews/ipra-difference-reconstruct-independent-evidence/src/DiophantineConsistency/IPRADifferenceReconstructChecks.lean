@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAReconstructClosure
+#check DiophantineConsistency.IPRAReconstructClosure.reconstruction
+#print axioms DiophantineConsistency.IPRAReconstructClosure.reconstruction

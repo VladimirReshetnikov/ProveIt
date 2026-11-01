@@ -204,8 +204,9 @@ remain to be assembled. Matching guarded replays retain historical ancestry.
 The needed positive [subtraction reconstruction](Lean/DiophantineConsistency/IPRAReconstructClosure.lean)
 `y−x=0 ∨ x+(y−x)=y` has now passed matching guarded author and independent
 replays. Its construction uses native open induction and does not assume
-arbitrary equality decidability. Its coherent connection to the successor-case
-provider remains to be checked.
+arbitrary equality decidability. A [single-provider reconstruction rebase](reviews/ipra-difference-reconstruct-independent.md)
+has also passed matched replays on the successor-logic provider. Connecting its
+positive branch to the universally closed successor case remains to be checked.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
 with matching author and independent replays. The companion
