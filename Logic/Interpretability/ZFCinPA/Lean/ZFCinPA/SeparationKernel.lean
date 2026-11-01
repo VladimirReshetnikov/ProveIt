@@ -1,4 +1,5 @@
 import ZFCinPA.ZFDelta1
+import ZFCinPA.ModelCodedSchemaAxioms
 import BoundedPAConsistency.ModelCodedPredicateTemplate
 
 /-!
@@ -142,26 +143,6 @@ lemma sepBody_mem_zfc_delta1Class_of_shift_fixed
     rw [fvarVec_zero]
     change (body.subst emptyVec).val = body.val
     rw [hempty]
-  have hidsub : Bootstrapping.subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) K.val
-      = K.val := by
-    -- The raw code of `![#0]` does not depend on the ambient arity, so the
-    -- level-3 substitution constant is also the code of the level-1 identity
-    -- substitution, which fixes `K` by the typed `subst_eq_self₁`.
-    have hvec :
-        ((sepSubstConst : ℕ) : V)
-          = Bootstrapping.SemitermVec.val
-              (![Bootstrapping.Semiterm.bvar 0] :
-                Bootstrapping.SemitermVec V ℒₛₑₜ 1 1) := by
-      rw [val_sepSubstConst]
-      simp [Bootstrapping.SemitermVec.val, Matrix.vecHead, Matrix.vecTail]
-    rw [hvec,
-      show Bootstrapping.subst ℒₛₑₜ
-          (Bootstrapping.SemitermVec.val
-            (![Bootstrapping.Semiterm.bvar 0] :
-              Bootstrapping.SemitermVec V ℒₛₑₜ 1 1)) K.val
-        = (K.subst (![Bootstrapping.Semiterm.bvar 0] :
-            Bootstrapping.SemitermVec V ℒₛₑₜ 1 1)).val from rfl,
-      Bootstrapping.Semiformula.subst_eq_self₁]
   refine ⟨0, by simp, sepBodyVal K.val, le_refl _, by simp, ?_, ?_, ?_,
     K.val, ?_, ?_, ?_⟩
   · rw [sepBodyVal_eq K]
@@ -175,7 +156,7 @@ lemma sepBody_mem_zfc_delta1Class_of_shift_fixed
     simpa [isSemiformula_iff] using hsemi.2
   · rw [hsubstEmpty]
     have h := subst_le_sepBodyVal (V := V) K.val
-    rwa [hidsub] at h
+    rwa [ModelCodedSchemaAxioms.sep_core_subst_identity K] at h
   · simp
   · rw [hsubstEmpty]
 
