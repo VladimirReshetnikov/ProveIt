@@ -271,6 +271,17 @@ historical inputs or a coherent rebuild of the affected dependency closure,
 with package-transitive and dynamic ancestry separately accounted for. This
 experiment does not establish an inconsistency in the actual project.
 
+A fresh Foundation build's receipt records a successful inner Lake exit and
+140 targets; independent checks rehashed the declared inputs and artifacts.
+The outer build-driver exit was not captured. See the [provider evidence](reviews/foundation-provider-recovery/README.md)
+and [independent audit](reviews/foundation-provider-independent-audit/README.md).
+A two-run source-only rebuild of the AQ29 endpoint's 1,210-module declared
+project closure is [in progress](reviews/fresh-project-pair-launch/README.md),
+starting from empty project object trees. After launch, an upstream edit changed
+`PRAWitnessCalculus.lean`, which belongs to that frozen closure, so a successful
+run would concern the historical snapshot. No completion is claimed; package-
+transitive and dynamic ancestry remain outside this build's current scope.
+
 The exact schemes are summarized in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md).
 The induction scheme advances by the syntactic term `n + 1`, whereas the
 language also has a distinct successor code. The project proves their equality
