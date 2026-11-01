@@ -155,7 +155,12 @@ parent. Its recorded project and external ancestry is still inherited. A later
 upstream refactor changed the bound endpoint and made `PRAConBForward` relevant;
 a [six-module certificate refresh](reviews/ipra-zfc-bound-certificate-replay/README.md)
 has now passed matching author and independent replays, with the inherited
-ancestry boundary stated there. The analogous HA normalization also uses
+ancestry boundary stated there. A later [historical single-provider join](Lean/DiophantineConsistency/IPRADeepBoundJoin.lean)
+has independently replayed the translated bound together with the exact ZFC
+deep-stability client, discharging its bound premise. Its native equality
+decision and remaining deep-matrix stability proofs remain explicit; the
+inherited ancestry and current-source limitations are recorded in its receipt.
+The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
