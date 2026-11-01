@@ -74,20 +74,7 @@ theorem sppow2_bound (m : V) : sppow2Def.val.Evalb ![m] →
             exact PRANegLenbitRewritingBound.neg_lenbit_rew_bound ω ![x,m] hf
           · left
             have hn : ¬(√x < x+1 ∧ √x * √x = x ∧ LenBit (√x) m) := fun hh => hl (hi.mpr hh)
-            have hf : PRANegSqrtLenbitBound.negSqrtLenbit.Evalb ![x,m] := by
-              simp [PRANegSqrtLenbitBound.negSqrtLenbit, Semiformula.bexsLTSucc, Semiformula.bexsLT, FirstOrder.bexs]
-              intro s
-              by_cases hs : x+1 ≤ s
-              · exact Or.inl hs
-              · by_cases heq : s = √x
-                · subst s
-                  right; right
-                  by_cases hsquare : √x * √x = x
-                  · right
-                    intro hlen
-                    exact hn ⟨lt_of_not_ge hs, hsquare, hlen⟩
-                  · exact Or.inl hsquare
-                · exact Or.inr (Or.inl heq)
+            have hf := PRANegSqrtLenbitBound.negSqrtLenbit_of_not x m hn
             have hb := PRANegSqrtLenbitBound.negSqrtLenbit_bound x m hf
             exact hb
     · right; left
