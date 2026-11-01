@@ -1,0 +1,27 @@
+DiophantineConsistency.IPRASuccessorInduction.replaceParameter {n : ℕ}
+  (φ : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language (n + 1))
+  (u v : LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ)
+  (args : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    DiophantineConsistency.IPRANativeAtomStability.eqAt u v 🡒
+      (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts fun i => Fin.cases u args i)) φ 🡒
+        (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts fun i => Fin.cases v args i)) φ
+DiophantineConsistency.IPRASuccessorInduction.stepConvert {n : ℕ}
+  (φ : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language (n + 1))
+  (args : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts args))
+        (DiophantineConsistency.IPRASuccessorInduction.succStepBody φ) 🡒
+      (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts args))
+        (∀⁰ (φ 🡒 DiophantineConsistency.IPRANativeInduction.atStep φ))
+DiophantineConsistency.IPRASuccessorInduction.successorInduction {n : ℕ}
+  (φ : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language (n + 1))
+  (hopen : DiophantineConsistency.IPRAQuantifierFree.OpenI φ) :
+  DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    DiophantineConsistency.IPRASuccessorInduction.succInductionAxiom φ
+'DiophantineConsistency.IPRASuccessorInduction.replaceParameter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRASuccessorInduction.successorInduction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

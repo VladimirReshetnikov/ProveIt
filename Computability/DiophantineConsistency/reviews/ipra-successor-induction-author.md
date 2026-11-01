@@ -1,0 +1,7 @@
+# Native successor induction for finite parameters: author replay
+
+Guarded author run `/tmp/ipra-successor-induction-p_a39r05` passed on the independently checked open-disjunction provider `/tmp/ipra-open-disjunction-witness-wwljfjae/lib`. `replaceParameter` proves native Leibniz substitution for a formula with an arbitrary finite parameter vector. `successorInduction` uses the actual native x+1 induction axiom, direct native add-one, symmetry, that substitution and uniform finite-arity closure to prove the universally closed open induction schema with `Sx` as the step, for every finite parameter arity. Both independent runs match source/object/full-log rows, parent state and selected inventory.
+
+This establishes the x+1-to-S schema direction only; it is not a full equivalence between candidate and conventional iPRA presentations. Sources and selected `.olean*`/`.ir` parent objects were checked before and after; parent/Foundation and external package transitive source ancestry remain inherited historical boundaries. The check log records the standard Lean axioms.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-successor-induction.py`. State SHA-256 `ac5171065afb30caa5b4bf36c455e84da2e501e04b19097ad6ccd4715a331fa7`; selected-provider inventory `a8d6e5470324cbad4f6241cf3f2e17a022bf2b42a84ba65c6794bb5d1eb05d85`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.
