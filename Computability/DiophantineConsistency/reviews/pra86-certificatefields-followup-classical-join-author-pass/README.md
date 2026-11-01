@@ -1,0 +1,3 @@
+# CertificateFields 86-operation classical endpoint
+
+The source-directed 111-module author run explicitly PASSed against fixed 848+75 parent `/tmp/pra14-zfc-join-v4kzb5vj`. It proves the 13-variable 86-operation equation's candidate-PRA no-zero/consistency equivalence. The input `../pra86-certificatefields-followup-classical-join-snapshot/` pins frozen sources and parent; final source/object/log/dependency and direct external-object guards passed without workspace project-object fallback. This is a historical fixed-source snapshot; original reused-object transitive environments are reconstructed from surviving records, package-transitive ancestry remains inherited, and independent replay is not yet claimed.
