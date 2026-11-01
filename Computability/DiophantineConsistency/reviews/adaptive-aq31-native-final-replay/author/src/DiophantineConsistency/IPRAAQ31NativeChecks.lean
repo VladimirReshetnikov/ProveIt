@@ -1,0 +1,6 @@
+import DiophantineConsistency.IPRAAQ31Native
+
+#print axioms DiophantineConsistency.AdaptiveVSignFrom87.from87_to32
+#print axioms DiophantineConsistency.AdaptiveVSignMachine32.from_run
+#print axioms DiophantineConsistency.IPRAAQ31Native.machineOrients
+#print axioms DiophantineConsistency.IPRAAQ31Native.literal_equivalence
