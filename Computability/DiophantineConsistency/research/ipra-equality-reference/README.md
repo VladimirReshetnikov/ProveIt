@@ -139,6 +139,17 @@ conversion and transfer, with no reported `sorryAx`. Those diagnostics do
 not repair the mixed-provider boundary: the known counterexample shows that
 successful checks and benign axiom reports can still be unsound in this setup.
 
+[`IPRAReferenceAQ29.lean`](draft/IPRAReferenceAQ29.lean) is an **uncompiled
+draft** applying this candidate transport to the fixed AQ29 endpoint. It
+states the no-zero formula and the negated mapped refutation explicitly under
+erasure; identifying that erased refutation with a separately specified
+reference-language consistency predicate remains open. The first exploratory
+mixed-provider invocation exited 1 because the AQ29 object was absent from the
+temporary overlay. After adding available historical AQ29 objects to that
+overlay, a second invocation was bounded to 45 seconds and exited 124 without
+an elaboration result. Neither invocation validates the draft; no further
+heavy mixed-provider probe is justified while the coherent rebuild is active.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements and candidate derivations; discharge the
 native induction image; transfer the reference axioms
