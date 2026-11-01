@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.RuntimeInstancePerm252
 import BusyBeaver.ZFC.RuntimePerm252
 import BusyBeaver.ZFC.InstructionPrefix246
 import BusyBeaver.ZFC.SiteCoverage
@@ -19,6 +20,7 @@ closed all-sites theorem, no finite blank bootstrap and no consistency theorem.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246
+export SetTheory.BusyBeaver.ZFC.RuntimeInstancePerm252 (clean_suffix)
 
 open RegisterPath RegisterPathClean Permutation252Frame
 open SymbolicPrefix246 SitePrefix246 Prefix246Simulation
@@ -45,14 +47,6 @@ theorem related_active (p : Program) (logical : Configuration) (binary : Config 
   have hs : binary.state = some dispatch := hz.1
   rw [hs]
   simp
-
-theorem clean_suffix (p : Program) (P : List Bool) (e : Edge) (d : Nat)
-    (hc : Clean p P) (hw : walk p (p.nnodes + 1) p.root P 0 = some (e, d)) :
-    ∀ b ∈ P.drop d, b = false := by
-  intro b hb
-  obtain ⟨i, hi⟩ := List.mem_iff_getElem?.mp hb
-  have hv : bit (P.drop d) i = b := by simp [bit, hi]
-  exact hv.symm.trans ((bit_drop P d i).trans (hc e d hw (d + i) (by omega)))
 
 theorem source_from_walk (p : Program) (logical : Configuration) (binary : Config 246)
     (gap : Nat) (spares : List Nat) (e : Edge) (d : Nat)

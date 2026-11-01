@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.InstructionPrefix246
 import BusyBeaver.ZFC.Prefix250Simulation
 
 /-!
@@ -11,31 +12,10 @@ The theorem is conditional on an accepted site; decoder coverage is separate.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.InstructionPrefix250
+export SetTheory.BusyBeaver.ZFC.InstructionPrefix246 (incRev_length incPath_length stripPath_length breakPath_length continuePath_length)
 
 open RegisterPath Permutation252Frame SymbolicPrefix250
 open SitePrefix250 Prefix250Simulation
-
-theorem incRev_length (P : List Bool) : (incRev P).length = P.length := by
-  induction P with
-  | nil => rfl
-  | cons b P ih => cases b <;> simp [incRev, ih]
-
-theorem incPath_length (P : List Bool) : (incPath P).length = P.length := by
-  simp only [incPath, List.length_reverse, incRev_length]
-
-theorem stripPath_length (b : Bool) (k : Nat) (P : List Bool) :
-    (stripPath b k P).length ≤ P.length := by
-  obtain ⟨T, ht⟩ := RegisterPathClean.stripPath_prefix b k P
-  have hl := congrArg List.length ht
-  simp only [List.length_append] at hl
-  omega
-
-theorem breakPath_length (k : Nat) (P : List Bool) :
-    (breakPath k P).length ≤ P.length := by
-  simpa only [breakPath, incPath_length] using stripPath_length false k P
-
-theorem continuePath_length (k : Nat) (P : List Bool) :
-    (continuePath k P).length ≤ P.length := stripPath_length true k P
 
 /-- Every accepted nonhalting site updates the complete dispatch frame.
 The spare suffix stays nonempty. Increment appends one value-one block;

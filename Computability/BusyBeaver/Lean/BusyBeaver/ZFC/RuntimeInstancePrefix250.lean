@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.RuntimeInstancePrefix246
 import BusyBeaver.ZFC.RuntimePerm252
 import BusyBeaver.ZFC.InstructionPrefix250
 import BusyBeaver.ZFC.SiteCoverage
@@ -19,6 +20,7 @@ closed all-sites theorem, no finite blank bootstrap and no consistency theorem.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix250
+export SetTheory.BusyBeaver.ZFC.RuntimeInstancePrefix246 (clean_suffix partialRun_eq_registerRun)
 
 open RegisterPath RegisterPathClean Permutation252Frame
 open SymbolicPrefix250 SitePrefix250 Prefix250Simulation
@@ -45,14 +47,6 @@ theorem related_active (p : Program) (logical : Configuration) (binary : Config 
   have hs : binary.state = some dispatch := hz.1
   rw [hs]
   simp
-
-theorem clean_suffix (p : Program) (P : List Bool) (e : Edge) (d : Nat)
-    (hc : Clean p P) (hw : walk p (p.nnodes + 1) p.root P 0 = some (e, d)) :
-    ∀ b ∈ P.drop d, b = false := by
-  intro b hb
-  obtain ⟨i, hi⟩ := List.mem_iff_getElem?.mp hb
-  have hv : bit (P.drop d) i = b := by simp [bit, hi]
-  exact hv.symm.trans ((bit_drop P d i).trans (hc e d hw (d + i) (by omega)))
 
 theorem source_from_walk (p : Program) (logical : Configuration) (binary : Config 250)
     (gap : Nat) (spares : List Nat) (e : Edge) (d : Nat)
@@ -110,12 +104,6 @@ theorem positive_simulation (p : Program) (hcov : Covered p) :
   step := related_step p hcov
   stopped := fun logical _ _ hs => stopped_terminal p hcov logical hs
   halt := related_halt p hcov
-
-theorem partialRun_eq_registerRun (p : Program) (N : Nat) (c : Configuration) :
-    partialRun (RegisterPath.step p) N c = RegisterPath.run p N c := by
-  induction N generalizing c with
-  | zero => rfl
-  | succ N ih => cases hs : RegisterPath.step p c <;> simp [partialRun, RegisterPath.run, hs, ih]
 
 theorem register_halts_iff_binary (p : Program) (hcov : Covered p)
     (logical : Configuration) (binary : Config 250) (hc : Related p logical binary) :

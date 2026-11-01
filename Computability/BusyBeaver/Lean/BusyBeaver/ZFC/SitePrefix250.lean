@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.SitePrefix246
 import BusyBeaver.ZFC.SymbolicPrefix250
 import BusyBeaver.ZFC.Permutation252Frame
 
@@ -24,18 +25,11 @@ preservation, and the blank bootstrap remain separate obligations.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.SitePrefix250
+export SetTheory.BusyBeaver.ZFC.SitePrefix246 (minDistance fuel physical allOnes)
 
 open RegisterPath SymbolicPrefix250
 
 def dispatch : Fin 250 := dispatchPrefix250
-def minDistance : Nat := 40
-def fuel : Nat := 4000
-
-def physical (r : Nat) (hr : r < 9) : Reg :=
-  ⟨Permutation252Frame.physOf r, Permutation252Frame.physOf_lt ⟨r, hr⟩⟩
-
-def allOnes (P : List Bool) : Bool := P.all id
-
 def start (Q : List Bool) : SConfig :=
   ⟨some dispatch, false, [.bit true],
     Q.map Segment.bit ++
