@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAAdaptiveNativeZFC
+#check DiophantineConsistency.IPRAAdaptiveNativeZFC.equivalence86
+#check DiophantineConsistency.IPRAAdaptiveNativeZFC.equivalence87
+#print axioms DiophantineConsistency.IPRAAdaptiveNativeZFC.equivalence86
+#print axioms DiophantineConsistency.IPRAAdaptiveNativeZFC.equivalence87
