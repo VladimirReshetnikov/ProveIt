@@ -1,0 +1,14 @@
+import DiophantineConsistency.AdaptiveAQ36
+
+#print axioms DiophantineConsistency.AdaptiveAQ36Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveAQ36Literal.new_literal
+#print axioms DiophantineConsistency.AdaptiveAQ36Zeros.old_zero
+#print axioms DiophantineConsistency.AdaptiveAQ36Zeros.new_zero
+#print axioms DiophantineConsistency.AdaptiveAQ36Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveAQ36Transport.project_inputs
+#print axioms DiophantineConsistency.AdaptiveAQ36Transport.extend_inputs
+#print axioms DiophantineConsistency.AdaptiveAQ36.project_zero
+#print axioms DiophantineConsistency.AdaptiveAQ36.removed_zero
+#print axioms DiophantineConsistency.AdaptiveAQ36.extend_zero
+#print axioms DiophantineConsistency.AdaptiveAQ36.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveAQ36.current_no_zero_iff
