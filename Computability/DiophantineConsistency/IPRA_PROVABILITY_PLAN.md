@@ -144,7 +144,13 @@ the native formula when proofs deciding its actual atoms are supplied. The
 matched [author](reviews/ipra-open-atom-decision-author.md) and
 [independent](reviews/ipra-open-atom-decision-independent.md) replays retain a
 historical provider boundary. This does not itself supply those atom decisions
-or treat bounded quantifiers.
+or treat bounded quantifiers. A [zero-atom specialization](Lean/DiophantineConsistency/IPRAZeroAtomDecision.lean)
+handles every open NNF formula built from equalities or inequalities between
+arbitrary terms and zero, assuming an explicit native zero-decidability proof;
+its author and independent replays match on a historical provider.
+A separately replayed [subtraction implication](Lean/DiophantineConsistency/IPRASubSuccZeroNative.lean)
+proves `(Sx − y = 0) → (x − y = 0)` in the native theory without an extra
+arithmetic premise. General equality and positive reconstruction remain open.
 
 The theory now proves zero decidability without an additional premise. The
 [checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)
