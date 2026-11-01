@@ -340,17 +340,8 @@ theorem eval_srcCrossLevel (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
   have hco : ∀ x1 x0 : X,
       Corr (x0 :> x1 :> (![] : Fin 0 → X)) f (scons x0 (scons x1 f)) :=
     fun x1 x0 ↦ ((corr0 f).cons x1).cons x0
-  have hcode : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f
-        (liftP (toSet 2 (fIsFormCodeF 1))) ↔
-      IsFormCodeSem H x1 := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fIsFormCodeF_spec H (scons x0 (scons x1 f)) 1)
-  have henv : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f (liftP (toSet 2 (fUnivEnvF 0))) ↔
-      IsUnivEnv H x0 := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fUnivEnvF_spec H (scons x0 (scons x1 f)) 0)
+  have hcode := eval_formCode1 (X := X) f H
+  have henv := eval_univEnv0 (X := X) f H
   have hbnd : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
       (x0 :> x1 :> (![] : Fin 0 → X)) f srcBoundedAt ↔
       ∃ k, templateNum X k ∧ QuantBounded H k x1 :=
@@ -380,17 +371,8 @@ theorem eval_srcCrossLevelSucc (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
   have hco : ∀ x1 x0 : X,
       Corr (x0 :> x1 :> (![] : Fin 0 → X)) f (scons x0 (scons x1 f)) :=
     fun x1 x0 ↦ ((corr0 f).cons x1).cons x0
-  have hcode : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f
-        (liftP (toSet 2 (fIsFormCodeF 1))) ↔
-      IsFormCodeSem H x1 := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fIsFormCodeF_spec H (scons x0 (scons x1 f)) 1)
-  have henv : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f (liftP (toSet 2 (fUnivEnvF 0))) ↔
-      IsUnivEnv H x0 := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fUnivEnvF_spec H (scons x0 (scons x1 f)) 0)
+  have hcode := eval_formCode1 (X := X) f H
+  have henv := eval_univEnv0 (X := X) f H
   have hbnd : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
       (x0 :> x1 :> (![] : Fin 0 → X)) f srcBoundedAtSucc ↔
       ∃ k, templateNum X k ∧ QuantBounded H (vsucc H k) x1 :=
