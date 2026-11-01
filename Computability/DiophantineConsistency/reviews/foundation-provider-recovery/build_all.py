@@ -19,6 +19,7 @@ MANIFEST = HERE / 'input-manifest.json'
 OLD = Path('/tmp/pra14-full-transitive-2x6o__to/package-lib')
 LEAN = Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
 MIN_FREE = 4 * 1024**3
+MANIFEST_SHA256 = '491075df9eac57799d21b475527b3b1af3dc81ded58e97a87e1cf6c453dcb13d'
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -42,7 +43,10 @@ def main():
     if len(sys.argv) != 2:
         raise SystemExit('usage: build_all.py /absolute/isolation/root')
     root = Path(sys.argv[1]).resolve(strict=True)
+    if sha(MANIFEST) != MANIFEST_SHA256:
+        raise RuntimeError('input manifest identity mismatch')
     manifest = json.loads(MANIFEST.read_text())
+    driver_hash = sha(Path(__file__))
     check_inputs(root, manifest)
     log = root / 'build-all.log'
     receipt = root / 'build-all-receipt.json'
@@ -68,13 +72,15 @@ def main():
         exit_code = p.wait()
     record = {'status': 'FAILED', 'exit_code': exit_code, 'space_stop': stopped,
               'elapsed_seconds': round(time.time() - start, 2), 'command': cmd,
-              'manifest_sha256': sha(MANIFEST), 'driver_sha256': sha(Path(__file__)),
+              'manifest_sha256': MANIFEST_SHA256, 'driver_sha256': driver_hash,
               'log_sha256': sha(log), 'root': str(root),
               'scope': 'Fresh Foundation build on inherited external package and dynamic ancestry; '
                        'no identity with vanished historical objects is asserted.'}
     try:
         if exit_code != 0:
             raise RuntimeError('Lake build did not exit successfully')
+        if sha(MANIFEST) != MANIFEST_SHA256 or sha(Path(__file__)) != driver_hash:
+            raise RuntimeError('manifest or driver changed during build')
         check_inputs(root, manifest)
         lib = root / '.lake/build/lib/lean'
         objects = {}
@@ -83,6 +89,13 @@ def main():
             if not obj.is_file():
                 raise RuntimeError(f'missing target object: {name}')
             objects[name] = sha(obj)
+        foundation = lib / 'Foundation'
+        artifacts = {}
+        for path in sorted(foundation.rglob('*')):
+            if path.is_symlink():
+                raise RuntimeError(f'unexpected symlink inside fresh provider: {path}')
+            if path.is_file():
+                artifacts[str(path.relative_to(foundation))] = sha(path)
         overlay.mkdir()
         for p in sorted(OLD.iterdir()):
             if p.name != 'Foundation':
@@ -91,7 +104,8 @@ def main():
         broken = [str(p) for p in overlay.iterdir() if not p.exists()]
         if broken:
             raise RuntimeError(f'broken top-level overlay entries: {broken}')
-        record.update(status='BUILT', objects=objects, overlay=str(overlay))
+        record.update(status='BUILT', objects=objects, foundation_artifacts=artifacts,
+                      overlay=str(overlay))
     except BaseException as exc:
         record['error'] = repr(exc)
         raise
