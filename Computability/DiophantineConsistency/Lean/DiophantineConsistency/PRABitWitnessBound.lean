@@ -1,6 +1,7 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRALenbitWitnessBound
 import DiophantineConsistency.PRABndRewriting
+import DiophantineConsistency.PRARewritingWitnessBound
 /-! Bind the concrete `lenbitDef` majorant into Foundation's actual
 `bitDef` membership graph. A bounded inlined `expDef` witness remains an
 explicit premise; no full refutation bound certificate is claimed. -/
@@ -16,26 +17,11 @@ retains the y+1 majorant. -/
 theorem lenbit_in_bit_bound (x i y : V) :
     (Rew.subst (![#0,#2] : Fin 2 → ArithmeticSemiterm Empty 3) ▹ lenbitDef.val).Evalb ![x,i,y] →
     (bnd (Rew.subst (![#0,#2] : Fin 2 → ArithmeticSemiterm Empty 3) ▹ lenbitDef.val)).Evalb ![x,i,y,y+1] := by
-  intro h
-  have hn := PRABndRewriting.natural lenbitDef.val
-    (Rew.subst (![#0,#2] : Fin 2 → ArithmeticSemiterm Empty 3)) ![x,i,y] (y+1)
-  have hv : (fun j => ((Rew.subst (![#0,#2] : Fin 2 → ArithmeticSemiterm Empty 3)) #j).val ![x,i,y] Empty.elim) = ![x,y] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![x,i,y] (y+1) = ![x,i,y,y+1] := by simp
-  have hs' : Fin.snoc ![x,y] (y+1) = ![x,y,y+1] := by simp
-  rw [hv,hs,hs'] at hn
-  have h0 : lenbitDef.val.Evalb ![x,y] := by
-    simp only [Semiformula.eval_rew] at h
-    have hb : (Semiterm.val ![x,i,y] Empty.elim ∘
-        (Rew.subst (![#0,#2] : Fin 2 → ArithmeticSemiterm Empty 3)) ∘ Semiterm.bvar) = ![x,y] := hv
-    have hf : (Semiterm.val ![x,i,y] Empty.elim ∘
-        (Rew.subst (![#0,#2] : Fin 2 → ArithmeticSemiterm Empty 3)) ∘ Semiterm.fvar) =
-        (Empty.elim : Empty → V) := Subsingleton.elim _ _
-    rw [hb,hf] at h
-    exact h
-  exact hn.mpr (lenbit_bound x y h0)
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  simpa using PRARewritingWitnessBound.binary_rew_bound_with lenbitDef.val
+    (fun _ y => y + 1) PRALenbitWitnessBound.lenbit_bound
+    (Rew.subst (![#0,#2] : Fin 2 → ArithmeticSemiterm Empty 3)) ![x,i,y] (y+1) (by simp)
+
 def expInsideBit : ArithmeticSemisentence 3 :=
   Rew.subst (![#0,#1] : Fin 2 → ArithmeticSemiterm Empty 3) ▹ expDef.val
 
