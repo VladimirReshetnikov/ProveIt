@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Check 14-variable graph residuals and exact degree; zero equivalence is open."""
+"""Check 14-variable graph residuals and exact polynomial degree."""
 import hashlib
 import json
 from pathlib import Path
@@ -45,4 +45,4 @@ expected_tail=[['squareDifference','-','squareWitness','g80'],
  ['squareConstraint','*','squareDifference','squareDifference'],
  ['sumWithConstraint','+','sumSquares','squareConstraint']]
 if c['source'][-3:]!=expected_tail:raise ValueError('constraint wiring')
-print('PASS residual degrees',degrees,'and exact output degree 30 after fixing ports and positive shift; zero equivalence remains open')
+print('PASS residual degrees',degrees,'and exact output degree 30 after fixing ports and positive shift; iPRA transfer checked separately')

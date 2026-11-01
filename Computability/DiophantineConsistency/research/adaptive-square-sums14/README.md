@@ -32,3 +32,15 @@ see [the focused replay](../../reviews/adaptive-square-sums14-model-replay/READM
 Transitive project, package and dynamic ancestry remains inherited. The native
 intuitionistic PRA endpoint for this new expression is being assembled and is
 not claimed by the model theorem alone.
+
+The separate [equation30.tex](../../equation30.tex) and
+[equation30.pdf](../../equation30.pdf) present the 14 distinct positive unknowns,
+the five squared residuals, the complete base-10 fixed integer, and all 91
+gates. `verify_display30.py` parses 25 displayed definitions, checks the final
+sum and every circuit row against the candidate, confirms the copied fixed
+constants, and rejects two deliberate formula mutations; it is not a general
+TeX interpreter. Normal Python and `python -O` both pass. Two `pdflatex` runs
+produced identical PDF SHA-256
+`47193ff48c19ae23936f6d833aa101e4a6a4613d536813a02f526cd24ea496c7`;
+both pages were visually inspected. The page currently states the model proof
+and the pending independent native-iPRA replay separately.
