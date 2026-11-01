@@ -1,0 +1,3 @@
+# MF-cleanup fixed-source 798-module author
+
+The guarded source rebase explicitly PASSed all 798 modules on `/tmp/pra14-full-transitive-l0yx0k8s`. Input tree and matching graph audit are in `../pra14-mfcleanup-followup-snapshot/`; full logs, warning inventory and transitive reuse manifests are preserved here. Source, object, direct-dependency and direct external inputs were checked without workspace project-object fallback. Original reused-object environments are reconstructed from surviving recorded providers and package-transitive ancestry is inherited. This fixed snapshot may precede later workspace edits; downstream corrected 75-module comparison is separate. Ordinary Lean warnings are recorded rather than treated as failures.
