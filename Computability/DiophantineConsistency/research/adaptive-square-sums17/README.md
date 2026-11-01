@@ -26,8 +26,14 @@ pass.
 
 Two focused [Lean model replays](../../reviews/adaptive-square-sums17-model-replay/README.md)
 match on the same historical parent. Transitive project, package and dynamic
-ancestry remains inherited. The native iPRA endpoint for this expression is
-separate work and is not established by the model receipt.
+ancestry remains inherited. The exact literal also has a native iPRA endpoint:
+`IPRARankWitness17Native.literal_equivalence` asserts a derivation of the
+no-positive-zero/selected ZFC consistency equivalence in the explicitly
+defined native theory. The [two guarded comparisons](../../reviews/ipra-rank17-native-verification/README.md)
+match all fourteen compiled suffix modules and 11,525 guarded files. This is a
+fixed-source result on the inherited historical provider, not a full
+source-current closure; package-transitive and dynamically loaded ancestry
+remain inherited.
 
 The separate [equation20.tex](../../equation20.tex) and
 [equation20.pdf](../../equation20.pdf) show all 17 distinct positive unknowns,
@@ -36,6 +42,5 @@ eight squared residuals, the full base-10 fixed integer and 99 gates.
 checks the sum wiring and copied constants, and rejects two formula mutations;
 it is a limited TeX parser. Normal Python and `python -O` pass. Two `pdflatex`
 runs produced identical PDF SHA-256
-`0530872703643dbb5b1f90679b4cb4ed3b80e41949f5f217b9fca173d1b33f88`;
-both pages were visually inspected. The page states the model proof and the
-pending native-iPRA endpoint separately.
+`d18dc859871393b4460b4e380b01b26581331d187e4a53daa91b15217b93d15a`;
+both pages were visually inspected. The page states the matched native-iPRA result and its snapshot boundary.
