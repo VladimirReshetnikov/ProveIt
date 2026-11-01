@@ -1,0 +1,6 @@
+import DiophantineConsistency.IPRABinaryRelationNative
+#print axioms DiophantineConsistency.IPRABinaryRelationNative.rel_left_open
+#print axioms DiophantineConsistency.IPRABinaryRelationNative.rel_right_open
+#print axioms DiophantineConsistency.IPRABinaryRelationNative.relation_open
+#print axioms DiophantineConsistency.IPRABinaryRelationNative.relation_closed_context
+#print axioms DiophantineConsistency.IPRABinaryRelationNative.relation_native
