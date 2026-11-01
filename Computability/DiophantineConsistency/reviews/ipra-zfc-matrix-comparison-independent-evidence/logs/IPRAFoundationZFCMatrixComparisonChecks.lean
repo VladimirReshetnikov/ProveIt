@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAFoundationZFCMatrixComparison
+#print axioms DiophantineConsistency.IPRAFoundationZFCMatrixComparison.boundedComparison
+#print axioms DiophantineConsistency.IPRAFoundationZFCMatrixComparison.mappedZFCWithMatrix
+#check DiophantineConsistency.IPRAFoundationZFCMatrixComparison.mappedZFCWithMatrix

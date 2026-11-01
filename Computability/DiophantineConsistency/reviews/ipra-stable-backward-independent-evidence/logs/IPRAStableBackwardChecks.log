@@ -1,0 +1,11 @@
+'DiophantineConsistency.IPRAStableBackward.nativeBackward' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.IPRAStableBackward.nativeBackward.{u_1} {L : LO.FirstOrder.Language} [L.DecidableEq]
+  {Λ : LO.FirstOrder.Hilbertᵢ L} (P : LO.FirstOrder.Proposition L → Prop)
+  (closed : DiophantineConsistency.IPRAStableBackward.Support P)
+  (stable :
+    (ψ : LO.FirstOrder.Proposition L) →
+      P ψ →
+        DiophantineConsistency.IPRAStableBackward.NeedsStability ψ →
+          Λ ⊢! ∼∼DiophantineConsistency.IPRANativeFormula.native ψ 🡒 DiophantineConsistency.IPRANativeFormula.native ψ)
+  (φ : LO.FirstOrder.Proposition L) :
+  P φ → Λ ⊢! LO.FirstOrder.Semiformula.doubleNegation φ 🡒 DiophantineConsistency.IPRANativeFormula.native φ

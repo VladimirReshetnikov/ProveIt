@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAStableBackward
+#print axioms DiophantineConsistency.IPRAStableBackward.nativeBackward
+#check DiophantineConsistency.IPRAStableBackward.nativeBackward

@@ -82,7 +82,10 @@ the equality images. The separate
 [basic-axiom images](Lean/DiophantineConsistency/IPRANativeBasicImages.lean)
 now cover all three basic axioms and have passed author and independent
 suffix replays. Equality remains the only undischarged PRA axiom family;
-the separate results also need a coherent combined build.
+its reflexivity, symmetry and transitivity images now have separate guarded
+author and independent replays, while arbitrary-arity function and relation
+congruence remain open. The separate results also need a coherent combined
+build.
 The [translated induction body](Lean/DiophantineConsistency/IPRAInductionGGBody.lean)
 has author and independent suffix replays: it proves intuitionistically that
 the GG image of Foundation's exact `succInd` body is equivalent to the
