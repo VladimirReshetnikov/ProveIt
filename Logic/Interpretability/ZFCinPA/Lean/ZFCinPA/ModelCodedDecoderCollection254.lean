@@ -41,10 +41,6 @@ local instance (k : Nat) : GödelQuote (Language.Set.Rel k) V :=
 local prefix:max "#'" => Bootstrapping.Semiterm.bvar (V := V) (L := ℒₛₑₜ)
 local prefix:max "&'" => Bootstrapping.Semiterm.fvar (V := V) (L := ℒₛₑₜ)
 
-private lemma mem_quote : (⌜Language.Set.Rel.mem⌝ : V) = 1 := by
-  change ((1 : Nat) : V) = 1
-  simp
-
 @[simp] private lemma bindT_neg {n : Nat} (chosen : V)
     (p : Bootstrapping.Semiformula V ℒₛₑₜ n) :
     bindT chosen (∼p) = ∼bindT chosen p := by
@@ -218,20 +214,8 @@ theorem zf_nativeG_coincident (a c : V) (p : Formula V ℒₛₑₜ) (hca : c �
   simpa only [nativeG,cover,support,empty] using hx ⨀ zf_named_empty a c hca
 
 lemma decoded_zero_equiv_top (T : InternalTheory V ℒₛₑₜ) :
-    T ⊢ decoded (0 : V) 🡘 ⊤ := by
-  classical
-  apply E!_intro CV!
-  have he : decoded (0 : V) = memNamed (0 : V) 0 🡒 memNamed 0 0 := by
-    apply Bootstrapping.Semiformula.ext
-    change decode (0 : V) = imp ℒₛₑₜ
-      (^rel 2 (⌜Language.Set.Rel.mem⌝ : V) ?[^&0,^&0])
-      (^rel 2 (⌜Language.Set.Rel.mem⌝ : V) ?[^&0,^&0])
-    rw [decode_zero,mem_quote]
-    rfl
-  have h0 : T ⊢ decoded (0 : V) := by
-    rw [he]
-    exact C!_id
-  exact C!_of_conseq! h0
+    T ⊢ decoded (0 : V) 🡘 ⊤ :=
+  E!_intro CV! (C!_of_conseq! (decoded_zero_provable T))
 
 /-- The actual endpoint keeps only the two genuine bundle gates. -/
 theorem zf_nativeG_decoded (a b c : V) (hca : c ≠ a) (hcb : c ≠ b) :

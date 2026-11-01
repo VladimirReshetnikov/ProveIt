@@ -23,6 +23,16 @@ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 noncomputable def decoded (n : V) : Formula V ℒₛₑₜ := ⟨decode n,decode_isFormula n⟩
 @[simp] theorem decoded_val (n : V) : (decoded n).val = decode n := rfl
 
+/-- The distinguished zero code is an implication identity in any internal theory. -/
+lemma decoded_zero_provable (T : InternalTheory V ℒₛₑₜ) : T ⊢ decoded (0 : V) := by
+  have he : decoded (0 : V) =
+      (⟨atomCode 1 0 0,memCode_isFormula 0 0⟩ : Formula V ℒₛₑₜ) 🡒
+        ⟨atomCode 1 0 0,memCode_isFormula 0 0⟩ := by
+    apply Bootstrapping.Semiformula.ext
+    exact decode_zero
+  rw [he]
+  exact C!_id
+
 theorem decoded_imp_equiv (T : Theory ℒₛₑₜ) [T.Δ₁] (a b : V) :
     T.internalize V ⊢ decoded (4*cantor a b) 🡘 (decoded a 🡒 decoded b) := by
   classical
@@ -32,7 +42,7 @@ theorem decoded_imp_equiv (T : Theory ℒₛₑₜ) [T.Δ₁] (a b : V) :
     rw [hz]
     apply E!_intro
     · exact C!_of_conseq! (show T.internalize V ⊢ decoded (0 : V) 🡒 decoded 0 from ⟨C_id⟩)
-    · exact C!_of_conseq! ((tprovable_iff_provable).mpr (decodedProvable_zero T))
+    · exact C!_of_conseq! (decoded_zero_provable (T.internalize V))
   · have he : decoded (4*cantor a b) = decoded a 🡒 decoded b := by
       apply LO.FirstOrder.Arithmetic.Bootstrapping.Semiformula.ext
       exact decode_imp a b h
