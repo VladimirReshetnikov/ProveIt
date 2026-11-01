@@ -83,6 +83,14 @@ the equality images. The separate
 now cover all three basic axioms and have passed author and independent
 suffix replays. Equality reflexivity, symmetry, transitivity, arbitrary-arity
 function congruence, and relation congruence have now all been translated.
+The exact 14-variable client in
+[IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
+now has matching guarded author and independent replays on the explicitly
+historical source snapshot. It proves native-theory equivalence of its literal
+no-zero sentence with negation of the GG-translated Foundation refutation
+predicate. The comparison with the intended ordinary native consistency
+sentence and a current-source replay remain separate obligations.
+
 The [complete GG transfer](Lean/DiophantineConsistency/IPRAFullGGTransfer.lean)
 combines every classical PRA axiom image and has matching guarded suffix
 replays on source/object-matched historical parents. This proves that a
@@ -121,9 +129,9 @@ definition is not simply a visibly bounded matrix. The existing classical
 PRA proof of `rho → ∃ b, bnd rho b` uses classical model completeness; it is
 not an intuitionistic PRA proof. Its Gödel–Gentzen translation is now
 constructed in [IPRAZFCRefutationBoundGG.lean](Lean/DiophantineConsistency/IPRAZFCRefutationBoundGG.lean):
-the source-directed author replay passed for the exact Foundation ZFC
-refutation predicate; an independent replay is still running. This gives the
-translated implication, not an unnegated intuitionistic witness. The analogous HA normalization also uses
+the source-directed author and independent replays passed for the exact Foundation
+ZFC refutation predicate, with matching source, object and full-log rows. This
+gives the translated implication, not an unnegated intuitionistic witness. The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary

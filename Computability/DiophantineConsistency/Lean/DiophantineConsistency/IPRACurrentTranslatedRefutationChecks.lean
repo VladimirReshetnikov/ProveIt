@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRACurrentTranslatedRefutation
+#check DiophantineConsistency.IPRACurrentTranslatedRefutation.current_translated_refutation
+#print axioms DiophantineConsistency.IPRACurrentTranslatedRefutation.current_translated_refutation

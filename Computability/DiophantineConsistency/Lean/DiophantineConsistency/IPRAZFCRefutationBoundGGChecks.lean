@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAZFCRefutationBoundGG
+#print axioms DiophantineConsistency.IPRAZFCRefutationBoundGG.refutation_bound_gg
+#print axioms DiophantineConsistency.IPRAZFCRefutationBoundGG.refutation_bound_gg_proof
