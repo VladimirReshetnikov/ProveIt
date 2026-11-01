@@ -521,9 +521,14 @@ see its [comparison](reviews/ipra-current-repaired-post172-verification/README.m
 and [terminal observations](reviews/ipra-current-repaired-post172-terminal-observations/README.md).
 The builds began without drift and ended with later edits to `ZFCinPA.LGlueCodes`,
 `LevelCodeTower`, `SetCongruence`, and `UniformStatement`, so this is a matched
-historical snapshot. A fresh source-only survey sizes a 120-module successor using the completed peer's recorded direct inputs;
-selected-origin authentication and paired successor replays remain open. The
-inherited 848-project and external ancestry limitations still apply.
+historical snapshot. The subsequent 120-module successor passed matched
+replays and comparisons, and its 351-module successor has now also passed both
+Lean builds and two byte-matching independent comparisons. The latter covers
+351 rows and 19,369 guarded files; its [comparison](reviews/ipra-current-repaired-post120-verification/README.md)
+and [terminal observations](reviews/ipra-current-repaired-post120-terminal-observations/README.md)
+record actual exits. Its source snapshot started with one workspace drift and
+ended with seven, so it is historical rather than a current-source closure.
+The inherited 848-project and external ancestry limitations still apply.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
