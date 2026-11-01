@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRANamedValues26Native
+#check DiophantineConsistency.IPRANamedValues26Native.sameNoZero26
+#check DiophantineConsistency.IPRANamedValues26Native.bridge26
+#check DiophantineConsistency.IPRANamedValues26Native.literal_equivalence
+#print axioms DiophantineConsistency.IPRANamedValues26Native.sameNoZero26
+#print axioms DiophantineConsistency.IPRANamedValues26Native.bridge26
+#print axioms DiophantineConsistency.IPRANamedValues26Native.literal_equivalence

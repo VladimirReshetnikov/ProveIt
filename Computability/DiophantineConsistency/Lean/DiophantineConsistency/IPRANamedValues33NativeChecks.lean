@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRANamedValues33Native
+#check DiophantineConsistency.IPRANamedValues33Native.sameNoZero33
+#check DiophantineConsistency.IPRANamedValues33Native.bridge33
+#check DiophantineConsistency.IPRANamedValues33Native.literal_equivalence
+#print axioms DiophantineConsistency.IPRANamedValues33Native.sameNoZero33
+#print axioms DiophantineConsistency.IPRANamedValues33Native.bridge33
+#print axioms DiophantineConsistency.IPRANamedValues33Native.literal_equivalence

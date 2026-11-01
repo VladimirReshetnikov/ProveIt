@@ -5,7 +5,7 @@ constants in base 10. `generate_equation12.py` constructs its TeX from the
 pinned graph, and `verify_display12.py` checks the display, all 124 circuit
 lines, the fixed-constant block, and two negative mutation controls. Two
 `pdflatex` runs produced the same PDF SHA-256
-`6460323fb261ac8fe4e487727dc31927789096eb3769df0d513f867c3b4b7a0d`;
+`e524766c09d3766ce8da07ffde4b4f0505aae3fc4b0716c0794b692299c795ff`;
 both rendered pages were inspected.
 
 This 124-operation circuit adds four squared constraints to the 22-variable,
@@ -18,8 +18,7 @@ zero, while positivity of the named expressions supplies the reverse witnesses.
 statement as the 22-variable parent for every natural port vector in every
 model of IΣ₁. `current_no_zero_iff` specializes it to the actual fixed ports.
 The [paired model replays](../../reviews/adaptive-square-sums26-model-replay/README.md)
-match on a historical provider. The native iPRA endpoint and its own replay
-remain separate work.
+match on a historical provider. The [native iPRA endpoint](../../Lean/DiophantineConsistency/IPRANamedValues26Native.lean) has a matching [guarded replay](../../reviews/ipra-named26-native-verification/README.md) on a historical provider. It uses the chosen mapped ZFC-refutation predicate; the shared project, package, and dynamic-import ancestry remains inherited.
 
 `generate.py` deterministically builds the 124-row candidate from the pinned
 22-variable graph and checks graph liveness. `verify_literal.py` matches the

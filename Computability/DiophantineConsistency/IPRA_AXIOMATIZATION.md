@@ -83,8 +83,9 @@ repaired parent; its [independent comparison](reviews/ipra-current-native14-repa
 matched all six rows and both complete log sets. The endpoint runs each recorded
 ten workspace-source drifts, so this is not a source-current result. The
 848-module ancestor remains author-only, and package-transitive and dynamically
-loaded ancestry remain inherited. A current-source survey is a plan, not a
-completed replay. The endpoint uses the native negation of
+loaded ancestry remain inherited. Newer source surveys and partial successor
+replays are documented in the [proof plan](IPRA_PROVABILITY_PLAN.md); a fully
+authenticated current-source closure remains open. The endpoint uses the native negation of
 Foundation's particular arithmetized ZFC refutation predicate, not an
 unverified identification with every possible proof coding. A Lean-checked
 comparison with any broader independently specified standard presentation of

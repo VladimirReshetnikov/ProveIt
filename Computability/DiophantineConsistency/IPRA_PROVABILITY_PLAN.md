@@ -80,6 +80,21 @@ a focused historical model-provider result, with full current-source closure
 and inherited 258/848, package-transitive and dynamic-import ancestry
 limitations.
 
+The [22-variable degree-16 equation](equation16.pdf), the
+[26-variable degree-12 equation](equation12.pdf), and the
+[33-variable degree-8 equation](equation8.pdf) have no-premise native iPRA
+endpoints for their exact shifted fixed-port literals. Their constructions
+successively name positive expressions and represent signed expressions with
+positive pairs. The model equivalences and native endpoints have matching
+focused replays; see the [22-variable comparison](reviews/ipra-named22-native-verification/README.md),
+[26-variable comparison](reviews/ipra-named26-native-verification/README.md),
+and [33-variable comparison](reviews/ipra-named33-native-verification/README.md).
+These endpoints use the mapped Foundation refutation predicate. Their
+comparisons retain the stated historical project, package-transitive and
+dynamic-import ancestry, including the author-only 848-module ancestor; they
+are not complete current-source closure replays. Their exact degrees and
+displayed circuit checks are separate finite computations.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz

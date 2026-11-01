@@ -1,0 +1,1 @@
+These records capture the actual exits and final output returned by both replay processes and pin their resulting states. The independent suffix processes use the same historical native-22 peer provider, not independent transitive ancestry.

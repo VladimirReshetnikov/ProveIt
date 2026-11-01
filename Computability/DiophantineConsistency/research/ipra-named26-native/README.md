@@ -1,0 +1,5 @@
+# Native endpoint for the 26-variable literal
+
+`IPRANamedValues26Native.literal_equivalence` constructs a derivation in the repository's `nativeTheory` of equivalence between the no-zero formula for the positive shift of the fixed-port 26-variable literal and the negation of its mapped native refutation predicate. It transfers the previously established 22-variable native bridge through the model-uniform fixed-port no-zero equivalence `AdaptiveNamedValues26.current_no_zero_iff`.
+
+The two focused replay processes share the same historical native-22 peer provider, itself backed by two matched native-22 suffix replays. The new model is rebuilt on this native provider and its source, checks source, and object are matched to the separate paired model-26 receipt. The original 258-module project ancestry, 848 author-only ancestry, package-transitive ancestry, and dynamic imports remain inherited. This is not a full current-source closure. Identification of the mapped refutation predicate with ordinary Con(ZFC) depends on the separate interpretation and refutation bridge; the endpoint alone does not close that broader goal.
