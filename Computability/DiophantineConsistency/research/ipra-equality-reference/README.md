@@ -168,6 +168,33 @@ This is a concrete candidate for identifying the transported formula with an
 independently defined syntax reader, not a comparison with all alternative
 proof codings, nor yet an elaborated or coherently checked Lean result.
 
+For the **selected Foundation coding**, the native source already contains a
+candidate internal comparison: `IPRABoundedRhoZFC.zfcEquiv` is a native-theory
+proof object comparing the GG translation of mapped Foundation `Con(ZFC)` to
+the negated mapped native reading of `rho`. The uncompiled
+[`IPRAReferenceSourceConsistency.lean`](draft/IPRAReferenceSourceConsistency.lean)
+draft proposes transporting that exact comparison to the equality-only
+reference theory, and [`IPRAReferenceAQ29Source.lean`](draft/IPRAReferenceAQ29Source.lean)
+proposes composing it with the AQ29 endpoint. Thus this identification does
+not require a theorem comparing every possible proof coding. The source
+comparison, its transfer and the endpoint all still require coherent replay;
+the target is the **erased GG reading** of Foundation's classical sentence,
+not a claim that an unmodified classical formula is an intuitionistic one.
+These two new drafts are not yet included in the pinned reference replay
+wrapper or its task policy; adding them to that replay requires updating and
+re-auditing the source closure, terminal report names and policy pins.
+
+The separate `ValidatorConsistency222.iSigma1_proves_con_ZFC_iff_222` is a
+classical `IΣ₁` derivability statement built using the two-way comparison in
+all `IΣ₁` models and completeness. The
+`FoundationZFCConsistencyNat.source_nat_iff_no_refutation` comparison with
+the project's `BProv` is a standard-natural semantic statement. Neither
+alone should be presented as an already established ordinary
+equality-reference-theory proof comparing arbitrary checker codings. An
+internal comparison to a *separately specified* reference-language checker
+would need its own precise formula and a proof of the appropriate translated
+or native equivalence.
+
 [`IPRAReferenceAQ29Direct.lean`](draft/IPRAReferenceAQ29Direct.lean) is an
 uncompiled assembly of the three preceding drafts. Its proposed theorem has
 type `referenceTheory ⊢ noZero AQ29 🡘 ∼refutation`, where `noZero` is the
