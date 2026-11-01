@@ -348,52 +348,39 @@ theorem neg_level : ∀ u : V, ∀ x : V, x ≤ lvB u → IsUFormula ℒₛₑ�
     have hm : (2 : V) ≤ 10 * (u + 1) := by simpa using two_le_m u 0
     rw [show 10 * (u + 1 + 1) = 10 * (u + 1) + 10 by ring]
     have hu1 : u + 1 ≤ 10 * (u + 1) := le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num)
+    have unary_step {tag y : V} (htag : tag ≤ 16) (hy : y ≤ lvB (10 * (u + 1))) :
+        ⟪tag, y⟫ + 1 ≤ lvB (10 * (u + 1) + 10) :=
+      pair_lvB_le hm (le_trans (_root_.add_le_add le_rfl (by norm_num)) le_rfl)
+        (tag_le_lvB htag hm) hy
+    have conn_step {inputTag outputTag p q : V} (htag : outputTag ≤ 16)
+        (hp : IsUFormula ℒₛₑₜ p) (hq : IsUFormula ℒₛₑₜ q)
+        (hx' : ⟪inputTag, ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1)) :
+        ⟪outputTag, ⟪neg ℒₛₑₜ p, neg ℒₛₑₜ q⟫⟫ + 1 ≤ lvB (10 * (u + 1) + 10) := by
+      have hY := (pair_children hx').2
+      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp
+      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq
+      exact pair_lvB_le (le_trans hm le_self_add) (slack4 _)
+        (tag_le_lvB htag (le_trans hm le_self_add)) (pair_lvB' hm ihp ihq)
     rcases hxF.case with ⟨k, R, v, hR, hv, rfl⟩ | ⟨k, R, v, hR, hv, rfl⟩ | rfl | rfl |
         ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ | ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
     · rw [neg_rel hR hv]
-      have hx' : ⟪(0 : V), ⟪k, ⟪R, v⟫⟫⟫ + 1 ≤ lvB (u + 1) := hx
-      have hY := (pair_children hx').2
-      exact pair_lvB_le hm (le_trans (_root_.add_le_add le_rfl (by norm_num)) le_rfl)
-        (tag_le_lvB (by norm_num) hm) (lift_lvB hY (le_trans (le_of_lt (lt_add_one u)) hu1))
+      exact unary_step (by norm_num) (lift_lvB (pair_children hx).2
+        (le_trans (le_of_lt (lt_add_one u)) hu1))
     · rw [neg_nrel hR hv]
-      have hx' : ⟪(1 : V), ⟪k, ⟪R, v⟫⟫⟫ + 1 ≤ lvB (u + 1) := hx
-      have hY := (pair_children hx').2
-      exact pair_lvB_le hm (le_trans (_root_.add_le_add le_rfl (by norm_num)) le_rfl)
-        (tag_le_lvB (by norm_num) hm) (lift_lvB hY (le_trans (le_of_lt (lt_add_one u)) hu1))
+      exact unary_step (by norm_num) (lift_lvB (pair_children hx).2
+        (le_trans (le_of_lt (lt_add_one u)) hu1))
     · rw [neg_verum]
-      exact le_trans (pair_lvB_le (u := 2) le_rfl (by
-          calc (2 : V) + 2 ≤ 10 := by norm_num
-            _ ≤ 10 * (u + 1) + 10 := le_add_self)
-        (tag_le_lvB (by norm_num) le_rfl) (Arithmetic.zero_le _)) le_rfl
+      exact unary_step (tag := 3) (by norm_num) (Arithmetic.zero_le _)
     · rw [neg_falsum]
-      exact le_trans (pair_lvB_le (u := 2) le_rfl (by
-          calc (2 : V) + 2 ≤ 10 := by norm_num
-            _ ≤ 10 * (u + 1) + 10 := le_add_self)
-        (tag_le_lvB (by norm_num) le_rfl) (Arithmetic.zero_le _)) le_rfl
+      exact unary_step (tag := 2) (by norm_num) (Arithmetic.zero_le _)
     · rw [neg_and hp hq]
-      have hx' : ⟪(4 : V), ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1) := hx
-      have hY := (pair_children hx').2
-      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp
-      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq
-      exact pair_lvB_le (le_trans hm le_self_add) (slack4 _)
-        (tag_le_lvB (by norm_num) (le_trans hm le_self_add)) (pair_lvB' hm ihp ihq)
+      exact conn_step (inputTag := 4) (outputTag := 5) (by norm_num) hp hq hx
     · rw [neg_or hp hq]
-      have hx' : ⟪(5 : V), ⟪p, q⟫⟫ + 1 ≤ lvB (u + 1) := hx
-      have hY := (pair_children hx').2
-      have ihp := ih p (le_trans (le_pair_left _ _) hY) hp
-      have ihq := ih q (le_trans (le_pair_right _ _) hY) hq
-      exact pair_lvB_le (le_trans hm le_self_add) (slack4 _)
-        (tag_le_lvB (by norm_num) (le_trans hm le_self_add)) (pair_lvB' hm ihp ihq)
+      exact conn_step (inputTag := 5) (outputTag := 4) (by norm_num) hp hq hx
     · rw [neg_all hp]
-      have hx' : ⟪(6 : V), p⟫ + 1 ≤ lvB (u + 1) := hx
-      have ihp := ih p (pair_children hx').2 hp
-      exact pair_lvB_le hm (le_trans (_root_.add_le_add le_rfl (by norm_num)) le_rfl)
-        (tag_le_lvB (by norm_num) hm) ihp
+      exact unary_step (tag := 7) (by norm_num) (ih p (pair_children hx).2 hp)
     · rw [neg_ex hp]
-      have hx' : ⟪(7 : V), p⟫ + 1 ≤ lvB (u + 1) := hx
-      have ihp := ih p (pair_children hx').2 hp
-      exact pair_lvB_le hm (le_trans (_root_.add_le_add le_rfl (by norm_num)) le_rfl)
-        (tag_le_lvB (by norm_num) hm) ihp
+      exact unary_step (tag := 6) (by norm_num) (ih p (pair_children hx).2 hp)
 
 end Main
 
