@@ -47,16 +47,19 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [46-variable 178-operation degree-4 equation](equation4-46.pdf), and the
 [44-variable 176-operation degree-4 equation](equation4-44.pdf), and the
 [43-variable 175-operation degree-4 equation](equation4-43.pdf), and the
-[42-variable 174-operation degree-4 equation](equation4-42.pdf). Each endpoint
+[42-variable 174-operation degree-4 equation](equation4-42.pdf), and the
+[41-variable 170-operation degree-4 equation](equation4-41.pdf). Each endpoint
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced a [41-variable quartic candidate](research/adaptive-square-sums41-quartic/README.md).
-Its substitution and degree have finite checks, and its quotient witness
-transport has a matched model replay; its native replay is in progress.
+finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md)
+and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
+Their substitutions and degrees have finite checks. The 29-variable candidate
+has a matched model replay; its native transport is undergoing verification.
+The 40-variable candidate's model and native transports remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

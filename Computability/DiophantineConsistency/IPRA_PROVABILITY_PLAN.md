@@ -176,10 +176,20 @@ proves the needed W positivity from the actual zero for arbitrary natural port
 vectors. Historical provider and inherited ancestry qualifications remain;
 the exact degree and display have separate finite checks.
 
-The [41-variable quartic quotient candidate](research/adaptive-square-sums41-quartic/README.md)
-has finite degree and residual-substitution checks. Its [matched model replay](reviews/adaptive-qf41-model-replay/README.md)
-proves shifted no-zero equivalence with the 42-variable equation for arbitrary
-integer ports; its native replay is in progress.
+The [41-variable quartic equation](equation4-41.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAQF41Native.lean) for its
+exact fixed-port literal. Its [focused paired replay](reviews/adaptive-qf41-native-replay/README.md)
+matched eight modules and all six rebuilt model objects. The quotient model
+comparison holds for arbitrary integer ports. The parent carries inherited
+provider overlap, transitive project/package and dynamic ancestry; exact degree
+and display have separate finite checks.
+
+The [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md)
+has finite substitution and degree checks and a matched model replay for
+arbitrary integer ports; its native transport is undergoing verification. The
+[40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
+has finite substitution and degree checks; its model and native transports
+remain open.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
@@ -242,9 +252,12 @@ independently specified standard intuitionistic PRA presentation and
 revalidating the endpoint with coherent dependencies and current sources
 remain obligations. It is neither classical
 `PRATheory.PRA` nor merely the negative translation of that theory. The
-existing classical induction scheme advances by
-the syntactic term `n + 1`, whereas the language also has a distinct successor
-code; a comparison with successor-form induction must prove their equality.
+exact schemes are summarized in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md).
+The induction scheme advances by the syntactic term `n + 1`, whereas the
+language also has a distinct successor code. The project proves their equality
+and [same-language derivability equivalence](Lean/DiophantineConsistency/IPRASuccessorTheoryEquivalence.lean)
+with the successor-step formulation; comparison with an independent standard
+presentation remains open.
 Classical formulas use negation-normal syntax, so interpreting a classical
 implication by first expanding it as `¬A ∨ B` would give a different, generally
 stronger intuitionistic formula than `A → B`. In particular, the intended

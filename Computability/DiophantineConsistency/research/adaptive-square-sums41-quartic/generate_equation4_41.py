@@ -25,7 +25,7 @@ header=r'''\documentclass[10pt]{article}
 \newcommand{\rg}[2]{\{#1,\ldots,#2\}}
 \begin{document}
 \begin{center}
-{\large\bfseries A forty-one-variable candidate equation}\\[-1pt]
+{\large\bfseries A forty-one-variable consistency equation}\\[-1pt]
 {\small Positive integer unknowns; exact degree 4; a 170-operation evaluator.}
 \end{center}\vspace{-8pt}
 \begin{multicols}{2}
@@ -33,8 +33,11 @@ header=r'''\documentclass[10pt]{article}
 '''
 footer=r'''
 \normalfont\fontsize{7.7}{8.2}\selectfont
-The fixed integer $\mathcal A$ above is written in base 10. This equation is a candidate: the quotient witness construction and native
-intuitionistic PRA equivalence are not yet established. Its exact degree is certified by integer-polynomial calculations;
+The fixed integer $\mathcal A$ above is written in base 10. Lean proves that the formalized equation has no positive solution exactly
+when the chosen arithmetized ZFC consistency statement holds, by a derivation
+in the specified intuitionistic PRA. The literal endpoint was independently
+replayed on a fixed source snapshot; some transitive dependencies remain
+inherited. The exact degree is certified by integer-polynomial calculations;
 the 170-operation count is for the unshifted circuit. Neither count is a
 minimality claim.
 \end{multicols}
