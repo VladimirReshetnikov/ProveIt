@@ -1,0 +1,8 @@
+import DiophantineConsistency.AdaptiveDirectQ50
+
+#print axioms DiophantineConsistency.AdaptiveDirectQ50Strong.strong_zero
+#print axioms DiophantineConsistency.AdaptiveDirectQ50Strong.strong_relation
+#print axioms DiophantineConsistency.AdaptiveDirectQ50Context.old_context
+#print axioms DiophantineConsistency.AdaptiveDirectQ50.collapse_zero
+#print axioms DiophantineConsistency.AdaptiveDirectQ50.expand_zero
+#print axioms DiophantineConsistency.AdaptiveDirectQ50.shifted_no_zero_iff
