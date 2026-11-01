@@ -1,0 +1,5 @@
+# Independent replay of captured project-origin trace
+
+A separate execution of the sibling source audit exited 0 with `PASS 136 roots 411 project nodes 411 objects`. It used the same immutable captured 139-row peer snapshot and historical provider inputs, and rehashed every observed physical project object and provider state. The audit script, captured state, full trace, and receipt all match the sibling author files byte-for-byte; their respective SHA-256 values are `298699af65e4ab24422b1bdc83634f9f0a35c97b16c654323e98c047c61e1071`, `a8addd1d7cf90089dbe16e71406ca0e0f325627a17478466fc2ef8d003ac9acb`, `f996eb5a3d92742d33570ae672d058051672642d224e8c2dd5e71b496a4faa19`, and `7f277a1da754b389ac3ae40e6603a02941bcf87176fbc7829c7064e2bcf68c00`.
+
+This independently repeats a historical project-object ancestry audit, not the endpoint proof or a current-source validation. Compiler logs and external package-transitive and dynamic ancestry remain outside its scope; the inherited 848 provider is author-only.

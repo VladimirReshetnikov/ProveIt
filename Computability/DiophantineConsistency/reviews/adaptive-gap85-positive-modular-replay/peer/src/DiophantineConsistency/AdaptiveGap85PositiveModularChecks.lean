@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85PositiveModular
+#print axioms DiophantineConsistency.AdaptiveGap85PositiveModular.positive_root_cubic_congruence
+#check DiophantineConsistency.AdaptiveGap85PositiveModular.positive_root_cubic_congruence
