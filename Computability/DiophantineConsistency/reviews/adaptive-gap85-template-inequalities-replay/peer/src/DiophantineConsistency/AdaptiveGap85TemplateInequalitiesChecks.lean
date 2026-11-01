@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85TemplateInequalities
+#print axioms DiophantineConsistency.AdaptiveGap85TemplateInequalities.second_index_literal_template
+#check DiophantineConsistency.AdaptiveGap85TemplateInequalities.second_index_literal_template
