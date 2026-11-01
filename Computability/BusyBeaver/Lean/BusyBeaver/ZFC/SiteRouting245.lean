@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.SiteRotation240
 import BusyBeaver.ZFC.SymbolicRouting245
 import BusyBeaver.ZFC.Permutation252Frame
 
@@ -24,18 +25,11 @@ remain separate obligations.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.SiteRouting245
+export SetTheory.BusyBeaver.ZFC.SiteRotation240 (minDistance fuel physical allOnes)
 
 open RegisterPath SymbolicRouting245
 
 def dispatch : Fin 245 := dispatchRouting245
-def minDistance : Nat := 64
-def fuel : Nat := 4000
-
-def physical (r : Nat) (hr : r < 9) : Reg :=
-  ⟨Permutation252Frame.physOf r, Permutation252Frame.physOf_lt ⟨r, hr⟩⟩
-
-def allOnes (P : List Bool) : Bool := P.all id
-
 def start (Q : List Bool) : SConfig :=
   ⟨some dispatch, false, [.bit true],
     Q.map Segment.bit ++
