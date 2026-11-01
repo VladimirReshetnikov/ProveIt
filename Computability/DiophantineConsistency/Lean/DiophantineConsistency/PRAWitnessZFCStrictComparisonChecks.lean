@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAWitnessZFCStrictComparison
+
+#check DiophantineConsistency.PRAWitnessZFCStrictComparison.zfc_boundCertificate
+#check DiophantineConsistency.PRAWitnessZFCStrictComparison.comparison
+#print axioms DiophantineConsistency.PRAWitnessZFCStrictComparison.comparison

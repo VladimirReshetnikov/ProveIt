@@ -1,0 +1,16 @@
+DiophantineConsistency.PRAWitnessZFCStrictComparison.zfc_boundCertificate :
+  DiophantineConsistency.PRAStrictConReverse.BoundCertificate
+    DiophantineConsistency.PRAWitnessZFCRefutationBound.refutation
+DiophantineConsistency.PRAWitnessZFCStrictComparison.comparison (n : ℕ) (a b : LO.FirstOrder.Semiterm ℒₒᵣ Empty n)
+  (h :
+    𝗜𝚺₁ ⊢
+      DiophantineConsistency.PRANoZeroUnary.noZero n a b 🡘
+        ∼DiophantineConsistency.PRAWitnessZFCRefutationBound.refutation) :
+  DiophantineConsistency.PRATheory.PRA ⊢
+    (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+        (DiophantineConsistency.PRANoZeroUnary.noZero n a b) 🡘
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+        (∼DiophantineConsistency.PRAWitnessZFCRefutationBound.refutation)
+'DiophantineConsistency.PRAWitnessZFCStrictComparison.comparison' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
