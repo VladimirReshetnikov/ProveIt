@@ -20,14 +20,8 @@ theorem inline_u_bound (p w : V) (h : (bnd (isUFormula L).sigma.val).Evalb ![p,w
   have hv : (fun j => (ω #j).val ![0,p] Empty.elim) = ![p] := by
     funext j
     exact Fin.cases rfl (fun k => Fin.elim0 k) j
-  have hs : Fin.snoc ![0,p] w = ![0,p,w] := by simp
-  have hs' : Fin.snoc ![p] w = ![p,w] := by simp
-  rw [hv,hs,hs'] at hn
-  have hb := hn.mpr h
-  have heq : PRASemiFormulaSigmaBound.uInside (L := L) = ω ▹ (isUFormula L).sigma.val := by
-    simp [PRASemiFormulaSigmaBound.uInside, ω]
-  rw [heq]
-  exact hb
+  rw [hv] at hn
+  simpa [PRASemiFormulaSigmaBound.uInside, ω] using hn.mpr (by simpa using h)
 
 theorem formulaSet_bound_of_histories (s w : V)
     (hw : 0 < w) (hneg : PRANegBitFullWitnessBound.negBitMajorant s ≤ w)
