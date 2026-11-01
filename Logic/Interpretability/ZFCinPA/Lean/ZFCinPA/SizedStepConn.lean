@@ -50,33 +50,17 @@ theorem conn_step_le (isAnd : Bool) {P₀ P₂ : SF V 1} {F₁ F₃ : SF V 2} {u
       simp only [cond_true] at hK ⊢
       have hc := compiledLe (by decide) andTemplate_provable _ hu hK
       have lt := trD_le andTemplate tD_and _ hK
-      obtain ⟨T, hT⟩ : ∃ T,
-          translateFormula (K6 P₀ F₁ P₂ F₃ (P₀ ⋏ P₂) (MaxT F₁ F₃))
-            (Rewriting.emb andTemplate) = T :=
-        ⟨_, rfl⟩
-      rw [hT] at hc lt
-      simp only [andTemplate, LogicalConnective.HomClass.map_imply,
-        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_tot₁, tr_refl₀₁,
-        tr_tot₃, tr_refl₂₃, tr_andDefP, tr_maxDefF, tr_tot₅, tr_refl₄₅] at hT
-      subst hT
-      have pA := dall_iff (P₀ ⋏ P₂) (hK 4) hu
       have hcl := c_and_le u
   case' false =>
       simp only [cond_false] at hK ⊢
       have hc := compiledLe (by decide) orTemplate_provable _ hu hK
       have lt := trD_le orTemplate tD_or _ hK
-      obtain ⟨T, hT⟩ : ∃ T,
-          translateFormula (K6 P₀ F₁ P₂ F₃ (P₀ ⋎ P₂) (MaxT F₁ F₃))
-            (Rewriting.emb orTemplate) = T :=
-        ⟨_, rfl⟩
-      rw [hT] at hc lt
-      simp only [orTemplate, LogicalConnective.HomClass.map_imply,
-        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_tot₁, tr_refl₀₁,
-        tr_tot₃, tr_refl₂₃, tr_orDefP, tr_maxDefF, tr_tot₅, tr_refl₄₅] at hT
-      subst hT
-      have pA := dall_iff (P₀ ⋎ P₂) (hK 4) hu
       have hcl := c_or_le u
   all_goals
+    simp only [andTemplate, orTemplate, LogicalConnective.HomClass.map_imply,
+      LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_tot₁, tr_refl₀₁,
+      tr_tot₃, tr_refl₂₃, tr_andDefP, tr_orDefP, tr_maxDefF, tr_tot₅, tr_refl₄₅] at hc lt
+    have pA := dall_iff _ (hK 4) hu
     have hA := imp_ante_le lt
     have hA2 := and_right_le hA
     have hA3 := and_right_le hA2

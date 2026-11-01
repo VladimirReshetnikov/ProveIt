@@ -48,37 +48,19 @@ theorem quant_step_le (isEx : Bool) {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (h
       simp only [cond_true] at hK ⊢
       have hc := compiledLe (by decide) exTemplate_provable _ hu hK
       have lt := trD_le exTemplate tD_ex _ hK
-      obtain ⟨T, hT⟩ : ∃ T,
-          translateFormula (K6 P₀ F₁ ⊤ (WbT P₀) (ExT P₀) (MaxT F₁ (WbT P₀)))
-            (Rewriting.emb exTemplate) = T :=
-        ⟨_, rfl⟩
-      rw [hT] at hc lt
-      simp only [exTemplate, LogicalConnective.HomClass.map_imply,
-        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_tot₁, tr_refl₀₁,
-        tr_exDefP, tr_wbDef₀, tr_maxDefF, tr_tot₅, tr_refl₄₅] at hT
-      subst hT
-      have pE := dall_iff (ExT P₀) (hK 4) hu
-      have pW := dall2_iff (WbT P₀) (hK 3) hu
-      have pM := dall2_swap (MaxT F₁ (WbT P₀)) (hK 5) hu
       have hcl := c_ex_le u
   case' false =>
       simp only [cond_false] at hK ⊢
       have hc := compiledLe (by decide) allTemplate_provable _ hu hK
       have lt := trD_le allTemplate tD_all _ hK
-      obtain ⟨T, hT⟩ : ∃ T,
-          translateFormula (K6 P₀ F₁ ⊤ (WbNT P₀) (AllT P₀) (MaxT F₁ (WbNT P₀)))
-            (Rewriting.emb allTemplate) = T :=
-        ⟨_, rfl⟩
-      rw [hT] at hc lt
-      simp only [allTemplate, LogicalConnective.HomClass.map_imply,
-        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_tot₁, tr_refl₀₁,
-        tr_allDefP, tr_wbDefN, tr_maxDefF, tr_tot₅, tr_refl₄₅] at hT
-      subst hT
-      have pE := dall_iff (AllT P₀) (hK 4) hu
-      have pW := dall2_iff (WbNT P₀) (hK 3) hu
-      have pM := dall2_swap (MaxT F₁ (WbNT P₀)) (hK 5) hu
       have hcl := c_all_le u
   all_goals
+    simp only [exTemplate, allTemplate, LogicalConnective.HomClass.map_imply,
+      LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_tot₁, tr_refl₀₁,
+      tr_exDefP, tr_allDefP, tr_wbDef₀, tr_wbDefN, tr_maxDefF, tr_tot₅, tr_refl₄₅] at hc lt
+    have pE := dall_iff _ (hK 4) hu
+    have pW := dall2_iff _ (hK 3) hu
+    have pM := dall2_swap _ (hK 5) hu
     have hA := imp_ante_le lt
     have hA2 := and_right_le hA
     have hA3 := and_right_le hA2
