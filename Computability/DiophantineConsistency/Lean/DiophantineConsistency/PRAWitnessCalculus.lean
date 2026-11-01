@@ -281,22 +281,6 @@ theorem wb_emb {n : ℕ} {ψ : ArithmeticSemisentence n} (hψ : WB M ψ) :
     WB M (Rewriting.emb ψ : ArithmeticSemisentence n) :=
   wb_rew Rew.emb hψ
 
-theorem wb_mem {n : ℕ} (t u : ArithmeticSemiterm Empty n) (hbit : WB M bitDef.val) :
-    WB M (Semiformula.Operator.Mem.mem.operator ![t, u]) := by
-  unfold Semiformula.Operator.operator
-  rw [operator_mem_def]
-  exact wb_subst _ (wb_emb hbit)
-
-theorem wb_not_mem {n : ℕ} (t u : ArithmeticSemiterm Empty n) (hbit : WB M (∼bitDef.val)) :
-    WB M (∼Semiformula.Operator.Mem.mem.operator ![t, u]) := by
-  unfold Semiformula.Operator.operator
-  rw [operator_mem_def]
-  refine wb_neg_subst _ ?_
-  have h : (∼(Rewriting.emb bitDef.val : ArithmeticSemisentence 2)) = Rewriting.emb (∼bitDef.val) :=
-    (LogicalConnective.HomClass.map_neg (Semiformula.rew Rew.emb) bitDef.val).symm
-  rw [h]
-  exact wb_emb hbit
-
 /-- A Foundation operator (such as `memRelOpr`) is its sentence, embedded. -/
 theorem wb_operator {k n : ℕ} (o : Semiformula.Operator ℒₒᵣ k)
     (v : Fin k → ArithmeticSemiterm Empty n) (ho : WB M o.sentence) : WB M (o.operator v) := by
@@ -308,10 +292,15 @@ theorem wb_neg_operator {k n : ℕ} (o : Semiformula.Operator ℒₒᵣ k)
     WB M (∼o.operator v) := by
   unfold Semiformula.Operator.operator
   refine wb_neg_subst _ ?_
-  have h : (∼(Rewriting.emb o.sentence : ArithmeticSemisentence k)) = Rewriting.emb (∼o.sentence) :=
-    (LogicalConnective.HomClass.map_neg (Semiformula.rew Rew.emb) o.sentence).symm
-  rw [h]
-  exact wb_emb ho
+  simpa only [LogicalConnective.HomClass.map_neg] using (wb_emb ho)
+
+theorem wb_mem {n : ℕ} (t u : ArithmeticSemiterm Empty n) (hbit : WB M bitDef.val) :
+    WB M (Semiformula.Operator.Mem.mem.operator ![t, u]) :=
+  wb_operator _ _ (by simpa only [operator_mem_def] using hbit)
+
+theorem wb_not_mem {n : ℕ} (t u : ArithmeticSemiterm Empty n) (hbit : WB M (∼bitDef.val)) :
+    WB M (∼Semiformula.Operator.Mem.mem.operator ![t, u]) :=
+  wb_neg_operator _ _ (by simpa only [operator_mem_def] using hbit)
 
 /-- One step of the calculus: the rule that matches the head constructor.
 `wb_auto` repeats it; leaves it cannot match (named definitions, genuinely
