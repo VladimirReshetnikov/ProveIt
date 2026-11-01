@@ -191,7 +191,11 @@ below a bound makes the fixed search output a zero witness below that bound.
 It transfers a classical open certificate using native open-formula stability;
 matched guarded replays retain the inherited provider boundary. Bounded
 existential stability and characteristic correctness for the actual ZFC
-matrix remain separate obligations.
+matrix remain separate obligations. A [generic selector-stability client](Lean/DiophantineConsistency/IPRASelectorStability.lean)
+proves existential stability from explicit selector, selected-instance
+stability, and characteristic-correctness proofs; its guarded replays match.
+Binding those premises to the primitive-recursive selector and the actual
+bounded matrix remains to be checked.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)

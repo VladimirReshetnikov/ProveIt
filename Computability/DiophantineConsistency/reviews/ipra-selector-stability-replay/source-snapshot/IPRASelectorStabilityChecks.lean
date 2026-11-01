@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRASelectorStability
+#print axioms DiophantineConsistency.IPRASelectorStability.stableExistsOfSelector
+#print axioms DiophantineConsistency.IPRASelectorStability.stableExistsOfCharacteristic
