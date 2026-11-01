@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveSquareWitness14
+#print axioms DiophantineConsistency.AdaptiveSquareWitness14.literal_context
+#print axioms DiophantineConsistency.AdaptiveSquareWitness14.literal_zero_project
+#print axioms DiophantineConsistency.AdaptiveSquareWitness14.exists_positive_extension
+#print axioms DiophantineConsistency.AdaptiveSquareWitness14.shifted_no_zero_iff
