@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveGap85FirstScore
+#print axioms DiophantineConsistency.AdaptiveGap85FirstScore.firstScore_definable
+#print axioms DiophantineConsistency.AdaptiveGap85FirstScore.exists_first_minimizing_zero
+#print axioms DiophantineConsistency.AdaptiveGap85FirstScore.exists_first_minimal_blocked
+#check DiophantineConsistency.AdaptiveGap85FirstScore.exists_first_minimal_blocked
