@@ -97,12 +97,6 @@ theorem interpret_bundle (a b c : V) :
 
 /-! ## Typed label binding -/
 
-local instance (k : Nat) : GödelQuote (Language.Set.Rel k) V := gödelQuoteRel (L := ℒₛₑₜ) k
-
-private lemma mem_symbol : (ℒₛₑₜ).IsRel (2 : V) ((1 : Nat) : V) := by
-  simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 1)).mpr
-    ⟨Language.Set.Rel.mem,rfl⟩
-
 noncomputable def bindT {n : Nat} (chosen : V)
     (p : Bootstrapping.Semiformula V ℒₛₑₜ n) : Bootstrapping.Semiformula V ℒₛₑₜ (n+1) :=
   ⟨bindOneAt ℒₛₑₜ chosen n p.val, by
@@ -141,9 +135,8 @@ include hP
 lemma fresh_remove {c : V} (hf : ∀ depth : V, bindOneAt ℒₛₑₜ c depth P = P)
     (x y : V) (hcx : c ≠ x) (hcy : c ≠ y) (d e f : V) :
     bindOneAt ℒₛₑₜ c d (bindOneAt ℒₛₑₜ x e (bindOneAt ℒₛₑₜ y f P)) =
-      bindOneAt ℒₛₑₜ x e (bindOneAt ℒₛₑₜ y f P) := by
-  rw [bindOneAt_commute (bindOneAt_isUFormula hP.isUFormula y f) c x d e hcx,
-    bindOneAt_commute hP.isUFormula c y d f hcy, hf d]
+      bindOneAt ℒₛₑₜ x e (bindOneAt ℒₛₑₜ y f P) :=
+  bindOneAt_fresh_through_two hP.isUFormula x y c d e f hcx hcy hf
 
 lemma fresh_remove1 {c : V} (hf : ∀ depth : V, bindOneAt ℒₛₑₜ c depth P = P)
     (x : V) (hcx : c ≠ x) (d e : V) :

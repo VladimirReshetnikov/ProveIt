@@ -114,9 +114,8 @@ theorem zf_canonicalG_provable (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) 
           ⟨CompiledCollection254.collectionProof K⟩)
   simpa only [collectionMatrix_specialize] using TProof.specialize! hi (&'b)
 
-/-- The raw freshness resource is used only inside the generic syntax bridge.
-The numerical endpoint below supplies it from positive own-code freshness. -/
-private lemma remove_container_binding {p : V} (hp : IsUFormula ℒₛₑₜ p)
+/-- A fresh label remains absent under two bindings of other labels. -/
+lemma bindOneAt_fresh_through_two {p : V} (hp : IsUFormula ℒₛₑₜ p)
     (a b c d e f : V) (hca : c ≠ a) (hcb : c ≠ b)
     (hf : ∀ depth : V, bindOneAt ℒₛₑₜ c depth p = p) :
     bindOneAt ℒₛₑₜ c d (bindOneAt ℒₛₑₜ a e (bindOneAt ℒₛₑₜ b f p)) =
@@ -132,7 +131,7 @@ lemma nativeG_distinct (a b c : V) (p : Formula V ℒₛₑₜ)
   have hAnte :
       bindOneAt ℒₛₑₜ c 2 (bindOneAt ℒₛₑₜ a 1 (bindOneAt ℒₛₑₜ b 0 p.val)) =
         ((binaryBody a b p).subst ![(#'1 : Bootstrapping.Semiterm V ℒₛₑₜ 3),#'0]).val := by
-    rw [remove_container_binding p.isSemiformula.isUFormula a b c 2 1 0 hca hcb hf,
+    rw [bindOneAt_fresh_through_two p.isSemiformula.isUFormula a b c 2 1 0 hca hcb hf,
       bindOneAt_commute p.isSemiformula.isUFormula a b 1 0 hab]
     simpa using
       (binaryBody_subst (m := 3) a b p (1 : Fin 3) (0 : Fin 3) hab).symm
@@ -144,14 +143,14 @@ lemma nativeG_distinct (a b c : V) (p : Formula V ℒₛₑₜ)
         bindOneAt ℒₛₑₜ b 0 p.val := by
       simpa only [Nat.cast_zero,zero_add] using bindOneAt_absorb p.isSemiformula b
     rw [hAbs,
-      remove_container_binding p.isSemiformula.isUFormula a b c 3 2 0 hca hcb hf,
+      bindOneAt_fresh_through_two p.isSemiformula.isUFormula a b c 3 2 0 hca hcb hf,
       bindOneAt_commute p.isSemiformula.isUFormula a b 2 0 hab]
     simpa using
       (binaryBody_subst (m := 4) a b p (2 : Fin 4) (0 : Fin 4) hab).symm
   have hSupport :
       bindOneAt ℒₛₑₜ c 2 (bindOneAt ℒₛₑₜ b 1 (bindOneAt ℒₛₑₜ a 0 p.val)) =
         ((binaryBody a b p).subst ![(#'0 : Bootstrapping.Semiterm V ℒₛₑₜ 3),#'1]).val := by
-    rw [remove_container_binding p.isSemiformula.isUFormula b a c 2 1 0 hcb hca hf]
+    rw [bindOneAt_fresh_through_two p.isSemiformula.isUFormula b a c 2 1 0 hcb hca hf]
     simpa using
       (binaryBody_subst (m := 3) a b p (0 : Fin 3) (1 : Fin 3) hab).symm
   simp only [nativeG,memNamed,namedFormula,namedExists,namedBody_bindT,
