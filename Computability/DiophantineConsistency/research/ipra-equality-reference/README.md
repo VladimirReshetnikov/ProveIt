@@ -112,6 +112,88 @@ invoked only with the untrusted mixed provider; they need a coherent replay.
 In particular the induction-image premise remains open, and neither theory
 equivalence nor the equation endpoint follows from this conditional result.
 
+[`IPRAReferenceAddOne.lean`](../../Lean/DiophantineConsistency/IPRAReferenceAddOne.lean)
+drafts the equality-only derivation of `x + 1 = S x` by translating an
+existing finite native proof and the specific defining and equality axioms it
+uses. It does not assume native induction, but is still only mixed-provider
+syntax-checked. The derivation must be coherently replayed and used to convert
+reference successor-step induction to the erased addition-step schema.
+
+[`IPRAReferenceAddOneOpen.lean`](../../Lean/DiophantineConsistency/IPRAReferenceAddOneOpen.lean)
+and [`IPRAReferenceInductionConversion.lean`](../../Lean/DiophantineConsistency/IPRAReferenceInductionConversion.lean)
+draft that conversion and assemble `nativeToReference`, a native-to-reference
+provability transfer with no remaining explicit axiom-image hypothesis. The
+only Lean invocation so far used the **untrusted mixed provider**, so this is
+candidate source, not an authenticated Lean result. In particular, coherent
+replay is essential, and applying the transfer still requires identifying
+the erased endpoint, including its consistency predicate, with the intended
+reference-language formulas. This direction alone is not a two-way theory
+equivalence.
+
+The exact candidate statement is
+`∀ {σ : Sentenceᵢ PRALanguage.language}, nativeTheory ⊢ σ → referenceTheory ⊢ erase σ`.
+The mixed-provider diagnostic invocation of
+[`IPRAReferenceConversionChecks.lean`](../../Lean/DiophantineConsistency/IPRAReferenceConversionChecks.lean)
+exited 0 and reported `propext`, `Classical.choice`, and `Quot.sound` for the
+conversion and transfer, with no reported `sorryAx`. Those diagnostics do
+not repair the mixed-provider boundary: the known counterexample shows that
+successful checks and benign axiom reports can still be unsound in this setup.
+
+[`IPRAReferenceAQ29.lean`](draft/IPRAReferenceAQ29.lean) is an **uncompiled
+draft** applying this candidate transport to the fixed AQ29 endpoint. It
+states the no-zero formula and the negated mapped refutation explicitly under
+erasure; identifying that erased refutation with a separately specified
+reference-language consistency predicate remains open. The first exploratory
+mixed-provider invocation exited 1 because the AQ29 object was absent from the
+temporary overlay. After adding available historical AQ29 objects to that
+overlay, a second invocation was bounded to 45 seconds and exited 124 without
+an elaboration result. Neither invocation validates the draft; no further
+heavy mixed-provider probe is justified while the coherent rebuild is active.
+
+More precisely, the existing source defines `ρ` as Foundation's
+`provabilityPred` for `ZermeloFraenkelChoice` and falsity, and defines the
+source consistency sentence as `∼ρ`. The native endpoint uses the separate
+formula `∼native (lMap embedding ρ)`, and the draft reference endpoint uses
+its equality-only erasure. These definitions identify the concrete coding
+being transported; they do not by themselves prove that a separately chosen
+reference-language ZFC proof predicate is intuitionistically equivalent to it.
+
+[`IPRAReferenceRefutationReading.lean`](draft/IPRAReferenceRefutationReading.lean)
+is an uncompiled draft of a direct equality-only reading of Foundation's
+arithmetic NNF syntax: equality remains equality; `<` is the PR comparison
+bit equal to one; negative atoms become intuitionistic negations; and the
+positive logical constructors are preserved. Its proposed general syntactic
+identity specializes to the **same** Foundation ZFC refutation predicate ρ.
+This is a concrete candidate for identifying the transported formula with an
+independently defined syntax reader, not a comparison with all alternative
+proof codings, nor yet an elaborated or coherently checked Lean result.
+
+[`IPRAReferenceAQ29Direct.lean`](draft/IPRAReferenceAQ29Direct.lean) is an
+uncompiled assembly of the three preceding drafts. Its proposed theorem has
+type `referenceTheory ⊢ noZero AQ29 🡘 ∼refutation`, where `noZero` is the
+explicit equality-only formula for the fixed positive-shift expression and
+`refutation` is the direct reader applied to Foundation's same ρ. The files
+are kept in the research draft directory, so their imports must be made
+available before any future Lean replay. No elaboration, alternative-coding
+equivalence, or equation proof verification is claimed.
+
+[`IPRAReferenceNoZero.lean`](draft/IPRAReferenceNoZero.lean) is another
+uncompiled source draft spelling out the equality-only no-zero formula from
+the positive-shift expression's two natural-polynomial sides and proposing
+its syntactic identification with erased `nativeNoZero`. It is intended to
+make the equation side of the endpoint explicit; it has not been elaborated
+or checked and says nothing about the independent consistency encoding.
+
+[`IPRAReferenceRoundtrip.lean`](draft/IPRAReferenceRoundtrip.lean) is an
+uncompiled outline for a metatheoretic comparison on equality-only sentences:
+`nativeTheory ⊢ embed σ ↔ referenceTheory ⊢ σ`. It assembles the earlier
+conditional reverse transfer and candidate induction-image wrapper with the
+candidate forward transfer and syntactic erasure-after-embedding identity.
+The induction wrapper itself remains uncompiled. Even if checked, that
+sentence-level provability comparison would not alone identify an arbitrary
+native formula with its embedded erasure, identify the consistency encoding,
+or validate the equation endpoint.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements and candidate derivations; discharge the
 native induction image; transfer the reference axioms
