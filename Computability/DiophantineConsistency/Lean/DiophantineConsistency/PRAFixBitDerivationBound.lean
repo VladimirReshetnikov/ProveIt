@@ -27,15 +27,12 @@ theorem body_bound (d s w : V) (hw : PRABitFullWitnessBound.bitMajorant s ≤ w)
   · exact hlim
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#1,#0]
-    have hf : (ω ▹ bitDef.val).Evalb ![s,d] := by
-      simpa [ω, Semiformula.eval_substs] using hbit
-    have hw' : PRABitFullWitnessBound.bitMajorant
-        ((ω #1).val ![s,d] Empty.elim) ≤ w := by
-      simpa [ω] using hw
-    have hrew := PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
-      (fun _ s => PRABitFullWitnessBound.bitMajorant s)
-      PRABitFullWitnessBound.bit_bound ω ![s,d] w hw' hf
-    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hrew
+    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using
+      (PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+        (fun _ s => PRABitFullWitnessBound.bitMajorant s)
+        PRABitFullWitnessBound.bit_bound ω ![s,d] w
+        (by simpa [ω] using hw) (by simpa [ω, Semiformula.eval_substs] using hbit))
+
 theorem derivation_bound_of_witness (d s w : V) (hs : s < w)
     (hw : PRABitFullWitnessBound.bitMajorant s ≤ w)
     (hbit : bitDef.val.Evalb ![d,s])
