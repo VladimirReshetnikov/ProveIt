@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/tmp/ipra-eleven-drift-comparison-design/check-negative.py", line 6, in <module>
+    files=('prepare.py','replay.py','compare.py','run.py');before={n:H(D/n) for n in files};self_hash=H(__file__)
+                                                                     ~^^^^^
+  File "/tmp/ipra-eleven-drift-comparison-design/check-negative.py", line 5, in <lambda>
+    D=Path(__file__).resolve().parent;H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+                                                                ~~~~~~~~~~~~~~~~~~^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py", line 625, in read_bytes
+    with self.open(mode='rb') as f:
+         ~~~~~~~~~^^^^^^^^^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/ipra-eleven-drift-comparison-design/prepare.py'

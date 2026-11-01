@@ -1,0 +1,55 @@
+{
+  "checker_sha256": "afc76a0bf2e2035bd53d5047ac3988dbc60432de9e1910582c19b2a7cc44146f",
+  "files_sha256": {
+    "compare.py": "1fb23e6a4480612252db8f0e90d1b3e59d90c3ca9dec039124f6a1b272ad2366",
+    "prepare.py": "904bf3a0e01d291ba9b2c207254f8006f7bafccd54ad9a6d751d54332dbeae2c",
+    "replay.py": "8bfbde1881075e0f023af1f04ab2eaf47f49465f8a45f9be9e47bc7079b2baee",
+    "run.py": "d5ee54cd747cc67abbbb4c0cba0ce679bf69ed914955b706675a689e49c5fca5"
+  },
+  "rows": [
+    {
+      "case": "missing_plan",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-six-drift-negative-r6kwhjtf/compare-missing_plan/compare.py\", line 17, in <module>\n    M,DR=PLAN/'manifest.json',PLAN/'replay.py';m,mh=read(M);a,ah=read(A/'state.json');b,bh=read(B/'state.json')\n                                                    ~~~~^^^\n  File \"/tmp/ipra-six-drift-negative-r6kwhjtf/compare-missing_plan/compare.py\", line 16, in read\n    raw=Path(p).read_bytes();return json.loads(raw),hashlib.sha256(raw).hexdigest()\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py\", line 625, in read_bytes\n    with self.open(mode='rb') as f:\n         ~~~~~~~~~^^^^^^^^^^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/ipra-six-drift-negative-r6kwhjtf/missing-plan/manifest.json'\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_directory",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-six-drift-negative-r6kwhjtf/compare-same_directory/compare.py\", line 8, in <module>\n    assert A.resolve()!=B.resolve() and not os.path.samefile(A/'state.json',B/'state.json'), 'author and peer must be independent runs'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_state_inode",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-six-drift-negative-r6kwhjtf/compare-same_state_inode/compare.py\", line 8, in <module>\n    assert A.resolve()!=B.resolve() and not os.path.samefile(A/'state.json',B/'state.json'), 'author and peer must be independent runs'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "missing_plan",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-six-drift-negative-r6kwhjtf/run-missing_plan/run.py\", line 12, in <module>\n    before={str(p.resolve()):H(p) for p in inputs};log,terminal,receipt=D/'run.log',D/'terminal.json',D/'receipt.json'\n                             ~^^^\n  File \"/tmp/ipra-six-drift-negative-r6kwhjtf/run-missing_plan/run.py\", line 9, in <lambda>\n    H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\n                              ~~~~~~~~~~~~~~~~~~^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py\", line 625, in read_bytes\n    with self.open(mode='rb') as f:\n         ~~~~~~~~~^^^^^^^^^^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/ipra-six-drift-negative-r6kwhjtf/missing-plan/manifest.json'\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_directory",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-six-drift-negative-r6kwhjtf/run-same_directory/run.py\", line 8, in <module>\n    assert author.resolve()!=peer.resolve() and not os.path.samefile(author/'state.json',peer/'state.json'), 'author and peer must be independent runs'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_state_inode",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-six-drift-negative-r6kwhjtf/run-same_state_inode/run.py\", line 8, in <module>\n    assert author.resolve()!=peer.resolve() and not os.path.samefile(author/'state.json',peer/'state.json'), 'author and peer must be independent runs'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    }
+  ],
+  "scope": "Both scripts present in each isolated probe; syntax and missing-plan / identical-directory / shared-state-inode rejection only. No successful comparison or replay is claimed.",
+  "status": "PASS_FAIL_CLOSED_NEGATIVE_CHECKS"
+}
