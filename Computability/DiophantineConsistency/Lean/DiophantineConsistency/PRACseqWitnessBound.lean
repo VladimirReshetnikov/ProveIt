@@ -1,6 +1,7 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRALhWitnessBound
 import DiophantineConsistency.PRANegLhWitnessBound
+import DiophantineConsistency.PRARewritingWitnessBound
 import Foundation.FirstOrder.Arithmetic.HFS.PRF
 set_option autoImplicit false
 set_option maxHeartbeats 2000000
@@ -35,19 +36,14 @@ attribute [local irreducible] seqDef lhDef memRel
         funext j; exact Fin.cases rfl (fun k => Fin.elim0 k) j
       exact PRALhWitnessBound.bnd_rew1 p.zero.val ω z s w z hv (hzero z hz hze)
     · have hr : memRel.val.Evalb ![s,0,z] := by simpa [Semiformula.Operator.val,memRelOpr] using hzr
-      have hb := PRAMemRelWitnessBound.memRel_bound_explicit s 0 z hr
       have hrelw := hrel 0 z zero_le (le_of_lt hz)
-      have hm : (bnd memRel.val).Evalb ![s,0,z,w] := by
-        simpa using (eval_bnd_mono memRel.val ![s,0,z] (Empty.elim : Empty → V) hrelw (by simpa using hb))
       let ω : Rew ℒₒᵣ Empty 3 Empty 2 := Rew.subst ![#1,Semiterm.numeral 0,#0]
-      have hn := PRABndRewriting.natural memRel.val ω ![z,s] w
-      have hv : (fun j => (ω #j).val ![z,s] Empty.elim) = ![s,0,z] := by
-        funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hv1 : Fin.snoc ![z,s] w = ![z,s,w] := by simp
-      have hv2 : Fin.snoc ![s,0,z] w = ![s,0,z,w] := by simp
-      rw [hv,hv1,hv2] at hn
-      simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hn.mpr hm
+      have hb := PRARewritingWitnessBound.ternary_rew_bound_with memRel.val
+        PRAMemRelWitnessBound.memRelMajorant PRAMemRelWitnessBound.memRel_bound_explicit
+        ω ![z,s] w (by simpa [ω] using hrelw)
+        (by simpa [ω, Semiformula.eval_substs] using hr)
+      simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hb
+
   · intro i
     by_cases hi : 2*s ≤ i
     · exact Or.inl hi
@@ -109,20 +105,15 @@ attribute [local irreducible] seqDef lhDef memRel
               rw [hv,hv1,hv2] at hn
               exact hn.mpr (hsucc u z i hu hz' hi' hus)
             · have hr : memRel.val.Evalb ![s,i+1,u] := by simpa [Semiformula.Operator.val,memRelOpr] using hur
-              have hb := PRAMemRelWitnessBound.memRel_bound_explicit s (i+1) u hr
               have hi2 : i+1 ≤ 2*s+1 := by simpa [add_comm] using add_le_add_right (le_of_lt hi') 1
               have hrelw := hrel (i+1) u hi2 (le_of_lt hu)
-              have hm : (bnd memRel.val).Evalb ![s,i+1,u,w] := by
-                simpa using (eval_bnd_mono memRel.val ![s,i+1,u] (Empty.elim : Empty → V) hrelw (by simpa using hb))
               let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![#3,‘#2+1’,#0]
-              have hn := PRABndRewriting.natural memRel.val ω ![u,z,i,s] w
-              have hv : (fun j => (ω #j).val ![u,z,i,s] Empty.elim) = ![s,i+1,u] := by
-                funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-                exact Fin.cases rfl (fun k => Fin.elim0 k) k
-              have hv1 : Fin.snoc ![u,z,i,s] w = ![u,z,i,s,w] := by simp
-              have hv2 : Fin.snoc ![s,i+1,u] w = ![s,i+1,u,w] := by simp
-              rw [hv,hv1,hv2] at hn
-              simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hn.mpr hm
+              have hb := PRARewritingWitnessBound.ternary_rew_bound_with memRel.val
+                PRAMemRelWitnessBound.memRelMajorant PRAMemRelWitnessBound.memRel_bound_explicit
+                ω ![u,z,i,s] w (by simpa [ω] using hrelw)
+                (by simpa [ω, Semiformula.eval_substs] using hr)
+              simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hb
+
 def relationHistoryMajorant (s : V) : V := (2*s+1+s+1)^2+1 + PRABitFullWitnessBound.bitMajorant s
 def cseqMajorant (s : V) : V := (2*s+1) + PRASeqFullWitnessBound.seqMajorant s +
  PRANegLhWitnessBound.negLhMajorant s + relationHistoryMajorant s + PRANegBitFullWitnessBound.negBitMajorant s
