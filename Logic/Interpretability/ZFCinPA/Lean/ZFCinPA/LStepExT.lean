@@ -91,12 +91,8 @@ theorem least_ord {Φ : V → Prop} (hsep : ∀ X, ∃ Z, ∀ h, mem h Z ↔ mem
 
 omit hR in
 /-- A union of ordinals is an ordinal. -/
-theorem ord_vunion {B : V} (hB : ∀ r, mem r B → Ord mem r) : Ord mem (_root_.SetTheory.vunion H B) := by
-  refine ⟨fun x hx z hz => ?_, fun x hx => ?_⟩
-  · obtain ⟨r, hxr, hrB⟩ := (_root_.SetTheory.vunion_spec H B x).1 hx
-    exact (_root_.SetTheory.vunion_spec H B z).2 ⟨r, (hB r hrB).1 x hxr z hz, hrB⟩
-  · obtain ⟨r, hxr, hrB⟩ := (_root_.SetTheory.vunion_spec H B x).1 hx
-    exact (hB r hrB).2 x hxr
+theorem ord_vunion {B : V} (hB : ∀ r, mem r B → Ord mem r) : Ord mem (_root_.SetTheory.vunion H B) :=
+  _root_.SetTheory.BusyBeaver.ZFC.InternalOrd.ord_vunion H hB
 
 /-- An ordinal contained in an ordinal `m` is a member of its successor. -/
 theorem mem_vsucc_of_sub {r m : V} (hr : Ord mem r) (hm : Ord mem m) (hsub : ∀ z, mem z r → mem z m) :
