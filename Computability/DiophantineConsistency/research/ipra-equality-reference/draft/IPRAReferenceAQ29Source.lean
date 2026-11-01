@@ -11,6 +11,10 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open IPRAEqualityOnlyReference AdaptiveEquationSyntax2011
 
+local instance : IPRAEqualityOnlyReference.language.DecidableEq where
+  func := fun k => by change DecidableEq (PRAFiniteFunctionCodes.Code k); infer_instance
+  rel := fun k => by change DecidableEq (EqualityRel k); infer_instance
+
 theorem literal_equivalence : referenceTheory ⊢
     IPRAReferenceNoZero.noZero
       (positiveShift (AdaptiveAQ29Literal.literal CurrentWindowCarry2011.ports)) 🡘
