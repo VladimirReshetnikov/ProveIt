@@ -1,0 +1,5 @@
+# Guarded 258-module source-survey replay input
+
+This is a prepared input packet, not a PASS receipt. Preparation authenticated the matched 73-module fixed-source project-origin repair and its independent closure/source-origin audits, the separate 1,099-source survey, its independent closure and Lean `--deps` receipts, the complete repaired-peer project inventory, all 106 surveyed direct external companion sets, and inherited direct-external guards. It observed no workspace-source drift in either preparation check. The captured replay rebuilds 258 modules from the immutable survey copies on separate guarded overlays and checks the two endpoint axiom reports.
+
+The source snapshot is not automatically a current-workspace result: each replay records workspace-source drift before and after, and a current-source claim requires empty drift at both observations plus the independent final comparison. A later source change does not invalidate the fixed-source computation but must be reported. The 848-project ancestor remains author-only; package-transitive and dynamically loaded ancestry remain inherited.
