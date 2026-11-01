@@ -662,31 +662,33 @@ theorem translate_srcLevelSat (x : V) :
     (fun i hi ↦ by have := free_tripleMemCanon hi; omega)
     (fun i hi ↦ free_tripleMemCanon hi)
 
+/-- Translation of the common bit-witness wrapper around a level reading. -/
+theorem translate_srcBitWitnessOf (x y : V) (m w : ℕ) (hm : 2 ≤ m)
+    (inner : Semiproposition srcL (m + 1))
+    (hinner : (translateFormula (levelLeaves x) inner).val = levelSatCode y) :
+    (translateFormula (levelLeaves x)
+      (∃⁰ (liftP (toSet (m + 1) (fNumF 0 w)) ⋏ inner))).val =
+      bitWitnessPart (bitWitnessCode w) y := by
+  rw [bitWitnessPart]
+  simp only [translate_exs, translate_and,
+    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
+    translate_liftP_val, hinner]
+  rw [quote_leaf_move (V := V) (fNumF 0 w) (m + 1) 3
+    (fun i hi ↦ by have := free_fNumF hi; omega)
+    (fun i hi ↦ by have := free_fNumF hi; omega)]
+  rfl
+
 /-- Sigma-truth at the successor index. -/
 theorem translate_srcSigmaTrue (x : V) :
     (translateFormula (levelLeaves x) srcSigmaTrue).val =
       sigmaTrueCode (x + 1) := by
-  rw [sigmaTrueCode, bitWitnessPart]
-  simp only [srcSigmaTrue, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_liftP_val, translate_srcLevelSat]
-  rw [quote_leaf_move (V := V) (fNumF 0 1) 5 3
-    (fun i hi ↦ by have := free_fNumF hi; omega)
-    (fun i hi ↦ by have := free_fNumF hi; omega)]
-  rfl
+  exact translate_srcBitWitnessOf x (x + 1) 4 1 (by omega) _ (translate_srcLevelSat x)
 
 /-- Pi-falsity at the successor index. -/
 theorem translate_srcPiFalse (x : V) :
     (translateFormula (levelLeaves x) srcPiFalse).val =
       piFalseCode (x + 1) := by
-  rw [piFalseCode, bitWitnessPart]
-  simp only [srcPiFalse, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_liftP_val, translate_srcLevelSat]
-  rw [quote_leaf_move (V := V) (fNumF 0 0) 5 3
-    (fun i hi ↦ by have := free_fNumF hi; omega)
-    (fun i hi ↦ by have := free_fNumF hi; omega)]
-  rfl
+  exact translate_srcBitWitnessOf x (x + 1) 4 0 (by omega) _ (translate_srcLevelSat x)
 
 /-- Pi-truth at the successor index. -/
 theorem translate_srcPiTrue (x : V) :
@@ -938,26 +940,12 @@ theorem translate_srcLevelSatSucc (x : V) :
 theorem translate_srcSigmaTrueSucc (x : V) :
     (translateFormula (levelLeaves x) srcSigmaTrueSucc).val =
       sigmaTrueCode (x + 1 + 1) := by
-  rw [sigmaTrueCode, bitWitnessPart]
-  simp only [srcSigmaTrueSucc, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_liftP_val, translate_srcLevelSatSucc]
-  rw [quote_leaf_move (V := V) (fNumF 0 1) 5 3
-    (fun i hi ↦ by have := free_fNumF hi; omega)
-    (fun i hi ↦ by have := free_fNumF hi; omega)]
-  rfl
+  exact translate_srcBitWitnessOf x (x + 1 + 1) 4 1 (by omega) _ (translate_srcLevelSatSucc x)
 
 theorem translate_srcPiFalseSucc (x : V) :
     (translateFormula (levelLeaves x) srcPiFalseSucc).val =
       piFalseCode (x + 1 + 1) := by
-  rw [piFalseCode, bitWitnessPart]
-  simp only [srcPiFalseSucc, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_liftP_val, translate_srcLevelSatSucc]
-  rw [quote_leaf_move (V := V) (fNumF 0 0) 5 3
-    (fun i hi ↦ by have := free_fNumF hi; omega)
-    (fun i hi ↦ by have := free_fNumF hi; omega)]
-  rfl
+  exact translate_srcBitWitnessOf x (x + 1 + 1) 4 0 (by omega) _ (translate_srcLevelSatSucc x)
 
 theorem translate_srcPiTrueSucc (x : V) :
     (translateFormula (levelLeaves x) srcPiTrueSucc).val =
