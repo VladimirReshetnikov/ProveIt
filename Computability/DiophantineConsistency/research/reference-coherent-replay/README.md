@@ -3,7 +3,7 @@
 `plan.py` surveys the source-declared import graph for the fixed AQ29 direct
 reference endpoint and the restricted equality-only provability roundtrip. It
 distinguishes project modules found in a pinned frozen parent manifest, new
-workspace modules and six explicitly mapped research-draft modules. It is a
+workspace modules and explicitly mapped research-draft modules. It is a
 planning tool, **not a compiler or an authenticated replay**; the line-based
 scanner is not Lean's parser.
 
@@ -34,24 +34,26 @@ following, none of which this survey has performed:
    the old historical project overlay, or a lone receipt is insufficient.
 2. Perform the strict source survey after the active build, authenticate the
    frozen parent snapshot and all used current source bytes and Git state, and
-   freeze the 31 additions including the research drafts under their module
+   freeze the additions including the research drafts under their module
    paths. `--basis current` refuses reuse on any observed parent-source drift.
    The historical basis deliberately uses parent-era sources and must be
    labeled as such. For a current-source claim with drift, first make and
    independently authenticate a same-target successor pair; do not silently
    mix changed ancestors with parent objects.
-3. Implement and test an **extension** builder: the existing selective-rebase
-   preparer requires unchanged module sets and therefore does not directly
-   accept these new targets. Each sibling must start in its own empty project
-   object root seeded only by copies from its corresponding authenticated
-   parent sibling. Reject preexisting additional outputs, cross-sibling links,
-   old project objects in every effective search root, mismatched compiler or
-   provider pins, and any direct import not explained by the frozen graph and
-   Lean's actual `--deps` output. Recheck object companions, search precedence,
-   source/configuration pins and endpoint axiom reports.
+3. Use the experimental scripts under [`extension`](extension/) only after
+   independent review and completion of the parent pair. They adapt the
+   selective-rebase checks to a strict extension: the entire parent source
+   graph must be unchanged and additions must follow it in topological order.
+   Each sibling receives separate copies of its own matched parent objects;
+   Lean's actual `--deps`, companions and search roots are checked. A tracked
+   task policy binds a new terminal wrapper and four exact axiom-report names.
+   The wrapper adds one module beyond the earlier 31-module provisional
+   observation. The freezer requires a strict current-source plan and observed
+   parent completion; full parent comparator authentication occurs at
+   preparation. These scripts have not been applied to the real project parent.
 4. Compile all additional modules in dependency order in each sibling; compare
    their outputs, logs and full dependency records under the same independently
-   audited paired-build safeguards. The six research-draft modules may fail to
+   audited paired-build safeguards. The research-draft modules may fail to
    elaborate and must be fixed and re-frozen before a passing claim. Check the
    exact endpoint statements and proof dependencies after the build.
 
