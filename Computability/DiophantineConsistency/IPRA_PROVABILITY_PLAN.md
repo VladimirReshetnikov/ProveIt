@@ -104,6 +104,14 @@ the 848-module author-only ancestor and package-transitive and dynamic-import
 ancestry remain inherited. Display binding and exact degree are checked by
 separate finite computations.
 
+The [40-variable degree-6 equation](equation6-40.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAAQ40Native.lean) for its
+exact shifted fixed-port literal. Its [focused paired replay](reviews/adaptive-aq40-native-replay/README.md)
+matched ten modules, including all eight rebuilt model objects, on the
+historical 42-variable native provider. The author-only ancestor and inherited
+package-transitive and dynamic-import ancestry remain qualifications. The
+display and exact degree have separate finite checks.
+
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
 for its exact shifted fixed-port literal. Its [focused guarded comparison](reviews/ipra-named51-native-verification/README.md)
