@@ -73,22 +73,9 @@ lemma negEquality_open_at_other (a b : V) :
 def reflexivitySentence : SetTheorySentence :=
   ∀⁰ FirstOrder.Semiformula.rel Language.Set.Rel.eq ![#0,#0]
 
-@[simp] private lemma standard_rel_eq {M : Type*} [SetStructure M] (v : Fin 2 → M) :
-    Structure.rel (L := ℒₛₑₜ) (M := M) Language.Set.Rel.eq v ↔ v 0 = v 1 := Iff.rfl
-
 theorem equality_reflexive (T : SetTheory) [T.Δ₁] [𝗘𝗤 ℒₛₑₜ ⪯ T] (b : V) :
-    T.internalize V ⊢ eqAtom (&'b) (&'b) := by
-  have ho : T ⊢ reflexivitySentence := by
-    apply SetTheory.provable_of_models.{0}
-    intro M _ _ _
-    simp [reflexivitySentence,models_iff]
-  have hi := internal_provable_of_outer_provable (V := V) ho
-  have hq : (⌜reflexivitySentence⌝ : Bootstrapping.Formula V ℒₛₑₜ) =
-      ∀⁰ eqAtom (#'0) (#'0) := by
-    rw [FirstOrder.Sentence.typed_quote_def]
-    simp [reflexivitySentence,eqAtom,Rew.q_emb,Rew.emb_bvar,quote_vec2]
-  rw [hq] at hi
-  simpa [eqAtom] using TProof.specialize! hi (&'b)
+    T.internalize V ⊢ eqAtom (&'b) (&'b) :=
+  SetCongruence.set_eq_refl T (&'b)
 
 theorem existsNamedEquality (T : SetTheory) [T.Δ₁] [𝗘𝗤 ℒₛₑₜ ⪯ T] (a b : V) :
     T.internalize V ⊢ ∼namedFormula a (∼eqAtom (&'a) (&'b)) := by

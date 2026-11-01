@@ -1,4 +1,6 @@
 import DiophantineConsistency.PRAWitnessZFCAxioms
+import DiophantineConsistency.PRAWitnessFormulaSetCandidate
+import DiophantineConsistency.PRAWitnessSetShiftCandidate
 /-! # Witness bounds for ZFC derivations -/
 set_option autoImplicit false
 namespace DiophantineConsistency.PRAWitnessDerivation
@@ -77,35 +79,14 @@ local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode !
 local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
 local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
 
-theorem wb_isFormulaSet_sigma : WB M (isFormulaSet ℒₛₑₜ).sigma.val := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
-  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_isSemiformula_sigma (M := M); have := wb_bitDef (M := M); have hn := wb_neg_bitDef (M := M)
-  simp only [isFormulaSet, HierarchySymbol.Semiformula.sigma_mkDelta, HierarchySymbol.Semiformula.val_mkSigma]
-  wb_auto
-  all_goals (apply wb_not_mem; exact hn)
+theorem wb_isFormulaSet_sigma : WB M (isFormulaSet ℒₛₑₜ).sigma.val :=
+  PRAWitnessFormulaSetCandidate.wb_isFormulaSet_sigma
 
-theorem wb_isFormulaSet_neg_pi : WB M (∼(isFormulaSet ℒₛₑₜ).pi.val) := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
-  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_isSemiformula_neg_pi (M := M); have := wb_bitDef (M := M); have hn := wb_neg_bitDef (M := M)
-  simp only [isFormulaSet, HierarchySymbol.Semiformula.pi_mkDelta, HierarchySymbol.Semiformula.val_mkPi]
-  wb_auto
-  all_goals (apply wb_not_mem; exact hn)
+theorem wb_isFormulaSet_neg_pi : WB M (∼(isFormulaSet ℒₛₑₜ).pi.val) :=
+  PRAWitnessFormulaSetCandidate.wb_isFormulaSet_neg_pi
 
-theorem wb_setShiftGraph : WB M (setShiftGraph ℒₛₑₜ).val := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
-  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_shiftGraph (M := M); have := wb_bitDef (M := M)
-  have hn := wb_neg_bitDef (M := M)
-  simp only [setShiftGraph, HierarchySymbol.Semiformula.val_mkSigma]
-  wb_auto
-  all_goals first
-    | (apply wb_not_mem; exact hn)
-    | exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘#1’
-        (fun V _ _ e u h => ⟨u, by
-          have h' := h; simp at h'
-          exact le_of_lt (lt_of_mem h'.2), h⟩) (by wb_auto)
+theorem wb_setShiftGraph : WB M (setShiftGraph ℒₛₑₜ).val :=
+  PRAWitnessSetShiftCandidate.wb_setShiftGraph
 
 set_option maxHeartbeats 4000000 in
 theorem wb_derivation_core_sigma : WB M (Derivation.blueprint (𝗭𝗙𝗖 : SetTheory)).core.sigma.val := by

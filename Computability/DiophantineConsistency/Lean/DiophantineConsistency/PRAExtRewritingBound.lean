@@ -1,6 +1,6 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRAExtWitnessBound
-import DiophantineConsistency.PRABndRewriting
+import DiophantineConsistency.PRARewritingWitnessBound
 /-! Transfer the extDef local bound through arbitrary substitutions, including
     the exact first initial occurrence in exponentialDef. The remainder of
     exponentialDef is not bounded here. -/
@@ -15,21 +15,10 @@ variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲�
 theorem ext_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 3 Empty n) (e : Fin n → V) :
     (ω ▹ extDef.val).Evalb e →
       (bnd (ω ▹ extDef.val)).Evalb (Fin.snoc e (((ω #2).val e Empty.elim)+1)) := by
-  intro h
-  let g : Fin 3 → V := fun i => (ω #i).val e Empty.elim
-  have hf : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → V) := Subsingleton.elim _ _
-  have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
-  simp only [Semiformula.eval_rew] at h
-  rw [hg,hf] at h
-  have hv : ![g 0,g 1,g 2] = g := by
-    funext i; revert i; simp [Fin.forall_fin_succ]
-  have hs : Fin.snoc g (g 2+1) = ![g 0,g 1,g 2,g 2+1] := by
-    funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
-  have hb := ext_bound (g 0) (g 1) (g 2) (by simpa [hv] using h)
-  have hn := PRABndRewriting.natural extDef.val ω e (g 2+1)
-  rw [hs] at hn
-  exact hn.mpr hb
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  exact PRARewritingWitnessBound.ternary_rew_bound_with extDef.val (fun _ _ z => z+1)
+    ext_bound ω e _ le_rfl
+
 def initialX : ArithmeticSemisentence 1 := “X. !extDef 1 4 X”
 
 theorem initialX_bound (X : V) (h : initialX.Evalb ![X]) :

@@ -1,3 +1,4 @@
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRANegSeqSWitnessBound
 /-! A polynomial model-uniform bound for negative Foundation exponentialDef.
@@ -16,23 +17,8 @@ theorem negSeq_rew_bound_at {n : ℕ} (ω : Rew ℒₒᵣ Empty 3 Empty n) (e : 
     (ω ▹ (∼Exponential.Seqₛ.def.val)).Evalb e →
       (bnd (ω ▹ (∼Exponential.Seqₛ.def.val))).Evalb (Fin.snoc e w) := by
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  intro h
-  let g : Fin 3 → V := fun i => (ω #i).val e Empty.elim
-  have hf : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → V) := Subsingleton.elim _ _
-  have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
-  simp only [Semiformula.eval_rew] at h
-  rw [hg,hf] at h
-  have hv : ![g 0,g 1,g 2] = g := by funext i; revert i; simp [Fin.forall_fin_succ]
-  have hs : Fin.snoc g (2*g 0+1) = ![g 0,g 1,g 2,2*g 0+1] := by funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
-  have hw' : 2*g 0+1 ≤ w := hw
-  have hb := PRANegSeqSWitnessBound.negSeq_bound (g 0) (g 1) (g 2) (by simpa [hv] using h)
-  have hb' : (bnd (∼Exponential.Seqₛ.def.val)).Evalb (Fin.snoc g w) := by
-    apply eval_bnd_mono (∼Exponential.Seqₛ.def.val) g (Empty.elim : Empty → V) hw'
-    rw [hs]
-    exact hb
-  exact (PRABndRewriting.natural (∼Exponential.Seqₛ.def.val) ω e w).mpr hb'
-
+  exact PRARewritingWitnessBound.ternary_rew_bound_with (∼Exponential.Seqₛ.def.val) (fun x _ _ => 2*x + 1)
+    PRANegSeqSWitnessBound.negSeq_bound ω e w hw
 
 theorem negExponential_bound_common (x y w : V)
     (hy : 2*y+1 ≤ w) (h2 : 2*(y^2)+1 ≤ w) :

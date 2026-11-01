@@ -23,13 +23,10 @@ theorem model_forward (π : ArithmeticSentence)
   rw [Semiformula.eval_lMap] at h ⊢
   rw [reduct_eq_standard] at h ⊢
   have hn : ¬ π.Evalb (M := M) ![] := by simpa using h
-  simp only [conB, Semiformula.eval_all, LogicalConnective.HomClass.map_neg]
+  rw [eval_conB]
   intro w hw
-  have hv : (Fin.snoc (![] : Fin 0 → M) w : Fin 1 → M) = ![w] := by
-    funext i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) i
-  apply hn
-  exact eval_bnd_imp π ![] w Empty.elim (by simpa only [hv] using hw)
+  exact hn (eval_bnd_imp π ![] w Empty.elim (by rwa [snoc_nil]))
+
 end models
 
 theorem PRA_proves_forward (π : ArithmeticSentence) :

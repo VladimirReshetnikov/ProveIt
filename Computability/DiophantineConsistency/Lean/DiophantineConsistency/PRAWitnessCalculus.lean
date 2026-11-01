@@ -1,4 +1,4 @@
-import DiophantineConsistency.PRABndRewriting
+import DiophantineConsistency.PRARewritingWitnessBound
 import Foundation.FirstOrder.Arithmetic.Exponential.Bit
 /-! # A compositional witness-bound calculus
 
@@ -154,13 +154,9 @@ theorem wb_rew {k n : ℕ} {ψ : ArithmeticSemisentence k} (ω : Rew ℒₒᵣ E
     (hψ : WB M ψ) : WB M (ω ▹ ψ) := by
   obtain ⟨B, hB, hb⟩ := hψ
   let V : (Fin n → M) → Fin k → M := fun e i => (ω #i).val e Empty.elim
-  refine ⟨fun e => B (V e), fun e e' h => hB _ _ (fun i => term_mono (ω #i) e e' h),
-    fun e he => ?_⟩
-  have hf : (Semiterm.val e Empty.elim ∘ ⇑ω ∘ Semiterm.fvar) = (Empty.elim : Empty → M) :=
-    funext fun x => Empty.elim x
-  rw [Semiformula.eval_rew, hf] at he
-  have hn := PRABndRewriting.natural ψ ω e (B (V e))
-  exact hn.mpr (hb (V e) (by simpa [V, Function.comp_def] using he))
+  refine ⟨fun e => B (V e), fun e e' h => hB _ _ (fun i => term_mono (ω #i) e e' h), ?_⟩
+  intro e
+  exact PRARewritingWitnessBound.rew_bound_with ψ B hb ω e (B (V e)) le_rfl
 
 omit [M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻] in
 @[simp] theorem subst_bot {k n : ℕ} (v : Fin k → ArithmeticSemiterm Empty n) :
