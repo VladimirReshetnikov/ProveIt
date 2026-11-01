@@ -273,7 +273,7 @@ Measured, not done (lines saved by the same lane-wide fixpoint):
 | target | lines | cost |
 | --- | ---: | --- |
 | `EnumPerm`/`Enum254` → `Enum222` | 45 + 29 | K215 (peer-pinned) and Prog254 endpoint rebuilds |
-| `Rotation240` → `Perm252` (both protected) | about 150 | KEndpoint and Rotation240 closures |
+| `Rotation240` → `Perm252` (both protected) | 119 | tried and reverted: the downstream reaches the PA and Diophantine endpoints (hundreds of heavy modules), and checking only the 33 modules that name an alias is not enough for an endpoint path |
 
 Larger savings in the protected lanes need a machine-generic formulation over
 `program`/`table`, not more aliasing.
