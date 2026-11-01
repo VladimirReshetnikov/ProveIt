@@ -1,0 +1,21 @@
+DiophantineConsistency.IntuitionisticPRACurrent.translated_current
+  (T : LO.FirstOrder.Theoryᵢ DiophantineConsistency.PRALanguage.language 𝗜𝗻𝘁¹)
+  (hax : ∀ σ ∈ DiophantineConsistency.PRATheory.PRA, T ⊢ LO.FirstOrder.Semiformula.doubleNegation σ)
+  (hcurrent : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.IntuitionisticPRACurrent.currentClassical) :
+  T ⊢ LO.FirstOrder.Semiformula.doubleNegation DiophantineConsistency.IntuitionisticPRACurrent.currentClassical
+DiophantineConsistency.IntuitionisticPRACurrent.current_with_target
+  (T : LO.FirstOrder.Theoryᵢ DiophantineConsistency.PRALanguage.language 𝗜𝗻𝘁¹)
+  (hax : ∀ σ ∈ DiophantineConsistency.PRATheory.PRA, T ⊢ LO.FirstOrder.Semiformula.doubleNegation σ)
+  (hcurrent : DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.IntuitionisticPRACurrent.currentClassical)
+  (target : LO.FirstOrder.Sentenceᵢ DiophantineConsistency.PRALanguage.language)
+  (hbridge :
+    T ⊢
+      LO.FirstOrder.Semiformula.doubleNegation DiophantineConsistency.IntuitionisticPRACurrent.currentClassical 🡒
+        target) :
+  T ⊢ target
+'DiophantineConsistency.IntuitionisticPRACurrent.translated_current' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IntuitionisticPRACurrent.current_with_target' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

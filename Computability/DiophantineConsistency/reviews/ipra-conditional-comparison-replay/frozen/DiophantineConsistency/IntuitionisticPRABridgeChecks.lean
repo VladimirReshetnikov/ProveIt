@@ -1,0 +1,5 @@
+import DiophantineConsistency.IntuitionisticPRABridge
+#check DiophantineConsistency.IntuitionisticPRABridge.from_classical
+#check DiophantineConsistency.IntuitionisticPRABridge.from_classical_with_target
+#print axioms DiophantineConsistency.IntuitionisticPRABridge.from_classical
+#print axioms DiophantineConsistency.IntuitionisticPRABridge.from_classical_with_target

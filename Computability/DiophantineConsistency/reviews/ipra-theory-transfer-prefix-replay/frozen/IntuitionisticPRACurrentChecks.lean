@@ -1,0 +1,5 @@
+import DiophantineConsistency.IntuitionisticPRACurrent
+#check DiophantineConsistency.IntuitionisticPRACurrent.translated_current
+#check DiophantineConsistency.IntuitionisticPRACurrent.current_with_target
+#print axioms DiophantineConsistency.IntuitionisticPRACurrent.translated_current
+#print axioms DiophantineConsistency.IntuitionisticPRACurrent.current_with_target

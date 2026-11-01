@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAConditionalComparison
+#print axioms DiophantineConsistency.IPRAConditionalComparison.translated_comparison
+#print axioms DiophantineConsistency.IPRAConditionalComparison.comparison_with_target
+#print axioms DiophantineConsistency.IPRAConditionalComparison.mapped_noZero_comparison_with_target

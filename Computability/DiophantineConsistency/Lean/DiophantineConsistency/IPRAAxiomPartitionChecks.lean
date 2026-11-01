@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAAxiomPartition
+#print axioms DiophantineConsistency.IPRAAxiomPartition.axiom_images_from_remaining
+#print axioms DiophantineConsistency.IPRAAxiomPartition.mapped_noZero_comparison_from_remaining
