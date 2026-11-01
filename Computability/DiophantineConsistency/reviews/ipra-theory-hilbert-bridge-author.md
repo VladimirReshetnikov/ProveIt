@@ -1,0 +1,5 @@
+# Intuitionistic theory/Hilbert bridge: author replay
+
+Guarded run `/tmp/ipra-theory-hilbert-bridge-2261i4re` passed. For arbitrary `Theoryᵢ L Λ`, extend Λ by the embeddings of exactly the theory's closed axioms. The proof transformations go both ways between a finite-context T-proof and an extended-Hilbert proof of the embedded sentence. The reverse transform handles generalization by proving every used context formula is fixed by variable shifting. Lean metatheory uses classical choice to inspect axiom-set membership; no excluded-middle axiom is added to the object calculus.
+
+No arithmetic stability or witness-bound proof is supplied. Foundation/package source-object correspondence and full transitive provenance remain unverified. Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-theory-hilbert-bridge.py`. Independent replay required. State `29e8761cc80d7aa71c12c46f3e6431c9aba2d30078789f9b479984bf5f6814e6`; manifest `80bd990799f26a4618b460ea656c7ecca00cb1f798ca93a558188b5c1e159ea4`.

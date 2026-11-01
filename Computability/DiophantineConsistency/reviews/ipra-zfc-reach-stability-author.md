@@ -1,0 +1,5 @@
+# Exact ZFC matrix reachable stability: author replay
+
+Guarded run `/tmp/ipra-zfc-reach-stability-k680xtdp` passed. For the literal mapped `bnd rho` matrix, its universally quantified GG-to-native comparison follows from explicit **Hilbertᵢ** stability proofs for precisely its recursively reachable positive atoms, disjunctions and existentials after opening the matrix. These are open-formula Hilbert proofs, not supplied arbitrary `Theoryᵢ` proofs. The mapped ZFC consistency equivalence also requires an explicit translated witness-bound T-proof. Neither class of premise is constructed; no unconditional iPRA theorem, standard-iPRA identification or PAHF/native identification is asserted.
+
+Selected parent and Foundation anchors are checked; full inherited HA/ZF/Foundation/package transitive source/object provenance remains unverified. Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-zfc-reach-stability.py`. Independent replay required. State `a48189d1f0537b92c8401e721a1c98d0212129c2e3a891f519b635178aca9fa8`; manifest `fba07cb9a5769344671f70c21a895699a300231adb8e4dabaa6ad91cea57efa4`.

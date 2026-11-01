@@ -1,0 +1,7 @@
+'DiophantineConsistency.IPRATheoryInstantiation.allInst' depends on axioms: [propext, Quot.sound]
+'DiophantineConsistency.IPRATheoryInstantiation.instantiateTheory' depends on axioms: [propext, Quot.sound]
+DiophantineConsistency.IPRATheoryInstantiation.instantiateTheory.{u_1} {L : LO.FirstOrder.Language}
+  {Λ : LO.FirstOrder.Hilbertᵢ L} {T : LO.FirstOrder.Theoryᵢ L Λ} {n : ℕ} (φ : LO.FirstOrder.Semisentenceᵢ L n)
+  (h : T ⊢! ∀⁰* φ) (v : Fin n → LO.FirstOrder.Term L ℕ) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended T ⊢!
+    (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts v)) φ

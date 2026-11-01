@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAFoundationZFCReachStability
+#print axioms DiophantineConsistency.IPRAFoundationZFCReachStability.matrixCompare
+#print axioms DiophantineConsistency.IPRAFoundationZFCReachStability.zfcEquiv
+#check DiophantineConsistency.IPRAFoundationZFCReachStability.zfcEquiv

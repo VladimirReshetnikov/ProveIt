@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRATheoryInstantiation
+#print axioms DiophantineConsistency.IPRATheoryInstantiation.allInst
+#print axioms DiophantineConsistency.IPRATheoryInstantiation.instantiateTheory
+#check DiophantineConsistency.IPRATheoryInstantiation.instantiateTheory
