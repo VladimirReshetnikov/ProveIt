@@ -36,23 +36,19 @@ theorem code4_le_repeatVec {c k R v' m j : V} (hc : c ≤ m) (hk : k ≤ m) (hR 
   exact add_le_add (pair_le_pair hc (le_trans (pair_le_pair hk
     (le_trans (pair_le_pair hR hv) le_self_add)) le_self_add)) le_rfl
 
-theorem termBVVec_le (k v : V) : termBVVec ℒₛₑₜ k v ≤ repeatVec v k := by
-  by_cases hv : IsUTermVec ℒₛₑₜ k v
-  · have hl := len_termBVVec hv
-    have h := len_repeatVec_of_nth_le (v := termBVVec ℒₛₑₜ k v) (m := v)
-      (fun i hi => by
-        rw [hl] at hi
-        rw [nth_termBVVec hv hi]
-        exact le_trans (termBV_le_self _) (nth_le v i))
-    rwa [hl] at h
-  · simp [termBVVec, hv]
-
 theorem listMax_termBVVec_le (k v : V) : listMax (termBVVec ℒₛₑₜ k v) ≤ v := by
   by_cases hv : IsUTermVec ℒₛₑₜ k v
   · refine listMaxss_le fun i hi => ?_
     rw [len_termBVVec hv] at hi
     rw [nth_termBVVec hv hi]
     exact le_trans (termBV_le_self _) (nth_le v i)
+  · simp [termBVVec, hv]
+
+theorem termBVVec_le (k v : V) : termBVVec ℒₛₑₜ k v ≤ repeatVec v k := by
+  by_cases hv : IsUTermVec ℒₛₑₜ k v
+  · have h := len_repeatVec_of_nth_le (v := termBVVec ℒₛₑₜ k v) (m := v)
+      (fun i hi => le_trans (nth_le_listMax hi) (listMax_termBVVec_le k v))
+    simpa only [len_termBVVec hv] using h
   · simp [termBVVec, hv]
 
 /-- Over `ℒₛₑₜ` the bound-variable bound of a formula code is at most the code. -/
