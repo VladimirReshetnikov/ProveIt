@@ -7,7 +7,7 @@ noncomputable section
 # Disjunction, negation and the constant steps of the reflection generator
 
 * `orTemplate` (six placeholders, as `LStepAnd.andTemplate`): the
-  disjunction step, by `satIn_or`;
+  disjunction step, by negation and the conjunction step;
 * `negTemplate`: if `F₁` is a total reflection function for `P₀`,
   `P₄ = ¬P₀` and `F₅ = F₁`, then `F₅` is one for `P₄` (code `c → ⊥`), which
   serves the negated atoms of the environment transform;
@@ -62,25 +62,6 @@ theorem lim_closed_succ {b : V} (hb : IsLim (memRel V) b) :
   · exact haγ
 
 include hR in
-/-- **The disjunction step.** -/
-theorem or_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Prop}
-    (htot₁ : Tot F₁) (hrefl₁ : Refl H hP P₀ F₁) (htot₃ : Tot F₃) (hrefl₃ : Refl H hP P₂ F₃)
-    (hdefP : ∀ t, P₄ t ↔ P₀ t ∨ P₂ t)
-    (hdefF : ∀ a g, F₅ a g ↔ ∃ g₁ g₂, F₁ a g₁ ∧ F₃ a g₂ ∧ ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂) :
-    Tot F₅ ∧ Refl H hP P₄ F₅ := by
-  -- the conjunction step at the same functions supplies totality and closure
-  obtain ⟨htot, c, -, hr⟩ := and_step H hR hP (P₄ := fun t => P₀ t ∧ P₂ t)
-    htot₁ hrefl₁ htot₃ hrefl₃ (fun _ => Iff.rfl) hdefF
-  refine ⟨htot, ?_⟩
-  obtain ⟨c₁, hc₁, hr₁⟩ := hrefl₁
-  obtain ⟨c₂, hc₂, hr₂⟩ := hrefl₃
-  refine ⟨_, isFormCodeSem_or H hc₁ hc₂, fun b hb hcl S hS R hR' a ha U hU t ht => ?_⟩
-  obtain ⟨hcl₁, hcl₃⟩ := max_closure H hR htot₁ htot₃ hdefF hb hcl
-  rw [hdefP, hr₁ b hb hcl₁ S hS R hR' a ha U hU t ht, hr₂ b hb hcl₃ S hS R hR' a ha U hU t ht,
-    satIn_or H (isSetStructure_stage H hR hP hb hS hR') hc₁ hc₂
-      (envOn_stage H hR hP hb hS ha hU ht)]
-
-include hR in
 /-- **The negation step.** -/
 theorem neg_step {P₀ P₂ : V → Prop} {F : V → V → Prop}
     (hrefl : Refl H hP P₀ F) (hdefP : ∀ t, P₂ t ↔ ¬ P₀ t) : Refl H hP P₂ F := by
@@ -91,6 +72,22 @@ theorem neg_step {P₀ P₂ : V → Prop} {F : V → V → Prop}
     satIn_imp H (isSetStructure_stage H hR hP hb hS hR') hc (isFormCodeSem_bot H)
       (envOn_stage H hR hP hb hS ha hU ht)]
   exact ⟨fun h hs => absurd hs h, fun h hs => satIn_bot H (h hs)⟩
+
+include hR in
+/-- **The disjunction step.** -/
+theorem or_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Prop}
+    (htot₁ : Tot F₁) (hrefl₁ : Refl H hP P₀ F₁) (htot₃ : Tot F₃) (hrefl₃ : Refl H hP P₂ F₃)
+    (hdefP : ∀ t, P₄ t ↔ P₀ t ∨ P₂ t)
+    (hdefF : ∀ a g, F₅ a g ↔ ∃ g₁ g₂, F₁ a g₁ ∧ F₃ a g₂ ∧ ∀ z, z ∈ g ↔ z ∈ g₁ ∨ z ∈ g₂) :
+    Tot F₅ ∧ Refl H hP P₄ F₅ := by
+  have hn₁ : Refl H hP (fun t => ¬ P₀ t) F₁ :=
+    neg_step H hR hP hrefl₁ (fun _ => Iff.rfl)
+  have hn₃ : Refl H hP (fun t => ¬ P₂ t) F₃ :=
+    neg_step H hR hP hrefl₃ (fun _ => Iff.rfl)
+  obtain ⟨htot, hrefl⟩ := and_step H hR hP
+    (P₄ := fun t => ¬ P₀ t ∧ ¬ P₂ t) htot₁ hn₁ htot₃ hn₃ (fun _ => Iff.rfl) hdefF
+  exact ⟨htot, neg_step H hR hP hrefl (fun t => by
+    simpa only [not_and_or, not_not] using hdefP t)⟩
 
 include hR in
 /-- `⊤` is reflected (code `⊥ → ⊥`). -/

@@ -22,14 +22,11 @@ theorem inline_bound (p s w : V)
     funext j
     refine Fin.cases rfl (fun k => ?_) j
     exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![p,s] w = ![p,s,w] := by simp
-  have hs' : Fin.snoc ![0,p] w = ![0,p,w] := by simp
-  rw [hv,hs,hs'] at hn
-  have hb := hn.mpr h
-  have heq : PRANegFormulaSetWitnessBound.negFormulaSetCore (L := L) = ω ▹ (∼(isSemiformula L).pi.val) := by
-    simp [PRANegFormulaSetWitnessBound.negFormulaSetCore, isFormulaSet, ballIn, Semiformula.ballLT, FirstOrder.ball, DeMorgan.imply, ←TransitiveRewriting.comp_app, Rew.subst_comp_subst, ω]
-  rw [heq]
-  exact hb
+  rw [hv] at hn
+  simpa [PRANegFormulaSetWitnessBound.negFormulaSetCore, isFormulaSet, ballIn, Semiformula.ballLT, FirstOrder.ball,
+    DeMorgan.imply, ←TransitiveRewriting.comp_app, Rew.subst_comp_subst, ω] using
+    hn.mpr (by simpa using h)
+
 theorem negFormulaSet_bound_of_syntax (s w : V)
     (hs : s ≤ w) (hpos : PRABitFullWitnessBound.bitMajorant s ≤ w)
     (hsyntax : ∀ p, p < s → (∼(isSemiformula L).pi.val).Evalb ![0,p] →

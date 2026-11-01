@@ -1,5 +1,6 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRABitFullWitnessBound
+import DiophantineConsistency.PRARewritingWitnessBound
 import Foundation.FirstOrder.Bootstrapping.Syntax.Formula.Basic
 /-! Bind the positive bit graph into the BV blueprint fixpoint. The
     bounded limSeqDef hypothesis is explicit and not supplied here. -/
@@ -25,18 +26,13 @@ theorem body_bound (d s t w : V) (hw : PRABitFullWitnessBound.bitMajorant s ≤ 
   constructor
   · exact hlim
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-    have hb := PRABitFullWitnessBound.bit_bound d s hbit
-    have hs0 : Fin.snoc ![d,s] (PRABitFullWitnessBound.bitMajorant s) = ![d,s,PRABitFullWitnessBound.bitMajorant s] := by simp
-    have hb' := eval_bnd_mono bitDef.val ![d,s] (Empty.elim : Empty → V) hw (by rw [hs0]; exact hb)
     let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#2,#0]
-    have hn := PRABndRewriting.natural bitDef.val ω ![s,t,d] w
-    have hv : (fun j => (ω #j).val ![s,t,d] Empty.elim) = ![d,s] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs : Fin.snoc ![s,t,d] w = ![s,t,d,w] := by simp
-    rw [hv,hs] at hn
-    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hn.mpr hb'
+    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using
+      (PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+        (fun _ s => PRABitFullWitnessBound.bitMajorant s)
+        PRABitFullWitnessBound.bit_bound ω ![s,t,d] w
+        (by simpa [ω] using hw) (by simpa [ω, Semiformula.eval_substs] using hbit))
+
 theorem bv_fixpoint_bound_of_witness (d s t w : V) (hs : s < w) (ht : t < w)
     (hw : PRABitFullWitnessBound.bitMajorant s ≤ w)
     (hbit : bitDef.val.Evalb ![d,s])
