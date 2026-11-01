@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRANamedValues50Native
+#check DiophantineConsistency.IPRANamedValues50Native.sameNoZero50
+#check DiophantineConsistency.IPRANamedValues50Native.bridge50
+#check DiophantineConsistency.IPRANamedValues50Native.literal_equivalence
+#print axioms DiophantineConsistency.IPRANamedValues50Native.sameNoZero50
+#print axioms DiophantineConsistency.IPRANamedValues50Native.bridge50
+#print axioms DiophantineConsistency.IPRANamedValues50Native.literal_equivalence

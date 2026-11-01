@@ -113,6 +113,16 @@ the author-only 848-module ancestor and package-transitive and dynamic-import
 ancestry remain inherited. The display and exact degree are checked separately
 by finite computations.
 
+The [50-variable degree-4 equation](equation4-50.pdf) replaces the signed
+rank-seed pair by one positive variable. Its exact shifted fixed-port literal
+has a no-premise [native endpoint](Lean/DiophantineConsistency/IPRANamedValues50Native.lean),
+and its [focused guarded comparison](reviews/ipra-named50-native-verification/README.md)
+matched five rows and 11,694 guarded files. The model equivalence uses the
+positivity of the first natural port; the instantiated fixed ports meet that
+condition. This retains the historical provider and inherited ancestry
+qualifications above. The displayed circuit and exact degree are separately
+checked by finite computations.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz
