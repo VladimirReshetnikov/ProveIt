@@ -175,7 +175,11 @@ A subsequent [zero-decidability join](Lean/DiophantineConsistency/IPRADifference
 rebuilds the necessary dependencies on that provider and discharges the zero
 decision premise. Matching guarded replays leave exactly the positive reverse
 difference implication as the explicit premise for general equality
-decidability; inherited package and project ancestry remains historical.
+decidability; inherited package and project ancestry remains historical. A
+[checked invariant client](Lean/DiophantineConsistency/IPRADifferenceInvariant.lean)
+reduces that positive reverse implication to the base and successor cases of
+quantifier-free induction on `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Both native arithmetic
+cases remain explicit obligations.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
 with matching author and independent replays. The analogous direct native

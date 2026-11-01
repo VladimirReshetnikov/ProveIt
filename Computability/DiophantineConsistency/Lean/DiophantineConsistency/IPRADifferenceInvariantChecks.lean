@@ -1,0 +1,6 @@
+import DiophantineConsistency.IPRADifferenceInvariant
+
+#check DiophantineConsistency.IPRADifferenceInvariant.invariantOpen
+#check DiophantineConsistency.IPRADifferenceInvariant.reverseFromInvariant
+#check DiophantineConsistency.IPRADifferenceInvariant.equalityDecidable
+#print axioms DiophantineConsistency.IPRADifferenceInvariant.equalityDecidable

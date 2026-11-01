@@ -1,0 +1,7 @@
+# Native two-difference induction invariant: author replay
+
+Guarded author run `/tmp/ipra-difference-invariant-lyacfqmg` passed on the independently checked zero-decidability join provider `/tmp/ipra-difference-zero-join-o5kg1x9y/lib`. The client uses the exact quantifier-free invariant `x−y≠0 ∨ (y−x≠0 ∨ x=y)` from the existing classical model proof. Lean checks its native open-formula status and uses the native open-induction axiom to construct the universally quantified positive reverse difference proof, then native equality decidability, from two explicitly supplied native-theory proofs: the invariant's base case and successor step, each universally closed over the free parameter.
+
+Neither arithmetic induction case is proved by this client. Source files and selected parent objects were authenticated before and after compilation; parent project/Foundation and external-package transitive ancestry remains inherited and historical. The axiom report is the standard `propext`, `Classical.choice`, and `Quot.sound`; no classical object-level rule is introduced.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-invariant.py`. State SHA-256 `d6f78c6b3f25d9712205e2cc72ef4ef3582243cca8adcfb05dc38da2affee7e0`; provider inventory `e14e23d49d2354c8c76fd51589caed507cb87f81fd37d094cb2b27febff7e29a`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.
