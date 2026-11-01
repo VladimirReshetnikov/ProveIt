@@ -165,6 +165,16 @@ its syntactic identification with erased `nativeNoZero`. It is intended to
 make the equation side of the endpoint explicit; it has not been elaborated
 or checked and says nothing about the independent consistency encoding.
 
+[`IPRAReferenceRoundtrip.lean`](draft/IPRAReferenceRoundtrip.lean) is an
+uncompiled outline for a metatheoretic comparison on equality-only sentences:
+`nativeTheory ⊢ embed σ ↔ referenceTheory ⊢ σ`. It assembles the earlier
+conditional reverse transfer and candidate induction-image wrapper with the
+candidate forward transfer and syntactic erasure-after-embedding identity.
+The induction wrapper itself remains uncompiled. Even if checked, that
+sentence-level provability comparison would not alone identify an arbitrary
+native formula with its embedded erasure, identify the consistency encoding,
+or validate the equation endpoint.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements and candidate derivations; discharge the
 native induction image; transfer the reference axioms
