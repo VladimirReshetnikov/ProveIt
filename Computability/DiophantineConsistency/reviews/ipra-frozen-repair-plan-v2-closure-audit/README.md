@@ -1,0 +1,5 @@
+# Independent 73-plan project-closure audit
+
+`receipt.json` reports `PASS_PROJECT_CLOSURE`. This independent checker reconstructs each retained node's original project environment from the actual physical provider's recorded direct imports or recorded dependency hashes, including both original and selected physical origins when their paths differ. It checks the recorded flattened environment exactly, re-derives the 1,098-module frozen target graph and the dirty-set reuse condition, and verifies all 1,025 retained modules against the selected overlay. It checks 1,951 recorded project edges and 1,232 direct external edges, plus all 5,662 planned guarded file hashes twice. The complete output is `audit.log`.
+
+This is independent project-environment reconstruction, not a Lean replay or a current-source theorem. It checks selected direct external object bytes, while package-transitive and dynamically loaded ancestry remain inherited; the inherited 848-project ancestor remains author-only. Both 73-module Lean replays and their matched endpoint axiom checks remain required.
