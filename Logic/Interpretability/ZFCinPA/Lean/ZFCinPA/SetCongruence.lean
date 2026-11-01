@@ -521,6 +521,22 @@ split by `isRel_iff_Set` into the four atom lemmas above; the connective
 and quantifier cases are language-independent transliterations of
 Foundation's `Bootstrapping.Arithmetic.replace_aux`. -/
 
+omit [𝗘𝗤 ℒₛₑₜ ⪯ T] in
+/-- Open an induction hypothesis of the replacement proof at two free variables. -/
+private lemma replace_aux_open (φ : Bootstrapping.Semiformula V ℒₛₑₜ 1)
+    (h : Provable T (^∀ ^∀ imp ℒₛₑₜ
+      (^rel 2 ((setEqIndex : ℕ) : V) ?[^#1, ^#0])
+      (imp ℒₛₑₜ (subst ℒₛₑₜ (^#1 ∷ 0) φ.val) (subst ℒₛₑₜ (^#0 ∷ 0) φ.val)))) :
+    T.internalize V ⊢ ((&'1) ≐ₛ (&'0)) 🡒 φ⤉⤉.subst ![&'1] 🡒 φ⤉⤉.subst ![&'0] := by
+  have ih : T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
+      φ.subst ![#'1] 🡒 φ.subst ![#'0]) := by
+    apply (tprovable_iff_provable (T := T)).mpr
+    simpa using h
+  have hs := TProof.specialize₂_shift! ih &'0 &'1
+  simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
+    Bootstrapping.Semiformula.shift_substs,
+    Bootstrapping.Semiformula.substs_substs] using hs
+
 lemma replace_aux (φ : V) :
     IsSemiformula ℒₛₑₜ 1 φ →
     Provable T (^∀ ^∀ imp ℒₛₑₜ
@@ -546,28 +562,8 @@ lemma replace_aux (φ : V) :
       simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
         Bootstrapping.Semiformula.shift_substs,
         Bootstrapping.Semiformula.substs_substs]
-    have ihφ : T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
-        φ.subst ![#'1] 🡒 φ.subst ![#'0]) := by
-      apply (tprovable_iff_provable (T := T)).mpr
-      simpa using ihp
-    have ihψ : T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
-        ψ.subst ![#'1] 🡒 ψ.subst ![#'0]) := by
-      apply (tprovable_iff_provable (T := T)).mpr
-      simpa using ihq
-    have ihφ :
-        T.internalize V ⊢ ((&'1) ≐ₛ (&'0)) 🡒
-          φ⤉⤉.subst ![&'1] 🡒 φ⤉⤉.subst ![&'0] := by
-      have := TProof.specialize₂_shift! ihφ &'0 &'1
-      simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
-        Bootstrapping.Semiformula.shift_substs,
-        Bootstrapping.Semiformula.substs_substs] using this
-    have ihψ :
-        T.internalize V ⊢ ((&'1) ≐ₛ (&'0)) 🡒
-          ψ⤉⤉.subst ![&'1] 🡒 ψ⤉⤉.subst ![&'0] := by
-      have := TProof.specialize₂_shift! ihψ &'0 &'1
-      simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
-        Bootstrapping.Semiformula.shift_substs,
-        Bootstrapping.Semiformula.substs_substs] using this
+    have ihφ := replace_aux_open T φ ihp
+    have ihψ := replace_aux_open T ψ ihq
     cl_prover [ihφ, ihψ]
   case hor =>
     intro p q hp hq ihp ihq
@@ -587,28 +583,8 @@ lemma replace_aux (φ : V) :
       simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
         Bootstrapping.Semiformula.shift_substs,
         Bootstrapping.Semiformula.substs_substs]
-    have ihφ : T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
-        φ.subst ![#'1] 🡒 φ.subst ![#'0]) := by
-      apply (tprovable_iff_provable (T := T)).mpr
-      simpa using ihp
-    have ihψ : T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
-        ψ.subst ![#'1] 🡒 ψ.subst ![#'0]) := by
-      apply (tprovable_iff_provable (T := T)).mpr
-      simpa using ihq
-    have ihφ :
-        T.internalize V ⊢ ((&'1) ≐ₛ (&'0)) 🡒
-          φ⤉⤉.subst ![&'1] 🡒 φ⤉⤉.subst ![&'0] := by
-      have := TProof.specialize₂_shift! ihφ &'0 &'1
-      simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
-        Bootstrapping.Semiformula.shift_substs,
-        Bootstrapping.Semiformula.substs_substs] using this
-    have ihψ :
-        T.internalize V ⊢ ((&'1) ≐ₛ (&'0)) 🡒
-          ψ⤉⤉.subst ![&'1] 🡒 ψ⤉⤉.subst ![&'0] := by
-      have := TProof.specialize₂_shift! ihψ &'0 &'1
-      simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
-        Bootstrapping.Semiformula.shift_substs,
-        Bootstrapping.Semiformula.substs_substs] using this
+    have ihφ := replace_aux_open T φ ihp
+    have ihψ := replace_aux_open T ψ ihq
     cl_prover [ihφ, ihψ]
   case hverum =>
     suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒 ⊤ 🡒 ⊤) by

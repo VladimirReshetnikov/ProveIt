@@ -205,16 +205,14 @@ theorem wb_of_term_bound {n : ℕ} {φ : ArithmeticSemisentence n} (P : Arithmet
 theorem wb_bexsLT {n : ℕ} (t : ArithmeticSemiterm Empty n) {ψ : ArithmeticSemisentence (n + 1)}
     (hψ : WB M ψ) : WB M (ψ.bexsLT t) := by
   unfold Semiformula.bexsLT FirstOrder.bexs
-  refine wb_exs (fun e => t.val e Empty.elim) (term_mono t) (fun e ⟨x, hx⟩ => ⟨x, ?_, hx⟩)
-    (wb_and (wb_open (by simp)) hψ)
+  refine wb_exs_term t (fun e x hx => ?_) (wb_and (wb_open (by simp)) hψ)
   simp [Function.comp_def] at hx
   exact le_of_lt hx.1
 
 theorem wb_bexsLE {n : ℕ} (t : ArithmeticSemiterm Empty n) {ψ : ArithmeticSemisentence (n + 1)}
     (hψ : WB M ψ) : WB M (ψ.bexsLE t) := by
   unfold Semiformula.bexsLE FirstOrder.bexs
-  refine wb_exs (fun e => t.val e Empty.elim) (term_mono t) (fun e ⟨x, hx⟩ => ⟨x, ?_, hx⟩)
-    (wb_and (wb_open (by simp)) hψ)
+  refine wb_exs_term t (fun e x hx => ?_) (wb_and (wb_open (by simp)) hψ)
   simp [Semiformula.Operator.le_def, Function.comp_def] at hx
   exact le_iff_eq_or_lt.mpr hx.1
 
