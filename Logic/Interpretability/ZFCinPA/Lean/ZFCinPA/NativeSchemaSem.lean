@@ -233,26 +233,19 @@ theorem eval_intT {ξ : Type*} :
       rw [intT_neg, LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq,
         LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.neg_eq]
       exact not_congr (eval_intT_rel R v b f)
-  | _, ⊤, b, f => by simp
-  | _, ⊥, b, f => by simp
-  | _, φ ⋏ ψ, b, f => by
-      simp only [intT_and, LogicalConnective.HomClass.map_and, LogicalConnective.Prop.and_eq,
-        eval_intT φ b f, eval_intT ψ b f]
-  | _, φ ⋎ ψ, b, f => by
-      simp only [intT_or, LogicalConnective.HomClass.map_or, LogicalConnective.Prop.or_eq,
-        eval_intT φ b f, eval_intT ψ b f]
-  | n, ∀⁰ φ, b, f => by
-      simp only [intT_all, Semiformula.eval_all, LogicalConnective.HomClass.map_or,
+  | _, ⊤, b, f | _, ⊥, b, f => by simp
+  | _, φ ⋏ ψ, b, f | _, φ ⋎ ψ, b, f => by
+      simp only [intT_and, intT_or, LogicalConnective.HomClass.map_and,
+        LogicalConnective.HomClass.map_or, LogicalConnective.Prop.and_eq,
+        LogicalConnective.Prop.or_eq, eval_intT φ b f, eval_intT ψ b f]
+  | n, ∀⁰ φ, b, f | n, ∃⁰ φ, b, f => by
+      simp only [intT_all, intT_exs, Semiformula.eval_all, Semiformula.eval_ex,
+        LogicalConnective.HomClass.map_or, LogicalConnective.HomClass.map_and,
         LogicalConnective.HomClass.map_neg, LogicalConnective.Prop.or_eq,
-        LogicalConnective.Prop.neg_eq, eval_domT]
-      apply ConstructibleInterpretation.forall_guard id Function.surjective_id
-      intro u
-      rw [← val_cons' u b, eval_intT φ (u :> b) f]
-      rfl
-  | n, ∃⁰ φ, b, f => by
-      simp only [intT_exs, Semiformula.eval_ex, LogicalConnective.HomClass.map_and,
-        LogicalConnective.Prop.and_eq, eval_domT]
-      apply ConstructibleInterpretation.exists_guard id Function.surjective_id
+        LogicalConnective.Prop.and_eq, LogicalConnective.Prop.neg_eq, eval_domT]
+      first
+      | apply ConstructibleInterpretation.forall_guard id Function.surjective_id
+      | apply ConstructibleInterpretation.exists_guard id Function.surjective_id
       intro u
       rw [← val_cons' u b, eval_intT φ (u :> b) f]
       rfl
