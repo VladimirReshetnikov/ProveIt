@@ -1,0 +1,3 @@
+# Prospective 14-variable suffix after the 73-module repair
+
+This source-plan audit finds no intersection between the proposed 73-module dirty set and any original transitive project manifest of the five extra inherited modules needed by the 14-variable endpoint. It pins and rechecks the five original manifests, both planning manifests and the ancestor state. This supports retaining the six-module 14-variable suffix shape, subject to a full reauthentication of the actual successfully repaired parent and all selected project objects. No repair replay has yet passed, and this is not an endpoint proof. The 848 ancestor and external package-transitive/dynamic boundary remain inherited.
