@@ -246,31 +246,23 @@ theorem wb_ballLTSucc {n : ℕ} (t : ArithmeticSemiterm Empty n) {ψ : Arithmeti
 
 theorem wb_neg_bexsLT {n : ℕ} (t : ArithmeticSemiterm Empty n) {ψ : ArithmeticSemisentence (n + 1)}
     (hψ : WB M (∼ψ)) : WB M (∼(ψ.bexsLT t)) := by
-  have h : (∼(ψ.bexsLT t) : ArithmeticSemisentence n) = (∼ψ).ballLT t := by
-    simp [Semiformula.bexsLT, Semiformula.ballLT, FirstOrder.bexs, FirstOrder.ball,
-      Semiformula.imp_eq]
-  rw [h]; exact wb_ballLT t hψ
+  simpa [Semiformula.bexsLT, Semiformula.ballLT, FirstOrder.bexs, FirstOrder.ball,
+    Semiformula.imp_eq] using (wb_ballLT t hψ)
 
 theorem wb_neg_ballLT {n : ℕ} (t : ArithmeticSemiterm Empty n) {ψ : ArithmeticSemisentence (n + 1)}
     (hψ : WB M (∼ψ)) : WB M (∼(ψ.ballLT t)) := by
-  have h : (∼(ψ.ballLT t) : ArithmeticSemisentence n) = (∼ψ).bexsLT t := by
-    simp [Semiformula.bexsLT, Semiformula.ballLT, FirstOrder.bexs, FirstOrder.ball,
-      Semiformula.imp_eq]
-  rw [h]; exact wb_bexsLT t hψ
+  simpa [Semiformula.bexsLT, Semiformula.ballLT, FirstOrder.bexs, FirstOrder.ball,
+    Semiformula.imp_eq] using (wb_bexsLT t hψ)
 
 theorem wb_neg_bexsLE {n : ℕ} (t : ArithmeticSemiterm Empty n) {ψ : ArithmeticSemisentence (n + 1)}
     (hψ : WB M (∼ψ)) : WB M (∼(ψ.bexsLE t)) := by
-  have h : (∼(ψ.bexsLE t) : ArithmeticSemisentence n) = (∼ψ).ballLE t := by
-    simp [Semiformula.bexsLE, Semiformula.ballLE, FirstOrder.bexs, FirstOrder.ball,
-      Semiformula.imp_eq]
-  rw [h]; exact wb_ballLE t hψ
+  simpa [Semiformula.bexsLE, Semiformula.ballLE, FirstOrder.bexs, FirstOrder.ball,
+    Semiformula.imp_eq] using (wb_ballLE t hψ)
 
 theorem wb_neg_ballLE {n : ℕ} (t : ArithmeticSemiterm Empty n) {ψ : ArithmeticSemisentence (n + 1)}
     (hψ : WB M (∼ψ)) : WB M (∼(ψ.ballLE t)) := by
-  have h : (∼(ψ.ballLE t) : ArithmeticSemisentence n) = (∼ψ).bexsLE t := by
-    simp [Semiformula.bexsLE, Semiformula.ballLE, FirstOrder.bexs, FirstOrder.ball,
-      Semiformula.imp_eq]
-  rw [h]; exact wb_bexsLE t hψ
+  simpa [Semiformula.bexsLE, Semiformula.ballLE, FirstOrder.bexs, FirstOrder.ball,
+    Semiformula.imp_eq] using (wb_bexsLE t hψ)
 
 theorem wb_neg_bexsLTSucc {n : ℕ} (t : ArithmeticSemiterm Empty n)
     {ψ : ArithmeticSemisentence (n + 1)} (hψ : WB M (∼ψ)) : WB M (∼(ψ.bexsLTSucc t)) :=
