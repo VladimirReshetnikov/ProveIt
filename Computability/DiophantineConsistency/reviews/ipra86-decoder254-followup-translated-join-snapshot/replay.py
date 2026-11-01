@@ -23,7 +23,7 @@ try:
  expected=json.loads(refs['parent_audit'].read_text())['graph'];snap=json.loads(refs['parent_snapshot'].read_text());tree=Path(snap['root'])/'tree';jm=json.loads(refs['classical_join_manifest'].read_text());fm=json.loads(refs['classical_86_manifest'].read_text())
  fs=json.loads(FS.read_text());assert fs['status']=='PASS' and len(fs['records'])==len(fm['order'])==111,'86 parent must be passed complete 111-module join'
  if fs['manifest_sha256']!=M['classical_86_manifest_sha256']:raise RuntimeError('86 parent used another join manifest')
- C=Path(fs['parent']);CS=C/'state.json';cs=json.loads(CS.read_text());assert cs['status']=='PASS' and len(cs['records'])==len(jm['order'])==74,'14 parent must be passed complete 74-module join'
+ C=Path(fs['classical_parent']);CS=C/'state.json';cs=json.loads(CS.read_text());assert cs['status']=='PASS' and len(cs['records'])==len(jm['order'])==74,'14 parent must be passed complete 74-module join'
  if cs['manifest_sha256']!=M['classical_join_manifest_sha256']:raise RuntimeError('14 parent used another join manifest')
  B=Path(cs['parent']);BS=B/'state.json';bs=json.loads(BS.read_text());assert bs['status']=='PASS' and len(bs['records'])==847,'underlying 847 parent must PASS';g=bs['graph']
  for k in ['sources','edges','order','source_hashes','external_paths','external_hashes','external_companions','anchors']:
