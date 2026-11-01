@@ -21,15 +21,11 @@ attribute [local irreducible] bitDef pairDef
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb : bitDef.val.Evalb ![p,r] := by simpa [Semiformula.Operator.val, operator_mem_def, p] using h.2
     let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#1]
-    have hf : (ω ▹ bitDef.val).Evalb ![p,r,x,y] := by
-      simpa [ω, Semiformula.eval_substs] using hb
-    have hw : PRABitFullWitnessBound.bitMajorant
-        ((ω #1).val ![p,r,x,y] Empty.elim) ≤ w := by
-      simpa [ω] using hbit
-    have hrew := PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
-      (fun _ r => PRABitFullWitnessBound.bitMajorant r)
-      PRABitFullWitnessBound.bit_bound ω ![p,r,x,y] w hw hf
-    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hrew
+    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using
+      (PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+        (fun _ r => PRABitFullWitnessBound.bitMajorant r)
+        PRABitFullWitnessBound.bit_bound ω ![p,r,x,y] w
+        (by simpa [ω] using hbit) (by simpa [ω, Semiformula.eval_substs] using hb))
 def memRelMajorant (r x y : V) : V := (x+y+1)^2+1 + PRABitFullWitnessBound.bitMajorant r
 theorem memRel_bound_explicit (r x y : V) : memRel.val.Evalb ![r,x,y] →
  (bnd memRel.val).Evalb ![r,x,y,memRelMajorant r x y] := by
