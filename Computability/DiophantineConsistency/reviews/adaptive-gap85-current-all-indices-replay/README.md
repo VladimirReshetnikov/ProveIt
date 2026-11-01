@@ -1,0 +1,5 @@
+# Fixed-port 85-zero same-witness index bounds and congruences
+
+Both coherent source-directed replays PASS with four matching source/object/full-log rows, zero warnings and standard Lean axioms. For every positive literal 85-zero at the current fixed ports in any IΣ₁ model, `current_zero_indices_root_congruences` produces the same Pell witnesses with n≥3, m≥5 and n<m, the stated coordinate identities, and either `27X ≡ 27·2^m` or `27(1+2^m X) ≡ 0` modulo `4Y(X+1)+3`. No choice of root orientation is assumed.
+
+These are necessary conditions only; no zero nonexistence or 85-operation equivalence is claimed. Three source modules plus checks are rebuilt on the independently replayed actual-all-indices provider; 405 selected project-object/companion paths and the recorded direct Foundation anchor are pinned. Original project and external package transitive source ancestry remains historical. Inputs and driver are `research/adaptive-gap85-normalization/{AdaptiveGap85CurrentAllIndicesRoot.lean,replay_current_all_indices.py}`; the already tracked first-index and fixed-port modules are rebuilt.

@@ -1,0 +1,5 @@
+import AdaptiveGap85LargeYPowNormExample
+#print axioms AdaptiveGap85LargeYPowNormExample.parameters
+#print axioms AdaptiveGap85LargeYPowNormExample.two_norms
+#print axioms AdaptiveGap85LargeYPowNormExample.index_polynomials
+#print axioms AdaptiveGap85LargeYPowNormExample.no_nontrivial_cube
