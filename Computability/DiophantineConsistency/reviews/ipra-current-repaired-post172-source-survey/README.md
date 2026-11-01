@@ -1,0 +1,5 @@
+# Post-172 source survey
+
+This is a prospective source-only capture for the next native endpoint rebase. It records 1,099 reachable source files and four workspace changes relative to the frozen 172-module build input. The conservative reverse closure contains 159 modules; it includes recorded environments from the earlier repair plan and direct imports from the completed 258-, 107-, and 172-module peer states. Both workspace scans during capture were empty. Lean's dependency parser was separately checked against all four changed import headers.
+
+The 172 peer process exited successfully, but its independent comparison was still running when this survey was prepared. This source survey does not authenticate selected object origins, transitive package or dynamic-import ancestry, nor does it constitute a successor Lean replay. It must be rechecked against the actual workspace and gated on independently matched parent receipts before use. Earlier 848-module and package ancestry boundaries remain inherited.
