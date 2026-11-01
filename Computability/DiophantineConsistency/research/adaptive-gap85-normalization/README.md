@@ -115,3 +115,10 @@ A further Lean-checked standard-natural example has X=4294967296=2³², Y=140737
 ### Conditional finite shift-orbit obstruction
 
 `AdaptiveGap85ShiftResidue.orbit_blocks` now checks the residue argument in every IΣ₁ model: for an abstract step adding or subtracting multiples of positive b to F and C independently, a finite external sequence preserves b∣F or b∣C, and every positive endpoint fails F+C<1+b. It uses Lean's external finite reflexive-transitive closure, not an internally coded model-length iteration. Binding the actual literal shifts to this relation and establishing an actual zero with the residue remain open. Matching focused replays and historical inherited ancestry are recorded in `reviews/adaptive-gap85-shift-residue-replay/`.
+
+
+### A third, residue-changing shift
+
+`AdaptiveGap85ThirdShift.literal_eval_shift` proves that the corrected third coordinate shift preserves the exact 85 expression over every commutative ring. The gamma decrement is `(q²−1)(A+1)c·s`; no extra factor H occurs. This is a ring-level equality and does not yet establish a positive arbitrary-IΣ₁-model shift or a normalizing representative. Independently replayed source, logs and historical provider qualifications are in `reviews/adaptive-gap85-third-shift-replay/`.
+
+The independently replayed `AdaptiveGap85ThirdResidueExample` checks positive integer coordinates before and after this shift, with artificial ports `(4,0,0,0)`, for which F changes from 0 to 1 modulo b=4. Thus the third shift can escape the residue invariant of the first two shifts on positive inputs. The example is not asserted to be an 85-equation zero or to use the actual fixed ports; it does not establish the 85 reverse implication. See `reviews/adaptive-gap85-third-residue-example-replay/`.

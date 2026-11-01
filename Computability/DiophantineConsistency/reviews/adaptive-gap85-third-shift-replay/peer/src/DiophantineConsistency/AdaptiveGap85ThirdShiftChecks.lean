@@ -1,0 +1,6 @@
+import DiophantineConsistency.AdaptiveGap85ThirdShift
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdShift.rank
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdShift.first_invariant
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdShift.main_invariant
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdShift.auxiliary_invariant
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdShift.literal_eval_shift

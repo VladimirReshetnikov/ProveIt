@@ -1,0 +1,4 @@
+import DiophantineConsistency.AdaptiveGap85ThirdResidueExample
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdResidueExample.all_positive
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdResidueExample.coordinates
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdResidueExample.residue_escape
