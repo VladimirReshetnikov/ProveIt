@@ -45,8 +45,9 @@ finite graph searches have produced a [47-variable quartic candidate](research/a
 and [40-variable](research/adaptive-square-sums40/README.md),
 [36-variable](research/adaptive-square-sums36/README.md), and
 [35-variable](research/adaptive-square-sums35/README.md) degree-six candidates.
-Their circuit sizes, substitutions and exact degrees have finite checks, but
-their model equivalences and native endpoints are not yet established.
+Their circuit sizes, substitutions and exact degrees have finite checks. The
+40-variable model equivalence has a matched historical replay; its native
+endpoint and the other candidates' model equivalences are still being checked.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader source refresh is running;
