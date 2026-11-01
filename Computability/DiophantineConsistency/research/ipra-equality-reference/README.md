@@ -90,6 +90,16 @@ reference-theory derivation of that schema from successor-step induction;
 the syntactic statement does not establish the derivation. Its invocation
 also used the untrusted mixed provider.
 
+The exploratory [`IPRAErasedSuccessorShape.lean`](../../Lean/DiophantineConsistency/IPRAErasedSuccessorShape.lean)
+gives the equality-only syntax of erased successor injectivity. It does not
+derive injectivity. [`IPRAErasedRemainingObligations.lean`](../../Lean/DiophantineConsistency/IPRAErasedRemainingObligations.lean)
+assembles the available erasure branches and makes the transport conditional
+on precisely two remaining proof obligations: the reference proof of
+successor injectivity and reference proofs of all erased native `x+1`
+induction instances. Both files have only been invoked with the untrusted
+mixed provider and require coherent replay. Their conditional transfer is
+not an established theory equivalence or an equation endpoint.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive
