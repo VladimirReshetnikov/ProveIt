@@ -45,10 +45,7 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
   · let ω : Rew ℒₒᵣ Empty 1 Empty 4 := Rew.subst ![#0]
     have hf : (ω ▹ ppow2Def.val).Evalb ![u,y,X,Y] := by simpa [ω, Semiformula.eval_substs] using hpow
     have hw : 2*(ω #0).val ![u,y,X,Y] Empty.elim+1 ≤ 2*y+1 := hpw
-    have hb := PRAExponentialWitnessBound.ppow2_rew_bound_at ω ![u,y,X,Y] (2*y+1) hw hf
-    have hh : Fin.snoc ![u,y,X,Y] (2*y+1) = ![u,y,X,Y,2*y+1] := by simp
-    rw [hh] at hb
-    exact hb
+    simpa using (PRAExponentialWitnessBound.ppow2_rew_bound_at ω ![u,y,X,Y] (2*y+1) hw hf)
   · rcases heven with hx | hy
     · left
       intro a
@@ -56,28 +53,24 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
       · exact Or.inl ha
       · right; left
         let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#0,#1,#3]
-        have hr := neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
-          (by simpa [ω, Semiformula.eval_substs] using ha1)
-        simpa using hr
+        simpa using (neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
+          (by simpa [ω, Semiformula.eval_substs] using ha1))
       · right; right
         let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘(2 * #0)’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#3]
-        have hr := neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
-          (by simpa [ω, Semiformula.eval_substs] using ha2)
-        simpa using hr
+        simpa using (neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
+          (by simpa [ω, Semiformula.eval_substs] using ha2))
     · right
       intro a
       rcases hy a with ha | ha1 | ha2
       · exact Or.inl ha
       · right; left
         let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#0,#1,#4]
-        have hr := neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
-          (by simpa [ω, Semiformula.eval_substs] using ha1)
-        simpa using hr
+        simpa using (neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
+          (by simpa [ω, Semiformula.eval_substs] using ha1))
       · right; right
         let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#0],(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#4]
-        have hr := neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
-          (by simpa [ω, Semiformula.eval_substs] using ha2)
-        simpa using hr
+        simpa using (neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
+          (by simpa [ω, Semiformula.eval_substs] using ha2))
   · rcases hodd with hx | hy
     · left
       intro a
@@ -85,28 +78,24 @@ theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y
       · exact Or.inl ha
       · right; left
         let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#0,#1,#3]
-        have hr := neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
-          (by simpa [ω, Semiformula.eval_substs] using ha1)
-        simpa using hr
+        simpa using (neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
+          (by simpa [ω, Semiformula.eval_substs] using ha1))
       · right; right
         let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘((2 * #0) + 1)’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#3]
-        have hr := neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
-          (by simpa [ω, Semiformula.eval_substs] using ha2)
-        simpa using hr
+        simpa using (neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
+          (by simpa [ω, Semiformula.eval_substs] using ha2))
     · right
       intro a
       rcases hy a with ha | ha1 | ha2
       · exact Or.inl ha
       · right; left
         let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#0,#1,#4]
-        have hr := neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
-          (by simpa [ω, Semiformula.eval_substs] using ha1)
-        simpa using hr
+        simpa using (neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
+          (by simpa [ω, Semiformula.eval_substs] using ha1))
       · right; right
         let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘(2 * !!((Semiterm.Operator.npow ℒₒᵣ 2).operator ![#0]))’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#4]
-        have hr := neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
-          (by simpa [ω, Semiformula.eval_substs] using ha2)
-        simpa using hr
+        simpa using (neg_ext_rew_neg_bound ω ![a,u,y,X,Y] (2*y+1)
+          (by simpa [ω, Semiformula.eval_substs] using ha2))
 
 def negSeq : ArithmeticSemisentence 3 := ∼Exponential.Seqₛ.def.val
 
