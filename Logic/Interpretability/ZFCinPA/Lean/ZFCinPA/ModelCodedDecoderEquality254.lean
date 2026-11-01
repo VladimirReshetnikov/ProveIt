@@ -77,9 +77,7 @@ theorem decoded_rho7_equiv (a b c : V) :
     ArithmeticCode254.tagged,add_zero]
   apply decoded_imp_congr
   · rw [decoded_weq]; exact ⟨E_Id⟩
-  · apply decoded_imp_congr
-    · rw [decoded_weq]; exact ⟨E_Id⟩
-    · rw [decoded_weq]; exact ⟨E_Id⟩
+  · apply decoded_imp_congr <;> rw [decoded_weq] <;> exact ⟨E_Id⟩
 
 theorem decoded_rho7_provable (a b c : V) :
     Provable T (decode (ArithmeticTemplates254.rho7 a b c)) := by
@@ -108,9 +106,7 @@ theorem decoded_rho5_equiv (a b c : V) :
     ArithmeticCode254.tagged,add_zero]
   apply decoded_imp_congr
   · rw [decoded_weq]; exact ⟨E_Id⟩
-  · apply decoded_imp_congr
-    · rw [decoded_wel]; exact ⟨E_Id⟩
-    · rw [decoded_wel]; exact ⟨E_Id⟩
+  · apply decoded_imp_congr <;> rw [decoded_wel] <;> exact ⟨E_Id⟩
 
 theorem decoded_rho5_provable (a b c : V) :
     Provable T (decode (ArithmeticTemplates254.rho5 a b c)) := by
@@ -139,9 +135,7 @@ theorem decoded_rho3_equiv (a b c : V) :
     ArithmeticCode254.tagged,add_zero]
   apply decoded_imp_congr
   · rw [decoded_weq]; exact ⟨E_Id⟩
-  · apply decoded_imp_congr
-    · rw [decoded_wel]; exact ⟨E_Id⟩
-    · rw [decoded_wel]; exact ⟨E_Id⟩
+  · apply decoded_imp_congr <;> rw [decoded_wel] <;> exact ⟨E_Id⟩
 
 theorem decoded_rho3_provable (a b c : V) :
     Provable T (decode (ArithmeticTemplates254.rho3 a b c)) := by
