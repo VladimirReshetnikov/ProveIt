@@ -9,6 +9,16 @@ result. The intended intuitionistic bridge and its open obligations are in
 [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md). The classical
 intermediate's exact axioms are in [PRA_AXIOMATIZATION.md](PRA_AXIOMATIZATION.md).
 
+## 13-variable compatibility build
+
+[PRA86ZFCStrict.lean](Lean/DiophantineConsistency/PRA86ZFCStrict.lean)
+constructs the classical candidate-PRA proof client for the literal
+13-variable, 86-operation equation. A [preliminary source-directed build](reviews/pra86-classical-preliminary/README.md)
+compiled all 111 suffix modules and its axiom check, but did not fully
+authenticate the inherited parent inputs. Guarded author and independent
+replays on the updated parent remain required. This is a classical
+intermediate and is not yet an intuitionistic PRA equivalence.
+
 ## Status update (2026-10-31)
 
 The bound certificate for Foundation's ZFC-refutation sentence
