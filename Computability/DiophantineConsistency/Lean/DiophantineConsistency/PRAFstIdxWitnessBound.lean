@@ -27,27 +27,20 @@ theorem fstIdx_bnd_succ (x p : V) :
   · by_cases hp : 1 ≤ p
     · exact Or.inr (h₁ hp)
     · left
-      have ho : ((“1 ≤ #2” : ArithmeticSemiformula Empty 3).neg).Open := by
-        change (∼ (“1 ≤ #2” : ArithmeticSemiformula Empty 3)).Open
-        exact Semiformula.open_neg.mpr (by simp)
-      rw [bnd_open _ ho]
-      simp only [Semiformula.eval_castLE]
-      have he : (fun i : Fin 3 => ![a,x,p,p+1] (i.castLE (by omega))) = ![a,x,p] := by
-        apply funext
-        simp [Fin.forall_fin_succ]
-      rw [he]
+      rw [← show Fin.snoc ![a,x,p] (p+1) = ![a,x,p,p+1] from by simp]
+      rw [bnd_open _ (by change (∼ (“1 ≤ #2” : ArithmeticSemiformula Empty 3)).Open; simp),
+        eval_bnd_atom]
       change ((∼ (“1 ≤ #2” : ArithmeticSemiformula Empty 3)).Eval ![a,x,p] Empty.elim)
       simpa [LogicalConnective.HomClass.map_neg] using hp
   · by_cases hp : p = 0
     · exact Or.inr (h₀ hp)
     · left
-      have ho : ((“#2 < 1” : ArithmeticSemiformula Empty 3).neg).Open := by
-        change (∼ (“#2 < 1” : ArithmeticSemiformula Empty 3)).Open
-        exact Semiformula.open_neg.mpr (by simp)
-      rw [bnd_open _ ho]
-      simp only [Semiformula.eval_castLE]
+      rw [← show Fin.snoc ![a,x,p] (p+1) = ![a,x,p,p+1] from by simp]
+      rw [bnd_open _ (by change (∼ (“#2 < 1” : ArithmeticSemiformula Empty 3)).Open; simp),
+        eval_bnd_atom]
       change ¬ p < 1
       simpa using hp
+
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 section candidate
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
