@@ -110,7 +110,7 @@ sentence is definitionally `¬rho` in
 The candidate [`IPRABoundedRhoZFC.zfcEquiv`](Lean/DiophantineConsistency/IPRABoundedRhoZFC.lean)
 states an internal native-theory derivation comparing the Gödel–Gentzen
 translation of the mapped Foundation consistency sentence with the native
-negation of the mapped refutation predicate. It is a comparison for this
+negation of the native NNF reading of the mapped refutation predicate. It is a comparison for this
 specific source sentence, not a general theorem identifying every alternative
 proof coding. It shares the coherent-replay qualifications above.
 
