@@ -102,9 +102,7 @@ theorem all_step {χ : Bootstrapping.Semiformula V ℒₛₑₜ 1} {W m : V} (hW
     (h : DLv 𝗭𝗙 (insert χ.free.val ∅) W) : DLv 𝗭𝗙 (insert (∀⁰ χ).val ∅) (W + 1 + 1) := by
   have hall : (∀⁰ χ).val = ^∀ χ.val := by simp
   have hS : setShift ℒₛₑₜ (insert (∀⁰ χ).val (∅ : V)) = insert (shift ℒₛₑₜ (∀⁰ χ).val) ∅ := by
-    rw [mem_setShift_insert]
-    congr 1
-    exact mem_ext fun y => by simp [mem_setShift_iff]
+    rw [mem_setShift_insert, setShift_empty]
   have hshl : shift ℒₛₑₜ (∀⁰ χ).val ≤ lvB (m + 1) := shift_level hA
   have d1 : DLv 𝗭𝗙 (insert (free ℒₛₑₜ χ.val) (setShift ℒₛₑₜ (insert (∀⁰ χ).val ∅))) (W + 1) := by
     rw [hS, ← Bootstrapping.Semiformula.free_val]

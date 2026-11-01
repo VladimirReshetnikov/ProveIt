@@ -49,9 +49,7 @@ theorem cancelShiftLe {p e B : V} (hp : IsFormula L p) (he : 4 ≤ e) (hBe : B �
   -- generalize: `⊢ ∀ p` from `⊢ shift p`
   have hprem : DerivableLe T (insert (free L p) (setShift L (insert (^∀ p) (∅ : V))))
       (Exp.exp (1024 * e)) := by
-    rw [free_formula hp, mem_setShift_insert]
-    have hset : setShift L (∅ : V) = ∅ := mem_ext fun y => by simp [mem_setShift_iff]
-    rw [hset]
+    rw [free_formula hp, mem_setShift_insert, setShift_empty]
     refine DerivableLe.wk he (DerivableLe.seq_le hBe (DerivableLe.insert_lt hb.hsh
       (DerivableLe.insert_lt hb.hshAll (empty_lt' B))))
       (by simp [hp.shift, hp1, hp1.shift]) ?_ h
