@@ -1,0 +1,5 @@
+# Conditional three-shift orbit obstruction
+
+Both focused Lean replays PASS with matching two source/object/full-log rows and standard Lean axioms. In any IΣ₁ model, if positive b divides both A and the initial F, the joint-residue theorem ensures b divides F at every endpoint of an external finite orbit of the three coordinate shifts; a positive endpoint F,C therefore cannot satisfy F+C<1+b. The balance C and third bA/F subtraction bounds are inherited from the orbit relation.
+
+The coordinate relation is broader than the zero-preserving shifts and does not establish an actual zero satisfying b∣A and b∣F, positivity of intermediate values, model-internal unbounded iteration or the 85 reverse implication. The independently replayed joint-residue provider is guarded, as are 396 selected inherited project-object/companion paths and one direct Foundation object; project/package transitive source ancestry remains historical. Source and driver: `research/adaptive-gap85-normalization/AdaptiveGap85JointObstruction.lean` and `replay_joint_obstruction.py`.

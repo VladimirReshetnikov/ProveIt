@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85JointObstruction
+#print axioms DiophantineConsistency.AdaptiveGap85JointObstruction.literal_orbit_divisible_F
+#print axioms DiophantineConsistency.AdaptiveGap85JointObstruction.literal_orbit_blocks_of_divisible_A_F

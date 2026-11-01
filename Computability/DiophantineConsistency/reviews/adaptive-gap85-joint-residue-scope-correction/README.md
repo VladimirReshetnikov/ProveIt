@@ -1,0 +1,3 @@
+# Historical replay with an incorrect scope label
+
+These two exploratory runs PASSed with matching source/object/full-log rows, but the replay driver's `scope` field was copied from its third-model parent and incorrectly describes the joint-residue client. The source and theorem checks state the actual conditional external finite coordinate-orbit congruence. `executed-driver.py` is the exact guarded script used. This packet preserves the incorrect metadata and its full evidence; the corrected driver and fresh replays are recorded separately. It does not claim zero preservation or any normalization theorem.
