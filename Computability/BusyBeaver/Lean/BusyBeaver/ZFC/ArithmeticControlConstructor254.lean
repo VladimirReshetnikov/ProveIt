@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.ArithmeticControlSourceRank254
 import BusyBeaver.ZFC.ArithmeticControlMP254
 
 set_option autoImplicit false
@@ -22,6 +23,7 @@ open ArithmeticControlUnpair254 (wsReg)
 open ArithmeticControlUnpairCore254 (UnpairCoreShape core_run)
 open ArithmeticControlMP254 (Scale4Shape scale_run)
 open FiniteControlTable254 RegisterPath
+open ArithmeticControlSourceRank254 (literal_target)
 
 /-- A finite sequence of actual TW increments, with no semantic run premise. -/
 inductive TagChain : Nat → Control → Control → Prop
@@ -76,18 +78,6 @@ private def c221 : Control := ⟨221, by decide⟩
 
 theorem impEntry_source : (source impEntry).2 = .decnz 2 := by rfl
 theorem impExit_source : (source impExit).2 = .decnz 1 := by rfl
-
-/-- Resolve a literal target through its finite tree path, avoiding catalogue search. -/
-private theorem literal_target (P : List Bool) (q : Control)
-    (hw : RMBisim.twalk ActualTree254.tree P 0 =
-      some ((source q).2, (source q).1.length))
-    (hc : consume P (source q).1.length = (source q).1) : resolveControl P = q := by
-  have hw' : walk Prog254.program (Prog254.program.nnodes + 1) Prog254.program.root P 0 =
-      some ((source q).2, (source q).1.length) := by
-    rw [RMBisim.walk_root, ActualTree254.tree_eq]
-    exact hw
-  apply source_injective
-  rw [resolve_source _ _ _ hw', hc]
 
 private def impPop : UnpairCoreShape where
   readEntry := impEntry

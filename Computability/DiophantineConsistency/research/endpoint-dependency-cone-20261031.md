@@ -183,9 +183,55 @@ modules from that family: `CurrentEquationSyntax2011`, `CurrentKernelData2011`,
 `CurrentMaskData2011` and `CurrentHighDigitFacts2011`. The other **60 modules
 (8.2k lines)**, with their `Checks`, are imported only by each other. If the
 matrix-free lane is the maintained route, retiring the matrix lane would be
-the largest single shortening available on the equation side. That is a
-decision about which results the repository keeps, so it is left as a
-proposal.
+the largest single shortening available on the equation side. **Decision
+(Vladimir, 31 October 2026): keep the matrix lane for now.** The decision may
+be revisited later.
+
+## Proof shortening in the 254 control lane (landed)
+
+The self-contained `BusyBeaver.ZFC.ArithmeticControl*254` lane (43 modules,
+imported by nothing outside it) proved each catalogue source equation
+`source cN = (path, edge)` either by `rfl` over the full 6,460-entry catalogue
+list or, in the three AX constructors, by a hand-written `AtRank` tree walk of
+about 25 tactic lines, 84 of them in total. `ArithmeticControlSourceRank254`
+now computes the rank and edge along the path (`pathRank`, `pathEdge`) and
+proves once that the computation is a structural rank witness
+(`atRank_of_pathEdge`, `source_of_path`). Each walk becomes
+`source_of_path (by rfl) (by rfl)` at default proof limits, and the unused
+`AtRank.right_count` is dropped. The `literal_target`/`cached_target`
+helpers, which had been copied privately into 13 lane modules, move to
+`ArithmeticControlSourceRank254` and are opened by name.
+
+14 files, **−2,586 / +254 lines.** All 15 changed or affected modules compile,
+against fresh oleans of their 33 dependencies, which had never been built
+locally. The constructor files compile in 17 s each. The research audits for
+`SourceRank254` and the 433/460 constructors still report only `propext` for
+the source and edge facts. The lane's historical `Research/ZFC/check_*.py`
+replay harnesses pin the superseded source SHA-256s, so they record the old
+bytes and would need fresh pins to be replayed.
+
+## Copied proofs
+
+[`dup_decls`-style census](endpoint-cone/) over `BusyBeaver/ZFC` and
+`DiophantineConsistency`: **195 groups of theorem blocks that are identical up
+to their own name occur in more than one file, about 2,600 redundant lines.** The
+largest families:
+
+* machine-variant lanes (`Perm252`, `Prefix246`, `Prefix250`, `Rotation240`,
+  `Rotation244`, `Routing245`) repeat their simulation, site, instruction and
+  box lemmas (`incr_eq_write`, `decr_eq_write`, `stopped_terminal`,
+  `clean_suffix`, `covered_of_allSites`, `check_inc_bound`, `stripPath_length`,
+  `reverse_carry_snoc`, …), often six times each;
+* `Enum222`/`Enum254`/`EnumDom`/`EnumPerm` repeat `exec_list`, `drain`,
+  `cexec_append`, `step_pl` and `execAt_pack`;
+* `ArithmeticDagMacrosPerm222` and `ArithmeticL2Lib254` share `pair162` and
+  `loop115` (90 + 40 lines);
+* the matrix `Current*2011` lane duplicates its `MFCurrent*2011` twin, for
+  example `clause_convolution`, `marker_convolution` and `south_convolution`.
+
+Each family needs one machine-generic home module upstream of the lanes.
+Those homes sit inside the KEndpoint/Rotation240 closures, so the work is
+left for a scheduled rebuild of those closures.
 
 ## Reproducing
 

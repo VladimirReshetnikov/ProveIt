@@ -22,6 +22,7 @@ open ArithmeticControlUnpair254 (wsReg)
 open ArithmeticControlUnpairCore254 (UnpairCoreShape)
 open ArithmeticControlMP254 (Scale4Shape)
 open FiniteControlTable254 RegisterPath
+open ArithmeticControlSourceRank254 (literal_target cached_target)
 
 /-- The next actual AX implication constructor starts at control460. -/
 def entry : Control := ⟨460, by decide⟩
@@ -58,885 +59,146 @@ private def c486 : Control := ⟨486, by decide⟩
 /-- Cache each complete catalogue equality before checking finite paths. -/
 private theorem source_460 :
     source entry =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, false], .decnz 2) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 450) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 436) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 422) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 421) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 420) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 419) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 338) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, false], .decnz 2) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_461 :
     source c461 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, false], .inc 7) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 451) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 437) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 423) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 422) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 421) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 420) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 339) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, false], .inc 7) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_462 :
     source c462 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, false, false], .decnz 6) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 452) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 438) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 424) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 423) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 422) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 421) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 340) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, false, false], .decnz 6) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_463 :
     source c463 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, false, true], .brk 1) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 453) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 439) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 425) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 424) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 423) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 422) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 341) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 3) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, false, true], .brk 1) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_464 :
     source c464 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, true, false], .decnz 7) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 454) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 440) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 426) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 425) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 424) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 423) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 342) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 4) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 3) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 2) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, true, false], .decnz 7) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_465 :
     source c465 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, true, true, false], .inc 6) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 455) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 441) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 427) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 426) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 425) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 424) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 343) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 5) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 4) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 3) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 2) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, true, true, false], .inc 6) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_466 :
     source c466 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, true, true, true], .cont 2) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 456) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 442) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 428) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 427) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 426) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 425) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 344) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 6) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 5) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 4) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 2) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, false, true, true, true], .cont 2) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_467 :
     source c467 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, true], .cont 3) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 457) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 443) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 429) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 428) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 427) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 426) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 345) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 7) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 6) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 5) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 5) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, false, true, true, true], .cont 3) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_468 :
     source c468 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, true, false], .decnz 7) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 458) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 444) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 430) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 429) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 428) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 427) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 346) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 8) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 8) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, true, false], .decnz 7) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_469 :
     source c469 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, true, true, false], .inc 2) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 459) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 445) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 431) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 430) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 429) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 428) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 347) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 9) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 8) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, true, true, false], .inc 2) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_470 :
     source c470 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, true, true, true], .cont 2) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 460) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 446) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 432) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 431) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 430) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 429) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 348) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 10) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 8) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, false, true, true, true], .cont 2) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_471 :
     source c471 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, false, false], .decnz 1) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 461) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 447) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 433) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 432) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 431) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 430) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 349) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 11) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, false, false], .decnz 1) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_472 :
     source c472 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, false, true, false], .inc 7) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 462) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 448) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 434) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 433) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 432) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 431) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 350) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 12) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, false, true, false], .inc 7) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_473 :
     source c473 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, false, true, true, false], .inc 6) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 463) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 449) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 435) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 434) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 433) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 432) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 351) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 13) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, false, true, true, false], .inc 6) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_474 :
     source c474 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, false, true, true, true], .cont 3) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 464) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 450) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 436) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 435) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 434) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 433) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 352) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 14) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 3) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, false, true, true, true], .cont 3) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_475 :
     source c475 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, false], .decnz 6) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 465) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 451) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 437) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 436) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 435) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 434) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 353) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 15) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 4) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 4) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, false], .decnz 6) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_476 :
     source c476 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, false, false], .inc 7) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 466) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 452) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 438) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 437) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 436) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 435) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 354) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 16) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 5) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 4) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, false, false], .inc 7) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_477 :
     source c477 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, false, true, false], .decnz 6) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 467) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 453) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 439) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 438) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 437) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 436) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 355) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 17) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 6) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 4) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, false, true, false], .decnz 6) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_478 :
     source c478 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, false, true, true, false], .inc 1) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 468) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 454) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 440) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 439) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 438) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 437) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 356) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 18) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 7) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 4) (i := 3) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, false, true, true, false], .inc 1) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_479 :
     source c479 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, false, true, true, true], .cont 2) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 469) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 455) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 441) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 440) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 439) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 438) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 357) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 19) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 8) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 4) (i := 4) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 3) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, false, true, true, true], .cont 2) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_480 :
     source c480 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, true], .cont 3) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 470) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 456) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 442) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 441) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 440) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 439) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 358) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 20) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 9) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 4) (i := 5) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 4) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 4) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, false, true, true, true], .cont 3) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_481 :
     source c481 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, false], .decnz 7) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 471) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 457) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 443) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 442) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 441) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 440) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 359) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 21) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 10) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, false], .decnz 7) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_482 :
     source c482 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, false, false, false], .inc 1) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 472) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 458) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 444) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 443) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 442) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 441) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 360) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 22) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 11) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, false, false, false], .inc 1) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_483 :
     source c483 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, false, false, true], .inc 1) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 473) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 459) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 445) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 444) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 443) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 442) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 361) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 23) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 12) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, false, false, true], .inc 1) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_484 :
     source c484 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, false, true, false], .inc 1) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 474) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 460) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 446) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 445) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 444) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 443) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 362) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 24) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 13) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 3) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 2) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 2) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, false, true, false], .inc 1) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_485 :
     source c485 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, false, true, true], .inc 1) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 475) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 461) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 447) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 446) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 445) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 444) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 363) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 25) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 14) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 4) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 3) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 2) (i := 1) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, false, true, true], .inc 1) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_486 :
     source c486 =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, true], .cont 2) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 476) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 462) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 448) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 447) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 446) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 445) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 364) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 26) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 11) (i := 15) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 5) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 4) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 4) (i := 0) (by rfl)
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, false, true, true, true, true], .cont 2) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 private theorem source_487 :
     source exit =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, true, false, false, false, false, false], .decnz 1) := by
-  apply ArithmeticControlSourceRank254.source_of_atRank
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 10) (i := 477) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 463) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 14) (i := 449) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 448) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 447) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 1) (i := 446) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 81) (i := 365) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 338) (i := 27) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.right_count (n := 27) (i := 0) (by rfl)
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  apply ArithmeticControlSourceRank254.AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, true, false, false, false, true, false, false, false, false, false], .decnz 1) :=
+  ArithmeticControlSourceRank254.source_of_path (by rfl) (by rfl)
 
 theorem entry_source : (source entry).2 = .decnz 2 := congrArg Prod.snd source_460
 theorem exit_source : (source exit).2 = .decnz 1 := congrArg Prod.snd source_487
-
-/-- Resolve a literal target through its finite tree path, avoiding catalogue search. -/
-private theorem literal_target (P : List Bool) (q : Control)
-    (hw : RMBisim.twalk ActualTree254.tree P 0 =
-      some ((source q).2, (source q).1.length))
-    (hc : consume P (source q).1.length = (source q).1) : resolveControl P = q := by
-  have hw' : walk Prog254.program (Prog254.program.nnodes + 1) Prog254.program.root P 0 =
-      some ((source q).2, (source q).1.length) := by
-    rw [RMBisim.walk_root, ActualTree254.tree_eq]
-    exact hw
-  apply source_injective
-  rw [resolve_source _ _ _ hw', hc]
-
-/-- Rewrite only abstract source equalities before checking the finite path. -/
-private theorem cached_target {a b : Control} {P Q : List Bool} {e f : Edge}
-    (ha : source a = (P, e)) (hb : source b = (Q, f))
-    (next : List Bool → List Bool)
-    (hw : RMBisim.twalk ActualTree254.tree (next P) 0 = some (f, Q.length))
-    (hc : consume (next P) Q.length = Q) :
-    resolveControl (next (source a).1) = b := by
-  rw [ha]
-  apply literal_target
-  · simpa only [hb] using hw
-  · simpa only [hb] using hc
 
 private def impPop : UnpairCoreShape where
   readEntry := entry
