@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRASuccLeft
+#check DiophantineConsistency.IPRASuccLeft.successor_left
+#print axioms DiophantineConsistency.IPRASuccLeft.successor_left
