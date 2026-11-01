@@ -54,9 +54,11 @@ are arbitrary finite lists.
    [`IPRASuccessorInductionConverse.lean`](Lean/DiophantineConsistency/IPRASuccessorInductionConverse.lean)
    derives each `n + 1` instance from the corresponding `S(n)` instance in
    any intuitionistic theory proving the stated defining and equality schemes;
-   it derives `n + 1 = S(n)` there without induction. These results compare
-   the induction step conventions, not complete independently specified
-   presentations.
+   it derives `n + 1 = S(n)` there without induction.
+   [`IPRASuccessorTheoryEquivalence.lean`](Lean/DiophantineConsistency/IPRASuccessorTheoryEquivalence.lean)
+   goes further: it defines the same theory with successor-step induction
+   and proves that the two explicit theories have the same derivable
+   sentences. This is not a comparison with every textbook presentation.
 
 There is no unrestricted induction scheme, general excluded middle, or Markov
 principle among these axioms. In particular, classical negation-normal
@@ -72,7 +74,7 @@ transfers each derivation in that particular classical presentation to a
 native-candidate derivation of its Gödel–Gentzen translation. It does not by
 itself identify the translated consistency sentence with the intended native
 consistency sentence. The exact equation equivalence and a Lean-checked
-comparison with an independently specified standard presentation of
+comparison with any broader independently specified standard presentation of
 intuitionistic PRA remain open; see
 [`IPRA_PROVABILITY_PLAN.md`](IPRA_PROVABILITY_PLAN.md).
 
