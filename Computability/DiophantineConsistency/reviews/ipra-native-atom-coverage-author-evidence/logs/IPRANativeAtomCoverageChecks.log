@@ -1,0 +1,10 @@
+'DiophantineConsistency.IPRANativeAtomCoverage.atomStable' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.IPRANativeAtomCoverage.atomStable
+  (h :
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      DiophantineConsistency.IPRANativeAtomStability.eqDecSentence)
+  {k : ℕ} (r : DiophantineConsistency.PRALanguage.language.Rel k)
+  (v : Fin k → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ∼∼DiophantineConsistency.IPRANativeFormula.native (LO.FirstOrder.Semiformula.rel r v) 🡒
+      DiophantineConsistency.IPRANativeFormula.native (LO.FirstOrder.Semiformula.rel r v)

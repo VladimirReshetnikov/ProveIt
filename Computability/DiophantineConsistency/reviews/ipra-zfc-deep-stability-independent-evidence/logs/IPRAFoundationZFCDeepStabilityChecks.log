@@ -1,0 +1,28 @@
+'DiophantineConsistency.IPRAFoundationZFCDeepStability.atomicGuardNotDeep' depends on axioms: [propext]
+'DiophantineConsistency.IPRAFoundationZFCDeepStability.zfcEquiv' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRAFoundationZFCDeepStability.zfcEquiv
+  (hbound :
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+            DiophantineConsistency.FoundationHAConsistencyNormalization.rho).doubleNegation 🡒
+        ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+            DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation).doubleNegation)
+  (heq :
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      DiophantineConsistency.IPRANativeAtomStability.eqDecSentence)
+  (deep :
+    (ψ : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language) →
+      ψ ∈
+          DiophantineConsistency.IPRAStableBackwardFinite.reachList
+            (DiophantineConsistency.IPRAFoundationZFCReachStability.matrixOpen
+              DiophantineConsistency.PRALanguage.embedding) →
+        DiophantineConsistency.IPRANativeDeepStability.DeepNeed ψ →
+          DiophantineConsistency.IPRAFoundationZFCStabilityWitness.StabilityWitness
+            DiophantineConsistency.IPRANativeTheory.nativeTheory ψ) :
+  DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+          DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence).doubleNegation 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation
+          DiophantineConsistency.PRALanguage.embedding

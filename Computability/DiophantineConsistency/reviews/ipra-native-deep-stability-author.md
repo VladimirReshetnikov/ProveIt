@@ -1,0 +1,5 @@
+# Native deep-stability induction: author replay
+
+Guarded run `/tmp/ipra-native-deep-stability-8tdjpqsg` passed. Under a supplied nativeTheory universal equality-decidability proof, native stability is derived for positive and negative atoms, conjunctions, universals, and disjunctions with either side open, recursively using the appropriate child stability. The only assumed stability derivations are for reachable existential formulas and disjunctions whose two children are non-open. No equality-decidability or remaining stability proof is supplied.
+
+Selected native/Foundation/Mathlib parent inventories are checked; full inherited HA/ZF/Foundation/package transitive source/object provenance remains unverified. Lean metatheory may use classical choice without adding a classical object-calculus axiom. Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-native-deep-stability.py`. Independent replay required. State `7706be632938342a9a6d9295b41ed815f3ebe68b074717df6a3f0864db08f98b`; manifest `d83c90f9bcc73073023d4638a35a54498b744c5d19bad40b7e467c2591792261`.

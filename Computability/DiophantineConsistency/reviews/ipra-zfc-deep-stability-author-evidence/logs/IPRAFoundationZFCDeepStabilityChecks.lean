@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAFoundationZFCDeepStability
+#print axioms DiophantineConsistency.IPRAFoundationZFCDeepStability.atomicGuardNotDeep
+#print axioms DiophantineConsistency.IPRAFoundationZFCDeepStability.zfcEquiv
+#check DiophantineConsistency.IPRAFoundationZFCDeepStability.zfcEquiv

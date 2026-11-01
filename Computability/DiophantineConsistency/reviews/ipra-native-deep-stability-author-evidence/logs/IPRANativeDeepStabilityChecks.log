@@ -1,0 +1,17 @@
+'DiophantineConsistency.IPRANativeDeepStability.stableNative' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.IPRANativeDeepStability.stableNative
+  (heq :
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      DiophantineConsistency.IPRANativeAtomStability.eqDecSentence)
+  (root : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language)
+  (needed :
+    (ψ : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language) →
+      DiophantineConsistency.IPRAStableBackwardReach.Reach root ψ →
+        DiophantineConsistency.IPRANativeDeepStability.DeepNeed ψ →
+          DiophantineConsistency.IPRATheoryHilbertBridge.extended
+              DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+            ∼∼DiophantineConsistency.IPRANativeFormula.native ψ 🡒 DiophantineConsistency.IPRANativeFormula.native ψ)
+  (φ : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language) :
+  DiophantineConsistency.IPRAStableBackwardReach.Reach root φ →
+    DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      ∼∼DiophantineConsistency.IPRANativeFormula.native φ 🡒 DiophantineConsistency.IPRANativeFormula.native φ

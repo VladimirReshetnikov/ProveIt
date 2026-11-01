@@ -1,0 +1,7 @@
+# Independent native iPRA 14-variable translated-refutation endpoint
+
+The independent same-parent 35-module source-directed build `/tmp/ipra14-translated-join-flph2cp_` finalized PASS. All 35 source, object, complete compiler-log and direct-dependency hashes match author `/tmp/ipra14-translated-join-mxwus070` (`comparison.json`). This packet preserves peer state and all logs; exact sources, author evidence and guarded replay driver are in `reviews/ipra14-translated-refutation-historical/`. Both runs authenticate the same independently passed 847+73 classical parent and direct package objects.
+
+The result is the literal 14-variable native no-zero sentence iff the negation of the Gödel–Gentzen translation of the mapped Foundation ZFC refutation predicate, in the explicitly defined candidate native intuitionistic PR theory. The theorem has no additional hypotheses and its Lean axiom check is exactly propext, Classical.choice and Quot.sound. The ordinary native consistency identification and comparison to an independent standard iPRA presentation remain separate obligations.
+
+This is a fixed historical source snapshot after later workspace merges. Original reused-object environments were reconstructed from surviving objects; Foundation/package transitive ancestry and dynamic imports remain inherited. These are common parent limitations, not independent reauthentication of the entire classical provider.

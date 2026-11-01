@@ -1,0 +1,5 @@
+# Exact ZFC finite stability obligations: author replay
+
+Guarded run `/tmp/ipra-zfc-finite-stability-prm0_a4b` passed. The exact mapped Foundation ZFC consistency equivalence follows from an explicit translated witness-bound T-proof and finite-parameter T-proof stability-schema witnesses for needed entries of a computable finite list built from the opened literal bounded matrix. The proof does not supply those witnesses, prove the witness bound, compute the list, establish its exact cardinality or reverse containment, or identify candidate native theory with standard iPRA.
+
+Selected parent/Foundation anchors are hashed; complete inherited HA/ZF/Foundation/package transitive source/object provenance remains unverified. Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-zfc-finite-stability.py`. Independent replay required. State `57adeb78d869d2d7c59b26cf93f562536613a9fd03511a6397a35ff5a450b26f`; manifest `4bac0daa5ed9d3a1333cf1a640a77fad365ee4ccaf76c2be99c6870d863d11bf`.

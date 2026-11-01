@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAFoundationZFCQuantifiedStability
+#print axioms DiophantineConsistency.IPRAFoundationZFCQuantifiedStability.zfcEquiv
+#check DiophantineConsistency.IPRAFoundationZFCQuantifiedStability.zfcEquiv

@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRANativeAtomCoverage
+#print axioms DiophantineConsistency.IPRANativeAtomCoverage.atomStable
+#check DiophantineConsistency.IPRANativeAtomCoverage.atomStable

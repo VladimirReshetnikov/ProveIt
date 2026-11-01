@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAZeroDecidable
+
+#check DiophantineConsistency.IPRAZeroDecidable.zero_decidable_of_step
+#print axioms DiophantineConsistency.IPRAZeroDecidable.zero_decidable_of_step

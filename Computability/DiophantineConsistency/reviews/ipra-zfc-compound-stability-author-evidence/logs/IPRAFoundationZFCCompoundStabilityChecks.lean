@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAFoundationZFCCompoundStability
+#print axioms DiophantineConsistency.IPRAFoundationZFCCompoundStability.stableFromAtomsAndCompounds
+#print axioms DiophantineConsistency.IPRAFoundationZFCCompoundStability.zfcEquiv
+#check DiophantineConsistency.IPRAFoundationZFCCompoundStability.zfcEquiv

@@ -1,0 +1,5 @@
+# Focused intuitionistic-PRA Gödel–Gentzen proof
+
+Author and independent runs passed with matching source, object and full compiler-log hashes for all 2 modules. Replay: `python3 Computability/DiophantineConsistency/reviews/ipra-finite-conj-gg-replay/replay.py`. Parent `/tmp/ipra-induction-nozero-lllig1pu`; the replay guards 296 source paths, 301 parent objects and 144 direct external objects. Five subsequently changed ancestor sources are guarded through byte-matching prior frozen snapshots, as recorded in `manifest.json`: this is a fixed historical broad-parent snapshot. Original reused-project ancestry is reconstructed from surviving objects; Foundation/package transitive ancestry and dynamic imports remain inherited.
+
+The exact arbitrary-arity Foundation function-congruence GG image follows from the explicit native function-congruence sentence, including arity zero; native function congruence itself remains separate. No decidability of atomic equality or order is assumed. The full Lean axiom audit is in the check log.

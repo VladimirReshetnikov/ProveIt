@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAStableBackwardFinite
+#print axioms DiophantineConsistency.IPRAStableBackwardFinite.reachMem
+#print axioms DiophantineConsistency.IPRAStableBackwardFinite.backwardFromList
+#check DiophantineConsistency.IPRAStableBackwardFinite.backwardFromList

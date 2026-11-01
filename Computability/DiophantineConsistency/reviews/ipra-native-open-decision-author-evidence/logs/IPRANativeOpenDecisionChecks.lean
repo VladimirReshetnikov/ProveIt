@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRANativeOpenDecision
+#print axioms DiophantineConsistency.IPRANativeOpenDecision.openDecision
+#print axioms DiophantineConsistency.IPRANativeOpenDecision.openStability
+#check DiophantineConsistency.IPRANativeOpenDecision.openStability

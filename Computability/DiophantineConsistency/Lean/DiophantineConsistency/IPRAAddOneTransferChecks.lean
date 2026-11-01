@@ -1,0 +1,2 @@
+import DiophantineConsistency.IPRAAddOneTransfer
+#print axioms DiophantineConsistency.IPRAAddOneTransfer.transfer

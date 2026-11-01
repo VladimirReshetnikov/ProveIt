@@ -44,13 +44,13 @@ The classical PRA source-current construction in
 [PRA_PROVABILITY_PLAN.md](PRA_PROVABILITY_PLAN.md) can supply the starting
 proof, but the following further steps are required in Lean:
 
-1. Define the chosen intuitionistic PRA theory and its quantifier-free
-   induction scheme, with the full primitive-recursive language and allowed
-   parameters made explicit.
-2. Prove every translated axiom actually needed by the classical PRA proof
-   is derivable in that theory. This includes equality, defining equations,
-   successor and order axioms, and translated open induction. Decidability and
-   stability facts needed for open formulas must themselves be established.
+1. Identify the defined native candidate with a standard intuitionistic PRA
+   presentation, including its full primitive-recursive language and allowed
+   induction parameters.
+2. Revalidate the checked translated-axiom transfer after the merge and join
+   it to the current equation proof. All classical PRA axiom images have been
+   derived in the candidate; decidability and stability facts for the final
+   consistency comparison remain separate.
 3. Prove that the translated conclusion entails the intended literal
    intuitionistic equivalence, for both the no-zero formula and the selected
    arithmetized ZFC consistency predicate. It is not enough to identify these
@@ -81,11 +81,23 @@ have also passed author and independent suffix replays; these do not discharge
 the equality images. The separate
 [basic-axiom images](Lean/DiophantineConsistency/IPRANativeBasicImages.lean)
 now cover all three basic axioms and have passed author and independent
-suffix replays. Equality remains the only undischarged PRA axiom family;
-its reflexivity, symmetry and transitivity images now have separate guarded
-author and independent replays, while arbitrary-arity function and relation
-congruence remain open. The separate results also need a coherent combined
-build.
+suffix replays. Equality reflexivity, symmetry, transitivity, arbitrary-arity
+function congruence, and relation congruence have now all been translated.
+The exact 14-variable client in
+[IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
+now has matching guarded author and independent replays on the explicitly
+historical source snapshot. It proves native-theory equivalence of its literal
+no-zero sentence with negation of the GG-translated Foundation refutation
+predicate. The comparison with the intended ordinary native consistency
+sentence and a current-source replay remain separate obligations.
+
+The [complete GG transfer](Lean/DiophantineConsistency/IPRAFullGGTransfer.lean)
+combines every classical PRA axiom image and has matching guarded suffix
+replays on source/object-matched historical parents. This proves that a
+classical candidate-PRA proof translates to a proof of its GG image in the
+native candidate; it does not identify ordinary intuitionistic consistency
+with that translated image, and the post-merge source closure remains to be
+revalidated.
 The [translated induction body](Lean/DiophantineConsistency/IPRAInductionGGBody.lean)
 has author and independent suffix replays: it proves intuitionistically that
 the GG image of Foundation's exact `succInd` body is equivalent to the
@@ -115,12 +127,29 @@ The chosen refutation sentence `rho` is the actual Foundation
 `¬rho`. Although `rho` has a checked Σ₁ hierarchy certificate, its displayed
 definition is not simply a visibly bounded matrix. The existing classical
 PRA proof of `rho → ∃ b, bnd rho b` uses classical model completeness; it is
-not an intuitionistic PRA proof. The analogous HA normalization also uses
+not an intuitionistic PRA proof. Its Gödel–Gentzen translation is now
+constructed in [IPRAZFCRefutationBoundGG.lean](Lean/DiophantineConsistency/IPRAZFCRefutationBoundGG.lean):
+the source-directed author and independent replays passed for the exact Foundation
+ZFC refutation predicate, with matching source, object and full-log rows. This
+gives the translated implication, not an unnegated intuitionistic witness. The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
 bounding and translation statements with quantifier-free induction, but
 those intuitionistic derivations remain open.
+
+The theory now proves zero decidability without an additional premise. The
+[checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)
+translates the classical PRA proof of `x + 1 = S(x)` to obtain its
+intuitionistic double negation; native Leibniz equality and successor
+nonzeroness then prove `x + 1 ≠ 0` without eliminating the double negation.
+Native open induction yields `∀ x, x = 0 ∨ ¬(x = 0)`. The author and
+independent [guarded replays](reviews/ipra-zero-decidable-native-replay/README.md)
+match, retaining the historical parent-object and external-ancestry boundary
+stated there. This is only equality with zero: general equality, order and
+bounded-formula decidability remain open. A fixed-parameter induction on one
+argument cannot simply invoke its induction hypothesis at a changed parameter;
+the corresponding quantified induction matrix is not quantifier-free.
 
 It may suffice to translate the existing *classical* witness-bound proof,
 instead of deriving an intuitionistic unnegated witness bound. If iPRA can

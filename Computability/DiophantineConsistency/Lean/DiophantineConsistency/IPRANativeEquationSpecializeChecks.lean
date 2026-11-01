@@ -1,0 +1,2 @@
+import DiophantineConsistency.IPRANativeEquationSpecialize
+#print axioms DiophantineConsistency.IPRANativeEquationSpecialize.specialize_equalClosureI

@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRANativeBoundedGuard
+#print axioms DiophantineConsistency.IPRANativeBoundedGuard.orderGuard
+#print axioms DiophantineConsistency.IPRANativeBoundedGuard.allOrderGuard
+#check DiophantineConsistency.IPRANativeBoundedGuard.allOrderGuard
