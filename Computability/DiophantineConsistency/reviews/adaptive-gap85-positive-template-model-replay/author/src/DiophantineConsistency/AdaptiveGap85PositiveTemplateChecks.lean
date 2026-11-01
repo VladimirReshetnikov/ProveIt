@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85PositiveTemplate
+#print axioms DiophantineConsistency.AdaptiveGap85PositiveTemplate.exclude_positive_template
+#check DiophantineConsistency.AdaptiveGap85PositiveTemplate.exclude_positive_template
