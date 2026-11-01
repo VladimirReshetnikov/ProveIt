@@ -68,35 +68,23 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
               have hf : (ω ▹ extDef.val).Evalb ![a,u,y,X,Y] := by
                 simpa [ω, Semiformula.eval_substs] using ha1
               have hw : (ω #2).val ![a,u,y,X,Y] Empty.elim + 1 ≤ w := hX
-              have hr := ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by simp
-              rw [hs] at hr
-              exact hr
+              simpa using (ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf)
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘(2 * #0)’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#3]
               have hf : (ω ▹ extDef.val).Evalb ![a,u,y,X,Y] := by
                 simpa [ω, Semiformula.eval_substs] using ha2
               have hw : (ω #2).val ![a,u,y,X,Y] Empty.elim + 1 ≤ w := hX
-              have hr := ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by simp
-              rw [hs] at hr
-              exact hr
+              simpa using (ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf)
           · refine ⟨b,lt_of_lt_of_le hb hY,hb,?_,?_⟩
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#0,#1,#4]
               have hf : (ω ▹ extDef.val).Evalb ![b,u,y,X,Y] := by
                 simpa [ω, Semiformula.eval_substs] using hb1
               have hw : (ω #2).val ![b,u,y,X,Y] Empty.elim + 1 ≤ w := hY
-              have hr := ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by simp
-              rw [hs] at hr
-              exact hr
+              simpa using (ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf)
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#0],(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#4]
               have hf : (ω ▹ extDef.val).Evalb ![b,u,y,X,Y] := by
                 simpa [ω, Semiformula.eval_substs] using hb2
               have hw : (ω #2).val ![b,u,y,X,Y] Empty.elim + 1 ≤ w := hY
-              have hr := ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by simp
-              rw [hs] at hr
-              exact hr
+              simpa using (ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf)
         · right
           constructor
           · refine ⟨a,lt_of_lt_of_le ha hX,ha,?_,?_⟩
@@ -104,35 +92,23 @@ theorem seqS_bound_of_common (y X Y w : V) (hX : X+1 ≤ w) (hY : Y+1 ≤ w) (hy
               have hf : (ω ▹ extDef.val).Evalb ![a,u,y,X,Y] := by
                 simpa [ω, Semiformula.eval_substs] using ha1
               have hw : (ω #2).val ![a,u,y,X,Y] Empty.elim + 1 ≤ w := hX
-              have hr := ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by simp
-              rw [hs] at hr
-              exact hr
+              simpa using (ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf)
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘((2 * #0) + 1)’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#3]
               have hf : (ω ▹ extDef.val).Evalb ![a,u,y,X,Y] := by
                 simpa [ω, Semiformula.eval_substs] using ha2
               have hw : (ω #2).val ![a,u,y,X,Y] Empty.elim + 1 ≤ w := hX
-              have hr := ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![a,u,y,X,Y] w = ![a,u,y,X,Y,w] := by simp
-              rw [hs] at hr
-              exact hr
+              simpa using (ext_rew_bound_at ω ![a,u,y,X,Y] w hw hf)
           · refine ⟨b,lt_of_lt_of_le hb hY,hb,?_,?_⟩
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#0,#1,#4]
               have hf : (ω ▹ extDef.val).Evalb ![b,u,y,X,Y] := by
                 simpa [ω, Semiformula.eval_substs] using hb1
               have hw : (ω #2).val ![b,u,y,X,Y] Empty.elim + 1 ≤ w := hY
-              have hr := ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by simp
-              rw [hs] at hr
-              exact hr
+              simpa using (ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf)
             · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![‘(2 * !!((Semiterm.Operator.npow ℒₒᵣ 2).operator ![#0]))’,(Semiterm.Operator.npow ℒₒᵣ 2).operator ![#1],#4]
               have hf : (ω ▹ extDef.val).Evalb ![b,u,y,X,Y] := by
                 simpa [ω, Semiformula.eval_substs] using hb2
               have hw : (ω #2).val ![b,u,y,X,Y] Empty.elim + 1 ≤ w := hY
-              have hr := ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf
-              have hs : Fin.snoc ![b,u,y,X,Y] w = ![b,u,y,X,Y,w] := by simp
-              rw [hs] at hr
-              exact hr
+              simpa using (ext_rew_bound_at ω ![b,u,y,X,Y] w hw hf)
 
 theorem seqS_bound (y X Y : V) : Exponential.Seqₛ.def.val.Evalb ![y,X,Y] →
       (bnd Exponential.Seqₛ.def.val).Evalb ![y,X,Y,X+Y+2*y+1] := by
