@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAEquationComposition
+#print axioms DiophantineConsistency.IPRAEquationComposition.translatedSourceNegation
+#print axioms DiophantineConsistency.IPRAEquationComposition.targetComparison
+#print axioms DiophantineConsistency.IPRAEquationComposition.equationComparison
