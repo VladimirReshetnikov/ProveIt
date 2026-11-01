@@ -18,11 +18,8 @@ private theorem bnd_rew_inside (ψ : ArithmeticSemisentence 2) (x u s w t : V)
   have hn := PRABndRewriting.natural ψ ω ![x,u,s] w
   have hv : (fun j => (ω #j).val ![x,u,s] Empty.elim) = ![x,u] := by
     funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![x,u,s] w = ![x,u,s,w] := by simp
-  have hs' : Fin.snoc ![x,u] w = ![x,u,w] := by simp
-  rw [hv, hs, hs'] at hn
-  rw [hs'] at hm
-  exact hn.mpr hm
+  rw [hv] at hn
+  simpa using hn.mpr (by simpa using hm)
 
 theorem bit_inside_bound (x u s w : V) (hw : PRABitFullWitnessBound.bitMajorant u ≤ w)
  (h : bitDef.val.Evalb ![x,u]) : (bnd “x u s. x ∈ u”).Evalb ![x,u,s,w] := by
