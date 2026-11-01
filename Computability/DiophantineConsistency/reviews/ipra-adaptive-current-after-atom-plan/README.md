@@ -1,0 +1,5 @@
+# Prospective rebase after native atom-stability merge
+
+This read-only source graph audit supersedes the previous four-source planning snapshot; it is not a proof or Lean replay. At the recorded HEAD five reachable sources differ from the fixed pre-merge snapshot: `IPRANativeAtomStability`, `IPRANativeBasicImages`, `IPRANativeEquationImages`, `ZFCinPA.SeparationKernel` and `ZFCinPA.SetPlaceholders`. The 1,098-source current graph gives their combined reverse cone as 189 modules, including 32 of the 113 prefix objects selected by the fixed replay. Rebuilding from the older base would require 418 modules. The manifest records current source hashes, project import edges and affected sets, with source hashes checked twice.
+
+The exact source-current suffix from the independently passed fixed provider cannot be known until that build finishes; re-survey all sources and objects and account for any later merges before launching. The inherited project ancestor remains author-only and package-transitive/dynamic ancestry inherited. No current-source theorem is claimed by this audit.
