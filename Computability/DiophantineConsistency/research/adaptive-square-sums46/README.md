@@ -28,7 +28,10 @@ witness, and prove both positive-shift no-zero directions. `verify_literal.py`
 checks all 46 inputs and 178 rows against the pinned graph. The paired model
 replay matched 12 modules on an accepted historical native-47 provider, with
 its actual exit and direct input guards recorded in
-`reviews/adaptive-square-sums46-model-replay/`. Project, package-transitive
-and dynamic-import ancestry remains inherited. The separate native endpoint
-has compiled exploratorily; its guarded replay remains open. No global
-minimality is claimed.
+`reviews/adaptive-square-sums46-model-replay/`. The no-premise
+`IPRAZ46Native.literal_equivalence` endpoint has also passed a matched
+14-module [native replay](../../reviews/adaptive-square-sums46-native-replay/README.md).
+It concerns the mapped native refutation predicate; its interpretation as
+Con(ZFC) uses the separate interpretation and refutation bridge. Project,
+package-transitive and dynamic-import ancestry remains inherited, including
+the 848-module author-only ancestor. No global minimality is claimed.

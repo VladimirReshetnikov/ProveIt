@@ -1,0 +1,15 @@
+import DiophantineConsistency.AdaptiveZ46Model
+#print axioms DiophantineConsistency.AdaptiveZ46Orientation.magnitude_quotient
+#print axioms DiophantineConsistency.AdaptiveZ46Orientation.orient
+#print axioms DiophantineConsistency.AdaptiveZ46Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveZ46Context.new_literal
+#print axioms DiophantineConsistency.AdaptiveZ46Zeros.sum_zero
+#print axioms DiophantineConsistency.AdaptiveZ46Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveZ46Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveZ46Rest.project_rest_equiv
+#print axioms DiophantineConsistency.AdaptiveZ46Norm.norm
+#print axioms DiophantineConsistency.AdaptiveZ46First.first_project
+#print axioms DiophantineConsistency.AdaptiveZ46Root.root_project
+#print axioms DiophantineConsistency.AdaptiveZ46Extend.extend_zero
+#print axioms DiophantineConsistency.AdaptiveZ46Model.project_zero
+#print axioms DiophantineConsistency.AdaptiveZ46Model.shifted_no_zero_iff
