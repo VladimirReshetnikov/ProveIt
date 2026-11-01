@@ -42,41 +42,8 @@ local notation "Fm" => Bootstrapping.Formula V ℒₛₑₜ
 /-- `∧`-elimination (left) at a conjunction of level `m`, by a cut on it. -/
 theorem dk_leftL {φ ψ : Fm} {w m : V} (hw : 4 ≤ w) (hm : (φ ⋏ ψ).val ≤ lvB m)
     (hmw : 10 * (m + 1) + 1 ≤ w) (d : DLv 𝗭𝗙 (insert (φ ⋏ ψ).val ∅) w) :
-    DLv 𝗭𝗙 (insert φ.val ∅) (w + 1 + 1 + 1) := by
-  have hmw' : m + 1 ≤ w := le_trans (le_of_add_eq (y := 9 * m + 10) (by ring)) hmw
-  have hp : (φ ⋏ ψ).val < lvB w := lt_of_lt_of_le (lt_lvB_succ hm) (lvB_mono hmw')
-  have hφ : φ.val < lvB w := lt_trans (lt_K!_left _ _) hp
-  have hneg : (∼(φ ⋏ ψ)).val < lvB w := by
-    rw [Bootstrapping.Semiformula.val_neg]
-    exact lt_of_lt_of_le (lt_lvB_succ (neg_level _ _ hm (φ ⋏ ψ).isSemiformula.isUFormula))
-      (lvB_mono hmw)
-  have hnn : (∼(φ ⋏ ψ)) = ∼φ ⋎ ∼ψ := by simp
-  have e1 : (∼φ).val < (∼(φ ⋏ ψ)).val := by
-    rw [hnn, Bootstrapping.Semiformula.val_or]; exact lt_or_left _ _
-  have e2 : (∼ψ).val < (∼(φ ⋏ ψ)).val := by
-    rw [hnn, Bootstrapping.Semiformula.val_or]; exact lt_or_right _ _
-  set S := insert φ.val (∅ : V) with hSd
-  have lS : SeqLt S w := (SeqLt.empty w).insert hφ
-  have fS : IsFormulaSet ℒₛₑₜ S := fset1 φ
-  set B := insert (∼(φ ⋏ ψ)).val S with hBd
-  have lB : SeqLt B w := lS.insert hneg
-  have fB : IsFormulaSet ℒₛₑₜ B := fins _ fS
-  have dE : DLv 𝗭𝗙 (insert (∼φ).val (insert (∼ψ).val B)) (w + 1) := by
-    refine DLv.em hw ((lB.insert (lt_trans e2 hneg)).insert (lt_trans e1 hneg))
-      (fins _ (fins _ fB)) φ.val (by simp [hBd, hSd]) ?_
-    rw [← Bootstrapping.Semiformula.val_neg]; simp
-  have dO : DLv 𝗭𝗙 B (w + 1 + 1) := by
-    refine DLv.or_m (le_trans hw le_self_add) (lB.mono le_self_add) (p := (∼φ).val)
-      (q := (∼ψ).val) ?_ dE
-    rw [hBd, hnn, Bootstrapping.Semiformula.val_or]; simp
-  have dA : DLv 𝗭𝗙 (insert (φ ⋏ ψ).val S) (w + 1) :=
-    DLv.wk hw (lS.insert hp) (fins _ fS)
-      (insert_subset_insert_of_subset _ (by intro z hz; simp at hz)) d
-  have hneg' : neg ℒₛₑₜ (φ ⋏ ψ).val = (∼(φ ⋏ ψ)).val := (Bootstrapping.Semiformula.val_neg _).symm
-  exact DLv.cut (le_trans hw (le_trans le_self_add le_self_add))
-    (lS.mono (le_trans le_self_add le_self_add)) (φ ⋏ ψ).val
-    (lt_of_lt_of_le hp (lvB_mono (le_trans le_self_add le_self_add))) (dA.mono le_self_add)
-    (by rw [hneg']; exact dO)
+    DLv 𝗭𝗙 (insert φ.val ∅) (w + 1 + 1 + 1) :=
+  dk_elimL true hw hm hmw d
 
 /-- The level of `∀(A ↔ A)` at any arity. -/
 theorem allIff_le {n : ℕ} (A : Bootstrapping.Semiformula V ℒₛₑₜ (n + 1)) {a : V}
