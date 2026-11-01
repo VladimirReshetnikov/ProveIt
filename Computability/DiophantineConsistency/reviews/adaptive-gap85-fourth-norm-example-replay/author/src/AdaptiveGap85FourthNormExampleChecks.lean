@@ -1,0 +1,4 @@
+import AdaptiveGap85FourthNormExample
+#print axioms AdaptiveGap85FourthNormExample.parameters
+#print axioms AdaptiveGap85FourthNormExample.two_norms
+#print axioms AdaptiveGap85FourthNormExample.index_polynomials
