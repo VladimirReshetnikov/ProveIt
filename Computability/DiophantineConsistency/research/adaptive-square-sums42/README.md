@@ -5,7 +5,7 @@ constants in base 10. `generate_equation6.py` constructs the TeX from the
 pinned graph; `verify_display6.py` checks all displayed definitions, 164 gates,
 fixed constants and two mutation controls. Two `pdflatex` runs produced the
 same PDF SHA-256
-`dcb586dbfe29260a405038f4c941997d9599fada24b992b8e58926d302251fc1`;
+`d913da62dcbb391b50359261ed60df71e5b093c7de43d16148a77e77e1711923`;
 both pages were inspected.
 
 This exploratory 164-operation circuit adds seven positive names and one

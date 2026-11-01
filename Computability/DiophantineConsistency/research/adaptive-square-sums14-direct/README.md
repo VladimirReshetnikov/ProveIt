@@ -40,5 +40,5 @@ checks the five-square wiring and all circuit rows against the pinned graph,
 confirms the copied fixed constants and rejects two formula mutations. It is a
 limited parser, not a general TeX interpreter. Normal Python and `python -O`
 pass. Two `pdflatex` runs produced identical PDF SHA-256
-`d62b9a5232ef12b9bbf26f88823c0560ed6cd3bbe208b46e532e18a10e78357a`;
+`f01dc9c931221b32d1e9c985797e755c962ab153c03b4d55959d8b213bd4538d`;
 both pages were visually inspected. The page states the matched native-iPRA result and its snapshot boundary.

@@ -168,7 +168,14 @@ def parse_and_check(text):
     start = text.index('% BEGIN VERIFIED DISPLAY\n')
     end = text.index('% END VERIFIED DISPLAY\n', start)
     display = text[start:end]
-    unknowns = re.search(r'The only unknowns are the thirteen distinct positive integers\s*\\\[(.*?)\\in\\mathbb Z_\{>0\}\.\s*\\\]', display, re.S)
+    # Pin the entire raw math environment before translating any residual aliases.
+    marker = 'The single Diophantine equation is'
+    if display.count(marker) != 1: raise ValueError('equation marker')
+    section = display.split(marker, 1)[1]
+    raw_equation = re.fullmatch(r'\s*\\\[(.*?)\\\]\s*', section, re.S)
+    if not raw_equation or re.sub(r'\s+', '', raw_equation.group(1)) != '\\boxed{\\begin{aligned}&[1+Z^2-M^2(1+\\ell(\\ell+k))]\\\\&\\quad\\cdot[1+D^2-U^2(1+\\Deltac^2)]\\\\&\\quad\\cdot[\\upsilon^2-Q(\\upsilon^2-V^2)][1+I^2-Q]=1.\\end{aligned}}':
+        raise ValueError('raw equation environment differs')
+    unknowns = re.search(r'The only unknowns are the thirteen separately named positive-integer variables\s*\\\[(.*?)\\in\\mathbb Z_\{>0\}\.\s*\\\]', display, re.S)
     if not unknowns:
         raise ValueError('missing positive-integer unknown declaration')
     listed = [x.strip().lstrip('\\') for x in unknowns.group(1).split(',')]
@@ -219,6 +226,19 @@ def parse_and_check(text):
 
 text = TEX.read_text()
 counts = parse_and_check(text)
+# Exact raw-environment controls: a bare alias and an inserted outside term.
+raw_marker = 'The single Diophantine equation is'
+start_raw = text.index(raw_marker)
+raw_open = text.index(r'\[', start_raw) + len(r'\[')
+outside_mutation = text[:raw_open] + '1+' + text[raw_open:]
+mutations_raw = [outside_mutation]
+if r'\mathcal{P}^2' in text[start_raw:]:
+    mutations_raw.append(text[:start_raw] + text[start_raw:].replace(r'\mathcal{P}^2', 'resA^2', 1))
+for mutation in mutations_raw:
+    try: parse_and_check(mutation)
+    except ValueError: pass
+    else: raise ValueError('raw equation mutation was not detected')
+
 # Check that two concrete source changes are rejected by the parser/comparison.
 mutations = [text.replace('C=q-F-\\alpha', 'C=q+F-\\alpha', 1),
              text.replace('[1+I^2-Q]', '[1+I^2+Q]', 1)]

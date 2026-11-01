@@ -60,12 +60,22 @@ expected={'b':'qm','q':'q','C':'C','U':'U','E':'productVariable2','k':'k','W':'n
 
 def validate(text):
     display=text[text.index('% BEGIN VERIFIED DISPLAY\n'):text.index('% END VERIFIED DISPLAY\n')]
-    unknowns=re.search(r'The only unknowns are the forty-two distinct positive integers\s*\\\[(.*?)\\in\\mathbb Z_\{>0\}\.\\end\{gathered\}\s*\\\]',display,re.S)
+    # The fixed decimal encoding uses calligraphic A outside this block.
+    if r'\mathcal{A}' in display or r'\mathcal A' in display:
+        raise ValueError('fixed-constant symbol reused in equation')
+    # Pin the entire raw math environment before translating any residual aliases.
+    marker = 'The single Diophantine equation is'
+    if display.count(marker) != 1: raise ValueError('equation marker')
+    section = display.split(marker, 1)[1]
+    raw_equation = re.fullmatch(r'\s*\\\[(.*?)\\\]\s*', section, re.S)
+    if not raw_equation or re.sub(r'\s+', '', raw_equation.group(1)) != '\\begin{split}\\mathcal{P}^2+\\mathcal{D}^2+\\mathcal{Q}^2+\\mathcal{R}^2+\\mathcal{E}^2+\\mathcal{B}^2+\\mathcal{C}^2+\\mathcal{G}^2&\\\\+\\mathcal{H}^2+\\mathcal{T}^2+\\mathcal{L}^2+\\mathcal{W}^2+\\mathcal{X}^2+\\mathcal{Y}^2+\\mathcal{Z}^2+\\mathcal{N}^2&\\\\+\\mathcal{I}^2+\\mathcal{J}^2+\\mathcal{K}^2+\\mathcal{O}^2+\\mathfrak{J}^2+\\mathcal{F}^2&\\\\+\\mathcal{M}^2+\\mathcal{S}^2+\\mathcal{U}^2+\\mathcal{V}^2+\\mathfrak{A}^2+\\mathfrak{B}^2&=0.\\end{split}':
+        raise ValueError('raw equation environment differs')
+    unknowns=re.search(r'The only unknowns are the forty-two separately named positive-integer variables\s*\\\[(.*?)\\in\\mathbb Z_\{>0\}\.\\end\{gathered\}\s*\\\]',display,re.S)
     if not unknowns:raise ValueError('unknown declaration')
     listed=[x.strip().lstrip('\\') for x in unknowns.group(1).replace(r'\begin{gathered}','').replace('\\\\','').split(',')]
     if listed!=['J','F','alpha','f','g','T','X','Y','xi','eta','zeta','upsilon','gamma','vartheta','psi','varphi','epsilon','c','a','ell','h','t','s','x','m','n','p','j','d','o','e','z','delta','kappa','lambda','sigma','tau','chi','theta','nu','u','v'] or len(set(listed))!=42:
         raise ValueError('unknown names')
-    for key,value in (('\\mathcal{P}','\\resA'),('\\mathcal{D}','\\resB'),('\\mathcal{Q}','\\resC'),('\\mathcal{R}','\\resD'),('\\mathcal{E}','\\resE'),('\\mathcal{B}','\\resF'),('\\mathcal{C}','\\resG'),('\\mathcal{G}','\\resH'),('\\mathcal{H}','\\resI'),('\\mathcal{T}','\\resJ'),('\\mathcal{L}','\\resK'),('\\mathcal{W}','\\resL'),('\\mathcal{X}','\\resM'),('\\mathcal{Y}','\\resN'),('\\mathcal{Z}','\\resO'),('\\mathcal{N}','\\resP'),('\\mathcal{I}','\\resQ'),('\\mathcal{J}','\\resR'),('\\mathcal{K}','\\resS'),('\\mathcal{O}','\\resT'),('\\mathcal{A}','\\resU'),('\\mathcal{F}','\\resV'),('\\mathcal{M}','\\resW'),('\\mathcal{S}','\\resX'),('\\mathcal{U}','\\resY'),('\\mathcal{V}','\\resZ'),('\\mathfrak{A}','\\resAA'),('\\mathfrak{B}','\\resAB')):
+    for key,value in (('\\mathcal{P}','\\resA'),('\\mathcal{D}','\\resB'),('\\mathcal{Q}','\\resC'),('\\mathcal{R}','\\resD'),('\\mathcal{E}','\\resE'),('\\mathcal{B}','\\resF'),('\\mathcal{C}','\\resG'),('\\mathcal{G}','\\resH'),('\\mathcal{H}','\\resI'),('\\mathcal{T}','\\resJ'),('\\mathcal{L}','\\resK'),('\\mathcal{W}','\\resL'),('\\mathcal{X}','\\resM'),('\\mathcal{Y}','\\resN'),('\\mathcal{Z}','\\resO'),('\\mathcal{N}','\\resP'),('\\mathcal{I}','\\resQ'),('\\mathcal{J}','\\resR'),('\\mathcal{K}','\\resS'),('\\mathcal{O}','\\resT'),('\\mathfrak{J}','\\resU'),('\\mathcal{F}','\\resV'),('\\mathcal{M}','\\resW'),('\\mathcal{S}','\\resX'),('\\mathcal{U}','\\resY'),('\\mathcal{V}','\\resZ'),('\\mathfrak{A}','\\resAA'),('\\mathfrak{B}','\\resAB')):
         display=display.replace(key,value)
     group=re.search(r'\\begin\{gathered\}(.*?)\\end\{gathered\}',display[unknowns.end():],re.S)
     if not group:raise ValueError('definitions')
@@ -86,6 +96,20 @@ def validate(text):
     if wiring!='resA^2+resB^2+resC^2+resD^2+resE^2+resF^2+resG^2+resH^2+resI^2+resJ^2+resK^2+resL^2+resM^2+resN^2+resO^2+resP^2+resQ^2+resR^2+resS^2+resT^2+resU^2+resV^2+resW^2+resX^2+resY^2+resZ^2+resAA^2+resAB^2=0.':raise ValueError(('sum wiring',wiring))
     return len(seen)
 text=(ROOT/'equation6.tex').read_text();count=validate(text)
+# Exact raw-environment controls: a bare alias and an inserted outside term.
+raw_marker = 'The single Diophantine equation is'
+start_raw = text.index(raw_marker)
+raw_open = text.index(r'\[', start_raw) + len(r'\[')
+outside_mutation = text[:raw_open] + '1+' + text[raw_open:]
+mutations_raw = [outside_mutation]
+mutations_raw.append(text.replace(r'\mathfrak{J}=', r'\mathcal{A}=', 1))
+if r'\mathcal{P}^2' in text[start_raw:]:
+    mutations_raw.append(text[:start_raw] + text[start_raw:].replace(r'\mathcal{P}^2', 'resA^2', 1))
+for mutation in mutations_raw:
+    try: validate(mutation)
+    except ValueError: pass
+    else: raise ValueError('raw equation mutation was not detected')
+
 for old,new in [('M=sb','M=s+b'),(r'\epsilon-R',r'\epsilon+R')]:
     if old not in text:raise ValueError('mutation site missing')
     try:validate(text.replace(old,new,1))

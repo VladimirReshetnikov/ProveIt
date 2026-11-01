@@ -1,6 +1,14 @@
 # Fifty-one-variable degree-4 candidate
 
-This exploratory 187-operation circuit extends the 42-variable degree-6
+[equation4.pdf](../../equation4.pdf) presents this circuit and its fixed
+constants in base 10. `generate_equation4.py` constructs the TeX from the
+pinned graph; `verify_display4.py` checks every displayed definition, all
+187 gates, the fixed constants and mutation controls. Two `pdflatex` runs
+produced the identical PDF SHA-256
+`b33a646de5629f06ad9f41549db32fa94f408374fe8e001789bbaf423a10dea1`;
+both pages were inspected.
+
+This 187-operation circuit extends the 42-variable degree-6
 candidate with five positive names and two signed names represented by four
 positive coordinates. The seven names stand for `delta*n`, the rank seed,
 `Y*k`, `k*W`, `X+a*c`, `varphi*gamma`, and `T*c`. Seven squared constraints
@@ -20,6 +28,4 @@ positive-zero directions in every IΣ₁ model, for every integer port vector.
 The [paired model replay](../../reviews/adaptive-square-sums51-model-replay/README.md)
 matched on a historical provider.
 
-**Open:** the native iPRA endpoint and its guarded replay remain separate
-work. These checks inherit historical project, package-transitive and dynamic
-ancestry. No global minimality claim is made.
+The [native iPRA endpoint](../../Lean/DiophantineConsistency/IPRANamedValues51Native.lean) has a matching [guarded replay](../../reviews/ipra-named51-native-verification/README.md) on a historical provider. It uses the chosen mapped ZFC-refutation predicate; the shared project, package, and dynamic-import ancestry remains inherited. No global minimality claim is made.

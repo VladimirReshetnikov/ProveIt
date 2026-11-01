@@ -48,7 +48,7 @@ thirty-three unknowns and the four fixed integers above. The ASCII names
 \texttt{alpha, xi, eta, zeta, upsilon, gamma, vartheta, psi, varphi, epsilon, beta, mu, omega, ell, Delta, delta}
 refer to their displayed counterparts; \texttt{g} is the unknown $g$. The last
 gate is zero exactly when the displayed equation holds. The circuit inputs
-\texttt{cNamed, aNamed, ellNamed} are $c,a,\ell$; \texttt{WNamed} is the
+\texttt{cNamed, aNamed, ellNamed} are $c,a,\ell$; gate \texttt{WNamed} is the
 displayed $W$, while gate \texttt{W} is $C(X+Kq)-Fq$. The inputs
 \texttt{s, x, m, n, p, j, d, o, e, z, delta} are the displayed
 $s,x,m,n,p,j,d,o,e,z,\delta$. Intermediate gate

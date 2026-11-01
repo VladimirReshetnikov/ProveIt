@@ -52,5 +52,5 @@ abbreviations and verifies them against the pinned parent graph; it checks the
 sum wiring and all rendered gate rows and rejects two controlled mutations.
 It does not interpret arbitrary TeX. Both normal Python and `python -O` pass.
 Two independent `pdflatex` runs produced identical PDF SHA-256
-`b89338ac319c36498266b2405de4e466cb58d26fb5c6705f38502301f23198c8`;
+`321e9d2714b7c40af7af20d5d28299346f10c5413f432ec32cceb59ccc775269`;
 both pages were visually inspected and the log contained no overfull boxes.

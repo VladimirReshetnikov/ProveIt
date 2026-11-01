@@ -46,5 +46,5 @@ sum and every circuit row against the candidate, confirms the copied fixed
 constants, and rejects two deliberate formula mutations; it is not a general
 TeX interpreter. Normal Python and `python -O` both pass. Two `pdflatex` runs
 produced identical PDF SHA-256
-`4593c0b40628cd768f07f6b30bc365df70682e090a918aee49eb608534320d49`;
+`22d8cf6ee7281fb8ad87a4e9e25a4ec0887c982486d4258ee03da63d7558a5fd`;
 both pages were visually inspected. The page states the matched native-iPRA result and its snapshot boundary.
