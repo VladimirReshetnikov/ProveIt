@@ -11,6 +11,8 @@ import DiophantineConsistency.MFCurrentWordPadding2011
 import DiophantineConsistency.MFCurrentWordTopBounds2011
 import DiophantineConsistency.MFNativeCyclicConvolution
 import DiophantineConsistency.MFNativeMaskPopulation
+import DiophantineConsistency.MFNativeRadixDigits
+import DiophantineConsistency.MFNativeVariableMask
 import DiophantineConsistency.MFWangTiles942Periodic
 import DiophantineConsistency.NativeCyclicCarry
 import DiophantineConsistency.NativePreliminaryCount2011
@@ -67,6 +69,33 @@ and field. Origin, padding, color-copy, marker and clause tests are proved
 by construction; the remaining fields have zero masks. Packing then gives
 the exact scalar highPort*J-1 test for the same normalized word.
 -/
+
+namespace DiophantineConsistency.MF.CurrentHighDigits2011
+open DiophantineConsistency.MF.CurrentMasks2011 DiophantineConsistency.CurrentMasks2011 DiophantineConsistency.MF.NativeCyclicConvolution DiophantineConsistency.MF.NativeRadixDigits DiophantineConsistency.MF.NativeVariableMask DiophantineConsistency.MF.NativeMaskPopulation
+
+/-- Subtracting one is confined to the origin digit4, so no borrow propagates. -/
+theorem high_mask_word {N : ℕ} [NeZero (N * 2011)] :
+    word radix (maskDigits (N := N)) = highPort * repunit width N - 1 := by
+  have he (k : ZMod (N * 2011)) :
+      maskDigits k + (if k = 0 then 1 else 0) = cellDigit (k.val % 2011) := by
+    by_cases hk : k = 0
+    · subst k
+      simp only [maskDigits_zero, ite_true, ZMod.val_zero, Nat.zero_mod, cellDigit_zero]
+    · simp only [maskDigits_nonzero k hk, if_neg hk, add_zero]
+  have hp := word_periodic (N := N) radix (by decide : 0 < 2011)
+    (fun j : Fin 2011 => cellDigit j.val)
+  change word radix (fun k : ZMod (N * 2011) => cellDigit (k.val % 2011)) = _ at hp
+  have hfactor := periodic_factor 47 2011 N
+  rw [← show radix = 2 ^ 47 from rfl, ← show width = 47 * 2011 from rfl] at hfactor
+  rw [cell_word, hfactor] at hp
+  have hsum : word radix (maskDigits (N := N)) + 1 = highPort * repunit width N := by
+    rw [← word_origin (n := N * 2011) radix 1, ← word_add, show
+      (fun k : ZMod (N * 2011) => maskDigits k + if k = 0 then 1 else 0) =
+        (fun k => cellDigit (k.val % 2011)) from funext he]
+    exact hp
+  omega
+
+end DiophantineConsistency.MF.CurrentHighDigits2011
 
 namespace DiophantineConsistency.MF.CurrentWordHighMask2011
 

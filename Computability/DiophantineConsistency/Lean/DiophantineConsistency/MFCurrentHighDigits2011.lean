@@ -3,9 +3,6 @@ import DiophantineConsistency.CurrentMaskData2011
 import DiophantineConsistency.LowMaskData
 import DiophantineConsistency.MFCurrentMasks2011
 import DiophantineConsistency.MFNativeCyclicConvolution
-import DiophantineConsistency.MFNativeMaskPopulation
-import DiophantineConsistency.MFNativeRadixDigits
-import DiophantineConsistency.MFNativeVariableMask
 import DiophantineConsistency.MFPaper1982Master2
 import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Algebra.MvPolynomial.Basic
@@ -61,7 +58,7 @@ It makes no carry, phase, one-hot, or machine-calibration assumption.
 
 namespace DiophantineConsistency.MF.CurrentHighDigits2011
 
-open DiophantineConsistency.MF.CurrentMasks2011 DiophantineConsistency.CurrentMasks2011 DiophantineConsistency.MF.NativeCyclicConvolution DiophantineConsistency.MF.NativeRadixDigits DiophantineConsistency.MF.NativeVariableMask DiophantineConsistency.MF.NativeMaskPopulation
+open DiophantineConsistency.MF.CurrentMasks2011 DiophantineConsistency.CurrentMasks2011 DiophantineConsistency.MF.NativeCyclicConvolution
 open scoped BigOperators
 
 set_option maxHeartbeats 2000000
@@ -126,28 +123,6 @@ theorem maskDigits_nonzero {N : ℕ} (k : ZMod (N * 2011)) (hk : k ≠ 0) :
 
 theorem maskDigits_lt {N : ℕ} (k : ZMod (N * 2011)) : maskDigits k < radix :=
   (Nat.sub_le _ _).trans_lt (cellDigit_lt _)
-
-/-- Subtracting one is confined to the origin digit4, so no borrow propagates. -/
-theorem high_mask_word {N : ℕ} [NeZero (N * 2011)] :
-    word radix (maskDigits (N := N)) = highPort * repunit width N - 1 := by
-  have he (k : ZMod (N * 2011)) :
-      maskDigits k + (if k = 0 then 1 else 0) = cellDigit (k.val % 2011) := by
-    by_cases hk : k = 0
-    · subst k
-      simp only [maskDigits_zero, ite_true, ZMod.val_zero, Nat.zero_mod, cellDigit_zero]
-    · simp only [maskDigits_nonzero k hk, if_neg hk, add_zero]
-  have hp := word_periodic (N := N) radix (by decide : 0 < 2011)
-    (fun j : Fin 2011 => cellDigit j.val)
-  change word radix (fun k : ZMod (N * 2011) => cellDigit (k.val % 2011)) = _ at hp
-  have hfactor := periodic_factor 47 2011 N
-  rw [← show radix = 2 ^ 47 from rfl, ← show width = 47 * 2011 from rfl] at hfactor
-  rw [cell_word, hfactor] at hp
-  have hsum : word radix (maskDigits (N := N)) + 1 = highPort * repunit width N := by
-    rw [← word_origin (n := N * 2011) radix 1, ← word_add, show
-      (fun k : ZMod (N * 2011) => maskDigits k + if k = 0 then 1 else 0) =
-        (fun k => cellDigit (k.val % 2011)) from funext he]
-    exact hp
-  omega
 
 /-- A statement carrying the positive cyclic length as part of its data. -/
 def MaskTest (F N : ℕ) (hN : 0 < N) : Prop :=
