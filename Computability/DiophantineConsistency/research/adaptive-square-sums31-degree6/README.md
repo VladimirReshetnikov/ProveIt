@@ -17,13 +17,19 @@ construction or other orientation argument is required. Existing auxiliary
 witness construction lemmas explicitly assume an orientation equality and do
 not alone discharge that condition.
 
+A Lean [oriented-witness theorem](../../Lean/DiophantineConsistency/AdaptiveAQ31.lean)
+now proves that candidate positive solutions correspond exactly to positive
+parent solutions with `v 24 < v 23`, for arbitrary integer ports in IΣ₁
+models. Its [focused paired replay](../../reviews/adaptive-aq31-oriented-replay/README.md)
+matched; it does not establish existence of an oriented parent solution.
+
 `verify_degree.py` performs exact integer polynomial arithmetic on the residuals
 and checks degree six after the positive shift; this finite computation is not
 a Lean degree theorem. Its leading homogeneous term argument uses a residual
 with a nonzero port-independent top-degree coefficient, so squaring and summing
 cannot cancel its leading degree over the reals. The original 32-variable
 candidate's model and native proof replays have separate status and provider
-qualifications; no Lean zero-set or native iPRA theorem is asserted here.
+qualifications; no unconditional Lean zero-set or native iPRA theorem is asserted here.
 
 Run `python generate.py` followed by `python verify_substitution.py` from this
 directory; the generator pins its parent JSON and the verifiers pin both
