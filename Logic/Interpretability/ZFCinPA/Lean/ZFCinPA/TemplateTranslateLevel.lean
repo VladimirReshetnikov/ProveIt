@@ -68,14 +68,11 @@ theorem four_le_vecA {n : ℕ} : ∀ {ℓ : ℕ}
 
 theorem two_le_tA {n : ℕ} (φ : Semiproposition (setTemplateLanguage k arities) n) : 2 ≤ tA φ := by
   induction φ with
-  | verum => simp [tA]
-  | falsum => simp [tA]
+  | verum | falsum => simp [tA]
   | rel r v => rcases r with r | r <;> simp [tA]
   | nrel r v => rcases r with r | r <;> simp [tA] <;> omega
-  | and p q => simp [tA]
-  | or p q => simp [tA]
-  | all p => simp [tA]
-  | exs p => simp [tA]
+  | and p q | or p q => simp [tA]
+  | all p | exs p => simp [tA]
 
 /-! ## Terms and term vectors -/
 
@@ -179,16 +176,9 @@ theorem translate_level : ∀ {n : ℕ} (φ : Semiproposition (setTemplateLangua
     (∀ i, (Ks i).val ≤ lvB u) → (translateFormula Ks φ).val ≤ lvB ((tA φ : V) * (u + 1)) := by
   intro n φ
   induction φ with
-  | verum =>
+  | verum | falsum =>
       intro u Ks _
-      simp only [translateFormula, Semiformula.val_verum, tA]
-      refine le_trans (pair_lvB le_rfl (tag_le_lvB (by norm_num) le_rfl) (Arithmetic.zero_le _))
-        (lvB_mono ?_)
-      push_cast
-      exact le_trans (by norm_num) (le_mul_succ 4 u)
-  | falsum =>
-      intro u Ks _
-      simp only [translateFormula, Semiformula.val_falsum, tA]
+      simp only [translateFormula, Semiformula.val_verum, Semiformula.val_falsum, tA]
       refine le_trans (pair_lvB le_rfl (tag_le_lvB (by norm_num) le_rfl) (Arithmetic.zero_le _))
         (lvB_mono ?_)
       push_cast

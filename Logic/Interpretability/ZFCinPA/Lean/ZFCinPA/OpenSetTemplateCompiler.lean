@@ -23,20 +23,13 @@ lemma translate_shift_family
     translateFormula (fun i => (Ks i).shift) (Rewriting.shift p) =
       (translateFormula Ks p).shift := by
   induction p using FirstOrder.Semiformula.rec' with
-  | hverum => simp [translateFormula]
-  | hfalsum => simp [translateFormula]
-  | @hrel n m r v =>
+  | hverum | hfalsum => simp [translateFormula]
+  | @hrel n m r v | @hnrel n m r v =>
       rcases r with r | r
       · simp [translateFormula,translateTerm_shift,Matrix.map,Function.comp_def]
       · simp [translateFormula,Bootstrapping.Semiformula.shift_substs,Matrix.map,Function.comp_def]
-  | @hnrel n m r v =>
-      rcases r with r | r
-      · simp [translateFormula,translateTerm_shift,Matrix.map,Function.comp_def]
-      · simp [translateFormula,Bootstrapping.Semiformula.shift_substs,Matrix.map,Function.comp_def]
-  | hand p q hp hq => simp [translateFormula,hp,hq]
-  | hor p q hp hq => simp [translateFormula,hp,hq]
-  | hall p hp => simp [translateFormula,hp]
-  | hexs p hp => simp [translateFormula,hp]
+  | hand p q hp hq | hor p q hp hq => simp [translateFormula,hp,hq]
+  | hall p hp | hexs p hp => simp [translateFormula,hp]
 
 lemma translate_free_family
     (Ks : (i : Fin k) → Bootstrapping.Semiformula V ℒₛₑₜ (arities i))

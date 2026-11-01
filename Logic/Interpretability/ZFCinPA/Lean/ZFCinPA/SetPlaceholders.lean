@@ -199,11 +199,8 @@ noncomputable def translateFormula
     (p : Semiproposition (setTemplateLanguage k arities) n) :
     translateFormula Ks (∼p) = ∼translateFormula Ks p := by
   induction p using FirstOrder.Semiformula.rec' with
-  | hverum => simp [translateFormula]
-  | hfalsum => simp [translateFormula]
-  | hrel r v =>
-      rcases r with r | r <;> simp [translateFormula]
-  | hnrel r v =>
+  | hverum | hfalsum => simp [translateFormula]
+  | hrel r v | hnrel r v =>
       rcases r with r | r <;> simp [translateFormula]
   | hand p q hp hq => simp [translateFormula, hp, hq]
   | hor p q hp hq => simp [translateFormula, hp, hq]
@@ -217,15 +214,8 @@ noncomputable def translateFormula
     translateFormula Ks (Rewriting.shift p) =
       (translateFormula Ks p).shift := by
   induction p using FirstOrder.Semiformula.rec' with
-  | hverum => simp [translateFormula]
-  | hfalsum => simp [translateFormula]
-  | @hrel n m r v =>
-      rcases r with r | r
-      · simp [translateFormula, translateTerm_shift, Matrix.map,
-          Function.comp_def]
-      · simp [translateFormula, Bootstrapping.Semiformula.shift_substs,
-          hKs r.1, Matrix.map, Function.comp_def]
-  | @hnrel n m r v =>
+  | hverum | hfalsum => simp [translateFormula]
+  | @hrel n m r v | @hnrel n m r v =>
       rcases r with r | r
       · simp [translateFormula, translateTerm_shift, Matrix.map,
           Function.comp_def]
@@ -244,15 +234,8 @@ noncomputable def translateFormula
       (translateFormula Ks p).subst
         (fun i ↦ translateTerm (V := V) (w i)) := by
   induction p using FirstOrder.Semiformula.rec' generalizing m with
-  | hverum => simp [translateFormula]
-  | hfalsum => simp [translateFormula]
-  | @hrel n m r v =>
-      rcases r with r | r
-      · simp [translateFormula, translateTerm_subst, Matrix.map,
-          Function.comp_def]
-      · simp [translateFormula, Bootstrapping.Semiformula.substs_substs,
-          translateTerm_subst, Matrix.map, Function.comp_def]
-  | @hnrel n m r v =>
+  | hverum | hfalsum => simp [translateFormula]
+  | @hrel n m r v | @hnrel n m r v =>
       rcases r with r | r
       · simp [translateFormula, translateTerm_subst, Matrix.map,
           Function.comp_def]
@@ -260,22 +243,13 @@ noncomputable def translateFormula
           translateTerm_subst, Matrix.map, Function.comp_def]
   | hand p q hp hq => simp [translateFormula, hp, hq]
   | hor p q hp hq => simp [translateFormula, hp, hq]
-  | hall p hp =>
-      simp only [Rewriting.app_all, translateFormula,
-        Bootstrapping.Semiformula.substs_all]
-      rw [Rew.q_subst]
-      rw [hp]
-      congr 2
-      funext i
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          simp [Bootstrapping.SemitermVec.q, translateTerm_bShift, Matrix.map]
-  | hexs p hp =>
-      simp only [Rewriting.app_exs, translateFormula,
-        Bootstrapping.Semiformula.substs_ex]
-      rw [Rew.q_subst]
-      rw [hp]
+  | hall p hp | hexs p hp =>
+      first
+      | rw [Rewriting.app_all]
+        simp only [translateFormula, Bootstrapping.Semiformula.substs_all]
+      | rw [Rewriting.app_exs]
+        simp only [translateFormula, Bootstrapping.Semiformula.substs_ex]
+      rw [Rew.q_subst, hp]
       congr 2
       funext i
       cases i using Fin.cases with

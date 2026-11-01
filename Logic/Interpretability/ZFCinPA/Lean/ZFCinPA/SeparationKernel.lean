@@ -270,13 +270,8 @@ noncomputable def translateFormula
     (p : Semiproposition setTemplateLanguage n) :
     translateFormula K (∼p) = ∼translateFormula K p := by
   induction p using FirstOrder.Semiformula.rec' with
-  | hverum => simp [translateFormula]
-  | hfalsum => simp [translateFormula]
-  | hrel r v =>
-      rcases r with r | r
-      · simp [translateFormula]
-      · cases r; simp [translateFormula]
-  | hnrel r v =>
+  | hverum | hfalsum => simp [translateFormula]
+  | hrel r v | hnrel r v =>
       rcases r with r | r
       · simp [translateFormula]
       · cases r; simp [translateFormula]
@@ -291,16 +286,8 @@ noncomputable def translateFormula
     translateFormula K (Rewriting.shift p) =
       (translateFormula K p).shift := by
   induction p using FirstOrder.Semiformula.rec' with
-  | hverum => simp [translateFormula]
-  | hfalsum => simp [translateFormula]
-  | @hrel n k r v =>
-      rcases r with r | r
-      · simp [translateFormula, translateTerm_shift, Matrix.map,
-          Function.comp_def]
-      · cases r
-        simp [translateFormula, Bootstrapping.Semiformula.shift_substs, hK,
-          Matrix.map, Function.comp_def]
-  | @hnrel n k r v =>
+  | hverum | hfalsum => simp [translateFormula]
+  | @hrel n k r v | @hnrel n k r v =>
       rcases r with r | r
       · simp [translateFormula, translateTerm_shift, Matrix.map,
           Function.comp_def]
@@ -320,16 +307,8 @@ noncomputable def translateFormula
       (translateFormula K p).subst
         (fun i ↦ translateTerm (V := V) (w i)) := by
   induction p using FirstOrder.Semiformula.rec' generalizing m with
-  | hverum => simp [translateFormula]
-  | hfalsum => simp [translateFormula]
-  | @hrel n k r v =>
-      rcases r with r | r
-      · simp [translateFormula, translateTerm_subst, Matrix.map,
-          Function.comp_def]
-      · cases r
-        simp [translateFormula, Bootstrapping.Semiformula.substs_substs,
-          translateTerm_subst, Matrix.map, Function.comp_def]
-  | @hnrel n k r v =>
+  | hverum | hfalsum => simp [translateFormula]
+  | @hrel n k r v | @hnrel n k r v =>
       rcases r with r | r
       · simp [translateFormula, translateTerm_subst, Matrix.map,
           Function.comp_def]
@@ -338,22 +317,13 @@ noncomputable def translateFormula
           translateTerm_subst, Matrix.map, Function.comp_def]
   | hand p q hp hq => simp [translateFormula, hp, hq]
   | hor p q hp hq => simp [translateFormula, hp, hq]
-  | hall p hp =>
-      simp only [Rewriting.app_all, translateFormula,
-        Bootstrapping.Semiformula.substs_all]
-      rw [Rew.q_subst]
-      rw [hp]
-      congr 2
-      funext i
-      cases i using Fin.cases with
-      | zero => rfl
-      | succ i =>
-          simp [Bootstrapping.SemitermVec.q, translateTerm_bShift, Matrix.map]
-  | hexs p hp =>
-      simp only [Rewriting.app_exs, translateFormula,
-        Bootstrapping.Semiformula.substs_ex]
-      rw [Rew.q_subst]
-      rw [hp]
+  | hall p hp | hexs p hp =>
+      first
+      | rw [Rewriting.app_all]
+        simp only [translateFormula, Bootstrapping.Semiformula.substs_all]
+      | rw [Rewriting.app_exs]
+        simp only [translateFormula, Bootstrapping.Semiformula.substs_ex]
+      rw [Rew.q_subst, hp]
       congr 2
       funext i
       cases i using Fin.cases with
@@ -417,14 +387,10 @@ ordinary typed quotation. -/
     translateFormula K (p.lMap setHom) =
       (⌜p⌝ : Bootstrapping.Semiformula V ℒₛₑₜ n) := by
   induction p using FirstOrder.Semiformula.rec' with
-  | hverum => rfl
-  | hfalsum => rfl
-  | hrel r v =>
-      simp only [FirstOrder.Semiformula.lMap_rel, setHom_rel, translateFormula]
-      apply Bootstrapping.Semiformula.ext
-      simp [translateTerm_lMap_set]
-  | hnrel r v =>
-      simp only [FirstOrder.Semiformula.lMap_nrel, setHom_rel, translateFormula]
+  | hverum | hfalsum => rfl
+  | hrel r v | hnrel r v =>
+      simp only [FirstOrder.Semiformula.lMap_rel, FirstOrder.Semiformula.lMap_nrel,
+        setHom_rel, translateFormula]
       apply Bootstrapping.Semiformula.ext
       simp [translateTerm_lMap_set]
   | hand p q hp hq => simp [translateFormula, hp, hq]

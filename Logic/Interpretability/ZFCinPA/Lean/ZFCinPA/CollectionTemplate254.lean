@@ -215,24 +215,15 @@ theorem eval_toFormula (p : Named) :
   | pred x y => intro n slots b f; simp [toFormula,NamedSat,predAt,relation]
   | mem x y =>
       intro n slots b f
-      have h := Structure.mem_lang (L := Lang)
-        (v := ![(slots x).val b f,(slots y).val b f])
-      change Structure.rel (L := Lang) (Sum.inl Language.Set.Rel.mem)
-        ![(slots x).val b f,(slots y).val b f] ↔
-          (slots x).val b f ∈ (slots y).val b f at h
-      simpa only [toFormula,memAt,Semiformula.eval_rel,NamedSat,Matrix.comp₂] using h
+      simp only [toFormula,memAt,Semiformula.eval_rel,NamedSat,Matrix.comp₂]
+      exact Structure.mem_lang (L := Lang)
   | eq x y =>
       intro n slots b f
-      have h := Structure.eq_lang (L := Lang)
-        (v := ![(slots x).val b f,(slots y).val b f])
-      change Structure.rel (L := Lang) (Sum.inl Language.Set.Rel.eq)
-        ![(slots x).val b f,(slots y).val b f] ↔
-          (slots x).val b f = (slots y).val b f at h
-      simpa only [toFormula,eqAt,Semiformula.eval_rel,NamedSat,Matrix.comp₂] using h
+      simp only [toFormula,eqAt,Semiformula.eval_rel,NamedSat,Matrix.comp₂]
+      exact Structure.eq_lang (L := Lang)
   | bot => intro n slots b f; simp [toFormula,NamedSat]
-  | imp p q hp hq => intro n slots b f; simp [toFormula,NamedSat,hp,hq]
-  | and p q hp hq => intro n slots b f; simp [toFormula,NamedSat,hp,hq]
-  | or p q hp hq => intro n slots b f; simp [toFormula,NamedSat,hp,hq]
+  | imp p q hp hq | and p q hp hq | or p q hp hq =>
+      intro n slots b f; simp [toFormula,NamedSat,hp,hq]
   | all x p hp =>
       intro n slots b f
       simp only [toFormula,Semiformula.eval_all,NamedSat]
