@@ -51,13 +51,7 @@ theorem backwardAux {Γ : Polarity} {s n : ℕ} {φ : Semisentence language n}
   induction h with
   | verum => intro e; exact ⟨Entailment.C_id⟩
   | falsum => intro e; exact ⟨Entailment.C_id⟩
-  | rel _ _ r v =>
-      intro e
-      apply Nonempty.intro
-      apply backward
-      apply openAtoms
-      simp [Semiformula.Open]
-  | nrel _ _ r v =>
+  | rel _ _ r v | nrel _ _ r v =>
       intro e
       apply Nonempty.intro
       apply backward
@@ -78,20 +72,16 @@ theorem backwardAux {Γ : Polarity} {s n : ℕ} {φ : Semisentence language n}
       have hbd := decideBoundedFromBackward _ (by simpa [hs] using hψ) e hb
       apply Nonempty.intro
       simpa using orBackward _ _ ha hb had hbd
-  | ball ht hφ ih =>
+  | ball ht hφ ih | bexs ht hφ ih =>
       obtain ⟨t, rfl⟩ := Rew.positive_iff.mp ht
       intro e
       have hback := fun u => Classical.choice (ih hs u)
       apply Nonempty.intro
-      change extended nativeTheory ⊢! (Rew.embSubsts e ▹ boundedAll t _)ᴺ 🡒 native (Rew.embSubsts e ▹ boundedAll t _)
-      exact boundedAllBackward t _ (by simpa [hs] using hφ) e hback
-  | bexs ht hφ ih =>
-      obtain ⟨t, rfl⟩ := Rew.positive_iff.mp ht
-      intro e
-      have hback := fun u => Classical.choice (ih hs u)
-      apply Nonempty.intro
-      change extended nativeTheory ⊢! (Rew.embSubsts e ▹ bounded t _)ᴺ 🡒 native (Rew.embSubsts e ▹ bounded t _)
-      exact boundedExistsBackward t _ (by simpa [hs] using hφ) e hback
+      first
+      | change extended nativeTheory ⊢! (Rew.embSubsts e ▹ boundedAll t _)ᴺ 🡒 native (Rew.embSubsts e ▹ boundedAll t _)
+        exact boundedAllBackward t _ (by simpa [hs] using hφ) e hback
+      | change extended nativeTheory ⊢! (Rew.embSubsts e ▹ bounded t _)ᴺ 🡒 native (Rew.embSubsts e ▹ bounded t _)
+        exact boundedExistsBackward t _ (by simpa [hs] using hφ) e hback
   | exs => omega
   | all => omega
   | sigma => omega
