@@ -83,6 +83,13 @@ the equality images. The separate
 now cover all three basic axioms and have passed author and independent
 suffix replays. Equality reflexivity, symmetry, transitivity, arbitrary-arity
 function congruence, and relation congruence have now all been translated.
+The [13-variable native translated-refutation client](Lean/DiophantineConsistency/IPRA86TranslatedRefutation.lean)
+has also compiled in a [preliminary provider union](reviews/ipra86-translated-refutation-preliminary/README.md)
+with no additional theorem hypothesis. That union has a recorded partial
+object audit but the original 86-side compile environment was not fully
+reauthenticated. A coherent guarded rebuild and the ordinary native
+consistency comparison remain open.
+
 The exact 14-variable client in
 [IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
 now has matching guarded author and independent replays on the explicitly
