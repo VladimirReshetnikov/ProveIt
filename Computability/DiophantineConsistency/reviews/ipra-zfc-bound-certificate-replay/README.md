@@ -15,3 +15,8 @@ historical. A frozen packet or RUNNING state is not a PASS, and the endpoint
 is the translated witness-bound implication, not ordinary native consistency.
 
 Run `python3 Computability/DiophantineConsistency/reviews/ipra-zfc-bound-certificate-replay/replay.py`.
+
+Both author `/tmp/ipra-induction-nozero-esexe4j6` and independent
+`/tmp/ipra-induction-nozero-oyzjik7z` replays passed; their six source,
+object, full-log, and exit rows match, and both authenticated the same frozen
+manifest. The inherited ancestry qualification above remains unchanged.
