@@ -47,6 +47,14 @@ full Leibniz equality images and the successor-nonzero image. Their only
 invocations also used the untrusted mixed provider; the induction image and
 logical proof transport are not established by these files.
 
+The exploratory [`IPRAReferenceInductionImage.lean`](../../Lean/DiophantineConsistency/IPRAReferenceInductionImage.lean)
+contains a syntactic comparison of the reference induction formula with the
+corresponding native-language successor-step formula. Its syntax has only
+been checked in the mixed provider. The separate
+[`IPRAReferenceInductionTransfer.lean`](draft/IPRAReferenceInductionTransfer.lean)
+is an **uncompiled draft** attempting to apply the existing native successor
+induction derivation; no induction-axiom image is claimed from it.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive

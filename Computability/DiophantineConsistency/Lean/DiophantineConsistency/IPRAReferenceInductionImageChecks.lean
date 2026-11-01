@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAReferenceInductionImage
+
+#print axioms DiophantineConsistency.IPRAReferenceInductionImage.embed_atZero
+#print axioms DiophantineConsistency.IPRAReferenceInductionImage.embed_atSucc
+#print axioms DiophantineConsistency.IPRAReferenceInductionImage.embed_inductionAxiom
