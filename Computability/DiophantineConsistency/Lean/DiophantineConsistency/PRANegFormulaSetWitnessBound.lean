@@ -1,5 +1,6 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRABitFullWitnessBound
+import DiophantineConsistency.PRARewritingWitnessBound
 import Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Basic
 /-! Bind positive bit inside negative Foundation isFormulaSet pi. The
     per-index negative isSemiformula bound remains explicit. -/
@@ -32,19 +33,15 @@ theorem negIsFormulaSet_bound_of_core (s w : V)
   refine ⟨p,lt_of_lt_of_le hp hs,hp,?_,?_⟩
   · have hf : bitDef.val.Evalb ![p,s] := by
       simpa [Semiformula.Operator.val, operator_mem_def] using hbit
-    have hb := PRABitFullWitnessBound.bit_bound p s hf
-    have hs0 : Fin.snoc ![p,s] (PRABitFullWitnessBound.bitMajorant s) = ![p,s,PRABitFullWitnessBound.bitMajorant s] := by simp
-    have hb' := eval_bnd_mono bitDef.val ![p,s] (Empty.elim : Empty → V) hpos (by rw [hs0]; exact hb)
     let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#0,#1]
-    have hn := PRABndRewriting.natural bitDef.val ω ![p,s] w
-    have hv : (fun j => (ω #j).val ![p,s] Empty.elim) = ![p,s] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hvw : Fin.snoc ![p,s] w = ![p,s,w] := by simp
-    rw [hv,hvw] at hn
-    rw [hvw] at hb'
-    have hh := hn.mpr hb'
+    have hf' : (ω ▹ bitDef.val).Evalb ![p,s] := by
+      simpa [ω, Semiformula.eval_substs] using hf
+    have hw : PRABitFullWitnessBound.bitMajorant
+        ((ω #1).val ![p,s] Empty.elim) ≤ w := by
+      simpa [ω] using hpos
+    have hh := PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+      (fun _ s => PRABitFullWitnessBound.bitMajorant s)
+      PRABitFullWitnessBound.bit_bound ω ![p,s] w hw hf'
     simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
   · have hn : (∼(isSemiformula L).pi.val).Evalb ![0,p] := by simpa using hform
     have hh := hcore p hp hn
