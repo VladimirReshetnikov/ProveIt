@@ -24,6 +24,10 @@ The [selected-consistency observation](provisional-selected-policy-observation.j
 reports 34 additional modules at observed HEAD `2eea286e4d`, including the two
 new selected-coding drafts. All 34 added sources were tracked and clean then;
 parent bytes, current drift, compiler imports and actual replay remain unchecked.
+After a source-only local-instance correction, the
+[refreshed observation](provisional-selected-policy-v2-observation.json)
+again reports 1,209 parent modules and 34 tracked, clean additions at observed
+HEAD `09da2bcff6`, with the same unchecked-parent and scanner limitations.
 
 An initial strict current-basis survey was interrupted (exit 130) while
 re-reading parent source files because of disk contention with the active
