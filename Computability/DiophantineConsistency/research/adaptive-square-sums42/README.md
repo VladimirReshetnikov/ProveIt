@@ -15,7 +15,13 @@ port-independent coefficient −1, so the degree of the sum is exactly 6,
 including after the positive-variable shift. These finite checks are not Lean
 degree theorems.
 
-**Open:** the graph has not yet been bound to a Lean literal and no
-positive-zero equivalence, native iPRA endpoint, or proof replay has been
-established. In particular, this candidate is not yet an equation claimed to
-be equivalent to `Con(ZFC)`. No global minimality claim is made.
+`verify_literal.py` matches the actual Lean literal and all 164 gate rows to
+the pinned candidate. `AdaptiveNamedValues42.shifted_no_zero_iff` proves both
+positive-zero directions in every IΣ₁ model for natural ports;
+`current_no_zero_iff` specializes to the actual fixed ports. The [paired
+model replay](../../reviews/adaptive-square-sums42-model-replay/README.md)
+matched on a historical provider.
+
+**Open:** the native iPRA endpoint and its guarded replay remain separate
+work. These checks inherit historical project, package-transitive and dynamic
+ancestry. No global minimality claim is made.
