@@ -35,6 +35,17 @@ are on the historical model-provider chain, not a full current-source closure;
 the original 258/848 project, package-transitive and dynamic-import ancestry
 remains inherited.
 
+The [direct-square degree-30 variant](equation30-direct.pdf) uses 14 positive
+variables and a 90-operation evaluator. Its exact shifted fixed-port literal
+has a no-premise [native endpoint](Lean/DiophantineConsistency/IPRASquareWitnessDirect14Native.lean)
+in the candidate theory. Both focused eight-module suffix replays and two
+independent guarded comparisons match; see the
+[comparison](reviews/ipra-square14-direct-native-verification/README.md).
+The result uses the checked fixed-port model equivalence and the generic
+arity-changing no-zero bridge. The checks are on the historical model-provider
+chain rather than a full current-source closure; 258/848 project,
+package-transitive and dynamic-import ancestry remains inherited.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz
