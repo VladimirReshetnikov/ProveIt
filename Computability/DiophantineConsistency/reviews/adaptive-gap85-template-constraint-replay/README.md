@@ -1,0 +1,5 @@
+# Special Pell-template integer constraints
+
+Independent same-parent author and peer runs passed with matching source, object and full-log hashes for both modules. `template_divisibility` derives `Y ∣ 45(T−1)` from the explicit displayed integer main-root equation with `a=Y(X+1)`, `Δ=a²+4a+3`, `c=4Δ+3`, `k=8XY²+4`, `R=cT−4Δ` and `Y ∣ U`. `template_small_T` further assumes `T≥1` and `45(T−1)<Y`, and concludes `T=1`. The exact theorem statements are in the preserved source and checks.
+
+These are integer lemmas under a restricted artificial Pell template; the assumptions have not been derived from an actual 85 zero, transferred to all IΣ₁ models, or shown sufficient for normalization. No 85 equivalence or fixed-port counterexample is claimed. Both runs guarded the source, Lean binary, direct Mathlib objects and companions before/after compilation and avoided workspace project-object fallback; Mathlib/package transitive ancestry is inherited. The copied replay driver hash was recorded after the runs, rather than authenticated during execution.
