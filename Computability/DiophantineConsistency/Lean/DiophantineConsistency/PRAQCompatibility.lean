@@ -101,102 +101,83 @@ theorem model_qEquality {σ : Sentence ℒₒᵣ} (hσ : σ ∈ 𝗘𝗤 ℒₒ�
   rw [reduct_eq]
   simpa only [models_iff] using hEq
 
-theorem model_qSuccNeZero : M↓[language] ⊧ Semiformula.lMap embedding qSuccNeZero := by
-  have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim qSuccNeZero := by
-    simp [qSuccNeZero]
-    intro x
-    change Structure.func (L := language) addCode
-      ![x, Structure.func (L := language) oneCode Fin.elim0] ≠
-        Structure.func (L := language) (Code.zero 0) Fin.elim0
-    rw [modelAddOne]
-    exact modelSuccNeZero x
+omit [M↓[language] ⊧* PRA] in
+private theorem model_of_standard {σ : Sentence ℒₒᵣ}
+    (h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim σ) :
+    M↓[language] ⊧ Semiformula.lMap embedding σ := by
   simp only [models_iff, Semiformula.eval_lMap]
-  change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim qSuccNeZero
+  change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim σ
   rw [reduct_eq]
   exact h
+
+theorem model_qSuccNeZero : M↓[language] ⊧ Semiformula.lMap embedding qSuccNeZero := by
+  apply model_of_standard
+  simp [qSuccNeZero]
+  intro x
+  change Structure.func (L := language) addCode
+    ![x, Structure.func (L := language) oneCode Fin.elim0] ≠
+      Structure.func (L := language) (Code.zero 0) Fin.elim0
+  rw [modelAddOne]
+  exact modelSuccNeZero x
 
 theorem model_qSuccInj : M↓[language] ⊧ Semiformula.lMap embedding qSuccInj := by
-  have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim qSuccInj := by
-    simp [qSuccInj]
-    intro x y
-    change Structure.func (L := language) addCode
-      ![x, Structure.func (L := language) oneCode Fin.elim0] =
-        Structure.func (L := language) addCode
-          ![y, Structure.func (L := language) oneCode Fin.elim0] → x = y
-    rw [modelAddOne, modelAddOne]
-    exact modelSuccInj x y
-  simp only [models_iff, Semiformula.eval_lMap]
-  change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim qSuccInj
-  rw [reduct_eq]
-  exact h
+  apply model_of_standard
+  simp [qSuccInj]
+  intro x y
+  change Structure.func (L := language) addCode
+    ![x, Structure.func (L := language) oneCode Fin.elim0] =
+      Structure.func (L := language) addCode
+        ![y, Structure.func (L := language) oneCode Fin.elim0] → x = y
+  rw [modelAddOne, modelAddOne]
+  exact modelSuccInj x y
 
 theorem model_qZeroOrSucc : M↓[language] ⊧ Semiformula.lMap embedding qZeroOrSucc := by
-  have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim qZeroOrSucc := by
-    simp [qZeroOrSucc]
-    intro x
-    have hb := modelZeroOrSuccPred x
-    rcases hb with hz | hs
-    · exact Or.inl hz
-    · right
-      refine ⟨Structure.func (L := language) predCode (fun _ => x), ?_⟩
-      change x = Structure.func (L := language) addCode
-        ![Structure.func (L := language) predCode (fun _ => x),
-          Structure.func (L := language) oneCode Fin.elim0]
-      rw [modelAddOne]
-      exact hs.symm
-  simp only [models_iff, Semiformula.eval_lMap]
-  change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim qZeroOrSucc
-  rw [reduct_eq]
-  exact h
+  apply model_of_standard
+  simp [qZeroOrSucc]
+  intro x
+  have hb := modelZeroOrSuccPred x
+  rcases hb with hz | hs
+  · exact Or.inl hz
+  · right
+    refine ⟨Structure.func (L := language) predCode (fun _ => x), ?_⟩
+    change x = Structure.func (L := language) addCode
+      ![Structure.func (L := language) predCode (fun _ => x),
+        Structure.func (L := language) oneCode Fin.elim0]
+    rw [modelAddOne]
+    exact hs.symm
 
 theorem model_qAddZero : M↓[language] ⊧ Semiformula.lMap embedding qAddZero := by
-  have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim qAddZero := by
-    simp [qAddZero]
-    intro x
-    exact modelAddZero x
-  simp only [models_iff, Semiformula.eval_lMap]
-  change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim qAddZero
-  rw [reduct_eq]
-  exact h
+  apply model_of_standard
+  simp [qAddZero]
+  intro x
+  exact modelAddZero x
 
 theorem model_qAddSucc : M↓[language] ⊧ Semiformula.lMap embedding qAddSucc := by
-  have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim qAddSucc := by
-    simp [qAddSucc]
-    intro x y
-    change Structure.func (L := language) addCode
-        ![x, Structure.func (L := language) addCode ![y, Structure.func (L := language) oneCode Fin.elim0]] =
-      Structure.func (L := language) addCode
-        ![Structure.func (L := language) addCode ![x,y], Structure.func (L := language) oneCode Fin.elim0]
-    rw [modelAddOne, modelAddOne]
-    exact modelAddSucc x y
-  simp only [models_iff, Semiformula.eval_lMap]
-  change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim qAddSucc
-  rw [reduct_eq]
-  exact h
+  apply model_of_standard
+  simp [qAddSucc]
+  intro x y
+  change Structure.func (L := language) addCode
+      ![x, Structure.func (L := language) addCode ![y, Structure.func (L := language) oneCode Fin.elim0]] =
+    Structure.func (L := language) addCode
+      ![Structure.func (L := language) addCode ![x,y], Structure.func (L := language) oneCode Fin.elim0]
+  rw [modelAddOne, modelAddOne]
+  exact modelAddSucc x y
 
 theorem model_qMulZero : M↓[language] ⊧ Semiformula.lMap embedding qMulZero := by
-  have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim qMulZero := by
-    simp [qMulZero]
-    intro x
-    exact modelMulZero x
-  simp only [models_iff, Semiformula.eval_lMap]
-  change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim qMulZero
-  rw [reduct_eq]
-  exact h
+  apply model_of_standard
+  simp [qMulZero]
+  intro x
+  exact modelMulZero x
 
 theorem model_qMulSucc : M↓[language] ⊧ Semiformula.lMap embedding qMulSucc := by
-  have h : Semiformula.Eval (s := Arithmetic.standardModel M) ![] Empty.elim qMulSucc := by
-    simp [qMulSucc]
-    intro x y
-    change Structure.func (L := language) mulCode
-        ![x, Structure.func (L := language) addCode ![y, Structure.func (L := language) oneCode Fin.elim0]] =
-      Structure.func (L := language) addCode ![Structure.func (L := language) mulCode ![x,y], x]
-    rw [modelAddOne]
-    exact modelMulSucc x y
-  simp only [models_iff, Semiformula.eval_lMap]
-  change Semiformula.Eval (s := (inferInstance : Structure language M).lMap embedding) ![] Empty.elim qMulSucc
-  rw [reduct_eq]
-  exact h
+  apply model_of_standard
+  simp [qMulSucc]
+  intro x y
+  change Structure.func (L := language) mulCode
+      ![x, Structure.func (L := language) addCode ![y, Structure.func (L := language) oneCode Fin.elim0]] =
+    Structure.func (L := language) addCode ![Structure.func (L := language) mulCode ![x,y], x]
+  rw [modelAddOne]
+  exact modelMulSucc x y
 end models
 
 theorem PRA_proves_qEquality {σ : Sentence ℒₒᵣ} (hσ : σ ∈ 𝗘𝗤 ℒₒᵣ) :
