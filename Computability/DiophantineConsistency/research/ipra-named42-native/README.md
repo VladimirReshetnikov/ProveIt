@@ -1,0 +1,5 @@
+# Native endpoint for the 42-variable literal
+
+`IPRANamedValues42Native.literal_equivalence` constructs a derivation in the repository's `nativeTheory` of equivalence between the no-zero formula for the positive shift of the fixed-port 42-variable literal and the negation of its mapped native refutation predicate. It transfers the established 33-variable native bridge through the model-uniform fixed-port no-zero equivalence `AdaptiveNamedValues42.current_no_zero_iff`.
+
+The focused replay processes share the historical native-33 peer provider, which itself has matched suffix replays. The new model is rebuilt on this native provider and required to match the source, checks source, and object of the separate paired model-42 replay; its actual model replay exit is guarded before the native runs. The 258-module project ancestry, 848 author-only ancestry, package-transitive ancestry, and dynamic imports remain inherited. This is not a full current-source closure. Identification of the mapped native refutation predicate with ordinary Con(ZFC) depends on the separate interpretation and refutation bridge; the endpoint alone does not close that broader goal.
