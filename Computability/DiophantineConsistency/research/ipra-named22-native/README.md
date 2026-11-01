@@ -1,0 +1,7 @@
+# Native endpoint for the 22-variable literal
+
+`IPRANamedValues22Native.literal_equivalence` constructs a derivation in the repository's `nativeTheory` of equivalence between the no-zero formula for the positive shift of the fixed-port 22-variable literal and the negation of its mapped native refutation predicate. It transfers the previous 17-variable native bridge using `AdaptiveNamedValues22.shifted_no_zero_iff`, a model-uniform result. The three endpoint axioms reports are checked independently; the reported Lean axioms are `propext`, `Classical.choice`, and `Quot.sound`.
+
+The two focused replay processes share a historical native-17 author provider, themselves backed by a separately matched native-17 replay. The reconstructed model object matches the independently replayed model-22 peer object byte-for-byte. Their direct dependency companions, complete provider inventory, pinned sources, and recorded upstream boundaries are checked. The original 258-module ancestry, 848 author-only ancestry, package-transitive ancestry, and dynamic imports remain inherited; this is not a full current-source closure. Identification of the mapped native refutation predicate with ordinary Con(ZFC) depends on the separate interpretation and refutation bridge. This endpoint alone does not close that broader goal.
+
+The first input failed before compiling Lean due to a missing manifest key; it is retained at `reviews/ipra-named22-native-replay-input`. The corrected input is `reviews/ipra-named22-native-replay-input-v2`.

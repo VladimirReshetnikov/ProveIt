@@ -1,0 +1,1 @@
+These records capture the actual exit codes and final output returned by the two independent replay processes, and pin their resulting state files. Both use the same historical native-17 author parent; they are independent suffix compilations, not independent transitive ancestry.
