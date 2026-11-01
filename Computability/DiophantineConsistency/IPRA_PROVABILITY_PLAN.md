@@ -153,7 +153,10 @@ arbitrary terms and zero, assuming an explicit native zero-decidability proof;
 its author and independent replays match on a historical provider.
 A separately replayed [subtraction implication](Lean/DiophantineConsistency/IPRASubSuccZeroNative.lean)
 proves `(Sx − y = 0) → (x − y = 0)` in the native theory without an extra
-arithmetic premise. General equality and positive reconstruction remain open.
+arithmetic premise. A second matched replay proves
+`(u − S(v) = 0) → pred(u − v) = 0` natively; see
+[IPRASubPredZeroNative.lean](Lean/DiophantineConsistency/IPRASubPredZeroNative.lean).
+General equality and positive reconstruction remain open.
 
 The theory now proves zero decidability without an additional premise. The
 [checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)
