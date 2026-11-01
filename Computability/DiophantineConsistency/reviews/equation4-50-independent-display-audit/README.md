@@ -1,0 +1,7 @@
+# Independent audit of the 50-variable quartic display
+
+`run_audit.py` ran five checks on the recorded input hashes. `audit.py` uses its own tokenizer and sparse-polynomial implementation to compare all 54 displayed definitions, including all 35 residuals, with the pinned 186-gate candidate in 54 independent symbols. It checks all 50 displayed variable names and positions, four port positions, the complete raw sum wiring, all 186 evaluator rows, and all 186 Lean-literal rows. It also rejects two corrupted raw sums. `evaluate_samples.py` separately checks the same definitions on 25 deterministic assignments, with seeds 80231 through 80255.
+
+`check_generator.py` reproduces the TeX byte-for-byte in a temporary copy. `check_verifier.py` confirms that the shipped verifier rejects both the bare-residual-alias spoof and an extra term outside the split environment. `check_pdf.py` independently rebuilds the PDF byte-for-byte; the local TeX run reported eight font-substitution warning lines and no overfull boxes. Both PDF pages were also inspected visually.
+
+The first combined audit attempt failed because this audit packet initially used the old PDF log filename; it did not report a successful audit. That harness filename was corrected and all five checks reran successfully. This packet checks displayed equations and local reproduction, not historical Lean object ancestry or the separate identification of the mapped refutation predicate with Con(ZFC).
