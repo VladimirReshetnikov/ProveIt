@@ -17,6 +17,9 @@ tracked and unchanged against observed Git HEAD; their hashes are in the
 observation. Parent source bytes and current drift were **not checked** in
 this low-I/O mode and are represented by `null`, not by a zero count. Even
 these graph counts remain provisional until Lean reports actual dependencies.
+The later [wrapper observation](provisional-wrapper-observation.json) adds the
+tracked terminal checks wrapper and reports 32 additional modules at observed
+HEAD `3631f97517`; it has the same unchecked-parent and source-scanner limits.
 
 An initial strict current-basis survey was interrupted (exit 130) while
 re-reading parent source files because of disk contention with the active
