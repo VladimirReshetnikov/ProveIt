@@ -56,16 +56,10 @@ theorem wb_exists {Q : V → Prop}
     Tot (WB H hP Q) := by
   intro a ha
   obtain ⟨g₀, hg₀, hag₀, hw₀⟩ := hbound a ha
-  obtain ⟨Z, hZ⟩ := hsep a (_root_.SetTheory.vsucc H g₀)
-  have hsucc : Ord (memRel V) (_root_.SetTheory.vsucc H g₀) := ord_succ H hg₀
-  obtain ⟨m, hmZ, hmin⟩ := hR Z ⟨g₀, (hZ g₀).2 ⟨_root_.SetTheory.vsucc_self H g₀, hg₀, hag₀, hw₀⟩⟩
-  obtain ⟨hmX, hmo, ham, hmw⟩ := (hZ m).1 hmZ
-  have hleast : ∀ h, (Ord (memRel V) h ∧ a ∈ h ∧ Wit H hP Q a h) → m ∈ h ∨ m = h := by
-    intro h hh
-    rcases trichotomy H hR m hmo h hh.1 with hmh | rfl | hhm
-    · exact Or.inl hmh
-    · exact Or.inr rfl
-    · exact absurd ⟨h, hhm, (hZ h).2 ⟨hsucc.1 m hmX h hhm, hh⟩⟩ hmin
+  obtain ⟨m, ⟨hmo, -, ham, hmw⟩, hleast₀⟩ :=
+    LStepAnd.least_separable_ord H hR (hsep a) hg₀ ⟨hg₀, hag₀, hw₀⟩
+  have hleast : ∀ h, (Ord (memRel V) h ∧ a ∈ h ∧ Wit H hP Q a h) → m ∈ h ∨ m = h :=
+    fun h hh => hleast₀ h hh.1 hh
   refine ⟨m, hmo, ham, ⟨⟨hmo, ham, hmw⟩, hleast⟩, fun h hh => ?_⟩
   rcases hh.2 m ⟨hmo, ham, hmw⟩ with hhm | rfl
   · rcases hleast h hh.1 with hmh | rfl
