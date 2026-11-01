@@ -27,7 +27,6 @@ examined=0; hits=[]
 for q in range(2,7):
     for y in range(q**3,401,q**3):
         for x in range(1,401):
-            if (x+y)%q: continue
             a=y*(x+1);delta=a*a+4*a+3;c=4*delta+3
             s=x*y*y;D=s*(s+1);k=2;first_root=2*s+1
             while y*k<c:
