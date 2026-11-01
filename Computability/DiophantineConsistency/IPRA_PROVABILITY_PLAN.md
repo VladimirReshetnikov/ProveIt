@@ -10,6 +10,19 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+The newer [13-variable degree-36 equation](equation36.pdf) has an
+87-operation evaluator. Its exact fixed-port literal now has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRASquareSumsNative.lean): the
+candidate native theory proves its no-zero sentence equivalent to the
+negation of the mapped Foundation ZFC refutation predicate. Both focused
+six-module suffix replays and their independently run guarded comparisons
+match; see the [comparison](reviews/ipra-square-sums-native-verification/README.md).
+The theorem uses an all-model same-valuation zero equivalence to the previously
+checked 86-operation construction. The comparison checks the six rebuilt
+sources, full selected overlay, direct inputs and companions, but does not
+establish a full current-source closure. Its original 258/848 project ancestry,
+package-transitive ancestry and dynamic imports remain inherited.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz

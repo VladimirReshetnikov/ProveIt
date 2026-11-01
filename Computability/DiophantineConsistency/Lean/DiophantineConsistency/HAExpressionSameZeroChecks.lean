@@ -1,0 +1,4 @@
+import DiophantineConsistency.HAExpressionSameZero
+#print axioms DiophantineConsistency.HAExpressionSameZero.shifted
+#print axioms DiophantineConsistency.HAExpressionSameZero.bridge
+#print axioms DiophantineConsistency.HAExpressionSameZero.bridge86

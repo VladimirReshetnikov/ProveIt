@@ -1,0 +1,9 @@
+import DiophantineConsistency.IPRASquareSumsNative
+#check DiophantineConsistency.IPRASquareSumsNative.sameZero
+#check DiophantineConsistency.IPRASquareSumsNative.bridge
+#check DiophantineConsistency.IPRASquareSumsNative.equivalence
+#check DiophantineConsistency.IPRASquareSumsNative.literal_equivalence
+#print axioms DiophantineConsistency.IPRASquareSumsNative.sameZero
+#print axioms DiophantineConsistency.IPRASquareSumsNative.bridge
+#print axioms DiophantineConsistency.IPRASquareSumsNative.equivalence
+#print axioms DiophantineConsistency.IPRASquareSumsNative.literal_equivalence
