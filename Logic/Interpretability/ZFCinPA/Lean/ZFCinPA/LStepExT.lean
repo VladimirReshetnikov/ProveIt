@@ -374,6 +374,20 @@ theorem models_wbDef (qS : Semisentence L6 1) (h : M↓[L6] ⊧ wbDef qS) :
   simp at h
   exact fun a g => h g a
 
+private theorem models_wb_tot (qS : Semisentence L6 1)
+    [M↓[L6] ⊧* templTheory 6 ar6] (h : M↓[L6] ⊧ wbDef qS) :
+    Tot (fun a g : M => F₃.Eval ![a, g] Empty.elim) ∧
+      ∀ a g : M, F₃.Eval ![a, g] Empty.elim →
+        Wit (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M))
+          (ConstructibleInterpretation.power_of_modelsZF (V := M))
+          (fun x => qS.Eval ![x] Empty.elim) a g := by
+  have hF3 := models_wbDef qS h
+  obtain ⟨htotWB, hWit⟩ := wb_tot (M := M) qS
+  have hG : (fun a g : M => F₃.Eval ![a, g] Empty.elim) =
+      fun a g => (wbS qS).Eval ![a, g] Empty.elim :=
+    funext fun a => funext fun g => propext (hF3 a g)
+  exact ⟨by rw [hG]; exact htotWB, fun a g h => hWit a g ((hF3 a g).1 h)⟩
+
 end TemplateReadings
 
 /-- **The existential template is a theorem of the template theory.** -/
@@ -388,16 +402,11 @@ theorem exTemplate_provable : templTheory 6 ar6 ⊢ exTemplate := by
   rw [models_maxDefF] at hdefF
   have hP4 : ∀ t : M, P₄.Eval ![t] Empty.elim ↔ exBody.Eval ![t] Empty.elim := by
     simpa [models_iff, exDefP] using hdefP
-  have hF3 := models_wbDef P₀ hwb
-  obtain ⟨htotWB, hWit⟩ := wb_tot (M := M) P₀
-  have hG : (fun a g : M => F₃.Eval ![a, g] Empty.elim) =
-      fun a g => (wbS P₀).Eval ![a, g] Empty.elim :=
-    funext fun a => funext fun g => propext (hF3 a g)
-  have htotG : Tot (fun a g : M => F₃.Eval ![a, g] Empty.elim) := by rw [hG]; exact htotWB
+  obtain ⟨htotG, hWit⟩ := models_wb_tot P₀ hwb
   exact ex_step (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M))
     (ConstructibleInterpretation.regular_of_modelsZF (V := M))
     (ConstructibleInterpretation.power_of_modelsZF (V := M)) htot hrefl htotG
-    (fun a g h => hWit a g ((hF3 a g).1 h))
+    hWit
     (fun U t ht => (hP4 t).trans (eval_exBody t ht.1.1)) hdefF
 
 /-- **The universal template is a theorem of the template theory.** -/
@@ -412,18 +421,13 @@ theorem allTemplate_provable : templTheory 6 ar6 ⊢ allTemplate := by
   rw [models_maxDefF] at hdefF
   have hP4 : ∀ t : M, P₄.Eval ![t] Empty.elim ↔ allBody.Eval ![t] Empty.elim := by
     simpa [models_iff, allDefP] using hdefP
-  have hF3 := models_wbDef (∼P₀) hwb
-  obtain ⟨htotWB, hWit⟩ := wb_tot (M := M) (∼P₀)
-  have hG : (fun a g : M => F₃.Eval ![a, g] Empty.elim) =
-      fun a g => (wbS (∼P₀)).Eval ![a, g] Empty.elim :=
-    funext fun a => funext fun g => propext (hF3 a g)
-  have htotG : Tot (fun a g : M => F₃.Eval ![a, g] Empty.elim) := by rw [hG]; exact htotWB
+  obtain ⟨htotG, hWit⟩ := models_wb_tot (∼P₀) hwb
   have hneg : (fun x : M => (∼P₀).Eval ![x] Empty.elim) = fun x => ¬ P₀.Eval ![x] Empty.elim :=
     funext fun x => by simp
   exact all_step (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M))
     (ConstructibleInterpretation.regular_of_modelsZF (V := M))
     (ConstructibleInterpretation.power_of_modelsZF (V := M)) htot hrefl htotG
-    (fun a g h => by rw [← hneg]; exact hWit a g ((hF3 a g).1 h))
+    (fun a g h => by rw [← hneg]; exact hWit a g h)
     (fun U t ht => (hP4 t).trans (eval_allBody t ht.1.1)) hdefF
 
 end LeanProofs.ZFCinPA.LStepExT
