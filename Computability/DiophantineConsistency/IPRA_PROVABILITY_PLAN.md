@@ -106,8 +106,13 @@ now has matching guarded author and independent replays on the explicitly
 historical source snapshot, and matching author/independent bundle-followup
 replays have since passed. It proves native-theory equivalence of its literal
 no-zero sentence with negation of the GG-translated Foundation refutation
-predicate. Its join with the separately established ordinary native consistency
-comparison and a current-source replay remain separate obligations.
+predicate. The subsequent [literal native-consistency wrapper](Lean/DiophantineConsistency/IPRACurrentNativeZFC.lean)
+has now passed matching six-module fixed-source replays and an independently
+repeated [comparison](reviews/ipra-current-native14-fixed-verification/README.md).
+Those runs inherit the same confirmed project-object environment mismatch,
+recorded source drift and external ancestry qualifications as the 13-variable
+provider. A coherent provenance repair and current-source replay remain
+separate obligations.
 
 The [complete GG transfer](Lean/DiophantineConsistency/IPRAFullGGTransfer.lean)
 combines every classical PRA axiom image and has matching guarded suffix
