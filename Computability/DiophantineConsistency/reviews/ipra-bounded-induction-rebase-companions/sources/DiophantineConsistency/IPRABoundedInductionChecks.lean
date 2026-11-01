@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRABoundedInduction
+#print axioms DiophantineConsistency.IPRABoundedInduction.boundedAllBackward
+#print axioms DiophantineConsistency.IPRABoundedInduction.backwardAux
+#print axioms DiophantineConsistency.IPRABoundedInduction.backward

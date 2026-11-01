@@ -7,3 +7,5 @@ Run `python3 reviews/ipra-bounded-induction-rebase/replay.py` from `Computabilit
 The parent 848 build is an author provider; its reused object environments are reconstructed from prior records and its Foundation/package transitive ancestry is inherited. This suffix does not by itself constitute an independently rebuilt full toolchain or prove the literal ZFC matrix and equation endpoint. The source-only dependency and non-circularity audit is in `research/ipra-bounded-induction-audit-20261031.md`.
 
 At packet creation the author run is still in progress; see its state rather than inferring success from this file. Completed author and independent evidence will be added when available.
+
+This preliminary driver guards the three direct Foundation `.olean` files but does not guard their `.ir`, `.olean.private`, `.olean.server`, or associated hash files. The companion-complete successor is `reviews/ipra-bounded-induction-rebase-companions/`; do not treat the preliminary run as the companion-complete result.
