@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessInsertExistential
+#print axioms DiophantineConsistency.PRAWitnessInsertExistential.insertBoundAt_spec
+#print axioms DiophantineConsistency.PRAWitnessInsertExistential.wb_exs_insert

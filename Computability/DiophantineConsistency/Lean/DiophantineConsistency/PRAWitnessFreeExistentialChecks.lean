@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessFreeExistential
+#print axioms DiophantineConsistency.PRAWitnessFreeExistential.freeBoundAt_spec
+#print axioms DiophantineConsistency.PRAWitnessFreeExistential.wb_exs_free
