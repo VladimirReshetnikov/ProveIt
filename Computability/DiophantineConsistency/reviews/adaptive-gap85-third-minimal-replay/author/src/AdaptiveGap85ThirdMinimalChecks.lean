@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85ThirdMinimal
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdMinimal.minimal_first_has_blocker
+#check DiophantineConsistency.AdaptiveGap85ThirdMinimal.minimal_first_has_blocker
