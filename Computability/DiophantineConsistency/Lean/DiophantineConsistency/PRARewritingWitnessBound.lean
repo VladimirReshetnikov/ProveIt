@@ -19,6 +19,19 @@ theorem rew_bound_with {k n : ℕ} (φ : ArithmeticSemisentence k) (bound : (Fin
   apply (PRABndRewriting.natural φ ω e w).mpr
   exact eval_bnd_mono φ _ (Empty.elim : Empty → V) hw (hφ _ h)
 
+theorem binary_rew_bound_with (φ : ArithmeticSemisentence 2) (bound : V → V → V)
+    (hφ : ∀ x y, φ.Evalb ![x,y] → (bnd φ).Evalb ![x,y,bound x y])
+    {n : ℕ} (ω : Rew ℒₒᵣ Empty 2 Empty n) (e : Fin n → V) (w : V)
+    (hw : bound ((ω #0).val e Empty.elim) ((ω #1).val e Empty.elim) ≤ w) :
+    (ω ▹ φ).Evalb e → (bnd (ω ▹ φ)).Evalb (Fin.snoc e w) := by
+  apply rew_bound_with φ (fun g => bound (g 0) (g 1)) ?_ ω e w hw
+  intro g h
+  have hv : ![g 0,g 1] = g := by funext i; revert i; simp [Fin.forall_fin_succ]
+  have hs : Fin.snoc g (bound (g 0) (g 1)) = ![g 0,g 1,bound (g 0) (g 1)] := by
+    funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
+  rw [hs]
+  exact hφ (g 0) (g 1) (by simpa [hv] using h)
+
 theorem ternary_rew_bound_with (φ : ArithmeticSemisentence 3) (bound : V → V → V → V)
     (hφ : ∀ x y z, φ.Evalb ![x,y,z] → (bnd φ).Evalb ![x,y,z,bound x y z])
     {n : ℕ} (ω : Rew ℒₒᵣ Empty 3 Empty n) (e : Fin n → V) (w : V)

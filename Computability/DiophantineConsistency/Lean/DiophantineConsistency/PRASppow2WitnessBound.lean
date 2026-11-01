@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRAUnaryRewritingBound
 import DiophantineConsistency.PRANegLenbitRewritingBound
 import DiophantineConsistency.PRANegPow2WitnessBound
@@ -17,19 +18,9 @@ variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲�
 theorem pos_lenbit_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 2 Empty n) (e : Fin n → V) :
     (ω ▹ lenbitDef.val).Evalb e →
       (bnd (ω ▹ lenbitDef.val)).Evalb (Fin.snoc e (((ω #1).val e Empty.elim)+1)) := by
-  intro h
-  let g : Fin 2 → V := fun i => (ω #i).val e Empty.elim
-  have hf : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → V) := Subsingleton.elim _ _
-  have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
-  simp only [Semiformula.eval_rew] at h
-  rw [hg,hf] at h
-  have hv : ![g 0,g 1] = g := by funext i; revert i; simp [Fin.forall_fin_succ]
-  have hs : Fin.snoc g (g 1+1) = ![g 0,g 1,g 1+1] := by funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
-  have hb := PRALenbitWitnessBound.lenbit_bound (g 0) (g 1) (by simpa [hv] using h)
-  have hn := PRABndRewriting.natural lenbitDef.val ω e (g 1+1)
-  rw [hs] at hn
-  exact hn.mpr hb
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  exact PRARewritingWitnessBound.binary_rew_bound_with lenbitDef.val (fun _ y => y+1)
+    PRALenbitWitnessBound.lenbit_bound ω e _ le_rfl
 
 theorem neg_pow2_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 1 Empty n) (e : Fin n → V) :
     (ω ▹ (∼pow2Def.val)).Evalb e →
