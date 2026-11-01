@@ -1,0 +1,7 @@
+# Prospective native 14-variable endpoint follow-up
+
+This source-only plan is not a build or proof receipt. The two new wrapper snapshots define the actual displayed equation's `noZero14` and compose the existing translated-refutation theorem with the bounded-rho ZFC comparison. They have not been compiled here.
+
+The manifest records the current 904-module source closure of `IPRACurrentTranslatedRefutation`; 9 sources lie outside the 13-variable endpoint's surveyed closure. Of those, five were unchanged in the accepted pre-continuation base, while four require rebuilding: `HACurrentPolynomialBridge2011`, `HACurrentEquation2011`, `PRACurrentZFCStrict`, `IPRACurrentTranslatedRefutation`. Two new wrapper/check snapshots follow. The recorded closure was generated against the current workspace and is only a plan: after the 13-variable author and independent peer pass, recompute source/import and object differences against the exact accepted provider, verify unchanged direct and transitive dependencies and package companions, and then freeze and run a guarded six-module (or revised) suffix and independent peer. The endpoint axiom report must be inspected. Any intervening source changes invalidate affected observations.
+
+The intended conclusion is native `noZero14 ↔ ¬ mappedNativeRefutation`; its identification with ordinary consistency and the provenance of inherited project/package objects must be stated separately. No result is claimed until coherent compilation and replay complete.
