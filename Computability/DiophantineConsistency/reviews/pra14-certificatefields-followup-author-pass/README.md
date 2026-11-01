@@ -1,0 +1,3 @@
+# CertificateFields fixed-source 848-module author
+
+The guarded source rebase explicitly PASSed all 848 modules against the TranslationCore parent `/tmp/pra14-full-transitive-yz9cwna8`. Source tree and matching graph audit are in `../pra14-certificatefields-followup-snapshot/`; full logs and transitive reuse manifests are preserved here. Source, object, direct-dependency and direct external inputs were checked without workspace project-object fallback. This fixed snapshot predates BaseCertificate and SuccessorSources updates; original reused-object environments are reconstructed from surviving provider records and package-transitive ancestry is inherited. Downstream 75-module comparison and later rebase are separate.
