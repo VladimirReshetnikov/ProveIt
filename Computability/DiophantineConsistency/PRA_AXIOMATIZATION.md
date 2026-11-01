@@ -45,6 +45,14 @@ full first-order induction and Σ₁ induction are not added as axioms. The
 proof system is classical; Lean's own metatheoretic principles used to prove
 the existence of a derivation are not additional PRA axioms.
 
+Schematically, `PRA ⊢ ψ` is a Lean proposition asserting the existence of a
+derivation of the object-language sentence `ψ` from precisely these axioms in
+Foundation's classical first-order proof system. The arithmetic sentence is
+mapped into this language by `PRALanguage.embedding`; the mapping does not add
+axioms. A Lean proof of this proposition is metatheoretic evidence for an
+object-theory derivation, not a proof of `ψ` from Lean's axioms presented as if
+it were a PRA derivation.
+
 ## Scope of the comparison
 
 This is a natural candidate presentation of first-order PRA. The repository
@@ -53,7 +61,8 @@ concrete translations and arithmetic consequences. A separate Lean theorem
 identifying this presentation with every standard presentation of PRA, or a
 general IΣ₁-to-PRA conservation theorem, is not currently claimed. See
 [PRA_PROVABILITY_PLAN.md](PRA_PROVABILITY_PLAN.md) for the exact proof target,
-the remaining witness-bound problem and the status of replaying dependencies.
+the status of the specific ZFC witness bound, and the remaining equation and
+dependency verification.
 The intended result is a PRA derivation of the equivalence between no positive
 solution and the chosen formal `Con(ZFC)` sentence, not a PRA proof of either
 side on its own.
