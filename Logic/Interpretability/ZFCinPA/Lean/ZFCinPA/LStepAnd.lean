@@ -59,11 +59,9 @@ lemma vcup_ord {g₁ g₂ : V} (h₁ : Ord mem g₁) (h₂ : Ord mem g₂) :
 /-- An ordinal contained in a member `g` of an ordinal `b` is a member of `b`. -/
 lemma mem_of_sub_mem {g₁ g b : V} (hb : Ord mem b) (hg : mem g b) (h₁ : Ord mem g₁)
     (hsub : ∀ z, mem z g₁ → mem z g) : mem g₁ b := by
-  have hgo : Ord mem g := ord_of_mem hb hg
-  rcases trichotomy H hR g₁ h₁ g hgo with h | rfl | h
-  · exact hb.1 g hg g₁ h
+  rcases le_of_sub H hR h₁ (ord_of_mem hb hg) hsub with rfl | h
   · exact hg
-  · exact absurd (hsub g h) (mem_irrefl H hR g)
+  · exact hb.1 g hg g₁ h
 
 end Ordinals
 
