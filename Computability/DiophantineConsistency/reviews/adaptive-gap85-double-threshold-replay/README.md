@@ -1,0 +1,5 @@
+# Doubled auxiliary-seed shift threshold
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked historical auxiliary-seed provider and guard its state, source, object, 385 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; the replays do not reconstruct or independently audit them.
+
+In every IΣ₁ model, the stated seed estimates imply `T>2c³`, strengthening the earlier bound `T>c³`. The existing outer-coordinate estimate bounds the old-shift T decrement `D` by `c³`, so `D+D<T`. Under the explicit rank, phase and outer-coordinate assumptions, the checked auxiliary seed constructor yields a witness meeting this doubled threshold. These are seed-level results; no source-coherent binding to a full gap 85-zero is asserted, and they do not establish the 85 reverse implication.

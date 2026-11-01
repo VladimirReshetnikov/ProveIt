@@ -1,0 +1,5 @@
+# Conditional full-zero example requiring two inverse steps
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked inverse-one-step provider and guard its state, source, object, 415 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; the replays do not reconstruct or independently audit them.
+
+In every IΣ₁ model, **if** a positive full 85-zero lies in the reverse gap, has `Jβ≥2`, and has T greater than twice the original shift decrement, applying that shift twice constructs a positive full 85-zero outside the gap that reaches the original zero in two positive inverse steps but has no positive gap endpoint in one of the six directed moves. The starting zero and T bound are explicit hypotheses, not established existential claims. Thus a universal one-step normalization proof would require additional argument; this result does not establish or refute the unconditional 85 reverse implication.

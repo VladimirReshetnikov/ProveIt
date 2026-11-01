@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85TwoStepFullZero
+#print axioms DiophantineConsistency.AdaptiveGap85TwoStepFullZero.two_step_full_zero_not_one
+#check DiophantineConsistency.AdaptiveGap85TwoStepFullZero.two_step_full_zero_not_one

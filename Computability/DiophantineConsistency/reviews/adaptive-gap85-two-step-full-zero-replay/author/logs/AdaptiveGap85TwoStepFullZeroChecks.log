@@ -1,0 +1,31 @@
+'DiophantineConsistency.AdaptiveGap85TwoStepFullZero.two_step_full_zero_not_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85TwoStepFullZero.two_step_full_zero_not_one.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (z : Fin 13 → V) (hb : 0 < ↑(p 0)) (hb2 : 2 ≤ z 0 * ↑(p 0))
+  (hz : ∀ (i : Fin 13), 0 < z i)
+  (hzero :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) z)
+  (hgapz : z 1 + z 2 < 1 + z 0 * ↑(p 0))
+  (hT :
+    have b := z 0 * ↑(p 0);
+    have q := 1 + b;
+    have U := z 7 * (q * q);
+    have D := b * U * (q * q - 1);
+    D + D < z 5) :
+  ∃ a m,
+    (∀ (i : Fin 13), 0 < a i) ∧
+      (∀ (i : Fin 13), 0 < m i) ∧
+        DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+            (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) a ∧
+          DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+              (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) m ∧
+            ¬a 1 + a 2 < 1 + a 0 * ↑(p 0) ∧
+              ¬m 1 + m 2 < 1 + m 0 * ↑(p 0) ∧
+                z 1 + z 2 < 1 + z 0 * ↑(p 0) ∧
+                  DiophantineConsistency.AdaptiveGap85InverseEntry.PositiveBiStep p a m ∧
+                    DiophantineConsistency.AdaptiveGap85InverseEntry.PositiveBiStep p m z ∧
+                      ¬∃ x,
+                          DiophantineConsistency.AdaptiveGap85InverseEntry.PositiveBiStep p a x ∧
+                            x 1 + x 2 < 1 + x 0 * ↑(p 0)

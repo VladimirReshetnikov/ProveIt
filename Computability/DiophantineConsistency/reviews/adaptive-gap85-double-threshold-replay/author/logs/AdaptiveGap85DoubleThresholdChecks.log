@@ -1,0 +1,34 @@
+'DiophantineConsistency.AdaptiveGap85DoubleThreshold.auxiliary_T_exceeds_twice_cube' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85DoubleThreshold.full_seed_exceeds_two_shifts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85DoubleThreshold.auxiliary_seed_with_two_shifts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85DoubleThreshold.auxiliary_seed_with_two_shifts.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (a R b s eta zeta : V) (hR : 5 ≤ R) (hphase : R % 4 = 3) (hs : 0 < s)
+  (heta : 0 < eta) (hzeta : 0 < zeta)
+  (hc :
+    have q := 1 + b;
+    have Y := s * q ^ 3;
+    eta + Y * (eta + zeta) = DiophantineConsistency.ArithmeticPellRecurrence.ycoord R a) :
+  ∃ f i T u y,
+    0 < f ∧
+      0 < i ∧
+        0 < T ∧
+          0 < u ∧
+            0 < y ∧
+              (have c := DiophantineConsistency.ArithmeticPellRecurrence.ycoord R a;
+                f * f = 1 + DiophantineConsistency.ArithmeticPellRecurrence.delta a * (i * c * c) * (i * c * c)) ∧
+                (have c := DiophantineConsistency.ArithmeticPellRecurrence.ycoord R a;
+                  have I := DiophantineConsistency.ArithmeticPellRecurrence.delta a * i * c * c;
+                  y = DiophantineConsistency.ArithmeticPellRecurrence.ycoord R (I - 2) ∧
+                    DiophantineConsistency.ArithmeticPellRecurrence.xcoord R (I - 2) = I * u) ∧
+                  f * f * DiophantineConsistency.ArithmeticPellRecurrence.ycoord R a * T =
+                      u + DiophantineConsistency.ArithmeticPellRecurrence.ycoord R a + f * f * R ∧
+                    have q := 1 + b;
+                    have Y := s * q ^ 3;
+                    have D := b * (Y * (q * q)) * (q * q - 1);
+                    D + D < T
