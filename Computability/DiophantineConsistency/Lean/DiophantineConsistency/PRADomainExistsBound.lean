@@ -23,15 +23,11 @@ theorem exists_bound (x u s w : V) (hs : s ≤ w)
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb : bitDef.val.Evalb ![z,s] := by simpa [Semiformula.Operator.val, operator_mem_def, z] using hbit
     let ω : Rew ℒₒᵣ Empty 2 Empty 5 := Rew.subst ![#0,#4]
-    have hf : (ω ▹ bitDef.val).Evalb ![z,y,x,u,s] := by
-      simpa [ω, Semiformula.eval_substs] using hb
-    have hw : PRABitFullWitnessBound.bitMajorant
-        ((ω #1).val ![z,y,x,u,s] Empty.elim) ≤ w := by
-      simpa [ω] using hposs
-    have hh := PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
-      (fun _ s => PRABitFullWitnessBound.bitMajorant s)
-      PRABitFullWitnessBound.bit_bound ω ![z,y,x,u,s] w hw hf
-    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
+    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using
+      (PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+        (fun _ s => PRABitFullWitnessBound.bitMajorant s)
+        PRABitFullWitnessBound.bit_bound ω ![z,y,x,u,s] w
+        (by simpa [ω] using hposs) (by simpa [ω, Semiformula.eval_substs] using hb))
   · simp [pairDef, bnd_open, z, ←pair_graph]
 noncomputable def boundedExists : ArithmeticSemisentence 4 := bnd existsInside
 noncomputable def existsBoundBody : ArithmeticSemisentence 4 :=

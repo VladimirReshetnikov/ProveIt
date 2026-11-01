@@ -27,17 +27,12 @@ theorem neg_exists_bound (x u s w : V) (hnegs : PRANegBitFullWitnessBound.negBit
       letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
       have hb : (∼bitDef.val).Evalb ![z,s] := by simpa [Semiformula.Operator.val, operator_mem_def] using hz
       let ω : Rew ℒₒᵣ Empty 2 Empty 5 := Rew.subst ![#0,#4]
-      have hf : (ω ▹ (∼bitDef.val)).Evalb ![z,y,x,u,s] := by
-        simpa [ω, Semiformula.eval_substs] using hb
-      have hw : PRANegBitFullWitnessBound.negBitMajorant
-          ((ω #1).val ![z,y,x,u,s] Empty.elim) ≤ w := by
-        simpa [ω] using hnegs
-      have hrew := PRARewritingWitnessBound.binary_rew_bound_with (∼bitDef.val)
-        (fun _ s => PRANegBitFullWitnessBound.negBitMajorant s)
-        PRANegBitFullWitnessBound.negBit_bound ω ![z,y,x,u,s] w hw hf
-      rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
-        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hrew
-      simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hrew
+      simpa [LogicalConnective.HomClass.map_neg, Semiformula.Operator.operator,
+        operator_mem_def, Rewriting.emb] using
+        (PRARewritingWitnessBound.binary_rew_bound_with (∼bitDef.val)
+          (fun _ s => PRANegBitFullWitnessBound.negBitMajorant s)
+          PRANegBitFullWitnessBound.negBit_bound ω ![z,y,x,u,s] w
+          (by simpa [ω] using hnegs) (by simpa [ω, Semiformula.eval_substs] using hb))
     · right; right
       by_cases hxy : x < y
       · have hz' : ¬z = y*y+x := by simpa [pair,hxy] using hz
