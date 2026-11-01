@@ -32,6 +32,7 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [26-variable 124-operation degree-12 equation](equation12.pdf), the
 [33-variable 139-operation degree-8 equation](equation8.pdf), the
 [42-variable 164-operation degree-6 equation](equation6.pdf), the
+[40-variable 160-operation degree-6 equation](equation6-40.pdf), the
 [51-variable 187-operation degree-4 equation](equation4.pdf), the
 [50-variable 186-operation degree-4 equation](equation4-50.pdf), and the
 [49-variable 185-operation degree-4 equation](equation4-49.pdf). Each endpoint
@@ -42,11 +43,11 @@ degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [47-variable quartic candidate](research/adaptive-square-sums47/README.md)
-and [40-variable](research/adaptive-square-sums40/README.md),
-[36-variable](research/adaptive-square-sums36/README.md), and
+and [36-variable](research/adaptive-square-sums36/README.md) and
 [35-variable](research/adaptive-square-sums35/README.md) degree-six candidates.
-Their circuit sizes, substitutions and exact degrees have finite checks, but
-their model equivalences and native endpoints are not yet established.
+Their circuit sizes, substitutions and exact degrees have finite checks. The
+47-variable model equivalence has a matched historical replay; its native
+endpoint and the other candidates' model equivalences are still being checked.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader source refresh is running;

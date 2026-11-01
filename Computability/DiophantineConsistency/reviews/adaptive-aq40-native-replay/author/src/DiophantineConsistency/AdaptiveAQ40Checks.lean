@@ -1,0 +1,13 @@
+import DiophantineConsistency.AdaptiveAQ40
+
+#print axioms DiophantineConsistency.AdaptiveAQ40Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveAQ40Literal.new_literal
+#print axioms DiophantineConsistency.AdaptiveFoldSquares.foldSquares_zero_iff
+#print axioms DiophantineConsistency.AdaptiveAQ40Zeros.old_zero
+#print axioms DiophantineConsistency.AdaptiveAQ40Zeros.new_zero
+#print axioms DiophantineConsistency.AdaptiveAQ40Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveAQ40Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveAQ40Transport.old_relations
+#print axioms DiophantineConsistency.AdaptiveAQ40.project_zero
+#print axioms DiophantineConsistency.AdaptiveAQ40.extend_zero
+#print axioms DiophantineConsistency.AdaptiveAQ40.shifted_no_zero_iff

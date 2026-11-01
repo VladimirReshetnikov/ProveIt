@@ -10,12 +10,24 @@ rows, and checks all inputs and gates are live and topologically ordered.
 
 `verify_substitution.py` independently expands the residuals as exact sparse
 integer polynomials, checking that every parent residual specializes to its
-candidate counterpart and both omitted residuals become zero. The exact
-degree and positive-shift checks are finite computations, not Lean degree
-theorems. The substitution calculation is not a proof of zero-set equivalence
-in all models: the converse requires recovering the two coordinates and the
-relevant positivity and sum-of-squares arguments.
+candidate counterpart and both omitted residuals become zero. `verify_literal.py`
+checks all 47 variable declarations, four fixed ports and 179 gate rows against
+the actual Lean literal. Degree and positive-shift checks remain finite
+computations, not Lean degree theorems.
 
-**Open:** the 47-variable graph has not yet been bound to a Lean literal; its
-model equivalence, native iPRA endpoint and guarded replays remain to be proved.
-There is no global minimality claim.
+The Lean modules `AdaptiveNamedValues47Context`, `AdaptiveNamedValues47Maps`,
+`AdaptiveNamedValues47Zeros`, and `AdaptiveNamedValues47Model` prove that the
+candidate and 49-variable graph have equivalent no-zero statements in every
+IΣ₁ model for arbitrary integer ports. The common residual context binds both
+graphs by definitional equality; a finite fold of squares gives the necessary
+zero criteria. In a 49-variable zero the deleted residuals determine both
+coordinates, while the converse inserts the two positive sums. The module
+`AdaptiveNamedValues47` composes this with the fixed-port 42-variable theorem.
+
+`replay_model.py` produced matching author and peer replays of all seven
+source modules on the same accepted 49-native parent, including a fresh build
+of `AdaptiveFoldSquares`, with recorded exit and direct dependency/companion
+guards in `reviews/adaptive-square-sums47-model-replay/`. This focused evidence
+inherits historical project and package ancestry; it is not a current-source
+closure. The native iPRA endpoint is being separately checked. No global
+minimality is claimed.

@@ -1,0 +1,11 @@
+import DiophantineConsistency.AdaptiveNamedValues47
+#print axioms DiophantineConsistency.AdaptiveFoldSquares.foldSquares_zero_iff
+#print axioms DiophantineConsistency.AdaptiveNamedValues47Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveNamedValues47Context.new_literal
+#print axioms DiophantineConsistency.AdaptiveNamedValues47Zeros.old_all
+#print axioms DiophantineConsistency.AdaptiveNamedValues47Zeros.new_all
+#print axioms DiophantineConsistency.AdaptiveNamedValues47Model.collapse_zero
+#print axioms DiophantineConsistency.AdaptiveNamedValues47Model.expand_zero
+#print axioms DiophantineConsistency.AdaptiveNamedValues47Model.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveNamedValues47.literal_eq
+#print axioms DiophantineConsistency.AdaptiveNamedValues47.current_no_zero_iff
