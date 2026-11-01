@@ -70,6 +70,13 @@ native axiom erasing to a reference-theory theorem**. They, too, have only
 been invoked under the untrusted mixed provider; their axiom-image premise,
 coherent replay and application to the equation remain open.
 
+The exploratory [`IPRAErasedDefiningImages.lean`](../../Lean/DiophantineConsistency/IPRAErasedDefiningImages.lean)
+and [`IPRAErasedEqualityImages.lean`](../../Lean/DiophantineConsistency/IPRAErasedEqualityImages.lean)
+contain candidate erasure images for all primitive-recursive defining
+equations, full Leibniz equality and successor nonzero. Their only invocations
+also used the untrusted mixed provider. Native successor injectivity, the
+order-definition image and native induction remain separate obligations.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive
