@@ -189,6 +189,9 @@ has finite substitution and degree checks and a matched model replay for
 arbitrary integer ports. Its native replay attempt failed before the first
 module because its historical package provider contained broken symlinks; no
 native replay pass is claimed. See the [failure evidence](reviews/adaptive-aq29-native-replay/failure.txt). The
+[28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md)
+has exact finite residual-substitution and degree checks; its model and native
+transports remain open. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
