@@ -39,15 +39,12 @@ def stg : ℕ → V → V
   | 0, e => e
   | n + 1, e => 1024 * stg n e
 
-theorem le_stg (n : ℕ) (e : V) : e ≤ stg n e := by
-  induction n with
-  | zero => exact le_rfl
-  | succ n ih => exact le_trans ih DerivableLe.le_1024
-
 theorem stg_mono {n m : ℕ} (h : n ≤ m) (e : V) : stg n e ≤ stg m e := by
   induction h with
   | refl => exact le_rfl
   | step _ ih => exact le_trans ih DerivableLe.le_1024
+
+theorem le_stg (n : ℕ) (e : V) : e ≤ stg n e := stg_mono (Nat.zero_le n) e
 
 theorem four_le_stg {e : V} (he : 4 ≤ e) (n : ℕ) : 4 ≤ stg n e := le_trans he (le_stg n e)
 
@@ -152,9 +149,8 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       simp only [Bootstrapping.Sequent.val_insert] at hp hq
       have hm : (tr.formula b φ).val ^⋏ (tr.formula b ψ).val ∈
           (translateSequent (tr.formula b) Δ).val := by
-        have := translated_mem (b := b) h
-        rw [tr.and] at this
-        simpa using this
+        simpa only [tr.and, Bootstrapping.Semiformula.val_and] using
+          translated_mem (b := b) h
       exact DerivableLe.and_m (four_le_stg he _)
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e)) hm
         (hp.mono (exp_monotone_le.mpr (stg_mono (le_max_left _ _) e)))
@@ -169,9 +165,8 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       simp only [Bootstrapping.Sequent.val_insert] at hp
       have hm : (tr.formula b φ).val ^⋎ (tr.formula b ψ).val ∈
           (translateSequent (tr.formula b) Δ).val := by
-        have := translated_mem (b := b) h
-        rw [tr.or] at this
-        simpa using this
+        simpa only [tr.or, Bootstrapping.Semiformula.val_or] using
+          translated_mem (b := b) h
       exact DerivableLe.or_m (four_le_stg he _)
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e)) hm hp
   case all Δ φ h dp ih =>
@@ -184,9 +179,8 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       rw [translateSequent_insert, tr.free, tr.sequent_shift] at hp
       simp only [Bootstrapping.Sequent.val_insert, Semiformula.free_val] at hp
       have hm : ^∀ (tr.formula b φ).val ∈ (translateSequent (tr.formula b) Δ).val := by
-        have := translated_mem (b := b) h
-        rw [tr.all] at this
-        simpa using this
+        simpa only [tr.all, Bootstrapping.Semiformula.val_all] using
+          translated_mem (b := b) h
       exact DerivableLe.all_m (four_le_stg he _)
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e)) hm hp
   case exs Δ φ h t dp ih =>
@@ -198,9 +192,8 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       rw [translateSequent_insert, tr.subst₁] at hp
       simp only [Bootstrapping.Sequent.val_insert, Semiformula.val_substs] at hp
       have hm : ^∃ (tr.formula b φ).val ∈ (translateSequent (tr.formula b) Δ).val := by
-        have := translated_mem (b := b) h
-        rw [tr.exs] at this
-        simpa using this
+        simpa only [tr.exs, Bootstrapping.Semiformula.val_exs] using
+          translated_mem (b := b) h
       exact DerivableLe.ex_m (four_le_stg he _)
         (le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e))
         (le_exp_of_le ht (le_stg _ e)) hm (tr.term t).isSemiterm
@@ -223,16 +216,14 @@ theorem sized_compile {F e : V} {B : ℕ} (he : 4 ≤ e) (hFe : F ≤ e) :
       obtain ⟨b', rfl⟩ : ∃ b', b = b' + 1 := ⟨b - 1, by omega⟩
       have hp := ih b' (by omega) (by omega) gp
       have hS := tr.sequent_shift b' Δ
+      have hSval := congrArg Bootstrapping.Sequent.val hS
+      simp only [Bootstrapping.Sequent.shift] at hSval
       have hsb : setShift L₂ (translateSequent (tr.formula b') Δ).val ≤
           Exp.exp (stg (height dp) e) := by
-        have := congrArg Bootstrapping.Sequent.val hS
-        simp only [Bootstrapping.Sequent.shift] at this
-        rw [← this]
+        rw [← hSval]
         exact le_exp_of_le (seq_bound tr hb hh hFe) (le_stg _ e)
       have hD := DerivableLe.shift (four_le_stg he _) hsb hp
-      have := congrArg Bootstrapping.Sequent.val hS
-      simp only [Bootstrapping.Sequent.shift] at this
-      rw [← this] at hD
+      rw [← hSval] at hD
       exact hD
   case cut Δ φ dp dq ihp ihq =>
       unfold Good at hg
