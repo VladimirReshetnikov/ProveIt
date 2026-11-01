@@ -104,9 +104,7 @@ theorem wb_nthDef : WB M nthDef.val := by
   have hg := wb_nth_graph (M := M)
   have := wb_pair₃Def (M := M)
   simp only [nthDef, HierarchySymbol.Semiformula.val_mkSigma]
-  refine wb_exs (fun e => triplePoly.val e Empty.elim) (term_mono triplePoly) ?_ (by wb_auto)
-  rintro e ⟨pr, hpr⟩
-  refine ⟨pr, ?_, hpr⟩
+  refine wb_exs_term triplePoly (fun e pr hpr => ?_) (by wb_auto)
   have he : e = ![e 0, e 1, e 2] := by
     funext j
     refine Fin.cases rfl (fun k => ?_) j
