@@ -229,9 +229,48 @@ largest families:
 * the matrix `Current*2011` lane duplicates its `MFCurrent*2011` twin, for
   example `clause_convolution`, `marker_convolution` and `south_convolution`.
 
-Each family needs one machine-generic home module upstream of the lanes.
-Those homes sit inside the KEndpoint/Rotation240 closures, so the work is
-left for a scheduled rebuild of those closures.
+**Correction to that count.** Textual identity overstates what can be shared.
+Each lane defines its own `incr`, `decr`, `Reg`, `program`, `table`, … and most
+copied lemmas are about those lane-local definitions. They are identical text
+about different constants. A lemma can be shared only if every lane-local
+name it mentions is shared too: a fixpoint over all modules of the lane, which
+the census tool does not compute.
+
+**Landed: the unprotected `Prefix246`/`Prefix250` lanes.** No endpoint or
+facade imports these two lanes. With the lane-wide fixpoint, the `Prefix250`
+copies of definitions and lemmas that are textually identical to `Prefix246`
+are deleted and re-exported (`export … (names)`), and likewise for `Prefix246`
+against the protected `Perm252` lane. The aliased names stay in their
+original namespaces, so every downstream reference resolves unchanged. Covered:
+`Symbolic*` (`Reg`, `Branch`, `incr`, `decr`, `markedBits` and their split
+lemmas), `*Simulation` (`incr_eq_write`, `decr_eq_write`, `registerBits_eq`,
+…), `Instruction*` (path-length lemmas), `RuntimeInstance*`, `Prefix250Boxes`
+and `SitePrefix250`. Ten files, **−287/+20 lines**. All 135 affected modules
+compile serially: both lanes, the 82 `SitesPrefix246` site batches, the boot
+chunks and `BinaryPrefix246`.
+
+**Landed: `Rotation244` against the protected `Rotation240`** (same method;
+none of the lane's protected modules, `ProgramRotation244` and
+`SourceRotation244`, import the edited files). Six files, **−151/+12 lines**.
+All 23 affected modules compile, including the ten `BootRotation244` chunks
+and `BootstrapFrameRotation244`.
+
+**Landed: `EnumDom` against `Enum222`.** Sixteen identical definitions and
+lemmas (`unP`, `gate`, `tailN`, `Good` with its lemmas, the `*_ne_one`
+facts) are re-exported, for −53/+2 lines. Its dependents `L2AxiomsDom`,
+`L2RootDom` and `SeedDom` compile. `KEndpoint217` names none of the aliased
+declarations.
+
+Measured, not done (lines saved by the same lane-wide fixpoint):
+
+| target | lines | cost |
+| --- | ---: | --- |
+| `Routing245` → `Rotation240` | 84 | several hundred cut and bisimulation chunk dependents |
+| `EnumPerm`/`Enum254` → `Enum222` | 45 + 29 | K215 (peer-pinned) and Prog254 endpoint rebuilds |
+| `Rotation240` → `Perm252` (both protected) | about 150 | KEndpoint and Rotation240 closures |
+
+Larger savings in the protected lanes need a machine-generic formulation over
+`program`/`table`, not more aliasing.
 
 ## Reproducing
 

@@ -236,9 +236,9 @@ theorem translate_level : ∀ {n : ℕ} (φ : Semiproposition (setTemplateLangua
         calc 10 * (10 * (u + 1) + c + 1) = 100 * (u + 1) + (10 * c + 10) := by ring
           _ ≤ 100 * (u + 1) + (10 * c + 10) * (u + 1) := _root_.add_le_add le_rfl (le_mul_succ _ u)
           _ = 10 * (c + 11) * (u + 1) := by ring
-  | and p q ihp ihq =>
+  | and p q ihp ihq | or p q ihp ihq =>
       intro u Ks hK
-      simp only [translateFormula, Semiformula.val_and, tA]
+      simp only [translateFormula, Semiformula.val_and, Semiformula.val_or, tA]
       have hp := ihp u Ks hK
       have hq := ihq u Ks hK
       have hL : (2 : V) ≤ ((tA p : V) + tA q) * (u + 1) := by
@@ -253,39 +253,9 @@ theorem translate_level : ∀ {n : ℕ} (φ : Semiproposition (setTemplateLangua
       calc ((tA p : V) + tA q) * (u + 1) + 2 + 2 = ((tA p : V) + tA q) * (u + 1) + 4 := by ring
         _ ≤ ((tA p : V) + tA q) * (u + 1) + 4 * (u + 1) := _root_.add_le_add le_rfl (le_mul_succ _ u)
         _ = ((tA p : V) + tA q + 4) * (u + 1) := by ring
-  | or p q ihp ihq =>
+  | all p ih | exs p ih =>
       intro u Ks hK
-      simp only [translateFormula, Semiformula.val_or, tA]
-      have hp := ihp u Ks hK
-      have hq := ihq u Ks hK
-      have hL : (2 : V) ≤ ((tA p : V) + tA q) * (u + 1) := by
-        have h2 := cast_le (V := V) (two_le_tA p)
-        simp only [Nat.cast_ofNat] at h2
-        exact le_trans (le_trans h2 le_self_add) (le_mul_succ _ u)
-      have ap := lift_lvB hp (mul_le_mul_of_nonneg_right (le_self_add : (tA p : V) ≤ tA p + tA q) (Arithmetic.zero_le (u + 1)))
-      have aq := lift_lvB hq (mul_le_mul_of_nonneg_right (le_add_self : (tA q : V) ≤ tA p + tA q) (Arithmetic.zero_le (u + 1)))
-      refine le_trans (pair_lvB (le_trans hL le_self_add)
-        (tag_le_lvB (by norm_num) (le_trans hL le_self_add)) (pair_lvB' hL ap aq)) (lvB_mono ?_)
-      push_cast
-      calc ((tA p : V) + tA q) * (u + 1) + 2 + 2 = ((tA p : V) + tA q) * (u + 1) + 4 := by ring
-        _ ≤ ((tA p : V) + tA q) * (u + 1) + 4 * (u + 1) := _root_.add_le_add le_rfl (le_mul_succ _ u)
-        _ = ((tA p : V) + tA q + 4) * (u + 1) := by ring
-  | all p ih =>
-      intro u Ks hK
-      simp only [translateFormula, Semiformula.val_all, tA]
-      have hp := ih u Ks hK
-      have hL : (2 : V) ≤ (tA p : V) * (u + 1) := by
-        have h2 := cast_le (V := V) (two_le_tA p)
-        simp only [Nat.cast_ofNat] at h2
-        exact le_trans h2 (le_mul_succ _ u)
-      refine le_trans (pair_lvB hL (tag_le_lvB (by norm_num) hL) hp) (lvB_mono ?_)
-      push_cast
-      calc (tA p : V) * (u + 1) + 2 ≤ (tA p : V) * (u + 1) + 2 * (u + 1) :=
-            _root_.add_le_add le_rfl (le_mul_succ _ u)
-        _ = ((tA p : V) + 2) * (u + 1) := by ring
-  | exs p ih =>
-      intro u Ks hK
-      simp only [translateFormula, Semiformula.val_exs, tA]
+      simp only [translateFormula, Semiformula.val_all, Semiformula.val_exs, tA]
       have hp := ih u Ks hK
       have hL : (2 : V) ≤ (tA p : V) * (u + 1) := by
         have h2 := cast_le (V := V) (two_le_tA p)

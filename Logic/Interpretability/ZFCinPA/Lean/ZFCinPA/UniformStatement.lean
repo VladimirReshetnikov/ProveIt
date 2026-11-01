@@ -144,17 +144,7 @@ theorem toNat_toSet_congr (φ : SetTheory.Form) :
       (toSet k₁ φ).toNat = (toSet k₂ φ).toNat ∧
       ((toSet k₁ φ).neg).toNat = ((toSet k₂ φ).neg).toNat := by
   induction φ with
-  | fMem i j =>
-      intro k₁ k₂ h₁ h₂
-      have hi₁ : i < k₁ := h₁ i (Or.inl rfl)
-      have hj₁ : j < k₁ := h₁ j (Or.inr rfl)
-      have hi₂ : i < k₂ := h₂ i (Or.inl rfl)
-      have hj₂ : j < k₂ := h₂ j (Or.inr rfl)
-      constructor <;>
-        simp [toSet, Semiformula.neg, Semiformula.toNat, Matrix.vecToNat,
-          Matrix.vecHead, Matrix.vecTail, Semiterm.encode_eq_toNat,
-          toNat_toSetVar, hi₁, hj₁, hi₂, hj₂]
-  | fEq i j =>
+  | fMem i j | fEq i j =>
       intro k₁ k₂ h₁ h₂
       have hi₁ : i < k₁ := h₁ i (Or.inl rfl)
       have hj₁ : j < k₁ := h₁ j (Or.inr rfl)
@@ -167,7 +157,7 @@ theorem toNat_toSet_congr (φ : SetTheory.Form) :
   | fBot =>
       intro _ _ _ _
       constructor <;> rfl
-  | fImp a b iha ihb =>
+  | fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
       intro k₁ k₂ h₁ h₂
       have ha := iha k₁ k₂ (fun i hi => h₁ i (Or.inl hi)) (fun i hi => h₂ i (Or.inl hi))
       have hb := ihb k₁ k₂ (fun i hi => h₁ i (Or.inr hi)) (fun i hi => h₂ i (Or.inr hi))
@@ -175,34 +165,7 @@ theorem toNat_toSet_congr (φ : SetTheory.Form) :
         simp [toSet, Semiformula.imp_eq, Semiformula.neg_eq, Semiformula.neg,
           Semiformula.neg_neg, Semiformula.toNat,
           ha.1, ha.2, hb.1, hb.2]
-  | fAnd a b iha ihb =>
-      intro k₁ k₂ h₁ h₂
-      have ha := iha k₁ k₂ (fun i hi => h₁ i (Or.inl hi)) (fun i hi => h₂ i (Or.inl hi))
-      have hb := ihb k₁ k₂ (fun i hi => h₁ i (Or.inr hi)) (fun i hi => h₂ i (Or.inr hi))
-      constructor <;>
-        simp [toSet, Semiformula.neg, Semiformula.toNat,
-          ha.1, ha.2, hb.1, hb.2]
-  | fOr a b iha ihb =>
-      intro k₁ k₂ h₁ h₂
-      have ha := iha k₁ k₂ (fun i hi => h₁ i (Or.inl hi)) (fun i hi => h₂ i (Or.inl hi))
-      have hb := ihb k₁ k₂ (fun i hi => h₁ i (Or.inr hi)) (fun i hi => h₂ i (Or.inr hi))
-      constructor <;>
-        simp [toSet, Semiformula.neg, Semiformula.toNat,
-          ha.1, ha.2, hb.1, hb.2]
-  | fAll a ih =>
-      intro k₁ k₂ h₁ h₂
-      have ha := ih (k₁ + 1) (k₂ + 1)
-        (fun i hi => by
-          cases i with
-          | zero => omega
-          | succ m => have := h₁ m hi; omega)
-        (fun i hi => by
-          cases i with
-          | zero => omega
-          | succ m => have := h₂ m hi; omega)
-      constructor <;>
-        simp [toSet, Semiformula.neg, Semiformula.toNat, ha.1, ha.2]
-  | fEx a ih =>
+  | fAll a ih | fEx a ih =>
       intro k₁ k₂ h₁ h₂
       have ha := ih (k₁ + 1) (k₂ + 1)
         (fun i hi => by

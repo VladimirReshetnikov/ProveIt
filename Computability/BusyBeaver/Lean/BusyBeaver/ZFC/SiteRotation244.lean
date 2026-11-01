@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.SiteRotation240
 import BusyBeaver.ZFC.SymbolicRotation244
 import BusyBeaver.ZFC.Permutation252Frame
 
@@ -11,18 +12,11 @@ blank initialization and the final Combined243 calibration remain separate.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.SiteRotation244
+export SetTheory.BusyBeaver.ZFC.SiteRotation240 (minDistance fuel physical allOnes)
 
 open RegisterPath SymbolicRotation244
 
 def dispatch : Fin 244 := dispatchRotation244
-def minDistance : Nat := 64
-def fuel : Nat := 4000
-
-def physical (r : Nat) (hr : r < 9) : Reg :=
-  ⟨Permutation252Frame.physOf r, Permutation252Frame.physOf_lt ⟨r, hr⟩⟩
-
-def allOnes (P : List Bool) : Bool := P.all id
-
 def start (Q : List Bool) : SConfig :=
   ⟨some dispatch, false, [.bit true],
     Q.map Segment.bit ++
