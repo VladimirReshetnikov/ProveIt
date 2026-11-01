@@ -11,13 +11,7 @@ theorem allClosure_imp (n : ℕ) (φ ψ : Semipropositionᵢ L n)
     (h : Λ ⊢ openAll n φ 🡒 openAll n ψ) :
     Λ ⊢ (∀⁰* φ) 🡒 (∀⁰* ψ) := by
   have hh := allClosure_fixitr_imp h n
-  have hi := congrArg (fun x : Semipropositionᵢ L n => ∀⁰* x) (openAll_inverse n φ)
-  have hj := congrArg (fun x : Semipropositionᵢ L n => ∀⁰* x) (openAll_inverse n ψ)
-  have hc1 := allClosure_cast (Nat.zero_add n) (Rew.fixitr 0 n ▹ openAll n φ)
-  have hc2 := allClosure_cast (Nat.zero_add n) (Rew.fixitr 0 n ▹ openAll n ψ)
-  have hi' : (∀⁰* (Rew.fixitr 0 n ▹ openAll n φ)) = ∀⁰* φ := hc1.symm.trans hi
-  have hj' : (∀⁰* (Rew.fixitr 0 n ▹ openAll n ψ)) = ∀⁰* ψ := hc2.symm.trans hj
-  simpa only [hi', hj'] using hh
+  simpa only [allClosure_openAll] using hh
 
 theorem openAll_imp (n : ℕ) (φ ψ : Semipropositionᵢ L n) :
     openAll n (φ 🡒 ψ) = (openAll n φ 🡒 openAll n ψ) := by

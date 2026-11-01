@@ -1,6 +1,8 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRASeqFullWitnessBound
 import DiophantineConsistency.PRANegSeqDefWitnessBound
+import DiophantineConsistency.PRAUnaryRewritingBound
+import DiophantineConsistency.PRARewritingWitnessBound
 set_option autoImplicit false
 set_option maxHeartbeats 2000000
 namespace DiophantineConsistency.PRALhWitnessBound
@@ -44,48 +46,45 @@ theorem bnd_lift2 (w : V) (φ : ArithmeticSemisentence 2) (a b q : V) (hq : q �
   intro h
   simp [lhDef,DeMorgan.imply,bnd,bnd_open] at h ⊢
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  have lift1 := bnd_lift1 w
-  have lift2 := bnd_lift2 w
   constructor
   · rcases h.1 with hn | ⟨d,hd,hde,hue⟩
     · left
       have hn' : (∼seqDef.val).Evalb ![s] := by simpa using hn
-      have hb := PRANegSeqDefWitnessBound.neg_seq_bound_explicit s hn'
-      have hw := lift1 (∼seqDef.val) s (PRANegSeqDefWitnessBound.negSeqMajorant s) hnegseq hb
       let ω : Rew ℒₒᵣ Empty 1 Empty 2 := Rew.subst ![#1]
-      have hv : (fun j => (ω #j).val ![l,s] Empty.elim) = ![s] := by
-        funext j; exact Fin.cases rfl (fun k => Fin.elim0 k) j
-      have hh := bnd_rew1 (∼seqDef.val) ω l s w s hv hw
+      have hh := PRAUnaryRewritingBound.rew_bound_with (∼seqDef.val)
+        PRANegSeqDefWitnessBound.negSeqMajorant PRANegSeqDefWitnessBound.neg_seq_bound_explicit
+        ω ![l,s] w (by simpa [ω] using hnegseq)
+        (by simpa [ω, Semiformula.eval_substs] using hn')
       rw [show (ω ▹ (∼seqDef.val)) = ∼(ω ▹ seqDef.val) from
         LogicalConnective.HomClass.map_neg (Semiformula.rew ω) seqDef.val] at hh
-      exact hh
+      simpa using hh
     · right
       simp [Semiformula.bexsLTSucc,Semiformula.bexsLT,FirstOrder.bexs,bnd,bnd_open]
       have hd' : d < 2*s+1 := lt_succ_iff_le.mpr hd
       refine ⟨d,lt_of_lt_of_le hd' hsize,hd',?_,?_⟩
-      · have hb := PRADomainWitnessBound.domain_bound_explicit d s hde
-        have hdsize := le_trans (PRASeqDomainBound.domainMajorant_mono_left d (2*s) s hd) hdom
-        have hw := lift2 domainDef.val d s (PRADomainWitnessBound.domainMajorant d s) hdsize hb
+      · have hdsize := le_trans (PRASeqDomainBound.domainMajorant_mono_left d (2*s) s hd) hdom
         let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#2]
-        have hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![d,s] := by
-          funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-        exact bnd_rew2 domainDef.val ω d l s w d s hv hw
-      · have hb := PRAUnderWitnessBound.under_bound d l hue
-        have hadd : d+1 ≤ 2*s+1 := by simpa [add_comm] using add_le_add_right hd 1
+        have hh := PRARewritingWitnessBound.binary_rew_bound_with domainDef.val
+          PRADomainWitnessBound.domainMajorant PRADomainWitnessBound.domain_bound_explicit
+          ω ![d,l,s] w (by simpa [ω] using hdsize)
+          (by simpa [ω, Semiformula.eval_substs] using hde)
+        simpa using hh
+      · have hadd : d+1 ≤ 2*s+1 := by simpa [add_comm] using add_le_add_right hd 1
         have husize := le_trans (PRAUnderMajorantMono.expMajorant_mono (d+1) (2*s+1) hadd) hunder
-        have hw := lift2 underDef.val d l (PRAExponentialWitnessBound.exponentialMajorant (d+1)) husize hb
         let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
-        have hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![d,l] := by
-          funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-        exact bnd_rew2 underDef.val ω d l s w d l hv hw
+        have hh := PRARewritingWitnessBound.binary_rew_bound_with underDef.val
+          (fun d _ => PRAExponentialWitnessBound.exponentialMajorant (d+1))
+          PRAUnderWitnessBound.under_bound ω ![d,l,s] w (by simpa [ω] using husize)
+          (by simpa [ω, Semiformula.eval_substs] using hue)
+        simpa using hh
   · rcases h.2 with hp | hp
     · left
-      have hb := PRASeqFullWitnessBound.seq_bound_explicit s hp
-      have hw := lift1 seqDef.val s (PRASeqFullWitnessBound.seqMajorant s) hseq hb
       let ω : Rew ℒₒᵣ Empty 1 Empty 2 := Rew.subst ![#1]
-      have hv : (fun j => (ω #j).val ![l,s] Empty.elim) = ![s] := by
-        funext j; exact Fin.cases rfl (fun k => Fin.elim0 k) j
-      exact bnd_rew1 seqDef.val ω l s w s hv hw
+      have hh := PRAUnaryRewritingBound.rew_bound_with seqDef.val
+        PRASeqFullWitnessBound.seqMajorant PRASeqFullWitnessBound.seq_bound_explicit
+        ω ![l,s] w (by simpa [ω] using hseq)
+        (by simpa [ω, Semiformula.eval_substs] using hp)
+      simpa using hh
     · exact Or.inr hp
 def lhMajorant (s : V) : V := (2*s+1) + PRASeqFullWitnessBound.seqMajorant s +
  PRANegSeqDefWitnessBound.negSeqMajorant s + PRADomainWitnessBound.domainMajorant (2*s) s +

@@ -459,21 +459,9 @@ theorem translate_emb_srcMem
           Semiproposition (setTemplateLanguage k arities) n) =
       Bootstrapping.Semiformula.rel Language.Set.Rel.mem
         ![translateTerm (Rew.emb t), translateTerm (Rew.emb u)] := by
-  rw [show (Rewriting.emb (srcMem t u) :
-        Semiproposition (setTemplateLanguage k arities) n)
-      = FirstOrder.Semiformula.rel (Sum.inl Language.Set.Rel.mem)
-          ![Rew.emb t, Rew.emb u] from by
-    simp [srcMem]]
-  rw [show translateFormula Ks
-        (FirstOrder.Semiformula.rel (Sum.inl Language.Set.Rel.mem)
-          ![Rew.emb t, Rew.emb u])
-      = Bootstrapping.Semiformula.rel Language.Set.Rel.mem
-          (fun i ↦ translateTerm ((![Rew.emb t, Rew.emb u]) i)) from rfl]
+  simp [srcMem, translateFormula, Function.comp_def]
   congr 1
-  funext i
-  match i with
-  | 0 => rfl
-  | 1 => rfl
+  exact Matrix.comp₂ (f := fun x => translateTerm (Rew.emb x)) t u
 
 /-- Specialization of the embedded equality atom. -/
 theorem translate_emb_srcEq
@@ -484,21 +472,9 @@ theorem translate_emb_srcEq
           Semiproposition (setTemplateLanguage k arities) n) =
       Bootstrapping.Semiformula.rel Language.Set.Rel.eq
         ![translateTerm (Rew.emb t), translateTerm (Rew.emb u)] := by
-  rw [show (Rewriting.emb (srcEq t u) :
-        Semiproposition (setTemplateLanguage k arities) n)
-      = FirstOrder.Semiformula.rel (Sum.inl Language.Set.Rel.eq)
-          ![Rew.emb t, Rew.emb u] from by
-    simp [srcEq]]
-  rw [show translateFormula Ks
-        (FirstOrder.Semiformula.rel (Sum.inl Language.Set.Rel.eq)
-          ![Rew.emb t, Rew.emb u])
-      = Bootstrapping.Semiformula.rel Language.Set.Rel.eq
-          (fun i ↦ translateTerm ((![Rew.emb t, Rew.emb u]) i)) from rfl]
+  simp [srcEq, translateFormula, Function.comp_def]
   congr 1
-  funext i
-  match i with
-  | 0 => rfl
-  | 1 => rfl
+  exact Matrix.comp₂ (f := fun x => translateTerm (Rew.emb x)) t u
 
 /-- Specialization of the embedded `i`-th placeholder atom. -/
 theorem translate_emb_srcP
