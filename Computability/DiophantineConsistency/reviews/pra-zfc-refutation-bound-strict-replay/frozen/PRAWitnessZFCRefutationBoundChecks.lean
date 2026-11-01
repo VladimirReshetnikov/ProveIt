@@ -1,0 +1,5 @@
+import DiophantineConsistency.PRAWitnessZFCRefutationBound
+
+#check DiophantineConsistency.PRAWitnessZFCRefutationBound.wb_refutation
+#check DiophantineConsistency.PRAWitnessZFCRefutationBound.PRA_proves_refutation_bound
+#print axioms DiophantineConsistency.PRAWitnessZFCRefutationBound.PRA_proves_refutation_bound

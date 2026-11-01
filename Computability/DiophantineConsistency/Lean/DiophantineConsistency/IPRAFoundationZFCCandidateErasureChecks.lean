@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAFoundationZFCCandidateErasure
+#print axioms DiophantineConsistency.IPRAFoundationZFCCandidateErasure.candidateErasure
+#print axioms DiophantineConsistency.IPRAFoundationZFCCandidateErasure.candidateTwoPremises
+#check DiophantineConsistency.IPRAFoundationZFCCandidateErasure.candidateTwoPremises

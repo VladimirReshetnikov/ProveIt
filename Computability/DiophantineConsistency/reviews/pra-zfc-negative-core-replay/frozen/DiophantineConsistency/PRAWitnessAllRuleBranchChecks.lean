@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessAllRuleBranch
+#print axioms DiophantineConsistency.PRAWitnessAllRuleBranch.actualAllBranch_eq
+#print axioms DiophantineConsistency.PRAWitnessAllRuleBranch.wb_neg_actualAllBranch

@@ -1,0 +1,1 @@
+Private same-parent peer passed; all four source/object/full-log/direct-dependency rows matched. Prefix, reconstructed-origin and external package ancestry limitations remain as described in the parent packet.

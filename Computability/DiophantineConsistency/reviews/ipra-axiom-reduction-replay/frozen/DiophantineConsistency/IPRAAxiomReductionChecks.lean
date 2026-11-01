@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAAxiomReduction
+#print axioms DiophantineConsistency.IPRAAxiomReduction.axiom_images_from_equality_and_basic
+#print axioms DiophantineConsistency.IPRAAxiomReduction.mapped_noZero_from_equality_and_basic

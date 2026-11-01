@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRAIffGG
+#print axioms DiophantineConsistency.IPRAIffGG.iff_doubleNegation
+#print axioms DiophantineConsistency.IPRAIffGG.sentence_iff_doubleNegation
+#print axioms DiophantineConsistency.IPRAIffGG.unpack_iff_image
+#print axioms DiophantineConsistency.IPRAIffGG.sentence_neg_doubleNegation
+#print axioms DiophantineConsistency.IPRAIffGG.unpack_neg_image
+#print axioms DiophantineConsistency.IPRAIffGG.unpack_iff_neg_image

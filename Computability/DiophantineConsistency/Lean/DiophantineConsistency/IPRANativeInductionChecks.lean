@@ -1,0 +1,2 @@
+import DiophantineConsistency.IPRANativeInduction
+#print axioms DiophantineConsistency.IPRANativeInduction.translated_matrix_nativeInduction

@@ -1,0 +1,5 @@
+# Native iPRA equality transitivity GG image
+
+The author and independent focused runs passed with matching source, object and full-log hashes for both modules. Replay: `python3 Computability/DiophantineConsistency/reviews/ipra-equality-trans-gg-replay/replay.py`. Parent is the accepted two-implication peer `/tmp/ipra-induction-nozero-re_whm9h`; the replay guards 292 project sources, 297 parent objects and 144 direct external objects. Parent project provenance includes reconstructed reused-object ancestry; Foundation/package transitive ancestry and dynamic imports remain inherited.
+
+`trans_image` proves the actual Foundation equality transitivity axiom's Gödel–Gentzen image in the candidate native theory. `trans_native` derives the corresponding direct intuitionistic closed transitivity statement from one explicit native Leibniz substitution axiom; the separate two-implication adapter supplies its translated image. No equality congruence or equation–consistency theorem is asserted. Lean axiom audit is in the full check log.

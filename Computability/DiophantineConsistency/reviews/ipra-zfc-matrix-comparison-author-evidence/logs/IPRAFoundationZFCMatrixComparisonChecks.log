@@ -1,0 +1,28 @@
+'DiophantineConsistency.IPRAFoundationZFCMatrixComparison.boundedComparison' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRAFoundationZFCMatrixComparison.mappedZFCWithMatrix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRAFoundationZFCMatrixComparison.mappedZFCWithMatrix.{u_1} {L : LO.FirstOrder.Language}
+  [L.DecidableEq] {Λ : LO.FirstOrder.Hilbertᵢ L} {T : LO.FirstOrder.Theoryᵢ L Λ} (f : ℒₒᵣ.Hom L)
+  (hbound :
+    T ⊢!
+      ((LO.FirstOrder.Semiformula.lMap f)
+            DiophantineConsistency.FoundationHAConsistencyNormalization.rho).doubleNegation 🡒
+        ((LO.FirstOrder.Semiformula.lMap f)
+            DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation).doubleNegation)
+  (hmatrix :
+    T ⊢!
+      ∀⁰
+        (((LO.FirstOrder.Semiformula.lMap f)
+              (DiophantineConsistency.StrictSigmaOneInduction.bnd
+                DiophantineConsistency.FoundationHAConsistencyNormalization.rho)).doubleNegation 🡒
+          DiophantineConsistency.IPRANativeFormula.native
+            ((LO.FirstOrder.Semiformula.lMap f)
+              (DiophantineConsistency.StrictSigmaOneInduction.bnd
+                DiophantineConsistency.FoundationHAConsistencyNormalization.rho)))) :
+  T ⊢!
+    ((LO.FirstOrder.Semiformula.lMap f)
+          DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence).doubleNegation 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation f

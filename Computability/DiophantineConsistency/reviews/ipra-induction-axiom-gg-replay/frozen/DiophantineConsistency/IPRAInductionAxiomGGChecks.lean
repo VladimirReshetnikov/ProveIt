@@ -1,0 +1,6 @@
+import DiophantineConsistency.IPRAInductionAxiomGG
+#print axioms DiophantineConsistency.IPRAMatrixQ.native_matrix_instance
+#print axioms DiophantineConsistency.IPRARewNatural.body_natural
+#print axioms DiophantineConsistency.IPRABodyBinding.embedded_axiom
+#print axioms DiophantineConsistency.IPRABodyBinding.induction_gg_in_theory
+#print axioms DiophantineConsistency.IPRABodyBinding.induction_scheme_gg_in_theory

@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAQuantifierFree
+#print axioms DiophantineConsistency.IPRAQuantifierFree.gg_preserves_open
+#print axioms DiophantineConsistency.IPRAQuantifierFree.gg_allClosure
+#print axioms DiophantineConsistency.IPRAQuantifierFree.gg_noZero

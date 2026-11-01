@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRABoundedExistsErasure
+#print axioms DiophantineConsistency.IPRABoundedExistsErasure.existsErasure
+#check DiophantineConsistency.IPRABoundedExistsErasure.existsErasure

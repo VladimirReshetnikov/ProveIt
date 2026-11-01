@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAEqualitySymmetryGG
+#print axioms DiophantineConsistency.IPRAEqualitySymmetryGG.symmetry_open
+#print axioms DiophantineConsistency.IPRAEqualitySymmetryGG.symmetry_closed_context
+#print axioms DiophantineConsistency.IPRAEqualitySymmetryGG.symmetry_native
+#print axioms DiophantineConsistency.IPRAEqualitySymmetryGG.symmetry_image

@@ -1,0 +1,2 @@
+import DiophantineConsistency.IPRAEqualityReflGG
+#print axioms DiophantineConsistency.IPRAEqualityImage.refl_image

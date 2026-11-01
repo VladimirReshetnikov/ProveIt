@@ -1,0 +1,2 @@
+import DiophantineConsistency.PRAWitnessZFCNegativePiCore
+#print axioms DiophantineConsistency.PRAWitnessZFCNegativePiCore.wb_neg_zfcCorePi

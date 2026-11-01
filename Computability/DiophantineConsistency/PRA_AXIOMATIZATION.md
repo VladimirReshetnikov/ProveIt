@@ -1,10 +1,14 @@
-# The PRA presentation used in the Lean development
+# The classical PRA presentation used as an intermediate
 
-The active target is existence of a proof in `PRATheory.PRA`, defined in
-[`PRATheory.lean`](Lean/DiophantineConsistency/PRATheory.lean). It is a
-classical first-order theory with equality, an expanded language of
-primitive-recursive functions, and induction for quantifier-free formulas.
-This replaced the earlier HA target.
+The active target is now existence of a proof in **intuitionistic PRA**; see
+[IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md). The intuitionistic theory
+has a candidate native definition, but its standard-presentation comparison
+and connection to the equation remain open. The existing `PRATheory.PRA`, defined in
+[`PRATheory.lean`](Lean/DiophantineConsistency/PRATheory.lean), is a classical
+first-order theory with equality, an expanded language of primitive-recursive
+functions, and induction for quantifier-free formulas. It is an intermediate
+whose proof objects cannot be presented as intuitionistic PRA proofs without
+an additional verified translation.
 
 ## Language
 
@@ -35,15 +39,25 @@ addition to first-order equality axioms, the theory has:
   truncated subtraction.
 * For every quantifier-free formula `φ(n, x̄)` in the **full expanded
   language**, the universal closure of
-  `φ(0,x̄) → (∀ n, φ(n,x̄) → φ(S(n),x̄)) → ∀ n, φ(n,x̄)`.
+  `φ(0,x̄) → (∀ n, φ(n,x̄) → φ(n + 1,x̄)) → ∀ n, φ(n,x̄)`.
   Parameters `x̄` are allowed. Quantifier-free here means no quantifiers in
   `φ`; bounded quantifiers written out as quantifiers are not themselves
-  quantifier-free.
+  quantifier-free. Here `n + 1` uses the designated addition and one codes;
+  it is not syntactically the same term as the separately coded `S(n)`.
+  Relating the two requires a derivation from the defining equations.
 
 The union is exactly `core ∪ BasicAxiom` in `PRATheory.PRA`. In particular,
 full first-order induction and Σ₁ induction are not added as axioms. The
 proof system is classical; Lean's own metatheoretic principles used to prove
 the existence of a derivation are not additional PRA axioms.
+
+Schematically, `PRA ⊢ ψ` is a Lean proposition asserting the existence of a
+derivation of the object-language sentence `ψ` from precisely these axioms in
+Foundation's classical first-order proof system. The arithmetic sentence is
+mapped into this language by `PRALanguage.embedding`; the mapping does not add
+axioms. A Lean proof of this proposition is metatheoretic evidence for an
+object-theory derivation, not a proof of `ψ` from Lean's axioms presented as if
+it were a PRA derivation.
 
 ## Scope of the comparison
 
@@ -53,7 +67,8 @@ concrete translations and arithmetic consequences. A separate Lean theorem
 identifying this presentation with every standard presentation of PRA, or a
 general IΣ₁-to-PRA conservation theorem, is not currently claimed. See
 [PRA_PROVABILITY_PLAN.md](PRA_PROVABILITY_PLAN.md) for the exact proof target,
-the remaining witness-bound problem and the status of replaying dependencies.
-The intended result is a PRA derivation of the equivalence between no positive
-solution and the chosen formal `Con(ZFC)` sentence, not a PRA proof of either
-side on its own.
+the status of the specific ZFC witness bound, and the remaining equation and
+dependency verification.
+The intended result is an intuitionistic PRA derivation of the equivalence
+between no positive solution and the chosen formal `Con(ZFC)` sentence, not a
+proof of either side on its own.

@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAWitnessPositiveCoreZFC
+#print axioms DiophantineConsistency.PRAWitnessPositiveCoreDirect.wb_coreSigma
+#print axioms DiophantineConsistency.PRAWitnessPositiveCoreZFC.wb_coreSigma
+#check DiophantineConsistency.PRAWitnessPositiveCoreZFC.wb_coreSigma

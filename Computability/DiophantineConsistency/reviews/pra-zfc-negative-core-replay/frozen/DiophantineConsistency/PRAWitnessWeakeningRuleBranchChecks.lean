@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessWeakeningRuleBranch
+#print axioms DiophantineConsistency.PRAWitnessWeakeningRuleBranch.actualWeakeningBranch_eq
+#print axioms DiophantineConsistency.PRAWitnessWeakeningRuleBranch.wb_neg_actualWeakeningBranch

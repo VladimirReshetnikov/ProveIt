@@ -2,11 +2,12 @@
 
 The active objective requires a Lean proof that the equivalence between each
 selected small equation's unsolvability and `Con(ZFC)` is provable in
-primitive recursive arithmetic (PRA). This replaced the earlier HA target;
-existing HA results are background and may supply useful shared dependencies.
-Existence of an object-theory proof is enough; a printed proof is not required.
-The exact language, defining equations, order axiom, and induction scheme are
-spelled out in [PRA_AXIOMATIZATION.md](PRA_AXIOMATIZATION.md).
+**intuitionistic** primitive recursive arithmetic (iPRA). Existence of an
+object-theory proof is enough; a printed proof is not required. The existing
+classical PRA development below is an intermediate, not a completed iPRA
+result. The intended intuitionistic bridge and its open obligations are in
+[IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md). The classical
+intermediate's exact axioms are in [PRA_AXIOMATIZATION.md](PRA_AXIOMATIZATION.md).
 
 ## Status update (2026-10-31)
 
@@ -26,13 +27,13 @@ calculus, layer by layer, in every candidate-PRA model:
 * derivations and the provability sentence
   (`PRAWitnessDerivation.wb_provable_falsum`).
 
-`PRACurrentConsistencyEndpoint` assembles `boundCertificate_rho` and the
-literal endpoint `pra_current_iff_consistency`
-(`PRA ⊢ classicalSentence ↔ sourceSentence`) through
-`PRAStrictConReverse.comparison_if_bound`. **The PRA target is closed:**
-both theorems compile, and the axiom audit
-(`PRACurrentConsistencyEndpointChecks`) reports only `propext`,
-`Classical.choice` and `Quot.sound`. The next target, intuitionistic PRA, is planned in
+Upstream reports that `PRACurrentConsistencyEndpoint` assembles
+`boundCertificate_rho` and the classical endpoint
+`pra_current_iff_consistency` through `comparison_if_bound`, with only the
+standard Lean metatheory axioms in its check. Its post-merge source closure
+has not been independently authenticated here. The separately guarded
+classical 14-variable endpoint below passed before this merge. Neither result
+is the requested intuitionistic PRA endpoint; see
 [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md).
 
 ## Status summary (2026-10-30)
@@ -41,9 +42,41 @@ Candidate PRA proves `noZero ↔ conB π` (`PRAStrictConComparison.comparison`)
 and `¬π → noZero` (`PRAStrictConForward.original_implies_noZero`) for every
 finite no-zero sentence with an IΣ₁ proof of `noZero ↔ ¬π`. The literal
 endpoint `noZero ↔ ¬π` for Foundation's actual ZFC-refutation sentence `π`
-needs exactly one more input, `PRAStrictConReverse.BoundCertificate π`:
-candidate PRA proves `π → ∃ w, bnd π (w)`. Its literal 14-variable
-instantiation additionally needs the source-current IΣ₁ equivalence closure.
+uses `PRAStrictConReverse.BoundCertificate π`: candidate PRA proves
+`π → ∃ w, bnd π (w)`. That fixed-sentence bound was derived on the strict
+project-source provider below and joined to the 14-variable equation in the
+pre-merge build described next. Post-merge source revalidation is needed.
+
+The isolated 847-module 14-variable source snapshot has now completed its
+author build and final authentication at `/tmp/pra14-full-transitive-g3ull6n_`;
+all 847 records passed. The 73-module comparison join has also passed on that
+provider and checks the literal 14-variable equivalence in **classical**
+candidate PRA. Its
+[author receipt](reviews/pra14-zfc-join-author-pass/README.md) records all 73
+matching pre-merge workspace source hashes and the inherited ancestry boundary. A subsequent
+[workspace source audit](reviews/pra14-isolated-author-pass/workspace-source-audit.json)
+found all 847 pre-merge source hashes match. The merge changed upstream sources,
+so the current workspace needs a fresh audit and affected-dependency rebuild.
+The snapshot incorporates authenticated
+reuse from a prior build, with reconstructed origin and external transitive
+ancestry; an independent full replay remains a separate check. This is not
+yet an intuitionistic PRA proof.
+
+The completed pre-merge join rebuilt the comparison on the frozen 14-variable
+equation provider. A source-import audit found 73 additional local modules
+through `PRACurrentZFCStrictChecks`, including the refutation-bound and
+comparison chains, plus four directly imported Foundation objects and their
+available companions. The corresponding source hashes match the independently
+replayed comparison inputs. The subsequent guarded join passed on the stated
+provider; its independent same-parent replay and post-merge validation remain
+separate checks.
+The 13-variable, 86-gate equation has a further audited cone of 108 local
+modules beyond the 14-variable graph, before its final PRA specialization.
+That specialization has also compiled in an exploratory mixed-provider
+overlay; its source closure and common-provider comparison remain to be
+replayed together.
+Shared source hashes do not by themselves authenticate compiled-object or
+transitive package compatibility.
 For the related 87-operation equation, a [fixed historical project snapshot](reviews/ha87-isolated-full-author-pass/README.md)
 has now passed a fresh 729-module author build and final reauthentication.
 That run is supporting equation-side provenance, not a current-source closure,
@@ -51,9 +84,13 @@ an independently fresh full replay, or a PRA refutation-bound proof; external
 package ancestry is inherited.
 
 `BoundCertificate π` is a statement that the displayed implication has a
-candidate-PRA proof. One way to establish it is to show suitable witness
-bounds in every candidate-PRA model and use completeness. This is now attacked
-compositionally:
+candidate-PRA proof. The [strict ZFC integration](reviews/pra-zfc-refutation-bound-strict-replay/README.md)
+now proves this bound for Foundation's actual ZFC refutation sentence without
+additional core-bound hypotheses, by combining the positive and negative
+ZFC derivation-core bounds in all candidate-PRA models and using completeness.
+The two matching strict integration replays inherit their external package
+ancestry. Comparisons for other equations and post-merge equation-source
+closure remain separate obligations.
 
 [`PRAWitnessBoundCertificate`](Lean/DiophantineConsistency/PRAWitnessBoundCertificate.lean)
 supplies this generic completeness step and composes it with the fixed-sentence
@@ -99,19 +136,24 @@ merged worktree before their proofs are treated as current-source evidence:
    uses a witness bound for the actual `shiftGraph` as a premise; its parent
    source/object correspondence and external ancestry remain unauthenticated.
 3. `PRAWitnessZFCAxioms.goodCh_zfc` states bounds for both polarities of the
-   actual ZFC axiom recognizer, including separation and replacement.
+   actual ZFC axiom recognizer, including separation and replacement. A
+   [strict nine-module suffix](reviews/pra-zfc-witness-closure-replay/README.md)
+   and independent same-parent replay now match, over the guarded 214-module
+   local project parent; the direct external objects' transitive ancestry is
+   inherited.
 
-The remaining endpoint is a bound for the actual `Derivation.blueprint`
-core. The [outer refutation reduction](reviews/pra-refutation-outer-provisional-replay/README.md)
+The earlier remaining endpoint was a bound for the actual
+`Derivation.blueprint` core. The
+[outer refutation reduction](reviews/pra-refutation-outer-provisional-replay/README.md)
 now derives the exact fixed ZFC `BoundCertificate` from the two core bounds in
 all candidate-PRA models, and composes the generic version with the no-zero
 comparison. The [formula-set conjuncts](reviews/pra-derivation-core-left-provisional-replay/README.md)
 of those core bounds are now established separately, leaving the positive
-rule disjunction and negated pi rule disjunction. Those bounds remain
-assumptions, and both reductions' replays
-inherit a provisional mixed-project and external provider. The presence of
-the source declarations above does not by itself establish the endpoint or a
-complete current-source replay.
+rule disjunction and negated pi rule disjunction. Those bounds are assumptions
+in the conditional reductions, whose replays inherit a provisional
+mixed-project and external provider. The later strict positive and negative
+ZFC core builds discharge them on the strict provider used in the integration
+above; a full current-source equation comparison remains outstanding.
 
 The [rule-leaf collector](reviews/pra-zfc-rule-leaves-provisional-replay/README.md)
 further reduces the exact ZFC certificate to positive and negative bounds for

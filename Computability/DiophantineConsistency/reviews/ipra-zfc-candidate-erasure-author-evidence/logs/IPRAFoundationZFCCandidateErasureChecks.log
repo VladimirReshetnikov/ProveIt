@@ -1,0 +1,25 @@
+'DiophantineConsistency.IPRAFoundationZFCCandidateErasure.candidateErasure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRAFoundationZFCCandidateErasure.candidateTwoPremises' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRAFoundationZFCCandidateErasure.candidateTwoPremises
+  (hbound :
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+            DiophantineConsistency.FoundationHAConsistencyNormalization.rho).doubleNegation 🡒
+        ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+            DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation).doubleNegation)
+  (hcompare :
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+            DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation).doubleNegation 🡒
+        ∼∼DiophantineConsistency.IPRANativeFormula.native
+              ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+                DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation)) :
+  DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+          DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence).doubleNegation 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation
+          DiophantineConsistency.PRALanguage.embedding

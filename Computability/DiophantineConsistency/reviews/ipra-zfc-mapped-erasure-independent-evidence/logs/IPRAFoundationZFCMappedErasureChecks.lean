@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAFoundationZFCMappedErasure
+#print axioms DiophantineConsistency.IPRAFoundationZFCMappedErasure.exactErasure
+#print axioms DiophantineConsistency.IPRAFoundationZFCMappedErasure.mappedZFCNegationTwoPremises
+#check DiophantineConsistency.IPRAFoundationZFCMappedErasure.mappedZFCNegationTwoPremises

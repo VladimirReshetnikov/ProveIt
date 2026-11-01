@@ -1,0 +1,18 @@
+DiophantineConsistency.IntuitionisticPRABridge.from_classical
+  (T : LO.FirstOrder.Theoryᵢ DiophantineConsistency.PRALanguage.language 𝗜𝗻𝘁¹)
+  (hax : ∀ σ ∈ DiophantineConsistency.PRATheory.PRA, T ⊢ LO.FirstOrder.Semiformula.doubleNegation σ)
+  {φ : LO.FirstOrder.Sentence DiophantineConsistency.PRALanguage.language}
+  (h : DiophantineConsistency.PRATheory.PRA ⊢ φ) : T ⊢ LO.FirstOrder.Semiformula.doubleNegation φ
+DiophantineConsistency.IntuitionisticPRABridge.from_classical_with_target
+  (T : LO.FirstOrder.Theoryᵢ DiophantineConsistency.PRALanguage.language 𝗜𝗻𝘁¹)
+  (hax : ∀ σ ∈ DiophantineConsistency.PRATheory.PRA, T ⊢ LO.FirstOrder.Semiformula.doubleNegation σ)
+  {φ : LO.FirstOrder.Sentence DiophantineConsistency.PRALanguage.language}
+  (h : DiophantineConsistency.PRATheory.PRA ⊢ φ)
+  (target : LO.FirstOrder.Sentenceᵢ DiophantineConsistency.PRALanguage.language)
+  (hstable : T ⊢ LO.FirstOrder.Semiformula.doubleNegation φ 🡒 target) : T ⊢ target
+'DiophantineConsistency.IntuitionisticPRABridge.from_classical' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IntuitionisticPRABridge.from_classical_with_target' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

@@ -1,0 +1,5 @@
+# Candidate native iPRA theory
+
+The two frozen modules compile in author and independent runs against `/tmp/ipra-induction-nozero-sifevdyb`, and both source, object and full compiler-log hashes match. Replay: `python3 Computability/DiophantineConsistency/reviews/ipra-native-theory-replay/replay.py`. Each run guards 282 workspace source hashes, 287 parent objects, and 144 direct external objects. The ancestor is the accepted finite-parameter induction prefix; its project prefix inherited reconstructed reused-object ancestry, and Foundation/package transitive ancestry and dynamically imported objects remain inherited.
+
+The candidate includes all five primitive-recursive defining-equation families, direct intuitionistic successor and order axioms, reflexivity and arbitrary-parameter Leibniz equality, and the existing direct-implication quantifier-free induction schema with the Foundation x+1 step term. This packet proves no equivalence with a standard presentation, no translated classical axiom images, and no equation/consistency equivalence. `#print axioms` reports only `propext` and `Quot.sound` for the theory and induction membership.

@@ -1,0 +1,5 @@
+# Conditional stable GG-to-native induction: author replay
+
+Guarded run `/tmp/ipra-stable-backward-gqjj3ia_` passed. For a syntax support closed under the relevant child and fresh-variable operations, the theorem derives GG-to-native comparison for supported formulas from explicit native double-negation-stability proofs for the supported positive atoms, disjunctions and existentials. It constructs neither the actual ZFC matrix support nor its stability proofs and is not an iPRA matrix comparison. No model semantics or bounded decidability is assumed.
+
+Selected parent and Foundation anchors are checked; complete inherited HA/ZF/Foundation/package transitive source/object provenance remains unverified. Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-stable-backward.py`. Independent replay required. State `407eaf447d8d3a12f662f3f922f229e205bf9f6b6f037113baaa78250a399266`; manifest `5acdb6173e036f2b70f84b0dd5a43adce5aff01cfe130f64f033571e2f6cbf02`.

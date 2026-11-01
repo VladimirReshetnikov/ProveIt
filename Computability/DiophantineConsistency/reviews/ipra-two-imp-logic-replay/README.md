@@ -1,0 +1,5 @@
+# Intuitionistic two-implication GG adapter
+
+Author and independent focused runs passed with matching source, object and full-log hashes for both modules. Replay: `python3 Computability/DiophantineConsistency/reviews/ipra-two-imp-logic-replay/replay.py`. Parent is the accepted all-basic peer `/tmp/ipra-induction-nozero-esaff8qy`; the replay guards 290 project sources, 295 parent objects and 144 direct external objects. Parent project provenance includes reconstructed reused-object ancestry; Foundation/package transitive ancestry and dynamic imports remain inherited.
+
+`atomic_twoImp_closure` proves in candidate native iPRA that any finite universal closure of a direct intuitionistic two-implication atomic formula implies the GG image of the corresponding classical formula. The check instantiates the equality-transitivity shape, but the direct native transitivity sentence itself is not proved in this packet. No atom decidability, equality image, or equation–consistency result is asserted. `#print axioms` reports only propext, Classical.choice and Quot.sound.

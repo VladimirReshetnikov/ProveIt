@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRACurrentZFCStrict
+
+#check DiophantineConsistency.PRACurrentZFCStrict.current_equivalence
+#print axioms DiophantineConsistency.PRACurrentZFCStrict.current_equivalence

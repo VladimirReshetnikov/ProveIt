@@ -1,0 +1,12 @@
+'DiophantineConsistency.IPRAStableBackwardReach.nativeBackwardReach' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRAStableBackwardReach.nativeBackwardReach.{u_1} {L : LO.FirstOrder.Language} [L.DecidableEq]
+  {Λ : LO.FirstOrder.Hilbertᵢ L} (φ : LO.FirstOrder.Proposition L)
+  (stable :
+    (ψ : LO.FirstOrder.Proposition L) →
+      DiophantineConsistency.IPRAStableBackwardReach.Reach φ ψ →
+        DiophantineConsistency.IPRAStableBackward.NeedsStability ψ →
+          Λ ⊢!
+            ∼∼DiophantineConsistency.IPRANativeFormula.native ψ 🡒 DiophantineConsistency.IPRANativeFormula.native ψ) :
+  Λ ⊢! LO.FirstOrder.Semiformula.doubleNegation φ 🡒 DiophantineConsistency.IPRANativeFormula.native φ

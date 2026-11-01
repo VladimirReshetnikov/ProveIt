@@ -1,0 +1,2 @@
+import DiophantineConsistency.IPRAInductionNativeGG
+#print axioms DiophantineConsistency.IPRAInductionNativeGG.induction_scheme_gg

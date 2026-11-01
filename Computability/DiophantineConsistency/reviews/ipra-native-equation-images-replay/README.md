@@ -1,0 +1,5 @@
+# Native PR defining-equation GG images
+
+Author and independent focused runs passed with matching source, object and full-log hashes for both frozen modules. Replay: `python3 Computability/DiophantineConsistency/reviews/ipra-native-equation-images-replay/replay.py`. Parent: accepted successor-nonzero peer `/tmp/ipra-induction-nozero-9za_xk67`. The replay guards 286 project sources, 291 parent objects and 144 direct external objects. Parent project provenance includes reconstructed reused-object ancestry; Foundation/package transitive ancestry and dynamic imports remain inherited.
+
+`definingEquation_image` proves the actual GG image of every member of the classical PRA defining-equation family in the candidate native theory. Checks instantiate zero, projection, composition, recursion base and recursion step. The proof uses an all-closure double-negation introduction theorem for arbitrary finite arity; it does not assume equality decidability. `#print axioms` reports `propext`, `Classical.choice`, `Quot.sound` for the closure and final theorems. No remaining axiom images, standard-presentation equivalence, or equation/consistency theorem is claimed.

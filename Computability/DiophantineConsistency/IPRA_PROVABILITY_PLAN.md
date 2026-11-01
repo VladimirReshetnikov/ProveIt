@@ -1,88 +1,187 @@
-# Intuitionistic PRA provability of the current consistency equivalence
+# Intuitionistic PRA proof-existence target
 
-**Goal (set 31 October 2026).** Prove in Lean that *intuitionistic* primitive
-recursive arithmetic proves the equivalence between unsolvability of the
-maintained 14-variable equation and the consistency of ZFC. A Lean proof that
-an intuitionistic derivation exists suffices, as for the HA endpoint.
+The active objective is a Lean proof that the chosen literal equation's
+no-positive-solution sentence is equivalent to the chosen formal `Con(ZFC)`
+sentence in **intuitionistic** primitive recursive arithmetic. This is a
+proof-existence statement, not a request to print a proof and not a proof of
+either side separately. No such iPRA endpoint is currently claimed.
 
-## Starting point
+The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
+uses the existing finite primitive-recursive function-code language, native
+defining equations, successor and order axioms, intuitionistic Leibniz
+equality and parameterized quantifier-free induction. Its guarded author and
+independent suffix replays have passed. Identifying this
+candidate with a standard intuitionistic PRA presentation and proving the
+connection to the conclusion remain obligations. It is neither classical
+`PRATheory.PRA` nor merely the negative translation of that theory. The
+existing classical induction scheme advances by
+the syntactic term `n + 1`, whereas the language also has a distinct successor
+code; a comparison with successor-form induction must prove their equality.
+Classical formulas use negation-normal syntax, so interpreting a classical
+implication by first expanding it as `¬A ∨ B` would give a different, generally
+stronger intuitionistic formula than `A → B`. In particular, the intended
+induction axioms must be constructed with the intuitionistic implication
+connective rather than obtained by an unchecked syntactic embedding of the
+classical induction formula.
 
-* Classical endpoint: `PRA ⊢ lMap classicalSentence 🡘 lMap sourceSentence`,
-  from `PRAStrictConReverse.comparison_if_bound` and
-  `PRACurrentConsistencyEndpoint.boundCertificate_rho`. Here `sourceSentence`
-  is Foundation's `ZFC.consistent = ∼rho`, with
-  `rho = provabilityPred ZFC ⊥` (Σ₁).
-* Foundation already provides intuitionistic first-order Hilbert systems over
-  any language (`Hilbertᵢ L`, `Theoryᵢ L Λ`, `𝗜𝗻𝘁¹`) and the Gödel–Gentzen
-  translation `φᴺ`. The repository's `FoundationTheoryGG.theory_intuitionistic`
-  turns `T ⊢ φ` into `T.ToTheoryᵢ 𝗜𝗻𝘁¹ ⊢ φᴺ` for any decidable-equality
-  language. Its target theory is the *translated* axiom set, not a
-  conventional intuitionistic theory; the discharge below supplies that step.
-* `PRABoundedFormula.PRA_proves_boundedBooleanCharacteristic`: every `Σ₀`
-  formula `θ` of the PRA language has a code `c` with `PRA ⊢ c ∈ {0,1}` and
-  `PRA ⊢ ∀x⃗ (c(x⃗) = 1 ↔ θ)`. `PRABoundedSearchCode` has bounded search codes.
+An existing reusable starting point is
+[`FoundationTheoryGG.theory_intuitionistic`](Lean/DiophantineConsistency/FoundationTheoryGG.lean),
+which transforms a classical proof over any suitable language into an
+intuitionistic proof of its Gödel–Gentzen translation over translated axioms.
+The [expanded-language conditional bridge](Lean/DiophantineConsistency/IntuitionisticPRABridge.lean)
+and its [literal 14-variable client](Lean/DiophantineConsistency/IntuitionisticPRACurrent.lean)
+now have guarded author and independent replays over a verified prefix of the
+equation build. They keep the classical derivation, all translated-axiom proofs and,
+where applicable, the final target-comparison proof as explicit hypotheses.
+They do not discharge those hypotheses or define native iPRA; the full
+equation provider and external ancestry retain the limits in their
+[replay packet](reviews/ipra-theory-transfer-prefix-replay/README.md).
+The separately replayed [iff translation](Lean/DiophantineConsistency/IPRAIffGG.lean)
+unpacks the translated classical comparison into a comparison of translated
+sides. It does not identify the translated refutation side with ordinary
+intuitionistic consistency.
+The classical PRA source-current construction in
+[PRA_PROVABILITY_PLAN.md](PRA_PROVABILITY_PLAN.md) can supply the starting
+proof, but the following further steps are required in Lean:
 
-## Definitions
+1. Define the chosen intuitionistic PRA theory and its quantifier-free
+   induction scheme, with the full primitive-recursive language and allowed
+   parameters made explicit.
+2. Prove every translated axiom actually needed by the classical PRA proof
+   is derivable in that theory. This includes equality, defining equations,
+   successor and order axioms, and translated open induction. Decidability and
+   stability facts needed for open formulas must themselves be established.
+3. Prove that the translated conclusion entails the intended literal
+   intuitionistic equivalence, for both the no-zero formula and the selected
+   arithmetized ZFC consistency predicate. It is not enough to identify these
+   only in the standard model or to assume a generic conservation theorem.
+4. Combine the resulting proof existence with coherent, source-authenticated
+   equation and classical-PRA dependencies for each selected equation.
 
-* `ι : Semiformula L ξ n → Semiformulaᵢ L ξ n`, the *intuitionistic reading*
-  of a classical (negation-normal) formula: atoms to atoms, negated atoms to
-  `∼atom`, `⊤ ⊥ ⋏ ⋎ ∀ ∃` to themselves.
-* `iPRA : Theoryᵢ language 𝗜𝗻𝘁¹`, conventional intuitionistic PRA in the PRA
-  language: `ι` of the equality axioms, the defining equations of every code,
-  the basic axioms (`S x ≠ 0`, successor injectivity, the order definition),
-  and every open induction instance `ι (succInd φ)`, `φ` open.
-* **Target theorem.**
-  `iPRA ⊢ ι (lMap classicalSentence) 🡘 ∼ ι (lMap rho)`:
-  "the equation has no positive zero iff ZFC proves no contradiction", with
-  consistency read as `¬Prov(⊥)`. (`ι (sourceSentence)` is the De Morgan
-  normal form of the same statement and is intuitionistically stronger; it is
-  not the target.)
+The focused [quantifier-free translation](Lean/DiophantineConsistency/IPRAQuantifierFree.lean)
+establishes a useful syntactic special case: Gödel–Gentzen translation
+preserves quantifier-freeness, commutes with finite universal closure, and
+translates a classical negative equality to literal intuitionistic negated
+equality. That does not require equality decidability. An author and an
+independent strict suffix replay have passed; their parent and external
+transitive ancestry are inherited as documented in the
+[replay packet](reviews/ipra-quantifier-free-replay/README.md). This does not
+address the arithmetized consistency predicate or the iPRA axiom images.
+The separate [native induction syntax](Lean/DiophantineConsistency/IPRANativeInduction.lean)
+uses intuitionistic implication and the exact `n + 1` term; it and the
+[mapped no-zero identity](Lean/DiophantineConsistency/IPRAMappedNoZero.lean)
+have also passed author and independent suffix replays. The native schema is
+not yet a complete iPRA theory, and eligibility of translated matrices is
+not a derivation of translated classical induction axioms.
+The first native axiom-image result,
+[successor nonzero](Lean/DiophantineConsistency/IPRANativeAxiomImage.lean),
+has author and independent suffix replays. All five primitive-recursive
+[defining-equation images](Lean/DiophantineConsistency/IPRANativeEquationImages.lean)
+have also passed author and independent suffix replays; these do not discharge
+the equality images. The separate
+[basic-axiom images](Lean/DiophantineConsistency/IPRANativeBasicImages.lean)
+now cover all three basic axioms and have passed author and independent
+suffix replays. Equality remains the only undischarged PRA axiom family;
+its reflexivity, symmetry and transitivity images now have separate guarded
+author and independent replays, while arbitrary-arity function and relation
+congruence remain open. The separate results also need a coherent combined
+build.
+The [translated induction body](Lean/DiophantineConsistency/IPRAInductionGGBody.lean)
+has author and independent suffix replays: it proves intuitionistically that
+the GG image of Foundation's exact `succInd` body is equivalent to the
+implication-shaped induction body for the translated matrix. Closing its
+free parameters has also passed author and independent suffix replays in
+[IPRAInductionGGClosure.lean](Lean/DiophantineConsistency/IPRAInductionGGClosure.lean),
+including the exact Foundation `univCl'` form. Identifying that closed body
+with the native finite-parameter schema and deriving the full axiom from it
+remain to be checked.
+The [finite-matrix construction](Lean/DiophantineConsistency/IPRAInductionFiniteMatrix.lean)
+has also passed author and independent suffix replays. It constructs an open,
+finite-parameter matrix from each actual Foundation open induction matrix and
+proves that its translated induction instance belongs to the native schema;
+it does not yet identify that instance with the exact closed Foundation body.
+The later [induction-axiom transfer](Lean/DiophantineConsistency/IPRAInductionAxiomGG.lean)
+completes that identification: for an intuitionistic theory containing the
+native induction schema, it derives the GG image of every actual Foundation
+open-induction axiom. Author and independent suffix replays passed; comparison
+of their hashes and the inherited external ancestry are recorded separately.
+The other PRA axiom families still require their own translations.
+The [native-theory specialization](Lean/DiophantineConsistency/IPRAInductionNativeGG.lean)
+has also passed author and independent coherent suffix replays: it removes the
+schema-inclusion premise for the candidate `nativeTheory` itself.
 
-## Proof route
+The chosen refutation sentence `rho` is the actual Foundation
+`provabilityPred ZFC ⊥`, and its source consistency sentence is definitionally
+`¬rho`. Although `rho` has a checked Σ₁ hierarchy certificate, its displayed
+definition is not simply a visibly bounded matrix. The existing classical
+PRA proof of `rho → ∃ b, bnd rho b` uses classical model completeness; it is
+not an intuitionistic PRA proof. The analogous HA normalization also uses
+bounded decisions and finite double-negation shifts derived with HA
+induction. A possible iPRA route is to construct primitive-recursive
+decision codes for the particular bounded matrices and prove the necessary
+bounding and translation statements with quantifier-free induction, but
+those intuitionistic derivations remain open.
 
-1. **Pure logic.** For every classical `φ`: `𝗜𝗻𝘁¹ ⊢ ι φ 🡒 φᴺ` (induction on
-   `φ`; the negation-normal form has no implications). `ι` commutes with
-   rewriting. For negative `φ` such as `classicalSentence`, `φᴺ` and `ι φ`
-   agree up to the `∼∼` on atoms.
-2. **Decidable atoms in iPRA.** `iPRA ⊢ s = t ⋎ ∼ s = t` and the same for `<`.
-   This is the only intuitionistic arithmetic: `t = 0 ⋎ t ≠ 0` by open
-   induction, then truncated subtraction for equality and the order
-   definition for `<`. The HA files `HAEqualityDecidable`/`HAOrderDecidable`
-   are a template, but only open induction may be used.
-3. **Axiom transfer.** `iPRA ⊢ σᴺ` for every axiom `σ` of PRA: equality and
-   the defining equations are atomic or negative; the basic axioms are
-   negative; open induction uses `φᴺ ↔ ι φ` for open `φ` (by step 2) and
-   `imply_doubleNegation`.
-4. **Classical-to-iPRA transfer.** `PRA ⊢ σ → iPRA ⊢ σᴺ`: compose
-   `theory_intuitionistic` with step 3 (discharge the finitely many
-   translated axioms used).
-5. **Bounded formulas.** For `Σ₀` `θ`: transfer the characteristic-code
-   theorem to get `iPRA ⊢ θᴺ ↔ c = 1` (so `θᴺ` is decidable), transfer the
-   bounded-search correctness theorem for witnesses, and conclude
-   `iPRA ⊢ θᴺ 🡒 ι θ` by induction on `θ`. The bounded `∀` case needs no
-   double-negation shift because `ᴺ` commutes with `∀`.
-6. **Normalization of rho.** From step 4 on `boundCertificate_rho`
-   (`PRA ⊢ rho → ∃w bnd rho w`) and step 5 on `bnd rho w`:
-   `iPRA ⊢ rhoᴺ → ∼∼∃w ι (bnd rho w)`; with `ι (bnd rho w) → ι rho`
-   (pure logic: `bnd` only bounds existentials) this gives
-   `iPRA ⊢ ∼ ι rho → ∼ rhoᴺ`; step 1 gives the converse.
-7. **Assembly.** Step 4 on the classical endpoint gives
-   `iPRA ⊢ (classicalSentence 🡘 ∼rho)ᴺ`; steps 1 and 6 and
-   `neg_doubleNegation` rewrite both sides into the target.
+It may suffice to translate the existing *classical* witness-bound proof,
+instead of deriving an intuitionistic unnegated witness bound. If iPRA can
+identify the translated bounded matrix with its ordinary interpretation up
+to the needed double negation, and prove that an ordinary bounded witness
+implies `rho`, the translated bound can potentially yield `rhoᴺ → ¬¬rho`.
+Together with the other implication and the intuitionistic
+`Derivation.neg_doubleNegation` lemma, this would compare the two consistency
+sentences without extracting a witness from a double negation. This is a proof
+plan, not yet a checked iPRA theorem.
+The pure logical final step has an independently replayed proof-producing
+lemma in [IPRARefutationNegationLogic.lean](Lean/DiophantineConsistency/IPRARefutationNegationLogic.lean):
+it assumes proofs of `ordinary → rhoᴺ` and `rhoᴺ → ¬¬ordinary` and derives
+the equivalence of `(¬rho)ᴺ` with `¬ordinary`. Its
+[theory-context extension](Lean/DiophantineConsistency/IPRARefutationNegationTheory.lean)
+has also passed author and independent replays, allowing both premises to be
+proved in an arbitrary intuitionistic theory. The first premise, from a native
+interpretation of a classical negation-normal formula to its GG translation,
+is now proved generically in
+[IPRANativeForwardTheory.lean](Lean/DiophantineConsistency/IPRANativeForwardTheory.lean)
+and has author and independent guarded replays. Establishing the reverse
+double-negated implication for the actual refutation predicate in the intended
+iPRA remains open.
+For the literal Foundation ZFC source sentence, the separately guarded
+[one-premise client](Lean/DiophantineConsistency/IPRAFoundationZFCNegationOnePremise.lean)
+now proves the desired consistency comparison for any intuitionistic theory
+from the explicit backward double-negation premise. Author and independent
+suffix replays passed, with the inherited HA/ZF/Foundation/package boundary
+recorded in their receipts; the arithmetic premise is not yet proved.
+The [language-mapped client](Lean/DiophantineConsistency/IPRAFoundationZFCMappedNegation.lean)
+and a generic [witness-bound logic bridge](Lean/DiophantineConsistency/IPRARefutationWitnessBridge.lean)
+have also passed author and independent suffix replays. The latter keeps all
+three implications about a proposed bound as explicit premises; it neither
+supplies those proofs nor yet identifies the bound with the literal ZFC one.
+The [literal-bound specialization](Lean/DiophantineConsistency/IPRAFoundationZFCWitnessBound.lean)
+now chooses exactly `∃ b, bnd rho` and has passed both author and independent
+suffix replays, retaining all three implication premises. It also checks the
+bounded-matrix hierarchy certificate. Those premises and the larger proof
+chain have not thereby been established in iPRA.
+The separately replayed [structural erasure](Lean/DiophantineConsistency/IPRABoundedErasure.lean)
+proves the native bounded body implies the native unbounded body for closed
+arithmetic NNF semisentences under term valuations, using intuitionistic
+logic alone. The [outer-existential erasure](Lean/DiophantineConsistency/IPRABoundedExistsErasure.lean)
+has also passed author and independent suffix replays in the arithmetic
+language. Mapping that result to the PR language for the exact `rho`, and
+identifying the translated bounded matrix with its ordinary interpretation,
+remain separate obligations.
 
-## Size (proof obligations)
+The repository's HA transfers and existing equation-side HA endpoints may
+provide proof-system and negative-translation lemmas. HA has stronger
+induction, so an HA proof alone does not establish an iPRA proof. Likewise,
+Lean's classical metatheory for proving existence of a derivation is distinct
+from adding classical logic to the object theory.
 
-* step 1: one recursive definition, three induction lemmas;
-* step 2: about six iPRA derivations;
-* step 3: five axiom families;
-* step 4: one composition lemma;
-* step 5: two transferred classical theorems (characteristic and search),
-  one induction over `Σ₀` formulas;
-* steps 6–7: one module.
+## Additional characteristic-code route
 
-## Status
-
-* 31 October 2026: plan written; infrastructure surveyed. The classical
-  endpoint `PRACurrentConsistencyEndpoint.pra_current_iff_consistency` is
-  closed. `IPRATheory.lean` (definitions of `ι` and `iPRA`) is drafted, not
-  yet compiled.
+The [historical upstream plan](research/ipra-upstream-plan-20261031.md)
+proposes reusing the classical bounded characteristic and search theorems by
+negative translation, then recovering a native bounded-matrix comparison
+using intuitionistic decidability. This is a possible route, not a checked
+replacement for those constructive obligations: the translated bit equations,
+bounded-search correctness, and quantifier cases must all be justified in
+native iPRA. Its direct negation-normal reading of `succInd` must not be used
+as native induction, for the implication reason explained above.

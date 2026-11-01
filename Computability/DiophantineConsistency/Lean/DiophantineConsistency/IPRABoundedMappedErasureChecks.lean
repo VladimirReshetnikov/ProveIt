@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRABoundedMappedErasure
+#print axioms DiophantineConsistency.IPRABoundedMappedErasure.bndErasure
+#print axioms DiophantineConsistency.IPRABoundedMappedErasure.existsErasure
+#check DiophantineConsistency.IPRABoundedMappedErasure.existsErasure

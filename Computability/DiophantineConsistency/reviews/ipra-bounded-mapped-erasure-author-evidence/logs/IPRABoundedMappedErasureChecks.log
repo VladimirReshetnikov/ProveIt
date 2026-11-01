@@ -1,0 +1,13 @@
+'DiophantineConsistency.IPRABoundedMappedErasure.bndErasure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRABoundedMappedErasure.existsErasure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRABoundedMappedErasure.existsErasure.{u_1} {L : LO.FirstOrder.Language} [L.DecidableEq]
+  {Λ : LO.FirstOrder.Hilbertᵢ L} (f : ℒₒᵣ.Hom L) (φ : LO.FirstOrder.ArithmeticSentence) :
+  Λ ⊢!
+    DiophantineConsistency.IPRANativeFormula.native
+        ((LO.FirstOrder.Semiformula.lMap f)
+          ((LO.FirstOrder.Rewriting.app LO.FirstOrder.Rew.emb)
+            (∃⁰ DiophantineConsistency.StrictSigmaOneInduction.bnd φ))) 🡒
+      DiophantineConsistency.IPRANativeFormula.native
+        ((LO.FirstOrder.Semiformula.lMap f) ((LO.FirstOrder.Rewriting.app LO.FirstOrder.Rew.emb) φ))

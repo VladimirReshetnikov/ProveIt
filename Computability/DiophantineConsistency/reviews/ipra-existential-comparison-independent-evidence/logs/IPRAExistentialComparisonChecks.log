@@ -1,0 +1,10 @@
+'DiophantineConsistency.IPRAExistentialComparison.existsCompareUniform' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRAExistentialComparison.theoryExistsCompare' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRAExistentialComparison.theoryExistsCompare.{u_1} {L : LO.FirstOrder.Language} [L.DecidableEq]
+  {Λ : LO.FirstOrder.Hilbertᵢ L} {T : LO.FirstOrder.Theoryᵢ L Λ} (φ : LO.FirstOrder.Semisentence L 1)
+  (h : T ⊢! ∀⁰ (LO.FirstOrder.Semiformula.doubleNegation φ 🡒 DiophantineConsistency.IPRANativeFormula.native φ)) :
+  T ⊢! (∃⁰ φ).doubleNegation 🡒 ∼∼(∃⁰ DiophantineConsistency.IPRANativeFormula.native φ)

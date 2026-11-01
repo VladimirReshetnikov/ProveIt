@@ -1,0 +1,18 @@
+# Arbitrary-model 85 literal shift: independent replay
+
+The independent run `/tmp/adaptive-gap85-shift-model-r4qq96um` passed all ten modules and both authentication gates. Its source, object, complete Lean-log, parent-state and selected-provider inventory hashes match the [author replay](adaptive-gap85-shift-model-author.md). The exact 85 literal has equivalent signed evaluations under the stated shift in any IΣ₁ model; with a positive zero and the strict T bound, the shifted positive zero violates the pointwise gap. No zero is asserted to exist, and a bad witness does not disprove existential zero equivalence. The remaining project/model/Foundation/package ancestry is historical as stated in the author receipt.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-shift-model.py`.
+
+- `AdaptiveGap85ShiftModelAlgebra`: source `d94d378895185e69bc9beeed392ef612519468aeae64c99ecdf8ab6a574cb994`, object `44fb682027087380bf327a7a599626cce99975a4ce5fe0533f1d19d300cbe21a`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftModelPairs`: source `89e7ce289451db20bbef2a6b307ef99d2d7624fb11e7d3bdae18f2371db4531b`, object `4a84b268a947e8f76b5e24d35e15bb83a290837fe04678fdd24ec4ff5e22f8e6`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftRankRep`: source `d942e7e80f09ac701be1c4dfac15dc2969ccc374b84ef737004ddb0cabeca56d`, object `406faf2bb7038c9c79e63581d576ae934c8233e2cc54493995d79edd07759297`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftMainInput`: source `aa5b828b2c18d7813c1760537a22e840120fa80c2b29e75da39021f6989d4aff`, object `cde1364ed5718149a55fa7eba4b8608423b961c09b78692cbf9adfb5f866bb44`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftFirstInput`: source `ad7e2affe86b0665c8badc4c32e3d9f60fc760ec5683dc999973ef88535e5de0`, object `08067a2e73f217fca85e4066b7af65cc0490e4762f732f70390c00e6f119e221`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftAuxInput`: source `61a76b7b4d66e9db6396df8753dc202ae70a9477d1d1b16615f685272ba8dbf2`, object `5c107c8e16b7aef9a48893e84519fc27ee1d7af87c5e2938d555ec4960958047`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftMainShift`: source `ce2ed033145410df9c8f9ff7a83261e2b3de9f5722db84939ceaac44d9c5081a`, object `2a78f0a6b16b9ca762f75533b3948fc755f3ac3c58030d9355a260011b5e1414`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftContext`: source `e613c0f5ec02dbc465551e4d3c489865cae5e04f98e9d90cdf034a203750a443`, object `62fee5643f74a34537607de4677d84ed6e410981ed4b4076306696563103832b`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftContextEquiv`: source `27f3ce21e640d20c6132dc2a0bf5c9c9e9d0c5ece2ae0feb70d57b9072c6d208`, object `7f52a35abb5f8fcea87970a861182f63ad74b94bf2651676cd5780a37147fa2b`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- `AdaptiveGap85ShiftModel`: source `91d38da0d3a1bd30b692b374a9592844217e0cdb7544dda35e86ce5e5360829e`, object `7a95d4308fb1ef1f2b9cbd3709a4ee8aa570a333244def272f40fc6db1196abc`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+State `569f507571a45b94e64d9b38188cb21739b47790b4a4dd2c00a3077b90ad1ba9`; manifest `5132d81e8bbe8dfae6b7909cd9835a846465ef9b54c55d7932da3b5fd79a84d5`.

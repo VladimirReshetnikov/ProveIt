@@ -1,0 +1,5 @@
+# Native basic-axiom GG images
+
+Author and independent focused runs passed with matching source, object and full-log hashes for both frozen modules. Replay: `python3 Computability/DiophantineConsistency/reviews/ipra-native-basic-images-replay/replay.py`. Parent: accepted defining-equation peer `/tmp/ipra-induction-nozero-ooa_b9xx`. The replay guards 288 project sources, 293 parent objects and 144 direct external objects. Parent project provenance includes reconstructed reused-object ancestry; Foundation/package transitive ancestry and dynamic imports remain inherited.
+
+`basicAxiom_image` proves the actual Gödel–Gentzen image of every member of the three-family classical PRA basic axiom type: successor nonzero, successor injectivity and order definition. Checks instantiate all three. The implication and iff arguments use intuitionistic double-negation functoriality and do not assume atomic equality or order decidability. The Lean axiom audit is in the full check log. Equality axiom images, standard-presentation equivalence, and equation/consistency theorem remain separate.
