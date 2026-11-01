@@ -150,6 +150,21 @@ overlay, a second invocation was bounded to 45 seconds and exited 124 without
 an elaboration result. Neither invocation validates the draft; no further
 heavy mixed-provider probe is justified while the coherent rebuild is active.
 
+More precisely, the existing source defines `ρ` as Foundation's
+`provabilityPred` for `ZermeloFraenkelChoice` and falsity, and defines the
+source consistency sentence as `∼ρ`. The native endpoint uses the separate
+formula `∼native (lMap embedding ρ)`, and the draft reference endpoint uses
+its equality-only erasure. These definitions identify the concrete coding
+being transported; they do not by themselves prove that a separately chosen
+reference-language ZFC proof predicate is intuitionistically equivalent to it.
+
+[`IPRAReferenceNoZero.lean`](draft/IPRAReferenceNoZero.lean) is another
+uncompiled source draft spelling out the equality-only no-zero formula from
+the positive-shift expression's two natural-polynomial sides and proposing
+its syntactic identification with erased `nativeNoZero`. It is intended to
+make the equation side of the endpoint explicit; it has not been elaborated
+or checked and says nothing about the independent consistency encoding.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements and candidate derivations; discharge the
 native induction image; transfer the reference axioms
