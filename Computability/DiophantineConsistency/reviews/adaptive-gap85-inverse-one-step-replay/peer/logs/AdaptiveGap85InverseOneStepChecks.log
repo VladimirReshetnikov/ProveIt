@@ -1,0 +1,26 @@
+'DiophantineConsistency.AdaptiveGap85InverseOneStep.one_step_gap_iff_candidate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85InverseOneStep.one_step_gap_zero_to_86' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85InverseOneStep.one_step_gap_iff_candidate.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 2 ≤ v 0 * ↑(p 0)) (hv : ∀ (i : Fin 13), 0 < v i)
+  (hnot : ¬v 1 + v 2 < 1 + v 0 * ↑(p 0)) :
+  (∃ w, DiophantineConsistency.AdaptiveGap85InverseEntry.PositiveBiStep p v w ∧ w 1 + w 2 < 1 + w 0 * ↑(p 0)) ↔
+    (∀ (i : Fin 13), 0 < DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v i) ∧
+      DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v 1 +
+          DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v 2 <
+        1 + DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v 0 * ↑(p 0)
+DiophantineConsistency.AdaptiveGap85InverseOneStep.one_step_gap_zero_to_86.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 2 ≤ v 0 * ↑(p 0)) (hv : ∀ (i : Fin 13), 0 < v i)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v)
+  (hnot : ¬v 1 + v 2 < 1 + v 0 * ↑(p 0))
+  (hstep : ∃ w, DiophantineConsistency.AdaptiveGap85InverseEntry.PositiveBiStep p v w ∧ w 1 + w 2 < 1 + w 0 * ↑(p 0)) :
+  ∃ u,
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveEquationSyntax2011.positiveShift
+        (DiophantineConsistency.AdaptiveDirectOrdinate86Literal.expressionAt86 fun j => ↑(p j)))
+      u
