@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85SameCoordinates
+#print axioms DiophantineConsistency.AdaptiveGap85SameCoordinates.divisible_coefficient_blocks_same_JX
+#check DiophantineConsistency.AdaptiveGap85SameCoordinates.divisible_coefficient_blocks_same_JX

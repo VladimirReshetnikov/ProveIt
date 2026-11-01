@@ -1,0 +1,5 @@
+# Exact one-step full-zero criterion
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked explicit inverse-bounds provider and guard its state, source, object, 417 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; the replays do not reconstruct or independently audit them.
+
+In every IΣ₁ model, for a positive full 85-zero outside the reverse gap with `Jβ≥2`, the four explicit bounds from `adaptive-gap85-inverse-bounds-replay` hold if and only if a positive **full 85-zero** in the gap is reachable in one of the three specified shifts or their inverses. The proof derives full-zero preservation from the necessary inverse-old step and its automatically available forward subtraction bound. It does not prove that the bounds hold for arbitrary zeros, characterize longer paths, or establish the unconditional 85 reverse implication.

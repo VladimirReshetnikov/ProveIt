@@ -1,0 +1,10 @@
+'DiophantineConsistency.AdaptiveGap85SameCoordinates.divisible_coefficient_blocks_same_JX' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85SameCoordinates.divisible_coefficient_blocks_same_JX.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v w : Fin 13 → V) (hb : 0 < ↑(p 0))
+  (hw : ∀ (i : Fin 13), 0 < w i)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) w)
+  (hJ : w 0 = v 0) (hX : w 6 = v 6) (hA : v 0 * ↑(p 0) ∣ v 6 + ↑(p 1)) : ¬w 1 + w 2 < 1 + w 0 * ↑(p 0)
