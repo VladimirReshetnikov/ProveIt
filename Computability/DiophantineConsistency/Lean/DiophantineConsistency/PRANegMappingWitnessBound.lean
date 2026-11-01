@@ -51,20 +51,16 @@ attribute [local irreducible] domainDef bitDef memRel
         · exact Or.inl hy
         · right; left
           have hr : (∼memRel.val).Evalb ![m,x,y] := by simpa [Semiformula.Operator.val,memRelOpr] using hy
-          have hrb := PRANegMemRelWitnessBound.neg_memRel_bound m x y w hrelneg hr
+          letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
           let ωr : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![#3,#1,#0]
-          have hrn := PRABndRewriting.natural (∼memRel.val) ωr ![y,x,d,m] w
-          have hrv : (fun j => (ωr #j).val ![y,x,d,m] Empty.elim) = ![m,x,y] := by
-            funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hrw : Fin.snoc ![y,x,d,m] w = ![y,x,d,m,w] := by simp
-          have hrw' : Fin.snoc ![m,x,y] w = ![m,x,y,w] := by simp
-          rw [hrv,hrw,hrw'] at hrn
-          have hrb' := hrn.mpr hrb
-          have hre : (ωr ▹ (∼memRel.val)) = ∼(ωr ▹ memRel.val) := by
-            exact LogicalConnective.HomClass.map_neg (Semiformula.rew ωr) memRel.val
-          rw [hre] at hrb'
-          simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hrb'
+          simpa [LogicalConnective.HomClass.map_neg, Semiformula.Operator.operator,
+            memRelOpr, Rewriting.emb] using
+            (PRARewritingWitnessBound.ternary_rew_bound_with (∼memRel.val)
+              (fun r _ _ => PRANegBitFullWitnessBound.negBitMajorant r)
+              (fun r a b => PRANegMemRelWitnessBound.neg_memRel_bound r a b
+                (PRANegBitFullWitnessBound.negBitMajorant r) le_rfl)
+              ωr ![y,x,d,m] w (by simpa [ωr] using hrelneg)
+              (by simpa [ωr, Semiformula.eval_substs] using hr))
         · right; right
           obtain ⟨y',hy',hrel',hne⟩ := hy
           have hm2 : m ≤ 2*m+1 := by simp [two_mul,add_assoc]
