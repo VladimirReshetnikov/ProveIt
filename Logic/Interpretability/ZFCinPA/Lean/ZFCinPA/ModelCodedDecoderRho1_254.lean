@@ -54,9 +54,7 @@ lemma bindOneAt_rel_namedVars (a b c i : V) (hr : (ℒₛₑₜ).IsRel (2 : V) i
 
 lemma namedBody_eqAtom (a b c : V) :
     namedBody a (eqAtom (&'b) (&'c)) = eqAtom (namedVar a b) (namedVar a c) := by
-  have hr : (ℒₛₑₜ).IsRel (2 : V) 0 := by
-    simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 0)).mpr
-      ⟨Language.Set.Rel.eq,rfl⟩
+  have hr : (ℒₛₑₜ).IsRel (2 : V) 0 := equality_symbol_isRel
   apply Bootstrapping.Semiformula.ext
   exact bindOneAt_rel_namedVars a b c 0 hr
 

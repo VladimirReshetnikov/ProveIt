@@ -27,14 +27,16 @@ instance atomCode_defined : 𝚺₁-Function₃[V] atomCode via atomCodeDef :=
 
 lemma atomCode_isFormula (symbol a b : V) (hr : (ℒₛₑₜ).IsRel 2 symbol) :
     IsFormula ℒₛₑₜ (atomCode symbol a b) := by simp [atomCode,hr]
-lemma eqCode_isFormula (a b : V) : IsFormula ℒₛₑₜ (atomCode 0 a b) := by
-  apply atomCode_isFormula
+lemma equality_symbol_isRel : (ℒₛₑₜ).IsRel (2 : V) 0 := by
   simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 0)).mpr
     ⟨Language.Set.Rel.eq,rfl⟩
-lemma memCode_isFormula (a b : V) : IsFormula ℒₛₑₜ (atomCode 1 a b) := by
-  apply atomCode_isFormula
+lemma membership_symbol_isRel : (ℒₛₑₜ).IsRel (2 : V) 1 := by
   simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 1)).mpr
     ⟨Language.Set.Rel.mem,rfl⟩
+lemma eqCode_isFormula (a b : V) : IsFormula ℒₛₑₜ (atomCode 0 a b) :=
+  atomCode_isFormula 0 a b equality_symbol_isRel
+lemma memCode_isFormula (a b : V) : IsFormula ℒₛₑₜ (atomCode 1 a b) :=
+  atomCode_isFormula 1 a b membership_symbol_isRel
 
 /-- Match Code254.T0: membership(0,0) implies itself, rather than primitive Bot. -/
 noncomputable def zeroFormula : V := imp ℒₛₑₜ (atomCode 1 0 0) (atomCode 1 0 0)
