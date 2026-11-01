@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAAddOneGeneral
+#check DiophantineConsistency.IPRAAddOneGeneral.addOne
+#print axioms DiophantineConsistency.IPRAAddOneGeneral.addOne

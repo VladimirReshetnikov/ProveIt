@@ -1,0 +1,10 @@
+DiophantineConsistency.IPRAAddOneGeneral.addOne
+  {T : LO.FirstOrder.Theoryᵢ DiophantineConsistency.PRALanguage.language 𝗜𝗻𝘁¹}
+  (hdef :
+    ∀ (σ : LO.FirstOrder.Sentenceᵢ DiophantineConsistency.PRALanguage.language),
+      DiophantineConsistency.IPRANativeTheory.DefiningEquationI σ → T ⊢ σ)
+  (heq :
+    ∀ (σ : LO.FirstOrder.Sentenceᵢ DiophantineConsistency.PRALanguage.language),
+      DiophantineConsistency.IPRANativeTheory.EqualityAxiomI σ → T ⊢ σ) :
+  T ⊢ DiophantineConsistency.IPRAAddOneDirect.addOneI
+'DiophantineConsistency.IPRAAddOneGeneral.addOne' depends on axioms: [propext, Classical.choice, Quot.sound]
