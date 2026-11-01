@@ -303,6 +303,17 @@ closure and a guarded successor still need to be authenticated together. The
 848 ancestor remains author-only, with package-transitive and dynamic ancestry
 inherited.
 
+The six-edit 107-module successor has since passed both Lean replays and two
+byte-matching guarded comparisons, covering 107 rows and 11,518 guarded files;
+see the [comparison](reviews/ipra-current-repaired-six-drift-verification/README.md)
+and [terminal observations](reviews/ipra-current-repaired-six-drift-terminal-observations/README.md).
+Both runs observed no initial workspace drift, then the later
+`ZFCinPA.SeparationKernel` edit at their final scans. The comparison therefore
+establishes the six-edit fixed snapshot, rather than a current-source result.
+The workspace has since also received a `PRAWitnessCodeGrowth` edit; a new
+source/object closure and guarded successor remain necessary. The inherited
+848-project and external ancestry limitations still apply.
+
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
 is checked, and its successor case uses the native positive
