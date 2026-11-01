@@ -22,12 +22,26 @@ in every IΣ₁ model that a positive zero assumed to minimize `F+C` must have
 either `C≤qb` or `r≤q(A+1)(bk+1)`. `AdaptiveGap85BalanceLeast` applies the
 IΣ₁ least-number principle to obtain such a zero from any positive zero,
 **provided** the positive-zero score predicate is Σ₁-definable. That
-definability is an explicit, undischarged premise: a direct tactic attempt
-did not handle the finite-function-valued witness existential. Matching
+definability is an explicit premise of the conditional theorem; its later
+provisional discharge is described below. Matching
 guarded replays are preserved in `reviews/adaptive-gap85-balance-minimal-replay/`
 and `reviews/adaptive-gap85-balance-least-replay/`; the historical project
 and package ancestry and lack of a direct-import trace remain as recorded.
 Neither conditional result proves existence of a normalized representative.
+
+`AdaptiveGap85ScoreCoding.zeroScore_definable` now compiles for the actual
+85 literal in arbitrary IΣ₁ models. It codes a 13-tuple with Cantor pairing,
+proves every fixed natural expression on that tuple is Σ₁-definable, and
+identifies the coded predicate with the exact positive-zero score. The
+resulting `exists_minimal_blocked_unconditional` discharges the earlier
+definability premise, while still assuming that a positive zero exists; it
+does not prove normalization or the 85 equivalence. Both preliminary source
+replays matched, but their driver did not guard the newly direct
+`ArithmeticCantor` import. The physical provider's overall build failed
+later, although its Cantor row succeeded. The exact Cantor object was
+subsequently reproduced in an exploratory run; guarded reproduction and
+revised score replays remain outstanding. See
+`reviews/adaptive-gap85-score-coding-preliminary/` for this limitation.
 
 The 85-operation candidate is a 13-positive-coordinate reparameterization of the checked 86-operation candidate. Its finite circuit audit and one-sided machine implication are documented in [the candidate packet](../adaptive-gap85/README.md). The 85 no-zero statement implies machine nonhalting; the reverse implication is not established. Neither the candidate nor this note establishes an 85-operation equivalence with consistency.
 
