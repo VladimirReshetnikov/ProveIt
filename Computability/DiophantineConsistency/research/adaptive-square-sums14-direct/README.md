@@ -26,3 +26,15 @@ They reuse the same historical provider and inherit transitive project,
 package and dynamic ancestry. A native iPRA endpoint for this direct variant is
 still to be proved and replayed; the model equivalence alone does not establish
 that endpoint.
+
+The separate [equation30-direct.tex](../../equation30-direct.tex) and
+[equation30-direct.pdf](../../equation30-direct.pdf) present the direct-square
+variant, its 14 distinct positive unknowns, the complete base-10 fixed integer,
+and all 90 gates. `verify_display30_direct.py` parses 25 displayed definitions,
+checks the five-square wiring and all circuit rows against the pinned graph,
+confirms the copied fixed constants and rejects two formula mutations. It is a
+limited parser, not a general TeX interpreter. Normal Python and `python -O`
+pass. Two `pdflatex` runs produced identical PDF SHA-256
+`d6b24e6b070a9f4e26dadcc01567fafdd512d1d69a4d1db86260da36b6489049`;
+both pages were visually inspected. The page separates the checked model
+result from the pending native-iPRA endpoint.
