@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRASelectorSearchBinding
+#print axioms DiophantineConsistency.IPRASelectorSearchBinding.selectorAt
+#print axioms DiophantineConsistency.IPRASelectorSearchBinding.stableWithCharacteristic
