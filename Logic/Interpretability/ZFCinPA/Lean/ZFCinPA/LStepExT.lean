@@ -96,11 +96,8 @@ theorem ord_vunion {B : V} (hB : ∀ r, mem r B → Ord mem r) : Ord mem (_root_
 
 /-- An ordinal contained in an ordinal `m` is a member of its successor. -/
 theorem mem_vsucc_of_sub {r m : V} (hr : Ord mem r) (hm : Ord mem m) (hsub : ∀ z, mem z r → mem z m) :
-    mem r (_root_.SetTheory.vsucc H m) := by
-  rcases trichotomy H hR r hr m hm with h | rfl | h
-  · exact (_root_.SetTheory.vsucc_spec H m r).2 (Or.inl h)
-  · exact _root_.SetTheory.vsucc_self H r
-  · exact absurd (hsub m h) (mem_irrefl H hR m)
+    mem r (_root_.SetTheory.vsucc H m) :=
+  (_root_.SetTheory.vsucc_spec H m r).2 ((le_of_sub H hR hr hm hsub).symm)
 
 end OrdFacts
 
