@@ -309,6 +309,18 @@ theorem complexity_free {p : V} (hp : IsSemiformula ℒₛₑₜ 1 p) :
     formulaComplexity ℒₛₑₜ (free ℒₛₑₜ p) = formulaComplexity ℒₛₑₜ p := by
   rw [free, substs1, fomulaComplexity_substs (m := 0) hp.shift (by simp), formulaComplexity_shift hp.isUFormula]
 
+private lemma binary_budgets {C j x y : V} (h : j + (max x y + 1) ≤ C) :
+    j + x ≤ C ∧ j + y ≤ C := by
+  constructor
+  · exact le_trans (add_le_add_right (le_trans (le_max_left x y) (by simp)) j) h
+  · exact le_trans (add_le_add_right (le_trans (le_max_right x y) (by simp)) j) h
+
+private lemma opened_budget {C j p : V} (hp : IsSemiformula ℒₛₑₜ 1 p)
+    (h : j + (formulaComplexity ℒₛₑₜ p + 1) ≤ C) :
+    j + 1 + formulaComplexity ℒₛₑₜ (free ℒₛₑₜ p) ≤ C := by
+  rw [complexity_free hp, add_assoc, add_comm 1]
+  exact h
+
 /-- **The glue**: for every formula code `q` whose free variables lie below `j`,
 `𝗭𝗙 ⊢ ∀t (¬M_j t ∨ (q^L ↔ envForm 0 q (t)))`, within the budget `C`. -/
 theorem glue (C : V) {q : V} (hq : IsFormula ℒₛₑₜ q) :
@@ -331,37 +343,23 @@ theorem glue (C : V) {q : V} (hq : IsFormula ℒₛₑₜ q) :
   · intro p q hp hq ihp ihq j hj hc hfv
     obtain ⟨fp, fq⟩ := fvLt_and hp.isUFormula hq.isUFormula hfv
     rw [formulaComplexity_and hp.isUFormula hq.isUFormula] at hc
-    have h1 : formulaComplexity ℒₛₑₜ p ≤
-        max (formulaComplexity ℒₛₑₜ p) (formulaComplexity ℒₛₑₜ q) + 1 :=
-      le_trans (le_max_left (formulaComplexity ℒₛₑₜ p) (formulaComplexity ℒₛₑₜ q)) (by simp)
-    have h2 : formulaComplexity ℒₛₑₜ q ≤
-        max (formulaComplexity ℒₛₑₜ p) (formulaComplexity ℒₛₑₜ q) + 1 :=
-      le_trans (le_max_right (formulaComplexity ℒₛₑₜ p) (formulaComplexity ℒₛₑₜ q)) (by simp)
-    exact case_and hp hq (ihp j hj (le_trans (add_le_add_right h1 j) hc) fp)
-      (ihq j hj (le_trans (add_le_add_right h2 j) hc) fq)
+    obtain ⟨hc₁, hc₂⟩ := binary_budgets hc
+    exact case_and hp hq (ihp j hj hc₁ fp)
+      (ihq j hj hc₂ fq)
   · intro p q hp hq ihp ihq j hj hc hfv
     obtain ⟨fp, fq⟩ := fvLt_or hp.isUFormula hq.isUFormula hfv
     rw [formulaComplexity_or hp.isUFormula hq.isUFormula] at hc
-    have h1 : formulaComplexity ℒₛₑₜ p ≤
-        max (formulaComplexity ℒₛₑₜ p) (formulaComplexity ℒₛₑₜ q) + 1 :=
-      le_trans (le_max_left (formulaComplexity ℒₛₑₜ p) (formulaComplexity ℒₛₑₜ q)) (by simp)
-    have h2 : formulaComplexity ℒₛₑₜ q ≤
-        max (formulaComplexity ℒₛₑₜ p) (formulaComplexity ℒₛₑₜ q) + 1 :=
-      le_trans (le_max_right (formulaComplexity ℒₛₑₜ p) (formulaComplexity ℒₛₑₜ q)) (by simp)
-    exact case_or hp hq (ihp j hj (le_trans (add_le_add_right h1 j) hc) fp)
-      (ihq j hj (le_trans (add_le_add_right h2 j) hc) fq)
+    obtain ⟨hc₁, hc₂⟩ := binary_budgets hc
+    exact case_or hp hq (ihp j hj hc₁ fp)
+      (ihq j hj hc₂ fq)
   · intro p hp ih j hj hc hfv
     rw [formulaComplexity_all hp.isUFormula] at hc
-    have hc' : j + 1 + formulaComplexity ℒₛₑₜ (free ℒₛₑₜ p) ≤ C := by
-      rw [complexity_free hp, add_assoc, add_comm 1]
-      exact hc
+    have hc' := opened_budget hp hc
     have hj' : j + 1 ≤ C := le_trans (by simp) hc'
     exact case_all hp (ih (j + 1) hj' hc' (fvLt_free hp hfv))
   · intro p hp ih j hj hc hfv
     rw [formulaComplexity_ex hp.isUFormula] at hc
-    have hc' : j + 1 + formulaComplexity ℒₛₑₜ (free ℒₛₑₜ p) ≤ C := by
-      rw [complexity_free hp, add_assoc, add_comm 1]
-      exact hc
+    have hc' := opened_budget hp hc
     have hj' : j + 1 ≤ C := le_trans (by simp) hc'
     exact case_ex hp (ih (j + 1) hj' hc' (fvLt_free_ex hp hfv))
 
