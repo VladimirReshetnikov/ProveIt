@@ -64,22 +64,9 @@ private theorem models_conj_iff {L' : Language}
     {n : ℕ} (v : Fin n → Sentence L') :
     M↓[L'] ⊧ Matrix.conj v ↔ ∀ i, M↓[L'] ⊧ v i := by
   induction n with
-  | zero =>
-      constructor
-      · intro _ i
-        exact i.elim0
-      · intro _
-        exact Semantics.Top.models_verum _
+  | zero => simp [Matrix.conj, Semantics.Top.models_verum]
   | succ n ih =>
-      rw [show Matrix.conj v = v 0 ⋏ Matrix.conj (Matrix.vecTail v) from rfl,
-        Semantics.And.models_and, ih]
-      constructor
-      · rintro ⟨h0, hs⟩ i
-        cases i using Fin.cases with
-        | zero => exact h0
-        | succ i => exact hs i
-      · intro h
-        exact ⟨h 0, fun i ↦ h i.succ⟩
+      simp [Matrix.conj, Semantics.And.models_and, ih, Matrix.vecTail, Fin.forall_fin_succ]
 
 /-- Satisfying the conjunctive antecedent is satisfying each conjunct. -/
 theorem models_setPlaceholderCongruence_iff
