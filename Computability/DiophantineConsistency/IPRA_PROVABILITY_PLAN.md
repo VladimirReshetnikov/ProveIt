@@ -185,6 +185,13 @@ historical. On that provider, [IPRANativeOpenDecidable.lean](Lean/DiophantineCon
 constructs free-variable decisions for all open NNF formulas and order atoms,
 and open-formula stability, with no extra proof premise. Its author and
 independent replays match; it does not establish bounded-search stability.
+A [native selector certificate](Lean/DiophantineConsistency/IPRABoundedSelector.lean)
+now proves, for each primitive-recursive test code, that any zero witness
+below a bound makes the fixed search output a zero witness below that bound.
+It transfers a classical open certificate using native open-formula stability;
+matched guarded replays retain the inherited provider boundary. Bounded
+existential stability and characteristic correctness for the actual ZFC
+matrix remain separate obligations.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
