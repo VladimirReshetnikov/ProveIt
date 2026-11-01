@@ -1,0 +1,7 @@
+# Thirty-one-variable native endpoint: replay input
+
+`IPRAAQ31Native.literal_equivalence` is a no-premise candidate-native theorem for the fixed-port 31-variable degree-six literal. It applies the conditional native bridge to `AdaptiveVSignMachine32.from_run`, which retains a constructed halting witness's auxiliary sign through the 87→86 coordinate replacement and the named witness extensions. The accompanying 31 model theorem uses existence-preserving orientation; no claim is made that every 32-zero has that sign.
+
+The 23-module manifest pins source hashes, six predecessor receipts and actual observed exits, the two candidate graphs, and expected axiom-report counts. `replay.py` rebuilds the chain on the matched conditional-native peer, checks 16 rebuilt predecessor objects against matched peer receipts, checks direct dependencies and output-fallback absences, and compares both source/object/log/direct-input rows. Its paired guarded replay was in progress when this input was committed; no replay PASS is claimed here.
+
+The focused build inherits transitive project and package ancestry and dynamic imports; point-in-time workspace scans do not prove a fully current-source closure. The theorem concerns the chosen native theory and mapped Foundation ZFC refutation formula.
