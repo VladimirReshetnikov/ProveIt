@@ -1,0 +1,5 @@
+# Frozen closure and independently matched prefix
+
+Both previous runs were deliberately interrupted to permit origin synchronization and exited 130. The author completed 10 rows and the peer 8; the first eight match byte-for-byte in source inputs, output objects, complete logs, warnings and direct-input hashes, and are dependency-closed on the earlier 105 audited rows. Full completed logs and both terminal states are preserved.
+
+Before the merge, the audit copied and checked the complete 1,103-source observed closure into `sources/` and rechecked every input hash twice: prior prefix receipts and objects, direct dependencies, 943 inherited project objects and 568 resolved direct external files and companions. Five source snapshots are retained historical prefix inputs that the endpoint's latest surveyed graph no longer reaches. This is a fixed pre-merge snapshot; it is not a source-current proof once the workspace changes. The ancestor 848-module project provider is author-only and package-transitive/dynamic import ancestry remains inherited.
