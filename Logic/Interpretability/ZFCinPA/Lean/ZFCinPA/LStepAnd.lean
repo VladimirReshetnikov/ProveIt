@@ -63,6 +63,22 @@ lemma mem_of_sub_mem {g₁ g b : V} (hb : Ord mem b) (hg : mem g b) (h₁ : Ord 
   · exact hg
   · exact hb.1 g hg g₁ h
 
+/-- The least ordinal with a separable property. -/
+theorem least_separable_ord {Φ : V → Prop} (hsep : ∀ X, ∃ Z, ∀ h, mem h Z ↔ mem h X ∧ Φ h)
+    {r₀ : V} (h₀ : Ord mem r₀) (hΦ : Φ r₀) :
+    ∃ r, (Ord mem r ∧ Φ r) ∧ ∀ h, Ord mem h → Φ h → mem r h ∨ r = h := by
+  obtain ⟨Z, hZ⟩ := hsep (_root_.SetTheory.vsucc H r₀)
+  have hsucc : Ord mem (_root_.SetTheory.vsucc H r₀) := ord_succ H h₀
+  obtain ⟨m, hmZ, hmin⟩ := hR Z ⟨r₀, (hZ r₀).2 ⟨_root_.SetTheory.vsucc_self H r₀, hΦ⟩⟩
+  obtain ⟨hmX, hmΦ⟩ := (hZ m).1 hmZ
+  have hmo : Ord mem m := ord_of_mem hsucc hmX
+  refine ⟨m, ⟨hmo, hmΦ⟩, fun h ho hh => ?_⟩
+  rcases trichotomy H hR m hmo h ho with hmh | rfl | hhm
+  · exact Or.inl hmh
+  · exact Or.inr rfl
+  · exact absurd ⟨h, hhm, (hZ h).2 ⟨hsucc.1 m hmX h hhm, hh⟩⟩ hmin
+
+
 end Ordinals
 
 /-! ## The step, for arbitrary relations -/
