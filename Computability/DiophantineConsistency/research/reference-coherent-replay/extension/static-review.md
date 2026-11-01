@@ -6,6 +6,10 @@ false-success path in the task-policy, parent-evidence and freezer-observation
 bindings. The reviewer also verified the targeted files were clean against
 that commit and reported these SHA-256 identities:
 
+This is a historical review of that exact commit. The freezer and task policy
+were subsequently changed to include the selected Foundation consistency
+composition, and this receipt does not audit the later versions.
+
 | File | SHA-256 |
 | --- | --- |
 | `freeze.py` | `327873a6002a40c79fb6c3d90f8a611dbc39ee9cdfb2af50ecac1925d89e8a8c` |

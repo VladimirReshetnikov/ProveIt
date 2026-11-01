@@ -49,9 +49,10 @@ following, none of which this survey has performed:
    graph must be unchanged and additions must follow it in topological order.
    Each sibling receives separate copies of its own matched parent objects;
    Lean's actual `--deps`, companions and search roots are checked. A tracked
-   task policy binds a new terminal wrapper and four exact axiom-report names.
-   The wrapper adds one module beyond the earlier 31-module provisional
-   observation. The freezer requires a strict current-source plan and observed
+   task policy binds a terminal wrapper and six exact axiom-report names,
+   including the selected Foundation consistency comparison and AQ29
+   composition. The earlier 31- and 32-module observations predate the two
+   selected-coding drafts. The freezer requires a strict current-source plan and observed
    parent completion; full parent comparator authentication occurs at
    preparation. These scripts have not been applied to the real project parent.
 4. Compile all additional modules in dependency order in each sibling; compare

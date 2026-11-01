@@ -19,6 +19,8 @@ import prepare
 HERE=Path(__file__).resolve().parent
 PLANNER=HERE.parent/'plan.py'
 EXPECTED=(
+    'DiophantineConsistency.IPRAReferenceAQ29Source.literal_equivalence',
+    'DiophantineConsistency.IPRAReferenceSourceConsistency.equivalence',
     'DiophantineConsistency.IPRAReferenceAQ29Direct.literal_equivalence',
     'DiophantineConsistency.IPRAReferenceRoundtrip.provability_iff',
     'DiophantineConsistency.IPRAReferenceInductionConversion.nativeToReference',
