@@ -42,5 +42,5 @@ eight squared residuals, the full base-10 fixed integer and 99 gates.
 checks the sum wiring and copied constants, and rejects two formula mutations;
 it is a limited TeX parser. Normal Python and `python -O` pass. Two `pdflatex`
 runs produced identical PDF SHA-256
-`d18dc859871393b4460b4e380b01b26581331d187e4a53daa91b15217b93d15a`;
+`bd267f86275bb6883a1face945d4fe17c29894d129f11f59d52991efd5cdedd6`;
 both pages were visually inspected. The page states the matched native-iPRA result and its snapshot boundary.

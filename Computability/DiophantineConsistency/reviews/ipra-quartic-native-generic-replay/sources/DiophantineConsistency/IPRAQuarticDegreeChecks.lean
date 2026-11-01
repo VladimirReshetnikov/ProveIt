@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAQuarticDegree
+
+#print axioms DiophantineConsistency.IPRAQuarticDegree.positive_quartic_degree
+#print axioms DiophantineConsistency.IPRAQuarticDegree.rawQuartic_degree

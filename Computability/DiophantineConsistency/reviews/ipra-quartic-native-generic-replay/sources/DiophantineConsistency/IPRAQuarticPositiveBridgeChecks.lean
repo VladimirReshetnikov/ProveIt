@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAQuarticPositiveBridge
+
+#print axioms DiophantineConsistency.IPRAQuarticPositiveBridge.shifted_no_zero_iff

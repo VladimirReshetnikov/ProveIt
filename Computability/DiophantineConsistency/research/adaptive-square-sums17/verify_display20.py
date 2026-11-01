@@ -31,7 +31,14 @@ expected={'b':'qm','q':'q','C':'C','U':'U','E':'E','k':'k','ell':'ell','c':'c',
           'N':'auxResidual','S':'g72','O':'squareDifference','G':'scaleDifference','h':'mainScaleDifference','j':'rankDifference'}
 def validate(text):
     display=text[text.index('% BEGIN VERIFIED DISPLAY\n'):text.index('% END VERIFIED DISPLAY\n')]
-    unknowns=re.search(r'The only unknowns are the seventeen distinct positive integers\s*\\\[(.*?)\\in\\mathbb Z_\{>0\}\.\s*\\\]',display,re.S)
+    # Pin the entire raw math environment before translating any residual aliases.
+    marker = 'The single Diophantine equation is'
+    if display.count(marker) != 1: raise ValueError('equation marker')
+    section = display.split(marker, 1)[1]
+    raw_equation = re.fullmatch(r'\s*\\\[(.*?)\\\]\s*', section, re.S)
+    if not raw_equation or re.sub(r'\s+', '', raw_equation.group(1)) != '\\boxed{\\mathcal{P}^2+\\mathcal{D}^2+\\mathcal{Q}^2+\\mathcal{R}^2+\\mathcal{E}^2+\\mathcal{B}^2+\\mathcal{C}^2+\\mathcal{G}^2=0.}':
+        raise ValueError('raw equation environment differs')
+    unknowns=re.search(r'The only unknowns are the seventeen separately named positive-integer variables\s*\\\[(.*?)\\in\\mathbb Z_\{>0\}\.\s*\\\]',display,re.S)
     if not unknowns:raise ValueError('unknown declaration')
     listed=[x.strip().lstrip('\\') for x in unknowns.group(1).split(',')]
     if listed!=['J','F','alpha','f','g','T','X','Y','xi','eta','zeta','upsilon','gamma','vartheta','psi','varphi','epsilon'] or len(set(listed))!=17:
@@ -55,6 +62,19 @@ def validate(text):
     if not box or re.sub(r'\s+','',box.group(1))!='A^2+B^2+N^2+S^2+O^2+G^2+h^2+j^2=0.':raise ValueError('sum wiring')
     return len(seen)
 text=(ROOT/'equation20.tex').read_text();count=validate(text)
+# Exact raw-environment controls: a bare alias and an inserted outside term.
+raw_marker = 'The single Diophantine equation is'
+start_raw = text.index(raw_marker)
+raw_open = text.index(r'\[', start_raw) + len(r'\[')
+outside_mutation = text[:raw_open] + '1+' + text[raw_open:]
+mutations_raw = [outside_mutation]
+if r'\mathcal{P}^2' in text[start_raw:]:
+    mutations_raw.append(text[:start_raw] + text[start_raw:].replace(r'\mathcal{P}^2', 'resA^2', 1))
+for mutation in mutations_raw:
+    try: validate(mutation)
+    except ValueError: pass
+    else: raise ValueError('raw equation mutation was not detected')
+
 for old,new in [('M=q^3b','M=q^2b'),(r'\epsilon-R',r'\epsilon+R')]:
     if old not in text:raise ValueError('mutation site missing')
     try:validate(text.replace(old,new,1))

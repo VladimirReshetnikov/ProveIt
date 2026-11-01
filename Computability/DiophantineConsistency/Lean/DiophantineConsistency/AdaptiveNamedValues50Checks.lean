@@ -1,0 +1,6 @@
+import DiophantineConsistency.AdaptiveNamedValues50
+#print axioms DiophantineConsistency.AdaptiveRankSeedPositive50.gap42
+#print axioms DiophantineConsistency.AdaptiveRankSeedPositive50.rank_rep
+#print axioms DiophantineConsistency.AdaptiveNamedValues50.literal_zero_project
+#print axioms DiophantineConsistency.AdaptiveNamedValues50.exists_positive_extension
+#print axioms DiophantineConsistency.AdaptiveNamedValues50.current_no_zero_iff

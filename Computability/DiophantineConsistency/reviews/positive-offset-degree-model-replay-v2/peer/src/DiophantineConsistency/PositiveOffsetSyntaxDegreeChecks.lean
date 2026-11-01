@@ -1,0 +1,2 @@
+import DiophantineConsistency.PositiveOffsetSyntaxDegree
+#print axioms DiophantineConsistency.PositiveOffsetSyntaxDegree.degree_decrement

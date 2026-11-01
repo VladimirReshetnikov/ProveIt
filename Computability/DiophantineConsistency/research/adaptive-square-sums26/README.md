@@ -5,7 +5,7 @@ constants in base 10. `generate_equation12.py` constructs its TeX from the
 pinned graph, and `verify_display12.py` checks the display, all 124 circuit
 lines, the fixed-constant block, and two negative mutation controls. Two
 `pdflatex` runs produced the same PDF SHA-256
-`e524766c09d3766ce8da07ffde4b4f0505aae3fc4b0716c0794b692299c795ff`;
+`07eee9f4ed61cf2f7ceaf0cfc9e79b49620f71ed85e7b2b15796bee4e4a3e647`;
 both rendered pages were inspected.
 
 This 124-operation circuit adds four squared constraints to the 22-variable,

@@ -1,0 +1,3 @@
+import DiophantineConsistency.PositiveOffsetArithmetic
+#print axioms DiophantineConsistency.PositiveOffsetArithmetic.decrement_shift_equiv
+#print axioms DiophantineConsistency.PositiveOffsetArithmetic.positiveShift_decrement_zero_iff

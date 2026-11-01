@@ -1,0 +1,3 @@
+The author and peer processes and their comparator exited 0, matching two source/check rows and direct dependency traces. Each guarded 392 inherited project objects, 400 direct-import companion candidates, private overlay entries and realpaths, generated checks and the Lean binary. Both runs share one historical parent, and do not rebuild historical project/package transitive or dynamic ancestry.
+
+In every IΣ₁ model, the theorem gives a positive tuple outside the reverse gap whose actual fixed-port first factor represents +1, given positive first Pell-norm data and q³ divisibility. It preserves the supplied X, Y, eta, zeta, f and i. It does not prove the remaining factor units, existence of a full zero, or an iPRA reverse implication.

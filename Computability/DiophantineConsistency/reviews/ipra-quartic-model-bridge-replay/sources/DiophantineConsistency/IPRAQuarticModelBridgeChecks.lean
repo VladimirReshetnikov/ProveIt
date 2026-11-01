@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAQuarticModelBridge
+
+#print axioms DiophantineConsistency.IPRAQuarticModelBridge.expression_eq
+#print axioms DiophantineConsistency.IPRAQuarticModelBridge.zero_iff_residuals
+#print axioms DiophantineConsistency.IPRAQuarticModelBridge.exists_quartic_iff

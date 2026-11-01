@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAQuarticNativeBridge
+
+#print axioms DiophantineConsistency.IPRAQuarticNativeBridge.sameNoZero
+#print axioms DiophantineConsistency.IPRAQuarticNativeBridge.bridge
+#print axioms DiophantineConsistency.IPRAQuarticNativeBridge.native_equivalence

@@ -1,0 +1,7 @@
+# Fifty-variable rank-seed quartic
+
+This candidate removes the rank-seed signed pair from the 51-variable quartic and replaces it with one positive `rankSeedVariable`; the root-skew signed pair remains. Its graph has 186 operations and its 35 residuals have degree at most 2, so the sum of squares has exact degree 4. The sparse-polynomial degree check supplies a nonzero port-independent leading term. The literal checker compares all 50 witness positions, four port positions and 186 gates against the Lean source.
+
+`AdaptiveRankSeedPositive50.gap42` projects a positive 42-variable zero through the earlier checked constructions to a direct-ordinate 86 zero, and applies its transport theorem to derive `F+alpha<q` in any IΣ₁ model when the first natural port is positive. Thus `alpha+(q−F)(J beta)` is positive and represents the needed signed rank seed. `AdaptiveNamedValues50.current_no_zero_iff` uses that value in its explicit positive witness extension and proves shifted no-zero equivalence with the 42-variable literal at the fixed ports. The generic theorem requires a positive first natural port; no claim is made for arbitrary integer ports.
+
+The paired model replay rebuilds the rank bridge, 50-variable model and checks against one matched historical native-51 peer provider. It preserves the provider ancestry recorded in `reviews/adaptive-square-sums50-model-replay/`. The separate native-theory endpoint and its identification with Con(ZFC) require their own evidence and bridge; the 85-operation reverse implication is not used or resolved.

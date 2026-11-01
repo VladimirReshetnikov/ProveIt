@@ -1,0 +1,5 @@
+# Native endpoint for the 51-variable quartic literal
+
+`IPRANamedValues51Native.literal_equivalence` constructs a derivation in the repository's `nativeTheory` of equivalence between the no-zero formula for the positive shift of the fixed-port 51-variable literal and the negation of its mapped native refutation predicate. It transfers the established 42-variable native bridge through the model-uniform no-zero equivalence `AdaptiveNamedValues51.shifted_no_zero_iff`.
+
+The focused replay processes share the historical native-42 peer provider, itself backed by matched suffix replays. The new model is rebuilt on this native provider and required to match the source, checks source, and object of the separate paired model-51 replay; the actual model replay exit is guarded before the native runs. The original 258-module project ancestry, 848 author-only ancestry, package-transitive ancestry, and dynamic imports remain inherited. This is not a full current-source closure. Identification of the mapped native refutation predicate with ordinary Con(ZFC) depends on the separate interpretation and refutation bridge; the endpoint alone does not close that broader goal.

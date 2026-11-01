@@ -4,7 +4,7 @@
 in base 10. `generate_equation8.py` constructs the TeX from the pinned graph;
 `verify_display8.py` checks the display, 139 gates, fixed constants and two
 mutation controls. Two `pdflatex` runs produced identical PDF SHA-256
-`ffdb16f7dec72d09f2665c5388676ac5c0c62d28cec68861b3d8bfb5d9f7165c`;
+`a69749e2643bb9dab9c031f4a27359ef0cee655261a9ab851bef7b500df2d1fd`;
 both pages were inspected.
 
 The graph extends the degree-12, 26-variable graph with positive variables `zPositive`, `zNegative`, `dPositive`, `dNegative`, `vPositive`, `vNegative`, and `deltaVariable`. It replaces Z, Dstar, and V by their signed differences and Delta by `deltaVariable`; four further squared residuals constrain these names to the former expressions. The graph has 139 binary arithmetic operations.
