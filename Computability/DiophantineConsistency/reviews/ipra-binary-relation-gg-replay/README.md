@@ -1,0 +1,5 @@
+# Focused intuitionistic-PRA Gödel–Gentzen proof
+
+Author and independent runs passed with matching source, object and full compiler-log hashes for all 6 modules. Replay: `python3 Computability/DiophantineConsistency/reviews/ipra-binary-relation-gg-replay/replay.py`. Parent `/tmp/ipra-induction-nozero-gn9c03hm`; the replay guards 320 source paths, 327 parent objects and 144 direct external objects. Five subsequently changed ancestor sources are guarded through byte-matching prior frozen snapshots, as recorded in `manifest.json`: this is a fixed historical broad-parent snapshot. Original reused-project ancestry is reconstructed from surviving objects; Foundation/package transitive ancestry and dynamic imports remain inherited.
+
+The exact Foundation relation-congruence GG axiom image is proved for every relation symbol in the PR language, including equality and order, from native Leibniz equality; this is not the function-congruence or final equation–consistency theorem. No decidability of atomic equality or order is assumed. The full Lean axiom audit is in the check log.

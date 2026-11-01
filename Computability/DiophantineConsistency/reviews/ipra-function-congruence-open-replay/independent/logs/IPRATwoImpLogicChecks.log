@@ -1,0 +1,11 @@
+DiophantineConsistency.IPRATwoImpLogic.twoImp_dni.{u_1} {L : Language} [L.DecidableEq] {Λ : Hilbertᵢ L}
+  (p q r : Propositionᵢ L) : Λ ⊢ (p 🡒 q 🡒 r) 🡒 ∼∼p 🡒 ∼∼q 🡒 ∼∼r
+DiophantineConsistency.IPRATwoImpLogic.atomic_twoImp_closure {n k j l : ℕ} (r : language.Rel k) (s : language.Rel j)
+  (t : language.Rel l) (v : Fin k → TermN n) (w : Fin j → TermN n) (u : Fin l → TermN n) :
+  nativeTheory ⊢
+    ∀⁰* (Semiformulaᵢ.rel r v 🡒 Semiformulaᵢ.rel s w 🡒 Semiformulaᵢ.rel t u) 🡒
+      (∀⁰* (Semiformula.rel r v 🡒 Semiformula.rel s w 🡒 Semiformula.rel t u))ᴺ
+'DiophantineConsistency.IPRATwoImpLogic.twoImp_dni' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRATwoImpLogic.atomic_twoImp_closure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

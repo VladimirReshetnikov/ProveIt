@@ -1,0 +1,17 @@
+DiophantineConsistency.IPRARelationGGLogic.nnConj.{u_1} {L : Language} [L.DecidableEq] {Λ : Hilbertᵢ L}
+  (p q : Propositionᵢ L) : Λ ⊢ ∼∼p ⋏ ∼∼q 🡒 ∼∼(p ⋏ q)
+DiophantineConsistency.IPRARelationGGLogic.atomic_relation_closure {n k j l m : ℕ} (ra : language.Rel k)
+  (rb : language.Rel j) (rr : language.Rel l) (rs : language.Rel m) (a : Fin k → PRATheory.TermN n)
+  (b : Fin j → PRATheory.TermN n) (v : Fin l → PRATheory.TermN n) (w : Fin m → PRATheory.TermN n) :
+  nativeTheory ⊢
+    ∀⁰* (Semiformulaᵢ.rel ra a 🡒 Semiformulaᵢ.rel rb b 🡒 Semiformulaᵢ.rel rr v 🡒 Semiformulaᵢ.rel rs w) 🡒
+      (∀⁰* (Semiformula.rel ra a ⋏ Semiformula.rel rb b ⋏ ⊤ 🡒 Semiformula.rel rr v 🡒 Semiformula.rel rs w))ᴺ
+DiophantineConsistency.IPRARelationGGLogic.binary_relExt_adapter (r : language.Rel 2) :
+  nativeTheory ⊢ relCongruenceI r 🡒 (Theory.Eq.relExt r)ᴺ
+'DiophantineConsistency.IPRARelationGGLogic.nnConj' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRARelationGGLogic.atomic_relation_closure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRARelationGGLogic.binary_relExt_adapter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

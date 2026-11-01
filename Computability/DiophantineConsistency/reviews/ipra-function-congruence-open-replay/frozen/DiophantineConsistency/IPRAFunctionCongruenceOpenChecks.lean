@@ -1,0 +1,6 @@
+import DiophantineConsistency.IPRAFunctionCongruenceOpen
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceOpen.function_matrix_specialized
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceOpen.one_coordinate_open
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceOpen.function_open
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceOpen.function_conj_open
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceOpen.allClosure_fixitr_context
