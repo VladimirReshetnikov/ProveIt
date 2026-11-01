@@ -25,3 +25,15 @@ Two focused [Lean model replays](../../reviews/adaptive-square-sums15-model-repl
 match on the same historical parent. Transitive project, package and dynamic
 ancestry is inherited. The native iPRA endpoint for this new expression is not
 yet established by this receipt and remains separate work.
+
+The separate [equation26.tex](../../equation26.tex) and
+[equation26.pdf](../../equation26.pdf) display the 15 distinct positive
+unknowns, six squared residuals, the complete base-10 fixed integer, and all
+93 circuit gates. `verify_display26.py` parses 26 polynomial definitions,
+checks the final sum and every circuit row against the pinned graph, confirms
+the copied fixed constants and rejects two formula mutations. It is a limited
+parser, not a general TeX interpreter. Normal Python and `python -O` pass. Two
+`pdflatex` runs produced identical PDF SHA-256
+`6021b6b74a5607965f577dfe2a06a80981e6de4644fa24bbb1564f621f43fff3`;
+both pages were visually inspected. The page states the model proof and the
+pending native-iPRA endpoint separately.
