@@ -31,7 +31,9 @@ checked theorem. The draft `rebuild.py` recompiles the affected modules in
 dependency order for one sibling, verifies `lean --deps` against source
 imports and authenticated seeds or fresh outputs, and rechecks parent,
 workspace, guards and artifact inventory. `run_pair.py` runs the two siblings
-sequentially and `compare.py` compares their results. These drivers have passed
+sequentially and `compare.py` compares their results. The required target
+axiom-report count must equal the matched parent's count in both siblings.
+These drivers have passed
 a small real-Lean control but **have not been run on the AQ29 successor**.
 A further source or configuration drift requires a newly frozen snapshot and a
 recomputed plan. Existing package-transitive, dynamic-loading, and possible
@@ -41,6 +43,7 @@ Run `PYTHONDONTWRITEBYTECODE=1 python3 test_prepare.py` for toy graph, hidden
 direct-import, parent terminal-observation, companion and sibling-isolation
 checks. `test_real_prepare.py` also constructs and compares a real-Lean toy
 parent pair and selective successor, and checks specific rejections for omitted
-direct imports, workspace drift, unexpected companions, sibling hardlinks,
-seed tampering and an unobserved parent exit. These tests do not exercise the
+direct imports, altered axiom-report counts, workspace drift, unexpected
+companions, sibling hardlinks, seed tampering and an unobserved parent exit.
+These tests do not exercise the
 unfinished 1,210-module parent pair or an actual AQ29 selective rebuild.
