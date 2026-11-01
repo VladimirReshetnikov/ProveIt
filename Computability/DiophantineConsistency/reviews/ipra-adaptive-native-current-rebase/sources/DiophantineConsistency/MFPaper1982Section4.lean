@@ -48,7 +48,7 @@ open Polynomial Finset
 /-- `ofDigits b (map f (range n)) = Σ_{j<n} f j b^j`. -/
 theorem ofDigits_map_range (b : ℕ) (f : ℕ → ℕ) :
     ∀ n : ℕ, Nat.ofDigits b ((List.range n).map f) = ∑ j ∈ range n, f j * b ^ j
-  | 0 => by simp [Nat.ofDigits]
+  | 0 => by simp
   | n + 1 => by
     rw [List.range_succ, List.map_append, Nat.ofDigits_append, ofDigits_map_range b f n,
       Finset.sum_range_succ]
