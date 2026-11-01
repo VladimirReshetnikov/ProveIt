@@ -1,0 +1,11 @@
+'DiophantineConsistency.IPRANativeBoundedGuard.orderGuard' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRANativeBoundedGuard.allOrderGuard' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.IPRANativeBoundedGuard.allOrderGuard
+  (heq :
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      DiophantineConsistency.IPRANativeAtomStability.eqDecSentence)
+  (a b : LO.FirstOrder.Semiterm DiophantineConsistency.PRALanguage.language ℕ 1)
+  (q : LO.FirstOrder.Semipropositionᵢ DiophantineConsistency.PRALanguage.language 1) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ∀⁰ ∼LO.FirstOrder.Semiformulaᵢ.rel LO.FirstOrder.Language.ORing.Rel.lt ![a, b] ⋎ q 🡘
+      ∀⁰ (LO.FirstOrder.Semiformulaᵢ.rel LO.FirstOrder.Language.ORing.Rel.lt ![a, b] 🡒 q)

@@ -1,0 +1,5 @@
+# Native bounded-universal guard: author replay
+
+Guarded run `/tmp/ipra-native-bounded-guard-f4dv9k4s` passed. Given an explicit nativeTheory universal equality-decidability proof, actual native order decidability yields intuitionistic pointwise and universally quantified equivalence of the NNF guard disjunction `¬(a<b) ∨ Q` and implication `(a<b → Q)`, for arbitrary open terms and body. This is a syntactic proof; it does not invoke semantic `eval_bnd_imp`, establish equality decidability, or prove bounded-search stability.
+
+Selected native/Foundation/Mathlib parent inventories are checked; full inherited HA/ZF/Foundation/package transitive source/object provenance remains unverified. Lean metatheory may use classical choice without adding a classical object-calculus axiom. Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-native-bounded-guard.py`. Independent replay required. State `e5e8fc4ae8ea504d9e17e6df2868cbeed9fe16608f62875253df9ac573cb7033`; manifest `bbfe70c0f91f1c936df93d3658d6ca95ed22b623b5b473ba850f68020b0cb0d6`.

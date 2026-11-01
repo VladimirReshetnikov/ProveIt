@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRANativeDeepStability
+#print axioms DiophantineConsistency.IPRANativeDeepStability.stableNative
+#check DiophantineConsistency.IPRANativeDeepStability.stableNative
