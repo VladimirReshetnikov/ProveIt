@@ -389,10 +389,8 @@ theorem nksN_equiv (a b c : V) (p q : Formula V ℒₛₑₜ)
 
 /-- A named universal instantiated at its own label is the body. -/
 theorem namedFormula_self (a : V) (X : Formula V ℒₛₑₜ) :
-    (namedBody a X).subst ![&'a] = X := by
-  apply Bootstrapping.Semiformula.ext
-  simpa [namedBody, Bootstrapping.Semiformula.val_substs, substs1] using
-    bindOneAt_open X.isSemiformula a
+    (namedBody a X).subst ![&'a] = X :=
+  ModelCodedDecoderRho6_254.namedBody_open a X
 
 /-- The matrix used in the templates: `⊤` for the code `0`, else the decoded matrix. -/
 noncomputable def freshMatrix (c : V) : Formula V ℒₛₑₜ := by
@@ -435,14 +433,8 @@ theorem zf_not_nks (a b c : V) (hca : c ≠ a) (hcb : c ≠ b) :
 
 /-- The vacuity half of the bundle. -/
 theorem zf_vrel (a b c : V) (hca : c ≠ a) (hcb : c ≠ b) :
-    (𝗭𝗙 : SetTheory).internalize V ⊢ vrelN a b c := by
-  have hv := decoded_wel_vacuity 𝗭𝗙 a b c hca hcb
-  have hd : (𝗭𝗙 : SetTheory).internalize V ⊢ decoded (vrel a b c) := by
-    rw [vrel_eq]
-    exact (tprovable_iff_provable (σ := decoded _)).mpr hv
-  have he := zf_decoded_circuit_equiv vrelTemplate a b c 0
-  rw [interpret_vrel] at he
-  exact (iff_of_E! he).mp hd
+    (𝗭𝗙 : SetTheory).internalize V ⊢ vrelN a b c :=
+  ⟨namedFormula_mem_vacuous _ a b c hca hcb⟩
 
 /-- **The decoded C222 seed bundle is an internal ZF theorem.** -/
 theorem zf_decoded_bundle222_provable (a b c : V) (hca : c ≠ a) (hcb : c ≠ b) :
