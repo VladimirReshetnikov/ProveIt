@@ -163,6 +163,14 @@ matched nine rows and 11,850 guarded files. This retains the historical
 provider and inherited ancestry qualifications above; the display and exact
 degree have separate finite checks.
 
+The [46-variable degree-4 equation](equation4-46.pdf) replaces a signed root
+pair with one positive coordinate. Its exact shifted fixed-port literal has a
+no-premise [native endpoint](Lean/DiophantineConsistency/IPRAZ46Native.lean),
+and its [focused paired replay](reviews/adaptive-square-sums46-native-replay/README.md)
+matched 14 modules and all twelve rebuilt model objects. This retains the
+historical provider and inherited ancestry qualifications above; the display
+and exact degree have separate finite checks.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz

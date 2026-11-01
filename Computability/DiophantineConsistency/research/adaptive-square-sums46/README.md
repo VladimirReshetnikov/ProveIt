@@ -1,4 +1,4 @@
-# Forty-six-variable quartic orientation candidate
+# Forty-six-variable quartic equation
 
 This graph replaces the parent 47-variable positive pair `zPositive`,
 `zNegative`, whose difference is the signed root `Z`, by one positive
@@ -9,7 +9,7 @@ that their sum of squares has exact degree four. `verify_substitution.py`
 checks the forward embedding `zPositive = zValueVariable + 1`,
 `zNegative = 1` for all 33 residuals using exact sparse polynomials.
 
-The proposed reverse orientation uses special structure, not a bare direct
+The reverse orientation uses special structure, not a bare direct
 substitution. At a parent zero the residuals give
 `Z² = psi² * (1 + tau)` and `psi > 0`, so the positive magnitude `z = |Z|`
 is nonzero and has the form `z = psi * t` for a natural `t`. The repository's
@@ -35,3 +35,9 @@ It concerns the mapped native refutation predicate; its interpretation as
 Con(ZFC) uses the separate interpretation and refutation bridge. Project,
 package-transitive and dynamic-import ancestry remains inherited, including
 the 848-module author-only ancestor. No global minimality is claimed.
+
+The [base-10 equation presentation](../../equation4-46.pdf) has separately
+named positive variables. `generate_equation4_46.py` creates the TeX and
+`verify_display4_46.py` checks all 52 definitions, 33 residuals, 178 gates,
+fixed constants and mutation controls. Two clean PDF builds matched SHA-256
+`df8aacc68a2af6ca80473efc42cf7c1619c8de0f435412e008c38338dade6ca7`.

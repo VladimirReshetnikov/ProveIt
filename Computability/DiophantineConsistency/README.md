@@ -38,14 +38,15 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [51-variable 187-operation degree-4 equation](equation4.pdf), the
 [50-variable 186-operation degree-4 equation](equation4-50.pdf), the
 [49-variable 185-operation degree-4 equation](equation4-49.pdf), and the
-[47-variable 179-operation degree-4 equation](equation4-47.pdf). Each endpoint
+[47-variable 179-operation degree-4 equation](equation4-47.pdf), and the
+[46-variable 178-operation degree-4 equation](equation4-46.pdf). Each endpoint
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced a [46-variable quartic candidate](research/adaptive-square-sums46/README.md),
+finite graph searches have produced a [44-variable quartic candidate](research/adaptive-square-sums44/README.md),
 and [34-variable](research/adaptive-square-sums34/README.md) and
 [33-variable](research/adaptive-square-sums33-degree6/README.md) degree-six candidates.
 Their circuit sizes, substitutions and exact degrees have finite checks; their
