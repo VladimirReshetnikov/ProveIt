@@ -252,8 +252,13 @@ now proves the exact mapped ZFC comparison without additional theorem
 premises; matching scoped author and independent replays are recorded
 [here](reviews/ipra-bounded-rho-scoped-author.md) and
 [here](reviews/ipra-bounded-rho-scoped-independent.md). Those replays retain
-historical project/Foundation and fallback-package ancestry boundaries; a
-more extensive package-pinned replay remains in progress.
+historical project/Foundation and fallback-package ancestry boundaries.
+Subsequent [package-pinned author](reviews/ipra-bounded-rho-pinned-author.md)
+and [independent](reviews/ipra-bounded-rho-pinned-independent.md) replays
+also match; they authenticate all 11,316 fallback files actually loaded by
+the traced client and check compilations. Package and project source-object
+ancestry remains inherited, and the later upstream erasure change requires a
+current-source join.
 
 The [equation-composition client](Lean/DiophantineConsistency/IPRAEquationComposition.lean)
 has also passed matching scoped replays, conditional on the equation and ZFC
