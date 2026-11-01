@@ -8,6 +8,33 @@ Existence of an object-theory proof is enough; a printed proof is not required.
 The exact language, defining equations, order axiom, and induction scheme are
 spelled out in [PRA_AXIOMATIZATION.md](PRA_AXIOMATIZATION.md).
 
+## Status update (2026-10-31)
+
+The bound certificate for Foundation's ZFC-refutation sentence
+`rho = provabilityPred ZFC ⊥` is established through the witness-bound
+calculus, layer by layer, in every candidate-PRA model:
+
+* terms and term recursions over `ℒₛₑₜ` (`PRAWitnessTermRec`,
+  `PRAWitnessTermFunctions`); formulas and formula recursions
+  (`PRAWitnessFormulas`, `PRAWitnessFormulaRec`, `PRAWitnessFormulaFunctions`);
+  substitution, whose parameter grows, through an explicit `𝗜𝚺₁` stage bound
+  (`PRAWitnessCodeGrowth`, `PRAWitnessSubsts`);
+* nested exponential bound terms (`PRAWitnessBoundTerms`) and primitive
+  recursions (`PRAWitnessPR`);
+* the ZFC axiom recognizer, including the separation and replacement schemata
+  (`PRAWitnessZFCAxioms.goodCh_zfc`);
+* derivations and the provability sentence
+  (`PRAWitnessDerivation.wb_provable_falsum`).
+
+`PRACurrentConsistencyEndpoint` assembles `boundCertificate_rho` and the
+literal endpoint `pra_current_iff_consistency`
+(`PRA ⊢ classicalSentence ↔ sourceSentence`) through
+`PRAStrictConReverse.comparison_if_bound`. **The PRA target is closed:**
+both theorems compile, and the axiom audit
+(`PRACurrentConsistencyEndpointChecks`) reports only `propext`,
+`Classical.choice` and `Quot.sound`. The next target, intuitionistic PRA, is planned in
+[IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md).
+
 ## Status summary (2026-10-30)
 
 Candidate PRA proves `noZero ↔ conB π` (`PRAStrictConComparison.comparison`)
