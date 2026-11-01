@@ -21,6 +21,9 @@ at most two in the 51 unknowns. One degree-two residual contains a monomial
 with port-independent coefficient 1. Its sum of squares therefore has exact
 degree 4, including after positive-variable shifting. These finite Python
 checks are not Lean degree theorems.
+An exploratory direct `rfl` attempt at the concrete syntactic degree bound
+timed out at 12 million heartbeats; its [failure record](../../reviews/quartic51-degree-structural-attempt/README.md)
+suggests using a shared gate certificate instead of reducing the full tree.
 
 `verify_literal.py` matches the actual Lean literal and all 187 gate rows to
 the pinned graph. `AdaptiveNamedValues51.shifted_no_zero_iff` proves both
