@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRANativeEqualityDecidable
+#check DiophantineConsistency.IPRANativeEqualityDecidable.equalityDecidable
+#print axioms DiophantineConsistency.IPRANativeEqualityDecidable.equalityDecidable
