@@ -1,0 +1,15 @@
+'DiophantineConsistency.AdaptiveGap85InverseBounds.one_step_gap_iff_bounds' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85InverseBounds.one_step_gap_iff_bounds.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 2 ≤ v 0 * ↑(p 0)) (hv : ∀ (i : Fin 13), 0 < v i)
+  (hnot : ¬v 1 + v 2 < 1 + v 0 * ↑(p 0)) :
+  have b := v 0 * ↑(p 0);
+  have q := 1 + b;
+  have k := v 9 + v 10;
+  have c := v 9 + v 7 * k;
+  have U := v 7 * (q * q);
+  have A := v 6 + ↑(p 1) * q;
+  have d := b * c * U;
+  (∃ w, DiophantineConsistency.AdaptiveGap85InverseEntry.PositiveBiStep p v w ∧ w 1 + w 2 < 1 + w 0 * ↑(p 0)) ↔
+    d < v 2 ∧ d * A * k + c * U * A < v 8 ∧ b * c * (q * q - 1) < v 12 ∧ v 1 + (v 2 - d) < q

@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85InverseBounds
+#print axioms DiophantineConsistency.AdaptiveGap85InverseBounds.one_step_gap_iff_bounds
+#check DiophantineConsistency.AdaptiveGap85InverseBounds.one_step_gap_iff_bounds
