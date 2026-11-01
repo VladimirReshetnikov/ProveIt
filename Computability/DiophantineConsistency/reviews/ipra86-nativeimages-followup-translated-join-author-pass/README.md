@@ -1,0 +1,3 @@
+# Fixed-source 86-operation native translated-refutation endpoint
+
+This 35-module author build explicitly PASSed final authentication on the frozen classical 86 parent `/tmp/pra86-classical-join-t1_a3ics`. It proves the native intuitionistic candidate-PRA equation equivalence to negated Gödel–Gentzen translated refutation, not yet ordinary consistency. The pinned sources and guards are in `../ipra86-nativeimages-followup-translated-join-snapshot/`. This is a historical fixed-source result; parent reused-object transitive environments are reconstructed from surviving records, and external package-transitive ancestry is inherited. The matching independent replay is recorded in `../ipra86-nativeimages-followup-translated-join-independent-pass/`.

@@ -1,0 +1,3 @@
+# Native-image fixed-source 86-operation classical endpoint
+
+The source-directed 111-module author run explicitly PASSed final authentication against fixed parent `/tmp/pra14-zfc-join-ll67m31i`. It proves the 13-variable 86-operation equation's classical candidate-PRA no-zero/consistency equivalence. The input `../pra86-nativeimages-followup-classical-join-snapshot/` pins frozen sources and parent; recorded source/object/log/dependency and direct external-object guards passed without workspace project-object fallback. This is a historical fixed-source snapshot; reused-object transitive environments are reconstructed from surviving records, external package-transitive ancestry is inherited, and an independent replay is not yet claimed.
