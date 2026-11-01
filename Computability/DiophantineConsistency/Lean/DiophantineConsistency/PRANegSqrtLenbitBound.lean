@@ -13,6 +13,19 @@ open DiophantineConsistency.StrictSigmaOneInduction
 def negSqrtLenbit : ArithmeticSemisentence 2 :=
   “x m. ¬∃ s <⁺ x, !sqrtDef s x ∧ s*s = x ∧ !lenbitDef s m”
 variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻]
+/-- A failed square-root/lenbit conjunction gives the negative graph. -/
+theorem negSqrtLenbit_of_not (x m : V)
+    (hn : ¬(√x < x+1 ∧ √x * √x = x ∧ LenBit (√x) m)) :
+    negSqrtLenbit.Evalb ![x,m] := by
+  simp [negSqrtLenbit, Semiformula.bexsLTSucc, Semiformula.bexsLT, FirstOrder.bexs]
+  intro s
+  by_cases heq : s = √x
+  · subst s
+    by_contra hc
+    simp [not_or, not_le] at hc
+    exact hn hc
+  · exact Or.inr (Or.inl heq)
+
 theorem negSqrtLenbit_bound (x m : V) :
     negSqrtLenbit.Evalb ![x,m] →
       (bnd negSqrtLenbit).Evalb ![x,m,m+1] := by

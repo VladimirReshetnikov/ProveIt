@@ -52,16 +52,7 @@ theorem neg_sppow2_bound (m : V) : (∼sppow2Def.val).Evalb ![m] →
         · have hn : ¬(√x < x+1 ∧ √x * √x = x ∧ LenBit (√x) m) := by
             intro hp
             exact hiff ⟨fun _ => hp, fun _ => hl⟩
-          have hf : PRANegSqrtLenbitBound.negSqrtLenbit.Evalb ![x,m] := by
-            simp [PRANegSqrtLenbitBound.negSqrtLenbit, Semiformula.bexsLTSucc,
-              Semiformula.bexsLT, FirstOrder.bexs]
-            intro s
-            by_cases heq : s = √x
-            · subst s
-              by_contra hc
-              simp [not_or, not_le] at hc
-              exact hn hc
-            · exact Or.inr (Or.inl heq)
+          have hf := PRANegSqrtLenbitBound.negSqrtLenbit_of_not x m hn
           have hb := PRANegSqrtLenbitBound.negSqrtLenbit_bound x m hf
           simpa [PRANegSqrtLenbitBound.negSqrtLenbit, Semiformula.bexsLTSucc, Semiformula.bexsLT, FirstOrder.bexs, bnd, bnd_open] using hb
       · right
