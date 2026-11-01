@@ -1,0 +1,7 @@
+# Native equality decision with zero decidability: author replay
+
+Guarded author run `/tmp/ipra-difference-zero-join-x3uclqgf` passed all five modules against the independently checked forward/equality parent `/tmp/ipra-difference-forward-join-avaqyued/lib`. It rebuilds the add-one transfer, zero-decidability, and unconditional native zero-step modules from workspace sources, then compiles the new join and its checks. All selected parent objects and sources were reauthenticated before and after the build.
+
+The result gives a native universal equality-decidability proof from the **one explicit native proof premise** `(x−y=0 ∧ y−x=0) → x=y`, universally quantified over both arguments. Its zero-decidability and forward-difference premises are discharged. This run does not prove the positive reverse implication. The Lean axiom report contains `propext`, `Classical.choice`, and `Quot.sound`, with no object-level classical logic added. Project/Foundation and external-package transitive source/object ancestry of the parent remains inherited and historical.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-zero-join.py`. State SHA-256 `bff771277094c3adbb62215fded54a38a6fa11987e1d11809195cb1f8f1c06aa`; provider inventory `cc96048acea24a04e6d13ccaded4744d503a14063409d0ca30432678d8c5cdbf`. Sources, driver, logs, state and inventory are preserved in the matching evidence directory.

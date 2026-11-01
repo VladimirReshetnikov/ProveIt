@@ -1,0 +1,5 @@
+# Native equality decision with forward difference: independent replay
+
+The guarded independent peer `/tmp/ipra-difference-forward-join-avaqyued` passed and matches the author `/tmp/ipra-difference-forward-join-014oxwf6` in all seven source/object/full-log records, the parent state hash, and the full serialized selected-provider inventory. This replays the seven source modules independently on the same checked forward parent; it does not independently rebuild that parent. The result keeps native zero decidability and the positive reverse difference implication as explicit premises, and retains the historical parent/Foundation/package ancestry qualification.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-forward-join.py`. Peer state SHA-256 `0f2fd393eb45ebe3c43f61fcd1f792b18a4dac42b798cc842797e5c233b90262`; provider inventory `3ce7c5fa4b5990026240ac0a8ebf91521ed37f012bada481e1c1b5772dd963c7`. Sources, logs, driver, state and inventory are preserved in the matching evidence directory.

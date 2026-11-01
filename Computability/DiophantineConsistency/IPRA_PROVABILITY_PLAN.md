@@ -167,7 +167,21 @@ A separate [forward difference theorem](Lean/DiophantineConsistency/IPRANativeDi
 derives `x = y → (x − y = 0 ∧ y − x = 0)` from an explicit native
 zero-decidability proof, with matching guarded replays. The positive reverse
 implication and authenticated composition with the unconditional zero proof
-remain open, as do general equality and positive reconstruction.
+remain open, as do general equality and positive reconstruction. A matched
+[single-provider join](Lean/DiophantineConsistency/IPRADifferenceEqualityForwardJoin.lean)
+now supplies this forward direction to the equality-decision reduction, leaving
+zero decidability and positive reverse difference correctness explicit.
+A subsequent [zero-decidability join](Lean/DiophantineConsistency/IPRADifferenceEqualityZeroJoin.lean)
+rebuilds the necessary dependencies on that provider and discharges the zero
+decision premise. Matching guarded replays leave exactly the positive reverse
+difference implication as the explicit premise for general equality
+decidability; inherited package and project ancestry remains historical.
+The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
+also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
+with matching author and independent replays. The analogous direct native
+[subtraction equations](Lean/DiophantineConsistency/IPRASubArithmetic.lean)
+`x−0=x`, `x−S(y)=pred(x−y)`, and `pred(0)=0` have also passed matching
+replays; these are positive equalities, not merely their GG images.
 
 The theory now proves zero decidability without an additional premise. The
 [checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)

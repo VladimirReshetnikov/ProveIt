@@ -1,0 +1,5 @@
+# Native equality decision with zero decidability: independent replay
+
+The guarded independent peer `/tmp/ipra-difference-zero-join-o5kg1x9y` passed and matches the author `/tmp/ipra-difference-zero-join-x3uclqgf` in all five source/object/full-log rows, the parent state hash, and the full serialized selected-provider inventory. It independently replays the three source prerequisites and two new client/check modules on the same checked forward/equality parent. Native zero decidability and forward difference correctness are discharged; the universally quantified positive reverse difference implication remains the one explicit premise. Parent/Foundation and external-package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-zero-join.py`. Peer state SHA-256 `014a72a1103d48ba15169f9321c9e591d617481c29ae786397df2df98e8c8e3e`; provider inventory `cc96048acea24a04e6d13ccaded4744d503a14063409d0ca30432678d8c5cdbf`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.
