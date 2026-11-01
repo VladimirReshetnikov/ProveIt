@@ -1,5 +1,6 @@
 import Diophantine.Paper1980.PellDoubled
 import Diophantine.Paper1982.Ratio
+import Diophantine.Paper1980.PellRatioCommon
 
 /-!
 # The ratio block of the 99-operation system
@@ -24,6 +25,7 @@ parameters `A = Y(U+1) + 4` and `P = 2UY² + 1`.
 -/
 
 namespace Jones1980
+export RatioCommon (one_add_pow_le a_gt central_dvd)
 
 open Diophantine Pell
 
@@ -151,16 +153,6 @@ theorem Y_lower {U Y r k c η ζ a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 
   have : (Y + 1) * U ^ r ≤ U ^ r * U ^ r := Nat.mul_le_mul_right _ (by omega)
   omega
 
-/-- The main parameter shift `a = Y(U+1)` exceeds `U^(r+1)` once `U^r ≤ Y`. -/
-theorem a_gt {U Y r a : ℕ} (hU : 1 ≤ U) (ha : a = Y * (U + 1)) (hYr : U ^ r ≤ Y) :
-    U ^ (r + 1) < a := by
-  rw [ha, pow_succ]
-  have h1 : U ^ r * U < U ^ r * (U + 1) := by
-    have : 0 < U ^ r := by positivity
-    nlinarith
-  calc U ^ r * U < U ^ r * (U + 1) := h1
-    _ ≤ Y * (U + 1) := Nat.mul_le_mul_right _ hYr
-
 /-- The lower estimate `k (U+1)^(2r) < c U^r` (the integer form of `ξ < c/k`). -/
 theorem lower_estimate {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
     (hJ : J = 2 * r + 1) (hA : 1 < a + 4) (ha : a = Y * (U + 1))
@@ -191,30 +183,6 @@ theorem upper_key {U Y : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (h16 : 16 ≤ Y * (U
   rw [e]
   have h1 : U * Y * 16 ≤ U * Y * (Y * (U + 1)) := Nat.mul_le_mul_left _ h16
   nlinarith [h1]
-
-/-- `(1 + ε)^r ≤ 1 + 2rε` for `0 ≤ ε` with `rε ≤ 1/2`. -/
-theorem one_add_pow_le {ε : ℝ} (r : ℕ) (hε : 0 ≤ ε) (hrε : (r : ℝ) * ε ≤ 1 / 2) :
-    (1 + ε) ^ r ≤ 1 + 2 * (r * ε) := by
-  rcases Nat.eq_zero_or_pos r with h | h
-  · subst h; simp
-  have hr1 : (1 : ℝ) ≤ r := by exact_mod_cast h
-  have hε1 : ε ≤ 1 := by nlinarith
-  have h5 : (1 + ε) ^ r * (1 - ε) ^ r ≤ 1 := by
-    rw [← mul_pow]
-    have : (1 + ε) * (1 - ε) = 1 - ε ^ 2 := by ring
-    rw [this]
-    exact pow_le_one₀ (by nlinarith) (by nlinarith)
-  have h2 : 1 - r * ε ≤ (1 - ε) ^ r := Jones1982.ineq_2_17_a hε1 r
-  have h3 : (1 - r * ε)⁻¹ ≤ 1 + 2 * (r * ε) := Jones1982.ineq_2_17_b (by positivity) hrε
-  have hpos : 0 < 1 - r * ε := by linarith
-  have hpos' : 0 < (1 - ε) ^ r := lt_of_lt_of_le hpos h2
-  have h4 : (1 + ε) ^ r ≤ 1 / (1 - ε) ^ r := by
-    rw [le_div_iff₀ hpos']; linarith [h5]
-  have h6 : 1 / (1 - ε) ^ r ≤ 1 / (1 - r * ε) := one_div_le_one_div_of_le hpos h2
-  calc (1 + ε) ^ r ≤ 1 / (1 - ε) ^ r := h4
-    _ ≤ 1 / (1 - r * ε) := h6
-    _ = (1 - r * ε)⁻¹ := one_div _
-    _ ≤ 1 + 2 * (r * ε) := h3
 
 /-- The upper estimate `c/k < ξ + 1/2` once `72 r < U + 1`, `U^r ≤ Y` and `16 ≤ Y(U+1)`. -/
 theorem upper_estimate' {U Y r k c a J : ℕ} (hU : 1 ≤ U) (hY : 1 ≤ Y) (hr : 1 ≤ r)
@@ -381,13 +349,5 @@ theorem Y_eq_floor {U Y r k c η ζ : ℕ} (hr : 1 ≤ r) (hU4 : 4 * 2 ^ (2 * r)
   have h1' : F < Y + 1 := by exact_mod_cast h1
   have h2' : Y < F + 1 := by exact_mod_cast h2
   omega
-
-/-- The central-binomial divisibility `n² ∣ C(2r, r)` from `Y = C(2r,r) + wU`, `n² ∣ U`,
-`n² ∣ Y`. -/
-theorem central_dvd {n U Y r w : ℕ} (hU : n ^ 2 ∣ U) (hY : n ^ 2 ∣ Y)
-    (h : Y = (2 * r).choose r + w * U) : n ^ 2 ∣ (2 * r).choose r := by
-  have h1 : n ^ 2 ∣ w * U := Dvd.dvd.mul_left hU w
-  have h2 : (2 * r).choose r = Y - w * U := by omega
-  rw [h2]; exact Nat.dvd_sub hY h1
 
 end Jones1980
