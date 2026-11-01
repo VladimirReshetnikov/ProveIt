@@ -19,11 +19,9 @@ MODULE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z")
 DRAFT_NAMES = {
     'IPRAReferenceAQ29', 'IPRAReferenceNoZero', 'IPRAReferenceRefutationReading',
     'IPRAReferenceAQ29Direct', 'IPRAReferenceInductionTransfer', 'IPRAReferenceRoundtrip',
+    'IPRAReferenceReplayChecks',
 }
-TARGETS = (
-    'DiophantineConsistency.IPRAReferenceAQ29Direct',
-    'DiophantineConsistency.IPRAReferenceRoundtrip',
-)
+TARGETS = ('DiophantineConsistency.IPRAReferenceReplayChecks',)
 
 def sha(raw):
     return hashlib.sha256(raw).hexdigest()
@@ -142,6 +140,7 @@ def main():
     result['additional_untracked']=sorted(set(paths)-{p.decode() for p in tracked if p})
     result['additional_modified_against_head']=sorted(p.decode() for p in modified if p)
     result.update({'parent_manifest_sha256':a.parent_sha256,'parent_snapshot':str(snapshot),
+                   'planner_sha256':sha(Path(__file__).read_bytes()),
                    'workspace_head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()})
     if a.output.exists() or a.output.is_symlink():raise ValueError('refusing to overwrite plan')
     with a.output.open('x') as f:json.dump(result,f,indent=2,sort_keys=True);f.write('\n')
