@@ -142,7 +142,7 @@ def sum (p : Fin 4 → ℤ) : Expr (Fin 28) := (residuals p 0)*(residuals p 0) +
 theorem sum_shape (p : Fin 4 → ℤ) : sum p = AdaptiveAQ28Literal.literal p := by rfl
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 theorem sum_zero (p : Fin 4 → ℤ) (v : Fin 28 → V) :
-    InternalZero (AdaptiveAQ28Literal.literal p) v ↔ ∀ i : Fin 18, InternalZero (residuals p i) v := by
+    InternalZero (AdaptiveAQ28Literal.literal p) v ↔ ∀ i : Fin 19, InternalZero (residuals p i) v := by
   let r0 := residuals p 0
   let es : List (Expr (Fin 28)) := List.ofFn (fun i : Fin 18 => residuals p i.succ)
   have hf := foldSquares_zero_iff v es (r0*r0) _ (rawSquare_rep r0 v)
