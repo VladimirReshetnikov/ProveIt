@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRAUnaryRewritingBound
 import DiophantineConsistency.PRANegSppow2WitnessBound
 /-! The negative Foundation ppow2Def graph has a model-uniform bound.
     The full exponential, membership and refutation obligations remain open. -/
@@ -14,27 +15,9 @@ theorem neg_sppow2_rew_bound_at {n : ℕ} (ω : Rew ℒₒᵣ Empty 1 Empty n) (
     (ω ▹ (∼sppow2Def.val)).Evalb e →
       (bnd (ω ▹ (∼sppow2Def.val))).Evalb (Fin.snoc e w) := by
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  intro h
-  let g : Fin 1 → V := fun i => (ω #i).val e Empty.elim
-  have hf : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → V) := Subsingleton.elim _ _
-  have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
-  simp only [Semiformula.eval_rew] at h
-  rw [hg,hf] at h
-  have hv : ![g 0] = g := by
-    funext i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) i
-  have hs : Fin.snoc g (g 0+1) = ![g 0,g 0+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
-  have hw' : g 0+1 ≤ w := hw
-  have hb := PRANegSppow2WitnessBound.neg_sppow2_bound (g 0) (by simpa [hv] using h)
-  have hb' : (bnd (∼sppow2Def.val)).Evalb (Fin.snoc g w) := by
-    apply eval_bnd_mono (∼sppow2Def.val) g (Empty.elim : Empty → V) hw'
-    rw [hs]
-    exact hb
-  exact (PRABndRewriting.natural (∼sppow2Def.val) ω e w).mpr hb'
+  exact PRAUnaryRewritingBound.rew_bound_at (∼sppow2Def.val)
+    PRANegSppow2WitnessBound.neg_sppow2_bound ω e w hw
+
 attribute [local irreducible] sppow2Def
 
 theorem neg_ppow2_bound (i : V) : (∼ppow2Def.val).Evalb ![i] →
