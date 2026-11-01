@@ -54,4 +54,4 @@ print('leading witness',witness,'port coefficient',terms)
 expected_tail=[['addC','+','finalWithRank','cConstraint'],['addA','+','addC','aConstraint'],
  ['addEll','+','addA','ellConstraint'],['finalWithNamedValues','+','addEll','wConstraint']]
 if c['source'][-4:]!=expected_tail:raise ValueError('constraint wiring')
-print('PASS residual degrees',degrees,'and exact output degree 16 after fixing ports and positive shift; zero-set equivalence remains open')
+print('PASS residual degrees',degrees,'and exact output degree 16 after fixing ports and positive shift; zero-set equivalence is outside this finite check')

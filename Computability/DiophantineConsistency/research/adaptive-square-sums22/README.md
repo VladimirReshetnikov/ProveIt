@@ -1,5 +1,13 @@
 # Twenty-two-variable degree-16 candidate
 
+[equation16.pdf](../../equation16.pdf) presents the circuit and its fixed
+constants in base 10. `generate_equation16.py` constructs its TeX from the
+pinned graph, and `verify_display16.py` checks the display, all 112 circuit
+lines, the fixed-constant block, and two negative mutation controls. Two
+`pdflatex` runs produced the same PDF SHA-256
+`98641f0ed05c6884134dce79419b88fb14001c9e4f414e84a6d521fd8d1b27a1`;
+both rendered pages were inspected.
+
 This 112-operation circuit adds four squared constraints to the 17-variable,
 99-operation degree-20 circuit. Three new positive coordinates name
 `c = eta + Y*(eta+zeta)`, `a = X*Y+Y`, and
