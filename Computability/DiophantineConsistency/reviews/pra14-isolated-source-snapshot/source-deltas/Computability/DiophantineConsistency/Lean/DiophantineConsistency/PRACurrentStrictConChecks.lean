@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRACurrentStrictCon
+open DiophantineConsistency.PRACurrentStrictCon
+#print axioms comparison
