@@ -25,6 +25,22 @@ Both invocations passed with byte-identical output, saved in [PRINTED-CONSTANTS-
 
 This is an exact finite Python calculation, not Lean evaluation of the current `ports`, not a parser for Lean tile constructors, and not a general TeX parser. Its mathematical transcription relies on the pinned block and the cited human/source reviews. The result does not by itself prove either Diophantine equivalence or equality of current source and historical compiled objects. The separate [equation display checker](verify_equation86.py) checks the 86-row circuit and the 24 algebraic identities against its pinned displayed block and candidate JSON; it too is not a TeX-to-Lean proof.
 
+The additional [TeX display parser](verify_display_tex86.py) reads the actual
+86-page unknown declaration, all 20 displayed polynomial abbreviations and
+the four boxed factors directly from `equation86.tex`, interprets the exact
+polynomial subset used there, and compares each result to the pinned circuit
+JSON using integer sparse polynomials. It checks that the 13 displayed
+unknowns are distinct positive integers and that the final product is wired
+as in the circuit. Two altered-display negative controls must be rejected.
+This independently removes the manual transcription step for the boxed
+equation and its abbreviations. It does not parse the fixed-constant recipes,
+establish the JSON-to-Lean bridge, or verify PDF rendering.
+
+```sh
+python3 Computability/DiophantineConsistency/research/adaptive-direct-ordinate86/verify_display_tex86.py
+python3 -O Computability/DiophantineConsistency/research/adaptive-direct-ordinate86/verify_display_tex86.py
+```
+
 ## Reproducible PDF bytes and decimal display
 
 On the installed `pdfTeX 3.141592653-2.6-1.40.22` (TeX Live 2022/dev/Debian), isolated builds of each current TeX file were byte-identical to its committed PDF:
