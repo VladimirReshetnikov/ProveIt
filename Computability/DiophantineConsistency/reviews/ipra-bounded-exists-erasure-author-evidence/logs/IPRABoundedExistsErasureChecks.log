@@ -1,0 +1,10 @@
+'DiophantineConsistency.IPRABoundedExistsErasure.existsErasure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRABoundedExistsErasure.existsErasure {Λ : LO.FirstOrder.Hilbertᵢ ℒₒᵣ}
+  (φ : LO.FirstOrder.ArithmeticSentence) :
+  Λ ⊢!
+    DiophantineConsistency.IPRANativeFormula.native
+        ((LO.FirstOrder.Rewriting.app LO.FirstOrder.Rew.emb)
+          (∃⁰ DiophantineConsistency.StrictSigmaOneInduction.bnd φ)) 🡒
+      DiophantineConsistency.IPRANativeFormula.native ((LO.FirstOrder.Rewriting.app LO.FirstOrder.Rew.emb) φ)

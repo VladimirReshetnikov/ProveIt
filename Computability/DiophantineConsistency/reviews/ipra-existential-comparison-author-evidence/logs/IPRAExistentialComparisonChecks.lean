@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAExistentialComparison
+#print axioms DiophantineConsistency.IPRAExistentialComparison.existsCompareUniform
+#print axioms DiophantineConsistency.IPRAExistentialComparison.theoryExistsCompare
+#check DiophantineConsistency.IPRAExistentialComparison.theoryExistsCompare

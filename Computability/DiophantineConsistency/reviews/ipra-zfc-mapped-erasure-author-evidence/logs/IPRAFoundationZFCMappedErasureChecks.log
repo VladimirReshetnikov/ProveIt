@@ -1,0 +1,25 @@
+'DiophantineConsistency.IPRAFoundationZFCMappedErasure.exactErasure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRAFoundationZFCMappedErasure.mappedZFCNegationTwoPremises' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.IPRAFoundationZFCMappedErasure.mappedZFCNegationTwoPremises.{u_1} {L : LO.FirstOrder.Language}
+  [L.DecidableEq] {Λ : LO.FirstOrder.Hilbertᵢ L} {T : LO.FirstOrder.Theoryᵢ L Λ} (f : ℒₒᵣ.Hom L)
+  (hbound :
+    T ⊢!
+      ((LO.FirstOrder.Semiformula.lMap f)
+            DiophantineConsistency.FoundationHAConsistencyNormalization.rho).doubleNegation 🡒
+        ((LO.FirstOrder.Semiformula.lMap f)
+            DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation).doubleNegation)
+  (hcompare :
+    T ⊢!
+      ((LO.FirstOrder.Semiformula.lMap f)
+            DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation).doubleNegation 🡒
+        ∼∼DiophantineConsistency.IPRANativeFormula.native
+              ((LO.FirstOrder.Semiformula.lMap f)
+                DiophantineConsistency.IPRAFoundationZFCWitnessBound.boundedRefutation)) :
+  T ⊢!
+    ((LO.FirstOrder.Semiformula.lMap f)
+          DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence).doubleNegation 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation f

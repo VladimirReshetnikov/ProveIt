@@ -1,0 +1,8 @@
+'DiophantineConsistency.IPRABoundedErasure.bndErasure' depends on axioms: [propext, Classical.choice, Quot.sound]
+DiophantineConsistency.IPRABoundedErasure.bndErasure {Λ : LO.FirstOrder.Hilbertᵢ ℒₒᵣ} {n : ℕ}
+  (φ : LO.FirstOrder.ArithmeticSemisentence n) (e : Fin n → LO.FirstOrder.Term ℒₒᵣ ℕ) (b : LO.FirstOrder.Term ℒₒᵣ ℕ) :
+  Λ ⊢!
+    DiophantineConsistency.IPRANativeFormula.native
+        ((LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts (Fin.snoc e b)))
+          (DiophantineConsistency.StrictSigmaOneInduction.bnd φ)) 🡒
+      DiophantineConsistency.IPRANativeFormula.native ((LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts e)) φ)
