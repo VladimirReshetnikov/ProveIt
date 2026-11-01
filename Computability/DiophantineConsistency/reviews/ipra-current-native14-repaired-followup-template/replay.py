@@ -46,7 +46,7 @@ def audit():
  assert h(D/'prepare.py')==m['preparer_sha256']
  assert h(P/'state.json')==m['peer_state_sha256'] and h(A/'state.json')==m['author_state_sha256'] and h(F)==m['frozen_13_manifest_sha256'] and h(G)==m['graph_sha256'] and h(E)==m['extra_manifest_sha256'] and h(LEAN)==m['lean_sha256']
  assert h(m['ancestor_state'])==m['ancestor_state_sha256'] and all(h(p)==v for p,v in m['ancestral_manifests'].items())
- assert h(BF)==m['original_fixed_manifest_sha256'] and h(ORIG)==m['parent_origin_receipt_sha256'] and h(CMP)==m['parent_comparison_receipt_sha256'] and h(CL)==m['parent_closure_receipt_sha256'] and all(h(p)==v for p,v in m['parent_origin_guard'].items())
+ assert h(BF)==m['original_fixed_manifest_sha256'] and h(ORIG)==m['parent_origin_receipt_sha256'] and h(CMP)==m['parent_comparison_receipt_sha256'] and h(CL)==m['parent_closure_receipt_sha256'] and all(h(p)==v for p,v in m['parent_receipt_checker_guard'].items()) and all(h(p)==v for p,v in m['parent_origin_guard'].items())
  assert all(h(p)==v and str(Path(p).resolve())==m['parent_external_resolved_paths'][p] for p,v in m['parent_external_direct_paths'].items()) and all(not os.path.lexists(p) for p in m['parent_external_absent_paths']) and all(not os.path.lexists(PKG/p) for p in m['parent_external_absent'])
  assert all(h(src(n))==v for n,v in m['source_sha256'].items()) and inv()==m['parent_inventory']
  assert all(h(PKG/k)==v['sha256'] and str((PKG/k).resolve())==v['resolved_path'] for k,v in m['external_direct'].items())
