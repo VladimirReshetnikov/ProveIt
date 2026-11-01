@@ -45,30 +45,15 @@ theorem atom_step_le (isEq : Bool) {N₀ N₂ : SF V 1} {u w : V} (hu : 2 ≤ u)
   case' false =>
       have hc := compiledLe (by decide) memAtom_provable _ hu hK
       have lt := trD_le memAtomTemplate tD_mem _ hK
-      obtain ⟨T, hT⟩ : ∃ T,
-          translateFormula (K6 N₀ ⊤ N₂ ⊤ (AtomT false N₀ N₂) (succT (V := V)))
-            (Rewriting.emb memAtomTemplate) = T :=
-        ⟨_, rfl⟩
-      rw [hT] at hc lt
-      simp only [memAtomTemplate, LogicalConnective.HomClass.map_imply,
-        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_numOK₀, tr_numOK₂,
-        tr_memAtomDefP, tr_succDefF, tr_tot₅, tr_refl₄₅] at hT
-      subst hT
       have hcl := c_mem_le u
   case' true =>
       have hc := compiledLe (by decide) eqAtom_provable _ hu hK
       have lt := trD_le eqAtomTemplate tD_eq _ hK
-      obtain ⟨T, hT⟩ : ∃ T,
-          translateFormula (K6 N₀ ⊤ N₂ ⊤ (AtomT true N₀ N₂) (succT (V := V)))
-            (Rewriting.emb eqAtomTemplate) = T :=
-        ⟨_, rfl⟩
-      rw [hT] at hc lt
-      simp only [eqAtomTemplate, LogicalConnective.HomClass.map_imply,
-        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_numOK₀, tr_numOK₂,
-        tr_eqAtomDefP, tr_succDefF, tr_tot₅, tr_refl₄₅] at hT
-      subst hT
       have hcl := c_eq_le u
   all_goals
+    simp only [memAtomTemplate, eqAtomTemplate, LogicalConnective.HomClass.map_imply,
+      LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_numOK₀, tr_numOK₂,
+      tr_memAtomDefP, tr_eqAtomDefP, tr_succDefF, tr_tot₅, tr_refl₄₅] at hc lt
     have hA := imp_ante_le lt
     have hA2 := and_right_le hA
     have hA3 := and_right_le hA2
