@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAPredSuccessor
+#check DiophantineConsistency.IPRAPredSuccessor.pred_successor
+#print axioms DiophantineConsistency.IPRAPredSuccessor.pred_successor
