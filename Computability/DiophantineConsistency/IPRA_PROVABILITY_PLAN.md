@@ -178,7 +178,10 @@ difference implication as the explicit premise for general equality
 decidability; inherited package and project ancestry remains historical.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
-with matching author and independent replays.
+with matching author and independent replays. The analogous direct native
+[subtraction equations](Lean/DiophantineConsistency/IPRASubArithmetic.lean)
+`x−0=x`, `x−S(y)=pred(x−y)`, and `pred(0)=0` have also passed matching
+replays; these are positive equalities, not merely their GG images.
 
 The theory now proves zero decidability without an additional premise. The
 [checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)

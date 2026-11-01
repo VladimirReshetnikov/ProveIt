@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRASubArithmetic
+#check DiophantineConsistency.IPRASubArithmetic.sub_zero_native
+#check DiophantineConsistency.IPRASubArithmetic.sub_succ_native
+#check DiophantineConsistency.IPRASubArithmetic.pred_zero_native
+#print axioms DiophantineConsistency.IPRASubArithmetic.sub_zero_native
+#print axioms DiophantineConsistency.IPRASubArithmetic.sub_succ_native
+#print axioms DiophantineConsistency.IPRASubArithmetic.pred_zero_native
