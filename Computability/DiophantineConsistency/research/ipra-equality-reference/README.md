@@ -100,10 +100,21 @@ induction instances. Both files have only been invoked with the untrusted
 mixed provider and require coherent replay. Their conditional transfer is
 not an established theory equivalence or an equation endpoint.
 
+The exploratory [`IPRAReferenceCloseFamily.lean`](../../Lean/DiophantineConsistency/IPRAReferenceCloseFamily.lean),
+[`IPRAReferenceEqualityTools.lean`](../../Lean/DiophantineConsistency/IPRAReferenceEqualityTools.lean), and
+[`IPRAReferencePredecessor.lean`](../../Lean/DiophantineConsistency/IPRAReferencePredecessor.lean)
+draft uniform closure, Leibniz instantiation, and the derivation of successor
+injectivity from predecessor recursion and projection. The related
+[`IPRAErasedInductionObligation.lean`](../../Lean/DiophantineConsistency/IPRAErasedInductionObligation.lean)
+assembles a native-to-reference transfer conditional only on derivability of
+the erased `x+1` induction instances. These are candidate source proofs,
+invoked only with the untrusted mixed provider; they need a coherent replay.
+In particular the induction-image premise remains open, and neither theory
+equivalence nor the equation endpoint follows from this conditional result.
+
 The missing comparison includes at least: coherently rebuild and independently
-replay the erasure/rewriting statements; transfer intuitionistic logical
-derivations and all nonlogical axioms to the equality-only theory; derive
-successor injectivity from the predecessor code; transfer the reference axioms
+replay the erasure/rewriting statements and candidate derivations; discharge the
+native induction image; transfer the reference axioms
 to the native candidate; and prove every native formula equivalent there to
 its embedded erasure. The two theories live in different languages, so the
 target comparison must explicitly translate the formula. The previously
