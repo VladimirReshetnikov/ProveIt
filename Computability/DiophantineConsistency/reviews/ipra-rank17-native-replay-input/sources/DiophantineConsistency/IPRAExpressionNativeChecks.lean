@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRAExpressionNative
+#check DiophantineConsistency.IPRAExpressionNative.comparison_of_pra
+#check DiophantineConsistency.IPRAExpressionNative.equivalence_of_isigma1
+#check DiophantineConsistency.IPRAExpressionNative.equivalence_of_bridge
+#print axioms DiophantineConsistency.IPRAExpressionNative.comparison_of_pra
+#print axioms DiophantineConsistency.IPRAExpressionNative.equivalence_of_isigma1
+#print axioms DiophantineConsistency.IPRAExpressionNative.equivalence_of_bridge

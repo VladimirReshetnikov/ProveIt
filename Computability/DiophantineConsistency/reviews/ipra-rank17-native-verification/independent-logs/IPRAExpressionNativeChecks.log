@@ -1,0 +1,35 @@
+DiophantineConsistency.IPRAExpressionNative.comparison_of_pra {n : ℕ} (e : DiophantineConsistency.Expr (Fin n))
+  (hc :
+    DiophantineConsistency.PRATheory.PRA ⊢
+      (LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+          (DiophantineConsistency.FoundationHANoZero.classicalNoZero e) 🡘
+        ∼(LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+            DiophantineConsistency.PRAWitnessZFCRefutationBound.refutation) :
+  DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢
+    DiophantineConsistency.IPRAExpressionNative.nativeNoZero e 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation
+          DiophantineConsistency.PRALanguage.embedding
+DiophantineConsistency.IPRAExpressionNative.equivalence_of_isigma1 {n : ℕ} (e : DiophantineConsistency.Expr (Fin n))
+  (h :
+    𝗜𝚺₁ ⊢
+      DiophantineConsistency.FoundationHANoZero.classicalNoZero e 🡘
+        DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence) :
+  DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢
+    DiophantineConsistency.IPRAExpressionNative.nativeNoZero e 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation
+          DiophantineConsistency.PRALanguage.embedding
+DiophantineConsistency.IPRAExpressionNative.equivalence_of_bridge {n : ℕ} (e : DiophantineConsistency.Expr (Fin n))
+  (hp : DiophantineConsistency.HAExpressionAssembly.PolynomialBridge e) :
+  DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢
+    DiophantineConsistency.IPRAExpressionNative.nativeNoZero e 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation
+          DiophantineConsistency.PRALanguage.embedding
+'DiophantineConsistency.IPRAExpressionNative.comparison_of_pra' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRAExpressionNative.equivalence_of_isigma1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRAExpressionNative.equivalence_of_bridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

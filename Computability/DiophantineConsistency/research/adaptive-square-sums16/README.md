@@ -24,9 +24,14 @@ Normal Python and `python -O` pass.
 
 Two focused [Lean model replays](../../reviews/adaptive-square-sums16-model-replay/README.md)
 match on the same historical fifteen-variable provider. Transitive project,
-package and dynamic ancestry remains inherited. The native iPRA endpoint for
-this new expression is separate work and is not established by the model
-receipt.
+package and dynamic ancestry remains inherited. The exact literal also has a native iPRA endpoint:
+`IPRAMainScaleWitness16Native.literal_equivalence` asserts a derivation of the
+no-positive-zero/selected ZFC consistency equivalence in the explicitly
+defined native theory. The [two guarded comparisons](../../reviews/ipra-main16-native-verification/README.md)
+match all twelve compiled suffix modules and 11,495 guarded files. This is a
+fixed-source result on the inherited historical provider, not a full
+source-current closure; package-transitive and dynamically loaded ancestry
+remain inherited.
 
 The separate [equation24.tex](../../equation24.tex) and
 [equation24.pdf](../../equation24.pdf) show all 16 distinct positive unknowns,
@@ -35,6 +40,5 @@ seven squared residuals, the full base-10 fixed integer and 96 gates.
 checks the sum wiring and copied constants, and rejects two formula mutations;
 it is a limited TeX parser. Normal Python and `python -O` pass. Two `pdflatex`
 runs produced identical PDF SHA-256
-`5e4ae926ca982f4a2e74a656a356bc3513d1161257857bdb1bf86f51229b46b4`;
-both pages were visually inspected. The page states the model proof and the
-pending native-iPRA endpoint separately.
+`cf1c4971232ea2b7ca175ca466b6348ebc01a342e8b8dc1995b5ea30c38f10c5`;
+both pages were visually inspected. The page states the matched native-iPRA result and its snapshot boundary.

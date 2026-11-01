@@ -69,6 +69,17 @@ a focused historical model-provider result, with full current-source closure
 and inherited 258/848, package-transitive and dynamic-import ancestry
 limitations.
 
+The [17-variable degree-20 equation](equation20.pdf) uses a 99-operation
+evaluator. Its exact shifted fixed-port literal has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRARankWitness17Native.lean)
+in the candidate theory, using the checked 17-to-16-variable no-zero
+equivalence. Both focused fourteen-module suffix replays and independently run
+guarded comparisons match; see the
+[comparison](reviews/ipra-rank17-native-verification/README.md). This remains
+a focused historical model-provider result, with full current-source closure
+and inherited 258/848, package-transitive and dynamic-import ancestry
+limitations.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz
