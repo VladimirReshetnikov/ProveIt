@@ -1,0 +1,17 @@
+DiophantineConsistency.IPRANativeWitnessFamily.witnessFromFamily
+  (ψ : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language) (n : ℕ)
+  (body : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language n)
+  (v : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ)
+  (h :
+    (w : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) →
+      DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+        ∼∼(LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) body 🡒
+          (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) body)
+  (hshape :
+    (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts v)) body =
+      DiophantineConsistency.IPRANativeFormula.native ψ) :
+  DiophantineConsistency.IPRAFoundationZFCStabilityWitness.StabilityWitness
+    DiophantineConsistency.IPRANativeTheory.nativeTheory ψ
+'DiophantineConsistency.IPRANativeWitnessFamily.witnessFromFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

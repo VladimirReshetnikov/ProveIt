@@ -1,0 +1,5 @@
+# Native open-family closure and disjunction stability witnesses: independent replay
+
+The guarded independent peer `/tmp/ipra-native-disjunction-witness-m386e3s0` passed and matches the author `/tmp/ipra-native-disjunction-witness-l20dop2q` in both source/object/full-log rows, parent state hash and the complete serialized selected-provider inventory. It replays the finite-arity uniform proof-family closure and exact shared-arity disjunction `StabilityWitness` constructors on the same independently checked deep/equality parent. Their native child decision/stability proofs and instance-shape equalities remain explicit inputs; no complete `DeepNeed` schema is asserted. Parent/Foundation and package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-native-disjunction-witness.py`. Peer state SHA-256 `a24b343c2a12d9732c2f8a08c7b88e248a88066347b3b1fb8245d2de4035d9e1`; provider inventory `884e63476abf890a3465e1e61f9cfd7caab9f10fe1d726b10088915767e7da8a`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

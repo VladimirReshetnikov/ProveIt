@@ -163,7 +163,12 @@ subsequent [single-provider equality join](Lean/DiophantineConsistency/IPRADeepE
 has matching guarded author and independent replays and discharges native
 equality decision as well. The sole explicit input to that comparison is the
 finite-list `DeepNeed` stability-witness schema; inherited ancestry and
-current-source limitations are recorded in its receipt.
+current-source limitations are recorded in its receipt. A [witness-family
+packer](Lean/DiophantineConsistency/IPRANativeWitnessFamily.lean) converts an
+explicit uniform stability family into the required witness, and a checked
+[disjunction helper](Lean/DiophantineConsistency/IPRANativeDisjunctionWitness.lean)
+combines one child's decision with the other's stability. Their child proofs
+and common-valuation shape hypotheses remain explicit.
 The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive

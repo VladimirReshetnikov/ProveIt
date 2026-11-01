@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRANativeWitnessFamily
+#check DiophantineConsistency.IPRANativeWitnessFamily.witnessFromFamily
+#print axioms DiophantineConsistency.IPRANativeWitnessFamily.witnessFromFamily
