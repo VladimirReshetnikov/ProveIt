@@ -1,4 +1,4 @@
-# Forty-four-variable quartic candidate
+# Forty-four-variable quartic equation
 
 This graph replaces both signed positive-coordinate pairs for `W` and the root
 skew `Γ` in the 46-variable oriented-root parent by single positive variables.
@@ -31,3 +31,9 @@ interpretation and refutation bridge. The replays inherit project,
 package-transitive and dynamic-import ancestry, including the author-only
 848-module ancestor; they are not a complete current-source closure. No global
 minimality is claimed.
+
+The [base-10 equation presentation](../../equation4-44.pdf) has separately
+named positive variables. `generate_equation4_44.py` produces the TeX and
+`verify_display4_44.py` checks 50 definitions, 33 residuals, 176 circuit rows,
+fixed constants and mutation controls. Two clean PDF builds matched SHA-256
+`6e524b5e2a27d36ebe7fdac934013685a08559ea09aac75e06abed8ef1ff9162`.
