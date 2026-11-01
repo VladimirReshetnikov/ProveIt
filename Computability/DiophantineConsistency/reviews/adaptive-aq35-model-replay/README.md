@@ -1,0 +1,7 @@
+# 35-variable degree-6 model equivalence: focused replay
+
+The literal has 35 variables and 145 live gates; `verify_literal.py` checks every gate against the pinned candidate. `AdaptiveAQ35.shifted_no_zero_iff` proves positive-shift no-zero equivalence with the 36-variable parent over every IΣ₁ model for arbitrary integer ports. Its extension valuation uses `AdaptiveAQ35Positive.square_positive`: at a positive zero, the auxiliary residual forces the substituted signed square to be positive. Both literal/context identities are definitional. The separate 36-to-40 theorem has its own nonnegative-first-port condition, discharged for the fixed port.
+
+Tool session 92751 actually exited 0 with `MATCHED_PASS 8 rows`. The driver rebuilt eight sources in two separate overlays over the same matched 36-model peer, compared their source/object/log/direct-input rows, checked 100 direct companion paths per run, and checked the reported axioms. The full receipt and logs are included. Root independently performed an unsaved read-only audit of both runs, the 22 axiom reports per run, all 200 direct companion guards, candidate/verifier pins, and the parent exit; that audit was not an additional Lean replay.
+
+The replay is focused on this suffix. Transitive project and package ancestry and dynamic imports are inherited; the point-in-time source guards do not establish a fully current-source closure.
