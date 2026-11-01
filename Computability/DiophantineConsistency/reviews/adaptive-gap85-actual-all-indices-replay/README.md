@@ -1,0 +1,5 @@
+# Actual 85-zero arbitrary-index root congruences
+
+Both source-directed replays PASS with six matching source/object/full-log rows, zero warnings and standard Lean axioms. `actual_zero_root_congruences` derives from any actual positive literal 85-zero and positive first port an internal main Pell index m with its actual ordinate, satisfying either `27X ≡ 27·2^m` or `27(1+2^m X) ≡ 0` modulo `4Y(X+1)+3`, in every IΣ₁ model. `actual_zero_large_Y_forces_power` additionally derives `7·2^m≤Y → X=2^m` for that index. The latter implication does not establish its antecedent or exclude the equality.
+
+These are necessary conditions, not an 85-zero exclusion or equivalence. Five source modules plus checks are rebuilt on the independently replayed no-fourth provider; 399 selected inherited project-object/companion paths and the recorded direct Foundation anchor are pinned. Original project and external package transitive source ancestry remains historical. Inputs are the five source modules and `replay_actual_all_indices.py` in `research/adaptive-gap85-normalization/`.

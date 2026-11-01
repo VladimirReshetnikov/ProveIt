@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.ArithmeticControlSourceRank254
 import BusyBeaver.ZFC.ArithmeticControlPair254
 
 set_option autoImplicit false
@@ -20,6 +21,7 @@ open ArithmeticControlFetch254 (put s1Reg plReg)
 open ArithmeticControlRead254 (s2Reg)
 open ArithmeticControlPair254 (twReg)
 open FiniteControlTable254 RegisterPath
+open ArithmeticControlSourceRank254 (literal_target)
 
 def entry : Control := ⟨181, by decide⟩
 def exit : Control := ⟨195, by decide⟩
@@ -29,18 +31,6 @@ theorem entry_source : source entry =
 
 theorem exit_source : source exit =
     ([true,true,true,false,true,false,false,true,false,false,true,false,true,false,false,false,true,false,true,true,false,false,false], .decnz 2) := by rfl
-
-/-- Resolve a literal target through its finite tree path, avoiding catalogue search. -/
-private theorem literal_target (P : List Bool) (q : Control)
-    (hw : RMBisim.twalk ActualTree254.tree P 0 =
-      some ((source q).2, (source q).1.length))
-    (hc : consume P (source q).1.length = (source q).1) : resolveControl P = q := by
-  have hw' : walk Prog254.program (Prog254.program.nnodes + 1) Prog254.program.root P 0 =
-      some ((source q).2, (source q).1.length) := by
-    rw [RMBisim.walk_root, ActualTree254.tree_eq]
-    exact hw
-  apply source_injective
-  rw [resolve_source _ _ _ hw', hc]
 
 private def twReadShape : ReadShape where
   readEntry := entry

@@ -1,0 +1,25 @@
+'DiophantineConsistency.AdaptiveGap85AllIndicesModular.pell_minus_congruence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85AllIndicesModular.pell_plus_congruence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85AllIndicesRoot.root_congruences' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ActualAllIndicesRoot.actual_zero_root_congruences' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ActualLargeYPow.actual_zero_large_Y_forces_power' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85ActualLargeYPow.actual_zero_large_Y_forces_power.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < ↑(p 0))
+  (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v) :
+  ∃ m,
+    0 < m ∧
+      DiophantineConsistency.ArithmeticPellRecurrence.ycoord m (v 6 * v 7 + v 7) = v 9 + v 7 * (v 9 + v 10) ∧
+        (7 * LO.Exp.exp m ≤ v 7 → v 6 = LO.Exp.exp m)

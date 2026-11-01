@@ -1,0 +1,17 @@
+'DiophantineConsistency.AdaptiveGap85AllIndicesModular.pell_minus_congruence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85AllIndicesModular.pell_minus_congruence.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (a n : V) :
+  DiophantineConsistency.ArithmeticPellRecurrence.xcoord n a % (4 * a + 3) =
+    (a * DiophantineConsistency.ArithmeticPellRecurrence.ycoord n a + LO.Exp.exp n) % (4 * a + 3)
+'DiophantineConsistency.AdaptiveGap85AllIndicesModular.pell_plus_congruence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85AllIndicesModular.pell_plus_congruence.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (a n : V) :
+  LO.Exp.exp n *
+        (DiophantineConsistency.ArithmeticPellRecurrence.xcoord n a +
+          a * DiophantineConsistency.ArithmeticPellRecurrence.ycoord n a) %
+      (4 * a + 3) =
+    1 % (4 * a + 3)
