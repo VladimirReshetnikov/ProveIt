@@ -23,6 +23,18 @@ sources, full selected overlay, direct inputs and companions, but does not
 establish a full current-source closure. Its original 258/848 project ancestry,
 package-transitive ancestry and dynamic imports remain inherited.
 
+The [14-variable degree-30 equation](equation30.pdf) has a 91-operation
+evaluator. Its exact fixed-port literal also has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRASquareWitness14Native.lean)
+in the candidate theory. The model argument gives an arity-changing
+no-zero equivalence with the degree-36 expression, and the generic bridge
+transfers the endpoint. Both focused eight-module suffix replays and their
+independently run guarded comparisons match; see the
+[comparison](reviews/ipra-square14-native-verification/README.md). These checks
+are on the historical model-provider chain, not a full current-source closure;
+the original 258/848 project, package-transitive and dynamic-import ancestry
+remains inherited.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz

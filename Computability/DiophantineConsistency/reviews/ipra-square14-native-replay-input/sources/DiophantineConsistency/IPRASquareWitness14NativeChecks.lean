@@ -1,0 +1,11 @@
+import DiophantineConsistency.IPRASquareWitness14Native
+#check DiophantineConsistency.IPRASquareWitness14Native.sameZero13
+#check DiophantineConsistency.IPRASquareWitness14Native.bridge13
+#check DiophantineConsistency.IPRASquareWitness14Native.sameNoZero14
+#check DiophantineConsistency.IPRASquareWitness14Native.bridge14
+#check DiophantineConsistency.IPRASquareWitness14Native.literal_equivalence
+#print axioms DiophantineConsistency.IPRASquareWitness14Native.sameZero13
+#print axioms DiophantineConsistency.IPRASquareWitness14Native.bridge13
+#print axioms DiophantineConsistency.IPRASquareWitness14Native.sameNoZero14
+#print axioms DiophantineConsistency.IPRASquareWitness14Native.bridge14
+#print axioms DiophantineConsistency.IPRASquareWitness14Native.literal_equivalence
