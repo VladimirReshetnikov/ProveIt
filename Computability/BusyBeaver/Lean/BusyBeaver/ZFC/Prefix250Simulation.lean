@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.Prefix246Simulation
 import BusyBeaver.ZFC.RegisterPathClean
 import BusyBeaver.ZFC.SitePrefix250
 
@@ -19,17 +20,9 @@ consistency theorem is claimed here.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.Prefix250Simulation
+export SetTheory.BusyBeaver.ZFC.Prefix246Simulation (registerBits_eq incr_eq_write decr_eq_write nth_vregs_append_getD valid_none valid_branch)
 
 open RegisterPath FiniteZipper Permutation252Frame SymbolicPrefix250
-
-theorem registerBits_eq (vs : List Nat) :
-    RegisterBoxesPerm252.registerBits vs = Permutation252Frame.registerBits vs := by
-  induction vs with
-  | nil => rfl
-  | cons v vs ih =>
-    change false :: true :: (List.replicate v true ++ RegisterBoxesPerm252.registerBits vs) =
-      false :: true :: (List.replicate v true ++ Permutation252Frame.registerBits vs)
-    rw [ih]
 
 theorem flat_map_bit (n : Nat) (vs : List Nat) (P : List Bool) :
     flat n vs (P.map Segment.bit) = P := by
@@ -117,37 +110,10 @@ theorem target_frame (n : Nat) (vs : List Nat) (P : List Bool)
   simpa only [dispatchZip, zAtS, hh, List.replicate_zero,
     List.append_nil, List.cons_append, List.nil_append, List.append_assoc] using hr
 
-theorem incr_eq_write (vs : List Nat) (r : Nat) (hr : r < vs.length) :
-    incr r vs = writeRegisters vs r (vs.getD r 0 + 1) := by
-  induction r generalizing vs with
-  | zero => cases vs <;> simp_all [incr, writeRegisters]
-  | succ r ih =>
-    cases vs with
-    | nil => simp at hr
-    | cons v vs =>
-      change v :: incr r vs = v :: writeRegisters vs r (vs.getD r 0 + 1)
-      rw [ih vs (by simpa using hr)]
-
-theorem decr_eq_write (vs : List Nat) (r : Nat) (hr : r < vs.length) :
-    decr r vs = writeRegisters vs r ((vs.getD r 0).pred) := by
-  induction r generalizing vs with
-  | zero => cases vs <;> simp_all [decr, writeRegisters]
-  | succ r ih =>
-    cases vs with
-    | nil => simp at hr
-    | cons v vs =>
-      change v :: decr r vs = v :: writeRegisters vs r ((vs.getD r 0).pred)
-      rw [ih vs (by simpa using hr)]
-
 theorem unchanged_rebase (R : Registers) (spares : List Nat) :
     boxBits (.plain .unchanged) (vregs R ++ spares) =
       Permutation252Frame.registerBits (vregs R ++ spares) := by
   simp only [boxBits, registerBits_eq]
-
-theorem nth_vregs_append_getD (R : Registers) (spares : List Nat) (r : Nat) (hr : r < 9) :
-    (vregs R ++ spares).getD (physOf r) 0 = R r := by
-  rw [List.getD_eq_getElem?_getD]
-  exact nth_vregs_append R spares r hr
 
 theorem increment_rebase (R : Registers) (spares : List Nat) (r : Nat) (hr : r < 9) :
     boxBits (.plain (.increment (SitePrefix250.physical r hr))) (vregs R ++ spares) =
@@ -169,19 +135,5 @@ theorem decrement_rebase (R : Registers) (spares : List Nat) (r : Nat) (hr : r <
   rw [decr_eq_write _ _ (by simp only [List.length_append, vregs_length]; omega),
     nth_vregs_append_getD R spares r hr, update_vregs_append R spares r (R r).pred hr]
   simp only [Nat.pred_eq_sub_one, List.append_assoc, registerBits_eq]
-
-theorem valid_none (R : Registers) (spares : List Nat) (hspares : spares ≠ []) :
-    Valid none (vregs R ++ spares) := by
-  refine ⟨?_, trivial⟩
-  cases spares with
-  | nil => exact False.elim (hspares rfl)
-  | cons v rest => simp only [List.length_append, vregs_length, List.length_cons]; omega
-
-theorem valid_branch (R : Registers) (spares : List Nat) (hspares : spares ≠ [])
-    (r : Nat) (hr : r < 9)
-    (zero : Bool) (hz : if zero then R r = 0 else R r ≠ 0) :
-    Valid (some (SitePrefix250.physical r hr, zero)) (vregs R ++ spares) := by
-  refine ⟨(valid_none R spares hspares).1, ?_⟩
-  simpa only [SitePrefix250.physical, nth_vregs_append_getD R spares r hr] using hz
 
 end SetTheory.BusyBeaver.ZFC.Prefix250Simulation

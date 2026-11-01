@@ -229,9 +229,32 @@ largest families:
 * the matrix `Current*2011` lane duplicates its `MFCurrent*2011` twin, for
   example `clause_convolution`, `marker_convolution` and `south_convolution`.
 
-Each family needs one machine-generic home module upstream of the lanes.
-Those homes sit inside the KEndpoint/Rotation240 closures, so the work is
-left for a scheduled rebuild of those closures.
+**Correction to that count.** Textual identity overstates what can be shared.
+Each lane defines its own `incr`, `decr`, `Reg`, `program`, `table`, … and most
+copied lemmas are about those lane-local definitions. They are identical text
+about different constants. A lemma can be shared only if every lane-local
+name it mentions is shared too: a fixpoint over all modules of the lane, which
+the census tool does not compute.
+
+**Landed: the unprotected `Prefix246`/`Prefix250` lanes.** No endpoint or
+facade imports these two lanes. With the lane-wide fixpoint, the `Prefix250`
+copies of definitions and lemmas that are textually identical to `Prefix246`
+are deleted and re-exported (`export … (names)`), and likewise for `Prefix246`
+against the protected `Perm252` lane. The aliased names stay in their
+original namespaces, so every downstream reference resolves unchanged. Covered:
+`Symbolic*` (`Reg`, `Branch`, `incr`, `decr`, `markedBits` and their split
+lemmas), `*Simulation` (`incr_eq_write`, `decr_eq_write`, `registerBits_eq`,
+…), `Instruction*` (path-length lemmas), `RuntimeInstance*`, `Prefix250Boxes`
+and `SitePrefix250`. Ten files, **−287/+20 lines**. All 135 affected modules
+compile serially: both lanes, the 82 `SitesPrefix246` site batches, the boot
+chunks and `BinaryPrefix246`.
+
+Not done: `Rotation244` and `Routing245` against the protected `Rotation240`
+(about 150 and 84 lines). `Routing245` sits beneath several hundred cut and
+bisimulation chunk modules that would all need recompiling. For the protected
+lanes themselves, sharing needs a machine-generic abstraction over
+`program`/`table`, which is a refactor through the KEndpoint and Rotation240
+closures.
 
 ## Reproducing
 
