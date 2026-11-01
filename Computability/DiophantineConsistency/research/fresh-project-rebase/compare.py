@@ -36,6 +36,8 @@ def compare(prepared, old_snap, new_snap, preparation_sha256):
                 or state['parent_pair_sha256'] != prep['parent_pair_sha256']
                 or state['driver_sha256'] != H(Path(rebuild.__file__))):
             raise ValueError(('sibling identity',label))
+        if state['expected_axiom_reports'] != parent_states[label]['expected_axiom_reports']:
+            raise ValueError(('target axiom report count differs from matched parent',label))
         expected = rebuild.expected_seed_inventory(parent/label/'lib',parent_states[label],plan['unaffected'])
         if expected != prep['seeds'][label]: raise ValueError(('seed parent mismatch',label))
         if [r['module'] for r in state['records']] != plan['affected'] or set(state['outputs']) != affected:

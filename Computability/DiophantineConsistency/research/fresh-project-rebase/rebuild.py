@@ -125,8 +125,11 @@ def main():
             raise ValueError(('seed hard-linked to sibling', rel))
     state_path = base/'rebuild-state.json'; logs = base/'rebuild-logs'
     if state_path.exists() or logs.exists(): raise ValueError('refusing to overwrite sibling rebuild')
+    parent_state = states[label]
+    if args.expected_axiom_reports != parent_state['expected_axiom_reports']:
+        raise ValueError('target axiom report count differs from matched parent')
     logs.mkdir()
-    parent_state = states[label]; provider = Path(parent_state['provider']); pr = json.loads(provider.read_text())
+    provider = Path(parent_state['provider']); pr = json.loads(provider.read_text())
     pkg = Path(parent_state['package_overlay']); lean = Path(parent_state['lean_path']); tool = lean.parent.parent/'lib/lean'
     tops = {n.split('.')[0] for n in new['order']}; reject_fallbacks(pkg, tool, tops)
     env = dict(os.environ, LEAN_PATH=str(lib)+':'+str(pkg), LEAN_NUM_THREADS='1')

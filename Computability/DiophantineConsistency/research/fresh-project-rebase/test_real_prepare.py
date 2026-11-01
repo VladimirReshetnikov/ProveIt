@@ -108,6 +108,12 @@ with tempfile.TemporaryDirectory(prefix='fresh-project-rebase-control-') as td:
     comparison_fails('direct import coverage')
     for label in ('author','peer'):
         (out/label/'rebuild-state.json').write_bytes(saved_states[label])
+    for label in ('author','peer'):
+        state_file=out/label/'rebuild-state.json';bad=json.loads(saved_states[label])
+        bad['expected_axiom_reports']=0;state_file.write_text(json.dumps(bad))
+    comparison_fails('target axiom report count differs from matched parent')
+    for label in ('author','peer'):
+        (out/label/'rebuild-state.json').write_bytes(saved_states[label])
     workspace_source=workspace/'src/Toy/Independent.lean'; saved_source=workspace_source.read_bytes()
     workspace_source.write_text('def independentValue : Nat := 8\n')
     comparison_fails('workspace source drift');workspace_source.write_bytes(saved_source)
@@ -127,4 +133,4 @@ with tempfile.TemporaryDirectory(prefix='fresh-project-rebase-control-') as td:
     bad_args[bad_args.index('--parent-observation-sha256')+1] = H(observation)
     q = subprocess.run([*map(str, bad_args), '--output', str(root/'bad')], capture_output=True, text=True)
     assert q.returncode != 0 and 'parent coordinator terminal observation does not match' in q.stderr and not (root/'bad').exists()
-print('PASS: real Lean selective pair; direct-import, workspace, companion, hardlink, seed and exit controls rejected')
+print('PASS: real Lean selective pair; import, axiom-count, workspace, companion, hardlink, seed and exit controls rejected')
