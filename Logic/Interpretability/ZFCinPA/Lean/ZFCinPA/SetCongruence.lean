@@ -1166,10 +1166,7 @@ lemma translateFormula_allClosure
     translateFormula Ks (∀⁰* p) = ∀⁰* translateFormula Ks p := by
   induction m with
   | zero => rfl
-  | succ m ih =>
-      rw [allClosure_succ, ih,
-        show translateFormula Ks (∀⁰ p) = ∀⁰ translateFormula Ks p from rfl,
-        ← allClosure_succ]
+  | succ m ih => exact ih (∀⁰ p)
 
 /-- Specialization commutes with finite conjunction. -/
 lemma translateFormula_conj
@@ -1180,12 +1177,9 @@ lemma translateFormula_conj
   induction m with
   | zero => rfl
   | succ m ih =>
-      rw [show Matrix.conj v = v 0 ⋏ Matrix.conj (Matrix.vecTail v) from rfl,
-        show translateFormula Ks (v 0 ⋏ Matrix.conj (Matrix.vecTail v)) =
-          translateFormula Ks (v 0) ⋏
-            translateFormula Ks (Matrix.conj (Matrix.vecTail v)) from rfl,
-        ih]
-      rfl
+      change translateFormula Ks (v 0) ⋏ translateFormula Ks (Matrix.conj (Matrix.vecTail v)) =
+        translateFormula Ks (v 0) ⋏ Matrix.conj (fun j => translateFormula Ks (v j.succ))
+      exact congrArg (fun q => translateFormula Ks (v 0) ⋏ q) (ih (Matrix.vecTail v))
 
 /-- **The congruence sentence specializes to the internal congruence
 formula.**  The source-level `relExt` at the `i`-th placeholder translates
