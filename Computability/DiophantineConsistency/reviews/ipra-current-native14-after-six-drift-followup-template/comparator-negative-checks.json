@@ -1,0 +1,55 @@
+{
+  "checker_sha256": "5149255aea78d16f60a1341cdae636a8b9c5912b09883f7677f7c4594dc47ecf",
+  "files_sha256": {
+    "compare.py": "da1ba499f7b2db163342b867c7ba4d4e93a915718cc8f4d3317139a5e2754e39",
+    "prepare.py": "a25afec27eb9e924ad5eac42d66043d1c38829c62033ceed6add62951a141470",
+    "replay.py": "da3bce3e56973904cf779284252312eb3eeeafbf17ab2efecefa035df6c02132",
+    "run.py": "301c6e3ab5a71719a5c14f0babd92469f8c40f8acb0fe931748f0f3b7c8fccf5"
+  },
+  "rows": [
+    {
+      "case": "missing_plan",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra14-after107-comparator-negative-1gnlbcm4/compare-missing_plan/compare.py\", line 28, in <module>\n    m, mh = read(M)\n            ~~~~^^^\n  File \"/tmp/ipra14-after107-comparator-negative-1gnlbcm4/compare-missing_plan/compare.py\", line 22, in read\n    raw = Path(p).read_bytes()\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py\", line 625, in read_bytes\n    with self.open(mode='rb') as f:\n         ~~~~~~~~~^^^^^^^^^^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/ipra14-after107-comparator-negative-1gnlbcm4/missing-plan/manifest.json'\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_directory",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra14-after107-comparator-negative-1gnlbcm4/compare-same_directory/compare.py\", line 25, in <module>\n    assert A.resolve() != B.resolve() and not os.path.samefile(A / 'state.json', B / 'state.json'), \\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_state_inode",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra14-after107-comparator-negative-1gnlbcm4/compare-same_state_inode/compare.py\", line 25, in <module>\n    assert A.resolve() != B.resolve() and not os.path.samefile(A / 'state.json', B / 'state.json'), \\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "missing_plan",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra14-after107-comparator-negative-1gnlbcm4/run-missing_plan/run.py\", line 21, in <module>\n    before = {str(p.resolve()): H(p) for p in inputs}\n                                ~^^^\n  File \"/tmp/ipra14-after107-comparator-negative-1gnlbcm4/run-missing_plan/run.py\", line 16, in <lambda>\n    H = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()\n                                 ~~~~~~~~~~~~~~~~~~^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py\", line 625, in read_bytes\n    with self.open(mode='rb') as f:\n         ~~~~~~~~~^^^^^^^^^^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/ipra14-after107-comparator-negative-1gnlbcm4/missing-plan/manifest.json'\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_directory",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra14-after107-comparator-negative-1gnlbcm4/run-same_directory/run.py\", line 14, in <module>\n    assert author.resolve() != peer.resolve() and not os.path.samefile(author / 'state.json', peer / 'state.json'), \\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_state_inode",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra14-after107-comparator-negative-1gnlbcm4/run-same_state_inode/run.py\", line 14, in <module>\n    assert author.resolve() != peer.resolve() and not os.path.samefile(author / 'state.json', peer / 'state.json'), \\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    }
+  ],
+  "scope": "Both scripts were present in every isolated execution; syntax and absent-plan / identical-directory / shared-state-inode tests only. No replay or comparator pass.",
+  "status": "PASS_FAIL_CLOSED_NEGATIVE_CHECKS"
+}

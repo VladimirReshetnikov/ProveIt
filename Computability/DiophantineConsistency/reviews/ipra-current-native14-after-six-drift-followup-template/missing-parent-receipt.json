@@ -1,0 +1,15 @@
+{
+  "checker_sha256": "0be557577f3b4da4b2b748b5dd7a2b0904b3cdf520f4346227ea303a9a58d6e0",
+  "files_sha256": {
+    "prepare.py": "a25afec27eb9e924ad5eac42d66043d1c38829c62033ceed6add62951a141470",
+    "replay.py": "da3bce3e56973904cf779284252312eb3eeeafbf17ab2efecefa035df6c02132"
+  },
+  "row": {
+    "exit_code": 1,
+    "output_created": false,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra14-after-six-drift-builder/prepare.py\", line 39, in <module>\n    ra,rb=comparison(CA,WA),comparison(CB,WB);assert ra==rb and H(CA/'receipt.json')==H(CB/'receipt.json')\n          ~~~~~~~~~~^^^^^^^\n  File \"/tmp/ipra14-after-six-drift-builder/prepare.py\", line 31, in comparison\n    r=read(directory/'receipt.json');t=read(directory/'terminal.json');assert r['status']=='MATCHED_PASS' and r['rows']==107\n  File \"/tmp/ipra14-after-six-drift-builder/prepare.py\", line 19, in read\n    def read(path):pin(path);return json.loads(Path(path).read_text())\n                   ~~~^^^^^^\n  File \"/tmp/ipra14-after-six-drift-builder/prepare.py\", line 17, in pin\n    p=Path(path).absolute();assert p.is_file() and p.resolve()==p,('noncanonical gate',str(p));h=H(p)\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('noncanonical gate', '/tmp/ipra14-after107-missing-parent-fnbko4oy/missing-a/receipt.json')\n",
+    "stdout": ""
+  },
+  "scope": "Both draft scripts compile; the preparer rejects a missing comparator receipt before creating output. No parent-dependent preparation or Lean replay was performed.",
+  "status": "PASS_MISSING_PARENT_REJECTED"
+}
