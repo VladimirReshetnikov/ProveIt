@@ -357,16 +357,21 @@ theorem termSubst_entry_le {w t E : V} (hw : ∀ j < len w, w.[j] ≤ E) :
     · exact absurd hkf (not_isFunc k f)
   · simp [termSubst, Language.TermRec.Construction.result_prop_not _ _ _ ht]
 
+theorem termSubstVec_le_entries2 {k w v E F : V} (hw : ∀ j < len w, w.[j] ≤ E)
+    (hv : IsUTermVec ℒₛₑₜ k v) (hF : ∀ i < k, v.[i] ≤ F) :
+    termSubstVec ℒₛₑₜ k w v ≤ repeatVec (E + F) k := by
+  have hl := len_termSubstVec (w := w) hv
+  have h := len_repeatVec_of_nth_le (v := termSubstVec ℒₛₑₜ k w v) (m := E + F)
+    (fun i hi => by
+      rw [hl] at hi
+      rw [nth_termSubstVec hv hi]
+      exact le_trans (termSubst_entry_le hw) (add_le_add le_rfl (hF i hi)))
+  rwa [hl] at h
+
 theorem termSubstVec_le_entries {k w v E : V} (hw : ∀ j < len w, w.[j] ≤ E) :
     termSubstVec ℒₛₑₜ k w v ≤ repeatVec (E + v) k := by
   by_cases hv : IsUTermVec ℒₛₑₜ k v
-  · have hl := len_termSubstVec (w := w) hv
-    have h := len_repeatVec_of_nth_le (v := termSubstVec ℒₛₑₜ k w v) (m := E + v)
-      (fun i hi => by
-        rw [hl] at hi
-        rw [nth_termSubstVec hv hi]
-        exact le_trans (termSubst_entry_le hw) (add_le_add le_rfl (nth_le v i)))
-    rwa [hl] at h
+  · exact termSubstVec_le_entries2 hw hv (fun i _ => nth_le v i)
   · simp [termSubstVec, hv]
 
 theorem sdepth_bin {p P : V} (h : p + 2 ≤ P) (D : V) : D + 4 * p + 6 ≤ D + 4 * P + 2 := by
@@ -611,16 +616,28 @@ theorem subst_fixpoint_stage {x s : V} (hx : x ∈ substFix.limSeq ![] s) :
 
 /-! ### `free`, `substs1` and `setShift` -/
 
-theorem termSubstVec_le_entries2 {k w v E F : V} (hw : ∀ j < len w, w.[j] ≤ E)
-    (hv : IsUTermVec ℒₛₑₜ k v) (hF : ∀ i < k, v.[i] ≤ F) :
-    termSubstVec ℒₛₑₜ k w v ≤ repeatVec (E + F) k := by
-  have hl := len_termSubstVec (w := w) hv
-  have h := len_repeatVec_of_nth_le (v := termSubstVec ℒₛₑₜ k w v) (m := E + F)
-    (fun i hi => by
-      rw [hl] at hi
-      rw [nth_termSubstVec hv hi]
-      exact le_trans (termSubst_entry_le hw) (add_le_add le_rfl (hF i hi)))
-  rwa [hl] at h
+/-- The shared relation-argument bound, for either relation tag. -/
+private theorem shifted_rel_bound {k R v w X D P t : V}
+    (hv : IsUTermVec ℒₛₑₜ k v) (hw : ∀ j < len w, w.[j] ≤ tau X D)
+    (hkP : k ≤ P) (hRP : R ≤ P) (hvP : v ≤ P) (ht : t ≤ 1) :
+    ⟪t, k, R, termSubstVec ℒₛₑₜ k w (termShiftVec ℒₛₑₜ k v)⟫ + 1 ≤
+      tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 4 * P + 6) := by
+  have hF : ∀ i < k, (termShiftVec ℒₛₑₜ k v).[i] ≤ (P + 2) * (P + 2) + 1 := fun i hi => by
+    rw [nth_termShiftVec hv hi]
+    exact le_trans (termShift_le _) (sq2_mono (le_trans (nth_le v i) hvP))
+  have hm : tau X D + ((P + 2) * (P + 2) + 1) ≤
+      tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P) :=
+    le_trans (tau_add_le X D _) (tau_mono le_self_add le_self_add)
+  have hv' : termSubstVec ℒₛₑₜ k w (termShiftVec ℒₛₑₜ k v) ≤
+      tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
+    le_trans (termSubstVec_le_entries2 hw hv.termShiftVec hF)
+      (le_trans (repeatVec_mono_left hm k) (repeatVec_le_tau le_rfl k))
+  have hY {c : V} (h : c ≤ P) : c ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
+    le_tau_of _ c _ (le_trans (le_trans (le_trans h (le_sq2 P)) le_add_self) le_self_add)
+  have ht' : t ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
+    le_trans ht (by simpa using (le_tau_of' 1 hv'))
+  have h := code4_le_tau ht' (hY hkP) (hY hRP) hv'
+  exact le_trans h (tau_mono le_rfl (sdepth_leaf hkP D))
 
 /-- **Substitution after shift**, bounded through the unshifted formula. -/
 theorem subst_shift_le : ∀ p : V, IsUFormula ℒₛₑₜ p → ∀ w X D : V, (∀ j < len w, w.[j] ≤ tau X D) →
@@ -628,40 +645,14 @@ theorem subst_shift_le : ∀ p : V, IsUFormula ℒₛₑₜ p → ∀ w X D : V,
   refine IsUFormula.ISigma1.pi1_succ_induction (by definability) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_
   · intro k R v hR hv w X D hw
     rw [shift_rel hR hv, substs_rel hR hv.termShiftVec]
-    set P := ^rel k R v
-    have hkP : k ≤ P := (arity_lt_rel k R v).le
-    have hRP : R ≤ P := (r_lt_rel k R v).le
-    have hvP : v ≤ P := (v_lt_rel k R v).le
-    have hF : ∀ i < k, (termShiftVec ℒₛₑₜ k v).[i] ≤ (P + 2) * (P + 2) + 1 := fun i hi => by
-      rw [nth_termShiftVec hv hi]; exact le_trans (termShift_le _) (sq2_mono (le_trans (nth_le v i) hvP))
-    have hm : tau X D + ((P + 2) * (P + 2) + 1) ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P) :=
-      le_trans (tau_add_le X D _) (tau_mono le_self_add le_self_add)
-    have hv' : termSubstVec ℒₛₑₜ k w (termShiftVec ℒₛₑₜ k v) ≤
-        tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
-      le_trans (termSubstVec_le_entries2 hw hv.termShiftVec hF)
-        (le_trans (repeatVec_mono_left hm k) (repeatVec_le_tau le_rfl k))
-    have hY {c : V} (h : c ≤ P) : c ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
-      le_tau_of _ c _ (le_trans (le_trans (le_trans h (le_sq2 P)) le_add_self) le_self_add)
-    have h := code4_le_tau (le_tau_of' 0 hv') (hY hkP) (hY hRP) hv'
-    exact le_trans (by simpa [qqRel] using h) (tau_mono le_rfl (sdepth_leaf hkP D))
+    have h := shifted_rel_bound (t := 0) hv hw (arity_lt_rel k R v).le
+      (r_lt_rel k R v).le (v_lt_rel k R v).le (by norm_num)
+    simpa [qqRel] using h
   · intro k R v hR hv w X D hw
     rw [shift_nrel hR hv, substs_nrel hR hv.termShiftVec]
-    set P := ^nrel k R v
-    have hkP : k ≤ P := (arity_lt_nrel k R v).le
-    have hRP : R ≤ P := (r_lt_nrel k R v).le
-    have hvP : v ≤ P := (v_lt_nrel k R v).le
-    have hF : ∀ i < k, (termShiftVec ℒₛₑₜ k v).[i] ≤ (P + 2) * (P + 2) + 1 := fun i hi => by
-      rw [nth_termShiftVec hv hi]; exact le_trans (termShift_le _) (sq2_mono (le_trans (nth_le v i) hvP))
-    have hm : tau X D + ((P + 2) * (P + 2) + 1) ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P) :=
-      le_trans (tau_add_le X D _) (tau_mono le_self_add le_self_add)
-    have hv' : termSubstVec ℒₛₑₜ k w (termShiftVec ℒₛₑₜ k v) ≤
-        tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
-      le_trans (termSubstVec_le_entries2 hw hv.termShiftVec hF)
-        (le_trans (repeatVec_mono_left hm k) (repeatVec_le_tau le_rfl k))
-    have hY {c : V} (h : c ≤ P) : c ≤ tau (X + ((P + 2) * (P + 2) + 1) + 8) (D + 2 * P + 2 * k) :=
-      le_tau_of _ c _ (le_trans (le_trans (le_trans h (le_sq2 P)) le_add_self) le_self_add)
-    have h := code4_le_tau (le_tau_of' 1 hv') (hY hkP) (hY hRP) hv'
-    exact le_trans (by simpa [qqNRel] using h) (tau_mono le_rfl (sdepth_leaf hkP D))
+    have h := shifted_rel_bound (t := 1) hv hw (arity_lt_nrel k R v).le
+      (r_lt_nrel k R v).le (v_lt_nrel k R v).le (by norm_num)
+    simpa [qqNRel] using h
   · intro w X D hw
     rw [shift_verum, substs_verum]
     exact le_trans (le_trans (le_trans (le_sq2 _) le_add_self) le_self_add) (le_tau _ _)
