@@ -1,0 +1,5 @@
+# Independent preparation of the 14-variable fixed-source replay
+
+This independent preparer reran the full parent/input/ancestry checks and reproduced the author replay manifest byte-for-byte, SHA-256 `fb00f55168269cc65099a6396b625064bda7997b55130d84f5d18c48df0f322b`, and replay driver byte-for-byte, SHA-256 `ed799013d63bdbbe2ca7be5afccb2e41c869d2403b762591ace07e2eab3fdd55`. Its preparation source differs from the current v2 author template only in the non-overwriting output-directory literal. `run.py` pins its own source, the preparer and replay source hashes before and after execution and preserves the full log.
+
+The original author preparation did not separately hash its preparer bytes at execution time; the independent reproduction establishes the generated input manifest and replay driver without retroactively claiming that missing initial hash. The result retains the known fixed-parent project-origin mismatch, author-only 848 ancestor, and inherited package-transitive/dynamic ancestry boundary.
