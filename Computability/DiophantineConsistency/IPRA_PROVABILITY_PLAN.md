@@ -169,8 +169,12 @@ quartic provider; overlapping transitive, package and dynamic ancestry remain
 inherited. The degree and display have separate finite checks.
 
 The [30-variable degree-eight candidate](research/adaptive-square-sums30-degree8/README.md)
-substitutes away the named W coordinate; proving its positivity and native
-equivalence remain open.
+substitutes away the named W coordinate. Its [paired model replay](research/adaptive-aq30-proof/README.md)
+matched the shifted no-zero comparison for arbitrary natural port vectors,
+including the zero-dependent W positivity; the native replay is in progress.
+The [41-variable quartic quotient candidate](research/adaptive-square-sums41-quartic/README.md)
+has finite degree and residual-substitution checks; model and native witness
+transport remain open.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
