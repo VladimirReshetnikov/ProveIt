@@ -34,18 +34,12 @@ theorem recGraph_bound_of_pair (β : UformulaRec1.Blueprint) (param p y pr w : V
   let ω : Rew ℒₒᵣ Empty 4 Empty 4 := Rew.subst ![#0,#1,#2,#3]
   have hn := PRABndRewriting.natural pair₃Def.val ω ![pr,param,p,y] w
   have hv : (fun j => (ω #j).val ![pr,param,p,y] Empty.elim) = ![pr,param,p,y] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.elim0 k
-  have hs' : Fin.snoc ![pr,param,p,y] w = ![pr,param,p,y,w] := by simp
-  rw [hv,hs'] at hn
+    funext j; revert j; simp [Fin.forall_fin_succ, ω]
+  rw [hv] at hn
   have heq : pairInside = ω ▹ pair₃Def.val := by simp [pairInside, ω]
   rw [heq]
-  rw [hs'] at hm
-  exact hn.mpr hm
+  simpa using hn.mpr hm
+
 noncomputable def bvFixInside : ArithmeticSemisentence 4 := fixInside (L := L) (BV.blueprint L)
 noncomputable def boundedBVFix : ArithmeticSemisentence 5 := bnd (bvFixInside (L := L))
 noncomputable def bvRecGraph : ArithmeticSemisentence 3 := ((BV.blueprint L).graph L).val
@@ -59,12 +53,7 @@ theorem bvRecGraphBoundBody_model (e : Fin 4 → V) : (bvRecGraphBoundBody (L :=
   apply recGraph_bound_of_pair (L := L) (BV.blueprint L) 0 (e 0) (e 1) (e 2) (e 3) hp hs
   · simpa using hpair
   · have hv : (FirstOrder.Semiterm.val e Empty.elim ∘ (![ #2, Semiterm.numeral 0, #0, #1, #3 ] : Fin 5 → Semiterm ℒₒᵣ Empty 4)) = ![e 2,0,e 0,e 1,e 3] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      funext j; revert j; simp [Fin.forall_fin_succ, Function.comp_def, Semiterm.Operator.val]; rfl
     rw [hv] at hfix
     exact hfix
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
