@@ -15,3 +15,11 @@ compiled or subjected to a guarded replay. No new model or native endpoint is
 claimed on the basis of these source files. The former package provider now has
 broken links; a replacement requires independently documented provenance and
 the resulting verification must retain its ancestry qualifications.
+
+`replay_native.py` prepares two guarded replays of the six model modules and
+two native modules, starting from the historical QF41 peer provider. It checks
+that parent's eight recorded objects and terminal observation and binds the
+literal verifier and all directly observed dependency companions. The package
+root is supplied as `QM40_PACKAGE_LIB`; the driver records its location, but
+does not authenticate its transitive ancestry or establish that its contents
+match the parent run's original package provider. The driver has not been run.
