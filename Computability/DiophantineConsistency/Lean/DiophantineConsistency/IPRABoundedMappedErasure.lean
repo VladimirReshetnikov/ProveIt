@@ -1,3 +1,4 @@
+import DiophantineConsistency.IPRABoundedErasure
 import DiophantineConsistency.StrictSigmaOneInduction
 import DiophantineConsistency.IPRANativeFormulaRew
 import DiophantineConsistency.IPRABoundedErasureLogic
@@ -11,18 +12,14 @@ namespace DiophantineConsistency.IPRABoundedMappedErasure
 variable {L : Language}
 
 theorem embed_cast_last {n : ℕ} (e : Fin n → Term L ℕ) (b : Term L ℕ) :
-    (Rew.embSubsts (Fin.snoc e b)).comp (Rew.castLE (Nat.le_succ n)) = Rew.embSubsts e := by
-  ext x
-  · rw [Rew.comp_app]
-    simp only [Rew.castLe_bvar, Rew.embSubsts_bvar]
-    exact congrArg (fun f => f x) (DiophantineConsistency.StrictSigmaOneInduction.snoc_castLE e b)
-  · exact Empty.elim x
+    (Rew.embSubsts (Fin.snoc e b)).comp (Rew.castLE (Nat.le_succ n)) = Rew.embSubsts e :=
+  IPRABoundedErasure.embed_cast_last e b
+
 theorem open_embed {n : ℕ} (e : Fin n → Term L ℕ) :
     (Rew.free (L := L) (n := 0)).comp (Rew.embSubsts e).q =
-      Rew.embSubsts ((&0) :> (Rew.shift ∘ e)) := by
-  ext x
-  · cases x using Fin.cases <;> simp [Rew.comp_app, Rew.q_embSubsts]
-  · exact Empty.elim x
+      Rew.embSubsts ((&0) :> (Rew.shift ∘ e)) :=
+  IPRABoundedErasure.open_embed e
+
 end DiophantineConsistency.IPRABoundedMappedErasure
 
 namespace DiophantineConsistency.IPRABoundedMappedErasure
