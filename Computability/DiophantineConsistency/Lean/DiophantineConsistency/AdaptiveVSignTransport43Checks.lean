@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveVSignTransport43
+#print axioms DiophantineConsistency.AdaptiveNamedValues50.exists_positive_extension_with_embedding
+#print axioms DiophantineConsistency.AdaptiveVSignTransport43.from42
