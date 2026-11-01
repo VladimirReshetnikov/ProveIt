@@ -1,0 +1,5 @@
+# Actual-zero joint transport congruence
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked joint-orbit provider and guard its state, source, object, 398 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; the replays do not reconstruct or independently audit them.
+
+In every IΣ₁ model, every positive zero of the actual 85 expression with positive first port satisfies `F ≡ C·(X+K) (mod Jβ)`. This follows from the actual first factor with no sign or normalization hypothesis. If the additional hypothesis `Jβ ∣ X+K` holds, every positive endpoint of the specified external finite three-shift orbit fails `F+C<1+Jβ`. That divisibility is not known to hold at any zero; the result does not assert existence of a zero or exclude other transformations, and it does not establish the 85 reverse implication.

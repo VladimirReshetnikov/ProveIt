@@ -1,0 +1,22 @@
+'DiophantineConsistency.AdaptiveGap85ActualJoint.actual_zero_transport_mod' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ActualJoint.actual_zero_conditional_orbit_blocks' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85ActualJoint.actual_zero_transport_mod.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < ↑(p 0)) (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v) :
+  have b := v 0 * ↑(p 0);
+  v 1 % b = v 2 * (v 6 + ↑(p 1)) % b
+DiophantineConsistency.AdaptiveGap85ActualJoint.actual_zero_conditional_orbit_blocks.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v w : Fin 13 → V) (hb : 0 < ↑(p 0))
+  (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v)
+  (hA : v 0 * ↑(p 0) ∣ v 6 + ↑(p 1))
+  (h : Relation.ReflTransGen (DiophantineConsistency.AdaptiveGap85JointResidue.LiteralStep p) v w) (hwF : 0 < w 1)
+  (hwC : 0 < w 2) : ¬w 1 + w 2 < 1 + w 0 * ↑(p 0)

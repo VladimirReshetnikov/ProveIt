@@ -178,3 +178,7 @@ The independently replayed `AdaptiveGap85JointObstruction` derives a conditional
 ### Actual-zero Pell-index window
 
 `AdaptiveGap85IndexUpper.current_zero_index_window` sharpens the bounds in every IΣ₁ model: an actual positive 85-zero at the literal current ports has internal first and main indices with `3 ≤ n < m < 2n` and `5 ≤ m`, together with the displayed Pell-coordinate equations. The new upper bound comes from an internal two-step recurrence comparison. Matching focused replays are recorded in `reviews/adaptive-gap85-index-upper-replay/`; the inherited project and package transitive source ancestry remains historical. The result is necessary for a zero and does not establish a zero, exclude all zeros, or prove the reverse implication.
+
+### Actual-zero transport congruence
+
+`AdaptiveGap85ActualJoint.actual_zero_transport_mod` derives `F ≡ C·(X+K) (mod Jβ)` in every IΣ₁ model from any actual positive 85-zero and a positive first port. If the additional condition `Jβ ∣ X+K` holds, `actual_zero_conditional_orbit_blocks` applies the existing three-shift invariant to show that no positive endpoint of that external finite coordinate orbit satisfies the reverse gap. The extra divisibility and existence of such a zero remain unproved, and the orbit statement does not exclude other transformations. Matching guarded replays are in `reviews/adaptive-gap85-actual-joint-replay/`, with inherited project and package transitive source ancestry historical. These consequences do not establish the 85 reverse implication.
