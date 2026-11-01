@@ -30,11 +30,7 @@ theorem seq_bound_explicit (s : V) : seqDef.val.Evalb ![s] →
   apply PRASeqDomainBound.seq_bound_of_domain s (seqMajorant s) hA hB hC
   intro hm
   have hb := PRAMappingWitnessBound.mapping_bound_explicit s hm
-  have hs : Fin.snoc ![s] (PRAMappingWitnessBound.mappingMajorant s) = ![s,PRAMappingWitnessBound.mappingMajorant s] := by simp
-  have hm' := eval_bnd_mono isMappingDef.val ![s] (Empty.elim : Empty → V) hD (by rw [hs]; exact hb)
-  have hs' : Fin.snoc ![s] (seqMajorant s) = ![s,seqMajorant s] := by simp
-  rw [hs'] at hm'
-  exact hm'
+  simpa using (eval_bnd_mono isMappingDef.val ![s] (Empty.elim : Empty → V) hD (by simpa using hb))
 noncomputable def boundedSeq : ArithmeticSemisentence 2 := bnd seqDef.val
 noncomputable def seqBoundBody : ArithmeticSemisentence 1 :=
   “s. !seqDef s → !boundedSeq s ((2*(s)+1)+(((2*(s)+1)⁴+1)+((2*(s)+1)²+1)+(2*(2*(s)+1)²+1)+((2*(s)+1)⁴+(2*(s)+1)⁴+2*(2*(s)+1)+1))+((s)+((((2*(s))⁴+1)+((2*(s))²+1)+(2*(2*(s))²+1)+((2*(s))⁴+(2*(s))⁴+2*(2*(s))+1))+(2*(s))+1)+(((2*(2*(s))+1)+(2*(2*(s))²+1))+(2*(s))+1)+((((s)⁴+1)+((s)²+1)+(2*(s)²+1)+((s)⁴+(s)⁴+2*(s)+1))+(s)+1)+(((2*(s)+1)+(2*(s)²+1))+(s)+1))+((2*(s)+1)+((s)+((((2*(s))⁴+1)+((2*(s))²+1)+(2*(2*(s))²+1)+((2*(s))⁴+(2*(s))⁴+2*(2*(s))+1))+(2*(s))+1)+(((2*(2*(s))+1)+(2*(2*(s))²+1))+(2*(s))+1)+((((s)⁴+1)+((s)²+1)+(2*(s)²+1)+((s)⁴+(s)⁴+2*(s)+1))+(s)+1)+(((2*(s)+1)+(2*(s)²+1))+(s)+1))+(((2*(2*(s))+1)+(2*(2*(s))²+1))+(2*(s))+1)+((2*(s)+(s)+1)²+1+((((s)⁴+1)+((s)²+1)+(2*(s)²+1)+((s)⁴+(s)⁴+2*(s)+1))+(s)+1))))”
