@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAFoundationZFCStabilityWitness
+#print axioms DiophantineConsistency.IPRAFoundationZFCStabilityWitness.stabilityFromWitness
+#print axioms DiophantineConsistency.IPRAFoundationZFCStabilityWitness.zfcEquivFromWitnesses
+#check DiophantineConsistency.IPRAFoundationZFCStabilityWitness.zfcEquivFromWitnesses
