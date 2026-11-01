@@ -255,12 +255,18 @@ none of the lane's protected modules, `ProgramRotation244` and
 All 23 affected modules compile, including the ten `BootRotation244` chunks
 and `BootstrapFrameRotation244`.
 
+**Landed: `EnumDom` against `Enum222`.** Sixteen identical definitions and
+lemmas (`unP`, `gate`, `tailN`, `Good` with its lemmas, the `*_ne_one`
+facts) are re-exported, for −53/+2 lines. Its dependents `L2AxiomsDom`,
+`L2RootDom` and `SeedDom` compile. `KEndpoint217` names none of the aliased
+declarations.
+
 Measured, not done (lines saved by the same lane-wide fixpoint):
 
 | target | lines | cost |
 | --- | ---: | --- |
 | `Routing245` → `Rotation240` | 84 | several hundred cut and bisimulation chunk dependents |
-| `EnumDom`/`EnumPerm`/`Enum254` → `Enum222` | 53 + 45 + 29 | K215/K217/K219/K221/Prog254 endpoint rebuilds |
+| `EnumPerm`/`Enum254` → `Enum222` | 45 + 29 | K215 (peer-pinned) and Prog254 endpoint rebuilds |
 | `Rotation240` → `Perm252` (both protected) | about 150 | KEndpoint and Rotation240 closures |
 
 Larger savings in the protected lanes need a machine-generic formulation over
