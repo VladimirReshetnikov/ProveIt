@@ -1,0 +1,6 @@
+import NegativeTemplate
+#print axioms cubic_modulus_general
+#print axioms negative_root_modulus
+#print axioms negative_template_Y_lt_54
+#print axioms exclude_negative_template
+#check exclude_negative_template

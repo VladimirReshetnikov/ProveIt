@@ -1,0 +1,7 @@
+# Negative-oriented special Pell-template exclusion
+
+Independent same-parent author and peer replays explicitly PASSed with matching source, object and full-log hashes for both modules. Over integers, `exclude_negative_template` proves a contradiction from the exact displayed special-template η equation and negative main-root equation, together with `X≥1`, `Y≥8`, `q≥2`, `η>0` and `q³ ∣ Y`. The other main-root term `B` and `γ` are arbitrary integers. Exact statements and axiom reports are frozen in the replay logs.
+
+The proof first derives `H ∣ 27(8X+1)` for `H=4Y(X+1)+3`, then proves `Y<54`. Positivity and `q³ ∣ Y` leave q=2 or 3 and finitely many Y values. The quotient in the divisibility equation is bounded by 1 through 6; the proof resolves those finite cases. An independent numerical derivation is in `research/adaptive-gap85-normalization/negative_template_case_audit.py`, whose only positive-X modulus candidate is q=2, Y=48, quotient 1, X=7, with negative η.
+
+This is not an exclusion of arbitrary 85 zeros: the Pell-template and negative-root equations have not been established for every zero, and the result is over ℤ rather than arbitrary IΣ₁ models. No 85 normalization, machine equivalence, or fixed-port counterexample is claimed. Source, Lean and direct Mathlib objects/companions were guarded before and after compilation without workspace project-object fallback; package-transitive ancestry remains inherited. The copied driver hash was recorded after the runs, rather than authenticated during execution.
