@@ -1,0 +1,4 @@
+import DiophantineConsistency.AdaptiveGap85LiteralShiftOrbit
+#print axioms DiophantineConsistency.AdaptiveGap85LiteralShiftOrbit.old_shift_step
+#print axioms DiophantineConsistency.AdaptiveGap85LiteralShiftOrbit.balance_shift_step
+#print axioms DiophantineConsistency.AdaptiveGap85LiteralShiftOrbit.literal_orbit_blocks
