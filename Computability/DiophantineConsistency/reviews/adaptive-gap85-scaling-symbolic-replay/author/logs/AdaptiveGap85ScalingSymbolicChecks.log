@@ -1,0 +1,30 @@
+'DiophantineConsistency.AdaptiveGap85ScalingSymbolic.partial_norms_without_scaling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ScalingSymbolic.first_norm_fails' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ScalingSymbolic.no_full_zero_fixed_split' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ScalingSymbolic.current_port_partial_norms_without_scaling' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85ScalingSymbolic.current_port_partial_norms_without_scaling.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] :
+  have beta := ↑(DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts 0);
+  have q := 1 + 2 * beta;
+  have Y := q ^ 3;
+  have a := 2 * Y + Y;
+  have c := 4 + Y * (4 + 2);
+  have deltaA := DiophantineConsistency.ArithmeticPellRecurrence.delta a;
+  5 ≤ q ∧
+    ∃ main f i,
+      0 < main ∧
+        0 < f ∧
+          0 < i ∧ main * main = 1 + deltaA * c * c ∧ i * c * c * (i * c * c) + deltaA = deltaA * (f * f) ∧ ¬deltaA ∣ i
+DiophantineConsistency.AdaptiveGap85ScalingSymbolic.no_full_zero_fixed_split.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < ↑(p 0)) (hv : ∀ (j : Fin 13), 0 < v j) (hX : v 6 = 2)
+  (he : v 9 = 4) (hz : v 10 = 2) :
+  ¬DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v
