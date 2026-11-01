@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRABoundedLogic
+#print axioms DiophantineConsistency.IPRABoundedLogic.orBackward
+#print axioms DiophantineConsistency.IPRABoundedLogic.stableAnyBoundedExists
+#print axioms DiophantineConsistency.IPRABoundedLogic.boundedExistsBackward
