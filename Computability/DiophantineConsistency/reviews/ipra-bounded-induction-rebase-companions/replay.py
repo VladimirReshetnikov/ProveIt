@@ -11,6 +11,7 @@ m=json.loads(M.read_text());mh=sha(M);dh=sha(__file__);assert dh==m['driver_sha2
 assert sha(P/'state.json')==m['parent_state_sha256'] and sha(LEAN)==m['lean_sha256']
 assert json.loads((P/'state.json').read_text())['status']=='PASS'
 assert all(sha(SRC/(n+'.lean'))==h for n,h in m['observed_sources'].items())
+assert {str(p.relative_to(P/'lib')) for p in (P/'lib').rglob('*.olean')} == set(m['parent_objects'])
 assert all(sha(P/'lib'/f)==h for f,h in m['parent_objects'].items())
 assert all(sha(PKG/f)==info['sha256'] and str((PKG/f).resolve())==info['resolved_path'] for f,info in m['external_direct'].items())
 w=Path(tempfile.mkdtemp(prefix='ipra-bounded-induction-rebase-companions-'));lib=w/'lib';lib.mkdir();dest=lib/'DiophantineConsistency';dest.mkdir();src=w/'src/DiophantineConsistency';src.mkdir(parents=True);logs=w/'logs';logs.mkdir();shutil.copyfile(__file__,w/'driver.py');shutil.copyfile(M,w/'manifest.json')
@@ -27,6 +28,8 @@ def audit():
  assert sha(M)==mh and sha(__file__)==dh and sha(w/'driver.py')==dh and sha(w/'manifest.json')==mh
  assert sha(P/'state.json')==m['parent_state_sha256'] and sha(LEAN)==m['lean_sha256']
  assert all(sha(SRC/(n+'.lean'))==h for n,h in m['observed_sources'].items())
+ assert all(sha(D/'sources/DiophantineConsistency'/(n+'.lean'))==m['observed_sources'][n] for n in m['order'])
+ assert {str(p.relative_to(P/'lib')) for p in (P/'lib').rglob('*.olean')} == set(m['parent_objects'])
  assert all(sha(src/(n+'.lean'))==m['observed_sources'][n] and sha(logs/(n+'.lean'))==m['observed_sources'][n] for n in m['order'])
  assert all(sha(P/'lib'/f)==h and sha(lib/f)==h for f,h in m['parent_objects'].items())
  assert all(sha(PKG/f)==info['sha256'] and str((PKG/f).resolve())==info['resolved_path'] for f,info in m['external_direct'].items())
