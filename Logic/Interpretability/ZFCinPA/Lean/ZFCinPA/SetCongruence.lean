@@ -606,46 +606,40 @@ lemma replace_aux (φ : V) :
     exact efq!
   case hrel =>
     intro k R v hR hv
-    rcases isRel_iff_Set.mp hR with (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
-    · let t : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
-        ⟨v.[0], by simpa using hv.nth (by simp)⟩
-      let u : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
-        ⟨v.[1], by simpa using hv.nth (by simp)⟩
-      have veq : v = ?[t.val, u.val] := by simp [t, u, Bootstrapping.Arithmetic.vec2_eq hv.lh]
-      suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
+    have hk : k = 2 := (isRel_iff_Set.mp hR).elim And.left And.left
+    subst k
+    let t : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
+      ⟨v.[0], by simpa using hv.nth (by simp)⟩
+    let u : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
+      ⟨v.[1], by simpa using hv.nth (by simp)⟩
+    have veq : v = ?[t.val, u.val] := by simp [t, u, Bootstrapping.Arithmetic.vec2_eq hv.lh]
+    rcases isRel_iff_Set.mp hR with (⟨_, rfl⟩ | ⟨_, rfl⟩)
+    · suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
           (t ≐ₛ u).subst ![#'1] 🡒 (t ≐ₛ u).subst ![#'0]) by
         have := (tprovable_iff_provable (T := T)).mp this
         simpa [-eqAtom_subst, veq] using! this
       simpa using replace_eq T t u
-    · let t : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
-        ⟨v.[0], by simpa using hv.nth (by simp)⟩
-      let u : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
-        ⟨v.[1], by simpa using hv.nth (by simp)⟩
-      have veq : v = ?[t.val, u.val] := by simp [t, u, Bootstrapping.Arithmetic.vec2_eq hv.lh]
-      suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
+    · suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
           (t ∊ₛ u).subst ![#'1] 🡒 (t ∊ₛ u).subst ![#'0]) by
         have := (tprovable_iff_provable (T := T)).mp this
         simpa [-memAtom_subst, veq] using! this
       simpa using replace_mem T t u
   case hnrel =>
     intro k R v hR hv
-    rcases isRel_iff_Set.mp hR with (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
-    · let t : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
-        ⟨v.[0], by simpa using hv.nth (by simp)⟩
-      let u : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
-        ⟨v.[1], by simpa using hv.nth (by simp)⟩
-      have veq : v = ?[t.val, u.val] := by simp [t, u, Bootstrapping.Arithmetic.vec2_eq hv.lh]
-      suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
+    have hk : k = 2 := (isRel_iff_Set.mp hR).elim And.left And.left
+    subst k
+    let t : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
+      ⟨v.[0], by simpa using hv.nth (by simp)⟩
+    let u : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
+      ⟨v.[1], by simpa using hv.nth (by simp)⟩
+    have veq : v = ?[t.val, u.val] := by simp [t, u, Bootstrapping.Arithmetic.vec2_eq hv.lh]
+    rcases isRel_iff_Set.mp hR with (⟨_, rfl⟩ | ⟨_, rfl⟩)
+    · suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
           (t ≉ₛ u).subst ![#'1] 🡒 (t ≉ₛ u).subst ![#'0]) by
         have := (tprovable_iff_provable (T := T)).mp this
         simpa [-neAtom_subst, veq] using! this
       simpa using replace_ne T t u
-    · let t : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
-        ⟨v.[0], by simpa using hv.nth (by simp)⟩
-      let u : Bootstrapping.Semiterm V ℒₛₑₜ 1 :=
-        ⟨v.[1], by simpa using hv.nth (by simp)⟩
-      have veq : v = ?[t.val, u.val] := by simp [t, u, Bootstrapping.Arithmetic.vec2_eq hv.lh]
-      suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
+    · suffices T.internalize V ⊢ ∀⁰ ∀⁰ (((#'1) ≐ₛ (#'0)) 🡒
           (t ∉ₛ u).subst ![#'1] 🡒 (t ∉ₛ u).subst ![#'0]) by
         have := (tprovable_iff_provable (T := T)).mp this
         simpa [-nmemAtom_subst, veq] using! this
