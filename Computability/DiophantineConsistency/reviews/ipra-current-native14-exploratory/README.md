@@ -1,0 +1,5 @@
+# Exploratory 14-variable statement probe
+
+The drafted source in the sibling `ipra-current-native14-followup-plan` compiled warning-free, and the checks printed exactly `propext`, `Classical.choice`, and `Quot.sound`. The JSON records exact source/object/log hashes. This used a manually combined, unauthenticated historical overlay, so it establishes only exploratory statement/type-check evidence; it is not a coherent provider, independent proof replay, or claim about current sources. The first checks command failed because Lean selected an incomplete namespace root; its full log is retained. The retry used a single combined overlay. A coherent source-directed suffix and independent peer remain required.
+
+`selected-overlay-inventory.json` lists the resolved path and SHA-256 of all 2,367 selected overlay object/companion files observed after the probe. This post-hoc inventory is not a before/after guard; the package fallback is not inventoried and package-transitive, dynamically loaded and historical-provider ancestry remain unverified.
