@@ -158,6 +158,16 @@ its equality-only erasure. These definitions identify the concrete coding
 being transported; they do not by themselves prove that a separately chosen
 reference-language ZFC proof predicate is intuitionistically equivalent to it.
 
+[`IPRAReferenceRefutationReading.lean`](draft/IPRAReferenceRefutationReading.lean)
+is an uncompiled draft of a direct equality-only reading of Foundation's
+arithmetic NNF syntax: equality remains equality; `<` is the PR comparison
+bit equal to one; negative atoms become intuitionistic negations; and the
+positive logical constructors are preserved. Its proposed general syntactic
+identity specializes to the **same** Foundation ZFC refutation predicate ρ.
+This is a concrete candidate for identifying the transported formula with an
+independently defined syntax reader, not a comparison with all alternative
+proof codings, nor yet an elaborated or coherently checked Lean result.
+
 [`IPRAReferenceNoZero.lean`](draft/IPRAReferenceNoZero.lean) is another
 uncompiled source draft spelling out the equality-only no-zero formula from
 the positive-shift expression's two natural-polynomial sides and proposing
