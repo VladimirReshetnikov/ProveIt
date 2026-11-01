@@ -1,0 +1,5 @@
+# Actual fourth-main-index 85 root congruences
+
+Both source-directed focused replays PASS with four matching source/object/full-log rows, zero warnings and standard Lean axioms. In every IΣ₁ model, `AdaptiveGap85ActualFourthRoot.actual_fourth_main_congruences` proves that an actual positive 85-zero with positive first port and fourth main Pell ordinate satisfies either 27X ≡ 432 or 27(16X+1) ≡ 0 modulo 4Y(X+1)+3. It derives the signed-root orientation and needed divisibility from the actual zero; neither is a separate hypothesis.
+
+The fourth-index hypothesis is explicit, and the congruence does not itself exclude that index or prove an 85 equivalence. Three modules plus checks are rebuilt against the independently replayed generic fourth-root provider; 372 selected project-object/companion paths and the recorded direct Foundation anchor are pinned, while original project and external package transitive source ancestry remains historical. Inputs: `research/adaptive-gap85-normalization/{AdaptiveGap85ThirdMainSyntax,AdaptiveGap85FourthMainSyntax,AdaptiveGap85ActualFourthRoot}.lean` and `replay_actual_fourth_root.py`.
