@@ -104,11 +104,7 @@ theorem criterion_iff_pow (v : Fin 3 → ℕ) : criterion v ↔ v 1 ^ v 2 = v 0 
   intro hn
   constructor
   · rintro ⟨w, a, t, z, x, y, ⟨ha, hx, hy⟩, hc, he, hm, hnw, hkw, hnorm⟩
-    change 1 < a at ha
-    change v 1 ≤ w at hnw
-    change Nat.ModEq t x (y * (a - v 1) + v 0) at hc
-    change Pell.xn ha (v 2) = x at hx
-    change Pell.yn ha (v 2) = y at hy
+    dsimp at ha hx hy hc hnw
     have hw : 1 < w + 1 := by omega
     refine ⟨w, a, t, z, ha, ?_, he, hm, hnw, hkw, (norm_iff_nat hw).mp hnorm⟩
     rw [hx, hy]
