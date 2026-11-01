@@ -1,0 +1,2 @@
+import DiophantineConsistency.AdaptiveVSignTransport32
+#print axioms DiophantineConsistency.AdaptiveVSignTransport32.from42
