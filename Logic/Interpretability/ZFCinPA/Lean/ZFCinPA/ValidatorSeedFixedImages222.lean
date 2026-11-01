@@ -275,10 +275,8 @@ theorem fixed_image_all {T : SetTheory} [T.Δ₁] (σ : SetTheorySentence)
     (h0 : Bootstrapping.Provable T (Bootstrapping.imp ℒₛₑₜ (emptyCode 0) (tagRel 0 (⌜σ⌝ : W))))
     (j : W) : Bootstrapping.Provable T (Bootstrapping.imp ℒₛₑₜ (emptyCode j) (tagRel j (⌜σ⌝ : W))) := by
   have hσ : IsFormula ℒₛₑₜ (⌜σ⌝ : W) := by simp
-  have hshift : shift ℒₛₑₜ (⌜σ⌝ : W) = ⌜σ⌝ := by
-    rw [LO.FirstOrder.Sentence.quote_def, ← LO.FirstOrder.Semiformula.quote_shift]
-    congr 1
-    rw [Rewriting.shift, ← TransitiveRewriting.comp_app, Rew.shift_comp_emb]
+  have hshift : shift ℒₛₑₜ (⌜σ⌝ : W) = ⌜σ⌝ :=
+    ConstructibleInterpretation.shift_quote_sen σ
   induction j using ISigma1.sigma1_succ_induction
   · definability
   case zero => exact h0

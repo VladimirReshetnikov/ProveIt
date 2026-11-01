@@ -103,12 +103,8 @@ theorem all_em (A : SF V 1) : (𝗭𝗙 : SetTheory).internalize V ⊢ ∀⁰ (�
     exact C!_id)
 
 /-- Quotations of semisentences have no free variables. -/
-theorem shift_quoteT {n : ℕ} (σ : SetTheorySemisentence n) : (⌜σ⌝ : SF V n).shift = ⌜σ⌝ := by
-  apply Bootstrapping.Semiformula.ext
-  show shift ℒₛₑₜ (⌜(Rewriting.emb σ : SetTheorySemiproposition n)⌝ : V) = _
-  rw [← LO.FirstOrder.Semiformula.quote_shift]
-  congr 1
-  rw [Rewriting.shift, ← TransitiveRewriting.comp_app, Rew.shift_comp_emb]
+theorem shift_quoteT {n : ℕ} (σ : SetTheorySemisentence n) : (⌜σ⌝ : SF V n).shift = ⌜σ⌝ :=
+  Bootstrapping.Semiformula.ext (ConstructibleInterpretation.shift_quote_sen σ)
 
 theorem funT_shift (M : SF V 1) :
     (∀⁰ (∼M ⋎ (⌜funcS⌝ : SF V 1)) : Bootstrapping.Formula V ℒₛₑₜ).shift =
