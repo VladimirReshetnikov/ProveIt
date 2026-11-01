@@ -1,0 +1,35 @@
+'DiophantineConsistency.AdaptiveGap85FixedSpecialization.fixed_ports_partial_family_blocks_rank_normalization' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85FixedSpecialization.fixed_ports_partial_family_blocks_rank_normalization :
+  ∃ w,
+    (∀ (i : Fin 13), 0 < w i) ∧
+      DiophantineConsistency.Expr.eval w
+            (DiophantineConsistency.AdaptiveGap85Factors.factors
+                DiophantineConsistency.CurrentWindowCarry2011.ports).1 =
+          1 ∧
+        DiophantineConsistency.Expr.eval w
+              (DiophantineConsistency.AdaptiveGap85Factors.factors
+                      DiophantineConsistency.CurrentWindowCarry2011.ports).2.2.1 =
+            1 ∧
+          DiophantineConsistency.Expr.eval w
+                (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85
+                  DiophantineConsistency.CurrentWindowCarry2011.ports) ≠
+              0 ∧
+            have q := 1 + w 0 * ↑DiophantineConsistency.CurrentMasks2011.beta;
+            ∀ (F' C' : ℤ),
+              0 < F' →
+                0 < C' →
+                  F' + C' < q →
+                    ¬(DiophantineConsistency.AdaptiveGap85PartialRankRemainder.rankPlus q (w 1) (w 2) (w 0)
+                              ↑DiophantineConsistency.CurrentMasks2011.lowPort
+                              ↑(DiophantineConsistency.CurrentMasks2011.highPort +
+                                  DiophantineConsistency.CurrentMasks2011.beta) +
+                            DiophantineConsistency.AdaptiveGap85PartialRankRemainder.rankMinus q F' C') %
+                          q =
+                        (DiophantineConsistency.AdaptiveGap85PartialRankRemainder.rankMinus q (w 1) (w 2) +
+                            DiophantineConsistency.AdaptiveGap85PartialRankRemainder.rankPlus q F' C' (w 0)
+                              ↑DiophantineConsistency.CurrentMasks2011.lowPort
+                              ↑(DiophantineConsistency.CurrentMasks2011.highPort +
+                                  DiophantineConsistency.CurrentMasks2011.beta)) %
+                          q
