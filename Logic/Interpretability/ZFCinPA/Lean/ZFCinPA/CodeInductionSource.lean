@@ -1,6 +1,7 @@
 import ZFCinPA.TowerSuccessorEvaluation
 import ZFCinPA.LocalStepSuccessor
 import ZFCinPA.SeparationKernel
+import ZFCinPA.ModelCodedSchemaAxioms
 
 /-!
 # Code induction at `StepGood`, as a source antecedent
@@ -870,22 +871,8 @@ theorem toSet_sepAtomZX : toSet 3 (Form.fMem 0 2) = sepAtomZX := by
 its raw code alone, also when the result is read at arity `3`. -/
 theorem subst_sepSubstConst_stepGoodPairQ
     (K : Bootstrapping.Semiformula V ℒₛₑₜ 1) :
-    Bootstrapping.subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) K.val = K.val := by
-  have hvec :
-      ((sepSubstConst : ℕ) : V)
-        = Bootstrapping.SemitermVec.val
-            (![Bootstrapping.Semiterm.bvar 0] :
-              Bootstrapping.SemitermVec V ℒₛₑₜ 1 1) := by
-    rw [val_sepSubstConst]
-    simp [Bootstrapping.SemitermVec.val, Matrix.vecHead, Matrix.vecTail]
-  rw [hvec,
-    show Bootstrapping.subst ℒₛₑₜ
-        (Bootstrapping.SemitermVec.val
-          (![Bootstrapping.Semiterm.bvar 0] :
-            Bootstrapping.SemitermVec V ℒₛₑₜ 1 1)) K.val
-      = (K.subst (![Bootstrapping.Semiterm.bvar 0] :
-          Bootstrapping.SemitermVec V ℒₛₑₜ 1 1)).val from rfl,
-    Bootstrapping.Semiformula.subst_eq_self₁]
+    Bootstrapping.subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) K.val = K.val :=
+  ModelCodedSchemaAxioms.sep_core_subst_identity K
 
 /-- **The translation identity.**  The source antecedent translates to
 literally the separation body at the model-coded core. -/
