@@ -213,25 +213,19 @@ theorem eval_toFormula (p : Named) :
   induction p with
   | pure p => exact fun slots b f => eval_pureAt slots p b f
   | pred x y => intro n slots b f; simp [toFormula,NamedSat,predAt,relation]
-  | mem x y =>
+  | mem x y | eq x y =>
       intro n slots b f
-      simp only [toFormula,memAt,Semiformula.eval_rel,NamedSat,Matrix.comp₂]
-      exact Structure.mem_lang (L := Lang)
-  | eq x y =>
-      intro n slots b f
-      simp only [toFormula,eqAt,Semiformula.eval_rel,NamedSat,Matrix.comp₂]
-      exact Structure.eq_lang (L := Lang)
+      simp only [toFormula,memAt,eqAt,Semiformula.eval_rel,NamedSat,Matrix.comp₂]
+      first | exact Structure.mem_lang (L := Lang) | exact Structure.eq_lang (L := Lang)
   | bot => intro n slots b f; simp [toFormula,NamedSat]
   | imp p q hp hq | and p q hp hq | or p q hp hq =>
       intro n slots b f; simp [toFormula,NamedSat,hp,hq]
-  | all x p hp =>
+  | all x p hp | ex x p hp =>
       intro n slots b f
-      simp only [toFormula,Semiformula.eval_all,NamedSat]
-      exact forall_congr' (fun d => (hp _ _ _).trans (by rw [under_env]))
-  | ex x p hp =>
-      intro n slots b f
-      simp only [toFormula,Semiformula.eval_ex,NamedSat]
-      exact exists_congr (fun d => (hp _ _ _).trans (by rw [under_env]))
+      simp only [toFormula,Semiformula.eval_all,Semiformula.eval_ex,NamedSat]
+      first
+      | exact forall_congr' (fun d => (hp _ _ _).trans (by rw [under_env]))
+      | exact exists_congr (fun d => (hp _ _ _).trans (by rw [under_env]))
 
 omit [Nonempty M] [Structure.Eq Lang M] [Structure.Mem Lang M] in
 private lemma named_witness (H : _root_.SetTheory.ZFAxioms (memRel M))
