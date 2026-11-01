@@ -181,7 +181,10 @@ The native theory now proves **universal equality decidability** without an
 extra arithmetic premise. [IPRANativeEqualityDecidable.lean](Lean/DiophantineConsistency/IPRANativeEqualityDecidable.lean)
 constructs the proof object; its guarded author and independent replays match.
 The project, Foundation and package ancestry of the selected provider remains
-historical.
+historical. On that provider, [IPRANativeOpenDecidable.lean](Lean/DiophantineConsistency/IPRANativeOpenDecidable.lean)
+constructs free-variable decisions for all open NNF formulas and order atoms,
+and open-formula stability, with no extra proof premise. Its author and
+independent replays match; it does not establish bounded-search stability.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
