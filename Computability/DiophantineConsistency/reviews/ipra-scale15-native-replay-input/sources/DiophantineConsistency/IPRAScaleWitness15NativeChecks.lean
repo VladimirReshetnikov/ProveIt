@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRAScaleWitness15Native
+#check DiophantineConsistency.IPRAScaleWitness15Native.sameNoZero15
+#check DiophantineConsistency.IPRAScaleWitness15Native.bridge15
+#check DiophantineConsistency.IPRAScaleWitness15Native.literal_equivalence
+#print axioms DiophantineConsistency.IPRAScaleWitness15Native.sameNoZero15
+#print axioms DiophantineConsistency.IPRAScaleWitness15Native.bridge15
+#print axioms DiophantineConsistency.IPRAScaleWitness15Native.literal_equivalence
