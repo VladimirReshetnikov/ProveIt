@@ -13,8 +13,8 @@ for a natural `t`, then replace negative `Z` by `|Z|` while increasing the
 positive `r` coordinate by `2*t`. This is the same orientation idea as the
 [46-variable quartic candidate](../adaptive-square-sums46/README.md); the
 first residual here already contains `psi²` directly. The polynomial checks
-do not prove the required quotient or model transport, and the 35-variable
-parent itself still has an open model proof.
+do not prove the required quotient or model transport. The 35-variable parent
+now has a matched native endpoint on a historical provider.
 
 **Open:** no Lean literal binding, all-model equivalence, native iPRA endpoint
 or guarded replay has yet been established for this candidate. No global

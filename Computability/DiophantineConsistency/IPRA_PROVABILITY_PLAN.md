@@ -120,6 +120,14 @@ theorem assumes a nonnegative first port, which the fixed port satisfies.
 The historical provider and inherited ancestry qualifications remain; exact
 degree and display are checked by separate finite computations.
 
+The [35-variable degree-6 equation](equation6-35.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAAQ35Native.lean) for its
+exact shifted fixed-port literal. Its [focused paired replay](reviews/adaptive-aq35-native-replay/README.md)
+matched ten modules and all eight rebuilt model objects. The model transport
+proves the needed zero-dependent positivity; the earlier first-port condition
+is discharged at the fixed port. Historical provider and inherited ancestry
+qualifications remain; exact degree and display have separate finite checks.
+
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
 for its exact shifted fixed-port literal. Its [focused guarded comparison](reviews/ipra-named51-native-verification/README.md)
