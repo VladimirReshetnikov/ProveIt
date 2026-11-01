@@ -29,5 +29,9 @@ source modules on the same accepted 49-native parent, including a fresh build
 of `AdaptiveFoldSquares`, with recorded exit and direct dependency/companion
 guards in `reviews/adaptive-square-sums47-model-replay/`. This focused evidence
 inherits historical project and package ancestry; it is not a current-source
-closure. The native iPRA endpoint is being separately checked. No global
-minimality is claimed.
+closure. The native endpoint `IPRANamedValues47Native.literal_equivalence` has also
+passed a separately matched nine-module replay, recorded under
+`reviews/ipra-named47-native-verification/`. It proves equivalence to the
+negation of the mapped native refutation predicate; the separate identification
+of that predicate with ordinary Con(ZFC) is not established by this endpoint.
+No global minimality is claimed.
