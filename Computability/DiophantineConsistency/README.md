@@ -31,8 +31,9 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [22-variable 112-operation degree-16 equation](equation16.pdf), the
 [26-variable 124-operation degree-12 equation](equation12.pdf), the
 [33-variable 139-operation degree-8 equation](equation8.pdf), the
-[42-variable 164-operation degree-6 equation](equation6.pdf), and the
-[51-variable 187-operation degree-4 equation](equation4.pdf). Each endpoint
+[42-variable 164-operation degree-6 equation](equation6.pdf), the
+[51-variable 187-operation degree-4 equation](equation4.pdf), and the
+[50-variable 186-operation degree-4 equation](equation4-50.pdf). Each endpoint
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
