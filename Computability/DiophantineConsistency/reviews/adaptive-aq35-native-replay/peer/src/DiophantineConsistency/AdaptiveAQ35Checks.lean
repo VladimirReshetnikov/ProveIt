@@ -1,0 +1,14 @@
+import DiophantineConsistency.AdaptiveAQ35
+
+#print axioms DiophantineConsistency.AdaptiveAQ35Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveAQ35Literal.new_literal
+#print axioms DiophantineConsistency.AdaptiveAQ35Zeros.old_zero
+#print axioms DiophantineConsistency.AdaptiveAQ35Zeros.new_zero
+#print axioms DiophantineConsistency.AdaptiveAQ35Positive.square_positive
+#print axioms DiophantineConsistency.AdaptiveAQ35Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveAQ35Transport.project_inputs
+#print axioms DiophantineConsistency.AdaptiveAQ35Transport.extend_inputs
+#print axioms DiophantineConsistency.AdaptiveAQ35.project_zero
+#print axioms DiophantineConsistency.AdaptiveAQ35.removed_zero
+#print axioms DiophantineConsistency.AdaptiveAQ35.extend_zero
+#print axioms DiophantineConsistency.AdaptiveAQ35.shifted_no_zero_iff

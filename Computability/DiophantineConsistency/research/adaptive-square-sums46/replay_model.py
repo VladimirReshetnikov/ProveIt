@@ -1,0 +1,126 @@
+#!/usr/bin/env python3
+"""Two focused Lean replays with direct input/companion guards; ancestry is inherited."""
+import hashlib
+import json
+import re
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+D = Path(__file__).resolve().parent
+ROOT = D.parents[3]
+SRC = ROOT/'Computability/DiophantineConsistency/Lean/DiophantineConsistency'
+PARENT = Path('/tmp/ipra-named47-native-w7yk7dcr')
+PARENT_RECEIPT = ROOT/'Computability/DiophantineConsistency/reviews/ipra-named47-native-verification/receipt.json'
+PKG = Path('/tmp/pra14-full-transitive-2x6o__to/package-lib')
+LEAN = Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
+TOOL = LEAN.parent.parent/'lib/lean'
+OUT = ROOT/'Computability/DiophantineConsistency/reviews/adaptive-square-sums46-model-replay'
+modules = ['AdaptiveZ46Orientation', 'AdaptiveZ46Context', 'AdaptiveZ46Zeros', 'AdaptiveZ46Maps', 'AdaptiveZ46Rest', 'AdaptiveZ46Norm', 'AdaptiveZ46First', 'AdaptiveZ46RootAlgebra', 'AdaptiveZ46Root', 'AdaptiveZ46Extend', 'AdaptiveZ46Model', 'AdaptiveZ46Checks']
+suffixes = ('.olean','.olean.private','.olean.server','.ir','.ilean',
+            '.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean.hash')
+
+def require(ok, msg):
+    if not ok:
+        raise RuntimeError(msg)
+def digest(p):
+    return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def scan(stem):
+    d = {}
+    for suffix in suffixes:
+        p = Path(str(stem)+suffix)
+        if os.path.lexists(p):
+            require(p.is_file(), ('bad input companion',str(p)))
+            d[str(p)] = {'realpath':str(p.resolve()), 'sha256':digest(p)}
+        else:
+            d[str(p)] = None
+    return d
+
+def check_guard(guard):
+    for path,record in guard.items():
+        p=Path(path)
+        if record is None:
+            require(not os.path.lexists(p), ('new companion',path))
+        else:
+            require(p.is_file() and str(p.resolve())==record['realpath'] and digest(p)==record['sha256'], ('changed dependency',path))
+
+require(not OUT.exists(), 'refusing to overwrite prior replay')
+OUT.mkdir(parents=True)
+base = {'driver':digest(__file__), 'lean':digest(LEAN), 'parent_state':digest(PARENT_RECEIPT), 'candidate':digest(D/'candidate.json'), 'literal_verifier':digest(D/'verify_literal.py'),
+        'sources':{name:digest(SRC/(name+'.lean')) for name in modules}}
+require(base['candidate']=='7edba2ef3473aad1e54742faf3f9307ef9591b0cd2f05dce65a6497e8425e5a4', 'candidate pin')
+check=subprocess.run(['python3',str(D/'verify_literal.py')],capture_output=True,text=True)
+require(check.returncode==0 and check.stdout.strip()=='PASS: 46 named variables, 4 ports and all 178 Lean literal rows match the pinned DAG', ('literal binding',check.stdout,check.stderr))
+parent_receipt=json.loads(PARENT_RECEIPT.read_text())
+require(parent_receipt['status']=='MATCHED_PASS' and parent_receipt['peer_path']==str(PARENT), 'parent receipt')
+require(digest(PARENT/'state.json')==parent_receipt['peer_state_sha256'], 'parent state')
+for row in parent_receipt['matched_rows']:
+    require(digest(PARENT/'lib'/'DiophantineConsistency'/(row['module']+'.olean'))==row['object_sha256'], ('parent object',row['module']))
+TERMINAL=PARENT_RECEIPT.parent/'terminal-observation.json';term=json.loads(TERMINAL.read_text())
+require(term['observed_exit_code']==0 and term['receipt_sha256']==digest(PARENT_RECEIPT), 'parent comparator exit')
+PARENT_OBS=ROOT/'Computability/DiophantineConsistency/reviews/ipra-named47-native-terminal-observations/peer.json'
+PARENT_AUTHOR=ROOT/'Computability/DiophantineConsistency/reviews/ipra-named47-native-terminal-observations/author.json'
+obs=json.loads(PARENT_OBS.read_text());require(obs['observed_exit_code']==0 and obs['state_sha256']==digest(PARENT/'state.json'), 'parent peer exit')
+aobs=json.loads(PARENT_AUTHOR.read_text());require(aobs['observed_exit_code']==0 and term['author_terminal_sha256']==digest(PARENT_AUTHOR) and term['peer_terminal_sha256']==digest(PARENT_OBS), 'parent author exit')
+gate={str(p):digest(p) for p in (PARENT/'state.json',TERMINAL,PARENT_OBS,PARENT_AUTHOR)}
+records=[]
+try:
+    for label in ('author','peer'):
+        run=Path(tempfile.mkdtemp(prefix='ipra-square-sums46-'+label+'-'))
+        lib=run/'lib';lib.mkdir()
+        subprocess.run(['cp','-as',str(PARENT/'lib')+'/.',str(lib)+'/'],check=True)
+        snap=OUT/label/'src'/'DiophantineConsistency';snap.mkdir(parents=True)
+        logs=OUT/label/'logs';logs.mkdir()
+        for name in modules:
+            shutil.copyfile(SRC/(name+'.lean'),snap/(name+'.lean'))
+            require(digest(snap/(name+'.lean'))==base['sources'][name], 'source snapshot')
+        env=dict(os.environ,LEAN_PATH=str(lib)+':'+str(PKG),LEAN_NUM_THREADS='1')
+        env.pop('LEAN_SRC_PATH',None)
+        guards={};rows=[]
+        for name in modules:
+            source=snap/(name+'.lean')
+            deps=subprocess.run([str(LEAN),'--deps',str(source)],env=env,capture_output=True,text=True)
+            require(deps.returncode==0 and not deps.stderr, ('deps failed',name,deps.stderr))
+            depinfo={}
+            for line in deps.stdout.splitlines():
+                path=Path(line)
+                require(path.is_absolute() and path.is_file() and str(path).endswith('.olean'), ('bad dependency',name,line))
+                require(any(path.is_relative_to(r) for r in (lib,PKG,TOOL)), ('unapproved dependency root',name,line))
+                stem=Path(str(path)[:-len('.olean')]);companions=scan(stem)
+                for key,value in companions.items():
+                    require(key not in guards or guards[key]==value, ('changed direct input',key))
+                    guards[key]=value
+                depinfo[str(path.relative_to(lib)) if path.is_relative_to(lib) else str(path)] = digest(path)
+            check_guard(guards)
+            obj=lib/'DiophantineConsistency'/(name+'.olean')
+            require(not os.path.lexists(obj), ('output already exists',name))
+            cmd=[str(LEAN),'-M8000','-j1','-DElab.async=false','--root='+str(snap.parent),str(source),'-o',str(obj)]
+            log=logs/(name+'.log')
+            with log.open('x') as out:
+                proc=subprocess.run(cmd,env=env,stdout=out,stderr=subprocess.STDOUT)
+            output=log.read_text()
+            require(proc.returncode==0 and obj.is_file(), ('lean failure',name,proc.returncode,output))
+            require('error:' not in output and 'sorryAx' not in output and 'warning:' not in output, ('bad log',name,output))
+            reports=re.findall(r"^'[^']+' (?:depends on axioms:\s*\[([^]]*)\]|does not depend on any axioms)",output,re.M|re.S)
+            expected={'AdaptiveZ46Orientation':2,'AdaptiveZ46Context':2,'AdaptiveZ46Zeros':1,'AdaptiveZ46Maps':4,'AdaptiveZ46Rest':2,'AdaptiveZ46Norm':1,'AdaptiveZ46First':1,'AdaptiveZ46RootAlgebra':1,'AdaptiveZ46Root':1,'AdaptiveZ46Extend':1,'AdaptiveZ46Model':2,'AdaptiveZ46Checks':14}[name]
+            require(len(reports)==expected and all({x.strip() for x in axioms.split(',') if x.strip()}<={'propext','Classical.choice','Quot.sound'} for axioms in reports),('unexpected axiom reports',name,len(reports),expected))
+            rows.append({'module':name,'exit':proc.returncode,'source_sha256':digest(source),
+                         'object_sha256':digest(obj),'log_sha256':digest(log),'direct_inputs':depinfo})
+            check_guard(guards)
+            print(label,name,'exit',proc.returncode,flush=True)
+        require(digest(__file__)==base['driver'] and digest(LEAN)==base['lean'] and digest(PARENT_RECEIPT)==base['parent_state'] and digest(D/'candidate.json')==base['candidate'] and digest(D/'verify_literal.py')==base['literal_verifier'] and all(digest(p)==h for p,h in gate.items()), 'fixed input changed')
+        require(all(digest(SRC/(name+'.lean'))==base['sources'][name] for name in modules),'workspace source drift')
+        check_guard(guards)
+        records.append({'label':label,'run':str(run),'rows':rows,'guarded_companion_paths':len(guards),'guards':guards})
+    for a,b in zip(records[0]['rows'],records[1]['rows']):
+        require(a==b, ('replay mismatch',a,b))
+    report={'status':'MATCHED_PASS','base':base,'parent_gate':gate,'runs':records,
+            'scope':'Two focused same-provider source/object/log and direct dependency companion replays; transitive project ancestry, package transitive ancestry and dynamic imports are inherited. These point-in-time source checks are not a full current-source closure.'}
+    (OUT/'receipt.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+    print('MATCHED_PASS',len(modules),'rows',flush=True)
+except BaseException as e:
+    (OUT/'failure.txt').write_text(repr(e)+'\n')
+    raise
