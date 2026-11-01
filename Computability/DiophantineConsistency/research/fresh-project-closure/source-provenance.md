@@ -1,0 +1,5 @@
+# Restored tracked source for the native expression bridge
+
+The current native endpoint imports `PRAExpressionZFCStrict.lean`, which was present in the workspace but absent from the Git index and not ignored. Its SHA-256 `6e44e5d68c4d17853e3ce27eda454c96e8b17b7cfc6d7c6340bdad31c44eca76` matches both historical copies under `reviews/ipra-square-sums-native-replay-input/sources/DiophantineConsistency/` and `reviews/ipra-square-sums-native-replay-preliminary/sources/DiophantineConsistency/`. The former historical input manifest records the same source hash and its two imports; its preparation observation records successful session exit and pins that manifest. Those copies and records were committed in `2f08a572db`.
+
+The restored project source is byte-identical to that recorded historical input. This establishes source identity only; it does not establish compatibility of old objects with the replacement Foundation build, a fresh Lean compilation, or a current project-transitive replay. A full source rebuild from a frozen source graph against one freshly verified Foundation provider remains necessary.
