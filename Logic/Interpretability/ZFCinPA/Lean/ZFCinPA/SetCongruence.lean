@@ -817,12 +817,9 @@ private lemma allFour {φ : Bootstrapping.Semiformula V ℒₛₑₜ 4}
       φ.shift.shift.shift.shift.subst genTuple₄) :
     T.internalize V ⊢ ∀⁰* φ := by
   simp only [allClosure_succ, allClosure_zero]
-  apply TProof.all!
-  simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
-  apply TProof.all!
-  simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
-  apply TProof.all!
-  simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
+  iterate 3
+    apply TProof.all!
+    simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
   apply TProof.all!
   simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
     Bootstrapping.Semiformula.shift_substs,
@@ -951,16 +948,9 @@ private lemma allSix {φ : Bootstrapping.Semiformula V ℒₛₑₜ 6}
       φ.shift.shift.shift.shift.shift.shift.subst genTuple₆) :
     T.internalize V ⊢ ∀⁰* φ := by
   simp only [allClosure_succ, allClosure_zero]
-  apply TProof.all!
-  simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
-  apply TProof.all!
-  simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
-  apply TProof.all!
-  simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
-  apply TProof.all!
-  simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
-  apply TProof.all!
-  simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
+  iterate 5
+    apply TProof.all!
+    simp [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q]
   apply TProof.all!
   simpa [Bootstrapping.Semiformula.free, Bootstrapping.SemitermVec.q,
     Bootstrapping.Semiformula.shift_substs,
