@@ -35,25 +35,28 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [40-variable 160-operation degree-6 equation](equation6-40.pdf), the
 [36-variable 148-operation degree-6 equation](equation6-36.pdf), the
 [35-variable 145-operation degree-6 equation](equation6-35.pdf), the
+[34-variable 144-operation degree-6 equation](equation6-34.pdf), the
+[33-variable 143-operation degree-6 equation](equation6-33.pdf), the
+[32-variable 142-operation degree-6 equation](equation6-32.pdf), the
 [51-variable 187-operation degree-4 equation](equation4.pdf), the
 [50-variable 186-operation degree-4 equation](equation4-50.pdf), the
 [49-variable 185-operation degree-4 equation](equation4-49.pdf), and the
 [47-variable 179-operation degree-4 equation](equation4-47.pdf), and the
-[46-variable 178-operation degree-4 equation](equation4-46.pdf). Each endpoint
+[46-variable 178-operation degree-4 equation](equation4-46.pdf), and the
+[44-variable 176-operation degree-4 equation](equation4-44.pdf), and the
+[43-variable 175-operation degree-4 equation](equation4-43.pdf). Each endpoint
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced [44-variable](research/adaptive-square-sums44/README.md)
-and [43-variable](research/adaptive-square-sums43/README.md) quartic candidates,
-and [34-variable](research/adaptive-square-sums34/README.md),
-[33-variable](research/adaptive-square-sums33-degree6/README.md), and
-[32-variable](research/adaptive-square-sums32-degree6/README.md) degree-six candidates.
-Their circuit sizes, substitutions and exact degrees have finite checks. The
-44-, 34- and 33-variable model equivalences have matched historical replays;
-their native endpoints and the other model equivalences are still being checked.
+finite graph searches have produced a [42-variable quartic](research/adaptive-square-sums42-quartic/README.md)
+and a [31-variable degree-six](research/adaptive-square-sums31-degree6/README.md)
+graph. Their finite embedding and degree checks establish candidate-to-parent
+solution maps; the reverse witness constructions and native equivalences remain
+open. A Lean construction of a positively oriented auxiliary witness and
+conditional transport theorems are being developed to close that gap.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader source refresh is running;

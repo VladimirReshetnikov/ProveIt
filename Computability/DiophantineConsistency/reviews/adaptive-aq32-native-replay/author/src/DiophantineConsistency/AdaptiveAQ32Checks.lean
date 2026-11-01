@@ -1,0 +1,14 @@
+import DiophantineConsistency.AdaptiveAQ32
+
+#print axioms DiophantineConsistency.AdaptiveAQ32Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveAQ32Literal.new_literal
+#print axioms DiophantineConsistency.AdaptiveAQ32Zeros.sum_zero
+#print axioms DiophantineConsistency.AdaptiveAQ32Bound.main_positive_bound
+#print axioms DiophantineConsistency.AdaptiveAQ32Facts.facts
+#print axioms DiophantineConsistency.AdaptiveAQ32Positive.signed_d_positive
+#print axioms DiophantineConsistency.AdaptiveAQ32Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveAQ32Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveAQ32Transport.project_zero
+#print axioms DiophantineConsistency.AdaptiveAQ32Transport.extend_zero
+#print axioms DiophantineConsistency.AdaptiveAQ32.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveAQ32.current_no_zero_iff

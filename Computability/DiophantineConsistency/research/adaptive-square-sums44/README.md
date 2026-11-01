@@ -1,4 +1,4 @@
-# Forty-four-variable quartic candidate
+# Forty-four-variable quartic equation
 
 This graph replaces both signed positive-coordinate pairs for `W` and the root
 skew `Γ` in the 46-variable oriented-root parent by single positive variables.
@@ -22,7 +22,18 @@ vectors**, without assuming a port is positive. The exact graph is bound to
 the Lean literal, and the [paired model replay](../../reviews/adaptive-square-sums44-model-replay/README.md)
 matched all seven modules on a historical native-46 provider.
 
-The fixed-port native iPRA endpoint and its guarded replay remain open.
-The model replay inherits project, package-transitive and dynamic-import
-ancestry, including the author-only 848-module ancestor; it is not a complete
-current-source closure. No global minimality is claimed.
+The no-premise `IPRAZ44Native.literal_equivalence` endpoint also has a
+[matched nine-module replay](../../reviews/adaptive-square-sums44-native-replay/README.md),
+using the existing `currentPorts_cast` theorem to specialize the all-natural-
+port model equivalence to the fixed integer ports. It concerns the mapped
+native refutation predicate; its interpretation as Con(ZFC) uses the separate
+interpretation and refutation bridge. The replays inherit project,
+package-transitive and dynamic-import ancestry, including the author-only
+848-module ancestor; they are not a complete current-source closure. No global
+minimality is claimed.
+
+The [base-10 equation presentation](../../equation4-44.pdf) has separately
+named positive variables. `generate_equation4_44.py` produces the TeX and
+`verify_display4_44.py` checks 50 definitions, 33 residuals, 176 circuit rows,
+fixed constants and mutation controls. Two clean PDF builds matched SHA-256
+`6e524b5e2a27d36ebe7fdac934013685a08559ea09aac75e06abed8ef1ff9162`.

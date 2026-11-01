@@ -1,0 +1,18 @@
+import DiophantineConsistency.AdaptiveAQ34
+
+#print axioms DiophantineConsistency.AdaptiveZ46Orientation.magnitude_quotient
+#print axioms DiophantineConsistency.AdaptiveZ46Orientation.orient
+#print axioms DiophantineConsistency.AdaptiveZ46RootAlgebra.root_invariant
+#print axioms DiophantineConsistency.AdaptiveAQ34Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveAQ34Literal.new_literal
+#print axioms DiophantineConsistency.AdaptiveAQ34Zeros.sum_zero
+#print axioms DiophantineConsistency.AdaptiveAQ34Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveAQ34Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveAQ34Norm.norm
+#print axioms DiophantineConsistency.AdaptiveAQ34Rest.project_rest_equiv
+#print axioms DiophantineConsistency.AdaptiveAQ34Rest.extend_rest_equiv
+#print axioms DiophantineConsistency.AdaptiveAQ34First.first_project
+#print axioms DiophantineConsistency.AdaptiveAQ34Root.root_project
+#print axioms DiophantineConsistency.AdaptiveAQ34Extend.extend_zero
+#print axioms DiophantineConsistency.AdaptiveAQ34.project_zero
+#print axioms DiophantineConsistency.AdaptiveAQ34.shifted_no_zero_iff

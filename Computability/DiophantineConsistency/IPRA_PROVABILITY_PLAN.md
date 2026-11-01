@@ -128,6 +128,36 @@ proves the needed zero-dependent positivity; the earlier first-port condition
 is discharged at the fixed port. Historical provider and inherited ancestry
 qualifications remain; exact degree and display have separate finite checks.
 
+The [34-variable degree-6 equation](equation6-34.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAAQ34Native.lean) for its
+exact shifted fixed-port literal. Its [focused paired replay](reviews/adaptive-aq34-native-replay/README.md)
+matched 15 modules and all 13 rebuilt model objects, including the two
+orientation helpers. The historical-provider and inherited-ancestry
+qualifications remain; exact degree and display have separate finite checks.
+
+The [33-variable degree-6 equation](equation6-33.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAAQ33Native.lean) for its
+exact shifted fixed-port literal. Its [focused paired replay](reviews/adaptive-aq33-native-replay/README.md)
+matched 12 modules and all ten rebuilt model objects. The model comparison
+uses natural ports and the checked cast at the fixed ports. Historical provider
+and inherited-ancestry qualifications remain; exact degree and display have
+separate finite checks.
+
+The [43-variable quartic equation](equation4-43.pdf) and [32-variable
+degree-6 equation](equation6-32.pdf) have no-premise native endpoints for
+their exact shifted fixed-port literals. Their [quartic](reviews/adaptive-square-sums43-native-replay/README.md)
+and [degree-six](reviews/adaptive-aq32-native-replay/README.md) paired replays
+matched 11 and 12 modules, respectively. Both general model comparisons require
+natural ports with first port at least 2; fixed-port corollaries discharge
+that bound. Historical provider and inherited ancestry qualifications remain;
+exact degree and display have separate finite checks.
+
+A further [42-variable quartic](research/adaptive-square-sums42-quartic/README.md)
+and [31-variable degree-6 graph](research/adaptive-square-sums31-degree6/README.md)
+replace the signed V pair by one positive coordinate. Their finite checks give
+only a candidate-to-parent solution embedding; the reverse witness construction
+and native equivalence remain open.
+
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
 for its exact shifted fixed-port literal. Its [focused guarded comparison](reviews/ipra-named51-native-verification/README.md)
@@ -170,6 +200,15 @@ and its [focused paired replay](reviews/adaptive-square-sums46-native-replay/REA
 matched 14 modules and all twelve rebuilt model objects. This retains the
 historical provider and inherited ancestry qualifications above; the display
 and exact degree have separate finite checks.
+
+The [44-variable degree-4 equation](equation4-44.pdf) replaces the signed
+transport and skew pairs with positive coordinates. Its exact shifted
+fixed-port literal has a no-premise [native endpoint](Lean/DiophantineConsistency/IPRAZ44Native.lean),
+and its [focused paired replay](reviews/adaptive-square-sums44-native-replay/README.md)
+matched nine modules and all seven rebuilt model objects. The model theorem
+uses natural port vectors, with the fixed integer ports connected by the
+checked cast theorem. Historical provider and inherited ancestry qualifications
+remain; the display and exact degree have separate finite checks.
 
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
