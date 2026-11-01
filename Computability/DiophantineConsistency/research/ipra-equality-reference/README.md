@@ -180,9 +180,9 @@ not require a theorem comparing every possible proof coding. The source
 comparison, its transfer and the endpoint all still require coherent replay;
 the target is the **erased GG reading** of Foundation's classical sentence,
 not a claim that an unmodified classical formula is an intuitionistic one.
-These two new drafts are not yet included in the pinned reference replay
-wrapper or its task policy; adding them to that replay requires updating and
-re-auditing the source closure, terminal report names and policy pins.
+The proposed reference replay wrapper and task policy now include these two
+drafts. The updated source closure and policy still require independent
+review and a guarded replay; neither draft has been elaborated.
 
 The separate `ValidatorConsistency222.iSigma1_proves_con_ZFC_iff_222` is a
 classical `IΣ₁` derivability statement built using the two-way comparison in

@@ -6,7 +6,8 @@ run on the real AQ29 project pair. They inherit the parent provider's
 package-transitive, dynamically loaded and transient-mutation limitations.
 
 The committed [`task-policy.json`](task-policy.json) binds the uncompiled
-joint wrapper `IPRAReferenceReplayChecks` and four exact declaration names.
+joint wrapper `IPRAReferenceReplayChecks` and six exact declaration names,
+including the selected Foundation consistency comparison and AQ29 composition.
 The freezer accepts a strict current-source plan only after an observed parent
 coordinator success, checks parent state and provider hashes, enforces a disk
 reserve, freezes sources under logical module paths and records tool hashes.

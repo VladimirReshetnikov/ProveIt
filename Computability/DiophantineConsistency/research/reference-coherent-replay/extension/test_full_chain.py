@@ -42,6 +42,8 @@ with tempfile.TemporaryDirectory(prefix='reference-full-chain-control-') as td:
     draft=research/'ipra-equality-reference/draft';draft.mkdir(parents=True)
     target=draft/'IPRAReferenceReplayChecks.lean'
     names=[
+      'DiophantineConsistency.IPRAReferenceAQ29Source.literal_equivalence',
+      'DiophantineConsistency.IPRAReferenceSourceConsistency.equivalence',
       'DiophantineConsistency.IPRAReferenceAQ29Direct.literal_equivalence',
       'DiophantineConsistency.IPRAReferenceRoundtrip.provability_iff',
       'DiophantineConsistency.IPRAReferenceInductionConversion.nativeToReference',
@@ -96,7 +98,7 @@ with tempfile.TemporaryDirectory(prefix='reference-full-chain-control-') as td:
       '--freezer-observation-sha256',H(freezer_obs),'--output',prepared)
     extension_pair=base/'extension-pair'
     q=run(sys.executable,ext/'run_pair.py','--prepared',prepared,'--preparation-sha256',H(prepared/'preparation.json'),
-      '--old-snapshot',old,'--new-snapshot',new,'--expected-axiom-reports','4','--output',extension_pair)
+      '--old-snapshot',old,'--new-snapshot',new,'--expected-axiom-reports',str(len(names)),'--output',extension_pair)
     pair_state=json.loads((extension_pair/'pair-state.json').read_text())
     assert q.returncode==0 and pair_state['status']=='MATCHED_SELECTIVE_PASS'
     assert [r['exit'] for r in pair_state['runs']]==[0,0]

@@ -19,7 +19,7 @@ MODULE = re.compile(r"[A-Za-z_][A-Za-z0-9_']*(?:\.[A-Za-z_][A-Za-z0-9_']*)*\Z")
 DRAFT_NAMES = {
     'IPRAReferenceAQ29', 'IPRAReferenceNoZero', 'IPRAReferenceRefutationReading',
     'IPRAReferenceAQ29Direct', 'IPRAReferenceInductionTransfer', 'IPRAReferenceRoundtrip',
-    'IPRAReferenceReplayChecks',
+    'IPRAReferenceSourceConsistency', 'IPRAReferenceAQ29Source', 'IPRAReferenceReplayChecks',
 }
 TARGETS = ('DiophantineConsistency.IPRAReferenceReplayChecks',)
 
