@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRANegBitFullWitnessBound
 import DiophantineConsistency.PRABitFullWitnessBound
 import Foundation.FirstOrder.Arithmetic.HFS.Basic
@@ -21,20 +22,16 @@ theorem exists_bound (x u s w : V) (hs : s ≤ w)
   refine ⟨y,lt_of_lt_of_le hy hs,hy,z,lt_of_lt_of_le hpairlt hs,hpairlt,?_,?_⟩
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb : bitDef.val.Evalb ![z,s] := by simpa [Semiformula.Operator.val, operator_mem_def, z] using hbit
-    have hh := PRABitFullWitnessBound.bit_bound z s hb
-    have hs' : Fin.snoc ![z,s] (PRABitFullWitnessBound.bitMajorant s) = ![z,s,PRABitFullWitnessBound.bitMajorant s] := by simp
-    have hm := eval_bnd_mono bitDef.val ![z,s] (Empty.elim : Empty → V) hposs (by rw [hs']; exact hh)
     let ω : Rew ℒₒᵣ Empty 2 Empty 5 := Rew.subst ![#0,#4]
-    have hn := PRABndRewriting.natural bitDef.val ω ![z,y,x,u,s] w
-    have hv : (fun j => (ω #j).val ![z,y,x,u,s] Empty.elim) = ![z,s] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hsn : Fin.snoc ![z,y,x,u,s] w = ![z,y,x,u,s,w] := by simp
-    have hs'' : Fin.snoc ![z,s] w = ![z,s,w] := by simp
-    rw [hv,hsn,hs''] at hn
-    rw [hs''] at hm
-    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hn.mpr hm
+    have hf : (ω ▹ bitDef.val).Evalb ![z,y,x,u,s] := by
+      simpa [ω, Semiformula.eval_substs] using hb
+    have hw : PRABitFullWitnessBound.bitMajorant
+        ((ω #1).val ![z,y,x,u,s] Empty.elim) ≤ w := by
+      simpa [ω] using hposs
+    have hh := PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+      (fun _ s => PRABitFullWitnessBound.bitMajorant s)
+      PRABitFullWitnessBound.bit_bound ω ![z,y,x,u,s] w hw hf
+    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
   · simp [pairDef, bnd_open, z, ←pair_graph]
 noncomputable def boundedExists : ArithmeticSemisentence 4 := bnd existsInside
 noncomputable def existsBoundBody : ArithmeticSemisentence 4 :=

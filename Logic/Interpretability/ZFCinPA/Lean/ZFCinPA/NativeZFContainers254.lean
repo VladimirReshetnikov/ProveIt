@@ -1,5 +1,6 @@
 import BusyBeaver.ZFC.ZFRank
 import Foundation.FirstOrder.SetTheory.Basic.Axioms
+import ZFCinPA.TranslationCore
 
 set_option autoImplicit false
 
@@ -45,14 +46,13 @@ environment entry. -/
 theorem val_toSetVar {V : Type*} [SetStructure V] {k : Nat} {b : Fin k → V}
     {f e : ℕ → V} (hb : ∀ i : Fin k, b i = e i.val)
     (hf : ∀ j, f j = e (k + j)) (i : ℕ) :
-    (toSetVar k i).val b f = e i := by
-  unfold toSetVar
-  by_cases h : i < k
-  · rw [dif_pos h]
-    exact hb ⟨i, h⟩
-  · rw [dif_neg h]
-    have h2 : k + (i - k) = i := by omega
-    rw [Semiterm.val_fvar, hf (i - k), h2]
+    (toSetVar k i).val b f = e i :=
+  LeanProofs.ZFCinPA.val_toSetVar hb hf i
+
+private theorem toSet_eq_shared (k : Nat) (φ : SetTheory.Form) :
+    toSet k φ = LeanProofs.ZFCinPA.toSet k φ := by
+  induction φ generalizing k <;>
+    simp [toSet, LeanProofs.ZFCinPA.toSet, toSetVar, LeanProofs.ZFCinPA.toSetVar, *]
 
 /-- **Satisfaction preservation.**  Over any Foundation set structure the
 Tarski evaluation of the translation agrees with the repository's `Sat`,
@@ -62,52 +62,9 @@ theorem eval_toSet {V : Type*} [SetStructure V] (φ : SetTheory.Form) :
     ∀ (k : Nat) (b : Fin k → V) (f e : ℕ → V),
       (∀ i : Fin k, b i = e i.val) → (∀ j, f j = e (k + j)) →
       ((toSet k φ).Eval b f ↔ SetTheory.Sat (memRel V) e φ) := by
-  induction φ with
-  | fMem i j =>
-      intro k b f e hb hf
-      simp [toSet, SetTheory.Sat, val_toSetVar hb hf]
-  | fEq i j =>
-      intro k b f e hb hf
-      simp [toSet, SetTheory.Sat, val_toSetVar hb hf]
-  | fBot =>
-      intro k b f e hb hf
-      simp [toSet, SetTheory.Sat]
-  | fImp a b iha ihb =>
-      intro k bb f e hb hf
-      simp only [toSet, LogicalConnective.HomClass.map_imply, SetTheory.Sat]
-      exact imp_congr (iha k bb f e hb hf) (ihb k bb f e hb hf)
-  | fAnd a b iha ihb =>
-      intro k bb f e hb hf
-      simp only [toSet, LogicalConnective.HomClass.map_and, SetTheory.Sat]
-      exact and_congr (iha k bb f e hb hf) (ihb k bb f e hb hf)
-  | fOr a b iha ihb =>
-      intro k bb f e hb hf
-      simp only [toSet, LogicalConnective.HomClass.map_or, SetTheory.Sat]
-      exact or_congr (iha k bb f e hb hf) (ihb k bb f e hb hf)
-  | fAll a ih =>
-      intro k bb f e hb hf
-      simp only [toSet, Semiformula.eval_all, SetTheory.Sat]
-      refine forall_congr' fun d => ih (k + 1) (d :> bb) f (SetTheory.scons d e) ?_ ?_
-      · intro i
-        refine Fin.cases ?_ (fun i' => ?_) i
-        · simp [SetTheory.scons]
-        · simpa [SetTheory.scons] using hb i'
-      · intro j
-        have h2 : k + 1 + j = (k + j) + 1 := by omega
-        rw [h2]
-        simpa [SetTheory.scons] using hf j
-  | fEx a ih =>
-      intro k bb f e hb hf
-      simp only [toSet, Semiformula.eval_ex, SetTheory.Sat]
-      refine exists_congr fun d => ih (k + 1) (d :> bb) f (SetTheory.scons d e) ?_ ?_
-      · intro i
-        refine Fin.cases ?_ (fun i' => ?_) i
-        · simp [SetTheory.scons]
-        · simpa [SetTheory.scons] using hb i'
-      · intro j
-        have h2 : k + 1 + j = (k + j) + 1 := by omega
-        rw [h2]
-        simpa [SetTheory.scons] using hf j
+  intro k b f e hb hf
+  rw [toSet_eq_shared]
+  exact LeanProofs.ZFCinPA.eval_toSet φ k b f e hb hf
 
 /-! ### Valuation correspondences at the depths the extraction uses -/
 
