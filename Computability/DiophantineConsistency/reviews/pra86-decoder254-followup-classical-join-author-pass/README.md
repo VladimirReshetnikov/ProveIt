@@ -1,0 +1,3 @@
+# Decoder254 86-operation classical endpoint
+
+The source-directed 111-module author run explicitly PASSed against the fixed 847+74 parent `/tmp/pra14-zfc-join-5ph6vozb`. It proves the 13-variable 86-operation equation's candidate-PRA no-zero/consistency equivalence. Input packet `../pra86-decoder254-followup-classical-join-snapshot/` pins sources and direct inputs; final source/object/log/dependency checks passed without workspace project-object fallback. This is a historical snapshot; original reused-object ancestry is reconstructed from surviving records, package-transitive ancestry inherited, and independent replay is not yet claimed.

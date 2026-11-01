@@ -1,0 +1,5 @@
+# Native stability witness from a uniform family: independent replay
+
+The guarded independent peer `/tmp/ipra-native-witness-family-bmu9x93d` passed and matches the author `/tmp/ipra-native-witness-family-myos02bp` in both source/object/full-log rows, parent state hash and complete serialized selected-provider inventory. It replays the exact `StabilityWitness` packer on the same checked disjunction-witness parent. A uniform native stability proof family and instance-shape equality remain explicit inputs; no complete `DeepNeed` schema is proved. Parent/Foundation and external-package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-native-witness-family.py`. Peer state SHA-256 `95abe2fb7b6d4db5914a61127c04e23b01b5c1defe1a44436f4dd5276605e372`; provider inventory `658508cb7e225861633a407d4aab44f10aa9646f9e2da508d4e18d28c44707e6`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

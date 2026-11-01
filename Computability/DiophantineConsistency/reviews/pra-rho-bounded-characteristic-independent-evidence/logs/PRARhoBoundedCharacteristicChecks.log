@@ -1,0 +1,15 @@
+'DiophantineConsistency.PRARhoBoundedCharacteristic.bounded_rho' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.PRARhoBoundedCharacteristic.rho_characteristic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.PRARhoBoundedCharacteristic.rho_characteristic :
+  ∃ c,
+    Primrec (DiophantineConsistency.PRAFiniteFunctionCodes.eval c) ∧
+      DiophantineConsistency.PRATheory.PRA ⊢ DiophantineConsistency.PRACharacteristicBit.bitSentence c ∧
+        DiophantineConsistency.PRATheory.PRA ⊢
+          DiophantineConsistency.PRABoundedCharacteristic.oneCorrectSentence c
+            ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+              (DiophantineConsistency.StrictSigmaOneInduction.bnd
+                DiophantineConsistency.FoundationHAConsistencyNormalization.rho))

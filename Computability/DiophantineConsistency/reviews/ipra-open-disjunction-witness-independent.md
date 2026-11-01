@@ -1,0 +1,5 @@
+# Disjunction stability from uniform open child families: independent replay
+
+The independently launched guarded peer `/tmp/ipra-open-disjunction-witness-wwljfjae` passed and matches author `/tmp/ipra-open-disjunction-witness-dp3gyxen` in both source/object/full-log rows, parent state hash and the full serialized selected-provider inventory. It checks both common-arity open-family disjunction adapters on the same independently replayed witness-family parent. Child decision/stability families, term valuation, and instance-shape equalities remain explicit; GG-backward child comparisons and characteristic correctness needed to construct such families remain upstream obligations. Parent/Foundation and package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-open-disjunction-witness.py`. Peer state SHA-256 `5e1df1ccebdcfd5f883ad41c0764f288180e22e0d691ba5e6e38f2e3bcc412e0`; provider inventory `ad2b47ae3e8ae2b1e22be1d2a5242bfdf494d1110b1821cc6a0f5b6bd49d1d23`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

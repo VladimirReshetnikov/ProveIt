@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAOpenDisjunctionWitness
+#check DiophantineConsistency.IPRAOpenDisjunctionWitness.fromOpenFamilies
+#check DiophantineConsistency.IPRAOpenDisjunctionWitness.fromOpenFamiliesRight
+#print axioms DiophantineConsistency.IPRAOpenDisjunctionWitness.fromOpenFamilies
+#print axioms DiophantineConsistency.IPRAOpenDisjunctionWitness.fromOpenFamiliesRight

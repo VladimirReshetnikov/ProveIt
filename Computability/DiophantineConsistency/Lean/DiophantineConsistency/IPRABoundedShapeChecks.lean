@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRABoundedShape
+#print axioms DiophantineConsistency.IPRABoundedShape.stableBoundedExists
+#print axioms DiophantineConsistency.IPRABoundedShape.decideBoundedFromBackward

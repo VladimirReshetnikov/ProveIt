@@ -163,13 +163,22 @@ subsequent [single-provider equality join](Lean/DiophantineConsistency/IPRADeepE
 has matching guarded author and independent replays and discharges native
 equality decision as well. The sole explicit input to that comparison is the
 finite-list `DeepNeed` stability-witness schema; inherited ancestry and
-current-source limitations are recorded in its receipt.
+current-source limitations are recorded in its receipt. A [witness-family
+packer](Lean/DiophantineConsistency/IPRANativeWitnessFamily.lean) converts an
+explicit uniform stability family into the required witness, and a checked
+[disjunction helper](Lean/DiophantineConsistency/IPRANativeDisjunctionWitness.lean)
+combines one child's decision with the other's stability. Their child proofs
+and common-valuation shape hypotheses remain explicit.
 The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
 bounding and translation statements with quantifier-free induction, but
-those intuitionistic derivations remain open.
+those intuitionistic derivations remain open. For the exact mapped `bnd rho`
+matrix, [PRARhoBoundedCharacteristic.lean](Lean/DiophantineConsistency/PRARhoBoundedCharacteristic.lean)
+now derives a Σ₀ hierarchy certificate and existence of a classical PRA
+Boolean characteristic code, with matching guarded replays. Native correctness
+for that bounded matrix remains to be established.
 
 For open classical NNF formulas, [IPRAOpenAtomDecision.lean](Lean/DiophantineConsistency/IPRAOpenAtomDecision.lean)
 constructs native decidability and the implication from the GG translation to
@@ -206,15 +215,36 @@ stability, and characteristic-correctness proofs; its guarded replays match.
 A [checked open-characteristic client](Lean/DiophantineConsistency/IPRASelectorOpenCharacteristic.lean)
 now discharges selected-instance stability using native open decision, while
 retaining fresh-witness forward correctness, the selector implication and
-selected-instance reverse correctness as explicit premises. Binding those
-the characteristic-correctness premises to the actual bounded matrix remains
+selected-instance reverse correctness as explicit premises. Binding the
+characteristic-correctness premises to the actual bounded matrix remains
 to be checked. The [concrete search binding](Lean/DiophantineConsistency/IPRASelectorSearchBinding.lean)
 now supplies the selector implication from the actual `searchCode`, leaving
 only the two pointwise characteristic-correctness directions explicit; its
 matched guarded replays retain historical ancestry. A [bit-convention lemma](Lean/DiophantineConsistency/IPRABitConvention.lean)
 now converts `isZero(t)=0` to `t=1` for a known bit with matching replays,
-without assuming that a quantified child formula is decidable. Its composition
-with the actual `notCode` and bounded characteristic compiler remains open.
+without assuming that a quantified child formula is decidable. The [actual
+`notCode` composition](Lean/DiophantineConsistency/IPRANotBit.lean) and a
+[generic characteristic transfer](Lean/DiophantineConsistency/IPRACharacteristicTransfer.lean)
+now have matching guarded replays. The latter obtains native one/zero
+correctness and child decision from the classical certificates and an explicit
+per-instance child GG-to-native proof. The [bounded-child step](Lean/DiophantineConsistency/IPRABoundedChild.lean)
+now combines this transfer with the selector: for a Σ₀ child and arbitrary
+term valuation it constructs stability of the guarded bounded existential,
+assuming only a uniform GG-to-native comparison for that child. Its
+[author and independent replays](reviews/ipra-bounded-child-replay/README.md)
+match, subject to their stated inherited-provider boundary. This is an
+induction step, not yet a comparison theorem for all bounded formulas.
+
+The next assembly is a structural GG-to-native comparison for bounded
+formulas, uniformly over term valuations. The open case uses native open
+decidability; the disjunction case can derive a child's decision from its
+classical characteristic and its recursive comparison; the bounded-existential
+case uses the new selector-based step. Once instantiated for `bnd rho`, a
+whole-matrix comparison can feed the existing
+[direct ZFC comparison](Lean/DiophantineConsistency/IPRAFoundationZFCMatrixComparison.lean),
+without constructing a separate stability witness for every `DeepNeed` node.
+The recursive assembly, its treatment of all bounded formula constructors,
+and the actual matrix comparison remain open.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)

@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRABoundedChild
+#print axioms DiophantineConsistency.IPRABoundedChild.stableFromClassical
+#print axioms DiophantineConsistency.IPRABoundedChild.stableFromBounded
