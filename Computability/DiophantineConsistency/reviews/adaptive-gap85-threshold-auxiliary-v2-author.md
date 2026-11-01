@@ -1,0 +1,5 @@
+# Hardened threshold-auxiliary author replay
+
+The guarded author run `/tmp/adaptive-gap85-threshold-auxiliary-v2-455jplco` passed. This repeats the identical theorem and scope of the [original author receipt](adaptive-gap85-threshold-auxiliary-author.md), while additionally serializing the added parent-state hashes in the child state. The historical model/Foundation/package and other project-source boundary remains unchanged. No zero existence or existential inequivalence is asserted.
+
+Replay: `python3 Computability/DiophantineConsistency/research/adaptive-gap85/build-threshold-auxiliary-v2.py`. Source `c9cc9cd2f1ec5daa59343f55bd1a514ae4ae43765ab225fe9a9877e11b5fe3fd`, object `32eb03f6a51dd8a3bb009f6a9e04b81f08c234f88f80341f92ac28ea1f397405`, complete log `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`, added parent states `{'/tmp/adaptive-gap85-threshold-seed-zta73rp5': '1e8bc731b9f5205649d635beed2b8b7d426cf6fba255402e12a93dd29135d90f'}`, state `401fa48c6e473a2065dad5fe0cc7f887fc6c21f2d985a4c20eb28ae3e54874ee`, manifest `6d2417155581916f666d8648b9b4ba80b96392db52bb8481f3c8060d1c4fead0`. Independent replay is required.
