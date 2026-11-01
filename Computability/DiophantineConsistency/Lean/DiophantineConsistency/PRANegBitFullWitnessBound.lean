@@ -1,6 +1,7 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRANegExpWitnessBound
-import DiophantineConsistency.PRANegLenbitRewritingBound
+import DiophantineConsistency.PRANegLenbitWitnessBound
+import DiophantineConsistency.PRARewritingWitnessBound
 /-! A polynomial bound for negative Foundation bitDef. The full
     recursive-history and refutation obligations remain open. -/
 set_option autoImplicit false
@@ -36,34 +37,29 @@ theorem negBit_bound (x y : V) : (∼bitDef.val).Evalb ![x,y] →
         exact add_le_add (add_le_add ht le_rfl) (add_le_add ht2 le_rfl)
       have hmy : PRANegExponentialWitnessBound.negExponentialMajorant y ≤ negBitMajorant y := le_trans le_self_add le_self_add
       have hw : PRANegExponentialWitnessBound.negExponentialMajorant z ≤ negBitMajorant y := le_trans hpoly hmy
-      have hf : (∼expDef.val).Evalb ![z,x] := by simpa using hexp
-      have hb := PRANegExpWitnessBound.neg_exp_bound z x hf
-      have hs0 : Fin.snoc ![z,x] (PRANegExponentialWitnessBound.negExponentialMajorant z) = ![z,x,PRANegExponentialWitnessBound.negExponentialMajorant z] := by simp
-      have hb' := eval_bnd_mono (∼expDef.val) ![z,x] (Empty.elim : Empty → V) hw (by rw [hs0]; exact hb)
       let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
-      have hn := PRABndRewriting.natural (∼expDef.val) ω ![z,x,y] (negBitMajorant y)
-      have hv : (fun j => (ω #j).val ![z,x,y] Empty.elim) = ![z,x] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hs : Fin.snoc ![z,x,y] (negBitMajorant y) = ![z,x,y,negBitMajorant y] := by simp
-      rw [hv,hs] at hn
-      have hh := hn.mpr hb'
+      have hf : (ω ▹ (∼expDef.val)).Evalb ![z,x,y] := by
+        simpa [ω, Semiformula.eval_substs] using hexp
+      have hw' : PRANegExponentialWitnessBound.negExponentialMajorant
+          ((ω #0).val ![z,x,y] Empty.elim) ≤ negBitMajorant y := by
+        simpa [ω] using hw
+      have hh := PRARewritingWitnessBound.binary_rew_bound_with (∼expDef.val)
+        (fun z _ => PRANegExponentialWitnessBound.negExponentialMajorant z)
+        PRANegExpWitnessBound.neg_exp_bound ω ![z,x,y] (negBitMajorant y) hw' hf
       rw [show (ω ▹ (∼expDef.val)) = ∼(ω ▹ expDef.val) from
         LogicalConnective.HomClass.map_neg (Semiformula.rew ω) expDef.val] at hh
-      exact hh
+      simpa using hh
     · right; right
       let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#2]
       have hf : (ω ▹ (∼lenbitDef.val)).Evalb ![z,x,y] := by simpa [ω, Semiformula.eval_substs] using hlen
-      have hb := PRANegLenbitRewritingBound.neg_lenbit_rew_bound ω ![z,x,y] hf
-      have hs0 : Fin.snoc ![z,x,y] (y+1) = ![z,x,y,y+1] := by simp
-      have hb' := eval_bnd_mono (ω ▹ (∼lenbitDef.val)) ![z,x,y] (Empty.elim : Empty → V) hyw hb
-      have hs : Fin.snoc ![z,x,y] (negBitMajorant y) = ![z,x,y,negBitMajorant y] := by simp
-      rw [hs] at hb'
-      have heq : (ω ▹ (∼lenbitDef.val)) = ∼(ω ▹ lenbitDef.val) := by
-        exact LogicalConnective.HomClass.map_neg (Semiformula.rew ω) lenbitDef.val
-      rw [heq] at hb'
-      exact hb' 
+      have hw : ((ω #1).val ![z,x,y] Empty.elim)+1 ≤ negBitMajorant y := by
+        simpa [ω] using hyw
+      have hb := PRARewritingWitnessBound.binary_rew_bound_with (∼lenbitDef.val)
+        (fun _ y => y+1) PRANegLenbitWitnessBound.neg_lenbit_bound
+        ω ![z,x,y] (negBitMajorant y) hw hf
+      rw [show (ω ▹ (∼lenbitDef.val)) = ∼(ω ▹ lenbitDef.val) from
+        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) lenbitDef.val] at hb
+      simpa using hb
 def negBit : ArithmeticSemisentence 2 := ∼bitDef.val
 
 def boundedNegBit : ArithmeticSemisentence 3 := bnd negBit
