@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveMainScaleWitness16
+#print axioms DiophantineConsistency.AdaptiveMainScaleWitness16.literal_context
+#print axioms DiophantineConsistency.AdaptiveMainScaleWitness16.literal_zero_project
+#print axioms DiophantineConsistency.AdaptiveMainScaleWitness16.exists_positive_extension
+#print axioms DiophantineConsistency.AdaptiveMainScaleWitness16.current_no_zero_iff
