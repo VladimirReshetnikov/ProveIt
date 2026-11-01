@@ -1,0 +1,5 @@
+# Native endpoint for the combined 49-variable quartic
+
+`IPRANamedValues49Native.literal_equivalence` constructs a derivation in the repository's `nativeTheory` of equivalence between the no-zero formula for the positive shift of the fixed-port 49-variable literal and the negation of its mapped native refutation predicate. It transfers the established 42-variable bridge through the composed fixed-port model equivalence. The root-skew signed pair remains.
+
+The focused native processes share the historical native-50 peer provider. All five model/check modules are rebuilt on it and required to match the separately replayed model-49 peer; its receipt and observed process exit were guarded before the native runs. Original 258-module project ancestry, 848 author-only ancestry, package-transitive ancestry and dynamic imports remain inherited. This is not a full current-source closure. Identification of the mapped refutation predicate with ordinary Con(ZFC) depends on the separate interpretation and refutation bridge; this endpoint alone does not close that broader goal.

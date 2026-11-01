@@ -1,0 +1,267 @@
+import DiophantineConsistency.AdaptiveCombined49Model
+
+/-! Exact 185-gate combined quartic and its fixed-port model equivalence. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxHeartbeats 12000000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveNamedValues49
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticAdaptiveScaledNorms2011
+attribute [local irreducible] CurrentMasks2011.beta CurrentMasks2011.radix CurrentKernel2011.K
+
+def literal (p : Fin 4 → ℤ) : Expr (Fin 49) :=
+  let J : Expr (Fin 49) := .var 0
+  let F : Expr (Fin 49) := .var 1
+  let alpha : Expr (Fin 49) := .var 2
+  let f : Expr (Fin 49) := .var 3
+  let i : Expr (Fin 49) := .var 4
+  let T : Expr (Fin 49) := .var 5
+  let X : Expr (Fin 49) := .var 6
+  let Y : Expr (Fin 49) := .var 7
+  let r : Expr (Fin 49) := .var 8
+  let eta : Expr (Fin 49) := .var 9
+  let zeta : Expr (Fin 49) := .var 10
+  let y : Expr (Fin 49) := .var 11
+  let gamma : Expr (Fin 49) := .var 12
+  let squareVariable : Expr (Fin 49) := .var 13
+  let scaleVariable : Expr (Fin 49) := .var 14
+  let mainScaleVariable : Expr (Fin 49) := .var 15
+  let rankVariable : Expr (Fin 49) := .var 16
+  let cVariable : Expr (Fin 49) := .var 17
+  let aVariable : Expr (Fin 49) := .var 18
+  let ellVariable : Expr (Fin 49) := .var 19
+  let wPositive : Expr (Fin 49) := .var 20
+  let wNegative : Expr (Fin 49) := .var 21
+  let cubeVariable : Expr (Fin 49) := .var 22
+  let productVariable : Expr (Fin 49) := .var 23
+  let fSquareVariable : Expr (Fin 49) := .var 24
+  let cSquareVariable : Expr (Fin 49) := .var 25
+  let zPositive : Expr (Fin 49) := .var 26
+  let zNegative : Expr (Fin 49) := .var 27
+  let dPositive : Expr (Fin 49) := .var 28
+  let dNegative : Expr (Fin 49) := .var 29
+  let vPositive : Expr (Fin 49) := .var 30
+  let vNegative : Expr (Fin 49) := .var 31
+  let deltaVariable : Expr (Fin 49) := .var 32
+  let qSquareVariable : Expr (Fin 49) := .var 33
+  let productVariable2 : Expr (Fin 49) := .var 34
+  let psiSquareVariable : Expr (Fin 49) := .var 35
+  let ellProductVariable : Expr (Fin 49) := .var 36
+  let varphiSquareVariable : Expr (Fin 49) := .var 37
+  let scaledIndexVariable : Expr (Fin 49) := .var 38
+  let ySquareVariable : Expr (Fin 49) := .var 39
+  let qValueVariable : Expr (Fin 49) := .var 40
+  let deltaProductVariable : Expr (Fin 49) := .var 41
+  let ySumVariable : Expr (Fin 49) := .var 42
+  let offsetVariable : Expr (Fin 49) := .var 43
+  let gammaProductVariable : Expr (Fin 49) := .var 44
+  let timeProductVariable : Expr (Fin 49) := .var 45
+  let rankSeedVariable : Expr (Fin 49) := .var 46
+  let rootSkewPositive : Expr (Fin 49) := .var 47
+  let rootSkewNegative : Expr (Fin 49) := .var 48
+  let beta : Expr (Fin 49) := .constant (p 0)
+  let K0 : Expr (Fin 49) := .constant (p 1)
+  let MC : Expr (Fin 49) := .constant (p 2)
+  let MF : Expr (Fin 49) := .constant (p 3)
+  let qm := J * beta
+  let q := 1 + qm
+  let q2 := q * q
+  let q3 := q * qSquareVariable
+  let U := Y * qSquareVariable
+  let qF := q - F
+  let C := qF - alpha
+  let E := X * Y
+  let k := eta + zeta
+  let kY := Y * k
+  let c := eta + ySumVariable
+  let c2 := cVariable * cVariable
+  let a := productVariable2 + Y
+  let g15 := 4 * aVariable
+  let H := 3 + g15
+  let g17 := aVariable * aVariable
+  let DeltaComputed := H + g17
+  let g19 := aVariable * cVariable
+  let b0 := X + g19
+  let ell := productVariable2 * ySumVariable
+  let M := cubeVariable * qm
+  let g25 := K0 * q
+  let g26 := X + g25
+  let g27 := C * g26
+  let g28 := F * q
+  let Bt := g27 - g28
+  let g30 := ellVariable + k
+  let g31 := g30 + r
+  let namedBt := wPositive - wNegative
+  let root_skewComputed := k * namedBt
+  let root_skew := rootSkewPositive - rootSkewNegative
+  let root_inner := g31 - root_skew
+  let root_scaled := scaleVariable * root_inner
+  let g33 := Y * qm
+  let root_btq3 := namedBt * cubeVariable
+  let root_sum := root_scaled + g33
+  let ZComputed := root_sum - root_btq3
+  let Z := zPositive - zNegative
+  let g38 := Z * Z
+  let g39 := scaleVariable * scaleVariable
+  let g40 := ellVariable * g30
+  let g41 := 1 + ellProductVariable
+  let g42 := psiSquareVariable * g41
+  let A0 := g38 - g42
+  let g44 := qF * qm
+  let GComputed := alpha + g44
+  let g46 := qSquareVariable - 1
+  let g47 := rankSeedVariable * g46
+  let g48 := MF * q
+  let g49 := MC + g48
+  let g50 := J * g49
+  let R := g47 + g50
+  let g52 := k - rankVariable
+  let r0 := g52 - 1
+  let g54 := mainScaleVariable * gamma
+  let g55 := productVariable2 * q
+  let g56 := gammaProductVariable + productVariable
+  let shift := g56 - r0
+  let g58 := mainScaleVariable * offsetVariable
+  let g59 := H * shift
+  let DstarComputed := g58 + g59
+  let Dstar := dPositive - dNegative
+  let g61 := Dstar * Dstar
+  let g62 := mainScaleVariable * mainScaleVariable
+  let g63 := deltaVariable * cSquareVariable
+  let g64 := 1 + deltaProductVariable
+  let g65 := varphiSquareVariable * g64
+  let A1 := g61 - g65
+  let f2 := f * f
+  let rho := fSquareVariable - 1
+  let QComputed := deltaVariable * rho
+  let I := cSquareVariable * i
+  let g71 := scaledIndexVariable * scaledIndexVariable
+  let g72 := g71 - qValueVariable
+  let g74 := T * cVariable
+  let g75 := timeProductVariable - rankVariable
+  let g76 := fSquareVariable * g75
+  let VComputed := g76 - cVariable
+  let V := vPositive - vNegative
+  let y2 := y * y
+  let g80 := V * V
+  let g81 := ySquareVariable - squareVariable
+  let g82 := qValueVariable * g81
+  let Fa := ySquareVariable - g82
+  let auxResidual := Fa - 1
+  let firstSquare := A0 * A0
+  let mainSquare := A1 * A1
+  let auxSquare := auxResidual * auxResidual
+  let strongSquare := g72 * g72
+  let firstMain := firstSquare + mainSquare
+  let firstMainAux := firstMain + auxSquare
+  let sumSquares := firstMainAux + strongSquare
+  let squareDifference := squareVariable - g80
+  let squareConstraint := squareDifference * squareDifference
+  let sumWithConstraint := sumSquares + squareConstraint
+  let scaleDifference := scaleVariable - M
+  let scaleConstraint := scaleDifference * scaleDifference
+  let finalWithScale := sumWithConstraint + scaleConstraint
+  let mainScaleDifference := mainScaleVariable - U
+  let mainScaleConstraint := mainScaleDifference * mainScaleDifference
+  let finalWithMainScale := finalWithScale + mainScaleConstraint
+  let rankDifference := rankVariable - R
+  let rankConstraint := rankDifference * rankDifference
+  let finalWithRank := finalWithMainScale + rankConstraint
+  let cDifference := cVariable - c
+  let cConstraint := cDifference * cDifference
+  let aDifference := aVariable - a
+  let aConstraint := aDifference * aDifference
+  let ellDifference := ellVariable - ell
+  let ellConstraint := ellDifference * ellDifference
+  let wDifference := namedBt - Bt
+  let wConstraint := wDifference * wDifference
+  let addC := finalWithRank + cConstraint
+  let addA := addC + aConstraint
+  let addEll := addA + ellConstraint
+  let finalWithNamedValues := addEll + wConstraint
+  let cubeDifference := cubeVariable - q3
+  let cubeConstraint := cubeDifference * cubeDifference
+  let productDifference := productVariable - g55
+  let productConstraint := productDifference * productDifference
+  let fSquareDifference := fSquareVariable - f2
+  let fSquareConstraint := fSquareDifference * fSquareDifference
+  let cSquareDifference := cSquareVariable - c2
+  let cSquareConstraint := cSquareDifference * cSquareDifference
+  let addCube := finalWithNamedValues + cubeConstraint
+  let addProduct := addCube + productConstraint
+  let addFSquare := addProduct + fSquareConstraint
+  let addCSquare := addFSquare + cSquareConstraint
+  let zDifference := Z - ZComputed
+  let zConstraint := zDifference * zDifference
+  let dDifference := Dstar - DstarComputed
+  let dConstraint := dDifference * dDifference
+  let vDifference := V - VComputed
+  let vConstraint := vDifference * vDifference
+  let deltaDifference := deltaVariable - DeltaComputed
+  let deltaConstraint := deltaDifference * deltaDifference
+  let addZConstraint := addCSquare + zConstraint
+  let addDConstraint := addZConstraint + dConstraint
+  let addVConstraint := addDConstraint + vConstraint
+  let addDELTAConstraint := addVConstraint + deltaConstraint
+  let qSquareDifference := qSquareVariable - q2
+  let qSquareConstraint := qSquareDifference * qSquareDifference
+  let product2Difference := productVariable2 - E
+  let product2Constraint := product2Difference * product2Difference
+  let psiSquareDifference := psiSquareVariable - g39
+  let psiSquareConstraint := psiSquareDifference * psiSquareDifference
+  let ellProductDifference := ellProductVariable - g40
+  let ellProductConstraint := ellProductDifference * ellProductDifference
+  let varphiSquareDifference := varphiSquareVariable - g62
+  let varphiSquareConstraint := varphiSquareDifference * varphiSquareDifference
+  let scaledIndexDifference := scaledIndexVariable - I
+  let scaledIndexConstraint := scaledIndexDifference * scaledIndexDifference
+  let ySquareDifference := ySquareVariable - y2
+  let ySquareConstraint := ySquareDifference * ySquareDifference
+  let qSignedDifference := qValueVariable - QComputed
+  let qSignedConstraint := qSignedDifference * qSignedDifference
+  let add_qSquare := addDELTAConstraint + qSquareConstraint
+  let add_product2 := add_qSquare + product2Constraint
+  let add_psiSquare := add_product2 + psiSquareConstraint
+  let add_ellProduct := add_psiSquare + ellProductConstraint
+  let add_varphiSquare := add_ellProduct + varphiSquareConstraint
+  let add_scaledIndex := add_varphiSquare + scaledIndexConstraint
+  let add_ySquare := add_scaledIndex + ySquareConstraint
+  let add_qSigned := add_ySquare + qSignedConstraint
+  let deltaProductDifference := deltaProductVariable - g63
+  let deltaProductConstraint := deltaProductDifference * deltaProductDifference
+  let rankSeedDifference := rankSeedVariable - GComputed
+  let rankSeedConstraint := rankSeedDifference * rankSeedDifference
+  let ySumDifference := ySumVariable - kY
+  let ySumConstraint := ySumDifference * ySumDifference
+  let rootSkewDifference := root_skew - root_skewComputed
+  let rootSkewConstraint := rootSkewDifference * rootSkewDifference
+  let offsetDifference := offsetVariable - b0
+  let offsetConstraint := offsetDifference * offsetDifference
+  let gammaProductDifference := gammaProductVariable - g54
+  let gammaProductConstraint := gammaProductDifference * gammaProductDifference
+  let timeProductDifference := timeProductVariable - g74
+  let timeProductConstraint := timeProductDifference * timeProductDifference
+  let add_deltaProduct := add_qSigned + deltaProductConstraint
+  let add_rankSeed := add_deltaProduct + rankSeedConstraint
+  let add_ySum := add_rankSeed + ySumConstraint
+  let add_rootSkew := add_ySum + rootSkewConstraint
+  let add_offset := add_rootSkew + offsetConstraint
+  let add_gammaProduct := add_offset + gammaProductConstraint
+  let add_timeProduct := add_gammaProduct + timeProductConstraint
+  add_timeProduct
+
+theorem literal_eq (p : Fin 4 → ℤ) : literal p = AdaptiveCombined49Context.literal p := by
+  rfl
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem current_no_zero_iff :
+    (∀ v : Fin 49 → V, ¬ InternalZero (positiveShift (literal CurrentWindowCarry2011.ports)) v) ↔
+    (∀ v : Fin 42 → V, ¬ InternalZero (positiveShift (AdaptiveNamedValues42.literal CurrentWindowCarry2011.ports)) v) := by
+  rw [literal_eq]
+  exact (AdaptiveCombined49Model.shifted_no_zero_iff (V:=V) CurrentWindowCarry2011.ports).trans
+    (AdaptiveNamedValues50.current_no_zero_iff (V:=V))
+
+end DiophantineConsistency.AdaptiveNamedValues49

@@ -1,0 +1,5 @@
+This input freezes seven source modules: strong residual, context, model, graph, model checks, native endpoint and native checks. It gates the matched native-50 comparison and observed peer/comparator exits, the separate paired model-49 receipt and process exit, source/object hashes and direct-import companion candidates. Each native replay must match every one of the five separately replayed model-49 objects.
+
+The first preparation attempt exited 1 before creating a replay directory because the parent receipt was incorrectly expected to have four rows; its native-50 receipt actually has five. The guard was corrected before this input was frozen.
+
+The two processes share one historical native-50 peer provider. Project and package transitive ancestry, including the 848 author-only ancestry, and dynamic imports remain inherited. This is not a full current-source closure. The endpoint refers to the mapped native refutation predicate; identifying it with ordinary Con(ZFC) depends on the separate interpretation and refutation bridge.
