@@ -86,12 +86,45 @@ with tempfile.TemporaryDirectory(prefix='fresh-project-rebase-control-') as td:
         assert (out/label/'lib/Toy/Independent.olean').is_file()
         assert not (out/label/'lib/Toy/A.olean').exists()
         assert not (out/label/'lib/Toy/Check.olean').exists()
+    selected_pair = root/'selective-pair'
+    command(sys.executable, HERE/'run_pair.py', '--prepared', out,
+            '--preparation-sha256', H(out/'preparation.json'), '--old-snapshot', old,
+            '--new-snapshot', new, '--expected-axiom-reports', '1', '--output', selected_pair)
+    selected_state = json.loads((selected_pair/'pair-state.json').read_text())
+    assert selected_state['status'] == 'MATCHED_SELECTIVE_PASS'
+    assert [r['exit'] for r in selected_state['runs']] == [0, 0]
+    comparison = command(sys.executable, HERE/'compare.py', out, old, new, H(out/'preparation.json'))
+    compared = json.loads(comparison.stdout)
+    assert compared['status'] == 'MATCHED_SELECTIVE_PASS' and compared['affected_modules'] == 2
+    def comparison_fails(reason):
+        q = subprocess.run([sys.executable, str(HERE/'compare.py'), str(out), str(old), str(new),
+                            H(out/'preparation.json')], capture_output=True, text=True)
+        assert q.returncode != 0 and reason in q.stderr, (reason,q.stdout,q.stderr)
+    saved_states = {}
+    for label in ('author','peer'):
+        state_file=out/label/'rebuild-state.json'; saved_states[label]=state_file.read_bytes()
+        bad=json.loads(saved_states[label]);bad['records'][-1]['direct_inputs'].pop('Toy.A')
+        state_file.write_text(json.dumps(bad))
+    comparison_fails('direct import coverage')
+    for label in ('author','peer'):
+        (out/label/'rebuild-state.json').write_bytes(saved_states[label])
+    workspace_source=workspace/'src/Toy/Independent.lean'; saved_source=workspace_source.read_bytes()
+    workspace_source.write_text('def independentValue : Nat := 8\n')
+    comparison_fails('workspace source drift');workspace_source.write_bytes(saved_source)
+    absent = next(s for s in ('.olean.private','.olean.server','.ir','.ilean')
+                  if not (out/'author/lib/Toy'/('Independent'+s)).exists())
+    extra = out/'author/lib/Toy'/('Independent'+absent);extra.write_bytes(b'unexpected')
+    comparison_fails('new companion');extra.unlink()
+    author_seed=out/'author/lib/Toy/Independent.olean';peer_seed=out/'peer/lib/Toy/Independent.olean'
+    peer_contents=peer_seed.read_bytes();peer_seed.unlink();os.link(author_seed,peer_seed)
+    comparison_fails('sibling hardlink');peer_seed.unlink();peer_seed.write_bytes(peer_contents)
     original_peer = (out/'peer/lib/Toy/Independent.olean').read_bytes()
     (out/'author/lib/Toy/Independent.olean').write_bytes(b'disturbed')
     assert (out/'peer/lib/Toy/Independent.olean').read_bytes() == original_peer
+    comparison_fails('changed companion')
     bad = json.loads(observation.read_text()); bad['observed_exit_code'] = None
     observation.write_text(json.dumps(bad)); bad_args = args[:]
     bad_args[bad_args.index('--parent-observation-sha256')+1] = H(observation)
     q = subprocess.run([*map(str, bad_args), '--output', str(root/'bad')], capture_output=True, text=True)
-    assert q.returncode != 0 and not (root/'bad').exists()
-print('PASS: real Lean matched toy pair, isolated unaffected seeds, affected exclusion and unobserved-exit rejection')
+    assert q.returncode != 0 and 'parent coordinator terminal observation does not match' in q.stderr and not (root/'bad').exists()
+print('PASS: real Lean selective pair; direct-import, workspace, companion, hardlink, seed and exit controls rejected')
