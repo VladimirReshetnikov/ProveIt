@@ -69,43 +69,21 @@ theorem eval_toSet {V : Type*} [SetStructure V] (φ : SetTheory.Form) :
       (∀ i : Fin k, b i = e i.val) → (∀ j, f j = e (k + j)) →
       ((toSet k φ).Eval b f ↔ SetTheory.Sat (memRel V) e φ) := by
   induction φ with
-  | fMem i j =>
-      intro k b f e hb hf
-      simp [toSet, SetTheory.Sat, val_toSetVar hb hf]
-  | fEq i j =>
+  | fMem i j | fEq i j =>
       intro k b f e hb hf
       simp [toSet, SetTheory.Sat, val_toSetVar hb hf]
   | fBot =>
       intro k b f e hb hf
       simp [toSet, SetTheory.Sat]
-  | fImp a b iha ihb =>
+  | fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
       intro k bb f e hb hf
-      simp only [toSet, LogicalConnective.HomClass.map_imply, SetTheory.Sat]
-      exact imp_congr (iha k bb f e hb hf) (ihb k bb f e hb hf)
-  | fAnd a b iha ihb =>
+      simp [toSet, SetTheory.Sat, iha k bb f e hb hf, ihb k bb f e hb hf]
+  | fAll a ih | fEx a ih =>
       intro k bb f e hb hf
-      simp only [toSet, LogicalConnective.HomClass.map_and, SetTheory.Sat]
-      exact and_congr (iha k bb f e hb hf) (ihb k bb f e hb hf)
-  | fOr a b iha ihb =>
-      intro k bb f e hb hf
-      simp only [toSet, LogicalConnective.HomClass.map_or, SetTheory.Sat]
-      exact or_congr (iha k bb f e hb hf) (ihb k bb f e hb hf)
-  | fAll a ih =>
-      intro k bb f e hb hf
-      simp only [toSet, Semiformula.eval_all, SetTheory.Sat]
-      refine forall_congr' fun d => ih (k + 1) (d :> bb) f (SetTheory.scons d e) ?_ ?_
-      · intro i
-        refine Fin.cases ?_ (fun i' => ?_) i
-        · simp [SetTheory.scons]
-        · simpa [SetTheory.scons] using hb i'
-      · intro j
-        have h2 : k + 1 + j = (k + j) + 1 := by omega
-        rw [h2]
-        simpa [SetTheory.scons] using hf j
-  | fEx a ih =>
-      intro k bb f e hb hf
-      simp only [toSet, Semiformula.eval_ex, SetTheory.Sat]
-      refine exists_congr fun d => ih (k + 1) (d :> bb) f (SetTheory.scons d e) ?_ ?_
+      simp only [toSet, Semiformula.eval_all, Semiformula.eval_ex, SetTheory.Sat]
+      first
+      | refine forall_congr' fun d => ih (k + 1) (d :> bb) f (SetTheory.scons d e) ?_ ?_
+      | refine exists_congr fun d => ih (k + 1) (d :> bb) f (SetTheory.scons d e) ?_ ?_
       · intro i
         refine Fin.cases ?_ (fun i' => ?_) i
         · simp [SetTheory.scons]
