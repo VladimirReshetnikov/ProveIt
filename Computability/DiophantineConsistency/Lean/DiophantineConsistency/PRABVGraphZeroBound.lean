@@ -23,18 +23,14 @@ theorem bvGraph_zero_bound (p w : V)
     let ω : Rew ℒₒᵣ Empty 3 Empty 2 := Rew.subst ![Semiterm.numeral 0,#1,#0]
     have hn := PRABndRewriting.natural (((BV.blueprint L).graph L).val) ω ![0,p] w
     have hv : (fun j => (ω #j).val ![0,p] Empty.elim) = ![0,p,0] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs : Fin.snoc ![0,p] w = ![0,p,w] := by simp
-    have hs' : Fin.snoc ![0,p,0] w = ![0,p,0,w] := by simp
-    rw [hv,hs,hs'] at hn
+      apply funext
+      simp [Fin.forall_fin_succ, ω]
+    rw [hv] at hn
     change (bnd (ω₀ ▹ (ω₁ ▹ (((BV.blueprint L).graph L).val)))).Evalb ![0,p,w]
     have heq : ω₀ ▹ (ω₁ ▹ (((BV.blueprint L).graph L).val)) = ω ▹ (((BV.blueprint L).graph L).val) := by
       simp [←TransitiveRewriting.comp_app, Rew.subst_comp_subst, ω₀,ω₁,ω]
     rw [heq]
-    exact hn.mpr hg
+    simpa using hn.mpr (by simpa using hg)
   · right
     rfl
 
@@ -49,12 +45,9 @@ theorem bvGraphZeroBody_model (e : Fin 3 → V) : (bvGraphZeroBody (L := L)).Eva
   apply recGraph_bound_of_pair (L := L) (BV.blueprint L) 0 (e 0) 0 (e 1) (e 2) hp hs
   · simpa using hpair
   · have hv : (FirstOrder.Semiterm.val e Empty.elim ∘ (![ #1, Semiterm.numeral 0, #0, Semiterm.numeral 0, #2 ] : Fin 5 → Semiterm ℒₒᵣ Empty 3)) = ![e 1,0,e 0,0,e 2] := by
-      funext j
-      refine Fin.cases rfl (fun k => ?_) j
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      refine Fin.cases rfl (fun k => ?_) k
-      exact Fin.cases rfl (fun k => Fin.elim0 k) k
+      apply funext
+      simp [Fin.forall_fin_succ, Function.comp_def]
+      rfl
     rw [hv] at hfix
     exact hfix
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
