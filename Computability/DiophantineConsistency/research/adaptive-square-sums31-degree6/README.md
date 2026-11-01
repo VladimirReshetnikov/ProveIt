@@ -29,6 +29,11 @@ of a positive parent zero implies existence of an oriented one. The proof does
 not require orienting every individual parent zero; the remaining task is to
 discharge this existence hypothesis for the fixed ports.
 
+A [conditional native iPRA bridge](../../reviews/adaptive-aq31-conditional-native-replay/README.md)
+now reduces the desired fixed-port result to the explicit all-model assertion
+that a halting run yields an oriented positive 32-variable witness. This
+assertion is not yet discharged by the conditional bridge.
+
 `verify_degree.py` performs exact integer polynomial arithmetic on the residuals
 and checks degree six after the positive shift; this finite computation is not
 a Lean degree theorem. Its leading homogeneous term argument uses a residual
