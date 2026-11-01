@@ -1,0 +1,28 @@
+'DiophantineConsistency.AdaptiveGap85ThirdCurrent.positive_zero_shift' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ThirdCurrent.first_strictly_decreases' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85ThirdCurrent.positive_zero_shift.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (s : V) (hp : 0 < ↑(p 0)) (hv : ∀ (i : Fin 13), 0 < v i)
+  (hF :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have A := v 6 + ↑(p 1) * q;
+    have U := v 7 * (q * q);
+    have c := v 9 + v 7 * (v 9 + v 10);
+    A * (c * U * s) < v 1)
+  (hg :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have A := v 6 + ↑(p 1) * q;
+    have c := v 9 + v 7 * (v 9 + v 10);
+    (q * q - 1) * (A + 1) * c * s < v 12)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v) :
+  (∀ (i : Fin 13), 0 < DiophantineConsistency.AdaptiveGap85ThirdModel.shift p v s i) ∧
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j))
+      (DiophantineConsistency.AdaptiveGap85ThirdModel.shift p v s)

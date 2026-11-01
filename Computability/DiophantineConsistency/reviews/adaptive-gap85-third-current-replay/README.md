@@ -1,0 +1,5 @@
+# Positive-port third-shift replay
+
+`AdaptiveGap85ThirdCurrent.positive_zero_shift` specializes the model-uniform third shift to positive first ports and positive witnesses, deriving the earlier `b*A ≥ 1` hypothesis. It still requires the displayed strict F and gamma decrement bounds. `first_strictly_decreases` shows F decreases strictly when the step parameter is positive and the F decrement is available. Neither theorem shows the bounds hold for an arbitrary zero, produces a normalized witness, or establishes the 85-to-86 implication.
+
+Both Lean replays actually exited 0. `comparison.json` matches the two complete source/object/full-log rows with zero warnings and rechecks 394 selected project object/companion paths. Both source snapshots, complete logs, and process states are preserved. The matched parent supplies the model shift; its original transitive project and external package ancestry remain historical. This focused replay does not independently rebuild that ancestry or record a direct-import resolution trace.

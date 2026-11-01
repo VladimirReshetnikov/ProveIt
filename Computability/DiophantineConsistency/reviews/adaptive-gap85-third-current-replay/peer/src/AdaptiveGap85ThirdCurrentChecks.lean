@@ -1,0 +1,4 @@
+import DiophantineConsistency.AdaptiveGap85ThirdCurrent
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdCurrent.positive_zero_shift
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdCurrent.first_strictly_decreases
+#check DiophantineConsistency.AdaptiveGap85ThirdCurrent.positive_zero_shift
