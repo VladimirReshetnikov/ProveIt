@@ -202,33 +202,25 @@ lemma row_isFormula (s code : V)
         · simpa [row,hz,h0,h1,h2] using namedAll_isFormula hb (ArithmeticCantor.first (code/4))
         · simpa [row,hz,h0,h1,h2] using eqCode_isFormula (V := V) (ArithmeticCantor.first (code/4)) (ArithmeticCantor.second (code/4))
 
-/-- A bounded internal prefix, rather than an external well-founded recursion. -/
+/-- Every decoded row is a formula, including at nonstandard indices. -/
+theorem decode_isFormula (code : V) : IsFormula ℒₛₑₜ (decode code) := by
+  induction code using ISigma1.sigma1_order_induction
+  · definability
+  case ind code ih =>
+    rcases zero_or_succ code with rfl | ⟨raw,rfl⟩
+    · simpa using zeroFormula_isFormula (V := V)
+    · rw [decode_succ_row]
+      apply row_isFormula
+      intro i hi
+      rw [history_lookup_le raw i (lt_succ_iff_le.mp hi)]
+      exact ih i hi
+
+/-- Every entry in a bounded history is a formula. -/
 lemma history_formulas (code : V) :
     ∀ i ≤ code, IsFormula ℒₛₑₜ (znth (history code) i) := by
-  induction code using ISigma1.sigma1_succ_induction
-  · definability
-  case zero =>
-    intro i hi
-    have hi0 : i = 0 := le_antisymm hi (by simp)
-    subst i
-    simpa using zeroFormula_isFormula (V := V)
-  case succ code ih =>
-    intro i hi
-    by_cases he : i = code+1
-    · subst i
-      have hv := row_isFormula (history code) (code+1) (by
-        intro j hj
-        exact ih j (lt_succ_iff_le.mp hj))
-      change IsFormula ℒₛₑₜ (decode (code+1))
-      rw [decode_succ_row]
-      exact hv
-    · have hil : i < code+1 := lt_of_le_of_ne hi he
-      rw [history_succ,znth_append_old (history_seq code) _ i
-        (by simpa only [history_length] using hil)]
-      exact ih i (lt_succ_iff_le.mp hil)
-
-theorem decode_isFormula (code : V) : IsFormula ℒₛₑₜ (decode code) :=
-  history_formulas code code le_rfl
+  intro i hi
+  rw [history_lookup_le code i hi]
+  exact decode_isFormula i
 
 /-- The exact positive recurrence; source zero remains a separately defined alias. -/
 theorem decode_succ (raw : V) :
