@@ -1,0 +1,5 @@
+# Native difference-invariant successor prerequisites: independent replay
+
+The guarded independent peer `/tmp/ipra-difference-step-prerequisites-10blm3n7` passed and matches the author `/tmp/ipra-difference-step-prerequisites-4kymuti3` in all ten source/object/full-log rows, the parent state hash, and the complete serialized selected-provider inventory. It independently replays the nine arithmetic source modules and check module on the same checked invariant-base parent. Neither positive reconstruction nor the invariant successor step is proved here. Parent/Foundation and package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-step-prerequisites.py`. Peer state SHA-256 `628652f8d4469c38c6f8d1d8c82f380fdc871f21c5876c752b230b99040495da`; provider inventory `a3ab1c4692d542df66ed1d798ee2fc05cd86cdd9f850f05177ca0872863296e8`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

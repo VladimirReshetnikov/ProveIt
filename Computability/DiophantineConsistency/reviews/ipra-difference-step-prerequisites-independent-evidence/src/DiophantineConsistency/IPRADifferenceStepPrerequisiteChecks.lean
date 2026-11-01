@@ -1,0 +1,11 @@
+import DiophantineConsistency.IPRAPredSuccessor
+import DiophantineConsistency.IPRASubSuccZeroNative
+import DiophantineConsistency.IPRASubPredZeroNative
+import DiophantineConsistency.IPRASubSuccSelfNonzero
+import DiophantineConsistency.IPRASuccLeft
+
+#print axioms DiophantineConsistency.IPRAPredSuccessor.pred_successor
+#print axioms DiophantineConsistency.IPRASubSuccZeroNative.native_provable
+#print axioms DiophantineConsistency.IPRASubPredZeroNative.native_provable
+#print axioms DiophantineConsistency.IPRASubSuccSelfNonzero.native
+#print axioms DiophantineConsistency.IPRASuccLeft.successor_left
