@@ -17,11 +17,14 @@ declares a `Foundation` library at `lib/FormalizedFormalLogic-Foundation`,
 requires mathlib `v4.32.0`, and uses the existing package build directories.
 [`build_all.py`](build_all.py) verifies the pinned inputs, attempts the 140
 named targets in a fresh root with no prior build, guards the explicitly
-imported external objects and companions before and after, monitors free
-space, and records its actual outcome. A success creates a new overlay with
+imported external objects and companions before and after, and guards against
+foreign Foundation objects and earlier external-object shadows in the Lake
+search path. It sanitizes inherited Lean and dynamic-library search environment
+variables, monitors free space, and records its actual outcome. A success creates a new overlay with
 fresh Foundation objects and inherited non-Foundation packages; it does not
 modify the historical provider. The guard is not an authentication of the
-external packages' transitive or dynamically loaded dependencies.
+external packages' transitive or dynamically loaded dependencies, and its
+before-and-after checks cannot exclude mutation followed by restoration.
 
 A first targeted Lake build of `Foundation.FirstOrder.Arithmetic.IOpen.Basic`
 and its dependencies was started in that root. This input record is **not a
@@ -45,4 +48,15 @@ The separate root `/tmp/ipra-foundation-guarded-ieOVZs2r` was prepared with
 the same source snapshot and configurations for a clean guarded build. A
 preflight source-closure walk found 140 Foundation source modules and 43
 declared external imports, corresponding to 430 present-or-absent companion
-paths. Preflight success is not a successful build or a completed replay.
+paths. That attempt was intentionally stopped after discovering that it did
+not guard earlier search-path shadows. Its [failed receipt](guarded-attempt-termination.json)
+and [terminal observation](guarded-attempt-observation.json) record Lake's
+SIGTERM exit and the outer process's failure; no outputs are reused.
+
+The independent fresh root `/tmp/ipra-foundation-guarded-v2-cjHUaJun` passed
+preflight with 140 source modules, 43 declared external imports and 14,764
+presence-or-absence guards, including all foreign Foundation companion paths
+and external search-path shadows. The [guard tests](test_guards.py) reject
+injected shadow objects, altered objects, new companions, foreign Foundation
+objects or companions, and empty or relative search-path components.
+Preflight success is not a successful build or a completed replay.

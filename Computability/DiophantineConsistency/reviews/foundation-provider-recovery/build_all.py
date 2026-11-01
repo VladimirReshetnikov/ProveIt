@@ -21,6 +21,11 @@ OLD = Path('/tmp/pra14-full-transitive-2x6o__to/package-lib')
 LEAN = Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
 MIN_FREE = 4 * 1024**3
 MANIFEST_SHA256 = '491075df9eac57799d21b475527b3b1af3dc81ded58e97a87e1cf6c453dcb13d'
+SUFFIXES = ('.olean', '.olean.private', '.olean.server', '.ir', '.ilean',
+            '.olean.hash', '.olean.private.hash', '.olean.server.hash',
+            '.ir.hash', '.ilean.hash')
+SANITIZED = ('LEAN_PATH', 'LEAN_SRC_PATH', 'LEAN_SYSROOT', 'LD_LIBRARY_PATH',
+             'LD_PRELOAD', 'LD_AUDIT')
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -57,7 +62,7 @@ def uncomment(text):
         raise RuntimeError('unterminated block comment in source')
     return ''.join(result)
 
-def direct_external_inputs(root, targets):
+def direct_external_inputs(root, targets, env):
     """Guard declared external imports of the Foundation source closure."""
     source = root / 'lib/FormalizedFormalLogic-Foundation'
     todo, visited, external = list(targets), set(), set()
@@ -77,19 +82,42 @@ def direct_external_inputs(root, targets):
             if match:
                 todo.extend(match.group(1).split())
     path_text = subprocess.check_output(['lake', 'env', 'printenv', 'LEAN_PATH'],
-                                        cwd=root, text=True).strip()
-    search = [Path(p) for p in path_text.split(':') if p]
+                                        cwd=root, env=env, text=True).strip()
+    parts = path_text.split(':')
+    if any(not p or not Path(p).is_absolute() for p in parts):
+        raise RuntimeError('empty or relative component in Lake LEAN_PATH')
+    search = [Path(p) for p in parts]
     guard = {}
+    own = (root / '.lake/build/lib/lean').resolve()
+    if sum(base.resolve() == own for base in search) != 1:
+        raise RuntimeError('fresh Foundation output root is absent or repeated in LEAN_PATH')
+    # No other search root may supply a Foundation object in this closure.
+    for name in sorted(visited):
+        rel = Path(*name.split('.'))
+        for base in search:
+            if base.resolve() == own:
+                continue
+            stem = base / rel
+            for suffix in SUFFIXES:
+                candidate = Path(str(stem) + suffix)
+                if os.path.lexists(candidate):
+                    raise RuntimeError(f'foreign Foundation fallback exists: {candidate}')
+                guard[str(candidate)] = None
     for name in sorted(external):
         rel = Path(*name.split('.'))
         candidates = [base / rel.with_suffix('.olean') for base in search]
         obj = next((p for p in candidates if p.is_file()), None)
         if obj is None:
             raise RuntimeError(f'external imported object missing: {name}')
+        # Guard shadowing: an earlier search-path object must remain absent.
+        for candidate in candidates:
+            if candidate == obj:
+                break
+            if os.path.lexists(candidate):
+                raise RuntimeError(f'broken or unexpected earlier import candidate: {candidate}')
+            guard[str(candidate)] = None
         stem = Path(str(obj)[:-len('.olean')])
-        for suffix in ('.olean', '.olean.private', '.olean.server', '.ir', '.ilean',
-                       '.olean.hash', '.olean.private.hash', '.olean.server.hash',
-                       '.ir.hash', '.ilean.hash'):
+        for suffix in SUFFIXES:
             path = Path(str(stem) + suffix)
             if os.path.lexists(path):
                 if not path.is_file():
@@ -97,7 +125,7 @@ def direct_external_inputs(root, targets):
                 guard[str(path)] = {'realpath': str(path.resolve()), 'sha256': sha(path)}
             else:
                 guard[str(path)] = None
-    return sorted(visited), sorted(external), guard
+    return sorted(visited), sorted(external), guard, path_text
 
 def check_guard(guard):
     for name, expected in guard.items():
@@ -126,11 +154,13 @@ def main():
     if shutil.disk_usage(root).free < MIN_FREE:
         raise RuntimeError('insufficient free space')
     targets = ['+' + n + ':olean' for n in manifest['historical_module_names']]
-    foundation_sources, external_modules, package_guard = direct_external_inputs(
-        root, manifest['historical_module_names'])
-    check_guard(package_guard)
     cmd = ['lake', 'build', *targets]
     env = dict(os.environ, LEAN_NUM_THREADS='1')
+    for variable in SANITIZED:
+        env.pop(variable, None)
+    foundation_sources, external_modules, package_guard, lean_path = direct_external_inputs(
+        root, manifest['historical_module_names'], env)
+    check_guard(package_guard)
     start = time.time()
     stopped = False
     with log.open('x') as f:
@@ -150,6 +180,8 @@ def main():
               'foundation_source_closure': foundation_sources,
               'declared_external_modules': external_modules,
               'declared_external_guard': package_guard,
+              'lake_lean_path': lean_path,
+              'sanitized_environment': list(SANITIZED),
               'scope': 'Fresh Foundation build on inherited external package and dynamic ancestry; '
                        'no identity with vanished historical objects is asserted.'}
     try:
@@ -159,6 +191,10 @@ def main():
             raise RuntimeError('manifest or driver changed during build')
         check_inputs(root, manifest)
         check_guard(package_guard)
+        final_path = subprocess.check_output(['lake', 'env', 'printenv', 'LEAN_PATH'],
+                                             cwd=root, env=env, text=True).strip()
+        if final_path != lean_path:
+            raise RuntimeError('effective Lake LEAN_PATH changed')
         lib = root / '.lake/build/lib/lean'
         objects = {}
         for name in manifest['historical_module_names']:
