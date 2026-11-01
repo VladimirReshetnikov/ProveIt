@@ -23,8 +23,14 @@ pinned graph. Normal Python and `python -O` pass.
 
 Two focused [Lean model replays](../../reviews/adaptive-square-sums15-model-replay/README.md)
 match on the same historical parent. Transitive project, package and dynamic
-ancestry is inherited. The native iPRA endpoint for this new expression is not
-yet established by this receipt and remains separate work.
+ancestry is inherited. The exact literal now also has a native iPRA endpoint:
+`IPRAScaleWitness15Native.literal_equivalence` asserts a derivation of the
+no-positive-zero/selected ZFC consistency equivalence in the explicitly
+defined native theory. The [two guarded comparisons](../../reviews/ipra-scale15-native-verification/README.md)
+match all ten compiled suffix modules and 11,467 guarded files. This is a
+fixed-source result on the inherited historical provider, not a full
+source-current closure; package-transitive and dynamically loaded ancestry
+remain inherited.
 
 The separate [equation26.tex](../../equation26.tex) and
 [equation26.pdf](../../equation26.pdf) display the 15 distinct positive
@@ -34,6 +40,5 @@ checks the final sum and every circuit row against the pinned graph, confirms
 the copied fixed constants and rejects two formula mutations. It is a limited
 parser, not a general TeX interpreter. Normal Python and `python -O` pass. Two
 `pdflatex` runs produced identical PDF SHA-256
-`6021b6b74a5607965f577dfe2a06a80981e6de4644fa24bbb1564f621f43fff3`;
-both pages were visually inspected. The page states the model proof and the
-pending native-iPRA endpoint separately.
+`fb674772a0d2f654182b3e979e26afd9deb38e097ad2b2a6e3669c4dc6c533d8`;
+both pages were visually inspected. The page states the matched native-iPRA result and its snapshot boundary.
