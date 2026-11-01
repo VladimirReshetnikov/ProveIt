@@ -1,0 +1,24 @@
+{
+  "rows": {
+    "comparison": {
+      "exit": 1,
+      "script_sha256": "a8f3a8f439c22c2e8f9ee47dcf19aacd96b6dfdaa042fee74521a6f05fe381d9",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/ipra-compare-same-run-negative-g_ieo09c/compare.py\", line 8, in <module>\n    assert len(sys.argv)==4;PLAN=Path(sys.argv[1]);A=Path(sys.argv[2]);B=Path(sys.argv[3]);assert A.resolve()!=B.resolve() and not os.path.samefile(A/'state.json',B/'state.json'), 'author and peer must be independent runs';M=PLAN/'manifest.json';DR=PLAN/'replay.py';m,mh=read(M);s,sh=read(SM);a,ah=read(A/'state.json');b,bh=read(B/'state.json');dh=h(DR);ch=h(__file__);assert sh==m['survey_manifest_sha256'] and a['status']==b['status']=='PASS' and a['manifest_sha256']==b['manifest_sha256']==mh and a['driver_sha256']==b['driver_sha256']==dh==m['driver_sha256'];assert [r['name'] for r in a['records']]==[r['name'] for r in b['records']]==s['order'];P=Path(m['parent_state_path']).parent;EXT={'Foundation','Mathlib','Lean','Init','Std','Batteries','Qq','Aesop','Plausible','ProofWidgets','ImportGraph','LeanSearchClient','Lake'};SUFFIXES=('.olean','.olean.private','.olean.server','.ir','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean','.ilean.hash')\n                                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    "wrapper": {
+      "exit": 1,
+      "script_sha256": "433a3623b81053f594d37205d2ccd7bf8f49c49e32c583f57b8851cc4450484a",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/ipra-compare-same-run-negative-g_ieo09c/run.py\", line 14, in <module>\n    assert author.resolve() != peer.resolve() and not os.path.samefile(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        author / 'state.json', peer / 'state.json'), 'author and peer must be independent runs'\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    "wrong_root": {
+      "exit": 1,
+      "script_sha256": "a8f3a8f439c22c2e8f9ee47dcf19aacd96b6dfdaa042fee74521a6f05fe381d9",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-compare-same-run-negative-diuvbqrp/compare.py\", line 5, in <module>\n    D=Path(__file__).resolve().parent;R=D.parents[3];V=R/'Computability/DiophantineConsistency/reviews';SUR=V/'ipra-current-repaired-survey';SM=SUR/'manifest.json';SNAP=SUR/'sources';PKG=Path('/tmp/pra14-full-transitive-2x6o__to/package-lib');LEAN=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean');TOOL=LEAN.parent.parent/'lib/lean';h=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()\n                                        ~~~~~~~~~^^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py\", line 49, in __getitem__\n    raise IndexError(idx)\nIndexError: 3\n",
+      "stdout": ""
+    }
+  },
+  "scope": "The first wrong-root probe failed before the intended check; in-repository probes rejected the same run without producing a receipt.",
+  "status": "PASS_NEGATIVE_CHECK"
+}
