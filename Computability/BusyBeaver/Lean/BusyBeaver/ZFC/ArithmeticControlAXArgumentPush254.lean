@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.ArithmeticControlSourceRank254
 import BusyBeaver.ZFC.ArithmeticControlCopyBack254
 
 set_option autoImplicit false
@@ -16,6 +17,7 @@ open ArithmeticControlFetch254 (put s1Reg)
 open ArithmeticControlRead254 (s2Reg acReg)
 open ArithmeticControlUnpair254 (wsReg)
 open FiniteControlTable254 RegisterPath
+open ArithmeticControlSourceRank254 (literal_target)
 
 def entry : Control := ⟨136, by decide⟩
 def argumentExit : Control := ⟨162, by decide⟩
@@ -68,18 +70,6 @@ private def c180 : Control := ⟨180, by decide⟩
 theorem entry_source : (source entry).2 = .decnz 1 := by rfl
 theorem argumentExit_source : (source argumentExit).2 = .decnz 1 := by rfl
 theorem exit_source : (source exit).2 = .decnz 8 := by rfl
-
-/-- Resolve a literal target through its finite tree path, avoiding catalogue search. -/
-private theorem literal_target (P : List Bool) (q : Control)
-    (hw : RMBisim.twalk ActualTree254.tree P 0 =
-      some ((source q).2, (source q).1.length))
-    (hc : consume P (source q).1.length = (source q).1) : resolveControl P = q := by
-  have hw' : walk Prog254.program (Prog254.program.nnodes + 1) Prog254.program.root P 0 =
-      some ((source q).2, (source q).1.length) := by
-    rw [RMBisim.walk_root, ActualTree254.tree_eq]
-    exact hw
-  apply source_injective
-  rw [resolve_source _ _ _ hw', hc]
 
 private def topToScratch : MoveShape where
   test := entry

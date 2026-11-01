@@ -3,10 +3,12 @@ import BusyBeaver.ZFC.FiniteControlTable254
 set_option autoImplicit false
 
 /-!
-Source-only prototype: certify a false-first catalogue rank through a finite
-binary tree. The witness follows a tree path, and right steps carry the left
-subtree's leaf count. No list prefix is dropped or indexed by reduction in the
-actual source-equality clients. Default proof limits are retained.
+Catalogue sources by a structural rank witness through the finite binary tree.
+`pathRank` and `pathEdge` compute the false-first leaf rank and the edge at the
+end of a path, walking only the path (right steps add the left subtree's leaf
+count). `source_of_path` turns the two computations into the exact catalogue
+source, so no catalogue list is built or indexed by reduction, and default
+proof limits are retained.
 -/
 namespace SetTheory.BusyBeaver.ZFC.ArithmeticControlSourceRank254
 open RegisterPath RMBisim SiteCoverage FiniteControlTable254
@@ -47,13 +49,6 @@ theorem lookup {t : Tree} {i : Nat} {P : List Bool} {e : Edge}
       List.getElem?_map, ih]
     rfl
 
-/-- A separately checked count can be reused at many literal right steps. -/
-theorem right_count {a b : Tree} {n i : Nat} {P : List Bool} {e : Edge}
-    (hn : leafCount a = n) (h : AtRank b i P e) :
-    AtRank (.node a b) (n + i) (true :: P) e := by
-  rw [← hn]
-  exact .right h
-
 end AtRank
 
 /-- This derives the complete existing catalogue source; it creates no new program. -/
@@ -65,51 +60,70 @@ theorem source_of_atRank {q : Control} {P : List Bool} {e : Edge}
     exact h.bound)] at hv
   exact Option.some.inj hv
 
-private theorem rank_354 :
-    AtRank ActualTree254.tree 354 [true, true, true, false, true, false, false, true, false, false, true, false, true, false, false, true, true, false, false, false, false] (.decnz 1) := by
-  apply AtRank.right_count (n := 10) (i := 344) (by rfl)
-  apply AtRank.right_count (n := 14) (i := 330) (by rfl)
-  apply AtRank.right_count (n := 14) (i := 316) (by rfl)
-  apply AtRank.left
-  apply AtRank.right_count (n := 1) (i := 315) (by rfl)
-  apply AtRank.left
-  apply AtRank.left
-  apply AtRank.right_count (n := 1) (i := 314) (by rfl)
-  apply AtRank.left
-  apply AtRank.left
-  apply AtRank.right_count (n := 1) (i := 313) (by rfl)
-  apply AtRank.left
-  apply AtRank.right_count (n := 81) (i := 232) (by rfl)
-  apply AtRank.left
-  apply AtRank.left
-  apply AtRank.right_count (n := 153) (i := 79) (by rfl)
-  apply AtRank.right_count (n := 79) (i := 0) (by rfl)
-  apply AtRank.left
-  apply AtRank.left
-  apply AtRank.left
-  apply AtRank.left
-  exact .here _
+/-- The false-first leaf rank reached by a path: every right step skips the
+leaves of the left subtree. Only the path and those left counts are computed. -/
+def pathRank : Tree → List Bool → Nat
+  | .node a _, false :: P => pathRank a P
+  | .node a b, true :: P => leafCount a + pathRank b P
+  | _, _ => 0
+
+/-- The edge at the end of a path that ends exactly at a leaf. -/
+def pathEdge : Tree → List Bool → Option Edge
+  | .leaf e, [] => some e
+  | .node a _, false :: P => pathEdge a P
+  | .node _ b, true :: P => pathEdge b P
+  | _, _ => none
+
+/-- A computed path lookup is a structural rank witness. -/
+theorem atRank_of_pathEdge : ∀ (t : Tree) (P : List Bool) (e : Edge),
+    pathEdge t P = some e → AtRank t (pathRank t P) P e
+  | .leaf e', [], e, h => by cases Option.some.inj h; exact .here e'
+  | .node a _, false :: P, e, h => .left (atRank_of_pathEdge a P e h)
+  | .node _ b, true :: P, e, h => .right (atRank_of_pathEdge b P e h)
+  | .none, _, _, h => by simp [pathEdge] at h
+  | .leaf _, _ :: _, _, h => by simp [pathEdge] at h
+  | .node _ _, [], _, h => by simp [pathEdge] at h
+
+/-- Catalogue sources from a computed path lookup, at default proof limits. -/
+theorem source_of_path {q : Control} {P : List Bool} {e : Edge}
+    (hr : pathRank ActualTree254.tree P = q.val) (he : pathEdge ActualTree254.tree P = some e) :
+    source q = (P, e) :=
+  source_of_atRank (hr ▸ atRank_of_pathEdge _ _ _ he)
+
+/-- Resolve a literal target through its finite tree path, avoiding catalogue search. -/
+theorem literal_target (P : List Bool) (q : Control)
+    (hw : RMBisim.twalk ActualTree254.tree P 0 =
+      some ((source q).2, (source q).1.length))
+    (hc : consume P (source q).1.length = (source q).1) : resolveControl P = q := by
+  have hw' : walk Prog254.program (Prog254.program.nnodes + 1) Prog254.program.root P 0 =
+      some ((source q).2, (source q).1.length) := by
+    rw [RMBisim.walk_root, ActualTree254.tree_eq]
+    exact hw
+  apply source_injective
+  rw [resolve_source _ _ _ hw', hc]
+
+/-- Rewrite only abstract source equalities before checking the finite path. -/
+theorem cached_target {a b : Control} {P Q : List Bool} {e f : Edge}
+    (ha : source a = (P, e)) (hb : source b = (Q, f))
+    (next : List Bool → List Bool)
+    (hw : RMBisim.twalk ActualTree254.tree (next P) 0 = some (f, Q.length))
+    (hc : consume (next P) Q.length = Q) :
+    resolveControl (next (source a).1) = b := by
+  rw [ha]
+  apply literal_target
+  · simpa only [hb] using hw
+  · simpa only [hb] using hc
 
 /-- Literal catalogue source at rank354, obtained from the tree witness. -/
 theorem source_354 :
     source (⟨354, by decide⟩ : Control) =
-      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, false, true, true, false, false, false, false], .decnz 1) := source_of_atRank rank_354
-
-private theorem rank_6423 :
-    AtRank ActualTree254.tree 6423 [true, true, true, true, true, false, false, false] (.decnz 6) := by
-  apply AtRank.right_count (n := 10) (i := 6413) (by rfl)
-  apply AtRank.right_count (n := 14) (i := 6399) (by rfl)
-  apply AtRank.right_count (n := 14) (i := 6385) (by rfl)
-  apply AtRank.right_count (n := 6329) (i := 56) (by rfl)
-  apply AtRank.right_count (n := 56) (i := 0) (by rfl)
-  apply AtRank.left
-  apply AtRank.left
-  apply AtRank.left
-  exact .here _
+      ([true, true, true, false, true, false, false, true, false, false, true, false, true, false, false, true, true, false, false, false, false], .decnz 1) :=
+  source_of_path (by rfl) (by rfl)
 
 /-- Literal catalogue source at rank6423, obtained from the tree witness. -/
 theorem source_6423 :
     source (⟨6423, by decide⟩ : Control) =
-      ([true, true, true, true, true, false, false, false], .decnz 6) := source_of_atRank rank_6423
+      ([true, true, true, true, true, false, false, false], .decnz 6) :=
+  source_of_path (by rfl) (by rfl)
 
 end SetTheory.BusyBeaver.ZFC.ArithmeticControlSourceRank254
