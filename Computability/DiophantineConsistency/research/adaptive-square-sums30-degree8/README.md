@@ -9,12 +9,13 @@ arithmetic rows.
 
 `verify_substitution.py` checks by exact polynomial arithmetic that all 22
 parent residuals agree after the substitution, with the eliminated residual
-identically zero. This is an identity of integer polynomials, not a Lean
-zero-set theorem: the candidate-to-parent witness map additionally needs the
-computed W value to be strictly positive. The parent 31-variable equation has a matched native endpoint, but both
-directions of the 30-to-31 model comparison and its native equivalence remain
-to be established before a consistency claim is made. Existing 33-to-34 sign results may help prove W positivity, but
-this specific construction has not yet been verified.
+identically zero. This finite identity alone is not a Lean zero-set theorem: the
+candidate-to-parent witness map additionally needs the computed W value to be
+strictly positive. That positivity and the shifted no-zero equivalence with
+the 31-variable equation are now proved in every IΣ₁ model for natural port
+vectors, with a [matched focused model replay](../../research/adaptive-aq30-proof/README.md).
+The native endpoint replay is still in progress, so the candidate remains
+unproved as a native iPRA consistency equation.
 
 `verify_degree.py` checks exact degree eight after the positive shift using
 sparse integer polynomials. A maximum-degree residual has a nonzero

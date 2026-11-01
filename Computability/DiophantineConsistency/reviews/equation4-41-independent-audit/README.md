@@ -1,0 +1,5 @@
+# Independent provisional 41-variable quartic display audit
+
+This is a finite display and graph audit of the provisional PDF (SHA-256 `47cd95b2089ce258b9bb4789e208f67a8ec0549f00e21f2071d84602d6ac29ec`), not a Lean proof. It checks all 170 candidate and printed circuit gates, 41 variables, four fixed ports, 48 displayed definitions and 32 residual squares; checks graph topology and liveness; and tests display and circuit mutations. The separate scope check verifies the candidate disclosure, W aliases, reconstructed first-root alias and deletion of the former psi-square input. Two clean builds reproduce the PDF byte-for-byte. Both pages were visually inspected; the layout log reports small font substitutions and no overfull or underfull boxes.
+
+No checked Lean 41 literal was available for comparison during this audit. The quotient witness construction and native iPRA equivalence remain open; the PDF explicitly says so. The prior local draft with an erroneously retained deleted residual was corrected before the inputs audited here; this packet does not audit that earlier draft.

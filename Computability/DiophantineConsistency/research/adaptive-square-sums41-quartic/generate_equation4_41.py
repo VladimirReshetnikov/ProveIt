@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""Generate the degree-4 presentation from its pinned circuit and fixed block."""
+import hashlib
+import json
+from pathlib import Path
+D=Path(__file__).resolve().parent
+ROOT=D.parents[1]
+raw=(D/'candidate.json').read_bytes()
+if hashlib.sha256(raw).hexdigest()!='62e7851fa8cfee544f92b83ff4f422e200f10c4a45f0e236d83e1ac3f07dd239':
+    raise RuntimeError('candidate mismatch')
+j=json.loads(raw)
+old=(ROOT/'equation.tex').read_text()
+start=old.index(r'\textbf{The four fixed integers.}')
+end=old.index(r'\endgroup',old.index(r'\textbf{The integer $\mathcal A$'))+len(r'\endgroup')
+constants=old[start:end]
+header=r'''\documentclass[10pt]{article}
+\usepackage[letterpaper,margin=.38in]{geometry}
+\usepackage{amsmath,amssymb,multicol,graphicx}
+\pdfinfoomitdate=1\pdftrailerid{}
+\pagestyle{empty}\setlength{\parindent}{0pt}\setlength{\parskip}{2pt}
+\setlength{\columnsep}{13pt}\setlength{\jot}{0pt}
+\setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{3pt}
+\let\bigsum\sum\renewcommand{\sum}{\bigsum\nolimits}
+\newcommand{\fl}[1]{\left\lfloor#1\right\rfloor}
+\newcommand{\rg}[2]{\{#1,\ldots,#2\}}
+\begin{document}
+\begin{center}
+{\large\bfseries A forty-one-variable candidate equation}\\[-1pt]
+{\small Positive integer unknowns; exact degree 4; a 170-operation evaluator.}
+\end{center}\vspace{-8pt}
+\begin{multicols}{2}
+\fontsize{8.6}{9.1}\selectfont
+'''
+footer=r'''
+\normalfont\fontsize{7.7}{8.2}\selectfont
+The fixed integer $\mathcal A$ above is written in base 10. This equation is a candidate: the quotient witness construction and native
+intuitionistic PRA equivalence are not yet established. Its exact degree is certified by integer-polynomial calculations;
+the 170-operation count is for the unshifted circuit. Neither count is a
+minimality claim.
+\end{multicols}
+\clearpage
+\begin{center}{\large\bfseries Exact 170-operation circuit}\end{center}
+Each numbered line defines one gate over the integers. The inputs are the
+forty-one unknowns and the four fixed integers above. The ASCII names
+\texttt{alpha, xi, eta, zeta, upsilon, gamma, vartheta, psi, varphi, epsilon, beta, mu, omega, ell, Delta, delta, kappa, lambda, tau, chi, theta, nu, Gamma}
+refer to their displayed counterparts; \texttt{g} is the unknown $g$. The last
+gate is zero exactly when the displayed equation holds. The circuit input
+\texttt{ellNamed} is $\ell$; gates \texttt{c, a} are the displayed abbreviations; input \texttt{WNamed} is the
+displayed $W$, while gate \texttt{WComputed} is $C(X+Kq)-Fq$. The inputs
+\texttt{s, x, m, n, z, D, V, delta} are the displayed
+$s,x,m,n,z,D,V,\delta$; \texttt{kappa, lambda, tau, chi, theta, nu, Q}
+are $\kappa,\lambda,\tau,\chi,\theta,\nu,Q$; \texttt{N, sumY, P, S, A, i, Gamma}
+are $N,O,P,S,A,i,\Gamma$. Gate \texttt{zScaled} is the abbreviation $Z=\psi z$. Gates \texttt{E, L, I} compute $XY,X+ac,ng$;
+the display uses $E=\lambda$, $L=P$, $I=\theta$. Intermediate gate
+names below are local abbreviations, not additional unknowns.
+\begin{multicols}{3}
+\raggedright\ttfamily\fontsize{6.2}{7.1}\selectfont
+'''
+rename={'r':'xi','i':'g','y':'upsilon','K0':'K','MC':'mu','MF':'omega',
+        'qm':'b','Bt':'WComputed','b0':'L','Dstar':'D','G':'rankseed','squareVariable':'vartheta','scaleVariable':'psi','mainScaleVariable':'varphi','rankVariable':'epsilon','cVariable':'cNamed','aVariable':'aNamed','ellVariable':'ellNamed','wValueVariable':'WNamed','cubeVariable':'s','productVariable':'x','fSquareVariable':'m','cSquareVariable':'n','firstQuotient':'z','zScaled':'Z','dValueVariable':'D','vValueVariable':'V','deltaVariable':'delta','qSquareVariable':'kappa','productVariable2':'lambda','psiSquareVariable':'sigma','ellProductVariable':'tau','varphiSquareVariable':'chi','scaledIndexVariable':'theta','ySquareVariable':'nu','qValueVariable':'Q','deltaProductVariable':'N','ySumVariable':'sumY','offsetVariable':'P','gammaProductVariable':'S','timeProductVariable':'A','rankSeedVariable':'i','rootSkewVariable':'Gamma','rankDifference':'rankDiff','rankConstraint':'rankCheck','finalWithRank':'result17','mainScaleDifference':'mainDiff','mainScaleConstraint':'mainCheck','finalWithMainScale':'result16','scaleDifference':'scaleDiff','scaleConstraint':'scaleCheck','finalWithScale':'final','squareConstraint':'constraint','squareDifference':'difference','sumWithConstraint':'result'}
+def fmt(x):return rename.get(str(x),str(x)).replace('_',r'\_')
+lines=[f'{i}. {fmt(name)} = {fmt(a)} {op} {fmt(b)}'+r'\\'
+       for i,(name,op,a,b) in enumerate(j['source'],1)]
+if len(lines)!=170:raise RuntimeError('circuit count')
+for position in (124, 64):
+    lines.insert(position, r'\columnbreak')
+result=header+(D/'equation4-41-display.tex').read_text()+constants+footer+'\n'.join(lines)+r'''
+\end{multicols}
+\end{document}
+'''
+(ROOT/'equation4-41.tex').write_text(result)
+print('PASS degree-4 TeX, 170 gates, candidate',hashlib.sha256(raw).hexdigest())

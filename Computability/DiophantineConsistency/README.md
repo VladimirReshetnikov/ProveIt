@@ -53,9 +53,11 @@ degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced a [30-variable degree-eight candidate](research/adaptive-square-sums30-degree8/README.md).
-Its substitution and degree have finite checks; its native equivalence remains
-open and requires positivity of the eliminated W coordinate.
+finite graph searches have produced a [30-variable degree-eight candidate](research/adaptive-square-sums30-degree8/README.md)
+and a [41-variable quartic candidate](research/adaptive-square-sums41-quartic/README.md).
+Both have finite substitution and degree checks. The degree-eight candidate has
+a matched model comparison; its native replay is in progress. The quartic
+quotient witness transport and native equivalence remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh
