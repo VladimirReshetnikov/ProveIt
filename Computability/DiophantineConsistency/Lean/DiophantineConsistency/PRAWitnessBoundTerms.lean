@@ -89,11 +89,9 @@ theorem eval_graph (A : BoundTerm n) (t : V) (e : Fin n → V) :
   induction A generalizing t with
   | poly P => rw [eval_graph_poly]; rfl
   | add A B ihA ihB =>
-    rw [eval_graph_add]; simp only [ihA, ihB, vval]
-    exact ⟨fun ⟨_, _, ha, hb, ht⟩ => ha ▸ hb ▸ ht, fun ht => ⟨_, _, rfl, rfl, ht⟩⟩
+    rw [eval_graph_add]; simp [ihA, ihB, vval]
   | mul A B ihA ihB =>
-    rw [eval_graph_mul]; simp only [ihA, ihB, vval]
-    exact ⟨fun ⟨_, _, ha, hb, ht⟩ => ha ▸ hb ▸ ht, fun ht => ⟨_, _, rfl, rfl, ht⟩⟩
+    rw [eval_graph_mul]; simp [ihA, ihB, vval]
   | exp2 A B ihA ihB =>
     rw [eval_graph_exp2]
     simp only [ihA, ihB, vval]
@@ -145,11 +143,9 @@ theorem eval_graph_model (A : BoundTerm n) (t : M) (e : Fin n → M) :
   induction A generalizing t with
   | poly P => rw [eval_graph_poly]; simp [term, val_lMap_std]
   | add A B ihA ihB =>
-    rw [eval_graph_add, val_term_add]; simp only [ihA, ihB]
-    exact ⟨fun ⟨_, _, ha, hb, ht⟩ => ha ▸ hb ▸ ht, fun ht => ⟨_, _, rfl, rfl, ht⟩⟩
+    rw [eval_graph_add, val_term_add]; simp [ihA, ihB]
   | mul A B ihA ihB =>
-    rw [eval_graph_mul, val_term_mul]; simp only [ihA, ihB]
-    exact ⟨fun ⟨_, _, ha, hb, ht⟩ => ha ▸ hb ▸ ht, fun ht => ⟨_, _, rfl, rfl, ht⟩⟩
+    rw [eval_graph_mul, val_term_mul]; simp [ihA, ihB]
   | exp2 A B ihA ihB =>
     rw [eval_graph_exp2, val_term_exp2]
     simp only [ihA, ihB]
