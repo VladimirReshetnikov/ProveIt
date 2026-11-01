@@ -57,25 +57,15 @@ theorem bitBoundBody_model (e : Fin 4 → V) : bitBoundBody.Eval e Empty.elim :=
   have he : (Semiterm.val e Empty.elim ∘
       (Rew.subst (![#3,#0,#1,#2] : Fin 4 → ArithmeticSemiterm Empty 4)) ∘ Semiterm.bvar) =
       ![e 3,e 0,e 1,e 2] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    funext j; revert j; simp [Fin.forall_fin_succ]
   have hl : (Semiterm.val e Empty.elim ∘
       (Rew.subst (![#3,#0,#1] : Fin 3 → ArithmeticSemiterm Empty 4)) ∘ Semiterm.bvar) =
       ![e 3,e 0,e 1] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    funext j; revert j; simp [Fin.forall_fin_succ]
   have ht : (Semiterm.val e Empty.elim ∘
       (Rew.subst (![#0,#1,#2] : Fin 3 → ArithmeticSemiterm Empty 4)) ∘ Semiterm.bvar) =
       ![e 0,e 1,e 2] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun k => ?_) k
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    funext j; revert j; simp [Fin.forall_fin_succ]
   have he' : (Semiterm.val e Empty.elim ∘
       (Rew.subst (![#3,#0,#1,#2] : Fin 4 → ArithmeticSemiterm Empty 4)) ∘ Semiterm.fvar) =
       (Empty.elim : Empty → V) := Subsingleton.elim _ _
