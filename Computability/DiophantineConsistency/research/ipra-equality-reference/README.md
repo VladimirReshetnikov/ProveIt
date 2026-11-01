@@ -55,6 +55,28 @@ been checked in the mixed provider. The separate
 is an **uncompiled draft** attempting to apply the existing native successor
 induction derivation; no induction-axiom image is claimed from it.
 
+The exploratory [`IPRAReferenceHilbert.lean`](../../Lean/DiophantineConsistency/IPRAReferenceHilbert.lean)
+and [`IPRAReferenceTheoryTransfer.lean`](../../Lean/DiophantineConsistency/IPRAReferenceTheoryTransfer.lean)
+contain a candidate embedding of intuitionistic Hilbert proof trees and a
+finite-theory derivation transport **conditional on all reference axiom images**.
+They have only been invoked with the same untrusted mixed provider. They do
+not discharge the axiom-image premise or establish either theory equivalence
+or an equation endpoint.
+
+The exploratory [`IPRAOrderErasureHilbert.lean`](../../Lean/DiophantineConsistency/IPRAOrderErasureHilbert.lean)
+and [`IPRAOrderErasureTheoryTransfer.lean`](../../Lean/DiophantineConsistency/IPRAOrderErasureTheoryTransfer.lean)
+now contain the opposite native-to-reference transport **conditional on every
+native axiom erasing to a reference-theory theorem**. They, too, have only
+been invoked under the untrusted mixed provider; their axiom-image premise,
+coherent replay and application to the equation remain open.
+
+The exploratory [`IPRAErasedDefiningImages.lean`](../../Lean/DiophantineConsistency/IPRAErasedDefiningImages.lean)
+and [`IPRAErasedEqualityImages.lean`](../../Lean/DiophantineConsistency/IPRAErasedEqualityImages.lean)
+contain candidate erasure images for all primitive-recursive defining
+equations, full Leibniz equality and successor nonzero. Their only invocations
+also used the untrusted mixed provider. Native successor injectivity, the
+order-definition image and native induction remain separate obligations.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive

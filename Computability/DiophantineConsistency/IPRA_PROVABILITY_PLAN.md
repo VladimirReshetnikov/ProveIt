@@ -277,9 +277,9 @@ The outer build-driver exit was not captured. See the [provider evidence](review
 and [independent audit](reviews/foundation-provider-independent-audit/README.md).
 A two-run source-only rebuild of the AQ29 endpoint's 1,210-module declared
 project closure is [in progress](reviews/fresh-project-pair-launch/README.md),
-starting from empty project object trees. After launch, an upstream edit changed
-`PRAWitnessCalculus.lean`, which belongs to that frozen closure, so a successful
-run would concern the historical snapshot. No completion is claimed; package-
+starting from empty project object trees. After launch, upstream edits changed
+`PRAWitnessCalculus.lean` and three `ZFCinPA` sources in that frozen closure,
+so a successful run would concern the historical snapshot. No completion is claimed; package-
 transitive and dynamic ancestry remain outside this build's current scope.
 
 The exact schemes are summarized in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md).

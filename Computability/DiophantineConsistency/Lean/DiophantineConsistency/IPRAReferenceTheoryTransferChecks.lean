@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAReferenceTheoryTransfer
+
+#print axioms DiophantineConsistency.IPRAReferenceHilbert.embedHilbert
+#print axioms DiophantineConsistency.IPRAReferenceTheoryTransfer.transfer
+#print axioms DiophantineConsistency.IPRAReferenceTheoryTransfer.transfer_provable

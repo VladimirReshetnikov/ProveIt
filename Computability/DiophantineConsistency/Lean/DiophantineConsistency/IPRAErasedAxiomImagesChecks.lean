@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAErasedEqualityImages
+
+#print axioms DiophantineConsistency.IPRAErasedDefiningImages.defining_images
+#print axioms DiophantineConsistency.IPRAErasedEqualityImages.equality_images
+#print axioms DiophantineConsistency.IPRAErasedEqualityImages.erase_successorNonzero

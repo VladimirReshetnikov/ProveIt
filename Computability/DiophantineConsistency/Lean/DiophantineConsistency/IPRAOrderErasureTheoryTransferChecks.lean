@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAOrderErasureTheoryTransfer
+
+#print axioms DiophantineConsistency.IPRAOrderErasureHilbert.eraseHilbert
+#print axioms DiophantineConsistency.IPRAOrderErasureTheoryTransfer.transfer
+#print axioms DiophantineConsistency.IPRAOrderErasureTheoryTransfer.transfer_provable
