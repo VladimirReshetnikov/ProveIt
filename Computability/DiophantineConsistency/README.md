@@ -36,7 +36,9 @@ refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
-The smaller 85-operation candidate's reverse implication remains open.
+The [42-variable degree-6 candidate](equation6.pdf) has a matched model
+equivalence replay; its native iPRA endpoint is still being checked. The
+smaller 85-operation candidate's reverse implication remains open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader source refresh is running;

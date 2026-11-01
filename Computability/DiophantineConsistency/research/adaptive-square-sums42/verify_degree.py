@@ -71,4 +71,4 @@ for label in labels:
     prev=name
 if c['output']!=prev:raise ValueError('wrong output')
 if maximum!=3:raise ValueError(('unexpected degree',maximum))
-print('PASS candidate degree',2*maximum,'after positive shift; no zero-set equivalence established')
+print('PASS candidate degree',2*maximum,'after positive shift; zero-set equivalence is outside this finite check')

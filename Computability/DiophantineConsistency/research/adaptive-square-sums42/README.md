@@ -1,5 +1,13 @@
 # Forty-two-variable degree-6 candidate
 
+[equation6.pdf](../../equation6.pdf) presents this circuit and its fixed
+constants in base 10. `generate_equation6.py` constructs the TeX from the
+pinned graph; `verify_display6.py` checks all displayed definitions, 164 gates,
+fixed constants and two mutation controls. Two `pdflatex` runs produced the
+same PDF SHA-256
+`3f1b52348b7279b19e4d1d28e9f3cc12c53297aaa9a8ed38930b355028165256`;
+both pages were inspected.
+
 This exploratory 164-operation circuit adds seven positive names and one
 signed name represented by two positive variables to the 33-variable,
 degree-8 circuit. The names stand for `q^2`, `X*Y`, `psi^2`,
