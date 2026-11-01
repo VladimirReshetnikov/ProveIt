@@ -1,0 +1,82 @@
+{
+  "BoundedPAConsistency.TypedTemplateProofCompiler": {
+    "imports": [
+      "Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Coding"
+    ],
+    "kind": "project",
+    "sha256": "0b21a1a1ba88016423e91ba236c39c4a94769461df4f78f37bcaa6271b2f8ce8"
+  },
+  "Foundation.FirstOrder.Bootstrapping.Syntax": {
+    "companions": {
+      "Foundation/FirstOrder/Bootstrapping/Syntax.ir": "9ca06792ce32f8808598c5d4ea05b1db1eea45e80ef5b176b2d7ffdf1feeff98",
+      "Foundation/FirstOrder/Bootstrapping/Syntax.olean.private": "7e3a71aa4464a5d1431e67a70f908c12e5bc316b334ee52c8660b18eca1a9f85",
+      "Foundation/FirstOrder/Bootstrapping/Syntax.olean.server": "7fb5fcac5b58e780b90e5426163c6a9a114102a2aea466152759a3e8a35f54cf"
+    },
+    "kind": "external",
+    "sha256": "7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c"
+  },
+  "Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Coding": {
+    "companions": {
+      "Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Coding.ir": "70b859553735336457f51987096dfeabd2f57da801e79e84a8e3279bad6a6719",
+      "Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Coding.olean.private": "05d618c6df7751204a2e2be278554084ab66c81f60600fa43469d7df5c9176bb",
+      "Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Coding.olean.server": "ed1166b9420b9cb83850ce153fbac8612ab210f79e5ee90826a8b10bd2d385c5"
+    },
+    "kind": "external",
+    "sha256": "dc6ca691ab138cb97276404acc7e6cd79c4ff018d5b153d243e607a4ecdbdcfd"
+  },
+  "Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1": {
+    "companions": {
+      "Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.ir": "cf26a3455b352e45d1c413ce6582e5114de9e6663cb703ce5b5ef56bad45c945",
+      "Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean.private": "fc2a4723e03c50e4dfd0e122680fb59be057287eedd40687041c676104939cef",
+      "Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean.server": "6fa0d837a209ed0a50ddfb1abd127b26aabb57315a8632ed287dba3be06c35ad"
+    },
+    "kind": "external",
+    "sha256": "5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6"
+  },
+  "Foundation.FirstOrder.SetTheory.Basic.Axioms": {
+    "companions": {
+      "Foundation/FirstOrder/SetTheory/Basic/Axioms.ir": "c61087047a83e6819ab33f4665f5da3c75447c6309bcd937a0e552872ec9ca85",
+      "Foundation/FirstOrder/SetTheory/Basic/Axioms.olean.private": "739275b34be878512b038b13a996e367655ce350370773fc61882b4060534207",
+      "Foundation/FirstOrder/SetTheory/Basic/Axioms.olean.server": "00434478d5fd28c4869474cc77110c7b44dd3d51938b4d9d95f8bf84ed760488"
+    },
+    "kind": "external",
+    "sha256": "e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704"
+  },
+  "ZFCinPA.Instances": {
+    "imports": [
+      "Foundation.FirstOrder.SetTheory.Basic.Axioms",
+      "Foundation.FirstOrder.Bootstrapping.Syntax"
+    ],
+    "kind": "project",
+    "sha256": "373f300edf2d3c7396ace73c139a433663bda232a80614856d177af1dfe58324"
+  },
+  "ZFCinPA.ReplacementDelta1": {
+    "imports": [
+      "ZFCinPA.SeparationDelta1"
+    ],
+    "kind": "project",
+    "sha256": "487bd58d5c6b1fb3ddff6c98975452f73bd581f32944ad0b78328c1259eb8155"
+  },
+  "ZFCinPA.SchemaClosure": {
+    "imports": [
+      "Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1"
+    ],
+    "kind": "project",
+    "sha256": "c87f6b9d7a9adfa27f5f241b36814a7355f1dd6e84aecb2faae19493a0e7170d"
+  },
+  "ZFCinPA.SeparationDelta1": {
+    "imports": [
+      "ZFCinPA.Instances",
+      "ZFCinPA.SchemaClosure"
+    ],
+    "kind": "project",
+    "sha256": "d6390e13b0fb90a49f9441b96cf3f76e2a079b97583ef21baa50798ccef17029"
+  },
+  "ZFCinPA.ZFDelta1": {
+    "imports": [
+      "ZFCinPA.ReplacementDelta1"
+    ],
+    "kind": "project",
+    "sha256": "71128a736b2403791a048532c59c431e8e937ec18fb1a3f3f0b0ea444283b85c"
+  }
+}

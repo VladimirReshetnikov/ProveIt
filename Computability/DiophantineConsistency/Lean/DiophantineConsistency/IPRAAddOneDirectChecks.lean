@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAAddOneDirect
+#check DiophantineConsistency.IPRAAddOneDirect.add_one_native
+#print axioms DiophantineConsistency.IPRAAddOneDirect.add_one_native

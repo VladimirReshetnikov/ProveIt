@@ -1,0 +1,86 @@
+{
+  "BoundedZFCConsistency.Basic": {
+    "imports": [
+      "FirstOrder.Completeness",
+      "ZF.Zf"
+    ],
+    "kind": "project",
+    "sha256": "195ac6fc30ca5fe23be584886ed67706cf16f1885f9e6092a0767b163e833440"
+  },
+  "BoundedZFCConsistency.CodePredicate": {
+    "imports": [
+      "BoundedZFCConsistency.Coding"
+    ],
+    "kind": "project",
+    "sha256": "4289e81a4859387f7627d2e2b387ef94b7902c156bb61377a38bb8697d36e603"
+  },
+  "BoundedZFCConsistency.Coding": {
+    "imports": [
+      "BoundedZFCConsistency.Basic"
+    ],
+    "kind": "project",
+    "sha256": "5963d47d087f6d53db1f7903494969e84cd926b09ab1294f7f1a300b0dcb6e6a"
+  },
+  "BoundedZFCConsistency.FormulaClosedSet": {
+    "imports": [
+      "BoundedZFCConsistency.CodePredicate"
+    ],
+    "kind": "project",
+    "sha256": "84d8b6b8c4202d49da4091e9cd345807c5fc54827402f8d6d69f37c69acbc4ad"
+  },
+  "BoundedZFCConsistency.InternalSat": {
+    "imports": [
+      "BoundedZFCConsistency.FormulaClosedSet",
+      "BoundedZFCConsistency.OmegaRecursion"
+    ],
+    "kind": "project",
+    "sha256": "96569dbdf6c6081b90ede4285b89b3d0e425bdb91b0c50f1881d003e85faa468"
+  },
+  "BoundedZFCConsistency.InternalSatTotality": {
+    "imports": [
+      "BoundedZFCConsistency.InternalSat"
+    ],
+    "kind": "project",
+    "sha256": "42cf8a92a3da6a201f6502403f32f6e89093a849da4c521c61a5442056a76952"
+  },
+  "BoundedZFCConsistency.InternalSoundness": {
+    "imports": [
+      "BoundedZFCConsistency.InternalSatTotality"
+    ],
+    "kind": "project",
+    "sha256": "21ebc8ef035aa3422c431f222dad95adcf64dfbc9dfc3a79dd1f583fc10b1818"
+  },
+  "BoundedZFCConsistency.OmegaRecursion": {
+    "imports": [
+      "BoundedZFCConsistency.Basic"
+    ],
+    "kind": "project",
+    "sha256": "14d00d9dacbd0197eba9a255a1e0f763563714f3d4e470fdf18646524ceb9bfd"
+  },
+  "FirstOrder.Calculus": {
+    "imports": [
+      "FirstOrder.Fol"
+    ],
+    "kind": "project",
+    "sha256": "7515da1a8586f7a4b0713af74f9d7ea192d09c80abc7b65c467784fb808147d9"
+  },
+  "FirstOrder.Completeness": {
+    "imports": [
+      "FirstOrder.Calculus"
+    ],
+    "kind": "project",
+    "sha256": "3564869a941cd367eb7de9fa14776bdd98a2793d1206abcc7590e5b2745744b7"
+  },
+  "FirstOrder.Fol": {
+    "imports": [],
+    "kind": "project",
+    "sha256": "3f5b11266f1e21076e8e876192edc29f4f47928df7c08515e5a9e819bf65b33d"
+  },
+  "ZF.Zf": {
+    "imports": [
+      "FirstOrder.Calculus"
+    ],
+    "kind": "project",
+    "sha256": "78e9931f1bcc97a3af92b2e97175c92fb99c33d6a4f0e918a85161c0ca2e3280"
+  }
+}

@@ -1,0 +1,5 @@
+# Post-merge 847-source 14-equation rebase: author PASS
+
+The isolated fixed-source rebase `/tmp/pra14-full-transitive-bbfwtdv_` finalized PASS with all 847 records verified: 760 reused and 87 newly compiled. This packet contains the terminal state, 847 full compiler logs and the unique transitive reuse manifests; the complete frozen source tree, source hashes, package anchors, graph audits and 16 deltas are documented in `reviews/pra14-post-merge-source-snapshot/`. The prior 847 author parent and its evidence are in `reviews/pra14-isolated-author-pass/`. This is an author build, not an independent replay.
+
+The decoder-bundle source changed afterward. The one-source successor is separately running from the prepared fixed tree (`reviews/pra14-bundle-followup-snapshot/`); do not treat this preceding snapshot as the latest workspace. Reused-object original compile environments are reconstructed from surviving origin objects; Foundation/package transitive ancestry and dynamic imports remain inherited. This is the classical 14 equation-side dependency, not the ordinary native iPRA consistency theorem.
