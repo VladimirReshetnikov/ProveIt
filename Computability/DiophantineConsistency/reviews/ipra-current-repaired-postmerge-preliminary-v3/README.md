@@ -8,6 +8,11 @@ object environments. The six edited files had unchanged explicit import lists.
 The observed Git HEAD and input hashes are in `manifest.json`; the scan and
 source recheck exited zero.
 
+`independent.py` separately reconstructed the fixed point by repeated set
+closure, matched all six drifted sources and 107 affected modules, and
+checked the recorded source topological order (`independent.json`). It
+inherits the same source-only limitations below.
+
 This is a prospective size estimate, **not** an authenticated successor plan or
 proof. It has not checked physical object origins, Lean's current dependency
 parser, new source snapshots, the still-running 258-module parent or its
