@@ -235,16 +235,21 @@ assuming only a uniform GG-to-native comparison for that child. Its
 match, subject to their stated inherited-provider boundary. This is an
 induction step, not yet a comparison theorem for all bounded formulas.
 
-The next assembly is a structural GG-to-native comparison for bounded
-formulas, uniformly over term valuations. The open case uses native open
-decidability; the disjunction case can derive a child's decision from its
-classical characteristic and its recursive comparison; the bounded-existential
-case uses the new selector-based step. Once instantiated for `bnd rho`, a
-whole-matrix comparison can feed the existing
-[direct ZFC comparison](Lean/DiophantineConsistency/IPRAFoundationZFCMatrixComparison.lean),
-without constructing a separate stability witness for every `DeepNeed` node.
-The recursive assembly, its treatment of all bounded formula constructors,
-and the actual matrix comparison remain open.
+The [structural GG-to-native comparison](Lean/DiophantineConsistency/IPRABoundedInduction.lean)
+now covers all zero-level hierarchy formulas of either polarity, uniformly
+over term valuations. The open case uses native open decidability; disjunction
+derives child decisions from classical characteristics and recursive
+comparisons; the bounded-quantifier cases use the child comparisons and the
+selector-based existential step. Matching guarded author and independent
+replays are documented [here](reviews/ipra-bounded-induction-replay/README.md);
+their inherited object and package ancestry remains qualified.
+
+The [direct ZFC client](Lean/DiophantineConsistency/IPRAWholeMatrixZFC.lean)
+accepts this kind of whole-matrix comparison and discharges the translated
+witness bound without a separate `DeepNeed` witness list. Specializing the
+structural result to the exact mapped `bnd rho` on a coherent source/object
+provider, then joining the resulting ZFC comparison to the equation proofs,
+remains to be checked.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
