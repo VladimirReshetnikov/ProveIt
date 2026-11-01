@@ -18,15 +18,11 @@ theorem neg_exp_bound (e n : V) : (∼expDef.val).Evalb ![e,n] →
   let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#1,#0]
   have h' : (∼exponentialDef.val).Evalb ![n,e] := by simpa using h
   letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-  have hf : (ω ▹ (∼exponentialDef.val)).Evalb ![e,n] := by
-    simpa [ω, Semiformula.eval_substs] using h'
-  have hw : PRANegExponentialWitnessBound.negExponentialMajorant
-      ((ω #1).val ![e,n] Empty.elim) ≤ PRANegExponentialWitnessBound.negExponentialMajorant e := by
-    simp [ω]
   have hrew := PRARewritingWitnessBound.binary_rew_bound_with (∼exponentialDef.val)
     (fun _ e => PRANegExponentialWitnessBound.negExponentialMajorant e)
     PRANegExponentialWitnessBound.negExponential_bound ω ![e,n]
-    (PRANegExponentialWitnessBound.negExponentialMajorant e) hw hf
+    (PRANegExponentialWitnessBound.negExponentialMajorant e) (by simp [ω])
+    (by simpa [ω, Semiformula.eval_substs] using h')
   rw [show (ω ▹ (∼exponentialDef.val)) = ∼(ω ▹ exponentialDef.val) from
     LogicalConnective.HomClass.map_neg (Semiformula.rew ω) exponentialDef.val] at hrew
   simpa using hrew
