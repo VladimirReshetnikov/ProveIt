@@ -381,29 +381,22 @@ theorem stepGood_of_levelLaws {L : W → W → W → Prop} {b : W}
     · rintro ⟨h1, h0⟩
       have k1 : (L a e (natV H 0) ∨ mem (satTriple H a e (natV H 0)) C) ∨
           (L b e (natV H 1) ∨ mem (satTriple H b e (natV H 1)) C) := by
-        rcases h1 with h1 | h1
-        · rcases hL.elim.impSigma a b e hca hcb he h1 with k | k
+        rcases h1.elim Or.inl (fun hm => levelJustified_imp H (hC _ _ _ hm).2) with hd | hcase
+        · rcases hL.elim.impSigma a b e hca hcb he hd with k | k
           · exact Or.inl (Or.inl k)
           · exact Or.inr (Or.inl k)
-        · rcases levelJustified_imp H (hC _ _ _ h1).2 with hd | hcase
-          · rcases hL.elim.impSigma a b e hca hcb he hd with k | k
-            · exact Or.inl (Or.inl k)
-            · exact Or.inr (Or.inl k)
-          · rcases hcase with ⟨-, hm | hm⟩ | ⟨hb0, -⟩
-            · exact Or.inl (Or.inr hm)
-            · exact Or.inr (Or.inr hm)
-            · exact absurd hb0 (natV_ne H (by decide))
+        · rcases hcase with ⟨-, hm | hm⟩ | ⟨hb0, -⟩
+          · exact Or.inl (Or.inr hm)
+          · exact Or.inr (Or.inr hm)
+          · exact absurd hb0 (natV_ne H (by decide))
       have k0 : (L a e (natV H 1) ∨ mem (satTriple H a e (natV H 1)) C) ∧
           (L b e (natV H 0) ∨ mem (satTriple H b e (natV H 0)) C) := by
-        rcases h0 with h0 | h0
-        · obtain ⟨j1, j2⟩ := hL.elim.impPi a b e hca hcb he h0
+        rcases h0.elim Or.inl (fun hm => levelJustified_imp H (hC _ _ _ hm).2) with hd | hcase
+        · obtain ⟨j1, j2⟩ := hL.elim.impPi a b e hca hcb he hd
           exact ⟨Or.inl j1, Or.inl j2⟩
-        · rcases levelJustified_imp H (hC _ _ _ h0).2 with hd | hcase
-          · obtain ⟨j1, j2⟩ := hL.elim.impPi a b e hca hcb he hd
-            exact ⟨Or.inl j1, Or.inl j2⟩
-          · rcases hcase with ⟨hb1, -⟩ | ⟨-, m1, m2⟩
-            · exact absurd hb1 (natV_ne H (by decide))
-            · exact ⟨Or.inr m1, Or.inr m2⟩
+        · rcases hcase with ⟨hb1, -⟩ | ⟨-, m1, m2⟩
+          · exact absurd hb1 (natV_ne H (by decide))
+          · exact ⟨Or.inr m1, Or.inr m2⟩
       rcases k1 with ka | kb
       · exact (iha e he).1 ⟨k0.1, ka⟩
       · exact (ihb e he).1 ⟨kb, k0.2⟩
@@ -432,29 +425,22 @@ theorem stepGood_of_levelLaws {L : W → W → W → Prop} {b : W}
     · rintro ⟨h1, h0⟩
       have k1 : (L a e (natV H 1) ∨ mem (satTriple H a e (natV H 1)) C) ∧
           (L b e (natV H 1) ∨ mem (satTriple H b e (natV H 1)) C) := by
-        rcases h1 with h1 | h1
-        · obtain ⟨j1, j2⟩ := hL.elim.andSigma a b e hca hcb he h1
+        rcases h1.elim Or.inl (fun hm => levelJustified_and H (hC _ _ _ hm).2) with hd | hcase
+        · obtain ⟨j1, j2⟩ := hL.elim.andSigma a b e hca hcb he hd
           exact ⟨Or.inl j1, Or.inl j2⟩
-        · rcases levelJustified_and H (hC _ _ _ h1).2 with hd | hcase
-          · obtain ⟨j1, j2⟩ := hL.elim.andSigma a b e hca hcb he hd
-            exact ⟨Or.inl j1, Or.inl j2⟩
-          · rcases hcase with ⟨-, m1, m2⟩ | ⟨hb0, -⟩
-            · exact ⟨Or.inr m1, Or.inr m2⟩
-            · exact absurd hb0 (natV_ne H (by decide))
+        · rcases hcase with ⟨-, m1, m2⟩ | ⟨hb0, -⟩
+          · exact ⟨Or.inr m1, Or.inr m2⟩
+          · exact absurd hb0 (natV_ne H (by decide))
       have k0 : (L a e (natV H 0) ∨ mem (satTriple H a e (natV H 0)) C) ∨
           (L b e (natV H 0) ∨ mem (satTriple H b e (natV H 0)) C) := by
-        rcases h0 with h0 | h0
-        · rcases hL.elim.andPi a b e hca hcb he h0 with k | k
+        rcases h0.elim Or.inl (fun hm => levelJustified_and H (hC _ _ _ hm).2) with hd | hcase
+        · rcases hL.elim.andPi a b e hca hcb he hd with k | k
           · exact Or.inl (Or.inl k)
           · exact Or.inr (Or.inl k)
-        · rcases levelJustified_and H (hC _ _ _ h0).2 with hd | hcase
-          · rcases hL.elim.andPi a b e hca hcb he hd with k | k
-            · exact Or.inl (Or.inl k)
-            · exact Or.inr (Or.inl k)
-          · rcases hcase with ⟨hb1, -⟩ | ⟨-, hm | hm⟩
-            · exact absurd hb1 (natV_ne H (by decide))
-            · exact Or.inl (Or.inr hm)
-            · exact Or.inr (Or.inr hm)
+        · rcases hcase with ⟨hb1, -⟩ | ⟨-, hm | hm⟩
+          · exact absurd hb1 (natV_ne H (by decide))
+          · exact Or.inl (Or.inr hm)
+          · exact Or.inr (Or.inr hm)
       rcases k0 with ka | kb
       · exact (iha e he).1 ⟨k1.1, ka⟩
       · exact (ihb e he).1 ⟨k1.2, kb⟩
@@ -481,29 +467,22 @@ theorem stepGood_of_levelLaws {L : W → W → W → Prop} {b : W}
     · rintro ⟨h1, h0⟩
       have k1 : (L a e (natV H 1) ∨ mem (satTriple H a e (natV H 1)) C) ∨
           (L b e (natV H 1) ∨ mem (satTriple H b e (natV H 1)) C) := by
-        rcases h1 with h1 | h1
-        · rcases hL.elim.orSigma a b e hca hcb he h1 with k | k
+        rcases h1.elim Or.inl (fun hm => levelJustified_or H (hC _ _ _ hm).2) with hd | hcase
+        · rcases hL.elim.orSigma a b e hca hcb he hd with k | k
           · exact Or.inl (Or.inl k)
           · exact Or.inr (Or.inl k)
-        · rcases levelJustified_or H (hC _ _ _ h1).2 with hd | hcase
-          · rcases hL.elim.orSigma a b e hca hcb he hd with k | k
-            · exact Or.inl (Or.inl k)
-            · exact Or.inr (Or.inl k)
-          · rcases hcase with ⟨-, hm | hm⟩ | ⟨hb0, -⟩
-            · exact Or.inl (Or.inr hm)
-            · exact Or.inr (Or.inr hm)
-            · exact absurd hb0 (natV_ne H (by decide))
+        · rcases hcase with ⟨-, hm | hm⟩ | ⟨hb0, -⟩
+          · exact Or.inl (Or.inr hm)
+          · exact Or.inr (Or.inr hm)
+          · exact absurd hb0 (natV_ne H (by decide))
       have k0 : (L a e (natV H 0) ∨ mem (satTriple H a e (natV H 0)) C) ∧
           (L b e (natV H 0) ∨ mem (satTriple H b e (natV H 0)) C) := by
-        rcases h0 with h0 | h0
-        · obtain ⟨j1, j2⟩ := hL.elim.orPi a b e hca hcb he h0
+        rcases h0.elim Or.inl (fun hm => levelJustified_or H (hC _ _ _ hm).2) with hd | hcase
+        · obtain ⟨j1, j2⟩ := hL.elim.orPi a b e hca hcb he hd
           exact ⟨Or.inl j1, Or.inl j2⟩
-        · rcases levelJustified_or H (hC _ _ _ h0).2 with hd | hcase
-          · obtain ⟨j1, j2⟩ := hL.elim.orPi a b e hca hcb he hd
-            exact ⟨Or.inl j1, Or.inl j2⟩
-          · rcases hcase with ⟨hb1, -⟩ | ⟨-, m1, m2⟩
-            · exact absurd hb1 (natV_ne H (by decide))
-            · exact ⟨Or.inr m1, Or.inr m2⟩
+        · rcases hcase with ⟨hb1, -⟩ | ⟨-, m1, m2⟩
+          · exact absurd hb1 (natV_ne H (by decide))
+          · exact ⟨Or.inr m1, Or.inr m2⟩
       rcases k1 with ka | kb
       · exact (iha e he).1 ⟨ka, k0.1⟩
       · exact (ihb e he).1 ⟨kb, k0.2⟩
