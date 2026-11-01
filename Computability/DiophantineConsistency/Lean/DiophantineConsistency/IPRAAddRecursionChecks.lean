@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAAddRecursion
+#check DiophantineConsistency.IPRAAddRecursion.add_zero_native
+#check DiophantineConsistency.IPRAAddRecursion.add_succ_native
+#print axioms DiophantineConsistency.IPRAAddRecursion.add_zero_native
+#print axioms DiophantineConsistency.IPRAAddRecursion.add_succ_native
