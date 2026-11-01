@@ -122,6 +122,20 @@ decision codes for the particular bounded matrices and prove the necessary
 bounding and translation statements with quantifier-free induction, but
 those intuitionistic derivations remain open.
 
+One prospective first step toward atom decidability avoids assuming that the
+two step terms are definitionally identical. Once every classical PRA axiom
+image has been discharged, translate the existing classical proof of
+`x + 1 = S(x)` to obtain `∀ x, ¬¬(x + 1 = S(x))`. Native Leibniz equality
+and `S(x) ≠ 0` should then imply `x + 1 ≠ 0` intuitionistically, without
+eliminating the double negation. Native open induction on
+`x = 0 ∨ ¬(x = 0)` can then supply zero decidability. This is an explicit
+proposed derivation; its Lean proof and the subsequent equality, order and
+bounded-formula decision procedures are still open.
+The last induction step has now been checked independently in
+[IPRAZeroDecidable.lean](Lean/DiophantineConsistency/IPRAZeroDecidable.lean):
+native iPRA proves zero decidability from the explicit premise that every
+`x + 1` is nonzero. Discharging that premise remains open.
+
 It may suffice to translate the existing *classical* witness-bound proof,
 instead of deriving an intuitionistic unnegated witness bound. If iPRA can
 identify the translated bounded matrix with its ordinary interpretation up
