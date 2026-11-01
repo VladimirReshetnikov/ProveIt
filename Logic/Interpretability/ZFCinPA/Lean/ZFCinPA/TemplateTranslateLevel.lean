@@ -183,49 +183,38 @@ theorem translate_level : ∀ {n : ℕ} (φ : Semiproposition (setTemplateLangua
         (lvB_mono ?_)
       push_cast
       exact le_trans (by norm_num) (le_mul_succ 4 u)
-  | rel r v =>
+  | rel r v | nrel r v =>
       intro u Ks hK
       rcases r with r | r
       · simp only [translateFormula, tA]
         have hc : (2 : V) ≤ (vecA v : V) := by
           have := cast_le (V := V) (le_trans (by norm_num : 2 ≤ 4) (four_le_vecA v))
           simpa using this
-        refine le_trans (setRel_le r _ hc (translateVec_le _ v)) (lvB_mono ?_)
-        push_cast
-        exact le_trans (_root_.add_le_add le_rfl (by norm_num)) (le_mul_succ _ u)
-      · simp only [translateFormula, tA]
-        have hc : (1 : V) ≤ (vecA (fun j ↦ v (Fin.cast r.2 j)) : V) := by
-          have := cast_le (V := V) (le_trans (by norm_num : 1 ≤ 4) (four_le_vecA (fun j ↦ v (Fin.cast r.2 j))))
-          simpa using this
-        refine le_trans (placeholder_le (Ks r.1) _ hc (hK r.1) (translateVec_le _ _)) (lvB_mono ?_)
-        push_cast
-        calc 10 * (u + 1) + (vecA (fun j ↦ v (Fin.cast r.2 j)) : V)
-            ≤ 10 * (u + 1) + (vecA (fun j ↦ v (Fin.cast r.2 j)) : V) * (u + 1) :=
-              _root_.add_le_add le_rfl (le_mul_succ _ u)
-          _ = ((vecA (fun j ↦ v (Fin.cast r.2 j)) : V) + 10) * (u + 1) := by ring
-  | nrel r v =>
-      intro u Ks hK
-      rcases r with r | r
-      · simp only [translateFormula, tA]
-        have hc : (2 : V) ≤ (vecA v : V) := by
-          have := cast_le (V := V) (le_trans (by norm_num : 2 ≤ 4) (four_le_vecA v))
-          simpa using this
-        refine le_trans (setNRel_le r _ hc (translateVec_le _ v)) (lvB_mono ?_)
+        first
+        | refine le_trans (setRel_le r _ hc (translateVec_le _ v)) (lvB_mono ?_)
+        | refine le_trans (setNRel_le r _ hc (translateVec_le _ v)) (lvB_mono ?_)
         push_cast
         exact le_trans (_root_.add_le_add le_rfl (by norm_num)) (le_mul_succ _ u)
       · simp only [translateFormula, tA, Semiformula.val_neg]
         have hc : (1 : V) ≤ (vecA (fun j ↦ v (Fin.cast r.2 j)) : V) := by
           have := cast_le (V := V) (le_trans (by norm_num : 1 ≤ 4) (four_le_vecA (fun j ↦ v (Fin.cast r.2 j))))
           simpa using this
-        have hS := placeholder_le (Ks r.1) (fun j ↦ translateTerm (v (Fin.cast r.2 j))) hc (hK r.1)
-          (translateVec_le _ _)
-        have hN := neg_level _ _ hS ((Ks r.1).subst _).isSemiformula.isUFormula
-        refine le_trans hN (lvB_mono ?_)
-        push_cast
-        set c := (vecA (fun j ↦ v (Fin.cast r.2 j)) : V)
-        calc 10 * (10 * (u + 1) + c + 1) = 100 * (u + 1) + (10 * c + 10) := by ring
-          _ ≤ 100 * (u + 1) + (10 * c + 10) * (u + 1) := _root_.add_le_add le_rfl (le_mul_succ _ u)
-          _ = 10 * (c + 11) * (u + 1) := by ring
+        first
+        | refine le_trans (placeholder_le (Ks r.1) _ hc (hK r.1) (translateVec_le _ _)) (lvB_mono ?_)
+          push_cast
+          calc 10 * (u + 1) + (vecA (fun j ↦ v (Fin.cast r.2 j)) : V)
+              ≤ 10 * (u + 1) + (vecA (fun j ↦ v (Fin.cast r.2 j)) : V) * (u + 1) :=
+                _root_.add_le_add le_rfl (le_mul_succ _ u)
+            _ = ((vecA (fun j ↦ v (Fin.cast r.2 j)) : V) + 10) * (u + 1) := by ring
+        | have hS := placeholder_le (Ks r.1) (fun j ↦ translateTerm (v (Fin.cast r.2 j))) hc (hK r.1)
+            (translateVec_le _ _)
+          have hN := neg_level _ _ hS ((Ks r.1).subst _).isSemiformula.isUFormula
+          refine le_trans hN (lvB_mono ?_)
+          push_cast
+          set c := (vecA (fun j ↦ v (Fin.cast r.2 j)) : V)
+          calc 10 * (10 * (u + 1) + c + 1) = 100 * (u + 1) + (10 * c + 10) := by ring
+            _ ≤ 100 * (u + 1) + (10 * c + 10) * (u + 1) := _root_.add_le_add le_rfl (le_mul_succ _ u)
+            _ = 10 * (c + 11) * (u + 1) := by ring
   | and p q ihp ihq | or p q ihp ihq =>
       intro u Ks hK
       simp only [translateFormula, Semiformula.val_and, Semiformula.val_or, tA]
