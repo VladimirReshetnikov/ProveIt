@@ -67,24 +67,18 @@ theorem atom_parameter_ne (R : V) (hR : R ≠ 0) :
   simp [InternalInterpretation.atomOf, parameter, hR]
 
 theorem good_parameter : InternalInterpretation.Good (parameter (V := V)) := by
-  constructor
-  · rw [dom_parameter]
-    exact isSemiformula_domainCode
-  · rw [dom_parameter]
-    exact shift_domainCode
-  · intro R
+  have atom_both (R : V) :
+      IsSemiformula ℒₛₑₜ 2 (InternalInterpretation.atomOf (parameter (V := V)) R) ∧
+        shift ℒₛₑₜ (InternalInterpretation.atomOf (parameter (V := V)) R) =
+          InternalInterpretation.atomOf (parameter (V := V)) R := by
     by_cases hR : R = 0
     · subst R
       rw [atom_parameter_zero]
-      exact isSemiformula_equalityCode
+      exact ⟨isSemiformula_equalityCode, shift_equalityCode⟩
     · rw [atom_parameter_ne R hR]
-      exact isSemiformula_membershipCode
-  · intro R
-    by_cases hR : R = 0
-    · subst R
-      rw [atom_parameter_zero]
-      exact shift_equalityCode
-    · rw [atom_parameter_ne R hR]
-      exact shift_membershipCode
+      exact ⟨isSemiformula_membershipCode, shift_membershipCode⟩
+  exact ⟨by simpa only [dom_parameter] using isSemiformula_domainCode,
+    by simpa only [dom_parameter] using shift_domainCode,
+    fun R => (atom_both R).1, fun R => (atom_both R).2⟩
 
 end LeanProofs.ZFCinPA.NativeWFClosedParameters
