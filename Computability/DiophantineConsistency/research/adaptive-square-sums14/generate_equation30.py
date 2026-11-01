@@ -34,12 +34,12 @@ header=r'''\documentclass[10pt]{article}
 footer=r'''
 \normalfont\fontsize{7.7}{8.2}\selectfont
 The fixed integer $\mathcal A$ above is written in base 10. Lean proves that
-the formalized equation has a positive solution exactly when the corresponding
-13-variable degree-36 equation does in every arithmetic model used by the
-proof. The intuitionistic PRA consistency endpoint is being independently
-replayed. The exact degree is certified by integer-polynomial calculations.
-The 91-operation count is for the unshifted circuit; neither count is a
-minimality claim.
+the formalized equation has no positive solution exactly when the chosen
+arithmetized ZFC consistency statement holds, by a derivation in the specified
+intuitionistic PRA. The literal endpoint was independently replayed on a fixed
+source snapshot; some transitive dependencies remain inherited. The exact
+degree is certified by integer-polynomial calculations. The 91-operation count
+is for the unshifted circuit; neither count is a minimality claim.
 \end{multicols}
 \clearpage
 \begin{center}{\large\bfseries Exact 91-operation circuit}\end{center}

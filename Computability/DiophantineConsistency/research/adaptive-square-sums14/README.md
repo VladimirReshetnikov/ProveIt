@@ -29,9 +29,14 @@ literal's 14 variable aliases, four ports, and 91 operation rows directly with
 
 The two model/check Lean replays matched on the same historical model provider;
 see [the focused replay](../../reviews/adaptive-square-sums14-model-replay/README.md).
-Transitive project, package and dynamic ancestry remains inherited. The native
-intuitionistic PRA endpoint for this new expression is being assembled and is
-not claimed by the model theorem alone.
+Transitive project, package and dynamic ancestry remains inherited. The exact literal also has a native iPRA endpoint:
+`IPRASquareWitness14Native.literal_equivalence` asserts a derivation of the
+no-positive-zero/selected ZFC consistency equivalence in the explicitly
+defined native theory. The [two guarded comparisons](../../reviews/ipra-square14-native-verification/README.md)
+match all eight compiled suffix modules and 11,433 guarded files. This is a
+fixed-source result on the inherited historical provider, not a full
+source-current closure; package-transitive and dynamically loaded ancestry
+remain inherited.
 
 The separate [equation30.tex](../../equation30.tex) and
 [equation30.pdf](../../equation30.pdf) present the 14 distinct positive unknowns,
@@ -41,6 +46,5 @@ sum and every circuit row against the candidate, confirms the copied fixed
 constants, and rejects two deliberate formula mutations; it is not a general
 TeX interpreter. Normal Python and `python -O` both pass. Two `pdflatex` runs
 produced identical PDF SHA-256
-`47193ff48c19ae23936f6d833aa101e4a6a4613d536813a02f526cd24ea496c7`;
-both pages were visually inspected. The page currently states the model proof
-and the pending independent native-iPRA replay separately.
+`4593c0b40628cd768f07f6b30bc365df70682e090a918aee49eb608534320d49`;
+both pages were visually inspected. The page states the matched native-iPRA result and its snapshot boundary.
