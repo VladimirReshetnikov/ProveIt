@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAAQ29Native
+#print axioms DiophantineConsistency.AdaptiveAQ29.current_no_zero_iff
+#print axioms DiophantineConsistency.IPRAAQ29Native.sameNoZero
+#print axioms DiophantineConsistency.IPRAAQ29Native.bridge29
+#print axioms DiophantineConsistency.IPRAAQ29Native.literal_equivalence
