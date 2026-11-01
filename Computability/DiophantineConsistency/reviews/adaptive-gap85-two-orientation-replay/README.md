@@ -1,0 +1,5 @@
+# Both special-template root orientations in IΣ₁ models
+
+The two focused runs PASS, matching source/object/full-log hashes and reporting standard Lean axioms. `AdaptiveGap85TwoOrientationTemplate.exclude_two_orientation_template` rules out the stated positive-root and balanced-negative-root alternatives in every IΣ₁ model, under the explicit first-norm, special-template, positivity, q³-divisibility, and root-witness assumptions. The negative branch requires its natural balanced-root witness.
+
+The theorem does not derive those assumptions or witnesses from arbitrary 85-zero solutions, and does not prove the 85-operation equation equivalent to consistency. It is built on the independently replayed negative-template provider containing the positive branch, with 375 selected inherited project-object/companion paths pinned. Original transitive project and external package source ancestry remain historical. Inputs: `research/adaptive-gap85-normalization/AdaptiveGap85TwoOrientationTemplate.lean` and `replay_two_orientation.py`.
