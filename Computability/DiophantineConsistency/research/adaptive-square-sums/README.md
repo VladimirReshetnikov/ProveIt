@@ -38,3 +38,14 @@ proof of an iPRA derivation is being assembled; it must be checked separately
 before claiming that endpoint. The graph has 13 variables, 87 unshifted binary
 operations (48 multiplications, 21 additions, 18 subtractions) and degree 36;
 these are distinct metrics and no global minimum is claimed.
+
+The separate [equation36.tex](../../equation36.tex) and
+[equation36.pdf](../../equation36.pdf) show the degree-36 equation, the exact
+87-gate circuit and the same complete base-10 fixed integer used by the
+14-variable page. `verify_display36.py` parses the displayed 24 polynomial
+abbreviations and verifies them against the pinned parent graph; it checks the
+sum wiring and all rendered gate rows and rejects two controlled mutations.
+It does not interpret arbitrary TeX. Both normal Python and `python -O` pass.
+Two independent `pdflatex` runs produced identical PDF SHA-256
+`c40aad3e0610da92da0d32102f20488eac12dd950cdf3a3e8bc88f263b2f5dd4`;
+both pages were visually inspected and the log contained no overfull boxes.
