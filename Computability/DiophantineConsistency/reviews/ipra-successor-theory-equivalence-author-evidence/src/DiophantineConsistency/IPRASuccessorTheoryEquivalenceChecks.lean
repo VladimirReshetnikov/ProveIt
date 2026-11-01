@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRASuccessorTheoryEquivalence
+#print axioms DiophantineConsistency.IPRASuccessorTheoryEquivalence.native_to_successor_axiom
+#print axioms DiophantineConsistency.IPRASuccessorTheoryEquivalence.successor_to_native_axiom
+#print axioms DiophantineConsistency.IPRASuccessorTheoryEquivalence.transfer
+#print axioms DiophantineConsistency.IPRASuccessorTheoryEquivalence.same_derivability
