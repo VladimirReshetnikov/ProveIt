@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRADifferenceStepClosure
+#check DiophantineConsistency.IPRADifferenceStepClosure.closedStep
+#check DiophantineConsistency.IPRADifferenceStepClosure.equalityDecidable
+#print axioms DiophantineConsistency.IPRADifferenceStepClosure.equalityDecidable
