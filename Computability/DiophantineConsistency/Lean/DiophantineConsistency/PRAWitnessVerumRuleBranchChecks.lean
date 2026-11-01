@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessVerumRuleBranch
+#print axioms DiophantineConsistency.PRAWitnessVerumRuleBranch.actualVerumBranch_eq
+#print axioms DiophantineConsistency.PRAWitnessVerumRuleBranch.wb_neg_actualVerumBranch

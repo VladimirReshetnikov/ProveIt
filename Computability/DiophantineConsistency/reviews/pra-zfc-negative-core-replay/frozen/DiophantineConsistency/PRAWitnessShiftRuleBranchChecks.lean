@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRAWitnessShiftRuleBranch
+#print axioms DiophantineConsistency.PRAWitnessShiftRuleBranch.actualShiftBranch_eq
+#print axioms DiophantineConsistency.PRAWitnessShiftRuleBranch.wb_neg_branch
+#print axioms DiophantineConsistency.PRAWitnessShiftRuleBranch.wb_neg_actualShiftBranch

@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRAWitnessNegativePiCore
+#print axioms DiophantineConsistency.PRAWitnessNegativePiCore.piTail_eq
+#print axioms DiophantineConsistency.PRAWitnessNegativePiCore.wb_neg_corePi
