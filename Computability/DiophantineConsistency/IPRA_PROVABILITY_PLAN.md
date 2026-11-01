@@ -171,6 +171,11 @@ remain open, as do general equality and positive reconstruction. A matched
 [single-provider join](Lean/DiophantineConsistency/IPRADifferenceEqualityForwardJoin.lean)
 now supplies this forward direction to the equality-decision reduction, leaving
 zero decidability and positive reverse difference correctness explicit.
+A subsequent [zero-decidability join](Lean/DiophantineConsistency/IPRADifferenceEqualityZeroJoin.lean)
+rebuilds the necessary dependencies on that provider and discharges the zero
+decision premise. Matching guarded replays leave exactly the positive reverse
+difference implication as the explicit premise for general equality
+decidability; inherited package and project ancestry remains historical.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
 with matching author and independent replays.

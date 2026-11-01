@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRADifferenceEqualityZeroJoin
+
+#check DiophantineConsistency.IPRADifferenceEqualityZeroJoin.equalityDecidable
+#print axioms DiophantineConsistency.IPRADifferenceEqualityZeroJoin.equalityDecidable
