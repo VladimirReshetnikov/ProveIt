@@ -1,0 +1,5 @@
+# Pending 14-variable suffix after project-origin repair
+
+This unexecuted, gated template cannot prepare its six-module suffix until both 73-module fixed-source repair peers report PASS, their full output/log/warning/direct-input rows match, and the separate independent project-closure audit passes. It then reauthenticates that repair plan's complete retained-object and original-provider guards, direct external resolution/companions and absences, all 994 14-variable source hashes, both completed repaired overlays, and the five extra ancestor transitive project manifests. Those manifests are disjoint from the proposed repair dirty set. The generated replay must itself pass independent peers and preserve the exact 14-variable axiom report.
+
+If successful this addresses the previously observed fixed-snapshot project-origin mismatch for the 14-variable endpoint. It remains a historical fixed-source result; the 848-project ancestor is author-only and package-transitive/dynamic ancestry remains inherited. The template has passed an independent static schema review but has not been run.

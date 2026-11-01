@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Prepare 14-variable suffix only after both 73-module repair peers PASS."""
+from pathlib import Path
+import hashlib,json,os
+D=Path(__file__).resolve().parent;R=D.parents[3];V=R/'Computability/DiophantineConsistency/reviews';F=V/'ipra-frozen-repair-plan-v2/manifest.json';BF=V/'ipra-adaptive-native-fixed-continuation/manifest.json';G=V/'ipra-current-native14-frozen-graph/manifest.json';E=V/'ipra-current-native14-frozen-extra/manifest.json';A=Path('/tmp/ipra-frozen-ancestry-repair-5_g68wg3');B=Path('/tmp/ipra-frozen-ancestry-repair-6ftdeyrq');OUT=V/'ipra-current-native14-repaired-replay';ORIG=V/'ipra-frozen-repair-plan-v2-verification/receipt.json';CMP=V/'ipra-frozen-repair-v2-verification/receipt.json';CL=V/'ipra-frozen-repair-plan-v2-closure-audit/receipt.json';PKG=Path('/tmp/pra14-full-transitive-2x6o__to/package-lib');h=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def read(p):
+ raw=Path(p).read_bytes();return json.loads(raw),hashlib.sha256(raw).hexdigest()
+prepare_bytes=Path(__file__).read_bytes();replay_bytes=(D/'replay.py').read_bytes();prepare_hash=hashlib.sha256(prepare_bytes).hexdigest();replay_hash=hashlib.sha256(replay_bytes).hexdigest()
+f,fh=read(F);bf,bfh=read(BF);g,gh=read(G);e,eh=read(E);a,ah=read(A/'state.json');b,bh=read(B/'state.json');orig,origh=read(ORIG);cmp,cmph=read(CMP);cl,clh=read(CL);assert cl['status']=='PASS_PROJECT_CLOSURE' and cl['plan_manifest_sha256']==fh and cl['fixed_manifest_sha256']==bfh;assert orig['status']=='MATCHED_PLAN' and orig['author_manifest_sha256']==fh and orig['replay_sha256']==f['driver_sha256'];assert cmp['status']=='MATCHED_PASS' and cmp['manifest_sha256']==fh and cmp['author_state_sha256']==ah and cmp['peer_state_sha256']==bh;assert a['status']==b['status']=='PASS' and a['manifest_sha256']==b['manifest_sha256']==fh and a['driver_sha256']==b['driver_sha256']==f['driver_sha256'];assert [r['name'] for r in a['records']]==[r['name'] for r in b['records']]==f['order'];assert len(f['order'])==73 and {'DiophantineConsistency.PRAPositiveCode','DiophantineConsistency.PRAPositivePackedNormal'}<=set(f['order']);assert f['fixed_manifest_sha256']==g['fixed_manifest_sha256']==bfh and f['source_sha256']==bf['source_sha256']
+for x,y in zip(a['records'],b['records']):
+ assert all(x.get(k)==y.get(k) for k in ['name','exit','object_sha256','log_sha256','warnings']) and x['exit']==0;assert {n:v['sha256'] for n,v in x['direct_imports'].items()}=={n:v['sha256'] for n,v in y['direct_imports'].items()}
+ for root,row in [(A,x),(B,y)]:
+  n=row['name'];out=root/'lib'/(n.replace('.','/')+'.olean');assert out.is_file() and not out.is_symlink() and out.resolve()==out.absolute() and h(out)==row['object_sha256'] and h(root/'logs'/(n.replace('.','_')+'.log'))==row['log_sha256'];assert all(h(v['resolved_path'])==v['sha256'] for v in row['direct_imports'].values())
+assert all(h(p)==v for p,v in f['origin_guard'].items());assert all(h(p)==v for p,v in f['external_direct_paths'].items());assert all(str(Path(p).resolve())==v for p,v in f['external_resolved_paths'].items());assert all(not os.path.lexists(p) for p in f['external_absent_paths']);assert all(h(PKG/k)==v['sha256'] and str((PKG/k).resolve())==v['resolved_path'] for k,v in f['external_files'].items());assert all(not os.path.lexists(PKG/k) for k in f['external_absent'])
+snap=V/'ipra-adaptive-fixed-snapshot-prefix/sources';extra=V/'ipra-current-native14-frozen-extra/sources';sp=lambda n:(extra if n in e['sources'] else snap)/(n.replace('.','/')+'.lean');assert all(h(sp(n))==v for n,v in g['project_source_sha256'].items())
+parent=Path(f['peer_state_path']).parent;sidecars=['.olean','.olean.private','.olean.server','.ir','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean','.ilean.hash'];excluded={n.replace('.','/')+s for n in f['order'] for s in sidecars}
+for rel,row in f['parent_inventory'].items():
+ assert h(parent/'lib'/rel)==row['sha256'] and str((parent/'lib'/rel).resolve())==row['resolved_path']
+ if rel not in excluded:assert h(B/'lib'/rel)==row['sha256'] and str((B/'lib'/rel).resolve())==row['resolved_path']
+ancestor=Path('/tmp/pra14-full-transitive-2x6o__to');anc,anch=read(ancestor/'state.json');anc_records={r['module']:r for r in anc['records']};ancestral_manifests={};dirty=set(f['order']);ancestral_project=set()
+for n,row in g['five_base_checks'].items():
+ rel=n.replace('.','/')+'.olean';assert h(B/'lib'/rel)==row['selected_base_object_sha256'] and (B/'lib'/rel).resolve()==(ancestor/'lib'/rel).resolve();record=anc_records[n];path=ancestor/'transitive-manifests'/record['transitive_manifest'];data,digest=read(path);assert digest==record['transitive_manifest_sha256'];ancestral_manifests[str(path)]=digest
+ for dep,item in data.items():
+  if item['kind']=='project':
+   assert dep not in dirty and h(B/'lib'/(dep.replace('.','/')+'.olean'))==item['sha256'];assert dep in g['project_source_sha256'] and g['project_source_sha256'][dep]==anc_records[dep]['source_sha256'];ancestral_project.add(dep)
+def inventory(root):
+ result={}
+ for d,_,fs in os.walk(root/'lib',followlinks=True):
+  for name in fs:
+   if name.endswith(tuple(sidecars)):
+    p=Path(d)/name;result[str(p.relative_to(root/'lib'))]={'sha256':h(p),'resolved_path':str(p.resolve())}
+ return result
+def expected_inventory(root,state):
+ result={rel:row for rel,row in f['parent_inventory'].items() if rel not in excluded}
+ for row in state['records']:
+  rel=row['name'].replace('.','/')+'.olean';p=root/'lib'/rel;assert p.is_file() and not p.is_symlink() and p.resolve()==p.absolute();result[rel]={'sha256':row['object_sha256'],'resolved_path':str(p.absolute())}
+ return result
+expected_a=expected_inventory(A,a);expected_b=expected_inventory(B,b);assert inventory(A)==expected_a and inventory(B)==expected_b;inv=expected_b
+assert h(A/'state.json')==ah and h(B/'state.json')==bh and h(F)==fh and h(BF)==bfh and h(G)==gh and h(E)==eh and h(ORIG)==origh and h(CMP)==cmph and h(CL)==clh and h(ancestor/'state.json')==anch;assert all(h(p)==v for p,v in ancestral_manifests.items()) and all(h(p)==v for p,v in f['origin_guard'].items()) and all(h(sp(n))==v for n,v in g['project_source_sha256'].items());assert all(h(p)==v and str(Path(p).resolve())==f['external_resolved_paths'][p] for p,v in f['external_direct_paths'].items()) and all(not os.path.lexists(p) for p in f['external_absent_paths'])
+assert inventory(A)==expected_a and inventory(B)==expected_b and h(__file__)==prepare_hash and h(D/'replay.py')==replay_hash
+for root,state in [(A,a),(B,b)]:
+ for row in state['records']:
+  n=row['name'];out=root/'lib'/(n.replace('.','/')+'.olean');assert out.is_file() and not out.is_symlink() and out.resolve()==out.absolute() and h(out)==row['object_sha256'] and h(root/'logs'/(n.replace('.','_')+'.log'))==row['log_sha256'];assert all(h(v['resolved_path'])==v['sha256'] for v in row['direct_imports'].values())
+order=['DiophantineConsistency.HACurrentPolynomialBridge2011','DiophantineConsistency.HACurrentEquation2011','DiophantineConsistency.PRACurrentZFCStrict','DiophantineConsistency.IPRACurrentTranslatedRefutation','DiophantineConsistency.IPRACurrentNativeZFC','DiophantineConsistency.IPRACurrentNativeZFCChecks'];manifest={'author':str(A),'peer':str(B),'author_state_sha256':ah,'peer_state_sha256':bh,'frozen_13_manifest_sha256':fh,'original_fixed_manifest_sha256':bfh,'graph_sha256':gh,'extra_manifest_sha256':eh,'parent_inventory':inv,'order':order,'source_sha256':g['project_source_sha256'],'extra_names':list(e['sources']),'direct_imports':{n:g['project_dependencies'][n] for n in order},'external_direct':f['external_files'],'parent_external_direct_paths':f['external_direct_paths'],'parent_external_resolved_paths':f['external_resolved_paths'],'parent_external_absent_paths':f['external_absent_paths'],'parent_external_absent':f['external_absent'],'parent_origin_guard':f['origin_guard'],'parent_origin_receipt_sha256':origh,'parent_comparison_receipt_sha256':cmph,'parent_closure_receipt_sha256':clh,'lean_sha256':f['lean_sha256'],'ancestor_state':str(ancestor/'state.json'),'ancestor_state_sha256':anch,'ancestral_manifests':ancestral_manifests,'ancestral_project_count':len(ancestral_project),'boundary':'Fixed historical source snapshot after matched 73-module project-origin repair. The 848 ancestor remains author-only and external package-transitive/dynamic ancestry remains inherited; current-workspace drift remains separate.'}
+assert h(__file__)==prepare_hash and h(D/'replay.py')==replay_hash;assert not OUT.exists(),('refusing to overwrite existing packet',str(OUT));OUT.mkdir();(OUT/'prepare.py').write_bytes(prepare_bytes);(OUT/'replay.py').write_bytes(replay_bytes);manifest['preparer_sha256']=prepare_hash;manifest['driver_sha256']=replay_hash;(OUT/'manifest.json').write_text(json.dumps(manifest,sort_keys=True,indent=2)+'\n');print('DRIVER',manifest['driver_sha256'],'MANIFEST',h(OUT/'manifest.json'),'PARENT_OBJECT_FILES',len(inv))
