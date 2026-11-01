@@ -60,7 +60,7 @@ variable (ν δ : ℕ)
 /-- `ofDigits b (ofFn f) = Σ_j f j b^j`. -/
 theorem ofDigits_ofFn (b : ℕ) : ∀ {n : ℕ} (f : Fin n → ℕ),
     Nat.ofDigits b (List.ofFn f) = ∑ j : Fin n, f j * b ^ (j : ℕ)
-  | 0, f => by simp [Nat.ofDigits]
+  | 0, f => by simp
   | n + 1, f => by
     rw [List.ofFn_succ, Nat.ofDigits_cons, ofDigits_ofFn b (fun i => f i.succ), Fin.sum_univ_succ,
       Finset.mul_sum]
