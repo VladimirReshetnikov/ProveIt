@@ -315,20 +315,14 @@ ordinary typed quotation. -/
     translateFormula Ks (p.lMap (setHom k arities)) =
       (⌜p⌝ : Bootstrapping.Semiformula V ℒₛₑₜ n) := by
   induction p using FirstOrder.Semiformula.rec' with
-  | hverum => rfl
-  | hfalsum => rfl
-  | hrel r v =>
-      simp only [FirstOrder.Semiformula.lMap_rel, setHom_rel, translateFormula]
+  | hverum | hfalsum => rfl
+  | hrel r v | hnrel r v =>
+      simp only [FirstOrder.Semiformula.lMap_rel, FirstOrder.Semiformula.lMap_nrel,
+        setHom_rel, translateFormula]
       apply Bootstrapping.Semiformula.ext
       simp [translateTerm_lMap_set]
-  | hnrel r v =>
-      simp only [FirstOrder.Semiformula.lMap_nrel, setHom_rel, translateFormula]
-      apply Bootstrapping.Semiformula.ext
-      simp [translateTerm_lMap_set]
-  | hand p q hp hq => simp [translateFormula, hp, hq]
-  | hor p q hp hq => simp [translateFormula, hp, hq]
-  | hall p hp => simp [translateFormula, hp]
-  | hexs p hp => simp [translateFormula, hp]
+  | hand p q hp hq | hor p q hp hq => simp [translateFormula, hp, hq]
+  | hall p hp | hexs p hp => simp [translateFormula, hp]
 
 /-- Sentence-level form of `translateFormula_lMap_set`: a lifted `ℒₛₑₜ`
 sentence specializes to its typed quotation. -/

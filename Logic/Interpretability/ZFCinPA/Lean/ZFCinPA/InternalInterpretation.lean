@@ -614,4 +614,16 @@ theorem provable_falsum_of_interp (hP : Good P)
 
 end Interpretation
 
+/-- A transfer of refutations yields the reverse transfer of consistency. -/
+theorem consistent_of_falsum_transfer {T U : SetTheory} [T.Δ₁] [U.Δ₁]
+    (htransfer : Provable T (^⊥ : V) → Provable U (^⊥ : V))
+    (h : U.Consistent V) : T.Consistent V := by
+  have e : (⌜(⊥ : Sentence ℒₛₑₜ)⌝ : V) = ^⊥ := by
+    simp [LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+  intro hT
+  apply h
+  unfold LO.FirstOrder.Theory.Consistent at *
+  rw [e] at hT ⊢
+  exact htransfer hT
+
 end LeanProofs.ZFCinPA.InternalInterpretation
