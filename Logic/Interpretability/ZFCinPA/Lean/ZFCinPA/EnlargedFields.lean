@@ -512,22 +512,18 @@ theorem stepGood_of_levelLaws {L : W → W → W → Prop} {b : W}
       have k1 : L (allC H a) e (natV H 1) ∨
           (PiBounded H (vsucc H b) (allC H a) ∧
             ¬ L (allC H a) e (natV H 0)) := by
-        rcases h1 with h1 | h1
-        · exact Or.inl h1
-        · rcases levelJustified_all H (hC _ _ _ h1).2 with hd | hcase
-          · exact Or.inl hd
-          · rcases hcase with ⟨-, hpb, hnp⟩ | ⟨hb0, -⟩
-            · exact Or.inr ⟨hpb, hnp⟩
-            · exact absurd hb0 (natV_ne H (by decide))
+        rcases h1.elim Or.inl (fun hm => levelJustified_all H (hC _ _ _ hm).2) with hd | hcase
+        · exact Or.inl hd
+        · rcases hcase with ⟨-, hpb, hnp⟩ | ⟨hb0, -⟩
+          · exact Or.inr ⟨hpb, hnp⟩
+          · exact absurd hb0 (natV_ne H (by decide))
       have k0 : L (allC H a) e (natV H 0) ∨
           ∃ d, mem (satTriple H a (econs H d e) (natV H 0)) C := by
-        rcases h0 with h0 | h0
-        · exact Or.inl h0
-        · rcases levelJustified_all H (hC _ _ _ h0).2 with hd | hcase
-          · exact Or.inl hd
-          · rcases hcase with ⟨hb1, -⟩ | ⟨-, hex⟩
-            · exact absurd hb1 (natV_ne H (by decide))
-            · exact Or.inr hex
+        rcases h0.elim Or.inl (fun hm => levelJustified_all H (hC _ _ _ hm).2) with hd | hcase
+        · exact Or.inl hd
+        · rcases hcase with ⟨hb1, -⟩ | ⟨-, hex⟩
+          · exact absurd hb1 (natV_ne H (by decide))
+          · exact Or.inr hex
       rcases k1 with k1 | ⟨hpb, hnp⟩
       · rcases k0 with k0 | ⟨d, hd⟩
         · exact hL.excl _ e (isFormCodeSem_all H hca) he k1 k0
@@ -562,23 +558,19 @@ theorem stepGood_of_levelLaws {L : W → W → W → Prop} {b : W}
     · rintro ⟨h1, h0⟩
       have k1 : L (exC H a) e (natV H 1) ∨
           ∃ d, mem (satTriple H a (econs H d e) (natV H 1)) C := by
-        rcases h1 with h1 | h1
-        · exact Or.inl h1
-        · rcases levelJustified_ex H (hC _ _ _ h1).2 with hd | hcase
-          · exact Or.inl hd
-          · rcases hcase with ⟨-, hex⟩ | ⟨hb0, -⟩
-            · exact Or.inr hex
-            · exact absurd hb0 (natV_ne H (by decide))
+        rcases h1.elim Or.inl (fun hm => levelJustified_ex H (hC _ _ _ hm).2) with hd | hcase
+        · exact Or.inl hd
+        · rcases hcase with ⟨-, hex⟩ | ⟨hb0, -⟩
+          · exact Or.inr hex
+          · exact absurd hb0 (natV_ne H (by decide))
       have k0 : L (exC H a) e (natV H 0) ∨
           (SigmaBounded H (vsucc H b) (exC H a) ∧
             ¬ L (exC H a) e (natV H 1)) := by
-        rcases h0 with h0 | h0
-        · exact Or.inl h0
-        · rcases levelJustified_ex H (hC _ _ _ h0).2 with hd | hcase
-          · exact Or.inl hd
-          · rcases hcase with ⟨hb1, -⟩ | ⟨-, hsb, hns⟩
-            · exact absurd hb1 (natV_ne H (by decide))
-            · exact Or.inr ⟨hsb, hns⟩
+        rcases h0.elim Or.inl (fun hm => levelJustified_ex H (hC _ _ _ hm).2) with hd | hcase
+        · exact Or.inl hd
+        · rcases hcase with ⟨hb1, -⟩ | ⟨-, hsb, hns⟩
+          · exact absurd hb1 (natV_ne H (by decide))
+          · exact Or.inr ⟨hsb, hns⟩
       rcases k0 with k0 | ⟨hsb, hns⟩
       · rcases k1 with k1 | ⟨d, hd⟩
         · exact hL.excl _ e (isFormCodeSem_ex H hca) he k1 k0
