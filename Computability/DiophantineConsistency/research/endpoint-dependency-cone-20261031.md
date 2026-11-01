@@ -261,11 +261,17 @@ facts) are re-exported, for −53/+2 lines. Its dependents `L2AxiomsDom`,
 `L2RootDom` and `SeedDom` compile. `KEndpoint217` names none of the aliased
 declarations.
 
+**Landed: `Routing245` against `Rotation240`.** −151/+12 lines over six
+files. The lane core compiles, and so do the eight dependents that name an
+aliased declaration (`Routing245Invariant` and the seven
+`SitesRouting245Pilot*`), plus a spot check of cut parts, a site batch and a
+bisimulation chunk. The other several hundred chunk modules name none of the
+aliased declarations.
+
 Measured, not done (lines saved by the same lane-wide fixpoint):
 
 | target | lines | cost |
 | --- | ---: | --- |
-| `Routing245` → `Rotation240` | 84 | several hundred cut and bisimulation chunk dependents |
 | `EnumPerm`/`Enum254` → `Enum222` | 45 + 29 | K215 (peer-pinned) and Prog254 endpoint rebuilds |
 | `Rotation240` → `Perm252` (both protected) | about 150 | KEndpoint and Rotation240 closures |
 

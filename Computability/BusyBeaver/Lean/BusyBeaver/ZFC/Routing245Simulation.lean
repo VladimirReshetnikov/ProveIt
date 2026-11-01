@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.Rotation240Simulation
 import BusyBeaver.ZFC.RegisterPathClean
 import BusyBeaver.ZFC.SiteRouting245
 
@@ -24,6 +25,7 @@ remain separate obligations.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.Routing245Simulation
+export SetTheory.BusyBeaver.ZFC.Rotation240Simulation (registerBits_eq incr_eq_write decr_eq_write)
 
 open RegisterPath FiniteZipper Permutation252Frame SymbolicRouting245
 
@@ -34,15 +36,6 @@ def DispatchFrame64 {states : Nat} (dispatch : Fin states) (binary : Config stat
   64 ≤ logical.path.length + gap ∧ LogicalTailZero logical.registers ∧
     ∃ leftPadding rightPadding : Nat,
       ZipRep binary (dispatchZip dispatch binary.head leftPadding rightPadding logical gap spares)
-
-theorem registerBits_eq (vs : List Nat) :
-    RegisterBoxesPerm252.registerBits vs = Permutation252Frame.registerBits vs := by
-  induction vs with
-  | nil => rfl
-  | cons v vs ih =>
-    change false :: true :: (List.replicate v true ++ RegisterBoxesPerm252.registerBits vs) =
-      false :: true :: (List.replicate v true ++ Permutation252Frame.registerBits vs)
-    rw [ih]
 
 theorem flat_map_bit (n : Nat) (vs : List Nat) (P : List Bool) :
     flat n vs (P.map Segment.bit) = P := by
@@ -129,28 +122,6 @@ theorem target_frame (n : Nat) (vs : List Nat) (P : List Bool)
   refine ⟨by dsimp; omega, htail, 0, 0, ?_⟩
   simpa only [dispatchZip, zAtS, hh, List.replicate_zero,
     List.append_nil, List.cons_append, List.nil_append, List.append_assoc] using hr
-
-theorem incr_eq_write (vs : List Nat) (r : Nat) (hr : r < vs.length) :
-    incr r vs = writeRegisters vs r (vs.getD r 0 + 1) := by
-  induction r generalizing vs with
-  | zero => cases vs <;> simp_all [incr, writeRegisters]
-  | succ r ih =>
-    cases vs with
-    | nil => simp at hr
-    | cons v vs =>
-      change v :: incr r vs = v :: writeRegisters vs r (vs.getD r 0 + 1)
-      rw [ih vs (by simpa using hr)]
-
-theorem decr_eq_write (vs : List Nat) (r : Nat) (hr : r < vs.length) :
-    decr r vs = writeRegisters vs r ((vs.getD r 0).pred) := by
-  induction r generalizing vs with
-  | zero => cases vs <;> simp_all [decr, writeRegisters]
-  | succ r ih =>
-    cases vs with
-    | nil => simp at hr
-    | cons v vs =>
-      change v :: decr r vs = v :: writeRegisters vs r ((vs.getD r 0).pred)
-      rw [ih vs (by simpa using hr)]
 
 theorem unchanged_rebase (R : Registers) (spares : List Nat) :
     boxBits (.plain .unchanged) (vregs R ++ spares) =
