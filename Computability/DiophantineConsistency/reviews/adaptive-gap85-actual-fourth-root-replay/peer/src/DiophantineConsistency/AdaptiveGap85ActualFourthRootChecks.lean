@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85ActualFourthRoot
+#print axioms DiophantineConsistency.AdaptiveGap85ActualFourthRoot.actual_fourth_main_congruences
+#check DiophantineConsistency.AdaptiveGap85ActualFourthRoot.actual_fourth_main_congruences
