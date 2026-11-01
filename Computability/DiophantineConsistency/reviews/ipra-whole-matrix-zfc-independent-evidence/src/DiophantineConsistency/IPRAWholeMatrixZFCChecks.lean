@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAWholeMatrixZFC
+#check DiophantineConsistency.IPRAWholeMatrixZFC.fromMatrix
+#check DiophantineConsistency.IPRAWholeMatrixZFC.fromOpenFamily
+#print axioms DiophantineConsistency.IPRAWholeMatrixZFC.fromMatrix
+#print axioms DiophantineConsistency.IPRAWholeMatrixZFC.fromOpenFamily

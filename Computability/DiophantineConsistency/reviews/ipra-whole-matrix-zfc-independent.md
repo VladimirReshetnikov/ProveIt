@@ -1,0 +1,5 @@
+# Native ZFC comparison from the whole bounded matrix: independent replay
+
+The independently launched guarded peer `/tmp/ipra-whole-matrix-zfc-yimxhx8_` passed and matches author `/tmp/ipra-whole-matrix-zfc-mz__b2ed` in both source/object/full-log rows, parent state hash, and the entire serialized selected-provider inventory. It checks the exact closed-matrix and uniform-open-family interfaces on the same independently checked parent. Both interfaces leave the whole bounded-matrix GG-to-native comparison as an explicit unproved input; the translated witness bound is internally discharged and no `DeepNeed` list is required. This does not prove the final iPRA consistency equivalence. Parent/Foundation and external-package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-whole-matrix-zfc.py`. Peer state SHA-256 `df1bfee2a93c6652b1e30c533de201cd3341a6a10eb6782fcbb8d42fcfbffbaa`; provider inventory `a8d6e5470324cbad4f6241cf3f2e17a022bf2b42a84ba65c6794bb5d1eb05d85`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

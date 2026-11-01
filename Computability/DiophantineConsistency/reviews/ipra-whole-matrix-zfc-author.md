@@ -1,0 +1,7 @@
+# Native ZFC comparison from the whole bounded matrix: author replay
+
+Guarded author run `/tmp/ipra-whole-matrix-zfc-mz__b2ed` passed on the independently replayed open-disjunction provider `/tmp/ipra-open-disjunction-witness-wwljfjae/lib`. `IPRAWholeMatrixZFC.fromMatrix` derives the exact native ZFC comparison from the single explicit native proof `∀ b, ((lMap embedding (bnd ρ))ᴺ → native (lMap embedding (bnd ρ)))`; the translated witness-bound proof is supplied internally. `fromOpenFamily` accepts instead that exact comparison uniformly at every open bound term and uses the proved `closeFamily` theorem to construct the closed matrix proof. Neither interface requires the `DeepNeed` witness list.
+
+The whole-matrix comparison, including the recursive child comparisons and bounded quantifier cases, remains an explicit unproved input; this is not the completed iPRA consistency equivalence. Sources and selected parent objects were reauthenticated before and after compilation. Parent/Foundation and external-package transitive source-object ancestry remain inherited historical boundaries; the check log records the standard Lean axioms.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-whole-matrix-zfc.py`. State SHA-256 `60f4e9fafcebc123fba49200425741a8cb692581b41e8ea5c3e28845e7f53a71`; provider inventory `a8d6e5470324cbad4f6241cf3f2e17a022bf2b42a84ba65c6794bb5d1eb05d85`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

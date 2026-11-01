@@ -1,0 +1,20 @@
+DiophantineConsistency.IPRAWholeMatrixZFC.fromMatrix
+  (h : DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢! ∀⁰ DiophantineConsistency.IPRAWholeMatrixZFC.matrix) :
+  DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+          DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence).doubleNegation 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation
+          DiophantineConsistency.PRALanguage.embedding
+DiophantineConsistency.IPRAWholeMatrixZFC.fromOpenFamily
+  (h :
+    (t : LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) →
+      DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+        (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts ![t]))
+          DiophantineConsistency.IPRAWholeMatrixZFC.matrix) :
+  DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ((LO.FirstOrder.Semiformula.lMap DiophantineConsistency.PRALanguage.embedding)
+          DiophantineConsistency.FoundationZFCConsistencyNat.sourceSentence).doubleNegation 🡘
+      ∼DiophantineConsistency.IPRAFoundationZFCMappedNegation.mappedNativeRefutation
+          DiophantineConsistency.PRALanguage.embedding
+'DiophantineConsistency.IPRAWholeMatrixZFC.fromMatrix' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRAWholeMatrixZFC.fromOpenFamily' depends on axioms: [propext, Classical.choice, Quot.sound]
