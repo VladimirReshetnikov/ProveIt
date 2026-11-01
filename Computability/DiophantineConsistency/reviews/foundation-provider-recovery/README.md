@@ -15,6 +15,10 @@ digests, and the inherited mathlib checkout revision. The temporary isolated
 build root is `/tmp/ipra-foundation-rebuild-DqHJmJJe`. Its Lake configuration
 declares a `Foundation` library at `lib/FormalizedFormalLogic-Foundation`,
 requires mathlib `v4.32.0`, and uses the existing package build directories.
+[`build_all.py`](build_all.py) verifies the pinned inputs, attempts the 140
+named targets, monitors free space, and records its actual outcome. A success
+creates a new overlay with fresh Foundation objects and inherited non-Foundation
+packages; it does not modify the historical provider.
 
 A first targeted Lake build of `Foundation.FirstOrder.Arithmetic.IOpen.Basic`
 and its dependencies was started in that root. This input record is **not a
