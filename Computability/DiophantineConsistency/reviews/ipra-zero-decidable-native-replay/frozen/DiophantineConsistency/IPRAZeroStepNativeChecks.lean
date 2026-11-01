@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAZeroStepNative
+#print axioms DiophantineConsistency.IPRAZeroStepNative.step_closed_context
+#print axioms DiophantineConsistency.IPRAZeroStepNative.step_nonzero_of_addNN
+#print axioms DiophantineConsistency.IPRAZeroStepNative.zero_decidable_of_addNN
+#print axioms DiophantineConsistency.IPRAZeroStepNative.zero_decidable

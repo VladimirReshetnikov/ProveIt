@@ -119,26 +119,29 @@ The chosen refutation sentence `rho` is the actual Foundation
 `¬rho`. Although `rho` has a checked Σ₁ hierarchy certificate, its displayed
 definition is not simply a visibly bounded matrix. The existing classical
 PRA proof of `rho → ∃ b, bnd rho b` uses classical model completeness; it is
-not an intuitionistic PRA proof. The analogous HA normalization also uses
+not an intuitionistic PRA proof. Its Gödel–Gentzen translation is now
+constructed in [IPRAZFCRefutationBoundGG.lean](Lean/DiophantineConsistency/IPRAZFCRefutationBoundGG.lean):
+the source-directed author replay passed for the exact Foundation ZFC
+refutation predicate; an independent replay is still running. This gives the
+translated implication, not an unnegated intuitionistic witness. The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
 bounding and translation statements with quantifier-free induction, but
 those intuitionistic derivations remain open.
 
-One prospective first step toward atom decidability avoids assuming that the
-two step terms are definitionally identical. Once every classical PRA axiom
-image has been discharged, translate the existing classical proof of
-`x + 1 = S(x)` to obtain `∀ x, ¬¬(x + 1 = S(x))`. Native Leibniz equality
-and `S(x) ≠ 0` should then imply `x + 1 ≠ 0` intuitionistically, without
-eliminating the double negation. Native open induction on
-`x = 0 ∨ ¬(x = 0)` can then supply zero decidability. This is an explicit
-proposed derivation; its Lean proof and the subsequent equality, order and
-bounded-formula decision procedures are still open.
-The last induction step has now been checked independently in
-[IPRAZeroDecidable.lean](Lean/DiophantineConsistency/IPRAZeroDecidable.lean):
-native iPRA proves zero decidability from the explicit premise that every
-`x + 1` is nonzero. Discharging that premise remains open.
+The theory now proves zero decidability without an additional premise. The
+[checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)
+translates the classical PRA proof of `x + 1 = S(x)` to obtain its
+intuitionistic double negation; native Leibniz equality and successor
+nonzeroness then prove `x + 1 ≠ 0` without eliminating the double negation.
+Native open induction yields `∀ x, x = 0 ∨ ¬(x = 0)`. The author and
+independent [guarded replays](reviews/ipra-zero-decidable-native-replay/README.md)
+match, retaining the historical parent-object and external-ancestry boundary
+stated there. This is only equality with zero: general equality, order and
+bounded-formula decidability remain open. A fixed-parameter induction on one
+argument cannot simply invoke its induction hypothesis at a changed parameter;
+the corresponding quantified induction matrix is not quantifier-free.
 
 It may suffice to translate the existing *classical* witness-bound proof,
 instead of deriving an intuitionistic unnegated witness bound. If iPRA can
