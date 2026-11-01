@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAEqualityRemaining
+#print axioms DiophantineConsistency.IPRAEqualityRemaining.axiom_images_from_equality
+#print axioms DiophantineConsistency.IPRAEqualityRemaining.equality_images_from_remaining
+#print axioms DiophantineConsistency.IPRAEqualityRemaining.mapped_noZero_from_equality
