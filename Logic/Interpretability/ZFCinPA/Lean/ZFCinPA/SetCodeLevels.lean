@@ -280,42 +280,28 @@ theorem subst_level : ∀ u : V, ∀ x : V, x ≤ lvB u → IsUFormula ℒₛₑ
       le_trans (le_trans (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num))
         le_self_add) le_self_add
     have hlen : len w = ℓ := hw.isUTerm.lh.symm
+    have hstep : u + c₀ ≤ 10 * (u + 1) + c₀ := _root_.add_le_add
+      (le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num))) le_rfl
+    have atom_step {tag R t₁ t₂ : V} (htag : tag ≤ 1) (hR1 : R ≤ 1)
+        (ht₁ : IsUTerm ℒₛₑₜ t₁) (ht₂ : IsUTerm ℒₛₑₜ t₂)
+        (hx' : ⟪tag, 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1)) :
+        ⟪tag, 2, R, termSubst ℒₛₑₜ w t₁ ∷ termSubst ℒₛₑₜ w t₂ ∷ 0⟫ + 1 ≤
+          lvB (10 * (u + 1) + c₀ + 10) := by
+      obtain ⟨h₁, h₂⟩ := atom_children hx'
+      exact atom_rebuild hm htag hR1 (lift_lvB (termSubst_var_le hlen hwb ht₁ h₁) hstep)
+        (lift_lvB (termSubst_var_le hlen hwb ht₂ h₂) hstep)
     rcases hxF.case with ⟨k, R, v, hR, hv, rfl⟩ | ⟨k, R, v, hR, hv, rfl⟩ | rfl | rfl |
         ⟨p, q, hp, hq, rfl⟩ | ⟨p, q, hp, hq, rfl⟩ | ⟨p, hp, rfl⟩ | ⟨p, hp, rfl⟩
     · obtain ⟨rfl, hR01⟩ := isRel_set hR
       obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
       rw [substs_rel hR hv, termSubstVec_cons₂ ht₁ ht₂]
-      have hx' : ⟪(0 : V), 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1) := hx
-      obtain ⟨h₁, h₂⟩ := atom_children hx'
       have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
-      exact atom_rebuild hm (by simp) hR1
-        (lift_lvB (termSubst_var_le hlen hwb ht₁ h₁) (by
-          calc u + c₀ ≤ 10 * (u + 1) + c₀ := _root_.add_le_add
-                (le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num)))
-                le_rfl
-            _ = _ := rfl))
-        (lift_lvB (termSubst_var_le hlen hwb ht₂ h₂) (by
-          calc u + c₀ ≤ 10 * (u + 1) + c₀ := _root_.add_le_add
-                (le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num)))
-                le_rfl
-            _ = _ := rfl))
+      exact atom_step (tag := 0) (by norm_num) hR1 ht₁ ht₂ hx
     · obtain ⟨rfl, hR01⟩ := isRel_set hR
       obtain ⟨t₁, t₂, rfl, ht₁, ht₂⟩ := vec_two hv
       rw [substs_nrel hR hv, termSubstVec_cons₂ ht₁ ht₂]
-      have hx' : ⟪(1 : V), 2, R, t₁ ∷ t₂ ∷ 0⟫ + 1 ≤ lvB (u + 1) := hx
-      obtain ⟨h₁, h₂⟩ := atom_children hx'
       have hR1 : R ≤ 1 := by rcases hR01 with rfl | rfl <;> simp
-      exact atom_rebuild hm le_rfl hR1
-        (lift_lvB (termSubst_var_le hlen hwb ht₁ h₁) (by
-          calc u + c₀ ≤ 10 * (u + 1) + c₀ := _root_.add_le_add
-                (le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num)))
-                le_rfl
-            _ = _ := rfl))
-        (lift_lvB (termSubst_var_le hlen hwb ht₂ h₂) (by
-          calc u + c₀ ≤ 10 * (u + 1) + c₀ := _root_.add_le_add
-                (le_trans le_self_add (le_mul_of_one_le_left (Arithmetic.zero_le _) (by norm_num)))
-                le_rfl
-            _ = _ := rfl))
+      exact atom_step (tag := 1) (by norm_num) hR1 ht₁ ht₂ hx
     · rw [substs_verum]
       exact lift_lvB hx hm10
     · rw [substs_falsum]
