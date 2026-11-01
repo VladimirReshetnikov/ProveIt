@@ -1,0 +1,32 @@
+'DiophantineConsistency.AdaptiveGap85FirstIndexThree.actual_zero_first_index_at_least_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85FirstIndexThree.actual_zero_first_index_at_least_three.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < ↑(p 0))
+  (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v) :
+  have Q := v 6 * v 7 * v 7;
+  have k := v 9 + v 10;
+  have c := v 9 + v 7 * k;
+  have a := v 6 * v 7 + v 7;
+  ∃ first main n m,
+    3 ≤ n ∧
+      4 ≤ m ∧
+        n < m ∧
+          DiophantineConsistency.ArithmeticPellRecurrence.xcoord n (2 * (Q - 1) + 1) = first ∧
+            2 * DiophantineConsistency.ArithmeticPellRecurrence.ycoord n (2 * (Q - 1) + 1) = k ∧
+              DiophantineConsistency.ArithmeticPellRecurrence.xcoord m a = main ∧
+                DiophantineConsistency.ArithmeticPellRecurrence.ycoord m a = c
+'DiophantineConsistency.AdaptiveGap85FirstIndexThree.actual_zero_first_index_three_size' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85FirstIndexThree.actual_zero_first_index_three_size.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < ↑(p 0))
+  (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v) :
+  have Q := v 6 * v 7 * v 7;
+  32 * Q * Q + 32 * Q + 6 ≤ v 9 + v 10

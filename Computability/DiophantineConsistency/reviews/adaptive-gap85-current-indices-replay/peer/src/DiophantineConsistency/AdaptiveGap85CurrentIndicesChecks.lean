@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85CurrentIndices
+#print axioms DiophantineConsistency.AdaptiveGap85CurrentIndices.current_zero_index_bounds
+#check DiophantineConsistency.AdaptiveGap85CurrentIndices.current_zero_index_bounds

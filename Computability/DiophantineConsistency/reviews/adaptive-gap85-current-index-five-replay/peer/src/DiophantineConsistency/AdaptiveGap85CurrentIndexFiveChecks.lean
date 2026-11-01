@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85CurrentIndexFive
+#print axioms DiophantineConsistency.AdaptiveGap85CurrentIndexFive.current_zero_main_index_at_least_five
+#check DiophantineConsistency.AdaptiveGap85CurrentIndexFive.current_zero_main_index_at_least_five

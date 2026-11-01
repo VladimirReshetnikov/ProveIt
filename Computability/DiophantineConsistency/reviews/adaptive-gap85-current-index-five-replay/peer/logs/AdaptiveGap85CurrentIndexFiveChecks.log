@@ -1,0 +1,22 @@
+'DiophantineConsistency.AdaptiveGap85CurrentIndexFive.current_zero_main_index_at_least_five' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85CurrentIndexFive.current_zero_main_index_at_least_five.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V) (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j =>
+        ↑(DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts j))
+      v) :
+  have Q := v 6 * v 7 * v 7;
+  have k := v 9 + v 10;
+  have c := v 9 + v 7 * k;
+  have a := v 6 * v 7 + v 7;
+  ∃ first main n m,
+    2 ≤ n ∧
+      5 ≤ m ∧
+        n < m ∧
+          DiophantineConsistency.ArithmeticPellRecurrence.xcoord n (2 * (Q - 1) + 1) = first ∧
+            2 * DiophantineConsistency.ArithmeticPellRecurrence.ycoord n (2 * (Q - 1) + 1) = k ∧
+              DiophantineConsistency.ArithmeticPellRecurrence.xcoord m a = main ∧
+                DiophantineConsistency.ArithmeticPellRecurrence.ycoord m a = c

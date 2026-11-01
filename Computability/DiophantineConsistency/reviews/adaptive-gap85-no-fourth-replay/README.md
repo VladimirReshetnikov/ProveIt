@@ -1,0 +1,7 @@
+# Actual fixed-port 85-zero excludes fourth main index
+
+Both source-directed replays explicitly PASS, with all ten source/object hashes and nine full-log hashes matching. The one differing full log is `AdaptiveGap85CurrentNoFourth`: each reports the same exponentiation-threshold warning with its own source-root path. The warning logs match after replacing those distinct roots, as recorded in `comparison.json`; the exponent 2011 was not evaluated. All endpoint checks report only the standard Lean axioms.
+
+`AdaptiveGap85NoFourthLargeQ.actual_zero_not_fourth_main_of_large_q` rules out main index 4 for an actual positive literal 85-zero with positive first port and q≥5. `AdaptiveGap85CurrentNoFourth.current_zero_not_fourth_main` proves the same for the literal fixed ports, deriving β≥4 and q≥5 internally from positivity; it has no separate large-q hypothesis. Both hold in every IΣ₁ model. They do not exclude higher indices or prove an 85-operation equivalence.
+
+Nine source modules plus checks are rebuilt on the independently replayed index-lower provider; 389 selected inherited project-object/companion paths and the recorded direct Foundation anchor are pinned. Original project and external package transitive source ancestry remains historical. The input list is recorded by `research/adaptive-gap85-normalization/replay_no_fourth.py`; its original docstring is retained to preserve the executed driver hash.
