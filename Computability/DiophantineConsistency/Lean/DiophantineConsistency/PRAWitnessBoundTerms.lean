@@ -176,7 +176,7 @@ theorem mono_term (A : BoundTerm n) : Mono M (fun e => A.term.val e Empty.elim) 
 end models
 
 theorem dominates_term (A : BoundTerm n) : PRA ⊢ dominates A.graph A.term := by
-  refine dominates_of_val _ _ fun M _ _ _ hM t e ht => ?_
+  refine PRAWitnessExpBounds.dominates_of_val _ _ fun M _ _ _ hM t e ht => ?_
   letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
   letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
   letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
