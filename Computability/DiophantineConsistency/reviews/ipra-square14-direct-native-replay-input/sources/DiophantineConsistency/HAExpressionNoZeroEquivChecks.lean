@@ -1,0 +1,3 @@
+import DiophantineConsistency.HAExpressionNoZeroEquiv
+#check DiophantineConsistency.HAExpressionNoZeroEquiv.bridge
+#print axioms DiophantineConsistency.HAExpressionNoZeroEquiv.bridge
