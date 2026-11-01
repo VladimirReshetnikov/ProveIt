@@ -1,0 +1,13 @@
+'template_divisibility' depends on axioms: [propext, Quot.sound]
+'template_small_T' depends on axioms: [propext, Classical.choice, Quot.sound]
+template_divisibility (X Y q T U gamma S : ℤ) (hU : Y ∣ U)
+  (hroot :
+    U * S =
+      U * (X + Y * (X + 1) * (4 * ((Y * (X + 1)) ^ 2 + 4 * (Y * (X + 1)) + 3) + 3)) +
+        (4 * (Y * (X + 1)) + 3) *
+          (U * gamma + X * Y * q - (8 * X * Y ^ 2 + 4) +
+              ((4 * ((Y * (X + 1)) ^ 2 + 4 * (Y * (X + 1)) + 3) + 3) * T -
+                4 * ((Y * (X + 1)) ^ 2 + 4 * (Y * (X + 1)) + 3)) +
+            1)) :
+  Y ∣ 45 * (T - 1)
+template_small_T (Y T : ℤ) (hT : 1 ≤ T) (hsmall : 45 * (T - 1) < Y) (hdiv : Y ∣ 45 * (T - 1)) : T = 1

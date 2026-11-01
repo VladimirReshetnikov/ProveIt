@@ -1,0 +1,3 @@
+# TranslationCore 848-module fixed-source author
+
+The guarded source rebase explicitly PASSed all 848 modules on `/tmp/pra14-full-transitive-4jyam4w5`. Source tree and matching frozen graph audit are in `../pra14-translationcore-followup-snapshot/`; full logs and transitive reuse manifests are preserved here. Source, object, direct dependency and direct external inputs were authenticated; there is no workspace project-object fallback. Original reused-object transitive environments are reconstructed from surviving recorded providers, and package-transitive ancestry remains inherited. This fixed snapshot predates later CertificateFields and SuccessorSources edits; downstream endpoints require separate builds.

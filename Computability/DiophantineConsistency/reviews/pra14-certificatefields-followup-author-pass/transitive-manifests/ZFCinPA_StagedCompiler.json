@@ -1,0 +1,344 @@
+{
+  "BoundedPAConsistency.ModelCodedPredicateTemplate": {
+    "imports": [
+      "BoundedPAConsistency.TypedTemplateProofCompiler",
+      "Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1"
+    ],
+    "kind": "project",
+    "sha256": "6790ea4173377baa66398fc248a56a0fede33b36780c8fd72d345a10d2daa66e"
+  },
+  "BoundedPAConsistency.TypedTemplateProofCompiler": {
+    "imports": [
+      "Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Coding"
+    ],
+    "kind": "project",
+    "sha256": "0b21a1a1ba88016423e91ba236c39c4a94769461df4f78f37bcaa6271b2f8ce8"
+  },
+  "BoundedZFCConsistency.AxiomCode": {
+    "imports": [
+      "BoundedZFCConsistency.CodedRank"
+    ],
+    "kind": "project",
+    "sha256": "cc2fa87575fec5f13cbacc6b26df63b6ca2641fc2e71107c703e11967e64c539"
+  },
+  "BoundedZFCConsistency.AxiomTruth": {
+    "imports": [
+      "BoundedZFCConsistency.LevelSoundnessProof"
+    ],
+    "kind": "project",
+    "sha256": "a1b7094cde53faff54db77ce93ce812f7dc007961467b728ddff76c21c4aef2b"
+  },
+  "BoundedZFCConsistency.Basic": {
+    "imports": [
+      "FirstOrder.Completeness",
+      "ZF.Zf"
+    ],
+    "kind": "project",
+    "sha256": "195ac6fc30ca5fe23be584886ed67706cf16f1885f9e6092a0767b163e833440"
+  },
+  "BoundedZFCConsistency.Choice": {
+    "imports": [
+      "ZF.Zf"
+    ],
+    "kind": "project",
+    "sha256": "c50a7f0310a7db7a95d31c68a35f3bc9d7497146280ec24f37a5a40f76d38d30"
+  },
+  "BoundedZFCConsistency.CodePredicate": {
+    "imports": [
+      "BoundedZFCConsistency.Coding"
+    ],
+    "kind": "project",
+    "sha256": "4289e81a4859387f7627d2e2b387ef94b7902c156bb61377a38bb8697d36e603"
+  },
+  "BoundedZFCConsistency.CodedDerivation": {
+    "imports": [
+      "BoundedZFCConsistency.InternalSoundness"
+    ],
+    "kind": "project",
+    "sha256": "93c96dd98b72881041f21e4cd520fb6871f730487d1d4f6066c0e6ef76bb1ad9"
+  },
+  "BoundedZFCConsistency.CodedRank": {
+    "imports": [
+      "BoundedZFCConsistency.CodedDerivation",
+      "BoundedZFCConsistency.Choice",
+      "FirstOrder.ClassicalCompleteness"
+    ],
+    "kind": "project",
+    "sha256": "0aae7c0c6f7fedb1b46e5ead40adfdab9154792d7c18db7c3c93b7e2964b5fb0"
+  },
+  "BoundedZFCConsistency.Coding": {
+    "imports": [
+      "BoundedZFCConsistency.Basic"
+    ],
+    "kind": "project",
+    "sha256": "5963d47d087f6d53db1f7903494969e84cd926b09ab1294f7f1a300b0dcb6e6a"
+  },
+  "BoundedZFCConsistency.FormulaClosedSet": {
+    "imports": [
+      "BoundedZFCConsistency.CodePredicate"
+    ],
+    "kind": "project",
+    "sha256": "84d8b6b8c4202d49da4091e9cd345807c5fc54827402f8d6d69f37c69acbc4ad"
+  },
+  "BoundedZFCConsistency.InternalSat": {
+    "imports": [
+      "BoundedZFCConsistency.FormulaClosedSet",
+      "BoundedZFCConsistency.OmegaRecursion"
+    ],
+    "kind": "project",
+    "sha256": "96569dbdf6c6081b90ede4285b89b3d0e425bdb91b0c50f1881d003e85faa468"
+  },
+  "BoundedZFCConsistency.InternalSatTotality": {
+    "imports": [
+      "BoundedZFCConsistency.InternalSat"
+    ],
+    "kind": "project",
+    "sha256": "42cf8a92a3da6a201f6502403f32f6e89093a849da4c521c61a5442056a76952"
+  },
+  "BoundedZFCConsistency.InternalSoundness": {
+    "imports": [
+      "BoundedZFCConsistency.InternalSatTotality"
+    ],
+    "kind": "project",
+    "sha256": "21ebc8ef035aa3422c431f222dad95adcf64dfbc9dfc3a79dd1f583fc10b1818"
+  },
+  "BoundedZFCConsistency.LevelCollapse": {
+    "imports": [
+      "BoundedZFCConsistency.LevelSoundness"
+    ],
+    "kind": "project",
+    "sha256": "2a81646509cdaf90b05fe470e39bbdce7a0c1ea0d16042e30227fe7cdfef01f7"
+  },
+  "BoundedZFCConsistency.LevelSoundness": {
+    "imports": [
+      "BoundedZFCConsistency.AxiomCode",
+      "BoundedZFCConsistency.UniverseTruthLevel"
+    ],
+    "kind": "project",
+    "sha256": "2fe7f1690337591cbe55aabdb4d3f7cf14ef1cc2cec5b5b8663558214109df00"
+  },
+  "BoundedZFCConsistency.LevelSoundnessProof": {
+    "imports": [
+      "BoundedZFCConsistency.LevelCollapse"
+    ],
+    "kind": "project",
+    "sha256": "001b301314fb1364caf9274e66787c4db589ac834c7e556764ae529638ec8bb1"
+  },
+  "BoundedZFCConsistency.OmegaRecursion": {
+    "imports": [
+      "BoundedZFCConsistency.Basic"
+    ],
+    "kind": "project",
+    "sha256": "14d00d9dacbd0197eba9a255a1e0f763563714f3d4e470fdf18646524ceb9bfd"
+  },
+  "BoundedZFCConsistency.UniverseTruthLevel": {
+    "imports": [
+      "BoundedZFCConsistency.UniverseTruthZero"
+    ],
+    "kind": "project",
+    "sha256": "a9dfb6b4205a5aa76cb6ed292213c9f374827bbfe25dfbb73bb4132dfbe3092a"
+  },
+  "BoundedZFCConsistency.UniverseTruthZero": {
+    "imports": [
+      "BoundedZFCConsistency.CodedRank"
+    ],
+    "kind": "project",
+    "sha256": "85804822815f7f895bd6ad6ba8e236dc0013bedae5207a87857dcb28b0f142c0"
+  },
+  "FirstOrder.Calculus": {
+    "imports": [
+      "FirstOrder.Fol"
+    ],
+    "kind": "project",
+    "sha256": "7515da1a8586f7a4b0713af74f9d7ea192d09c80abc7b65c467784fb808147d9"
+  },
+  "FirstOrder.ClassicalCompleteness": {
+    "imports": [
+      "FirstOrder.Compactness"
+    ],
+    "kind": "project",
+    "sha256": "d0495dcb8f26b7c461ead49f020c90b9e67cf89d11482e4e50eb3bb729c66a73"
+  },
+  "FirstOrder.Compactness": {
+    "imports": [
+      "FirstOrder.Completeness"
+    ],
+    "kind": "project",
+    "sha256": "bb2f2ac2204fffd2ef7906eb8c5ed3982e3f9c263beaff62f5427810598cfc0a"
+  },
+  "FirstOrder.Completeness": {
+    "imports": [
+      "FirstOrder.Calculus"
+    ],
+    "kind": "project",
+    "sha256": "3564869a941cd367eb7de9fa14776bdd98a2793d1206abcc7590e5b2745744b7"
+  },
+  "FirstOrder.Fol": {
+    "imports": [],
+    "kind": "project",
+    "sha256": "3f5b11266f1e21076e8e876192edc29f4f47928df7c08515e5a9e819bf65b33d"
+  },
+  "Foundation.FirstOrder.Bootstrapping.DerivabilityCondition.D1": {
+    "companions": {
+      "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition/D1.ir": "1fe6f2cc50dea5f2b070d7da1b9ddfebbdf21a6d4269de6e3afa57fef67e05db",
+      "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition/D1.olean.private": "8875852dd113937a0553ca3730a147354d5a48401b7bd7328204c7d2787f9e96",
+      "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition/D1.olean.server": "a7260b2ca5116f4c468d334b1119d373159fe77ce284dd95f08c5eba9d6143b8"
+    },
+    "kind": "external",
+    "sha256": "bd2bb4fcb30f74b67efd9b12d5c9e56ebadd4192cf59997340547f09d9c9cba3"
+  },
+  "Foundation.FirstOrder.Bootstrapping.FixedPoint": {
+    "companions": {
+      "Foundation/FirstOrder/Bootstrapping/FixedPoint.ir": "8aab27c6009db849649bb5cb5f4d7116215c42dfaab723c1080a671de0fb3c27",
+      "Foundation/FirstOrder/Bootstrapping/FixedPoint.olean.private": "74bb9749b0b6878f08cacf26985ecee670f352942e4441091a3c52b93a780cd4",
+      "Foundation/FirstOrder/Bootstrapping/FixedPoint.olean.server": "38580f1b78da82fe1b08a64de830fb2412dd27b043c179a7fd12c636ef1dd185"
+    },
+    "kind": "external",
+    "sha256": "51b0ba2d0427369baae31a6ecf9a37d948bc0080df85c1f065349fb72650c3c4"
+  },
+  "Foundation.FirstOrder.Bootstrapping.Syntax": {
+    "companions": {
+      "Foundation/FirstOrder/Bootstrapping/Syntax.ir": "9ca06792ce32f8808598c5d4ea05b1db1eea45e80ef5b176b2d7ffdf1feeff98",
+      "Foundation/FirstOrder/Bootstrapping/Syntax.olean.private": "7e3a71aa4464a5d1431e67a70f908c12e5bc316b334ee52c8660b18eca1a9f85",
+      "Foundation/FirstOrder/Bootstrapping/Syntax.olean.server": "7fb5fcac5b58e780b90e5426163c6a9a114102a2aea466152759a3e8a35f54cf"
+    },
+    "kind": "external",
+    "sha256": "7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c"
+  },
+  "Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Coding": {
+    "companions": {
+      "Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Coding.ir": "70b859553735336457f51987096dfeabd2f57da801e79e84a8e3279bad6a6719",
+      "Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Coding.olean.private": "05d618c6df7751204a2e2be278554084ab66c81f60600fa43469d7df5c9176bb",
+      "Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Coding.olean.server": "ed1166b9420b9cb83850ce153fbac8612ab210f79e5ee90826a8b10bd2d385c5"
+    },
+    "kind": "external",
+    "sha256": "dc6ca691ab138cb97276404acc7e6cd79c4ff018d5b153d243e607a4ecdbdcfd"
+  },
+  "Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1": {
+    "companions": {
+      "Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.ir": "cf26a3455b352e45d1c413ce6582e5114de9e6663cb703ce5b5ef56bad45c945",
+      "Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean.private": "fc2a4723e03c50e4dfd0e122680fb59be057287eedd40687041c676104939cef",
+      "Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean.server": "6fa0d837a209ed0a50ddfb1abd127b26aabb57315a8632ed287dba3be06c35ad"
+    },
+    "kind": "external",
+    "sha256": "5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6"
+  },
+  "Foundation.FirstOrder.SetTheory.Basic.Axioms": {
+    "companions": {
+      "Foundation/FirstOrder/SetTheory/Basic/Axioms.ir": "c61087047a83e6819ab33f4665f5da3c75447c6309bcd937a0e552872ec9ca85",
+      "Foundation/FirstOrder/SetTheory/Basic/Axioms.olean.private": "739275b34be878512b038b13a996e367655ce350370773fc61882b4060534207",
+      "Foundation/FirstOrder/SetTheory/Basic/Axioms.olean.server": "00434478d5fd28c4869474cc77110c7b44dd3d51938b4d9d95f8bf84ed760488"
+    },
+    "kind": "external",
+    "sha256": "e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704"
+  },
+  "Foundation.FirstOrder.SetTheory.Z": {
+    "companions": {
+      "Foundation/FirstOrder/SetTheory/Z.ir": "c4465f1920a607c3aacf5737627ef09a58c1fdbae83e548f073c07086c6f77f2",
+      "Foundation/FirstOrder/SetTheory/Z.olean.private": "86191523d94c04a2350fd03ea49b33950e6e2ee6b896ab83b4dc0da6ffbfd569",
+      "Foundation/FirstOrder/SetTheory/Z.olean.server": "407b7beef617a1368d0179b8db193d44f754f3083b85ec728a7f5b7c0d11b747"
+    },
+    "kind": "external",
+    "sha256": "9ce7e2e5611413b22d892a3a810de8fcf1985e8b836026b2041c5d9f8f3f5ddc"
+  },
+  "ZF.Zf": {
+    "imports": [
+      "FirstOrder.Calculus"
+    ],
+    "kind": "project",
+    "sha256": "78e9931f1bcc97a3af92b2e97175c92fb99c33d6a4f0e918a85161c0ca2e3280"
+  },
+  "ZFCinPA.CertificateFamily": {
+    "imports": [
+      "ZFCinPA.PackageInduction"
+    ],
+    "kind": "project",
+    "sha256": "826190df04f4bf228dc39ad133cc517975cdc6bbffebfdb62405220049cda073"
+  },
+  "ZFCinPA.Instances": {
+    "imports": [
+      "Foundation.FirstOrder.SetTheory.Basic.Axioms",
+      "Foundation.FirstOrder.Bootstrapping.Syntax"
+    ],
+    "kind": "project",
+    "sha256": "373f300edf2d3c7396ace73c139a433663bda232a80614856d177af1dfe58324"
+  },
+  "ZFCinPA.PackageInduction": {
+    "imports": [
+      "ZFCinPA.UniformStatement"
+    ],
+    "kind": "project",
+    "sha256": "58a626478ce9535686c559936c90a7f535deb54a0b07c69fbcfbea2f5be96e73"
+  },
+  "ZFCinPA.ReplacementDelta1": {
+    "imports": [
+      "ZFCinPA.SeparationDelta1"
+    ],
+    "kind": "project",
+    "sha256": "487bd58d5c6b1fb3ddff6c98975452f73bd581f32944ad0b78328c1259eb8155"
+  },
+  "ZFCinPA.SchemaClosure": {
+    "imports": [
+      "Foundation.FirstOrder.Incompleteness.InductionSchemeDelta1"
+    ],
+    "kind": "project",
+    "sha256": "c87f6b9d7a9adfa27f5f241b36814a7355f1dd6e84aecb2faae19493a0e7170d"
+  },
+  "ZFCinPA.SeparationDelta1": {
+    "imports": [
+      "ZFCinPA.Instances",
+      "ZFCinPA.SchemaClosure"
+    ],
+    "kind": "project",
+    "sha256": "d6390e13b0fb90a49f9441b96cf3f76e2a079b97583ef21baa50798ccef17029"
+  },
+  "ZFCinPA.SeparationKernel": {
+    "imports": [
+      "ZFCinPA.ZFDelta1",
+      "BoundedPAConsistency.ModelCodedPredicateTemplate"
+    ],
+    "kind": "project",
+    "sha256": "daf44a47d06769434f2f5ca8fadd76b88466c1ef9c1ce7884bc84b0cf1e5322c"
+  },
+  "ZFCinPA.Translation": {
+    "imports": [
+      "BoundedZFCConsistency.AxiomTruth",
+      "Foundation.FirstOrder.SetTheory.Z",
+      "ZFCinPA.TranslationCore"
+    ],
+    "kind": "project",
+    "sha256": "c616280692608c7bb12195d43a99c4b4dca9ec6a162a83ecb125dc0e8d49effa"
+  },
+  "ZFCinPA.TranslationCore": {
+    "imports": [
+      "ZF.Zf",
+      "Foundation.FirstOrder.SetTheory.Basic.Axioms"
+    ],
+    "kind": "project",
+    "sha256": "bd5ced916dcc64934284214412edf639e946424347444c68eae5834560bd9a5a"
+  },
+  "ZFCinPA.UniformStatement": {
+    "imports": [
+      "ZFCinPA.ZFDelta1",
+      "ZFCinPA.Translation",
+      "Foundation.FirstOrder.Bootstrapping.DerivabilityCondition.D1",
+      "Foundation.FirstOrder.Bootstrapping.FixedPoint"
+    ],
+    "kind": "project",
+    "sha256": "f554ba41bb7952925c66f69969f983e5ecaf13201deea41cadf97690d258d370"
+  },
+  "ZFCinPA.UniversalKernel": {
+    "imports": [
+      "ZFCinPA.SeparationKernel"
+    ],
+    "kind": "project",
+    "sha256": "a56230038638d76687fa70c27b0ae010b244835a0ca07c3b0a96ef0ee752b282"
+  },
+  "ZFCinPA.ZFDelta1": {
+    "imports": [
+      "ZFCinPA.ReplacementDelta1"
+    ],
+    "kind": "project",
+    "sha256": "71128a736b2403791a048532c59c431e8e937ec18fb1a3f3f0b0ea444283b85c"
+  }
+}
