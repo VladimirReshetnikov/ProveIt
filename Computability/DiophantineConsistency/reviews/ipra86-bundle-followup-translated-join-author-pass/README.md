@@ -1,0 +1,5 @@
+# Native 13-variable, 86-operation translated-refutation endpoint
+
+The guarded 35-module author run passed against the source-directed 847+73+111 classical provider `/tmp/pra86-classical-join-wvpx6cuz`. It proves the literal no-zero formula equivalent in the explicitly defined native intuitionistic theory to the negation of the Gödel–Gentzen translation of Foundation's actual ZFC refutation predicate. The endpoint check reports only `propext`, `Classical.choice`, and `Quot.sound`. Ordinary native intuitionistic consistency remains a separate obligation.
+
+Input packet: `../ipra86-bundle-followup-translated-join-snapshot/`. Source, object, log and direct-dependency hashes and directly guarded external objects were checked before and after compilation; no workspace project-object fallback was used. The fixed earlier source snapshot does not cover later changes. Original reused-object environments are reconstructed from surviving recorded providers; package-transitive ancestry is inherited. Independent replay is pending.

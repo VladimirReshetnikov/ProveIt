@@ -93,8 +93,10 @@ The [13-variable native translated-refutation client](Lean/DiophantineConsistenc
 has also compiled in a [preliminary provider union](reviews/ipra86-translated-refutation-preliminary/README.md)
 with no additional theorem hypothesis. That union has a recorded partial
 object audit but the original 86-side compile environment was not fully
-reauthenticated. A coherent guarded rebuild and the ordinary native
-consistency comparison remain open.
+reauthenticated. A subsequent [35-module guarded author replay](reviews/ipra86-bundle-followup-translated-join-author-pass/README.md)
+has passed on the authenticated classical bundle snapshot. Its independent
+peer, later source refresh, and ordinary native consistency comparison remain
+open.
 
 The exact 14-variable client in
 [IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
