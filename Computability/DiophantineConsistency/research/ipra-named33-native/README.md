@@ -1,0 +1,5 @@
+# Native endpoint for the 33-variable literal
+
+`IPRANamedValues33Native.literal_equivalence` constructs a derivation in the repository's `nativeTheory` of equivalence between the no-zero formula for the positive shift of the fixed-port 33-variable literal and the negation of its mapped native refutation predicate. It transfers the 26-variable native bridge through the model-uniform no-zero equivalence `AdaptiveNamedValues33.shifted_no_zero_iff`.
+
+The two focused replay processes share the same historical native-26 peer provider, itself backed by two matched native-26 suffix replays. The new model is rebuilt on this native provider and its source, checks source, and object are matched to the separate paired model-33 receipt; the actual model replay process exit is guarded before the native runs. The original 258-module project ancestry, 848 author-only ancestry, package-transitive ancestry, and dynamic imports remain inherited. This is not a full current-source closure. Identification of the mapped refutation predicate with ordinary Con(ZFC) depends on the separate interpretation and refutation bridge; the endpoint alone does not close that broader goal.
