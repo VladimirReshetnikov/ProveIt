@@ -207,7 +207,10 @@ the characteristic-correctness premises to the actual bounded matrix remains
 to be checked. The [concrete search binding](Lean/DiophantineConsistency/IPRASelectorSearchBinding.lean)
 now supplies the selector implication from the actual `searchCode`, leaving
 only the two pointwise characteristic-correctness directions explicit; its
-matched guarded replays retain historical ancestry.
+matched guarded replays retain historical ancestry. A [bit-convention lemma](Lean/DiophantineConsistency/IPRABitConvention.lean)
+now converts `isZero(t)=0` to `t=1` for a known bit with matching replays,
+without assuming that a quantified child formula is decidable. Its composition
+with the actual `notCode` and bounded characteristic compiler remains open.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
