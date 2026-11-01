@@ -18,11 +18,17 @@ square-divisibility result in every IΣ₁ model. The witness `r` occurs only in
 the computed root with coefficient `psi`. If the old signed `Z` is negative,
 replace it by `z` and increase `r` by `2*t`; otherwise leave `r` unchanged.
 `verify_orientation.py` checks exactly that this transformation preserves all
-other residuals and changes the root residual by `2*(z - psi*t)`. This is a
-polynomial identity, not a Lean proof that its quotient and positivity
-hypotheses hold at a parent zero.
+other residuals and changes the root residual by `2*(z - psi*t)`.
 
-**Open:** the candidate is not yet bound to a Lean literal, and the conditional
-orientation, arbitrary-model positive witness maps, no-zero equivalence,
-native iPRA endpoint and guarded replays still need proofs. No global
+The Lean `AdaptiveZ46*` modules now bind the exact candidate and parent
+literals to a common 33-residual context by definitional equality. In every
+IΣ₁ model and for arbitrary integer ports, they derive the root norm and
+positive scale quotient from a parent zero, construct the positive oriented
+witness, and prove both positive-shift no-zero directions. `verify_literal.py`
+checks all 46 inputs and 178 rows against the pinned graph. The paired model
+replay matched 12 modules on an accepted historical native-47 provider, with
+its actual exit and direct input guards recorded in
+`reviews/adaptive-square-sums46-model-replay/`. Project, package-transitive
+and dynamic-import ancestry remains inherited. The separate native endpoint
+has compiled exploratorily; its guarded replay remains open. No global
 minimality is claimed.
