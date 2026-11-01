@@ -60,8 +60,15 @@ and [`IPRAReferenceTheoryTransfer.lean`](../../Lean/DiophantineConsistency/IPRAR
 contain a candidate embedding of intuitionistic Hilbert proof trees and a
 finite-theory derivation transport **conditional on all reference axiom images**.
 They have only been invoked with the same untrusted mixed provider. They do
-not discharge the axiom-image premise, supply the reverse erasure transfer, or
-establish either theory equivalence or an equation endpoint.
+not discharge the axiom-image premise or establish either theory equivalence
+or an equation endpoint.
+
+The exploratory [`IPRAOrderErasureHilbert.lean`](../../Lean/DiophantineConsistency/IPRAOrderErasureHilbert.lean)
+and [`IPRAOrderErasureTheoryTransfer.lean`](../../Lean/DiophantineConsistency/IPRAOrderErasureTheoryTransfer.lean)
+now contain the opposite native-to-reference transport **conditional on every
+native axiom erasing to a reference-theory theorem**. They, too, have only
+been invoked under the untrusted mixed provider; their axiom-image premise,
+coherent replay and application to the equation remain open.
 
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
