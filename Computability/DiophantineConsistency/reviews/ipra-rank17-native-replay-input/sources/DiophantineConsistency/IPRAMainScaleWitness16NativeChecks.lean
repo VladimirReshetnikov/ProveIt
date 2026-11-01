@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRAMainScaleWitness16Native
+#check DiophantineConsistency.IPRAMainScaleWitness16Native.sameNoZero16
+#check DiophantineConsistency.IPRAMainScaleWitness16Native.bridge16
+#check DiophantineConsistency.IPRAMainScaleWitness16Native.literal_equivalence
+#print axioms DiophantineConsistency.IPRAMainScaleWitness16Native.sameNoZero16
+#print axioms DiophantineConsistency.IPRAMainScaleWitness16Native.bridge16
+#print axioms DiophantineConsistency.IPRAMainScaleWitness16Native.literal_equivalence

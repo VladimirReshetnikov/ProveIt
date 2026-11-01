@@ -1,0 +1,7 @@
+import DiophantineConsistency.IPRARankWitness17Native
+#check DiophantineConsistency.IPRARankWitness17Native.sameNoZero17
+#check DiophantineConsistency.IPRARankWitness17Native.bridge17
+#check DiophantineConsistency.IPRARankWitness17Native.literal_equivalence
+#print axioms DiophantineConsistency.IPRARankWitness17Native.sameNoZero17
+#print axioms DiophantineConsistency.IPRARankWitness17Native.bridge17
+#print axioms DiophantineConsistency.IPRARankWitness17Native.literal_equivalence
