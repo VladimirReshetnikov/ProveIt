@@ -2,9 +2,11 @@
 
 The active target is now existence of a proof in **intuitionistic PRA**; see
 [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md). The intuitionistic theory
-has a candidate native definition. Its literal equation endpoint has passed
-matching fixed-snapshot replays with an inherited dependency mismatch; a
-coherent repair and a broader standard-presentation comparison remain open.
+has a candidate native definition. Its literal 14-variable equation endpoint
+has passed matching fixed-snapshot replays on a repaired project-origin
+provider. A current-source replay and a broader standard-presentation
+comparison remain open; the original 848-module ancestor is author-only and
+external package-transitive and dynamic ancestry remains inherited.
 The existing `PRATheory.PRA`, defined in
 [`PRATheory.lean`](Lean/DiophantineConsistency/PRATheory.lean), is a classical
 first-order theory with equality, an expanded language of primitive-recursive
