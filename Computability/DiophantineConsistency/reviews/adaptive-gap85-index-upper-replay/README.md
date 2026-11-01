@@ -1,0 +1,5 @@
+# Pell-index upper bound for actual fixed-port zeros
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked current-index provider and guard its state, source, object, 403 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; these replays do not reconstruct or independently audit them.
+
+In every IΣ₁ model, `current_zero_index_window` derives internal first and main Pell indices `n,m` for any positive zero of the actual fixed-port 85 expression. It proves `3 ≤ n < m < 2n` and `5 ≤ m`, while retaining the stated Pell-coordinate equations. The new bound `m < 2n` uses an internally inductive two-step recurrence comparison and positivity of the split ordinate. This is a necessary condition; it does not assert such a zero exists, rule out zeros, establish a normalized representative, or prove the reverse implication.

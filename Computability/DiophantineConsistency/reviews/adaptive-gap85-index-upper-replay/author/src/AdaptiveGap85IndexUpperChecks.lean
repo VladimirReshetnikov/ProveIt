@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85IndexUpper
+#print axioms DiophantineConsistency.AdaptiveGap85IndexUpper.current_zero_index_window
+#check DiophantineConsistency.AdaptiveGap85IndexUpper.current_zero_index_window
