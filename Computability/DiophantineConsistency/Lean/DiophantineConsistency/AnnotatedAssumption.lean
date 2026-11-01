@@ -54,14 +54,14 @@ theorem exists_program_iff (G : List Form) (f : Form) :
   constructor
   · rintro ⟨shifted,evidence,index,h⟩
     rw [program_input,AnnotatedSchemaMaps.mul_eq_one_nat] at h
-    exact List.mem_of_getElem? ((AnnotatedContextLookup.reference_context G index f).mp h.2)
+    exact (AnnotatedContextLookup.exists_reference G f).mp ⟨index,h.2⟩
   · intro h
-    obtain ⟨index,hi⟩ := List.getElem?_of_mem h
+    obtain ⟨index,hi⟩ := (AnnotatedContextLookup.exists_reference G f).mpr h
     obtain ⟨evidence,he⟩ := (AnnotatedContext.exists_check_iff G
       (contextCode (G.map (rename Nat.succ)))).mpr rfl
     refine ⟨contextCode (G.map (rename Nat.succ)),evidence,index,?_⟩
     rw [program_input,AnnotatedSchemaMaps.mul_eq_one_nat]
-    exact ⟨he,(AnnotatedContextLookup.reference_context G index f).mpr hi⟩
+    exact ⟨he,hi⟩
 
 /-- Exact agreement with the frozen original parent-index checker on the
 assumption line, including its empty premise list. -/

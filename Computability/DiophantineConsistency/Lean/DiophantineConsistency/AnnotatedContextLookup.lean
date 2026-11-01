@@ -98,6 +98,12 @@ theorem reference_context (G : List Form) (index : Nat) (f : Form) :
     simp only [referenceValue,Nat.unpair_pair,lookup_contextCode,h,Option.map_some,
       optionCode,if_true]
 
+/-- A coded context reference exists exactly for its members. -/
+theorem exists_reference (G : List Form) (a : Form) :
+    (∃ index,referenceValue
+      (Nat.pair (contextCode G) (Nat.pair index (formCode a)))=1) ↔ a∈G := by
+  simpa only [reference_context] using (List.mem_iff_getElem? (a := a) (l := G)).symm
+
 theorem lookupProgram_primrec : Nat.Primrec lookupProgram.val.eval := lookupProgram.val.primrec
 
 theorem lookupProgram_nodeCount : lookupProgram.val.nodeCount=207 := by decide
