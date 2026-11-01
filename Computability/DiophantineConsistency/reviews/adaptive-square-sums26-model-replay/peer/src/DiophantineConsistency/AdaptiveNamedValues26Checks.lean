@@ -1,0 +1,4 @@
+import DiophantineConsistency.AdaptiveNamedValues26
+#print axioms DiophantineConsistency.AdaptiveNamedValues26.literal_zero_project
+#print axioms DiophantineConsistency.AdaptiveNamedValues26.exists_positive_extension
+#print axioms DiophantineConsistency.AdaptiveNamedValues26.current_no_zero_iff
