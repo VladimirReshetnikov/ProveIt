@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRANegBitFullWitnessBound
 import Foundation.FirstOrder.Arithmetic.Exponential.Bit
 set_option autoImplicit false
@@ -25,18 +26,15 @@ attribute [local irreducible] bitDef pairDef
   · right; right
     letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb : (∼bitDef.val).Evalb ![p,r] := by simpa [Semiformula.Operator.val, operator_mem_def] using hp
-    have hh := PRANegBitFullWitnessBound.negBit_bound p r hb
-    have hs : Fin.snoc ![p,r] (PRANegBitFullWitnessBound.negBitMajorant r) = ![p,r,PRANegBitFullWitnessBound.negBitMajorant r] := by simp
-    have hm := eval_bnd_mono (∼bitDef.val) ![p,r] (Empty.elim : Empty → V) hbit (by rw [hs]; exact hh)
     let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#1]
-    have hn := PRABndRewriting.natural (∼bitDef.val) ω ![p,r,x,y] w
-    have hv : (fun j => (ω #j).val ![p,r,x,y] Empty.elim) = ![p,r] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs' : Fin.snoc ![p,r,x,y] w = ![p,r,x,y,w] := by simp
-    have hs'' : Fin.snoc ![p,r] w = ![p,r,w] := by simp
-    rw [hv,hs',hs''] at hn
-    rw [hs''] at hm
-    have hrew := hn.mpr hm
+    have hf : (ω ▹ (∼bitDef.val)).Evalb ![p,r,x,y] := by
+      simpa [ω, Semiformula.eval_substs] using hb
+    have hw : PRANegBitFullWitnessBound.negBitMajorant
+        ((ω #1).val ![p,r,x,y] Empty.elim) ≤ w := by
+      simpa [ω] using hbit
+    have hrew := PRARewritingWitnessBound.binary_rew_bound_with (∼bitDef.val)
+      (fun _ r => PRANegBitFullWitnessBound.negBitMajorant r)
+      PRANegBitFullWitnessBound.negBit_bound ω ![p,r,x,y] w hw hf
     rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
       LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hrew
     simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hrew
