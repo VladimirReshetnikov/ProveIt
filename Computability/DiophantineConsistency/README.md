@@ -46,11 +46,14 @@ degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced a [44-variable quartic candidate](research/adaptive-square-sums44/README.md),
-and [34-variable](research/adaptive-square-sums34/README.md) and
-[33-variable](research/adaptive-square-sums33-degree6/README.md) degree-six candidates.
-Their circuit sizes, substitutions and exact degrees have finite checks; their
-model equivalences and native endpoints are still being checked.
+finite graph searches have produced [44-variable](research/adaptive-square-sums44/README.md)
+and [43-variable](research/adaptive-square-sums43/README.md) quartic candidates,
+and [34-variable](research/adaptive-square-sums34/README.md),
+[33-variable](research/adaptive-square-sums33-degree6/README.md), and
+[32-variable](research/adaptive-square-sums32-degree6/README.md) degree-six candidates.
+Their circuit sizes, substitutions and exact degrees have finite checks. The
+44-, 34- and 33-variable model equivalences have matched historical replays;
+their native endpoints and the other model equivalences are still being checked.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader source refresh is running;

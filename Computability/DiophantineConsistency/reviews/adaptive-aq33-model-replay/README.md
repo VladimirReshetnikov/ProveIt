@@ -1,0 +1,7 @@
+# 33-variable degree-6 model equivalence: focused replay
+
+The literal has 33 variables and 143 live gates; `verify_literal.py` checks every gate against the pinned candidate. `AdaptiveAQ33.shifted_no_zero_iff` proves positive-shift no-zero equivalence with the 34-variable parent in every IΣ₁ model for natural port vectors; `current_no_zero_iff` specializes to the exact fixed ports using the existing `currentPorts_cast` theorem. The signed W positivity proof extracts the first norm and root equation from the parent residuals. Both literal/context identities are definitional.
+
+Tool session 50048 actually exited 0 with `MATCHED_PASS 10 rows`. The driver rebuilt ten modules twice over the matched 34-model peer, compared source/object/log/direct-input rows, guarded 150 direct companion paths per run, and checked the reported axioms. The full receipt and logs are included. Root independently performed an unsaved read-only audit of both runs, the 22 axiom reports per run, all 300 direct companion guards and the parent exit; that audit was not an additional Lean replay.
+
+The replay is focused on this suffix. Transitive project and package ancestry and dynamic imports are inherited; the point-in-time source guards do not establish a fully current-source closure. Superseded fixed-port scratch attempts are described separately in `reviews/adaptive-aq33-fixed-port-attempts/` and are not used in the proof.
