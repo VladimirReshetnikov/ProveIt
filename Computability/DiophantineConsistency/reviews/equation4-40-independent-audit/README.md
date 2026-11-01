@@ -1,0 +1,5 @@
+# Independent provisional 40-variable display audit
+
+This finite display and graph audit covers the provisional PDF (SHA-256 `1e8493f3cf68008f0e851f7e93b75cd96db53cf7b0f995f92aaa752fe8a8673f`). It checks all 166 candidate and printed circuit gates, 40 variables, four fixed ports, 48 displayed definitions and 31 residual squares; checks graph topology and liveness; and tests display and circuit mutations. The separate scope check verifies the candidate disclosure and W and both reconstructed-root aliases. Two clean builds reproduce the PDF byte-for-byte. Both pages were visually inspected; the layout log reports small font substitutions and no overfull or underfull boxes.
+
+This packet checks the candidate graph and displayed formula, not a Lean literal or model transport. The PDF explicitly states that the quotient witness construction and native iPRA equivalence are not yet established. A later proof or replay must be assessed separately. Polynomial degree checks use sparse integer arithmetic; they are not Lean theorems.
