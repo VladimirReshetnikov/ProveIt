@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAReconstructBridgeOpen
+#check DiophantineConsistency.IPRAReconstructBridgeOpen.open_bridge
+#print axioms DiophantineConsistency.IPRAReconstructBridgeOpen.open_bridge

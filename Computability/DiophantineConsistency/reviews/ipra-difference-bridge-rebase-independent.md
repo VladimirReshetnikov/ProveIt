@@ -1,0 +1,5 @@
+# Native positive successor bridge rebase: independent replay
+
+The guarded independent peer `/tmp/ipra-difference-bridge-rebase-icux7svu` passed and matches author `/tmp/ipra-difference-bridge-rebase-b3vt2dpp` in both source/object/full-log rows, parent state hash and the entire serialized selected-provider inventory. It independently rebuilds the actual closed native positive successor bridge on the same checked closure/reconstruction parent. Open-family instantiation and unconditional equality are not yet shown. Parent/Foundation and external-package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-bridge-rebase.py`. Peer state SHA-256 `7d2fc41729d9e1e323a854c82e876cc6112d4756e7fe1e50b598f40158cbd102`; provider inventory `e94b683c1faa506da0173efc29ee27fac23269f861a09c56ad723db1c7f765f8`. Sources, logs, driver, state and inventory are retained in the evidence directory.

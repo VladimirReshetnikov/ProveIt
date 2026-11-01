@@ -209,8 +209,9 @@ has also passed matched replays on the successor-logic provider. Connecting its
 positive branch to the universally closed successor case remains to be checked.
 The exact [native successor bridge](Lean/DiophantineConsistency/IPRAReconstructBridge.lean)
 `y−Sx=0 → (y−x≠0 → Sx=y)` has passed matched guarded replays. The closed
-step has also been rebuilt on the reconstruction provider with matched replays;
-the bridge must still be rebuilt and instantiated on that single provider.
+step and the closed bridge have also been rebuilt on the reconstruction
+provider with matched replays. The separately checked open-term bridge family
+must still be rebuilt and instantiated on that single provider.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
 with matching author and independent replays. The companion
