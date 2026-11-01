@@ -64,12 +64,7 @@ well-founded part of the quotient. -/
 theorem models_intF_iff (σ : SetTheorySentence) :
     M↓[ℒₛₑₜ] ⊧ intF σ ↔ (WQ M)↓[ℒₛₑₜ] ⊧ σ := by
   have h := eval_intF (M := M) σ ![] Empty.elim
-  have e1 : (Subtype.val ∘ (![] : Fin 0 → {x : M // D x})) = ![] := funext fun i => i.elim0
-  have e2 : (Subtype.val ∘ (Empty.elim : Empty → {x : M // D x})) = Empty.elim :=
-    funext fun i => i.elim
-  have e3 : (cls ∘ (![] : Fin 0 → {x : M // D x})) = ![] := funext fun i => i.elim0
-  have e4 : (cls ∘ (Empty.elim : Empty → {x : M // D x})) = Empty.elim := funext fun i => i.elim
-  rw [e1, e2, e3, e4] at h
+  simp only [Matrix.comp₀, Empty.eq_elim] at h
   simpa [models_iff] using h
 
 end Models
