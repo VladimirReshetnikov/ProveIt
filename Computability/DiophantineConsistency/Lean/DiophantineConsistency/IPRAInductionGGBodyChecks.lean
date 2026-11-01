@@ -1,0 +1,6 @@
+import DiophantineConsistency.IPRAInductionGGBody
+#print axioms DiophantineConsistency.IPRAImplicationBridge.gg_two_implications
+#print axioms DiophantineConsistency.IPRAImplicationBridge.gg_all_implication
+#print axioms DiophantineConsistency.IPRAImplicationBridge.gg_induction_shape
+#print axioms DiophantineConsistency.IPRAImplicationBridge.gg_succInd_body
+#print axioms DiophantineConsistency.IPRAImplicationBridge.gg_succInd_native_body

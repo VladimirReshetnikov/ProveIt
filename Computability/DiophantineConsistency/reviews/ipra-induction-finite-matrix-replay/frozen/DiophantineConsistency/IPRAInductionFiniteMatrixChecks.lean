@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAInductionFiniteMatrix
+#print axioms DiophantineConsistency.IPRAMatrix.matrix_var_bound
+#print axioms DiophantineConsistency.IPRAMatrix.fixed_matrix_no_free
+#print axioms DiophantineConsistency.IPRAMatrix.finiteMatrix_open
+#print axioms DiophantineConsistency.IPRAMatrix.native_matrix_instance

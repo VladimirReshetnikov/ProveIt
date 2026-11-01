@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAInductionGGClosure
+#print axioms DiophantineConsistency.IPRAClosure.allClosure_fixitr_iff
+#print axioms DiophantineConsistency.IPRAClosure.closed_gg_succInd_body
+#print axioms DiophantineConsistency.IPRAClosure.univCl_gg_succInd_body
