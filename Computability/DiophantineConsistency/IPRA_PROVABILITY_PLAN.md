@@ -151,7 +151,17 @@ bounded-formula decidability remain open. Independently, the ordinary positive
 `∀x, x + 1 = S(x)` has now been proved directly from native defining equations
 and Leibniz equality in [IPRAAddOneDirect.lean](Lean/DiophantineConsistency/IPRAAddOneDirect.lean),
 with matching [guarded replays](reviews/ipra-addone-direct-replay/README.md).
-This proof has no object-theory decidability premise. A fixed-parameter induction on one
+This proof has no object-theory decidability premise. The native theory also
+proves `∀x (x = 0 ∨ x = S(pred x))` by quantifier-free induction; see
+[IPRAPredReconstruct.lean](Lean/DiophantineConsistency/IPRAPredReconstruct.lean)
+and its [matched replays](reviews/ipra-pred-reconstruct-replay/README.md).
+A separate [sub-self derivation](Lean/DiophantineConsistency/IPRANativeSubSelf.lean)
+proves `∀x, x − x = 0` from an explicit zero-decidability proof by translating
+the classical theorem and eliminating double negation only for equality with
+zero; its author and independent replays match. The eventual composition with
+the unconditional zero-decidability provider still requires an authenticated
+join of their historical dependencies.
+A fixed-parameter induction on one
 argument cannot simply invoke its induction hypothesis at a changed parameter;
 the corresponding quantified induction matrix is not quantifier-free.
 

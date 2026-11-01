@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRANativeSubSelf
+#print axioms DiophantineConsistency.IPRANativeSubSelf.classicalSubSelf
+#print axioms DiophantineConsistency.IPRANativeSubSelf.translatedSubSelf
+#print axioms DiophantineConsistency.IPRANativeSubSelf.nativeSubSelf
+#check DiophantineConsistency.IPRANativeSubSelf.nativeSubSelf
