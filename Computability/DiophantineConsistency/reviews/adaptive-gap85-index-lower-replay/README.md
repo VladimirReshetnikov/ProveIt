@@ -1,0 +1,5 @@
+# Actual 85-zero Pell-index lower bounds
+
+Both focused source-directed replays PASS, with two matching source/object/full-log records, zero warnings and only standard Lean axioms. In every IΣ₁ model, `actual_zero_index_lower_bounds` derives first Pell index n≥2 and main Pell index m≥4, with n<m and the stated coordinate identities, from an actual positive literal 85-zero and a positive first port. `actual_zero_first_index_size` additionally proves `8*((v 6*v 7)*v 7)+4 ≤ v 9+v 10` under those same assumptions.
+
+These are necessary bounds, not a proof that 85 zeros do not exist, nor an 85-operation equivalence. The replays rebuild the client and checks on the independently replayed actual-third provider, pinning 387 selected project-object/companion paths and the recorded direct Foundation anchor. Original project and external package transitive source ancestry remains historical. Input and driver: `research/adaptive-gap85-normalization/AdaptiveGap85IndexLowerBound.lean` and `replay_index_lower.py`; set `GAP85_THIRD_PARENT` to a passed actual-third provider when replaying.

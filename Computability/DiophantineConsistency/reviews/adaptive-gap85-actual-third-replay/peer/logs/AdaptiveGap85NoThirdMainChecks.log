@@ -1,0 +1,9 @@
+'DiophantineConsistency.AdaptiveGap85NoThirdMain.actual_zero_not_third_main' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85NoThirdMain.actual_zero_not_third_main.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < ↑(p 0)) (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v) :
+  v 9 + v 7 * (v 9 + v 10) ≠ DiophantineConsistency.ArithmeticPellRecurrence.ycoord 3 (v 6 * v 7 + v 7)

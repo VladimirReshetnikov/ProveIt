@@ -1,0 +1,7 @@
+# Actual 85-zero excludes third main Pell ordinate
+
+Both coherent source-directed replays PASS: all 18 source/object/full-log rows match, no warnings, with only standard Lean axioms. `AdaptiveGap85NoThirdMain.actual_zero_not_third_main` proves in every IΣ₁ model that, given a positive 13-coordinate zero of the literal 85 expression and a positive first port, its main ordinate `v 9 + v 7*(v 9+v 10)` is not `ycoord 3 (v 6*v 7+v 7)`. It derives the necessary first norm, q³-divisibility, signed root orientations and special-template equation from the actual zero; none are additional hypotheses. The separate source `AdaptiveGap85ThirdMainSyntax.lean` gives signed-pair orientation and third Pell coordinates.
+
+This rules out main index 3 only. It does not exclude higher indices, establish a normalized representative, or prove the 85-operation reverse implication. The replays rebuild 17 project sources plus checks on the passed historical 85 merged provider and pin 369 selected inherited project-object/companion paths, plus the recorded direct Foundation anchor, without workspace project-object fallback. Original project and external package transitive source ancestry remains historical.
+
+Inputs: `research/adaptive-gap85-normalization/{AdaptiveGap85ThirdMainSyntax,AdaptiveGap85NoThirdMain}.lean`, the 15 template source dependencies listed by `replay_actual_third.py`, and that driver. Parent 85 evidence is the separately frozen `adaptive-gap85-merged-suffix` provider chain.
