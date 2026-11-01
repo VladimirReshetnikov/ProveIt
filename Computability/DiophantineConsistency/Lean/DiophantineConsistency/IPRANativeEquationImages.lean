@@ -45,18 +45,17 @@ theorem allClosure_cast {n m : ℕ} (h : n = m) (φ : Semipropositionᵢ L n) :
   cases h
   rfl
 
+theorem allClosure_openAll (n : ℕ) (φ : Semipropositionᵢ L n) :
+    (∀⁰* (Rew.fixitr 0 n ▹ openAll n φ)) = ∀⁰* φ := by
+  have h := congrArg (fun x : Semipropositionᵢ L n => ∀⁰* x) (openAll_inverse n φ)
+  exact (allClosure_cast (Nat.zero_add n) (Rew.fixitr 0 n ▹ openAll n φ)).symm.trans h
+
 theorem allClosure_dni [L.DecidableEq] (n : ℕ) (φ : Semipropositionᵢ L n) :
     Λ ⊢ (∀⁰* φ) 🡒 (∀⁰* (∼∼φ)) := by
   have h : Λ ⊢ openAll n φ 🡒 ∼∼openAll n φ := ⟨Entailment.dni⟩
   have hh := allClosure_fixitr_imp h n
-  have hi := congrArg (fun x : Semipropositionᵢ L n => ∀⁰* x) (openAll_inverse n φ)
-  have hj := congrArg (fun x : Semipropositionᵢ L n => ∀⁰* x) (openAll_inverse n (∼∼φ))
-  have hc1 := allClosure_cast (Nat.zero_add n) (Rew.fixitr 0 n ▹ openAll n φ)
-  have hc2 := allClosure_cast (Nat.zero_add n) (Rew.fixitr 0 n ▹ openAll n (∼∼φ))
-  have hi' : (∀⁰* (Rew.fixitr 0 n ▹ openAll n φ)) = ∀⁰* φ := hc1.symm.trans hi
-  have hj' : (∀⁰* (Rew.fixitr 0 n ▹ openAll n (∼∼φ))) = ∀⁰* (∼∼φ) := hc2.symm.trans hj
-  rw [←hi', ←hj']
-  simpa only [openAll_neg] using hh
+  rw [← openAll_neg n φ, ← openAll_neg n (∼φ)] at hh
+  simpa only [allClosure_openAll] using hh
 open PRAFiniteFunctionCodes PRALanguage PRATheory IPRAQuantifierFree
 open IPRANativeTheory IPRANativeAxiomImage
 
