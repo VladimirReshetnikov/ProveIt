@@ -60,5 +60,13 @@ class ExtensionTests(unittest.TestCase):
                     {'snapshot_path':'/tmp/other'},{'observed_stdout':'FROZEN_NOT_COMPILED 3 sources digest\n'}):
             with self.assertRaisesRegex(ValueError,'freezer terminal observation'):
                 prepare.check_freezer_observation(dict(good,**bad),'digest',path,4)
+    def test_freezer_tools_are_pinned(self):
+        good={key:prepare.digest(path) for key,path in {
+            'freezer_sha256':prepare.HERE/'freeze.py','preparer_sha256':prepare.HERE/'prepare.py',
+            'planner_sha256':prepare.HERE.parent/'plan.py'}.items()}
+        prepare.verify_freezer_identity(good)
+        for key in good:
+            with self.assertRaisesRegex(ValueError,'freezer tool provenance mismatch'):
+                prepare.verify_freezer_identity(dict(good,**{key:'wrong'}))
 
 if __name__=='__main__':unittest.main()

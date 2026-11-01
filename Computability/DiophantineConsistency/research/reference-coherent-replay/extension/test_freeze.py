@@ -82,4 +82,17 @@ with tempfile.TemporaryDirectory(prefix='reference-freeze-control-') as td:
         with patch.object(freeze,'load_planner',return_value=fake),patch.object(sys,'argv',args),redirect_stdout(io.StringIO()):freeze.run()
     except ValueError as e:assert 'parent coordinator terminal observation' in str(e),str(e)
     else:raise AssertionError('unobserved parent completion accepted')
-print('PASS: Git-backed source freeze, parent drift and provisional-plan rejection')
+    observation.write_text(json.dumps({'observed_exit_code':0,'observed_stdout':'MATCHED_PASS 1 rows\n',
+        'pair_state_sha256':H(pair),'pair_state_path':str(pair)}))
+    args[args.index('--parent-observation-sha256')+1]=H(observation)
+    def reject_mutation(path,contents,reason):
+        saved=path.read_bytes();path.write_bytes(contents)
+        try:
+            with patch.object(freeze,'load_planner',return_value=fake),patch.object(sys,'argv',args),redirect_stdout(io.StringIO()):freeze.run()
+        except ValueError as e:assert reason in str(e),str(e)
+        else:raise AssertionError(('invalid mutation accepted',reason))
+        finally:path.write_bytes(saved)
+    reject_mutation(parent/'author/state.json',b'{}','parent state changed')
+    reject_mutation(receipt,b'{}','parent provider receipt changed')
+    reject_mutation(policy,b'{}','task-specific target policy mismatch')
+print('PASS: Git-backed freeze, source/policy/parent/provider drift and incomplete evidence rejected')
