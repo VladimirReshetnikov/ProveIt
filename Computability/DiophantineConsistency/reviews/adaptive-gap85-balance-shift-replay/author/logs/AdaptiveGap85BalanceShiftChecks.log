@@ -1,0 +1,13 @@
+'DiophantineConsistency.AdaptiveGap85BalanceShift.literal_integer_shift' depends on axioms: [propext, Quot.sound]
+'DiophantineConsistency.AdaptiveGap85BalanceShift.positive_integer_zero_shift' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85BalanceShift.shifted_gap_sum' depends on axioms: [propext]
+DiophantineConsistency.AdaptiveGap85BalanceShift.positive_integer_zero_shift (p : Fin 4 → ℤ) (v : Fin 13 → ℤ) (t : ℤ)
+  (hp : 0 ≤ p 0) (ht : 0 ≤ t) (hv : ∀ (j : Fin 13), 0 < v j) (hC : (1 + v 0 * p 0) * (v 0 * p 0) * t < v 2)
+  (hr : (1 + v 0 * p 0) * t * (v 6 + p 1 * (1 + v 0 * p 0) + 1) * (v 0 * p 0 * (v 9 + v 10) + 1) < v 8)
+  (hz : DiophantineConsistency.Expr.eval v (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 p) = 0) :
+  (∀ (j : Fin 13), 0 < DiophantineConsistency.AdaptiveGap85BalanceShift.shift p v t j) ∧
+    DiophantineConsistency.Expr.eval (DiophantineConsistency.AdaptiveGap85BalanceShift.shift p v t)
+        (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 p) =
+      0

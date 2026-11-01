@@ -1,5 +1,21 @@
 # 85-operation existential normalization investigation
 
+An additional balance shift changes `F` as well as `C`: with `b=Jβ`,
+`q=1+b`, `A=X+Kq` and `k=η+ζ`, it replaces `F` by `F+bt`, `C` by
+`C−qbt`, and the first-root auxiliary `r` by
+`r−qt(A+1)(bk+1)`, leaving the remaining coordinates unchanged. The exact
+integer literal is invariant. More importantly,
+`AdaptiveGap85BalanceModel.positive_zero_shift` proves in every IΣ₁ model
+that, when the two displayed decrements are strictly below their coordinates,
+the shifted tuple is again a positive zero and satisfies
+`F′+C′+b²t=F+C`. The separate `gap_strictly_decreases` theorem gives strict
+decrease for positive `b,t`. Matching guarded author/peer replays are in
+`reviews/adaptive-gap85-balance-{shift,model,progress}-replay/`, with the
+historical transitive project and external package boundaries recorded there.
+These results do not show that an arbitrary zero satisfies the decrement
+bounds, that the shift can be iterated sufficiently, or that any representative
+satisfies `F+C<q`; the reverse 85-to-86 implication remains open.
+
 The 85-operation candidate is a 13-positive-coordinate reparameterization of the checked 86-operation candidate. Its finite circuit audit and one-sided machine implication are documented in [the candidate packet](../adaptive-gap85/README.md). The 85 no-zero statement implies machine nonhalting; the reverse implication is not established. Neither the candidate nor this note establishes an 85-operation equivalence with consistency.
 
 The existing reverse transfer `AdaptiveGap85Exists.new_natural_zero_to_old_of_bound` maps an 85 zero to an 86 zero when that witness satisfies `F + C < q`, with `q = 1 + Jβ`. The earlier full-equivalence adapter assumes this for every 85 zero. This is stronger than necessary: it suffices to construct, for each 85 zero, some 85 zero whose positive coordinates satisfy the bound. The exploratory Lean file [ExistentialNormalization.lean](ExistentialNormalization.lean) states that existential representative hypothesis explicitly and derives the reverse zero transfer and no-zero equivalence from the existing lift. It compiled against `/tmp/adaptive-gap85-machine-m09n4q_7/lib` and inherited Foundation/Mathlib/package boundaries; it is a provisional scratch result, not an authenticated source-current replay. It does not prove that representatives exist.
@@ -66,3 +82,23 @@ The root congruence now holds at an arbitrary internal main Pell index. `Adaptiv
 ### Partial large-Y power-of-two norm example
 
 A Lean-checked natural-number example has X=32=2⁵ and Y=579≥7·2⁵, positive auxiliary values, both Pell norm equations, and the first-index-three and main-index-five polynomial identities. Therefore these conditions alone cannot exclude the power-of-two alternative. The example fails q³∣Y for every q≥2; it is not a full 85-equation zero and does not establish anything about arbitrary IΣ₁ models. The focused author and independent replays, source and object hashes, full logs, and inherited package boundary are recorded in `reviews/adaptive-gap85-large-Y-power-example-replay/`.
+
+
+### Partial large-Y example with cubic divisibility
+
+A second Lean-checked standard-natural example has X=65536=2¹⁶, Y=36032920392046168, q=2, positive eta and zeta, Y≥7·2¹⁶, q³∣Y, both Pell norm equations and the first-index-nine/main-index-sixteen recurrences. It demonstrates that even these combined partial conditions do not rule out X=2ᵐ. It does not meet the actual fixed-port requirement q≥5, nor assert the signed-root equations or a full 85-equation zero; it does not establish the reverse implication. Author and independent replays match; see `reviews/adaptive-gap85-cube-power-example-replay/` for source, objects, full logs and the inherited package boundary.
+
+
+### Partial large-q large-Y power example
+
+A further Lean-checked standard-natural example has X=4294967296=2³², Y=140737488482304, q=8, positive eta and zeta, Y≥7·2³², q³∣Y, q≥5, both Pell norm equations and the first-index-20/main-index-32 recurrences. Even these combined partial conditions do not rule out X=2ᵐ. The example does not establish that q=8 is realizable at the actual fixed port, nor does it assert the signed-root equations or a full 85-equation zero. It does not establish the reverse implication. Author and independent replays match; see `reviews/adaptive-gap85-large-q-power-example-replay/` for source, objects, full logs and the inherited package boundary.
+
+
+### Conditional divisible-coordinate gap obstruction
+
+`AdaptiveGap85DivisibleGap.divisible_blocks` checks in every IΣ₁ model that positive F,C with b∣F cannot satisfy F+C<1+b; by symmetry the same applies if b∣C. Its forward lemma proves b∣F is preserved by adding b·t. Both known shifts change F and C by multiples of b=q−1, suggesting this residue is an obstruction to normalizing within their shift orbit. No actual zero is known to have a divisible coordinate, and the full shift-orbit claim is not formalized in this packet. Focused independent replays match (`reviews/adaptive-gap85-divisible-gap-replay/`), with historical inherited transitive ancestry.
+
+
+### Conditional finite shift-orbit obstruction
+
+`AdaptiveGap85ShiftResidue.orbit_blocks` now checks the residue argument in every IΣ₁ model: for an abstract step adding or subtracting multiples of positive b to F and C independently, a finite external sequence preserves b∣F or b∣C, and every positive endpoint fails F+C<1+b. It uses Lean's external finite reflexive-transitive closure, not an internally coded model-length iteration. Binding the actual literal shifts to this relation and establishing an actual zero with the residue remain open. Matching focused replays and historical inherited ancestry are recorded in `reviews/adaptive-gap85-shift-residue-replay/`.

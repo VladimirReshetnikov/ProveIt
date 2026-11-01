@@ -1,0 +1,4 @@
+import AdaptiveGap85CubePowerNormExample
+#print axioms AdaptiveGap85CubePowerNormExample.conditions
+#print axioms AdaptiveGap85CubePowerNormExample.norms
+#print axioms AdaptiveGap85CubePowerNormExample.indices
