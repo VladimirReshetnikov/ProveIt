@@ -1,0 +1,12 @@
+import DiophantineConsistency.AdaptiveZ44Model
+#print axioms DiophantineConsistency.AdaptiveZ44Positivity.impossible_nonpositive
+#print axioms DiophantineConsistency.AdaptiveZ44Facts.facts
+#print axioms DiophantineConsistency.AdaptiveZ44PositiveActual.signed_w_positive
+#print axioms DiophantineConsistency.AdaptiveZ44PositiveActual.signed_skew_positive
+#print axioms DiophantineConsistency.AdaptiveZ44Context.old_literal
+#print axioms DiophantineConsistency.AdaptiveZ44Context.new_literal
+#print axioms DiophantineConsistency.AdaptiveZ44Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveZ44Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveZ44Model.project_zero
+#print axioms DiophantineConsistency.AdaptiveZ44Model.extend_zero
+#print axioms DiophantineConsistency.AdaptiveZ44Model.shifted_no_zero_iff

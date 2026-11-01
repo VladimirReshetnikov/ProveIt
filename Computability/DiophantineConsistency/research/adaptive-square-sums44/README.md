@@ -22,7 +22,12 @@ vectors**, without assuming a port is positive. The exact graph is bound to
 the Lean literal, and the [paired model replay](../../reviews/adaptive-square-sums44-model-replay/README.md)
 matched all seven modules on a historical native-46 provider.
 
-The fixed-port native iPRA endpoint and its guarded replay remain open.
-The model replay inherits project, package-transitive and dynamic-import
-ancestry, including the author-only 848-module ancestor; it is not a complete
-current-source closure. No global minimality is claimed.
+The no-premise `IPRAZ44Native.literal_equivalence` endpoint also has a
+[matched nine-module replay](../../reviews/adaptive-square-sums44-native-replay/README.md),
+using the existing `currentPorts_cast` theorem to specialize the all-natural-
+port model equivalence to the fixed integer ports. It concerns the mapped
+native refutation predicate; its interpretation as Con(ZFC) uses the separate
+interpretation and refutation bridge. The replays inherit project,
+package-transitive and dynamic-import ancestry, including the author-only
+848-module ancestor; they are not a complete current-source closure. No global
+minimality is claimed.
