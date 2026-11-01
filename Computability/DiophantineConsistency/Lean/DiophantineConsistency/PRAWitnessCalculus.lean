@@ -119,11 +119,8 @@ theorem wb_all_guard {n : ℕ} {χ ψ : ArithmeticSemisentence (n + 1)} (hχ : �
   · exact Or.inl hx
   · right
     have hψx := (he x).resolve_left hx
-    refine eval_bnd_mono ψ (x :> e) Empty.elim (hB _ _ ?_) (hb _ hψx)
-    intro i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · simpa using hguard x e hx
-    · simp
+    exact eval_bnd_mono ψ (x :> e) Empty.elim
+      (hB _ _ (Fin.cons_le_cons.mpr ⟨hguard x e hx, le_rfl⟩)) (hb _ hψx)
 
 /-- **Existential with a monotone witness bound.** -/
 theorem wb_exs {n : ℕ} {ψ : ArithmeticSemisentence (n + 1)}
@@ -143,11 +140,7 @@ theorem wb_exs {n : ℕ} {ψ : ArithmeticSemisentence (n + 1)}
     simpa [val_lastVar] using hlt
   · rw [cons_snoc]
     refine eval_bnd_mono ψ (x :> e) Empty.elim ?_ (hb _ hx)
-    refine le_trans (hB _ _ ?_) le_add_self
-    intro i
-    refine Fin.cases ?_ (fun j => ?_) i
-    · simpa using hxF
-    · simp
+    exact le_trans (hB _ _ (Fin.cons_le_cons.mpr ⟨hxF, le_rfl⟩)) le_add_self
 
 /-- **Substitution of terms.** -/
 theorem wb_rew {k n : ℕ} {ψ : ArithmeticSemisentence k} (ω : Rew ℒₒᵣ Empty k Empty n)
