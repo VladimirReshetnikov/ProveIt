@@ -53,19 +53,15 @@ theorem neg_sppow2_bound (m : V) : (∼sppow2Def.val).Evalb ![m] →
             intro hp
             exact hiff ⟨fun _ => hp, fun _ => hl⟩
           have hf : PRANegSqrtLenbitBound.negSqrtLenbit.Evalb ![x,m] := by
-            simp [PRANegSqrtLenbitBound.negSqrtLenbit, Semiformula.bexsLTSucc, Semiformula.bexsLT, FirstOrder.bexs]
+            simp [PRANegSqrtLenbitBound.negSqrtLenbit, Semiformula.bexsLTSucc,
+              Semiformula.bexsLT, FirstOrder.bexs]
             intro s
-            by_cases hs : x+1 ≤ s
-            · exact Or.inl hs
-            · by_cases heq : s = √x
-              · subst s
-                right; right
-                by_cases hsquare : √x * √x = x
-                · right
-                  intro hlen
-                  exact hn ⟨lt_of_not_ge hs, hsquare, hlen⟩
-                · exact Or.inl hsquare
-              · exact Or.inr (Or.inl heq)
+            by_cases heq : s = √x
+            · subst s
+              by_contra hc
+              simp [not_or, not_le] at hc
+              exact hn hc
+            · exact Or.inr (Or.inl heq)
           have hb := PRANegSqrtLenbitBound.negSqrtLenbit_bound x m hf
           simpa [PRANegSqrtLenbitBound.negSqrtLenbit, Semiformula.bexsLTSucc, Semiformula.bexsLT, FirstOrder.bexs, bnd, bnd_open] using hb
       · right
