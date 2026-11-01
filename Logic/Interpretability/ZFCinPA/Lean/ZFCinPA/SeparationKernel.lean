@@ -632,21 +632,9 @@ theorem translate_emb_srcMem {n : ℕ}
         (Rewriting.emb (srcMem t u) : Semiproposition setTemplateLanguage n) =
       Bootstrapping.Semiformula.rel Language.Set.Rel.mem
         ![translateTerm (Rew.emb t), translateTerm (Rew.emb u)] := by
-  rw [show (Rewriting.emb (srcMem t u) :
-        Semiproposition setTemplateLanguage n)
-      = FirstOrder.Semiformula.rel (Sum.inl Language.Set.Rel.mem)
-          ![Rew.emb t, Rew.emb u] from by
-    simp [srcMem]]
-  rw [show translateFormula K
-        (FirstOrder.Semiformula.rel (Sum.inl Language.Set.Rel.mem)
-          ![Rew.emb t, Rew.emb u])
-      = Bootstrapping.Semiformula.rel Language.Set.Rel.mem
-          (fun i ↦ translateTerm ((![Rew.emb t, Rew.emb u]) i)) from rfl]
+  simp [srcMem, translateFormula, Function.comp_def]
   congr 1
-  funext i
-  match i with
-  | 0 => rfl
-  | 1 => rfl
+  exact Matrix.comp₂ (f := fun x => translateTerm (Rew.emb x)) t u
 
 /-- Specialization of the embedded placeholder atom. -/
 theorem translate_emb_srcP {n : ℕ}
