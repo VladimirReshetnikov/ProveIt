@@ -1,0 +1,5 @@
+# Fixed-source 14-variable native ZFC endpoint replay
+
+This is a prepared input packet, not a PASS receipt. The preparer verified both completed 13-variable parent state records, their full row/object/log/direct-input hashes and four retained prefix sets; it inventoried 1,164 selected parent object/companion files and checked the frozen 994-source graph. The five unchanged extra inherited objects resolve to the original ancestor's physical files, and their original project transitive manifests match the selected parent. Six modules are rebuilt, ending in the literal 14-variable native equation check. Author and independent replay remain required.
+
+The fixed parent retains the separately documented `PRAPositiveCode`/`PRAPositivePackedNormal` versus old `PRAPositiveMapPack` project-origin mismatch. The 848 ancestor is author-only, and package-transitive/dynamic ancestry remains inherited. Workspace changes are recorded separately; a successful result is historical unless the entire source graph is revalidated.
