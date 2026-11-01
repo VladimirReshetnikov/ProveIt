@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRABoundedInduction
+#check DiophantineConsistency.IPRABoundedInduction.backward
+#print axioms DiophantineConsistency.IPRABoundedInduction.backward

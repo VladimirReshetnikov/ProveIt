@@ -33,13 +33,18 @@ def audit():
  assert all(sha(src/(n+'.lean'))==m['observed_sources'][n] and sha(logs/(n+'.lean'))==m['observed_sources'][n] for n in m['order'])
  assert all(sha(P/'lib'/f)==h and sha(lib/f)==h for f,h in m['parent_objects'].items())
  assert all(sha(PKG/f)==info['sha256'] and str((PKG/f).resolve())==info['resolved_path'] for f,info in m['external_direct'].items())
+ assert all(sha(dest/(r['name']+'.olean'))==r['object_sha256'] and sha(logs/(r['name']+'.log'))==r['log_sha256'] for r in state['records'] if r['exit']==0)
 save();print('PRIVATE',w,flush=True)
 try:
  audit();env=dict(os.environ,LEAN_PATH=str(lib)+':'+str(PKG),LEAN_NUM_THREADS='1');env.pop('LEAN_SRC_PATH',None)
  for n in m['order']:
   obj=dest/(n+'.olean');log=logs/(n+'.log');t=time.monotonic()
+  dep={}
+  for mod in m['direct_imports'][n]:
+   rel=Path(mod.replace('.','/')+'.olean');path=lib/rel if (lib/rel).exists() else PKG/rel
+   assert path.exists(),str(path);dep[mod]={'sha256':sha(path),'resolved_path':str(path.resolve())}
   with log.open('w') as f:r=subprocess.run([str(LEAN),'-M8000','-j1','-DElab.async=false','--root='+str(src.parent),str(src/(n+'.lean')),'-o',str(obj)],cwd=R,env=env,stdout=f,stderr=subprocess.STDOUT)
-  state['records'].append({'name':n,'exit':r.returncode,'object_sha256':sha(obj) if obj.exists() else None,'log_sha256':sha(log),'seconds':time.monotonic()-t});save();print(n,r.returncode,flush=True)
+  state['records'].append({'name':n,'exit':r.returncode,'object_sha256':sha(obj) if obj.exists() else None,'log_sha256':sha(log),'direct_imports':dep,'seconds':time.monotonic()-t});save();print(n,r.returncode,flush=True)
   s=log.read_text();assert r.returncode==0 and 'warning:' not in s and 'error:' not in s and 'sorryAx' not in s
   if n=='IPRABoundedInductionChecks':
    blocks=re.findall(r'depends on axioms: \[([^\]]*)\]',s);assert len(blocks)==3,(s,blocks)
