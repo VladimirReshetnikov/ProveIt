@@ -12,4 +12,4 @@ This is a conditional witness equivalence. It does not prove that an arbitrary
 43-variable zero is oriented, nor that an oriented zero exists whenever the
 machine halts. Those require a separate witness-construction and sign-transport
 argument. In particular no unqualified native iPRA endpoint is asserted here.
-The focused replay inherits the parent provider's transitive and dynamic ancestry.
+A native iPRA client is separately checked with the explicit `MachineOrients` premise: every internal machine halting time gives a positive 43-variable zero with `v 26 < v 25`. The focused replays inherit the parent provider's transitive and dynamic ancestry.
