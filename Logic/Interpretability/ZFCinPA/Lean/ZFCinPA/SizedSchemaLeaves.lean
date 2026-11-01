@@ -169,9 +169,7 @@ theorem vac_gen {X w : V} (hX : IsSemiformula ℒₛₑₜ 0 X) (hs : shift ℒ�
     have lA : ^∀ Y < lvB w := hall ▸ hb (k + 1) le_rfl
     have hw' : w ≤ w + 2 * k := le_self_add
     have hS : setShift ℒₛₑₜ (insert (^∀ Y) (∅ : V)) = insert (^∀ Y) ∅ := by
-      rw [mem_setShift_insert, Bootstrapping.shift_all hYc.isUFormula, hYs]
-      congr 1
-      exact mem_ext fun y => by simp [mem_setShift_iff]
+      rw [mem_setShift_insert, Bootstrapping.shift_all hYc.isUFormula, hYs, setShift_empty]
     have hfA : IsFormula ℒₛₑₜ (^∀ Y) := by
       have := closed_qqAlls hX (k + 1); rwa [hall] at this
     have d1 : DLv 𝗭𝗙 (insert Y (insert (^∀ Y) ∅)) (w + 2 * k + 1) :=
