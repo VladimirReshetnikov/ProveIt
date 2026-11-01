@@ -1,5 +1,13 @@
 # Twenty-six-variable degree-12 candidate
 
+[equation12.pdf](../../equation12.pdf) presents the circuit and the fixed
+constants in base 10. `generate_equation12.py` constructs its TeX from the
+pinned graph, and `verify_display12.py` checks the display, all 124 circuit
+lines, the fixed-constant block, and two negative mutation controls. Two
+`pdflatex` runs produced the same PDF SHA-256
+`6460323fb261ac8fe4e487727dc31927789096eb3769df0d513f867c3b4b7a0d`;
+both rendered pages were inspected.
+
 This 124-operation circuit adds four squared constraints to the 22-variable,
 degree-16 circuit. Four new positive coordinates name `q^3`, `(X*Y)*q`,
 `f^2`, and `c^2`. The constraints require each coordinate to agree with its
