@@ -30,6 +30,14 @@ it should not delay or be conflated with the separate guarded project rebuild.
 Actual runtime file observations, if captured, require a separately reviewed
 trace and may reveal inputs absent from the compiled-header graph.
 
+The separate [`sample_provider.py`](sample_provider.py) has now inspected two
+`.olean` and two `.ir` headers from the audited replacement Foundation
+provider. The [sample receipt](provider-sample-receipt.json) pins those objects,
+their companions and corresponding source snapshots; its independently
+[observed exit](provider-sample-observation.json) was zero. This is a four-file
+reader test, not the optional full package closure survey. The provider's
+outer process exit was not captured, as documented in its audit.
+
 Run `python3 test_closure.py` after moving aside an existing test receipt. The
 controls exercise a real compiled two-module transitive chain, namespace
 shadowing, a missing module, a traversal limit, object/companion mutation, and
