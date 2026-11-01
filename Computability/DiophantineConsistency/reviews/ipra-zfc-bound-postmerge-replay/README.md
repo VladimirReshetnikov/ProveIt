@@ -18,3 +18,9 @@ the translated refutation witness-bound implication, not the ordinary native
 consistency comparison. A prepared packet or a RUNNING state is not a PASS.
 
 Run `python3 Computability/DiophantineConsistency/reviews/ipra-zfc-bound-postmerge-replay/replay.py`.
+
+The author `/tmp/ipra-induction-nozero-hz8vd5yk` and independent
+`/tmp/ipra-induction-nozero-upa7appl` runs have now passed; all 58 source,
+object, full-log, and exit rows match, and both authenticate the same frozen
+manifest before and after compilation. The inherited ancestry qualifications
+above remain in force.

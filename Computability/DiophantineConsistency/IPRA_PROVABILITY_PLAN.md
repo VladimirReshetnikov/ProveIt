@@ -131,7 +131,10 @@ not an intuitionistic PRA proof. Its Gödel–Gentzen translation is now
 constructed in [IPRAZFCRefutationBoundGG.lean](Lean/DiophantineConsistency/IPRAZFCRefutationBoundGG.lean):
 the source-directed author and independent replays passed for the exact Foundation
 ZFC refutation predicate, with matching source, object and full-log rows. This
-gives the translated implication, not an unnegated intuitionistic witness. The analogous HA normalization also uses
+gives the translated implication, not an unnegated intuitionistic witness.
+After the witness-calculus merge, a [58-module source-directed rebuild](reviews/ipra-zfc-bound-postmerge-replay/README.md)
+passed matching author and independent replays against the frozen historical
+parent. Its recorded project and external ancestry is still inherited. The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
