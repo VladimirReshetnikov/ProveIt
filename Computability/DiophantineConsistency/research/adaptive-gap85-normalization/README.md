@@ -66,3 +66,13 @@ The root congruence now holds at an arbitrary internal main Pell index. `Adaptiv
 ### Partial large-Y power-of-two norm example
 
 A Lean-checked natural-number example has X=32=2⁵ and Y=579≥7·2⁵, positive auxiliary values, both Pell norm equations, and the first-index-three and main-index-five polynomial identities. Therefore these conditions alone cannot exclude the power-of-two alternative. The example fails q³∣Y for every q≥2; it is not a full 85-equation zero and does not establish anything about arbitrary IΣ₁ models. The focused author and independent replays, source and object hashes, full logs, and inherited package boundary are recorded in `reviews/adaptive-gap85-large-Y-power-example-replay/`.
+
+
+### Partial large-Y example with cubic divisibility
+
+A second Lean-checked standard-natural example has X=65536=2¹⁶, Y=36032920392046168, q=2, positive eta and zeta, Y≥7·2¹⁶, q³∣Y, both Pell norm equations and the first-index-nine/main-index-sixteen recurrences. It demonstrates that even these combined partial conditions do not rule out X=2ᵐ. It does not meet the actual fixed-port requirement q≥5, nor assert the signed-root equations or a full 85-equation zero; it does not establish the reverse implication. Author and independent replays match; see `reviews/adaptive-gap85-cube-power-example-replay/` for source, objects, full logs and the inherited package boundary.
+
+
+### Partial large-q large-Y power example
+
+A further Lean-checked standard-natural example has X=4294967296=2³², Y=140737488482304, q=8, positive eta and zeta, Y≥7·2³², q³∣Y, q≥5, both Pell norm equations and the first-index-20/main-index-32 recurrences. Even these combined partial conditions do not rule out X=2ᵐ. The example does not establish that q=8 is realizable at the actual fixed port, nor does it assert the signed-root equations or a full 85-equation zero. It does not establish the reverse implication. Author and independent replays match; see `reviews/adaptive-gap85-large-q-power-example-replay/` for source, objects, full logs and the inherited package boundary.

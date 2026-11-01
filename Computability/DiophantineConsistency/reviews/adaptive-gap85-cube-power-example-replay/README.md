@@ -1,0 +1,5 @@
+# Partial large-Y power and cubic-divisibility example
+
+Both focused Lean replays PASS with two matching source/object/full-log rows. In the standard natural numbers, the explicit values X=65536=2¹⁶, Y=36032920392046168 and q=2 satisfy 7·2¹⁶≤Y and q³∣Y. The source supplies positive eta and zeta, checks both Pell norm equations, and checks the first-index-nine and main-index-sixteen recurrences. Thus those partial norms, positive auxiliary coordinates, cubic divisibility for a positive q≥2, and the large-Y bound do not alone exclude X=2ᵐ.
+
+This example does not satisfy the actual fixed-port requirement q≥5. No signed-root equation or full 85-equation zero is asserted, and the example has no implication for an arbitrary IΣ₁ model or the reverse direction. Direct Mathlib objects and companions are guarded; package-transitive ancestry is inherited. Source and replay driver are `research/adaptive-gap85-normalization/AdaptiveGap85CubePowerNormExample.lean` and `replay_cube_power_example.py`.

@@ -1,0 +1,4 @@
+import AdaptiveGap85LargeQPowerNormExample
+#print axioms AdaptiveGap85LargeQPowerNormExample.conditions
+#print axioms AdaptiveGap85LargeQPowerNormExample.norms
+#print axioms AdaptiveGap85LargeQPowerNormExample.indices
