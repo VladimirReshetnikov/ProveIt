@@ -104,10 +104,7 @@ theorem candidate_proves_ext_bound : PRA ⊢ boundSentence := by
   letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
   have he' : (Semiformula.lMap embedding extDef.val).Eval ![e 0,e 1,e 2] Empty.elim := by
     have hv : ![e 0,e 1,e 2] = e := by
-      funext i
-      refine Fin.cases rfl (fun j => ?_) i
-      refine Fin.cases rfl (fun j => ?_) j
-      exact Fin.cases rfl (fun j => Fin.elim0 j) j
+      funext i; revert i; simp [Fin.forall_fin_succ]
     rw [hv]
     exact he
   have hb := candidate_ext_bound (e 0) (e 1) (e 2) he'
@@ -115,19 +112,12 @@ theorem candidate_proves_ext_bound : PRA ⊢ boundSentence := by
   have hv : (Semiterm.val e Empty.elim ∘
         (Rew.subst ![#0, #1, #2, applyCode addCode ![#2, applyCode oneCode Fin.elim0]]) ∘ Semiterm.bvar) =
       ![e 0,e 1,e 2,e 2+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) j
-    simp [Function.comp_def, Rew.subst, applyCode, Semiterm.val_func]
+    funext i; revert i
+    simp [Fin.forall_fin_succ, Function.comp_def, Rew.subst, applyCode, Semiterm.val_func]
     congr 1
-    funext k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases ?_ (fun k => Fin.elim0 k) k
-    change Structure.func (L := language) oneCode
-      (Semiterm.val e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN 3)) =
-      Structure.func (L := language) oneCode Fin.elim0
+    funext j; revert j
+    simp [Fin.forall_fin_succ, Semiterm.val_func]
+    change Structure.func (L := language) oneCode _ = Structure.func (L := language) oneCode Fin.elim0
     congr 1
     exact Subsingleton.elim _ _
   have hf : (Semiterm.val e Empty.elim ∘
