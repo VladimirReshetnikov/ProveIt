@@ -90,27 +90,28 @@ section Proofs
 
 local notation "PH" i:max x:max => Structure.rel (L := GL) (placeholderRel i) ![x]
 
+private theorem binary_congr {p a b c d : Prop} (op : Prop → Prop → Prop)
+    (h₁ : ¬ p ∨ (a ↔ b)) (h₂ : ¬ p ∨ (c ↔ d)) :
+    ¬ p ∨ (op a c ↔ op b d) := by
+  rcases h₁ with h | h
+  · exact Or.inl h
+  rcases h₂ with h' | h'
+  · exact Or.inl h'
+  exact Or.inr (by rw [h, h'])
+
 theorem andG_provable : templTheory 8 arG ⊢ andG := by
   apply templ_provable
   intro M _ _ s _ _ _
   simp [andG, gS, G, models_iff]
   intro h₁ h₂ t
-  rcases h₁ t with h | h
-  · exact Or.inl h
-  rcases h₂ t with h' | h'
-  · exact Or.inl h'
-  exact Or.inr (by rw [h, h'])
+  exact binary_congr And (h₁ t) (h₂ t)
 
 theorem orG_provable : templTheory 8 arG ⊢ orG := by
   apply templ_provable
   intro M _ _ s _ _ _
   simp [orG, gS, G, models_iff]
   intro h₁ h₂ t
-  rcases h₁ t with h | h
-  · exact Or.inl h
-  rcases h₂ t with h' | h'
-  · exact Or.inl h'
-  exact Or.inr (by rw [h, h'])
+  exact binary_congr Or (h₁ t) (h₂ t)
 
 theorem negG_provable : templTheory 8 arG ⊢ negG := by
   apply templ_provable
