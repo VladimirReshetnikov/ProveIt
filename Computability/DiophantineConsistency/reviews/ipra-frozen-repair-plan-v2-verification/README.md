@@ -1,0 +1,5 @@
+# Comparison of the two shared-source-aware origin plans
+
+`receipt.json` reports `MATCHED_PLAN` for the 73-module dirty set: both full physical-origin node maps and 5,660 common guarded file hashes match. The author and independent preparers use identical logic except for the output-directory literal. They separately hash and trace original physical project providers and direct external companions against the same passed fixed-snapshot parents. The comparison checks the complete physical-origin node maps, selected source/object inventories, unknown-origin reasons, external resolution/presence maps, origin guards except each packet's own script paths, and equality of the dirty sets. Each potentially different topological order is checked independently. Full original run logs are preserved.
+
+A matching plan is not a Lean proof. The separate replay must rebuild the dirty modules, check its endpoint axioms, and pass an independent peer. The inherited 848-project ancestor remains author-only; external package-transitive and dynamic ancestry remain inherited.

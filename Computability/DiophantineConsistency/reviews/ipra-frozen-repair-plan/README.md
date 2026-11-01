@@ -1,0 +1,5 @@
+# Conservative fixed-snapshot project-origin repair plan
+
+This is an authenticated input plan, not a PASS receipt. After both fixed endpoint parents passed, its captured preparer traced every candidate reused physical project-object environment and computed a fail-closed fixed point. It schedules 185 modules for rebuilding, including the two verified stale users; 183 candidate origins were marked unknown or mismatched. Most unknowns are conservative missing-source-path cases in historical providers, not evidence of invalid theorems. The complete origin observations and dirty reasons are pinned in `manifest.json`.
+
+The captured replay guards the matched parent object inventory and source snapshots, the original project-origin evidence, direct external objects and companions with path/absence checks, dirty-module source/import order, both overlay contents and exact endpoint axiom reports. Author and independent replay remain necessary. This is the historical fixed source, not a current-workspace result; the 848 ancestor remains author-only and package-transitive/dynamic ancestry remains inherited.

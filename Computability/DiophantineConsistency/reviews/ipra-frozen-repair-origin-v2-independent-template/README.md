@@ -1,0 +1,3 @@
+# Independent shared-source-aware origin-plan preparation
+
+This template differs from the v2 author preparer only in its generated output-directory name. It preserves the first 73-module plan and separately rechecks the entire input, physical project-origin fixed point, source hashes, and direct external resolution. Distinct output paths and captured preparer hashes are expected; compare resulting dirty **sets**, source/project/original-environment and external guards, and independently validate each topological order. This is a plan audit, not a Lean proof. The ancestor and package-transitive boundaries remain inherited.
