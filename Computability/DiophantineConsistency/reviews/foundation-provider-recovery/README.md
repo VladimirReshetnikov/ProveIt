@@ -16,9 +16,12 @@ build root is `/tmp/ipra-foundation-rebuild-DqHJmJJe`. Its Lake configuration
 declares a `Foundation` library at `lib/FormalizedFormalLogic-Foundation`,
 requires mathlib `v4.32.0`, and uses the existing package build directories.
 [`build_all.py`](build_all.py) verifies the pinned inputs, attempts the 140
-named targets, monitors free space, and records its actual outcome. A success
-creates a new overlay with fresh Foundation objects and inherited non-Foundation
-packages; it does not modify the historical provider.
+named targets in a fresh root with no prior build, guards the explicitly
+imported external objects and companions before and after, monitors free
+space, and records its actual outcome. A success creates a new overlay with
+fresh Foundation objects and inherited non-Foundation packages; it does not
+modify the historical provider. The guard is not an authentication of the
+external packages' transitive or dynamically loaded dependencies.
 
 A first targeted Lake build of `Foundation.FirstOrder.Arithmetic.IOpen.Basic`
 and its dependencies was started in that root. This input record is **not a
@@ -37,3 +40,9 @@ hash differed from the recorded historical hash. This is a point-in-time
 observation, not a diagnosis of the cause. Future comparisons and explicit
 compatibility checks with inherited project objects are necessary before a new
 provider can support proof-replay claims.
+
+The separate root `/tmp/ipra-foundation-guarded-ieOVZs2r` was prepared with
+the same source snapshot and configurations for a clean guarded build. A
+preflight source-closure walk found 140 Foundation source modules and 43
+declared external imports, corresponding to 430 present-or-absent companion
+paths. Preflight success is not a successful build or a completed replay.
