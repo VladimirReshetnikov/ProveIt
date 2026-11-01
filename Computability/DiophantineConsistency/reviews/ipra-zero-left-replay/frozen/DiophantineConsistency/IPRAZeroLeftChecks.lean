@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAZeroLeft
+#check DiophantineConsistency.IPRAZeroLeft.zero_left
+#print axioms DiophantineConsistency.IPRAZeroLeft.zero_left
