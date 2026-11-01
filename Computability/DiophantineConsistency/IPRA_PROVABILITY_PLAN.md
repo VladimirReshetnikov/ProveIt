@@ -217,8 +217,13 @@ now supplies the selector implication from the actual `searchCode`, leaving
 only the two pointwise characteristic-correctness directions explicit; its
 matched guarded replays retain historical ancestry. A [bit-convention lemma](Lean/DiophantineConsistency/IPRABitConvention.lean)
 now converts `isZero(t)=0` to `t=1` for a known bit with matching replays,
-without assuming that a quantified child formula is decidable. Its composition
-with the actual `notCode` and bounded characteristic compiler remains open.
+without assuming that a quantified child formula is decidable. The [actual
+`notCode` composition](Lean/DiophantineConsistency/IPRANotBit.lean) and a
+[generic characteristic transfer](Lean/DiophantineConsistency/IPRACharacteristicTransfer.lean)
+now have matching guarded replays. The latter obtains native one/zero
+correctness and child decision from the classical certificates and an explicit
+per-instance child GG-to-native proof. The recursive bounded-formula assembly
+and the actual matrix's native correctness remain open.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)

@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRANotBit
+#print axioms DiophantineConsistency.PRANotBit.PRA_proves_sentence
+#print axioms DiophantineConsistency.IPRANotBit.notBitConvention

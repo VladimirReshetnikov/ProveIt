@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRACharacteristicTransfer
+#print axioms DiophantineConsistency.IPRACharacteristicTransfer.transferCorrectness
+#print axioms DiophantineConsistency.IPRACharacteristicTransfer.transferBit
+#print axioms DiophantineConsistency.IPRACharacteristicTransfer.transferZeroCorrectness
+#print axioms DiophantineConsistency.IPRACharacteristicTransfer.decideFromCharacteristic
