@@ -1,0 +1,4 @@
+import DiophantineConsistency.AdaptiveGap85ShiftResidue
+#print axioms DiophantineConsistency.AdaptiveGap85ShiftResidue.move_residue
+#print axioms DiophantineConsistency.AdaptiveGap85ShiftResidue.orbit_preserves
+#print axioms DiophantineConsistency.AdaptiveGap85ShiftResidue.orbit_blocks

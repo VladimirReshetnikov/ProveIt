@@ -81,3 +81,8 @@ A further Lean-checked standard-natural example has X=4294967296=2³², Y=140737
 ### Conditional divisible-coordinate gap obstruction
 
 `AdaptiveGap85DivisibleGap.divisible_blocks` checks in every IΣ₁ model that positive F,C with b∣F cannot satisfy F+C<1+b; by symmetry the same applies if b∣C. Its forward lemma proves b∣F is preserved by adding b·t. Both known shifts change F and C by multiples of b=q−1, suggesting this residue is an obstruction to normalizing within their shift orbit. No actual zero is known to have a divisible coordinate, and the full shift-orbit claim is not formalized in this packet. Focused independent replays match (`reviews/adaptive-gap85-divisible-gap-replay/`), with historical inherited transitive ancestry.
+
+
+### Conditional finite shift-orbit obstruction
+
+`AdaptiveGap85ShiftResidue.orbit_blocks` now checks the residue argument in every IΣ₁ model: for an abstract step adding or subtracting multiples of positive b to F and C independently, a finite external sequence preserves b∣F or b∣C, and every positive endpoint fails F+C<1+b. It uses Lean's external finite reflexive-transitive closure, not an internally coded model-length iteration. Binding the actual literal shifts to this relation and establishing an actual zero with the residue remain open. Matching focused replays and historical inherited ancestry are recorded in `reviews/adaptive-gap85-shift-residue-replay/`.
