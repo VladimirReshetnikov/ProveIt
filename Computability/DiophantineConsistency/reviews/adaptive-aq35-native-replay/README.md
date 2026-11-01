@@ -1,0 +1,7 @@
+# 35-variable degree-6 candidate-native endpoint: focused replay
+
+`IPRAAQ35Native.literal_equivalence` proves, in the chosen native intuitionistic PRA theory, that the fixed-port 35-variable positive-integer equation has no solution exactly when the mapped Foundation ZFC refutation formula is negated. The model bridge establishes the 35-to-36 equivalence for arbitrary integer ports; its positive extension uses the auxiliary residual to prove the substituted signed square is nonzero. The prior 36-to-40 bridge separately assumes a nonnegative first port, discharged for the fixed port.
+
+Tool session 99346 actually exited 0 with `MATCHED_PASS 10 rows`. The driver rebuilt the eight model modules and two native modules twice over the same matched 36-native peer, checked all eight rebuilt model objects against the accepted model receipt, and matched source/object/log/direct-input rows. It guarded 120 direct companion paths per run and the recorded predecessor exits. Root independently performed an unsaved read-only receipt audit of both runs, the 25 axiom reports per run, all 240 direct companion guards and the predecessor observations; that audit was not an additional Lean replay.
+
+This is a focused suffix replay. Transitive project and package ancestry and dynamic imports are inherited, and the point-in-time source checks are not a full current-source closure. The claim is for the chosen formal native theory and mapped refutation formula.

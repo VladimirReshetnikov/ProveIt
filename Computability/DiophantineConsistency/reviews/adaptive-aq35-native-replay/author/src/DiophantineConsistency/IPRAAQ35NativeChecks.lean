@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAAQ35Native
+
+#print axioms DiophantineConsistency.IPRAAQ35Native.sameNoZero
+#print axioms DiophantineConsistency.IPRAAQ35Native.bridge35
+#print axioms DiophantineConsistency.IPRAAQ35Native.literal_equivalence
