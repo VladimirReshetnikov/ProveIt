@@ -8,15 +8,18 @@ def inv():
  result={}
  for d,_,fs in os.walk(P/'lib',followlinks=True):
   for name in fs:
-   if name.endswith(('.olean','.olean.private','.olean.server','.ir')):
+   if name.endswith(('.olean','.olean.private','.olean.server','.ir','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean','.ilean.hash')):
     p=Path(d)/name;result[str(p.relative_to(P/'lib'))]={'sha256':h(p),'resolved_path':str(p.resolve())}
  return result
 assert h(P/'state.json')==m['peer_state_sha256'] and h(A/'state.json')==m['author_state_sha256'] and json.loads((P/'state.json').read_text())['status']==json.loads((A/'state.json').read_text())['status']=='PASS'
 assert h(F)==m['frozen_13_manifest_sha256'] and h(G)==m['graph_sha256'] and h(E)==m['extra_manifest_sha256'] and h(LEAN)==m['lean_sha256']
 assert all(h(src(n))==v for n,v in m['source_sha256'].items()) and inv()==m['parent_inventory']
+assert m['order'] and m['order'][-1]=='DiophantineConsistency.IPRACurrentNativeZFCChecks';dirty=set(m['order']);done=set()
+for n in m['order']:
+ actual=re.findall(r'^import\s+([A-Z][\w.]*)',src(n).read_text(),re.M);assert actual==m['direct_imports'][n];assert all(dep not in dirty or dep in done for dep in actual);done.add(n)
 assert all(h(PKG/k)==v['sha256'] and str((PKG/k).resolve())==v['resolved_path'] for k,v in m['external_direct'].items())
 w=Path(tempfile.mkdtemp(prefix='ipra-current-native14-fixed-'));lib=w/'lib';lib.mkdir();logs=w/'logs';logs.mkdir();(w/'driver.py').write_bytes(Path(__file__).read_bytes());(w/'manifest.json').write_bytes(M.read_bytes())
-excluded={n.replace('.','/')+ext for n in m['order'] for ext in ('.olean','.olean.private','.olean.server','.ir')}
+excluded={n.replace('.','/')+ext for n in m['order'] for ext in ('.olean','.olean.private','.olean.server','.ir','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean','.ilean.hash')}
 for rel in m['parent_inventory']:
  if rel not in excluded:
   dst=lib/rel;dst.parent.mkdir(parents=True,exist_ok=True);dst.symlink_to((P/'lib'/rel).resolve())
@@ -31,14 +34,26 @@ def drift():
  return result
 state={'status':'RUNNING','manifest_sha256':mh,'driver_sha256':dh,'parent_state_sha256':m['peer_state_sha256'],'records':[],'workspace_drift_before':drift(),'boundary':m['boundary']}
 def save():(w/'state.json').write_text(json.dumps(state,sort_keys=True,indent=2)+'\n')
+def overlay_inventory():
+ result={}
+ for d,_,fs in os.walk(lib,followlinks=True):
+  for name in fs:
+   if name.endswith(('.olean','.olean.private','.olean.server','.ir','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean','.ilean.hash')):
+    p=Path(d)/name;result[str(p.relative_to(lib))]={'sha256':h(p),'resolved_path':str(p.resolve())}
+ return result
 def audit():
  assert h(M)==mh and h(__file__)==dh and h(w/'manifest.json')==mh and h(w/'driver.py')==dh
  assert h(P/'state.json')==m['peer_state_sha256'] and h(A/'state.json')==m['author_state_sha256'] and h(F)==m['frozen_13_manifest_sha256'] and h(G)==m['graph_sha256'] and h(E)==m['extra_manifest_sha256'] and h(LEAN)==m['lean_sha256']
  assert h(m['ancestor_state'])==m['ancestor_state_sha256'] and all(h(p)==v for p,v in m['ancestral_manifests'].items())
  assert all(h(src(n))==v for n,v in m['source_sha256'].items()) and inv()==m['parent_inventory']
  assert all(h(PKG/k)==v['sha256'] and str((PKG/k).resolve())==v['resolved_path'] for k,v in m['external_direct'].items())
- assert all(h(lib/rel)==row['sha256'] for rel,row in m['parent_inventory'].items() if rel not in excluded)
- assert all(h(lib/(r['name'].replace('.','/')+'.olean'))==r['object_sha256'] and h(logs/(r['name'].replace('.','_')+'.log'))==r['log_sha256'] for r in state['records'] if r['exit']==0)
+ expected={rel:row for rel,row in m['parent_inventory'].items() if rel not in excluded}
+ for row in state['records']:
+  if row['exit']==0:
+   rel=row['name'].replace('.','/')+'.olean';out=lib/rel;assert out.is_file() and not out.is_symlink() and out.resolve()==out.absolute();expected[rel]={'sha256':row['object_sha256'],'resolved_path':str(out.absolute())};assert h(logs/(row['name'].replace('.','_')+'.log'))==row['log_sha256']
+   for dep,x in row['direct_imports'].items():
+    path=lib/(dep.replace('.','/')+'.olean');assert path.exists() and str(path.resolve())==x['resolved_path'] and h(path)==x['sha256']
+ assert overlay_inventory()==expected
 
 def warnings(s):
  out=[]
