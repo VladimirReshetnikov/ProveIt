@@ -1,5 +1,5 @@
 import DiophantineConsistency.PRAPositiveNormalize
-import DiophantineConsistency.ParsonsBasePositive
+import DiophantineConsistency.ParsonsPositiveSyntax
 import DiophantineConsistency.ParsonsHierarchyMap
 import DiophantineConsistency.PRAFormulaParameters
 /-! Map and pack positive arithmetic formulas without changing their shape. -/

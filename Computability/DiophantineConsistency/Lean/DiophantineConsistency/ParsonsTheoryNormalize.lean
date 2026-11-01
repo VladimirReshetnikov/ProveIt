@@ -1,38 +1,11 @@
 import DiophantineConsistency.ParsonsClosure
+import DiophantineConsistency.ParsonsPositiveSyntax
 set_option autoImplicit false
 namespace DiophantineConsistency.ParsonsTheoryNormalize
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open ParsonsClosure
 variable {L : Language} [L.ORing]
-
-theorem partition (T : Theory L) (C : Semiproposition L 1 → Prop)
-    (A : List (Sentence L))
-    (h : ∀ σ ∈ A, σ ∈ T ∪ InductionScheme L C) :
-    ∃ (B : List (Sentence L)) (Φ : List (Semiproposition L 1)),
-      (∀ σ ∈ B, σ ∈ T) ∧ (∀ φ ∈ Φ, C φ) ∧
-      A ⊆ B ++ Φ.map (fun φ ↦ (succInd φ).univCl) := by
-  induction A with
-  | nil => exact ⟨[], [], by simp⟩
-  | cons a A ih =>
-    obtain ⟨B, Φ, hb, hf, hs⟩ := ih (fun σ hm => h σ (by simp [hm]))
-    have ha := h a (by simp)
-    rcases ha with ha | ha
-    · refine ⟨a :: B, Φ, ?_, hf, ?_⟩
-      · intro σ hm; simp only [List.mem_cons] at hm; rcases hm with rfl | hm
-        · exact ha
-        · exact hb σ hm
-      · intro σ hm; simp only [List.mem_cons] at hm; rcases hm with rfl | hm
-        · simp
-        · have := hs hm; simp only [List.mem_append, List.mem_cons] at *; tauto
-    · obtain ⟨φ, hc, he⟩ := ha
-      refine ⟨B, φ :: Φ, hb, ?_, ?_⟩
-      · intro ψ hm; simp only [List.mem_cons] at hm; rcases hm with rfl | hm
-        · exact hc
-        · exact hf ψ hm
-      · intro σ hm; simp only [List.mem_cons] at hm; rcases hm with rfl | hm
-        · simp [he]
-        · have := hs hm; simp only [List.map_cons, List.mem_append, List.mem_cons] at *; tauto
 
 structure NormalizedProof (T : Theory L) (C : Semiproposition L 1 → Prop)
     (σ : Sentence L) where

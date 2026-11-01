@@ -1,6 +1,7 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRAMappingWitnessBound
 import DiophantineConsistency.PRANegDomainWitnessBound
+import DiophantineConsistency.PRARewritingWitnessBound
 set_option autoImplicit false
 set_option maxHeartbeats 2000000
 namespace DiophantineConsistency.PRANegMappingWitnessBound
@@ -27,21 +28,15 @@ attribute [local irreducible] domainDef bitDef memRel
     · exact (hd hh).elim
     · right; left
       have hdom' : (∼domainDef.val).Evalb ![d,m] := by simpa using hh
-      have hb := PRANegDomainWitnessBound.neg_domain_bound_explicit d m hdom'
       letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-      have hs : Fin.snoc ![d,m] (PRANegDomainWitnessBound.negDomainMajorant d m) = ![d,m,PRANegDomainWitnessBound.negDomainMajorant d m] := by simp
-      have hm := eval_bnd_mono (∼domainDef.val) ![d,m] (Empty.elim : Empty → V) (hdom d hd') (by rw [hs]; exact hb)
       let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#0,#1]
-      have hn := PRABndRewriting.natural (∼domainDef.val) ω ![d,m] w
-      have hv : (fun j => (ω #j).val ![d,m] Empty.elim) = ![d,m] := by
-        funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hs' : Fin.snoc ![d,m] w = ![d,m,w] := by simp
-      rw [hv,hs'] at hn
-      rw [hs'] at hm
-      have hh := hn.mpr hm
+      have hb := PRARewritingWitnessBound.binary_rew_bound_with (∼domainDef.val)
+        PRANegDomainWitnessBound.negDomainMajorant PRANegDomainWitnessBound.neg_domain_bound_explicit
+        ω ![d,m] w (by simpa [ω] using hdom d hd')
+        (by simpa [ω, Semiformula.eval_substs] using hdom')
       rw [show (ω ▹ (∼domainDef.val)) = ∼(ω ▹ domainDef.val) from
-        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) domainDef.val] at hh
-      exact hh
+        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) domainDef.val] at hb
+      simpa using hb
     · right; right
       obtain ⟨x,hx,hbit,hrest⟩ := hh
       have hx2 : x ≤ 2*m := le_trans (le_of_lt hx) hd'
@@ -76,21 +71,15 @@ attribute [local irreducible] domainDef bitDef memRel
           have hmw : m ≤ w := le_trans hm2 hsize
           refine ⟨y',lt_of_lt_of_le hy' hmw,hy',?_,hne⟩
           have hr : memRel.val.Evalb ![m,x,y'] := by simpa [Semiformula.Operator.val,memRelOpr] using hrel'
-          have hrb := PRAMemRelWitnessBound.memRel_bound_explicit m x y' hr
           have hrs : PRAMemRelWitnessBound.memRelMajorant m x y' ≤ w := hrel x y' hx2 (le_of_lt hy')
           letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-          have hsc : Fin.snoc ![m,x,y'] (PRAMemRelWitnessBound.memRelMajorant m x y') = ![m,x,y',PRAMemRelWitnessBound.memRelMajorant m x y'] := by simp
-          have hrm := eval_bnd_mono memRel.val ![m,x,y'] (Empty.elim : Empty → V) hrs (by rw [hsc]; exact hrb)
           let ωr : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#4,#2,#0]
-          have hrn := PRABndRewriting.natural memRel.val ωr ![y',y,x,d,m] w
-          have hrv : (fun j => (ωr #j).val ![y',y,x,d,m] Empty.elim) = ![m,x,y'] := by
-            funext j; refine Fin.cases rfl (fun k => ?_) j; refine Fin.cases rfl (fun k => ?_) k
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hrw : Fin.snoc ![y',y,x,d,m] w = ![y',y,x,d,m,w] := by simp
-          have hrw' : Fin.snoc ![m,x,y'] w = ![m,x,y',w] := by simp
-          rw [hrv,hrw,hrw'] at hrn
-          rw [hrw'] at hrm
-          simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hrn.mpr hrm
+          have hb := PRARewritingWitnessBound.ternary_rew_bound_with memRel.val
+            PRAMemRelWitnessBound.memRelMajorant PRAMemRelWitnessBound.memRel_bound_explicit
+            ωr ![y',y,x,d,m] w (by simpa [ωr] using hrs)
+            (by simpa [ωr, Semiformula.eval_substs] using hr)
+          simpa [Semiformula.Operator.operator,memRelOpr,Rewriting.emb] using hb
+
 def negMappingMajorant (m : V) : V := (2*m+1) + PRANegDomainWitnessBound.negDomainMajorant (2*m) m +
  PRABitFullWitnessBound.bitMajorant (2*m) + PRANegBitFullWitnessBound.negBitMajorant (2*m) +
  PRAMappingWitnessBound.relationFamilyMajorant m

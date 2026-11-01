@@ -1,8 +1,5 @@
-import Diophantine.Paper1976.Lemma23
-import Diophantine.Paper1984.Masking
 import DiophantineConsistency.CurrentMaskData2011
 import DiophantineConsistency.LowMaskData
-import DiophantineConsistency.SplitCertificate59
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Degrees
 import Mathlib.Algebra.Order.Chebyshev
@@ -34,6 +31,15 @@ import Mathlib.Tactic.SplitIfs
 import Mathlib.Tactic.Tauto
 import Mathlib.Tactic.Use
 import Mathlib.Tactic.Zify
+import Mathlib.Algebra.Polynomial.Coeff
+import Mathlib.Data.Fintype.Prod
+import Mathlib.Data.Nat.Bits
+import Mathlib.Data.Nat.Bitwise
+import Mathlib.Data.Nat.Choose.Lucas
+import Mathlib.NumberTheory.Pell
+import Mathlib.NumberTheory.PellMatiyasevic
+import Mathlib.Order.Fin.Basic
+import Mathlib.Tactic.LinearCombination
 
 /-! Matrix-free clone of `DiophantineConsistency.CurrentMasks2011`: only the declarations needed for the local
 normalization lemma are kept, proof bodies verbatim; namespaces are prefixed by

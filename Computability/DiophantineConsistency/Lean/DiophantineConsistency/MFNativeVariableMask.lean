@@ -1,12 +1,9 @@
-import Diophantine.Paper1976.Lemma23
-import Diophantine.Paper1984.Masking
 import DiophantineConsistency.LowMaskData
 import DiophantineConsistency.MFNativeCyclicConvolution
 import DiophantineConsistency.MFNativeMaskPopulation
 import DiophantineConsistency.MFNativeRadixDigits
 import DiophantineConsistency.MFNativeSourceMask
 import DiophantineConsistency.MFPaper1982Coding
-import DiophantineConsistency.SplitCertificate59
 import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Degrees
@@ -39,6 +36,13 @@ import Mathlib.Tactic.SplitIfs
 import Mathlib.Tactic.Tauto
 import Mathlib.Tactic.Use
 import Mathlib.Tactic.Zify
+import Mathlib.Algebra.Polynomial.Coeff
+import Mathlib.Data.Fin.VecNotation
+import Mathlib.Data.Fintype.Prod
+import Mathlib.NumberTheory.Pell
+import Mathlib.NumberTheory.PellMatiyasevic
+import Mathlib.Order.Fin.Basic
+import Mathlib.Tactic.LinearCombination
 
 /-! Matrix-free clone of `DiophantineConsistency.NativeVariableMask`: only the declarations needed for the local
 normalization lemma are kept, proof bodies verbatim; namespaces are prefixed by

@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRAExpWitnessBound
 import DiophantineConsistency.PRABitWitnessBound
 /-! Bound the actual positive Foundation bitDef graph, discharging its
@@ -37,20 +38,17 @@ theorem bit_bound (x y : V) : bitDef.val.Evalb ![x,y] →
   have hyw : y+1 ≤ bitMajorant y := by simpa [bitMajorant,add_comm] using add_le_add_right hy 1
   have hmy : PRAExponentialWitnessBound.exponentialMajorant y ≤ bitMajorant y := le_trans le_self_add le_self_add
   have hmz : PRAExponentialWitnessBound.exponentialMajorant z ≤ bitMajorant y := le_trans (majorant_mono hzy) hmy
-  have hb := PRAExpWitnessBound.exp_bound z x hexp
-  have hs0 : Fin.snoc ![z,x] (PRAExponentialWitnessBound.exponentialMajorant z) = ![z,x,PRAExponentialWitnessBound.exponentialMajorant z] := by simp
-  have hb' := eval_bnd_mono expDef.val ![z,x] (Empty.elim : Empty → V) hmz (by rw [hs0]; exact hb)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
-  have hn := PRABndRewriting.natural expDef.val ω ![z,x,y] (bitMajorant y)
-  have hv : (fun j => (ω #j).val ![z,x,y] Empty.elim) = ![z,x] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![z,x,y] (bitMajorant y) = ![z,x,y,bitMajorant y] := by simp
-  have hs' : Fin.snoc ![z,x] (bitMajorant y) = ![z,x,bitMajorant y] := by simp
-  rw [hv,hs,hs'] at hn
-  rw [hs'] at hb'
-  have hbe : (bnd PRABitWitnessBound.expInsideBit).Evalb ![z,x,y,bitMajorant y] := hn.mpr hb'
+  have hf : (ω ▹ expDef.val).Evalb ![z,x,y] := by
+    simpa [ω, Semiformula.eval_substs] using hexp
+  have hw : PRAExponentialWitnessBound.exponentialMajorant
+      ((ω #0).val ![z,x,y] Empty.elim) ≤ bitMajorant y := by
+    simpa [ω] using hmz
+  have hb := PRARewritingWitnessBound.binary_rew_bound_with expDef.val
+    (fun z _ => PRAExponentialWitnessBound.exponentialMajorant z)
+    PRAExpWitnessBound.exp_bound ω ![z,x,y] (bitMajorant y) hw hf
+  have hbe : (bnd PRABitWitnessBound.expInsideBit).Evalb ![z,x,y,bitMajorant y] := by
+    simpa [PRABitWitnessBound.expInsideBit, ω] using hb
   have hbl : PRABitWitnessBound.lenbitInsideBit.Evalb ![z,x,y] := by
     simpa [PRABitWitnessBound.lenbitInsideBit, Semiformula.eval_substs] using hlen
   exact PRABitWitnessBound.bit_bnd_of_witness x y (bitMajorant y) z hyw hzy hbe hbl

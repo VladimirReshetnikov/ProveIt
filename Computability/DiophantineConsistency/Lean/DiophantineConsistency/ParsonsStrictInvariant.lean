@@ -1,14 +1,10 @@
 import DiophantineConsistency.ParsonsStrictPrefixTree
+import DiophantineConsistency.ParsonsPositiveSyntax
 set_option autoImplicit false
 namespace DiophantineConsistency.ParsonsStrictInvariant
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open ParsonsGuardTree ParsonsUnified ParsonsRule
-
-/-- Syntactically strict existential prefix with a bounded matrix. -/
-def Strict (φ : ArithmeticSemiformula ℕ 1) : Prop :=
-  ∃ (n : ℕ) (D : ArithmeticSemiformula ℕ (1+n)),
-    Hierarchy 𝚺 0 D ∧ φ = ∃⁰^[n] D
 
 theorem sigma {φ : ArithmeticSemiformula ℕ 1} (h : Strict φ) : Hierarchy 𝚺 1 φ := by
   obtain ⟨n,D,hD,rfl⟩ := h

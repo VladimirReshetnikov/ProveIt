@@ -1,4 +1,4 @@
-import DiophantineConsistency.ParsonsTheoryNormalize
+import DiophantineConsistency.ParsonsPositiveSyntax
 import DiophantineConsistency.ParsonsMapInduction
 import DiophantineConsistency.PRAPeanoMinusTranslation
 /-! Extract the finite induction instances actually used by an IΣ₁ proof and

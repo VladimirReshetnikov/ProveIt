@@ -1,5 +1,5 @@
-import DiophantineConsistency.MFCurrentWordHighMask2011
 import DiophantineConsistency.MFCurrentWordOrigin2011
+import DiophantineConsistency.MFCurrentWordPadding2011
 
 /-! **Per-cell mask tests under per-cell hypotheses** (Matrix-free).
 
