@@ -1,6 +1,6 @@
 # Candidate: 42-variable quartic with a positive V coordinate
 
-This is an **unproved candidate**, not a new equivalence with ZFC consistency.
+The [base-10 candidate display](../../equation4-42.pdf) is an **unproved candidate**, not a new equivalence with ZFC consistency.
 Starting from the pinned 43-variable candidate, `generate.py` replaces its two
 positive coordinates `vPositive` and `vNegative`, used through their difference
 `V`, by the single positive coordinate `vValueVariable`. The resulting circuit
