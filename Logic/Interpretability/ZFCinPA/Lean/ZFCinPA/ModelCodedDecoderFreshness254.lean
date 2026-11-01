@@ -72,12 +72,8 @@ theorem decode_binder_fresh (code : V) :
   · definability
   case ind code ih =>
     intro chosen depth hchosen hle
-    have hr0 : (ℒₛₑₜ).IsRel (2 : V) 0 := by
-      simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 0)).mpr
-        ⟨Language.Set.Rel.eq,rfl⟩
-    have hr1 : (ℒₛₑₜ).IsRel (2 : V) 1 := by
-      simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 1)).mpr
-        ⟨Language.Set.Rel.mem,rfl⟩
+    have hr0 : (ℒₛₑₜ).IsRel (2 : V) 0 := equality_symbol_isRel
+    have hr1 : (ℒₛₑₜ).IsRel (2 : V) 1 := membership_symbol_isRel
     by_cases hz : code = 0
     · subst code
       rw [decode_zero]

@@ -156,11 +156,6 @@ private lemma mem_quote : (⌜Language.Set.Rel.mem⌝ : V) = 1 := by
   change ((1 : Nat) : V) = 1
   simp
 
-private lemma mem_symbol : (ℒₛₑₜ).IsRel (2 : V) ((1 : Nat) : V) := by
-  simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 1)).mpr
-    ⟨Language.Set.Rel.mem,rfl⟩
-
-
 /-- Typed views keep the already checked formation proof attached during the
 finite calculation, rather than repeatedly rediscovering it from a raw code. -/
 noncomputable def bindT {n : Nat} (chosen : V)
@@ -213,7 +208,7 @@ noncomputable def termBindT {n : Nat} (chosen : V)
   apply Bootstrapping.Semiformula.ext
   change bindOneAt ℒₛₑₜ chosen n (^rel 2 ((1 : Nat) : V) ?[t.val,u.val]) =
     ^rel 2 ((1 : Nat) : V) ?[(termBindT chosen t).val,(termBindT chosen u).val]
-  rw [Nat.cast_one,bindOneAt_rel chosen n (by simpa using mem_symbol (V := V)) (by simp),
+  rw [Nat.cast_one,bindOneAt_rel chosen n membership_symbol_isRel (by simp),
     termBindOneVecAt_pair chosen n t.val u.val t.isUTerm u.isUTerm]
   rfl
 

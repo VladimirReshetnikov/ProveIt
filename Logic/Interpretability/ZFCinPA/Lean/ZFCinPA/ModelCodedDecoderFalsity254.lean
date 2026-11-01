@@ -54,9 +54,7 @@ lemma irreflexivity_internal_at (T : SetTheory) [T.Δ₁] (hZF : (𝗭𝗙 : Set
     internalize_provability (Entailment.weakening hZF zf_irreflexivity_outer)
   rw [quote_irreflexivity] at hc
   obtain ⟨d,hd⟩ := hc
-  have hr : (ℒₛₑₜ).IsRel (2 : V) 1 := by
-    simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 1)).mpr
-      ⟨Language.Set.Rel.mem,rfl⟩
+  have hr : (ℒₛₑₜ).IsRel (2 : V) 1 := membership_symbol_isRel
   have hb : IsSemiformula ℒₛₑₜ (1 : V) (^nrel 2 1 ?[^#0,^#0]) := by simp [hr]
   refine ⟨specializeCode ℒₛₑₜ d (^nrel 2 1 ?[^#0,^#0]) (^&a),?_⟩
   have h := specializeCode_isProof T hb
