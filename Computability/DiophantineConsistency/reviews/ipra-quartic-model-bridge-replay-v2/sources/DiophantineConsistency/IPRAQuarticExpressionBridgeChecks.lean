@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAQuarticExpressionBridge
+
+#print axioms DiophantineConsistency.IPRAQuarticExpressionBridge.exists_zero_iff
+#print axioms DiophantineConsistency.IPRAQuarticExpressionBridge.no_zero_iff
