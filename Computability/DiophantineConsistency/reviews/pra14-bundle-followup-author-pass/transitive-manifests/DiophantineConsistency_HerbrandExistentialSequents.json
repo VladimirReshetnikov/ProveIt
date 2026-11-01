@@ -1,0 +1,381 @@
+{
+  "DiophantineConsistency.PRAAddOne": {
+    "imports": [
+      "DiophantineConsistency.PRATheory",
+      "Foundation.FirstOrder.Completeness.CounterModel"
+    ],
+    "kind": "project",
+    "sha256": "3b83f7fece0d0219b72bdd3118aa871a1d3dbb9df8695acf87a515385d73c7df"
+  },
+  "DiophantineConsistency.PRAAddition": {
+    "imports": [
+      "DiophantineConsistency.PRAAddOne"
+    ],
+    "kind": "project",
+    "sha256": "81d50defa8b8c5d13ec69e27a77718570902fa800b0fd8fabc3d344bf13598c3"
+  },
+  "DiophantineConsistency.PRAAdditionCommutativity": {
+    "imports": [
+      "DiophantineConsistency.PRAAdditionSuccLeft"
+    ],
+    "kind": "project",
+    "sha256": "b438af76d40ae16618fe61e56e3e909e0cb29f9e0675ba4db03bcdfb9df96dbb"
+  },
+  "DiophantineConsistency.PRAAdditionSuccLeft": {
+    "imports": [
+      "DiophantineConsistency.PRAAdditionZeroLeft"
+    ],
+    "kind": "project",
+    "sha256": "75fd72cb9aa76bb9a1328d860aa96a2f2ef21b37a88586eb2fd4a37a686d0cc3"
+  },
+  "DiophantineConsistency.PRAAdditionZeroLeft": {
+    "imports": [
+      "DiophantineConsistency.PRAOpenInduction",
+      "DiophantineConsistency.PRAAddition"
+    ],
+    "kind": "project",
+    "sha256": "2515efb6f30291ea3228cde76944c0790d9667a2f5cf6dc49b2c0cb6f05dc1dc"
+  },
+  "DiophantineConsistency.PRABooleanOps": {
+    "imports": [
+      "DiophantineConsistency.PRAIsZero",
+      "DiophantineConsistency.PRAAdditionZeroLeft"
+    ],
+    "kind": "project",
+    "sha256": "5d4890fa120d5ea4853f23b2338f54fbf67a984592d6e6ace616940701b40bce"
+  },
+  "DiophantineConsistency.PRABoundedSearchCode": {
+    "imports": [
+      "DiophantineConsistency.PRASelectCode"
+    ],
+    "kind": "project",
+    "sha256": "c94e18ed0a08c99853d94efd8b2c1b405421bd20f36443774b203a8e840210c0"
+  },
+  "DiophantineConsistency.PRABoundedSearchInvariant": {
+    "imports": [
+      "DiophantineConsistency.PRABoundedSearchCode"
+    ],
+    "kind": "project",
+    "sha256": "67cd71f5f96c65553e28438dce41f419cb088518992834059bf972a2ded24627"
+  },
+  "DiophantineConsistency.PRABoundedSearchMinimal": {
+    "imports": [
+      "DiophantineConsistency.PRABoundedSearchInvariant"
+    ],
+    "kind": "project",
+    "sha256": "c128890e13f1b4ed826a448be5a3865864f6a03237571f48160bf0d6de9ef2f4"
+  },
+  "DiophantineConsistency.PRABoundedSearchUniversalRule": {
+    "imports": [
+      "DiophantineConsistency.PRABoundedSearchMinimal"
+    ],
+    "kind": "project",
+    "sha256": "906391fb2629fc9f469ab4fa62de704256ec9e2036bfb73716d563d77f3eba6b"
+  },
+  "DiophantineConsistency.PRACharacteristicBit": {
+    "imports": [
+      "DiophantineConsistency.PRAFormulaParameters"
+    ],
+    "kind": "project",
+    "sha256": "658f616c7ed341e5d50cb573c9fb5b5d918e838bff638593249d7969b02ae436"
+  },
+  "DiophantineConsistency.PRACodeEncoding": {
+    "imports": [
+      "DiophantineConsistency.PRAFiniteFunctionCodes",
+      "Mathlib.Data.Nat.Pairing",
+      "Lean.Elab.Tactic.Omega"
+    ],
+    "kind": "project",
+    "sha256": "7e1e7c58f1ee3755235b07a8b43a727e11f0ff52ef0d304a8821c63c5fed0a2a"
+  },
+  "DiophantineConsistency.PRAEqualityCode": {
+    "imports": [
+      "DiophantineConsistency.PRAEqualityDifference",
+      "DiophantineConsistency.PRAOpenFormulaCoverage"
+    ],
+    "kind": "project",
+    "sha256": "d0fb34c8a7f8cf15f7ca0622deac532ada9fc730194db402101ccda304601076"
+  },
+  "DiophantineConsistency.PRAEqualityDifference": {
+    "imports": [
+      "DiophantineConsistency.PRASubSuccessorInvariant",
+      "DiophantineConsistency.PRASubAddition"
+    ],
+    "kind": "project",
+    "sha256": "958c9e84929145a8d47978ad133aab6d2d118a119e635fb76b7e16b49bc541ab"
+  },
+  "DiophantineConsistency.PRAExhaustion": {
+    "imports": [
+      "DiophantineConsistency.PRAAddOne"
+    ],
+    "kind": "project",
+    "sha256": "4efb083a873b718beacc5011e7d223a85fb2191a54d7b5a56c7370e5badcd147"
+  },
+  "DiophantineConsistency.PRAFiniteFunctionCodes": {
+    "imports": [
+      "DiophantineConsistency.PRAFunctionCodes"
+    ],
+    "kind": "project",
+    "sha256": "39af36620dc6af0f45906d208378af639bc4073114044c4afc53ffbd35767b8c"
+  },
+  "DiophantineConsistency.PRAFormulaParameters": {
+    "imports": [
+      "DiophantineConsistency.PRAEqualityCode"
+    ],
+    "kind": "project",
+    "sha256": "e0c705660605fd24a52d4e41f741f50088cc557284f206b2facbe0b8ca834263"
+  },
+  "DiophantineConsistency.PRAFunctionCodes": {
+    "imports": [
+      "Mathlib.Computability.Primrec.List"
+    ],
+    "kind": "project",
+    "sha256": "8440cc3e807df295d16ba75468785e314c750a033bf008c0e191789b59b4cd7e"
+  },
+  "DiophantineConsistency.PRAIsZero": {
+    "imports": [
+      "DiophantineConsistency.PRANonzeroCharacter"
+    ],
+    "kind": "project",
+    "sha256": "341c45dbc80cfb1c79b97a483b6e7e913f6d570280340e9e4fc15537fc33e7a2"
+  },
+  "DiophantineConsistency.PRALanguage": {
+    "imports": [
+      "DiophantineConsistency.PRACodeEncoding",
+      "Foundation.FirstOrder.Arithmetic.Basic.Model"
+    ],
+    "kind": "project",
+    "sha256": "f9325ab1d722c34c32e456653a4594aee1aa3f718c521eda5c5037e90d3b233e"
+  },
+  "DiophantineConsistency.PRAMultiplication": {
+    "imports": [
+      "DiophantineConsistency.PRAAddOne"
+    ],
+    "kind": "project",
+    "sha256": "948192cb173859724550e6bb795bb42f334baee8831344f043080cf499dd73ea"
+  },
+  "DiophantineConsistency.PRANonzero": {
+    "imports": [
+      "DiophantineConsistency.PRAMultiplication"
+    ],
+    "kind": "project",
+    "sha256": "0cfa61ac68fef37dc49fea477eeabc86a0ac623c6680814ca2fae697cd1f4a7e"
+  },
+  "DiophantineConsistency.PRANonzeroCharacter": {
+    "imports": [
+      "DiophantineConsistency.PRANonzero",
+      "DiophantineConsistency.PRAExhaustion"
+    ],
+    "kind": "project",
+    "sha256": "553ac76d20ea378ce1cc8ca6392a615620adb89e4452366a0fa58750c6217b28"
+  },
+  "DiophantineConsistency.PRAOpenFormulaCompiler": {
+    "imports": [
+      "DiophantineConsistency.PRABooleanOps",
+      "DiophantineConsistency.PRATermCompilation",
+      "DiophantineConsistency.PRAQOrder"
+    ],
+    "kind": "project",
+    "sha256": "f1eec46f2efd7c9a69f14e629b6a826a14b0ca66137723062e9de1ae4138b6b9"
+  },
+  "DiophantineConsistency.PRAOpenFormulaCoverage": {
+    "imports": [
+      "DiophantineConsistency.PRAOpenFormulaCompiler"
+    ],
+    "kind": "project",
+    "sha256": "64de3da805f8e2e23f7df4a9cfbfe6da0c22c2b43954ff615000c58f7e42f645"
+  },
+  "DiophantineConsistency.PRAOpenInduction": {
+    "imports": [
+      "DiophantineConsistency.PRAExhaustion"
+    ],
+    "kind": "project",
+    "sha256": "a68ad451c9717ac35d27f90b556adac754f2d96a268a7cc2775fb52adfa8af6d"
+  },
+  "DiophantineConsistency.PRAQCompatibility": {
+    "imports": [
+      "DiophantineConsistency.PRAAddition",
+      "DiophantineConsistency.PRAMultiplication",
+      "DiophantineConsistency.PRAExhaustion",
+      "Foundation.FirstOrder.Arithmetic.Q.Basic"
+    ],
+    "kind": "project",
+    "sha256": "a2d221ae4ccd4ba4259b2bfcab333aeed3f02fd7b13d96c16a47c240c29cfdc5"
+  },
+  "DiophantineConsistency.PRAQOrder": {
+    "imports": [
+      "DiophantineConsistency.PRASubReconstruct",
+      "DiophantineConsistency.PRANonzeroCharacter",
+      "DiophantineConsistency.PRAQCompatibility"
+    ],
+    "kind": "project",
+    "sha256": "f25194d1e8f6616e555d2cb3545e97dfce4829cb197882887d36549e175724ef"
+  },
+  "DiophantineConsistency.PRASelectCode": {
+    "imports": [
+      "DiophantineConsistency.PRACharacteristicBit"
+    ],
+    "kind": "project",
+    "sha256": "50a4912e1e94c69700064d0b9a305bd427fcfdf3f94c8a3fdd65adb7f3cf1090"
+  },
+  "DiophantineConsistency.PRASubAddition": {
+    "imports": [
+      "DiophantineConsistency.PRAAdditionCommutativity",
+      "DiophantineConsistency.PRASubSuccCancel"
+    ],
+    "kind": "project",
+    "sha256": "015f9a45b261fb756b81a77f60492b723ff8227783a544c6baa3581ef75ab3bc"
+  },
+  "DiophantineConsistency.PRASubReconstruct": {
+    "imports": [
+      "DiophantineConsistency.PRASubAddition"
+    ],
+    "kind": "project",
+    "sha256": "3a39c11e33cf1b77b40f15d559e8e36251b77c4e23439a8c608bd65633279b82"
+  },
+  "DiophantineConsistency.PRASubSuccCancel": {
+    "imports": [
+      "DiophantineConsistency.PRAOpenInduction",
+      "DiophantineConsistency.PRASubtraction"
+    ],
+    "kind": "project",
+    "sha256": "68392ace7b4a05b73fa7de67a4072d56d19d389645bf523371f0138c7b545d3f"
+  },
+  "DiophantineConsistency.PRASubSuccessorInvariant": {
+    "imports": [
+      "DiophantineConsistency.PRASubReconstruct",
+      "DiophantineConsistency.PRAQCompatibility"
+    ],
+    "kind": "project",
+    "sha256": "1848668f296f8f8a73aaa874d113cbc9cb2843e1f04ea70e90e858ae329b9c88"
+  },
+  "DiophantineConsistency.PRASubtraction": {
+    "imports": [
+      "DiophantineConsistency.PRAExhaustion"
+    ],
+    "kind": "project",
+    "sha256": "84315d5acabbe12c7bcd71a2b9031d779f8a329caf3fd641615be74f8d05b3f8"
+  },
+  "DiophantineConsistency.PRATermCompilation": {
+    "imports": [
+      "DiophantineConsistency.PRAAddOne"
+    ],
+    "kind": "project",
+    "sha256": "bfd428549a3698218467c8ee67daa9484baaf6d4d49f452db2c84bf1efd802ab"
+  },
+  "DiophantineConsistency.PRATheory": {
+    "imports": [
+      "DiophantineConsistency.PRALanguage",
+      "Foundation.FirstOrder.Arithmetic.Schemata"
+    ],
+    "kind": "project",
+    "sha256": "3261443880f6abef40c60b9bcd901ea53504fd6f895ae9cb5b3285b6c8150a13"
+  },
+  "DiophantineConsistency.PRAUniversalCandidate": {
+    "imports": [
+      "DiophantineConsistency.PRABoundedSearchUniversalRule"
+    ],
+    "kind": "project",
+    "sha256": "f427deb5a1e4b5d86c6732c93143d6bb5bec0219888604a2d3ba72bf280ad55a"
+  },
+  "DiophantineConsistency.PRAUniversalEquivalence": {
+    "imports": [
+      "DiophantineConsistency.PRAUniversalInduction"
+    ],
+    "kind": "project",
+    "sha256": "f812a61161a0d5c371489e224087d627bc3490a4037544f984134e4ab4694377"
+  },
+  "DiophantineConsistency.PRAUniversalInduction": {
+    "imports": [
+      "DiophantineConsistency.PRAUniversalModelLemmas"
+    ],
+    "kind": "project",
+    "sha256": "942558e20ac88ac645a1d1ceace93be06d9ebdd992b8e2228649a0451fe9b4e0"
+  },
+  "DiophantineConsistency.PRAUniversalModelLemmas": {
+    "imports": [
+      "DiophantineConsistency.PRAUniversalCandidate"
+    ],
+    "kind": "project",
+    "sha256": "aa5b2dde4fe09528c659458ecf295c71816a54eb332a8cf08e5592ab8987f0d3"
+  },
+  "DiophantineConsistency.PRAUniversalSyntax": {
+    "imports": [
+      "DiophantineConsistency.PRAUniversalEquivalence"
+    ],
+    "kind": "project",
+    "sha256": "c0724816fba3b3d2cf986823d0bcd1d31431fc4195405c980dded4d4d9e49fa8"
+  },
+  "Foundation.FirstOrder.Arithmetic.Basic.Model": {
+    "companions": {
+      "Foundation/FirstOrder/Arithmetic/Basic/Model.ir": "84c5409648a773622c46d485054e57580685f855a8d1431f6acd2d950a95730c",
+      "Foundation/FirstOrder/Arithmetic/Basic/Model.olean.private": "8b9d9eb59256c329ba088849f1d81e85eb48242acbe1151366500390fab2cc96",
+      "Foundation/FirstOrder/Arithmetic/Basic/Model.olean.server": "df7aba1f7f7d7773bc5aae1b6f1ca8c5dd3cd5d7aaee4a17fdbf81158a6cf76a"
+    },
+    "kind": "external",
+    "sha256": "22d709494075d3ee9b3147177a21bb5369c55b5f8813233424b38f4fe9fac4a2"
+  },
+  "Foundation.FirstOrder.Arithmetic.Q.Basic": {
+    "companions": {
+      "Foundation/FirstOrder/Arithmetic/Q/Basic.ir": "619d1e0a4dc70776db13b5f4c1fc1a9b8137c1e1af280e49adcdea79b7f293c9",
+      "Foundation/FirstOrder/Arithmetic/Q/Basic.olean.private": "fec4d2708fc72c77b3ae3bfaf29307ea5a84a14fa87edb2fd59631fcd1946f48",
+      "Foundation/FirstOrder/Arithmetic/Q/Basic.olean.server": "417ddaa4a794a448258d5c4e92825adcc7a4fcb56e639a99045bfcb1e90adcf6"
+    },
+    "kind": "external",
+    "sha256": "7051750f2019bcf2237d85fbc515ba685f83b7db2667bfafb1060611e2129819"
+  },
+  "Foundation.FirstOrder.Arithmetic.Schemata": {
+    "companions": {
+      "Foundation/FirstOrder/Arithmetic/Schemata.ir": "cb142d3b013981d8311326f2a3a2c5cd8559fd9c9c94095c0e7c5a18a7a3db19",
+      "Foundation/FirstOrder/Arithmetic/Schemata.olean.private": "cca1b81b852abc8f4f66408051b10cbd260cf5c62512f218fa1d815c09612929",
+      "Foundation/FirstOrder/Arithmetic/Schemata.olean.server": "aa314c4c22db5a775f1d9fb3c098ec52ce496777da45aeac6d290dc5b318d678"
+    },
+    "kind": "external",
+    "sha256": "c6fd2331f3c2fe25b04d0cf4e95502320c12b2d4a875fa8d43993c08b4986bbe"
+  },
+  "Foundation.FirstOrder.Basic.CutFree": {
+    "companions": {
+      "Foundation/FirstOrder/Basic/CutFree.ir": "0fd265b3d6c93afc3576f7e2fa78892f8ff57a797e0655d97d748a4ebe9e8a2a",
+      "Foundation/FirstOrder/Basic/CutFree.olean.private": "5711ebcbbd51657add9fd57171dfce2f75e79ccfb208a2f097b0406ed42916a2",
+      "Foundation/FirstOrder/Basic/CutFree.olean.server": "ae517def56c8fda898171f6a15e29876f55833a1357e3f8a6e28a8fdc63671dd"
+    },
+    "kind": "external",
+    "sha256": "887d6ca2abf9d9cc380bb8bf59c60adb79ff16f87ff4d92617ccfb4e3418407a"
+  },
+  "Foundation.FirstOrder.Completeness.CounterModel": {
+    "companions": {
+      "Foundation/FirstOrder/Completeness/CounterModel.ir": "5fb77c38ae162b70dc536adaaeec9dc7fecfe7558a27c8d8e701c7e6928e73cc",
+      "Foundation/FirstOrder/Completeness/CounterModel.olean.private": "a4fbe7d5b01b2ac9dcc3bcade3d70242f70e851f2f96951ecf528f465d2b4821",
+      "Foundation/FirstOrder/Completeness/CounterModel.olean.server": "3b1bdbbd99efd89ad004de079f7a72a1768a8382a19afd82bd9d95e2ba95d3a1"
+    },
+    "kind": "external",
+    "sha256": "92bd596cfa84533b8fa0a1bd9d150c711b9ec90b8cfdb0718e2c085a3450cb1b"
+  },
+  "Lean.Elab.Tactic.Omega": {
+    "companions": {
+      "Lean/Elab/Tactic/Omega.ir": "817ab41759f9e3e00c55d5a7b7920ae3ce450960a045f16f23a01e120472d0ab",
+      "Lean/Elab/Tactic/Omega.olean.private": "16e8b7fd8225841fce06403a7d10cf408ed3afe827e00b9d029cbf84e7b11647",
+      "Lean/Elab/Tactic/Omega.olean.server": "02a48023f18bb903eaddb5850d1cde788dfa2354f7fc2c8deb390915b9c2a3a4"
+    },
+    "kind": "external",
+    "sha256": "eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe"
+  },
+  "Mathlib.Computability.Primrec.List": {
+    "companions": {
+      "Mathlib/Computability/Primrec/List.ir": "a8dfdc6a409873c2452628968e1deafd8882698aa950489cd9c44fc93b68949d",
+      "Mathlib/Computability/Primrec/List.olean.private": "50bda885074e5d37a224ff85e0fe6df4f81281f2eada91ef177f25f83f00df19",
+      "Mathlib/Computability/Primrec/List.olean.server": "d9962c743412cc06d6af33f8aec834c505b3fb1f587750defd748ad950f7ea1e"
+    },
+    "kind": "external",
+    "sha256": "b6a76161ba28dd7e5d18ce9a10cc2cbe21dfe26c9f67bd287722b27a98fe1ed9"
+  },
+  "Mathlib.Data.Nat.Pairing": {
+    "companions": {
+      "Mathlib/Data/Nat/Pairing.ir": "8162afcf121ed4792ecfbe611d58c4e60c0f7d4d4d6503895fd8bdbd72f90422",
+      "Mathlib/Data/Nat/Pairing.olean.private": "9174dbc7d9e476fba0c12c9abb918bf5a7e3c115ca3e39577af4fd2e4a17f9ba",
+      "Mathlib/Data/Nat/Pairing.olean.server": "9f8efb909b0556c335cf668b1b4e75e267421fb2579bafd5567fc092dc3f6ffc"
+    },
+    "kind": "external",
+    "sha256": "019598b5ae91d63712d2d3b3cc0c90826bcf2d423dc9d33fe7776dad310c6db9"
+  }
+}

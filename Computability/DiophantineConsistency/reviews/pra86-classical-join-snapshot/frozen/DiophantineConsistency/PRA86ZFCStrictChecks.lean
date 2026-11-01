@@ -1,0 +1,3 @@
+import DiophantineConsistency.PRA86ZFCStrict
+#check DiophantineConsistency.PRA86ZFCStrict.equivalence
+#print axioms DiophantineConsistency.PRA86ZFCStrict.equivalence
