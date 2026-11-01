@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRAMappedNoZero
+#print axioms DiophantineConsistency.IPRAMappedNoZero.embedding_eq
+#print axioms DiophantineConsistency.IPRAMappedNoZero.mapped_gg_noZero
