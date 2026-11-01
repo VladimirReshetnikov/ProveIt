@@ -68,6 +68,19 @@ theorem eval_univEnv0 (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
     (eval_liftP (((corr0 f).cons x1).cons x0) _).trans
       (fUnivEnvF_spec H (scons x0 (scons x1 f)) 0)
 
+private theorem eval_taggedEmpty1 (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
+    ∀ x1 x0 : X, Semiformula.Eval (s := sX)
+      (x0 :> x1 :> (![] : Fin 0 → X)) f
+        (liftP (toSet 2 (fTaggedEmptyF 1 2))) ↔ x1 = EnlargedFields.botC H :=
+  fun x1 x0 ↦
+    (eval_liftP (((corr0 f).cons x1).cons x0) _).trans
+      (fTaggedEmptyF_spec H (scons x0 (scons x1 f)) 1 2)
+
+private theorem eval_falsum2 (f : ℕ → X) :
+    ∀ x1 x0 : X, Semiformula.Eval (s := sX)
+      (x0 :> x1 :> (![] : Fin 0 → X)) f (liftP (toSet 2 Form.fBot)) ↔ False :=
+  fun x1 x0 ↦ eval_liftP (((corr0 f).cons x1).cons x0) Form.fBot
+
 /-! ## The first field -/
 
 /-- **The local-step field evaluates to `LocalStepLaws` over the induced
@@ -79,12 +92,7 @@ theorem eval_srcLocalStep (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
       Corr (x0 :> x1 :> (![] : Fin 0 → X)) f (scons x0 (scons x1 f)) :=
     fun x1 x0 ↦ ((corr0 f).cons x1).cons x0
   have henv := eval_univEnv0 (X := X) f H
-  have hbot : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f
-        (liftP (toSet 2 (fTaggedEmptyF 1 2))) ↔
-      x1 = EnlargedFields.botC H := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fTaggedEmptyF_spec H (scons x0 (scons x1 f)) 1 2)
+  have hbot := eval_taggedEmpty1 f H
   have hcode := eval_formCode1 (X := X) f H
   have hsig : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
       (x0 :> x1 :> (![] : Fin 0 → X)) f (srcCanonAt srcSigmaTrue) ↔
@@ -100,9 +108,7 @@ theorem eval_srcLocalStep (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
         exact imp_congr
           (eval_srcBitWitnessAt 4 0 (((hco x1 x0).cons y1).cons y0) H)
           (eval_liftP (((hco x1 x0).cons y1).cons y0) Form.fBot))
-  have hfls : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f (liftP (toSet 2 Form.fBot)) ↔ False :=
-    fun x1 x0 ↦ eval_liftP (hco x1 x0) Form.fBot
+  have hfls := eval_falsum2 f
   simp only [LocalStepSuccessor.srcLocalStep, Semiformula.eval_all,
     LogicalConnective.HomClass.map_imply, LogicalConnective.HomClass.map_and,
     henv, hbot, hcode, hsig, hpit, hfls]
@@ -125,12 +131,7 @@ theorem eval_srcLocalStepSucc (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
       Corr (x0 :> x1 :> (![] : Fin 0 → X)) f (scons x0 (scons x1 f)) :=
     fun x1 x0 ↦ ((corr0 f).cons x1).cons x0
   have henv := eval_univEnv0 (X := X) f H
-  have hbot : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f
-        (liftP (toSet 2 (fTaggedEmptyF 1 2))) ↔
-      x1 = EnlargedFields.botC H := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fTaggedEmptyF_spec H (scons x0 (scons x1 f)) 1 2)
+  have hbot := eval_taggedEmpty1 f H
   have hcode := eval_formCode1 (X := X) f H
   have hsig : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
       (x0 :> x1 :> (![] : Fin 0 → X)) f (srcCanonAt srcSigmaTrueSucc) ↔
@@ -146,9 +147,7 @@ theorem eval_srcLocalStepSucc (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
         exact imp_congr
           (eval_srcBitWitnessSuccAt 4 0 (((hco x1 x0).cons y1).cons y0) H)
           (eval_liftP (((hco x1 x0).cons y1).cons y0) Form.fBot))
-  have hfls : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f (liftP (toSet 2 Form.fBot)) ↔ False :=
-    fun x1 x0 ↦ eval_liftP (hco x1 x0) Form.fBot
+  have hfls := eval_falsum2 f
   simp only [LocalStepSuccessor.srcLocalStepSucc, Semiformula.eval_all,
     LogicalConnective.HomClass.map_imply, LogicalConnective.HomClass.map_and,
     henv, hbot, hcode, hsig, hpit, hfls]
