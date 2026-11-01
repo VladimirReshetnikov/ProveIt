@@ -1,0 +1,10 @@
+import DiophantineConsistency.AdaptiveQM40Model
+#print axioms DiophantineConsistency.AdaptiveQM40Context.literal_eq
+#print axioms DiophantineConsistency.AdaptiveQM40Context.common_old
+#print axioms DiophantineConsistency.AdaptiveQM40Context.common_new
+#print axioms DiophantineConsistency.AdaptiveQM40Zeros.old_all
+#print axioms DiophantineConsistency.AdaptiveQM40Zeros.new_all
+#print axioms DiophantineConsistency.AdaptiveQM40Maps.project_common
+#print axioms DiophantineConsistency.AdaptiveQM40Maps.extend_common
+#print axioms DiophantineConsistency.AdaptiveQM40Norm.quotient
+#print axioms DiophantineConsistency.AdaptiveQM40Model.shifted_no_zero_iff
