@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85BalanceProgress
+#print axioms DiophantineConsistency.AdaptiveGap85BalanceProgress.gap_strictly_decreases
+#check DiophantineConsistency.AdaptiveGap85BalanceProgress.gap_strictly_decreases

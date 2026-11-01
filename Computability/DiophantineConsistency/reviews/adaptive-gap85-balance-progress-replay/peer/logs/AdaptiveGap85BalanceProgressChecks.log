@@ -1,0 +1,12 @@
+'DiophantineConsistency.AdaptiveGap85BalanceProgress.gap_strictly_decreases' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85BalanceProgress.gap_strictly_decreases.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (t : V) (hb : 0 < v 0 * ↑(p 0)) (ht : 0 < t)
+  (hC :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    q * b * t ≤ v 2) :
+  DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t 1 +
+      DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t 2 <
+    v 1 + v 2

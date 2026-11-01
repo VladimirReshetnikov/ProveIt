@@ -1,0 +1,33 @@
+'DiophantineConsistency.AdaptiveGap85BalanceModel.literal_preserved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85BalanceModel.positive_zero_shift' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85BalanceModel.shifted_gap_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85BalanceModel.positive_zero_shift.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (t : V) (hv : ∀ (i : Fin 13), 0 < v i)
+  (hC :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    q * b * t < v 2)
+  (hr :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have A := v 6 + ↑(p 1) * q;
+    have k := v 9 + v 10;
+    q * t * (A + 1) * (b * k + 1) < v 8)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v) :
+  (∀ (i : Fin 13), 0 < DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t i) ∧
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+        (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j))
+        (DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t) ∧
+      have b := v 0 * ↑(p 0);
+      DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t 1 +
+            DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t 2 +
+          b * b * t =
+        v 1 + v 2

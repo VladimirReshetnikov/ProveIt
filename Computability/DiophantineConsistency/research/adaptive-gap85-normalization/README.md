@@ -1,5 +1,21 @@
 # 85-operation existential normalization investigation
 
+An additional balance shift changes `F` as well as `C`: with `b=Jβ`,
+`q=1+b`, `A=X+Kq` and `k=η+ζ`, it replaces `F` by `F+bt`, `C` by
+`C−qbt`, and the first-root auxiliary `r` by
+`r−qt(A+1)(bk+1)`, leaving the remaining coordinates unchanged. The exact
+integer literal is invariant. More importantly,
+`AdaptiveGap85BalanceModel.positive_zero_shift` proves in every IΣ₁ model
+that, when the two displayed decrements are strictly below their coordinates,
+the shifted tuple is again a positive zero and satisfies
+`F′+C′+b²t=F+C`. The separate `gap_strictly_decreases` theorem gives strict
+decrease for positive `b,t`. Matching guarded author/peer replays are in
+`reviews/adaptive-gap85-balance-{shift,model,progress}-replay/`, with the
+historical transitive project and external package boundaries recorded there.
+These results do not show that an arbitrary zero satisfies the decrement
+bounds, that the shift can be iterated sufficiently, or that any representative
+satisfies `F+C<q`; the reverse 85-to-86 implication remains open.
+
 The 85-operation candidate is a 13-positive-coordinate reparameterization of the checked 86-operation candidate. Its finite circuit audit and one-sided machine implication are documented in [the candidate packet](../adaptive-gap85/README.md). The 85 no-zero statement implies machine nonhalting; the reverse implication is not established. Neither the candidate nor this note establishes an 85-operation equivalence with consistency.
 
 The existing reverse transfer `AdaptiveGap85Exists.new_natural_zero_to_old_of_bound` maps an 85 zero to an 86 zero when that witness satisfies `F + C < q`, with `q = 1 + Jβ`. The earlier full-equivalence adapter assumes this for every 85 zero. This is stronger than necessary: it suffices to construct, for each 85 zero, some 85 zero whose positive coordinates satisfy the bound. The exploratory Lean file [ExistentialNormalization.lean](ExistentialNormalization.lean) states that existential representative hypothesis explicitly and derives the reverse zero transfer and no-zero equivalence from the existing lift. It compiled against `/tmp/adaptive-gap85-machine-m09n4q_7/lib` and inherited Foundation/Mathlib/package boundaries; it is a provisional scratch result, not an authenticated source-current replay. It does not prove that representatives exist.

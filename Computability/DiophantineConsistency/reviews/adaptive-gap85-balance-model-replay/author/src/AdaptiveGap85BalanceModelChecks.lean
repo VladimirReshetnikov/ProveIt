@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveGap85BalanceModel
+#print axioms DiophantineConsistency.AdaptiveGap85BalanceModel.literal_preserved
+#print axioms DiophantineConsistency.AdaptiveGap85BalanceModel.positive_zero_shift
+#print axioms DiophantineConsistency.AdaptiveGap85BalanceModel.shifted_gap_sum
+#check DiophantineConsistency.AdaptiveGap85BalanceModel.positive_zero_shift
