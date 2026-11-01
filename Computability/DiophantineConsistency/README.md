@@ -58,18 +58,26 @@ The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),
 a [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md),
 a [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md),
+a [26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md),
 and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
 Their substitutions and degrees have finite checks. The 29-variable candidate
 has a matched model replay; its native transport is undergoing verification.
 The guarded native replay attempt failed before its first module because a
 historical dependency provider contained broken symlinks; it has not passed.
-The 27-variable, 28-variable and 40-variable candidates' model and native transports remain open.
+The 26-variable, 27-variable, 28-variable and 40-variable candidates' model
+and native transports remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh
 has matching replays and independent comparisons, but subsequent source edits
 make its snapshot historical as well. See the iPRA plan for precise replay
-boundaries and current status.
+boundaries and current status. The historical package provider is partly
+unavailable, and an initially rebuilt Foundation object differs from its
+recorded historical hash. A [controlled Lean experiment](reviews/lean-mixed-provider-counterexample/README.md)
+shows why a successful replay with mixed old and new objects would not alone
+validate the inherited proof chain. A coherent dependency rebuild or verified
+historical input identity is needed; the experiment does not show an actual
+project inconsistency.
 The older progress descriptions below are historical checkpoints.
 
 The [internal binary population package](reviews/arithmetic-binary-population-root.md)
