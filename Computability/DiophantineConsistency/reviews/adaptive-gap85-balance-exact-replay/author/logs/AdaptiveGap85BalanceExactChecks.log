@@ -1,0 +1,60 @@
+'DiophantineConsistency.AdaptiveGap85BalanceExact.single_balance_gap_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85BalanceExact.single_balance_normalizes_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85BalanceExact.single_balance_zero_to_86' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85BalanceExact.single_balance_gap_iff.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < v 0 * ↑(p 0)) (hv : ∀ (j : Fin 13), 0 < v j) :
+  have b := v 0 * ↑(p 0);
+  have q := 1 + b;
+  have A := v 6 + ↑(p 1) * q;
+  have k := v 9 + v 10;
+  have t := v 2 / (q * b);
+  have C := v 2 % (q * b);
+  (∃ t,
+      (∀ (j : Fin 13), 0 < DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t j) ∧
+        DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t 1 +
+            DiophantineConsistency.AdaptiveGap85BalanceModel.shift p v t 2 <
+          q) ↔
+    0 < C ∧ v 1 + b * t + C < q ∧ q * t * (A + 1) * (b * k + 1) < v 8
+DiophantineConsistency.AdaptiveGap85BalanceExact.single_balance_normalizes_zero.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < v 0 * ↑(p 0))
+  (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v)
+  (h :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have A := v 6 + ↑(p 1) * q;
+    have k := v 9 + v 10;
+    have t := v 2 / (q * b);
+    have C := v 2 % (q * b);
+    0 < C ∧ v 1 + b * t + C < q ∧ q * t * (A + 1) * (b * k + 1) < v 8) :
+  ∃ w,
+    (∀ (j : Fin 13), 0 < w j) ∧
+      DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+          (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) w ∧
+        w 1 + w 2 < 1 + w 0 * ↑(p 0)
+DiophantineConsistency.AdaptiveGap85BalanceExact.single_balance_zero_to_86.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hb : 0 < v 0 * ↑(p 0)) (hv : ∀ (j : Fin 13), 0 < v j)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v)
+  (h :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have A := v 6 + ↑(p 1) * q;
+    have k := v 9 + v 10;
+    have t := v 2 / (q * b);
+    have C := v 2 % (q * b);
+    0 < C ∧ v 1 + b * t + C < q ∧ q * t * (A + 1) * (b * k + 1) < v 8) :
+  ∃ u,
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveEquationSyntax2011.positiveShift
+        (DiophantineConsistency.AdaptiveDirectOrdinate86Literal.expressionAt86 fun j => ↑(p j)))
+      u

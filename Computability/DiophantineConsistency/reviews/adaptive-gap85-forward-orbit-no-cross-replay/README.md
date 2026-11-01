@@ -1,0 +1,5 @@
+# Positive forward shifts cannot enter the reverse gap
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked balance-no-cross provider and guard its state, source, object, 404 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; the replays do not reconstruct or independently audit them.
+
+In every IΣ₁ model, a finite external sequence of the three specified **forward** coordinate shifts through positive tuples cannot reach the reverse gap from outside it when `Jβ≥2`. The theorem proves this threshold for the actual fixed ZFC ports. The old and third forward shifts do not decrease `F+C` under the stated bounds, while a gap-reaching balance shift has amount zero. This rules out this forward-shift normalization strategy regardless of whether its tuples are zeros; it does not cover inverse shifts, nonpositive intermediate tuples, or other transformations, and does not establish the 85 reverse implication.

@@ -1,0 +1,22 @@
+'DiophantineConsistency.AdaptiveGap85ForwardOrbitNoCross.third_score_nondecreasing' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ForwardOrbitNoCross.positive_forward_orbit_no_cross' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ForwardOrbitNoCross.current_positive_forward_orbit_no_cross' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85ForwardOrbitNoCross.positive_forward_orbit_no_cross.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v w : Fin 13 → V) (hb : 2 ≤ v 0 * ↑(p 0))
+  (h : Relation.ReflTransGen (DiophantineConsistency.AdaptiveGap85ForwardOrbitNoCross.PositiveStep p) v w)
+  (hg : w 1 + w 2 < 1 + w 0 * ↑(p 0)) : v 1 + v 2 < 1 + v 0 * ↑(p 0)
+DiophantineConsistency.AdaptiveGap85ForwardOrbitNoCross.current_positive_forward_orbit_no_cross.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v w : Fin 13 → V) (hv0 : 0 < v 0)
+  (h :
+    Relation.ReflTransGen
+      (DiophantineConsistency.AdaptiveGap85ForwardOrbitNoCross.PositiveStep
+        DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts)
+      v w)
+  (hg : w 1 + w 2 < 1 + w 0 * ↑(DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts 0)) :
+  v 1 + v 2 < 1 + v 0 * ↑(DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011.currentPorts 0)
