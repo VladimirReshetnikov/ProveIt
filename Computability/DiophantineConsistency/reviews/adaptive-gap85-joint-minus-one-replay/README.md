@@ -1,0 +1,5 @@
+# Conditional minus-one residue obstruction
+
+Both focused source-directed Lean replays PASS with two matching source/object/full-log rows and standard Lean axioms. In every IΣ₁ model, if b>1 divides A+1, and the initial `(F+C)%b=1`, the joint-residue theorem implies that no positive endpoint of an external finite three-shift coordinate orbit satisfies F+C<1+b. The balance C and third bA/F subtraction bounds are explicit in the inherited orbit relation.
+
+The coordinate relation is broader than the zero-preserving shifts and does not establish an actual zero satisfying these assumptions, positivity of intermediate values, model-internal unbounded iteration, or the 85 reverse implication. The independently replayed joint-residue provider is guarded, together with 396 inherited project-object/companion paths and one direct Foundation object; project/package transitive source ancestry remains historical. Source and driver: `research/adaptive-gap85-normalization/AdaptiveGap85JointMinusOne.lean` and `replay_joint_minus_one.py`.
