@@ -15,8 +15,10 @@ intermediate's exact axioms are in [PRA_AXIOMATIZATION.md](PRA_AXIOMATIZATION.md
 constructs the classical candidate-PRA proof client for the literal
 13-variable, 86-operation equation. A [preliminary source-directed build](reviews/pra86-classical-preliminary/README.md)
 compiled all 111 suffix modules and its axiom check, but did not fully
-authenticate the inherited parent inputs. Guarded author and independent
-replays on the updated parent remain required. This is a classical
+authenticate the inherited parent inputs. A subsequent guarded 111-module
+author replay on the bundle snapshot has passed; see
+[its receipt](reviews/pra86-bundle-followup-classical-join-author-pass/README.md).
+The independent same-parent replay and updated-source rebuild remain required. This is a classical
 intermediate and is not yet an intuitionistic PRA equivalence.
 
 ## Status update (2026-10-31)

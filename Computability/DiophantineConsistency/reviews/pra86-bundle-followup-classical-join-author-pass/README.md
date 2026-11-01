@@ -1,0 +1,5 @@
+# 13-variable 86-operation classical PRA endpoint, bundle snapshot
+
+The guarded 111-module author run passed on the fixed 847+73 classical provider `/tmp/pra14-zfc-join-jgav0pv3`. It proves `PRA86ZFCStrict.equivalence`: no natural-number zero of the stated 13-variable equation is equivalent in classical candidate PRA to the mapped Foundation ZFC consistency sentence. The endpoint check uses only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Input packet: `../pra86-classical-join-snapshot/`. Project source, object, log and direct dependency hashes and directly guarded external objects were authenticated before and after compilation without a workspace project-object fallback. The 847 parent includes reused objects whose original transitive environment is reconstructed from surviving records; package-transitive ancestry is inherited. This is a fixed source snapshot; an independent same-parent replay is running. The native intuitionistic translated-refutation successor is separately running and ordinary intuitionistic consistency remains separate.

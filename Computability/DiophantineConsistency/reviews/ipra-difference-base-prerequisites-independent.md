@@ -1,0 +1,5 @@
+# Native difference-invariant base prerequisites: independent replay
+
+Guarded independent run `/tmp/ipra-difference-base-prerequisites-o5wlkrve` passed all six source modules against the same independently checked invariant provider `/tmp/ipra-difference-invariant-6h779lo7/lib`. Both independent runs have identical source, object and full-log hashes for all six rows, the parent state hash and serialized selected-provider inventory. This supplies a source-directed single-provider copy of the checked positive native subtraction arithmetic, including `sub(y,0)=y`; it does not prove the induction base or step. Project/Foundation and package transitive ancestry remain inherited and historical.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-base-prerequisites.py`. State SHA-256 `09dc3f9d9d59897849eb2666374292079d318f60a26f185520a938c2e537efca`; provider inventory `653d373da0475cea1b13437f11322391f1a6efbf5e1c4664628970b4e59a7b9b`. State, driver, source snapshots, logs and selected inventory are retained in the evidence directory.
