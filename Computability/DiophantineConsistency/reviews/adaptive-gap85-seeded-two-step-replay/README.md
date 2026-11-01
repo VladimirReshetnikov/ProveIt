@@ -1,0 +1,5 @@
+# Conditional seed binding for two full-zero shifts
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays rebuild seven threshold modules from pinned sources on the checked two-step-full-zero provider and guard its state, source, object, 417 selected inherited project object/companion paths, Lean binary, this replay driver, and these sources. Other project and package transitive source ancestry remains historical; it is not reconstructed or independently audited here.
+
+In every IΣ₁ model, an actual positive full 85-zero in the gap with `Jβ≥2`, a stated Pell index `R≥5`, the stated actual-to-seed coordinate scaling, and the two explicit auxiliary-seed equations yields the conditional two-step full-zero example. The proof derives `q³ ∣ Y` and the strong norm from the actual zero, then applies the source-rebuilt doubled threshold. The scaling equation and auxiliary-seed equations are **assumptions**, not consequences established for arbitrary zeros. No suitable zero is asserted to exist, and the 85 reverse implication remains open.

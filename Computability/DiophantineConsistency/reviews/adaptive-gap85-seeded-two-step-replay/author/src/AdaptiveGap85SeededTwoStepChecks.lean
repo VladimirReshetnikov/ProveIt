@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85SeededTwoStep
+#print axioms DiophantineConsistency.AdaptiveGap85SeededTwoStep.seeded_gap_zero_two_step
+#check DiophantineConsistency.AdaptiveGap85SeededTwoStep.seeded_gap_zero_two_step
