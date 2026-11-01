@@ -165,34 +165,16 @@ def freeMax : SetTheory.Form → ℕ
 /-- Every free slot lies below `freeMax`. -/
 theorem free_lt_freeMax (f : SetTheory.Form) : ∀ n, Free n f → n < freeMax f := by
   induction f with
-  | fMem i j =>
-      intro n hn
-      rcases hn with rfl | rfl <;> simp [freeMax]
-  | fEq i j =>
+  | fMem i j | fEq i j =>
       intro n hn
       rcases hn with rfl | rfl <;> simp [freeMax]
   | fBot => intro n hn; cases hn
-  | fImp a b iha ihb =>
+  | fImp a b iha ihb | fAnd a b iha ihb | fOr a b iha ihb =>
       intro n hn
       rcases hn with hn | hn
       · have := iha n hn; simp only [freeMax]; omega
       · have := ihb n hn; simp only [freeMax]; omega
-  | fAnd a b iha ihb =>
-      intro n hn
-      rcases hn with hn | hn
-      · have := iha n hn; simp only [freeMax]; omega
-      · have := ihb n hn; simp only [freeMax]; omega
-  | fOr a b iha ihb =>
-      intro n hn
-      rcases hn with hn | hn
-      · have := iha n hn; simp only [freeMax]; omega
-      · have := ihb n hn; simp only [freeMax]; omega
-  | fAll a ih =>
-      intro n hn
-      have := ih (n + 1) hn
-      simp only [freeMax]
-      omega
-  | fEx a ih =>
+  | fAll a ih | fEx a ih =>
       intro n hn
       have := ih (n + 1) hn
       simp only [freeMax]
