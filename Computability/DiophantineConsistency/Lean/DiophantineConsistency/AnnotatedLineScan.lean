@@ -59,11 +59,8 @@ theorem scan_sound (fuel remaining : Nat) (seen : List Judgment)
     · rw [scan_succ]
       by_cases hc : AnnotatedLine.check (historyCode seen) remaining.pred.unpair.1=1
       · obtain ⟨original,ho,_,hv⟩ := AnnotatedLine.check_sound seen _ hc
-        have hnext : ∀ j∈original.rule.output::seen,j.Provable := by
-          intro j hj
-          rcases List.mem_cons.mp hj with rfl | hj
-          · exact original.sound seen hseen hv
-          · exact hseen j hj
+        have hnext : ∀ j∈original.rule.output::seen,j.Provable :=
+          List.forall_mem_cons.mpr ⟨original.sound seen hseen hv,hseen⟩
         have hs : step (Nat.pair remaining (historyCode seen))=
             Nat.pair remaining.pred.unpair.2 (historyCode (original.rule.output::seen)) := by
           simp only [step,Nat.unpair_pair,hr,if_false,hc,if_true,historyCode_cons,ho]
@@ -90,10 +87,8 @@ theorem finish_history (goal remaining : Nat) (seen : List Judgment) :
   cases seen with
   | nil => simp [finish]
   | cons j tail =>
-    by_cases hr : remaining=0
-    · by_cases hg : goal=judgmentCode j <;>
-        simp [finish,historyCode,listCode,AnnotatedLine.equal,hr,hg,eq_comm]
-    · simp [finish,hr]
+    simp [finish,historyCode,listCode,AnnotatedLine.equal,eq_comm]
+    split_ifs <;> simp_all
 
 /-- `(goal,fuel,proofCode)` are all raw natural inputs. -/
 def checkNat (goal fuel proofCode : Nat) : Nat :=
