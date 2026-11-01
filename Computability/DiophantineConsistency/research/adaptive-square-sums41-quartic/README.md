@@ -1,8 +1,8 @@
 # Candidate: 41-variable quartic with a first-root quotient
 
-This is a conditional candidate, not yet a new consistency endpoint. Starting
+The [base-10 display](../../equation4-41.pdf) is a conditional candidate, not yet a new consistency endpoint. Starting
 from the 42-variable quartic, replace its positive first root `Z` by a positive
-quotient `t`, reconstructing `Z = scale*t`. Replace the first norm residual
+quotient `t` (shown as `z` in the display), reconstructing `Z = scale*t`. Replace the first norm residual
 `Z² - scale²*(1+ellProduct)` by `t² - (1+ellProduct)`, and replace the root
 binding residual by `scale*t - ZComputed`. The now-redundant positive
 `psiSquare` variable and its defining residual are removed. The resulting
