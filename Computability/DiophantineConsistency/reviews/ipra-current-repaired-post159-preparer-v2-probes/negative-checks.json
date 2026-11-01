@@ -1,0 +1,29 @@
+{
+  "checker_sha256": "403c64f042c56a2c5a79fe30b97d9ea9a5d25f1a41fe3e9844811e22af2f6991",
+  "files_sha256": {
+    "prepare.py": "894d7637494581f1fc4e3d18c0f2be1c8f7f2ae32772510aba7116b0ad0a448a",
+    "replay.py": "aa42982a72416c3d48df49df95c3be8508c61a79e27bf785cebb0617f1e4f513"
+  },
+  "rows": [
+    {
+      "case": "existing_output",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-post159-builder-v2/prepare.py\", line 113, in <module>\n    assert not OUT.exists(), ('refusing to overwrite', str(OUT))\n           ^^^^^^^^^^^^^^^^\nAssertionError: ('refusing to overwrite', '/tmp/ipra-post172-negative-dxykqmfb/existing')\n",
+      "stdout": ""
+    },
+    {
+      "case": "missing_survey",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-post159-builder-v2/prepare.py\", line 116, in <module>\n    new = read(SUR / 'manifest.json')\n  File \"/tmp/ipra-post159-builder-v2/prepare.py\", line 62, in read\n    pin(path)\n    ~~~^^^^^^\n  File \"/tmp/ipra-post159-builder-v2/prepare.py\", line 55, in pin\n    assert p.is_file() and p.resolve() == p, ('noncanonical gate', str(p))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('noncanonical gate', '/tmp/ipra-post172-negative-dxykqmfb/missing-survey/manifest.json')\n",
+      "stdout": ""
+    },
+    {
+      "case": "missing_manifest",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-post159-builder-v2/replay.py\", line 23, in <module>\n    raw = M.read_bytes()\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py\", line 625, in read_bytes\n    with self.open(mode='rb') as f:\n         ~~~~~~~~~^^^^^^^^^^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/ipra-post159-builder-v2/manifest.json'\n",
+      "stdout": ""
+    }
+  ],
+  "scope": "Existing output, missing survey and missing replay manifest are rejected; no positive replay.",
+  "status": "PASS_FAIL_CLOSED_NEGATIVE_CHECKS"
+}
