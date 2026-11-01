@@ -1,0 +1,5 @@
+# Native 13-variable 87-operation degree-51 translated-refutation endpoint
+
+The 38-module source-directed author build passed against `/tmp/pra86-classical-join-wvpx6cuz` with frozen 847+73+111 ancestry. It rebuilds native GG transfer, derives the 87-operation degree-51 equation's classical candidate-PRA consistency equivalence, and obtains its native intuitionistic no-zero equivalence to negated translated refutation. Both theorem checks report only `propext`, `Classical.choice`, and `Quot.sound`. Ordinary intuitionistic consistency is a separate obligation.
+
+Input packet `../ipra87-bundle-followup-translated-join-snapshot/` supplies frozen sources; parent sources, objects, logs, direct dependencies and direct external objects were guarded before and after compilation without workspace project-object fallback. This is a fixed historical snapshot; reused-object original environments are reconstructed from surviving records and package-transitive ancestry is inherited. An independent same-parent replay is pending.

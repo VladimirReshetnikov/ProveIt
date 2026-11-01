@@ -85,9 +85,11 @@ suffix replays. Equality reflexivity, symmetry, transitivity, arbitrary-arity
 function congruence, and relation congruence have now all been translated.
 The independently degree-certified 13-variable, 87-operation candidate
 has [preliminary classical and native clients](reviews/pra87-translated-preliminary/README.md)
-that compiled on an audited surviving-object overlay. The native client proves
-only the translated-refutation comparison; its inherited provider ancestry,
-source-current replay, and ordinary native consistency comparison remain open.
+that compiled on an audited surviving-object overlay. A subsequent guarded
+[38-module author replay](reviews/ipra87-bundle-followup-translated-join-author-pass/README.md)
+has passed on the classical bundle snapshot. Its independent peer, later source
+refresh, inherited provider ancestry, and ordinary native consistency comparison
+remain open; the native theorem concerns translated refutation.
 
 The [13-variable native translated-refutation client](Lean/DiophantineConsistency/IPRA86TranslatedRefutation.lean)
 has also compiled in a [preliminary provider union](reviews/ipra86-translated-refutation-preliminary/README.md)
