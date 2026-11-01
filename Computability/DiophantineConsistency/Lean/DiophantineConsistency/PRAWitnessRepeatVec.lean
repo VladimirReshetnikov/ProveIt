@@ -140,10 +140,7 @@ theorem wb_repeatVec_result : WB M repeatVec.blueprint.resultDef.val := by
     (dominates_expBound historyPoly) (mono_expBound historyPoly) ?_ (by wb_auto)
   intro V _ _ e s h
   have he : e = ![e 0, e 1, e 2] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun l => ?_) k
-    exact Fin.cases rfl (fun m => Fin.elim0 m) l
+    funext j; revert j; simp [Fin.forall_fin_succ]
   rw [he] at h ⊢
   have h' : repeatVec.adjointruction.CSeq (fun _ : Fin 1 => e 2) s ∧ ⟪e 1, e 0⟫ ∈ s := by
     simpa [Semiformula.Operator.val, memRelOpr, repeatVec.adjointruction.cseq_defined.iff] using h

@@ -106,10 +106,7 @@ theorem wb_nthDef : WB M nthDef.val := by
   simp only [nthDef, HierarchySymbol.Semiformula.val_mkSigma]
   refine wb_exs_term triplePoly (fun e pr hpr => ?_) (by wb_auto)
   have he : e = ![e 0, e 1, e 2] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    refine Fin.cases rfl (fun l => ?_) k
-    exact Fin.cases rfl (fun m => Fin.elim0 m) l
+    funext j; revert j; simp [Fin.forall_fin_succ]
   rw [he] at hpr ⊢
   set y := e 0
   set v := e 1

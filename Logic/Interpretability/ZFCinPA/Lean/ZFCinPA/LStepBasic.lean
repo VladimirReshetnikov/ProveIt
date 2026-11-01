@@ -212,15 +212,12 @@ theorem topBase_provable : templTheory 6 ar6 ⊢ topBase := by
   have hdefP' : ∀ t : M, P₄.Eval ![t] Empty.elim ↔ True := by
     simpa [models_iff, topDefP] using hdefP
   rw [models_totS, models_reflS]
-  have hP4 : (fun t : M => P₄.Eval ![t] Empty.elim) = fun _ => True :=
-    funext fun t => propext (hdefP' t)
-  obtain ⟨htot, hrefl⟩ := tot_refl_congr hdefF
+  simp only [hdefP']
+  exact tot_refl_congr hdefF
     (tot_succ (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)))
     (top_refl (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M))
       (ConstructibleInterpretation.regular_of_modelsZF (V := M))
       (ConstructibleInterpretation.power_of_modelsZF (V := M)))
-  rw [← hP4] at hrefl
-  exact ⟨htot, hrefl⟩
 
 theorem botBase_provable : templTheory 6 ar6 ⊢ botBase := by
   apply templ_provable
@@ -232,13 +229,10 @@ theorem botBase_provable : templTheory 6 ar6 ⊢ botBase := by
   have hdefP' : ∀ t : M, P₄.Eval ![t] Empty.elim ↔ False := by
     simpa [models_iff, botDefP] using hdefP
   rw [models_totS, models_reflS]
-  have hP4 : (fun t : M => P₄.Eval ![t] Empty.elim) = fun _ => False :=
-    funext fun t => propext (hdefP' t)
-  obtain ⟨htot, hrefl⟩ := tot_refl_congr hdefF
+  simp only [hdefP']
+  exact tot_refl_congr hdefF
     (tot_succ (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)))
     (bot_refl (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M))
       (ConstructibleInterpretation.power_of_modelsZF (V := M)))
-  rw [← hP4] at hrefl
-  exact ⟨htot, hrefl⟩
 
 end LeanProofs.ZFCinPA.LStepBasic
