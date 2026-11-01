@@ -138,6 +138,14 @@ decision codes for the particular bounded matrices and prove the necessary
 bounding and translation statements with quantifier-free induction, but
 those intuitionistic derivations remain open.
 
+For open classical NNF formulas, [IPRAOpenAtomDecision.lean](Lean/DiophantineConsistency/IPRAOpenAtomDecision.lean)
+constructs native decidability and the implication from the GG translation to
+the native formula when proofs deciding its actual atoms are supplied. The
+matched [author](reviews/ipra-open-atom-decision-author.md) and
+[independent](reviews/ipra-open-atom-decision-independent.md) replays retain a
+historical provider boundary. This does not itself supply those atom decisions
+or treat bounded quantifiers.
+
 The theory now proves zero decidability without an additional premise. The
 [checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)
 translates the classical PRA proof of `x + 1 = S(x)` to obtain its
