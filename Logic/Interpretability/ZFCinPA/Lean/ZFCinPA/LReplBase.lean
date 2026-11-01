@@ -302,16 +302,16 @@ def TB (Kt : SF V 2) : Bootstrapping.Formula V ℒₛₑₜ :=
 
 theorem repBody_eq (Kt : SF V 2) : repBody Kt = (TA Kt 🡒 TB Kt) := rfl
 
+private theorem subst_domL_identity : subst ℒₛₑₜ (^#0 ∷ 0)
+    (⌜(Rewriting.emb domL : SetTheorySemiproposition 1)⌝ : SF V 1).val = dL := by
+  exact congrArg Bootstrapping.Semiformula.val
+    (Bootstrapping.Semiformula.subst_eq_self₁
+      (⌜(Rewriting.emb domL : SetTheorySemiproposition 1)⌝ : SF V 1))
+
 include hK in
 theorem relReplA_val (Ks : (i : Fin 6) → SF V (ar6 i)) (hR : (Ks 1).val = rel K) :
     (translateFormula Ks (Rewriting.emb relReplA)).val = rel (TA ⟨K, by simpa using hK⟩).val := by
-  have eD : subst ℒₛₑₜ (^#0 ∷ 0)
-      (⌜(Rewriting.emb domL : SetTheorySemiproposition 1)⌝ : SF V 1).val = dL := by
-    have h1 : (⌜(Rewriting.emb domL : SetTheorySemiproposition 1)⌝ : SF V 1).val = dL := rfl
-    rw [h1]
-    exact subst_eq_self hdL (by simp) (fun i hi ↦ by
-      have : i = 0 := by simpa using hi
-      subst this; simp)
+  have eD := subst_domL_identity (V := V)
   simp only [TA, repAtomEq, FirstOrder.Semiformula.typed_quote_rel, relT_all, relT_ex, relT_and,
     relT_imp, relT_rel, relT_subst]
   simp [relReplA, translateFormula, F₁, hR, Matrix.vecHead, Matrix.vecTail,
@@ -331,13 +331,7 @@ theorem relReplA_val (Ks : (i : Fin 6) → SF V (ar6 i)) (hR : (Ks 1).val = rel 
 include hK in
 theorem relReplB_val (Ks : (i : Fin 6) → SF V (ar6 i)) (hR : (Ks 1).val = rel K) :
     (translateFormula Ks (Rewriting.emb relReplB)).val = rel (TB ⟨K, by simpa using hK⟩).val := by
-  have eD : subst ℒₛₑₜ (^#0 ∷ 0)
-      (⌜(Rewriting.emb domL : SetTheorySemiproposition 1)⌝ : SF V 1).val = dL := by
-    have h1 : (⌜(Rewriting.emb domL : SetTheorySemiproposition 1)⌝ : SF V 1).val = dL := rfl
-    rw [h1]
-    exact subst_eq_self hdL (by simp) (fun i hi ↦ by
-      have : i = 0 := by simpa using hi
-      subst this; simp)
+  have eD := subst_domL_identity (V := V)
   simp only [TB, repAtomYY, repAtomXX, FirstOrder.Semiformula.typed_quote_rel, relT_all, relT_ex,
     relT_and, relT_iff, relT_rel, relT_subst]
   simp [relReplB, translateFormula, F₁, zyS, hR, tr_F1, Matrix.vecHead, Matrix.vecTail,
