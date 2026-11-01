@@ -1,0 +1,48 @@
+DiophantineConsistency.IPRAOpenDisjunctionWitness.fromOpenFamilies
+  (φ ψ : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language) (n : ℕ)
+  (a b : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language n)
+  (v : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ)
+  (ha :
+    (w : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) →
+      DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+        (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) a ⋎
+          ∼(LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) a)
+  (hb :
+    (w : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) →
+      DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+        ∼∼(LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) b 🡒
+          (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) b)
+  (hshapeA :
+    (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts v)) a = DiophantineConsistency.IPRANativeFormula.native φ)
+  (hshapeB :
+    (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts v)) b =
+      DiophantineConsistency.IPRANativeFormula.native ψ) :
+  DiophantineConsistency.IPRAFoundationZFCStabilityWitness.StabilityWitness
+    DiophantineConsistency.IPRANativeTheory.nativeTheory (φ ⋎ ψ)
+DiophantineConsistency.IPRAOpenDisjunctionWitness.fromOpenFamiliesRight
+  (φ ψ : LO.FirstOrder.Proposition DiophantineConsistency.PRALanguage.language) (n : ℕ)
+  (a b : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language n)
+  (v : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ)
+  (ha :
+    (w : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) →
+      DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+        ∼∼(LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) a 🡒
+          (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) a)
+  (hb :
+    (w : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) →
+      DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+        (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) b ⋎
+          ∼(LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts w)) b)
+  (hshapeA :
+    (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts v)) a = DiophantineConsistency.IPRANativeFormula.native φ)
+  (hshapeB :
+    (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts v)) b =
+      DiophantineConsistency.IPRANativeFormula.native ψ) :
+  DiophantineConsistency.IPRAFoundationZFCStabilityWitness.StabilityWitness
+    DiophantineConsistency.IPRANativeTheory.nativeTheory (φ ⋎ ψ)
+'DiophantineConsistency.IPRAOpenDisjunctionWitness.fromOpenFamilies' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRAOpenDisjunctionWitness.fromOpenFamiliesRight' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
