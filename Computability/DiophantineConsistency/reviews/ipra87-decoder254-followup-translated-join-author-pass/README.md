@@ -1,0 +1,5 @@
+# Decoder254 native 87-operation translated-refutation endpoint
+
+The source-directed 38-module author run explicitly PASSed against `/tmp/pra86-classical-join-w5g_sfd4`, the authenticated fixed 847+74+111 parent. The exact no-zero formula is equivalent in the specified native intuitionistic candidate to negated Gödel–Gentzen-translated ZFC refutation. Ordinary native intuitionistic consistency remains a separate obligation. The endpoint check reports only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Input `../ipra87-decoder254-followup-translated-join-snapshot/` pins source and parent hashes. Source, object, log, direct-dependency and external-object pre/post guards passed without workspace project-object fallback. Fixed snapshot only; original reused-object transitive environments are reconstructed from surviving records, and package-transitive ancestry remains inherited. Same-parent independent replay passed with every source/object/log/direct-dependency record matching; see `../ipra87-decoder254-followup-translated-join-independent-pass/`.

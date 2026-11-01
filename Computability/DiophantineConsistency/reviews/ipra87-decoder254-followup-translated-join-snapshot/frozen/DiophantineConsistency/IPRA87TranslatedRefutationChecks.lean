@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRA87TranslatedRefutation
+#print axioms DiophantineConsistency.IPRA87TranslatedRefutation.translated_refutation
+#check DiophantineConsistency.IPRA87TranslatedRefutation.translated_refutation

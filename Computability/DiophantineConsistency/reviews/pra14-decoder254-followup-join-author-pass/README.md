@@ -1,0 +1,3 @@
+# Fixed-source guarded author result
+
+The 74-module author run explicitly PASSed, proving the classical 14-variable candidate-PRA consistency endpoint. Input packet `../pra14-decoder254-followup-join-snapshot/` contains its frozen sources and parent graph. Final source/object/log/direct dependency and direct external-object checks passed without workspace project-object fallback. This is a fixed historical snapshot, not a claim about later edits. Original reused-object environments are reconstructed from surviving provider records; external package-transitive ancestry remains inherited. Independent replay remains separate.
