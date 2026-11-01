@@ -1,0 +1,3 @@
+# MF warning-cleanup fixed source snapshot
+
+Workspace and frozen-tree graph audits agree on 798 modules, source hashes, declared imports, order, direct external objects and compiler/configuration anchors. The two source deltas relative to the post-cut parent are `MFPaper1982Coding` and `MFPaper1982Section4`; their import lists are unchanged. This is build input only. Rebase on the passed 798 post-cut parent. Original reused-object environments are reconstructed from surviving provider records and package-transitive ancestry/dynamic imports remain inherited. The corrected witness-bound suffix is separate.
