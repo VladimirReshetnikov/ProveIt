@@ -75,10 +75,16 @@ native-candidate derivation of its Gödel–Gentzen translation. It does not by
 itself identify the translated consistency sentence with the intended native
 consistency sentence. The later theorem
 [`IPRACurrentNativeZFC.equivalence14`](Lean/DiophantineConsistency/IPRACurrentNativeZFC.lean)
-states the literal 14-variable equivalence in this native theory and has passed
-matching fixed-snapshot replays. Those replays inherit a confirmed mismatch in
-two project dependency objects; provenance repair and a coherent current-source
-replay remain in progress. The endpoint uses the native negation of
+states the literal 14-variable equivalence in this native theory. A
+[73-module project-origin repair](reviews/ipra-frozen-repair-v2-verification/README.md)
+rebuilt the two previously mismatched dependency users and passed matching
+fixed-snapshot replays. The 14-variable endpoint was then rebuilt on that
+repaired parent; its [independent comparison](reviews/ipra-current-native14-repaired-verification-peer/README.md)
+matched all six rows and both complete log sets. The endpoint runs each recorded
+ten workspace-source drifts, so this is not a source-current result. The
+848-module ancestor remains author-only, and package-transitive and dynamically
+loaded ancestry remain inherited. A current-source survey is a plan, not a
+completed replay. The endpoint uses the native negation of
 Foundation's particular arithmetized ZFC refutation predicate, not an
 unverified identification with every possible proof coding. A Lean-checked
 comparison with any broader independently specified standard presentation of

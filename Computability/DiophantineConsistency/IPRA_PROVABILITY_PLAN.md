@@ -5,8 +5,10 @@ no-positive-solution sentence is equivalent to the chosen formal `Con(ZFC)`
 sentence in **intuitionistic** primitive recursive arithmetic. This is a
 proof-existence statement, not a request to print a proof and not a proof of
 either side separately. Literal iPRA endpoint theorems have passed matching
-fixed-snapshot replays, subject to the dependency and source-current
-qualifications described below.
+fixed-snapshot replays. The identified project-object mismatch has since been
+repaired on that snapshot, and the 14-variable endpoint rechecked on the
+repaired parent; source-current and inherited external-ancestry qualifications
+remain as described below.
 
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
@@ -113,10 +115,15 @@ no-zero sentence with negation of the GG-translated Foundation refutation
 predicate. The subsequent [literal native-consistency wrapper](Lean/DiophantineConsistency/IPRACurrentNativeZFC.lean)
 has now passed matching six-module fixed-source replays and an independently
 repeated [comparison](reviews/ipra-current-native14-fixed-verification/README.md).
-Those runs inherit the same confirmed project-object environment mismatch,
-recorded source drift and external ancestry qualifications as the 13-variable
-provider. A coherent provenance repair and current-source replay remain
-separate obligations.
+Those earlier runs inherited a confirmed project-object environment mismatch.
+The later [73-module repair](reviews/ipra-frozen-repair-v2-verification/README.md)
+rebuilds the affected project closure; both repair peers and their independent
+comparisons match. The literal 14-variable wrapper was rebuilt on that repaired
+parent and its [independent comparison](reviews/ipra-current-native14-repaired-verification-peer/README.md)
+matched all six outputs, logs, warnings and inputs. Both 14-variable runs
+recorded ten workspace-source drifts, so a source-current replay remains open.
+The 848 ancestor remains author-only, with package-transitive and dynamic
+ancestry inherited.
 
 The [complete GG transfer](Lean/DiophantineConsistency/IPRAFullGGTransfer.lean)
 combines every classical PRA axiom image and has matching guarded suffix
@@ -274,12 +281,15 @@ has passed matching scoped replays, conditional on the equation and ZFC
 inputs. The [86- and 87-operation endpoint declarations](Lean/DiophantineConsistency/IPRAAdaptiveNativeZFC.lean)
 now compile without theorem premises in two matched 236-module fixed-snapshot
 replays; their [verification receipt](reviews/ipra-adaptive-native-fixed-continuation-verification/README.md)
-records full output, log and direct-input comparisons. These checks are not yet
-a coherent source-current proof: the runs recorded source drift and the
-[ancestry audit](reviews/ipra-inherited-object-ancestry-audit/README.md)
+records full output, log and direct-input comparisons. The [ancestry audit](reviews/ipra-inherited-object-ancestry-audit/README.md)
 found two inherited objects built against a different recorded dependency.
-Repairing that provider environment and then rebasing to current sources remain
-outstanding, along with the external package ancestry qualifications.
+A subsequent independently matched [73-module repair](reviews/ipra-frozen-repair-v2-verification/README.md)
+rebuilt the affected fixed-source project closure and rechecked both endpoint
+axiom reports; its independent project-closure and source-origin audits are
+linked in the repair evidence. These results remain historical snapshots, with
+the 848 ancestor author-only and package-transitive/dynamic ancestry inherited.
+The [1,099-source current survey](reviews/ipra-current-repaired-survey/) is a
+258-module rebuild plan, not a completed current-source replay.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
