@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRANegBitFullWitnessBound
 import Foundation.FirstOrder.Bootstrapping.Syntax.Proof.Basic
 /-! Bind the negative bit branch in Foundation isFormulaSet sigma. The
@@ -36,19 +37,15 @@ theorem isFormulaSet_bound_of_core (s w : V)
       have hf : (∼bitDef.val).Evalb ![p,s] := by
         simpa [Semiformula.Operator.val, operator_mem_def] using hbit
       letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
-      have hb := PRANegBitFullWitnessBound.negBit_bound p s hf
-      have hs0 : Fin.snoc ![p,s] (PRANegBitFullWitnessBound.negBitMajorant s) = ![p,s,PRANegBitFullWitnessBound.negBitMajorant s] := by simp
-      have hb' := eval_bnd_mono (∼bitDef.val) ![p,s] (Empty.elim : Empty → V) hneg (by rw [hs0]; exact hb)
       let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#0,#1]
-      have hn := PRABndRewriting.natural (∼bitDef.val) ω ![p,s] w
-      have hv : (fun j => (ω #j).val ![p,s] Empty.elim) = ![p,s] := by
-        funext j
-        refine Fin.cases rfl (fun k => ?_) j
-        exact Fin.cases rfl (fun k => Fin.elim0 k) k
-      have hs : Fin.snoc ![p,s] w = ![p,s,w] := by simp
-      rw [hv,hs] at hn
-      rw [hs] at hb'
-      have hh := hn.mpr hb'
+      have hf' : (ω ▹ (∼bitDef.val)).Evalb ![p,s] := by
+        simpa [ω, Semiformula.eval_substs] using hf
+      have hw : PRANegBitFullWitnessBound.negBitMajorant
+          ((ω #1).val ![p,s] Empty.elim) ≤ w := by
+        simpa [ω] using hneg
+      have hh := PRARewritingWitnessBound.binary_rew_bound_with (∼bitDef.val)
+        (fun _ s => PRANegBitFullWitnessBound.negBitMajorant s)
+        PRANegBitFullWitnessBound.negBit_bound ω ![p,s] w hw hf'
       rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
         LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hh
       simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
