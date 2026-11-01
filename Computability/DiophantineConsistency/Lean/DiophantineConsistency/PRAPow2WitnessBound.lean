@@ -30,21 +30,13 @@ theorem pow2_bound (a : V) : pow2Def.val.Evalb ![a] →
           by_cases hz : z < a+1
           · right
             have hneq : a ≠ x*z := fun he => hw ⟨z,hz,he⟩
-            have ho : (∼ (“#2 = #1 * #0” : ArithmeticSemisentence 3)).Evalb ![z,x,a] := by simpa using hneq
-            have he := (PRAExtWitnessBound.eval_open_bnd (∼ (“#2 = #1 * #0” : ArithmeticSemisentence 3)) (by simp) ![z,x,a] (a+1)).mpr ho
-            exact he
+            exact (PRAExtWitnessBound.eval_open_bnd (∼ (“#2 = #1 * #0” : ArithmeticSemisentence 3)) (by simp) ![z,x,a] (a+1)).mpr (by simpa using hneq)
           · left
-            have ho : (∼ (“#0 < #2 + 1” : ArithmeticSemisentence 3)).Evalb ![z,x,a] := by simpa using hz
-            have he := (PRAExtWitnessBound.eval_open_bnd (∼ (“#0 < #2 + 1” : ArithmeticSemisentence 3)) (by simp) ![z,x,a] (a+1)).mpr ho
-            exact he
+            exact (PRAExtWitnessBound.eval_open_bnd (∼ (“#0 < #2 + 1” : ArithmeticSemisentence 3)) (by simp) ![z,x,a] (a+1)).mpr (by simpa using hz)
       · right; left
-        have ho : (∼ (“1 < #0” : ArithmeticSemisentence 2)).Evalb ![x,a] := by simpa using hx1
-        have he := (PRAExtWitnessBound.eval_open_bnd (∼ (“1 < #0” : ArithmeticSemisentence 2)) (by simp) ![x,a] (a+1)).mpr ho
-        exact he
+        exact (PRAExtWitnessBound.eval_open_bnd (∼ (“1 < #0” : ArithmeticSemisentence 2)) (by simp) ![x,a] (a+1)).mpr (by simpa using hx1)
     · left
-      have ho : (∼ (“#0 < #1 + 1” : ArithmeticSemisentence 2)).Evalb ![x,a] := by simpa using hx
-      have he := (PRAExtWitnessBound.eval_open_bnd (∼ (“#0 < #1 + 1” : ArithmeticSemisentence 2)) (by simp) ![x,a] (a+1)).mpr ho
-      exact he
+      exact (PRAExtWitnessBound.eval_open_bnd (∼ (“#0 < #1 + 1” : ArithmeticSemisentence 2)) (by simp) ![x,a] (a+1)).mpr (by simpa using hx)
 def boundedPow2 : ArithmeticSemisentence 2 := bnd pow2Def.val
 
 def pow2BoundBody : ArithmeticSemisentence 1 := “a. !pow2Def a → !boundedPow2 a (a+1)”
