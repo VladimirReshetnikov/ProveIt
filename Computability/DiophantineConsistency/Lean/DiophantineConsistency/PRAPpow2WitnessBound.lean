@@ -38,10 +38,7 @@ theorem ppow2_bound (i : V) : ppow2Def.val.Evalb ![i] →
     · let ω : Rew ℒₒᵣ Empty 1 Empty 2 := Rew.subst ![#0]
       have hf : (ω ▹ sppow2Def.val).Evalb ![m,i] := by
         simpa [ω, Semiformula.eval_substs] using hspp
-      have hb := sppow2_rew_bound_at ω ![m,i] (2*i+1) hmw hf
-      have hs : Fin.snoc ![m,i] (2*i+1) = ![m,i,2*i+1] := by simp
-      rw [hs] at hb
-      exact hb
+      simpa using (sppow2_rew_bound_at ω ![m,i] (2*i+1) hmw hf)
     · let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#1,#0]
       have hf : (ω ▹ lenbitDef.val).Evalb ![m,i] := by simpa [ω, Semiformula.eval_substs] using hlen
       have hb := PRASppow2WitnessBound.pos_lenbit_rew_bound ω ![m,i] hf
@@ -52,13 +49,9 @@ def ppow2BoundBody : ArithmeticSemisentence 1 := “i. !ppow2Def i → !boundedP
 
 theorem ppow2BoundBody_model (e : Fin 1 → V) : ppow2BoundBody.Eval e Empty.elim := by
   simp [ppow2BoundBody, boundedPpow2, Semiformula.eval_substs]
-  intro h
-  apply ppow2_bound (e 0)
-  have hv : ![e 0] = e := by
-    funext i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) i
-  rw [hv]
-  exact h
+  have hv : ![e 0] = e := (Matrix.fun_eq_vec_one e).symm
+  simpa only [hv] using ppow2_bound (e 0)
+
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 
 def ppow2BoundSentence : Sentence language := ∀⁰* Semiformula.lMap embedding ppow2BoundBody

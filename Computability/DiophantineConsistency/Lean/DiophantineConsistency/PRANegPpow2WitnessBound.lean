@@ -42,12 +42,8 @@ theorem neg_ppow2_bound (i : V) : (∼ppow2Def.val).Evalb ![i] →
       · right; left
         let ω : Rew ℒₒᵣ Empty 1 Empty 2 := Rew.subst ![#0]
         have hf : (ω ▹ (∼sppow2Def.val)).Evalb ![m,i] := by simpa [ω, Semiformula.eval_substs] using hspp
-        have hb := neg_sppow2_rew_bound_at ω ![m,i] (2*i+1) hmw hf
-        have hs : Fin.snoc ![m,i] (2*i+1) = ![m,i,2*i+1] := by simp
-        rw [hs] at hb
-        rw [show (ω ▹ (∼sppow2Def.val)) = ∼(ω ▹ sppow2Def.val) from
-          LogicalConnective.HomClass.map_neg (Semiformula.rew ω) sppow2Def.val] at hb
-        exact hb
+        simpa [LogicalConnective.HomClass.map_neg] using
+          (neg_sppow2_rew_bound_at ω ![m,i] (2*i+1) hmw hf)
       · right; right
         let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#1,#0]
         have hf : (ω ▹ (∼lenbitDef.val)).Evalb ![m,i] := by simpa [ω, Semiformula.eval_substs] using hlen
@@ -61,13 +57,9 @@ def negPpow2BoundBody : ArithmeticSemisentence 1 := “i. !negPpow2 i → !bound
 
 theorem negPpow2BoundBody_model (e : Fin 1 → V) : negPpow2BoundBody.Eval e Empty.elim := by
   simp [negPpow2BoundBody, boundedNegPpow2, Semiformula.eval_substs]
-  intro h
-  apply neg_ppow2_bound (e 0)
-  have hv : ![e 0] = e := by
-    funext i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) i
-  rw [hv]
-  exact h
+  have hv : ![e 0] = e := (Matrix.fun_eq_vec_one e).symm
+  simpa only [negPpow2, hv] using neg_ppow2_bound (e 0)
+
 open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 
 def negPpow2BoundSentence : Sentence language := ∀⁰* Semiformula.lMap embedding negPpow2BoundBody
