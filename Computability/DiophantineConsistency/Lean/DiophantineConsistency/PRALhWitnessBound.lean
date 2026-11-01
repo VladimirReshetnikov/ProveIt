@@ -14,19 +14,15 @@ theorem bnd_rew1 (φ : ArithmeticSemisentence 1) (ω : Rew ℒₒᵣ Empty 1 Emp
  (l s w a : V) (hv : (fun j => (ω #j).val ![l,s] Empty.elim) = ![a])
  (h : (bnd φ).Evalb ![a,w]) : (bnd (ω ▹ φ)).Evalb ![l,s,w] := by
   have hn := PRABndRewriting.natural φ ω ![l,s] w
-  have hs : Fin.snoc ![l,s] w = ![l,s,w] := by simp
-  have hs' : Fin.snoc ![a] w = ![a,w] := by simp
-  rw [hv,hs,hs'] at hn
-  exact hn.mpr h
+  rw [hv] at hn
+  simpa using hn.mpr (by simpa using h)
 omit [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻] in
 theorem bnd_rew2 (φ : ArithmeticSemisentence 2) (ω : Rew ℒₒᵣ Empty 2 Empty 3)
  (d l s w a b : V) (hv : (fun j => (ω #j).val ![d,l,s] Empty.elim) = ![a,b])
  (h : (bnd φ).Evalb ![a,b,w]) : (bnd (ω ▹ φ)).Evalb ![d,l,s,w] := by
   have hn := PRABndRewriting.natural φ ω ![d,l,s] w
-  have hs : Fin.snoc ![d,l,s] w = ![d,l,s,w] := by simp
-  have hs' : Fin.snoc ![a,b] w = ![a,b,w] := by simp
-  rw [hv,hs,hs'] at hn
-  exact hn.mpr h
+  rw [hv] at hn
+  simpa using hn.mpr (by simpa using h)
 /-- Increase a witness bound for a one-variable formula. -/
 theorem bnd_lift1 (w : V) (φ : ArithmeticSemisentence 1) (a q : V) (hq : q ≤ w)
     (hb : (bnd φ).Evalb ![a,q]) : (bnd φ).Evalb ![a,w] := by
