@@ -215,8 +215,8 @@ stability, and characteristic-correctness proofs; its guarded replays match.
 A [checked open-characteristic client](Lean/DiophantineConsistency/IPRASelectorOpenCharacteristic.lean)
 now discharges selected-instance stability using native open decision, while
 retaining fresh-witness forward correctness, the selector implication and
-selected-instance reverse correctness as explicit premises. Binding those
-the characteristic-correctness premises to the actual bounded matrix remains
+selected-instance reverse correctness as explicit premises. Binding the
+characteristic-correctness premises to the actual bounded matrix remains
 to be checked. The [concrete search binding](Lean/DiophantineConsistency/IPRASelectorSearchBinding.lean)
 now supplies the selector implication from the actual `searchCode`, leaving
 only the two pointwise characteristic-correctness directions explicit; its
@@ -227,8 +227,24 @@ without assuming that a quantified child formula is decidable. The [actual
 [generic characteristic transfer](Lean/DiophantineConsistency/IPRACharacteristicTransfer.lean)
 now have matching guarded replays. The latter obtains native one/zero
 correctness and child decision from the classical certificates and an explicit
-per-instance child GG-to-native proof. The recursive bounded-formula assembly
-and the actual matrix's native correctness remain open.
+per-instance child GG-to-native proof. The [bounded-child step](Lean/DiophantineConsistency/IPRABoundedChild.lean)
+now combines this transfer with the selector: for a Σ₀ child and arbitrary
+term valuation it constructs stability of the guarded bounded existential,
+assuming only a uniform GG-to-native comparison for that child. Its
+[author and independent replays](reviews/ipra-bounded-child-replay/README.md)
+match, subject to their stated inherited-provider boundary. This is an
+induction step, not yet a comparison theorem for all bounded formulas.
+
+The next assembly is a structural GG-to-native comparison for bounded
+formulas, uniformly over term valuations. The open case uses native open
+decidability; the disjunction case can derive a child's decision from its
+classical characteristic and its recursive comparison; the bounded-existential
+case uses the new selector-based step. Once instantiated for `bnd rho`, a
+whole-matrix comparison can feed the existing
+[direct ZFC comparison](Lean/DiophantineConsistency/IPRAFoundationZFCMatrixComparison.lean),
+without constructing a separate stability witness for every `DeepNeed` node.
+The recursive assembly, its treatment of all bounded formula constructors,
+and the actual matrix comparison remain open.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
