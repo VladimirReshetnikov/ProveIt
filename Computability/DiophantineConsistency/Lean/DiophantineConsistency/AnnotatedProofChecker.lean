@@ -208,11 +208,7 @@ theorem run_sound (lines : List Line) (seen result : List Judgment)
     simp only [run] at hrun
     split at hrun
     next h =>
-      apply ih _ _ hrun
-      intro j hj
-      rcases List.mem_cons.mp hj with rfl | hj
-      · exact line.sound seen hseen h
-      · exact hseen j hj
+      exact ih _ (List.forall_mem_cons.mpr ⟨line.sound seen hseen h,hseen⟩) hrun
     next h => contradiction
 
 def Produces (lines : List Line) (history : List Judgment) : Prop :=

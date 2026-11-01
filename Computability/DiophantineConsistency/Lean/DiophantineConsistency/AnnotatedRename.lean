@@ -182,11 +182,7 @@ theorem run_sound (mode k : Nat) (rows seen result : List Row)
     simp only [run] at hr
     split at hr
     next h =>
-      apply ih _ _ hr
-      intro a ha
-      rcases List.mem_cons.mp ha with rfl | ha
-      · exact Row.sound mode k a seen hs h
-      · exact hs a ha
+      exact ih _ (List.forall_mem_cons.mpr ⟨Row.sound mode k r seen hs h,hs⟩) hr
     next h => contradiction
 
 def Produces (mode k : Nat) (rows history : List Row) : Prop :=

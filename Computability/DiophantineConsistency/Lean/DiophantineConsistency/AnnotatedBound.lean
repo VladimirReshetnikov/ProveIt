@@ -116,11 +116,7 @@ theorem run_sound (rows seen result : List Row)
     simp only [run] at hr
     split at hr
     next h =>
-      apply ih _ _ hr
-      intro a ha
-      rcases List.mem_cons.mp ha with rfl | ha
-      · exact row_sound a seen hs h
-      · exact hs a ha
+      exact ih _ (List.forall_mem_cons.mpr ⟨row_sound r seen hs h,hs⟩) hr
     next h => contradiction
 
 def Produces (rows history : List Row) : Prop :=
