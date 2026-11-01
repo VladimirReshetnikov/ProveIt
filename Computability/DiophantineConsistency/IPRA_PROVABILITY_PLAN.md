@@ -104,6 +104,15 @@ the 848-module author-only ancestor and package-transitive and dynamic-import
 ancestry remain inherited. Display binding and exact degree are checked by
 separate finite computations.
 
+The [51-variable degree-4 equation](equation4.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
+for its exact shifted fixed-port literal. Its [focused guarded comparison](reviews/ipra-named51-native-verification/README.md)
+matched the native runs and separately replayed model source. This is a
+historical-provider result for the mapped Foundation refutation predicate;
+the author-only 848-module ancestor and package-transitive and dynamic-import
+ancestry remain inherited. The display and exact degree are checked separately
+by finite computations.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz
@@ -409,10 +418,15 @@ and [terminal observations](reviews/ipra-current-repaired-eleven-drift-terminal-
 record the results. Both started without workspace drift and ended with four
 later edits: `PRAWitnessVectors`, `PRAWitnessZFCAxioms`, `ZFCinPA.UniformStatement`,
 and `ZFCinPA.TranslationCore`. It therefore establishes a historical snapshot.
-A [new source survey](reviews/ipra-current-repaired-post172-source-survey/README.md)
-sizes a conservative 159-module successor; object-origin authentication and
-its guarded replays remain pending. The inherited 848-project and external
-ancestry limitations still apply.
+The 159-module successor has since passed both Lean replays and matching
+author/independent comparisons, covering 159 rows and 15,183 guarded files;
+see its [comparison](reviews/ipra-current-repaired-post172-verification/README.md)
+and [terminal observations](reviews/ipra-current-repaired-post172-terminal-observations/README.md).
+The builds began without drift and ended with later edits to `ZFCinPA.LGlueCodes`,
+`LevelCodeTower`, `SetCongruence`, and `UniformStatement`, so this is a matched
+historical snapshot. A fresh source-only survey sizes a 120-module successor using the completed peer's recorded direct inputs;
+selected-origin authentication and paired successor replays remain open. The
+inherited 848-project and external ancestry limitations still apply.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
