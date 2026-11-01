@@ -1,48 +1,37 @@
-# Candidate: 31-variable degree-six equation with a positive V coordinate
+# The 31-variable degree-six equation with a positive V coordinate
 
-The [base-10 candidate display](../../equation6-31.pdf) is an **unproved candidate**, not a new equivalence with ZFC consistency.
-Starting from the pinned 32-variable degree-six candidate, `generate.py` replaces
-its two positive coordinates `vPositive` and `vNegative`, used through their
-difference `V`, by the single positive coordinate `vValueVariable`. The
-resulting circuit has 31 positive inputs and 141 live arithmetic rows; it has
-the same four fixed ports and 22 squared residuals as its parent.
+The [base-10 equation](../../equation6-31.pdf) has 31 separately named positive
+integer unknowns and a 141-operation circuit. The no-premise Lean theorem
+[`IPRAAQ31Native.literal_equivalence`](../../Lean/DiophantineConsistency/IPRAAQ31Native.lean)
+asserts a derivation in the project's native intuitionistic PRA candidate: the
+fixed-port equation has no positive zero if and only if Foundation's particular
+mapped ZFC refutation predicate is negated. Its [focused paired replay](../../reviews/adaptive-aq31-native-final-replay/README.md)
+matched 23 modules, including the no-premise endpoint. This is a historical
+fixed-snapshot result with inherited project, package-transitive and dynamic
+ancestry; a fully authenticated current-source closure remains open.
 
-`verify_substitution.py` checks the exact polynomial identity for every parent
-residual under `vPositive = vValueVariable + 1`, `vNegative = 1`, leaving all
-other coordinates and ports unchanged. Thus every positive candidate solution
-embeds into a positive parent solution. This check does **not** show the
-converse: a parent solution may have a negative signed V, and positivity cannot
-be assumed from the identity. A separate existence-preserving witness
-construction or other orientation argument is required. Existing auxiliary
-witness construction lemmas explicitly assume an orientation equality and do
-not alone discharge that condition.
+Starting from the pinned 32-variable degree-six graph, `generate.py` replaces
+its positive pair `vPositive`, `vNegative`, used through their difference `V`,
+with the single positive coordinate `vValueVariable`. `verify_substitution.py`
+checks all 22 parent residuals under `vPositive = vValueVariable + 1` and
+`vNegative = 1` as exact polynomials. That identity alone proves only the
+candidate-to-parent solution map, since an arbitrary parent zero need not have
+positive signed V.
 
-A Lean [oriented-witness theorem](../../Lean/DiophantineConsistency/AdaptiveAQ31.lean)
-now proves that candidate positive solutions correspond exactly to positive
-parent solutions with `v 24 < v 23`, for arbitrary integer ports in IΣ₁
-models. Its [focused paired replay](../../reviews/adaptive-aq31-oriented-replay/README.md)
-matched; it does not establish existence of an oriented parent solution.
+The Lean proof instead constructs a suitable oriented witness when a halting
+run exists. The [oriented-witness model theorem](../../reviews/adaptive-aq31-oriented-replay/README.md)
+relates positive 31-variable zeros to positive 32-variable zeros with the
+explicit sign `v 24 < v 23`. The [conditional native bridge](../../reviews/adaptive-aq31-conditional-native-replay/README.md)
+requires a halting-to-oriented-witness premise; the final endpoint discharges
+it using a constructed oriented auxiliary witness and sign-preserving
+extensions. It does not assert pointwise orientation of every parent zero.
 
-A separate [conditional shifted no-zero theorem](../../reviews/adaptive-aq31-conditional-nozero-replay/README.md)
-shows the 31- and 32-variable no-zero statements are equivalent if existence
-of a positive parent zero implies existence of an oriented one. The proof does
-not require orienting every individual parent zero; the remaining task is to
-discharge this existence hypothesis for the fixed ports.
+`verify_degree.py` checks exact degree six after the positive shift using sparse
+integer polynomials. A residual has a nonzero port-independent leading
+coefficient, so the squared residuals cannot cancel their highest degree over
+the reals. This finite computation is not a Lean degree theorem; no global
+minimality is claimed.
 
-A [conditional native iPRA bridge](../../reviews/adaptive-aq31-conditional-native-replay/README.md)
-now reduces the desired fixed-port result to the explicit all-model assertion
-that a halting run yields an oriented positive 32-variable witness. This
-assertion is not yet discharged by the conditional bridge.
-
-`verify_degree.py` performs exact integer polynomial arithmetic on the residuals
-and checks degree six after the positive shift; this finite computation is not
-a Lean degree theorem. Its leading homogeneous term argument uses a residual
-with a nonzero port-independent top-degree coefficient, so squaring and summing
-cannot cancel its leading degree over the reals. The original 32-variable
-candidate's model and native proof replays have separate status and provider
-qualifications; no unconditional Lean zero-set or native iPRA theorem is asserted here.
-
-Run `python generate.py` followed by `python verify_substitution.py` from this
-directory; the generator pins its parent JSON and the verifiers pin both
-candidate JSON files. The candidate SHA-256 is
+Run `python generate.py` followed by `python verify_substitution.py`; the
+scripts pin their graph inputs. Candidate SHA-256:
 `a90ab59a3ab1b3e9b04c2b962ea79c666a3c2dc90e6941c73f5180ab73c5ee67`.

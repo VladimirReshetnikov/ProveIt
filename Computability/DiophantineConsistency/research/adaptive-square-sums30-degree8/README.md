@@ -1,8 +1,8 @@
 # Candidate: 30 variables, degree eight, 138 circuit operations
 
-This graph is an **unproved candidate**, not a new ZFC-consistency equivalence.
+The [base-10 display](../../equation8-30.pdf) is an **unproved candidate**, not a new ZFC-consistency equivalence.
 It eliminates the positive named W coordinate from the pinned 31-variable
-candidate by substituting its defining expression `Bt = C*(X + K*q) - F*q`
+equation by substituting its defining expression `Bt = C*(X + K*q) - F*q`
 throughout the graph and removing the now-zero W defining residual. The result
 has 30 positive inputs, four fixed ports, 21 squared residuals and 138 live
 arithmetic rows.
@@ -11,10 +11,9 @@ arithmetic rows.
 parent residuals agree after the substitution, with the eliminated residual
 identically zero. This is an identity of integer polynomials, not a Lean
 zero-set theorem: the candidate-to-parent witness map additionally needs the
-computed W value to be strictly positive. The parent 31-variable graph also
-still has a separate auxiliary-V orientation obligation; both directions of an
-unconditional native iPRA equivalence must be established before a consistency
-claim is made. Existing 33-to-34 sign results may help prove W positivity, but
+computed W value to be strictly positive. The parent 31-variable equation has a matched native endpoint, but both
+directions of the 30-to-31 model comparison and its native equivalence remain
+to be established before a consistency claim is made. Existing 33-to-34 sign results may help prove W positivity, but
 this specific construction has not yet been verified.
 
 `verify_degree.py` checks exact degree eight after the positive shift using

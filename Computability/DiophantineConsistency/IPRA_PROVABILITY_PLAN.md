@@ -143,6 +143,14 @@ uses natural ports and the checked cast at the fixed ports. Historical provider
 and inherited-ancestry qualifications remain; exact degree and display have
 separate finite checks.
 
+The [31-variable degree-6 equation](equation6-31.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAAQ31Native.lean) for the
+exact shifted fixed-port literal. Its [focused paired replay](reviews/adaptive-aq31-native-final-replay/README.md)
+matched 23 modules and 16 selected prior model objects. The proof constructs an
+oriented witness from a halting run; it does not claim every parent zero is
+oriented. Historical provider and inherited ancestry qualifications remain;
+the exact degree and displayed circuit have separate finite checks.
+
 The [43-variable quartic equation](equation4-43.pdf) and [32-variable
 degree-6 equation](equation6-32.pdf) have no-premise native endpoints for
 their exact shifted fixed-port literals. Their [quartic](reviews/adaptive-square-sums43-native-replay/README.md)
@@ -152,11 +160,17 @@ natural ports with first port at least 2; fixed-port corollaries discharge
 that bound. Historical provider and inherited ancestry qualifications remain;
 exact degree and display have separate finite checks.
 
-A further [42-variable quartic](research/adaptive-square-sums42-quartic/README.md)
-and [31-variable degree-6 graph](research/adaptive-square-sums31-degree6/README.md)
-replace the signed V pair by one positive coordinate. Their finite checks give
-only a candidate-to-parent solution embedding; the reverse witness construction
-and native equivalence remain open.
+The [42-variable quartic equation](equation4-42.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAQV42Native.lean) for its
+exact fixed-port literal. Its [focused paired replay](reviews/adaptive-qv42-native-final-replay/README.md)
+matched five modules and the three previously accepted sign-transport objects.
+It uses the final 31-native provider with missing objects from the conditional
+quartic provider; overlapping transitive, package and dynamic ancestry remain
+inherited. The degree and display have separate finite checks.
+
+The [30-variable degree-eight candidate](research/adaptive-square-sums30-degree8/README.md)
+substitutes away the named W coordinate; proving its positivity and native
+equivalence remain open.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)

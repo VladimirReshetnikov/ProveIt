@@ -38,25 +38,24 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [34-variable 144-operation degree-6 equation](equation6-34.pdf), the
 [33-variable 143-operation degree-6 equation](equation6-33.pdf), the
 [32-variable 142-operation degree-6 equation](equation6-32.pdf), the
+[31-variable 141-operation degree-6 equation](equation6-31.pdf), the
 [51-variable 187-operation degree-4 equation](equation4.pdf), the
 [50-variable 186-operation degree-4 equation](equation4-50.pdf), the
 [49-variable 185-operation degree-4 equation](equation4-49.pdf), and the
 [47-variable 179-operation degree-4 equation](equation4-47.pdf), and the
 [46-variable 178-operation degree-4 equation](equation4-46.pdf), and the
 [44-variable 176-operation degree-4 equation](equation4-44.pdf), and the
-[43-variable 175-operation degree-4 equation](equation4-43.pdf). Each endpoint
+[43-variable 175-operation degree-4 equation](equation4-43.pdf), and the
+[42-variable 174-operation degree-4 equation](equation4-42.pdf). Each endpoint
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced a [42-variable quartic](research/adaptive-square-sums42-quartic/README.md)
-and a [31-variable degree-six](research/adaptive-square-sums31-degree6/README.md)
-graph. Their finite embedding and degree checks establish candidate-to-parent
-solution maps; the reverse witness constructions and native equivalences remain
-open. A Lean construction of a positively oriented auxiliary witness and
-conditional transport theorems are being developed to close that gap.
+finite graph searches have produced a [30-variable degree-eight candidate](research/adaptive-square-sums30-degree8/README.md).
+Its substitution and degree have finite checks; its native equivalence remains
+open and requires positivity of the eliminated W coordinate.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh
