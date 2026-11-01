@@ -31,6 +31,7 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [22-variable 112-operation degree-16 equation](equation16.pdf), the
 [26-variable 124-operation degree-12 equation](equation12.pdf), the
 [33-variable 139-operation degree-8 equation](equation8.pdf), the
+[30-variable 138-operation degree-8 equation](equation8-30.pdf), the
 [42-variable 164-operation degree-6 equation](equation6.pdf), the
 [40-variable 160-operation degree-6 equation](equation6-40.pdf), the
 [36-variable 148-operation degree-6 equation](equation6-36.pdf), the
@@ -53,11 +54,9 @@ degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
-finite graph searches have produced a [30-variable degree-eight candidate](research/adaptive-square-sums30-degree8/README.md)
-and a [41-variable quartic candidate](research/adaptive-square-sums41-quartic/README.md).
-Both have finite substitution and degree checks. The degree-eight candidate has
-a matched model comparison; its native replay is in progress. The quartic
-quotient witness transport and native equivalence remain open.
+finite graph searches have produced a [41-variable quartic candidate](research/adaptive-square-sums41-quartic/README.md).
+Its substitution and degree have finite checks, and its quotient witness
+transport has a matched model replay; its native replay is in progress.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

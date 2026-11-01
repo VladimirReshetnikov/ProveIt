@@ -1,28 +1,35 @@
-# Candidate: 30 variables, degree eight, 138 circuit operations
+# The 30-variable degree-eight equation
 
-The [base-10 display](../../equation8-30.pdf) is an **unproved candidate**, not a new ZFC-consistency equivalence.
-It eliminates the positive named W coordinate from the pinned 31-variable
-equation by substituting its defining expression `Bt = C*(X + K*q) - F*q`
-throughout the graph and removing the now-zero W defining residual. The result
-has 30 positive inputs, four fixed ports, 21 squared residuals and 138 live
-arithmetic rows.
+The [base-10 equation](../../equation8-30.pdf) has 30 separately named positive
+integer unknowns and a 138-operation circuit. The no-premise Lean theorem
+[`IPRAAQ30Native.literal_equivalence`](../../Lean/DiophantineConsistency/IPRAAQ30Native.lean)
+asserts a derivation in the project's native intuitionistic PRA candidate: the
+fixed-port equation has no positive zero if and only if Foundation's particular
+mapped ZFC refutation predicate is negated. Its [focused paired replay](../../research/adaptive-aq30-proof/NATIVE.md)
+matched eleven modules and all nine rebuilt model objects. This is a historical
+fixed-snapshot result with inherited project, package-transitive and dynamic
+ancestry; a fully authenticated current-source closure remains open.
 
-`verify_substitution.py` checks by exact polynomial arithmetic that all 22
-parent residuals agree after the substitution, with the eliminated residual
-identically zero. This finite identity alone is not a Lean zero-set theorem: the
-candidate-to-parent witness map additionally needs the computed W value to be
-strictly positive. That positivity and the shifted no-zero equivalence with
-the 31-variable equation are now proved in every IΣ₁ model for natural port
-vectors, with a [matched focused model replay](../../research/adaptive-aq30-proof/README.md).
-The native endpoint replay is still in progress, so the candidate remains
-unproved as a native iPRA consistency equation.
+The graph eliminates the positive named W coordinate from the pinned
+31-variable equation by substituting its defining expression
+`Bt = C*(X + K*q) - F*q`. It has 21 squared residuals. The finite
+`verify_substitution.py` checks that all 22 parent residuals agree after this
+substitution, with the removed residual identically zero. The identity alone
+does not show that the reconstructed W is positive.
+
+The [model proof](../../research/adaptive-aq30-proof/README.md) derives that
+positivity from the actual first norm and root equation, using the positive and
+negative components of `splitEval Bt`; it does not assume a signed intermediate
+is naturally nonnegative. Lean proves the shifted no-zero statements equivalent
+for every natural port vector in every IΣ₁ model, and the native endpoint uses
+the exact fixed ports.
 
 `verify_degree.py` checks exact degree eight after the positive shift using
 sparse integer polynomials. A maximum-degree residual has a nonzero
-port-independent highest-degree monomial; the sum of its square and the
-other squared residuals cannot cancel the leading degree over the reals. This
-is a finite computation, not a Lean degree theorem. No minimum is claimed.
+port-independent leading coefficient, so the squared residuals cannot cancel
+their highest degree over the reals. This finite computation is not a Lean
+degree theorem; no global minimality is claimed.
 
-Run `python generate.py` and then `python verify_substitution.py`; all scripts
+Run `python generate.py` and then `python verify_substitution.py`; the scripts
 pin their graph inputs. Candidate SHA-256:
 `f6c88de69011dc070c3cb642cf12bc27bb20c6ee92eaabb56dc1ccd884f685ad`.

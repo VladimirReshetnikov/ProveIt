@@ -168,13 +168,18 @@ It uses the final 31-native provider with missing objects from the conditional
 quartic provider; overlapping transitive, package and dynamic ancestry remain
 inherited. The degree and display have separate finite checks.
 
-The [30-variable degree-eight candidate](research/adaptive-square-sums30-degree8/README.md)
-substitutes away the named W coordinate. Its [paired model replay](research/adaptive-aq30-proof/README.md)
-matched the shifted no-zero comparison for arbitrary natural port vectors,
-including the zero-dependent W positivity; the native replay is in progress.
+The [30-variable degree-eight equation](equation8-30.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAAQ30Native.lean) for its
+exact shifted fixed-port literal. Its [focused paired replay](research/adaptive-aq30-proof/NATIVE.md)
+matched eleven modules and all nine rebuilt model objects. The model theorem
+proves the needed W positivity from the actual zero for arbitrary natural port
+vectors. Historical provider and inherited ancestry qualifications remain;
+the exact degree and display have separate finite checks.
+
 The [41-variable quartic quotient candidate](research/adaptive-square-sums41-quartic/README.md)
-has finite degree and residual-substitution checks; model and native witness
-transport remain open.
+has finite degree and residual-substitution checks. Its [matched model replay](reviews/adaptive-qf41-model-replay/README.md)
+proves shifted no-zero equivalence with the 42-variable equation for arbitrary
+integer ports; its native replay is in progress.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
