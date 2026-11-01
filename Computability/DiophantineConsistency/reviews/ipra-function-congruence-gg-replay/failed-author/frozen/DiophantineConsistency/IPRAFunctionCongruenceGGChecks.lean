@@ -1,0 +1,2 @@
+import DiophantineConsistency.IPRAFunctionCongruenceGG
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceGG.funcExt_image

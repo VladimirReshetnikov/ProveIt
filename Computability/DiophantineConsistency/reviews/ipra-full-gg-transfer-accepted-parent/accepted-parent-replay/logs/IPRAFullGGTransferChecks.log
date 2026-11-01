@@ -1,0 +1,14 @@
+DiophantineConsistency.IPRAFullGGTransfer.equality_images (σ : Sentence language) : σ ∈ 𝗘𝗤 language → nativeTheory ⊢ σᴺ
+DiophantineConsistency.IPRAFullGGTransfer.axiom_images (σ : Sentence language) : σ ∈ PRA → nativeTheory ⊢ σᴺ
+DiophantineConsistency.IPRAFullGGTransfer.from_classical {φ : Sentence language} (h : PRA ⊢ φ) : nativeTheory ⊢ φᴺ
+DiophantineConsistency.IPRAFullGGTransfer.mapped_noZero_comparison (n : ℕ) (a b : Semiterm ℒₒᵣ Empty n)
+  (ψ : Sentence language) (target : Sentenceᵢ language)
+  (h : PRA ⊢ (Semiformula.lMap embedding) (PRANoZeroUnary.noZero n a b) 🡘 ∼ψ) (hcons : nativeTheory ⊢ ∼ψᴺ 🡘 target) :
+  nativeTheory ⊢
+    ∀⁰* ∼Semiformulaᵢ.rel Language.ORing.Rel.eq ![Semiterm.lMap embedding a, Semiterm.lMap embedding b] 🡘 target
+'DiophantineConsistency.IPRAFullGGTransfer.equality_images' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRAFullGGTransfer.axiom_images' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRAFullGGTransfer.from_classical' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRAFullGGTransfer.mapped_noZero_comparison' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

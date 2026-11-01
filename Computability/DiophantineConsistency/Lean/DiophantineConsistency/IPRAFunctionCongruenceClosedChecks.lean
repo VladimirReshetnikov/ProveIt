@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAFunctionCongruenceClosed
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceClosed.bound_function_matrix
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceClosed.closure_binding
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceClosed.function_closed_context
+#print axioms DiophantineConsistency.IPRAFunctionCongruenceClosed.function_native

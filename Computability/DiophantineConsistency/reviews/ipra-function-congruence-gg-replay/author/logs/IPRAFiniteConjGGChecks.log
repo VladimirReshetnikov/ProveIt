@@ -1,0 +1,14 @@
+DiophantineConsistency.IPRAFiniteConjGG.ggFiniteConj.{u_1} {L : Language} [L.DecidableEq] {Λ : Hilbertᵢ L} (n : ℕ)
+  (f : Fin n → Proposition L) (g : Fin n → Propositionᵢ L) (h : ∀ (i : Fin n), (f i)ᴺ = ∼∼g i) :
+  Λ ⊢ (Matrix.conj f)ᴺ 🡒 ∼∼Matrix.conj g
+DiophantineConsistency.IPRAFiniteConjGG.finite_atomic_imp_closure {n k j : ℕ} (r : language.Rel j)
+  (v w : Fin k → PRATheory.TermN n) (u : Fin j → PRATheory.TermN n) :
+  nativeTheory ⊢
+    ∀⁰* ((Matrix.conj fun i => Semiformulaᵢ.rel Language.ORing.Rel.eq ![v i, w i]) 🡒 Semiformulaᵢ.rel r u) 🡒
+      (∀⁰* ((Matrix.conj fun i => Semiformula.rel Language.ORing.Rel.eq ![v i, w i]) 🡒 Semiformula.rel r u))ᴺ
+DiophantineConsistency.IPRAFiniteConjGG.functionCongruence_adapter {k : ℕ} (f : language.Func k) :
+  nativeTheory ⊢ functionCongruenceI f 🡒 (Theory.Eq.funcExt f)ᴺ
+'DiophantineConsistency.IPRAFiniteConjGG.ggFiniteConj' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRAFiniteConjGG.functionCongruence_adapter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
