@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.Rotation240Boxes
 import BusyBeaver.ZFC.Routing245Pulse
 import BusyBeaver.ZFC.RegisterMarkPerm252
 
@@ -20,6 +21,7 @@ moves the boundary one cell right; zero CD requires an actual following block.
 No blank bootstrap, all-sites acceptance or consistency endpoint is asserted.
 -/
 namespace SetTheory.BusyBeaver.ZFC.Routing245Boxes
+export SetTheory.BusyBeaver.ZFC.Rotation240Boxes (carryLeft carryLeft_append following_nonempty)
 
 open FiniteZipper ZipperRuns RegisterBoxesPerm252
 
@@ -38,11 +40,6 @@ def carryBits : List Nat → List Bool
   | [] => []
   | v :: vs => true :: false :: (List.replicate v true ++ carryBits vs)
 
-/-- The same crossed blocks in nearest-first order on the left half-tape. -/
-def carryLeft : List Nat → List Bool
-  | [] => []
-  | v :: vs => List.replicate v true ++ false :: true :: carryLeft vs
-
 private theorem ones_snoc (v : Nat) (l : List Bool) :
     List.replicate v true ++ true :: l = true :: (List.replicate v true ++ l) := by
   calc
@@ -54,12 +51,6 @@ theorem carryBits_append (a b : List Nat) :
   induction a with
   | nil => rfl
   | cons v a ih => simp [carryBits, ih]
-
-theorem carryLeft_append (a b : List Nat) :
-    carryLeft (a ++ b) = carryLeft a ++ carryLeft b := by
-  induction a with
-  | nil => rfl
-  | cons v a ih => simp [carryLeft, ih, List.append_assoc]
 
 theorem reverse_carryBits (vs : List Nat) :
     (carryBits vs).reverse = carryLeft vs.reverse := by
@@ -409,14 +400,5 @@ theorem increment {c : Config 245} (pre : List Nat) (v : Nat)
   have hs := zipRun_sound machineRouting245 (2 * width (pre ++ v :: rest) + 7) hc
   rw [increment_zip] at hs
   exact hs
-
-/-- A selected index below 9 in a file with at least 10 blocks has a following
-block. No bound is placed on its value or on the length of the suffix. -/
-theorem following_nonempty (pre rest : List Nat) (v : Nat)
-    (hp : pre.length < 9) (hf : 10 ≤ (pre ++ v :: rest).length) : rest ≠ [] := by
-  intro he
-  subst rest
-  simp only [List.length_append, List.length_cons, List.length_nil] at hf
-  omega
 
 end SetTheory.BusyBeaver.ZFC.Routing245Boxes
