@@ -44,8 +44,9 @@ degree theorems and no global minimum is claimed.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [46-variable quartic candidate](research/adaptive-square-sums46/README.md),
-and [36-variable](research/adaptive-square-sums36/README.md) and
-[35-variable](research/adaptive-square-sums35/README.md) degree-six candidates.
+and [36-variable](research/adaptive-square-sums36/README.md),
+[35-variable](research/adaptive-square-sums35/README.md), and
+[34-variable](research/adaptive-square-sums34/README.md) degree-six candidates.
 Their circuit sizes, substitutions and exact degrees have finite checks; their
 model equivalences and native endpoints are still being checked.
 The native endpoints above have matching fixed-source proof replays on
