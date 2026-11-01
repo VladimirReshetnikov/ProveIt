@@ -95,7 +95,15 @@ declarations moved to off-route modules.
    `PRAISigmaOneFiniteTranslation` and `PRAPositiveMapPack`) import the
    syntax module instead of the rule calculus.
 
-Effect on the PRA endpoint's import closure, on current sources: **928 → 878
+3. **`high_mask_word`** (follow-up commit) moves from `MFCurrentHighDigits2011`
+   to `MFCurrentWordHighMask2011`, its only user, taking `MFNativeMaskPopulation`,
+   `MFNativeRadixDigits`, `MFNativeVariableMask`, `MFNativeSourceMask` and
+   `MFPaper1982Section4` off the route. Both modules compile. The namespace
+   check, run with the namespaces each module declares (for example
+   `MF.NativeRadixDigits`, `JSWW1976` and `Jones1982`), is clean for all 55
+   modules removed by items 1–3.
+
+Effect of items 1–2 on the PRA endpoint's import closure, on current sources: **928 → 878
 modules, 209.9k → 203.9k lines**. The 51 modules that leave it are 41
 `Parsons*` modules, `SplitCertificate59`, `SplitGeometry59`,
 `DegreeSeparatedCoding`, `SelectiveQuadraticCoding`, `SidonPositions`,
@@ -150,10 +158,21 @@ module of their only users).
   (`P`), `KSeed222` (`SeedProp`), `Permutation252Frame` (`physOf`),
   `ArithmeticHistory254` (`foundation_div_nat`, `foundation_rem_nat`) and
   `Lukasiewicz` (the implicational calculus without `complete`).
-* `MFCurrentHighDigits2011.high_mask_word` is used only by the unused
-  `MFCurrentWordHighMask2011`. Moving it there takes
-  `MFNativeVariableMask`/`RadixDigits`/`MaskPopulation` off the route.
 * `NaturalExpression.graphRep` (no users) holds in `ArithmeticRepresentation`.
+
+## Turing-machine endpoint (machine 222)
+
+The same audit was run on
+`BusyBeaver.ZFC.KEndpoint.blank_halts_iff_zfc_refutation`, the Lean statement
+that the machine halts from blank iff ZFC proves ⊥. Its route is already
+tight: 95 project modules (25.7k lines), and 3,604 of their 7,059 constants
+are reached. Only five modules (1.5k lines) contribute nothing: `RMBisim`,
+`RMDag`, `SiteCoverage`, `PowerSyntax` and `BoundedZFCConsistency.Basic`.
+The register-machine bisimulation layer (`RMBisim`/`RMDag`, 832 lines) is
+imported but unused by this endpoint's term. It is the largest cut available
+there, inside the BusyBeaver closure whose rebuild cost is noted above. The
+local oleans of `KEndpoint219`, `KEndpoint221` and the Rotation240 PA endpoint
+predate their current sources, so those were not audited.
 
 ## Superseded parallel lane (outside the endpoints)
 
