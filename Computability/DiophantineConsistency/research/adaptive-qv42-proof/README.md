@@ -1,4 +1,4 @@
-# Oriented 42-variable quartic candidate
+# Forty-two-variable quartic equivalence
 
 The Lean literal is bound row by row to the pinned 42-variable, 174-operation
 candidate in `adaptive-square-sums42-quartic`. `AdaptiveQV42.oriented_exists_iff`
@@ -8,8 +8,16 @@ parent whose two V coordinates satisfy `v 26 < v 25`. The forward map takes
 the magnitude of that positive difference; the reverse embeds a positive V
 as `(V+1,1)`.
 
-This is a conditional witness equivalence. It does not prove that an arbitrary
-43-variable zero is oriented, nor that an oriented zero exists whenever the
-machine halts. Those require a separate witness-construction and sign-transport
-argument. In particular no unqualified native iPRA endpoint is asserted here.
-A native iPRA client is separately checked with the explicit `MachineOrients` premise: every internal machine halting time gives a positive 43-variable zero with `v 26 < v 25`. The focused replays inherit the parent provider's transitive and dynamic ancestry.
+The oriented equivalence does not assert that every 43-variable zero has the
+required sign. `AdaptiveVSignMachine43.machineOrients` instead constructs a
+suitably oriented witness from any internal halting time, using the preserved
+auxiliary seed and the 42-to-43 sign transport. This discharges the explicit
+premise of the earlier conditional native client. `IPRAQV42Native.literal_equivalence`
+states the fixed-port literal equivalence in the specified intuitionistic PRA,
+with the negation of the mapped Foundation ZFC refutation predicate.
+
+The [final paired replay](../../reviews/adaptive-qv42-native-final-replay/README.md)
+uses a 31-final primary provider and fills absent objects from a conditional
+QV42 provider, with primary objects taking precedence. Direct dependencies are
+guarded; project-transitive, package-transitive and dynamically loaded ancestry
+is inherited. A fully authenticated current-source closure remains open.
