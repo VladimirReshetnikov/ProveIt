@@ -1,4 +1,3 @@
-import Diophantine.Paper1984.Masking
 import DiophantineConsistency.MFPaper1984Identities
 import Mathlib.Data.Nat.Choose.Bounds
 import Mathlib.Data.Nat.Choose.Sum

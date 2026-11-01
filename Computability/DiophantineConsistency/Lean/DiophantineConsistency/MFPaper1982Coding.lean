@@ -1,4 +1,3 @@
-import Diophantine.Paper1984.Masking
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Degrees
 import Mathlib.Data.Nat.Choose.Bounds
@@ -23,6 +22,9 @@ import Mathlib.Tactic.SplitIfs
 import Mathlib.Tactic.Tauto
 import Mathlib.Tactic.Use
 import Mathlib.Tactic.Zify
+import Mathlib.Data.Nat.Bits
+import Mathlib.Data.Nat.Bitwise
+import Mathlib.Data.Nat.Choose.Lucas
 
 /-! Matrix-free clone of `Diophantine.Paper1982.Coding`: only the declarations needed for the local
 normalization lemma are kept, proof bodies verbatim; namespaces are prefixed by

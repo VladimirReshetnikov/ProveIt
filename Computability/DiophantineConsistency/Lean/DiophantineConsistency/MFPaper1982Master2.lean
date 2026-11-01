@@ -1,4 +1,3 @@
-import Diophantine.Paper1984.Masking
 import DiophantineConsistency.MFPaper1982Carries
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Degrees

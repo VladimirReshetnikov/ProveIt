@@ -1,4 +1,3 @@
-import Diophantine.Paper1984.Masking
 import DiophantineConsistency.MFNativeCyclicConvolution
 import DiophantineConsistency.MFNativeCyclicRotation
 import DiophantineConsistency.MFPaper1984Identities

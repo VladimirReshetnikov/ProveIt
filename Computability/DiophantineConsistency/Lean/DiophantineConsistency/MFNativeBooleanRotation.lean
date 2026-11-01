@@ -1,4 +1,3 @@
-import Diophantine.Paper1984.Masking
 import DiophantineConsistency.MFNativeCyclicRotation
 import Mathlib.Algebra.BigOperators.ModEq
 import Mathlib.Algebra.MvPolynomial.Basic

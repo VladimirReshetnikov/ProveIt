@@ -5,14 +5,6 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open ParsonsBaseShape ParsonsBaseState ParsonsUnified ParsonsGuardTree
 
-/-- Positive Boolean combinations and existential quantifiers over bounded
-matrices. Negating this shape yields a Tree. -/
-inductive Positive : {ξ : Type} → {n : ℕ} → Semiformula ℒₒᵣ ξ n → Prop where
-  | bounded {ξ : Type} {n} {A : Semiformula ℒₒᵣ ξ n} : Hierarchy 𝚺 0 A → Positive A
-  | and {ξ : Type} {n} {A B : Semiformula ℒₒᵣ ξ n} : Positive A → Positive B → Positive (A ⋏ B)
-  | or {ξ : Type} {n} {A B : Semiformula ℒₒᵣ ξ n} : Positive A → Positive B → Positive (A ⋎ B)
-  | exs {ξ : Type} {n} {A : Semiformula ℒₒᵣ ξ (n+1)} : Positive A → Positive (∃⁰ A)
-
 theorem sigma {ξ : Type} {n : ℕ} {A : Semiformula ℒₒᵣ ξ n} (h : Positive A) : Hierarchy 𝚺 1 A := by
   induction h with
   | bounded h => exact h.mono (by decide)
