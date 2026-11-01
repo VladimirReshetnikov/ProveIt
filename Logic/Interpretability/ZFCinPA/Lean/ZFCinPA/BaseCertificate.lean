@@ -462,79 +462,48 @@ def tarskiIntroSet (n : ℕ) : SetTheorySentence :=
 
 section Provability
 
+/-- Transfer satisfaction in every ZFC model to a Foundation derivation. -/
+private theorem zfc_proves_of_sat (φ : SetTheory.Form)
+    (h : ∀ {W : Type} {mem : W → W → Prop},
+      BoundedZFCConsistency.ZFCAxioms mem → ∀ e, SetTheory.Sat mem e φ) :
+    𝗭𝗙𝗖 ⊢ (toSet 0 φ).univCl := by
+  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 _ ?_
+  intro W _ _ _
+  refine models_iff_proposition.mpr fun f => ?_
+  exact (eval_toSet φ 0 ![] f f
+    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
+    (h zfcAxioms_of_models f)
+
 /-- **`𝗭𝗙𝗖` derives every local-step field sentence**, by completeness
 from `sat_localStepF`. -/
 theorem zfc_proves_localStepSet (n : ℕ) : 𝗭𝗙𝗖 ⊢ localStepSet n := by
-  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 (localStepSet n) ?_
-  intro W _ _ _
-  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (localStepF n)).univCl
-  refine models_iff_proposition.mpr fun f => ?_
-  exact (eval_toSet (localStepF n) 0 ![] f f
-    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
-    (sat_localStepF zfcAxioms_of_models n f)
+  exact zfc_proves_of_sat _ (fun K e => sat_localStepF K n e)
 
 /-- **`𝗭𝗙𝗖` derives every cross-level field sentence.** -/
 theorem zfc_proves_crossLevelSet (n : ℕ) : 𝗭𝗙𝗖 ⊢ crossLevelSet n := by
-  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 (crossLevelSet n) ?_
-  intro W _ _ _
-  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (crossLevelF n)).univCl
-  refine models_iff_proposition.mpr fun f => ?_
-  exact (eval_toSet (crossLevelF n) 0 ![] f f
-    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
-    (sat_crossLevelF zfcAxioms_of_models n f)
+  exact zfc_proves_of_sat _ (fun K e => sat_crossLevelF K n e)
 
 /-- **`𝗭𝗙𝗖` derives every shift-invariance field sentence.** -/
 theorem zfc_proves_shiftInvariantSet (n : ℕ) :
     𝗭𝗙𝗖 ⊢ shiftInvariantSet n := by
-  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 (shiftInvariantSet n) ?_
-  intro W _ _ _
-  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (shiftInvariantF n)).univCl
-  refine models_iff_proposition.mpr fun f => ?_
-  exact (eval_toSet (shiftInvariantF n) 0 ![] f f
-    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
-    (sat_shiftInvariantF zfcAxioms_of_models n f)
+  exact zfc_proves_of_sat _ (fun K e => sat_shiftInvariantF K n e)
 
 /-- **`𝗭𝗙𝗖` derives every substitution-invariance field sentence.** -/
 theorem zfc_proves_substitutionInvariantSet (n : ℕ) :
     𝗭𝗙𝗖 ⊢ substitutionInvariantSet n := by
-  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖
-    (substitutionInvariantSet n) ?_
-  intro W _ _ _
-  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (substitutionInvariantF n)).univCl
-  refine models_iff_proposition.mpr fun f => ?_
-  exact (eval_toSet (substitutionInvariantF n) 0 ![] f f
-    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
-    (sat_substitutionInvariantF zfcAxioms_of_models n f)
+  exact zfc_proves_of_sat _ (fun K e => sat_substitutionInvariantF K n e)
 
 /-- **`𝗭𝗙𝗖` derives every axiom-soundness field sentence.** -/
 theorem zfc_proves_axiomSoundSet (n : ℕ) : 𝗭𝗙𝗖 ⊢ axiomSoundSet n := by
-  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 (axiomSoundSet n) ?_
-  intro W _ _ _
-  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (axiomSoundF n)).univCl
-  refine models_iff_proposition.mpr fun f => ?_
-  exact (eval_toSet (axiomSoundF n) 0 ![] f f
-    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
-    (sat_axiomSoundF zfcAxioms_of_models n f)
+  exact zfc_proves_of_sat _ (fun K e => sat_axiomSoundF K n e)
 
 /-- **`𝗭𝗙𝗖` derives every Tarski-elimination field sentence.** -/
 theorem zfc_proves_tarskiElimSet (n : ℕ) : 𝗭𝗙𝗖 ⊢ tarskiElimSet n := by
-  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 (tarskiElimSet n) ?_
-  intro W _ _ _
-  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (tarskiElimF n)).univCl
-  refine models_iff_proposition.mpr fun f => ?_
-  exact (eval_toSet (tarskiElimF n) 0 ![] f f
-    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
-    (sat_tarskiElimF zfcAxioms_of_models n f)
+  exact zfc_proves_of_sat _ (fun K e => sat_tarskiElimF K n e)
 
 /-- **`𝗭𝗙𝗖` derives every Tarski-introduction field sentence.** -/
 theorem zfc_proves_tarskiIntroSet (n : ℕ) : 𝗭𝗙𝗖 ⊢ tarskiIntroSet n := by
-  refine SetTheory.provable_of_models.{0} 𝗭𝗙𝗖 (tarskiIntroSet n) ?_
-  intro W _ _ _
-  show W↓[ℒₛₑₜ] ⊧ (toSet 0 (tarskiIntroF n)).univCl
-  refine models_iff_proposition.mpr fun f => ?_
-  exact (eval_toSet (tarskiIntroF n) 0 ![] f f
-    (fun i => i.elim0) (fun j => by rw [Nat.zero_add])).mpr
-    (sat_tarskiIntroF zfcAxioms_of_models n f)
+  exact zfc_proves_of_sat _ (fun K e => sat_tarskiIntroF K n e)
 
 end Provability
 
