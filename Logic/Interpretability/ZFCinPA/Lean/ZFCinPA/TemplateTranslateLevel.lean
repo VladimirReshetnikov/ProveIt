@@ -69,8 +69,7 @@ theorem four_le_vecA {n : ℕ} : ∀ {ℓ : ℕ}
 theorem two_le_tA {n : ℕ} (φ : Semiproposition (setTemplateLanguage k arities) n) : 2 ≤ tA φ := by
   induction φ with
   | verum | falsum => simp [tA]
-  | rel r v => rcases r with r | r <;> simp [tA]
-  | nrel r v => rcases r with r | r <;> simp [tA] <;> omega
+  | rel r v | nrel r v => rcases r with r | r <;> simp [tA] <;> omega
   | and p q | or p q => simp [tA]
   | all p | exs p => simp [tA]
 
@@ -90,14 +89,10 @@ theorem var_code_le {t z : V} (ht : t = ⟪0, z⟫ + 1 ∨ t = ⟪1, z⟫ + 1) :
 theorem translateTerm_le {n : ℕ} (t : SyntacticSemiterm (setTemplateLanguage k arities) n) :
     (translateTerm (V := V) t).val ≤ lvB (termA t : V) := by
   cases t with
-  | bvar i =>
-      simp only [translateTerm, Semiterm.bvar_val, termA]
+  | bvar i | fvar i =>
+      simp only [translateTerm, Semiterm.bvar_val, Semiterm.fvar_val, termA]
       push_cast
-      exact var_code_le (Or.inl rfl)
-  | fvar x =>
-      simp only [translateTerm, Semiterm.fvar_val, termA]
-      push_cast
-      exact var_code_le (Or.inr rfl)
+      first | exact var_code_le (Or.inl rfl) | exact var_code_le (Or.inr rfl)
   | func f v => rcases f with f | f <;> exact f.elim
 
 theorem translateVec_le {n : ℕ} : ∀ (ℓ : ℕ)
