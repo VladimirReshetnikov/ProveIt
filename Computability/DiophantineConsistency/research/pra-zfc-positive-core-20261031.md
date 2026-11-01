@@ -1,0 +1,7 @@
+# Positive derivation core for ZFC
+
+The positive sigma core of Foundation's actual derivation blueprint consists of the formula-set conjunct and ten rule leaves. `PRAWitnessPositiveCoreDirect.wb_coreSigma` assembles witness bounds for all these leaves in each candidate-PRA model, retaining only an explicit witness-bound hypothesis for the theory's sigma axiom recognizer. `PRAWitnessPositiveCoreZFC.wb_coreSigma` discharges that hypothesis with `PRAWitnessZFCAxioms.goodCh_zfc` for Foundation's ZFC recognizer.
+
+The [strict 21-module author and independent root peer](../reviews/pra-positive-core-zfc-strict-author-replay/README.md) pass with matching source, object, full-log and declared-dependency hashes over the independently replayed ZFC axiom-witness parent. The packet freezes the suffix sources and guards selected parent objects, parent source observations, compiler and direct external anchors. Foundation, ZFC Instances and other package transitive ancestry remain inherited. `WB` asserts existence of a monotone witness-bound function separately in each model; no uniform primitive-recursive code is claimed.
+
+This closes the positive sigma-core witness obligation at that recorded provider boundary. It does not alone prove the negative pi core, an actual bound for the full refutation sentence, or the requested PRA equivalence. A separately replayed negative-core provider is being combined with this result through a guarded integration.

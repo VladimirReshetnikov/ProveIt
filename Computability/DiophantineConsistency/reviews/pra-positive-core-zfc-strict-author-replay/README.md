@@ -1,0 +1,12 @@
+# Positive ZFC derivation-core witness bound
+
+`PRAWitnessPositiveCoreDirect.wb_coreSigma` proves a witness bound for the complete actual sigma core of Foundation's derivation blueprint in every candidate-PRA model, conditional on a witness bound for that theory's sigma axiom recognizer. `PRAWitnessPositiveCoreZFC.wb_coreSigma` discharges that hypothesis using `PRAWitnessZFCAxioms.goodCh_zfc` for Foundation's actual ZFC recognizer. The rule leaves are connected to the literal blueprint by definitional equality. `WB` supplies a monotone bound separately in each model; this result does not name a uniform primitive-recursive bound or by itself establish a complete refutation bound or PRA equivalence.
+
+The author `/tmp/pra-positive-core-zfc-strict-c_3lc7ew` and root independent peer `/tmp/pra-positive-core-zfc-strict-cyu3nwvf` passed, and all 21 source, object, full-log and declared-direct-dependency rows matched. The frozen suffix rebuilds the formula-set left conjunct, all ten positive rule leaves and their needed free/substitution/set-shift/insert/negation helpers, the complete core, the ZFC specialization and axiom checks. Both runs use the independently replayed strict ZFC axiom-witness provider `/tmp/pra-zfc-witness-closure-k18_2x43`; the packet guards 224 parent project/ZFC objects, observes 223 parent source hashes, pins 19 external objects and the Lean compiler, and authenticates sources and direct dependencies before/after compilation. The final checks report only `propext`, `Classical.choice`, and `Quot.sound` as Lean metatheory axioms. Author/root terminal states and complete logs are retained; all suffix sources are in `frozen/`.
+
+This is a guarded local-source chain, not full source-current provenance for every transitive dependency. Foundation, `ZFCinPA.Instances`, Lean/Mathlib/package transitive ancestry, dynamic imports and the Lake path fallback remain inherited. An independent object-byte overlap observation in `positive-negative-overlap.json` found identical bytes for 230 shared project, 139 Foundation and 5 ZFC objects with the separately replayed negative-core provider `/tmp/pra-zfc-negative-core-9uk4xsr2/lib`; it does not add source provenance.
+
+```sh
+python3 Computability/DiophantineConsistency/reviews/pra-positive-core-zfc-strict-author-replay/replay.py
+python3 Computability/DiophantineConsistency/reviews/pra-positive-core-zfc-strict-author-replay/compare.py /tmp/PEER_ROOT
+```
