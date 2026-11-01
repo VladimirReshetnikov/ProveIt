@@ -33,9 +33,14 @@ is live, and emits both the JSON graph and the Lean literal.
 The model and literal passed two focused, matching [Lean replays](../../reviews/adaptive-square-sums-model-replay/README.md)
 against the same matched historical 258-module provider, with selected direct
 inputs and companions guarded. Transitive project, package and dynamic ancestry
-is inherited; this is not a fully source-current closure. The passage from the model equivalence to a Lean
-proof of an iPRA derivation is being assembled; it must be checked separately
-before claiming that endpoint. The graph has 13 variables, 87 unshifted binary
+is inherited; this is not a fully source-current closure. The exact literal now also has a native iPRA endpoint:
+`IPRASquareSumsNative.literal_equivalence` proves the existence of a derivation
+of the no-positive-zero/selected ZFC consistency equivalence in the explicitly
+defined native theory. Its [two guarded comparisons](../../reviews/ipra-square-sums-native-verification/README.md)
+match all six compiled suffix modules and 11,401 guarded files. This is a
+fixed-source result on the inherited historical provider, not a full
+source-current closure; package-transitive and dynamically loaded ancestry
+remain inherited. The graph has 13 variables, 87 unshifted binary
 operations (48 multiplications, 21 additions, 18 subtractions) and degree 36;
 these are distinct metrics and no global minimum is claimed.
 
@@ -47,5 +52,5 @@ abbreviations and verifies them against the pinned parent graph; it checks the
 sum wiring and all rendered gate rows and rejects two controlled mutations.
 It does not interpret arbitrary TeX. Both normal Python and `python -O` pass.
 Two independent `pdflatex` runs produced identical PDF SHA-256
-`c40aad3e0610da92da0d32102f20488eac12dd950cdf3a3e8bc88f263b2f5dd4`;
+`b89338ac319c36498266b2405de4e466cb58d26fb5c6705f38502301f23198c8`;
 both pages were visually inspected and the log contained no overfull boxes.
