@@ -42,28 +42,16 @@ noncomputable def bndErasure {n : ℕ} (φ : ArithmeticSemisentence n)
   induction φ generalizing b with
   | verum => change Λ ⊢! (⊤ : Propositionᵢ ℒₒᵣ) 🡒 ⊤; exact Entailment.C_id
   | falsum => change Λ ⊢! (⊥ : Propositionᵢ ℒₒᵣ) 🡒 ⊥; exact Entailment.C_id
-  | rel r v =>
-    simp only [bnd, ← TransitiveRewriting.comp_app, embed_cast_last]
-    exact Entailment.C_id
-  | nrel r v =>
+  | rel r v | nrel r v =>
     simp only [bnd, ← TransitiveRewriting.comp_app, embed_cast_last]
     exact Entailment.C_id
   | and φ ψ ihφ ihψ =>
     exact eraseAnd (ihφ e b) (ihψ e b)
   | or φ ψ ihφ ihψ =>
     exact eraseOr (ihφ e b) (ihψ e b)
-  | all φ ih =>
-    simp only [bnd]
-    apply eraseAll
-    change Λ ⊢! (Rew.free ▹ native ((Rew.embSubsts (Fin.snoc e b)).q ▹ bnd φ)) 🡒
-      (Rew.free ▹ native ((Rew.embSubsts e).q ▹ φ))
-    rw [native_rew, native_rew, ← TransitiveRewriting.comp_app,
-      ← TransitiveRewriting.comp_app, open_embed, open_embed]
-    rw [Fin.comp_snoc, DiophantineConsistency.StrictSigmaOneInduction.cons_snoc]
-    exact ih ((&0) :> (Rew.shift ∘ e)) (Rew.shift b)
-  | exs φ ih =>
+  | all φ ih | exs φ ih =>
     simp only [bnd, FirstOrder.bexs]
-    apply eraseGuardedEx
+    first | apply eraseAll | apply eraseGuardedEx
     change Λ ⊢! (Rew.free ▹ native ((Rew.embSubsts (Fin.snoc e b)).q ▹ bnd φ)) 🡒
       (Rew.free ▹ native ((Rew.embSubsts e).q ▹ φ))
     rw [native_rew, native_rew, ← TransitiveRewriting.comp_app,
