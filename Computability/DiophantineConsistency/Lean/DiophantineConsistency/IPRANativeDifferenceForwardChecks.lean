@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRANativeDifferenceForward
+
+#check DiophantineConsistency.IPRANativeDifferenceForward.forwardProof
+#print axioms DiophantineConsistency.IPRANativeDifferenceForward.forwardProof

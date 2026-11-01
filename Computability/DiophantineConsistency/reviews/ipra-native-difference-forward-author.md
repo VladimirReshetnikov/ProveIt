@@ -1,0 +1,7 @@
+# Native forward difference correctness: author replay
+
+The guarded author run `/tmp/ipra-native-difference-forward-s4ubs3wr` passed both modules, using the independently replayed sub-self provider `/tmp/ipra-native-subself-v3-8rg4n2aw/lib`. From an explicit native zero-decidability proof, `forwardProof` constructs the native theory proof `∀x y, x=y → (x−y=0 ∧ y−x=0)`, using sub-self and native Leibniz substitution. Its formula definitions are definitionally identical to the corresponding equality-decision client's definitions; this replay does not import that separate client. The proof is checked without a direct classical object-logic axiom; its Lean axiom report is `propext`, `Classical.choice`, `Quot.sound`.
+
+All 915 selected provider `.olean`, `.olean.*`, and `.ir` entries and both new sources were rehashed before and after compilation. The external package and earlier project/Foundation source-object ancestry are inherited; they are not certified as a source-current closure. The zero-decidability premise remains explicit in this client, and no reverse difference implication or equality-decidability theorem is asserted.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-native-difference-forward.py`. State SHA-256 `76bddd4325338beee8c0e7fa5c9e9c565f037ddb95b374c65f9dc5bb95cc3e75`, provider inventory `e8afe2a275ed0214c9e24f1a0d55045c6b26ad3a9aedeaa41ed79d2dbbcebacc`. The evidence directory preserves source snapshots, logs, state, inventory, and driver.

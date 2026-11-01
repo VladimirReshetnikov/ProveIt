@@ -83,6 +83,13 @@ the equality images. The separate
 now cover all three basic axioms and have passed author and independent
 suffix replays. Equality reflexivity, symmetry, transitivity, arbitrary-arity
 function congruence, and relation congruence have now all been translated.
+The [13-variable native translated-refutation client](Lean/DiophantineConsistency/IPRA86TranslatedRefutation.lean)
+has also compiled in a [preliminary provider union](reviews/ipra86-translated-refutation-preliminary/README.md)
+with no additional theorem hypothesis. That union has a recorded partial
+object audit but the original 86-side compile environment was not fully
+reauthenticated. A coherent guarded rebuild and the ordinary native
+consistency comparison remain open.
+
 The exact 14-variable client in
 [IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
 now has matching guarded author and independent replays on the explicitly
@@ -153,7 +160,14 @@ arbitrary terms and zero, assuming an explicit native zero-decidability proof;
 its author and independent replays match on a historical provider.
 A separately replayed [subtraction implication](Lean/DiophantineConsistency/IPRASubSuccZeroNative.lean)
 proves `(Sx − y = 0) → (x − y = 0)` in the native theory without an extra
-arithmetic premise. General equality and positive reconstruction remain open.
+arithmetic premise. A second matched replay proves
+`(u − S(v) = 0) → pred(u − v) = 0` natively; see
+[IPRASubPredZeroNative.lean](Lean/DiophantineConsistency/IPRASubPredZeroNative.lean).
+A separate [forward difference theorem](Lean/DiophantineConsistency/IPRANativeDifferenceForward.lean)
+derives `x = y → (x − y = 0 ∧ y − x = 0)` from an explicit native
+zero-decidability proof, with matching guarded replays. The positive reverse
+implication and authenticated composition with the unconditional zero proof
+remain open, as do general equality and positive reconstruction.
 
 The theory now proves zero decidability without an additional premise. The
 [checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)

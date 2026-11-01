@@ -1,0 +1,5 @@
+# Native forward difference correctness: independent replay
+
+Independent guarded run `/tmp/ipra-native-difference-forward-dekdijq6` passed and matches the author `/tmp/ipra-native-difference-forward-s4ubs3wr` in both source hashes, both output-object hashes, both full-log hashes, parent-state hash, and all 915 serialized selected-provider inventory entries. Both use the same independently checked sub-self parent; this is an independent replay, not an independently rebuilt parent. The theorem retains its native zero-decidability premise and does not prove the reverse implication. Project/Foundation and external package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-native-difference-forward.py`. Peer state SHA-256 `12328448587a050dcee26befc4abafc30f76cc96b193c26da7e4ad1597b916e4`; selected-provider inventory `e8afe2a275ed0214c9e24f1a0d55045c6b26ad3a9aedeaa41ed79d2dbbcebacc`. Source snapshots, logs, driver, state, and inventory are preserved in the corresponding evidence directory.
