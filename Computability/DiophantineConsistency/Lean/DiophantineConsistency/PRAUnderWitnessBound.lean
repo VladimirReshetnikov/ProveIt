@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRAExpWitnessBound
 /-! Explicit positive bound for the actual Foundation underDef graph. -/
 set_option autoImplicit false
@@ -15,16 +16,13 @@ theorem under_bound (y x : V) : underDef.val.Evalb ![y,x] →
   intro h
   simp [underDef] at h ⊢
   let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![‘#0+1’,#1]
-  have hb := PRAExpWitnessBound.exp_bound (y+1) x h
-  have hn := PRABndRewriting.natural expDef.val ω ![y,x] (PRAExponentialWitnessBound.exponentialMajorant (y+1))
-  have hv : (fun j => (ω #j).val ![y,x] Empty.elim) = ![y+1,x] := by
-    funext j
-    refine Fin.cases rfl (fun k => ?_) j
-    exact Fin.cases rfl (fun k => Fin.elim0 k) k
-  have hs : Fin.snoc ![y,x] (PRAExponentialWitnessBound.exponentialMajorant (y+1)) = ![y,x,PRAExponentialWitnessBound.exponentialMajorant (y+1)] := by simp
-  have hs' : Fin.snoc ![y+1,x] (PRAExponentialWitnessBound.exponentialMajorant (y+1)) = ![y+1,x,PRAExponentialWitnessBound.exponentialMajorant (y+1)] := by simp
-  rw [hv,hs,hs'] at hn
-  exact hn.mpr hb
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  have hb := PRARewritingWitnessBound.binary_rew_bound_with expDef.val
+    (fun y _ => PRAExponentialWitnessBound.exponentialMajorant y)
+    PRAExpWitnessBound.exp_bound ω ![y,x]
+    (PRAExponentialWitnessBound.exponentialMajorant (y+1)) (by simp [ω])
+    (by simpa [ω, Semiformula.eval_substs] using h)
+  simpa [ω] using hb
 noncomputable def boundedUnder : ArithmeticSemisentence 3 := bnd underDef.val
 noncomputable def underBoundBody : ArithmeticSemisentence 2 :=
   “y x. !underDef y x → !boundedUnder y x (((y+1)⁴+1)+((y+1)²+1)+(2*(y+1)²+1)+((y+1)⁴+(y+1)⁴+2*(y+1)+1))”
