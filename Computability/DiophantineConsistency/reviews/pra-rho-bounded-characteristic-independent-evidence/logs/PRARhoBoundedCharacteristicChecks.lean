@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRARhoBoundedCharacteristic
+#print axioms DiophantineConsistency.PRARhoBoundedCharacteristic.bounded_rho
+#print axioms DiophantineConsistency.PRARhoBoundedCharacteristic.rho_characteristic
+#check DiophantineConsistency.PRARhoBoundedCharacteristic.rho_characteristic

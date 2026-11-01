@@ -169,7 +169,11 @@ bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
 bounding and translation statements with quantifier-free induction, but
-those intuitionistic derivations remain open.
+those intuitionistic derivations remain open. For the exact mapped `bnd rho`
+matrix, [PRARhoBoundedCharacteristic.lean](Lean/DiophantineConsistency/PRARhoBoundedCharacteristic.lean)
+now derives a Σ₀ hierarchy certificate and existence of a classical PRA
+Boolean characteristic code, with matching guarded replays. Native correctness
+for that bounded matrix remains to be established.
 
 For open classical NNF formulas, [IPRAOpenAtomDecision.lean](Lean/DiophantineConsistency/IPRAOpenAtomDecision.lean)
 constructs native decidability and the implication from the GG translation to
