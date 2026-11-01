@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85NoThirdMain
+#print axioms DiophantineConsistency.AdaptiveGap85NoThirdMain.actual_zero_not_third_main
+#check DiophantineConsistency.AdaptiveGap85NoThirdMain.actual_zero_not_third_main
