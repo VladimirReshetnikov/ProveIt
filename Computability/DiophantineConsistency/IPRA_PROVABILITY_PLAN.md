@@ -367,11 +367,9 @@ Both runs saw no workspace drift initially and six edited sources at the end:
 `ZFCinPA.LStepAnd`, `LStepBasic`, and `LStepEx`. This is therefore a matched
 fixed-snapshot result, not a source-current replay. An independently checked
 [preliminary impact scan](reviews/ipra-current-repaired-postmerge-preliminary-v3/README.md)
-sizes a source-and-recorded-environment reverse closure at 107 modules; the
-completed parent, retained physical object origins, current Lean dependency
-closure and a guarded successor still need to be authenticated together. The
-848 ancestor remains author-only, with package-transitive and dynamic ancestry
-inherited.
+sized a source-and-recorded-environment reverse closure at 107 modules; the
+guarded successor described below has since been replayed. The 848 ancestor
+remains author-only, with package-transitive and dynamic ancestry inherited.
 
 The six-edit 107-module successor has since passed both Lean replays and two
 byte-matching guarded comparisons, covering 107 rows and 11,518 guarded files;
@@ -380,9 +378,17 @@ and [terminal observations](reviews/ipra-current-repaired-six-drift-terminal-obs
 Both runs observed no initial workspace drift, then the later
 `ZFCinPA.SeparationKernel` edit at their final scans. The comparison therefore
 establishes the six-edit fixed snapshot, rather than a current-source result.
-The workspace has since also received a `PRAWitnessCodeGrowth` edit; a new
-source/object closure and guarded successor remain necessary. The inherited
-848-project and external ancestry limitations still apply.
+The subsequent 172-module source-directed successor has also passed two Lean
+replays and byte-matching independent comparisons, covering 172 rows and
+13,488 guarded files; its [comparison](reviews/ipra-current-repaired-eleven-drift-verification/README.md)
+and [terminal observations](reviews/ipra-current-repaired-eleven-drift-terminal-observations/README.md)
+record the results. Both started without workspace drift and ended with four
+later edits: `PRAWitnessVectors`, `PRAWitnessZFCAxioms`, `ZFCinPA.UniformStatement`,
+and `ZFCinPA.TranslationCore`. It therefore establishes a historical snapshot.
+A [new source survey](reviews/ipra-current-repaired-post172-source-survey/README.md)
+sizes a conservative 159-module successor; object-origin authentication and
+its guarded replays remain pending. The inherited 848-project and external
+ancestry limitations still apply.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
