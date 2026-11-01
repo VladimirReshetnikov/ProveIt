@@ -288,8 +288,20 @@ rebuilt the affected fixed-source project closure and rechecked both endpoint
 axiom reports; its independent project-closure and source-origin audits are
 linked in the repair evidence. These results remain historical snapshots, with
 the 848 ancestor author-only and package-transitive/dynamic ancestry inherited.
-The [1,099-source current survey](reviews/ipra-current-repaired-survey/) is a
-258-module rebuild plan, not a completed current-source replay.
+The 1,099-source survey's 258-module source-directed rebuild has now passed
+both Lean replays and two byte-matching guarded comparisons, covering 258 rows
+and 10,148 guarded files; see the [comparison](reviews/ipra-current-repaired-build-verification/README.md)
+and [terminal observations](reviews/ipra-current-repaired-build-terminal-observations/README.md).
+Both runs saw no workspace drift initially and six edited sources at the end:
+`PRAWitnessFormulaRec`, `PRAWitnessPR`, `PRAWitnessZFCAxioms`, and
+`ZFCinPA.LStepAnd`, `LStepBasic`, and `LStepEx`. This is therefore a matched
+fixed-snapshot result, not a source-current replay. An independently checked
+[preliminary impact scan](reviews/ipra-current-repaired-postmerge-preliminary-v3/README.md)
+sizes a source-and-recorded-environment reverse closure at 107 modules; the
+completed parent, retained physical object origins, current Lean dependency
+closure and a guarded successor still need to be authenticated together. The
+848 ancestor remains author-only, with package-transitive and dynamic ancestry
+inherited.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
