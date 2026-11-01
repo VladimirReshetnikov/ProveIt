@@ -167,24 +167,19 @@ theorem wb_core_neg_pi (hβ : ClauseBounds β M) : WB M (∼(β.blueprint ℒₛ
   simp only [UformulaRec1.Blueprint.blueprint, HierarchySymbol.Semiformula.pi_mkDelta,
     HierarchySymbol.Semiformula.val_mkPi]
   wb_auto
-  · refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
+  all_goals
+    refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
       (PRAWitnessExpBounds.expGraph2 ‘#4 + 4’ ‘2 * #4 + 4’)
       (PRAWitnessExpBounds.expBound2 ‘#4 + 4’ ‘2 * #4 + 4’)
       (PRAWitnessExpBounds.dominates_expBound2 _ _) (PRAWitnessExpBounds.mono_expBound2 _ _)
       (fun V _ _ e u h => ?_) (by wb_auto)
     have h' := h; simp at h'
-    refine ⟨Exp.exp ((e 4 + 4) * Exp.exp (2 * e 4 + 4)), ?_, u, hβ.allChanges_le V u (e 4) h'.1, h⟩
-    rw [PRAWitnessExpBounds.eval_expGraph2]
-    exact ⟨_, by simpa using exponential_exp (2 * e 4 + 4), by simpa using exponential_exp _⟩
-  · refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
-      (PRAWitnessExpBounds.expGraph2 ‘#4 + 4’ ‘2 * #4 + 4’)
-      (PRAWitnessExpBounds.expBound2 ‘#4 + 4’ ‘2 * #4 + 4’)
-      (PRAWitnessExpBounds.dominates_expBound2 _ _) (PRAWitnessExpBounds.mono_expBound2 _ _)
-      (fun V _ _ e u h => ?_) (by wb_auto)
-    have h' := h; simp at h'
-    refine ⟨Exp.exp ((e 4 + 4) * Exp.exp (2 * e 4 + 4)), ?_, u, hβ.exsChanges_le V u (e 4) h'.1, h⟩
-    rw [PRAWitnessExpBounds.eval_expGraph2]
-    exact ⟨_, by simpa using exponential_exp (2 * e 4 + 4), by simpa using exponential_exp _⟩
+    refine ⟨Exp.exp ((e 4 + 4) * Exp.exp (2 * e 4 + 4)), ?_, u, ?_, h⟩
+    · rw [PRAWitnessExpBounds.eval_expGraph2]
+      exact ⟨_, by simpa using exponential_exp (2 * e 4 + 4), by simpa using exponential_exp _⟩
+    · first
+      | exact hβ.allChanges_le V u (e 4) h'.1
+      | exact hβ.exsChanges_le V u (e 4) h'.1
 
 /-- A construction of the blueprint in every `𝗜𝚺₁` model. -/
 abbrev Constructions (β : UformulaRec1.Blueprint) :=
