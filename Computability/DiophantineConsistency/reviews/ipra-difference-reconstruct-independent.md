@@ -1,0 +1,5 @@
+# Native positive reconstruction on the invariant provider: independent replay
+
+The guarded independent peer `/tmp/ipra-difference-reconstruct-hfkv_z62` passed and matches the author `/tmp/ipra-difference-reconstruct-yxjbuksy` in all four source/object/full-log rows, the parent state hash and the complete serialized selected-provider inventory. It independently replays the three reconstruction sources and check module on the same checked successor-logic parent. The positive successor branch and closed invariant step are not yet bound. Parent/Foundation and package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-reconstruct.py`. Peer state SHA-256 `5bb7d29ea546a5fab7cc7232bfdb8299d5eba55c88fd497471254e5d4de79f3f`; provider inventory `f0ced9be89621b30d420101413401bd74152c7f497ea149d4950bca1232ca655`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

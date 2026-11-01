@@ -86,8 +86,8 @@ function congruence, and relation congruence have now all been translated.
 The independently degree-certified 13-variable, 87-operation candidate
 has [preliminary classical and native clients](reviews/pra87-translated-preliminary/README.md)
 that compiled on an audited surviving-object overlay. A subsequent guarded
-[38-module author replay](reviews/ipra87-bundle-followup-translated-join-author-pass/README.md)
-has passed on the classical bundle snapshot. Its independent peer, later source
+[38-module author and independent replays](reviews/ipra87-bundle-followup-translated-join-independent-pass/README.md)
+have passed with matching rows on the classical bundle snapshot. Later source
 refresh, inherited provider ancestry, and ordinary native consistency comparison
 remain open; the native theorem concerns translated refutation.
 
@@ -95,10 +95,9 @@ The [13-variable native translated-refutation client](Lean/DiophantineConsistenc
 has also compiled in a [preliminary provider union](reviews/ipra86-translated-refutation-preliminary/README.md)
 with no additional theorem hypothesis. That union has a recorded partial
 object audit but the original 86-side compile environment was not fully
-reauthenticated. A subsequent [35-module guarded author replay](reviews/ipra86-bundle-followup-translated-join-author-pass/README.md)
-has passed on the authenticated classical bundle snapshot. Its independent
-peer, later source refresh, and ordinary native consistency comparison remain
-open.
+reauthenticated. Subsequent [35-module guarded author and independent replays](reviews/ipra86-bundle-followup-translated-join-independent-pass/README.md)
+have passed with matching rows on the authenticated classical bundle snapshot.
+Later source refresh and ordinary native consistency comparison remain open.
 
 The exact 14-variable client in
 [IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
@@ -205,8 +204,13 @@ remain to be assembled. Matching guarded replays retain historical ancestry.
 The needed positive [subtraction reconstruction](Lean/DiophantineConsistency/IPRAReconstructClosure.lean)
 `y−x=0 ∨ x+(y−x)=y` has now passed matching guarded author and independent
 replays. Its construction uses native open induction and does not assume
-arbitrary equality decidability. Its coherent connection to the successor-case
-provider remains to be checked.
+arbitrary equality decidability. A [single-provider reconstruction rebase](reviews/ipra-difference-reconstruct-independent.md)
+has also passed matched replays on the successor-logic provider. Connecting its
+positive branch to the universally closed successor case remains to be checked.
+The exact [native successor bridge](Lean/DiophantineConsistency/IPRAReconstructBridge.lean)
+`y−Sx=0 → (y−x≠0 → Sx=y)` has passed matched guarded replays. The closed
+step has also been rebuilt on the reconstruction provider with matched replays;
+the bridge must still be rebuilt and instantiated on that single provider.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
 with matching author and independent replays. The companion
