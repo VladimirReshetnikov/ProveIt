@@ -142,6 +142,7 @@ import Diophantine.Common.PellInt
 import Diophantine.Paper1980.PellDoubled
 import Diophantine.Paper1980.PellRelaxed
 import Diophantine.Paper1980.PellExponent
+import Diophantine.Paper1980.PellRatioCommon
 import Diophantine.Paper1980.PellRatio
 import Diophantine.Common.RadicalWeights
 import Diophantine.Common.RadicalBounds
