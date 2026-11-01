@@ -34,6 +34,12 @@ commutes with capture-avoiding rewriting. It has likewise only been invoked
 in the mixed-provider exploratory environment; these are not yet authenticated
 Lean proof results.
 
+The exploratory [`IPRAReferenceImages.lean`](../../Lean/DiophantineConsistency/IPRAReferenceImages.lean)
+contains candidate syntactic image statements for all five primitive-recursive
+defining-equation schemes, culminating in `defining_images`. This establishes
+neither the other reference-axiom images nor derivation transport, and its
+only invocation likewise used the untrusted mixed provider.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive

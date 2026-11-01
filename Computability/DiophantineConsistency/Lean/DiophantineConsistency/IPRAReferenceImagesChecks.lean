@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAReferenceImages
+
+#print axioms DiophantineConsistency.IPRAReferenceImages.embed_allClosure
+#print axioms DiophantineConsistency.IPRAReferenceImages.embed_equalClosure
+#print axioms DiophantineConsistency.IPRAReferenceImages.defining_images
