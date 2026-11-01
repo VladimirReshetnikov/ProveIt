@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85DivisibleGap
+#print axioms DiophantineConsistency.AdaptiveGap85DivisibleGap.divisible_blocks
+#print axioms DiophantineConsistency.AdaptiveGap85DivisibleGap.forward_preserves

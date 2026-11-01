@@ -76,3 +76,8 @@ A second Lean-checked standard-natural example has X=65536=2¹⁶, Y=36032920392
 ### Partial large-q large-Y power example
 
 A further Lean-checked standard-natural example has X=4294967296=2³², Y=140737488482304, q=8, positive eta and zeta, Y≥7·2³², q³∣Y, q≥5, both Pell norm equations and the first-index-20/main-index-32 recurrences. Even these combined partial conditions do not rule out X=2ᵐ. The example does not establish that q=8 is realizable at the actual fixed port, nor does it assert the signed-root equations or a full 85-equation zero. It does not establish the reverse implication. Author and independent replays match; see `reviews/adaptive-gap85-large-q-power-example-replay/` for source, objects, full logs and the inherited package boundary.
+
+
+### Conditional divisible-coordinate gap obstruction
+
+`AdaptiveGap85DivisibleGap.divisible_blocks` checks in every IΣ₁ model that positive F,C with b∣F cannot satisfy F+C<1+b; by symmetry the same applies if b∣C. Its forward lemma proves b∣F is preserved by adding b·t. Both known shifts change F and C by multiples of b=q−1, suggesting this residue is an obstruction to normalizing within their shift orbit. No actual zero is known to have a divisible coordinate, and the full shift-orbit claim is not formalized in this packet. Focused independent replays match (`reviews/adaptive-gap85-divisible-gap-replay/`), with historical inherited transitive ancestry.
