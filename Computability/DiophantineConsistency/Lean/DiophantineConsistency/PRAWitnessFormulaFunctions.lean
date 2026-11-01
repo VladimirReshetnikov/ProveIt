@@ -228,28 +228,20 @@ theorem bv_clauses : PRAWitnessFormulaRec.ClauseBounds (BV.blueprint ℒₛₑ�
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := wb_termBVVecGraph (M := M); have := wb_listMaxDef (M := M); have := wb_maxDef (M := M)
   have := wb_subDef (M := M)
-  have h_rel : WB M (BV.blueprint ℒₛₑₜ).rel.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]
-    refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
-      (expGraph2 ‘#4 + 2’ ‘2 * #2’) (expBound2 ‘#4 + 2’ ‘2 * #2’)
-      (dominates_expBound2 _ _) (mono_expBound2 _ _) (fun V _ _ e x h => ?_) (by wb_auto)
-    have h' := h; simp at h'
-    refine ⟨Exp.exp ((e 4 + 2) * Exp.exp (2 * e 2)), ?_, x, ?_, h⟩
-    · rw [eval_expGraph2]
-      exact ⟨Exp.exp (2 * e 2), by simpa using exponential_exp (2 * e 2),
-        by simpa using exponential_exp ((e 4 + 2) * Exp.exp (2 * e 2))⟩
-    · rw [h'.1]; exact le_trans (termBVVec_le _ _) (le_of_lt (repeatVec_lt _ _))
-  have h_nrel : WB M (BV.blueprint ℒₛₑₜ).nrel.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]
-    refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
-      (expGraph2 ‘#4 + 2’ ‘2 * #2’) (expBound2 ‘#4 + 2’ ‘2 * #2’)
-      (dominates_expBound2 _ _) (mono_expBound2 _ _) (fun V _ _ e x h => ?_) (by wb_auto)
-    have h' := h; simp at h'
-    refine ⟨Exp.exp ((e 4 + 2) * Exp.exp (2 * e 2)), ?_, x, ?_, h⟩
-    · rw [eval_expGraph2]
-      exact ⟨Exp.exp (2 * e 2), by simpa using exponential_exp (2 * e 2),
-        by simpa using exponential_exp ((e 4 + 2) * Exp.exp (2 * e 2))⟩
-    · rw [h'.1]; exact le_trans (termBVVec_le _ _) (le_of_lt (repeatVec_lt _ _))
+  have ⟨h_rel, h_nrel⟩ :
+      WB M (BV.blueprint ℒₛₑₜ).rel.val ∧ WB M (BV.blueprint ℒₛₑₜ).nrel.val := by
+    constructor <;>
+      simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;>
+      refine PRAWitnessTransfer.wb_exs_bound _ (by simp)
+        (expGraph2 ‘#4 + 2’ ‘2 * #2’) (expBound2 ‘#4 + 2’ ‘2 * #2’)
+        (dominates_expBound2 _ _) (mono_expBound2 _ _) (fun V _ _ e x h => ?_) (by wb_auto)
+    all_goals
+      have h' := h; simp at h'
+      refine ⟨Exp.exp ((e 4 + 2) * Exp.exp (2 * e 2)), ?_, x, ?_, h⟩
+      · rw [eval_expGraph2]
+        exact ⟨Exp.exp (2 * e 2), by simpa using exponential_exp (2 * e 2),
+          by simpa using exponential_exp ((e 4 + 2) * Exp.exp (2 * e 2))⟩
+      · rw [h'.1]; exact le_trans (termBVVec_le _ _) (le_of_lt (repeatVec_lt _ _))
   have ⟨h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges⟩ :
       WB M (BV.blueprint ℒₛₑₜ).verum.val ∧ WB M (BV.blueprint ℒₛₑₜ).falsum.val ∧
       WB M (BV.blueprint ℒₛₑₜ).and.val ∧ WB M (BV.blueprint ℒₛₑₜ).or.val ∧
