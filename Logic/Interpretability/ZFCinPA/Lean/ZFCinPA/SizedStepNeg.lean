@@ -41,15 +41,9 @@ theorem neg_step_le {P₀ : SF V 1} {F₁ : SF V 2} {u w : V} (hu : 2 ≤ u)
   obtain ⟨up, u4, uA⟩ := wD_up hw
   have hc := compiledLe (by decide) negTemplate_provable _ hu hK
   have lt := trD_le negTemplate tD_neg _ hK
-  obtain ⟨T, hT⟩ : ∃ T,
-      translateFormula (K6 P₀ F₁ ⊤ ⊤ (∼P₀) F₁)
-        (Rewriting.emb negTemplate) = T :=
-    ⟨_, rfl⟩
-  rw [hT] at hc lt
   simp only [negTemplate, LogicalConnective.HomClass.map_imply,
     LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_tot₁, tr_refl₀₁,
-    tr_negDefP, tr_eqDefF, tr_tot₅, tr_refl₄₅] at hT
-  subst hT
+    tr_negDefP, tr_eqDefF, tr_tot₅, tr_refl₄₅] at hc lt
   have hA := imp_ante_le lt
   have hA2 := and_right_le hA
   have hA3 := and_right_le hA2
@@ -74,31 +68,17 @@ theorem base_step_le (isTop : Bool) {u w : V} (hu : 2 ≤ u)
       simp only [cond_true] at hK ⊢
       have hc := compiledLe (by decide) topBase_provable _ hu hK
       have lt := trD_le topBase tD_top _ hK
-      obtain ⟨T, hT⟩ : ∃ T,
-          translateFormula (K6 ⊤ ⊤ ⊤ ⊤ ⊤ (succT (V := V))) (Rewriting.emb topBase) = T :=
-        ⟨_, rfl⟩
-      rw [hT] at hc lt
-      simp only [topBase, LogicalConnective.HomClass.map_imply,
-        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_topDefP, tr_succDefF,
-        tr_tot₅, tr_refl₄₅] at hT
-      subst hT
-      have pA := dall_iff (⊤ : SF V 1) (hK 4) hu
       have hcl := c_top_le u
   case' false =>
       simp only [cond_false] at hK ⊢
       have hc := compiledLe (by decide) botBase_provable _ hu hK
       have lt := trD_le botBase tD_bot _ hK
-      obtain ⟨T, hT⟩ : ∃ T,
-          translateFormula (K6 ⊤ ⊤ ⊤ ⊤ ⊥ (succT (V := V))) (Rewriting.emb botBase) = T :=
-        ⟨_, rfl⟩
-      rw [hT] at hc lt
-      simp only [botBase, LogicalConnective.HomClass.map_imply,
-        LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_botDefP, tr_succDefF,
-        tr_tot₅, tr_refl₄₅] at hT
-      subst hT
-      have pA := dall_iff (⊥ : SF V 1) (hK 4) hu
       have hcl := c_bot_le u
   all_goals
+    simp only [topBase, botBase, LogicalConnective.HomClass.map_imply,
+      LogicalConnective.HomClass.map_and, translateFormula_imp, tr_and', tr_topDefP, tr_botDefP,
+      tr_succDefF, tr_tot₅, tr_refl₄₅] at hc lt
+    have pA := dall_iff _ (hK 4) hu
     have c1 := dandW (u4 0) (imp_ante_le lt) (uA 0) pA (le_trans (wD_i hw) (up 0))
       (dall2_swap (succT (V := V)) (hK 5) hu) (le_trans (wD_s hw) (up 0))
     exact (dmpW (u4 2) lt (uA 2) hc (le_trans (le_trans hcl (wD_c hw)) (up 2)) c1
