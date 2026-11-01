@@ -157,6 +157,34 @@ noncomputable def dominates (Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
     (Rew.subst ![#0, Rew.bShift Tt] ▹
       Semiformula.lMap embedding (“x y. x ≤ y” : ArithmeticSemisentence 2)))
 
+/-- Reduce a domination sentence to its value in a candidate-PRA model. -/
+theorem dominates_of_val (Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA] (t : M) (e : Fin n → M),
+      (Semiformula.lMap embedding Tg).Eval (t :> e) Empty.elim →
+        (Semiformula.lMap embedding (“x y. x ≤ y” : ArithmeticSemisentence 2)).Eval
+          ![t, Tt.val e Empty.elim] Empty.elim) :
+    PRA ⊢ dominates Tg Tt := by
+  apply Theory.Proof.complete_on_eq_models.{0,0}
+  intro M _ _ _ hM
+  letI : M↓[language] ⊧* PRA := hM
+  simp only [models_iff, dominates, Semiformula.eval_allClosure, LogicalConnective.HomClass.map_imply]
+  intro v hv
+  rw [Semiformula.eval_rew]
+  have hvec : (Semiterm.val v Empty.elim ∘
+      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift Tt]) ∘ Semiterm.bvar) =
+      ![v 0, Tt.val (fun i => v i.succ) Empty.elim] := by
+    funext i; refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun k => Fin.elim0 k) j) i <;>
+      simp [Semiterm.val_bShift']
+  have hf : (Semiterm.val v Empty.elim ∘
+      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift Tt]) ∘
+        Semiterm.fvar) = (Empty.elim : Empty → M) := Subsingleton.elim _ _
+  rw [hvec, hf]
+  have hv' : v = v 0 :> fun i => v i.succ := (Fin.cons_self_tail v).symm
+  rw [hv'] at hv
+  exact h M (v 0) (fun i => v i.succ) hv
+
+
 /-- The open matrix: free variables `x = &0`, `w = &1`, `e = &2, …`; bound `z`. -/
 noncomputable def theta (cA cC : Code (n + 2)) (Tt : TermN n) : Semiproposition language 1 :=
   ∼(Rew.embSubsts (fun i : Fin (n + 2) => (&(i : ℕ) : Semiterm language ℕ 1)) ▹ characteristicMatrix cA) ⋎
@@ -339,33 +367,20 @@ theorem val_lMap_std (P : ArithmeticSemiterm Empty n) (e : Fin n → M) :
 
 theorem dominates_poly (P : ArithmeticSemiterm Empty n) :
     PRA ⊢ dominates (polyGraph P) (Semiterm.lMap embedding P) := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
+  refine dominates_of_val _ _ fun M _ _ _ hM x e hx => ?_
   letI : M↓[language] ⊧* PRA := hM
   letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
   letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
   letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
   letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
   letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  simp only [models_iff, dominates, Semiformula.eval_allClosure, LogicalConnective.HomClass.map_imply]
-  intro v hv
-  rw [eval_lMap_std] at hv
-  have hv0 : v 0 = P.val (fun i => v i.succ) Empty.elim := by
+  rw [eval_lMap_std] at hx ⊢
+  have hx0 : x = P.val e Empty.elim := by
     simpa [polyGraph, Semiformula.Operator.val, Semiformula.Operator.Eq.sentence_eq,
-      Semiterm.val_bShift'] using hv
-  rw [Semiformula.eval_rew]
-  have hvec : (Semiterm.val v Empty.elim ∘
-      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift (Semiterm.lMap embedding P)]) ∘
-        Semiterm.bvar) = ![v 0, P.val (fun i => v i.succ) Empty.elim] := by
-    funext i; refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun k => Fin.elim0 k) j) i <;>
-      simp [Semiterm.val_bShift', val_lMap_std]
-  have hf : (Semiterm.val v Empty.elim ∘
-      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift (Semiterm.lMap embedding P)]) ∘
-        Semiterm.fvar) = (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [hvec, hf, eval_lMap_std]
-  simp [Semiformula.Operator.val, Semiformula.Operator.LE.sentence_eq, Semiformula.Operator.Eq.sentence_eq,
-    Semiformula.Operator.LT.sentence_eq]
-  exact Or.inl hv0
+      Semiterm.val_bShift'] using hx
+  rw [val_lMap_std, hx0]
+  simp [Semiformula.Operator.val, Semiformula.Operator.LE.sentence_eq,
+    Semiformula.Operator.Eq.sentence_eq, Semiformula.Operator.LT.sentence_eq]
 
 end transfer
 

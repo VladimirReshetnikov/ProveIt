@@ -119,25 +119,8 @@ theorem dominates_of_val (Tg : ArithmeticSemisentence (n + 1)) (Tt : TermN n)
       (Semiformula.lMap embedding Tg).Eval (t :> e) Empty.elim →
         (Semiformula.lMap embedding (“x y. x ≤ y” : ArithmeticSemisentence 2)).Eval
           ![t, Tt.val e Empty.elim] Empty.elim) :
-    PRA ⊢ dominates Tg Tt := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
-  letI : M↓[language] ⊧* PRA := hM
-  simp only [models_iff, dominates, Semiformula.eval_allClosure, LogicalConnective.HomClass.map_imply]
-  intro v hv
-  rw [Semiformula.eval_rew]
-  have hvec : (Semiterm.val v Empty.elim ∘
-      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift Tt]) ∘ Semiterm.bvar) =
-      ![v 0, Tt.val (fun i => v i.succ) Empty.elim] := by
-    funext i; refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun k => Fin.elim0 k) j) i <;>
-      simp [Semiterm.val_bShift']
-  have hf : (Semiterm.val v Empty.elim ∘
-      ⇑(Rew.subst ![(#0 : Semiterm language Empty (n + 1)), Rew.bShift Tt]) ∘
-        Semiterm.fvar) = (Empty.elim : Empty → M) := Subsingleton.elim _ _
-  rw [hvec, hf]
-  have hv' : v = v 0 :> fun i => v i.succ := (Fin.cons_self_tail v).symm
-  rw [hv'] at hv
-  exact h M (v 0) (fun i => v i.succ) hv
+    PRA ⊢ dominates Tg Tt :=
+  PRAWitnessTransfer.dominates_of_val Tg Tt h
 
 section dom
 variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
