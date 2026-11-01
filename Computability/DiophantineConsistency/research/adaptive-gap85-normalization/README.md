@@ -29,6 +29,17 @@ and `reviews/adaptive-gap85-balance-least-replay/`; the historical project
 and package ancestry and lack of a direct-import trace remain as recorded.
 Neither conditional result proves existence of a normalized representative.
 
+The corresponding least-`F` result is established separately in
+`AdaptiveGap85FirstScore`: positive-zero `F` scores are Σ₁-definable, so any
+existing positive zero yields a positive zero with minimum `F`. If the first
+port is positive, `minimal_first_has_blocker` shows that this witness has
+either `F≤A(cU)` or `γ≤(q²−1)(A+1)c`, blocking the strict third shift.
+The independently audited author/peer proof packet is
+`reviews/adaptive-gap85-first-score-replay/`. This minimizing witness need
+not be the one minimizing `F+C` above. Neither result establishes the
+reverse implication or existence of a zero; historical transitive and
+dynamic package ancestry remains inherited.
+
 `AdaptiveGap85ScoreCoding.zeroScore_definable` is now replayed for the actual
 85 literal in arbitrary IΣ₁ models. For each fixed external natural port
 tuple, it codes a 13-tuple with Cantor pairing, proves every fixed natural
