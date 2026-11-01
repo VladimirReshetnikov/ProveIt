@@ -112,6 +112,14 @@ historical 42-variable native provider. The author-only ancestor and inherited
 package-transitive and dynamic-import ancestry remain qualifications. The
 display and exact degree have separate finite checks.
 
+The [36-variable degree-6 equation](equation6-36.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRAAQ36Native.lean) for its
+exact shifted fixed-port literal. Its [focused paired replay](reviews/adaptive-aq36-native-replay/README.md)
+matched nine modules and all seven rebuilt model objects. The general model
+theorem assumes a nonnegative first port, which the fixed port satisfies.
+The historical provider and inherited ancestry qualifications remain; exact
+degree and display are checked by separate finite computations.
+
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
 for its exact shifted fixed-port literal. Its [focused guarded comparison](reviews/ipra-named51-native-verification/README.md)

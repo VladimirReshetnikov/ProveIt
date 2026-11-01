@@ -17,5 +17,5 @@ valuation map for arbitrary inputs.
 
 **Open:** the 35-variable graph is not yet bound to a Lean literal; the required
 zero-dependent positivity, model equivalence, native iPRA endpoint and guarded
-replays remain to be proved. Its parent proof is open as well. No minimality is
-claimed.
+replays remain to be proved. The 36-variable parent now has a matched native
+endpoint on a historical provider. No minimality is claimed.
