@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRATheoryHilbertBridge
+#print axioms DiophantineConsistency.IPRATheoryHilbertBridge.theoryToExtended
+#print axioms DiophantineConsistency.IPRATheoryHilbertBridge.extendedToTheory
+#check DiophantineConsistency.IPRATheoryHilbertBridge.extendedToTheory

@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRAFoundationZFCTheoryStability
+#print axioms DiophantineConsistency.IPRAFoundationZFCTheoryStability.matrixCompareFromTheory
+#print axioms DiophantineConsistency.IPRAFoundationZFCTheoryStability.zfcEquivFromTheory
+#check DiophantineConsistency.IPRAFoundationZFCTheoryStability.zfcEquivFromTheory
