@@ -82,32 +82,20 @@ theorem unary_sound (r : Row) (seen : List Row)
 theorem row_sound (r : Row) (seen : List Row)
     (hs : ∀ a∈seen,Good a) (h : valid r seen=true) : Good r := by
   unfold valid at h
-  split at h
-  next h0 =>
-    simp only [atomicEquations,decide_eq_true_eq] at h
+  split_ifs at h with h0 h1 h2 hb hu
+  · simp only [atomicEquations,decide_eq_true_eq] at h
     refine ⟨fMem r.first r.second,?_,?_⟩
     · simpa only [h0,code_mem] using h.1
     · simpa only [bound] using h.2
-  next h0 =>
-    split at h
-    next h1 =>
-      simp only [atomicEquations,decide_eq_true_eq] at h
-      refine ⟨fEq r.first r.second,?_,?_⟩
-      · simpa only [h1,code_eq] using h.1
-      · simpa only [bound] using h.2
-    next h1 =>
-      split at h
-      next h2 =>
-        simp only [bottomEquations,decide_eq_true_eq] at h
-        exact ⟨fBot,by simpa only [code_bot] using h.1,
-          by simpa only [bound] using h.2⟩
-      next h2 =>
-        split at h
-        next hb => exact binary_sound r seen hs hb h
-        next hb =>
-          split at h
-          next hu => exact unary_sound r seen hs hu h
-          next hu => contradiction
+  · simp only [atomicEquations,decide_eq_true_eq] at h
+    refine ⟨fEq r.first r.second,?_,?_⟩
+    · simpa only [h1,code_eq] using h.1
+    · simpa only [bound] using h.2
+  · simp only [bottomEquations,decide_eq_true_eq] at h
+    exact ⟨fBot,by simpa only [code_bot] using h.1,
+      by simpa only [bound] using h.2⟩
+  · exact binary_sound r seen hs hb h
+  · exact unary_sound r seen hs hu h
 
 def run : List Row → List Row → Option (List Row)
   | [],seen => some seen
