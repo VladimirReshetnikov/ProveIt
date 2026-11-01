@@ -27,9 +27,8 @@ theorem proves_succ_bound (φ : ArithmeticSemisentence 2) (ψ : ArithmeticSemise
   letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
   have he' : (Semiformula.lMap embedding φ).Eval ![e 0,e 1] Empty.elim := by
     have hv : ![e 0,e 1] = e := by
-      funext i
-      refine Fin.cases rfl (fun j => ?_) i
-      exact Fin.cases rfl (fun j => Fin.elim0 j) j
+      apply funext
+      simp [Fin.forall_fin_succ]
     rw [hv]
     exact he
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
@@ -42,15 +41,11 @@ theorem proves_succ_bound (φ : ArithmeticSemisentence 2) (ψ : ArithmeticSemise
   have hv : (Semiterm.val e Empty.elim ∘
         (Rew.subst ![#0, #1, applyCode addCode ![#1, applyCode oneCode Fin.elim0]]) ∘ Semiterm.bvar) =
       ![e 0, e 1, e 1+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases ?_ (fun j => Fin.elim0 j) j
-    simp [Function.comp_def, Rew.subst, applyCode, Semiterm.val_func]
+    apply funext
+    simp [Fin.forall_fin_succ, Function.comp_def, Rew.subst, applyCode, Semiterm.val_func]
     congr 1
-    funext k
-    refine Fin.cases rfl (fun k => ?_) k
-    refine Fin.cases ?_ (fun k => Fin.elim0 k) k
+    apply funext
+    simp [Fin.forall_fin_succ, Semiterm.val_func]
     change Structure.func (L := language) oneCode
       (Semiterm.val e Empty.elim ∘ (Fin.elim0 : Fin 0 → TermN 2)) =
       Structure.func (L := language) oneCode Fin.elim0
