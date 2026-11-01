@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAOrderErasure
+
+#print axioms DiophantineConsistency.IPRAOrderErasure.term_roundtrip
+#print axioms DiophantineConsistency.IPRAOrderErasure.erase_embed
+#print axioms DiophantineConsistency.IPRAOrderErasure.erase_preserves_open

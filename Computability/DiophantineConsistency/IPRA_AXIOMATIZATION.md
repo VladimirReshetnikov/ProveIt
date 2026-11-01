@@ -21,6 +21,17 @@ defined in [`PRAFiniteFunctionCodes.lean`](Lean/DiophantineConsistency/PRAFinite
 Addition, multiplication and one are designated codes, not separate primitive
 axioms. Variables range over the arithmetic domain.
 
+For an independent comparison, [Moschovakis's account of intuitionistic
+PRA₀](https://www.math.ucla.edu/~joan/techgothenburghandout.pdf) describes
+primitive-recursive function symbols, intuitionistic logic and quantifier-free
+induction, and discusses the corresponding first-order formulation. For an
+explicit intensional construction of function symbols, [Aehlig's arithmetic
+language](https://www.linta.de/~aehlig/university/pub/04-jsl.pdf) uses zero,
+successor, projections, composition and primitive recursion; the surrounding
+system in that paper is classical, so it supplies a language presentation,
+not the intuitionistic logic. These references motivate a comparison target;
+they do not themselves prove that the Lean theories are equivalent.
+
 ## Nonlogical axiom schemes
 
 All displayed free variables are universally closed; parameters in the schemes
@@ -103,3 +114,12 @@ needed; the experiment does not show an inconsistency in this project.
 A Lean theorem asserting `nativeTheory ⊢ ψ` is a metatheoretic assertion that
 an object-theory derivation exists. Principles used by Lean in that
 metatheoretic proof do not become additional object-theory axioms.
+
+One concrete remaining comparison is an independently specified first-order
+intuitionistic theory in the constructor-code language with equality alone and
+successor-step open induction. A translation can erase each `<` atom into the
+candidate's comparison-code equation. Proving that translation preserves
+quantifier-freeness, transfers every axiom and derivation in both directions,
+and maps the particular consistency sentence is still required. Distinct
+construction codes must not silently be identified just because they compute
+the same standard function.
