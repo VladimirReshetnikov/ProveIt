@@ -1,0 +1,7 @@
+# 14-equation classical candidate-PRA join: author PASS
+
+The 73-module suffix completed with final authentication PASS against `/tmp/pra14-full-transitive-g3ull6n_`; this author state and all 73 compiler logs are frozen here. Its exact source, parent and external anchors, authenticated launcher, and historical negative precondition tests are in `reviews/pra14-zfc-join-snapshot/`. The endpoint check prints only `propext`, `Classical.choice` and `Quot.sound`. An independent same-parent suffix replay is in progress; author PASS is not independent replay.
+
+A separate read-only source audit `workspace-source-audit.json` compares each suffix source with its frozen SHA-256. The parent receipt `reviews/pra14-isolated-author-pass/` separately records its 847/847 workspace-source match at audit time. These checks concern source bytes, not Foundation/package transitive ancestry or dynamically imported objects. The 847 parent used source-declared transitive hashes reconstructed from surviving origin objects to reuse 563 objects, which cannot exclude unrecorded mutation during their original compilation. Those external and original-reuse boundaries are inherited here.
+
+`PRACurrentZFCStrict.current_equivalence` is the **classical candidate-PRA** equation/consistency theorem; it is not a native intuitionistic-PRA proof. An iPRA proof still requires the remaining native equality axiom-image obligations and the separately identified target/consistency bridge.
