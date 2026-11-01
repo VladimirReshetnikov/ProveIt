@@ -29,12 +29,8 @@ def eqDecOpen (h : nativeTheory ⊢! eqDecSentence) (a b : Term language ℕ) :
     extended nativeTheory ⊢! eqAt a b ⋎ ∼eqAt a b := by
   have hp := instantiateTheory (T := nativeTheory) (eqMatrix ⋎ ∼eqMatrix) h ![a,b]
   have hv : (fun i : Fin 2 => (Rew.embSubsts ![a,b]) (![#0,#1] i)) = ![a,b] := by
-    funext i
-    cases i using Fin.cases with
-    | zero => simp
-    | succ j => cases j using Fin.cases with
-      | zero => simp
-      | succ j => exact Fin.elim0 j
+    apply funext
+    simp [Fin.forall_fin_two]
   simpa [eqAt, eqMatrix, Semiformulaᵢ.rewAux,
     Semiformulaᵢ.rew_rel, Function.comp_def, hv] using hp
 
@@ -43,23 +39,12 @@ def orderOpen (a b : Term language ℕ) :
   have ho : nativeTheory ⊢! orderDefinitionI := Axiomatized.prfAxm (NativeAxiom.basic BasicAxiomI.orderDefinition)
   have hp := instantiateTheory (T := nativeTheory) orderMatrix ho ![a,b]
   have hv : (fun i : Fin 2 => (Rew.embSubsts ![a,b]) (![#0,#1] i)) = ![a,b] := by
-    funext i
-    cases i using Fin.cases with
-    | zero => simp
-    | succ j => cases j using Fin.cases with
-      | zero => simp
-      | succ j => exact Fin.elim0 j
+    apply funext
+    simp [Fin.forall_fin_two]
   have ht : (fun i : Fin 2 => (Rew.embSubsts ![a,b]) (![applyCode ltBitCode (fun j => #j), applyCode oneCode Fin.elim0] i)) =
       ![Semiterm.func ltBitCode ![a,b], Semiterm.func oneCode Fin.elim0] := by
-    funext i
-    cases i using Fin.cases with
-    | zero => simp [applyCode, Rew.func, Function.comp_def]
-    | succ j => cases j using Fin.cases with
-      | zero =>
-        simp [applyCode, Rew.func, Function.comp_def]
-        funext k
-        exact Fin.elim0 k
-      | succ j => exact Fin.elim0 j
+    apply funext
+    simp [Fin.forall_fin_two, applyCode, Rew.func, Function.comp_def, funext_iff]
   simpa [orderMatrix, ltAt, eqAt, Semiformulaᵢ.rewAux,
     Semiformulaᵢ.rew_rel, Function.comp_def, hv, ht] using hp
 
