@@ -219,12 +219,10 @@ theorem bv_clauses : ClauseBounds IsUTerm.BV.blueprint M := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := wb_listMaxDef (M := M)
-  have hb : WB M IsUTerm.BV.blueprint.bvar.val := by
-    simp only [IsUTerm.BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have hf : WB M IsUTerm.BV.blueprint.fvar.val := by
-    simp only [IsUTerm.BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have hu : WB M IsUTerm.BV.blueprint.func.val := by
-    simp only [IsUTerm.BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
+  have ⟨hb, hf, hu⟩ : WB M IsUTerm.BV.blueprint.bvar.val ∧ WB M IsUTerm.BV.blueprint.fvar.val ∧
+      WB M IsUTerm.BV.blueprint.func.val := by
+    refine ⟨?_, ?_, ?_⟩ <;>
+      simp only [IsUTerm.BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;> wb_auto
   refine ⟨hb, hf, hu, wb_neg_graphDelta_pi _ hb ‘#0 + 1’ ?_, wb_neg_graphDelta_pi _ hf ‘0’ ?_,
     wb_neg_graphDelta_pi _ hu ‘#3’ ?_⟩
   · intro V _ _ e y h; simp [IsUTerm.BV.blueprint] at h; simp [h]
@@ -296,12 +294,10 @@ theorem subst_clauses : ClauseBounds TermSubst.blueprint M := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := wb_nthDef (M := M); have := wb_qqFvarDef (M := M); have := wb_qqFuncDef (M := M)
-  have hb : WB M TermSubst.blueprint.bvar.val := by
-    simp only [TermSubst.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have hf : WB M TermSubst.blueprint.fvar.val := by
-    simp only [TermSubst.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have hu : WB M TermSubst.blueprint.func.val := by
-    simp only [TermSubst.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
+  have ⟨hb, hf, hu⟩ : WB M TermSubst.blueprint.bvar.val ∧ WB M TermSubst.blueprint.fvar.val ∧
+      WB M TermSubst.blueprint.func.val := by
+    refine ⟨?_, ?_, ?_⟩ <;>
+      simp only [TermSubst.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;> wb_auto
   refine ⟨hb, hf, hu, wb_neg_graphDelta_pi _ hb ‘#1’ ?_,
     wb_neg_graphDelta_pi _ hf ‘(1 + #0 + 1) * (1 + #0 + 1) + 1’ ?_,
     wb_neg_graphDelta_pi _ hu (funcPoly 0 1 3) ?_⟩
@@ -313,12 +309,10 @@ theorem shift_clauses : ClauseBounds TermShift.blueprint M := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := wb_qqBvarDef (M := M); have := wb_qqFvarDef (M := M); have := wb_qqFuncDef (M := M)
-  have hb : WB M TermShift.blueprint.bvar.val := by
-    simp only [TermShift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have hf : WB M TermShift.blueprint.fvar.val := by
-    simp only [TermShift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have hu : WB M TermShift.blueprint.func.val := by
-    simp only [TermShift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
+  have ⟨hb, hf, hu⟩ : WB M TermShift.blueprint.bvar.val ∧ WB M TermShift.blueprint.fvar.val ∧
+      WB M TermShift.blueprint.func.val := by
+    refine ⟨?_, ?_, ?_⟩ <;>
+      simp only [TermShift.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;> wb_auto
   refine ⟨hb, hf, hu, wb_neg_graphDelta_pi _ hb ‘(#0 + 1) * (#0 + 1) + 1’ ?_,
     wb_neg_graphDelta_pi _ hf ‘(1 + (#0 + 1) + 1) * (1 + (#0 + 1) + 1) + 1’ ?_,
     wb_neg_graphDelta_pi _ hu (funcPoly 0 1 3) ?_⟩
@@ -330,12 +324,10 @@ theorem bShift_clauses : ClauseBounds TermBShift.blueprint M := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := wb_qqBvarDef (M := M); have := wb_qqFvarDef (M := M); have := wb_qqFuncDef (M := M)
-  have hb : WB M TermBShift.blueprint.bvar.val := by
-    simp only [TermBShift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have hf : WB M TermBShift.blueprint.fvar.val := by
-    simp only [TermBShift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have hu : WB M TermBShift.blueprint.func.val := by
-    simp only [TermBShift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
+  have ⟨hb, hf, hu⟩ : WB M TermBShift.blueprint.bvar.val ∧ WB M TermBShift.blueprint.fvar.val ∧
+      WB M TermBShift.blueprint.func.val := by
+    refine ⟨?_, ?_, ?_⟩ <;>
+      simp only [TermBShift.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;> wb_auto
   refine ⟨hb, hf, hu, wb_neg_graphDelta_pi _ hb ‘(#0 + 1 + 1) * (#0 + 1 + 1) + 1’ ?_,
     wb_neg_graphDelta_pi _ hf ‘(1 + #0 + 1) * (1 + #0 + 1) + 1’ ?_,
     wb_neg_graphDelta_pi _ hu (funcPoly 0 1 3) ?_⟩
