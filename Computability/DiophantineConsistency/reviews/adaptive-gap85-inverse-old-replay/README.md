@@ -1,0 +1,5 @@
+# Conditional inverse-old zero transfer
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked balance-exact provider and guard its state, source, object, 408 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Its parent rebuilt four transfer modules from pinned source on a selected balance provider. Other project and package transitive source ancestry remains historical; this packet does not reconstruct or independently audit it.
+
+In every IΣ₁ model, the explicit inverse of the original C-increasing shift yields a positive 85-zero from a positive 85-zero under the stated strict C, r and gamma subtraction bounds. If the resulting tuple also satisfies the reverse gap, it constructs a natural zero of the shifted 86 expression. The two inverse identities are checked under their respective subtraction bounds. No theorem here establishes those hypotheses for arbitrary 85-zeros or asserts that any particular zero exists; the unconditional 85 reverse implication remains open.

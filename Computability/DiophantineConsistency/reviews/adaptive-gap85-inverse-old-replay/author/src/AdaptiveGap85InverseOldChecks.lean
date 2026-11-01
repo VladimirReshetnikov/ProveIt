@@ -1,0 +1,7 @@
+import DiophantineConsistency.AdaptiveGap85InverseOld
+#print axioms DiophantineConsistency.AdaptiveGap85InverseOld.shift_inverse
+#print axioms DiophantineConsistency.AdaptiveGap85InverseOld.inverse_shift
+#print axioms DiophantineConsistency.AdaptiveGap85InverseOld.inverse_positive_zero
+#print axioms DiophantineConsistency.AdaptiveGap85InverseOld.inverse_old_zero_to_86
+#check DiophantineConsistency.AdaptiveGap85InverseOld.inverse_positive_zero
+#check DiophantineConsistency.AdaptiveGap85InverseOld.inverse_old_zero_to_86

@@ -1,0 +1,5 @@
+# A necessary inverse shift for entering the gap
+
+Both replay processes exited successfully and their source, object, and full-log rows match; `comparison.json` records the hashes. The replays use the checked forward-orbit provider and guard its state, source, object, 406 selected inherited project object/companion paths, Lean binary, this replay driver, and this source. Package and transitive project source ancestry remain historical; the replays do not reconstruct or independently audit them.
+
+In every IΣ₁ model, if one of the three specified coordinate shifts or its inverse takes a positive tuple from outside into the reverse gap with `Jβ≥2`, then that step is the inverse of the original C-increasing shift. Nonzero inverse balance and inverse third shifts are excluded. The coordinate relation is broader than zero-preserving moves, and the theorem does not assert that the necessary inverse step exists or that an arbitrary 85-zero has such a path. Other transformations remain possible; the reverse implication remains open.

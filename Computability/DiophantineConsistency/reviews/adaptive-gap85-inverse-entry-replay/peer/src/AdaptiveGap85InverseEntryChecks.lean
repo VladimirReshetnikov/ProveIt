@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveGap85InverseEntry
+#print axioms DiophantineConsistency.AdaptiveGap85InverseEntry.gap_source_balance_zero
+#print axioms DiophantineConsistency.AdaptiveGap85InverseEntry.gap_source_third_zero
+#print axioms DiophantineConsistency.AdaptiveGap85InverseEntry.entry_requires_inverse_old
+#check DiophantineConsistency.AdaptiveGap85InverseEntry.entry_requires_inverse_old

@@ -1,0 +1,13 @@
+'DiophantineConsistency.AdaptiveGap85InverseEntry.gap_source_balance_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85InverseEntry.gap_source_third_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85InverseEntry.entry_requires_inverse_old' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85InverseEntry.entry_requires_inverse_old.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v w : Fin 13 → V) (hb : 2 ≤ v 0 * ↑(p 0))
+  (h : DiophantineConsistency.AdaptiveGap85InverseEntry.PositiveBiStep p v w) (hnot : ¬v 1 + v 2 < 1 + v 0 * ↑(p 0))
+  (hg : w 1 + w 2 < 1 + w 0 * ↑(p 0)) : v = DiophantineConsistency.AdaptiveGap85ShiftModel.shift p w

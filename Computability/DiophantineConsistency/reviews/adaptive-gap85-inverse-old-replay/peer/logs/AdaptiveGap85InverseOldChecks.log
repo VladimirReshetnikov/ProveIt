@@ -1,0 +1,71 @@
+'DiophantineConsistency.AdaptiveGap85InverseOld.shift_inverse' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85InverseOld.inverse_shift' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85InverseOld.inverse_positive_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85InverseOld.inverse_old_zero_to_86' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85InverseOld.inverse_positive_zero.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ (i : Fin 13), 0 < v i)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v)
+  (hC :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have U := v 7 * (q * q);
+    have c := v 9 + v 7 * (v 9 + v 10);
+    b * c * U < v 2)
+  (hr :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have U := v 7 * (q * q);
+    have c := v 9 + v 7 * (v 9 + v 10);
+    have A := v 6 + ↑(p 1) * q;
+    b * c * U * A * (v 9 + v 10) + c * U * A < v 8)
+  (hg :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have c := v 9 + v 7 * (v 9 + v 10);
+    b * c * (q * q - 1) < v 12) :
+  (∀ (i : Fin 13), 0 < DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v i) ∧
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j))
+      (DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v)
+DiophantineConsistency.AdaptiveGap85InverseOld.inverse_old_zero_to_86.{u_1} {V : Type u_1} [LO.ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ (i : Fin 13), 0 < v i)
+  (hz :
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v)
+  (hC :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have U := v 7 * (q * q);
+    have c := v 9 + v 7 * (v 9 + v 10);
+    b * c * U < v 2)
+  (hr :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have U := v 7 * (q * q);
+    have c := v 9 + v 7 * (v 9 + v 10);
+    have A := v 6 + ↑(p 1) * q;
+    b * c * U * A * (v 9 + v 10) + c * U * A < v 8)
+  (hg :
+    have b := v 0 * ↑(p 0);
+    have q := 1 + b;
+    have c := v 9 + v 7 * (v 9 + v 10);
+    b * c * (q * q - 1) < v 12)
+  (hgap :
+    DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v 1 +
+        DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v 2 <
+      1 + DiophantineConsistency.AdaptiveGap85InverseOld.inverse p v 0 * ↑(p 0)) :
+  ∃ u,
+    DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+      (DiophantineConsistency.AdaptiveEquationSyntax2011.positiveShift
+        (DiophantineConsistency.AdaptiveDirectOrdinate86Literal.expressionAt86 fun j => ↑(p j)))
+      u
