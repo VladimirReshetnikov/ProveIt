@@ -36,9 +36,19 @@ This independently removes the manual transcription step for the boxed
 equation and its abbreviations. It does not parse the fixed-constant recipes,
 establish the JSON-to-Lean bridge, or verify PDF rendering.
 
+The companion [14-variable TeX display parser](verify_display_tex14.py) uses
+the same arithmetic parser to read the 14 positive unknowns, all 22 displayed
+abbreviations, and the final factor product directly from `equation.tex`. It
+compares each abbreviation and the final factor wiring with the pinned
+65-operation candidate JSON and rejects two altered-display controls. Like the
+86 checker, it is a finite external check of the polynomial display, not a
+parser for the fixed-constant recipes or a Lean proof of the JSON binding.
+
 ```sh
 python3 Computability/DiophantineConsistency/research/adaptive-direct-ordinate86/verify_display_tex86.py
 python3 -O Computability/DiophantineConsistency/research/adaptive-direct-ordinate86/verify_display_tex86.py
+python3 Computability/DiophantineConsistency/research/adaptive-direct-ordinate86/verify_display_tex14.py
+python3 -O Computability/DiophantineConsistency/research/adaptive-direct-ordinate86/verify_display_tex14.py
 ```
 
 ## Reproducible PDF bytes and decimal display
