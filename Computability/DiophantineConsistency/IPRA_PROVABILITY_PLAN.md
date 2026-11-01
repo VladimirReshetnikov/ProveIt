@@ -155,7 +155,12 @@ parent. Its recorded project and external ancestry is still inherited. A later
 upstream refactor changed the bound endpoint and made `PRAConBForward` relevant;
 a [six-module certificate refresh](reviews/ipra-zfc-bound-certificate-replay/README.md)
 has now passed matching author and independent replays, with the inherited
-ancestry boundary stated there. The analogous HA normalization also uses
+ancestry boundary stated there. A later [historical single-provider join](Lean/DiophantineConsistency/IPRADeepBoundJoin.lean)
+has independently replayed the translated bound together with the exact ZFC
+deep-stability client, discharging its bound premise. Its native equality
+decision and remaining deep-matrix stability proofs remain explicit; the
+inherited ancestry and current-source limitations are recorded in its receipt.
+The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
@@ -185,6 +190,21 @@ historical. On that provider, [IPRANativeOpenDecidable.lean](Lean/DiophantineCon
 constructs free-variable decisions for all open NNF formulas and order atoms,
 and open-formula stability, with no extra proof premise. Its author and
 independent replays match; it does not establish bounded-search stability.
+A [native selector certificate](Lean/DiophantineConsistency/IPRABoundedSelector.lean)
+now proves, for each primitive-recursive test code, that any zero witness
+below a bound makes the fixed search output a zero witness below that bound.
+It transfers a classical open certificate using native open-formula stability;
+matched guarded replays retain the inherited provider boundary. Bounded
+existential stability and characteristic correctness for the actual ZFC
+matrix remain separate obligations. A [generic selector-stability client](Lean/DiophantineConsistency/IPRASelectorStability.lean)
+proves existential stability from explicit selector, selected-instance
+stability, and characteristic-correctness proofs; its guarded replays match.
+A [checked open-characteristic client](Lean/DiophantineConsistency/IPRASelectorOpenCharacteristic.lean)
+now discharges selected-instance stability using native open decision, while
+retaining fresh-witness forward correctness, the selector implication and
+selected-instance reverse correctness as explicit premises. Binding those
+premises to the primitive-recursive selector and the actual bounded matrix
+remains to be checked.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
