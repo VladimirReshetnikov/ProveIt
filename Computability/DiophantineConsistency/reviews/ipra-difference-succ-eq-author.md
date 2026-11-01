@@ -1,0 +1,7 @@
+# Native successor-equality consequence: author replay
+
+Guarded author run `/tmp/ipra-difference-succ-eq-wyb9x977` passed on the independently checked successor arithmetic provider `/tmp/ipra-difference-step-prerequisites-10blm3n7/lib`. It proves the native open formula `x=y → Sx−y≠0` for arbitrary terms, using actual native Leibniz substitution on a negative formula and the previously checked negative successor-self difference. This is one ingredient of the two-difference invariant successor case; no complete step or positive reconstruction is proved.
+
+Sources and selected parent objects were authenticated before and after compilation. The Lean axiom report records the standard metatheory axioms; inherited project/Foundation and external-package transitive ancestry remains historical. Earlier run `/tmp/ipra-difference-succ-eq-m5ai6_v8` failed because a linter-cleanup edit changed tactic behavior; its failed state and logs are preserved separately, and the successful run restored the checked tactic with its linter suppression scoped to that helper.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-succ-eq.py`. State SHA-256 `a2ccc05d0256420880ce4f1c1a7d07136d285f0f0af19f396cc1fad55719aad5`; provider inventory `562810b10e500b5408345f9599a144c6f1de21ffbe0df2bf0c1bb8f386e26cb3`. Sources, logs, driver, state and inventory are retained in the evidence directory.

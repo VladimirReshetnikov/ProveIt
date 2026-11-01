@@ -198,6 +198,10 @@ quantifier-free induction on `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. The actual nat
 has matching guarded author and independent replays. The resulting equality
 decision construction has the invariant successor case as its sole explicit
 premise; that case remains unproved, and provider ancestry remains historical.
+A [checked open successor-case reduction](Lean/DiophantineConsistency/IPRADifferenceSuccLogic.lean)
+now leaves the positive branch `y−Sx=0 → (y−x≠0 → Sx=y)` explicit; its
+conversion from `Sx` to the induction term `x+1` and universal closure also
+remain to be assembled. Matching guarded replays retain historical ancestry.
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
 with matching author and independent replays. The companion

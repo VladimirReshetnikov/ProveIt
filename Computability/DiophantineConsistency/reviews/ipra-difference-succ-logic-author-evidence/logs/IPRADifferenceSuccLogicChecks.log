@@ -1,0 +1,24 @@
+DiophantineConsistency.IPRADifferenceSuccLogic.stepOpen
+  (x y : LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ)
+  (hbridge :
+    DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+      DiophantineConsistency.IPRANativeDifferenceEquality.zeroOpen
+          (LO.FirstOrder.Semiterm.func DiophantineConsistency.PRATheory.subCode
+            ![y, DiophantineConsistency.IPRADifferenceSuccEq.sx x]) 🡒
+        ∼DiophantineConsistency.IPRANativeDifferenceEquality.zeroOpen
+              (LO.FirstOrder.Semiterm.func DiophantineConsistency.PRATheory.subCode ![y, x]) 🡒
+          DiophantineConsistency.IPRANativeAtomStability.eqAt (DiophantineConsistency.IPRADifferenceSuccEq.sx x) y) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended DiophantineConsistency.IPRANativeTheory.nativeTheory ⊢!
+    ∼DiophantineConsistency.IPRANativeDifferenceEquality.zeroOpen
+            (LO.FirstOrder.Semiterm.func DiophantineConsistency.PRATheory.subCode ![x, y]) ⋎
+        ∼DiophantineConsistency.IPRANativeDifferenceEquality.zeroOpen
+              (LO.FirstOrder.Semiterm.func DiophantineConsistency.PRATheory.subCode ![y, x]) ⋎
+          DiophantineConsistency.IPRANativeAtomStability.eqAt x y 🡒
+      ∼DiophantineConsistency.IPRANativeDifferenceEquality.zeroOpen
+            (LO.FirstOrder.Semiterm.func DiophantineConsistency.PRATheory.subCode
+              ![DiophantineConsistency.IPRADifferenceSuccEq.sx x, y]) ⋎
+        ∼DiophantineConsistency.IPRANativeDifferenceEquality.zeroOpen
+              (LO.FirstOrder.Semiterm.func DiophantineConsistency.PRATheory.subCode
+                ![y, DiophantineConsistency.IPRADifferenceSuccEq.sx x]) ⋎
+          DiophantineConsistency.IPRANativeAtomStability.eqAt (DiophantineConsistency.IPRADifferenceSuccEq.sx x) y
+'DiophantineConsistency.IPRADifferenceSuccLogic.stepOpen' depends on axioms: [propext, Classical.choice, Quot.sound]

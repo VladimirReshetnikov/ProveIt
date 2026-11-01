@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRADifferenceSuccEq
+
+#check DiophantineConsistency.IPRADifferenceSuccEq.equalityNotSuccDiff
+#print axioms DiophantineConsistency.IPRADifferenceSuccEq.equalityNotSuccDiff

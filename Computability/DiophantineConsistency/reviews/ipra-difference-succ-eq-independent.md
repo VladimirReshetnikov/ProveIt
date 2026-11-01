@@ -1,0 +1,5 @@
+# Native successor-equality consequence: independent replay
+
+The guarded independent peer `/tmp/ipra-difference-succ-eq-fjr41bz0` passed and matches the author `/tmp/ipra-difference-succ-eq-wyb9x977` in both source/object/full-log rows, parent state hash and the full serialized selected-provider inventory. The replay checks the actual open native proof `x=y → Sx−y≠0` over the same independently checked arithmetic prerequisite parent. It does not prove the invariant successor case or positive reconstruction. Parent/Foundation and external-package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-succ-eq.py`. Peer state SHA-256 `6b8d981f5868121e134f59e3af654cffa53d02c1099163a0e45fc5b9d3f0cea7`; provider inventory `562810b10e500b5408345f9599a144c6f1de21ffbe0df2bf0c1bb8f386e26cb3`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

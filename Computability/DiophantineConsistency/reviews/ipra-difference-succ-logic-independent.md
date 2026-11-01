@@ -1,0 +1,5 @@
+# Native open successor invariant: independent replay
+
+The guarded independent peer `/tmp/ipra-difference-succ-logic-pvrqdth2` passed and matches the author `/tmp/ipra-difference-succ-logic-0hojpt1x` in both source/object/full-log rows, parent state hash, and the full serialized selected-provider inventory. It independently replays the two source modules on the same checked successor-equality parent. The explicit open positive-branch proof, conversion from `Sx` to `x+1`, and closed induction step remain outstanding; parent/Foundation and package transitive source ancestry remain inherited historical boundaries.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-difference-succ-logic.py`. Peer state SHA-256 `850913c21bbbce2436d98010a17c6569ea86f483ac0eeb92b92886f23a7bd2db`; provider inventory `81376c1d427bcc1e1fcab964b37954e9420e2327ccafbf6171e50e8ef3efc08e`. Source snapshots, logs, driver, state and inventory are retained in the evidence directory.

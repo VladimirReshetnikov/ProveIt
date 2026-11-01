@@ -1,0 +1,4 @@
+import DiophantineConsistency.IPRADifferenceSuccLogic
+
+#check DiophantineConsistency.IPRADifferenceSuccLogic.stepOpen
+#print axioms DiophantineConsistency.IPRADifferenceSuccLogic.stepOpen
