@@ -251,13 +251,25 @@ theorem wb_sepCh_sigma : WB M sepCh.sigma.val := by
     HierarchySymbol.Semiformula.val_mkSigma, schemaSigma] using
     (wb_schemaSigma (M := M) 1 sepBodyValGraph wb_sepBodyValGraph)
 
-theorem wb_sepCh_neg_pi : WB M (∼sepCh.pi.val) := by
+/-- The common negative recognizer, with its body-counterexample bound supplied separately. -/
+private noncomputable def schemaPi (arity : ℕ) (G : 𝚺₁.Semisentence 2) : ArithmeticSemisentence 1 :=
+  “p. ∃ m < p + 1, ∃ b < p + 1,
+    (∀ y, !qqAllsDef y b m → y = p) ∧ !(Bootstrapping.isUFormula ℒₛₑₜ).pi b
+    ∧ (∀ y, !(Bootstrapping.shiftGraph ℒₛₑₜ) y b → y = b) ∧ (∀ y, !(Bootstrapping.bvGraph ℒₛₑₜ) y b → y = m)
+    ∧ ∀ fv, !fvarVecDef fv m → ∀ s, !(Bootstrapping.substsGraph ℒₛₑₜ) s fv b
+      → ∃ K < s + 1, !(Bootstrapping.isSemiformula ℒₛₑₜ).pi ↑arity K ∧ ∀ ib, !G ib K → s = ib”
+
+private def schemaCounterexample (G : 𝚺₁.Semisentence 2) (n : ℕ) : ArithmeticSemisentence (n + 2) :=
+  ∃⁰ (Rewriting.subst G.val ![#0,#1] ⋏ Semiformula.nrel Language.ORing.Rel.eq ![#2,#0])
+
+private theorem wb_schemaPi (arity : ℕ) (G : 𝚺₁.Semisentence 2) (hG : WB M G.val)
+    (tail : ∀ n, WB M (schemaCounterexample G n)) : WB M (∼schemaPi arity G) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := wb_qqAllsDef (M := M); have := wb_isUFormula_neg_pi (M := M); have := wb_shiftGraph (M := M)
   have := wb_bvGraph (M := M); have := wb_fvarVecDef (M := M); have := wb_substsGraph (M := M)
-  have := wb_isSemiformula_neg_pi (M := M); have := wb_sepBodyValGraph (M := M)
-  simp only [sepCh, HierarchySymbol.Semiformula.pi_mkDelta, HierarchySymbol.Semiformula.val_mkPi]
+  have := wb_isSemiformula_neg_pi (M := M); have := hG
+  unfold schemaPi
   wb_auto
   · exact wb_exs_bt _ (by simp) (tauT (poly ‘#0’) (poly ‘2 * #1’)) (fun V _ _ e x h => by
       have h' := h; simp at h'
@@ -282,11 +294,23 @@ theorem wb_sepCh_neg_pi : WB M (∼sepCh.pi.val) := by
   · have h' := h; simp at h'
     rw [h'.1]; simpa [vval_tauT, vval, numeral_eq_natCast] using subst_le' (e 0) (e 1)
   wb_auto
-  exact wb_exs_bt _ (by simp)
-    (tauT (add sepT (poly ‘8’)) (add (mul (poly ‘2’) sepT) (poly ‘20’)))
-    (fun V _ _ e x h => by
-      have h' := h; simp at h'
-      rw [h'.1]; simpa [sepT, vval_tauT, vval, numeral_eq_natCast] using sepBodyVal_le (e 0)) (by wb_auto)
+  exact tail _
+
+theorem wb_sepCh_neg_pi : WB M (∼sepCh.pi.val) := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
+  have := wb_sepBodyValGraph (M := M)
+  have htail (n : ℕ) : WB M (schemaCounterexample sepBodyValGraph n) := by
+    unfold schemaCounterexample
+    exact wb_exs_bt _ (by simp)
+      (tauT (add sepT (poly ‘8’)) (add (mul (poly ‘2’) sepT) (poly ‘20’)))
+      (fun V _ _ e x h => by
+        have h' := h; simp at h'
+        rw [h'.1]; simpa [sepT, vval_tauT, vval, numeral_eq_natCast] using sepBodyVal_le (e 0)) (by wb_auto)
+
+  simpa only [sepCh, HierarchySymbol.Semiformula.pi_mkDelta,
+    HierarchySymbol.Semiformula.val_mkPi, schemaPi] using
+    (wb_schemaPi (M := M) 1 sepBodyValGraph wb_sepBodyValGraph htail)
 
 theorem wb_repBodyValGraph : WB M repBodyValGraph.val := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
@@ -378,40 +402,19 @@ theorem wb_repCh_sigma : WB M repCh.sigma.val := by
 theorem wb_repCh_neg_pi : WB M (∼repCh.pi.val) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_qqAllsDef (M := M); have := wb_isUFormula_neg_pi (M := M); have := wb_shiftGraph (M := M)
-  have := wb_bvGraph (M := M); have := wb_fvarVecDef (M := M); have := wb_substsGraph (M := M)
-  have := wb_isSemiformula_neg_pi (M := M); have := wb_repBodyValGraph (M := M)
-  simp only [repCh, HierarchySymbol.Semiformula.pi_mkDelta, HierarchySymbol.Semiformula.val_mkPi]
-  wb_auto
-  · exact wb_exs_bt _ (by simp) (tauT (poly ‘#0’) (poly ‘2 * #1’)) (fun V _ _ e x h => by
-      have h' := h; simp at h'
-      rw [h'.1]; simpa [vval_tauT, vval] using qqAlls_le (e 0) (e 1)) (by wb_auto)
-  · exact wb_exs_bt _ (by simp) (tauT (poly ‘(#0 + 2) * (#0 + 2) + 1 + 8’) (poly ‘2 * #0 + 6’))
+  have := wb_repBodyValGraph (M := M)
+  have htail (n : ℕ) : WB M (schemaCounterexample repBodyValGraph n) := by
+    unfold schemaCounterexample
+    exact wb_exs_bt _ (by simp)
+      (tauT (add repT2 (poly ‘8’)) (add (mul (poly ‘2’) repT2) (poly ‘10’)))
       (fun V _ _ e x h => by
         have h' := h; simp at h'
-        rw [h'.1]
-        by_cases hb : IsUFormula ℒₛₑₜ (e 0)
-        · simpa [vval_tauT, vval, numeral_eq_natCast] using shift_le (e 0) hb
-        · rw [shift_not_uformula hb]; simp) (by wb_auto)
-  · exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘#0’ (fun V _ _ e x h => ⟨x, by
-      have h' := h; simp at h'
-      rw [h'.1]; simpa using bv_le_self (e 0), h⟩) (by wb_auto)
-  refine wb_exs_bt' _ (by simp) (tauT (poly ‘(#1 + 2) * (#1 + 2) + 1’) (poly ‘2 * #1’))
-    (fun V _ _ e x h => ⟨x, ?_, h⟩) ?_
-  · have h' := h; simp at h'
-    rw [h'.1]; simpa [vval_tauT, vval] using fvarVec_le (e 1) (e 1) le_rfl
-  wb_auto
-  refine wb_exs_bt' _ (by simp) (tauT (poly ‘#0 + #1 + 8’) (poly ‘0 + 4 * #1 + 6’))
-    (fun V _ _ e x h => ⟨x, ?_, h⟩) ?_
-  · have h' := h; simp at h'
-    rw [h'.1]; simpa [vval_tauT, vval, numeral_eq_natCast] using subst_le' (e 0) (e 1)
-  wb_auto
-  exact wb_exs_bt _ (by simp)
-    (tauT (add repT2 (poly ‘8’)) (add (mul (poly ‘2’) repT2) (poly ‘10’)))
-    (fun V _ _ e x h => by
-      have h' := h; simp at h'
-      rw [h'.1]; simpa [repT2, repT0, vval_tauT, vval, numeral_eq_natCast] using repBodyVal_le (e 0)) (by wb_auto)
+        rw [h'.1]; simpa [repT2, repT0, vval_tauT, vval, numeral_eq_natCast] using repBodyVal_le (e 0)) (by wb_auto)
 
+
+  simpa only [repCh, HierarchySymbol.Semiformula.pi_mkDelta,
+    HierarchySymbol.Semiformula.val_mkPi, schemaPi] using
+    (wb_schemaPi (M := M) 2 repBodyValGraph wb_repBodyValGraph htail)
 
 /-! ### Foundation's `Δ₁` combinators -/
 
