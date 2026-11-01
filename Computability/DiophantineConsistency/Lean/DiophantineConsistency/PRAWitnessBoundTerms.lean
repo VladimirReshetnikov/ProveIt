@@ -120,13 +120,13 @@ omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 theorem val_term_add (A B : BoundTerm n) (e : Fin n → M) :
     (add A B).term.val e Empty.elim = A.term.val e Empty.elim + B.term.val e Empty.elim := by
   simp only [term, Semiterm.val_func]
-  congr 1; funext i; exact Fin.cases rfl (fun j => Fin.cases rfl (fun k => Fin.elim0 k) j) i
+  congr 1; funext i; revert i; simp [Fin.forall_fin_succ]
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 theorem val_term_mul (A B : BoundTerm n) (e : Fin n → M) :
     (mul A B).term.val e Empty.elim = A.term.val e Empty.elim * B.term.val e Empty.elim := by
   simp only [term, Semiterm.val_func]
-  congr 1; funext i; exact Fin.cases rfl (fun j => Fin.cases rfl (fun k => Fin.elim0 k) j) i
+  congr 1; funext i; revert i; simp [Fin.forall_fin_succ]
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 theorem val_term_exp2 (A B : BoundTerm n) (e : Fin n → M) :
