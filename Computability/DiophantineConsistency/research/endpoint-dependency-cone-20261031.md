@@ -135,6 +135,33 @@ module of their only users).
   use the `BoundedZFCConsistency` coded-derivation and universe-truth modules
   only outside the cone. Moving those declarations to a separate module would
   take about 17k lines off both endpoints.
+* **Exact plan for the `BoundedZFCConsistency` cut** (exact proof-term cone,
+  31 October build). Through `ZFCinPA.Translation`, `UniformStatement`,
+  `ConcreteFamily` and `SuccessorSources`, the two endpoints reach only two
+  small layers. The rest of those modules (the certificate family and the
+  bounded-ZFC soundness development) is what pulls in about 17k lines of
+  `BoundedZFCConsistency`:
+  - the **set-syntax translation basics**: `toSet`, `toSetVar`,
+    `val_toSetVar`, `memRel`, `eval_toSet`, `eval_toSet_pair`,
+    `eval_toSet_single` and the private `env1_eq`/`env1_shift`/`env2_eq`/
+    `env2_shift` lemmas. The peer's `TranslationCore` (9008d183a3) already
+    holds most of these;
+  - the **numeral-chain codes**: `numChainCode` with `numChainCode.defined`,
+    `_zero`, `_succ` and `numChainCode_definable`, `numChainStepCode`,
+    `numChainZeroCode`, `numChainGraph`, `NumChain.blueprint`,
+    `NumChain.construction`, `coe_toNat_eq_quote`, `freeVariables_toSet` and
+    `free_fEmptyF`/`free_fNumF`/`free_fSuccF` (`UniformStatement`);
+    `isSemiformula_numChainCode`, `isSemiformula_of_le`, `leafArity` and the
+    private `wf_numChainStep`/`wf_numChainZero` (`ConcreteFamily`); the
+    `SuccessorSources.ShiftFixed` predicate with its `and`/`exs` rules,
+    `free_numChain*`, `shiftFixed_*`, `shift_numChainCode` and
+    `leafIsSemiformula`.
+
+  Moving these 42 declarations into one `ZFCinPA` numeral-chain core module,
+  next to `TranslationCore`, and pointing the endpoint-side importers at it
+  takes the whole `BoundedZFCConsistency` block off both Diophantine routes.
+  That lane is being edited hourly by the peer, so the plan is recorded for
+  it rather than landed here.
 * `ZFCinPA.R2Quant` (1 of 47 constants reached) holds in ten
   `Validator*254` and `R2*` modules.
 * BusyBeaver: `Permutation252Frame.registerBits`/`dispatchZip` →
