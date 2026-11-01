@@ -234,26 +234,14 @@ theorem translate_srcLevelSatSuccAt (x : V) (m : ℕ) (hm : 3 ≤ m) :
 theorem translate_srcBitWitnessAt (x : V) (m w : ℕ) (hm : 2 ≤ m) :
     (translateFormula (levelLeaves x) (srcBitWitnessAt m w)).val =
       bitWitnessPart (bitWitnessCode w) (x + 1) := by
-  rw [bitWitnessPart]
-  simp only [srcBitWitnessAt, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_liftP_val, translate_srcLevelSatAt x (m + 1) (by omega)]
-  rw [quote_leaf_move (V := V) (fNumF 0 w) (m + 1) 3
-    (fun i hi ↦ by have := free_fNumF hi; omega)
-    (fun i hi ↦ by have := free_fNumF hi; omega)]
-  rfl
+  exact translate_srcBitWitnessOf x (x + 1) m w hm _
+    (translate_srcLevelSatAt x (m + 1) (by omega))
 
 theorem translate_srcBitWitnessSuccAt (x : V) (m w : ℕ) (hm : 2 ≤ m) :
     (translateFormula (levelLeaves x) (srcBitWitnessSuccAt m w)).val =
       bitWitnessPart (bitWitnessCode w) (x + 1 + 1) := by
-  rw [bitWitnessPart]
-  simp only [srcBitWitnessSuccAt, translate_exs, translate_and,
-    Bootstrapping.Semiformula.val_exs, Bootstrapping.Semiformula.val_and,
-    translate_liftP_val, translate_srcLevelSatSuccAt x (m + 1) (by omega)]
-  rw [quote_leaf_move (V := V) (fNumF 0 w) (m + 1) 3
-    (fun i hi ↦ by have := free_fNumF hi; omega)
-    (fun i hi ↦ by have := free_fNumF hi; omega)]
-  rfl
+  exact translate_srcBitWitnessOf x (x + 1 + 1) m w hm _
+    (translate_srcLevelSatSuccAt x (m + 1) (by omega))
 
 theorem translate_srcCanonAtPair (x : V) (m ci ei : ℕ) (hci : ci < m)
     (hei : ei < m) (inner : Semiproposition srcL (m + 1 + 1)) :

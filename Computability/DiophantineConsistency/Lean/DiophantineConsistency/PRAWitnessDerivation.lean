@@ -1,3 +1,4 @@
+import DiophantineConsistency.PRAWitnessRefutationOuter
 import DiophantineConsistency.PRAWitnessZFCAxioms
 import DiophantineConsistency.PRAWitnessFormulaSetCandidate
 import DiophantineConsistency.PRAWitnessSetShiftCandidate
@@ -167,17 +168,7 @@ theorem wb_provable_falsum :
     WB M (provabilityPred (𝗭𝗙𝗖 : SetTheory) (⊥ : SetTheorySentence)) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_proof_sigma (M := M)
-  simp only [provabilityPred, provable, HierarchySymbol.Semiformula.val_mkSigma, Rewriting.subst,
-    Rewriting.app_exs]
-  refine wb_exs (fun _ => Classical.epsilon fun x =>
-      (((Rew.subst ![(⌜(⊥ : SetTheorySentence)⌝ : ArithmeticSemiterm Empty 0)]).q ▹
-        ((proof (𝗭𝗙𝗖 : SetTheory)).sigma.val/[#0, #1] : ArithmeticSemisentence 2)) :
-          ArithmeticSemisentence 1).Eval (x :> ![]) Empty.elim)
-    (mono_const _) (fun e he => ?_) (wb_rew _ (wb_rew _ this))
-  have he0 : e = ![] := funext fun i => i.elim0
-  subst he0
-  exact ⟨_, le_rfl, Classical.epsilon_spec he⟩
+  exact PRAWitnessRefutationOuter.wb_provabilityPred (𝗭𝗙𝗖 : SetTheory) ⊥ wb_derivation_sigma
 
 end models
 end DiophantineConsistency.PRAWitnessDerivation
