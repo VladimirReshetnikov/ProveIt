@@ -89,11 +89,9 @@ theorem eval_graph (A : BoundTerm n) (t : V) (e : Fin n → V) :
   induction A generalizing t with
   | poly P => rw [eval_graph_poly]; rfl
   | add A B ihA ihB =>
-    rw [eval_graph_add]; simp only [ihA, ihB, vval]
-    exact ⟨fun ⟨_, _, ha, hb, ht⟩ => ha ▸ hb ▸ ht, fun ht => ⟨_, _, rfl, rfl, ht⟩⟩
+    rw [eval_graph_add]; simp [ihA, ihB, vval]
   | mul A B ihA ihB =>
-    rw [eval_graph_mul]; simp only [ihA, ihB, vval]
-    exact ⟨fun ⟨_, _, ha, hb, ht⟩ => ha ▸ hb ▸ ht, fun ht => ⟨_, _, rfl, rfl, ht⟩⟩
+    rw [eval_graph_mul]; simp [ihA, ihB, vval]
   | exp2 A B ihA ihB =>
     rw [eval_graph_exp2]
     simp only [ihA, ihB, vval]
@@ -122,13 +120,13 @@ omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 theorem val_term_add (A B : BoundTerm n) (e : Fin n → M) :
     (add A B).term.val e Empty.elim = A.term.val e Empty.elim + B.term.val e Empty.elim := by
   simp only [term, Semiterm.val_func]
-  congr 1; funext i; exact Fin.cases rfl (fun j => Fin.cases rfl (fun k => Fin.elim0 k) j) i
+  congr 1; funext i; revert i; simp [Fin.forall_fin_succ]
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 theorem val_term_mul (A B : BoundTerm n) (e : Fin n → M) :
     (mul A B).term.val e Empty.elim = A.term.val e Empty.elim * B.term.val e Empty.elim := by
   simp only [term, Semiterm.val_func]
-  congr 1; funext i; exact Fin.cases rfl (fun j => Fin.cases rfl (fun k => Fin.elim0 k) j) i
+  congr 1; funext i; revert i; simp [Fin.forall_fin_succ]
 
 omit [Nonempty M] [Structure.Eq language M] [M↓[language] ⊧* PRA] in
 theorem val_term_exp2 (A B : BoundTerm n) (e : Fin n → M) :
@@ -145,11 +143,9 @@ theorem eval_graph_model (A : BoundTerm n) (t : M) (e : Fin n → M) :
   induction A generalizing t with
   | poly P => rw [eval_graph_poly]; simp [term, val_lMap_std]
   | add A B ihA ihB =>
-    rw [eval_graph_add, val_term_add]; simp only [ihA, ihB]
-    exact ⟨fun ⟨_, _, ha, hb, ht⟩ => ha ▸ hb ▸ ht, fun ht => ⟨_, _, rfl, rfl, ht⟩⟩
+    rw [eval_graph_add, val_term_add]; simp [ihA, ihB]
   | mul A B ihA ihB =>
-    rw [eval_graph_mul, val_term_mul]; simp only [ihA, ihB]
-    exact ⟨fun ⟨_, _, ha, hb, ht⟩ => ha ▸ hb ▸ ht, fun ht => ⟨_, _, rfl, rfl, ht⟩⟩
+    rw [eval_graph_mul, val_term_mul]; simp [ihA, ihB]
   | exp2 A B ihA ihB =>
     rw [eval_graph_exp2, val_term_exp2]
     simp only [ihA, ihB]

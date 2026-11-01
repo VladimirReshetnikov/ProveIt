@@ -1,0 +1,4 @@
+import DiophantineConsistency.PRACurrentConsistencyEndpoint
+/-! Axiom audit for `PRACurrentConsistencyEndpoint`. -/
+#print axioms DiophantineConsistency.PRACurrentConsistencyEndpoint.boundCertificate_rho
+#print axioms DiophantineConsistency.PRACurrentConsistencyEndpoint.pra_current_iff_consistency

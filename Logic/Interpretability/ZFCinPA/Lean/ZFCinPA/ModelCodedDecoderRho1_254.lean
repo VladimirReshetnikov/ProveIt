@@ -43,19 +43,20 @@ noncomputable def namedVar (chosen x : V) : Bootstrapping.Semiterm V ℒₛₑ�
   classical
   exact if x = chosen then #'0 else &'x
 
-lemma namedBody_eqAtom (a b c : V) :
-    namedBody a (eqAtom (&'b) (&'c)) = eqAtom (namedVar a b) (namedVar a c) := by
+lemma bindOneAt_rel_namedVars (a b c i : V) (hr : (ℒₛₑₜ).IsRel (2 : V) i) :
+    bindOneAt ℒₛₑₜ a 0 (^rel 2 i ?[^&b,^&c]) =
+      ^rel 2 i ?[(namedVar a b).val,(namedVar a c).val] := by
   classical
-  have hr : (ℒₛₑₜ).IsRel (2 : V) 0 := by
-    simpa using (isRel_quote_quote (V := V) (L := ℒₛₑₜ) (k := 2) (x := 0)).mpr
-      ⟨Language.Set.Rel.eq,rfl⟩
   have hv : IsUTermVec ℒₛₑₜ (2 : V) ?[^&b,^&c] := by simp
-  apply Bootstrapping.Semiformula.ext
-  change bindOneAt ℒₛₑₜ a 0 (^rel 2 0 ?[^&b,^&c]) =
-    ^rel 2 0 ?[(namedVar a b).val,(namedVar a c).val]
   rw [bindOneAt_rel a 0 hr hv,termBindOneVecAt_pair a 0 _ _ (by simp) (by simp)]
   by_cases hb : b = a <;> by_cases hc : c = a <;>
     simp [namedVar,termBindOneAt_fvar,hb,hc]
+
+lemma namedBody_eqAtom (a b c : V) :
+    namedBody a (eqAtom (&'b) (&'c)) = eqAtom (namedVar a b) (namedVar a c) := by
+  have hr : (ℒₛₑₜ).IsRel (2 : V) 0 := equality_symbol_isRel
+  apply Bootstrapping.Semiformula.ext
+  exact bindOneAt_rel_namedVars a b c 0 hr
 
 lemma namedBody_neg (a : V) (p : Formula V ℒₛₑₜ) :
     namedBody a (∼p) = ∼namedBody a p := by

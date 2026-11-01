@@ -157,55 +157,42 @@ theorem wb_qqAllsDef : WB M qqAllsDef.val := by
 
 /-! ### `concat` -/
 
-theorem wb_concat_core_sigma : WB M Concat.blueprint.blueprint.core.sigma.val := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
-  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_pairDef (M := M); have := wb_adjoinDef (M := M); have := wb_memRel (M := M)
-  have : WB M memRelOpr.sentence := wb_memRel (M := M)
-  simp only [VecRec.Blueprint.blueprint, Concat.blueprint, HierarchySymbol.Semiformula.sigma_mkDelta,
-    HierarchySymbol.Semiformula.val_mkSigma]
-  wb_auto
-  · exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#2 + 1) * (#2 + 1) + 1’ (fun V _ _ e u h => ⟨u, by
-      have h' := h; simp at h'
-      rw [h'.1, adjoin_def]
-      simpa using add_le_add (pair_le_sq (le_refl (e 2)) (le_refl 0)) (le_refl 1), h⟩) (by wb_auto)
-  · refine PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#2 + #1 + 1) * (#2 + #1 + 1) + 1’
-      (fun V _ _ e u h => ⟨u, by
-        have h' := h; simp at h'
-        rw [h'.1, adjoin_def]
-        exact add_le_add (pair_le_sq le_rfl le_rfl) le_rfl, h⟩) ?_
-    wb_auto
-    exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#3 + #1 + 1) * (#3 + #1 + 1) + 1’
-      (fun V _ _ e u h => ⟨u, by
-        have h' := h; simp at h'
-        rw [h'.1, adjoin_def]
-        exact add_le_add (pair_le_sq le_rfl le_rfl) le_rfl, h⟩) (by wb_auto)
-
-theorem wb_concat_core_neg_pi : WB M (∼Concat.blueprint.blueprint.core.pi.val) := by
+private theorem wb_concat_core (neg : Bool) :
+    WB M (if neg then ∼Concat.blueprint.blueprint.core.pi.val
+      else Concat.blueprint.blueprint.core.sigma.val) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := wb_pairDef (M := M); have := wb_adjoinDef (M := M); have := wb_memRel (M := M)
   have := wb_neg_pairDef (M := M); have := wb_neg_memRel (M := M)
   have : WB M memRelOpr.sentence := wb_memRel (M := M)
   have : WB M (∼memRelOpr.sentence) := wb_neg_memRel (M := M)
-  simp only [VecRec.Blueprint.blueprint, Concat.blueprint, HierarchySymbol.Semiformula.pi_mkDelta,
-    HierarchySymbol.Semiformula.val_mkPi, HierarchySymbol.Semiformula.val_mkSigma]
-  wb_auto
-  · exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#2 + 1) * (#2 + 1) + 1’ (fun V _ _ e u h => ⟨u, by
-      have h' := h; simp at h'
-      rw [h'.1, adjoin_def]
-      simpa using add_le_add (pair_le_sq (le_refl (e 2)) (le_refl 0)) (le_refl 1), h⟩) (by wb_auto)
-  · refine PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#2 + #1 + 1) * (#2 + #1 + 1) + 1’
-      (fun V _ _ e u h => ⟨u, by
-        have h' := h; simp at h'
-        rw [h'.1, adjoin_def]
-        exact add_le_add (pair_le_sq le_rfl le_rfl) le_rfl, h⟩) ?_
+  cases neg <;> simp only [Bool.false_eq_true, ↓reduceIte]
+  all_goals
+    simp only [VecRec.Blueprint.blueprint, Concat.blueprint, HierarchySymbol.Semiformula.sigma_mkDelta,
+      HierarchySymbol.Semiformula.pi_mkDelta, HierarchySymbol.Semiformula.val_mkPi,
+      HierarchySymbol.Semiformula.val_mkSigma]
     wb_auto
-    exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#3 + #1 + 1) * (#3 + #1 + 1) + 1’
-      (fun V _ _ e u h => ⟨u, by
+    · exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#2 + 1) * (#2 + 1) + 1’ (fun V _ _ e u h => ⟨u, by
         have h' := h; simp at h'
         rw [h'.1, adjoin_def]
-        exact add_le_add (pair_le_sq le_rfl le_rfl) le_rfl, h⟩) (by wb_auto)
+        simpa using add_le_add (pair_le_sq (le_refl (e 2)) (le_refl 0)) (le_refl 1), h⟩) (by wb_auto)
+    · refine PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#2 + #1 + 1) * (#2 + #1 + 1) + 1’
+        (fun V _ _ e u h => ⟨u, by
+          have h' := h; simp at h'
+          rw [h'.1, adjoin_def]
+          exact add_le_add (pair_le_sq le_rfl le_rfl) le_rfl, h⟩) ?_
+      wb_auto
+      exact PRAWitnessTransfer.wb_exs_poly _ (by simp) ‘(#3 + #1 + 1) * (#3 + #1 + 1) + 1’
+        (fun V _ _ e u h => ⟨u, by
+          have h' := h; simp at h'
+          rw [h'.1, adjoin_def]
+          exact add_le_add (pair_le_sq le_rfl le_rfl) le_rfl, h⟩) (by wb_auto)
+
+theorem wb_concat_core_sigma : WB M Concat.blueprint.blueprint.core.sigma.val := by
+  simpa using wb_concat_core (M := M) false
+
+theorem wb_concat_core_neg_pi : WB M (∼Concat.blueprint.blueprint.core.pi.val) := by
+  simpa using wb_concat_core (M := M) true
 
 theorem wb_concat_graph : WB M Concat.blueprint.graphDef.val := by
   refine PRAWitnessFixpointGraph.wb_fixpointDef Concat.blueprint.blueprint wb_concat_core_sigma

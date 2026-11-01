@@ -193,12 +193,13 @@ theorem zfc_provable_rename (chosen : V) {p : V} (hp : Provable (𝗭𝗙𝗖 : 
     Provable (𝗭𝗙𝗖 : SetTheory) (rename ℒₛₑₜ chosen 0 0 p) :=
   provable_rename chosen (fun level offset _ hf hT => zfc_rename_mem chosen level offset hf hT) hp
 
-private lemma provable_namedAll_of_renamed {p : V} (chosen : V) (hp : IsFormula L p)
+private lemma provable_namedAll_of_renamed {p : V} (chosen : V) (hp : Provable T p)
     (h : Provable T (rename L chosen 0 0 p)) : Provable T (namedAll L chosen p) := by
+  have hf : IsFormula L p := hp.toDerivable.isFormulaSet p (by simp)
   have hbody : IsSemiformula L 1 (bindOneAt L chosen 0 p) := by
-    simpa only [zero_add] using bindOneAt_isSemiformula hp chosen
+    simpa only [zero_add] using bindOneAt_isSemiformula hf chosen
   have hfree : Derivable T (insert (free L (bindOneAt L chosen 0 p)) (∅ : V)) := by
-    rw [free_bindOneAt hp chosen]
+    rw [free_bindOneAt hf chosen]
     exact h.toDerivable
   have hall : Derivable T (insert (^∀ (bindOneAt L chosen 0 p)) (∅ : V)) := by
     apply Derivable.all hbody
@@ -207,13 +208,11 @@ private lemma provable_namedAll_of_renamed {p : V} (chosen : V) (hp : IsFormula 
 
 /-- Named GEN for all internal ZF formulas, including formulas containing free zero. -/
 theorem zf_provable_namedAll (chosen : V) {p : V} (hp : Provable (𝗭𝗙 : SetTheory) p) :
-    Provable (𝗭𝗙 : SetTheory) (namedAll ℒₛₑₜ chosen p) := by
-  have hf : IsFormula ℒₛₑₜ p := hp.toDerivable.isFormulaSet p (by simp)
-  exact provable_namedAll_of_renamed chosen hf (zf_provable_rename chosen hp)
+    Provable (𝗭𝗙 : SetTheory) (namedAll ℒₛₑₜ chosen p) :=
+  provable_namedAll_of_renamed chosen hp (zf_provable_rename chosen hp)
 /-- Named GEN for all internal ZFC formulas, with no closed-matrix premise. -/
 theorem zfc_provable_namedAll (chosen : V) {p : V} (hp : Provable (𝗭𝗙𝗖 : SetTheory) p) :
-    Provable (𝗭𝗙𝗖 : SetTheory) (namedAll ℒₛₑₜ chosen p) := by
-  have hf : IsFormula ℒₛₑₜ p := hp.toDerivable.isFormulaSet p (by simp)
-  exact provable_namedAll_of_renamed chosen hf (zfc_provable_rename chosen hp)
+    Provable (𝗭𝗙𝗖 : SetTheory) (namedAll ℒₛₑₜ chosen p) :=
+  provable_namedAll_of_renamed chosen hp (zfc_provable_rename chosen hp)
 
 end LeanProofs.ZFCinPA.ModelCodedProofRenaming

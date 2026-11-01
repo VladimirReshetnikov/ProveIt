@@ -125,25 +125,9 @@ theorem wb_nthDef : WB M nthDef.val := by
 
 /-! ### Length -/
 
-theorem wb_len_core_sigma : WB M Len.blueprint.blueprint.core.sigma.val := by
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
-  have := wb_pairDef (M := M); have := wb_adjoinDef (M := M); have := wb_memRel (M := M)
-  have : WB M memRelOpr.sentence := wb_memRel (M := M)
-  simp only [VecRec.Blueprint.blueprint, Len.blueprint, HierarchySymbol.Semiformula.sigma_mkDelta,
-    HierarchySymbol.Semiformula.val_mkSigma]
-  wb_auto
-  · exact wb_exs_term ‘0’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto)
-  · refine wb_exs_term ‘(#2 + #1 + 1) * (#2 + #1 + 1) + 1’ (fun e y h => ?_) ?_
-    · simp [adjoinDef] at h
-      rw [h.1.2]
-      have hp : ⟪e 2, e 1⟫ ≤ (e 2 + e 1 + 1) * (e 2 + e 1 + 1) := by
-        simpa [sq] using pair_polybound (e 2) (e 1)
-      simpa using add_le_add_right hp 1
-    · refine wb_and (by wb_auto) (wb_exs_term ‘#1 + 1’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto))
-
-theorem wb_len_core_neg_pi : WB M (∼Len.blueprint.blueprint.core.pi.val) := by
+private theorem wb_len_core (neg : Bool) :
+    WB M (if neg then ∼Len.blueprint.blueprint.core.pi.val
+      else Len.blueprint.blueprint.core.sigma.val) := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
@@ -151,17 +135,26 @@ theorem wb_len_core_neg_pi : WB M (∼Len.blueprint.blueprint.core.pi.val) := by
   have := wb_neg_pairDef (M := M); have := wb_neg_memRel (M := M)
   have : WB M memRelOpr.sentence := wb_memRel (M := M)
   have : WB M (∼memRelOpr.sentence) := wb_neg_memRel (M := M)
-  simp only [VecRec.Blueprint.blueprint, Len.blueprint, HierarchySymbol.Semiformula.pi_mkDelta,
-    HierarchySymbol.Semiformula.val_mkPi, HierarchySymbol.Semiformula.val_mkSigma]
-  wb_auto
-  · exact wb_exs_term ‘0’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto)
-  · refine wb_exs_term ‘(#2 + #1 + 1) * (#2 + #1 + 1) + 1’ (fun e y h => ?_) ?_
-    · simp [adjoinDef] at h
-      rw [h.1.2]
-      have hp : ⟪e 2, e 1⟫ ≤ (e 2 + e 1 + 1) * (e 2 + e 1 + 1) := by
-        simpa [sq] using pair_polybound (e 2) (e 1)
-      simpa using add_le_add_right hp 1
-    · refine wb_and (by wb_auto) (wb_exs_term ‘#1 + 1’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto))
+  cases neg <;> simp only [Bool.false_eq_true, ↓reduceIte]
+  all_goals
+    simp only [VecRec.Blueprint.blueprint, Len.blueprint, HierarchySymbol.Semiformula.sigma_mkDelta,
+      HierarchySymbol.Semiformula.pi_mkDelta, HierarchySymbol.Semiformula.val_mkPi,
+      HierarchySymbol.Semiformula.val_mkSigma]
+    wb_auto
+    · exact wb_exs_term ‘0’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto)
+    · refine wb_exs_term ‘(#2 + #1 + 1) * (#2 + #1 + 1) + 1’ (fun e y h => ?_) ?_
+      · simp [adjoinDef] at h
+        rw [h.1.2]
+        have hp : ⟪e 2, e 1⟫ ≤ (e 2 + e 1 + 1) * (e 2 + e 1 + 1) := by
+          simpa [sq] using pair_polybound (e 2) (e 1)
+        simpa using add_le_add_right hp 1
+      · refine wb_and (by wb_auto) (wb_exs_term ‘#1 + 1’ (fun e y h => by simp at h; simp [h.1]) (by wb_auto))
+
+theorem wb_len_core_sigma : WB M Len.blueprint.blueprint.core.sigma.val := by
+  simpa using wb_len_core (M := M) false
+
+theorem wb_len_core_neg_pi : WB M (∼Len.blueprint.blueprint.core.pi.val) := by
+  simpa using wb_len_core (M := M) true
 
 /-- **`len`'s graph has bounded witnesses.** -/
 theorem wb_len_graph : WB M Len.blueprint.graphDef.val := by

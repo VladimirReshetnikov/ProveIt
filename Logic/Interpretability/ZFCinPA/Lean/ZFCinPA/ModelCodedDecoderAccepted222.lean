@@ -62,24 +62,10 @@ theorem rowKernel_sound (k payload u v : V)
 /-- One actual `Σ₁` invariant over all internal proof codes. -/
 theorem rejected_or_decoded_provable : ∀ code : V,
     ArithmeticHistory222.value code = 0 ∨
-      Provable (𝗭𝗙 : SetTheory) (decode (ArithmeticHistory222.value code-1)) := by
-  apply ISigma1.sigma1_order_induction (P := fun code : V =>
-    ArithmeticHistory222.value code = 0 ∨
-      Provable (𝗭𝗙 : SetTheory) (decode (ArithmeticHistory222.value code-1)))
-  · definability
-  · intro code ih
-    rcases zero_or_succ code with rfl | ⟨raw,rfl⟩
-    · left; simp
-    · have child (i : V) (hi : i ≤ raw) (hne : ArithmeticHistory222.value i ≠ 0) :
-          Provable (𝗭𝗙 : SetTheory) (decode (ArithmeticHistory222.value i-1)) := by
-        exact (ih i (lt_of_le_of_lt hi (lt_add_one raw))).resolve_left hne
-      rw [ArithmeticHistory222.value_succ]
-      apply rowKernel_sound
-      · by_cases htag : raw % 12 = 2
-        · simpa only [htag,ite_true] using child (second (raw/12)) (ArithmeticHistory222.tail_le raw)
-        · simpa only [htag,ite_false] using
-            child (first (second (raw/12))) (ArithmeticHistory222.minor_le raw)
-      · exact child (second (second (raw/12))) (ArithmeticHistory222.major_le raw)
+      Provable (𝗭𝗙 : SetTheory) (decode (ArithmeticHistory222.value code-1)) :=
+  ModelCodedDecoderAccepted254.history_sound ArithmeticHistory222.value
+    ArithmeticRow222.rowKernel ArithmeticHistory222.value_zero
+    ArithmeticHistory222.value_succ rowKernel_sound
 
 theorem accepted_conclusion_provable (code conclusion : V)
     (hv : ArithmeticHistory222.value code = conclusion+1) :

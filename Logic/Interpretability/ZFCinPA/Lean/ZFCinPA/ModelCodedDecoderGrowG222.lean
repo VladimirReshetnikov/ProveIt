@@ -50,11 +50,9 @@ theorem decoded_growG_provable (a b c : V) :
     Provable T (decode (ArithmeticTemplates222.growG a b c)) := by
   classical
   let v := wel a b
-  have hv := decoded_weq_vacuity T a b v (wel_ne_left a b) (wel_ne_right a b)
   have hvt : T.internalize V ⊢ decoded (weq a b) 🡒 decoded (wal v (weq a b)) := by
-    have h := (tprovable_iff_provable (σ := decoded (wim (weq a b) (wal v (weq a b))))).mpr hv
-    simp only [wim, tagged, add_zero] at h
-    exact (iff_of_E! (decoded_imp_equiv T (weq a b) (wal v (weq a b)))).mp h
+    rw [←ModelCodedDecoderRho2_254.namedFormula_decoded,decoded_weq]
+    exact ⟨namedFormula_eq_vacuous (T.internalize V) a b v (wel_ne_left a b) (wel_ne_right a b)⟩
   have h7 : T.internalize V ⊢ decoded (weq c a) 🡒 (decoded (weq c b) 🡒 decoded (weq a b)) := by
     rw [decoded_weq, decoded_weq, decoded_weq]
     exact rho7Template T a b c

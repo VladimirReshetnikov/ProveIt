@@ -96,12 +96,8 @@ theorem collection (phi : SetTheory.Form) (env : ℕ → M) :
   have h := models_iff_proposition.mp (models_gic (M := M) (toSet 2 phi)) env
   have key : ∀ x y : M, (toSet 2 phi).Eval ![x, y] env ↔
       DeepPositiveClosure.MatrixRelation (memRel M) phi env x y := fun x y =>
-    eval_toSet phi 2 ![x, y] env _ (fun i => by
-      match i with
-      | 0 => rfl
-      | 1 => rfl) (fun j => by rw [Nat.add_comm]; rfl)
-  simp [gicBodyMeta, gicAtomYB3, gicAtomXA3, gicAtomYB4, Semiformula.eval_substs,
-    Matrix.comp_vecCons', Matrix.constant_eq_singleton] at h
+    eval_toSet_pair phi x y env
+  simp [gicBodyMeta, gicAtomYB3, gicAtomXA3, gicAtomYB4, Semiformula.eval_substs] at h
   intro a
   obtain ⟨b, h1, h2⟩ := h a
   refine ⟨b, fun y hy => ?_, fun x hx ⟨y, hy⟩ => ?_⟩

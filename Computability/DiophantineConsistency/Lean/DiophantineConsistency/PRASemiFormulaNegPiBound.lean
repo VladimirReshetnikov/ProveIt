@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRANegFormulaSetWitnessBound
+import DiophantineConsistency.PRAIOpenCompleteness
 /-! Two conditional bindings for the negative arity-zero semiformula pi
     graph. Syntax graph bounds and the BV witness bound remain explicit. -/
 set_option autoImplicit false
@@ -50,32 +51,14 @@ open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 noncomputable def negSemiLeftSentence : Sentence language := ∀⁰* Semiformula.lMap embedding (negSemiLeftBody (L := L))
 noncomputable def negSemiBvSentence : Sentence language := ∀⁰* Semiformula.lMap embedding (negSemiBvBody (L := L))
 
-theorem candidate_proves_negSemiLeft_bound : PRA ⊢ negSemiLeftSentence (L := L) := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
-  letI : M↓[language] ⊧* PRA := hM
-  letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
-  letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
-  letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
-  letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
-  letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  simp only [models_iff, negSemiLeftSentence, Semiformula.eval_allClosure]
-  intro e
-  rw [Semiformula.eval_lMap, reduct_eq_standard]
-  exact negSemiLeftBody_model e
+theorem candidate_proves_negSemiLeft_bound : PRA ⊢ negSemiLeftSentence (L := L) :=
+  PRAIOpenCompleteness.proves_allClosure _ (by
+    intro M _ _ e
+    exact negSemiLeftBody_model e)
 
-theorem candidate_proves_negSemiBv_bound : PRA ⊢ negSemiBvSentence (L := L) := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro M _ _ _ hM
-  letI : M↓[language] ⊧* PRA := hM
-  letI : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
-  letI : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
-  letI : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
-  letI : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
-  letI : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
-  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
-  simp only [models_iff, negSemiBvSentence, Semiformula.eval_allClosure]
-  intro e
-  rw [Semiformula.eval_lMap, reduct_eq_standard]
-  exact negSemiBvBody_model e
+theorem candidate_proves_negSemiBv_bound : PRA ⊢ negSemiBvSentence (L := L) :=
+  PRAIOpenCompleteness.proves_allClosure _ (by
+    intro M _ _ e
+    exact negSemiBvBody_model e)
+
 end DiophantineConsistency.PRASemiFormulaNegPiBound

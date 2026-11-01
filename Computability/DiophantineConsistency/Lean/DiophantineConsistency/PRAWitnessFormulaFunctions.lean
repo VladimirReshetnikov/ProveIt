@@ -96,26 +96,14 @@ theorem neg_clauses : PRAWitnessFormulaRec.ClauseBounds Negation.blueprint M := 
   have := wb_qqRelDef (M := M); have := wb_qqNRelDef (M := M); have := wb_qqVerumDef (M := M)
   have := wb_qqFalsumDef (M := M); have := wb_qqAndDef (M := M); have := wb_qqOrDef (M := M)
   have := wb_qqAllDef (M := M); have := wb_qqExsDef (M := M)
-  have h_rel : WB M Negation.blueprint.rel.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_nrel : WB M Negation.blueprint.nrel.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_verum : WB M Negation.blueprint.verum.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_falsum : WB M Negation.blueprint.falsum.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_and : WB M Negation.blueprint.and.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_or : WB M Negation.blueprint.or.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_all : WB M Negation.blueprint.all.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_exs : WB M Negation.blueprint.exs.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_allChanges : WB M Negation.blueprint.allChanges.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_exsChanges : WB M Negation.blueprint.exsChanges.val := by
-    simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
+  have ⟨h_rel, h_nrel, h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges⟩ :
+      WB M Negation.blueprint.rel.val ∧ WB M Negation.blueprint.nrel.val ∧
+      WB M Negation.blueprint.verum.val ∧ WB M Negation.blueprint.falsum.val ∧
+      WB M Negation.blueprint.and.val ∧ WB M Negation.blueprint.or.val ∧
+      WB M Negation.blueprint.all.val ∧ WB M Negation.blueprint.exs.val ∧
+      WB M Negation.blueprint.allChanges.val ∧ WB M Negation.blueprint.exsChanges.val := by
+    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+      simp only [Negation.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;> wb_auto
   refine ⟨h_rel, h_nrel, h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges,
     wb_neg_graphDelta_pi _ h_rel ‘(1 + (#1 + (#2 + #3 + 1) * (#2 + #3 + 1) + 1) * (#1 + (#2 + #3 + 1) * (#2 + #3 + 1) + 1) + 1) * (1 + (#1 + (#2 + #3 + 1) * (#2 + #3 + 1) + 1) * (#1 + (#2 + #3 + 1) * (#2 + #3 + 1) + 1) + 1) + 1’ ?_,
     wb_neg_graphDelta_pi _ h_nrel ‘(0 + (#1 + (#2 + #3 + 1) * (#2 + #3 + 1) + 1) * (#1 + (#2 + #3 + 1) * (#2 + #3 + 1) + 1) + 1) * (0 + (#1 + (#2 + #3 + 1) * (#2 + #3 + 1) + 1) * (#1 + (#2 + #3 + 1) * (#2 + #3 + 1) + 1) + 1) + 1’ ?_,
@@ -174,22 +162,13 @@ theorem shift_clauses : PRAWitnessFormulaRec.ClauseBounds (Shift.blueprint ℒ�
       (fun V _ _ e u h => ⟨u, by
         have h' := h; simp at h'
         simpa [h'.2] using le_of_lt (v_lt_nrel (e 2) (e 3) u), h⟩) (by wb_auto)
-  have h_verum : WB M (Shift.blueprint ℒₛₑₜ).verum.val := by
-    simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_falsum : WB M (Shift.blueprint ℒₛₑₜ).falsum.val := by
-    simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_and : WB M (Shift.blueprint ℒₛₑₜ).and.val := by
-    simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_or : WB M (Shift.blueprint ℒₛₑₜ).or.val := by
-    simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_all : WB M (Shift.blueprint ℒₛₑₜ).all.val := by
-    simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_exs : WB M (Shift.blueprint ℒₛₑₜ).exs.val := by
-    simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_allChanges : WB M (Shift.blueprint ℒₛₑₜ).allChanges.val := by
-    simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_exsChanges : WB M (Shift.blueprint ℒₛₑₜ).exsChanges.val := by
-    simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
+  have ⟨h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges⟩ :
+      WB M (Shift.blueprint ℒₛₑₜ).verum.val ∧ WB M (Shift.blueprint ℒₛₑₜ).falsum.val ∧
+      WB M (Shift.blueprint ℒₛₑₜ).and.val ∧ WB M (Shift.blueprint ℒₛₑₜ).or.val ∧
+      WB M (Shift.blueprint ℒₛₑₜ).all.val ∧ WB M (Shift.blueprint ℒₛₑₜ).exs.val ∧
+      WB M (Shift.blueprint ℒₛₑₜ).allChanges.val ∧ WB M (Shift.blueprint ℒₛₑₜ).exsChanges.val := by
+    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+      simp only [Shift.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;> wb_auto
   refine ⟨h_rel, h_nrel, h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges,
     wb_neg_graphDelta_pi_exp _ h_rel ‘(#3 + 2) * (#3 + 2) + 1 + #1 + #2 + 2’ ‘2 * (#1 + 1 + 1 + 1)’ ?_,
     wb_neg_graphDelta_pi_exp _ h_nrel ‘(#3 + 2) * (#3 + 2) + 1 + #1 + #2 + 2’ ‘2 * (#1 + 1 + 1 + 1)’ ?_,
@@ -271,22 +250,13 @@ theorem bv_clauses : PRAWitnessFormulaRec.ClauseBounds (BV.blueprint ℒₛₑ�
       exact ⟨Exp.exp (2 * e 2), by simpa using exponential_exp (2 * e 2),
         by simpa using exponential_exp ((e 4 + 2) * Exp.exp (2 * e 2))⟩
     · rw [h'.1]; exact le_trans (termBVVec_le _ _) (le_of_lt (repeatVec_lt _ _))
-  have h_verum : WB M (BV.blueprint ℒₛₑₜ).verum.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_falsum : WB M (BV.blueprint ℒₛₑₜ).falsum.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_and : WB M (BV.blueprint ℒₛₑₜ).and.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_or : WB M (BV.blueprint ℒₛₑₜ).or.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_all : WB M (BV.blueprint ℒₛₑₜ).all.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_exs : WB M (BV.blueprint ℒₛₑₜ).exs.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_allChanges : WB M (BV.blueprint ℒₛₑₜ).allChanges.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_exsChanges : WB M (BV.blueprint ℒₛₑₜ).exsChanges.val := by
-    simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
+  have ⟨h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges⟩ :
+      WB M (BV.blueprint ℒₛₑₜ).verum.val ∧ WB M (BV.blueprint ℒₛₑₜ).falsum.val ∧
+      WB M (BV.blueprint ℒₛₑₜ).and.val ∧ WB M (BV.blueprint ℒₛₑₜ).or.val ∧
+      WB M (BV.blueprint ℒₛₑₜ).all.val ∧ WB M (BV.blueprint ℒₛₑₜ).exs.val ∧
+      WB M (BV.blueprint ℒₛₑₜ).allChanges.val ∧ WB M (BV.blueprint ℒₛₑₜ).exsChanges.val := by
+    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+      simp only [BV.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;> wb_auto
   refine ⟨h_rel, h_nrel, h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges,
     wb_neg_graphDelta_pi _ h_rel ‘#3’ ?_, wb_neg_graphDelta_pi _ h_nrel ‘#3’ ?_,
     wb_neg_graphDelta_pi _ h_verum ‘0’ ?_, wb_neg_graphDelta_pi _ h_falsum ‘0’ ?_,

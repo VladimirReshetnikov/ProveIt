@@ -1,0 +1,13 @@
+import DiophantineConsistency.PRAWitnessDerivation
+/-! Axiom audit for `PRAWitnessDerivation`. -/
+#print axioms DiophantineConsistency.PRAWitnessDerivation.le_insert_self
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_isFormulaSet_sigma
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_isFormulaSet_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_setShiftGraph
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_derivation_core_sigma
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_derivation_core_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_derivation_sigma
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_derivation_neg_pi
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_derivationOf_sigma
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_proof_sigma
+#print axioms DiophantineConsistency.PRAWitnessDerivation.wb_provable_falsum

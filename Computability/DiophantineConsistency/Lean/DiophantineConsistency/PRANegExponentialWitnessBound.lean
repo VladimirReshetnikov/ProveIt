@@ -23,17 +23,8 @@ theorem negSeq_rew_bound_at {n : ℕ} (ω : Rew ℒₒᵣ Empty 3 Empty n) (e : 
   have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
   simp only [Semiformula.eval_rew] at h
   rw [hg,hf] at h
-  have hv : ![g 0,g 1,g 2] = g := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
-  have hs : Fin.snoc g (2*g 0+1) = ![g 0,g 1,g 2,2*g 0+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+  have hv : ![g 0,g 1,g 2] = g := by funext i; revert i; simp [Fin.forall_fin_succ]
+  have hs : Fin.snoc g (2*g 0+1) = ![g 0,g 1,g 2,2*g 0+1] := by funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
   have hw' : 2*g 0+1 ≤ w := hw
   have hb := PRANegSeqSWitnessBound.negSeq_bound (g 0) (g 1) (g 2) (by simpa [hv] using h)
   have hb' : (bnd (∼Exponential.Seqₛ.def.val)).Evalb (Fin.snoc g w) := by

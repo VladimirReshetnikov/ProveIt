@@ -20,15 +20,8 @@ theorem neg_lenbit_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 2 Empty n) (e :
   have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
   simp only [Semiformula.eval_rew] at h
   rw [hg,hf] at h
-  have hv : ![g 0,g 1] = g := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
-  have hs : Fin.snoc g (g 1+1) = ![g 0,g 1,g 1+1] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
+  have hv : ![g 0,g 1] = g := by funext i; revert i; simp [Fin.forall_fin_succ]
+  have hs : Fin.snoc g (g 1+1) = ![g 0,g 1,g 1+1] := by funext i; revert i; simp [Fin.forall_fin_succ, Fin.snoc]
   have hb := neg_lenbit_bound (g 0) (g 1) (by simpa [hv] using h)
   have hn := PRABndRewriting.natural (∼lenbitDef.val) ω e (g 1+1)
   rw [hs] at hn
@@ -36,11 +29,8 @@ theorem neg_lenbit_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 2 Empty n) (e :
 
 def negFirst : ArithmeticSemisentence 1 := “m. ¬!lenbitDef 1 m”
 theorem negFirst_bound (m : V) (h : negFirst.Evalb ![m]) :
-    (bnd negFirst).Evalb ![m,m+1] := by
-  let ω : Rew ℒₒᵣ Empty 2 Empty 1 := Rew.subst ![Semiterm.numeral 1,#0]
-  have h0 : (ω ▹ (∼lenbitDef.val)).Evalb ![m] := by exact h
-  have hb := neg_lenbit_rew_bound ω ![m] h0
-  exact hb
+    (bnd negFirst).Evalb ![m,m+1] :=
+  neg_lenbit_rew_bound (Rew.subst ![Semiterm.numeral 1,#0]) ![m] h
 def boundedNegFirst : ArithmeticSemisentence 2 := bnd negFirst
 
 def negFirstBoundBody : ArithmeticSemisentence 1 := “m. !negFirst m → !boundedNegFirst m (m+1)”

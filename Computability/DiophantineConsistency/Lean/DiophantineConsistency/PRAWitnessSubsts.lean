@@ -44,22 +44,13 @@ theorem subst_clauses : PRAWitnessFormulaRec.ClauseBounds (Substs.blueprint ℒ�
       (fun V _ _ e u h => ⟨u, by
         have h' := h; simp at h'
         simpa [h'.2] using le_of_lt (v_lt_nrel (e 2) (e 3) u), h⟩) (by wb_auto)
-  have h_verum : WB M (Substs.blueprint ℒₛₑₜ).verum.val := by
-    simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_falsum : WB M (Substs.blueprint ℒₛₑₜ).falsum.val := by
-    simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_and : WB M (Substs.blueprint ℒₛₑₜ).and.val := by
-    simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_or : WB M (Substs.blueprint ℒₛₑₜ).or.val := by
-    simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_all : WB M (Substs.blueprint ℒₛₑₜ).all.val := by
-    simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_exs : WB M (Substs.blueprint ℒₛₑₜ).exs.val := by
-    simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_allChanges : WB M (Substs.blueprint ℒₛₑₜ).allChanges.val := by
-    simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
-  have h_exsChanges : WB M (Substs.blueprint ℒₛₑₜ).exsChanges.val := by
-    simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma]; wb_auto
+  have ⟨h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges⟩ :
+      WB M (Substs.blueprint ℒₛₑₜ).verum.val ∧ WB M (Substs.blueprint ℒₛₑₜ).falsum.val ∧
+      WB M (Substs.blueprint ℒₛₑₜ).and.val ∧ WB M (Substs.blueprint ℒₛₑₜ).or.val ∧
+      WB M (Substs.blueprint ℒₛₑₜ).all.val ∧ WB M (Substs.blueprint ℒₛₑₜ).exs.val ∧
+      WB M (Substs.blueprint ℒₛₑₜ).allChanges.val ∧ WB M (Substs.blueprint ℒₛₑₜ).exsChanges.val := by
+    refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+      simp only [Substs.blueprint, HierarchySymbol.Semiformula.val_mkSigma] <;> wb_auto
   refine ⟨h_rel, h_nrel, h_verum, h_falsum, h_and, h_or, h_all, h_exs, h_allChanges, h_exsChanges,
     wb_neg_graphDelta_pi_exp _ h_rel ‘#3 + #0 + #1 + #2 + 1 + 2’ ‘2 * (#1 + 1 + 1 + 1)’ ?_,
     wb_neg_graphDelta_pi_exp _ h_nrel ‘#3 + #0 + #1 + #2 + 1 + 2’ ‘2 * (#1 + 1 + 1 + 1)’ ?_,
@@ -94,8 +85,7 @@ theorem subst_clauses : PRAWitnessFormulaRec.ClauseBounds (Substs.blueprint ℒ�
   · intro V _ _ e y h; simp [Substs.blueprint] at h; rw [h]; simpa [qqOr, numeral_eq_natCast] using code3_le 5 (e 3) (e 4)
   · intro V _ _ e y h; simp [Substs.blueprint] at h; rw [h]; simpa [qqAll, numeral_eq_natCast] using code2_le 6 (e 2)
   · intro V _ _ e y h; simp [Substs.blueprint] at h; rw [h]; simpa [qqExs, numeral_eq_natCast] using code2_le 7 (e 2)
-  · intro V _ _ a b h; simp [Substs.blueprint] at h; rw [h]; simpa [tau] using qVec_le b
-  · intro V _ _ a b h; simp [Substs.blueprint] at h; rw [h]; simpa [tau] using qVec_le b
+  all_goals intro V _ _ a b h; simp [Substs.blueprint] at h; rw [h]; simpa [tau] using qVec_le b
 
 theorem wb_subst_fixpoint : WB M ((Substs.blueprint ℒₛₑₜ).blueprint ℒₛₑₜ).fixpointDef.val := by
   refine wb_fixpointDef_exp _ (wb_core_sigma subst_clauses) (wb_core_neg_pi subst_clauses)

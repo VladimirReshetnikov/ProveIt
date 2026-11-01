@@ -174,3 +174,14 @@ provide proof-system and negative-translation lemmas. HA has stronger
 induction, so an HA proof alone does not establish an iPRA proof. Likewise,
 Lean's classical metatheory for proving existence of a derivation is distinct
 from adding classical logic to the object theory.
+
+## Additional characteristic-code route
+
+The [historical upstream plan](research/ipra-upstream-plan-20261031.md)
+proposes reusing the classical bounded characteristic and search theorems by
+negative translation, then recovering a native bounded-matrix comparison
+using intuitionistic decidability. This is a possible route, not a checked
+replacement for those constructive obligations: the translated bit equations,
+bounded-search correctness, and quantifier cases must all be justified in
+native iPRA. Its direct negation-normal reading of `succInd` must not be used
+as native induction, for the implication reason explained above.

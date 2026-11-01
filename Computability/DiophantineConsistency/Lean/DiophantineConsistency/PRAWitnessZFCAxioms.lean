@@ -46,52 +46,6 @@ theorem subst_le' (w k : V) : subst ℒₛₑₜ w k ≤ tau (w + k + 8) (0 + 4 
   · exact subst_le k hk w w 0 (fun j _ => le_trans (nth_le w j) (le_tau w 0))
   · rw [substs_not_uformula hk]; simp
 
-/-- **The separation body is a tower of two `tau`s in its core.** -/
-theorem sepBodyVal_le (k : V) :
-    sepBodyVal k ≤ tau (tau ((sepC : V) + k + 8) (4 * k + 10) + 8)
-      (2 * tau ((sepC : V) + k + 8) (4 * k + 10) + 20) := by
-  set T1 := tau ((sepC : V) + k + 8) (4 * k + 10) with hT1
-  have hcs : ((sepSubstConst : ℕ) : V) ≤ sepC := by
-    unfold sepC; push_cast; exact le_trans le_self_add le_self_add
-  have hcy : ((sepAtomZYCode : ℕ) : V) ≤ sepC := by
-    unfold sepC; push_cast; exact le_trans le_add_self le_self_add
-  have hcx : ((sepAtomZXCode : ℕ) : V) ≤ sepC := by unfold sepC; push_cast; exact le_add_self
-  have hbase {c : V} (hc : c ≤ sepC) (D : V) : c ≤ tau ((sepC : V) + k + 8) D :=
-    le_trans (le_trans hc (le_trans le_self_add le_self_add)) (le_tau _ _)
-  have hS : subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) k ≤ tau ((sepC : V) + k + 8) (0 + 4 * k + 6) :=
-    le_trans (subst_le' _ k) (tau_mono (add_le_add (add_le_add hcs le_rfl) le_rfl) le_rfl)
-  have hX : ((sepAtomZXCode : ℕ) : V) ^⋏ subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) k ≤ T1 := by
-    have h := code3_le_tau (small_le_tau _ _ (n := 4) (by norm_num)) (hbase hcx _) hS
-    exact le_trans (by simpa [qqAnd] using h) (tau_mono le_rfl (le_of_eq (by ring)))
-  set X := ((sepAtomZXCode : ℕ) : V) ^⋏ subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) k
-  have hY : ((sepAtomZYCode : ℕ) : V) ≤ T1 := hbase hcy _
-  have hT2 {t : V} (ht : t ≤ T1) : t ≤ tau (T1 + 8) (2 * T1 + 6) :=
-    le_trans (le_trans ht le_self_add) (le_tau _ _)
-  have hnX := neg_le' X T1 hX
-  have hnY := neg_le' _ T1 hY
-  have h5 : ((5 : ℕ) : V) ≤ tau (T1 + 8) (2 * T1 + 6) := small_le_tau _ _ (by norm_num)
-  have h4 : ((4 : ℕ) : V) ≤ tau (T1 + 8) (2 * T1 + 6 + 2 + 2) := small_le_tau _ _ (by norm_num)
-  have h6 {D : V} : ((6 : ℕ) : V) ≤ tau (T1 + 8) D := small_le_tau _ _ (by norm_num)
-  have h7 {D : V} : ((7 : ℕ) : V) ≤ tau (T1 + 8) D := small_le_tau _ _ (by norm_num)
-  have hi1 : neg ℒₛₑₜ ((sepAtomZYCode : ℕ) : V) ^⋎ X ≤ tau (T1 + 8) (2 * T1 + 6 + 2 + 2) := by
-    simpa [qqOr] using code3_le_tau h5 hnY (hT2 hX)
-  have hi2 : neg ℒₛₑₜ X ^⋎ ((sepAtomZYCode : ℕ) : V) ≤ tau (T1 + 8) (2 * T1 + 6 + 2 + 2) := by
-    simpa [qqOr] using code3_le_tau h5 hnX (hT2 hY)
-  have hiff : iff ℒₛₑₜ ((sepAtomZYCode : ℕ) : V) X ≤ tau (T1 + 8) (2 * T1 + 6 + 2 + 2 + 2 + 2) := by
-    unfold iff imp
-    simpa [qqAnd] using code3_le_tau h4 hi1 hi2
-  have ha1 : ^∀ iff ℒₛₑₜ ((sepAtomZYCode : ℕ) : V) X ≤ tau (T1 + 8) (2 * T1 + 6 + 2 + 2 + 2 + 2 + 2) := by
-    simpa [qqAll] using code2_le_tau h6 hiff
-  have he1 : ^∃ ^∀ iff ℒₛₑₜ ((sepAtomZYCode : ℕ) : V) X ≤
-      tau (T1 + 8) (2 * T1 + 6 + 2 + 2 + 2 + 2 + 2 + 2) := by
-    simpa [qqExs] using code2_le_tau h7 ha1
-  have ha2 : ^∀ ^∃ ^∀ iff ℒₛₑₜ ((sepAtomZYCode : ℕ) : V) X ≤
-      tau (T1 + 8) (2 * T1 + 6 + 2 + 2 + 2 + 2 + 2 + 2 + 2) := by
-    simpa [qqAll] using code2_le_tau h6 he1
-  unfold sepBodyVal
-  exact le_trans ha2 (tau_mono le_rfl (le_of_eq (by ring)))
-
-
 theorem imp_le {a b T : V} (ha : a ≤ T) (hb : b ≤ T) : imp ℒₛₑₜ a b ≤ tau (T + 8) (2 * T + 10) := by
   have hb' : b ≤ tau (T + 8) (2 * T + 6) := le_trans (le_trans hb le_self_add) (le_tau _ _)
   have h := code3_le_tau (small_le_tau (T + 8) (2 * T + 6) (n := 5) (by norm_num)) (neg_le' a T ha) hb'
@@ -112,6 +66,33 @@ theorem exs_le_tau {x X D : V} (h : x ≤ tau X D) : ^∃ x ≤ tau X (D + 2) :=
 
 theorem and_le_tau {x y X D : V} (hx : x ≤ tau X D) (hy : y ≤ tau X D) : x ^⋏ y ≤ tau X (D + 2 + 2) := by
   simpa [qqAnd] using code3_le_tau (small_le_tau X D (n := 4) (by norm_num)) hx hy
+
+/-- **The separation body is a tower of two `tau`s in its core.** -/
+theorem sepBodyVal_le (k : V) :
+    sepBodyVal k ≤ tau (tau ((sepC : V) + k + 8) (4 * k + 10) + 8)
+      (2 * tau ((sepC : V) + k + 8) (4 * k + 10) + 20) := by
+  set T1 := tau ((sepC : V) + k + 8) (4 * k + 10) with hT1
+  have hcs : ((sepSubstConst : ℕ) : V) ≤ sepC := by
+    unfold sepC; push_cast; exact le_trans le_self_add le_self_add
+  have hcy : ((sepAtomZYCode : ℕ) : V) ≤ sepC := by
+    unfold sepC; push_cast; exact le_trans le_add_self le_self_add
+  have hcx : ((sepAtomZXCode : ℕ) : V) ≤ sepC := by unfold sepC; push_cast; exact le_add_self
+  have hbase {c : V} (hc : c ≤ sepC) (D : V) : c ≤ tau ((sepC : V) + k + 8) D :=
+    le_trans (le_trans hc (le_trans le_self_add le_self_add)) (le_tau _ _)
+  have hS : subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) k ≤ tau ((sepC : V) + k + 8) (0 + 4 * k + 6) :=
+    le_trans (subst_le' _ k) (tau_mono (add_le_add (add_le_add hcs le_rfl) le_rfl) le_rfl)
+  have hX : ((sepAtomZXCode : ℕ) : V) ^⋏ subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) k ≤ T1 := by
+    have h := code3_le_tau (small_le_tau _ _ (n := 4) (by norm_num)) (hbase hcx _) hS
+    exact le_trans (by simpa [qqAnd] using h) (tau_mono le_rfl (le_of_eq (by ring)))
+  set X := ((sepAtomZXCode : ℕ) : V) ^⋏ subst ℒₛₑₜ ((sepSubstConst : ℕ) : V) k
+  have hY : ((sepAtomZYCode : ℕ) : V) ≤ T1 := hbase hcy _
+  have hiff := iff_le hY hX
+  have ha1 := all_le_tau hiff
+  have he1 := exs_le_tau ha1
+  have ha2 := all_le_tau he1
+  unfold sepBodyVal
+  exact le_trans ha2 (tau_mono le_rfl (le_of_eq (by ring)))
+
 
 /-- A common bound for the replacement skeleton constants. -/
 noncomputable def repC : ℕ :=
