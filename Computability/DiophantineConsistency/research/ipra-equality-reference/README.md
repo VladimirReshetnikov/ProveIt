@@ -112,6 +112,13 @@ invoked only with the untrusted mixed provider; they need a coherent replay.
 In particular the induction-image premise remains open, and neither theory
 equivalence nor the equation endpoint follows from this conditional result.
 
+[`IPRAReferenceAddOne.lean`](../../Lean/DiophantineConsistency/IPRAReferenceAddOne.lean)
+drafts the equality-only derivation of `x + 1 = S x` by translating an
+existing finite native proof and the specific defining and equality axioms it
+uses. It does not assume native induction, but is still only mixed-provider
+syntax-checked. The derivation must be coherently replayed and used to convert
+reference successor-step induction to the erased addition-step schema.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements and candidate derivations; discharge the
 native induction image; transfer the reference axioms
