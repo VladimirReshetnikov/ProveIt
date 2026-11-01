@@ -242,15 +242,16 @@ theorem wb_fixpointDef_exp {ar : ℕ} (φ : Fixpoint.Blueprint ar)
 theorem wb_graph_of_fixpoint (hfix : WB M (β.blueprint ℒₛₑₜ).fixpointDef.val) :
     WB M (β.graph ℒₛₑₜ).val := by
   letI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₀ := PRAModelIOpenPairing.standardModelISigmaZero
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝚺₀) inferInstance
   have := hfix; have := wb_pair₃Def (M := M)
   simp only [UformulaRec1.Blueprint.graph, HierarchySymbol.Semiformula.val_mkSigma]
-  exact PRAWitnessTransfer.wb_exs_poly _ (by simp)
+  refine wb_exs_term
     ‘(#0 + (#1 + #2 + 1) * (#1 + #2 + 1) + 1) * (#0 + (#1 + #2 + 1) * (#1 + #2 + 1) + 1)’
-    (fun V _ _ e u h => ⟨u, by
-      have h' := h; simp at h'
-      rw [h'.1]
-      simpa using pair₃_le_sq (le_refl (e 0)) (le_refl (e 1)) (le_refl (e 2)), h⟩) (by wb_auto)
+    (fun e u h => ?_) (by wb_auto)
+  simp [pair₃Def] at h
+  rw [h.1.2]
+  simpa [triplePoly] using pair3_le_triplePoly (e 0) (e 1) (e 2)
 
 theorem wb_result_of_fixpoint (hfix : WB M (β.blueprint ℒₛₑₜ).fixpointDef.val) :
     WB M (β.result ℒₛₑₜ).val := by
