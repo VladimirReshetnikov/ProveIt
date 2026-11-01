@@ -89,18 +89,14 @@ theorem or_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Prop
   exact ⟨htot, neg_step H hR hP hrefl (fun t => by
     simpa only [not_and_or, not_not] using hdefP t)⟩
 
-include hR in
-/-- `⊤` is reflected (code `⊥ → ⊥`). -/
-theorem top_refl {F : V → V → Prop} : Refl H hP (fun _ => True) F :=
-  ⟨_, isFormCodeSem_imp H (isFormCodeSem_bot H) (isFormCodeSem_bot H),
-    fun b hb _ S hS R hR' a ha U hU t ht => by
-      rw [satIn_imp H (isSetStructure_stage H hR hP hb hS hR') (isFormCodeSem_bot H)
-        (isFormCodeSem_bot H) (envOn_stage H hR hP hb hS ha hU ht)]
-      exact ⟨fun _ h => h, fun _ => trivial⟩⟩
-
 /-- `⊥` is reflected (code `⊥`). -/
 theorem bot_refl {F : V → V → Prop} : Refl H hP (fun _ => False) F :=
   ⟨_, isFormCodeSem_bot H, fun _ _ _ _ _ _ _ _ _ _ _ _ _ => ⟨False.elim, satIn_bot H⟩⟩
+
+include hR in
+/-- `⊤` is reflected (code `⊥ → ⊥`). -/
+theorem top_refl {F : V → V → Prop} : Refl H hP (fun _ => True) F :=
+  neg_step H hR hP (bot_refl H hP) (by simp)
 
 end Semantics
 
