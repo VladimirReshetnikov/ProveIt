@@ -1,4 +1,5 @@
 import DiophantineConsistency.InternalResidualSquares
+import DiophantineConsistency.PositiveOffsetCore
 
 /-! Convert nonnegative witness coordinates to strictly positive coordinates
 without changing zero existence, uniformly in every IΣ₁ model. -/
@@ -11,7 +12,6 @@ open AdaptiveEquationSyntax2011 AdaptiveFirstRootFactor87 AdaptiveFirstRootFacto
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 variable {σ : Type*}
 
-def decrement (e : Expr σ) : Expr σ := e.subst (fun i => .var i - 1)
 
 private theorem add_equiv {p q r s : Pair V} (h : Equivalent p q) (k : Equivalent r s) :
     Equivalent (pairAdd p r) (pairAdd q s) := by

@@ -1,4 +1,4 @@
-import DiophantineConsistency.QuarticCompiler
+import DiophantineConsistency.QuarticCompilerCore
 import DiophantineConsistency.NaturalExpressionSemiring
 
 /-! # The literal tree gates over an arbitrary commutative semiring

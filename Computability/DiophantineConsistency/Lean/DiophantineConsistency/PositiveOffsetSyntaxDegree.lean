@@ -1,4 +1,4 @@
-import DiophantineConsistency.PositiveOffsetArithmetic
+import DiophantineConsistency.PositiveOffsetCore
 
 /-! Replacing every variable by x−1 preserves the standard structural
 degree bound. Relating this bound to polynomial degree is separate. -/
