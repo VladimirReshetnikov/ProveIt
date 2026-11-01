@@ -1,0 +1,3 @@
+# Independent same-parent replay
+
+The independently compiled same-parent run explicitly PASSed. One source-identical module has a different object and warning-log hash: both become byte-identical after replacing the embedded author/peer build root by the same placeholder. Its downstream direct-dependency hash therefore differs. The outputs are not byte-identical; all other compared fields match. See `comparison.json`, state and complete logs for evidence. These are fixed-source proofs; original reused-object environments were reconstructed from surviving provider records, package-transitive ancestry remains inherited, and the native statements concern translated refutation rather than ordinary intuitionistic consistency.

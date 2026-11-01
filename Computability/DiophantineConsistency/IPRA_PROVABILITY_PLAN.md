@@ -86,8 +86,8 @@ function congruence, and relation congruence have now all been translated.
 The independently degree-certified 13-variable, 87-operation candidate
 has [preliminary classical and native clients](reviews/pra87-translated-preliminary/README.md)
 that compiled on an audited surviving-object overlay. A subsequent guarded
-[38-module author replay](reviews/ipra87-bundle-followup-translated-join-author-pass/README.md)
-has passed on the classical bundle snapshot. Its independent peer, later source
+[38-module author and independent replays](reviews/ipra87-bundle-followup-translated-join-independent-pass/README.md)
+have passed with matching rows on the classical bundle snapshot. Later source
 refresh, inherited provider ancestry, and ordinary native consistency comparison
 remain open; the native theorem concerns translated refutation.
 
@@ -95,10 +95,9 @@ The [13-variable native translated-refutation client](Lean/DiophantineConsistenc
 has also compiled in a [preliminary provider union](reviews/ipra86-translated-refutation-preliminary/README.md)
 with no additional theorem hypothesis. That union has a recorded partial
 object audit but the original 86-side compile environment was not fully
-reauthenticated. A subsequent [35-module guarded author replay](reviews/ipra86-bundle-followup-translated-join-author-pass/README.md)
-has passed on the authenticated classical bundle snapshot. Its independent
-peer, later source refresh, and ordinary native consistency comparison remain
-open.
+reauthenticated. Subsequent [35-module guarded author and independent replays](reviews/ipra86-bundle-followup-translated-join-independent-pass/README.md)
+have passed with matching rows on the authenticated classical bundle snapshot.
+Later source refresh and ordinary native consistency comparison remain open.
 
 The exact 14-variable client in
 [IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
