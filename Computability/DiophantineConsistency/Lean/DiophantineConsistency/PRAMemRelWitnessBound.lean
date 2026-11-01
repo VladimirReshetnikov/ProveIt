@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAIOpenCompleteness
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRABitFullWitnessBound
 import Foundation.FirstOrder.Arithmetic.Exponential.Bit
 set_option autoImplicit false
@@ -19,18 +20,16 @@ attribute [local irreducible] bitDef pairDef
   · simp [pairDef,bnd_open,p,←pair_graph]
   · letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
     have hb : bitDef.val.Evalb ![p,r] := by simpa [Semiformula.Operator.val, operator_mem_def, p] using h.2
-    have hh := PRABitFullWitnessBound.bit_bound p r hb
-    have hs : Fin.snoc ![p,r] (PRABitFullWitnessBound.bitMajorant r) = ![p,r,PRABitFullWitnessBound.bitMajorant r] := by simp
-    have hm := eval_bnd_mono bitDef.val ![p,r] (Empty.elim : Empty → V) hbit (by rw [hs]; exact hh)
     let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#1]
-    have hn := PRABndRewriting.natural bitDef.val ω ![p,r,x,y] w
-    have hv : (fun j => (ω #j).val ![p,r,x,y] Empty.elim) = ![p,r] := by
-      funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
-    have hs' : Fin.snoc ![p,r,x,y] w = ![p,r,x,y,w] := by simp
-    have hs'' : Fin.snoc ![p,r] w = ![p,r,w] := by simp
-    rw [hv,hs',hs''] at hn
-    rw [hs''] at hm
-    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hn.mpr hm
+    have hf : (ω ▹ bitDef.val).Evalb ![p,r,x,y] := by
+      simpa [ω, Semiformula.eval_substs] using hb
+    have hw : PRABitFullWitnessBound.bitMajorant
+        ((ω #1).val ![p,r,x,y] Empty.elim) ≤ w := by
+      simpa [ω] using hbit
+    have hrew := PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+      (fun _ r => PRABitFullWitnessBound.bitMajorant r)
+      PRABitFullWitnessBound.bit_bound ω ![p,r,x,y] w hw hf
+    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hrew
 def memRelMajorant (r x y : V) : V := (x+y+1)^2+1 + PRABitFullWitnessBound.bitMajorant r
 theorem memRel_bound_explicit (r x y : V) : memRel.val.Evalb ![r,x,y] →
  (bnd memRel.val).Evalb ![r,x,y,memRelMajorant r x y] := by
