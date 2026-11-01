@@ -29,11 +29,8 @@ theorem neg_lenbit_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 2 Empty n) (e :
 
 def negFirst : ArithmeticSemisentence 1 := “m. ¬!lenbitDef 1 m”
 theorem negFirst_bound (m : V) (h : negFirst.Evalb ![m]) :
-    (bnd negFirst).Evalb ![m,m+1] := by
-  let ω : Rew ℒₒᵣ Empty 2 Empty 1 := Rew.subst ![Semiterm.numeral 1,#0]
-  have h0 : (ω ▹ (∼lenbitDef.val)).Evalb ![m] := by exact h
-  have hb := neg_lenbit_rew_bound ω ![m] h0
-  exact hb
+    (bnd negFirst).Evalb ![m,m+1] :=
+  neg_lenbit_rew_bound (Rew.subst ![Semiterm.numeral 1,#0]) ![m] h
 def boundedNegFirst : ArithmeticSemisentence 2 := bnd negFirst
 
 def negFirstBoundBody : ArithmeticSemisentence 1 := “m. !negFirst m → !boundedNegFirst m (m+1)”
