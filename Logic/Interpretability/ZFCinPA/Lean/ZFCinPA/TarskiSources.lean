@@ -108,21 +108,25 @@ open SetTheory (Form Free)
 private theorem free_bot_absurd {i : ℕ} (h : Free i Form.fBot) : i < 0 :=
   absurd h (by simp [Free])
 
+private theorem not_free_connBot (k : ℕ) : ¬ Free k (connClauseF 3 Form.fBot Form.fBot) :=
+  not_free_connClauseF 3 freeMax_fTagPairF_imp
+    (fun _ hj ↦ by have := free_bot_absurd hj; omega)
+    (fun _ hj ↦ by have := free_bot_absurd hj; omega) k
+
+private theorem not_free_quantBot (k : ℕ) : ¬ Free k (quantClauseF 6 Form.fBot Form.fBot) :=
+  not_free_quantClauseF 6 freeMax_fTagUnF_all
+    (fun _ hj ↦ by have := free_bot_absurd hj; omega)
+    (fun _ hj ↦ by have := free_bot_absurd hj; omega) k
+
 theorem free_isFormCode3D4 {i : ℕ} (h : Free i (fIsFormCodeF 3)) : i < 4 := by
   by_contra hlt
   obtain ⟨k, rfl⟩ : ∃ k, i = k + 4 := ⟨i - 4, by omega⟩
-  exact not_free_connClauseF 3 freeMax_fTagPairF_imp
-    (prem := Form.fBot) (concl := Form.fBot)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega) k (Or.inl h)
+  exact not_free_connBot k (Or.inl h)
 
 theorem free_isFormCode2D4 {i : ℕ} (h : Free i (fIsFormCodeF 2)) : i < 4 := by
   by_contra hlt
   obtain ⟨k, rfl⟩ : ∃ k, i = k + 4 := ⟨i - 4, by omega⟩
-  exact not_free_connClauseF 3 freeMax_fTagPairF_imp
-    (prem := Form.fBot) (concl := Form.fBot)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega) k (Or.inr (Or.inl h))
+  exact not_free_connBot k (Or.inr (Or.inl h))
 
 theorem free_univEnv1D4 {i : ℕ} (h : Free i (fUnivEnvF 1)) : i < 2 := by
   have := free_lt_freeMax _ i h; have := fm02; omega
@@ -134,18 +138,12 @@ theorem free_tagPairD4 {t i : ℕ} (ht : freeMax (fTagPairF 0 t 3 2) ≤ 4)
 theorem free_isFormCode4D5 {i : ℕ} (h : Free i (fIsFormCodeF 4)) : i < 5 := by
   by_contra hlt
   obtain ⟨k, rfl⟩ : ∃ k, i = k + 5 := ⟨i - 5, by omega⟩
-  exact not_free_quantClauseF 6 freeMax_fTagUnF_all
-    (prem := Form.fBot) (concl := Form.fBot)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega) k (Or.inl h)
+  exact not_free_quantBot k (Or.inl h)
 
 theorem free_univEnv3D5 {i : ℕ} (h : Free i (fUnivEnvF 3)) : i < 5 := by
   by_contra hlt
   obtain ⟨k, rfl⟩ : ∃ k, i = k + 5 := ⟨i - 5, by omega⟩
-  exact not_free_quantClauseF 6 freeMax_fTagUnF_all
-    (prem := Form.fBot) (concl := Form.fBot)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega) k (Or.inr (Or.inl h))
+  exact not_free_quantBot k (Or.inr (Or.inl h))
 
 theorem free_tagUnD5 {t i : ℕ} (ht : freeMax (fTagUnF 1 t 4) ≤ 5)
     (h : Free i (fTagUnF 1 t 4)) : i < 5 := by
@@ -154,10 +152,7 @@ theorem free_tagUnD5 {t i : ℕ} (ht : freeMax (fTagUnF 1 t 4) ≤ 5)
 theorem free_econsQuantD5 {i : ℕ} (h : Free i (fEconsF 0 2 3)) : i < 5 := by
   by_contra hlt
   obtain ⟨k, rfl⟩ : ∃ k, i = k + 5 := ⟨i - 5, by omega⟩
-  exact not_free_quantClauseF 6 freeMax_fTagUnF_all
-    (prem := Form.fBot) (concl := Form.fBot)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega)
-    (fun _ hj ↦ by have := free_bot_absurd hj; omega) k
+  exact not_free_quantBot k
     (Or.inr (Or.inr (Or.inr (Or.inl h))))
 
 theorem free_taggedEmpty0D2 {i : ℕ} (h : Free i (fTaggedEmptyF 0 2)) :
