@@ -38,17 +38,12 @@ theorem isFormulaSet_bound_of_core (s w : V)
         simpa [Semiformula.Operator.val, operator_mem_def] using hbit
       letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
       let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#0,#1]
-      have hf' : (ω ▹ (∼bitDef.val)).Evalb ![p,s] := by
-        simpa [ω, Semiformula.eval_substs] using hf
-      have hw : PRANegBitFullWitnessBound.negBitMajorant
-          ((ω #1).val ![p,s] Empty.elim) ≤ w := by
-        simpa [ω] using hneg
-      have hh := PRARewritingWitnessBound.binary_rew_bound_with (∼bitDef.val)
-        (fun _ s => PRANegBitFullWitnessBound.negBitMajorant s)
-        PRANegBitFullWitnessBound.negBit_bound ω ![p,s] w hw hf'
-      rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
-        LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hh
-      simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
+      simpa [LogicalConnective.HomClass.map_neg, Semiformula.Operator.operator,
+        operator_mem_def, Rewriting.emb] using
+        (PRARewritingWitnessBound.binary_rew_bound_with (∼bitDef.val)
+          (fun _ s => PRANegBitFullWitnessBound.negBitMajorant s)
+          PRANegBitFullWitnessBound.negBit_bound ω ![p,s] w
+          (by simpa [ω] using hneg) (by simpa [ω, Semiformula.eval_substs] using hf))
     · right; right
       have hh := hcore p hlt hform
       simpa [formulaSetCore, isFormulaSet, ballIn, Semiformula.ballLT, FirstOrder.ball, DeMorgan.imply] using hh

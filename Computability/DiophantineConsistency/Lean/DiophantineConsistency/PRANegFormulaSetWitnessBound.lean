@@ -34,15 +34,11 @@ theorem negIsFormulaSet_bound_of_core (s w : V)
   · have hf : bitDef.val.Evalb ![p,s] := by
       simpa [Semiformula.Operator.val, operator_mem_def] using hbit
     let ω : Rew ℒₒᵣ Empty 2 Empty 2 := Rew.subst ![#0,#1]
-    have hf' : (ω ▹ bitDef.val).Evalb ![p,s] := by
-      simpa [ω, Semiformula.eval_substs] using hf
-    have hw : PRABitFullWitnessBound.bitMajorant
-        ((ω #1).val ![p,s] Empty.elim) ≤ w := by
-      simpa [ω] using hpos
-    have hh := PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
-      (fun _ s => PRABitFullWitnessBound.bitMajorant s)
-      PRABitFullWitnessBound.bit_bound ω ![p,s] w hw hf'
-    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
+    simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using
+      (PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+        (fun _ s => PRABitFullWitnessBound.bitMajorant s)
+        PRABitFullWitnessBound.bit_bound ω ![p,s] w
+        (by simpa [ω] using hpos) (by simpa [ω, Semiformula.eval_substs] using hf))
   · have hn : (∼(isSemiformula L).pi.val).Evalb ![0,p] := by simpa using hform
     have hh := hcore p hp hn
     simpa [negFormulaSetCore, isFormulaSet, ballIn, Semiformula.ballLT, FirstOrder.ball, DeMorgan.imply] using hh
