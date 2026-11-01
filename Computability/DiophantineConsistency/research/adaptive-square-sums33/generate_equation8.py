@@ -33,12 +33,13 @@ header=r'''\documentclass[10pt]{article}
 '''
 footer=r'''
 \normalfont\fontsize{7.7}{8.2}\selectfont
-The fixed integer $\mathcal A$ above is written in base 10. This candidate
-is constructed from the twenty-six-variable equation by naming three signed
-expressions and one positive expression. Its native intuitionistic PRA proof
-and guarded checks are in progress. The exact degree is certified by
-integer-polynomial calculations; the 139-operation count is for the unshifted
-circuit. Neither count is a minimality claim.
+The fixed integer $\mathcal A$ above is written in base 10. Lean proves that the formalized equation has no positive solution exactly
+when the chosen arithmetized ZFC consistency statement holds, by a derivation
+in the specified intuitionistic PRA. The literal endpoint was independently
+replayed on a fixed source snapshot; some transitive dependencies remain
+inherited. The exact degree is certified by integer-polynomial calculations;
+the 139-operation count is for the unshifted circuit. Neither count is a
+minimality claim.
 \end{multicols}
 \clearpage
 \begin{center}{\large\bfseries Exact 139-operation circuit}\end{center}
