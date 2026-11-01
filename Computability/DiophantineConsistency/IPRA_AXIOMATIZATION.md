@@ -47,8 +47,11 @@ are arbitrary finite lists.
    conjunction, disjunction and implication. Negation is implication to
    falsity. Bounded quantifiers written as quantifiers are not quantifier-free.
    The step `n + 1` uses the designated addition and one codes: it is not
-   syntactically identical to `S(n)`, although their equality is an intended
-   arithmetic consequence of the function equations.
+   syntactically identical to `S(n)`. The candidate proves their equality;
+   [`IPRASuccessorInduction.lean`](Lean/DiophantineConsistency/IPRASuccessorInduction.lean)
+   uses it to derive the usual `S(n)` quantifier-free induction schema with
+   arbitrary finite parameters. This establishes that schema direction, not
+   a full comparison of independently specified presentations.
 
 There is no unrestricted induction scheme, general excluded middle, or Markov
 principle among these axioms. In particular, classical negation-normal
