@@ -1,5 +1,3 @@
-import Diophantine.Paper1976.Lemma23
-import Diophantine.Paper1984.Masking
 import DiophantineConsistency.CurrentKernelData2011
 import DiophantineConsistency.CurrentMaskData2011
 import DiophantineConsistency.LowMaskData
@@ -12,7 +10,6 @@ import DiophantineConsistency.MFNativeCyclicRotation
 import DiophantineConsistency.MFWangTiles942Periodic
 import DiophantineConsistency.NativeCyclicCarry
 import DiophantineConsistency.NativePreliminaryCount2011
-import DiophantineConsistency.SplitCertificate59
 import DiophantineConsistency.WangTiles942Data
 import DiophantineConsistency.WangTiles942TableData
 import Mathlib.Algebra.BigOperators.ModEq
@@ -50,6 +47,11 @@ import Mathlib.Tactic.SplitIfs
 import Mathlib.Tactic.Tauto
 import Mathlib.Tactic.Use
 import Mathlib.Tactic.Zify
+import Mathlib.Algebra.Polynomial.Coeff
+import Mathlib.Data.Fintype.Prod
+import Mathlib.NumberTheory.Pell
+import Mathlib.NumberTheory.PellMatiyasevic
+import Mathlib.Tactic.LinearCombination
 
 /-! Matrix-free cyclic carry construction proofs shared with the ordinary module. -/
 /-!

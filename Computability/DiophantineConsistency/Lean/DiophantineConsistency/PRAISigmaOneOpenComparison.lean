@@ -1,6 +1,6 @@
 import DiophantineConsistency.StrictSigmaOneInduction
 import DiophantineConsistency.PRAPositiveStrictCertificate
-import DiophantineConsistency.ParsonsPositiveRule
+import DiophantineConsistency.ParsonsPositiveSyntax
 import DiophantineConsistency.PRAISigmaOneFiniteTranslation
 /-! Combine strict-prefix normalization and finite positive-axiom elimination. -/
 set_option autoImplicit false

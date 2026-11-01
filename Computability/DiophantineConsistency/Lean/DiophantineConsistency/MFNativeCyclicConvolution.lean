@@ -1,4 +1,3 @@
-import Diophantine.Paper1984.Masking
 import DiophantineConsistency.MFPaper1982Carries
 import DiophantineConsistency.MFPaper1982Coding
 import DiophantineConsistency.MFPaper1982Digits

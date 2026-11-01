@@ -8,19 +8,6 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
 open ParsonsRule ParsonsBasePositive ParsonsGuard
 
-theorem positive_exsItr {ξ : Type} (m n : ℕ)
-    (D : Semiformula ℒₒᵣ ξ (m+n)) (hD : Positive D) : Positive (∃⁰^[n] D) := by
-  induction n generalizing m with
-  | zero => simpa using hD
-  | succ n ih =>
-    simp only [exsItr_succ]
-    exact ih m (∃⁰ D) (Positive.exs hD)
-
-theorem strict_positive {φ : ArithmeticSemiformula ℕ 1}
-    (h : ParsonsStrictInvariant.Strict φ) : Positive φ := by
-  obtain ⟨n,D,hD,rfl⟩ := h
-  exact positive_exsItr 1 n D (.bounded hD)
-
 theorem positive_guard {φ : ArithmeticSemiformula ℕ 1} {E : Proposition ℒₒᵣ}
     (hφ : Positive φ) (hE : Positive E) : Positive (ParsonsGuard.guard φ E) := by
   unfold ParsonsGuard.guard
