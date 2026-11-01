@@ -158,8 +158,12 @@ has now passed matching author and independent replays, with the inherited
 ancestry boundary stated there. A later [historical single-provider join](Lean/DiophantineConsistency/IPRADeepBoundJoin.lean)
 has independently replayed the translated bound together with the exact ZFC
 deep-stability client, discharging its bound premise. Its native equality
-decision and remaining deep-matrix stability proofs remain explicit; the
-inherited ancestry and current-source limitations are recorded in its receipt.
+decision and remaining deep-matrix stability proofs were explicit there. A
+subsequent [single-provider equality join](Lean/DiophantineConsistency/IPRADeepEqualityJoin.lean)
+has matching guarded author and independent replays and discharges native
+equality decision as well. The sole explicit input to that comparison is the
+finite-list `DeepNeed` stability-witness schema; inherited ancestry and
+current-source limitations are recorded in its receipt.
 The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
