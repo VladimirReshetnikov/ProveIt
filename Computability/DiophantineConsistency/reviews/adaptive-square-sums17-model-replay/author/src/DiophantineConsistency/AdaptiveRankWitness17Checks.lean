@@ -1,0 +1,6 @@
+import DiophantineConsistency.AdaptiveRankWitness17
+#print axioms DiophantineConsistency.AdaptiveRankWitness17.literal_context
+#print axioms DiophantineConsistency.AdaptiveRankWitness17.literal_zero_project
+#print axioms DiophantineConsistency.AdaptiveRankWitness17.rank_rep
+#print axioms DiophantineConsistency.AdaptiveRankWitness17.positive_rank_of_zero
+#print axioms DiophantineConsistency.AdaptiveRankWitness17.current_no_zero_iff
