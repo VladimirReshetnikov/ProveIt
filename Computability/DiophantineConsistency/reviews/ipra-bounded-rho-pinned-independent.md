@@ -1,0 +1,7 @@
+# Exact bounded-rho native ZFC comparison: companion-pinned independent replay
+
+The independently launched guarded peer `/tmp/ipra-bounded-rho-pinned-arsc7meo` passed and matches author `/tmp/ipra-bounded-rho-pinned-2y4tr22c` in both source/object/full-log rows, parent state, selected-provider inventory and package manifest. Each traced client/check execution in both runs opened exactly the same 11,316 pinned fallback `.olean`, `.olean.private`, `.olean.server`, and `.ir` files, with no unknown fallback paths; all selected parent and pinned package files were rehashed before and after compilation. The raw traces differ in run-specific paths and process IDs, and are preserved compressed rather than claimed byte-identical.
+
+The exact candidate-native ZFC GG/native-refutation comparison has no explicit proof premises. Project/Foundation and package source-object ancestry remains inherited historical, and no current-source closure, standard-iPRA identification or 86/87 equation equivalence follows from this client alone.
+
+Replay: `python3 Computability/DiophantineConsistency/research/ipra-refutation-logic/build-bounded-rho-pinned.py`. Peer state SHA-256 `665ae8801f1749c7a2aa9434d380bb8f30de661927d18f8d607b036e06727bac`; selected-provider inventory `516376d82ea5abd0f2885e2bb756d7803003750b025b08e595fd5becb9c8d569`; canonical package manifest SHA-256 `b7c402f906c6c03bbfe4110aa185580f7924e265696566d5c601848b862a07b7`. Sources, logs, compressed raw traces, driver, state and selected inventory are retained in the evidence directory.
