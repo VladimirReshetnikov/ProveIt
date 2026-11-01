@@ -12,20 +12,36 @@ finite derivation of falsity from the repository's ZFC axiom predicate.
 Neither consistency nor inconsistency is assumed.
 
 The current priority is Lean proofs that the smallest constructed equations
-under the different size metrics have no solutions exactly when `Con(ZFC)`.
-The owner now additionally requires a Lean theorem that this equivalence
-is provable in intuitionistic Heyting Arithmetic (HA). Proving existence
-of such a proof is sufficient; a literal printed proof is unnecessary.
-The [HA provability plan](HA_PROVABILITY_PLAN.md) tracks that stronger target.
+under different size metrics have no solutions exactly when `Con(ZFC)`, and
+that this equivalence is provable in **intuitionistic PRA**. A Lean theorem
+asserting the existence of an object-theory derivation is sufficient; a
+printed derivation is not required. The exact candidate theory and proof
+boundary are specified in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md)
+and tracked in [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md).
 
-**Current proof status (29 October 2026).** The maintained 14-variable
-equation now has closed Lean IΣ₁ and HA proof-existence theorems in
-[`HACurrentEquation2011`](Lean/DiophantineConsistency/HACurrentEquation2011.lean).
-The earlier progress descriptions below are historical checkpoints. The active
-objective also requires a Lean proof of PRA provability; the existing citation
-of Parsons' theorem is an external argument, and the needed PRA calculus and
-formal transfer remain open. See the [PRA plan](PRA_PROVABILITY_PLAN.md) for
-the exact gap and the separate work needed for other equation-size records.
+**Current proof status (1 November 2026).** Lean has native iPRA proof-existence
+endpoints for the maintained [14-variable degree-150 equation](equation.pdf),
+the [13-variable 86-operation degree-56 equation](equation86.pdf), the
+[13-variable 87-operation degree-36 equation](equation36.pdf), the
+[14-variable 90-operation degree-30 equation](equation30-direct.pdf), the
+[14-variable 91-operation degree-30 equation](equation30.pdf), the
+[15-variable 93-operation degree-26 equation](equation26.pdf), and the
+[16-variable 96-operation degree-24 equation](equation24.pdf). Each endpoint
+uses the native negation of Foundation's particular arithmetized ZFC
+refutation predicate. The displayed polynomials, circuit counts and exact
+degrees have separate finite checks; the degree calculations are not Lean
+degree theorems and no global minimum is claimed.
+
+For the [17-variable 99-operation degree-20 equation](equation20.pdf), Lean
+has checked both zero-existence transfers in every IΣ₁ model and matching
+focused model replays; the native iPRA endpoint is undergoing independent
+replay. The smaller 85-operation candidate's reverse implication remains open.
+The native endpoints above have matching fixed-source proof replays on
+historical providers, with an author-only ancestor and inherited package and
+dynamically loaded dependency ancestry. A broader source refresh is running;
+subsequent upstream source edits mean its current snapshot is historical as
+well. See the iPRA plan for precise replay boundaries and current status.
+The older progress descriptions below are historical checkpoints.
 
 The [internal binary population package](reviews/arithmetic-binary-population-root.md)
 now proves total represented population, block concatenation and complement
