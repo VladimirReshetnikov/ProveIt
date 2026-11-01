@@ -1,3 +1,4 @@
+import DiophantineConsistency.PRARewritingWitnessBound
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRANegExtWitnessBound
 import DiophantineConsistency.PRAExponentialWitnessBound
@@ -15,28 +16,9 @@ attribute [local irreducible] extDef ppow2Def
 theorem neg_ext_rew_bound {n : ℕ} (ω : Rew ℒₒᵣ Empty 3 Empty n) (e : Fin n → V) (w : V) :
     (ω ▹ (∼extDef.val)).Evalb e →
       (bnd (ω ▹ (∼extDef.val))).Evalb (Fin.snoc e w) := by
-  intro h
-  let g : Fin 3 → V := fun i => (ω #i).val e Empty.elim
-  have hf : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.fvar) =
-      (Empty.elim : Empty → V) := Subsingleton.elim _ _
-  have hg : (Semiterm.val e Empty.elim ∘ ω ∘ Semiterm.bvar) = g := rfl
-  simp only [Semiformula.eval_rew] at h
-  rw [hg,hf] at h
-  have hv : ![g 0,g 1,g 2] = g := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
-  have hs : Fin.snoc g w = ![g 0,g 1,g 2,w] := by
-    funext i
-    refine Fin.cases rfl (fun j => ?_) i
-    refine Fin.cases rfl (fun j => ?_) j
-    refine Fin.cases rfl (fun j => ?_) j
-    exact Fin.cases rfl (fun j => Fin.elim0 j) j
-  have hb := PRANegExtWitnessBound.neg_ext_bound (g 0) (g 1) (g 2) w (by simpa [hv] using h)
-  have hn := PRABndRewriting.natural (∼extDef.val) ω e w
-  rw [hs] at hn
-  exact hn.mpr hb
+  letI : V↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  exact PRARewritingWitnessBound.ternary_rew_bound_with (∼extDef.val) (fun _ _ _ => w)
+    (fun x y z => PRANegExtWitnessBound.neg_ext_bound x y z w) ω e w le_rfl
 
 theorem negSeq_bound (y X Y : V) : (∼Exponential.Seqₛ.def.val).Evalb ![y,X,Y] →
     (bnd (∼Exponential.Seqₛ.def.val)).Evalb ![y,X,Y,2*y+1] := by
