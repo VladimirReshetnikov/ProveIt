@@ -24,9 +24,9 @@ theorem axiom_images (σ : Sentenceᵢ IPRAEqualityOnlyReference.language)
   change ReferenceAxiom σ at h
   cases h with
   | equality he =>
-    exact ⟨Axiomatized.prfAxm (NativeAxiom.equality (IPRAReferenceEqualityImages.equality_images he))⟩
+    exact ⟨Axiomatized.prfAxm (IPRAReferenceEqualityImages.equality_images he)⟩
   | defining hd =>
-    exact ⟨Axiomatized.prfAxm (NativeAxiom.defining (IPRAReferenceImages.defining_images hd))⟩
+    exact ⟨Axiomatized.prfAxm (IPRAReferenceImages.defining_images hd)⟩
   | successorNonzero =>
     rw [IPRAReferenceEqualityImages.embed_successorNonzero]
     exact ⟨Axiomatized.prfAxm (NativeAxiom.basic BasicAxiomI.succNonzero)⟩
