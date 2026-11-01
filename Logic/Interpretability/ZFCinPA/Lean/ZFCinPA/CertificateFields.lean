@@ -207,6 +207,12 @@ def axiomSoundF (n : ℕ) : SetTheory.Form :=
     (.fImp (boundedAtF n 1)
       (.fAnd (sigmaAtF n 1 0) (piTrueAtF n 1 0))))))
 
+/-- The **polarized** level-truth leaf at the canonical slots: the bit-`b`
+witness around the canonical instance of the level family.  `fPolarF n 1`
+is `fSigmaTrueF n` and `fPolarF n 0` is `fPiFalseF n`, definitionally. -/
+def fPolarF (n b c_i e_i : ℕ) : SetTheory.Form :=
+  .fEx (.fAnd (fNumF 0 b) (levelSatF n (c_i + 1) (e_i + 1) 0))
+
 end FormLevel
 
 /-! ## Free-slot bounds
@@ -284,25 +290,26 @@ theorem free_levelSatF_canonical :
         have h3 := fb15
         omega
 
-/-- The canonical Sigma-truth wrapper has free slots below `2`. -/
-theorem free_fSigmaTrueF_canonical {n i : ℕ}
-    (h : Free i (fSigmaTrueF n 1 0)) : i < 2 := by
-  simp only [BoundedZFCConsistency.fSigmaTrueF, SetTheory.Free] at h
+/-- The polarized canonical wrapper has free slots below `2`, at every
+level and on either polarity. -/
+theorem free_fPolarF_canonical {n b i : ℕ} (h : Free i (fPolarF n b 1 0)) :
+    i < 2 := by
+  simp only [fPolarF, SetTheory.Free] at h
   rcases h with h | h
   · have := free_fNumF h
     omega
   · have := free_levelSatF_canonical n h
     omega
 
+/-- The canonical Sigma-truth wrapper has free slots below `2`. -/
+theorem free_fSigmaTrueF_canonical {n i : ℕ}
+    (h : Free i (fSigmaTrueF n 1 0)) : i < 2 :=
+  free_fPolarF_canonical (b := 1) h
+
 /-- The canonical Pi-falsity wrapper has free slots below `2`. -/
 theorem free_fPiFalseF_canonical {n i : ℕ}
-    (h : Free i (fPiFalseF n 1 0)) : i < 2 := by
-  simp only [BoundedZFCConsistency.fPiFalseF, SetTheory.Free] at h
-  rcases h with h | h
-  · have := free_fNumF h
-    omega
-  · have := free_levelSatF_canonical n h
-    omega
+    (h : Free i (fPiFalseF n 1 0)) : i < 2 :=
+  free_fPolarF_canonical (b := 0) h
 
 /-- The canonical Pi-truth wrapper has free slots below `2`. -/
 theorem free_fPiTrueF_canonical {n i : ℕ}
@@ -1144,12 +1151,6 @@ section TarskiFormLevel
 
 open SetTheory (Form Free)
 
-/-- The **polarized** level-truth leaf at the canonical slots: the bit-`b`
-witness around the canonical instance of the level family.  `fPolarF n 1`
-is `fSigmaTrueF n` and `fPolarF n 0` is `fPiFalseF n`, definitionally. -/
-def fPolarF (n b c_i e_i : ℕ) : SetTheory.Form :=
-  .fEx (.fAnd (fNumF 0 b) (levelSatF n (c_i + 1) (e_i + 1) 0))
-
 theorem fPolarF_one (n c_i e_i : ℕ) :
     fPolarF n 1 c_i e_i = fSigmaTrueF n c_i e_i := rfl
 
@@ -1281,17 +1282,6 @@ set_option maxHeartbeats 1000000 in
 theorem freeMax_fTagUnF_ex : freeMax (fTagUnF 1 7 4) ≤ 5 := by decide
 
 /-! ### Structural bounds -/
-
-/-- The polarized canonical wrapper has free slots below `2`, at every
-level and on either polarity. -/
-theorem free_fPolarF_canonical {n b i : ℕ} (h : Free i (fPolarF n b 1 0)) :
-    i < 2 := by
-  simp only [fPolarF, SetTheory.Free] at h
-  rcases h with h | h
-  · have := free_fNumF h
-    omega
-  · have := free_levelSatF_canonical n h
-    omega
 
 /-- Free slots of the polarized gadget. -/
 theorem free_polarAtF {n b ci ei i : ℕ} (h : Free i (polarAtF n b ci ei)) :

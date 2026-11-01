@@ -1,4 +1,5 @@
 import DiophantineConsistency.PRAWitnessRefutationGraph
+import DiophantineConsistency.PRAWitnessBoundCertificate
 import DiophantineConsistency.PRAWitnessPositiveCoreZFC
 import DiophantineConsistency.PRAWitnessZFCNegativePiCore
 
@@ -30,14 +31,7 @@ theorem wb_refutation (N : Type) [Nonempty N] [Structure language N] [Structure.
 /-- Candidate PRA proves that any actual Foundation ZFC refutation has a
 single bound for the witnesses in its arithmetized predicate. -/
 theorem PRA_proves_refutation_bound :
-    PRA ⊢ Semiformula.lMap embedding (refutation 🡒 ∃⁰ bnd refutation) := by
-  apply Theory.Proof.complete_on_eq_models.{0,0}
-  intro N _ _ _ hN
-  letI : N↓[language] ⊧* PRA := hN
-  simp only [Semantics.Imp.models_imply, models_iff, Semiformula.eval_lMap,
-    LogicalConnective.HomClass.map_imply, Semiformula.eval_ex]
-  rw [PRAModelIOpenPairing.reduct_eq_standard]
-  intro hp
-  obtain ⟨w, hw⟩ := exists_bound (wb_refutation N) ![] hp
-  exact ⟨w, by simpa using hw⟩
+    PRA ⊢ Semiformula.lMap embedding (refutation 🡒 ∃⁰ bnd refutation) :=
+  PRAWitnessBoundCertificate.certificate_of_witness_bounds refutation wb_refutation
+
 end DiophantineConsistency.PRAWitnessZFCRefutationBound
