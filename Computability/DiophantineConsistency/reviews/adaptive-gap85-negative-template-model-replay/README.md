@@ -1,0 +1,9 @@
+# Negative special-template exclusion in IΣ₁ models
+
+Both coherent focused replays PASS, with seven matching source/object/full-log records, zero warnings and standard Lean axioms. `AdaptiveGap85NegativeTemplate.exclude_negative_template` excludes the explicitly stated negative balanced-root special template in every IΣ₁ model. Its assumptions include X≥1, Y≥8, q≥2, q³∣Y, positivity of k/eta/zeta, the exact first-norm and special-template equations, k=eta+zeta, and a natural witness L for the displayed balanced negative-root equation. It reduces internal q,Y and the modulus multiplier to finite cases, proves their unique linear survivor X=7,Y=48,m=1, and rejects it using the template equation.
+
+It does not derive the balanced equation or a special-template representative from an arbitrary 85-zero, and it does not establish an 85-operation equivalence. The replays rebuild six source modules plus checks on the independently accepted positive-template provider; they pin 368 selected inherited project-object/companion paths. Original inherited project and external package transitive source ancestry remains historical.
+
+Inputs: `research/adaptive-gap85-normalization/{AdaptiveGap85NegativeModular,AdaptiveGap85NegativeSmallCases,AdaptiveGap85NegativeMultiplier,AdaptiveGap85FiniteSix,AdaptiveGap85NegativeLinearOptimized,AdaptiveGap85NegativeTemplate}.lean` and `replay_negative_template_model.py`.
+
+The model replay driver was executed under the former path `replay_negative_template.py`; after the runs, it was renamed byte-for-byte to `replay_negative_template_model.py` and the pre-existing integer driver restored at the former path. The original state records and their anchor paths remain unchanged as historical evidence. `executed-driver.sha256` records the model driver hash, which matches that historical anchor; rerunning the renamed driver records its new path.

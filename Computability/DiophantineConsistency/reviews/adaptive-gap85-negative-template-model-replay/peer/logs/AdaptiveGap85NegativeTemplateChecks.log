@@ -1,0 +1,15 @@
+'DiophantineConsistency.AdaptiveGap85NegativeTemplate.exclude_negative_template' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85NegativeTemplate.exclude_negative_template.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (X Y q x k eta zeta L : V) (hX : 1 ≤ X) (hY : 8 ≤ Y) (hq : 2 ≤ q)
+  (hkpos : 0 < k) (heta : 0 < eta) (hzeta : 0 < zeta) (hq3 : q * q * q ∣ Y)
+  (hn : x * x = 1 + X * Y * Y * (X * Y * Y + 1) * k * k) (hk : k = eta + zeta)
+  (hc : eta + Y * k = 4 * (Y * (X + 1) * (Y * (X + 1)) + 4 * (Y * (X + 1)) + 3) + 3)
+  (hneg :
+    Y * q * q *
+          (4 * (Y * (X + 1)) * (Y * (X + 1)) * (Y * (X + 1)) + 24 * (Y * (X + 1)) * (Y * (X + 1)) + 45 * (Y * (X + 1)) +
+            26) +
+        Y * q * q * (X + Y * (X + 1) * (4 * (Y * (X + 1) * (Y * (X + 1)) + 4 * (Y * (X + 1)) + 3) + 3)) =
+      (4 * (Y * (X + 1)) + 3) * L) :
+  False
