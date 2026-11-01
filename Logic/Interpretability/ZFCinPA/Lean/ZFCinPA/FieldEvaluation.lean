@@ -50,6 +50,24 @@ itself. -/
 /-- The valuation correspondence a field reading starts from. -/
 theorem corr0 (f : ℕ → X) : Corr (k := 0) ![] f f := Corr.zero f
 
+/-- Evaluation of the form-code guard in the field's two-slot environment. -/
+theorem eval_formCode1 (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
+    ∀ x1 x0 : X, Semiformula.Eval (s := sX)
+      (x0 :> x1 :> (![] : Fin 0 → X)) f
+        (liftP (toSet 2 (fIsFormCodeF 1))) ↔ IsFormCodeSem H x1 :=
+  fun x1 x0 ↦
+    (eval_liftP (((corr0 f).cons x1).cons x0) _).trans
+      (fIsFormCodeF_spec H (scons x0 (scons x1 f)) 1)
+
+/-- Evaluation of the universe-environment guard in the two-slot environment. -/
+theorem eval_univEnv0 (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
+    ∀ x1 x0 : X, Semiformula.Eval (s := sX)
+      (x0 :> x1 :> (![] : Fin 0 → X)) f
+        (liftP (toSet 2 (fUnivEnvF 0))) ↔ IsUnivEnv H x0 :=
+  fun x1 x0 ↦
+    (eval_liftP (((corr0 f).cons x1).cons x0) _).trans
+      (fUnivEnvF_spec H (scons x0 (scons x1 f)) 0)
+
 /-! ## The first field -/
 
 /-- **The local-step field evaluates to `LocalStepLaws` over the induced
@@ -60,23 +78,14 @@ theorem eval_srcLocalStep (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
   have hco : ∀ x1 x0 : X,
       Corr (x0 :> x1 :> (![] : Fin 0 → X)) f (scons x0 (scons x1 f)) :=
     fun x1 x0 ↦ ((corr0 f).cons x1).cons x0
-  have henv : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f (liftP (toSet 2 (fUnivEnvF 0))) ↔
-      IsUnivEnv H x0 := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fUnivEnvF_spec H (scons x0 (scons x1 f)) 0)
+  have henv := eval_univEnv0 (X := X) f H
   have hbot : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
       (x0 :> x1 :> (![] : Fin 0 → X)) f
         (liftP (toSet 2 (fTaggedEmptyF 1 2))) ↔
       x1 = EnlargedFields.botC H := fun x1 x0 ↦
     (eval_liftP (hco x1 x0) _).trans
       (fTaggedEmptyF_spec H (scons x0 (scons x1 f)) 1 2)
-  have hcode : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f
-        (liftP (toSet 2 (fIsFormCodeF 1))) ↔
-      IsFormCodeSem H x1 := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fIsFormCodeF_spec H (scons x0 (scons x1 f)) 1)
+  have hcode := eval_formCode1 (X := X) f H
   have hsig : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
       (x0 :> x1 :> (![] : Fin 0 → X)) f (srcCanonAt srcSigmaTrue) ↔
       templateLevel X H x1 x0 (natV H 1) := fun x1 x0 ↦
@@ -115,23 +124,14 @@ theorem eval_srcLocalStepSucc (f : ℕ → X) (H : ZFAxioms (templateMem X)) :
   have hco : ∀ x1 x0 : X,
       Corr (x0 :> x1 :> (![] : Fin 0 → X)) f (scons x0 (scons x1 f)) :=
     fun x1 x0 ↦ ((corr0 f).cons x1).cons x0
-  have henv : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f (liftP (toSet 2 (fUnivEnvF 0))) ↔
-      IsUnivEnv H x0 := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fUnivEnvF_spec H (scons x0 (scons x1 f)) 0)
+  have henv := eval_univEnv0 (X := X) f H
   have hbot : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
       (x0 :> x1 :> (![] : Fin 0 → X)) f
         (liftP (toSet 2 (fTaggedEmptyF 1 2))) ↔
       x1 = EnlargedFields.botC H := fun x1 x0 ↦
     (eval_liftP (hco x1 x0) _).trans
       (fTaggedEmptyF_spec H (scons x0 (scons x1 f)) 1 2)
-  have hcode : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
-      (x0 :> x1 :> (![] : Fin 0 → X)) f
-        (liftP (toSet 2 (fIsFormCodeF 1))) ↔
-      IsFormCodeSem H x1 := fun x1 x0 ↦
-    (eval_liftP (hco x1 x0) _).trans
-      (fIsFormCodeF_spec H (scons x0 (scons x1 f)) 1)
+  have hcode := eval_formCode1 (X := X) f H
   have hsig : ∀ x1 x0 : X, Semiformula.Eval (s := sX)
       (x0 :> x1 :> (![] : Fin 0 → X)) f (srcCanonAt srcSigmaTrueSucc) ↔
       templateStepLevel X H x1 x0 (natV H 1) := fun x1 x0 ↦

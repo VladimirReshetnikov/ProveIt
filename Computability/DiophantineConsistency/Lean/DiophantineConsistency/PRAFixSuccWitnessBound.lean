@@ -1,6 +1,7 @@
 import DiophantineConsistency.PRAIOpenCompleteness
 import DiophantineConsistency.PRANegBitFullWitnessBound
 import DiophantineConsistency.PRABitFullWitnessBound
+import DiophantineConsistency.PRARewritingWitnessBound
 import Foundation.FirstOrder.Arithmetic.HFS.Fixpoint
 /-! Bind both membership polarities in Foundation succDef. The per-index
     bounded core sigma and negated-pi hypotheses remain explicit. -/
@@ -49,17 +50,11 @@ theorem succ_bound_of_core (u ih s w : V)
         · left
           have hf : (∼bitDef.val).Evalb ![x,u] := by
             simpa [Semiformula.Operator.val, operator_mem_def] using hbit
-          have hm := PRANegBitFullWitnessBound.negBit_bound x u hf
-          have hs : Fin.snoc ![x,u] (PRANegBitFullWitnessBound.negBitMajorant u) = ![x,u,PRANegBitFullWitnessBound.negBitMajorant u] := by simp
-          have hm' := eval_bnd_mono (∼bitDef.val) ![x,u] (Empty.elim : Empty → V) hneg (by rw [hs]; exact hm)
-          have hs' : Fin.snoc ![x,u] w = ![x,u,w] := by simp
-          rw [hs'] at hm'
           let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#1]
-          have hv : (fun j => (ω #j).val ![x,u,ih,s] Empty.elim) = ![x,u] := by
-            funext j
-            refine Fin.cases rfl (fun k => ?_) j
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hh := bnd_rew_succ (∼bitDef.val) ω x u ih s w x u hv hm'
+          have hh := PRARewritingWitnessBound.binary_rew_bound_with (∼bitDef.val)
+            (fun _ u => PRANegBitFullWitnessBound.negBitMajorant u)
+            PRANegBitFullWitnessBound.negBit_bound ω ![x,u,ih,s] w
+            (by simpa [ω] using hneg) (by simpa [ω, Semiformula.eval_substs] using hf)
           rw [show (ω ▹ (∼bitDef.val)) = ∼(ω ▹ bitDef.val) from
             LogicalConnective.HomClass.map_neg (Semiformula.rew ω) bitDef.val] at hh
           simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
@@ -87,18 +82,13 @@ theorem succ_bound_of_core (u ih s w : V)
         · right
           have hf : bitDef.val.Evalb ![x,u] := by
             simpa [Semiformula.Operator.val, operator_mem_def] using hbit
-          have hm := PRABitFullWitnessBound.bit_bound x u hf
-          have hs : Fin.snoc ![x,u] (PRABitFullWitnessBound.bitMajorant u) = ![x,u,PRABitFullWitnessBound.bitMajorant u] := by simp
-          have hm' := eval_bnd_mono bitDef.val ![x,u] (Empty.elim : Empty → V) hpos (by rw [hs]; exact hm)
-          have hs' : Fin.snoc ![x,u] w = ![x,u,w] := by simp
-          rw [hs'] at hm'
           let ω : Rew ℒₒᵣ Empty 2 Empty 4 := Rew.subst ![#0,#1]
-          have hv : (fun j => (ω #j).val ![x,u,ih,s] Empty.elim) = ![x,u] := by
-            funext j
-            refine Fin.cases rfl (fun k => ?_) j
-            exact Fin.cases rfl (fun k => Fin.elim0 k) k
-          have hh := bnd_rew_succ bitDef.val ω x u ih s w x u hv hm'
+          have hh := PRARewritingWitnessBound.binary_rew_bound_with bitDef.val
+            (fun _ u => PRABitFullWitnessBound.bitMajorant u)
+            PRABitFullWitnessBound.bit_bound ω ![x,u,ih,s] w
+            (by simpa [ω] using hpos) (by simpa [ω, Semiformula.eval_substs] using hf)
           simpa [Semiformula.Operator.operator, operator_mem_def, Rewriting.emb] using hh
+
 noncomputable def coreSigma : ArithmeticSemisentence 2 := φ.core.sigma.val
 noncomputable def negCorePi : ArithmeticSemisentence 2 := ∼φ.core.pi.val
 noncomputable def boundedCoreSigma : ArithmeticSemisentence 3 := bnd (coreSigma φ)
