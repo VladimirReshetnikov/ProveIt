@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRADeepEqualityJoin
+#check DiophantineConsistency.IPRADeepEqualityJoin.zfcEquiv
+#print axioms DiophantineConsistency.IPRADeepEqualityJoin.zfcEquiv
