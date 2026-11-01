@@ -10,15 +10,19 @@ embedding `(wPositive,wNegative)=(W+1,1)` and
 `(rootSkewPositive,rootSkewNegative)=(Γ+1,1)`.
 
 The reverse direction needs positivity of the original signed `W` at every
-positive parent zero. The proposed argument uses its first norm: if `W≤0`,
+positive parent zero. The Lean proof uses its first norm: if `W≤0`,
 the root-skew constraint gives `Γ=kW`, and the root equation forces the
 positive first root to be at least `psi*(ell+k)`. Its norm and the positive
 scale instead give `Z=psi*t` with `t<ell+k`. The general IΣ₁ inequality
-`ArithmeticAdaptiveTransport2011.first_root_bound` supplies the last bound,
-but the required residual extraction and model witness map are not yet
-proved for this candidate. The fixed first port is positive; any broader port
-assumptions must remain explicit.
+`ArithmeticAdaptiveTransport2011.first_root_bound` supplies the last bound.
+`AdaptiveZ44PositiveActual` proves this positivity and the ensuing `Γ>0`
+from the actual residuals; `AdaptiveZ44Model.shifted_no_zero_iff` then proves
+the 44-to-46 no-zero equivalence in every IΣ₁ model for **all natural port
+vectors**, without assuming a port is positive. The exact graph is bound to
+the Lean literal, and the [paired model replay](../../reviews/adaptive-square-sums44-model-replay/README.md)
+matched all seven modules on a historical native-46 provider.
 
-**Open:** the 44-variable graph is not yet bound to a Lean literal; the
-signed-W positivity, model equivalence, native iPRA endpoint and guarded
-replays remain to be proved. No global minimality is claimed.
+The fixed-port native iPRA endpoint and its guarded replay remain open.
+The model replay inherits project, package-transitive and dynamic-import
+ancestry, including the author-only 848-module ancestor; it is not a complete
+current-source closure. No global minimality is claimed.
