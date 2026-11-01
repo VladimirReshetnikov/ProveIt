@@ -131,7 +131,10 @@ not an intuitionistic PRA proof. Its Gödel–Gentzen translation is now
 constructed in [IPRAZFCRefutationBoundGG.lean](Lean/DiophantineConsistency/IPRAZFCRefutationBoundGG.lean):
 the source-directed author and independent replays passed for the exact Foundation
 ZFC refutation predicate, with matching source, object and full-log rows. This
-gives the translated implication, not an unnegated intuitionistic witness. The analogous HA normalization also uses
+gives the translated implication, not an unnegated intuitionistic witness.
+After the witness-calculus merge, a [58-module source-directed rebuild](reviews/ipra-zfc-bound-postmerge-replay/README.md)
+passed matching author and independent replays against the frozen historical
+parent. Its recorded project and external ancestry is still inherited. The analogous HA normalization also uses
 bounded decisions and finite double-negation shifts derived with HA
 induction. A possible iPRA route is to construct primitive-recursive
 decision codes for the particular bounded matrices and prove the necessary
@@ -144,7 +147,13 @@ the native formula when proofs deciding its actual atoms are supplied. The
 matched [author](reviews/ipra-open-atom-decision-author.md) and
 [independent](reviews/ipra-open-atom-decision-independent.md) replays retain a
 historical provider boundary. This does not itself supply those atom decisions
-or treat bounded quantifiers.
+or treat bounded quantifiers. A [zero-atom specialization](Lean/DiophantineConsistency/IPRAZeroAtomDecision.lean)
+handles every open NNF formula built from equalities or inequalities between
+arbitrary terms and zero, assuming an explicit native zero-decidability proof;
+its author and independent replays match on a historical provider.
+A separately replayed [subtraction implication](Lean/DiophantineConsistency/IPRASubSuccZeroNative.lean)
+proves `(Sx − y = 0) → (x − y = 0)` in the native theory without an extra
+arithmetic premise. General equality and positive reconstruction remain open.
 
 The theory now proves zero decidability without an additional premise. The
 [checked native proof](Lean/DiophantineConsistency/IPRAZeroStepNative.lean)

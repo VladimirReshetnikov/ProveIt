@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRASubSuccZeroNative
+#check DiophantineConsistency.IPRASubSuccZeroNative.native_provable
+#print axioms DiophantineConsistency.IPRASubSuccZeroNative.native_provable
