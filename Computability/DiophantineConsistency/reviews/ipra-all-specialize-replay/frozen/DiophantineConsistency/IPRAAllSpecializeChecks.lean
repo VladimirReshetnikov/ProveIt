@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAAllSpecialize
+#print axioms DiophantineConsistency.IPRAAllSpecialize.subst_after_q
+#print axioms DiophantineConsistency.IPRAAllSpecialize.allClosure_specialize
+#print axioms DiophantineConsistency.IPRAAllSpecialize.specialize_over_context
+#print axioms DiophantineConsistency.IPRAAllSpecialize.specialize_native_leibniz
