@@ -29,16 +29,15 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 [16-variable 96-operation degree-24 equation](equation24.pdf), the
 [17-variable 99-operation degree-20 equation](equation20.pdf), the
 [22-variable 112-operation degree-16 equation](equation16.pdf), the
-[26-variable 124-operation degree-12 equation](equation12.pdf), and the
-[33-variable 139-operation degree-8 equation](equation8.pdf). Each endpoint
+[26-variable 124-operation degree-12 equation](equation12.pdf), the
+[33-variable 139-operation degree-8 equation](equation8.pdf), and the
+[42-variable 164-operation degree-6 equation](equation6.pdf). Each endpoint
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
-The [42-variable degree-6 candidate](equation6.pdf) has a matched model
-equivalence replay; its native iPRA endpoint is still being checked. The
-smaller 85-operation candidate's reverse implication remains open.
+The smaller 85-operation candidate's reverse implication remains open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader source refresh is running;

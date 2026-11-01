@@ -95,6 +95,15 @@ dynamic-import ancestry, including the author-only 848-module ancestor; they
 are not complete current-source closure replays. Their exact degrees and
 displayed circuit checks are separate finite computations.
 
+The [42-variable degree-6 equation](equation6.pdf) has a no-premise
+[native endpoint](Lean/DiophantineConsistency/IPRANamedValues42Native.lean)
+for its exact shifted fixed-port literal. The [focused guarded comparison](reviews/ipra-named42-native-verification/README.md)
+matched both native runs and the separately replayed model source. This is a
+historical-provider result using the mapped Foundation refutation predicate;
+the 848-module author-only ancestor and package-transitive and dynamic-import
+ancestry remain inherited. Display binding and exact degree are checked by
+separate finite computations.
+
 The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheory.lean)
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz

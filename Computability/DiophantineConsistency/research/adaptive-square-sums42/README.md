@@ -5,7 +5,7 @@ constants in base 10. `generate_equation6.py` constructs the TeX from the
 pinned graph; `verify_display6.py` checks all displayed definitions, 164 gates,
 fixed constants and two mutation controls. Two `pdflatex` runs produced the
 same PDF SHA-256
-`3f1b52348b7279b19e4d1d28e9f3cc12c53297aaa9a8ed38930b355028165256`;
+`dcb586dbfe29260a405038f4c941997d9599fada24b992b8e58926d302251fc1`;
 both pages were inspected.
 
 This exploratory 164-operation circuit adds seven positive names and one
@@ -30,6 +30,4 @@ positive-zero directions in every IΣ₁ model for natural ports;
 model replay](../../reviews/adaptive-square-sums42-model-replay/README.md)
 matched on a historical provider.
 
-**Open:** the native iPRA endpoint and its guarded replay remain separate
-work. These checks inherit historical project, package-transitive and dynamic
-ancestry. No global minimality claim is made.
+The [native iPRA endpoint](../../Lean/DiophantineConsistency/IPRANamedValues42Native.lean) has a matching [guarded replay](../../reviews/ipra-named42-native-verification/README.md) on a historical provider. It uses the chosen mapped ZFC-refutation predicate; the shared project, package, and dynamic-import ancestry remains inherited. No global minimality claim is made.
