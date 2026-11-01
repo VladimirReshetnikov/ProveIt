@@ -18,41 +18,17 @@ theorem fstIdx_inline_succ (x p : V) :
     (Rew.subst (![#1,#0] : Fin 2 → ArithmeticSemiterm Empty 2) ▹ fstIdxDef.val).Evalb ![p,x] →
       (bnd (Rew.subst (![#1,#0] : Fin 2 → ArithmeticSemiterm Empty 2) ▹ fstIdxDef.val)).Evalb ![p,x,p+1] := by
   intro h
-  simp [fstIdxDef, pi₁Def, pairDef, subDef] at h
-  simp [fstIdxDef, pi₁Def, pairDef, subDef,
-    Semiformula.bexsLTSucc, Semiformula.bexsLT, FirstOrder.bexs,
-    bnd, bnd_open, Rew.subst, Rew.q] 
-  rcases h with ⟨a, ha, ⟨h₁,h₀⟩, b,hb,hpair⟩
-  refine ⟨a, lt_succ_iff_le.mpr ha, ⟨?_,?_⟩, b, lt_succ_iff_le.mpr (le_trans hb ha), lt_succ_iff_le.mpr hb, hpair⟩
-  · by_cases hp : 1 ≤ p
-    · exact Or.inr (h₁ hp)
-    · left
-      have ho : ((“1 ≤ #1” : ArithmeticSemiformula Empty 3).neg).Open := by
-        change (∼ (“1 ≤ #1” : ArithmeticSemiformula Empty 3)).Open
-        exact Semiformula.open_neg.mpr (by simp)
-      rw [bnd_open _ ho]
-      simp only [Semiformula.eval_castLE]
-      have he : (fun i : Fin 3 => ![a,p,x,p+1] (i.castLE (by omega))) = ![a,p,x] := by
-        funext i
-        refine Fin.cases rfl (fun i => ?_) i
-        refine Fin.cases rfl (fun i => ?_) i
-        exact Fin.cases rfl (fun i => Fin.elim0 i) i
-      rw [he]
-      change ((∼ (“1 ≤ #1” : ArithmeticSemiformula Empty 3)).Eval ![a,p,x] Empty.elim)
-      simpa [LogicalConnective.HomClass.map_neg] using hp
-  · by_cases hp : p = 0
-    · exact Or.inr (h₀ hp)
-    · left
-      have ho : ((“#1 < 1” : ArithmeticSemiformula Empty 3).neg).Open := by
-        change (∼ (“#1 < 1” : ArithmeticSemiformula Empty 3)).Open
-        exact Semiformula.open_neg.mpr (by simp)
-      rw [bnd_open _ ho]
-      simp only [Semiformula.eval_castLE]
-      change ¬ p < 1
-      intro hlt
-      apply hp
-      have hz : p ≤ 0 := lt_succ_iff_le.mp (by simpa using hlt)
-      exact le_antisymm hz (show 0 ≤ p from zero_le)
+  have h' : fstIdxDef.val.Evalb ![x,p] := by
+    simpa [fstIdxDef, pi₁Def, pairDef, subDef] using h
+  have hb := PRAFstIdxWitnessBound.fstIdx_bnd_succ x p h'
+  have ho₁ : ((“1 ≤ #1” : ArithmeticSemiformula Empty 3).neg).Open := Semiformula.open_neg.mpr (by simp)
+  have ho₂ : ((“1 ≤ #2” : ArithmeticSemiformula Empty 3).neg).Open := Semiformula.open_neg.mpr (by simp)
+  have ho₃ : ((“#1 < 1” : ArithmeticSemiformula Empty 3).neg).Open := Semiformula.open_neg.mpr (by simp)
+  have ho₄ : ((“#2 < 1” : ArithmeticSemiformula Empty 3).neg).Open := Semiformula.open_neg.mpr (by simp)
+  simp [fstIdxDef, pi₁Def, pairDef, subDef, Semiformula.bexsLTSucc,
+    Semiformula.bexsLT, FirstOrder.bexs, bnd, bnd_open, Rew.subst, Rew.q] at hb ⊢
+  simp [bnd_open _ ho₁, bnd_open _ ho₂, bnd_open _ ho₃, bnd_open _ ho₄] at hb ⊢
+  exact hb
 
 variable {L : Language} [L.Encodable] [L.LORDefinable] (T : Theory L) [T.Δ₁]
 /-- The first-index occurrence is definitionally the first conjunct of

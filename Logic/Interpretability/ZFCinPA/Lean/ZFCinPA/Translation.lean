@@ -1,6 +1,7 @@
 import BoundedZFCConsistency.AxiomTruth
 import Foundation.FirstOrder.SetTheory.Z
 import ZFCinPA.TranslationCore
+import ZFCinPA.NativeZFReplacement
 
 /-!
 # `Conₙ(ZFC)` is a theorem of Foundation's `𝗭𝗙𝗖`, for every metatheoretic `n`
@@ -180,75 +181,22 @@ theorem sat_totalGraphF {V : Type*} [SetStructure V] (psi : SetTheory.Form)
     SetTheory.Sat (memRel V) (SetTheory.scons xv (SetTheory.scons yv e)) (totalGraphF psi) ↔
       (SetTheory.relOf (memRel V) psi e yv xv ∨
         ((¬ ∃ z, SetTheory.relOf (memRel V) psi e z xv) ∧ yv = xv)) := by
-  unfold totalGraphF
-  simp only [SetTheory.Sat]
-  refine or_congr ?_ (and_congr ?_ Iff.rfl)
-  · exact SetTheory.Sat_rename_ext psi swapR _ _ (fun n => match n with
-      | 0 => rfl
-      | 1 => rfl
-      | _ + 2 => rfl)
-  · refine not_congr (exists_congr fun z => ?_)
-    exact SetTheory.Sat_rename_ext psi liftR _ _ (fun n => match n with
-      | 0 => rfl
-      | 1 => rfl
-      | _ + 2 => rfl)
+  exact NativeZFContainers254.sat_totalGraphF psi e xv yv
 
 /-- Satisfaction of the carving predicate, computed. -/
 theorem sat_carveF {V : Type*} [SetStructure V] (psi : SetTheory.Form)
     (e : ℕ → V) (a y : V) :
     SetTheory.Sat (memRel V) (SetTheory.scons y (SetTheory.scons a e)) (carveF psi) ↔
       ∃ x, x ∈ a ∧ SetTheory.relOf (memRel V) psi e y x := by
-  unfold carveF
-  simp only [SetTheory.Sat]
-  refine exists_congr fun x => and_congr Iff.rfl ?_
-  exact SetTheory.Sat_rename_ext psi carveR _ _ (fun n => match n with
-    | 0 => rfl
-    | 1 => rfl
-    | _ + 2 => rfl)
+  exact NativeZFContainers254.sat_carveF psi e a y
 
 /-- The repository's Replacement clause, from Foundation's replacement schema
 at the totalized graph, followed by Separation. -/
 theorem repl_clause [V↓[ℒₛₑₜ] ⊧* 𝗭𝗙𝗖] (psi : SetTheory.Form) (e : ℕ → V)
     (hfun : SetTheory.Functional (SetTheory.relOf (memRel V) psi e)) (a : V) :
     ∃ r : V, ∀ y, y ∈ r ↔ ∃ x, x ∈ a ∧ SetTheory.relOf (memRel V) psi e y x := by
-  haveI : V↓[ℒₛₑₜ] ⊧* 𝗭 := modelsZ_of_modelsZFC (V := V)
-  -- The totalized graph, read through satisfaction preservation.
-  have hTG : ∀ xv yv : V,
-      ((toSet 2 (totalGraphF psi)).Eval ![xv, yv] e ↔
-        (SetTheory.relOf (memRel V) psi e yv xv ∨
-          ((¬ ∃ z, SetTheory.relOf (memRel V) psi e z xv) ∧ yv = xv))) := fun xv yv =>
-    (eval_toSet_pair (totalGraphF psi) xv yv e).trans
-      (sat_totalGraphF psi e xv yv)
-  -- Totalized functionality: exactly what Foundation's schema demands.
-  have htot : ∀ x : V, ∃! y, (toSet 2 (totalGraphF psi)).Eval ![x, y] e := by
-    intro x
-    by_cases hx : ∃ z, SetTheory.relOf (memRel V) psi e z x
-    · obtain ⟨z, hz⟩ := hx
-      exact ⟨z, (hTG x z).mpr (Or.inl hz), fun y hy =>
-        ((hTG x y).mp hy).elim (fun h => hfun x y z h hz)
-          (fun h => absurd ⟨z, hz⟩ h.1)⟩
-    · exact ⟨x, (hTG x x).mpr (Or.inr ⟨hx, rfl⟩), fun y hy =>
-        ((hTG x y).mp hy).elim (fun h => absurd ⟨y, h⟩ hx) (fun h => h.2)⟩
-  -- Foundation's replacement schema at the totalized graph.
-  have hrepl :
-      ∀ f : ℕ → V,
-        (∀ x : V, ∃! y : V, (toSet 2 (totalGraphF psi)).Eval ![x, y] f) →
-        ∀ X : V, ∃ Y : V, ∀ y : V,
-          y ∈ Y ↔ ∃ x ∈ X, (toSet 2 (totalGraphF psi)).Eval ![x, y] f := by
-    simpa [models_iff, Axiom.replacementSchema, Matrix.constant_eq_singleton,
-      Matrix.comp_vecCons'] using
-      Theory.models V 𝗭𝗙𝗖 (Set.mem_union_left _
-        (ZermeloFraenkel.axiom_of_replacement (toSet 2 (totalGraphF psi))))
-  obtain ⟨Y, hY⟩ := hrepl e htot a
-  -- Carve the exact image out of the totalized one.
-  obtain ⟨r, hr⟩ := sep_clause (carveF psi) (SetTheory.scons a e) Y
-  refine ⟨r, fun y => ?_⟩
-  rw [hr y, sat_carveF psi e a y]
-  constructor
-  · rintro ⟨-, hx⟩
-    exact hx
-  · rintro ⟨x, hxa, hRyx⟩
-    exact ⟨(hY y).mpr ⟨x, hxa, (hTG x y).mpr (Or.inl hRyx)⟩, x, hxa, hRyx⟩
+  letI : V↓[ℒₛₑₜ] ⊧* 𝗭𝗙 := modelsZF_of_modelsZFC (V := V)
+  exact NativeZFContainers254.repl_clause psi e hfun a
 
 /-! ### The remaining seven clauses -/
 
