@@ -1,0 +1,26 @@
+# Foundation provider recovery: input snapshot
+
+The historical `/tmp/pra14-full-transitive-2x6o__to/package-lib` overlay
+contains 140 Foundation object links. At the time of the recovery survey,
+135 object links and their associated companions targeted the now-missing
+`/home/codex/src/Proofs/.lake/build/lib/lean` tree. The overlay itself has not
+been changed. Its old receipts remain historical evidence and are not a
+currently usable provider.
+
+[`input-manifest.json`](input-manifest.json) records those 140 module names
+and SHA-256 digests of all 477 files in a fresh `git archive` of the exact
+Foundation gitlink commit `32e1a0956a8622fad067328ca1959729a7634428`. It also
+records the Lake configuration, manifest, toolchain and Lean executable
+digests, and the inherited mathlib checkout revision. The temporary isolated
+build root is `/tmp/ipra-foundation-rebuild-DqHJmJJe`. Its Lake configuration
+declares a `Foundation` library at `lib/FormalizedFormalLogic-Foundation`,
+requires mathlib `v4.32.0`, and uses the existing package build directories.
+
+A first targeted Lake build of `Foundation.FirstOrder.Arithmetic.IOpen.Basic`
+and its dependencies was started in that root. This input record is **not a
+successful build receipt**. A new build must record its actual exit, outputs,
+dependency provenance, and compatibility with the existing project objects
+before it can support a replay. In particular, a newly compiled Foundation
+object is not presumed byte-identical to an unavailable historical object;
+mathlib/package-transitive objects and dynamically loaded dependencies remain
+inherited unless separately authenticated.
