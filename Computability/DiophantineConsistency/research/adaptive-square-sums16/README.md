@@ -27,3 +27,14 @@ match on the same historical fifteen-variable provider. Transitive project,
 package and dynamic ancestry remains inherited. The native iPRA endpoint for
 this new expression is separate work and is not established by the model
 receipt.
+
+The separate [equation24.tex](../../equation24.tex) and
+[equation24.pdf](../../equation24.pdf) show all 16 distinct positive unknowns,
+seven squared residuals, the full base-10 fixed integer and 96 gates.
+`verify_display24.py` parses all 27 displayed definitions and circuit rows,
+checks the sum wiring and copied constants, and rejects two formula mutations;
+it is a limited TeX parser. Normal Python and `python -O` pass. Two `pdflatex`
+runs produced identical PDF SHA-256
+`5e4ae926ca982f4a2e74a656a356bc3513d1161257857bdb1bf86f51229b46b4`;
+both pages were visually inspected. The page states the model proof and the
+pending native-iPRA endpoint separately.
