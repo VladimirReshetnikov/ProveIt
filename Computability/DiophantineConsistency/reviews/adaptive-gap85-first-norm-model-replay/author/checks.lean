@@ -1,0 +1,6 @@
+import DiophantineConsistency.AdaptiveGap85FirstNormModel
+#print axioms DiophantineConsistency.AdaptiveGap85FirstNormModel.carrier_algebra
+#print axioms DiophantineConsistency.AdaptiveGap85FirstNormModel.first_factor_unit
+#print axioms DiophantineConsistency.AdaptiveGap85FirstNormModel.completion_first_factor
+#print axioms DiophantineConsistency.AdaptiveGap85FirstNormModel.positive_completion
+#print axioms DiophantineConsistency.AdaptiveGap85FirstNormModel.current_completion
