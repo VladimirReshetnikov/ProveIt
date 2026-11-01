@@ -177,41 +177,23 @@ proves `(Sx − y = 0) → (x − y = 0)` in the native theory without an extra
 arithmetic premise. A second matched replay proves
 `(u − S(v) = 0) → pred(u − v) = 0` natively; see
 [IPRASubPredZeroNative.lean](Lean/DiophantineConsistency/IPRASubPredZeroNative.lean).
-A separate [forward difference theorem](Lean/DiophantineConsistency/IPRANativeDifferenceForward.lean)
-derives `x = y → (x − y = 0 ∧ y − x = 0)` from an explicit native
-zero-decidability proof, with matching guarded replays. The positive reverse
-implication and authenticated composition with the unconditional zero proof
-remain open, as do general equality and positive reconstruction. A matched
-[single-provider join](Lean/DiophantineConsistency/IPRADifferenceEqualityForwardJoin.lean)
-now supplies this forward direction to the equality-decision reduction, leaving
-zero decidability and positive reverse difference correctness explicit.
-A subsequent [zero-decidability join](Lean/DiophantineConsistency/IPRADifferenceEqualityZeroJoin.lean)
-rebuilds the necessary dependencies on that provider and discharges the zero
-decision premise. Matching guarded replays leave exactly the positive reverse
-difference implication as the explicit premise for general equality
-decidability; inherited package and project ancestry remains historical. A
-[checked invariant client](Lean/DiophantineConsistency/IPRADifferenceInvariant.lean)
-reduces that positive reverse implication to the base and successor cases of
-quantifier-free induction on `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. The actual native
-[base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
-has matching guarded author and independent replays. The resulting equality
-decision construction has the invariant successor case as its sole explicit
-premise; that case remains unproved, and provider ancestry remains historical.
-A [checked open successor-case reduction](Lean/DiophantineConsistency/IPRADifferenceSuccLogic.lean)
-now leaves the positive branch `y−Sx=0 → (y−x≠0 → Sx=y)` explicit; its
-conversion from `Sx` to the induction term `x+1` and universal closure also
-remain to be assembled. Matching guarded replays retain historical ancestry.
-The needed positive [subtraction reconstruction](Lean/DiophantineConsistency/IPRAReconstructClosure.lean)
-`y−x=0 ∨ x+(y−x)=y` has now passed matching guarded author and independent
-replays. Its construction uses native open induction and does not assume
-arbitrary equality decidability. A [single-provider reconstruction rebase](reviews/ipra-difference-reconstruct-independent.md)
-has also passed matched replays on the successor-logic provider. Connecting its
-positive branch to the universally closed successor case remains to be checked.
-The exact [native successor bridge](Lean/DiophantineConsistency/IPRAReconstructBridge.lean)
-`y−Sx=0 → (y−x≠0 → Sx=y)` has passed matched guarded replays. The closed
-step and the closed bridge have also been rebuilt on the reconstruction
-provider with matched replays. The separately checked open-term bridge family
-must still be rebuilt and instantiated on that single provider.
+The native theory now proves **universal equality decidability** without an
+extra arithmetic premise. [IPRANativeEqualityDecidable.lean](Lean/DiophantineConsistency/IPRANativeEqualityDecidable.lean)
+constructs the proof object; its guarded author and independent replays match.
+The project, Foundation and package ancestry of the selected provider remains
+historical.
+
+The construction proves the open-induction invariant
+`x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
+is checked, and its successor case uses the native positive
+[subtraction reconstruction](Lean/DiophantineConsistency/IPRAReconstructClosure.lean)
+`y−x=0 ∨ x+(y−x)=y`. The resulting
+[successor bridge](Lean/DiophantineConsistency/IPRAReconstructBridge.lean)
+`y−Sx=0 → (y−x≠0 → Sx=y)` and its open-term family are rebuilt on the same
+provider as the quantified induction step. The [forward difference theorem](Lean/DiophantineConsistency/IPRANativeDifferenceForward.lean)
+was similarly joined with native zero decidability. The intermediate modules
+retain their stated explicit premises; the equality endpoint discharges them.
+
 The native positive addition identities `x+0=x` and `x+S(y)=S(x+y)` have
 also been checked by [direct defining-equation proofs](Lean/DiophantineConsistency/IPRAAddRecursion.lean),
 with matching author and independent replays. The companion
