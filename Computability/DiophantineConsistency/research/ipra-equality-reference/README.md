@@ -40,6 +40,13 @@ defining-equation schemes, culminating in `defining_images`. This establishes
 neither the other reference-axiom images nor derivation transport, and its
 only invocation likewise used the untrusted mixed provider.
 
+The exploratory [`IPRAReferenceRew.lean`](../../Lean/DiophantineConsistency/IPRAReferenceRew.lean)
+and [`IPRAReferenceEqualityImages.lean`](../../Lean/DiophantineConsistency/IPRAReferenceEqualityImages.lean)
+add candidate embedding-rewriting compatibility, open-formula preservation,
+full Leibniz equality images and the successor-nonzero image. Their only
+invocations also used the untrusted mixed provider; the induction image and
+logical proof transport are not established by these files.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive

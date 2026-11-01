@@ -1,0 +1,6 @@
+import DiophantineConsistency.IPRAReferenceEqualityImages
+
+#print axioms DiophantineConsistency.IPRAReferenceRew.embed_rew
+#print axioms DiophantineConsistency.IPRAReferenceRew.embed_preserves_open
+#print axioms DiophantineConsistency.IPRAReferenceEqualityImages.equality_images
+#print axioms DiophantineConsistency.IPRAReferenceEqualityImages.embed_successorNonzero
