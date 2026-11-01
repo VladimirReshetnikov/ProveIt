@@ -16,6 +16,33 @@ These results do not show that an arbitrary zero satisfies the decrement
 bounds, that the shift can be iterated sufficiently, or that any representative
 satisfies `F+C<q`; the reverse 85-to-86 implication remains open.
 
+The balance step yields a sharper conditional description of a minimal
+positive zero. `AdaptiveGap85BalanceMinimal.minimal_zero_has_blocker` proves
+in every IΣ₁ model that a positive zero assumed to minimize `F+C` must have
+either `C≤qb` or `r≤q(A+1)(bk+1)`. `AdaptiveGap85BalanceLeast` applies the
+IΣ₁ least-number principle to obtain such a zero from any positive zero,
+**provided** the positive-zero score predicate is Σ₁-definable. That
+definability is an explicit premise of the conditional theorem; its later
+provisional discharge is described below. Matching
+guarded replays are preserved in `reviews/adaptive-gap85-balance-minimal-replay/`
+and `reviews/adaptive-gap85-balance-least-replay/`; the historical project
+and package ancestry and lack of a direct-import trace remain as recorded.
+Neither conditional result proves existence of a normalized representative.
+
+`AdaptiveGap85ScoreCoding.zeroScore_definable` now compiles for the actual
+85 literal in arbitrary IΣ₁ models. It codes a 13-tuple with Cantor pairing,
+proves every fixed natural expression on that tuple is Σ₁-definable, and
+identifies the coded predicate with the exact positive-zero score. The
+resulting `exists_minimal_blocked_unconditional` discharges the earlier
+definability premise, while still assuming that a positive zero exists; it
+does not prove normalization or the 85 equivalence. Both preliminary source
+replays matched, but their driver did not guard the newly direct
+`ArithmeticCantor` import. The physical provider's overall build failed
+later, although its Cantor row succeeded. The exact Cantor object was
+subsequently reproduced in an exploratory run; guarded reproduction and
+revised score replays remain outstanding. See
+`reviews/adaptive-gap85-score-coding-preliminary/` for this limitation.
+
 The 85-operation candidate is a 13-positive-coordinate reparameterization of the checked 86-operation candidate. Its finite circuit audit and one-sided machine implication are documented in [the candidate packet](../adaptive-gap85/README.md). The 85 no-zero statement implies machine nonhalting; the reverse implication is not established. Neither the candidate nor this note establishes an 85-operation equivalence with consistency.
 
 The existing reverse transfer `AdaptiveGap85Exists.new_natural_zero_to_old_of_bound` maps an 85 zero to an 86 zero when that witness satisfies `F + C < q`, with `q = 1 + Jβ`. The earlier full-equivalence adapter assumes this for every 85 zero. This is stronger than necessary: it suffices to construct, for each 85 zero, some 85 zero whose positive coordinates satisfy the bound. The exploratory Lean file [ExistentialNormalization.lean](ExistentialNormalization.lean) states that existential representative hypothesis explicitly and derives the reverse zero transfer and no-zero equivalence from the existing lift. It compiled against `/tmp/adaptive-gap85-machine-m09n4q_7/lib` and inherited Foundation/Mathlib/package boundaries; it is a provisional scratch result, not an authenticated source-current replay. It does not prove that representatives exist.
@@ -102,3 +129,22 @@ A further Lean-checked standard-natural example has X=4294967296=2³², Y=140737
 ### Conditional finite shift-orbit obstruction
 
 `AdaptiveGap85ShiftResidue.orbit_blocks` now checks the residue argument in every IΣ₁ model: for an abstract step adding or subtracting multiples of positive b to F and C independently, a finite external sequence preserves b∣F or b∣C, and every positive endpoint fails F+C<1+b. It uses Lean's external finite reflexive-transitive closure, not an internally coded model-length iteration. Binding the actual literal shifts to this relation and establishing an actual zero with the residue remain open. Matching focused replays and historical inherited ancestry are recorded in `reviews/adaptive-gap85-shift-residue-replay/`.
+
+
+### A third, residue-changing shift
+
+`AdaptiveGap85ThirdShift.literal_eval_shift` proves that the corrected third coordinate shift preserves the exact 85 expression over every commutative ring. The gamma decrement is `(q²−1)(A+1)c·s`; no extra factor H occurs. This is a ring-level equality and does not yet establish a positive arbitrary-IΣ₁-model shift or a normalizing representative. Independently replayed source, logs and historical provider qualifications are in `reviews/adaptive-gap85-third-shift-replay/`.
+
+The independently replayed `AdaptiveGap85ThirdResidueExample` checks positive integer coordinates before and after this shift, with artificial ports `(4,0,0,0)`, for which F changes from 0 to 1 modulo b=4. Thus the third shift can escape the residue invariant of the first two shifts on positive inputs. The example is not asserted to be an 85-equation zero or to use the actual fixed ports; it does not establish the 85 reverse implication. See `reviews/adaptive-gap85-third-residue-example-replay/`.
+
+
+### Joint residue for the three shifts
+
+`AdaptiveGap85JointResidue.literal_orbit_congruence` proves in every IΣ₁ model that any external finite sequence of the three coordinate shifts preserves the joint residue F−A·C modulo b, expressed without subtraction as `(F′+A·C)%b=(F+A·C′)%b`. The balance C-subtraction and third bA/F-subtraction bounds are explicit. The relation is broader than the zero-preserving moves, and does not claim positive intermediate coordinates or a model-internal unbounded iteration. Corrected-scope author and independent replays match (`reviews/adaptive-gap85-joint-residue-replay/`); earlier successful runs with a copied, incorrect scope field are preserved in `reviews/adaptive-gap85-joint-residue-scope-correction/`. Inherited project/package transitive source ancestry remains historical.
+
+The independently replayed `AdaptiveGap85JointObstruction` derives a conditional limitation: if b divides both A and the initial F, no positive endpoint of that finite coordinate orbit meets F+C<1+b (`reviews/adaptive-gap85-joint-obstruction-replay/`). It remains unknown whether any actual 85-equation zero satisfies those divisibility hypotheses. Neither result proves or disproves the 85 reverse implication.
+
+
+### Conditional minus-one joint-residue obstruction
+
+`AdaptiveGap85JointMinusOne.orbit_blocks_minus_one` gives another independently replayed conditional obstruction in every IΣ₁ model. If b>1 divides A+1 and the initial `(F+C)%b=1`, no positive endpoint of the external finite three-shift coordinate orbit has F+C<1+b. Its coordinate relation is broader than zero-preserving moves; actual-zero occurrence of these assumptions and the 85 reverse implication remain open. See `reviews/adaptive-gap85-joint-minus-one-replay/` for the matching focused replays and historical inherited ancestry.

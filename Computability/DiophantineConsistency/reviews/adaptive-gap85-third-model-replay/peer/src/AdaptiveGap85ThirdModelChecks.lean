@@ -1,0 +1,5 @@
+import DiophantineConsistency.AdaptiveGap85ThirdModel
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdModel.literal_preserved
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdModel.positive_zero_shift
+#print axioms DiophantineConsistency.AdaptiveGap85ThirdModel.shifted_F_sum
+#check DiophantineConsistency.AdaptiveGap85ThirdModel.positive_zero_shift

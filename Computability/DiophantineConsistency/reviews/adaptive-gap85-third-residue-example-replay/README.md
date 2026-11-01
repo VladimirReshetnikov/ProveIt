@@ -1,0 +1,5 @@
+# Positive-input residue change under the third shift
+
+Both source-directed Lean replays PASS with two matching source/object/full-log rows and standard Lean axioms. With artificial ports `(4,0,0,0)`, the 13 positive integer inputs `(1,76,1,1,1,1,1,1,1,1,1,1,145)` and s=1, every output coordinate of the third shift is positive. The five changed coordinates are F=1, C=226, T=1201, r=1351, gamma=1; F changes from 0 to 1 modulo b=4. This shows the third shift need not preserve the earlier residue obstruction even under positive integer inputs and outputs.
+
+The example does not assert that the input is an 85-equation zero or uses the actual fixed ports, and does not prove a normalizing representative exists. The selected independently replayed third-shift provider and 394 project-object/companion paths plus a direct Foundation object are guarded; inherited project/package transitive source ancestry remains historical. Source and driver: `research/adaptive-gap85-normalization/AdaptiveGap85ThirdResidueExample.lean` and `replay_third_residue_example.py`.

@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85JointMinusOne
+#print axioms DiophantineConsistency.AdaptiveGap85JointMinusOne.joint_sum_mod
+#print axioms DiophantineConsistency.AdaptiveGap85JointMinusOne.orbit_blocks_minus_one

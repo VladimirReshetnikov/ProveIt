@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85BalanceLeast
+#print axioms DiophantineConsistency.AdaptiveGap85BalanceLeast.exists_minimal_blocked
+#check DiophantineConsistency.AdaptiveGap85BalanceLeast.exists_minimal_blocked

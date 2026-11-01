@@ -1,0 +1,5 @@
+# Corrected third shift: exact ring-level literal equality
+
+Both source-directed focused Lean replays PASS with two matching source/object/full-log rows and standard Lean axioms. The source checks the corrected third-shift rank, transport, first-root, auxiliary and main-input identities and, through the three-hole expression context, proves that the exact `expressionAt85` has equal evaluations before and after the shift in any commutative ring. The gamma decrement is `(q²−1)(A+1)c·s`, with no additional H factor.
+
+This is a ring-level equality, not a proof of nonnegative shifted coordinates, model-uniform internal literal preservation, an actual zero, or an 85 equivalence. The correction may change F modulo b, but attainability of a normalizing representative is open. The independently replayed balance-model peer is the selected parent; 392 project-object/companion paths and a direct Foundation object are guarded, while project/package transitive source ancestry remains historical. Sources and driver: `research/adaptive-gap85-normalization/AdaptiveGap85ThirdShift.lean` and `replay_third_shift.py`.

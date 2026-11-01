@@ -1,0 +1,5 @@
+# Score coding replay with Cantor guard: preliminary
+
+Both source replays exited 0 and matched two source, object and full-log rows with zero warnings; `comparison.json` preserves the matching states and guarded project inputs. The `audit_direct.py` post-run check confirms that the retained private overlays currently resolve the score's direct imports to the intended balance-least, Cantor and Init objects, and rechecks all 500 Cantor candidate paths in the independent repair packet.
+
+This remains preliminary. The replay driver guarded the parent Cantor and its companion/shadowing candidates throughout, but did not guard the complete private overlay, record direct import resolution during compilation, or pin the generated checks source. The post-run audit cannot establish what those paths resolved to throughout the completed runs. A stronger replay is in preparation. Historical transitive project, package and dynamic ancestry also remain inherited. The semantic model result does not itself establish an iPRA derivation or the 85-to-86 equivalence.

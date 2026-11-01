@@ -1,0 +1,25 @@
+'DiophantineConsistency.AdaptiveGap85ScoreCoding.zeroScore_definable' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ScoreCoding.exists_minimizing_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveGap85ScoreCoding.exists_minimal_blocked_unconditional' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+DiophantineConsistency.AdaptiveGap85ScoreCoding.exists_minimal_blocked_unconditional.{u_1} {V : Type u_1}
+  [LO.ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (p : Fin 4 → ℕ) (hp : 0 < ↑(p 0))
+  (hex :
+    ∃ v,
+      (∀ (i : Fin 13), 0 < v i) ∧
+        DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+          (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v) :
+  ∃ v,
+    (∀ (i : Fin 13), 0 < v i) ∧
+      DiophantineConsistency.AdaptiveEquationSyntax2011.InternalZero
+          (DiophantineConsistency.AdaptiveGap85Literal.expressionAt85 fun j => ↑(p j)) v ∧
+        have b := v 0 * ↑(p 0);
+        have q := 1 + b;
+        have A := v 6 + ↑(p 1) * q;
+        have k := v 9 + v 10;
+        v 2 ≤ q * b ∨ v 8 ≤ q * (A + 1) * (b * k + 1)

@@ -1,0 +1,6 @@
+import DiophantineConsistency.AdaptiveGap85JointResidue
+#print axioms DiophantineConsistency.AdaptiveGap85JointResidue.old_joint
+#print axioms DiophantineConsistency.AdaptiveGap85JointResidue.balance_joint
+#print axioms DiophantineConsistency.AdaptiveGap85JointResidue.third_joint
+#print axioms DiophantineConsistency.AdaptiveGap85JointResidue.literal_orbit_joint
+#print axioms DiophantineConsistency.AdaptiveGap85JointResidue.literal_orbit_congruence

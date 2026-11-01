@@ -1,0 +1,5 @@
+# Third-shift model-uniform replay
+
+`AdaptiveGap85ThirdModel.literal_preserved` proves equivalence of the exact 85 literal's signed evaluations in every IΣ₁ model under the displayed `b*A ≥ 1`, F decrement, and gamma decrement bounds. `positive_zero_shift` proves that an actual positive zero remains a positive zero under strict F and gamma bounds; `shifted_F_sum` gives the exact change of F. The theorem does not establish that an arbitrary zero satisfies those bounds, or that a normalized witness exists, and does not prove the reverse 85-to-86 implication.
+
+Two author/peer Lean processes actually exited 0. `comparison.json` matches both source, object and full-log rows with zero warnings and rechecks 392 selected project object/companion paths. Sources, complete logs and process states are preserved for each run. The selected provider's transitive project and package ancestry remains historical; this focused replay does not independently rebuild it or record a direct-import resolution trace.
