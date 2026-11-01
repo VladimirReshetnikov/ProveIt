@@ -1,0 +1,9 @@
+# Source-current 86/87 continuation from an authenticated prefix
+
+This continuation rebuilds the changed `IPRABoundedInduction` plus the remaining 296 modules of the native `IPRAAdaptiveNativeZFCChecks` graph, and reuses only the first 52 completed modules from the independently matched, dependency-closed interrupted prefix documented in `reviews/ipra-adaptive-prefix-audit/`. The prefix is not downstream of the changed source. The endpoint remains the no-premise native-theory 86/87 equation-to-negated-ZFC-refutation comparison, not a proof of minimality or of a different external consistency encoding.
+
+The manifest pins the actual merged-workspace 1,103-source graph and hashes, 943 parent project objects, the prefix receipt and peer state, all 52 reused prefix objects/full logs and their recorded direct imports, and all 568 directly imported external files/companions and resolved paths. It contains all 349 affected current-source snapshots: 52 authenticated prefix sources and 297 sources to rebuild. The fresh multi-namespace overlay removes all affected parent objects before placing the prefix objects and compiling the remaining topological order, so no stale changed induction object can be selected. It records every new direct import/output/full log and rechecks all declared guards after compilation.
+
+Replay with `python3 reviews/ipra-adaptive-native-prefix-continuation/replay.py` from `Computability/DiophantineConsistency`. Both a full author and a separate peer must pass and their complete rows/direct-import hashes must be compared. The 848-module project ancestor is author-only; Foundation/package transitive ancestry and dynamically loaded inputs remain inherited and are not exhaustively traced. Prior failed/interrupted runs and their evidence remain in the preceding packets.
+
+At input-packet creation no continuation author or peer PASS is claimed.

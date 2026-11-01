@@ -1,0 +1,6 @@
+import DiophantineConsistency.IPRASuccessorInduction
+#check DiophantineConsistency.IPRASuccessorInduction.replaceParameter
+#check DiophantineConsistency.IPRASuccessorInduction.stepConvert
+#check DiophantineConsistency.IPRASuccessorInduction.successorInduction
+#print axioms DiophantineConsistency.IPRASuccessorInduction.replaceParameter
+#print axioms DiophantineConsistency.IPRASuccessorInduction.successorInduction

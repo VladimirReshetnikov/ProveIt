@@ -1,0 +1,5 @@
+# Positive-oriented special Pell-template exclusion
+
+Independent same-parent author and peer passed with matching source, object and full-log hashes for both modules. Over integers, `exclude_positive_template` proves a contradiction assuming `X≥1`, `Y≥8`, `η>0`, `q∣Y`, the explicit equation `η = 4((Y(X+1))² + 4Y(X+1) + 3)+3 − Y(8XY²+4)`, and the displayed positive main-root equation. The subsidiary lemmas derive `H∣Yq²(8−X)`, then `H∣27(8−X)`, and use positivity to force `X=8` and contradict `η>0`; `H=4Y(X+1)+3`. Exact theorem statements and checks are frozen here.
+
+This excludes only that explicitly specified positive-root template. The assumptions have not been derived for every 85 zero, negative-root orientation is untouched, and the argument has not been generalized to arbitrary IΣ₁ models; it does not prove 85 normalization, machine equivalence, or a fixed-port counterexample. Both runs guarded source, Lean binary, direct Mathlib objects and companions before/after compilation without workspace project-object fallback; Mathlib/package transitive ancestry is inherited. The copied driver hash was recorded after the runs rather than during execution.
