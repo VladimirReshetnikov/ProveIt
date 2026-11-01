@@ -1,0 +1,8 @@
+import DiophantineConsistency.AdaptiveNamedValues49
+#print axioms DiophantineConsistency.AdaptiveCombined49Strong.strong_relation
+#print axioms DiophantineConsistency.AdaptiveCombined49Context.old_context
+#print axioms DiophantineConsistency.AdaptiveCombined49Model.collapse_zero
+#print axioms DiophantineConsistency.AdaptiveCombined49Model.expand_zero
+#print axioms DiophantineConsistency.AdaptiveCombined49Model.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveNamedValues49.literal_eq
+#print axioms DiophantineConsistency.AdaptiveNamedValues49.current_no_zero_iff
