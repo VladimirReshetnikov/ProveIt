@@ -14,7 +14,12 @@ with port-independent coefficient 1. Its sum of squares therefore has exact
 degree 4, including after positive-variable shifting. These finite Python
 checks are not Lean degree theorems.
 
-**Open:** no Lean literal binding, positive-zero equivalence, native iPRA
-endpoint or guarded replay has yet been established for this candidate. It
-is not yet claimed equivalent to `Con(ZFC)`. No global minimality claim is
-made.
+`verify_literal.py` matches the actual Lean literal and all 187 gate rows to
+the pinned graph. `AdaptiveNamedValues51.shifted_no_zero_iff` proves both
+positive-zero directions in every IΣ₁ model, for every integer port vector.
+The [paired model replay](../../reviews/adaptive-square-sums51-model-replay/README.md)
+matched on a historical provider.
+
+**Open:** the native iPRA endpoint and its guarded replay remain separate
+work. These checks inherit historical project, package-transitive and dynamic
+ancestry. No global minimality claim is made.
