@@ -1,0 +1,3 @@
+import DiophantineConsistency.IPRACurrentNativeZFC
+#check DiophantineConsistency.IPRACurrentNativeZFC.equivalence14
+#print axioms DiophantineConsistency.IPRACurrentNativeZFC.equivalence14
