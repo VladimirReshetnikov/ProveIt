@@ -1,0 +1,3 @@
+import DiophantineConsistency.AdaptiveGap85NegativeSmallCases
+#print axioms DiophantineConsistency.AdaptiveGap85NegativeSmallCases.negative_template_cases
+#check DiophantineConsistency.AdaptiveGap85NegativeSmallCases.negative_template_cases
