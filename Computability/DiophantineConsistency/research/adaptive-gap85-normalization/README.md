@@ -23,25 +23,32 @@ either `C≤qb` or `r≤q(A+1)(bk+1)`. `AdaptiveGap85BalanceLeast` applies the
 IΣ₁ least-number principle to obtain such a zero from any positive zero,
 **provided** the positive-zero score predicate is Σ₁-definable. That
 definability is an explicit premise of the conditional theorem; its later
-provisional discharge is described below. Matching
+discharge and replay qualifications are described below. Matching
 guarded replays are preserved in `reviews/adaptive-gap85-balance-minimal-replay/`
 and `reviews/adaptive-gap85-balance-least-replay/`; the historical project
 and package ancestry and lack of a direct-import trace remain as recorded.
 Neither conditional result proves existence of a normalized representative.
 
-`AdaptiveGap85ScoreCoding.zeroScore_definable` now compiles for the actual
-85 literal in arbitrary IΣ₁ models. It codes a 13-tuple with Cantor pairing,
-proves every fixed natural expression on that tuple is Σ₁-definable, and
-identifies the coded predicate with the exact positive-zero score. The
-resulting `exists_minimal_blocked_unconditional` discharges the earlier
-definability premise, while still assuming that a positive zero exists; it
-does not prove normalization or the 85 equivalence. Both preliminary source
-replays matched, but their driver did not guard the newly direct
-`ArithmeticCantor` import. The physical provider's overall build failed
-later, although its Cantor row succeeded. The exact Cantor object was
-subsequently reproduced in an exploratory run; guarded reproduction and
-revised score replays remain outstanding. See
-`reviews/adaptive-gap85-score-coding-preliminary/` for this limitation.
+`AdaptiveGap85ScoreCoding.zeroScore_definable` is now replayed for the actual
+85 literal in arbitrary IΣ₁ models. For each fixed external natural port
+tuple, it codes a 13-tuple with Cantor pairing, proves every fixed natural
+expression on that tuple is Σ₁-definable, and identifies the coded predicate
+with the exact positive-zero score. `exists_minimal_blocked_unconditional`
+discharges the earlier definability premise, while still assuming a positive
+first port and an existing positive zero. It does not prove normalization,
+the 85 equivalence, or an iPRA derivation of that equivalence.
+
+The matched v3 replays and independent audit are preserved in
+`reviews/adaptive-gap85-score-coding-v3-{input,replay}/`. Both source and
+generated Checks bytes, private-overlay entries and realpaths, direct Lean
+dependency resolution at three stages, provider companion candidates, and
+Cantor direct inputs were guarded. The selected Cantor object was separately
+reproduced byte-for-byte; its historical provider failed later on a different
+module. The earlier unguarded and guarded-v2 packets are retained as qualified
+preliminary evidence in `reviews/adaptive-gap85-score-coding-preliminary/`
+and `reviews/adaptive-gap85-score-coding-guarded-replay/`. Neither the v3
+replays nor the Cantor repair independently rebuild the historical transitive
+project/package source-to-object or dynamic ancestry.
 
 The 85-operation candidate is a 13-positive-coordinate reparameterization of the checked 86-operation candidate. Its finite circuit audit and one-sided machine implication are documented in [the candidate packet](../adaptive-gap85/README.md). The 85 no-zero statement implies machine nonhalting; the reverse implication is not established. Neither the candidate nor this note establishes an 85-operation equivalence with consistency.
 
