@@ -39,15 +39,15 @@ theorem read_eq_erasure {ξ : Type} {n : ℕ} (φ : Semiformula ℒₒᵣ ξ n) 
   induction φ with
   | verum => rfl
   | falsum => rfl
-  | rel r v => cases r <;> simp [read, atom, translatedTerm, Semiformula.lMap,
+  | rel r v => cases r <;> simp [read, atom, translatedTerm, Semiformula.lMap, Semiformula.lMapAux,
       IPRANativeFormula.native, erase, PRALanguage.embedding, Language.ORing.embedding, Function.comp_def]
-  | nrel r v => cases r <;> simp [read, atom, translatedTerm, Semiformula.lMap,
+  | nrel r v => cases r <;> simp [read, atom, translatedTerm, Semiformula.lMap, Semiformula.lMapAux,
       IPRANativeFormula.native, erase, PRALanguage.embedding, Language.ORing.embedding,
       Semiformulaᵢ.neg_def, Function.comp_def]
-  | and p q ihp ihq => simp [read, Semiformula.lMap, IPRANativeFormula.native, erase, ihp, ihq]
-  | or p q ihp ihq => simp [read, Semiformula.lMap, IPRANativeFormula.native, erase, ihp, ihq]
-  | all p ih => simp [read, Semiformula.lMap, IPRANativeFormula.native, erase, ih]
-  | exs p ih => simp [read, Semiformula.lMap, IPRANativeFormula.native, erase, ih]
+  | and p q ihp ihq => simp [read, Semiformula.lMap, Semiformula.lMapAux, IPRANativeFormula.native, erase, ihp, ihq]
+  | or p q ihp ihq => simp [read, Semiformula.lMap, Semiformula.lMapAux, IPRANativeFormula.native, erase, ihp, ihq]
+  | all p ih => simp [read, Semiformula.lMap, Semiformula.lMapAux, IPRANativeFormula.native, erase, ih]
+  | exs p ih => simp [read, Semiformula.lMap, Semiformula.lMapAux, IPRANativeFormula.native, erase, ih]
 
 def refutation : Sentenceᵢ IPRAEqualityOnlyReference.language :=
   read FoundationHAConsistencyNormalization.rho
