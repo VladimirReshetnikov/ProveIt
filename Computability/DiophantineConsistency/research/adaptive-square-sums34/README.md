@@ -4,4 +4,4 @@ This 144-operation graph replaces the signed `Z` pair in the 35-variable parent 
 
 `AdaptiveAQ34.shifted_no_zero_iff` now proves, in every IΣ₁ model and for arbitrary integer ports, that the positive-shift 34-variable literal has no zero exactly when the corresponding 35-variable literal has no zero. Its proof obtains the positive magnitude of `Z` from the first residual and adjusts `r` when the signed root is negative. The exact 144-gate Lean literal and both context bindings are checked, and a focused paired 13-module replay matched; its [receipt and scope](../../reviews/adaptive-aq34-model-replay/README.md) retain the inherited historical ancestry. The 35-variable parent has a matched native endpoint on that historical provider.
 
-The native endpoint for this candidate is under separate replay. No global minimality is claimed.
+The fixed-port `IPRAAQ34Native.literal_equivalence` now proves the candidate-native equivalence to mapped Foundation ZFC refutation negation. Its [focused native replay](../../reviews/adaptive-aq34-native-replay/README.md) matched, with inherited historical ancestry. No global minimality is claimed.
