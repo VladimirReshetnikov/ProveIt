@@ -1,0 +1,3 @@
+import DiophantineConsistency.InternalResidualSquares
+#print axioms DiophantineConsistency.InternalResidualSquares.squareSum_rep
+#print axioms DiophantineConsistency.InternalResidualSquares.squareSum_zero_iff
