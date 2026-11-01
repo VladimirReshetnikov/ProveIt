@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRASuccessorInductionConverse
+#check DiophantineConsistency.IPRASuccessorInductionConverse.replaceParameterT
+#check DiophantineConsistency.IPRASuccessorInductionConverse.closeFamilyT
+#check DiophantineConsistency.IPRASuccessorInductionConverse.plusInductionFromSucc
+#print axioms DiophantineConsistency.IPRASuccessorInductionConverse.plusInductionFromSucc

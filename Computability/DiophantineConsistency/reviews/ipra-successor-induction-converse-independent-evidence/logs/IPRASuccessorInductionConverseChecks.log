@@ -1,0 +1,33 @@
+DiophantineConsistency.IPRASuccessorInductionConverse.replaceParameterT
+  {T : LO.FirstOrder.Theoryᵢ DiophantineConsistency.PRALanguage.language 𝗜𝗻𝘁¹}
+  (heq :
+    (σ : LO.FirstOrder.Sentenceᵢ DiophantineConsistency.PRALanguage.language) →
+      DiophantineConsistency.IPRANativeTheory.EqualityAxiomI σ → T ⊢! σ)
+  {n : ℕ} (φ : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language (n + 1))
+  (u v : LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ)
+  (args : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) :
+  DiophantineConsistency.IPRATheoryHilbertBridge.extended T ⊢!
+    DiophantineConsistency.IPRANativeAtomStability.eqAt u v 🡒
+      (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts fun i => Fin.cases u args i)) φ 🡒
+        (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts fun i => Fin.cases v args i)) φ
+DiophantineConsistency.IPRASuccessorInductionConverse.closeFamilyT
+  {T : LO.FirstOrder.Theoryᵢ DiophantineConsistency.PRALanguage.language 𝗜𝗻𝘁¹} (n : ℕ)
+  (φ : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language n) :
+  ((v : Fin n → LO.FirstOrder.Term DiophantineConsistency.PRALanguage.language ℕ) →
+      DiophantineConsistency.IPRATheoryHilbertBridge.extended T ⊢!
+        (LO.FirstOrder.Rewriting.app (LO.FirstOrder.Rew.embSubsts v)) φ) →
+    T ⊢! ∀⁰* φ
+DiophantineConsistency.IPRASuccessorInductionConverse.plusInductionFromSucc
+  {T : LO.FirstOrder.Theoryᵢ DiophantineConsistency.PRALanguage.language 𝗜𝗻𝘁¹}
+  (hdef :
+    (σ : LO.FirstOrder.Sentenceᵢ DiophantineConsistency.PRALanguage.language) →
+      DiophantineConsistency.IPRANativeTheory.DefiningEquationI σ → T ⊢! σ)
+  (heq :
+    (σ : LO.FirstOrder.Sentenceᵢ DiophantineConsistency.PRALanguage.language) →
+      DiophantineConsistency.IPRANativeTheory.EqualityAxiomI σ → T ⊢! σ)
+  {n : ℕ} (φ : LO.FirstOrder.Semisentenceᵢ DiophantineConsistency.PRALanguage.language (n + 1))
+  (hsucc : T ⊢! DiophantineConsistency.IPRASuccessorInduction.succInductionAxiom φ) :
+  T ⊢! DiophantineConsistency.IPRANativeInduction.inductionAxiom φ
+'DiophantineConsistency.IPRASuccessorInductionConverse.plusInductionFromSucc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
