@@ -249,12 +249,22 @@ and `SitePrefix250`. Ten files, **−287/+20 lines**. All 135 affected modules
 compile serially: both lanes, the 82 `SitesPrefix246` site batches, the boot
 chunks and `BinaryPrefix246`.
 
-Not done: `Rotation244` and `Routing245` against the protected `Rotation240`
-(about 150 and 84 lines). `Routing245` sits beneath several hundred cut and
-bisimulation chunk modules that would all need recompiling. For the protected
-lanes themselves, sharing needs a machine-generic abstraction over
-`program`/`table`, which is a refactor through the KEndpoint and Rotation240
-closures.
+**Landed: `Rotation244` against the protected `Rotation240`** (same method;
+none of the lane's protected modules, `ProgramRotation244` and
+`SourceRotation244`, import the edited files). Six files, **−151/+12 lines**.
+All 23 affected modules compile, including the ten `BootRotation244` chunks
+and `BootstrapFrameRotation244`.
+
+Measured, not done (lines saved by the same lane-wide fixpoint):
+
+| target | lines | cost |
+| --- | ---: | --- |
+| `Routing245` → `Rotation240` | 84 | several hundred cut and bisimulation chunk dependents |
+| `EnumDom`/`EnumPerm`/`Enum254` → `Enum222` | 53 + 45 + 29 | K215/K217/K219/K221/Prog254 endpoint rebuilds |
+| `Rotation240` → `Perm252` (both protected) | about 150 | KEndpoint and Rotation240 closures |
+
+Larger savings in the protected lanes need a machine-generic formulation over
+`program`/`table`, not more aliasing.
 
 ## Reproducing
 

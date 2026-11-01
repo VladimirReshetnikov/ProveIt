@@ -1,3 +1,4 @@
+import BusyBeaver.ZFC.SymbolicRotation240
 import BusyBeaver.ZFC.Rotation244Boxes
 import BusyBeaver.ZFC.FastTableRotation244
 import BusyBeaver.ZFC.RegisterMarkRotation244
@@ -13,13 +14,11 @@ blank initialization and the final Combined243 calibration remain separate.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.SymbolicRotation244
+export SetTheory.BusyBeaver.ZFC.SymbolicRotation240 (Reg Branch incr decr markedBits Valid incr_split decr_split markedBits_split split_register)
 
 open FiniteZipper ZipperRuns
 open RegisterBoxesPerm252 (registerBits width)
 
-
-abbrev Reg := Fin 9
-abbrev Branch := Option (Reg × Bool)
 
 inductive Effect where
   | unchanged
@@ -32,21 +31,6 @@ inductive Box where
   | marked (r : Reg)
   deriving DecidableEq, Repr
 
-def incr : Nat → List Nat → List Nat
-  | _, [] => []
-  | 0, v :: vs => (v + 1) :: vs
-  | r + 1, v :: vs => v :: incr r vs
-
-def decr : Nat → List Nat → List Nat
-  | _, [] => []
-  | 0, v :: vs => v.pred :: vs
-  | r + 1, v :: vs => v :: decr r vs
-
-def markedBits : Nat → List Nat → List Bool
-  | _, [] => []
-  | 0, v :: vs => false :: false :: (List.replicate v true ++ registerBits vs)
-  | r + 1, v :: vs => false :: true :: (List.replicate v true ++ markedBits r vs)
-
 /-- Whole-file denotation. The zipper supplies the zero exterior. Only
 increment adds a spare; positive decrement instead shifts the left boundary. -/
 def boxBits (x : Box) (vs : List Nat) : List Bool :=
@@ -55,11 +39,6 @@ def boxBits (x : Box) (vs : List Nat) : List Bool :=
   | .plain (.increment r) => registerBits (incr r.val vs ++ [1])
   | .plain (.decrement r) => registerBits (decr r.val vs)
   | .marked r => markedBits r.val vs
-
-def Valid (br : Branch) (vs : List Nat) : Prop :=
-  10 ≤ vs.length ∧ match br with
-  | none => True
-  | some (r, zero) => if zero then vs.getD r.val 0 = 0 else vs.getD r.val 0 ≠ 0
 
 inductive Segment where
   | bit (b : Bool)
@@ -109,39 +88,6 @@ theorem flat_cons (n : Nat) (vs : List Nat) (x : Segment) (xs : List Segment) :
 theorem flat_append (n : Nat) (vs : List Nat) (a b : List Segment) :
     flat n vs (a ++ b) = flat n vs a ++ flat n vs b := by
   simp [flat, List.flatMap_append]
-
-theorem incr_split (pre : List Nat) (v : Nat) (rest : List Nat) :
-    incr pre.length (pre ++ v :: rest) = pre ++ (v + 1) :: rest := by
-  induction pre with
-  | nil => rfl
-  | cons a pre ih => simpa [incr] using congrArg (List.cons a) ih
-
-theorem decr_split (pre : List Nat) (v : Nat) (rest : List Nat) :
-    decr pre.length (pre ++ v :: rest) = pre ++ v.pred :: rest := by
-  induction pre with
-  | nil => rfl
-  | cons a pre ih => simpa [decr] using congrArg (List.cons a) ih
-
-theorem markedBits_split (pre : List Nat) (v : Nat) (rest : List Nat) :
-    markedBits pre.length (pre ++ v :: rest) =
-      registerBits pre ++ false :: false :: (List.replicate v true ++ registerBits rest) := by
-  induction pre with
-  | nil => rfl
-  | cons a pre ih => simp [markedBits, registerBits, ih, List.append_assoc]
-
-theorem split_register (r : Nat) (vs : List Nat) (hr : r < vs.length) :
-    ∃ pre v rest, vs = pre ++ v :: rest ∧ pre.length = r ∧ vs.getD r 0 = v := by
-  induction r generalizing vs with
-  | zero =>
-    cases vs with
-    | nil => simp at hr
-    | cons v rest => exact ⟨[], v, rest, rfl, rfl, rfl⟩
-  | succ r ih =>
-    cases vs with
-    | nil => simp at hr
-    | cons a vs =>
-      obtain ⟨pre, v, rest, he, hl, hv⟩ := ih vs (by simpa using hr)
-      exact ⟨a :: pre, v, rest, by simp [he], by simp [hl], hv⟩
 
 theorem box_head (x : Box) (vs : List Nat) (hne : vs ≠ []) :
     ∃ t, boxBits x vs = false :: t := by
