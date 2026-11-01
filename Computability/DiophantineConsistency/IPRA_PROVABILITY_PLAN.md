@@ -261,11 +261,16 @@ ancestry remains inherited, and the later upstream erasure change requires a
 current-source join.
 
 The [equation-composition client](Lean/DiophantineConsistency/IPRAEquationComposition.lean)
-has also passed matching scoped replays, conditional on the equation and ZFC
-inputs. Checking the literal equation endpoints together with the unconditional
-ZFC comparison on a coherent provider remains outstanding. A separate
-source-current rebase of the bounded comparison is in progress after the
-upstream import-pruning merge.
+has passed matching scoped replays, conditional on the equation and ZFC
+inputs. The [86- and 87-operation endpoint declarations](Lean/DiophantineConsistency/IPRAAdaptiveNativeZFC.lean)
+now compile without theorem premises in two matched 236-module fixed-snapshot
+replays; their [verification receipt](reviews/ipra-adaptive-native-fixed-continuation-verification/README.md)
+records full output, log and direct-input comparisons. These checks are not yet
+a coherent source-current proof: the runs recorded source drift and the
+[ancestry audit](reviews/ipra-inherited-object-ancestry-audit/README.md)
+found two inherited objects built against a different recorded dependency.
+Repairing that provider environment and then rebasing to current sources remain
+outstanding, along with the external package ancestry qualifications.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
