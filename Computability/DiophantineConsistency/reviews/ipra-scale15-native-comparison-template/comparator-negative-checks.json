@@ -1,0 +1,53 @@
+{
+  "checker_sha256": "bdefc7e1f6754c8a5af23198cfab0e9b6e5234c893df31d99fe4dd9fe63216b7",
+  "files_sha256": {
+    "compare.py": "04afe3a58166612f53afae81bbcf73a80f707b5c13dc174e0cb08021d3659323",
+    "run.py": "7d79cb2b9570d33be54d47682ea487116e72075fc8fc4e0c41e46437d2cb14c1"
+  },
+  "rows": [
+    {
+      "case": "missing_plan",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-square-native-negative-8nr5v430/compare-missing_plan/compare.py\", line 11, in <module>\n    m,mh=read(M);a,ah=read(A/'state.json');b,bh=read(B/'state.json');P=Path(m['parent']);R=Path(m['workspace_root']);SRC=R/'Computability/DiophantineConsistency/Lean/DiophantineConsistency';dh=H(DR);ch=H(__file__)\n         ~~~~^^^\n  File \"/tmp/ipra-square-native-negative-8nr5v430/compare-missing_plan/compare.py\", line 10, in read\n    raw=Path(p).read_bytes();return json.loads(raw),hashlib.sha256(raw).hexdigest()\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py\", line 625, in read_bytes\n    with self.open(mode='rb') as f:\n         ~~~~~~~~~^^^^^^^^^^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/ipra-square-native-negative-8nr5v430/missing-plan/manifest.json'\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_directory",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-square-native-negative-8nr5v430/compare-same_directory/compare.py\", line 6, in <module>\n    PLAN,A,B=(Path(x).absolute() for x in sys.argv[1:]);assert A.resolve()!=B.resolve() and not os.path.samefile(A/'state.json',B/'state.json'),'author and peer must be independent runs'\n                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_state_inode",
+      "exit_code": 1,
+      "script": "compare.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-square-native-negative-8nr5v430/compare-same_state_inode/compare.py\", line 6, in <module>\n    PLAN,A,B=(Path(x).absolute() for x in sys.argv[1:]);assert A.resolve()!=B.resolve() and not os.path.samefile(A/'state.json',B/'state.json'),'author and peer must be independent runs'\n                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "missing_plan",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-square-native-negative-8nr5v430/run-missing_plan/run.py\", line 11, in <module>\n    before={str(p.resolve()):H(p) for p in inputs};log,terminal,receipt=D/'run.log',D/'terminal.json',D/'receipt.json';assert not any(os.path.lexists(p) for p in (log,terminal,receipt)),'refusing to overwrite evidence'\n                             ~^^^\n  File \"/tmp/ipra-square-native-negative-8nr5v430/run-missing_plan/run.py\", line 9, in <lambda>\n    H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();inputs=[Path(__file__).resolve(),D/'compare.py',plan/'manifest.json',plan/'replay.py',author/'state.json',peer/'state.json']\n                              ~~~~~~~~~~~~~~~~~~^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_abc.py\", line 625, in read_bytes\n    with self.open(mode='rb') as f:\n         ~~~~~~~~~^^^^^^^^^^^\n  File \"/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py\", line 537, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/tmp/ipra-square-native-negative-8nr5v430/missing-plan/manifest.json'\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_directory",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-square-native-negative-8nr5v430/run-same_directory/run.py\", line 8, in <module>\n    assert author.resolve()!=peer.resolve() and not os.path.samefile(author/'state.json',peer/'state.json'),'author and peer must be independent runs'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    },
+    {
+      "case": "same_state_inode",
+      "exit_code": 1,
+      "script": "run.py",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/ipra-square-native-negative-8nr5v430/run-same_state_inode/run.py\", line 8, in <module>\n    assert author.resolve()!=peer.resolve() and not os.path.samefile(author/'state.json',peer/'state.json'),'author and peer must be independent runs'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: author and peer must be independent runs\n",
+      "stdout": ""
+    }
+  ],
+  "scope": "Both scripts present in each isolated missing-plan / identical-directory / shared-inode probe. No positive comparison or replay is claimed.",
+  "status": "PASS_FAIL_CLOSED_NEGATIVE_CHECKS"
+}
