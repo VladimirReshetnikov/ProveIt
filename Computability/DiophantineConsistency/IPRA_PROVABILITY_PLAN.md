@@ -87,9 +87,9 @@ The independently degree-certified 13-variable, 87-operation candidate
 has [preliminary classical and native clients](reviews/pra87-translated-preliminary/README.md)
 that compiled on an audited surviving-object overlay. A subsequent guarded
 [38-module author and independent replays](reviews/ipra87-bundle-followup-translated-join-independent-pass/README.md)
-have passed with matching rows on the classical bundle snapshot. Later source
-refresh, inherited provider ancestry, and ordinary native consistency comparison
-remain open; the native theorem concerns translated refutation.
+have passed with matching rows on the classical bundle snapshot. This native
+theorem concerns translated refutation; source refresh and its coherent join
+with the separately established native consistency comparison remain open.
 
 The [13-variable native translated-refutation client](Lean/DiophantineConsistency/IPRA86TranslatedRefutation.lean)
 has also compiled in a [preliminary provider union](reviews/ipra86-translated-refutation-preliminary/README.md)
@@ -97,7 +97,8 @@ with no additional theorem hypothesis. That union has a recorded partial
 object audit but the original 86-side compile environment was not fully
 reauthenticated. Subsequent [35-module guarded author and independent replays](reviews/ipra86-bundle-followup-translated-join-independent-pass/README.md)
 have passed with matching rows on the authenticated classical bundle snapshot.
-Later source refresh and ordinary native consistency comparison remain open.
+Later source refresh and a coherent join with the separately established
+ordinary native consistency comparison remain open.
 
 The exact 14-variable client in
 [IPRACurrentTranslatedRefutation.lean](Lean/DiophantineConsistency/IPRACurrentTranslatedRefutation.lean)
@@ -105,8 +106,8 @@ now has matching guarded author and independent replays on the explicitly
 historical source snapshot, and matching author/independent bundle-followup
 replays have since passed. It proves native-theory equivalence of its literal
 no-zero sentence with negation of the GG-translated Foundation refutation
-predicate. The comparison with the intended ordinary native consistency
-sentence and a current-source replay remain separate obligations.
+predicate. Its join with the separately established ordinary native consistency
+comparison and a current-source replay remain separate obligations.
 
 The [complete GG transfer](Lean/DiophantineConsistency/IPRAFullGGTransfer.lean)
 combines every classical PRA axiom image and has matching guarded suffix
@@ -169,16 +170,15 @@ explicit uniform stability family into the required witness, and a checked
 [disjunction helper](Lean/DiophantineConsistency/IPRANativeDisjunctionWitness.lean)
 combines one child's decision with the other's stability. Their child proofs
 and common-valuation shape hypotheses remain explicit.
-The analogous HA normalization also uses
-bounded decisions and finite double-negation shifts derived with HA
-induction. A possible iPRA route is to construct primitive-recursive
-decision codes for the particular bounded matrices and prove the necessary
-bounding and translation statements with quantifier-free induction, but
-those intuitionistic derivations remain open. For the exact mapped `bnd rho`
-matrix, [PRARhoBoundedCharacteristic.lean](Lean/DiophantineConsistency/PRARhoBoundedCharacteristic.lean)
-now derives a Σ₀ hierarchy certificate and existence of a classical PRA
-Boolean characteristic code, with matching guarded replays. Native correctness
-for that bounded matrix remains to be established.
+The analogous HA normalization uses bounded decisions and finite
+double-negation shifts derived with HA induction. The iPRA construction
+instead transfers classical primitive-recursive characteristic certificates
+using native open decision and a recursive GG comparison, as described
+below. For the exact mapped `bnd rho` matrix,
+[PRARhoBoundedCharacteristic.lean](Lean/DiophantineConsistency/PRARhoBoundedCharacteristic.lean)
+derives a Σ₀ hierarchy certificate and existence of a classical PRA Boolean
+characteristic code, with matching guarded replays. The subsequent native
+matrix comparison is established by the bounded induction and literal client.
 
 For open classical NNF formulas, [IPRAOpenAtomDecision.lean](Lean/DiophantineConsistency/IPRAOpenAtomDecision.lean)
 constructs native decidability and the implication from the GG translation to
@@ -207,9 +207,9 @@ A [native selector certificate](Lean/DiophantineConsistency/IPRABoundedSelector.
 now proves, for each primitive-recursive test code, that any zero witness
 below a bound makes the fixed search output a zero witness below that bound.
 It transfers a classical open certificate using native open-formula stability;
-matched guarded replays retain the inherited provider boundary. Bounded
-existential stability and characteristic correctness for the actual ZFC
-matrix remain separate obligations. A [generic selector-stability client](Lean/DiophantineConsistency/IPRASelectorStability.lean)
+matched guarded replays retain the inherited provider boundary. This selector
+alone does not establish bounded existential stability or characteristic
+correctness. A [generic selector-stability client](Lean/DiophantineConsistency/IPRASelectorStability.lean)
 proves existential stability from explicit selector, selected-instance
 stability, and characteristic-correctness proofs; its guarded replays match.
 A [checked open-characteristic client](Lean/DiophantineConsistency/IPRASelectorOpenCharacteristic.lean)
@@ -246,10 +246,21 @@ their inherited object and package ancestry remains qualified.
 
 The [direct ZFC client](Lean/DiophantineConsistency/IPRAWholeMatrixZFC.lean)
 accepts this kind of whole-matrix comparison and discharges the translated
-witness bound without a separate `DeepNeed` witness list. Specializing the
-structural result to the exact mapped `bnd rho` on a coherent source/object
-provider, then joining the resulting ZFC comparison to the equation proofs,
-remains to be checked.
+witness bound without a separate `DeepNeed` witness list. The
+[literal bounded-rho specialization](Lean/DiophantineConsistency/IPRABoundedRhoZFC.lean)
+now proves the exact mapped ZFC comparison without additional theorem
+premises; matching scoped author and independent replays are recorded
+[here](reviews/ipra-bounded-rho-scoped-author.md) and
+[here](reviews/ipra-bounded-rho-scoped-independent.md). Those replays retain
+historical project/Foundation and fallback-package ancestry boundaries; a
+more extensive package-pinned replay remains in progress.
+
+The [equation-composition client](Lean/DiophantineConsistency/IPRAEquationComposition.lean)
+has also passed matching scoped replays, conditional on the equation and ZFC
+inputs. Checking the literal equation endpoints together with the unconditional
+ZFC comparison on a coherent provider remains outstanding. A separate
+source-current rebase of the bounded comparison is in progress after the
+upstream import-pruning merge.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
@@ -280,8 +291,9 @@ nonzeroness then prove `x + 1 ≠ 0` without eliminating the double negation.
 Native open induction yields `∀ x, x = 0 ∨ ¬(x = 0)`. The author and
 independent [guarded replays](reviews/ipra-zero-decidable-native-replay/README.md)
 match, retaining the historical parent-object and external-ancestry boundary
-stated there. This is only equality with zero: general equality, order and
-bounded-formula decidability remain open. Independently, the ordinary positive
+stated there. This step establishes only equality with zero; the later general
+equality, order and bounded-formula comparisons are described above.
+Independently, the ordinary positive
 `∀x, x + 1 = S(x)` has now been proved directly from native defining equations
 and Leibniz equality in [IPRAAddOneDirect.lean](Lean/DiophantineConsistency/IPRAAddOneDirect.lean),
 with matching [guarded replays](reviews/ipra-addone-direct-replay/README.md).
@@ -306,8 +318,8 @@ to the needed double negation, and prove that an ordinary bounded witness
 implies `rho`, the translated bound can potentially yield `rhoᴺ → ¬¬rho`.
 Together with the other implication and the intuitionistic
 `Derivation.neg_doubleNegation` lemma, this would compare the two consistency
-sentences without extracting a witness from a double negation. This is a proof
-plan, not yet a checked iPRA theorem.
+sentences without extracting a witness from a double negation. The later
+literal bounded-rho client above now carries out this plan on a scoped provider.
 The pure logical final step has an independently replayed proof-producing
 lemma in [IPRARefutationNegationLogic.lean](Lean/DiophantineConsistency/IPRARefutationNegationLogic.lean):
 it assumes proofs of `ordinary → rhoᴺ` and `rhoᴺ → ¬¬ordinary` and derives
@@ -318,15 +330,15 @@ proved in an arbitrary intuitionistic theory. The first premise, from a native
 interpretation of a classical negation-normal formula to its GG translation,
 is now proved generically in
 [IPRANativeForwardTheory.lean](Lean/DiophantineConsistency/IPRANativeForwardTheory.lean)
-and has author and independent guarded replays. Establishing the reverse
-double-negated implication for the actual refutation predicate in the intended
-iPRA remains open.
+and has author and independent guarded replays. The reverse direction for the
+actual refutation predicate is supplied by the later bounded-rho client.
 For the literal Foundation ZFC source sentence, the separately guarded
 [one-premise client](Lean/DiophantineConsistency/IPRAFoundationZFCNegationOnePremise.lean)
 now proves the desired consistency comparison for any intuitionistic theory
 from the explicit backward double-negation premise. Author and independent
 suffix replays passed, with the inherited HA/ZF/Foundation/package boundary
-recorded in their receipts; the arithmetic premise is not yet proved.
+recorded in their receipts; this one-premise client itself does not discharge
+the arithmetic premise.
 The [language-mapped client](Lean/DiophantineConsistency/IPRAFoundationZFCMappedNegation.lean)
 and a generic [witness-bound logic bridge](Lean/DiophantineConsistency/IPRARefutationWitnessBridge.lean)
 have also passed author and independent suffix replays. The latter keeps all
@@ -342,9 +354,8 @@ proves the native bounded body implies the native unbounded body for closed
 arithmetic NNF semisentences under term valuations, using intuitionistic
 logic alone. The [outer-existential erasure](Lean/DiophantineConsistency/IPRABoundedExistsErasure.lean)
 has also passed author and independent suffix replays in the arithmetic
-language. Mapping that result to the PR language for the exact `rho`, and
-identifying the translated bounded matrix with its ordinary interpretation,
-remain separate obligations.
+language. The later mapped client and bounded-rho comparison discharge the
+corresponding obligations on their scoped provider.
 
 The repository's HA transfers and existing equation-side HA endpoints may
 provide proof-system and negative-translation lemmas. HA has stronger

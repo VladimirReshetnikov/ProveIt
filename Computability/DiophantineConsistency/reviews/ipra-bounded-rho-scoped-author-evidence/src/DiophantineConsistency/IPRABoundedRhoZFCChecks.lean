@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRABoundedRhoZFC
+#check DiophantineConsistency.IPRABoundedRhoZFC.boundedMatrix
+#check DiophantineConsistency.IPRABoundedRhoZFC.matrixOpen
+#check DiophantineConsistency.IPRABoundedRhoZFC.zfcEquiv
+#print axioms DiophantineConsistency.IPRABoundedRhoZFC.zfcEquiv
