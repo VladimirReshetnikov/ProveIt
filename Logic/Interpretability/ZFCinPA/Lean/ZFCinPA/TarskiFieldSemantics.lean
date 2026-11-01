@@ -212,28 +212,28 @@ theorem piFalse_ex_elim_strong (n : Nat) {a e d : W}
 
 /-- **The elimination field is true at every level.** -/
 theorem tarskiElim_levelSat (n : Nat) : TarskiElim H (LevelSat H n) where
-  impSigma := fun _ _ _ ha hb he h => sigmaTrue_imp_elim H n ha hb he h
-  impPi := fun _ _ _ ha hb he h => piFalse_imp_elim H n ha hb he h
-  andSigma := fun _ _ _ ha hb he h => sigmaTrue_and_elim H n ha hb he h
-  andPi := fun _ _ _ ha hb he h => piFalse_and_elim H n ha hb he h
-  orSigma := fun _ _ _ ha hb he h => sigmaTrue_or_elim H n ha hb he h
-  orPi := fun _ _ _ ha hb he h => piFalse_or_elim H n ha hb he h
-  allSigma := fun _ _ _ ha he h => sigmaTrue_all_elim_strong H n ha he h
-  exPi := fun _ _ _ ha he h => piFalse_ex_elim_strong H n ha he h
+  impSigma := @sigmaTrue_imp_elim _ _ H n
+  impPi := @piFalse_imp_elim _ _ H n
+  andSigma := @sigmaTrue_and_elim _ _ H n
+  andPi := @piFalse_and_elim _ _ H n
+  orSigma := @sigmaTrue_or_elim _ _ H n
+  orPi := @piFalse_or_elim _ _ H n
+  allSigma := @sigmaTrue_all_elim_strong _ _ H n
+  exPi := @piFalse_ex_elim_strong _ _ H n
 
 /-- **The introduction field is true at every positive level.**  Level zero
 is excluded because the introduction clauses build a certificate, and the
 level-zero reading has none. -/
 theorem tarskiIntro_levelSat (n : Nat) : TarskiIntro H (LevelSat H (n + 1)) where
-  botPi := fun _ he => piFalse_bot H (n + 1) he
-  impSigma := fun _ _ _ _ _ he k => sigmaTrue_imp_intro H n he k
-  impPi := fun _ _ _ _ _ he k1 k2 => piFalse_imp_intro H n he k1 k2
-  andSigma := fun _ _ _ _ _ he k1 k2 => sigmaTrue_and_intro H n he k1 k2
-  andPi := fun _ _ _ _ _ he k => piFalse_and_intro H n he k
-  orSigma := fun _ _ _ _ _ he k => sigmaTrue_or_intro H n he k
-  orPi := fun _ _ _ _ _ he k1 k2 => piFalse_or_intro H n he k1 k2
-  allPi := fun _ _ _ _ he h => piFalse_all_intro H n he h
-  exSigma := fun _ _ _ _ he h => sigmaTrue_ex_intro H n he h
+  botPi := @piFalse_bot _ _ H (n + 1)
+  impSigma := fun _ _ _ _ _ => sigmaTrue_imp_intro H n
+  impPi := fun _ _ _ _ _ => piFalse_imp_intro H n
+  andSigma := fun _ _ _ _ _ => sigmaTrue_and_intro H n
+  andPi := fun _ _ _ _ _ => piFalse_and_intro H n
+  orSigma := fun _ _ _ _ _ => sigmaTrue_or_intro H n
+  orPi := fun _ _ _ _ _ => piFalse_or_intro H n
+  allPi := fun _ _ _ _ => piFalse_all_intro H n
+  exSigma := fun _ _ _ _ => sigmaTrue_ex_intro H n
 
 end Soundness
 
