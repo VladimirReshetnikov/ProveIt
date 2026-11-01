@@ -58,45 +58,27 @@ theorem exponential_bound_of_common (x y w : V)
       · let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![Semiterm.numeral 1,Semiterm.numeral 4,#1]
         have hf : (ω ▹ extDef.val).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he1
         have hw : (ω #2).val ![B,A,x,y] Empty.elim + 1 ≤ w := hAw
-        have hb := PRASeqSWitnessBound.ext_rew_bound_at ω ![B,A,x,y] w hw hf
-        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
-        rw [hh] at hb
-        exact hb
+        simpa using (PRASeqSWitnessBound.ext_rew_bound_at ω ![B,A,x,y] w hw hf)
       · let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![Semiterm.numeral 2,Semiterm.numeral 4,#0]
         have hf : (ω ▹ extDef.val).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he2
         have hw : (ω #2).val ![B,A,x,y] Empty.elim + 1 ≤ w := hBw
-        have hb := PRASeqSWitnessBound.ext_rew_bound_at ω ![B,A,x,y] w hw hf
-        have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
-        rw [hh] at hb
-        exact hb
+        simpa using (PRASeqSWitnessBound.ext_rew_bound_at ω ![B,A,x,y] w hw hf)
     · let ω : Rew ℒₒᵣ Empty 3 Empty 4 := Rew.subst ![#3,#1,#0]
       have hf : (ω ▹ Exponential.Seqₛ.def.val).Evalb ![B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using hseq
       have hw : (ω #1).val ![B,A,x,y] Empty.elim + (ω #2).val ![B,A,x,y] Empty.elim + 2*(ω #0).val ![B,A,x,y] Empty.elim + 1 ≤ w := hseqw
-      have hb := seqS_rew_bound_at ω ![B,A,x,y] w hw hf
-      have hh : Fin.snoc ![B,A,x,y] w = ![B,A,x,y,w] := by simp
-      rw [hh] at hb
-      exact hb
+      simpa using (seqS_rew_bound_at ω ![B,A,x,y] w hw hf)
     · let ω : Rew ℒₒᵣ Empty 1 Empty 5 := Rew.subst ![#0]
       have hf : (ω ▹ ppow2Def.val).Evalb ![u,B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using hpow
       have hw : 2*(ω #0).val ![u,B,A,x,y] Empty.elim+1 ≤ w := hpw
-      have hb := ppow2_rew_bound_at ω ![u,B,A,x,y] w hw hf
-      have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
-      rw [hh] at hb
-      exact hb
+      simpa using (ppow2_rew_bound_at ω ![u,B,A,x,y] w hw hf)
     · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#3,#0,#2]
       have hf : (ω ▹ extDef.val).Evalb ![u,B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he3
       have hw : (ω #2).val ![u,B,A,x,y] Empty.elim+1 ≤ w := hAw
-      have hb := PRASeqSWitnessBound.ext_rew_bound_at ω ![u,B,A,x,y] w hw hf
-      have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
-      rw [hh] at hb
-      exact hb
+      simpa using (PRASeqSWitnessBound.ext_rew_bound_at ω ![u,B,A,x,y] w hw hf)
     · let ω : Rew ℒₒᵣ Empty 3 Empty 5 := Rew.subst ![#4,#0,#1]
       have hf : (ω ▹ extDef.val).Evalb ![u,B,A,x,y] := by simpa [ω, Semiformula.eval_substs] using he4
       have hw : (ω #2).val ![u,B,A,x,y] Empty.elim+1 ≤ w := hBw
-      have hb := PRASeqSWitnessBound.ext_rew_bound_at ω ![u,B,A,x,y] w hw hf
-      have hh : Fin.snoc ![u,B,A,x,y] w = ![u,B,A,x,y,w] := by simp
-      rw [hh] at hb
-      exact hb
+      simpa using (PRASeqSWitnessBound.ext_rew_bound_at ω ![u,B,A,x,y] w hw hf)
 def exponentialMajorant (y : V) : V :=
   (y^4+1)+(y^2+1)+(2*(y^2)+1)+(y^4+y^4+2*y+1)
 
