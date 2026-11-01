@@ -203,8 +203,11 @@ A [checked open-characteristic client](Lean/DiophantineConsistency/IPRASelectorO
 now discharges selected-instance stability using native open decision, while
 retaining fresh-witness forward correctness, the selector implication and
 selected-instance reverse correctness as explicit premises. Binding those
-premises to the primitive-recursive selector and the actual bounded matrix
-remains to be checked.
+the characteristic-correctness premises to the actual bounded matrix remains
+to be checked. The [concrete search binding](Lean/DiophantineConsistency/IPRASelectorSearchBinding.lean)
+now supplies the selector implication from the actual `searchCode`, leaving
+only the two pointwise characteristic-correctness directions explicit; its
+matched guarded replays retain historical ancestry.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
