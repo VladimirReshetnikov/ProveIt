@@ -244,10 +244,8 @@ lemma tr_rA {n : Nat} (i j : Fin n) :
       K.subst ![#'i, #'j] := by
   simp [rA, translateFormula, placeholderRel, Rew.emb_bvar]
   congr 1
-  funext k
-  match k with
-  | 0 => rfl
-  | 1 => rfl
+  exact Matrix.comp₂ (f := translateTerm (V := V)) _ _
+
 lemma tr_mA {n : Nat} (i j : Fin n) :
     translateFormula (fun _ : Fin 1 => K) (Rewriting.emb (mA i j) : Semiproposition LB n) =
       memAtom (#'i) (#'j) := by

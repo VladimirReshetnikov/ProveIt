@@ -78,11 +78,8 @@ noncomputable def canonicalG (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) (b
 
 private lemma translate_vec2 {n : Nat}
     (t u : SyntacticSemiterm CollectionTemplate254.Lang n) :
-    (fun i => translateTerm (V := V) (![t,u] i)) = ![translateTerm t,translateTerm u] := by
-  funext i
-  match i with
-  | 0 => rfl
-  | 1 => rfl
+    (fun i => translateTerm (V := V) (![t,u] i)) = ![translateTerm t,translateTerm u] :=
+  Matrix.comp₂ (f := translateTerm (V := V)) t u
 
 lemma translate_collectionSentence (K : Bootstrapping.Semiformula V ℒₛₑₜ 2) :
     translateFormula (fun _ : Fin 1 => K)
