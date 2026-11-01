@@ -83,6 +83,13 @@ contains a candidate intuitionistic reference-theory derivation by identity
 and generalization. Its only invocation likewise used the mixed provider;
 the successful invocation is syntax feedback, not proof authentication.
 
+The exploratory [`IPRAErasedInductionShape.lean`](../../Lean/DiophantineConsistency/IPRAErasedInductionShape.lean)
+expresses the erased native induction schema in the equality-only language,
+still using the `x+1` step. The remaining induction obligation is a
+reference-theory derivation of that schema from successor-step induction;
+the syntactic statement does not establish the derivation. Its invocation
+also used the untrusted mixed provider.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive
