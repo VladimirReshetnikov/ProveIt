@@ -17,7 +17,8 @@ private theorem bnd_rew_inside (ψ : ArithmeticSemisentence 2) (x u s w t : V)
   let ω : Rew ℒₒᵣ Empty 2 Empty 3 := Rew.subst ![#0,#1]
   have hn := PRABndRewriting.natural ψ ω ![x,u,s] w
   have hv : (fun j => (ω #j).val ![x,u,s] Empty.elim) = ![x,u] := by
-    funext j; refine Fin.cases rfl (fun k => ?_) j; exact Fin.cases rfl (fun k => Fin.elim0 k) k
+    apply funext
+    simp [Fin.forall_fin_succ, ω]
   rw [hv] at hn
   simpa using hn.mpr (by simpa using hm)
 

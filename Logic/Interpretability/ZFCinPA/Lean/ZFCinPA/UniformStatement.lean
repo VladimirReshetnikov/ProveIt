@@ -130,6 +130,13 @@ section DepthIndependence
 
 open SetTheory (Free)
 
+private theorem free_bound_under_binder {φ : SetTheory.Form} {k : ℕ}
+    (h : ∀ i, Free (i + 1) φ → i < k) : ∀ i, Free i φ → i < k + 1 := by
+  intro i hi
+  cases i with
+  | zero => omega
+  | succ m => have := h m hi; omega
+
 /-- The code of a translated variable below the depth. -/
 theorem toNat_toSetVar {k i : ℕ} (h : i < k) :
     (toSetVar k i).toNat = Nat.pair 0 i + 1 := by
@@ -168,14 +175,7 @@ theorem toNat_toSet_congr (φ : SetTheory.Form) :
   | fAll a ih | fEx a ih =>
       intro k₁ k₂ h₁ h₂
       have ha := ih (k₁ + 1) (k₂ + 1)
-        (fun i hi => by
-          cases i with
-          | zero => omega
-          | succ m => have := h₁ m hi; omega)
-        (fun i hi => by
-          cases i with
-          | zero => omega
-          | succ m => have := h₂ m hi; omega)
+        (free_bound_under_binder h₁) (free_bound_under_binder h₂)
       constructor <;>
         simp [toSet, Semiformula.neg, Semiformula.toNat, ha.1, ha.2]
 
@@ -378,10 +378,7 @@ theorem freeVariables_toSet (φ : Form) :
         ihb k (fun i hi => h i (Or.inr hi))]
   | fAll a ih | fEx a ih =>
       intro k h
-      have := ih (k + 1) (fun i hi => by
-        cases i with
-        | zero => omega
-        | succ m => have := h m hi; omega)
+      have := ih (k + 1) (free_bound_under_binder h)
       simp [toSet, this]
 
 /- `conZFCForm n` unfolds to the sealed closure of a large body; nothing
