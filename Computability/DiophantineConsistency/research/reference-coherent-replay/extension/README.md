@@ -26,18 +26,15 @@ observations must be pinned; the final reviewer must check the manifest's
 target and task-policy identity, not merely a success status.
 
 Nine tiny selection/observation controls and a Git-backed source-freezer
-control pass on the current scripts. An earlier revision also passed a small
-real-Lean paired extension with mutation controls, but the freezer, policy and
-observation chain were strengthened afterward. **The final script revision
-has not yet passed a real-Lean paired integration rerun.** That rerun and an
-independent audit are required before this prototype is used for the real
-project. The present real-Lean toy test simulates the freezer observation;
-even if it passes, it is not an end-to-end observed freezer-to-pair run. No
-test here establishes the requested mathematical equivalence.
+control pass on the current scripts. The final-source adversarial real-Lean
+toy and the observed-freezer end-to-end toy also passed at low priority; an
+independent reviewer reran the latter. Their scoped terminal observations are
+in [toy-integration-observation.md](toy-integration-observation.md) and
+[toy-adversarial-observation.md](toy-adversarial-observation.md).
+No test here establishes the requested mathematical equivalence.
 
-[`test_full_chain.py`](test_full_chain.py) is a separate, as-yet-unexecuted
-toy integration path: it constructs a small paired parent, invokes the actual
-planner and freezer, records their terminal exits, and passes the observed
-freezer output into the paired extension. Only Python syntax has been checked.
-Its declarations use the target names for testing but are toy theorems; a
-passing run would validate this workflow on that toy, not the AQ29 endpoint.
+[`test_full_chain.py`](test_full_chain.py) constructs a small paired parent,
+invokes the actual planner and freezer, records their terminal exits, and
+passes the observed freezer output into the paired extension. Its declarations
+use the target names for testing but are toy theorems; a passing run validates
+this workflow on that toy, not the AQ29 endpoint.
