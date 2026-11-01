@@ -27,8 +27,15 @@ provider; the [mixed-provider counterexample](../../reviews/lean-mixed-provider-
 shows why even a successful invocation does not validate these statements.
 A coherent build and independent replay remain required.
 
-The missing comparison includes at least: prove erasure commutes with
-substitution and quantifier binding; transfer intuitionistic logical
+The exploratory [`IPRAOrderErasureRew.lean`](../../Lean/DiophantineConsistency/IPRAOrderErasureRew.lean)
+adds statements that term erasure commutes with rewriting, that the translated
+rewriting commutes with passing under a quantifier, and that formula erasure
+commutes with capture-avoiding rewriting. It has likewise only been invoked
+in the mixed-provider exploratory environment; these are not yet authenticated
+Lean proof results.
+
+The missing comparison includes at least: coherently rebuild and independently
+replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive
 successor injectivity from the predecessor code; transfer the reference axioms
 to the native candidate; and prove every native formula equivalent there to

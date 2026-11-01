@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAOrderErasureRew
+
+#print axioms DiophantineConsistency.IPRAOrderErasureRew.erase_term_rew
+#print axioms DiophantineConsistency.IPRAOrderErasureRew.eraseRew_q
+#print axioms DiophantineConsistency.IPRAOrderErasureRew.erase_rew
