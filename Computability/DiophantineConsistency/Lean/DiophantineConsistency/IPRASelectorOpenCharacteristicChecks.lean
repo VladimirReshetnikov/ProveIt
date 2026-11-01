@@ -1,0 +1,2 @@
+import DiophantineConsistency.IPRASelectorOpenCharacteristic
+#print axioms DiophantineConsistency.IPRASelectorOpenCharacteristic.openCharacteristic

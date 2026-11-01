@@ -194,8 +194,12 @@ existential stability and characteristic correctness for the actual ZFC
 matrix remain separate obligations. A [generic selector-stability client](Lean/DiophantineConsistency/IPRASelectorStability.lean)
 proves existential stability from explicit selector, selected-instance
 stability, and characteristic-correctness proofs; its guarded replays match.
-Binding those premises to the primitive-recursive selector and the actual
-bounded matrix remains to be checked.
+A [checked open-characteristic client](Lean/DiophantineConsistency/IPRASelectorOpenCharacteristic.lean)
+now discharges selected-instance stability using native open decision, while
+retaining fresh-witness forward correctness, the selector implication and
+selected-instance reverse correctness as explicit premises. Binding those
+premises to the primitive-recursive selector and the actual bounded matrix
+remains to be checked.
 
 The construction proves the open-induction invariant
 `x−y≠0 ∨ (y−x≠0 ∨ x=y)`. Its [base case](Lean/DiophantineConsistency/IPRADifferenceInvariantBase.lean)
