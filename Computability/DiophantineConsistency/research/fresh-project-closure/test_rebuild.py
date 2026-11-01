@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Run a tiny real-Lean rebuild plus stale-fallback and snapshot-drift controls."""
-import hashlib,json,os,subprocess,tempfile
+import hashlib,json,os,subprocess,sys,tempfile
 from pathlib import Path
-D=Path(__file__).resolve().parent; H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();lean=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean');tool=lean.parent.parent/'lib/lean'
+D=Path(__file__).resolve().parent;sys.path.insert(0,str(D));from compare import compare
+H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();lean=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean');tool=lean.parent.parent/'lib/lean'
 with tempfile.TemporaryDirectory(prefix='fresh-project-closure-control-') as td:
  root=Path(td);snap=root/'snapshot';src=snap/'src/FreshToy';src.mkdir(parents=True)
  texts={'FreshToy.Base':'def number : Nat := 1\n','FreshToy.Check':'import FreshToy.Base\ntheorem check : number = 1 := rfl\n#print axioms check\n'};rows={}
@@ -21,6 +22,28 @@ with tempfile.TemporaryDirectory(prefix='fresh-project-closure-control-') as td:
  q,s=run('valid');
  if q.returncode: print('LEAN LOG:',Path(s['records'][-1]['log']).read_text())
  assert q.returncode==0 and s['status']=='PASS' and len(s['records'])==2,(q.stdout,q.stderr,s)
+ q,peer=run('valid_peer');assert q.returncode==0 and peer['status']=='PASS'
+ result=compare(root/'valid/state.json',root/'valid_peer/state.json');assert result['status']=='MATCHED_PASS' and result['rows']==2
+ peerstate=root/'valid_peer/state.json';saved=peerstate.read_bytes();bad=json.loads(saved);bad['records'][0]['object_sha256']='0'*64;peerstate.write_text(json.dumps(bad))
+ try:compare(root/'valid/state.json',peerstate)
+ except ValueError:pass
+ else:raise AssertionError('comparator accepted altered object hash')
+ peerstate.write_bytes(saved)
+ authorstate=root/'valid/state.json';author_saved=authorstate.read_bytes()
+ for mode in ('both_missing_row','both_altered_hash','both_missing_dependency','both_altered_axioms'):
+  ax=json.loads(author_saved);bx=json.loads(saved)
+  for z in (ax,bx):
+   if mode=='both_missing_row':z['records'].pop()
+   elif mode=='both_altered_hash':z['records'][0]['object_sha256']='0'*64
+   elif mode=='both_missing_dependency':z['records'][1]['direct_inputs'].pop('FreshToy.Base')
+   else:z['records'][-1]['axiom_reports']=['propext']
+  authorstate.write_text(json.dumps(ax));peerstate.write_text(json.dumps(bx))
+  try:compare(authorstate,peerstate)
+  except ValueError:pass
+  else:raise AssertionError('comparator accepted '+mode)
+  authorstate.write_bytes(author_saved);peerstate.write_bytes(saved)
+ pair=subprocess.run(['python3',str(D/'run_pair.py'),'--snapshot',str(snap),'--output',str(root/'paired'),'--provider-receipt',str(receipt),'--snapshot-sha256',H(snap/'manifest.json'),'--provider-sha256',H(receipt),'--foundation-input',str(foundation_input),'--expected-axiom-reports','1'],capture_output=True,text=True)
+ assert pair.returncode==0 and json.loads((root/'paired/pair-state.json').read_text())['status']=='MATCHED_PASS',(pair.stdout,pair.stderr)
  (pkg/'FreshToy').mkdir();q,s=run('fallback');assert q.returncode!=0 and s['status']=='FAILED' and 'project fallback artifact' in s['failure'],(q.stdout,q.stderr,s);(pkg/'FreshToy').rmdir()
  (pkg/'FreshToy.so').write_bytes(b'stale');q,s=run('plugin');assert q.returncode!=0 and s['status']=='FAILED' and 'project fallback artifact' in s['failure'];(pkg/'FreshToy.so').unlink()
  m['sources']['FreshToy.Check']['imports']=[];(snap/'manifest.json').write_text(json.dumps(m));q,s=run('import_mismatch');assert q.returncode!=0 and s['status']=='FAILED' and 'declared and compiler deps disagree' in s['failure'];m['sources']['FreshToy.Check']['imports']=['FreshToy.Base'];(snap/'manifest.json').write_text(json.dumps(m))
@@ -35,4 +58,4 @@ with tempfile.TemporaryDirectory(prefix='fresh-project-closure-control-') as td:
  fake_input=provider/'fake-input.json';fake_input.write_text(json.dumps({'lean_sha256':H(fake)}));fake_receipt=provider/'fake-receipt.json';fake_pr=json.loads(receipt.read_text());fake_pr['manifest_sha256']=H(fake_input);fake_receipt.write_text(json.dumps(fake_pr))
  q,s=run('foundation_tool_fallback',['--lean',str(fake),'--foundation-input',str(fake_input),'--provider-receipt',str(fake_receipt),'--provider-sha256',H(fake_receipt)]);assert q.returncode!=0 and 'Foundation outside fresh provider' in s['failure'],(q.stdout,q.stderr,s)
  (src/'Base.lean').write_text('def number : Nat := 2\n');q,s=run('drift');assert q.returncode!=0 and s['status']=='FAILED' and 'snapshot drift' in s['failure'],(q.stdout,q.stderr,s)
- print('PASS: real-Lean two-module fresh build; fallback/plugin, omitted import, hash pins, path escape, symlink parent, Foundation inventory/tool fallback, report count, compiler and source drift controls rejected')
+ print('PASS: paired real-Lean two-module fresh builds and comparator same-state mutations; fallback/plugin, omitted import, hash pins, path escape, symlink parent, Foundation inventory/tool fallback, report count, compiler and source drift controls rejected')
