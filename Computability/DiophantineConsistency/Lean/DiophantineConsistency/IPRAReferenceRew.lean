@@ -38,6 +38,18 @@ theorem embedRew_subst {ξ : Type} {n m : ℕ}
       Rew.subst (fun i => Semiterm.lMap toNative (v i)) := by
   ext x <;> simp [embedRew, Rew.subst]
 
+theorem embedRew_free {n : ℕ} :
+    embedRew (Rew.free : Rew IPRAEqualityOnlyReference.language ℕ (n+1) ℕ n) = Rew.free := by
+  ext x
+  · refine Fin.lastCases ?_ (fun i => ?_) x <;> simp [embedRew]
+  · simp [embedRew]
+
+theorem embedRew_emb {ξ : Type} {n : ℕ} :
+    embedRew (Rew.emb : Rew IPRAEqualityOnlyReference.language Empty n ξ n) = Rew.emb := by
+  ext x
+  · simp [embedRew]
+  · exact Empty.elim x
+
 theorem embed_rew (ω : Rew IPRAEqualityOnlyReference.language ξ₁ n₁ ξ₂ n₂)
     (φ : Semiformulaᵢ IPRAEqualityOnlyReference.language ξ₁ n₁) :
     embed (ω ▹ φ) = embedRew ω ▹ embed φ := by
@@ -48,6 +60,41 @@ theorem embed_rew (ω : Rew IPRAEqualityOnlyReference.language ξ₁ n₁ ξ₂ 
     cases r
     simp [embed, Semiformulaᵢ.rewAux, embed_term_rew, Function.comp_def]
   all_goals rfl
+
+theorem embed_free {n : ℕ}
+    (φ : Semiformulaᵢ IPRAEqualityOnlyReference.language ℕ (n+1)) :
+    embed (Rewriting.free φ) = Rewriting.free (embed φ) := by
+  simpa only [Rewriting.free, embedRew_free] using
+    embed_rew (Rew.free : Rew IPRAEqualityOnlyReference.language ℕ (n+1) ℕ n) φ
+
+theorem embed_emb {ξ : Type} {n : ℕ}
+    (φ : Semisentenceᵢ IPRAEqualityOnlyReference.language n) :
+    embed (Rewriting.emb (ξ := ξ) φ) = Rewriting.emb (ξ := ξ) (embed φ) := by
+  simpa only [Rewriting.emb, embedRew_emb] using
+    embed_rew (Rew.emb : Rew IPRAEqualityOnlyReference.language Empty n ξ n) φ
+
+theorem embed_subst {ξ : Type} {n m : ℕ}
+    (φ : Semiformulaᵢ IPRAEqualityOnlyReference.language ξ n)
+    (v : Fin n → Semiterm IPRAEqualityOnlyReference.language ξ m) :
+    embed (φ ⇜ v) = embed φ ⇜ (fun i => Semiterm.lMap toNative (v i)) := by
+  simpa only [Rewriting.subst, embedRew_subst] using embed_rew (Rew.subst v) φ
+
+theorem embed_subst_zero (φ : Propositionᵢ IPRAEqualityOnlyReference.language) :
+    embed (φ/[] : Semiformulaᵢ IPRAEqualityOnlyReference.language ℕ 1) =
+      ((embed φ)/[] : Semiformulaᵢ PRALanguage.language ℕ 1) := by
+  rw [embed_subst]
+  congr 2
+  funext i
+  exact Fin.elim0 i
+
+theorem embed_subst_one (φ : Semiformulaᵢ IPRAEqualityOnlyReference.language ℕ 1)
+    (t : Term IPRAEqualityOnlyReference.language ℕ) :
+    embed (φ/[t]) = (embed φ)/[Semiterm.lMap toNative t] := by
+  rw [embed_subst]
+  congr 2
+  funext i
+  refine Fin.cases ?_ (fun j => Fin.elim0 j) i
+  rfl
 
 theorem embed_preserves_open {ξ : Type} {n : ℕ}
     (φ : Semiformulaᵢ IPRAEqualityOnlyReference.language ξ n) :

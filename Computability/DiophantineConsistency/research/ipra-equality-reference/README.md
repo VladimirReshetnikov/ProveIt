@@ -55,6 +55,14 @@ been checked in the mixed provider. The separate
 is an **uncompiled draft** attempting to apply the existing native successor
 induction derivation; no induction-axiom image is claimed from it.
 
+The exploratory [`IPRAReferenceHilbert.lean`](../../Lean/DiophantineConsistency/IPRAReferenceHilbert.lean)
+and [`IPRAReferenceTheoryTransfer.lean`](../../Lean/DiophantineConsistency/IPRAReferenceTheoryTransfer.lean)
+contain a candidate embedding of intuitionistic Hilbert proof trees and a
+finite-theory derivation transport **conditional on all reference axiom images**.
+They have only been invoked with the same untrusted mixed provider. They do
+not discharge the axiom-image premise, supply the reverse erasure transfer, or
+establish either theory equivalence or an equation endpoint.
+
 The missing comparison includes at least: coherently rebuild and independently
 replay the erasure/rewriting statements; transfer intuitionistic logical
 derivations and all nonlogical axioms to the equality-only theory; derive
