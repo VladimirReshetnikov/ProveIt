@@ -641,7 +641,11 @@ extends support-zero and the target-phase `NoCarry` facts across periods and
 shows the output digit is even at positive in-range phases `2195` and `3296`.
 Its raw-column evenness corollary still assumes a clean temporal column and
 the stated carry conditions at that position; those conditions have not been
-derived there.
+derived there. A later author-side [graph carry-parity client](research/ordinary12-ipra-bridge/compact44-graph-carry-parity-prototype/README.md)
+uses the same fixed graph witnesses to prove, at every positive in-range
+column of either phase, that the incoming carry is at most `1` and the sum of
+the full raw column and incoming carry is even. It assumes no clean column;
+the raw term still includes both bands, bare terms and temporal contribution.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
