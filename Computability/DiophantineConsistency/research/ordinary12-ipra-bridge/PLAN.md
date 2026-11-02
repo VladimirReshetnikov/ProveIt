@@ -125,9 +125,12 @@ and check actual compiler dependencies and terminal exits. Do not mix the
 recently merged `ModelArithmetic`, `ModelCarrierCurrent`,
 `ModelCarrierScaled`, `ModelDifferenceRing` or `DiscreteOrderedRingFacts`
 objects into that parent: those modules are not in its 1,210-row manifest.
-They require a coherent source-current successor closure if used. The
-source-current coexistence build remains unperformed. A pinned launcher and
-sampled resource monitor have been developed; the launcher is under
-independent review and must not be treated as cleared until its exact bytes
-and startup environment have passed that review. Sampling is not a hard
-per-build quota or a continuously enforced free-space reserve.
+They require a coherent source-current successor closure if used. A
+[70-source coexistence pair](../../reviews/ordinary12-coexistence-pair-independent-audit/README.md)
+has now passed an independent artifact audit. The two Lean files added by a
+later upstream merge are outside that frozen closure; the 70 pinned sources
+still matched the workspace at the audit. Package-transitive and dynamic
+ancestry, and the original Foundation wrapper exit, retain the audit's
+qualifications. The sampled resource monitor is not a hard per-build quota
+or a continuously enforced free-space reserve. This pair checks coexistence,
+not the missing ordinary-integrality or iPRA theorem.

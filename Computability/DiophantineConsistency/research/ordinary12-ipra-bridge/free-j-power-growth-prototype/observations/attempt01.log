@@ -1,0 +1,53 @@
+/tmp/ipra-freej-power-growth-explore/FreeJPowerGrowth.lean:70:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+    (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0
+in the target expression
+  c = ycoord R (Y * (X + 1))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (literal fun j => ↑(p j)) v
+hbeta : 46 ≤ ↑(p 0)
+q : V := 1 + v 0 * ↑(p 0)
+X : V := v 5
+Y : V := v 6
+Q : V := X * Y * Y
+k : V := v 8 + v 9
+c : V := v 8 + Y * k
+a : V := X * Y + Y
+R : V := ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0
+hX : 16 ≤ X
+first main n m : V
+left✝⁴ : 0 < first
+left✝³ : 0 < main
+hn13 : 13 ≤ n
+left✝² : n < m
+hmR :
+  m =
+    ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+      (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0
+hnR :
+  2 * n =
+    ((1 + v 0 * ↑(p 0) - 1) * (1 + v 0 * ↑(p 0) - v 1) + v 2) * ((1 + v 0 * ↑(p 0)) ^ 2 - 1) +
+        (↑(p 2) + (1 + v 0 * ↑(p 0)) * ↑(p 3)) * v 0 +
+      1
+left✝¹ : xcoord n (2 * (v 5 * v 6 * v 6 - 1) + 1) = first
+hny : 2 * ycoord n (2 * (v 5 * v 6 * v 6 - 1) + 1) = v 8 + v 9
+left✝ : xcoord m (v 5 * v 6 + v 6) = main
+r : V := n - 1
+hn1 : 1 ≤ n
+hrplus : r + 1 = n
+hr2 : 2 ≤ r
+hR : R = 2 * r + 1
+hbase : a = Y * (X + 1)
+hmy : ycoord m a = c
+⊢ c = ycoord R (Y * (X + 1))
+'FreeJPowerGrowth.X_lower' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FreeJPowerGrowth.growth' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

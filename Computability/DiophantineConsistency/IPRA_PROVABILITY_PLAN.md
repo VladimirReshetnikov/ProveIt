@@ -63,6 +63,17 @@ matched all eight additions and passed an [independent complete-result audit](re
 Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
 has a separate review and retains the decoder and rank-recipe boundary.
 
+A distinct [13-variable, 69-operation candidate](research/thirteen69-model-bridge/PLAN.md)
+has exact degree 174 and a different phase-split2471 four-port tuple. An
+[independently audited model seed](reviews/thirteen-model-strong-seed-independent-audit/README.md)
+supplies the required extra Pell divisibility factor, but the candidate's
+all-model reverse construction, full tuple calibration and iPRA endpoint
+remain open. The previously checked 13-variable endpoints do not by
+themselves establish this candidate's equivalence. A distinct instance using
+the 2011 tuple now has an [audited 69-row model binding](reviews/thirteen69-dag-binding-independent-audit/README.md)
+and [independently checked degree 174](reviews/thirteen69-degree2011-independent-audit/README.md).
+Its model converse and iPRA endpoint remain open as well.
+
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common
 bound in the chosen Foundation refutation encoding, and internal native and
@@ -274,19 +285,81 @@ theorem or an internal iPRA proof.
 The ordinary tail's polarized residual and denominator-cleared identities have
 also passed a [bounded replay audit](reviews/ordinary12-freej-ordinary-identities-independent-audit/README.md),
 but those identities do not establish denominator divisibility or integrality.
+A [signed transport](research/ordinary12-ipra-bridge/free-j-signed-transport-prototype/README.md)
+now derives the unpolarized norm residual in the model difference ring from
+the exact free-J graph zero, with an [independent paired replay and graph audit](reviews/ordinary12-freej-signed-transport-independent-audit/README.md).
+Separately, the [proof-only denominator's strict negativity](research/ordinary12-ipra-bridge/free-j-denominator-prototype/README.md)
+passed an [independent bounded replay](reviews/ordinary12-freej-denominator-independent-audit/README.md)
+under the stated graph and port hypotheses. The denominator is not a literal
+graph node. A later [coherent composition](research/ordinary12-ipra-bridge/free-j-current-denominator-composition/README.md)
+derives its nonzeroness together with the cleared auxiliary equation; the
+paired rebuild passed an [independent artifact audit](reviews/ordinary12-current-denominator-independent-audit/README.md),
+which retains the execution-time manifest qualification. This does not
+establish integrality.
 A [conditional descent-step audit](reviews/ordinary12-descent-step-independent-audit/README.md)
 checks norm preservation and preservation of supplied divisor and Bézout
 witnesses; it does not supply those witnesses or prove descent termination.
+A [model-level square-divisor theorem](research/ordinary12-ipra-bridge/model-square-divisor-prototype/README.md)
+derives a natural witness for `b² ∣ r` from a supplied reduced norm and
+four-natural Bézout certificate, including the zero case. Its paired suffix
+passed an [independent artifact audit](reviews/ordinary12-model-square-divisor-independent-audit/README.md).
+It does not construct those hypotheses or an internal iPRA derivation.
+A [reduced-model descent step](research/ordinary12-ipra-bridge/reduced-model-descent-prototype/README.md)
+establishes norm preservation, strict bounds and signed Bézout transport;
+its paired suffix passed an [independent artifact audit](reviews/ordinary12-reduced-model-descent-independent-audit/README.md).
+A later [paired measure replay](research/ordinary12-ipra-bridge/reduced-model-nonzero-prototype/README.md)
+constructs a strictly smaller positive model coordinate and passed an
+[independent artifact audit](reviews/ordinary12-reduced-model-nonzero-independent-audit/README.md).
+A further [simultaneous-state theorem](research/ordinary12-ipra-bridge/reduced-model-state-prototype/README.md)
+combines the smaller coordinate, transformed numerator, norm and certificate;
+its paired replay passed an [independent artifact audit](reviews/ordinary12-reduced-model-state-independent-audit/README.md).
+A subsequent [model least-number proof](research/ordinary12-ipra-bridge/reduced-model-induction-prototype/README.md)
+proves `b=1` for the stated positive reduced norm and Bézout certificate;
+its paired replay passed an [independent artifact audit](reviews/ordinary12-reduced-model-induction-independent-audit/README.md).
+A later [natural normalization theorem](research/ordinary12-ipra-bridge/reduced-model-normalization-prototype/README.md)
+constructs the gcd and certificate and derives denominator divisibility from
+the stated positive natural cleared norm; its paired replay passed an
+[independent artifact audit](reviews/ordinary12-reduced-model-normalization-independent-audit/README.md).
+A [signed difference-ring theorem](research/ordinary12-ipra-bridge/reduced-model-signed-prototype/README.md)
+extends this to arbitrary signs and a nonzero denominator; its paired replay
+passed an [independent artifact audit](reviews/ordinary12-reduced-model-signed-independent-audit/README.md).
+The [free-J graph application](research/ordinary12-ipra-bridge/free-j-graph-integrality-prototype/README.md)
+now proves the proof-only denominator divides the corresponding numerator
+under its stated zero, positivity and port hypotheses; its paired replay
+passed an [independent artifact audit](reviews/ordinary12-freej-graph-integrality-independent-audit/README.md).
+The [graph strong-norm theorem](research/ordinary12-ipra-bridge/free-j-graph-strong-prototype/README.md)
+then constructs a positive natural multiplier without assuming the strong
+norm; its paired replay passed an [independent artifact audit](reviews/ordinary12-freej-graph-strong-independent-audit/README.md).
+The [graph auxiliary-witness theorem](research/ordinary12-ipra-bridge/free-j-graph-auxiliary-prototype/README.md)
+also constructs positive witnesses and proves the auxiliary norm, retaining
+the signed alternatives; its paired replay passed an [independent artifact
+audit](reviews/ordinary12-freej-graph-auxiliary-independent-audit/README.md).
+The [exact carrier-index theorem](research/ordinary12-ipra-bridge/free-j-exact-ordinary-prototype/README.md)
+then proves `π=R` and `2j=R+1` under those model hypotheses, with an
+[independent artifact audit](reviews/ordinary12-freej-exact-ordinary-independent-audit/README.md).
+Here `π` indexes the carrier ordinate; the distinct exponent `m` indexing
+`f` is only known to satisfy `π ∣ m`. The [power identity theorem](research/ordinary12-ipra-bridge/free-j-power-finish-prototype/README.md)
+proves `X=2^R` under the graph hypotheses and `β≥46`; its paired replay
+passed an [independent artifact audit](reviews/ordinary12-freej-power-finish-independent-audit/README.md).
+A [conditional Mersenne cancellation](research/ordinary12-ipra-bridge/free-j-power-cancel-prototype/README.md)
+then proves `q ∣ 2^R` assuming additionally `d≥4` and `β=2^d−1`; its
+paired replay passed an [independent artifact audit](reviews/ordinary12-freej-power-cancel-independent-audit/README.md).
+Binding these assumptions to the compact44 ports, remaining carrier recovery
+and transport of the full argument to iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
 not establish those unbounded claims or an iPRA derivation.
 A [source-current difference-ring rebuild plan](research/ordinary12-ipra-bridge/difference-ring-build-plan/README.md)
 has a separate [source-closure and resource review](reviews/ordinary12-difference-ring-plan-independent-audit/README.md);
-a sampled resource monitor and its wrapper have been implemented and
-independently reviewed. A pinned launcher is being prepared for independent
-review; no full source-current coexistence build is claimed here. Sampling
-does not enforce a continuous disk reserve or hard per-build quota.
+two guarded builds of the 70-source coexistence closure subsequently passed
+and matched, with an [independent artifact audit](reviews/ordinary12-coexistence-pair-independent-audit/README.md).
+The two Lean files added by a later upstream merge are outside that closure;
+the 70 pinned sources still matched the workspace at the audit. Provider
+transitive/dynamic ancestry and the original Foundation wrapper exit retain
+the audit's qualifications. The sampled resource monitor is not a continuous
+disk reserve or hard per-build quota. This coexistence check is not an
+ordinary-integrality or iPRA proof.
 Exact index matching cannot
 yet be imported directly: its existing theorem assumes strong and auxiliary
 norms that must first be recovered noncircularly. These are model-level
@@ -295,7 +368,10 @@ compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
 13-variable 2011 ports with `beta = 2^94517 - 1`. A [finite full-tuple and
 parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
 has been checked; its internal checker calibration remains a separate
-prerequisite. A [manuscript
+prerequisite. The [compact44 calibration survey](research/ordinary12-ipra-bridge/compact44-calibration/README.md)
+identifies parameterized model-level reuse, the hardwired 2011 boundary and
+a proposed selector/copy lemma; it does not prove the compiler or controller.
+A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
 does not identify the ports.

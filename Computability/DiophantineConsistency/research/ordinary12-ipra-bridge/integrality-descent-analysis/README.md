@@ -127,6 +127,12 @@ encoded quantifier-free invariant and decreasing measure, and the exact
 internal Lean proofs of the iteration all remain to be supplied. In
 particular, this alternative does not assume Σ₁ minimization in iPRA.
 
+The more detailed [primitive-recursive design](PRIMITIVE-RECURSIVE-DESIGN.md)
+specifies signed-pair coefficient updates, a candidate open induction
+invariant, an explicit natural divisor witness, and a possible bounded
+Euclidean normalization. These remain proof obligations, not established
+object-theory derivations.
+
 ## Exact free-J graph instantiation
 
 For the ordinary tail set
@@ -188,6 +194,38 @@ any theorem that additionally requires positive `u` or a particular sign of
 * `ordinary-descent-step-prototype/FreeJDescentStep.lean` proves conditional
   algebraic norm preservation and Bézout preservation given a divisor
   witness; its README explicitly excludes denominator recovery and descent.
+* The [reduced model descent step](../reduced-model-descent-prototype/README.md)
+  combines a model square-divisor witness with norm preservation, strict
+  bounds and signed certificate transport; its [independent artifact audit](../../../reviews/ordinary12-reduced-model-descent-independent-audit/README.md)
+  passed. A later [paired measure replay](../reduced-model-nonzero-prototype/README.md)
+  constructs a strictly smaller positive model coordinate and passed an
+  [independent artifact audit](../../../reviews/ordinary12-reduced-model-nonzero-independent-audit/README.md).
+  The [simultaneous-state theorem](../reduced-model-state-prototype/README.md)
+  combines the coordinate, numerator, norm and certificate, and its paired
+  replay passed an [independent artifact audit](../../../reviews/ordinary12-reduced-model-state-independent-audit/README.md).
+  A [model least-number proof](../reduced-model-induction-prototype/README.md)
+  now proves `b=1` from the stated positive reduced norm and certificate;
+  its paired replay passed an [independent artifact audit](../../../reviews/ordinary12-reduced-model-induction-independent-audit/README.md).
+  A subsequent [natural normalization theorem](../reduced-model-normalization-prototype/README.md)
+  constructs the gcd and certificate from the positive natural cleared norm;
+  its paired replay passed an [independent artifact audit](../../../reviews/ordinary12-reduced-model-normalization-independent-audit/README.md).
+  A [signed difference-ring lift](../reduced-model-signed-prototype/README.md)
+  handles arbitrary signs and nonzero denominator; its paired replay passed an
+  [independent artifact audit](../../../reviews/ordinary12-reduced-model-signed-independent-audit/README.md).
+  The [graph application](../free-j-graph-integrality-prototype/README.md)
+  now proves `D ∣ Y` under its stated free-J hypotheses, with an [independent
+  artifact audit](../../../reviews/ordinary12-freej-graph-integrality-independent-audit/README.md).
+  The subsequent [graph strong-norm theorem](../free-j-graph-strong-prototype/README.md)
+  constructs a positive multiplier without assuming the norm; its paired
+  replay passed an [independent artifact audit](../../../reviews/ordinary12-freej-graph-strong-independent-audit/README.md).
+  A [graph auxiliary-witness theorem](../free-j-graph-auxiliary-prototype/README.md)
+  also proves the positive auxiliary norm with explicit sign alternatives;
+  its paired replay passed an [independent artifact audit](../../../reviews/ordinary12-freej-graph-auxiliary-independent-audit/README.md).
+  The [exact carrier-index theorem](../free-j-exact-ordinary-prototype/README.md)
+  subsequently proves `π=R` and `2j=R+1`, with an [independent artifact audit](../../../reviews/ordinary12-freej-exact-ordinary-independent-audit/README.md).
+  The distinct `f` exponent `m` is only known to be divisible by `π`.
+  Remaining carrier recovery, fixed-port calibration and the object-level
+  iPRA proof remain open.
 * `FreeJNormZero` proves the generic ring identity and a natural-valued
   signed-pair instance. The general signed graph substitution is open.
 * The early-size and index packets give useful intermediate model results

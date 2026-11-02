@@ -15,5 +15,7 @@ The receipt preserves two axiom reports, source/object hashes, direct imports,
 and the inherited early-index replay. The original failed and warning-bearing
 attempts are recorded under `observations/`. This is single-author model
 evidence, not a matched full-project replay or dynamic dependency audit.
-The ordinary norm-integrality descent and only then the matching `m=R`,
-actual compact44 port interpretation, and object-level iPRA proof remain open.
+The ordinary norm-integrality descent and only then the matching `m=R` for
+the **main-carrier index** `m` (the index of `c`, not the exponent indexing
+`f`), actual compact44 port interpretation, and object-level iPRA proof
+remain open at this historical stage.
