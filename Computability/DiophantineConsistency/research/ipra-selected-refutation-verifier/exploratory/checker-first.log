@@ -1,0 +1,21 @@
+/tmp/ipra-selected-verifier-joint/src/DiophantineConsistency/IPRASelectedCheckerConsistency.lean:56:14: error: don't know how to synthesize implicit argument `Λ`
+  @exImplyEx language ?m.221 (emb A) (emb B)
+context:
+c : Code 1
+hprim : Primrec (eval c)
+hbit : PRA ⊢ PRACharacteristicBit.bitSentence c
+hcorrect :
+  ∀ (e : Fin 1 → Term language ℕ),
+    extended nativeTheory ⊢
+      native ((app (Rew.embSubsts e)) (oneAtom c)) 🡘
+        native ((app (Rew.embSubsts e)) ((Semiformula.lMap embedding) (bnd rho)))
+A : Semisentenceᵢ language 1 := ⋯
+B : Semisentenceᵢ language 1 := ⋯
+hAB : nativeTheory ⊢! ∀⁰ (A 🡒 B)
+hBA : nativeTheory ⊢! ∀⁰ (B 🡒 A)
+⊢ Hilbertᵢ language
+/tmp/ipra-selected-verifier-joint/src/DiophantineConsistency/IPRASelectedCheckerConsistency.lean:56:9: error: failed to infer `have` declaration type
+'DiophantineConsistency.IPRASelectedCheckerConsistency.selected_checker_endpoints' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
