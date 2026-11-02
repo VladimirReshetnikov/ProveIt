@@ -584,6 +584,12 @@ A [finite coefficient-decomposition client](research/ordinary12-ipra-bridge/comp
 has compiled in one exploratory run for arbitrary model-valued selector and
 copy functions. It does not prove that a graph-derived cyclic column has that
 finite decomposition or supply Boolean, copy-bound and no-carry hypotheses.
+A [local coefficient decoder client](research/ordinary12-ipra-bridge/compact44-local-coefficient-decoder-prototype/README.md)
+has compiled in a same-provider exploratory run: for explicitly Boolean
+selector and copy inputs it composes the coefficient decomposition and copy
+bound with the conditional decoder equivalence. It does not derive those
+inputs or a local no-carry condition from the graph; paired verification remains
+open.
 A [direct symbolic-K graph client](research/ordinary12-ipra-bridge/compact44-direct-symbolic-k-prototype/README.md)
 has likewise compiled on one provider side. Its definition is a distinct Lean
 expression until equality with the retained K bytes and displayed coefficient
