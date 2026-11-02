@@ -518,6 +518,11 @@ the aligned family's coefficient sum is at most the stated finite stencil
 mass; it also checks the corresponding strict half-radix slack. This is an
 author-side exploration: the concrete family-sum premise and clean
 predecessor are not supplied by the lemma.
+The [separated band-mass exploration](research/ordinary12-ipra-bridge/compact44-separated-band-mass-prototype/README.md)
+checks the selector and copy sums and the two-band model inequality needed
+for carry bound `1`, together with a generic indexed-family sum identity.
+Specializing that identity to the concrete flattened family exceeded the
+kernel memory limit, so the actual family-sum premise remains open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
