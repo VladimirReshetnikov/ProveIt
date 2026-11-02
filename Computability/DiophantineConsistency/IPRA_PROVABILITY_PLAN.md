@@ -269,6 +269,9 @@ passed a [separate audit](reviews/ordinary12-freej-early-size-independent-audit/
 The ordinary tail's polarized residual and denominator-cleared identities have
 also passed a [bounded replay audit](reviews/ordinary12-freej-ordinary-identities-independent-audit/README.md),
 but those identities do not establish denominator divisibility or integrality.
+A [conditional descent-step audit](reviews/ordinary12-descent-step-independent-audit/README.md)
+checks norm preservation and preservation of supplied divisor and Bézout
+witnesses; it does not supply those witnesses or prove descent termination.
 A [source-current difference-ring rebuild plan](research/ordinary12-ipra-bridge/difference-ring-build-plan/README.md)
 has a separate [source-closure and resource review](reviews/ordinary12-difference-ring-plan-independent-audit/README.md);
 the build driver and stop behavior remain to be implemented and reviewed.
