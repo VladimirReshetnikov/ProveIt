@@ -190,7 +190,9 @@ arbitrary integer ports. The initial focused native replay failed because of
 broken historical-provider symlinks. A later fresh project-source author pass
 completed the native endpoint and passed an [independent artifact audit](reviews/fresh-project-author-independent-audit/README.md);
 its peer and matched comparison are still in progress, with the historical and
-provider qualifications recorded below. The
+provider qualifications recorded below. A [standard-theory AQ29 extension](research/ipra-standard-aq29/README.md)
+also completed one author-only guarded run and an independent artifact audit;
+its separate paired Lean replay remains open. The
 [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md)
 has exact finite residual-substitution and degree checks; its model and native
 transports remain open. The further [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md)
