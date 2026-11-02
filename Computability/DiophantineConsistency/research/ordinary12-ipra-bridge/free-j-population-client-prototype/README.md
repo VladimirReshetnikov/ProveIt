@@ -36,3 +36,11 @@ not suppress that linter or accept a warning class generally. The isolated
 changed-line, extra-warning, wrong-module and missing-warning controls; its
 isolated `-O` run was rejected with exit 1. A fresh independent prelaunch
 review and protected paired run are still required.
+
+After the first failed pair, an exploratory continuation used a new overlay of
+the retained author-side partial provider, leaving its objects and logs intact.
+The first temporary launcher exited 1 before Lean because of a monitor-loader
+typo; corrected wrapper session 36556 exited 0 for all four remaining modules,
+including the graph client, with no warnings or sorryAx. Its source and logs
+are retained under `observations/author-continuation`. This is single-side
+exploratory evidence and does not replace the required matched replay.
