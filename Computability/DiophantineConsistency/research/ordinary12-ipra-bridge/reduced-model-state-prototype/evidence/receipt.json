@@ -1,0 +1,75 @@
+{
+  "parent_comparison": {
+    "author_state_sha256": "fceb7b4dbdc132fc37c4b0e82633b2547be7b27c0f1b414debfa6796fa114049",
+    "author_workspace_source_drift": [],
+    "manifest_sha256": "9a7059e439bb77ab258808789fd1165cff8a4961c609e132ca0ed2130cb27ded",
+    "peer_state_sha256": "ce847b696f9d9912166f7ca4cc01ba45268732b2c146a88eb73d21dc893e63f4",
+    "peer_workspace_source_drift": [],
+    "provider_receipt_sha256": "7cbd49b6d84497c46520e908fc8c4dc105d7a0070fd1323c6c28e26bf4cf00f6",
+    "rows": 70,
+    "scope": "Two separate project compilations using the same frozen sources, compiler, driver and Foundation provider. Package-transitive and dynamic ancestry remains inherited; this comparison does not replay Lean itself.",
+    "status": "MATCHED_PASS"
+  },
+  "pins": {
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/free-j-current-denominator-composition/replay.py": "2c8a7f848e715a297f8af31e6a2be46747db0d571bc9fa1f104ab06d2db94eb8",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/reduced-model-nonzero-prototype/evidence/receipt.json": "01af03ae511a9a94c65fb60d1d2a634dc1b502e18bcd6a9584296bdb2d14bedb",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/reduced-model-nonzero-prototype/replay.py": "5d1d1cd442a648b9e87db6c9b15ba25666d30975123560648193dce1bf759b0a",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/reduced-model-state-prototype/ReducedNormState.lean": "128acd729e48147d8ac7bb546245967945ff0ac78cfc814db762997334b84b3e"
+  },
+  "runs": [
+    {
+      "axiom_reports": [
+        "propext, Classical.choice, Quot.sound"
+      ],
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/ipra-reduced-model-state-pair-01/author/src",
+        "/tmp/ipra-reduced-model-state-pair-01/author/src/DiophantineConsistency/ReducedNormState.lean",
+        "-o",
+        "/tmp/ipra-reduced-model-state-pair-01/author/ReducedNormState.olean"
+      ],
+      "compiler_exit": 0,
+      "deps_exit": 0,
+      "deps_stdout": "/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Init.olean\n/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Init.olean\n/tmp/ipra-reduced-model-state-pair-01/author/lib/DiophantineConsistency/ReducedNormNext.olean\n",
+      "label": "author",
+      "log_sha256": "32d692bc60a93582732b6ddc7077c9a15cd1643aa131af60e8270688341952cc",
+      "object_sha256": "4a2201c3246f1506a6ba0e8c51138e49e266e9428c3c40636eae16b1bb6fd774",
+      "sampled_peak_rss_bytes": 2092056576,
+      "seed_sha256": "29137245243c5b38a7213cc6c00a5db877a80a39373833bb03bd973d59e82482",
+      "source_sha256": "128acd729e48147d8ac7bb546245967945ff0ac78cfc814db762997334b84b3e",
+      "stdout": "'ReducedNormState.smaller_reduced_state' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "stop_reason": null
+    },
+    {
+      "axiom_reports": [
+        "propext, Classical.choice, Quot.sound"
+      ],
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/ipra-reduced-model-state-pair-01/peer/src",
+        "/tmp/ipra-reduced-model-state-pair-01/peer/src/DiophantineConsistency/ReducedNormState.lean",
+        "-o",
+        "/tmp/ipra-reduced-model-state-pair-01/peer/ReducedNormState.olean"
+      ],
+      "compiler_exit": 0,
+      "deps_exit": 0,
+      "deps_stdout": "/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Init.olean\n/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Init.olean\n/tmp/ipra-reduced-model-state-pair-01/peer/lib/DiophantineConsistency/ReducedNormNext.olean\n",
+      "label": "peer",
+      "log_sha256": "32d692bc60a93582732b6ddc7077c9a15cd1643aa131af60e8270688341952cc",
+      "object_sha256": "4a2201c3246f1506a6ba0e8c51138e49e266e9428c3c40636eae16b1bb6fd774",
+      "sampled_peak_rss_bytes": 2092199936,
+      "seed_sha256": "29137245243c5b38a7213cc6c00a5db877a80a39373833bb03bd973d59e82482",
+      "source_sha256": "128acd729e48147d8ac7bb546245967945ff0ac78cfc814db762997334b84b3e",
+      "stdout": "'ReducedNormState.smaller_reduced_state' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "stop_reason": null
+    }
+  ],
+  "scope": "Paired model-level suffix over matched source-current and reduced-norm parents. No least-number descent, rational-normalization bridge, graph binding, iPRA proof, or package-transitive/dynamic ancestry audit.",
+  "status": "PASS_PAIRED_REDUCED_MODEL_SMALLER_STATE"
+}
