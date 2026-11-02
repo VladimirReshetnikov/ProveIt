@@ -530,9 +530,13 @@ A subsequent [two-band flattening client](research/ordinary12-ipra-bridge/compac
 checks the concrete indexed carry input with carry bound `1` on a coherent
 author-side rebuild. It discharges the family mass inequality and flattens
 the two rotated bands, while assuming the word and digit bounds, output
-bound and split-band congruence. Supplying those premises from the same
-graph witnesses, deriving a clean predecessor and connecting retained
-coefficients to the symbolic kernel remain open.
+bound and split-band congruence. A later author-side
+[fixed-graph carry client](research/ordinary12-ipra-bridge/compact44-fixed-graph-indexed-carry-prototype/README.md)
+derives those premises from the same witnesses, yielding the concrete
+indexed `CarryInput` with carry bound `1` from positive graph coordinates
+and zero at the symbolic ports. That client has not had a paired replay;
+deriving a clean predecessor and connecting retained coefficients to the
+symbolic kernel remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
