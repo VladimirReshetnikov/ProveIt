@@ -275,7 +275,11 @@ ordinary trace-checked rebuild from the Lean sources of commit `66da84a9e7`
 (92 project modules recompiled), and its
 [checks](Lean/DiophantineConsistency/IPRAStandardCurrentEndpointChecks.lean)
 report only `propext`, `Classical.choice` and `Quot.sound`. This is an
-author build, not an independent replay packet. The language keeps `<` as a
+author build, not an independent replay packet. A later [16-module guarded
+author extension](reviews/ipra-standard-current14-author-trial/README.md)
+over the fresh AQ29 author provider passed, as did a separate [artifact audit](reviews/ipra-standard-current14-author-independent-audit/README.md).
+It is a historical hybrid, with no matched peer or established current-PDF
+identification from that audit. The language keeps `<` as a
 symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`; erasing it
 into an equality-only language is the separate comparison described in
 [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md). The candidate is neither classical
