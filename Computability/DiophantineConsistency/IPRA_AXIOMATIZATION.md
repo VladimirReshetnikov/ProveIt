@@ -110,8 +110,9 @@ induction. The two presentations share the primitive-recursive defining and
 basic axiom schemes, including the defined order relation. A direct AQ29 client
 and its selected-consistency composition have completed one [author-only
 extension and independent artifact audit](research/ipra-standard-aq29/README.md).
-The parent pair and a second Lean replay remain open, with historical-source
-and provider qualifications. For the 14-variable equation,
+The parent pair has since matched and passed independent artifact audit; the
+separate standard-AQ29 extension remains author-only. Historical-source and
+provider qualifications apply. For the 14-variable equation,
 [`IPRAStandardCurrentEndpoint.ipra_current_iff_consistency`](Lean/DiophantineConsistency/IPRAStandardCurrentEndpoint.lean)
 states the equivalence in `standardTheory` itself; its author build from the
 Lean sources of `66da84a9e7` reports only Lean's standard axioms (see the
@@ -119,9 +120,11 @@ Lean sources of `66da84a9e7` reports only Lean's standard axioms (see the
 A separate [16-module author-only extension](reviews/ipra-standard-current14-author-trial/README.md)
 over the fresh AQ29 author provider completed with exit 0 and passed an
 [independent artifact audit](reviews/ipra-standard-current14-author-independent-audit/README.md).
-It uses a historical hybrid of source versions; neither a paired Lean replay
-nor identification of that hybrid literal with the current PDF is established
-by this audit. The parent/provider limitations above remain.
+It uses a historical hybrid of source versions. A later [paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
+matched all 16 additions; its independent complete-result audit is pending.
+A separate [finite PDF binding](reviews/equation14-historical-literal-binding/README.md)
+retains a manual decoder and rank-recipe boundary. The parent/provider
+limitations above remain.
 The distinct equality-only comparison described below has an author-built
 native-to-reference direction; its reverse direction and independent replay
 remain open.

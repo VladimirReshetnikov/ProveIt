@@ -297,8 +297,10 @@ report only `propext`, `Classical.choice` and `Quot.sound`. This is an
 author build, not an independent replay packet. A later [16-module guarded
 author extension](reviews/ipra-standard-current14-author-trial/README.md)
 over the fresh AQ29 author provider passed, as did a separate [artifact audit](reviews/ipra-standard-current14-author-independent-audit/README.md).
-It is a historical hybrid, with no matched peer or established current-PDF
-identification from that audit. The language keeps `<` as a
+It is a historical hybrid. A later [paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
+matched all 16 additions; independent audit of the completed pair is pending.
+The separate finite PDF binding retains its decoder and rank-recipe boundary.
+The language keeps `<` as a
 symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`. In the
 equality-only language, [`IPRAReferenceCurrentEndpoint`](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean)
 states the same equivalence in the reference theory with `<` erased; it and
