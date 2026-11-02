@@ -501,17 +501,16 @@ instead reduce the residual modulo the word modulus and show that aligned
 rotations preserve a supplied digit cap. Both are conditional model results,
 not paired replays; neither establishes the clean predecessor, weighted carry
 family, retained coefficient binding or internal iPRA endpoint.
-An author-side [fixed-graph temporal client](research/ordinary12-ipra-bridge/compact44-fixed-graph-temporal-prototype/README.md)
-now composes the bit rotation with the symbolic graph's same witnesses and
-actual exponent, without an alignment premise. It retains the full-radix
-temporal digit cap; the same unresolved carry, coefficient and iPRA
-obligations apply.
-A [generic finite-family client](research/ordinary12-ipra-bridge/compact44-generic-band-carry-family-prototype/README.md)
-has also compiled on the author-side coherent provider. It constructs the
-heterogeneous carry input for finitely many aligned rotations and one bounded
-temporal word, assuming the weighted congruence, output bound and mass
-inequality. Connecting the concrete graph bands to this family and proving
-those assumptions and a clean predecessor remain open.
+The [fixed-graph temporal and generic carry clients](reviews/compact44-graph-temporal-carry-pair-independent-audit/README.md)
+have now passed a seven-module-per-side replay and artifact audit. The former
+composes the bit rotation with the symbolic graph's same witnesses and actual
+exponent without an alignment premise, retaining the full-radix temporal digit
+cap. The latter constructs a heterogeneous carry input for finitely many
+aligned rotations and one bounded temporal word, assuming the weighted
+congruence, output bound and mass inequality. They remain separate results:
+connecting the concrete graph bands to this family and proving those
+assumptions and a clean predecessor remain open. The artifact auditor authored
+some clients; the audit is not an independent mathematical review of them.
 A separate [model stencil-slack client](research/ordinary12-ipra-bridge/compact44-model-stencil-slack-prototype/README.md)
 checks that carry bound `1` satisfies the required mass inequality whenever
 the aligned family's coefficient sum is at most the stated finite stencil
