@@ -1,0 +1,5 @@
+# Independent same-witness source-closure review
+
+The independent no-Lean check exited 0. It verified each of the three selected sources against its stated Git commit and imports; separately confirmed that the older same-named congruence source has different bytes; reconstructed 143 matching inherited object paths/hashes per side, 120 direct companion slots, 60 absent output slots, and ten Init slots; and checked that the source declarations request five, one, and two axiom reports. The author's scan reran byte-for-byte and its optimized-Python mode exited 1. The preserved static audit can be rerun from the repository root using `python3 -I -S -B`.
+
+This review covers a point-in-time inventory only. It does not rerun the parent audit, freeze inputs atomically, build Lean, bind retained tuple bytes or K, establish a decoder/machine simulation, or prove an internal PRA theorem. The common-N/w client's graph, positivity and symbolic-instance scope remains as stated in the source plan; package/dynamic ancestry and transient between-check mutations remain outside this review.
