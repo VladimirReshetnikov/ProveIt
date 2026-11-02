@@ -1,0 +1,29 @@
+/tmp/ipra-compact-low-population-explore/CompactLowPopulation.lean:32:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  pcF 67 (2 ^ 67 - 4)
+in the target expression
+  (pcF 67 (if True then 2 ^ 67 - 4 else 2 ^ 67 - 2) + 1 + if True then 1 else 0) = 67
+
+case pos
+len special : ℕ
+S : Finset ℕ
+hS : S ⊆ range len
+hspecial : special ∈ S
+hspecial_range : special ∈ range len
+⊢ (pcF 67 (if True then 2 ^ 67 - 4 else 2 ^ 67 - 2) + 1 + if True then 1 else 0) = 67
+/tmp/ipra-compact-low-population-explore/CompactLowPopulation.lean:39:74: error: unsolved goals
+len special : ℕ
+S : Finset ℕ
+hS : S ⊆ range len
+hspecial : special ∈ S
+hspecial_range : special ∈ range len
+hpoint : ∀ (j : ℕ), ((pcF 67 (digit (2 ^ 67) special S j) + if j ∈ S then 1 else 0) + if j = special then 1 else 0) = 67
+⊢ ↑len * 67 = len * 67
+/tmp/ipra-compact-low-population-explore/CompactLowPopulation.lean:31:24: warning: This simp argument is unused:
+  if_pos rfl
+
+Hint: Omit it from the simp argument list.
+  simp only [digit, if_pos r̵f̵l̵,̵ ̵i̵f̵_̵p̵o̵s̵ ̵hspecial]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'CompactLowPopulation.list_population' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactLowPopulation.model_population' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
