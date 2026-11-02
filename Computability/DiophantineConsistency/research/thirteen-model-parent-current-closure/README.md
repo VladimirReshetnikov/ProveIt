@@ -54,16 +54,3 @@ status instead of `FROZEN_NOT_COMPILED`, and the first lakefile-aware attempt
 failed because Foundation's local source path was absent; Foundation is now
 explicitly treated as the inherited package-provider boundary. The superseded
 39-module observation is not build evidence.
-
-## Frozen source extension
-
-After the separate [independent survey audit](../../reviews/thirteen-model-parent-current-closure-independent-audit/README.md)
-passed, [`freeze.py`](freeze.py) copied the 44 source files from the pinned
-Git commit into a fresh out-of-tree source tree, verifying each against both
-the source manifest and current workspace. It rechecked the source survey and
-independent audit before and after. Session 92246 actually exited 0 and
-printed `PASS_FROZEN_44_SOURCE_EXTENSION 2b6dc7e05664e925728bfde59e9da4c3d30242a006b1310b1681be53f3b87ef3`.
-The [frozen manifest](frozen-manifest.json) and [terminal observation](freeze-observation.json)
-record its paths and hashes. This is only a frozen source snapshot; it has not
-been independently reviewed or compiled. The freezer accepts only fresh,
-named directories immediately under `/tmp` and refuses optimized Python.
