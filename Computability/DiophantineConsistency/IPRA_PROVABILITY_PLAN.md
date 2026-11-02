@@ -483,7 +483,8 @@ passed, while retained-port identification remains open. A [paired high-mask the
 proves population `986` for an explicit symbolic digit list and externally
 compares its digits with retained `MF_source−β`; its independent artifact
 audit passed. A [separate paired residue client](research/ordinary12-ipra-bridge/compact44-high-residue-prototype/PAIR_RESULT.md)
-proves the symbolic value is `4 mod 8`; its artifact audit remains pending.
+proves the symbolic value is `4 mod 8`; its [independent artifact audit](reviews/compact44-high-residue-independent-audit/README.md)
+passed.
 Internal high-port equality remains open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
