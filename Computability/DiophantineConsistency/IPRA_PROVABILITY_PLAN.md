@@ -420,6 +420,14 @@ the block with the retained MC coefficient or give an internal iPRA
 construction. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
+A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-fractional-clean-column/README.md)
+exhibits a cap-respecting word for which no target has both zero temporal
+contribution and predecessor contribution at most one. It also checks a
+weaker half-radix predecessor bound for one clean target in every finite
+shift/fraction case. Neither observation establishes that a graph solution
+exists or supplies the arbitrary-model carry reset; applying the weaker bound
+requires model-level rotation transport and a sufficiently sharp independent
+bound on the other contributions.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
