@@ -628,7 +628,10 @@ uses the graph's origin digit to rule out the zero alternative and select row
 derives seven Boolean source digits equal to one, including positions `1095`,
 `2195` and `3296`. Turning those occupied positions into neighboring decoded
 rows, machine semantics, retained coefficient binding and the internal iPRA
-endpoint remain open.
+endpoint remain open. A generic author-side [decoded-row shift client](research/ordinary12-ipra-bridge/compact44-decoded-shift-prototype/README.md)
+shows that a decoded row satisfying its explicit Boolean and payload hypotheses
+has selector `0` occupied at seven cyclic shifts. It does not prove the decoder
+premises at those shifted positions.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
