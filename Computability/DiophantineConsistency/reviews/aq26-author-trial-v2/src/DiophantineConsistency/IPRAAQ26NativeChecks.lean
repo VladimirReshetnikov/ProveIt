@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAAQ26Native
+#print axioms DiophantineConsistency.AdaptiveAQ26.current_no_zero_iff
+#print axioms DiophantineConsistency.IPRAAQ26Native.sameNoZero
+#print axioms DiophantineConsistency.IPRAAQ26Native.bridge26
+#print axioms DiophantineConsistency.IPRAAQ26Native.literal_equivalence
