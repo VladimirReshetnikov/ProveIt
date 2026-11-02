@@ -37,6 +37,11 @@ def validate_reports(name,reports):
  expected_reports={stem+'.'+n for n in expected_reports.get(stem,set())}
  if len(reports)!=len(expected_reports) or {report for report,_ in reports}!=expected_reports or any({x.strip() for x in ax.split(',') if x.strip()} != ({'propext'} if report=='CompactHighResidue.natural_mod_eight' else {'propext','Classical.choice','Quot.sound'}) for report,ax in reports):raise ValueError(('unexpected axiom report',name,reports))
 
+def require_init(package):
+ init=package/'Init.olean'
+ if not init.is_file():raise ValueError(('required Init object missing',str(init)))
+ return str(init)
+
 def load(path):
  spec=importlib.util.spec_from_file_location('monitor',path);obj=importlib.util.module_from_spec(spec);spec.loader.exec_module(obj);return obj
 
@@ -84,7 +89,7 @@ def main():
    code,peak,reason=monitor.monitored(cmd,env,log);text=log.read_text();reports=re.findall(r"^'([^']+)' depends on axioms: \[([^\]]*)\]$",text,re.M)
    if code or reason or 'warning:' in text or 'error:' in text or 'sorryAx' in text:raise ValueError(('compiler failure',label,name,code,reason,text[-8000:]))
    validate_reports(name,reports)
-   deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60);expected={str(PACKAGE/'Init.olean')}
+   deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60);expected={require_init(PACKAGE)}
    for dep in imports:
     rel=Path(*dep.split('.')).with_suffix('.olean');candidate=lib/rel
     if not candidate.is_file() and dep.startswith('DiophantineConsistency.'):
