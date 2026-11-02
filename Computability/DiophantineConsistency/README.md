@@ -67,8 +67,10 @@ the native endpoint and passed an independent artifact audit. Its peer and
 matched comparison remain in progress. A standard-iPRA AQ29 extension also
 completed one author run and a separate independent artifact audit; its paired
 Lean replay remains open, with the historical and provider qualifications below.
-The 26-variable, 27-variable, 28-variable and 40-variable candidates' model
-and native transports remain open.
+The 26-, 27- and 28-variable model transports and native endpoints have a
+separate author-only historical run and independent artifact audit; their
+paired Lean replay remains open. The 40-variable candidate's model and native
+transports remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

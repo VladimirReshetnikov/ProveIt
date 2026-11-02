@@ -193,13 +193,14 @@ its peer and matched comparison are still in progress, with the historical and
 provider qualifications recorded below. A [standard-theory AQ29 extension](research/ipra-standard-aq29/README.md)
 also completed one author-only guarded run and an independent artifact audit;
 its separate paired Lean replay remains open. The
-[28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md)
-has exact finite residual-substitution and degree checks; its model and native
-transports remain open. The further [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md)
-has the same finite checks, with model and native transports also open. The
-[26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md)
-has finite exact residual and degree checks; its model and native transports
-are also open. The
+[28-variable](research/adaptive-square-sums28-degree8/README.md),
+[27-variable](research/adaptive-square-sums27-degree8/README.md) and
+[26-variable](research/adaptive-square-sums26-degree8/README.md) degree-eight
+reductions have finite exact residual and degree checks. Their Lean model
+transports and native endpoints completed one [author-only extension](reviews/aq26-author-trial-v2/README.md)
+and passed an [independent artifact audit](reviews/aq26-author-independent-audit/README.md).
+They remain historical, with no matched peer; the standard-theory AQ26 client
+is being checked separately. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
