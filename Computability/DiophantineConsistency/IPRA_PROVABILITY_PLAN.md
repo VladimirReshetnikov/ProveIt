@@ -247,12 +247,15 @@ has finite substitution and degree checks; its model and native transports
 remain open.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
-plan](research/ordinary12-ipra-bridge/PLAN.md) and an isolated modulo-four
-Lean prototype. Its model-level residual split, positive-rank recovery and
-object-theory proof remain open. It uses the compact44 fixed ports, including
-`beta = 2^590069 - 1`, rather than the audited 13-variable equations' 2011
-ports with `beta = 2^94517 - 1`; an explicit port binding and checker
-calibration are separate prerequisites.
+plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
+prototype and an exploratory abstract three-factor model split. The literal
+binding, positive-rank recovery and object-theory proof remain open. Its
+compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
+13-variable 2011 ports with `beta = 2^94517 - 1`; an explicit full-tuple
+binding and checker calibration are separate prerequisites. A [manuscript
+reconstruction](research/manuscript115-reconstruction/README.md) records that
+another compact44-labeled tuple differs in its `K` value, so the label alone
+does not identify the ports.
 The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
 is a further five-binding AQ22 reduction with independently checked finite
 substitution, positivity and degree calculations. Its Lean transport and
