@@ -1,0 +1,7 @@
+# Exploratory fixed symbolic graph carry input
+
+`FixedGraphIndexedCarry.graph_carry` assumes positive values for all twelve graph coordinates and zero of the literal graph at the fixed symbolic ports using `paramKernel rho`. It returns the same positive N and w satisfying the graph power/repunit and w relations together with a b=1 `CarryInput` for the exact separately indexed two-band selector/copy family, five unit terms, and the temporal word. The endpoint derives its word bounds, digit caps, output bound, modular congruence and coefficient-mass bound from earlier graph and indexed-family results; they are not extra hypotheses. The temporal word has the full radix-minus-one digit cap.
+
+Author-only session 16305 actually exited 0 with no warnings or `sorryAx`; the axiom report is `propext`, `Classical.choice`, `Quot.sound`. The failed session 2851 and its source/log are retained: it did not adapt the all-index temporal digit cap to the bounded predicate, and its `sorryAx` report proves nothing. This was compiled on the graph-temporal/carry author provider plus the same-side locally rebuilt sources and clients documented in `compact44-indexed-band-flatten-prototype` (commit af5be62e3d). It is exploratory and has no paired replay or independent artifact audit.
+
+The graph uses symbolic ports and `paramKernel rho`; equality to retained K or payload bytes is not established here. Neither a clean predecessor, graph-column decoding, machine equivalence, nor an internal iPRA theorem is claimed.
