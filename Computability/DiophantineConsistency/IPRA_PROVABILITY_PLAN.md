@@ -646,6 +646,10 @@ uses the same fixed graph witnesses to prove, at every positive in-range
 column of either phase, that the incoming carry is at most `1` and the sum of
 the full raw column and incoming carry is even. It assumes no clean column;
 the raw term still includes both bands, bare terms and temporal contribution.
+A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
+expands this relation into both selector sums, five bare digits, the temporal
+digit and incoming carry; even-weighted copy terms vanish modulo two. It does
+not yet prove row propagation.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
