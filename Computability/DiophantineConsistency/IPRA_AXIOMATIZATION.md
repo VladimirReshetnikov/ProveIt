@@ -134,7 +134,13 @@ also present in the audited fresh AQ29 parent pair. A separate [guarded
 historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
 compiled its standard-theory client and comparison with the selected
 translated Foundation consistency sentence. Its [independent artifact audit](reviews/ipra-standard-direct14-guarded-author-independent-audit/README.md)
-passed; a paired extension remains pending.
+passed. A later [historical pair](reviews/ipra-direct14-historical-pair-terminal/README.md)
+matched all five additions; its independent complete-result audit is pending.
+
+The degree-36 and degree-56 13-variable equations have a [joint guarded
+historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
+with native and standard-theory clients. Independent artifact audit and a
+paired extension remain pending.
 
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency

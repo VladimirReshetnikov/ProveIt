@@ -64,9 +64,18 @@ For the smaller [14-variable degree-30 direct-square equation](equation30-direct
 the native endpoint was compiled in the matched fresh AQ29 parent pair. A
 subsequent [five-module historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
 compiled its standard-iPRA endpoint and selected translated consistency
-comparison and passed an independent artifact audit; a paired extension remains pending. A
+comparison and passed an independent artifact audit. A subsequent [historical
+paired extension](reviews/ipra-direct14-historical-pair-terminal/README.md)
+matched all five additions; its independent complete-result audit is pending. A
 [finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
 retains the manual decoder and rank-recipe boundary.
+
+For the 13-variable degree-36 and degree-56 equations, a [joint historical
+author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
+compiled native and standard-iPRA endpoint clients. Independent artifact audit
+and a paired extension remain pending. Their [finite display bindings](reviews/frontier13-pdf-historical-lean-binding/README.md)
+have a [separate review](reviews/frontier13-pdf-historical-lean-binding-independent-audit/README.md)
+and retain the manual decoder and rank-recipe boundary.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),

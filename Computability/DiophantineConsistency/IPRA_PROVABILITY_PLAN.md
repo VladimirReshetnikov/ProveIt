@@ -49,10 +49,17 @@ package-transitive and dynamic-import ancestry remains inherited.
 The exact direct-square native endpoint also occurs in the independently
 audited fresh AQ29 parent pair. A subsequent [five-module historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
 compiled its standard-iPRA client and selected translated-consistency
-comparison and passed an [independent artifact audit](reviews/ipra-standard-direct14-guarded-author-independent-audit/README.md);
-a paired extension remains pending.
+comparison and passed an [independent artifact audit](reviews/ipra-standard-direct14-guarded-author-independent-audit/README.md).
+A later [historical paired extension](reviews/ipra-direct14-historical-pair-terminal/README.md)
+matched all five additions; its independent complete-result audit is pending.
 The separate [finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
 retains the manual decoder and rank-recipe boundary.
+
+The 13-variable degree-36 and degree-56 equations also have a [joint guarded
+historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
+with native and standard-iPRA endpoint clients. Independent artifact audit
+and a paired extension remain pending. Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
+has a separate review and retains the decoder and rank-recipe boundary.
 
 The [15-variable degree-26 equation](equation26.pdf) uses a 93-operation
 evaluator. Its exact shifted fixed-port literal has a no-premise
