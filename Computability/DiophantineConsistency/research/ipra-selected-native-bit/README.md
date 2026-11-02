@@ -36,3 +36,12 @@ Lean metatheory dependencies, not additional object-theory axioms. This is
 not yet a guarded complete-chain or matched peer replay. The earlier
 selected-checker packet's historical parent, package-transitive, dynamic,
 between-observation and Foundation wrapper-exit qualifications apply.
+
+`build_manifest.py` pins the ten previously guarded endpoint/checker sources
+and the new native-bit module to source commit
+`a20144a8f23340745a05ab733d104e2944fbf439`, requiring every old Git blob to
+remain byte-identical. It produced `author-additions.json` with SHA-256
+`7eb9d405153d4de522b3b10007003691de860565a882c1f83e8cd3d589bb2607`, eleven
+source modules and eighteen exact diagnostic names. The guarded runner's
+`verify_additions` accepted the pinned manifest with actual tool exit 0; that
+preflight alone is not a compilation or a peer replay.
