@@ -507,9 +507,8 @@ composes the bit rotation with the symbolic graph's same witnesses and actual
 exponent without an alignment premise, retaining the full-radix temporal digit
 cap. The latter constructs a heterogeneous carry input for finitely many
 aligned rotations and one bounded temporal word, assuming the weighted
-congruence, output bound and mass inequality. They remain separate results:
-connecting the concrete graph bands to this family and proving those
-assumptions and a clean predecessor remain open. The artifact auditor authored
+congruence, output bound and mass inequality. These two clients are separate;
+the later fixed-graph carry client below joins the concrete bands. The artifact auditor authored
 some clients; the audit is not an independent mathematical review of them.
 A separate [model stencil-slack client](research/ordinary12-ipra-bridge/compact44-model-stencil-slack-prototype/README.md)
 checks that carry bound `1` satisfies the required mass inequality whenever
@@ -524,8 +523,8 @@ An initial specialization to the concrete flattened family exceeded the
 kernel memory limit. A later [indexed-family exploration](research/ordinary12-ipra-bridge/compact44-indexed-band-mass-prototype/README.md)
 splits the specialization into four modules and checks both the exact
 concrete family mass and its model carry-one inequality. This is an
-author-only result for the formal indexed family; its identity with the
-graph's actual rotations and columns remains open.
+author-only result for the formal indexed family; its own statement does not
+identify it with the graph's actual rotations and columns.
 A subsequent [two-band flattening client](research/ordinary12-ipra-bridge/compact44-indexed-band-flatten-prototype/README.md)
 checks the concrete indexed carry input with carry bound `1` on a coherent
 author-side rebuild. It discharges the family mass inequality and flattens
@@ -536,12 +535,12 @@ derives those premises from the same witnesses, yielding the concrete
 indexed `CarryInput` with carry bound `1` from positive graph coordinates
 and zero at the symbolic ports. Its eleven-module-per-side replay and artifact
 audit passed, subject to the stated provider and authorship qualifications.
-Deriving a clean predecessor and connecting retained coefficients to the
-symbolic kernel remain open.
+The temporal-clean client below gives a selected target and a half-radix
+predecessor bound; the carry reset and retained-coefficient binding remain open.
 An author-side [fractional-digit client](research/ordinary12-ipra-bridge/compact44-fractional-digits-prototype/README.md)
 checks, in an arbitrary IΣ₁ model, the formula expressing an unaligned
 67-bit quotient window using its two adjacent radix-67 digits. Its application
-to cyclic wraparound and the clean-predecessor selection remain open; Boolean
+to cyclic wraparound is supplied by the later window clients; Boolean
 adjacent digits alone do not give the strict half-radix bound in every case.
 A subsequent [rotation-window exploration](research/ordinary12-ipra-bridge/compact44-rotation-adjacent-prototype/README.md)
 composes this with a non-wrapping bit-rotation window under explicit model
@@ -552,8 +551,8 @@ checks the wholly wrapped case under explicit index equations and composes it
 with the adjacent-digit identity. A third author-side
 [straddling-window client](research/ordinary12-ipra-bridge/compact44-straddling-rotation-prototype/README.md)
 checks the boundary-spanning formula and its adjacent-digit composition under
-explicit model index and word-bound conditions. Deriving the case conditions
-from the graph and selecting a clean predecessor in every model remain open.
+explicit model index and word-bound conditions. Their own statements do not
+derive the case conditions from the graph.
 An author-side [coverage and all-cases client](research/ordinary12-ipra-bridge/compact44-rotation-coverage-prototype/README.md)
 now combines the three window cases for arbitrary in-range model positions.
 It does not itself bound the selected source index by the word length or prove
@@ -598,8 +597,12 @@ graph target remains open. An author-side [cyclic-source branch client](research
 derives the equations for all three fractional source-index orderings. A later
 author-side [unified temporal-source client](research/ordinary12-ipra-bridge/compact44-temporal-source-unified-prototype/README.md)
 checks target and cyclic-predecessor formulas for arbitrary in-range model
-positions, including aligned shifts. Their application to a selected graph
-target and the carry reset remain open.
+positions, including aligned shifts. A subsequent author-side
+[fixed-graph temporal-clean client](research/ordinary12-ipra-bridge/compact44-fixed-temporal-clean-prototype/README.md)
+combines these formulas with the graph's same witnesses and selects target
+`4393` or `5495` where the temporal digit is zero and its cyclic predecessor
+is at most `2^66`. The carry reset, graph-column decoding, retained
+coefficient binding and internal iPRA endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
