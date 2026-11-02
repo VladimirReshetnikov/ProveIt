@@ -453,7 +453,12 @@ also has a paired and independently audited client for the color ranges and
 row indices excluding 1. A [paired local row-matching client](reviews/compact44-row-match-independent-audit/README.md)
 has also passed independent audit for bounded old-row indices. The external
 JSON binding, actual neighbor existence, wrap and full tiling transport remain
-separate. The
+separate. An [author-only forward marked-word client](research/ordinary12-ipra-bridge/compact44-row-transport-prototype/MARKED-RESULT.md)
+transports the supplied cyclic relations of an existing old word. An
+[author-only inverse lookup client](research/ordinary12-ipra-bridge/compact44-row-transport-prototype/INVERSE-RESULT.md)
+handles bounded compact indices other than 1 and has a definability instance.
+Their matched replays, exclusion of row 1 in an actual tableau, reverse word
+transport and word existence remain open. The
 single extra row is ruled out by
 the [paired local exclusion theorem](reviews/compact44-forbidden-independent-audit/README.md)
 when a matching left neighbor exists; boundary and arbitrary-model neighbor
