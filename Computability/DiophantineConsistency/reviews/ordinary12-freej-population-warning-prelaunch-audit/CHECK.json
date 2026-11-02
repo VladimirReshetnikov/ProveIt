@@ -1,0 +1,33 @@
+{
+  "status": "PASS_CONDITIONAL_FREEJ_POPULATION_WARNING_PRELAUNCH_AUDIT",
+  "driver_commit": "189b41c279",
+  "driver_sha256": "ab21a262ef9ba39ba3c6dc57e1899bc8f2574231e2f1222171b547c37699d725",
+  "prior_driver_sha256": "793a6873afd3517b85828e54421ee16cbd6077091b08318fb6bc62611d20de8f",
+  "recorded_failed_outer_session": 52770,
+  "recorded_failed_outer_exit": 1,
+  "failed_author_logs_checked": 7,
+  "read_only_preflight": "PASS",
+  "controls": [
+    {
+      "script": "mock_loop.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "good PASS fake_children 22\nwrong_report PASS fake_children 10\nwarning PASS fake_children 1\nmissing_project PASS fake_children 11\nwrong_deps PASS fake_children 1\nmissing_allowed PASS fake_children 7\nchanged_allowed PASS fake_children 7\nextra_warning PASS fake_children 7\n"
+    },
+    {
+      "script": "warning_controls.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "PASS_EXACT_WARNING_CONTROLS\n"
+    },
+    {
+      "script": "warning_controls.py",
+      "args": [
+        "-O"
+      ],
+      "exit": 1,
+      "stdout": ""
+    }
+  ],
+  "scope": "No Lean compile. Accepts only exact observed one-module linter warning; trusted clean initial loader and externally enforced stable-HEAD/sole-Lean window required; point-in-time provider/source checks and inherited sampled-resource/package-transitive/dynamic boundaries."
+}
