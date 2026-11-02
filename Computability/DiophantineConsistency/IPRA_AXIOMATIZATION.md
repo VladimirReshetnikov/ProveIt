@@ -121,7 +121,7 @@ A separate [16-module author-only extension](reviews/ipra-standard-current14-aut
 over the fresh AQ29 author provider completed with exit 0 and passed an
 [independent artifact audit](reviews/ipra-standard-current14-author-independent-audit/README.md).
 It uses a historical hybrid of source versions. A later [paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
-matched all 16 additions; its independent complete-result audit is pending.
+matched all 16 additions and passed an [independent complete-result audit](reviews/ipra-standard-current14-historical-pair-independent-audit/README.md).
 A separate [finite PDF binding](reviews/equation14-historical-literal-binding/README.md)
 retains a manual decoder and rank-recipe boundary. The parent/provider
 limitations above remain.

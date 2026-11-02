@@ -299,7 +299,7 @@ author build, not an independent replay packet. A later [16-module guarded
 author extension](reviews/ipra-standard-current14-author-trial/README.md)
 over the fresh AQ29 author provider passed, as did a separate [artifact audit](reviews/ipra-standard-current14-author-independent-audit/README.md).
 It is a historical hybrid. A later [paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
-matched all 16 additions; independent audit of the completed pair is pending.
+matched all 16 additions and passed an [independent complete-result audit](reviews/ipra-standard-current14-historical-pair-independent-audit/README.md).
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 The language keeps `<` as a
 symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`. In the

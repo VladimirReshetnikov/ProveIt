@@ -55,8 +55,8 @@ degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
 For the maintained 14-variable equation, a [historical paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
-has matched all 16 added modules, including the standard-iPRA endpoint. An
-independent complete-result audit is pending. The endpoint uses the selected
+has matched all 16 added modules, including the standard-iPRA endpoint, and
+passed an independent complete-result audit. The endpoint uses the selected
 mapped and translated Foundation consistency sentence; the separately checked
 PDF binding retains a manual decoder and rank-recipe boundary.
 

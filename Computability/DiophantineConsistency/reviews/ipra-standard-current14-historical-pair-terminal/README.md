@@ -20,8 +20,8 @@ Gödel–Gentzen-translated Foundation consistency sentence; the earlier
 [finite PDF binding](../equation14-historical-literal-binding/README.md)
 records the remaining manual decoder and rank-recipe boundary.
 
-This is a matched **historical** result. An independent audit of the completed
-pair is still required. It does not establish a current-source replay, formal
+This is a matched **historical** result. A subsequent [independent audit](../ipra-standard-current14-historical-pair-independent-audit/README.md)
+of the completed pair passed. It does not establish a current-source replay, formal
 PDF semantics or equality with every possible untranslated consistency coding.
 The Foundation wrapper's outer exit was not observed; package-transitive,
 dynamic-load and between-observation provenance remain inherited.
