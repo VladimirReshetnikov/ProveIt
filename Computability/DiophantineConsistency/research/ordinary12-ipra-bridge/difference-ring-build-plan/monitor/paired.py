@@ -36,6 +36,8 @@ def checked_builder_kill(terminal_path):
 
 
 def main():
+    if not sys.flags.isolated or not sys.flags.no_site:
+        raise RuntimeError('coordinator requires isolated Python startup (-I -S)')
     ap = argparse.ArgumentParser()
     ap.add_argument('--output', type=Path, required=True)
     ap.add_argument('--snapshot', type=Path, required=True)
@@ -132,11 +134,12 @@ def main():
         for label in ('author','peer'):
             if pending:raise InterruptedError(('coordinator signal',pending[0]))
             run_dir=out/label; child=run_dir/'child-output'; monitor_log=out/(label+'-monitor.log')
-            builder_cmd=[sys.executable,str(builder),'--snapshot',str(a.snapshot),'--output',str(child),
+            builder_cmd=[sys.executable,'-I','-S',str(builder),'--snapshot',str(a.snapshot),'--output',str(child),
                          '--provider-receipt',str(a.provider_receipt),'--snapshot-sha256',a.snapshot_sha256,
                          '--provider-sha256',a.provider_sha256,'--foundation-input',str(a.foundation_input),
                          '--expected-axiom-reports',str(a.expected_axiom_reports)]
-            cmd=[sys.executable,str(monitor),'--run-dir',str(run_dir),'--reserve-bytes',str(a.reserve_bytes),
+            bootstrap="import runpy,sys; from pathlib import Path; p=Path(sys.argv[1]).resolve(strict=True); sys.path.insert(0,str(p.parent)); sys.argv=sys.argv[1:]; runpy.run_path(str(p),run_name='__main__')"
+            cmd=[sys.executable,'-I','-S','-c',bootstrap,str(monitor),'--run-dir',str(run_dir),'--reserve-bytes',str(a.reserve_bytes),
                  '--budget-bytes',str(a.budget_bytes),'--interval',str(a.interval),'--grace',str(a.grace)]
             for path in protected:cmd.extend(['--protect',str(path)])
             cmd+=['--']+builder_cmd
@@ -157,7 +160,7 @@ def main():
                 raise RuntimeError(('sibling failed or stopped',label,exit_code,item['monitor_status'],item['builder_exit'],item['builder_status']))
         if pending:raise InterruptedError(('coordinator signal',pending[0]))
         comp_log=out/'comparator.log'
-        comp_cmd=[sys.executable,str(comparator),str(out/'author/child-output/state.json'),str(out/'peer/child-output/state.json')]
+        comp_cmd=[sys.executable,'-I','-S',str(comparator),str(out/'author/child-output/state.json'),str(out/'peer/child-output/state.json')]
         comp_exit,_=launch(comp_cmd,comp_log)
         state['comparison']={'exit':comp_exit,'log':str(comp_log),'log_sha256':H(comp_log)};save()
         if pending:raise InterruptedError(('coordinator signal',pending[0]))

@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import signal
 import subprocess
+import sys
 import time
 from path_guard import fresh_output
 
@@ -207,6 +208,8 @@ def run(run_dir, command, *, reserve=RESERVE, budget=BUDGET, interval=1.0,
 
 
 def main():
+    if not sys.flags.isolated or not sys.flags.no_site:
+        raise RuntimeError('monitor requires isolated Python startup (-I -S)')
     ap = argparse.ArgumentParser()
     ap.add_argument('--run-dir', type=Path, required=True)
     ap.add_argument('--reserve-bytes', type=int, default=RESERVE)

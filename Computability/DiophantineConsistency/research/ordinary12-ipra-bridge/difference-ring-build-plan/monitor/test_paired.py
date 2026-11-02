@@ -6,9 +6,11 @@ import subprocess,sys,tempfile
 
 HERE=Path(__file__).resolve().parent
 H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+BOOT="import runpy,sys; from pathlib import Path; p=Path(sys.argv[1]).resolve(strict=True); sys.path.insert(0,str(p.parent)); sys.argv=sys.argv[1:]; runpy.run_path(str(p),run_name='__main__')"
+def isolated(script):return [sys.executable,'-I','-S','-c',BOOT,str(script)]
 BUILDER=r'''
 import argparse,json,os,pathlib,signal,subprocess,sys,time
-assert __debug__ and not os.environ.get('PYTHONOPTIMIZE')
+assert __debug__ and sys.flags.isolated and sys.flags.no_site and not os.environ.get('PYTHONOPTIMIZE')
 p=argparse.ArgumentParser();p.add_argument('--output',required=True);a,_=p.parse_known_args()
 out=pathlib.Path(a.output);label=out.parent.name
 assert os.environ['MONITOR_OUTPUT']==str(out) and pathlib.Path(os.environ['TMPDIR']).parent==out.parent
@@ -25,6 +27,7 @@ if os.environ.get('TOY_FAIL')==label:sys.exit(7)
 '''
 COMPARATOR=r'''
 import json,os,pathlib,sys
+assert sys.flags.isolated and sys.flags.no_site
 with open(os.environ['TOY_TRACE'],'a') as f:f.write('compare\n')
 a,b=[json.loads(pathlib.Path(x).read_text()) for x in sys.argv[1:]]
 assert a=={'status':'PASS','label':'author'} and b=={'status':'PASS','label':'peer'}
@@ -33,6 +36,7 @@ print(json.dumps({'status':'MATCHED_PASS','rows':2}))
 '''
 STUCK_MONITOR=r'''
 import json,os,pathlib,signal,subprocess,sys,time
+assert sys.flags.isolated and sys.flags.no_site
 signal.signal(signal.SIGTERM,signal.SIG_IGN)
 args=sys.argv[1:];run=pathlib.Path(args[args.index('--run-dir')+1]);run.mkdir()
 tmp=run/'tmp';tmp.mkdir();out=run/'child-output';env=os.environ.copy();env['MONITOR_OUTPUT']=str(out);env['TMPDIR']=str(tmp)
@@ -49,7 +53,7 @@ def run_case(root,name,extra,budget=1000000,interrupt=False,stuck_monitor=False,
     provider=provider_dir/'provider.json';provider.write_text(json.dumps({'root':str(provider_dir),'overlay':str(overlay)}));foundation=case/'foundation.json';foundation.write_text('{}')
     builder=case/'builder.py';builder.write_text(BUILDER);comp=case/'comparator.py';comp.write_text(COMPARATOR);trace=case/'trace'
     out=case/'run';env=os.environ.copy();env.update(extra);env['TOY_TRACE']=str(trace)
-    cmd=[sys.executable,str(HERE/'paired.py'),'--output',str(out),'--snapshot',str(snapshot),'--snapshot-sha256',H(snapshot/'manifest.json'),
+    cmd=isolated(HERE/'paired.py')+['--output',str(out),'--snapshot',str(snapshot),'--snapshot-sha256',H(snapshot/'manifest.json'),
          '--provider-receipt',str(provider),'--provider-sha256',H(provider),'--foundation-input',str(foundation),'--expected-axiom-reports','0',
          '--builder',str(builder),'--comparator',str(comp),'--reserve-bytes','0','--budget-bytes',str(budget),'--interval','.02','--grace','.1']
     if stuck_monitor:
@@ -90,7 +94,7 @@ def main():
         provider.write_text(json.dumps({'root':str(provider_dir),'overlay':str(provider_dir/'package')}))
         foundation=guard/'foundation.json';foundation.write_text('{}')
         builder=guard/'builder.py';builder.write_text(BUILDER);comp=guard/'comparator.py';comp.write_text(COMPARATOR)
-        base=[sys.executable,str(HERE/'paired.py'),'--snapshot',str(snapshot),'--snapshot-sha256',H(snapshot/'manifest.json'),
+        base=isolated(HERE/'paired.py')+['--snapshot',str(snapshot),'--snapshot-sha256',H(snapshot/'manifest.json'),
               '--provider-receipt',str(provider),'--provider-sha256',H(provider),'--foundation-input',str(foundation),
               '--expected-axiom-reports','0','--builder',str(builder),'--comparator',str(comp)]
         link=guard/'link';link.symlink_to(snapshot,target_is_directory=True)

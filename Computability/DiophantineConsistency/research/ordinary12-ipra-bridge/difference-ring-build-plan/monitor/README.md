@@ -139,3 +139,26 @@ still toy controls, not an actual project replay. The final observed hashes are:
 - `paired.py`: `ab9a2787e4fb99f9c201280e1219e48a2bf6f7c8a2e8f78049743b3dce282ebb`
 - `test_monitor.py`: `52650f400f92adc9b83030da0ae8a4488cc32a1e94c1ea15ee0e652551cc74ed`
 - `test_paired.py`: `6513363589dc07e2d46c715a07943ff1b4ab734dd11f601b7e3b46e1854f835a`
+
+## Isolated Python process chain
+
+The earlier wrapper hashes and toy sessions above are historical. The
+coordinator and monitor now require `-I -S` at their actual CLI entrypoints.
+The coordinator invokes the monitor through an isolated `runpy` bootstrap
+which inserts only the pinned monitor script directory, and invokes the
+stdlib-only historical builder and comparator with `-I -S`. A reviewed outer
+launcher must itself use isolated startup and remove inherited `PYTHON*`
+variables before starting the coordinator; a direct non-isolated invocation
+can execute Python startup hooks before a script rejects it. Non-Python
+runtime, executable, package and dynamic-load trust boundaries remain.
+
+Revised monitor toy session 6855 and paired toy session 57209 actually exited
+0. The paired mock builder, comparator and stuck monitor assert isolated and
+no-site flags, and the ordinary stop/cleanup/guard controls still pass. These
+are fake children, not a full project replay. Final script hashes:
+
+- `monitor.py`: `f83085ddc84b9376d934cfbc4b29cd28b91f10a7f1ac28fd372e276b5cf542ee`
+- `paired.py`: `b3eb4021ae3d8797adcb796bcbe3613a9363ea5b4917d85173e92e27c08f9910`
+- `test_monitor.py`: `6ef9bb779def89ba1d2705e1e3c0f6a26c641d4fe193f01237eb49aaec178fb5`
+- `test_paired.py`: `f3de7241071deeae8be007f208b9efa58fb27d36cf04b44354f436a6ac3f04e2`
+- `path_guard.py`: `9af0852abe419dee3fa83a57aa8fbdb3584285c8c40a229c9ef041f610375173`

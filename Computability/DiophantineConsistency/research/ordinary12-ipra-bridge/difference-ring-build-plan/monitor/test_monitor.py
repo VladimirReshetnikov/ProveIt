@@ -12,6 +12,9 @@ from unittest.mock import patch
 
 import monitor
 
+BOOT="import runpy,sys; from pathlib import Path; p=Path(sys.argv[1]).resolve(strict=True); sys.path.insert(0,str(p.parent)); sys.argv=sys.argv[1:]; runpy.run_path(str(p),run_name='__main__')"
+def isolated(script):return [sys.executable,'-I','-S','-c',BOOT,str(script)]
+
 
 def dead_or_zombie(pid):
     path = Path(f'/proc/{pid}/stat')
@@ -85,19 +88,19 @@ def main():
         protected = root/'protected'; protected.mkdir()
         link = root/'link'; link.symlink_to(protected, target_is_directory=True)
         for destination in (protected/'new', link/'new'):
-            result = subprocess.run([sys.executable, str(Path(monitor.__file__)),
+            result = subprocess.run(isolated(Path(monitor.__file__))+[
                 '--run-dir', str(destination), '--protect', str(protected),
                 '--reserve-bytes', '0', '--', sys.executable, '-c', 'pass'],
                 text=True,capture_output=True)
             assert result.returncode != 0 and not (protected/'new').exists()
         inferred=protected/'inferred'
-        result=subprocess.run([sys.executable,str(Path(monitor.__file__)),'--run-dir',str(inferred),
+        result=subprocess.run(isolated(Path(monitor.__file__))+['--run-dir',str(inferred),
             '--reserve-bytes','0','--',sys.executable,'-c','pass','--snapshot',str(protected)],
             text=True,capture_output=True)
         assert result.returncode != 0 and not inferred.exists()
         optimized = root/'optimized'
         env = os.environ.copy(); env['PYTHONOPTIMIZE']='1'
-        result = subprocess.run([sys.executable, str(Path(monitor.__file__)),
+        result = subprocess.run(isolated(Path(monitor.__file__))+[
             '--run-dir', str(optimized), '--reserve-bytes', '0', '--',
             sys.executable, '-c', 'pass'],env=env,text=True,capture_output=True)
         assert result.returncode != 0 and not optimized.exists() and 'rejects optimized' in result.stderr
@@ -122,7 +125,7 @@ while not (out/'child').exists(): time.sleep(.01)
         wait_dead(int((root/'lingering/child-output/child').read_text()))
         print('PASS successful leader with lingering descendant rejected', flush=True)
         interrupt = root/'interrupt'
-        cli = subprocess.Popen([sys.executable, str(Path(monitor.__file__)), '--run-dir', str(interrupt),
+        cli = subprocess.Popen(isolated(Path(monitor.__file__))+[ '--run-dir', str(interrupt),
                                 '--reserve-bytes', '0', '--interval', '.02', '--grace', '.1', '--', sys.executable, '-c', CHILD],
                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         deadline = time.monotonic()+10
