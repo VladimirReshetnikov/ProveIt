@@ -535,8 +535,9 @@ derives those premises from the same witnesses, yielding the concrete
 indexed `CarryInput` with carry bound `1` from positive graph coordinates
 and zero at the symbolic ports. Its eleven-module-per-side replay and artifact
 audit passed, subject to the stated provider and authorship qualifications.
-The temporal-clean client below gives a selected target and a half-radix
-predecessor bound; the carry reset and retained-coefficient binding remain open.
+The temporal-clean and clean-carry clients below give a selected target, a
+half-radix predecessor bound and carry reset for the symbolic graph; binding
+the retained coefficients remains open.
 An author-side [fractional-digit client](research/ordinary12-ipra-bridge/compact44-fractional-digits-prototype/README.md)
 checks, in an arbitrary IΣ₁ model, the formula expressing an unaligned
 67-bit quotient window using its two adjacent radix-67 digits. Its application
@@ -560,8 +561,8 @@ the graph-specific support and clean-predecessor conditions. A subsequent
 [bounded rotation client](reviews/compact44-rotation-windows-pair-independent-audit/README.md)
 does bound that index for a reduced cut and records the zero-padded final
 digit explicitly. Its fourteen-module-per-side replay and artifact audit
-passed, retaining the audit's inherited-provider qualifications. Selecting a
-clean predecessor from the graph remains open.
+passed, retaining the audit's inherited-provider qualifications. That client
+does not itself select a clean predecessor from the graph.
 An author-side [clean-phase geometry client](research/ordinary12-ipra-bridge/compact44-clean-phase-geometry-prototype/README.md)
 proves that, for any model shift, one of the two target phases lies outside
 the compact blocker `[0,1065] ∪ {1095,2195,3296}`. It uses an interval
@@ -572,8 +573,8 @@ positive-index `NoCarry` and an origin bound, obtains zero digits outside
 the blocker and Boolean digits away from phase `1063`. A subsequent author-side
 [graph/support/carry client](research/ordinary12-ipra-bridge/compact44-fixed-graph-support-carry-prototype/README.md)
 joins those bounds to the same symbolic graph and carry witnesses, proving
-the independently obtained lengths equal. Selecting a clean predecessor and
-deriving the carry reset remain open.
+the independently obtained lengths equal. Its own statement does not select a
+clean predecessor or derive the carry reset.
 An author-side [phase-neighbor client](research/ordinary12-ipra-bridge/compact44-clean-phase-neighbors-prototype/README.md)
 also checks that the two preceding phases of any phase outside the blocker
 avoid the exceptional position. A separate author-side
@@ -583,8 +584,8 @@ selects a zero source digit with two Boolean predecessors. It assumes the
 two source-index phase equations. A later author-side
 [fixed-graph safe-source client](research/ordinary12-ipra-bridge/compact44-fixed-safe-source-prototype/README.md)
 obtains the selected zero and Boolean predecessor digits for an arbitrary
-model offset from the symbolic graph's same witnesses. Connecting that offset
-to the temporal bit rotation and establishing the clean carry remain open.
+model offset from the symbolic graph's same witnesses. The later clean-carry
+client connects that offset to the temporal rotation.
 An author-side [temporal clean-numerics client](research/ordinary12-ipra-bridge/compact44-temporal-clean-numerics-prototype/README.md)
 checks the model quotient/remainder split for the rotation shift and proves
 the zero-target and half-radix predecessor bound assuming explicit two-digit
@@ -601,8 +602,11 @@ positions, including aligned shifts. A subsequent author-side
 [fixed-graph temporal-clean client](research/ordinary12-ipra-bridge/compact44-fixed-temporal-clean-prototype/README.md)
 combines these formulas with the graph's same witnesses and selects target
 `4393` or `5495` where the temporal digit is zero and its cyclic predecessor
-is at most `2^66`. The carry reset, graph-column decoding, retained
-coefficient binding and internal iPRA endpoint remain open.
+is at most `2^66`. An author-side [fixed-graph clean-carry client](research/ordinary12-ipra-bridge/compact44-fixed-clean-carry-prototype/README.md)
+then proves the incoming carry is zero and the output digit equals the full
+raw indexed column at that target. This is a conditional symbolic-graph
+model result, not yet a paired replay. Identifying the raw column with the
+decoder, binding retained coefficients and the internal iPRA endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
@@ -706,12 +710,13 @@ shift/fraction case; its [independent finite audit](reviews/compact44-fractional
 passed. Neither observation establishes that a graph solution
 exists or supplies the arbitrary-model carry reset; applying the weaker bound
 requires model-level rotation transport and a sufficiently sharp independent
-bound on the other contributions.
+bound on the other contributions. The author-side fixed-graph clean-carry
+client above supplies those ingredients for the symbolic graph.
 A [paired heterogeneous-carry prototype](research/ordinary12-ipra-bridge/compact44-heterogeneous-carry-prototype/README.md)
 extends the all-model end-around carry to an individual digit cap for each
 word in an external finite family. This allows a rotated temporal word to have
-a larger cap than the other words, but the exact graph decomposition and mass
-bound remain open. Its [independent artifact audit](reviews/compact44-heterogeneous-carry-independent-audit/README.md)
+a larger cap than the other words; later clients above specialize the symbolic
+graph decomposition and mass bound. Its [independent artifact audit](reviews/compact44-heterogeneous-carry-independent-audit/README.md)
 passed with the inherited provider limitations recorded there.
 A [conditional clean-predecessor client](research/ordinary12-ipra-bridge/compact44-clean-carry-reset-prototype/PAIR_RESULT.md)
 has passed a paired replay and [independent artifact audit](reviews/compact44-clean-carry-independent-audit/README.md).
@@ -722,8 +727,8 @@ The graph-specific decomposition, rotation transport and required inequalities
 remain assumptions.
 An [independently audited finite coefficient-mass calculation](reviews/compact44-coefficient-mass-independent-audit/README.md)
 proves the 943-row selector and 41-copy totals in Lean, with the numerical
-half-radix and heterogeneous-carry slack. The connection from those finite
-totals to the graph's model-level word decomposition is not yet proved.
+half-radix and heterogeneous-carry slack. Later clients above connect those
+totals to the symbolic graph's indexed family.
 A [finite coefficient-decomposition client](reviews/compact44-coefficient-decomposition-independent-audit/README.md)
 has passed a paired replay and independent artifact audit for arbitrary
 model-valued selector and copy functions. It does not prove that a graph-derived
