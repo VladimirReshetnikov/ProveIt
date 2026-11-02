@@ -433,6 +433,12 @@ For the symbolic beta and masks it derives a positive block count, the radix
 and repunit identities and the digit bounds from a graph zero and positive
 variables, with arbitrary `K`. It does not bind the retained tuple or establish
 the encoded machine or iPRA endpoint.
+A [first-root congruence client](research/ordinary12-ipra-bridge/free-j-first-congruence-prototype/README.md)
+has compiled on one exploratory provider. Under its stated graph and port
+assumptions it derives the bounded output remainder and the weighted modular
+identity used in the proposed [graph-to-decoder route](research/ordinary12-ipra-bridge/compact44-graph-to-decoder-plan/README.md).
+The coefficient interpretation, no-carry transport, decoder and paired
+verification remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
