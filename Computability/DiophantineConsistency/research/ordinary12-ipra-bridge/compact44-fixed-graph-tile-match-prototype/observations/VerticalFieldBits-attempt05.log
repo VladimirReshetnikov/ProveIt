@@ -1,0 +1,30 @@
+/tmp/compact44-graph-support-join-01/VerticalFieldBits.lean:52:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑z
+in the target expression
+  fbit (Compact943Decoder.tileValue i) (25 + u) = fbit (Compact943Decoder.tileValue j) (8 + u)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+N C s h : V
+i j : Fin 943
+hN : 0 < N
+hh : h < N
+hs : s < N
+hfield :
+  ∀ u < 9,
+    ∀ k < 8807 * N, k % 8807 = ↑(1013 + u) → dig 67 C (cyc (8807 * N) k 30) = dig 67 C (cyc (8807 * N) k (8807 * s))
+hin : UniformBandInputs.Inputs (8807 * N) C (8807 * h + 4393) 4393
+hw : UniformBandDecoder.copyWord (8807 * N) C (8807 * h + 4393) 4393 = Compact943Decoder.tileValue i
+hin' : UniformBandInputs.Inputs (8807 * N) C (8807 * cyc N h s + 4393) 4393
+hw' : UniformBandDecoder.copyWord (8807 * N) C (8807 * cyc N h s + 4393) 4393 = Compact943Decoder.tileValue j
+u : V
+hu : u < 9
+z : ℕ
+hz : z < 9
+he : u = ↑z
+hb : fbit (Compact943Decoder.tileValue i) ↑(25 + z) = fbit (Compact943Decoder.tileValue j) ↑(8 + z)
+⊢ fbit (Compact943Decoder.tileValue i) (25 + u) = fbit (Compact943Decoder.tileValue j) (8 + u)
+'VerticalFieldBits.fields' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'VerticalFieldBits.positions' depends on axioms: [propext, Quot.sound]
+'VerticalFieldBits.bit' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,37 @@
+/tmp/compact44-graph-support-join-01/FiniteBinaryWord.lean:33:4: error: Tactic `apply` failed: could not unify the conclusion of `Finset.sum_eq_single i`
+  ∑ x ∈ ?m.63, ?m.64 x = ?m.64 i
+with the goal
+  (∑ i_1, if ↑↑i = ↑↑i_1 then bits i_1 else 0) = bits i
+
+Note: The full type of `Finset.sum_eq_single i` is
+  (∀ b ∈ ?m.63, b ≠ i → ?m.64 b = 0) → (i ∉ ?m.63 → ?m.64 i = 0) → ∑ x ∈ ?m.63, ?m.64 x = ?m.64 i
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+m : ℕ
+bits : Fin m → V
+hb : ∀ (j : Fin m), bits j ≤ 1
+j : Fin m
+f : V → V := fun x => ∑ i, if x = ↑↑i then bits i else 0
+i : Fin m
+⊢ (∑ i_1, if ↑↑i = ↑↑i_1 then bits i_1 else 0) = bits i
+/tmp/compact44-graph-support-join-01/FiniteBinaryWord.lean:48:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, ?f ↑i
+in the target expression
+  ∑ j ∈ Finset.range m, f ↑j * 2 ^ j = ∑ i, 2 ^ ↑i * bits i
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+m : ℕ
+bits : Fin m → V
+hb : ∀ (j : Fin m), bits j ≤ 1
+j : Fin m
+f : V → V := fun x => ∑ i, if x = ↑↑i then bits i else 0
+hf : ∀ (i : Fin m), f ↑↑i = bits i
+hbound : ∀ j < m, f ↑j ≤ 1
+hs : Blocks 1 f (↑m) (∑ j ∈ Finset.range m, f ↑j * 2 ^ j)
+⊢ ∑ j ∈ Finset.range m, f ↑j * 2 ^ j = ∑ i, 2 ^ ↑i * bits i
+'FiniteBinaryWord.finite_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FiniteBinaryWord.bit' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
