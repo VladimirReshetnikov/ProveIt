@@ -54,6 +54,40 @@ refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
 degree theorems and no global minimum is claimed.
 
+**CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
+lower-degree carrier forms of the maintained coefficient tuple now also have
+native, standard and equality-only iPRA endpoints. They cover the 14-variable
+67/106, 66/118, 71/80 and 72/68 forms ([`ModelCarrierCurrent`](Lean/DiophantineConsistency/ModelCarrierCurrent.lean),
+[`ModelCarrierSpheres`](Lean/DiophantineConsistency/ModelCarrierSpheres.lean))
+and the 13-variable 69/174, 70/140, 71/128, 73/126, 74/122, 72/124, 77/96,
+76/96, 75/96 and 84/92 forms ([`ModelThirteenCarrier`](Lean/DiophantineConsistency/ModelThirteenCarrier.lean),
+[`ModelThirteenForms`](Lean/DiophantineConsistency/ModelThirteenForms.lean),
+[`ModelThirteenStrong`](Lean/DiophantineConsistency/ModelThirteenStrong.lean),
+[`ModelThirteenSquares`](Lean/DiophantineConsistency/ModelThirteenSquares.lean)).
+Each external standard-integer zero-set argument is replayed in every model of
+`𝗜𝚺₁` through the model's ring of differences ([`ModelDifferenceRing`](Lean/DiophantineConsistency/ModelDifferenceRing.lean)).
+The new internal number theory is an internal near-square descent
+([`ModelArithmetic`](Lean/DiophantineConsistency/ModelArithmetic.lean)), an
+internal pigeonhole principle giving a Pell ordinate divisible by any modulus
+([`ArithmeticPellPigeonhole`](Lean/DiophantineConsistency/ArithmeticPellPigeonhole.lean)),
+the signed odd-index Pell residue ([`ArithmeticOddOrdinateResidue`](Lean/DiophantineConsistency/ArithmeticOddOrdinateResidue.lean)),
+and the 14→13 completion with fresh Pell seeds ([`ArithmeticThirteenSeed`](Lean/DiophantineConsistency/ArithmeticThirteenSeed.lean),
+[`ArithmeticThirteenOuter`](Lean/DiophantineConsistency/ArithmeticThirteenOuter.lean)).
+The maintained all-model bridge then transfers to each form. The
+[`ModelCarrierChecks`](Lean/DiophantineConsistency/ModelCarrierChecks.lean),
+[`ModelThirteenCarrierChecks`](Lean/DiophantineConsistency/ModelThirteenCarrierChecks.lean)
+and [`ModelThirteenChecks`](Lean/DiophantineConsistency/ModelThirteenChecks.lean)
+audits report only `propext`, `Classical.choice` and `Quot.sound`. These are
+author builds in the root workspace, not independent replay packets. The
+endpoints are stated for literal `Expr` transcriptions of the forms, whose
+ring evaluations are proved equal to the generic `value` definitions. The
+statement identifying the 14-variable syntax with the accepted
+`MvPolynomial`s ([`ModelCarrierBindings`](Lean/DiophantineConsistency/ModelCarrierBindings.lean))
+has not yet been built here, and the analogous 13-variable bindings are not
+yet written.
+The 9-variable equation of [EXPLICIT_EQUATION.md](EXPLICIT_EQUATION.md)
+still has only its external Lean equivalence.
+
 For the maintained 14-variable equation, a [historical paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
 has matched all 16 added modules, including the standard-iPRA endpoint, and
 passed an independent complete-result audit. The endpoint uses the selected
