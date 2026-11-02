@@ -1,0 +1,7 @@
+# Exploratory uniform fixed-graph carry reset
+
+`WholeBlockPhase` proves that a whole-8807-cell cyclic shift preserves source phase; decoder target phases 4393 and 5495 are outside the blocker, as are the predecessors of phases 2195, 3296, 4393 and 5495. `WholeBlockTemporal` uses the aligned actual rotation and the explicit source support hypothesis to prove temporal predecessor zero at every in-range column of those four phases, and temporal target zero at the two decoder phases. The parity target phases 2195 and 3296 are themselves in the blocker, so their temporal target digits are not asserted to vanish.
+
+`FixedGraphUniformReset.graph_uniform_reset` joins the source facts to the fixed symbolic graph and its same N,w,s witnesses, indexed b=1 carry input and whole-cell displacement. At every in-range model column of the four phases it derives zero temporal predecessor and zero incoming carry; for decoder phases it additionally derives zero temporal target. The theorem assumes positive graph coordinates and literal graph zero at the fixed symbolic ports with `paramKernel rho`. It does not prove graph existence, nonzero local rows, a represented global word, retained port/K byte binding, machine semantics or internal iPRA.
+
+Author-only source order was `WholeBlockPhase`, `WholeBlockTemporal`, `FixedGraphUniformReset` over the exploratory provider of `283232f28e`. Sessions 67168, 79677 and 50202 actually exited 0 without warnings or `sorryAx`; exact named axiom reports are retained. This is not a paired replay or independent artifact audit.
