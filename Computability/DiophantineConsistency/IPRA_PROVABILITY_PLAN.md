@@ -636,7 +636,12 @@ premises at those shifted positions. An author-side [overlap check](research/ord
 shows a concrete obstruction to reusing the same single-band proof at column
 `5488`: its other band contains the nonzero origin digit, and the local high
 mask digit there is zero. This is a limitation of that propagation route, not
-a contradiction in the graph.
+a contradiction in the graph. An author-side [uniform phase and parity client](research/ordinary12-ipra-bridge/compact44-uniform-parity-prototype/README.md)
+extends support-zero and the target-phase `NoCarry` facts across periods and
+shows the output digit is even at positive in-range phases `2195` and `3296`.
+Its raw-column evenness corollary still assumes a clean temporal column and
+the stated carry conditions at that position; those conditions have not been
+derived there.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
