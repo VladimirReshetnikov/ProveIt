@@ -269,6 +269,9 @@ passed a [separate audit](reviews/ordinary12-freej-early-size-independent-audit/
 The ordinary tail's polarized residual and denominator-cleared identities have
 also passed a [bounded replay audit](reviews/ordinary12-freej-ordinary-identities-independent-audit/README.md),
 but those identities do not establish denominator divisibility or integrality.
+A [source-current difference-ring rebuild plan](research/ordinary12-ipra-bridge/difference-ring-build-plan/README.md)
+has a separate [source-closure and resource review](reviews/ordinary12-difference-ring-plan-independent-audit/README.md);
+the build driver and stop behavior remain to be implemented and reviewed.
 Exact index matching cannot
 yet be imported directly: its existing theorem assumes strong and auxiliary
 norms that must first be recovered noncircularly. These are model-level
