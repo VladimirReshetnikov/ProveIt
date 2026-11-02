@@ -372,7 +372,11 @@ Here `π` indexes the carrier ordinate; the distinct exponent `m` indexing
 `f` must not be identified with `π` merely from that statement. The proof of
 the later power identity does locally obtain `m=R` for its separately
 extracted main index by comparing the same strictly monotone ordinate, though
-it does not export that intermediate equality as a standalone theorem. The
+it does not export that intermediate equality as a standalone theorem. A
+later [paired uniqueness client](research/ordinary12-ipra-bridge/free-j-main-index-unique-prototype/README.md)
+now states that any index with that recovered ordinate equals `R` under the
+exact-ordinary graph hypotheses, without the later `β≥46` assumption; this
+client awaits independent review. The
 [power identity theorem](research/ordinary12-ipra-bridge/free-j-power-finish-prototype/README.md)
 proves `X=2^R` under the graph hypotheses and `β≥46`; its paired replay
 passed an [independent artifact audit](reviews/ordinary12-freej-power-finish-independent-audit/README.md).
