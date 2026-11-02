@@ -8,6 +8,7 @@ HERE=Path(__file__).resolve().parent
 H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
 BUILDER=r'''
 import argparse,json,os,pathlib,signal,subprocess,sys,time
+assert __debug__ and not os.environ.get('PYTHONOPTIMIZE')
 p=argparse.ArgumentParser();p.add_argument('--output',required=True);a,_=p.parse_known_args()
 out=pathlib.Path(a.output);label=out.parent.name
 assert os.environ['MONITOR_OUTPUT']==str(out) and pathlib.Path(os.environ['TMPDIR']).parent==out.parent
@@ -44,7 +45,8 @@ while True:time.sleep(.1)
 
 def run_case(root,name,extra,budget=1000000,interrupt=False,stuck_monitor=False,unconfirmed=False):
     case=root/name;case.mkdir();snapshot=case/'snap';snapshot.mkdir();(snapshot/'manifest.json').write_text('{}')
-    provider=case/'provider.json';provider.write_text('{}');foundation=case/'foundation.json';foundation.write_text('{}')
+    provider_dir=case/'provider';provider_dir.mkdir();overlay=provider_dir/'package';overlay.mkdir()
+    provider=provider_dir/'provider.json';provider.write_text(json.dumps({'root':str(provider_dir),'overlay':str(overlay)}));foundation=case/'foundation.json';foundation.write_text('{}')
     builder=case/'builder.py';builder.write_text(BUILDER);comp=case/'comparator.py';comp.write_text(COMPARATOR);trace=case/'trace'
     out=case/'run';env=os.environ.copy();env.update(extra);env['TOY_TRACE']=str(trace)
     cmd=[sys.executable,str(HERE/'paired.py'),'--output',str(out),'--snapshot',str(snapshot),'--snapshot-sha256',H(snapshot/'manifest.json'),
@@ -83,6 +85,30 @@ def main():
     with tempfile.TemporaryDirectory(prefix='ipra-paired-tests-') as tmp:
         root=Path(tmp)
         import paired
+        guard=root/'guards';guard.mkdir();snapshot=guard/'snap';snapshot.mkdir();(snapshot/'manifest.json').write_text('{}')
+        provider_dir=guard/'provider';provider_dir.mkdir();(provider_dir/'package').mkdir();provider=provider_dir/'provider.json'
+        provider.write_text(json.dumps({'root':str(provider_dir),'overlay':str(provider_dir/'package')}))
+        foundation=guard/'foundation.json';foundation.write_text('{}')
+        builder=guard/'builder.py';builder.write_text(BUILDER);comp=guard/'comparator.py';comp.write_text(COMPARATOR)
+        base=[sys.executable,str(HERE/'paired.py'),'--snapshot',str(snapshot),'--snapshot-sha256',H(snapshot/'manifest.json'),
+              '--provider-receipt',str(provider),'--provider-sha256',H(provider),'--foundation-input',str(foundation),
+              '--expected-axiom-reports','0','--builder',str(builder),'--comparator',str(comp)]
+        link=guard/'link';link.symlink_to(snapshot,target_is_directory=True)
+        for destination in (snapshot/'new',provider_dir/'new',link/'new'):
+            r=subprocess.run(base+['--output',str(destination)],capture_output=True,text=True)
+            assert r.returncode!=0 and not destination.exists()
+        bad_out=guard/'bad-pin';bad=base.copy();bad[bad.index('--snapshot-sha256')+1]='0'*64
+        r=subprocess.run(bad+['--output',str(bad_out)],capture_output=True,text=True)
+        assert r.returncode!=0 and not bad_out.exists() and 'pin mismatch' in r.stderr
+        missing=guard/'missing-provider-fields.json';missing.write_text('{}')
+        bad=base.copy();bad[bad.index('--provider-receipt')+1]=str(missing);bad[bad.index('--provider-sha256')+1]=H(missing)
+        missing_out=guard/'missing-fields-output'
+        r=subprocess.run(bad+['--output',str(missing_out)],capture_output=True,text=True)
+        assert r.returncode!=0 and not missing_out.exists() and 'invalid or missing provider root' in r.stderr
+        optimized=guard/'optimized';env=os.environ.copy();env['PYTHONOPTIMIZE']='1'
+        r=subprocess.run(base+['--output',str(optimized)],env=env,capture_output=True,text=True)
+        assert r.returncode!=0 and not optimized.exists() and 'rejects optimized' in r.stderr
+        print('PASS protected outputs, input pins and optimized launcher rejected before writes',flush=True)
         bogus=root/'bogus-terminal.json';bogus.write_text(json.dumps({'pid':os.getpid(),'pid_start_ticks':0}))
         assert paired.checked_builder_kill(bogus)['status']=='unconfirmed'
         assert paired.checked_builder_kill(root/'missing-terminal.json')['status']=='unconfirmed'

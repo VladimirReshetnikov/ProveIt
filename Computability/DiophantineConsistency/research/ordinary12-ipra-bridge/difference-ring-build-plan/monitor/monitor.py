@@ -11,6 +11,10 @@ from pathlib import Path
 import signal
 import subprocess
 import time
+from path_guard import fresh_output
+
+if not __debug__ or os.environ.get('PYTHONOPTIMIZE'):
+    raise RuntimeError('sampled replay rejects optimized Python and PYTHONOPTIMIZE')
 
 RESERVE = 4 * 1024**3
 BUDGET = 512 * 1024**2
@@ -44,6 +48,30 @@ def disk_bytes(path):
     return st.f_bavail * st.f_frsize
 
 
+def command_inputs(command):
+    """Protect named Lean-builder inputs; arbitrary child paths need --protect."""
+    found=[]
+    for i,arg in enumerate(command):
+        for flag in ('--snapshot','--provider-receipt','--foundation-input'):
+            if arg==flag:
+                if i+1>=len(command):raise ValueError(('missing input flag value',flag))
+                found.append(Path(command[i+1]))
+            elif arg.startswith(flag+'='):
+                found.append(Path(arg[len(flag)+1:]))
+    for i,arg in enumerate(command):
+        value=None
+        if arg=='--provider-receipt' and i+1<len(command):value=command[i+1]
+        elif arg.startswith('--provider-receipt='):value=arg.split('=',1)[1]
+        if value is not None:
+            data=json.loads(Path(value).read_text())
+            for key in ('root','overlay'):
+                item=data.get(key)
+                if not isinstance(item,str) or not Path(item).is_absolute() or not Path(item).is_dir():
+                    raise ValueError(('invalid or missing provider root',key))
+                found.append(Path(item))
+    return found
+
+
 def terminate_group(proc, grace):
     """Signal the entire session, including children after leader exit."""
     try:
@@ -66,12 +94,17 @@ def terminate_group(proc, grace):
 
 
 def run(run_dir, command, *, reserve=RESERVE, budget=BUDGET, interval=1.0,
-        grace=2.0, sensor=None):
+        grace=2.0, sensor=None, protected=()):
     """Run once. `sensor` is injection for unit tests only, never the CLI."""
     if reserve < 0 or budget <= 0 or interval <= 0 or grace < 0 or not command:
         raise ValueError('invalid monitor settings')
-    run_dir = Path(run_dir).absolute()
+    protected=(*protected,*command_inputs(command))
+    run_dir = fresh_output(run_dir, protected)
+    # Recheck immediately before creation; this does not close TOCTOU races.
+    run_dir = fresh_output(run_dir, protected)
     run_dir.mkdir(parents=False, exist_ok=False)
+    if run_dir.is_symlink() or run_dir.resolve(strict=True) != run_dir:
+        raise ValueError('output changed during creation')
     out = run_dir / 'child-output'
     tmp = run_dir / 'tmp'
     tmp.mkdir()
@@ -111,7 +144,7 @@ def run(run_dir, command, *, reserve=RESERVE, budget=BUDGET, interval=1.0,
     env = os.environ.copy()
     env['MONITOR_OUTPUT'] = str(out)
     env['TMPDIR'] = str(tmp)
-    for name in ('LEAN_SRC_PATH', 'LEAN_SYSROOT', 'LD_LIBRARY_PATH', 'LD_PRELOAD', 'LD_AUDIT'):
+    for name in ('LEAN_SRC_PATH', 'LEAN_SYSROOT', 'LD_LIBRARY_PATH', 'LD_PRELOAD', 'LD_AUDIT', 'PYTHONOPTIMIZE'):
         env.pop(name, None)
     requested = []
     old_handlers = {}
@@ -180,11 +213,12 @@ def main():
     ap.add_argument('--budget-bytes', type=int, default=BUDGET)
     ap.add_argument('--interval', type=float, default=1.0)
     ap.add_argument('--grace', type=float, default=2.0)
+    ap.add_argument('--protect', type=Path, action='append', default=[])
     ap.add_argument('command', nargs=argparse.REMAINDER)
     a = ap.parse_args()
     command = a.command[1:] if a.command[:1] == ['--'] else a.command
     result = run(a.run_dir, command, reserve=a.reserve_bytes, budget=a.budget_bytes,
-                 interval=a.interval, grace=a.grace)
+                 interval=a.interval, grace=a.grace, protected=a.protect)
     print(json.dumps(result, sort_keys=True), flush=True)
     return 0 if result['status'] == 'EXITED' and result['outer_exit_code'] == 0 else 1
 

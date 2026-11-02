@@ -77,11 +77,31 @@ def main():
         assert (root/'success/tmp/toy').read_text() == 'tmp'
         try:
             monitor.run(root/'success', command, reserve=0, budget=100)
-        except FileExistsError:
+        except (FileExistsError, ValueError):
             pass
         else:
             raise AssertionError('existing run directory accepted')
         print('PASS actual success and fresh-path guard', flush=True)
+        protected = root/'protected'; protected.mkdir()
+        link = root/'link'; link.symlink_to(protected, target_is_directory=True)
+        for destination in (protected/'new', link/'new'):
+            result = subprocess.run([sys.executable, str(Path(monitor.__file__)),
+                '--run-dir', str(destination), '--protect', str(protected),
+                '--reserve-bytes', '0', '--', sys.executable, '-c', 'pass'],
+                text=True,capture_output=True)
+            assert result.returncode != 0 and not (protected/'new').exists()
+        inferred=protected/'inferred'
+        result=subprocess.run([sys.executable,str(Path(monitor.__file__)),'--run-dir',str(inferred),
+            '--reserve-bytes','0','--',sys.executable,'-c','pass','--snapshot',str(protected)],
+            text=True,capture_output=True)
+        assert result.returncode != 0 and not inferred.exists()
+        optimized = root/'optimized'
+        env = os.environ.copy(); env['PYTHONOPTIMIZE']='1'
+        result = subprocess.run([sys.executable, str(Path(monitor.__file__)),
+            '--run-dir', str(optimized), '--reserve-bytes', '0', '--',
+            sys.executable, '-c', 'pass'],env=env,text=True,capture_output=True)
+        assert result.returncode != 0 and not optimized.exists() and 'rejects optimized' in result.stderr
+        print('PASS protected paths, symlink ancestor and optimized CLI rejected before writes', flush=True)
         before = monitor.run(root/'preflight', command, reserve=100, budget=100,
                              sensor=lambda:(99,0))
         assert before['status'] == 'STOPPED_BEFORE_LAUNCH' and not (root/'preflight/child-output').exists()

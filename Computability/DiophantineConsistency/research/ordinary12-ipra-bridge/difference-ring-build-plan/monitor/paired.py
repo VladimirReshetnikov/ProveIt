@@ -9,6 +9,10 @@ import signal
 import subprocess
 import sys
 import time
+from path_guard import fresh_output
+
+if not __debug__ or os.environ.get('PYTHONOPTIMIZE'):
+    raise RuntimeError('sampled replay rejects optimized Python and PYTHONOPTIMIZE')
 
 HERE = Path(__file__).resolve().parent
 PROJECT = HERE.parents[2] / 'fresh-project-closure'
@@ -50,10 +54,24 @@ def main():
     a = ap.parse_args()
     if a.expected_axiom_reports < 0:
         raise ValueError('negative axiom report count')
-    out = a.output.absolute()
-    out.mkdir(parents=False, exist_ok=False)
+    # Validate input pins and derive protected roots before any output creation.
+    snapshot=a.snapshot.resolve(strict=True); provider=a.provider_receipt.resolve(strict=True)
+    foundation_input=a.foundation_input.resolve(strict=True)
     builder, comparator, monitor = (p.resolve(strict=True) for p in (a.builder,a.comparator,a.monitor))
-    fixed = {str(p):H(p) for p in (builder,comparator,monitor,Path(__file__).resolve(),a.foundation_input)}
+    if H(snapshot/'manifest.json')!=a.snapshot_sha256 or H(provider)!=a.provider_sha256:
+        raise ValueError('snapshot or provider pin mismatch')
+    provider_data=json.loads(provider.read_text())
+    protected=[snapshot,provider,foundation_input,builder,comparator,monitor]
+    for key in ('root','overlay'):
+        value=provider_data.get(key)
+        if not isinstance(value,str) or not Path(value).is_absolute() or not Path(value).is_dir():
+            raise ValueError(('invalid or missing provider root',key))
+        protected.append(Path(value))
+    fixed = {str(p):H(p) for p in (builder,comparator,monitor,HERE/'path_guard.py',Path(__file__).resolve(),foundation_input)}
+    out=fresh_output(a.output,protected)
+    out=fresh_output(out,protected)
+    out.mkdir(parents=False, exist_ok=False)
+    if out.is_symlink() or out.resolve(strict=True)!=out:raise ValueError('output changed during creation')
     state = {'status':'RUNNING','runs':[], 'fixed_inputs_sha256':fixed,
              'snapshot_sha256':a.snapshot_sha256, 'provider_sha256':a.provider_sha256,
              'scope':'Two sequential sampled monitors and existing comparator; sampled resources are not quotas or continuous guarantees. Comparator and builder determine their own artifact/provenance scope.'}
@@ -119,7 +137,9 @@ def main():
                          '--provider-sha256',a.provider_sha256,'--foundation-input',str(a.foundation_input),
                          '--expected-axiom-reports',str(a.expected_axiom_reports)]
             cmd=[sys.executable,str(monitor),'--run-dir',str(run_dir),'--reserve-bytes',str(a.reserve_bytes),
-                 '--budget-bytes',str(a.budget_bytes),'--interval',str(a.interval),'--grace',str(a.grace),'--']+builder_cmd
+                 '--budget-bytes',str(a.budget_bytes),'--interval',str(a.interval),'--grace',str(a.grace)]
+            for path in protected:cmd.extend(['--protect',str(path)])
+            cmd+=['--']+builder_cmd
             exit_code,escalation=launch(cmd,monitor_log,monitor_terminal=run_dir/'terminal.json')
             terminal_path=run_dir/'terminal.json'; builder_state=child/'state.json'; builder_log=run_dir/'child.log'
             terminal=json.loads(terminal_path.read_text()) if terminal_path.is_file() else None
