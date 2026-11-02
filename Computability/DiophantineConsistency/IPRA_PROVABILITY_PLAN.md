@@ -690,7 +690,14 @@ object, so a coherent source rebuild is needed before composing it. An
 author-side [lookup bridge](research/ordinary12-ipra-bridge/compact44-field-lookup-bridge-prototype/README.md)
 derives the old interface's cyclic matching conditions given the explicit
 compact-field cast law, without assuming a positive or coprime stride. It
-does not itself rebuild the marked-word provider or supply that cast law.
+does not itself rebuild the marked-word provider or supply that cast law. A
+subsequent author-side [local compact-word client](research/ordinary12-ipra-bridge/compact44-local-compact-word-prototype/README.md)
+checks a concrete lookup cast and a distinct local word structure on the graph
+provider; its identification with the old named interface is still uncompiled.
+The [source-closure review](reviews/compact44-graph-marked-join-closure-review/README.md)
+and [BusyBeaver addendum](research/ordinary12-ipra-bridge/compact44-graph-marked-join-plan/BUSYBEAVER-ADDENDUM.md)
+record missing historical objects, differing provider objects and additional
+source candidates; they are not a completed coherent build.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
