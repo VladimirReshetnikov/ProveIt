@@ -586,6 +586,11 @@ two source-index phase equations. A later author-side
 obtains the selected zero and Boolean predecessor digits for an arbitrary
 model offset from the symbolic graph's same witnesses. Connecting that offset
 to the temporal bit rotation and establishing the clean carry remain open.
+An author-side [temporal clean-numerics client](research/ordinary12-ipra-bridge/compact44-temporal-clean-numerics-prototype/README.md)
+checks the model quotient/remainder split for the rotation shift and proves
+the zero-target and half-radix predecessor bound assuming explicit two-digit
+rotation formulas and the stated zero/Boolean source digits. Those formulas
+are still hypotheses of the numerical result, not yet graph-derived facts.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
