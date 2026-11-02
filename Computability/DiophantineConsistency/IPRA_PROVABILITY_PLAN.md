@@ -436,7 +436,12 @@ parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
 has been checked; its internal checker calibration remains a separate
 prerequisite. The [compact44 calibration survey](research/ordinary12-ipra-bridge/compact44-calibration/README.md)
 identifies parameterized model-level reuse, the hardwired 2011 boundary and
-the remaining compiler/controller work. Its local [finite-sum selector/copy
+the remaining compiler/controller work. A [single-side exploratory controller-data
+specialization](research/ordinary12-ipra-bridge/compact44-controller-data-prototype/README.md)
+now compiles the modular residue and model coordinate surjectivity and
+injectivity for width 590069 and modulus 581197, on a historical provider with
+one recorded linter warning. It does not establish the full controller choice,
+retained coefficient binding or an iPRA endpoint. Its local [finite-sum selector/copy
 equivalence](research/ordinary12-ipra-bridge/compact44-decoder-iff-prototype/README.md)
 has passed an [independent artifact audit](reviews/compact44-decoder-iff-independent-audit/README.md)
 under explicit bounds and an external finite index type. A later
