@@ -542,6 +542,10 @@ checks, in an arbitrary IΣ₁ model, the formula expressing an unaligned
 67-bit quotient window using its two adjacent radix-67 digits. Its application
 to cyclic wraparound and the clean-predecessor selection remain open; Boolean
 adjacent digits alone do not give the strict half-radix bound in every case.
+A subsequent [rotation-window exploration](research/ordinary12-ipra-bridge/compact44-rotation-adjacent-prototype/README.md)
+composes this with a non-wrapping bit-rotation window under explicit model
+position equations and word bounds. Cyclic wrap cases and selection of a
+clean predecessor from graph data remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
