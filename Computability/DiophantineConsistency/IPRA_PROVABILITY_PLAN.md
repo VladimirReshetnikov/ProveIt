@@ -464,8 +464,11 @@ one recorded linter warning. It does not establish the full controller choice,
 retained coefficient binding or an iPRA endpoint. A separate [controller-choice
 specialization](research/ordinary12-ipra-bridge/compact44-controller-choice-prototype/README.md)
 also compiled the choice and conditional rank-calibration statements in an
-exploratory build. Its historical project and Foundation providers are mixed,
-so a coherent replay is needed; no compact graph binding follows. The local [finite-sum selector/copy
+exploratory mixed-provider build. A later [same-side paired replay](research/ordinary12-ipra-bridge/compact44-controller-pair-prototype/PAIR_RESULT.md)
+passed an [independent artifact audit](reviews/compact44-controller-pair-independent-audit/README.md).
+Its endpoint parent was checked using an explicitly contextual historical
+source view; the unchanged live-source parent audit still fails on the later
+source refactor. No compact graph or retained K binding follows. The local [finite-sum selector/copy
 equivalence](research/ordinary12-ipra-bridge/compact44-decoder-iff-prototype/README.md)
 has passed an [independent artifact audit](reviews/compact44-decoder-iff-independent-audit/README.md)
 under explicit bounds and an external finite index type. A later
