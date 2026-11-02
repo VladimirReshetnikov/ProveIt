@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/tmp/wangtable-highmem-01.py", line 28, in <module>
+    try:main()
+        ~~~~^^
+  File "/tmp/wangtable-highmem-01.py", line 17, in main
+    row=next(x for x in pre['sources'] if x['module']=='DiophantineConsistency.ArithmeticWangTable');src=Path(row['frozen']);need(src.is_file() and H(src)==row['source_sha256'],'source mismatch');spec=importlib.util.spec_from_file_location('monitor',MON);monitor=importlib.util.module_from_spec(spec);spec.loader.exec_module(monitor);OUT.mkdir();lib=OUT/'lib';monitor.overlay(PARENT/'lib',lib);frozen=OUT/'frozen';dst=frozen/'DiophantineConsistency'/'ArithmeticWangTable.lean';dst.parent.mkdir(parents=True);shutil.copyfile(src,dst);need(H(dst)==row['source_sha256'],'frozen source mismatch');obj=lib/'DiophantineConsistency/ArithmeticWangTable.olean';before=slots(Path(str(obj)[:-6]));need(all(v is None for v in before.values()),'output collision')
+                                                                                                                                                                                                                                                                                                             ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 1023, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/tmp/wangtable-monitor-7g.py", line 23, in <module>
+    AUDIT = HERE.parents[2]/'reviews/ordinary12-coexistence-pair-independent-audit/CHECK.json'
+            ~~~~~~~~~~~~^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 49, in __getitem__
+    raise IndexError(idx)
+IndexError: 2
