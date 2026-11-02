@@ -594,7 +594,9 @@ are still hypotheses of the numerical result, not yet graph-derived facts.
 Separate author-side [temporal window formulas](research/ordinary12-ipra-bridge/compact44-temporal-window-formulas-prototype/README.md)
 now cover the aligned, non-wrapping, wholly wrapped and straddling cases under
 explicit index and cut equations. Deriving those equations for the selected
-graph target remains open.
+graph target remains open. An author-side [cyclic-source branch client](research/ordinary12-ipra-bridge/compact44-temporal-source-branches-prototype/README.md)
+derives the equations for all three fractional source-index orderings; a
+unified target-and-predecessor application to the graph remains open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
