@@ -1,7 +1,9 @@
 # Direct substitutions in the 26-variable degree-eight graph
 
-[`survey.py`](survey.py) checks the 13 coordinates directly bound by named
-square residuals in the pinned [AQ26 graph](../adaptive-square-sums26-degree8/candidate.json).
+[`survey.py`](survey.py) checks 14 direct witness bindings in square
+residuals of the pinned [AQ26 graph](../adaptive-square-sums26-degree8/candidate.json).
+The 14 include both direct bindings of `qValueVariable`; the `g72` binding
+has the opposite subtraction orientation.
 For each coordinate it substitutes the bound DAG expression into every
 residual, checks that the removed binding residual is identically zero, and
 calculates the exact degrees by sparse integer-polynomial arithmetic. It finds
@@ -26,6 +28,7 @@ cancel the top degree of all its nonzero residuals.
 | `qSquareVariable` | 10 |
 | `productVariable2` | 10 |
 | `qValueVariable` | 10 |
+| `qValueVariable` from `g72` | 12 |
 
 Thus none of these **single direct substitution and deletion** rewrites
 preserves degree eight. The calculation does not assert that each substituted

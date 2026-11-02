@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exhaust the 13 direct named-residual substitutions in the AQ26 graph."""
+"""Check 14 direct witness bindings among the AQ26 residuals."""
 import hashlib
 import json
 from pathlib import Path
@@ -19,7 +19,8 @@ for name, expected in pins.items():
         raise ValueError(('parent pin', name))
 
 # Each triple substitutes the value forced by one named square residual.
-# These are all 13 residuals that directly bind a witness to a named DAG row.
+# These include both orientations of every residual that binds a witness to
+# a named DAG row; qValueVariable has two distinct bindings.
 choices = [
     ('scaleVariable', 'M', 'scaleDifference', 8),
     ('mainScaleVariable', 'U', 'mainScaleDifference', 6),
@@ -34,20 +35,32 @@ choices = [
     ('qSquareVariable', 'q2', 'qSquareDifference', 5),
     ('productVariable2', 'E', 'product2Difference', 5),
     ('qValueVariable', 'QComputed', 'qSignedDifference', 5),
+    ('qValueVariable', 'g71', 'g72', 6),
 ]
 ns = runpy.run_path(str(parent / 'verify_degree.py'))
 P, graph, names = ns['P'], ns['g'], ns['names']
 factors, rows = ns['factors_names'], ns['rows']
 if names[26:] != ['beta', 'K0', 'MC', 'MF']:
     raise ValueError('unexpected port order')
-if (len(choices) != 13 or len({v for v, _, _, _ in choices}) != 13 or
+if (len(choices) != 14 or len({(v, r) for v, _, r, _ in choices}) != 14 or
         set(factors) - {removed for _, _, removed, _ in choices} !=
-        {'A0', 'A1', 'auxResidual', 'g72'}):
+        {'A0', 'A1', 'auxResidual'}):
     raise ValueError('residual coverage')
+declared = set()
+for factor in factors:
+    _, op, left, right = rows[factor]
+    if op != '-':
+        raise ValueError(('residual is not a difference', factor))
+    for witness, expression in ((left, right), (right, left)):
+        if witness in names[:26] and isinstance(expression, str):
+            declared.add((witness, expression, factor))
+if declared != {(v, r, d) for v, r, d, _ in choices}:
+    raise ValueError(('immediate binding coverage', sorted(declared)))
 
 result = []
 for var, replacement, removed, expected_degree in choices:
-    if rows[removed] != [removed, '-', var, replacement]:
+    if rows[removed] not in ([removed, '-', var, replacement],
+                            [removed, '-', replacement, var]):
         raise ValueError(('binding mismatch', var))
     i = names.index(var)
     value = graph[replacement]
@@ -101,6 +114,6 @@ for var, replacement, removed, expected_degree in choices:
                    'leading_certificate': certificate})
 
 output = {'status': 'PASS_DIRECT_SUBSTITUTION_SURVEY', 'parent_sha256': pins['candidate.json'],
-          'scope': '13 named residual substitutions only; not a model proof or minimality result',
+          'scope': '14 direct residual substitutions only; not a model proof or minimality result',
           'results': result}
 print(json.dumps(output, indent=2, sort_keys=True))
