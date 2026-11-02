@@ -40,8 +40,11 @@ def output(obj,before):
   if suffix=='.olean' and not before:need(value is not None and obj.is_file() and not obj.is_symlink(),('invalid output',str(obj)))
   else:need(value is None,('unexpected output companion',stem+suffix))
  return g
+def frozen_location(src,out):
+ need(out.is_dir() and not out.is_symlink() and src.parent.is_dir() and not src.parent.is_symlink() and src.parent.parent.is_dir() and not src.parent.parent.is_symlink() and src.parent.parent.parent==out and src.parent.resolve().is_relative_to(out.resolve()),('invalid frozen source directory',str(src.parent)))
 def frozen(src):
- need(src.is_file() and not src.is_symlink() and not src.parent.is_symlink() and not src.parent.parent.is_symlink() and h(src)==PINS[SOURCE],('frozen source drift',str(src)))
+ frozen_location(src,src.parent.parent.parent)
+ need(src.is_file() and not src.is_symlink() and h(src)==PINS[SOURCE],('frozen source drift',str(src)))
 def outdir(obj,lib):
  need(not lib.is_symlink() and not lib.parent.is_symlink() and not lib.parent.parent.is_symlink() and not obj.parent.is_symlink() and obj.parent.resolve().is_relative_to(lib.resolve()),('invalid output directory',str(obj.parent)))
 def verify():
@@ -69,7 +72,7 @@ def main():
  if args.verify_only:print(json.dumps({'status':'PASS_COEFFICIENT_DECOMPOSITION_PREFLIGHT','driver_sha256':driver,'lean_launched':False}),flush=True);return
  need(shutil.disk_usage('/tmp').free>=4*1024**3,'free space below reserve')
  spec=importlib.util.spec_from_file_location('monitor',MONITOR);monitor=importlib.util.module_from_spec(spec);spec.loader.exec_module(monitor)
- out.mkdir();src=out/'frozen/DiophantineConsistency/CompactCoefficientDecoder.lean';src.parent.mkdir(parents=True);shutil.copyfile(SOURCE,src);frozen(src);runs=[];allguards={}
+ out.mkdir();src=out/'frozen/DiophantineConsistency/CompactCoefficientDecoder.lean';src.parent.mkdir(parents=True);frozen_location(src,out);need(not os.path.lexists(src),'frozen source collision');shutil.copyfile(SOURCE,src);frozen_location(src,out);frozen(src);runs=[];allguards={}
  for side in ('author','peer'):
   need(head()==args.expected_head,'HEAD drift');frozen(src);checkguards(allguards);run=out/side;run.mkdir();lib=run/'lib';monitor.overlay(PREFIX/side/'lib',lib)
   for row in (x for x in scan['seeds'] if x['side']==side):

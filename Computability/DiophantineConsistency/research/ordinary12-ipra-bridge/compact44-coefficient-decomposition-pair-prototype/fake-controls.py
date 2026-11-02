@@ -3,7 +3,7 @@
 import contextlib,hashlib,importlib.util,io,json,os,shutil,subprocess,sys,tempfile,types
 from pathlib import Path
 D=Path(__file__).with_name('replay.py');HEAD='a'*40
-MODES=['verify_only','good','duplicate_init','triple_init','wrong_dep','duplicate_dep','missing_init','missing_direct','missing_seed','seed_companion','seed_collision','output_collision','output_companion','peer_companion','output_symlink','output_missing','warning','sorry','wrong_report','wrong_axiom','missing_report','extra_report','nonzero','boolean_exit','stop','sibling_mismatch','frozen_symlink','late_source','late_seed','late_output','late_log','late_companion','parent_drift','head_drift','seed_copy_companion','seed_copy_companion_peer','seed_parent_symlink','seed_parent_after_copy','seed_copy_symlink']
+MODES=['verify_only','good','duplicate_init','triple_init','wrong_dep','duplicate_dep','missing_init','missing_direct','missing_seed','seed_companion','seed_collision','output_collision','output_companion','peer_companion','output_symlink','output_missing','warning','sorry','wrong_report','wrong_axiom','missing_report','extra_report','nonzero','boolean_exit','stop','sibling_mismatch','frozen_symlink','late_source','late_seed','late_output','late_log','late_companion','parent_drift','head_drift','seed_copy_companion','seed_copy_companion_peer','seed_parent_symlink','seed_parent_after_copy','seed_copy_symlink','frozen_dir_before_copy']
 for mode in MODES:
  spec=importlib.util.spec_from_file_location('candidate',D);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
  root=Path(tempfile.mkdtemp(prefix='coeff-fake-fixture-',dir='/tmp'));out=Path(tempfile.mkdtemp(prefix='ipra-compact-coefficient-decomposition-pair-fake-',dir='/tmp'));out.rmdir()
@@ -80,6 +80,13 @@ for mode in MODES:
   return result
  m.subprocess=types.SimpleNamespace(run=run);m.shutil=types.SimpleNamespace(copyfile=copyfile,disk_usage=lambda _:types.SimpleNamespace(free=10*1024**3))
  sys.argv=[str(D),'--expected-head',HEAD,'--verify-only'] if mode=='verify_only' else [str(D),'--expected-head',HEAD,'--output',str(out)]
+ real_mkdir=Path.mkdir
+ def malicious_mkdir(p,*a,**kw):
+  result=real_mkdir(p,*a,**kw)
+  if mode=='frozen_dir_before_copy' and p==out/'frozen/DiophantineConsistency' and not p.is_symlink():
+   outside=root/'outside';p.rename(outside);p.symlink_to(outside,target_is_directory=True)
+  return result
+ Path.mkdir=malicious_mkdir
  try:
   with contextlib.redirect_stdout(io.StringIO()):
    try:m.main();err=None
@@ -87,11 +94,12 @@ for mode in MODES:
   if mode=='verify_only':assert err is None and counts['child']==0 and not out.exists(),(mode,err,counts)
   elif mode in ('good','duplicate_init'):assert err is None and counts['child']==2,(mode,err,counts)
   else:
-   expected={'triple_init':'dependency mismatch','wrong_dep':'dependency mismatch','duplicate_dep':'dependency mismatch','missing_init':'companion drift','missing_direct':'companion drift','missing_seed':'seed drift','seed_companion':'seed companion','seed_collision':'seed collision','output_collision':'unexpected output companion','output_companion':'unexpected output companion','peer_companion':'unexpected output companion','output_symlink':'invalid output','output_missing':'invalid output','warning':'compiler failure','sorry':'compiler failure','wrong_report':'axiom reports','wrong_axiom':'axiom reports','missing_report':'axiom reports','extra_report':'axiom reports','nonzero':'compiler failure','boolean_exit':'compiler failure','stop':'compiler failure','sibling_mismatch':'paired output mismatch','frozen_symlink':'frozen source drift','late_source':'frozen source drift','late_seed':'companion drift','late_output':'companion drift','late_log':'final output drift','late_companion':'unexpected companion','parent_drift':'final input drift','head_drift':'preflight drift','seed_copy_companion':'unexpected output companion','seed_copy_companion_peer':'unexpected output companion','seed_parent_symlink':'invalid output directory','seed_parent_after_copy':'invalid output directory','seed_copy_symlink':'seed copy drift'}[mode]
+   expected={'triple_init':'dependency mismatch','wrong_dep':'dependency mismatch','duplicate_dep':'dependency mismatch','missing_init':'companion drift','missing_direct':'companion drift','missing_seed':'seed drift','seed_companion':'seed companion','seed_collision':'seed collision','output_collision':'unexpected output companion','output_companion':'unexpected output companion','peer_companion':'unexpected output companion','output_symlink':'invalid output','output_missing':'invalid output','warning':'compiler failure','sorry':'compiler failure','wrong_report':'axiom reports','wrong_axiom':'axiom reports','missing_report':'axiom reports','extra_report':'axiom reports','nonzero':'compiler failure','boolean_exit':'compiler failure','stop':'compiler failure','sibling_mismatch':'paired output mismatch','frozen_symlink':'frozen source drift','late_source':'frozen source drift','late_seed':'companion drift','late_output':'companion drift','late_log':'final output drift','late_companion':'unexpected companion','parent_drift':'final input drift','head_drift':'preflight drift','seed_copy_companion':'unexpected output companion','seed_copy_companion_peer':'unexpected output companion','seed_parent_symlink':'invalid output directory','seed_parent_after_copy':'invalid output directory','seed_copy_symlink':'seed copy drift','frozen_dir_before_copy':'invalid frozen source directory'}[mode]
    assert err is not None and expected in err,(mode,expected,err,counts)
+   if mode=='frozen_dir_before_copy':assert not (root/'outside/CompactCoefficientDecoder.lean').exists(),(mode,'source copied outside output')
    if mode=='seed_parent_symlink':assert not (root/'outside/Compact943Decoder.olean').exists() and not (root/'outside/CompactCoefficientMass.olean').exists(),(mode,'seed copied outside overlay')
   print(mode,'PASS',counts['child'],'fake children')
- finally:shutil.rmtree(root,ignore_errors=True);shutil.rmtree(out,ignore_errors=True)
+ finally:Path.mkdir=real_mkdir;shutil.rmtree(root,ignore_errors=True);shutil.rmtree(out,ignore_errors=True)
 
 for suffix in (x for x in m.SUFFIXES if x != '.olean'):
  with tempfile.TemporaryDirectory(prefix='coeff-output-slot-',dir='/tmp') as td:
