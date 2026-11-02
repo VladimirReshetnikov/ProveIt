@@ -622,8 +622,10 @@ derives the selected band's required `NoCarry` condition from graph high
 saturation. The author-side [selected local decoder](research/ordinary12-ipra-bridge/compact44-selected-local-decoder-prototype/README.md)
 then proves its precise disjunction: either all selector digits and the copy
 word are zero, or a selector is chosen and the copy word equals its row's
-tile value. Handling the zero alternative, machine semantics, retained
-coefficient binding and the internal iPRA endpoint remain open.
+tile value. A later author-side [origin client](research/ordinary12-ipra-bridge/compact44-selected-origin-prototype/README.md)
+uses the graph's origin digit to rule out the zero alternative and select row
+`0` with its corresponding tile value. Row propagation and machine semantics,
+retained coefficient binding and the internal iPRA endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
