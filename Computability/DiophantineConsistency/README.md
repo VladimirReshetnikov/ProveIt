@@ -74,8 +74,9 @@ The 26-, 27- and 28-variable model transports and native endpoints have a
 separate author-only historical run and independent artifact audit; their
 paired Lean replay remains open. The standard-theory 26-variable client also
 has one author run and a separate artifact audit. The 22-variable graph has
-exact finite checks and an independently reviewed ordinary witness argument;
-its Lean model transport and native iPRA equivalence remain open. The
+exact finite checks and a guarded historical author run of its Lean model
+transport and native and standard iPRA endpoints, with an independent
+artifact audit; its paired replay remains open. The
 40-variable candidate's model and native transports remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and

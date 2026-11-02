@@ -203,9 +203,12 @@ They remain historical, with no matched peer. The [standard-theory AQ26 client](
 also completed one author-only single-overlay run and a separate artifact
 audit; its paired Lean replay remains open. The
 [22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md)
-has independently checked finite substitution and degree calculations and an
-ordinary positive-witness argument. Its model transport and native iPRA
-equivalence have not been proved in Lean. The
+has independently checked finite substitution and degree calculations and a
+[guarded historical author run](reviews/ipra-aq22-guarded-author/README.md)
+of its model transport and native and standard iPRA endpoints, with a separate
+artifact audit. Its paired replay remains open. The standard endpoint uses the
+Gödel–Gentzen translation of the selected embedded Foundation consistency
+sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
