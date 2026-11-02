@@ -424,10 +424,16 @@ A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-f
 exhibits a cap-respecting word for which no target has both zero temporal
 contribution and predecessor contribution at most one. It also checks a
 weaker half-radix predecessor bound for one clean target in every finite
-shift/fraction case. Neither observation establishes that a graph solution
+shift/fraction case; its [independent finite audit](reviews/compact44-fractional-clean-independent-audit/README.md)
+passed. Neither observation establishes that a graph solution
 exists or supplies the arbitrary-model carry reset; applying the weaker bound
 requires model-level rotation transport and a sufficiently sharp independent
 bound on the other contributions.
+A [paired heterogeneous-carry prototype](research/ordinary12-ipra-bridge/compact44-heterogeneous-carry-prototype/README.md)
+extends the all-model end-around carry to an individual digit cap for each
+word in an external finite family. This allows a rotated temporal word to have
+a larger cap than the other words, but the exact graph decomposition and mass
+bound remain open and the new paired packet awaits independent review.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
