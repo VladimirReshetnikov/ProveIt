@@ -646,6 +646,11 @@ uses the same fixed graph witnesses to prove, at every positive in-range
 column of either phase, that the incoming carry is at most `1` and the sum of
 the full raw column and incoming carry is even. It assumes no clean column;
 the raw term still includes both bands, bare terms and temporal contribution.
+A subsequent author-side [uniform parity-copy client](research/ordinary12-ipra-bridge/compact44-uniform-parity-copy-prototype/README.md)
+combines the whole-block shift, reset and Boolean bounds to equate the
+appropriate cyclic source digits at both phases. Its indices retain their
+model cyclic form; it does not construct a global word or establish machine
+semantics.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
