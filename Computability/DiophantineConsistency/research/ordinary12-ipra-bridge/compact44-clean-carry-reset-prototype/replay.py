@@ -21,6 +21,15 @@ def require_init(package):
  return str(p)
 def require_output(obj):
  if not obj.is_file() or obj.is_symlink():raise ValueError(('invalid output object',str(obj)))
+def output_guards(obj, *, before):
+ stem=str(obj)[:-len('.olean')];observed=guard(stem)
+ for suffix in SUFFIXES:
+  value=observed[stem+suffix]
+  if suffix=='.olean' and not before:
+   if value is None or obj.is_symlink():raise ValueError(('missing or symlink output',str(obj)))
+  elif value is not None:raise ValueError(('unexpected output companion',stem+suffix))
+ return observed
+
 def check_source(src):
  if not src.is_file() or src.is_symlink() or H(src)!=PINS[SOURCE]:raise ValueError(('frozen source drift',str(src)))
 def guard(stem):
@@ -86,12 +95,11 @@ def main():
   env['LEAN_PATH']=str(lib)+':'+str(PACKAGE);deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60)
   if deps.returncode or deps.stderr or set(deps.stdout.splitlines())!=expected:raise ValueError(('direct imports differ',label,deps.returncode,deps.stdout,deps.stderr))
   checkguards(allguards);check_source(src);obj=lib/'DiophantineConsistency/CompactCarryReset.olean';log=run/'compiler.log'
-  for suffix in SUFFIXES:
-   if os.path.lexists(Path(str(obj)[:-6]+suffix)):raise ValueError(('output companion occupied',label,suffix))
+  output_guards(obj,before=True)
   cmd=[str(LEAN),'-M3000','-j1','-DElab.async=false',f'--root={out/"frozen"}',str(src),'-o',str(obj)]
   code,peak,reason=monitor.monitored(cmd,env,log);text=log.read_text()
   if code or reason:raise ValueError(('compiler failure',label,code,reason,text[-8000:]))
-  validate_output(text);require_output(obj);checkguards(allguards);mergeguards(allguards,guard(str(obj)[:-6]));check_source(src)
+  validate_output(text);require_output(obj);checkguards(allguards);mergeguards(allguards,output_guards(obj,before=False));check_source(src)
   runs.append({'label':label,'compiler_exit':code,'deps_exit':deps.returncode,'deps_stdout':deps.stdout,'command':cmd,'source_sha256':H(src),'object_sha256':H(obj),'log_sha256':H(log),'stdout':text,'sampled_peak_rss_bytes':peak,'stop_reason':reason})
   print(label,'exit',code,'peak_RSS',peak,flush=True)
  if runs[0]['object_sha256']!=runs[1]['object_sha256'] or runs[0]['stdout']!=runs[1]['stdout']:raise ValueError('paired output differs')
