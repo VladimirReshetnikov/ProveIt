@@ -537,6 +537,11 @@ indexed `CarryInput` with carry bound `1` from positive graph coordinates
 and zero at the symbolic ports. That client has not had a paired replay;
 deriving a clean predecessor and connecting retained coefficients to the
 symbolic kernel remain open.
+An author-side [fractional-digit client](research/ordinary12-ipra-bridge/compact44-fractional-digits-prototype/README.md)
+checks, in an arbitrary IΣ₁ model, the formula expressing an unaligned
+67-bit quotient window using its two adjacent radix-67 digits. Its application
+to cyclic wraparound and the clean-predecessor selection remain open; Boolean
+adjacent digits alone do not give the strict half-radix bound in every case.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
