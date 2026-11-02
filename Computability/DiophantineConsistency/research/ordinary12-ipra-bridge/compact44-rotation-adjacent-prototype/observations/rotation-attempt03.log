@@ -1,0 +1,14 @@
+/tmp/compact44-fractional-digits-01/RotationWindow.lean:32:2: error: Type mismatch
+  Eq.symm
+    (div_mod_add_mul (X % Exp.exp (L - e)) (X / Exp.exp (L - e)) (Exp.exp s) (Exp.exp 67) (Exp.exp u) (exp_pos s)
+      (exp_pos 67))
+has type
+  X % Exp.exp (L - e) / Exp.exp s % Exp.exp 67 =
+    (X % Exp.exp (L - e) + X / Exp.exp (L - e) * (Exp.exp s * Exp.exp 67 * Exp.exp u)) / Exp.exp s % Exp.exp 67
+but is expected to have type
+  X % Exp.exp (L - e) / Exp.exp s % Exp.exp 67 =
+    (X % (Exp.exp s * Exp.exp 67 * Exp.exp u) +
+          X / (Exp.exp s * Exp.exp 67 * Exp.exp u) * (Exp.exp s * Exp.exp 67 * Exp.exp u)) /
+        Exp.exp s %
+      Exp.exp 67
+'RotationWindow.unwrapped' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

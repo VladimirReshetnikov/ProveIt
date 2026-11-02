@@ -1,0 +1,7 @@
+# Exploratory non-wrapping fractional rotation digit
+
+In any IΣ₁ model, `RotationWindow.unwrapped` identifies a 67-bit digit of a bitwise cyclic rotation with a non-wrapping source quotient. Its explicit hypotheses are `L = e + (s + 67 + u)`, `67*k = e + s` and `X < 2^L`. `RotationAdjacent.unwrapped_adjacent` specializes `s = 67*q+r` with `r < 67` and composes the all-model adjacent-digit identity, yielding the exact two-source-digit expression. All variables are model values, and the exponentials are internal.
+
+Author-only compiler sessions 73744 and 10808 actually exited 0 with no warnings or `sorryAx`; their named axiom reports are `propext`, `Classical.choice`, and `Quot.sound`. The three previous bounded sessions 26304, 48429 and 75831 actually exited 1; exact sources and diagnostics are retained, and any `sorryAx` reports from failures prove nothing. The fresh overlay inherits the author side of the graph-temporal/carry provider and locally compiled fractional-digit modules from commit 5152fadc5e. This is exploratory evidence, not a paired build or independent artifact audit.
+
+Wrapping windows and the derivation of these index hypotheses from the graph witnesses remain open. No strict half-radix bound or clean predecessor follows from the theorem alone; Boolean adjacent digits can attain exactly the half radix. No graph-column, retained-K, or internal iPRA conclusion is claimed.
