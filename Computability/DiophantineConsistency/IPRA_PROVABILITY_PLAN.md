@@ -272,9 +272,16 @@ but those identities do not establish denominator divisibility or integrality.
 A [conditional descent-step audit](reviews/ordinary12-descent-step-independent-audit/README.md)
 checks norm preservation and preservation of supplied divisor and Bézout
 witnesses; it does not supply those witnesses or prove descent termination.
+A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
+separates the missing graph inequalities, denominator certificates and
+termination argument. Its finite identity checks and independent review do
+not establish those unbounded claims or an iPRA derivation.
 A [source-current difference-ring rebuild plan](research/ordinary12-ipra-bridge/difference-ring-build-plan/README.md)
 has a separate [source-closure and resource review](reviews/ordinary12-difference-ring-plan-independent-audit/README.md);
-the build driver and stop behavior remain to be implemented and reviewed.
+a sampled resource monitor and its wrapper have been implemented and
+independently reviewed. A pinned launcher is being prepared for independent
+review; no full source-current coexistence build is claimed here. Sampling
+does not enforce a continuous disk reserve or hard per-build quota.
 Exact index matching cannot
 yet be imported directly: its existing theorem assumes strong and auxiliary
 norms that must first be recovered noncircularly. These are model-level
