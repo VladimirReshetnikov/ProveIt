@@ -35,9 +35,11 @@ actual observed successful coordinator exit and parent comparator checks, a
 strict source audit and authenticated snapshot of all six additions, an exact
 checks policy, isolated sibling inputs and two completed Lean replays. The
 existing [reference extension tools](../reference-coherent-replay/extension/)
-use a reference-specific hard-coded target policy and cannot be applied to
-this standard client without a separately reviewed policy adaptation. The
-in-progress parent already has known workspace source drift, so a result from
-it would be historical unless a coherent successor is rebuilt. Package-
+use a reference-specific target policy. A separate [dedicated adaptation](extension/README.md)
+has passed toy controls but still needs independent review. The
+in-progress parent already has known workspace source drift. The dedicated
+freezer requires a strict current-source plan, so it cannot use that parent
+directly while the drift remains; a coherent successor or separately reviewed
+historical-basis workflow is required. Package-
 transitive and dynamic provenance, and the parent Foundation wrapper's
 unobserved outer exit, retain their documented limits.
