@@ -679,8 +679,10 @@ packs those rows and excludes the extra row `1` at every block. Field matching,
 machine semantics, retained coefficient binding and the iPRA endpoint are not
 conclusions of that client. A later author-side [tile-field matching client](research/ordinary12-ipra-bridge/compact44-fixed-graph-tile-match-prototype/README.md)
 proves the horizontal and vertical field equalities for every model block of
-the same represented word, including cyclic indexing. It has not had a paired
-replay or established machine semantics or the iPRA endpoint.
+the same represented word, including cyclic indexing. A separate [mathematical
+review](reviews/compact44-fixed-graph-tile-match-mathematical-review/README.md)
+found no gap in the inspected extraction and backward-cyclic matching. It has
+not had a paired replay or established machine semantics or the iPRA endpoint.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
