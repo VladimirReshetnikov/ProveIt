@@ -101,6 +101,8 @@ and [84 operations, degree 92](reviews/thirteen84-model-binding-independent-audi
 both at the 2011 ports. Their named DAG clients include the selected
 translated-consistency comparison. The [75-operation display](equation75-2011.pdf)
 passed a separate [external transcription and PDF audit](reviews/equation75-2011-display-independent-audit/README.md),
+and the [84-operation display](equation84-2011.pdf) passed its own
+[independent review](reviews/equation84-2011-display-independent-audit/README.md),
 with the same fixed-recipe interpretation boundary as the 69-operation page.
 
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
