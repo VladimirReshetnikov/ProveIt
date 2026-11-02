@@ -67,10 +67,13 @@ def main():
    cmd=[str(LEAN),'-M3000','-j1','-DElab.async=false',f'--root={frozen}',str(src),'-o',str(obj)]
    code,peak,reason=monitor.monitored(cmd,env,log);text=log.read_text();reports=re.findall(r"^'([^']+)' depends on axioms: \[([^\]]*)\]$",text,re.M)
    if code or reason or 'warning:' in text or 'error:' in text or 'sorryAx' in text or len(reports)!=report_count:raise ValueError(('compiler failure',label,name,code,reason,text[-8000:]))
-   if any({x.strip() for x in ax.split(',') if x.strip()}-{'propext','Classical.choice','Quot.sound'} for _,ax in reports):raise ValueError(('unexpected axiom',name,reports))
+   expected_reports={'DiophantineConsistency.FreeJPopulationFactsNarrow':{'FreeJPopulationFacts.population_of_ordinary_facts'},'DiophantineConsistency.FreeJPopulationClient':{'FreeJPopulationClient.graph_population'}}.get(name,set())
+   if {report for report,_ in reports}!=expected_reports or any({x.strip() for x in ax.split(',') if x.strip()}-{'propext','Classical.choice','Quot.sound'} for _,ax in reports):raise ValueError(('unexpected axiom report',name,reports))
    deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60);expected={str(PACKAGE/'Init.olean')}
    for dep in imports:
     rel=Path(*dep.split('.')).with_suffix('.olean');candidate=lib/rel
+    if not candidate.is_file() and dep.startswith('DiophantineConsistency.'):
+     raise ValueError(('project import absent from same-side overlay',name,dep))
     if not candidate.is_file():candidate=PACKAGE/rel
     if not candidate.is_file():raise ValueError(('missing imported object',name,dep))
     expected.add(str(candidate))
