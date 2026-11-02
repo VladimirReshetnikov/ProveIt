@@ -95,9 +95,9 @@ footer = r'''
 \normalfont\fontsize{7.7}{8.2}\selectfont
 The fixed integer $\mathcal A$ above is written in base 10. This is a research
 candidate. Exact polynomial calculations certify degree 32 and the
-substitution identities. The substitution argument is an ordinary integer argument; a Lean
-witness-transport theorem and an internal intuitionistic PRA equivalence for
-this candidate remain open. No
+substitution identities. An exploratory Lean run compiled witness transport
+and an intuitionistic PRA equivalence to a translated consistency sentence;
+a guarded replay remains pending. No
 minimality claim is made.
 \end{multicols}
 \clearpage

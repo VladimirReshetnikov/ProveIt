@@ -215,7 +215,8 @@ remain open.
 The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
 is a further five-binding AQ22 reduction with independently checked finite
 substitution, positivity and degree calculations. Its Lean transport and
-internal iPRA endpoint remain open.
+internal iPRA endpoints compiled in an exploratory historical overlay; a
+guarded replay remains pending.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)

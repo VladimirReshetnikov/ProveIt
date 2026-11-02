@@ -4,8 +4,10 @@ The generated [candidate17.json](candidate17.json) is a 17-positive-variable,
 degree-32 sum-of-squares circuit with 99 arithmetic rows and eight squared
 residuals. It is obtained from the pinned 22-variable, degree-10 graph by
 simultaneously eliminating five explicit binding variables. This is a finite
-algebraic candidate and an ordinary integer witness argument; no Lean proof
-of its transport or internal iPRA endpoint has been compiled. It has not been
+algebraic candidate and an ordinary integer witness argument. An
+[exploratory historical-overlay Lean run](../aq17-witness-transport/README.md)
+compiled its transport and native and standard iPRA endpoints; a guarded
+replay remains pending. It has not been
 identified with the equation in the project's current PDF. A separate
 [base-10 candidate display](equation32-17.pdf) names all 17 positive unknowns
 and includes the complete 99-operation circuit. Its fixed decoder and rank
