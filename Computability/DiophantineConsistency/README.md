@@ -60,6 +60,14 @@ passed an independent complete-result audit. The endpoint uses the selected
 mapped and translated Foundation consistency sentence; the separately checked
 PDF binding retains a manual decoder and rank-recipe boundary.
 
+For the smaller [14-variable degree-30 direct-square equation](equation30-direct.pdf),
+the native endpoint was compiled in the matched fresh AQ29 parent pair. A
+subsequent [five-module historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
+compiled its standard-iPRA endpoint and selected translated consistency
+comparison; independent audit and a paired extension remain pending. A
+[finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
+retains the manual decoder and rank-recipe boundary.
+
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),
 a [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md),

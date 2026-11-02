@@ -129,6 +129,13 @@ The distinct equality-only comparison described below has an author-built
 native-to-reference direction; its reverse direction and independent replay
 remain open.
 
+For the 14-variable degree-30 direct-square equation, the native endpoint is
+also present in the audited fresh AQ29 parent pair. A separate [guarded
+historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
+compiled its standard-theory client and comparison with the selected
+translated Foundation consistency sentence. Its independent artifact audit
+and paired extension remain pending.
+
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency
 sentence is definitionally `¬rho` in

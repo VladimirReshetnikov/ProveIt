@@ -46,6 +46,13 @@ arity-changing no-zero bridge. The checks are on the historical model-provider
 chain rather than a full current-source closure; 258/848 project,
 package-transitive and dynamic-import ancestry remains inherited.
 
+The exact direct-square native endpoint also occurs in the independently
+audited fresh AQ29 parent pair. A subsequent [five-module historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
+compiled its standard-iPRA client and selected translated-consistency
+comparison; independent artifact audit and a paired extension remain pending.
+The separate [finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
+retains the manual decoder and rank-recipe boundary.
+
 The [15-variable degree-26 equation](equation26.pdf) uses a 93-operation
 evaluator. Its exact shifted fixed-port literal has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRAScaleWitness15Native.lean)
