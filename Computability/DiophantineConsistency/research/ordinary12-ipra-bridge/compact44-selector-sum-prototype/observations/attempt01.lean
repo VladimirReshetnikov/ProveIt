@@ -1,0 +1,36 @@
+import DiophantineConsistency.ArithmeticWindowDigits
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace CompactSelectorSum
+open DiophantineConsistency
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def Selected {ι : Type*} (f : ι → V) (i : ι) : Prop := f i=1 ∧ ∀ j, j≠i → f j=0
+
+theorem sum_le_one_cases {ι : Type*} [Fintype ι] (f : ι → V)
+    (hf : (∑ i, f i)≤1) : (∀ i,f i=0) ∨ ∃ i,Selected f i := by
+  classical
+  by_cases h : ∀ i,f i=0
+  · exact Or.inl h
+  · obtain ⟨i,hi⟩ := not_forall.mp h
+    have hs := Finset.sum_le_one_iff.mp hf
+    exact Or.inr ⟨i,(hs i i (Finset.mem_univ _) (Finset.mem_univ _) hi hi).2,
+      fun j hj => by
+        by_contra hj0
+        exact hj (hs j i (Finset.mem_univ _) (Finset.mem_univ _) hj0 hi).1⟩
+
+theorem selected_weighted {ι : Type*} [Fintype ι] {f : ι → V} {i : ι}
+    (h : Selected f i) (a : ι → V) : (∑ j,a j*f j)=a i := by
+  classical
+  rw [Finset.sum_eq_single i]
+  · rw [h.1,mul_one]
+  · intro j _ hj
+    rw [h.2 j hj,mul_zero]
+  · intro hi
+    exact (hi (Finset.mem_univ i)).elim
+end CompactSelectorSum
+#print axioms CompactSelectorSum.sum_le_one_cases
+#print axioms CompactSelectorSum.selected_weighted
