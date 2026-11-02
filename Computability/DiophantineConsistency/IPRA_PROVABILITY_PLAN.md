@@ -619,8 +619,11 @@ derives Boolean bounds for its selector and copy digits and a `2^41` copy-word
 bound using the same graph witness. A further author-side
 [local high-mask client](research/ordinary12-ipra-bridge/compact44-selected-local-nocarry-prototype/README.md)
 derives the selected band's required `NoCarry` condition from graph high
-saturation. Decoder row semantics, retained coefficient binding and the
-internal iPRA endpoint remain open.
+saturation. The author-side [selected local decoder](research/ordinary12-ipra-bridge/compact44-selected-local-decoder-prototype/README.md)
+then proves its precise disjunction: either all selector digits and the copy
+word are zero, or a selector is chosen and the copy word equals its row's
+tile value. Handling the zero alternative, machine semantics, retained
+coefficient binding and the internal iPRA endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
