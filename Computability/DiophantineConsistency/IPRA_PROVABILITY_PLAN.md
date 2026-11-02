@@ -668,8 +668,12 @@ excludes `65` using model cyclic phase separation and the exceptional-digit
 bound. A subsequent author-side [uniform alignment client](research/ordinary12-ipra-bridge/compact44-fixed-graph-aligned-shift-prototype/README.md)
 handles every positive remainder and proves that the graph's temporal exponent
 is divisible by `67`. It remains conditional on symbolic graph zero and
-positive coordinates, has not had a paired replay, and does not identify the
-aligned shift with a valid machine offset or prove the iPRA endpoint.
+positive coordinates and has not had a paired replay; a separate
+[mathematical review](reviews/compact44-fixed-graph-aligned-shift-mathematical-review/README.md)
+found no gap in the inspected argument. An author-side [whole-block shift client](research/ordinary12-ipra-bridge/compact44-fixed-graph-cell-shift-prototype/README.md)
+further derives a reduced displacement of `8807*s` digits with `s<N` for the
+same graph witnesses. It does not identify `s` with a valid machine stride or
+prove a global decoder or iPRA endpoint.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
