@@ -613,9 +613,11 @@ rotation terms; the temporal contribution vanishes. Controlling the other
 band and bare terms is supplied by a later author-side
 [single-band client](research/ordinary12-ipra-bridge/compact44-fixed-single-band-prototype/README.md):
 it proves their source phases lie outside the symbolic support blocker and
-obtains the selected decoder-shaped band alone. Boolean decoder inputs,
-row semantics, retained coefficient binding and the internal iPRA endpoint
-remain open.
+obtains the selected decoder-shaped band alone. A subsequent author-side
+[selected-input client](research/ordinary12-ipra-bridge/compact44-selected-inputs-prototype/README.md)
+derives Boolean bounds for its selector and copy digits and a `2^41` copy-word
+bound using the same graph witness. Local high-mask `NoCarry`, row semantics,
+retained coefficient binding and the internal iPRA endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
