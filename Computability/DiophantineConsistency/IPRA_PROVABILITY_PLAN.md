@@ -463,6 +463,12 @@ has compiled in a single-side exploration. For the same symbolic graph witnesses
 it derives Boolean selector digits and a zero forbidden digit at the stated
 positive, bounded model positions; the origin is handled separately. Its
 paired replay, retained-port and full cyclic-word interpretation remain open.
+A [selector-period client](research/ordinary12-ipra-bridge/compact44-selector-period-prototype/README.md)
+has compiled in a single-side exploratory run. It derives the selector digit
+bound throughout each model period and handles the origin separately; the
+forbidden index-1 digit is zero in every period. This remains conditional on
+the symbolic graph and positive variables and does not identify the retained
+ports or the graph's cyclic columns.
 A [supported-slot and copy-position client](research/ordinary12-ipra-bridge/compact44-copy-support-prototype/README.md)
 has compiled in an exploratory combined overlay. It extends the bound to
 ordinary supported indices and proves it for the 41 symbolic kernel copy
