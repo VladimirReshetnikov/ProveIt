@@ -408,7 +408,12 @@ under explicit bounds and an external finite index type. A later
 [943-row specialization](reviews/compact44-943-decoder-independent-audit/README.md)
 retains those conditional bounds; the [ordered table audit](reviews/compact44-943-table-independent-audit/README.md)
 checks the finite Lean list against the pinned JSON externally. Neither result
-proves the compiler or controller. An [independent finite recipe reconstruction](reviews/compact44-selector-recipe-independent-audit/README.md)
+proves the compiler or controller. A separate [finite relabeling audit](reviews/compact44-color-relabel-independent-audit/README.md)
+matches the old 942-row table to 942 compact rows, subject to its explicit
+manual source-formula interpretation. The single extra row is ruled out by
+the [paired local exclusion theorem](reviews/compact44-forbidden-independent-audit/README.md)
+when a matching left neighbor exists; boundary and arbitrary-model neighbor
+existence remain open. An [independent finite recipe reconstruction](reviews/compact44-selector-recipe-independent-audit/README.md)
 recomputes the four retained integer payloads and the 8,807 mask digits;
 this external calculation is not an all-model port calibration.
 
