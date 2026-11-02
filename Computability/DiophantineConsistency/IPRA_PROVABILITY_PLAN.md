@@ -492,6 +492,10 @@ point-in-time qualifications recorded in that audit. Neither result
 identifies the retained coefficient bytes with the symbolic kernel, disposes
 of the residual term, or supplies the full graph-column, machine or iPRA
 equivalence.
+An [external symbolic-K byte check](research/ordinary12-ipra-bridge/compact44-symbolic-k-external-byte-check/README.md)
+reconstructs the parameterized kernel from the pinned finite data and matches
+all retained original K bytes. It is an external transcription and exact byte
+comparison, not a Lean equality theorem or a binding of the displayed tuple.
 Two further single-side explorations give alternative bounded representations
 of that residual. The [bit-rotation client](research/ordinary12-ipra-bridge/compact44-bit-rotation-prototype/README.md)
 represents multiplication by an arbitrary power of two modulo the word modulus
