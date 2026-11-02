@@ -1,0 +1,7 @@
+# Conditional clean-carry client closure: preliminary
+
+The point-in-time scan inventories 115 matching inherited `.olean` paths per side from the audited heterogeneous-carry pair. The client's only explicit import, `CompactHeterogeneousCarry`, is a separately produced same-side seed outside that overlay: the scan checks each audited seed object's hash and verifies that its intended overlay target is unoccupied. It also pins the exploratory client source and audited parent CHECK, compares both provider inventories and hashes, and records the package Init object. The normal scan exited 0; optimized Python was rejected with exit 1.
+
+This scan does not rerun the parent audit, simultaneously freeze inputs, check every companion slot, launch Lean or produce a paired theorem. A replay must preserve each side's provider/seed relationship, verify frozen sources and all direct objects and relevant companion slots before and after the compiler, receive independent prelaunch review, and use a root-coordinated stable-HEAD/sole-Lean window. Point-in-time checks cannot exclude transient between-check changes; complete package/dynamic ancestry and resource limits remain inherited.
+
+The client is conditional on the heterogeneous `CarryInput`, externally finite index family, predecessor raw-column bound, slack and half-radix equation; the second theorem also requires the target column bound. It does not derive those conditions from the graph or fractional rotations, establish machine simulation/checker semantics, or prove an object-theory PRA endpoint.
