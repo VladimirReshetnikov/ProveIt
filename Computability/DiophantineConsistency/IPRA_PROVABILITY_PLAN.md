@@ -661,8 +661,9 @@ every model step on that orbit is occupied, without coprimality. It does not
 prove all blocks occupied or identify `s` as a semantic machine stride. A
 subsequent author-side [represented orbit-word client](research/ordinary12-ipra-bridge/compact44-represented-orbit-word-prototype/README.md)
 constructs a model-definable selected-row function and a radix-1024 word of
-length `N` for the same graph witnesses. Edge matching and machine semantics
-remain open.
+length `N` for the same graph witnesses. A separate [mathematical review](reviews/compact44-represented-orbit-word-mathematical-review/README.md)
+found no gap in the inspected induction, witness matching or word coding; it
+is not a paired replay. Edge matching and machine semantics remain open.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
