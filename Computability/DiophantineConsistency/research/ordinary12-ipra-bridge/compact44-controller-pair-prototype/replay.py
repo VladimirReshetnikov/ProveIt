@@ -43,6 +43,10 @@ def guards(paths):
     result[str(p)]={'realpath':str(p.resolve()),'sha256':H(p)}
    else:result[str(p)]=None
  return result
+def check_frozen(source_dir):
+ for original in (DATA,CHOICE):
+  frozen=source_dir/original.name
+  if not frozen.is_file() or frozen.is_symlink() or H(frozen)!=PINS[original]:raise ValueError(('frozen source drift',original.name))
 def checkguards(items):
  for path,v in items.items():
   p=Path(path)
@@ -58,6 +62,7 @@ def main():
  for source in (DATA,CHOICE):
   dest=d/source.name;shutil.copyfile(source,dest)
   if H(dest)!=PINS[source]:raise ValueError('frozen source drift')
+ check_frozen(d)
  runs=[];allguards={}
  for side in ('author','peer'):
   run=out/side;run.mkdir();lib=run/'lib';mon.overlay(PARENT/side/'lib',lib);env=os.environ.copy()
@@ -65,8 +70,7 @@ def main():
    if k.startswith('PYTHON') or k in ('LEAN_SRC_PATH','LEAN_SYSROOT','LD_LIBRARY_PATH','LD_PRELOAD','LD_AUDIT'):env.pop(k,None)
   env['LEAN_PATH']=str(lib)+':'+str(PACKAGE);steps=[]
   for i,source in enumerate((DATA,CHOICE)):
-   for original in (DATA,CHOICE):
-    if H(d/original.name)!=PINS[original]:raise ValueError(('frozen source drift',original.name))
+   check_frozen(d)
    src=d/source.name;obj=lib/'DiophantineConsistency'/source.with_suffix('.olean').name;log=run/(source.stem+'.log')
    for suffix in SUFFIXES:
     if os.path.lexists(Path(str(obj)[:-6]+suffix)):raise ValueError(('output companion collision',str(obj),suffix))
@@ -86,12 +90,11 @@ def main():
    for k,v in guards([obj]).items():
     if k in allguards and allguards[k]!=v:raise ValueError(('output guard drift',k))
     allguards[k]=v
-   for original in (DATA,CHOICE):
-    if H(d/original.name)!=PINS[original]:raise ValueError(('frozen source drift',original.name))
+   check_frozen(d)
    steps.append({'module':source.stem,'source_sha256':H(src),'object_sha256':H(obj),'log_sha256':H(log),'stdout':text,'compiler_exit':code,'deps_exit':q.returncode,'deps_stdout':q.stdout,'sampled_peak_rss_bytes':peak,'stop_reason':reason,'direct_guards':g,'command':cmd})
   runs.append({'side':side,'steps':steps})
  if any(a['source_sha256']!=b['source_sha256'] or a['object_sha256']!=b['object_sha256'] or a['stdout'].replace(str(frozen),'<ROOT>')!=b['stdout'].replace(str(frozen),'<ROOT>') for a,b in zip(runs[0]['steps'],runs[1]['steps'])):raise ValueError('paired mismatch')
- checkguards(allguards);after=verify(args.historical_view);checkguards(allguards)
+ check_frozen(d);checkguards(allguards);after=verify(args.historical_view);check_frozen(d);checkguards(allguards)
  if before!=after or H(__file__)!=driver or githead()!=args.expected_head:raise ValueError('final input or HEAD drift')
  receipt={'status':'PASS_PAIRED_COMPACT_CONTROLLER','runs':runs,'driver_sha256':driver,'head':args.expected_head,'direct_and_output_guards':allguards,'scope':'Conditional symbolic model controller only, no retained graph/K binding, machine or iPRA theorem; contextual historical endpoint parent and dynamic/provider/resource boundaries apply.'}
  with (out/'receipt.json').open('x') as f:json.dump(receipt,f,indent=2,sort_keys=True);f.write('\n')

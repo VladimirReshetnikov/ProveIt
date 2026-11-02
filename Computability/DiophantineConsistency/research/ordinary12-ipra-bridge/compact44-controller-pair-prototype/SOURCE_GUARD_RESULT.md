@@ -1,0 +1,7 @@
+# Frozen-source guard correction
+
+Independent prelaunch review found that the original driver checked frozen source hashes but allowed a symlink to identical bytes, and did not recheck the frozen files after its final contextual parent audit. The corrected driver requires both frozen source paths to be regular non-symlink files with pinned hashes after copying, before and after each compiler child, and after the final parent audit. This is a guard correction; no real controller build has run.
+
+The no-Lean fake wrapper now exercises twenty modes, including an identical-byte frozen-source symlink after the first child, late source-content mutation inside the final parent callback, and late identical-byte symlink replacement. All three are rejected. The first attempt at the updated fake harness exited 1 because its assertion expected only `frozen source drift` while the earlier existing single-source guard had already correctly rejected the content mutation as `source or HEAD drift`. The harness assertion was corrected to accept either correct rejection for that case, while requiring the explicit frozen-source guard for all three new regressions; the corrected fake wrapper exited 0. The original `fake-observation.txt` and `terminal-observation.json` remain historical evidence of the earlier driver bytes.
+
+The final corrected driver read-only parent preflight, session 55720, actually exited 0. These controls do not make the new driver independently reviewed or authorize a real build; a fresh exact-byte prelaunch review remains required.
