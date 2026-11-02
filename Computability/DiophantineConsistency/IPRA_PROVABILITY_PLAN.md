@@ -218,8 +218,9 @@ substitution, positivity and degree calculations. Its Lean transport and
 internal iPRA endpoints compiled in a guarded historical author run and
 passed an independent artifact audit; a paired replay remains pending.
 The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
-has a separately audited finite positivity and substitution argument; its Lean
-transport and internal iPRA endpoint remain open.
+has a separately audited finite positivity and substitution argument. Its Lean
+transport and iPRA clients compiled in an exploratory historical overlay;
+a guarded complete-chain replay and paired replay remain pending.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)

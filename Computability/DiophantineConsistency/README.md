@@ -86,7 +86,8 @@ endpoints have a guarded historical author run and an independent artifact
 audit; a paired replay remains pending.
 The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
 has independently checked finite algebra and positivity under the actual fixed
-parameter; its Lean transport and internal iPRA endpoint remain open.
+parameter, and an exploratory Lean compilation of transport and iPRA clients;
+a guarded complete-chain replay and paired replay remain pending.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

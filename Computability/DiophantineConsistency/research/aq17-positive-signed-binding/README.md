@@ -5,13 +5,15 @@ finite-audited 17-variable graph. Its right-hand side `DstarComputed` contains
 a subtraction, but is positive for every positive assignment when the fixed
 port satisfies **beta ≥ 2**. The resulting sum of seven squares has 16 distinct
 positive integer variables, 96 binary arithmetic rows, and exact degree 32
-after specializing the four recorded fixed ports. These are finite external
-algebraic checks; no AQ16 Lean transport theorem, internal iPRA result, PDF
-binding, or global minimality claim is made here.
+after specializing the four recorded fixed ports. An [exploratory Lean run](../aq16-witness-transport/README.md)
+also compiled the transport and native and standard iPRA clients in a
+historical development overlay. A guarded complete-chain replay and paired
+replay remain pending; no formal PDF binding or global minimality is claimed.
 
 The [base-10 candidate display](equation32-16.pdf) lists all 16 positive
-unknowns and its complete 96-operation circuit. Its [independent audit](../../reviews/equation32-16-independent-audit/README.md)
-checks the presentation and reproducible PDF. The fixed decoder and rank recipe
+unknowns and its complete 96-operation circuit. An [independent audit](../../reviews/equation32-16-independent-audit/README.md)
+checked the preceding PDF; the present status-wording refresh awaits review.
+The fixed decoder and rank recipe
 retain the project's documented manual-transcription boundary.
 
 Write `q = 1 + J*beta`, `E = X*Y`, `a = E+Y`, `k = eta+zeta`,

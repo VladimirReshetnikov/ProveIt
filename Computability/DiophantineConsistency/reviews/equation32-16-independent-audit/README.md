@@ -1,5 +1,10 @@
 # Independent audit of the AQ16 circuit display
 
+This audit records the earlier PDF with the transport-open disclosure. The
+current display has a later status-wording refresh; its formula, input list,
+fixed constants and circuit are unchanged, and a fresh presentation review is
+pending.
+
 The independent checker exited zero. It compared the pinned AQ16 graph with
 all 16 displayed input aliases, the four port aliases, all 96 live numbered
 gates and the final seven-square output. It checked the fixed base-10 block
