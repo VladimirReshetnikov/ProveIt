@@ -1,0 +1,25 @@
+/tmp/ipra-compact-mask-to-carry-explore/CompactMixedIncrement.lean:31:34: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Exp.exp 67 - 2
+in the target expression
+  e = e
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+m N C MC : V
+hm : 0 < m
+hN : 0 < N
+hMC : MC < Exp.exp (67 * m)
+hC : 1 ≤ C
+hnc : NoCarry (C - 1) (MC * rep (67 * m) N + 1)
+h2 : 2 ≤ Exp.exp 67
+e : V := Exp.exp 67 - 2
+hclass : ∀ j < m, dig 67 MC j = Exp.exp 67 - 1 ∨ dig 67 MC j = e ∨ dig 67 MC j = Exp.exp 67 - 4
+hMC0 : dig 67 MC 0 = e
+he : Exp.exp 67 = e + 2
+hρ1 : Exp.exp 67 - 1 = e + 1
+hρ2 : Exp.exp 67 - 2 = e
+hmN : 0 < m * N
+hJ : ∀ k < m * N, dig 67 (MC * rep (67 * m) N) k = dig 67 MC (k % m)
+⊢ e = e
+'CompactMixedIncrement.decode_mixed_increment' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
