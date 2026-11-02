@@ -3,11 +3,11 @@
 import contextlib,hashlib,importlib.util,io,json,os,shutil,subprocess,sys,tempfile,types
 from pathlib import Path
 D=Path(__file__).resolve().with_name('replay.py')
-WANT='169f39ddd34647819ff480fb61561007b59e81ff1ee7cc9a9ea853632092a4e0'
+WANT='dc56ea8855a5a332e2481509e40f28813f17dc6f3f60056e70c09d355b2b8d2c'
 assert hashlib.sha256(D.read_bytes()).hexdigest()==WANT
 PLAN=D.parent.parent/'compact44-direct-symbolic-k-closure-plan/scan.json'
 scan=json.loads(PLAN.read_bytes());HEAD='a'*40
-modes=['verify_only','good','wrong_report','extra_report','noaxiom_report','wrong_axiom','warning','sorry','compiler_exit','stop_reason','wrong_deps','duplicate_deps','duplicate_init','missing_init','missing_external','missing_built','sibling_mismatch','parent_drift','frozen_symlink','frozen_directory_symlink','late_source','late_object','late_log','head_drift','output_companion','late_companion','preexisting_companion','output_companion_last','output_companion_peer','late_frozen_directory','output_directory_symlink','late_output_directory','boolean_exit']
+modes=['verify_only','good','wrong_report','extra_report','noaxiom_report','wrong_axiom','warning','sorry','compiler_exit','stop_reason','wrong_deps','duplicate_deps','duplicate_init','missing_init','missing_external','missing_built','sibling_mismatch','parent_drift','frozen_symlink','frozen_directory_symlink','late_source','late_object','late_log','head_drift','output_companion','late_companion','preexisting_companion','output_companion_last','output_companion_peer','late_frozen_directory','output_directory_symlink','late_output_directory','boolean_exit','copy_directory_symlink']
 for mode in modes:
     spec=importlib.util.spec_from_file_location('driver',D);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
     tmp=Path(tempfile.mkdtemp(prefix='ipra-sat-fake-fixture-',dir='/tmp'));out=Path(tempfile.mkdtemp(prefix='ipra-direct-symbolic-k-pair-fake-',dir='/tmp'));out.rmdir()
@@ -71,7 +71,13 @@ for mode in modes:
         if mode=='duplicate_deps':paths.append(paths[1])
         if mode=='duplicate_init':paths.append(paths[0])
         return subprocess.CompletedProcess(cmd,0,stdout='\n'.join(paths)+'\n',stderr='')
-    m.subprocess=types.SimpleNamespace(run=fake_run);m.shutil=types.SimpleNamespace(copyfile=shutil.copyfile,disk_usage=lambda _:types.SimpleNamespace(free=10*1024**3))
+    copied=[]
+    def copying(src,dst):
+        result=shutil.copyfile(src,dst);copied.append(str(dst))
+        if mode=='copy_directory_symlink' and len(copied)==1:
+            directory=Path(dst).parent;outside=tmp/'outside';directory.rename(outside);directory.symlink_to(outside,target_is_directory=True)
+        return result
+    m.subprocess=types.SimpleNamespace(run=fake_run);m.shutil=types.SimpleNamespace(copyfile=copying,disk_usage=lambda _:types.SimpleNamespace(free=10*1024**3))
     sys.argv=[str(D),'--verify-only','--expected-head',HEAD] if mode=='verify_only' else [str(D),'--output',str(out),'--expected-head',HEAD]
     try:
         with contextlib.redirect_stdout(io.StringIO()):
@@ -83,8 +89,9 @@ for mode in modes:
             assert err is None and len(calls)==14 and len(json.loads((out/'receipt.json').read_bytes())['runs'])==2,(mode,err)
         else:
             assert err is not None,(mode,err)
-            expected={'wrong_report':'axiom reports','extra_report':'axiom reports','noaxiom_report':'axiom reports','wrong_axiom':'axiom reports','warning':'compiler failure','sorry':'compiler failure','compiler_exit':'compiler failure','boolean_exit':'compiler failure','stop_reason':'compiler failure','wrong_deps':'dependency mismatch','duplicate_deps':'dependency mismatch','missing_init':'companion drift','missing_external':'companion drift','missing_built':'companion drift','sibling_mismatch':'paired outputs differ','parent_drift':'final input or HEAD drift','frozen_symlink':'frozen source drift','frozen_directory_symlink':'frozen source drift','late_frozen_directory':'frozen source drift','output_directory_symlink':'invalid output directory','late_output_directory':'companion drift','late_source':'frozen source drift','late_object':'companion drift','late_log':'final output drift','head_drift':'HEAD drift','output_companion':'unexpected output companion','output_companion_last':'unexpected output companion','output_companion_peer':'unexpected output companion','late_companion':'unexpected companion','preexisting_companion':'unexpected output companion'}[mode]
+            expected={'wrong_report':'axiom reports','extra_report':'axiom reports','noaxiom_report':'axiom reports','wrong_axiom':'axiom reports','warning':'compiler failure','sorry':'compiler failure','compiler_exit':'compiler failure','boolean_exit':'compiler failure','stop_reason':'compiler failure','wrong_deps':'dependency mismatch','duplicate_deps':'dependency mismatch','missing_init':'companion drift','missing_external':'companion drift','missing_built':'companion drift','sibling_mismatch':'paired outputs differ','parent_drift':'final input or HEAD drift','frozen_symlink':'frozen source drift','frozen_directory_symlink':'frozen source drift','late_frozen_directory':'frozen source drift','output_directory_symlink':'invalid output directory','late_output_directory':'companion drift','late_source':'frozen source drift','late_object':'companion drift','late_log':'final output drift','head_drift':'HEAD drift','output_companion':'unexpected output companion','output_companion_last':'unexpected output companion','output_companion_peer':'unexpected output companion','late_companion':'unexpected companion','preexisting_companion':'unexpected output companion','copy_directory_symlink':'invalid frozen source directory'}[mode]
             assert expected in err,(mode,expected,err)
+            if mode=='copy_directory_symlink':assert len(copied)==1 and len(list((tmp/'outside').glob('*.lean')))==1 and not calls,(mode,copied,calls)
         print(mode,'PASS',len(calls),'fake deps')
     finally:shutil.rmtree(out,ignore_errors=True);shutil.rmtree(tmp,ignore_errors=True)
 # Explicitly exercise every non-object companion slot, both before and after a child.

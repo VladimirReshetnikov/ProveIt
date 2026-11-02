@@ -64,6 +64,11 @@ def output_guards(obj,before):
         if suffix=='.olean' and not before:need(value is not None and obj.is_file() and not obj.is_symlink(),('invalid emitted object',str(obj)))
         else:need(value is None,('unexpected output companion',stem+suffix))
     return result
+def check_copy_destination(dst,frozen,out):
+    # This is a point-in-time check; it does not make path traversal atomic.
+    need(not out.is_symlink() and out.is_dir() and not frozen.is_symlink() and frozen.is_dir(),('invalid frozen root',str(frozen)))
+    need(not dst.parent.is_symlink() and dst.parent.is_dir() and dst.parent.resolve().is_relative_to(frozen.resolve()),('invalid frozen source directory',str(dst.parent)))
+    need(not os.path.lexists(dst) or (dst.is_file() and not dst.is_symlink()),('invalid frozen destination',str(dst)))
 def check_frozen(rows):
     for name,src,sha,imports in rows:
         need(src.is_file() and not src.is_symlink() and not src.parent.is_symlink() and not src.parent.parent.is_symlink() and digest(src)==sha,('frozen source drift',name))
@@ -105,7 +110,7 @@ def main():
     need(shutil.disk_usage('/tmp').free>=4*1024**3,'sampled free space below reserve')
     monitor=load_monitor();out.mkdir();frozen=out/'frozen';rows=[]
     for row in scan['source_order']:
-        src=Path(row['source']);dst=(frozen/Path(*row['module'].split('.'))).with_suffix('.lean');dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst)
+        src=Path(row['source']);dst=(frozen/Path(*row['module'].split('.'))).with_suffix('.lean');dst.parent.mkdir(parents=True,exist_ok=True);check_copy_destination(dst,frozen,out);shutil.copyfile(src,dst);check_copy_destination(dst,frozen,out)
         rows.append((row['module'],dst,row['source_sha256'],row['imports']))
     check_frozen(rows);runs=[];allguards={}
     for side in ('author','peer'):
