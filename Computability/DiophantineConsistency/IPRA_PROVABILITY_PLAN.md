@@ -493,6 +493,15 @@ is preparation for a paired replay, not a completed replay. Neither result
 identifies the retained coefficient bytes with the symbolic kernel, disposes
 of the residual term, or supplies the full graph-column, machine or iPRA
 equivalence.
+Two further single-side explorations give alternative bounded representations
+of that residual. The [bit-rotation client](research/ordinary12-ipra-bridge/compact44-bit-rotation-prototype/README.md)
+represents multiplication by an arbitrary power of two modulo the word modulus
+as a bit rotation, with a full radix-minus-one digit cap. The
+[carry-input lemmas](research/ordinary12-ipra-bridge/compact44-band-carry-inputs-prototype/README.md)
+instead reduce the residual modulo the word modulus and show that aligned
+rotations preserve a supplied digit cap. Both are conditional model results,
+not paired replays; neither establishes the clean predecessor, weighted carry
+family, retained coefficient binding or internal iPRA endpoint.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
