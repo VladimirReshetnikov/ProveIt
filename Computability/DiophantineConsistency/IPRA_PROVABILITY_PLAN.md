@@ -419,13 +419,13 @@ residue results. Its seven-module-per-side paired replay passed an
 Both graph-port equalities to symbolic masks and the other stated graph, radix
 and product hypotheses remain explicit; this does not calibrate the retained
 coefficient tuple or prove a machine simulation.
-A later [fixed-symbolic graph client](research/ordinary12-ipra-bridge/compact44-fixed-graph-digits-prototype/EXPLORATORY_RESULT.md)
-has compiled in one exploratory provider chain. For beta `2^(67*8807)-1`
-and symbolic masks it derives the port inequalities, beta lower bound and
-high-product condition from graph-variable positivity, while retaining graph
-zero, radix and repunit hypotheses. `K` remains arbitrary, and no retained
-coefficient binding or machine simulation is claimed. A paired source-frozen
-replay and independent audit remain open.
+A later [fixed-symbolic graph client](research/ordinary12-ipra-bridge/compact44-fixed-graph-digits-prototype/PAIR_RESULT.md)
+has passed a six-module-per-side paired replay and [independent artifact
+audit](reviews/compact44-fixed-graph-independent-audit/README.md).
+For beta `2^(67*8807)-1` and symbolic masks it derives the port inequalities,
+beta lower bound and high-product condition from graph-variable positivity,
+while retaining graph zero, radix and repunit hypotheses. `K` remains
+arbitrary, and no retained coefficient binding or machine simulation is claimed.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
