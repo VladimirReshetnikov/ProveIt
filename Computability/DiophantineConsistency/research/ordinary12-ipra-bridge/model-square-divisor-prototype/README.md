@@ -42,9 +42,11 @@ To replay when the pinned temporary providers still exist, invoke
 python3 -I -S replay.py --output /tmp/ipra-model-square-divisor-replay-NEW
 ```
 
-The parent pair has matched author and peer results, but its **independent
-artifact audit remains a separate prerequisite**, as does an independent
-review of this suffix. The parent inherits package-transitive and dynamic
+The [parent pair](../../../reviews/ordinary12-coexistence-pair-independent-audit/README.md)
+and this [paired suffix](../../../reviews/ordinary12-model-square-divisor-independent-audit/README.md)
+have each passed an independent artifact audit. The suffix audit rechecks
+the recorded objects and inputs; it is not a further Lean recompilation.
+The parent inherits package-transitive and dynamic
 loading ancestry, and the Foundation provider's outer wrapper exit remains
 unobserved. The replay's checks are point-in-time checks, not protection
 against changes between observations.

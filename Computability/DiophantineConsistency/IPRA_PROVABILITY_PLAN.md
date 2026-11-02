@@ -277,6 +277,11 @@ but those identities do not establish denominator divisibility or integrality.
 A [conditional descent-step audit](reviews/ordinary12-descent-step-independent-audit/README.md)
 checks norm preservation and preservation of supplied divisor and Bézout
 witnesses; it does not supply those witnesses or prove descent termination.
+A [model-level square-divisor theorem](research/ordinary12-ipra-bridge/model-square-divisor-prototype/README.md)
+derives a natural witness for `b² ∣ r` from a supplied reduced norm and
+four-natural Bézout certificate, including the zero case. Its paired suffix
+passed an [independent artifact audit](reviews/ordinary12-model-square-divisor-independent-audit/README.md).
+It does not construct those hypotheses or an internal iPRA derivation.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
