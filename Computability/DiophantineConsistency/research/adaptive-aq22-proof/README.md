@@ -1,9 +1,10 @@
 # AQ22 native transport: development drafts
 
 This directory develops the 22-positive-variable degree-10 graph in
-`../adaptive-square-sums22-degree10/candidate.json`. It is a candidate, not a
-completed native PRA proof and not an independently replayed proof. The Lean
-files under `draft-src` are not part of the regular Lean source tree.
+`../adaptive-square-sums22-degree10/candidate.json`. A historical guarded
+author run has compiled the native and standard iPRA endpoints and passed an
+independent artifact audit; a matched peer remains pending. The Lean files
+under `draft-src` are not part of the regular Lean source tree.
 
 `generate_model.py` derives the literal and 13-residual sum-of-squares draft
 from the SHA-256-pinned candidate and the pinned AQ29 zero-decomposition
@@ -42,12 +43,12 @@ That exact translated formula must not be silently identified with an
 untranslated Con(ZFC); the required identification depends on the larger
 project's interpretation and consistency bridges.
 
-This is an exploratory compilation, **not** a guarded or independently
-matched replay: the development overlay does not have the guarded runner's
-input, output, and provenance guarantees, and the parent author build has not
-yet been matched by its peer. It does not establish a current-source or
-unconditional user-facing Con(ZFC) claim. The separately guarded run described below still requires independent audit
-and a matched peer before these sources are promoted.
+This exploratory compilation is **not** a guarded or independently matched
+replay: the development overlay does not have the guarded runner's input,
+output, and provenance guarantees. It does not establish a current-source or
+unconditional user-facing Con(ZFC) claim. The separately guarded run described
+below has since passed an independent artifact audit but still requires a
+matched peer.
 
 `author-additions.json` is a static input for the guarded author-only runner in
 `../author-only-extension/run.py`. It lists 37 modules: all 30 additions in the
@@ -63,5 +64,6 @@ over the audited AQ29 parent, with the runner reporting `AUTHOR_ONLY_PASS` and
 the terminal wrapper observing exit 0. The primary record is
 `../../reviews/ipra-aq22-guarded-author/README.md`; its precise historical
 scope and limitations apply. The run did not reuse objects from the separate
-exploratory AQ26 extension. An independent audit and a matched peer remain
-necessary before a paired-replay claim is justified.
+exploratory AQ26 extension. Its [independent artifact audit](../../reviews/ipra-aq22-guarded-author-independent-audit/README.md)
+passed; a matched peer remains necessary before a paired-replay claim is
+justified.
