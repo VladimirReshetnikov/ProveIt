@@ -24,9 +24,9 @@ retain all 1,210 parent rows. Six normal fixture suites, including real Lean
 paired/full-chain toys and the production policy check, and six optimized-mode
 rejection controls actually passed. These are not a real paired replay.
 
-Before any real launch, require a separate independent review of the complete
-workflow, including the corrected production freezer policy, source choices,
-author audit pins and runbook. Use stable HEAD through preparation, capture
+The required [independent workflow review](../../../reviews/ipra-selected-native-bit-historical-workflow-independent-audit/README.md)
+has passed, including the corrected production freezer policy, source choices,
+author audit pins and runbook. For a real launch, use stable HEAD through preparation, capture
 actual exits and preserve failed attempts. Any historical matched result would
 still inherit package-transitive, dynamic and unobserved Foundation-wrapper
 outer-exit limits. The external alternate-checker and desired consistency
