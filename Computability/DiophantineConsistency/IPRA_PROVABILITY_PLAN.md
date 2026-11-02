@@ -530,12 +530,13 @@ A subsequent [two-band flattening client](research/ordinary12-ipra-bridge/compac
 checks the concrete indexed carry input with carry bound `1` on a coherent
 author-side rebuild. It discharges the family mass inequality and flattens
 the two rotated bands, while assuming the word and digit bounds, output
-bound and split-band congruence. A later author-side
-[fixed-graph carry client](research/ordinary12-ipra-bridge/compact44-fixed-graph-indexed-carry-prototype/README.md)
+bound and split-band congruence. A later
+[fixed-graph carry client](reviews/compact44-indexed-graph-carry-pair-independent-audit/README.md)
 derives those premises from the same witnesses, yielding the concrete
 indexed `CarryInput` with carry bound `1` from positive graph coordinates
-and zero at the symbolic ports. That client has not had a paired replay;
-deriving a clean predecessor and connecting retained coefficients to the
+and zero at the symbolic ports. Its eleven-module-per-side replay and artifact
+audit passed, subject to the stated provider and authorship qualifications.
+Deriving a clean predecessor and connecting retained coefficients to the
 symbolic kernel remain open.
 An author-side [fractional-digit client](research/ordinary12-ipra-bridge/compact44-fractional-digits-prototype/README.md)
 checks, in an arbitrary IΣ₁ model, the formula expressing an unaligned
@@ -553,6 +554,10 @@ with the adjacent-digit identity. A third author-side
 checks the boundary-spanning formula and its adjacent-digit composition under
 explicit model index and word-bound conditions. Deriving the case conditions
 from the graph and selecting a clean predecessor in every model remain open.
+An author-side [coverage and all-cases client](research/ordinary12-ipra-bridge/compact44-rotation-coverage-prototype/README.md)
+now combines the three window cases for arbitrary in-range model positions.
+It does not yet bound the selected source index by the word length or prove
+the graph-specific support and clean-predecessor conditions.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
