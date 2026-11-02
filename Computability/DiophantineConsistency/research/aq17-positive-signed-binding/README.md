@@ -10,8 +10,9 @@ algebraic checks; no AQ16 Lean transport theorem, internal iPRA result, PDF
 binding, or global minimality claim is made here.
 
 The [base-10 candidate display](equation32-16.pdf) lists all 16 positive
-unknowns and its complete 96-operation circuit. The fixed decoder and rank
-recipe retain the project's documented manual-transcription boundary.
+unknowns and its complete 96-operation circuit. Its [independent audit](../../reviews/equation32-16-independent-audit/README.md)
+checks the presentation and reproducible PDF. The fixed decoder and rank recipe
+retain the project's documented manual-transcription boundary.
 
 Write `q = 1 + J*beta`, `E = X*Y`, `a = E+Y`, `k = eta+zeta`,
 `c = eta+Y*k`, `U = Y*q^2`, `H = 4*a+3`, and let `R` be the surviving

@@ -1,5 +1,10 @@
 # Independent audit of the AQ17 circuit display
 
+This audit records the earlier PDF with the exploratory-run disclosure. The
+current display has a later status-wording refresh; its formula, input list,
+fixed constants and circuit are unchanged, and a fresh presentation review is
+pending.
+
 The independent checker exited zero. It compared the pinned AQ17 graph with
 all 17 displayed input aliases, the four port aliases, all 99 live numbered
 gates and the final eight-square output. It checked the fixed base-10 block
