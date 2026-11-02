@@ -4,6 +4,15 @@ These generated source drafts follow the existing AQ29 pattern: decompose each l
 
 **Compilation is pending.** These drafts are kept outside the project Lean source tree, do not establish the stated theorems, and may need proof or elaboration changes. The prior provider used for AQ29 has missing project build dependencies; its native replay did not pass. A replacement Foundation provider has since been audited, but the full project-source replay is still running. Compiling the complete AQ29 → AQ28 → AQ27 → AQ26 chain and guarded model and native replays remain necessary. All three generated native endpoints also inherit the independent issue of identifying the formalized candidate theory and the mapped refutation with the intended arithmetic and ZFC statements.
 
+The [first fresh-author attempt](../../reviews/aq26-author-attempt-1/README.md)
+passed the first three AQ28 modules but failed in `AdaptiveAQ28Transport`:
+the unqualified `subst_id` was not in scope. The generator and all three
+transport drafts now refer explicitly to the already imported
+`DiophantineConsistency.AdaptiveAQ30Transport.subst_id`. The regenerated
+sources pass the finite literal and witness-binding controls, but this fix is
+not yet Lean-verified. The previous additions manifest pins the failed source
+and must be regenerated after the corrected sources are committed.
+
 `generate_model.py` and `generate_transport.py` prepare the draft sources; `verify_literals.py` checks every draft literal gate against its pinned graph. This finite comparison is not Lean type-checking.
 
 The AQ28 `sum_zero` draft previously quantified over `Fin 18` even though its
