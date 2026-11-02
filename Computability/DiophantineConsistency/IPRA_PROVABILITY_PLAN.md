@@ -265,7 +265,8 @@ the latter retains explicit model mask bounds. An [early-index bound](reviews/or
 also passed bounded replay audit under those assumptions; it does not identify
 the index with the rank. A [separate index-comparison audit](reviews/ordinary12-freej-index-comparison-independent-audit/README.md)
 checks the proved ordering and `2R < c`; the [early-size replay](research/ordinary12-ipra-bridge/free-j-early-size-prototype/README.md)
-has completed and awaits independent audit. Exact index matching cannot
+passed a [separate audit](reviews/ordinary12-freej-early-size-independent-audit/README.md).
+Exact index matching cannot
 yet be imported directly: its existing theorem assumes strong and auxiliary
 norms that must first be recovered noncircularly. These are model-level
 results, not an internal iPRA derivation. The candidate's
