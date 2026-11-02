@@ -186,9 +186,11 @@ and display have separate finite checks.
 
 The [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md)
 has finite substitution and degree checks and a matched model replay for
-arbitrary integer ports. Its native replay attempt failed before the first
-module because its historical package provider contained broken symlinks; no
-native replay pass is claimed. See the [failure evidence](reviews/adaptive-aq29-native-replay/failure.txt). The
+arbitrary integer ports. The initial focused native replay failed because of
+broken historical-provider symlinks. A later fresh project-source author pass
+completed the native endpoint and passed an [independent artifact audit](reviews/fresh-project-author-independent-audit/README.md);
+its peer and matched comparison are still in progress, with the historical and
+provider qualifications recorded below. The
 [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md)
 has exact finite residual-substitution and degree checks; its model and native
 transports remain open. The further [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md)

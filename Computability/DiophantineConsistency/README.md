@@ -61,9 +61,11 @@ a [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/R
 a [26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md),
 and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
 Their substitutions and degrees have finite checks. The 29-variable candidate
-has a matched model replay; its native transport is undergoing verification.
-The guarded native replay attempt failed before its first module because a
-historical dependency provider contained broken symlinks; it has not passed.
+has a matched model replay. Its initial focused native replay failed on broken
+historical provider links; a later fresh project-source author pass completed
+the native endpoint and passed an independent artifact audit. Its peer and
+matched comparison remain in progress, with the historical and provider
+qualifications below.
 The 26-variable, 27-variable, 28-variable and 40-variable candidates' model
 and native transports remain open.
 The native endpoints above have matching fixed-source proof replays on
