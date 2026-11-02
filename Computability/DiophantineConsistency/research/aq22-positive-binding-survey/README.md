@@ -17,6 +17,11 @@ checked the preceding PDF; the present status-wording refresh awaits review.
 Its fixed decoder and rank recipe
 retain the project's documented manual-transcription boundary.
 
+The maintained [14-variable degree-30 equation](../../equation30-direct.pdf)
+uses 90 circuit operations, so it is smaller on all three of those stated
+metrics. The AQ17 construction extends the freshly rebuilt AQ29-to-AQ22 proof
+chain; its proof provenance and replay status are tracked separately.
+
 All circuit subtraction is integer subtraction. Let
 
 - `q = 1 + J * beta`, `qm = J * beta`, and `M = q^3 * qm`;

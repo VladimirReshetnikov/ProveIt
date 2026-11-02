@@ -5,10 +5,16 @@ finite-audited 17-variable graph. Its right-hand side `DstarComputed` contains
 a subtraction, but is positive for every positive assignment when the fixed
 port satisfies **beta ≥ 2**. The resulting sum of seven squares has 16 distinct
 positive integer variables, 96 binary arithmetic rows, and exact degree 32
-after specializing the four recorded fixed ports. An [exploratory Lean run](../aq16-witness-transport/README.md)
-also compiled the transport and native and standard iPRA clients in a
-historical development overlay. A guarded complete-chain replay and paired
-replay remain pending; no formal PDF binding or global minimality is claimed.
+after specializing the four recorded fixed ports. A [guarded historical Lean author run](../../reviews/ipra-aq16-guarded-author/README.md)
+compiled the full 52-module chain, including transport and native and standard
+iPRA clients. Independent artifact audit and paired replay remain pending; no
+formal PDF binding or global minimality is claimed.
+
+The maintained [14-variable degree-30 equation](../../equation30-direct.pdf)
+uses 90 circuit operations, so it is smaller on all three of those stated
+metrics. This AQ16 construction is useful as a reduction along the freshly
+rebuilt AQ29-to-AQ22 proof chain; its proof provenance and replay status are
+tracked separately from the other equation's.
 
 The [base-10 candidate display](equation32-16.pdf) lists all 16 positive
 unknowns and its complete 96-operation circuit. An [independent audit](../../reviews/equation32-16-independent-audit/README.md)
