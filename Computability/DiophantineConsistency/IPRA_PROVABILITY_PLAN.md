@@ -679,6 +679,11 @@ then proves incoming carry zero at every in-range column of phases `2195`,
 decoder phases. It does not assert temporal target zero at the parity phases,
 identify `s` with a valid machine stride, or prove a global decoder or iPRA
 endpoint. These later clients have not had paired replays.
+An author-side [uniform graph decoder](research/ordinary12-ipra-bridge/compact44-uniform-graph-decoder-prototype/README.md)
+now gives the single-band local decoder at every in-range column of phase
+`4393` or `5495`, with Boolean inputs and the explicit alternative of an
+all-zero configuration or a unique selected row with matching tile value.
+It does not establish nonzero rows throughout the word or machine semantics.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
