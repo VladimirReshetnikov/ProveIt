@@ -90,6 +90,13 @@ are separate from the Lean theorem and retain the fixed-recipe interpretation
 boundary. A separate [independent display review](reviews/equation69-2011-display-independent-audit/README.md)
 passed, including PDF reproducibility and exact graph-row comparisons.
 
+The later-source [lower-degree suffix](research/thirteen-model-lowdegree-suffix/README.md)
+also has paired and independently audited native, standard and reference
+iPRA endpoints for nine current-2011 source expressions. Their separate
+JSON-graph bindings, reported evaluator sizes and exact degrees have not yet
+been independently established, and translated-consistency clients remain
+separate obligations.
+
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common
 bound in the chosen Foundation refutation encoding, and internal native and
