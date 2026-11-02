@@ -49,9 +49,11 @@ hypotheses, but still assumes an abstract product-equals-one equation. The
 [historical literal prototype](literal-prototype/README.md) now checks all
 100 graph rows and proves the literal factorization, a separate integer
 evaluation identity, and that an internal zero implies product one for the
-three concrete signed factor pairs. Connecting those concrete factors to the
-generic exclusions is still open; the composed theorem is not yet a proof
-about `P12`.
+three concrete signed factor pairs. The
+[concrete split prototype](concrete-split-prototype/README.md) binds those
+factors to residue exclusions and proves, in an `IΣ₁` model, that each
+factor is the positive unit. This model-level result holds for arbitrary
+integer ports; it is not compact44 checker calibration or an iPRA proof.
 
 **Early rank before norm recovery.** With only `A0=A1=0` and the explicit
 positive/port hypotheses, construct internal witnesses for the divisions
