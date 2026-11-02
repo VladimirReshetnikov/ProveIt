@@ -581,8 +581,11 @@ avoid the exceptional position. A separate author-side
 [clean-source client](research/ordinary12-ipra-bridge/compact44-clean-source-select-prototype/README.md)
 transports these phase facts to full-word cyclic positions and conditionally
 selects a zero source digit with two Boolean predecessors. It assumes the
-two source-index phase equations; deriving them from the temporal rotation
-and establishing the clean carry remain open.
+two source-index phase equations. A later author-side
+[fixed-graph safe-source client](research/ordinary12-ipra-bridge/compact44-fixed-safe-source-prototype/README.md)
+obtains the selected zero and Boolean predecessor digits for an arbitrary
+model offset from the symbolic graph's same witnesses. Connecting that offset
+to the temporal bit rotation and establishing the clean carry remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
