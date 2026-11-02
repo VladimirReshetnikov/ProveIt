@@ -24,6 +24,13 @@ artifacts. It checks the standard endpoint's positive-shift AQ22 literal and
 selected embedded Gödel–Gentzen-translated Foundation consistency sentence.
 The snapshot records 15 workspace-source drifts and is historical.
 
+The supplemental [state-link check](state-link-check.py) also binds each
+sibling's old/new snapshot, parent-pair and driver hashes directly to its
+preparation and coordinator records. Its [receipt](state-link-receipt.json)
+and [observed exit](state-link-observation.json) are separate. The two
+builders recorded different workspace HEADs after preparation; the result
+remains tied to the frozen historical sources and pinned additions.
+
 An [earlier attempt](attempt-1-observation.json) was deliberately stopped
 with exit 143 after the reviewer noticed that seed hashes also needed an
 explicit binding to the parent-state output records. Its exact
