@@ -653,7 +653,10 @@ model cyclic form; it does not construct a global word or establish machine
 semantics. A later author-side [block-copy client](research/ordinary12-ipra-bridge/compact44-fixed-graph-block-copy-prototype/README.md)
 proves for every model `h<N` that the phase-`1095` digit in block `h` equals
 the phase-`2195` and phase-`3296` digits in block `cyc(N,h,s)`, including
-cyclic wrap. Occupancy of all blocks and the meaning of `s` remain open.
+cyclic wrap. An author-side [occupied-orbit client](research/ordinary12-ipra-bridge/compact44-occupied-orbit-prototype/README.md)
+proves the origin block is selected and selection is closed under the cyclic
+`s`-successor. It does not prove all blocks occupied, construct a represented
+orbit or word, or identify `s` as a semantic machine stride.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
