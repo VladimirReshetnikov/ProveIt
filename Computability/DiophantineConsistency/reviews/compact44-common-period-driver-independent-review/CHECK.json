@@ -1,0 +1,187 @@
+{
+  "driver_sha256": "b6937baa668c261b9487a98f54297789beae09411332a183877672486780a943",
+  "fake_controls_exit": 0,
+  "fake_controls_sha256": "5d897ed294097371f8079e37047391b075a0e4db593387c5c2ff68005b631ca0",
+  "fake_log_sha256": "a68180cd1a8eddd4a6eb19ed088cdab510e92f87e98951f16804fd67371739af",
+  "fixed_pin_count": 12,
+  "lean_launched": false,
+  "objects_per_side": 150,
+  "provider": "/tmp/ipra-direct-symbolic-k-pair-01",
+  "recorded_preflight_head": "f5d0aff22a755e04bfd5aa3b293087726eeec659",
+  "recorded_preflight_sha256": "2f95ce9cbbf7ff02b7250d75d878dbc13f24e91e74e262c5e6950ba86b892c2e",
+  "scope": "Source and slot inventory plus fake controls; no Lean, independent parent audit rerun or paired artifact.",
+  "slot_counts": {
+    "external_direct_slots": 160,
+    "init_slots": 10,
+    "target_slots": 240
+  },
+  "source_rows": [
+    {
+      "imports": [
+        "DiophantineConsistency.CompactGraphDerivedRadix",
+        "DiophantineConsistency.ArithmeticModularCancellation"
+      ],
+      "module": "DiophantineConsistency.FreeJGraphCongruenceExplore",
+      "reports": [
+        "FreeJGraphCongruenceExplore.fixed_symbolic_aligned",
+        "FreeJGraphCongruenceExplore.symbolic_aligned",
+        "FreeJGraphCongruenceExplore.first_pair_mod",
+        "FreeJGraphCongruenceExplore.graph_congruence",
+        "FreeJGraphCongruenceExplore.graph_aligned_congruence"
+      ],
+      "sha256": "d748f8bbad7a45a328322eec1acd4643bc3e2c3f40d015b6b653f790fd8978d0"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.FreeJConcreteDigitsClient",
+        "DiophantineConsistency.CompactLowExact",
+        "DiophantineConsistency.CompactLowEven",
+        "DiophantineConsistency.CompactHighResidue"
+      ],
+      "module": "DiophantineConsistency.CompactSymbolicGraphSaturation",
+      "reports": [
+        "CompactSymbolicGraphSaturation.graph_saturation"
+      ],
+      "sha256": "812a757a038d63873ad94a02c310c79800f1ed98abd18b6fe1cd17445b556e8a"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.FreeJGraphCongruenceExplore",
+        "DiophantineConsistency.CompactSymbolicGraphSaturation"
+      ],
+      "module": "DiophantineConsistency.CompactSameWitnessSaturation2",
+      "reports": [
+        "CompactSameWitnessSaturation.fixed_graph_saturation",
+        "CompactSameWitnessSaturation.generic_graph_saturation"
+      ],
+      "sha256": "246e900e939b0c6b6cbdc15f49eccc6bd07361c9816d099004ad59c79edb6afd"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactMixedIncrement"
+      ],
+      "module": "DiophantineConsistency.CompactPositionIncrement",
+      "reports": [
+        "CompactPositionCarry.increment_digits"
+      ],
+      "sha256": "38c19700d6caeadd28bae9d239b0c2302e032ec01011071ea4b4ace52543a675"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactSameWitnessSaturation2",
+        "DiophantineConsistency.CompactPositionIncrement"
+      ],
+      "module": "DiophantineConsistency.CompactPositionGraph",
+      "reports": [
+        "CompactPositionCarry.generic_position_noCarry",
+        "CompactPositionCarry.fixed_position_noCarry"
+      ],
+      "sha256": "23ede19121f1691051f8667833b99baf09090af765ecc88c2357a74501cb715c"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactPositionGraph"
+      ],
+      "module": "DiophantineConsistency.CompactSelectorMask",
+      "reports": [
+        "CompactSelectorMask.selector_mask_digit",
+        "CompactSelectorMask.absent_mask_digit"
+      ],
+      "sha256": "91846742919ca2a0d3ffce3a6da0b7cac2044de2d9ef6fc6b640c329431df550"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactSelectorMask"
+      ],
+      "module": "DiophantineConsistency.CompactSelectorGraph",
+      "reports": [
+        "CompactSelectorGraph.selector_slot",
+        "CompactSelectorGraph.excluded_slot",
+        "CompactSelectorGraph.fixed_graph_selector_bounds"
+      ],
+      "sha256": "dfd3155e95af8d17e6ee46a3eb37d0f40a8ad429febb1caf23dae8f2a1bc447b"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactSelectorGraph"
+      ],
+      "module": "DiophantineConsistency.CompactSupportSlot",
+      "reports": [
+        "CompactSupportSlot.support_mask_digit",
+        "CompactSupportSlot.support_slot",
+        "CompactSupportSlot.fixed_graph_support_bounds"
+      ],
+      "sha256": "9b8c126b63cab1e3d6e629cad5d3a0597bd00a51c708d41a54a5b1be3ad65596"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactSupportSlot",
+        "DiophantineConsistency.CompactSymbolicKernel"
+      ],
+      "module": "DiophantineConsistency.CompactCopySupport",
+      "reports": [
+        "CompactCopySupport.position_good",
+        "CompactCopySupport.fixed_graph_copy_bounds"
+      ],
+      "sha256": "a2c3fc4a396229bef7e8b95b712c0cee7be79a1d4f91e2f6cb440a35db1df24e"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactCopySupport"
+      ],
+      "module": "DiophantineConsistency.CompactPeriodCopy",
+      "reports": [
+        "CompactPeriodCopy.period_index",
+        "CompactPeriodCopy.position_pos",
+        "CompactPeriodCopy.fixed_graph_period_copies"
+      ],
+      "sha256": "784bae25f74d5e198cd056b4d92de1ac20ebf1bc66ec2dd48309bbc502c08dc9"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactSelectorGraph"
+      ],
+      "module": "DiophantineConsistency.CompactSelectorPeriod",
+      "reports": [
+        "CompactSelectorPeriod.period_index_zero_allowed",
+        "CompactSelectorPeriod.fixed_graph_period_selectors"
+      ],
+      "sha256": "1b01e1c5585ecab636d94624d670354e659eb85bb219f44a482d28114c79a492"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactPeriodCopy",
+        "DiophantineConsistency.CompactSelectorPeriod"
+      ],
+      "module": "DiophantineConsistency.CompactCommonPeriodBits",
+      "reports": [
+        "CompactCommonPeriodBits.fixed_graph_common_period_bits"
+      ],
+      "sha256": "23ab0a6d005f15336abbeae3703ad761979b5fb91eb4def6eee20c6ff75b3711"
+    }
+  ],
+  "special_axioms": {
+    "CompactPeriodCopy.position_pos": [
+      "propext",
+      "Quot.sound"
+    ],
+    "other_named_reports": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "status": "PASS_NO_LEAN_INDEPENDENT_COMMON_PERIOD_DRIVER_REVIEW",
+  "suffixes": [
+    ".olean",
+    ".olean.private",
+    ".olean.server",
+    ".ir",
+    ".ilean",
+    ".olean.hash",
+    ".olean.private.hash",
+    ".olean.server.hash",
+    ".ir.hash",
+    ".ilean.hash"
+  ]
+}
