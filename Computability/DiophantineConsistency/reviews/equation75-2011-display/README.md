@@ -25,7 +25,9 @@ inherits the [2011 fixed-constant audit](../equation14-historical-literal-bindin
 including its manually transcribed decoder/ranking recipe boundary. This
 external display check is not Lean semantics for TeX or PDF, and the parent
 proof's package-transitive/dynamic and Foundation wrapper-exit limitations
-remain. The present display packet awaits independent review.
+remain. A separate [independent display review](../equation75-2011-display-independent-audit/README.md)
+checked the formulas, decimal constant block and reproducible PDF, retaining
+the same interpretation boundaries.
 
 `python3 -I -S check_display.py` actually exited 0 with all 24 definitions,
 graph output wiring, constant block and three mutation controls checked;

@@ -95,7 +95,13 @@ also has paired and independently audited native, standard and reference
 iPRA endpoints for nine current-2011 source expressions. Their separate
 JSON-graph bindings, reported evaluator sizes and exact degrees have not yet
 been independently established, and translated-consistency clients remain
-separate obligations.
+separate obligations for the full family. Two instances have since received
+separate exact graph and iPRA audits: [75 operations, degree 96](reviews/thirteen75-model-binding-independent-audit/README.md)
+and [84 operations, degree 92](reviews/thirteen84-model-binding-independent-audit/README.md),
+both at the 2011 ports. Their named DAG clients include the selected
+translated-consistency comparison. The [75-operation display](equation75-2011.pdf)
+passed a separate [external transcription and PDF audit](reviews/equation75-2011-display-independent-audit/README.md),
+with the same fixed-recipe interpretation boundary as the 69-operation page.
 
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common
