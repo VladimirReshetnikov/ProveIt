@@ -369,7 +369,11 @@ The [exact carrier-index theorem](research/ordinary12-ipra-bridge/free-j-exact-o
 then proves `π=R` and `2j=R+1` under those model hypotheses, with an
 [independent artifact audit](reviews/ordinary12-freej-exact-ordinary-independent-audit/README.md).
 Here `π` indexes the carrier ordinate; the distinct exponent `m` indexing
-`f` is only known to satisfy `π ∣ m`. The [power identity theorem](research/ordinary12-ipra-bridge/free-j-power-finish-prototype/README.md)
+`f` must not be identified with `π` merely from that statement. The proof of
+the later power identity does locally obtain `m=R` for its separately
+extracted main index by comparing the same strictly monotone ordinate, though
+it does not export that intermediate equality as a standalone theorem. The
+[power identity theorem](research/ordinary12-ipra-bridge/free-j-power-finish-prototype/README.md)
 proves `X=2^R` under the graph hypotheses and `β≥46`; its paired replay
 passed an [independent artifact audit](reviews/ordinary12-freej-power-finish-independent-audit/README.md).
 A [conditional Mersenne cancellation](research/ordinary12-ipra-bridge/free-j-power-cancel-prototype/README.md)
