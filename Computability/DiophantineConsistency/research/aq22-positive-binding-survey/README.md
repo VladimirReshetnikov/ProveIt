@@ -13,7 +13,8 @@ It has not been
 identified with the equation in the project's current PDF. A separate
 [base-10 candidate display](equation32-17.pdf) names all 17 positive unknowns
 and includes the complete 99-operation circuit. An [independent audit](../../reviews/equation32-17-independent-audit/README.md)
-checked the preceding PDF; the present status-wording refresh awaits review.
+checked the preceding PDF; a [separate review](../../reviews/equation32-17-wording-independent-audit/README.md)
+passed for the present status-wording refresh.
 Its fixed decoder and rank recipe
 retain the project's documented manual-transcription boundary.
 
