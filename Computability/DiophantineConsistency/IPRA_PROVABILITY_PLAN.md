@@ -279,8 +279,11 @@ A two-run source-only rebuild of the AQ29 endpoint's 1,210-module declared
 project closure is [in progress](reviews/fresh-project-pair-launch/README.md),
 starting from empty project object trees. After launch, upstream edits changed
 `PRAWitnessCalculus.lean` and several `ZFCinPA` sources in that frozen closure,
-so a successful run would concern the historical snapshot. No completion is claimed; package-
-transitive and dynamic ancestry remain outside this build's current scope.
+so a successful run would concern the historical snapshot. The [author pass](reviews/fresh-project-pair-author/README.md)
+completed all 1,210 modules, including the AQ29 endpoint checks, with a
+coordinator-reported exit 0 and 15 recorded workspace-source drifts. The peer
+and matched comparison remain in progress; package-transitive and dynamic
+ancestry remain outside this build's current scope.
 
 The exact schemes are summarized in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md).
 The induction scheme advances by the syntactic term `n + 1`, whereas the
