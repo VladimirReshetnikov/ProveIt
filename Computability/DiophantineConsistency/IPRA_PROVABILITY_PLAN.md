@@ -417,7 +417,9 @@ constructs a block with the required three-way digit shape in an `IΣ₁`
 model for an arbitrary support word, using external induction on the standard
 block length. Its support is still a parameter: the result does not identify
 the block with the retained MC coefficient or give an internal iPRA
-construction. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
+construction. A separate [finite-list identity and model transfer](reviews/compact44-list-mask-independent-audit/README.md)
+has matching paired replays and an independent audit; it likewise leaves the
+specific support and retained-MC graph-port equality open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
 A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-fractional-clean-column/README.md)
@@ -433,7 +435,8 @@ A [paired heterogeneous-carry prototype](research/ordinary12-ipra-bridge/compact
 extends the all-model end-around carry to an individual digit cap for each
 word in an external finite family. This allows a rotated temporal word to have
 a larger cap than the other words, but the exact graph decomposition and mass
-bound remain open and the new paired packet awaits independent review.
+bound remain open. Its [independent artifact audit](reviews/compact44-heterogeneous-carry-independent-audit/README.md)
+passed with the inherited provider limitations recorded there.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
