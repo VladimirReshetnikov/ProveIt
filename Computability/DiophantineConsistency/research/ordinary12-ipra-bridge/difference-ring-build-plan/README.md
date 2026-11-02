@@ -55,14 +55,15 @@ A separately reviewed implementation should:
    same independently authenticated Foundation/package provider. Do not use
    old project objects, including the apparently unchanged 35 objects or any
    generated FreeJ object; compare the complete sibling records and outputs.
-3. Start only after independently reviewing the driver and the exact source
-   snapshot. Set a hard **512 MiB output cap per sibling**, including logs and
-   temporary files, and check a **4 GiB free-space reserve** before starting,
-   during the run and afterward. Stop on any cap, reserve, dependency, source,
-   companion, or terminal-exit failure. Two caps permit at most 1 GiB for
-   these trees, but unknown transient/compiler use and concurrent activity
-   still make successful completion uncertain; no launch is authorized by
-   this planning receipt.
+3. Start only after independently reviewing the driver and exact snapshot.
+   A proposed **512 MiB per sibling** is a planning budget, not a cap that the
+   current scripts enforce. Sample free space before, during and after each
+   run and stop when a sample falls below **4 GiB**; sampling cannot guarantee
+   that the threshold is maintained between samples or against other users.
+   Also stop on any dependency, source, companion or terminal-exit failure.
+   Two 512 MiB budgets would total 1 GiB, but compiler temporary files,
+   concurrent writers and new output sizes remain unknown. No launch is
+   authorized by this planning receipt.
 4. Preserve actual outer and compiler exits, direct dependency resolutions,
    source/object/companion hashes, axiom reports and all failures. An
    independently reviewed artifact audit is required before treating either
@@ -74,3 +75,22 @@ integrality, or an internal iPRA proof. The 64-source count is a conservative
 union from existing source-declared graphs; any new bridge or changed import
 can enlarge it, and current source drift must be rechecked immediately before
 freezing. No build was launched in this survey.
+
+## Storage-control assessment
+
+At the later probe, `/tmp` was on `/dev/sda2` (`ext4`, mount options
+`rw,relatime`), with 6,094,270,464 bytes available. The current user was UID
+1000; `setquota` was unavailable and no project quota was reported in the
+mount options. `prlimit` is available, but its file-size limit is per file,
+not an aggregate project-tree quota. A non-destructive user-namespace probe
+successfully mounted and unmounted a 1 MiB tmpfs in a private namespace.
+`bwrap` is present. A bounded tmpfs combined with a separately reviewed
+read-only filesystem sandbox and writable scratch, including compiler temp
+paths and logs, is a possible aggregate scratch limit; the probe did not test
+that setup. Tmpfs may use swap, and other processes may consume disk, so it
+does not by itself guarantee 4 GiB of host free space. A filesystem/project
+quota or reserved filesystem covering all writes could enforce a scoped cap
+if available; none has been established here. A reserved allocation might
+protect reclaimable capacity but is not the same as keeping `df` free space
+above the threshold. No quota, scratch mount, reservation or build is left
+active by the probe.
