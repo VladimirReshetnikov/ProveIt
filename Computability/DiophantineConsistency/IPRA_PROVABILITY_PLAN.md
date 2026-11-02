@@ -657,8 +657,8 @@ cyclic wrap. An author-side [occupied-orbit client](research/ordinary12-ipra-bri
 proves the origin block is selected and selection is closed under the cyclic
 `s`-successor. An author-side [internal occupied-orbit client](research/ordinary12-ipra-bridge/compact44-internal-occupied-orbit-prototype/README.md)
 defines the occupancy predicate and proves by model `IΣ₁` induction that
-every model step on that orbit is occupied, without coprimality. It does not
-prove all blocks occupied or identify `s` as a semantic machine stride. A
+every model step on that orbit is occupied, without coprimality. That client
+alone does not prove all blocks occupied or identify `s` as a semantic machine stride. A
 subsequent author-side [represented orbit-word client](research/ordinary12-ipra-bridge/compact44-represented-orbit-word-prototype/README.md)
 constructs a model-definable selected-row function and a radix-1024 word of
 length `N` for the same graph witnesses. A separate [mathematical review](reviews/compact44-represented-orbit-word-mathematical-review/README.md)
@@ -668,8 +668,11 @@ derives same-witness source-bit equalities in the horizontal and vertical
 field windows at all applicable model columns. An author-side
 [field-marker extension](research/ordinary12-ipra-bridge/compact44-fixed-graph-field-markers-prototype/README.md)
 includes the extra boundary marker positions in those equalities. Translating
-the bits to block occupancy, tile-field matching and machine semantics remains
-open.
+the bits to tile-field matching and machine semantics remains open. An
+author-side [all-block client](research/ordinary12-ipra-bridge/compact44-fixed-graph-all-blocks-prototype/README.md)
+uses the horizontal marker to prove successor selection and then `IΣ₁`
+induction to obtain a selected row at every model block `h<N`. It has not had
+a paired replay and does not establish edge matching or machine semantics.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
