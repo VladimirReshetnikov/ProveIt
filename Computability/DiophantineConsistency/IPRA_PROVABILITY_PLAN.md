@@ -507,6 +507,12 @@ now composes the bit rotation with the symbolic graph's same witnesses and
 actual exponent, without an alignment premise. It retains the full-radix
 temporal digit cap; the same unresolved carry, coefficient and iPRA
 obligations apply.
+A [generic finite-family client](research/ordinary12-ipra-bridge/compact44-generic-band-carry-family-prototype/README.md)
+has also compiled on the author-side coherent provider. It constructs the
+heterogeneous carry input for finitely many aligned rotations and one bounded
+temporal word, assuming the weighted congruence, output bound and mass
+inequality. Connecting the concrete graph bands to this family and proving
+those assumptions and a clean predecessor remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
