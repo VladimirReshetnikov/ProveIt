@@ -77,6 +77,13 @@ artifact audit; a paired extension remains pending. Their [finite display bindin
 have a [separate review](reviews/frontier13-pdf-historical-lean-binding-independent-audit/README.md)
 and retain the manual decoder and rank-recipe boundary.
 
+A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
+also compiled a primitive-recursive checker for a common bound in the selected
+Foundation refutation encoding, with internal iPRA equivalences linking its
+absence of output 1 to both 13-variable no-zero sentences. Its independent
+artifact audit and a paired extension remain pending; it does not identify an
+arbitrary independently specified proof checker with the selected one.
+
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),
 a [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md),

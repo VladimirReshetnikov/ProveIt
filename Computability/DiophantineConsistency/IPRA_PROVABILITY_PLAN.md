@@ -61,6 +61,14 @@ with native and standard-iPRA endpoint clients. An [independent artifact audit](
 passed; a paired extension remains pending. Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
 has a separate review and retains the decoder and rank-recipe boundary.
 
+A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
+compiled an existentially selected primitive-recursive checker for a common
+bound in the chosen Foundation refutation encoding, and internal native and
+standard-iPRA equivalences linking no output 1 to both 13-variable no-zero
+sentences. Its independent artifact audit and paired extension remain pending.
+The recorded bit sentence is classical PRA; no stronger native bit theorem or
+comparison with an independently specified checker is claimed.
+
 The [15-variable degree-26 equation](equation26.pdf) uses a 93-operation
 evaluator. Its exact shifted fixed-port literal has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRAScaleWitness15Native.lean)
