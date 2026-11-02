@@ -1,0 +1,5 @@
+# AQ22 historical preparation stopped on HEAD change
+
+The first real historical-extension workflow, tool session 20989, returned actual exit code 1 before starting its Lean pair. Its parent reauthentication, strict source plan and freezer passed; the freezer's subprocess exit was 0 for 1,247 frozen sources. The preparer also recorded exit 0 with 37 affected additions and 1,210 copied parent modules. The runbook's separate gate then rejected the attempt because Git HEAD changed during preparation. The complete observed outer stdout and its exit code are recorded in `terminal-observation.json`.
+
+The preparer records HEAD `fc31f545fe43644c761d354a0399005d8fa67005` before and `d4494deb7fda72f1e902674d1a5cd3acd29b0735` after. The intervening commit added an independent AQ17 display audit. Its apparent unrelatedness does not satisfy the runbook's explicit equality gate; no Lean pair was started and no success is claimed. The original working data remains at `/tmp/ipra-aq22-historical-paired-run-01`; a retry must use a new output path and rerun every gate.
