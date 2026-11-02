@@ -595,8 +595,11 @@ Separate author-side [temporal window formulas](research/ordinary12-ipra-bridge/
 now cover the aligned, non-wrapping, wholly wrapped and straddling cases under
 explicit index and cut equations. Deriving those equations for the selected
 graph target remains open. An author-side [cyclic-source branch client](research/ordinary12-ipra-bridge/compact44-temporal-source-branches-prototype/README.md)
-derives the equations for all three fractional source-index orderings; a
-unified target-and-predecessor application to the graph remains open.
+derives the equations for all three fractional source-index orderings. A later
+author-side [unified temporal-source client](research/ordinary12-ipra-bridge/compact44-temporal-source-unified-prototype/README.md)
+checks target and cyclic-predecessor formulas for arbitrary in-range model
+positions, including aligned shifts. Their application to a selected graph
+target and the carry reset remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
