@@ -36,7 +36,7 @@ def audit():
     p=subprocess.run([sys.executable,'-I','-S','-B',str(AUDIT/'audit.py')],capture_output=True,text=True,timeout=1200)
     if p.returncode or p.stderr:raise ValueError(('parent audit failed',p.returncode,p.stdout,p.stderr))
     x=json.loads(p.stdout)
-    if x.get('status')!='PASS_INDEPENDENT_COMPACT44_TABLE_LOOKUP_AUDIT':raise ValueError(('parent audit status',x))
+    if x!=json.loads((AUDIT/'CHECK.json').read_text()):raise ValueError(('parent audit receipt mismatch',x))
     return x
 def overlay(base,dest):
     for current,dirs,files in os.walk(base,followlinks=False):
@@ -100,6 +100,7 @@ def main():
         row['object_sha256']=digest(obj);(out/'progress.json').write_text(json.dumps(rows,indent=2)+'\n')
     if rows[0]['object_sha256']!=rows[1]['object_sha256'] or rows[0]['log_sha256']!=rows[1]['log_sha256']:raise ValueError('paired outputs differ')
     pins();checkguards(allguards);after=audit()
+    if before!=after:raise ValueError('parent audit reruns differ')
     if digest(__file__)!=driver:raise ValueError('driver drift')
     receipt={'status':'PASS_COMPACT_ROW_TRANSPORT_PAIR','driver_sha256':driver,'source_sha256':digest(src),'parent_audit_before':before['status'],'parent_audit_after':after['status'],'direct_guards':allguards,'rows':rows,'scope':'Bounded local row, field and matching transport only; no actual neighbor existence, wrap, tiling transport, calibration or iPRA endpoint. Sampled resource checks and package/transitive/dynamic boundaries apply; lean --deps has leader timeout only.'}
     (out/'receipt.json').write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n')
