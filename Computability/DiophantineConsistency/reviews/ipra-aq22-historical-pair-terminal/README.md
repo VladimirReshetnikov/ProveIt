@@ -16,9 +16,9 @@ The snapshot contains 1,210 frozen historical parent sources and 37 added
 sources; the sibling runs reused only their own corresponding authenticated
 parent seeds. The 37 additions include the AQ26 and standard-iPRA chain.
 
-This is a coordinator result, not yet an independent full artifact audit.
-The complete run remains at `/tmp/ipra-aq22-historical-paired-run-02` for
-independent validation, including both sibling states, outputs and guards.
+The subsequent [independent full artifact audit](../ipra-aq22-historical-pair-independent-audit/README.md)
+passed, including both sibling states, outputs and guards. The complete run
+remains at `/tmp/ipra-aq22-historical-paired-run-02` while that directory exists.
 It proves nothing about current workspace sources differing from the frozen
 parent, runtime/package-transitive ancestry, or temporary mutations between
 guard checks. The Foundation wrapper's outer exit was not captured; its inner

@@ -4,7 +4,7 @@ This directory develops the 22-positive-variable degree-10 graph in
 `../adaptive-square-sums22-degree10/candidate.json`. A historical guarded
 author run has compiled the native and standard iPRA endpoints and passed an
 independent artifact audit. A later historical pair has matched all 37 added
-modules; independent audit of that pair is underway. The Lean files
+modules and passed an independent artifact audit. The Lean files
 under `draft-src` are not part of the regular Lean source tree.
 
 `generate_model.py` derives the literal and 13-residual sum-of-squares draft
@@ -67,4 +67,4 @@ the terminal wrapper observing exit 0. The primary record is
 scope and limitations apply. The run did not reuse objects from the separate
 exploratory AQ26 extension. Its [independent artifact audit](../../reviews/ipra-aq22-guarded-author-independent-audit/README.md)
 passed. A later [historical paired run](../../reviews/ipra-aq22-historical-pair-terminal/README.md)
-matched the 37-module extension; its independent artifact audit is underway.
+matched the 37-module extension and passed an [independent artifact audit](../../reviews/ipra-aq22-historical-pair-independent-audit/README.md).

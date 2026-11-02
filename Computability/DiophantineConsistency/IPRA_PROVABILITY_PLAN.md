@@ -207,7 +207,8 @@ has independently checked finite substitution and degree calculations and a
 [guarded historical author run](reviews/ipra-aq22-guarded-author/README.md)
 of its model transport and native and standard iPRA endpoints, with a separate
 artifact audit. A later [historical paired run](reviews/ipra-aq22-historical-pair-terminal/README.md)
-matched all 37 additions; independent complete-result audit is underway. The standard endpoint uses the
+matched all 37 additions and passed an [independent complete-result audit](reviews/ipra-aq22-historical-pair-independent-audit/README.md).
+The standard endpoint uses the
 Gödel–Gentzen translation of the selected embedded Foundation consistency
 sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)

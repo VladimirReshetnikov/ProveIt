@@ -21,8 +21,8 @@ single overlay, and passed an [independent artifact audit](../../reviews/ipra-aq
 The standard endpoint relates absence of a zero to the Gödel–Gentzen
 translation of the selected embedded Foundation ZFC consistency sentence. A
 [historical paired replay](../../reviews/ipra-aq22-historical-pair-terminal/README.md)
-has now matched all 37 added modules; its independent complete-result audit
-is underway. This result inherits its parent provider's
+has now matched all 37 added modules and passed an [independent complete-result audit](../../reviews/ipra-aq22-historical-pair-independent-audit/README.md).
+This result inherits its parent provider's
 documented provenance limitations and does not itself formally identify the
 PDF with the Lean term. A separate [finite binding audit](../../reviews/aq22-pdf-historical-lean-binding/README.md)
 compares the historical Lean literal, displayed graph, and recorded four-port

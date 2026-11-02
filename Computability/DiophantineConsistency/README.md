@@ -82,7 +82,7 @@ separate author-only historical run and independent artifact audit; the
 standard-theory 26-variable client also has one author run and an audit. A
 later historical paired run included these endpoints and the 22-variable model
 transport and native and standard endpoints, matching all 37 added modules.
-Its independent complete-result audit is underway. The
+Its independent complete-result audit passed. The
 40-variable candidate's model and native transports remain open.
 The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
 eliminates five more AQ22 bindings and has independently checked finite
