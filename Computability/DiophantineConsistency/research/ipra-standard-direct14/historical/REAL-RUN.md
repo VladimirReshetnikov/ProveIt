@@ -75,7 +75,7 @@ author=json.loads(authorpath.read_text()); autht=json.loads(authorterminal.read_
 if prepare.digest(authorpath)!=os.environ['DIRECT14_AUTHOR_AUDIT_SHA256'] or autht['receipt_sha256']!=prepare.digest(authorpath):raise ValueError('author audit receipt pin')
 if autht['observed_exit_code']!=0 or author['status']!='PASS_INDEPENDENT_DIRECT14_AUTHOR_ARTIFACT_AUDIT':raise ValueError('independent DIRECT14 author audit missing')
 if author['manifest_sha256']!='d2ff86b187c8b4aeb97dc701bfc7ba33b050b38c873cc5ceb6fb174991744690' or author['trial_state_sha256']!='37092f477544b888ba861fb2e4eb7093d0fa592ef0fa0185f724d3127656d0bd':raise ValueError('DIRECT14 author audit wrong run')
-if author['parent_state_sha256']!='b9ab036bf00296c9491ef6f06eb44aca805b51ab36f0d48e090d5620a55f6153' or author['added_modules']!=5 or author['added_direct_import_edges']!=11:raise ValueError('DIRECT14 author audit wrong ancestry')
+if author['parent_state_sha256']!='b9ab036bf00296c9491ef6f06eb44aca805b51ab36f0d48e090d5620a55f6153' or author['added_modules']!=5 or author['added_direct_import_edges']!=16:raise ValueError('DIRECT14 author audit wrong ancestry')
 old=Path(os.environ['DIRECT14_OLD']).resolve(strict=True)
 parent=Path(os.environ['DIRECT14_PARENT']).resolve(strict=True)
 obs=Path(os.environ['DIRECT14_OBSERVATION']).resolve(strict=True)

@@ -22,6 +22,13 @@ audit and a separate independent review of this workflow and runbook are
 required before any real launch. Capture actual exits, preserve failed runs,
 and use stable HEAD through preparation.
 
+The guarded-author artifact auditor counts all direct inputs, including the
+five `Init` imports: its receipt records 16 edges rather than the 11 declared
+project imports. `test_author_audit_gate.py` executes the runbook's actual
+ancestry gate against that independent receipt, accepts 16, rejects 11, 15
+and 17, and refuses optimized Python. Its observed outcomes and exact input
+hashes are recorded separately in `author-audit-gate-observation.json`.
+
 A future matched run would inherit the historical parent, external ancestry
 and missing Foundation-wrapper outer exit boundaries. It would not alone
 establish current-source provenance, formal PDF semantics, or identification
