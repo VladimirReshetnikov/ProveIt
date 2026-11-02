@@ -305,10 +305,13 @@ A [reduced-model descent step](research/ordinary12-ipra-bridge/reduced-model-des
 establishes norm preservation, strict bounds and signed Bézout transport;
 its paired suffix passed an [independent artifact audit](reviews/ordinary12-reduced-model-descent-independent-audit/README.md).
 A later [paired measure replay](research/ordinary12-ipra-bridge/reduced-model-nonzero-prototype/README.md)
-constructs a strictly smaller positive model coordinate; its independent
-review remains pending. Combining the new coordinate, transformed numerator
-and norm in one state, proving termination, and transporting the result to
-iPRA remain open.
+constructs a strictly smaller positive model coordinate and passed an
+[independent artifact audit](reviews/ordinary12-reduced-model-nonzero-independent-audit/README.md).
+A further [simultaneous-state theorem](research/ordinary12-ipra-bridge/reduced-model-state-prototype/README.md)
+combines the smaller coordinate, transformed numerator, norm and certificate;
+its paired replay passed an [independent artifact audit](reviews/ordinary12-reduced-model-state-independent-audit/README.md).
+Proving termination, connecting the graph to a reduced state, and transporting
+the result to iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
