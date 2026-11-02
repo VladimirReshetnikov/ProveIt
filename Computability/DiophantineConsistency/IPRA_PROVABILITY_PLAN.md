@@ -526,6 +526,13 @@ splits the specialization into four modules and checks both the exact
 concrete family mass and its model carry-one inequality. This is an
 author-only result for the formal indexed family; its identity with the
 graph's actual rotations and columns remains open.
+A subsequent [two-band flattening client](research/ordinary12-ipra-bridge/compact44-indexed-band-flatten-prototype/README.md)
+checks the concrete indexed carry input with carry bound `1` on a coherent
+author-side rebuild. It discharges the family mass inequality and flattens
+the two rotated bands, while assuming the word and digit bounds, output
+bound and split-band congruence. Supplying those premises from the same
+graph witnesses, deriving a clean predecessor and connecting retained
+coefficients to the symbolic kernel remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
