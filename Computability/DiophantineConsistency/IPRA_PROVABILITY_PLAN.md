@@ -465,7 +465,10 @@ MC bytes and the graph port remains a separate obligation. A further
 [coherent symbolic-mask decoder](reviews/compact44-concrete-increment-independent-audit/README.md)
 derives origin digit 1 and digit bounds at model indices below `8807*N` from
 `N>0`, `C≥1`, and the explicitly assumed no-carry condition; it does not
-derive that condition from the graph. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
+derive that condition from the graph. A [single-side exploratory composition](research/ordinary12-ipra-bridge/compact44-low-population-exact-prototype/README.md)
+also proves the symbolic low-mask population is `589083`, without assuming
+the finite support cardinality; its paired replay, independent audit and
+retained-port identification remain open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
 A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-fractional-clean-column/README.md)
