@@ -441,8 +441,10 @@ matches the old 942-row table to 942 compact rows, subject to its explicit
 manual source-formula interpretation. A subsequent [paired Lean replay](research/ordinary12-ipra-bridge/compact44-relabel-pair-prototype/README.md)
 checks the corresponding 942-row list equality and all three supplied-array
 permutations in 58 modules per side; its [independent artifact audit](reviews/compact44-relabel-pair-independent-audit/README.md)
-passed. The external JSON binding and arbitrary-model tiling transport remain
-separate. The
+passed. A [compact-specific bounded model lookup](reviews/compact44-table-lookup-independent-audit/README.md)
+also has a paired and independently audited client for the color ranges and
+row indices excluding 1. The external JSON binding, model adjacency and full
+tiling transport remain separate. The
 single extra row is ruled out by
 the [paired local exclusion theorem](reviews/compact44-forbidden-independent-audit/README.md)
 when a matching left neighbor exists; boundary and arbitrary-model neighbor
@@ -465,10 +467,10 @@ MC bytes and the graph port remains a separate obligation. A further
 [coherent symbolic-mask decoder](reviews/compact44-concrete-increment-independent-audit/README.md)
 derives origin digit 1 and digit bounds at model indices below `8807*N` from
 `N>0`, `C≥1`, and the explicitly assumed no-carry condition; it does not
-derive that condition from the graph. A [single-side exploratory composition](research/ordinary12-ipra-bridge/compact44-low-population-exact-prototype/README.md)
+derive that condition from the graph. A [paired composition](research/ordinary12-ipra-bridge/compact44-low-population-exact-prototype/README.md)
 also proves the symbolic low-mask population is `589083`, without assuming
-the finite support cardinality; its paired replay, independent audit and
-retained-port identification remain open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
+the finite support cardinality; its independent audit and retained-port
+identification remain open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
 A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-fractional-clean-column/README.md)
