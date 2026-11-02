@@ -44,4 +44,7 @@ remain byte-identical. It produced `author-additions.json` with SHA-256
 `7eb9d405153d4de522b3b10007003691de860565a882c1f83e8cd3d589bb2607`, eleven
 source modules and eighteen exact diagnostic names. The guarded runner's
 `verify_additions` accepted the pinned manifest with actual tool exit 0; that
-preflight alone is not a compilation or a peer replay.
+preflight alone is not a compilation or a peer replay. The subsequent
+[guarded historical author run](../../reviews/ipra-selected-native-bit-guarded-author/README.md)
+exited 0 and passed an [independent artifact audit](../../reviews/ipra-selected-native-bit-guarded-author-independent-audit/README.md);
+a matched peer replay remains pending.

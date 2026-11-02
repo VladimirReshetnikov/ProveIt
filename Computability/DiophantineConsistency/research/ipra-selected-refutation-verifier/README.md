@@ -6,6 +6,11 @@ The selected sentence is Foundation's `provabilityPred ZermeloFraenkelChoice ⊥
 
 `selected_checker_endpoints` composes that fact with the existing native bounded-refutation negation bridge. It establishes the existence of one such code for which native iPRA and explicitly axiomatized standard iPRA prove the selected native refutation's negation iff there is no bound `b` with `c(b) = 1`; standard iPRA also proves this equivalence for each of the existing 13-variable 87-operation and 86-operation no-zero sentences. This is a bound-certificate checker for the **selected encoding**, not a proof that an arbitrary independently specified derivation verifier has equivalent consistency. No numeral-code extraction or equivalence of positive proof witnesses is asserted. No actual ZFC consistency or inconsistency is claimed. The classical PRA bit theorem is included; the attempted stronger native and standard iPRA bit sentences did not compile and are **not** asserted by this packet.
 
+A later [native-bit extension](../ipra-selected-native-bit/README.md) took a
+different proof route and compiled those bit sentences for the same selected
+code. Its historical author build passed an independent artifact audit; a
+matched peer replay remains pending.
+
 Sources: `FoundationHAConsistencyNormalization`, `IPRABoundedRhoZFC`, `StrictSigmaOneInduction`, `IPRABoundedShape`, `IPRACharacteristicTransfer`, `PRAFiniteFunctionCodes`, `IPRAStandardTheory`, and the two standard 13-variable clients. In the pinned Foundation package `Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Basic.lean`, `proof` and `provable` implement the predicates described above. Existing standard-natural-model comparisons and HA proofs in other theories do not by themselves supply an iPRA proof equating a different verifier's consistency sentence.
 
 ## Exploratory compilation

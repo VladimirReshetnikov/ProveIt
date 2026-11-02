@@ -25,8 +25,8 @@ encoding, not an identification of an unrelated proof-code checker.
 This packet preserves the exact manifest, runner, copied sources, per-module
 logs, state, process output and observed exit. Binary outputs remain in
 `/tmp/ipra-selected-native-bit-guarded-author-20261101/lib` while that
-directory exists. It is **one historical author run**. An independent artifact
-audit and matched peer remain necessary; the result does not formalize PDF
+directory exists. It is **one historical author run**. Its [independent artifact audit](../ipra-selected-native-bit-guarded-author-independent-audit/README.md)
+passed; a matched peer remains necessary. The result does not formalize PDF
 semantics or establish an internal equivalence with a different proof coding.
 Package-transitive, dynamic and between-observation provenance, and the
 unobserved outer Foundation build-wrapper exit, remain inherited limitations.

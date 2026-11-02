@@ -153,7 +153,8 @@ bit sentence was first proved in classical candidate PRA; a later [exploratory
 extension](research/ipra-selected-native-bit/README.md) compiled native and
 standard iPRA bit sentences for the same code, including in a [guarded
 historical author run](reviews/ipra-selected-native-bit-guarded-author/README.md).
-Its independent audit and paired replay remain pending.
+Its [independent artifact audit](reviews/ipra-selected-native-bit-guarded-author-independent-audit/README.md)
+passed; a paired replay remains pending.
 This is a checker for the selected bounded encoding, not a comparison with an
 independently specified proof checker. A [guarded historical author run](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled the full ten-module extension and passed an [independent artifact audit](reviews/ipra-selected-verifier-guarded-author-independent-audit/README.md).
