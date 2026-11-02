@@ -141,7 +141,7 @@ The degree-36 and degree-56 13-variable equations have a [joint guarded
 historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
 with native and standard-theory clients. An [independent artifact audit](reviews/ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
 passed. A later [historical pair](reviews/ipra-frontier13-historical-pair-terminal/README.md)
-matched all eight additions; independent complete-result audit is underway.
+matched all eight additions and passed an [independent complete-result audit](reviews/ipra-frontier13-historical-pair-independent-audit/README.md).
 
 The [selected bounded-refutation checker](research/ipra-selected-refutation-verifier/README.md)
 has a Lean construction of one primitive-recursive function code

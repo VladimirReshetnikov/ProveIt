@@ -16,8 +16,8 @@ retained, together with the separate package-choice observation and its
 successful launch-time check. The plan reported 15 workspace source drifts
 relative to the historical parent.
 
-This records the coordinator result and copied evidence; a separate complete
-independent artifact audit remains necessary. The original run remains at
+The subsequent [independent complete-result audit](../ipra-frontier13-historical-pair-independent-audit/README.md)
+passed. The original run remains at
 `/tmp/ipra-frontier13-historical-paired-run-01`. The result inherits historical
 parent, package-transitive, dynamic and between-observation boundaries. The
 Foundation wrapper's outer exit was not captured, although its inner Lake exit

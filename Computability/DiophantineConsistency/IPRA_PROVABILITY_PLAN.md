@@ -59,7 +59,7 @@ The 13-variable degree-36 and degree-56 equations also have a [joint guarded
 historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
 with native and standard-iPRA endpoint clients. An [independent artifact audit](reviews/ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
 passed. A later [historical pair](reviews/ipra-frontier13-historical-pair-terminal/README.md)
-matched all eight additions; independent complete-result audit is underway.
+matched all eight additions and passed an [independent complete-result audit](reviews/ipra-frontier13-historical-pair-independent-audit/README.md).
 Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
 has a separate review and retains the decoder and rank-recipe boundary.
 
