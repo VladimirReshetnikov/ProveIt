@@ -1,0 +1,73 @@
+{
+  "status": "PASS_AUDIT_WITH_ENVIRONMENT_FINDING",
+  "reviewed_commit": "2b44686e4b",
+  "pins": {
+    "launch.py": "d965a46a57bdea680fe8e4e6d3be0852bd44e8ce84c7861618a8fda92eb9e0f1",
+    "gates.py": "76f153b8be70b4c804469934c2dcaf92f9803f0024932a48674c96d3b47d373e",
+    "test_gates.py": "4294b614a0ba6253a5655f0e1a43c2a396d6e7ee12fb7c50dc2d58740207c494",
+    "test_launch.py": "b7c751e2ef2764a8a6420472eda1eb06837321dd4358c52063eb86048bb0f9cf"
+  },
+  "observed": {
+    "test_gates.py": {
+      "exit": 0,
+      "stdout": "PASS_COHERENT_PREFLIGHT_TOY tracked-source pins drift symlink provider guards inventory"
+    },
+    "test_launch.py": {
+      "exit": 0,
+      "stdout": "PASS actual optimized launcher rejected before writes\nPASS missing executable pin rejected before launch\nPASS fake coordinator records exit/stdout and sanitized environment\nPASS_COHERENT_LAUNCHER_TOY_CONTROLS"
+    },
+    "guard_O": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: launcher rejects optimized Python and PYTHONOPTIMIZE"
+    },
+    "guard_OO": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: launcher rejects optimized Python and PYTHONOPTIMIZE"
+    },
+    "guard_env": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: launcher rejects optimized Python and PYTHONOPTIMIZE"
+    },
+    "guard_unexpected_argument": {
+      "exit": 1,
+      "stderr_last_line": "ValueError: launcher takes no arguments"
+    },
+    "independent_receipt_controls": {
+      "valid_accepted": true,
+      "bad_receipt_pin_rejected": true,
+      "bad_terminal_pin_rejected": true,
+      "wrong_status_rejected": true,
+      "nonzero_exit_rejected": true,
+      "wrong_claimed_receipt_hash_rejected": true
+    },
+    "actual_fixed_inputs": {
+      "sha256": {
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/difference-ring-build-plan/coherent-replay/gates.py": "76f153b8be70b4c804469934c2dcaf92f9803f0024932a48674c96d3b47d373e",
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/difference-ring-build-plan/coherent-replay/REAL-RUN.md": "d60575b7a89aae56976710d076f87285261066ee1fa5f432250cdd7b33274f08",
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/difference-ring-build-plan/monitor/paired.py": "ab9a2787e4fb99f9c201280e1219e48a2bf6f7c8a2e8f78049743b3dce282ebb",
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/difference-ring-build-plan/monitor/monitor.py": "bcb54868a78911f470e1ab833255b67e8f26d82fc7133eb0ddc5e663ef4770f8",
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/difference-ring-build-plan/monitor/path_guard.py": "9af0852abe419dee3fa83a57aa8fbdb3584285c8c40a229c9ef041f610375173",
+        "Computability/DiophantineConsistency/research/fresh-project-closure/rebuild.py": "8170bd401b1821666fffc2a55f8dd908e473d32c71797661a5acd85a32d0dc56",
+        "Computability/DiophantineConsistency/research/fresh-project-closure/compare.py": "530def48c58dc38ce8a293a5c9912762b2ad101e63faf7cb0763f71a7ac9a3a5",
+        "source_manifest": "9a7059e439bb77ab258808789fd1165cff8a4961c609e132ca0ed2130cb27ded",
+        "provider": "7cbd49b6d84497c46520e908fc8c4dc105d7a0070fd1323c6c28e26bf4cf00f6",
+        "foundation_input": "491075df9eac57799d21b475527b3b1af3dc81ded58e97a87e1cf6c453dcb13d",
+        "lean": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+      },
+      "point_in_time_only": true
+    },
+    "missing_fixed_pin": {
+      "rejected_before_preflight": true
+    },
+    "real_fake_coordinator": {
+      "outer_exit": 0,
+      "pythonpath_inherited": true,
+      "sitecustomize_executed": true,
+      "lean_path_inherited": true,
+      "named_scrubs_absent": true,
+      "scope": "fake coordinator only, actual subprocess; no Lean build"
+    }
+  },
+  "finding": "PYTHONPATH reaches the real coordinator process and sitecustomize executes at Python startup; launcher and review do not authenticate the starting Python environment. LEAN_PATH is inherited by the coordinator but fresh-project-closure/rebuild.py later sets its own LEAN_PATH.",
+  "scope": "Toy controls and fake coordinator only; no build, no project or iPRA theorem, and no proof against concurrent input mutation."
+}

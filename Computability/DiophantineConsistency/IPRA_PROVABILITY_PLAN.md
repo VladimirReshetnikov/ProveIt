@@ -176,7 +176,7 @@ separate finite checks.
 
 The [31-variable degree-6 equation](equation6-31.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRAAQ31Native.lean) for the
-exact shifted fixed-port literal. Its [focused paired replay](reviews/adaptive-aq31-native-final-replay/README.md)
+exact shifted fixed-port literal. Its [focused paired replay receipt](reviews/adaptive-aq31-native-final-replay/receipt.json)
 matched 23 modules and 16 selected prior model objects. The proof constructs an
 oriented witness from a halting run; it does not claim every parent zero is
 oriented. Historical provider and inherited ancestry qualifications remain;
@@ -252,6 +252,45 @@ prototype and an exploratory [free-J 95-gate factor split](research/ordinary12-i
 for arbitrary integer ports in `IΣ₁` models. Its [independent bounded replay
 audit](reviews/ordinary12-freej-prototype-independent-audit/README.md) passed;
 positive-rank recovery and object-theory proof remain open. Its
+first-factor consequence `q³ ∣ Y` for natural ports, a graph zero and positive
+`J` and beta has also passed a [separate bounded replay audit](reviews/ordinary12-freej-first-divisibility-independent-audit/README.md);
+it assumes neither rank nor checker calibration. The [first-root transport](reviews/ordinary12-freej-first-transport-independent-audit/README.md)
+also passed a bounded replay audit under positivity of all twelve inputs and
+beta. A later [signed `q⁴` congruence replay](research/ordinary12-ipra-bridge/free-j-main-rank-congruence-prototype/README.md)
+passed a [separate bounded audit](reviews/ordinary12-freej-main-congruence-independent-audit/README.md).
+The existence of both Pell indices and the conditional early scalar window
+also passed [separate](reviews/ordinary12-freej-pell-indices-independent-audit/README.md)
+[audits](reviews/ordinary12-freej-early-window-independent-audit/README.md);
+the latter retains explicit model mask bounds. An [early-index bound](reviews/ordinary12-freej-early-index-independent-audit/README.md)
+also passed bounded replay audit under those assumptions; it does not identify
+the index with the rank. A [separate index-comparison audit](reviews/ordinary12-freej-index-comparison-independent-audit/README.md)
+checks the proved ordering and `2R < c`; the [early-size replay](research/ordinary12-ipra-bridge/free-j-early-size-prototype/README.md)
+passed a [separate audit](reviews/ordinary12-freej-early-size-independent-audit/README.md).
+A subsequent [bounded model replay](research/ordinary12-ipra-bridge/free-j-graph-vbound-prototype/README.md)
+proves the exact graph's signed `V>c>1` under the stated positive-coordinate
+and port bounds; an [independent bounded replay](reviews/ordinary12-freej-vbound-independent-audit/README.md)
+also passed. These historical overlays are not yet the denominator-nonzero
+theorem or an internal iPRA proof.
+The ordinary tail's polarized residual and denominator-cleared identities have
+also passed a [bounded replay audit](reviews/ordinary12-freej-ordinary-identities-independent-audit/README.md),
+but those identities do not establish denominator divisibility or integrality.
+A [conditional descent-step audit](reviews/ordinary12-descent-step-independent-audit/README.md)
+checks norm preservation and preservation of supplied divisor and Bézout
+witnesses; it does not supply those witnesses or prove descent termination.
+A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
+separates the missing graph inequalities, denominator certificates and
+termination argument. Its finite identity checks and independent review do
+not establish those unbounded claims or an iPRA derivation.
+A [source-current difference-ring rebuild plan](research/ordinary12-ipra-bridge/difference-ring-build-plan/README.md)
+has a separate [source-closure and resource review](reviews/ordinary12-difference-ring-plan-independent-audit/README.md);
+a sampled resource monitor and its wrapper have been implemented and
+independently reviewed. A pinned launcher is being prepared for independent
+review; no full source-current coexistence build is claimed here. Sampling
+does not enforce a continuous disk reserve or hard per-build quota.
+Exact index matching cannot
+yet be imported directly: its existing theorem assumes strong and auxiliary
+norms that must first be recovered noncircularly. These are model-level
+results, not an internal iPRA derivation. The candidate's
 compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
 13-variable 2011 ports with `beta = 2^94517 - 1`. A [finite full-tuple and
 parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
