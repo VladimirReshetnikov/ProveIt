@@ -50,4 +50,9 @@ with tempfile.TemporaryDirectory() as td:
  assert not evidence.exists() and not evidence.is_symlink()
  run=subprocess.run([sys.executable,str(p),'--output',str(evidence)],capture_output=True,text=True)
  assert run.returncode!=0 and 'output/protected overlap' in run.stderr and not evidence.exists()
+ newer=Path('/tmp/ipra-ordinary12-coexistence-source-02/__must_not_create__')
+ if newer.parent.is_dir():
+  assert not newer.exists() and not newer.is_symlink()
+  run=subprocess.run([sys.executable,str(p),'--output',str(newer)],capture_output=True,text=True)
+  assert run.returncode!=0 and 'output/protected overlap' in run.stderr and not newer.exists()
 print('PASS_COHERENT_FREEZER_TOY parser topology external cycle missing overlap symlink canonical')

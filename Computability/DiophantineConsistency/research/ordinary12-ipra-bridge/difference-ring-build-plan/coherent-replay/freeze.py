@@ -69,6 +69,7 @@ def main():
   Path('/tmp/ipra-aq29-fresh-project-pair'),Path('/tmp/ipra-aq29-fresh-source-closure-v2'),
   Path('/tmp/ipra-model-diff-closure-plan-01'),Path('/tmp/ipra-ordinary12-coexistence-source-01'),
   Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0')]
+ protected.extend(p for p in Path('/tmp').glob('ipra-ordinary12-coexistence-source-*') if p.is_dir())
  out=validate_output(a.output,protected)
  cfg=ROOT/'lakefile.toml';libs={x['name']:ROOT/x.get('srcDir','.') for x in tomllib.loads(cfg.read_text())['lean_lib']};libs.pop('Foundation',None)
  head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip();cfg_hash=H(cfg);tool_hash=H(ROOT/'lean-toolchain')
