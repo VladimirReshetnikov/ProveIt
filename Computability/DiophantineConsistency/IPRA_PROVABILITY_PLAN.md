@@ -434,8 +434,9 @@ proves the compiler or controller. A separate [finite relabeling audit](reviews/
 matches the old 942-row table to 942 compact rows, subject to its explicit
 manual source-formula interpretation. A subsequent [paired Lean replay](research/ordinary12-ipra-bridge/compact44-relabel-pair-prototype/README.md)
 checks the corresponding 942-row list equality and all three supplied-array
-permutations in 58 modules per side. Its independent artifact audit and
-arbitrary-model tiling transport remain open. The
+permutations in 58 modules per side; its [independent artifact audit](reviews/compact44-relabel-pair-independent-audit/README.md)
+passed. The external JSON binding and arbitrary-model tiling transport remain
+separate. The
 single extra row is ruled out by
 the [paired local exclusion theorem](reviews/compact44-forbidden-independent-audit/README.md)
 when a matching left neighbor exists; boundary and arbitrary-model neighbor

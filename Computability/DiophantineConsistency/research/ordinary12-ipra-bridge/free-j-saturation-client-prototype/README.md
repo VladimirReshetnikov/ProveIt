@@ -26,3 +26,14 @@ warnings in other modules. It does not suppress a linter class. Synthetic
 controls exited 0 under isolated normal Python and rejected isolated `-O` with
 exit 1. The policy and any future build driver require independent review before
 a protected paired build.
+
+`replay.py` is a proposed source-frozen paired driver: it pins the independent
+population-provider and four-module closure audits, rebuilds the four missing
+modules and this client separately on the same-side provider overlays, verifies
+source hashes and exact direct imports, and checks the named client axiom
+report. It strips Python-related variables, `LEAN_SRC_PATH`, `LEAN_SYSROOT`, `LD_LIBRARY_PATH`, `LD_PRELOAD`, and `LD_AUDIT` before
+compiling. The sampled leader/process-group
+monitor is not a hard whole-tree quota; the separate `lean --deps` and read-only
+audit subprocesses use timeouts without that monitor. The driver and warning
+policy require independent prelaunch review and a protected paired run; no
+such run has occurred.
