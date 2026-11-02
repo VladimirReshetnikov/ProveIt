@@ -607,10 +607,11 @@ selector and copy inputs it composes the coefficient decomposition and copy
 bound with the conditional decoder equivalence. It does not derive those
 inputs or a local no-carry condition from the graph; paired verification remains
 open.
-A [direct symbolic-K graph client](research/ordinary12-ipra-bridge/compact44-direct-symbolic-k-prototype/README.md)
-has likewise compiled on one provider side. Its definition is a distinct Lean
-expression until equality with the retained K bytes and displayed coefficient
-is proved; no machine semantics or internal iPRA endpoint follows from it.
+A [direct symbolic-K graph client](reviews/compact44-direct-symbolic-k-pair-independent-audit/README.md)
+has passed a seven-module-per-side paired replay and independent artifact audit.
+Its definition is a distinct Lean expression until equality with the retained K
+bytes and displayed coefficient is proved; no machine semantics or internal
+iPRA endpoint follows from it.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
