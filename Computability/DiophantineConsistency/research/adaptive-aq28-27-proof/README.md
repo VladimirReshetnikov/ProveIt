@@ -20,3 +20,16 @@ templates and rejects mutations, including the original AQ28 arity error.
 These checks do not type-check Lean, validate the entire positivity or
 transport proofs, or establish native equivalence; the wiring checks inspect
 selected text rather than parsing a complete Lean declaration.
+
+`survey_author_extension.py` prepares a provisional author-only extension graph
+and a tracked-source additions manifest. The [recorded survey](author-survey.json)
+uses 1,209 parent modules, 24 draft modules and six check modules; no declared
+external import is new relative to the parent manifest. The accompanying
+[additions manifest](author-additions.json) pins every draft to a tracked Git
+blob and records exact diagnostic declaration names. The survey deliberately
+does not rehash the parent, check source drift or Lean's actual imports, or
+compile any draft. A separate author-only guarded driver must reauthenticate
+the completed author provider, freeze these bytes and check all dependencies;
+its output cannot be called a matched peer proof. The parent remains historical,
+with its documented package/dynamic ancestry and unobserved Foundation wrapper
+exit. Run the survey with two unused paths via `--output` and `--manifest-output`.
