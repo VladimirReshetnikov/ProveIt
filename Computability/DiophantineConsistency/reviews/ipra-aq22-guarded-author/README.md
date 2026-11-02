@@ -26,9 +26,10 @@ axiom report names and for absence of `sorryAx` or unexpected axioms. The
 standard-theory endpoint states equivalence with the embedded
 Gödel–Gentzen translation of the selected Foundation ZFC consistency sentence.
 
-This is **one historical author-only run**. It is not an independently audited
-result, a peer match, a current-source replay, a proof of dynamic/package-
-transitive provenance, or a claim that the translated formula is silently
-identical to untranslated Con(ZFC). An independent audit and matched peer
-replay remain necessary. The recorded guards are checks at specified points in
+This is **one historical author-only run**. A subsequent [independent artifact
+audit](../ipra-aq22-guarded-author-independent-audit/README.md) passed; it is
+not a second Lean run. A matched peer replay remains necessary. Neither run nor
+audit is a current-source replay, a proof of dynamic/package-transitive
+provenance, or a claim that the translated formula is silently identical to
+untranslated Con(ZFC). The recorded guards are checks at specified points in
 time, not a continuous input trace.
