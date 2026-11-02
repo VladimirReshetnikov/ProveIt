@@ -449,11 +449,11 @@ has also compiled in one exploratory run. It obtains the radix, repunit,
 digit and weighted congruence conclusions using the same witnesses, from a
 positive graph zero at symbolic beta and masks, with arbitrary `K`. Retained
 coefficient binding, decoder semantics and independent replay remain open.
-A [same-witness saturation extension](research/ordinary12-ipra-bridge/compact44-same-witness-saturation-prototype/README.md)
-has compiled in a single-side exploratory run: the same `N,w` also supply
-both global `NoCarry` statements. An earlier direct composition exceeded the
-Lean memory limit; the successful proof uses a smaller generic bridge. The
-retained-tuple binding, model decoder and paired verification remain open.
+A [same-witness saturation extension](reviews/compact44-same-witness-saturation-independent-audit/README.md)
+has passed a three-module-per-side paired replay and independent artifact audit:
+the same `N,w` also supply both global `NoCarry` statements. An earlier direct
+composition exceeded the Lean memory limit; the successful proof uses a
+smaller generic bridge. The retained-tuple binding and model decoder remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
