@@ -218,7 +218,10 @@ any theorem that additionally requires positive `u` or a particular sign of
   The subsequent [graph strong-norm theorem](../free-j-graph-strong-prototype/README.md)
   constructs a positive multiplier without assuming the norm; its paired
   replay passed an [independent artifact audit](../../../reviews/ordinary12-freej-graph-strong-independent-audit/README.md).
-  The auxiliary witness, rank recovery and object-level iPRA proof remain open.
+  A [graph auxiliary-witness theorem](../free-j-graph-auxiliary-prototype/README.md)
+  also proves the positive auxiliary norm with explicit sign alternatives;
+  its paired replay passed an [independent artifact audit](../../../reviews/ordinary12-freej-graph-auxiliary-independent-audit/README.md).
+  Final rank recovery and the object-level iPRA proof remain open.
 * `FreeJNormZero` proves the generic ring identity and a natural-valued
   signed-pair instance. The general signed graph substitution is open.
 * The early-size and index packets give useful intermediate model results
