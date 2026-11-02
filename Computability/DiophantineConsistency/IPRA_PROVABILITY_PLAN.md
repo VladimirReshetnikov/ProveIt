@@ -199,8 +199,9 @@ its separate paired Lean replay remains open. The
 reductions have finite exact residual and degree checks. Their Lean model
 transports and native endpoints completed one [author-only extension](reviews/aq26-author-trial-v2/README.md)
 and passed an [independent artifact audit](reviews/aq26-author-independent-audit/README.md).
-They remain historical, with no matched peer; the standard-theory AQ26 client
-is being checked separately. The
+They remain historical, with no matched peer. The [standard-theory AQ26 client](research/ipra-standard-aq26/README.md)
+also completed one author-only single-overlay run and a separate artifact
+audit; its paired Lean replay remains open. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
