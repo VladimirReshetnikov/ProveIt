@@ -1,0 +1,5 @@
+# Symbolic compact low-mask parity: exploratory
+
+`CompactLowEven.low_even` proves, in an arbitrary IΣ₁ model, that the symbolic finite-list low mask has remainder zero modulo two. It uses the previously established low radix digit and nested remainder identities. This discharges the low-even hypothesis once the graph low port is explicitly identified with that symbolic mask; it does not prove that identification.
+
+The corrected source compiled on the author graph-digit overlay in actual session 57047, exit 0, without warnings, with `[propext, Classical.choice, Quot.sound]`. The failed first source and diagnostics are retained under `observations`; its `sorryAx` is a failure artifact. This is single-side exploratory evidence, not a paired replay, a retained-MC equality, or a PRA derivation. The bounded command used Lean `-M3000 -j1 -DElab.async=false`, a 90-second timeout and a clean initial loader environment; the whole process tree was not subject to a separate sampled memory monitor.
