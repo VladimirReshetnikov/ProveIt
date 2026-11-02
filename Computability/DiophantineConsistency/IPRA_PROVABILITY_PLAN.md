@@ -556,8 +556,11 @@ explicit model index and word-bound conditions. Deriving the case conditions
 from the graph and selecting a clean predecessor in every model remain open.
 An author-side [coverage and all-cases client](research/ordinary12-ipra-bridge/compact44-rotation-coverage-prototype/README.md)
 now combines the three window cases for arbitrary in-range model positions.
-It does not yet bound the selected source index by the word length or prove
-the graph-specific support and clean-predecessor conditions.
+It does not itself bound the selected source index by the word length or prove
+the graph-specific support and clean-predecessor conditions. A subsequent
+author-side [bounded rotation client](research/ordinary12-ipra-bridge/compact44-rotation-index-bounds-prototype/README.md)
+does bound that index for a reduced cut and records the zero-padded final
+digit explicitly. Selecting a clean predecessor from the graph remains open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
