@@ -392,7 +392,10 @@ from its explicit power, divisibility, index and positivity assumptions, but
 does not itself show that the free-J graph provides those facts. A
 [source-only closure audit](reviews/ordinary12-freej-population-closure-independent-audit/README.md)
 checks a proposed nine-module coherent rebuild for a graph client; that build
-and the client remain open.
+and the client remain open. Its first protected attempt stopped on a source
+style warning before reaching the client. A [reviewed retry policy](reviews/ordinary12-freej-population-warning-prelaunch-audit/README.md)
+retains that precise warning and rejects changed or additional warnings; it
+does not itself establish a successful graph build.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
