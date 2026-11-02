@@ -30,7 +30,8 @@ with the Foundation consistency sentence under the recorded embedding and
 Gödel–Gentzen translation.
 
 This is one historical **author-only extension**. Its [independent artifact audit](../ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
-passed; a matched extension replay remains pending. The separately checked finite
+passed. A later [historical pair](../ipra-frontier13-historical-pair-terminal/README.md)
+matched all eight additions; independent complete-result audit is underway. The separately checked finite
 [PDF binding](../frontier13-pdf-historical-lean-binding/README.md) does not
 formalize TeX; its fixed decoder/rank recipe remains manually transcribed.
 This result is not a current-source claim or an identification of translated

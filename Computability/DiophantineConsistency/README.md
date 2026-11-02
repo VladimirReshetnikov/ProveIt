@@ -73,7 +73,9 @@ retains the manual decoder and rank-recipe boundary.
 For the 13-variable degree-36 and degree-56 equations, a [joint historical
 author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
 compiled native and standard-iPRA endpoint clients and passed an independent
-artifact audit; a paired extension remains pending. Their [finite display bindings](reviews/frontier13-pdf-historical-lean-binding/README.md)
+artifact audit. A later [historical pair](reviews/ipra-frontier13-historical-pair-terminal/README.md)
+matched all eight additions; its independent complete-result audit is underway.
+Their [finite display bindings](reviews/frontier13-pdf-historical-lean-binding/README.md)
 have a [separate review](reviews/frontier13-pdf-historical-lean-binding-independent-audit/README.md)
 and retain the manual decoder and rank-recipe boundary.
 
@@ -81,7 +83,7 @@ A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-a
 also compiled a primitive-recursive checker for a common bound in the selected
 Foundation refutation encoding, with internal iPRA equivalences linking its
 absence of output 1 to both 13-variable no-zero sentences. Its independent
-artifact audit and a paired extension remain pending; it does not identify an
+artifact audit passed; a paired extension remains pending. It does not identify an
 arbitrary independently specified proof checker with the selected one.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer

@@ -140,7 +140,8 @@ matched all five additions and passed an [independent complete-result audit](rev
 The degree-36 and degree-56 13-variable equations have a [joint guarded
 historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
 with native and standard-theory clients. An [independent artifact audit](reviews/ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
-passed; a paired extension remains pending.
+passed. A later [historical pair](reviews/ipra-frontier13-historical-pair-terminal/README.md)
+matched all eight additions; independent complete-result audit is underway.
 
 The [selected bounded-refutation checker](research/ipra-selected-refutation-verifier/README.md)
 has a Lean construction of one primitive-recursive function code
@@ -152,8 +153,8 @@ bit sentence is proved in classical candidate PRA; attempted native and
 standard iPRA bit-sentence strengthenings did not compile and are not claimed.
 This is a checker for the selected bounded encoding, not a comparison with an
 independently specified proof checker. A [guarded historical author run](reviews/ipra-selected-verifier-guarded-author/README.md)
-compiled the full ten-module extension; independent artifact audit and a
-matched peer remain pending.
+compiled the full ten-module extension and passed an [independent artifact audit](reviews/ipra-selected-verifier-guarded-author-independent-audit/README.md);
+a matched peer remains pending.
 
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency
