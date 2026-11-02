@@ -577,8 +577,12 @@ the independently obtained lengths equal. Selecting a clean predecessor and
 deriving the carry reset remain open.
 An author-side [phase-neighbor client](research/ordinary12-ipra-bridge/compact44-clean-phase-neighbors-prototype/README.md)
 also checks that the two preceding phases of any phase outside the blocker
-avoid the exceptional position. Transport to full-word positions is a
-separate model lemma.
+avoid the exceptional position. A separate author-side
+[clean-source client](research/ordinary12-ipra-bridge/compact44-clean-source-select-prototype/README.md)
+transports these phase facts to full-word cyclic positions and conditionally
+selects a zero source digit with two Boolean predecessors. It assumes the
+two source-index phase equations; deriving them from the temporal rotation
+and establishing the clean carry remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
