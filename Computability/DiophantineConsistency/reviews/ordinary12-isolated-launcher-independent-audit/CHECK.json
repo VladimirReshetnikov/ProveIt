@@ -1,0 +1,89 @@
+{
+  "status": "PASS_INDEPENDENT_ISOLATED_LAUNCHER_AUDIT",
+  "reviewed_commit": "face1a63cd",
+  "pins": {
+    "launch.py": "6e3df86b8218a759612992a41f5dbef84bce0cc5e9ecc19e6ffeeda84d3343c5",
+    "gates.py": "76f153b8be70b4c804469934c2dcaf92f9803f0024932a48674c96d3b47d373e",
+    "test_gates.py": "4294b614a0ba6253a5655f0e1a43c2a396d6e7ee12fb7c50dc2d58740207c494",
+    "test_launch.py": "d4575af81c45470c9984de71cabbde08cec2f6a11455367ea9fff8ea946aba29"
+  },
+  "observed": {
+    "test_gates.py": {
+      "exit": 0,
+      "stdout": "PASS_COHERENT_PREFLIGHT_TOY tracked-source pins drift symlink provider guards inventory"
+    },
+    "test_launch.py": {
+      "exit": 0,
+      "stdout": "PASS actual optimized or non-isolated launcher rejected before writes\nPASS missing executable pin rejected before launch\nPASS fake coordinator records exit/stdout and sanitized environment\nPASS real isolated launcher startup blocks inherited sitecustomize\nPASS real sitecustomize canary blocked by isolated child and sanitized environment\nPASS real isolated runpy coordinator bootstrap imports only its script directory\nPASS_COHERENT_LAUNCHER_TOY_CONTROLS"
+    },
+    "nonisolated": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: invoke launcher as python3 -I -S launch.py"
+    },
+    "isolated_without_no_site": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: invoke launcher as python3 -I -S launch.py"
+    },
+    "no_site_without_isolated": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: invoke launcher as python3 -I -S launch.py"
+    },
+    "optimized_O": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: launcher rejects optimized Python and PYTHONOPTIMIZE"
+    },
+    "optimized_OO": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: launcher rejects optimized Python and PYTHONOPTIMIZE"
+    },
+    "optimized_env": {
+      "exit": 1,
+      "stderr_last_line": "RuntimeError: launcher rejects optimized Python and PYTHONOPTIMIZE"
+    },
+    "live_readonly_preflight": {
+      "exit": 0,
+      "result": {
+        "status": "PASS_PINNED_COEXISTENCE_PREFLIGHT",
+        "source": {
+          "project_modules": 70,
+          "target": "DiophantineConsistency.FreeJProviderChecks",
+          "manifest_sha256": "9a7059e439bb77ab258808789fd1165cff8a4961c609e132ca0ed2130cb27ded",
+          "head": "4d952f817bc98de490b43e84335a6c4f52a0343d",
+          "direct_foundation_imports": [
+            "Foundation.FirstOrder.Arithmetic.Exponential.Log",
+            "Foundation.FirstOrder.Arithmetic.HFS.PRF",
+            "Foundation.FirstOrder.Arithmetic.IOpen.Basic"
+          ]
+        },
+        "provider": {
+          "receipt_sha256": "7cbd49b6d84497c46520e908fc8c4dc105d7a0070fd1323c6c28e26bf4cf00f6",
+          "foundation_artifacts": 1540,
+          "guard_paths": 14764,
+          "outer_wrapper_exit_observed": false
+        },
+        "reviews": 6,
+        "free_disk_bytes": 6035574784
+      }
+    },
+    "fake_child_0": {
+      "launcher_exit": 0,
+      "recorded_child_exit": 0,
+      "isolated": 1,
+      "no_site": 1,
+      "startup_canary": false,
+      "named_variables_scrubbed": true,
+      "local_wrapper_import": "AUDIT_FAKE_WRAPPER"
+    },
+    "fake_child_7": {
+      "launcher_exit": 7,
+      "recorded_child_exit": 7,
+      "isolated": 1,
+      "no_site": 1,
+      "startup_canary": false,
+      "named_variables_scrubbed": true,
+      "local_wrapper_import": "AUDIT_FAKE_WRAPPER"
+    }
+  },
+  "real_output_paths_untouched": true,
+  "scope": "Read-only point-in-time preflight and isolated fake children; no real build, no guarantee of race-free inputs or hard resource quotas, and no graph transport or iPRA theorem."
+}
