@@ -665,8 +665,11 @@ length `N` for the same graph witnesses. A separate [mathematical review](review
 found no gap in the inspected induction, witness matching or word coding; it
 is not a paired replay. An author-side [field-bit client](research/ordinary12-ipra-bridge/compact44-fixed-graph-field-bits-prototype/README.md)
 derives same-witness source-bit equalities in the horizontal and vertical
-field windows at all applicable model columns. Translating those bits to
-tile-field matching and machine semantics remains open.
+field windows at all applicable model columns. An author-side
+[field-marker extension](research/ordinary12-ipra-bridge/compact44-fixed-graph-field-markers-prototype/README.md)
+includes the extra boundary marker positions in those equalities. Translating
+the bits to block occupancy, tile-field matching and machine semantics remains
+open.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
