@@ -46,3 +46,12 @@ remain in force.
 `generate.py` pins the candidate and AQ17 zero-decomposition template and
 produces the literal and zero decomposition. `check_literal.py` checks the
 literal spelling independently. Both require ordinary, non-optimized Python.
+
+`build_manifest.py --source-commit a8a528414339a138adac3d409ebe492c359e8f12`
+freezes the previous 44 AQ22/AQ17 additions and the eight AQ16 additions,
+with exact source hashes, imports and diagnostic names. It produces the
+52-module `author-additions.json`, SHA-256
+`081e343d107f6ff1e73b1bfded119dd3698f363169ae24c25a07b60ddff33a0d`.
+The guarded runner's source policy accepted all 52 modules, and a full
+single-overlay author run has been launched over the audited AQ29 parent.
+The manifest alone does not establish that the guarded run succeeded.
