@@ -1,0 +1,45 @@
+{
+  "scope": "source and direct-object scan only; no Lean",
+  "script_sha256": "5518eab1c4844af1c27318a15a2974572f702ad31810809d0c6db5aaaf2e0c6d",
+  "source_scan_sha256": "1aca547836bef23a058e5714dbaf33bd86666f931e3e872319efc73d6e78a880",
+  "intermediate_failed_scan": {
+    "actual_exit": 1,
+    "reason": "the graph-halt draft was changed to retain s-bound and shift before updating its pin",
+    "stale_expected_sha256": "6cf60538f78f06c66e4c5ad9caba6270c7a9eafa6e2c17ba746c86a7967803e7",
+    "observed_draft_sha256": "a4919134a0434c790732d6f9a82ff6cc6b1285ce5d596d8b0152624aaaff7586",
+    "disposition": "updated the source pin and reran the complete scan; no Lean was run"
+  },
+  "runs": [
+    {
+      "case": "normal",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-marked-suffix-source-plan/scan.py",
+        "--output",
+        "/tmp/suffix-scan-observe-gtrv8ct0/normal.json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"conflicts\": 0, \"direct_seeds\": 26, \"modules\": 22, \"status\": \"PASS_SOURCE_ONLY_SUFFIX_SCAN\", \"target_collisions\": 0, \"unresolved\": 0}\n",
+      "stderr": ""
+    },
+    {
+      "case": "optimized",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "-B",
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-marked-suffix-source-plan/scan.py",
+        "--output",
+        "/tmp/suffix-scan-observe-gtrv8ct0/optimized.json"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-marked-suffix-source-plan/scan.py\", line 54, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-marked-suffix-source-plan/scan.py\", line 21, in main\n    require(__debug__ and not sys.flags.optimize,'optimized Python rejected');ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-marked-suffix-source-plan/scan.py\", line 13, in require\n    if not v:raise ValueError(msg)\n             ^^^^^^^^^^^^^^^^^^^^^\nValueError: optimized Python rejected\n"
+    }
+  ]
+}
