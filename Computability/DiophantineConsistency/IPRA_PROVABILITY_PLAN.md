@@ -386,6 +386,13 @@ then proves `q ∣ 2^R` assuming additionally `d≥4` and `β=2^d−1`; its
 paired replay passed an [independent artifact audit](reviews/ordinary12-freej-power-cancel-independent-audit/README.md).
 Binding these assumptions to the compact44 ports, remaining carrier recovery
 and transport of the full argument to iPRA remain open.
+A separate [population theorem from ordinary Pell facts](reviews/ordinary12-freej-population-facts-independent-audit/README.md)
+has passed paired replay and independent audit. It derives `3h+2 ≤ population R`
+from its explicit power, divisibility, index and positivity assumptions, but
+does not itself show that the free-J graph provides those facts. A
+[source-only closure audit](reviews/ordinary12-freej-population-closure-independent-audit/README.md)
+checks a proposed nine-module coherent rebuild for a graph client; that build
+and the client remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
