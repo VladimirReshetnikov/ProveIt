@@ -454,6 +454,11 @@ has passed a three-module-per-side paired replay and independent artifact audit:
 the same `N,w` also supply both global `NoCarry` statements. An earlier direct
 composition exceeded the Lean memory limit; the successful proof uses a
 smaller generic bridge. The retained-tuple binding and model decoder remain open.
+A [selector-digit client](research/ordinary12-ipra-bridge/compact44-selector-graph-prototype/README.md)
+has compiled in a single-side exploration. For the same symbolic graph witnesses
+it derives Boolean selector digits and a zero forbidden digit at the stated
+positive, bounded model positions; the origin is handled separately. Its
+paired replay, retained-port and full cyclic-word interpretation remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
@@ -575,6 +580,14 @@ An [independently audited finite coefficient-mass calculation](reviews/compact44
 proves the 943-row selector and 41-copy totals in Lean, with the numerical
 half-radix and heterogeneous-carry slack. The connection from those finite
 totals to the graph's model-level word decomposition is not yet proved.
+A [finite coefficient-decomposition client](research/ordinary12-ipra-bridge/compact44-coefficient-decomposition-prototype/README.md)
+has compiled in one exploratory run for arbitrary model-valued selector and
+copy functions. It does not prove that a graph-derived cyclic column has that
+finite decomposition or supply Boolean, copy-bound and no-carry hypotheses.
+A [direct symbolic-K graph client](research/ordinary12-ipra-bridge/compact44-direct-symbolic-k-prototype/README.md)
+has likewise compiled on one provider side. Its definition is a distinct Lean
+expression until equality with the retained K bytes and displayed coefficient
+is proved; no machine semantics or internal iPRA endpoint follows from it.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
