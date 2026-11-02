@@ -39,7 +39,8 @@ use a reference-specific target policy. A separate [dedicated adaptation](extens
 has passed toy controls but still needs independent review. The
 in-progress parent already has known workspace source drift. The dedicated
 freezer requires a strict current-source plan, so it cannot use that parent
-directly while the drift remains; a coherent successor or separately reviewed
-historical-basis workflow is required. Package-
+directly while the drift remains. A separate [historical-parent workflow](historical/README.md)
+has passed independently rerun toy controls and source review; it cannot yield
+a current-source claim. Package-
 transitive and dynamic provenance, and the parent Foundation wrapper's
 unobserved outer exit, retain their documented limits.
