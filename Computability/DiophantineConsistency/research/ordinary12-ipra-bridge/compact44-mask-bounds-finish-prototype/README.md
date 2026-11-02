@@ -1,0 +1,5 @@
+# Symbolic mask bounds from an explicit beta identity: exploratory
+
+In an arbitrary IΣ₁ model, `CompactBetaResidues.residues` proves beta is odd and congruent to 7 modulo 8, assuming beta+1=Exp.exp(67*8807). `CompactMaskBoundFinish.bounds` combines this with the symbolic low/high mask bounds and residues: given that exact beta identity and J>0, it concludes beta>0, low<beta, beta+high<2*beta, and 1≤high*J. Thus these conclusions no longer need to be separate assumptions for that symbolic instance.
+
+The identity for beta remains explicit. No equality to the retained beta numeral, low/high payload bytes or graph tuple is proved. The fixed K, machine simulation, checker and PRA theorem remain outside scope. The three-source single-side fresh-overlay wrapper session 85004 actually exited 0 without warnings; all three theorems report `[propext, Classical.choice, Quot.sound]`. Earlier failed attempts and exploratory logs are under `observations`. This is neither a paired replay nor an independent audit.
