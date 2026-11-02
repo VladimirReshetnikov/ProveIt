@@ -341,8 +341,11 @@ Here `π` indexes the carrier ordinate; the distinct exponent `m` indexing
 `f` is only known to satisfy `π ∣ m`. The [power identity theorem](research/ordinary12-ipra-bridge/free-j-power-finish-prototype/README.md)
 proves `X=2^R` under the graph hypotheses and `β≥46`; its paired replay
 passed an [independent artifact audit](reviews/ordinary12-freej-power-finish-independent-audit/README.md).
-Remaining carrier recovery, compact44 calibration and transport of the full
-argument to iPRA remain open.
+A [conditional Mersenne cancellation](research/ordinary12-ipra-bridge/free-j-power-cancel-prototype/README.md)
+then proves `q ∣ 2^R` assuming additionally `d≥4` and `β=2^d−1`; its
+paired replay passed an [independent artifact audit](reviews/ordinary12-freej-power-cancel-independent-audit/README.md).
+Binding these assumptions to the compact44 ports, remaining carrier recovery
+and transport of the full argument to iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
