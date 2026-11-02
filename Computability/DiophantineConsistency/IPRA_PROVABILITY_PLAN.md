@@ -283,10 +283,14 @@ termination argument. Its finite identity checks and independent review do
 not establish those unbounded claims or an iPRA derivation.
 A [source-current difference-ring rebuild plan](research/ordinary12-ipra-bridge/difference-ring-build-plan/README.md)
 has a separate [source-closure and resource review](reviews/ordinary12-difference-ring-plan-independent-audit/README.md);
-a sampled resource monitor and its wrapper have been implemented and
-independently reviewed. A pinned launcher is being prepared for independent
-review; no full source-current coexistence build is claimed here. Sampling
-does not enforce a continuous disk reserve or hard per-build quota.
+two guarded builds of the 70-source coexistence closure subsequently passed
+and matched, with an [independent artifact audit](reviews/ordinary12-coexistence-pair-independent-audit/README.md).
+The two Lean files added by a later upstream merge are outside that closure;
+the 70 pinned sources still matched the workspace at the audit. Provider
+transitive/dynamic ancestry and the original Foundation wrapper exit retain
+the audit's qualifications. The sampled resource monitor is not a continuous
+disk reserve or hard per-build quota. This coexistence check is not an
+ordinary-integrality or iPRA proof.
 Exact index matching cannot
 yet be imported directly: its existing theorem assumes strong and auxiliary
 norms that must first be recovered noncircularly. These are model-level
