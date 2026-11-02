@@ -55,12 +55,15 @@ To obtain the missing all-model direction without circularity:
    Deriving those assumptions from the parent zero remains open. The
    standard-integer `ThirteenFreshSeed.fresh_private_seed` is not an
    arbitrary-model theorem.
-3. Bind the resulting 13-coordinate `value69` to the **entire** pinned 69-row
-   expression and the original 14-coordinate evaluator to the precise native
-   carrier, including conversion of positive integer variables to whatever
-   nonnegative-variable equation is ultimately displayed. Prove both model
-   implications with the same full port tuple. No single scalar bound or
-   matching beta alone establishes equality of four whole constants.
+3. The [69-row DAG binding](../thirteen69-dag-binding/README.md) now proves
+   the generic-ring equality to `value69` and its shifted 2011-port model
+   statement. Its [independent audit](../../reviews/thirteen69-dag-binding-independent-audit/README.md)
+   checks the 69 rows and four symbolic port slots externally. An [independent
+   degree audit](../../reviews/thirteen69-degree2011-independent-audit/README.md)
+   also verifies exact degree 174 for the distinct 2011 tuple. The 2011-port
+   candidate still needs both model implications with the same full tuple,
+   and any displayed equation needs its own exact binding. No single scalar
+   bound or matching beta alone establishes equality of four whole constants.
 4. Prove the phase-split2471 tuple's native checker/calibration and link its
    interpreted refutation predicate to the particular consistency statement;
    a theorem for another 2011 or compact44 tuple does not supply this link.

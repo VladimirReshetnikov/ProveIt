@@ -69,7 +69,10 @@ has exact degree 174 and a different phase-split2471 four-port tuple. An
 supplies the required extra Pell divisibility factor, but the candidate's
 all-model reverse construction, full tuple calibration and iPRA endpoint
 remain open. The previously checked 13-variable endpoints do not by
-themselves establish this candidate's equivalence.
+themselves establish this candidate's equivalence. A distinct instance using
+the 2011 tuple now has an [audited 69-row model binding](reviews/thirteen69-dag-binding-independent-audit/README.md)
+and [independently checked degree 174](reviews/thirteen69-degree2011-independent-audit/README.md).
+Its model converse and iPRA endpoint remain open as well.
 
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common
