@@ -412,6 +412,13 @@ the symbolic mask, along with its stated radix and mask hypotheses. The audit
 records that an older closure-audit rerun fails against the corrected client
 source; it separately checked the unchanged closure scan and frozen corrected
 source rather than treating that historical rerun as successful.
+A [symbolic-mask graph-digit join](research/ordinary12-ipra-bridge/compact44-symbolic-graph-join-prototype/README.md)
+combines the graph client with the audited symbolic population, parity and
+residue results. Its seven-module-per-side paired replay passed an
+[independent artifact audit](reviews/compact44-symbolic-graph-join-independent-audit/README.md).
+Both graph-port equalities to symbolic masks and the other stated graph, radix
+and product hypotheses remain explicit; this does not calibrate the retained
+coefficient tuple or prove a machine simulation.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
@@ -441,7 +448,11 @@ specialization](research/ordinary12-ipra-bridge/compact44-controller-data-protot
 now compiles the modular residue and model coordinate surjectivity and
 injectivity for width 590069 and modulus 581197, on a historical provider with
 one recorded linter warning. It does not establish the full controller choice,
-retained coefficient binding or an iPRA endpoint. Its local [finite-sum selector/copy
+retained coefficient binding or an iPRA endpoint. A separate [controller-choice
+specialization](research/ordinary12-ipra-bridge/compact44-controller-choice-prototype/README.md)
+also compiled the choice and conditional rank-calibration statements in an
+exploratory build. Its historical project and Foundation providers are mixed,
+so a coherent replay is needed; no compact graph binding follows. The local [finite-sum selector/copy
 equivalence](research/ordinary12-ipra-bridge/compact44-decoder-iff-prototype/README.md)
 has passed an [independent artifact audit](reviews/compact44-decoder-iff-independent-audit/README.md)
 under explicit bounds and an external finite index type. A later
