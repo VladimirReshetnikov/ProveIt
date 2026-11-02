@@ -716,9 +716,10 @@ A [single-module retry](research/ordinary12-ipra-bridge/compact44-wangtable-high
 also failed at the 6,000 MB kernel limit on `rows_goodC`; it does not establish
 that declaration or the module. A subsequent [chunked author-side build](research/ordinary12-ipra-bridge/compact44-wang-table-chunk-explore/AUTHOR_RESULT.md)
 compiled all 96 modules and the original-name table module; a separate
-29-declaration axiom inventory also completed. Its independent artifact
-audit is pending, and the exploratory seed/provider limitations remain; this
-is not a paired or fully authenticated build.
+29-declaration axiom inventory also completed. Its [independent artifact and
+source-assembly audit](reviews/compact44-wang-chunk-author-artifact-independent-audit/README.md)
+passed, with exploratory seed/provider and inventory-binary qualifications;
+this is not a paired or fully authenticated build.
 A separate [converse construction plan](research/ordinary12-ipra-bridge/compact44-converse-construction-plan/README.md)
 identifies the compact44-specific packing, calibration and witness assembly
 still needed for the halt-to-graph direction; the differently parameterized
