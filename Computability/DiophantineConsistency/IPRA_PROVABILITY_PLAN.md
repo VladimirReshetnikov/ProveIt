@@ -212,6 +212,10 @@ sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
+The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
+is a further five-binding AQ22 reduction with independently checked finite
+substitution, positivity and degree calculations. Its Lean transport and
+internal iPRA endpoint remain open.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
