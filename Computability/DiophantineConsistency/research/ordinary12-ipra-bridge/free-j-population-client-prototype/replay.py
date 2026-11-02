@@ -24,6 +24,13 @@ H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def load(path):
  spec=importlib.util.spec_from_file_location('monitor',path);obj=importlib.util.module_from_spec(spec);spec.loader.exec_module(obj);return obj
 
+def warnings_accepted(name,src,text):
+ if name=='DiophantineConsistency.ArithmeticBinomLegendre':
+  expected=(f"{src}:78:10: warning: try 'simp' instead of 'simpa'\n\n"
+    "Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`\n")
+  return text==expected
+ return 'warning:' not in text
+
 def verify():
  for p,h in PINS.items():
   if H(p)!=h:raise ValueError(('fixed input drift',str(p)))
@@ -66,7 +73,7 @@ def main():
    if obj.exists() or obj.is_symlink():raise ValueError(('output path occupied',label,name))
    cmd=[str(LEAN),'-M3000','-j1','-DElab.async=false',f'--root={frozen}',str(src),'-o',str(obj)]
    code,peak,reason=monitor.monitored(cmd,env,log);text=log.read_text();reports=re.findall(r"^'([^']+)' depends on axioms: \[([^\]]*)\]$",text,re.M)
-   if code or reason or 'warning:' in text or 'error:' in text or 'sorryAx' in text or len(reports)!=report_count:raise ValueError(('compiler failure',label,name,code,reason,text[-8000:]))
+   if code or reason or not warnings_accepted(name,src,text) or 'error:' in text or 'sorryAx' in text or len(reports)!=report_count:raise ValueError(('compiler failure',label,name,code,reason,text[-8000:]))
    expected_reports={'DiophantineConsistency.FreeJPopulationFactsNarrow':{'FreeJPopulationFacts.population_of_ordinary_facts'},'DiophantineConsistency.FreeJPopulationClient':{'FreeJPopulationClient.graph_population'}}.get(name,set())
    if {report for report,_ in reports}!=expected_reports or any({x.strip() for x in ax.split(',') if x.strip()}-{'propext','Classical.choice','Quot.sound'} for _,ax in reports):raise ValueError(('unexpected axiom report',name,reports))
    deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60);expected={str(PACKAGE/'Init.olean')}

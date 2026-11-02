@@ -23,3 +23,16 @@ leader/process-group monitor; the separate `lean --deps` query uses a
 60-second subprocess timeout, not that resource monitor, and the read-only
 audits use timeouts rather than a hard resource quota. This is a description
 of the proposed replay, not evidence it has run.
+
+The first protected paired wrapper, session 52770, exited 1: the first six
+author modules succeeded, then `ArithmeticBinomLegendre` itself exited 0 but
+the strict driver rejected its `unnecessarySimpa` warning at line 78:10. No
+peer build or graph theorem resulted. The pinned source remains unchanged and
+the exact failure logs and original driver are retained. The revised driver
+accepts only that complete observed warning text for that exact module and
+frozen source location; any changed or additional warning is rejected. It does
+not suppress that linter or accept a warning class generally. The isolated
+`warning_controls.py` run exited 0 after testing the observed warning and
+changed-line, extra-warning, wrong-module and missing-warning controls; its
+isolated `-O` run was rejected with exit 1. A fresh independent prelaunch
+review and protected paired run are still required.
