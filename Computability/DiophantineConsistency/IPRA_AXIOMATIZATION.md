@@ -142,6 +142,18 @@ historical author extension](reviews/ipra-standard-13-frontier-guarded-author/RE
 with native and standard-theory clients. An [independent artifact audit](reviews/ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
 passed; a paired extension remains pending.
 
+The [selected bounded-refutation checker](research/ipra-selected-refutation-verifier/README.md)
+has an exploratory Lean construction of one primitive-recursive function code
+whose output-at-one characterizes the selected bounded refutation matrix. Its
+clients state internal native and standard iPRA equivalences between the
+selected refutation's negation and the absence of a bound producing one, and
+connect that same checker to both 13-variable no-zero sentences. The recorded
+bit sentence is proved in classical candidate PRA; attempted native and
+standard iPRA bit-sentence strengthenings did not compile and are not claimed.
+This is a checker for the selected bounded encoding, not a comparison with an
+independently specified proof checker. A full guarded replay and independent
+artifact audit remain pending.
+
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency
 sentence is definitionally `¬rho` in
