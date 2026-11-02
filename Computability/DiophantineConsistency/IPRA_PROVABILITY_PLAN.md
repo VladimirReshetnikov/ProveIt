@@ -658,7 +658,12 @@ contradiction or a row-propagation theorem. The author-side
 [fractional carry-one client](research/ordinary12-ipra-bridge/compact44-fractional-carry-one-prototype/README.md)
 further proves that if the temporal bit-shift remainder is between `1` and
 `65`, both temporal digits are even and both incoming carries equal `1`.
-It does not exclude those remainders.
+That client alone does not exclude those remainders. A later author-side
+[fractional exclusion client](research/ordinary12-ipra-bridge/compact44-fractional-exclusion-prototype/README.md)
+combines the carry fact with a model-wide half-radix temporal bound to exclude
+remainders `1` through `64` under the symbolic graph hypotheses. Remainders
+`0`, `65` and `66` remain open in that result; it does not assert a graph
+solution or contradiction.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
