@@ -1,0 +1,5 @@
+# Uncompiled inverse lookup draft
+
+`CompactInverseDraft.lean` proposes the finite lookup `inverseLookup` from the exact `inverseRows` array and attempts to derive its left-inverse property from the already paired finite `forward_roundtrip`, then its bounded inverse image using `row_surjective`. Its source and every stated theorem are uncompiled and may contain elaboration errors. The apparent Σ₀ lookup instance and its composition with an arbitrary modeled word also require checking.
+
+Even if the inverse theorems compile, they apply only to a compact row index <943 that is not 1. Excluding row 1 from an actual compact cyclic word requires an explicit matching left neighbor. The separately audited `CompactForbidden.five_cannot_have_left` provides an exact finite-table local exclusion, but its compiled provider is not in the current paired matching overlay. A same-provider coherent rebuild or fully checked provider join and model field lift are required before using it here. No arbitrary neighbor, cyclic wrap, whole-tiling converse or machine equivalence has been established by this draft.
