@@ -37,6 +37,37 @@ def require_init(package):
  if not init.is_file():raise ValueError(('required Init object missing',str(init)))
  return str(init)
 
+SUFFIXES=('.olean','.olean.private','.olean.server','.ir','.ilean','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean.hash')
+def guard(stem):
+ result={}
+ for suffix in SUFFIXES:
+  p=Path(str(stem)+suffix)
+  if os.path.lexists(p):
+   if not p.is_file():raise ValueError(('invalid companion',str(p)))
+   result[str(p)]={'realpath':str(p.resolve()),'sha256':H(p)}
+  else:result[str(p)]=None
+ return result
+
+def checkguards(guards):
+ for name,prior in guards.items():
+  p=Path(name)
+  if prior is None:
+   if os.path.lexists(p):raise ValueError(('unexpected companion',name))
+  elif not p.is_file() or str(p.resolve())!=prior['realpath'] or H(p)!=prior['sha256']:
+   raise ValueError(('companion drift',name))
+
+def mergeguards(allguards,new):
+ for key,value in new.items():
+  if key in allguards and allguards[key]!=value:raise ValueError(('guard changed between steps',key))
+  allguards[key]=value
+
+def check_frozen(rows):
+ for name,src,digest,_ in rows:
+  if not src.is_file() or H(src)!=digest:raise ValueError(('frozen source drift',name))
+
+def require_output(obj):
+ if not obj.is_file() or obj.is_symlink():raise ValueError(('invalid output object',str(obj)))
+
 def load(path):
  spec=importlib.util.spec_from_file_location('monitor',path);obj=importlib.util.module_from_spec(spec);spec.loader.exec_module(obj);return obj
 
@@ -45,8 +76,8 @@ def verify():
   if H(p)!=h:raise ValueError(('fixed input drift',str(p)))
  scan=json.loads((PLAN/'scan.json').read_text());review=json.loads((AUDIT/'CHECK.json').read_text());obs=json.loads((AUDIT/'terminal-observation.json').read_text());plan_review=json.loads(PLAN_AUDIT.read_text());plan_obs=json.loads((PLAN_AUDIT.parent/'terminal-observation.json').read_text())
  if scan['status']!='PRELIMINARY_SOURCE_CLOSURE_SCAN_NOT_A_BUILD' or len(scan['modules'])!=6 or len(scan['inherited_objects'])!=134:raise ValueError('invalid scan')
- if review.get('status')!='PASS_INDEPENDENT_SYMBOLIC_GRAPH_JOIN_PAIR_AUDIT' or review.get('recorded_outer_exit')!=0 or obs.get('independent_review_exit')!=0 or obs.get('check_sha256')!=PINS[AUDIT/'CHECK.json']:raise ValueError('invalid graph-digit audit')
- if plan_review.get('status')!='PASS_INDEPENDENT_POINT_IN_TIME_FIXED_GRAPH_CLOSURE' or plan_review.get('parent_object_count_each')!=134 or plan_review.get('ordered_sources')!=[x['module'] for x in scan['modules']] or plan_obs.get('observed_exit')!=0 or plan_obs.get('receipt_sha256')!=PINS[PLAN_AUDIT]:raise ValueError('invalid closure audit')
+ if review.get('status')!='PASS_INDEPENDENT_SYMBOLIC_GRAPH_JOIN_PAIR_AUDIT' or review.get('recorded_outer_exit')!=0 or type(obs.get('independent_review_exit')) is not int or obs['independent_review_exit']!=0 or obs.get('lean_launched') is not False or obs.get('check_sha256')!=PINS[AUDIT/'CHECK.json']:raise ValueError('invalid graph-digit audit')
+ if plan_review.get('status')!='PASS_INDEPENDENT_POINT_IN_TIME_FIXED_GRAPH_CLOSURE' or plan_review.get('parent_object_count_each')!=134 or plan_review.get('ordered_sources')!=[x['module'] for x in scan['modules']] or type(plan_obs.get('observed_exit')) is not int or plan_obs['observed_exit']!=0 or plan_obs.get('lean_launched') is not False or plan_obs.get('receipt_sha256')!=PINS[PLAN_AUDIT]:raise ValueError('invalid closure audit')
  proc=subprocess.run([sys.executable,'-I','-S','-B',str(PLAN/'scan.py')],capture_output=True,text=True,timeout=120)
  if proc.returncode or proc.stderr or json.loads(proc.stdout)!=scan:raise ValueError(('source closure drift',proc.returncode,proc.stderr))
  proc=subprocess.run([sys.executable,'-I','-S','-B',str(AUDIT/'audit.py'),review['evidence_commit'],review['receipt_sha256']],capture_output=True,text=True,timeout=1800)
@@ -66,7 +97,7 @@ def main():
   if H(dst)!=PINS[source]:raise ValueError(('client freeze drift',source.name))
   imports=[v for line in dst.read_text().splitlines() if line.startswith('import ') for v in line[7:].split()]
   rows.append(('DiophantineConsistency.'+source.stem,dst,PINS[source],imports))
- runs=[]
+ runs=[];allguards={}
  for label in ('author','peer'):
   run=out/label;run.mkdir();lib=run/'lib';monitor.overlay(PREFIX/label/'lib',lib)
   env=os.environ.copy()
@@ -75,28 +106,37 @@ def main():
   env['LEAN_PATH']=str(lib)+':'+str(PACKAGE);steps=[]
   for name,src,digest,imports in rows:
    rel=Path(*name.split('.'));obj=(lib/rel).with_suffix('.olean');obj.parent.mkdir(parents=True,exist_ok=True);log=run/(name.replace('.','_')+'.log')
-   if obj.exists() or obj.is_symlink():raise ValueError(('output path occupied',label,name))
+   for suffix in SUFFIXES:
+    if os.path.lexists(Path(str(obj)[:-6]+suffix)):raise ValueError(('output companion occupied',label,name,suffix))
+   expected={require_init(PACKAGE)}
+   for dep in imports:
+    drel=Path(*dep.split('.')).with_suffix('.olean');candidate=lib/drel
+    if not candidate.is_file() and dep.startswith('DiophantineConsistency.'):
+     raise ValueError(('project import absent from same-side overlay',name,dep))
+    if not candidate.is_file():candidate=PACKAGE/drel
+    if not candidate.is_file():raise ValueError(('missing imported object',name,dep))
+    expected.add(str(candidate))
+   guards={}
+   for item in expected:guards.update(guard(item[:-6]))
+   checkguards(allguards);checkguards(guards);mergeguards(allguards,guards)
+   deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60)
+   if deps.returncode or deps.stderr or set(deps.stdout.splitlines())!=expected:raise ValueError(('direct imports differ',label,name,deps.returncode,deps.stdout,deps.stderr))
+   checkguards(allguards)
    cmd=[str(LEAN),'-M3000','-j1','-DElab.async=false',f'--root={frozen}',str(src),'-o',str(obj)]
    code,peak,reason=monitor.monitored(cmd,env,log);text=log.read_text();reports=re.findall(r"^'([^']+)' depends on axioms: \[([^\]]*)\]$",text,re.M)
    if code or reason or 'warning:' in text or 'error:' in text or 'sorryAx' in text:raise ValueError(('compiler failure',label,name,code,reason,text[-8000:]))
-   validate_reports(name,reports)
-   deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60);expected={require_init(PACKAGE)}
-   for dep in imports:
-    rel=Path(*dep.split('.')).with_suffix('.olean');candidate=lib/rel
-    if not candidate.is_file() and dep.startswith('DiophantineConsistency.'):
-     raise ValueError(('project import absent from same-side overlay',name,dep))
-    if not candidate.is_file():candidate=PACKAGE/rel
-    if not candidate.is_file():raise ValueError(('missing imported object',name,dep))
-    expected.add(str(candidate))
-   if deps.returncode or deps.stderr or set(deps.stdout.splitlines())!=expected:raise ValueError(('direct imports differ',label,name,deps.returncode,deps.stdout,deps.stderr))
+   require_output(obj);checkguards(allguards);validate_reports(name,reports)
+   mergeguards(allguards,guard(str(obj)[:-6]))
    if H(src)!=digest:raise ValueError(('frozen source drift',name))
    steps.append({'module':name,'compiler_exit':code,'deps_exit':deps.returncode,'deps_stdout':deps.stdout,'command':cmd,'source_sha256':digest,'object_sha256':H(obj),'log_sha256':H(log),'stdout':text,'axiom_reports':reports,'sampled_peak_rss_bytes':peak,'stop_reason':reason})
    print(label,name,'exit',code,'peak_RSS',peak,flush=True)
   runs.append({'label':label,'steps':steps})
  if [{k:v for k,v in r.items() if k not in ('command','deps_stdout','sampled_peak_rss_bytes')} for r in runs[0]['steps']]!=[{k:v for k,v in r.items() if k not in ('command','deps_stdout','sampled_peak_rss_bytes')} for r in runs[1]['steps']]:raise ValueError('paired outputs differ')
+ check_frozen(rows);checkguards(allguards)
  scan2,review2=verify()
+ check_frozen(rows);checkguards(allguards)
  if scan2!=scan or review2!=review or H(__file__)!=driver:raise ValueError('parent inputs or driver changed')
- receipt={'status':'PASS_PAIRED_COMPACT_FIXED_GRAPH_DIGITS','runs':runs,'driver_sha256':driver,'graph_digit_audit':review,'fixed_inputs_sha256':{str(p):h for p,h in PINS.items()},'scope':'Fixed-symbolic graph digit bounds, with arbitrary K and explicit graph-zero, positivity, radix and repunit assumptions. No retained-port binding, checker, machine simulation or PRA proof. No full package/dynamic ancestry audit.'}
+ receipt={'status':'PASS_PAIRED_COMPACT_FIXED_GRAPH_DIGITS','runs':runs,'driver_sha256':driver,'direct_and_output_guards':allguards,'graph_digit_audit':review,'fixed_inputs_sha256':{str(p):h for p,h in PINS.items()},'scope':'Fixed-symbolic graph digit bounds, with arbitrary K and explicit graph-zero, positivity, radix and repunit assumptions. No retained-port binding, checker, machine simulation or PRA proof. No full package/dynamic ancestry audit.'}
  with (out/'receipt.json').open('x') as f:json.dump(receipt,f,indent=2,sort_keys=True);f.write('\n')
  print('PASS_PAIRED_COMPACT_FIXED_GRAPH_DIGITS',H(out/'receipt.json'),flush=True)
 if __name__=='__main__':main()
