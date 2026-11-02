@@ -450,8 +450,10 @@ checks the corresponding 942-row list equality and all three supplied-array
 permutations in 58 modules per side; its [independent artifact audit](reviews/compact44-relabel-pair-independent-audit/README.md)
 passed. A [compact-specific bounded model lookup](reviews/compact44-table-lookup-independent-audit/README.md)
 also has a paired and independently audited client for the color ranges and
-row indices excluding 1. The external JSON binding, model adjacency and full
-tiling transport remain separate. The
+row indices excluding 1. A [paired local row-matching client](reviews/compact44-row-match-independent-audit/README.md)
+has also passed independent audit for bounded old-row indices. The external
+JSON binding, actual neighbor existence, wrap and full tiling transport remain
+separate. The
 single extra row is ruled out by
 the [paired local exclusion theorem](reviews/compact44-forbidden-independent-audit/README.md)
 when a matching left neighbor exists; boundary and arbitrary-model neighbor
@@ -477,10 +479,12 @@ derives origin digit 1 and digit bounds at model indices below `8807*N` from
 derive that condition from the graph. A [paired composition](research/ordinary12-ipra-bridge/compact44-low-population-exact-prototype/README.md)
 also proves the symbolic low-mask population is `589083`, without assuming
 the finite support cardinality; its [independent audit](reviews/compact44-low-exact-independent-audit/README.md)
-passed, while retained-port identification remains open. A [single-side high-mask exploration](research/ordinary12-ipra-bridge/compact44-high-population-prototype/README.md)
+passed, while retained-port identification remains open. A [paired high-mask theorem](research/ordinary12-ipra-bridge/compact44-high-population-prototype/PAIR_RESULT.md)
 proves population `986` for an explicit symbolic digit list and externally
-compares its digits with retained `MF_source−β`; its paired replay, internal
-port equality and mod-8 residue remain open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
+compares its digits with retained `MF_source−β`; its independent artifact
+audit passed. A [separate paired residue client](research/ordinary12-ipra-bridge/compact44-high-residue-prototype/PAIR_RESULT.md)
+proves the symbolic value is `4 mod 8`; its artifact audit remains pending.
+Internal high-port equality remains open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
 A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-fractional-clean-column/README.md)
