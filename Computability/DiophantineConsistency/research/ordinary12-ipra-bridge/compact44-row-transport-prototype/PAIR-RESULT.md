@@ -1,0 +1,7 @@
+# Paired bounded local-matching result
+
+The reviewed paired replay actually exited 0 in outer session 35384, status `PASS_COMPACT_ROW_TRANSPORT_PAIR`; the receipt SHA-256 is `a10ab9ecc787aa4ba3ff0f88a38b12eb68bbd2722a693e490b61ac14f762cdc9`. Both full parent audits completed successfully, each compiler and dependency query exited 0, both sides produced matching object and log hashes, and all 12 exact named reports contained `[propext, Classical.choice, Quot.sound]` without warnings or `sorryAx`. The protected HEAD is recorded in the terminal observation. The retained logs and receipt include direct companion guards and sampled resource observations.
+
+For every pair of old row indices <942 in an arbitrary model of `IΣ₁`, the proved theorems identify all four translated compact fields and establish the local east/west and south/north matching equivalences. The proof derives the necessary 250/439 color bounds from the actual old table; it does not assume them separately. The equivalences remain conditional on the two specified bounded row indices and do not assert that neighboring rows exist or match.
+
+This pair remains provisional pending independent artifact review. It does not prove existence of neighbors, cyclic wrap conditions, whole-tiling transport, the compact checker calibration, or a 12-variable iPRA endpoint. The explicitly uncompiled marked-word draft and the JSON-to-Lean finite-table and inherited provider boundaries remain separate. The stated Lean metatheory axiom reports are not an axiom inventory for the encoded object theory.
