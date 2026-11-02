@@ -1,0 +1,7 @@
+# Compact 943-tile local forbidden-row exclusion
+
+`CompactForbidden.lean` in the sibling color-relabel packet proves by finite kernel computation that no exact compact 943-table row has east color 5, and any row with west color 5 is the extra `(5,0,0,0)` row. Its `five_cannot_have_left` theorem then excludes west 5 when an indexed left row's east color matches it. The two table-wide Boolean computations require no Lean axioms; the indexed and matching-neighbor theorems use `propext` and `Quot.sound` as Lean metatheoretic axioms.
+
+This is a finite `Fin 943` table lemma, not yet a proof that each selected tile in an arbitrary model has a matching left neighbor. Boundary, cyclic-wrap, table-to-machine relabeling, the compact44 ports, all-model simulation and iPRA consistency remain separate. The external JSON-to-Lean table identification and the provider's inherited package-transitive/dynamic and axiom-inventory boundaries remain those of the audited 943-table parent.
+
+Exploratory session 28567 exited 0 without warnings or `sorryAx`. Paired wrapper session 24468 exited 0 with both compilers and both reruns of the independent parent audit passing; receipt SHA-256 `8f1eadf2756320921733d832fa7f467fcfd916acd424f45ca2f63a0c3d0d1de2`. The replay checks exact named axiom outputs, direct imports, source, matched seed objects and sibling outputs. Resource monitoring is sampled; the dependency-query timeout applies to its leader. Independent review is pending.
