@@ -84,7 +84,7 @@ also compiled a primitive-recursive checker for a common bound in the selected
 Foundation refutation encoding, with internal iPRA equivalences linking its
 absence of output 1 to both 13-variable no-zero sentences. Its independent
 artifact audit passed. A [historical paired extension](reviews/ipra-selected-checker-historical-pair-terminal/README.md)
-matched all ten additions; its independent complete-result audit is pending.
+matched all ten additions and passed an independent complete-result audit.
 It does not identify an
 arbitrary independently specified proof checker with the selected one.
 

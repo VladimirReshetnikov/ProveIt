@@ -18,8 +18,8 @@ attempt referenced a nonexistent control-observation filename; its failure
 and successful continuation are recorded separately and did not modify the
 original run artifacts.
 
-This records the coordinator result and copied evidence; a separate complete
-independent artifact audit remains necessary. The original run remains at
+The subsequent [independent complete-result audit](../ipra-selected-checker-historical-pair-independent-audit/README.md)
+passed. The original run remains at
 `/tmp/ipra-selected-checker-historical-paired-run-01`. The result inherits
 historical parent, package-transitive, dynamic and between-observation limits.
 The Foundation wrapper's outer exit was not captured, although its inner Lake

@@ -151,13 +151,14 @@ selected refutation's negation and the absence of a bound producing one, and
 connect that same checker to both 13-variable no-zero sentences. The recorded
 bit sentence was first proved in classical candidate PRA; a later [exploratory
 extension](research/ipra-selected-native-bit/README.md) compiled native and
-standard iPRA bit sentences for the same code. Its guarded rebuild and
-independent audit remain pending.
+standard iPRA bit sentences for the same code, including in a [guarded
+historical author run](reviews/ipra-selected-native-bit-guarded-author/README.md).
+Its independent audit and paired replay remain pending.
 This is a checker for the selected bounded encoding, not a comparison with an
 independently specified proof checker. A [guarded historical author run](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled the full ten-module extension and passed an [independent artifact audit](reviews/ipra-selected-verifier-guarded-author-independent-audit/README.md).
 A subsequent [historical pair](reviews/ipra-selected-checker-historical-pair-terminal/README.md)
-matched all ten additions; independent complete-result audit remains pending.
+matched all ten additions and passed an [independent complete-result audit](reviews/ipra-selected-checker-historical-pair-independent-audit/README.md).
 
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency

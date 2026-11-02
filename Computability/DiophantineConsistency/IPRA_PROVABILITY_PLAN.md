@@ -68,10 +68,11 @@ compiled an existentially selected primitive-recursive checker for a common
 bound in the chosen Foundation refutation encoding, and internal native and
 standard-iPRA equivalences linking no output 1 to both 13-variable no-zero
 sentences. Its independent artifact audit passed, and a later [historical pair](reviews/ipra-selected-checker-historical-pair-terminal/README.md)
-matched all ten additions; independent complete-result audit is pending.
-An [exploratory extension](research/ipra-selected-native-bit/README.md) also
-compiled native and standard iPRA bit sentences for the same code; its guarded
-rebuild and independent audit remain pending. No comparison with an
+matched all ten additions and passed an [independent complete-result audit](reviews/ipra-selected-checker-historical-pair-independent-audit/README.md).
+An [extension](research/ipra-selected-native-bit/README.md) also compiled
+native and standard iPRA bit sentences for the same code, including in a
+[guarded historical author run](reviews/ipra-selected-native-bit-guarded-author/README.md).
+Its independent audit and paired replay remain pending. No comparison with an
 independently specified checker is claimed.
 
 The [15-variable degree-26 equation](equation26.pdf) uses a 93-operation
