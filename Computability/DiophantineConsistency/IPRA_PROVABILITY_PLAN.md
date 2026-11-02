@@ -624,8 +624,11 @@ then proves its precise disjunction: either all selector digits and the copy
 word are zero, or a selector is chosen and the copy word equals its row's
 tile value. A later author-side [origin client](research/ordinary12-ipra-bridge/compact44-selected-origin-prototype/README.md)
 uses the graph's origin digit to rule out the zero alternative and select row
-`0` with its corresponding tile value. Row propagation and machine semantics,
-retained coefficient binding and the internal iPRA endpoint remain open.
+`0` with its corresponding tile value. A further author-side [occupied-bit client](research/ordinary12-ipra-bridge/compact44-origin-occupied-prototype/README.md)
+derives seven Boolean source digits equal to one, including positions `1095`,
+`2195` and `3296`. Turning those occupied positions into neighboring decoded
+rows, machine semantics, retained coefficient binding and the internal iPRA
+endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
