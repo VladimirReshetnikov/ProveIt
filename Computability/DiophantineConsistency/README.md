@@ -72,12 +72,11 @@ standard-iPRA AQ29 extension also
 completed one author run and a separate independent artifact audit; its paired
 Lean replay remains open, with the historical and provider qualifications below.
 The 26-, 27- and 28-variable model transports and native endpoints have a
-separate author-only historical run and independent artifact audit; their
-paired Lean replay remains open. The standard-theory 26-variable client also
-has one author run and a separate artifact audit. The 22-variable graph has
-exact finite checks and a guarded historical author run of its Lean model
-transport and native and standard iPRA endpoints, with an independent
-artifact audit; its paired replay remains open. The
+separate author-only historical run and independent artifact audit; the
+standard-theory 26-variable client also has one author run and an audit. A
+later historical paired run included these endpoints and the 22-variable model
+transport and native and standard endpoints, matching all 37 added modules.
+Its independent complete-result audit is underway. The
 40-variable candidate's model and native transports remain open.
 The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
 eliminates five more AQ22 bindings and has independently checked finite

@@ -3,7 +3,8 @@
 This directory develops the 22-positive-variable degree-10 graph in
 `../adaptive-square-sums22-degree10/candidate.json`. A historical guarded
 author run has compiled the native and standard iPRA endpoints and passed an
-independent artifact audit; a matched peer remains pending. The Lean files
+independent artifact audit. A later historical pair has matched all 37 added
+modules; independent audit of that pair is underway. The Lean files
 under `draft-src` are not part of the regular Lean source tree.
 
 `generate_model.py` derives the literal and 13-residual sum-of-squares draft
@@ -46,9 +47,9 @@ project's interpretation and consistency bridges.
 This exploratory compilation is **not** a guarded or independently matched
 replay: the development overlay does not have the guarded runner's input,
 output, and provenance guarantees. It does not establish a current-source or
-unconditional user-facing Con(ZFC) claim. The separately guarded run described
-below has since passed an independent artifact audit but still requires a
-matched peer.
+unconditional user-facing Con(ZFC) claim. The separately guarded author run
+described below has since passed an independent artifact audit, and a later
+historical paired run has completed.
 
 `author-additions.json` is a static input for the guarded author-only runner in
 `../author-only-extension/run.py`. It lists 37 modules: all 30 additions in the
@@ -65,5 +66,5 @@ the terminal wrapper observing exit 0. The primary record is
 `../../reviews/ipra-aq22-guarded-author/README.md`; its precise historical
 scope and limitations apply. The run did not reuse objects from the separate
 exploratory AQ26 extension. Its [independent artifact audit](../../reviews/ipra-aq22-guarded-author-independent-audit/README.md)
-passed; a matched peer remains necessary before a paired-replay claim is
-justified.
+passed. A later [historical paired run](../../reviews/ipra-aq22-historical-pair-terminal/README.md)
+matched the 37-module extension; its independent artifact audit is underway.

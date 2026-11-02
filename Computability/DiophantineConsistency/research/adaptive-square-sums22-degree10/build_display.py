@@ -98,9 +98,9 @@ footer = r'''
 \normalfont\fontsize{7.7}{8.2}\selectfont
 The fixed integer $\mathcal A$ above is written in base 10. This is a research
 candidate. Exact polynomial calculations certify degree 10 and the
-substitution identities. A historical author-only Lean run established the
-witness transport and an internal intuitionistic PRA equivalence to a
-translated consistency sentence. A paired replay remains pending. No
+substitution identities. Historical paired Lean runs compiled the witness
+transport and an internal intuitionistic PRA equivalence to a translated
+consistency sentence. No
 minimality claim is made.
 \end{multicols}
 \clearpage

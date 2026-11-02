@@ -1,5 +1,9 @@
 # Independent review of the AQ22 display wording refresh
 
+This audit covers the earlier author-only disclosure. The current PDF has a
+later paired-replay wording refresh; its formula, constants and circuit are
+unchanged, and a fresh presentation review is pending.
+
 This review compares the refreshed generator and TeX with their exact
 previously audited versions in commit `7158586014`: in each, the only change
 is the same replacement of the three-line unproved-status paragraph with the

@@ -8,10 +8,11 @@ for four fewer coordinates; this is not a minimality result. The graph is
 given by `candidate.json`, not by the equation in the project's current PDF.
 
 The [base-10 candidate display](equation10-22.pdf) names all 22 positive
-unknowns and includes the 114-operation circuit. Its [independent presentation
+unknowns and includes the 114-operation circuit. An [independent presentation
 audit](../../reviews/equation10-22-independent-audit/README.md) checked the
-formula, aliases, circuit, reproducible PDF and mutation controls. The fixed
-decoder and rank recipe retains the stated manual-transcription boundary.
+formula, aliases and circuit in an earlier PDF; the current status-wording
+refresh awaits review. The fixed decoder and rank recipe retain the stated
+manual-transcription boundary.
 
 The scripts check exact polynomial identities and degree; these finite checks
 are separate from the Lean proof. A [guarded historical author run](../../reviews/ipra-aq22-guarded-author/README.md)
@@ -19,7 +20,9 @@ compiled the witness transport and native and standard iPRA endpoints in a
 single overlay, and passed an [independent artifact audit](../../reviews/ipra-aq22-guarded-author-independent-audit/README.md).
 The standard endpoint relates absence of a zero to the Gödel–Gentzen
 translation of the selected embedded Foundation ZFC consistency sentence. A
-paired replay remains pending. This run inherits its parent provider's
+[historical paired replay](../../reviews/ipra-aq22-historical-pair-terminal/README.md)
+has now matched all 37 added modules; its independent complete-result audit
+is underway. This result inherits its parent provider's
 documented provenance limitations and does not itself formally identify the
 PDF with the Lean term. A separate [finite binding audit](../../reviews/aq22-pdf-historical-lean-binding/README.md)
 compares the historical Lean literal, displayed graph, and recorded four-port

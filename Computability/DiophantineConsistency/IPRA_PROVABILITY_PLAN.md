@@ -199,14 +199,15 @@ its separate paired Lean replay remains open. The
 reductions have finite exact residual and degree checks. Their Lean model
 transports and native endpoints completed one [author-only extension](reviews/aq26-author-trial-v2/README.md)
 and passed an [independent artifact audit](reviews/aq26-author-independent-audit/README.md).
-They remain historical, with no matched peer. The [standard-theory AQ26 client](research/ipra-standard-aq26/README.md)
+They remain historical. The [standard-theory AQ26 client](research/ipra-standard-aq26/README.md)
 also completed one author-only single-overlay run and a separate artifact
-audit; its paired Lean replay remains open. The
+audit; the later AQ22 pair includes this entire 26-variable chain. The
 [22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md)
 has independently checked finite substitution and degree calculations and a
 [guarded historical author run](reviews/ipra-aq22-guarded-author/README.md)
 of its model transport and native and standard iPRA endpoints, with a separate
-artifact audit. Its paired replay remains open. The standard endpoint uses the
+artifact audit. A later [historical paired run](reviews/ipra-aq22-historical-pair-terminal/README.md)
+matched all 37 additions; independent complete-result audit is underway. The standard endpoint uses the
 Gödel–Gentzen translation of the selected embedded Foundation consistency
 sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
