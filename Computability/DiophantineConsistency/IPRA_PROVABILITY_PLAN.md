@@ -502,6 +502,11 @@ instead reduce the residual modulo the word modulus and show that aligned
 rotations preserve a supplied digit cap. Both are conditional model results,
 not paired replays; neither establishes the clean predecessor, weighted carry
 family, retained coefficient binding or internal iPRA endpoint.
+An author-side [fixed-graph temporal client](research/ordinary12-ipra-bridge/compact44-fixed-graph-temporal-prototype/README.md)
+now composes the bit rotation with the symbolic graph's same witnesses and
+actual exponent, without an alignment premise. It retains the full-radix
+temporal digit cap; the same unresolved carry, coefficient and iPRA
+obligations apply.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
