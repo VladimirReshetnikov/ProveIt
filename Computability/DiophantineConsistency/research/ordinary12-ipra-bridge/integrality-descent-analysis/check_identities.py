@@ -3,6 +3,9 @@
 from itertools import product
 from math import gcd
 
+if not __debug__:
+    raise RuntimeError('optimized Python is unsupported')
+
 class P:
     names = ('q', 'd', 'v', 'n', 'a', 'b', 's', 'x', 'y', 'i')
     def __init__(self, terms=None):

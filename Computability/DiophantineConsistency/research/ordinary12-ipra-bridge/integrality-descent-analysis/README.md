@@ -190,3 +190,9 @@ Run `python3 check_identities.py` in this directory for five sparse-integer
 polynomial identities and an exhaustive **bounded** sanity check, including
 the `Q=1` counterexample. These calculations do not certify any of the
 unbounded claims or model/graph transports.
+
+The [independent review](../../../reviews/ordinary12-integrality-descent-independent/README.md)
+also found that the original checker could print success under optimized
+Python with its assertions disabled. The checker now rejects optimized mode.
+The normal and optimized process outcomes are recorded in
+[`guard-fix-observation.json`](guard-fix-observation.json).
