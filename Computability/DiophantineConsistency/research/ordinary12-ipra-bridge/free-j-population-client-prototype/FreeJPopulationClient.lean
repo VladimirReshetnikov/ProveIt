@@ -29,7 +29,7 @@ theorem graph_population (p : Fin 4 → ℕ) (v : Fin 12 → V) (h : V)
     exact le_trans (le_trans (by norm_num : (16:V)≤46) hbeta)
       (le_trans hm (by dsimp [q]; simp))
   have hx : v 5=Exp.exp R := FreeJPowerFinish.graph_power p v hb hl hh hv hz hbeta
-  obtain ⟨s,hs⟩ := FreeJFirstTransport.first_factor_forces_Y_divisible p v hz (hv 0) hb
+  obtain ⟨s,hs⟩ := FreeJRootBinding.first_factor_forces_Y_divisible p v hz (hv 0) hb
   have hy : ∃s:V, v 6=q^3*s := by
     refine ⟨s,?_⟩
     simpa only [pow_succ,pow_zero,one_mul,mul_assoc] using hs
