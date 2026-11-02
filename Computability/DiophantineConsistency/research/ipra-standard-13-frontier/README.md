@@ -39,3 +39,9 @@ decoder and rank recipe retain the manual-transcription boundary.
 additions and the 13 requested diagnostic names for the guarded runner. A real
 guarded run must use a fresh overlay, not the exploratory objects, and a
 later independent artifact audit and matched peer remain separate work.
+
+The source-frozen manifest pins commit `72bb86f99414925806059a74f0bf77be7d1c5fc5`
+and has SHA-256 `2a4749c34750dbff650e19b5e5fc7effd98a64774c4051852f3db39221b2f134`.
+The guarded runner's source policy accepted all eight additions and 13
+diagnostics; the actual validation exit is recorded in
+`manifest-observation.json`. The manifest alone is not a guarded replay.

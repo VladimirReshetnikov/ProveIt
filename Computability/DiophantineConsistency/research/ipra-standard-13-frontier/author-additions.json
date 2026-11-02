@@ -1,0 +1,104 @@
+{
+  "axiom_reports": {
+    "DiophantineConsistency.IPRAStandardProduct13": [
+      "DiophantineConsistency.HAAdaptiveDirectOrdinate86.polynomialBridge",
+      "DiophantineConsistency.IPRAStandardProduct13.native_equivalence",
+      "DiophantineConsistency.IPRAStandardProduct13.literal_equivalence",
+      "DiophantineConsistency.IPRAStandardProduct13.selected_foundation_consistency",
+      "DiophantineConsistency.IPRAStandardProduct13.literal_iff_translated_consistency"
+    ],
+    "DiophantineConsistency.IPRAStandardSquareSums13": [
+      "DiophantineConsistency.IPRASquareSumsNative.sameZero",
+      "DiophantineConsistency.IPRASquareSumsNative.bridge",
+      "DiophantineConsistency.IPRASquareSumsNative.equivalence",
+      "DiophantineConsistency.IPRASquareSumsNative.literal_eq",
+      "DiophantineConsistency.IPRASquareSumsNative.literal_equivalence",
+      "DiophantineConsistency.IPRAStandardSquareSums13.literal_equivalence",
+      "DiophantineConsistency.IPRAStandardSquareSums13.selected_foundation_consistency",
+      "DiophantineConsistency.IPRAStandardSquareSums13.literal_iff_translated_consistency"
+    ]
+  },
+  "order": [
+    "DiophantineConsistency.IPRASuccessorInduction",
+    "DiophantineConsistency.IPRAAddOneGeneral",
+    "DiophantineConsistency.IPRASuccessorInductionConverse",
+    "DiophantineConsistency.IPRAStandardTheory",
+    "DiophantineConsistency.AdaptiveDirectOrdinateSquareSumsLiteral",
+    "DiophantineConsistency.IPRASquareSumsNative",
+    "DiophantineConsistency.IPRAStandardSquareSums13",
+    "DiophantineConsistency.IPRAStandardProduct13"
+  ],
+  "parent_manifest_sha256": "63b846158674d41beeaa99843d92008465f8e0fe5c45bb9e1fed4b78e1a2ab48",
+  "scope": "Joint single-overlay historical AQ29 author extension for 13-variable sum-square and product endpoints; not paired or current-source.",
+  "source_commit": "72bb86f99414925806059a74f0bf77be7d1c5fc5",
+  "sources": {
+    "DiophantineConsistency.AdaptiveDirectOrdinateSquareSumsLiteral": {
+      "imports": [
+        "DiophantineConsistency.AdaptiveDirectOrdinateSquareSums"
+      ],
+      "sha256": "9eb21e1febd710884d971be3431387144845d9eb8e6a0747d7224d1321c01a78",
+      "workspace_path": "Computability/DiophantineConsistency/research/ipra-standard-13-frontier/draft-src/AdaptiveDirectOrdinateSquareSumsLiteral.lean"
+    },
+    "DiophantineConsistency.IPRAAddOneGeneral": {
+      "imports": [
+        "DiophantineConsistency.IPRASuccessorInduction",
+        "DiophantineConsistency.IPRAAddOneDirect"
+      ],
+      "sha256": "f64dba0a4cb407f651f979c37d092519d7125546bf3b9fd1e359cce2156b809e",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAAddOneGeneral.lean"
+    },
+    "DiophantineConsistency.IPRASquareSumsNative": {
+      "imports": [
+        "DiophantineConsistency.IPRAExpressionNative",
+        "DiophantineConsistency.HAExpressionSameZero",
+        "DiophantineConsistency.AdaptiveDirectOrdinateSquareSumsLiteral"
+      ],
+      "sha256": "09d068c77bc97fa1202401c4d032cd3f835d280cc80ad3b1396d709443f91eee",
+      "workspace_path": "Computability/DiophantineConsistency/research/ipra-standard-13-frontier/draft-src/IPRASquareSumsNative.lean"
+    },
+    "DiophantineConsistency.IPRAStandardProduct13": {
+      "imports": [
+        "DiophantineConsistency.IPRAStandardTheory",
+        "DiophantineConsistency.IPRAExpressionNative",
+        "DiophantineConsistency.HAAdaptiveDirectOrdinate86",
+        "DiophantineConsistency.IPRABoundedRhoZFC"
+      ],
+      "sha256": "5e43254ae3fec9bf17bf85cf05b7202a3d7af0065709c07668aae8ad186ed269",
+      "workspace_path": "Computability/DiophantineConsistency/research/ipra-standard-13-frontier/draft-src/IPRAStandardProduct13.lean"
+    },
+    "DiophantineConsistency.IPRAStandardSquareSums13": {
+      "imports": [
+        "DiophantineConsistency.IPRAStandardTheory",
+        "DiophantineConsistency.IPRASquareSumsNative",
+        "DiophantineConsistency.IPRABoundedRhoZFC"
+      ],
+      "sha256": "8c1639b2be7f25535b2401cf2925bbeaa41b0715584cecb11f11187718da1bdc",
+      "workspace_path": "Computability/DiophantineConsistency/research/ipra-standard-13-frontier/draft-src/IPRAStandardSquareSums13.lean"
+    },
+    "DiophantineConsistency.IPRAStandardTheory": {
+      "imports": [
+        "DiophantineConsistency.IPRASuccessorInductionConverse"
+      ],
+      "sha256": "c2800acbf0077a1c4d95707a6118e89d6d5cf6a3f9193139d5b2098411b4f120",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAStandardTheory.lean"
+    },
+    "DiophantineConsistency.IPRASuccessorInduction": {
+      "imports": [
+        "DiophantineConsistency.IPRAOpenDisjunctionWitness",
+        "DiophantineConsistency.IPRAAddOneDirect",
+        "DiophantineConsistency.IPRAEqualitySymmetryGG"
+      ],
+      "sha256": "00352fbe924874c2d7a4754ef40de0a7657b505ee01a411ac652c47f8d5eada9",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRASuccessorInduction.lean"
+    },
+    "DiophantineConsistency.IPRASuccessorInductionConverse": {
+      "imports": [
+        "DiophantineConsistency.IPRAAddOneGeneral",
+        "DiophantineConsistency.IPRASuccessorInduction"
+      ],
+      "sha256": "66237bbe6f405e2b87fcf598b2fbef074c80264fccc87df11a25773e25756dd8",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRASuccessorInductionConverse.lean"
+    }
+  },
+  "status": "FROZEN_ADDITIONS"
+}
