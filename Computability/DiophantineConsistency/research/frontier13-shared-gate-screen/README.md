@@ -1,5 +1,9 @@
 # A bounded shared-intermediate search for the 13-variable circuits
 
+The [independent review](../../reviews/frontier13-shared-gate-screen-independent-audit/README.md)
+reproduced the bounded search, exact identities and liveness checks. Its
+search-family and fixed-port exclusions remain essential.
+
 The search found no new operation-count improvement. In each original graph it
 found two exact two-target forms of the already known [G linearization](../adaptive-g-linearized-product-tradeoff/README.md).
 They keep 87/86 total operations while reducing the multiplication count by
