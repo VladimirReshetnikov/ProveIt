@@ -591,6 +591,10 @@ checks the model quotient/remainder split for the rotation shift and proves
 the zero-target and half-radix predecessor bound assuming explicit two-digit
 rotation formulas and the stated zero/Boolean source digits. Those formulas
 are still hypotheses of the numerical result, not yet graph-derived facts.
+Separate author-side [temporal window formulas](research/ordinary12-ipra-bridge/compact44-temporal-window-formulas-prototype/README.md)
+now cover the aligned, non-wrapping, wholly wrapped and straddling cases under
+explicit index and cut equations. Deriving those equations for the selected
+graph target remains open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
