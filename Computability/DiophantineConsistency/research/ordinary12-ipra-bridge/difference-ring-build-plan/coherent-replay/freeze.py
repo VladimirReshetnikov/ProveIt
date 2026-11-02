@@ -15,6 +15,19 @@ OVERRIDES={
  'DiophantineConsistency.Ordinary12Residual':HERE.parents[1]/'model-prototype/Ordinary12Residual.lean',
 }
 H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def validate_output(path,protected):
+ """Reject existing paths, symlink ancestors and either-way root overlap."""
+ out=Path(path).absolute()
+ if out.exists() or out.is_symlink():raise ValueError(('existing output',str(out)))
+ for parent in out.parents:
+  if parent.is_symlink():raise ValueError(('symlink output ancestor',str(parent)))
+ resolved=out.resolve(strict=False)
+ if resolved!=out:raise ValueError(('noncanonical output',str(out)))
+ for root in protected:
+  root=Path(root).resolve(strict=False)
+  if resolved.is_relative_to(root) or root.is_relative_to(resolved):
+   raise ValueError(('output/protected overlap',str(resolved),str(root)))
+ return resolved
 def uncomment(s):
  out=[];i=0;depth=0
  while i<len(s):
@@ -51,8 +64,12 @@ def walk(target,read,is_project):
  visit(target)
  return rows,order,sorted(external)
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);a=ap.parse_args();out=a.output.absolute()
- if out.exists() or out.is_symlink():raise ValueError('refusing existing output')
+ ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+ protected=[ROOT,Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun'),
+  Path('/tmp/ipra-aq29-fresh-project-pair'),Path('/tmp/ipra-aq29-fresh-source-closure-v2'),
+  Path('/tmp/ipra-model-diff-closure-plan-01'),Path('/tmp/ipra-ordinary12-coexistence-source-01'),
+  Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0')]
+ out=validate_output(a.output,protected)
  cfg=ROOT/'lakefile.toml';libs={x['name']:ROOT/x.get('srcDir','.') for x in tomllib.loads(cfg.read_text())['lean_lib']};libs.pop('Foundation',None)
  head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip();cfg_hash=H(cfg);tool_hash=H(ROOT/'lean-toolchain')
  def read(n):
@@ -68,11 +85,17 @@ def main():
  # This narrow compatibility endpoint is deliberately expected to match the
  # surveyed 64 project + 5 existing research + one checks source closure.
  if len(order)!=70:raise ValueError(('unexpected closure count; re-audit imports',len(order)))
- out.mkdir(parents=True);src=out/'src';src.mkdir();source_rows={}
+ if validate_output(out,protected)!=out:raise ValueError('output changed before creation')
+ out.mkdir(parents=True)
+ if out.is_symlink() or out.resolve(strict=True)!=out:raise ValueError('output changed during creation')
+ src=out/'src';src.mkdir();source_rows={}
  for n in order:
   row=rows[n];dest=src/(n.replace('.','/')+'.lean');dest.parent.mkdir(parents=True,exist_ok=True);dest.write_bytes(row['raw']);digest=hashlib.sha256(row['raw']).hexdigest()
   if H(dest)!=digest or H(ROOT/row['path'])!=digest:raise ValueError(('source drift while freezing',n))
   source_rows[n]={'workspace_path':row['path'],'snapshot_path':str(dest.relative_to(out)),'sha256':digest,'imports':row['imports']}
+ for n,row in source_rows.items():
+  if H(ROOT/row['workspace_path'])!=row['sha256'] or H(out/row['snapshot_path'])!=row['sha256']:
+   raise ValueError(('source drift before manifest',n))
  if subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()!=head or H(cfg)!=cfg_hash or H(ROOT/'lean-toolchain')!=tool_hash:raise ValueError('HEAD or config changed')
  manifest={'status':'FROZEN_NOT_COMPILED','target':TARGET,'root':str(ROOT),'head':head,'lakefile_sha256':cfg_hash,'lean_toolchain_sha256':tool_hash,'project_modules':len(order),'order':order,'sources':source_rows,'external_modules':external,'scope':'Tracked source-declared graph only, endpoint checks coexistence not graph transport, ordinary integrality or iPRA proof; no Lean compilation.'}
  (out/'manifest.json').write_text(json.dumps(manifest,sort_keys=True,indent=2)+'\n')

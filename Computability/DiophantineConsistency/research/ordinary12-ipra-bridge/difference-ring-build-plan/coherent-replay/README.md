@@ -12,6 +12,17 @@ prints three axiom reports for coexistence of the difference-ring provider,
 free-J residual, and cleared identity; it does not prove graph transport,
 ordinary integrality, checker calibration, or an iPRA theorem.
 
+The original committed freezer allowed output inside protected trees or
+through symlinked ancestors; the earlier 70-source snapshot was outside those
+trees but that fact did not establish the missing guard. The revised freezer
+rejects existing output, symlinked/noncanonical ancestors, and two-sided
+overlap with the checkout, historical source/project roots, the recorded
+model and coexistence source-evidence trees, replacement provider and
+compiler tree; it rechecks immediately before creation. It also rehashes all
+workspace and snapshot sources immediately before writing its manifest. These
+are point-in-time checks, not protection against adversarial path replacement
+between checks and writes. No real rebuild may use the earlier freezer bytes.
+
 `test_freeze.py` passes source-parser, topology, external-import, cycle and
 missing-source toy controls; `py_compile` also passed. The existing guarded
 `fresh-project-closure/rebuild.py` and comparator are intended for two fresh
