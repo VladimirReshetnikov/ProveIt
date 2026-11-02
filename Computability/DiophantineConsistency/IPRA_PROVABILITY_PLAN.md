@@ -399,6 +399,12 @@ The client retains the graph, positivity, port-bound, `β≥46` and `q=2^h`
 assumptions; its [independent artifact audit](reviews/ordinary12-freej-population-client-independent-audit/README.md)
 passed. Compact44 checker
 calibration and the iPRA endpoint remain open.
+A [conditional graph saturation client](reviews/ordinary12-freej-saturation-client-independent-audit/README.md)
+has also passed a paired build and independent audit. It derives the two
+no-carry statements from the graph and explicit radix, repunit, port-split,
+mask-bound, residue and mask-population hypotheses. Establishing those facts
+for the retained compact44 ports and transporting the decoded computation
+remain separate obligations.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
