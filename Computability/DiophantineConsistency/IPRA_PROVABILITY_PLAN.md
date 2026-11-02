@@ -288,8 +288,11 @@ the exact free-J graph zero, with an [independent paired replay and graph audit]
 Separately, the [proof-only denominator's strict negativity](research/ordinary12-ipra-bridge/free-j-denominator-prototype/README.md)
 passed an [independent bounded replay](reviews/ordinary12-freej-denominator-independent-audit/README.md)
 under the stated graph and port hypotheses. The denominator is not a literal
-graph node, and these results still need coherent composition with the
-cleared auxiliary identity; neither establishes integrality.
+graph node. A later [coherent composition](research/ordinary12-ipra-bridge/free-j-current-denominator-composition/README.md)
+derives its nonzeroness together with the cleared auxiliary equation; the
+paired rebuild passed an [independent artifact audit](reviews/ordinary12-current-denominator-independent-audit/README.md),
+which retains the execution-time manifest qualification. This does not
+establish integrality.
 A [conditional descent-step audit](reviews/ordinary12-descent-step-independent-audit/README.md)
 checks norm preservation and preservation of supplied divisor and Bézout
 witnesses; it does not supply those witnesses or prove descent termination.

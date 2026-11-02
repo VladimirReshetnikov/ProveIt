@@ -37,8 +37,11 @@ the corresponding residuals; its substitution into this graph over signed
 model pairs is not established by this packet. A later [signed transport](../free-j-signed-transport-prototype/README.md)
 derives the unpolarized norm residual from the graph zero in a difference
 ring; its [independent paired replay](../../../reviews/ordinary12-freej-signed-transport-independent-audit/README.md)
-passed. A coherent Lean composition identifying the proof-only denominator
-and applying the cleared auxiliary identity remains to be supplied.
+passed. A later [coherent composition](../free-j-current-denominator-composition/README.md)
+identifies the proof-only denominator and applies the cleared auxiliary
+identity. Its paired rebuild passed an [independent artifact audit](../../../reviews/ordinary12-current-denominator-independent-audit/README.md),
+with the recorded execution-time manifest qualification. Integrality remains
+open.
 
 The proof establishes separately that the signed graph `Q` equals the
 nonnegative natural model expression Δ((1+t)²−1) and that this value is
