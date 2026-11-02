@@ -1,5 +1,9 @@
 # A bounded degree obstruction for residual shears
 
+The [independent review](../../reviews/frontier13-low-degree-shear-obstruction-independent-audit/README.md)
+reconstructed the leading supports and fixed-beta coefficient and checked the
+bounded-degree noncancellation argument. The scope below remains essential.
+
 The 13-variable degree-36 square-sum equation is a sum of four integer
 residual squares. Write its residuals as `A0`, `A1`, `S = g72`, and
 `N = auxResidual`. Their witness degrees, treating the four ports as
