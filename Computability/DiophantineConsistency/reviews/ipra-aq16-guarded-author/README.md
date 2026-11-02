@@ -28,8 +28,8 @@ The standard endpoint states AQ16 no-zero equivalence to the selected
 Foundation consistency sentence under the recorded embedding and
 Gödel–Gentzen translation.
 
-This is one historical **author-only** run, not yet an independently audited
-run or a matched peer replay. It does not prove formal PDF semantics or
+This is one historical **author-only** run. Its [independent artifact audit](../ipra-aq16-guarded-author-independent-audit/README.md)
+passed; a matched peer replay remains pending. It does not prove formal PDF semantics or
 identify the translated consistency formula with untranslated Con(ZFC).
 It inherits the parent provider's package-transitive, dynamic-load,
 between-observation and unobserved Foundation wrapper-exit limitations.

@@ -88,11 +88,12 @@ The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/READ
 eliminates five more AQ22 bindings and has independently checked finite
 substitution, positivity and degree calculations. Its Lean transport and iPRA
 endpoints have a guarded historical author run and an independent artifact
-audit; a paired replay remains pending.
+audit. A later historical pair matched all 44 additions; its independent
+complete-result audit is pending.
 The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
 has independently checked finite algebra and positivity under the actual fixed
 parameter, and a guarded historical author run of the full transport and iPRA
-chain. Its independent artifact audit and paired replay remain pending.
+chain with an independent artifact audit. A paired replay remains pending.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

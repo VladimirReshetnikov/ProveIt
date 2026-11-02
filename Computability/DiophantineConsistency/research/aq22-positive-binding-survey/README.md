@@ -8,13 +8,14 @@ algebraic candidate and an ordinary integer witness argument. A
 [guarded historical Lean author run](../../reviews/ipra-aq17-guarded-author/README.md)
 compiled its transport and native and standard iPRA endpoints in one fresh
 overlay. Its [independent artifact audit](../../reviews/ipra-aq17-guarded-author-independent-audit/README.md)
-passed; a paired replay remains pending.
+passed. A later [historical paired run](../../reviews/ipra-aq17-historical-pair-terminal/README.md)
+matched all 44 additions; independent audit of the completed pair is pending.
 It has not been
 identified with the equation in the project's current PDF. A separate
 [base-10 candidate display](equation32-17.pdf) names all 17 positive unknowns
 and includes the complete 99-operation circuit. An [independent audit](../../reviews/equation32-17-independent-audit/README.md)
 checked the preceding PDF; a [separate review](../../reviews/equation32-17-wording-independent-audit/README.md)
-passed for the present status-wording refresh.
+passed for its author-run wording. The newer paired-run wording awaits review.
 Its fixed decoder and rank recipe
 retain the project's documented manual-transcription boundary.
 
