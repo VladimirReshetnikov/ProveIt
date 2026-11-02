@@ -49,9 +49,30 @@ hypotheses, but still assumes an abstract product-equals-one equation. The
 [historical literal prototype](literal-prototype/README.md) now checks all
 100 graph rows and proves the literal factorization, a separate integer
 evaluation identity, and that an internal zero implies product one for the
-three concrete signed factor pairs. Connecting those concrete factors to the
-generic exclusions is still open; the composed theorem is not yet a proof
-about `P12`.
+three concrete signed factor pairs. The
+[concrete split prototype](concrete-split-prototype/README.md) binds those
+factors to residue exclusions and proves, in an `IΣ₁` model, that each
+factor is the positive unit. This model-level result holds for arbitrary
+integer ports; it is not compact44 checker calibration or an iPRA proof.
+
+The [95-operation free-J prototype](free-j-prototype/README.md) separately
+proves the same factor-unit conclusion for its own exact graph using a
+polarized ordinary-factor exclusion. Unlike the 100-row graph, its first
+variable is a free `J`, not `6j+1`. The ordinary free-J soundness route
+handles a possible exceptional factor three using rank growth and the
+Mersenne coefficient, rather than deriving `J=1 mod 6` for every zero. That
+argument and the rank and checker obligations remain open.
+
+For this free-J route, the earlier suggestion of recovering `J=1 mod 6` is
+only a possible restricted-parent bridge, not a required or established
+property. The stated ordinary proof instead first derives the carrier
+divisibility and window from the two carrier equations and port bounds,
+then proves `q⁴∣v` allowing `gcd(q,H)=3`. It uses those facts for the early
+Pell rank bounds *before* ordinary norm recovery. Only after ordinary norm
+recovery yields the exact rank does it derive `X=2ᴿ` and `q∣3X`; the
+Mersenne β argument must then eliminate `q=3·2ᵘ`. Each step still needs its
+own formal model proof and, separately, the required object-level bridge.
+The proof must not use the later strong norm to justify the early rank.
 
 **Early rank before norm recovery.** With only `A0=A1=0` and the explicit
 positive/port hypotheses, construct internal witnesses for the divisions
