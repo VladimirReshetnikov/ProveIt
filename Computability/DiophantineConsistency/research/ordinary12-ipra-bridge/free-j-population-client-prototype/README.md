@@ -1,17 +1,15 @@
-# Free-J population client: uncompiled source draft
+# Conditional free-J population client
 
-These two files are an **uncompiled draft**. `FreeJPopulationFactsNarrow.lean`
-is the paired graph-independent argument with its import narrowed to
-`ArithmeticHalfBinomialCompat`; it has not been checked with that import.
-`FreeJPopulationClient.lean` proposes applying it to the free-J graph's exact
-ordinary-index and power theorems. It explicitly retains the positive port and
+`FreeJPopulationFactsNarrow.lean` is the graph-independent argument with its
+import narrowed to `ArithmeticHalfBinomialCompat`. `FreeJPopulationClient.lean`
+applies it to the free-J graph's exact ordinary-index and power theorems. It explicitly retains the positive port and
 variable hypotheses, β ≥ 46, graph zero, and `q = 2^h`; it does not specialize
 the compact44 ports or prove a PRA theorem.
 
 The preferred coherent route and its nine-module source/dependency observation
-are in `free-j-population-closure-plan`. The draft must be checked by a
-source-frozen, matched author/peer rebuild against the audited free-J provider;
-no objects from the incompatible endpoint provider may be mixed into it.
+are in `free-j-population-closure-plan`. The two sources have now been checked by the source-frozen matched replay
+described below. No objects from the incompatible endpoint provider were mixed
+into it.
 
 The proposed driver strips Python-related variables and `LEAN_SRC_PATH`,
 `LEAN_SYSROOT`, `LD_LIBRARY_PATH`, `LD_PRELOAD`, and `LD_AUDIT` before Lean
@@ -34,8 +32,8 @@ frozen source location; any changed or additional warning is rejected. It does
 not suppress that linter or accept a warning class generally. The isolated
 `warning_controls.py` run exited 0 after testing the observed warning and
 changed-line, extra-warning, wrong-module and missing-warning controls; its
-isolated `-O` run was rejected with exit 1. A fresh independent prelaunch
-review and protected paired run are still required.
+isolated `-O` run was rejected with exit 1. The revised driver was independently reviewed before the protected paired
+retry reported below.
 
 After the first failed pair, an exploratory continuation used a new overlay of
 the retained author-side partial provider, leaving its objects and logs intact.
@@ -44,3 +42,14 @@ typo; corrected wrapper session 36556 exited 0 for all four remaining modules,
 including the graph client, with no warnings or sorryAx. Its source and logs
 are retained under `observations/author-continuation`. This is single-side
 exploratory evidence and does not replace the required matched replay.
+
+The subsequent protected clean-loader paired wrapper session 11239 actually
+exited 0. It froze the nine source-declared half-binomial modules plus the two
+client sources and rebuilt them against each audited free-J power provider;
+all 22 compilers, direct-import checks, matching-object checks and final
+provider checks passed. The exact pinned ArithmeticBinomLegendre line-78
+warning above was retained and accepted on both sides. The result is the
+conditional IΣ₁ model theorem `graph_population` with explicit graph zero,
+positive ports/variables, β ≥ 46 and `q = 2^h` hypotheses. It does not bind the
+compact44 port tuple, calibrate the checker, simulate the machine, or prove a
+PRA theorem. The matched result requires an independent artifact audit.
