@@ -53,3 +53,15 @@ composition module). A coherent author-only rebuild is being prepared; it is
 not a matched peer, a current-source result, or an internal iPRA theorem.
 The accompanying [`SelectedExternalCheckerComparison.lean`](draft-src/SelectedExternalCheckerComparison.lean)
 is proposed source and has not yet been compiled in that coherent rebuild.
+
+The prepared manifest pins 35 source blobs from commit
+`07d55c8b2b0921440cce8b38ff96182973407679`, with SHA-256
+`eea1923b96112722f8e2a9151cc870250a5b694bd95d772525fabe8127adcb57`.
+The existing guarded runner's source verifier accepted all 35 rows and three
+requested reports with actual exit 0. A point-in-time storage estimate found
+7.0 GiB free: the 257,263 added source bytes multiplied by the maximum
+output/source ratio observed across the audited parent projects approximately
+548 MiB of outputs. That extrapolation is not a bound. The launch wrapper
+samples free space every two seconds and stops the entire process group if it
+observes less than a 4 GiB reserve; changes between observations remain
+unobserved. This preflight does not establish the result of the build.
