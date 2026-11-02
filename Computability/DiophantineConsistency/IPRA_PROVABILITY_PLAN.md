@@ -671,8 +671,10 @@ includes the extra boundary marker positions in those equalities. Translating
 the bits to tile-field matching and machine semantics remains open. An
 author-side [all-block client](research/ordinary12-ipra-bridge/compact44-fixed-graph-all-blocks-prototype/README.md)
 uses the horizontal marker to prove successor selection and then `IΣ₁`
-induction to obtain a selected row at every model block `h<N`. It has not had
-a paired replay. A subsequent author-side [all-block word client](research/ordinary12-ipra-bridge/compact44-fixed-graph-all-block-word-prototype/README.md)
+induction to obtain a selected row at every model block `h<N`. A separate
+[mathematical review](reviews/compact44-fixed-graph-all-blocks-mathematical-review/README.md)
+found no gap in its inspected successor, wrap or induction argument; it has
+not had a paired replay. A subsequent author-side [all-block word client](research/ordinary12-ipra-bridge/compact44-fixed-graph-all-block-word-prototype/README.md)
 packs those rows and excludes the extra row `1` at every block. Field matching,
 machine semantics, retained coefficient binding and the iPRA endpoint remain
 open.
