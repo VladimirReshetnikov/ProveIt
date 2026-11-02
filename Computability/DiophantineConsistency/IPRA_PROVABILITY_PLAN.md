@@ -610,7 +610,12 @@ decoder, binding retained coefficients and the internal iPRA endpoint remain ope
 A later author-side [clean-column band client](research/ordinary12-ipra-bridge/compact44-fixed-clean-bands-prototype/README.md)
 decomposes that raw column into both selector/copy bands and five bare
 rotation terms; the temporal contribution vanishes. Controlling the other
-band and bare terms and deriving decoder row semantics remain open.
+band and bare terms is supplied by a later author-side
+[single-band client](research/ordinary12-ipra-bridge/compact44-fixed-single-band-prototype/README.md):
+it proves their source phases lie outside the symbolic support blocker and
+obtains the selected decoder-shaped band alone. Boolean decoder inputs,
+row semantics, retained coefficient binding and the internal iPRA endpoint
+remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
