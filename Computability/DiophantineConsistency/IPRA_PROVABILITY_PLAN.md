@@ -187,10 +187,10 @@ and display have separate finite checks.
 The [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md)
 has finite substitution and degree checks and a matched model replay for
 arbitrary integer ports. The initial focused native replay failed because of
-broken historical-provider symlinks. A later fresh project-source author pass
-completed the native endpoint and passed an [independent artifact audit](reviews/fresh-project-author-independent-audit/README.md);
-its peer and matched comparison are still in progress, with the historical and
-provider qualifications recorded below. A [standard-theory AQ29 extension](research/ipra-standard-aq29/README.md)
+broken historical-provider symlinks. A later fresh project-source pair
+completed the native endpoint, matched all 1,210 rows and passed an
+[independent artifact audit](reviews/fresh-project-pair-independent-audit/README.md),
+with the historical and provider qualifications recorded below. A [standard-theory AQ29 extension](research/ipra-standard-aq29/README.md)
 also completed one author-only guarded run and an independent artifact audit;
 its separate paired Lean replay remains open. The
 [28-variable](research/adaptive-square-sums28-degree8/README.md),
@@ -319,14 +319,13 @@ A fresh Foundation build's receipt records a successful inner Lake exit and
 The outer build-driver exit was not captured. See the [provider evidence](reviews/foundation-provider-recovery/README.md)
 and [independent audit](reviews/foundation-provider-independent-audit/README.md).
 A two-run source-only rebuild of the AQ29 endpoint's 1,210-module declared
-project closure is [in progress](reviews/fresh-project-pair-launch/README.md),
-starting from empty project object trees. After launch, upstream edits changed
+project closure completed from empty project object trees. After launch, upstream edits changed
 `PRAWitnessCalculus.lean` and several `ZFCinPA` sources in that frozen closure,
-so a successful run would concern the historical snapshot. The [author pass](reviews/fresh-project-pair-author/README.md)
-completed all 1,210 modules, including the AQ29 endpoint checks, with a
-coordinator-reported exit 0 and 15 recorded workspace-source drifts. The peer
-and matched comparison remain in progress; package-transitive and dynamic
-ancestry remain outside this build's current scope.
+so the result concerns the historical snapshot, with 15 recorded workspace
+source drifts. The [terminal observation](reviews/fresh-project-pair-terminal/README.md)
+records both successful runs and the 1,210-row match; a separate
+[artifact audit](reviews/fresh-project-pair-independent-audit/README.md) passed.
+Package-transitive and dynamic ancestry remain outside this build's scope.
 
 The exact schemes are summarized in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md).
 The induction scheme advances by the syntactic term `n + 1`, whereas the

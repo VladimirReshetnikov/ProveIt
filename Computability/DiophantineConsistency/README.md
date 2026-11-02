@@ -65,9 +65,10 @@ with a [base-10 display](research/adaptive-square-sums22-degree10/equation10-22.
 and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
 Their substitutions and degrees have finite checks. The 29-variable candidate
 has a matched model replay. Its initial focused native replay failed on broken
-historical provider links; a later fresh project-source author pass completed
-the native endpoint and passed an independent artifact audit. Its peer and
-matched comparison remain in progress. A standard-iPRA AQ29 extension also
+historical provider links; a later fresh project-source pair completed the
+native endpoint, matched all 1,210 rows and passed an independent artifact
+audit. The pair is historical, with 15 workspace-source drifts. A
+standard-iPRA AQ29 extension also
 completed one author run and a separate independent artifact audit; its paired
 Lean replay remains open, with the historical and provider qualifications below.
 The 26-, 27- and 28-variable model transports and native endpoints have a

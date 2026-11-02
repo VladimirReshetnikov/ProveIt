@@ -8,11 +8,10 @@ The initial focused native replay failed before its first Lean module because
 the inherited package provider's `Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean`
 symlink points to a missing file. That attempt remains in
 `reviews/adaptive-aq29-native-replay`. On a subsequently rebuilt Foundation
-provider, the [fresh project-source author pass](../../reviews/fresh-project-pair-author/README.md)
-completed all 1,210 modules including the native endpoint; its [independent
-artifact audit](../../reviews/fresh-project-author-independent-audit/README.md)
-passed. It is a historical snapshot with 15 workspace-source drifts. The peer
-and final comparison remain in progress, and the Foundation build wrapper's
-outer exit was not observed.
+provider, the [fresh project-source pair](../../reviews/fresh-project-pair-terminal/README.md)
+completed and matched all 1,210 modules including the native endpoint. Its
+[independent artifact audit](../../reviews/fresh-project-pair-independent-audit/README.md)
+passed. It is a historical snapshot with 15 workspace-source drifts, and the
+Foundation build wrapper's outer exit was not observed.
 
-The selected parent inherits historical transitive project and package ancestry and dynamic imports. The focused replay does not establish a fully current-source closure or identify the chosen native theory with every standard iPRA presentation.
+The fresh pair inherits package-transitive and dynamic ancestry. It does not establish a fully current-source closure or identify the chosen native theory with every standard iPRA presentation.
