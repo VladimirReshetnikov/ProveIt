@@ -71,6 +71,11 @@ To obtain the missing all-model direction without circularity:
    candidate still needs both model implications with the same full tuple,
    and any displayed equation needs its own exact binding. No single scalar
    bound or matching beta alone establishes equality of four whole constants.
+   The [conditional current-2011 converse](../../reviews/thirteen-model-fresh-graph-independent-audit/README.md)
+   now constructs a shifted 69-literal zero from a positive parent zero in
+   each `IΣ₁` model under four explicit port equalities; its paired replay
+   passed an independent artifact audit. The unconditional fixed-tuple
+   specialization and the opposite model direction remain separate checks.
 4. Prove the phase-split2471 tuple's native checker/calibration and link its
    interpreted refutation predicate to the particular consistency statement;
    a theorem for another 2011 or compact44 tuple does not supply this link.
