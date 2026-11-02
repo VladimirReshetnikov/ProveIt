@@ -1,0 +1,18 @@
+{
+  "status": "PASS_SCOPED_TOY_NOT_A_BUILD_SANDBOX",
+  "actual_exit_code": 0,
+  "script_sha256": "11eb32d857c66d26b3e5b06d4c564667370eb7a696465cc830d158fb90e157a7",
+  "stdout": "ee8c6c64689e1dfa6d2686f366793215c7b956d4140ab64c1be484e828fc07c3  /tmp/ipra-confined-poc.FOXbmN/out/Toy.olean\ntmpfs           16777216 16777216         0 100% /tmp/ipra-confined-poc.FOXbmN\nPASS_CONFINED_LEAN_TOY output TMPDIR outside-tmp-dev-denied ENOSPC\n",
+  "earlier_controls": [
+    {
+      "status": "INVALID",
+      "note": "First 1 MiB check did not execute the negative probes: shell could not open read-only /dev/null."
+    },
+    {
+      "exit_code": 1,
+      "stdout": "libc++abi: terminating due to uncaught exception of type lean::exception: permission denied (error code: 13)\n  file: /dev/urandom\nAborted (core dumped)\n",
+      "note": "Lean requires urandom; no sandbox completeness claim."
+    }
+  ],
+  "scope": "Toy paths and tested writes only; no host free-space reservation or assurance covering all compiler descendants."
+}
