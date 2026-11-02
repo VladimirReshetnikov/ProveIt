@@ -48,4 +48,4 @@ preflight alone is not a compilation or a peer replay. The subsequent
 [guarded historical author run](../../reviews/ipra-selected-native-bit-guarded-author/README.md)
 exited 0 and passed an [independent artifact audit](../../reviews/ipra-selected-native-bit-guarded-author-independent-audit/README.md).
 A later [historical pair](../../reviews/ipra-native-bit-historical-pair-terminal/README.md)
-matched all 11 additions; independent complete-result audit is pending.
+matched all 11 additions and passed an [independent complete-result audit](../../reviews/ipra-selected-native-bit-historical-pair-independent-audit/README.md).

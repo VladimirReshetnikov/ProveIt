@@ -87,6 +87,8 @@ artifact audit passed. A [historical paired extension](reviews/ipra-selected-che
 matched all ten additions and passed an independent complete-result audit.
 It does not identify an
 arbitrary independently specified proof checker with the selected one.
+The [same selected code's native and standard iPRA bit-range proofs](research/ipra-selected-native-bit/README.md)
+also have matched historical builds and an independent complete-result audit.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),

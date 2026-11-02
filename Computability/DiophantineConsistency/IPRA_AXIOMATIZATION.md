@@ -155,7 +155,7 @@ standard iPRA bit sentences for the same code, including in a [guarded
 historical author run](reviews/ipra-selected-native-bit-guarded-author/README.md).
 Its [independent artifact audit](reviews/ipra-selected-native-bit-guarded-author-independent-audit/README.md)
 passed. A later [historical pair](reviews/ipra-native-bit-historical-pair-terminal/README.md)
-matched all 11 additions; independent complete-result audit is pending.
+matched all 11 additions and passed an [independent complete-result audit](reviews/ipra-selected-native-bit-historical-pair-independent-audit/README.md).
 This is a checker for the selected bounded encoding, not a comparison with an
 independently specified proof checker. A [guarded historical author run](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled the full ten-module extension and passed an [independent artifact audit](reviews/ipra-selected-verifier-guarded-author-independent-audit/README.md).
