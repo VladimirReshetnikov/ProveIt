@@ -1,0 +1,7 @@
+# Independent corrected contextual output-guard prelaunch review
+
+The exact contextual inverse/exclusion driver bytes from commit `e9bce4bbfa` passed the full no-Lean fake loops (20 inverse cases and 22 exclusion cases). Independent controls also exercised all ten output slots before creation, all nine companion slots after creation and after snapshot, plus output mutation, absence and symlink cases. Both real historical-view parent preflights actually exited 0 in sessions 70178 and 74251; their complete status output is retained here. The audit checks the retained observations and reruns the fake and focused controls; it does not rerun those long parent preflights itself.
+
+The first independent review-script session 72488 exited 1 reporting an exclusion fake-loop mismatch without enough detail to determine which subcheck differed. The standalone exclusion loop, a separate captured-output comparison and the full review retry session 16588 then exited 0. The failed observation is retained; no Lean was launched.
+
+The passing review concerns explicit contextual routing through the pinned historical parent view. It is not an unchanged live-parent audit, a Lean build, proof of the newer live source, machine simulation, retained-port calibration or a PRA theorem. Source/object checks are point-in-time and cannot exclude transient changes reverted between checks. Trusted clean initial loader, stable HEAD, sole Lean, package/dynamic and sampled-resource limitations remain externally enforced.
