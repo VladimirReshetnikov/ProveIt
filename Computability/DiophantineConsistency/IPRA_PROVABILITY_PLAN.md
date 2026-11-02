@@ -74,10 +74,12 @@ the 2011 tuple now has an [audited 69-row model binding](reviews/thirteen69-dag-
 and [independently checked degree 174](reviews/thirteen69-degree2011-independent-audit/README.md).
 One model direction has a [paired, independently reviewed fixed-port theorem](reviews/thirteen-model-exact-port-independent-audit/README.md).
 Newly merged source declares both model directions and iPRA endpoints, but
-their coherent replay remains open. An independently reviewed [source-closure
-and successor plan](reviews/thirteen-model-endpoint-closure-independent-audit/README.md)
-identifies 338 modules to rebuild over 807 candidate historical seeds; it is
-not a compiled endpoint or a proof of the reverse direction.
+their subsequent 338-module coherent successor pair and 69-node semantic
+binding have now passed an [independent artifact audit](reviews/thirteen-model-endpoint-successor-pair-independent-audit/README.md).
+This verifies the endpoint declarations for their own expression and a
+model-level zero equivalence to the 69-node graph, subject to the audit's
+inherited provider and dynamic-loading qualifications. A separate internal
+iPRA client for the exact 69-node syntax is still being paired and audited.
 
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common
