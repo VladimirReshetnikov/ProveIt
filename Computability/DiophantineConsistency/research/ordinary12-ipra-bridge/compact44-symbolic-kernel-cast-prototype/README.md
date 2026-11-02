@@ -1,0 +1,9 @@
+# Author-only symbolic kernel model-cast exploration
+
+`cast_reflected_sum` proves that a finite standard-natural sum of the two reflected terms can be cast into an arbitrary IΣ₁ model and evaluated there term by term. `cast_kernel_generic` combines two independently indexed reflected sums with four arbitrary bare powers and the block/spatial term. It remains generic in all naturals, finite types and coefficient/index functions; it does not instantiate the enormous concrete kernel.
+
+On the same author-side exploratory overlay described in the sibling [symbolic kernel packet](../compact44-symbolic-kernel-prototype/README.md), the reflected-sum source session 54650 and the generic full-sum source session 88861 actually exited 0. Both exact `#print axioms` reports are `[propext, Classical.choice, Quot.sound]`. These are Lean metatheory dependencies, not PRA axioms or an internal iPRA derivation. There was no paired replay, independent artifact review or sampled RSS/process-group monitoring.
+
+The original direct concrete attempt session 93146 exited 1: the proposed sum-cast name was unavailable and the kernel hit its memory limit; its self-referential axiom report does not establish a theorem. An API diagnostic exited 134 at 1,500 MB (session 70518) and its 3,000 MB retry exited 1 because the queried cast name was unavailable. Concrete assembly attempts 32871 and 42631 both exited 1 at the 3,000 MB Lean kernel limit. Their logs and exact failed sources are retained under `evidence`; neither supplies a valid concrete cast theorem.
+
+The successful generic result is a reusable algebraic lemma. It does not prove a concrete `kernelNat` model-cast equality, identify K with the retained raw bytes or the displayed expression, establish the low/high mask tuple binding, derive graph or machine semantics, or prove an iPRA endpoint. A bounded specialization avoiding numeral expansion, coherent replay and independent artifact audit remain necessary.
