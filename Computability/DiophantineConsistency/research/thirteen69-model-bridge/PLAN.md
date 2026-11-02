@@ -44,8 +44,10 @@ To obtain the missing all-model direction without circularity:
    For the distinct current-2011 tuple, the [actual-zero outer theorem](../thirteen-model-current-outer/README.md)
    now derives the positive divisible transport and carrier ordinate; its
    paired replay passed an [independent artifact audit](../../reviews/thirteen-model-current-outer-independent-audit/README.md).
-   The rank phase and full graph converse are still open, and the parent
-   prefix has no complete printed axiom inventory.
+   The actual-zero rank phase `R mod 4=3` also passed an [independent artifact
+   audit](../../reviews/thirteen-model-current-phase-independent-audit/README.md).
+   The full graph converse remains open, and the parent prefix and suffix
+   have no complete printed axiom inventory.
 2. The fresh model-level [strong Pell seed](../thirteen-model-strong-seed/README.md)
    now supplies positive `t,f,i` with ordinate `b*i*c²` when `b,c>0`;
    its paired replay passed an [independent artifact audit](../../reviews/thirteen-model-strong-seed-independent-audit/README.md).

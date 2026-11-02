@@ -338,8 +338,11 @@ The [exact carrier-index theorem](research/ordinary12-ipra-bridge/free-j-exact-o
 then proves `π=R` and `2j=R+1` under those model hypotheses, with an
 [independent artifact audit](reviews/ordinary12-freej-exact-ordinary-independent-audit/README.md).
 Here `π` indexes the carrier ordinate; the distinct exponent `m` indexing
-`f` is only known to satisfy `π ∣ m`. Remaining carrier recovery, compact44
-calibration and transport of the full argument to iPRA remain open.
+`f` is only known to satisfy `π ∣ m`. The [power identity theorem](research/ordinary12-ipra-bridge/free-j-power-finish-prototype/README.md)
+proves `X=2^R` under the graph hypotheses and `β≥46`; its paired replay
+passed an [independent artifact audit](reviews/ordinary12-freej-power-finish-independent-audit/README.md).
+Remaining carrier recovery, compact44 calibration and transport of the full
+argument to iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
