@@ -475,11 +475,11 @@ ordinary supported indices and proves it for the 41 symbolic kernel copy
 positions under explicit positive and bounded model-position hypotheses. The
 overlay's full companion and transitive ancestry, a coherent paired replay,
 retained tuple and graph-column binding remain open.
-A [common-period bit client](research/ordinary12-ipra-bridge/compact44-common-period-bits-prototype/README.md)
-has compiled in a twelve-source single-side rebuild. It uses one graph-derived
-pair `N,w` to bound the selector and all 41 copy digits in each model period,
-including the origin and forbidden-selector cases. A paired replay, retained
-tuple binding and graph-column identification remain open.
+A [common-period bit client](reviews/compact44-common-period-pair-independent-audit/README.md)
+has passed a twelve-module-per-side paired replay and independent artifact
+audit. It uses one graph-derived pair `N,w` to bound the selector and all 41
+copy digits in each model period, including the origin and forbidden-selector
+cases. Retained tuple binding and graph-column identification remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
