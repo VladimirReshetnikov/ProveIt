@@ -391,11 +391,13 @@ has passed paired replay and independent audit. It derives `3h+2 ≤ population 
 from its explicit power, divisibility, index and positivity assumptions, but
 does not itself show that the free-J graph provides those facts. A
 [source-only closure audit](reviews/ordinary12-freej-population-closure-independent-audit/README.md)
-checks a proposed nine-module coherent rebuild for a graph client; that build
-and the client remain open. Its first protected attempt stopped on a source
-style warning before reaching the client. A [reviewed retry policy](reviews/ordinary12-freej-population-warning-prelaunch-audit/README.md)
-retains that precise warning and rejects changed or additional warnings; it
-does not itself establish a successful graph build.
+checks the nine-module closure for a graph client. The first protected attempt
+stopped on a source style warning before reaching the client. A [reviewed retry](research/ordinary12-ipra-bridge/free-j-population-client-prototype/README.md)
+retained that precise warning, rejected changed or additional warnings, and
+completed matching 11-step builds including the graph client on both sides.
+The client retains the graph, positivity, port-bound, `β≥46` and `q=2^h`
+assumptions; its independent artifact audit is pending. Compact44 checker
+calibration and the iPRA endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
