@@ -1,0 +1,5 @@
+# Second independent first-root congruence source-closure review
+
+The no-Lean review actually exited 0 in session 66484. It checked all four plan files against commit `7b0366359b`, the source against the independently preserved `df486043d0` bytes, the audited parent receipt and observation, all 143 matching `.olean` paths/hashes per side, all 40 direct-project companion slots, the package Init object, the three declared axiom-report names, and absence of output companion slots. The original scan reran byte-for-byte; its optimized-Python control exited 1. This audit independently reconstructed the inventory rather than only trusting the original scan.
+
+This is a point-in-time source/import/object review. It does not rerun the parent audit, perform an atomic freeze or Lean build, bind retained K or the tuple, prove the decoder/machine simulation, or establish a PRA theorem. The source's graph and alignment premises remain explicit; complete package/dynamic ancestry and transient between-check changes are not covered.
