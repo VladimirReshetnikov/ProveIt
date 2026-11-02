@@ -41,13 +41,12 @@ To obtain the missing all-model direction without circularity:
    and beta-times-J divisibility, to the chosen model and exactly the same
    port tuple. Establish each mask and port premise from its native
    specification rather than assuming the desired equation equivalence.
-2. Construct, inside each such model, the fresh strong Pell seed with the
-   ordinate divisible by the required `b*c²`; establish its positivity,
-   required congruences and the positive quotient witnesses `f,i,T,m`. The
-   existing standard-integer `ThirteenFreshSeed.fresh_private_seed` shows the
-   intended result but is not an internal theorem. Assess the newer
-   `ArithmeticPellPigeonhole` source as an ingredient only after rebuilding
-   its complete dependencies coherently.
+2. The fresh model-level [strong Pell seed](../thirteen-model-strong-seed/README.md)
+   now supplies positive `t,f,i` with ordinate `b*i*c²` when `b,c>0`;
+   its paired replay passed an [independent artifact audit](../../reviews/thirteen-model-strong-seed-independent-audit/README.md).
+   Extend it with the required congruences and positive auxiliary witnesses
+   `T,m`. The standard-integer `ThirteenFreshSeed.fresh_private_seed` shows
+   the intended final result but is not an arbitrary-model theorem.
 3. Bind the resulting 13-coordinate `value69` to the **entire** pinned 69-row
    expression and the original 14-coordinate evaluator to the precise native
    carrier, including conversion of positive integer variables to whatever

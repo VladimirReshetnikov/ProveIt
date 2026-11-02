@@ -46,8 +46,8 @@ pigeonhole source emits three pre-existing deprecation warnings (`push_neg`
 twice and `mul_le_mul_left'` once); these are preserved in the receipt. Those
 Lean metatheory axioms are not axioms asserted for object-level iPRA.
 
-This is a paired suffix replay, not yet an independently audited suffix. Its
-70-module parent is source-frozen; the two Lean files added by the subsequent
+This paired suffix has passed an [independent artifact audit](../../reviews/thirteen-model-strong-seed-independent-audit/README.md).
+Its 70-module parent is source-frozen; the two Lean files added by the subsequent
 upstream merge are not in that parent. The original Foundation provider's outer
 wrapper exit and package-transitive/dynamic dependency ancestry retain the
 [parent audit's](../../reviews/ordinary12-coexistence-pair-independent-audit/README.md)
