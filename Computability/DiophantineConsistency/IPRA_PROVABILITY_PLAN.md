@@ -176,7 +176,7 @@ separate finite checks.
 
 The [31-variable degree-6 equation](equation6-31.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRAAQ31Native.lean) for the
-exact shifted fixed-port literal. Its [focused paired replay](reviews/adaptive-aq31-native-final-replay/README.md)
+exact shifted fixed-port literal. Its [focused paired replay receipt](reviews/adaptive-aq31-native-final-replay/receipt.json)
 matched 23 modules and 16 selected prior model objects. The proof constructs an
 oriented witness from a halting run; it does not claim every parent zero is
 oriented. Historical provider and inherited ancestry qualifications remain;
@@ -268,8 +268,9 @@ checks the proved ordering and `2R < c`; the [early-size replay](research/ordina
 passed a [separate audit](reviews/ordinary12-freej-early-size-independent-audit/README.md).
 A subsequent [bounded model replay](research/ordinary12-ipra-bridge/free-j-graph-vbound-prototype/README.md)
 proves the exact graph's signed `V>c>1` under the stated positive-coordinate
-and port bounds. It is a single-author historical overlay, not yet the
-denominator-nonzero theorem or an internal iPRA proof.
+and port bounds; an [independent bounded replay](reviews/ordinary12-freej-vbound-independent-audit/README.md)
+also passed. These historical overlays are not yet the denominator-nonzero
+theorem or an internal iPRA proof.
 The ordinary tail's polarized residual and denominator-cleared identities have
 also passed a [bounded replay audit](reviews/ordinary12-freej-ordinary-identities-independent-audit/README.md),
 but those identities do not establish denominator divisibility or integrality.

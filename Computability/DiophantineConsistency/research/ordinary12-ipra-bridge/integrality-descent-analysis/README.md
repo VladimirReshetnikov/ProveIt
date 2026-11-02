@@ -155,10 +155,10 @@ its graph/port hypotheses. A later [bounded model replay](../free-j-graph-vbound
 proves the signed graph binding and `V>c>1` using those assumptions and
 the actual free-J zero. Its theorem explicitly bridges the graph's signed
 subtraction to the natural subtraction used in the early-size result; it
-does not assume the later strong norm. This is a single-author historical
-overlay, not yet an iPRA derivation or a proof of the specific denominator's
-nonzeroness. Another proof of `w!=0` would also suffice for that step, but
-must be shown from graph hypotheses.
+does not assume the later strong norm. An [independent bounded replay](../../../reviews/ordinary12-freej-vbound-independent-audit/README.md)
+also passed. These historical overlays are not yet an iPRA derivation or a
+proof of the specific denominator's nonzeroness. Another proof of `w!=0`
+would also suffice for that step, but must be shown from graph hypotheses.
 
 After applying the uniform integrality claim, write `Y=D z` and let
 `i₀=w-z`, a **signed** integer. Then `A=D i₀`. From `N=0`,
