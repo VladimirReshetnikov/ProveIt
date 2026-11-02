@@ -191,6 +191,11 @@ polynomial identities and an exhaustive **bounded** sanity check, including
 the `Q=1` counterexample. These calculations do not certify any of the
 unbounded claims or model/graph transports.
 
+On this revision, the normal invocation exited `0` with all checks passing.
+`python3 -O check_identities.py` exited `1` with `Refusing optimized Python:
+this checker requires assertions.` The guard is necessary because optimized
+Python removes `assert` statements.
+
 The [independent review](../../../reviews/ordinary12-integrality-descent-independent/README.md)
 also found that the original checker could print success under optimized
 Python with its assertions disabled. The checker now rejects optimized mode.
