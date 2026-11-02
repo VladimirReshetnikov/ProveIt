@@ -63,7 +63,7 @@ def mergeguards(allguards,new):
 
 def check_frozen(rows):
  for name,src,digest,_ in rows:
-  if not src.is_file() or H(src)!=digest:raise ValueError(('frozen source drift',name))
+  if not src.is_file() or src.is_symlink() or H(src)!=digest:raise ValueError(('frozen source drift',name))
 
 def require_output(obj):
  if not obj.is_file() or obj.is_symlink():raise ValueError(('invalid output object',str(obj)))
@@ -105,6 +105,7 @@ def main():
    if key.startswith('PYTHON') or key in ('LEAN_SRC_PATH','LEAN_SYSROOT','LD_LIBRARY_PATH','LD_PRELOAD','LD_AUDIT'):env.pop(key,None)
   env['LEAN_PATH']=str(lib)+':'+str(PACKAGE);steps=[]
   for name,src,digest,imports in rows:
+   check_frozen(rows)
    rel=Path(*name.split('.'));obj=(lib/rel).with_suffix('.olean');obj.parent.mkdir(parents=True,exist_ok=True);log=run/(name.replace('.','_')+'.log')
    for suffix in SUFFIXES:
     if os.path.lexists(Path(str(obj)[:-6]+suffix)):raise ValueError(('output companion occupied',label,name,suffix))
@@ -127,7 +128,7 @@ def main():
    if code or reason or 'warning:' in text or 'error:' in text or 'sorryAx' in text:raise ValueError(('compiler failure',label,name,code,reason,text[-8000:]))
    require_output(obj);checkguards(allguards);validate_reports(name,reports)
    mergeguards(allguards,guard(str(obj)[:-6]))
-   if H(src)!=digest:raise ValueError(('frozen source drift',name))
+   check_frozen(rows)
    steps.append({'module':name,'compiler_exit':code,'deps_exit':deps.returncode,'deps_stdout':deps.stdout,'command':cmd,'source_sha256':digest,'object_sha256':H(obj),'log_sha256':H(log),'stdout':text,'axiom_reports':reports,'sampled_peak_rss_bytes':peak,'stop_reason':reason})
    print(label,name,'exit',code,'peak_RSS',peak,flush=True)
   runs.append({'label':label,'steps':steps})

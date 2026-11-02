@@ -13,5 +13,5 @@ with tempfile.TemporaryDirectory(prefix='fixed-graph-integrity-') as d:
  obj.unlink();reject('removed object',lambda:m.checkguards(snap));reject('missing output',lambda:m.require_output(obj));obj.write_bytes(b'object')
  companion=root/'Obj.olean.private';companion.write_bytes(b'late');reject('added companion',lambda:m.checkguards(snap));companion.unlink()
  target=root/'other';target.write_bytes(b'object');obj.unlink();obj.symlink_to(target);reject('repointed object',lambda:m.checkguards(snap));reject('symlink output',lambda:m.require_output(obj));obj.unlink();obj.mkdir();reject('directory output',lambda:m.require_output(obj));obj.rmdir()
- source=root/'Source.lean';source.write_bytes(b'source');rows=[('Source',source,m.H(source),[])];m.check_frozen(rows);source.write_bytes(b'late mutation');reject('late source change',lambda:m.check_frozen(rows))
-print('PASS object/companion/frozen-source checks and 8 negative controls; no Lean launched')
+ source=root/'Source.lean';source.write_bytes(b'source');rows=[('Source',source,m.H(source),[])];m.check_frozen(rows);source.write_bytes(b'late mutation');reject('late source change',lambda:m.check_frozen(rows));source.write_bytes(b'source');source.unlink();source.symlink_to(target);target.write_bytes(b'source');reject('symlink frozen source with matching bytes',lambda:m.check_frozen(rows))
+print('PASS object/companion/frozen-source checks and 9 negative controls; no Lean launched')
