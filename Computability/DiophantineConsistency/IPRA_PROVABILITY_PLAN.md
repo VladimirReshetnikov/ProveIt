@@ -78,8 +78,16 @@ their subsequent 338-module coherent successor pair and 69-node semantic
 binding have now passed an [independent artifact audit](reviews/thirteen-model-endpoint-successor-pair-independent-audit/README.md).
 This verifies the endpoint declarations for their own expression and a
 model-level zero equivalence to the 69-node graph, subject to the audit's
-inherited provider and dynamic-loading qualifications. A separate internal
-iPRA client for the exact 69-node syntax is still being paired and audited.
+inherited provider and dynamic-loading qualifications. A separate [internal
+iPRA client for the exact 69-node syntax](research/thirteen-model-dag-ipra-followup/README.md)
+has since passed a paired replay and [independent artifact and statement audit](reviews/thirteen-model-dag-ipra-independent-audit/README.md).
+It includes native, standard and reference theory endpoints, and the standard
+endpoint for the Gödel–Gentzen translation of the selected Foundation ZFC
+consistency sentence. The 69-operation count is for the positive-coordinate
+DAG; its object no-zero syntax uses the positive shift. A [decimal-seed
+display](equation69-2011.pdf) and its [external transcription check](reviews/equation69-2011-display/README.md)
+are separate from the Lean theorem and retain the fixed-recipe interpretation
+boundary; their independent review is pending.
 
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common
