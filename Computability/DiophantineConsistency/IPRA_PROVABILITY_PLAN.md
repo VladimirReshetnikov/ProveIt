@@ -73,7 +73,8 @@ An [extension](research/ipra-selected-native-bit/README.md) also compiled
 native and standard iPRA bit sentences for the same code, including in a
 [guarded historical author run](reviews/ipra-selected-native-bit-guarded-author/README.md).
 Its [independent artifact audit](reviews/ipra-selected-native-bit-guarded-author-independent-audit/README.md)
-passed; a paired replay remains pending. No comparison with an
+passed. A later [historical pair](reviews/ipra-native-bit-historical-pair-terminal/README.md)
+matched all 11 additions; independent complete-result audit is pending. No comparison with an
 independently specified checker is claimed.
 
 The [15-variable degree-26 equation](equation26.pdf) uses a 93-operation
