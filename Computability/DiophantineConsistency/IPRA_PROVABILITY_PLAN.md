@@ -412,7 +412,7 @@ the symbolic mask, along with its stated radix and mask hypotheses. The audit
 records that an older closure-audit rerun fails against the corrected client
 source; it separately checked the unchanged closure scan and frozen corrected
 source rather than treating that historical rerun as successful.
-A [symbolic-mask graph-digit join](research/ordinary12-ipra-bridge/compact44-symbolic-graph-join-prototype/README.md)
+A [symbolic-mask graph-digit join](research/ordinary12-ipra-bridge/compact44-symbolic-graph-join-prototype/PAIR-RESULT.md)
 combines the graph client with the audited symbolic population, parity and
 residue results. Its seven-module-per-side paired replay passed an
 [independent artifact audit](reviews/compact44-symbolic-graph-join-independent-audit/README.md).
