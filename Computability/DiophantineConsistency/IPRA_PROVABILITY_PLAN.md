@@ -327,8 +327,11 @@ The [free-J graph application](research/ordinary12-ipra-bridge/free-j-graph-inte
 now proves the proof-only denominator divides the corresponding numerator
 under its stated zero, positivity and port hypotheses; its paired replay
 passed an [independent artifact audit](reviews/ordinary12-freej-graph-integrality-independent-audit/README.md).
-Recovering the ordinary strong norm and transporting the full argument to
-iPRA remain open.
+The [graph strong-norm theorem](research/ordinary12-ipra-bridge/free-j-graph-strong-prototype/README.md)
+then constructs a positive natural multiplier without assuming the strong
+norm; its paired replay passed an [independent artifact audit](reviews/ordinary12-freej-graph-strong-independent-audit/README.md).
+The auxiliary witness, rank recovery, compact44 calibration and transport of
+the full argument to iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do

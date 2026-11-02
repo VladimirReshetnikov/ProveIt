@@ -215,7 +215,10 @@ any theorem that additionally requires positive `u` or a particular sign of
   The [graph application](../free-j-graph-integrality-prototype/README.md)
   now proves `D ∣ Y` under its stated free-J hypotheses, with an [independent
   artifact audit](../../../reviews/ordinary12-freej-graph-integrality-independent-audit/README.md).
-  Ordinary strong-norm recovery and the object-level iPRA proof remain open.
+  The subsequent [graph strong-norm theorem](../free-j-graph-strong-prototype/README.md)
+  constructs a positive multiplier without assuming the norm; its paired
+  replay passed an [independent artifact audit](../../../reviews/ordinary12-freej-graph-strong-independent-audit/README.md).
+  The auxiliary witness, rank recovery and object-level iPRA proof remain open.
 * `FreeJNormZero` proves the generic ring identity and a natural-valued
   signed-pair instance. The general signed graph substitution is open.
 * The early-size and index packets give useful intermediate model results
