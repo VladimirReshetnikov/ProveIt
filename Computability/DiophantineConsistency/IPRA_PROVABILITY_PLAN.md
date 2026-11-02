@@ -202,6 +202,10 @@ and passed an [independent artifact audit](reviews/aq26-author-independent-audit
 They remain historical, with no matched peer. The [standard-theory AQ26 client](research/ipra-standard-aq26/README.md)
 also completed one author-only single-overlay run and a separate artifact
 audit; its paired Lean replay remains open. The
+[22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md)
+has independently checked finite substitution and degree calculations and an
+ordinary positive-witness argument. Its model transport and native iPRA
+equivalence have not been proved in Lean. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.

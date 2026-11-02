@@ -60,6 +60,7 @@ a [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/R
 a [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md),
 a [26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md)
 with a [base-10 display](research/adaptive-square-sums26-degree8/equation8-26.pdf),
+a [22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md),
 and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
 Their substitutions and degrees have finite checks. The 29-variable candidate
 has a matched model replay. Its initial focused native replay failed on broken
@@ -71,8 +72,10 @@ Lean replay remains open, with the historical and provider qualifications below.
 The 26-, 27- and 28-variable model transports and native endpoints have a
 separate author-only historical run and independent artifact audit; their
 paired Lean replay remains open. The standard-theory 26-variable client also
-has one author run and a separate artifact audit. The 40-variable candidate's
-model and native transports remain open.
+has one author run and a separate artifact audit. The 22-variable graph has
+exact finite checks and an independently reviewed ordinary witness argument;
+its Lean model transport and native iPRA equivalence remain open. The
+40-variable candidate's model and native transports remain open.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

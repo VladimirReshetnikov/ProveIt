@@ -12,6 +12,11 @@ proofs, and neither a Lean witness-transport theorem nor a native iPRA proof
 for this candidate has been completed. In particular, these finite checks do
 not prove the requested equivalence with `Con(ZFC)` in iPRA.
 
+An [independent audit](../../reviews/aq22-degree10-independent-audit/README.md)
+reconstructed the graph and residual identities, confirmed the degree and
+positivity argument, and exercised mutation controls. Its scope is finite
+computation and ordinary integer reasoning, not Lean derivability.
+
 ## Substitution and positivity
 
 In the parent's graph, eliminate these four positive coordinates using the
