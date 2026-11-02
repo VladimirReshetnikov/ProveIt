@@ -21,8 +21,8 @@ histogram, rejects four mutations, and checks the exact 2011-port shifted
 literal declaration. Its comparison is an **external source check**, not a
 Lean parser or theorem about JSON. It does not bind a PDF or count any decimal
 constant digits. The separately audited original graph has exact degree 174
-for its phase-split2471 ports; this packet does not independently certify the
-exact degree after substituting the distinct 2011 tuple.
+for its phase-split2471 ports. A further external [2011-port degree check](check_degree2011.py),
+described below, checks that the same degree survives the distinct tuple.
 
 The 2011 fixed tuple and the JSON's original phase-split2471 tuple are
 **different**. The symbolic node theorem holds for any integer tuple, but its
@@ -55,10 +55,40 @@ Run a fresh replay where the pinned parent/provider paths remain available:
 python3 -I -S replay.py --output /tmp/ipra-thirteen69-dag-pair-NEW
 ```
 
-The paired suffix has not yet received an independent artifact audit. The
-provider inherits the original Foundation wrapper's unobserved outer exit and
+The paired suffix passed an [independent artifact audit](../../reviews/thirteen69-dag-binding-independent-audit/README.md).
+The provider inherits the original Foundation wrapper's unobserved outer exit and
 package-transitive and dynamic-loading qualifications. Checks are at observed
 points, not protection from mutation between observations. Earlier global
 normalization attempts exceeded resource bounds and were retained with the
 [canonical-binding packet](../thirteen69-canonical-binding/observations/failed-attempts.md);
 the successful cut-point proof avoids that expansion.
+
+## Exact degree at the 2011 ports
+
+[`check_degree2011.py`](check_degree2011.py) reruns the pinned prior
+[`audit.py`](../thirteen-variable-independent/audit.py) leading-form
+calculation on the exact 69-row schedule. That calculation treats all four
+ports as symbolic coefficients and checks the entire degree-174 homogeneous
+form, including the full main-norm cancellation; specialization of any
+integer ports can only lower that degree. For the variable monomial
+
+```
+J^101 gamma i^4 eta^15 w^14 s^27 f^8 T^4
+```
+
+the script checks that the entire generic coefficient consists of the single
+term `-128*beta^101`, with no K, MC or MF terms that could cancel it. The
+checked 2011 tuple is exactly `CurrentMasks2011.ports (K : ℤ)`:
+`(beta, K, lowPort, highPort+beta)`, with `beta=(2^47)^2011-1`. Modulo
+`1,000,000,007`, this beta is `878756698` and the selected coefficient is
+`937554773`, so the coefficient is nonzero. Thus the distinct 2011-port DAG
+has exact degree 174. The substitution of each variable by `x+1` preserves
+the leading homogeneous form and therefore its degree.
+
+The normal check actually exited `0` and wrote [its receipt](degree2011-receipt.json)
+(SHA-256 `1c78a79547036a9b88ac7ef2bd5d7d3b4a3ccabe3eb265208985397f1789b0fb`);
+an optimized `python3 -I -S -O` invocation actually exited `1` before the
+check. This is an external finite sparse-polynomial check, reusing the
+earlier audit rather than an independently authored proof or a Lean theorem
+about polynomial degree. It does not establish PDF semantics, the converse,
+or the final iPRA equivalence. An independent review is pending.
