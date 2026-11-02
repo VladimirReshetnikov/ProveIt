@@ -568,9 +568,11 @@ arithmetic certificate and bounded-model transfer, rather than enumerating
 all shifts. A separate author-side [model support client](research/ordinary12-ipra-bridge/compact44-clean-model-support-prototype/README.md)
 proves symbolic mask support is contained in that blocker and, assuming
 positive-index `NoCarry` and an origin bound, obtains zero digits outside
-the blocker and Boolean digits away from phase `1063`. Joining these bounds
-to the same graph witnesses and selected predecessor, and deriving the carry
-reset, remain open.
+the blocker and Boolean digits away from phase `1063`. A subsequent author-side
+[graph/support/carry client](research/ordinary12-ipra-bridge/compact44-fixed-graph-support-carry-prototype/README.md)
+joins those bounds to the same symbolic graph and carry witnesses, proving
+the independently obtained lengths equal. Selecting a clean predecessor and
+deriving the carry reset remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
