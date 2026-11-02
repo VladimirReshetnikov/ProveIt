@@ -1,0 +1,37 @@
+/tmp/compact44-graph-support-join-01/FractionalAnchorConflict.lean:27:14: error(lean.unknownIdentifier): Unknown identifier `TemporalEvenCarry.carry_one`
+/tmp/compact44-graph-support-join-01/FractionalAnchorConflict.lean:18:78: error: unsolved goals
+V : Type u_1
+ι : Type u_2
+inst✝² : ORingStructure V
+inst✝¹ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+inst✝ : Fintype ι
+n C E F : V
+a e : ι → V
+hn : 0 < n
+hC : C < Exp.exp (67 * n)
+h :
+  CarryInput 67 n F 1 GenericBandCarryFamily.cap (GenericBandCarryFamily.coefficient a)
+    (GenericBandCarryFamily.word n C e (temporalWord n E C))
+t : V
+ht : t < n
+hroom : ∑ j, a j * 3 + 1 < Exp.exp 66
+hr0 : 0 < E % 67
+hpar :
+  (1 + dig 67 (temporalWord n E C) t +
+        carry 67 n (GenericBandCarryFamily.coefficient a) (GenericBandCarryFamily.word n C e (temporalWord n E C))
+          (cyc n t 1)) %
+      2 =
+    0
+hb : dig 67 C (cyc n (cyc n t 1) (E / 67 % n)) ≤ 1
+hbprev : dig 67 C (cyc n (cyc n (cyc n t 1) (E / 67 % n)) 1) ≤ 1
+T : V := temporalWord n E C
+X : ι ⊕ Unit → V := GenericBandCarryFamily.word n C e T
+A : ι ⊕ Unit → V := GenericBandCarryFamily.coefficient a
+hprev : dig 67 C (cyc n (cyc n t (E / 67 % n)) 1) ≤ 1
+he : dig 67 (rot 1 (67 * n) C (E % (67 * n))) t % 2 = 0
+hcb :
+  carry 67 n (GenericBandCarryFamily.coefficient a) (GenericBandCarryFamily.word n C e (temporalWord n E C))
+      (cyc n t 1) ≤
+    1
+⊢ False
+'FractionalAnchorConflict.conflict' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

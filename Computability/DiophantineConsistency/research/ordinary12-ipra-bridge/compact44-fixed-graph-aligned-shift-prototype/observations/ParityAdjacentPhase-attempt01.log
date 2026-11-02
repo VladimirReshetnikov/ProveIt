@@ -1,0 +1,21 @@
+/tmp/compact44-graph-support-join-01/ParityAdjacentPhase.lean:43:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  cyc 8807 2194 D
+in the target expression
+  cyc (8807 * N) 3295 D % 8807 = cyc 8807 3295 D
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+N D : V
+hN : 0 < N
+hdlt : D % 8807 < 8807
+d : ℕ
+hd : d < 8807
+hdv : D % 8807 = ↑d
+h1 : cyc (8807 * N) 2194 D % 8807 = cyc 8807 2194 (D % 8807)
+h2 : cyc (8807 * N) 3295 D % 8807 = cyc 8807 3295 D
+⊢ let a := cyc (8807 * N) 2194 D % 8807;
+  let b := cyc (8807 * N) 3295 D % 8807;
+  a ≠ 1063 ∧ a ≠ 1064 ∨ b ≠ 1063 ∧ b ≠ 1064
+'ParityAdjacentPhase.nat_choice' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ParityAdjacentPhase.choose_two_ordinary' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
