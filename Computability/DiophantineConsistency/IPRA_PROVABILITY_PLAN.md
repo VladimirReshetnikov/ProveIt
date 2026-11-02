@@ -490,7 +490,7 @@ compares its digits with retained `MF_source−β`; its independent artifact
 audit passed. A [separate paired residue client](research/ordinary12-ipra-bridge/compact44-high-residue-prototype/PAIR_RESULT.md)
 proves the symbolic value is `4 mod 8`; its [independent artifact audit](reviews/compact44-high-residue-independent-audit/README.md)
 passed. The symbolic low-mask [evenness client](research/ordinary12-ipra-bridge/compact44-low-even-prototype/PAIR_RESULT.md)
-has also passed its paired wrapper and awaits independent artifact audit.
+has also passed its paired wrapper and [independent artifact audit](reviews/compact44-low-even-independent-audit/README.md).
 Internal high-port equality remains open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
