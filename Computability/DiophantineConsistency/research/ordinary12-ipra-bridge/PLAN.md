@@ -46,8 +46,12 @@ The bounded model prototype now compiles a generic signed-pair version of
 step 3, plus both generic carrier exclusions and the ordinary factor
 exclusion. Their composition uses no carrier exclusion, rank or port
 hypotheses, but still assumes an abstract product-equals-one equation. The
-remaining step is the exact literal-to-abstract-factors identity and its
-model evaluation; the composed theorem is not yet a proof about `P12`.
+[historical literal prototype](literal-prototype/README.md) now checks all
+100 graph rows and proves the literal factorization, a separate integer
+evaluation identity, and that an internal zero implies product one for the
+three concrete signed factor pairs. Connecting those concrete factors to the
+generic exclusions is still open; the composed theorem is not yet a proof
+about `P12`.
 
 **Early rank before norm recovery.** With only `A0=A1=0` and the explicit
 positive/port hypotheses, construct internal witnesses for the divisions
