@@ -73,7 +73,10 @@ or exclude transient changes. Exact direct-import checks and the pinned
 parent comparison are separate evidence, and this manifest-at-read caveat
 remains. The inherited Foundation outer-wrapper exit, dynamic provenance,
 and package-transitive dependency ancestry are also not established here.
-A separate independent audit of this new suffix packet is still required.
+The [independent suffix audit](../../../reviews/ordinary12-current-denominator-independent-audit/CHECK.json)
+exited `0`; it checked both provider and suffix artifact chains, all 24
+compiler logs and objects, and reconstructed the direct-import closure at
+audit time. It retains the manifest-at-read and inherited ancestry caveats.
 
 The driver samples only the leader's RSS and host free space; the limits are
 not hard quotas or total-process-tree accounting. Its reviewed signal handler
