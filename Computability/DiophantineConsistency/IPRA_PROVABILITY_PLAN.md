@@ -617,6 +617,11 @@ also compiled in a single-side exploration. It relates one aligned reflected
 selector/copy band to the finite decoder expression; the other graph terms,
 possibly fractional residual rotation, carry reset and retained K binding are
 not supplied by that theorem.
+A [conditional two-band congruence](research/ordinary12-ipra-bridge/compact44-two-band-rotation-prototype/README.md)
+has compiled in a bounded single-side tmpfs exploration. It combines the
+aligned reflected bands and five monomials while leaving `w*C` separate and
+assuming the symbolic K decomposition. The model K-cast bridge, full column,
+fractional residual, retained bytes and paired verification remain open.
 A [direct symbolic-K graph client](reviews/compact44-direct-symbolic-k-pair-independent-audit/README.md)
 has passed a seven-module-per-side paired replay and independent artifact audit.
 Its definition is a distinct Lean expression until equality with the retained K
