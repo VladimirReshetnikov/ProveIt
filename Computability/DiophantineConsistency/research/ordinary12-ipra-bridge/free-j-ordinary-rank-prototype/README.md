@@ -28,10 +28,11 @@ f = xcoord m a,          i c² = Δ · ycoord m a.
 The proof combines the noncircular early main-index/size result with the
 previous positive ordinary strong norm and invokes
 `ArithmeticPellIntegralSolution.integral_solution_tsub`. It does **not**
-assume or conclude `Δ | i`. In particular, `p | m` is not the later exact
-rank equality `m=R`; obtaining that equality and the remaining carrier and
-checker bridges are still open. The auxiliary norm is retained in the output
-for subsequent work but is not used to manufacture the early size estimate.
+assume or conclude `Δ | i`. Here `p` indexes `c` and `m` indexes `f`; the
+later main-carrier index target is `p=R`, and it does not assert `m=R`. The
+exact carrier index and the remaining carrier and checker bridges are still
+open. The auxiliary norm is retained in the output for subsequent work but is
+not used to manufacture the early size estimate.
 
 This is a conditional model-level theorem, not an object-level iPRA proof or
 an end-to-end consistency equivalence. The signed multiplier and auxiliary
