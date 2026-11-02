@@ -6,6 +6,7 @@ if not __debug__ or os.environ.get('PYTHONOPTIMIZE') or not sys.flags.isolated o
 HERE=Path(__file__).resolve().parent; BASE=HERE.parent; ROOT=HERE.parents[2]
 PLAN=BASE/'compact44-symbolic-graph-closure-plan'; AUDIT=ROOT/'reviews/ordinary12-freej-concrete-digits-client-independent-audit'
 PLAN_AUDIT=ROOT/'reviews/compact44-symbolic-graph-closure-independent-audit/CHECK.json'
+LOW_AUDIT=ROOT/'reviews/compact44-low-even-independent-audit'
 PREFIX=Path('/tmp/ipra-freej-concrete-digits-client-pair-01'); PACKAGE=Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib')
 MONITOR=BASE/'free-j-current-denominator-composition/replay.py'; LEAN=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
 SOURCES=()
@@ -18,8 +19,24 @@ PINS={MONITOR: '2c8a7f848e715a297f8af31e6a2be46747db0d571bc9fa1f104ab06d2db94eb8
  AUDIT/'CHECK.json': '5ef4ae700c1105220472fe57952929071a6c5666d1cad01a3b37c971c49d3056',
  AUDIT/'terminal-observation.json': '11434c5c2368518a75264e68ee27784ab93162e1c39a56e34df18c10b8b5b2d6',
  PLAN_AUDIT: '05de5c689e16dab9c5ec0cf5a319f81c4d2d96ceeebfe7503ee163622686bc2b',
- PLAN_AUDIT.parent/'terminal-observation.json':'28f97011af2a1c64e42f8af0396edd1bffa7f033a73de3509b6f013bbb866ffa'}
+ PLAN_AUDIT.parent/'terminal-observation.json':'28f97011af2a1c64e42f8af0396edd1bffa7f033a73de3509b6f013bbb866ffa',
+ LOW_AUDIT/'audit.py':'977a0c8fe03c2e393c2234ad8ecaf8170fef4c0203ec9a076a3606ee9b880042',
+ LOW_AUDIT/'CHECK.json':'5ddfb822587813f5883fc32ec2ced206f913ac362f35a762e1cee9b8503f395d',
+ LOW_AUDIT/'terminal-observation.json':'6ee553dd579a8ba61323c2de04bad503d7f8f9294ec183e7367dae844b938529'}
 H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def validate_reports(name,reports):
+ expected_reports={
+  'CompactLowPopulation': {'list_population','model_population'},
+  'CompactSupportCard': {'support_card'},
+  'CompactLowExact': {'model_population'},
+  'CompactLowEven': {'low_even'},
+  'CompactHighPopulation': {'model_population','model_lt'},
+  'CompactHighResidue': {'natural_mod_eight','model_mod_eight'},
+  'CompactSymbolicGraphDigits': {'graph_digits'}}
+ stem=name.rsplit('.',1)[-1]
+ expected_reports={stem+'.'+n for n in expected_reports.get(stem,set())}
+ if len(reports)!=len(expected_reports) or {report for report,_ in reports}!=expected_reports or any({x.strip() for x in ax.split(',') if x.strip()} != ({'propext'} if report=='CompactHighResidue.natural_mod_eight' else {'propext','Classical.choice','Quot.sound'}) for report,ax in reports):raise ValueError(('unexpected axiom report',name,reports))
+
 def load(path):
  spec=importlib.util.spec_from_file_location('monitor',path);obj=importlib.util.module_from_spec(spec);spec.loader.exec_module(obj);return obj
 
@@ -34,12 +51,16 @@ def verify():
  if proc.returncode or proc.stderr or json.loads(proc.stdout)!=scan:raise ValueError(('source closure drift',proc.returncode,proc.stderr))
  proc=subprocess.run([sys.executable,'-I','-S','-B',str(AUDIT/'audit.py')],capture_output=True,text=True,timeout=900)
  if proc.returncode or proc.stderr or json.loads(proc.stdout)!=review:raise ValueError(('graph-digit audit rerun failed',proc.returncode,proc.stderr))
- return scan,review
+ low=json.loads((LOW_AUDIT/'CHECK.json').read_text());low_obs=json.loads((LOW_AUDIT/'terminal-observation.json').read_text())
+ if low.get('status')!='PASS_INDEPENDENT_COMPACT44_LOW_EVEN_AUDIT' or low.get('recorded_outer_exit')!=0 or low_obs.get('independent_review_exit')!=0 or low_obs.get('check_sha256')!=PINS[LOW_AUDIT/'CHECK.json']:raise ValueError('invalid low-even audit')
+ proc=subprocess.run([sys.executable,'-I','-S','-B',str(LOW_AUDIT/'audit.py')],capture_output=True,text=True,timeout=1800)
+ if proc.returncode or proc.stderr or json.loads(proc.stdout)!=low:raise ValueError(('low-even audit rerun failed',proc.returncode,proc.stderr))
+ return scan,review,low
 
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);out=ap.parse_args().output.absolute()
  if out.parent.resolve(strict=True)!=Path('/tmp').resolve() or not out.name.startswith('ipra-compact-symbolic-graph-join-pair-') or out.exists() or out.is_symlink():raise ValueError('use a fresh direct /tmp/ipra-compact-symbolic-graph-join-pair-* path')
- driver=H(__file__);scan,review=verify(); monitor=load(MONITOR);out.mkdir(); frozen=out/'frozen';frozen.mkdir();rows=[]
+ driver=H(__file__);scan,review,low=verify(); monitor=load(MONITOR);out.mkdir(); frozen=out/'frozen';frozen.mkdir();rows=[]
  for row in scan['modules']:
   src=Path(row['source']);dst=frozen/Path(*row['module'].split('.')).with_suffix('.lean');dst.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(src,dst)
   if H(dst)!=row['source_sha256']:raise ValueError(('freeze drift',row['module']))
@@ -62,17 +83,7 @@ def main():
    cmd=[str(LEAN),'-M3000','-j1','-DElab.async=false',f'--root={frozen}',str(src),'-o',str(obj)]
    code,peak,reason=monitor.monitored(cmd,env,log);text=log.read_text();reports=re.findall(r"^'([^']+)' depends on axioms: \[([^\]]*)\]$",text,re.M)
    if code or reason or 'warning:' in text or 'error:' in text or 'sorryAx' in text:raise ValueError(('compiler failure',label,name,code,reason,text[-8000:]))
-   expected_reports={
-    'CompactLowPopulation': {'list_population','model_population'},
-    'CompactSupportCard': {'support_card'},
-    'CompactLowExact': {'model_population'},
-    'CompactLowEven': {'low_even'},
-    'CompactHighPopulation': {'model_population','model_lt'},
-    'CompactHighResidue': {'natural_mod_eight','model_mod_eight'},
-    'CompactSymbolicGraphDigits': {'graph_digits'}}
-   stem=name.rsplit('.',1)[-1]
-   expected_reports={stem+'.'+n for n in expected_reports.get(stem,set())}
-   if len(reports)!=len(expected_reports) or {report for report,_ in reports}!=expected_reports or any({x.strip() for x in ax.split(',') if x.strip()}-{'propext','Classical.choice','Quot.sound'} for _,ax in reports):raise ValueError(('unexpected axiom report',name,reports))
+   validate_reports(name,reports)
    deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60);expected={str(PACKAGE/'Init.olean')}
    for dep in imports:
     rel=Path(*dep.split('.')).with_suffix('.olean');candidate=lib/rel
@@ -87,9 +98,9 @@ def main():
    print(label,name,'exit',code,'peak_RSS',peak,flush=True)
   runs.append({'label':label,'steps':steps})
  if [{k:v for k,v in r.items() if k not in ('command','deps_stdout','sampled_peak_rss_bytes')} for r in runs[0]['steps']]!=[{k:v for k,v in r.items() if k not in ('command','deps_stdout','sampled_peak_rss_bytes')} for r in runs[1]['steps']]:raise ValueError('paired outputs differ')
- scan2,review2=verify()
- if scan2!=scan or review2!=review or H(__file__)!=driver:raise ValueError('parent inputs or driver changed')
- receipt={'status':'PASS_PAIRED_COMPACT_SYMBOLIC_GRAPH_JOIN','runs':runs,'driver_sha256':driver,'graph_digit_audit':review,'fixed_inputs_sha256':{str(p):h for p,h in PINS.items()},'scope':'Conditional graph digit bounds with explicit low- and high-symbolic-port equalities, graph, beta, radix, split and product assumptions. No retained-port binding, checker, machine simulation or PRA proof. No full package/dynamic ancestry audit.'}
+ scan2,review2,low2=verify()
+ if scan2!=scan or review2!=review or low2!=low or H(__file__)!=driver:raise ValueError('parent inputs or driver changed')
+ receipt={'status':'PASS_PAIRED_COMPACT_SYMBOLIC_GRAPH_JOIN','runs':runs,'driver_sha256':driver,'graph_digit_audit':review,'low_even_audit':low,'fixed_inputs_sha256':{str(p):h for p,h in PINS.items()},'scope':'Conditional graph digit bounds with explicit low- and high-symbolic-port equalities, graph, beta, radix, split and product assumptions. No retained-port binding, checker, machine simulation or PRA proof. No full package/dynamic ancestry audit.'}
  with (out/'receipt.json').open('x') as f:json.dump(receipt,f,indent=2,sort_keys=True);f.write('\n')
  print('PASS_PAIRED_COMPACT_SYMBOLIC_GRAPH_JOIN',H(out/'receipt.json'),flush=True)
 if __name__=='__main__':main()
