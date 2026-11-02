@@ -705,7 +705,14 @@ provider; its identification with the old named interface is still uncompiled.
 The [source-closure review](reviews/compact44-graph-marked-join-closure-review/README.md)
 and [BusyBeaver addendum](research/ordinary12-ipra-bridge/compact44-graph-marked-join-plan/BUSYBEAVER-ADDENDUM.md)
 record missing historical objects, differing provider objects and additional
-source candidates; they are not a completed coherent build.
+source candidates; they are not a completed coherent build. An exploratory
+runner has an independently reproduced [provider-shadowing guard gap](reviews/compact44-graph-marked-runner-review/README.md):
+the test does not establish live compromise, but the run cannot authenticate
+frozen direct resolution or substitute for a guarded paired build.
+A separate [converse construction plan](research/ordinary12-ipra-bridge/compact44-converse-construction-plan/README.md)
+identifies the compact44-specific packing, calibration and witness assembly
+still needed for the halt-to-graph direction; the differently parameterized
+2011 construction cannot be applied directly.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
