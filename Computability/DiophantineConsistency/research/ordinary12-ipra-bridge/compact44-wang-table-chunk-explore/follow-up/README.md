@@ -1,0 +1,3 @@
+# Uncompiled follow-up inventory
+
+`FinalWangTableInventory.lean` is a proposed separate report client. After a successful coherent author-side build of the split `ArithmeticWangTable`, it should print the actual axiom reports for the three final original-name table checks and selected exported tile, lookup and transition declarations. This file has **not** been compiled. It is not part of the existing 96-source manifest or the 94 chunk/cover report checks, and its report sets are not guessed here. It needs its own source freeze, provider mapping, bounded compiler observation and independent review.
