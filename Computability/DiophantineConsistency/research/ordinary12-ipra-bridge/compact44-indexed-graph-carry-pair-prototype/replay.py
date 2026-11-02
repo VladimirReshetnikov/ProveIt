@@ -21,7 +21,7 @@ PINS={MONITOR:'2c8a7f848e715a297f8af31e6a2be46747db0d571bc9fa1f104ab06d2db94eb8'
  CLOSURE_AUDIT/'audit.py':'3283d8cdd471c73e99cd1af02054aee022ad678d23613808435ae258626976b3',CLOSURE_AUDIT/'CHECK.json':'71a573a864565788da2627cbae8652946b49c6a2ee76c34accb193fa333bfeb0',CLOSURE_AUDIT/'terminal-observation.json':'085fa4f5036f41a2b9eabbc97836d20faf637854b775eef3489cbda9799a84df',
  PARENT_AUDIT/'audit.py':'f2e8fc237ae73ba58e54a3b0fc68a49d4d348d61ebbbea9ebe1284ccb88b2781',PARENT_AUDIT/'CHECK.json':'eab1a508f2b84c27883f526e882bf0852045580fa690f86948bf834b4557cb0e',PARENT_AUDIT/'terminal-observation.json':'7d15ef6ba86cd61fd85f7a37c9a26c42d116258368a3a9fcec3a06ea1903eb19'}
 MODULES=['DiophantineConsistency.'+x for x in ['CompactModelStencilSlack','CompactGenericAlignedMass','CompactSelectorMassBridge','CompactIndexedMass','CompactFinIndexedMass','CompactConcreteIndexedMass','CompactConcreteIndexedModel','CompactIndexedFlatten','CompactTwoBandFlatten','CompactTwoBandCarry','FixedGraphIndexedCarry']]
-SMALL_AXIOMS={'CompactSelectorMassBridge.ofFn_get_cast','CompactSelectorMassBridge.rows_ofFn','CompactSelectorMassBridge.copy_fin_mass'}
+SMALL_AXIOMS={'CompactSelectorMassBridge.ofFn_get_cast','CompactSelectorMassBridge.rows_ofFn'}
 AXIOMS={'propext','Classical.choice','Quot.sound'}
 def digest(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def need(ok,msg):
