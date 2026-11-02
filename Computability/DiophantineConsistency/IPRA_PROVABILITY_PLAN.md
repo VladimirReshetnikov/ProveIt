@@ -650,7 +650,10 @@ A subsequent author-side [uniform parity-copy client](research/ordinary12-ipra-b
 combines the whole-block shift, reset and Boolean bounds to equate the
 appropriate cyclic source digits at both phases. Its indices retain their
 model cyclic form; it does not construct a global word or establish machine
-semantics.
+semantics. A later author-side [block-copy client](research/ordinary12-ipra-bridge/compact44-fixed-graph-block-copy-prototype/README.md)
+proves for every model `h<N` that the phase-`1095` digit in block `h` equals
+the phase-`2195` and phase-`3296` digits in block `cyc(N,h,s)`, including
+cyclic wrap. Occupancy of all blocks and the meaning of `s` remain open.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
