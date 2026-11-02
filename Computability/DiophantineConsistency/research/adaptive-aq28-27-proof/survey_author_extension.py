@@ -63,11 +63,24 @@ def main():
         raw_source = (ROOT / path).read_bytes()
         if git('show', f'{head}:{path}') != raw_source:
             raise ValueError(('draft differs from tracked commit', path))
+        source = raw_source.decode()
+        printed = re.findall(r'^#print axioms\s+(\S+)\s*$', source, re.M)
+        if printed:
+            # Non-check modules print names relative to their explicitly
+            # declared namespace; check modules use fully qualified names.
+            if any('.' not in item for item in printed):
+                ns = re.findall(r'^namespace\s+(\S+)\s*$', source, re.M)
+                if ns != [name]:
+                    raise ValueError(('unexpected report namespace', name, ns))
+            reports[name] = [name + '.' + item if '.' not in item else item for item in printed]
+            if len(set(reports[name])) != len(reports[name]):
+                raise ValueError(('duplicate axiom declaration', name, reports[name]))
         if name.endswith('Checks'):
-            reports[name] = re.findall(r'^#print axioms\s+(\S+)\s*$', raw_source.decode(), re.M)
             expected = 4 if 'NativeChecks' in name else 9
-            if len(reports[name]) != expected or len(set(reports[name])) != expected:
-                raise ValueError(('unexpected axiom declarations', name, reports[name]))
+            if len(reports.get(name, [])) != expected:
+                raise ValueError(('unexpected check declarations', name, reports.get(name)))
+    if len(reports) != 21 or sum(map(len, reports.values())) != 75:
+        raise ValueError(('unexpected total axiom reports', len(reports), sum(map(len, reports.values()))))
     used = result.pop('parent_source_modules_used')
     result['parent_modules_used'] = len(used)
     result['parent_module_order_sha256'] = sha(('\n'.join(used) + '\n').encode())
@@ -103,7 +116,7 @@ def main():
         json.dump(manifest, f, indent=2, sort_keys=True)
         f.write('\n')
     print(result['status'], result['parent_modules_used'], 'parent modules;', len(additions),
-          'draft modules;', len(reports), 'checks;', sha(args.output.read_bytes()),
+          'draft modules;', len(reports), 'reporting modules;', sha(args.output.read_bytes()),
           'manifest', sha(args.manifest_output.read_bytes()))
 
 if __name__ == '__main__':
