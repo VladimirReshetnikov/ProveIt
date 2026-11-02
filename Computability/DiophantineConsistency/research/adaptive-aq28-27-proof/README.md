@@ -26,7 +26,8 @@ and a tracked-source additions manifest. The [recorded survey](author-survey.jso
 uses 1,209 parent modules, 24 draft modules and six check modules; no declared
 external import is new relative to the parent manifest. The accompanying
 [additions manifest](author-additions.json) pins every draft to a tracked Git
-blob and records exact diagnostic declaration names. The survey deliberately
+blob and records all 75 diagnostic declaration names, including reports emitted
+inside non-check modules. The survey deliberately
 does not rehash the parent, check source drift or Lean's actual imports, or
 compile any draft. A separate author-only guarded driver must reauthenticate
 the completed author provider, freeze these bytes and check all dependencies;
