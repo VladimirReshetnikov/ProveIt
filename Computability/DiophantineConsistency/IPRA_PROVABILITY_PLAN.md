@@ -565,8 +565,12 @@ An author-side [clean-phase geometry client](research/ordinary12-ipra-bridge/com
 proves that, for any model shift, one of the two target phases lies outside
 the compact blocker `[0,1065] ∪ {1095,2195,3296}`. It uses an interval
 arithmetic certificate and bounded-model transfer, rather than enumerating
-all shifts. Graph-derived zero and Boolean digit bounds at the selected phase
-and its predecessors, and the resulting carry reset, remain to be proved.
+all shifts. A separate author-side [model support client](research/ordinary12-ipra-bridge/compact44-clean-model-support-prototype/README.md)
+proves symbolic mask support is contained in that blocker and, assuming
+positive-index `NoCarry` and an origin bound, obtains zero digits outside
+the blocker and Boolean digits away from phase `1063`. Joining these bounds
+to the same graph witnesses and selected predecessor, and deriving the carry
+reset, remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
