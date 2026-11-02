@@ -672,8 +672,13 @@ positive coordinates and has not had a paired replay; a separate
 [mathematical review](reviews/compact44-fixed-graph-aligned-shift-mathematical-review/README.md)
 found no gap in the inspected argument. An author-side [whole-block shift client](research/ordinary12-ipra-bridge/compact44-fixed-graph-cell-shift-prototype/README.md)
 further derives a reduced displacement of `8807*s` digits with `s<N` for the
-same graph witnesses. It does not identify `s` with a valid machine stride or
-prove a global decoder or iPRA endpoint.
+same graph witnesses; a separate [mathematical review](reviews/compact44-fixed-graph-cell-shift-mathematical-review/README.md)
+found no gap in the inspected argument. An author-side [uniform reset client](research/ordinary12-ipra-bridge/compact44-fixed-graph-uniform-reset-prototype/README.md)
+then proves incoming carry zero at every in-range column of phases `2195`,
+`3296`, `4393` and `5495`, and temporal target digit zero at the latter two
+decoder phases. It does not assert temporal target zero at the parity phases,
+identify `s` with a valid machine stride, or prove a global decoder or iPRA
+endpoint. These later clients have not had paired replays.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
