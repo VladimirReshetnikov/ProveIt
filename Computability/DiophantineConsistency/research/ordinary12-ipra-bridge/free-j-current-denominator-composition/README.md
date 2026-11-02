@@ -77,10 +77,12 @@ A separate independent audit of this new suffix packet is still required.
 
 The driver samples only the leader's RSS and host free space; the limits are
 not hard quotas or total-process-tree accounting. Its reviewed signal handler
-terminates and reaps the verified same-group process tree, using Linux
-subreaper support. This does not cover deliberately escaped descendants,
-wrapper SIGKILL, PID reuse races, or unobserved resource changes between
-samples. [Monitor controls](evidence/monitor-controls.json) include missing
+signals the verified group and reaps the leader, using Linux subreaper
+support. Controls also observed reaping specific same-group descendants;
+they do not establish a general descendant-reaping guarantee. This does not
+cover deliberately escaped descendants, wrapper SIGKILL, PID reuse or nested
+reparenting races, or unobserved resource changes between samples.
+[Monitor controls](evidence/monitor-controls.json) include missing
 RSS, transient recovery, no-sample fast exit, signal and exception cleanup;
 independent review is recorded separately in
 [the RSS-retry audit](../../../reviews/ordinary12-rss-retry-independent-audit/README.md).
