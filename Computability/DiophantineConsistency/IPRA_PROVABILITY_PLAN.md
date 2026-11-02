@@ -563,12 +563,13 @@ word in an external finite family. This allows a rotated temporal word to have
 a larger cap than the other words, but the exact graph decomposition and mass
 bound remain open. Its [independent artifact audit](reviews/compact44-heterogeneous-carry-independent-audit/README.md)
 passed with the inherited provider limitations recorded there.
-A [conditional clean-predecessor client](research/ordinary12-ipra-bridge/compact44-clean-carry-reset-prototype/README.md)
-has compiled in a single-side exploration. It shows that the stated local
+A [conditional clean-predecessor client](research/ordinary12-ipra-bridge/compact44-clean-carry-reset-prototype/PAIR_RESULT.md)
+has passed a paired replay and [independent artifact audit](reviews/compact44-clean-carry-independent-audit/README.md).
+It shows that the stated local
 predecessor and global carry bounds force the carry into the next column to
 zero, and identifies that output digit under a further target-column bound.
 The graph-specific decomposition, rotation transport and required inequalities
-remain assumptions, as do a paired replay and independent artifact audit.
+remain assumptions.
 An [independently audited finite coefficient-mass calculation](reviews/compact44-coefficient-mass-independent-audit/README.md)
 proves the 943-row selector and 41-copy totals in Lean, with the numerical
 half-radix and heterogeneous-carry slack. The connection from those finite
