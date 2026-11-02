@@ -24,6 +24,10 @@ an incorrect relative path; it was corrected before the successful replay.
 This single-author bounded replay does not replace a matched full-project
 build or audit dynamic/package-transitive dependencies.
 
+The [independent bounded replay audit](../../../reviews/ordinary12-freej-prototype-independent-audit/README.md)
+passed for this free-J split, with the historical-provider qualifications
+recorded there.
+
 The 100-row theorem uses `J=6j+1`, while `J` is free here. A theorem for the
 former does not cover every free-J valuation. This direct split makes no such
 restriction. The ordinary free-J soundness proof instead describes an

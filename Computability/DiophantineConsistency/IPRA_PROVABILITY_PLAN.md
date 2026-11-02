@@ -249,8 +249,9 @@ remain open.
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
 prototype and an exploratory [free-J 95-gate factor split](research/ordinary12-ipra-bridge/free-j-prototype/README.md)
-for arbitrary integer ports in `IΣ₁` models. Its independent replay audit is
-underway; positive-rank recovery and object-theory proof remain open. Its
+for arbitrary integer ports in `IΣ₁` models. Its [independent bounded replay
+audit](reviews/ordinary12-freej-prototype-independent-audit/README.md) passed;
+positive-rank recovery and object-theory proof remain open. Its
 compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
 13-variable 2011 ports with `beta = 2^94517 - 1`. A [finite full-tuple and
 parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
