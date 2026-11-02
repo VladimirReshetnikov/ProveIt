@@ -558,9 +558,11 @@ An author-side [coverage and all-cases client](research/ordinary12-ipra-bridge/c
 now combines the three window cases for arbitrary in-range model positions.
 It does not itself bound the selected source index by the word length or prove
 the graph-specific support and clean-predecessor conditions. A subsequent
-author-side [bounded rotation client](research/ordinary12-ipra-bridge/compact44-rotation-index-bounds-prototype/README.md)
+[bounded rotation client](reviews/compact44-rotation-windows-pair-independent-audit/README.md)
 does bound that index for a reduced cut and records the zero-padded final
-digit explicitly. Selecting a clean predecessor from the graph remains open.
+digit explicitly. Its fourteen-module-per-side replay and artifact audit
+passed, retaining the audit's inherited-provider qualifications. Selecting a
+clean predecessor from the graph remains open.
 An author-side [clean-phase geometry client](research/ordinary12-ipra-bridge/compact44-clean-phase-geometry-prototype/README.md)
 proves that, for any model shift, one of the two target phases lies outside
 the compact blocker `[0,1065] ∪ {1095,2195,3296}`. It uses an interval
@@ -573,6 +575,10 @@ the blocker and Boolean digits away from phase `1063`. A subsequent author-side
 joins those bounds to the same symbolic graph and carry witnesses, proving
 the independently obtained lengths equal. Selecting a clean predecessor and
 deriving the carry reset remain open.
+An author-side [phase-neighbor client](research/ordinary12-ipra-bridge/compact44-clean-phase-neighbors-prototype/README.md)
+also checks that the two preceding phases of any phase outside the blocker
+avoid the exceptional position. Transport to full-word positions is a
+separate model lemma.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
