@@ -73,7 +73,8 @@ An [extension](research/ipra-selected-native-bit/README.md) also compiled
 native and standard iPRA bit sentences for the same code, including in a
 [guarded historical author run](reviews/ipra-selected-native-bit-guarded-author/README.md).
 Its [independent artifact audit](reviews/ipra-selected-native-bit-guarded-author-independent-audit/README.md)
-passed; a paired replay remains pending. No comparison with an
+passed. A later [historical pair](reviews/ipra-native-bit-historical-pair-terminal/README.md)
+matched all 11 additions and passed an [independent complete-result audit](reviews/ipra-selected-native-bit-historical-pair-independent-audit/README.md). No comparison with an
 independently specified checker is claimed.
 
 The [15-variable degree-26 equation](equation26.pdf) uses a 93-operation
@@ -244,6 +245,17 @@ sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
+
+The existing ordinary 12-variable candidate has a [source-pinned internalization
+plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
+prototype and an exploratory abstract three-factor model split. The literal
+binding, positive-rank recovery and object-theory proof remain open. Its
+compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
+13-variable 2011 ports with `beta = 2^94517 - 1`; an explicit full-tuple
+binding and checker calibration are separate prerequisites. A [manuscript
+reconstruction](research/manuscript115-reconstruction/README.md) records that
+another compact44-labeled tuple differs in its `K` value, so the label alone
+does not identify the ports.
 The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
 is a further five-binding AQ22 reduction with independently checked finite
 substitution, positivity and degree calculations. Its Lean transport and
@@ -254,7 +266,7 @@ The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/READ
 has a separately audited finite positivity and substitution argument. Its Lean
 transport and iPRA clients compiled in a guarded historical author run and
 passed an independent artifact audit. A later [historical pair](reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
-matched all 52 additions; independent complete-result audit is pending.
+matched all 52 additions and passed an [independent complete-result audit](reviews/ipra-aq16-historical-retry-pair-independent-audit/README.md).
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)

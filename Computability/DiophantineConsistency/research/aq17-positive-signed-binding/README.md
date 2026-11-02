@@ -9,7 +9,7 @@ after specializing the four recorded fixed ports. A [guarded historical Lean aut
 compiled the full 52-module chain, including transport and native and standard
 iPRA clients and passed an independent author-artifact audit. A subsequent
 [historical pair](../../reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
-matched all 52 additions; independent complete-result audit is pending. No
+matched all 52 additions and passed an [independent complete-result audit](../../reviews/ipra-aq16-historical-retry-pair-independent-audit/README.md). No
 formal PDF binding or global minimality is claimed.
 
 The maintained [14-variable degree-30 equation](../../equation30-direct.pdf)
@@ -21,7 +21,8 @@ tracked separately from the other equation's.
 The [base-10 candidate display](equation32-16.pdf) lists all 16 positive
 unknowns and its complete 96-operation circuit. An [independent audit](../../reviews/equation32-16-independent-audit/README.md)
 checked the preceding PDF; a [separate review](../../reviews/equation32-16-wording-independent-audit/README.md)
-passed for its exploratory-run wording. The newer paired-run wording awaits review.
+passed for its exploratory-run wording. A [later review](../../reviews/equation32-16-paired-wording-independent-audit/README.md)
+passed for the paired-run wording.
 The fixed decoder and rank recipe
 retain the project's documented manual-transcription boundary.
 

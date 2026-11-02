@@ -2,7 +2,8 @@
 
 This review covers the exploratory-run disclosure at the cited revision. The
 current PDF has a later paired-run wording refresh; its equation and circuit
-are unchanged, and a separate review of that refresh is pending.
+are unchanged, and a [separate review](../equation32-16-paired-wording-independent-audit/README.md)
+of that refresh passed.
 
 This finite review passed with the actual process exit recorded in
 [terminal-observation.json](terminal-observation.json). It compares the

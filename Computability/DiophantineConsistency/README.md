@@ -87,6 +87,8 @@ artifact audit passed. A [historical paired extension](reviews/ipra-selected-che
 matched all ten additions and passed an independent complete-result audit.
 It does not identify an
 arbitrary independently specified proof checker with the selected one.
+The [same selected code's native and standard iPRA bit-range proofs](research/ipra-selected-native-bit/README.md)
+also have matched historical builds and an independent complete-result audit.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),
@@ -122,7 +124,7 @@ The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/READ
 has independently checked finite algebra and positivity under the actual fixed
 parameter, and a guarded historical author run of the full transport and iPRA
 chain with an independent artifact audit. A later [historical pair](reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
-matched all 52 additions; independent complete-result audit is pending.
+matched all 52 additions and passed an independent complete-result audit.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh
