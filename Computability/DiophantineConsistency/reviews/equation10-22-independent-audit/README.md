@@ -1,5 +1,9 @@
 # Independent audit of the AQ22 circuit display
 
+This audit records the earlier PDF and status wording. The current wording
+and refreshed PDF are checked in the
+[independent wording refresh audit](../equation10-22-wording-independent-audit/README.md).
+
 This is a finite audit of `../../research/adaptive-square-sums22-degree10/`
 at the input hashes in `receipt.json`. The checked PDF prints the equation as
 an arithmetic circuit, with 22 distinct positive integer unknowns and four
