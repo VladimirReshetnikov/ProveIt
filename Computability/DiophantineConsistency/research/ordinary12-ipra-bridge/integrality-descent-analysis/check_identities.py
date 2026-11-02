@@ -2,10 +2,6 @@
 """Exact polynomial identities and a bounded sanity check; no external packages."""
 from itertools import product
 from math import gcd
-import sys
-
-if not __debug__:
-    sys.exit('Refusing optimized Python: this checker requires assertions.')
 
 if not __debug__:
     raise RuntimeError('optimized Python is unsupported')
