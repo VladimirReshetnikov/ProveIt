@@ -463,6 +463,12 @@ has compiled in a single-side exploration. For the same symbolic graph witnesses
 it derives Boolean selector digits and a zero forbidden digit at the stated
 positive, bounded model positions; the origin is handled separately. Its
 paired replay, retained-port and full cyclic-word interpretation remain open.
+A [supported-slot and copy-position client](research/ordinary12-ipra-bridge/compact44-copy-support-prototype/README.md)
+has compiled in an exploratory combined overlay. It extends the bound to
+ordinary supported indices and proves it for the 41 symbolic kernel copy
+positions under explicit positive and bounded model-position hypotheses. The
+overlay's full companion and transitive ancestry, a coherent paired replay,
+retained tuple and graph-column binding remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
