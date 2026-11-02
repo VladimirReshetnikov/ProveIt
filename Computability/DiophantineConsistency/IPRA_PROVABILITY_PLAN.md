@@ -419,6 +419,11 @@ residue results. Its seven-module-per-side paired replay passed an
 Both graph-port equalities to symbolic masks and the other stated graph, radix
 and product hypotheses remain explicit; this does not calibrate the retained
 coefficient tuple or prove a machine simulation.
+A [symbolic saturation client](research/ordinary12-ipra-bridge/compact44-symbolic-saturation-prototype/README.md)
+has compiled in one exploratory run and exposes both conditional `NoCarry`
+conclusions used by the digit client. Its graph, port, radix, repunit and
+product assumptions remain explicit; a combined graph-derived-witness client,
+paired replay and independent audit are still open.
 A later [fixed-symbolic graph client](research/ordinary12-ipra-bridge/compact44-fixed-graph-digits-prototype/PAIR_RESULT.md)
 has passed a six-module-per-side paired replay and [independent artifact
 audit](reviews/compact44-fixed-graph-independent-audit/README.md).
