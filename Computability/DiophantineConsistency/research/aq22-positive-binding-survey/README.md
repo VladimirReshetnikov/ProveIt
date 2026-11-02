@@ -10,8 +10,9 @@ compiled its transport and native and standard iPRA endpoints; a guarded
 replay remains pending. It has not been
 identified with the equation in the project's current PDF. A separate
 [base-10 candidate display](equation32-17.pdf) names all 17 positive unknowns
-and includes the complete 99-operation circuit. Its fixed decoder and rank
-recipe retain the project's documented manual-transcription boundary.
+and includes the complete 99-operation circuit; its [independent audit](../../reviews/equation32-17-independent-audit/README.md)
+checks the display and reproducible PDF. Its fixed decoder and rank recipe
+retain the project's documented manual-transcription boundary.
 
 All circuit subtraction is integer subtraction. Let
 
