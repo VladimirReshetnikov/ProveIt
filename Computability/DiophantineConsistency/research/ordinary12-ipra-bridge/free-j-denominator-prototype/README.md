@@ -1,8 +1,9 @@
 # Nonzero candidate denominator from the free-J graph
 
 **Status: bounded Lean replays passed against one shared historical parent;
-independent review remains pending.** Do not interpret this packet as an
-iPRA proof or as a complete ordinary-norm recovery.
+an [independent bounded replay](../../../reviews/ordinary12-freej-denominator-independent-audit/README.md)
+also passed.** Do not interpret this packet as an iPRA proof or as a complete
+ordinary-norm recovery.
 
 `FreeJDenominator.denominator_negative` uses the exact hypotheses of
 `FreeJGraphVBound.graph_bound`: an arbitrary `IΣ₁` model, natural ports
@@ -33,7 +34,11 @@ from the actual ordinary factor. In particular, the graph's polarized
 `core.pa` has `d·h−Q(1−Q)` while the cleared identity's `A` uses
 `d·h+Q(1−Q)`. A universal commutative-ring polarization identity relates
 the corresponding residuals; its substitution into this graph over signed
-model pairs is not established by this packet.
+model pairs is not established by this packet. A later [signed transport](../free-j-signed-transport-prototype/README.md)
+derives the unpolarized norm residual from the graph zero in a difference
+ring; its [independent paired replay](../../../reviews/ordinary12-freej-signed-transport-independent-audit/README.md)
+passed. A coherent Lean composition identifying the proof-only denominator
+and applying the cleared auxiliary identity remains to be supplied.
 
 The proof establishes separately that the signed graph `Q` equals the
 nonnegative natural model expression Δ((1+t)²−1) and that this value is

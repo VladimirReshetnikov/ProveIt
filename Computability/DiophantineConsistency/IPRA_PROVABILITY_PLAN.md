@@ -274,6 +274,14 @@ theorem or an internal iPRA proof.
 The ordinary tail's polarized residual and denominator-cleared identities have
 also passed a [bounded replay audit](reviews/ordinary12-freej-ordinary-identities-independent-audit/README.md),
 but those identities do not establish denominator divisibility or integrality.
+A [signed transport](research/ordinary12-ipra-bridge/free-j-signed-transport-prototype/README.md)
+now derives the unpolarized norm residual in the model difference ring from
+the exact free-J graph zero, with an [independent paired replay and graph audit](reviews/ordinary12-freej-signed-transport-independent-audit/README.md).
+Separately, the [proof-only denominator's strict negativity](research/ordinary12-ipra-bridge/free-j-denominator-prototype/README.md)
+passed an [independent bounded replay](reviews/ordinary12-freej-denominator-independent-audit/README.md)
+under the stated graph and port hypotheses. The denominator is not a literal
+graph node, and these results still need coherent composition with the
+cleared auxiliary identity; neither establishes integrality.
 A [conditional descent-step audit](reviews/ordinary12-descent-step-independent-audit/README.md)
 checks norm preservation and preservation of supplied divisor and Bézout
 witnesses; it does not supply those witnesses or prove descent termination.
