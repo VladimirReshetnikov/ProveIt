@@ -654,7 +654,11 @@ uses the model support bounds to eliminate both selector sums and all but one
 bare digit at those phases. In the first period the occupied origin payload
 sets that digit to `1`, so the temporal digit and incoming carry cannot both
 be zero at either column. This is conditional on symbolic graph zero, not a
-contradiction or a row-propagation theorem.
+contradiction or a row-propagation theorem. The author-side
+[fractional carry-one client](research/ordinary12-ipra-bridge/compact44-fractional-carry-one-prototype/README.md)
+further proves that if the temporal bit-shift remainder is between `1` and
+`65`, both temporal digits are even and both incoming carries equal `1`.
+It does not exclude those remainders.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
