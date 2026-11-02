@@ -1,0 +1,31 @@
+{
+  "status": "PASS_FAIL_CLOSED_FAKE_RESOURCE_CONTROLS",
+  "driver_sha256": "ea404d70c32a939423a792e856b3fd0cbe78aa93056b6a2d8e08bf7bd46c2c9e",
+  "cases": [
+    {
+      "case": "missing",
+      "child_exit": -15,
+      "reason": "rss_unavailable_while_unreaped",
+      "leader_reaped": true
+    },
+    {
+      "case": "rss",
+      "child_exit": -15,
+      "reason": "sampled_rss_above_3.5GiB",
+      "leader_reaped": true
+    },
+    {
+      "case": "timeout",
+      "child_exit": -15,
+      "reason": "timeout",
+      "leader_reaped": true
+    },
+    {
+      "case": "disk",
+      "child_exit": -15,
+      "reason": "sampled_free_below_4GiB",
+      "leader_reaped": true
+    }
+  ],
+  "scope": "Injected samples and fake direct leaders only; no process-tree RSS, continuous sampling or hard quota claim."
+}

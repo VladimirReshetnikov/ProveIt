@@ -1,0 +1,106 @@
+{
+  "status": "PASS_INDEPENDENT_DENOMINATOR_MONITOR_REVIEW",
+  "snapshot_sha256": {
+    "monitor-reviewed-bcf.py": "bcf08ab90070b83b2f30c1f0116c7088e1791a5679a4310b3b0375ad47dc5a2b",
+    "monitor-corrected-ea4.py": "ea404d70c32a939423a792e856b3fd0cbe78aa93056b6a2d8e08bf7bd46c2c9e",
+    "monitor-final-c5.py": "c5cc9ec88c7c7cf7b6ec47b26281259c698dbadbb7c87a96b68433e3bcb5d3b0",
+    "composition-source-e8.lean": "e8e3b87727d21969a7d5d5380e9b21b141e56357fc1c5a0e0268a5c262947715"
+  },
+  "final_driver_only_source_pin_changed": true,
+  "first_attempt_wrapper_exit": 1,
+  "first_attempt_child_exit_observed": false,
+  "second_attempt_wrapper_exit": 1,
+  "second_attempt_failed_compiler_exit": 1,
+  "original_author_controls_recheck_session": 14750,
+  "original_author_controls_recheck_exit": 0,
+  "checks": [
+    {
+      "script": "test_sigterm.py",
+      "exit": 0,
+      "result": {
+        "status": "CONFIRMED_SIGTERM_GAP_WITH_CLEANUP",
+        "driver_sha256": "bcf08ab90070b83b2f30c1f0116c7088e1791a5679a4310b3b0375ad47dc5a2b",
+        "wrapper_exit": -15,
+        "child_alive_after_wrapper_exit": true,
+        "fake_child_killed_and_reaped": true,
+        "scope": "One temporary fake child and one SIGTERM; no Lean process or live retry touched."
+      }
+    },
+    {
+      "script": "test_exception.py",
+      "exit": 0,
+      "result": {
+        "status": "PASS_CONFIRMED_TERM_IGNORING_DESCENDANT_EXCEPTION_CONTROL",
+        "driver_sha256": "bcf08ab90070b83b2f30c1f0116c7088e1791a5679a4310b3b0375ad47dc5a2b",
+        "descendant_confirmed_ignored_sigterm_before_injection": true,
+        "injected_exception_propagated": true,
+        "fake_leader_reaped": true,
+        "fake_same_group_descendant_reaped": true,
+        "scope": "One verified process group only; escaped descendants, SIGKILL of the wrapper, race-free PID identity and whole-tree RSS remain outside this control."
+      }
+    },
+    {
+      "script": "test_corrected_signals.py",
+      "exit": 0,
+      "result": {
+        "status": "PASS_CORRECTED_EXTERNAL_SIGNAL_CONTROLS",
+        "driver_sha256": "ea404d70c32a939423a792e856b3fd0cbe78aa93056b6a2d8e08bf7bd46c2c9e",
+        "results": [
+          {
+            "signal": 15,
+            "harness_exit": 0,
+            "monitored_child_exit": -15,
+            "reason": "interrupt_signal_15",
+            "leader_reaped": true,
+            "confirmed_term_ignoring_descendant_reaped": true
+          },
+          {
+            "signal": 2,
+            "harness_exit": 0,
+            "monitored_child_exit": -15,
+            "reason": "interrupt_signal_2",
+            "leader_reaped": true,
+            "confirmed_term_ignoring_descendant_reaped": true
+          }
+        ],
+        "scope": "Two temporary same-group controls only; no Lean or real replay. Escape, PID races, forced wrapper SIGKILL, whole-tree RSS and continuous quotas are not covered."
+      }
+    },
+    {
+      "script": "test_thresholds.py",
+      "exit": 0,
+      "result": {
+        "status": "PASS_FAIL_CLOSED_FAKE_RESOURCE_CONTROLS",
+        "driver_sha256": "ea404d70c32a939423a792e856b3fd0cbe78aa93056b6a2d8e08bf7bd46c2c9e",
+        "cases": [
+          {
+            "case": "missing",
+            "child_exit": -15,
+            "reason": "rss_unavailable_while_unreaped",
+            "leader_reaped": true
+          },
+          {
+            "case": "rss",
+            "child_exit": -15,
+            "reason": "sampled_rss_above_3.5GiB",
+            "leader_reaped": true
+          },
+          {
+            "case": "timeout",
+            "child_exit": -15,
+            "reason": "timeout",
+            "leader_reaped": true
+          },
+          {
+            "case": "disk",
+            "child_exit": -15,
+            "reason": "sampled_free_below_4GiB",
+            "leader_reaped": true
+          }
+        ],
+        "scope": "Injected samples and fake direct leaders only; no process-tree RSS, continuous sampling or hard quota claim."
+      }
+    }
+  ],
+  "scope": "Fake-process sampled controls only; no Lean build, no hard quota, aggregate RSS, escaped-process guarantee or race-free process identity."
+}
