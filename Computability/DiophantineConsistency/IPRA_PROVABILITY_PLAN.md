@@ -475,6 +475,11 @@ ordinary supported indices and proves it for the 41 symbolic kernel copy
 positions under explicit positive and bounded model-position hypotheses. The
 overlay's full companion and transitive ancestry, a coherent paired replay,
 retained tuple and graph-column binding remain open.
+A [common-period bit client](research/ordinary12-ipra-bridge/compact44-common-period-bits-prototype/README.md)
+has compiled in a twelve-source single-side rebuild. It uses one graph-derived
+pair `N,w` to bound the selector and all 41 copy digits in each model period,
+including the origin and forbidden-selector cases. A paired replay, retained
+tuple binding and graph-column identification remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
@@ -607,6 +612,11 @@ selector and copy inputs it composes the coefficient decomposition and copy
 bound with the conditional decoder equivalence. It does not derive those
 inputs or a local no-carry condition from the graph; paired verification remains
 open.
+A [partial-band rotation client](research/ordinary12-ipra-bridge/compact44-partial-band-rotation-prototype/README.md)
+also compiled in a single-side exploration. It relates one aligned reflected
+selector/copy band to the finite decoder expression; the other graph terms,
+possibly fractional residual rotation, carry reset and retained K binding are
+not supplied by that theorem.
 A [direct symbolic-K graph client](reviews/compact44-direct-symbolic-k-pair-independent-audit/README.md)
 has passed a seven-module-per-side paired replay and independent artifact audit.
 Its definition is a distinct Lean expression until equality with the retained K
