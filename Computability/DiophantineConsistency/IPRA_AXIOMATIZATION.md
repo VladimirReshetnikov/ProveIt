@@ -110,7 +110,12 @@ induction. The two presentations share the primitive-recursive defining and
 basic axiom schemes, including the defined order relation. A direct AQ29 client
 and its selected-consistency composition are [drafted](research/ipra-standard-aq29/README.md);
 they and the new standard-theory comparison have not yet received a coherent
-replay. The distinct equality-only comparison described below remains open.
+replay. For the 14-variable equation,
+[`IPRAStandardCurrentEndpoint.ipra_current_iff_consistency`](Lean/DiophantineConsistency/IPRAStandardCurrentEndpoint.lean)
+states the equivalence in `standardTheory` itself; its author build from the
+Lean sources of `66da84a9e7` reports only Lean's standard axioms (see the
+[checks](Lean/DiophantineConsistency/IPRAStandardCurrentEndpointChecks.lean)).
+The distinct equality-only comparison described below remains open.
 
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency

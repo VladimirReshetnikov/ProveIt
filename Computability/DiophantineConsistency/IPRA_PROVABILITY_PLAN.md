@@ -258,10 +258,25 @@ The candidate [native object theory](Lean/DiophantineConsistency/IPRANativeTheor
 uses the existing finite primitive-recursive function-code language, native
 defining equations, successor and order axioms, intuitionistic Leibniz
 equality and parameterized quantifier-free induction. Its guarded author and
-independent suffix replays have passed. Identifying this candidate with an
-independently specified standard intuitionistic PRA presentation and
-revalidating the endpoint with coherent dependencies and current sources
-remain obligations. It is neither classical
+independent suffix replays have passed. [`IPRAStandardTheory`](Lean/DiophantineConsistency/IPRAStandardTheory.lean)
+now identifies it with a standard presentation: `standardTheory` takes
+reflexivity, replacement `x = y → A(x) → A(y)` for **atomic** `A` only, the same
+defining, successor and order axioms, and successor-step `A(0) → ∀x (A(x) →
+A(S x)) → ∀x A(x)` quantifier-free induction with arbitrary parameters.
+`leibniz` derives replacement for every formula from the atomic instances, and
+`provable_iff : standardTheory ⊢ φ ↔ nativeTheory ⊢ φ` follows with the
+existing successor-step conversions. [`IPRAStandardCurrentEndpoint`](Lean/DiophantineConsistency/IPRAStandardCurrentEndpoint.lean)
+states the 14-variable equivalence in `standardTheory`, both with the native
+negation of the mapped refutation predicate and with the Gödel–Gentzen image of
+Foundation's ZFC consistency sentence. On 2026-11-01 it built with Lake's
+ordinary trace-checked rebuild from the Lean sources of commit `66da84a9e7`
+(92 project modules recompiled), and its
+[checks](Lean/DiophantineConsistency/IPRAStandardCurrentEndpointChecks.lean)
+report only `propext`, `Classical.choice` and `Quot.sound`. This is an
+author build, not an independent replay packet. The language keeps `<` as a
+symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`; erasing it
+into an equality-only language is the separate comparison described in
+[IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md). The candidate is neither classical
 `PRATheory.PRA` nor merely the negative translation of that theory. The
 historical package provider is now partly unavailable. A rebuilt Foundation
 object already differs from its recorded historical hash; a successful replay
@@ -291,8 +306,8 @@ The exact schemes are summarized in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION
 The induction scheme advances by the syntactic term `n + 1`, whereas the
 language also has a distinct successor code. The project proves their equality
 and [same-language derivability equivalence](Lean/DiophantineConsistency/IPRASuccessorTheoryEquivalence.lean)
-with the successor-step formulation; comparison with an independent standard
-presentation remains open.
+with the successor-step formulation, and `IPRAStandardTheory.provable_iff`
+extends this to atomic-only replacement.
 Classical formulas use negation-normal syntax, so interpreting a classical
 implication by first expanding it as `¬A ∨ B` would give a different, generally
 stronger intuitionistic formula than `A → B`. In particular, the intended
@@ -323,7 +338,9 @@ progress and remaining replay obligations for its individual steps:
 
 1. Identify the defined native candidate with a standard intuitionistic PRA
    presentation, including its full primitive-recursive language and allowed
-   induction parameters.
+   induction parameters. Done by `IPRAStandardTheory.provable_iff`, for the
+   language with `<` as an explicitly defined symbol; the endpoint in that
+   theory is `IPRAStandardCurrentEndpoint.ipra_current_iff_consistency`.
 2. Revalidate the checked translated-axiom transfer after the merge and join
    it to the current equation proof. All classical PRA axiom images have been
    derived in the candidate; decidability and stability facts for the final
