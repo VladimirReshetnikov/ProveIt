@@ -405,6 +405,13 @@ no-carry statements from the graph and explicit radix, repunit, port-split,
 mask-bound, residue and mask-population hypotheses. Establishing those facts
 for the retained compact44 ports and transporting the decoded computation
 remain separate obligations.
+A [paired graph-to-symbolic-digit client](reviews/ordinary12-freej-concrete-digits-client-independent-audit/README.md)
+combines saturation with the symbolic low-mask decoder and has passed
+independent artifact review. It still assumes that the graph low port equals
+the symbolic mask, along with its stated radix and mask hypotheses. The audit
+records that an older closure-audit rerun fails against the corrected client
+source; it separately checked the unchanged closure scan and frozen corrected
+source rather than treating that historical rerun as successful.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
