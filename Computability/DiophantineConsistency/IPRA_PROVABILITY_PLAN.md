@@ -453,7 +453,11 @@ A [same-witness saturation extension](reviews/compact44-same-witness-saturation-
 has passed a three-module-per-side paired replay and independent artifact audit:
 the same `N,w` also supply both global `NoCarry` statements. An earlier direct
 composition exceeded the Lean memory limit; the successful proof uses a
-smaller generic bridge. The retained-tuple binding and model decoder remain open.
+smaller generic bridge. A [later isolation review](reviews/compact44-same-witness-freeze-location-note/README.md)
+found that a simulated frozen-directory replacement could redirect later
+copies before detection. The actual audited source hashes and paired artifacts
+are not thereby shown wrong; the original wrapper did not prevent that
+intervening write. The retained-tuple binding and model decoder remain open.
 A [selector-digit client](research/ordinary12-ipra-bridge/compact44-selector-graph-prototype/README.md)
 has compiled in a single-side exploration. For the same symbolic graph witnesses
 it derives Boolean selector digits and a zero forbidden digit at the stated
