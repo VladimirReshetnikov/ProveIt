@@ -672,7 +672,10 @@ the bits to tile-field matching and machine semantics remains open. An
 author-side [all-block client](research/ordinary12-ipra-bridge/compact44-fixed-graph-all-blocks-prototype/README.md)
 uses the horizontal marker to prove successor selection and then `IΣ₁`
 induction to obtain a selected row at every model block `h<N`. It has not had
-a paired replay and does not establish edge matching or machine semantics.
+a paired replay. A subsequent author-side [all-block word client](research/ordinary12-ipra-bridge/compact44-fixed-graph-all-block-word-prototype/README.md)
+packs those rows and excludes the extra row `1` at every block. Field matching,
+machine semantics, retained coefficient binding and the iPRA endpoint remain
+open.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
