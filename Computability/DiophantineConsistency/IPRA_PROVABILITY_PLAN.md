@@ -258,7 +258,12 @@ it assumes neither rank nor checker calibration. The [first-root transport](revi
 also passed a bounded replay audit under positivity of all twelve inputs and
 beta. A later [signed `q⁴` congruence replay](research/ordinary12-ipra-bridge/free-j-main-rank-congruence-prototype/README.md)
 passed a [separate bounded audit](reviews/ordinary12-freej-main-congruence-independent-audit/README.md).
-These are model-level
+The existence of both Pell indices and the conditional early scalar window
+also passed [separate](reviews/ordinary12-freej-pell-indices-independent-audit/README.md)
+[audits](reviews/ordinary12-freej-early-window-independent-audit/README.md);
+the latter retains explicit model mask bounds. Exact index matching cannot
+yet be imported directly: its existing theorem assumes strong and auxiliary
+norms that must first be recovered noncircularly. These are model-level
 results, not an internal iPRA derivation. The candidate's
 compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
 13-variable 2011 ports with `beta = 2^94517 - 1`. A [finite full-tuple and
