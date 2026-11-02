@@ -60,7 +60,8 @@ a [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/R
 a [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md),
 a [26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md)
 with a [base-10 display](research/adaptive-square-sums26-degree8/equation8-26.pdf),
-a [22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md),
+a [22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md)
+with a [base-10 display](research/adaptive-square-sums22-degree10/equation10-22.pdf),
 and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
 Their substitutions and degrees have finite checks. The 29-variable candidate
 has a matched model replay. Its initial focused native replay failed on broken

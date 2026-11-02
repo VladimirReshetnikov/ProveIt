@@ -7,6 +7,12 @@ Its graph has 22 positive-coordinate inputs, four fixed-numeral ports,
 for four fewer coordinates; this is not a minimality result. The graph is
 given by `candidate.json`, not by the equation in the project's current PDF.
 
+The [base-10 candidate display](equation10-22.pdf) names all 22 positive
+unknowns and includes the 114-operation circuit. Its [independent presentation
+audit](../../reviews/equation10-22-independent-audit/README.md) checked the
+formula, aliases, circuit, reproducible PDF and mutation controls. The fixed
+decoder and rank recipe retains the stated manual-transcription boundary.
+
 The scripts check exact polynomial identities and degree. They are not Lean
 proofs, and neither a Lean witness-transport theorem nor a native iPRA proof
 for this candidate has been completed. In particular, these finite checks do
