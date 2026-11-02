@@ -631,7 +631,11 @@ rows, machine semantics, retained coefficient binding and the internal iPRA
 endpoint remain open. A generic author-side [decoded-row shift client](research/ordinary12-ipra-bridge/compact44-decoded-shift-prototype/README.md)
 shows that a decoded row satisfying its explicit Boolean and payload hypotheses
 has selector `0` occupied at seven cyclic shifts. It does not prove the decoder
-premises at those shifted positions.
+premises at those shifted positions. An author-side [overlap check](research/ordinary12-ipra-bridge/compact44-foreign-origin-overlap-prototype/README.md)
+shows a concrete obstruction to reusing the same single-band proof at column
+`5488`: its other band contains the nonzero origin digit, and the local high
+mask digit there is zero. This is a limitation of that propagation route, not
+a contradiction in the graph.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
