@@ -16,8 +16,8 @@ the original parent; partial run-01 peer artifacts were not reused. The
 earlier [run-01 interruption](../ipra-aq16-historical-interrupted-run-01/README.md)
 remains a distinct exit-143 observation with unknown cause.
 
-This records the coordinator result and copied evidence; a separate complete
-independent artifact audit remains necessary. The original run remains at
+The subsequent [independent complete-result audit](../ipra-aq16-historical-retry-pair-independent-audit/README.md)
+passed. The original run remains at
 `/tmp/ipra-aq16-historical-paired-run-02`. The result inherits historical
 parent, package-transitive, dynamic and between-observation limitations. The
 Foundation wrapper's outer exit was not captured, although its inner Lake exit
