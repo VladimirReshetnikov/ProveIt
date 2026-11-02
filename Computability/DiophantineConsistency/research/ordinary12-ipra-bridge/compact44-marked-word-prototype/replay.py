@@ -21,12 +21,17 @@ PINS={AUDIT/'CHECK.json':'db7690d62441f036f8275f5270416b015c8e0b2cc858de8b48ea19
 NAMES=['CompactMarkedTransport.forward_marked_word']
 SUFFIXES=('.olean','.olean.private','.olean.server','.ir','.ilean','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean.hash')
 def digest(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def valid_parent_observation(x,obs):
+    return (x.get('status')=='PASS_INDEPENDENT_COMPACT_ROW_MATCH_AUDIT'
+        and type(obs.get('independent_parent_rerun_exit')) is int and obs['independent_parent_rerun_exit']==0
+        and type(obs.get('independent_review_exit')) is int and obs['independent_review_exit']==0
+        and obs.get('check_sha256')==PINS[AUDIT/'CHECK.json']
+        and obs.get('lean_launched') is False)
 def pins():
     for p,h in PINS.items():
         if digest(p)!=h:raise ValueError(('fixed input drift',str(p)))
     x=json.loads((AUDIT/'CHECK.json').read_text()); obs=json.loads((AUDIT/'terminal-observation.json').read_text())
-    if x.get('status')!='PASS_INDEPENDENT_COMPACT_ROW_MATCH_AUDIT' or obs.get('observed_exit')!=0 or obs.get('receipt_sha256')!=PINS[AUDIT/'CHECK.json']:
-        raise ValueError('parent audit observation')
+    if not valid_parent_observation(x,obs):raise ValueError('parent audit observation')
 def audit():
     p=subprocess.run([sys.executable,'-I','-S','-B',str(AUDIT/'audit.py')],capture_output=True,text=True,timeout=1200)
     if p.returncode or p.stderr:raise ValueError(('parent audit failed',p.returncode,p.stdout,p.stderr))
