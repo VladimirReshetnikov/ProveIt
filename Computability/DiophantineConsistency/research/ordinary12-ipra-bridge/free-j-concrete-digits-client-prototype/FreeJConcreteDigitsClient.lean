@@ -38,7 +38,7 @@ theorem graph_digits (p : Fin 4 → ℕ) (v : Fin 12 → V) (N HP : V)
     apply pos_iff_one_le.mp
     simpa only [C,tsub_tsub] using (FreeJFirstTransport.freej_first_factor_transport p v hb hv hz).2
   have hnc' : NoCarry (C-1) (CompactConcreteIncrement.mask * rep (67*8807) N + 1) := by
-    simpa only [C,hlow,hJ] using hnc
+    simpa only [C,q,hlow,hJ] using hnc
   exact CompactConcreteIncrement.recipe_digits N C hN hC hnc'
 end FreeJConcreteDigitsClient
 #print axioms FreeJConcreteDigitsClient.graph_digits
