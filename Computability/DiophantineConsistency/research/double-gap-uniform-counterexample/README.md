@@ -13,8 +13,8 @@ actual first port is positive and its other fixed ports have different values.
 Thus this is not a counterexample to fixed-port equivalence, and it does not
 establish or refute `Con(ZFC)`. The witness below is a finite exact symbolic
 integer construction; its enormous Pell power is **not expanded** by the
-checker or printed in decimal. An independent mathematical review and a Lean
-formalization are not claimed.
+checker or printed in decimal. A separate [independent mathematical review](../../reviews/double-gap-uniform-counterexample-independent-audit/README.md)
+passed; no Lean formalization is claimed.
 
 ## The witness
 

@@ -4,6 +4,9 @@
 has fewer binary operations, but an equivalence for unrestricted positive
 inputs has not been proved. In particular, two strict inequalities needed
 to recover the old positive coordinates are not enforced by the graph.
+An [independently reviewed symbolic counterexample](../double-gap-uniform-counterexample/README.md)
+shows that the reverse inequalities fail for a positive zero at auxiliary
+ports with `beta = 0`; it does not settle the actual fixed-port case.
 
 Write the old coordinates and shared quantities as
 
