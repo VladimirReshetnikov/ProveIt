@@ -64,7 +64,7 @@ For the smaller [14-variable degree-30 direct-square equation](equation30-direct
 the native endpoint was compiled in the matched fresh AQ29 parent pair. A
 subsequent [five-module historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
 compiled its standard-iPRA endpoint and selected translated consistency
-comparison; independent audit and a paired extension remain pending. A
+comparison and passed an independent artifact audit; a paired extension remains pending. A
 [finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
 retains the manual decoder and rank-recipe boundary.
 

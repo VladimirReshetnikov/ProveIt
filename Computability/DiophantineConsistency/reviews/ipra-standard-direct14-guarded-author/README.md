@@ -27,8 +27,8 @@ The two endpoint statements respectively use the selected mapped native
 refutation predicate and the Foundation consistency sentence under its
 recorded embedding and Gödel–Gentzen translation.
 
-This is one historical **author-only extension**, not yet an independently
-audited result or matched extension replay. The underlying direct-square
+This is one historical **author-only extension**. Its [independent artifact audit](../ipra-standard-direct14-guarded-author-independent-audit/README.md)
+passed; a matched extension replay remains pending. The underlying direct-square
 literal and native endpoint were compiled in both audited AQ29 parent
 siblings, but their separate diagnostic-check module was absent from that
 parent snapshot; the five native reports here are newly observed in this

@@ -49,7 +49,8 @@ package-transitive and dynamic-import ancestry remains inherited.
 The exact direct-square native endpoint also occurs in the independently
 audited fresh AQ29 parent pair. A subsequent [five-module historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
 compiled its standard-iPRA client and selected translated-consistency
-comparison; independent artifact audit and a paired extension remain pending.
+comparison and passed an [independent artifact audit](reviews/ipra-standard-direct14-guarded-author-independent-audit/README.md);
+a paired extension remains pending.
 The separate [finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
 retains the manual decoder and rank-recipe boundary.
 
