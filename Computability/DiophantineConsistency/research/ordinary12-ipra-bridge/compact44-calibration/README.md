@@ -140,6 +140,13 @@ must all be dealt with explicitly. The external theorem
 
 ## A concrete first model-level lemma
 
+The local finite-sum selector/copy equivalence outlined below has since been
+proved under the stated count, value, copy and no-carry bounds in arbitrary
+`IΣ₁` models over an external finite index type. Its [paired replay](../compact44-decoder-iff-prototype/README.md)
+passed an [independent artifact audit](../../../reviews/compact44-decoder-iff-independent-audit/README.md).
+That result does not yet bind the 943-row data, derive the graph hypotheses,
+or prove the machine simulation.
+
 For the recipe's selector count `n<2^10`, selector/copy payload `P`,
 `S=n+2^10 P`, and mask `mu=2^51-2`, one can aim to prove the aggregate
 lemma directly in an arbitrary IΣ₁ model:

@@ -72,7 +72,12 @@ remain open. The previously checked 13-variable endpoints do not by
 themselves establish this candidate's equivalence. A distinct instance using
 the 2011 tuple now has an [audited 69-row model binding](reviews/thirteen69-dag-binding-independent-audit/README.md)
 and [independently checked degree 174](reviews/thirteen69-degree2011-independent-audit/README.md).
-Its model converse and iPRA endpoint remain open as well.
+One model direction has a [paired, independently reviewed fixed-port theorem](reviews/thirteen-model-exact-port-independent-audit/README.md).
+Newly merged source declares both model directions and iPRA endpoints, but
+their coherent replay remains open. An independently reviewed [source-closure
+and successor plan](reviews/thirteen-model-endpoint-closure-independent-audit/README.md)
+identifies 338 modules to rebuild over 807 candidate historical seeds; it is
+not a compiled endpoint or a proof of the reverse direction.
 
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common
@@ -370,7 +375,11 @@ parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
 has been checked; its internal checker calibration remains a separate
 prerequisite. The [compact44 calibration survey](research/ordinary12-ipra-bridge/compact44-calibration/README.md)
 identifies parameterized model-level reuse, the hardwired 2011 boundary and
-a proposed selector/copy lemma; it does not prove the compiler or controller.
+the remaining compiler/controller work. Its local [finite-sum selector/copy
+equivalence](research/ordinary12-ipra-bridge/compact44-decoder-iff-prototype/README.md)
+has passed an [independent artifact audit](reviews/compact44-decoder-iff-independent-audit/README.md)
+under explicit bounds and an external finite index type; it does not bind the
+943-row table or prove the compiler or controller.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
