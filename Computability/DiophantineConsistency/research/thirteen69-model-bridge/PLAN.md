@@ -47,8 +47,10 @@ To obtain the missing all-model direction without circularity:
    A subsequent [model auxiliary seed](../thirteen-model-auxiliary-seed/README.md)
    supplies positive `T,u,y` and the stated quotient residues when also
    `R mod 4=3`; its paired replay passed an [independent artifact audit](../../reviews/thirteen-model-auxiliary-seed-independent-audit/README.md).
-   The signed ordinate and positive carrier coordinate `m` remain separate
-   obligations. The standard-integer `ThirteenFreshSeed.fresh_private_seed`
+   A separate [audited model residue](../../reviews/thirteen-model-negative-residue-independent-audit/README.md)
+   proves the required `y+1` divisibility under the stated phase and base
+   assumptions. Its application to the auxiliary seed and the positive
+   carrier coordinate `m` remain separate obligations. The standard-integer `ThirteenFreshSeed.fresh_private_seed`
    shows the intended final result but is not an arbitrary-model theorem.
 3. Bind the resulting 13-coordinate `value69` to the **entire** pinned 69-row
    expression and the original 14-coordinate evaluator to the precise native
@@ -61,6 +63,12 @@ To obtain the missing all-model direction without circularity:
    a theorem for another 2011 or compact44 tuple does not supply this link.
    Only then apply the repository's independently justified all-model to
    internal-provability bridge with its exact theory and axiom assumptions.
+
+A distinct [2011-port route](../thirteen-model-2011-port-route/README.md)
+would instantiate a newly constructed thirteen-variable expression at the
+already calibrated 2011 tuple. It still needs the uniform model converse,
+exact new literal and size binding, and a coherent endpoint replay; it would
+not calibrate the original phase-split2471 graph.
 
 The completed 70-source difference-ring pair and its independent audit
 ([receipt](../../reviews/ordinary12-coexistence-pair-independent-audit/CHECK.json))

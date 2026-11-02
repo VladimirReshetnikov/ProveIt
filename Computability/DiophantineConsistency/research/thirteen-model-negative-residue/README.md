@@ -45,8 +45,8 @@ records the outer exit. The new residue lemma reports
 `[propext, Classical.choice, Quot.sound]` with no `sorryAx` or warnings.
 The rebuilt older dependencies emit pre-existing deprecation warnings,
 retained verbatim in the receipt. These Lean metatheory dependencies are not
-asserted as axioms of object-level iPRA. This suffix is not yet independently
-audited.
+asserted as axioms of object-level iPRA. An [independent artifact audit](../../reviews/thirteen-model-negative-residue-independent-audit/README.md)
+passed; it checks the recorded paired results without rerunning Lean.
 
 An earlier exploratory chain (session 83530) exited 1: its final theorem used
 an ambiguous name `pair` and reported `sorryAx`. Qualifying the intended
