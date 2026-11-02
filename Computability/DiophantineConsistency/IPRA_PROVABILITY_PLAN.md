@@ -686,7 +686,11 @@ not had a paired replay or established machine semantics or the iPRA endpoint.
 An author-side [origin-and-match client](research/ordinary12-ipra-bridge/compact44-fixed-graph-origin-match-prototype/README.md)
 also joins the initial row `0` to the same `N`, represented word and field
 matches. The existing marked-word provider has a conflicting dependency
-object, so a coherent source rebuild is needed before composing it.
+object, so a coherent source rebuild is needed before composing it. An
+author-side [lookup bridge](research/ordinary12-ipra-bridge/compact44-field-lookup-bridge-prototype/README.md)
+derives the old interface's cyclic matching conditions given the explicit
+compact-field cast law, without assuming a positive or coprime stride. It
+does not itself rebuild the marked-word provider or supply that cast law.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
