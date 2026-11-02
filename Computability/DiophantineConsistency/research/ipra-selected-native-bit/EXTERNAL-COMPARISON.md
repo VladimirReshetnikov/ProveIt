@@ -49,10 +49,15 @@ The two cited source theorems are different from a newly replayed composition:
 the first is present in the audited AQ29 historical parent; the explicit
 annotated-checker module was not. A source-declared preflight found 34
 additional tracked project modules to rebuild over that parent (plus a new
-composition module). A coherent author-only rebuild is being prepared; it is
-not a matched peer, a current-source result, or an internal iPRA theorem.
-The accompanying [`SelectedExternalCheckerComparison.lean`](draft-src/SelectedExternalCheckerComparison.lean)
-is proposed source and has not yet been compiled in that coherent rebuild.
+composition module). Its [guarded author attempt](../../reviews/external-checker-author-failed-attempt/README.md)
+stopped because a Mathlib direct import was absent from the pinned parent
+guard. The accompanying [`SelectedExternalCheckerComparison.lean`](draft-src/SelectedExternalCheckerComparison.lean)
+remains proposed source and has not yet been compiled in a coherent rebuild.
+An [isolated reproduction probe](../../reviews/mathlib-primrec-basic-repro-probe/README.md)
+did not reproduce the cached object's bytes; it neither proves incompatibility
+nor authenticates the original build's transitive ancestry. The comparison
+replay remains blocked at this provider boundary, independently of the already
+completed native-bit result.
 
 The prepared manifest pins 35 source blobs from commit
 `07d55c8b2b0921440cce8b38ff96182973407679`, with SHA-256
