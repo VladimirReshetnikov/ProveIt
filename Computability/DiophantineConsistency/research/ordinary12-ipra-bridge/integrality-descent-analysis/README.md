@@ -221,7 +221,11 @@ any theorem that additionally requires positive `u` or a particular sign of
   A [graph auxiliary-witness theorem](../free-j-graph-auxiliary-prototype/README.md)
   also proves the positive auxiliary norm with explicit sign alternatives;
   its paired replay passed an [independent artifact audit](../../../reviews/ordinary12-freej-graph-auxiliary-independent-audit/README.md).
-  Final rank recovery and the object-level iPRA proof remain open.
+  The [exact carrier-index theorem](../free-j-exact-ordinary-prototype/README.md)
+  subsequently proves `π=R` and `2j=R+1`, with an [independent artifact audit](../../../reviews/ordinary12-freej-exact-ordinary-independent-audit/README.md).
+  The distinct `f` exponent `m` is only known to be divisible by `π`.
+  Remaining carrier recovery, fixed-port calibration and the object-level
+  iPRA proof remain open.
 * `FreeJNormZero` proves the generic ring identity and a natural-valued
   signed-pair instance. The general signed graph substitution is open.
 * The early-size and index packets give useful intermediate model results

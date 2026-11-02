@@ -52,7 +52,8 @@ receipt SHA-256 `fec23d0d6fdc8b66041bf67b41f10a80e8dc3b9d48bd0b7138cfb6bf19374c6
 The [receipt](evidence/receipt.json) records both compiler and direct-import
 checks exiting 0, matching objects, and the three standard axioms. The
 [author](evidence/author.log) and [peer](evidence/peer.log) logs contain no
-warnings or `sorryAx`. Independent audit of this suffix remains required.
+warnings or `sorryAx`. A subsequent [independent artifact audit](../../../reviews/ordinary12-freej-exact-ordinary-independent-audit/README.md)
+passed for this suffix.
 When the pinned temporary parents remain available and the Lean slot is free,
 the paired replay is:
 
