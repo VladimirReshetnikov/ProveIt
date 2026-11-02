@@ -561,6 +561,12 @@ the graph-specific support and clean-predecessor conditions. A subsequent
 author-side [bounded rotation client](research/ordinary12-ipra-bridge/compact44-rotation-index-bounds-prototype/README.md)
 does bound that index for a reduced cut and records the zero-padded final
 digit explicitly. Selecting a clean predecessor from the graph remains open.
+An author-side [clean-phase geometry client](research/ordinary12-ipra-bridge/compact44-clean-phase-geometry-prototype/README.md)
+proves that, for any model shift, one of the two target phases lies outside
+the compact blocker `[0,1065] ∪ {1095,2195,3296}`. It uses an interval
+arithmetic certificate and bounded-model transfer, rather than enumerating
+all shifts. Graph-derived zero and Boolean digit bounds at the selected phase
+and its predecessors, and the resulting carry reset, remain to be proved.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
