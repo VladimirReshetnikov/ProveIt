@@ -1,0 +1,24 @@
+Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-color-relabel/chunk-drafts/CompactRelabelIndicesSort.lean:9:103: error: Tactic `decide` failed for proposition
+  (rowIndices.toList.mergeSort fun x y => decide (x ≤ y)) = [0] ++ List.range' 2 941
+because its `Decidable` instance
+  instDecidableEqList (rowIndices.toList.mergeSort fun x y => decide (x ≤ y)) ([0] ++ List.range' 2 941)
+did not reduce to `isTrue` or `isFalse`.
+
+Reduction got stuck at the `Decidable` instance
+  match rowIndices.toList.mergeSort fun x y => decide (x ≤ y) with
+  | [] =>
+    match [0] ++ List.range' 2 941 with
+    | [] => isTrue ⋯
+    | head :: tail => isFalse ⋯
+  | a :: as =>
+    match [0] ++ List.range' 2 941 with
+    | [] => isFalse ⋯
+    | b :: bs =>
+      match decEq a b with
+      | isTrue hab =>
+        match as.hasDecEq bs with
+        | isTrue habs => isTrue ⋯
+        | isFalse nabs => isFalse ⋯
+      | isFalse nab => isFalse ⋯
+'CompactRelabelDraft.indices_sort' depends on axioms: [propext, sorryAx, Quot.sound]
+'CompactRelabelDraft.indices_permutation_fast' depends on axioms: [propext, sorryAx, Quot.sound]
