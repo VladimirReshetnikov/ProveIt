@@ -1,0 +1,7 @@
+# Independent clean-carry prelaunch review
+
+The corrected driver at commit `135406f6b5` passed the independent exact-byte check and a complete two-child fake wrapper, with 24 negative controls. The controls include output companions before, during and after compilation, including injection during the final parent callback; the old driver accepted a fake `.olean.private` output companion. The corrected driver rejects it. Source, seed, output and companion mutation, exact named axiom reports, warning, `sorryAx`, dependency and failure handling are also exercised. Fake subprocesses are not Lean builds.
+
+The separate actual no-Lean parent verification exited 0 and reported 115 inherited objects per side and two seed objects; `verify.log` records its terminal output. `audit.py` verifies exact committed driver bytes, all fixed input pins, and reruns the fake tests. These are prelaunch checks and do not establish a new theorem.
+
+The proposed client is conditional on the supplied carry input, finite index set, predecessor and slack hypotheses. It does not derive these from the graph or establish word existence, a machine simulation, or a PRA/iPRA endpoint. A real replay still requires a clean initial native loader, a stable HEAD, an exclusive Lean slot and fresh output. Monitoring is sampled; `lean --deps` has a timeout but lacks the compiler monitor's process-group/resource protections. Inherited package, dynamic-import and between-check boundaries remain.
