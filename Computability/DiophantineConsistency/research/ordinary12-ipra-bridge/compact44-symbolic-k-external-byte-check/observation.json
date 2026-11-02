@@ -1,0 +1,30 @@
+{
+  "script_sha256": "fecbee263c76f5a87d589d16e45f815845d4802534d3a8c6054d142012652e87",
+  "runs": [
+    {
+      "case": "normal",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-symbolic-k-external-byte-check/check.py"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"bit_length\": 592884, \"raw_bytes\": 74111, \"raw_sha256\": \"c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e\", \"rows\": 943, \"scope\": \"external Python, not an internal equality or model theorem\", \"slots\": 41, \"status\": \"PASS_EXTERNAL_SYMBOLIC_RECIPE_BYTES\"}\n",
+      "stderr": ""
+    },
+    {
+      "case": "optimized",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-symbolic-k-external-byte-check/check.py"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-symbolic-k-external-byte-check/check.py\", line 14, in <module>\n    require(__debug__ and not sys.flags.optimize,'optimized Python rejected')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-symbolic-k-external-byte-check/check.py\", line 13, in require\n    if not b:raise ValueError(msg)\n             ^^^^^^^^^^^^^^^^^^^^^\nValueError: optimized Python rejected\n"
+    }
+  ]
+}
