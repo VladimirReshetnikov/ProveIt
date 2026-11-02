@@ -83,7 +83,9 @@ A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-a
 also compiled a primitive-recursive checker for a common bound in the selected
 Foundation refutation encoding, with internal iPRA equivalences linking its
 absence of output 1 to both 13-variable no-zero sentences. Its independent
-artifact audit passed; a paired extension remains pending. It does not identify an
+artifact audit passed. A [historical paired extension](reviews/ipra-selected-checker-historical-pair-terminal/README.md)
+matched all ten additions; its independent complete-result audit is pending.
+It does not identify an
 arbitrary independently specified proof checker with the selected one.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
