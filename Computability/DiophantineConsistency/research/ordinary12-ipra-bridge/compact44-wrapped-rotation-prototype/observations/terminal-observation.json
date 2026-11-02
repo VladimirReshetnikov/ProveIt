@@ -1,0 +1,44 @@
+{
+  "kind": "author-only exploratory compile",
+  "provider": "/tmp/ipra-graph-temporal-carry-pair-01/author/lib",
+  "overlay": "/tmp/compact44-fractional-digits-01/lib",
+  "package": "/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+  "prior_sources": "fractional digits commit 5152fadc5e and non-wrapping rotation commit ce88d22a4f",
+  "direct_object_sha256": {
+    "RotationAdjacent": "8bd6084eab882fb84fa975495c902b63942a389187d87114dc41a222fa1740e1",
+    "RotationWrapped": "8f41ce96a1ab07046ce0214055e31fe9ce9584baa554b9dae3ab702c34150173"
+  },
+  "compile_options": [
+    "timeout 90",
+    "-M3000",
+    "-j1",
+    "-DElab.async=false"
+  ],
+  "runs": [
+    {
+      "session": 9623,
+      "exit": 1,
+      "source": "observations/wrapped-attempt01.lean",
+      "log": "observations/wrapped-attempt01.log",
+      "reason": "rewrite pattern mismatch; sorryAx report rejected",
+      "source_sha256": "8be49cb5bda924f40b30c713f528b9786dbafb41b7532120153626efcbbd6d83",
+      "log_sha256": "98b756aa26ea1d2fcfb86c77c0a35a747f17750f731293951777d97b5e297713"
+    },
+    {
+      "session": 15201,
+      "exit": 0,
+      "source": "RotationWrapped.lean",
+      "log": "observations/wrapped-attempt02.log",
+      "source_sha256": "e7d43e97a59c4e47499473212fcbc12fdd476abfd009a22b798cf95710225746",
+      "log_sha256": "4590fbf14acd91e291c43ac860b32c3c93d020d237385bdeecf65e82376511e9"
+    },
+    {
+      "session": 14757,
+      "exit": 0,
+      "source": "WrappedAdjacent.lean",
+      "log": "observations/wrapped-adjacent-attempt01.log",
+      "source_sha256": "b803e1dc9eed94cdc25d4e8fb6cbb80f58ee41dd41ccfc1320546e7bfde785ce",
+      "log_sha256": "ac4879300e340642ce2f9404d18a00d66246bee0275789abb9bd6aa45adcccef"
+    }
+  ]
+}
