@@ -1,0 +1,58 @@
+{
+  "status": "PASS_CONDITIONAL_COMPACT44_HIGH_POPULATION_PRELAUNCH_AUDIT",
+  "source_commit": "eb3e089ecb",
+  "driver_sha256": "52b10e75fe24d6aa883b7db3c011171ce7c5fc82e5c45e46ba0a39aa4aa1fd30",
+  "external_digit_count": 8807,
+  "external_population": 986,
+  "reported_successful_exploration_session": 70407,
+  "failed_optional_mod8_attempts": [
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "controls": [
+    {
+      "script": "check_external.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "{\n  \"status\": \"PASS_INDEPENDENT_HIGH_LIST_EXTERNAL\",\n  \"length\": 8807,\n  \"digits_checked\": 8807,\n  \"population\": 986,\n  \"nonzero_positions\": 38,\n  \"mutations_rejected\": [\n    0,\n    2195,\n    4393,\n    8805\n  ],\n  \"scope\": \"Finite external source/recipe/bytes only; no Lean retained-port identity, mod-8 theorem, graph or iPRA proof.\"\n}\n"
+    },
+    {
+      "script": "check_external.py",
+      "args": [
+        "-O"
+      ],
+      "exit": 0,
+      "stdout": "{\n  \"status\": \"PASS_INDEPENDENT_HIGH_LIST_EXTERNAL\",\n  \"length\": 8807,\n  \"digits_checked\": 8807,\n  \"population\": 986,\n  \"nonzero_positions\": 38,\n  \"mutations_rejected\": [\n    0,\n    2195,\n    4393,\n    8805\n  ],\n  \"scope\": \"Finite external source/recipe/bytes only; no Lean retained-port identity, mod-8 theorem, graph or iPRA proof.\"\n}\n"
+    },
+    {
+      "script": "check_display.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "{\"status\": \"PASS_COMPACT_HIGH_LIST_EXTERNAL\", \"length\": 8807, \"population\": 986, \"digits_checked\": 8807, \"mutations_rejected\": [\"origin\", \"clause\", \"padding\"]}\n"
+    },
+    {
+      "script": "check_display.py",
+      "args": [
+        "-O"
+      ],
+      "exit": 0,
+      "stdout": "{\"status\": \"PASS_COMPACT_HIGH_LIST_EXTERNAL\", \"length\": 8807, \"population\": 986, \"digits_checked\": 8807, \"mutations_rejected\": [\"origin\", \"clause\", \"padding\"]}\n"
+    },
+    {
+      "script": "mock_loop.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "good PASS fake_children 2\nwrong_report PASS fake_children 1\nwarning PASS fake_children 1\nsorry PASS fake_children 1\nwrong_deps PASS fake_children 1\n"
+    },
+    {
+      "script": "guards.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "PASS_PIN_AND_OUTPUT_AND_OPTIMIZATION_GUARDS\n"
+    }
+  ],
+  "scope": "No Lean build. Independent finite source/recipe/bytes check; no internal retained-MF/graph-port identity, mod-8 theorem, machine or iPRA. Separately observed full parent preflight recorded in terminal observation; trusted initial loader and external stable-HEAD/sole-Lean window required."
+}
