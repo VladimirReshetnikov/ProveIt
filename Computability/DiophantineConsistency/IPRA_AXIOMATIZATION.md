@@ -103,6 +103,15 @@ comparison with any broader independently specified standard presentation of
 intuitionistic PRA also remains open; see
 [`IPRA_PROVABILITY_PLAN.md`](IPRA_PROVABILITY_PLAN.md).
 
+The newly added [`IPRAStandardTheory.lean`](Lean/DiophantineConsistency/IPRAStandardTheory.lean)
+states a same-language provability equivalence between the native candidate
+and a presentation with atomic equality replacement and successor-step open
+induction. The two presentations share the primitive-recursive defining and
+basic axiom schemes, including the defined order relation. A direct AQ29 client
+and its selected-consistency composition are [drafted](research/ipra-standard-aq29/README.md);
+they and the new standard-theory comparison have not yet received a coherent
+replay. The distinct equality-only comparison described below remains open.
+
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency
 sentence is definitionally `¬rho` in
@@ -110,9 +119,9 @@ sentence is definitionally `¬rho` in
 The candidate [`IPRABoundedRhoZFC.zfcEquiv`](Lean/DiophantineConsistency/IPRABoundedRhoZFC.lean)
 states an internal native-theory derivation comparing the Gödel–Gentzen
 translation of the mapped Foundation consistency sentence with the native
-negation of the native NNF reading of the mapped refutation predicate. It is a comparison for this
-specific source sentence, not a general theorem identifying every alternative
-proof coding. It shares the coherent-replay qualifications above.
+negation of the native NNF reading of the mapped refutation predicate. It is a
+comparison for this specific source sentence, not a general theorem identifying
+every alternative proof coding. It shares the coherent-replay qualifications above.
 
 The historical package provider has since become partly unavailable, and one
 freshly rebuilt Foundation object differs from its recorded historical hash.
