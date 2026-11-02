@@ -48,3 +48,19 @@ input, output, and provenance guarantees, and the parent author build has not
 yet been matched by its peer. It does not establish a current-source or
 unconditional user-facing Con(ZFC) claim. A coherent guarded replay and
 independent audit are required before promoting these sources.
+
+`author-additions.json` is a static input for the guarded author-only runner in
+`../author-only-extension/run.py`. It lists 37 modules: all 30 additions in the
+previous combined AQ26/standard-theory author plan, followed by all seven AQ22
+modules. The plan pins all source blobs to commit
+`bd19027b68` and records their direct imports and exact requested axiom-report
+names. The runner's source-verification routine accepted all 37 pinned blobs,
+imports, and report policies. Manifest SHA-256:
+`3c5df040f94803b19ccbed14ec93be2e3de2e16ed9c31efd9bcfb531373200df`.
+
+The manifest is preparation for a fresh *single-overlay* author run, not its
+result: no objects from an independently built AQ26 extension are to be reused
+as additions. The runner must compile the entire listed chain over the audited
+AQ29 author parent, with its normal input and output guards. A successful
+single-author run would still require an independent audit and a matched peer
+before a paired-replay claim is justified.
