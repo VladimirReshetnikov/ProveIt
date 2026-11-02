@@ -376,7 +376,8 @@ it does not export that intermediate equality as a standalone theorem. A
 later [paired uniqueness client](research/ordinary12-ipra-bridge/free-j-main-index-unique-prototype/README.md)
 now states that any index with that recovered ordinate equals `R` under the
 exact-ordinary graph hypotheses, without the later `β≥46` assumption; this
-client awaits independent review. The
+client has passed an [independent artifact audit](reviews/ordinary12-freej-main-index-unique-independent-audit/README.md).
+The
 [power identity theorem](research/ordinary12-ipra-bridge/free-j-power-finish-prototype/README.md)
 proves `X=2^R` under the graph hypotheses and `β≥46`; its paired replay
 passed an [independent artifact audit](reviews/ordinary12-freej-power-finish-independent-audit/README.md).
