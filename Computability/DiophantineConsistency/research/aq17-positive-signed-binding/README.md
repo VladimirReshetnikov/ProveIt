@@ -56,4 +56,6 @@ python3 Computability/DiophantineConsistency/research/aq17-positive-signed-bindi
 The checker refuses to overwrite a different candidate, rejects optimized
 Python, and exercises a wrong-sign identity, corrupted residual operation,
 and output-sign mutation. The [terminal observation](terminal-observation.json)
-records the actual exit; independent review of the new reduction is pending.
+records the actual exit. An [independent finite audit](../../reviews/aq16-independent-audit/README.md)
+also checks the substitution, positivity and exact degree with a separately
+represented sparse polynomial calculation; it is not a Lean replay.

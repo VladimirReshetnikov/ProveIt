@@ -217,6 +217,9 @@ is a further five-binding AQ22 reduction with independently checked finite
 substitution, positivity and degree calculations. Its Lean transport and
 internal iPRA endpoints compiled in an exploratory historical overlay; a
 guarded replay remains pending.
+The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
+has a separately audited finite positivity and substitution argument; its Lean
+transport and internal iPRA endpoint remain open.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
