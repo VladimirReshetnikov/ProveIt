@@ -544,8 +544,12 @@ to cyclic wraparound and the clean-predecessor selection remain open; Boolean
 adjacent digits alone do not give the strict half-radix bound in every case.
 A subsequent [rotation-window exploration](research/ordinary12-ipra-bridge/compact44-rotation-adjacent-prototype/README.md)
 composes this with a non-wrapping bit-rotation window under explicit model
-position equations and word bounds. Cyclic wrap cases and selection of a
-clean predecessor from graph data remain open.
+position equations and word bounds. Its theorem does not cover cyclic wrap
+or select a clean predecessor from graph data.
+A separate author-side [wrapped-window client](research/ordinary12-ipra-bridge/compact44-wrapped-rotation-prototype/README.md)
+checks the wholly wrapped case under explicit index equations and composes it
+with the adjacent-digit identity. A window straddling the rotation boundary
+and the all-model clean-predecessor selection still need proofs.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
