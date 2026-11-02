@@ -87,7 +87,8 @@ consistency sentence. The 69-operation count is for the positive-coordinate
 DAG; its object no-zero syntax uses the positive shift. A [decimal-seed
 display](equation69-2011.pdf) and its [external transcription check](reviews/equation69-2011-display/README.md)
 are separate from the Lean theorem and retain the fixed-recipe interpretation
-boundary; their independent review is pending.
+boundary. A separate [independent display review](reviews/equation69-2011-display-independent-audit/README.md)
+passed, including PDF reproducibility and exact graph-row comparisons.
 
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common

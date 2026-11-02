@@ -29,8 +29,10 @@ including its Gödel–Gentzen-translated consistency comparison. This display
 check is external: it is not a Lean parser for TeX or a formal PDF semantics.
 The unchanged constant block inherits the existing [2011 display audit](../equation14-historical-literal-binding/README.md),
 including its manually transcribed decoder/ranking recipe boundary and the
-recorded provider/dynamic ancestry limitations. The current display check has
-not yet been independently reviewed.
+recorded provider/dynamic ancestry limitations. A separate [independent
+display review](../equation69-2011-display-independent-audit/README.md) checked
+the displayed expressions, row count, decimal seed, degree evidence and PDF
+reproducibility; it retains the same interpretation boundaries.
 
 ## Observed checks
 
