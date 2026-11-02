@@ -1,0 +1,92 @@
+import DiophantineConsistency.BlockOrbit
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace FixedGraphOccupiedOrbit
+open DiophantineConsistency CompactBitRotation CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts CompactPartialBand
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs Ordinary12FreeJ
+open ArithmeticBinaryCarry ArithmeticRepunit ArithmeticWindowDigits ArithmeticCyclicWord CompactHeterogeneousCarry
+open CompactGenericAlignedMass CompactConcreteIndexedMass CompactTwoBandFlatten
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat lowNat highNat
+attribute [local irreducible] Compact943Data.rows selectors copies
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def SelectedBlock (N C h : V) : Prop :=
+  ∃ i : Fin 943, CompactSelectorSum.Selected (selectorDigit (8807*N) C (8807*h+4393) 4393) i ∧
+    UniformBandDecoder.copyWord (8807*N) C (8807*h+4393) 4393=Compact943Decoder.tileValue (V:=V) i
+
+theorem graph_occupied_orbit (v : Fin 12 → V)
+    (hv : ∀ j,0<v j)
+    (hz : InternalZero (literal (fun j => (ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat j:ℤ))) v) :
+    let p := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+    let q : V := 1+v 0*(p 0:V)
+    let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
+    let C : V := q-v 1-v 2
+    let a := GenericBandCarryFamily.coefficient (fun j : Aligned (Fin 943) (Fin 41) => (alignedCoeff selectors copies j:V))
+    ∃ N w s : V, 0<N ∧ q=Exp.exp ((67*8807)*N) ∧ v 0=rep (67*8807) N ∧
+      (67*8807)*N≤R ∧ w=Exp.exp (R-(67*8807)*N) ∧ v 5=q*w ∧
+      let E := R-67*(8807*N)
+      let T := temporalWord (8807*N) E C
+      let X := GenericBandCarryFamily.word (8807*N) C (bandOffsets position) T
+      CarryInput 67 (8807*N) (v 1) 1 (GenericBandCarryFamily.cap (ι:=Aligned (Fin 943) (Fin 41))) a X ∧
+      E%67=0 ∧ s<N ∧ (E/67)%(8807*N)=8807*s ∧
+      SelectedBlock N C 0 ∧ ∀ h<N, SelectedBlock N C h → SelectedBlock N C ((h+s)%N) := by
+  obtain ⟨N,w,s,hN,hq,hJ,hle,hw,hv5,hcarry,haligned,hs,hshift,hdecode,hdecode'⟩ :=
+    FixedGraphUniformDecoder.graph_uniform_decoder v hv hz
+  obtain ⟨N',w',s',hN',hq',hJ',hle',hw',hv5',hcarry',haligned',hs',hshift',hcopy⟩ :=
+    FixedGraphBlockCopy.graph_block_copy v hv hz
+  obtain ⟨N'',w'',hN'',hq'',hJ'',hv5'',hcongr'',h0,hslots,hhigh⟩ :=
+    CompactPositionCarry.fixed_position_noCarry (paramKernel rho) v hv hz
+  dsimp only at *
+  have hNN : N'=N := by
+    apply mul_left_cancel₀ (by norm_num : ((67*8807):V)≠0)
+    exact exp_inj (hq'.symm.trans hq)
+  subst N'
+  have hss : s'=s := by
+    apply mul_left_cancel₀ (by norm_num : (8807:V)≠0)
+    exact hshift'.symm.trans hshift
+  subst s'
+  let p := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+  let q : V := 1+v 0*(p 0:V)
+  let C : V := q-v 1-v 2
+  let n : V := 8807*N
+  have hn : 0<n := mul_pos (by norm_num) hN
+  have hnge : (8807:V)≤n := by
+    have h := mul_le_mul_of_nonneg_left (pos_iff_one_le.mp hN) (by norm_num : (0:V)≤8807)
+    simpa only [n,mul_one] using h
+  have ht : (4393:V)<n := lt_of_lt_of_le (by norm_num) hnge
+  have hp0 : (4393:V)%8807=4393 := mod_eq_self_of_lt (by norm_num)
+  have hdec0 := (hdecode 4393 ht hp0).2.2.2
+  have hone : selectorDigit n C 4393 4393 ⟨0,by decide⟩=1 := by
+    unfold selectorDigit
+    rw [SelectedBandInputs.source_index n 4393 0 ht (by norm_num)]
+    simpa only [Nat.cast_zero] using h0
+  have hsel0 : SelectedBlock N C 0 := by
+    dsimp only [SelectedBlock, mul_zero, zero_add]
+    rcases hdec0 with hzero | hsel
+    · have hh := hzero.1 ⟨0,by decide⟩
+      rw [hone] at hh
+      exact False.elim (_root_.one_ne_zero hh)
+    · exact hsel
+  refine ⟨N,w,s,hN,hq,hJ,hle,hw,hv5,hcarry,haligned,hs,hshift,hsel0,?_⟩
+  intro h hh hsel
+  let g : V := (h+s)%N
+  have hg : g<N := mod_lt _ hN
+  have hidx := BlockCyclicIndex.index N h 4393 hh (by norm_num)
+  have hin := (hdecode (8807*h+4393) hidx.1 hidx.2).2.1
+  have hmarkers := BlockSelectedMarker.selected_markers N C h 4393 hh (by norm_num) (by norm_num) hin hsel
+  have hcopyg := (hcopy g hg).1
+  have hback : cyc N g s=h := BlockOrbit.forward_back N h s hN hh
+  rw [hback] at hcopyg
+  have hgmarker : dig 67 C (8807*g+1095)=1 := hcopyg.trans hmarkers.2.1
+  have hidxg := BlockCyclicIndex.index N g 4393 hg (by norm_num)
+  have hdecg := (hdecode (8807*g+4393) hidxg.1 hidxg.2).2.2.2
+  have hbit : copyDigit position n C (8807*g+4393) 4393 ⟨38,by decide⟩=1 := by
+    unfold copyDigit
+    rw [BlockSelectedMarker.copy_index N g 4393 ⟨38,by decide⟩ hg (by norm_num) (by norm_num [position,slots])]
+    simpa [position,slots] using hgmarker
+  exact BlockSelectedMarker.selected_of_copy_one n C (8807*g+4393) 4393 ⟨38,by decide⟩ hbit hdecg
+#print axioms FixedGraphOccupiedOrbit.graph_occupied_orbit
+end FixedGraphOccupiedOrbit
