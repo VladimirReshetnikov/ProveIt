@@ -1,0 +1,43 @@
+import DiophantineConsistency.CarryParity
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace FixedGraphCarryParity
+open DiophantineConsistency CompactBitRotation CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs Ordinary12FreeJ
+open ArithmeticBinaryCarry ArithmeticRepunit ArithmeticWindowDigits ArithmeticCyclicWord CompactHeterogeneousCarry
+open CompactGenericAlignedMass CompactConcreteIndexedMass CompactTwoBandFlatten
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat lowNat highNat
+attribute [local irreducible] Compact943Data.rows selectors copies
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_parity (v : Fin 12 → V)
+    (hv : ∀ j,0<v j)
+    (hz : InternalZero (literal (fun j => (ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat j:ℤ))) v) :
+    let p := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+    let q : V := 1+v 0*(p 0:V)
+    let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
+    let C : V := q-v 1-v 2
+    let a := GenericBandCarryFamily.coefficient (fun j : Aligned (Fin 943) (Fin 41) => (alignedCoeff selectors copies j:V))
+    ∃ N w : V, 0<N ∧ q=Exp.exp ((67*8807)*N) ∧ v 0=rep (67*8807) N ∧
+      (67*8807)*N≤R ∧ w=Exp.exp (R-(67*8807)*N) ∧ v 5=q*w ∧
+      let T := temporalWord (8807*N) (R-67*(8807*N)) C
+      let X := GenericBandCarryFamily.word (8807*N) C (bandOffsets position) T
+      CarryInput 67 (8807*N) (v 1) 1 (GenericBandCarryFamily.cap (ι:=Aligned (Fin 943) (Fin 41))) a X ∧
+      (∀ t<8807*N, 0<t → (t%8807=2195 ∨ t%8807=3296) →
+        carry 67 (8807*N) a X (cyc (8807*N) t 1)≤1 ∧
+        (raw 67 a X t+carry 67 (8807*N) a X (cyc (8807*N) t 1))%2=0) := by
+  obtain ⟨N,w,hN,hq,hJ,hle,hw,hv5,hcarry,h0,hzero,hbool⟩ :=
+    FixedGraphSupportCarry.graph_support_carry v hv hz
+  obtain ⟨N',w',hN',hq',hJ',hv5',hcongr',h0',hslots,hhigh⟩ :=
+    CompactPositionCarry.fixed_position_noCarry (paramKernel rho) v hv hz
+  dsimp only at *
+  have hhigh' : NoCarry (v 1) ((highNat:V)*rep (67*8807) N-1) := by rw [←hJ]; exact hhigh
+  refine ⟨N,w,hN,hq,hJ,hle,hw,hv5,hcarry,?_⟩
+  intro t ht ht0 hphase
+  have heven := ParityPhase.output_even N (v 1) t hN ht ht0 hphase hhigh'
+  exact CarryParity.raw_plus_incoming_even _ _ _ _ _ hcarry t ht heven
+#print axioms FixedGraphCarryParity.graph_parity
+end FixedGraphCarryParity

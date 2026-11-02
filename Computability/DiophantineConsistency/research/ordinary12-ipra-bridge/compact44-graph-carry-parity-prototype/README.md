@@ -1,0 +1,7 @@
+# Exploratory fixed-graph parity with incoming carry
+
+`CarryParity.raw_plus_incoming_even` proves for an arbitrary IΣ₁ model that an in-range even output digit of a b=1 `CarryInput` has incoming carry at most 1 and `(raw + incoming carry) % 2 = 0`. It uses the end-around carry equation and even radix; no zero temporal digit, bounded temporal predecessor, or clean carry premise is assumed. The raw term includes every indexed convolution term, including temporal, bare, both bands and any carry effects represented by the input family.
+
+`FixedGraphCarryParity.graph_parity` combines that lemma and the uniform phase mask facts with the same fixed graph N,w and indexed `CarryInput`. Under positive graph coordinates and literal graph zero at the fixed symbolic ports with `paramKernel rho`, it gives this parity relation for every positive in-range position of phase 2195 or 3296. The result does not assert graph existence, raw-column separation, a clean column, neighboring row decoding, retained byte/K binding or machine semantics.
+
+Source order `CarryParity`, then `FixedGraphCarryParity` was checked over the single-author exploratory overlay of `a548a76e9f`. Sessions 89033 and 21604 actually exited 0 without warnings or `sorryAx`; named axiom reports are retained. Generic attempts 46146 and 28911 actually exited 1 on a namespace and multiplication-commutativity detail; their sources, logs and failure-derived `sorryAx` reports are retained. This is not a paired replay or independent artifact audit.
