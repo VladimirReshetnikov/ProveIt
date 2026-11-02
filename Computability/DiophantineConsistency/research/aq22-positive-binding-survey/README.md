@@ -9,7 +9,7 @@ algebraic candidate and an ordinary integer witness argument. A
 compiled its transport and native and standard iPRA endpoints in one fresh
 overlay. Its [independent artifact audit](../../reviews/ipra-aq17-guarded-author-independent-audit/README.md)
 passed. A later [historical paired run](../../reviews/ipra-aq17-historical-pair-terminal/README.md)
-matched all 44 additions; independent audit of the completed pair is pending.
+matched all 44 additions and passed an [independent complete-result audit](../../reviews/ipra-aq17-historical-pair-independent-audit/README.md).
 It has not been
 identified with the equation in the project's current PDF. A separate
 [base-10 candidate display](equation32-17.pdf) names all 17 positive unknowns

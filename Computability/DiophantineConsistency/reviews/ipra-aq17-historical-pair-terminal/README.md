@@ -15,8 +15,8 @@ was rehashed against its sibling state during copying. Each state reports
 observed freezer and preparer exits, equal HEAD gate, frozen snapshot and 15
 historical-parent workspace drifts.
 
-This records the coordinator result and copied evidence; a separate complete
-independent artifact audit is still needed. The complete original run remains
+The subsequent [independent complete-result audit](../ipra-aq17-historical-pair-independent-audit/README.md)
+passed. The complete original run remains
 at `/tmp/ipra-aq17-historical-paired-run-01`. Results use the historical parent
 and inherit package-transitive, dynamic and between-observation limitations;
 the Foundation wrapper's outer exit was not captured, although its inner Lake

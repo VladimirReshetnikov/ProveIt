@@ -226,7 +226,7 @@ is a further five-binding AQ22 reduction with independently checked finite
 substitution, positivity and degree calculations. Its Lean transport and
 internal iPRA endpoints compiled in a guarded historical author run and
 passed an independent artifact audit. A later historical pair matched all
-44 additions; independent audit of that pair is pending.
+44 additions and passed an [independent complete-result audit](reviews/ipra-aq17-historical-pair-independent-audit/README.md).
 The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
 has a separately audited finite positivity and substitution argument. Its Lean
 transport and iPRA clients compiled in a guarded historical author run and
