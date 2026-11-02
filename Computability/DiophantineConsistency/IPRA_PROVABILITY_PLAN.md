@@ -320,8 +320,11 @@ A later [natural normalization theorem](research/ordinary12-ipra-bridge/reduced-
 constructs the gcd and certificate and derives denominator divisibility from
 the stated positive natural cleared norm; its paired replay passed an
 [independent artifact audit](reviews/ordinary12-reduced-model-normalization-independent-audit/README.md).
-Lifting this to the graph's signed fraction and transporting the resulting
-argument to iPRA remain open.
+A [signed difference-ring theorem](research/ordinary12-ipra-bridge/reduced-model-signed-prototype/README.md)
+extends this to arbitrary signs and a nonzero denominator; its paired replay
+passed an [independent artifact audit](reviews/ordinary12-reduced-model-signed-independent-audit/README.md).
+Applying it to the graph and transporting the resulting argument to iPRA
+remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
