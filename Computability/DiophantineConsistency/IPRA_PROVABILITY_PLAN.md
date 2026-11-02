@@ -391,10 +391,10 @@ transitive/dynamic ancestry and the original Foundation wrapper exit retain
 the audit's qualifications. The sampled resource monitor is not a continuous
 disk reserve or hard per-build quota. This coexistence check is not an
 ordinary-integrality or iPRA proof.
-Exact index matching cannot
-yet be imported directly: its existing theorem assumes strong and auxiliary
-norms that must first be recovered noncircularly. These are model-level
-results, not an internal iPRA derivation. The candidate's
+The subsequent graph-specific strong and auxiliary norm constructions and
+exact index theorem above address that earlier circularity under their stated
+hypotheses. These are model-level results, not an internal iPRA derivation.
+The candidate's
 compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
 13-variable 2011 ports with `beta = 2^94517 - 1`. A [finite full-tuple and
 parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
@@ -404,8 +404,22 @@ identifies parameterized model-level reuse, the hardwired 2011 boundary and
 the remaining compiler/controller work. Its local [finite-sum selector/copy
 equivalence](research/ordinary12-ipra-bridge/compact44-decoder-iff-prototype/README.md)
 has passed an [independent artifact audit](reviews/compact44-decoder-iff-independent-audit/README.md)
-under explicit bounds and an external finite index type; it does not bind the
-943-row table or prove the compiler or controller.
+under explicit bounds and an external finite index type. A later
+[943-row specialization](reviews/compact44-943-decoder-independent-audit/README.md)
+retains those conditional bounds; the [ordered table audit](reviews/compact44-943-table-independent-audit/README.md)
+checks the finite Lean list against the pinned JSON externally. Neither result
+proves the compiler or controller. An [independent finite recipe reconstruction](reviews/compact44-selector-recipe-independent-audit/README.md)
+recomputes the four retained integer payloads and the 8,807 mask digits;
+this external calculation is not an all-model port calibration.
+
+The [structured mask theorem](reviews/compact44-structured-mask-independent-audit/README.md)
+constructs a block with the required three-way digit shape in an `IΣ₁`
+model for an arbitrary support word, using external induction on the standard
+block length. Its support is still a parameter: the result does not identify
+the block with the retained MC coefficient or give an internal iPRA
+construction. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
+handles the mixed digit caps under explicit hypotheses, but deriving those
+hypotheses from the graph and proving clean temporal alignment remain open.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
