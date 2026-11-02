@@ -12,6 +12,9 @@ import json
 from pathlib import Path
 import sys
 
+if not __debug__:
+    raise RuntimeError('This audit requires assertions; do not run Python with -O or -OO')
+
 sys.set_int_max_str_digits(0)
 HERE = Path(__file__).resolve().parent
 BASE = HERE.parents[1]

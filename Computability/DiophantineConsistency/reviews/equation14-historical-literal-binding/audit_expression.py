@@ -15,6 +15,9 @@ import runpy
 import subprocess
 import tempfile
 
+if not __debug__:
+    raise RuntimeError('This audit requires assertions; do not run Python with -O or -OO')
+
 HERE = Path(__file__).resolve().parent
 BASE = HERE.parents[1]
 ROOT = HERE.parents[3]

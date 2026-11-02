@@ -7,6 +7,11 @@ semantics for TeX or PDF, an independent second Lean proof replay, a claim that
 all current-source dependencies have been rebuilt, or a proof of ZFC
 consistency.
 
+Both Python audit scripts use assertions for verification and explicitly
+refuse optimized Python (`-O` or `-OO`). Their originally recorded receipts
+predate that fail-closed guard; independent review rechecks the guarded script
+versions and records their hashes separately.
+
 ## Polynomial and displayed variables
 
 [`audit_expression.py`](audit_expression.py) parses the actual historical
