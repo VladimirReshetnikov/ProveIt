@@ -1,0 +1,5 @@
+# Contextual paired bounded inverse lookup
+
+The protected contextual paired wrapper session 80478 actually exited 0 at HEAD `73ad8806e1684415cc759ca57cce7361ce1ada01`. Both compiler children and direct dependency checks passed; outputs matched, and the final source, object/companion and contextual parent checks passed. The receipt and compiler logs are in `contextual-evidence`; the receipt SHA-256 is `4dcbdb75860c71610ff389cdd7a6bce7ffaa374d46efa2a0c26f0a7c20aafe15`. Independent artifact review is pending.
+
+This bounded inverse-row lookup theorem explicitly excludes row 1 and includes the separately reported Σ₀ lookup definability instance. The parent verification is a documented contextual historical-source rerun, not an unchanged live-parent audit or evidence about newer live source bytes. It does not construct a word, prove reverse word transport, bind the retained tuple or checker, simulate the machine, or establish an internal PRA endpoint. Source/object guards are point-in-time; trusted loader, sampled-resource and inherited package/dynamic limitations remain.
