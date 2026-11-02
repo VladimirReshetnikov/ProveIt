@@ -1,0 +1,29 @@
+/tmp/compact44-graph-support-join-01/TemporalSourceNonwrap.lean:20:16: error: unexpected token ':='; expected term
+/tmp/compact44-graph-support-join-01/TemporalSourceNonwrap.lean:20:13: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  OfNat (Type ?u.130) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+  Type ?u.130
+due to the absence of the instance above
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/tmp/compact44-graph-support-join-01/TemporalSourceNonwrap.lean:20:7: error: Missing cases:
+/tmp/compact44-graph-support-join-01/TemporalSourceNonwrap.lean:16:81: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X n E t q r : V
+ht : t < n
+hq : q < n
+hqt : q < t
+hr0 : 0 < r
+hr : r < 67
+he : E % (67 * n) = 67 * q + r
+hX : X < Exp.exp (67 * n)
+i : V := t - q
+s : V := i - 1
+u : V := 67 * (n - (t + 1))
+hi0 : PrincipalSeg (fun x1 x2 => sorry) fun x1 x2 => sorry
+⊢ let i := cyc n t q;
+  dig 67 (rot 1 (67 * n) X (E % (67 * n))) t =
+    dig 67 X i * Exp.exp r % Exp.exp 67 + dig 67 X (cyc n i 1) / Exp.exp (67 - r)
+'TemporalSourceNonwrap.nonwrap' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

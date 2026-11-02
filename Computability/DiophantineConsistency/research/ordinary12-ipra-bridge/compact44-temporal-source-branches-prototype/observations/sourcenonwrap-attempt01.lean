@@ -1,0 +1,43 @@
+import DiophantineConsistency.TemporalStraddleWindow
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TemporalSourceNonwrap
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ArithmeticWindowDigits ArithmeticCyclicWord
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem nonwrap (X n E t q r : V) (ht : t<n) (hq : q<n) (hqt : q<t)
+    (hr0 : 0<r) (hr : r<67) (he : E%(67*n)=67*q+r)
+    (hX : X<Exp.exp (67*n)) :
+    let i := cyc n t q
+    dig 67 (rot 1 (67*n) X (E%(67*n))) t =
+      (dig 67 X i*Exp.exp r)%Exp.exp 67 + dig 67 X (cyc n i 1)/Exp.exp (67-r) := by
+  let i := t-q
+  let s := i-1
+  let u := 67*(n-(t+1))
+  have hi0 : 0<i := tsub_pos_iff_lt.mpr hqt
+  have hin : i<n := lt_of_le_of_lt tsub_le_self ht
+  have hqi : q+i=t := add_tsub_cancel_of_le (le_of_lt hqt)
+  have hsi : s+1=i := tsub_add_cancel_of_le (pos_iff_one_le.mp hi0)
+  have hrr : r+(67-r)=67 := add_tsub_cancel_of_le (le_of_lt hr)
+  have hti : 67*t=(67*q+r)+(67*s+(67-r)) := by
+    calc
+      _ = 67*(q+(s+1)) := by rw [hsi,hqi]
+      _ = 67*q+67*s+(r+(67-r)) := by rw [hrr]; ring
+      _ = _ := by ring
+  have htn : (t+1)+(n-(t+1))=n := add_tsub_cancel_of_le (lt_iff_succ_le.mp ht)
+  have hwin : 67*t+67+u=67*n := by dsimp [u]; rw [←htn]; ring
+  have ht' : 67*t=E%(67*n)+(67*s+(67-r)) := by rw [he]; exact hti
+  have hL : 67*n=E%(67*n)+(67*s+(67-r)+67+u) := by
+    calc
+      _ = 67*t+67+u := hwin.symm
+      _ = E%(67*n)+(67*s+(67-r)+67+u) := by rw [←ht']; ring
+  have hi : cyc n t q=i := cyc_of_le ht hq (le_of_lt hqt)
+  have hs : cyc n i 1=s := (cyc_one hin).2 hi0
+  have h := TemporalWindowFormula.nonwrap X n E t s r u hr0 hr hL ht' hX
+  rw [hsi, ←hi, ←hs] at h
+  exact h
+#print axioms TemporalSourceNonwrap.nonwrap
+end TemporalSourceNonwrap

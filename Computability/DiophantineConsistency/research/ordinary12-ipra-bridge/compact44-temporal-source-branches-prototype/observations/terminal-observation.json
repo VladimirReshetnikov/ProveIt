@@ -1,0 +1,107 @@
+{
+  "kind": "author-only exploratory compile",
+  "provider": "/tmp/ipra-rotation-windows-pair-01/author/lib",
+  "overlay": "/tmp/compact44-graph-support-join-01/lib",
+  "package": "/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+  "prior_commits": [
+    "ae249d0592",
+    "ffe7765fba",
+    "81417adafb"
+  ],
+  "direct_object_sha256": {
+    "TemporalWindowFormula": "8454077f7eb3f82b8db145bc5f0b6aa8de6feec60b33e9097ea7feeefa0d80d6",
+    "TemporalOtherWindows": "ee83d2ed178a40ba1573eeb08183f198868d909215318ad6106be80e6d8f9967",
+    "TemporalStraddleWindow": "1e1ab8ad3f7b090722b6167423657e04026286edfb4c3f7b89811fab510489b9",
+    "TemporalSourceNonwrap": "5e74a624f2afcf2b3a4b899ede9c5d8cdbf42904911cbdab5dae62f456a04a1b",
+    "TemporalSourceWrapped": "15e4fada1ed4d40e775db7417fdbb037577e3d19c9e4202f0827eb799ed897ef"
+  },
+  "compile_options": [
+    "timeout 120",
+    "-M3000",
+    "-j1",
+    "-DElab.async=false"
+  ],
+  "runs": [
+    {
+      "session": 38143,
+      "exit": 1,
+      "source": "observations/sourcenonwrap-attempt01.lean",
+      "source_sha256": "d23eec159bd665eea4c3c798db44276b362fc90b62a8da2ca9d193314bc0d83d",
+      "log": "observations/sourcenonwrap-attempt01.log",
+      "log_sha256": "ffb99796edf89a94b09a0d79a07aa9b0bafee8420fa4992bf856a12dd0d38ded",
+      "observation": "parser failure"
+    },
+    {
+      "session": 83849,
+      "exit": 1,
+      "source": "observations/sourcenonwrap-attempt02.lean",
+      "source_sha256": "467c9a6cd2bb9e6f3e2531a12909ed062cdcb7d8db21a5646e3f358bdeaedb7a",
+      "log": "observations/sourcenonwrap-attempt02.log",
+      "log_sha256": "0d4c30cc5186fdd52a32d0e95a5c28531623826cd7f72cbfd5be51ac9dce9707",
+      "observation": "truncated subtraction rewrites"
+    },
+    {
+      "session": 26724,
+      "exit": 0,
+      "source": "TemporalSourceNonwrap.lean",
+      "source_sha256": "e7cfa87da35a19ddfd09ad22c5c8ce56eb4db27c7bc33de195d1c3cfc59078c0",
+      "log": "observations/sourcenonwrap-attempt03.log",
+      "log_sha256": "8a330e7749780fac04b81b2e08482a0c8ce1e1897d588fb39f622f2b5336f6af",
+      "observation": "warning-free"
+    },
+    {
+      "session": 32595,
+      "exit": 1,
+      "source": "observations/sourcewrapped-attempt01.lean",
+      "source_sha256": "94edbb8518ef2de1ccc99391196b4f8aec674c8e311c3d7e8c15308d1d7159c3",
+      "log": "observations/sourcewrapped-attempt01.log",
+      "log_sha256": "ae2f7569ea6e6c8fd0d9c286935765b7a4e52be8b1450afc4dc5df0568389e52",
+      "observation": "subtraction/cancellation failure"
+    },
+    {
+      "session": 72672,
+      "exit": 0,
+      "source": "observations/sourcewrapped-attempt02.lean",
+      "source_sha256": "58e93e329126775e65b563fd74c16a29b7ac1d9dc66145390aabf09b8fa4ffca",
+      "log": "observations/sourcewrapped-attempt02.log",
+      "log_sha256": "39291d8d2f9f56d85b72afcbbf6cf7df0d9abe2f47aa43d33be5d192b32c76c2",
+      "observation": "one unused-variable warning; superseded"
+    },
+    {
+      "session": 15976,
+      "exit": 0,
+      "source": "TemporalSourceWrapped.lean",
+      "source_sha256": "ad15ca51b05bfc4568f40c31dc2b412934d2537146bf4b1bf5309c7ea9d21e8f",
+      "log": "observations/sourcewrapped-attempt03.log",
+      "log_sha256": "f8ec0fcf99e3800958c58d1a5903d3379b319bf186b468cbecef135d68deec40",
+      "observation": "warning-free"
+    },
+    {
+      "session": 36252,
+      "exit": 1,
+      "source": "observations/sourcestraddle-attempt01.lean",
+      "source_sha256": "6a18fe8363111b367765bac63b9eb165f2762ffec95aa2cc956e77c659978e04",
+      "log": "observations/sourcestraddle-attempt01.log",
+      "log_sha256": "d2e2df61aeeb7b1e5d09ab2c0ea122b4ecf3260561b240ce08b16bd1762ba1c2",
+      "observation": "truncated-subtraction rewriting"
+    },
+    {
+      "session": 8796,
+      "exit": 0,
+      "source": "TemporalSourceStraddle.lean",
+      "source_sha256": "f9893cd1211151ae04944f08cd2d1b77d6ac9c72a2b67cdfc0f6752c9712c46e",
+      "log": "observations/sourcestraddle-attempt02.log",
+      "log_sha256": "a41f6695e2509f7a2edc2aa5eb3df393879b8d0429d436d22e36ab032bdec11f",
+      "observation": "successful against warning-bearing wrapped object"
+    },
+    {
+      "session": 9228,
+      "exit": 0,
+      "source": "TemporalSourceStraddle.lean",
+      "source_sha256": "f9893cd1211151ae04944f08cd2d1b77d6ac9c72a2b67cdfc0f6752c9712c46e",
+      "log": "observations/sourcestraddle-attempt03.log",
+      "log_sha256": "a41f6695e2509f7a2edc2aa5eb3df393879b8d0429d436d22e36ab032bdec11f",
+      "observation": "warning-free rebuild against final wrapped object"
+    }
+  ]
+}
