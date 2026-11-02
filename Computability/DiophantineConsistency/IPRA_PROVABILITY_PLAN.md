@@ -484,12 +484,11 @@ The [two-band rotation client](reviews/compact44-two-band-pair-independent-audit
 has also passed a paired replay and independent artifact audit. It turns the
 weighted congruence into two aligned bands and five bare rotations, assuming
 the displayed model decomposition of `K`; it retains `w*C` separately. A
-subsequent [graph-to-band exploration](research/ordinary12-ipra-bridge/compact44-graph-band-client-prototype/README.md)
+subsequent [graph-to-band client](reviews/compact44-graph-band-pair-independent-audit/README.md)
 connects that result to the graph's same witnesses and checks the decomposition
-for the distinct symbolic `paramKernel rho`. This last connection has only an
-author-side exploratory build, with the provider qualifications recorded
-there; its [21-source same-side rebuild plan](research/ordinary12-ipra-bridge/compact44-graph-band-closure-plan/README.md)
-is preparation for a paired replay, not a completed replay. Neither result
+for the distinct symbolic `paramKernel rho`. Its 21-module-per-side replay
+and independent artifact audit passed, with the inherited provider and
+point-in-time qualifications recorded in that audit. Neither result
 identifies the retained coefficient bytes with the symbolic kernel, disposes
 of the residual term, or supplies the full graph-column, machine or iPRA
 equivalence.
