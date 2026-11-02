@@ -712,6 +712,9 @@ frozen direct resolution or substitute for a guarded paired build.
 The [author-side rebuild observation](research/ordinary12-ipra-bridge/compact44-graph-marked-rebuild-prototype/README.md)
 records 81 successful children before `ArithmeticWangTable` exhausted the
 3,000 MB kernel limit; the overall build failed and supplies no table object.
+A [single-module retry](research/ordinary12-ipra-bridge/compact44-wangtable-highmem-prototype/README.md)
+also failed at the 6,000 MB kernel limit on `rows_goodC`; it does not establish
+that declaration or the module.
 A separate [converse construction plan](research/ordinary12-ipra-bridge/compact44-converse-construction-plan/README.md)
 identifies the compact44-specific packing, calibration and witness assembly
 still needed for the halt-to-graph direction; the differently parameterized
