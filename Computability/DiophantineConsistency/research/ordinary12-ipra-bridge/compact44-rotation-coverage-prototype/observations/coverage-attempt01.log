@@ -1,0 +1,36 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/compact44-fractional-digits-01/RotationCoverage.lean:21:35: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+L e b w : V
+hwindow : b + w ≤ L
+heb : e ≤ b
+hs : e + (b - e) = b
+hu : b + w + (L - (b + w)) = L
+⊢ e + (b - e) + w + (L - (e + (b - e) + w)) = e + w + (L - (e + (b - e) + w)) + (e + (b - e) - e)
+/tmp/compact44-fractional-digits-01/RotationCoverage.lean:35:27: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  e - b + (w - (e - b))
+in the target expression
+  b + w + (L - (b + w)) = b + (e - b) + (w - (e - b)) + (L - (b + w))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+L e b w : V
+hwindow : b + w ≤ L
+heb : ¬e ≤ b
+hbe : b < e
+hwrap : ¬b + w ≤ e
+hew : e < b + w
+hba : b + (e - b) = e
+ha : e - b < w
+ht : b + w + (L - (b + w)) = L
+⊢ b + w + (L - (b + w)) = b + (e - b) + (w - (e - b)) + (L - (b + w))
+'RotationCoverage.coverage' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'RotationCoverage.digit_index' depends on axioms: [propext, Classical.choice, Quot.sound]
