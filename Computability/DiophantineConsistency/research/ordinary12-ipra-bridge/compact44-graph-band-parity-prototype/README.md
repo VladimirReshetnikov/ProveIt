@@ -1,0 +1,7 @@
+# Exploratory fixed-graph indexed band parity
+
+`RawParityBands.raw_mod_two` reduces the existing exact indexed raw-column decomposition in an arbitrary IΣ₁ model. With positive period n, k<n and C below the n-digit radix bound, raw parity is the parity of both complete 943-selector sums, the five bare-rotation digits, and the temporal digit. The `Exp.exp 10` multiple containing all copy digits and tile payload terms is even. This is the parity decomposition of the actual indexed family; no term is discarded on a clean-column assumption.
+
+`RawCarryParity.expand` combines this identity with a supplied raw-plus-carry parity. `FixedGraphBandParity.graph_band_parity` supplies that premise from the same fixed symbolic graph witnesses N,w and indexed b=1 `CarryInput`, for every positive in-range column of phase 2195 or 3296. Its conclusion retains both selector sums, all bare rotations, the temporal digit and the incoming carry; the carry is at most 1. It assumes positive graph coordinates and literal graph zero, and does not assert graph existence, a clean temporal digit, row propagation, retained port/K byte binding, machine semantics or internal iPRA results.
+
+The author-only source order was `RawParityBands`, `RawCarryParity`, `FixedGraphBandParity` over the exploratory provider of `f91980c3eb`. Sessions 72479, 10436 and 91135 actually exited 0 without warnings or `sorryAx`; named axiom reports are retained. These are not a paired replay or independent artifact audit.
