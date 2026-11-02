@@ -442,6 +442,10 @@ word in an external finite family. This allows a rotated temporal word to have
 a larger cap than the other words, but the exact graph decomposition and mass
 bound remain open. Its [independent artifact audit](reviews/compact44-heterogeneous-carry-independent-audit/README.md)
 passed with the inherited provider limitations recorded there.
+An [independently audited finite coefficient-mass calculation](reviews/compact44-coefficient-mass-independent-audit/README.md)
+proves the 943-row selector and 41-copy totals in Lean, with the numerical
+half-radix and heterogeneous-carry slack. The connection from those finite
+totals to the graph's model-level word decomposition is not yet proved.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
