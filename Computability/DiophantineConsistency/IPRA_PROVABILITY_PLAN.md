@@ -426,12 +426,13 @@ For beta `2^(67*8807)-1` and symbolic masks it derives the port inequalities,
 beta lower bound and high-product condition from graph-variable positivity,
 while retaining graph zero, radix and repunit hypotheses. `K` remains
 arbitrary, and no retained coefficient binding or machine simulation is claimed.
-A subsequent [graph-derived radix client](research/ordinary12-ipra-bridge/compact44-graph-derived-radix-prototype/README.md)
-has compiled in a single-side exploratory run. For the symbolic beta and
-masks it derives a positive block count, the radix and repunit identities and
-the digit bounds from a graph zero and positive variables, with arbitrary `K`.
-This composition still needs a paired replay and independent audit; it does
-not bind the retained tuple or establish the encoded machine or iPRA endpoint.
+A subsequent [graph-derived radix client](research/ordinary12-ipra-bridge/compact44-graph-derived-radix-prototype/PAIR_RESULT.md)
+has passed a three-module-per-side paired replay and [independent artifact
+audit](reviews/compact44-graph-derived-radix-independent-audit/README.md).
+For the symbolic beta and masks it derives a positive block count, the radix
+and repunit identities and the digit bounds from a graph zero and positive
+variables, with arbitrary `K`. It does not bind the retained tuple or establish
+the encoded machine or iPRA endpoint.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
