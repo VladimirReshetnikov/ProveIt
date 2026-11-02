@@ -432,10 +432,10 @@ retains those conditional bounds; the [ordered table audit](reviews/compact44-94
 checks the finite Lean list against the pinned JSON externally. Neither result
 proves the compiler or controller. A separate [finite relabeling audit](reviews/compact44-color-relabel-independent-audit/README.md)
 matches the old 942-row table to 942 compact rows, subject to its explicit
-manual source-formula interpretation. A subsequent [author-only Lean assembly](research/ordinary12-ipra-bridge/compact44-relabel-author/README.md)
-checks the corresponding 942-row list equality in bounded pieces. The color
-and row-index permutations also have author-only checks; an independent
-paired replay and arbitrary-model tiling transport remain open. The
+manual source-formula interpretation. A subsequent [paired Lean replay](research/ordinary12-ipra-bridge/compact44-relabel-pair-prototype/README.md)
+checks the corresponding 942-row list equality and all three supplied-array
+permutations in 58 modules per side. Its independent artifact audit and
+arbitrary-model tiling transport remain open. The
 single extra row is ruled out by
 the [paired local exclusion theorem](reviews/compact44-forbidden-independent-audit/README.md)
 when a matching left neighbor exists; boundary and arbitrary-model neighbor
