@@ -190,14 +190,17 @@ arbitrary integer ports. The initial focused native replay failed because of
 broken historical-provider symlinks. A later fresh project-source author pass
 completed the native endpoint and passed an [independent artifact audit](reviews/fresh-project-author-independent-audit/README.md);
 its peer and matched comparison are still in progress, with the historical and
-provider qualifications recorded below. The
-[28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md)
-has exact finite residual-substitution and degree checks; its model and native
-transports remain open. The further [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md)
-has the same finite checks, with model and native transports also open. The
-[26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md)
-has finite exact residual and degree checks; its model and native transports
-are also open. The
+provider qualifications recorded below. A [standard-theory AQ29 extension](research/ipra-standard-aq29/README.md)
+also completed one author-only guarded run and an independent artifact audit;
+its separate paired Lean replay remains open. The
+[28-variable](research/adaptive-square-sums28-degree8/README.md),
+[27-variable](research/adaptive-square-sums27-degree8/README.md) and
+[26-variable](research/adaptive-square-sums26-degree8/README.md) degree-eight
+reductions have finite exact residual and degree checks. Their Lean model
+transports and native endpoints completed one [author-only extension](reviews/aq26-author-trial-v2/README.md)
+and passed an [independent artifact audit](reviews/aq26-author-independent-audit/README.md).
+They remain historical, with no matched peer; the standard-theory AQ26 client
+is being checked separately. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
@@ -273,7 +276,11 @@ ordinary trace-checked rebuild from the Lean sources of commit `66da84a9e7`
 (92 project modules recompiled), and its
 [checks](Lean/DiophantineConsistency/IPRAStandardCurrentEndpointChecks.lean)
 report only `propext`, `Classical.choice` and `Quot.sound`. This is an
-author build, not an independent replay packet. The language keeps `<` as a
+author build, not an independent replay packet. A later [16-module guarded
+author extension](reviews/ipra-standard-current14-author-trial/README.md)
+over the fresh AQ29 author provider passed, as did a separate [artifact audit](reviews/ipra-standard-current14-author-independent-audit/README.md).
+It is a historical hybrid, with no matched peer or established current-PDF
+identification from that audit. The language keeps `<` as a
 symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`. In the
 equality-only language, [`IPRAReferenceCurrentEndpoint`](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean)
 states the same equivalence in the reference theory with `<` erased; it and

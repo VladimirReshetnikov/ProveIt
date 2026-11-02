@@ -1,0 +1,7 @@
+# AQ28 → AQ27 → AQ26: historical author-only extension
+
+The corrected guarded extension completed with **actual tool session 18122 exit 0** and stdout `AQ26_AUTHOR_TRIAL_V2_EXIT=0`. All 24 Lean modules compiled in the forward dependency order AQ28 → AQ27 → AQ26; the final [state](state.json) has SHA-256 `b7b18c51f0a8a921b916cd64119a8cccd0971c6bc2b0d759d4ae3d5433c92c73`. The exact 75 axiom diagnostics match the pinned additions manifest and include no `sorryAx`; the final AQ26 native reports list Lean metatheory axioms `propext`, `Classical.choice`, and `Quot.sound`, which are not object-theory axioms.
+
+This trial extends the independently audited historical AQ29 author provider only. It is not a matched author/peer result, a current-source or PDF identity result, or a compilation of the separate standard-theory AQ26 client. The Foundation build wrapper's outer exit was not observed; package-transitive, dynamic and between-observation provenance limitations remain inherited. The previous trial failed and its error is preserved in the separate `aq26-author-attempt-1` packet; this run uses the qualified existing identity-substitution lemma and an isolated output.
+
+The packet preserves the full state, 24 frozen sources, all Lean logs, pinned manifest, process log and [terminal observation](terminal-observation.json). Compiled objects and provider paths remain in their recorded `/tmp` locations and require independent verification. The trial has not yet been independently audited.
