@@ -44,3 +44,11 @@ author-only runner. It records the eight diagnostics explicitly. The guarded
 run must compile all five in a fresh overlay over the AQ29 parent; it must not
 reuse the exploratory outputs. A successful author run and a later matched
 peer and independent artifact audit remain distinct results.
+
+The frozen source commit is `777716daef4825d6b3023446b457f12d83aca67f`.
+The resulting manifest SHA-256 is
+`d2ff86b187c8b4aeb97dc701bfc7ba33b050b38c873cc5ceb6fb174991744690`;
+the guarded runner's source validation exited zero for all five additions
+and eight diagnostics. The first manifest-builder attempt failed on a
+mistyped parent-manifest hash before writing output; the corrected attempt
+and its observed exit are recorded in `manifest-observation.json`.

@@ -6,7 +6,7 @@ if not __debug__:raise RuntimeError('assertions required')
 D=Path(__file__).resolve().parent
 ROOT=D.parents[3]
 BASE=D.parent/'adaptive-aq22-proof/author-additions.json'
-assert hashlib.sha256(BASE.read_bytes()).hexdigest()=='3c5df040f94803b19ccbed14ec93be2e3de2e16ed9c31efd9bc531373200df'
+assert hashlib.sha256(BASE.read_bytes()).hexdigest()=='3c5df040f94803b19ccbed14ec93be2e3de2e16ed9c31efd9bcfb531373200df'
 ap=argparse.ArgumentParser();ap.add_argument('--source-commit',required=True);a=ap.parse_args()
 assert re.fullmatch('[0-9a-f]{40}',a.source_commit)
 base=json.loads(BASE.read_text());short=['IPRASuccessorInduction','IPRAAddOneGeneral','IPRASuccessorInductionConverse','IPRAStandardTheory']
