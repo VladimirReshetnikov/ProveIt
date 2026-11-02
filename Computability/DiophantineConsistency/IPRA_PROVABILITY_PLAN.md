@@ -313,8 +313,11 @@ constructs a strictly smaller positive model coordinate and passed an
 A further [simultaneous-state theorem](research/ordinary12-ipra-bridge/reduced-model-state-prototype/README.md)
 combines the smaller coordinate, transformed numerator, norm and certificate;
 its paired replay passed an [independent artifact audit](reviews/ordinary12-reduced-model-state-independent-audit/README.md).
-Proving termination, connecting the graph to a reduced state, and transporting
-the result to iPRA remain open.
+A subsequent [model least-number proof](research/ordinary12-ipra-bridge/reduced-model-induction-prototype/README.md)
+proves `b=1` for the stated positive reduced norm and Bézout certificate;
+its paired replay passed an [independent artifact audit](reviews/ordinary12-reduced-model-induction-independent-audit/README.md).
+Normalizing the graph's signed fraction, connecting it to that reduced state,
+and transporting the resulting argument to iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do

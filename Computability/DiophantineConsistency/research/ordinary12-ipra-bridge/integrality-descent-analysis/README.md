@@ -203,7 +203,11 @@ any theorem that additionally requires positive `u` or a particular sign of
   The [simultaneous-state theorem](../reduced-model-state-prototype/README.md)
   combines the coordinate, numerator, norm and certificate, and its paired
   replay passed an [independent artifact audit](../../../reviews/ordinary12-reduced-model-state-independent-audit/README.md).
-  Termination and the object-level iPRA proof remain open.
+  A [model least-number proof](../reduced-model-induction-prototype/README.md)
+  now proves `b=1` from the stated positive reduced norm and certificate;
+  its paired replay passed an [independent artifact audit](../../../reviews/ordinary12-reduced-model-induction-independent-audit/README.md).
+  This does not yet normalize an arbitrary signed fraction, connect it to the
+  graph, or give an object-level iPRA proof.
 * `FreeJNormZero` proves the generic ring identity and a natural-valued
   signed-pair instance. The general signed graph substitution is open.
 * The early-size and index packets give useful intermediate model results
