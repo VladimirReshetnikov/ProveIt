@@ -195,4 +195,5 @@ The [independent review](../../../reviews/ordinary12-integrality-descent-indepen
 also found that the original checker could print success under optimized
 Python with its assertions disabled. The checker now rejects optimized mode.
 The normal and optimized process outcomes are recorded in
-[`guard-fix-observation.json`](guard-fix-observation.json).
+[`guard-fix-observation.json`](guard-fix-observation.json); a [separate review](../../../reviews/ordinary12-integrality-guard-independent/README.md)
+checked the correction under normal and optimized invocation modes.
