@@ -11,7 +11,10 @@ transport drafts now refer explicitly to the already imported
 `DiophantineConsistency.AdaptiveAQ30Transport.subst_id`. The regenerated
 sources pass the finite literal and witness-binding controls, but this fix is
 not yet Lean-verified. The previous additions manifest pins the failed source
-and must be regenerated after the corrected sources are committed.
+and is preserved as historical. The corrected source's [v2 additions
+manifest](author-additions-v2.json) and [provisional survey](author-survey-v2.json)
+pin all 24 current drafts and 75 exact diagnostic names; they are not a Lean
+replay or a proof.
 
 `generate_model.py` and `generate_transport.py` prepare the draft sources; `verify_literals.py` checks every draft literal gate against its pinned graph. This finite comparison is not Lean type-checking.
 
