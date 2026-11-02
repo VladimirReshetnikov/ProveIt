@@ -3,7 +3,7 @@
 import contextlib,hashlib,importlib.util,io,json,os,shutil,subprocess,sys,tempfile,types
 from pathlib import Path
 D=Path(__file__).with_name('replay.py');HEAD='a'*40
-MODES=['verify_only','good','duplicate_init','triple_init','wrong_dep','duplicate_dep','missing_init','missing_direct','missing_seed','seed_companion','seed_collision','output_collision','output_companion','peer_companion','output_symlink','output_missing','warning','sorry','wrong_report','wrong_axiom','missing_report','extra_report','nonzero','boolean_exit','stop','sibling_mismatch','frozen_symlink','late_source','late_seed','late_output','late_log','late_companion','parent_drift','head_drift']
+MODES=['verify_only','good','duplicate_init','triple_init','wrong_dep','duplicate_dep','missing_init','missing_direct','missing_seed','seed_companion','seed_collision','output_collision','output_companion','peer_companion','output_symlink','output_missing','warning','sorry','wrong_report','wrong_axiom','missing_report','extra_report','nonzero','boolean_exit','stop','sibling_mismatch','frozen_symlink','late_source','late_seed','late_output','late_log','late_companion','parent_drift','head_drift','seed_copy_companion','seed_copy_companion_peer','seed_parent_symlink','seed_parent_after_copy','seed_copy_symlink']
 for mode in MODES:
  spec=importlib.util.spec_from_file_location('candidate',D);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
  root=Path(tempfile.mkdtemp(prefix='coeff-fake-fixture-',dir='/tmp'));out=Path(tempfile.mkdtemp(prefix='ipra-compact-coefficient-decomposition-pair-fake-',dir='/tmp'));out.rmdir()
@@ -30,7 +30,11 @@ for mode in MODES:
   return scan,[{'v':1 if mode!='parent_drift' or counts['verify']==1 else 2}]
  m.verify=verify
  def overlay(base,lib):
-  d=lib/'DiophantineConsistency';d.mkdir(parents=True);(d/'ArithmeticWindowCarry.olean').symlink_to(base/'DiophantineConsistency/ArithmeticWindowCarry.olean')
+  d=lib/'DiophantineConsistency'
+  if mode=='seed_parent_symlink':
+   d.parent.mkdir(parents=True);outside=root/'outside';outside.mkdir(exist_ok=True);d.symlink_to(outside,target_is_directory=True)
+  else:d.mkdir(parents=True)
+  (d/'ArithmeticWindowCarry.olean').symlink_to(base/'DiophantineConsistency/ArithmeticWindowCarry.olean')
   if mode=='seed_collision':(d/'Compact943Decoder.olean.private').write_bytes(b'injected')
   if mode=='output_collision':(d/'CompactCoefficientDecoder.olean.server').write_bytes(b'injected')
  def monitored(cmd,env,log,timeout):
@@ -65,7 +69,16 @@ for mode in MODES:
   if mode=='missing_init':Path(init).unlink()
   if mode=='missing_direct':Path(paths[1]).unlink()
   return subprocess.CompletedProcess(cmd,0,stdout='\n'.join(paths)+'\n',stderr='')
- m.subprocess=types.SimpleNamespace(run=run);m.shutil=types.SimpleNamespace(copyfile=shutil.copyfile,disk_usage=lambda _:types.SimpleNamespace(free=10*1024**3))
+ def copyfile(src,dst):
+  dst=Path(dst);result=shutil.copyfile(src,dst)
+  if dst.name in ('Compact943Decoder.olean','CompactCoefficientMass.olean'):
+   if mode=='seed_copy_companion' or mode=='seed_copy_companion_peer' and 'peer' in str(dst):Path(str(dst)+'.private').write_bytes(b'injected')
+   if mode=='seed_copy_symlink':
+    data=dst.read_bytes();dst.unlink();back=dst.with_suffix('.backing');back.write_bytes(data);dst.symlink_to(back)
+   if mode=='seed_parent_after_copy':
+    parent=dst.parent;back=parent.parent/'outside';parent.rename(back);parent.symlink_to(back,target_is_directory=True)
+  return result
+ m.subprocess=types.SimpleNamespace(run=run);m.shutil=types.SimpleNamespace(copyfile=copyfile,disk_usage=lambda _:types.SimpleNamespace(free=10*1024**3))
  sys.argv=[str(D),'--expected-head',HEAD,'--verify-only'] if mode=='verify_only' else [str(D),'--expected-head',HEAD,'--output',str(out)]
  try:
   with contextlib.redirect_stdout(io.StringIO()):
@@ -74,8 +87,9 @@ for mode in MODES:
   if mode=='verify_only':assert err is None and counts['child']==0 and not out.exists(),(mode,err,counts)
   elif mode in ('good','duplicate_init'):assert err is None and counts['child']==2,(mode,err,counts)
   else:
-   expected={'triple_init':'dependency mismatch','wrong_dep':'dependency mismatch','duplicate_dep':'dependency mismatch','missing_init':'companion drift','missing_direct':'companion drift','missing_seed':'seed drift','seed_companion':'seed companion','seed_collision':'seed collision','output_collision':'unexpected output companion','output_companion':'unexpected output companion','peer_companion':'unexpected output companion','output_symlink':'invalid output','output_missing':'invalid output','warning':'compiler failure','sorry':'compiler failure','wrong_report':'axiom reports','wrong_axiom':'axiom reports','missing_report':'axiom reports','extra_report':'axiom reports','nonzero':'compiler failure','boolean_exit':'compiler failure','stop':'compiler failure','sibling_mismatch':'paired output mismatch','frozen_symlink':'frozen source drift','late_source':'frozen source drift','late_seed':'companion drift','late_output':'companion drift','late_log':'final output drift','late_companion':'unexpected companion','parent_drift':'final input drift','head_drift':'preflight drift'}[mode]
+   expected={'triple_init':'dependency mismatch','wrong_dep':'dependency mismatch','duplicate_dep':'dependency mismatch','missing_init':'companion drift','missing_direct':'companion drift','missing_seed':'seed drift','seed_companion':'seed companion','seed_collision':'seed collision','output_collision':'unexpected output companion','output_companion':'unexpected output companion','peer_companion':'unexpected output companion','output_symlink':'invalid output','output_missing':'invalid output','warning':'compiler failure','sorry':'compiler failure','wrong_report':'axiom reports','wrong_axiom':'axiom reports','missing_report':'axiom reports','extra_report':'axiom reports','nonzero':'compiler failure','boolean_exit':'compiler failure','stop':'compiler failure','sibling_mismatch':'paired output mismatch','frozen_symlink':'frozen source drift','late_source':'frozen source drift','late_seed':'companion drift','late_output':'companion drift','late_log':'final output drift','late_companion':'unexpected companion','parent_drift':'final input drift','head_drift':'preflight drift','seed_copy_companion':'unexpected output companion','seed_copy_companion_peer':'unexpected output companion','seed_parent_symlink':'invalid output directory','seed_parent_after_copy':'invalid output directory','seed_copy_symlink':'seed copy drift'}[mode]
    assert err is not None and expected in err,(mode,expected,err,counts)
+   if mode=='seed_parent_symlink':assert not (root/'outside/Compact943Decoder.olean').exists() and not (root/'outside/CompactCoefficientMass.olean').exists(),(mode,'seed copied outside overlay')
   print(mode,'PASS',counts['child'],'fake children')
  finally:shutil.rmtree(root,ignore_errors=True);shutil.rmtree(out,ignore_errors=True)
 

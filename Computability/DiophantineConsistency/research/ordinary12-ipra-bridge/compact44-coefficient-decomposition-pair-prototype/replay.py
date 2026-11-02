@@ -74,8 +74,8 @@ def main():
   need(head()==args.expected_head,'HEAD drift');frozen(src);checkguards(allguards);run=out/side;run.mkdir();lib=run/'lib';monitor.overlay(PREFIX/side/'lib',lib)
   for row in (x for x in scan['seeds'] if x['side']==side):
    seed=Path(row['path']);need(seed.is_file() and h(seed)==row['sha256'],('seed drift',side,row['module']));g=guard(str(seed)[:-6]);need(g[str(seed)] is not None and all(v is None for k,v in g.items() if k!=str(seed)),('seed companion',side));merge(allguards,g)
-   target=lib/'DiophantineConsistency'/(row['module']+'.olean');need(all(v is None for v in guard(str(target)[:-6]).values()),('seed collision',side));shutil.copyfile(seed,target)
-   need(target.is_file() and not target.is_symlink() and h(target)==row['sha256'],('seed copy drift',side));merge(allguards,guard(str(target)[:-6]))
+   target=lib/'DiophantineConsistency'/(row['module']+'.olean');outdir(target,lib);need(all(v is None for v in guard(str(target)[:-6]).values()),('seed collision',side));shutil.copyfile(seed,target)
+   outdir(target,lib);need(target.is_file() and not target.is_symlink() and h(target)==row['sha256'],('seed copy drift',side));merge(allguards,output(target,False))
   init=PACKAGE/'Init.olean';window=lib/'DiophantineConsistency/ArithmeticWindowCarry.olean';need(init.is_file() and window.is_file(),'missing direct import');expected={str(init),str(window),str(lib/'DiophantineConsistency/Compact943Decoder.olean'),str(lib/'DiophantineConsistency/CompactCoefficientMass.olean')}
   for dep in expected:merge(allguards,guard(dep[:-6]))
   checkguards(allguards);env=os.environ.copy()
