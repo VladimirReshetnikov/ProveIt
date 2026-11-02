@@ -323,8 +323,12 @@ the stated positive natural cleared norm; its paired replay passed an
 A [signed difference-ring theorem](research/ordinary12-ipra-bridge/reduced-model-signed-prototype/README.md)
 extends this to arbitrary signs and a nonzero denominator; its paired replay
 passed an [independent artifact audit](reviews/ordinary12-reduced-model-signed-independent-audit/README.md).
-Applying it to the graph and transporting the resulting argument to iPRA
-remain open.
+The [free-J graph application](research/ordinary12-ipra-bridge/free-j-graph-integrality-prototype/README.md)
+now proves the proof-only denominator divides the corresponding numerator
+under its stated zero, positivity and port hypotheses; its paired replay
+passed an [independent artifact audit](reviews/ordinary12-freej-graph-integrality-independent-audit/README.md).
+Recovering the ordinary strong norm and transporting the full argument to
+iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do

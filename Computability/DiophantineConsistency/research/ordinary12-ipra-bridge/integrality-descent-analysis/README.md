@@ -212,7 +212,10 @@ any theorem that additionally requires positive `u` or a particular sign of
   A [signed difference-ring lift](../reduced-model-signed-prototype/README.md)
   handles arbitrary signs and nonzero denominator; its paired replay passed an
   [independent artifact audit](../../../reviews/ordinary12-reduced-model-signed-independent-audit/README.md).
-  The graph application and object-level iPRA proof remain open.
+  The [graph application](../free-j-graph-integrality-prototype/README.md)
+  now proves `D ∣ Y` under its stated free-J hypotheses, with an [independent
+  artifact audit](../../../reviews/ordinary12-freej-graph-integrality-independent-audit/README.md).
+  Ordinary strong-norm recovery and the object-level iPRA proof remain open.
 * `FreeJNormZero` proves the generic ring identity and a natural-valued
   signed-pair instance. The general signed graph substitution is open.
 * The early-size and index packets give useful intermediate model results
