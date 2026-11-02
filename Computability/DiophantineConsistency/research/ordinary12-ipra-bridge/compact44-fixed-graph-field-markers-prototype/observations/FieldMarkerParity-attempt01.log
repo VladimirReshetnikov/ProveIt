@@ -1,0 +1,34 @@
+/tmp/compact44-graph-support-join-01/FieldMarkerParity.lean:84:31: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+N C E F k : V
+hN : 0 < N
+hk : k < 8807 * N
+hC : C < Exp.exp (67 * (8807 * N))
+haligned : E % 67 = 0
+hcell : E / 67 % (8807 * N) % 8807 = 0
+hp : k % 8807 = 1073
+hslots : ∀ x < 8807 * N, 0 < x → NoCarry (dig 67 C x) (dig 67 (↑lowNat) (x % 8807))
+hbool : ∀ x < 8807 * N, x % 8807 ≠ 1063 → dig 67 C x ≤ 1
+hhigh : NoCarry F (↑highNat * rep (67 * 8807) N - 1)
+hcarry :
+  CarryInput 67 (8807 * N) F 1 GenericBandCarryFamily.cap
+    (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+    (GenericBandCarryFamily.word (8807 * N) C (bandOffsets CompactSymbolicKernel.position)
+      (temporalWord (8807 * N) E C))
+n : V := 8807 * N
+D : V := E / 67 % n
+T : V := temporalWord n E C
+hn : 0 < n
+hk0 : 0 < k
+heven : dig 67 F k % 2 = 0
+hreset :
+  carry 67 (8807 * N) (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+      (GenericBandCarryFamily.word (8807 * N) C (bandOffsets CompactSymbolicKernel.position)
+        (temporalWord (8807 * N) E C))
+      (cyc (8807 * N) k 1) =
+    0
+⊢ 1073 = ↑1073
+'FieldMarkerParity.vertical' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FieldMarkerParity.horizontal' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
