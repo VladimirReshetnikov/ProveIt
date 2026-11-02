@@ -424,7 +424,11 @@ block length. Its support is still a parameter: the result does not identify
 the block with the retained MC coefficient or give an internal iPRA
 construction. A separate [finite-list identity and model transfer](reviews/compact44-list-mask-independent-audit/README.md)
 has matching paired replays and an independent audit; it likewise leaves the
-specific support and retained-MC graph-port equality open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
+specific support and retained-MC graph-port equality open. A subsequent
+[concrete support specialization](reviews/compact44-concrete-mask-independent-audit/README.md)
+has also passed independent audit: it checks the bit-exponent recipe and its
+model digit classification. Identifying this symbolic value with the retained
+MC bytes and the graph port remains a separate obligation. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
 A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-fractional-clean-column/README.md)
