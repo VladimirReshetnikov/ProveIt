@@ -122,7 +122,9 @@ over the fresh AQ29 author provider completed with exit 0 and passed an
 It uses a historical hybrid of source versions; neither a paired Lean replay
 nor identification of that hybrid literal with the current PDF is established
 by this audit. The parent/provider limitations above remain.
-The distinct equality-only comparison described below remains open.
+The distinct equality-only comparison described below has an author-built
+native-to-reference direction; its reverse direction and independent replay
+remain open.
 
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency
@@ -147,12 +149,12 @@ A Lean theorem asserting `nativeTheory ⊢ ψ` is a metatheoretic assertion that
 an object-theory derivation exists. Principles used by Lean in that
 metatheoretic proof do not become additional object-theory axioms.
 
-One concrete remaining comparison is an independently specified first-order
+One concrete comparison uses an independently specified first-order
 intuitionistic theory in the constructor-code language with equality alone and
-successor-step open induction. A translation can erase each `<` atom into the
-candidate's comparison-code equation. Proving that translation preserves
-quantifier-freeness, transfers every axiom and derivation in both directions,
-and maps the particular consistency sentence is still required. Distinct
+successor-step open induction. A translation erases each `<` atom into the
+candidate's comparison-code equation. The author-built forward transfer is
+described below; an independently replayed dependency closure and the reverse
+axiom transfer remain open. Distinct
 construction codes must not silently be identified just because they compute
 the same standard function.
 
@@ -160,9 +162,10 @@ Status 2026-11-01: that reference theory is
 [`IPRAEqualityOnlyReference.referenceTheory`](Lean/DiophantineConsistency/IPRAEqualityOnlyReference.lean),
 and the erasure is `IPRAOrderErasure.erase`. The native-to-reference direction
 `IPRAReferenceInductionConversion.nativeToReference : nativeTheory ⊢ σ →
-referenceTheory ⊢ erase σ` and its 19-module closure built coherently from
-source in the root workspace (Lake's ordinary trace-checked build, Lean
-sources of `9cd427e8da`); its checks report only `propext`,
+referenceTheory ⊢ erase σ` and its 19-module closure have an ordinary
+trace-checked Lake author build from the Lean sources of `9cd427e8da`; the
+full transitive and dynamic dependency ancestry has not been independently
+authenticated. Its checks report only `propext`,
 `Classical.choice` and `Quot.sound`. Applied to the 14-variable endpoint, it
 gives [`IPRAReferenceCurrentEndpoint.reference_current_iff_consistency`](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean):
 `referenceTheory ⊢ erase noZero14 🡘 ∼erase (mappedNativeRefutation embedding)`,
