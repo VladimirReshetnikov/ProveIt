@@ -63,6 +63,14 @@ matched all eight additions and passed an [independent complete-result audit](re
 Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
 has a separate review and retains the decoder and rank-recipe boundary.
 
+A distinct [13-variable, 69-operation candidate](research/thirteen69-model-bridge/PLAN.md)
+has exact degree 174 and a different phase-split2471 four-port tuple. An
+[independently audited model seed](reviews/thirteen-model-strong-seed-independent-audit/README.md)
+supplies the required extra Pell divisibility factor, but the candidate's
+all-model reverse construction, full tuple calibration and iPRA endpoint
+remain open. The previously checked 13-variable endpoints do not by
+themselves establish this candidate's equivalence.
+
 A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
 compiled an existentially selected primitive-recursive checker for a common
 bound in the chosen Foundation refutation encoding, and internal native and
