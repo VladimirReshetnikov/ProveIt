@@ -34,8 +34,10 @@ source, in that order, against one coherent author parent plus the locally
 compiled strong-seed dependency. The final theorem printed
 `[propext, Classical.choice, Quot.sound]`, without warnings or `sorryAx`.
 The chain's observed success implies each command in it returned zero, but
-its individual child exits were not separately recorded. No independent
-audit of this suffix is yet claimed.
+its individual child exits were not separately recorded. A subsequent paired
+replay and its [independent artifact audit](../../reviews/thirteen-model-auxiliary-seed-independent-audit/README.md)
+are described below; the audit does not supply missing child observations for
+this earlier exploratory chain.
 
 [`replay.py`](replay.py) prepares separate author and peer suffixes over the
 [independently audited strong-seed pair](../../reviews/thirteen-model-strong-seed-independent-audit/README.md).
