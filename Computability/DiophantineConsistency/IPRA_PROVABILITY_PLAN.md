@@ -251,8 +251,10 @@ plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
 prototype and an exploratory abstract three-factor model split. The literal
 binding, positive-rank recovery and object-theory proof remain open. Its
 compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
-13-variable 2011 ports with `beta = 2^94517 - 1`; an explicit full-tuple
-binding and checker calibration are separate prerequisites. A [manuscript
+13-variable 2011 ports with `beta = 2^94517 - 1`. A [finite full-tuple and
+parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
+has been checked; its internal checker calibration remains a separate
+prerequisite. A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
 does not identify the ports.
