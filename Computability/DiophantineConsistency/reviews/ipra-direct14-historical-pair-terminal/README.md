@@ -13,8 +13,8 @@ rehashed against its recorded state during copying. Each sibling passed five
 added modules and recorded all eight selected target diagnostics. The plan
 reported 15 workspace source drifts relative to the historical parent.
 
-This records a coordinator result and copied evidence; a separate complete
-independent artifact audit is still needed. The original run remains at
+The subsequent [independent complete-result audit](../ipra-direct14-historical-pair-independent-audit/README.md)
+passed. The original run remains at
 `/tmp/ipra-direct14-historical-paired-run-01`. The result inherits historical
 parent, package-transitive, dynamic and between-observation boundaries. The
 Foundation wrapper's outer exit was not captured, although its inner Lake exit

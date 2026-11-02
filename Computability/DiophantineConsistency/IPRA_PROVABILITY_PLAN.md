@@ -51,7 +51,7 @@ audited fresh AQ29 parent pair. A subsequent [five-module historical author exte
 compiled its standard-iPRA client and selected translated-consistency
 comparison and passed an [independent artifact audit](reviews/ipra-standard-direct14-guarded-author-independent-audit/README.md).
 A later [historical paired extension](reviews/ipra-direct14-historical-pair-terminal/README.md)
-matched all five additions; its independent complete-result audit is pending.
+matched all five additions and passed an [independent complete-result audit](reviews/ipra-direct14-historical-pair-independent-audit/README.md).
 The separate [finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
 retains the manual decoder and rank-recipe boundary.
 

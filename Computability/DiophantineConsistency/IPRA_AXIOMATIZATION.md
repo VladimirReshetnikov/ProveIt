@@ -135,7 +135,7 @@ historical author extension](reviews/ipra-standard-direct14-guarded-author/READM
 compiled its standard-theory client and comparison with the selected
 translated Foundation consistency sentence. Its [independent artifact audit](reviews/ipra-standard-direct14-guarded-author-independent-audit/README.md)
 passed. A later [historical pair](reviews/ipra-direct14-historical-pair-terminal/README.md)
-matched all five additions; its independent complete-result audit is pending.
+matched all five additions and passed an [independent complete-result audit](reviews/ipra-direct14-historical-pair-independent-audit/README.md).
 
 The degree-36 and degree-56 13-variable equations have a [joint guarded
 historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)

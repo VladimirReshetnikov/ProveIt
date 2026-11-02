@@ -66,7 +66,7 @@ subsequent [five-module historical author extension](reviews/ipra-standard-direc
 compiled its standard-iPRA endpoint and selected translated consistency
 comparison and passed an independent artifact audit. A subsequent [historical
 paired extension](reviews/ipra-direct14-historical-pair-terminal/README.md)
-matched all five additions; its independent complete-result audit is pending. A
+matched all five additions and passed an independent complete-result audit. A
 [finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
 retains the manual decoder and rank-recipe boundary.
 
