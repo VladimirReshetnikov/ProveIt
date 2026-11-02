@@ -15,14 +15,14 @@ H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
 files=[ROOT/'paired_plan.py',HERE/'task-policy.json']+[HERE/name for name in (
     'prepare.py','freeze.py','rebuild.py','compare.py','run_pair.py',
     'test_history.py','test_prepare.py','test_freeze.py','test_real_extension.py',
-    'test_full_chain.py','run_controls.py')]
+    'test_full_chain.py','test_real_policy.py','run_controls.py')]
 before={str(p.resolve()):H(p) for p in files}
 rows=[]
-for name in ('test_history.py','test_prepare.py','test_freeze.py','test_real_extension.py','test_full_chain.py'):
+for name in ('test_history.py','test_prepare.py','test_freeze.py','test_real_extension.py','test_full_chain.py','test_real_policy.py'):
     p=subprocess.run([sys.executable,str(HERE/name)],cwd=HERE,capture_output=True,text=True,timeout=240)
     rows.append({'script':str((HERE/name).resolve()),'exit_code':p.returncode,'stdout':p.stdout,'stderr':p.stderr})
     if p.returncode:raise RuntimeError(('control failed',name,p.returncode,p.stdout,p.stderr))
-for name in ('test_history.py','test_prepare.py','test_freeze.py','test_real_extension.py','test_full_chain.py'):
+for name in ('test_history.py','test_prepare.py','test_freeze.py','test_real_extension.py','test_full_chain.py','test_real_policy.py'):
     p=subprocess.run([sys.executable,'-O',str(HERE/name)],cwd=HERE,capture_output=True,text=True,timeout=30)
     if p.returncode == 0 or 'controls require Python assertions enabled' not in p.stderr:
         raise RuntimeError(('optimized control failed to reject',name,p.returncode,p.stdout,p.stderr))

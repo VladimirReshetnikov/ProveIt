@@ -1,5 +1,16 @@
 # Selected-checker historical paired workflow: prepared, not launched
 
+The independent review found that the initial freezer still hardcoded the
+prior product endpoint's five reports instead of this task's single final
+report. The freezer now checks the real policy through a shared validation
+function; `test_real_policy.py` exercises that production function against the
+pinned policy and rejects three mutations. The first control rerun exited 1
+because its full-chain toy retained the old report list; after correcting that
+fixture and strengthening the real-policy test, all 12 normal and optimized
+controls passed. Earlier receipts are retained for history; observed fix-run
+outcomes are in `freezer-policy-fix-observations.json`. Independent workflow
+review remains required before launch.
+
 This adapts the reviewed joint-thirteen workflow to rebuild both endpoint chains and the two selected-checker modules against separately copied siblings of the authenticated AQ29 historical parent. The fixed policy has ten additions and sixteen exact diagnostics (8 + 5 + 2 + 1), and SHA-256 `e4361ca7aa1032a2391cbd1cce6bded47a2fa993794050accdda5aa3e36b48c9`. The guarded author manifest is pinned at `dae80b2f3bc452f6138da34e5af026c458c7464bdee1b9a1bb9e0d02ca70a7c2`. The runbook gates launch on a separate independent workflow review, a separate independent audit of author artifact state `385b40c10de33c60da377b0b84ba22ee2c9103e2a32d8dffc25e84857c26af30`, independently observed audit exits, and the authenticated original matched parent and observed exits. The author artifact audit has since passed independently in commit `636c494657`; the separate workflow review remains required.
 
 The two duplicated square-sum literal/native files are explicitly selected from their tracked Lean package paths. `check_package_choice.py` compares those clean HEAD and workspace bytes with the pinned guarded author's draft blobs; toy controls reject altered source, path, hash, and optimized execution. The two new checker modules remain selected from their committed draft paths; the planner rejects an unexpected package shadow. Parent, peer, seeds, sources and output roots remain isolated, with frozen source, direct dependency, diagnostic, object, and process gates inherited from the joint-thirteen workflow. The setup itself is not a replay.

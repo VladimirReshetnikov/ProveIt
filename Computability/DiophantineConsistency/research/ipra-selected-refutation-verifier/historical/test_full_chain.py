@@ -49,11 +49,7 @@ with tempfile.TemporaryDirectory(prefix='reference-full-chain-control-') as td:
     draft=research/'ipra-selected-refutation-verifier/draft';draft.mkdir(parents=True)
     target=draft/'ToyCurrentEndpointChecks.lean'
     names=[
-    'DiophantineConsistency.HAAdaptiveDirectOrdinate86.polynomialBridge',
-    'DiophantineConsistency.IPRAStandardProduct13.native_equivalence',
-    'DiophantineConsistency.IPRAStandardProduct13.literal_equivalence',
-    'DiophantineConsistency.IPRAStandardProduct13.selected_foundation_consistency',
-    'DiophantineConsistency.IPRAStandardProduct13.literal_iff_translated_consistency',
+    'DiophantineConsistency.IPRASelectedCheckerConsistency.selected_checker_endpoints',
     ]
     definitions='\n'.join('namespace '+n.rsplit('.',1)[0]+'\ntheorem '+n.rsplit('.',1)[1]+' : True := trivial\nend '+n.rsplit('.',1)[0] for n in names)
     target.write_text('import DiophantineConsistency.ParentChecks\n'+definitions+'\n'+'\n'.join('#print axioms '+n for n in names)+'\n')

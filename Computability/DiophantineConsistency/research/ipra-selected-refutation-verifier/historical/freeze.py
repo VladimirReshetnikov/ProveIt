@@ -19,13 +19,15 @@ import prepare
 HERE=Path(__file__).resolve().parent
 PLANNER=HERE.parent/'paired_plan.py'
 EXPECTED=(
-    'DiophantineConsistency.HAAdaptiveDirectOrdinate86.polynomialBridge',
-    'DiophantineConsistency.IPRAStandardProduct13.native_equivalence',
-    'DiophantineConsistency.IPRAStandardProduct13.literal_equivalence',
-    'DiophantineConsistency.IPRAStandardProduct13.selected_foundation_consistency',
-    'DiophantineConsistency.IPRAStandardProduct13.literal_iff_translated_consistency',
+    'DiophantineConsistency.IPRASelectedCheckerConsistency.selected_checker_endpoints',
 )
 H=prepare.digest
+
+def validate_target_policy(task, names, target):
+    if (task.get('target') != target or task.get('addition_order') != names or
+            task.get('expected_axiom_names') != list(EXPECTED) or
+            task.get('expected_axiom_by_module', {}).get(target) != list(EXPECTED)):
+        raise ValueError('task-specific target policy mismatch')
 
 def load_planner():
     spec=importlib.util.spec_from_file_location('reference_replay_plan',PLANNER)
@@ -96,9 +98,7 @@ def run():
                     'sha256':row['source_sha256'],'imports':row['imports']}
     policy=root/prepare.POLICY_REL
     task=json.loads(policy.read_text())
-    if (task.get('target')!=planner.TARGETS[-1] or task.get('addition_order')!=names or
-        task.get('expected_axiom_names')!=list(EXPECTED)):
-        raise ValueError('task-specific target policy mismatch')
+    validate_target_policy(task, names, planner.TARGETS[-1])
     new={'status':'FROZEN_NOT_COMPILED','target':planner.TARGETS[-1],'root':str(root),
          'head':before,'lakefile_sha256':old['lakefile_sha256'],'lean_toolchain_sha256':old['lean_toolchain_sha256'],
          'project_modules':len(rows),'order':old['order']+names,'sources':rows,

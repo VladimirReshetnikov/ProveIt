@@ -69,7 +69,7 @@ if wft['observed_exit_code']!=0 or wf['status']!='PASS_INDEPENDENT_SELECTED_CHEC
     raise ValueError('independent SELECTED_CHECKER workflow review missing or mismatched')
 for name in ('task-policy.json','prepare.py','freeze.py','rebuild.py','compare.py','run_pair.py',
              'run_controls.py','test_history.py','test_prepare.py','test_freeze.py',
-             'test_real_extension.py','test_full_chain.py','check_package_choice.py','test_package_choice.py',
+             'test_real_extension.py','test_full_chain.py','test_real_policy.py','check_package_choice.py','test_package_choice.py',
              'test_author_ancestry_gate.py','policy-preflight.py','REAL-RUN.md','../paired_plan.py',
              '../author-additions.json'):
     f=(h/name).resolve(strict=True)
