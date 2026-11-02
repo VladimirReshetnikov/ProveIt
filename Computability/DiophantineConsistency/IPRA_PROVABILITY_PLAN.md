@@ -266,6 +266,9 @@ also passed bounded replay audit under those assumptions; it does not identify
 the index with the rank. A [separate index-comparison audit](reviews/ordinary12-freej-index-comparison-independent-audit/README.md)
 checks the proved ordering and `2R < c`; the [early-size replay](research/ordinary12-ipra-bridge/free-j-early-size-prototype/README.md)
 passed a [separate audit](reviews/ordinary12-freej-early-size-independent-audit/README.md).
+The ordinary tail's polarized residual and denominator-cleared identities have
+also passed a [bounded replay audit](reviews/ordinary12-freej-ordinary-identities-independent-audit/README.md),
+but those identities do not establish denominator divisibility or integrality.
 Exact index matching cannot
 yet be imported directly: its existing theorem assumes strong and auxiliary
 norms that must first be recovered noncircularly. These are model-level
