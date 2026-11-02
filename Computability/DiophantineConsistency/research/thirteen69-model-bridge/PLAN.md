@@ -1,0 +1,71 @@
+# Model bridge for the thirteen-variable 69-operation carrier
+
+This is a source survey and plan, not a completed iPRA equivalence or a new
+kernel replay. The fixed positive-variable graph is
+[`polynomial69.json`](../thirteen-variable-independent/polynomial69.json)
+(SHA-256 `3400069ead0bbf7b85d382c47fdd790bc18d68d9979e049f475d4e1c52d4182f`).
+The separately reviewed finite audit and its exact scope are in the
+[graph review](../thirteen-variable-independent/ROOT_FINITE_REVIEW.md): 13
+positive variables, 69 binary operations (39 multiplications, 16 additions,
+14 subtractions) and exact total degree 174. The audit checks every row and
+an exact nonzero degree-174 leading form. The graph uses the **whole
+phase-split2471 tuple**, not the distinct 2011 or compact44 tuple. Its four
+ports, their entire byte bindings and the ordinary proof are documented in
+[the graph packet](../thirteen-variable-independent/README.md).
+The count treats fixed integer ports as leaves; it is not a count of decimal
+digits or a claim of global minimality.
+
+The new [`ModelThirteenRestoration.lean`](../../Lean/DiophantineConsistency/ModelThirteenRestoration.lean)
+(SHA-256 `8e1f80500e54ee71b40085a01cdb00c22e69e66426fc823950dd07ab69380bfc`)
+proves `restores_positive_zero69`: with a positive beta port, all 13 coordinates
+positive, appropriate ordered-ring facts and its signed-residue hypothesis, a
+zero of `ThirteenCarrier.value69` restores a positive `Carrier65.value` zero
+at the *same four ports*. Its `modelSignedResidue` supplies that hypothesis in
+the difference ring of an arbitrary model of IΣ₁. Instantiating all the ring
+facts and translating between ring-positive elements and model coordinates,
+and between this evaluator and the exact literal expression, are still explicit
+bridge steps; the imported theorem by itself is not a native iPRA derivation.
+
+The other direction exists over standard integers:
+[`ThirteenCarrierComplete.lean`](../../Lean/DiophantineConsistency/ThirteenCarrierComplete.lean)
+(SHA-256 `5f971560bae4ca88ba157fcb8a398e6f3f0bf418cd70491051c69bb8bf278fc0`),
+`positive_zero_completes`, uses `PortBounds`, a native mask `Interface` and
+`MC % 4 = 2`. It preserves the outer coordinates and replaces the four private
+ones with fresh positive Pell witnesses. This is an integer theorem; it does not
+by itself supply witnesses in an arbitrary nonstandard model.
+
+To obtain the missing all-model direction without circularity:
+
+1. Translate the stated parent-zero consequences, including the rank's
+   required residue class, canonical Pell ordinate, positive transport `G`
+   and beta-times-J divisibility, to the chosen model and exactly the same
+   port tuple. Establish each mask and port premise from its native
+   specification rather than assuming the desired equation equivalence.
+2. Construct, inside each such model, the fresh strong Pell seed with the
+   ordinate divisible by the required `b*c²`; establish its positivity,
+   required congruences and the positive quotient witnesses `f,i,T,m`. The
+   existing standard-integer `ThirteenFreshSeed.fresh_private_seed` shows the
+   intended result but is not an internal theorem. Assess the newer
+   `ArithmeticPellPigeonhole` source as an ingredient only after rebuilding
+   its complete dependencies coherently.
+3. Bind the resulting 13-coordinate `value69` to the **entire** pinned 69-row
+   expression and the original 14-coordinate evaluator to the precise native
+   carrier, including conversion of positive integer variables to whatever
+   nonnegative-variable equation is ultimately displayed. Prove both model
+   implications with the same full port tuple. No single scalar bound or
+   matching beta alone establishes equality of four whole constants.
+4. Prove the phase-split2471 tuple's native checker/calibration and link its
+   interpreted refutation predicate to the particular consistency statement;
+   a theorem for another 2011 or compact44 tuple does not supply this link.
+   Only then apply the repository's independently justified all-model to
+   internal-provability bridge with its exact theory and axiom assumptions.
+
+The completed 70-source difference-ring pair and its independent audit
+([receipt](../../reviews/ordinary12-coexistence-pair-independent-audit/CHECK.json))
+provide useful prior evidence, but the newly merged restoration and odd-residue
+modules are outside that frozen closure. Any replay of them needs an
+out-of-tree, authenticated source snapshot of their full transitive import
+closure and a coherent rebuild or separately audited ancestry; never splice
+fresh model sources into incompatible historical project objects. The source
+survey here neither proves that closure compiled nor asserts fixed-port
+calibration, fresh-seed completeness in models, or an iPRA endpoint.
