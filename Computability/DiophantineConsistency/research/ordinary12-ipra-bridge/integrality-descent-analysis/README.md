@@ -55,6 +55,12 @@ choice of an external standard integer is required. Showing that the
 cubic signed-coefficient identity is usable with the model's four-natural
 coefficient representation is still a Lean obligation.
 
+An exploratory [universal ring lemma](../square-divisor-witness/README.md)
+now supplies an explicit polynomial witness for this divisibility from the
+cleared norm and a supplied Bézout certificate. Its bounded compilation
+does not yet supply the model-pair representation, natural sign of the
+witness, gcd certificates, descent, or the internal iPRA derivation.
+
 ## Descent and the induction predicate
 
 From `(2)` we have `v>0` and `a>0`. If `v=1`, cancellation of `q-1>0`
