@@ -1,0 +1,81 @@
+/tmp/compact44-fractional-digits-01/RotationStraddling.lean:41:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  P * A
+in the target expression
+  H < A * P
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X L e k a t : V
+ha : a < 67
+he : e = 67 * k + a
+hL : L = e + (67 - a + t)
+hX : X < Exp.exp L
+P : V := ⋯
+A : V := ⋯
+B : V := ⋯
+H : V := ⋯
+Q : V := ⋯
+hcut : L - e = 67 - a + t
+hfull : Exp.exp 67 = A * B
+hp : Exp.exp e = P * A
+hhigh : H < Exp.exp e
+⊢ H < A * P
+/tmp/compact44-fractional-digits-01/RotationStraddling.lean:61:4: error: Tactic `rfl` failed: The left-hand side
+  X * Exp.exp a + X / Exp.exp (L - e + 67 * k)
+is not definitionally equal to the right-hand side
+  X * Exp.exp a + X / Exp.exp (L - e + 67 * k) % Exp.exp a
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X L e k a t : V
+ha : a < 67
+he : e = 67 * k + a
+hL : L = e + (67 - a + t)
+hX : X < Exp.exp L
+P : V := Exp.exp (67 * k)
+A : V := Exp.exp a
+B : V := Exp.exp (67 - a)
+H : V := X / Exp.exp (L - e)
+Q : V := X % Exp.exp (L - e)
+hcut : L - e = 67 - a + t
+hfull : Exp.exp 67 = A * B
+hp : Exp.exp e = P * A
+hhigh : H < Exp.exp e
+hlow : H / P < A
+hdiv : (Q * Exp.exp e + H) / P = Q * A + H / P
+hcutexp : Exp.exp (L - e) = B * Exp.exp t
+hmod : Q % B = X % B
+hHdiv : H / P = X / Exp.exp (L - e + 67 * k)
+⊢ X * Exp.exp a + X / Exp.exp (L - e + 67 * k) = X * Exp.exp a + X / Exp.exp (L - e + 67 * k) % Exp.exp a
+/tmp/compact44-fractional-digits-01/RotationStraddling.lean:62:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  X / Exp.exp (L - e + 67 * k)
+in the target expression
+  X < B
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X L e k a t : V
+ha : a < 67
+he : e = 67 * k + a
+hL : L = e + (67 - a + t)
+hX : X < Exp.exp L
+P : V := Exp.exp (67 * k)
+A : V := Exp.exp a
+B : V := Exp.exp (67 - a)
+H : V := X / Exp.exp (L - e)
+Q : V := X % Exp.exp (L - e)
+hcut : L - e = 67 - a + t
+hfull : Exp.exp 67 = A * B
+hp : Exp.exp e = P * A
+hhigh : H < Exp.exp e
+hlow : H / P < A
+hdiv : (Q * Exp.exp e + H) / P = Q * A + H / P
+hcutexp : Exp.exp (L - e) = B * Exp.exp t
+hmod : Q % B = X % B
+hHdiv : H / P = X / Exp.exp (L - e + 67 * k)
+⊢ X < B
+'RotationStraddling.mod_low_high' depends on axioms: [propext, Classical.choice, Quot.sound]
+'RotationStraddling.straddling' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
