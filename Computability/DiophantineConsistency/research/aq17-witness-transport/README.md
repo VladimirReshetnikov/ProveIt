@@ -51,7 +51,7 @@ AQ17 additions to Git commit `1eae3a0a882e8bba1ee0fecc6461dd1f0602d06d`,
 including exact declared imports and diagnostic names. It produces
 `author-additions.json`, whose SHA-256 is
 `96cd989a4abaf88c0c181e14a72946b3af1b58f4efc485a63ff1687c56918378`.
-The guarded runner's source policy accepted all 44 rows. A single-overlay
-author run over the audited AQ29 parent has been launched; no result is
-claimed by this static manifest. Its actual terminal exit and artifacts must
-be inspected before a guarded-pass claim.
+The guarded runner's source policy accepted all 44 rows. The subsequent
+[single-overlay author run](../../reviews/ipra-aq17-guarded-author/README.md)
+exited 0 and passed an [independent artifact audit](../../reviews/ipra-aq17-guarded-author-independent-audit/README.md).
+It remains a historical author-only result; a matched peer replay is pending.

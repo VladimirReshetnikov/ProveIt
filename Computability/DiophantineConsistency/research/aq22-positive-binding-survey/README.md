@@ -7,7 +7,8 @@ simultaneously eliminating five explicit binding variables. This is a finite
 algebraic candidate and an ordinary integer witness argument. A
 [guarded historical Lean author run](../../reviews/ipra-aq17-guarded-author/README.md)
 compiled its transport and native and standard iPRA endpoints in one fresh
-overlay. An independent artifact audit and a paired replay remain pending.
+overlay. Its [independent artifact audit](../../reviews/ipra-aq17-guarded-author-independent-audit/README.md)
+passed; a paired replay remains pending.
 It has not been
 identified with the equation in the project's current PDF. A separate
 [base-10 candidate display](equation32-17.pdf) names all 17 positive unknowns
