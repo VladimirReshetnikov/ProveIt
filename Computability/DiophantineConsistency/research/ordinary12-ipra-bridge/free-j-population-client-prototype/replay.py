@@ -48,7 +48,7 @@ def main():
  for source in SOURCES:
   dst=frozen/'DiophantineConsistency'/source.name;shutil.copyfile(source,dst)
   if H(dst)!=PINS[source]:raise ValueError(('client freeze drift',source.name))
-  imports=[v for line in source.read_text().splitlines() if line.startswith('import ') for v in line[7:].split()]
+  imports=[v for line in dst.read_text().splitlines() if line.startswith('import ') for v in line[7:].split()]
   rows.append(('DiophantineConsistency.'+source.stem,dst,PINS[source],imports,1))
  runs=[]
  for label in ('author','peer'):
