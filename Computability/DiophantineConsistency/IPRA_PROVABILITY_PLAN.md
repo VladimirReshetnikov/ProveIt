@@ -458,11 +458,11 @@ found that a simulated frozen-directory replacement could redirect later
 copies before detection. The actual audited source hashes and paired artifacts
 are not thereby shown wrong; the original wrapper did not prevent that
 intervening write. The retained-tuple binding and model decoder remain open.
-A [selector-digit client](research/ordinary12-ipra-bridge/compact44-selector-graph-prototype/README.md)
-has compiled in a single-side exploration. For the same symbolic graph witnesses
-it derives Boolean selector digits and a zero forbidden digit at the stated
-positive, bounded model positions; the origin is handled separately. Its
-paired replay, retained-port and full cyclic-word interpretation remain open.
+A [selector-digit client](reviews/compact44-selector-graph-independent-audit/README.md)
+has passed a paired replay and independent artifact audit. For the same symbolic
+graph witnesses it derives Boolean selector digits and a zero forbidden digit
+at the stated positive, bounded model positions; the origin is handled
+separately. Retained-port and full cyclic-word interpretation remain open.
 A [selector-period client](research/ordinary12-ipra-bridge/compact44-selector-period-prototype/README.md)
 has compiled in a single-side exploratory run. It derives the selector digit
 bound throughout each model period and handles the origin separately; the
