@@ -1,0 +1,116 @@
+{
+  "aq17_author_state_sha256": "0ac4cf0425d3a405fdd6bdf5450d6a7602fb8a15479f26547ec68f739c09b3f7",
+  "candidate_sha256": "a7d6f8a618a810b37eb7a9de6bd92ceb73bd6351971fdd39045bf95f8bf9edac",
+  "extension_root": "/tmp/aq16-develop",
+  "failures": [
+    {
+      "observed_exit_codes": [
+        1,
+        1
+      ],
+      "reason": "Addition ordering in abstract arithmetic model differed from the proposed simplification; the final proof uses the actual addition orientation.",
+      "stage": "positive lemma attempts 1 and 2",
+      "tool_sessions": [
+        36693,
+        16980
+      ]
+    },
+    {
+      "observed_exit_codes": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "reason": "The initially proposed omega and conversion rewrites did not normalize subtraction consistently between the model and signed-pair expressions. The final proof unfolds and normalizes both sides before applying cancellation.",
+      "stage": "transport attempts and diagnostic trace",
+      "tool_sessions": [
+        86729,
+        93891,
+        41624,
+        32883,
+        45746
+      ]
+    }
+  ],
+  "lean_path": "/tmp/aq16-develop/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+  "lean_sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550",
+  "literal_binding_check": {
+    "observed_exit_code": 0,
+    "optimized_OO_observed_exit_code": 1,
+    "optimized_error": "RuntimeError: assertions required",
+    "stdout": "PASS_AQ16_LITERAL_BINDING 16 variables 4 ports 96 gates 4 mutations"
+  },
+  "logs_sha256": {
+    "transport-fifth.log": "3a4d3eb52cc69aae587285a33a3d293ca1a8591f8a3905457aee0c4cfd25752f",
+    "transport-first.log": "7b212eb0ba3d8408dccd7cbeeeb769a39d844fd0880a7a184867cd422848d85b",
+    "transport-fourth.log": "53df1e6c911138a918404fc7bf2531ce72da167b98b4427b434f262c5005a3c2",
+    "transport-second.log.gz": "97ad1bd88622de2d478cae3dc4366a9bd349b68b56ff1faaa428de3e248b933a",
+    "transport-third.log": "237dedd1887665c9ded55f420892875199be645254997bce8ccf2865461e44d9",
+    "transport-trace.log": "4ee360de748067c6dd3f6bf81b1dd1b990afdc29ece148ac267197b620e09642"
+  },
+  "model_warning": "Lean warned that exponent 2011 exceeds automatic exponentiation threshold 256; the proof used an inequality and did not evaluate the huge power.",
+  "package_provider": "/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+  "parent_overlay": "/tmp/ipra-aq17-complete-guarded-author-20261101/lib",
+  "rows": [
+    {
+      "module": "AdaptiveAQ16Literal",
+      "object_sha256": "9716e088aab408711a97b97a962df796c8c09c0fd8ca16451f7204c0d7b2eaea",
+      "observed_exit_code": 0,
+      "source_sha256": "4df27ca1c17adf5af277258d4506d98df10d381f5a39ff0bff49dd9877fba9cd",
+      "tool_session": 71563
+    },
+    {
+      "module": "AdaptiveAQ16Zeros",
+      "object_sha256": "48ce4705c50dfe41bd579ced2ad2ce94aa71b0fad261c96e1a56112142b7a0a1",
+      "observed_exit_code": 0,
+      "source_sha256": "8c7589e199c5e7e7c99e86b3fb0b9c4886727680f7358e008d062e4787c664de",
+      "tool_session": 63196
+    },
+    {
+      "module": "AdaptiveAQ16Positive",
+      "object_sha256": "d4ed042d3df0d15746d70363fd84005116672169addaf7fae632f29119d39c72",
+      "observed_exit_code": 0,
+      "source_sha256": "ad3540b4b5d7e9fd01613c8c980ac571ed71200942b16ed436436e66622296d6",
+      "tool_session": 92400
+    },
+    {
+      "module": "AdaptiveAQ16Maps",
+      "object_sha256": "2e6c837965f29968dbcf92597a3c1596a8481353c4262ee92e699e77b010efde",
+      "observed_exit_code": 0,
+      "source_sha256": "3ac650be298331265d09c74efda68d20b4b958fce6c3801f069e00c6638ce139",
+      "tool_session": 19251
+    },
+    {
+      "module": "AdaptiveAQ16Transport",
+      "object_sha256": "9022c271ab3e7ac873c89bc58e5b60ec49f346eaa7006f6985024834ae4ebc02",
+      "observed_exit_code": 0,
+      "source_sha256": "ee97a87f2a3f741e595a0e024a0bb4bc48aa1b9ab27b4a636c7757993961a8dd",
+      "tool_session": 98827
+    },
+    {
+      "module": "AdaptiveAQ16",
+      "object_sha256": "f5a01fa5f748c6eeae4f214d162b64e26bab0731ccd1f19ddd28232d6ad8952a",
+      "observed_exit_code": 0,
+      "source_sha256": "a978dca6139f5f5974ee0517539f4dc78906efa0c4b0fd3bf346c5fafd3f84d7",
+      "tool_session": 38115
+    },
+    {
+      "module": "IPRAAQ16Native",
+      "object_sha256": "ba497e12c7202d9ab9c0c1d29e734a58495bfe57500f8cf299be690bc9bd3770",
+      "observed_exit_code": 0,
+      "source_sha256": "bb406ec9d598738c284fdb6a585c93e219755d789279b3f34bf1b1bb452d24fd",
+      "tool_session": 86972
+    },
+    {
+      "module": "IPRAStandardAQ16",
+      "object_sha256": "f5541abb9bcf7c32c4b6c6ee890972101f48a36701f95cb5bc0023f5f6def21d",
+      "observed_exit_code": 0,
+      "source_sha256": "bae18686ab3072d7379df45bea506d246d6e8f7862fe4fcd675b7c62d0ceb8ad",
+      "tool_session": 68353
+    }
+  ],
+  "scope": "Exploratory development only, no pre/post guard or independent Lean replay. A fresh file-symlink overlay points to the single guarded AQ17 author overlay plus the same historical package provider. No unrelated project objects combined.",
+  "transport_second_uncompressed_sha256": "a9dba5f5a9dd619fb71e349daa989bc8c7f1b02ef1e6c4b5debe2abce8dddaf9"
+}
