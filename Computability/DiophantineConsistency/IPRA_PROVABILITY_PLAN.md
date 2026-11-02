@@ -665,8 +665,11 @@ remainders `1` through `64` under the symbolic graph hypotheses. Remainders
 `0`, `65` and `66` remain open in that result. A separate author-side
 [remainder-65 client](research/ordinary12-ipra-bridge/compact44-fractional-sixty-five-prototype/README.md)
 excludes `65` using model cyclic phase separation and the exceptional-digit
-bound. Remainders `0` and `66` remain; neither result asserts a graph solution
-or contradiction.
+bound. A subsequent author-side [uniform alignment client](research/ordinary12-ipra-bridge/compact44-fixed-graph-aligned-shift-prototype/README.md)
+handles every positive remainder and proves that the graph's temporal exponent
+is divisible by `67`. It remains conditional on symbolic graph zero and
+positive coordinates, has not had a paired replay, and does not identify the
+aligned shift with a valid machine offset or prove the iPRA endpoint.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
