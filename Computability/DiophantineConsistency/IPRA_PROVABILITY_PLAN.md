@@ -720,6 +720,11 @@ compiled all 96 modules and the original-name table module; a separate
 source-assembly audit](reviews/compact44-wang-chunk-author-artifact-independent-audit/README.md)
 passed, with exploratory seed/provider and inventory-binary qualifications;
 this is not a paired or fully authenticated build.
+A [22-module marked suffix plan](reviews/compact44-marked-suffix-source-independent-review/README.md)
+has passed a source and direct-provider review over that author-side table
+provider. Its graph-halt client remains uncompiled; its intended conclusion is
+a halt at a model-internal time below `N`, not an external halt or an iPRA
+proof. The review records the prior-scan pinning and inherited-ancestry limits.
 A separate [converse construction plan](research/ordinary12-ipra-bridge/compact44-converse-construction-plan/README.md)
 identifies the compact44-specific packing, calibration and witness assembly
 still needed for the halt-to-graph direction; the differently parameterized
