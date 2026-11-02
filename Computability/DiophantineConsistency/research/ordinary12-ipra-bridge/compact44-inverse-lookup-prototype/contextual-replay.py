@@ -79,6 +79,17 @@ def checkguards(guards):
             if os.path.lexists(p):raise ValueError(('unexpected companion',k))
         elif not p.is_file() or str(p.resolve())!=v['realpath'] or digest(p)!=v['sha256']:
             raise ValueError(('companion drift',k))
+def output_guards(obj, *, before):
+    stem = str(obj)[:-len('.olean')]
+    observed = guard(stem)
+    for suffix in SUFFIXES:
+        value = observed[stem + suffix]
+        if suffix == '.olean' and not before:
+            if value is None or obj.is_symlink():raise ValueError(('missing or symlink output',str(obj)))
+        elif value is not None:
+            raise ValueError(('unexpected output companion',stem + suffix))
+    return observed
+
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);ap.add_argument('--historical-view',type=Path,required=True);ap.add_argument('--expected-head',required=True);args=ap.parse_args();out=args.output.absolute()
     if out.parent.resolve(strict=True)!=Path('/tmp').resolve() or not out.name.startswith('ipra-compact-inverse-contextual-pair-'):raise ValueError('invalid output')
@@ -106,7 +117,7 @@ def main():
         guards={}
         for item in expected:guards.update(guard(item[:-6]))
         checkguards(guards);obj=lib/'DiophantineConsistency/CompactInverseInventory.olean';log=run/'CompactInverseInventory.log'
-        if os.path.lexists(obj):raise ValueError(('object collision',side))
+        output_guards(obj,before=True)
         cmd=[str(LEAN),'-M4000','-j1','-DElab.async=false',f'--root={srcroot}',str(src),'-o',str(obj)]
         code,peak,reason=monitor.monitored(cmd,env,log,timeout=600);output=log.read_text()
         reports=re.findall(r"^'([^']+)' depends on axioms: \[([^\]]*)\]$",output,re.M)
@@ -114,6 +125,7 @@ def main():
         rows.append(row);(out/'progress.json').write_text(json.dumps(rows,indent=2)+'\n')
         if code or reason or not obj.is_file() or obj.is_symlink() or re.search(r'(?m)^.*(?:error:|warning:)|\bsorryAx\b|\bsorry\b',output):raise ValueError(('compiler failure',side,code,reason,output[-12000:]))
         if [n for n,_ in reports]!=NAMES or any({x.strip() for x in ax.split(',') if x.strip()}!={'propext','Classical.choice','Quot.sound'} for _,ax in reports):raise ValueError(('axiom report mismatch',side,reports))
+        guards.update(output_guards(obj,before=False))
         pins();checkguards(guards)
         if head()!=args.expected_head:raise ValueError('HEAD drift')
         check_frozen(src,HERE/'CompactInverseInventory.lean')

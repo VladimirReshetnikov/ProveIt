@@ -92,6 +92,17 @@ def checkguards(guards):
             if os.path.lexists(p):raise ValueError(('unexpected companion',k))
         elif not p.is_file() or str(p.resolve())!=v['realpath'] or digest(p)!=v['sha256']:
             raise ValueError(('companion drift',k))
+def output_guards(obj, *, before):
+    stem = str(obj)[:-len('.olean')]
+    observed = guard(stem)
+    for suffix in SUFFIXES:
+        value = observed[stem + suffix]
+        if suffix == '.olean' and not before:
+            if value is None or obj.is_symlink():raise ValueError(('missing or symlink output',str(obj)))
+        elif value is not None:
+            raise ValueError(('unexpected output companion',stem + suffix))
+    return observed
+
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);ap.add_argument('--historical-view',type=Path,required=True);ap.add_argument('--expected-head',required=True);args=ap.parse_args();out=args.output.absolute()
     if out.parent.resolve(strict=True)!=Path('/tmp').resolve() or not out.name.startswith('ipra-compact-noextra-contextual-pair-'):raise ValueError('invalid output')
@@ -124,7 +135,7 @@ def main():
             guards={}
             for item in expected:guards.update(guard(item[:-6]))
             checkguards(guards);obj=lib/'DiophantineConsistency'/(name+'.olean');log=run/(name+'.log')
-            if os.path.lexists(obj):raise ValueError(('object collision',side,name))
+            output_guards(obj,before=True)
             cmd=[str(LEAN),'-M4000','-j1','-DElab.async=false',f'--root={srcroot}',str(src),'-o',str(obj)]
             code,peak,reason=monitor.monitored(cmd,env,log,timeout=600);output=log.read_text()
             pattern=r"^'([^']+)' (?:depends on axioms: \[([^\]]*)\]|does not depend on any axioms)$"
@@ -134,6 +145,7 @@ def main():
             if code or reason or not obj.is_file() or obj.is_symlink() or re.search(r'(?m)^.*(?:error:|warning:)|\bsorryAx\b|\bsorry\b',output):raise ValueError(('compiler failure',side,name,code,reason,output[-12000:]))
             expectedreports=REPORTS[name]
             if [n for n,_ in reports]!=[n for n,_ in expectedreports] or any({x.strip() for x in ax.split(',') if x.strip()}!=wanted for (_,ax),(_,wanted) in zip(reports,expectedreports)):raise ValueError(('axiom report mismatch',side,name,reports))
+            guards.update(output_guards(obj,before=False))
             pins();checkguards(guards)
             if head()!=args.expected_head:raise ValueError('HEAD drift')
             for frozen_name,frozen_original in sources.items():check_frozen(srcdir/(frozen_name+'.lean'),frozen_original)
