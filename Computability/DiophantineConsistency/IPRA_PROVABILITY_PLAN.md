@@ -253,7 +253,8 @@ passed an independent artifact audit. A later historical pair matched all
 The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
 has a separately audited finite positivity and substitution argument. Its Lean
 transport and iPRA clients compiled in a guarded historical author run and
-passed an independent artifact audit; a paired replay remains pending.
+passed an independent artifact audit. A later [historical pair](reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
+matched all 52 additions; independent complete-result audit is pending.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)

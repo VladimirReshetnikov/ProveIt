@@ -121,7 +121,8 @@ independent complete-result audit.
 The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
 has independently checked finite algebra and positivity under the actual fixed
 parameter, and a guarded historical author run of the full transport and iPRA
-chain with an independent artifact audit. A paired replay remains pending.
+chain with an independent artifact audit. A later [historical pair](reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
+matched all 52 additions; independent complete-result audit is pending.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

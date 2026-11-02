@@ -7,7 +7,9 @@ port satisfies **beta ≥ 2**. The resulting sum of seven squares has 16 distinc
 positive integer variables, 96 binary arithmetic rows, and exact degree 32
 after specializing the four recorded fixed ports. A [guarded historical Lean author run](../../reviews/ipra-aq16-guarded-author/README.md)
 compiled the full 52-module chain, including transport and native and standard
-iPRA clients. Independent artifact audit and paired replay remain pending; no
+iPRA clients and passed an independent author-artifact audit. A subsequent
+[historical pair](../../reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
+matched all 52 additions; independent complete-result audit is pending. No
 formal PDF binding or global minimality is claimed.
 
 The maintained [14-variable degree-30 equation](../../equation30-direct.pdf)
@@ -19,7 +21,7 @@ tracked separately from the other equation's.
 The [base-10 candidate display](equation32-16.pdf) lists all 16 positive
 unknowns and its complete 96-operation circuit. An [independent audit](../../reviews/equation32-16-independent-audit/README.md)
 checked the preceding PDF; a [separate review](../../reviews/equation32-16-wording-independent-audit/README.md)
-passed for the present status-wording refresh.
+passed for its exploratory-run wording. The newer paired-run wording awaits review.
 The fixed decoder and rank recipe
 retain the project's documented manual-transcription boundary.
 
