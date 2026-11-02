@@ -494,8 +494,12 @@ of the residual term, or supplies the full graph-column, machine or iPRA
 equivalence.
 An [external symbolic-K byte check](research/ordinary12-ipra-bridge/compact44-symbolic-k-external-byte-check/README.md)
 reconstructs the parameterized kernel from the pinned finite data and matches
-all retained original K bytes. It is an external transcription and exact byte
-comparison, not a Lean equality theorem or a binding of the displayed tuple.
+all retained original K bytes; a separate [external review](reviews/compact44-symbolic-k-byte-independent-review/README.md)
+matches them by an independent Horner reconstruction. An author-side [finite
+kernel certificate](research/ordinary12-ipra-bridge/compact44-k-finite-certificate-prototype/README.md)
+also proves constituent position-separation and coefficient bounds in Lean.
+Neither result is a Lean serialization equality or a binding of the displayed
+tuple.
 Two further single-side explorations give alternative bounded representations
 of that residual. The [bit-rotation client](research/ordinary12-ipra-bridge/compact44-bit-rotation-prototype/README.md)
 represents multiplication by an arbitrary power of two modulo the word modulus
