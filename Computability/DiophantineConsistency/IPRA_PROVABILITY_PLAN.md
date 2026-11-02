@@ -513,6 +513,12 @@ heterogeneous carry input for finitely many aligned rotations and one bounded
 temporal word, assuming the weighted congruence, output bound and mass
 inequality. Connecting the concrete graph bands to this family and proving
 those assumptions and a clean predecessor remain open.
+A separate [model stencil-slack client](research/ordinary12-ipra-bridge/compact44-model-stencil-slack-prototype/README.md)
+checks that carry bound `1` satisfies the required mass inequality whenever
+the aligned family's coefficient sum is at most the stated finite stencil
+mass; it also checks the corresponding strict half-radix slack. This is an
+author-side exploration: the concrete family-sum premise and clean
+predecessor are not supplied by the lemma.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
