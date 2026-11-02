@@ -1,0 +1,7 @@
+# Graph-derived symbolic radix source closure: preliminary
+
+This point-in-time source/import inventory observes 140 matching inherited objects per side on the independently audited fixed-graph provider. It finds three additional sources in topological order: `FreeJPowerCancel`, `FreeJRadixAlignment`, and the single-side exploratory `CompactGraphDerivedRadix` client. Each selected name has exactly one current candidate. The scanner pins all three source hashes and checks the first two bytes against the source commits recorded in their prior independent audit receipts; those historical providers are not mixed into the new overlay.
+
+The scan pins the current parent and prior audit receipt hashes, compares both inherited object inventories and hashes, and rejects a missing project import rather than falling back to the package. The normal scan exited 0; optimized Python exited 1. It does not rerun the audits, simultaneously freeze inputs, compile Lean or provide a paired theorem. A reviewed launcher, coherent source-frozen pair and independent artifact audit remain necessary; package/dynamic ancestry is not fully audited here.
+
+The fixed-symbolic client assumes graph zero and positivity of all twelve variables, with symbolic beta/masks and arbitrary explicit natural K. It derives a positive internal radix block count, the radix and repunit equations and stated digit bounds. It does not identify the symbolic tuple with retained beta, mask or K bytes/decimal literals, prove machine semantics or a checker, or establish a PRA result.
