@@ -48,11 +48,11 @@ and 18 subtractions, counting each binary gate once and fixed numerals as
 free leaves. The restored supplement's own different exact-cut checker agrees.
 Neither this check nor the supplement independently proves exact degree 70:
 the supplement transports it from the parent, while its direct syntactic
-degree bound is 82. The pinned parent reports an upper bound of 70 and a
-nonzero leading coefficient; those inherited arguments are not independently
-verified in this note. The reported ordinary equivalence is likewise inherited
-from the parent arithmetic and its native/compiler calibration, not proved by
-this finite graph identity.
+degree bound is 82. A subsequent [independent audit](../../reviews/manuscript115-reconstruction-independent-audit/README.md)
+established exact degree 70 using structural cancellations for the upper
+bound and a nonzero diagonal coefficient computed from the exact fixed ports.
+The reported ordinary equivalence remains inherited from the parent arithmetic
+and its native/compiler calibration, not proved by this finite graph identity.
 
 The parent free-J proof changes a constrained witness to an arbitrary positive
 `J`; it is an ordinary two-direction arithmetic argument, not pointwise
@@ -87,5 +87,5 @@ python3 -B Computability/DiophantineConsistency/research/manuscript115-reconstru
 python3 -B -O Computability/DiophantineConsistency/research/manuscript115-reconstruction/check.py
 ```
 
-These checks provide finite evidence for the literal graph and payload
-reconstruction, not an independent proof of the mathematical dependencies.
+These reconstruction checks provide finite evidence for the literal graph and
+payloads; they do not prove the remaining ordinary-equivalence dependencies.
