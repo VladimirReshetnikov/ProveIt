@@ -28,7 +28,10 @@ repository's formal-difference pairs. One concrete route is:
    `M=q³(q−1)` and `U=q²Y` are even. Independently prove
    `bn=2(1−Q)(n+V)` even. The six compiled finite `ZMod 4` lemmas cover
    the corresponding residue exclusions only; lift them through the signed
-   pair residue map, including the exact associativity of `d·bn²·Q`.
+   pair residue map, including the exact associativity of `d·bn²·Q`. The
+   [bounded model prototype](model-prototype/README.md) now proves that the
+   generic signed factor `1+AN²−d(2b)²Q` is not the negative unit. Its
+   substitution into this exact candidate's ordinary merger is still open.
 3. From the three-factor product being one, derive magnitude one for each
    factor, then exclude `−1` and conclude each factor is `+1`. The pinned
    `ArithmeticSignedPairs.magnitude_multiply` and `product5_magnitudes`
@@ -38,6 +41,13 @@ repository's formal-difference pairs. One concrete route is:
    declarations assume an `IΣ₁` model and concern different literals;
    applicability to this exact graph and the desired object theory must be
    proved, not inferred from matching names.
+
+The bounded model prototype now compiles a generic signed-pair version of
+step 3, plus both generic carrier exclusions and the ordinary factor
+exclusion. Their composition uses no carrier exclusion, rank or port
+hypotheses, but still assumes an abstract product-equals-one equation. The
+remaining step is the exact literal-to-abstract-factors identity and its
+model evaluation; the composed theorem is not yet a proof about `P12`.
 
 **Early rank before norm recovery.** With only `A0=A1=0` and the explicit
 positive/port hypotheses, construct internal witnesses for the divisions
