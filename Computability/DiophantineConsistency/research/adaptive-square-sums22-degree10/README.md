@@ -13,10 +13,15 @@ audit](../../reviews/equation10-22-independent-audit/README.md) checked the
 formula, aliases, circuit, reproducible PDF and mutation controls. The fixed
 decoder and rank recipe retains the stated manual-transcription boundary.
 
-The scripts check exact polynomial identities and degree. They are not Lean
-proofs, and neither a Lean witness-transport theorem nor a native iPRA proof
-for this candidate has been completed. In particular, these finite checks do
-not prove the requested equivalence with `Con(ZFC)` in iPRA.
+The scripts check exact polynomial identities and degree; these finite checks
+are separate from the Lean proof. A [guarded historical author run](../../reviews/ipra-aq22-guarded-author/README.md)
+compiled the witness transport and native and standard iPRA endpoints in a
+single overlay, and passed an [independent artifact audit](../../reviews/ipra-aq22-guarded-author-independent-audit/README.md).
+The standard endpoint relates absence of a zero to the Gödel–Gentzen
+translation of the selected embedded Foundation ZFC consistency sentence. A
+paired replay remains pending. This run inherits its parent provider's
+documented provenance limitations and does not itself formally identify the
+PDF with the Lean term.
 
 An [independent audit](../../reviews/aq22-degree10-independent-audit/README.md)
 reconstructed the graph and residual identities, confirmed the degree and
@@ -51,8 +56,8 @@ since `1 + beta * J >= 1`. For the fourth, the retained residual `g72` is
 zero, so the expression equals `(cSquareVariable * i)^2`, which is positive.
 The reconstructed tuple is therefore positive and makes every parent residual
 zero. Both directions use the fact that an integer sum of squares is zero only
-when each summand is zero. This argument specifies the intended transport but
-has not been formalized in Lean or lifted to an internal iPRA derivation.
+when each summand is zero. The historical author run formalizes this transport
+and lifts it to the specified internal iPRA equivalence.
 
 ## Exact checks
 
