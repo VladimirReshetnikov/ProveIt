@@ -124,6 +124,15 @@ def main():
         assert p.stdout.strip()=='MATCHED_PASS 2 rows' and not p.stderr
         assert all(Path(r['builder_log']).read_text().startswith('BUILDER') for r in s['runs'])
         print('PASS pair, actual exits and logs',flush=True)
+        site=root/'site';site.mkdir();marker=root/'site-marker'
+        (site/'sitecustomize.py').write_text('import os,pathlib\npathlib.Path(os.environ["CANARY_MARK"]).write_text("ran")\n')
+        env=os.environ.copy();env['PYTHONPATH']=str(site);env['CANARY_MARK']=str(marker)
+        control=subprocess.run([sys.executable,'-c','pass'],env=env,capture_output=True,text=True)
+        assert control.returncode==0 and marker.read_text()=='ran';marker.unlink()
+        p,s,t,out=run_case(root,'site_canary',{'PYTHONPATH':str(site),'CANARY_MARK':str(marker)})
+        assert p.returncode==0 and s['status']=='MATCHED_PASS' and not marker.exists()
+        assert t==['builder:author','builder:peer','compare']
+        print('PASS actual full-chain PYTHONPATH sitecustomize canary blocked',flush=True)
         p,s,t,out=run_case(root,'author_fail',{'TOY_FAIL':'author'})
         assert p.returncode==1 and s['status']=='FAILED' and t==['builder:author'] and len(s['runs'])==1
         assert s['runs'][0]['builder_exit']==7 and s['runs'][0]['monitor_exit']==1 and 'comparison' not in s

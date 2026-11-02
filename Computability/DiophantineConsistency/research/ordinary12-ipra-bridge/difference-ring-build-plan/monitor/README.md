@@ -162,3 +162,12 @@ are fake children, not a full project replay. Final script hashes:
 - `test_monitor.py`: `6ef9bb779def89ba1d2705e1e3c0f6a26c641d4fe193f01237eb49aaec178fb5`
 - `test_paired.py`: `f3de7241071deeae8be007f208b9efa58fb27d36cf04b44354f436a6ac3f04e2`
 - `path_guard.py`: `9af0852abe419dee3fa83a57aa8fbdb3584285c8c40a229c9ef041f610375173`
+
+A subsequent actual full-chain canary test, session 73693 exit 0, first
+confirmed a temporary `PYTHONPATH/sitecustomize.py` hook executes in a normal
+Python control, then observed that the isolated coordinator, monitor, fake
+builder and fake comparator completed without executing that hook. The
+updated `test_paired.py` SHA-256 is
+`dec96710caf9d0091ef65adc3aceb0d07f9d0f4ae7145a8904d59c937ed98219`.
+This tests the Python startup chain only, not non-Python environment or
+runtime trust and not a real project rebuild.
