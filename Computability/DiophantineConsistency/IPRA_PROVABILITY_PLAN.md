@@ -266,6 +266,10 @@ also passed bounded replay audit under those assumptions; it does not identify
 the index with the rank. A [separate index-comparison audit](reviews/ordinary12-freej-index-comparison-independent-audit/README.md)
 checks the proved ordering and `2R < c`; the [early-size replay](research/ordinary12-ipra-bridge/free-j-early-size-prototype/README.md)
 passed a [separate audit](reviews/ordinary12-freej-early-size-independent-audit/README.md).
+A subsequent [bounded model replay](research/ordinary12-ipra-bridge/free-j-graph-vbound-prototype/README.md)
+proves the exact graph's signed `V>c>1` under the stated positive-coordinate
+and port bounds. It is a single-author historical overlay, not yet the
+denominator-nonzero theorem or an internal iPRA proof.
 The ordinary tail's polarized residual and denominator-cleared identities have
 also passed a [bounded replay audit](reviews/ordinary12-freej-ordinary-identities-independent-audit/README.md),
 but those identities do not establish denominator divisibility or integrality.

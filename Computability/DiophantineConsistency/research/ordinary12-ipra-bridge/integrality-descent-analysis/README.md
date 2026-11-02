@@ -151,13 +151,14 @@ and `c,n,t` are positive, so the first two are expected by elementary
 inequalities. For the third, one sufficient route is the manuscript's
 early `V>c>1`, which makes `w=n+V>0` without invoking a strong norm. The
 replayed early-size packet proves `c>(a+2)Δ²` and `2R<c`, conditional on
-its graph/port hypotheses. It does **not** already prove the later signed
-binding `V=f²(cT-R)-c` and inequality `V>c>1`. To derive that remaining
-inequality use `f>=2`, `T>=1`, `2R<c`, and positivity of `c`; with the
-positive difference `cT-R`, one has
-`V-c >= 4(c-R)-2c = 2c-4R>0`. Its formal signed substitution and `c>1`
-remain to be proved. Another proof of `w!=0` would also suffice for this
-specific step, but must be shown from graph hypotheses.
+its graph/port hypotheses. A later [bounded model replay](../free-j-graph-vbound-prototype/README.md)
+proves the signed graph binding and `V>c>1` using those assumptions and
+the actual free-J zero. Its theorem explicitly bridges the graph's signed
+subtraction to the natural subtraction used in the early-size result; it
+does not assume the later strong norm. This is a single-author historical
+overlay, not yet an iPRA derivation or a proof of the specific denominator's
+nonzeroness. Another proof of `w!=0` would also suffice for that step, but
+must be shown from graph hypotheses.
 
 After applying the uniform integrality claim, write `Y=D z` and let
 `i₀=w-z`, a **signed** integer. Then `A=D i₀`. From `N=0`,
