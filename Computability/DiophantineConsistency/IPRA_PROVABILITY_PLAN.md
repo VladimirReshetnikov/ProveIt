@@ -469,8 +469,11 @@ derives origin digit 1 and digit bounds at model indices below `8807*N` from
 `N>0`, `C≥1`, and the explicitly assumed no-carry condition; it does not
 derive that condition from the graph. A [paired composition](research/ordinary12-ipra-bridge/compact44-low-population-exact-prototype/README.md)
 also proves the symbolic low-mask population is `589083`, without assuming
-the finite support cardinality; its independent audit and retained-port
-identification remain open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
+the finite support cardinality; its [independent audit](reviews/compact44-low-exact-independent-audit/README.md)
+passed, while retained-port identification remains open. A [single-side high-mask exploration](research/ordinary12-ipra-bridge/compact44-high-population-prototype/README.md)
+proves population `986` for an explicit symbolic digit list and externally
+compares its digits with retained `MF_source−β`; its paired replay, internal
+port equality and mod-8 residue remain open. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
 A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-fractional-clean-column/README.md)
