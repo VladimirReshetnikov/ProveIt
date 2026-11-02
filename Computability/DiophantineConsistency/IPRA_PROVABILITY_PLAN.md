@@ -245,6 +245,14 @@ sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks; its model and native transports
 remain open.
+
+The existing ordinary 12-variable candidate has a [source-pinned internalization
+plan](research/ordinary12-ipra-bridge/PLAN.md) and an isolated modulo-four
+Lean prototype. Its model-level residual split, positive-rank recovery and
+object-theory proof remain open. It uses the compact44 fixed ports, including
+`beta = 2^590069 - 1`, rather than the audited 13-variable equations' 2011
+ports with `beta = 2^94517 - 1`; an explicit port binding and checker
+calibration are separate prerequisites.
 The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
 is a further five-binding AQ22 reduction with independently checked finite
 substitution, positivity and degree calculations. Its Lean transport and
