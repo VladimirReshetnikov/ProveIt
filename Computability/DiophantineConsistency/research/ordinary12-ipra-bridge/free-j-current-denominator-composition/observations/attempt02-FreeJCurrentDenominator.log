@@ -1,0 +1,225 @@
+/tmp/ipra-freej-current-denominator-rebuild-02/author/src/DiophantineConsistency/FreeJCurrentDenominator.lean:24:81: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 12 → V
+⊢ Expr.evalRing (fun i => ι (v i)) (parts p).d *
+      (↑2 * (↑1 - Expr.evalRing (fun i => ι (v i)) (parts p).q) *
+        (Expr.evalRing (fun i => ι (v i)) (parts p).n + Expr.evalRing (fun i => ι (v i)) (parts p).z)) =
+    Expr.evalRing (fun i => ι (v i)) (parts p).d *
+      (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts p).q) *
+        (Expr.evalRing (fun i => ι (v i)) (parts p).n + Expr.evalRing (fun i => ι (v i)) (parts p).z))
+/tmp/ipra-freej-current-denominator-rebuild-02/author/src/DiophantineConsistency/FreeJCurrentDenominator.lean:60:22: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  -0
+in the target expression
+  Expr.evalRing (fun i => ι (v i)) (parts ports).q * Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+              Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+              (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                  Expr.evalRing (fun i => ι (v i)) (parts ports).z))) *
+          (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+            (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+              (Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z))) -
+        (Expr.evalRing (fun i => ι (v i)) (parts ports).q - 1) *
+            ((Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+                (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+                  (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                    (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                      Expr.evalRing (fun i => ι (v i)) (parts ports).z))) -
+              (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+                  ((1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                          (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                            Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+                        (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                          Expr.evalRing (fun i => ι (v i)) (parts ports).z) +
+                      Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+                          Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+                        Expr.evalRing (fun i => ι (v i)) (parts ports).z -
+                    1) +
+                Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+                  (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q))) *
+          ((Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+              (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+                (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                  (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                    Expr.evalRing (fun i => ι (v i)) (parts ports).z))) -
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+                ((1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                        (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                          Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+                      (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                        Expr.evalRing (fun i => ι (v i)) (parts ports).z) +
+                    Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+                        Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+                      Expr.evalRing (fun i => ι (v i)) (parts ports).z -
+                  1) +
+              Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+                (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q))) -
+      Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+          (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z)) *
+        (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+          (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z))) =
+    0
+
+case right
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (literal fun j => ↑(p j)) v
+ports : Fin 4 → ℤ := fun j => ↑(p j)
+hs :
+  have z := pairEval (graphD fun j => ↑(p j)) v;
+  z.1 < z.2
+hD : Expr.evalRing (fun i => ι (v i)) (graphD ports) ≠ 0
+hq :
+  (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+            ((1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                    (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                      Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+                  (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                    Expr.evalRing (fun i => ι (v i)) (parts ports).z) +
+                Expr.evalRing (fun i => ι (v i)) (parts ports).q * Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+                  Expr.evalRing (fun i => ι (v i)) (parts ports).z -
+              1) +
+          Expr.evalRing (fun i => ι (v i)) (parts ports).q * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q)) *
+        (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+            ((1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                    (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                      Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+                  (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                    Expr.evalRing (fun i => ι (v i)) (parts ports).z) +
+                Expr.evalRing (fun i => ι (v i)) (parts ports).q * Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+                  Expr.evalRing (fun i => ι (v i)) (parts ports).z -
+              1) +
+          Expr.evalRing (fun i => ι (v i)) (parts ports).q * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q)) -
+      Expr.evalRing (fun i => ι (v i)) (parts ports).d * Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+          (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z)) *
+        (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+          (Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z)) =
+    0
+hid :
+  Expr.evalRing (fun i => ι (v i)) (parts ports).q * Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+              Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+              (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                  Expr.evalRing (fun i => ι (v i)) (parts ports).z))) *
+          (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+            (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+              (Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z))) -
+        (Expr.evalRing (fun i => ι (v i)) (parts ports).q - 1) *
+            ((Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+                (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+                  (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                    (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                      Expr.evalRing (fun i => ι (v i)) (parts ports).z))) -
+              (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+                  ((1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                          (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                            Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+                        (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                          Expr.evalRing (fun i => ι (v i)) (parts ports).z) +
+                      Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+                          Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+                        Expr.evalRing (fun i => ι (v i)) (parts ports).z -
+                    1) +
+                Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+                  (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q))) *
+          ((Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+              (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+                (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                  (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                    Expr.evalRing (fun i => ι (v i)) (parts ports).z))) -
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+                ((1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+                        (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                          Expr.evalRing (fun i => ι (v i)) (parts ports).z) *
+                      (Expr.evalRing (fun i => ι (v i)) (parts ports).n +
+                        Expr.evalRing (fun i => ι (v i)) (parts ports).z) +
+                    Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+                        Expr.evalRing (fun i => ι (v i)) (parts ports).z *
+                      Expr.evalRing (fun i => ι (v i)) (parts ports).z -
+                  1) +
+              Expr.evalRing (fun i => ι (v i)) (parts ports).q *
+                (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q))) -
+      Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+          (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z)) *
+        (Expr.evalRing (fun i => ι (v i)) (parts ports).d *
+          (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts ports).q) *
+            (Expr.evalRing (fun i => ι (v i)) (parts ports).n + Expr.evalRing (fun i => ι (v i)) (parts ports).z))) =
+    0
+⊢ Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q *
+                Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z *
+              Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z *
+            (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).d *
+              (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q) *
+                (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                  Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z))) *
+          (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).d *
+            (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q) *
+              (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z))) -
+        (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q - 1) *
+            ((Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                  Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z) *
+                (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).d *
+                  (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q) *
+                    (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                      Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z))) -
+              (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).d *
+                  ((1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q) *
+                          (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                            Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z) *
+                        (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                          Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z) +
+                      Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q *
+                          Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z *
+                        Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z -
+                    1) +
+                Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q *
+                  (1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q))) *
+          ((Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z) *
+              (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).d *
+                (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q) *
+                  (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                    Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z))) -
+            (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).d *
+                ((1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q) *
+                        (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                          Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z) *
+                      (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+                        Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z) +
+                    Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q *
+                        Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z *
+                      Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z -
+                  1) +
+              Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q *
+                (1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q))) -
+      Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).d *
+          (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q) *
+            (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+              Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z)) *
+        (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).d *
+          (2 * (1 - Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).q) *
+            (Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).n +
+              Expr.evalRing (fun i => ι (v i)) (parts fun j => ↑(p j)).z))) =
+    0
+'FreeJCurrentDenominator.denominator_shape' depends on axioms: [propext]
+'FreeJCurrentDenominator.denominator_eval' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'FreeJCurrentDenominator.auxiliary_with_nonzero_denominator' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
