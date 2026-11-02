@@ -96,11 +96,21 @@ with (r/'freezer-observation.json').open('x') as f:
 PY
 export AQ26_NEW_SHA256="$(sha256sum "$AQ26_RUN/snapshot/manifest.json" | cut -d' ' -f1)"
 export AQ26_FREEZER_OBS_SHA256="$(sha256sum "$AQ26_RUN/freezer-observation.json" | cut -d' ' -f1)"
-python3 "$AQ26_TOOLS/prepare.py" --parent "$AQ26_PARENT" --old-snapshot "$AQ26_OLD" \
-  --new-snapshot "$AQ26_RUN/snapshot" --old-sha256 "$AQ26_OLD_SHA256" --new-sha256 "$AQ26_NEW_SHA256" \
-  --parent-pair-sha256 "$AQ26_PARENT_PAIR_SHA256" --parent-observation "$AQ26_OBSERVATION" \
-  --parent-observation-sha256 "$AQ26_OBSERVATION_SHA256" --freezer-observation "$AQ26_RUN/freezer-observation.json" \
-  --freezer-observation-sha256 "$AQ26_FREEZER_OBS_SHA256" --output "$AQ26_RUN/prepared"
+# Capture the actual preparer return code and both output streams on failure too.
+python3 - <<'PY_PREPARE'
+import json,os,subprocess,sys
+from pathlib import Path
+e=os.environ;t=Path(e['AQ26_TOOLS']);r=Path(e['AQ26_RUN'])
+cmd=[sys.executable,str(t/'prepare.py'),'--parent',e['AQ26_PARENT'],'--old-snapshot',e['AQ26_OLD'],
+ '--new-snapshot',str(r/'snapshot'),'--old-sha256',e['AQ26_OLD_SHA256'],'--new-sha256',e['AQ26_NEW_SHA256'],
+ '--parent-pair-sha256',e['AQ26_PARENT_PAIR_SHA256'],'--parent-observation',e['AQ26_OBSERVATION'],
+ '--parent-observation-sha256',e['AQ26_OBSERVATION_SHA256'],'--freezer-observation',str(r/'freezer-observation.json'),
+ '--freezer-observation-sha256',e['AQ26_FREEZER_OBS_SHA256'],'--output',str(r/'prepared')]
+p=subprocess.run(cmd,capture_output=True,text=True);print(p.stdout,end='');print(p.stderr,end='',file=sys.stderr)
+with (r/'preparer-process.json').open('x') as f:
+ json.dump({'observed_exit_code':p.returncode,'observed_stdout':p.stdout,'observed_stderr':p.stderr},f,indent=2)
+if p.returncode:sys.exit(p.returncode)
+PY_PREPARE
 # Preparation records both HEADs; require them to agree before starting Lean.
 python3 - <<'PY'
 import json,os
@@ -128,7 +138,7 @@ PY
 
 Afterward, retain and independently inspect the coordinator observation,
 `pair-state.json`, both builder states and logs, snapshot, strict plan, and
-preparation receipt. Require actual outer exit 0, final stdout
+preparation receipt and separately observed preparer exit. Require actual outer exit 0, final stdout
 `MATCHED_SELECTIVE_PASS 30 affected modules`, paired status
 `MATCHED_SELECTIVE_PASS`, sibling exits 0, historical basis, exact 30 additions
 and their 79 diagnostics, and reproducibility of the comparator using

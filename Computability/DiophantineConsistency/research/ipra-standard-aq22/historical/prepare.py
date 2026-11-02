@@ -379,7 +379,14 @@ def run():
     output = args.output.absolute()
     if output.exists() or output.is_symlink():
         raise ValueError('refusing to overwrite output')
-    for prohibited in (parent, old_snap, new_snap, Path(states['author']['package_overlay']).resolve()):
+    protected = [parent, old_snap, new_snap]
+    for label in ('author', 'peer'):
+        state = states[label]
+        provider = Path(state['provider']).resolve(strict=True)
+        protected.extend((Path(state['package_overlay']).resolve(strict=True),
+                          Path(json.loads(provider.read_text())['root']).resolve(strict=True),
+                          Path(state['lean_path']).resolve(strict=True).parent.parent))
+    for prohibited in protected:
         candidate = output.resolve()
         if candidate.is_relative_to(prohibited) or prohibited.is_relative_to(candidate):
             raise ValueError(('output overlaps protected root', str(prohibited)))

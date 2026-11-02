@@ -116,6 +116,17 @@ with tempfile.TemporaryDirectory(prefix='reference-extension-control-') as td:
           '--freezer-observation-sha256',H(freezer_observation)]
     def prep(name):
         path=root/name;run(*args,'--output',path);return path
+    # A rejected preparation must never create artifacts under shared
+    # Foundation or Lean installations, even if those paths are writable.
+    for protected in (provider, LEAN.parent.parent):
+        unsafe=protected/('aq26-unsafe-output-'+root.name)
+        assert not unsafe.exists()
+        try:
+            q=run(*args,'--output',unsafe,ok=False)
+            assert q.returncode and 'output overlaps protected root' in q.stderr,(q.stdout,q.stderr)
+            assert not unsafe.exists()
+        finally:
+            if unsafe.exists():shutil.rmtree(unsafe)
     stale=prep('stale');sidecar=stale/'author/lib/Toy/Extra.olean.private';sidecar.parent.mkdir(parents=True,exist_ok=True);sidecar.write_bytes(b'stale')
     q=run(sys.executable,HERE/'rebuild.py','--prepared',stale,'--preparation-sha256',H(stale/'preparation.json'),
           '--old-snapshot',old,'--new-snapshot',new,'--sibling','author','--expected-axiom-reports','2',ok=False)

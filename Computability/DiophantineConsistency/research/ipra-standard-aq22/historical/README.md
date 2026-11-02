@@ -37,6 +37,10 @@ not establish the real AQ22 or AQ29 results. A manifest-only historical survey
 found 1,209 parent modules and 37 additions; it did not check parent source
 bytes or drift, and it cannot authorize freezing.
 
+The controls also reject preparation paths inside the Foundation provider or
+Lean toolchain before creating any output. The receipt from before this guard
+was added is retained as [historical evidence](control-receipt-before-overlap-fix.json).
+
 The one parent module outside that source closure is the old terminal
 `IPRAAQ29NativeChecks`: the AQ22 additions do not import it. The freezer still
 retains and checks every one of the 1,210 parent sources, and preparation

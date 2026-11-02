@@ -37,6 +37,10 @@ not establish the real AQ26 or AQ29 results. A manifest-only historical survey
 found 1,209 parent modules and 30 additions; it did not check parent source
 bytes or drift, and it cannot authorize freezing.
 
+The controls also reject preparation paths inside the Foundation provider or
+Lean toolchain before creating any output. The receipt from before this guard
+was added is retained as [historical evidence](control-receipt-before-overlap-fix.json).
+
 No real extension has been prepared or run by this workflow. Do not start one
 until the real AQ29 parent pair has completed successfully and its coordinator
 exit and stdout have been observed and recorded. The parent and provider's
