@@ -663,7 +663,10 @@ subsequent author-side [represented orbit-word client](research/ordinary12-ipra-
 constructs a model-definable selected-row function and a radix-1024 word of
 length `N` for the same graph witnesses. A separate [mathematical review](reviews/compact44-represented-orbit-word-mathematical-review/README.md)
 found no gap in the inspected induction, witness matching or word coding; it
-is not a paired replay. Edge matching and machine semantics remain open.
+is not a paired replay. An author-side [field-bit client](research/ordinary12-ipra-bridge/compact44-fixed-graph-field-bits-prototype/README.md)
+derives same-witness source-bit equalities in the horizontal and vertical
+field windows at all applicable model columns. Translating those bits to
+tile-field matching and machine semantics remains open.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
