@@ -602,10 +602,11 @@ positions, including aligned shifts. A subsequent author-side
 [fixed-graph temporal-clean client](research/ordinary12-ipra-bridge/compact44-fixed-temporal-clean-prototype/README.md)
 combines these formulas with the graph's same witnesses and selects target
 `4393` or `5495` where the temporal digit is zero and its cyclic predecessor
-is at most `2^66`. An author-side [fixed-graph clean-carry client](research/ordinary12-ipra-bridge/compact44-fixed-clean-carry-prototype/README.md)
+is at most `2^66`. The [fixed-graph clean-carry client](reviews/compact44-fixed-clean-carry-pair-independent-audit/README.md)
 then proves the incoming carry is zero and the output digit equals the full
 raw indexed column at that target. This is a conditional symbolic-graph
-model result, not yet a paired replay. Identifying the raw column with the
+model result; its 33-module-per-side replay and independent artifact audit
+passed with the recorded provider and authorship qualifications. Identifying the raw column with the
 decoder, binding retained coefficients and the internal iPRA endpoint remain open.
 A later author-side [clean-column band client](research/ordinary12-ipra-bridge/compact44-fixed-clean-bands-prototype/README.md)
 decomposes that raw column into both selector/copy bands and five bare
