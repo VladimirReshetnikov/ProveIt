@@ -616,8 +616,11 @@ it proves their source phases lie outside the symbolic support blocker and
 obtains the selected decoder-shaped band alone. A subsequent author-side
 [selected-input client](research/ordinary12-ipra-bridge/compact44-selected-inputs-prototype/README.md)
 derives Boolean bounds for its selector and copy digits and a `2^41` copy-word
-bound using the same graph witness. Local high-mask `NoCarry`, row semantics,
-retained coefficient binding and the internal iPRA endpoint remain open.
+bound using the same graph witness. A further author-side
+[local high-mask client](research/ordinary12-ipra-bridge/compact44-selected-local-nocarry-prototype/README.md)
+derives the selected band's required `NoCarry` condition from graph high
+saturation. Decoder row semantics, retained coefficient binding and the
+internal iPRA endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
