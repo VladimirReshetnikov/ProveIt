@@ -396,7 +396,8 @@ stopped on a source style warning before reaching the client. A [reviewed retry]
 retained that precise warning, rejected changed or additional warnings, and
 completed matching 11-step builds including the graph client on both sides.
 The client retains the graph, positivity, port-bound, `β≥46` and `q=2^h`
-assumptions; its independent artifact audit is pending. Compact44 checker
+assumptions; its [independent artifact audit](reviews/ordinary12-freej-population-client-independent-audit/README.md)
+passed. Compact44 checker
 calibration and the iPRA endpoint remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
