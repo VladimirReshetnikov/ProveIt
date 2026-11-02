@@ -649,7 +649,12 @@ the raw term still includes both bands, bare terms and temporal contribution.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
-not yet prove row propagation.
+not yet prove row propagation. A later author-side [simplified parity client](research/ordinary12-ipra-bridge/compact44-graph-simple-parity-prototype/README.md)
+uses the model support bounds to eliminate both selector sums and all but one
+bare digit at those phases. In the first period the occupied origin payload
+sets that digit to `1`, so the temporal digit and incoming carry cannot both
+be zero at either column. This is conditional on symbolic graph zero, not a
+contradiction or a row-propagation theorem.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
