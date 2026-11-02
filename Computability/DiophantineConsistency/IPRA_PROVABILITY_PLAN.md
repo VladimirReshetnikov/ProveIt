@@ -316,8 +316,12 @@ its paired replay passed an [independent artifact audit](reviews/ordinary12-redu
 A subsequent [model least-number proof](research/ordinary12-ipra-bridge/reduced-model-induction-prototype/README.md)
 proves `b=1` for the stated positive reduced norm and Bézout certificate;
 its paired replay passed an [independent artifact audit](reviews/ordinary12-reduced-model-induction-independent-audit/README.md).
-Normalizing the graph's signed fraction, connecting it to that reduced state,
-and transporting the resulting argument to iPRA remain open.
+A later [natural normalization theorem](research/ordinary12-ipra-bridge/reduced-model-normalization-prototype/README.md)
+constructs the gcd and certificate and derives denominator divisibility from
+the stated positive natural cleared norm; its paired replay passed an
+[independent artifact audit](reviews/ordinary12-reduced-model-normalization-independent-audit/README.md).
+Lifting this to the graph's signed fraction and transporting the resulting
+argument to iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do

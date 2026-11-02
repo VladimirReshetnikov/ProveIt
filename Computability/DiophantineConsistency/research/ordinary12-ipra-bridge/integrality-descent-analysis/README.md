@@ -206,8 +206,10 @@ any theorem that additionally requires positive `u` or a particular sign of
   A [model least-number proof](../reduced-model-induction-prototype/README.md)
   now proves `b=1` from the stated positive reduced norm and certificate;
   its paired replay passed an [independent artifact audit](../../../reviews/ordinary12-reduced-model-induction-independent-audit/README.md).
-  This does not yet normalize an arbitrary signed fraction, connect it to the
-  graph, or give an object-level iPRA proof.
+  A subsequent [natural normalization theorem](../reduced-model-normalization-prototype/README.md)
+  constructs the gcd and certificate from the positive natural cleared norm;
+  its paired replay passed an [independent artifact audit](../../../reviews/ordinary12-reduced-model-normalization-independent-audit/README.md).
+  The signed lift, graph application and object-level iPRA proof remain open.
 * `FreeJNormZero` proves the generic ring identity and a natural-valued
   signed-pair instance. The general signed graph substitution is open.
 * The early-size and index packets give useful intermediate model results
