@@ -2,9 +2,11 @@
 
 The graph-independent population theorem uses the half-binomial library. The
 free-J `graph_power` theorem is available in the separately audited matched
-provider, but that provider and the 342-module endpoint successor have six
-different object hashes among their shared `.olean` paths. Their arbitrary
-objects must therefore not be combined.
+provider. A preliminary comparison of that free-J overlay with the 342-module
+endpoint successor found two different object hashes among 64 shared `.olean`
+paths; the earlier six-object comparison concerned the separate 24-module
+window overlay. Objects from these providers must not be mixed without a
+coherent rebuild or an audited exact dependency closure.
 
 `scan.py` walks source-declared imports and records current source SHA-256s,
 module order and both free-J provider sides' inherited `.olean` hashes and
