@@ -1,0 +1,5 @@
+# Author-only permutation checks
+
+The explicit horizontal and vertical color arrays have author-only Lean `List.Perm` proofs against `List.range 250` and `List.range 439`, respectively. Their bounded exploratory children exited 0 with no warnings or `sorryAx`; `horizontal.log` and `vertical.log` preserve their reported metatheoretic axioms. These checks used the author-only successor-provider overlay and the `CompactRelabelBase` source from the assembled table-equality packet, not an independently paired replay.
+
+The analogous monolithic row-index `List.Perm` check did **not** finish: wrapper session 93740 actually exited 124 when that child reached the 60-second timeout, after the two color checks exited 0. Its output log was empty. The row-index permutation remains unproved in Lean. A proposed alternative is to check explicit forward and inverse row-index round trips in bounded chunks, then derive bijectivity using the verified ranges; that method and its assembly have not yet been compiled. No arbitrary-model tile simulation or iPRA endpoint follows.
