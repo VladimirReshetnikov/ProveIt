@@ -436,7 +436,11 @@ specific support and retained-MC graph-port equality open. A subsequent
 [concrete support specialization](reviews/compact44-concrete-mask-independent-audit/README.md)
 has also passed independent audit: it checks the bit-exponent recipe and its
 model digit classification. Identifying this symbolic value with the retained
-MC bytes and the graph port remains a separate obligation. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
+MC bytes and the graph port remains a separate obligation. A further
+[coherent symbolic-mask decoder](reviews/compact44-concrete-increment-independent-audit/README.md)
+derives origin digit 1 and digit bounds at model indices below `8807*N` from
+`N>0`, `C≥1`, and the explicitly assumed no-carry condition; it does not
+derive that condition from the graph. The [conditional repeated-mask carry join](reviews/compact44-mask-carry-join-independent-audit/README.md)
 handles the mixed digit caps under explicit hypotheses, but deriving those
 hypotheses from the graph and proving clean temporal alignment remain open.
 A [finite fractional-rotation check](research/ordinary12-ipra-bridge/compact44-fractional-clean-column/README.md)
