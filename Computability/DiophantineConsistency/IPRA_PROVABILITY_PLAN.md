@@ -301,6 +301,14 @@ derives a natural witness for `b² ∣ r` from a supplied reduced norm and
 four-natural Bézout certificate, including the zero case. Its paired suffix
 passed an [independent artifact audit](reviews/ordinary12-model-square-divisor-independent-audit/README.md).
 It does not construct those hypotheses or an internal iPRA derivation.
+A [reduced-model descent step](research/ordinary12-ipra-bridge/reduced-model-descent-prototype/README.md)
+establishes norm preservation, strict bounds and signed Bézout transport;
+its paired suffix passed an [independent artifact audit](reviews/ordinary12-reduced-model-descent-independent-audit/README.md).
+A later [paired measure replay](research/ordinary12-ipra-bridge/reduced-model-nonzero-prototype/README.md)
+constructs a strictly smaller positive model coordinate; its independent
+review remains pending. Combining the new coordinate, transformed numerator
+and norm in one state, proving termination, and transporting the result to
+iPRA remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do

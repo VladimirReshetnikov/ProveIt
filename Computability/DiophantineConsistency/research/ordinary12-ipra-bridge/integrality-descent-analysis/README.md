@@ -194,6 +194,13 @@ any theorem that additionally requires positive `u` or a particular sign of
 * `ordinary-descent-step-prototype/FreeJDescentStep.lean` proves conditional
   algebraic norm preservation and Bézout preservation given a divisor
   witness; its README explicitly excludes denominator recovery and descent.
+* The [reduced model descent step](../reduced-model-descent-prototype/README.md)
+  combines a model square-divisor witness with norm preservation, strict
+  bounds and signed certificate transport; its [independent artifact audit](../../../reviews/ordinary12-reduced-model-descent-independent-audit/README.md)
+  passed. A later [paired measure replay](../reduced-model-nonzero-prototype/README.md)
+  constructs a strictly smaller positive model coordinate. Its independent
+  review and a theorem combining the coordinate, numerator, norm and
+  certificate into one new state remain open.
 * `FreeJNormZero` proves the generic ring identity and a natural-valued
   signed-pair instance. The general signed graph substitution is open.
 * The early-size and index packets give useful intermediate model results
