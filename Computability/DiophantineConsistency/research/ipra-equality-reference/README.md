@@ -231,3 +231,17 @@ proved same-language successor-step versus `n+1` induction comparison does
 not by itself discharge this language or proof-transport work. Applying the
 comparison to the equation also requires checking the translated consistency
 predicate and the positive-shift no-zero formula.
+
+## Coherent root-workspace build (2026-11-01)
+
+The native-to-reference chain above, from `IPRAEqualityOnlyReference` through
+`IPRAReferenceInductionConversion` and `IPRAReferenceConversionChecks`
+(19 modules), built from source with Lake's ordinary trace-checked build in
+the root workspace, at the Lean sources of `9cd427e8da`. This was not the
+mixed-provider environment. `nativeToReference` reports only `propext`,
+`Classical.choice` and `Quot.sound`. The 14-variable client
+[`IPRAReferenceCurrentEndpoint`](../../Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean)
+built on top of it, and its two theorems report the same three axioms. This is
+an author build only; an independent replay packet has not been made. The
+reverse transport and the formula-wise native/erasure comparison remain open,
+as listed in the preceding paragraph.
