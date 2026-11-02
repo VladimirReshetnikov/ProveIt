@@ -10,8 +10,8 @@ given by `candidate.json`, not by the equation in the project's current PDF.
 The [base-10 candidate display](equation10-22.pdf) names all 22 positive
 unknowns and includes the 114-operation circuit. An [independent presentation
 audit](../../reviews/equation10-22-independent-audit/README.md) checked the
-formula, aliases and circuit in an earlier PDF; the current status-wording
-refresh awaits review. The fixed decoder and rank recipe retain the stated
+formula, aliases and circuit in an earlier PDF; a [separate review](../../reviews/equation10-22-paired-wording-independent-audit/README.md)
+passed for the current status-wording refresh. The fixed decoder and rank recipe retain the stated
 manual-transcription boundary.
 
 The scripts check exact polynomial identities and degree; these finite checks

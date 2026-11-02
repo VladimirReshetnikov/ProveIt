@@ -18,7 +18,8 @@ tracked separately from the other equation's.
 
 The [base-10 candidate display](equation32-16.pdf) lists all 16 positive
 unknowns and its complete 96-operation circuit. An [independent audit](../../reviews/equation32-16-independent-audit/README.md)
-checked the preceding PDF; the present status-wording refresh awaits review.
+checked the preceding PDF; a [separate review](../../reviews/equation32-16-wording-independent-audit/README.md)
+passed for the present status-wording refresh.
 The fixed decoder and rank recipe
 retain the project's documented manual-transcription boundary.
 

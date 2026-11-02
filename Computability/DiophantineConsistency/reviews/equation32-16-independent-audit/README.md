@@ -2,8 +2,8 @@
 
 This audit records the earlier PDF with the transport-open disclosure. The
 current display has a later status-wording refresh; its formula, input list,
-fixed constants and circuit are unchanged, and a fresh presentation review is
-pending.
+fixed constants and circuit are unchanged, and a [separate refresh review](../equation32-16-wording-independent-audit/README.md)
+has passed.
 
 The independent checker exited zero. It compared the pinned AQ16 graph with
 all 16 displayed input aliases, the four port aliases, all 96 live numbered

@@ -15,7 +15,8 @@ identified with the equation in the project's current PDF. A separate
 [base-10 candidate display](equation32-17.pdf) names all 17 positive unknowns
 and includes the complete 99-operation circuit. An [independent audit](../../reviews/equation32-17-independent-audit/README.md)
 checked the preceding PDF; a [separate review](../../reviews/equation32-17-wording-independent-audit/README.md)
-passed for its author-run wording. The newer paired-run wording awaits review.
+passed for its author-run wording. A [later review](../../reviews/equation32-17-paired-wording-independent-audit/README.md)
+passed for the paired-run wording.
 Its fixed decoder and rank recipe
 retain the project's documented manual-transcription boundary.
 
