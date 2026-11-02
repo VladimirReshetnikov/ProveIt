@@ -64,7 +64,8 @@ direct-dependency-check exits, the corresponding matching object hashes and
 both parent audits. The [terminal observation](terminal-observation.json)
 records the actual outer exit. Both carrier compiles emit the same three
 `push_neg` deprecation warnings; both assembly compiles have no warnings or
-`sorryAx`. An independent audit of this combined suffix remains pending.
+`sorryAx`. A subsequent [independent artifact audit](../../reviews/thirteen-model-fresh-private-independent-audit/README.md)
+passed for the combined suffix and its two parent branches.
 
 The audited parent branches share the same 70-source project parent. Their
 package-transitive and dynamic ancestry and the original Foundation wrapper's

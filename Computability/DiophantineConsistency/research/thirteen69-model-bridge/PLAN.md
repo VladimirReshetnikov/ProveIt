@@ -49,9 +49,12 @@ To obtain the missing all-model direction without circularity:
    `R mod 4=3`; its paired replay passed an [independent artifact audit](../../reviews/thirteen-model-auxiliary-seed-independent-audit/README.md).
    A separate [audited model residue](../../reviews/thirteen-model-negative-residue-independent-audit/README.md)
    proves the required `y+1` divisibility under the stated phase and base
-   assumptions. Its application to the auxiliary seed and the positive
-   carrier coordinate `m` remain separate obligations. The standard-integer `ThirteenFreshSeed.fresh_private_seed`
-   shows the intended final result but is not an arbitrary-model theorem.
+   assumptions. The conditional [fresh-private model assembly](../thirteen-model-fresh-private/README.md)
+   combines these ingredients and constructs a signed carrier with positive
+   `m` given `G>0` and `b ∣ G`; its paired replay passed an [independent artifact audit](../../reviews/thirteen-model-fresh-private-independent-audit/README.md).
+   Deriving those assumptions from the parent zero remains open. The
+   standard-integer `ThirteenFreshSeed.fresh_private_seed` is not an
+   arbitrary-model theorem.
 3. Bind the resulting 13-coordinate `value69` to the **entire** pinned 69-row
    expression and the original 14-coordinate evaluator to the precise native
    carrier, including conversion of positive integer variables to whatever
