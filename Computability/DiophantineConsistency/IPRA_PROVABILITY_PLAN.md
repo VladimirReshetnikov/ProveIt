@@ -439,6 +439,11 @@ assumptions it derives the bounded output remainder and the weighted modular
 identity used in the proposed [graph-to-decoder route](research/ordinary12-ipra-bridge/compact44-graph-to-decoder-plan/README.md).
 The coefficient interpretation, no-carry transport, decoder and paired
 verification remain open.
+A [fixed-symbolic composition](research/ordinary12-ipra-bridge/free-j-symbolic-congruence-prototype/README.md)
+has also compiled in one exploratory run. It obtains the radix, repunit,
+digit and weighted congruence conclusions using the same witnesses, from a
+positive graph zero at symbolic beta and masks, with arbitrary `K`. Retained
+coefficient binding, decoder semantics and independent replay remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
