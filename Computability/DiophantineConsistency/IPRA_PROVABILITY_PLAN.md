@@ -295,7 +295,10 @@ compact44-labeled ports include `beta = 2^590069 - 1`, unlike the audited
 13-variable 2011 ports with `beta = 2^94517 - 1`. A [finite full-tuple and
 parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
 has been checked; its internal checker calibration remains a separate
-prerequisite. A [manuscript
+prerequisite. The [compact44 calibration survey](research/ordinary12-ipra-bridge/compact44-calibration/README.md)
+identifies parameterized model-level reuse, the hardwired 2011 boundary and
+a proposed selector/copy lemma; it does not prove the compiler or controller.
+A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
 does not identify the ports.

@@ -127,6 +127,12 @@ encoded quantifier-free invariant and decreasing measure, and the exact
 internal Lean proofs of the iteration all remain to be supplied. In
 particular, this alternative does not assume Σ₁ minimization in iPRA.
 
+The more detailed [primitive-recursive design](PRIMITIVE-RECURSIVE-DESIGN.md)
+specifies signed-pair coefficient updates, a candidate open induction
+invariant, an explicit natural divisor witness, and a possible bounded
+Euclidean normalization. These remain proof obligations, not established
+object-theory derivations.
+
 ## Exact free-J graph instantiation
 
 For the ordinary tail set
