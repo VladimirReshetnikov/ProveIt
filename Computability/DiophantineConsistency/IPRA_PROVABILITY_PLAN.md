@@ -375,7 +375,11 @@ parent-graph binding](research/ordinary12-ipra-bridge/port-binding/README.md)
 has been checked; its internal checker calibration remains a separate
 prerequisite. The [compact44 calibration survey](research/ordinary12-ipra-bridge/compact44-calibration/README.md)
 identifies parameterized model-level reuse, the hardwired 2011 boundary and
-a proposed selector/copy lemma; it does not prove the compiler or controller.
+the remaining compiler/controller work. Its local [finite-sum selector/copy
+equivalence](research/ordinary12-ipra-bridge/compact44-decoder-iff-prototype/README.md)
+has passed an [independent artifact audit](reviews/compact44-decoder-iff-independent-audit/README.md)
+under explicit bounds and an external finite index type; it does not bind the
+943-row table or prove the compiler or controller.
 A [manuscript
 reconstruction](research/manuscript115-reconstruction/README.md) records that
 another compact44-labeled tuple differs in its `K` value, so the label alone
