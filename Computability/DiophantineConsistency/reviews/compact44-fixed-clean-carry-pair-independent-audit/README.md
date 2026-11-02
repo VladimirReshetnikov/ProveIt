@@ -1,0 +1,11 @@
+# Fixed clean-carry pair: artifact audit
+
+This verifies the retained evidence from commit `2bc682f80c` for the protected pair at HEAD `4d5474f10e00412135d659dc7a1f74fc6457656a`. The reviewer authored some clients in the inherited dependency chain. This is an independent artifact and source-closure check, not an independent mathematical review of those clients; no Lean was launched during this audit.
+
+The recorded preflight and pair exited 0, with stdout and stderr retained and hashed. The audit checks all 66 source/object/log rows, exact compiler commands and same-side direct dependencies, frozen sources against their source commits, and matching paired outputs. It checks the full 236-object overlay per side, including the inherited 203 objects, and all 1,090 direct/output companion guard slots. Each side has 54 named axiom reports: `CleanGeometry.finite_disjoint` and `CleanTargetPhase.finite_relation` report exactly `propext` and `Quot.sound`; the remaining 52 also report `Classical.choice`. The parent artifact and source-closure audits are rerun without Lean.
+
+The same-side parent and inherited package are still subject to their original provenance qualifications. The nested audits also read the older `/tmp/ipra-compact-clean-carry-pair-01` and `/tmp/compact44-aligned-family-plan/lib` as historical comparison dependencies; neither is the seed for this pair. Guards and memory/disk observations are point-in-time or sampled checks, and do not independently certify all package, transitive or dynamic dependencies.
+
+The theorem applies under positive graph coordinates and literal zero for the fixed symbolic graph with the distinct `paramKernel rho`. It supplies a single graph witness `N, w`, a target `t = 4393` or `t = 5495`, an indexed `b = 1` carry input, zero temporal target digit, predecessor temporal digit at most `Exp.exp 66`, predecessor carry zero, and equality of the output digit with the raw indexed target column. This does not identify that raw column with a local decoder, bind retained coefficients, ports or displayed equation bytes, establish machine correctness, or prove internal iPRA provability.
+
+Run `python3 -I -S -B audit.py` from the repository root. The check requires the retained external `/tmp` providers and audit dependencies to be present with the pinned bytes.
