@@ -590,10 +590,11 @@ An [independently audited finite coefficient-mass calculation](reviews/compact44
 proves the 943-row selector and 41-copy totals in Lean, with the numerical
 half-radix and heterogeneous-carry slack. The connection from those finite
 totals to the graph's model-level word decomposition is not yet proved.
-A [finite coefficient-decomposition client](research/ordinary12-ipra-bridge/compact44-coefficient-decomposition-prototype/README.md)
-has compiled in one exploratory run for arbitrary model-valued selector and
-copy functions. It does not prove that a graph-derived cyclic column has that
-finite decomposition or supply Boolean, copy-bound and no-carry hypotheses.
+A [finite coefficient-decomposition client](reviews/compact44-coefficient-decomposition-independent-audit/README.md)
+has passed a paired replay and independent artifact audit for arbitrary
+model-valued selector and copy functions. It does not prove that a graph-derived
+cyclic column has that finite decomposition or supply Boolean, copy-bound and
+no-carry hypotheses.
 A [local coefficient decoder client](research/ordinary12-ipra-bridge/compact44-local-coefficient-decoder-prototype/README.md)
 has compiled in a same-provider exploratory run: for explicitly Boolean
 selector and copy inputs it composes the coefficient decomposition and copy
