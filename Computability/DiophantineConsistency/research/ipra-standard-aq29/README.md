@@ -25,8 +25,8 @@ The [provisional survey](survey-receipt.json), made with the existing
 line-based planner against the in-progress AQ29 parent's pinned source
 manifest, reports 1,209 parent modules and six additions: successor induction,
 general addition-one, its converse, `IPRAStandardTheory`, and the two client
-drafts. It found no new direct external imports. The two drafts were untracked
-when surveyed. **Parent bytes and source drift were not checked**; the scan is
+drafts. It found no new direct external imports. All six additions were tracked
+and unmodified at the observed Git head. **Parent bytes and source drift were not checked**; the scan is
 not Lean's dependency parser. The survey records neither a parent build pass
 nor evidence that any addition compiles.
 

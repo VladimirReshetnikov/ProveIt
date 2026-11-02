@@ -39,10 +39,18 @@ result.update(parent_manifest_sha256=PIN, planner_sha256=planner.sha(PLANNER.rea
               workspace_head=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
               additional_untracked=sorted(set(paths)-{p.decode() for p in tracked if p}),
               additional_modified_against_head=sorted(p.decode() for p in modified if p))
+used = result.pop('parent_source_modules_used')
+additions = result['additional_project_modules']
+result['parent_modules_used'] = len(used)
+result['parent_module_order_sha256'] = planner.sha(('\n'.join(used)+'\n').encode())
+result['parent_modules_not_used'] = sorted(set(parent['order'])-set(used))
+result['direct_external_not_in_parent'] = sorted(set(result['external_modules'])-set(parent['external_modules']))
+result['sources'] = {name: result['sources'][name] for name in additions}
+result.pop('order')
 output = HERE/'survey-receipt.json'
 if output.exists() or output.is_symlink():
     raise ValueError('refusing to overwrite existing receipt')
 output.write_text(json.dumps(result, indent=2, sort_keys=True)+'\n')
-print(result['status'], len(result['parent_source_modules_used']), 'parent modules;',
+print(result['status'], result['parent_modules_used'], 'parent modules;',
       len(result['additional_project_modules']), 'additional modules;',
       'parent bytes and drift unchecked;', planner.sha(output.read_bytes()))
