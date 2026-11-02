@@ -1,0 +1,71 @@
+{
+  "axiom_reports": {
+    "DiophantineConsistency.IPRAStandardAQ29Checks": [
+      "DiophantineConsistency.IPRAStandardTheory.provable_iff",
+      "DiophantineConsistency.IPRAStandardAQ29.literal_equivalence",
+      "DiophantineConsistency.IPRAStandardAQ29.selected_foundation_consistency",
+      "DiophantineConsistency.IPRAStandardAQ29.literal_iff_translated_consistency"
+    ]
+  },
+  "order": [
+    "DiophantineConsistency.IPRASuccessorInduction",
+    "DiophantineConsistency.IPRAAddOneGeneral",
+    "DiophantineConsistency.IPRASuccessorInductionConverse",
+    "DiophantineConsistency.IPRAStandardTheory",
+    "DiophantineConsistency.IPRAStandardAQ29",
+    "DiophantineConsistency.IPRAStandardAQ29Checks"
+  ],
+  "scope": "Six tracked sources only; parent snapshot and proof are not audited by this planner.",
+  "source_commit": "218899d7da464abdde75068b53788e4ee40267d4",
+  "sources": {
+    "DiophantineConsistency.IPRAAddOneGeneral": {
+      "imports": [
+        "DiophantineConsistency.IPRASuccessorInduction",
+        "DiophantineConsistency.IPRAAddOneDirect"
+      ],
+      "sha256": "f64dba0a4cb407f651f979c37d092519d7125546bf3b9fd1e359cce2156b809e",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAAddOneGeneral.lean"
+    },
+    "DiophantineConsistency.IPRAStandardAQ29": {
+      "imports": [
+        "DiophantineConsistency.IPRAStandardTheory",
+        "DiophantineConsistency.IPRAAQ29Native",
+        "DiophantineConsistency.IPRABoundedRhoZFC"
+      ],
+      "sha256": "3d5dfcf53162bc7f1334e56d2a1e1735da4eafd2f31307fc0634f2116f77e7e3",
+      "workspace_path": "Computability/DiophantineConsistency/research/ipra-standard-aq29/draft/IPRAStandardAQ29.lean"
+    },
+    "DiophantineConsistency.IPRAStandardAQ29Checks": {
+      "imports": [
+        "DiophantineConsistency.IPRAStandardAQ29"
+      ],
+      "sha256": "d2dc7c8308b9fa2ffed0a981e7486f68362615e718cd791f006ac83007bc30ec",
+      "workspace_path": "Computability/DiophantineConsistency/research/ipra-standard-aq29/draft/IPRAStandardAQ29Checks.lean"
+    },
+    "DiophantineConsistency.IPRAStandardTheory": {
+      "imports": [
+        "DiophantineConsistency.IPRASuccessorInductionConverse"
+      ],
+      "sha256": "c2800acbf0077a1c4d95707a6118e89d6d5cf6a3f9193139d5b2098411b4f120",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAStandardTheory.lean"
+    },
+    "DiophantineConsistency.IPRASuccessorInduction": {
+      "imports": [
+        "DiophantineConsistency.IPRAOpenDisjunctionWitness",
+        "DiophantineConsistency.IPRAAddOneDirect",
+        "DiophantineConsistency.IPRAEqualitySymmetryGG"
+      ],
+      "sha256": "00352fbe924874c2d7a4754ef40de0a7657b505ee01a411ac652c47f8d5eada9",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRASuccessorInduction.lean"
+    },
+    "DiophantineConsistency.IPRASuccessorInductionConverse": {
+      "imports": [
+        "DiophantineConsistency.IPRAAddOneGeneral",
+        "DiophantineConsistency.IPRASuccessorInduction"
+      ],
+      "sha256": "66237bbe6f405e2b87fcf598b2fbef074c80264fccc87df11a25773e25756dd8",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRASuccessorInductionConverse.lean"
+    }
+  },
+  "status": "FROZEN_ADDITIONS"
+}
