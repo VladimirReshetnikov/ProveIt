@@ -548,8 +548,11 @@ position equations and word bounds. Its theorem does not cover cyclic wrap
 or select a clean predecessor from graph data.
 A separate author-side [wrapped-window client](research/ordinary12-ipra-bridge/compact44-wrapped-rotation-prototype/README.md)
 checks the wholly wrapped case under explicit index equations and composes it
-with the adjacent-digit identity. A window straddling the rotation boundary
-and the all-model clean-predecessor selection still need proofs.
+with the adjacent-digit identity. A third author-side
+[straddling-window client](research/ordinary12-ipra-bridge/compact44-straddling-rotation-prototype/README.md)
+checks the boundary-spanning formula and its adjacent-digit composition under
+explicit model index and word-bound conditions. Deriving the case conditions
+from the graph and selecting a clean predecessor in every model remain open.
 A proposed [noncircular integrality-descent route](research/ordinary12-ipra-bridge/integrality-descent-analysis/README.md)
 separates the missing graph inequalities, denominator certificates and
 termination argument. Its finite identity checks and independent review do
