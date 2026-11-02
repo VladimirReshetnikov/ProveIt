@@ -24,6 +24,19 @@ PINS={MONITOR: '2c8a7f848e715a297f8af31e6a2be46747db0d571bc9fa1f104ab06d2db94eb8
  LOW_AUDIT/'CHECK.json':'5ddfb822587813f5883fc32ec2ced206f913ac362f35a762e1cee9b8503f395d',
  LOW_AUDIT/'terminal-observation.json':'6ee553dd579a8ba61323c2de04bad503d7f8f9294ec183e7367dae844b938529'}
 H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def validate_reports(name,reports):
+ expected_reports={
+  'CompactLowPopulation': {'list_population','model_population'},
+  'CompactSupportCard': {'support_card'},
+  'CompactLowExact': {'model_population'},
+  'CompactLowEven': {'low_even'},
+  'CompactHighPopulation': {'model_population','model_lt'},
+  'CompactHighResidue': {'natural_mod_eight','model_mod_eight'},
+  'CompactSymbolicGraphDigits': {'graph_digits'}}
+ stem=name.rsplit('.',1)[-1]
+ expected_reports={stem+'.'+n for n in expected_reports.get(stem,set())}
+ if len(reports)!=len(expected_reports) or {report for report,_ in reports}!=expected_reports or any({x.strip() for x in ax.split(',') if x.strip()} != ({'propext'} if report=='CompactHighResidue.natural_mod_eight' else {'propext','Classical.choice','Quot.sound'}) for report,ax in reports):raise ValueError(('unexpected axiom report',name,reports))
+
 def load(path):
  spec=importlib.util.spec_from_file_location('monitor',path);obj=importlib.util.module_from_spec(spec);spec.loader.exec_module(obj);return obj
 
@@ -70,17 +83,7 @@ def main():
    cmd=[str(LEAN),'-M3000','-j1','-DElab.async=false',f'--root={frozen}',str(src),'-o',str(obj)]
    code,peak,reason=monitor.monitored(cmd,env,log);text=log.read_text();reports=re.findall(r"^'([^']+)' depends on axioms: \[([^\]]*)\]$",text,re.M)
    if code or reason or 'warning:' in text or 'error:' in text or 'sorryAx' in text:raise ValueError(('compiler failure',label,name,code,reason,text[-8000:]))
-   expected_reports={
-    'CompactLowPopulation': {'list_population','model_population'},
-    'CompactSupportCard': {'support_card'},
-    'CompactLowExact': {'model_population'},
-    'CompactLowEven': {'low_even'},
-    'CompactHighPopulation': {'model_population','model_lt'},
-    'CompactHighResidue': {'natural_mod_eight','model_mod_eight'},
-    'CompactSymbolicGraphDigits': {'graph_digits'}}
-   stem=name.rsplit('.',1)[-1]
-   expected_reports={stem+'.'+n for n in expected_reports.get(stem,set())}
-   if len(reports)!=len(expected_reports) or {report for report,_ in reports}!=expected_reports or any({x.strip() for x in ax.split(',') if x.strip()} != ({'propext'} if report=='CompactHighResidue.natural_mod_eight' else {'propext','Classical.choice','Quot.sound'}) for report,ax in reports):raise ValueError(('unexpected axiom report',name,reports))
+   validate_reports(name,reports)
    deps=subprocess.run([str(LEAN),'--deps',str(src)],env=env,text=True,capture_output=True,timeout=60);expected={str(PACKAGE/'Init.olean')}
    for dep in imports:
     rel=Path(*dep.split('.')).with_suffix('.olean');candidate=lib/rel
