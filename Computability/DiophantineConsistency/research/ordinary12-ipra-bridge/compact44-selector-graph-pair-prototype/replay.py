@@ -11,7 +11,7 @@ REPOSITORY=ROOT.parents[1]
 PLAN=BASE/'compact44-selector-graph-closure-plan'
 PARENT_AUDIT=ROOT/'reviews/compact44-same-witness-saturation-independent-audit'
 CLOSURE_AUDIT=ROOT/'reviews/compact44-selector-graph-closure-independent-audit'
-PREFIX=Path('/tmp/ipra-selector-graph-pair-01')
+PREFIX=Path('/tmp/ipra-same-witness-saturation-pair-01')
 PACKAGE=Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib')
 MONITOR=BASE/'free-j-current-denominator-composition/replay.py'
 PARENT_REPLAY=BASE/'compact44-same-witness-saturation-pair-prototype/replay.py'
@@ -92,6 +92,14 @@ def verify():
     for p,h in PINS.items():need(p.is_file() and digest(p)==h,('fixed input drift after audit',str(p)))
     return scan,parent
 
+def validate_provider():
+    # Bind the real parent path independently of mocked subprocesses or overlays.
+    need(PREFIX==Path('/tmp/ipra-same-witness-saturation-pair-01'),('unexpected provider path',str(PREFIX)))
+    for side in ('author','peer'):
+        lib=PREFIX/side/'lib'
+        need(lib.is_dir() and not lib.is_symlink(),('missing provider library',str(lib)))
+        for module in ('CompactMixedIncrement','CompactSameWitnessSaturation2'):
+            need((lib/'DiophantineConsistency'/(module+'.olean')).is_file(),('missing provider object',side,module))
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path);ap.add_argument('--verify-only',action='store_true');ap.add_argument('--expected-head',required=True);args=ap.parse_args()
     need(re.fullmatch('[0-9a-f]{40}',args.expected_head) is not None and git_head()==args.expected_head,'unexpected launch HEAD')
@@ -100,7 +108,7 @@ def main():
         need(args.output is not None,'output required')
         out=args.output.absolute()
         need(out.parent.resolve(strict=True)==Path('/tmp').resolve() and out.name.startswith('ipra-selector-graph-pair-') and not os.path.lexists(out),'fresh direct /tmp output required')
-    driver=digest(__file__);scan,parent=verify()
+    validate_provider();driver=digest(__file__);scan,parent=verify()
     need(git_head()==args.expected_head and digest(__file__)==driver,'HEAD drift or driver drift after preflight')
     if args.verify_only:
         print(json.dumps({'status':'PASS_SELECTOR_GRAPH_READ_ONLY_PREFLIGHT','driver_sha256':driver,'expected_head':args.expected_head,'source_modules':len(scan['source_order']),'parent_audit_status':parent['status'],'lean_launched':False}),flush=True)

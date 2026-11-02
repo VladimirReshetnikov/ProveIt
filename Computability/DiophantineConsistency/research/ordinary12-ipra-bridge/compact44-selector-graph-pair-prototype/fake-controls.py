@@ -3,7 +3,7 @@
 import contextlib,hashlib,importlib.util,io,json,os,shutil,subprocess,sys,tempfile,types
 from pathlib import Path
 D=Path(__file__).resolve().with_name('replay.py')
-WANT='a25d6bdac30b6b9d224eee994393e439517471a2593c2b168d87627191a28275'
+WANT='f6a4b8321fa2c532d55c6816d5fbd7c9ebe981604949c1695340f965f3525117'
 assert hashlib.sha256(D.read_bytes()).hexdigest()==WANT
 PLAN=D.parent.parent/'compact44-selector-graph-closure-plan/scan.json'
 scan=json.loads(PLAN.read_bytes());HEAD='a'*40
@@ -20,6 +20,7 @@ for mode in modes:
     def git_head():
         heads.append(1);return 'b'*40 if mode=='head_drift' and len(heads)>1 else HEAD
     m.git_head=git_head
+    m.validate_provider=lambda:None  # Fake fixtures deliberately use a temporary provider.
     def verify():
         audits.append(1)
         if len(audits)>1 and mode=='late_source':
@@ -104,3 +105,19 @@ for suffix in (s for s in m.SUFFIXES if s != '.olean'):
             except ValueError as e:assert 'unexpected output companion' in str(e),(suffix,before,str(e))
             else:raise AssertionError(('accepted companion',suffix,before))
 print('all_nine_output_companion_slots_before_and_after PASS')
+
+# Real provider and fresh-output families are distinct; do not mask this in the full-loop fixtures.
+spec=importlib.util.spec_from_file_location('real_provider_check',D);v=importlib.util.module_from_spec(spec);spec.loader.exec_module(v)
+assert v.PREFIX==Path('/tmp/ipra-same-witness-saturation-pair-01')
+v.validate_provider()
+v.PREFIX=Path('/tmp/ipra-selector-graph-pair-01')
+try:v.validate_provider()
+except ValueError as e:assert 'unexpected provider path' in str(e)
+else:raise AssertionError('wrong output-family provider accepted')
+v.PREFIX=Path('/tmp/ipra-same-witness-saturation-pair-01')
+v.git_head=lambda:HEAD
+sys.argv=[str(D),'--output',str(v.PREFIX),'--expected-head',HEAD]
+try:v.main()
+except ValueError as e:assert 'fresh direct /tmp output required' in str(e)
+else:raise AssertionError('parent provider accepted as fresh output')
+print('real_provider_wrong_output_family_and_parent_as_output PASS')
