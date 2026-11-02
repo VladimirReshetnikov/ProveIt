@@ -1,0 +1,28 @@
+/tmp/compact44-coefficient-decoder-explore/CompactCoefficientDecoder.lean:36:4: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑(2 ^ 41 - CompactCoefficientMass.value (Compact943Data.row i))
+in the target expression
+  1 + ↑(2 ^ 10) * ↑(2 ^ 41 - CompactCoefficientMass.value (Compact943Data.row i)) =
+    1 + Exp.exp 10 * (Exp.exp 41 - Compact943Decoder.tileValue i)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+i : Fin 943
+hm : Compact943Data.row i ∈ Compact943Data.rows
+hv :
+  0 < CompactCoefficientMass.value (Compact943Data.row i) ∧ CompactCoefficientMass.value (Compact943Data.row i) < 2 ^ 41
+hle : CompactCoefficientMass.value (Compact943Data.row i) ≤ 2 ^ 41
+⊢ 1 + ↑(2 ^ 10) * ↑(2 ^ 41 - CompactCoefficientMass.value (Compact943Data.row i)) =
+    1 + Exp.exp 10 * (Exp.exp 41 - Compact943Decoder.tileValue i)
+/tmp/compact44-coefficient-decoder-explore/CompactCoefficientDecoder.lean:50:8: error(lean.unknownIdentifier): Unknown constant `Finset.mul_sum`
+/tmp/compact44-coefficient-decoder-explore/CompactCoefficientDecoder.lean:46:31: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+f : Fin 943 → V
+b : Fin 41 → V
+⊢ ∑ x, f x + ∑ x, Exp.exp 10 * ((Exp.exp 41 - Compact943Decoder.tileValue x) * f x) + ∑ x, 2 ^ 10 * (2 ^ ↑x * b x) =
+    ∑ x, f x + Exp.exp 10 * (∑ i, (Exp.exp 41 - Compact943Decoder.tileValue i) * f i + ∑ j, 2 ^ ↑j * b j)
+'CompactCoefficientDecoder.cast_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CompactCoefficientDecoder.selector_model' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactCoefficientDecoder.finite_decomposition' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
