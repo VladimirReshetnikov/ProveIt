@@ -58,6 +58,9 @@ def overlay(base,dest):
             p=current/d
             if p.is_symlink():(out/d).symlink_to(p);dirs.remove(d)
         for f in files:(out/f).symlink_to(current/f)
+def require_objects(expected,side,name):
+    for item in expected:
+        if not Path(item).is_file():raise ValueError(('missing required object',side,name,item))
 def guard(stem):
     out={}
     for suffix in SUFFIXES:
@@ -99,6 +102,7 @@ def main():
             if name=='CompactForbidden':expected.add(str(lib/'DiophantineConsistency/Compact943Data.olean'))
             else:expected.update({str(lib/'DiophantineConsistency/CompactRowComplete.olean'),str(lib/'DiophantineConsistency/CompactForbidden.olean')})
             if deps.returncode or deps.stderr or set(deps.stdout.splitlines())!=expected:raise ValueError(('dependency mismatch',side,name,deps.returncode,deps.stdout,deps.stderr))
+            require_objects(expected,side,name)
             guards={}
             for item in expected:guards.update(guard(item[:-6]))
             checkguards(guards);obj=lib/'DiophantineConsistency'/(name+'.olean');log=run/(name+'.log')

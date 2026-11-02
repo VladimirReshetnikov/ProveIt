@@ -1,0 +1,7 @@
+# Required-object guard correction
+
+The independently reviewed prelaunch controls found that the original inverse and model-exclusion drivers could accept a fake successful `lean --deps` response listing an absent required `.olean`; companion guarding then recorded the missing file as absent without independently rejecting it. The already completed forward-word driver had the same limitation and is retained unchanged; its independent artifact review must explicitly verify actual imports.
+
+Both unlaunched inverse and model-exclusion drivers now call `require_objects` after the direct dependency query and before companion guarding or compiler invocation. Every expected dependency must be an existing regular file. `object-controls.py`, run using `python3 -I -S -B`, exited 0 without starting Lean: it tested an all-present positive case, each of the two missing inverse dependencies, each of the two missing first-step exclusion dependencies, each of the three missing second-step exclusion dependencies, and a directory in place of an object for all three configurations. All negative cases were rejected. `OBJECT-CONTROLS.json` records the output. These are direct helper tests, not a fake full-wrapper test or independent review.
+
+Both corrected drivers require renewed independent prelaunch review before any real build; their sampled-resource and package/transitive/dynamic import limits remain.
