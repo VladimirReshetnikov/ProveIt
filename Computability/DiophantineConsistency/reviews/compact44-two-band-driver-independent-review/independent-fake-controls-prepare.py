@@ -1,0 +1,9 @@
+from pathlib import Path
+p=Path.cwd()/'Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-two-band-rotation-pair-prototype/fake-controls.py'
+s=p.read_text()
+s=s.replace("D=Path(__file__).resolve().with_name('replay.py')", "D=Path("+repr(str(p.with_name('replay.py')))+")")
+s=s.replace("'frozen_root_before_subdir']", "'frozen_root_before_subdir','output_symlink','late_external_companion','late_source_same_content_symlink','late_output_symlink']",1)
+s=s.replace("        return scan,{'status':'drift'", "        if len(audits)>1 and mode=='late_external_companion':(out/'author/lib/DiophantineConsistency/ArithmeticCyclicWord.olean.private').write_bytes(b'injected')\n        if len(audits)>1 and mode=='late_source_same_content_symlink':\n            p=out/'frozen/DiophantineConsistency/TwoBand.lean'; data=p.read_bytes(); p.unlink(); back=p.with_suffix('.backing'); back.write_bytes(data); p.symlink_to(back)\n        if len(audits)>1 and mode=='late_output_symlink':\n            p=out/'author/lib/DiophantineConsistency/TwoBand.olean'; data=p.read_bytes(); p.unlink(); back=p.with_suffix('.backing'); back.write_bytes(data); p.symlink_to(back)\n        return scan,{'status':'drift'")
+s=s.replace("        if mode=='output_directory_symlink':", "        if mode=='output_symlink':\n            data=obj.read_bytes(); obj.unlink(); back=obj.with_suffix('.backing'); back.write_bytes(data); obj.symlink_to(back)\n        if mode=='output_directory_symlink':")
+s=s.replace("'frozen_root_before_subdir':'invalid frozen root'}[mode]", "'frozen_root_before_subdir':'invalid frozen root','output_symlink':'invalid emitted object','late_external_companion':'unexpected companion','late_source_same_content_symlink':'invalid frozen destination','late_output_symlink':'companion drift'}[mode]")
+Path('/tmp/two-band-independent-fake-controls.py').write_text(s)
