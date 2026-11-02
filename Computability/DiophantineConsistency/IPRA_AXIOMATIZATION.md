@@ -139,8 +139,8 @@ matched all five additions; its independent complete-result audit is pending.
 
 The degree-36 and degree-56 13-variable equations have a [joint guarded
 historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
-with native and standard-theory clients. Independent artifact audit and a
-paired extension remain pending.
+with native and standard-theory clients. An [independent artifact audit](reviews/ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
+passed; a paired extension remains pending.
 
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency

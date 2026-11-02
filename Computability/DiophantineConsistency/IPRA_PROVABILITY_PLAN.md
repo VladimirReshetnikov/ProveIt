@@ -57,8 +57,8 @@ retains the manual decoder and rank-recipe boundary.
 
 The 13-variable degree-36 and degree-56 equations also have a [joint guarded
 historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
-with native and standard-iPRA endpoint clients. Independent artifact audit
-and a paired extension remain pending. Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
+with native and standard-iPRA endpoint clients. An [independent artifact audit](reviews/ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
+passed; a paired extension remains pending. Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
 has a separate review and retains the decoder and rank-recipe boundary.
 
 The [15-variable degree-26 equation](equation26.pdf) uses a 93-operation
