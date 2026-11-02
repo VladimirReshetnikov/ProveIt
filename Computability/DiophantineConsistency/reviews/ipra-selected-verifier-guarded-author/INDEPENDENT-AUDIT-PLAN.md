@@ -1,0 +1,5 @@
+# Independent audit prerequisites
+
+Verify the captured terminal exit, frozen ten-module manifest and each pinned Git blob, copied sources and logs, all recorded direct-import edges and their object hashes, and the exact sixteen diagnostic occurrences. Recheck author output and parent overlay guards, the independently audited AQ29 author and paired parent records, frozen snapshot, Foundation provider and toolchain. Verify that both thirteen-variable chains and both checker modules were rebuilt in this single overlay, and check every theorem statement, the common witness-bound meaning, and the code's bit/equality form. Audit one fixed snapshot with before/after hashes and an observed process exit; retain all inherited provenance limits.
+
+Do not substitute separately compiled development artifacts if historical artifacts are absent. A passing artifact audit is not another Lean run, a paired extension, formal PDF semantics, an internal comparison with a different independently specified proof verifier, or a proof of ZFC consistency. The output directory, AQ29 parent and snapshot, Foundation provider, original Git objects and toolchain must remain available.

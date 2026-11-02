@@ -1,5 +1,9 @@
 # Independent AQ16 wording-refresh review
 
+This review covers the exploratory-run disclosure at the cited revision. The
+current PDF has a later paired-run wording refresh; its equation and circuit
+are unchanged, and a separate review of that refresh is pending.
+
 This finite review passed with the actual process exit recorded in
 [terminal-observation.json](terminal-observation.json). It compares the
 [revised PDF](../../research/aq17-positive-signed-binding/equation32-16.pdf)

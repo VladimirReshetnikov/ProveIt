@@ -140,7 +140,26 @@ matched all five additions and passed an [independent complete-result audit](rev
 The degree-36 and degree-56 13-variable equations have a [joint guarded
 historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
 with native and standard-theory clients. An [independent artifact audit](reviews/ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
-passed; a paired extension remains pending.
+passed. A later [historical pair](reviews/ipra-frontier13-historical-pair-terminal/README.md)
+matched all eight additions and passed an [independent complete-result audit](reviews/ipra-frontier13-historical-pair-independent-audit/README.md).
+
+The [selected bounded-refutation checker](research/ipra-selected-refutation-verifier/README.md)
+has a Lean construction of one primitive-recursive function code
+whose output-at-one characterizes the selected bounded refutation matrix. Its
+clients state internal native and standard iPRA equivalences between the
+selected refutation's negation and the absence of a bound producing one, and
+connect that same checker to both 13-variable no-zero sentences. The recorded
+bit sentence was first proved in classical candidate PRA; a later [exploratory
+extension](research/ipra-selected-native-bit/README.md) compiled native and
+standard iPRA bit sentences for the same code, including in a [guarded
+historical author run](reviews/ipra-selected-native-bit-guarded-author/README.md).
+Its [independent artifact audit](reviews/ipra-selected-native-bit-guarded-author-independent-audit/README.md)
+passed; a paired replay remains pending.
+This is a checker for the selected bounded encoding, not a comparison with an
+independently specified proof checker. A [guarded historical author run](reviews/ipra-selected-verifier-guarded-author/README.md)
+compiled the full ten-module extension and passed an [independent artifact audit](reviews/ipra-selected-verifier-guarded-author-independent-audit/README.md).
+A subsequent [historical pair](reviews/ipra-selected-checker-historical-pair-terminal/README.md)
+matched all ten additions and passed an [independent complete-result audit](reviews/ipra-selected-checker-historical-pair-independent-audit/README.md).
 
 For this selected coding, `rho` is Foundation's arithmetized provability
 predicate for falsity from ZFC and its retained classical source consistency

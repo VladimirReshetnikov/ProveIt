@@ -73,9 +73,20 @@ retains the manual decoder and rank-recipe boundary.
 For the 13-variable degree-36 and degree-56 equations, a [joint historical
 author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
 compiled native and standard-iPRA endpoint clients and passed an independent
-artifact audit; a paired extension remains pending. Their [finite display bindings](reviews/frontier13-pdf-historical-lean-binding/README.md)
+artifact audit. A later [historical pair](reviews/ipra-frontier13-historical-pair-terminal/README.md)
+matched all eight additions and passed an independent complete-result audit.
+Their [finite display bindings](reviews/frontier13-pdf-historical-lean-binding/README.md)
 have a [separate review](reviews/frontier13-pdf-historical-lean-binding-independent-audit/README.md)
 and retain the manual decoder and rank-recipe boundary.
+
+A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
+also compiled a primitive-recursive checker for a common bound in the selected
+Foundation refutation encoding, with internal iPRA equivalences linking its
+absence of output 1 to both 13-variable no-zero sentences. Its independent
+artifact audit passed. A [historical paired extension](reviews/ipra-selected-checker-historical-pair-terminal/README.md)
+matched all ten additions and passed an independent complete-result audit.
+It does not identify an
+arbitrary independently specified proof checker with the selected one.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),
@@ -110,7 +121,8 @@ independent complete-result audit.
 The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
 has independently checked finite algebra and positivity under the actual fixed
 parameter, and a guarded historical author run of the full transport and iPRA
-chain with an independent artifact audit. A paired replay remains pending.
+chain with an independent artifact audit. A later [historical pair](reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
+matched all 52 additions; independent complete-result audit is pending.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

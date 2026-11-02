@@ -58,8 +58,23 @@ retains the manual decoder and rank-recipe boundary.
 The 13-variable degree-36 and degree-56 equations also have a [joint guarded
 historical author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
 with native and standard-iPRA endpoint clients. An [independent artifact audit](reviews/ipra-standard-13-frontier-guarded-author-independent-audit/README.md)
-passed; a paired extension remains pending. Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
+passed. A later [historical pair](reviews/ipra-frontier13-historical-pair-terminal/README.md)
+matched all eight additions and passed an [independent complete-result audit](reviews/ipra-frontier13-historical-pair-independent-audit/README.md).
+Their [finite display binding](reviews/frontier13-pdf-historical-lean-binding/README.md)
 has a separate review and retains the decoder and rank-recipe boundary.
+
+A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
+compiled an existentially selected primitive-recursive checker for a common
+bound in the chosen Foundation refutation encoding, and internal native and
+standard-iPRA equivalences linking no output 1 to both 13-variable no-zero
+sentences. Its independent artifact audit passed, and a later [historical pair](reviews/ipra-selected-checker-historical-pair-terminal/README.md)
+matched all ten additions and passed an [independent complete-result audit](reviews/ipra-selected-checker-historical-pair-independent-audit/README.md).
+An [extension](research/ipra-selected-native-bit/README.md) also compiled
+native and standard iPRA bit sentences for the same code, including in a
+[guarded historical author run](reviews/ipra-selected-native-bit-guarded-author/README.md).
+Its [independent artifact audit](reviews/ipra-selected-native-bit-guarded-author-independent-audit/README.md)
+passed; a paired replay remains pending. No comparison with an
+independently specified checker is claimed.
 
 The [15-variable degree-26 equation](equation26.pdf) uses a 93-operation
 evaluator. Its exact shifted fixed-port literal has a no-premise
@@ -238,7 +253,8 @@ passed an independent artifact audit. A later historical pair matched all
 The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
 has a separately audited finite positivity and substitution argument. Its Lean
 transport and iPRA clients compiled in a guarded historical author run and
-passed an independent artifact audit; a paired replay remains pending.
+passed an independent artifact audit. A later [historical pair](reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
+matched all 52 additions; independent complete-result audit is pending.
 
 The [51-variable degree-4 equation](equation4.pdf) has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRANamedValues51Native.lean)
