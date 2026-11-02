@@ -261,7 +261,9 @@ passed a [separate bounded audit](reviews/ordinary12-freej-main-congruence-indep
 The existence of both Pell indices and the conditional early scalar window
 also passed [separate](reviews/ordinary12-freej-pell-indices-independent-audit/README.md)
 [audits](reviews/ordinary12-freej-early-window-independent-audit/README.md);
-the latter retains explicit model mask bounds. Exact index matching cannot
+the latter retains explicit model mask bounds. An [early-index bound](reviews/ordinary12-freej-early-index-independent-audit/README.md)
+also passed bounded replay audit under those assumptions; it does not identify
+the index with the rank. Exact index matching cannot
 yet be imported directly: its existing theorem assumes strong and auxiliary
 norms that must first be recovered noncircularly. These are model-level
 results, not an internal iPRA derivation. The candidate's
