@@ -1,11 +1,16 @@
 # Concrete proof plan and dependency boundary
 
-The target literal is `ordinary-unit-products/p12_ordinary_degree70.json`,
-SHA-256 `444c25b68fbfee600ae174cb5bad1931897a55ffe2f9570fd22f3281f6e97010`:
-12 positive coordinates, 100 live binary operations, and the ordinary
-certificate's degree 70. Its exact source, ordinary derivation and relevant
-historical module hashes are pinned in `source-pins.json`. Hashes and finite
-tests do not prove the derivation.
+The initial restricted-J literal is
+`ordinary-unit-products/p12_ordinary_degree70.json`, SHA-256
+`444c25b68fbfee600ae174cb5bad1931897a55ffe2f9570fd22f3281f6e97010`:
+12 positive coordinates and 100 live binary operations. The current smaller
+free-J candidate has 12 positive coordinates, 95 operations, and exact degree
+70 at its pinned fixed tuple. Its graph hash and source-binding qualifications
+are recorded in [the free-J prototype](free-j-prototype/README.md) and its
+[independent audit](../../reviews/ordinary12-freej-prototype-independent-audit/README.md).
+The two graphs quantify over J differently; a result for the restricted graph
+cannot automatically be transferred to the free-J graph. Hashes and finite
+checks do not prove the ordinary derivation.
 
 **Port prerequisite.** The fixed compact44 `β=2^590069−1` differs from the
 2011 endpoint's `β=2^94517−1`; the remaining three fixed ports must also be
@@ -29,9 +34,10 @@ repository's formal-difference pairs. One concrete route is:
    `bn=2(1−Q)(n+V)` even. The six compiled finite `ZMod 4` lemmas cover
    the corresponding residue exclusions only; lift them through the signed
    pair residue map, including the exact associativity of `d·bn²·Q`. The
-   [bounded model prototype](model-prototype/README.md) now proves that the
+   [bounded model prototype](model-prototype/README.md) proves that the
    generic signed factor `1+AN²−d(2b)²Q` is not the negative unit. Its
-   substitution into this exact candidate's ordinary merger is still open.
+   substitution into the restricted-J ordinary merger is supplied by the
+   concrete split below; the free-J merger has its own polarized exclusion.
 3. From the three-factor product being one, derive magnitude one for each
    factor, then exclude `−1` and conclude each factor is `+1`. The pinned
    `ArithmeticSignedPairs.magnitude_multiply` and `product5_magnitudes`
@@ -55,7 +61,8 @@ factors to residue exclusions and proves, in an `IΣ₁` model, that each
 factor is the positive unit. This model-level result holds for arbitrary
 integer ports; it is not compact44 checker calibration or an iPRA proof.
 
-The [95-operation free-J prototype](free-j-prototype/README.md) separately
+The [95-operation free-J prototype](free-j-prototype/README.md), with a
+separate [bounded replay audit](../../reviews/ordinary12-freej-prototype-independent-audit/README.md),
 proves the same factor-unit conclusion for its own exact graph using a
 polarized ordinary-factor exclusion. Unlike the 100-row graph, its first
 variable is a free `J`, not `6j+1`. The ordinary free-J soundness route
@@ -118,6 +125,9 @@ and check actual compiler dependencies and terminal exits. Do not mix the
 recently merged `ModelArithmetic`, `ModelCarrierCurrent`,
 `ModelCarrierScaled`, `ModelDifferenceRing` or `DiscreteOrderedRingFacts`
 objects into that parent: those modules are not in its 1,210-row manifest.
-They require a coherent source-current successor closure if used. Disk was
-near the existing reserve during this assessment, so no large rebuild was
-started.
+They require a coherent source-current successor closure if used. The
+source-current coexistence build remains unperformed. A pinned launcher and
+sampled resource monitor have been developed; the launcher is under
+independent review and must not be treated as cleared until its exact bytes
+and startup environment have passed that review. Sampling is not a hard
+per-build quota or a continuously enforced free-space reserve.
