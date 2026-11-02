@@ -1,0 +1,9 @@
+# Failed inverse pair preflight, session 3421
+
+The protected inverse wrapper session 3421 actually exited 1 before compilation. Its protected HEAD was `e71b9e2050b01bfc69cc4a5559ed9dc3ae80f8eb`; the requested fresh output path was `/tmp/ipra-compact-inverse-lookup-pair-01`, and no output directory or Lean child was created. The exact inverse driver SHA-256 was `ec9888b8345faa873f6d419bbcedf5696f06e1f8e5ffc6ad3833353bafcac0e3`.
+
+The outer tool output was returned directly and not retained as a compiler-written or wrapper-written log. This is a labeled transcription of its decisive failure as reported by the observing agent: the row-matching independent parent audit failed at its nested parent rerun, with `ValueError('parent audit rerun')`. No complete stderr is claimed here.
+
+Read-only diagnostic session 5587 reran `compact44-table-lookup-independent-audit/audit.py` directly and actually exited 1 at its nested `compact44-relabel-pair-independent-audit` rerun. Session 74451 reran that relabel audit directly and actually exited 1 at its nested `thirteen-model-endpoint-successor-pair-independent-audit` rerun. Session 1180 reran the latter directly and actually exited 1 at `plan audit rerun`. These observations do not by themselves establish the underlying file drift. The independent reviewer separately reports that the nested plan audit detects changed `ModelCarrierCurrent` source bytes introduced by an upstream merge; preserve the original pinned audit and treat that diagnosis as separate from the outer observed failure until the review is committed.
+
+No inverse pair success, Lean proof or theorem regression follows from this failed preflight. Do not silently mix the changed current source with the historical provider, bypass its pinned audit, or reuse a historical project object as current. Any corrected replay needs an explicit coherent provider/source strategy and independent review.
