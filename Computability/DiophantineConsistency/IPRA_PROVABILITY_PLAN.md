@@ -507,16 +507,17 @@ also has a paired and independently audited client for the color ranges and
 row indices excluding 1. A [paired local row-matching client](reviews/compact44-row-match-independent-audit/README.md)
 has also passed independent audit for bounded old-row indices. The external
 JSON binding, actual neighbor existence, wrap and full tiling transport remain
-separate. An [author-only forward marked-word client](research/ordinary12-ipra-bridge/compact44-row-transport-prototype/MARKED-RESULT.md)
-transports the supplied cyclic relations of an existing old word. An
-[author-only inverse lookup client](research/ordinary12-ipra-bridge/compact44-row-transport-prototype/INVERSE-RESULT.md)
-handles bounded compact indices other than 1 and has a definability instance.
-Their matched replays, exclusion of row 1 in an actual tableau, reverse word
-transport and word existence remain open. The
-single extra row is ruled out by
-the [paired local exclusion theorem](reviews/compact44-forbidden-independent-audit/README.md)
-when a matching left neighbor exists; boundary and arbitrary-model neighbor
-existence remain open. An [independent finite recipe reconstruction](reviews/compact44-selector-recipe-independent-audit/README.md)
+separate. A [paired forward marked-word client](reviews/compact44-forward-word-independent-audit/README.md)
+transports the supplied cyclic relations of an existing old word. A
+[contextually replayed inverse lookup](reviews/compact44-contextual-inverse-independent-audit/README.md)
+handles compact indices below 943 other than 1 and has a definability instance.
+The [contextual exclusion client](reviews/compact44-contextual-exclusion-artifact-independent-audit/README.md)
+rules out row 1 when its stated matching neighbor is supplied, including for
+a supplied positive-period cyclic matching word. These replays use the
+documented historical source view for their parent audits. A combined paired
+reverse-word transport and construction of the required word remain open;
+an author-only supplied-word equivalence does not construct one. An
+[independent finite recipe reconstruction](reviews/compact44-selector-recipe-independent-audit/README.md)
 recomputes the four retained integer payloads and the 8,807 mask digits;
 this external calculation is not an all-model port calibration.
 
