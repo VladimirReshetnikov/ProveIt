@@ -1,5 +1,9 @@
 # Bounded one- and two-gate screening for the 13-variable equations
 
+The [independent review](../../reviews/frontier13-local-rewrite-screen-independent-audit/README.md)
+reproduced the bounded enumeration and checked the finite-field rejection
+argument and degenerate cases. Its limits below remain essential.
+
 For each of the pinned 87-operation square-sum and 86-operation product DAGs,
 `screen.py` examines the following **restricted** syntactic family:
 
