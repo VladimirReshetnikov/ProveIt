@@ -22,12 +22,29 @@ one directly in a model of natural arithmetic may truncate. The proposed
 `extend_inputs`, `project_inputs`, and zero-transport theorems are intended to
 check this in Lean, rather than assume it from the graph manipulation.
 
-An exploratory single-thread development run against one previously
-source-built author AQ26 provider compiled `AdaptiveAQ22Literal`,
-`AdaptiveAQ22Zeros`, and `AdaptiveAQ22Maps`, including the positivity proof.
-This is not an independently audited replay: the development overlay does not
-have the guarded runner's output/provenance guarantees. The transport,
-no-zero equivalence, and native endpoint sources remain drafts until compiled
-and then replayed against a matched, source-verified dependency chain. No claim
-is made that the endpoint or either direction of its equivalence has been
-established by these drafts.
+An exploratory single-thread development run against the single-author AQ26
+provider in `/tmp/ipra-standard-aq26-combined-author-trial` compiled all of
+`AdaptiveAQ22Literal`, `AdaptiveAQ22Zeros`, `AdaptiveAQ22Maps`,
+`AdaptiveAQ22Transport`, `AdaptiveAQ22`, `IPRAAQ22Native`, and
+`IPRAStandardAQ22`. Each module was compiled in a separate Lean process, in
+that order, with the previous outputs in a fresh overlay and the parent
+provider's package overlay. For the transport, model-equivalence, native, and
+standard endpoint theorems, `#print axioms` reported `propext`,
+`Classical.choice`, and `Quot.sound`, without `sorryAx`. The first transport
+attempt failed on two signed-subtraction simplifications; the committed source
+contains the successful correction.
+
+The native endpoint derives an object-theory equivalence of the no-zero
+sentence with the repository's mapped refutation predicate. The standard
+presentation client also derives an equivalence with the embedded
+Gödel–Gentzen translation of `FoundationZFCConsistencyNat.sourceSentence`.
+That exact translated formula must not be silently identified with an
+untranslated Con(ZFC); the required identification depends on the larger
+project's interpretation and consistency bridges.
+
+This is an exploratory compilation, **not** a guarded or independently
+matched replay: the development overlay does not have the guarded runner's
+input, output, and provenance guarantees, and the parent author build has not
+yet been matched by its peer. It does not establish a current-source or
+unconditional user-facing Con(ZFC) claim. A coherent guarded replay and
+independent audit are required before promoting these sources.
