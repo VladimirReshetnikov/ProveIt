@@ -21,7 +21,10 @@ The standard endpoint relates absence of a zero to the Gödel–Gentzen
 translation of the selected embedded Foundation ZFC consistency sentence. A
 paired replay remains pending. This run inherits its parent provider's
 documented provenance limitations and does not itself formally identify the
-PDF with the Lean term.
+PDF with the Lean term. A separate [finite binding audit](../../reviews/aq22-pdf-historical-lean-binding/README.md)
+compares the historical Lean literal, displayed graph, and recorded four-port
+values. It retains the manually transcribed decoder and rank-recipe boundary;
+it is not a formal semantics for the PDF.
 
 An [independent audit](../../reviews/aq22-degree10-independent-audit/README.md)
 reconstructed the graph and residual identities, confirmed the degree and
