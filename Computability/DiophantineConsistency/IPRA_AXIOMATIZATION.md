@@ -148,3 +148,22 @@ quantifier-freeness, transfers every axiom and derivation in both directions,
 and maps the particular consistency sentence is still required. Distinct
 construction codes must not silently be identified just because they compute
 the same standard function.
+
+Status 2026-11-01: that reference theory is
+[`IPRAEqualityOnlyReference.referenceTheory`](Lean/DiophantineConsistency/IPRAEqualityOnlyReference.lean),
+and the erasure is `IPRAOrderErasure.erase`. The native-to-reference direction
+`IPRAReferenceInductionConversion.nativeToReference : nativeTheory ⊢ σ →
+referenceTheory ⊢ erase σ` and its 19-module closure built coherently from
+source in the root workspace (Lake's ordinary trace-checked build, Lean
+sources of `9cd427e8da`); its checks report only `propext`,
+`Classical.choice` and `Quot.sound`. Applied to the 14-variable endpoint, it
+gives [`IPRAReferenceCurrentEndpoint.reference_current_iff_consistency`](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean):
+`referenceTheory ⊢ erase noZero14 🡘 ∼erase (mappedNativeRefutation embedding)`,
+plus `reference_current_iff_translated_consistency` with the erased
+Gödel–Gentzen image of Foundation's ZFC consistency sentence. Both report the
+same three axioms in their [checks](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpointChecks.lean).
+`noZero14` has no `<` atom, so its erasure is the same no-zero formula read in
+the equality-only language. This is an author build, not an independent
+replay packet. The reverse reference-to-native transport (`IPRAReferenceTheoryTransfer`)
+is still conditional on the reference axiom images, so the two-way theory
+comparison remains open. The endpoint itself needs only the forward direction.

@@ -274,9 +274,11 @@ ordinary trace-checked rebuild from the Lean sources of commit `66da84a9e7`
 [checks](Lean/DiophantineConsistency/IPRAStandardCurrentEndpointChecks.lean)
 report only `propext`, `Classical.choice` and `Quot.sound`. This is an
 author build, not an independent replay packet. The language keeps `<` as a
-symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`; erasing it
-into an equality-only language is the separate comparison described in
-[IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md). The candidate is neither classical
+symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`. In the
+equality-only language, [`IPRAReferenceCurrentEndpoint`](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean)
+states the same equivalence in the reference theory with `<` erased; it and
+the `nativeToReference` closure also built coherently on 2026-11-01 (see
+[IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md)). The candidate is neither classical
 `PRATheory.PRA` nor merely the negative translation of that theory. The
 historical package provider is now partly unavailable. A rebuilt Foundation
 object already differs from its recorded historical hash; a successful replay
