@@ -41,7 +41,10 @@ A proposed [92-operation quotient graph](research/ordinary12-qcube92-candidate/R
 replaces the old positive witness `Y` by `q³s` and divides the first
 residual by `q⁶`. An [independent finite audit](reviews/ordinary12-qcube92-independent/README.md)
 checks its graph, polynomial scaling identities and fixed-coefficient exact
-degree 164. An all-model positive-zero proof is outlined using the existing
+degree 164. A bounded author Lean check now proves the [three residual
+identities](research/ordinary12-qcube92-candidate/ALGEBRA.md) over arbitrary
+commutative rings, with the inherited-provider limits recorded there. An
+all-model positive-zero proof is outlined using the existing
 `q³ ∣ Y` theorem, but has not yet been checked for the new expression; the
 92-operation graph has no established iPRA endpoint or formal PDF binding.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
@@ -91,12 +94,13 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage225/README.md)
-has rebuilt its first 239 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage251-warning-retry/README.md)
+has rebuilt its first 251 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
 separately source-pinned, exact-warning baselines, with further baselines at
-stages 197 and 224 to preserve existing interfaces. Stage 95's initial
+stages 197 and 224 to preserve existing interfaces and at stages 250–251 for
+source-pinned style warnings. Stage 95's initial
 three-minute attempt timed out; a separately guarded longer retry passed.
 The remaining stages and final
 client are open. A separately checked
