@@ -378,10 +378,13 @@ also constructs a positive first coordinate and its additive transport
 identity for those same outer witnesses. Separately,
 the exact free-J literal has a checked [factor equivalence](research/ordinary12-ipra-bridge/free-j-completeness-factor-bridge-prototype/README.md)
 and [conditional factor/graph witness bridges](research/ordinary12-ipra-bridge/free-j-witness-assembly-prototype/README.md).
-Constructing positive coordinates that meet all factor equations, binding the
-retained/displayed coefficients and proving the iPRA endpoint remain separate
-obligations. The components use guarded single-author providers with inherited
-ancestry, as described in their linked records.
+A later [all-model converse client](research/ordinary12-ipra-bridge/free-j-halt-model-zero-prototype/README.md)
+constructs a positive zero of the exact free-J literal from a model halt,
+conditional on four explicit port equalities. Discharging those equalities,
+binding the retained/displayed coefficients, joining the opposite implication
+and proving the iPRA endpoint remain separate obligations. The components use
+guarded single-author providers with inherited ancestry, as described in their
+linked records.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
