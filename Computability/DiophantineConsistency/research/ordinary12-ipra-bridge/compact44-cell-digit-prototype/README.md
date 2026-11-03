@@ -17,7 +17,13 @@ warnings or `sorryAx`. Its printed axiom report contains `propext`,
 `Classical.choice` and `Quot.sound`. The failed source and both attempt logs
 are retained under `observations/`.
 
+`CompactCellDigitUniform.lean` strengthens this to a Σ₁-definable ternary
+function in `a`, `d` and `k`. Its guarded author attempt exited 0 without
+warnings or `sorryAx`; the printed axioms are `propext`, `Classical.choice`
+and `Quot.sound`, and the sampled direct dependencies were unchanged. An
+earlier dependency scan used an incorrect provider path and failed before
+Lean compilation; its diagnostic is preserved as `uniform-attempt01`.
+
 These incremental single-author results inherit the word and lookup providers'
-transitive and package ancestry. The definability is not yet uniform in `a`
-and `d`; neither result packs the digits into a cell, establishes no-carry or
-graph-zero conditions, or proves an iPRA endpoint.
+transitive and package ancestry. They do not yet pack the digits into a cell,
+establish no-carry or graph-zero conditions, or prove an iPRA endpoint.

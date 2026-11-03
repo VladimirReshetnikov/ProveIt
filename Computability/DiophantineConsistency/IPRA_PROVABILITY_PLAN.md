@@ -338,6 +338,13 @@ including the selected translated Foundation consistency sentence. A separate
 [artifact audit](reviews/ipra-standard-qm40-author-artifact-audit/README.md)
 passed; a paired replay and formal PDF-byte interpretation remain open.
 
+For the missing converse of the ordinary 12-variable candidate, a
+[single-author compact cell-digit prototype](research/ordinary12-ipra-bridge/compact44-cell-digit-prototype/README.md)
+now proves the desired selector, dummy and copy values and Σ₁ definability
+uniformly in the row, dummy bit and position. This is a model-level component;
+packed-cell and full-word construction, mask safety and the iPRA endpoint
+remain separate obligations.
+
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
 prototype and an exploratory [free-J 95-gate factor split](research/ordinary12-ipra-bridge/free-j-prototype/README.md)
