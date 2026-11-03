@@ -10,6 +10,27 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+For the distinct 12-variable, 95-operation free-J graph, a bounded author
+build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
+in each model of IΣ₁, its fixed symbolic positive-zero predicate is
+equivalent to the encoded machine's internal halting predicate. All four
+symbolic port projections are discharged, including the single beta shift in
+the high port. A [source review](reviews/compact44-symbolic-model-unconditional-iff-source-review/README.md)
+checks the final join, with disclosed overlap in authorship and without a
+fresh replay or complete ancestry audit.
+
+This is not yet an iPRA endpoint for that graph. A separately checked
+[generic positive-model adapter](research/ordinary12-ipra-bridge/positive-model-ipra-adapter-prototype/README.md)
+cannot yet be combined with it because their selected object providers
+conflict. A [source-pinned rebuild preflight](research/ordinary12-ipra-bridge/compact12-ipra-coherent-rebuild-plan/README.md)
+identifies a smaller possible rebuild on the nine-variable provider but does
+not establish its full dependency closure. The symbolic coefficients are
+also not formally bound to retained payload bytes or a PDF. In particular,
+as documented in the [display boundary](research/ordinary12-ipra-bridge/positive-shift-display-boundary/README.md),
+`equation12.pdf` displays a separate 26-variable graph, and `equation.pdf`
+displays the separate 14-variable equation. The adapter's positive shift
+substitutes `x + 1`; a different same-named function substitutes `x - 1`.
+
 The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
 states native, standard and equality-only iPRA equivalences without hypotheses;
 the separate [CURRENT2011 nine-variable endpoint](Lean/DiophantineConsistency/IPRANineCurrent.lean)
