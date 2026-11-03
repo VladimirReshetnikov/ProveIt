@@ -1,0 +1,9 @@
+# Independent review: 141 upstream project input triage
+
+PASS for the capture-relative classifications in `research/trace75-upstream-141-inventory/`. We independently rechecked all 141 selected object/companion presence, first-recorded paths and hashes and captured headers; six pinned producer results; the earlier BFS serialized capture; the preceding 186-cone inventory; and author checker, terminal and stdout hashes. We compared every candidate receipt file with its captured hash and its listed direct-comparison record.
+
+Six pinned runs contain 16 exact selected stage matches, requiring both the selected `.olean` realpath and all companion hashes, and recorded successful stage exit. In the earlier BFS capture, 126 inputs have matching companion hashes, one differs (`DiophantineConsistency.ArithmeticNegativeNorms`), and 14 are absent. The capture lists matching-hash candidate receipt files for 41 inputs. Among the 125 without an exact stage match in those six runs, 115 have the same earlier captured companion hashes and `.olean` realpath; 30 of those 115 have candidate receipts. These classifications overlap and are not additive.
+
+An earlier matching hash or a candidate receipt alone does not establish which source produced the currently selected object, the producer's direct selections at production time, or complete upstream ancestry. Even the 16 exact matches identify only those captured output records, not all their transitive history. This triage does not complete a source-current closure, package/dynamic ancestry, external file binding, or independent Lean replay.
+
+Author checker SHA `0226c4646a85e4bc22f75ce1673960617fa7e3a1ee86e939e4266c98f54a5082`, terminal SHA `94a001c50e462013f7576d3b2e3fe909aa6c62a882ebf3627dc9b569643d81a4`, stdout SHA `87c27b168b3d242214d75e8de5c4165dd2c7ac9005ac680c6bc812558dbd8575`. Our independent checker and output are alongside this review; no Lean was run.
