@@ -725,6 +725,11 @@ has passed a source and direct-provider review over that author-side table
 provider. Its graph-halt client remains uncompiled; its intended conclusion is
 a halt at a model-internal time below `N`, not an external halt or an iPRA
 proof. The review records the prior-scan pinning and inherited-ancestry limits.
+The suffix wrapper subsequently stopped on a missing namespace in that client.
+An isolated [corrected graph-halt client](research/ordinary12-ipra-bridge/compact44-marked-halt-open-exploration/README.md)
+has since compiled on the author-side first-20-module overlay: under positive
+symbolic graph zero it obtains a model-internal halt before `N`. The full
+suffix has not succeeded, and this is not a paired replay or an iPRA theorem.
 A separate [converse construction plan](research/ordinary12-ipra-bridge/compact44-converse-construction-plan/README.md)
 identifies the compact44-specific packing, calibration and witness assembly
 still needed for the halt-to-graph direction; the differently parameterized
