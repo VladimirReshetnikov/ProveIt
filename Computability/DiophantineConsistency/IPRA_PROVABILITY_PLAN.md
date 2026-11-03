@@ -285,8 +285,10 @@ The standard endpoint uses the
 Gödel–Gentzen translation of the selected embedded Foundation consistency
 sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
-has finite substitution and degree checks; its model and native transports
-remain open.
+has finite substitution and degree checks. A [bounded author-side run](reviews/adaptive-qm40-native-bounded-replay/README.md)
+compiled its six model modules, but timed out on the native client; the
+paired replay and native endpoint remain open. Its [standard-iPRA client](research/ipra-standard-qm40/README.md)
+is still an uncompiled draft requiring coherent native and standard providers.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
@@ -514,6 +516,10 @@ proves the generic little-endian byte formula, including boundaries between
 Its recorded checks include boundary-crossing and out-of-range examples. These
 results do not yet establish equality with retained file bytes, gzip decoding,
 the other kernel representation or the displayed tuple.
+A further author-side [sparse-byte client](research/ordinary12-ipra-bridge/compact44-symbolic-k-retained-suffix-exploration/README.md)
+establishes the symbolic natural kernel's exact bit bounds, a 9,171-byte
+middle zero interval and a zero-padded suffix whose last nonzero byte is 8;
+the corresponding retained bytes are checked externally, not bound in Lean.
 Two further single-side explorations give alternative bounded representations
 of that residual. The [bit-rotation client](research/ordinary12-ipra-bridge/compact44-bit-rotation-prototype/README.md)
 represents multiplication by an arbitrary power of two modulo the word modulus
@@ -757,11 +763,32 @@ That author-side result passed a source/artifact review with the recorded
 tooling and provider limitations. Other controller premises and the graph-zero
 construction remain separate obligations. A [controller-unit plan](research/ordinary12-ipra-bridge/compact44-controller-unit-plan/README.md)
 records recipe-derived residues and a proposed adaptation of the old
-all-model lifting argument; no compact Lean unit theorem or kernel binding is
-claimed. An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
+all-model lifting argument. A subsequent author-side [conditional unit client](research/ordinary12-ipra-bridge/compact44-controller-unit-prototype/README.md)
+proves the inverse exists in all IΣ₁ models for the stated power dimensions,
+assuming the concrete residue of `K` modulo `342946332593`. It does not prove
+that residue for `paramKernel (2^67)`, identify the actual rank variation or
+construct the dummy locations; its provider ancestry is inherited.
+A separate author-side [Horner-residue client](research/ordinary12-ipra-bridge/compact44-symbolic-k-residue-prototype/README.md)
+proves the required modular residue for the symbolic natural kernel. Its
+provider differs from the unit client's, so applying the results together
+requires a coherent same-provider rebuild. An [initial join attempt](research/ordinary12-ipra-bridge/compact44-symbolic-controller-join-prototype/README.md)
+successfully rebuilt the four component stages on one author-side provider,
+but its final client failed first at the elaboration recursion limit and then
+at the kernel memory limit. No joined theorem is claimed.
+Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
+and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
+found no defect in the inspected arguments; neither review supplies the join.
+An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
 proves a conditional local aggregate lemma on an existing author-side
 coefficient provider; it does not construct its selector or payload
 hypotheses, and its incremental build is not a paired replay or fresh closure.
+A subsequent author-side [bounded-row input client](research/ordinary12-ipra-bridge/compact44-forward-cell-inputs-exploration/README.md)
+constructs a one-hot selector and payload bits for each model row below 943
+and discharges those local sum hypotheses. Uniform lookup from the compact
+word, physical packing and the graph-to-iPRA connection remain open. An
+uncompiled [word-cell client draft](research/ordinary12-ipra-bridge/compact44-word-cell-client-plan/README.md)
+isolates the intended uniform bridge and identifies the same-provider rebuild
+needed before it can be checked.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does

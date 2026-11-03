@@ -1,0 +1,16 @@
+{
+  "checks": [
+    {
+      "command": "python3 -I -S -B replay.py --preflight-only --output /tmp/ipra-qm40-incremental-overlay-preflight-20261102-a",
+      "exit": 0,
+      "stdout": "READY_INCREMENTAL_QM40_NO_LEAN"
+    },
+    {
+      "command": "python3 -I -S -B controls.py",
+      "exit": 0,
+      "stdout": "PASS_NO_LEAN_GUARD_CONTROLS; new companion, altered link target and altered target content detected"
+    }
+  ],
+  "lean_launched": false,
+  "qualification": "Corrected overlay preflight and temporary-file guard controls only; dependency resolution and compiler paths are not yet exercised."
+}
