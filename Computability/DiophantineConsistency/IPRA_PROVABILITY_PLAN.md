@@ -497,6 +497,10 @@ and its [exact-definition alias](research/direct-bfs-kernel-lower-mass-alias-pro
 supply a stronger bound needed for [high-padding size](research/direct-bfs-high-padding-size-prototype/README.md).
 A [phase-zero theorem](research/direct-bfs-phase-zero-high-prototype/README.md)
 proves high-mask no-carry for that phase; other phases remain open;
+the [constructed carry](research/direct-bfs-constructed-carry-prototype/README.md)
+and [temporal carry](research/direct-bfs-temporal-constructed-carry-prototype/README.md)
+clients provide the direct cyclic product-carry inputs from explicit word
+bounds, without assuming carry vanishes;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
