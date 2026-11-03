@@ -94,6 +94,15 @@ consistency sentence. The audit is not a fresh Lean replay; package-transitive,
 dynamic and complete historical source-to-object ancestry remain inherited.
 The [decimal display](research/ordinary12-direct90-decimal-display/README.md)
 has external graph, payload and PDF checks; no Lean PDF semantics is claimed.
+
+An [89-operation absorbed-first-root draft](research/ordinary12-absorb89-probe/README.md)
+has an externally checked live gate count and Lean-checked forward algebraic
+comparison. Its graph-specific model lemmas obtain both signed first-root
+branches, transport divisibility, negative-branch reflection at the first
+root, and a positive-branch growth bound conditional on a Pell index at least
+3. Deriving that index from an actual graph zero and proving preservation of
+the full graph under reflection remain open. The draft has no established
+reverse existence, halt equivalence, or iPRA endpoint.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
