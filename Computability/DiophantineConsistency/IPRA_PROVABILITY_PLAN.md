@@ -22,9 +22,12 @@ A [build preflight](research/nine-variable-ipra/bounded-build-preflight/README.m
 identifies 103 missing project modules across the two source-declared closures
 on the selected historical provider. Existing object availability and the
 sampled source comparisons do not authenticate its full dependency closure.
-The first two author-side stages of the [resumable build](reviews/nine-variable-ipra-first-two-stages-author-audit/README.md)
-passed an independent artifact check; the second uses a source-bound warning
-baseline and has an earlier rejected object with a different unexplained hash.
+The first five author-side stages of the resumable build passed independent
+artifact checks: [stages 1–2](reviews/nine-variable-ipra-first-two-stages-author-audit/README.md)
+and [stages 3–5](reviews/nine-variable-ipra-stages-3-5-author-audit/README.md).
+The second uses a source-bound warning baseline and has an earlier rejected
+object with a different unexplained hash. These are intermediate results, not
+a replay of either endpoint.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
 87-operation evaluator. Its exact fixed-port literal now has a no-premise
@@ -860,7 +863,10 @@ band, bare rotations, temporal digit and incoming carry, and assume the
 corresponding `CarryInput`. A later [carry-input and packed-digit client](research/ordinary12-ipra-bridge/compact44-constructed-carry-input-prototype/README.md)
 constructs that input for the exact symbolic cyclic product from explicit
 radix and temporal bounds and transfers local cell-digit facts to the packed
-word. The required cell construction and temporal bounds remain open.
+word. The required cell construction and packed-source bounds remain open.
+A [temporal-rotation join](research/ordinary12-ipra-bridge/compact44-temporal-constructed-carry-prototype/README.md)
+derives the temporal bound and cyclic congruence directly from the packed
+source bound, retaining the source digit cap and the other column terms.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
