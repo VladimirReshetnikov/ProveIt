@@ -84,8 +84,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage203/README.md)
-has rebuilt its first 207 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage213/README.md)
+has rebuilt its first 217 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
 separately source-pinned, exact-warning baselines, with a fourth at stage 197
@@ -1343,6 +1343,12 @@ over the fresh AQ29 author provider passed, as did a separate [artifact audit](r
 It is a historical hybrid. A later [paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
 matched all 16 additions and passed an [independent complete-result audit](reviews/ipra-standard-current14-historical-pair-independent-audit/README.md).
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
+A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
+now identifies 715 explicit Lean decimal digits with the imported machine seed;
+its [independent review](reviews/current14-seed-lines-binding-independent/README.md)
+separately checks those digits against the TeX and PDF text extraction. This
+does not formalize PDF semantics or authenticate the inherited seed object's
+source ancestry.
 The language keeps `<` as a
 symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`. In the
 equality-only language, [`IPRAReferenceCurrentEndpoint`](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean)
