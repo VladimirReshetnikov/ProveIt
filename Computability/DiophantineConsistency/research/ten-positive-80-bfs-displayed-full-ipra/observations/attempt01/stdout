@@ -1,0 +1,46 @@
+BFSDisplayedFullIPRA.standard_consistency :
+  standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero
+        (positiveShift
+          (graph
+              (integerPorts
+                (ports BFSDisplayedBetaIPRA.displayedBeta (BFSDisplayedSlots.displayedKernel rho)
+                  ((2 ^ 67) ^ 8807 - 1 - ∑ j ∈ CompactConcreteMask.support, (2 ^ 67) ^ j - 2 * (2 ^ 67) ^ 1063)
+                  (BFSHighSymbolic.displayedHigh rho)))).output) 🡘
+      ∼mappedNativeRefutation embedding
+BFSDisplayedFullIPRA.standard_translated_consistency :
+  standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero
+        (positiveShift
+          (graph
+              (integerPorts
+                (ports BFSDisplayedBetaIPRA.displayedBeta (BFSDisplayedSlots.displayedKernel rho)
+                  ((2 ^ 67) ^ 8807 - 1 - ∑ j ∈ CompactConcreteMask.support, (2 ^ 67) ^ j - 2 * (2 ^ 67) ^ 1063)
+                  (BFSHighSymbolic.displayedHigh rho)))).output) 🡘
+      ((Semiformula.lMap embedding) sourceSentence)ᴺ
+BFSDisplayedFullIPRA.reference_consistency :
+  referenceTheory ⊢
+    erase
+        (IPRAExpressionNative.nativeNoZero
+          (positiveShift
+            (graph
+                (integerPorts
+                  (ports BFSDisplayedBetaIPRA.displayedBeta (BFSDisplayedSlots.displayedKernel rho)
+                    ((2 ^ 67) ^ 8807 - 1 - ∑ j ∈ CompactConcreteMask.support, (2 ^ 67) ^ j - 2 * (2 ^ 67) ^ 1063)
+                    (BFSHighSymbolic.displayedHigh rho)))).output)) 🡘
+      ∼erase (mappedNativeRefutation embedding)
+BFSDisplayedFullIPRA.reference_translated_consistency :
+  referenceTheory ⊢
+    erase
+        (IPRAExpressionNative.nativeNoZero
+          (positiveShift
+            (graph
+                (integerPorts
+                  (ports BFSDisplayedBetaIPRA.displayedBeta (BFSDisplayedSlots.displayedKernel rho)
+                    ((2 ^ 67) ^ 8807 - 1 - ∑ j ∈ CompactConcreteMask.support, (2 ^ 67) ^ j - 2 * (2 ^ 67) ^ 1063)
+                    (BFSHighSymbolic.displayedHigh rho)))).output)) 🡘
+      erase ((Semiformula.lMap embedding) sourceSentence)ᴺ
+'BFSDisplayedFullIPRA.standard_consistency' depends on axioms: [propext, Classical.choice, Quot.sound]
+'BFSDisplayedFullIPRA.standard_translated_consistency' depends on axioms: [propext, Classical.choice, Quot.sound]
+'BFSDisplayedFullIPRA.reference_consistency' depends on axioms: [propext, Classical.choice, Quot.sound]
+'BFSDisplayedFullIPRA.reference_translated_consistency' depends on axioms: [propext, Classical.choice, Quot.sound]
