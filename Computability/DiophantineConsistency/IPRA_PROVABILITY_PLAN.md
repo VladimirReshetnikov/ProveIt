@@ -185,7 +185,9 @@ replay. A [strong/auxiliary index theorem](research/ten-positive-80-folding-prot
 now supplies the strong and odd adjacent indices without assuming the main
 norm. A [graph-specific signed congruence](research/ten-positive-80-residue-binding-prototype/README.md)
 is checked and [joined to the same magnitude witness](research/ten-positive-80-folding-joined-prototype/README.md)
-as the indices. The remaining all-index folding, machine calibration and iPRA
+as the indices. A [folding-input corollary](research/ten-positive-80-folding-consequences-prototype/README.md)
+then gives `c≤I` and the signed congruence between `c` and the auxiliary
+ordinate. The remaining all-index folding, machine calibration and iPRA
 endpoint remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
