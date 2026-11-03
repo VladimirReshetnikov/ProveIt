@@ -33,19 +33,19 @@ evidence; it reports exact degree 164. This trades a larger degree for two
 fewer operations than the parent’s 94-operation, degree-84 variant. The
 finite graph and degree checks are external to Lean.
 
-There is a specific route to an all-model existence equivalence, not yet a
-checked end-to-end theorem for this candidate. In a model of `IΣ₁`, with
-natural-number ports and positive β and all witnesses positive, the existing
-`FreeJRootBinding.first_factor_forces_Y_divisible` theorem gives `q³ ∣ Y` at
-an old zero. Since `q` and `Y` are positive, the quotient `s` is positive,
-including in nonstandard models. Conversely, a positive new witness maps to
-an old witness by `Y=q³s`. In the model's ordered difference ring, `q³` is
-nonzero; the scaling identity and nonnegativity of squares give the two zero
-implications. This route depends on the previous divisibility theorem and an
-as-yet-unchecked graph-to-expression and model join. In particular, this
-packet does **not** claim an iPRA derivation, a Lean proof of the proposed
-92-gate equivalence, an end-to-end fixed-port file/PDF binding, or global
-minimality.
+A separately checked Lean model bridge now proves, in every model of `IΣ₁`,
+that this graph has a positive zero exactly when the represented machine has
+an internal halt. Its witness map uses the previously proved `q³ ∣ Y`
+condition: positive `Y` gives a positive quotient `s`, including in
+nonstandard models. In the other direction, `Y=q³s` preserves positivity.
+The bridge uses the residual scaling identity in the model's ordered
+difference ring and checks the fixed β positivity premise. See [HALT.md](HALT.md)
+for the exact theorem, byte-recipe version, selected-provider evidence and
+remaining ancestry limits.
+
+The Lean graph and JSON source remain connected by an external check. This
+packet does **not** claim an iPRA derivation, an end-to-end fixed-port
+file/PDF binding inside Lean, or global minimality.
 
 Run `python3 -I -S -B check_graph.py` from this directory. The script rejects
 optimized Python, pins the parent graph, and does not modify artifacts.
