@@ -15,8 +15,9 @@ states native, standard and equality-only iPRA equivalences without hypotheses;
 the separate [CURRENT2011 nine-variable endpoint](Lean/DiophantineConsistency/IPRANineCurrent.lean)
 does the same for a different equation. The merged [nine-variable plan](research/nine-variable-ipra/PLAN.md)
 reports author-side builds of their model dependencies and endpoints. These
-reports are not independent replay packets; the new source and its binding to
-the published equation are under separate inspection.
+reports are not independent replay packets. A separate [source-evidence inspection](reviews/nine-variable-ipra-endpoint-source-evidence/README.md)
+checks the endpoint statements and the source-level expression binding; it
+does not reproduce the reported builds or interpret the document's bytes.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
 87-operation evaluator. Its exact fixed-port literal now has a no-premise
@@ -796,6 +797,13 @@ using an explicitly identified alias and separate equality transports. This
 author-side model result passed an independent [source and artifact audit](reviews/compact44-controller-abstract-bridge-artifact-audit/README.md)
 with inherited provider qualifications; the rank-variation identity and
 construction obligations remain open.
+A subsequent [symbolic rank-calibration client](research/ordinary12-ipra-bridge/compact44-symbolic-rank-calibration-prototype/README.md)
+uses that unit to produce an abstract definable Boolean selector with the
+stated congruence, under two explicit size and stride bounds. Its compact
+controller source is a mechanically checked triangle-only adaptation; the
+single-author run retains its documented linter warnings and inherited
+provider limitations. This does not establish safe physical dummy locations
+or the packed-rank variation identity.
 Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
 and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
 found no defect in the inspected arguments; these reviews predate the joined
