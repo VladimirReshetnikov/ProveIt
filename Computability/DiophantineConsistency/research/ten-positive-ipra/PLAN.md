@@ -26,8 +26,8 @@ For the direct-BFS symbolic ports, the independently reviewed
 that every positive trace75 zero yields an internal machine halt in each
 `IΣ₁` model. Its provider incorporates the independently audited
 [14-stage fresh-provider replay](../trace75-fresh-provider-rebuild/README.md).
-This is **one direction**, not a model equivalence or an iPRA endpoint; the
-earlier baseline, supplements and package/dynamic ancestry remain inherited.
+This is the zero-to-halt direction. The earlier baseline, supplements and
+package/dynamic ancestry remain inherited.
 The direct-BFS symbolic kernel is not yet formally identified with the
 retained JSON/gzip coefficient bytes.
 
@@ -39,10 +39,16 @@ multiplier, under explicit first-Pell, phase, power and size hypotheses. The
 [reverse graph client](../trace75-unscaled-reverse-graph-prototype/README.md)
 binds that tuple to the actual registers, and the [packing client](../trace75-packing-reverse-graph-prototype/README.md)
 derives its assumptions from one compact packing and explicit seed conditions.
-Deriving those conditions from a direct-BFS halt remains open. These two clients
-use a mixed historical-provider overlay with five recorded object differences;
-their ancestry has not been coherently rebuilt. Neither the converse nor the
-syntactic iPRA adapter may be inferred from these conditional results.
+An exploratory [halt client](../trace75-bfs-halt-graph-prototype/README.md)
+now derives the conditions from an internal halt and model-cast ports, and
+the [model-iff client](../trace75-bfs-model-iff-prototype/README.md) joins both
+directions at the stated symbolic natural ports. These clients use a mixed
+historical-provider overlay with five recorded object differences. Moreover,
+the earlier fresh trace provider replaced eight BFS baseline objects in the
+halt-seed closure. Their combined ancestry has not been coherently rebuilt;
+the [compatible-provider plan](../trace75-bfs-compatible-provider-plan/README.md)
+records the affected cone. No syntactic iPRA endpoint or external coefficient
+file binding follows from this exploratory model equivalence.
 
 ## The source dependency (compact44 tuple)
 
@@ -112,7 +118,7 @@ Codex. A stage changes hands only when this section says so.
 | K9 | normalized rank and `p = R` | `ArithmeticPellIndexDivisibility.relaxed_auxiliary`; generic [rank reduction](../pell-rank-generic-rebuild/README.md) | [rank exactness](../trace75-root-probe/RANKEXACT.md) checked for beta ≥ 31 and explicit mask bounds; see [audit](../../reviews/trace75-rank-index-exact-independent/README.md) and the subsequent fresh-provider replay |
 | K10 | q3-chart integrality, uniform ratio estimate, projector ⇒ `X = 2^R`, `h ∣ B` | [weighted product height](../trace75-root-probe/PRODUCTHEIGHT.md) and arithmetic Pell growth | [X = 2^R](../trace75-root-probe/GRAPHPOWER.md) and [natural transport with `B = h*t`](../trace75-root-probe/NATURALTRANSPORT.md) checked under explicit port bounds. The affected chain was subsequently replayed on the fresh provider; inherited baseline and outside-ancestry limits remain |
 | K11 | completeness: outer data ⇒ positive zero, via (7.1) and (7.2) | [unscaled reverse data](../trace75-unscaled-reverse-data-prototype/README.md) and [natural parts binding](../trace75-natural-parts-binding-prototype/README.md) | conditional pieces checked; actual register binding and halt-derived inputs remain open, with historical reverse-data ancestry inherited |
-| K12 | assembly: kernel iff + `SourceModel` ⇒ bridge ⇒ native/standard/reference endpoints | `IPRAExpressionNative.equivalence_of_bridge`, `IPRAStandardTheory.provable_iff` | [positive zero ⇒ model halt](../trace75-bfs-model-halt-prototype/README.md) checked and audited for direct-BFS symbolic ports; converse and iPRA endpoints remain open |
+| K12 | assembly: kernel iff + `SourceModel` ⇒ bridge ⇒ native/standard/reference endpoints | `IPRAExpressionNative.equivalence_of_bridge`, `IPRAStandardTheory.provable_iff` | [model iff](../trace75-bfs-model-iff-prototype/README.md) checked on mixed providers for direct-BFS symbolic ports; compatible replay and iPRA endpoints remain open |
 
 For the remaining K6 branch, [graph-derived index-two algebra](../trace75-root-probe/THREETWO.md)
 gives the exact first-parameter and carrier equations and a signed eta identity
