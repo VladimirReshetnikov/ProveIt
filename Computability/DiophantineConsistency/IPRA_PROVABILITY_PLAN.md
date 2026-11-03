@@ -293,8 +293,14 @@ applies that lower bound to actual positive graph zeros. A separate
 and [rounding theorem](research/ten-positive-scaled-rounding-prototype/README.md)
 are checked under explicit inequalities. A [population join](research/ten-positive-80-population-sandwich-prototype/README.md)
 derives the half-binomial identity and population bound if both strict
-sandwiches hold for the same graph index. Discharging the graph's upper
-sandwich remains open.
+sandwiches hold for the same graph index. A subsequent [graph sandwich join](research/ten-positive-80-sandwich-both-prototype/README.md)
+now derives both strict inequalities for one actual graph index. The
+[population composition](research/ten-positive-80-population-model-prototype/README.md)
+uses that witness to derive the half-binomial identity and population bound
+from an actual zero, without assuming either sandwich or the identity. Its
+symbolic beta and radix hypotheses remain explicit. An [independent audit](reviews/ten-positive-80-both-sandwich-independent/README.md)
+checks the same-index joins and selected receipts without replaying Lean;
+machine decoding and iPRA remain separate.
 After power recovery, an [unweighted projection](research/ten-positive-80-projection-product-prototype/UNWEIGHTED.md)
 derives `H ∣ Kpos` directly from the Pell norm, without canceling `b` or the
 power, and obtains a positive natural quotient under the same port bounds.
