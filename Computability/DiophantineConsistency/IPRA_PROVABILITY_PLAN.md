@@ -78,6 +78,13 @@ remains an unchecked draft. A [standalone decimal display](research/ordinary12-x
 and its [independent review](reviews/ordinary12-xq91-decimal-independent/README.md)
 externally check the 91 rows and fixed-coefficient recipes; these are not
 Lean theorems about PDF or filesystem semantics.
+
+A possible further reduction replacing `gamma+w` with a single positive input
+has [conditional direct-main lemmas](research/ordinary12-direct-main-probe/README.md)
+and an [independent review](reviews/ordinary12-direct-main-independent/README.md).
+They require explicit norm, balance and bounds and do not establish those
+conditions for a new graph, nor prove soundness, completeness or iPRA
+provability for a 90-operation equation.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
@@ -125,8 +132,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage306-warning-retry/README.md)
-has rebuilt its first 306 of 425 modules. A missing declaration in a
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage310-warning-retry/README.md)
+has rebuilt its first 310 of 425 modules. A missing declaration in a
 historical provider required a checked local source repair at stage 276;
 similar later references and inherited provider freshness remain open. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
