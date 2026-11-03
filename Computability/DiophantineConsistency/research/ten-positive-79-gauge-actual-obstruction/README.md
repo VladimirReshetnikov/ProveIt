@@ -1,0 +1,7 @@
+# Small-C obstruction to the actual moved guard
+
+`Mask79ActualObstruction.no_moved_guard` proves in every supported IΣ₁ model, for arbitrary ports and valuations, that if `C≤q*b` and the original mask guard fails (`q≤F+C`), there is no model parameter `t` satisfying both `q*b*t<C` and the **actual** moved guard `(F+b*t)+(C−q*b*t)<q`. This strengthens the [small-C obstruction for a sufficient gap criterion](../ten-positive-79-gauge-small-obstruction/README.md): it rules out the proposed gauge's positive-C move itself in this region, independently of the auxiliary `n` bound.
+
+The theorem makes no graph-zero assumption and does not show that a positive 79 graph zero exists in this region. It does not rule out another transformation or prove/disprove unrestricted 79/80 equivalence. In particular, showing a useful parameter exists for every unguarded positive zero would require excluding this region or changing the construction.
+
+Guarded author `observations/attempt01/` and its enclosing tool session exited 0. Source SHA-256 is `88d8a14e07681a86b28082c2173ca230e9d447a356bbf9859ee77c740edcc48c`; terminal SHA-256 is `4098f77288790315e5feb1bb578774dfc15b3d0103028a3322bc87fd00863efa`; output `/tmp/mask79-actualobstruction-f9zcqtsm/Mask79ActualObstruction.olean` SHA-256 is `e52bb646b781e921432af8bb13e07207643c7ea245b74e9212836b1b35abe6b8`. The direct obstruction object and selected predecessors are pinned; transitive historical project/package/dynamic ancestry remains inherited. No independent Lean replay or file semantics is claimed.
