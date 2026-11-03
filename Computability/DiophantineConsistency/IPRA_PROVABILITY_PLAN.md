@@ -163,7 +163,8 @@ Lean. Its reverse positive map requires
 `F+C<q`, which is not established; it is not a proved smaller consistency
 equation or iPRA endpoint. A [guarded model client](research/ten-positive-79-guarded-model-probe/README.md)
 now proves 79-zero implies 80-zero when that inequality is supplied explicitly;
-the unguarded implication remains open.
+the unguarded implication remains open. An [independent guarded audit](reviews/ten-positive-79-guarded-and-bfs-cyclic-independent/README.md)
+checks that premise and the separate cyclic-field receipts without replaying Lean.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
