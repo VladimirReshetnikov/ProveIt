@@ -1,0 +1,68 @@
+import DiophantineConsistency.CompactWordCellClient
+import DiophantineConsistency.ForeignBandGeometry
+
+/-! Construct an inverse of the compact44 payload-slot map, without a
+full 8,807-entry model table. Slot codes are one-based; zero means absent. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+set_option maxHeartbeats 4000000
+noncomputable section
+namespace CompactCellCopyCode
+open DiophantineConsistency
+open DiophantineConsistency.ArithmeticWangTable
+open CompactSymbolicKernel
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The inverse indices for the contiguous positions 983 through 1031. -/
+def nearCodes : List ℕ := [26,27,28,29,30,31,32,33,34,38,0,0,0,0,0,0,0,0,0,0,
+  18,19,20,21,22,23,24,25,37,0,9,10,11,12,13,14,15,16,17,36,1,2,3,4,5,6,7,8,35]
+
+def copyCode (k : V) : V :=
+  if k = 1095 then 39 else if k = 2195 then 40 else if k = 3296 then 41
+  else if 983 ≤ k then tabValue nearCodes 0 (k-983) else 0
+
+instance near_table_definable : 𝚺₁-Function₁[V] (tabValue nearCodes 0) :=
+  (tab_defined nearCodes 0).to_definable.of_zero
+
+theorem copyCode_definable : 𝚺₁-Function₁[V] copyCode := by
+  have hR : 𝚺₁.Definable (fun v : Fin 2 → V =>
+    (v 1=1095 ∧ v 0=39) ∨
+    (v 1≠1095 ∧ v 1=2195 ∧ v 0=40) ∨
+    (v 1≠1095 ∧ v 1≠2195 ∧ v 1=3296 ∧ v 0=41) ∨
+    (v 1≠1095 ∧ v 1≠2195 ∧ v 1≠3296 ∧ 983≤v 1 ∧
+      v 0=tabValue nearCodes 0 (v 1-983)) ∨
+    (v 1≠1095 ∧ v 1≠2195 ∧ v 1≠3296 ∧ v 1<983 ∧ v 0=0)) := by definability
+  apply hR.of_iff
+  intro v
+  unfold copyCode
+  by_cases h1 : v 1=1095 <;> by_cases h2 : v 1=2195 <;>
+    by_cases h3 : v 1=3296 <;> by_cases h4 : 983≤v 1 <;> simp [h1,h2,h3,h4,not_le.mp,not_lt.mpr]
+
+/-- Selectors and the dummy position cannot be mistaken for copy slots. -/
+theorem below_copy (k : V) (hk : k<943) : copyCode k=0 := by
+  unfold copyCode
+  have h1 : k≠1095 := ne_of_lt (lt_trans hk (by norm_num))
+  have h2 : k≠2195 := ne_of_lt (lt_trans hk (by norm_num))
+  have h3 : k≠3296 := ne_of_lt (lt_trans hk (by norm_num))
+  have h4 : ¬983≤k := not_le_of_gt (lt_trans hk (by norm_num))
+  simp [h1,h2,h3,h4]
+
+theorem at_dummy : copyCode (1063 : V)=0 := by
+  unfold copyCode
+  rw [if_neg (by norm_num), if_neg (by norm_num), if_neg (by norm_num), if_pos (by norm_num)]
+  have ht : (1063 : V)-983 = 80 := by norm_num
+  rw [ht, show (80:V)=((80:ℕ):V) by simp, tab_cast]
+  norm_num [nearCodes]
+
+/-- Every actual payload slot maps back to its one-based payload bit. -/
+theorem at_slot (i : Fin 41) : copyCode (position i:V) = (i.val+1:ℕ) := by
+  fin_cases i <;> norm_num [position, slots, copyCode, nearCodes, tabValue]
+
+#print axioms CompactCellCopyCode.copyCode_definable
+#print axioms CompactCellCopyCode.below_copy
+#print axioms CompactCellCopyCode.at_dummy
+#print axioms CompactCellCopyCode.at_slot
+end CompactCellCopyCode
