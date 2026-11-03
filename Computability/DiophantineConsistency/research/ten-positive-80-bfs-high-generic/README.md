@@ -1,0 +1,5 @@
+# Generic radix-run identities
+
+`BFSHighGeneric.replicate_value` and `run_sum` prove finite-sum formulas for a constant repeated digit, and for such a run prepended to a digit list, over an arbitrary natural radix. These are reusable ingredients for expanding `CompactHighPopulation.highDigits` into the displayed weighted sum without evaluating the enormous fixed radix power. They do not themselves prove that the complete high-mask sum in the PDF equals `highNat`.
+
+The guarded author check `observations/attempt01/` and enclosing tool session exited 0. Source SHA-256 is `8b0fa6e1f6dc150ea1faee57e1b2beb8453a31c1bf2adbb6e1775efb3b5a1225`; terminal SHA-256 is `7c9a936b8f36af025d30f9f386100f8d0692ab448f32afd2d69bd51eaf345d88`. The output `/tmp/bfs-high-generic-nsp2g8fz/BFSHighGeneric.olean` has SHA-256 `cdb9593b8e095fbe92ecc3d89fef9e7c77c4a98a3b1688b4988d6d48bc7cc1ff`. Both direct imports and selected related objects are pinned; full historical-source, package-transitive and dynamic ancestry is inherited, and no independent Lean replay or file binding is claimed.
