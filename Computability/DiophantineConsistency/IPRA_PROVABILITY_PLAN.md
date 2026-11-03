@@ -444,7 +444,9 @@ but not the full inverse maps or row correspondences. A
 [bounded conjugacy sweep](research/direct-bfs-lean-conjugacy-coverage-prototype/README.md)
 has independently reviewed coverage and successful endpoint pilots; its
 full 59-stage Lean author run has exited successfully with all ranges accepted.
-The separate completed receipts still need independent audit. The generated aggregate is unchecked,
+An [independent sweep audit](reviews/direct-bfs-conjugacy-full-sweep-independent/README.md)
+checks all 59 receipts, objects and required axiom reports without replaying Lean.
+The generated aggregate is unchecked,
 so neither a complete finite Lean conjugacy nor a tiling lift is yet claimed.
 The [sweep audit](reviews/direct-bfs-conjugacy-sweep-v2-independent/README.md)
 documents its single-run discipline, pinned inputs and explicit limits. An
