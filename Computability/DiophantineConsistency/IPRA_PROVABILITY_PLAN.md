@@ -516,6 +516,10 @@ proves the generic little-endian byte formula, including boundaries between
 Its recorded checks include boundary-crossing and out-of-range examples. These
 results do not yet establish equality with retained file bytes, gzip decoding,
 the other kernel representation or the displayed tuple.
+A further author-side [sparse-byte client](research/ordinary12-ipra-bridge/compact44-symbolic-k-retained-suffix-exploration/README.md)
+establishes the symbolic natural kernel's exact bit bounds, a 9,171-byte
+middle zero interval and a zero-padded suffix whose last nonzero byte is 8;
+the corresponding retained bytes are checked externally, not bound in Lean.
 Two further single-side explorations give alternative bounded representations
 of that residual. The [bit-rotation client](research/ordinary12-ipra-bridge/compact44-bit-rotation-prototype/README.md)
 represents multiplication by an arbitrary power of two modulo the word modulus
@@ -764,9 +768,10 @@ proves the inverse exists in all IΣ₁ models for the stated power dimensions,
 assuming the concrete residue of `K` modulo `342946332593`. It does not prove
 that residue for `paramKernel (2^67)`, identify the actual rank variation or
 construct the dummy locations; its provider ancestry is inherited.
-A [Horner-residue draft](research/ordinary12-ipra-bridge/compact44-symbolic-k-residue-prototype/README.md)
-records a finite modular decomposition for the missing symbolic residue, but
-the Lean draft has not been compiled.
+A separate author-side [Horner-residue client](research/ordinary12-ipra-bridge/compact44-symbolic-k-residue-prototype/README.md)
+proves the required modular residue for the symbolic natural kernel. Its
+provider differs from the unit client's, so applying the results together
+requires a coherent same-provider rebuild.
 An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
 proves a conditional local aggregate lemma on an existing author-side
 coefficient provider; it does not construct its selector or payload
