@@ -630,6 +630,12 @@ coherent packing and seed tuple, yielding a positive 80 zero under its
 explicit port, positivity, phase, power and size assumptions. This is an
 author check; an [independent packing audit](reviews/ten-positive-packing-reverse-graph-independent/README.md)
 checks its exact premises and direct providers without replaying Lean.
+A [halt-to-80 join](research/ten-positive-packing-reverse-graph-prototype/HALT.md)
+now obtains one packing and seed from the internal halt constructor and
+derives the remaining phase and size assumptions, yielding a positive 80
+zero under all four explicit model port equalities. In particular the kernel
+port is the original symbolic `paramKernel rho`; this author check is not
+yet an iPRA theorem or a binding of the distinct retained BFS payload.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
