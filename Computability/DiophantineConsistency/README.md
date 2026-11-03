@@ -111,7 +111,9 @@ maintained equation's quartic gates
 [`IPRANineChecks`](Lean/DiophantineConsistency/IPRANineChecks.lean)), has its
 own unconditional endpoints. Module map and plan:
 [research/nine-variable-ipra/PLAN.md](research/nine-variable-ipra/PLAN.md).
-These are author builds in the root workspace, not independent replay packets.
+The CURRENT2011-based endpoint and its checks have also passed an
+[incremental author-side replay](reviews/nine-variable-ipra-stages-75-81-author-observation/README.md)
+over a historical provider. These are not independent paired replay packets.
 
 For the maintained 14-variable equation, a [historical paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
 has matched all 16 added modules, including the standard-iPRA endpoint, and
