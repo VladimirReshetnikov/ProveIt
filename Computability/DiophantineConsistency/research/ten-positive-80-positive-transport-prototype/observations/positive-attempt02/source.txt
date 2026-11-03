@@ -1,0 +1,68 @@
+import Direct80SymbolicPortBounds
+import Direct80NaturalTransport
+import Direct80GraphPower
+import Direct80RankThree
+
+/-! Positive natural transport quotient on an actual fixed-port 80 zero. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80PositiveTransport
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011
+open CompactFixedBeta CompactSymbolicPorts
+open TenPositive80Graph TenPositive80Factors TenPositive80NaturalRank
+open TenPositive80NaturalTransport TenPositive80SymbolicPortBounds
+attribute [local irreducible] CompactFixedBeta.betaNat Nat.ofDigits lowNat highNat
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_positive_transport (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hp0 : p 0=betaNat) (hp2 : p 2=lowNat) (hp3 : p 3=betaNat+highNat)
+    (hv : ∀j,0<v j) (hz : InternalZero (graph (integerPorts p)).output v) :
+    q p v<v 5 ∧ ∃ t : V, 0 < t ∧ 0<Cnat p v ∧
+      ((p 1:V)+v 5)*Cnat p v=v 1+b p v*t := by
+  obtain ⟨h31,hl,hh,hodd⟩ := fixed_bounds (V:=V) p hp0 hp2 hp3
+  have hb : 0<(p 0:V) := lt_of_lt_of_le (by norm_num) h31
+  have hq : 0<q p v := add_pos (mul_pos hb (hv 0)) (by simp)
+  have hR := Direct80RankThree.graph_rank_gt_three_q p v h31 hv hz
+  have h2 : 2*q p v≤rankNat p v := by
+    have h23 : 2*q p v≤3*q p v := mul_le_mul_of_nonneg_right (by norm_num) (by simp)
+    exact le_trans h23 (le_of_lt hR)
+  have hp := Direct80GraphPower.graph_power p v h31 hl hh hv hz hodd
+  have hqexp : q p v<Exp.exp (q p v) := lt_exp (q p v)
+  have hsq : q p v*q p v<Exp.exp (q p v)*Exp.exp (q p v) :=
+    lt_of_le_of_lt (mul_le_mul_of_nonneg_left (le_of_lt hqexp) (by simp))
+      (mul_lt_mul_of_pos_right hqexp (lt_of_lt_of_le hq hqexp.le))
+  have hpow : Exp.exp (q p v)*Exp.exp (q p v)=Exp.exp (2*q p v) := by
+    rw [←exp_add]
+    congr 1
+    ring
+  have hw : q p v<v 5 := by
+    apply (mul_lt_mul_iff_of_pos_left hq).mp
+    calc
+      q p v*q p v<Exp.exp (q p v)*Exp.exp (q p v) := hsq
+      _=Exp.exp (2*q p v) := hpow
+      _≤Exp.exp (rankNat p v) := exp_monotone_le.mpr h2
+      _=X p v := hp.symm
+      _=q p v*v 5 := by dsimp [X]; ring
+  obtain ⟨t,hC,ht⟩ := graph_natural_transport p v h31 hl hh hv hz hodd
+  have hgap : v 1+v 2<q p v := (TenPositive80NaturalRank.graph_natural_rank p v hb hv hz).2.2
+  have hF : v 1<q p v := lt_of_le_of_lt (by simp) hgap
+  have hC1 : 1≤Cnat p v := pos_iff_one_le.mp hC
+  have hWle : v 5≤((p 1:V)+v 5)*Cnat p v := by
+    calc
+      v 5≤(p 1:V)+v 5 := by simp
+      _≤((p 1:V)+v 5)*Cnat p v := le_mul_of_one_le_right (by simp) hC1
+  have htpos : 0<t := by
+    by_contra hn
+    have ht0 : t=0 := le_antisymm (le_of_not_gt hn) (by simp)
+    rw [ht0] at ht
+    simp only [mul_zero,add_zero] at ht
+    rw [ht] at hWle
+    exact (not_le_of_gt (lt_trans hF hw)) hWle
+  exact ⟨hw,t,htpos,hC,ht⟩
+
+#print axioms TenPositive80PositiveTransport.graph_positive_transport
+end TenPositive80PositiveTransport

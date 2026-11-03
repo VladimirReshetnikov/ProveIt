@@ -357,7 +357,9 @@ selected-column decoding or machine/color conjugacy. An
 reconciles the radix length with the kernel-independent low-mask support and
 Boolean facts. A [coefficient decoder](research/direct-bfs-lean-coefficient-decoder-prototype/README.md)
 connects the direct selector coefficients to the local no-carry decoder,
-without yet identifying a graph column. An
+and a [raw-column theorem](research/direct-bfs-lean-raw-column-prototype/README.md)
+expresses the full carry column with the direct tile payloads. The selected
+graph-column and machine conclusions are still separate. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
@@ -413,11 +415,15 @@ earlier fresh-offset runner did not individually pin its direct
 `ArithmeticPellCongruences.olean` import; its compile-time bytes are not
 authenticated by the later path/hash observation. A corrected runner and
 both dependent rechecks have now passed with the missing import individually
-pinned and bit-identical output objects; an independent audit of those v2
-receipts remains separate. The
+pinned and bit-identical output objects. An [independent v2 audit](reviews/ten-positive-80-to-90-main-v2-independent/README.md)
+checks these selected receipts and direct inputs without replaying Lean. The
 [independent main-factor review](reviews/ten-positive-80-to-90-main-independent/README.md)
 records the historical limitation and checks the flexible witness scope
 without replaying Lean.
+A [positive transport join](research/ten-positive-80-positive-transport-prototype/README.md)
+derives `q < v₅` and a strictly positive natural transport quotient from the
+actual positive 80-graph zero, still with p₁ arbitrary. This is a prerequisite
+for constructing further source factors, not a source-zero theorem.
 A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
 proves `rank > 3*q` and `q^3 ∣ Y` under explicit beta and positivity bounds,
 without assuming a graph zero. An [independent audit](reviews/ten-positive-80-carry-fresh-interval-independent/README.md)
