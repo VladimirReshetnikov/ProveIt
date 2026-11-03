@@ -26,10 +26,11 @@ the executable expression. `ConZFC` means precisely
 The theorem above is an external Lean theorem about syntactic ZFC consistency.
 The later [`IPRAExplicitZFCFinal`](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
 sources also state native, standard and equality-only iPRA derivability of the
-corresponding equivalence, and the [nine-variable plan](research/nine-variable-ipra/PLAN.md)
-reports author builds. These are not yet independently replayed here; a
-derivation in the object-language ZFC calculus is a separate statement. No
-global simplicity minimum is claimed.
+corresponding equivalence. An [incremental author-side replay](reviews/nine-variable-ipra-complete-author-ledger/README.md)
+has now rebuilt the endpoint on a historical provider; a paired replay and
+complete transitive-closure authentication remain open. A derivation in the
+object-language ZFC calculus is a separate statement. No global simplicity
+minimum is claimed.
 
 [`PositiveZFC.lean`](Lean/DiophantineConsistency/PositiveZFC.lean) also gives
 a closed equation on nine strictly positive integers: replace each original

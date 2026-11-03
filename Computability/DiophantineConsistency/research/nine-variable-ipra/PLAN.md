@@ -12,7 +12,10 @@ obligations of the reduction are theorems: `ModelJonesNine.jonesModel` and
 `ModelProgramLink.programLink`). A second nine-unknown equation,
 `IPRANineCurrent.expression` (Jones applied to the maintained CURRENT2011
 gate system), has its own unconditional endpoints and audit
-(`IPRANineChecks`). The sections below record the plan as executed.
+(`IPRANineChecks`). Both endpoints have since passed a [104-stage author-side
+replay](../../reviews/nine-variable-ipra-complete-author-ledger/README.md) on
+a historical provider. This is not a paired replay or a fully authenticated
+transitive closure. The sections below record the plan as executed.
 
 Target: native, standard and equality-only iPRA proofs that the no-zero
 sentence of `ExplicitZFC.expression` (nine unknowns, Jones 1982 coding of

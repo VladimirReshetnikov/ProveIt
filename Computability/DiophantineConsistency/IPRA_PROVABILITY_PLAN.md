@@ -13,10 +13,10 @@ remain as described below.
 The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
 states native, standard and equality-only iPRA equivalences without hypotheses;
 the separate [CURRENT2011 nine-variable endpoint](Lean/DiophantineConsistency/IPRANineCurrent.lean)
-does the same for a different equation. The latter and its 15 named axiom
-checks have now passed an [incremental author-side replay](reviews/nine-variable-ipra-stages-75-81-author-observation/README.md)
-on a historical provider. The merged [nine-variable plan](research/nine-variable-ipra/PLAN.md)
-reports author-side builds for both endpoints; neither is yet a paired replay.
+does the same for a different equation. Both have now passed a
+[104-stage incremental author-side replay](reviews/nine-variable-ipra-complete-author-ledger/README.md)
+on a historical provider; the endpoint packets retain the 15 CURRENT2011 and
+four ExplicitZFC named axiom reports. Neither is yet a paired replay.
 A separate [source-evidence inspection](reviews/nine-variable-ipra-endpoint-source-evidence/README.md)
 checks the endpoint statements and the source-level expression binding; it
 does not reproduce the reported builds or interpret the document's bytes.
