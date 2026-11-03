@@ -509,7 +509,10 @@ maps the shared graph coordinates, distinct Pell bases, internal period lemma,
 and outstanding carrier and provider obligations. A later [scaled strong-seed theorem](research/ten-positive-scaled-strong-seed-prototype/README.md)
 uses the internal arbitrary-modulus Pell result to construct positive seed
 indices and doubled coordinates for any positive c and τ. It is not yet
-joined to a 90 zero or the remaining 80 carriers.
+joined to a 90 zero or the remaining 80 carriers. A separate
+[unbounded divisible-ordinate theorem](research/ten-positive-pell-ordinate-above-prototype/README.md)
+chooses an internal divisible Pell index above any internal bound; it remains
+to be used to establish the required carrier positivity.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
