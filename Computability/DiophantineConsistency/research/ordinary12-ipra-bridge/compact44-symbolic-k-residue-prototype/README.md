@@ -1,10 +1,12 @@
-# Symbolic compact44 kernel residue: Horner draft
+# Symbolic compact44 kernel residue: Horner calculation
 
-`SymbolicKernelResidue-DRAFT.lean` is **uncompiled**. It proposes proving
-the actual `CompactSymbolicKernelOpaque.paramKernel rho` residue modulo
-`342946332593` without expanding the roughly 593,000-bit integer. No Lean
-theorem, file binding, model unit, graph construction, or iPRA conclusion is
-claimed by this draft.
+`SymbolicKernelResidue.lean` proves the actual natural-number
+`CompactSymbolicKernelOpaque.paramKernel rho` is `284898815895` modulo
+`342946332593`, without expanding the roughly 593,000-bit integer. The
+retained source is byte-for-byte the successful compiler input; its original
+opening comment calling it an uncompiled draft is historical and outdated.
+This is a single-author exploratory build, not a paired replay or a fresh
+authenticated source closure.
 
 The draft follows the older checked `ArithmeticConstructionKernel` method.
 For the exact `Compact943Data.rows` list, define
@@ -32,12 +34,19 @@ uses a separately transcribed selector formula to check these residues:
 | four bare terms and temporal term | 294472239397 |
 | whole proposed `paramKernel rho` | 284898815895 |
 
-The external script actually exited 0. Its reading and transcribed arithmetic
-are evidence for the numbers, not the required kernel-checked equality.
-The open work is to compile the draft on a coherent provider and repair all
-elaboration or resource failures. In particular, the 943-step `decide
-+kernel` may need bounded chunks: prove a list-append law for `run`, split
-the literal list, and certify each intermediate state separately. Then compile
-a client applying `gamma_unit_nat` to the *same* symbolic `paramKernel rho`.
-Even that result would not identify the retained bytes or derive the rank
-variation and dummy-location premises.
+The external script exited 0; its reading and transcribed arithmetic are
+supplementary evidence rather than the Lean proof. The first bounded compile
+exited 1 with a looping nil-case simplification, redundant cast rewrite, and
+an unresolved `ZMod.val` simplification; its exact source and output are
+retained and do not constitute a proof. After those issues were repaired,
+attempt 02 exited 0 in 7.21 seconds with no warnings. Both final theorems
+report only `propext`, `Classical.choice`, and `Quot.sound`, with no
+`sorryAx`. The exact input, output, direct imported-object hash and command
+are in `observations/`; package, transitive and dynamic ancestry are inherited.
+
+The successful build uses a different symbolic-kernel provider from the
+earlier conditional-unit client, and shared imported object hashes differ. A
+client applying `gamma_unit_nat` to this same `paramKernel rho` requires a
+coherent same-provider rebuild before the results can be joined. Neither the
+symbolic residue theorem nor that prospective join identifies retained bytes
+or proves the rank variation, dummy locations, graph zero, or iPRA theorem.

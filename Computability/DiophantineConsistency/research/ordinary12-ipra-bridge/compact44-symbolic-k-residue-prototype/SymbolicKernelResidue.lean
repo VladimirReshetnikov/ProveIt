@@ -21,7 +21,7 @@ theorem evaluate_sum {R : Type*} [CommSemiring R] (r : R)
     evaluate r l = ∑ j : Fin l.length,
       (CompactCoefficientMass.selector l[j.val] : R) * r ^ (l.length - 1 - j.val) := by
   induction l with
-  | nil => simp [evaluate]
+  | nil => simp only [evaluate, List.length_nil, Fin.sum_univ_zero]
   | cons a l ih =>
       simp only [List.length_cons, evaluate, Fin.sum_univ_succ, Fin.val_zero,
         List.getElem_cons_zero, Nat.add_sub_cancel, Nat.sub_zero, Fin.val_succ,
@@ -45,6 +45,7 @@ theorem selector_reflection {R : Type*} [CommSemiring R] (r : R) :
   rw [evaluate_rows, Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro i _
+  have hi : i.val < 943 := i.isLt
   have h1 : 4393-i.val = (942-i.val)+3451 := by omega
   have h2 : 5495-i.val = (942-i.val)+4553 := by omega
   rw [h1, h2, pow_add, pow_add]
@@ -83,8 +84,7 @@ private theorem copies_common : copyReflection (Radix : ZMod Modulus) = 29983974
   decide +kernel
 
 private theorem rho_common : (rho : ZMod Modulus) = Radix := by
-  change ((2 : ℕ)^67 : ZMod Modulus) = Radix
-  rw [Nat.cast_pow, Nat.cast_ofNat]
+  change (2 : ZMod Modulus)^67 = Radix
   reduce_mod_char
 
 theorem symbolic_kernel_cast : (paramKernel rho : ZMod Modulus) = 284898815895 := by
@@ -101,7 +101,8 @@ theorem symbolic_kernel_cast : (paramKernel rho : ZMod Modulus) = 284898815895 :
 
 theorem symbolic_kernel_mod : paramKernel rho % Modulus = 284898815895 := by
   have h := congrArg ZMod.val symbolic_kernel_cast
-  simpa only [ZMod.val_natCast, Nat.mod_eq_of_lt (by decide : 284898815895 < Modulus)] using h
+  have hr : (284898815895 : ZMod Modulus).val = 284898815895 := by decide +kernel
+  simpa only [ZMod.val_natCast, hr] using h
 
 #print axioms symbolic_kernel_cast
 #print axioms symbolic_kernel_mod
