@@ -10,9 +10,8 @@ in both directions in arbitrary IΣ₁ models, and the native module proposes th
 fixed-port theorem by composing that model bridge with the 41-variable one.
 
 The context, zero, maps and norm modules had exploratory compiled objects from
-an earlier provider. The complete model and native modules have not yet been
-compiled or subjected to a guarded replay. No new model or native endpoint is
-claimed on the basis of these source files. The former package provider now has
+an earlier provider. The later author-side results described below compile the
+complete model and native modules; they are not a paired replay. The former package provider now has
 broken links; a replacement requires independently documented provenance and
 the resulting verification must retain its ancestry qualifications.
 
@@ -32,4 +31,6 @@ provider. It retains the original direct-companion guards and inherited
 ancestry limitations. These are sampled disk checks, not continuous resource
 monitoring. Its first [bounded run](../../reviews/adaptive-qm40-native-bounded-replay/README.md)
 compiled all six model modules on the author side, then timed out on the
-native client; the paired replay and native endpoint remain incomplete.
+native client. A subsequent [incremental author-side retry](../../reviews/adaptive-qm40-native-incremental-author/README.md)
+compiled the native endpoint and checks on that provider; the paired replay
+and a fully authenticated current-source closure remain incomplete.
