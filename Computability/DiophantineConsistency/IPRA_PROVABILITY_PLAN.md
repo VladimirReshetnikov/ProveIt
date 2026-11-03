@@ -287,7 +287,9 @@ sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks. A [bounded author-side run](reviews/adaptive-qm40-native-bounded-replay/README.md)
 compiled its six model modules, but timed out on the native client; the
-paired replay and native endpoint remain open. Its [standard-iPRA client](research/ipra-standard-qm40/README.md)
+paired replay and native endpoint remain open. A [separate source review](reviews/adaptive-qm40-model-mathematical-source-review/README.md)
+found no defect in the inspected model witness maps or residual coverage.
+Its [standard-iPRA client](research/ipra-standard-qm40/README.md)
 is still an uncompiled draft requiring coherent native and standard providers.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
