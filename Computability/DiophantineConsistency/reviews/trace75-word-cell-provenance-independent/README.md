@@ -1,0 +1,7 @@
+# Independent review: CompactWordCellClient bounded observation
+
+PASS for the capture-relative observation in `research/trace75-word-cell-provenance/`. We independently rehashed the author JSON, its log and command-named current source/output, the retained source and byte-identical workspace draft, and the final selected object. The JSON records successful exit, a command naming that selected output path and its output hash. Its three named direct `.olean` observations (`CompactForwardCellInputs`, `CompactMarkedTransport`, `Init`) currently resolve to the same paths and hashes as the final selected imports and match the captured header's set of names.
+
+The historical JSON does **not** record the source hash; the equality of the currently present source copies therefore does not atomically link that source to the recorded output or authenticate producer-time bytes. Direct companion bundles, additional dynamic inputs, transitive/package ancestry and external file binding remain open. The initial failed check, caused by a short-versus-qualified module-name expectation, is retained. The author reports actual outer exit 0; the inner terminal does not independently capture that outer exit. No Lean replay was performed.
+
+Checker SHA `f9abee0d298746c0d96aa2729baa215f1481b8ebaa42459ffded97502da924d0`, successful terminal SHA `a9a1e3217fd057c218f466976f1d2f7880ae0dbd300c552d34ff81205bdd2454`, stdout SHA `024ca0ac7ce3c61d49f886da57eee079b8389a7185244439c9cc6f74de1cb238`. Independent checker and output are alongside.
