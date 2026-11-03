@@ -413,6 +413,9 @@ maps are permutations or all rows match. An
 [actual-graph marker join](research/direct-bfs-80-field-markers-prototype/README.md)
 derives the direct vertical and horizontal field equalities including their
 marker bits under the four explicit direct-BFS symbolic port equalities. An
+[independent marker/color audit](reviews/direct-bfs-markers-colors-independent/README.md)
+checks selected direct inputs and the shared graph witness without replaying
+Lean. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
