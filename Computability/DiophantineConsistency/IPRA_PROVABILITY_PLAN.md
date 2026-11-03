@@ -140,7 +140,8 @@ No 88-operation halt or iPRA endpoint is claimed.
 
 A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
 has externally checked liveness and Lean ring identities for the transformed
-residuals. Its proposed input map can be negative even on positive inputs;
+residuals; an [independent audit](reviews/ordinary12-absorb86-signed-graph-independent/README.md)
+checks those selected artifacts without replaying Lean. Its proposed input map can be negative even on positive inputs;
 positive-zero equivalence, halt and iPRA remain unproved.
 
 For the separate ten-positive 84- and 85-operation proposals, a
