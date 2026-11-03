@@ -441,7 +441,11 @@ machine table, the converse, iPRA and formal file binding remain open. A
 [model-valued inverse index map](research/direct-bfs-model-index-map-prototype/README.md)
 preserves represented bounded sequences, and [finite edge reflection](research/direct-bfs-lean-edge-reflection-prototype/README.md)
 maps matching direct edges back to the original typed colors. These author
-results do not yet join model lookup and sequence transport. An
+results are joined by a [model word-transfer theorem](research/direct-bfs-model-word-transfer-prototype/README.md)
+that maps a direct local word to an original-table local word, preserving
+origin, exclusion and both edge equalities. An [actual-graph word join](research/direct-bfs-80-original-word-prototype/README.md)
+applies that transfer to a positive 80 zero at the direct-BFS symbolic ports.
+The coherent machine interface remains separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -584,6 +588,13 @@ once-shifted graph and both mapped-refutation-negation and translated source
 consistency formulations. This is a guarded author check; a concrete tuple
 specialization, full provider-closure review and external file binding remain
 separate, and it does not cover the distinct retained BFS kernel.
+A [fixed symbolic-port client](research/ten-positive-80-symbolic-ipra-client-prototype/FIXED.md)
+now specializes the four hypotheses and provides no-premise Lean statements
+of the four standard/reference derivability equivalences for the once-shifted
+80-row graph with the original symbolic kernel. The accepted author check is
+not yet a complete selected-transitive closure/source-object audit or an
+external JSON/PDF binding; it is not a theorem for the different retained
+BFS coefficient.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. The generic result alone does not derive
