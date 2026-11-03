@@ -305,7 +305,9 @@ symbolic beta and radix hypotheses remain explicit. An [independent audit](revie
 checks the same-index joins and selected receipts without replaying Lean;
 machine decoding and iPRA remain separate. A [saturation theorem](research/ten-positive-80-saturation-prototype/README.md)
 derives the two no-carry conclusions for the same repunit length, conditional
-on explicit repeated-mask arithmetic facts that still need specialization.
+on explicit repeated-mask arithmetic facts. A [symbolic-mask specialization](research/ten-positive-80-fixed-saturation-prototype/README.md)
+now discharges those facts under three explicit port equalities; external
+tuple/file binding and machine decoding remain separate.
 After power recovery, an [unweighted projection](research/ten-positive-80-projection-product-prototype/UNWEIGHTED.md)
 derives `H ∣ Kpos` directly from the Pell norm, without canceling `b` or the
 power, and obtains a positive natural quotient under the same port bounds.
