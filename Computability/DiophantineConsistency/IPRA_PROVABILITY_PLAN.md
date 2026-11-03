@@ -536,6 +536,9 @@ A [generic positive carrier quotient](research/ten-positive-scaled-kappa-generic
 derives the needed projection divisibility from `X=2^R` and `X<ycoord(R,a)`
 without assuming a graph zero. Its hypotheses and the remaining transport
 equation still need to be bound to the same source witnesses.
+A [generic scaled offset](research/ten-positive-scaled-offset-generic-prototype/README.md)
+constructs the natural μ² quotient of the first-Pell index residue without
+an 80-zero hypothesis; it does not assert that quotient is positive.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
