@@ -552,6 +552,9 @@ A [reverse-start join](research/ten-positive-scaled-reverse-start-prototype/READ
 combines the fresh scaled interval, positive first root, offset and projection
 quotients at one X,Y,r under explicit unscaled source hypotheses. It still
 does not establish those hypotheses from a 90 zero or a positive 80 valuation.
+An [independent start audit](reviews/ten-positive-scaled-reverse-start-independent/README.md)
+checks the shared tuple and distinguishes the unscaled `Y*(X+1)` Pell base
+from the scaled `(μY)*(X+1)-1` base, without replaying Lean.
 A [conditional positive carrier theorem](research/ten-positive-reverse-carrier-prototype/README.md)
 uses the two quotients and an explicit `κ<f` bound to construct n>0 and prove
 the signed carrier identity. It does not yet bind that identity to the actual
