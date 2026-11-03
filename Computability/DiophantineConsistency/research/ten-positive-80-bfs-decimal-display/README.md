@@ -13,3 +13,5 @@ To rebuild, invoke `python3 -I -S -B generate.py --output build03` with a fresh 
 - TeX SHA-256 `be7181e835a2b530da007b7b856ea9a799db2f2ad05aef8036a3a95ed21cd849`.
 - PDF SHA-256 `412ebf276d1e3d9b2802d333e020a4b7579f2368660bdede31be665564e40fe7`.
 - Complete BFS K raw SHA-256 `0a86821a704294199c2e1a50379d242c96840a3366e9d965689ba3d74605203f`.
+
+The [independent display review](../../reviews/ten-positive-80-bfs-decimal-independent/README.md) separately checks all 80 rows, the direct-BFS Lean and JSON table, the 943 selectors, 41 slots, full payloads and a full diagonal-polynomial degree certificate. It does not provide Lean file semantics.
