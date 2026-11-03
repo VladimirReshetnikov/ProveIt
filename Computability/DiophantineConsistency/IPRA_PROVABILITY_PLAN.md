@@ -532,6 +532,10 @@ A [scaled auxiliary join](research/ten-positive-scaled-auxiliary-seed-prototype/
 now combines the strong and auxiliary witnesses in one tuple and makes the
 strong root f exceed any given internal bound. It retains explicit phase,
 ordinate and positivity assumptions; graph and carrier binding remain open.
+A [generic positive carrier quotient](research/ten-positive-scaled-kappa-generic-prototype/README.md)
+derives the needed projection divisibility from `X=2^R` and `X<ycoord(R,a)`
+without assuming a graph zero. Its hypotheses and the remaining transport
+equation still need to be bound to the same source witnesses.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
