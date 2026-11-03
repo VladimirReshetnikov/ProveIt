@@ -363,8 +363,13 @@ graph-column and machine conclusions are still separate. A receipt audit
 found that the coefficient-decoder runner did not individually pin its direct
 `ArithmeticWindowCarry.olean` import; a post-hoc hash does not establish its
 compile-time bytes. A corrected author runner and fresh raw-column, raw-parity
-and graph-parity checks have since passed with bit-identical objects; their
-independent v2 audit remains separate. An
+and graph-parity checks have since passed with bit-identical objects. An
+[independent v2 audit](reviews/direct-bfs-carry-decoder-v2-independent/README.md)
+checks the selected direct inputs and provider edges without replaying Lean.
+A [selected-origin lemma](research/direct-bfs-lean-selected-origin-prototype/README.md)
+proves the direct table's index-zero tile agrees with the corresponding old
+origin tile and reuses the generic origin occupancy conclusion after that
+tile is selected; it does not identify the full tables or kernels. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
