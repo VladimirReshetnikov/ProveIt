@@ -38,9 +38,13 @@ open. The [serialized-import inventory](research/ordinary12-ipra-bridge/compact1
 also supports the initial 59-module rebuild within its scoped namespace,
 without certifying all other project or package ancestry. A guarded
 [15-stage author prefix](research/ordinary12-ipra-bridge/compact12-ipra-incremental-rebuild-merged-batch03/README.md)
-has since compiled, but conflicts in `BusyBeaver.*` and another project
-namespace make a broader reverse-impact scan necessary before the proposed
-59-module cone can be considered complete. A separately checked
+has since compiled, but a broader serialized-import reverse-impact scan
+finds a 425-module endpoint ancestor cone: the original 59 omissions plus
+366 affected nine-provider objects. The first 15 rebuilt stages have
+unresolved affected ancestors and must be treated as provisional until
+those predecessors and the stages themselves are rebuilt coherently. The
+source files for the enlarged cone are identifiable; their historical
+source-to-object origins remain incompletely authenticated. A separately checked
 [conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
 also supplies standard and equality-only iPRA conclusions for any positive
 all-model bridge; it has not been joined to the compact bridge in a coherent
