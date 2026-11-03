@@ -1,0 +1,7 @@
+# Old first factor unit at the transformed valuation
+
+`DirectMainOldFirst.lean` proves in every IΣ₁ model, for arbitrary natural ports, that a direct-draft output zero gives the old 95-graph first residual zero and first factor unit at the explicit composed X,Y transformed valuation defined in `DirectMainOrdinary`. No positivity or old whole-graph zero is assumed. The original first residual is a q⁶ multiple of the draft first residual under this transform, so this direction uses no cancellation or division.
+
+Combined with `DirectMainOrdinary.old_ordinary_unit`, this provides the old first and ordinary units, not the old main unit or the old full zero. Model-to-halt equivalence and an internal iPRA proof-existence theorem remain open.
+
+Attempt 01 failed because two definitionally equal port functions needed an explicit `change`; it is retained. Attempt 02 passed with no reported warnings. Source SHA-256 is `9b5e38779581c2ffaaaabd5878d0a64e2279d87ac79b1e20002606f84f2e14f5` and output object is `63214d18e5f2689e705ba359615a80d1675665f2fe2844c7efd021a35a13a1a7`; both axiom reports list `propext`, `Classical.choice`, and `Quot.sound`. The ordinary-binding, first norm, XQ91 model, graph, and XQ91 objects and the selected 1,291-object union were pinned and rechecked. Package, dynamic, and source-to-object ancestry are inherited rather than freshly rebuilt; imported first norm source locally suppresses unused-variable and unused-simp-argument linters. Resource samples and exact pins are in the receipt; temporary paths may disappear.
