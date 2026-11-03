@@ -533,8 +533,9 @@ A [physical field-parity theorem](research/direct-bfs-word-field-parity-prototyp
 derives evenness at nine vertical and eight horizontal field phases without a
 high-mask assumption. A [marker-parity client](research/direct-bfs-word-marker-parity-prototype/README.md)
 adds the adjacent marker positions, covering both full field ranges; the
-anchor phases and parity-to-no-carry step
-remain separate; these results do not yet discharge all six high-mask classes;
+[field no-carry join](research/direct-bfs-word-field-high-prototype/README.md)
+now proves the required high-mask condition on both ranges. The four anchor
+and target phases 2195, 3296, 4393 and 5495 remain open;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)

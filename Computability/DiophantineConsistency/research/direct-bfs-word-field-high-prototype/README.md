@@ -1,0 +1,5 @@
+# Direct-BFS field high-mask disjointness
+
+`DirectBFSWordFieldHigh.lean` combines the checked direct-BFS parity lemmas with the fixed high-mask digit values. For each physical block of a direct local word it proves no binary carry with the high mask at every phase in `1013 ≤ p < 1023` and `1065 ≤ p < 1074`. The model theorem assumes `1 < N` and `s < N` and does not assume high-mask disjointness. Four active anchor/target phases remain, as do BFS completeness and its iPRA endpoint.
+
+Accepted author check `observations/directbfswordfieldhigh-attempt01/`: Lean and outer runner exited 0 without diagnostics; both axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`. The object `/tmp/direct-bfs-wordfieldhigh-jysg1gix/DirectBFSWordFieldHigh.olean` has SHA-256 `c3776f135922c9f6653515d59bf02113358e38cd97804f1c2b2ad764e3aee1ca`. All direct imports are checked against first-resolved pinned objects before and after execution. Project, package, dynamic, and historical source-to-object ancestry are inherited limitations; no independent Lean replay is claimed.
