@@ -1,0 +1,7 @@
+# Compact low-mask digits for the 80 graph
+
+`Direct80FixedDigits.graph_fixed_digits` derives, in every IΣ₁ model, the compact repunit/radix witness, positive C, the exact natural transport equation, the low-mask origin digit and bounded base-2^67 digits, and the high-mask no-carry condition, all for the same actual positive 80-graph zero and the same N. The fixed symbolic port equalities `p 0=betaNat`, `p 2=lowNat`, `p 3=betaNat+highNat` are explicit hypotheses. This connects the previously checked mask saturation and natural transport without assuming a half-binomial identity or sandwich.
+
+The conclusion is not yet the full compact-window or machine-halting theorem; remaining rank phase, decoding, converse, iPRA and external decimal/PDF binding work must be checked separately. The exact transport equation uses the 80 graph's `v 5` as its natural multiplier, with no unproved identification with an older 12-variable witness.
+
+The guarded fresh author check `observations/fixeddigits-attempt01/` exited 0 with no diagnostics; axioms printed were `propext`, `Classical.choice`, `Quot.sound`. Its object `/tmp/tenpositive-80fixeddigits-9k6e3vi2/Direct80FixedDigits.olean` has SHA-256 `5f92689c33d0efc85b6403e851cf94ab60a4905dffc1004474967592ee81cab5`. The runner records resources and selected project-object hashes; inherited source/object, package, and dynamic ancestry have not been independently authenticated, and no independent Lean replay is claimed.

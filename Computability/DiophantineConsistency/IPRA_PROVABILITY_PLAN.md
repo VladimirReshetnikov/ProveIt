@@ -307,7 +307,10 @@ machine decoding and iPRA remain separate. A [saturation theorem](research/ten-p
 derives the two no-carry conclusions for the same repunit length, conditional
 on explicit repeated-mask arithmetic facts. A [symbolic-mask specialization](research/ten-positive-80-fixed-saturation-prototype/README.md)
 now discharges those facts under three explicit port equalities; external
-tuple/file binding and machine decoding remain separate.
+tuple/file binding and machine decoding remain separate. A [fixed-digit join](research/ten-positive-80-fixed-digits-prototype/README.md)
+adds the exact natural transport, origin digit and bounded low-mask digits
+for the same graph zero and radix length; the full compact window and rank
+phase are not yet established.
 After power recovery, an [unweighted projection](research/ten-positive-80-projection-product-prototype/UNWEIGHTED.md)
 derives `H ∣ Kpos` directly from the Pell norm, without canceling `b` or the
 power, and obtains a positive natural quotient under the same port bounds.
