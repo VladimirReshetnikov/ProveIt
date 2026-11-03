@@ -496,7 +496,10 @@ prerequisite for high-mask arguments; a [lower-mass refinement](research/direct-
 and its [exact-definition alias](research/direct-bfs-kernel-lower-mass-alias-prototype/README.md)
 supply a stronger bound needed for [high-padding size](research/direct-bfs-high-padding-size-prototype/README.md).
 A [phase-zero theorem](research/direct-bfs-phase-zero-high-prototype/README.md)
-proves high-mask no-carry for that phase; other phases remain open;
+proves high-mask no-carry for that phase; a [padding-tail theorem](research/direct-bfs-high-padding-prototype/README.md)
+handles the terminal zero digits. An [active-phase packing reduction](research/direct-bfs-active-phase-packing-prototype/README.md)
+reduces the remaining high-mask proof to six explicitly listed phase classes,
+which remain assumptions. This is not yet completeness;
 the [constructed carry](research/direct-bfs-constructed-carry-prototype/README.md)
 and [temporal carry](research/direct-bfs-temporal-constructed-carry-prototype/README.md)
 clients provide the direct cyclic product-carry inputs from explicit word
