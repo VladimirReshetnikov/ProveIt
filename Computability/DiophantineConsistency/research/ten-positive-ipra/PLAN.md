@@ -50,7 +50,9 @@ the [compatible-provider plan](../trace75-bfs-compatible-provider-plan/README.md
 records the affected cone. A [31-stage compatible trace replay](../trace75-bfs-compatible-provider-rebuild/README.md)
 and [13-stage reverse replay](../trace75-bfs-compatible-reverse-rebuild/README.md)
 have since passed and preserved the captured BFS halt-seed closure. The
-forward model-halt chain and final clients still require replay on that union;
+[21-stage forward replay](../trace75-bfs-compatible-forward-rebuild/README.md)
+has also passed and preserved the reverse and BFS closures on the same union.
+The final model-iff and iPRA clients still require replay on that union;
 four affected baseline objects and package/dynamic ancestry remain inherited.
 An [exploratory iPRA client](../trace75-bfs-ipra-draft/README.md) checks the
 proof-existence statements on the mixed provider, not yet on the compatible
@@ -126,7 +128,7 @@ Codex. A stage changes hands only when this section says so.
 | K9 | normalized rank and `p = R` | `ArithmeticPellIndexDivisibility.relaxed_auxiliary`; generic [rank reduction](../pell-rank-generic-rebuild/README.md) | [rank exactness](../trace75-root-probe/RANKEXACT.md) checked for beta ≥ 31 and explicit mask bounds; see [audit](../../reviews/trace75-rank-index-exact-independent/README.md) and the subsequent fresh-provider replay |
 | K10 | q3-chart integrality, uniform ratio estimate, projector ⇒ `X = 2^R`, `h ∣ B` | [weighted product height](../trace75-root-probe/PRODUCTHEIGHT.md) and arithmetic Pell growth | [X = 2^R](../trace75-root-probe/GRAPHPOWER.md) and [natural transport with `B = h*t`](../trace75-root-probe/NATURALTRANSPORT.md) checked under explicit port bounds. The affected chain was subsequently replayed on the fresh provider; inherited baseline and outside-ancestry limits remain |
 | K11 | completeness: outer data ⇒ positive zero, via (7.1) and (7.2) | [unscaled reverse data](../trace75-unscaled-reverse-data-prototype/README.md) and [natural parts binding](../trace75-natural-parts-binding-prototype/README.md) | conditional pieces checked; actual register binding and halt-derived inputs remain open, with historical reverse-data ancestry inherited |
-| K12 | assembly: kernel iff + `SourceModel` ⇒ bridge ⇒ native/standard/reference endpoints | `IPRAExpressionNative.equivalence_of_bridge`, `IPRAStandardTheory.provable_iff` | [model iff](../trace75-bfs-model-iff-prototype/README.md) checked on mixed providers for direct-BFS symbolic ports; compatible replay and iPRA endpoints remain open |
+| K12 | assembly: kernel iff + `SourceModel` ⇒ bridge ⇒ native/standard/reference endpoints | `IPRAExpressionNative.equivalence_of_bridge`, `IPRAStandardTheory.provable_iff` | [model iff and iPRA endpoints](../trace75-bfs-ipra-draft/README.md) checked on mixed providers for direct-BFS symbolic ports; final client replay on the compatible union remains open |
 
 For the remaining K6 branch, [graph-derived index-two algebra](../trace75-root-probe/THREETWO.md)
 gives the exact first-parameter and carrier equations and a signed eta identity

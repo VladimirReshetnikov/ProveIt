@@ -26,8 +26,8 @@ rows, fixed coefficients, liveness and degree have external finite checks,
 including a structural comparison with the Lean evaluator. Lean also checks
 fixed-port iPRA proof-existence statements on an exploratory mixed provider
 ([endpoint record](research/trace75-bfs-ipra-draft/README.md)). A compatible
-provider has since been used to replay the trace and reverse chains; the
-forward and final iPRA clients still need replay on that provider. Four retained
+provider has since been used to replay the trace, reverse, and forward chains;
+the final iPRA clients still need replay on that provider. Four retained
 baseline source ancestries, package/dynamic inputs and formal external-file
 semantics remain outside those checks. The maintained root equation is
 unchanged. See the [trace75 plan](research/ten-positive-ipra/PLAN.md) for the
