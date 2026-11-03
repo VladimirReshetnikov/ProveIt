@@ -464,7 +464,9 @@ adds definable direct-table fields and identifies them with the symbolic tile
 payload on standard row indices. The direct-family packing and graph-witness
 construction are still separate. A [cell-digit theorem](research/direct-bfs-cell-digit-prototype/README.md)
 adds jointly definable Boolean selector, dummy and payload-copy digits; it
-does not yet construct represented cells or packing. An
+does not itself construct packing. A [represented-cell theorem](research/direct-bfs-packed-cell-prototype/README.md)
+now packs and recovers those digits in a bounded definable family; global
+packing and its carry/mask conditions remain open. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
