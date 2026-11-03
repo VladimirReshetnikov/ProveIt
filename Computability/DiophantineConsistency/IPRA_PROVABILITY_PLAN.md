@@ -515,6 +515,9 @@ chooses an internal divisible Pell index above any internal bound; it remains
 to be used to establish the required carrier positivity. A
 [strong-seed extension](research/ten-positive-scaled-strong-seed-above-prototype/README.md)
 combines that bound with the doubled seed coordinates. An
+[independent audit](reviews/ten-positive-scaled-strong-above-independent/README.md)
+checks the selected receipts and notes the bound is on the index m, not
+directly on i or f; it does not replay Lean. An
 [independent receipt audit](reviews/ten-positive-scaled-reverse-and-halt-forward-independent/README.md)
 checks the conditional forward halt, scaled-interval, fresh-witness and first
 strong-seed results without replaying Lean.
