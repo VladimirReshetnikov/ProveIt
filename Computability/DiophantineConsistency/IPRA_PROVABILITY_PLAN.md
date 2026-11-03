@@ -377,6 +377,12 @@ proves the temporal shift divisible by 67. A [whole-cell join](research/direct-b
 derives the cell offset modulo the cycle, and a [uniform reset join](research/direct-bfs-80-uniform-reset-prototype/README.md)
 derives the selected temporal and carry resets at the same length. These are
 author checks; complete window and machine decoding remain separate. An
+independent receipt check found that the cell-shift runner did not
+individually pin its direct `SymbolicKBandDraft.olean` import. Its post-hoc
+hash is not evidence of the compile-time bytes; corrected cell-shift and
+downstream checks are in progress. The [independent receipt review](reviews/direct-bfs-cell-and-80-source-data-independent/README.md)
+records this gap and checks the source-data witness scope without replaying
+Lean. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
