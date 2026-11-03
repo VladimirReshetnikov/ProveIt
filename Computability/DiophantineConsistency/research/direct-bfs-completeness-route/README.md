@@ -32,3 +32,6 @@ constructs the outer and auxiliary Pell seed families and a positive shifted
 transport witness from the same internally halted, calibrated BFS packed word.
 The first-carrier and graph valuation remain open, as do the external
 coefficient binding and coherent combined provider audit.
+An [independent source and receipt review](../../reviews/direct-bfs-halt-pell-seed-independent/README.md)
+checks the common word and pulse throughout this join, without a new Lean
+replay or full ancestry audit.
