@@ -1,0 +1,210 @@
+/tmp/trace75-normalize-_jjay7j5/Trace75NormalizeCenter.lean:75:36: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (value75 (Trace75Factors.ports p) fun j => ι (v j)) = 0
+rr : Regs (DiffRing V) := regs (Trace75Factors.ports p) fun j => ι (v j)
+hb : 0 < ↑(p 0)
+tau f V0 Z0 y : V
+ht : 0 < tau
+hf : 0 < f
+hV : 0 < V0
+hy : 0 < y
+hE : E p v = tau * tau
+hf2 : 1 + delta p v * U p v * U p v * E p v = f * f
+hVs :
+  (regs (Trace75Factors.ports p) fun j => ι (v j)).V * (regs (Trace75Factors.ports p) fun j => ι (v j)).V = ι (V0 * V0)
+hZs :
+  (regs (Trace75Factors.ports p) fun j => ι (v j)).Z * (regs (Trace75Factors.ports p) fun j => ι (v j)).Z = ι (Z0 * Z0)
+hZeq : Z0 = M p v * tau * f * y
+right✝ :
+  delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) * (V0 * V0) =
+    1 + (delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) - 1) * (y * y)
+kappa : V
+_hkp : 0 < kappa
+hK : (regs (Trace75Factors.ports p) fun j => ι (v j)).K = (regs (Trace75Factors.ports p) fun j => ι (v j)).H * ι kappa
+t : V
+hB : (regs (Trace75Factors.ports p) fun j => ι (v j)).B = ι (b p v * t)
+_n s : V
+_hn : 0 < _n
+_halign : 2 * _n = Trace75Rank.rankNat p v + 1
+_hk : k v = Trace75Rank.rankNat p v + 1 + 4 * Trace75Pell.firstParam p v * s
+he : (regs (Trace75Factors.ports p) fun j => ι (v j)).e = ι (4 * Trace75Pell.firstParam p v * s)
+L : V := tau * f * y
+rho : V := 4 * Y p v * s
+hkf : kappa < f
+hfL : f ≤ L
+hkL : kappa < L
+hkLR : ι kappa < ι L
+hBnonneg : 0 ≤ rr.B
+hshift : 0 ≤ shift p v
+hMpos : 0 < M p v
+hMne : rr.M ≠ 0
+hZsq : rr.Z * rr.Z = rr.M * ι L * (rr.M * ι L)
+hsign : rr.Z = rr.M * ι L ∨ rr.Z = -(rr.M * ι L)
+hheval : rr.h = ι (b p v)
+hDeval : rr.D = ι (X p v * Y p v)
+heval : rr.e = ι (X p v * Y p v) * ι rho
+hMshape : rr.M = rr.h * rr.D * rr.H
+⊢ (regs (Trace75Factors.ports p) fun j => ι (v j)).h *
+          ((regs (Trace75Factors.ports p) fun j => ι (v j)).X * (regs (Trace75Factors.ports p) fun j => ι (v j)).Y) *
+        ((regs (Trace75Factors.ports p) fun j => ι (v j)).H *
+            (ι (v 7) -
+              (regs (Trace75Factors.ports p) fun j => ι (v j)).V * (regs (Trace75Factors.ports p) fun j => ι (v j)).V *
+                (regs (Trace75Factors.ports p) fun j => ι (v j)).B) +
+          (regs (Trace75Factors.ports p) fun j => ι (v j)).K) -
+      (regs (Trace75Factors.ports p) fun j => ι (v j)).H *
+        ((regs (Trace75Factors.ports p) fun j => ι (v j)).X * (regs (Trace75Factors.ports p) fun j => ι (v j)).Y *
+            (regs (Trace75Factors.ports p) fun j => ι (v j)).B +
+          (regs (Trace75Factors.ports p) fun j => ι (v j)).h * (regs (Trace75Factors.ports p) fun j => ι (v j)).e) =
+    (regs (Trace75Factors.ports p) fun j => ι (v j)).h *
+          ((regs (Trace75Factors.ports p) fun j => ι (v j)).X * (regs (Trace75Factors.ports p) fun j => ι (v j)).Y) *
+        ((regs (Trace75Factors.ports p) fun j => ι (v j)).H *
+            (ι (v 7) -
+              (regs (Trace73ModelTransfer.ports p) (castVal v)).V *
+                  (regs (Trace73ModelTransfer.ports p) (castVal v)).V *
+                (regs (Trace73ModelTransfer.ports p) (castVal v)).B) +
+          (regs (Trace75Factors.ports p) fun j => ι (v j)).K) -
+      (regs (Trace75Factors.ports p) fun j => ι (v j)).H *
+        ((regs (Trace75Factors.ports p) fun j => ι (v j)).X * (regs (Trace75Factors.ports p) fun j => ι (v j)).Y *
+            (regs (Trace75Factors.ports p) fun j => ι (v j)).B +
+          (regs (Trace75Factors.ports p) fun j => ι (v j)).h * (regs (Trace75Factors.ports p) fun j => ι (v j)).e)
+/tmp/trace75-normalize-_jjay7j5/Trace75NormalizeCenter.lean:106:6: error: unsolved goals
+case pos
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (value75 (Trace75Factors.ports p) fun j => ι (v j)) = 0
+rr : Regs (DiffRing V) := regs (Trace75Factors.ports p) fun j => ι (v j)
+hb : 0 < ↑(p 0)
+tau f V0 Z0 y : V
+ht : 0 < tau
+hf : 0 < f
+hV : 0 < V0
+hy : 0 < y
+hE : E p v = tau * tau
+hf2 : 1 + delta p v * U p v * U p v * E p v = f * f
+hVs :
+  (regs (Trace75Factors.ports p) fun j => ι (v j)).V * (regs (Trace75Factors.ports p) fun j => ι (v j)).V = ι (V0 * V0)
+hZs :
+  (regs (Trace75Factors.ports p) fun j => ι (v j)).Z * (regs (Trace75Factors.ports p) fun j => ι (v j)).Z = ι (Z0 * Z0)
+hZeq : Z0 = M p v * tau * f * y
+right✝ :
+  delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) * (V0 * V0) =
+    1 + (delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) - 1) * (y * y)
+kappa : V
+_hkp : 0 < kappa
+hK : (regs (Trace75Factors.ports p) fun j => ι (v j)).K = (regs (Trace75Factors.ports p) fun j => ι (v j)).H * ι kappa
+t : V
+hB : (regs (Trace75Factors.ports p) fun j => ι (v j)).B = ι (b p v * t)
+_n s : V
+_hn : 0 < _n
+_halign : 2 * _n = Trace75Rank.rankNat p v + 1
+_hk : k v = Trace75Rank.rankNat p v + 1 + 4 * Trace75Pell.firstParam p v * s
+he : (regs (Trace75Factors.ports p) fun j => ι (v j)).e = ι (4 * Trace75Pell.firstParam p v * s)
+L : V := tau * f * y
+rho : V := 4 * Y p v * s
+hkf : kappa < f
+hfL : f ≤ L
+hkL : kappa < L
+hkLR : ι kappa < ι L
+hBnonneg : 0 ≤ rr.B
+hshift : 0 ≤ shift p v
+hMpos : 0 < M p v
+hMne : rr.M ≠ 0
+hZsq : rr.Z * rr.Z = rr.M * ι L * (rr.M * ι L)
+hheval : rr.h = ι (b p v)
+hDeval : rr.D = ι (X p v * Y p v)
+heval : rr.e = ι (X p v * Y p v) * ι rho
+hMshape : rr.M = rr.h * rr.D * rr.H
+hshape : rr.Z = rr.h * rr.D * (rr.H * (ι (v 7) - shift p v) + rr.K) - rr.H * (rr.D * rr.B + rr.h * rr.e)
+hZformula : rr.Z = rr.M * (ι (v 7) - shift p v + ι kappa - ι t - ι rho)
+ht0 : 0 ≤ ι t
+hrho0 : 0 ≤ ι rho
+hminus : rr.Z = -(rr.M * ι L)
+w : Fin 10 → V := Function.update v 7 (v 7 + 2 * L)
+hw : ∀ (j : Fin 10), 0 < w j
+hbal : ι (v 7) - shift p v + ι kappa - ι t - ι rho = -ι L
+hbound : shift p w < ι (w 7)
+⊢ ι 2 = 2 ∨ ι L = 0
+/tmp/trace75-normalize-_jjay7j5/Trace75NormalizeCenter.lean:109:16: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  value75 (Trace75Factors.ports p) (Trace75SignFlip.move (fun j => ι (v j)) (ι L))
+in the target expression
+  value75 (Trace73ModelTransfer.ports p) (Trace75SignFlip.move (castVal v) (ι L)) = 0
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (value75 (Trace75Factors.ports p) fun j => ι (v j)) = 0
+rr : Regs (DiffRing V) := regs (Trace75Factors.ports p) fun j => ι (v j)
+hb : 0 < ↑(p 0)
+tau f V0 Z0 y : V
+ht : 0 < tau
+hf : 0 < f
+hV : 0 < V0
+hy : 0 < y
+hE : E p v = tau * tau
+hf2 : 1 + delta p v * U p v * U p v * E p v = f * f
+hVs :
+  (regs (Trace75Factors.ports p) fun j => ι (v j)).V * (regs (Trace75Factors.ports p) fun j => ι (v j)).V = ι (V0 * V0)
+hZs :
+  (regs (Trace75Factors.ports p) fun j => ι (v j)).Z * (regs (Trace75Factors.ports p) fun j => ι (v j)).Z = ι (Z0 * Z0)
+hZeq : Z0 = M p v * tau * f * y
+right✝ :
+  delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) * (V0 * V0) =
+    1 + (delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) - 1) * (y * y)
+kappa : V
+_hkp : 0 < kappa
+hK : (regs (Trace75Factors.ports p) fun j => ι (v j)).K = (regs (Trace75Factors.ports p) fun j => ι (v j)).H * ι kappa
+t : V
+hB : (regs (Trace75Factors.ports p) fun j => ι (v j)).B = ι (b p v * t)
+_n s : V
+_hn : 0 < _n
+_halign : 2 * _n = Trace75Rank.rankNat p v + 1
+_hk : k v = Trace75Rank.rankNat p v + 1 + 4 * Trace75Pell.firstParam p v * s
+he : (regs (Trace75Factors.ports p) fun j => ι (v j)).e = ι (4 * Trace75Pell.firstParam p v * s)
+L : V := tau * f * y
+rho : V := 4 * Y p v * s
+hkf : kappa < f
+hfL : f ≤ L
+hkL : kappa < L
+hkLR : ι kappa < ι L
+hBnonneg : 0 ≤ rr.B
+hshift : 0 ≤ shift p v
+hMpos : 0 < M p v
+hMne : rr.M ≠ 0
+hZsq : rr.Z * rr.Z = rr.M * ι L * (rr.M * ι L)
+hheval : rr.h = ι (b p v)
+hDeval : rr.D = ι (X p v * Y p v)
+heval : rr.e = ι (X p v * Y p v) * ι rho
+hMshape : rr.M = rr.h * rr.D * rr.H
+hshape : rr.Z = rr.h * rr.D * (rr.H * (ι (v 7) - shift p v) + rr.K) - rr.H * (rr.D * rr.B + rr.h * rr.e)
+hZformula : rr.Z = rr.M * (ι (v 7) - shift p v + ι kappa - ι t - ι rho)
+ht0 : 0 ≤ ι t
+hrho0 : 0 ≤ ι rho
+hminus : rr.Z = -(rr.M * ι L)
+w : Fin 10 → V := Function.update v 7 (v 7 + 2 * L)
+hw : ∀ (j : Fin 10), 0 < w j
+hbal : ι (v 7) - shift p v + ι kappa - ι t - ι rho = -ι L
+hbound : shift p w < ι (w 7)
+hmove : castVal w = Trace75SignFlip.move (castVal v) (ι L)
+⊢ value75 (Trace73ModelTransfer.ports p) (Trace75SignFlip.move (castVal v) (ι L)) = 0
+'Trace75NormalizeCenter.positive_zero_to_center' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
