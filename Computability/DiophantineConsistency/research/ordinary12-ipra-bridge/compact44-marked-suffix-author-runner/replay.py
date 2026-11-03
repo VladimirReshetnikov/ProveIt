@@ -8,12 +8,18 @@ PLAN=HERE.parent/'compact44-marked-suffix-source-plan'
 PRIOR=HERE.parent/'compact44-graph-marked-join-plan'
 AUDIT=DC/'reviews/compact44-marked-suffix-source-independent-review'
 PARENT=DC/'reviews/compact44-wang-chunk-author-artifact-independent-audit'
+HIST=DC/'reviews/ha87-isolated-full-author-pass'
+PLANE='DiophantineConsistency.ArithmeticWangPlane'
+PLANE_SHA='cfe5c8bdc328291ded007cbb8181797d55292608ccc4eef264100103839fbcf9'
+NORMALIZED_SHA='6db38ab5d8c4ccdae9406fd92269e618cd31f4803246ad33f46d88204c0b9ac8'
 SEED=Path('/tmp/ipra-wang-chunk-author-build-02/lib')
 SEED_RESULT=SEED.parent/'RESULT.json'
 PKG=Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib')
 LEAN=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
 MON=DC/'research/ordinary12-ipra-bridge/free-j-current-denominator-composition/replay.py'
 PINS={
+ 'history_state':'84c3bc6f6c34c47e67278c43df8580444d32e2946844a4c40c31cfd747f33a90',
+ 'history_log':'fb85934b5529859319550f2c14fa002f0983bb163cdc24aec8d2b3e754a5ef27',
  'plan_scan':'1aca547836bef23a058e5714dbaf33bd86666f931e3e872319efc73d6e78a880',
  'plan_script':'5518eab1c4844af1c27318a15a2974572f702ad31810809d0c6db5aaaf2e0c6d',
  'prior_source':'2aeb7400ef18c7cd4bc0c74b1ca09b53e0c685f6054e99d92617f3af9bab7cc6',
@@ -76,6 +82,22 @@ def report_inventory(source,output):
  need(set(got)==set(names),('axiom report names differ',sorted(names),sorted(got)))
  need(not pat.sub('',output).strip(),('unexpected compiler output',pat.sub('',output)[:1000]))
  return got
+def warning_baseline():
+ state=HIST/'state.json';log=HIST/'logs/DiophantineConsistency_ArithmeticWangPlane-attempt-1.log'
+ need(state.is_file() and H(state)==PINS['history_state'] and log.is_file() and H(log)==PINS['history_log'],'historical warning inputs changed')
+ data=json.loads(state.read_text()); records=[x for x in data['records'] if x.get('module')==PLANE]
+ need(len(records)==1,'historical warning record count')
+ r=records[0];need(r.get('exit')==0 and r.get('verified') is True and r.get('source_sha256')==PLANE_SHA and r.get('log_sha256')==PINS['history_log'] and r.get('log_file')==log.name,'historical warning record mismatch')
+ paths=[x for x in r['command'] if x.endswith('/ArithmeticWangPlane.lean')];need(len(paths)==1,'historical source path mismatch')
+ text=log.read_text(); normalized=text.replace(paths[0],'<SOURCE>')
+ need(text.count(paths[0])==2 and text.count('warning:')==2 and hashlib.sha256(normalized.encode()).hexdigest()==NORMALIZED_SHA,'historical warning content mismatch')
+ return normalized
+def accepted_diagnostics(name,src,sha,text,baseline):
+ need(not re.search(r'(?m)^.*error:|\bsorryAx\b|\bsorry\b',text),('diagnostic rejected',name))
+ if 'warning:' not in text:return text
+ need(name==PLANE and sha==PLANE_SHA and text.count(str(src))==2 and text.count('warning:')==2 and text.replace(str(src),'<SOURCE>')==baseline,('diagnostic rejected',name))
+ need(warning_baseline()==baseline,'historical warning baseline drift')
+ return ''
 def resolve_mapping(mapping,outputs,lib,pkg):
  expected=set()
  for dep,item in mapping.items():
@@ -100,6 +122,7 @@ def run_closure_audit(out,label,expected):
 
 def main():
  need(__debug__ and not sys.flags.optimize,'optimized Python rejected')
+ baseline=warning_baseline()
  need(not any(k.startswith('LD_') or k in ('LEAN_SRC_PATH','LEAN_SYSROOT') for k in os.environ),'unsafe loader environment')
  ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True);ap.add_argument('--preflight-only',action='store_true');args=ap.parse_args()
  out=args.output;need(out.is_absolute() and out.parent.is_dir() and out.parent.resolve().is_relative_to(Path('/tmp')),'output must be under /tmp')
@@ -181,13 +204,13 @@ def main():
   code,peak,reason=monitor.monitored(cmd,env,log,timeout=600);step={'position':pos,'module':name,'compiler_exit':code,'peak_sampled_rss_bytes':peak,'reason':reason,'log':str(log),'log_sha256':H(log),'deps_command':[str(LEAN),'--deps',str(src)],'deps_stdout':dp.stdout,'compiler_command':cmd,'disk_free_bytes':shutil.disk_usage('/tmp').free};steps.append(step)
   (out/'progress.json').write_text(json.dumps({'steps':steps},indent=2)+'\n');print(json.dumps(step),flush=True)
   need(type(code) is int and code==0 and reason is None,('child failed',name,code,reason))
-  text=log.read_text();need(not re.search(r'(?m)^.*(?:error:|warning:)|\bsorryAx\b|\bsorry\b',text),('diagnostic rejected',name))
-  reports=report_inventory(src.read_text(),text)
+  text=log.read_text();clean_text=accepted_diagnostics(name,src,row['sha256'],text,baseline)
+  reports=report_inventory(src.read_text(),clean_text)
   need(obj.is_file() and not obj.is_symlink(),('missing or linked output',name));snapshot=slots(stem);need(all((v is not None) if p==str(obj) else v is None for p,v in snapshot.items()),('unexpected output companion',name));merge_guards(directguards,snapshot);outputs[name]=rec(obj);step['output_slots']=snapshot;step['axiom_reports']=reports
   (out/'progress.json').write_text(json.dumps({'steps':steps},indent=2)+'\n');check(directguards);safe_dir(out,stem.parent);safe_dir(out,src.parent)
- check(directguards);no_link_dirs(lib);no_link_dirs(frozen)
+ check(directguards);no_link_dirs(lib);no_link_dirs(frozen);need(warning_baseline()==baseline,'historical warning baseline drift')
  after_audit=run_closure_audit(out,'closure-audit-after',closure)
- check(directguards);no_link_dirs(lib);no_link_dirs(frozen)
+ check(directguards);no_link_dirs(lib);no_link_dirs(frozen);need(warning_baseline()==baseline,'historical warning baseline drift')
  for path,sha in sourceguards.items():need(Path(path).is_file() and not Path(path).is_symlink() and H(Path(path))==sha,('final source drift',path))
  (out/'RESULT.json').write_text(json.dumps({'status':'PASS_AUTHOR_ONLY_MARKED_SUFFIX','steps':steps,'closure_audit_before':before_audit,'closure_audit_after':after_audit,'final_direct_and_output_slots':directguards,'limitations':pre['limitations']},indent=2)+'\n');print('PASS_AUTHOR_ONLY_MARKED_SUFFIX',flush=True)
 if __name__=='__main__':

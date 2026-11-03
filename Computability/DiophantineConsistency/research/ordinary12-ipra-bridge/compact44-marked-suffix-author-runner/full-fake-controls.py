@@ -38,6 +38,12 @@ if mode=='symlink-output' and n==1:
 elif mode!='missing-output' or n!=1:out.write_bytes(('fake-object-'+str(n)).encode())
 if mode=='output-companion' and n==1:Path(str(out)+'.private').write_bytes(b'extra')
 if mode=='warning' and n==1:print(str(src)+':1:1: warning: injected')
+if mode in ('plane-warning','plane-extra-warning','plane-changed-warning','plane-warning-wrong-path','plane-warning-sorry') and n==7:
+ for line,col in ((252,24),(276,46)):
+  path=str(src) if mode!='plane-warning-wrong-path' else '/tmp/not-the-source.lean'
+  print(path+':'+str(line)+':'+str(col)+": warning: `mul_le_mul_left'` has been deprecated: Use `_root_.mul_le_mul_right` instead"+(' modified' if mode=='plane-changed-warning' and line==252 else ''))
+ if mode=='plane-extra-warning':print(str(src)+':1:1: warning: injected')
+ if mode=='plane-warning-sorry':print('sorryAx')
 names=re.findall(r'^#print\\s+axioms\\s+([\\w.]+)\\s*$',src.read_text(),re.M)
 for name in names:
  if mode=='missing-report' and n==1:continue
@@ -55,7 +61,7 @@ def monitored(cmd,env,log,timeout=600):
  with log.open('x') as f:r=subprocess.run(cmd,env=env,stdout=f,stderr=subprocess.STDOUT,timeout=timeout)
  return r.returncode,123456,None
 '''
-modes=['success','shadow-object','shadow-companion','package-companion','old-object-mutate','late-source-mutate','redirect-directory','symlink-output','missing-output','output-companion','nonzero','warning','wrong-deps','missing-report','extra-axiom','duplicate-report','identical-source-symlink','final-source-mutate','final-shadow-companion','final-old-object-mutate','audit-before-failure','audit-after-failure','prior-scan-drift','closure-check-drift','reviewed-source-drift','reviewed-candidate-drift','closure-schema-failure']
+modes=['success','plane-warning','plane-extra-warning','plane-changed-warning','plane-warning-wrong-path','plane-warning-sorry','shadow-object','shadow-companion','package-companion','old-object-mutate','late-source-mutate','redirect-directory','symlink-output','missing-output','output-companion','nonzero','warning','wrong-deps','missing-report','extra-axiom','duplicate-report','identical-source-symlink','final-source-mutate','final-shadow-companion','final-old-object-mutate','audit-before-failure','audit-after-failure','prior-scan-drift','closure-check-drift','reviewed-source-drift','reviewed-candidate-drift','closure-schema-failure']
 actual=json.loads((HERE.parent/'compact44-marked-suffix-source-plan/source-scan.json').read_text())['sources'];need(len(actual)==22,'real source count')
 with tempfile.TemporaryDirectory(prefix='marked-suffix-full-fake-') as tmp:
  root=Path(tmp);results={}
@@ -87,7 +93,7 @@ with tempfile.TemporaryDirectory(prefix='marked-suffix-full-fake-') as tmp:
   seedresult=case/'seed-result.json';seedresult.write_text(json.dumps({'status':'PASS_AUTHOR_ONLY_CHUNKED_TABLE','steps':[{}]*96}));(parent/'CHECK.json').write_text(json.dumps({'status':'PASS_INDEPENDENT_AUTHOR_ONLY_WANG_ARTIFACT_AUDIT','result_sha256':H(seedresult)}))
   mon=case/'monitor.py';mon.write_text(MON);lean=case/'fake-lean';lean.write_text(FAKE.replace('FAKE_ROOT',repr(str(case))));lean.chmod(0o755);(case/'mode').write_text(mode)
   mod.REPO=repo;mod.PLAN=plan;mod.PRIOR=prior;mod.AUDIT=audit;mod.PARENT=parent;mod.SEED=seed;mod.PKG=pkg;mod.SEED_RESULT=seedresult;mod.MON=mon;mod.LEAN=lean
-  mod.PINS={'plan_scan':H(scan),'plan_script':H(ps),'prior_source':H(prev),'prior_busy':H(busy),'closure_check':H(closure),'closure_terminal':H(audit/'terminal-observation.json'),'closure_audit':H(audit/'audit.py'),'parent_check':H(parent/'CHECK.json'),'parent_terminal':H(parent/'terminal-observation.json'),'parent_audit':H(parent/'audit.py'),'seed_result':H(seedresult),'monitor':H(mon),'lean':H(lean)}
+  mod.PINS={'history_state':H(mod.HIST/'state.json'),'history_log':H(mod.HIST/'logs/DiophantineConsistency_ArithmeticWangPlane-attempt-1.log'),'plan_scan':H(scan),'plan_script':H(ps),'prior_source':H(prev),'prior_busy':H(busy),'closure_check':H(closure),'closure_terminal':H(audit/'terminal-observation.json'),'closure_audit':H(audit/'audit.py'),'parent_check':H(parent/'CHECK.json'),'parent_terminal':H(parent/'terminal-observation.json'),'parent_audit':H(parent/'audit.py'),'seed_result':H(seedresult),'monitor':H(mon),'lean':H(lean)}
   if mode=='prior-scan-drift':prev.write_text('changed')
   if mode=='closure-check-drift':closure.write_text('changed')
   if mode=='reviewed-source-drift':Path(rows[0]['source']).write_text('changed')
@@ -105,7 +111,7 @@ with tempfile.TemporaryDirectory(prefix='marked-suffix-full-fake-') as tmp:
    try:mod.main()
    except Exception as exc:failure=repr(exc)
   sys.argv=old;receipt=output/'RESULT.json';steps=json.loads((output/'progress.json').read_text())['steps'] if (output/'progress.json').exists() else []
-  if mode=='success':
+  if mode in ('success','plane-warning'):
    need(failure is None and receipt.is_file() and len(steps)==22,('fake success failed',failure,len(steps)))
    d=json.loads(receipt.read_text());need(d['status']=='PASS_AUTHOR_ONLY_MARKED_SUFFIX' and sum(len(x['axiom_reports']) for x in d['steps'])==58,'fake report inventory')
    need(all(x.get('compiler_command') and x.get('deps_command') and x.get('output_slots') for x in d['steps']),'missing child evidence')
