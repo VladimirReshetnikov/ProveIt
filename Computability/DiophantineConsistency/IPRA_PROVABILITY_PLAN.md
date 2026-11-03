@@ -233,8 +233,10 @@ identifies its exact positive natural value. A [rank-window packet](research/ten
 proves the symbolic window and `2R<c` under the stated port bounds and mask
 gap. The [exact rank join](research/ten-positive-80-rank-exact-prototype/README.md)
 uses those bounds to identify the natural rank with the positive odd main
-Pell index. Fixed-byte recipe calibration, first/main index alignment, machine
-equivalence and iPRA remain open.
+Pell index. An [independent audit](reviews/ten-positive-80-rank-window-independent/README.md)
+checks the universal representation argument and stated port assumptions
+without replaying Lean. Fixed-byte recipe calibration, first/main index
+alignment, machine equivalence and iPRA remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
