@@ -1,0 +1,7 @@
+# Conditional natural/model gauge lift
+
+`Mask79NaturalLift.moved` defines the corrected gauge update directly in a model's natural semiring using truncated subtraction. `moved_positive` proves every moved coordinate positive from positivity of the original valuation and the explicit strict bounds `q*b*t<C` and `(b*z+1)*D*t<n`. `moved_lift` proves that its lift into the model's difference ring is exactly the all-ring gauge update, assuming the same bounds and an explicit equation identifying `z` with the shared row-52 square. Here `D=q*(K+w)+1`; all quantities are model values.
+
+Guarded author `observations/attempt02/` and the enclosing tool session exited 0. Accepted source `Mask79NaturalLiftV2.lean` SHA-256 is `97db8e1c23f770c32993c4c98dcf2e7bf3de3873f72454959a42bb431a873392`; terminal SHA-256 is `ca3c42e5f051686d8dc8b6dd81165d043d7253b242d0c8e206aa5e8440c56e09`; output `/tmp/mask79-naturallift-uaxz8axx/Mask79NaturalLiftV2.olean` SHA-256 is `097ebdc4b112f9c470bc75d51b48b6d5355046becd4702641cc46e5b75d509d5`. Attempt01 failed on finite-vector/cast simplification; its exact source, runner and receipt are retained. Direct objects and selected predecessor objects are pinned; historical transitive project/package/dynamic ancestry remains inherited. No independent Lean replay or file semantics theorem is claimed.
+
+These are conditional representation and positivity results. They do not prove the moved valuation satisfies the mask guard, that the square representative or a useful `t` exists, or an unrestricted 79-row equivalence/iPRA endpoint.
