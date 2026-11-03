@@ -15,10 +15,14 @@ auxiliary relation `f*f=1+delta a*(i*c*c)*(i*c*c)`, and proves
 delta a*(f*f-1) = (c*c*c*c)*(delta a*i)*(delta a*i).
 ```
 
-These are the natural-number positivity and square identity for the proposed
-ordinary-tail coordinates `t=f-1`, `n=delta a*i+w` and ordinary multiplier
-`delta a*i`. They apply to the corresponding positive variables and equations
-in `CompactOuterPellSeed.seeds` once its rank positivity is supplied. This
+The `f-1` positivity and square identity are useful for the ordinary-tail
+construction. The separately proved positivity of `delta a*i+w` does **not**
+supply its graph coordinate: the exact ordinary-tail bridge instead requires
+`n=delta a*i+(y-w)` (with this seed's `w` identified with graph `V`). The
+separate [ordinate-order theorem](../compact44-aux-ordinate-order-prototype/README.md)
+provides the needed `w ≤ y` under explicit seed hypotheses. The positivity
+and square facts apply to the corresponding variables in
+`CompactOuterPellSeed.seeds` once its rank positivity is supplied. This
 client does not establish that any graph evaluation equals these expressions,
 construct the other positive coordinates, prove the free-J literal zero,
 identify retained/displayed coefficients, or establish an iPRA derivation.

@@ -16,9 +16,13 @@ delta a*(f*f-1) = (c*c*c*c)*(delta a*i)*(delta a*i).
 
 Here `w>0` is the **auxiliary seed** witness, and its positivity remains
 explicit in the output. It is not the shifted-transport power that is also
-called `w` in some other interfaces. These facts support the proposed
-ordinary-tail coordinates `t=f-1`, `n=delta a*i+w` and multiplier
-`delta a*i`. The proof derives positivity of the exact constructed rank from
+called `w` in some other interfaces. The `f-1` positivity and square identity
+support the ordinary-tail construction, but `delta a*i+w` is not the required
+graph coordinate. The exact ordinary-tail bridge requires
+`n=delta a*i+(y-w)`; the separate
+[ordinate-order theorem](../compact44-aux-ordinate-order-prototype/README.md)
+proves `w ≤ y` under explicit seed hypotheses. The proof derives positivity of
+the exact constructed rank from
 the packing and uses the auxiliary coordinate theorem after unpacking the
 seed. Every original and new assertion in the conclusion concerns the
 **same existential witnesses**. The statement does not identify these
