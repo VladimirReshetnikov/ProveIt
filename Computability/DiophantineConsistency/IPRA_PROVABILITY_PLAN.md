@@ -449,7 +449,10 @@ A [BFS graph-to-halt join](research/direct-bfs-80-model-halt-prototype/README.md
 composes the transferred word with selected machine soundness providers to
 derive an internal halt time under four direct-BFS symbolic port equalities.
 This author check has not yet established a coherent full provider closure,
-the converse, or external byte binding. An
+the converse, or external byte binding. A [selected-header scan](research/direct-bfs-80-model-halt-serialized-audit/README.md)
+captures 739 project modules, reconciles 529 with the prior 90-provider
+record and checks the 59 conjugacy chunks; full historical, package-transitive
+and dynamic ancestry remains outside its scope. Independent audit is pending. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -606,6 +609,10 @@ records 1,765 selected project ancestors with no differing selected-project
 overlap. Its producer audit found explicit full direct pins for only 25 of the
 157 fresh-header objects; the other producer-time edges, full source ancestry,
 package-transitive imports and dynamic dependencies remain unverified. A
+[staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
+matches seven previously unmatched fresh helper objects to multi-stage
+receipts, while explicitly retaining the producer-time pin limitations and
+24 remaining unmatched older batch objects. A
 [base-10 decimal display](research/ten-positive-80-original-kernel-display/README.md)
 uses ten distinct unknown names and the original coefficient tuple. Its
 graph, payload and PDF checks are external, not a Lean file-binding theorem.
