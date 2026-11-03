@@ -18,8 +18,34 @@ slots to the pinned original-kernel JSON and PDF-extracted text. It also
 checks the output register. That is an external text comparison, not a Lean
 parser theorem about the JSON or PDF. It does not bind printed coefficient
 recipes to Lean constants. The file/constant correspondence remains an
-external evidence boundary; this packet does not itself state an iPRA
+external evidence boundary; `output_eq` alone does not state an iPRA
 derivation or transfer any result to the distinct direct-BFS K0.
+
+## Explicit-row iPRA endpoints
+
+The later `DisplayedRowsIPRA.lean` applies `output_eq` to the fixed symbolic
+80-graph endpoints. It directly states all four no-premise derivability
+theorems for the explicit Lean row expression after the single positive shift:
+standard and equality-only reference iPRA, each with mapped native refutation
+negation or the selected Gödel–Gentzen-translated Foundation consistency
+sentence. This is a Lean theorem about the explicitly written Lean rows and
+the selected fixed symbolic ports; it does not parse the TeX, PDF, or JSON,
+nor prove the printed constant recipes equal those ports. The original-kernel
+and direct-BFS coefficients remain distinct.
+
+The bounded author check `observations/ipra-attempt02/` passed with outer
+process exit 0, empty stderr, four reports exactly
+`[propext, Classical.choice, Quot.sound]`, and object
+`/tmp/displayed80-ipra-euiu0tvn/DisplayedRowsIPRA.olean` SHA-256
+`128c42d9aeda9fa2cebb1faa84115bf7300d165d9233e5159a1f3685b2d7d547`.
+The run selected the checked `DisplayedRows` object and the fixed endpoint
+from the audited 127-module rebuilt union, and pinned the shared graph object.
+It did not itself independently replay that union or authenticate its entire
+project, package-transitive, dynamic, and historical ancestry. The first
+attempt is retained: its missing namespace caused errors and incomplete
+axiom reports, and it is not accepted. The runner was then adjusted to
+recognize Lean's multiline axiom reports and the source was corrected; the
+attempt source copies and result files preserve both observations.
 
 Source SHA-256 is
 `fd36492f39119d761fb23adf835bc922c8e8ed092aed7e1ec88aac7b4844c585`;
