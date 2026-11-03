@@ -28,8 +28,28 @@ Six isolated final-wrapper stub controls passed; their terminal has SHA-256
 These controls do not replace a final-runner prelaunch review, a successful
 Lean assembly, or an independent result audit.
 
-The assembly must be launched only after scoped independent review and
-resource coordination. Even on success it inherits the four named baseline
-source/object ancestry limits and the other project, outside, package and
-dynamic limits in the [plan](README.md); it would not establish formal
-JSON, TeX or PDF binding or decide consistency.
+After [scoped independent prelaunch review](../../reviews/trace75-bfs-final-assembly-prelaunch-independent/README.md),
+the assembly was launched once. Actual outer tool session 3516 exited 0 and
+was reaped; its child result is `PASS`, and the wrapper and input hashes were
+stable. The final result SHA-256 is
+`b05b0970cde855c6c65973b9550ae7231b7cca02f8659140a166f206bf51093c`, and
+the outer terminal SHA-256 is
+`2188db777c5fe442be871c30d29943de70fe0c1d20325d49b00bb9886e56c69d`.
+All five stages exited 0. The output union is
+`/tmp/trace75-final-assembly-7cxl4am4/lib` with 2,016 project modules. The
+fixed endpoint's selected closure contains 1,868 project and 81 outside
+names. The two BFS root closures and the preserved reverse and forward graph
+closures match the captured parent records under the runner's checks.
+Their project/outside sizes are 46/6 for `DirectBFSBandCarry`, 855/44 for
+`DirectBFSHaltPellSeed`, 965/46 for `Trace75BFSHaltGraph`, and 748/43 for
+`Trace75BFSModelHalt`. All five newly built `.olean` hashes match their
+exploratory predecessor hashes; byte identity alone does not establish unique
+producer history.
+
+The [independent result audit](../../reviews/trace75-bfs-final-assembly-result-independent/README.md)
+checked all five stages and 14 reports, selected inputs, union inventory and
+preserved closures. It did not independently replay Lean. The assembly
+inherits the four named baseline source/object ancestry limits
+and the other project, outside, package and dynamic limits in the
+[plan](README.md); it does not establish formal JSON, TeX or PDF binding or
+decide consistency.

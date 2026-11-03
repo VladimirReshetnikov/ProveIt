@@ -23,13 +23,14 @@ and tracked in [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md).
 [decimal display](research/trace75-bfs-decimal-display/equation.pdf) gives a
 ten-positive-variable, 75-operation, degree-402 candidate. Its displayed
 rows, fixed coefficients, liveness and degree have external finite checks,
-including a structural comparison with the Lean evaluator. Lean also checks
-fixed-port iPRA proof-existence statements on an exploratory mixed provider
-([endpoint record](research/trace75-bfs-ipra-draft/README.md)). A compatible
-provider has since been used to replay the trace, reverse, and forward chains;
-the final iPRA clients still need replay on that provider. Four retained
-baseline source ancestries, package/dynamic inputs and formal external-file
-semantics remain outside those checks. The maintained root equation is
+including a structural comparison with the Lean evaluator. The fixed-port
+native, standard and equality-only iPRA proof-existence statements have now
+passed a [five-stage final assembly](research/trace75-bfs-ipra-final-assembly-plan/RUNNER.md)
+on the compatible trace, reverse and forward provider, with an independent
+result audit. The statements use the selected mapped native refutation
+negation or the Gödel–Gentzen-translated consistency sentence. Four retained
+baseline source ancestries, other unrebuilt ancestry, package/dynamic inputs
+and formal external-file semantics remain outside those checks. The maintained root equation is
 unchanged. See the [trace75 plan](research/ten-positive-ipra/PLAN.md) for the
 current proof boundary.
 

@@ -1,0 +1,28 @@
+import DiophantineConsistency.TenPositiveTrace75Syntax
+import Trace75Factors
+
+/-! Draft model-zero binding for the existing trace75 literal syntax. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace Trace75BFSSyntax
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing TenPositiveTrace75
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def literal (p : Fin 4 → ℕ) : Expr (Fin 10) :=
+  TenPositiveTrace75.expression (fun j => (p j : ℤ))
+
+theorem literal_zero_iff (p : Fin 4 → ℕ) (v : Fin 10 → V) :
+    InternalZero (literal p) v ↔
+      value75 (Trace75Factors.ports p) (fun j => ι (v j)) = 0 := by
+  rw [internalZero_iff]
+  unfold literal
+  rw [TenPositiveTrace75.evalRing_expression]
+  simp only [Int.cast_natCast]
+  rfl
+
+#print axioms Trace75BFSSyntax.literal_zero_iff
+end Trace75BFSSyntax

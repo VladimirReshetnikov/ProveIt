@@ -42,8 +42,10 @@ byte-for-byte. The [independent display audit](../../reviews/trace75-bfs-decimal
 rechecks the printed rows, coefficients, liveness, and full modular ray
 polynomial; it does not replay Lean.
 
-The [model equivalence](../trace75-bfs-model-iff-prototype/README.md) for the
-corresponding Lean graph is exploratory on mixed providers, and the iPRA client
-is still under development. This standalone display does not establish an
-end-to-end iPRA theorem or replace the maintained root `equation.tex` and
-`equation.pdf`.
+The fixed-port iPRA proof-existence clients for the corresponding Lean graph
+have since passed the [compatible-provider final assembly](../trace75-bfs-ipra-final-assembly-plan/RUNNER.md)
+and its independent result audit. That assembly retains the documented
+historical and outside ancestry limits. This standalone display's connection to
+those Lean statements is through the external checks above, not a Lean theorem
+about file semantics. It does not replace the maintained root `equation.tex`
+and `equation.pdf`.
