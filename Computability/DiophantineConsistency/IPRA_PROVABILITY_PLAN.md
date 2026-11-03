@@ -251,6 +251,13 @@ A [noncircular alignment theorem](research/ten-positive-80-index-alignment-proto
 now excludes other residue representatives and proves `2n=rank+1` under the
 explicit symbolic port and odd-beta assumptions. Fixed-recipe composition
 remains separate.
+
+The [80-row height theorem](research/ten-positive-80-scaled-growth-prototype/POWER.md)
+combines the actual alignment and scaled-growth lemmas to derive `2^rank<Y`
+from a positive graph zero, with beta size/oddness and symbolic low/high bounds
+explicit. A separate [projection-divisibility theorem](research/ten-positive-80-projection-divisibility-prototype/README.md)
+derives `H ∣ h*Kpos` in the difference ring; translating it to the needed
+natural projection and proving `X=2^rank` remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
