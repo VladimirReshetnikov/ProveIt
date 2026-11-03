@@ -6,8 +6,9 @@ This is a separate research candidate, derived from package 163's
 It has 10 strictly positive witnesses and four fixed ports; all 74 rows and
 all 14 inputs are live. The binary operation count is 44 multiplications,
 16 additions and 14 subtractions. Subtractions are integer subtractions.
-The exact degree of the new graph has **not** been determined: the parent's
-402 degree is not automatically preserved by this coordinate change.
+The changed chart has exact degree 402 by the separate [external degree
+certificate](../trace74-degree-check/README.md), which checks the actual
+fixed coefficients; this is not a Lean degree theorem.
 
 The old witness `alpha` is replaced at witness index 2 by `C`. Write
 `bJ = beta*J`, `q = bJ+1`, `qmF = q-F`. The graph removes the old row

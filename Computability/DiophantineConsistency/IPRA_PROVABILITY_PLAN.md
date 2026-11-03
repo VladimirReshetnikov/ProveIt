@@ -176,7 +176,9 @@ applies the same substitution to the upstream 75-row BFS-kernel chart. Its
 [Lean ring identity](research/trace75-mask-coordinate-ring-probe/README.md)
 is checked for arbitrary ports, with JSON comparison external. Neither
 positive-direction guard has been proved for that chart, and the parent
-trace75 itself does not yet have its machine/iPRA bridge.
+trace75 itself does not yet have its machine/iPRA bridge. An [external degree certificate](research/trace74-degree-check/README.md)
+establishes exact degree 402 for its pinned coefficients; an [independent audit](reviews/trace74-ring-coordinate-independent/README.md)
+checks that certificate and the row/identity receipts without replaying Lean.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
@@ -548,7 +550,9 @@ and target phases were separate; an [anchor client](research/direct-bfs-word-anc
 now proves no-carry at 2195 and 3296. Only target phases 4393 and 5495 remain
 open. An [occupied-aggregate theorem](research/direct-bfs-word-occupied-prototype/README.md)
 computes the direct selector/copy sum as `1+2^51` for each local-word row;
-its physical target-phase binding remains separate;
+the [target-phase join](research/direct-bfs-marked-target-prototype/README.md)
+uses it to prove no-carry at both 4393 and 5495. All listed phase lemmas have
+now been checked separately; a same-witness global packing assembly remains;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
