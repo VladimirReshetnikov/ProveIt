@@ -762,6 +762,9 @@ proves the inverse exists in all IΣ₁ models for the stated power dimensions,
 assuming the concrete residue of `K` modulo `342946332593`. It does not prove
 that residue for `paramKernel (2^67)`, identify the actual rank variation or
 construct the dummy locations; its provider ancestry is inherited.
+A [Horner-residue draft](research/ordinary12-ipra-bridge/compact44-symbolic-k-residue-prototype/README.md)
+records a finite modular decomposition for the missing symbolic residue, but
+the Lean draft has not been compiled.
 An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
 proves a conditional local aggregate lemma on an existing author-side
 coefficient provider; it does not construct its selector or payload
@@ -769,7 +772,10 @@ hypotheses, and its incremental build is not a paired replay or fresh closure.
 A subsequent author-side [bounded-row input client](research/ordinary12-ipra-bridge/compact44-forward-cell-inputs-exploration/README.md)
 constructs a one-hot selector and payload bits for each model row below 943
 and discharges those local sum hypotheses. Uniform lookup from the compact
-word, physical packing and the graph-to-iPRA connection remain open.
+word, physical packing and the graph-to-iPRA connection remain open. An
+uncompiled [word-cell client draft](research/ordinary12-ipra-bridge/compact44-word-cell-client-plan/README.md)
+isolates the intended uniform bridge and identifies the same-provider rebuild
+needed before it can be checked.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
