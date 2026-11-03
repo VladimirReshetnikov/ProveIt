@@ -749,7 +749,12 @@ checks those three bounds and two controller size inequalities for the stated
 powers, and specializes the word construction under the model halt hypothesis.
 That author-side result passed a source/artifact review with the recorded
 tooling and provider limitations. Other controller premises and the graph-zero
-construction remain separate obligations.
+construction remain separate obligations. A [controller-unit plan](research/ordinary12-ipra-bridge/compact44-controller-unit-plan/README.md)
+records recipe-derived residues and a proposed adaptation of the old
+all-model lifting argument; no compact Lean unit theorem or kernel binding is
+claimed. An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
+states a conditional local aggregate lemma, but has not been compiled and
+does not construct its selector or payload hypotheses.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
