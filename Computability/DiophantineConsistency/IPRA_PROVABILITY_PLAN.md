@@ -490,6 +490,12 @@ are guarded author checks; an [independent receipt audit](reviews/ten-positive-8
 checks their direct inputs and same-output witness without replaying Lean. They do not prove
 the reverse direction, equate the distinct external K payloads, bind either
 file to Lean, or establish a halt or iPRA theorem.
+A separate [forward halt join](research/ten-positive-80-symbolic-halt-forward-prototype/README.md)
+composes the 80-to-90 result with the selected 90-row halt theorem. It assumes
+the three β/low/high equalities **and** an explicit equality of the entire
+integer port tuple to the original-kernel 90-row symbolic tuple. Thus it is a
+model-level zero-to-halt implication under those assumptions, not a theorem
+for the distinct retained BFS K0, a reverse implication, or an iPRA endpoint.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
