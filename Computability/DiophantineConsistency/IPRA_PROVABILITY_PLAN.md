@@ -286,8 +286,10 @@ Gödel–Gentzen translation of the selected embedded Foundation consistency
 sentence. The
 [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md)
 has finite substitution and degree checks. A [bounded author-side run](reviews/adaptive-qm40-native-bounded-replay/README.md)
-compiled its six model modules, but timed out on the native client; the
-paired replay and native endpoint remain open. A [separate source review](reviews/adaptive-qm40-model-mathematical-source-review/README.md)
+compiled its six model modules, but timed out on the native client. A later
+[incremental author-side run](reviews/adaptive-qm40-native-incremental-author/README.md)
+compiled the native endpoint and its checks on that model provider; a paired
+replay and complete authenticated closure remain open. A [separate source review](reviews/adaptive-qm40-model-mathematical-source-review/README.md)
 found no defect in the inspected model witness maps or residual coverage.
 Its [standard-iPRA client](research/ipra-standard-qm40/README.md)
 is still an uncompiled draft requiring coherent native and standard providers.
