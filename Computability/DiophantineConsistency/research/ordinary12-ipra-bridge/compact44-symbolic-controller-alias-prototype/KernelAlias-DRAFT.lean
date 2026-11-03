@@ -4,9 +4,11 @@ import SymbolicKernelResidue
 while retaining an explicit equality to the actual parameterized kernel. -/
 set_option autoImplicit false
 set_option Elab.async false
+set_option maxRecDepth 16384
 noncomputable section
 namespace CompactSymbolicKernelAlias
 open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicKernelResidue
+attribute [local irreducible] paramKernel rho
 
 @[irreducible] def kernelAlias : ℕ := paramKernel rho
 
