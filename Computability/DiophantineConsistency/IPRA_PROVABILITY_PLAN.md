@@ -37,6 +37,11 @@ cover the 94- and 95-operation variants. These are external finite checks,
 not Lean proofs of PDF or file semantics. A proposed [94-operation iPRA
 client](research/ordinary12-sum-squares-ipra-endpoint-draft/README.md) has
 not yet been compiled on a coherent provider.
+A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
+and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
+find no member of the 425-module rebuild cone among the recorded selected-project
+ancestors of the 94-operation model join. This does not authenticate inherited
+package ancestry or replace a coherent compilation of the final client.
 
 Neither compact graph yet has a verified iPRA endpoint. A separately checked
 [generic positive-model adapter](research/ordinary12-ipra-bridge/positive-model-ipra-adapter-prototype/README.md)
@@ -79,11 +84,12 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage191/README.md)
-has rebuilt its first 195 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage203/README.md)
+has rebuilt its first 207 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
-separately source-pinned, exact-warning baselines. Stage 95's initial
+separately source-pinned, exact-warning baselines, with a fourth at stage 197
+to preserve an explicit interface parameter. Stage 95's initial
 three-minute attempt timed out; a separately guarded longer retry passed.
 The remaining stages and final
 client are open. A separately checked
