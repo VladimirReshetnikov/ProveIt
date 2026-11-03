@@ -103,6 +103,12 @@ root, and a positive-branch growth bound conditional on a Pell index at least
 3. Deriving that index from an actual graph zero and proving preservation of
 the full graph under reflection remain open. The draft has no established
 reverse existence, halt equivalence, or iPRA endpoint.
+
+For the separate ten-positive 84- and 85-operation proposals, a
+[Pell-doubling prototype](research/ten-positive-ipra-doubling-prototype/README.md)
+proves the needed coprimality of abstract doubled radicands in every IΣ₁
+model, using explicit Bézout certificates. It is not yet bound to either
+graph; root recovery, the machine bridge and an iPRA endpoint remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
