@@ -1,0 +1,9 @@
+# Independent review: positive forward witness transport
+
+For arbitrary natural ports and any valuation in an IΣ₁ model with the stated ordered-ring interface, `zero_iff` proves that the direct draft output vanishes at `transform v` exactly when the 91-graph output vanishes at `v`. The transformation changes only slot 11, setting it to old slot 11 plus slot 5 (`gamma+w`). This valuation-level equivalence itself does not require positivity. `transform_pos` proves that strictly positive input witnesses remain strictly positive, and `exists_direct_of_xq91` consequently gives a positive direct-draft zero from a positive 91-graph zero, for the same arbitrary ports.
+
+The equivalence is only at values produced by that transformation. In particular, an arbitrary positive direct input need not have slot 11 greater than slot 5, so subtracting slot 5 need not give a positive old witness. No arbitrary direct-to-91 existence implication, graph-to-halt equivalence, or internal iPRA proof is established by this file. The conditional observation about the image is not a claim that an actual graph zero violates that inequality.
+
+The audit checks the exact theorem direction and positivity condition, graph and XQ91 producer hashes and selected search order, the accepted source, runner, Lean binary, object and complete logs. It reruns the independent draft-graph review, which checks all 1,291 selected union files. The successful check reports `[propext, Classical.choice, Quot.sound]` for each of the three printed theorems, with no warnings and no local linter suppressions. Resource records are point samples. Package, dynamic and complete historical source-to-object ancestry are inherited; no Lean process was launched for this audit.
+
+Run `python3 -I -S -B check.py` from this directory; `observations/stdout` captures success. Retained `/tmp` proof objects and providers are required. Source and file comparisons are external checks.
