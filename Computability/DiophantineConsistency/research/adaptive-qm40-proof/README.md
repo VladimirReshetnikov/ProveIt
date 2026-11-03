@@ -30,4 +30,6 @@ seconds, requires at least 4 GiB free before each compile, and rejects
 preexisting candidate modules and companion files in the parent or package
 provider. It retains the original direct-companion guards and inherited
 ancestry limitations. These are sampled disk checks, not continuous resource
-monitoring. It writes a separate result directory and has not yet been run.
+monitoring. Its first [bounded run](../../reviews/adaptive-qm40-native-bounded-replay/README.md)
+compiled all six model modules on the author side, then timed out on the
+native client; the paired replay and native endpoint remain incomplete.
