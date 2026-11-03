@@ -14,3 +14,11 @@ The retained first runner had a generated variable-name collision and exited
 before creating an observation or launching Lean; v2 corrects it. Selected
 direct imports are pinned; historical transitive/package ancestry and
 external graph/file binding remain inherited limits.
+
+The same source passed `run-radixalignment-v3.py`,
+`observations/radixalignment-attempt02/`, selecting the fresh GraphPower
+v3 object and pinning its first-resolved historical `ModelRatioBounds`
+object (`fcf4152e49cb9a989bd9f8ba08259a26c646dfca18370b0c6e1ce7ebfb33b8a7`).
+Its object at `/tmp/trace75-radixalignment-i4hl__80/Trace75RadixAlignment.olean`
+is byte-identical to attempt 01. Known producer-time drift for that inherited
+historical object is not repaired; a coherent fresh-provider rebuild is needed.
