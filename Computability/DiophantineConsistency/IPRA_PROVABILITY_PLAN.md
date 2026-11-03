@@ -493,7 +493,9 @@ prerequisite for high-mask arguments; a [lower-mass refinement](research/direct-
 supplies a stronger bound needed for high-mask padding;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
-is divisible by four. Adjusted high-origin no-carry remains separate;
+is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
+uses this to derive the adjusted high-origin field from an explicit all-index
+ordinary high-mask condition; the latter remains open;
 a [cell-product client](research/direct-bfs-cell-product-prototype/README.md)
 uses it and the cell bound to prove the conditional `hi_lt` field for a
 non-forbidden normalized cell. A [four-field adapter](research/direct-bfs-four-fields-packing-prototype/README.md)
@@ -707,7 +709,9 @@ attempt stopped at stage 13, `ModelRatioBounds`, with outer exit 1 because of
 four warnings; a source-specific historical comparison is in progress. No
 attempt has passed. An [independent attempt audit](reviews/ten-positive-80-rebuild-attempt03-independent/README.md)
 checks the twelve preceding outputs, both accepted exceptions and the exact
-historical stage-13 warning log without replaying Lean. Only final
+historical stage-13 warning log without replaying Lean. A [v6 prelaunch audit](reviews/ten-positive-80-rebuild-v6-prelaunch-independent/README.md)
+checks a third exact module/source/full-log exception, with strict diagnostics
+elsewhere; one fresh guarded retry is being coordinated. Only final
 PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
 The [historical warning inventory](reviews/ten-positive-80-warning-inventory/README.md)
 identifies a further recorded policy at planned stage 13, but does not
