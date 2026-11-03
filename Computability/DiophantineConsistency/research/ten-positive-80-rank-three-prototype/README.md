@@ -1,0 +1,5 @@
+# A stronger graph-rank lower bound
+
+`Direct80RankThree.graph_rank_gt_three_q` proves `3*q < rankNat` for a positive zero of the 80-operation graph in an IΣ₁ model, assuming β ≥ 31. It derives the actual mask gap from the prior graph transport theorem; it does not assume parity, port bounds, or a radix alignment. This is stronger than the earlier generic `q ≤ rankNat`, and may support the population-count argument. The existing `ArithmeticHalfBinomial.rank_lower_of_radix` already provides the needed bound `3*h+1 ≤ rankNat` by a different route when q = 2^h and q ≥ 16; neither result establishes the missing half-binomial representation.
+
+The fresh author check in `observations/rankthree-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`. Object `/tmp/tenpositive-80rankthree-4pq56a6f/Direct80RankThree.olean` has SHA-256 `2709c5d7b17462f7d1b8d3bc4ec419fac0a7dd9c7a31a9297c9b16546eca8df4`. The runner pins its selected project objects and records resource samples; inherited source/object, package and dynamic ancestry are not independently rebuilt or authenticated here. This is not a halt, iPRA, or PDF theorem.

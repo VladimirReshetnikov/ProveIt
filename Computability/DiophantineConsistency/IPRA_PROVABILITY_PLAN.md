@@ -286,8 +286,12 @@ fixed tuple/file binding and machine/iPRA equivalence remain separate.
 The [repunit join](research/ten-positive-80-repunit-prototype/README.md)
 recovers `J` using the same block-count witness. A preliminary
 [scaled Pell sandwich](research/pell-scaled-sandwich-prototype/README.md)
-checks the lower ratio inequality and shifted coefficient gap; its upper and
-rounding steps remain open.
+checks the lower ratio inequality and shifted coefficient gap; a
+[graph join](research/ten-positive-80-sandwich-lower-prototype/README.md)
+applies that lower bound to actual positive graph zeros. A separate
+[population theorem](research/ten-positive-80-population-conditional-prototype/README.md)
+keeps the needed half-binomial identity as an explicit premise. The upper
+sandwich and rounding steps remain open.
 After power recovery, an [unweighted projection](research/ten-positive-80-projection-product-prototype/UNWEIGHTED.md)
 derives `H ∣ Kpos` directly from the Pell norm, without canceling `b` or the
 power, and obtains a positive natural quotient under the same port bounds.
