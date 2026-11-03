@@ -1,0 +1,37 @@
+/tmp/tenpositive-80positive-offset-um87uxzb/Direct80PositiveOffset.lean:56:11: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?f ?x * ?f ?y
+in the target expression
+  ι (4 * firstParam p v * s) = ι (mu p v * mu p v * (4 * X p v * (Y p v * Y p v) * s))
+
+case refine_2
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+hbeta : ∃ u, ↑(p 0) = 2 * u + 1
+_n s : V
+_hn : 0 < _n
+_halign : 2 * _n = rankNat p v + 1
+hk : k v = rankNat p v + 1 + 4 * firstParam p v * s
+he : Expr.evalRing (fun j => ι (v j)) (eExpr (integerPorts p)) = ι (4 * firstParam p v * s)
+hklo : 8 * firstParam p v + 4 ≤ k v
+hwindow : rankNat p v + q p v ^ 3 + q p v + 1 ≤ q p v ^ 4
+hRplus : rankNat p v + 1 ≤ q p v ^ 4
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+hmu : 0 < mu p v
+hS : q p v * q p v ≤ mu p v * Y p v
+hP : q p v ^ 4 ≤ firstParam p v
+hPpos : 0 < firstParam p v
+hPk : firstParam p v < k v
+hRk : rankNat p v + 1 < k v
+hs : 0 < s
+⊢ ι (4 * firstParam p v * s) = ι (mu p v * mu p v * (4 * X p v * (Y p v * Y p v) * s))
+'TenPositive80PositiveOffset.graph_positive_rho' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

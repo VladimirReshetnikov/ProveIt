@@ -253,6 +253,9 @@ explicit symbolic port and odd-beta assumptions. Fixed-recipe composition
 remains separate. A subsequent [exact offset theorem](research/ten-positive-80-offset-exact-prototype/README.md)
 uses the full first recurrence to derive a nonnegative offset and the stronger
 signed divisibility `(μ²Y²) ∣ e`, without assuming coprimality of `Y` and `h`.
+A [positive-offset theorem](research/ten-positive-80-positive-offset-prototype/README.md)
+further obtains a positive natural quotient of `e` by `μ²` under those
+symbolic assumptions.
 
 The [80-row height theorem](research/ten-positive-80-scaled-growth-prototype/POWER.md)
 combines the actual alignment and scaled-growth lemmas to derive `2^rank<Y`
@@ -300,7 +303,9 @@ uses that witness to derive the half-binomial identity and population bound
 from an actual zero, without assuming either sandwich or the identity. Its
 symbolic beta and radix hypotheses remain explicit. An [independent audit](reviews/ten-positive-80-both-sandwich-independent/README.md)
 checks the same-index joins and selected receipts without replaying Lean;
-machine decoding and iPRA remain separate.
+machine decoding and iPRA remain separate. A [saturation theorem](research/ten-positive-80-saturation-prototype/README.md)
+derives the two no-carry conclusions for the same repunit length, conditional
+on explicit repeated-mask arithmetic facts that still need specialization.
 After power recovery, an [unweighted projection](research/ten-positive-80-projection-product-prototype/UNWEIGHTED.md)
 derives `H ∣ Kpos` directly from the Pell norm, without canceling `b` or the
 power, and obtains a positive natural quotient under the same port bounds.
