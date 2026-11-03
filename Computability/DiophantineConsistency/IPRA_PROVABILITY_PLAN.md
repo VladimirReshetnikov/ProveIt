@@ -518,6 +518,10 @@ combines that bound with the doubled seed coordinates. An
 [independent receipt audit](reviews/ten-positive-scaled-reverse-and-halt-forward-independent/README.md)
 checks the conditional forward halt, scaled-interval, fresh-witness and first
 strong-seed results without replaying Lean.
+A [generalized auxiliary-seed theorem](research/ten-positive-general-auxiliary-seed-prototype/README.md)
+constructs positive auxiliary Pell witnesses for a supplied strong root under
+explicit norm, divisibility and phase assumptions, including the essential
+`c = ycoord(R,a)` identity. It is not yet joined to the scaled seed or graph.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
