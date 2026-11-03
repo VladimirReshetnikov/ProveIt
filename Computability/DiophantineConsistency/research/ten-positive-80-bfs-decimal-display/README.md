@@ -23,3 +23,9 @@ an [independent source/receipt review](../../reviews/bfs-displayed-full-ipra-ind
 The connection from the PDF text and coefficient files to those expressions
 remains external, and the client's complete selected-provider ancestry has
 not yet been authenticated.
+
+The [selected-header capture](../ten-positive-80-bfs-full-closure/README.md)
+matches all 1,795 previously replayed project records and 80 outside records,
+and records 12 new selected modules. An [independent audit](../../reviews/bfs-full-closure-independent/README.md)
+rechecks that capture; historical producer, package-transitive and dynamic
+ancestry remain separate.
