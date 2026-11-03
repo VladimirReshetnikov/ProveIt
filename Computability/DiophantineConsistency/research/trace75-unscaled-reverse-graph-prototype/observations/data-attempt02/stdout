@@ -1,0 +1,886 @@
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:105:4: error: Type mismatch
+  Eq.symm hh
+has type
+  ι C =
+    (ι (W 8) + ι (W 9)) * ((↑(p 0) * ι (W 0) + 1) * (↑(p 0) * ι (W 0) + 1) * (↑(p 0) * ι (W 0) + 1) * ι (W 6)) + ι (W 8)
+but is expected to have type
+  (ι (W 8) + ι (W 9)) * ((↑(p 0) * ι (W 0) + 1) * (↑(p 0) * ι (W 0) + 1) * (↑(p 0) * ι (W 0) + 1) * ι (W 6)) + ι (W 8) =
+    ι C
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:118:37: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+r eta zeta t : V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hr : 0 < r
+hmask : v 1 + v 2 < q p v
+htransport : (↑(p 1) + v 5) * (q p v - v 1 - v 2) = v 1 + b p v * t
+hR : rankNat p v = 2 * r + 1
+hphase : (2 * r + 1) % 4 = 3
+hXeq : X p v = Exp.exp (2 * r + 1)
+h72 : 72 * r < X p v + 1
+heta : 0 < eta
+hzeta : 0 < zeta
+hck : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hk : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hbpos : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+P : V := X p v * Y p v * Y p v
+a : V := Y p v * (X p v + 1) - 1
+R : V := 2 * r + 1
+K : V := 2 * ycoord (r + 1) (2 * (P - 1) + 1)
+C : V := ycoord R a
+D : V := ArithmeticPellRecurrence.delta a
+H : V := 4 * a + 3
+Kpos : V := X p v * (3 * C - 2 * X p v) + 2
+eta' zeta' i T n tau f0 u y I rho : V
+heta' : 0 < eta'
+hzeta' : 0 < zeta'
+hi : 0 < i
+hT : 0 < T
+hn : 0 < n
+htau : 0 < tau
+hf0 : 0 < f0
+hu : 0 < u
+hy : 0 < y
+hC :
+  ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta'
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta' + zeta'
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = 2 * r + 1 + 1 + X p v * Y p v * rho
+hsize : X p v < ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)
+hE :
+  1 +
+      X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) *
+        (X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) +
+          2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) =
+    tau * tau
+hfn :
+  f0 * f0 =
+    1 +
+      ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+              (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+            (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+          tau *
+        tau
+hQ :
+  ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+      (4 *
+          (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau) *
+        (1 +
+          ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau)) =
+    I * I
+hV :
+  ι
+          (1 +
+            4 *
+                (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau) *
+              (1 +
+                ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau)) *
+        (ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) * ι T - ι (2 * r + 1)) -
+      ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) =
+    ι u
+hZ :
+  ι (b p v) * ι (X p v * Y p v) *
+        (ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι n - ι u * ι u * (ι (b p v) * ι t)) +
+          ι (X p v * (3 * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) - 2 * X p v) + 2)) -
+      ι (4 * (Y p v * (X p v + 1) - 1) + 3) *
+        (ι (X p v * Y p v) * (ι (b p v) * ι t) +
+          ι (b p v) * ι (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) - (2 * r + 1) - 1)) =
+    ι (b p v) * ι (X p v * Y p v) * ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι tau * ι f0 * ι y)
+haux : I * I * u * u + y * y = 1 + I * I * y * y
+W : Fin 10 → V := valuation v i T n eta' zeta'
+hWpos : ∀ (j : Fin 10), 0 < W j
+hbW : b p W = b p v
+hqW : q p W = q p v
+hYW : Y p W = Y p v
+hXW : X p W = X p v
+hkW : k W = K
+hcW : c p W = C
+hUW : U p W = i * C * C
+hAW : A p W = Y p v * (X p v + 1)
+hApos : 0 < A p W
+ha1 : a + 1 = A p W
+hDW : Trace75Factors.delta p W = D
+hEW : E p W = tau * tau
+hmaskW : W 1 + W 2 < q p W
+hRankW : rankNat p W = R
+z : Fin 10 → DiffRing V := fun j => ι (W j)
+rr : Regs (DiffRing V) := regs (ports p) z
+A0 : V := D * (i * C * C) * (i * C * C) * (tau * tau)
+hcR : rr.c = ι C
+hRankR : rr.rank = ι R
+hdelta : rr.Delta = ι D
+hU : rr.U = ι (i * C * C)
+hE' : rr.E = ι tau * ι tau
+haR : rr.a = ι A0
+hW4 : W 4 = T
+hVS :
+  (1 +
+          4 *
+              (ι (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1)) *
+                      (ι i * ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                        ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1))) *
+                    (ι i * ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1))) *
+                  ι tau *
+                ι tau) *
+            (1 +
+              ι (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1)) *
+                      (ι i * ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                        ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1))) *
+                    (ι i * ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1))) *
+                  ι tau *
+                ι tau)) *
+        (ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) * ι T - (2 * ι r + 1)) -
+      ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) =
+    ι u
+⊢ -(ι D * ι i ^ 2 * ι C ^ 4 * ι tau ^ 2 * ι R * 4) + ι D * ι i ^ 2 * ι C ^ 5 * ι tau ^ 2 * ι T * 4 -
+              ι D ^ 2 * ι i ^ 4 * ι C ^ 8 * ι tau ^ 4 * ι R * 4 +
+            ι D ^ 2 * ι i ^ 4 * ι C ^ 9 * ι tau ^ 4 * ι T * 4 -
+          ι C +
+        ι C * ι T -
+      ι R =
+    -1 +
+                      ι i ^ 2 * ι tau ^ 2 * ι T * ι (ArithmeticPellRecurrence.delta (Y p v + Y p v * X p v - 1)) *
+                          ι (ycoord (1 + r * 2) (Y p v + Y p v * X p v - 1)) ^ 5 *
+                        4 -
+                    ι i ^ 2 * ι tau ^ 2 * ι (ArithmeticPellRecurrence.delta (Y p v + Y p v * X p v - 1)) *
+                        ι (ycoord (1 + r * 2) (Y p v + Y p v * X p v - 1)) ^ 4 *
+                      4 -
+                  ι i ^ 2 * ι tau ^ 2 * ι (ArithmeticPellRecurrence.delta (Y p v + Y p v * X p v - 1)) *
+                        ι (ycoord (1 + r * 2) (Y p v + Y p v * X p v - 1)) ^ 4 *
+                      ι r *
+                    8 +
+                ι i ^ 4 * ι tau ^ 4 * ι T * ι (ArithmeticPellRecurrence.delta (Y p v + Y p v * X p v - 1)) ^ 2 *
+                    ι (ycoord (1 + r * 2) (Y p v + Y p v * X p v - 1)) ^ 9 *
+                  4 -
+              ι i ^ 4 * ι tau ^ 4 * ι (ArithmeticPellRecurrence.delta (Y p v + Y p v * X p v - 1)) ^ 2 *
+                  ι (ycoord (1 + r * 2) (Y p v + Y p v * X p v - 1)) ^ 8 *
+                4 -
+            ι i ^ 4 * ι tau ^ 4 * ι (ArithmeticPellRecurrence.delta (Y p v + Y p v * X p v - 1)) ^ 2 *
+                  ι (ycoord (1 + r * 2) (Y p v + Y p v * X p v - 1)) ^ 8 *
+                ι r *
+              8 +
+          ι T * ι (ycoord (1 + r * 2) (Y p v + Y p v * X p v - 1)) -
+        ι (ycoord (1 + r * 2) (Y p v + Y p v * X p v - 1)) -
+      ι r * 2
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:136:4: error: No goals to be solved
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:165:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ι (q p v) - ι (v 1) - ι (v 2)
+in the target expression
+  (↑(p 1) + ι (v 5)) * (↑(p 0) * ι (v 0) + 1 - ι (v 1) - ι (v 2)) - ι (v 1) = ι (b p v) * ι t
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+r eta zeta t : V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hr : 0 < r
+hmask : v 1 + v 2 < q p v
+htransport : (↑(p 1) + v 5) * (q p v - v 1 - v 2) = v 1 + b p v * t
+hR : rankNat p v = 2 * r + 1
+hphase : (2 * r + 1) % 4 = 3
+hXeq : X p v = Exp.exp (2 * r + 1)
+h72 : 72 * r < X p v + 1
+heta : 0 < eta
+hzeta : 0 < zeta
+hck : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hk : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hbpos : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+P : V := X p v * Y p v * Y p v
+a : V := Y p v * (X p v + 1) - 1
+R : V := 2 * r + 1
+K : V := 2 * ycoord (r + 1) (2 * (P - 1) + 1)
+C : V := ycoord R a
+D : V := ArithmeticPellRecurrence.delta a
+H : V := 4 * a + 3
+Kpos : V := X p v * (3 * C - 2 * X p v) + 2
+eta' zeta' i T n tau f0 u y I rho : V
+heta' : 0 < eta'
+hzeta' : 0 < zeta'
+hi : 0 < i
+hT : 0 < T
+hn : 0 < n
+htau : 0 < tau
+hf0 : 0 < f0
+hu : 0 < u
+hy : 0 < y
+hC :
+  ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta'
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta' + zeta'
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = 2 * r + 1 + 1 + X p v * Y p v * rho
+hsize : X p v < ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)
+hE :
+  1 +
+      X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) *
+        (X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) +
+          2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) =
+    tau * tau
+hfn :
+  f0 * f0 =
+    1 +
+      ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+              (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+            (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+          tau *
+        tau
+hQ :
+  ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+      (4 *
+          (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau) *
+        (1 +
+          ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau)) =
+    I * I
+hV :
+  ι
+          (1 +
+            4 *
+                (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau) *
+              (1 +
+                ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau)) *
+        (ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) * ι T - ι (2 * r + 1)) -
+      ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) =
+    ι u
+hZ :
+  ι (b p v) * ι (X p v * Y p v) *
+        (ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι n - ι u * ι u * (ι (b p v) * ι t)) +
+          ι (X p v * (3 * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) - 2 * X p v) + 2)) -
+      ι (4 * (Y p v * (X p v + 1) - 1) + 3) *
+        (ι (X p v * Y p v) * (ι (b p v) * ι t) +
+          ι (b p v) * ι (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) - (2 * r + 1) - 1)) =
+    ι (b p v) * ι (X p v * Y p v) * ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι tau * ι f0 * ι y)
+haux : I * I * u * u + y * y = 1 + I * I * y * y
+W : Fin 10 → V := valuation v i T n eta' zeta'
+hWpos : ∀ (j : Fin 10), 0 < W j
+hbW : b p W = b p v
+hqW : q p W = q p v
+hYW : Y p W = Y p v
+hXW : X p W = X p v
+hkW : k W = K
+hcW : c p W = C
+hUW : U p W = i * C * C
+hAW : A p W = Y p v * (X p v + 1)
+hApos : 0 < A p W
+ha1 : a + 1 = A p W
+hDW : Trace75Factors.delta p W = D
+hEW : E p W = tau * tau
+hmaskW : W 1 + W 2 < q p W
+hRankW : rankNat p W = R
+z : Fin 10 → DiffRing V := fun j => ι (W j)
+rr : Regs (DiffRing V) := regs (ports p) z
+A0 : V := D * (i * C * C) * (i * C * C) * (tau * tau)
+hcR : rr.c = ι C
+hRankR : rr.rank = ι R
+hdelta : rr.Delta = ι D
+hU : rr.U = ι (i * C * C)
+hE' : rr.E = ι tau * ι tau
+haR : rr.a = ι A0
+hVR : oldV (ports p) z = ι u
+hhR : rr.h = ι (b p v)
+hDR : rr.D = ι (X p v * Y p v)
+hHR : rr.H = ι H
+hsub : ∀ {x y : V}, y ≤ x → ι (x - y) = ι x - ι y
+hFle : v 1 ≤ q p v
+hAle : v 2 ≤ q p v - v 1
+hmaskCast : ι (q p v - v 1 - v 2) = ι (q p v) - ι (v 1) - ι (v 2)
+⊢ (↑(p 1) + ι (v 5)) * (↑(p 0) * ι (v 0) + 1 - ι (v 1) - ι (v 2)) - ι (v 1) = ι (b p v) * ι t
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:175:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)
+in the target expression
+  K - R - 1 = X p v * Y p v * rho
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+r eta zeta t : V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hr : 0 < r
+hmask : v 1 + v 2 < q p v
+htransport : (↑(p 1) + v 5) * (q p v - v 1 - v 2) = v 1 + b p v * t
+hR : rankNat p v = 2 * r + 1
+hphase : (2 * r + 1) % 4 = 3
+hXeq : X p v = Exp.exp (2 * r + 1)
+h72 : 72 * r < X p v + 1
+heta : 0 < eta
+hzeta : 0 < zeta
+hck : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hk : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hbpos : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+P : V := X p v * Y p v * Y p v
+a : V := Y p v * (X p v + 1) - 1
+R : V := 2 * r + 1
+K : V := 2 * ycoord (r + 1) (2 * (P - 1) + 1)
+C : V := ycoord R a
+D : V := ArithmeticPellRecurrence.delta a
+H : V := 4 * a + 3
+Kpos : V := X p v * (3 * C - 2 * X p v) + 2
+eta' zeta' i T n tau f0 u y I rho : V
+heta' : 0 < eta'
+hzeta' : 0 < zeta'
+hi : 0 < i
+hT : 0 < T
+hn : 0 < n
+htau : 0 < tau
+hf0 : 0 < f0
+hu : 0 < u
+hy : 0 < y
+hC :
+  ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta'
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta' + zeta'
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = 2 * r + 1 + 1 + X p v * Y p v * rho
+hsize : X p v < ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)
+hE :
+  1 +
+      X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) *
+        (X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) +
+          2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) =
+    tau * tau
+hfn :
+  f0 * f0 =
+    1 +
+      ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+              (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+            (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+          tau *
+        tau
+hQ :
+  ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+      (4 *
+          (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau) *
+        (1 +
+          ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau)) =
+    I * I
+hV :
+  ι
+          (1 +
+            4 *
+                (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau) *
+              (1 +
+                ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau)) *
+        (ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) * ι T - ι (2 * r + 1)) -
+      ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) =
+    ι u
+hZ :
+  ι (b p v) * ι (X p v * Y p v) *
+        (ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι n - ι u * ι u * (ι (b p v) * ι t)) +
+          ι (X p v * (3 * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) - 2 * X p v) + 2)) -
+      ι (4 * (Y p v * (X p v + 1) - 1) + 3) *
+        (ι (X p v * Y p v) * (ι (b p v) * ι t) +
+          ι (b p v) * ι (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) - (2 * r + 1) - 1)) =
+    ι (b p v) * ι (X p v * Y p v) * ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι tau * ι f0 * ι y)
+haux : I * I * u * u + y * y = 1 + I * I * y * y
+W : Fin 10 → V := valuation v i T n eta' zeta'
+hWpos : ∀ (j : Fin 10), 0 < W j
+hbW : b p W = b p v
+hqW : q p W = q p v
+hYW : Y p W = Y p v
+hXW : X p W = X p v
+hkW : k W = K
+hcW : c p W = C
+hUW : U p W = i * C * C
+hAW : A p W = Y p v * (X p v + 1)
+hApos : 0 < A p W
+ha1 : a + 1 = A p W
+hDW : Trace75Factors.delta p W = D
+hEW : E p W = tau * tau
+hmaskW : W 1 + W 2 < q p W
+hRankW : rankNat p W = R
+z : Fin 10 → DiffRing V := fun j => ι (W j)
+rr : Regs (DiffRing V) := regs (ports p) z
+A0 : V := D * (i * C * C) * (i * C * C) * (tau * tau)
+hcR : rr.c = ι C
+hRankR : rr.rank = ι R
+hdelta : rr.Delta = ι D
+hU : rr.U = ι (i * C * C)
+hE' : rr.E = ι tau * ι tau
+haR : rr.a = ι A0
+hVR : oldV (ports p) z = ι u
+hhR : rr.h = ι (b p v)
+hDR : rr.D = ι (X p v * Y p v)
+hHR : rr.H = ι H
+hsub : ∀ {x y : V}, y ≤ x → ι (x - y) = ι x - ι y
+hFle : v 1 ≤ q p v
+hAle : v 2 ≤ q p v - v 1
+hmaskCast : ι (q p v - v 1 - v 2) = ι (q p v) - ι (v 1) - ι (v 2)
+hBR : rr.B = ι (b p v) * ι t
+⊢ K - R - 1 = X p v * Y p v * rho
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:180:4: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+r eta zeta t : V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hr : 0 < r
+hmask : v 1 + v 2 < q p v
+htransport : (↑(p 1) + v 5) * (q p v - v 1 - v 2) = v 1 + b p v * t
+hR : rankNat p v = 2 * r + 1
+hphase : (2 * r + 1) % 4 = 3
+hXeq : X p v = Exp.exp (2 * r + 1)
+h72 : 72 * r < X p v + 1
+heta : 0 < eta
+hzeta : 0 < zeta
+hck : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hk : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hbpos : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+P : V := ⋯
+a : V := ⋯
+R : V := ⋯
+K : V := ⋯
+C : V := ⋯
+D : V := ⋯
+H : V := ⋯
+Kpos : V := ⋯
+eta' zeta' i T n tau f0 u y I rho : V
+heta' : 0 < eta'
+hzeta' : 0 < zeta'
+hi : 0 < i
+hT : 0 < T
+hn : 0 < n
+htau : 0 < tau
+hf0 : 0 < f0
+hu : 0 < u
+hy : 0 < y
+hC :
+  ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta'
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta' + zeta'
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = 2 * r + 1 + 1 + X p v * Y p v * rho
+hsize : X p v < ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)
+hE :
+  1 +
+      X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) *
+        (X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) +
+          2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) =
+    tau * tau
+hfn :
+  f0 * f0 =
+    1 +
+      ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+              (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+            (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+          tau *
+        tau
+hQ :
+  ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+      (4 *
+          (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau) *
+        (1 +
+          ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau)) =
+    I * I
+hV :
+  ι
+          (1 +
+            4 *
+                (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau) *
+              (1 +
+                ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau)) *
+        (ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) * ι T - ι (2 * r + 1)) -
+      ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) =
+    ι u
+hZ :
+  ι (b p v) * ι (X p v * Y p v) *
+        (ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι n - ι u * ι u * (ι (b p v) * ι t)) +
+          ι (X p v * (3 * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) - 2 * X p v) + 2)) -
+      ι (4 * (Y p v * (X p v + 1) - 1) + 3) *
+        (ι (X p v * Y p v) * (ι (b p v) * ι t) +
+          ι (b p v) * ι (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) - (2 * r + 1) - 1)) =
+    ι (b p v) * ι (X p v * Y p v) * ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι tau * ι f0 * ι y)
+haux : I * I * u * u + y * y = 1 + I * I * y * y
+W : Fin 10 → V := ⋯
+hWpos : ∀ (j : Fin 10), 0 < W j
+hbW : b p W = b p v
+hqW : q p W = q p v
+hYW : Y p W = Y p v
+hXW : X p W = X p v
+hkW : k W = K
+hcW : c p W = C
+hUW : U p W = i * C * C
+hAW : A p W = Y p v * (X p v + 1)
+hApos : 0 < A p W
+ha1 : a + 1 = A p W
+hDW : Trace75Factors.delta p W = D
+hEW : E p W = tau * tau
+hmaskW : W 1 + W 2 < q p W
+hRankW : rankNat p W = R
+z : Fin 10 → DiffRing V := ⋯
+rr : Regs (DiffRing V) := ⋯
+A0 : V := ⋯
+hcR : rr.c = ι C
+hRankR : rr.rank = ι R
+hdelta : rr.Delta = ι D
+hU : rr.U = ι (i * C * C)
+hE' : rr.E = ι tau * ι tau
+haR : rr.a = ι A0
+hVR : oldV (ports p) z = ι u
+hhR : rr.h = ι (b p v)
+hDR : rr.D = ι (X p v * Y p v)
+hHR : rr.H = ι H
+hsub : ∀ {x y : V}, y ≤ x → ι (x - y) = ι x - ι y
+hFle : v 1 ≤ q p v
+hAle : v 2 ≤ q p v - v 1
+hmaskCast : ι (q p v - v 1 - v 2) = ι (q p v) - ι (v 1) - ι (v 2)
+hBR : rr.B = ι (b p v) * ι t
+heNat : K - R - 1 = X p v * Y p v * rho
+hh : ι eta' + ι zeta' = ι 2 * ι r + 1 + 1 + ι (X p v) * ι (Y p v) * ι rho
+⊢ 1 - ι R + ι 2 * ι r + ι (X p v) * ι (Y p v) * ι rho - ι rho * ι (X p v * Y p v) = 0
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:200:18: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  rr.D
+in the target expression
+  ι (b p v) * ((regs (ports p) z).X * (regs (ports p) z).Y) * (regs (ports p) z).H = ι (b p v) * ι (X p v * Y p v) * ι H
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+r eta zeta t : V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hr : 0 < r
+hmask : v 1 + v 2 < q p v
+htransport : (↑(p 1) + v 5) * (q p v - v 1 - v 2) = v 1 + b p v * t
+hR : rankNat p v = 2 * r + 1
+hphase : (2 * r + 1) % 4 = 3
+hXeq : X p v = Exp.exp (2 * r + 1)
+h72 : 72 * r < X p v + 1
+heta : 0 < eta
+hzeta : 0 < zeta
+hck : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hk : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hbpos : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+P : V := X p v * Y p v * Y p v
+a : V := Y p v * (X p v + 1) - 1
+R : V := 2 * r + 1
+K : V := 2 * ycoord (r + 1) (2 * (P - 1) + 1)
+C : V := ycoord R a
+D : V := ArithmeticPellRecurrence.delta a
+H : V := 4 * a + 3
+Kpos : V := X p v * (3 * C - 2 * X p v) + 2
+eta' zeta' i T n tau f0 u y I rho : V
+heta' : 0 < eta'
+hzeta' : 0 < zeta'
+hi : 0 < i
+hT : 0 < T
+hn : 0 < n
+htau : 0 < tau
+hf0 : 0 < f0
+hu : 0 < u
+hy : 0 < y
+hC :
+  ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta'
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta' + zeta'
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = 2 * r + 1 + 1 + X p v * Y p v * rho
+hsize : X p v < ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)
+hE :
+  1 +
+      X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) *
+        (X p v * Y p v * Y p v * (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) +
+          2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)) =
+    tau * tau
+hfn :
+  f0 * f0 =
+    1 +
+      ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+              (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+            (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+          tau *
+        tau
+hQ :
+  ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+      (4 *
+          (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau) *
+        (1 +
+          ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau)) =
+    I * I
+hV :
+  ι
+          (1 +
+            4 *
+                (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau) *
+              (1 +
+                ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau)) *
+        (ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) * ι T - ι (2 * r + 1)) -
+      ι (ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) =
+    ι u
+hZ :
+  ι (b p v) * ι (X p v * Y p v) *
+        (ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι n - ι u * ι u * (ι (b p v) * ι t)) +
+          ι (X p v * (3 * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) - 2 * X p v) + 2)) -
+      ι (4 * (Y p v * (X p v + 1) - 1) + 3) *
+        (ι (X p v * Y p v) * (ι (b p v) * ι t) +
+          ι (b p v) * ι (2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) - (2 * r + 1) - 1)) =
+    ι (b p v) * ι (X p v * Y p v) * ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι tau * ι f0 * ι y)
+haux : I * I * u * u + y * y = 1 + I * I * y * y
+W : Fin 10 → V := valuation v i T n eta' zeta'
+hWpos : ∀ (j : Fin 10), 0 < W j
+hbW : b p W = b p v
+hqW : q p W = q p v
+hYW : Y p W = Y p v
+hXW : X p W = X p v
+hkW : k W = K
+hcW : c p W = C
+hUW : U p W = i * C * C
+hAW : A p W = Y p v * (X p v + 1)
+hApos : 0 < A p W
+ha1 : a + 1 = A p W
+hDW : Trace75Factors.delta p W = D
+hEW : E p W = tau * tau
+hmaskW : W 1 + W 2 < q p W
+hRankW : rankNat p W = R
+z : Fin 10 → DiffRing V := fun j => ι (W j)
+rr : Regs (DiffRing V) := regs (ports p) z
+A0 : V := D * (i * C * C) * (i * C * C) * (tau * tau)
+hcR : rr.c = ι C
+hRankR : rr.rank = ι R
+hdelta : rr.Delta = ι D
+hU : rr.U = ι (i * C * C)
+hE' : rr.E = ι tau * ι tau
+haR : rr.a = ι A0
+hVR : oldV (ports p) z = ι u
+hhR : rr.h = ι (b p v)
+hDR : rr.D = ι (X p v * Y p v)
+hHR : rr.H = ι H
+hsub : ∀ {x y : V}, y ≤ x → ι (x - y) = ι x - ι y
+hFle : v 1 ≤ q p v
+hAle : v 2 ≤ q p v - v 1
+hmaskCast : ι (q p v - v 1 - v 2) = ι (q p v) - ι (v 1) - ι (v 2)
+hBR : rr.B = ι (b p v) * ι t
+heR : rr.e = ι (K - R - 1)
+hgap : 2 * X p v ≤ 3 * C
+hKR : rr.K = ι Kpos
+⊢ ι (b p v) * ((regs (ports p) z).X * (regs (ports p) z).Y) * (regs (ports p) z).H = ι (b p v) * ι (X p v * Y p v) * ι H
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:208:4: error: Type mismatch: After simplification, term
+  hZ
+ has type
+  ι (b p v) *
+        (ι (X p v * Y p v) *
+          (ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι n - ι u * (ι u * (ι (b p v) * ι t))) +
+            ι (X p v * (3 * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) - 2 * X p v) + 2))) -
+      ι (4 * (Y p v * (X p v + 1) - 1) + 3) *
+        (ι (X p v * Y p v) * (ι (b p v) * ι t) +
+          ι (b p v) * ι (2 * ycoord (r + 1) (2 * (X p v * (Y p v * Y p v) - 1) + 1) - (2 * r + 1) - 1)) =
+    ι (b p v) * (ι (X p v * Y p v) * (ι (4 * (Y p v * (X p v + 1) - 1) + 3) * (ι tau * (ι f0 * ι y))))
+but is expected to have type
+  ι (b p v) * (ι (X p v * Y p v) * (ι H * (ι n - ι u * (ι u * (ι (b p v) * ι t))) + ι Kpos)) -
+      ι H * (ι (X p v * Y p v) * (ι (b p v) * ι t) + ι (b p v) * ι (K - R - 1)) =
+    ι (b p v) * (ι (X p v * Y p v) * (ι H * (ι tau * (ι f0 * ι y))))
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:209:74: error: Type mismatch
+  hfn
+has type
+  f0 * f0 =
+    1 +
+      ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+              (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+            (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+          tau *
+        tau
+but is expected to have type
+  f0 * f0 = 1 + D * (i * C * C) * (i * C * C) * (tau * tau)
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:211:67: error: Type mismatch
+  hQ
+has type
+  ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+      (4 *
+          (ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau) *
+        (1 +
+          ArithmeticPellRecurrence.delta (Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau)) =
+    I * I
+but is expected to have type
+  D * (4 * (D * (i * C * C) * (i * C * C) * (tau * tau)) * (1 + D * (i * C * C) * (i * C * C) * (tau * tau))) = I * I
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:102:51: warning: This simp argument is unused:
+  map_add
+
+Hint: Omit it from the simp argument list.
+  simp only [c_def, ̲k_def, ̲Y_def, ̲q_def, ̲h_def, ̲ports, ̲map_a̵d̵d̵,̵ma̵p̵_̵m̵ul, ̲map_one, ̲map_natCast]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:102:59: warning: This simp argument is unused:
+  map_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [̵c̵_̵d̵e̵f̵,̵k̵_̵d̵e̵f̵,̵Y̵_̵d̵e̵f̵,̵q̵_̵d̵e̵f̵,̵h̵_̵d̵e̵f̵,̵p̵o̵r̵t̵s̵,̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵n̵e̵,̵m̵a̵p̵_̵n̵a̵t̵C̵a̵s̵t̵]̵[̲c̲_̲d̲e̲f̲,̲ ̲k̲_̲d̲e̲f̲,̲ ̲Y̲_̲d̲e̲f̲,̲ ̲q̲_̲d̲e̲f̲,̲ ̲h̲_̲d̲e̲f̲,̲ ̲p̲o̲r̲t̲s̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲o̲n̲e̲,̲ ̲m̲a̲p̲_̲n̲a̲t̲C̲a̲s̲t̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:102:67: warning: This simp argument is unused:
+  map_one
+
+Hint: Omit it from the simp argument list.
+  simp only [c_def, ̲k_def, ̲Y_def, ̲q_def, ̲h_def, ̲ports, ̲map_add, ̲map_mul, ̲map_o̵ne̵,̵m̵ap̵_̵n̵a̵tCast]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:102:75: warning: This simp argument is unused:
+  map_natCast
+
+Hint: Omit it from the simp argument list.
+  simp only [̵c̵_̵d̵e̵f̵,̵k̵_̵d̵e̵f̵,̵Y̵_̵d̵e̵f̵,̵q̵_̵d̵e̵f̵,̵h̵_̵d̵e̵f̵,̵p̵o̵r̵t̵s̵,̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵n̵e̵,̵m̵a̵p̵_̵n̵a̵t̵C̵a̵s̵t̵]̵[̲c̲_̲d̲e̲f̲,̲ ̲k̲_̲d̲e̲f̲,̲ ̲Y̲_̲d̲e̲f̲,̲ ̲q̲_̲d̲e̲f̲,̲ ̲h̲_̲d̲e̲f̲,̲ ̲p̲o̲r̲t̲s̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲m̲u̲l̲,̲ ̲m̲a̲p̲_̲o̲n̲e̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:163:45: warning: This simp argument is unused:
+  map_add
+
+Hint: Omit it from the simp argument list.
+  simp only [B_def, ̲C_def, ̲q_def, ̲h_def, ̲ports, ̲map_a̵d̵d̵,̵ma̵p̵_̵m̵ul, ̲map_one, ̲map_natCast]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:163:53: warning: This simp argument is unused:
+  map_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [̵B̵_̵d̵e̵f̵,̵C̵_̵d̵e̵f̵,̵q̵_̵d̵e̵f̵,̵h̵_̵d̵e̵f̵,̵p̵o̵r̵t̵s̵,̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵n̵e̵,̵m̵a̵p̵_̵n̵a̵t̵C̵a̵s̵t̵]̵[̲B̲_̲d̲e̲f̲,̲ ̲C̲_̲d̲e̲f̲,̲ ̲q̲_̲d̲e̲f̲,̲ ̲h̲_̲d̲e̲f̲,̲ ̲p̲o̲r̲t̲s̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲o̲n̲e̲,̲ ̲m̲a̲p̲_̲n̲a̲t̲C̲a̲s̲t̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:163:61: warning: This simp argument is unused:
+  map_one
+
+Hint: Omit it from the simp argument list.
+  simp only [B_def, ̲C_def, ̲q_def, ̲h_def, ̲ports, ̲map_add, ̲map_mul, ̲map_o̵ne̵,̵m̵ap̵_̵n̵a̵tCast]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace75-unscaled-graph-gssn1y4f/Trace75UnscaledReverseGraph.lean:163:69: warning: This simp argument is unused:
+  map_natCast
+
+Hint: Omit it from the simp argument list.
+  simp only [̵B̵_̵d̵e̵f̵,̵C̵_̵d̵e̵f̵,̵q̵_̵d̵e̵f̵,̵h̵_̵d̵e̵f̵,̵p̵o̵r̵t̵s̵,̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵n̵e̵,̵m̵a̵p̵_̵n̵a̵t̵C̵a̵s̵t̵]̵[̲B̲_̲d̲e̲f̲,̲ ̲C̲_̲d̲e̲f̲,̲ ̲q̲_̲d̲e̲f̲,̲ ̲h̲_̲d̲e̲f̲,̲ ̲p̲o̲r̲t̲s̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲m̲u̲l̲,̲ ̲m̲a̲p̲_̲o̲n̲e̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Trace75UnscaledReverseGraph.graph_zero_of_source' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
