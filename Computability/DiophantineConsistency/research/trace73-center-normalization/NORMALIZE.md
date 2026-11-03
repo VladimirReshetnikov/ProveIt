@@ -30,7 +30,7 @@ The bounded author run `observations/normalize-attempt02/` and tool session
 `c9db6c31f50c7b19480d7f8f0653e053a77313b7765363ffdd5967b2f1195148`.
 The source, runner and terminal hashes are
 `f1737d306452a44076e18001a513ca237ab1baaff95f30852ea28c0a9623e797`,
-`a232c90cad80313593f3af08a1b4feadf9e81af69e165c2c66a73aa86559e1`, and
+`a232c90cad80313593f3af08a1b4feadf9c9e81af69e165c2c66a73aa86559e1`, and
 `5b2e91e5c5f7947d42365237740e719b9cbd18de2d3aaa55fcebec4da0e1702c`.
 Attempt01 failed on cast/definitional-equality details and is retained.
 
