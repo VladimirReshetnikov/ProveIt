@@ -1,7 +1,8 @@
 # Prepared staged symbolic controller alias
 
 The explicit equality-transport alias module has compiled successfully. The
-alias-unit and actual-symbol controller clients remain uncompiled. The preceding same-provider join
+alias-unit client failed kernel checking; the actual-symbol controller client
+has not been run. The preceding same-provider join
 attempt built the two ingredients but failed when the final theorem caused
 Lean to expand the huge symbolic natural; local irreducibility plus a higher
 recursion limit then reached the 3 GB kernel limit. See the preserved
@@ -39,12 +40,16 @@ same provider in 2.13 seconds, exit 0, without warnings. Both
 `Classical.choice`, and `Quot.sound`; there is no `sorryAx`. Its retained
 source is byte-for-byte the successful input, so its opening draft comment is
 historical. The logs and terminal receipt are in `observations03/`.
+A separate attempt to apply `gamma_unit_nat` to the checked alias and residue
+exited 1 with excessive kernel memory use, and did not run the subsequent
+actual-symbol client. Its source and output are in `observations04/`; the
+printed self-reference for the failed theorem is error recovery, not a proof.
 
 The runners reuse and hash-check the four earlier same-provider
 objects, builds the three sources sequentially, and retains each stage's
 source hash, dependency listing, compiler output and exit. The two initial
 attempts stopped at the first stage; the explicit-transport alias is proved,
-but its controller clients have not been run. The inherited project/package/transitive provenance remains as
+but its attempted controller client failed. The inherited project/package/transitive provenance remains as
 limited as in the earlier attempt. Neither a successful alias nor a successful
 actual-symbol theorem would by itself connect retained bytes, rank variation,
 dummy locations, graph zero or iPRA provability.

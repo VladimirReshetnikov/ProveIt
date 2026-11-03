@@ -10,7 +10,7 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder.Arithmetic
 open DiophantineConsistency.ArithmeticPow
 open DiophantineConsistency.ArithmeticConstructionUnitCompact44
-open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicKernelAlias
+open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicKernelAliasExplicit
 open CompactSymbolicControllerAlias
 attribute [local irreducible] paramKernel rho
 

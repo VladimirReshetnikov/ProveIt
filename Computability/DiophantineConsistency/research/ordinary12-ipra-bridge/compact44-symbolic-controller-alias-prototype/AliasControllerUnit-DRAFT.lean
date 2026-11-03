@@ -1,5 +1,5 @@
 import DiophantineConsistency.ArithmeticConstructionUnitCompact44
-import KernelAlias
+import KernelAliasExplicit
 
 /-! Uncompiled: a named-symbol version of the unit theorem; its explicit
 equality to paramKernel rho must remain available to every downstream client. -/
@@ -12,7 +12,7 @@ open LO LO.FirstOrder LO.FirstOrder.Arithmetic
 open scoped LO.FirstOrder.Arithmetic
 open DiophantineConsistency.ArithmeticPow
 open DiophantineConsistency.ArithmeticConstructionUnitCompact44
-open CompactSymbolicKernelAlias
+open CompactSymbolicKernelAliasExplicit
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
