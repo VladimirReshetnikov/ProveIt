@@ -1,0 +1,5 @@
+# Independent review: positive center for a reverse-carrier witness
+
+`positive_carrier_center` is a scalar theorem in an arbitrary supported IΣ₁ model. Given model values satisfying `Kpos=H*kappa`, `tau>0`, `y>0` and `kappa<f`, it takes the single `n` produced by the previously checked reverse-carrier theorem and proves, for that very same witness, `n>0`, `n-u²*(b*t)>0`, the stated balance, and the original difference-ring carrier identity. The center-positivity lemma is applied to the same balance and parameters.
+
+`check.py` rechecked those exact assumptions and same-witness composition, accepted source/runner/output/logs and all recorded pins including both direct providers. The retained axiom report lists `[propext, Classical.choice, Quot.sound]`. No Lean replay or enclosing-process exit observation was performed. The scalar parameters have not been bound here to a particular trace75 valuation or graph zero, and this does not prove a 73/75 equivalence or iPRA endpoint; project/package/dynamic ancestry remains inherited.
