@@ -149,8 +149,9 @@ transport and native and standard endpoints, matching all 37 added modules.
 Its independent complete-result audit passed. The
 40-variable candidate's model and native transports have an
 [incremental author-side build](reviews/adaptive-qm40-native-incremental-author/README.md);
-an independent paired replay, standard-presentation client and formal
-PDF-byte binding remain open.
+its [standard-presentation client](research/ipra-standard-qm40/author-rebuild/README.md)
+also has an author-side build. An independent paired replay and formal PDF-byte
+binding remain open.
 The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
 eliminates five more AQ22 bindings and has independently checked finite
 substitution, positivity and degree calculations. Its Lean transport and iPRA

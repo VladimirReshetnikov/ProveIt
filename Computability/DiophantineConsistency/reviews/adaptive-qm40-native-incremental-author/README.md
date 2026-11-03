@@ -20,5 +20,6 @@ authenticated current-source closure. The runner checks direct imports and
 companions and their precedence at sampled points; the earlier model build's
 project, package, transitive, dynamic and between-snapshot ancestry remains
 inherited. The external literal verifier compares 166 source rows with the
-pinned candidate graph; it is not a Lean interpretation of PDF bytes. The
-separate standard-presentation client remains uncompiled.
+pinned candidate graph; it is not a Lean interpretation of PDF bytes. A later
+[standard-presentation client](../../research/ipra-standard-qm40/author-rebuild/README.md)
+has compiled in a separate author-side extension.

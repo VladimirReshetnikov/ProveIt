@@ -19,5 +19,6 @@ reconstruction. For a positive parent zero, the checked `scaled_quotient`
 theorem gives an integral `s` with `D=mainScale*s` and the reduced norm, and
 positivity of D gives `s>0`. Both model witness maps and the native iPRA
 endpoint have now compiled in an [incremental author-side run](../../reviews/adaptive-qm40-native-incremental-author/README.md).
-The paired replay, standard-presentation client and formal PDF-byte binding
-remain open. No global minimality is claimed.
+The [standard-presentation client](../ipra-standard-qm40/author-rebuild/README.md)
+also compiled in an author-side extension. The paired replay and formal PDF-byte
+binding remain open. No global minimality is claimed.

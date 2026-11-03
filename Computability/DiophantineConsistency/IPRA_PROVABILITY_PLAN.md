@@ -293,7 +293,10 @@ compiled the native endpoint and its checks on that model provider; a separate
 passed. A paired replay and complete authenticated closure remain open. A [separate source review](reviews/adaptive-qm40-model-mathematical-source-review/README.md)
 found no defect in the inspected model witness maps or residual coverage.
 Its [standard-iPRA client](research/ipra-standard-qm40/README.md)
-is still an uncompiled draft requiring coherent native and standard providers.
+also compiled in a guarded author-side extension on the native provider,
+including the selected translated Foundation consistency sentence. A separate
+[artifact audit](reviews/ipra-standard-qm40-author-artifact-audit/README.md)
+passed; a paired replay and formal PDF-byte interpretation remain open.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
