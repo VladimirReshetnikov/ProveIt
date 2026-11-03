@@ -1,0 +1,135 @@
+import DirectMainGraph
+import DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011
+
+/-! Extract the first Pell norm from a direct-main graph zero. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+set_option maxHeartbeats 8000000
+set_option linter.unusedVariables false
+set_option linter.unusedSimpArgs false
+noncomputable section
+namespace DirectMainFirst
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency FreeJDirectMainGraph
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ModelDifferenceRing
+open ArithmeticAdaptiveScaledNorms2011 ArithmeticAdaptiveQuotients2011
+open ArithmeticAdaptiveFactorMagnitude2011
+
+def firstParts (p : Fin 4 → ℤ) : Expr (Fin 12) × Expr (Fin 12) :=
+  let J : Expr (Fin 12) := .var 0
+  let F : Expr (Fin 12) := .var 1
+  let alpha : Expr (Fin 12) := .var 2
+  let t : Expr (Fin 12) := .var 3
+  let T : Expr (Fin 12) := .var 4
+  let w : Expr (Fin 12) := .var 5
+  let s : Expr (Fin 12) := .var 6
+  let r : Expr (Fin 12) := .var 7
+  let eta : Expr (Fin 12) := .var 8
+  let zeta : Expr (Fin 12) := .var 9
+  let n : Expr (Fin 12) := .var 10
+  let direct : Expr (Fin 12) := .var 11
+  let beta : Expr (Fin 12) := .constant (p 0)
+  let K0 : Expr (Fin 12) := .constant (p 1)
+  let MC : Expr (Fin 12) := .constant (p 2)
+  let MF : Expr (Fin 12) := .constant (p 3)
+  let qm := J * beta
+  let q := 1 + qm
+  let X := q * w
+  let q2 := q * q
+  let q3 := q * q2
+  let Y := q3 * s
+  let U := Y * q2
+  let qF := q - F
+  let C := qF - alpha
+  let E := X * Y
+  let k := eta + zeta
+  let kY := Y * k
+  let c := eta + kY
+  let c2 := c * c
+  let a := E + Y
+  let g15 := 4 * a
+  let H := 3 + g15
+  let g17 := a * a
+  let Delta := H + g17
+  let g19 := a * c
+  let b0 := X + g19
+  let ell := E * kY
+  let kw := K0 + w
+  let g27 := C * kw
+  let g28 := g27 - F
+  let Bt := q * g28
+  let g30 := ell + k
+  let g31 := g30 + r
+  let folded_kBt := k * Bt
+  let folded_g31 := g31 - folded_kBt
+  let g32 := folded_g31 + s
+  let g33 := qm * g32
+  let Z := g33 - Bt
+  let g38 := Z * Z
+  let g39 := qm * qm
+  let g40 := ell * g30
+  let g41 := 1 + g40
+  let g42 := g39 * g41
+  (Z, g42)
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+def integerPorts (p : Fin 4 → ℕ) : Fin 4 → ℤ := fun i => (p i : ℤ)
+
+theorem first_shape (p : Fin 4 → ℤ) : (graph p).first =
+    (firstParts p).1*(firstParts p).1-(firstParts p).2 := by rfl
+
+theorem rhs_pair (p : Fin 4 → ℕ) (v : Fin 12 → V) :
+    let q : V := 1+v 0*(p 0:V)
+    let X : V := q*v 5
+    let Y : V := (q*(q*q))*v 6
+    let k : V := v 8+v 9
+    let ell : V := (X*Y)*(Y*k)
+    let b : V := v 0*(p 0:V)
+    pairEval (firstParts (integerPorts p)).2 v = (b*b*(1+ell*(ell+k)),0) := by
+  simp [firstParts,integerPorts,pairEval,Expr.splitNatural,NatExpr.evalSemiring]
+
+theorem first_zero (p : Fin 4 → ℕ) (v : Fin 12 → V)
+    (hz : InternalZero (graph (integerPorts p)).output v) :
+    InternalZero (graph (integerPorts p)).first v := by
+  rw [internalZero_iff] at hz ⊢
+  change (graph (integerPorts p)).first.evalRing (fun j => ι (v j)) = 0
+  have hshape : (graph (integerPorts p)).output =
+      (graph (integerPorts p)).first*(graph (integerPorts p)).first+
+      (graph (integerPorts p)).main*(graph (integerPorts p)).main+
+      (graph (integerPorts p)).ordinary*(graph (integerPorts p)).ordinary := by rfl
+  rw [hshape] at hz
+  simp only [Expr.evalRing_add,Expr.evalRing_mul] at hz
+  have ha := sq_nonneg ((graph (integerPorts p)).first.evalRing (fun j => ι (v j)))
+  have hb := sq_nonneg ((graph (integerPorts p)).main.evalRing (fun j => ι (v j)))
+  have hc := sq_nonneg ((graph (integerPorts p)).ordinary.evalRing (fun j => ι (v j)))
+  have h : (graph (integerPorts p)).first.evalRing (fun j => ι (v j)) *
+      (graph (integerPorts p)).first.evalRing (fun j => ι (v j)) = 0 := by nlinarith
+  exact mul_self_eq_zero.mp h
+
+theorem first_scaled_norm (p : Fin 4 → ℕ) (v : Fin 12 → V)
+    (hz : InternalZero (graph (integerPorts p)).output v) :
+    let q : V := 1+v 0*(p 0:V)
+    let X : V := q*v 5
+    let Y : V := (q*(q*q))*v 6
+    let k : V := v 8+v 9
+    let ell : V := (X*Y)*(Y*k)
+    let b : V := v 0*(p 0:V)
+    magnitude (pairEval (firstParts (integerPorts p)).1 v) *
+      magnitude (pairEval (firstParts (integerPorts p)).1 v) = b*b*(1+ell*(ell+k)) := by
+  have hf := first_zero p v hz
+  rw [first_shape] at hf
+  have hunit : (pairEval (1+((firstParts (integerPorts p)).1*(firstParts (integerPorts p)).1-
+      (firstParts (integerPorts p)).2)) v).1 =
+      (pairEval (1+((firstParts (integerPorts p)).1*(firstParts (integerPorts p)).1-
+      (firstParts (integerPorts p)).2)) v).2+1 := by
+    have h := congrArg (fun z : V => z+1) hf
+    simpa [InternalZero,pairEval,Expr.splitNatural,NatExpr.evalSemiring,add_assoc,add_comm,add_left_comm] using h
+  have hs := unit_square_norm (firstParts (integerPorts p)).1 (firstParts (integerPorts p)).2 v hunit
+  rw [rhs_pair p v] at hs
+  simpa only [Prod.fst,Prod.snd,add_zero] using hs
+
+#print axioms DirectMainFirst.first_zero
+#print axioms DirectMainFirst.first_scaled_norm
+end DirectMainFirst
