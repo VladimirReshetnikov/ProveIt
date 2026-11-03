@@ -270,7 +270,10 @@ symbolic port bounds. An [independent projection audit](reviews/ten-positive-80-
 checks the retained factor and selected receipts without replaying Lean.
 A [conditional final step](research/ten-positive-80-projection-product-prototype/HEIGHT.md)
 now proves `X=2^rank` if the entire product is strictly smaller than `H`;
-that strict height inequality remains open.
+that strict height inequality remains open. A [variable-base height theorem](research/ten-positive-80-variable-height-prototype/README.md)
+now derives `X^(r+1)<H` for an actual zero with `rank=2r+1` under the symbolic
+port and oddness assumptions; bounding the whole product below that power
+remains separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
