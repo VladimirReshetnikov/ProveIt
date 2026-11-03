@@ -1,6 +1,10 @@
 # Original-kernel specialization of the 80-row graph
 
 This is a distinct **candidate**, not an established consistency equation.
+The [fixed symbolic Lean client](../ten-positive-80-symbolic-ipra-client-prototype/FIXED.md)
+now asserts the iPRA equivalences for its once-shifted graph without port
+premises. Its connection to this JSON and payload is checked externally,
+not by a Lean file theorem, and historical provider drift is under repair.
 `equation.json` retains the exact 80 ordered rows and ten positive witnesses
 of the [directly indexed graph](../ten-positive-unshift-t-finite/data/equation_qcube_V2.json),
 but uses the complete retained original-order coefficient tuple. The input
@@ -16,9 +20,9 @@ not a Lean theorem.
 An earlier [external recipe check](../ordinary12-ipra-bridge/compact44-symbolic-k-external-byte-check/README.md)
 computes a manual transcription of `paramKernel rho` and matches it to this
 original-order K0, not the BFS K0. That is useful for the current Lean
-decoder, which explicitly assumes `p 1 = paramKernel rho`. The Python check
-is not a Lean theorem equating this file with the symbolic kernel, nor does
-this candidate establish a machine equivalence or iPRA provability.
+decoder, which uses `paramKernel rho`. The Python check is not a Lean theorem
+equating this file with the symbolic kernel, and this candidate artifact by
+itself does not establish the iPRA equivalence for its filesystem bytes.
 
 Run `python3 -I -S -B research/ten-positive-80-original-kernel-variant/build.py`
 from `Computability/DiophantineConsistency` (or supply its full path from the

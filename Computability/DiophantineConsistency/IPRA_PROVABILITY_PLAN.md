@@ -667,8 +667,11 @@ matches its sources and import names; it is not a rebuild or package-ancestry
 authentication. The [independent v2 prelaunch review](reviews/ten-positive-80-rebuild-v2-prelaunch-independent/README.md)
 found memory-guard and diagnostic-matching blockers. A corrected v3 passed
 [independent static review](reviews/ten-positive-80-rebuild-v3-prelaunch-independent/README.md)
-and a single guarded 127-stage attempt is now running. Only final PASS plus
-outer exit 0 and a later receipt audit will establish this scoped replay.
+was followed by one guarded attempt. It stopped with outer exit 1 at stage 3
+because the strict policy rejected three deprecation warnings; Lean itself
+exited 0 for that stage. The retained diagnostic is being checked against a
+historical baseline and a source modernization is under consideration. Only
+final PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
 Those
 byte-matched records are not proven unique producer
 origins. No replay is yet claimed. A
