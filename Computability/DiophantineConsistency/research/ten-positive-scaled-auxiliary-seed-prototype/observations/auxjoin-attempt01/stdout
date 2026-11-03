@@ -1,0 +1,53 @@
+/tmp/scaled-auxiliary-seed-cp81w6tk/ScaledAuxiliarySeed.lean:65:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  F * F
+in the target expression
+  I * I + D = D * F * F
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+a R tau L : V
+hphase : R % 4 = 3
+htau : 0 < tau
+c : V := ycoord R a
+D : V := delta a
+hR : 0 < R
+hc : 0 < c
+hD : 0 < D
+m i f : V
+hm : L < m
+hi : 0 < i
+hf : 0 < f
+hym : ycoord m a = i * c * c * tau
+hfx : f = xcoord m a
+hfnorm : f * f = 1 + delta a * (i * c * c) * (i * c * c) * tau * tau
+hdoublex : xcoord (2 * m) a = 1 + 2 * delta a * (i * c * c) * (i * c * c) * tau * tau
+hdoubley : ycoord (2 * m) a = i * c * c * (2 * tau * f)
+U : V := i * c * c
+A : V := D * U * U * tau * tau
+F : V := 1 + 2 * A
+I : V := D * (U * (2 * tau * f))
+hmpos : 0 < m
+hfl : L < f
+hU : 0 < U
+hA : 0 < A
+hF : 0 < F
+hf1 : 1 ≤ f
+hc1 : 1 ≤ c
+hi1 : 1 ≤ i
+ht1 : 1 ≤ tau
+hD1 : 1 ≤ D
+hU1 : 1 ≤ U
+hI2 : 2 ≤ I
+hfn : f * f = 1 + A
+hFn : F * F = 1 + D * (U * (2 * tau * f)) * (U * (2 * tau * f))
+⊢ I * I + D = D * F * F
+/tmp/scaled-auxiliary-seed-cp81w6tk/ScaledAuxiliarySeed.lean:76:44: error: Application type mismatch: The argument
+  hdoublex
+has type
+  xcoord (2 * m) a = 1 + 2 * delta a * (i * c * c) * (i * c * c) * tau * tau
+but is expected to have type
+  xcoord (2 * m) a = 1 + 2 * (delta a * (i * ycoord R a * ycoord R a) * (i * ycoord R a * ycoord R a) * tau * tau)
+in the application
+  And.intro hdoublex
+'TenPositiveScaledAuxiliarySeed.scaled_auxiliary' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

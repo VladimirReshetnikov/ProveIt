@@ -524,7 +524,11 @@ strong-seed results without replaying Lean.
 A [generalized auxiliary-seed theorem](research/ten-positive-general-auxiliary-seed-prototype/README.md)
 constructs positive auxiliary Pell witnesses for a supplied strong root under
 explicit norm, divisibility and phase assumptions, including the essential
-`c = ycoord(R,a)` identity. It is not yet joined to the scaled seed or graph.
+`c = ycoord(R,a)` identity. It does not itself assume a graph zero.
+A [scaled auxiliary join](research/ten-positive-scaled-auxiliary-seed-prototype/README.md)
+now combines the strong and auxiliary witnesses in one tuple and makes the
+strong root f exceed any given internal bound. It retains explicit phase,
+ordinate and positivity assumptions; graph and carrier binding remain open.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
