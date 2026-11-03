@@ -346,7 +346,16 @@ also checks the generic no-carry decoding equivalence for the BFS rows; it
 does not yet connect those local facts to a graph band. A
 [finite mass calculation](research/direct-bfs-lean-mass-prototype/README.md)
 and [model lift](research/direct-bfs-lean-model-mass-prototype/README.md)
-check the direct coefficient-family bounds needed for carry estimates. An
+check the direct coefficient-family bounds needed for carry estimates. The
+[BFS band/carry theorem](research/direct-bfs-lean-band-carry-prototype/README.md)
+and [graph carry join](research/direct-bfs-80-carry-prototype/README.md)
+now derive the indexed carry family from the actual positive 80 graph under
+the direct-BFS symbolic kernel port and the other three symbolic port
+equalities. These author checks do not prove the external port/file binding,
+selected-column decoding or machine/color conjugacy. An
+[80-graph support join](research/direct-bfs-80-support-prototype/README.md)
+reconciles the radix length with the kernel-independent low-mask support and
+Boolean facts. An
 [independent audit](reviews/direct-bfs-lean-kernel-decoder-independent/README.md)
 checks selected kernel/decoder/mass receipts and reconstructs the BFS K bytes
 externally; it does not replay Lean.
@@ -392,6 +401,16 @@ discharges those hypotheses with one positive 12-coordinate valuation from
 an actual 80-row zero, while leaving p₁ arbitrary. Only its main factor is
 proved zero; compatible witnesses for the other factors and a whole-graph
 source zero remain open.
+A [flexible main-factor join](research/ten-positive-80-to-90-main-flexible-prototype/README.md)
+keeps its fresh main witnesses fixed while allowing any positive choices for
+the four coordinates unused by the main factor. An audit found that the
+earlier fresh-offset runner did not individually pin its direct
+`ArithmeticPellCongruences.olean` import; its compile-time bytes are not
+authenticated by the later path/hash observation. A corrected runner and
+dependent rechecks are required before closing that receipt boundary. The
+[independent main-factor review](reviews/ten-positive-80-to-90-main-independent/README.md)
+records this limitation and checks the flexible witness scope without
+replaying Lean.
 A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
 proves `rank > 3*q` and `q^3 ∣ Y` under explicit beta and positivity bounds,
 without assuming a graph zero. An [independent audit](reviews/ten-positive-80-carry-fresh-interval-independent/README.md)
