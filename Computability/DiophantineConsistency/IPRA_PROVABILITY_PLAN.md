@@ -51,8 +51,9 @@ the new zero is equivalent to an old zero at the transformed valuation in
 every IΣ₁ model, for arbitrary natural ports. A further bounded Lean check
 proves [positive-zero existence equivalence](research/ordinary12-qcube92-candidate/EXISTENCE.md)
 between the 92- and 95-operation graphs in every IΣ₁ model, for natural ports
-with positive β, using the existing `q³ ∣ Y` theorem. Its fixed-port halt
-join and provider ancestry remain open; the 92-operation graph has no
+with positive β, using the existing `q³ ∣ Y` theorem. An [independent review](reviews/ordinary12-qcube92-existence-independent/README.md)
+checks the witness maps, hypotheses and retained provider evidence. Its
+fixed-port halt join and provider ancestry remain open; the 92-operation graph has no
 established iPRA endpoint or formal PDF binding.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
@@ -101,13 +102,13 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage263-warning-retry/README.md)
-has rebuilt its first 263 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage266-warning-retry/README.md)
+has rebuilt its first 266 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
 separately source-pinned, exact-warning baselines, with further baselines at
 stages 197, 224 and 263 to preserve existing interfaces and at stages 250–251
-for source-pinned style warnings. Stage 95's initial
+and 266 for source-pinned style warnings. Stage 95's initial
 three-minute attempt timed out; a separately guarded longer retry passed.
 The remaining stages and final
 client are open. A separately checked
