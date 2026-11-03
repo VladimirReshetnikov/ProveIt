@@ -24,3 +24,5 @@ coefficient bound `K0<beta²`. It does not assert that such a zero exists or
 disprove equivalence of the two zero-existence statements. It does show that
 universal transport positivity is not a viable reverse route in the stated
 conditional setting.
+
+A subsequent author check has proved conditional reverse existence and unrestricted forward existence; see `CONDITIONAL.md` for the exact 88-side transport hypothesis and check evidence. The arbitrary-zero, halt, and iPRA questions remain open.

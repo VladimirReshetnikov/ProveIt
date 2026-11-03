@@ -126,6 +126,9 @@ is now checked in models, including a positive Pell root when beta is positive.
 The [signed-root alternatives](research/ordinary12-absorb88-probe/SIGNS.md)
 and [positive-branch witness bound](research/ordinary12-absorb88-probe/GAP.md)
 are checked conditional on the unresolved transport bound.
+Lean also checks [conditional existence transport](research/ordinary12-absorb88-probe/CONDITIONAL.md):
+every positive 89 zero maps to an 88 zero, and an 88 zero with the explicit
+transport bound maps back to an 89 zero.
 Its reverse argument is open: exact first-factor examples show the needed
 transport positivity cannot be derived from that factor alone, including one
 under the abstract port bounds. Neither example is a full-graph counterexample.
