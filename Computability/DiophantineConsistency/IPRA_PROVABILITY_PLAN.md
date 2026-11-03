@@ -198,7 +198,11 @@ without assuming its main Pell norm. An [independent fold audit](reviews/pell-al
 checks the same witnesses, noncircular source dependencies and receipts
 without a Lean replay. A [main-norm corollary](research/ten-positive-80-main-norm-prototype/README.md)
 derives that norm as a conclusion. Rank decoding, machine calibration and the
-iPRA endpoint remain open.
+iPRA endpoint remain open. A [signed rank-index theorem](research/ten-positive-80-rank-index-prototype/README.md)
+now derives the actual graph rank's signed congruence to its odd auxiliary
+index without assuming a rank sign. A [corrected scaled-growth lemma](research/ten-positive-80-scaled-growth-prototype/MINUS.md)
+handles the graph's main parameter but still assumes index alignment and the
+stated size bounds.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
