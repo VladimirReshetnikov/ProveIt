@@ -1,0 +1,7 @@
+# Independent status-text review: 74 boundary probe
+
+PASS for the boundary status in `research/trace74-mask-coordinate-probe/README.md` SHA `645561b543cbed256ff85adf77458b0d133c1f41de9bc7c0f5afc3787ac94269`, compared with `Trace74BoundaryConcreteZero.positive_zero_with_boundary` and `reviews/trace74-boundary-concrete-zero-result-independent/README.md` SHA `79a83ac507498f3a8477961beeba2fe81d124ded701ebd98bd762a407fd81432`. The text states the same positive witness, coordinates, value74 zero and q=F+C at ports `(1,1,28,0)` for the stated ordered-ring/IΣ₁ models; the strict guard fails for that witness. It does not turn the existential into an explicit numeral vector.
+
+The text correctly retains the four baseline/source and outside/package/dynamic provenance boundaries and the external Lean/JSON correspondence boundary. It also explicitly declines to infer the fixed-BFS guard, 75 graph nonexistence, 74/75 existence inequivalence or fixed-port halt/iPRA result. The text explicitly states that formal `value74=0` is equality in the model difference ring, as in the theorem and result audit. This qualification was added after review of the earlier README SHA `f34adc6a40db3d83da9c1b0975b066983bb3d7af5b286361c85b338c63b7aafc`. No Lean replay was performed.
+
+The final positive-domain paragraph explicitly records that the reverse guard is not automatic for arbitrary ports while its fixed-BFS case remains open; this matches the audited counterexample and does not assert 74/75 existence inequivalence.

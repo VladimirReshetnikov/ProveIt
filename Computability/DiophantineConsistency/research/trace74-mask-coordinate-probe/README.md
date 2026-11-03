@@ -34,41 +34,16 @@ the JSON-to-Lean row comparison remains external.
 candidate witness `C=q-F-alpha` is positive only if `alpha+F<q`. From a
 positive candidate valuation, the mapped old witness `alpha=q-F-C` is
 positive only if `F+C<q`. With those respective guards, the coordinate maps
-are inverse and preserve zero. Showing the guards follow from the applicable
-graph-zero hypotheses, particularly the reverse guard `F+C<q`, is separate
-work; no unconditional positive-solution equivalence, halt equivalence or
-internal iPRA proof for this candidate is asserted.
+are inverse and preserve zero. The reverse guard `F+C<q` does not follow
+from a positive graph zero for arbitrary ports, as shown below. Whether it
+follows at the fixed BFS tuple remains open. No unconditional positive-solution
+equivalence, halt equivalence or internal iPRA proof for this candidate is asserted.
 
-**Boundary investigation.** A checked [conditional construction](../trace74-boundary-compatible-rebuild/README.md)
-now obtains a positive trace74 zero from explicit model-level source, mask,
-transport and Pell hypotheses even when the old `alpha` coordinate is zero.
-A later [witness-preserving version](../trace74-boundary-witness-rebuild/README.md)
-retains `w0=v0`, `w1=v1` and `w2=q−v1−v2` for that same returned zero.
-Thus, when the source has `alpha=0`, its output coordinates meet the boundary
-`F+C=q`; no suitable source for the fixed BFS tuple has been established.
-A separate [finite seed](../trace74-boundary-31-seed/README.md)
-meets the relevant displayed arithmetic conditions at arbitrary ports where
-the guard fails for the source valuation. Its standard-natural Pell data have
-since been used in a [checked seed-specific specialization](../trace74-boundary-seed-specialization-rebuild/README.md),
-which still assumes the necessary model facts; its ports do not satisfy the fixed BFS tuple.
-Neither result establishes a trace74/trace75 inequivalence or an iPRA endpoint.
+**Boundary investigation.** A [Lean-checked same-witness theorem](../trace74-boundary-concrete-zero-rebuild/README.md), with an [independent result audit](../../reviews/trace74-boundary-concrete-zero-result-independent/README.md), now proves the following for every IΣ₁ model with the stated `ORingStructure`: at the ports `(beta,K0,MC,MF)=(1,1,28,0)` there is one positive valuation `w` for the formal `value74` graph with `w 0=w 1=w 2=1`, `value74=0` in the model difference ring, and `q=w 1+w 2`. Thus the strict guard `F+C<q` does not follow from positivity and a 74 zero for arbitrary ports. The proof returns an existential witness; it does not export a closed vector of numerals.
 
-A further [parametric specialization](../trace74-boundary-seed-parametric-rebuild/README.md)
-has been Lean checked at ports `(1,1,28,0)`: under explicit positivity,
-phase, growth, exponential and Pell hypotheses, it returns a positive zero
-with the first three coordinates equal to 1, so `F+C=q=2`. The finite seed's
-hypotheses have not been certified in Lean, and these ports are not the fixed
-BFS tuple. The check does not establish a fixed-port inequivalence or iPRA
-endpoint.
+The theorem uses the [kernel-checked finite Pell interval](../trace74-boundary-natural-seed-rebuild/README.md), [generic model transfer and assembly](../trace74-boundary-generic-assembly-rebuild/README.md), and [cast-based model facts](../trace74-boundary-seed-model-facts-rebuild/README.md). Its captured provider closure retains the four inherited baseline source-ancestry and outside/package/dynamic limits documented in the result audit. The formal Lean graph's correspondence with the external JSON remains external.
 
-The [standard-natural Pell interval](../trace74-boundary-natural-seed-rebuild/README.md),
-the [generic cast transfer](../trace74-boundary-generic-cast-transfer-rebuild/README.md)
-and the [generic model assembly](../trace74-boundary-generic-assembly-rebuild/README.md)
-have since passed guarded Lean checks and independent audits. The model
-assembly retains its explicit natural Pell, subtraction-cast, coordinate,
-positivity, phase, exponential and growth hypotheses. The seed-specific client
-discharges the finite Pell equations using the certified slacks, but its model
-facts remain assumptions. No fully certified concrete zero has been obtained.
+These ports violate the fixed BFS bounds. The counterexample does not decide the guard at the fixed BFS tuple, prove that the 75 graph has no positive zero, establish 74/75 existence inequivalence, or supply a fixed-port halt/iPRA theorem.
 
 The `coefficient_binding` object, including the tuple description and all
 compressed/raw hashes, is copied verbatim from the pinned 75-row JSON. Its
