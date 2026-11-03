@@ -476,7 +476,9 @@ digits. A [same-row pulse family](research/direct-bfs-halt-packed-family-prototy
 keeps one halt-derived row and geometry while quantifying over the pulses;
 a [local low-mask lemma](research/direct-bfs-cell-low-pulse-prototype/README.md)
 handles normalized pulses for non-forbidden rows. Global origin, high-mask
-and rank calibration remain separate. An
+and rank calibration remain separate. A [word low-mask join](research/direct-bfs-word-low-fields-prototype/README.md)
+proves the positive origin and low-mask fields for a direct local word when
+the dummy at the origin is even; high-mask and calibrated packing remain open. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -657,7 +659,9 @@ An [independent HA87 review](reviews/ten-positive-80-ha87-drift-independent/READ
 confirms the comparisons and reachability without replaying Lean. A
 [127-module preflight](reviews/ten-positive-80-127-rebuild-preflight/README.md)
 matches its sources and import names; it is not a rebuild or package-ancestry
-authentication. Those byte-matched records are not proven unique producer
+authentication. A replacement runner is held for independent review, which
+has already found memory-guard and diagnostic-matching defects; it has not
+been launched. Those byte-matched records are not proven unique producer
 origins. No replay is yet claimed. A
 [staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
 matches seven previously unmatched fresh helper objects to multi-stage

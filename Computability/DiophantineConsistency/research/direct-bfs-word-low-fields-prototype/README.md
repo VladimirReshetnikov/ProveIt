@@ -1,0 +1,5 @@
+# Direct-BFS word low-mask fields
+
+`DirectBFSWordLowFields.word_low_fields` proves the positive origin, adjusted origin no-carry, and per-cell concrete low-mask no-carry for any direct-BFS local word and any dummy family whose origin normalizes to zero. Unlike a proof based on a separate pulse decomposition, the per-cell no-carry lemma permits arbitrary dummy values after modulo-two normalization. These are the low-mask fields needed for a later `PackingInput`; product, high-mask and calibration fields remain open.
+
+Guarded author attempt `observations/directbfswordlow-attempt01/` exited 0 without diagnostics, and the three axiom reports are `[propext, Classical.choice, Quot.sound]`. Direct imports were pinned and rechecked. Object `/tmp/direct-bfs-wordlow-lvr6nlmq/DirectBFSWordLowFields.olean` has SHA-256 `1a5d8739b8a5f655f8a15ee72b2b6f4bf2876718bb57b1590093758125aa6ef9`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.
