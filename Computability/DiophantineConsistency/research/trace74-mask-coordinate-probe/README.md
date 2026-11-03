@@ -42,8 +42,11 @@ internal iPRA proof for this candidate is asserted.
 **Boundary investigation.** A checked [conditional construction](../trace74-boundary-compatible-rebuild/README.md)
 now obtains a positive trace74 zero from explicit model-level source, mask,
 transport and Pell hypotheses even when the old `alpha` coordinate is zero.
-Its existential conclusion does not retain the returned witness coordinates,
-so it does not prove that a zero violates `F+C<q`. A separate [finite seed](../trace74-boundary-31-seed/README.md)
+A later [witness-preserving version](../trace74-boundary-witness-rebuild/README.md)
+retains `w0=v0`, `w1=v1` and `w2=q−v1−v2` for that same returned zero.
+Thus, when the source has `alpha=0`, its output coordinates meet the boundary
+`F+C=q`; no suitable source for the fixed BFS tuple has been established.
+A separate [finite seed](../trace74-boundary-31-seed/README.md)
 meets the relevant displayed arithmetic conditions at arbitrary ports where
 the guard fails for the source valuation. The checked theorem has not been
 specialized to that seed, and its ports do not satisfy the fixed BFS tuple.
