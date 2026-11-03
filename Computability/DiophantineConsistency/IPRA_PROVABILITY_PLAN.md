@@ -213,8 +213,13 @@ derives index at least two from a positive zero at positive beta, without
 assuming rank, transport or alignment. This yields the actual graph bound
 [`X<c`](research/ten-positive-80-scaled-growth-prototype/C_ABOVE_X.md) and a
 positive correction gap. A [model carrier lemma](research/ten-positive-carrier-transport-prototype/README.md)
-checks a conditional negative-transport contradiction; its full graph
-hypotheses are not yet established.
+checks a conditional negative-transport contradiction. The exact graph
+[carrier identity](research/ten-positive-80-carrier-identity-prototype/README.md),
+[signed integral carrier](research/ten-positive-80-signed-carrier-prototype/README.md),
+and [conditional graph transport theorem](research/ten-positive-80-transport-conditional-prototype/README.md)
+are now checked. An [offset bound](research/ten-positive-80-offset-bound-prototype/README.md)
+supplies one of its two size estimates from positive inputs; the other estimate
+and their same-witness composition remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project

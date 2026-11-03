@@ -1,0 +1,53 @@
+import CarrierTransport
+import Direct80ResidueBinding
+
+/-! Exact ring carrier identity of the 80-row graph. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80CarrierIdentity
+open DiophantineConsistency AdaptiveEquationSyntax2011
+open TenPositive80Graph TenPositive80ResidueBinding
+
+def hExpr (p : Fin 4 → ℤ) : Expr (Fin 10) := .constant (p 0) * .var 0
+def qExpr (p : Fin 4 → ℤ) : Expr (Fin 10) := hExpr p+1
+def muExpr (p : Fin 4 → ℤ) : Expr (Fin 10) := qExpr p*qExpr p+1
+def HExpr (p : Fin 4 → ℤ) : Expr (Fin 10) :=
+  4*((muExpr p*((qExpr p*qExpr p*qExpr p)*.var 6))*(.var 5*qExpr p+1))-1
+def BExpr (p : Fin 4 → ℤ) : Expr (Fin 10) :=
+  (.constant (p 1)+.var 5)*(qExpr p-.var 1-.var 2)-.var 1
+def eExpr (p : Fin 4 → ℤ) : Expr (Fin 10) := (.var 8+.var 9)-rExpr p-1
+def KExpr (p : Fin 4 → ℤ) : Expr (Fin 10) :=
+  (.var 5*qExpr p)*(3*cExpr p-2*(.var 5*qExpr p))+2
+
+theorem z_shape (p : Fin 4 → ℤ) : (graph p).z =
+    (hExpr p*(muExpr p*muExpr p))*
+      (HExpr p*(.var 7-((graph p).v*(graph p).v)*BExpr p)+KExpr p)-
+      HExpr p*((muExpr p*muExpr p)*BExpr p+hExpr p*eExpr p) := by rfl
+
+theorem m_shape (p : Fin 4 → ℤ) : (graph p).m =
+    (hExpr p*(muExpr p*muExpr p))*HExpr p := by rfl
+
+variable {R : Type*} [CommRing R]
+theorem z_eval (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    let h := (hExpr p).evalRing v
+    let m := (muExpr p).evalRing v*(muExpr p).evalRing v
+    let H := (HExpr p).evalRing v
+    let B := (BExpr p).evalRing v
+    let e := (eExpr p).evalRing v
+    let k := (KExpr p).evalRing v
+    let L := (graph p).v.evalRing v*(graph p).v.evalRing v
+    (graph p).z.evalRing v = h*m*(H*(v 7-L*B)+k)-H*(m*B+h*e) := by
+  rw [z_shape]
+  simp only [Expr.evalRing_mul,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_var]
+
+theorem m_eval (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    (graph p).m.evalRing v = (hExpr p).evalRing v *
+      ((muExpr p).evalRing v*(muExpr p).evalRing v)*(HExpr p).evalRing v := by
+  rw [m_shape]
+  simp only [Expr.evalRing_mul]
+
+#print axioms TenPositive80CarrierIdentity.z_eval
+#print axioms TenPositive80CarrierIdentity.m_eval
+end TenPositive80CarrierIdentity
