@@ -1,0 +1,7 @@
+# Direct graph Pell-index comparison
+
+`DirectMainComparison.comparison` proves in every IΣ₁ model that a direct-draft output zero, positive witnesses, and ports satisfying `0<beta`, `MC<beta`, and `MF<2*beta` yield positive Pell roots and indices satisfying the stated coordinate equations, `13≤n<m`, `14≤m`, `2*R<c`, the prior q⁴ index congruence, and the additional bounds in the Lean theorem. It uses the earlier graph-specific index and window results and does not assume an old 95-graph zero.
+
+This does not yet identify the indices exactly with the encoded rank, extract the needed auxiliary-residual consequences, prove model-to-halt equivalence, or prove internal iPRA derivability.
+
+`run-comparison.py` produced `observations/comparison-attempt01/` with exit 0 and no reported warnings. Source SHA-256 is `36bba26b975a3e571cdb1668070dd25eacdd2360491231f539a2e02712516119`, output object is `42d86b41387d230d85b9de33b0eca8c7b340975e15fab6d9c0be9086c305263d`, and the axiom report lists `propext`, `Classical.choice`, and `Quot.sound`. The window and all thirteen predecessor objects and the selected 1,291-object union were pinned and rechecked. Package, dynamic, and source-to-object ancestry are inherited rather than freshly rebuilt; imported first and main norm sources locally suppress unused-variable and unused-simp-argument linters. Resource samples and exact pins are in the receipt; temporary paths may disappear.
