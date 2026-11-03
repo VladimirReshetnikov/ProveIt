@@ -79,12 +79,17 @@ and its [independent review](reviews/ordinary12-xq91-decimal-independent/README.
 externally check the 91 rows and fixed-coefficient recipes; these are not
 Lean theorems about PDF or filesystem semantics.
 
-A possible further reduction replacing `gamma+w` with a single positive input
-has [conditional direct-main lemmas](research/ordinary12-direct-main-probe/README.md)
-and an [independent review](reviews/ordinary12-direct-main-independent/README.md).
-They require explicit norm, balance and bounds and do not establish those
-conditions for a new graph, nor prove soundness, completeness or iPRA
-provability for a 90-operation equation.
+A [90-operation direct-main graph](research/ordinary12-direct-main-probe/GRAPH.md)
+replaces `gamma+w` with a single positive input. Lean now checks its
+[positive-zero equivalence](research/ordinary12-direct-main-probe/EQUIVALENCE.md)
+to the 91-operation graph under the stated port bounds and its fixed-port
+[all-model halt bridge](research/ordinary12-direct-main-probe/HALT.md),
+including shifted and closed Lean byte-recipe forms. The graph and exact
+degree 172 are externally checked. These are model-level author builds with
+inherited provider ancestry, not yet an internal iPRA derivation. A proposed
+[iPRA client](research/ordinary12-direct90-ipra-endpoint-draft/README.md) is
+unchecked. The [decimal display](research/ordinary12-direct90-decimal-display/README.md)
+has external graph, payload and PDF checks; no Lean PDF semantics is claimed.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
@@ -132,8 +137,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage310-warning-retry/README.md)
-has rebuilt its first 310 of 425 modules. A missing declaration in a
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage368-warning-retry/README.md)
+has rebuilt its first 368 of 425 modules. A missing declaration in a
 historical provider required a checked local source repair at stage 276;
 similar later references and inherited provider freshness remain open. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
