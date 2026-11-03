@@ -29,7 +29,9 @@ producing `/tmp/trace75-bfs-carry-fcp4lu0b/Trace75BFSCarry.olean` SHA-256
 The `observations/outer-attempt01/terminal.json` receipt (SHA-256
 `c12da16e2196705490b6b5c54bf1c626eb8bda5446772018974d2e88a7c84631`)
 records actual child exit 0 and stable inputs/wrapper; the supervising tool
-session also exited 0. Independent post-run review is pending.
+session also exited 0. Independent post-run review passed in
+`reviews/trace75-bfs-carry-result-independent/README.md` (SHA-256
+`2f4047e8bef0827fb50fa1c734fbf28b45b3e3543c5cdb9090dba762b5a17d68`).
 
 Historical unrebuilt-source provenance,
 full package/dynamic ancestry and external file binding are not established
