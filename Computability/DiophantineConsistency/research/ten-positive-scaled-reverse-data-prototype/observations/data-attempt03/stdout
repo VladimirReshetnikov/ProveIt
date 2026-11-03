@@ -1,0 +1,42 @@
+/tmp/scaled-reverse-data-x69oq5_5/ScaledReverseData.lean:55:33: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X Y mu r eta zeta b t : V
+hX : 1 ≤ X
+hY : 1 ≤ Y
+hmu : 1 ≤ mu
+hr : 0 < r
+hXeq : X = Exp.exp (2 * r + 1)
+h72 : 72 * r < X + 1
+hphase : (2 * r + 1) % 4 = 3
+heta : 0 < eta
+hzeta : 0 < zeta
+hck : ycoord (2 * r + 1) (Y * (X + 1)) = 2 * ycoord (r + 1) (2 * (X * Y * Y - 1) + 1) * Y + eta
+hk : 2 * ycoord (r + 1) (2 * (X * Y * Y - 1) + 1) = eta + zeta
+P : V := X * (mu * Y) * (mu * Y)
+a : V := mu * Y * (X + 1) - 1
+R : V := 2 * r + 1
+K : V := 2 * ycoord (r + 1) (2 * (P - 1) + 1)
+C : V := ycoord R a
+D : V := delta a
+H : V := 4 * a + 3
+Kpos : V := X * (3 * C - 2 * X) + 2
+eta' zeta' rho kappa tau : V
+heta' : 0 < eta'
+hzeta' : 0 < zeta'
+hkappa : 0 < kappa
+htau : 0 < tau
+hC : ycoord (2 * r + 1) (mu * Y * (X + 1) - 1) = 2 * ycoord (r + 1) (2 * (X * (mu * Y) * (mu * Y) - 1) + 1) * Y + eta'
+hK : 2 * ycoord (r + 1) (2 * (X * (mu * Y) * (mu * Y) - 1) + 1) = eta' + zeta'
+hsize : X < ycoord (2 * r + 1) (mu * Y * (X + 1) - 1)
+hkap : X * (3 * ycoord (2 * r + 1) (mu * Y * (X + 1) - 1) - 2 * X) + 2 = (4 * (mu * Y * (X + 1) - 1) + 3) * kappa
+hnorm :
+  tau * tau =
+    1 +
+      X * (mu * Y) * (mu * Y) * (X * (mu * Y) * (mu * Y) + 1) *
+          (2 * ycoord (r + 1) (2 * (X * (mu * Y) * (mu * Y) - 1) + 1)) *
+        (2 * ycoord (r + 1) (2 * (X * (mu * Y) * (mu * Y) - 1) + 1))
+hoff : K = R + 1 + mu * mu * rho
+⊢ R + 1 + mu * mu * rho - R - 1 = mu * mu * rho
+'TenPositiveScaledReverseData.reverse_data' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
