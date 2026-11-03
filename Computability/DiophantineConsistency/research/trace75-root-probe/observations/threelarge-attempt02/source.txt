@@ -1,0 +1,70 @@
+import DiophantineConsistency.ArithmeticPellHalfIndex
+import Mathlib.Tactic.Linarith
+
+/-! The main index three is incompatible with first index at least three. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace Trace75ThreeLarge
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ArithmeticPellRecurrence ArithmeticPellHalfIndex
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem impossible (X Y k eta n : V) (hX : 2≤X) (hY : 2≤Y) (heta : 0<eta)
+    (hn : 3≤n)
+    (hfirst : 2*ycoord n (2*(X*(Y*Y)-1)+1)=k)
+    (hmain : k*Y+eta=ycoord 3 ((X*Y+Y)-1)) : False := by
+  let P : V := X*(Y*Y)
+  let A : V := X*Y+Y
+  let B : V := 2*(P-1)+1
+  let C : V := k*Y+eta
+  have hXpos : 0<X := lt_of_lt_of_le (by simp : (0:V)<2) hX
+  have hYpos : 0<Y := lt_of_lt_of_le (by simp : (0:V)<2) hY
+  have hY1 : 1≤Y := le_trans (by simp : (1:V)≤2) hY
+  have hPpos : 0<P := mul_pos hXpos (mul_pos hYpos hYpos)
+  have hApos : 0<A := add_pos (mul_pos hXpos hYpos) hYpos
+  have hp1 : P-1+1=P := tsub_add_cancel_of_le (pos_iff_one_le.mp hPpos)
+  have ha1 : A-1+1=A := tsub_add_cancel_of_le (pos_iff_one_le.mp hApos)
+  have hbase : B+2=2*P+1 := by
+    calc
+      B+2=2*(P-1+1)+1 := by dsimp [B]; ring
+      _=2*P+1 := by rw [hp1]
+  have hbaseA : (A-1)+2=A+1 := by
+    calc
+      (A-1)+2=(A-1+1)+1 := by ring
+      _=A+1 := by rw [ha1]
+  have h2Y : 2*Y≤X*Y := mul_le_mul_of_nonneg_right hX (by simp)
+  have hYplus : Y+1≤2*Y := by nlinarith
+  have h2XY : 2*(X*Y)≤(X*Y)*Y := by
+    simpa only [mul_comm] using mul_le_mul_of_nonneg_left hY (show (0:V)≤X*Y by simp)
+  have hPA : A+1≤P := calc
+    A+1=X*Y+(Y+1) := by dsimp [A]; ring
+    _≤X*Y+X*Y := add_le_add_left (le_trans hYplus h2Y) _
+    _=2*(X*Y) := by ring
+    _≤(X*Y)*Y := h2XY
+    _=P := by dsimp [P]; ring
+  have hBA : A+1≤B+2 := by rw [hbase]; exact le_trans hPA (by nlinarith)
+  have hsquare : (A+1)*(A+1)≤(B+2)*(B+2) := mul_self_le_mul_self (by simp) hBA
+  have hy3 : ycoord 3 B+1=4*(B+2)*(B+2) := y_three B
+  have hybound : ycoord 3 B≤ycoord n B := (ordinate_strictMono B).monotone hn
+  have hkbound : 8*(B+2)*(B+2)≤k+2 := by
+    change 2*ycoord n B=k at hfirst
+    have hh := mul_le_mul_of_nonneg_left hybound (show (0:V)≤2 by simp)
+    nlinarith [hy3]
+  have hc3 : C+1=4*(A+1)*(A+1) := by
+    change C=ycoord 3 (A-1) at hmain
+    rw [hmain]
+    simpa only [hbaseA] using y_three (A-1)
+  have htwice : 2*(C+1)≤k+2 := calc
+    2*(C+1)=8*((A+1)*(A+1)) := by rw [hc3]; ring
+    _≤8*((B+2)*(B+2)) := mul_le_mul_of_nonneg_left hsquare (by simp)
+    _=8*(B+2)*(B+2) := by ring
+    _≤k+2 := hkbound
+  have hkc : k<C := calc
+    k≤k*Y := by simpa only [mul_one] using mul_le_mul_of_nonneg_left hY1 (show (0:V)≤k by simp)
+    _<k*Y+eta := lt_add_of_pos_right _ heta
+  nlinarith
+
+#print axioms Trace75ThreeLarge.impossible
+end Trace75ThreeLarge

@@ -1,0 +1,35 @@
+/tmp/trace75-threelarge-ruuyg_77/Trace75ThreeLarge.lean:38:30: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X Y k eta n : V
+hX : 2 ≤ X
+hY : 2 ≤ Y
+heta : 0 < eta
+hn : 3 ≤ n
+hfirst : 2 * ycoord n (2 * (X * (Y * Y) - 1) + 1) = k
+hmain : k * Y + eta = ycoord 3 (X * Y + Y - 1)
+P : V := X * (Y * Y)
+A : V := X * Y + Y
+B : V := 2 * (P - 1) + 1
+C : V := k * Y + eta
+hXpos : 0 < X
+hYpos : 0 < Y
+hY1 : 1 ≤ Y
+hPpos : 0 < P
+hApos : 0 < A
+hp1 : P - 1 + 1 = P
+ha1 : A - 1 + 1 = A
+hbase : B + 2 = 2 * P + 1
+hbaseA : A - 1 + 2 = A + 1
+h2Y : 2 * Y ≤ X * Y
+a✝ : 2 * Y < Y + 1
+⊢ False
+failed
+/tmp/trace75-threelarge-ruuyg_77/Trace75ThreeLarge.lean:43:17: error: Type mismatch
+  add_le_add_left (le_trans hYplus h2Y) ?m.576
+has type
+  Y + 1 + ?m.576 ≤ X * Y + ?m.576
+but is expected to have type
+  X * Y + (Y + 1) ≤ X * Y + X * Y
+'Trace75ThreeLarge.impossible' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

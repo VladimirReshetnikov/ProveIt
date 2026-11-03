@@ -1,0 +1,106 @@
+/tmp/trace75-threelarge-2y330ha5/Trace75ThreeLarge.lean:49:62: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X Y k eta n : V
+hX : 2 ≤ X
+hY : 2 ≤ Y
+heta : 0 < eta
+hn : 3 ≤ n
+hfirst : 2 * ycoord n (2 * (X * (Y * Y) - 1) + 1) = k
+hmain : k * Y + eta = ycoord 3 (X * Y + Y - 1)
+P : V := X * (Y * Y)
+A : V := X * Y + Y
+B : V := 2 * (P - 1) + 1
+C : V := k * Y + eta
+hXpos : 0 < X
+hYpos : 0 < Y
+hY1 : 1 ≤ Y
+hPpos : 0 < P
+hApos : 0 < A
+hp1 : P - 1 + 1 = P
+ha1 : A - 1 + 1 = A
+hbase : B + 2 = 2 * P + 1
+hbaseA : A - 1 + 2 = A + 1
+h2Y : 2 * Y ≤ X * Y
+hYplus : Y + 1 ≤ 2 * Y
+h2XY : 2 * (X * Y) ≤ X * Y * Y
+hPA : A + 1 ≤ P
+a✝ : 2 * P + 1 < P
+⊢ False
+failed
+/tmp/trace75-threelarge-2y330ha5/Trace75ThreeLarge.lean:56:4: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X Y k eta n : V
+hX : 2 ≤ X
+hY : 2 ≤ Y
+heta : 0 < eta
+hn : 3 ≤ n
+hmain : k * Y + eta = ycoord 3 (X * Y + Y - 1)
+P : V := X * (Y * Y)
+A : V := X * Y + Y
+B : V := 2 * (P - 1) + 1
+C : V := k * Y + eta
+hXpos : 0 < X
+hYpos : 0 < Y
+hY1 : 1 ≤ Y
+hPpos : 0 < P
+hApos : 0 < A
+hp1 : P - 1 + 1 = P
+ha1 : A - 1 + 1 = A
+hbase : B + 2 = 2 * P + 1
+hbaseA : A - 1 + 2 = A + 1
+h2Y : 2 * Y ≤ X * Y
+hYplus : Y + 1 ≤ 2 * Y
+h2XY : 2 * (X * Y) ≤ X * Y * Y
+hPA : A + 1 ≤ P
+hBA : A + 1 ≤ B + 2
+hsquare : (A + 1) * (A + 1) ≤ (B + 2) * (B + 2)
+hy3 : ycoord 3 B + 1 = 4 * (B + 2) * (B + 2)
+hybound : ycoord 3 B ≤ ycoord n B
+hfirst : 2 * ycoord n B = k
+hh : 2 * ycoord 3 B ≤ 2 * ycoord n B
+a✝ : k + 2 < 8 * (B + 2) * (B + 2)
+⊢ False
+failed
+/tmp/trace75-threelarge-2y330ha5/Trace75ThreeLarge.lean:69:2: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X Y k eta n : V
+hX : 2 ≤ X
+hY : 2 ≤ Y
+heta : 0 < eta
+hn : 3 ≤ n
+hfirst : 2 * ycoord n (2 * (X * (Y * Y) - 1) + 1) = k
+hmain : k * Y + eta = ycoord 3 (X * Y + Y - 1)
+P : V := X * (Y * Y)
+A : V := X * Y + Y
+B : V := 2 * (P - 1) + 1
+C : V := k * Y + eta
+hXpos : 0 < X
+hYpos : 0 < Y
+hY1 : 1 ≤ Y
+hPpos : 0 < P
+hApos : 0 < A
+hp1 : P - 1 + 1 = P
+ha1 : A - 1 + 1 = A
+hbase : B + 2 = 2 * P + 1
+hbaseA : A - 1 + 2 = A + 1
+h2Y : 2 * Y ≤ X * Y
+hYplus : Y + 1 ≤ 2 * Y
+h2XY : 2 * (X * Y) ≤ X * Y * Y
+hPA : A + 1 ≤ P
+hBA : A + 1 ≤ B + 2
+hsquare : (A + 1) * (A + 1) ≤ (B + 2) * (B + 2)
+hy3 : ycoord 3 B + 1 = 4 * (B + 2) * (B + 2)
+hybound : ycoord 3 B ≤ ycoord n B
+hkbound : 8 * (B + 2) * (B + 2) ≤ k + 2
+hc3 : C + 1 = 4 * (A + 1) * (A + 1)
+htwice : 2 * (C + 1) ≤ k + 2
+hkc : k < C
+⊢ False
+failed
+'Trace75ThreeLarge.impossible' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
