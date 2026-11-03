@@ -255,7 +255,9 @@ remains separate.
 The [80-row height theorem](research/ten-positive-80-scaled-growth-prototype/POWER.md)
 combines the actual alignment and scaled-growth lemmas to derive `2^rank<Y`
 from a positive graph zero, with beta size/oddness and symbolic low/high bounds
-explicit. A separate [projection-divisibility theorem](research/ten-positive-80-projection-divisibility-prototype/README.md)
+explicit. An [independent audit](reviews/ten-positive-80-index-alignment-independent/README.md)
+checks the same alignment witness, quotient bound and selected producers
+without replaying Lean. A separate [projection-divisibility theorem](research/ten-positive-80-projection-divisibility-prototype/README.md)
 derives `H ∣ h*Kpos` in the difference ring; a [natural projection theorem](research/ten-positive-80-natural-projection-prototype/README.md)
 now transfers that divisibility back to the model's natural elements. The
 whole-product projection and `X=2^rank` remain open.
