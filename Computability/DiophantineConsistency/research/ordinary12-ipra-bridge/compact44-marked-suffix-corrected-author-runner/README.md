@@ -1,0 +1,5 @@
+# Fail-closed corrected suffix runner draft
+
+The draft selects the reviewed-source-plan candidate in `../compact44-marked-suffix-corrected-source-plan/`, including its isolated checked no-`#check` source at position 21. It inherits the previous author-only bounded runner and three exact historical full-warning baselines. It deliberately contains placeholder corrected-closure review pins; its real preflight fails before creating output until the independent closure review exists and exact pins are incorporated.
+
+Synthetic fake wrapper, warning and helper controls are recorded in observations. These replace compiler, provider, monitor and closure callback and prove no Lean result. The draft has not run a real preflight or compiler. The isolated graph-halt client does not establish a completed suffix, paired provenance, inherited transitive ancestry, concrete tuple binding, converse or internal iPRA conclusion. Corrected source-closure review, final runner pinning and independent exact-byte runner review remain required.
