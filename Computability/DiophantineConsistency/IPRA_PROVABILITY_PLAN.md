@@ -202,7 +202,9 @@ iPRA endpoint remain open. A [signed rank-index theorem](research/ten-positive-8
 now derives the actual graph rank's signed congruence to its odd auxiliary
 index without assuming a rank sign. A [corrected scaled-growth lemma](research/ten-positive-80-scaled-growth-prototype/MINUS.md)
 handles the graph's main parameter but still assumes index alignment and the
-stated size bounds.
+stated size bounds. Its [graph application](research/ten-positive-80-scaled-growth-prototype/GRAPH.md)
+obtains the two Pell equations from an actual zero but keeps alignment and
+`X≥16` as explicit premises.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
