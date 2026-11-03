@@ -358,10 +358,14 @@ derives that term from the word for the exact `(K+2^e)` product. These are
 model-level components. The [product-size bound](research/ordinary12-ipra-bridge/compact44-cell-product-bound-prototype/README.md)
 now discharges the kernel-product field for valid base and pulsed cells; the
 [chosen-rank client](research/ordinary12-ipra-bridge/compact44-word-rank-static-fields-prototype/README.md)
-uses it and discharges the scalar bounds at the chosen dimensions, while
-retaining four base and universally quantified pulsed block and high-mask
-fields. Those fields, graph-zero construction and the iPRA endpoint remain
-separate obligations.
+uses it and discharges the scalar bounds at the chosen dimensions. Subsequent
+[block positivity](research/ordinary12-ipra-bridge/compact44-word-block-positivity-prototype/README.md)
+and [cell-sum](research/ordinary12-ipra-bridge/compact44-marked-cell-sum-prototype/README.md)
+clients establish the remaining size and positivity properties for the base
+and Boolean-pulsed marked word. Both high-mask conditions, graph-zero
+construction and the iPRA endpoint remain separate obligations; the
+individual components use guarded single-author providers with inherited
+ancestry, as described in their linked records.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
