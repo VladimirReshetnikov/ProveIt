@@ -1,0 +1,5 @@
+# Direct-BFS kernel upper bound
+
+`DirectBFSKernelBound.kernel_lt` proves `DirectBFSSymbolicKernel.paramKernel r < r^8850` for every natural `r≥2^67`. It bounds each power in the two weighted sums by `r^8849`, uses the checked exact selector/copy masses, and bounds the resulting coefficient below `r`. This is a direct symbolic-kernel theorem and does not expand the full coefficient. It can support the missing product field for direct-family `PackingInput`.
+
+Attempt 01 failed due to unavailable arithmetic tactics and proof elaboration; attempt 02 fixed the main bound but failed at the last power identity; attempt 03 also failed at that identity. All sources and receipts are retained. Guarded author attempt `observations/directbfskernelbound-attempt04/` exited 0 without diagnostics, and its axiom report is `[propext, Classical.choice, Quot.sound]`. All direct imports were pinned and rechecked. Object `/tmp/direct-bfs-kernelbound-7d2yzbp5/DirectBFSKernelBound.olean` has SHA-256 `fe44d4e7ca87794e9c2a24c906556ce7bbfc74544d941474322707c516c86766`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

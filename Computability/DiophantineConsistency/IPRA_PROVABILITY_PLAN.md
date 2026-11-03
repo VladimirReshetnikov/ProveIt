@@ -483,7 +483,9 @@ the dummy at the origin is even. A [conditional packing adapter](research/direct
 combines those fields with explicitly assumed transport/high-mask conditions;
 those conditions and calibrated graph witnesses remain open. A [direct-cell size bound](research/direct-bfs-cell-size-prototype/README.md)
 proves a smaller upper bound under non-forbidden-row and Boolean-dummy
-assumptions; the direct kernel bound and product field are still separate. An
+assumptions. A [direct kernel bound](research/direct-bfs-kernel-bound-prototype/README.md)
+now proves the symbolic kernel is below the stated power without expansion;
+the combined product field remains separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A

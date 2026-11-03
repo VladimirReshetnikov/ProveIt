@@ -1,0 +1,41 @@
+/tmp/direct-bfs-kernelbound-7hwh_zuk/DirectBFSKernelBound.lean:48:5: error: unknown tactic
+/tmp/direct-bfs-kernelbound-7hwh_zuk/DirectBFSKernelBound.lean:12:55: error: No goals to be solved
+/tmp/direct-bfs-kernelbound-7hwh_zuk/DirectBFSKernelBound.lean:12:22: error: unsolved goals
+r : ℕ
+hr : 2 ^ 67 ≤ r
+this : 0 < 2 ^ 67
+⊢ 0 < r
+/tmp/direct-bfs-kernelbound-7hwh_zuk/DirectBFSKernelBound.lean:14:45: warning: exponent 8849 exceeds the threshold 256, exponentiation operation was not evaluated, use `set_option exponentiation.threshold <num>` to set a new threshold
+/tmp/direct-bfs-kernelbound-7hwh_zuk/DirectBFSKernelBound.lean:41:58: error: No goals to be solved
+/tmp/direct-bfs-kernelbound-7hwh_zuk/DirectBFSKernelBound.lean:42:61: error: unsolved goals
+r : ℕ
+hr : 2 ^ 67 ≤ r
+hrpos : 0 < r
+P : ℕ := r ^ 8849
+hpow : ∀ n ≤ 8849, r ^ n ≤ P
+hbare : r ^ 30 + r ^ 62 + r ^ 1100 + r ^ 2201 ≤ 4 * P
+hs : ∑ i, selectors i * (r ^ (4393 - ↑i) + r ^ (5495 - ↑i)) ≤ selectorMass * (2 * P)
+hc :
+  ∑ i, copies i * (r ^ (4393 - CompactSymbolicKernel.position i) + r ^ (5495 - CompactSymbolicKernel.position i)) ≤
+    copyMass * (2 * P)
+ht : r ^ 8807 * r ^ 42 = P
+⊢ r ^ 30 + r ^ 62 + r ^ 1100 + r ^ 2201 + ∑ i, selectors i * (r ^ (4393 - ↑i) + r ^ (5495 - ↑i)) +
+        ∑ i,
+          copies i * (r ^ (4393 - CompactSymbolicKernel.position i) + r ^ (5495 - CompactSymbolicKernel.position i)) +
+      P ≤
+    (2 * selectorMass + 2 * copyMass + 5) * P
+/tmp/direct-bfs-kernelbound-7hwh_zuk/DirectBFSKernelBound.lean:11:68: error: unsolved goals
+r : ℕ
+hr : 2 ^ 67 ≤ r
+hrpos : 0 < r
+P : ℕ := r ^ 8849
+hpow : ∀ n ≤ 8849, r ^ n ≤ P
+hbare : r ^ 30 + r ^ 62 + r ^ 1100 + r ^ 2201 ≤ 4 * P
+hs : ∑ i, selectors i * (r ^ (4393 - ↑i) + r ^ (5495 - ↑i)) ≤ selectorMass * (2 * P)
+hc :
+  ∑ i, copies i * (r ^ (4393 - CompactSymbolicKernel.position i) + r ^ (5495 - CompactSymbolicKernel.position i)) ≤
+    copyMass * (2 * P)
+ht : r ^ 8807 * r ^ 42 = P
+hk : paramKernel r ≤ (2 * selectorMass + 2 * copyMass + 5) * P
+⊢ paramKernel r < r ^ 8850
+'DirectBFSKernelBound.kernel_lt' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
