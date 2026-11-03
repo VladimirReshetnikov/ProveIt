@@ -700,6 +700,9 @@ reviewed [v5 retry policy](reviews/ten-positive-80-rebuild-v5-prelaunch-independ
 allows exactly those two source-specific complete warning logs, with all
 other warnings still fatal; its fresh run is being coordinated. Only final
 PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
+The [historical warning inventory](reviews/ten-positive-80-warning-inventory/README.md)
+identifies a further recorded policy at planned stage 13, but does not
+pre-approve its output under the fresh provider.
 Those
 byte-matched records are not proven unique producer
 origins. No replay is yet claimed. A
