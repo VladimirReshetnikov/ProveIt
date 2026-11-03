@@ -389,8 +389,11 @@ Lean. An
 [arbitrary-phase local decoder](research/direct-bfs-lean-uniform-decoder-prototype/README.md)
 and [actual-graph join](research/direct-bfs-80-uniform-decoder-prototype/README.md)
 now establish the direct-table selector/copy decoding at every designated
-band phase under the direct symbolic ports. Full Wang-window and machine/color
-conjugacy remain open. An
+band phase under the direct symbolic ports. A [field-bits join](research/direct-bfs-80-field-bits-prototype/README.md)
+derives the vertical and horizontal parity families at the same length. An
+[independent review](reviews/direct-bfs-uniform-and-positive-seed-independent/README.md)
+checks the two uniform-decoder receipts and the generic positive seed without
+replaying Lean. Full Wang-window and machine/color conjugacy remain open. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An

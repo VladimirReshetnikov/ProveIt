@@ -1,0 +1,5 @@
+# Direct-BFS 80-graph field matching
+
+`DirectBFS80FieldBits.graph_field_bits` derives both vertical and horizontal field-bit equality families from a positive 80-graph zero at the four explicit direct-BFS symbolic port equalities. It combines the actual graph's direct-family whole-cell alignment/carry with K-independent low/high-mask support and the direct-family parity lemmas, proving independently obtained radix lengths equal. No retained-original K or full-table equality is assumed.
+
+The guarded author check `observations/directbfs80fieldbits-attempt01/` exited 0 without diagnostics and reported `propext`, `Classical.choice`, `Quot.sound`. Every direct source import was first resolved to an explicit pinned object and rechecked. Object `/tmp/direct-bfs-80-fieldbits-ak655jn3/DirectBFS80FieldBits.olean` SHA-256 `85bdd704828acdb145c7160c00b0e2be75056d48358968286baef2a425a40f73`. Inherited transitive source/object, package and dynamic ancestry remain unverified and no independent Lean replay is claimed. Full direct tile-window decoding, machine/color conjugacy, converse, iPRA and formal JSON/file binding remain open.
