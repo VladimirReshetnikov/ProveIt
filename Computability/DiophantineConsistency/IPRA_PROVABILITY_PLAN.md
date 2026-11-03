@@ -41,7 +41,11 @@ and [36–40](reviews/nine-variable-ipra-stages-36-40-author-observation/README.
 cover subsequent syntax and representation modules. The author observations
 for [stages 41–50](reviews/nine-variable-ipra-stages-41-50-author-observation/README.md)
 include the fixed syntax and quartic model bridge; [stages 51–60](reviews/nine-variable-ipra-stages-51-60-author-observation/README.md)
-cover equality-only theory-transfer modules.
+cover equality-only theory-transfer modules. The author observations for
+[stages 61–69](reviews/nine-variable-ipra-stages-61-69-author-observation/README.md)
+include the endpoint reduction under two model obligations, while
+[stages 70–74](reviews/nine-variable-ipra-stages-70-74-author-observation/README.md)
+include the internal Jones reduction.
 These observations do not establish a paired replay or full closure.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
