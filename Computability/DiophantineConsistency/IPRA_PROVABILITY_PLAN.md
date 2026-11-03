@@ -155,7 +155,9 @@ remain open.
 
 The [79-row coordinate probe](research/ten-positive-79-mask-coordinate-probe/README.md)
 replaces the third positive unknown by the mask C and has an external all-ring
-substitution identity to the 80-row graph. Its reverse positive map requires
+substitution identity to the 80-row graph. A [Lean ring client](research/ten-positive-79-ring-probe/README.md)
+now checks that identity for arbitrary commutative rings and ports, with an
+external row comparison. Its reverse positive map requires
 `F+C<q`, which is not established; it is not a proved smaller consistency
 equation or iPRA endpoint.
 
