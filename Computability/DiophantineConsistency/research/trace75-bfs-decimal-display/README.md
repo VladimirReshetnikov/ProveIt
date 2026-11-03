@@ -1,0 +1,38 @@
+# Decimal display of the ten-positive trace75 candidate
+
+[`equation.pdf`](equation.pdf) and [`equation.tex`](equation.tex) display the
+75-operation degree-402 candidate with the directly indexed BFS coefficient
+tuple. Its ten strictly positive unknowns have the distinct names `a` through
+`j`; the numbered `r` symbols are intermediate abbreviations, not additional
+unknowns. The 75 count covers the positive-coordinate evaluator and excludes
+the separate positive shifts and construction of fixed constants. The fixed
+selector values are printed as decimal integers; the formulas use ordinary
+integer arithmetic and powers.
+
+`generate.py` builds the display from the pinned 75-row JSON and reconstructs
+all four fixed integers against the complete retained coefficient payloads.
+The observed generation in tool session 23536 exited 0; its finite receipt is
+[`observations/generation.json`](observations/generation.json). The independent
+checker `check_display.py` parses the rendered PDF text, checks all 75 rows,
+943 decimal selectors, 41 slots, fixed coefficient formulas and payloads,
+and checks word bounding boxes; [`observations/display.json`](observations/display.json)
+records its successful rerun. These are external finite checks. They do not
+formalize TeX, PDF, or the JSON-to-Lean-file correspondence in Lean.
+
+`check_liveness.py` finds all 75 rows and all 14 inputs live (44
+multiplications, 17 additions and 14 subtractions). `verify_degree.py` obtains
+a degree upper bound of 402 from the row graph and a nonzero coefficient of
+`t^402` after sending all ten unknowns to `t` modulo 1,000,000,007, proving
+exact total degree 402 for the pinned fixed integers. Their finite outputs are
+in `observations/`. Neither result is a Lean degree theorem.
+
+A second generation (tool session 71517, exit 0) reproduced the TeX and PDF
+byte-for-byte. The [independent display audit](../../reviews/trace75-bfs-decimal-display-independent/README.md)
+rechecks the printed rows, coefficients, liveness, and full modular ray
+polynomial; it does not replay Lean.
+
+The [model equivalence](../trace75-bfs-model-iff-prototype/README.md) for the
+corresponding Lean graph is exploratory on mixed providers, and the iPRA client
+is still under development. This standalone display does not establish an
+end-to-end iPRA theorem or replace the maintained root `equation.tex` and
+`equation.pdf`.
