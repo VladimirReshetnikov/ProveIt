@@ -1,0 +1,19 @@
+import DiophantineConsistency.IPRANineCurrent
+
+/-! Axiom audit for the internal Jones theorem and the nine-unknown iPRA endpoints. -/
+
+#print axioms DiophantineConsistency.ModelRelationCombining.model_conditions_iff_value
+#print axioms DiophantineConsistency.ModelNineConds.model_conds_iff_value
+#print axioms DiophantineConsistency.ModelProductPell.lemma_2_27
+#print axioms DiophantineConsistency.ModelRatio.lemma_2_25
+#print axioms DiophantineConsistency.ModelRatio.exists_B25core
+#print axioms DiophantineConsistency.ModelNineRatio.ratio_sound
+#print axioms DiophantineConsistency.ModelNineRatio.ratio_complete
+#print axioms DiophantineConsistency.ModelNineReduce.reduced_iff
+#print axioms DiophantineConsistency.ModelJonesNine.nine_iff
+#print axioms DiophantineConsistency.ModelJonesNine.jonesModel
+#print axioms DiophantineConsistency.IPRANineCurrent.polynomialBridge
+#print axioms DiophantineConsistency.IPRANineCurrent.native_equivalence
+#print axioms DiophantineConsistency.IPRANineCurrent.standard_equivalence
+#print axioms DiophantineConsistency.IPRANineCurrent.reference_equivalence
+#print axioms DiophantineConsistency.IPRAExplicitZFCReduction.native_equivalence
