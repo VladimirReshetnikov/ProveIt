@@ -1,0 +1,11 @@
+# Independent prelaunch review: model-natural gauge sign
+
+Scoped GO for one guarded author check of source SHA-256 `0087bbf34dcd43083ebf730c43a2f1a5ac8a081a9182c59757b4937a09f2997f` and runner SHA-256 `5369625f82d04877f969d32791b31dec31ecc515028d58651e9f34c36817ed50`. No Lean run was performed in this review.
+
+The theorem assumes an IΣ₁ model, natural ports and a positive model-natural valuation whose literal trace73 output is zero, plus the explicit difference-ring h≥1, p₁+v₅≥0 and strict `step<ι(v 7)` hypotheses. It invokes the conditional ordered-ring sign witness, represents each of its positive coordinates by a model natural, and concludes a positive model-natural literal trace73 zero with negative B at the same ports. It does not prove the existence of the starting zero or strict bound, or give an unconditional equivalence or halt/iPRA endpoint.
+
+The captured independent checker verified both reviewed bytes, all twelve pinned provider hashes and current first selected direct and Mathlib providers, checking for earlier dangling shadows. The runner checks selected objects and hashes before and after the check, monitors the memory/process limits, and requires one named axiom report with the allowed set. It uses `is_file` for its own first-selection routine, so that routine would skip a newly introduced dangling earlier shadow; none was present at independent preflight. The runner captures source and runner hashes at execution rather than enforcing these reviewed hashes itself, and has no separate pinned outer wrapper: verify the exact reviewed bytes at launch and retain the actual tool exit. Full transitive, historical, package and dynamic ancestry remain outside this review.
+
+## Attempt02 correction
+
+Attempt01 failed on the orientation of `nonneg_iff`'s representative equality and reported `sorryAx`; it is excluded. The revised source SHA-256 `3fabcd4855d35807b053f2a647a139f1fd46bbc8005866b6724846461d6ced7e` changes only that proof step to extract the representative and reverse its equality. The theorem statement and runner remain unchanged. **Scoped GO for one attempt02** with the revised exact source and unchanged runner, subject to the same selection, tool-exit and ancestry limits above.
