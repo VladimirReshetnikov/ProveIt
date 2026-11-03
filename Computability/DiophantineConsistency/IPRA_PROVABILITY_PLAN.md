@@ -419,8 +419,9 @@ Lean. A [spatial-successor join](research/direct-bfs-80-spatial-successor-protot
 derives an occupied base and cyclic next-block propagation from an actual
 graph zero. An [all-block join](research/direct-bfs-80-all-blocks-prototype/README.md)
 propagates it to a selected direct tile at every internal block. These are
-author checks; edge adjacency, complete tiling and machine semantics remain
-separate. An
+author checks; an [independent all-blocks audit](reviews/direct-bfs-spatial-all-blocks-independent/README.md)
+checks the common length and unit-successor propagation without replaying Lean.
+Edge adjacency, complete tiling and machine semantics remain separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
