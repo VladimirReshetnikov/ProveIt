@@ -1,0 +1,49 @@
+import Direct80RankLower
+
+/-! Canonical rank and cubic-divisibility conditions for the 80 graph. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositive80CanonicalBounds
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency TenPositive80Factors TenPositive80NaturalRank
+open TenPositive80RankLower
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- These inequalities use only the displayed positive variables and beta bound;
+they do not assume that the graph vanishes. -/
+theorem rank_gt_three_radix (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hb : (31:V) ≤ (p 0:V)) (hJ : 0<v 0) (ha : 0<v 2) (hw : 0<v 5) :
+    3*q p v < rankNat p v := by
+  have hq32 : (32:V) ≤ q p v := (graph_rank_lower p v hb hJ ha hw).1
+  have hq4 : (4:V) ≤ q p v := le_trans (by norm_num) hq32
+  have hq2 : (2:V) ≤ q p v := le_trans (by norm_num) hq32
+  have hq1 : (1:V) ≤ q p v := le_trans (by norm_num) hq32
+  have hG : 1 ≤ b p v*(q p v-v 1)+v 2 := pos_iff_one_le.mp
+    (add_pos_of_nonneg_of_pos (by simp) ha)
+  have hR : q p v*q p v-1 ≤ rankNat p v := calc
+    q p v*q p v-1 ≤ (b p v*(q p v-v 1)+v 2)*(q p v*q p v-1) :=
+      le_mul_of_one_le_left (by simp) hG
+    _ ≤ rankNat p v := by dsimp [rankNat]; simp
+  have hsq : 4*q p v ≤ q p v*q p v :=
+    mul_le_mul_of_nonneg_right hq4 (by simp)
+  have hsq1 : 1 ≤ q p v*q p v := one_le_mul hq1 hq1
+  have hsmall : 3*q p v+2 ≤ q p v*q p v := calc
+    3*q p v+2 ≤ 3*q p v+q p v := _root_.add_le_add_right hq2 _
+    _ = 4*q p v := by ring
+    _ ≤ q p v*q p v := hsq
+  have hsmall' : 3*q p v+1 ≤ q p v*q p v-1 :=
+    (le_tsub_iff_right hsq1).mpr (calc
+      3*q p v+1+1 = 3*q p v+2 := by ring
+      _ ≤ q p v*q p v := hsmall)
+  exact lt_of_lt_of_le (lt_add_one (3*q p v)) (le_trans hsmall' hR)
+
+theorem cubic_divides_ordinate (p : Fin 4 → ℕ) (v : Fin 10 → V) :
+    (q p v)^3 ∣ Y p v := by
+  refine ⟨v 6, ?_⟩
+  simp only [Y, pow_succ, pow_zero, one_mul]
+
+#print axioms TenPositive80CanonicalBounds.rank_gt_three_radix
+#print axioms TenPositive80CanonicalBounds.cubic_divides_ordinate
+end TenPositive80CanonicalBounds

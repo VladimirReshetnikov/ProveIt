@@ -330,7 +330,12 @@ derives both compact anchor-column carry parities, and a separate
 [clean-carry theorem](research/ten-positive-80-clean-carry-prototype/README.md)
 finds a band position with zero incoming carry and an exact output digit.
 These are guarded author checks, with no independent Lean replay; full window
-decoding and machine soundness remain open.
+decoding and machine soundness remain open. An [occupied-anchor join](research/ten-positive-80-occupied-anchor-prototype/README.md)
+derives all seven origin slots, and an [alignment join](research/ten-positive-80-aligned-shift-prototype/README.md)
+derives divisibility of the temporal shift by 67 for the same length. The
+subsequent [cell-shift join](research/ten-positive-80-cell-shift-prototype/README.md)
+places the shift on a whole cell at that length. These are author checks;
+the full window and machine soundness still remain open.
 A [half-binomial join](research/ten-positive-80-half-binomial-prototype/README.md)
 obtains the identity at the actual graph rank under the beta bounds, without
 assuming fixed symbolic ports or a radix exponent. The generic
@@ -340,11 +345,15 @@ retains a scaled sandwich's small remainder. A subsequent
 uses it to prove the unscaled Pell pair lies strictly between consecutive
 multiples of the actual graph's Y, at the same rank. This does not identify
 the fresh ordinate with the graph's scaled ordinate.
-A
-[fresh unscaled auxiliary theorem](research/ten-positive-80-fresh-auxiliary-prototype/README.md)
-uses the phase to construct source-side Pell witnesses without identifying
-them with the graph's scaled ordinate. The full compact window, source graph
-zero and machine theorem are not yet established.
+The [positive interval join](research/ten-positive-80-fresh-first-main-prototype/README.md)
+and [fresh norm join](research/ten-positive-80-fresh-pell-norms-prototype/README.md)
+construct positive first/main Pell witnesses and their norm equations at the
+same rank, X and Y. A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
+proves `rank > 3*q` and `q^3 ∣ Y` under explicit beta and positivity bounds,
+without assuming a graph zero. An [independent audit](reviews/ten-positive-80-carry-fresh-interval-independent/README.md)
+checks nine selected carry and fresh-interval author receipts, without a Lean
+replay. The full compact window, source graph zero and machine theorem are
+not yet established.
 
 A [signed-V orientation theorem](research/ten-positive-80-v-positive-prototype/README.md)
 derives positivity of the 80 graph's signed `V` from an actual zero under
