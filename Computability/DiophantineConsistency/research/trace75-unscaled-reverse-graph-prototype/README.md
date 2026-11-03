@@ -31,3 +31,5 @@ run; its two direct imports are pinned. This is not a coherent provider-closure
 or source-ancestry proof. Historical producer drift, package and dynamic
 ancestry remain inherited; this result has not been transferred to the fresh
 trace75/BFS union.
+Independent source and receipt audit passed in
+`reviews/trace75-unscaled-reverse-graph-independent/`; no Lean replay was done.

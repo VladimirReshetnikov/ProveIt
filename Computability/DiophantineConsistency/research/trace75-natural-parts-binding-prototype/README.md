@@ -15,3 +15,4 @@ check `observations/binding-attempt03/` produced
 `749302923c77ec62b0b9cef23cadc3f7ff6b9c18e65bafa0eb1facee629022eb`.
 Attempts01–02 failed on algebra normalization and are retained. Direct inputs
 are pinned; project/package transitive and dynamic ancestry remain inherited.
+An independent source and receipt audit passed; no Lean replay was performed.
