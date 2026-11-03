@@ -670,7 +670,10 @@ found memory-guard and diagnostic-matching blockers. A corrected v3 passed
 was followed by one guarded attempt. It stopped with outer exit 1 at stage 3
 because the strict policy rejected three deprecation warnings; Lean itself
 exited 0 for that stage. The retained diagnostic is being checked against a
-historical baseline and a source modernization is under consideration. Only
+historical baseline and a source modernization is under consideration. An
+[independent stop audit](reviews/ten-positive-80-rebuild-attempt01-independent/README.md)
+confirms that the entire path-normalized warning log matches the historical
+source-specific baseline; it does not turn the rejected run into a pass. Only
 final PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
 Those
 byte-matched records are not proven unique producer
