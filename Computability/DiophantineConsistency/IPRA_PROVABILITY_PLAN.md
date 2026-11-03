@@ -635,7 +635,9 @@ now obtains one packing and seed from the internal halt constructor and
 derives the remaining phase and size assumptions, yielding a positive 80
 zero under all four explicit model port equalities. In particular the kernel
 port is the original symbolic `paramKernel rho`; this author check is not
-yet an iPRA theorem or a binding of the distinct retained BFS payload.
+yet an iPRA theorem or a binding of the distinct retained BFS payload. An
+[independent halt-reverse audit](reviews/ten-positive-halt-reverse-graph-independent/README.md)
+checks its selected providers and same packing/seed witness without replaying Lean.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
