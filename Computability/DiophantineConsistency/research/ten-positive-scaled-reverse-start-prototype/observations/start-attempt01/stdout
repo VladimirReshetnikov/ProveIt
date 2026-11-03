@@ -1,0 +1,46 @@
+/tmp/scaled-reverse-start-sbrdtwx3/ScaledReverseStart.lean:75:18: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ycoord (2 * r + 1) (S * (X + 1) - 1)
+in the target expression
+  K * Y < C
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X Y mu r eta zeta : V
+hX : 1 ≤ X
+hY : 1 ≤ Y
+hmu : 1 ≤ mu
+hr : 0 < r
+hXeq : X = Exp.exp (2 * r + 1)
+h72 : 72 * r < X + 1
+heta : 0 < eta
+hzeta : 0 < zeta
+hck : ycoord (2 * r + 1) (Y * (X + 1)) = 2 * ycoord (r + 1) (2 * (X * Y * Y - 1) + 1) * Y + eta
+hk : 2 * ycoord (r + 1) (2 * (X * Y * Y - 1) + 1) = eta + zeta
+S : V := mu * Y
+P : V := X * S * S
+B : V := 2 * (P - 1) + 1
+a : V := S * (X + 1) - 1
+K : V := 2 * ycoord (r + 1) B
+C : V := ycoord (2 * r + 1) a
+hXpos : 0 < X
+hYpos : 0 < Y
+hmupos : 0 < mu
+hS : 1 ≤ S
+hSpos : 0 < S
+hSY : Y ≤ S
+eta' zeta' : V
+heta' : 0 < eta'
+hzeta' : 0 < zeta'
+hC : ycoord (2 * r + 1) (S * (X + 1) - 1) = 2 * ycoord (r + 1) (2 * (X * S * S - 1) + 1) * Y + eta'
+hK : 2 * ycoord (r + 1) (2 * (X * S * S - 1) + 1) = eta' + zeta'
+rho : V
+hoff : 2 * ycoord (r + 1) (2 * (X * (mu * Y) * (mu * Y) - 1) + 1) = 2 * r + 1 + 1 + mu * mu * rho
+hP : 0 < P
+hP1 : P - 1 + 1 = P
+hn2 : 2 ≤ r + 1
+hKbound : 8 * P + 4 ≤ K
+hXP : X ≤ P
+hPK : P < K
+⊢ K * Y < C
+'TenPositiveScaledReverseStart.scaled_start' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

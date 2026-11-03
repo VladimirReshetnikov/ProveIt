@@ -545,6 +545,10 @@ equation still need to be bound to the same source witnesses.
 A [generic scaled offset](research/ten-positive-scaled-offset-generic-prototype/README.md)
 constructs the natural μ² quotient of the first-Pell index residue without
 an 80-zero hypothesis; it does not assert that quotient is positive.
+A [reverse-start join](research/ten-positive-scaled-reverse-start-prototype/README.md)
+combines the fresh scaled interval, positive first root, offset and projection
+quotients at one X,Y,r under explicit unscaled source hypotheses. It still
+does not establish those hypotheses from a 90 zero or a positive 80 valuation.
 A [conditional positive carrier theorem](research/ten-positive-reverse-carrier-prototype/README.md)
 uses the two quotients and an explicit `κ<f` bound to construct n>0 and prove
 the signed carrier identity. It does not yet bind that identity to the actual
