@@ -1,0 +1,114 @@
+import Direct80FreshMainOffset
+import Direct80PositiveTransport
+import FirstCoordinate
+import DiophantineConsistency.ArithmeticPellCongruences
+
+/-! Fresh unscaled first coordinate with the same 80-zero transport. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80FreshFirstCoordinate
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011
+open ArithmeticPellRecurrence ArithmeticPellHalfIndex ArithmeticPellCongruences
+open CompactFixedBeta CompactSymbolicPorts
+open TenPositive80Graph TenPositive80Factors TenPositive80NaturalRank
+open TenPositive80FreshMainOffset TenPositive80PositiveTransport TenPositive80NaturalTransport
+open TenPositive80SymbolicPortBounds TenPositiveFirstCoordinate
+attribute [local irreducible] CompactFixedBeta.betaNat Nat.ofDigits lowNat highNat
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_fresh_first_coordinate (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hp0 : p 0=betaNat) (hp2 : p 2=lowNat) (hp3 : p 3=betaNat+highNat)
+    (hv : ∀j,0<v j) (hz : InternalZero (graph (integerPorts p)).output v) :
+    ∃ r eta zeta gamma h t s tau : V,
+      0<r ∧ 0<eta ∧ 0<zeta ∧ 0<gamma ∧ 0<t ∧ 0<s ∧ 0<tau ∧
+      rankNat p v=2*r+1 ∧
+      let X0:=X p v
+      let Y0:=Y p v
+      let P:=X0*Y0*Y0
+      let K:=2*ycoord (r+1) (2*(P-1)+1)
+      let a:=Y0*(X0+1)
+      let C:=ycoord (2*r+1) a
+      C=K*Y0+eta ∧ K=eta+zeta ∧
+      xcoord (2*r+1) a=X0+a*C+(4*a+3)*gamma ∧
+      K=rankNat p v+1+(Y0*(q p v*q p v))*h ∧
+      ((p 1:V)+v 5)*Cnat p v=v 1+b p v*t ∧
+      tau=xcoord (r+1) (2*(P-1)+1) ∧
+      tau*tau=1+P*(P+1)*K*K ∧
+      tau+q p v*t*(b p v*K+1)=P*K+K+s+v 6 := by
+  obtain ⟨r,eta,zeta,gamma,h,hr,heta,hzeta,hgamma,hR,hC,hK,hproj,hoff⟩ :=
+    graph_fresh_main_offset p v hp0 hp2 hp3 hv hz
+  obtain ⟨hw,t,ht,hMask,htransport⟩ := graph_positive_transport p v hp0 hp2 hp3 hv hz
+  obtain ⟨h31,_hl,_hh,_hodd⟩ := fixed_bounds (V:=V) p hp0 hp2 hp3
+  have hb0 : 0<(p 0:V) := lt_of_lt_of_le (by norm_num) h31
+  have hbpos : 0<b p v := mul_pos hb0 (hv 0)
+  have hb1 : 1≤b p v := pos_iff_one_le.mp hbpos
+  have hq2 : 2≤q p v := by
+    have he : (1:V)+1≤b p v+1 := _root_.add_le_add hb1 (le_refl (1:V))
+    simpa only [q,show (2:V)=1+1 by ring] using he
+  have hq : 0<q p v := lt_of_lt_of_le (by norm_num) hq2
+  have hq1 : 1≤q p v := pos_iff_one_le.mp hq
+  have hY : 0<Y p v := mul_pos (mul_pos (mul_pos hq hq) hq) (hv 6)
+  have hX : 0<X p v := mul_pos (hv 5) hq
+  have hX1 : 1≤X p v := pos_iff_one_le.mp hX
+  have hY1 : 1≤Y p v := pos_iff_one_le.mp hY
+  let P:=X p v*Y p v*Y p v
+  let B:=2*(P-1)+1
+  let K:=2*ycoord (r+1) B
+  let tau:=xcoord (r+1) B
+  have hP : 0<P := mul_pos (mul_pos hX hY) hY
+  have hP1 : P-1+1=P := tsub_add_cancel_of_le (pos_iff_one_le.mp hP)
+  have hsP : v 6≤P := by
+    have hq3 : 1≤q p v*q p v*q p v := one_le_mul (one_le_mul hq1 hq1) hq1
+    have hsY : v 6≤Y p v := le_mul_of_one_le_left (by simp) hq3
+    have hYP : Y p v≤P := by
+      calc
+        Y p v≤X p v*Y p v := le_mul_of_one_le_left (by simp) hX1
+        _≤X p v*Y p v*Y p v := le_mul_of_one_le_right (by simp) hY1
+    exact le_trans hsY hYP
+  have hn2 : 2≤r+1 := by
+    have h := _root_.add_le_add (pos_iff_one_le.mp hr) (le_refl (1:V))
+    simpa only [show (2:V)=1+1 by ring] using h
+  have hKbound : 8*P+4≤K := by
+    calc
+      8*P+4=2*ycoord 2 B := by
+        rw [y_two]
+        dsimp [B]
+        have he : 2*(P-1)+1+2=2*(P-1+1)+1 := by ring
+        rw [he,hP1]
+        ring
+      _≤2*ycoord (r+1) B := mul_le_mul_of_nonneg_left ((y_strictMono B).monotone hn2) (by simp)
+      _=K := rfl
+  have hdelta : ArithmeticPellRecurrence.delta B=4*P*(P+1) := by
+    dsimp [B,ArithmeticPellRecurrence.delta]
+    calc
+      (2*(P-1)+1+1)*(2*(P-1)+1+3)=4*(P-1+1)*(P-1+1+1) := by ring
+      _=4*P*(P+1) := by rw [hP1]
+  have hnorm : tau*tau=1+P*(P+1)*K*K := by
+    have hh := norm (r+1) B
+    rw [hdelta] at hh
+    dsimp [tau,K]
+    calc
+      xcoord (r+1) B*xcoord (r+1) B=1+4*P*(P+1)*ycoord (r+1) B*ycoord (r+1) B := hh
+      _=1+P*(P+1)*(2*ycoord (r+1) B)*(2*ycoord (r+1) B) := by ring
+  have htau : 0<tau := lt_of_lt_of_le (by simp : (0:V)<1) (one_le_x (r+1) B)
+  have hsq : (P*K)*(P*K)<tau*tau := by
+    rw [hnorm]
+    calc
+      (P*K)*(P*K)=P*P*K*K := by ring
+      _≤P*(P+1)*K*K := mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (by simp) (by simp)) (by simp)) (by simp)
+      _<1+P*(P+1)*K*K := by simp
+  have htauBig : P*K<tau := by
+    by_contra hn
+    exact (not_le_of_gt hsq) (mul_self_le_mul_self (by simp) (le_of_not_gt hn))
+  obtain ⟨s,hs,hcoord⟩ := positive_coordinate P K (v 6) (b p v) (q p v) t tau
+    hsP hq2 hb1 (pos_iff_one_le.mp ht) hKbound htauBig
+  exact ⟨r,eta,zeta,gamma,h,t,s,tau,hr,heta,hzeta,hgamma,ht,hs,htau,hR,
+    hC,hK,hproj,hoff,htransport,rfl,hnorm,hcoord⟩
+
+#print axioms TenPositive80FreshFirstCoordinate.graph_fresh_first_coordinate
+end TenPositive80FreshFirstCoordinate

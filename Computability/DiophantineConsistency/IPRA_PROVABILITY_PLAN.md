@@ -359,7 +359,10 @@ Boolean facts. A [coefficient decoder](research/direct-bfs-lean-coefficient-deco
 connects the direct selector coefficients to the local no-carry decoder,
 and a [raw-column theorem](research/direct-bfs-lean-raw-column-prototype/README.md)
 expresses the full carry column with the direct tile payloads. The selected
-graph-column and machine conclusions are still separate. An
+graph-column and machine conclusions are still separate. A receipt audit
+found that the coefficient-decoder runner did not individually pin its direct
+`ArithmeticWindowCarry.olean` import; a post-hoc hash does not establish its
+compile-time bytes, and corrected downstream rechecks are in progress. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
@@ -424,6 +427,14 @@ A [positive transport join](research/ten-positive-80-positive-transport-prototyp
 derives `q < v₅` and a strictly positive natural transport quotient from the
 actual positive 80-graph zero, still with p₁ arbitrary. This is a prerequisite
 for constructing further source factors, not a source-zero theorem.
+A [fresh first-coordinate join](research/ten-positive-80-fresh-first-coordinate-prototype/README.md)
+adds a positive first-coordinate witness and first Pell norm to the same
+unscaled main witnesses and positive transport quotient. Its abstract
+[inequality lemma](research/ten-positive-first-coordinate-prototype/README.md)
+and the graph join do not yet establish the actual first-factor zero.
+A separate [receipt audit](reviews/direct-bfs-raw-column-positive-transport-independent/README.md)
+records the coefficient-decoder import-pin gap and the positive transport
+scope; it does not replay Lean.
 A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
 proves `rank > 3*q` and `q^3 ∣ Y` under explicit beta and positivity bounds,
 without assuming a graph zero. An [independent audit](reviews/ten-positive-80-carry-fresh-interval-independent/README.md)
