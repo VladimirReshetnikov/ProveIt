@@ -538,7 +538,9 @@ high-mask assumption. A [marker-parity client](research/direct-bfs-word-marker-p
 adds the adjacent marker positions, covering both full field ranges; the
 [field no-carry join](research/direct-bfs-word-field-high-prototype/README.md)
 now proves the required high-mask condition on both ranges. The four anchor
-and target phases 2195, 3296, 4393 and 5495 remain open;
+and target phases were separate; an [anchor client](research/direct-bfs-word-anchor-high-prototype/README.md)
+now proves no-carry at 2195 and 3296. Only target phases 4393 and 5495 remain
+open;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
