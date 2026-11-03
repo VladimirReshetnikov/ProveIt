@@ -37,6 +37,13 @@ cover the 94- and 95-operation variants. These are external finite checks,
 not Lean proofs of PDF or file semantics. A proposed [94-operation iPRA
 client](research/ordinary12-sum-squares-ipra-endpoint-draft/README.md) has
 not yet been compiled on a coherent provider.
+A proposed [92-operation quotient graph](research/ordinary12-qcube92-candidate/README.md)
+replaces the old positive witness `Y` by `q³s` and divides the first
+residual by `q⁶`. An [independent finite audit](reviews/ordinary12-qcube92-independent/README.md)
+checks its graph, polynomial scaling identities and fixed-coefficient exact
+degree 164. An all-model positive-zero proof is outlined using the existing
+`q³ ∣ Y` theorem, but has not yet been checked for the new expression; the
+92-operation graph has no established iPRA endpoint or formal PDF binding.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
@@ -84,12 +91,12 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage213/README.md)
-has rebuilt its first 217 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage225/README.md)
+has rebuilt its first 239 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
-separately source-pinned, exact-warning baselines, with a fourth at stage 197
-to preserve an explicit interface parameter. Stage 95's initial
+separately source-pinned, exact-warning baselines, with further baselines at
+stages 197 and 224 to preserve existing interfaces. Stage 95's initial
 three-minute attempt timed out; a separately guarded longer retry passed.
 The remaining stages and final
 client are open. A separately checked
