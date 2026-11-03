@@ -355,7 +355,12 @@ equalities. These author checks do not prove the external port/file binding,
 selected-column decoding or machine/color conjugacy. An
 [80-graph support join](research/direct-bfs-80-support-prototype/README.md)
 reconciles the radix length with the kernel-independent low-mask support and
-Boolean facts. An
+Boolean facts. A [coefficient decoder](research/direct-bfs-lean-coefficient-decoder-prototype/README.md)
+connects the direct selector coefficients to the local no-carry decoder,
+without yet identifying a graph column. An
+[independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
+checks the selected producer receipts and same-length interface without
+replaying Lean. An
 [independent audit](reviews/direct-bfs-lean-kernel-decoder-independent/README.md)
 checks selected kernel/decoder/mass receipts and reconstructs the BFS K bytes
 externally; it does not replay Lean.
