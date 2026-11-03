@@ -417,7 +417,10 @@ marker bits under the four explicit direct-BFS symbolic port equalities. An
 checks selected direct inputs and the shared graph witness without replaying
 Lean. A [spatial-successor join](research/direct-bfs-80-spatial-successor-prototype/README.md)
 derives an occupied base and cyclic next-block propagation from an actual
-graph zero; complete tiling and machine semantics remain separate. An
+graph zero. An [all-block join](research/direct-bfs-80-all-blocks-prototype/README.md)
+propagates it to a selected direct tile at every internal block. These are
+author checks; edge adjacency, complete tiling and machine semantics remain
+separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
