@@ -30,6 +30,13 @@ as documented in the [display boundary](research/ordinary12-ipra-bridge/positive
 `equation12.pdf` displays a separate 26-variable graph, and `equation.pdf`
 displays the separate 14-variable equation. The adapter's positive shift
 substitutes `x + 1`; a different same-named function substitutes `x - 1`.
+For the first symbolic port, a [checked byte-recipe theorem](research/ordinary12-ipra-bridge/compact44-retained-beta-byte-prototype/README.md)
+now identifies beta with a simple little-endian base-256 digit list; an
+external check separately matches that list to the retained compressed
+payload. The other three port bindings and formal file correspondence remain
+open. The [serialized-import inventory](research/ordinary12-ipra-bridge/compact12-ipra-object-import-prototype/README.md)
+also supports the initial 59-module rebuild within its scoped namespace,
+without certifying all other project or package ancestry.
 
 The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
 states native, standard and equality-only iPRA equivalences without hypotheses;
