@@ -1,0 +1,84 @@
+/tmp/compact44-positive-transport-author-i0x6frt6/CompactPositiveTransport.lean:43:20: error(lean.unknownIdentifier): Unknown identifier `exp_monotone_lt.mpr`
+/tmp/compact44-positive-transport-author-i0x6frt6/CompactPositiveTransport.lean:53:44: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  F + (q - F)
+in the target expression
+  (K + w) * C + q = (K + w) * C + (q - F + F)
+
+V : Type u_1
+inst✝² : ORingStructure V
+inst✝¹ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+K N s R : V
+X : V → V
+inst✝ : 𝚺₁-Function₁ X
+h : PackingInput 590069 K CompactConstructedRank.low CompactConstructedRank.high N s X
+hbig : 2 * (590069 * N) < R
+hmod : Exp.exp (R - 590069 * N) % (Exp.exp (590069 * N) - 1) = Exp.exp (590069 * s) % (Exp.exp (590069 * N) - 1)
+u : V := 590069 * N
+q : V := Exp.exp u
+w : V := Exp.exp (R - u)
+C : V := Cw 590069 N X
+F : V := Fw 590069 K N s X
+huR : u ≤ R
+hsub : u + (R - u) = R
+hlt : u < R - u
+hqw : q * w = Exp.exp R
+hwq : q < w
+hq1 : q - 1 + 1 = q
+hC : 0 < C
+hF : F < q
+hWle : w ≤ (K + w) * C
+hCF : F < (K + w) * C
+htr :
+  (K + w) * Cw 590069 N X + (Exp.exp (590069 * N) - Fw 590069 K N s X) =
+    zq 590069 K N w X * (Exp.exp (590069 * N) - 1) + 1
+z : V := (K + w) * C / (q - 1)
+⊢ (K + w) * C + q = (K + w) * C + (q - F + F)
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/compact44-positive-transport-author-i0x6frt6/CompactPositiveTransport.lean:59:23: error: unsolved goals
+V : Type u_1
+inst✝² : ORingStructure V
+inst✝¹ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+K N s R : V
+X : V → V
+inst✝ : 𝚺₁-Function₁ X
+h : PackingInput 590069 K CompactConstructedRank.low CompactConstructedRank.high N s X
+hbig : 2 * (590069 * N) < R
+hmod : Exp.exp (R - 590069 * N) % (Exp.exp (590069 * N) - 1) = Exp.exp (590069 * s) % (Exp.exp (590069 * N) - 1)
+u : V := 590069 * N
+q : V := Exp.exp u
+w : V := Exp.exp (R - u)
+C : V := Cw 590069 N X
+F : V := Fw 590069 K N s X
+huR : u ≤ R
+hsub : u + (R - u) = R
+hlt : u < R - u
+hqw : q * w = Exp.exp R
+hwq : q < w
+hq1 : q - 1 + 1 = q
+hC : 0 < C
+hF : F < q
+hWle : w ≤ (K + w) * C
+hCF : F < (K + w) * C
+htr :
+  (K + w) * Cw 590069 N X + (Exp.exp (590069 * N) - Fw 590069 K N s X) =
+    zq 590069 K N w X * (Exp.exp (590069 * N) - 1) + 1
+z : V := (K + w) * C / (q - 1)
+heq : (K + w) * C + q = (z + 1) * (q - 1) + 1 + F
+⊢ 1 + z * (1 + (q - 1) - 1) + (1 + (q - 1) - 1) + F = 1 + z * (1 + (q - 1) - 1) + (q - 1) + F
+/tmp/compact44-positive-transport-author-i0x6frt6/CompactPositiveTransport.lean:65:27: error: Application type mismatch: The argument
+  Eq.symm hshift
+has type
+  F = (K + w) * C
+but is expected to have type
+  (K + w) * C = F
+in the application
+  ne_of_gt hCF (Eq.symm hshift)
+'CompactPositiveTransport.positive_shifted_transport' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
