@@ -124,6 +124,7 @@ has an externally checked live graph and Lean-checked forward ring identities.
 The [first-factor extraction](research/ordinary12-absorb88-probe/FIRST.md)
 is now checked in models, including a positive Pell root when beta is positive.
 The [signed-root alternatives](research/ordinary12-absorb88-probe/SIGNS.md)
+and [positive-branch witness bound](research/ordinary12-absorb88-probe/GAP.md)
 are checked conditional on the unresolved transport bound.
 Its reverse argument is open: exact first-factor examples show the needed
 transport positivity cannot be derived from that factor alone, including one
@@ -156,8 +157,10 @@ coefficient under the stated cross-multiplied equation. It does not yet prove
 the descent or denominator integrality required by the 80-row argument. A
 [separate step theorem](research/ten-positive-adjacent-preserve-prototype/README.md)
 establishes reducedness of the transformed numerator, integrality of the
-transformed first coordinate and a ring norm identity; strict decrease and
-the internal descent argument remain open.
+transformed first coordinate and a ring norm identity. A subsequent
+[complete descent step](research/ten-positive-adjacent-step-prototype/README.md)
+proves a positive strictly smaller coordinate at the same reduced denominator.
+The internal least-number argument and its application to the graph remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project

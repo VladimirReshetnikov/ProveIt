@@ -1,0 +1,36 @@
+/tmp/tenpositive-adjacent-bounds-amxmp0yc/AdjacentBounds.lean:30:4: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+B m v r : V
+hB : 0 < B
+hm : 0 < m
+hv : 1 < v
+X : V := m * v
+hmX : m < X
+hXsq : m * m < X * X
+hn : ¬X < r
+hrX : r ≤ X
+hsq : r * r ≤ X * X
+hmulsq : B * (r * r) ≤ B * (X * X)
+h : (1 + B) * (X * X) = m * m + B * (r * r)
+⊢ False
+failed
+/tmp/tenpositive-adjacent-bounds-amxmp0yc/AdjacentBounds.lean:35:8: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+B m v r : V
+hB : 0 < B
+hm : 0 < m
+hv : 1 < v
+h : (1 + B) * (m * v * (m * v)) = m * m + B * (r * r)
+X : V := m * v
+hmX : m < X
+hXsq : m * m < X * X
+hXr : X < r
+hp : 0 < (1 + B) * (m * m)
+a✝ : B * r * (B * r) + (1 + B) * (m * m) + B * (r * r) ≤ B * r * (B * r)
+⊢ False
+failed
+'TenPositiveAdjacentBounds.adjacent_order' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

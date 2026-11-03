@@ -1,0 +1,7 @@
+# Adjacent-Pell strict descent inequalities
+
+For any IΣ₁ model with the repository's `ORingStructure` interface, `adjacent_order` takes `m>0`, `v>1`, and `(1+B)*(m*v)²=m²+B*r²` and derives `m*v<r` and `B*r<(1+B)*m*v`. It does not need an explicit `B>0` premise. `adjacent_first_decreases` additionally assumes `B>0` and `B=m²*t`, and proves that the magnitude of the signed natural pair `((1+2B)*v,2*m*t*r)` is strictly less than `v`. These are abstract model inequalities; they do not by themselves construct a nonzero descended point or prove termination.
+
+Author attempt 06 exited 0 without warnings or `sorryAx`, and both printed theorem axiom reports are `[propext, Classical.choice, Quot.sound]`. Source SHA-256 is `4db573ea169893b8fb96430a48bd30a578263979f136619e8812ffa0153f4814`; object SHA-256 is `b6afea28cda32503292760953f1773b183089b151689af8f80d1d76a18da8101`. Prior attempts, including rejected warnings and failed proof elaborations, are retained under `observations/`.
+
+The guarded runner pins the adjacent-preserve and three abstract predecessor objects, selected `ArithmeticGcdNormalization`, source, runner and Lean binary. It inherits other direct project imports, the rest of the selected 90-operation union, package-transitive and dynamic dependencies and full historical source-to-object ancestry. Sampling is not continuous; `/tmp` providers can disappear. No paired replay, machine equivalence, iPRA theorem or file binding is claimed.

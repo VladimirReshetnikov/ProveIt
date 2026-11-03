@@ -1,0 +1,31 @@
+/tmp/tenpositive-adjacent-bounds-quf1oqnd/AdjacentBounds.lean:62:4: error: invalid 'calc' step, right-hand side is
+  v + 2 * m * t * r : V
+but is expected to be
+  R + v : V
+/tmp/tenpositive-adjacent-bounds-quf1oqnd/AdjacentBounds.lean:62:24: error: Type mismatch: After simplification, term
+  add_lt_add_left
+ has type
+  ?m.259 < ?m.260 → ∀ (a : ?m.255), ?m.259 + a < ?m.260 + a
+but is expected to have type
+  v + 2 * m * t * (m * v) < v + 2 * m * t * r
+/tmp/tenpositive-adjacent-bounds-quf1oqnd/AdjacentBounds.lean:54:39: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+B m v r t : V
+hB : 0 < B
+hm : 0 < m
+hv : 1 < v
+hBt : B = m * m * t
+h : (1 + B) * (m * v * (m * v)) = m * m + B * (r * r)
+hXr : m * v < r
+hBr : B * r < (1 + B) * (m * v)
+ht : 0 < t
+hscale : 0 < 2 * m * t
+L : V := (1 + 2 * B) * v
+R : V := 2 * m * t * r
+hleft : L < R + v
+⊢ magnitude ((1 + 2 * B) * v, 2 * m * t * r) < v
+/tmp/tenpositive-adjacent-bounds-quf1oqnd/AdjacentBounds.lean:63:22: error: unexpected token '('; expected command
+'TenPositiveAdjacentBounds.adjacent_order' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TenPositiveAdjacentBounds.adjacent_first_decreases' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
