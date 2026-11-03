@@ -506,7 +506,9 @@ and both high-mask assumptions. A [block-size theorem](research/direct-bfs-kerne
 now proves the cell-sum field for a suitably bounded direct cell family and
 identifies the high-product split. A [block-positivity theorem](research/direct-bfs-word-block-positive-prototype/README.md)
 proves positive blocks for a direct local word and normalized dummy; the
-high-mask calibration remains separate. An
+high-mask calibration remains separate. An [independent bounds audit](reviews/direct-bfs-packing-bounds-residue-independent/README.md)
+checks the selected receipts and explicit size/stride/high-mask premises
+without replaying Lean. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
