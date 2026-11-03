@@ -1,0 +1,5 @@
+# Held single-stage diagnostic
+
+Read-only preflight and 25 policy controls passed. Captured provider and package ancestry limitations remain. This stage does not prove the concrete fixed mask cover.
+
+The [independent prelaunch review](../../reviews/trace74-generic-defect-support-prelaunch-independent/README.md) approved one run. Attempt01 completed with actual outer exit 0 and child status PASS; its [result](observations/attempt01/result.json) SHA-256 is `3aa11826e07b5d67901577917433f147ce426a737c828743c403b4f9edd6ad07`, [outer receipt](observations/outer-attempt01/terminal.json) SHA-256 `5a95ab9cea01f80212e17b83861e27859aae8bc9c1b855df85ea7e2a20c4e393`, and object SHA-256 `0aa1257ae2e0885a8e8c4cd1fa78f8442b23510de9c0106533e88bc25e639d90`. The [independent result audit](../../reviews/trace74-generic-defect-result-independent/README.md) passed. The exported lemmas remain parametric in the radix, lengths, special index and support and retain their explicit bounds; they do not assert the concrete symbolic cover.

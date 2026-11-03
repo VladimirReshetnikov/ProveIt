@@ -1,0 +1,9 @@
+# Independent post-audit: generic short defect
+
+**PASS within the selected provider closure.** Author reports actual outer tool exit 0 and reaping. Retained outer terminal SHA-256 `5a95ab9cea01f80212e17b83861e27859aae8bc9c1b855df85ea7e2a20c4e393` records child exit 0 and PASS, stable inputs and child result SHA-256 `3aa11826e07b5d67901577917433f147ce426a737c828743c403b4f9edd6ad07`. Lean stage and header-reader records both report exit 0 with no termination reason.
+
+The selected and copied source SHA-256 is `ef3440f4a482e4447da7688ef249a04ae71920d6032dffb41f3f44996fe3869d`, and output object SHA-256 `0aa1257ae2e0885a8e8c4cd1fa78f8442b23510de9c0106533e88bc25e639d90`. The ordered `truncate`, `digits_lt`, `low_add_defect` reports each list `[propext, Classical.choice, Quot.sound]`; stderr is empty. The exact import header is two Init entries plus `DiophantineConsistency.CompactListMask`; its selected object SHA-256 is `1f94ce66997b99f723f9abb990ba91574d0574c10a56d0b514f210a930907c99`.
+
+Our independent `check.py` verified source, recorded inputs and output/log hashes, all 2,036 selected union object/companion bundles and 81 selected outside bundles, and compared the 17 inherited closure sets and companion hashes with the pinned parent. The generic statements retain their explicit `short<=long`, `special<short`, support containment and/or `B>=4` assumptions as appropriate. They prove generic finite defect truncation, the strict digit-list bound and the low/defect identity; they do not assert the concrete support or selected fixed-mask cover.
+
+No Lean replay was run during this audit. Four inherited baseline nodes and outside/package/dynamic/transitive producer ancestry retain prior limits. A separately checked support, source-consistent specialization, high-digit bound, join and model cast remain needed for symbolic coverage; no external file binding, graph guard or iPRA conclusion follows here.
