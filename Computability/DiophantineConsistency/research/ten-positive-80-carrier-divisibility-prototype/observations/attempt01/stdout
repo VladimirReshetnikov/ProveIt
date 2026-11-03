@@ -1,0 +1,45 @@
+/tmp/tenpositive-80carrier-divisibility-vqeijwho/Direct80CarrierDivisibility.lean:37:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  h * m * H
+in the target expression
+  Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).z = ι (M p v) * z
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+tau f V0 y : V
+z : DiffRing V
+_ht : 0 < tau
+_hf : 0 < f
+_hV : 0 < V0
+_hy : 0 < y
+_he : E p v = tau * tau
+_hf2 : 1 + delta p v * U p v * U p v * E p v = f * f
+_hVs :
+  Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v *
+      Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v =
+    ι (V0 * V0)
+hZ : Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).z = ι (M p v) * z
+_hsign : z = ι (tau * f * y) ∨ z = -ι (tau * f * y)
+_hzle : z ≤ ι (tau * f * y)
+_haux :
+  delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) * (V0 * V0) =
+    1 + (delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) - 1) * (y * y)
+w : Fin 10 → DiffRing V := fun j => ι (v j)
+h : DiffRing V := Expr.evalRing w (hExpr (integerPorts p))
+m : DiffRing V := Expr.evalRing w (muExpr (integerPorts p)) * Expr.evalRing w (muExpr (integerPorts p))
+H : DiffRing V := Expr.evalRing w (HExpr (integerPorts p))
+B : DiffRing V := Expr.evalRing w (BExpr (integerPorts p))
+k : DiffRing V := Expr.evalRing w (KExpr (integerPorts p))
+e : DiffRing V := Expr.evalRing w (eExpr (integerPorts p))
+L : DiffRing V := Expr.evalRing w (graph (integerPorts p)).v * Expr.evalRing w (graph (integerPorts p)).v
+hM : ι (M p v) = h * m * H
+⊢ Expr.evalRing w (graph (integerPorts p)).z = h * m * H * z
+'TenPositive80CarrierDivisibility.graph_carrier_divisibility' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

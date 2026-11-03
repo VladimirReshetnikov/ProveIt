@@ -236,7 +236,10 @@ uses those bounds to identify the natural rank with the positive odd main
 Pell index. An [independent audit](reviews/ten-positive-80-rank-window-independent/README.md)
 checks the universal representation argument and stated port assumptions
 without replaying Lean. Fixed-byte recipe calibration, first/main index
-alignment, machine equivalence and iPRA remain open.
+alignment, machine equivalence and iPRA remain open. The graph's signed
+carrier additionally supplies [`μ² ∣ h*e`](research/ten-positive-80-carrier-cancel-h-prototype/README.md)
+after an explicit cancellation of `H`; canceling `h` still requires the
+separate radix-parity/unit argument.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
