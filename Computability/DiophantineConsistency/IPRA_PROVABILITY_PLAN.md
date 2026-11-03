@@ -831,7 +831,10 @@ that uniform realization assumption. A separate [source review](reviews/compact4
 confirms that the same selector and packing witnesses are used throughout.
 The [canonical perturbation client](research/ordinary12-ipra-bridge/compact44-canonical-perturbation-prototype/README.md)
 defines the modified word explicitly, but still assumes that every admissible
-perturbation preserves all packing conditions.
+perturbation preserves all packing conditions. A [pulse-preservation client](research/ordinary12-ipra-bridge/compact44-pulse-preservation-prototype/README.md)
+reduces those conditions to a selector-independent single-pulse low-mask
+fact and five explicit perturbed product and block facts, still assuming a
+valid base packing. It does not prove those remaining facts.
 A [static-field client](research/ordinary12-ipra-bridge/compact44-packing-static-fields-prototype/README.md)
 proves the chosen-dimension inequalities and three bounds for the exact
 symbolic native masks. This exploratory mixed-provider build checks selected
