@@ -506,8 +506,14 @@ proves the symbolic `paramKernel r` is the weighted list sum and its
 digit client](research/ordinary12-ipra-bridge/compact44-sparse-k-bound-exploration/README.md)
 discharges the aggregate coefficient bound for `r ≥ 2^67` using a count bound,
 and proves the corresponding digit and size statements without expanding K.
-These results do not yet give a Lean K-byte serialization equality or bind the
-displayed tuple.
+A separate [source review](reviews/compact44-sparse-k-bound-mathematical-source-review/README.md)
+finds no defect in the inspected bound and digit argument. A subsequent
+author-side [byte-window client](research/ordinary12-ipra-bridge/compact44-symbolic-k-byte-window-exploration/README.md)
+proves the generic little-endian byte formula, including boundaries between
+67-bit digits and zero padding, and specializes it to the symbolic kernel.
+Its recorded checks include boundary-crossing and out-of-range examples. These
+results do not yet establish equality with retained file bytes, gzip decoding,
+the other kernel representation or the displayed tuple.
 Two further single-side explorations give alternative bounded representations
 of that residual. The [bit-rotation client](research/ordinary12-ipra-bridge/compact44-bit-rotation-prototype/README.md)
 represents multiplication by an arbitrary power of two modulo the word modulus
