@@ -531,7 +531,9 @@ derives matching payload bits and source digits from a direct local word; its
 runner automatically enforces only the final two of six captured axiom reports.
 A [physical field-parity theorem](research/direct-bfs-word-field-parity-prototype/README.md)
 derives evenness at nine vertical and eight horizontal field phases without a
-high-mask assumption. The marker/anchor phases and parity-to-no-carry step
+high-mask assumption. A [marker-parity client](research/direct-bfs-word-marker-parity-prototype/README.md)
+adds the adjacent marker positions, covering both full field ranges; the
+anchor phases and parity-to-no-carry step
 remain separate; these results do not yet discharge all six high-mask classes;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
