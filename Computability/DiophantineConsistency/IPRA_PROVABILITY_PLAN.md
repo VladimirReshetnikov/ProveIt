@@ -60,8 +60,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage95-long-retry/README.md)
-has rebuilt its first 95 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage106/README.md)
+has rebuilt its first 110 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
 separately source-pinned, exact-warning baselines. Stage 95's initial
@@ -84,12 +84,13 @@ completed all 104 stages. Its [aggregate audit](reviews/nine-variable-ipra-compl
 records matching endpoint outputs and named reports but 20 differing object
 hashes and 31 differing direct-input pairs, so this is not an exact
 full-chain paired replay or a complete inherited-ancestry audit.
-An additional equal-length-root replay has reached
-[stage 86](reviews/nine-variable-ipra-equal-length-stages-82-86-overlap/README.md):
-the full prefix compares byte-for-byte after at most one equal-length source
-path substitution per object, with differing direct hashes mapped only to
-previously checked predecessors. This is not a Lean object-format theorem
-or a complete ancestry audit.
+An additional equal-length-root replay has completed
+[all 104 stages](reviews/nine-variable-ipra-equal-length-stages-102-104-monitored/README.md):
+84 output objects match byte-for-byte, and 20 match after one equal-length
+source-path substitution per object. Differing direct hashes are mapped only
+to previously checked predecessors. Both endpoint objects and their named
+axiom reports match. This is not a Lean object-format theorem or a complete
+ancestry audit.
 A new guarded peer has compiled its first ten stages, with evidence for
 [stages 1–5](reviews/nine-variable-ipra-peer-first-five/README.md) and
 [6–10](reviews/nine-variable-ipra-peer-stages-six-ten/README.md). Several
@@ -111,8 +112,8 @@ match their output objects and recorded direct guards. In
 [stages 66–70](reviews/nine-variable-ipra-peer-stages-66-70/README.md), four
 outputs match and the last differs in its embedded source pathname while
 importing earlier objects with differing hashes.
-The peer has reached [stages 92–96](reviews/nine-variable-ipra-peer-stages-92-96/README.md).
-It compiled the CURRENT2011 endpoint and its [axiom-report client](reviews/nine-variable-ipra-peer-stage-81/README.md),
+The original peer also compiled the CURRENT2011 endpoint and its
+[axiom-report client](reviews/nine-variable-ipra-peer-stage-81/README.md),
 but earlier differing-hash imports prevent an exact full-chain match claim.
 A separate [source-evidence inspection](reviews/nine-variable-ipra-endpoint-source-evidence/README.md)
 checks the endpoint statements and the source-level expression binding; it
