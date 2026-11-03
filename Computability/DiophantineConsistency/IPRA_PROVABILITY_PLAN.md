@@ -243,7 +243,9 @@ separate radix-parity/unit argument. A [graph parity packet](research/ten-positi
 constructs that unit certificate under the port bounds and an explicit
 odd-beta witness. A [symbolic fixed-beta parity join](research/ten-positive-80-rank-parity-prototype/FIXED.md)
 discharges beta positivity and oddness for `CompactFixedBeta.betaNat` while
-retaining the low/high port inequalities; signed cancellation remains
+retaining the low/high port inequalities. A separate [signed cancellation join](research/ten-positive-80-offset-divisibility-prototype/README.md)
+now derives `μ² ∣ e` under explicit positive-beta, low/high and odd-beta
+assumptions; a fixed-recipe composition and first/main index alignment remain
 separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
