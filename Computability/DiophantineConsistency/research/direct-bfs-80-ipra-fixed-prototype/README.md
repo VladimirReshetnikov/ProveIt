@@ -5,3 +5,13 @@
 Accepted exploratory author check: `observations/directbfs80iprafixed-attempt01/`, with the separate outer supervisor receipt `observations/outer-attempt01/`. Lean, the inner runner and outer supervisor exited 0; no diagnostics were reported, and all four axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`. Output `/tmp/direct-bfs-80iprafixed-df6_j_mk/DirectBFS80FixedIPRA.olean`, SHA-256 `2155f5f05a8e993dc3582f3c14ce9c56916d0ac09dc326c02093d83a878e4703`. Direct imports and selected objects were pinned and rechecked. The supervisor records its own, the runner's, and the source's hashes before and after execution, the actual outer exit, and outer log hashes.
 
 This is **not yet a fully audited coherent end-to-end source build**. Full serialized transitive closure, historical source-to-object and package-transitive ancestry, and dynamic dependencies remain to be audited; no independent Lean replay is claimed. The literal retained 80-row JSON/gzip coefficient and the symbolic Lean K have external byte/recipe evidence but no Lean equality in this packet. This is not the distinct trace75 graph or the original 14-variable PDF.
+
+A later [selected-header scan and reconciliation](../direct-bfs-80-ipra-serialized-audit/README.md)
+captured 1,795 project objects and found that all 739 previously captured BFS
+forward objects and companions match. Compared with the separate 127-stage
+rebuilt original-kernel union, 1,627 project objects match, 166 are absent,
+and the selected `.olean` hashes differ for `ArithmeticNegativeNorms` and
+`ModelRatioBounds`. The fixed BFS client therefore cannot be claimed to have
+been built on that other union. The scan does not authenticate full historical
+source/object, package-transitive or dynamic ancestry, or replace a coherent
+rebuild; its independent audit is pending.
