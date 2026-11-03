@@ -489,7 +489,8 @@ a [kernel divisibility theorem](research/direct-bfs-kernel-divisibility-prototyp
 also proves radix divisibility and the resulting model mod-four fact;
 a [lower-part theorem](research/direct-bfs-kernel-lower-bound-prototype/README.md)
 separates the distinguished high term and bounds the remainder, as a
-prerequisite for high-mask arguments;
+prerequisite for high-mask arguments; a [lower-mass refinement](research/direct-bfs-kernel-lower-mass-prototype/README.md)
+supplies a stronger bound needed for high-mask padding;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. Adjusted high-origin no-carry remains separate;
@@ -704,11 +705,14 @@ reviewed [v5 retry policy](reviews/ten-positive-80-rebuild-v5-prelaunch-independ
 allowed exactly those two source-specific complete warning logs. Its fresh
 attempt stopped at stage 13, `ModelRatioBounds`, with outer exit 1 because of
 four warnings; a source-specific historical comparison is in progress. No
-attempt has passed. Only final
+attempt has passed. An [independent attempt audit](reviews/ten-positive-80-rebuild-attempt03-independent/README.md)
+checks the twelve preceding outputs, both accepted exceptions and the exact
+historical stage-13 warning log without replaying Lean. Only final
 PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
 The [historical warning inventory](reviews/ten-positive-80-warning-inventory/README.md)
 identifies a further recorded policy at planned stage 13, but does not
-pre-approve its output under the fresh provider.
+pre-approve its output under the fresh provider. An [independent inventory review](reviews/ten-positive-80-warning-inventory-independent/README.md)
+checks its source and evidence scope without treating it as a fresh-warning prediction.
 Those
 byte-matched records are not proven unique producer
 origins. No replay is yet claimed. A
