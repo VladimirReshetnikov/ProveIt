@@ -85,10 +85,14 @@ replaces `gamma+w` with a single positive input. Lean now checks its
 to the 91-operation graph under the stated port bounds and its fixed-port
 [all-model halt bridge](research/ordinary12-direct-main-probe/HALT.md),
 including shifted and closed Lean byte-recipe forms. The graph and exact
-degree 172 are externally checked. These are model-level author builds with
-inherited provider ancestry, not yet an internal iPRA derivation. A proposed
-[iPRA client](research/ordinary12-direct90-ipra-endpoint-draft/README.md) is
-unchecked. The [decimal display](research/ordinary12-direct90-decimal-display/README.md)
+degree 172 are externally checked. The [iPRA client](research/ordinary12-direct90-ipra-endpoint-draft/README.md)
+passed a guarded [author join](research/ordinary12-direct90-ipra-join/ATTEMPT03.md),
+with an [independent receipt audit](reviews/ordinary12-direct90-ipra-join-independent/README.md).
+It states no-premise derivability in the standard and equality-only theories,
+for both the mapped native refutation negation and the selected translated
+consistency sentence. The audit is not a fresh Lean replay; package-transitive,
+dynamic and complete historical source-to-object ancestry remain inherited.
+The [decimal display](research/ordinary12-direct90-decimal-display/README.md)
 has external graph, payload and PDF checks; no Lean PDF semantics is claimed.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
@@ -96,12 +100,11 @@ find no member of the 425-module rebuild cone among the recorded selected-projec
 ancestors of the 94-operation model join. This does not authenticate inherited
 package ancestry or replace a coherent compilation of the final client.
 
-Neither compact graph yet has a verified iPRA endpoint. A separately checked
+The earlier 94- and 95-operation compact graphs do not yet have a checked iPRA
+endpoint. A separately checked
 [generic positive-model adapter](research/ordinary12-ipra-bridge/positive-model-ipra-adapter-prototype/README.md)
-cannot yet be combined with it because their selected object providers
-conflict. A [source-pinned rebuild preflight](research/ordinary12-ipra-bridge/compact12-ipra-coherent-rebuild-plan/README.md)
-identifies a smaller possible rebuild on the nine-variable provider but does
-not establish its full dependency closure. The symbolic coefficients are
+was subsequently combined with the 90-operation graph using the guarded
+rebuild described below. The symbolic coefficients are
 also not formally bound to retained payload bytes or a PDF. In particular,
 as documented in the [display boundary](research/ordinary12-ipra-bridge/positive-shift-display-boundary/README.md),
 `equation12.pdf` displays a separate 26-variable graph, and `equation.pdf`
@@ -137,21 +140,22 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage368-warning-retry/README.md)
-has rebuilt its first 368 of 425 modules. A missing declaration in a
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage420/README.md)
+has rebuilt all 425 selected modules. A missing declaration in a
 historical provider required a checked local source repair at stage 276;
-similar later references and inherited provider freshness remain open. At stage 64 a warning-bearing
+further source repairs were required at later stages, and inherited provider
+freshness remains open. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
 separately source-pinned, exact-warning baselines, with further baselines at
 stages 197, 224, 263, 270 and 272 to preserve existing interfaces and at stages
 250–251, 266 and 268 for source-pinned style warnings. Stage 95's initial
 three-minute attempt timed out; a separately guarded longer retry passed.
-The remaining stages and final
-client are open. A separately checked
+The final 90-operation client has since passed the guarded author join described
+above. A separately checked
 [conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
 also supplies standard and equality-only iPRA conclusions for any positive
-all-model bridge; it has not been joined to the compact bridge in a coherent
+all-model bridge; it has now been joined to the 90-operation compact bridge in a coherent
 build.
 
 The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)

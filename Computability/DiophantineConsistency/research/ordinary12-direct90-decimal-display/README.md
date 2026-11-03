@@ -4,7 +4,7 @@
 
 The pinned graph and Lean source have been externally checked to have 90 live operations (50 multiplications, 23 additions, 17 subtractions); `../ordinary12-direct-main-probe/check-degree.py` separately checks exact degree 172 with a polynomial upper bound and a fixed-payload modular lower witness. These are external checks, not Lean theorems about a parsed PDF.
 
-The associated `DirectMainHalt` theorem proves positive-zero and shifted-natural-zero equivalence to the internal machine halt predicate in every IΣ₁ model, on its selected author provider. A Lean proof that the equivalence has a derivation in iPRA remains open, as does a formal binding of this PDF to the Lean expression. The separate `../ordinary12-direct90-ipra-endpoint-draft/` client is unchecked.
+The associated `DirectMainHalt` theorem proves positive-zero and shifted-natural-zero equivalence to the internal machine halt predicate in every IΣ₁ model. The separate `../ordinary12-direct90-ipra-endpoint-draft/` client has now compiled in the guarded author join described in `../ordinary12-direct90-ipra-join/ATTEMPT03.md`, proving its stated internal standard/reference iPRA equivalences on the selected provider. The join receipt and theorem scope passed independent audit in `../../reviews/ordinary12-direct90-ipra-join-independent/` without a separate Lean replay. A formal binding of this PDF to the Lean expression remains open; package-transitive, dynamic, and complete historical source-to-object ancestry are outside the join audit.
 
 ## Reproduction and checks
 
