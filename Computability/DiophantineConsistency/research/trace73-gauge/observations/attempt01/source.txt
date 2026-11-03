@@ -1,0 +1,64 @@
+import Trace73Literal
+
+/-! A rank-preserving gauge of the centered 73-row circuit. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+set_option maxHeartbeats 4000000
+noncomputable section
+namespace Trace73Gauge
+open DiophantineConsistency.TenPositiveTrace75
+variable {R : Type*} [CommRing R]
+
+def step (p : Fin 4 → R) (v : Fin 10 → R) : R :=
+  (p 1 + v 5) * ((regs p v).h + 1) + 1
+
+def move (p : Fin 4 → R) (v : Fin 10 → R) (t : R) : Fin 10 → R :=
+  let h := (regs p v).h
+  ![v 0, v 1+h*t, v 2+h*h*t, v 3, v 4, v 5, v 6,
+    v 7-step p v*t, v 8, v 9]
+
+theorem rank_move (p : Fin 4 → R) (v : Fin 10 → R) (t : R) :
+    (regs p (move p v t)).rank = (regs p v).rank := by
+  dsimp [regs, move]
+  ring
+
+theorem B_move (p : Fin 4 → R) (v : Fin 10 → R) (t : R) :
+    (regs p (move p v t)).B = (regs p v).B - (regs p v).h * step p v*t := by
+  dsimp [regs, move, step]
+  ring
+
+theorem center_move (p : Fin 4 → R) (v : Fin 10 → R) (t : R) :
+    Trace73Center.centerZ p (move p v t) = Trace73Center.centerZ p v := by
+  have hr := rank_move p v t
+  have hB := B_move p v t
+  have he : (regs p (move p v t)).e = (regs p v).e := by
+    rw [e_def,e_def,hr]
+    rfl
+  have hh : (regs p (move p v t)).h = (regs p v).h := rfl
+  have hD : (regs p (move p v t)).D = (regs p v).D := rfl
+  have hH : (regs p (move p v t)).H = (regs p v).H := rfl
+  have hK : (regs p (move p v t)).K = (regs p v).K := rfl
+  simp only [Trace73Center.centerZ]
+  rw [hh,hD,hH,hK,hB,he]
+  change _ * _ * (_ * (v 7-step p v*t) + _) - _ * (_ * (_ - _ * step p v*t) + _ * _) = _
+  ring
+
+theorem graph_move (p : Fin 4 → R) (v : Fin 10 → R) (t : R) :
+    Trace73Literal.graph73 p (move p v t) = Trace73Literal.graph73 p v := by
+  rw [Trace73Literal.literal_eq,Trace73Literal.literal_eq]
+  have hr := rank_move p v t
+  have hQ : (regs p (move p v t)).Q = (regs p v).Q := rfl
+  have hM : (regs p (move p v t)).M = (regs p v).M := rfl
+  have hG : (regs p (move p v t)).Gn = (regs p v).Gn := rfl
+  have hV : (regs p (move p v t)).V = (regs p v).V := by
+    rw [V_def,V_def,b_def,b_def,hr]
+    rfl
+  simp only [Trace73Center.value73]
+  rw [center_move,hQ,hM,hG,hV]
+
+#print axioms Trace73Gauge.rank_move
+#print axioms Trace73Gauge.B_move
+#print axioms Trace73Gauge.center_move
+#print axioms Trace73Gauge.graph_move
+end Trace73Gauge
