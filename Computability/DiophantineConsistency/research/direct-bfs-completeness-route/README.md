@@ -26,3 +26,9 @@ remain open. Its author check is recorded.
 An [independent source and receipt review](../../reviews/direct-bfs-model-residue-independent/README.md)
 checks the natural-to-model cast and exact-kernel join, without a new Lean
 replay or full ancestry audit.
+
+A [later seed and transport join](../direct-bfs-halt-pell-seed-prototype/README.md)
+constructs the outer and auxiliary Pell seed families and a positive shifted
+transport witness from the same internally halted, calibrated BFS packed word.
+The first-carrier and graph valuation remain open, as do the external
+coefficient binding and coherent combined provider audit.
