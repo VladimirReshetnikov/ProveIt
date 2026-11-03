@@ -179,6 +179,10 @@ positive-direction guard has been proved for that chart, and the parent
 trace75 itself does not yet have its machine/iPRA bridge. An [external degree certificate](research/trace74-degree-check/README.md)
 establishes exact degree 402 for its pinned coefficients; an [independent audit](reviews/trace74-ring-coordinate-independent/README.md)
 checks that certificate and the row/identity receipts without replaying Lean.
+A [guarded trace model iff](research/trace75-mask-coordinate-ring-probe/GUARDED.md)
+equates positive 75 and 74 zeros only with **both** respective coordinate
+guards explicit (`F+alpha<q` on the old side, `F+C<q` on the new side).
+Neither guard is derived there from a zero.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
@@ -557,7 +561,10 @@ assembles them into `PackingInput` with no remaining high-mask premise, under
 explicit direct local word, definability, origin-dummy, geometry and scalar
 mask bounds. An [independent packing audit](reviews/direct-bfs-word-packing-independent/README.md)
 checks these same-witness assumptions and selected phase receipts without
-replaying Lean; halt-to-packing and calibrated graph witnesses remain separate;
+replaying Lean. A [canonical halt-packing client](research/direct-bfs-halt-canonical-packing-prototype/README.md)
+now derives the direct packing family from internal halt under three explicit
+scalar mask bounds, keeping one row and geometry for all admissible dummies.
+Calibrated rank and graph witnesses remain separate;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)

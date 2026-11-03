@@ -1,0 +1,7 @@
+# Internal halt to canonical direct-BFS packing
+
+`DirectBFSHaltCanonicalPacking.halt_pack` fixes a single canonical direct-BFS row by applying the checked model row map to the halt-derived compact row. Given internal machine-215 halt and any definable dummy function with `dummy 0 % 2 = 0`, it derives the row's Σ₁ definability, the direct local word, the explicit power-based length and stride with `1 < length` and `0 < stride < length`, and `PackingInput` for the corresponding normalized direct-BFS cell word. The theorem retains the three displayed scalar low/high-mask bounds as explicit premises. The row, length, and stride do not depend on the supplied dummy function. This is not yet a calibrated-rank, graph-zero, or iPRA theorem.
+
+Accepted author check `observations/directbfshaltcanonical-attempt02/`: Lean and outer runner exited 0, no diagnostics, and the axiom report is limited to `propext`, `Classical.choice`, and `Quot.sound`. Output `/tmp/direct-bfs-haltcanonical-jfc9vv7z/DirectBFSHaltCanonicalPacking.olean`, SHA-256 `31e3a8809bda91bf75c9b4accecb7dabaf257dfb32e070b6769f0dda00cd9654`. First-resolved direct imports and selected additional objects were pinned and rechecked. Project, package, dynamic, and historical source-to-object ancestry are inherited limitations; no independent Lean replay is claimed.
+
+Attempt01 and `run-attempt01.py` retain a failed proof of elementary geometry using `nlinarith`; attempt02 replaces it with explicit order inequalities.
