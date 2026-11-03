@@ -485,7 +485,10 @@ those conditions and calibrated graph witnesses remain open. A [direct-cell size
 proves a smaller upper bound under non-forbidden-row and Boolean-dummy
 assumptions. A [direct kernel bound](research/direct-bfs-kernel-bound-prototype/README.md)
 now proves the symbolic kernel is below the stated power without expansion;
-the combined product field remains separate. An
+a [cell-product client](research/direct-bfs-cell-product-prototype/README.md)
+uses it and the cell bound to prove the conditional `hi_lt` field for a
+non-forbidden normalized cell. Global cell sums and high-mask fields remain
+separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A

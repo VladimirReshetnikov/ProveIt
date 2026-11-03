@@ -1,0 +1,5 @@
+# Direct-BFS cell product bound
+
+`DirectBFSCellProduct.symbolic_kernel_lt` casts the checked direct-kernel bound into every IΣ₁ model without evaluating the full coefficient. `normalized_cell_product_lt` combines it with the checked cell-support bound to establish the `hi_lt` product inequality for every normalized direct cell whose row is not forbidden. The bound applies to arbitrary model-valued dummy inputs after normalization. It does not establish the remaining cell/block sum or high-mask fields.
+
+Attempts `observations/directbfscellproduct-attempt01/` and `...attempt02/` failed on local reducibility/elaboration issues and are retained. Guarded author attempt `observations/directbfscellproduct-attempt03/` exited 0 without diagnostics; all three exact axiom reports are `[propext, Classical.choice, Quot.sound]`. Every direct import was explicitly pinned and rechecked. Object `/tmp/direct-bfs-cellproduct-bp350ydc/DirectBFSCellProduct.olean` has SHA-256 `de7be1d66656ef004648213f356b1c50cea49e6fc6e713e4cff23349630fa937`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.
