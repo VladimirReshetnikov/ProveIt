@@ -772,6 +772,9 @@ A separate author-side [Horner-residue client](research/ordinary12-ipra-bridge/c
 proves the required modular residue for the symbolic natural kernel. Its
 provider differs from the unit client's, so applying the results together
 requires a coherent same-provider rebuild.
+Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
+and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
+found no defect in the inspected arguments; neither review supplies the join.
 An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
 proves a conditional local aggregate lemma on an existing author-side
 coefficient provider; it does not construct its selector or payload
