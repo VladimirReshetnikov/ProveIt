@@ -38,7 +38,9 @@ cover model packing, master and nine-variable reduction. Observations for
 [stages 24–30](reviews/nine-variable-ipra-stages-24-30-author-observation/README.md),
 [31–35](reviews/nine-variable-ipra-stages-31-35-author-observation/README.md)
 and [36–40](reviews/nine-variable-ipra-stages-36-40-author-observation/README.md)
-cover subsequent syntax and representation modules.
+cover subsequent syntax and representation modules. The author observations
+for [stages 41–50](reviews/nine-variable-ipra-stages-41-50-author-observation/README.md)
+include the fixed syntax and quartic model bridge.
 These observations do not establish a paired replay or full closure.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
