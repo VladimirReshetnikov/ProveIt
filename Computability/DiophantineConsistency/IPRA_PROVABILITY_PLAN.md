@@ -398,7 +398,9 @@ checks its generic and graph receipts and same-length scope. Full Wang-window
 and machine/color conjugacy remain open. An
 [edge-field theorem](research/direct-bfs-lean-tile-fields-prototype/README.md)
 identifies all four binary payload slices with the direct table's typed edge
-labels in the stated models; the full graph tile window is still separate. An
+labels in the stated models. A [direct occupied-orbit lemma](research/direct-bfs-lean-block-orbit-prototype/README.md)
+propagates occupancy under explicit decoder, marker and edge hypotheses; its
+binding to an actual graph zero and full tile window remain separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
