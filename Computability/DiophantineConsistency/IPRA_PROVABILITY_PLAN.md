@@ -341,8 +341,13 @@ passed; a paired replay and formal PDF-byte interpretation remain open.
 For the missing converse of the ordinary 12-variable candidate, a
 [single-author compact cell-digit prototype](research/ordinary12-ipra-bridge/compact44-cell-digit-prototype/README.md)
 now proves the desired selector, dummy and copy values and Σ₁ definability
-uniformly in the row, dummy bit and position. This is a model-level component;
-packed-cell and full-word construction, mask safety and the iPRA endpoint
+uniformly in the row, dummy bit and position. A later
+[single-author word construction](research/ordinary12-ipra-bridge/compact44-word-constructed-prototype/README.md)
+packs definable row and dummy functions into a bounded model word with the
+expected local digits. Separately, the [dummy-pulse result](research/ordinary12-ipra-bridge/compact44-pulse-bit-safety-prototype/README.md)
+proves preservation of low-mask no-carry assuming baseline low-mask safety.
+These are model-level components; proving the baseline mask and other packing
+conditions, constructing a graph zero and establishing the iPRA endpoint
 remain separate obligations.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
