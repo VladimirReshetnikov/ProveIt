@@ -365,10 +365,12 @@ clients establish the remaining size and positivity properties for the base
 and Boolean-pulsed marked word. A [halt-derived rank client](research/ordinary12-ipra-bridge/compact44-halt-rank-high-fields-prototype/README.md)
 now derives a calibrated pulsed packing from a model halt subject only to
 the two high-mask conditions for the base and uniformly for every admissible
-definable Boolean pulse. Those conditions, graph-zero construction and the
-iPRA endpoint remain separate obligations; the individual components use
-guarded single-author providers with inherited ancestry, as described in
-their linked records.
+definable Boolean pulse. An [origin-transfer client](research/ordinary12-ipra-bridge/compact44-high-origin-marked-prototype/README.md)
+shows that ordinary high-mask no-carry at every index would supply both
+conditions, using the proved origin block residue; that all-index property
+remains unproved. Graph-zero construction and the iPRA endpoint remain
+separate obligations; the individual components use guarded single-author
+providers with inherited ancestry, as described in their linked records.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
