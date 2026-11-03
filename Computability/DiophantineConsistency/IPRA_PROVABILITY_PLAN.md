@@ -269,11 +269,14 @@ now proves the same signed divisibility for actual positive zeros under the
 symbolic port bounds. An [independent projection audit](reviews/ten-positive-80-projection-independent/README.md)
 checks the retained factor and selected receipts without replaying Lean.
 A [conditional final step](research/ten-positive-80-projection-product-prototype/HEIGHT.md)
-now proves `X=2^rank` if the entire product is strictly smaller than `H`;
-that strict height inequality remains open. A [variable-base height theorem](research/ten-positive-80-variable-height-prototype/README.md)
+proves `X=2^rank` if the entire product is strictly smaller than `H`. A
+[variable-base height theorem](research/ten-positive-80-variable-height-prototype/README.md)
 now derives `X^(r+1)<H` for an actual zero with `rank=2r+1` under the symbolic
-port and oddness assumptions; bounding the whole product below that power
-remains separate.
+port and oddness assumptions. The [graph power join](research/ten-positive-80-projection-product-prototype/GRAPH_POWER.md)
+now bounds the complete product and proves `X=2^rank` under explicit beta-size,
+oddness and low/high port bounds. A [symbolic port theorem](research/ten-positive-80-symbolic-port-bounds-prototype/README.md)
+derives those conditions from three explicit port equalities; the full fixed
+tuple/file binding and machine/iPRA equivalence remain separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project

@@ -1,0 +1,7 @@
+# Exact power recovery for the 80 graph
+
+`Direct80GraphPower.graph_product_height` proves the strict full-product height inequality for every positive zero of the exact 80-row Lean graph in an indicated IΣ₁ model, under the explicit assumptions `beta≥31`, an oddness witness for beta, `low<beta`, and `high<2*beta`. It uses the separately checked graph bounds `X≥32`, `R≥32`, `b<X`, the recovered form `R=2r+1` with `r≥15`, `power X (r+1)<H`, and the abstract entire-product comparison.
+
+`Direct80GraphPower.graph_power` feeds that derived height to the checked entire-product divisibility theorem and concludes **`X=2^rankNat`** under the same assumptions. The theorem does not assume the height inequality or cancel `b` modulo `H`. It is an actual graph soundness ingredient; it does not yet establish the machine computation, a reverse witness construction, a derivation in iPRA, or a Lean binding to a displayed PDF. The fixed port tuple and its inequalities/oddness are not instantiated by this theorem.
+
+Self-pinning guarded author `run-graphpower.py`, `observations/graphpower-attempt01/`, passed in session 63399, producing `/tmp/tenpositive-80graphpower-ma16fo2p/Direct80GraphPower.olean` SHA-256 `3c426eba44b1590d85bd4c3ca52229e0af93e9892944a4ccdd97401aab34b383`. Both printed axiom reports are `propext`, `Classical.choice`, and `Quot.sound`. The exact source, selected prototype/object pins, logs and resource samples are retained. Full package-transitive, dynamic and historical source/object ancestry remain inherited; no independent Lean replay is claimed.
