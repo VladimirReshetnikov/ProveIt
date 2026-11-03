@@ -498,8 +498,10 @@ all retained original K bytes; a separate [external review](reviews/compact44-sy
 matches them by an independent Horner reconstruction. An author-side [finite
 kernel certificate](research/ordinary12-ipra-bridge/compact44-k-finite-certificate-prototype/README.md)
 also proves constituent position-separation and coefficient bounds in Lean.
-Neither result is a Lean serialization equality or a binding of the displayed
-tuple.
+An author-side [generic sparse-radix client](research/ordinary12-ipra-bridge/compact44-sparse-radix-generic-exploration/README.md)
+proves finite weighted-list digit extraction under explicit aggregate bounds,
+including duplicate positions. These results do not yet give a Lean K-byte
+serialization equality or bind the displayed tuple.
 Two further single-side explorations give alternative bounded representations
 of that residual. The [bit-rotation client](research/ordinary12-ipra-bridge/compact44-bit-rotation-prototype/README.md)
 represents multiplication by an arbitrary power of two modulo the word modulus
