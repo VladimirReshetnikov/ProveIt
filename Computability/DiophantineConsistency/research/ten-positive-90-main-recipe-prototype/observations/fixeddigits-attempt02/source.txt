@@ -1,0 +1,32 @@
+import DirectMainGraph
+
+/-! Direct 90-graph main residual, as a factored ring expression. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive90MainRecipe
+open DiophantineConsistency
+variable {R : Type*} [CommRing R]
+
+theorem main_recipe (p : Fin 4 → ℤ) (v : Fin 12 → R) :
+    ((FreeJDirectMainGraph.graph p).main).evalRing v =
+      let b := v 0*(p 0:R)
+      let q := 1+b
+      let X := q*v 5
+      let Y := q*(q*q)*v 6
+      let U := Y*(q*q)
+      let K := v 8+v 9
+      let C := v 8+Y*K
+      let a := X*Y+Y
+      let H := 3+4*a
+      let rank := (v 2+(q-v 1)*b)*(q*q-1)+((p 2:R)+(p 3:R)*q)*v 0
+      (U*(X+a*C)+H*(U*(v 11)-(K-rank-1)))^2-
+        U*U*(1+(H+a*a)*C*C) := by
+  simp only [FreeJDirectMainGraph.graph,Expr.evalRing_mul,Expr.evalRing_add,
+    Expr.evalRing_sub,Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    Nat.cast_one,Nat.cast_ofNat]
+  rfl
+
+#print axioms TenPositive90MainRecipe.main_recipe
+end TenPositive90MainRecipe

@@ -6,9 +6,12 @@ of the [directly indexed graph](../ten-positive-unshift-t-finite/data/equation_q
 but uses the complete retained original-order coefficient tuple. The input
 graph's fixed K0 is the directly indexed BFS payload; this candidate's K0 is
 the different original-order payload. The other three ports have identical
-uncompressed bytes in the two tuples. The imported degree 750 is recorded
-as inherited; this packet does not independently certify the exact degree of
-the new specialization.
+uncompressed bytes in the two tuples. The exact degree is 750: the external
+`verify_degree.py` obtains that upper bound from the rows and a matching lower
+bound by substituting `t` for every witness. The diagonal polynomial's
+degree-750 coefficient is 12396338 modulo 1000000007. A nonzero coefficient
+in this reduction certifies that the integer coefficient is nonzero. This is
+not a Lean theorem.
 
 An earlier [external recipe check](../ordinary12-ipra-bridge/compact44-symbolic-k-external-byte-check/README.md)
 computes a manual transcription of `paramKernel rho` and matches it to this
@@ -26,3 +29,5 @@ complete original tuple and writes deterministic JSON; it does not evaluate
 Lean, prove file semantics, or compare the two equations' solutions. The
 recorded output hash is
 `90bb24c77fab7a19cd4d021e7cd73eda527f71fc361b0aaba6a5f8eaeb1f7be2`.
+Run the degree check with `python3 -I -S -B` and the full path to
+`verify_degree.py`.

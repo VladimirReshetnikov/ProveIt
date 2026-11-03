@@ -333,9 +333,18 @@ does not by itself affect those statements. The external transcription is not
 a Lean theorem identifying either file's bytes with the symbolic term.
 A separately labeled [original-kernel 80-row candidate](research/ten-positive-80-original-kernel-variant/README.md)
 retains the same row schedule with the complete original coefficient tuple;
-it is a candidate only, with its file binding, machine theorem, iPRA endpoint,
-and exact specialized degree still to be established. The BFS instance also
-remains a target. An [independent mismatch review](reviews/ten-positive-80-alignment-fresh-projection-independent/README.md)
+it is a candidate only, with its file binding, machine theorem and iPRA endpoint
+still to be established. Its degree 750 has a separate external modular
+diagonal-witness check and an [independent candidate review](reviews/ten-positive-80-original-kernel-variant-independent/README.md),
+not a Lean degree theorem. The BFS instance also
+remains a target. A separate [direct-BFS symbolic kernel](research/direct-bfs-lean-kernel-prototype/README.md)
+now checks its 943-row data and model casts in Lean, with an external byte
+comparison to the BFS K. It does not yet provide row/color conjugacy, a
+complete graph decoder, controller calibration, or a Lean file-binding
+theorem. A [local selector decoder](research/direct-bfs-lean-decoder-prototype/README.md)
+also checks the generic no-carry decoding equivalence for the BFS rows; it
+does not yet connect those local facts to a graph band.
+An [independent mismatch review](reviews/ten-positive-80-alignment-fresh-projection-independent/README.md)
 checks the two payloads and the selected alignment and fresh-projection
 receipts; it does not replay Lean.
 An [independent audit](reviews/ten-positive-80-phase-indexed-carry-independent/README.md)
@@ -369,6 +378,11 @@ construct positive first/main Pell witnesses and their norm equations at the
 same rank, X and Y. A [fresh projection](research/ten-positive-80-fresh-projection-prototype/README.md)
 adds the positive main-root projection, and a [fresh offset](research/ten-positive-80-fresh-main-offset-prototype/README.md)
 derives its natural divisibility remainder without assuming it is positive.
+A [factor identity](research/ten-positive-fresh-main-algebra-prototype/README.md)
+and [90-row main-factor client](research/ten-positive-90-main-factor-prototype/README.md)
+show a conditional residual zero for the selected source graph under explicit
+projection and norm hypotheses; they do not yet construct one source graph
+zero from an 80-row graph zero.
 A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
 proves `rank > 3*q` and `q^3 ∣ Y` under explicit beta and positivity bounds,
 without assuming a graph zero. An [independent audit](reviews/ten-positive-80-carry-fresh-interval-independent/README.md)
