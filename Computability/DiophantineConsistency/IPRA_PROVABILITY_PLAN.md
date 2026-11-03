@@ -759,8 +759,9 @@ construction remain separate obligations. A [controller-unit plan](research/ordi
 records recipe-derived residues and a proposed adaptation of the old
 all-model lifting argument; no compact Lean unit theorem or kernel binding is
 claimed. An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
-states a conditional local aggregate lemma, but has not been compiled and
-does not construct its selector or payload hypotheses.
+proves a conditional local aggregate lemma on an existing author-side
+coefficient provider; it does not construct its selector or payload
+hypotheses, and its incremental build is not a paired replay or fresh closure.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
