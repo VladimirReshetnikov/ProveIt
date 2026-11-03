@@ -1,0 +1,5 @@
+# First-factor transport on the speculative graph
+
+`Absorb89Transport.lean` proves the exact signed first-root representation and, from a speculative-graph output zero, positive witnesses, and positive beta, proves `Bn<Bp` and `F+alpha<q` in every IΣ₁ model. The exact definitions are in the Lean source. No 90-graph zero or reverse witness map is assumed.
+
+The guarded first attempt exited 0 without reported warnings. Source SHA-256 is `b5a7e2e7e60704461b0d3d58c369115e11c2111eff5359208b870211bd069620`, output object is `5d9c2b7aa695c3ab74366f6751f16ee8664c8ce2d33a9d1dff8697da7cdb64ba`; both theorem axiom reports list `propext`, `Classical.choice`, and `Quot.sound`. The quotient, first, graph and direct graph producers and selected 1,291-object union were pinned and rechecked. The inherited first source locally suppresses unused-variable and unused-simp-argument linters; package, dynamic and source-to-object ancestry remain inherited rather than freshly rebuilt. Exact pins and resource samples are in the receipt.
