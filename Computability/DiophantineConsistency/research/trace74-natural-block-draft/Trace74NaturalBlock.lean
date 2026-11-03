@@ -1,4 +1,5 @@
 import DiophantineConsistency.ModelDifferenceRing
+import DiophantineConsistency.ArithmeticSaturation
 import Trace74DirectFourBlock
 
 /-! UNCHECKED DRAFT. Naturalize the four-block identity once the signed rank
