@@ -362,19 +362,16 @@ uses it and discharges the scalar bounds at the chosen dimensions. Subsequent
 [block positivity](research/ordinary12-ipra-bridge/compact44-word-block-positivity-prototype/README.md)
 and [cell-sum](research/ordinary12-ipra-bridge/compact44-marked-cell-sum-prototype/README.md)
 clients establish the remaining size and positivity properties for the base
-and Boolean-pulsed marked word. A [halt-derived rank client](research/ordinary12-ipra-bridge/compact44-halt-rank-high-fields-prototype/README.md)
-now derives a calibrated pulsed packing from a model halt subject only to
-the two high-mask conditions for the base and uniformly for every admissible
-definable Boolean pulse. An [origin-transfer client](research/ordinary12-ipra-bridge/compact44-high-origin-marked-prototype/README.md)
-shows that ordinary high-mask no-carry at every index would supply both
-conditions, using the proved origin block residue; that all-index property
-remains unproved. The [padding bound](research/ordinary12-ipra-bridge/compact44-high-padding-bound-prototype/README.md)
-clears high-mask slots 8792–8805, and the [physical-column bridge](research/ordinary12-ipra-bridge/compact44-marked-physical-column-prototype/README.md)
-identifies all remaining block digits with carry-free symbolic stencil
-columns. Their high-mask restrictions, graph-zero construction and the iPRA
-endpoint remain separate obligations; the individual components use guarded
-single-author providers with inherited ancestry, as described in their linked
-records.
+and Boolean-pulsed marked word. The [all-index high-mask theorem](research/ordinary12-ipra-bridge/compact44-marked-all-high-prototype/README.md)
+now proves ordinary high-mask safety from the checked physical columns and
+finite phase cases; the [origin-transfer client](research/ordinary12-ipra-bridge/compact44-high-origin-marked-prototype/README.md)
+supplies the special decremented origin mask. A [halt-to-packing theorem](research/ordinary12-ipra-bridge/compact44-halt-rank-no-high-prototype/README.md)
+therefore derives a full symbolic compact packing and calibrated rank from a
+model-internal halt, without separate physical premises, and its [source review](reviews/compact44-halt-rank-no-high-source-review/README.md)
+records the exact scope. Constructing a positive zero of the free-J graph,
+binding the retained/displayed coefficients and proving the iPRA endpoint
+remain separate obligations. The components use guarded single-author
+providers with inherited ancestry, as described in their linked records.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
