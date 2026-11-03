@@ -105,9 +105,11 @@ now derives an index of at least 13 from an actual graph zero with the stated
 port bounds. A [positive-branch theorem](research/ordinary12-absorb89-probe/POSITIVE_BRANCH.md)
 uses that index to prove the absorbed witness exceeds `s`; a separate
 [model reflection](reviews/ordinary12-absorb89-reflection-independent/README.md)
-preserves the full graph output in the negative branch. The branch-to-witness
-composition is being checked separately. The draft has no established
-reverse existence, halt equivalence, or iPRA endpoint.
+preserves the full graph output in the negative branch. Their
+[existence-equivalence join](research/ordinary12-absorb89-probe/EQUIVALENCE.md)
+now proves that the 89- and 90-row graphs have positive zeros in the same
+IΣ₁ models under those port bounds. This is an author-selected provider check;
+independent review and fixed-port halt and iPRA joins remain separate.
 
 For the separate ten-positive 84- and 85-operation proposals, a
 [Pell-doubling prototype](research/ten-positive-ipra-doubling-prototype/README.md)

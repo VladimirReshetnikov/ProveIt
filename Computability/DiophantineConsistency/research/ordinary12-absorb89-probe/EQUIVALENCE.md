@@ -1,0 +1,7 @@
+# Bounded-port positive-zero equivalence
+
+`Absorb89Equivalence.positive_zero_iff` proves in every indicated IΣ₁ model that the actual 89-row graph has a positive zero if and only if the actual 90-row direct graph has one, for natural ports with `0 < beta`, `low < beta`, and `high < 2*beta`. The forward map adds `s` to `r`. For the reverse, `Absorb89Select.select` uses the positive first-root branch directly and the independently checked model reflection for the negative branch to obtain a positive 89-row zero with `s < r`; `Absorb89Inverse.exists_direct_of_gap` subtracts `s` and inverts the forward map. The transformation is existential: it may reflect the input witness first.
+
+The selection (`run-select.py`, attempt01), inverse (`run-inverse.py`, attempt02), and equivalence (`run-equivalence.py`, attempt01) author checks each passed in their recorded guarded sessions, with exact source copies, output, provider pins, and resource observations in the matching `observations` directories. Inverse attempt01 failed on a lexical parsing issue and is retained. The reflection model source and its separate accepted receipt are in `reviews/ordinary12-absorb89-reflection-independent/`. No independent Lean replay has yet been performed for this join. The selected project provider and inherited package-transitive, dynamic and historical source/object ancestry limitations apply.
+
+This theorem alone does not assert fixed-port halt or an internal iPRA derivation for the 89-row graph. Those require separately checked joins.

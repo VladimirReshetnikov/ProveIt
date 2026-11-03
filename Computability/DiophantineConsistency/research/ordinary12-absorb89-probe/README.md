@@ -1,6 +1,6 @@
 # Speculative first-root absorption
 
-`Absorb89Graph.lean` defines a draft by absorbing the direct graph's `+s` into the witness r. Its checked commutative-ring lemmas compare all three residuals under the forward assignment `rPrime=r+s`. This is a forward algebraic comparison only. The external digest-pinned DAG check in `check-dag.py` finds 89 live operations: 50 multiplications, 22 additions and 17 subtractions. Its observation is in `observations/dag-attempt01/`. The model-level reverse witness map, machine-halt equivalence, PDF binding, and iPRA proof-existence are not established by these packets.
+`Absorb89Graph.lean` defines a draft by absorbing the direct graph's `+s` into the witness r. Its checked commutative-ring lemmas compare all three residuals under the forward assignment `rPrime=r+s`. The external digest-pinned DAG check in `check-dag.py` finds 89 live operations: 50 multiplications, 22 additions and 17 subtractions. Its observation is in `observations/dag-attempt01/`. A later [existence-equivalence join](EQUIVALENCE.md) establishes both model-level directions at bounded ports. Machine-halt equivalence, PDF binding, and iPRA proof-existence require separate joins or checks.
 
 `Absorb89First.lean` proves an actual draft output zero implies its first residual zero and exact scaled first norm in every IΣ₁ model, for arbitrary natural ports and without positivity. `Absorb89FirstQuotient.lean` adds a positive first root and its Pell equation assuming `J*beta>0`. Both theorem statements include the exact expressions. These are graph-specific first-factor results, not the missing reverse transformation.
 
@@ -16,9 +16,10 @@ proves the positive-branch bound `3*s≤k` if a first-Pell coordinate has index
 at least 3. A subsequent [six-stage index chain](INDEX_CHAIN.md) proves that
 an actual graph zero has such an index, in fact at least 13, under the stated
 fixed-port bounds. The [positive-branch theorem](POSITIVE_BRANCH.md) joins
-these results and derives the required witness bound. The branch-to-witness
-composition remains separate; these model results do not yet imply an
-89-operation iPRA endpoint.
+these results and derives the required witness bound. The separate
+[existence-equivalence join](EQUIVALENCE.md) combines both branches with the
+forward and inverse witness maps; it does not yet imply an 89-operation iPRA
+endpoint without the fixed-port and adapter joins.
 
 The guarded graph, first and quotient attempts all exited 0 without reported warnings. The first-norm source locally suppresses unused-variable and unused-simp-argument linters; those classes were not checked. Source/object SHA-256 pairs are:
 
