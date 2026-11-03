@@ -44,7 +44,12 @@ checks its graph, polynomial scaling identities and fixed-coefficient exact
 degree 164. A bounded author Lean check now proves the [three residual
 identities](research/ordinary12-qcube92-candidate/ALGEBRA.md) over arbitrary
 commutative rings, with the inherited-provider limits recorded there. An
-all-model positive-zero proof is outlined using the existing
+independently reviewed [source and artifact check](reviews/ordinary12-qcube92-algebra-independent/README.md)
+compares all 92 Lean graph rows and the recorded identities. A separate
+[model theorem](research/ordinary12-qcube92-candidate/MODEL.md) proves that
+the new zero is equivalent to an old zero at the transformed valuation in
+every IΣ₁ model, for arbitrary natural ports. An all-model **existence**
+equivalence is outlined using the existing
 `q³ ∣ Y` theorem, but has not yet been checked for the new expression; the
 92-operation graph has no established iPRA endpoint or formal PDF binding.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
