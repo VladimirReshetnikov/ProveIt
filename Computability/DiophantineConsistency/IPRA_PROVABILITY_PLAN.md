@@ -574,7 +574,9 @@ now assembles one fresh positive scaled tuple satisfying the first interval,
 both quotient identities, strong/auxiliary norms and signed carrier parts,
 under explicit unscaled interval, power, size and phase hypotheses. Its
 transport inputs remain arbitrary; actual graph syntax and source-zero
-binding remain open.
+binding remain open. An [independent reverse-data audit](reviews/ten-positive-scaled-reverse-data-independent/README.md)
+checks the selected direct inputs and shared existential scope without
+replaying Lean; I and ρ are not asserted positive.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
