@@ -100,8 +100,10 @@ has an externally checked live gate count and Lean-checked forward algebraic
 comparison. Its graph-specific model lemmas obtain both signed first-root
 branches, transport divisibility, negative-branch reflection at the first
 root, and a positive-branch growth bound conditional on a Pell index at least
-3. Deriving that index from an actual graph zero and proving preservation of
-the full graph under reflection remain open. The draft has no established
+3. A [six-stage index chain](research/ordinary12-absorb89-probe/INDEX_CHAIN.md)
+now derives an index of at least 13 from an actual graph zero with the stated
+port bounds. Full-graph reflection and the branch-to-witness composition are
+being checked separately. The draft has no established
 reverse existence, halt equivalence, or iPRA endpoint.
 
 For the separate ten-positive 84- and 85-operation proposals, a

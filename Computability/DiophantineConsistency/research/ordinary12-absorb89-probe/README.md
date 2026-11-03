@@ -11,8 +11,10 @@ The [reflection theorem](REFLECTION.md) constructs a negative-branch witness
 above `s` satisfying the positive first-root equation. Full-graph preservation
 under that replacement remains open. A separate [growth lemma](GROWTH.md)
 proves the positive-branch bound `3*s≤k` if a first-Pell coordinate has index
-at least 3; deriving that index from a graph zero remains open. These
-conditional model results do not yet imply an 89-operation iPRA endpoint.
+at least 3. A subsequent [six-stage index chain](INDEX_CHAIN.md) proves that
+an actual graph zero has such an index, in fact at least 13, under the stated
+fixed-port bounds. The branch-to-witness composition remains separate; these
+model results do not yet imply an 89-operation iPRA endpoint.
 
 The guarded graph, first and quotient attempts all exited 0 without reported warnings. The first-norm source locally suppresses unused-variable and unused-simp-argument linters; those classes were not checked. Source/object SHA-256 pairs are:
 
