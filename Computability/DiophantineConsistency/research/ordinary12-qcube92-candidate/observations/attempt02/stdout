@@ -1,0 +1,32 @@
+/tmp/free-j-qcube92-uiwbkksf/QCube92.lean:161:2: error: 'change' tactic failed, pattern
+  (q3 * b * (ell + k + v 7 - k * bt) + q3 * v 6 * b - q3 * bt) *
+        (q3 * b * (ell + k + v 7 - k * bt) + q3 * v 6 * b - q3 * bt) -
+      q3 * b * (q3 * b) * (1 + ell * (ell + k)) =
+    q3 * q3 *
+      ((b * (ell + k + v 7 - k * bt + v 6) - bt) * (b * (ell + k + v 7 - k * bt + v 6) - bt) -
+        b * b * (1 + ell * (ell + k)))
+is not definitionally equal to target
+  Expr.evalRing (lift p v) (FreeJSumSquares.firstResidual p) = qcube p v * qcube p v * Expr.evalRing v (graph p).first
+/tmp/free-j-qcube92-uiwbkksf/QCube92.lean:171:2: error: Tactic `rfl` failed: The left-hand side
+  Expr.evalRing (lift p v) (FreeJSumSquares.mainResidual p)
+is not definitionally equal to the right-hand side
+  Expr.evalRing v (graph p).main
+
+R : Type u_1
+inst✝ : CommRing R
+p : Fin 4 → ℤ
+v : Fin 12 → R
+⊢ Expr.evalRing (lift p v) (FreeJSumSquares.mainResidual p) = Expr.evalRing v (graph p).main
+/tmp/free-j-qcube92-uiwbkksf/QCube92.lean:176:2: error: Tactic `rfl` failed: The left-hand side
+  Expr.evalRing (lift p v) (FreeJSumSquares.ordinaryResidual p)
+is not definitionally equal to the right-hand side
+  Expr.evalRing v (graph p).ordinary
+
+R : Type u_1
+inst✝ : CommRing R
+p : Fin 4 → ℤ
+v : Fin 12 → R
+⊢ Expr.evalRing (lift p v) (FreeJSumSquares.ordinaryResidual p) = Expr.evalRing v (graph p).ordinary
+'FreeJQCube92.first_eval' depends on axioms: [propext, sorryAx]
+'FreeJQCube92.main_eval' depends on axioms: [propext, sorryAx]
+'FreeJQCube92.ordinary_eval' depends on axioms: [propext, sorryAx]
