@@ -74,6 +74,11 @@ establish that complete `SourceModel` or a Lean file-binding theorem.
 | K11 | completeness: outer data ⇒ positive zero, via (7.1) and (7.2) | — | open |
 | K12 | assembly: kernel iff + `SourceModel` ⇒ bridge ⇒ native/standard/reference endpoints | `IPRAExpressionNative.equivalence_of_bridge`, `IPRAStandardTheory.provable_iff` | open |
 
+For the remaining K6 branch, [graph-derived index-two algebra](../trace75-root-probe/THREETWO.md)
+now gives the exact first-parameter and carrier equations and a signed eta
+identity under the explicit main-index-three premise. It does not yet yield
+the size-gap contradiction needed to exclude that branch.
+
 The kernel is first proved over `ℤ`, against the paper, then replayed over
 `Facts R` and instantiated in `DiffRing V`, as for the carrier forms. K4 and
 K10 are the largest new proofs (roughly 15–25 modules in all).
