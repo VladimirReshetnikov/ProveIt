@@ -570,7 +570,8 @@ externally confirms that the BFS kernel's residue differs from the original
 kernel's, while its candidate Γ residue is a unit. Neither this arithmetic nor
 the BFS file-to-symbolic identity is yet a Lean calibration theorem. A
 [symbolic residue theorem](research/direct-bfs-symbolic-k-residue-prototype/README.md)
-now checks the BFS Lean kernel's residue itself; the Γ unit and full rank
+now checks the BFS Lean kernel's residue itself. A [finite Γ-order theorem](research/direct-bfs-gamma-order-prototype/README.md)
+checks the modular order identity; the model-level Γ unit and full rank
 calibration remain separate. An [independent packing/residue audit](reviews/direct-bfs-canonical-packing-residue-independent/README.md)
 checks the same-row quantifiers, scalar premises and external residue arithmetic
 without replaying Lean;

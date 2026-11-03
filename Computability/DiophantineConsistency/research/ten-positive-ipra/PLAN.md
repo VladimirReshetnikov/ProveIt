@@ -62,7 +62,7 @@ establish that complete `SourceModel` or a Lean file-binding theorem.
 |---|---|---|---|
 | K0 | circuit value, ring identities (2.2), (3.1), (3.3) | — | **compiled**: `TenPositiveTrace75` |
 | K1 | literal `Expr`, `evalRing` = value | — | **compiled**: `TenPositiveTrace75Syntax` (DAG never unfolded) |
-| K2 | root extraction: `G = g²`, `E = tau²`, `F0 = f0²` from coprimality | `ModelDifferenceRing`, square-divisor lemmas | [root client](../trace75-root-probe/README.md) and [nonzero/sign client](../trace75-root-probe/NONZERO.md) checked under explicit positive Δ,U,E,M representatives; deriving those from graph witnesses remains open |
+| K2 | root extraction: `G = g²`, `E = tau²`, `F0 = f0²` from coprimality | `ModelDifferenceRing`, square-divisor lemmas | [graph roots](../trace75-root-probe/FACTORS.md) checked from an actual positive trace75 zero and positive beta; later Pell quotient and machine steps remain open |
 | K3 | rational integrality of `y` in `QV² − (Q−1)y² = 1` | prototype only: `ReducedNormSigned.signed_denominator_divides` | open, port the generic statement |
 | K4 | **signed all-index folding** ⇒ `c = ψ_A(p)`, `p` odd | [80-row all-index folding](../../reviews/pell-all-index-recovery-independent/README.md) has checked related model machinery; applicability to trace75 requires a new adapter | open for trace75; the central new proof (paper source: inherited Lucas parent) |
 | K5 | first Pell classification, `n0 ≥ 2`, (3.5) | `ArithmeticPellFirstNorm.positive_parameter_solution` | open |
