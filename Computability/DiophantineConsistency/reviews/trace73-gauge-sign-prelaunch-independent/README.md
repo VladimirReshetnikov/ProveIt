@@ -53,3 +53,15 @@ dangling-aware enumeration. The runner's own `first_linarith` uses `is_file`
 and does not report a dangling earlier shadow; none was present at review.
 **Scoped GO for one guarded attempt02** using revised source and runner exact
 bytes, retaining all earlier limitations and inspecting both axiom reports.
+
+Attempt02 failed because `LinearOrderedCommRing` was unavailable and its
+reports contain `sorryAx`; it is excluded. Attempt03 source SHA-256
+`fff52aba491a28091a8b80f91006a456694f9d9dfb17edadad9db5aa7ebda182`
+adds only direct `Mathlib.Algebra.Order.Ring.Basic`, retaining the same
+statements. Runner SHA-256
+`1521fe020d58fb01ca6017d8ef76fd3c008fd408ada78e4020bfaa28c2c4baba`
+pins both direct Mathlib imports and checks their planned first paths before
+and after. All ten pins and current first selections were independently
+rechecked with dangling-aware enumeration. The runner's own first-selection
+check still skips dangling paths; none was present at review. **Scoped GO for
+one guarded attempt03**, with the same outer-exit and both-report limitations.
