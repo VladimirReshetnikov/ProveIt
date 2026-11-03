@@ -469,7 +469,10 @@ now packs and recovers those digits in a bounded definable family; global
 packing and its carry/mask conditions remain open. A [constructed-word theorem](research/direct-bfs-constructed-word-prototype/README.md)
 now packs arbitrary definable row/dummy families and recovers selectors and
 copies with Boolean and origin bounds. The global packing input's low/high
-mask and carry conditions still need proof. An
+mask and carry conditions still need proof. A [halt-to-packed-word join](research/direct-bfs-halt-packed-word-prototype/README.md)
+and [definable dummy-pulse extension](research/direct-bfs-halt-packed-pulse-prototype/README.md)
+construct such words from internal halt while preserving normalized dummy
+digits; the mask and rank calibration remain separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -639,7 +642,11 @@ needed; the hashes alone do not show mathematical unsoundness. A [source preflig
 matches all 114 candidate source hashes to retained producer pins and their
 explicit import names to the captured headers. An [expanded preflight](reviews/ten-positive-80-expanded-rebuild-preflight/README.md)
 does the same for all 122 provisional cone modules. Neither is a rebuild, and
-source-byte matches do not establish unique producer origins. A
+source-byte matches do not establish unique producer origins. An [independent drift review](reviews/ten-positive-80-producer-drift-independent/README.md)
+rechecks the eleven recorded mismatches and provisional reachability without
+replaying Lean. A [guarded rebuild runner](research/ten-positive-80-coherent-rebuild/README.md)
+is prepared but held pending independent static review of its exact inputs,
+guards and warning policy; no 122-stage replay is yet claimed. A
 [staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
 matches seven previously unmatched fresh helper objects to multi-stage
 receipts, while explicitly retaining the producer-time pin limitations and

@@ -1,0 +1,5 @@
+# Internal halt to a direct-BFS packed word with arbitrary dummy pulse
+
+`DirectBFSHaltPackedPulse.halt_packed_word` strengthens the zero-dummy halt construction to an arbitrary Σ₁-definable dummy function, whose values are normalized modulo two. From an internal decimal215 halt in any IΣ₁ model it constructs a direct-BFS local word and one positive bounded packed selector/copy word at the same explicit halt geometry; it recovers all selector, payload-copy and dummy digits and bounds all radix digits by one. This retains the adjustable dummy input needed for later rank calibration, but does not establish high/low masks, calibration, Pell seeds or a graph zero.
+
+The guarded author check `observations/directbfshaltpackedpulse-attempt01/` exited 0 without diagnostics and reports axioms `[propext, Classical.choice, Quot.sound]`. All direct imports were pinned and rechecked. Object `/tmp/direct-bfs-haltpackedpulse-li3_5p3n/DirectBFSHaltPackedPulse.olean` has SHA-256 `c46b4977182e3c99da18919af442bec94e9cb52dc1e177f0c484369cc8d55f80`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.
