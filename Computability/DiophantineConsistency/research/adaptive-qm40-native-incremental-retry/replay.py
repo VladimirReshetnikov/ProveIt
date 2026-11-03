@@ -128,8 +128,21 @@ def main():
     lib = out / "lib"
     frozen = out / "src" / "DiophantineConsistency"
     logs = out / "logs"
-    for p in (lib / "DiophantineConsistency", frozen, logs):
+    for p in (lib, frozen, logs):
         p.mkdir(parents=True)
+    # Lean selects a module-root directory before resolving individual files:
+    # an empty fresh DiophantineConsistency directory shadows SEED.  Create a
+    # fresh symlink overlay of the entire seed, as in the prior bounded driver.
+    # The fresh tree owns its directories; the seed itself is never modified.
+    copy = subprocess.run(["/usr/bin/cp", "-as", str(SEED) + "/.", str(lib) + "/"],
+                          capture_output=True, text=True, timeout=120)
+    need(copy.returncode == 0 and not copy.stdout and not copy.stderr,
+         ("seed overlay failed", copy.returncode, copy.stdout, copy.stderr))
+    for base, dirs, _ in os.walk(lib, followlinks=False):
+        for dirname in dirs:
+            need(not (Path(base) / dirname).is_symlink(), ("overlay has linked directory", base, dirname))
+    need((lib / "DiophantineConsistency").is_dir() and
+         not (lib / "DiophantineConsistency").is_symlink(), "unsafe output parent")
     sources = {}
     for name in MODULES:
         source = SRC / (name + ".lean")
@@ -198,8 +211,8 @@ def main():
                 if name == "IPRAQM40NativeChecks" and path == lib / "DiophantineConsistency/IPRAQM40Native.olean":
                     need(slots(path.with_suffix("")) == built_slots, "new native object drift")
                 direct.append({"path": line, "record": record(path)})
-            expected = ({str(PKG / "Init.olean"), str(SEED / "DiophantineConsistency/AdaptiveQM40Model.olean"),
-                         str(SEED / "DiophantineConsistency/IPRAQF41Native.olean")}
+            expected = ({str(PKG / "Init.olean"), str(lib / "DiophantineConsistency/AdaptiveQM40Model.olean"),
+                         str(lib / "DiophantineConsistency/IPRAQF41Native.olean")}
                         if name == "IPRAQM40Native" else
                         {str(PKG / "Init.olean"), str(lib / "DiophantineConsistency/IPRAQM40Native.olean")})
             need(set(d["path"] for d in direct) == expected, ("unexpected direct inputs", name, direct))

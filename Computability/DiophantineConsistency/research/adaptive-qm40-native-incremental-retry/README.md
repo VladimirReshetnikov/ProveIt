@@ -8,9 +8,13 @@ the peer side. The reason for the timeout was not established.
 `replay.py` prepares an incremental **single-author** retry of
 `IPRAQM40Native` followed by `IPRAQM40NativeChecks`, using the six observed
 objects in `/tmp/ipra-qm40-native-author-8thsscoi/lib`. It creates a fresh
-direct `/tmp` output root, freezes both Lean sources there, and writes new
-objects only under that fresh root. The historical seed and package are
-read-only inputs. Each compiler child has a 600-second timeout, `-M3000`,
+direct `/tmp` output root, makes a symlink overlay of the seed, freezes both
+Lean sources there, and writes new objects only under that fresh root. The
+overlay is necessary because Lean's project module directory selection can
+shadow the later seed even when a particular object is absent. The
+[first incremental attempt](../../reviews/adaptive-qm40-incremental-shadow-failure/README.md)
+hit exactly this issue and exited before elaboration. The historical seed and
+package remain read-only inputs. Each compiler child has a 600-second timeout, `-M3000`,
 `-j1` and asynchronous elaboration disabled. The checks client requires
 three axiom reports and rejects warnings, errors and `sorryAx`. A failed
 child is retained as a failure with its available logs and step records; no
@@ -27,9 +31,13 @@ or provider state between checks; the earlier model and package ancestry
 limitations remain. This is not a matched replay or an independent source
 closure.
 
-The no-Lean preflight exited 0 with `READY_INCREMENTAL_QM40_NO_LEAN` and
-recorded [preflight.json](preflight.json). Its script SHA-256 is
-`31896a24ac4a114d18b344e010c7c28f13ac6a5d41f4f902fde204f101513958`.
+The corrected no-Lean overlay preflight exited 0 with
+`READY_INCREMENTAL_QM40_NO_LEAN` and recorded
+[preflight-overlay.json](preflight-overlay.json). Its script SHA-256 is
+`e6915734d1d0467dc776061d5eb8ce651538c7bca64e2bc763af7ab6f547a2c6`.
+The earlier [preflight.json](preflight.json) belongs to the initial driver
+with SHA-256 `31896a24ac4a114d18b344e010c7c28f13ac6a5d41f4f902fde204f101513958`;
+that preflight did not detect the subsequent shadowing failure.
 The no-Lean controls exited 0 and detected a new companion file, a changed
 symlink target with identical bytes, and a changed target payload. Attempts
 to reuse the preflight directory, use the seed directory as output, or run
