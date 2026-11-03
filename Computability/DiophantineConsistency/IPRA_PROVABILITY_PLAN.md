@@ -614,11 +614,13 @@ records 1,765 selected project ancestors with no differing selected-project
 overlap. Its producer audit found explicit full direct pins for only 25 of the
 157 fresh-header objects; the other producer-time edges, full source ancestry,
 package-transitive imports and dynamic dependencies remain unverified. A
-historical producer comparison is being extended after finding direct-import
-hash drift in older producer
-receipts, including `ModelArithmetic` versus `ModelDifferenceRing`. A matching
+[historical producer comparison](reviews/ten-positive-80-nine-prefix-producer-audit/README.md)
+found nine direct-import hash drifts across five older producer receipts,
+including `ModelArithmetic` versus `ModelDifferenceRing`. A matching
 present-day search-path overlap does not establish producer-time compatibility;
-a coherent rebuild or stronger audit is needed. A
+the observed reverse-dependency cone has 114 modules, and additional
+unmatched producers could enlarge it. A coherent rebuild or stronger audit is
+needed; the hashes alone do not show mathematical unsoundness. A
 [staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
 matches seven previously unmatched fresh helper objects to multi-stage
 receipts, while explicitly retaining the producer-time pin limitations and
