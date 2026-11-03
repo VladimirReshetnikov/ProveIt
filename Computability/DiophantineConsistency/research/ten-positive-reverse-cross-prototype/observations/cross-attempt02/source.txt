@@ -1,0 +1,26 @@
+import ReverseCarrier
+
+/-! Factored cross-product zero from a carrier and auxiliary norm. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositiveReverseCross
+variable {R : Type*} [CommRing R]
+
+theorem cross_zero (M tau f y u I Q Z : R)
+    (hZ : Z=M*(tau*f*y)) (hQ : Q=I*I)
+    (haux : I*I*u*u+y*y=1+I*I*y*y) :
+    (Q-1)*Z*Z-(M*M)*(tau*tau*f*f)*(Q*u*u-1)=0 := by
+  have hh : (I*I-1)*y*y-(I*I*u*u-1)=0 := by
+    calc
+      (I*I-1)*y*y-(I*I*u*u-1)=(1+I*I*y*y)-(I*I*u*u+y*y) := by ring
+      _=0 := by rw [haux]; ring
+  rw [hZ,hQ]
+  calc
+    (I*I-1)*(M*(tau*f*y))*(M*(tau*f*y))-
+        (M*M)*(tau*tau*f*f)*(I*I*u*u-1) =
+      ((M*M)*(tau*tau*f*f))*((I*I-1)*y*y-(I*I*u*u-1)) := by ring
+    _=0 := by rw [hh]; ring
+
+#print axioms TenPositiveReverseCross.cross_zero
+end TenPositiveReverseCross
