@@ -14,4 +14,6 @@ and the selected `.olean` hashes differ for `ArithmeticNegativeNorms` and
 `ModelRatioBounds`. The fixed BFS client therefore cannot be claimed to have
 been built on that other union. The scan does not authenticate full historical
 source/object, package-transitive or dynamic ancestry, or replace a coherent
-rebuild; its independent audit is pending.
+rebuild. An [independent audit](../../reviews/direct-bfs-80-ipra-serialized-independent/README.md)
+rechecks the captured reachability, selected objects and the two differences,
+without replaying Lean or authenticating the remaining provider history.
