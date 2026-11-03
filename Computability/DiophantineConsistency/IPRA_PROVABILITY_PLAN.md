@@ -393,7 +393,9 @@ band phase under the direct symbolic ports. A [field-bits join](research/direct-
 derives the vertical and horizontal parity families at the same length. An
 [independent review](reviews/direct-bfs-uniform-and-positive-seed-independent/README.md)
 checks the two uniform-decoder receipts and the generic positive seed without
-replaying Lean. Full Wang-window and machine/color conjugacy remain open. An
+replaying Lean; a [field-bit audit](reviews/direct-bfs-field-bits-independent/README.md)
+checks its generic and graph receipts and same-length scope. Full Wang-window
+and machine/color conjugacy remain open. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
