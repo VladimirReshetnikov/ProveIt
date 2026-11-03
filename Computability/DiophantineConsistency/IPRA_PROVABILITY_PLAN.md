@@ -576,6 +576,14 @@ does not bind the external BFS coefficient or prove an internal iPRA theorem.
 An [independent iff/port audit](reviews/symbolic-model-iff-row-transfer-independent/README.md)
 checks these premises, direct providers and the separate finite row transfer
 without replaying Lean.
+A [parameterized 80-row iPRA client](research/ten-positive-80-symbolic-ipra-client-prototype/README.md)
+now applies the existing completeness adapters to that model bridge. Under
+the four natural original-kernel symbolic port equalities it constructs Lean
+terms asserting derivability in standard and equality-only iPRA, for the
+once-shifted graph and both mapped-refutation-negation and translated source
+consistency formulations. This is a guarded author check; a concrete tuple
+specialization, full provider-closure review and external file binding remain
+separate, and it does not cover the distinct retained BFS kernel.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. The generic result alone does not derive
