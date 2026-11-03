@@ -754,7 +754,8 @@ extracted PDF text, without proving those file correspondences in Lean. A
 [checked explicit-row theorem](research/ten-positive-80-explicit-rows-binding/README.md)
 also identifies an explicitly listed 80-register Lean expression with the
 graph output for arbitrary integer ports; the JSON/PDF and coefficient
-correspondences in that packet remain external.
+correspondences in that packet remain external. An [independent row audit](reviews/ten-positive-80-displayed-rows-independent/README.md)
+checks the arbitrary-port scope and selected graph object without replaying Lean.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. The generic result alone does not derive
