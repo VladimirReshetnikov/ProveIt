@@ -168,6 +168,9 @@ also constructs the other direction and proves 80 positive-zero existence
 equivalent to 79 positive-zero existence *with* that guard, for positive beta.
 An [independent guarded audit](reviews/ten-positive-79-guarded-and-bfs-cyclic-independent/README.md)
 checks that premise and the separate cyclic-field receipts without replaying Lean.
+A [follow-up iff/parity audit](reviews/ten-positive-79-forward-bfs-parities-independent/README.md)
+checks both guarded directions and the BFS field-parity receipts; it also does
+not replay Lean or eliminate the guard.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
