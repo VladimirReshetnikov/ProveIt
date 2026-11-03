@@ -1,0 +1,5 @@
+# Direct-BFS uniform temporal reset
+
+`DirectBFS80UniformReset.graph_uniform_reset` proves that an actual positive 80-graph zero at the four explicit direct-BFS symbolic ports supplies one positive N and an aligned whole-cell shift with direct-family indexed carry, and uniformly zero predecessor temporal digits and carries at all four designated columns. The two decoder target temporal digits also vanish. It uses direct-family carry room and reconciles the support and shift radix lengths by internal exponential injectivity; it does not substitute original-K coefficients.
+
+The guarded author check `observations/directbfs80reset-attempt01/` exited 0 without diagnostics and reported `propext`, `Classical.choice`, `Quot.sound`. Object `/tmp/direct-bfs-80-reset-_4wj5vbh/DirectBFS80UniformReset.olean` SHA-256 `c77bbcc0452ddb98ffdc47a82f8ce13bf1feea7f4b19ec5c67084750c8f97288`. Selected inputs/resources are pinned; inherited source/object, package and dynamic ancestry remain unverified and no independent Lean replay is claimed. Uniform direct row/window decoding, machine/color conjugacy, converse, iPRA and formal JSON/file binding remain open.

@@ -1,0 +1,5 @@
+# Direct-BFS whole-cell alignment for the 80 graph
+
+`DirectBFS80CellShift.graph_cell_shift` proves, from an actual positive 80-graph zero with all four explicit direct-BFS symbolic port equalities, that the same positive radix length N has indexed direct-family carry, 67-bit alignment and a cell shift `(E/67)%(8807*N)=8807*s` for some s<N. It uses the direct-BFS occupied anchors, direct parity and direct carry room, together with K-independent mask digit bounds; independently produced radix witnesses are equated by internal exponential injectivity. It assumes neither the original K nor an old graph zero.
+
+The guarded author check `observations/directbfs80cell-attempt01/` exited 0 without diagnostics and reported `propext`, `Classical.choice`, `Quot.sound`; object `/tmp/direct-bfs-80-cell-xqd_rif4/DirectBFS80CellShift.olean` SHA-256 `d4c3f6de8512260ca8a5fafa04cd424f5be05e174d97861051f6dcf76b9d4b89`. Selected inputs/resources are pinned; inherited source/object, package and dynamic ancestry remain unverified and there has been no independent Lean replay. Uniform direct decoder, machine/color conjugacy, converse, iPRA and formal JSON/file binding remain open.
