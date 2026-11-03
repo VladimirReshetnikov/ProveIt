@@ -266,7 +266,9 @@ rank. An [abstract whole-product theorem](research/ten-positive-80-projection-pr
 derives the corresponding ring divisibility without canceling the carrier
 factor. Its [graph binding](research/ten-positive-80-projection-product-prototype/GRAPH.md)
 now proves the same signed divisibility for actual positive zeros under the
-symbolic port bounds. The strict height argument and `X=2^rank` remain open.
+symbolic port bounds. An [independent projection audit](reviews/ten-positive-80-projection-independent/README.md)
+checks the retained factor and selected receipts without replaying Lean.
+The strict height argument and `X=2^rank` remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
