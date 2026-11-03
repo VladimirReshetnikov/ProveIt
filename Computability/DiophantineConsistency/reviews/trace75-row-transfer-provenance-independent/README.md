@@ -1,0 +1,9 @@
+# Independent review: DirectBFSRowTransfer bounded provenance
+
+PASS for the bounded observation in `research/trace75-row-transfer-provenance/` after its README correction. We independently rehashed the recorded successful receipt, source snapshot/current source/copied temporary source, runner, stdout/stderr and selected output. The receipt records unchanged source/runner hashes and direct `.olean` snapshots before and after. Its three explicit import names match the captured serialized header after omitting implicit `Init`.
+
+All three currently recorded and final-selected direct `.olean` objects have equal hashes **and the same resolved realpaths**: `DirectBFSConjugacyLift`, `DirectBFSSymbolicKernel` and `DiophantineConsistency.Compact943Data`. The Compact943Data recorded and selected path strings are spelled differently, but both currently resolve to the same realpath. The original author README's contrary different-realpath sentence was corrected; the pinned checker and stdout already recorded the correct all-three-same classification.
+
+These are captured before/after records and current path/hash comparisons, not atomic authentication of producer-time reads. Implicit `Init`, companion objects, dynamic/package inputs, transitive ancestry and external-file binding remain outside scope. The historical outer tool exit is not independently captured by this packet, and no Lean replay was performed.
+
+Checker SHA `18e490eb0114a3dc76f0e61c7faf7d8cc6b126334a06df87713053628ab51dad`, terminal SHA `474a0a08bb64c65e614f9a4499834208e35807d0f78a34da97fc7b9eb26b254d`, stdout SHA `2a862662bc49fb532e0f880cc013600125f59bd7294a5d6c52650bae3cb468b5`; corrected author README SHA `45c4f4d477da092afd27a59cef2c1d36ca2eaa85970c6980b8a52ce3622e1ed1`. Independent checker and output are alongside.
