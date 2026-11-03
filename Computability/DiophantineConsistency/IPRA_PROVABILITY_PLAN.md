@@ -283,6 +283,9 @@ derives the power and aligned indices from three explicit port equalities. A
 separate [radix alignment](research/ten-positive-80-projection-product-prototype/RADIX.md)
 obtains the power-of-two block form under an explicit beta identity. Full
 fixed tuple/file binding and machine/iPRA equivalence remain separate.
+After power recovery, an [unweighted projection](research/ten-positive-80-projection-product-prototype/UNWEIGHTED.md)
+derives `H ∣ Kpos` directly from the Pell norm, without canceling `b` or the
+power, and obtains a positive natural quotient under the same port bounds.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
