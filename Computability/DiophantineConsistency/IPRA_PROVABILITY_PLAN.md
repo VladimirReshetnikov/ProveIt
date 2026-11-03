@@ -733,7 +733,13 @@ paired or fully authenticated rebuild.
 A separate [converse construction plan](research/ordinary12-ipra-bridge/compact44-converse-construction-plan/README.md)
 identifies the compact44-specific packing, calibration and witness assembly
 still needed for the halt-to-graph direction; the differently parameterized
-2011 construction cannot be applied directly.
+2011 construction cannot be applied directly. A six-module [halt-to-compact-word
+client](reviews/compact44-halt-compact-author-artifact-independent-audit/README.md)
+has since compiled on the author-side provider and passed an independent
+artifact audit: a model-internal halt plus its three explicit dimension bounds
+gives a definable compact word with finite cyclic neighbor matching. It does
+not construct a graph zero; the dimension bounds, provider ancestry and
+remaining converse construction are separate obligations.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
