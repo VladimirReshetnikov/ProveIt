@@ -370,9 +370,12 @@ therefore derives a full symbolic compact packing and calibrated rank from a
 model-internal halt, without separate physical premises, and its [source review](reviews/compact44-halt-rank-no-high-source-review/README.md)
 records the exact scope. A [rank-forcing join](research/ordinary12-ipra-bridge/compact44-rank-residue-join-prototype/README.md)
 derives the compact rank population, mod-four phase and size from any such
-symbolic packing and identifies the relevant calibration constant. Separately,
+symbolic packing and identifies the relevant calibration constant. A
+[halt-to-seeds-and-transport client](research/ordinary12-ipra-bridge/compact44-halt-pell-transport-prototype/README.md)
+now constructs both positive Pell seed families and a positive shifted
+transport quotient for the same calibrated word. Separately,
 the exact free-J literal has a checked [factor equivalence](research/ordinary12-ipra-bridge/free-j-completeness-factor-bridge-prototype/README.md)
-and a [conditional ordinary-factor construction](research/ordinary12-ipra-bridge/free-j-ordinary-tail-witness-prototype/README.md).
+and [conditional factor/graph witness bridges](research/ordinary12-ipra-bridge/free-j-witness-assembly-prototype/README.md).
 Constructing positive coordinates that meet all factor equations, binding the
 retained/displayed coefficients and proving the iPRA endpoint remain separate
 obligations. The components use guarded single-author providers with inherited
