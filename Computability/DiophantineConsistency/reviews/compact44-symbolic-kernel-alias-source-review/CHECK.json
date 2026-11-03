@@ -1,0 +1,31 @@
+{
+  "audit_sha256": "b78cbbea7904ee5209eabe3a25fc80cf1d5a62e9b0057bfbbc1823ac2b4380b2",
+  "reviewed_commit": "7c14598ac5",
+  "runs": [
+    {
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/reviews/compact44-symbolic-kernel-alias-source-review/audit.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"scope\": \"point-in-time source/artifact check, not Lean replay\", \"status\": \"PASS_ALIAS_SOURCE_REVIEW\", \"successful_alias_exit\": 0, \"unit_client_exit\": 1}\n"
+    },
+    {
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/reviews/compact44-symbolic-kernel-alias-source-review/audit.py"
+      ],
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/compact44-symbolic-kernel-alias-source-review/audit.py\", line 9, in <module>\n    raise RuntimeError('optimized Python is rejected')\nRuntimeError: optimized Python is rejected\n",
+      "stdout": ""
+    }
+  ],
+  "scope": "Point-in-time source/artifact check; no Lean replay or full transitive audit.",
+  "status": "PASS_ALIAS_SOURCE_REVIEW"
+}
