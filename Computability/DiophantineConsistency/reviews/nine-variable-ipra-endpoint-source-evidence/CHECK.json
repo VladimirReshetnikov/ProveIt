@@ -1,0 +1,31 @@
+{
+  "audit_sha256": "bf2de4c86f25a5cfbfe5eba898f0fcb4460dbf5130321cbe000563932f274130",
+  "reviewed_commit": "d9947ea4ea9c0b5957bb833bac677741d7c9a341",
+  "runs": [
+    {
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/reviews/nine-variable-ipra-endpoint-source-evidence/audit.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"changed_lean_files_scanned\": 54, \"endpoint_commit\": \"d9947ea4ea9c0b5957bb833bac677741d7c9a341\", \"local_endpoint_objects_present\": {\"IPRAExplicitZFCFinal.olean\": false, \"IPRANineCurrent.olean\": false}, \"plan_directory_files\": [\"PLAN.md\"], \"scope\": \"source and author-claim inspection; no Lean run or proof-closure audit\", \"status\": \"PASS_PINNED_SOURCE_INSPECTION_NOT_A_BUILD\"}\n"
+    },
+    {
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/reviews/nine-variable-ipra-endpoint-source-evidence/audit.py"
+      ],
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/nine-variable-ipra-endpoint-source-evidence/audit.py\", line 11, in <module>\n    raise RuntimeError('optimized Python is rejected')\nRuntimeError: optimized Python is rejected\n",
+      "stdout": ""
+    }
+  ],
+  "scope": "Source and author-claim inspection only; no Lean run or full proof-closure audit.",
+  "status": "PASS_PINNED_SOURCE_INSPECTION_NOT_A_BUILD"
+}
