@@ -362,10 +362,13 @@ uses it and discharges the scalar bounds at the chosen dimensions. Subsequent
 [block positivity](research/ordinary12-ipra-bridge/compact44-word-block-positivity-prototype/README.md)
 and [cell-sum](research/ordinary12-ipra-bridge/compact44-marked-cell-sum-prototype/README.md)
 clients establish the remaining size and positivity properties for the base
-and Boolean-pulsed marked word. Both high-mask conditions, graph-zero
-construction and the iPRA endpoint remain separate obligations; the
-individual components use guarded single-author providers with inherited
-ancestry, as described in their linked records.
+and Boolean-pulsed marked word. A [halt-derived rank client](research/ordinary12-ipra-bridge/compact44-halt-rank-high-fields-prototype/README.md)
+now derives a calibrated pulsed packing from a model halt subject only to
+the two high-mask conditions for the base and uniformly for every admissible
+definable Boolean pulse. Those conditions, graph-zero construction and the
+iPRA endpoint remain separate obligations; the individual components use
+guarded single-author providers with inherited ancestry, as described in
+their linked records.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
