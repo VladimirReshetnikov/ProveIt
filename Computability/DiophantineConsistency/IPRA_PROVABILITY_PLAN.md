@@ -548,7 +548,8 @@ an 80-zero hypothesis; it does not assert that quotient is positive.
 A [conditional positive carrier theorem](research/ten-positive-reverse-carrier-prototype/README.md)
 uses the two quotients and an explicit `κ<f` bound to construct n>0 and prove
 the signed carrier identity. It does not yet bind that identity to the actual
-80 graph evaluation or prove its output zero.
+80 graph evaluation or prove its output zero. An [independent ingredient audit](reviews/ten-positive-reverse-carrier-ingredients-independent/README.md)
+checks the selected receipts, assumptions and direct inputs without replaying Lean.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
