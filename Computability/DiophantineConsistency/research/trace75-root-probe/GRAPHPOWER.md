@@ -20,3 +20,12 @@ Attempt 01 is retained: elaboration failed on an untyped intermediate
 inequality and reported `sorryAx`. Selected direct providers are pinned;
 historical transitive/package ancestry and external graph/file binding remain
 inherited limits.
+
+The same source also passed `run-graphpower-v3.py`,
+`observations/graphpower-attempt03/`, producing a byte-identical object at
+`/tmp/trace75-graphpower-2136o7kc/Trace75GraphPower.olean`. This run pins
+the first-selected `ModelRatioBounds.olean` at the variable-height overlay,
+SHA-256 `fcf4152e49cb9a989bd9f8ba08259a26c646dfca18370b0c6e1ce7ebfb33b8a7`.
+It resolves to a historical provider with known producer-time drift. Pinning
+that same object improves this run's evidence; a coherent rebuild against
+the separately audited fresh provider remains needed.
