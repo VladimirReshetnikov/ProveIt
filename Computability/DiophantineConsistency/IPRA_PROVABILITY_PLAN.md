@@ -262,7 +262,11 @@ derives `H ∣ h*Kpos` in the difference ring; a [natural projection theorem](re
 now transfers that divisibility back to the model's natural elements. A
 [Pell projection join](research/ten-positive-80-projection-pell-prototype/README.md)
 packages the natural divisor and main coordinate identities at the checked
-rank. The whole-product projection and `X=2^rank` remain open.
+rank. An [abstract whole-product theorem](research/ten-positive-80-projection-product-prototype/README.md)
+derives the corresponding ring divisibility without canceling the carrier
+factor. Its [graph binding](research/ten-positive-80-projection-product-prototype/GRAPH.md)
+now proves the same signed divisibility for actual positive zeros under the
+symbolic port bounds. The strict height argument and `X=2^rank` remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
