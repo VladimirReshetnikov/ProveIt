@@ -86,6 +86,16 @@ and the 13-variable 69/174, 70/140, 71/128, 73/126, 74/122, 72/124, 77/96,
 [`ModelThirteenForms`](Lean/DiophantineConsistency/ModelThirteenForms.lean),
 [`ModelThirteenStrong`](Lean/DiophantineConsistency/ModelThirteenStrong.lean),
 [`ModelThirteenSquares`](Lean/DiophantineConsistency/ModelThirteenSquares.lean)).
+The 14-variable 67-operation degree-94 form of
+[package 188](con-zfc-diophantine-forms/188-pell-orientation-exact-projection/native/README.md),
+which uses the ordinary strong norm `(i c²)² = Delta (f² − 1)`, has the same
+three endpoints since 3 November 2026
+([`ModelCarrier94`](Lean/DiophantineConsistency/ModelCarrier94.lean)). Its
+soundness re-proves the maintained index stage for that norm
+([`ArithmeticCarrier94Indices`](Lean/DiophantineConsistency/ArithmeticCarrier94Indices.lean),
+via `relaxed_auxiliary`), after which the maintained power, population and
+window clients apply unchanged; completeness replaces `i` by `Delta i` in a
+maintained zero.
 Each external standard-integer zero-set argument is replayed in every model of
 `𝗜𝚺₁` through the model's ring of differences ([`ModelDifferenceRing`](Lean/DiophantineConsistency/ModelDifferenceRing.lean)).
 The new internal number theory is an internal near-square descent
