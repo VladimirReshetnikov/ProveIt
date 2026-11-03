@@ -1,0 +1,3 @@
+# Recurrence cast normalization retry
+
+This draft differs from the [reviewed original](../trace74-boundary-recurrence-cast-draft/README.md) only by adding `Nat.cast_one` to the first successor-branch simplification. Its statement is unchanged. The first Lean attempt left a cast-normalization goal and is not an accepted theorem; see the [runner record](../trace74-boundary-recurrence-cast-rebuild/README.md). The repaired theorem passed the author check, and the [independent post-run audit](../../reviews/trace74-boundary-recurrence-cast-result-independent/README.md) passed. The numerical seed certificate remains a separate experiment.

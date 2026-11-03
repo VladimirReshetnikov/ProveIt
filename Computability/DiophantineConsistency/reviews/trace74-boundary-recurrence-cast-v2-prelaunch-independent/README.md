@@ -1,0 +1,9 @@
+# Independent prelaunch review: recurrence cast normalization retry
+
+Scoped GO for one coordinated retry with `research/trace74-boundary-recurrence-cast-rebuild/run-v2.py` SHA `5789ec48070933521ab2a7a3509db7dd66b89037fe2987f4111c6b0486984280` and `run-outer-v2.py` SHA `26aeb80f257730041075fe979108de7ac5275fcc35e3f92c74cd3071a1f6a291`. No Lean was run for this review.
+
+Prior attempt01 result `2eeaffafcefa547d66df3091b20da385b3c13966c67828696320234e23b8eef3` and outer terminal `2c12d6bfc382aca6fe5ba54d7f23c54f2cedebe2ecc0145f090ba20b90e6fc49` record Lean exit 1 with a successor-case `↑1` normalization goal and a rejected `sorryAx` report. The revised source SHA `0265f8492b69236bd63e6b81876af51a4c7a3c4a509ce9305a05b919a305300a` differs only by adding `Nat.cast_one` to that simp list. The statement and other proof bytes are unchanged; the failed attempt is retained and not accepted.
+
+We verified the audited parent and outer, source plan `f4a1aa012e13e9505742dadf25170502477938c0d2e220d8585d086af552af35`, read-only preflight `84b53be083d69c6b8469a8ef2098d707d10b718c10392ba1bcf7ee2507770a5f` (2,026 parent/81 outside/one stage), exact report/import, recurrence provider first selection and all outside companion bundles. Nineteen actual-function controls passed on copies; independent copied-wrapper tests rejected altered runner bytes before observation creation, rejected a stub FAILED child and accepted a stub PASS. Full parent union, no-clobber, resource and eight inherited closure guards are unchanged from the preceding reviewed runner.
+
+The proposed theorem concerns standard natural n,b cast into an IΣ₁ model, not arbitrary internal indices; no finite seed or graph conclusion is established by this prelaunch review. Four inherited baseline source ancestries, outside/package/dynamic ancestry and external file binding remain outside scope. Actual execution and independent post-audit remain necessary.
