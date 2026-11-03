@@ -815,7 +815,9 @@ physical construction obligations. A [conditional variation client](research/ord
 checks the exact symbolic rank-variation identity and calibrated congruence
 assuming two valid packings, the stated cell perturbation, Boolean and
 nonwrapping support, and the calibration congruence. It does not construct
-either physical packing or prove the selected changes safe. A further
+either physical packing or prove the selected changes safe. A separate
+[source review](reviews/compact44-rank-variation-mathematical-source-review/README.md)
+found no defect in the inspected adaptation or algebra. A further
 [realization-conditional client](research/ordinary12-ipra-bridge/compact44-controller-realizable-bridge-prototype/README.md)
 combines chosen calibration with variation, assuming a valid initial packing
 and a valid perturbed packing for every admissible selector; it does not prove
