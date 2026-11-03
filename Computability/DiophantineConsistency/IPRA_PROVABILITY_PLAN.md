@@ -129,7 +129,9 @@ The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
 For arbitrary natural ports with positive beta, any positive zero yields the
 two positive doubled-factor roots; the graph rows are compared to the stored
-JSON externally. Adjacent-Pell descent, the machine bridge, iPRA derivability,
+JSON externally. A [further model theorem](research/ten-positive-80-pell-prototype/README.md)
+derives the first Pell index, the doubled strong-Pell identity and a required
+divisibility from such a zero. Adjacent-Pell descent, the machine bridge, iPRA derivability,
 and a formal JSON/PDF binding remain open. The 81-, 83- and 84-operation
 descendants share the externally checked finalizer shape but are distinct
 graphs.
