@@ -31,7 +31,9 @@ a replay of either endpoint. The later [stages 6–9](reviews/nine-variable-ipra
 also passed on the same author overlay; their source, log, receipt and warning
 baseline hashes were retained in an author-side observation. The same is true
 for [stages 10–14](reviews/nine-variable-ipra-stages-10-14-author-observation/README.md);
-these observations do not establish a paired replay or full closure.
+and for [stages 15–17](reviews/nine-variable-ipra-stages-15-17-author-observation/README.md)
+and [18–20](reviews/nine-variable-ipra-stages-18-20-author-observation/README.md).
+These observations do not establish a paired replay or full closure.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
 87-operation evaluator. Its exact fixed-port literal now has a no-premise
