@@ -135,6 +135,11 @@ with negative transport. This rules out a universal positivity proof under
 that condition, but does not settle existential equivalence.
 No 88-operation halt or iPRA endpoint is claimed.
 
+A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
+has externally checked liveness and Lean ring identities for the transformed
+residuals. Its proposed input map can be negative even on positive inputs;
+positive-zero equivalence, halt and iPRA remain unproved.
+
 For the separate ten-positive 84- and 85-operation proposals, a
 [Pell-doubling prototype](research/ten-positive-ipra-doubling-prototype/README.md)
 proves coprimality of abstract doubled radicands in every IΣ₁ model, using
@@ -168,7 +173,10 @@ An [internal least-number theorem](research/ten-positive-adjacent-complete-proto
 now proves that the denominator is one under the reduced norm hypotheses.
 An [integral-quotient theorem](research/ten-positive-adjacent-integer-prototype/README.md)
 constructs the reduced representation from the abstract scaled norm, without
-assuming divisibility. Constructing its hypotheses from the graph remains open.
+assuming divisibility. The [80-row adjacent join](research/ten-positive-80-adjacent-prototype/README.md)
+now derives the required positive integral quotient and adjacent Pell norm
+from an actual positive graph zero. Pell folding, machine calibration and
+the iPRA endpoint remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
