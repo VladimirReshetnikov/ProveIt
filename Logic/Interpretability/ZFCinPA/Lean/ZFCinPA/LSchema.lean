@@ -59,8 +59,14 @@ theorem provable_falsum_ZF_of_ZFC (h : Bootstrapping.Provable 𝗭𝗙𝗖 (^⊥
   ConstructibleInterpretation.provable_falsum_ZF_of_ZFC hSchema h
 
 theorem consistent_ZFC_of_ZF (h : (𝗭𝗙 : SetTheory).Consistent W) :
-    (𝗭𝗙𝗖 : SetTheory).Consistent W :=
-  InternalInterpretation.consistent_of_falsum_transfer provable_falsum_ZF_of_ZFC h
+    (𝗭𝗙𝗖 : SetTheory).Consistent W := by
+  have e : (⌜(⊥ : Sentence ℒₛₑₜ)⌝ : W) = ^⊥ := by
+    simp [LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+  intro hZFC
+  apply h
+  unfold LO.FirstOrder.Theory.Consistent at *
+  rw [e] at hZFC ⊢
+  exact provable_falsum_ZF_of_ZFC hZFC
 
 /-- Internally, `𝗭𝗙`'s axiom class is contained in `𝗭𝗙𝗖`'s. -/
 lemma zf_subset_zfc : (𝗭𝗙 : SetTheory).internalize W ⊆ (𝗭𝗙𝗖 : SetTheory).internalize W :=
@@ -74,8 +80,14 @@ theorem provable_falsum_ZFC_of_ZF (h : Bootstrapping.Provable 𝗭𝗙 (^⊥ : W
   simpa using Bootstrapping.tprovable_iff_provable.mp (Bootstrapping.TProof.of_subset zf_subset_zfc h')
 
 theorem consistent_ZF_of_ZFC (h : (𝗭𝗙𝗖 : SetTheory).Consistent W) :
-    (𝗭𝗙 : SetTheory).Consistent W :=
-  InternalInterpretation.consistent_of_falsum_transfer provable_falsum_ZFC_of_ZF h
+    (𝗭𝗙 : SetTheory).Consistent W := by
+  have e : (⌜(⊥ : Sentence ℒₛₑₜ)⌝ : W) = ^⊥ := by
+    simp [LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+  intro hZF
+  apply h
+  unfold LO.FirstOrder.Theory.Consistent at *
+  rw [e] at hZF ⊢
+  exact provable_falsum_ZFC_of_ZF hZF
 
 end Internal
 
