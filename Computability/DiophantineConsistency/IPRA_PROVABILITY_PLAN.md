@@ -163,7 +163,10 @@ Lean. Its reverse positive map requires
 `F+C<q`, which is not established; it is not a proved smaller consistency
 equation or iPRA endpoint. A [guarded model client](research/ten-positive-79-guarded-model-probe/README.md)
 now proves 79-zero implies 80-zero when that inequality is supplied explicitly;
-the unguarded implication remains open. An [independent guarded audit](reviews/ten-positive-79-guarded-and-bfs-cyclic-independent/README.md)
+the unguarded implication remains open. A [guarded iff](research/ten-positive-79-guarded-model-probe/FORWARD.md)
+also constructs the other direction and proves 80 positive-zero existence
+equivalent to 79 positive-zero existence *with* that guard, for positive beta.
+An [independent guarded audit](reviews/ten-positive-79-guarded-and-bfs-cyclic-independent/README.md)
 checks that premise and the separate cyclic-field receipts without replaying Lean.
 
 The later ten-positive 80-operation, degree-750 descendant has an
@@ -526,7 +529,10 @@ identifies each physical block digit with its direct raw column using this
 zero-carry result. A [cyclic field theorem](research/direct-bfs-word-field-cyclic-prototype/README.md)
 derives matching payload bits and source digits from a direct local word; its
 runner automatically enforces only the final two of six captured axiom reports.
-These results do not by themselves discharge the six open high-mask phases;
+A [physical field-parity theorem](research/direct-bfs-word-field-parity-prototype/README.md)
+derives evenness at nine vertical and eight horizontal field phases without a
+high-mask assumption. The marker/anchor phases and parity-to-no-carry step
+remain separate; these results do not yet discharge all six high-mask classes;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)

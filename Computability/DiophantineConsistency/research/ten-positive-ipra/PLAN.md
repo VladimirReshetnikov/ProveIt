@@ -39,6 +39,23 @@ This campaign therefore states the source as an explicit hypothesis
 (`SourceModel`, as in `IPRAExplicitZFCReduction`) and discharges it once the
 compact44 rebuild lands in the tree. It does not rebuild those modules.
 
+**Kernel ordering boundary.** The retained trace75 JSON identifies its K0
+payload by raw SHA-256
+`0a86821a704294199c2e1a50379d242c96840a3366e9d965689ba3d74605203f`,
+the directly indexed BFS kernel. The existing `paramKernel rho` used in the
+original-table compact model theorem has an externally reconstructed payload
+with the different raw SHA-256
+`c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e`.
+See the [independent comparison](../../reviews/ten-positive-80-alignment-fresh-projection-independent/README.md)
+and [direct-BFS kernel review](../../reviews/direct-bfs-lean-kernel-decoder-independent/README.md).
+Thus the cited original-table model equivalence cannot alone discharge a
+`SourceModel` for the trace75 K0: that requires a checked color/row and
+packing transfer, or a separate proof for the direct kernel, as well as a
+binding from the retained bytes to the Lean term. The current direct-BFS
+[graph-to-halt route](../direct-bfs-80-model-halt-prototype/README.md) and
+[converse packing work](../direct-bfs-completeness-route/README.md) do not yet
+establish that complete `SourceModel` or a Lean file-binding theorem.
+
 ## Kernel stages (PROOF.md §§2–7, chart q3, weight L = V²)
 
 | stage | content | existing Lean to reuse (generic in ports) | status |
@@ -47,7 +64,7 @@ compact44 rebuild lands in the tree. It does not rebuild those modules.
 | K1 | literal `Expr`, `evalRing` = value | — | **compiled**: `TenPositiveTrace75Syntax` (DAG never unfolded) |
 | K2 | root extraction: `G = g²`, `E = tau²`, `F0 = f0²` from coprimality | `ModelDifferenceRing`, square-divisor lemmas | open |
 | K3 | rational integrality of `y` in `QV² − (Q−1)y² = 1` | prototype only: `ReducedNormSigned.signed_denominator_divides` | open, port the generic statement |
-| K4 | **signed all-index folding** ⇒ `c = ψ_A(p)`, `p` odd | **absent everywhere** | open; the central new proof (paper source: inherited Lucas parent) |
+| K4 | **signed all-index folding** ⇒ `c = ψ_A(p)`, `p` odd | [80-row all-index folding](../../reviews/pell-all-index-recovery-independent/README.md) has checked related model machinery; applicability to trace75 requires a new adapter | open for trace75; the central new proof (paper source: inherited Lucas parent) |
 | K5 | first Pell classification, `n0 ≥ 2`, (3.5) | `ArithmeticPellFirstNorm.positive_parameter_solution` | open |
 | K6 | exclusion of `p = 3`, `c > 4Delta + 3`; auxiliary index odd and ≥ 5 | `ArithmeticPellResidueClasses.odd_index_of_base_dvd`, `ArithmeticPellHalfIndex.y_three` | open |
 | K7 | signed transport (4.3) and recovery `B ≥ 0`, `C > 0` | — | open |

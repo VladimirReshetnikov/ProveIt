@@ -1,0 +1,7 @@
+# Direct-BFS matched-field parity
+
+`DirectBFSWordFieldParity.lean` proves that every digit of the direct-BFS packed word is disjoint from the low mask, and that physical transport-block digits are even at the nine vertical field phases `1013 + u` for `u < 9` and eight horizontal field phases `1065 + u` for `u < 8`. It uses the actual direct selector coefficients, direct local-word adjacency, the physical-column identity, and cyclic zero carry. The theorem applies in every IΣ₁ model with `1 < N` and `s < N`, without an assumed high-mask premise. It does not cover the adjacent marker phases or the four remaining anchor/target phases, nor does it establish BFS completeness or an iPRA endpoint.
+
+The accepted author check is `observations/directbfswordfieldparity-attempt02/`. Lean and the outer runner exited 0 without diagnostics; all three captured axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`. Output `/tmp/direct-bfs-wordfieldparity-4tkw9kqn/DirectBFSWordFieldParity.olean`, SHA-256 `123125d4ecaf64734fe9cdc8052c5903fb5190eeb5adcabd21f38c9682680de9`. Direct imports were checked against their first-resolved pinned objects before and after execution. This exploratory check inherits project, package, dynamic, and historical source-to-object ancestry limits, and has not been independently replayed.
+
+`observations/directbfswordfieldparity-attempt01/` and `run-attempt01.py` retain the failed low-slot subdigit proof.
