@@ -1,0 +1,9 @@
+# Actual graph rank modulo its recovered main index
+
+`Direct80RankMain.graph_rank_main_congruence` proves in every IΣ₁ model that an actual positive zero of the exact Lean 80-row graph, with positive beta and arbitrary other natural ports, has a positive odd main Pell index `r`, satisfies `c=ycoord r (A-1)`, and has an exact signed-pair representation `R=rp-rn` of the graph rank for which `SignMod c |rp-rn| r`.
+
+The proof retains the common strong/auxiliary witnesses for the two signed congruences, while the separate recovered main index is tied to the same actual graph `c` by equality. It proves `r≥3` from graph positivity and oddness, applies the general noncircular rank-reduction theorem, and uses neither a sign of `R` nor an assumed main norm. The auxiliary-index construction is reproduced here only to expose both congruences with the very same witness; it is not an invocation of the previously checked graph theorem with unrelated witnesses.
+
+This is a congruence, not yet rank equality. To infer `|R|=r`, the ordinary route still needs `|R|>0` and `2|R|<c`; transport-sign and fixed-port bounds have not been established by this packet. Further index alignment, graph-to-halt, and iPRA joins remain open.
+
+Guarded author `observations/attempt01/` succeeded without diagnostics, producing `/tmp/tenpositive-80rank-main-7b29xgpj/Direct80RankMain.olean`, SHA-256 `fe890213af8ab352c44b43e54166700a76d0142b1ad5f6e5692a697cd90297f1`. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. The runner pins selected prototype objects and one inherited provider, but does not independently certify all transitive project/package/dynamic inputs or historical source-to-object ancestry. Resource checks are sampled; no paired replay is claimed. JSON/source and displayed-file correspondence remain separate boundaries.

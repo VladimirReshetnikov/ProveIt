@@ -200,7 +200,9 @@ without a Lean replay. A [main-norm corollary](research/ten-positive-80-main-nor
 derives that norm as a conclusion. Rank decoding, machine calibration and the
 iPRA endpoint remain open. A [signed rank-index theorem](research/ten-positive-80-rank-index-prototype/README.md)
 now derives the actual graph rank's signed congruence to its odd auxiliary
-index without assuming a rank sign. A [corrected scaled-growth lemma](research/ten-positive-80-scaled-growth-prototype/MINUS.md)
+index without assuming a rank sign. A [rank-reduction join](research/ten-positive-80-rank-main-prototype/README.md)
+relates the signed graph rank to the recovered odd main index modulo `c`;
+rank equality still needs positivity and size bounds. A [corrected scaled-growth lemma](research/ten-positive-80-scaled-growth-prototype/MINUS.md)
 handles the graph's main parameter but still assumes index alignment and the
 stated size bounds. Its [graph application](research/ten-positive-80-scaled-growth-prototype/GRAPH.md)
 obtains the two Pell equations from an actual zero but keeps alignment and
