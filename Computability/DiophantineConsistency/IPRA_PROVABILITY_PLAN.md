@@ -202,11 +202,13 @@ iPRA endpoint remain open. A [signed rank-index theorem](research/ten-positive-8
 now derives the actual graph rank's signed congruence to its odd auxiliary
 index without assuming a rank sign. A [rank-reduction join](research/ten-positive-80-rank-main-prototype/README.md)
 relates the signed graph rank to the recovered odd main index modulo `c`;
-rank equality still needs positivity and size bounds. A [corrected scaled-growth lemma](research/ten-positive-80-scaled-growth-prototype/MINUS.md)
+the [conditional equality theorem](research/ten-positive-80-rank-equality-prototype/README.md)
+derives rank equality if `2|R|<c`. A [corrected scaled-growth lemma](research/ten-positive-80-scaled-growth-prototype/MINUS.md)
 handles the graph's main parameter but still assumes index alignment and the
 stated size bounds. Its [graph application](research/ten-positive-80-scaled-growth-prototype/GRAPH.md)
 obtains the two Pell equations from an actual zero but keeps alignment and
-`X≥16` as explicit premises.
+`X≥16` as explicit premises; a [size lemma](research/ten-positive-80-scaled-growth-prototype/SIZE.md)
+derives the latter from `beta≥15`.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
