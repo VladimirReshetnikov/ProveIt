@@ -497,7 +497,11 @@ a [cell-product client](research/direct-bfs-cell-product-prototype/README.md)
 uses it and the cell bound to prove the conditional `hi_lt` field for a
 non-forbidden normalized cell. A [four-field adapter](research/direct-bfs-four-fields-packing-prototype/README.md)
 discharges that product field while retaining explicit cell/block sum, origin
-and both high-mask assumptions. Global calibration remains separate. An
+and both high-mask assumptions. A [block-size theorem](research/direct-bfs-kernel-block-size-prototype/README.md)
+now proves the cell-sum field for a suitably bounded direct cell family and
+identifies the high-product split. A [block-positivity theorem](research/direct-bfs-word-block-positive-prototype/README.md)
+proves positive blocks for a direct local word and normalized dummy; the
+high-mask calibration remains separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -697,8 +701,10 @@ warnings match a separate historical source-specific baseline. An
 [independent stop audit](reviews/ten-positive-80-rebuild-attempt02-independent/README.md)
 checks both stages and records that the attempt remains failed. A separately
 reviewed [v5 retry policy](reviews/ten-positive-80-rebuild-v5-prelaunch-independent/README.md)
-allows exactly those two source-specific complete warning logs, with all
-other warnings still fatal; its fresh run is being coordinated. Only final
+allowed exactly those two source-specific complete warning logs. Its fresh
+attempt stopped at stage 13, `ModelRatioBounds`, with outer exit 1 because of
+four warnings; a source-specific historical comparison is in progress. No
+attempt has passed. Only final
 PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
 The [historical warning inventory](reviews/ten-positive-80-warning-inventory/README.md)
 identifies a further recorded policy at planned stage 13, but does not
