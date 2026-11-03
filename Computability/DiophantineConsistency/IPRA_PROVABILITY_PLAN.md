@@ -27,7 +27,9 @@ artifact checks: [stages 1–2](reviews/nine-variable-ipra-first-two-stages-auth
 and [stages 3–5](reviews/nine-variable-ipra-stages-3-5-author-audit/README.md).
 The second uses a source-bound warning baseline and has an earlier rejected
 object with a different unexplained hash. These are intermediate results, not
-a replay of either endpoint.
+a replay of either endpoint. The later [stages 6–9](reviews/nine-variable-ipra-stages-6-9-author-observation/README.md)
+also passed on the same author overlay; their source, log, receipt and warning
+baseline hashes were retained in an author-side observation.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
 87-operation evaluator. Its exact fixed-port literal now has a no-premise
