@@ -1,0 +1,54 @@
+import Direct80Root
+
+/-! Positive graph values for the exact 80-row expression. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+set_option maxHeartbeats 8000000
+noncomputable section
+namespace TenPositive80Factors
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open TenPositive80Graph TenPositive80Root
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def b (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := (p 0:V)*v 0
+def q (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := b p v+1
+def Y (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := (q p v*q p v*q p v)*v 6
+def X (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := v 5*q p v
+def k (v : Fin 10 → V) : V := v 8+v 9
+def c (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := k v*Y p v+v 8
+def mu (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := q p v*q p v+1
+def A (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := (mu p v*Y p v)*(X p v+1)
+def delta (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := A p v*(A p v+2)
+def U (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := v 3*(c p v*c p v)
+def E (p : Fin 4 → ℕ) (v : Fin 10 → V) : V :=
+  let V0 := X p v*((mu p v*Y p v)*(mu p v*Y p v))
+  (V0*k v)*(V0*k v+k v)+1
+def M (p : Fin 4 → ℕ) (v : Fin 10 → V) : V :=
+  (b p v*(mu p v*mu p v))*(4*A p v-1)
+def integerPorts (p : Fin 4 → ℕ) : Fin 4 → ℤ := fun j => (p j : ℤ)
+
+theorem delta_eval (p : Fin 4 → ℕ) (v : Fin 10 → V) :
+    (graph (integerPorts p)).delta.evalRing (fun j => ι (v j)) = ι (delta p v) := by
+  simp only [delta,A,mu,Y,X,q,b,integerPorts,graph,Expr.evalRing_mul,Expr.evalRing_add,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,Int.cast_natCast,
+    Nat.cast_one,Nat.cast_ofNat,map_mul,map_add,map_one,map_natCast]
+
+theorem U_eval (p : Fin 4 → ℕ) (v : Fin 10 → V) :
+    (graph (integerPorts p)).u.evalRing (fun j => ι (v j)) = ι (U p v) := by
+  simp only [U,c,k,Y,q,b,integerPorts,graph,Expr.evalRing_mul,Expr.evalRing_add,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,Int.cast_natCast,
+    Nat.cast_one,map_mul,map_add,map_one,map_natCast]
+
+theorem E_eval (p : Fin 4 → ℕ) (v : Fin 10 → V) :
+    (graph (integerPorts p)).e.evalRing (fun j => ι (v j)) = ι (E p v) := by
+  simp only [E,k,mu,Y,X,q,b,integerPorts,graph,Expr.evalRing_mul,Expr.evalRing_add,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,Int.cast_natCast,
+    Nat.cast_one,map_mul,map_add,map_one,map_natCast]
+
+#print axioms TenPositive80Factors.delta_eval
+#print axioms TenPositive80Factors.U_eval
+#print axioms TenPositive80Factors.E_eval
+end TenPositive80Factors

@@ -1,0 +1,65 @@
+import Direct80Graph
+import ProductRoot
+import DiophantineConsistency.ModelDifferenceRing
+
+/-! Conditional graph-to-root join; value representations and positivity
+are explicit premises, not yet discharged for positive graph witnesses. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositive80Root
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open TenPositive80Graph TenPositiveProductRoot
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem root_of_representatives (p : Fin 4 → ℤ) (v : Fin 10 → V)
+    (delta U E M V0 Z0 : V)
+    (hdelta : 0<delta) (hU : 0<U) (hE : 0<E) (hM : 0<M) (hV0 : 0<V0)
+    (hd : (graph p).delta.evalRing (fun j => ι (v j)) = ι delta)
+    (hu : (graph p).u.evalRing (fun j => ι (v j)) = ι U)
+    (he : (graph p).e.evalRing (fun j => ι (v j)) = ι E)
+    (hm : (graph p).m.evalRing (fun j => ι (v j)) = ι M)
+    (hv : (graph p).v.evalRing (fun j => ι (v j)) *
+      (graph p).v.evalRing (fun j => ι (v j)) = ι (V0*V0))
+    (hz : (graph p).z.evalRing (fun j => ι (v j)) *
+      (graph p).z.evalRing (fun j => ι (v j)) = ι (Z0*Z0))
+    (hzero : InternalZero (graph p).output v) :
+    ∃ tau f : V, 0<tau ∧ 0<f ∧ E=tau*tau ∧ 1+delta*U*U*E=f*f := by
+  let a : V := delta*U*U*E
+  let G : V := E*(1+a)
+  let Q : V := delta*(4*a*(1+a))
+  have ha : 0<a := mul_pos (mul_pos (mul_pos hdelta hU) hU) hE
+  have hQ : 0<Q := mul_pos hdelta (mul_pos (mul_pos (by simp) ha) (by simp))
+  have hQV : 0<Q*(V0*V0) := mul_pos hQ (mul_pos hV0 hV0)
+  have hqsub : Q-1+1=Q := tsub_add_cancel_of_le (pos_iff_one_le.mp hQ)
+  have hqvsub : Q*(V0*V0)-1+1=Q*(V0*V0) := tsub_add_cancel_of_le (pos_iff_one_le.mp hQV)
+  have hQcast : ι (Q-1) = ι Q - 1 := by
+    apply eq_sub_iff_add_eq.mpr
+    rw [← map_one (ι : V →+* DiffRing V), ← map_add, hqsub]
+  have hQVcast : ι (Q*(V0*V0)-1) = ι (Q*(V0*V0)) - 1 := by
+    apply eq_sub_iff_add_eq.mpr
+    rw [← map_one (ι : V →+* DiffRing V), ← map_add, hqvsub]
+  have haeval : (graph p).a.evalRing (fun j => ι (v j)) = ι a := by
+    rw [a_eval,hd,hu,he]
+    simp only [a,map_mul]
+  have hgeval : (graph p).g.evalRing (fun j => ι (v j)) = ι G := by
+    rw [g_eval,he,haeval]
+    simp only [G,map_mul,map_add,map_one,add_comm]
+  have hqeval : (graph p).q.evalRing (fun j => ι (v j)) = ι Q := by
+    rw [q_eval,hd,haeval]
+    simp only [Q,map_mul,map_add,map_one,map_ofNat]
+  rw [internalZero_iff,output_eval,hqeval,hz,hm,hgeval,hv] at hzero
+  have heq : (Q-1)*(Z0*Z0) = M*M*(G*(Q*(V0*V0)-1)) := by
+    apply ι_injective
+    simp only [map_mul,hQcast,hQVcast]
+    have h' := sub_eq_zero.mp hzero
+    rw [map_mul] at hQVcast
+    rw [← hQVcast] at h'
+    simpa only [map_mul,hQcast,hQVcast,mul_assoc] using h'
+  apply doubled_product_roots delta U E V0 Z0 M hdelta hU hE hV0 hM
+  simpa only [Q,G,a,add_tsub_cancel_left,mul_assoc] using heq
+
+#print axioms TenPositive80Root.root_of_representatives
+end TenPositive80Root

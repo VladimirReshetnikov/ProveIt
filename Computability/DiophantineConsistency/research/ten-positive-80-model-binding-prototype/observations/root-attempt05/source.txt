@@ -1,0 +1,169 @@
+import Direct80Graph
+import ProductRoot
+import DiophantineConsistency.ModelDifferenceRing
+
+/-! Conditional graph-to-root join; value representations and positivity
+are explicit premises, not yet discharged for positive graph witnesses. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositive80Root
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open TenPositive80Graph TenPositiveProductRoot
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem root_of_representatives (p : Fin 4 → ℤ) (v : Fin 10 → V)
+    (delta U E M V0 Z0 : V)
+    (hdelta : 0<delta) (hU : 0<U) (hE : 0<E) (hM : 0<M) (hV0 : 0<V0)
+    (hd : (graph p).delta.evalRing (fun j => ι (v j)) = ι delta)
+    (hu : (graph p).u.evalRing (fun j => ι (v j)) = ι U)
+    (he : (graph p).e.evalRing (fun j => ι (v j)) = ι E)
+    (hm : (graph p).m.evalRing (fun j => ι (v j)) = ι M)
+    (hv : (graph p).v.evalRing (fun j => ι (v j)) *
+      (graph p).v.evalRing (fun j => ι (v j)) = ι (V0*V0))
+    (hz : (graph p).z.evalRing (fun j => ι (v j)) *
+      (graph p).z.evalRing (fun j => ι (v j)) = ι (Z0*Z0))
+    (hzero : InternalZero (graph p).output v) :
+    ∃ tau f : V, 0<tau ∧ 0<f ∧ E=tau*tau ∧ 1+delta*U*U*E=f*f := by
+  let a : V := delta*U*U*E
+  let G : V := E*(1+a)
+  let Q : V := delta*(4*a*(1+a))
+  have ha : 0<a := mul_pos (mul_pos (mul_pos hdelta hU) hU) hE
+  have hQ : 0<Q := mul_pos hdelta (mul_pos (mul_pos (by simp) ha) (by simp))
+  have hQV : 0<Q*(V0*V0) := mul_pos hQ (mul_pos hV0 hV0)
+  have hqsub : Q-1+1=Q := tsub_add_cancel_of_le (pos_iff_one_le.mp hQ)
+  have hqvsub : Q*(V0*V0)-1+1=Q*(V0*V0) := tsub_add_cancel_of_le (pos_iff_one_le.mp hQV)
+  have hQcast : ι (Q-1) = ι Q - 1 := by
+    apply eq_sub_iff_add_eq.mpr
+    rw [← map_one (ι : V →+* DiffRing V), ← map_add, hqsub]
+  have hQVcast : ι (Q*(V0*V0)-1) = ι (Q*(V0*V0)) - 1 := by
+    apply eq_sub_iff_add_eq.mpr
+    rw [← map_one (ι : V →+* DiffRing V), ← map_add, hqvsub]
+  have haeval : (graph p).a.evalRing (fun j => ι (v j)) = ι a := by
+    rw [a_eval,hd,hu,he]
+    simp only [a,map_mul]
+  have hgeval : (graph p).g.evalRing (fun j => ι (v j)) = ι G := by
+    rw [g_eval,he,haeval]
+    simp only [G,map_mul,map_add,map_one,add_comm]
+  have hqeval : (graph p).q.evalRing (fun j => ι (v j)) = ι Q := by
+    rw [q_eval,hd,haeval]
+    simp only [Q,map_mul,map_add,map_one,map_ofNat]
+  rw [internalZero_iff,output_eval,hqeval,hz,hm,hgeval,hv] at hzero
+  have heq : (Q-1)*(Z0*Z0) = M*M*(G*(Q*(V0*V0)-1)) := by
+    apply ι_injective
+    simp only [map_mul,hQcast,hQVcast]
+    have h' := sub_eq_zero.mp hzero
+    rw [map_mul] at hQVcast
+    rw [← hQVcast] at h'
+    simpa only [map_mul,hQcast,hQVcast,mul_assoc] using h'
+  apply doubled_product_roots delta U E V0 Z0 M hdelta hU hE hV0 hM
+  simpa only [Q,G,a,add_tsub_cancel_left,mul_assoc] using heq
+
+
+/-- Every difference-ring element has a natural square representative;
+nonzero elements have a positive one. -/
+theorem square_rep (x : DiffRing V) :
+    ∃ a : V, x*x=ι (a*a) ∧ (x≠0 → 0<a) := by
+  rcases nonneg_or_nonpos x with ⟨a,ha⟩ | ⟨a,ha⟩
+  · refine ⟨a,?_,?_⟩
+    · rw [ha,map_mul]
+    · intro hx
+      apply pos_iff_ne_zero.mpr
+      intro h
+      apply hx
+      simpa [h] using ha
+  · refine ⟨a,?_,?_⟩
+    · rw [ha,map_mul]
+      ring
+    · intro hx
+      apply pos_iff_ne_zero.mpr
+      intro h
+      apply hx
+      simpa [h] using ha
+
+/-- Square representatives are constructed internally from the model's
+ring of differences; only nonzero signed V remains an explicit premise. -/
+theorem root_of_nonzero (p : Fin 4 → ℤ) (v : Fin 10 → V)
+    (delta U E M : V)
+    (hdelta : 0<delta) (hU : 0<U) (hE : 0<E) (hM : 0<M)
+    (hd : (graph p).delta.evalRing (fun j => ι (v j)) = ι delta)
+    (hu : (graph p).u.evalRing (fun j => ι (v j)) = ι U)
+    (he : (graph p).e.evalRing (fun j => ι (v j)) = ι E)
+    (hm : (graph p).m.evalRing (fun j => ι (v j)) = ι M)
+    (hV : (graph p).v.evalRing (fun j => ι (v j)) ≠ 0)
+    (hzero : InternalZero (graph p).output v) :
+    ∃ tau f : V, 0<tau ∧ 0<f ∧ E=tau*tau ∧ 1+delta*U*U*E=f*f := by
+  obtain ⟨V0,hv,hVp⟩ := square_rep ((graph p).v.evalRing (fun j => ι (v j)))
+  obtain ⟨Z0,hz,_⟩ := square_rep ((graph p).z.evalRing (fun j => ι (v j)))
+  exact root_of_representatives p v delta U E M V0 Z0 hdelta hU hE hM (hVp hV)
+    hd hu he hm hv hz hzero
+
+
+/-- A graph zero cannot have signed V equal to zero when the four
+nonnegative graph factors have the stated positive representatives. -/
+theorem V_nonzero_of_positive_representatives (p : Fin 4 → ℤ) (v : Fin 10 → V)
+    (delta U E M : V)
+    (hdelta : 0<delta) (hU : 0<U) (hE : 0<E) (hM : 0<M)
+    (hd : (graph p).delta.evalRing (fun j => ι (v j)) = ι delta)
+    (hu : (graph p).u.evalRing (fun j => ι (v j)) = ι U)
+    (he : (graph p).e.evalRing (fun j => ι (v j)) = ι E)
+    (hm : (graph p).m.evalRing (fun j => ι (v j)) = ι M)
+    (hzero : InternalZero (graph p).output v) :
+    (graph p).v.evalRing (fun j => ι (v j)) ≠ 0 := by
+  let a : V := delta*U*U*E
+  let G : V := E*(1+a)
+  let Q : V := delta*(4*a*(1+a))
+  have ha : 0<a := mul_pos (mul_pos (mul_pos hdelta hU) hU) hE
+  have hQ : 0<Q := mul_pos hdelta (mul_pos (mul_pos (by simp) ha) (by simp))
+  have hG : 0<G := mul_pos hE (by simp)
+  have hqsub : Q-1+1=Q := tsub_add_cancel_of_le (pos_iff_one_le.mp hQ)
+  have hQcast : ι (Q-1) = ι Q - 1 := by
+    apply eq_sub_iff_add_eq.mpr
+    rw [← map_one (ι : V →+* DiffRing V), ← map_add, hqsub]
+  have haeval : (graph p).a.evalRing (fun j => ι (v j)) = ι a := by
+    rw [a_eval,hd,hu,he]
+    simp only [a,map_mul]
+  have hgeval : (graph p).g.evalRing (fun j => ι (v j)) = ι G := by
+    rw [g_eval,he,haeval]
+    simp only [G,map_mul,map_add,map_one,add_comm]
+  have hqeval : (graph p).q.evalRing (fun j => ι (v j)) = ι Q := by
+    rw [q_eval,hd,haeval]
+    simp only [Q,map_mul,map_add,map_one,map_ofNat]
+  have hnonneg : 0 ≤ ((graph p).q.evalRing (fun j => ι (v j))-1)*
+      ((graph p).z.evalRing (fun j => ι (v j))*
+        (graph p).z.evalRing (fun j => ι (v j))) := by
+    apply mul_nonneg
+    · rw [hqeval,←hQcast]
+      exact ι_nonneg (Q-1)
+    · exact sq_nonneg ((graph p).z.evalRing (fun j => (ι (v j) : DiffRing V)))
+  have hmpos : 0<(ι M : DiffRing V) := ι_lt_ι.mpr hM
+  have hgpos : 0<(ι G : DiffRing V) := ι_lt_ι.mpr hG
+  have hprod : 0<(ι M : DiffRing V)*(ι M)*(ι G) := mul_pos (mul_pos hmpos hmpos) hgpos
+  intro hv
+  have hout := (internalZero_iff (graph p).output v).mp hzero
+  rw [output_eval,hv,hm,hgeval] at hout
+  simp only [mul_zero,_root_.sub_zero] at hout
+  nlinarith
+
+/-- An actual zero gives both positive roots, conditional on the four
+positive graph-value representatives. No V/Z sign hypothesis is made. -/
+theorem root_of_positive_representatives (p : Fin 4 → ℤ) (v : Fin 10 → V)
+    (delta U E M : V)
+    (hdelta : 0<delta) (hU : 0<U) (hE : 0<E) (hM : 0<M)
+    (hd : (graph p).delta.evalRing (fun j => ι (v j)) = ι delta)
+    (hu : (graph p).u.evalRing (fun j => ι (v j)) = ι U)
+    (he : (graph p).e.evalRing (fun j => ι (v j)) = ι E)
+    (hm : (graph p).m.evalRing (fun j => ι (v j)) = ι M)
+    (hzero : InternalZero (graph p).output v) :
+    ∃ tau f : V, 0<tau ∧ 0<f ∧ E=tau*tau ∧ 1+delta*U*U*E=f*f := by
+  have hv := V_nonzero_of_positive_representatives p v delta U E M hdelta hU hE hM hd hu he hm hzero
+  exact root_of_nonzero p v delta U E M hdelta hU hE hM hd hu he hm hv hzero
+
+#print axioms TenPositive80Root.root_of_representatives
+#print axioms TenPositive80Root.square_rep
+#print axioms TenPositive80Root.root_of_nonzero
+#print axioms TenPositive80Root.V_nonzero_of_positive_representatives
+#print axioms TenPositive80Root.root_of_positive_representatives
+end TenPositive80Root

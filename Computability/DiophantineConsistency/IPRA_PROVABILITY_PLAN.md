@@ -124,6 +124,15 @@ combines that result with scaled-square extraction to recover positive roots
 from the exact abstract cross-multiplied relation. It is not yet bound to
 either graph; full root recovery, the machine bridge and an iPRA endpoint
 remain open.
+
+The later ten-positive 80-operation, degree-750 descendant has an
+[80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
+For arbitrary natural ports with positive beta, any positive zero yields the
+two positive doubled-factor roots; the graph rows are compared to the stored
+JSON externally. Adjacent-Pell descent, the machine bridge, iPRA derivability,
+and a formal JSON/PDF binding remain open. The 81-, 83- and 84-operation
+descendants share the externally checked finalizer shape but are distinct
+graphs.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project

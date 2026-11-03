@@ -1,0 +1,175 @@
+import DiophantineConsistency.AdaptiveEquationSyntax2011
+import DiophantineConsistency.WeightedExpressionDegree
+import Mathlib.Tactic.Ring
+
+/-! Exact 80-row graph syntax and factored all-ring identities.
+External JSON-to-source correspondence is not an internal Lean theorem. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80Graph
+open DiophantineConsistency AdaptiveEquationSyntax2011
+
+structure Graph where
+  delta : Expr (Fin 10)
+  u : Expr (Fin 10)
+  e : Expr (Fin 10)
+  a : Expr (Fin 10)
+  g : Expr (Fin 10)
+  q : Expr (Fin 10)
+  v : Expr (Fin 10)
+  z : Expr (Fin 10)
+  m : Expr (Fin 10)
+  output : Expr (Fin 10)
+
+def graph (p : Fin 4 → ℤ) : Graph :=
+  let J : Expr (Fin 10) := .var 0
+  let F : Expr (Fin 10) := .var 1
+  let alpha : Expr (Fin 10) := .var 2
+  let i : Expr (Fin 10) := .var 3
+  let T : Expr (Fin 10) := .var 4
+  let w : Expr (Fin 10) := .var 5
+  let s : Expr (Fin 10) := .var 6
+  let n : Expr (Fin 10) := .var 7
+  let eta : Expr (Fin 10) := .var 8
+  let zeta : Expr (Fin 10) := .var 9
+  let beta : Expr (Fin 10) := .constant (p 0)
+  let K0 : Expr (Fin 10) := .constant (p 1)
+  let MC : Expr (Fin 10) := .constant (p 2)
+  let MF : Expr (Fin 10) := .constant (p 3)
+  let bJ := beta * J
+  let q := bJ + 1
+  let q2 := q * q
+  let q3 := q2 * q
+  let Y := q3 * s
+  let qmF := q - F
+  let C := qmF - alpha
+  let X := w * q
+  let k := eta + zeta
+  let kY := k * Y
+  let c := kY + eta
+  let mu := q2 + 1
+  let Xp1 := X + 1
+  let muY := mu * Y
+  let Am1 := muY * Xp1
+  let fourAm1 := 4 * Am1
+  let Hp := fourAm1 - 1
+  let Ap1 := Am1 + 2
+  let muY2 := muY * muY
+  let V0 := X * muY2
+  let V0k := V0 * k
+  let V0kk := V0k + k
+  let V0k2 := V0k * V0kk
+  let Dtau := V0k2 + 1
+  let G1 := bJ * qmF
+  let G := G1 + alpha
+  let q2m1 := q2 - 1
+  let Gq := G * q2m1
+  let qMF := q * MF
+  let MCqMF := MC + qMF
+  let RJ := MCqMF * J
+  let R := Gq + RJ
+  let kR := k - R
+  let e := kR - 1
+  let K0w := K0 + w
+  let K0wC := K0w * C
+  let Bt := K0wC - F
+  let c2 := c * c
+  let U := i * c2
+  let UE := U * Dtau
+  let Delta := Am1 * Ap1
+  let SE := Delta * UE
+  let DpI2 := SE * U
+  let Df := DpI2 + 1
+  let aF0 := DpI2 * Df
+  let fouraF0 := 4 * aF0
+  let Fsqr := fouraF0 + 1
+  let Q := Delta * fouraF0
+  let cT := c * T
+  let cTR := cT - R
+  let DfcTR := Fsqr * cTR
+  let V := DfcTR - c
+  let V2 := V * V
+  let mu2 := mu * mu
+  let P1mu2 := bJ * mu2
+  let LBt := V2 * Bt
+  let center := n - LBt
+  let Hn := Hp * center
+  let threec := 3 * c
+  let twoX := 2 * X
+  let gap := threec - twoX
+  let Kpos0 := X * gap
+  let Kpos := Kpos0 + 2
+  let lin := Hn + Kpos
+  let Zpart1 := P1mu2 * lin
+  let mu2inner := mu2 * Bt
+  let P1e := bJ * e
+  let brk := mu2inner + P1e
+  let Zpart2 := Hp * brk
+  let Znum := Zpart1 - Zpart2
+  let Mtot := P1mu2 * Hp
+  let M2 := Mtot * Mtot
+  let Dg := Dtau * Df
+  let Z2 := Znum * Znum
+  let RG := M2 * Dg
+  let RGV2 := RG * V2
+  let inside := Z2 - RGV2
+  let Qinside := Q * inside
+  let correction := RG - Z2
+  let N := Qinside + correction
+  ⟨Delta,U,Dtau,DpI2,Dg,Q,V,Znum,Mtot,N⟩
+
+theorem a_shape (p : Fin 4 → ℤ) : (graph p).a =
+    ((graph p).delta*((graph p).u*(graph p).e))*(graph p).u := by rfl
+
+theorem g_shape (p : Fin 4 → ℤ) : (graph p).g =
+    (graph p).e*((graph p).a+1) := by rfl
+
+theorem q_shape (p : Fin 4 → ℤ) : (graph p).q =
+    (graph p).delta*(4*((graph p).a*((graph p).a+1))) := by rfl
+
+theorem output_shape (p : Fin 4 → ℤ) : (graph p).output =
+    (graph p).q*((graph p).z*(graph p).z-
+      ((graph p).m*(graph p).m*(graph p).g)*((graph p).v*(graph p).v))+
+      (((graph p).m*(graph p).m*(graph p).g)-(graph p).z*(graph p).z) := by rfl
+
+variable {R : Type*} [CommRing R]
+
+theorem output_eval (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    (graph p).output.evalRing v =
+      ((graph p).q.evalRing v-1)*((graph p).z.evalRing v*(graph p).z.evalRing v)-
+      ((graph p).m.evalRing v*(graph p).m.evalRing v)*((graph p).g.evalRing v)*
+        ((graph p).q.evalRing v*((graph p).v.evalRing v*(graph p).v.evalRing v)-1) := by
+  rw [output_shape]
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul]
+  ring
+
+theorem a_eval (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    (graph p).a.evalRing v =
+      (graph p).delta.evalRing v*(graph p).u.evalRing v*(graph p).u.evalRing v*(graph p).e.evalRing v := by
+  rw [a_shape]
+  simp only [Expr.evalRing_mul]
+  ring
+
+
+theorem g_eval (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    (graph p).g.evalRing v = (graph p).e.evalRing v*((graph p).a.evalRing v+1) := by
+  rw [g_shape]
+  simp only [Expr.evalRing_mul,Expr.evalRing_add,Expr.evalRing_ofNat,
+    Nat.cast_one]
+
+theorem q_eval (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    (graph p).q.evalRing v = (graph p).delta.evalRing v*
+      (4*(graph p).a.evalRing v*(1+(graph p).a.evalRing v)) := by
+  rw [q_shape]
+  simp only [Expr.evalRing_mul,Expr.evalRing_add,Expr.evalRing_ofNat,
+    Nat.cast_one,Nat.cast_ofNat]
+  ring
+
+#print axioms TenPositive80Graph.output_shape
+#print axioms TenPositive80Graph.output_eval
+#print axioms TenPositive80Graph.a_eval
+#print axioms TenPositive80Graph.g_eval
+#print axioms TenPositive80Graph.q_eval
+end TenPositive80Graph
