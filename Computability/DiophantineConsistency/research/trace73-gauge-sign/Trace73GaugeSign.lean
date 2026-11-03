@@ -1,4 +1,6 @@
 import Trace73Gauge
+import Mathlib.Tactic.Linarith
+import Mathlib.Algebra.Order.Ring.Basic
 
 /-! A conditional negative-B positive zero, using the actual graph gauge. -/
 set_option autoImplicit false
@@ -8,7 +10,7 @@ set_option maxHeartbeats 4000000
 noncomputable section
 namespace Trace73GaugeSign
 open DiophantineConsistency.TenPositiveTrace75
-variable {R : Type*} [LinearOrderedCommRing R]
+variable {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
 
 theorem B_negative_after_one (p : Fin 4 → R) (v : Fin 10 → R)
     (hh : 1 ≤ (regs p v).h) (hk : 0 ≤ p 1+v 5)

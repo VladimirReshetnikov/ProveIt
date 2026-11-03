@@ -17,6 +17,8 @@ pins={Path('/tmp/trace73-gauge-r0w9s5ez/Trace73Gauge.olean'):'397b4aec0c8ed00428
       lib/'Trace75Kappa.olean':'d1b5f11393d947960986f70e247db55dbcc559a4fe7214878006f64a25f78b2a',
       lib/'DiophantineConsistency/TenPositiveTrace75.olean':'1ae82441c7023e9675c5cc532d4026da6a3ee77e906996d67c315e4f693b079c',
       lib/'DiophantineConsistency/ModelDifferenceRing.olean':'d0fb8f9664675190dbfc25915a687cef203b8362681d9256606f1022a6dbde74',
+      pkg/'Mathlib/Tactic/Linarith.olean':'bbe0c9d1f3d5471ae115ccd10d9ef2f6dc5ec645bad49ee5a04830c178e42091',
+      pkg/'Mathlib/Algebra/Order/Ring/Basic.olean':'ea83b1b21091681e446b6d29768b758db2523188f511a372f599db4d4f2d9333',
       pkg/'Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean':'fdf05f04ff241ddea16128e1fc799cc5cc9470fbc1a63c92a200688ee597ef45'}
 def sha(p):return sha256(Path(p).read_bytes()).hexdigest()
 def need(b,m):
@@ -27,6 +29,11 @@ def resources():
     mem=int(next(s for s in Path('/proc/meminfo').read_text().splitlines() if s.startswith('MemAvailable:')).split()[1])
     return {'time_ns':time.time_ns(),'lean':active,'mem_available_kib':mem}
 for p,digest in pins.items():need(p.is_file() and sha(p)==digest,'pin mismatch '+str(p))
+roots=[Path('/tmp/trace73-gauge-r0w9s5ez'),Path('/tmp/trace73-literal-1adlrevr'),Path('/tmp/trace73-center-r4z617bq'),lib,pkg]
+def first_object(rel):
+    return next((r/rel for r in roots if (r/rel).is_file()),None)
+for rel in ['Mathlib/Tactic/Linarith.olean','Mathlib/Algebra/Order/Ring/Basic.olean']:
+    need(first_object(rel)==pkg/rel,'object selection mismatch '+rel)
 attempt=os.environ.get('ATTEMPT','attempt01');need(re.fullmatch(r'attempt\d+',attempt),'attempt name')
 obs=h/'observations'/attempt;need(not os.path.lexists(obs),'attempt exists')
 pre=resources();need(len(pre['lean'])<2 and pre['mem_available_kib']>=8*1024**2,'resource preflight')
@@ -52,6 +59,8 @@ ok=(proc.returncode==0 and reason is None and obj.is_file() and not re.search(r'
     and len(reports)==1 and set(x.strip() for x in reports[0].split(',') if x.strip())<={'propext','Classical.choice','Quot.sound'})
 need(sha(src)==source_hash==sha(copy)==sha(obs/'source.txt') and sha(Path(__file__))==runner_hash,'source/runner drift')
 for p,digest in pins.items():need(sha(p)==digest,'pin changed '+str(p))
+for rel in ['Mathlib/Tactic/Linarith.olean','Mathlib/Algebra/Order/Ring/Basic.olean']:
+    need(first_object(rel)==pkg/rel,'object selection changed '+rel)
 record={'status':'PASS' if ok else 'FAILED','exit':proc.returncode,'reason':reason,'command':cmd,'lean_path':env['LEAN_PATH'],
         'source_sha256':source_hash,'runner_sha256':runner_hash,'pins':{str(p):{'sha256':d,'resolved':str(p.resolve())} for p,d in pins.items()},
         'output':str(obj),'output_sha256':sha(obj) if obj.is_file() else None,'stdout_sha256':sha(obs/'stdout'),'stderr_sha256':sha(obs/'stderr'),
