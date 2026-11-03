@@ -23,3 +23,11 @@ literal verifier and all directly observed dependency companions. The package
 root is supplied as `QM40_PACKAGE_LIB`; the driver records its location, but
 does not authenticate its transitive ancestry or establish that its contents
 match the parent run's original package provider. The driver has not been run.
+
+`replay_native_bounded.py` is a separate prepared driver for the same
+source/provider comparison. It caps each Lean child at `-M3000` and 180
+seconds, requires at least 4 GiB free before each compile, and rejects
+preexisting candidate modules and companion files in the parent or package
+provider. It retains the original direct-companion guards and inherited
+ancestry limitations. These are sampled disk checks, not continuous resource
+monitoring. It writes a separate result directory and has not yet been run.
