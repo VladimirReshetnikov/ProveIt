@@ -552,7 +552,10 @@ open. An [occupied-aggregate theorem](research/direct-bfs-word-occupied-prototyp
 computes the direct selector/copy sum as `1+2^51` for each local-word row;
 the [target-phase join](research/direct-bfs-marked-target-prototype/README.md)
 uses it to prove no-carry at both 4393 and 5495. All listed phase lemmas have
-now been checked separately; a same-witness global packing assembly remains;
+now been checked separately. A [constructed-word packing theorem](research/direct-bfs-word-packing-prototype/README.md)
+assembles them into `PackingInput` with no remaining high-mask premise, under
+explicit direct local word, definability, origin-dummy, geometry and scalar
+mask bounds. Halt-to-packing and calibrated graph witnesses remain separate;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
