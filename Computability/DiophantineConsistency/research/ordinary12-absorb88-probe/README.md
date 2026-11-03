@@ -4,6 +4,10 @@ The candidate replaces the 89-row graph's `g31=(ell+k)+r` by a new independent p
 
 `Absorb88Graph.lean` checks the three residual identities for the forward map over any commutative ring. The guarded author run `run-graph.py` passed in session 26946, exit 0, with source, provider pins, commands, resources and output under `observations/graph-attempt01/`. This is not an independent Lean replay; selected-provider and inherited package/dynamic/source-object ancestry limitations apply.
 
+The [first-factor packet](FIRST.md) extracts the scaled norm and a positive
+first Pell root from a full graph zero. It does not establish transport
+positivity or the reverse direction.
+
 The proposed reverse idea is to use divisibility `Bt=b*t` and the positive first-root branch to show `r_new=(1+k*b)*t+first>ell+k`; for the negative branch, reflection by `2*first` should preserve the whole graph and produce a witness above that threshold. Those claims have not yet been bound to this actual graph in Lean. Neither bounded-port model equivalence, halt, iPRA, nor a PDF binding is asserted for the 88 graph.
 
 There is a substantive gap in that reverse plan: the existing 89 transport proof establishes `Bt>0` using the lower bound on the old expression `ell+k+r`. The new witness is only positive, and the actual 88 first residual permits `Bt<0` and a witness below `ell+k`. `check-obstruction.py` evaluates the actual pinned DAG with all witnesses and ports 1 except `r=251`: it obtains `ell=256`, `k=2`, `Bt=-2`, `Z=257`, and `A0=0`, while `r<ell+k=258`. The other two residuals are nonzero, so this does not refute full-graph soundness, but the first residual alone cannot supply the needed transport inequality. An argument using additional graph constraints is required.

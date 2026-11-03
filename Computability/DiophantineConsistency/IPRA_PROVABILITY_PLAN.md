@@ -121,6 +121,8 @@ there is no Lean parser or theorem about the TeX or PDF.
 
 An [88-operation absorbed-root draft](research/ordinary12-absorb88-probe/README.md)
 has an externally checked live graph and Lean-checked forward ring identities.
+The [first-factor extraction](research/ordinary12-absorb88-probe/FIRST.md)
+is now checked in models, including a positive Pell root when beta is positive.
 Its reverse argument is open: exact first-factor examples show the needed
 transport positivity cannot be derived from that factor alone, including one
 under the abstract port bounds. Neither example is a full-graph counterexample.
@@ -141,7 +143,9 @@ For arbitrary natural ports with positive beta, any positive zero yields the
 two positive doubled-factor roots; the graph rows are compared to the stored
 JSON externally. A [further model theorem](research/ten-positive-80-pell-prototype/README.md)
 derives the first Pell index, the doubled strong-Pell identity and a required
-divisibility from such a zero. Adjacent-Pell descent, the machine bridge, iPRA derivability,
+divisibility from such a zero. An [independent receipt and source audit](reviews/ten-positive-80-root-pell-independent/README.md)
+checks these statements and their selected inputs without replaying Lean.
+Adjacent-Pell descent, the machine bridge, iPRA derivability,
 and a formal JSON/PDF binding remain open. The 81-, 83- and 84-operation
 descendants share the externally checked finalizer shape but are distinct
 graphs. A separate [adjacent-Pell denominator lemma](research/ten-positive-adjacent-descent-prototype/README.md)
