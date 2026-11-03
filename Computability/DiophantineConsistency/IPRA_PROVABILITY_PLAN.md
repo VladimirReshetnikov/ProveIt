@@ -496,6 +496,11 @@ the three β/low/high equalities **and** an explicit equality of the entire
 integer port tuple to the original-kernel 90-row symbolic tuple. Thus it is a
 model-level zero-to-halt implication under those assumptions, not a theorem
 for the distinct retained BFS K0, a reverse implication, or an iPRA endpoint.
+A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
+constructs the scaled interval at the same X,Y,r from explicit source
+interval, power and size hypotheses. These hypotheses are not yet derived
+from the selected 90 graph or a halt, and the remaining positive 80 carrier
+coordinates have not been constructed; the reverse implication remains open.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
