@@ -493,7 +493,10 @@ also proves radix divisibility and the resulting model mod-four fact;
 a [lower-part theorem](research/direct-bfs-kernel-lower-bound-prototype/README.md)
 separates the distinguished high term and bounds the remainder, as a
 prerequisite for high-mask arguments; a [lower-mass refinement](research/direct-bfs-kernel-lower-mass-prototype/README.md)
-supplies a stronger bound needed for high-mask padding;
+and its [exact-definition alias](research/direct-bfs-kernel-lower-mass-alias-prototype/README.md)
+supply a stronger bound needed for [high-padding size](research/direct-bfs-high-padding-size-prototype/README.md).
+A [phase-zero theorem](research/direct-bfs-phase-zero-high-prototype/README.md)
+proves high-mask no-carry for that phase; other phases remain open;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
@@ -725,6 +728,12 @@ exceptions and the four endpoint axiom reports without replaying Lean. The
 fresh endpoint object matches the earlier endpoint hash; five of the 127
 rebuilt objects differ. This scoped observed-cone replay does not authenticate
 unrebuilt historical, package-transitive or dynamic ancestry or external files.
+A [fresh-union header rescan](reviews/ten-positive-80-coherent-rebuilt-closure/README.md)
+reads all 1,765 selected project headers and reconstructs the same project and
+outside reachability; an [independent audit](reviews/ten-positive-80-rebuilt-closure-independent/README.md)
+checks the captured logs, objects and companions without replaying Lean. The
+other 1,638 project source histories and outside-transitive ancestry remain
+inherited, and the scan has no separately captured outer-process receipt.
 The [historical warning inventory](reviews/ten-positive-80-warning-inventory/README.md)
 identifies a further recorded policy at planned stage 13, but does not
 pre-approve its output under the fresh provider. An [independent inventory review](reviews/ten-positive-80-warning-inventory-independent/README.md)
@@ -741,7 +750,11 @@ uses ten distinct unknown names and the original coefficient tuple. Its
 graph, payload and PDF checks are external, not a Lean file-binding theorem.
 An [independent display audit](reviews/ten-positive-80-decimal-display-independent/README.md)
 compares all rows against Lean source and JSON, the complete payloads and
-extracted PDF text, without proving those file correspondences in Lean.
+extracted PDF text, without proving those file correspondences in Lean. A
+[checked explicit-row theorem](research/ten-positive-80-explicit-rows-binding/README.md)
+also identifies an explicitly listed 80-register Lean expression with the
+graph output for arbitrary integer ports; the JSON/PDF and coefficient
+correspondences in that packet remain external.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. The generic result alone does not derive
