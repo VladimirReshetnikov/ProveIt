@@ -452,7 +452,8 @@ This author check has not yet established a coherent full provider closure,
 the converse, or external byte binding. A [selected-header scan](research/direct-bfs-80-model-halt-serialized-audit/README.md)
 captures 739 project modules, reconciles 529 with the prior 90-provider
 record and checks the 59 conjugacy chunks; full historical, package-transitive
-and dynamic ancestry remains outside its scope. Independent audit is pending.
+and dynamic ancestry remains outside its scope. An [independent scan audit](reviews/direct-bfs-model-halt-serialized-independent/README.md)
+rechecks the selected paths, companions and reported overlaps without replaying Lean.
 The reverse path now has [finite edge transport](research/direct-bfs-lean-edge-forward-prototype/README.md),
 a [model forward index map](research/direct-bfs-model-forward-map-prototype/README.md),
 and a [model forward-word theorem](research/direct-bfs-model-forward-word-prototype/README.md)
@@ -480,7 +481,9 @@ and rank calibration remain separate. A [word low-mask join](research/direct-bfs
 proves the positive origin and low-mask fields for a direct local word when
 the dummy at the origin is even. A [conditional packing adapter](research/direct-bfs-conditional-packing-prototype/README.md)
 combines those fields with explicitly assumed transport/high-mask conditions;
-those conditions and calibrated graph witnesses remain open. An
+those conditions and calibrated graph witnesses remain open. A [direct-cell size bound](research/direct-bfs-cell-size-prototype/README.md)
+proves a smaller upper bound under non-forbidden-row and Boolean-dummy
+assumptions; the direct kernel bound and product field are still separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
