@@ -415,7 +415,9 @@ derives the direct vertical and horizontal field equalities including their
 marker bits under the four explicit direct-BFS symbolic port equalities. An
 [independent marker/color audit](reviews/direct-bfs-markers-colors-independent/README.md)
 checks selected direct inputs and the shared graph witness without replaying
-Lean. An
+Lean. A [spatial-successor join](research/direct-bfs-80-spatial-successor-prototype/README.md)
+derives an occupied base and cyclic next-block propagation from an actual
+graph zero; complete tiling and machine semantics remain separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A

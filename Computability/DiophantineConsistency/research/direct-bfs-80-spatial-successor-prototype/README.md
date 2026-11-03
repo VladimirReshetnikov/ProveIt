@@ -1,0 +1,5 @@
+# Direct-BFS graph occupied-block successor
+
+`DirectBFS80SpatialSuccessor.graph_spatial_successor` proves, for a positive 80-graph zero at the four explicit direct-BFS symbolic ports in any IΣ₁ model, a common positive radix length with a selected base block and selection preserved at the next cyclic block. It also provides the direct-family decoder at each block. The proof reconciles the independently obtained radix lengths before using the horizontal marker equality; the zero selector digit gives the base.
+
+The guarded author check `observations/directbfs80spatial-attempt01/` exited 0 without diagnostics and reports axioms `propext`, `Classical.choice`, and `Quot.sound`. Every direct source import was first resolved to an explicitly pinned object and rechecked. Object `/tmp/direct-bfs-80-spatial-04agsftn/DirectBFS80SpatialSuccessor.olean` has SHA-256 `b2d9f78ac05c742850f13ba855b1bbddbce1ca3ff7526d7da1c4e72da4f61c73`. Inherited transitive source/object, package and dynamic ancestry remain unverified; no independent Lean replay is claimed. Complete tiling, machine/color conjugacy, converse, iPRA and formal JSON/file binding remain open.
