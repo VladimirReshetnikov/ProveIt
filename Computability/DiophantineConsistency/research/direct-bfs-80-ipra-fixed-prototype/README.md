@@ -17,3 +17,5 @@ source/object, package-transitive or dynamic ancestry, or replace a coherent
 rebuild. An [independent audit](../../reviews/direct-bfs-80-ipra-serialized-independent/README.md)
 rechecks the captured reachability, selected objects and the two differences,
 without replaying Lean or authenticating the remaining provider history.
+
+A later selected-header comparison found **concrete producer-time direct-dependency drift** for the selected `ArithmeticNegativeNorms` and `ModelRatioBounds` objects. Their historical producer records use four direct dependency object hashes that differ from the objects selected by this client. The captured affected cone and proposed fresh rebuild are documented in [`../direct-bfs-80-coherent-rebuild-plan/README.md`](../direct-bfs-80-coherent-rebuild-plan/README.md). Consequently the accepted exploratory check should not be described as a coherent end-to-end source replay.
