@@ -398,7 +398,13 @@ checks its generic and graph receipts and same-length scope. Full Wang-window
 and machine/color conjugacy remain open. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
-but not the full inverse maps or row correspondences. An
+but not the full inverse maps or row correspondences. A
+[bounded conjugacy sweep](research/direct-bfs-lean-conjugacy-coverage-prototype/README.md)
+has independently reviewed coverage and successful endpoint pilots; its
+full 59-stage Lean run is in progress. The generated aggregate is unchecked,
+so neither a complete finite Lean conjugacy nor a tiling lift is yet claimed.
+The [sweep audit](reviews/direct-bfs-conjugacy-sweep-v2-independent/README.md)
+documents its single-run discipline, pinned inputs and explicit limits. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An

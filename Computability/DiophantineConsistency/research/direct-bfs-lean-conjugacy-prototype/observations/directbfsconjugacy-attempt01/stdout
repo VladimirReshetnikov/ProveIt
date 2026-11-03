@@ -1,0 +1,72 @@
+/tmp/direct-bfs-conjugacy-kjnnido5/DirectBFSConjugacy.lean:18:85: error: Tactic `decide` failed for proposition
+  (horizontal.mergeSort fun x1 x2 => decide (x1 ≤ x2)) = List.range 250
+because its `Decidable` instance
+  instDecidableEqList (horizontal.mergeSort fun x1 x2 => decide (x1 ≤ x2)) (List.range 250)
+did not reduce to `isTrue` or `isFalse`.
+
+After unfolding the instance `instDecidableEqList`, reduction got stuck at the `Decidable` instance
+  match horizontal.mergeSort fun x1 x2 => decide (x1 ≤ x2) with
+  | [] =>
+    match List.range 250 with
+    | [] => isTrue ⋯
+    | head :: tail => isFalse ⋯
+  | a :: as =>
+    match List.range 250 with
+    | [] => isFalse ⋯
+    | b :: bs =>
+      match decEq a b with
+      | isTrue hab =>
+        match as.hasDecEq bs with
+        | isTrue habs => isTrue ⋯
+        | isFalse nabs => isFalse ⋯
+      | isFalse nab => isFalse ⋯
+/tmp/direct-bfs-conjugacy-kjnnido5/DirectBFSConjugacy.lean:19:81: error: Tactic `decide` failed for proposition
+  (vertical.mergeSort fun x1 x2 => decide (x1 ≤ x2)) = List.range 439
+because its `Decidable` instance
+  instDecidableEqList (vertical.mergeSort fun x1 x2 => decide (x1 ≤ x2)) (List.range 439)
+did not reduce to `isTrue` or `isFalse`.
+
+After unfolding the instance `instDecidableEqList`, reduction got stuck at the `Decidable` instance
+  match vertical.mergeSort fun x1 x2 => decide (x1 ≤ x2) with
+  | [] =>
+    match List.range 439 with
+    | [] => isTrue ⋯
+    | head :: tail => isFalse ⋯
+  | a :: as =>
+    match List.range 439 with
+    | [] => isFalse ⋯
+    | b :: bs =>
+      match decEq a b with
+      | isTrue hab =>
+        match as.hasDecEq bs with
+        | isTrue habs => isTrue ⋯
+        | isFalse nabs => isFalse ⋯
+      | isFalse nab => isFalse ⋯
+/tmp/direct-bfs-conjugacy-kjnnido5/DirectBFSConjugacy.lean:20:74: error: Tactic `decide` failed for proposition
+  (rowMap.mergeSort fun x1 x2 => decide (x1 ≤ x2)) = List.range 943
+because its `Decidable` instance
+  instDecidableEqList (rowMap.mergeSort fun x1 x2 => decide (x1 ≤ x2)) (List.range 943)
+did not reduce to `isTrue` or `isFalse`.
+
+After unfolding the instance `instDecidableEqList`, reduction got stuck at the `Decidable` instance
+  match rowMap.mergeSort fun x1 x2 => decide (x1 ≤ x2) with
+  | [] =>
+    match List.range 943 with
+    | [] => isTrue ⋯
+    | head :: tail => isFalse ⋯
+  | a :: as =>
+    match List.range 943 with
+    | [] => isFalse ⋯
+    | b :: bs =>
+      match decEq a b with
+      | isTrue hab =>
+        match as.hasDecEq bs with
+        | isTrue habs => isTrue ⋯
+        | isFalse nabs => isFalse ⋯
+      | isFalse nab => isFalse ⋯
+/tmp/direct-bfs-conjugacy-kjnnido5/DirectBFSConjugacy.lean:23:8: error: (kernel) excessive memory consumption detected
+'DirectBFSConjugacy.horizontal_permutation' depends on axioms: [propext, sorryAx, Quot.sound]
+'DirectBFSConjugacy.vertical_permutation' depends on axioms: [propext, sorryAx, Quot.sound]
+'DirectBFSConjugacy.row_permutation' depends on axioms: [propext, sorryAx, Quot.sound]
+'DirectBFSConjugacy.distinguished' does not depend on any axioms
+'DirectBFSConjugacy.rows_match' depends on axioms: [propext, rows_match]
