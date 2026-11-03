@@ -1,0 +1,5 @@
+# Constructed direct-BFS selector/copy word
+
+`DirectBFSConstructedWord` packs an internally definable family of direct-BFS cells into one model-valued radix word. The checked lemmas recover each selector, direct payload copy, and normalized dummy digit, prove the full word bound and Boolean digit cap, and derive a positive marked origin from a `DirectBFSLocalWord.Word`. This is a represented selector/copy word; it does not yet establish the direct-family high/low mask and carry conditions needed for `PackingInput`.
+
+The guarded author check `observations/directbfsconstructedword-attempt01/` exited 0 without diagnostics. Its eight exact axiom reports are `[propext, Classical.choice, Quot.sound]`; direct source imports were pinned and rechecked. Object `/tmp/direct-bfs-constructedword-tusb_02x/DirectBFSConstructedWord.olean` has SHA-256 `383de3016f4801bc91367041049a50b3971c72911542f44e0b7490459675fb88`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

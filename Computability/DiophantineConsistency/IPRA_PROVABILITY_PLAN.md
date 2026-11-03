@@ -466,7 +466,10 @@ construction are still separate. A [cell-digit theorem](research/direct-bfs-cell
 adds jointly definable Boolean selector, dummy and payload-copy digits; it
 does not itself construct packing. A [represented-cell theorem](research/direct-bfs-packed-cell-prototype/README.md)
 now packs and recovers those digits in a bounded definable family; global
-packing and its carry/mask conditions remain open. An
+packing and its carry/mask conditions remain open. A [constructed-word theorem](research/direct-bfs-constructed-word-prototype/README.md)
+now packs arbitrary definable row/dummy families and recovers selectors and
+copies with Boolean and origin bounds. The global packing input's low/high
+mask and carry conditions still need proof. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
