@@ -487,6 +487,9 @@ assumptions. A [direct kernel bound](research/direct-bfs-kernel-bound-prototype/
 now proves the symbolic kernel is below the stated power without expansion;
 a [kernel divisibility theorem](research/direct-bfs-kernel-divisibility-prototype/README.md)
 also proves radix divisibility and the resulting model mod-four fact;
+a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
+shows the relevant vertical predecessor is not the marker and its packed cell
+is divisible by four. Adjusted high-origin no-carry remains separate;
 a [cell-product client](research/direct-bfs-cell-product-prototype/README.md)
 uses it and the cell bound to prove the conditional `hi_lt` field for a
 non-forbidden normalized cell. A [four-field adapter](research/direct-bfs-four-fields-packing-prototype/README.md)
