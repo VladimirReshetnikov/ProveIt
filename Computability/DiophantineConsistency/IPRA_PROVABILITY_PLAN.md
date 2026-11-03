@@ -34,7 +34,11 @@ For the first symbolic port, a [checked byte-recipe theorem](research/ordinary12
 now identifies beta with a simple little-endian base-256 digit list; an
 external check separately matches that list to the retained compressed
 payload. The other three port bindings and formal file correspondence remain
-open. The [serialized-import inventory](research/ordinary12-ipra-bridge/compact12-ipra-object-import-prototype/README.md)
+open. For the MC port, separately checked byte-window theorems cover 73,617
+of 73,759 symbolic windows, and a [closed byte recipe](research/ordinary12-ipra-bridge/compact44-low-byte-complete-recipe/README.md)
+has checked length and lookup lemmas. The other 142 windows, a global Lean
+reconstruction and the retained-file correspondence remain open. The
+[serialized-import inventory](research/ordinary12-ipra-bridge/compact12-ipra-object-import-prototype/README.md)
 also supports the initial 59-module rebuild within its scoped namespace,
 without certifying all other project or package ancestry. A guarded
 [15-stage author prefix](research/ordinary12-ipra-bridge/compact12-ipra-incremental-rebuild-merged-batch03/README.md)
@@ -45,8 +49,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-batch05/README.md)
-has rebuilt its first 25 of 425 modules; the remaining stages and final
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-batch10/README.md)
+has rebuilt its first 50 of 425 modules; the remaining stages and final
 client are open. A separately checked
 [conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
 also supplies standard and equality-only iPRA conclusions for any positive
@@ -75,6 +79,9 @@ These remain scoped prefix observations with some differing object bytes.
 The [26–30 peer stages](reviews/nine-variable-ipra-peer-stages-26-30/README.md)
 match their author output objects, source hashes and recorded direct guards;
 the complete endpoints and inherited ancestry remain unchecked by that packet.
+The subsequent scoped peer comparisons through
+[stages 56–60](reviews/nine-variable-ipra-peer-stages-56-60/README.md) also
+match their output objects and recorded direct guards.
 A separate [source-evidence inspection](reviews/nine-variable-ipra-endpoint-source-evidence/README.md)
 checks the endpoint statements and the source-level expression binding; it
 does not reproduce the reported builds or interpret the document's bytes.
