@@ -1,7 +1,7 @@
 import DiophantineConsistency.CompactCoefficientDecoder
 
 /-!
-Exploratory source, not yet compiled.  This isolates one finite arithmetic
+Exploratory source.  This isolates one finite arithmetic
 step toward constructing a compact cell.  The hypotheses assert the three
 finite sums needed for an occupied selected row; this file does not derive
 them from a cyclic word or a physical cell, and does not establish a mask or
@@ -9,6 +9,7 @@ graph equation.
 -/
 set_option autoImplicit false
 set_option Elab.async false
+set_option maxRecDepth 8192
 noncomputable section
 
 namespace CompactForwardLocalCell
@@ -32,7 +33,7 @@ theorem occupied_aggregate (f : Fin 943 → V) (b : Fin 41 → V) (i : Fin 943)
     tsub_add_cancel_of_le (Compact943Decoder.tileValue_bounds (V := V) i).2.le]
   have hexp : Exp.exp (10 : V) * Exp.exp 41 = Exp.exp 51 := by
     rw [← exp_add]
-    congr 1 <;> norm_num
+    congr 1; norm_num
   rw [hexp]
 
 #print axioms CompactForwardLocalCell.occupied_aggregate
