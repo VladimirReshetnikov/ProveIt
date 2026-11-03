@@ -452,7 +452,12 @@ This author check has not yet established a coherent full provider closure,
 the converse, or external byte binding. A [selected-header scan](research/direct-bfs-80-model-halt-serialized-audit/README.md)
 captures 739 project modules, reconciles 529 with the prior 90-provider
 record and checks the 59 conjugacy chunks; full historical, package-transitive
-and dynamic ancestry remains outside its scope. Independent audit is pending. An
+and dynamic ancestry remains outside its scope. Independent audit is pending.
+The reverse path now has [finite edge transport](research/direct-bfs-lean-edge-forward-prototype/README.md),
+a [model forward index map](research/direct-bfs-model-forward-map-prototype/README.md),
+and a [model forward-word theorem](research/direct-bfs-model-forward-word-prototype/README.md)
+that transfers the original local tiling predicate to the direct table.
+The direct-family packing and graph-witness construction are still separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -609,6 +614,11 @@ records 1,765 selected project ancestors with no differing selected-project
 overlap. Its producer audit found explicit full direct pins for only 25 of the
 157 fresh-header objects; the other producer-time edges, full source ancestry,
 package-transitive imports and dynamic dependencies remain unverified. A
+historical producer comparison is being extended after finding direct-import
+hash drift in older producer
+receipts, including `ModelArithmetic` versus `ModelDifferenceRing`. A matching
+present-day search-path overlap does not establish producer-time compatibility;
+a coherent rebuild or stronger audit is needed. A
 [staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
 matches seven previously unmatched fresh helper objects to multi-stage
 receipts, while explicitly retaining the producer-time pin limitations and
