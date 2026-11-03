@@ -19,6 +19,20 @@ printed derivation is not required. The exact candidate theory and proof
 boundary are specified in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md)
 and tracked in [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md).
 
+**Trace75 research candidate (3 November 2026).** A separate
+[decimal display](research/trace75-bfs-decimal-display/equation.pdf) gives a
+ten-positive-variable, 75-operation, degree-402 candidate. Its displayed
+rows, fixed coefficients, liveness and degree have external finite checks,
+including a structural comparison with the Lean evaluator. Lean also checks
+fixed-port iPRA proof-existence statements on an exploratory mixed provider
+([endpoint record](research/trace75-bfs-ipra-draft/README.md)). A compatible
+provider has since been used to replay the trace and reverse chains; the
+forward and final iPRA clients still need replay on that provider. Four retained
+baseline source ancestries, package/dynamic inputs and formal external-file
+semantics remain outside those checks. The maintained root equation is
+unchanged. See the [trace75 plan](research/ten-positive-ipra/PLAN.md) for the
+current proof boundary.
+
 **Current proof status (1 November 2026).** Lean has native iPRA proof-existence
 endpoints for the maintained [14-variable degree-150 equation](equation.pdf),
 the [13-variable 86-operation degree-56 equation](equation86.pdf), the
