@@ -162,7 +162,9 @@ transformed first coordinate and a ring norm identity. A subsequent
 proves a positive strictly smaller coordinate at the same reduced denominator.
 An [internal least-number theorem](research/ten-positive-adjacent-complete-prototype/README.md)
 now proves that the denominator is one under the reduced norm hypotheses.
-Constructing those hypotheses from the graph remains open.
+An [integral-quotient theorem](research/ten-positive-adjacent-integer-prototype/README.md)
+constructs the reduced representation from the abstract scaled norm, without
+assuming divisibility. Constructing its hypotheses from the graph remains open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
