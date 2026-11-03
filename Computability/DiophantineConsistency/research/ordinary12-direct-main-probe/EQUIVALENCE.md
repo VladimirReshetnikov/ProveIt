@@ -1,0 +1,7 @@
+# Bounded-port positive-zero equivalence
+
+`DirectMainEquivalence.positive_zero_iff` proves in every IΣ₁ model, for natural ports satisfying `0<beta`, `MC<beta`, and `MF<2*beta`, that the 90-row direct draft has a strictly positive zero if and only if XQ91 has a strictly positive zero. The forward direction uses `DirectMainGap.graph_gap` to prove the direct witness lies in the image of `G=gamma+w`; the reverse uses the explicitly checked positive forward map. Both graphs and exact hypotheses occur in the Lean theorem.
+
+This packet does not yet compose the result with the fixed-port machine-halt theorem, establish a formal binding to a displayed PDF, or prove existence of an internal iPRA derivation. Its selected project-object provider is not a clean source-to-object rebuild.
+
+`run-equivalence.py` produced `observations/equivalence-attempt01/` with exit 0 and no reported warnings. Source SHA-256 is `fa47d935f56421fc923cc847d885ff86710df9b12fba453f214b00a116ad2dbb` and output object is `167b9617d2df21aedf9be5403d8e64b0a072747b929a282b22b480f2558d0c4f`; the axiom report lists `propext`, `Classical.choice`, and `Quot.sound`. The gap, restricted-converse, forward and all transitive proof-object inputs plus the selected 1,291-object union were pinned and rechecked. Package, dynamic, and source-to-object ancestry remain inherited rather than freshly rebuilt; imported first and main norm sources locally suppress unused-variable and unused-simp-argument linters. Exact pins and resource samples are in the receipt; temporary paths may disappear.
