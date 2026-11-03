@@ -1,0 +1,7 @@
+# Independent review of trace75 natural offset congruence
+
+For the same arbitrary p,v in any IΣ₁ model, assuming model bounds `31≤beta`, `MC<beta`, `MF<2*beta`, all ten positive coordinates and actual trace75 difference-ring zero, the checked theorem proves `k mod q⁴ = (rankNat+1) mod q⁴` in the model. K0 is arbitrary; the three port bounds are explicit and not specialized to fixed numerals.
+
+The proof obtains the signed actual-graph divisibility `ι(q)^4 | e` and the actual graph rank cast from the same p,v, rewrites `e=ι(k)−ι(rankNat+1)`, then uses a generic positive-modulus lemma that considers both signs of the difference-ring quotient to obtain equality of model remainders. It does not assert k equals rankNat+1, align any Pell indices, prove halting/iPRA, establish an unguarded trace74 equivalence, or bind external files.
+
+`check.py` rehashes accepted source/copies, runner, all recorded pins, object and logs; the direct and nearby providers are verified post hoc against the retained Lean path. The sole printed axiom report lists `[propext, Classical.choice, Quot.sound]`. The saved receipt precedes the runner's final diagnostic guard, which the retained logs satisfy; no separate runner outer-exit receipt was supplied. The source header's draft wording is stale but the accepted check and its scope are documented. No compile-time path manifest, independent Lean replay, complete historical/package/dynamic ancestry, or external JSON/payload binding is claimed.
