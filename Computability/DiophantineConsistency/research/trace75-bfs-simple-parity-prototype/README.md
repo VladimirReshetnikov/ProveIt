@@ -14,7 +14,8 @@ and header exit 0. `observations/attempt01/result.json` has SHA-256
 `9cccfed92c8af9105c754b8e083f824903598e82ab9995742ab12a2e2e25252e`.
 The object `/tmp/trace75-bfs-simpleparity-klgreprj/Trace75BFSSimpleParity.olean`
 has SHA-256 `c6067db34633e8bb3bd9e0efbd11c61effabd3564346f0877430b51a21944b67`.
-Independent post-audit is pending.
+Independent post-audit passed in
+`reviews/trace75-bfs-simple-parity-result-independent/`.
 
 The pinned runner checks the fresh support, carry and fixed-slots results,
 the 1,977-object fresh union and 80 outside providers, and the captured BFS
