@@ -1,0 +1,7 @@
+# Independent review of generic low-mask identity and failed specializations
+
+The accepted Lean theorem is **generic**: for natural B,len,special and finite S, assuming `4≤B`, `S⊆range len`, and `special∈S`, it identifies `Nat.ofDigits B (digits B len special S)` with the natural truncated-subtraction expression `B^len−1−∑(B^j)−2*B^special`. Its proof combines the existing digit/defect sum lemmas; it does not specialize B, len or S to the displayed constants and does not bind a PDF or produce an iPRA client with displayed low mask.
+
+`check.py` rehashes the generic source, author runner, all recorded pins, object and logs and checks the selected direct `CompactConcreteMask` provider. Its sole printed axiom report is `[propext, Classical.choice, Quot.sound]`; the author reports the enclosing session exited 0. The two retained fixed-specialization clients both have failed statuses and nonzero Lean exits, with `(kernel) excessive memory consumption` diagnostics under the 3-GiB cap. Their printed axiom reports mention unresolved `low_eq`, so they must not be treated as accepted derivability or low-mask equality results. A separate later scratch source, if any, is outside this review.
+
+Direct path selection is checked post hoc against the recorded runner configuration. Prior BFS replay's historical source, 101 supplements, package and dynamic ancestry remain inherited. No independent Lean replay, full transitive closure or external file binding is claimed.
