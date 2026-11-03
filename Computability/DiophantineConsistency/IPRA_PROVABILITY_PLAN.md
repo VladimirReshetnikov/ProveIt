@@ -44,7 +44,8 @@ parent payloads; Lean does not yet establish those file or gzip
 correspondences. A separate [all-model client](research/ordinary12-ipra-bridge/compact44-byte-ports-model-iff-prototype/README.md)
 uses those naturally decoded recipes in the generated 95-gate Lean expression
 and proves shifted zero iff internal machine halt in each IΣ₁ model. This is
-not yet an internal iPRA derivation. Parent-to-supplement and PDF
+not yet an internal iPRA derivation; its [source and selected-provider review](reviews/compact44-byte-ports-model-iff-source-review/README.md)
+is not a fresh replay or a full ancestry audit. Parent-to-supplement and PDF
 correspondence remain open. The
 [serialized-import inventory](research/ordinary12-ipra-bridge/compact12-ipra-object-import-prototype/README.md)
 also supports the initial 59-module rebuild within its scoped namespace,
@@ -57,8 +58,10 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage65/README.md)
-has rebuilt its first 65 of 425 modules; the remaining stages and final
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage66/README.md)
+has rebuilt its first 66 of 425 modules. At stage 64 a warning-bearing
+attempt was rejected; the minimal unused-argument correction was separately
+re-pinned and checked before continuing. The remaining stages and final
 client are open. A separately checked
 [conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
 also supplies standard and equality-only iPRA conclusions for any positive
