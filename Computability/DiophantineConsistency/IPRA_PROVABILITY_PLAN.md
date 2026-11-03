@@ -634,7 +634,9 @@ are not proven to be unique origins. Further unmatched producers could enlarge
 it. A coherent rebuild or stronger audit is
 needed; the hashes alone do not show mathematical unsoundness. A [source preflight](reviews/ten-positive-80-rebuild-source-preflight/README.md)
 matches all 114 candidate source hashes to retained producer pins and their
-explicit import names to the captured headers; it is not a rebuild. A
+explicit import names to the captured headers. An [expanded preflight](reviews/ten-positive-80-expanded-rebuild-preflight/README.md)
+does the same for all 122 provisional cone modules. Neither is a rebuild, and
+source-byte matches do not establish unique producer origins. A
 [staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
 matches seven previously unmatched fresh helper objects to multi-stage
 receipts, while explicitly retaining the producer-time pin limitations and
