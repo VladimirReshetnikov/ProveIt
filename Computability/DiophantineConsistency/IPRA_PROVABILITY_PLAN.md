@@ -803,7 +803,10 @@ stated congruence, under two explicit size and stride bounds. Its compact
 controller source is a mechanically checked triangle-only adaptation; the
 single-author run retains its documented linter warnings and inherited
 provider limitations. This does not establish safe physical dummy locations
-or the packed-rank variation identity.
+or the packed-rank variation identity. A [chosen-dimensions client](research/ordinary12-ipra-bridge/compact44-chosen-controller-calibration-prototype/README.md)
+discharges both bounds for explicit powers of `581197`, giving the abstract
+calibration for every model computation bound; it inherits the same remaining
+physical construction obligations.
 Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
 and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
 found no defect in the inspected arguments; these reviews predate the joined
