@@ -27,3 +27,17 @@ initial source/runner pin in the runner: the orchestrator must reverify the
 reviewed bytes before the single launch and retain its actual tool exit.
 Full transitive, historical, package and dynamic ancestry remain outside this
 review.
+
+## Attempt02 revision: HOLD
+
+The first author attempt failed with missing ordered-ring/tactic imports and
+`sorryAx`; it is excluded. Revised source SHA-256
+`52f6843ee66cf6e7691d9750c766ea7cd842eb0de2d2b8b52f565b9b00a58fbe`
+adds only direct `import Mathlib.Tactic.Linarith`, leaving both statements
+unchanged. The unchanged reviewed runner does **not** pin that new direct
+import, so do not launch it as attempt02. The current first-selected object is
+`/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Mathlib/Tactic/Linarith.olean`,
+resolved to the Mathlib build, SHA-256
+`bbe0c9d1f3d5471ae115ccd10d9ef2f6dc5ec645bad49ee5a04830c178e42091`.
+Add an explicit selected-object pin in a new runner and independently review
+the revised bytes before launch. All earlier scoped limitations remain.
