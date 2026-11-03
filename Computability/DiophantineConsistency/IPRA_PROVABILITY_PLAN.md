@@ -782,10 +782,15 @@ provider differs from the unit client's, so applying the results together
 requires a coherent same-provider rebuild. An [initial join attempt](research/ordinary12-ipra-bridge/compact44-symbolic-controller-join-prototype/README.md)
 successfully rebuilt the four component stages on one author-side provider,
 but its final client failed first at the elaboration recursion limit and then
-at the kernel memory limit. No joined theorem is claimed.
+at the kernel memory limit. A later [four-stage separated bridge](research/ordinary12-ipra-bridge/compact44-controller-abstract-bridge-prototype/README.md)
+compiled the actual `paramKernel rho` unit theorem without a residue premise,
+using an explicitly identified alias and separate equality transports. This
+is an author-side model result with inherited provider qualifications; the
+rank-variation identity and construction obligations remain open.
 Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
 and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
-found no defect in the inspected arguments; neither review supplies the join.
+found no defect in the inspected arguments; these reviews predate the joined
+client and do not audit it.
 An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
 proves a conditional local aggregate lemma on an existing author-side
 coefficient provider; it does not construct its selector or payload
