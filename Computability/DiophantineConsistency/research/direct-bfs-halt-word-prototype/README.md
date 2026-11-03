@@ -1,0 +1,5 @@
+# Internal halt to a direct-BFS local word
+
+`DirectBFSHaltWord.halt_direct_word` proves in Lean that an internal decimal215 halting time in any IΣ₁ model yields a Σ₁-definable, base-1024 represented direct-BFS local tiling word. Its length and stride are the explicit powers from the existing halt geometry. The proof converts the existing original compact word to the local predicate and then applies the checked original→direct model word transport. It does not yet construct the direct-family selector/copy packing, its calibrated Pell seeds, or a graph zero.
+
+The guarded author check `observations/directbfshaltword-attempt01/` exited 0 without diagnostics. Both exact axiom reports are `[propext, Classical.choice, Quot.sound]`; every direct source import was explicitly pinned and rechecked. Object `/tmp/direct-bfs-haltword-c5829a5u/DirectBFSHaltWord.olean` has SHA-256 `228989328dfb9a5c807278bf71bc97e16304f322ef6cdbc2fbb685e821188577`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

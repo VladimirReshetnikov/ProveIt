@@ -457,7 +457,10 @@ The reverse path now has [finite edge transport](research/direct-bfs-lean-edge-f
 a [model forward index map](research/direct-bfs-model-forward-map-prototype/README.md),
 and a [model forward-word theorem](research/direct-bfs-model-forward-word-prototype/README.md)
 that transfers the original local tiling predicate to the direct table.
-The direct-family packing and graph-witness construction are still separate. An
+An [internal halt-to-direct-word join](research/direct-bfs-halt-word-prototype/README.md)
+now produces that direct local word from an internal halt and the existing
+power-based geometry. The direct-family packing and graph-witness construction
+are still separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -620,7 +623,9 @@ including `ModelArithmetic` versus `ModelDifferenceRing`. A matching
 present-day search-path overlap does not establish producer-time compatibility;
 the observed reverse-dependency cone has 114 modules, and additional
 unmatched producers could enlarge it. A coherent rebuild or stronger audit is
-needed; the hashes alone do not show mathematical unsoundness. A
+needed; the hashes alone do not show mathematical unsoundness. A [source preflight](reviews/ten-positive-80-rebuild-source-preflight/README.md)
+matches all 114 candidate source hashes to retained producer pins and their
+explicit import names to the captured headers; it is not a rebuild. A
 [staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
 matches seven previously unmatched fresh helper objects to multi-stage
 receipts, while explicitly retaining the producer-time pin limitations and
