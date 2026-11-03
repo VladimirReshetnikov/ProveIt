@@ -569,6 +569,9 @@ A subsequent [port-projection client](research/ten-positive-80-symbolic-model-if
 discharges the tuple and model-cast hypotheses using exactly the four natural
 symbolic port equalities. This author-checked result remains model-level and
 does not bind the external BFS coefficient or prove an internal iPRA theorem.
+An [independent iff/port audit](reviews/symbolic-model-iff-row-transfer-independent/README.md)
+checks these premises, direct providers and the separate finite row transfer
+without replaying Lean.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. The generic result alone does not derive
