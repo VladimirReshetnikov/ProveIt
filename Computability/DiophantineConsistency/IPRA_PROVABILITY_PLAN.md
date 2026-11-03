@@ -194,7 +194,9 @@ now proves ordinate recovery in every IΣ₁ model under explicit strict size
 bounds, using internal antiperiodicity and odd-index folding. A subsequent
 [graph-specific fold](research/ten-positive-80-folding-complete-prototype/README.md)
 derives those bounds and the odd main ordinate from a positive 80-row zero,
-without assuming its main Pell norm. A [main-norm corollary](research/ten-positive-80-main-norm-prototype/README.md)
+without assuming its main Pell norm. An [independent fold audit](reviews/pell-all-index-recovery-independent/README.md)
+checks the same witnesses, noncircular source dependencies and receipts
+without a Lean replay. A [main-norm corollary](research/ten-positive-80-main-norm-prototype/README.md)
 derives that norm as a conclusion. Rank decoding, machine calibration and the
 iPRA endpoint remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
