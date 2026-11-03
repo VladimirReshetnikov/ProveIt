@@ -34,5 +34,9 @@ limitations are inherited.
 A separate chosen-rank client retains the single-pulse premise and quantifies
 the five product/block conditions uniformly over every admissible selector.
 Its first attempt failed because it lacked the `CompactRankVariation`
-namespace; the corrected `CompactPulseChosenRankRetry.lean` is an uncompiled
-draft. The source and failed observation are retained separately.
+namespace. The corrected `CompactPulseChosenRankRetry.lean` compiled without
+warnings or `sorryAx` in tool session `87886`; its theorem produces the
+chosen calibrated packing under those same explicit pulse and uniform
+product/block premises. The source, failed attempt, successful log and
+terminal observations are retained. This is an incremental author-side build
+with the same inherited provider limitations.
