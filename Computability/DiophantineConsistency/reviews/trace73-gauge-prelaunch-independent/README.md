@@ -38,3 +38,12 @@ slots 1, 2 and 7, implementing the same intended move. The runner hash is
 unchanged, and all seven pins and current first selections were reverified.
 **Scoped GO for one guarded attempt02** on those exact bytes, with the same
 outer-exit and four-report post-audit limitations above.
+
+Attempt02 failed with unresolved `Function.update` terms and `sorryAx`; it is
+not accepted. The attempt03 source SHA-256 is
+`c7a949a6f3622fccc94412f2529603f749a4eb2fd481fdaf31403547e6fc4ece`.
+Its only delta changes the `rank_move` and `B_move` proof simplification to
+explicit `Function.update_apply`, `norm_num`, and the existing `ring` tactic;
+the move, statements and hypotheses are unchanged. The runner and all seven
+selected provider bytes and targets were reverified. **Scoped GO for one
+guarded attempt03** on those exact bytes, with the same limitations above.
