@@ -424,7 +424,13 @@ checks the common length and unit-successor propagation without replaying Lean.
 The [represented-word client](research/direct-bfs-80-all-block-word-prototype/README.md)
 constructs one internal base-1024 word of selected direct tile indices at
 every block, using a [direct orbit word](research/direct-bfs-lean-orbit-row-prototype/README.md).
-Edge adjacency, complete tiling and machine semantics remain separate. An
+An [independent word audit](reviews/direct-bfs-orbit-row-word-independent/README.md)
+checks the same-index representation and selected receipts without Lean replay.
+A [field-slice theorem](research/direct-bfs-lean-field-slices-prototype/README.md)
+and [graph tile-matching join](research/direct-bfs-80-tile-match-prototype/README.md)
+then derive cyclic horizontal and aligned temporal vertical edge matching
+for that direct-table word under explicit symbolic ports. This is not yet
+the model-level color/machine interpretation, converse, iPRA or file binding. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A

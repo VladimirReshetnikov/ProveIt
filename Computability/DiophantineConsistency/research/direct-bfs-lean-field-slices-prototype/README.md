@@ -1,0 +1,5 @@
+# Direct-BFS decoded field slices
+
+`DirectBFSDecodedPayloadBits.bit`, `DirectBFSVerticalFieldBits.fields`, and `DirectBFSHorizontalFieldBits.fields` adapt the decoded-copy and local field-slice arguments to direct-BFS tile values. Under explicit Boolean input, copy-word and digit-matching assumptions, they give equality of the corresponding vertical 9-bit and horizontal 8-bit slices in any IΣ₁ model. They do not themselves establish those hypotheses for a graph zero.
+
+The guarded author check `observations/directbfsfieldslices-attempt01/` exited 0 without diagnostics. The printed axioms are within `propext`, `Classical.choice`, and `Quot.sound`; the complete reports are retained in stdout. Every direct source import was resolved to an explicitly pinned object and rechecked. Object `/tmp/direct-bfs-fieldslices-ojv1pls6/DirectBFSFieldSlices.olean` has SHA-256 `a05523b42e4f25203d88f1ab2aa3a2a1fe966fc0927633d47b9ab4c14bf97079`. Inherited transitive source/object, package and dynamic ancestry remain unverified; no independent Lean replay is claimed. Graph edge matching, machine/color conjugacy, converse, iPRA and formal JSON/file binding remain open.
