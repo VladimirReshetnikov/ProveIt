@@ -1,0 +1,142 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/direct-main-projection-0i9cwjgp/DirectMainTransport.lean:31:47: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+⊢ NatExpr.evalSemiring v
+                                          (Expr.var 0 * Expr.constant ↑(p 0) *
+                                                  ((1 + Expr.var 0 * Expr.constant ↑(p 0)) * Expr.var 5 *
+                                                              ((1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                                                                  ((1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                                                                    (1 + Expr.var 0 * Expr.constant ↑(p 0))) *
+                                                                Expr.var 6) *
+                                                            ((1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                                                                  ((1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                                                                    (1 + Expr.var 0 * Expr.constant ↑(p 0))) *
+                                                                Expr.var 6 *
+                                                              (Expr.var 8 + Expr.var 9)) +
+                                                          (Expr.var 8 + Expr.var 9) +
+                                                        Expr.var 7 -
+                                                      (Expr.var 8 + Expr.var 9) *
+                                                        ((1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                                                          ((1 + Expr.var 0 * Expr.constant ↑(p 0) - Expr.var 1 -
+                                                                Expr.var 2) *
+                                                              (Expr.constant ↑(p 1) + Expr.var 5) -
+                                                            Expr.var 1)) +
+                                                    Expr.var 6) -
+                                                (1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                                                  ((1 + Expr.var 0 * Expr.constant ↑(p 0) - Expr.var 1 - Expr.var 2) *
+                                                      (Expr.constant ↑(p 1) + Expr.var 5) -
+                                                    Expr.var 1)).splitNatural.1 +
+                                        v 0 * ↑(p 0) * ↑(p 1) * 2 +
+                                      v 0 * ↑(p 0) * ↑(p 1) * v 8 +
+                                    v 0 * ↑(p 0) * ↑(p 1) * v 9 +
+                                  v 0 * ↑(p 0) * v 5 * 2 +
+                                v 0 * ↑(p 0) * v 5 * v 8 +
+                              v 0 * ↑(p 0) * v 5 * v 9 +
+                            v 0 ^ 2 * ↑(p 0) ^ 2 * ↑(p 1) +
+                          v 0 ^ 2 * ↑(p 0) ^ 2 * ↑(p 1) * v 8 * 2 +
+                        v 0 ^ 2 * ↑(p 0) ^ 2 * ↑(p 1) * v 9 * 2 +
+                      v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 +
+                    v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 * v 8 * 2 +
+                  v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 * v 9 * 2 +
+                v 0 ^ 3 * ↑(p 0) ^ 3 * ↑(p 1) * v 8 +
+              v 0 ^ 3 * ↑(p 0) ^ 3 * ↑(p 1) * v 9 +
+            v 0 ^ 3 * ↑(p 0) ^ 3 * v 5 * v 8 +
+          v 0 ^ 3 * ↑(p 0) ^ 3 * v 5 * v 9 +
+        ↑(p 1) +
+      v 5 =
+    ⋯ + ⋯ + ⋯ * v 1 + ⋯ * v 9 * v 2 + v 0 * ⋯ * ↑(p 1) * v 1 + v 0 * ↑(p 0) * ↑(p 1) * v 2 +
+                                                                                              v 0 * ↑(p 0) * v 5 * v 8 *
+                                                                                                v 6 ^ 2 +
+                                                                                            v 0 * ↑(p 0) * v 5 * v 8 *
+                                                                                              v 1 +
+                                                                                          v 0 * ↑(p 0) * v 5 * v 8 *
+                                                                                            v 2 +
+                                                                                        v 0 * ↑(p 0) * v 5 * v 9 *
+                                                                                          v 6 ^ 2 +
+                                                                                      v 0 * ↑(p 0) * v 5 * v 9 * v 1 +
+                                                                                    v 0 * ↑(p 0) * v 5 * v 9 * v 2 +
+                                                                                  v 0 * ↑(p 0) * v 5 * v 1 +
+                                                                                v 0 * ↑(p 0) * v 5 * v 2 +
+                                                                              v 0 * ↑(p 0) * v 8 +
+                                                                            v 0 * ↑(p 0) * v 8 * v 1 +
+                                                                          v 0 * ↑(p 0) * v 9 +
+                                                                        v 0 * ↑(p 0) * v 9 * v 1 +
+                                                                      v 0 * ↑(p 0) * v 6 +
+                                                                    v 0 * ↑(p 0) * v 7 +
+                                                                  v 0 * ↑(p 0) * v 1 +
+                                                                v 0 ^ 2 * ↑(p 0) ^ 2 * ↑(p 1) * v 8 * v 1 +
+                                                              v 0 ^ 2 * ↑(p 0) ^ 2 * ↑(p 1) * v 8 * v 2 +
+                                                            v 0 ^ 2 * ↑(p 0) ^ 2 * ↑(p 1) * v 9 * v 1 +
+                                                          v 0 ^ 2 * ↑(p 0) ^ 2 * ↑(p 1) * v 9 * v 2 +
+                                                        v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 * v 8 * v 6 ^ 2 * 7 +
+                                                      v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 * v 8 * v 1 +
+                                                    v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 * v 8 * v 2 +
+                                                  v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 * v 9 * v 6 ^ 2 * 7 +
+                                                v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 * v 9 * v 1 +
+                                              v 0 ^ 2 * ↑(p 0) ^ 2 * v 5 * v 9 * v 2 +
+                                            v 0 ^ 2 * ↑(p 0) ^ 2 * v 8 * v 1 +
+                                          v 0 ^ 2 * ↑(p 0) ^ 2 * v 9 * v 1 +
+                                        v 0 ^ 3 * ↑(p 0) ^ 3 * v 5 * v 8 * v 6 ^ 2 * 21 +
+                                      v 0 ^ 3 * ↑(p 0) ^ 3 * v 5 * v 9 * v 6 ^ 2 * 21 +
+                                    v 0 ^ 4 * ↑(p 0) ^ 4 * v 5 * v 8 * v 6 ^ 2 * 35 +
+                                  v 0 ^ 4 * ↑(p 0) ^ 4 * v 5 * v 9 * v 6 ^ 2 * 35 +
+                                v 0 ^ 5 * ↑(p 0) ^ 5 * v 5 * v 8 * v 6 ^ 2 * 35 +
+                              v 0 ^ 5 * ↑(p 0) ^ 5 * v 5 * v 9 * v 6 ^ 2 * 35 +
+                            v 0 ^ 6 * ↑(p 0) ^ 6 * v 5 * v 8 * v 6 ^ 2 * 21 +
+                          v 0 ^ 6 * ↑(p 0) ^ 6 * v 5 * v 9 * v 6 ^ 2 * 21 +
+                        v 0 ^ 7 * ↑(p 0) ^ 7 * v 5 * v 8 * v 6 ^ 2 * 7 +
+                      v 0 ^ 7 * ↑(p 0) ^ 7 * v 5 * v 9 * v 6 ^ 2 * 7 +
+                    v 0 ^ 8 * ↑(p 0) ^ 8 * v 5 * v 8 * v 6 ^ 2 +
+                  v 0 ^ 8 * ↑(p 0) ^ 8 * v 5 * v 9 * v 6 ^ 2 +
+                ↑(p 1) * v 1 +
+              ↑(p 1) * v 2 +
+            v 5 * v 1 +
+          v 5 * v 2 +
+        NatExpr.evalSemiring v
+          (Expr.var 0 * Expr.constant ↑(p 0) *
+                  ((1 + Expr.var 0 * Expr.constant ↑(p 0)) * Expr.var 5 *
+                              ((1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                                  ((1 + Expr.var 0 * Expr.constant ↑(p 0)) * (1 + Expr.var 0 * Expr.constant ↑(p 0))) *
+                                Expr.var 6) *
+                            ((1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                                  ((1 + Expr.var 0 * Expr.constant ↑(p 0)) * (1 + Expr.var 0 * Expr.constant ↑(p 0))) *
+                                Expr.var 6 *
+                              (Expr.var 8 + Expr.var 9)) +
+                          (Expr.var 8 + Expr.var 9) +
+                        Expr.var 7 -
+                      (Expr.var 8 + Expr.var 9) *
+                        ((1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                          ((1 + Expr.var 0 * Expr.constant ↑(p 0) - Expr.var 1 - Expr.var 2) *
+                              (Expr.constant ↑(p 1) + Expr.var 5) -
+                            Expr.var 1)) +
+                    Expr.var 6) -
+                (1 + Expr.var 0 * Expr.constant ↑(p 0)) *
+                  ((1 + Expr.var 0 * Expr.constant ↑(p 0) - Expr.var 1 - Expr.var 2) *
+                      (Expr.constant ↑(p 1) + Expr.var 5) -
+                    Expr.var 1)).splitNatural.2 +
+      v 1
+/tmp/direct-main-projection-0i9cwjgp/DirectMainTransport.lean:32:41: warning: This simp argument is unused:
+  Expr.splitNatural
+
+Hint: Omit it from the simp argument list.
+  simp [̵f̵i̵r̵s̵t̵P̵a̵r̵t̵s̵,̵i̵n̵t̵e̵g̵e̵r̵P̵o̵r̵t̵s̵,̵p̵a̵i̵r̵E̵v̵a̵l̵,̵E̵x̵p̵r̵.̵s̵p̵l̵i̵t̵N̵a̵t̵u̵r̵a̵l̵,̵N̵a̵t̵E̵x̵p̵r̵.̵e̵v̵a̵l̵S̵e̵m̵i̵r̵i̵n̵g̵,̵E̵q̵u̵i̵v̵a̵l̵e̵n̵t̵]̵[̲f̲i̲r̲s̲t̲P̲a̲r̲t̲s̲,̲ ̲i̲n̲t̲e̲g̲e̲r̲P̲o̲r̲t̲s̲,̲ ̲p̲a̲i̲r̲E̲v̲a̲l̲,̲ ̲N̲a̲t̲E̲x̲p̲r̲.̲e̲v̲a̲l̲S̲e̲m̲i̲r̲i̲n̲g̲,̲ ̲E̲q̲u̲i̲v̲a̲l̲e̲n̲t̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/direct-main-projection-0i9cwjgp/DirectMainTransport.lean:32:59: warning: This simp argument is unused:
+  NatExpr.evalSemiring
+
+Hint: Omit it from the simp argument list.
+  simp [̵f̵i̵r̵s̵t̵P̵a̵r̵t̵s̵,̵i̵n̵t̵e̵g̵e̵r̵P̵o̵r̵t̵s̵,̵p̵a̵i̵r̵E̵v̵a̵l̵,̵E̵x̵p̵r̵.̵s̵p̵l̵i̵t̵N̵a̵t̵u̵r̵a̵l̵,̵N̵a̵t̵E̵x̵p̵r̵.̵e̵v̵a̵l̵S̵e̵m̵i̵r̵i̵n̵g̵,̵E̵q̵u̵i̵v̵a̵l̵e̵n̵t̵]̵[̲f̲i̲r̲s̲t̲P̲a̲r̲t̲s̲,̲ ̲i̲n̲t̲e̲g̲e̲r̲P̲o̲r̲t̲s̲,̲ ̲p̲a̲i̲r̲E̲v̲a̲l̲,̲ ̲E̲x̲p̲r̲.̲s̲p̲l̲i̲t̲N̲a̲t̲u̲r̲a̲l̲,̲ ̲E̲q̲u̲i̲v̲a̲l̲e̲n̲t̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'DirectMainTransport.root_rep' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'DirectMainTransport.transport' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
