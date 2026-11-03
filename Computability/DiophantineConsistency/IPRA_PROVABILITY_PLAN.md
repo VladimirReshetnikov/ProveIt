@@ -407,10 +407,12 @@ the four coordinates unused by the main factor. An audit found that the
 earlier fresh-offset runner did not individually pin its direct
 `ArithmeticPellCongruences.olean` import; its compile-time bytes are not
 authenticated by the later path/hash observation. A corrected runner and
-dependent rechecks are required before closing that receipt boundary. The
+both dependent rechecks have now passed with the missing import individually
+pinned and bit-identical output objects; an independent audit of those v2
+receipts remains separate. The
 [independent main-factor review](reviews/ten-positive-80-to-90-main-independent/README.md)
-records this limitation and checks the flexible witness scope without
-replaying Lean.
+records the historical limitation and checks the flexible witness scope
+without replaying Lean.
 A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
 proves `rank > 3*q` and `q^3 ∣ Y` under explicit beta and positivity bounds,
 without assuming a graph zero. An [independent audit](reviews/ten-positive-80-carry-fresh-interval-independent/README.md)

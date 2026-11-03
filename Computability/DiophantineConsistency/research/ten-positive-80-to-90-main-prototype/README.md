@@ -37,3 +37,11 @@ The exact 90 main recipe is checked separately in
 the 3-GiB Lean limit when it expanded the polynomial. The accepted proof
 preserves the factored expression and no failed run is treated as evidence of
 that identity.
+
+A fresh self-pinning `run-v2.py` rebuild selects the corrected offset
+producer `/tmp/tenpositive-80freshmainoffset-zbew9euo/`, whose v2 receipt
+individually pins its direct `ArithmeticPellCongruences.olean` import. The
+accepted dependent replay is `observations/v2-attempt01/` and its object
+`/tmp/tenpositive-80to90main-36rqgq9d/Direct80To90Main.olean` has SHA-256 `d1a7e37d24f475f7546394a467fdc58462b4752a7c80daf3e958c0435f443d54`, identical to the earlier object. These
+selected-edge checks do not expand the inherited transitive source-object,
+package or dynamic-library coverage.

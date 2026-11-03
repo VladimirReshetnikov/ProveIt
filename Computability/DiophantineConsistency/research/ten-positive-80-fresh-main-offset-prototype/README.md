@@ -21,3 +21,13 @@ The guarded check `observations/fixeddigits-attempt01/` produced
 SHA-256 `4ae50ad87c91a1b6d96f4f1e7febeb2b9f0c0998c0ffb30dfae9717aefe6748e`.
 The receipt pins selected direct inputs and resources; full project/package
 ancestry, dynamic libraries and historical source-object edges are inherited.
+
+The original accepted run did not individually pin the directly imported
+`ArithmeticPellCongruences.olean`. The separate self-pinning `run-v2.py`
+adds its selected object pin, SHA-256
+`ff395c82ca9ea770a64ec69e4b4b7f8e1e2d655d67db4831af39a2d8a78ae664`.
+The corrected guarded check is `observations/v2-attempt01/`; its fresh output
+`/tmp/tenpositive-80freshmainoffset-zbew9euo/Direct80FreshMainOffset.olean`
+is bit-identical to the earlier object. The v2 receipt verifies source,
+runner, tool and selected pins across the run. Other historical transitive
+source-object, package and dynamic-library limitations remain inherited.

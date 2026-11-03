@@ -19,3 +19,11 @@ Accepted guarded check: `observations/fixeddigits-attempt01/`, object
 SHA-256 `7791ec1083fc33ecb77c29532fa4ec206f010eaeb889fdc1277ca992ff6be18c`.
 The receipt pins selected direct inputs and inherits the existing project,
 package, historical source-object and dynamic-library limits.
+
+A fresh self-pinning `run-v2.py` rebuild selects the corrected offset
+producer `/tmp/tenpositive-80freshmainoffset-zbew9euo/`, whose v2 receipt
+individually pins its direct `ArithmeticPellCongruences.olean` import. The
+accepted dependent replay is `observations/v2-attempt01/` and its object
+`/tmp/tenpositive-80to90mainflexible-5zbpv7ul/Direct80To90MainFlexible.olean` has SHA-256 `7791ec1083fc33ecb77c29532fa4ec206f010eaeb889fdc1277ca992ff6be18c`, identical to the earlier object. These
+selected-edge checks do not expand the inherited transitive source-object,
+package or dynamic-library coverage.
