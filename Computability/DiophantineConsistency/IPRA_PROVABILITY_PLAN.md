@@ -401,6 +401,11 @@ identifies all four binary payload slices with the direct table's typed edge
 labels in the stated models. A [direct occupied-orbit lemma](research/direct-bfs-lean-block-orbit-prototype/README.md)
 propagates occupancy under explicit decoder, marker and edge hypotheses; its
 binding to an actual graph zero and full tile window remain separate. An
+[marker-parity lemma](research/direct-bfs-lean-marker-parity-prototype/README.md)
+handles the direct selector family under explicit support and alignment
+assumptions. A separate axiom-free [color-bounds check](research/direct-bfs-lean-color-bounds-prototype/README.md)
+shows both tables stay inside the finite color domains, without proving the
+maps are permutations or all rows match. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
