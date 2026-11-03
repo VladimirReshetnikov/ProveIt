@@ -40,3 +40,34 @@ Reproduce from the repository root with `python3 -I -S` on `scan.py`. The
 output is a fresh sampled JSON report; its time and free-space fields can
 change. Optimized Python is rejected. Source or provider changes require a
 new preflight rather than silently reusing this order.
+
+## Prepared incremental runner
+
+[`replay.py`](replay.py) is a resumable, single-side experiment over the
+pinned overlay. It adds `IPRANineChecks` immediately after the NineCurrent
+endpoint, for 104 stages total. It freezes every planned source, checks the
+recorded standard-QM40 and native parent guards, and checks declared direct
+imports and all recorded module companions before each build. Successful
+objects are published without overwrite and recorded in a contiguous receipt
+ledger; failed attempts are retained separately. Each compiler step uses
+`-M3000 -j1`, a 600-second timeout, strict rejection of warnings and
+`sorryAx`, and a 4 GiB free-space floor. The two endpoint audit stages require
+the expected axiom-report names and allow only `propext`, `Classical.choice`,
+and `Quot.sound`.
+
+Initialize a fresh direct `/tmp` child with `--init`; `--check` verifies its
+inputs and ledger without invoking Lean. To execute, use the same command
+without either flag; the default is one stage per invocation and `--limit N`
+allows up to N stages. The process lock excludes simultaneous users of the
+same overlay. An interrupted publication that leaves an object without a
+receipt is reported for inspection and is not silently removed or resumed.
+
+The exact runner was initialized at `/tmp/nine-ipra-guarded-author-20261102-e`
+and `--check` reported zero completed stages with `WeightedExpressionDegree`
+next. An overlay made with an earlier runner was rejected for runner drift,
+and optimized Python was rejected. These are initialization/control checks:
+**no compiler stage was launched by these checks**. The compiler path,
+warning behavior on these 104 sources, resource usage and full resumption
+after a real stage remain untested. Direct-input guards are sampled at stage
+boundaries; the inherited package, transitive and dynamic provider ancestry
+is not authenticated.
