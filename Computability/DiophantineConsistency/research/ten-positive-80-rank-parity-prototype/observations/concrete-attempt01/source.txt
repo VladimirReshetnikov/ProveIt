@@ -1,0 +1,32 @@
+import Direct80FixedParity
+import DiophantineConsistency.CompactSymbolicPorts
+
+/-! Apply fixed-beta parity to the checked symbolic natural port tuple. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace Direct80ConcreteParity
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ArithmeticGcdNormalization CompactFixedBeta
+open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+open TenPositive80Graph TenPositive80Factors
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat Nat.ofDigits
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def fixedPorts : Fin 4 → ℕ := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+
+theorem fixed_tuple_even_and_unit (v : Fin 10 → V) (hv : ∀j,0<v j)
+    (hz : InternalZero (graph (integerPorts fixedPorts)).output v) :
+    (∃w : V, q fixedPorts v=2*w) ∧
+      Bez (b fixedPorts v) (mu fixedPorts v*mu fixedPorts v) 1 := by
+  have hb := CompactFixedBeta.bounds (1:V) (by simp)
+  have hl : (fixedPorts 2:V)<(fixedPorts 0:V) := hb.2.1
+  have hh : (fixedPorts 3:V)<2*(fixedPorts 0:V) := by
+    change ((CompactFixedBeta.betaNat+highNat:ℕ):V)<2*(CompactFixedBeta.betaNat:V)
+    rw [Nat.cast_add]
+    exact hb.2.2.1
+  exact Direct80FixedParity.graph_fixed_even_and_unit fixedPorts v rfl hl hh hv hz
+
+#print axioms Direct80ConcreteParity.fixed_tuple_even_and_unit
+end Direct80ConcreteParity
