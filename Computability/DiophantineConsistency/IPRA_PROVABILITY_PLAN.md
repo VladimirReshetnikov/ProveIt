@@ -171,6 +171,12 @@ checks that premise and the separate cyclic-field receipts without replaying Lea
 A [follow-up iff/parity audit](reviews/ten-positive-79-forward-bfs-parities-independent/README.md)
 checks both guarded directions and the BFS field-parity receipts; it also does
 not replay Lean or eliminate the guard.
+A separate [74-row trace probe](research/trace74-mask-coordinate-probe/README.md)
+applies the same substitution to the upstream 75-row BFS-kernel chart. Its
+[Lean ring identity](research/trace75-mask-coordinate-ring-probe/README.md)
+is checked for arbitrary ports, with JSON comparison external. Neither
+positive-direction guard has been proved for that chart, and the parent
+trace75 itself does not yet have its machine/iPRA bridge.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
@@ -540,7 +546,9 @@ adds the adjacent marker positions, covering both full field ranges; the
 now proves the required high-mask condition on both ranges. The four anchor
 and target phases were separate; an [anchor client](research/direct-bfs-word-anchor-high-prototype/README.md)
 now proves no-carry at 2195 and 3296. Only target phases 4393 and 5495 remain
-open;
+open. An [occupied-aggregate theorem](research/direct-bfs-word-occupied-prototype/README.md)
+computes the direct selector/copy sum as `1+2^51` for each local-word row;
+its physical target-phase binding remains separate;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)

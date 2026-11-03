@@ -1,0 +1,21 @@
+/tmp/direct-bfs-wordoccupied-neqeb8yd/DirectBFSWordOccupied.lean:48:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ∑ i, ↑(CompactCoefficientMass.selector (DirectBFSSymbolicKernel.row i)) * ?f i + ∑ j, ↑(2 ^ (10 + ↑j)) * ?b j
+in the target expression
+  ∑ i, ↑(selectors i) * selector (b j) i + ∑ i_1, ↑(copies i_1) * payloadBit (DirectBFSDecoder.tileValue i) i_1 =
+    1 + Exp.exp 51
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+b : V → V
+N s : V
+hw : DirectBFSLocalWord.Word b N s
+j : V
+hj : j < N
+i : Fin 943
+hi : b j = ↑↑i
+hp : payload (b j) = DirectBFSDecoder.tileValue i
+⊢ ∑ i, ↑(selectors i) * selector (b j) i + ∑ i_1, ↑(copies i_1) * payloadBit (DirectBFSDecoder.tileValue i) i_1 =
+    1 + Exp.exp 51
+'DirectBFSWordOccupied.payload_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DirectBFSWordOccupied.word_occupied' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
