@@ -18,3 +18,11 @@ fresh provider. One direct outside import, `Mathlib.Algebra.Order.Ring.Basic`,
 is not among the parent BFS replay's 80 recorded outside names; a replay must
 capture it separately. The earlier baseline, supplements and outside/package/
 dynamic ancestry retain the limitations recorded in the parent replay.
+
+**Provider correction.** The retained parent union replaces eight BFS baseline
+objects with trace-specific supplements. All eight names occur in the captured
+`DirectBFSHaltPellSeed` serialized closure. Consequently this thirteen-stage
+plan is not, by itself, a repair of the combined halt chain. A static walk also
+finds additional trace dependencies of those eight objects that were not among
+the earlier 14 rebuilt stages. The held compatible-provider investigation is
+in `../trace75-bfs-compatible-provider-rebuild/`.
