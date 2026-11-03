@@ -680,7 +680,11 @@ historical baseline and a source modernization is under consideration. An
 [independent stop audit](reviews/ten-positive-80-rebuild-attempt01-independent/README.md)
 confirms that the entire path-normalized warning log matches the historical
 source-specific baseline; it does not turn the rejected run into a pass. Only
-final PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
+A [v4 retry](research/ten-positive-80-coherent-rebuild/V4.md) admits only the
+exact pinned module/source/full normalized warning log and remains strict
+elsewhere. An [independent v4 review](reviews/ten-positive-80-rebuild-v4-prelaunch-independent/README.md)
+checks its policy and outer wrapper. One fresh guarded attempt is running;
+only final PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
 Those
 byte-matched records are not proven unique producer
 origins. No replay is yet claimed. A
