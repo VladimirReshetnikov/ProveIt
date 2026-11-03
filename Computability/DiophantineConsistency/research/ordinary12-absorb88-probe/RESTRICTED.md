@@ -5,3 +5,5 @@
 This is not an equivalence for arbitrary positive 88 zeros: the extra inequality is part of the existential statement. In particular the conditional full-zero symmetry obstruction rules out simply proving that all 88 zeros obey it under the documented fixed-port hypothesis. This result alone does not give an unrestricted 88 iPRA equivalence.
 
 `run-restricted.py` passed in guarded author session 24085, exit 0. Its exact source snapshot, selected predecessor objects, resource samples and output are under `observations/restricted-attempt01/`. It inherits the previously documented linter suppressions and selected-provider, package-transitive, dynamic and historical source/object ancestry limitations; no independent Lean replay is claimed.
+
+The independent source-and-receipt review passed in `reviews/ordinary12-absorb88-restricted-independent/`; it did not independently replay Lean.

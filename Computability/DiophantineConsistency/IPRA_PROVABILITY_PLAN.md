@@ -183,9 +183,9 @@ checks the seven source/receipt stages and their provider limits without a Lean
 replay. A [strong/auxiliary index theorem](research/ten-positive-80-folding-prototype/README.md)
 now supplies the strong and odd adjacent indices without assuming the main
 norm. A [graph-specific signed congruence](research/ten-positive-80-residue-binding-prototype/README.md)
-is separately checked; joining it to the same magnitude witness as the
-indices requires a further theorem. The remaining all-index folding, machine
-calibration and iPRA endpoint remain open.
+is checked and [joined to the same magnitude witness](research/ten-positive-80-folding-joined-prototype/README.md)
+as the indices. The remaining all-index folding, machine calibration and iPRA
+endpoint remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
