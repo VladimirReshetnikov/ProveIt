@@ -39,6 +39,16 @@ graph-zero hypotheses, particularly the reverse guard `F+C<q`, is separate
 work; no unconditional positive-solution equivalence, halt equivalence or
 internal iPRA proof for this candidate is asserted.
 
+**Boundary investigation.** A checked [conditional construction](../trace74-boundary-compatible-rebuild/README.md)
+now obtains a positive trace74 zero from explicit model-level source, mask,
+transport and Pell hypotheses even when the old `alpha` coordinate is zero.
+Its existential conclusion does not retain the returned witness coordinates,
+so it does not prove that a zero violates `F+C<q`. A separate [finite seed](../trace74-boundary-31-seed/README.md)
+meets the relevant displayed arithmetic conditions at arbitrary ports where
+the guard fails for the source valuation. The checked theorem has not been
+specialized to that seed, and its ports do not satisfy the fixed BFS tuple.
+Neither result establishes a trace74/trace75 inequivalence or an iPRA endpoint.
+
 The `coefficient_binding` object, including the tuple description and all
 compressed/raw hashes, is copied verbatim from the pinned 75-row JSON. Its
 `coefficients/` path belongs to that source package's layout, not this probe's
