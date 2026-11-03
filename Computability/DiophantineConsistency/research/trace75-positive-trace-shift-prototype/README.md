@@ -17,3 +17,4 @@ is `observations/shift-attempt02/`, object
 Attempt01 failed on the order of factors in a positivity lemma; its diagnostics
 and source are retained. The accepted runner pins its direct Mathlib imports;
 full transitive, package and dynamic ancestry remain inherited.
+An independent source and receipt audit passed; no Lean replay was performed.

@@ -12,4 +12,5 @@ result. The accepted author run is `observations/natural-attempt02/`, object
 `b828737e9a8889dc05a8aab6e22f84dc2dd470a0265ae27d0d7462fe04498318`.
 Attempt01 lacked the model syntax import and is retained. The accepted runner
 pins direct providers; full transitive, package and dynamic ancestry remain
-inherited.
+inherited. An independent source and receipt audit passed; no Lean replay was
+performed.
