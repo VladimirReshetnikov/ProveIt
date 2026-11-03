@@ -18,6 +18,10 @@ reports author-side builds of their model dependencies and endpoints. These
 reports are not independent replay packets. A separate [source-evidence inspection](reviews/nine-variable-ipra-endpoint-source-evidence/README.md)
 checks the endpoint statements and the source-level expression binding; it
 does not reproduce the reported builds or interpret the document's bytes.
+A [build preflight](research/nine-variable-ipra/bounded-build-preflight/README.md)
+identifies 103 missing project modules across the two source-declared closures
+on the selected historical provider. Existing object availability and the
+sampled source comparisons do not authenticate its full dependency closure.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
 87-operation evaluator. Its exact fixed-port literal now has a no-premise
@@ -811,7 +815,11 @@ physical construction obligations. A [conditional variation client](research/ord
 checks the exact symbolic rank-variation identity and calibrated congruence
 assuming two valid packings, the stated cell perturbation, Boolean and
 nonwrapping support, and the calibration congruence. It does not construct
-either physical packing or prove the selected changes safe.
+either physical packing or prove the selected changes safe. A further
+[realization-conditional client](research/ordinary12-ipra-bridge/compact44-controller-realizable-bridge-prototype/README.md)
+combines chosen calibration with variation, assuming a valid initial packing
+and a valid perturbed packing for every admissible selector; it does not prove
+that uniform realization assumption.
 Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
 and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
 found no defect in the inspected arguments; these reviews predate the joined
@@ -831,6 +839,11 @@ A later [sparse target-block client](research/ordinary12-ipra-bridge/compact44-w
 proves no-carry against the symbolic high mask for the two occupied target
 phases, including arbitrary model-length repetition. It does not identify
 that sparse block with the complete kernel product or settle the other columns.
+A conditional [packed-column client](research/ordinary12-ipra-bridge/compact44-word-product-column-prototype/README.md)
+identifies the selected band at both target phases using explicit packed
+selector and copy digit hypotheses. Its output equations retain the opposite
+band, bare rotations, temporal digit and incoming carry, and assume the
+corresponding `CarryInput`; those assumptions still need construction.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
