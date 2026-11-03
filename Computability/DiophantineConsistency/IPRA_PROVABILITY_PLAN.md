@@ -153,6 +153,12 @@ from the exact abstract cross-multiplied relation. It is not yet bound to
 either graph; full root recovery, the machine bridge and an iPRA endpoint
 remain open.
 
+The [79-row coordinate probe](research/ten-positive-79-mask-coordinate-probe/README.md)
+replaces the third positive unknown by the mask C and has an external all-ring
+substitution identity to the 80-row graph. Its reverse positive map requires
+`F+C<q`, which is not established; it is not a proved smaller consistency
+equation or iPRA endpoint.
+
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
 For arbitrary natural ports with positive beta, any positive zero yields the
@@ -161,8 +167,9 @@ JSON externally. A [further model theorem](research/ten-positive-80-pell-prototy
 derives the first Pell index, the doubled strong-Pell identity and a required
 divisibility from such a zero. An [independent receipt and source audit](reviews/ten-positive-80-root-pell-independent/README.md)
 checks these statements and their selected inputs without replaying Lean.
-Adjacent-Pell descent, the machine bridge, iPRA derivability,
-and a formal JSON/PDF binding remain open. The 81-, 83- and 84-operation
+At this initial stage adjacent-Pell descent, the machine bridge, iPRA
+derivability and formal JSON/PDF binding were open; later progress and the
+distinction between original and BFS kernels are recorded below. The 81-, 83- and 84-operation
 descendants share the externally checked finalizer shape but are distinct
 graphs. A separate [adjacent-Pell denominator lemma](research/ten-positive-adjacent-descent-prototype/README.md)
 proves that a reduced denominator's square divides the corresponding
@@ -503,7 +510,9 @@ which remain assumptions. This is not yet completeness;
 the [constructed carry](research/direct-bfs-constructed-carry-prototype/README.md)
 and [temporal carry](research/direct-bfs-temporal-constructed-carry-prototype/README.md)
 clients provide the direct cyclic product-carry inputs from explicit word
-bounds, without assuming carry vanishes;
+bounds, without assuming carry vanishes. A [Boolean stencil theorem](research/direct-bfs-stencil-zero-carry-prototype/README.md)
+proves zero cyclic carry when its explicit Boolean-family and carry-input
+premises hold; graph or packing instances remain separate;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)

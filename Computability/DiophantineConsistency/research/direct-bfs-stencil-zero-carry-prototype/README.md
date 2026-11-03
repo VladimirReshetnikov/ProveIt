@@ -1,0 +1,7 @@
+# Direct-BFS Boolean stencil zero carry
+
+`DirectBFSStencilZeroCarry.lean` specializes the generic Boolean zero-carry theorem to the **direct-BFS** selector and copy arrays. It proves the actual coefficient sum is the direct stencil mass, that this mass has enough base-2^67 carry room, and that every Boolean input family satisfying `CarryInput` has zero cyclic carry and output digits equal to the raw columns. The theorem applies in any model of IΣ₁. It does not itself prove that a constructed word supplies the hypotheses, any high-mask field, BFS completeness, or an iPRA endpoint.
+
+`run.py` checked the displayed source in `observations/directbfsstencilzero-attempt02/` with Lean exit 0, no diagnostics, and the three captured axiom reports limited to `propext`, `Classical.choice`, and `Quot.sound`. The selected output is `/tmp/direct-bfs-stencilzero-gtb6jyuf/DirectBFSStencilZeroCarry.olean`, SHA-256 `610631898b4b4c0ee0f383e295d13a1f44af2787270f0d914f478aea234f01f4`. Every direct import is checked against its first-resolved pinned object before and after the run. The exploratory run inherits project, package, dynamic, and historical source-to-object ancestry limitations; it is not an independent Lean replay.
+
+`observations/directbfsstencilzero-attempt01/` and `run-attempt01.py` preserve the failed first check: the mass-room proof referred to the original table's exact-mass theorem. Its accepted replacement uses the direct-BFS theorem.
