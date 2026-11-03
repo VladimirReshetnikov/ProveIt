@@ -41,7 +41,11 @@ with beta added once. A [four-port Lean theorem](research/ordinary12-ipra-bridge
 now joins closed beta, K, MC and shifted-MF byte recipes to the exact symbolic
 tuple. External pinned checks compare recipe transcriptions with the retained
 parent payloads; Lean does not yet establish those file or gzip
-correspondences. Parent-to-supplement and PDF correspondence remain open. The
+correspondences. A separate [all-model client](research/ordinary12-ipra-bridge/compact44-byte-ports-model-iff-prototype/README.md)
+uses those naturally decoded recipes in the generated 95-gate Lean expression
+and proves shifted zero iff internal machine halt in each IΣ₁ model. This is
+not yet an internal iPRA derivation. Parent-to-supplement and PDF
+correspondence remain open. The
 [serialized-import inventory](research/ordinary12-ipra-bridge/compact12-ipra-object-import-prototype/README.md)
 also supports the initial 59-module rebuild within its scoped namespace,
 without certifying all other project or package ancestry. A guarded
