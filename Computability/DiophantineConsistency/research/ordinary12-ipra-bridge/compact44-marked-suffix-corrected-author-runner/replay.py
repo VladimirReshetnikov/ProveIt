@@ -24,9 +24,9 @@ PINS={
  'plan_script':'1cc8e7caa50fa1947a6980cfe2d37832f1d50c852ac9bfece2a4d594f7986c09',
  'prior_source':'2aeb7400ef18c7cd4bc0c74b1ca09b53e0c685f6054e99d92617f3af9bab7cc6',
  'prior_busy':'abe89bf1cf589a8146771707d322c663012e03e63a7e4e605df486b808f19846',
- 'closure_check':'PENDING_INDEPENDENT_CLOSURE_CHECK',
- 'closure_terminal':'PENDING_INDEPENDENT_CLOSURE_TERMINAL',
- 'closure_audit':'PENDING_INDEPENDENT_CLOSURE_AUDIT',
+ 'closure_check':'9def6a93cd07d214c6957522e1f54c772a988936667e625fe2413f51c3c9535c',
+ 'closure_terminal':'c3322ac3e602376ff4d74de387892fb187a4ca8d4fd51267dc75a28d2d117240',
+ 'closure_audit':'6d6cbb7d639b59e7d95804749859d99a1827af420363834c0f50117bd7c407c2',
  'parent_check':'59dd1eefe5fc2d46bbb0ca7b2d83e14bcc1de9b692da98e94c5598f17678945e',
  'parent_terminal':'af62d28207cca0c6d6163b4f46731919031600bd69d5efddc1a41dbe509e6b9a',
  'parent_audit':'a48b7684dc27fff4705419d30fbf14a62fb99f9ac302edcd79b1d508bccbcda1',
@@ -141,8 +141,9 @@ def main():
        (SEED_RESULT,'seed_result'),(MON,'monitor'),(LEAN,'lean')]
  for path,key in pins:need(path.is_file() and H(path)==PINS[key],('pinned input changed',str(path)))
  closure=json.loads((AUDIT/'CHECK.json').read_text()); parent=json.loads((PARENT/'CHECK.json').read_text())
- need(closure.get('status')=='PASS_NO_LEAN_CORRECTED_MARKED_SUFFIX_SOURCE_REVIEW' and closure.get('reviewed_commit')=='7fd9b953f9' and closure.get('scan_sha256')==PINS['plan_scan'] and closure.get('source_count')==22 and closure.get('direct_modules')==26 and closure.get('candidate_roots')==52 and closure.get('candidate_slots')==520 and closure.get('target_slots')==440 and closure.get('lean_launched') is False and all(type(closure.get(k)) is int and closure[k]==v for k,v in {'parent_audit_rerun_exit':0,'author_scan_rerun_exit':0,'optimized_scan_exit':1}.items()),'closure schema mismatch')
- need(closure.get('prior_scan_pins')=={'source-scan.json':PINS['prior_source'],'busybeaver-source-scan.json':PINS['prior_busy']},'prior scan pin mismatch')
+ need(closure.get('status')=='PASS_NO_LEAN_CORRECTED_MARKED_SUFFIX_SOURCE_REVIEW' and closure.get('reviewed_commit')=='7fd9b953f9' and closure.get('scan_sha256')==PINS['plan_scan'] and closure.get('source_count')==22 and closure.get('changed_position')==21 and closure.get('direct_modules')==26 and closure.get('candidate_slots')==520 and closure.get('target_slots')==440 and closure.get('prior_inventories_equal') is True and closure.get('lean_launched') is False and all(type(closure.get(k)) is int and closure[k]==v for k,v in {'author_scan_rerun_exit':0,'optimized_scan_exit':1}.items()),'closure schema mismatch')
+ need(closure.get('isolated_source_sha256')=='6d98a5ac6a8d892e2b6ee5e9fa908d276a52311cb4647a1a05350470f59ffcf2' and closure.get('isolated_log_sha256')=='30bddd6fecc5844fbc4602d711d0bdaa1bad4a5e88854efbaca7764b8a58f06e','isolated observation mismatch')
+ need(closure.get('parent_review_reruns')=={'compact44-marked-halt-client-mathematical-review':{'check_sha256':'cdbfc57c65270e10d5265a137ec1dac5bbd872b34bbdb29cf79949aec28c702c','exit':0},'compact44-marked-suffix-source-independent-review':{'check_sha256':'91ed365da479a7ce7fe2e83651cfba486e8e5aa2a01ec6c055c7bca85640750e','exit':0}},'parent review mismatch')
  need(parent.get('status')=='PASS_INDEPENDENT_AUTHOR_ONLY_WANG_ARTIFACT_AUDIT' and parent.get('result_sha256')==PINS['seed_result'],'parent schema mismatch')
  seed=json.loads(SEED_RESULT.read_text());need(seed.get('status')=='PASS_AUTHOR_ONLY_CHUNKED_TABLE' and len(seed.get('steps',[]))==96,'seed result schema mismatch')
  manifest=json.loads((PLAN/'source-scan.json').read_text());rows=manifest['sources'];need(manifest.get('status')=='PASS_SOURCE_ONLY_SUFFIX_SCAN' and len(rows)==22,'source scan schema mismatch')
