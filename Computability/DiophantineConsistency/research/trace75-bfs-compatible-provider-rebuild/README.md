@@ -16,6 +16,15 @@ read-only preflight passed with 1,931 baseline modules, 15 supplemental inputs,
 80 outside providers and 31 stages. Fifteen actual-function policy controls
 passed, including rejection of a same-byte symlink substituted for a copied
 source. An [independent scoped review](../../reviews/trace75-bfs-compatible-provider-runner-independent/README.md)
-also checked the outer child-status gate. A replay has not yet been run. No
-full source ancestry, reverse-chain replay, iPRA theorem, or file binding is
-claimed.
+also checked the outer child-status gate.
+
+The reviewed replay at `observations/attempt01/` passed all 31 stages, and
+the outer tool session 33900 actually exited 0. The selected closure contains
+901 project and 44 outside objects. The BFS carry and halt-seed closures match
+the earlier captured project companion hashes, with 46/6 and 855/44
+project/outside modules respectively. The new trace endpoint's selected
+closure has 241/27. The [independent result audit](../../reviews/trace75-bfs-compatible-provider-result-independent/README.md)
+rechecks the stages, union, receipts and selected headers. The four affected
+retained baseline objects, unrebuilt project source ancestry and package/dynamic
+ancestry remain inherited. This replay does not yet include the trace75 reverse
+chain, a joined iPRA endpoint, or an external file binding.
