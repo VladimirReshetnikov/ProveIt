@@ -368,9 +368,13 @@ the two high-mask conditions for the base and uniformly for every admissible
 definable Boolean pulse. An [origin-transfer client](research/ordinary12-ipra-bridge/compact44-high-origin-marked-prototype/README.md)
 shows that ordinary high-mask no-carry at every index would supply both
 conditions, using the proved origin block residue; that all-index property
-remains unproved. Graph-zero construction and the iPRA endpoint remain
-separate obligations; the individual components use guarded single-author
-providers with inherited ancestry, as described in their linked records.
+remains unproved. The [padding bound](research/ordinary12-ipra-bridge/compact44-high-padding-bound-prototype/README.md)
+clears high-mask slots 8792–8805, and the [physical-column bridge](research/ordinary12-ipra-bridge/compact44-marked-physical-column-prototype/README.md)
+identifies all remaining block digits with carry-free symbolic stencil
+columns. Their high-mask restrictions, graph-zero construction and the iPRA
+endpoint remain separate obligations; the individual components use guarded
+single-author providers with inherited ancestry, as described in their linked
+records.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
