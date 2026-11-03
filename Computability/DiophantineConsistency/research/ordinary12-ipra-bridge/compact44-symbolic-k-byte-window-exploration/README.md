@@ -1,0 +1,7 @@
+# Symbolic K little-endian byte windows
+
+`ByteWindow.byte` proves for any finite list of digits below `2^67` and any byte index `j` that `(Nat.ofDigits (2^67) L / 2^(8*j)) % 256` equals the two adjacent digits around bit `8*j`, shifted by its remainder modulo 67. The digit accessor is explicitly zero-padded, so the formula includes indices outside the list and bytes crossing a 67-bit boundary. The separate kernel-checked examples cover both a crossing byte and an out-of-range zero byte.
+
+`SymbolicKernelBytes.kernel_byte` instantiates the same formula with the symbolic aggregated sparse digits of `paramKernel rho`; its digit bounds come from the earlier coefficient proof. It does not expand K or a byte literal. Generic sources were checked on a fresh package-only overlay, then rebuilt against the coherent author-side symbolic-K provider before the specialization. Exact sources, logs, dependency outputs, two rejected example attempts, and point-in-time post-run direct-object hashes are retained in `observations/`. The failed Lean attempt's `sorryAx` report is not evidence, and the warning-bearing check was rejected by the wrapper.
+
+These are author-only natural-number results. They do not prove the minimal serialization length, equality to any retained literal, file, gzip stream, `kernelNat` or displayed coefficient, a model cast, or an iPRA conclusion. File/decompression/display provenance remains separate; inherited transitive/package and dynamic provider ancestry is not independently authenticated.
