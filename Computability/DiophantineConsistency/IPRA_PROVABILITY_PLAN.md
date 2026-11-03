@@ -369,7 +369,11 @@ checks the selected direct inputs and provider edges without replaying Lean.
 A [selected-origin lemma](research/direct-bfs-lean-selected-origin-prototype/README.md)
 proves the direct table's index-zero tile agrees with the corresponding old
 origin tile and reuses the generic origin occupancy conclusion after that
-tile is selected; it does not identify the full tables or kernels. An
+tile is selected; it does not identify the full tables or kernels. A
+[direct-BFS occupancy join](research/direct-bfs-80-occupied-anchor-prototype/README.md)
+now derives all seven origin slots from the actual graph under the direct-BFS
+symbolic port equalities. It is an author check; full temporal and machine
+decoding remain separate. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
@@ -443,8 +447,13 @@ independent receipt check found that the abstract lemma's runner did not
 individually pin its direct `ArithmeticPellFirstNorm.olean` import; its
 post-hoc object hash cannot establish the earlier compile-time bytes. A
 corrected author run and dependent recheck have now passed with bit-identical
-objects; an independent check of the v2 receipts is still pending. See the
+objects; an [independent v2 audit](reviews/ten-positive-80-fresh-first-coordinate-v2-independent/README.md)
+checks the selected inputs and rebuilt provider edges without replaying Lean. See the
 [independent first-coordinate review](reviews/ten-positive-80-fresh-first-coordinate-independent/README.md).
+A subsequent [first/main join](research/ten-positive-80-to-90-first-main-prototype/README.md)
+zeros both selected 90-graph factors using one positive valuation from the
+same actual 80 zero, with three other positive coordinates still arbitrary
+and p₁ unrestricted. The ordinary factor and whole graph remain open.
 A separate [receipt audit](reviews/direct-bfs-raw-column-positive-transport-independent/README.md)
 records the coefficient-decoder import-pin gap and the positive transport
 scope; it does not replay Lean.
