@@ -47,3 +47,13 @@ explicit `Function.update_apply`, `norm_num`, and the existing `ring` tactic;
 the move, statements and hypotheses are unchanged. The runner and all seven
 selected provider bytes and targets were reverified. **Scoped GO for one
 guarded attempt03** on those exact bytes, with the same limitations above.
+
+Attempt03 failed in `rank_move` and `B_move` with unresolved update terms and
+`sorryAx`; it is not accepted. Attempt04 source SHA-256 is
+`ea63e8f4c0c59b5548b972f176bbb33b320cbe71d2968f4603aad6b561ce85c4`.
+The sole delta replaces those two proof simplifications with explicit `change`
+expressions in `h=p₀*v₀` followed by `ring`; these expressions match the
+actual register formulas and intended coordinate updates. Statements,
+hypotheses and move remain unchanged. The runner and seven pinned provider
+bytes and targets were reverified. **Scoped GO for one guarded attempt04** on
+those exact bytes, with the same limitations above.

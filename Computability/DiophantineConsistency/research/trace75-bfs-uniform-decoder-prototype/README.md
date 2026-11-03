@@ -7,7 +7,7 @@ the stated decoder-band equality, inputs, no-carry and decoder conclusions
 at every index in phase classes 4393 and 5495. Separately selected lengths
 are identified through the common radix. The author check passed with
 tool-observed outer exit 0 and child, Lean and header exits 0. Independent
-post-audit is pending.
+post-audit passed in `reviews/trace75-bfs-uniform-decoder-result-independent/`.
 
 The runner checks nine accepted regular client roots, the 1,977-object fresh
 union, 80 outside providers and captured BFS `DirectBFSUniformDecoder` and
