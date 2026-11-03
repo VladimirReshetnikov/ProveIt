@@ -1,0 +1,5 @@
+# Direct-BFS residue in arbitrary arithmetic models
+
+`DirectBFSModelResidue.residue` transports the separately checked natural remainder of the direct BFS symbolic kernel through the standard natural-number cast and model remainder. It proves the exact residue in every IΣ₁ model, including nonstandard models, while keeping the kernel numeral locally irreducible. This discharges the mathematical natural-to-model coercion, but does not by itself prove the chosen-rank theorem, a graph zero, or equality to the external gzip/JSON payload.
+
+Accepted author check `observations/directbfsmodelresidue-attempt01/`: Lean and outer runner exited 0 without diagnostics; its axiom report contains only `propext`, `Classical.choice`, and `Quot.sound`. Output `/tmp/direct-bfs-modelresidue-iu99nau1/DirectBFSModelResidue.olean`, SHA-256 `421f11c8cad5ef90c0e138234eb1bdb598b8430b0989f4a9cbfb0261ab85921f`. Direct imports were pinned and rechecked. Project, package-transitive, dynamic, and historical source-to-object ancestry remain inherited limits; no independent Lean replay is claimed.

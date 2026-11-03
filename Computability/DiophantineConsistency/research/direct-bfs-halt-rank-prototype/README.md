@@ -1,0 +1,9 @@
+# Internal halt to calibrated direct-BFS packing
+
+`DirectBFSHaltRank.halt_rank` combines the canonical direct-BFS halt packing, uniform Boolean pulse stability, controller calibration, and the independently factored natural-to-model residue proof. In every IΣ₁ model, an internal machine-215 halt yields one definable Boolean pulse with the stated support bounds, a complete packing of the same canonical direct-BFS row and pulse, and the required window-rank congruence. The kernel in the packing and in the discharged residue is the **same** direct-BFS symbolic `paramKernel rho`. No model-side residue, scalar-mask, or high-mask premise remains; the theorem has only its displayed internal-halt hypothesis (and arbitrary model parameter `c`).
+
+This does not yet construct Pell seeds or an 80/75 graph zero, identify the external payload with the Lean symbolic kernel, prove a full model equivalence, or establish an iPRA endpoint. Existing selected object ancestry still needs a coherent combined audit before a final endpoint claim.
+
+Accepted author check `observations/directbfshaltrank-attempt03/`: Lean and outer runner exited 0 without diagnostics; the enforced axiom report contains only `propext`, `Classical.choice`, and `Quot.sound`. Output `/tmp/direct-bfs-haltrank-8cjy45ho/DirectBFSHaltRank.olean`, SHA-256 `e0de9db897a4dc7175a4056e0cfa797c63de0d182cb34b78c1b2a7b81627e405`. Direct imports and selected additional objects were pinned and rechecked. Project, package-transitive, dynamic, and historical source-to-object ancestry remain inherited limitations; no independent Lean replay is claimed.
+
+Attempt01 failed before elaboration on a missing selected transitive path; attempt02 exposed that the intentionally irreducible `kernel` abbreviation needed explicit unfolding. Both receipts and corresponding runner snapshots are retained.
