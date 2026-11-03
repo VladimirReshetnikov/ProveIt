@@ -8,13 +8,17 @@ The [sign theorem](SIGNS.md) now binds the positive and negative root branches
 to an actual graph zero and proves its transport term positive. The
 [divisibility theorem](DIVISIBILITY.md) establishes `b ∣ Bt` in either branch.
 The [reflection theorem](REFLECTION.md) constructs a negative-branch witness
-above `s` satisfying the positive first-root equation. Full-graph preservation
-under that replacement remains open. A separate [growth lemma](GROWTH.md)
+above `s` satisfying the positive first-root equation. A separate
+[model reflection](../../reviews/ordinary12-absorb89-reflection-independent/README.md)
+proves that this negative-branch replacement preserves the entire graph zero.
+A separate [growth lemma](GROWTH.md)
 proves the positive-branch bound `3*s≤k` if a first-Pell coordinate has index
 at least 3. A subsequent [six-stage index chain](INDEX_CHAIN.md) proves that
 an actual graph zero has such an index, in fact at least 13, under the stated
-fixed-port bounds. The branch-to-witness composition remains separate; these
-model results do not yet imply an 89-operation iPRA endpoint.
+fixed-port bounds. The [positive-branch theorem](POSITIVE_BRANCH.md) joins
+these results and derives the required witness bound. The branch-to-witness
+composition remains separate; these model results do not yet imply an
+89-operation iPRA endpoint.
 
 The guarded graph, first and quotient attempts all exited 0 without reported warnings. The first-norm source locally suppresses unused-variable and unused-simp-argument linters; those classes were not checked. Source/object SHA-256 pairs are:
 

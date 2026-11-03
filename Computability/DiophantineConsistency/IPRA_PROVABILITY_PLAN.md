@@ -102,8 +102,11 @@ branches, transport divisibility, negative-branch reflection at the first
 root, and a positive-branch growth bound conditional on a Pell index at least
 3. A [six-stage index chain](research/ordinary12-absorb89-probe/INDEX_CHAIN.md)
 now derives an index of at least 13 from an actual graph zero with the stated
-port bounds. Full-graph reflection and the branch-to-witness composition are
-being checked separately. The draft has no established
+port bounds. A [positive-branch theorem](research/ordinary12-absorb89-probe/POSITIVE_BRANCH.md)
+uses that index to prove the absorbed witness exceeds `s`; a separate
+[model reflection](reviews/ordinary12-absorb89-reflection-independent/README.md)
+preserves the full graph output in the negative branch. The branch-to-witness
+composition is being checked separately. The draft has no established
 reverse existence, halt equivalence, or iPRA endpoint.
 
 For the separate ten-positive 84- and 85-operation proposals, a

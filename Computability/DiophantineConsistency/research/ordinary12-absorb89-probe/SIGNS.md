@@ -5,8 +5,9 @@
 The graph-specific [divisibility theorem](DIVISIBILITY.md) has since supplied
 the required first transport divisibility in either branch. The
 [negative-branch reflection](REFLECTION.md) constructs a witness above `s`
-and proves its first-root equation, but full-graph zero preservation remains
-open. The positive branch still needs its growth condition. The count of 89
+and proves its first-root equation; a separate model theorem preserves the
+full graph zero. The [positive branch](POSITIVE_BRANCH.md) has since acquired
+its growth condition under the fixed-port bounds. The count of 89
 live operations has been checked externally against the Lean graph; reverse
 existence equivalence, halt, and iPRA remain unproved.
 
