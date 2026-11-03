@@ -19,6 +19,17 @@ and checks word bounding boxes; [`observations/display.json`](observations/displ
 records its successful rerun. These are external finite checks. They do not
 formalize TeX, PDF, or the JSON-to-Lean-file correspondence in Lean.
 
+The separate `check_lean_graph.py` parses the restricted arithmetic fragment
+of the pinned Lean `regs` and `value75` definitions and compares their output
+with the JSON circuit after exact associative/commutative ring normalization.
+It uses interned structural terms rather than random evaluations; its
+[`observations/lean-graph.json`](observations/lean-graph.json) records PASS.
+This connects the JSON and Lean source through a finite external parser, not a
+Lean theorem about source-file or PDF bytes. An [independent audit](../../reviews/trace75-lean-json-structural-independent/README.md)
+reproduced the result and checked five rejected parser mutations. The
+normalization is sound for commutative rings but is not a complete equality
+procedure; it compares the final output rather than each field independently.
+
 `check_liveness.py` finds all 75 rows and all 14 inputs live (44
 multiplications, 17 additions and 14 subtractions). `verify_degree.py` obtains
 a degree upper bound of 402 from the row graph and a nonzero coefficient of
