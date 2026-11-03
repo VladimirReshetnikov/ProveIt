@@ -63,7 +63,7 @@ establish that complete `SourceModel` or a Lean file-binding theorem.
 | K0 | circuit value, ring identities (2.2), (3.1), (3.3) | — | **compiled**: `TenPositiveTrace75` |
 | K1 | literal `Expr`, `evalRing` = value | — | **compiled**: `TenPositiveTrace75Syntax` (DAG never unfolded) |
 | K2 | root extraction: `G = g²`, `E = tau²`, `F0 = f0²` from coprimality | `ModelDifferenceRing`, square-divisor lemmas | [graph roots](../trace75-root-probe/FACTORS.md) checked from an actual positive trace75 zero and positive beta; later Pell quotient and machine steps remain open |
-| K3 | rational integrality of `y` in `QV² − (Q−1)y² = 1` | prototype only: `ReducedNormSigned.signed_denominator_divides` | open, port the generic statement |
+| K3 | rational integrality of `y` in `QV² − (Q−1)y² = 1` | generic internal `AdjacentInteger` descent | [adjacent quotient](../trace75-root-probe/ADJACENT.md) checked from an actual positive trace75 zero and positive beta; no converse or machine theorem |
 | K4 | **signed all-index folding** ⇒ `c = ψ_A(p)`, `p` odd | [80-row all-index folding](../../reviews/pell-all-index-recovery-independent/README.md) has checked related model machinery; applicability to trace75 requires a new adapter | open for trace75; the central new proof (paper source: inherited Lucas parent) |
 | K5 | first Pell classification, `n0 ≥ 2`, (3.5) | `ArithmeticPellFirstNorm.positive_parameter_solution` | open |
 | K6 | exclusion of `p = 3`, `c > 4Delta + 3`; auxiliary index odd and ≥ 5 | `ArithmeticPellResidueClasses.odd_index_of_base_dvd`, `ArithmeticPellHalfIndex.y_three` | open |
