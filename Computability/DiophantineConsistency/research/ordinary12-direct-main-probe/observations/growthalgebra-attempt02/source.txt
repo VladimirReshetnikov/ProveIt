@@ -1,0 +1,70 @@
+import DirectMainProjection
+
+/-! A coarse, conditional polynomial growth estimate. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DirectMainGrowthAlgebra
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem growth_of_square_bound (X Y w k eta : V)
+    (hX : 1≤X) (hY : 8≤Y) (hw : w≤X) (hk : (X*Y*Y)*(X*Y*Y)≤k) :
+    X+(3+4*(X*Y+Y))*w < eta+Y*k := by
+  let Q : V := X*Y*Y
+  have hXp : 0<X := lt_of_lt_of_le (by simp : (0:V)<1) hX
+  have hYp : 0<Y := lt_of_lt_of_le (by simp : (0:V)<8) hY
+  have hY2 : 2≤Y := le_trans (by norm_num : (2:V)≤8) hY
+  have hYsq : 4≤Y*Y := by
+    have h := mul_le_mul hY2 hY2 (by simp : (0:V)≤2) (by simp : (0:V)≤Y)
+    norm_num at h ⊢
+    exact h
+  have hQ4 : 4*X≤Q := by
+    calc
+      4*X=X*4 := by ring
+      _≤X*(Y*Y) := mul_le_mul_of_nonneg_left hYsq (by simp)
+      _=Q := by dsimp [Q]; ring
+  have hQsq : 16*(X*X)≤Q*Q := by
+    calc
+      16*(X*X)=(4*X)*(4*X) := by ring
+      _≤Q*Q := mul_le_mul hQ4 hQ4 (by simp) (by simp)
+  have hkY : 16*Y*(X*X)≤Y*k := by
+    have h := mul_le_mul_of_nonneg_left (le_trans hQsq hk) (show (0:V)≤Y by simp)
+    calc
+      16*Y*(X*X)=Y*(16*(X*X)) := by ring
+      _≤Y*k := h
+  have hXX : X≤X*X := le_mul_of_one_le_right (by simp) hX
+  have hYXX : Y*X≤Y*(X*X) := mul_le_mul_of_nonneg_left hXX (by simp)
+  have hYX : X*X≤Y*(X*X) := by
+    have hY1 : 1≤Y := le_trans (by norm_num : (1:V)≤8) hY
+    simpa only [one_mul] using mul_le_mul_of_nonneg_right hY1 (show (0:V)≤X*X by simp)
+  have hHw : (3+4*(X*Y+Y))*w≤(3+4*(X*Y+Y))*X := mul_le_mul_of_nonneg_left hw (by simp)
+  have ht : 0<Y*(X*X) := mul_pos hYp (mul_pos hXp hXp)
+  have hA : 4*X≤4*(X*X) := mul_le_mul_of_nonneg_left hXX (by simp)
+  have hB : 4*(Y*X)≤4*(Y*(X*X)) := mul_le_mul_of_nonneg_left hYXX (by simp)
+  have hC : 4*(X*X)≤4*(Y*(X*X)) := mul_le_mul_of_nonneg_left hYX (by simp)
+  have hUpper : X+(3+4*(X*Y+Y))*w≤12*(Y*(X*X)) := by
+    calc
+      X+(3+4*(X*Y+Y))*w≤X+(3+4*(X*Y+Y))*X := _root_.add_le_add (le_refl X) hHw
+      _=4*X+4*(Y*(X*X))+4*(Y*X) := by ring
+      _≤4*(X*X)+4*(Y*(X*X))+4*(Y*(X*X)) :=
+        _root_.add_le_add (_root_.add_le_add hA (le_refl _)) hB
+      _≤4*(Y*(X*X))+4*(Y*(X*X))+4*(Y*(X*X)) :=
+        _root_.add_le_add (_root_.add_le_add hC (le_refl _)) (le_refl _)
+      _=12*(Y*(X*X)) := by ring
+  have hStrict : 12*(Y*(X*X))<16*(Y*(X*X)) := by
+    calc
+      12*(Y*(X*X))<12*(Y*(X*X))+4*(Y*(X*X)) :=
+        lt_add_of_pos_right _ (mul_pos (by simp) ht)
+      _=16*(Y*(X*X)) := by ring
+  calc
+    X+(3+4*(X*Y+Y))*w≤12*(Y*(X*X)) := hUpper
+    _<16*(Y*(X*X)) := hStrict
+    _=16*Y*(X*X) := by ring
+    _≤Y*k := hkY
+    _≤eta+Y*k := by simp
+
+#print axioms DirectMainGrowthAlgebra.growth_of_square_bound
+end DirectMainGrowthAlgebra

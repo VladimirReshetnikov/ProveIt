@@ -1,0 +1,5 @@
+# Conditional coarse growth estimate
+
+`DirectMainGrowthAlgebra.growth_of_square_bound` proves in every IΣ₁ model that `X≥1`, `Y≥8`, `w≤X`, and `(X*Y*Y)²≤k` imply `X+(3+4*(X*Y+Y))*w < eta+Y*k`. This is an algebraic implication with an explicit square-bound hypothesis; it does not establish the bound for graph zeros.
+
+Attempt 01 failed to discharge an arithmetic simplification and a nonlinear tactic; it is retained. Attempt 02 replaces that tactic with explicit monotone inequalities and passed without reported warnings. Source SHA-256 is `c8fc2d246ef25c2f7f9dd2cc905ceec0d91926309dc7d7cf60a2d321d443a940`, output object is `7859903f35db31c6a4f2cc2ba4ac8a072ffbfec1cd43b3bd7be4b5ce8a144f75`, and the axiom report lists `propext`, `Classical.choice`, and `Quot.sound`. The projection object and selected 1,291-object union were pinned and rechecked. Package, dynamic, and source-to-object ancestry remain inherited rather than freshly rebuilt; resource samples and exact pins are in the receipt, and temporary paths may disappear.
