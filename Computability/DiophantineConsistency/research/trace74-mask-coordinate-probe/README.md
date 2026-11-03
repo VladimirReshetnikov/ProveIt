@@ -48,8 +48,9 @@ Thus, when the source has `alpha=0`, its output coordinates meet the boundary
 `F+C=q`; no suitable source for the fixed BFS tuple has been established.
 A separate [finite seed](../trace74-boundary-31-seed/README.md)
 meets the relevant displayed arithmetic conditions at arbitrary ports where
-the guard fails for the source valuation. The checked theorem has not been
-specialized to that seed, and its ports do not satisfy the fixed BFS tuple.
+the guard fails for the source valuation. Its standard-natural Pell data have
+since been used in a [checked seed-specific specialization](../trace74-boundary-seed-specialization-rebuild/README.md),
+which still assumes the necessary model facts; its ports do not satisfy the fixed BFS tuple.
 Neither result establishes a trace74/trace75 inequivalence or an iPRA endpoint.
 
 A further [parametric specialization](../trace74-boundary-seed-parametric-rebuild/README.md)
@@ -64,9 +65,10 @@ The [standard-natural Pell interval](../trace74-boundary-natural-seed-rebuild/RE
 the [generic cast transfer](../trace74-boundary-generic-cast-transfer-rebuild/README.md)
 and the [generic model assembly](../trace74-boundary-generic-assembly-rebuild/README.md)
 have since passed guarded Lean checks and independent audits. The model
-assembly still requires its explicit natural Pell, subtraction-cast,
-coordinate, positivity, phase, exponential and growth hypotheses. It has not
-yet been specialized to a fully certified concrete zero.
+assembly retains its explicit natural Pell, subtraction-cast, coordinate,
+positivity, phase, exponential and growth hypotheses. The seed-specific client
+discharges the finite Pell equations using the certified slacks, but its model
+facts remain assumptions. No fully certified concrete zero has been obtained.
 
 The `coefficient_binding` object, including the tuple description and all
 compressed/raw hashes, is copied verbatim from the pinned 75-row JSON. Its
