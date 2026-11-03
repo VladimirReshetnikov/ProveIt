@@ -19,6 +19,16 @@ the high port. A [source review](reviews/compact44-symbolic-model-unconditional-
 checks the final join, with disclosed overlap in authorship and without a
 fresh replay or complete ancestry audit.
 
+A [12-variable, 94-operation variant](research/ordinary12-sum-of-squares-candidate/README.md)
+replaces the final unit-factor product with a sum of three residual squares.
+Lean checks same-valuation zero equivalence to the 95-operation expression in
+every IΣ₁ model, and a separate [model client](research/ordinary12-sum-squares-model-bridge/README.md)
+checks both positive-coordinate and shifted byte-recipe zero iff internal
+halt. An external exact-degree check gives 84, versus the parent's stated 70;
+94 counts the unshifted positive-coordinate evaluator, not the separate
+`x+1` substitutions. The JSON/source and file/PDF correspondence remain
+external, and an iPRA derivation for this variant is not yet established.
+
 This is not yet an iPRA endpoint for that graph. A separately checked
 [generic positive-model adapter](research/ordinary12-ipra-bridge/positive-model-ipra-adapter-prototype/README.md)
 cannot yet be combined with it because their selected object providers
@@ -60,8 +70,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage106/README.md)
-has rebuilt its first 110 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage131/README.md)
+has rebuilt its first 135 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
 separately source-pinned, exact-warning baselines. Stage 95's initial
