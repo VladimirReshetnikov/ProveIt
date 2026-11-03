@@ -1,5 +1,7 @@
 # Draft AQ28, AQ27 and AQ26 model and native bridges
 
+**Promoted (3 November 2026).** The Lean files of this directory were copied byte for byte into `Lean/DiophantineConsistency/` and built there against current sources; see the [promotion record](../../reviews/aq22-28-current-source-promotion/README.md). The tree copies are now canonical; the copies here are retained as the audited historical inputs.
+
 These generated source drafts follow the existing AQ29 pattern: decompose each literal into a sum of squared residuals, project away the deleted positive coordinate, reconstruct it using the defining expression, transport each residual via substitution, and assemble the fixed-port native bridge. AQ28 reconstructs `mainScaleVariable²`; AQ27 reconstructs `ellVariable * (ellVariable + eta + zeta)`, and AQ26 reconstructs `cSquareVariable * i`. The candidate graphs and exact polynomial checks are documented separately.
 
 The corrected drafts have completed one [author-only Lean extension](../../reviews/aq26-author-trial-v2/README.md)

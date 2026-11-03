@@ -52,7 +52,12 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
-degree theorems and no global minimum is claimed.
+degree theorems and no global minimum is claimed. Since 3 November 2026 the
+tree also holds native and standard endpoints for the
+[22-variable degree-10](research/adaptive-square-sums22-degree10/equation10-22.pdf),
+[26-variable](research/adaptive-square-sums26-degree8/equation8-26.pdf),
+[27-variable](equation8-27.pdf) and 28-variable degree-8 candidates
+([promotion record](reviews/aq22-28-current-source-promotion/README.md)).
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
@@ -84,8 +89,8 @@ ring evaluations are proved equal to the generic `value` definitions. The
 statement identifying the 14-variable syntax with the accepted
 `MvPolynomial`s (a `ModelCarrierBindings` module importing the
 Foundation-free [`ModelCarrierSyntax`](Lean/DiophantineConsistency/ModelCarrierSyntax.lean))
-is drafted but not yet built or committed, and the analogous 13-variable
-bindings are not yet written.
+is [`ModelCarrierBindings`](Lean/DiophantineConsistency/ModelCarrierBindings.lean)
+(built, `97c0c77cc4`). The analogous 13-variable bindings are not yet written.
 
 **Nine unknowns (2 November 2026).** The 9-variable equation of
 [EXPLICIT_EQUATION.md](EXPLICIT_EQUATION.md) now has native, standard and
@@ -174,7 +179,12 @@ separate author-only historical run and independent artifact audit; the
 standard-theory 26-variable client also has one author run and an audit. A
 later historical paired run included these endpoints and the 22-variable model
 transport and native and standard endpoints, matching all 37 added modules.
-Its independent complete-result audit passed. The
+Its independent complete-result audit passed. On 3 November 2026 these
+22-, 26-, 27- and 28-variable endpoints, together with the standard AQ26 and
+AQ29 clients, were [promoted byte for byte into the Lean tree](reviews/aq22-28-current-source-promotion/README.md)
+(35 modules) and built there against current sources. Each named endpoint
+reports only `propext`, `Classical.choice` and `Quot.sound`. This is an
+author build, not a paired replay. The
 40-variable candidate's model and native transports have an
 [incremental author-side build](reviews/adaptive-qm40-native-incremental-author/README.md);
 its [standard-presentation client](research/ipra-standard-qm40/author-rebuild/README.md)

@@ -1,5 +1,7 @@
 # AQ22 native transport: development drafts
 
+**Promoted (3 November 2026).** The Lean files of this directory were copied byte for byte into `Lean/DiophantineConsistency/` and built there against current sources; see the [promotion record](../../reviews/aq22-28-current-source-promotion/README.md). The tree copies are now canonical; the copies here are retained as the audited historical inputs.
+
 This directory develops the 22-positive-variable degree-10 graph in
 `../adaptive-square-sums22-degree10/candidate.json`. A historical guarded
 author run has compiled the native and standard iPRA endpoints and passed an

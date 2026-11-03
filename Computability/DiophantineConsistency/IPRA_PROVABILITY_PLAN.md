@@ -1277,7 +1277,10 @@ its separate paired Lean replay remains open. The
 reductions have finite exact residual and degree checks. Their Lean model
 transports and native endpoints completed one [author-only extension](reviews/aq26-author-trial-v2/README.md)
 and passed an [independent artifact audit](reviews/aq26-author-independent-audit/README.md).
-They remain historical. The [standard-theory AQ26 client](research/ipra-standard-aq26/README.md)
+On 3 November 2026 they, the AQ22 chain and the standard AQ26/AQ29 clients
+were [promoted byte for byte into the Lean tree](reviews/aq22-28-current-source-promotion/README.md)
+and built there against current sources (35 modules, author build, clean
+named axiom reports); the historical runs below remain the paired evidence. The [standard-theory AQ26 client](research/ipra-standard-aq26/README.md)
 also completed one author-only single-overlay run and a separate artifact
 audit; the later AQ22 pair includes this entire 26-variable chain. The
 [22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md)
@@ -2649,3 +2652,24 @@ replacement for those constructive obligations: the translated bit equations,
 bounded-search correctness, and quantifier cases must all be justified in
 native iPRA. Its direct negation-normal reading of `succInd` must not be used
 as native induction, for the implication reason explained above.
+
+## Further questions: frontier equations without an iPRA endpoint
+
+Recorded 3 November 2026. Every equation with a Lean Con(ZFC) proof in the
+tree now also has native and standard iPRA endpoints in the tree. That covers
+the README's proof-status list, the CURRENT2011 carrier forms, the two
+nine-unknown equations, and AQ22–AQ40. Two groups remain outside that
+statement:
+
+- **The ordinary 12-variable, 95-operation free-J graph.** Its all-model
+  equivalence is a research prototype whose import closure has 462 prototype
+  modules; 81 module names have several competing variants. Joining that
+  equivalence to the positive-model adapter in one coherent build is the
+  active rebuild described at the top of this file.
+- **The delivered package frontier of
+  [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md).**
+  Examples are ten positive unknowns in 75 operations at degree 402
+  (package 163), and nine positive unknowns in 420 operations (package 101).
+  These have manuscript proofs and finite replays, but no Lean Con(ZFC)
+  proof, external or internal. An iPRA endpoint for any of them first
+  needs that Lean proof.

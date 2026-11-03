@@ -1,5 +1,7 @@
 # Same-language standard-iPRA AQ29 client
 
+**Promoted (3 November 2026).** The Lean files of this directory were copied byte for byte into `Lean/DiophantineConsistency/` and built there against current sources; see the [promotion record](../../reviews/aq22-28-current-source-promotion/README.md). The tree copies are now canonical; the copies here are retained as the audited historical inputs.
+
 [`IPRAStandardTheory.standardTheory`](../../Lean/DiophantineConsistency/IPRAStandardTheory.lean)
 uses the same full primitive-recursive code language as `nativeTheory`, with
 atomic Leibniz replacement instead of full formula replacement and
