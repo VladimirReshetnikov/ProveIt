@@ -3,8 +3,10 @@
 **Later status:** The 89-row graph, the bounded-port positive-zero
 equivalence, and the fixed-port all-model halt bridge have since been checked;
 see [the absorbed graph record](../ordinary12-absorb89-probe/README.md).
-An iPRA join and formal display binding remain separate. The text below records
-the earlier speculative state and the useful first-factor counterexamples.
+The 89-row [iPRA join](../ordinary12-absorb89-ipra-join/README.md) has also
+passed with an independently audited receipt. Formal display binding remains
+separate. The text below records the earlier speculative state and the useful
+first-factor counterexamples.
 
 The 90-row expression contains the first-root segment
 

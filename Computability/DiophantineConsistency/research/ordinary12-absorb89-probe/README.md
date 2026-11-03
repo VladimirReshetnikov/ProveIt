@@ -1,6 +1,6 @@
 # Speculative first-root absorption
 
-`Absorb89Graph.lean` defines a draft by absorbing the direct graph's `+s` into the witness r. Its checked commutative-ring lemmas compare all three residuals under the forward assignment `rPrime=r+s`. The external digest-pinned DAG check in `check-dag.py` finds 89 live operations: 50 multiplications, 22 additions and 17 subtractions. Its observation is in `observations/dag-attempt01/`. A later [existence-equivalence join](EQUIVALENCE.md) establishes both model-level directions at bounded ports, and a [fixed-port join](HALT.md) relates the 89 graph's positive, shifted and byte-port forms to the machine's internal halt predicate. The latter inherits its documented combined-provider ancestry limits. PDF binding and iPRA proof-existence require separate checks.
+`Absorb89Graph.lean` defines a draft by absorbing the direct graph's `+s` into the witness r. Its checked commutative-ring lemmas compare all three residuals under the forward assignment `rPrime=r+s`. The external digest-pinned DAG check in `check-dag.py` finds 89 live operations: 50 multiplications, 22 additions and 17 subtractions. Its observation is in `observations/dag-attempt01/`. A later [existence-equivalence join](EQUIVALENCE.md) establishes both model-level directions at bounded ports, and a [fixed-port join](HALT.md) relates the 89 graph's positive, shifted and byte-port forms to the machine's internal halt predicate. The [iPRA endpoint](../ordinary12-absorb89-ipra-join/README.md) now has an independently audited author build with the stated provider limits. Formal PDF binding remains separate.
 
 `Absorb89First.lean` proves an actual draft output zero implies its first residual zero and exact scaled first norm in every IΣ₁ model, for arbitrary natural ports and without positivity. `Absorb89FirstQuotient.lean` adds a positive first root and its Pell equation assuming `J*beta>0`. Both theorem statements include the exact expressions. These are graph-specific first-factor results, not the missing reverse transformation.
 
@@ -18,8 +18,8 @@ an actual graph zero has such an index, in fact at least 13, under the stated
 fixed-port bounds. The [positive-branch theorem](POSITIVE_BRANCH.md) joins
 these results and derives the required witness bound. The separate
 [existence-equivalence join](EQUIVALENCE.md) combines both branches with the
-forward and inverse witness maps; it does not yet imply an 89-operation iPRA
-endpoint without the fixed-port and adapter joins.
+forward and inverse witness maps. Subsequent fixed-port and adapter joins now
+establish the iPRA endpoint subject to the recorded provider limits.
 
 The guarded graph, first and quotient attempts all exited 0 without reported warnings. The first-norm source locally suppresses unused-variable and unused-simp-argument linters; those classes were not checked. Source/object SHA-256 pairs are:
 

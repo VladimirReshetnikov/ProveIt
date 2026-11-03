@@ -110,9 +110,12 @@ preserves the full graph output in the negative branch. Their
 now proves that the 89- and 90-row graphs have positive zeros in the same
 IΣ₁ models under those port bounds. An [independent receipt audit](reviews/ordinary12-absorb89-equivalence-independent/README.md)
 checks the theorem scope and selected provider without replaying Lean. A subsequent [fixed-port halt bridge](research/ordinary12-absorb89-probe/HALT.md)
-checks the positive, shifted and byte-port forms, but does not authenticate
-the full serialized ancestry of the combined roots. The iPRA join remains
-separate. A [base-10 decimal display](research/ordinary12-absorb89-decimal-display/README.md)
+checks the positive, shifted and byte-port forms. A guarded [iPRA join](research/ordinary12-absorb89-ipra-join/README.md)
+now proves the standard and equality-only equivalences for the shifted Lean
+byte-port graph, and an [independent receipt audit](reviews/ordinary12-absorb89-ipra-join-independent/README.md)
+has passed without an independent Lean replay. Package-transitive, dynamic,
+and complete historical source-to-object ancestry remain inherited. A
+[base-10 decimal display](research/ordinary12-absorb89-decimal-display/README.md)
 externally checks the 89 rows, coefficient payloads and exact degree 172;
 there is no Lean parser or theorem about the TeX or PDF.
 

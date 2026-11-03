@@ -19,9 +19,11 @@ The 89/90 positive-zero existence equivalence has been checked in the stated
 IΣ₁ models under the port bounds and independently reviewed in
 `../../reviews/ordinary12-absorb89-equivalence-independent/`. An author
 fixed-port model halt bridge is recorded in `../ordinary12-absorb89-probe/HALT.md`.
-An 89-operation iPRA endpoint is a separate task. There is no Lean parser or
-file theorem binding this TeX or PDF to the Lean expression; the display
-checks below are external transcription checks.
+The shifted Lean byte-port graph has a guarded [iPRA endpoint](../ordinary12-absorb89-ipra-join/README.md),
+whose receipt passed independent audit without another Lean replay. There is
+no Lean parser or file theorem binding this TeX or PDF to the Lean expression;
+the display checks below are external transcription checks. Package-transitive,
+dynamic and full historical source-to-object ancestry remain inherited.
 
 Run `python3 -I -S -B generate.py --output build01` and similarly for a new
 `build02`. The retained fresh builds have byte-identical TeX and PDF. The
