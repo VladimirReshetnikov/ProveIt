@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+"""No-Lean pin and elementary arithmetic checks for symbolic K source review."""
+import hashlib,json,os,pathlib,sys
+if not __debug__ or not sys.flags.isolated or not sys.flags.no_site or os.environ.get('PYTHONOPTIMIZE'):raise RuntimeError('isolated nonoptimized Python required')
+P=pathlib.Path;root=P.cwd();p=root/'Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-sparse-k-bound-exploration';H=lambda q:hashlib.sha256(P(q).read_bytes()).hexdigest();t=json.loads((p/'terminal-observation.json').read_bytes());names=['SparseAggregateBasic','SparseFamilyMass','AbstractKernelMass','KernelWeightMass','SparseCountBound','KernelTermBounds','KernelCoefficientBound','KernelDigitsBounded'];assert [x['module'] for x in t['successful_sessions']]==names and t['all_successful_outer_and_compiler_exits']==0
+for name in names:
+ assert H(p/(name+'.lean'))==t['source_sha256'][name] and H(p/'observations'/(name+'.log'))==t['successful_logs_sha256'][name]
+family=p.parent/'compact44-sparse-k-family-exploration'
+for name,sha in [('SparseRadix','1e9f64186090cc13c77c8f704ff0291928e35700390833c70333e5fc386f65fa'),('AbstractSparseFamily','5ff6042e731a4ebb0ae76438d2ef74a5f1e67166f6c191bca53d10054dbf91bc'),('ConcreteSparseKernel','bf6acf6496295962f2be177aa6ae5aa214f3c66cc01da283daa81226172ae4aa'),('ConcreteSparsePositions','a68ce275d9a3452599c1702960b4ca253f3618d557822f5dfdecd680f817a9f2'),('ConcreteSparseDigits','393741cbbc1004843310ea66629ca2a6901e7145d606d920bdb6944f2f57b4dc')]:assert H(family/(name+'.lean'))==sha
+assert H(p.parent/'compact44-symbolic-kernel-param-prototype/CompactSymbolicKernelOpaque.lean')=='fbef8642de957bb39493607cb67edda418f53332af5a92ee594a2a437241e0b8'
+log=(p/'observations/KernelDigitsBounded.log').read_text();names2=['kernel_digit','kernel_lt','rho_digit'];assert log==''.join("'KernelDigitsBounded."+n+"' depends on axioms: [propext, Classical.choice, Quot.sound]\n" for n in names2)
+r=json.loads((p/'observations/final-bounded02.stdout').read_bytes());assert r['module']=='KernelDigitsBounded' and r['compiler_exit']==r['deps_exit']==0 and r['reason'] is None and r['source_sha256']==H(p/'KernelDigitsBounded.lean') and r['log_sha256']==H(p/'observations/KernelDigitsBounded.log')
+assert 4+2*943+2*41+1==1973;bound=1973*(2**51+1);radix=2**67;assert bound<radix
+print(json.dumps({'status':'PASS_NO_LEAN_SYMBOLIC_K_SOURCE_REVIEW','reviewed_commit':'e8f302285a','final_source_sha256':H(p/'KernelDigitsBounded.lean'),'coefficient_bound_source_sha256':H(p/'KernelCoefficientBound.lean'),'terms_source_sha256':H(p/'KernelTermBounds.lean'),'final_log_sha256':H(p/'observations/KernelDigitsBounded.log'),'term_count':1973,'coarse_coefficient_bound':bound,'radix_lower_bound':radix,'lean_launched':False,'scope':'Source-level and recorded-log review; natural paramKernel only, author-only provider, no retained kernel/byte identity, model or internal PRA theorem.'},indent=2,sort_keys=True))
