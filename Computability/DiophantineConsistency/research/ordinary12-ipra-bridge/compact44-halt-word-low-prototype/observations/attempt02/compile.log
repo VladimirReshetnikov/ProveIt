@@ -1,0 +1,33 @@
+/tmp/compact44-halt-word-low-author-noruqyuy/CompactHaltWordLow.lean:40:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dig (67 * 8807) (bsum (67 * 8807) (fun t => normalizedCell (haltRow T t) 0) (haltLength T)) j
+in the target expression
+  dig (67 * 8807) (bsum (67 * 8807) (cellWord (haltRow T) fun x => 0) (haltLength T)) j = packedCell (haltRow T j) 0
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+T : V
+hT : ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0
+this✝¹ : 𝚺₁-Function₁ fun x => 0 := of_eq_true (HierarchySymbol.DefinableFunction.const._simp_1 0)
+h :
+  (𝚺₁-Function₁ haltRow T) ∧
+    CompactWord (haltRow T) (haltLength T) (haltStride T) ∧
+      (1 ≤ haltPacked T fun x => 0) ∧
+        (haltPacked T fun x => 0) < Exp.exp (67 * 8807 * haltLength T) ∧
+          (∀ k < 8807 * haltLength T, dig 67 (haltPacked T fun x => 0) k ≤ 1) ∧
+            (∀ j < haltLength T,
+                ∀ (i : Fin 943),
+                  dig 67 (haltPacked T fun x => 0) (8807 * j + ↑↑i) =
+                    CompactWordCellClient.wordSelector (haltRow T) i j) ∧
+              (∀ j < haltLength T,
+                  ∀ (i : Fin 41),
+                    dig 67 (haltPacked T fun x => 0) (8807 * j + ↑(CompactSymbolicKernel.position i)) =
+                      CompactWordCellClient.wordPayloadBit (haltRow T) i j) ∧
+                ∀ j < haltLength T, dig 67 (haltPacked T fun x => 0) (8807 * j + 1063) = 0 % 2
+this✝ : 𝚺₁-Function₁ haltRow T := h.left
+this : 𝚺₁-Function₁ fun t => normalizedCell (haltRow T t) 0 := word_definable (haltRow T) fun x => 0
+hw : CompactWord (haltRow T) (haltLength T) (haltStride T)
+j : V
+hj : j < haltLength T
+⊢ dig (67 * 8807) (bsum (67 * 8807) (cellWord (haltRow T) fun x => 0) (haltLength T)) j = packedCell (haltRow T j) 0
+'CompactHaltWordLow.halt_word_low' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
