@@ -325,6 +325,22 @@ checks these phase and carry receipts and their stated witness and port boundari
 it does not replay Lean or establish the complete decoder.
 A [support/carry join](research/ten-positive-80-support-carry-prototype/README.md)
 adds the compact support and Boolean digit facts at the same length. A
+[parity join](research/ten-positive-80-simple-parity-prototype/README.md)
+derives both compact anchor-column carry parities, and a separate
+[clean-carry theorem](research/ten-positive-80-clean-carry-prototype/README.md)
+finds a band position with zero incoming carry and an exact output digit.
+These are guarded author checks, with no independent Lean replay; full window
+decoding and machine soundness remain open.
+A [half-binomial join](research/ten-positive-80-half-binomial-prototype/README.md)
+obtains the identity at the actual graph rank under the beta bounds, without
+assuming fixed symbolic ports or a radix exponent. The generic
+[shared-floor lemma](research/ten-positive-pell-sandwich-floor-prototype/README.md)
+retains a scaled sandwich's small remainder. A subsequent
+[fresh-interval theorem](research/ten-positive-80-fresh-interval-prototype/README.md)
+uses it to prove the unscaled Pell pair lies strictly between consecutive
+multiples of the actual graph's Y, at the same rank. This does not identify
+the fresh ordinate with the graph's scaled ordinate.
+A
 [fresh unscaled auxiliary theorem](research/ten-positive-80-fresh-auxiliary-prototype/README.md)
 uses the phase to construct source-side Pell witnesses without identifying
 them with the graph's scaled ordinate. The full compact window, source graph
@@ -333,7 +349,8 @@ zero and machine theorem are not yet established.
 A [signed-V orientation theorem](research/ten-positive-80-v-positive-prototype/README.md)
 derives positivity of the 80 graph's signed `V` from an actual zero under
 positive beta and low/high port bounds, without assuming beta oddness. The
-rank phase, machine decoding and iPRA endpoint remain open.
+rank phase follows under the symbolic fixed ports as described above; machine
+decoding and the iPRA endpoint remain open.
 After power recovery, an [unweighted projection](research/ten-positive-80-projection-product-prototype/UNWEIGHTED.md)
 derives `H ∣ Kpos` directly from the Pell norm, without canceling `b` or the
 power, and obtains a positive natural quotient under the same port bounds.

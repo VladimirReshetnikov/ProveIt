@@ -1,0 +1,5 @@
+# Compact anchor-column parity for the 80 graph
+
+`Direct80SimpleParity.graph_simple_parity` derives the two compact anchor-column carry parities and incoming-carry bounds from the actual positive 80 graph at the four explicit symbolic port equalities. It joins indexed carry, support, and high-mask no-carry at the same radix length, with N equality proved by internal exponential injectivity. The conclusion is the graph-level analogue of the preexisting 12-variable simple-parity stage; the occupied anchor and temporal phase remain open.
+
+The first attempt failed from a missing namespace and is retained. Fresh guarded author `observations/simpleparity-attempt02/` exited 0 without diagnostics with axioms `propext`, `Classical.choice`, `Quot.sound`; object `/tmp/tenpositive-80simpleparity-o0teo3s_/Direct80SimpleParity.olean` SHA-256 `a79cb1a6e2d0d30a9aa9d3b62158a63b5dac4dfdfcd92fc1af7db64424fb5e4e`. The selected object hashes and resource samples are recorded, with inherited source/object, package and dynamic-ancestry limits and no independent Lean replay. This is not full window decoding, machine halt, converse, iPRA, or external-payload/PDF binding.
