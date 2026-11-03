@@ -430,7 +430,10 @@ A [field-slice theorem](research/direct-bfs-lean-field-slices-prototype/README.m
 and [graph tile-matching join](research/direct-bfs-80-tile-match-prototype/README.md)
 then derive cyclic horizontal and aligned temporal vertical edge matching
 for that direct-table word under explicit symbolic ports. This is not yet
-the model-level color/machine interpretation, converse, iPRA or file binding. An
+the model-level color/machine interpretation, converse, iPRA or file binding.
+An [independent edge audit](reviews/direct-bfs-field-slices-tile-match-independent/README.md)
+checks the same N,W,s, selected indices and eight direct imports without a
+Lean replay; it does not assert `s>0` or boundary/machine behavior. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
