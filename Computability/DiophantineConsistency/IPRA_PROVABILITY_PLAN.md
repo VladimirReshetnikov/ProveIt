@@ -62,6 +62,15 @@ binding. The [proposed iPRA client](research/ordinary12-qcube92-ipra-endpoint-dr
 has not yet been compiled. A [standalone decimal display](research/ordinary12-qcube92-decimal-display/README.md)
 has external checks of all 92 rows, fixed-coefficient recipes and selector
 blocks; these do not constitute a Lean theorem about the PDF.
+
+A proposed [91-operation graph](research/ordinary12-xq91-candidate/README.md)
+replaces another positive witness `X` by `q w` and factors two expressions.
+The [independent graph and degree audit](reviews/ordinary12-xq91-independent/README.md)
+checks all live rows and gives an external exact degree of 172. A bounded
+Lean check establishes the [three residual identities](research/ordinary12-xq91-candidate/ALGEBRA.md)
+over arbitrary commutative rings. The proposed converse witness map relies on
+the stronger fixed-port `compact_graph_alignment` theorem; its positive-zero
+model join and any internal iPRA endpoint are not yet checked.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
@@ -109,8 +118,10 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage272-warning-retry/README.md)
-has rebuilt its first 272 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage276-source-retry/README.md)
+has rebuilt its first 276 of 425 modules. A missing declaration in a
+historical provider required a checked local source repair at stage 276;
+similar later references and inherited provider freshness remain open. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
 separately source-pinned, exact-warning baselines, with further baselines at
