@@ -1,0 +1,28 @@
+/tmp/pell-all-index-fold-3sp4i9br/PellFold.lean:17:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1 + 2 * delta b * ycoord n b * ycoord n b + 1
+in the target expression
+  (1 + 2 * delta b * ycoord n b * ycoord n b) * ycoord t b + 2 * xcoord n b * ycoord n b * xcoord t b + ycoord t b =
+    2 * xcoord n b * ycoord (n + t) b
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+n t b : V
+⊢ (1 + 2 * delta b * ycoord n b * ycoord n b) * ycoord t b + 2 * xcoord n b * ycoord n b * xcoord t b + ycoord t b =
+    2 * xcoord n b * ycoord (n + t) b
+/tmp/pell-all-index-fold-3sp4i9br/PellFold.lean:59:4: error: Tactic `assumption` failed
+
+case inr
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+n r b : V
+hr : r ≤ 2 * n
+hp : 0 < xcoord n b
+key : ∀ u ≤ n, ycoord (2 * n - u) b % xcoord n b = ycoord u b % xcoord n b
+h : n ≤ r
+hsub : 2 * n - r ≤ n
+hh : ycoord r b % xcoord n b = ycoord (2 * n - r) b % xcoord n b
+⊢ ycoord (2 * n - r) b % xcoord n b = ycoord r b % xcoord n b
+'TenPositivePellFold.y_antiperiod_blocks' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'TenPositivePellFold.y_reflected_mod' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
