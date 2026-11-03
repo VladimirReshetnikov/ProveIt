@@ -58,8 +58,9 @@ that union, passed the actual outer exit, and received an independent result
 audit. It establishes the named native, standard and equality-only
 proof-existence statements for the fixed symbolic expression, with mapped
 refutation negation or the selected translated consistency sentence. Four
-affected baseline objects, other unrebuilt ancestry and package/dynamic inputs
-remain inherited. The [decimal display](../trace75-bfs-decimal-display/README.md) has
+affected baseline objects have a separate [direct-producer audit](../trace75-baseline-four-provenance/README.md);
+their upstream transitive ancestry, other unrebuilt ancestry and package/dynamic
+inputs remain inherited. The [decimal display](../trace75-bfs-decimal-display/README.md) has
 external graph, coefficient, source-transcription and exact-degree checks,
 not Lean semantics for external files.
 

@@ -44,8 +44,10 @@ polynomial; it does not replay Lean.
 
 The fixed-port iPRA proof-existence clients for the corresponding Lean graph
 have since passed the [compatible-provider final assembly](../trace75-bfs-ipra-final-assembly-plan/RUNNER.md)
-and its independent result audit. That assembly retains the documented
-historical and outside ancestry limits. This standalone display's connection to
+and its independent result audit. The four retained baseline objects also have
+a [direct-producer audit](../trace75-baseline-four-provenance/README.md); their
+upstream and other historical and outside ancestry remain inherited. This
+standalone display's connection to
 those Lean statements is through the external checks above, not a Lean theorem
 about file semantics. It does not replace the maintained root `equation.tex`
 and `equation.pdf`.

@@ -28,9 +28,11 @@ native, standard and equality-only iPRA proof-existence statements have now
 passed a [five-stage final assembly](research/trace75-bfs-ipra-final-assembly-plan/RUNNER.md)
 on the compatible trace, reverse and forward provider, with an independent
 result audit. The statements use the selected mapped native refutation
-negation or the Gödel–Gentzen-translated consistency sentence. Four retained
-baseline source ancestries, other unrebuilt ancestry, package/dynamic inputs
-and formal external-file semantics remain outside those checks. The maintained root equation is
+negation or the Gödel–Gentzen-translated consistency sentence. The four
+retained baseline objects have a separate [direct-producer audit](research/trace75-baseline-four-provenance/README.md);
+their upstream transitive ancestry, other unrebuilt ancestry, package/dynamic
+inputs and formal external-file semantics remain outside those checks. The
+maintained root equation is
 unchanged. See the [trace75 plan](research/ten-positive-ipra/PLAN.md) for the
 current proof boundary.
 
