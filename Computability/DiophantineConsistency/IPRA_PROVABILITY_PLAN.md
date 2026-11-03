@@ -108,8 +108,8 @@ uses that index to prove the absorbed witness exceeds `s`; a separate
 preserves the full graph output in the negative branch. Their
 [existence-equivalence join](research/ordinary12-absorb89-probe/EQUIVALENCE.md)
 now proves that the 89- and 90-row graphs have positive zeros in the same
-IΣ₁ models under those port bounds. This is an author-selected provider check;
-independent review remains separate. A subsequent [fixed-port halt bridge](research/ordinary12-absorb89-probe/HALT.md)
+IΣ₁ models under those port bounds. An [independent receipt audit](reviews/ordinary12-absorb89-equivalence-independent/README.md)
+checks the theorem scope and selected provider without replaying Lean. A subsequent [fixed-port halt bridge](research/ordinary12-absorb89-probe/HALT.md)
 checks the positive, shifted and byte-port forms, but does not authenticate
 the full serialized ancestry of the combined roots. The iPRA join remains
 separate.
