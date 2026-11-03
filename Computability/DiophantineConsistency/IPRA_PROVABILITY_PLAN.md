@@ -512,7 +512,9 @@ and [temporal carry](research/direct-bfs-temporal-constructed-carry-prototype/RE
 clients provide the direct cyclic product-carry inputs from explicit word
 bounds, without assuming carry vanishes. A [Boolean stencil theorem](research/direct-bfs-stencil-zero-carry-prototype/README.md)
 proves zero cyclic carry when its explicit Boolean-family and carry-input
-premises hold; graph or packing instances remain separate;
+premises hold; an [aligned-word join](research/direct-bfs-aligned-zero-carry-prototype/README.md)
+now establishes zero carry for the constructed direct-BFS word and temporal
+term. It does not by itself discharge the six open high-mask phases;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
