@@ -487,8 +487,9 @@ assumptions. A [direct kernel bound](research/direct-bfs-kernel-bound-prototype/
 now proves the symbolic kernel is below the stated power without expansion;
 a [cell-product client](research/direct-bfs-cell-product-prototype/README.md)
 uses it and the cell bound to prove the conditional `hi_lt` field for a
-non-forbidden normalized cell. Global cell sums and high-mask fields remain
-separate. An
+non-forbidden normalized cell. A [four-field adapter](research/direct-bfs-four-fields-packing-prototype/README.md)
+discharges that product field while retaining explicit cell/block sum, origin
+and both high-mask assumptions. Global calibration remains separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
