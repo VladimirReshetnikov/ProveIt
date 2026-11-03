@@ -355,9 +355,12 @@ a marked word and for Boolean pulses supported away from zero. The
 constructs the cyclic carry input from the packed word with an explicitly
 bounded temporal term; a [temporal-rotation client](research/ordinary12-ipra-bridge/compact44-word-temporal-carry-prototype/README.md)
 derives that term from the word for the exact `(K+2^e)` product. These are
-model-level components; the remaining product/high-mask and other packing
-conditions, graph-zero construction and iPRA endpoint remain separate
-obligations.
+model-level components. The [product-size bound](research/ordinary12-ipra-bridge/compact44-cell-product-bound-prototype/README.md)
+now discharges the kernel-product field for valid base and pulsed cells; the
+[chosen-rank client](research/ordinary12-ipra-bridge/compact44-word-rank-four-fields-prototype/README.md)
+uses it while retaining four base and universally quantified pulsed block and
+high-mask fields. Those fields, graph-zero construction and the iPRA endpoint
+remain separate obligations.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
