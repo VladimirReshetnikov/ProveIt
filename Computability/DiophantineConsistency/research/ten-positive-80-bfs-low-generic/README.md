@@ -1,0 +1,7 @@
+# Generic weighted-support low-mask identity
+
+`BFSDisplayedLowGeneric.low_recipe` proves the existing concrete-mask argument for an arbitrary natural radix `B ≥ 4`, length, special index and finite support. It assumes the support lies within the length and contains the special index, and equates the `Nat.ofDigits` low mask with `B^len − 1 − ∑(B^j) − 2*B^special`. It combines the existing generic defect identity and support expansion without expanding any large numeral.
+
+The guarded author check `observations/attempt01/` and enclosing tool session exited 0. Source SHA-256 is `4481f5c5e76c0cebd8ee4cb783c2dc77b2b3d64eb65dd32740536c8e6c9955e0`; terminal SHA-256 is `f5bb4d5395aaee39808b297edf64ef83e1e231682968576719a32c5c42e78d16`. Output `/tmp/bfs-low-generic-a45fw3m2/BFSDisplayedLowGeneric.olean` has SHA-256 `4b6de4c0f87b6185110c37cd846f119949835718e663b1bc6096a2a804e73618`. The direct `CompactConcreteMask` object and selected coherent-provider result are pinned. Full transitive source/object, package and dynamic ancestry remain inherited; no independent Lean replay is claimed.
+
+This theorem does not specialize the formula to the displayed fixed β/low mask or bind a PDF. Two attempts to make that specialization in a full iPRA client hit the 3-GiB kernel cap and are retained in `../ten-positive-80-bfs-displayed-low/observations/`. Their failure does not invalidate this generic identity.
