@@ -1,0 +1,28 @@
+/tmp/direct-main-projection-2o_d8agw/DirectMainOriented.lean:103:13: error(lean.unknownIdentifier): Unknown identifier `magnitude_equivalent`
+/tmp/direct-main-projection-2o_d8agw/DirectMainOriented.lean:97:74: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (graph (DirectMainFirst.integerPorts p)).output v
+hq : 1 ≤ 1 + v 0 * ↑(p 0)
+hgap : 0 < 1 + v 0 * ↑(p 0) - (v 1 + v 2)
+hF : v 1 ≤ 1 + v 0 * ↑(p 0)
+⊢ let b := v 0 * ↑(p 0);
+  let q := 1 + b;
+  let X := q * v 5;
+  let Y := q * (q * q) * v 6;
+  let U := Y * (q * q);
+  let k := v 8 + v 9;
+  let c := v 8 + Y * k;
+  let a := X * Y + Y;
+  let H := 3 + 4 * a;
+  let R := (v 2 + (q - v 1) * b) * (q * q - 1) + v 0 * (↑(p 2) + ↑(p 3) * q);
+  magnitude (U * (X + a * c) + H * (U * v 11 + R + 1), H * k) *
+      magnitude (U * (X + a * c) + H * (U * v 11 + R + 1), H * k) =
+    U * U * (1 + (H + a * a) * (c * c))
+'DirectMainOriented.main_root_rep' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DirectMainOriented.direct_norm' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
