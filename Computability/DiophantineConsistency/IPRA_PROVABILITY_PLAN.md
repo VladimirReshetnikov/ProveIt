@@ -191,9 +191,11 @@ ordinate. An [independent audit](reviews/ten-positive-80-indices-residue-indepen
 checks the common witness and noncircular source dependencies without replaying
 Lean. A separate [noncircular all-index recovery theorem](research/pell-all-index-recovery-prototype/README.md)
 now proves ordinate recovery in every IΣ₁ model under explicit strict size
-bounds, using internal antiperiodicity and odd-index folding. Deriving those
-bounds for the 80-row graph, machine calibration and the iPRA endpoint remain
-open.
+bounds, using internal antiperiodicity and odd-index folding. A subsequent
+[graph-specific fold](research/ten-positive-80-folding-complete-prototype/README.md)
+derives those bounds and the odd main ordinate from a positive 80-row zero,
+without assuming its main Pell norm. Rank decoding, machine calibration and
+the iPRA endpoint remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
