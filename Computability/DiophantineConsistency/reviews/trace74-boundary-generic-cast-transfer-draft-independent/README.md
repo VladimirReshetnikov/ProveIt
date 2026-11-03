@@ -1,0 +1,7 @@
+# Independent source review: generic Pell cast transfer
+
+This is a source-only review of `research/trace74-boundary-generic-cast-transfer-draft/Trace74BoundaryGenericCastTransfer.lean` SHA `0b8cec5b1d8d5cf237fdc098007d50e2da60d5db3112692949851bf536b3c824`. No Lean run or accepted theorem is asserted; the cast positivity, rewrites, numeral normalization and imported provider selection remain to be checked.
+
+For arbitrary standard naturals `x,y,eta,zeta`, the draft assumes eta and zeta positive, both natural ordinate equations, and explicitly assumes that the cast of `2*(x*y*y−1)+1` equals the corresponding model expression with model truncated subtraction. No positivity of x or y, and no derivation of that subtraction-cast equality, is asserted. It proposes the positivity of the same eta and zeta casts and both represented model ordinate equations in an arbitrary IΣ₁ model with ordered-ring structure.
+
+The first ordinate uses standard index 16 and offset `2*(x*y*y−1)+1`; the outer ordinate uses standard index 31 and offset `y*(x+1)`. These are the offsets and indices of the conditional boundary source equations. Both model equations retain the same x/y/eta/zeta tuple; the proof sketch uses the checked `xy_cast` at those standard indices and casts the assumed natural equations. No definite source-level tuple/index mismatch was found, but elaboration and normalization remain unverified. It does not instantiate the concrete finite seed, discharge the subtraction-cast premise, prove a graph zero, or address fixed ports or iPRA.
