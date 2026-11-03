@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""Generate an unverified all-window assembly from named interval lemmas."""
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+spans = [(16,17), (7890,7898), (8225,8233), (8308,8317),
+         (8392,8401), (8468,8484), (8635,8643), (8895,8920),
+         (9163,9179), (18375,18392), (27596,27613), (73751,73759)]
+imports = '\n'.join(f'import CompactLowByteBoundary{i:02d}' for i in range(1,13))
+cases = '\n'.join(
+    f'  · exact CompactLowByteBoundary{i:02d}.windows j h.1 h.2'
+    for i in range(1,13))
+disj = ' ∨\n      '.join(f'({lo} ≤ j ∧ j < {hi})' for lo,hi in spans)
+source = f'''import CompactLowByteRecipeData
+import CompactLowBytePrefix
+import CompactLowByteDense
+import CompactLowByteDenseExtra
+import CompactLowByteGaps
+import CompactLowByteTail
+import CompactLowByteBound
+import RadixWindowReconstruction
+{imports}
+
+/-! Draft: not an established result until compiled in a coherent provider. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace CompactLowByteAssembly
+open CompactLowByteRecipeData
+open CompactLowByteDense CompactLowByteDenseExtra CompactLowByteGaps
+open CompactLowByteTail
+attribute [local irreducible] bytes CompactSymbolicPorts.lowNat
+
+theorem point (j : ℕ) (hj : j < 73759) :
+    byteAt j = (CompactSymbolicPorts.lowNat / 256^j) % 256 := by
+  have hpow : (256:ℕ)^j = 2^(8*j) := by
+    rw [show (256:ℕ) = 2^8 by norm_num, ← pow_mul]
+  by_cases hp : j < 16
+  · have hv : byteAt j = CompactLowBytePrefix.firstBytes.getD j 0 := by
+      interval_cases j <;> norm_num [byteAt, denseIndex, irregularByte,
+        CompactLowBytePrefix.firstBytes]
+    rw [hv]
+    exact CompactLowBytePrefix.prefix_windows j hp
+  by_cases hd : 17 ≤ j ∧ j < 7890
+  · have hdi : denseIndex j := by unfold denseIndex; omega
+    have hj0 : j ≠ 0 := by omega
+    rw [byteAt, if_neg hj0, if_pos hdi, hpow]
+    exact (CompactLowByteDense.dense_byte j hd.1 hd.2).symm
+  by_cases he : inDenseExtra j
+  · have hdi : denseIndex j := by unfold denseIndex inDenseExtra at *; omega
+    have hj0 : j ≠ 0 := by unfold inDenseExtra at he; omega
+    rw [byteAt, if_neg hj0, if_pos hdi, hpow]
+    exact (CompactLowByteDenseExtra.extra_dense_byte j he).symm
+  by_cases hg : inGap j
+  · have hdi : ¬ denseIndex j := by unfold denseIndex inGap at *; omega
+    have hj0 : j ≠ 0 := by unfold inGap at hg; omega
+    have hv : irregularByte j = 255 := by
+      unfold irregularByte inGap at *
+      split_ifs <;> omega
+    rw [byteAt, if_neg hj0, if_neg hdi, hv, hpow]
+    exact (CompactLowByteGaps.gap_byte j hg).symm
+  by_cases ht : 27613 ≤ j ∧ j < 73751
+  · have hdi : ¬ denseIndex j := by unfold denseIndex; omega
+    have hj0 : j ≠ 0 := by omega
+    have hv : irregularByte j = 255 := by
+      unfold irregularByte
+      split_ifs <;> omega
+    rw [byteAt, if_neg hj0, if_neg hdi, hv, hpow]
+    exact (CompactLowByteTail.interior_byte j ht.1 ht.2).symm
+  have hleft : {disj} := by
+    unfold inGap inDenseExtra at *
+    omega
+  rcases hleft with h | h | h | h | h | h | h | h | h | h | h | h
+{cases}
+
+theorem all_windows (j : ℕ) (hj : j < bytes.length) :
+    bytes.getD j 0 = (CompactSymbolicPorts.lowNat / 256^j) % 256 := by
+  rw [bytes_length] at hj
+  rw [bytes_getD j hj]
+  exact point j hj
+
+theorem decode_bytes : Nat.ofDigits 256 bytes = CompactSymbolicPorts.lowNat := by
+  apply RadixWindowReconstruction.ofDigits_eq_of_windows 256 (by decide)
+  · rw [bytes_length]
+    exact CompactLowByteBound.low_lt_byte_power
+  · exact all_windows
+
+#print axioms CompactLowByteAssembly.point
+#print axioms CompactLowByteAssembly.decode_bytes
+end CompactLowByteAssembly
+'''
+(HERE/'CompactLowByteAssembly.lean').write_text(source)
+print('generated uncompiled assembly draft')
