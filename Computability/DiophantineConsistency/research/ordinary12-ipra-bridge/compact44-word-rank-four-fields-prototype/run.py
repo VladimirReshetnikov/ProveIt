@@ -38,7 +38,7 @@ PACKING_PROVIDER = Path('/tmp/ipra-compact44-symbolic-unit-join/lib')
 PROVIDER = Path('/tmp/compact44-word-rank-overlay-o4nua886')
 PACKAGE = Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib')
 LEAN = Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
-OBS = HERE / 'observations/attempt02'
+OBS = HERE / 'observations/attempt03'
 SUFFIXES = ('.olean', '.olean.private', '.olean.server', '.ir', '.ilean',
             '.olean.hash', '.olean.private.hash', '.olean.server.hash', '.ir.hash', '.ilean.hash')
 
