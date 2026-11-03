@@ -401,6 +401,10 @@ identifies all four binary payload slices with the direct table's typed edge
 labels in the stated models. A [direct occupied-orbit lemma](research/direct-bfs-lean-block-orbit-prototype/README.md)
 propagates occupancy under explicit decoder, marker and edge hypotheses; its
 binding to an actual graph zero and full tile window remain separate. An
+[independent orbit audit](reviews/direct-bfs-tile-fields-orbit-independent/README.md)
+checks the selected receipts and distinguishes the generic arbitrary-step
+orbit premise from the separately proved unit-successor step, without a Lean
+replay. An
 [marker-parity lemma](research/direct-bfs-lean-marker-parity-prototype/README.md)
 handles the direct selector family under explicit support and alignment
 assumptions. A separate axiom-free [color-bounds check](research/direct-bfs-lean-color-bounds-prototype/README.md)
