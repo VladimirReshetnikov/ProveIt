@@ -60,10 +60,13 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage66/README.md)
-has rebuilt its first 66 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage90/README.md)
+has rebuilt its first 94 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
-re-pinned and checked before continuing. The remaining stages and final
+re-pinned and checked. Later unchanged theorem interfaces required three
+separately source-pinned, exact-warning baselines. Stage 95's initial
+three-minute attempt timed out; a longer guarded retry is being evaluated.
+The remaining stages and final
 client are open. A separately checked
 [conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
 also supplies standard and equality-only iPRA conclusions for any positive
@@ -81,6 +84,12 @@ completed all 104 stages. Its [aggregate audit](reviews/nine-variable-ipra-compl
 records matching endpoint outputs and named reports but 20 differing object
 hashes and 31 differing direct-input pairs, so this is not an exact
 full-chain paired replay or a complete inherited-ancestry audit.
+An additional equal-length-root replay has reached
+[stage 86](reviews/nine-variable-ipra-equal-length-stages-82-86-overlap/README.md):
+the full prefix compares byte-for-byte after at most one equal-length source
+path substitution per object, with differing direct hashes mapped only to
+previously checked predecessors. This is not a Lean object-format theorem
+or a complete ancestry audit.
 A new guarded peer has compiled its first ten stages, with evidence for
 [stages 1–5](reviews/nine-variable-ipra-peer-first-five/README.md) and
 [6–10](reviews/nine-variable-ipra-peer-stages-six-ten/README.md). Several
