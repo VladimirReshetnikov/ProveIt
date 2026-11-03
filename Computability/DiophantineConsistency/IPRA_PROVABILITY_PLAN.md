@@ -44,7 +44,10 @@ finds a [425-module endpoint ancestor cone](research/ordinary12-ipra-bridge/comp
 unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
-source-to-object origins remain incompletely authenticated. A separately checked
+source-to-object origins remain incompletely authenticated. A fresh,
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-batch03/README.md)
+has rebuilt its first 15 of 425 modules; the remaining stages and final
+client are open. A separately checked
 [conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
 also supplies standard and equality-only iPRA conclusions for any positive
 all-model bridge; it has not been joined to the compact bridge in a coherent
@@ -64,6 +67,11 @@ objects differ in bytes: the stage-two difference is localized to a source
 pathname, while a stage-six size/layout discrepancy remains unexplained by
 any proved Lean serialization semantics. These prefixes do not establish a
 matched endpoint replay.
+The same peer has since compiled and compared
+[stages 11–15](reviews/nine-variable-ipra-peer-stages-eleven-fifteen/README.md),
+[16–20](reviews/nine-variable-ipra-peer-stages-sixteen-twenty/README.md), and
+[21–25](reviews/nine-variable-ipra-peer-stages-twentyone-twentyfive/README.md).
+These remain scoped prefix observations with some differing object bytes.
 A separate [source-evidence inspection](reviews/nine-variable-ipra-endpoint-source-evidence/README.md)
 checks the endpoint statements and the source-level expression binding; it
 does not reproduce the reported builds or interpret the document's bytes.
