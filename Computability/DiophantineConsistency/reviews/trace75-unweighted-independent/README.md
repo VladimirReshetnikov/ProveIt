@@ -1,0 +1,7 @@
+# Independent review of trace75 unweighted projection
+
+For the same arbitrary p,v in any IΣ₁ model, with model `31≤beta`, `MC<beta`, `MF<2*beta`, all ten coordinates positive and actual trace75 difference-ring zero, the checked theorem concludes `H | K` for the actual signed graph registers. K0 is arbitrary. It does not assert a natural positive quotient, machine halt, iPRA equivalence, or trace74 converse.
+
+The proof takes the exact main Pell ordinate from `graph_rank_exact` and `X=2^rankNat` from the separately reviewed GraphPower on the same p,v, uses the Pell projection quotient and norm, rewrites the actual H,K,X as required and invokes a generic unweighted ring identity. It **does not cancel h or X** from the earlier weighted divisibility. The file's “Weighted whole-product” header is stale; the theorem shown is the unweighted H|K statement.
+
+`check.py` rehashes accepted source/copies, author runner, all recorded pins, object and logs, and verifies three direct plus nearby provider paths post hoc. The report is `[propext, Classical.choice, Quot.sound]`. The historical `ModelRatioBounds` path is explicitly pinned at `fcf4152e...` and currently first-resolves to the known producer-drift object; this does not repair its historical ancestry or prove unsoundness. The receipt precedes the final diagnostic guard, which the retained logs satisfy; no separate outer runner-exit receipt exists. No independent Lean replay, compile-time resolution manifest, full historical/package/dynamic ancestry, or external graph/file binding is claimed.
