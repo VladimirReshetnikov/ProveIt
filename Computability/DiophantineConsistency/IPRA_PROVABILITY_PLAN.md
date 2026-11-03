@@ -316,7 +316,11 @@ extends the low-mask no-carry conclusion to every nonzero slot. An [independent 
 checks these witnesses and the locally compiled increment proof without a Lean
 replay. A [fixed congruence join](research/ten-positive-80-fixed-congruence-prototype/README.md)
 reconciles the digit and radix lengths and derives the transport congruence.
-The full compact window and rank phase are not yet established.
+The [rank-phase theorem](research/ten-positive-80-rank-phase-prototype/README.md)
+now derives rank `≡3 (mod 4)` under the symbolic port equalities. A separate
+[indexed-carry join](research/ten-positive-80-indexed-carry-prototype/README.md)
+reaches the generic compact carry interface with all four port equalities.
+The full compact window and machine theorem are not yet established.
 
 A [signed-V orientation theorem](research/ten-positive-80-v-positive-prototype/README.md)
 derives positivity of the 80 graph's signed `V` from an actual zero under
