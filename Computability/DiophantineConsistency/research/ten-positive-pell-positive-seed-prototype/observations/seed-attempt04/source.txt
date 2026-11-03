@@ -1,0 +1,56 @@
+import DiophantineConsistency.ArithmeticPellAuxiliarySeed
+import DiophantineConsistency.ArithmeticAdaptiveConstructionAuxPhase2011
+
+/-! Positive ordinary-factor coordinates from a phase-3 Pell seed. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositivePellPositiveSeed
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency
+open ArithmeticPellRecurrence ArithmeticPellAuxiliarySeed
+open ArithmeticAdaptiveConstructionAux2011 ArithmeticAdaptiveConstructionAuxPhase2011
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem positive_seed (a R : V) (hphase : R%4=3) :
+    let c:=ycoord R a
+    let D:=ArithmeticPellRecurrence.delta a
+    ∃ f i T u y t n : V, 1 < f ∧ 0 < i ∧ 0 < T ∧ 0 < u ∧ 0 < y ∧ 0 < t ∧ 0 < n ∧
+      f=1+t ∧ n=D*i+(y-u) ∧ (y-u)+u=y ∧
+      f*f=1+D*(i*c*c)*(i*c*c) ∧
+      f*f*c*T=u+c+f*f*R ∧
+      (D*i*c*c)*(D*i*c*c)*u*u+y*y=1+(D*i*c*c)*(D*i*c*c)*y*y := by
+  obtain ⟨f,i,T,u,y,hf,hi,hT,hu,hy,_hfx,_hyic,hstrong,hycoord,_hux,_huq,_huf,_huc,hlit,_habs,haux⟩ :=
+    auxiliary_seed a R hphase
+  let c:=ycoord R a
+  let D:=ArithmeticPellRecurrence.delta a
+  let I:=D*i*c*c
+  have hR : 0<R := (phase_indices R hphase).1
+  have hc : 0<c := lt_of_lt_of_le hR (time_le_y R a)
+  have hD : 0<D := by dsimp [D,ArithmeticPellRecurrence.delta]; exact mul_pos (by simp) (by simp)
+  have hspos : 0 < i*c*c := mul_pos (mul_pos hi hc) hc
+  have hsquare : 1<f*f := by
+    rw [hstrong]
+    exact lt_add_of_pos_right _ (mul_pos (mul_pos hD hspos) hspos)
+  have hfgt : 1<f := by
+    by_contra hn
+    have hle : f≤1 := le_of_not_gt hn
+    have hh : f*f≤1*1 := mul_self_le_mul_self (by simp) hle
+    exact (not_le_of_gt hsquare) (by simpa using hh)
+  have hy2 : 2≤y := by rw [hycoord]; exact ordinate_bound R (I-2) hphase
+  have haux' : I*I*u*u+y*y=1+I*I*y*y := haux
+  obtain ⟨hn,hny⟩ := positive_auxiliary_witness I u y hy2 haux'
+  let t:=f-1
+  let n:=D*i+(y-u)
+  have ht : 0<t := tsub_pos_iff_lt.mpr hfgt
+  have hnpos : 0<n := add_pos (mul_pos hD hi) hn
+  have htplus : f=1+t := by
+    dsimp [t]
+    have hh := tsub_add_cancel_of_le (le_of_lt hfgt)
+    simpa only [add_comm] using hh.symm
+  exact ⟨f,i,T,u,y,t,n,hfgt,hi,hT,hu,hy,ht,hnpos,htplus,rfl,hny,hstrong,hlit,haux⟩
+
+#print axioms TenPositivePellPositiveSeed.positive_seed
+end TenPositivePellPositiveSeed

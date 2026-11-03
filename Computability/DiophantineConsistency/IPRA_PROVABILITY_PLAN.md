@@ -379,8 +379,10 @@ derives the selected temporal and carry resets at the same length. These are
 author checks; complete window and machine decoding remain separate. An
 independent receipt check found that the cell-shift runner did not
 individually pin its direct `SymbolicKBandDraft.olean` import. Its post-hoc
-hash is not evidence of the compile-time bytes; corrected cell-shift and
-downstream checks are in progress. The [independent receipt review](reviews/direct-bfs-cell-and-80-source-data-independent/README.md)
+hash is not evidence of the compile-time bytes. Corrected cell-shift and
+reset author checks now pin and preflight all direct imports, and produce
+bit-identical objects; an independent v3 audit remains separate. The
+[independent receipt review](reviews/direct-bfs-cell-and-80-source-data-independent/README.md)
 records this gap and checks the source-data witness scope without replaying
 Lean. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
@@ -467,6 +469,9 @@ exposes the exact unscaled Pell data for the same witnesses to support the
 remaining construction. An [independent first/main audit](reviews/ten-positive-80-to-90-first-main-independent/README.md)
 checks selected receipts, same-witness scope and the BFS occupancy client
 without replaying Lean. The ordinary factor and whole graph remain open.
+A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
+constructs the needed positive Pell coordinates from an explicit rank phase;
+it has not yet been bound to the same source graph valuation.
 A separate [receipt audit](reviews/direct-bfs-raw-column-positive-transport-independent/README.md)
 records the coefficient-decoder import-pin gap and the positive transport
 scope; it does not replay Lean.
