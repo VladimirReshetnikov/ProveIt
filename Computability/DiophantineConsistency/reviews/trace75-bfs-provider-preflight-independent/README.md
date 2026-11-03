@@ -1,0 +1,5 @@
+# Independent review: trace75 / BFS namespace overlap
+
+`check.py` re-enumerated and rehashed all 997 `.olean` names currently shared by the fixed-congruence overlay and the BFS coherent union. Exactly five differ: `ModelRatioBounds`, `ArithmeticNegativeNorms`, `ArithmeticCarrierRadix2011`, `ArithmeticWindowInterface`, and `ArithmeticCarrierSoundness2011`. It rechecked each captured object's path, symlink, resolved target, SHA-256 and companion presence/metadata, plus the pinned BFS replay receipt. The independent output, including both hashes for all five, is in `result.txt`.
+
+These are current overlapping namespace files, not evidence that either candidate is in a particular root's serialized ancestry or that a combined search order is safe. The comparison does not determine source compatibility, prove an import conflict or soundness defect, verify producer-time selection, replay Lean, establish package/dynamic provenance, or prove a machine-halt or iPRA theorem. The separate historical `ModelRatioBounds` producer-drift limitation remains.
