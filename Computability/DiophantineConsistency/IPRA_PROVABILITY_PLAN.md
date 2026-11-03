@@ -565,7 +565,10 @@ checks these same-witness assumptions and selected phase receipts without
 replaying Lean. A [canonical halt-packing client](research/direct-bfs-halt-canonical-packing-prototype/README.md)
 now derives the direct packing family from internal halt under three explicit
 scalar mask bounds, keeping one row and geometry for all admissible dummies.
-Calibrated rank and graph witnesses remain separate;
+Calibrated rank and graph witnesses remain separate. A [controller residue check](research/direct-bfs-controller-residue-audit/README.md)
+externally confirms that the BFS kernel's residue differs from the original
+kernel's, while its candidate Γ residue is a unit. Neither this arithmetic nor
+the BFS file-to-symbolic identity is yet a Lean calibration theorem;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
