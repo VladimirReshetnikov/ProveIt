@@ -1,0 +1,411 @@
+/tmp/tenpositive-80to90fullzero-nm_8egsc/Direct80To90FullZero.lean:85:54: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+r eta zeta gamma h s : V
+hr : 0 < r
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hs : 0 < s
+hR : rankNat p v = 2 * r + 1
+hboth :
+  ∀ (t0 T n : V),
+    0 < t0 →
+      0 < T →
+        0 < n →
+          (∀ (j : Fin 12), 0 < valuation v eta zeta (gamma + h) t0 T n s j) ∧
+            Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+                  (FreeJDirectMainGraph.graph (integerPorts p)).first =
+                0 ∧
+              Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+                  (FreeJDirectMainGraph.graph (integerPorts p)).main =
+                0
+hC : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hphase : rankNat p v % 4 = 3
+a : V := Y p v * (X p v + 1)
+C : V := ycoord (rankNat p v) a
+D : V := ArithmeticPellRecurrence.delta a
+f i T u y t0 n : V
+hf : 1 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hy : 0 < y
+ht : 0 < t0
+hn : 0 < n
+hfEq : f = 1 + t0
+hnEq : n = ArithmeticPellRecurrence.delta a * i + (y - u)
+hyn : y - u + u = y
+hstrong :
+  f * f =
+    1 +
+      ArithmeticPellRecurrence.delta a * (i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+        (i * ycoord (rankNat p v) a * ycoord (rankNat p v) a)
+hlit : f * f * ycoord (rankNat p v) a * T = u + ycoord (rankNat p v) a + f * f * rankNat p v
+haux :
+  ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a *
+            (ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+          u *
+        u +
+      y * y =
+    1 +
+      ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a *
+            (ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+          y *
+        y
+w : Fin 12 → V := valuation v eta zeta (gamma + h) t0 T n s
+hw : ∀ (j : Fin 12), 0 < valuation v eta zeta (gamma + h) t0 T n s j
+hfirst :
+  Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+      (FreeJDirectMainGraph.graph (integerPorts p)).first =
+    0
+hmain :
+  Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+      (FreeJDirectMainGraph.graph (integerPorts p)).main =
+    0
+h31 : 31 ≤ ↑(p 0)
+hb : 0 < ↑(p 0)
+hnat : Expr.evalRing (fun j => ι (v j)) (TenPositive80ResidueBinding.rExpr (integerPorts p)) = ι (rankNat p v)
+hRank :
+  ι (rankNat p v) =
+    (ι (v 2) + (1 + ι (v 0) * ι ↑(p 0) - ι (v 1)) * (ι (v 0) * ι ↑(p 0))) *
+        ((1 + ι (v 0) * ι ↑(p 0)) * (1 + ι (v 0) * ι ↑(p 0)) - 1) +
+      ι (v 0) * (ι ↑(p 2) + ι ↑(p 3) * (1 + ι (v 0) * ι ↑(p 0)))
+hqcast : 1 + ι (v 0) * ↑(p 0) = ι (q p v)
+hYcast : ι (q p v) * (ι (q p v) * ι (q p v)) * ι (v 6) = ι (Y p v)
+hXcast : ι (q p v) * ι (v 5) = ι (X p v)
+hCnat : C = (eta + zeta) * Y p v + eta
+hCcast : ι C = ι eta + ι (Y p v) * (ι eta + ι zeta)
+hacast : ι a = ι (X p v) * ι (Y p v) + ι (Y p v)
+hDcast : ι D = 3 + 4 * ι a + ι a * ι a
+hfcast : ι f = 1 + ι t0
+hdiff : ι (y - u) = ι y - ι u
+⊢ ι (ArithmeticPellRecurrence.delta a) * ι i + (ι y - ι u) = ι D * ι i + (ι y - ι u)
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+r eta zeta gamma h s : V
+hr : 0 < r
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hs : 0 < s
+hR : rankNat p v = 2 * r + 1
+hboth :
+  ∀ (t0 T n : V),
+    0 < t0 →
+      0 < T →
+        0 < n →
+          (∀ (j : Fin 12), 0 < valuation v eta zeta (gamma + h) t0 T n s j) ∧
+            Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+                  (FreeJDirectMainGraph.graph (integerPorts p)).first =
+                0 ∧
+              Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+                  (FreeJDirectMainGraph.graph (integerPorts p)).main =
+                0
+hC : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hphase : rankNat p v % 4 = 3
+a : V := Y p v * (X p v + 1)
+C : V := ycoord (rankNat p v) a
+D : V := ArithmeticPellRecurrence.delta a
+f i T u y t0 n : V
+hf : 1 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hy : 0 < y
+ht : 0 < t0
+hn : 0 < n
+hfEq : f = 1 + t0
+hnEq : n = ArithmeticPellRecurrence.delta a * i + (y - u)
+hyn : y - u + u = y
+hstrong :
+  f * f =
+    1 +
+      ArithmeticPellRecurrence.delta a * (i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+        (i * ycoord (rankNat p v) a * ycoord (rankNat p v) a)
+hlit : f * f * ycoord (rankNat p v) a * T = u + ycoord (rankNat p v) a + f * f * rankNat p v
+haux :
+  ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a *
+            (ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+          u *
+        u +
+      y * y =
+    1 +
+      ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a *
+            (ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+          y *
+        y
+w : Fin 12 → V := valuation v eta zeta (gamma + h) t0 T n s
+hw : ∀ (j : Fin 12), 0 < valuation v eta zeta (gamma + h) t0 T n s j
+hfirst :
+  Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+      (FreeJDirectMainGraph.graph (integerPorts p)).first =
+    0
+hmain :
+  Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+      (FreeJDirectMainGraph.graph (integerPorts p)).main =
+    0
+h31 : 31 ≤ ↑(p 0)
+hb : 0 < ↑(p 0)
+hnat : Expr.evalRing (fun j => ι (v j)) (TenPositive80ResidueBinding.rExpr (integerPorts p)) = ι (rankNat p v)
+hRank :
+  ι (rankNat p v) =
+    (ι (v 2) + (1 + ι (v 0) * ι ↑(p 0) - ι (v 1)) * (ι (v 0) * ι ↑(p 0))) *
+        ((1 + ι (v 0) * ι ↑(p 0)) * (1 + ι (v 0) * ι ↑(p 0)) - 1) +
+      ι (v 0) * (ι ↑(p 2) + ι ↑(p 3) * (1 + ι (v 0) * ι ↑(p 0)))
+hqcast : 1 + ι (v 0) * ↑(p 0) = ι (q p v)
+hYcast : ι (q p v) * (ι (q p v) * ι (q p v)) * ι (v 6) = ι (Y p v)
+hXcast : ι (q p v) * ι (v 5) = ι (X p v)
+hCnat : C = (eta + zeta) * Y p v + eta
+hCcast : ι C = ι eta + ι (Y p v) * (ι eta + ι zeta)
+hacast : ι a = ι (X p v) * ι (Y p v) + ι (Y p v)
+hDcast : ι D = 3 + 4 * ι a + ι a * ι a
+hfcast : ι f = 1 + ι t0
+hdiff : ι (y - u) = ι y - ι u
+hncast : ι n = ι D * ι i + (ι y - ι u)
+hVcast : ι f * ι f * (ι T * ι C - ι (rankNat p v)) - ι C = ι u
+hstrongR : ι f * ι f = 1 + ι D * (ι i * ι C * ι C) * (ι i * ι C * ι C)
+hQ : ι D * (ι f * ι f - 1) = ι C * ι C * (ι C * ι C) * (ι D * ι i) * (ι D * ι i)
+hQI : ι D * (ι f * ι f - 1) = ι D * ι i * ι C * ι C * (ι D * ι i * ι C * ι C)
+hauxR :
+  ι D * ι i * ι C * ι C * (ι D * ι i * ι C * ι C) * ι u * ι u + ι y * ι y =
+    1 + ι D * ι i * ι C * ι C * (ι D * ι i * ι C * ι C) * ι y * ι y
+hauxzero :
+  (1 - ι D * (ι f * ι f - 1)) * (ι u + (ι y - ι u)) * (ι u + (ι y - ι u)) + ι D * (ι f * ι f - 1) * ι u * ι u - 1 = 0
+⊢ ((ι eta + (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) * (ι eta + ι zeta)) *
+                (ι eta +
+                  (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                    (ι eta + ι zeta)) *
+              ((ι eta +
+                  (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                    (ι eta + ι zeta)) *
+                (ι eta +
+                  (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                    (ι eta + ι zeta))) *
+            ((1 -
+                  (3 +
+                        4 *
+                          ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                              ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                            (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                            ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                            ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6))) *
+                    ((1 + ι t0) * (1 + ι t0) - 1)) *
+                (((1 + ι t0) * (1 + ι t0) *
+                        (ι T *
+                            (ι eta +
+                              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                                (ι eta + ι zeta)) -
+                          ((ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+                              ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+                            ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))))) -
+                      (ι eta +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                          (ι eta + ι zeta)) +
+                    ι n) *
+                  ((1 + ι t0) * (1 + ι t0) *
+                        (ι T *
+                            (ι eta +
+                              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                                (ι eta + ι zeta)) -
+                          ((ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+                              ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+                            ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))))) -
+                      (ι eta +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                          (ι eta + ι zeta)) +
+                    ι n)) +
+              ((3 +
+                        4 *
+                          ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                              ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                            (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                            ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                            ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6))) *
+                    ((1 + ι t0) * (1 + ι t0) - 1) *
+                  (((1 + ι t0) * (1 + ι t0) *
+                        (ι T *
+                            (ι eta +
+                              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                                (ι eta + ι zeta)) -
+                          ((ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+                              ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+                            ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))))) -
+                      (ι eta +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                          (ι eta + ι zeta))) *
+                    ((1 + ι t0) * (1 + ι t0) *
+                        (ι T *
+                            (ι eta +
+                              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                                (ι eta + ι zeta)) -
+                          ((ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+                              ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+                            ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))))) -
+                      (ι eta +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                          (ι eta + ι zeta)))) -
+                1)) -
+          (3 +
+                  4 *
+                    ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                      ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                    (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+                  ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                      ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                    (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6))) *
+              ((1 + ι t0) * (1 + ι t0) - 1) *
+            (1 -
+              (3 +
+                    4 *
+                      ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                          ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                  ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+                    ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6))) *
+                ((1 + ι t0) * (1 + ι t0) - 1))) *
+        ((ι eta +
+                  (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                    (ι eta + ι zeta)) *
+                (ι eta +
+                  (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                    (ι eta + ι zeta)) *
+              ((ι eta +
+                  (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                    (ι eta + ι zeta)) *
+                (ι eta +
+                  (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                    (ι eta + ι zeta))) *
+            ((1 -
+                  (3 +
+                        4 *
+                          ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                              ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                            (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                            ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                            ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6))) *
+                    ((1 + ι t0) * (1 + ι t0) - 1)) *
+                (((1 + ι t0) * (1 + ι t0) *
+                        (ι T *
+                            (ι eta +
+                              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                                (ι eta + ι zeta)) -
+                          ((ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+                              ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+                            ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))))) -
+                      (ι eta +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                          (ι eta + ι zeta)) +
+                    ι n) *
+                  ((1 + ι t0) * (1 + ι t0) *
+                        (ι T *
+                            (ι eta +
+                              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                                (ι eta + ι zeta)) -
+                          ((ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+                              ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+                            ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))))) -
+                      (ι eta +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                          (ι eta + ι zeta)) +
+                    ι n)) +
+              ((3 +
+                        4 *
+                          ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                              ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                            (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                            ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                            ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6))) *
+                    ((1 + ι t0) * (1 + ι t0) - 1) *
+                  (((1 + ι t0) * (1 + ι t0) *
+                        (ι T *
+                            (ι eta +
+                              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                                (ι eta + ι zeta)) -
+                          ((ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+                              ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+                            ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))))) -
+                      (ι eta +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                          (ι eta + ι zeta))) *
+                    ((1 + ι t0) * (1 + ι t0) *
+                        (ι T *
+                            (ι eta +
+                              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                                (ι eta + ι zeta)) -
+                          ((ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+                              ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+                            ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))))) -
+                      (ι eta +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) *
+                          (ι eta + ι zeta)))) -
+                1)) -
+          (3 +
+                  4 *
+                    ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                      ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                    (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+                  ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                      ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                    (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6))) *
+              ((1 + ι t0) * (1 + ι t0) - 1) *
+            (1 -
+              (3 +
+                    4 *
+                      ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                          ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                        (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                  ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+                    ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                        ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                      (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * ⋯) * ⋯)) *
+                ⋯)) +
+      ⋯ =
+    ⋯
+'TenPositive80To90FullZero.graph_factors' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

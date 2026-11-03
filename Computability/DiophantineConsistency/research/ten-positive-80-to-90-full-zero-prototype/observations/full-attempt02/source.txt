@@ -1,0 +1,118 @@
+import Direct80To90SourceData
+import Direct80RankPhase
+import PellPositiveSeed
+import Direct90OrdinaryFactor
+
+/-! One 80 zero supplies all three factors of a fresh 90 valuation. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80To90FullZero
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open ArithmeticPellRecurrence
+open CompactFixedBeta CompactSymbolicPorts
+open TenPositive80Graph TenPositive80Factors TenPositive80NaturalRank
+open TenPositive80To90SourceData TenPositive80RankPhase TenPositivePellPositiveSeed
+open TenPositive80SymbolicPortBounds
+attribute [local irreducible] CompactFixedBeta.betaNat Nat.ofDigits lowNat highNat
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_factors (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hp0 : p 0=betaNat) (hp2 : p 2=lowNat) (hp3 : p 3=betaNat+highNat)
+    (hv : ∀j,0<v j) (hz : InternalZero (graph (integerPorts p)).output v) :
+    ∃ w : Fin 12 → V, (∀j,0<w j) ∧
+      ((FreeJDirectMainGraph.graph (integerPorts p)).first).evalRing (fun j => ι (w j))=0 ∧
+      ((FreeJDirectMainGraph.graph (integerPorts p)).main).evalRing (fun j => ι (w j))=0 ∧
+      ((FreeJDirectMainGraph.graph (integerPorts p)).ordinary).evalRing (fun j => ι (w j))=0 := by
+  obtain ⟨r,eta,zeta,gamma,h,s,hr,heta,hzeta,hgamma,hs,hR,⟨hC,hK⟩,hboth⟩ :=
+    graph_source_data p v hp0 hp2 hp3 hv hz
+  have hphase := graph_phase p v hp0 hp2 hp3 hv hz
+  let a:=Y p v*(X p v+1)
+  let C:=ycoord (rankNat p v) a
+  let D:=ArithmeticPellRecurrence.delta a
+  obtain ⟨f,i,T,u,y,t0,n,hf,hi,hT,hu,hy,ht,hn,hfEq,hnEq,hyn,hstrong,hlit,haux⟩ :=
+    positive_seed a (rankNat p v) hphase
+  let w:=valuation v eta zeta (gamma+h) t0 T n s
+  obtain ⟨hw,hfirst,hmain⟩ := hboth t0 T n ht hT hn
+  refine ⟨w,hw,hfirst,hmain,?_⟩
+  have h31 := (fixed_bounds (V:=V) p hp0 hp2 hp3).1
+  have hb : 0<(p 0:V) := lt_of_lt_of_le (by norm_num) h31
+  have hnat := (graph_natural_rank p v hb hv hz).1
+  have hRank :
+      (ι (rankNat p v):DiffRing V)=
+        (ι (v 2)+(1+ι (v 0)*ι (p 0:V)-ι (v 1))*(ι (v 0)*ι (p 0:V)))*
+          ((1+ι (v 0)*ι (p 0:V))*(1+ι (v 0)*ι (p 0:V))-1)+
+            ι (v 0)*(ι (p 2:V)+ι (p 3:V)*(1+ι (v 0)*ι (p 0:V))) := by
+    rw [←hnat]
+    simp only [TenPositive80ResidueBinding.rExpr,integerPorts,Expr.evalRing_mul,
+      Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_var,Expr.evalRing_constant,
+      Expr.evalRing_ofNat,Int.cast_natCast,Nat.cast_one,map_natCast]
+    ring
+  have hqcast : (1+ι (v 0)*(p 0:DiffRing V))=ι (q p v) := by
+    simp only [q,b,map_add,map_mul,map_one,map_natCast]
+    ring
+  have hYcast : (ι (q p v):DiffRing V)*(ι (q p v)*ι (q p v))*ι (v 6)=ι (Y p v) := by
+    simp only [Y,map_mul]
+    ring
+  have hXcast : (ι (q p v):DiffRing V)*ι (v 5)=ι (X p v) := by
+    simp only [X,map_mul]
+    ring
+  have hCnat : C=(eta+zeta)*Y p v+eta := by
+    dsimp [C,a]
+    rw [hR,hC,hK]
+  have hCcast : (ι C:DiffRing V)=ι eta+ι (Y p v)*(ι eta+ι zeta) := by
+    rw [hCnat]
+    simp only [map_add,map_mul]
+    ring
+  have hacast : (ι a:DiffRing V)=ι (X p v)*ι (Y p v)+ι (Y p v) := by
+    dsimp [a]
+    simp only [map_mul,map_add,map_one]
+    ring
+  have hDcast : (ι D:DiffRing V)=(3+4*ι a)+ι a*ι a := by
+    dsimp [D,ArithmeticPellRecurrence.delta]
+    simp only [map_mul,map_add,map_one,map_ofNat]
+    ring
+  have hfcast : (ι f:DiffRing V)=1+ι t0 := by
+    rw [hfEq]
+    simp only [map_add,map_one]
+  have hdiff : (ι (y-u):DiffRing V)=ι y-ι u := by
+    have he := congrArg (ι : V →+* DiffRing V) hyn
+    simp only [map_add] at he
+    linear_combination he
+  have hncast : (ι n:DiffRing V)=ι D*ι i+(ι y-ι u) := by
+    rw [hnEq]
+    simp only [map_add,map_mul,hdiff]
+  have hVcast : (ι f:DiffRing V)*ι f*(ι T*ι C-ι (rankNat p v))-ι C=ι u := by
+    have heNat : f*f*C*T=u+C+f*f*rankNat p v := hlit
+    have he := congrArg (ι : V →+* DiffRing V) heNat
+    simp only [map_add,map_mul] at he
+    linear_combination he
+  have hstrongR : (ι f:DiffRing V)*ι f=1+ι D*(ι i*ι C*ι C)*(ι i*ι C*ι C) := by
+    have heNat : f*f=1+D*(i*C*C)*(i*C*C) := hstrong
+    have he := congrArg (ι : V →+* DiffRing V) heNat
+    simpa only [map_add,map_mul,map_one] using he
+  have hQ : (ι D:DiffRing V)*(ι f*ι f-1)=(ι C*ι C)*(ι C*ι C)*(ι D*ι i)*(ι D*ι i) := by
+    rw [hstrongR]
+    ring
+  have hQI : (ι D:DiffRing V)*(ι f*ι f-1)=(ι D*ι i*ι C*ι C)*(ι D*ι i*ι C*ι C) := by
+    rw [hstrongR]
+    ring
+  have hauxR : (ι D:DiffRing V)*ι i*ι C*ι C*(ι D*ι i*ι C*ι C)*ι u*ι u+ι y*ι y=
+      1+(ι D*ι i*ι C*ι C)*(ι D*ι i*ι C*ι C)*ι y*ι y := by
+    have heNat : (D*i*C*C)*(D*i*C*C)*u*u+y*y=1+(D*i*C*C)*(D*i*C*C)*y*y := haux
+    have he := congrArg (ι : V →+* DiffRing V) heNat
+    simpa only [map_add,map_mul,map_one] using he
+  have hauxzero : (1-(ι D:DiffRing V)*(ι f*ι f-1))*(ι u+(ι y-ι u))*(ι u+(ι y-ι u))+
+      (ι D*(ι f*ι f-1))*ι u*ι u-1=0 := by
+    rw [hQI]
+    linear_combination hauxR
+  rw [TenPositive90OrdinaryFactor.ordinary_recipe]
+  simp [w,valuation,integerPorts]
+  trace_state
+  sorry
+
+#print axioms TenPositive80To90FullZero.graph_factors
+end TenPositive80To90FullZero

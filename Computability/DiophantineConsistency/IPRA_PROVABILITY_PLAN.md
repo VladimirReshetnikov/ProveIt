@@ -479,7 +479,16 @@ and p₁ unrestricted. A [source-data join](research/ten-positive-80-to-90-sourc
 exposes the exact unscaled Pell data for the same witnesses to support the
 remaining construction. An [independent first/main audit](reviews/ten-positive-80-to-90-first-main-independent/README.md)
 checks selected receipts, same-witness scope and the BFS occupancy client
-without replaying Lean. The ordinary factor and whole graph remain open.
+without replaying Lean. A later [ordinary-factor identity](research/ten-positive-90-ordinary-factor-prototype/README.md)
+and [three-factor join](research/ten-positive-80-to-90-full-zero-prototype/README.md)
+construct one positive 90 valuation that zeros all three selected factors.
+The [output wrapper](research/ten-positive-80-to-90-output-prototype/README.md)
+then proves, in every stated IΣ₁ model, that an actual positive 80 Lean graph
+zero implies a positive selected 90 Lean graph output zero at the **same**
+arbitrary p₁, under the three symbolic β/low/high port assumptions. These
+are guarded author checks, not yet independently audited. They do not prove
+the reverse direction, equate the distinct external K payloads, bind either
+file to Lean, or establish a halt or iPRA theorem.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
