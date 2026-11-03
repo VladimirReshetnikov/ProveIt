@@ -1,0 +1,24 @@
+/tmp/compact44-lower-kernel-mass-author-zt18pvbx/CompactLowerKernelMass.lean:26:38: warning: exponent 5495 exceeds the threshold 256, exponentiation operation was not evaluated, use `set_option exponentiation.threshold <num>` to set a new threshold
+/tmp/compact44-lower-kernel-mass-author-zt18pvbx/CompactLowerKernelMass.lean:32:50: error: unsolved goals
+r : ℕ
+hr : 1 ≤ r
+t : ℕ × ℕ
+ts : List (ℕ × ℕ)
+ih :
+  (∀ t ∈ ts, t.1 ≤ 5495) →
+    (∀ t ∈ ts, t.2 ≤ 2 ^ 51 + 1) → (List.map (fun t => t.2 * r ^ t.1) ts).sum ≤ ts.length * ((2 ^ 51 + 1) * r ^ 5495)
+hpos : ∀ t_1 ∈ t :: ts, t_1.1 ≤ 5495
+hweight : ∀ t_1 ∈ t :: ts, t_1.2 ≤ 2 ^ 51 + 1
+hp : t.1 ≤ 5495
+hw : t.2 ≤ 2 ^ 51 + 1
+hps : ∀ u ∈ ts, u.1 ≤ 5495
+hws : ∀ u ∈ ts, u.2 ≤ 2 ^ 51 + 1
+hrpos : 0 < r
+hpow : r ^ t.1 ≤ r ^ 5495
+ht : t.2 * r ^ t.1 ≤ (2 ^ 51 + 1) * r ^ 5495
+hs : (List.map (fun t => t.2 * r ^ t.1) ts).sum ≤ ts.length * ((2 ^ 51 + 1) * r ^ 5495)
+⊢ 2 ^ 51 * r ^ 5495 + r ^ 5495 + ts.length * (2 ^ 51 * r ^ 5495 + r ^ 5495) =
+    ts.length * (2 ^ 51 * r ^ 5495 + r ^ 5495) + (2 ^ 51 * r ^ 5495 + r ^ 5495)
+'CompactLowerKernelMass.weighted_bound' depends on axioms: [propext, sorryAx]
+'CompactLowerKernelMass.low_length' depends on axioms: [propext, Quot.sound]
+'CompactLowerKernelMass.lower_le' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

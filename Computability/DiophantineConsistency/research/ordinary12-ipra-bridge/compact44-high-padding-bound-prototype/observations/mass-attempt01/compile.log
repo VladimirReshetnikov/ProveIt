@@ -1,0 +1,46 @@
+/tmp/compact44-lower-kernel-mass-author-__3yy9ej/CompactLowerKernelMass.lean:25:38: warning: exponent 5495 exceeds the threshold 256, exponentiation operation was not evaluated, use `set_option exponentiation.threshold <num>` to set a new threshold
+/tmp/compact44-lower-kernel-mass-author-__3yy9ej/CompactLowerKernelMass.lean:29:4: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  i ≥ 0
+  h ≥ 0
+  g ≥ 0
+  g - h ≥ 0
+  f ≥ 0
+  e ≥ 0
+  d ≥ 0
+  d - e ≥ 0
+  2251799813685249*d - f ≥ 0
+  2251799813685249*d - f - h + i ≤ -1
+  0 ≤ c ≤ 2251799813685249
+  0 ≤ b ≤ 5495
+  a ≥ 1
+where
+ a := ↑r
+ b := ↑t.1
+ c := ↑t.2
+ d := ↑(r ^ 5495)
+ e := ↑(r ^ t.1)
+ f := ↑t.2 * ↑(r ^ t.1)
+ g := ↑ts.length * ↑((2 ^ 51 + 1) * r ^ 5495)
+ h := ↑(List.map (fun t => t.2 * r ^ t.1) ts).sum
+ i := ↑ts.length * ↑(2 ^ 51 * r ^ 5495 + r ^ 5495)
+/tmp/compact44-lower-kernel-mass-author-__3yy9ej/CompactLowerKernelMass.lean:32:55: error: Tactic `rfl` failed: The left-hand side
+  kernelTerms
+is not definitionally equal to the right-hand side
+  lowTerms ++ [(8849, 1)]
+
+⊢ kernelTerms = lowTerms ++ [(8849, 1)]
+/tmp/compact44-lower-kernel-mass-author-__3yy9ej/CompactLowerKernelMass.lean:48:57: error: Tactic `rfl` failed: The left-hand side
+  kernelTerms
+is not definitionally equal to the right-hand side
+  lowTerms ++ [(8849, 1)]
+
+r : ℕ
+hr : 1 ≤ r
+hp : ∀ t ∈ lowTerms, t.1 ≤ 5495
+t : ℕ × ℕ
+ht : t ∈ lowTerms
+⊢ kernelTerms = lowTerms ++ [(8849, 1)]
+'CompactLowerKernelMass.weighted_bound' depends on axioms: [propext, sorryAx]
+'CompactLowerKernelMass.low_length' depends on axioms: [propext, sorryAx, Quot.sound]
+'CompactLowerKernelMass.lower_le' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
