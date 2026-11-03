@@ -663,7 +663,9 @@ confirms the comparisons and reachability without replaying Lean. A
 matches its sources and import names; it is not a rebuild or package-ancestry
 authentication. A replacement runner is held for independent review, which
 has already found memory-guard and diagnostic-matching defects; it has not
-been launched. Those byte-matched records are not proven unique producer
+been launched. The [independent v2 prelaunch review](reviews/ten-positive-80-rebuild-v2-prelaunch-independent/README.md)
+records both blockers and additional stability/failure-capture gaps. Those
+byte-matched records are not proven unique producer
 origins. No replay is yet claimed. A
 [staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
 matches seven previously unmatched fresh helper objects to multi-stage
