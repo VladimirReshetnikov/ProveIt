@@ -29,7 +29,9 @@ The second uses a source-bound warning baseline and has an earlier rejected
 object with a different unexplained hash. These are intermediate results, not
 a replay of either endpoint. The later [stages 6–9](reviews/nine-variable-ipra-stages-6-9-author-observation/README.md)
 also passed on the same author overlay; their source, log, receipt and warning
-baseline hashes were retained in an author-side observation.
+baseline hashes were retained in an author-side observation. The same is true
+for [stages 10–14](reviews/nine-variable-ipra-stages-10-14-author-observation/README.md);
+these observations do not establish a paired replay or full closure.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
 87-operation evaluator. Its exact fixed-port literal now has a no-premise
