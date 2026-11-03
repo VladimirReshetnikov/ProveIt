@@ -15,3 +15,11 @@ To rebuild, invoke `python3 -I -S -B generate.py --output build03` with a fresh 
 - Complete BFS K raw SHA-256 `0a86821a704294199c2e1a50379d242c96840a3366e9d965689ba3d74605203f`.
 
 The [independent display review](../../reviews/ten-positive-80-bfs-decimal-independent/README.md) separately checks all 80 rows, the direct-BFS Lean and JSON table, the 943 selectors, 41 slots, full payloads and a full diagonal-polynomial degree certificate. It does not provide Lean file semantics.
+
+A later [full-recipe iPRA client](../ten-positive-80-bfs-displayed-full-ipra/README.md)
+states all four derivability forms using Lean expressions for the displayed
+beta, kernel lists, low support and high interval sums; its inferred types have
+an [independent source/receipt review](../../reviews/bfs-displayed-full-ipra-independent/README.md).
+The connection from the PDF text and coefficient files to those expressions
+remains external, and the client's complete selected-provider ancestry has
+not yet been authenticated.
