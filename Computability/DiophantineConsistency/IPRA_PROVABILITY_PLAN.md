@@ -45,8 +45,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-batch03/README.md)
-has rebuilt its first 15 of 425 modules; the remaining stages and final
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-batch05/README.md)
+has rebuilt its first 25 of 425 modules; the remaining stages and final
 client are open. A separately checked
 [conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
 also supplies standard and equality-only iPRA conclusions for any positive
@@ -72,6 +72,9 @@ The same peer has since compiled and compared
 [16–20](reviews/nine-variable-ipra-peer-stages-sixteen-twenty/README.md), and
 [21–25](reviews/nine-variable-ipra-peer-stages-twentyone-twentyfive/README.md).
 These remain scoped prefix observations with some differing object bytes.
+The [26–30 peer stages](reviews/nine-variable-ipra-peer-stages-26-30/README.md)
+match their author output objects, source hashes and recorded direct guards;
+the complete endpoints and inherited ancestry remain unchecked by that packet.
 A separate [source-evidence inspection](reviews/nine-variable-ipra-endpoint-source-evidence/README.md)
 checks the endpoint statements and the source-level expression binding; it
 does not reproduce the reported builds or interpret the document's bytes.
