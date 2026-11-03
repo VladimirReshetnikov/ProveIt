@@ -501,6 +501,9 @@ constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. These hypotheses are not yet derived
 from the selected 90 graph or a halt, and the remaining positive 80 carrier
 coordinates have not been constructed; the reverse implication remains open.
+A [fresh scaled-witness join](research/ten-positive-scaled-witness-from-unscaled-prototype/README.md)
+adds positive η′ and ζ′ for the scaled pair, explicitly distinct from the
+unscaled source witnesses. This is still a conditional model theorem.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
