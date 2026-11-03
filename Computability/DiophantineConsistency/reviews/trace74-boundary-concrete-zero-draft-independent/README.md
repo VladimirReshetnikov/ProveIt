@@ -1,0 +1,7 @@
+# Independent source review: concrete boundary composition draft
+
+This is a source-only review of `research/trace74-boundary-concrete-zero-draft/Trace74BoundaryConcreteZero.lean` SHA `c2579d4fa585e099d14478a23834ec55a0e9c641cf5543a4037dbc659ff2f42f`. It has not been elaborated or checked by Lean; import/provider selection, tuple destructuring, final simplifier behavior and exact axiom report require a guarded author check.
+
+The proposed theorem is parameterized by a type V with ordered-ring structure and an IΣ₁-model instance, with no additional explicit hypotheses. It destructures all eight separately accepted `model_facts` for W and S, then supplies those same W/S and facts in order to the accepted `zero_of_seed_model_facts` theorem. It destructures the returned positive witness once, retaining the same `w`, `w 0=w 1=w 2=1` and actual value74 zero. For the fixed non-BFS tuple `(1,1,28,0)`, q is `1*w 0+1=2`, so the proposed final equality `q ports31 w = w 1 + w 2` is mathematically consistent with those same coordinates and implies the strict guard fails. The final `simp` proof is untested.
+
+No definite source-level witness or assumption mismatch was found, but the composition is not yet an accepted Lean theorem. The ports are not the fixed BFS ports. Captured provider/source ancestry, package/dynamic dependencies and external equation-file binding retain their prior limits; no fixed-port or iPRA conclusion follows from this draft alone.
