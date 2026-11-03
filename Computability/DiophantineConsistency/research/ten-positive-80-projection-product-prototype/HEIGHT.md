@@ -1,0 +1,7 @@
+# Power equality conditional on the full-product height
+
+`Direct80ProductHeight.equality_of_height` proves in every indicated IΣ₁ model that, if `b>0`, `H ∣ b*(X−t)*(tX+1)` in the model's difference ring, and the **natural** inequality `b*(X+t)*(tX+1)<H` holds, then `X=t`. The proof bounds the absolute value of the entire product, uses discreteness to show a multiple of positive H strictly between −H and H is zero, and cancels factors only after equality to zero. It does not cancel b modulo H.
+
+`Direct80PowerFromHeight.graph_power_of_height` combines this with the checked actual-graph whole-product divisibility. For an actual positive 80 graph zero under `beta>0`, `low<beta`, and `high<2*beta`, the explicit hypothesis `b*(X+2^R)*(2^R*X+1)<H` implies `X=2^R`. **That height inequality remains a hypothesis here.** Neither this packet nor the earlier weaker `2^R<Y` bound establishes it.
+
+Guarded self-pinning author `run-height.py`, `observations/height-attempt02/`, passed in session 96037; attempt01 failed on a universe mismatch and a positivity tactic. `run-fromheight.py`, `observations/fromheight-attempt01/`, passed in session 94291 with output `/tmp/tenpositive-80powerfromheight-v45p8fbb/Direct80PowerFromHeight.olean` SHA-256 `93cfb422eb70c60115ec94c054e110f01df4a893f376ea90dfe15d5ca9604ebf`. Exact sources, selected input pins, logs and resource samples are retained. Full package-transitive, dynamic and historical source/object ancestry remain inherited; no independent Lean replay or file/PDF, halt or iPRA endpoint is claimed.
