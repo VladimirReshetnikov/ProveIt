@@ -1,0 +1,24 @@
+# Expanded compact/iPRA rebuild: stages 51–55
+
+This bounded author batch resumed the guarded 425-module merged-root build.
+Before compilation it verified the first ten runner hashes, the original
+baseline, all 425 source pins, selected original and merged provider files,
+all first-fifty output/log hashes and all earlier direct dependency and
+companion guards. The exact runner is `run.py`, SHA-256
+`6542b81b75d5462262410f1547f78743e029cfc153432eeb3ce3b2d2c51e6df6`.
+
+Lean compiled five `KSites215Batch002` through `KSites215Batch006` sources
+from the current BusyBeaver source tree in pinned selected-object topological
+order; each exited 0 without warnings or `sorryAx`. The respective durations
+were approximately 123, 120, 143, 153 and 156 seconds, each within the
+180-second per-stage cap. Source copies, direct dependency lists, guards,
+logs, hashes and receipts are in `observations/batch-011/`. The wrapper
+rechecked the full selected overlay, all source hashes, output hashes and
+direct guards, and exited 0 with `completed: 55, total: 425`. Earlier
+receipts and the baseline are in the ten prior sibling packets.
+
+This is an exploratory author prefix, not an iPRA endpoint, full coherent
+build or independent replay. Import-shape agreement does not authenticate
+historical provenance of inherited objects. Package, dynamic and broader
+provider ancestry remain unverified; 370 rebuild stages and the compact
+model-to-iPRA join remain open. File/resource guards are point-in-time.
