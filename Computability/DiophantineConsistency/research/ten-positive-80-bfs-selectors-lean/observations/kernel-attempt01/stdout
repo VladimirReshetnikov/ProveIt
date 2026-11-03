@@ -1,0 +1,20 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ten-positive-80-bfs-selectors-lean/BFSDisplayedKernel.lean:21:6: error: Tactic `rewrite` failed: motive is not type correct:
+  fun _a => _a.get ⟨↑i, ⋯⟩ = CompactCoefficientMass.selector (DirectBFSSymbolicKernel.rows.get ⟨↑i, ⋯⟩)
+Error: Application type mismatch: The argument
+  displayedSelector._proof_1 i
+has type
+  ↑i < BFSDisplayedSelectors.values.length
+but is expected to have type
+  ↑i < _a.length
+in the application
+  ⟨↑i, ⋯⟩
+
+Explanation: The rewrite tactic rewrites an expression 'e' using an equality 'a = b' by the following process. First, it looks for all 'a' in 'e'. Second, it tries to abstract these occurrences of 'a' to create a function 'm := fun _a => ...', called the *motive*, with the property that 'm a' is definitionally equal to 'e'. Third, we observe that 'congrArg' implies that 'm a = m b', which can be used with lemmas such as 'Eq.mpr' to change the goal. However, if 'e' depends on specific properties of 'a', then the motive 'm' might not typecheck.
+
+Possible solutions: use rewrite's 'occs' configuration option to limit which occurrences are rewritten, or use 'simp' or 'conv' mode, which have strategies for certain kinds of dependencies (these tactics can handle proofs and 'Decidable' instances whose types depend on the rewritten term, and 'simp' can apply user-defined '@[congr]' theorems as well).
+
+i : Fin 943
+⊢ BFSDisplayedSelectors.values.get ⟨↑i, ⋯⟩ = CompactCoefficientMass.selector (DirectBFSSymbolicKernel.rows.get ⟨↑i, ⋯⟩)
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ten-positive-80-bfs-selectors-lean/BFSDisplayedKernel.lean:33:2: warning: exponent 8849 exceeds the threshold 256, exponentiation operation was not evaluated, use `set_option exponentiation.threshold <num>` to set a new threshold
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ten-positive-80-bfs-selectors-lean/BFSDisplayedKernel.lean:34:2: error: No goals to be solved
+'BFSDisplayedKernel.kernel_eq_displayed' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

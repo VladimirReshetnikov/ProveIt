@@ -1,0 +1,84 @@
+/tmp/trace75-graphproduct-dbtb1xts/Trace75GraphProduct.lean:37:36: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (value75 (ports p) fun j => ι (v j)) = 0
+rr : Regs (DiffRing V) := regs (ports p) fun j => ι (v j)
+a : V := A p v - 1
+R : V := rankNat p v
+C : V := c p v
+d : V := xcoord R a
+T : V := Exp.exp R
+hb : 0 < ↑(p 0)
+hq : 0 < q p v
+hy : 0 < Y p v
+hx : 0 < X p v
+hA : 0 < A p v
+ha1 : a + 1 = A p v
+⊢ ι (v 5) * (ports p 0 * ι (v 0) + 1) *
+        ((ports p 0 * ι (v 0) + 1) * (ports p 0 * ι (v 0) + 1) * (ports p 0 * ι (v 0) + 1) * ι (v 6)) +
+      (ports p 0 * ι (v 0) + 1) * (ports p 0 * ι (v 0) + 1) * (ports p 0 * ι (v 0) + 1) * ι (v 6) =
+    ι (v 5) * (↑(p 0) * ι (v 0) + 1) *
+        ((↑(p 0) * ι (v 0) + 1) * (↑(p 0) * ι (v 0) + 1) * (↑(p 0) * ι (v 0) + 1) * ι (v 6)) +
+      (↑(p 0) * ι (v 0) + 1) * (↑(p 0) * ι (v 0) + 1) * (↑(p 0) * ι (v 0) + 1) * ι (v 6)
+/tmp/trace75-graphproduct-dbtb1xts/Trace75GraphProduct.lean:40:28: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (value75 (ports p) fun j => ι (v j)) = 0
+rr : Regs (DiffRing V) := regs (ports p) fun j => ι (v j)
+a : V := A p v - 1
+R : V := rankNat p v
+C : V := c p v
+d : V := xcoord R a
+T : V := Exp.exp R
+hb : 0 < ↑(p 0)
+hq : 0 < q p v
+hy : 0 < Y p v
+hx : 0 < X p v
+hA : 0 < A p v
+ha1 : a + 1 = A p v
+hAeval : rr.Am1 = ι (A p v)
+⊢ (ι (v 8) + ι (v 9)) * ((ports p 0 * ι (v 0) + 1) * (ports p 0 * ι (v 0) + 1) * (ports p 0 * ι (v 0) + 1) * ι (v 6)) +
+      ι (v 8) =
+    (ι (v 8) + ι (v 9)) * ((↑(p 0) * ι (v 0) + 1) * (↑(p 0) * ι (v 0) + 1) * (↑(p 0) * ι (v 0) + 1) * ι (v 6)) + ι (v 8)
+/tmp/trace75-graphproduct-dbtb1xts/Trace75GraphProduct.lean:47:4: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (value75 (ports p) fun j => ι (v j)) = 0
+rr : Regs (DiffRing V) := ⋯
+a : V := ⋯
+R : V := ⋯
+C : V := ⋯
+d : V := ⋯
+T : V := ⋯
+hb : 0 < ↑(p 0)
+hq : 0 < q p v
+hy : 0 < Y p v
+hx : 0 < X p v
+hA : 0 < A p v
+ha1 : a + 1 = A p v
+hAeval : rr.Am1 = ι (A p v)
+hCeval : rr.c = ι C
+ha : ι a + 1 = rr.Am1
+⊢ -8 + rr.Am1 * 8 - ι a * 8 = 0
+'Trace75GraphProduct.graph_entire_product' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
