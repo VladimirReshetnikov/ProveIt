@@ -28,8 +28,17 @@ halt. An external exact-degree check gives 84, versus the parent's stated 70;
 94 counts the unshifted positive-coordinate evaluator, not the separate
 `x+1` substitutions. The JSON/source and file/PDF correspondence remain
 external, and an iPRA derivation for this variant is not yet established.
+An [independent source and arithmetic review](reviews/ordinary12-sum-squares-independent-review/README.md)
+checks the same-valuation model reduction, the 94-row graph, and the degree
+calculation within the stated provider limits; it is not a fresh Lean replay.
+[Standalone decimal displays](research/ordinary12-ipra-bridge/compact44-free-j-display-v2/README.md)
+and their [independent review](reviews/ordinary12-decimal-displays-v2-independent-review/README.md)
+cover the 94- and 95-operation variants. These are external finite checks,
+not Lean proofs of PDF or file semantics. A proposed [94-operation iPRA
+client](research/ordinary12-sum-squares-ipra-endpoint-draft/README.md) has
+not yet been compiled on a coherent provider.
 
-This is not yet an iPRA endpoint for that graph. A separately checked
+Neither compact graph yet has a verified iPRA endpoint. A separately checked
 [generic positive-model adapter](research/ordinary12-ipra-bridge/positive-model-ipra-adapter-prototype/README.md)
 cannot yet be combined with it because their selected object providers
 conflict. A [source-pinned rebuild preflight](research/ordinary12-ipra-bridge/compact12-ipra-coherent-rebuild-plan/README.md)
@@ -70,8 +79,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage131/README.md)
-has rebuilt its first 135 of 425 modules. At stage 64 a warning-bearing
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage191/README.md)
+has rebuilt its first 195 of 425 modules. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
 re-pinned and checked. Later unchanged theorem interfaces required three
 separately source-pinned, exact-warning baselines. Stage 95's initial
