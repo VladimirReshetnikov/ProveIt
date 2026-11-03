@@ -160,7 +160,9 @@ establishes reducedness of the transformed numerator, integrality of the
 transformed first coordinate and a ring norm identity. A subsequent
 [complete descent step](research/ten-positive-adjacent-step-prototype/README.md)
 proves a positive strictly smaller coordinate at the same reduced denominator.
-The internal least-number argument and its application to the graph remain open.
+An [internal least-number theorem](research/ten-positive-adjacent-complete-prototype/README.md)
+now proves that the denominator is one under the reduced norm hypotheses.
+Constructing those hypotheses from the graph remains open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
