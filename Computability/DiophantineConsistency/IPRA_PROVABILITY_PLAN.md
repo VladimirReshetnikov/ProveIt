@@ -343,7 +343,13 @@ comparison to the BFS K. It does not yet provide row/color conjugacy, a
 complete graph decoder, controller calibration, or a Lean file-binding
 theorem. A [local selector decoder](research/direct-bfs-lean-decoder-prototype/README.md)
 also checks the generic no-carry decoding equivalence for the BFS rows; it
-does not yet connect those local facts to a graph band.
+does not yet connect those local facts to a graph band. A
+[finite mass calculation](research/direct-bfs-lean-mass-prototype/README.md)
+and [model lift](research/direct-bfs-lean-model-mass-prototype/README.md)
+check the direct coefficient-family bounds needed for carry estimates. An
+[independent audit](reviews/direct-bfs-lean-kernel-decoder-independent/README.md)
+checks selected kernel/decoder/mass receipts and reconstructs the BFS K bytes
+externally; it does not replay Lean.
 An [independent mismatch review](reviews/ten-positive-80-alignment-fresh-projection-independent/README.md)
 checks the two payloads and the selected alignment and fresh-projection
 receipts; it does not replay Lean.
@@ -381,8 +387,11 @@ derives its natural divisibility remainder without assuming it is positive.
 A [factor identity](research/ten-positive-fresh-main-algebra-prototype/README.md)
 and [90-row main-factor client](research/ten-positive-90-main-factor-prototype/README.md)
 show a conditional residual zero for the selected source graph under explicit
-projection and norm hypotheses; they do not yet construct one source graph
-zero from an 80-row graph zero.
+projection and norm hypotheses. A later [80-to-90 main-factor join](research/ten-positive-80-to-90-main-prototype/README.md)
+discharges those hypotheses with one positive 12-coordinate valuation from
+an actual 80-row zero, while leaving p₁ arbitrary. Only its main factor is
+proved zero; compatible witnesses for the other factors and a whole-graph
+source zero remain open.
 A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
 proves `rank > 3*q` and `q^3 ∣ Y` under explicit beta and positivity bounds,
 without assuming a graph zero. An [independent audit](reviews/ten-positive-80-carry-fresh-interval-independent/README.md)

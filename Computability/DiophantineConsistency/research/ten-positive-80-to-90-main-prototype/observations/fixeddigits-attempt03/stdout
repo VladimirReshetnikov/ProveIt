@@ -1,0 +1,166 @@
+/tmp/tenpositive-80to90main-f9b8qouk/Direct80To90Main.lean:76:24: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ι (Y p v)
+in the target expression
+  ι eta + ι zeta = ι (rankNat p v) + 1 + ι (q p v) * (ι (q p v) * ι (q p v)) * ι (v 6) * (ι (q p v) * ι (q p v)) * ι h
+
+case refine_2.hoff
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+r eta zeta gamma h : V
+hr : 0 < r
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hR : rankNat p v = 2 * r + 1
+hC : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hproj :
+  xcoord (2 * r + 1) (Y p v * (X p v + 1)) =
+    X p v + Y p v * (X p v + 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1)) + (4 * (Y p v * (X p v + 1)) + 3) * gamma
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = rankNat p v + 1 + Y p v * (q p v * q p v) * h
+h31 : 31 ≤ ↑(p 0)
+_hl : ↑(p 2) < ↑(p 0)
+_hh : ↑(p 3) < 2 * ↑(p 0)
+_hodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+a : V := Y p v * (X p v + 1)
+K : V := 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)
+C : V := ycoord (2 * r + 1) a
+d : V := xcoord (2 * r + 1) a
+hnorm : d * d = 1 + (a * a + (4 * a + 3)) * C * C
+hnat : Expr.evalRing (fun j => ι (v j)) (TenPositive80ResidueBinding.rExpr (integerPorts p)) = ι (rankNat p v)
+hqcast : 1 + ι (v 0) * ↑(p 0) = ι (q p v)
+hYcast : ι (q p v) * (ι (q p v) * ι (q p v)) * ι (v 6) = ι (Y p v)
+hXcast : ι (q p v) * ι (v 5) = ι (X p v)
+hCcast : ι C = ι eta + ι (Y p v) * (ι eta + ι zeta)
+hRank :
+  ι (rankNat p v) =
+    (ι (v 2) + (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+        ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+      ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0)))
+⊢ ι eta + ι zeta = ι (rankNat p v) + 1 + ι (q p v) * (ι (q p v) * ι (q p v)) * ι (v 6) * (ι (q p v) * ι (q p v)) * ι h
+case refine_2.hroot
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+r eta zeta gamma h : V
+hr : 0 < r
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hR : rankNat p v = 2 * r + 1
+hC : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hproj :
+  xcoord (2 * r + 1) (Y p v * (X p v + 1)) =
+    X p v + Y p v * (X p v + 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1)) + (4 * (Y p v * (X p v + 1)) + 3) * gamma
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = rankNat p v + 1 + Y p v * (q p v * q p v) * h
+h31 : 31 ≤ ↑(p 0)
+_hl : ↑(p 2) < ↑(p 0)
+_hh : ↑(p 3) < 2 * ↑(p 0)
+_hodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+a : V := Y p v * (X p v + 1)
+K : V := 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)
+C : V := ycoord (2 * r + 1) a
+d : V := xcoord (2 * r + 1) a
+hnorm : d * d = 1 + (a * a + (4 * a + 3)) * C * C
+hnat : Expr.evalRing (fun j => ι (v j)) (TenPositive80ResidueBinding.rExpr (integerPorts p)) = ι (rankNat p v)
+hRank :
+  ι (rankNat p v) =
+    (ι (v 2) + (1 + ι (v 0) * ι ↑(p 0) - ι (v 1)) * (ι (v 0) * ι ↑(p 0))) *
+        ((1 + ι (v 0) * ι ↑(p 0)) * (1 + ι (v 0) * ι ↑(p 0)) - 1) +
+      ι (v 0) * (ι ↑(p 2) + ι ↑(p 3) * (1 + ι (v 0) * ι ↑(p 0)))
+hqcast : 1 + ι (v 0) * ↑(p 0) = ι (q p v)
+hYcast : ι (q p v) * (ι (q p v) * ι (q p v)) * ι (v 6) = ι (Y p v)
+hXcast : ι (q p v) * ι (v 5) = ι (X p v)
+hCcast : ι C = ι eta + ι (Y p v) * (ι eta + ι zeta)
+⊢ ι d =
+    (1 + ι (v 0) * ↑(p 0)) * ι (v 5) +
+        ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+              ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+            (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+          (ι eta +
+            (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) * (ι eta + ι zeta)) +
+      (4 *
+            ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+              (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+          3) *
+        ι gamma
+case refine_2.hnorm
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+r eta zeta gamma h : V
+hr : 0 < r
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hR : rankNat p v = 2 * r + 1
+hC : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hproj :
+  xcoord (2 * r + 1) (Y p v * (X p v + 1)) =
+    X p v + Y p v * (X p v + 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1)) + (4 * (Y p v * (X p v + 1)) + 3) * gamma
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = rankNat p v + 1 + Y p v * (q p v * q p v) * h
+h31 : 31 ≤ ↑(p 0)
+_hl : ↑(p 2) < ↑(p 0)
+_hh : ↑(p 3) < 2 * ↑(p 0)
+_hodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+a : V := Y p v * (X p v + 1)
+K : V := 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)
+C : V := ycoord (2 * r + 1) a
+d : V := xcoord (2 * r + 1) a
+hnorm : d * d = 1 + (a * a + (4 * a + 3)) * C * C
+hnat : Expr.evalRing (fun j => ι (v j)) (TenPositive80ResidueBinding.rExpr (integerPorts p)) = ι (rankNat p v)
+hRank :
+  ι (rankNat p v) =
+    (ι (v 2) + (1 + ι (v 0) * ι ↑(p 0) - ι (v 1)) * (ι (v 0) * ι ↑(p 0))) *
+        ((1 + ι (v 0) * ι ↑(p 0)) * (1 + ι (v 0) * ι ↑(p 0)) - 1) +
+      ι (v 0) * (ι ↑(p 2) + ι ↑(p 3) * (1 + ι (v 0) * ι ↑(p 0)))
+hqcast : 1 + ι (v 0) * ↑(p 0) = ι (q p v)
+hYcast : ι (q p v) * (ι (q p v) * ι (q p v)) * ι (v 6) = ι (Y p v)
+hXcast : ι (q p v) * ι (v 5) = ι (X p v)
+hCcast : ι C = ι eta + ι (Y p v) * (ι eta + ι zeta)
+⊢ ι d * ι d =
+    1 +
+      (((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                  ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) *
+              ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                  ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+            (4 *
+                ((1 + ι (v 0) * ↑(p 0)) * ι (v 5) *
+                    ((1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+                  (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6)) +
+              3)) *
+          (ι eta +
+            (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) * (ι eta + ι zeta)) *
+        (ι eta +
+          (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) * ι (v 6) * (ι eta + ι zeta))
+'TenPositive80To90Main.graph_main_factor' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
