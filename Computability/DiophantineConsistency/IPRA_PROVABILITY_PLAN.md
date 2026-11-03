@@ -45,8 +45,10 @@ correspondences. A separate [all-model client](research/ordinary12-ipra-bridge/c
 uses those naturally decoded recipes in the generated 95-gate Lean expression
 and proves shifted zero iff internal machine halt in each IΣ₁ model. This is
 not yet an internal iPRA derivation; its [source and selected-provider review](reviews/compact44-byte-ports-model-iff-source-review/README.md)
-is not a fresh replay or a full ancestry audit. Parent-to-supplement and PDF
-correspondence remain open. The
+is not a fresh replay or a full ancestry audit. The supplement's missing
+binding and payloads have been [restored from exact manifest-pinned sources](research/ordinary12-ipra-bridge/supplement-pinned-restoration/README.md),
+and external checks establish the parent-to-supplement byte correspondence.
+The Lean file/gzip and JSON transcriptions and PDF correspondence remain open. The
 [serialized-import inventory](research/ordinary12-ipra-bridge/compact12-ipra-object-import-prototype/README.md)
 also supports the initial 59-module rebuild within its scoped namespace,
 without certifying all other project or package ancestry. A guarded
