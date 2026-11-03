@@ -1,0 +1,5 @@
+# Independent review: conditional 79 gauge gap criterion
+
+`guard_from_gap` proves that `q*b*t<C` and `F+C<q+b²*t` imply the actual truncated moved guard, with `q=b+1`. `guarded_zero_of_gap` composes this with the earlier conditional bridge for the same `z`, `t` and source tuple: a positive original InternalZero, an explicit shared-square representative, two strict subtraction bounds, and the gap condition imply a positive guarded InternalZero. It does not prove such a parameter exists.
+
+`check.py` verified the exact assumptions, conclusion and composition, accepted source/output/direct pin/logs, two axiom reports `[propext, Classical.choice, Quot.sound]`, and the rejected first attempt; finite examples are only a sanity check. No Lean replay was performed. The later independently reviewed signed-gauge no-go shows that for an initially unguarded positive-F valuation this gauge cannot satisfy the requested guard; that limitation does not resolve graph-zero existence or another transformation. No unguarded 79/80 equivalence, iPRA theorem or external file binding follows here, and transitive provenance remains inherited.
