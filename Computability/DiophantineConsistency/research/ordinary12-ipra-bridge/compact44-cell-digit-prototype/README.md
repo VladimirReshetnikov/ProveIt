@@ -9,7 +9,15 @@ the four printed reports contain only `propext`, `Classical.choice` and
 `Quot.sound`. The sampled direct dependency and companion records remained
 unchanged; the command, logs and hashes are retained in `observations/`.
 
-This incremental single-author result inherits the word and lookup providers'
-transitive and package ancestry. It does not yet prove uniform definability,
-pack the digits into a cell, establish no-carry or graph-zero conditions, or
-prove an iPRA endpoint.
+`CompactCellDigitDef.lean` further proves that, for fixed model elements `a`
+and `d`, the function `k ↦ cellDigit a d k` is Σ₁-definable. The first attempt
+left numeral comparisons unsolved; the retained second attempt adds numeric
+normalization and exited 0, with unchanged sampled direct dependencies and no
+warnings or `sorryAx`. Its printed axiom report contains `propext`,
+`Classical.choice` and `Quot.sound`. The failed source and both attempt logs
+are retained under `observations/`.
+
+These incremental single-author results inherit the word and lookup providers'
+transitive and package ancestry. The definability is not yet uniform in `a`
+and `d`; neither result packs the digits into a cell, establishes no-carry or
+graph-zero conditions, or proves an iPRA endpoint.
