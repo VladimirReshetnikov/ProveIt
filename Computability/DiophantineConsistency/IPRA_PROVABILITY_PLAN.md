@@ -396,6 +396,9 @@ checks the two uniform-decoder receipts and the generic positive seed without
 replaying Lean; a [field-bit audit](reviews/direct-bfs-field-bits-independent/README.md)
 checks its generic and graph receipts and same-length scope. Full Wang-window
 and machine/color conjugacy remain open. An
+[edge-field theorem](research/direct-bfs-lean-tile-fields-prototype/README.md)
+identifies all four binary payload slices with the direct table's typed edge
+labels in the stated models; the full graph tile window is still separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
