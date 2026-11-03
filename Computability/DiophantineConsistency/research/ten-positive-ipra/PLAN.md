@@ -56,6 +56,21 @@ binding from the retained bytes to the Lean term. The current direct-BFS
 [converse packing work](../direct-bfs-completeness-route/README.md) do not yet
 establish that complete `SourceModel` or a Lean file-binding theorem.
 
+## Lane split (3 November 2026, Vladimir's decision)
+
+Two agents work on this campaign. To avoid duplicate proofs:
+
+- **Codex:** K2–K6 (already under way in `research/trace75-root-probe`),
+  K8, K9, K12 and the compact44 source side.
+- **Claude:** K7 (signed transport, `B ≥ 0`, `C > 0`), K10 (q3-chart
+  integrality, ratio estimate, projector ⇒ `X = 2^R`) and K11 (constructive
+  completeness), all **model-internal** (every model of `𝗜𝚺₁`), building on
+  the trace75 register module `TenPositiveTrace75` and the conventions of
+  `Trace75Factors`.
+
+K6 was offered to Claude, but Codex had already reached it, so it stays with
+Codex. A stage changes hands only when this section says so.
+
 ## Kernel stages (PROOF.md §§2–7, chart q3, weight L = V²)
 
 | stage | content | existing Lean to reuse (generic in ports) | status |
