@@ -39,7 +39,7 @@ also supports the initial 59-module rebuild within its scoped namespace,
 without certifying all other project or package ancestry. A guarded
 [15-stage author prefix](research/ordinary12-ipra-bridge/compact12-ipra-incremental-rebuild-merged-batch03/README.md)
 has since compiled, but a broader serialized-import reverse-impact scan
-finds a 425-module endpoint ancestor cone: the original 59 omissions plus
+finds a [425-module endpoint ancestor cone](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-preflight/README.md): the original 59 omissions plus
 366 affected nine-provider objects. The first 15 rebuilt stages have
 unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
