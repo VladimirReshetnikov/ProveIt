@@ -239,7 +239,10 @@ without replaying Lean. Fixed-byte recipe calibration, first/main index
 alignment, machine equivalence and iPRA remain open. The graph's signed
 carrier additionally supplies [`μ² ∣ h*e`](research/ten-positive-80-carrier-cancel-h-prototype/README.md)
 after an explicit cancellation of `H`; canceling `h` still requires the
-separate radix-parity/unit argument.
+separate radix-parity/unit argument. A [graph parity packet](research/ten-positive-80-rank-parity-prototype/README.md)
+constructs that unit certificate under the port bounds and an explicit
+odd-beta witness; its signed cancellation and fixed-beta binding remain
+separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
