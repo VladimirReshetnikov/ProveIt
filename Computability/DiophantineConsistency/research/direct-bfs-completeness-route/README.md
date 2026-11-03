@@ -64,4 +64,7 @@ passed an author check for four assumption-free derivability statements over
 the exact symbolic direct-BFS Lean tuple. Its positive shift and the selected
 consistency sentences are inherited from the adapter. The full serialized
 dependency closure and source ancestry, and a Lean equality to the external
-JSON/gzip coefficient, remain open; independent review is pending.
+JSON/gzip coefficient, remain open.
+An [independent source and receipt review](../../reviews/direct-bfs-80-ipra-fixed-independent/README.md)
+checks all four fixed-port statements and the observed inner runner success,
+without a new Lean replay or full coherent ancestry audit.
