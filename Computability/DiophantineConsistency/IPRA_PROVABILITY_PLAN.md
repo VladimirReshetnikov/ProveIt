@@ -344,11 +344,14 @@ now proves the desired selector, dummy and copy values and Σ₁ definability
 uniformly in the row, dummy bit and position. A later
 [single-author word construction](research/ordinary12-ipra-bridge/compact44-word-constructed-prototype/README.md)
 packs definable row and dummy functions into a bounded model word with the
-expected local digits. Separately, the [dummy-pulse result](research/ordinary12-ipra-bridge/compact44-pulse-bit-safety-prototype/README.md)
-proves preservation of low-mask no-carry assuming baseline low-mask safety.
-These are model-level components; proving the baseline mask and other packing
-conditions, constructing a graph zero and establishing the iPRA endpoint
-remain separate obligations.
+expected local digits. A [model-halt client](research/ordinary12-ipra-bridge/compact44-halt-packed-word-prototype/README.md)
+now constructs the marked packed word at the chosen power dimensions.
+The [base-cell low-mask theorem](research/ordinary12-ipra-bridge/compact44-base-low-nocarry-prototype/README.md)
+proves no-carry for each non-forbidden row, and the separate
+[dummy-pulse result](research/ordinary12-ipra-bridge/compact44-pulse-bit-safety-prototype/README.md)
+proves preservation of that fact under the dummy pulse. These are model-level
+components; the special origin-mask condition, other packing conditions,
+graph-zero construction and iPRA endpoint remain separate obligations.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
