@@ -32,11 +32,16 @@ constructs the outer and auxiliary Pell seed families and a positive shifted
 transport witness from the same internally halted, calibrated BFS packed word.
 The [first-carrier join](../direct-bfs-halt-first-seed-prototype/README.md)
 also produces its positive first-carrier equations on that same word. The
-graph valuation remains open, as do the external coefficient binding and
-coherent combined provider audit.
+graph valuation is supplied for model ports satisfying four explicit
+equalities by the [80-graph reverse theorem](../direct-bfs-halt-80-graph-prototype/README.md).
+The external coefficient binding and coherent combined provider audit remain
+open. This is not a trace75 graph theorem.
 An [independent source and receipt review](../../reviews/direct-bfs-halt-pell-seed-independent/README.md)
 checks the common word and pulse throughout this join, without a new Lean
 replay or full ancestry audit.
 The [first-carrier review](../../reviews/direct-bfs-halt-first-seed-independent/README.md)
 checks its exact same-word witness and first-carrier equations with the same
 replay and ancestry qualifications.
+The [reverse-graph review](../../reviews/direct-bfs-halt-80-graph-independent/README.md)
+checks all four model-port hypotheses and the common witnesses, without a new
+Lean replay or full ancestry audit.
