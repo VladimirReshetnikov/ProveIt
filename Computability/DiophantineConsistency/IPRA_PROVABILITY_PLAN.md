@@ -475,7 +475,9 @@ and [definable dummy-pulse extension](research/direct-bfs-halt-packed-pulse-prot
 construct such words from internal halt while preserving normalized dummy
 digits. A [same-row pulse family](research/direct-bfs-halt-packed-family-prototype/README.md)
 keeps one halt-derived row and geometry while quantifying over the pulses;
-a [local low-mask lemma](research/direct-bfs-cell-low-pulse-prototype/README.md)
+an [independent ingredient audit](reviews/direct-bfs-halt-packing-ingredients-independent/README.md)
+checks this quantifier order and the conditional transport premises without
+replaying Lean. A [local low-mask lemma](research/direct-bfs-cell-low-pulse-prototype/README.md)
 handles normalized pulses for non-forbidden rows. Global origin, high-mask
 and rank calibration remain separate. A [word low-mask join](research/direct-bfs-word-low-fields-prototype/README.md)
 proves the positive origin and low-mask fields for a direct local word when
