@@ -4,4 +4,4 @@
 
 The selection (`run-select.py`, attempt01), inverse (`run-inverse.py`, attempt02), and equivalence (`run-equivalence.py`, attempt01) author checks each passed in their recorded guarded sessions, with exact source copies, output, provider pins, and resource observations in the matching `observations` directories. Inverse attempt01 failed on a lexical parsing issue and is retained. The reflection model source and its separate accepted receipt are in `reviews/ordinary12-absorb89-reflection-independent/`. No independent Lean replay has yet been performed for this join. The selected project provider and inherited package-transitive, dynamic and historical source/object ancestry limitations apply.
 
-This theorem alone does not assert fixed-port halt or an internal iPRA derivation for the 89-row graph. Those require separately checked joins.
+This theorem alone does not assert fixed-port halt or an internal iPRA derivation for the 89-row graph. A subsequent [fixed-port join](HALT.md) supplies the former with its stated provider limitations; an iPRA derivation requires a separate checked join.

@@ -109,7 +109,10 @@ preserves the full graph output in the negative branch. Their
 [existence-equivalence join](research/ordinary12-absorb89-probe/EQUIVALENCE.md)
 now proves that the 89- and 90-row graphs have positive zeros in the same
 IΣ₁ models under those port bounds. This is an author-selected provider check;
-independent review and fixed-port halt and iPRA joins remain separate.
+independent review remains separate. A subsequent [fixed-port halt bridge](research/ordinary12-absorb89-probe/HALT.md)
+checks the positive, shifted and byte-port forms, but does not authenticate
+the full serialized ancestry of the combined roots. The iPRA join remains
+separate.
 
 For the separate ten-positive 84- and 85-operation proposals, a
 [Pell-doubling prototype](research/ten-positive-ipra-doubling-prototype/README.md)
