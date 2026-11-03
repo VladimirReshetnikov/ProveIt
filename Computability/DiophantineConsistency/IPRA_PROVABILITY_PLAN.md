@@ -512,7 +512,12 @@ indices and doubled coordinates for any positive c and τ. It is not yet
 joined to a 90 zero or the remaining 80 carriers. A separate
 [unbounded divisible-ordinate theorem](research/ten-positive-pell-ordinate-above-prototype/README.md)
 chooses an internal divisible Pell index above any internal bound; it remains
-to be used to establish the required carrier positivity.
+to be used to establish the required carrier positivity. A
+[strong-seed extension](research/ten-positive-scaled-strong-seed-above-prototype/README.md)
+combines that bound with the doubled seed coordinates. An
+[independent receipt audit](reviews/ten-positive-scaled-reverse-and-halt-forward-independent/README.md)
+checks the conditional forward halt, scaled-interval, fresh-witness and first
+strong-seed results without replaying Lean.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
