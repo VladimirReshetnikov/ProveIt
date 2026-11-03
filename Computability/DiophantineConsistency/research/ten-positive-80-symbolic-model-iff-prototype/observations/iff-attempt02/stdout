@@ -1,0 +1,26 @@
+/tmp/direct80-symbolic-model-iff-w94kf8fm/Direct80SymbolicModelIff.lean:37:42: error: Tactic `rfl` failed: The left-hand side
+  ↑lowNat
+is not definitionally equal to the right-hand side
+  low
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+hp0 : p 0 = betaNat
+hp1 : p 1 = paramKernel rho
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hports : integerPorts p = CompactSymbolicModelIff.p
+hp0m : ↑(p 0) = Exp.exp 590069 - 1
+hp1m : ↑(p 1) = ↑(paramKernel rho)
+⊢ ↑lowNat = low
+/tmp/direct80-symbolic-model-iff-w94kf8fm/Direct80SymbolicModelIff.lean:40:4: error: 'change' tactic failed, pattern
+  ?m.621 = ↑highNat + (Exp.exp 590069 - 1)
+is not definitionally equal to target
+  Exp.exp 590069 - 1 + ↑highNat = high + (Exp.exp 590069 - 1)
+/tmp/direct80-symbolic-model-iff-w94kf8fm/Direct80SymbolicModelIff.lean:21:8: error: (kernel) excessive memory consumption detected
+'Direct80SymbolicModelIff.symbolic_positive_model_iff' depends on axioms: [propext,
+ Classical.choice,
+ symbolic_positive_model_iff,
+ Quot.sound]

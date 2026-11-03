@@ -1,0 +1,32 @@
+import DirectBFSConjugacyLift
+import DirectBFSSymbolicKernel
+import DiophantineConsistency.Compact943Data
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DirectBFSRowTransfer
+open DirectBFSConjugacyBase DirectBFSConjugacyLift
+
+theorem backward_forward (i : Fin 943) : rowForward (rowBackward i)=i := by
+  apply Fin.ext
+  exact row_inverse i.isLt
+
+theorem original_row (i : Fin 943) : original.getD i.val (0,0,0,0)=Compact943Data.row i := by
+  have hi : i.val<Compact943Data.rows.length := by simpa only [Compact943Data.rows_length] using i.isLt
+  simp only [original,Array.getD,List.getElem?_toArray,getElem?_pos _ _ hi,Option.getD_some,Compact943Data.row]
+
+theorem direct_row (i : Fin 943) : direct.getD i.val (0,0,0,0)=DirectBFSSymbolicKernel.row i := by
+  have hi : i.val<DirectBFSSymbolicKernel.rows.length := by simpa only [DirectBFSSymbolicKernel.rows_length] using i.isLt
+  simp only [direct,Array.getD,List.getElem?_toArray,getElem?_pos _ _ hi,Option.getD_some,DirectBFSSymbolicKernel.row]
+
+theorem direct_is_renamed_original (j : Fin 943) :
+    rename (Compact943Data.row (rowBackward j)) = DirectBFSSymbolicKernel.row j := by
+  have h := row_match_fin (rowBackward j)
+  rw [backward_forward,original_row,direct_row] at h
+  exact h
+#print axioms DirectBFSRowTransfer.backward_forward
+#print axioms DirectBFSRowTransfer.original_row
+#print axioms DirectBFSRowTransfer.direct_row
+#print axioms DirectBFSRowTransfer.direct_is_renamed_original
+end DirectBFSRowTransfer

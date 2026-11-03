@@ -557,6 +557,12 @@ the three β/low/high equalities **and** an explicit equality of the entire
 integer port tuple to the original-kernel 90-row symbolic tuple. Thus it is a
 model-level zero-to-halt implication under those assumptions, not a theorem
 for the distinct retained BFS K0, a reverse implication, or an iPRA endpoint.
+A [two-way model join](research/ten-positive-80-symbolic-model-iff-prototype/README.md)
+now composes both directions: in each stated IΣ₁ model the positive 80 graph
+zero is equivalent to machine halt, with explicit natural β/low/high port
+equalities, the complete integer tuple equality, and a separate p₁ model-cast
+equality. These hypotheses remain in the theorem. It does not establish an
+internal iPRA proof or a binding to the distinct retained BFS coefficient.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. These hypotheses are not yet derived
