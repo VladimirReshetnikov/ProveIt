@@ -2624,3 +2624,24 @@ replacement for those constructive obligations: the translated bit equations,
 bounded-search correctness, and quantifier cases must all be justified in
 native iPRA. Its direct negation-normal reading of `succInd` must not be used
 as native induction, for the implication reason explained above.
+
+## Further questions: frontier equations without an iPRA endpoint
+
+Recorded 3 November 2026. Every equation with a Lean Con(ZFC) proof in the
+tree now also has native and standard iPRA endpoints in the tree. That covers
+the README's proof-status list, the CURRENT2011 carrier forms, the two
+nine-unknown equations, and AQ22–AQ40. Two groups remain outside that
+statement:
+
+- **The ordinary 12-variable, 95-operation free-J graph.** Its all-model
+  equivalence is a research prototype whose import closure has 462 prototype
+  modules; 81 module names have several competing variants. Joining that
+  equivalence to the positive-model adapter in one coherent build is the
+  active rebuild described at the top of this file.
+- **The delivered package frontier of
+  [con-zfc-diophantine-forms](con-zfc-diophantine-forms/README.md).**
+  Examples are ten positive unknowns in 75 operations at degree 402
+  (package 163), and nine positive unknowns in 420 operations (package 101).
+  These have manuscript proofs and finite replays, but no Lean Con(ZFC)
+  proof, external or internal. An iPRA endpoint for any of them first
+  needs that Lean proof.
