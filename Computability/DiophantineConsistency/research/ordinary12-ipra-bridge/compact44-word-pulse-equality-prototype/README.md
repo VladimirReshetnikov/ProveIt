@@ -15,7 +15,8 @@ conditions, graph zero or an iPRA proof.
 The guarded single-author compile exited 0 without warnings or `sorryAx`,
 with unchanged sampled direct dependency and companion guards. Its three
 named axiom reports list only `propext`, `Classical.choice`, and `Quot.sound`.
-This run briefly overlapped another Lean compile because of coordination
-latency; the direct-guard observations are still as recorded, but no sole-Lean
-resource claim is made. Provider package, transitive, dynamic and
-between-observation ancestry remains inherited; `/tmp` paths may disappear.
+The first run briefly overlapped another Lean compile because of coordination
+latency. A second bounded run in an available Lean slot also exited 0 with
+unchanged sampled guards and produced the same object hash; both observations
+are retained. Provider package, transitive, dynamic and between-observation
+ancestry remains inherited; `/tmp` paths may disappear.
