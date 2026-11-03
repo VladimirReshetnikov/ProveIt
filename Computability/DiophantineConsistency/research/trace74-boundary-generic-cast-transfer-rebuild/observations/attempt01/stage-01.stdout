@@ -1,0 +1,45 @@
+/tmp/trace74-boundary-generic-cast-transfer-i5r3xwzx/src/Trace74BoundaryGenericCastTransfer.lean:39:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ycoord (↑31) (↑y * (↑x + 1))
+in the target expression
+  ycoord 31 (↑y * (↑x + 1)) = 2 * ycoord 16 (2 * (↑x * ↑y * ↑y - 1) + 1) * ↑y + ↑eta
+
+case refine_1
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+x y eta zeta : ℕ
+heta : 0 < eta
+hzeta : 0 < zeta
+hbase : ↑(2 * (x * y * y - 1) + 1) = 2 * (↑x * ↑y * ↑y - 1) + 1
+hck : (xy 31 (y * (x + 1))).2 = 2 * (xy 16 (2 * (x * y * y - 1) + 1)).2 * y + eta
+hk : 2 * (xy 16 (2 * (x * y * y - 1) + 1)).2 = eta + zeta
+he : 0 < ↑eta
+hz : 0 < ↑zeta
+hfirst : ycoord (↑16) (2 * (↑x * ↑y * ↑y - 1) + 1) = ↑(xy 16 (2 * (x * y * y - 1) + 1)).2
+hmain : ycoord (↑31) (↑y * (↑x + 1)) = ↑(xy 31 (y * (x + 1))).2
+hckV : ↑(xy 31 (y * (x + 1))).2 = 2 * ↑(xy 16 (2 * (x * y * y - 1) + 1)).2 * ↑y + ↑eta
+hkV : 2 * ↑(xy 16 (2 * (x * y * y - 1) + 1)).2 = ↑eta + ↑zeta
+⊢ ycoord 31 (↑y * (↑x + 1)) = 2 * ycoord 16 (2 * (↑x * ↑y * ↑y - 1) + 1) * ↑y + ↑eta
+/tmp/trace74-boundary-generic-cast-transfer-i5r3xwzx/src/Trace74BoundaryGenericCastTransfer.lean:41:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ycoord (↑16) (2 * (↑x * ↑y * ↑y - 1) + 1)
+in the target expression
+  2 * ycoord 16 (2 * (↑x * ↑y * ↑y - 1) + 1) = ↑eta + ↑zeta
+
+case refine_2
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+x y eta zeta : ℕ
+heta : 0 < eta
+hzeta : 0 < zeta
+hbase : ↑(2 * (x * y * y - 1) + 1) = 2 * (↑x * ↑y * ↑y - 1) + 1
+hck : (xy 31 (y * (x + 1))).2 = 2 * (xy 16 (2 * (x * y * y - 1) + 1)).2 * y + eta
+hk : 2 * (xy 16 (2 * (x * y * y - 1) + 1)).2 = eta + zeta
+he : 0 < ↑eta
+hz : 0 < ↑zeta
+hfirst : ycoord (↑16) (2 * (↑x * ↑y * ↑y - 1) + 1) = ↑(xy 16 (2 * (x * y * y - 1) + 1)).2
+hmain : ycoord (↑31) (↑y * (↑x + 1)) = ↑(xy 31 (y * (x + 1))).2
+hckV : ↑(xy 31 (y * (x + 1))).2 = 2 * ↑(xy 16 (2 * (x * y * y - 1) + 1)).2 * ↑y + ↑eta
+hkV : 2 * ↑(xy 16 (2 * (x * y * y - 1) + 1)).2 = ↑eta + ↑zeta
+⊢ 2 * ycoord 16 (2 * (↑x * ↑y * ↑y - 1) + 1) = ↑eta + ↑zeta
+'Trace74BoundaryGenericCastTransfer.transfer' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
