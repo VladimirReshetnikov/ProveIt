@@ -628,7 +628,8 @@ A [packing/seed adapter](research/ten-positive-packing-reverse-graph-prototype/R
 now derives the graph mask, rank, X, Y and transport bindings from one
 coherent packing and seed tuple, yielding a positive 80 zero under its
 explicit port, positivity, phase, power and size assumptions. This is an
-author check, not yet a theorem deriving these inputs from halt.
+author check; an [independent packing audit](reviews/ten-positive-packing-reverse-graph-independent/README.md)
+checks its exact premises and direct providers without replaying Lean.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
