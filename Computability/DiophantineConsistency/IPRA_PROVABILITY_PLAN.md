@@ -373,7 +373,9 @@ derives the compact rank population, mod-four phase and size from any such
 symbolic packing and identifies the relevant calibration constant. A
 [halt-to-seeds-and-transport client](research/ordinary12-ipra-bridge/compact44-halt-pell-transport-prototype/README.md)
 now constructs both positive Pell seed families and a positive shifted
-transport quotient for the same calibrated word. Separately,
+transport quotient for the same calibrated word. A [first-carrier client](research/ordinary12-ipra-bridge/compact44-halt-first-seed-prototype/README.md)
+also constructs a positive first coordinate and its additive transport
+identity for those same outer witnesses. Separately,
 the exact free-J literal has a checked [factor equivalence](research/ordinary12-ipra-bridge/free-j-completeness-factor-bridge-prototype/README.md)
 and [conditional factor/graph witness bridges](research/ordinary12-ipra-bridge/free-j-witness-assembly-prototype/README.md).
 Constructing positive coordinates that meet all factor equations, binding the
