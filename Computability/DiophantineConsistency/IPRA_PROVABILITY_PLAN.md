@@ -312,8 +312,11 @@ checks the same-length saturation and selected mask facts without replaying
 Lean. A [fixed-digit join](research/ten-positive-80-fixed-digits-prototype/README.md)
 adds the exact natural transport, origin digit and bounded low-mask digits
 for the same graph zero and radix length. A [slotwise join](research/ten-positive-80-fixed-slots-prototype/README.md)
-extends the low-mask no-carry conclusion to every nonzero slot. The full
-compact window and rank phase are not yet established.
+extends the low-mask no-carry conclusion to every nonzero slot. An [independent audit](reviews/ten-positive-80-fixed-digits-independent/README.md)
+checks these witnesses and the locally compiled increment proof without a Lean
+replay. A [fixed congruence join](research/ten-positive-80-fixed-congruence-prototype/README.md)
+reconciles the digit and radix lengths and derives the transport congruence.
+The full compact window and rank phase are not yet established.
 
 A [signed-V orientation theorem](research/ten-positive-80-v-positive-prototype/README.md)
 derives positivity of the 80 graph's signed `V` from an actual zero under
