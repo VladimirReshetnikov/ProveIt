@@ -21,3 +21,12 @@ external coefficient-file limitations remain inherited.
 
 **The runner and pinned outer wrapper remain held pending independent
 prelaunch review and coordinated release.**
+
+The independently reviewed first runner was held because its client-root
+check accepted a same-byte symlink substitution. `run-v2.py` now requires
+both client directories and all four captured source/object paths to remain
+regular at their exact resolved paths. Its captured read-only preflight
+`observations/preflight-attempt02/` passes; the 18 actual-function controls
+at `observations/policy-attempt02/` include same-byte source and object
+symlink rejection. The revised runner and `run-outer-v2.py` remain held
+pending a separate independent re-review. No client Lean check has run.
