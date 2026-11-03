@@ -320,6 +320,9 @@ The [rank-phase theorem](research/ten-positive-80-rank-phase-prototype/README.md
 now derives rank `≡3 (mod 4)` under the symbolic port equalities. A separate
 [indexed-carry join](research/ten-positive-80-indexed-carry-prototype/README.md)
 reaches the generic compact carry interface with all four port equalities.
+An [independent audit](reviews/ten-positive-80-phase-indexed-carry-independent/README.md)
+checks these phase and carry receipts and their stated witness and port boundaries;
+it does not replay Lean or establish the complete decoder.
 A [support/carry join](research/ten-positive-80-support-carry-prototype/README.md)
 adds the compact support and Boolean digit facts at the same length. A
 [fresh unscaled auxiliary theorem](research/ten-positive-80-fresh-auxiliary-prototype/README.md)
