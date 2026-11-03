@@ -1,0 +1,11 @@
+# Independent prelaunch review: standard-natural finite interval
+
+Scoped GO for one coordinated author check with `research/trace74-boundary-natural-seed-rebuild/run.py` SHA `f9620254f4ec717c6f2f8e0db155439588b213b198d4618d5b0f139738f4caf9` and `run-outer.py` SHA `772380f9fa68a24aab910012e1bc91f05d35186573f0ab978c747cda13624296`. No Lean run or successful proof is asserted by this review.
+
+We checked the audited 2,027-object recurrence-cast parent and its outer receipt, one source and direct recurrence provider's first selection, all 81 outside first selections and companions, preflight `cbc190b38fe8659893612f42dd73fd7d9e934b5724b84d81dc17a5b37ca82622` (2,027/81/1), and 23 actual-function policy controls rerun on copies. Independent wrapper stubs rejected altered runner bytes before creating observations and a FAILED child and accepted a PASS child. Full union/input/source stability, no-clobber, resource and nine parent closure/companion guards are retained.
+
+The source uses ordinary `decide` for the finite natural interval and `omega` for its slack decomposition, not `native_decide`. The guarded Lean command has `-M3000`, one thread and a 600-second stage timeout, with the shared available-memory and process guard. The two named axiom reports must appear exactly once and in order, with either no axioms or a nonduplicated subset of `propext`, `Classical.choice`, `Quot.sound`; missing, duplicate, extra, unexpected-axiom, warning/error/sorry and stderr cases are rejected. Actual elaboration and resource feasibility remain untested.
+
+The source-level comparison with the Python seed and offset conventions is documented in `reviews/trace74-boundary-natural-seed-draft-independent/`. Even if accepted, this check establishes a standard-natural interval and slacks, not its model instantiation or a graph zero. Fixed ports, four inherited baseline source ancestries, package/dynamic ancestry and external-file binding remain outside scope. Independent post-run audit remains necessary.
+
+Source plan SHA `06ef42a1dfc3aacd417d0ffc533e851f5244a307649207e44b0db6c9a9c116fc`, policy receipt SHA `f4102d09294a63c03d8e451f36a618047dddbb147671f92cc2e1d6ed4a32e06c`, author wrapper controls SHA `bb85b906ac1531988e59ca553a2a432fbe8a09e721e4ada89910c1b2f50e12d7`. Independent checker and output are alongside.
