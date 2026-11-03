@@ -437,7 +437,11 @@ Lean replay; it does not assert `s>0` or boundary/machine behavior. An
 [internal local-word join](research/direct-bfs-80-local-word-prototype/README.md)
 now composes represented direct rows, origin/exclusion facts and local edge
 equalities at one length. Translating this direct-table word to the original
-machine table, the converse, iPRA and formal file binding remain open. An
+machine table, the converse, iPRA and formal file binding remain open. A
+[model-valued inverse index map](research/direct-bfs-model-index-map-prototype/README.md)
+preserves represented bounded sequences, and [finite edge reflection](research/direct-bfs-lean-edge-reflection-prototype/README.md)
+maps matching direct edges back to the original typed colors. These author
+results do not yet join model lookup and sequence transport. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
