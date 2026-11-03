@@ -1,0 +1,5 @@
+# Main Pell norm after folding
+
+`Direct80MainNorm.graph_main_norm` derives the main Pell norm from an actual positive zero of the exact Lean 80-row graph in any IΣ₁ model with positive beta. It retains a positive odd main index `r`, the larger positive strong index `j`, the actual strong pair and `c² ∣ I`, and sets `d=xcoord r (A-1)` to obtain `d²=1+delta*c²`. The main norm is a conclusion obtained from the noncircular all-index fold, not a hypothesis.
+
+Guarded author `observations/attempt01/` passed without diagnostics, yielding `/tmp/tenpositive-80mainnorm-uewlhem5/Direct80MainNorm.olean`, SHA-256 `817aca133ff759ad633835741f261503a2612cd5a0e95de274bcce1bd607593a`. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. The runner pins selected prototype objects and one inherited provider, not the full project/package/dynamic or historical source-to-object ancestry. Resource samples are discrete; no paired replay is claimed. The result is not a machine or iPRA endpoint, and external graph/PDF correspondence remains separate.
