@@ -1,0 +1,38 @@
+import Direct80RankPhase
+import DiophantineConsistency.ArithmeticPellAuxiliarySeed
+
+/-! Fresh unscaled source auxiliaries for a fixed-mask 80 zero. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80FreshAuxiliary
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011
+open ArithmeticPellRecurrence ArithmeticPellHalfIndex ArithmeticPellAuxiliarySeed
+open CompactFixedBeta CompactSymbolicPorts
+open TenPositive80Graph TenPositive80Factors TenPositive80NaturalRank TenPositive80RankPhase
+attribute [local irreducible] CompactFixedBeta.betaNat Nat.ofDigits lowNat highNat
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_fresh_auxiliary (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hp0 : p 0=betaNat) (hp2 : p 2=lowNat) (hp3 : p 3=betaNat+highNat)
+    (hv : ∀j,0<v j) (hz : InternalZero (graph (integerPorts p)).output v) :
+    let a := Y p v*(X p v+1)
+    let R := rankNat p v
+    let c := ycoord R a
+    ∃ f i T u y : V, 0<f ∧ 0<i ∧ 0<T ∧ 0<u ∧ 0<y ∧
+      f=xcoord (R*c) a ∧ ycoord (R*c) a=i*c*c ∧
+      f*f=1+ArithmeticPellRecurrence.delta a*(i*c*c)*(i*c*c) ∧
+      let I:=ArithmeticPellRecurrence.delta a*i*c*c
+      y=ycoord R (I-2) ∧ xcoord R (I-2)=I*u ∧
+      u=oddQuotient ((R-1)/2) (I-2) ∧
+      (u+c)%(f*f)=0 ∧ (u+R)%c=0 ∧
+      f*f*c*T=u+c+f*f*R ∧ u=absdiff (f*f*c*T) (f*f*R+c) ∧
+      I*I*u*u+y*y=1+I*I*y*y := by
+  exact auxiliary_seed (Y p v*(X p v+1)) (rankNat p v)
+    (graph_phase p v hp0 hp2 hp3 hv hz)
+
+#print axioms TenPositive80FreshAuxiliary.graph_fresh_auxiliary
+end TenPositive80FreshAuxiliary

@@ -320,7 +320,12 @@ The [rank-phase theorem](research/ten-positive-80-rank-phase-prototype/README.md
 now derives rank `≡3 (mod 4)` under the symbolic port equalities. A separate
 [indexed-carry join](research/ten-positive-80-indexed-carry-prototype/README.md)
 reaches the generic compact carry interface with all four port equalities.
-The full compact window and machine theorem are not yet established.
+A [support/carry join](research/ten-positive-80-support-carry-prototype/README.md)
+adds the compact support and Boolean digit facts at the same length. A
+[fresh unscaled auxiliary theorem](research/ten-positive-80-fresh-auxiliary-prototype/README.md)
+uses the phase to construct source-side Pell witnesses without identifying
+them with the graph's scaled ordinate. The full compact window, source graph
+zero and machine theorem are not yet established.
 
 A [signed-V orientation theorem](research/ten-positive-80-v-positive-prototype/README.md)
 derives positivity of the 80 graph's signed `V` from an actual zero under
