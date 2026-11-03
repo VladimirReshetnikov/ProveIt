@@ -1,5 +1,7 @@
 # Standard-theory AQ26 client: single-overlay author replay
 
+**Promoted (3 November 2026).** The Lean files of this directory were copied byte for byte into `Lean/DiophantineConsistency/` and built there against current sources; see the [promotion record](../../reviews/aq22-28-current-source-promotion/README.md). The tree copies are now canonical; the copies here are retained as the audited historical inputs.
+
 The two files in `draft` form a client of the AQ26 native bridge and of
 `IPRAStandardTheory`, adapted from the AQ29 client. They compiled in the
 [single-overlay author trial](../../reviews/ipra-standard-aq26-combined-author-trial/README.md),

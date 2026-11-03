@@ -1249,7 +1249,10 @@ its separate paired Lean replay remains open. The
 reductions have finite exact residual and degree checks. Their Lean model
 transports and native endpoints completed one [author-only extension](reviews/aq26-author-trial-v2/README.md)
 and passed an [independent artifact audit](reviews/aq26-author-independent-audit/README.md).
-They remain historical. The [standard-theory AQ26 client](research/ipra-standard-aq26/README.md)
+On 3 November 2026 they, the AQ22 chain and the standard AQ26/AQ29 clients
+were [promoted byte for byte into the Lean tree](reviews/aq22-28-current-source-promotion/README.md)
+and built there against current sources (35 modules, author build, clean
+named axiom reports); the historical runs below remain the paired evidence. The [standard-theory AQ26 client](research/ipra-standard-aq26/README.md)
 also completed one author-only single-overlay run and a separate artifact
 audit; the later AQ22 pair includes this entire 26-variable chain. The
 [22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md)
