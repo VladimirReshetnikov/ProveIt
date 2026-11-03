@@ -22,4 +22,7 @@ discharges that model-side residue for the exact same symbolic BFS kernel,
 using a separate natural-to-model residue theorem. Internal halt is its only
 theorem hypothesis; Pell witnesses, a graph-zero construction, formal binding
 of the retained coefficient files, and a coherent complete ancestry audit
-remain open. Its author check is recorded; independent review is pending.
+remain open. Its author check is recorded.
+An [independent source and receipt review](../../reviews/direct-bfs-model-residue-independent/README.md)
+checks the natural-to-model cast and exact-kernel join, without a new Lean
+replay or full ancestry audit.
