@@ -45,6 +45,17 @@ The theorem uses the [kernel-checked finite Pell interval](../trace74-boundary-n
 
 These ports violate the fixed BFS bounds. The counterexample does not decide the guard at the fixed BFS tuple, prove that the 75 graph has no positive zero, establish 74/75 existence inequivalence, or supply a fixed-port halt/iPRA theorem.
 
+The [conditional saturation theorem](../trace74-conditional-saturation-guard-rebuild/README.md)
+now has a Lean replay and independent result audit: its natural block,
+size, population, and `F <= MC*J` assumptions imply both no-carry facts and
+the guard. A separate [scalar example](../trace74-saturation-scalar-obstruction/README.md)
+shows why saturation and no-carry alone do not imply that comparison for
+arbitrary ports. For the retained fixed payload an [external exact check](../trace74-fixed-mask-cover/README.md)
+establishes `MC + HP > beta`; a conditional model-arithmetic draft uses that
+cover and the second no-carry fact to recover the comparison. The fixed mask
+check is not yet a Lean theorem about the symbolic ports, and neither route
+has derived the block and population assumptions from a 74 zero.
+
 The `coefficient_binding` object, including the tuple description and all
 compressed/raw hashes, is copied verbatim from the pinned 75-row JSON. Its
 `coefficients/` path belongs to that source package's layout, not this probe's
