@@ -822,6 +822,11 @@ found no defect in the inspected adaptation or algebra. A further
 combines chosen calibration with variation, assuming a valid initial packing
 and a valid perturbed packing for every admissible selector; it does not prove
 that uniform realization assumption.
+A [static-field client](research/ordinary12-ipra-bridge/compact44-packing-static-fields-prototype/README.md)
+proves the chosen-dimension inequalities and three bounds for the exact
+symbolic native masks. This exploratory mixed-provider build checks selected
+direct overlaps, but inherits transitive and package limitations; the eight
+word-dependent `PackingInput` fields and physical dummy safety remain open.
 Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
 and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
 found no defect in the inspected arguments; these reviews predate the joined
