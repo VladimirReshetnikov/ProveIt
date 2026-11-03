@@ -59,3 +59,9 @@ equality-only iPRA endpoints for mapped refutation negation and the selected
 translated Foundation consistency sentence. The [independent review](../../reviews/direct-bfs-80-ipra-client-independent/README.md)
 checks these hypotheses, conclusions and selected receipts; fixed ports and
 the remaining ancestry and external binding are separate.
+A [fixed-port client](../direct-bfs-80-ipra-fixed-prototype/README.md) has now
+passed an author check for four assumption-free derivability statements over
+the exact symbolic direct-BFS Lean tuple. Its positive shift and the selected
+consistency sentences are inherited from the adapter. The full serialized
+dependency closure and source ancestry, and a Lean equality to the external
+JSON/gzip coefficient, remain open; independent review is pending.
