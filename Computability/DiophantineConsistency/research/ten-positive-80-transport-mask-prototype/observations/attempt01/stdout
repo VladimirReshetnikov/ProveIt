@@ -1,0 +1,35 @@
+/tmp/tenpositive-80transport-mask-d05h4hk6/Direct80TransportMask.lean:25:79: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hvF : 0 < v 1
+hvw : 0 < v 5
+hB : 0 ≤ Expr.evalRing (fun j => ι (v j)) (BExpr (integerPorts p))
+w : Fin 10 → DiffRing V := fun j => ι (v j)
+coefficient : DiffRing V := ι ↑(p 1) + ι (v 5)
+gap : DiffRing V := ι (q p v) - ι (v 1) - ι (v 2)
+hqeval : Expr.evalRing w (qExpr (integerPorts p)) = ι (q p v)
+⊢ (↑(integerPorts p 1) + ι (v 5)) * (ι (q p v) - ι (v 1) - ι (v 2)) - ι (v 1) =
+    (↑(p 1) + ι (v 5)) * (ι (q p v) - ι (v 1) - ι (v 2)) - ι (v 1)
+/tmp/tenpositive-80transport-mask-d05h4hk6/Direct80TransportMask.lean:36:43: error: Application type mismatch: The argument
+  hprod
+has type
+  0 < coefficient * gap
+but is expected to have type
+  0 < gap * coefficient
+in the application
+  pos_of_mul_pos_left hprod
+/tmp/tenpositive-80transport-mask-d05h4hk6/Direct80TransportMask.lean:27:29: warning: This simp argument is unused:
+  Int.cast_natCast
+
+Hint: Omit it from the simp argument list.
+  simp only [BExpr, ̲Expr.evalRing_mul, ̲Expr.evalRing_add, ̲Expr.evalRing_sub, ̲Expr.evalRing_var,
+        Expr.evalRing_constant,I̵n̵t̵.̵c̵a̵s̵t̵_̵n̵a̵t̵C̵a̵s̵t̵,̵ ̲hqeval]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'TenPositive80TransportMask.positive_mask_of_nonnegative_transport' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

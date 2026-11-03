@@ -1,0 +1,126 @@
+/tmp/tenpositive-80graphcarrierbound-bnkl09p3/Direct80GraphCarrierBound.lean:62:45: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  tau * tau
+in the target expression
+  f * f = 1 + D * U0 * U0 * tau * tau
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := delta p v
+U0 : V := U p v
+E0 : V := E p v
+C : V := c p v
+AA : V := A p v
+a : V := D * U0 * U0 * E0
+F : V := 1 + 2 * a
+Q : V := D * (4 * a * (1 + a))
+tau f V0 Z0 y : V
+ht : 0 < tau
+hf : 0 < f
+hV : 0 < V0
+hy : 0 < y
+hE : E p v = tau * tau
+hf2 : 1 + delta p v * U p v * U p v * E p v = f * f
+hVs :
+  Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v *
+      Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v =
+    ι (V0 * V0)
+hZs :
+  Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).z *
+      Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).z =
+    ι (Z0 * Z0)
+hZeq : Z0 = M p v * tau * f * y
+haux :
+  delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) * (V0 * V0) =
+    1 + (delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) - 1) * (y * y)
+hq : 0 < q p v
+hq1 : 1 ≤ q p v
+hY : 0 < Y p v
+hY1 : 1 ≤ Y p v
+hX : 0 < X p v
+hX1 : 1 ≤ X p v
+hcgt : 1 < C
+hc1 : 1 ≤ C
+hmu2 : 2 ≤ mu p v
+hS2 : 2 ≤ mu p v * Y p v
+hXplus : 2 ≤ X p v + 1
+hA4 : 4 ≤ AA
+hD : 16 ≤ D
+hi : 1 ≤ v 3
+hU : C ≤ U0
+ht1 : 1 ≤ tau
+⊢ f * f = 1 + D * U0 * U0 * tau * tau
+/tmp/tenpositive-80graphcarrierbound-bnkl09p3/Direct80GraphCarrierBound.lean:63:40: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  tau * tau
+in the target expression
+  D * U0 * U0 * tau * tau = a
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := delta p v
+U0 : V := U p v
+E0 : V := E p v
+C : V := c p v
+AA : V := A p v
+a : V := D * U0 * U0 * E0
+F : V := 1 + 2 * a
+Q : V := D * (4 * a * (1 + a))
+tau f V0 Z0 y : V
+ht : 0 < tau
+hf : 0 < f
+hV : 0 < V0
+hy : 0 < y
+hE : E p v = tau * tau
+hf2 : 1 + delta p v * U p v * U p v * E p v = f * f
+hVs :
+  Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v *
+      Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v =
+    ι (V0 * V0)
+hZs :
+  Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).z *
+      Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).z =
+    ι (Z0 * Z0)
+hZeq : Z0 = M p v * tau * f * y
+haux :
+  delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) * (V0 * V0) =
+    1 + (delta p v * (4 * (delta p v * U p v * U p v * E p v) * (1 + delta p v * U p v * U p v * E p v)) - 1) * (y * y)
+hq : 0 < q p v
+hq1 : 1 ≤ q p v
+hY : 0 < Y p v
+hY1 : 1 ≤ Y p v
+hX : 0 < X p v
+hX1 : 1 ≤ X p v
+hcgt : 1 < C
+hc1 : 1 ≤ C
+hmu2 : 2 ≤ mu p v
+hS2 : 2 ≤ mu p v * Y p v
+hXplus : 2 ≤ X p v + 1
+hA4 : 4 ≤ AA
+hD : 16 ≤ D
+hi : 1 ≤ v 3
+hU : C ≤ U0
+ht1 : 1 ≤ tau
+hfs : f * f = 1 + D * U0 * U0 * tau * tau
+⊢ D * U0 * U0 * tau * tau = a
+/tmp/tenpositive-80graphcarrierbound-bnkl09p3/Direct80GraphCarrierBound.lean:69:34: error: `simp` made no progress
+/tmp/tenpositive-80graphcarrierbound-bnkl09p3/Direct80GraphCarrierBound.lean:70:60: error: `simp` made no progress
+/tmp/tenpositive-80graphcarrierbound-bnkl09p3/Direct80GraphCarrierBound.lean:70:76: error: Application type mismatch: The argument
+  hcB
+has type
+  C < D * (4 * a * (1 + a)) - 1
+but is expected to have type
+  ?m.1069 < Q
+in the application
+  le_of_lt hcB
+'Direct80GraphCarrierBound.graph_carrier_bound' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

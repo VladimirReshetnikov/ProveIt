@@ -218,8 +218,11 @@ checks a conditional negative-transport contradiction. The exact graph
 [signed integral carrier](research/ten-positive-80-signed-carrier-prototype/README.md),
 and [conditional graph transport theorem](research/ten-positive-80-transport-conditional-prototype/README.md)
 are now checked. An [offset bound](research/ten-positive-80-offset-bound-prototype/README.md)
-supplies one of its two size estimates from positive inputs; the other estimate
-and their same-witness composition remain open.
+supplies one of its two size estimates from positive inputs; a separate
+[carrier estimate](research/ten-positive-80-carrier-estimate-prototype/README.md)
+supplies the other for its returned graph witnesses. Their same-witness
+composition remains open. A [mask lemma](research/ten-positive-80-transport-mask-prototype/README.md)
+derives the required mask gap if nonnegative transport is obtained.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
