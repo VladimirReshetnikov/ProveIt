@@ -347,10 +347,14 @@ packs definable row and dummy functions into a bounded model word with the
 expected local digits. A [model-halt client](research/ordinary12-ipra-bridge/compact44-halt-packed-word-prototype/README.md)
 now constructs the marked packed word at the chosen power dimensions.
 The [base-cell low-mask theorem](research/ordinary12-ipra-bridge/compact44-base-low-nocarry-prototype/README.md)
-proves no-carry for each non-forbidden row, and the separate
-[dummy-pulse result](research/ordinary12-ipra-bridge/compact44-pulse-bit-safety-prototype/README.md)
-proves preservation of that fact under the dummy pulse. These are model-level
-components; the special origin-mask condition, other packing conditions,
+proves no-carry for each non-forbidden row. The
+[word-level low-field client](research/ordinary12-ipra-bridge/compact44-word-low-fields-prototype/README.md)
+now derives both the special origin and all in-range low-mask conditions for
+a marked word and for Boolean pulses supported away from zero. The
+[exact-product carry client](research/ordinary12-ipra-bridge/compact44-word-carry-join-prototype/README.md)
+constructs the cyclic carry input from the packed word with an explicitly
+bounded temporal term. These are model-level components; identifying the
+temporal term, the remaining product/high-mask and other packing conditions,
 graph-zero construction and iPRA endpoint remain separate obligations.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
