@@ -22,4 +22,10 @@ Five successful scaled-growth receipts pin the hash of `run.py` rather than the 
 
 Thus those receipts cannot authenticate the actual executing runner. This is a provenance defect; the graph-growth and graph-index source snapshots, compiler output logs, objects, and currently selected direct input hashes were separately checked against their recorded values, and no Lean theorem failure follows. The corrected abstract growth and index-one staged runners use `sha(__file__)`; their current runner hashes match their records. Fresh corrected guarded runs are being prepared separately.
 
+The five affected checks were subsequently repeated with self-pinning runners.
+Their unchanged sources and bit-identical objects, and the corrected
+graph-index → c>X → Kpos provider chain, passed a separate
+[independent receipt audit](../ten-positive-80-corrected-receipts-independent/README.md).
+That audit did not replay Lean or reconstruct all inherited ancestry.
+
 `check.py` checks the accepted receipts and direct import selections shown in its captured output, recorded source and object hashes, selected predecessor hashes, reported axioms and sampled resources. For the two affected graph variants it deliberately checks the historically recorded `run.py` hash and does **not** claim it authenticates the actual variant. It does not independently audit the other three affected packets' objects here. Prior providers, package/dynamic inputs and historical source-to-object links are not fully inventoried. Printed `propext`, `Classical.choice`, and `Quot.sound` are Lean metatheory dependencies, not iPRA object axioms. No Lean replay, graph/PDF binding, or full ancestry reconstruction was performed. The read-only check passed in `observations/attempt01/`.
