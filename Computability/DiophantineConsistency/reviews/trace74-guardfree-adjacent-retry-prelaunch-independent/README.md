@@ -1,0 +1,7 @@
+# Independent scoped prelaunch review: narrowed adjacent retry
+
+**GO for one coordinated retry** using revised representatives source SHA-256 `7347a88241d6ffacb1059df5b69742118e4a8c61ee4577cc077c5398b3a1fc28` and runner SHA-256 `19fa8b09c8ba3a2b25c26713d84511c55bc12bf9edfe3fe58d43a98d142a07ba`, after the current Lean job is reaped and the locked resource preflight passes. No Lean was run in this review.
+
+The first attempt timed out with empty output and no accepted stage; its factual audit is `reviews/trace74-guardfree-adjacent-timeout-independent/`. The exact diff against retained attempt01 source changes only five representative proofs: broad `simpa` becomes `change` to the original valuation register followed by the same previously checked lemma. The affected Δ,U,E,M,c registers do not depend on the replaced oldVal coordinate 2. Statements and other source hashes are unchanged; runner diff changes only the representative source pin. Independently reran all 13 copied-actual report-parser controls. The timeout record does not locate the expensive expression, so this modification is an unverified resource hypothesis, not a diagnosed fix.
+
+The original prelaunch scope and guards apply: three sequential stages, six/one/one exact reports, direct-object pins and shared no-other-Lean/8-GiB resource lock; search-path shadowing, intermediate output stability and transitive project/package/dynamic ancestry are inherited. Capture actual tool exit and audit any accepted result. No guard, graph equivalence or iPRA endpoint follows from this retry alone.
