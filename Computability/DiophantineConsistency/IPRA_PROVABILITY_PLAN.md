@@ -562,6 +562,8 @@ and [actual 80-output binding](research/ten-positive-80-reverse-output-parts-pro
 show the selected output vanishes from explicit coherent scalar-part
 equalities and the auxiliary norm. The positive valuation and those graph-part
 equalities are still hypotheses to be constructed, not yet a reverse proof.
+An [independent cross/output audit](reviews/ten-positive-reverse-cross-output-independent/README.md)
+checks the selected receipts and exact hypothesis scope without replaying Lean.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
