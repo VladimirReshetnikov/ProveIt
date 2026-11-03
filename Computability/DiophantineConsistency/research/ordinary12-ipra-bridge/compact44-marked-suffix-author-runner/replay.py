@@ -9,9 +9,10 @@ PRIOR=HERE.parent/'compact44-graph-marked-join-plan'
 AUDIT=DC/'reviews/compact44-marked-suffix-source-independent-review'
 PARENT=DC/'reviews/compact44-wang-chunk-author-artifact-independent-audit'
 HIST=DC/'reviews/ha87-isolated-full-author-pass'
-PLANE='DiophantineConsistency.ArithmeticWangPlane'
-PLANE_SHA='cfe5c8bdc328291ded007cbb8181797d55292608ccc4eef264100103839fbcf9'
-NORMALIZED_SHA='6db38ab5d8c4ccdae9406fd92269e618cd31f4803246ad33f46d88204c0b9ac8'
+WARNING_RULES={
+ 'DiophantineConsistency.ArithmeticWangPlane':('cfe5c8bdc328291ded007cbb8181797d55292608ccc4eef264100103839fbcf9','fb85934b5529859319550f2c14fa002f0983bb163cdc24aec8d2b3e754a5ef27',2,'6db38ab5d8c4ccdae9406fd92269e618cd31f4803246ad33f46d88204c0b9ac8'),
+ 'DiophantineConsistency.ArithmeticWangStrip':('87297fe92e3f6d1df0266c1f19a8f45d69cfc0e8e9a167e292bfca9628336b2f','c9b9d15e042fd9f35e62f13937bcc36ee169ca869aefb1d300b82651bbadb29a',1,'7b8d1d8e81daf210b0390264e9cb622ad8262e4b81b8f33a0005793b4116074c'),
+ 'DiophantineConsistency.ArithmeticWangSoundness':('583535a73f2e4700aabd94291148ca7f254c5c0b85c335237137c512d57b2643','3e5486008d4701a9db2c635f16c1d4d7694c70f5657529fd5b6b8b4e98389f6e',1,'93ad55b2c786f26df91a1a5b25c6392e537bbb738e2ec19897db8263221522e7')}
 SEED=Path('/tmp/ipra-wang-chunk-author-build-02/lib')
 SEED_RESULT=SEED.parent/'RESULT.json'
 PKG=Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib')
@@ -19,7 +20,6 @@ LEAN=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
 MON=DC/'research/ordinary12-ipra-bridge/free-j-current-denominator-composition/replay.py'
 PINS={
  'history_state':'84c3bc6f6c34c47e67278c43df8580444d32e2946844a4c40c31cfd747f33a90',
- 'history_log':'fb85934b5529859319550f2c14fa002f0983bb163cdc24aec8d2b3e754a5ef27',
  'plan_scan':'1aca547836bef23a058e5714dbaf33bd86666f931e3e872319efc73d6e78a880',
  'plan_script':'5518eab1c4844af1c27318a15a2974572f702ad31810809d0c6db5aaaf2e0c6d',
  'prior_source':'2aeb7400ef18c7cd4bc0c74b1ca09b53e0c685f6054e99d92617f3af9bab7cc6',
@@ -83,20 +83,27 @@ def report_inventory(source,output):
  need(not pat.sub('',output).strip(),('unexpected compiler output',pat.sub('',output)[:1000]))
  return got
 def warning_baseline():
- state=HIST/'state.json';log=HIST/'logs/DiophantineConsistency_ArithmeticWangPlane-attempt-1.log'
- need(state.is_file() and H(state)==PINS['history_state'] and log.is_file() and H(log)==PINS['history_log'],'historical warning inputs changed')
- data=json.loads(state.read_text()); records=[x for x in data['records'] if x.get('module')==PLANE]
- need(len(records)==1,'historical warning record count')
- r=records[0];need(r.get('exit')==0 and r.get('verified') is True and r.get('source_sha256')==PLANE_SHA and r.get('log_sha256')==PINS['history_log'] and r.get('log_file')==log.name,'historical warning record mismatch')
- paths=[x for x in r['command'] if x.endswith('/ArithmeticWangPlane.lean')];need(len(paths)==1,'historical source path mismatch')
- text=log.read_text(); normalized=text.replace(paths[0],'<SOURCE>')
- need(text.count(paths[0])==2 and text.count('warning:')==2 and hashlib.sha256(normalized.encode()).hexdigest()==NORMALIZED_SHA,'historical warning content mismatch')
- return normalized
-def accepted_diagnostics(name,src,sha,text,baseline):
+ state=HIST/'state.json'
+ need(state.is_file() and H(state)==PINS['history_state'],'historical warning state changed')
+ data=json.loads(state.read_text());result={}
+ for name,(source_sha,log_sha,count,norm_sha) in WARNING_RULES.items():
+  log=HIST/'logs'/(name.replace('.','_')+'-attempt-1.log')
+  need(log.is_file() and H(log)==log_sha,('historical warning log changed',name))
+  records=[x for x in data['records'] if x.get('module')==name and x.get('source_sha256')==source_sha and x.get('exit')==0 and x.get('verified') is True]
+  need(len(records)==1,'historical warning record count')
+  r=records[0];need(r.get('log_sha256')==log_sha and r.get('log_file')==log.name,'historical warning record mismatch')
+  paths=[x for x in r['command'] if x.endswith('/'+name.split('.')[-1]+'.lean')];need(len(paths)==1,'historical source path mismatch')
+  text=log.read_text();normalized=text.replace(paths[0],'<SOURCE>')
+  need(text.count(paths[0])==count and text.count('warning:')==count and hashlib.sha256(normalized.encode()).hexdigest()==norm_sha,('historical warning content mismatch',name))
+  result[name]=normalized
+ return result
+def accepted_diagnostics(name,src,sha,text,baselines):
  need(not re.search(r'(?m)^.*error:|\bsorryAx\b|\bsorry\b',text),('diagnostic rejected',name))
  if 'warning:' not in text:return text
- need(name==PLANE and sha==PLANE_SHA and text.count(str(src))==2 and text.count('warning:')==2 and text.replace(str(src),'<SOURCE>')==baseline,('diagnostic rejected',name))
- need(warning_baseline()==baseline,'historical warning baseline drift')
+ rule=WARNING_RULES.get(name);need(rule is not None,('diagnostic rejected',name))
+ source_sha,_,count,_=rule
+ need(sha==source_sha and text.count(str(src))==count and text.count('warning:')==count and text.replace(str(src),'<SOURCE>')==baselines[name],('diagnostic rejected',name))
+ need(warning_baseline()==baselines,'historical warning baseline drift')
  return ''
 def resolve_mapping(mapping,outputs,lib,pkg):
  expected=set()
