@@ -21,4 +21,15 @@ The subsequent [producer-drift review](../../reviews/direct-bfs-producer-drift-i
 checks the recorded producer-time dependency differences and the captured
 rebuild cone. It does not assert unique producer identity or prove unsoundness.
 
+The [65-stage selected-union replay](../direct-bfs-80-coherent-rebuild/README.md)
+subsequently rebuilt that captured affected cone on the 127-stage base and
+rescanned 1,795 selected project and 80 outside objects. Its recorded inner
+runner exited 0 and its result is PASS; all 65 output `.olean` bytes match the
+previous selection. An [independent post-check](../../reviews/direct-bfs-coherent-attempt-postrun-independent/README.md)
+verifies the stages, selected dependencies and closure without replaying Lean.
+The actual outer-wrapper exit was not separately captured. The 127-stage base
+and 101 supplemental objects are inherited, as are remaining historical,
+package-transitive and dynamic ancestry; Lean does not bind the external
+coefficient files here.
+
 A later selected-header comparison found **concrete producer-time direct-dependency drift** for the selected `ArithmeticNegativeNorms` and `ModelRatioBounds` objects. Their historical producer records use four direct dependency object hashes that differ from the objects selected by this client. The captured affected cone and proposed fresh rebuild are documented in [`../direct-bfs-80-coherent-rebuild-plan/README.md`](../direct-bfs-80-coherent-rebuild-plan/README.md). Consequently the accepted exploratory check should not be described as a coherent end-to-end source replay.
