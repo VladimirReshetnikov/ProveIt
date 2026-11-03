@@ -175,8 +175,9 @@ An [integral-quotient theorem](research/ten-positive-adjacent-integer-prototype/
 constructs the reduced representation from the abstract scaled norm, without
 assuming divisibility. The [80-row adjacent join](research/ten-positive-80-adjacent-prototype/README.md)
 now derives the required positive integral quotient and adjacent Pell norm
-from an actual positive graph zero. Pell folding, machine calibration and
-the iPRA endpoint remain open.
+from an actual positive graph zero. An [independent adjacent-chain audit](reviews/ten-positive-80-adjacent-independent/README.md)
+checks the seven source/receipt stages and their provider limits without a Lean
+replay. Pell folding, machine calibration and the iPRA endpoint remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
