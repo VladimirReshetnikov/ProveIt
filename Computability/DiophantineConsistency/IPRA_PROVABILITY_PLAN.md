@@ -10,6 +10,14 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
+states native, standard and equality-only iPRA equivalences without hypotheses;
+the separate [CURRENT2011 nine-variable endpoint](Lean/DiophantineConsistency/IPRANineCurrent.lean)
+does the same for a different equation. The merged [nine-variable plan](research/nine-variable-ipra/PLAN.md)
+reports author-side builds of their model dependencies and endpoints. These
+reports are not independent replay packets; the new source and its binding to
+the published equation are under separate inspection.
+
 The newer [13-variable degree-36 equation](equation36.pdf) has an
 87-operation evaluator. Its exact fixed-port literal now has a no-premise
 [native endpoint](Lean/DiophantineConsistency/IPRASquareSumsNative.lean): the
@@ -785,8 +793,9 @@ but its final client failed first at the elaboration recursion limit and then
 at the kernel memory limit. A later [four-stage separated bridge](research/ordinary12-ipra-bridge/compact44-controller-abstract-bridge-prototype/README.md)
 compiled the actual `paramKernel rho` unit theorem without a residue premise,
 using an explicitly identified alias and separate equality transports. This
-is an author-side model result with inherited provider qualifications; the
-rank-variation identity and construction obligations remain open.
+author-side model result passed an independent [source and artifact audit](reviews/compact44-controller-abstract-bridge-artifact-audit/README.md)
+with inherited provider qualifications; the rank-variation identity and
+construction obligations remain open.
 Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
 and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
 found no defect in the inspected arguments; these reviews predate the joined
@@ -798,10 +807,10 @@ hypotheses, and its incremental build is not a paired replay or fresh closure.
 A subsequent author-side [bounded-row input client](research/ordinary12-ipra-bridge/compact44-forward-cell-inputs-exploration/README.md)
 constructs a one-hot selector and payload bits for each model row below 943
 and discharges those local sum hypotheses. Uniform lookup from the compact
-word, physical packing and the graph-to-iPRA connection remain open. An
-uncompiled [word-cell client draft](research/ordinary12-ipra-bridge/compact44-word-cell-client-plan/README.md)
-isolates the intended uniform bridge and identifies the same-provider rebuild
-needed before it can be checked.
+word is supplied by a later [same-provider word-cell build](research/ordinary12-ipra-bridge/compact44-word-cell-author-rebuild/README.md):
+it compiles definable selector and payload-bit functions and the occupied
+aggregate at every bounded word position. This is an author-side incremental
+result; physical packing and the graph-to-iPRA connection remain open.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
