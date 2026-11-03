@@ -19,6 +19,28 @@ The bridge splits into a **kernel** part, specific to this equation, and a
 
 Sizes are proposed-work estimates in modules, not commitments.
 
+## Current proof boundary
+
+For the direct-BFS symbolic ports, the independently reviewed
+[model-halting client](../trace75-bfs-model-halt-prototype/README.md) proves
+that every positive trace75 zero yields an internal machine halt in each
+`IΣ₁` model. Its provider incorporates the independently audited
+[14-stage fresh-provider replay](../trace75-fresh-provider-rebuild/README.md).
+This is **one direction**, not a model equivalence or an iPRA endpoint; the
+earlier baseline, supplements and package/dynamic ancestry remain inherited.
+The direct-BFS symbolic kernel is not yet formally identified with the
+retained JSON/gzip coefficient bytes.
+
+For the converse, the [natural-parts client](../trace75-natural-parts-binding-prototype/README.md)
+constructs a positive trace75 zero from explicit same-valuation Pell and
+carrier equations. The [unscaled reverse-data construction](../trace75-unscaled-reverse-data-prototype/README.md)
+now supplies a coherent candidate tuple with the required `XY` carrier
+multiplier, under explicit first-Pell, phase, power and size hypotheses.
+Matching that tuple to the actual graph registers, and deriving all its
+hypotheses from the direct-BFS halt witness, remain open. Its selected
+historical providers have not been coherently rebuilt. Neither the converse
+nor the syntactic iPRA adapter may be inferred from these conditional results.
+
 ## The source dependency (compact44 tuple)
 
 The equation uses the compact44 tuple `beta = 2^590069 - 1, K0, MC, MF`
@@ -31,13 +53,13 @@ X = 2^R,  q³ | Y,  t = B/h ≥ 0,  (K0 + Wbase) C − F = t (q − 1),  c = ψ_
 first Pell witnesses with 0 < eta < k   ⇔   machine 215 halts.
 ```
 
-The only Lean proof of a compact44 halt equivalence is in Codex's
-`research/ordinary12-ipra-bridge` prototypes:
-`CompactSymbolicModelUnconditionalIff.model_iff`, with an import closure
-of 462 prototype modules. That lane is Codex's active coherent rebuild.
-This campaign therefore states the source as an explicit hypothesis
-(`SourceModel`, as in `IPRAExplicitZFCReduction`) and discharges it once the
-compact44 rebuild lands in the tree. It does not rebuild those modules.
+An original-table compact44 model equivalence exists in
+`CompactSymbolicModelUnconditionalIff.model_iff`. A separate
+[direct-BFS 80-row model equivalence](../direct-bfs-80-model-iff-corrected-prototype/README.md)
+has since been checked under its four symbolic port equalities. Neither is by
+itself the trace75 source equivalence: the former has a different kernel
+ordering, and the latter concerns another graph. The actual trace75 forward
+direction and its current converse obligations are described above.
 
 **Kernel ordering boundary.** The retained trace75 JSON identifies its K0
 payload by raw SHA-256
@@ -54,7 +76,7 @@ packing transfer, or a separate proof for the direct kernel, as well as a
 binding from the retained bytes to the Lean term. The current direct-BFS
 [graph-to-halt route](../direct-bfs-80-model-halt-prototype/README.md) and
 [converse packing work](../direct-bfs-completeness-route/README.md) do not yet
-establish that complete `SourceModel` or a Lean file-binding theorem.
+establish the trace75 converse or a Lean file-binding theorem.
 
 ## Lane split (3 November 2026, Vladimir's decision)
 
@@ -81,13 +103,13 @@ Codex. A stage changes hands only when this section says so.
 | K3 | rational integrality of `y` in `QV² − (Q−1)y² = 1` | generic internal `AdjacentInteger` descent | [adjacent quotient](../trace75-root-probe/ADJACENT.md) checked from an actual positive trace75 zero and positive beta; no converse or machine theorem |
 | K4 | **signed all-index folding** ⇒ `c = ψ_A(p)`, `p` odd | [generic folded recovery](../pell-generic-fold-rebuild/README.md) rebuilt with a direct arithmetic import; `TenPositiveFolding.folding` is a separate in-tree integer version | [odd ordinate recovery](../trace75-root-probe/FOLD.md) checked from an actual positive trace75 zero and positive beta, with [independent source/receipt audit](../../reviews/trace75-fold-independent/README.md); no converse or machine theorem |
 | K5 | first Pell classification, `n0 ≥ 2`, (3.5) | `ArithmeticPellFirstNorm.positive_parameter_solution` | [classification](../trace75-root-probe/PELL.md) and [index-one exclusion](../trace75-root-probe/INDEX.md) checked for the actual unscaled trace75 parameter; the latter has an [independent source/receipt audit](../../reviews/trace75-index-independent/README.md) |
-| K6 | exclusion of `p = 3`, `c > 4Delta + 3`; auxiliary index odd and ≥ 5 | `ArithmeticPellResidueClasses.odd_index_of_base_dvd`, `ArithmeticPellHalfIndex.y_three` | [main index `p ≥ 5`](../trace75-root-probe/MAINFIVE.md), [carrier bound](../trace75-root-probe/MAINSIZE.md), and [auxiliary index ≥ 5](../trace75-root-probe/AUXFIVE.md) checked for beta ≥ 2 from an actual positive zero; [auxiliary-index audit](../../reviews/trace75-aux-five-independent/README.md) records the witness scope; fixed-port specialization and index alignment remain open |
+| K6 | exclusion of `p = 3`, `c > 4Delta + 3`; auxiliary index odd and ≥ 5 | `ArithmeticPellResidueClasses.odd_index_of_base_dvd`, `ArithmeticPellHalfIndex.y_three` | [main index `p ≥ 5`](../trace75-root-probe/MAINFIVE.md), [carrier bound](../trace75-root-probe/MAINSIZE.md), and [auxiliary index ≥ 5](../trace75-root-probe/AUXFIVE.md) checked for beta ≥ 2; fixed-port bounds and later index alignment are checked separately |
 | K7 | signed transport (4.3) and recovery `B ≥ 0`, `C > 0` | [generic transport helpers](../generic-transport-rebuild/README.md) rebuilt without a direct 80-rank import; `TenPositiveTransport.transport` is a separate in-tree ring-generic version | [transport sign and old-chart mask](../trace75-root-probe/TRANSPORT.md) checked from an actual positive zero and beta > 0, with [independent audit](../../reviews/trace75-transport-independent/README.md); the new trace74 reverse guard is not established |
 | K8 | mask window `3q < R < q⁴` | `NativeAdaptiveRankWindow.target_window` (ℤ); `ArithmeticPellFirstIndex.scalar_window` (model) | [rank binding and window](../trace75-root-probe/RANK.md) checked from a positive zero under beta ≥ 31 and explicit low/high mask bounds, with [independent source/receipt audit](../../reviews/trace75-rank-independent/README.md); K0 is arbitrary |
-| K9 | normalized rank and `p = R` | `ArithmeticPellIndexDivisibility.relaxed_auxiliary`; generic [rank reduction](../pell-rank-generic-rebuild/README.md) | [rank exactness](../trace75-root-probe/RANKEXACT.md) checked for beta ≥ 31 and explicit mask bounds, with [independent source/receipt audit](../../reviews/trace75-rank-index-exact-independent/README.md); power recovery and machine bridge remain open |
-| K10 | q3-chart integrality, uniform ratio estimate, projector ⇒ `X = 2^R`, `h ∣ B` | [weighted product height](../trace75-root-probe/PRODUCTHEIGHT.md) and arithmetic Pell growth | [X = 2^R](../trace75-root-probe/GRAPHPOWER.md) author-checked under explicit port bounds without cancelling X; its helper inherits a [known producer-drift limitation](../../reviews/trace75-product-height-independent/README.md). The `h ∣ B` conclusion remains open |
-| K11 | completeness: outer data ⇒ positive zero, via (7.1) and (7.2) | — | open |
-| K12 | assembly: kernel iff + `SourceModel` ⇒ bridge ⇒ native/standard/reference endpoints | `IPRAExpressionNative.equivalence_of_bridge`, `IPRAStandardTheory.provable_iff` | open |
+| K9 | normalized rank and `p = R` | `ArithmeticPellIndexDivisibility.relaxed_auxiliary`; generic [rank reduction](../pell-rank-generic-rebuild/README.md) | [rank exactness](../trace75-root-probe/RANKEXACT.md) checked for beta ≥ 31 and explicit mask bounds; see [audit](../../reviews/trace75-rank-index-exact-independent/README.md) and the subsequent fresh-provider replay |
+| K10 | q3-chart integrality, uniform ratio estimate, projector ⇒ `X = 2^R`, `h ∣ B` | [weighted product height](../trace75-root-probe/PRODUCTHEIGHT.md) and arithmetic Pell growth | [X = 2^R](../trace75-root-probe/GRAPHPOWER.md) and [natural transport with `B = h*t`](../trace75-root-probe/NATURALTRANSPORT.md) checked under explicit port bounds. The affected chain was subsequently replayed on the fresh provider; inherited baseline and outside-ancestry limits remain |
+| K11 | completeness: outer data ⇒ positive zero, via (7.1) and (7.2) | [unscaled reverse data](../trace75-unscaled-reverse-data-prototype/README.md) and [natural parts binding](../trace75-natural-parts-binding-prototype/README.md) | conditional pieces checked; actual register binding and halt-derived inputs remain open, with historical reverse-data ancestry inherited |
+| K12 | assembly: kernel iff + `SourceModel` ⇒ bridge ⇒ native/standard/reference endpoints | `IPRAExpressionNative.equivalence_of_bridge`, `IPRAStandardTheory.provable_iff` | [positive zero ⇒ model halt](../trace75-bfs-model-halt-prototype/README.md) checked and audited for direct-BFS symbolic ports; converse and iPRA endpoints remain open |
 
 For the remaining K6 branch, [graph-derived index-two algebra](../trace75-root-probe/THREETWO.md)
 gives the exact first-parameter and carrier equations and a signed eta identity
