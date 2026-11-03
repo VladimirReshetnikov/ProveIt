@@ -735,6 +735,9 @@ exceptions and the four endpoint axiom reports without replaying Lean. The
 fresh endpoint object matches the earlier endpoint hash; five of the 127
 rebuilt objects differ. This scoped observed-cone replay does not authenticate
 unrebuilt historical, package-transitive or dynamic ancestry or external files.
+A [post-merge pin check](reviews/ten-positive-80-post-merge-source-check/README.md)
+rechecked the 127 source pins and recorded replay/closure inputs after the
+origin/main merge; it is not a new Lean replay or a full workspace diff.
 A [fresh-union header rescan](reviews/ten-positive-80-coherent-rebuilt-closure/README.md)
 reads all 1,765 selected project headers and reconstructs the same project and
 outside reachability; an [independent audit](reviews/ten-positive-80-rebuilt-closure-independent/README.md)
