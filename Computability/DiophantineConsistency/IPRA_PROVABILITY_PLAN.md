@@ -235,8 +235,8 @@ gap. The [exact rank join](research/ten-positive-80-rank-exact-prototype/README.
 uses those bounds to identify the natural rank with the positive odd main
 Pell index. An [independent audit](reviews/ten-positive-80-rank-window-independent/README.md)
 checks the universal representation argument and stated port assumptions
-without replaying Lean. Fixed-byte recipe calibration, first/main index
-alignment, machine equivalence and iPRA remain open. The graph's signed
+without replaying Lean. Fixed-byte recipe calibration, machine equivalence
+and iPRA remain open. The graph's signed
 carrier additionally supplies [`μ² ∣ h*e`](research/ten-positive-80-carrier-cancel-h-prototype/README.md)
 after an explicit cancellation of `H`; canceling `h` still requires the
 separate radix-parity/unit argument. A [graph parity packet](research/ten-positive-80-rank-parity-prototype/README.md)
@@ -247,8 +247,10 @@ retaining the low/high port inequalities. A separate [signed cancellation join](
 now derives `μ² ∣ e` under explicit positive-beta, low/high and odd-beta
 assumptions. A [first-index residue theorem](research/ten-positive-80-first-index-residue-prototype/README.md)
 uses this to obtain `2n ≡ rank+1 (mod μ²)` for an actual first Pell index.
-Excluding other residue representatives, fixed-recipe composition and exact
-first/main index alignment remain separate.
+A [noncircular alignment theorem](research/ten-positive-80-index-alignment-prototype/README.md)
+now excludes other residue representatives and proves `2n=rank+1` under the
+explicit symbolic port and odd-beta assumptions. Fixed-recipe composition
+remains separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
