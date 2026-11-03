@@ -12,4 +12,10 @@ The proposed algebraic binding is as follows. In the 74 graph, the above fixed c
 
 `observation.json` records the finite checks and a hash of the nonzero trial output. No Lean process was launched for this probe; it establishes no 74/75 inequivalence or iPRA result.
 
+Subsequently, the first-source interval and its positive additive slacks have
+been [certified in standard `ℕ` by Lean](../trace74-boundary-natural-seed-rebuild/README.md)
+using ordinary kernel-checked `decide`, with an independent result audit.
+That certificate alone does not discharge the other hypotheses of the
+parametric graph theorem or construct a concrete trace74 zero.
+
 Independent review of the finite seed passed: `reviews/trace74-boundary-31-seed-independent/`. It independently recomputed the Pell recurrences, indexing, intervals, rank, divisibilities and nonzero trial; the proposed existential binding remains uncompiled.
