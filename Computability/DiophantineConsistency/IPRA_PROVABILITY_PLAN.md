@@ -2758,3 +2758,15 @@ statement:
   These have manuscript proofs and finite replays, but no Lean Con(ZFC)
   proof, external or internal. An iPRA endpoint for any of them first
   needs that Lean proof.
+
+Update, 3 November 2026. The CURRENT2011-tuple frontier point of package 188,
+the 14-positive 67/94 equation (ordinary strong norm), now has native,
+standard and equality-only endpoints
+([`ModelCarrier94`](Lean/DiophantineConsistency/ModelCarrier94.lean)). Every
+other package frontier point inspected (packages 72, 101, 113, 115, 163, 170,
+184 and 193: the ten-, eleven-, twelve- and thirteen-positive low-operation
+forms and the nine-positive form) is built on the compact BFS943/H2082 tuple
+`beta = 2^590069 - 1`. For that tuple the native source-to-halting calibration
+is not yet in the tree; it is the compact44 rebuild described at the top of
+this file. Kernel stages for one of them (package 163's 75/402) are tracked in
+[research/ten-positive-ipra/PLAN.md](research/ten-positive-ipra/PLAN.md).
