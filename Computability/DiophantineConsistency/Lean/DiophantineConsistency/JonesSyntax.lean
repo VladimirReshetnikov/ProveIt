@@ -135,10 +135,6 @@ theorem eval_withInput (ν : ℕ) (P : MvPolynomial (Fin (ν + 1)) ℤ)
     eval_rad, eval_wt, eval_dvsr, eval_dvnd, eval_marg, eval_syntaxVars]
   rfl
 
-/-- Replace the input by the fixed numeral 1 in the syntax itself. -/
-def removeInput (e : Expr (Fin 10)) : Expr (Fin 9) :=
-  e.subst (Fin.cons (.constant 1) (fun i => .var i))
-
 theorem eval_removeInput (e : Expr (Fin 10)) (a : Fin 9 → ℤ) :
     (removeInput e).eval a = e.eval (Fin.cons 1 a) := by
   rw [removeInput, Expr.eval_subst]

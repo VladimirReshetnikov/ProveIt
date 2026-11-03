@@ -82,11 +82,36 @@ author builds in the root workspace, not independent replay packets. The
 endpoints are stated for literal `Expr` transcriptions of the forms, whose
 ring evaluations are proved equal to the generic `value` definitions. The
 statement identifying the 14-variable syntax with the accepted
-`MvPolynomial`s ([`ModelCarrierBindings`](Lean/DiophantineConsistency/ModelCarrierBindings.lean))
-has not yet been built here, and the analogous 13-variable bindings are not
-yet written.
-The 9-variable equation of [EXPLICIT_EQUATION.md](EXPLICIT_EQUATION.md)
-still has only its external Lean equivalence.
+`MvPolynomial`s (a `ModelCarrierBindings` module importing the
+Foundation-free [`ModelCarrierSyntax`](Lean/DiophantineConsistency/ModelCarrierSyntax.lean))
+is drafted but not yet built or committed, and the analogous 13-variable
+bindings are not yet written.
+
+**Nine unknowns (2 November 2026).** The 9-variable equation of
+[EXPLICIT_EQUATION.md](EXPLICIT_EQUATION.md) now has native, standard and
+equality-only iPRA endpoints with no hypotheses
+([`IPRAExplicitZFCFinal`](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean));
+its `#print axioms` report lists only `propext`, `Classical.choice` and
+`Quot.sound`. The endpoints are stated for `ExplicitZFCSyntax.expression`,
+which [`ExplicitZFC.expression_eq_syntax`](Lean/DiophantineConsistency/ExplicitZFC.lean)
+identifies with `ExplicitZFC.expression` (the syntax data were moved, names
+unchanged, into Matrix-free modules because Foundation's `Matrix.map`
+collides with Mathlib's). The proof internalizes, in every model of `𝗜𝚺₁`,
+both Jones's 1982 nine-unknowns reduction
+([`ModelJonesNine`](Lean/DiophantineConsistency/ModelJonesNine.lean): an
+elementary two-radicand relation combiner, integer sandwich bounds in place of
+the real ratio estimate, Kummer carries and digit coding) and the
+Diophantine compilation of the enumerator program
+([`ModelRepFinal`](Lean/DiophantineConsistency/ModelRepFinal.lean): Gödel's
+β-function, Matiyasevich's Pell criterion and the Davis–Putnam–Robinson
+bounded quantifier; [`ModelProgramLink`](Lean/DiophantineConsistency/ModelProgramLink.lean)
+for the C222 enumerator). A second nine-unknown equation, Jones applied to the
+maintained equation's quartic gates
+([`IPRANineCurrent`](Lean/DiophantineConsistency/IPRANineCurrent.lean), audit
+[`IPRANineChecks`](Lean/DiophantineConsistency/IPRANineChecks.lean)), has its
+own unconditional endpoints. Module map and plan:
+[research/nine-variable-ipra/PLAN.md](research/nine-variable-ipra/PLAN.md).
+These are author builds in the root workspace, not independent replay packets.
 
 For the maintained 14-variable equation, a [historical paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
 has matched all 16 added modules, including the standard-iPRA endpoint, and
