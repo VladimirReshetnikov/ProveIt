@@ -35,6 +35,7 @@ assert (L, B, dc, dr, k, rho1063, gamma) == (
     284898815895, 298529384010, 306697999258,
 )
 assert pow(B, p, L) == B
+assert B * B % L == 201792753151
 assert pow(gamma, p - 1, L) == 1
 print("PASS: recipe-derived compact controller residues and proposed exponents")
 print("Scope: finite Python calculation; no Lean theorem or retained-byte binding")

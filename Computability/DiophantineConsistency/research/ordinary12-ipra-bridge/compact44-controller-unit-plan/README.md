@@ -29,6 +29,7 @@ modular arithmetic throughout, and checks the following residues modulo
 | --- | ---: |
 | `B` | 290226301192 |
 | `rho^1063` | 298529384010 |
+| `B^2` | 201792753151 |
 | `DC` | 313772214412 |
 | `DR` | 158651740298 |
 | `K=DC+B*DR` | 284898815895 |
@@ -52,8 +53,9 @@ transcription audit, and they do not connect the recipe to
    identity `B^p ≡ B (mod L)` into the model and use Σ₁ induction to obtain
    `B^(p^n) ≡ B (mod L)` for all model `n`. This supplies both `B^N` and
    `B^w` for the stated power-of-`p` dimensions. Handle the natural
-   subtraction in `(B^N)^2-1` with its positivity hypothesis, as in the old
-   construction.
+   subtraction in `(B^N)^2-1` using its **positive remainder**
+   `201792753151`: the old `sub_one_res` requires this stronger condition,
+   not merely positivity of `B^N`.
 3. Combine the residues to get `Gamma ≡ 306697999258 (mod L)`. Lift the
    finite power identity to `Gamma^(p-1) = 1+d*p*v` for some model `v`.
    Apply the existing `ArithmeticControllerLift.lte` with `c=d` and the
