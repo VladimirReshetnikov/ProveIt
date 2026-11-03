@@ -1,10 +1,10 @@
 # Prepared same-provider symbolic controller unit join
 
-This is **uncompiled preparation**. The two successful earlier results use
+This is an **incomplete join attempt**. The two successful earlier results use
 different provider objects, including different `ArithmeticPow`,
 `ArithmeticStandardCasts`, `ArithmeticPackingBlocks`, and
 `ArithmeticWindowDigits` hashes. The present draft does not combine those
-already-built objects or establish a unit theorem.
+already-built objects or establish a joined unit theorem.
 
 The proposed author-side build chooses the symbolic-kernel provider
 `/tmp/compact44-k-radix-cert-01/lib`, reuses its existing project and package
@@ -33,7 +33,17 @@ successful run. The runner does not authenticate the inherited package,
 transitive or dynamic dependency closure, protect against all between-check
 mutations, or provide a second independent build.
 
-Neither the client nor the runner has been executed. If compiled, the joined
-theorem would still be a model-level controller unit only; it would not prove
+The first four stages actually exited 0 on the same symbolic provider. The
+compact data stage emitted its previously documented unused-section-variable
+linter warning; the other three completed without warnings. The fifth stage
+exited 1 because elaboration exhausted recursion while reducing the large
+kernel. An incremental retry of only the client, with local irreducibility and
+an increased recursion limit, also exited 1: the kernel reported excessive
+memory consumption. Neither failed client produces a theorem. The exact
+sources, stage logs, dependency listings, hashes and terminal receipts are in
+`observations/`; the retry checked the hashes of all four earlier objects.
+
+If a later join compiles, the resulting theorem would still be a model-level
+controller unit only; it would not prove
 retained-byte/display binding, the actual rank-variation identity, safe dummy
 locations, a positive graph zero, or an iPRA derivation.

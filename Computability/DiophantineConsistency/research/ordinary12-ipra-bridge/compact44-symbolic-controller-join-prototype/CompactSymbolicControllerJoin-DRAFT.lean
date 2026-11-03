@@ -5,6 +5,7 @@ import SymbolicKernelResidue
 previously conditional controller-unit residue premise. -/
 set_option autoImplicit false
 set_option Elab.async false
+set_option maxRecDepth 16384
 noncomputable section
 namespace CompactSymbolicControllerJoin
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic
@@ -12,6 +13,7 @@ open scoped LO.FirstOrder.Arithmetic
 open DiophantineConsistency.ArithmeticPow
 open DiophantineConsistency.ArithmeticConstructionUnitCompact44
 open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicKernelResidue
+attribute [local irreducible] paramKernel rho
 
 variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
