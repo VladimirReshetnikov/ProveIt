@@ -1,0 +1,100 @@
+/tmp/packing-reverse-graph-wnesqczj/PackingReverseGraph.lean:63:4: error: Type mismatch
+  lt_add_of_pos_left ?m.1578 hc
+has type
+  ?m.1578 < Cw 590069 N word + ?m.1578
+but is expected to have type
+  F + alpha0 < Cw 590069 N word + F + alpha0
+/tmp/packing-reverse-graph-wnesqczj/PackingReverseGraph.lean:69:59: error: `simp` made no progress
+/tmp/packing-reverse-graph-wnesqczj/PackingReverseGraph.lean:71:4: error: Type mismatch: After simplification, term
+  htransport
+ has type
+  (K + w) * Cw 590069 N word = Fw 590069 K N stride word + t * (Exp.exp (N * 590069) - 1)
+but is expected to have type
+  (K + w) * Cw 590069 N word = F + t * (q0 - 1)
+/tmp/packing-reverse-graph-wnesqczj/PackingReverseGraph.lean:72:36: error: unsolved goals
+V : Type u_1
+inst✝² : ORingStructure V
+inst✝¹ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+K N stride : V
+word : V → V
+inst✝ : 𝚺₁-Function₁ word
+sY n eta zeta gamma w t r : V
+hp : PackingInput 590069 K low high N stride word
+hp0 : ↑(p 0) = Exp.exp 590069 - 1
+hp1 : ↑(p 1) = K
+hp2 : ↑(p 2) = low
+hp3 : ↑(p 3) = high + (Exp.exp 590069 - 1)
+hb : 0 < ↑(p 0)
+hsY : 0 < sY
+hw : 0 < w
+heta : 0 < eta
+hzeta : 0 < zeta
+hr : 4 ≤ r
+hphase : (2 * r + 1) % 4 = 3
+hR : rank K N stride word = 2 * r + 1
+hpow : Exp.exp (590069 * N) * w = Exp.exp (2 * r + 1)
+htransport : (K + w) * Cw 590069 N word = Fw 590069 K N stride word + t * (Exp.exp (590069 * N) - 1)
+hseed : SeedRelations (590069 * N) (2 * r + 1) sY n eta zeta gamma
+J : V := rep 590069 N
+F : V := Fw 590069 K N stride word
+alpha0 : V := alpha 590069 K N stride word
+q0 : V := Exp.exp (590069 * N)
+v : Fin 10 → V := ![J, F, alpha0, 1, 1, w, sY, 1, 1, 1]
+hJ : 0 < J
+hv : ∀ (j : Fin 10), 0 < v j
+hq : q p v = q0
+hbJ : b p v = q0 - 1
+hmask : v 1 + v 2 < q p v
+htransport' : (↑(p 1) + v 5) * (q p v - v 1 - v 2) = v 1 + b p v * t
+⊢ ((Exp.exp (590069 * N) - 1) *
+            (Exp.exp (590069 * N) -
+              ![rep 590069 N, Fw 590069 K N stride word, alpha 590069 K N stride word, 1, 1, w, sY, 1, 1, 1] 1) +
+          ![rep 590069 N, Fw 590069 K N stride word, alpha 590069 K N stride word, 1, 1, w, sY, 1, 1, 1] 2) *
+        (Exp.exp (590069 * N) * Exp.exp (590069 * N) - 1) +
+      (low + Exp.exp (590069 * N) * (high + (Exp.exp 590069 - 1))) *
+        ![rep 590069 N, Fw 590069 K N stride word, alpha 590069 K N stride word, 1, 1, w, sY, 1, 1, 1] 0 =
+    ((Exp.exp (590069 * N) - 1) * (Exp.exp (590069 * N) - Fw 590069 K N stride word) + alpha 590069 K N stride word) *
+        (Exp.exp (590069 * N) * Exp.exp (590069 * N) - 1) +
+      (low + Exp.exp (590069 * N) * (high + (Exp.exp 590069 - 1))) * rep 590069 N
+/tmp/packing-reverse-graph-wnesqczj/PackingReverseGraph.lean:93:4: error: omega could not prove the goal:
+No usable constraints found. You may need to unfold definitions so `omega` can see linear arithmetic facts about `Nat` and `Int`, which may also involve multiplication, division, and modular remainder by constants.
+/tmp/packing-reverse-graph-wnesqczj/PackingReverseGraph.lean:98:53: error: No goals to be solved
+/tmp/packing-reverse-graph-wnesqczj/PackingReverseGraph.lean:98:4: error: Type mismatch: After simplification, term
+  Eq.trans (Eq.symm hC)
+    (Eq.mpr
+      (id
+        (congrArg
+          (fun _a =>
+            _a * (sY * Exp.exp (590069 * N) ^ 3) + eta =
+              2 *
+                    ycoord (r + 1)
+                      (2 *
+                          (Exp.exp (2 * r + 1) * (sY * Exp.exp (590069 * N) ^ 3) * (sY * Exp.exp (590069 * N) ^ 3) -
+                            1) +
+                        1) *
+                  (sY * Exp.exp (590069 * N) ^ 3) +
+                eta)
+          hk))
+      (Eq.refl
+        (2 *
+              ycoord (r + 1)
+                (2 * (Exp.exp (2 * r + 1) * (sY * Exp.exp (590069 * N) ^ 3) * (sY * Exp.exp (590069 * N) ^ 3) - 1) +
+                  1) *
+            (sY * Exp.exp (590069 * N) ^ 3) +
+          eta)))
+ has type
+  ycoord (2 * r + 1) (Exp.exp (2 * r + 1) * (sY * Exp.exp (590069 * N) ^ 3) + sY * Exp.exp (590069 * N) ^ 3) =
+    2 *
+          ycoord (r + 1)
+            (2 * (Exp.exp (2 * r + 1) * (sY * Exp.exp (590069 * N) ^ 3) * (sY * Exp.exp (590069 * N) ^ 3) - 1) + 1) *
+        (sY * Exp.exp (590069 * N) ^ 3) +
+      eta
+but is expected to have type
+  ycoord (2 * r + 1) (sY * Exp.exp (590069 * N) ^ 3 * (Exp.exp (2 * r + 1) + 1)) =
+    2 *
+          ycoord (r + 1)
+            (2 * (Exp.exp (2 * r + 1) * (sY * Exp.exp (590069 * N) ^ 3) * (sY * Exp.exp (590069 * N) ^ 3) - 1) + 1) *
+        (sY * Exp.exp (590069 * N) ^ 3) +
+      eta
+'TenPositivePackingReverseGraph.packing_seed_zero' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
