@@ -487,6 +487,9 @@ assumptions. A [direct kernel bound](research/direct-bfs-kernel-bound-prototype/
 now proves the symbolic kernel is below the stated power without expansion;
 a [kernel divisibility theorem](research/direct-bfs-kernel-divisibility-prototype/README.md)
 also proves radix divisibility and the resulting model mod-four fact;
+a [lower-part theorem](research/direct-bfs-kernel-lower-bound-prototype/README.md)
+separates the distinguished high term and bounds the remainder, as a
+prerequisite for high-mask arguments;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. Adjusted high-origin no-carry remains separate;
