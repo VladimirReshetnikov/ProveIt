@@ -571,7 +571,9 @@ kernel's, while its candidate Γ residue is a unit. Neither this arithmetic nor
 the BFS file-to-symbolic identity is yet a Lean calibration theorem. A
 [symbolic residue theorem](research/direct-bfs-symbolic-k-residue-prototype/README.md)
 now checks the BFS Lean kernel's residue itself; the Γ unit and full rank
-calibration remain separate;
+calibration remain separate. An [independent packing/residue audit](reviews/direct-bfs-canonical-packing-residue-independent/README.md)
+checks the same-row quantifiers, scalar premises and external residue arithmetic
+without replaying Lean;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
