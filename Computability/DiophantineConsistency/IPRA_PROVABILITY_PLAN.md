@@ -259,8 +259,10 @@ explicit. An [independent audit](reviews/ten-positive-80-index-alignment-indepen
 checks the same alignment witness, quotient bound and selected producers
 without replaying Lean. A separate [projection-divisibility theorem](research/ten-positive-80-projection-divisibility-prototype/README.md)
 derives `H ∣ h*Kpos` in the difference ring; a [natural projection theorem](research/ten-positive-80-natural-projection-prototype/README.md)
-now transfers that divisibility back to the model's natural elements. The
-whole-product projection and `X=2^rank` remain open.
+now transfers that divisibility back to the model's natural elements. A
+[Pell projection join](research/ten-positive-80-projection-pell-prototype/README.md)
+packages the natural divisor and main coordinate identities at the checked
+rank. The whole-product projection and `X=2^rank` remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project

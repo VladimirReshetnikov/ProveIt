@@ -1,0 +1,36 @@
+/tmp/tenpositive-80projection-pell-oqxyp_0r/Direct80ProjectionPell.lean:44:52: error: ambiguous term, use fully qualified name, possible interpretations [@TenPositive80Factors.delta,
+ @ArithmeticPellRecurrence.delta]
+/tmp/tenpositive-80projection-pell-oqxyp_0r/Direct80ProjectionPell.lean:47:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  H
+in the target expression
+  xcoord R a = Exp.exp (rankNat p v) + (A p v - 1) * c p v + Hnat p v * z
+
+case refine_1
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+a : V := A p v - 1
+R : V := rankNat p v
+H : V := Hnat p v
+hc : c p v = ycoord R a
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+hmu : 0 < mu p v
+hA : 0 < A p v
+hA1 : a + 1 = A p v
+h4A : 1 ≤ 4 * A p v
+hH1 : H + 1 = 4 * A p v
+hH : H = 4 * a + 3
+hdelta : ArithmeticPellRecurrence.delta a = a * a + H
+z : V
+hzq : xcoord R a = Exp.exp R + a * ycoord R a + (4 * a + 3) * z
+⊢ xcoord R a = Exp.exp (rankNat p v) + (A p v - 1) * c p v + Hnat p v * z
+'TenPositive80ProjectionPell.graph_projection_pell' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
