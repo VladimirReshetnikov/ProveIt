@@ -474,7 +474,9 @@ and [definable dummy-pulse extension](research/direct-bfs-halt-packed-pulse-prot
 construct such words from internal halt while preserving normalized dummy
 digits. A [same-row pulse family](research/direct-bfs-halt-packed-family-prototype/README.md)
 keeps one halt-derived row and geometry while quantifying over the pulses;
-the mask and rank calibration remain separate. An
+a [local low-mask lemma](research/direct-bfs-cell-low-pulse-prototype/README.md)
+handles normalized pulses for non-forbidden rows. Global origin, high-mask
+and rank calibration remain separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -651,8 +653,12 @@ was prepared for 122 modules but is superseded and held: a further historical
 [comparison](reviews/ten-positive-80-ha87-producer-drift/README.md) found
 eleven additional recorded direct-import differences, including one outside
 Foundation object, and expanded the provisional cone to 127 modules.
-Those byte-matched records are not proven unique producer origins. No replay
-is yet claimed. A
+An [independent HA87 review](reviews/ten-positive-80-ha87-drift-independent/README.md)
+confirms the comparisons and reachability without replaying Lean. A
+[127-module preflight](reviews/ten-positive-80-127-rebuild-preflight/README.md)
+matches its sources and import names; it is not a rebuild or package-ancestry
+authentication. Those byte-matched records are not proven unique producer
+origins. No replay is yet claimed. A
 [staged-producer follow-up](reviews/ten-positive-80-staged-producer-audit/README.md)
 matches seven previously unmatched fresh helper objects to multi-stage
 receipts, while explicitly retaining the producer-time pin limitations and
