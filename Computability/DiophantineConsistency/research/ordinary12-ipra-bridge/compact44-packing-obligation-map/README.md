@@ -18,12 +18,12 @@ and the status of their compact instances:
 
 | Field | Needed compact fact and current evidence |
 | --- | --- |
-| `N_gt` | Prove `1 < N` for the selected powers. The chosen-power numerical bounds imply it; a geometry-only client is prepared but not yet checked. |
-| `s_lt` | Prove `w < N`. The chosen controller's `w ≤ 581197^(2*T+3)` plus positivity and one extra power imply it; the geometry-only client is uncompiled. |
+| `N_gt` | Prove `1 < N` for the selected powers. The [geometry client](../compact44-packing-static-fields-prototype/README.md) checks it on the documented exploratory mixed overlay. |
+| `s_lt` | Prove `w < N`. The same checked geometry client derives it from the chosen controller's width bound and one extra power. |
 | `hi_lt` | For each cell word `X j`, prove `K*X j < B*B`. The natural symbolic K digit theorem gives an upper bound, but a model cell-word bound and the exact cast/product comparison are still needed. |
-| `MC_lt` | Prove `lowNat+1<B`. The separately checked `CompactFixedBeta.bounds` gives its low recipe below `beta=B-1`; transporting that exact bound to this controller provider/port spelling is in progress. |
-| `HP_pos` | Prove `1≤highNat`. The beta/mask bound with `J=1` gives the needed high-recipe positivity, subject to the same provider and spelling bridge. |
-| `HP_lt` | Prove `highNat<B`. The beta/mask bound gives `beta+highNat<2*beta`, hence `highNat<beta<B`, subject to the same bridge. |
+| `MC_lt` | Prove `lowNat+1<B`. The [separated static-field client](../compact44-packing-static-fields-prototype/README.md) checks the exact symbolic bound on the documented mixed overlay. |
+| `HP_pos` | Prove `1≤highNat`. The same client checks the exact native-mask positivity. |
+| `HP_lt` | Prove `highNat<B`. The same client checks the bound from the symbolic beta/mask inequality. |
 | `cell_sum` | For all `j<N`, prove `X j + blk j < B` for the actual `K`, cell and cyclic neighbors. This needs a constructed compact cell, local product bounds and no-carry/normalization of **all** contributing columns; the selected aggregate alone is insufficient. |
 | `origin` | Prove `1≤X 0`. The compact word has the designated origin row, but its actual packed cell and the selector digit at zero must still be constructed and identified. |
 | `blk_pos` | Prove `0<blk 0` for the actual normalized block. The sparse target has occupied digits, but equality of the full normalized product/neighbor block to that target has not been proved. |

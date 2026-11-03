@@ -17,7 +17,7 @@ theorem fields_of_beta (β L H B : V) (hβ : β+1=B) (hL : L<β)
     exact lt_of_add_lt_add_left hH
   refine ⟨?_, hpos, ?_⟩
   · rw [← hβ]
-    exact add_lt_add_right hL 1
+    simpa only [add_comm] using add_lt_add_right hL 1
   · rw [← hβ]
     exact lt_trans hh (lt_add_one _)
 
