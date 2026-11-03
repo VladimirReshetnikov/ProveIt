@@ -112,7 +112,9 @@ IΣ₁ models under those port bounds. An [independent receipt audit](reviews/or
 checks the theorem scope and selected provider without replaying Lean. A subsequent [fixed-port halt bridge](research/ordinary12-absorb89-probe/HALT.md)
 checks the positive, shifted and byte-port forms, but does not authenticate
 the full serialized ancestry of the combined roots. The iPRA join remains
-separate.
+separate. A [base-10 decimal display](research/ordinary12-absorb89-decimal-display/README.md)
+externally checks the 89 rows, coefficient payloads and exact degree 172;
+there is no Lean parser or theorem about the TeX or PDF.
 
 For the separate ten-positive 84- and 85-operation proposals, a
 [Pell-doubling prototype](research/ten-positive-ipra-doubling-prototype/README.md)
