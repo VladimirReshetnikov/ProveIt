@@ -771,7 +771,10 @@ construct the dummy locations; its provider ancestry is inherited.
 A separate author-side [Horner-residue client](research/ordinary12-ipra-bridge/compact44-symbolic-k-residue-prototype/README.md)
 proves the required modular residue for the symbolic natural kernel. Its
 provider differs from the unit client's, so applying the results together
-requires a coherent same-provider rebuild.
+requires a coherent same-provider rebuild. An [initial join attempt](research/ordinary12-ipra-bridge/compact44-symbolic-controller-join-prototype/README.md)
+successfully rebuilt the four component stages on one author-side provider,
+but its final client failed first at the elaboration recursion limit and then
+at the kernel memory limit. No joined theorem is claimed.
 Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
 and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
 found no defect in the inspected arguments; neither review supplies the join.
