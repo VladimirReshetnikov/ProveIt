@@ -1,8 +1,11 @@
 # Proposed construction direction for the compact44 free-J graph
 
-This is a source-only proof plan. It does not construct any witness, prove an
-all-model converse, identify the retained tuple with the symbolic ports, or
-produce a derivation in iPRA. The intended first endpoint is conditional on a
+This document is the original construction plan; its individual status notes
+below are historical. A later [guarded Lean theorem](../compact44-halt-rank-no-high-prototype/README.md)
+now constructs, from a model-internal halt, a full symbolic compact packing
+and calibrated rank without extra physical premises. It does not construct a
+positive graph zero, prove an all-model converse, identify the retained tuple
+with the symbolic ports, or produce a derivation in iPRA. The intended first endpoint is conditional on a
 model of `IΣ₁`: from an internal halting time of the selected `decimal215`
 run, construct twelve strictly positive model naturals at which the **actual
 free-J literal** `Ordinary12FreeJ.literal` has `InternalZero`, with the four
