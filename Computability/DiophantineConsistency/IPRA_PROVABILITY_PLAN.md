@@ -283,6 +283,11 @@ derives the power and aligned indices from three explicit port equalities. A
 separate [radix alignment](research/ten-positive-80-projection-product-prototype/RADIX.md)
 obtains the power-of-two block form under an explicit beta identity. Full
 fixed tuple/file binding and machine/iPRA equivalence remain separate.
+The [repunit join](research/ten-positive-80-repunit-prototype/README.md)
+recovers `J` using the same block-count witness. A preliminary
+[scaled Pell sandwich](research/pell-scaled-sandwich-prototype/README.md)
+checks the lower ratio inequality and shifted coefficient gap; its upper and
+rounding steps remain open.
 After power recovery, an [unweighted projection](research/ten-positive-80-projection-product-prototype/UNWEIGHTED.md)
 derives `H ∣ Kpos` directly from the Pell norm, without canceling `b` or the
 power, and obtains a positive natural quotient under the same port bounds.
