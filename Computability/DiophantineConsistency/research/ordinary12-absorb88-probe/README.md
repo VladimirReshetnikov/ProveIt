@@ -16,3 +16,11 @@ There is a substantive gap in that reverse plan: the existing 89 transport proof
 The checker also verifies an independently supplied `Bt=0` example that satisfies the 90 comparison's symbolic port inequalities: `beta=3`, `K0=1`, `MC=MF=0`, `J=1`, `F=2`, `alpha=w=s=eta=zeta=1`, and `r=32769`. It gives `ell=32768`, `k=2`, `Bt=0`, `Z=98307`, and `A0=0`. This does not establish the other residuals or the actual fixed `K0`.
 
 The `F,alpha` symmetry preserving `G=alpha+(q-F)b` suggests trying to normalize witnesses until `Bt>0`. The checker records an isolated first-factor obstruction: with the same bounded ports and `J=w=s=eta=zeta=1`, taking `F=1`, `alpha=19`, `r=32461` gives `q=4`, `G=28`, `Bt=-132` and `A0=0`. For `q=4`, any positive `F',alpha'` with `Bt'>0` must satisfy `F'+alpha'<4`, which gives `G'≤11`; thus this first-factor example has no such `G`-preserving normalization. Again, the other residuals are nonzero, so this does not rule out a normalization theorem for full graph zeros.
+
+The independent [symmetry analysis](../../reviews/ordinary12-absorb88-transport-obstruction/README.md)
+also gives an external conditional construction: from any fixed-port 89 zero
+it obtains a full 88 zero with negative transport, using the checked fixed
+coefficient bound `K0<beta²`. It does not assert that such a zero exists or
+disprove equivalence of the two zero-existence statements. It does show that
+universal transport positivity is not a viable reverse route in the stated
+conditional setting.

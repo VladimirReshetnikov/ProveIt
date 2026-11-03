@@ -129,6 +129,10 @@ are checked conditional on the unresolved transport bound.
 Its reverse argument is open: exact first-factor examples show the needed
 transport positivity cannot be derived from that factor alone, including one
 under the abstract port bounds. Neither example is a full-graph counterexample.
+An external [symmetry argument](reviews/ordinary12-absorb88-transport-obstruction/README.md)
+further shows that, if a fixed-port 89 zero exists, there is a full 88 zero
+with negative transport. This rules out a universal positivity proof under
+that condition, but does not settle existential equivalence.
 No 88-operation halt or iPRA endpoint is claimed.
 
 For the separate ten-positive 84- and 85-operation proposals, a
