@@ -111,9 +111,12 @@ reverse existence, halt equivalence, or iPRA endpoint.
 
 For the separate ten-positive 84- and 85-operation proposals, a
 [Pell-doubling prototype](research/ten-positive-ipra-doubling-prototype/README.md)
-proves the needed coprimality of abstract doubled radicands in every IΣ₁
-model, using explicit Bézout certificates. It is not yet bound to either
-graph; root recovery, the machine bridge and an iPRA endpoint remain open.
+proves coprimality of abstract doubled radicands in every IΣ₁ model, using
+explicit Bézout certificates. A subsequent [product-root theorem](research/ten-positive-ipra-product-root-prototype/README.md)
+combines that result with scaled-square extraction to recover positive roots
+from the exact abstract cross-multiplied relation. It is not yet bound to
+either graph; full root recovery, the machine bridge and an iPRA endpoint
+remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
