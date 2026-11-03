@@ -802,7 +802,8 @@ uses that unit to produce an abstract definable Boolean selector with the
 stated congruence, under two explicit size and stride bounds. Its compact
 controller source is a mechanically checked triangle-only adaptation; the
 single-author run retains its documented linter warnings and inherited
-provider limitations. This does not establish safe physical dummy locations
+provider limitations. An independent [source and artifact review](reviews/compact44-symbolic-rank-calibration-source-review/README.md)
+passed for the inspected transformation and theorem. This does not establish safe physical dummy locations
 or the packed-rank variation identity. A [chosen-dimensions client](research/ordinary12-ipra-bridge/compact44-chosen-controller-calibration-prototype/README.md)
 discharges both bounds for explicit powers of `581197`, giving the abstract
 calibration for every model computation bound; it inherits the same remaining
@@ -822,6 +823,10 @@ word is supplied by a later [same-provider word-cell build](research/ordinary12-
 it compiles definable selector and payload-bit functions and the occupied
 aggregate at every bounded word position. This is an author-side incremental
 result; physical packing and the graph-to-iPRA connection remain open.
+A later [sparse target-block client](research/ordinary12-ipra-bridge/compact44-word-target-nocarry-prototype/README.md)
+proves no-carry against the symbolic high mask for the two occupied target
+phases, including arbitrary model-length repetition. It does not identify
+that sparse block with the complete kernel product or settle the other columns.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
