@@ -1,0 +1,7 @@
+# Guard-independent first-index residue
+
+`Trace74FirstIndexResidue.graph_first_index_residue` states that in each stated IΣ₁ model a positive 74 zero with positive beta has a positive first Pell index `n` satisfying the recorded first Pell ordinate equation and `k ≡ 2*n (mod q^4)` for the same witness tuple. The proof applies the [guard-independent Pell client](PELL.md) and the general Pell congruence theorem. It does not assume `F+C<q` and does not yet identify `k` with the rank offset.
+
+The author check passed actual tool session 12922, exit 0 and fully reaped. Source SHA-256 `5454d0e46d9e89800a96203ff244c23dae6dc2dab2737defa3587b52156fc9ce`, runner `c1f6dfcacf4c283ad1d008db4fa66336ef0aaae4b84cd6ed2d6318bc475d8efb`, terminal `3c7ed7084bbe5528b768de2084271d0293e7b5fd247410450da59c1d83e0c4f3`, object `9155e2a4d9a945750f1edb1af9ce985d4b6f5ff55323b68a82a83ec3724d288f`. The named report lists `propext`, `Classical.choice`, `Quot.sound`; thirteen copied actual-function report controls pass. The [prelaunch review](../../reviews/trace74-first-index-residue-prelaunch-independent/README.md) and [independent result audit](../../reviews/trace74-first-index-residue-result-independent/README.md) passed; the latter SHA-256 `5719b4c5067429fac2fc0a72fab39fef9aef1bd53cb01219934f0ee0c32e5efb`. Direct-object pins do not authenticate full project/package/dynamic ancestry or exclude search-path shadowing.
+
+The natural rank representative and its offset congruence, repunit, population lower bound, fixed-port guard, 74/75 equivalence and iPRA endpoint remain open.
