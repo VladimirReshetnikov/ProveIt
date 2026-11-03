@@ -1,0 +1,7 @@
+# Static review: held trace75/BFS occupied-origin client
+
+GO for one coordinated author check with runner SHA-256 `856acbd45cd41f4e30007b13f5016e469f37d5e464eb7b96f391a0221cddcd3a` and outer SHA-256 `186bd5548f3e42831545eaad2892c8f9591f6e25ff334bb5ef7821740a8e2657`. Under exact four symbolic ports and a positive trace75 graph zero, the proposed theorem seeks `dig 67 (Cnat p v) (position j)=1` for every `j : Fin 41` with `34≤j.val`. It aligns the three independently supplied clean-carry, support and slot lengths using the same radix power. This remains a proposed result pending Lean, not a halt, iPRA or file-binding theorem.
+
+`check.py` independently rehashed the 1,977-object fresh union and 80 outside bundles/targets, all four prior regular client roots and eight source/object files, and four BFS provider subtrees against the captured replay: `DirectBFSSelectedOrigin` 258 project/29 outside, `DirectBFSForeignBands` 243/28, `SelectedBandWord` 240/28, and `HighMaskLocal` 243/29. It checked the frozen preflight, 18 policy controls, actual-helper same-byte source/object symlink rejection and copied-supervisor modified-runner rejection. The runner retains exact axiom and direct-header policy, root shadow, resource, source-copy and terminal guards. No Lean candidate process was launched here.
+
+Preserve and independently audit actual result and outer terminal after completion. Historical unrebuilt source, package/dynamic ancestry and external coefficient/PDF binding remain inherited.
