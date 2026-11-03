@@ -52,6 +52,14 @@ the guard fails for the source valuation. The checked theorem has not been
 specialized to that seed, and its ports do not satisfy the fixed BFS tuple.
 Neither result establishes a trace74/trace75 inequivalence or an iPRA endpoint.
 
+A further [parametric specialization](../trace74-boundary-seed-parametric-rebuild/README.md)
+has been Lean checked at ports `(1,1,28,0)`: under explicit positivity,
+phase, growth, exponential and Pell hypotheses, it returns a positive zero
+with the first three coordinates equal to 1, so `F+C=q=2`. The finite seed's
+hypotheses have not been certified in Lean, and these ports are not the fixed
+BFS tuple. The check does not establish a fixed-port inequivalence or iPRA
+endpoint.
+
 The `coefficient_binding` object, including the tuple description and all
 compressed/raw hashes, is copied verbatim from the pinned 75-row JSON. Its
 `coefficients/` path belongs to that source package's layout, not this probe's
