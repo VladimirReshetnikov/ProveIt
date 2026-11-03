@@ -353,9 +353,11 @@ now derives both the special origin and all in-range low-mask conditions for
 a marked word and for Boolean pulses supported away from zero. The
 [exact-product carry client](research/ordinary12-ipra-bridge/compact44-word-carry-join-prototype/README.md)
 constructs the cyclic carry input from the packed word with an explicitly
-bounded temporal term. These are model-level components; identifying the
-temporal term, the remaining product/high-mask and other packing conditions,
-graph-zero construction and iPRA endpoint remain separate obligations.
+bounded temporal term; a [temporal-rotation client](research/ordinary12-ipra-bridge/compact44-word-temporal-carry-prototype/README.md)
+derives that term from the word for the exact `(K+2^e)` product. These are
+model-level components; the remaining product/high-mask and other packing
+conditions, graph-zero construction and iPRA endpoint remain separate
+obligations.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
