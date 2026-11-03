@@ -1,0 +1,65 @@
+{
+  "error": "RuntimeError('stage failure Direct80FixedBetaOdd')",
+  "lean_path": "/tmp/absorb89-chain-8kdpvg4u/lib:/tmp/qcube92-halt-5apqi7f7/lib/DiophantineConsistency:/tmp/qcube92-halt-5apqi7f7/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+  "output_root": "/tmp/absorb89-chain-8kdpvg4u",
+  "predecessors": {
+    "/tmp/qcube92-halt-5apqi7f7/lib/DiophantineConsistency/ArithmeticPellPowerRecovery.olean": "81ac9f2d4ffcf1ad8a5bce697cc6369a21a1df07aa9fdf10a8700e63755e392f"
+  },
+  "runner_sha256": "e4e067992ad02e87b289280464ccd2d160675ca4ffed5e47af9b78b1d7343f92",
+  "scope": "selected project author chain; package/dynamic/source-object ancestry inherited; no reverse or iPRA theorem",
+  "sources": {
+    "Direct80FixedBetaOdd": "b73deac83268f6db153899b3bf0e524fcbd94f2fc56acdef9651b825348874b8"
+  },
+  "stages": [
+    {
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/absorb89-chain-8kdpvg4u/src",
+        "/tmp/absorb89-chain-8kdpvg4u/src/Direct80FixedBetaOdd.lean",
+        "-o",
+        "/tmp/absorb89-chain-8kdpvg4u/lib/Direct80FixedBetaOdd.olean"
+      ],
+      "elapsed": 3.023007648997009,
+      "exit": 1,
+      "module": "Direct80FixedBetaOdd",
+      "object_sha256": null,
+      "preflight": {
+        "lean_pids": [],
+        "mem_available_kib": 18754008,
+        "time_ns": 1793707239717568463
+      },
+      "reason": null,
+      "samples": [
+        {
+          "lean_pids": [
+            3830488
+          ],
+          "mem_available_kib": 18749420,
+          "time_ns": 1793707239725644967
+        },
+        {
+          "lean_pids": [
+            3830488
+          ],
+          "mem_available_kib": 18642260,
+          "time_ns": 1793707240733466751
+        },
+        {
+          "lean_pids": [
+            3830488
+          ],
+          "mem_available_kib": 18584304,
+          "time_ns": 1793707241740734029
+        }
+      ],
+      "source_sha256": "b73deac83268f6db153899b3bf0e524fcbd94f2fc56acdef9651b825348874b8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6f42721d7308af299c23bffb7268919cae598ebc94df9aa723d3472488f2ecf3"
+    }
+  ],
+  "status": "FAILED",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ten-positive-80-rank-parity-prototype/run-betaodd.py\", line 71, in main\n    need(proc.returncode==0 and reason is None and op.is_file() and not re.search(r'\\b(?:error|warning)(?:\\([^\\n)]*\\))?:',text) and 'sorryAx' not in text,'stage failure '+n)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ten-positive-80-rank-parity-prototype/run-betaodd.py\", line 20, in need\n    if not x:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: stage failure Direct80FixedBetaOdd\n"
+}

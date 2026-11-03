@@ -241,7 +241,9 @@ carrier additionally supplies [`μ² ∣ h*e`](research/ten-positive-80-carrier-
 after an explicit cancellation of `H`; canceling `h` still requires the
 separate radix-parity/unit argument. A [graph parity packet](research/ten-positive-80-rank-parity-prototype/README.md)
 constructs that unit certificate under the port bounds and an explicit
-odd-beta witness; its signed cancellation and fixed-beta binding remain
+odd-beta witness. A [symbolic fixed-beta parity join](research/ten-positive-80-rank-parity-prototype/FIXED.md)
+discharges beta positivity and oddness for `CompactFixedBeta.betaNat` while
+retaining the low/high port inequalities; signed cancellation remains
 separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
