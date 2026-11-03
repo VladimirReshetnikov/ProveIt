@@ -66,7 +66,7 @@ establish that complete `SourceModel` or a Lean file-binding theorem.
 | K3 | rational integrality of `y` in `QV² − (Q−1)y² = 1` | generic internal `AdjacentInteger` descent | [adjacent quotient](../trace75-root-probe/ADJACENT.md) checked from an actual positive trace75 zero and positive beta; no converse or machine theorem |
 | K4 | **signed all-index folding** ⇒ `c = ψ_A(p)`, `p` odd | [generic folded recovery](../pell-generic-fold-rebuild/README.md) rebuilt with a direct arithmetic import; `TenPositiveFolding.folding` is a separate in-tree integer version | [odd ordinate recovery](../trace75-root-probe/FOLD.md) checked from an actual positive trace75 zero and positive beta, with [independent source/receipt audit](../../reviews/trace75-fold-independent/README.md); no converse or machine theorem |
 | K5 | first Pell classification, `n0 ≥ 2`, (3.5) | `ArithmeticPellFirstNorm.positive_parameter_solution` | [classification](../trace75-root-probe/PELL.md) and [index-one exclusion](../trace75-root-probe/INDEX.md) checked for the actual unscaled trace75 parameter; the latter has an [independent source/receipt audit](../../reviews/trace75-index-independent/README.md) |
-| K6 | exclusion of `p = 3`, `c > 4Delta + 3`; auxiliary index odd and ≥ 5 | `ArithmeticPellResidueClasses.odd_index_of_base_dvd`, `ArithmeticPellHalfIndex.y_three` | [graph bounds](../trace75-root-probe/SIZE.md), [main index `p ≥ 3`](../trace75-root-probe/MAININDEX.md), and [exclusion of `p = 3` for beta ≥ 2](../trace75-root-probe/THREEEXCLUDED.md) checked; the remaining K6 conclusions are open |
+| K6 | exclusion of `p = 3`, `c > 4Delta + 3`; auxiliary index odd and ≥ 5 | `ArithmeticPellResidueClasses.odd_index_of_base_dvd`, `ArithmeticPellHalfIndex.y_three` | [main odd index `p ≥ 5` for beta ≥ 2](../trace75-root-probe/MAINFIVE.md) author-checked from an actual positive zero; the remaining K6 conclusions are open |
 | K7 | signed transport (4.3) and recovery `B ≥ 0`, `C > 0` | — | open |
 | K8 | mask window `3q < R < q⁴` | `NativeAdaptiveRankWindow.target_window` (ℤ); `ArithmeticPellFirstIndex.scalar_window` (model) | open |
 | K9 | normalized rank and `p = R` | `ArithmeticPellIndexDivisibility.relaxed_auxiliary`; `NativePellStepDown.source_index` (ℤ) | open; needs a model `source_index` |
@@ -80,8 +80,9 @@ under the explicit main-index-three premise. A [subsequent contradiction](../tra
 excludes that premise for an actual positive zero and a first-ordinate witness
 when beta is at least two in the model. An [independent source and receipt
 audit](../../reviews/trace75-three-excluded-independent/README.md) checks that
-argument without replaying Lean. It has not yet been combined with the
-odd-index existential or specialized to fixed ports.
+argument without replaying Lean. A subsequent [main-index composition](../trace75-root-probe/MAINFIVE.md)
+combines it with the first- and odd-index witnesses; fixed-port specialization
+remains open.
 
 The kernel is first proved over `ℤ`, against the paper, then replayed over
 `Facts R` and instantiated in `DiffRing V`, as for the carrier forms. K4 and
