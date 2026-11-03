@@ -1,0 +1,103 @@
+/tmp/tenpositive-80indices-22xu_gju/Direct80Indices.lean:47:15: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  A0 - 1 + 1
+in the target expression
+  A0 * (A0 + 2) = D
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := TenPositive80Factors.delta p v
+U0 : V := U p v
+E0 : V := E p v
+A0 : V := A p v
+a : V := D * U0 * U0 * E0
+F : V := 1 + 2 * a
+Q : V := D * (4 * a * (1 + a))
+hD : 0 < TenPositive80Factors.delta p v
+hU : 0 < U p v
+hE : 0 < E p v
+hM : 0 < M p v
+hA : 0 < A0
+hA1 : A0 - 1 + 1 = A0
+h3 : A0 - 1 + 3 = A0 - 1 + 1 + 2
+⊢ A0 * (A0 + 2) = D
+/tmp/tenpositive-80indices-22xu_gju/Direct80Indices.lean:99:15: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  F * F
+in the target expression
+  J * J + D = D * F * F
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := TenPositive80Factors.delta p v
+U0 : V := U p v
+E0 : V := E p v
+A0 : V := A p v
+a : V := D * U0 * U0 * E0
+F : V := 1 + 2 * a
+Q : V := D * (4 * a * (1 + a))
+hD : 0 < TenPositive80Factors.delta p v
+hU : 0 < U p v
+hE : 0 < E p v
+hM : 0 < M p v
+hA : 0 < A0
+hA1 : A0 - 1 + 1 = A0
+hdelta : ArithmeticPellRecurrence.delta (A0 - 1) = D
+tau f V0 Z0 y : V
+htau : 0 < tau
+hf : 0 < f
+hVp : 0 < V0
+hy : 0 < y
+hV :
+  Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v *
+      Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v =
+    ι (V0 * V0)
+hZ :
+  Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).z *
+      Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).z =
+    ι (Z0 * Z0)
+hZeq : Z0 = M p v * tau * f * y
+ht : E0 = tau * tau
+hf2 : 1 + a = f * f
+haux : Q * (V0 * V0) = 1 + (Q - 1) * (y * y)
+I : V := 2 * U0 * tau * f
+J : V := D * I
+hI : 0 < I
+hD1 : 1 ≤ D
+hI2 : 2 ≤ I
+hJ2 : 2 ≤ J
+hJ : 0 < J
+hF : 0 < F
+hG : E0 * (1 + a) = tau * tau * (f * f)
+hstrong : F * F = 1 + D * I * I
+hQ : Q = J * J
+hc : c p v * c p v ∣ I
+hstrong' : F * F = 1 + ArithmeticPellRecurrence.delta (A0 - 1) * I * I
+j : V
+left✝¹ : j ≤ I
+hjx : xcoord j (A0 - 1) = F
+hjy : ycoord j (A0 - 1) = I
+hj : 0 < j
+hJsub : J - 2 + 2 = J
+hdJ : ArithmeticPellRecurrence.delta (J - 2) + 1 = J * J
+hQsub : Q - 1 = ArithmeticPellRecurrence.delta (J - 2)
+hn : J * V0 * (J * V0) = 1 + ArithmeticPellRecurrence.delta (J - 2) * y * y
+s : V
+left✝ : s ≤ y
+hsx : xcoord s (J - 2) = J * V0
+hsy : ycoord s (J - 2) = y
+h : V
+hs : s = 2 * h + 1
+hV0 : V0 = oddQuotient h (J - 2)
+⊢ J * J + D = D * F * F
+'TenPositive80Indices.strong_and_auxiliary_indices' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

@@ -126,9 +126,9 @@ is now checked in models, including a positive Pell root when beta is positive.
 The [signed-root alternatives](research/ordinary12-absorb88-probe/SIGNS.md)
 and [positive-branch witness bound](research/ordinary12-absorb88-probe/GAP.md)
 are checked conditional on the unresolved transport bound.
-Lean also checks [conditional existence transport](research/ordinary12-absorb88-probe/CONDITIONAL.md):
-every positive 89 zero maps to an 88 zero, and an 88 zero with the explicit
-transport bound maps back to an 89 zero.
+Lean also checks [restricted existence equivalence](research/ordinary12-absorb88-probe/RESTRICTED.md):
+a positive 89 zero exists exactly when an 88 zero exists that satisfies the
+explicit transport bound.
 Its reverse argument is open: exact first-factor examples show the needed
 transport positivity cannot be derived from that factor alone, including one
 under the abstract port bounds. Neither example is a full-graph counterexample.
@@ -180,7 +180,10 @@ assuming divisibility. The [80-row adjacent join](research/ten-positive-80-adjac
 now derives the required positive integral quotient and adjacent Pell norm
 from an actual positive graph zero. An [independent adjacent-chain audit](reviews/ten-positive-80-adjacent-independent/README.md)
 checks the seven source/receipt stages and their provider limits without a Lean
-replay. Pell folding, machine calibration and the iPRA endpoint remain open.
+replay. A [strong/auxiliary index theorem](research/ten-positive-80-folding-prototype/README.md)
+now supplies the strong and odd adjacent indices without assuming the main
+norm. The remaining all-index folding, machine calibration and iPRA endpoint
+remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
