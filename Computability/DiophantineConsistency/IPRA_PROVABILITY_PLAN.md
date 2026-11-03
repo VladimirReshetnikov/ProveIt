@@ -59,7 +59,9 @@ equivalences; its [independent audit](reviews/ordinary12-qcube92-halt-independen
 checks the selected provider and recorded result. Full inherited ancestry
 remains open, as do the 92-operation graph's iPRA endpoint and formal PDF
 binding. The [proposed iPRA client](research/ordinary12-qcube92-ipra-endpoint-draft/README.md)
-has not yet been compiled.
+has not yet been compiled. A [standalone decimal display](research/ordinary12-qcube92-decimal-display/README.md)
+has external checks of all 92 rows, fixed-coefficient recipes and selector
+blocks; these do not constitute a Lean theorem about the PDF.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
