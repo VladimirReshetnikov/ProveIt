@@ -61,9 +61,11 @@ refutation negation or the selected translated consistency sentence. Four
 affected baseline objects have a separate [direct-producer audit](../trace75-baseline-four-provenance/README.md);
 their upstream transitive ancestry, other unrebuilt ancestry and package/dynamic
 inputs remain inherited. An independently reviewed [source inventory](../trace75-cone-source-inventory/README.md)
-records the captured 186-module impact cone and a topological order, while
-leaving its 141 direct outside-cone project inputs and a source-current replay
-unresolved. The [decimal display](../trace75-bfs-decimal-display/README.md) has
+records the captured 186-module impact cone and a topological order. A separate
+[141-input triage](../trace75-upstream-141-inventory/README.md) classifies its
+direct outside-cone project selections, without establishing their complete
+producer-time or transitive ancestry. A source-current replay remains open.
+The [decimal display](../trace75-bfs-decimal-display/README.md) has
 external graph, coefficient, source-transcription and exact-degree checks,
 not Lean semantics for external files.
 
