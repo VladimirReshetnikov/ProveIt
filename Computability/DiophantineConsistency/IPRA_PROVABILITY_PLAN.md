@@ -757,8 +757,12 @@ That author-side result passed a source/artifact review with the recorded
 tooling and provider limitations. Other controller premises and the graph-zero
 construction remain separate obligations. A [controller-unit plan](research/ordinary12-ipra-bridge/compact44-controller-unit-plan/README.md)
 records recipe-derived residues and a proposed adaptation of the old
-all-model lifting argument; no compact Lean unit theorem or kernel binding is
-claimed. An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
+all-model lifting argument. A subsequent author-side [conditional unit client](research/ordinary12-ipra-bridge/compact44-controller-unit-prototype/README.md)
+proves the inverse exists in all IΣ₁ models for the stated power dimensions,
+assuming the concrete residue of `K` modulo `342946332593`. It does not prove
+that residue for `paramKernel (2^67)`, identify the actual rank variation or
+construct the dummy locations; its provider ancestry is inherited.
+An [occupied-cell prototype](research/ordinary12-ipra-bridge/compact44-forward-local-cell-prototype/README.md)
 proves a conditional local aggregate lemma on an existing author-side
 coefficient provider; it does not construct its selector or payload
 hypotheses, and its incremental build is not a paired replay or fresh closure.
