@@ -1,8 +1,18 @@
 # Draft coherent 80 symbolic iPRA replay
 
+**SUPERSEDED:** subsequent [historical producer comparisons](../../reviews/ten-positive-80-ha87-producer-drift/README.md)
+expanded the provisional affected cone to 127 modules, so this 122-stage
+runner must not be launched as a repair of the current known drift. Its
+retained script is historical preparation only.
+
 **DRAFT / HOLD: do not launch `run.py` until an independent static review of
 this exact script, its inputs, scope, guards, warning policy, and output
 handling is complete.** No replay is claimed here.
+
+The 122-stage plan is now **superseded**: additional historical producer
+records expand the observed-drift reverse-reachable cone to at least 127
+modules. The existing runner must not be launched; a new pinned plan and
+runner are required.
 
 The proposed runner uses the selected 1,765-project-module closure and the
 expanded source-pinned 122-module drift cone. It materializes one fresh
