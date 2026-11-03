@@ -74,7 +74,10 @@ map and establishes positive, shifted and closed Lean byte-recipe forms in
 every IΣ₁ model. It is an author build with the recorded inherited-ancestry
 limits, not yet an internal iPRA derivation. An [independent audit](reviews/ordinary12-xq91-halt-independent/README.md)
 checks its theorem, fixed-port assumptions and selected union. The [iPRA client](research/ordinary12-xq91-ipra-endpoint-draft/README.md)
-remains an unchecked draft.
+remains an unchecked draft. A [standalone decimal display](research/ordinary12-xq91-decimal-display/README.md)
+and its [independent review](reviews/ordinary12-xq91-decimal-independent/README.md)
+externally check the 91 rows and fixed-coefficient recipes; these are not
+Lean theorems about PDF or filesystem semantics.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
@@ -122,8 +125,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage301-warning-retry/README.md)
-has rebuilt its first 301 of 425 modules. A missing declaration in a
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage306-warning-retry/README.md)
+has rebuilt its first 306 of 425 modules. A missing declaration in a
 historical provider required a checked local source repair at stage 276;
 similar later references and inherited provider freshness remain open. At stage 64 a warning-bearing
 attempt was rejected; the minimal unused-argument correction was separately
