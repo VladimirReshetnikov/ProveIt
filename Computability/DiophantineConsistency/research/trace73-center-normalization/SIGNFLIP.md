@@ -2,7 +2,8 @@
 
 `Trace75SignFlip.Z_move` proves for arbitrary commutative rings, ring-valued
 ports and valuations, that adding `2*d` to slot 7 changes the actual trace75
-carrier `Z` by `2*M*d` and keeps all output-relevant registers unchanged.
+carrier `Z` by `2*M*d` and keeps the other output-relevant registers `Q`,
+`M`, `Gn` and `V` unchanged.
 `value_flip` consequently proves that, if the original carrier is `-M*d`,
 the update preserves the actual trace75 output. Both are all-ring Lean
 statements about `TenPositiveTrace75.value75`; they do not by themselves
