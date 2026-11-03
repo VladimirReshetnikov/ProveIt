@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+"""Capture-relative 186-node source, log and selected-import inventory; no Lean."""
+from collections import Counter,defaultdict
+from hashlib import sha256
+from pathlib import Path
+import heapq,json,re,subprocess,sys
+
+if not sys.flags.isolated or not sys.flags.no_site or sys.flags.optimize:
+    raise SystemExit('use python3 -I -S -B')
+H=Path(__file__).resolve().parent;D=H.parents[1]
+INPUTS={
+ 'research/ten-positive-80-coherent-rebuild/observations/attempt04/result.json':'e1ccee0f9c5fdc14cde89368925cb56f41d6acbe5c89a41c9e2bab798184582b',
+ 'research/direct-bfs-80-coherent-rebuild/observations/attempt01/result.json':'ca79d2e68509999cb2a6cd43759e31d656796f09719239c0adac259b7cadb559',
+ 'research/trace75-bfs-compatible-provider-rebuild/observations/attempt01/result.json':'04cd437011c9a8b753a310da6c7691f229f9758b9050fdba9b61b812697fbc3c',
+ 'research/trace75-bfs-compatible-reverse-rebuild/observations/attempt01/result.json':'9cf2209e033a0baeab5e1ecac3c9aee0f13afffade6c6a716a7661eeff17ba49',
+ 'research/trace75-bfs-compatible-forward-rebuild/observations/attempt01/result.json':'f8d6388911e101a7dfae2547907bc6f9245950fa953c3a4769eff00c140fc3d8',
+ 'research/trace75-bfs-ipra-final-assembly-plan/observations/attempt01/result.json':'b05b0970cde855c6c65973b9550ae7231b7cca02f8659140a166f206bf51093c',
+ 'reviews/ten-positive-80-127-rebuild-preflight/observations/attempt01.json':'cd224b6f17f9cd3cd08cf3a9e84923c1de9edbb635f6969cd4e1991e009b7e3a',
+ 'research/direct-bfs-80-coherent-rebuild-plan/observations/attempt01/result.json':'14c9a694d6574037e70044fcec7ef12aae0d399ce1341add86cdafd1d0388893',
+ 'research/trace75-baseline-four-provenance/observations/attempt02/stdout':'72587a664b8d7a41704b146ad054c33bf1cdc70b9ae891fca18b11e9425a51b7'}
+PATHS=list(INPUTS)[:6];FINAL=PATHS[-1];S127=list(INPUTS)[6];S65=list(INPUTS)[7];CONE=list(INPUTS)[8]
+ALTERNATIVES={
+ 'OffsetBound':'research/generic-transport-rebuild/OffsetBound.lean',
+ 'DirectBFSOriginBlockResidue':'research/direct-bfs-80-coherent-rebuild/observations/attempt01/stage-044/source.lean'}
+def need(b,m):
+    if not b:raise RuntimeError(m)
+def sha(p):return sha256(Path(p).read_bytes()).hexdigest()
+def hs(record):return {k:None if v is None else v['sha256'] for k,v in record.items()}
+def read(p):return json.loads((D/p).read_text())
+def git(*args):return subprocess.run(['git','-C',str(D),*args],capture_output=True,check=True).stdout
+for p,h in INPUTS.items():need(sha(D/p)==h,'input drift '+p)
+head_before=git('rev-parse','HEAD').decode().strip()
+root=Path(git('rev-parse','--show-toplevel').decode().strip())
+cone=set(read(CONE)['reverse_reachable']);final=read(FINAL);project=set(final['selected_project']);outside=set(final['selected_outside'])
+need(len(cone)==186 and cone<=project and final['status']=='PASS','cone or final status')
+sources127=read(S127)['sources'];sources65={r['module']:r['producer'] for r in read(S65)['rebuild_order']}
+records={};counts=Counter();direct_mismatches=[];direct_count=0
+for kind,path in enumerate(PATHS):
+    result=read(path);need(result['status']=='PASS','producer result failed '+path)
+    for s in result['stages']:
+        name=s['module'];obj=s.get('object') or s.get('output');selected=final['selected_project'].get(name)
+        if name not in cone or selected is None or obj['.olean']['resolved']!=selected['.olean']['resolved']:continue
+        need(name not in records,'ambiguous exact producer '+name)
+        need(s['exit']==0 and s['reason'] is None and hs(obj)==hs(selected),'producer output mismatch '+name)
+        out=Path(obj['.olean']['path']);need(out.is_file() and str(out.resolve())==obj['.olean']['resolved'] and sha(out)==obj['.olean']['sha256'],'live output drift '+name)
+        copied=Path(s['command'][5]);need(copied.is_file() and sha(copied)==s['source_sha256'],'producer source copy drift '+name)
+        receipt=None
+        if kind==0:
+            row=sources127[name];listed=Path(row['source']);method='127_source_plan';need(row['sha256']==s['source_sha256'],'127 source plan drift '+name)
+            current=listed
+        elif kind==1:
+            row=sources65[name];listed=Path(row['source_snapshot']);method='inferred_sibling_of_65_snapshot'
+            need(row['source_sha256']==s['source_sha256'],'65 snapshot plan drift '+name)
+            receipt=Path(row['receipt']);need(receipt.is_file() and sha(receipt)==row['receipt_sha256'],'historical source receipt drift '+name)
+            current=listed.parents[2]/(name.split('.')[-1]+'.lean')
+        else:
+            listed=Path(s['source']);current=listed;method='recorded_stage_source'
+        need(listed.is_file() and sha(listed)==s['source_sha256'],'listed source drift '+name)
+        need(current.is_file() and current.is_relative_to(root) and sha(current)==s['source_sha256'],'workspace source drift '+name)
+        header=final['serialized_headers'][name]
+        imports=re.findall(r'^import\s+([A-Za-z0-9_.]+)\s*$',copied.read_text(),re.M)
+        need([x for x in header if x!='Init']==imports,'source/header mismatch '+name)
+        obs=(D/path).parent;idx=s['index'];logs={}
+        for ext in ['stdout','stderr']:
+            log=(obs/('stage-'+str(idx).zfill(3))/ext) if kind==1 else obs/('stage-'+str(idx).zfill(3 if kind==0 else 2)+'.'+ext)
+            need(log.is_file() and sha(log)==s[ext+'_sha256'],'stage log drift '+name+' '+ext);logs[ext]=str(log)
+        before=s.get('direct_before') or s.get('direct_imports');after=s.get('direct_after') or s.get('direct_imports_after')
+        if before is not None:
+            need(before==after,'producer direct-before/after changed '+name)
+            for dep,bundle in before.items():
+                chosen=final['selected_project'].get(dep) or final['selected_outside'].get(dep)
+                if chosen is None or hs(bundle)!=hs(chosen):direct_mismatches.append([name,dep])
+                direct_count+=1
+        records[name]={'module':name,'producer_result':path,'producer_stage':idx,'object_sha256':obj['.olean']['sha256'],
+          'object_realpath':obj['.olean']['resolved'],'source_sha256':s['source_sha256'],'copied_source':str(copied),
+          'listed_source':str(listed),'workspace_candidate':str(current),'source_identification':method,
+          'historical_receipt':str(receipt) if receipt else None,'logs':logs,'imports':imports,
+          'producer_direct_bundles_recorded':before is not None}
+        counts[method]+=1
+need(set(records)==cone,'producer coverage incomplete')
+workspace=[records[n]['workspace_candidate'] for n in sorted(records)]
+tracked=set(git('ls-files','--full-name','-z','--',*workspace).decode().split('\0'))
+for n in records:
+    r=records[n];r['workspace_indexed']=str(Path(r['workspace_candidate']).relative_to(root)) in tracked
+for n,rel in ALTERNATIVES.items():
+    p=D/rel;need(p.is_file() and sha(p)==records[n]['source_sha256'],'tracked alternative drift '+n)
+    need(str(p.relative_to(root)) in tracked or bool(git('ls-files','--',str(p)).strip()),'alternative not indexed '+n)
+    records[n]['tracked_byte_identical_alternative']=str(p)
+reverse=defaultdict(set);upstream=set();external=set();internal_edges=0
+for name in cone:
+    for dep in set(final['serialized_headers'][name]):
+        if dep in cone:reverse[dep].add(name);internal_edges+=1
+        elif dep in project:upstream.add(dep)
+        elif dep in outside:external.add(dep)
+        else:raise RuntimeError('unresolved captured input '+name+' '+dep)
+indegree={n:len(set(final['serialized_headers'][n])&cone) for n in cone};ready=[n for n in cone if not indegree[n]];heapq.heapify(ready);order=[]
+while ready:
+    n=heapq.heappop(ready);order.append(n)
+    for user in sorted(reverse[n]):
+        indegree[user]-=1
+        if indegree[user]==0:heapq.heappush(ready,user)
+need(len(order)==len(cone),'captured header graph cyclic')
+head_after=git('rev-parse','HEAD').decode().strip();need(head_before==head_after,'git HEAD changed during scan')
+for p,h in INPUTS.items():need(sha(D/p)==h,'input changed '+p)
+summary={'count':len(records),'by_identification':dict(counts),'workspace_indexed':sum(r['workspace_indexed'] for r in records.values()),
+ 'workspace_unindexed':sorted(n for n,r in records.items() if not r['workspace_indexed']),
+ 'producer_direct_comparisons':direct_count,'producer_direct_mismatches':direct_mismatches,
+ 'internal_edges':internal_edges,'upstream_project_count':len(upstream),'outside_direct_count':len(external)}
+print(json.dumps({'status':'PASS','git_head':head_before,'summary':summary,'topological_order':order,
+ 'upstream_project':sorted(upstream),'outside_direct':sorted(external),'records':[records[n] for n in sorted(records)],
+ 'scope':'capture-relative current-path inventory and selected header DAG; no Lean replay or complete source-current ancestry'},sort_keys=True))
