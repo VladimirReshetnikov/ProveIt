@@ -594,7 +594,9 @@ of the four standard/reference derivability equivalences for the once-shifted
 80-row graph with the original symbolic kernel. The accepted author check is
 not yet a complete selected-transitive closure/source-object audit or an
 external JSON/PDF binding; it is not a theorem for the different retained
-BFS coefficient.
+BFS coefficient. An [independent endpoint audit](reviews/direct80-symbolic-ipra-client-independent/README.md)
+checks the four theorem statements, positive shift, named theories and selected
+direct providers without replaying Lean.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. The generic result alone does not derive
