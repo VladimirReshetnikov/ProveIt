@@ -1,5 +1,6 @@
 import DiophantineConsistency.NaturalSimplifier
 import DiophantineConsistency.ExecutableJones
+import DiophantineConsistency.CompactedJonesSyntax
 
 /-!
 # A smaller Jones source obtained by deleting redundant natural gates
@@ -12,9 +13,6 @@ or preserves the exponent parameter of the subsequent Jones encoding.
 namespace DiophantineConsistency.SimplifiedJones
 
 open Jones1982
-
-def left {A : Prop} (r : Rep Empty (fun _ => A)) := r.expression.splitNatural.1.simplify
-def right {A : Prop} (r : Rep Empty (fun _ => A)) := r.expression.splitNatural.2.simplify
 
 def witnessCount {A : Prop} (r : Rep Empty (fun _ => A)) : ℕ :=
   QuarticCompiler.witnessCount (left r) (right r)

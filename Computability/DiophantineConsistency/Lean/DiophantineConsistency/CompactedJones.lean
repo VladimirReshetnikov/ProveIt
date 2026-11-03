@@ -1,6 +1,7 @@
 import DiophantineConsistency.WitnessCompaction
 import DiophantineConsistency.SimplifiedJones
 import DiophantineConsistency.ExecutableJones
+import DiophantineConsistency.CompactedJonesSyntax
 
 /-!
 # Jones syntax after removing unused source witnesses
@@ -14,17 +15,12 @@ namespace DiophantineConsistency.CompactedJones
 
 open Jones1982
 
+/-- Changing only the represented predicate leaves the syntax unchanged. -/
+theorem expression_ofIff {A B : Prop} (r : Rep Empty (fun _ => A)) (h : ∀ v : Empty → ℕ, A ↔ B) :
+    expression (r.ofIff h) = expression r := rfl
+
 def retainedWitnesses {A : Prop} (r : Rep Empty (fun _ => A)) : ℕ :=
   WitnessCompaction.count (SimplifiedJones.left r) (SimplifiedJones.right r)
-
-def left {A : Prop} (r : Rep Empty (fun _ => A)) :=
-  WitnessCompaction.leftClosed (SimplifiedJones.left r) (SimplifiedJones.right r)
-
-def right {A : Prop} (r : Rep Empty (fun _ => A)) :=
-  WitnessCompaction.rightClosed (SimplifiedJones.left r) (SimplifiedJones.right r)
-
-def witnessCount {A : Prop} (r : Rep Empty (fun _ => A)) : ℕ :=
-  QuarticCompiler.witnessCount (left r) (right r)
 
 theorem retainedWitnesses_le {A : Prop} (r : Rep Empty (fun _ => A)) :
     retainedWitnesses r ≤ r.witnessCount := WitnessCompaction.count_le _ _
@@ -66,10 +62,6 @@ noncomputable def compile {A : Prop} (r : Rep Empty (fun _ => A)) : QuarticCompi
     degree := QuarticCompiler.quartic_degree _ _
     normalized := QuarticCompiler.quartic_normalized _ _
     correct := wset_iff r }
-
-/-- Executable final syntax using the simplified natural gate source. -/
-def expression {A : Prop} (r : Rep Empty (fun _ => A)) : Expr (Fin 9) :=
-  ExecutableJones.expression (QuarticSyntax.expression (left r) (right r)) 0
 
 theorem expression_correct {A : Prop} (r : Rep Empty (fun _ => A)) :
     (∃ v : Fin 9 → ℕ, (expression r).eval (fun i => (v i : ℤ)) = 0) ↔ A := by
