@@ -161,7 +161,9 @@ external row comparison. An [independent ring audit](reviews/ten-positive-79-rin
 checks the row mapping, direct provider and theorem scope without replaying
 Lean. Its reverse positive map requires
 `F+C<q`, which is not established; it is not a proved smaller consistency
-equation or iPRA endpoint.
+equation or iPRA endpoint. A [guarded model client](research/ten-positive-79-guarded-model-probe/README.md)
+now proves 79-zero implies 80-zero when that inequality is supplied explicitly;
+the unguarded implication remains open.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
@@ -520,7 +522,10 @@ premises hold; an [aligned-word join](research/direct-bfs-aligned-zero-carry-pro
 now establishes zero carry for the constructed direct-BFS word and temporal
 term. A [physical-column theorem](research/direct-bfs-physical-column-prototype/README.md)
 identifies each physical block digit with its direct raw column using this
-zero-carry result. It does not by itself discharge the six open high-mask phases;
+zero-carry result. A [cyclic field theorem](research/direct-bfs-word-field-cyclic-prototype/README.md)
+derives matching payload bits and source digits from a direct local word; its
+runner automatically enforces only the final two of six captured axiom reports.
+These results do not by themselves discharge the six open high-mask phases;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)

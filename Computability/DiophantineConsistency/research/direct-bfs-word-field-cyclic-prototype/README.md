@@ -1,0 +1,7 @@
+# Matched direct-BFS field digits and cyclic sources
+
+`DirectBFSWordFieldCyclic.lean` proves that direct local-word matching gives equal payload bits on vertically and horizontally adjacent rows, translates these to digits of the direct-BFS packed word, and identifies the corresponding cyclicly shifted source digits. The same normalized dummy function is used throughout; no graph-zero assumption is needed. These IΣ₁-model lemmas are inputs to high-mask parity proofs, not a proof of any high-mask phase or BFS completeness by themselves.
+
+Accepted author run: `observations/directbfswordfieldcyclic-attempt03/`; Lean and the outer runner exited 0 with no diagnostics. All six captured axiom reports were inspected and contain only `propext`, `Classical.choice`, and `Quot.sound`; the runner automatically enforces this for the final two cyclic theorems. The selected object is `/tmp/direct-bfs-wordfieldcyclic-9u2rg6b0/DirectBFSWordFieldCyclic.olean`, SHA-256 `6b14bb325f225d7480f5ec14926debb6b8ae0a72a3842bb05baa444b0c24d449`. Direct imports are checked against first-resolved pinned objects before and after execution. This exploratory author check inherits project, package, dynamic and historical source-to-object ancestry limitations and has not been independently replayed.
+
+Attempts 01 and 02 and their exact runner snapshots are retained: the first exposed missing namespace openings and the second left the field lookup implicit.

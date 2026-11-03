@@ -1,0 +1,193 @@
+import DirectBFSHighOnlyPacking
+import DirectBFSTileFields
+import DiophantineConsistency.HorizontalFieldBits
+
+/-! Forward bitwise consequences of a compact word's tile-color matching. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DirectBFSWordColorBits
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ArithmeticWindowDigits
+open CompactRowTransport DirectBFSLocalWord DirectBFSModelPayload CompactForwardCellInputs
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Vertical neighbor matching equates each south bit of one row with the
+corresponding north bit of its cyclic predecessor. -/
+theorem vertical_bits {row : V → V} {N s j j' : V}
+    (hw : DirectBFSLocalWord.Word row N s) (hj : j<N) (hj' : j'<N) (he : (j'+s)%N=j)
+    (u : V) (hu : u<9) :
+    fbit (DirectBFSModelPayload.payload (row j)) (25+u) = fbit (DirectBFSModelPayload.payload (row j')) (8+u) := by
+  obtain ⟨i, hi⟩ := standard_row (hw.tile_lt j hj)
+  obtain ⟨i', hi'⟩ := standard_row (hw.tile_lt j' hj')
+  have hc := hw.south j hj j' hj' he
+  rw [hi, hi', DirectBFSFieldCastBridge.lookup_row (fun t => t.2.2.2) (DirectBFSLocalWord.field (fun t => t.2.2.2)) (fun m => DirectBFSLocalWord.field_cast _ rfl m) i,
+    DirectBFSFieldCastBridge.lookup_row (fun t => t.2.1) (DirectBFSLocalWord.field (fun t => t.2.1)) (fun m => DirectBFSLocalWord.field_cast _ rfl m) i'] at hc
+  have hb := congrArg (fun x : V => fbit x u) hc
+  rw [hi, hi', payload_row i, payload_row i']
+  have hs := BinarySliceEqual.bit_slice (DirectBFSDecoder.tileValue (V:=V) i) 25 9 u hu
+  have hn := BinarySliceEqual.bit_slice (DirectBFSDecoder.tileValue (V:=V) i') 8 9 u hu
+  rw [(DirectBFSTileFields.tile_fields i).1] at hs
+  rw [(DirectBFSTileFields.tile_fields i').2.1] at hn
+  exact hs.symm.trans (hb.trans hn)
+
+/-- Horizontal neighbor matching equates each east bit of one row with the
+corresponding west bit of its cyclic predecessor. -/
+theorem horizontal_bits {row : V → V} {N s j j' : V}
+    (hw : DirectBFSLocalWord.Word row N s) (hj : j<N) (hj' : j'<N) (he : (j'+1)%N=j)
+    (u : V) (hu : u<8) :
+    fbit (DirectBFSModelPayload.payload (row j)) (17+u) = fbit (DirectBFSModelPayload.payload (row j')) u := by
+  obtain ⟨i, hi⟩ := standard_row (hw.tile_lt j hj)
+  obtain ⟨i', hi'⟩ := standard_row (hw.tile_lt j' hj')
+  have hc := hw.east j hj j' hj' he
+  rw [hi, hi', DirectBFSFieldCastBridge.lookup_row (fun t => t.2.2.1) (DirectBFSLocalWord.field (fun t => t.2.2.1)) (fun m => DirectBFSLocalWord.field_cast _ rfl m) i,
+    DirectBFSFieldCastBridge.lookup_row (fun t => t.1) (DirectBFSLocalWord.field (fun t => t.1)) (fun m => DirectBFSLocalWord.field_cast _ rfl m) i'] at hc
+  have hb := congrArg (fun x : V => fbit x u) hc
+  rw [hi, hi', payload_row i, payload_row i']
+  have hs := BinarySliceEqual.bit_slice (DirectBFSDecoder.tileValue (V:=V) i) 17 8 u hu
+  have hn := BinarySliceEqual.bit_slice (DirectBFSDecoder.tileValue (V:=V) i') 0 8 u hu
+  rw [(DirectBFSTileFields.tile_fields i).2.2.1] at hs
+  rw [(DirectBFSTileFields.tile_fields i').2.2.2] at hn
+  simpa using hs.symm.trans (hb.trans hn)
+
+#print axioms DirectBFSWordColorBits.vertical_bits
+#print axioms DirectBFSWordColorBits.horizontal_bits
+end DirectBFSWordColorBits
+
+/-! The constructed word carries matched edge bits in the concrete slots. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DirectBFSWordFieldDigits
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ArithmeticWindowDigits
+open CompactSymbolicKernel DirectBFSModelPayload CompactForwardCellInputs
+open DirectBFSLocalWord DirectBFSConstructedWord DirectBFSWordColorBits
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem south_position (u : Fin 9) :
+    position ⟨25+u.val, by have := u.isLt; omega⟩ = 983+u.val := by
+  fin_cases u <;> decide
+
+theorem north_position (u : Fin 9) :
+    position ⟨8+u.val, by have := u.isLt; omega⟩ = 1013+u.val := by
+  fin_cases u <;> decide
+
+theorem east_position (u : Fin 8) :
+    position ⟨17+u.val, by have := u.isLt; omega⟩ = 1003+u.val := by
+  fin_cases u <;> decide
+
+theorem west_position (u : Fin 8) :
+    position ⟨u.val, by have := u.isLt; omega⟩ = 1023+u.val := by
+  fin_cases u <;> decide
+
+/-- The vertical field phases compare the current south bits with the
+    vertical predecessor's north bits. -/
+theorem vertical_digits {row dummy : V → V} [𝚺₁-Function₁ row] [𝚺₁-Function₁ dummy]
+    {N s j j' : V} (hw : DirectBFSLocalWord.Word row N s) (hj : j<N) (hj' : j'<N)
+    (he : (j'+s)%N=j) (u : ℕ) (hu : u<9) :
+    dig 67 (packedWord row dummy N) (8807*j+((983+u:ℕ):V)) =
+      dig 67 (packedWord row dummy N) (8807*j'+((1013+u:ℕ):V)) := by
+  let south : Fin 41 := ⟨25+u, by omega⟩
+  let north : Fin 41 := ⟨8+u, by omega⟩
+  have hps : position south = 983+u := south_position ⟨u,hu⟩
+  have hpn : position north = 1013+u := north_position ⟨u,hu⟩
+  have hs := word_copy row dummy N j hj south
+  have hn := word_copy row dummy N j' hj' north
+  have huV : (u:V)<9 := by exact_mod_cast hu
+  have hb := vertical_bits hw hj hj' he (u:V) huV
+  simp only [hps, wordPayloadBit, payloadBit, south, Nat.cast_add, Nat.cast_ofNat] at hs
+  simp only [hpn, wordPayloadBit, payloadBit, north, Nat.cast_add, Nat.cast_ofNat] at hn
+  simpa only [Nat.cast_add, Nat.cast_ofNat] using hs.trans (hb.trans hn.symm)
+
+/-- The horizontal field phases compare current east bits with the
+    horizontal predecessor's west bits. -/
+theorem horizontal_digits {row dummy : V → V} [𝚺₁-Function₁ row] [𝚺₁-Function₁ dummy]
+    {N s j j' : V} (hw : DirectBFSLocalWord.Word row N s) (hj : j<N) (hj' : j'<N)
+    (he : (j'+1)%N=j) (u : ℕ) (hu : u<8) :
+    dig 67 (packedWord row dummy N) (8807*j+((1003+u:ℕ):V)) =
+      dig 67 (packedWord row dummy N) (8807*j'+((1023+u:ℕ):V)) := by
+  let east : Fin 41 := ⟨17+u, by omega⟩
+  let west : Fin 41 := ⟨u, by omega⟩
+  have hpe : position east = 1003+u := east_position ⟨u,hu⟩
+  have hpw : position west = 1023+u := west_position ⟨u,hu⟩
+  have heast := word_copy row dummy N j hj east
+  have hwest := word_copy row dummy N j' hj' west
+  have huV : (u:V)<8 := by exact_mod_cast hu
+  have hb := horizontal_bits hw hj hj' he (u:V) huV
+  simp only [hpe, wordPayloadBit, payloadBit, east, Nat.cast_add, Nat.cast_ofNat] at heast
+  simp only [hpw, wordPayloadBit, payloadBit, west] at hwest
+  simpa only [Nat.cast_add, Nat.cast_ofNat] using heast.trans (hb.trans hwest.symm)
+
+#print axioms DirectBFSWordFieldDigits.vertical_digits
+#print axioms DirectBFSWordFieldDigits.horizontal_digits
+end DirectBFSWordFieldDigits
+
+/-! Matched source digits at the exact cyclic field-column offsets. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DirectBFSWordFieldCyclic
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ArithmeticWindowDigits ArithmeticCyclicWord
+open DirectBFSLocalWord DirectBFSConstructedWord DirectBFSWordFieldDigits
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+private theorem mod_add_mod' {n : V} (hn : 0<n) (x y : V) : (x%n+y)%n=(x+y)%n := by
+  rw [mod_add hn, mod_eq_self_of_lt (mod_lt x hn), ← mod_add hn]
+private theorem cyc_add_mod {n : V} (hn : 0<n) (k e : V) : (cyc n k e+e)%n=k%n := by
+  unfold cyc
+  rw [mod_add_mod' hn]
+  have hle : e%n≤k+n := le_trans (le_of_lt (mod_lt e hn)) le_add_self
+  have he : k+n-e%n+e=(k+n)+n*(e/n) := by
+    calc
+      _ = k+n-e%n+(n*(e/n)+e%n) := by rw [div_add_mod]
+      _ = (k+n-e%n+e%n)+n*(e/n) := by ring
+      _ = _ := by rw [tsub_add_cancel_of_le hle]
+  rw [he,mod_add_mul' _ _ hn,mod_add_remove_right hn]
+
+/-- The bare shift 30 and whole-cell shift `8807*s` select matched bits
+    at each vertical field phase. -/
+theorem vertical_sources {row dummy : V → V} [𝚺₁-Function₁ row] [𝚺₁-Function₁ dummy]
+    {N s j : V} (hw : DirectBFSLocalWord.Word row N s) (hj : j<N) (hs : s<N) (u : ℕ) (hu : u<9) :
+    dig 67 (packedWord row dummy N) (cyc (8807*N) (8807*j+((1013+u:ℕ):V)) 30) =
+      dig 67 (packedWord row dummy N) (cyc (8807*N) (8807*j+((1013+u:ℕ):V)) (8807*s)) := by
+  have hj' : cyc N j s < N := cyc_lt hw.pos _ _
+  have he : (cyc N j s+s)%N=j := by rw [cyc_add_mod hw.pos, mod_eq_self_of_lt hj]
+  have hb := vertical_digits hw hj hj' he u hu (dummy:=dummy)
+  have hsub : ((1013+u:ℕ):V)-30=((983+u:ℕ):V) := by
+    apply (eq_tsub_of_add_eq ?_).symm
+    exact_mod_cast (show (983+u)+30=1013+u by omega)
+  have hq : ((1013+u:ℕ):V)<8807 := by exact_mod_cast (show 1013+u<8807 by omega)
+  have hq30 : (30:V)≤((1013+u:ℕ):V) := by exact_mod_cast (show 30≤1013+u by omega)
+  rw [BlockCyclicIndex.reflected N j _ 30 hj hq hq30, hsub,
+    BlockCyclicIndex.shift N j s _ hj hs hq]
+  exact hb
+
+/-- The bare shifts 62 and 8849 select matched bits at each horizontal
+    field phase, including the cyclic predecessor cell. -/
+theorem horizontal_sources {row dummy : V → V} [𝚺₁-Function₁ row] [𝚺₁-Function₁ dummy]
+    {N s j : V} (hw : DirectBFSLocalWord.Word row N s) (hj : j<N) (u : ℕ) (hu : u<8) :
+    dig 67 (packedWord row dummy N) (cyc (8807*N) (8807*j+((1065+u:ℕ):V)) 62) =
+      dig 67 (packedWord row dummy N) (cyc (8807*N) (8807*j+((1065+u:ℕ):V)) 8849) := by
+  have hj' : cyc N j 1 < N := cyc_lt hw.pos _ _
+  have he : (cyc N j 1+1)%N=j := by rw [cyc_add_mod hw.pos, mod_eq_self_of_lt hj]
+  have hb := horizontal_digits hw hj hj' he u hu (dummy:=dummy)
+  have hsub : ((1065+u:ℕ):V)-62=((1003+u:ℕ):V) := by
+    apply (eq_tsub_of_add_eq ?_).symm
+    exact_mod_cast (show (1003+u)+62=1065+u by omega)
+  have hq : ((1065+u:ℕ):V)<8807 := by exact_mod_cast (show 1065+u<8807 by omega)
+  have hq62 : (62:V)≤((1065+u:ℕ):V) := by exact_mod_cast (show 62≤1065+u by omega)
+  rw [BlockCyclicIndex.reflected N j _ 62 hj hq hq62, hsub,
+    HorizontalFieldBits.previous N j u hu hw.pos hj]
+  exact hb
+
+#print axioms DirectBFSWordFieldCyclic.vertical_sources
+#print axioms DirectBFSWordFieldCyclic.horizontal_sources
+end DirectBFSWordFieldCyclic
