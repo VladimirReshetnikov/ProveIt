@@ -1,0 +1,7 @@
+# Smaller defect-bound source drafts
+
+The [prior fixed-parameter attempt](../trace74-symbolic-mask-short-defect-rebuild/README.md) produced no diagnostic before its 600-second timeout; the exact expensive expression is **not known**. Likely reduction sites include specializing `digits_add_defect` to the 8,807-digit concrete low mask and rewriting an equality with the 3,297-digit defect list, and elaborating or normalizing the concrete finite support during `simp` and type matching. These are hypotheses for isolation, not conclusions from a profiler or Lean error.
+
+`Trace74GenericDefect.lean` keeps the radix, both lengths, special index and support symbolic while proving separately the outside-support zero, sum truncation, bounded digits, and low/defect identity. `Trace74SupportShort.lean` isolates the concrete support bound alone. The planned next step is a small specialization importing separately checked objects and preserving `B^8807` and `Nat.ofDigits` symbolically; do not expand the full low mask or its power. Such a specialization may itself still encounter costly definitional equality and is not included as a proven result.
+
+The [independent source review](../../reviews/trace74-generic-defect-draft-independent/README.md) found no mathematical blocker; it did not run Lean. These drafts remain unchecked and need separate guarded compilation. A successful generic stage alone would not establish concrete coverage, model casts, a graph guard or an iPRA endpoint. The original timeout is preserved unchanged.
