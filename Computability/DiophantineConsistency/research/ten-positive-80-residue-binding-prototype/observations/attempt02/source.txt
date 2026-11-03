@@ -1,0 +1,54 @@
+import Direct80Residue
+
+/-! Binding the signed square-multiple residue to the exact 80-row graph. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80ResidueBinding
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open ArithmeticPellHalfIndex TenPositive80Graph TenPositive80Factors TenPositive80Residue
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def cExpr (p : Fin 4 → ℤ) : Expr (Fin 10) :=
+  let q := (.constant (p 0) : Expr (Fin 10)) * .var 0 + 1
+  (.var 8 + .var 9) * ((q*q*q)*.var 6) + .var 8
+
+def rExpr (p : Fin 4 → ℤ) : Expr (Fin 10) :=
+  let b := (.constant (p 0) : Expr (Fin 10)) * .var 0
+  let q := b+1
+  (b*(q-.var 1)+.var 2)*(q*q-1)+(.constant (p 2)+q*.constant (p 3))*.var 0
+
+theorem v_shape (p : Fin 4 → ℤ) : (graph p).v =
+    (4*((graph p).a*((graph p).a+1))+1)*
+      (cExpr p*.var 4-rExpr p)-cExpr p := by rfl
+
+theorem c_eval (p : Fin 4 → ℕ) (v : Fin 10 → V) :
+    (cExpr (integerPorts p)).evalRing (fun j => ι (v j))=ι (c p v) := by
+  simp only [cExpr,c,k,Y,q,b,integerPorts,Expr.evalRing_mul,Expr.evalRing_add,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,Int.cast_natCast,
+    Nat.cast_one,map_mul,map_add,map_one,map_natCast]
+
+theorem graph_signed_residue (p : Fin 4 → ℕ) (v : Fin 10 → V) (u : V)
+    (hs : (graph (integerPorts p)).v.evalRing (fun j => ι (v j)) *
+      (graph (integerPorts p)).v.evalRing (fun j => ι (v j)) = ι (u*u)) :
+    SignMod (1+2*(delta p v*U p v*U p v*E p v)) u (c p v) := by
+  let a : V := delta p v*U p v*U p v*E p v
+  let F : V := 1+2*a
+  let w : DiffRing V := ((cExpr (integerPorts p))*.var 4-rExpr (integerPorts p)).evalRing (fun j => ι (v j))
+  have hF : 0<F := by dsimp [F]; simp
+  have hx : (graph (integerPorts p)).v.evalRing (fun j => ι (v j))=ι (F*F)*w-ι (c p v) := by
+    rw [v_shape]
+    simp only [Expr.evalRing_mul,Expr.evalRing_sub,Expr.evalRing_add,Expr.evalRing_ofNat,
+      Nat.cast_one,Nat.cast_ofNat]
+    rw [a_eval,delta_eval,U_eval,E_eval,c_eval]
+    dsimp [w,F,a]
+    simp only [c_eval,map_mul,map_add,
+      map_one,map_ofNat]
+    ring
+  exact square_multiple_residue F (c p v) u w _ hF hx hs
+
+#print axioms TenPositive80ResidueBinding.graph_signed_residue
+end TenPositive80ResidueBinding
