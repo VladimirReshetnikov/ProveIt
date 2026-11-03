@@ -446,8 +446,12 @@ has independently reviewed coverage and successful endpoint pilots; its
 full 59-stage Lean author run has exited successfully with all ranges accepted.
 An [independent sweep audit](reviews/direct-bfs-conjugacy-full-sweep-independent/README.md)
 checks all 59 receipts, objects and required axiom reports without replaying Lean.
-The generated aggregate is unchecked,
-so neither a complete finite Lean conjugacy nor a tiling lift is yet claimed.
+The first [aggregate attempt](research/direct-bfs-lean-conjugacy-aggregate-prototype/README.md)
+failed, but a separate [retry](research/direct-bfs-lean-conjugacy-aggregate-retry-prototype/README.md)
+has checked all seven range-aggregate Boolean declarations with outer exit 0.
+An [independent accepted-aggregate audit](reviews/direct-bfs-conjugacy-aggregate-accepted-independent/README.md)
+checks its selected 60 direct providers and axiom reports without replaying
+Lean. A pointwise finite-conjugacy client and the tiling lift remain separate.
 The [sweep audit](reviews/direct-bfs-conjugacy-sweep-v2-independent/README.md)
 documents its single-run discipline, pinned inputs and explicit limits. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
