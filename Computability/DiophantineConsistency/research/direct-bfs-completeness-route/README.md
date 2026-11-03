@@ -53,3 +53,9 @@ port equalities for the direct-BFS symbolic coefficient tuple. An
 checks the selected inputs and both directions. It is not a fixed-port iPRA
 endpoint, a trace75 equivalence, or a Lean theorem about external payloads;
 full source/object and package ancestry and independent replay remain open.
+A [parameterized iPRA client](../direct-bfs-80-ipra-client-prototype/README.md)
+uses the same four explicit port equalities to derive standard and
+equality-only iPRA endpoints for mapped refutation negation and the selected
+translated Foundation consistency sentence. The [independent review](../../reviews/direct-bfs-80-ipra-client-independent/README.md)
+checks these hypotheses, conclusions and selected receipts; fixed ports and
+the remaining ancestry and external binding are separate.
