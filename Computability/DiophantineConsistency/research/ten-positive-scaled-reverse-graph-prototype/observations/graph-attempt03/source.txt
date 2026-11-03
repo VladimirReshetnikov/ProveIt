@@ -1,0 +1,135 @@
+import ScaledReverseData
+import Direct80ReverseOutputParts
+import Direct80NaturalRank
+import Direct80CarrierIdentity
+import ScaledReverseStart
+
+/-! Construct an 80 graph valuation from an unscaled source and transport. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositiveScaledReverseGraph
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open ArithmeticPellRecurrence
+open TenPositive80Graph TenPositive80Factors TenPositive80ResidueBinding TenPositive80CarrierIdentity
+open TenPositive80NaturalRank TenPositiveScaledReverseData TenPositiveScaledReverseStart
+open TenPositive80ReverseOutputParts
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def valuation (v : Fin 10 → V) (i T n eta zeta : V) : Fin 10 → V :=
+  ![v 0,v 1,v 2,i,T,v 5,v 6,n,eta,zeta]
+
+theorem graph_zero_of_source (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (r eta zeta t : V)
+    (hb : 0<(p 0:V)) (hv : ∀j,0<v j) (hr : 0<r)
+    (hmask : v 1+v 2<q p v)
+    (htransport : ((p 1:V)+v 5)*(q p v-v 1-v 2)=v 1+b p v*t)
+    (hR : rankNat p v=2*r+1) (hphase : (2*r+1)%4=3)
+    (hXeq : X p v=Exp.exp (2*r+1)) (h72 : 72*r<X p v+1)
+    (heta : 0<eta) (hzeta : 0<zeta)
+    (hck : ycoord (2*r+1) (Y p v*(X p v+1))=
+      2*ycoord (r+1) (2*(X p v*Y p v*Y p v-1)+1)*Y p v+eta)
+    (hk : 2*ycoord (r+1) (2*(X p v*Y p v*Y p v-1)+1)=eta+zeta) :
+    ∃ w : Fin 10 → V, (∀j,0<w j) ∧ InternalZero (graph (integerPorts p)).output w := by
+  have hbpos : 0<b p v := mul_pos hb (hv 0)
+  have hq : 0<q p v := add_pos hbpos (by simp)
+  have hY : 0<Y p v := mul_pos (mul_pos (mul_pos hq hq) hq) (hv 6)
+  have hX : 0<X p v := mul_pos (hv 5) hq
+  have hmu : 1≤mu p v := by dsimp [mu]; simp
+  let P:=X p v*(mu p v*Y p v)*(mu p v*Y p v)
+  let a:=(mu p v*Y p v)*(X p v+1)-1
+  let R:=2*r+1
+  let K:=2*ycoord (r+1) (2*(P-1)+1)
+  let C:=ycoord R a
+  let D:=ArithmeticPellRecurrence.delta a
+  let H:=4*a+3
+  let Kpos:=X p v*(3*C-2*X p v)+2
+  obtain ⟨eta',zeta',i,T,n,tau,f,u,y,I,rho,heta',hzeta',hi,hT,hn,htau,hf,hu,hy,
+    hC,hK,hoff,hE,hfn,hQ,hV,hZ,haux⟩ :=
+    reverse_data (X p v) (Y p v) (mu p v) r eta zeta (b p v) t
+      (pos_iff_one_le.mp hX) (pos_iff_one_le.mp hY) hmu hr hXeq h72 hphase heta hzeta hck hk
+  change C=K*Y p v+eta' at hC
+  change K=eta'+zeta' at hK
+  change K=R+1+(mu p v*mu p v)*rho at hoff
+  change 1+(P*K)*(P*K+K)=tau*tau at hE
+  let U:=i*C*C
+  let A0:=D*U*U*tau*tau
+  let W:=valuation v i T n eta' zeta'
+  have hWpos : ∀j,0<W j := by
+    intro j
+    fin_cases j <;> simp [W,valuation,hv,hi,hT,hn,heta',hzeta']
+  have hbW : b p W=b p v := by simp [W,valuation,b]
+  have hqW : q p W=q p v := by simp [q,hbW]
+  have hYW : Y p W=Y p v := by
+    change (q p W*q p W*q p W)*W 6=(q p v*q p v*q p v)*v 6
+    rw [hqW]
+    simp [W,valuation]
+  have hXW : X p W=X p v := by
+    change W 5*q p W=v 5*q p v
+    rw [hqW]
+    simp [W,valuation]
+  have hmuW : mu p W=mu p v := by simp [mu,hqW]
+  have hkW : k W=K := by
+    change W 8+W 9=K
+    simpa [W,valuation] using hK.symm
+  have hcW : c p W=C := by
+    change k W*Y p W+W 8=C
+    rw [hkW,hYW]
+    simpa [W,valuation] using hC.symm
+  have hUW : TenPositive80Factors.U p W=U := by
+    dsimp [TenPositive80Factors.U,U]
+    rw [hcW]
+    simp [W,valuation,mul_assoc]
+  have hAW : TenPositive80Factors.A p W=(mu p v*Y p v)*(X p v+1) := by
+    simp only [TenPositive80Factors.A,hmuW,hYW,hXW]
+  have hAPos : 0<TenPositive80Factors.A p W := by
+    rw [hAW]
+    exact mul_pos (mul_pos (lt_of_lt_of_le (by simp) hmu) hY) (add_pos hX (by simp))
+  have ha1 : a+1=TenPositive80Factors.A p W := by
+    rw [hAW]
+    exact tsub_add_cancel_of_le (pos_iff_one_le.mp (by simpa only [hAW] using hAPos))
+  have hDW : TenPositive80Factors.delta p W=D := by
+    change TenPositive80Factors.A p W*(TenPositive80Factors.A p W+2)=ArithmeticPellRecurrence.delta a
+    unfold ArithmeticPellRecurrence.delta
+    have h3 : a+3=(a+1)+2 := by ring
+    rw [h3,ha1]
+  have hEW : E p W=tau*tau := by
+    dsimp [E]
+    rw [hmuW,hYW,hXW,hkW]
+    have hh : 1+(P*K)*(P*K+K)=tau*tau := hE
+    calc
+      (X p v*(mu p v*Y p v*(mu p v*Y p v))*K)*
+          (X p v*(mu p v*Y p v*(mu p v*Y p v))*K+K)+1 =
+        1+(P*K)*(P*K+K) := by dsimp [P]; ring
+      _=tau*tau := hh
+  have hdelta : (graph (integerPorts p)).delta.evalRing (fun j => ι (W j))=ι D := by
+    rw [delta_eval,hDW]
+  have hU : (graph (integerPorts p)).u.evalRing (fun j => ι (W j))=ι U := by
+    rw [U_eval,hUW]
+  have he : (graph (integerPorts p)).e.evalRing (fun j => ι (W j))=ι tau*ι tau := by
+    rw [E_eval,hEW,map_mul]
+  have haGraph : (graph (integerPorts p)).a.evalRing (fun j => ι (W j))=ι A0 := by
+    rw [a_eval,hdelta,hU,he]
+    simp only [A0,map_mul]
+    ring
+  refine ⟨W,hWpos,?_⟩
+  apply (internalZero_iff _ _).mpr
+  apply TenPositive80ReverseOutputParts.output_zero (integerPorts p) (fun j => ι (W j))
+    (ι tau) (ι f) (ι y) (ι u) (ι I)
+  · exact he
+  · rw [haGraph]
+    have hfnNat : f*f=1+A0 := hfn
+    have hh := congrArg (ι : V →+* DiffRing V) hfnNat
+    simp only [map_add,map_mul,map_one] at hh
+    linear_combination hh
+  · sorry
+  · sorry
+  · sorry
+  · have he := congrArg (ι : V →+* DiffRing V) haux
+    simpa only [map_add,map_mul,map_one] using he
+
+#print axioms TenPositiveScaledReverseGraph.graph_zero_of_source
+end TenPositiveScaledReverseGraph

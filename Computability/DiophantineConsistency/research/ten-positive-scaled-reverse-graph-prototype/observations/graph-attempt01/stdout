@@ -1,0 +1,125 @@
+/tmp/scaled-reverse-graph-hny5r_yj/ScaledReverseGraph.lean:25:8: warning: declaration uses `sorry`
+case hE
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+r eta zeta t : V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hr : 0 < r
+hmask : v 1 + v 2 < q p v
+htransport : (↑(p 1) + v 5) * (q p v - v 1 - v 2) = v 1 + b p v * t
+hR : rankNat p v = 2 * r + 1
+hphase : (2 * r + 1) % 4 = 3
+hXeq : X p v = Exp.exp (2 * r + 1)
+h72 : 72 * r < X p v + 1
+heta : 0 < eta
+hzeta : 0 < zeta
+hck : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hk : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hbpos : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+hmu : 1 ≤ mu p v
+P : V := ⋯
+a : V := ⋯
+R : V := ⋯
+K : V := ⋯
+C : V := ⋯
+D : V := ⋯
+H : V := ⋯
+Kpos : V := ⋯
+eta' zeta' i T n tau f u y I rho : V
+heta' : 0 < eta'
+hzeta' : 0 < zeta'
+hi : 0 < i
+hT : 0 < T
+hn : 0 < n
+htau : 0 < tau
+hf : 0 < f
+hu : 0 < u
+hy : 0 < y
+hC :
+  ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) =
+    2 * ycoord (r + 1) (2 * (X p v * (mu p v * Y p v) * (mu p v * Y p v) - 1) + 1) * Y p v + eta'
+hK : 2 * ycoord (r + 1) (2 * (X p v * (mu p v * Y p v) * (mu p v * Y p v) - 1) + 1) = eta' + zeta'
+hoff :
+  2 * ycoord (r + 1) (2 * (X p v * (mu p v * Y p v) * (mu p v * Y p v) - 1) + 1) = 2 * r + 1 + 1 + mu p v * mu p v * rho
+hE :
+  1 +
+      X p v * (mu p v * Y p v) * (mu p v * Y p v) *
+          (2 * ycoord (r + 1) (2 * (X p v * (mu p v * Y p v) * (mu p v * Y p v) - 1) + 1)) *
+        (X p v * (mu p v * Y p v) * (mu p v * Y p v) *
+            (2 * ycoord (r + 1) (2 * (X p v * (mu p v * Y p v) * (mu p v * Y p v) - 1) + 1)) +
+          2 * ycoord (r + 1) (2 * (X p v * (mu p v * Y p v) * (mu p v * Y p v) - 1) + 1)) =
+    tau * tau
+hfn :
+  f * f =
+    1 +
+      ArithmeticPellRecurrence.delta (mu p v * Y p v * (X p v + 1) - 1) *
+              (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+            (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+              ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+          tau *
+        tau
+hQ :
+  ArithmeticPellRecurrence.delta (mu p v * Y p v * (X p v + 1) - 1) *
+      (4 *
+          (ArithmeticPellRecurrence.delta (mu p v * Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                    ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                  ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau) *
+        (1 +
+          ArithmeticPellRecurrence.delta (mu p v * Y p v * (X p v + 1) - 1) *
+                  (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                    ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+                (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                  ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+              tau *
+            tau)) =
+    I * I
+hV :
+  ι
+          (1 +
+            4 *
+                (ArithmeticPellRecurrence.delta (mu p v * Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau) *
+              (1 +
+                ArithmeticPellRecurrence.delta (mu p v * Y p v * (X p v + 1) - 1) *
+                        (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                          ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+                      (i * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) *
+                        ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) *
+                    tau *
+                  tau)) *
+        (ι (ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) * ι T - ι (2 * r + 1)) -
+      ι (ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1)) =
+    ι u
+hZ :
+  ι (b p v) * ι (mu p v) * ι (mu p v) *
+        (ι (4 * (mu p v * Y p v * (X p v + 1) - 1) + 3) * (ι n - ι u * ι u * (ι (b p v) * ι t)) +
+          ι (X p v * (3 * ycoord (2 * r + 1) (mu p v * Y p v * (X p v + 1) - 1) - 2 * X p v) + 2)) -
+      ι (4 * (mu p v * Y p v * (X p v + 1) - 1) + 3) *
+        (ι (mu p v) * ι (mu p v) * (ι (b p v) * ι t) +
+          ι (b p v) *
+            ι (2 * ycoord (r + 1) (2 * (X p v * (mu p v * Y p v) * (mu p v * Y p v) - 1) + 1) - (2 * r + 1) - 1)) =
+    ι (b p v) * ι (mu p v) * ι (mu p v) * ι (4 * (mu p v * Y p v * (X p v + 1) - 1) + 3) * (ι tau * ι f * ι y)
+haux : I * I * u * u + y * y = 1 + I * I * y * y
+U : V := ⋯
+A0 : V := ⋯
+W : Fin 10 → V := ⋯
+hWpos : ∀ (j : Fin 10), 0 < W j
+⊢ Expr.evalRing (fun j => ι (W j)) (graph (integerPorts p)).e = ι tau * ι tau
+'TenPositiveScaledReverseGraph.graph_zero_of_source' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

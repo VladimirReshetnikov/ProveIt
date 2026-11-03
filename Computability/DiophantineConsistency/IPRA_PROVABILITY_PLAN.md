@@ -607,9 +607,16 @@ now assembles one fresh positive scaled tuple satisfying the first interval,
 both quotient identities, strong/auxiliary norms and signed carrier parts,
 under explicit unscaled interval, power, size and phase hypotheses. Its
 transport inputs remain arbitrary; actual graph syntax and source-zero
-binding remain open. An [independent reverse-data audit](reviews/ten-positive-scaled-reverse-data-independent/README.md)
+binding were separate at that stage. An [independent reverse-data audit](reviews/ten-positive-scaled-reverse-data-independent/README.md)
 checks the selected direct inputs and shared existential scope without
 replaying Lean; I and ρ are not asserted positive.
+A [conditional reverse-graph theorem](research/ten-positive-scaled-reverse-graph-prototype/README.md)
+now binds the scalar parts to the actual selected 80 graph and constructs a
+positive zero under explicit source interval, rank, power, size, phase and
+transport hypotheses. It exports existence, not retained-coordinate equalities.
+An [independent graph audit](reviews/ten-positive-scaled-reverse-graph-independent/README.md)
+checks these premises and selected receipts without replaying Lean. Deriving
+the hypotheses from an actual 90 zero remains open.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
