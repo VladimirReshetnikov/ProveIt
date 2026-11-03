@@ -1,0 +1,7 @@
+# Static review: held trace75/BFS uniform decoder
+
+GO for one coordinated author check with runner SHA-256 `57a11f6730d5c6953e50c5e43f385187589f4c96abeb97e0b7836b33c757e6d1` through outer SHA-256 `3db2cecaafc8930cb2a7171e09fcea5f6bb0bc168f590e58c3ce780dee89b5e9`. Under exact four symbolic ports and a positive trace75 zero in a supported IΣ₁ model, the proposed theorem aligns the reset, support and slot lengths and seeks common `N,s` retaining carry and cell alignment. For each `k<8807*N` with residue 4393, respectively 5495, it asserts the corresponding decoder-band equality, inputs, no-carry and decoder conclusion. The candidate is not yet checked by Lean.
+
+`check.py` independently rehashed the 1,977-object fresh union and 80 outside bundles/targets, nine regular prior client roots and eighteen source/object files, and both captured BFS provider subtrees: `DirectBFSUniformDecoder` 294 project/29 outside and `UniformPhaseSupport` 244/29. It checked frozen preflight and 18 actual-function controls, independently exercised same-byte source/object symlink rejection and copied-real-supervisor altered-runner rejection. The reviewed runner preserves named axiom/direct-header, resource, shadow, source/provider/companion and actual-exit checks. No Lean candidate process was launched here.
+
+A successful author check would give a conditional decoder consequence, not halt/iPRA or external file binding. Preserve the outer terminal and independently audit the result; historical unrebuilt-source, package/dynamic and external payload provenance remain inherited.
