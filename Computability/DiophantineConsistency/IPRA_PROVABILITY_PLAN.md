@@ -288,8 +288,9 @@ sentence. The
 has finite substitution and degree checks. A [bounded author-side run](reviews/adaptive-qm40-native-bounded-replay/README.md)
 compiled its six model modules, but timed out on the native client. A later
 [incremental author-side run](reviews/adaptive-qm40-native-incremental-author/README.md)
-compiled the native endpoint and its checks on that model provider; a paired
-replay and complete authenticated closure remain open. A [separate source review](reviews/adaptive-qm40-model-mathematical-source-review/README.md)
+compiled the native endpoint and its checks on that model provider; a separate
+[artifact audit](reviews/adaptive-qm40-native-incremental-author-artifact-audit/README.md)
+passed. A paired replay and complete authenticated closure remain open. A [separate source review](reviews/adaptive-qm40-model-mathematical-source-review/README.md)
 found no defect in the inspected model witness maps or residual coverage.
 Its [standard-iPRA client](research/ipra-standard-qm40/README.md)
 is still an uncompiled draft requiring coherent native and standard providers.
