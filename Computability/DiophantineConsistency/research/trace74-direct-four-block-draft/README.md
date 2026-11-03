@@ -8,7 +8,7 @@ R = G*(q^2-1)+(MC+q*(beta+HP))*J
     +q^2*(q-C)+q^3*(q-1-F).
 ```
 
-The source has not been checked in Lean; finite integer substitutions are diagnostic only. The identity is in a ring: converting it to the natural four-block shape requires justification of every truncated subtraction and the selected rank's natural representative.
+The abstract ring theorem passed the author Lean check; the [independent post-run audit](../../reviews/trace74-direct-four-block-result-independent/README.md) passed. Finite integer substitutions are diagnostic only. The identity is in a ring: converting it to the natural four-block shape requires justification of every truncated subtraction and the selected rank's natural representative.
 
 A possible fixed-port proof route is to derive from the **74 zero itself**, with the same witnesses: `C>0`, `C<=q`, `F<q`, `HP*J>=1`, `q=Exp.exp u`, the exact natural four-block rank identity, `population(MC*J+1)+population(HP*J-1)<=u+2`, and `3u+2<=population R`. Under those explicit hypotheses, `ArithmeticSaturation.saturation` would imply `NoCarry(C-1,MC*J+1)` and `NoCarry(F,HP*J-1)`. Establishing the hypotheses directly for 74 is open: `Trace75Saturation` uses the reverse guard and cannot be imported as if it were independent.
 
