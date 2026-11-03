@@ -1,0 +1,28 @@
+/tmp/direct-main-projection-y_jv9epv/DirectMainGapBalance.lean:26:66: error: Type mismatch
+  add_le_add_left h ?m.358
+has type
+  H * (R + 1) + ?m.358 ≤ H * k + ?m.358
+but is expected to have type
+  U * main + H * (R + 1) ≤ U * main + H * k
+/tmp/direct-main-projection-y_jv9epv/DirectMainGapBalance.lean:29:30: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+U X a c H G R k main w : V
+hU : 0 < U
+hH : 0 < H
+hR : R + 1 ≤ k
+hbalance : U * (X + a * c) + H * (U * G + R + 1) = H * k + U * main
+hmain : (a + 1) * c < main
+hgrowth : X + H * w < c
+he : U * (X + a * c + H * G) + H * (R + 1) = U * main + H * k
+hmul : U * main ≤ U * (X + a * c + H * G)
+hmainle : main ≤ X + a * c + H * G
+a✝ : H * G ≤ H * w
+⊢ False
+failed
+/tmp/direct-main-projection-y_jv9epv/DirectMainGapBalance.lean:30:9: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  MulRightStrictMono V
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+'DirectMainGapBalance.gap_of_balance' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
