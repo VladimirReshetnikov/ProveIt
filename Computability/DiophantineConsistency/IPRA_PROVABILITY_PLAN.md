@@ -545,6 +545,10 @@ equation still need to be bound to the same source witnesses.
 A [generic scaled offset](research/ten-positive-scaled-offset-generic-prototype/README.md)
 constructs the natural μ² quotient of the first-Pell index residue without
 an 80-zero hypothesis; it does not assert that quotient is positive.
+A [conditional positive carrier theorem](research/ten-positive-reverse-carrier-prototype/README.md)
+uses the two quotients and an explicit `κ<f` bound to construct n>0 and prove
+the signed carrier identity. It does not yet bind that identity to the actual
+80 graph evaluation or prove its output zero.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
