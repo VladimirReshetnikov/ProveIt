@@ -738,8 +738,12 @@ client](reviews/compact44-halt-compact-author-artifact-independent-audit/README.
 has since compiled on the author-side provider and passed an independent
 artifact audit: a model-internal halt plus its three explicit dimension bounds
 gives a definable compact word with finite cyclic neighbor matching. It does
-not construct a graph zero; the dimension bounds, provider ancestry and
-remaining converse construction are separate obligations.
+not construct a graph zero. A subsequent [dimensions client](reviews/compact44-halt-dimensions-independent-artifact-review/README.md)
+checks those three bounds and two controller size inequalities for the stated
+powers, and specializes the word construction under the model halt hypothesis.
+That author-side result passed a source/artifact review with the recorded
+tooling and provider limitations. Other controller premises and the graph-zero
+construction remain separate obligations.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
