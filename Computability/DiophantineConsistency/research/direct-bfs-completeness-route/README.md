@@ -37,3 +37,6 @@ coherent combined provider audit.
 An [independent source and receipt review](../../reviews/direct-bfs-halt-pell-seed-independent/README.md)
 checks the common word and pulse throughout this join, without a new Lean
 replay or full ancestry audit.
+The [first-carrier review](../../reviews/direct-bfs-halt-first-seed-independent/README.md)
+checks its exact same-word witness and first-carrier equations with the same
+replay and ancestry qualifications.
