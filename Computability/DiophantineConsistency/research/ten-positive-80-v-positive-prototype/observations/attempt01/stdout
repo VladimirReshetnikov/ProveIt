@@ -1,0 +1,114 @@
+/tmp/tenpositive-80v-positive-3aallcln/Direct80VPositive.lean:89:44: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := delta p v
+U0 : V := U p v
+E0 : V := E p v
+C : V := c p v
+a : V := D * U0 * U0 * E0
+w : Fin 10 → DiffRing V := fun j => ι (v j)
+R : DiffRing V := Expr.evalRing w (rExpr (integerPorts p))
+B : DiffRing V := ι C * ι (v 4) - R
+e : DiffRing V := Expr.evalRing w (eExpr (integerPorts p))
+vv : DiffRing V := Expr.evalRing w (graph (integerPorts p)).v
+F2 : DiffRing V := ι (1 + 2 * a) * ι (1 + 2 * a)
+mm : DiffRing V := Expr.evalRing w (muExpr (integerPorts p)) * Expr.evalRing w (muExpr (integerPorts p))
+hb0 : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hk : 0 < k v
+hC : 0 < C
+hCk : k v < C
+hD : 0 < delta p v
+hU : 0 < U p v
+hE : 0 < E p v
+_hM : 0 < M p v
+hC1 : 1 ≤ C
+hU1 : 1 ≤ U0
+hCU : C ≤ U0
+hUa : U0 ≤ a
+hCa : C ≤ a
+hCR : 0 < ι C
+hCaR : ι C ≤ ι a
+hF : ι C + 1 < F2
+hT : 1 ≤ ι (v 4)
+hCT : ι C ≤ ι C * ι (v 4)
+hCkR : ι (k v) < ι C
+eeval : e = ι (k v) - R - 1
+hEB : e < B
+hV : vv = F2 * B - ι C
+hRle : rankNat p v ≤ q p v ^ 4
+hsize : 2 * q p v ^ 4 < c p v
+a✝ : 2 * q p v ^ 4 < q p v ^ 4
+⊢ False
+failed
+/tmp/tenpositive-80v-positive-3aallcln/Direct80VPositive.lean:100:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  vv
+in the target expression
+  0 < Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := delta p v
+U0 : V := U p v
+E0 : V := E p v
+C : V := c p v
+a : V := D * U0 * U0 * E0
+w : Fin 10 → DiffRing V := fun j => ι (v j)
+R : DiffRing V := Expr.evalRing w (rExpr (integerPorts p))
+B : DiffRing V := ι C * ι (v 4) - R
+e : DiffRing V := Expr.evalRing w (eExpr (integerPorts p))
+vv : DiffRing V := Expr.evalRing w (graph (integerPorts p)).v
+F2 : DiffRing V := ι (1 + 2 * a) * ι (1 + 2 * a)
+mm : DiffRing V := Expr.evalRing w (muExpr (integerPorts p)) * Expr.evalRing w (muExpr (integerPorts p))
+hb0 : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hk : 0 < k v
+hC : 0 < C
+hCk : k v < C
+hD : 0 < delta p v
+hU : 0 < U p v
+hE : 0 < E p v
+_hM : 0 < M p v
+hC1 : 1 ≤ C
+hU1 : 1 ≤ U0
+hCU : C ≤ U0
+hUa : U0 ≤ a
+hCa : C ≤ a
+hCR : 0 < ι C
+hCaR : ι C ≤ ι a
+hF : ι C + 1 < F2
+hT : 1 ≤ ι (v 4)
+hCT : ι C ≤ ι C * ι (v 4)
+hCkR : ι (k v) < ι C
+eeval : e = ι (k v) - R - 1
+hEB : e < B
+hV : vv = F2 * B - ι C
+hRle : rankNat p v ≤ q p v ^ 4
+hsize : 2 * q p v ^ 4 < c p v
+hsmall : rankNat p v < C
+hnat : Expr.evalRing (fun j => ι (v j)) (rExpr (integerPorts p)) = ι (rankNat p v)
+hsmallR : R < ι C
+hB : 0 < B
+hB1 : 1 ≤ B
+hF0 : 0 < F2
+hmult : F2 ≤ F2 * B
+⊢ 0 < Expr.evalRing (fun j => ι (v j)) (graph (integerPorts p)).v
+'TenPositive80VPositive.graph_v_positive' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
