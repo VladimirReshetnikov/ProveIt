@@ -222,7 +222,9 @@ supplies one of its two size estimates from positive inputs; a separate
 [carrier estimate](research/ten-positive-80-carrier-estimate-prototype/README.md)
 supplies the other for its returned graph witnesses. The [same-witness transport join](research/ten-positive-80-transport-model-prototype/README.md)
 now proves nonnegative transport and the strict mask gap for every positive
-graph zero with positive beta, without assuming signs. Fixed-port rank bounds,
+graph zero with positive beta, without assuming signs. An [independent receipt audit](reviews/ten-positive-80-transport-independent/README.md)
+checks the same-witness composition and selected producers without replaying
+Lean. Fixed-port rank bounds,
 machine soundness and the iPRA endpoint remain open. A further
 [rank-orientation theorem](research/ten-positive-80-rank-orientation-prototype/README.md)
 derives positivity of the signed graph rank from this transport result; the
