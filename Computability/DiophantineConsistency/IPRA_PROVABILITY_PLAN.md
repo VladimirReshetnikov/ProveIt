@@ -445,7 +445,11 @@ results are joined by a [model word-transfer theorem](research/direct-bfs-model-
 that maps a direct local word to an original-table local word, preserving
 origin, exclusion and both edge equalities. An [actual-graph word join](research/direct-bfs-80-original-word-prototype/README.md)
 applies that transfer to a positive 80 zero at the direct-BFS symbolic ports.
-The coherent machine interface remains separate. An
+A [BFS graph-to-halt join](research/direct-bfs-80-model-halt-prototype/README.md)
+composes the transferred word with selected machine soundness providers to
+derive an internal halt time under four direct-BFS symbolic port equalities.
+This author check has not yet established a coherent full provider closure,
+the converse, or external byte binding. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -597,6 +601,14 @@ external JSON/PDF binding; it is not a theorem for the different retained
 BFS coefficient. An [independent endpoint audit](reviews/direct80-symbolic-ipra-client-independent/README.md)
 checks the four theorem statements, positive shift, named theories and selected
 direct providers without replaying Lean.
+An author-side [serialized-closure scan](reviews/ten-positive-80-fixed-ipra-serialized-closure/README.md)
+records 1,765 selected project ancestors with no differing selected-project
+overlap. Its producer audit found explicit full direct pins for only 25 of the
+157 fresh-header objects; the other producer-time edges, full source ancestry,
+package-transitive imports and dynamic dependencies remain unverified. A
+[base-10 decimal display](research/ten-positive-80-original-kernel-display/README.md)
+uses ten distinct unknown names and the original coefficient tuple. Its
+graph, payload and PDF checks are external, not a Lean file-binding theorem.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
 interval, power and size hypotheses. The generic result alone does not derive
