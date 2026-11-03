@@ -250,7 +250,9 @@ uses this to obtain `2n ≡ rank+1 (mod μ²)` for an actual first Pell index.
 A [noncircular alignment theorem](research/ten-positive-80-index-alignment-prototype/README.md)
 now excludes other residue representatives and proves `2n=rank+1` under the
 explicit symbolic port and odd-beta assumptions. Fixed-recipe composition
-remains separate.
+remains separate. A subsequent [exact offset theorem](research/ten-positive-80-offset-exact-prototype/README.md)
+uses the full first recurrence to derive a nonnegative offset and the stronger
+signed divisibility `(μ²Y²) ∣ e`, without assuming coprimality of `Y` and `h`.
 
 The [80-row height theorem](research/ten-positive-80-scaled-growth-prototype/POWER.md)
 combines the actual alignment and scaled-growth lemmas to derive `2^rank<Y`
