@@ -372,8 +372,9 @@ origin tile and reuses the generic origin occupancy conclusion after that
 tile is selected; it does not identify the full tables or kernels. A
 [direct-BFS occupancy join](research/direct-bfs-80-occupied-anchor-prototype/README.md)
 now derives all seven origin slots from the actual graph under the direct-BFS
-symbolic port equalities. It is an author check; full temporal and machine
-decoding remain separate. An
+symbolic port equalities, and an [alignment join](research/direct-bfs-80-aligned-shift-prototype/README.md)
+proves the temporal shift divisible by 67. These are author checks; whole-cell
+alignment and machine decoding remain separate. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
@@ -453,7 +454,9 @@ checks the selected inputs and rebuilt provider edges without replaying Lean. Se
 A subsequent [first/main join](research/ten-positive-80-to-90-first-main-prototype/README.md)
 zeros both selected 90-graph factors using one positive valuation from the
 same actual 80 zero, with three other positive coordinates still arbitrary
-and p₁ unrestricted. The ordinary factor and whole graph remain open.
+and p₁ unrestricted. A [source-data join](research/ten-positive-80-to-90-source-data-prototype/README.md)
+exposes the exact unscaled Pell data for the same witnesses to support the
+remaining construction. The ordinary factor and whole graph remain open.
 A separate [receipt audit](reviews/direct-bfs-raw-column-positive-transport-independent/README.md)
 records the coefficient-decoder import-pin gap and the positive transport
 scope; it does not replay Lean.
