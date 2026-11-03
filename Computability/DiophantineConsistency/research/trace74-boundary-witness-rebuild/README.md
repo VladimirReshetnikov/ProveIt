@@ -1,0 +1,7 @@
+# Held witness-preserving boundary author check
+
+The five-stage source-pinned runner is **held for independent prelaunch review and coordinated release**. Its selected parent is the independently audited 2,021-object conditional boundary union. The first four drafts propose exporting the same returned witness's `w 0`, `w 1` and `w 2` coordinates; the fifth fixes arbitrary small ports but still assumes the exponential and two Pell source equations. All five drafts are uncompiled. Even a successful conditional check would not certify the numerical R=31 input or produce a fixed-BFS-port theorem.
+
+The runner reconstructs and monitors the complete parent union and 81 captured outside bundles; pins all sources and direct selections, snapshots stage inputs, enforces resource/no-clobber and exact-axiom-report policies, and checks the boundary, fixed-iPRA, forward, reverse and BFS captured closures and companions. It retains the four inherited historical source-ancestry limits and does not prove transitive outside/package/dynamic ancestry or external-file binding.
+
+The read-only preflight exited 0 (2,021 parent objects, 81 outside captures and five stages). Nineteen actual-function policy controls passed. In isolated wrapper copies, altered runner bytes and missing, malformed or FAILED child results were rejected; a stub PASS with child exit 0 was accepted. No Lean stage has run in this packet; its draft proof may fail elaboration or exact expected-report checks.
