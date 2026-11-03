@@ -35,11 +35,14 @@ For the converse, the [natural-parts client](../trace75-natural-parts-binding-pr
 constructs a positive trace75 zero from explicit same-valuation Pell and
 carrier equations. The [unscaled reverse-data construction](../trace75-unscaled-reverse-data-prototype/README.md)
 now supplies a coherent candidate tuple with the required `XY` carrier
-multiplier, under explicit first-Pell, phase, power and size hypotheses.
-Matching that tuple to the actual graph registers, and deriving all its
-hypotheses from the direct-BFS halt witness, remain open. Its selected
-historical providers have not been coherently rebuilt. Neither the converse
-nor the syntactic iPRA adapter may be inferred from these conditional results.
+multiplier, under explicit first-Pell, phase, power and size hypotheses. The
+[reverse graph client](../trace75-unscaled-reverse-graph-prototype/README.md)
+binds that tuple to the actual registers, and the [packing client](../trace75-packing-reverse-graph-prototype/README.md)
+derives its assumptions from one compact packing and explicit seed conditions.
+Deriving those conditions from a direct-BFS halt remains open. These two clients
+use a mixed historical-provider overlay with five recorded object differences;
+their ancestry has not been coherently rebuilt. Neither the converse nor the
+syntactic iPRA adapter may be inferred from these conditional results.
 
 ## The source dependency (compact44 tuple)
 
