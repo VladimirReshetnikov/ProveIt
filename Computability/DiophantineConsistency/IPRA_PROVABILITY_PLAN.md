@@ -311,8 +311,9 @@ tuple/file binding and machine decoding remain separate. An [independent audit](
 checks the same-length saturation and selected mask facts without replaying
 Lean. A [fixed-digit join](research/ten-positive-80-fixed-digits-prototype/README.md)
 adds the exact natural transport, origin digit and bounded low-mask digits
-for the same graph zero and radix length; the full compact window and rank
-phase are not yet established.
+for the same graph zero and radix length. A [slotwise join](research/ten-positive-80-fixed-slots-prototype/README.md)
+extends the low-mask no-carry conclusion to every nonzero slot. The full
+compact window and rank phase are not yet established.
 
 A [signed-V orientation theorem](research/ten-positive-80-v-positive-prototype/README.md)
 derives positivity of the 80 graph's signed `V` from an actual zero under
