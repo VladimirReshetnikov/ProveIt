@@ -1,0 +1,112 @@
+/tmp/tenpositive-80natural-transport-1756cmh4/Direct80NaturalTransport.lean:37:17: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  q p v - v 1 - v 2 + v 2
+in the target expression
+  ι (Cnat p v + v 2) = ι (q p v - v 1)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hbeta31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+hbetaodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+hmask : v 1 + v 2 < q p v
+hFle : v 1 ≤ q p v
+hsub : q p v - v 1 + v 1 = q p v
+halpha : v 2 < q p v - v 1
+hC : 0 < Cnat p v
+hcast1 : ι (q p v - v 1) = ι (q p v) - ι (v 1)
+⊢ ι (Cnat p v + v 2) = ι (q p v - v 1)
+/tmp/tenpositive-80natural-transport-1756cmh4/Direct80NaturalTransport.lean:40:46: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hbeta31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+hbetaodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+hmask : v 1 + v 2 < q p v
+hFle : v 1 ≤ q p v
+hsub : q p v - v 1 + v 1 = q p v
+halpha : v 2 < q p v - v 1
+hC : 0 < Cnat p v
+hcast1 : ι (q p v - v 1) = ι (q p v) - ι (v 1)
+hcast2 : ι (Cnat p v) = ι (q p v - v 1) - ι (v 2)
+t : V
+ht : Expr.evalRing (fun j => ι (v j)) (BExpr (integerPorts p)) = ι (b p v * t)
+⊢ (↑(p 1) + ι (v 5)) * (↑(p 0) * ι (v 0) + 1 - ι (v 1) - ι (v 2)) - ι (v 1) =
+    (↑(p 1) + ι (v 5)) * (ι (↑(p 0) * v 0 + 1 - v 1) - ι (v 2)) - ι (v 1)
+/tmp/tenpositive-80natural-transport-1756cmh4/Direct80NaturalTransport.lean:47:4: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hbeta31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+hbetaodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+hmask : v 1 + v 2 < q p v
+hFle : v 1 ≤ q p v
+hsub : q p v - v 1 + v 1 = q p v
+halpha : v 2 < q p v - v 1
+hC : 0 < Cnat p v
+hcast1 : ι (q p v - v 1) = ι (q p v) - ι (v 1)
+hcast2 : ι (Cnat p v) = ι (q p v - v 1) - ι (v 2)
+t : V
+ht : ι (↑(p 1) + v 5) * ι (Cnat p v) - ι (v 1) = ι (b p v * t)
+hBeval : Expr.evalRing (fun j => ι (v j)) (BExpr (integerPorts p)) = ι (↑(p 1) + v 5) * ι (Cnat p v) - ι (v 1)
+⊢ ι ↑(p 1) * ι (Cnat p v) + ι (v 5) * ι (Cnat p v) - ι (Cnat p v) * ι (↑(p 1) + v 5) + ι (b p v * t) -
+        ι (v 1 + b p v * t) +
+      ι (v 1) =
+    0
+/tmp/tenpositive-80natural-transport-1756cmh4/Direct80NaturalTransport.lean:43:33: warning: This simp argument is unused:
+  hcast1
+
+Hint: Omit it from the simp argument list.
+  simp only [̵B̵E̵x̵p̵r̵,̵q̵E̵x̵p̵r̵,̵h̵E̵x̵p̵r̵,̵i̵n̵t̵e̵g̵e̵r̵P̵o̵r̵t̵s̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵m̵u̵l̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵a̵d̵d̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵s̵u̵b̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵c̵o̵n̵s̵t̵a̵n̵t̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵v̵a̵r̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵o̵f̵N̵a̵t̵,̵I̵n̵t̵.̵c̵a̵s̵t̵_̵n̵a̵t̵C̵a̵s̵t̵,̵N̵a̵t̵.̵c̵a̵s̵t̵_̵o̵n̵e̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵n̵a̵t̵C̵a̵s̵t̵,̵h̵c̵a̵s̵t̵2̵,̵h̵c̵a̵s̵t̵1̵,̵q̵,̵b̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵n̵e̵]̵[̲B̲E̲x̲p̲r̲,̲ ̲q̲E̲x̲p̲r̲,̲ ̲h̲E̲x̲p̲r̲,̲ ̲i̲n̲t̲e̲g̲e̲r̲P̲o̲r̲t̲s̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲m̲u̲l̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲a̲d̲d̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲s̲u̲b̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲c̲o̲n̲s̲t̲a̲n̲t̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲v̲a̲r̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲o̲f̲N̲a̲t̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲I̲n̲t̲.̲c̲a̲s̲t̲_̲n̲a̲t̲C̲a̲s̲t̲,̲ ̲N̲a̲t̲.̲c̲a̲s̲t̲_̲o̲n̲e̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲n̲a̲t̲C̲a̲s̲t̲,̲ ̲h̲c̲a̲s̲t̲2̲,̲ ̲q̲,̲ ̲b̲,̲ ̲m̲a̲p̲_̲m̲u̲l̲,̲ ̲m̲a̲p̲_̲o̲n̲e̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/tenpositive-80natural-transport-1756cmh4/Direct80NaturalTransport.lean:43:44: warning: This simp argument is unused:
+  map_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [̵B̵E̵x̵p̵r̵,̵q̵E̵x̵p̵r̵,̵h̵E̵x̵p̵r̵,̵i̵n̵t̵e̵g̵e̵r̵P̵o̵r̵t̵s̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵m̵u̵l̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵a̵d̵d̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵s̵u̵b̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵c̵o̵n̵s̵t̵a̵n̵t̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵v̵a̵r̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵o̵f̵N̵a̵t̵,̵I̵n̵t̵.̵c̵a̵s̵t̵_̵n̵a̵t̵C̵a̵s̵t̵,̵N̵a̵t̵.̵c̵a̵s̵t̵_̵o̵n̵e̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵n̵a̵t̵C̵a̵s̵t̵,̵h̵c̵a̵s̵t̵2̵,̵h̵c̵a̵s̵t̵1̵,̵q̵,̵b̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵n̵e̵]̵[̲B̲E̲x̲p̲r̲,̲ ̲q̲E̲x̲p̲r̲,̲ ̲h̲E̲x̲p̲r̲,̲ ̲i̲n̲t̲e̲g̲e̲r̲P̲o̲r̲t̲s̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲m̲u̲l̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲a̲d̲d̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲s̲u̲b̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲c̲o̲n̲s̲t̲a̲n̲t̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲v̲a̲r̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲o̲f̲N̲a̲t̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲I̲n̲t̲.̲c̲a̲s̲t̲_̲n̲a̲t̲C̲a̲s̲t̲,̲ ̲N̲a̲t̲.̲c̲a̲s̲t̲_̲o̲n̲e̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲n̲a̲t̲C̲a̲s̲t̲,̲ ̲h̲c̲a̲s̲t̲2̲,̲ ̲h̲c̲a̲s̲t̲1̲,̲ ̲q̲,̲ ̲b̲,̲ ̲m̲a̲p̲_̲o̲n̲e̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/tenpositive-80natural-transport-1756cmh4/Direct80NaturalTransport.lean:43:52: warning: This simp argument is unused:
+  map_one
+
+Hint: Omit it from the simp argument list.
+  simp only [̵B̵E̵x̵p̵r̵,̵q̵E̵x̵p̵r̵,̵h̵E̵x̵p̵r̵,̵i̵n̵t̵e̵g̵e̵r̵P̵o̵r̵t̵s̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵m̵u̵l̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵a̵d̵d̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵s̵u̵b̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵c̵o̵n̵s̵t̵a̵n̵t̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵v̵a̵r̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵o̵f̵N̵a̵t̵,̵I̵n̵t̵.̵c̵a̵s̵t̵_̵n̵a̵t̵C̵a̵s̵t̵,̵N̵a̵t̵.̵c̵a̵s̵t̵_̵o̵n̵e̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵n̵a̵t̵C̵a̵s̵t̵,̵h̵c̵a̵s̵t̵2̵,̵h̵c̵a̵s̵t̵1̵,̵q̵,̵b̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵n̵e̵]̵[̲B̲E̲x̲p̲r̲,̲ ̲q̲E̲x̲p̲r̲,̲ ̲h̲E̲x̲p̲r̲,̲ ̲i̲n̲t̲e̲g̲e̲r̲P̲o̲r̲t̲s̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲m̲u̲l̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲a̲d̲d̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲s̲u̲b̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲c̲o̲n̲s̲t̲a̲n̲t̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲v̲a̲r̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲o̲f̲N̲a̲t̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲I̲n̲t̲.̲c̲a̲s̲t̲_̲n̲a̲t̲C̲a̲s̲t̲,̲ ̲N̲a̲t̲.̲c̲a̲s̲t̲_̲o̲n̲e̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲n̲a̲t̲C̲a̲s̲t̲,̲ ̲h̲c̲a̲s̲t̲2̲,̲ ̲h̲c̲a̲s̲t̲1̲,̲ ̲q̲,̲ ̲b̲,̲ ̲m̲a̲p̲_̲m̲u̲l̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'TenPositive80NaturalTransport.graph_natural_transport' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

@@ -289,7 +289,8 @@ power, and obtains a positive natural quotient under the same port bounds.
 The [integral transport join](research/ten-positive-80-transport-integral-graph-prototype/README.md)
 then derives a natural quotient for the actual signed transport under explicit
 beta-size, oddness and low/high port assumptions, without assuming `Y` is
-coprime to `b`.
+coprime to `b`. A [natural transport join](research/ten-positive-80-natural-transport-prototype/README.md)
+uses the proven mask gap to recover the exact positive mask equation.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
