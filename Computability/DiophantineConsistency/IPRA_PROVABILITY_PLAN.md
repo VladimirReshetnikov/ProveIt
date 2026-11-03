@@ -502,9 +502,12 @@ An author-side [generic sparse-radix client](research/ordinary12-ipra-bridge/com
 proves finite weighted-list digit extraction under explicit aggregate bounds,
 including duplicate positions. A subsequent author-side [sparse K family](research/ordinary12-ipra-bridge/compact44-sparse-k-family-exploration/README.md)
 proves the symbolic `paramKernel r` is the weighted list sum and its
-`Nat.ofDigits` form for arbitrary natural `r`; its extraction theorem still
-assumes aggregate coefficient bounds. These results do not yet give a Lean
-K-byte serialization equality or bind the displayed tuple.
+`Nat.ofDigits` form for arbitrary natural `r`. A later author-side [bound and
+digit client](research/ordinary12-ipra-bridge/compact44-sparse-k-bound-exploration/README.md)
+discharges the aggregate coefficient bound for `r ≥ 2^67` using a count bound,
+and proves the corresponding digit and size statements without expanding K.
+These results do not yet give a Lean K-byte serialization equality or bind the
+displayed tuple.
 Two further single-side explorations give alternative bounded representations
 of that residual. The [bit-rotation client](research/ordinary12-ipra-bridge/compact44-bit-rotation-prototype/README.md)
 represents multiplication by an arbitrary power of two modulo the word modulus
