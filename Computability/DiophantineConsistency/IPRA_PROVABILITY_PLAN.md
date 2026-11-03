@@ -137,7 +137,10 @@ derives the first Pell index, the doubled strong-Pell identity and a required
 divisibility from such a zero. Adjacent-Pell descent, the machine bridge, iPRA derivability,
 and a formal JSON/PDF binding remain open. The 81-, 83- and 84-operation
 descendants share the externally checked finalizer shape but are distinct
-graphs.
+graphs. A separate [adjacent-Pell denominator lemma](research/ten-positive-adjacent-descent-prototype/README.md)
+proves that a reduced denominator's square divides the corresponding
+coefficient under the stated cross-multiplied equation. It does not yet prove
+the descent or denominator integrality required by the 80-row argument.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
