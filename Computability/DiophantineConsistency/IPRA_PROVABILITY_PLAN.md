@@ -274,9 +274,13 @@ proves `X=2^rank` if the entire product is strictly smaller than `H`. A
 now derives `X^(r+1)<H` for an actual zero with `rank=2r+1` under the symbolic
 port and oddness assumptions. The [graph power join](research/ten-positive-80-projection-product-prototype/GRAPH_POWER.md)
 now bounds the complete product and proves `X=2^rank` under explicit beta-size,
-oddness and low/high port bounds. A [symbolic port theorem](research/ten-positive-80-symbolic-port-bounds-prototype/README.md)
-derives those conditions from three explicit port equalities; the full fixed
-tuple/file binding and machine/iPRA equivalence remain separate.
+oddness and low/high port bounds. An [independent power audit](reviews/ten-positive-80-height-power-independent/README.md)
+checks its common witness, retained carrier factor and selected providers
+without replaying Lean. A [symbolic specialization](research/ten-positive-80-fixed-symbolic-power-prototype/README.md)
+derives the power and aligned indices from three explicit port equalities. A
+separate [radix alignment](research/ten-positive-80-projection-product-prototype/RADIX.md)
+obtains the power-of-two block form under an explicit beta identity. Full
+fixed tuple/file binding and machine/iPRA equivalence remain separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project

@@ -1,0 +1,7 @@
+# Power and Pell alignment under symbolic fixed-port equalities
+
+`Direct80FixedSymbolicPower.fixed_symbolic_power` proves in every IΣ₁ model that a positive zero of the exact Lean 80-row graph has `X=2^rankNat`, an odd main rank with the actual main Pell ordinate, and a positive first Pell index `n` satisfying `2n=rankNat+1` and the actual first ordinate equation, **assuming** the explicit symbolic equalities `p₀=betaNat`, `p₂=lowNat`, `p₃=betaNat+highNat`. It derives the numerical port bounds and internal odd-beta witness from those equalities without expanding the giant beta numeral. Port `p₁` remains arbitrary.
+
+Guarded author `observations/graphpower-attempt01/` succeeded without diagnostics, producing `/tmp/tenpositive-80fixed-symbolic-power-ldac6wav/Direct80FixedSymbolicPower.olean`, SHA-256 `7b1478bbc94e4d8d7ef99f02c14917e5b20389cd1be4cc2a600807a0150a024e`. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. Selected prototype objects, symbolic fixed-beta/port providers and one inherited provider are pinned; complete transitive project/package/dynamic and historical source-object ancestry remain inherited. Resource checks are sampled; no paired replay is claimed.
+
+This is a conditional **model-level arithmetic theorem**, not an external byte/PDF binding, a whole-tuple calibration, a graph-to-machine equivalence or an iPRA proof-existence endpoint. The three symbolic equalities themselves remain hypotheses and the full graph's machine reconstruction and converse remain separate.
