@@ -568,7 +568,10 @@ scalar mask bounds, keeping one row and geometry for all admissible dummies.
 Calibrated rank and graph witnesses remain separate. A [controller residue check](research/direct-bfs-controller-residue-audit/README.md)
 externally confirms that the BFS kernel's residue differs from the original
 kernel's, while its candidate Γ residue is a unit. Neither this arithmetic nor
-the BFS file-to-symbolic identity is yet a Lean calibration theorem;
+the BFS file-to-symbolic identity is yet a Lean calibration theorem. A
+[symbolic residue theorem](research/direct-bfs-symbolic-k-residue-prototype/README.md)
+now checks the BFS Lean kernel's residue itself; the Γ unit and full rank
+calibration remain separate;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
