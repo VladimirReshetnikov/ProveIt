@@ -1,0 +1,7 @@
+# Compact field parity under retained-original K
+
+`Direct80FieldBits.graph_field_bits` derives the compact vertical and horizontal field-bit equality families for a positive 80-graph zero satisfying explicit symbolic port equalities, including `p 1=paramKernel rho`. The proof uses the actual graph's whole-cell alignment, support, low-mask slots, high-mask no-carry, and indexed carry, reconciling all independently produced radix lengths by exponential injectivity.
+
+**Payload boundary:** `paramKernel rho` is externally checked against the retained-original K (raw SHA-256 `c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e`), while the retained 80-row JSON graph `equation_qcube_V2.json` uses BFS-renamed K (raw SHA-256 `0a86821a704294199c2e1a50379d242c96840a3366e9d965689ba3d74605203f`). Thus this conditional theorem does not establish field decoding for that JSON graph coefficient. Hash comparisons are external evidence, not formal file-to-coefficient equalities. Full window/machine decoding, converse, iPRA and PDF binding remain open.
+
+The guarded author check `observations/fieldbits-attempt01/` exited 0 without diagnostics, printing axioms `propext`, `Classical.choice`, `Quot.sound`. Object `/tmp/tenpositive-80fieldbits-n8i2lo6_/Direct80FieldBits.olean` SHA-256 `2fbdad93887d45b7a416fc949350940680310886ee7eee5484f53bb7b315301d`. Selected inputs and resource samples are recorded; inherited source/object, package and dynamic ancestry remain unverified and no independent Lean replay is claimed.

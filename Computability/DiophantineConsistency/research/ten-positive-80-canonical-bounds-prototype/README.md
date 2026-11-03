@@ -10,7 +10,7 @@ rank below by `q*q-1` using positive alpha, and compares that to `3*q`.
 used by the canonical source reconstruction; neither constructs its
 witnesses or establishes graph equivalence.
 
-The guarded author check `observations/fixeddigits-attempt03/` passed and
+The guarded author check `observations/attempt03/` passed and
 reported only `propext`, `Classical.choice`, and `Quot.sound` as Lean
 metatheory dependencies. Its object is
 `/tmp/tenpositive-80canonical-bounds-1hl2di9j/Direct80CanonicalBounds.olean`,

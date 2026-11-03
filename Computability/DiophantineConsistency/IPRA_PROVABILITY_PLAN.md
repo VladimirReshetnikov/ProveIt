@@ -320,6 +320,24 @@ The [rank-phase theorem](research/ten-positive-80-rank-phase-prototype/README.md
 now derives rank `≡3 (mod 4)` under the symbolic port equalities. A separate
 [indexed-carry join](research/ten-positive-80-indexed-carry-prototype/README.md)
 reaches the generic compact carry interface with all four port equalities.
+**Kernel mismatch:** the retained 80-row JSON fixes its `K0` to the directly
+indexed BFS payload (raw SHA-256 `0a86821a704294199c2e1a50379d242c96840a3366e9d965689ba3d74605203f`),
+whereas the existing external transcription of `paramKernel rho` matches the
+original-order K payload (raw SHA-256 `c6d523bd32af8dd0345db843cdadf6932bfcad186912a6d112314b60657c554e`).
+Those payloads differ. Therefore the decoder results requiring
+`p 1 = paramKernel rho` cannot currently be instantiated to the retained
+80-row JSON's K0. Either adapt the decoder to the directly indexed kernel or
+construct and separately verify an original-kernel graph specialization.
+The three-port fresh-Pell results below leave `p 1` arbitrary; this mismatch
+does not by itself affect those statements. The external transcription is not
+a Lean theorem identifying either file's bytes with the symbolic term.
+A separately labeled [original-kernel 80-row candidate](research/ten-positive-80-original-kernel-variant/README.md)
+retains the same row schedule with the complete original coefficient tuple;
+it is a candidate only, with its file binding, machine theorem, iPRA endpoint,
+and exact specialized degree still to be established. The BFS instance also
+remains a target. An [independent mismatch review](reviews/ten-positive-80-alignment-fresh-projection-independent/README.md)
+checks the two payloads and the selected alignment and fresh-projection
+receipts; it does not replay Lean.
 An [independent audit](reviews/ten-positive-80-phase-indexed-carry-independent/README.md)
 checks these phase and carry receipts and their stated witness and port boundaries;
 it does not replay Lean or establish the complete decoder.
@@ -348,7 +366,10 @@ the fresh ordinate with the graph's scaled ordinate.
 The [positive interval join](research/ten-positive-80-fresh-first-main-prototype/README.md)
 and [fresh norm join](research/ten-positive-80-fresh-pell-norms-prototype/README.md)
 construct positive first/main Pell witnesses and their norm equations at the
-same rank, X and Y. A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
+same rank, X and Y. A [fresh projection](research/ten-positive-80-fresh-projection-prototype/README.md)
+adds the positive main-root projection, and a [fresh offset](research/ten-positive-80-fresh-main-offset-prototype/README.md)
+derives its natural divisibility remainder without assuming it is positive.
+A separate [canonical-bounds theorem](research/ten-positive-80-canonical-bounds-prototype/README.md)
 proves `rank > 3*q` and `q^3 ∣ Y` under explicit beta and positivity bounds,
 without assuming a graph zero. An [independent audit](reviews/ten-positive-80-carry-fresh-interval-independent/README.md)
 checks nine selected carry and fresh-interval author receipts, without a Lean
