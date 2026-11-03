@@ -210,9 +210,11 @@ obtains the two Pell equations from an actual zero but keeps alignment and
 `X≥16` as explicit premises; a [size lemma](research/ten-positive-80-scaled-growth-prototype/SIZE.md)
 derives the latter from `beta≥15`. A separate [first-index theorem](research/ten-positive-80-scaled-growth-prototype/INDEX_ONE.md)
 derives index at least two from a positive zero at positive beta, without
-assuming rank, transport or alignment. An [ordered-ring transport lemma](research/ten-positive-transport-order-prototype/README.md)
-checks a conditional negative-transport contradiction; its graph hypotheses
-are not yet established.
+assuming rank, transport or alignment. This yields the actual graph bound
+[`X<c`](research/ten-positive-80-scaled-growth-prototype/C_ABOVE_X.md) and a
+positive correction gap. A [model carrier lemma](research/ten-positive-carrier-transport-prototype/README.md)
+checks a conditional negative-transport contradiction; its full graph
+hypotheses are not yet established.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
