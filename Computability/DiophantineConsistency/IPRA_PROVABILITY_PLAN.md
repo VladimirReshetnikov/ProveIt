@@ -486,7 +486,8 @@ The [output wrapper](research/ten-positive-80-to-90-output-prototype/README.md)
 then proves, in every stated IΣ₁ model, that an actual positive 80 Lean graph
 zero implies a positive selected 90 Lean graph output zero at the **same**
 arbitrary p₁, under the three symbolic β/low/high port assumptions. These
-are guarded author checks, not yet independently audited. They do not prove
+are guarded author checks; an [independent receipt audit](reviews/ten-positive-80-to-90-full-zero-independent/README.md)
+checks their direct inputs and same-output witness without replaying Lean. They do not prove
 the reverse direction, equate the distinct external K payloads, bind either
 file to Lean, or establish a halt or iPRA theorem.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
