@@ -1,0 +1,7 @@
+# Natural rank window and graph smallness
+
+`Direct80RankWindow.window` derives `24≤R` and `R+q³+q+1≤q⁴` from positive witnesses, the explicit transport gap `F+alpha<q`, and symbolic port bounds `beta>0`, `low<beta`, `high<2*beta`. Here `R` is the natural expression defined in that source; this lemma does not itself connect it to the graph's signed `rExpr`.
+
+`Direct80RankSmall.graph_rank_small` combines that window with the independently checked graph scale `2q⁴<c` to obtain `24≤R`, `R<q⁴` and `2R<c` for an actual positive graph zero, retaining the explicit gap and port assumptions. The separate 80 transport theorem can supply the gap; signed-rank binding and index equality are separate joins.
+
+Guarded self-pinning author `run.py`, `observations/attempt02/`, passed in session 32580; attempt01 failed on rewriting local abbreviations. `run-small.py`, `observations/small-attempt02/`, passed in session 20487, producing `/tmp/tenpositive-80ranksmall-pyh23_xh/Direct80RankSmall.olean` SHA-256 `692295787ea2a700f47cbf8bec638de60cba15a587092d4368d03e6bfeb81994`; small-attempt01 failed on a lemma name. An initial invocation refused an existing observation before starting Lean. Sources, selected input hashes, diagnostics and samples are retained. Full package/dynamic and historical source/object ancestry remain inherited; no independent Lean replay, PDF binding, halt or iPRA endpoint is claimed.

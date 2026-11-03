@@ -227,8 +227,11 @@ checks the same-witness composition and selected producers without replaying
 Lean. Fixed-port rank bounds,
 machine soundness and the iPRA endpoint remain open. A further
 [rank-orientation theorem](research/ten-positive-80-rank-orientation-prototype/README.md)
-derives positivity of the signed graph rank from this transport result; the
-fixed-port rank window and exact index equality remain separate.
+derives positivity of the signed graph rank from this transport result, and
+a [natural-rank binding](research/ten-positive-80-natural-rank-prototype/README.md)
+identifies its exact positive natural value. A [rank-window packet](research/ten-positive-80-rank-window-prototype/README.md)
+proves the symbolic window and `2R<c` under the stated port bounds and mask
+gap. The final exact index-equality join remains separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project

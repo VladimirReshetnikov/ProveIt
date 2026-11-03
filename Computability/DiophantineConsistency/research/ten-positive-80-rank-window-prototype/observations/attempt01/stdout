@@ -1,0 +1,23 @@
+/tmp/tenpositive-80rankwindow-113peobq/Direct80RankWindow.lean:32:71: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hgap : v 1 + v 2 < 1 + v 0 * ↑(p 0)
+b : V := v 0 * ↑(p 0)
+q : V := 1 + b
+R : V := rank p v
+hq : q = ↑(p 0) * v 0 + 1
+hw :
+  24 ≤ ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0 ∧
+    ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0 + q ^ 3 + q + 1 ≤ q ^ 4
+hqb : q - 1 = b
+⊢ b * (q - v 1) * (q ^ 2 - 1) + v 2 * (q ^ 2 - 1) + q * ↑(p 3) * v 0 + ↑(p 2) * v 0 =
+    v 2 * (1 + v 0 * ↑(p 0) * 2 + v 0 ^ 2 * ↑(p 0) ^ 2 - 1) + ↑(p 2) * v 0 + ↑(p 3) * v 0 + ↑(p 3) * v 0 ^ 2 * ↑(p 0) +
+      v 0 * ↑(p 0) * (1 + v 0 * ↑(p 0) - v 1) * (1 + v 0 * ↑(p 0) * 2 + v 0 ^ 2 * ↑(p 0) ^ 2 - 1)
+'Direct80RankWindow.window' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
