@@ -119,6 +119,13 @@ and complete historical source-to-object ancestry remain inherited. A
 externally checks the 89 rows, coefficient payloads and exact degree 172;
 there is no Lean parser or theorem about the TeX or PDF.
 
+An [88-operation absorbed-root draft](research/ordinary12-absorb88-probe/README.md)
+has an externally checked live graph and Lean-checked forward ring identities.
+Its reverse argument is open: exact first-factor examples show the needed
+transport positivity cannot be derived from that factor alone, including one
+under the abstract port bounds. Neither example is a full-graph counterexample.
+No 88-operation halt or iPRA endpoint is claimed.
+
 For the separate ten-positive 84- and 85-operation proposals, a
 [Pell-doubling prototype](research/ten-positive-ipra-doubling-prototype/README.md)
 proves coprimality of abstract doubled radicands in every IΣ₁ model, using
