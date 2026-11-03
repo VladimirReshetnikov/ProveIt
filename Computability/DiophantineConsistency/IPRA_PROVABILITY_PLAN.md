@@ -485,6 +485,8 @@ those conditions and calibrated graph witnesses remain open. A [direct-cell size
 proves a smaller upper bound under non-forbidden-row and Boolean-dummy
 assumptions. A [direct kernel bound](research/direct-bfs-kernel-bound-prototype/README.md)
 now proves the symbolic kernel is below the stated power without expansion;
+a [kernel divisibility theorem](research/direct-bfs-kernel-divisibility-prototype/README.md)
+also proves radix divisibility and the resulting model mod-four fact;
 a [cell-product client](research/direct-bfs-cell-product-prototype/README.md)
 uses it and the cell bound to prove the conditional `hi_lt` field for a
 non-forbidden normalized cell. A [four-field adapter](research/direct-bfs-four-fields-packing-prototype/README.md)
@@ -683,8 +685,12 @@ source-specific baseline; it does not turn the rejected run into a pass. Only
 A [v4 retry](research/ten-positive-80-coherent-rebuild/V4.md) admits only the
 exact pinned module/source/full normalized warning log and remains strict
 elsewhere. An [independent v4 review](reviews/ten-positive-80-rebuild-v4-prelaunch-independent/README.md)
-checks its policy and outer wrapper. One fresh guarded attempt is running;
-only final PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
+checks its policy and outer wrapper. The fresh v4 attempt stopped with outer
+exit 1 at stage 5 after accepting the exact stage-3 baseline; its three new
+warnings match a separate historical source-specific baseline. An
+[independent stop audit](reviews/ten-positive-80-rebuild-attempt02-independent/README.md)
+checks both stages and records that the attempt remains failed. Only final
+PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
 Those
 byte-matched records are not proven unique producer
 origins. No replay is yet claimed. A

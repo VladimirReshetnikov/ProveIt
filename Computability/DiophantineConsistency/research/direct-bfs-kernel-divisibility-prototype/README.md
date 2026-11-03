@@ -1,0 +1,5 @@
+# Direct-BFS kernel divisibility
+
+`DirectBFSKernelDivisibility.radix_dvd` proves that every natural radix divides the direct symbolic kernel at that radix. The proof uses the positive exponent in each bare, selector and copy term. Specializing to `rho=2^67` and casting into an arbitrary IΣ₁ model gives divisibility by four. This supplies the low-product divisibility ingredient for a future adjusted high-mask origin proof, not that origin proof itself.
+
+Guarded attempt `observations/directbfskerneldiv-attempt01/` failed because the finite-sum divisibility lemma was not imported and is retained. Attempt `observations/directbfskerneldiv-attempt02/` explicitly pins the added package import and exited 0 without diagnostics; all three axiom reports are `[propext, Classical.choice, Quot.sound]`. Direct imports were pinned and rechecked. Object `/tmp/direct-bfs-kerneldiv-tynjd8xz/DirectBFSKernelDivisibility.olean` has SHA-256 `6cec55cae3334844b964f86eeaa6c904ac4138f6387669d071661b5a1d3469c2`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.
