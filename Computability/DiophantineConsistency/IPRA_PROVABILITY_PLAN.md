@@ -516,7 +516,9 @@ bounds, without assuming carry vanishes. A [Boolean stencil theorem](research/di
 proves zero cyclic carry when its explicit Boolean-family and carry-input
 premises hold; an [aligned-word join](research/direct-bfs-aligned-zero-carry-prototype/README.md)
 now establishes zero carry for the constructed direct-BFS word and temporal
-term. It does not by itself discharge the six open high-mask phases;
+term. A [physical-column theorem](research/direct-bfs-physical-column-prototype/README.md)
+identifies each physical block digit with its direct raw column using this
+zero-carry result. It does not by itself discharge the six open high-mask phases;
 a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md)
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
