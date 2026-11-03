@@ -396,6 +396,9 @@ checks the two uniform-decoder receipts and the generic positive seed without
 replaying Lean; a [field-bit audit](reviews/direct-bfs-field-bits-independent/README.md)
 checks its generic and graph receipts and same-length scope. Full Wang-window
 and machine/color conjugacy remain open. An
+[array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
+proves the candidate row/color map sizes and selected distinguished entries,
+but not the full inverse maps or row correspondences. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
