@@ -695,7 +695,10 @@ checks its policy and outer wrapper. The fresh v4 attempt stopped with outer
 exit 1 at stage 5 after accepting the exact stage-3 baseline; its three new
 warnings match a separate historical source-specific baseline. An
 [independent stop audit](reviews/ten-positive-80-rebuild-attempt02-independent/README.md)
-checks both stages and records that the attempt remains failed. Only final
+checks both stages and records that the attempt remains failed. A separately
+reviewed [v5 retry policy](reviews/ten-positive-80-rebuild-v5-prelaunch-independent/README.md)
+allows exactly those two source-specific complete warning logs, with all
+other warnings still fatal; its fresh run is being coordinated. Only final
 PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
 Those
 byte-matched records are not proven unique producer
