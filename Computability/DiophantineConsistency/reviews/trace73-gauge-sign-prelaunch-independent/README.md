@@ -41,3 +41,15 @@ resolved to the Mathlib build, SHA-256
 `bbe0c9d1f3d5471ae115ccd10d9ef2f6dc5ec645bad49ee5a04830c178e42091`.
 Add an explicit selected-object pin in a new runner and independently review
 the revised bytes before launch. All earlier scoped limitations remain.
+
+## Revised runner: scoped GO
+
+The revised runner SHA-256 is
+`e558ad98199ad8f3d2596088988943b50bc25f02b38ca2816a0fcee6635dd446`.
+It adds the explicit Linarith object hash and rechecks that the planned
+first-selected path is the package object before and after execution. All
+nine pins and the current first selections were independently verified using
+dangling-aware enumeration. The runner's own `first_linarith` uses `is_file`
+and does not report a dangling earlier shadow; none was present at review.
+**Scoped GO for one guarded attempt02** using revised source and runner exact
+bytes, retaining all earlier limitations and inspecting both axiom reports.
