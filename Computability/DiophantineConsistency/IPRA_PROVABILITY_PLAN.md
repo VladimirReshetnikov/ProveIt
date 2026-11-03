@@ -565,11 +565,15 @@ zero is equivalent to machine halt, with explicit natural β/low/high port
 equalities, the complete integer tuple equality, and a separate p₁ model-cast
 equality. These hypotheses remain in the theorem. It does not establish an
 internal iPRA proof or a binding to the distinct retained BFS coefficient.
+A subsequent [port-projection client](research/ten-positive-80-symbolic-model-iff-prototype/PROJECTION.md)
+discharges the tuple and model-cast hypotheses using exactly the four natural
+symbolic port equalities. This author-checked result remains model-level and
+does not bind the external BFS coefficient or prove an internal iPRA theorem.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
 constructs the scaled interval at the same X,Y,r from explicit source
-interval, power and size hypotheses. These hypotheses are not yet derived
-from the selected 90 graph or a halt, and the remaining positive 80 carrier
-coordinates have not been constructed; the reverse implication remains open.
+interval, power and size hypotheses. The generic result alone does not derive
+its hypotheses from a 90 zero; later reverse graph and halt joins under
+explicit symbolic assumptions are described below.
 A [fresh scaled-witness join](research/ten-positive-scaled-witness-from-unscaled-prototype/README.md)
 adds positive η′ and ζ′ for the scaled pair, explicitly distinct from the
 unscaled source witnesses. This is still a conditional model theorem. A
