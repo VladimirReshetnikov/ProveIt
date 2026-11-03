@@ -1,0 +1,5 @@
+# Parameterized carrier bound
+
+`Direct80GraphCarrierParam.bound_for_witnesses` proves the same graph-specific estimate `2*tau*f*y<V0²` for **any supplied** positive `tau`, `f`, and `V0` satisfying the explicit graph root equations, signed V-square representation, and adjacent Pell norm. The graph itself must be a positive zero and `beta>0`. The source states the equations exactly. This avoids silently identifying independent existential witnesses, but does not by itself supply the signed Z-factor or the offset estimate.
+
+`run-param.py`, `observations/param-attempt01/`, passed in guarded author session 69593, producing `/tmp/tenpositive-80graphcarrierparam-_7a9oz32/Direct80GraphCarrierParam.olean` SHA-256 `26cd2a61e89da9a2de87a6e029882876608fe5da5e594cedd02e63da711823dd`. It pins the selected prototype objects, executable and source and records resource samples; full package/dynamic and historical source/object ancestry remain inherited. No independent Lean replay or Lean file/PDF binding is claimed.
