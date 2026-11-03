@@ -410,6 +410,9 @@ handles the direct selector family under explicit support and alignment
 assumptions. A separate axiom-free [color-bounds check](research/direct-bfs-lean-color-bounds-prototype/README.md)
 shows both tables stay inside the finite color domains, without proving the
 maps are permutations or all rows match. An
+[actual-graph marker join](research/direct-bfs-80-field-markers-prototype/README.md)
+derives the direct vertical and horizontal field equalities including their
+marker bits under the four explicit direct-BFS symbolic port equalities. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
