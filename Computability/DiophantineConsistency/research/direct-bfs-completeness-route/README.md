@@ -1,0 +1,16 @@
+# Direct-BFS 80-row completeness route
+
+This note tracks the direct-enumeration BFS symbolic kernel used by the retained 80-row JSON graph. Its coefficient is different from the original-table symbolic kernel used in the other 80-operation completeness route. External byte reconstruction matches the direct symbolic recipe to the retained JSON coefficient, but there is no Lean theorem binding that file's bytes to the symbolic expression.
+
+The checked direction from a positive graph zero to an internal decimal215 halt is `../direct-bfs-80-model-halt-prototype/`. It goes through a direct local tiling word, a finite checked color/row conjugacy and its model-valued inverse, an original-table local word, and the selected marked-word and Wang soundness modules. Its selected-header and prior-provider reconciliation has been independently reviewed in `../../reviews/direct-bfs-model-halt-serialized-independent/`; the remaining historical, package-transitive and dynamic ancestry limits are recorded in `../direct-bfs-80-model-halt-serialized-audit/`.
+
+For the converse, the following author-checked steps now work in every IΣ₁ model:
+
+- An internal machine halt yields a Σ₁-definable direct local word by original→direct color/row transport (`../direct-bfs-halt-word-prototype/` and `../direct-bfs-model-forward-word-prototype/`).
+- One such row and geometry supports a family of positive bounded selector/copy/dummy packed words for every Σ₁-definable dummy pulse, with exact digit recovery (`../direct-bfs-halt-packed-family-prototype/`).
+- With a zero normalized origin dummy, the direct word satisfies the concrete low-mask origin and per-cell fields (`../direct-bfs-word-low-fields-prototype/`). The direct kernel product bound, block-size sum and positive-block lemmas are checked in `../direct-bfs-cell-product-prototype/`, `../direct-bfs-kernel-block-size-prototype/`, and `../direct-bfs-word-block-positive-prototype/`.
+- For a direct local word with positive stride below its length, ordinary high-mask no-carry at all indices implies both the adjusted origin and non-origin high fields (`../direct-bfs-origin-block-residue-prototype/`).
+
+The conditional composition deriving `PackingInput` from all-index high-mask safety is checked in `../direct-bfs-high-only-packing-prototype/`; its all-index premise is not established. The sharper direct-cell bound is checked in `../direct-bfs-cell-sharp-size-prototype/`. Separate unchecked clients for high-padding size, phase-zero safety and symbolic/temporal product carry are in the similarly named `direct-bfs-*` prototype directories. They are preparation, not evidence of those results.
+
+The remaining work includes proving all high-mask phase classes for the direct family, selecting a supported dummy pulse with calibrated rank on the same row, deriving the compatible Pell and graph witnesses, and joining both model directions to the iPRA proof-existence adapter with a coherent, audited provider. Each step also needs the precise scalar geometry and mask assumptions required by the relevant theorem. No direct-BFS model equivalence, iPRA endpoint, or formal JSON binding is claimed by this note. The previously checked theorem packets are author checks with the ancestry and no-independent-replay qualifications stated in their individual READMEs.

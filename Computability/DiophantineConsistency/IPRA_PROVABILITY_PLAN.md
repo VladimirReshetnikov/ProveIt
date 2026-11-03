@@ -485,7 +485,8 @@ the dummy at the origin is even. A [conditional packing adapter](research/direct
 combines those fields with explicitly assumed transport/high-mask conditions;
 those conditions and calibrated graph witnesses remain open. A [direct-cell size bound](research/direct-bfs-cell-size-prototype/README.md)
 proves a smaller upper bound under non-forbidden-row and Boolean-dummy
-assumptions. A [direct kernel bound](research/direct-bfs-kernel-bound-prototype/README.md)
+assumptions. A [sharp-cell refinement](research/direct-bfs-cell-sharp-size-prototype/README.md)
+provides the bound needed for high-mask padding. A [direct kernel bound](research/direct-bfs-kernel-bound-prototype/README.md)
 now proves the symbolic kernel is below the stated power without expansion;
 a [kernel divisibility theorem](research/direct-bfs-kernel-divisibility-prototype/README.md)
 also proves radix divisibility and the resulting model mod-four fact;
@@ -497,7 +498,9 @@ a [predecessor lemma](research/direct-bfs-origin-predecessor-prototype/README.md
 shows the relevant vertical predecessor is not the marker and its packed cell
 is divisible by four. An [origin-block reduction](research/direct-bfs-origin-block-residue-prototype/README.md)
 uses this to derive the adjusted high-origin field from an explicit all-index
-ordinary high-mask condition; the latter remains open;
+ordinary high-mask condition. A [high-only packing join](research/direct-bfs-high-only-packing-prototype/README.md)
+discharges the checked size and positivity fields but retains that all-index
+high-mask premise and scalar geometry; the premise remains open;
 a [cell-product client](research/direct-bfs-cell-product-prototype/README.md)
 uses it and the cell bound to prove the conditional `hi_lt` field for a
 non-forbidden normalized cell. A [four-field adapter](research/direct-bfs-four-fields-packing-prototype/README.md)
@@ -715,8 +718,13 @@ attempt has passed. An [independent attempt audit](reviews/ten-positive-80-rebui
 checks the twelve preceding outputs, both accepted exceptions and the exact
 historical stage-13 warning log without replaying Lean. A [v6 prelaunch audit](reviews/ten-positive-80-rebuild-v6-prelaunch-independent/README.md)
 checks a third exact module/source/full-log exception, with strict diagnostics
-elsewhere; one fresh guarded retry is being coordinated. Only final
-PASS plus outer exit 0 and a later receipt audit will establish a scoped replay.
+elsewhere. The fresh v6 attempt has now completed all 127 stages with final
+PASS and outer exit 0, and an [independent post-run audit](reviews/ten-positive-80-rebuild-attempt04-postrun-independent/README.md)
+checks source/direct input snapshots, all outputs and headers, exact warning
+exceptions and the four endpoint axiom reports without replaying Lean. The
+fresh endpoint object matches the earlier endpoint hash; five of the 127
+rebuilt objects differ. This scoped observed-cone replay does not authenticate
+unrebuilt historical, package-transitive or dynamic ancestry or external files.
 The [historical warning inventory](reviews/ten-positive-80-warning-inventory/README.md)
 identifies a further recorded policy at planned stage 13, but does not
 pre-approve its output under the fresh provider. An [independent inventory review](reviews/ten-positive-80-warning-inventory-independent/README.md)
