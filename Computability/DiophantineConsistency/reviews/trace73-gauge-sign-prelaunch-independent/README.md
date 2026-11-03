@@ -65,3 +65,13 @@ and after. All ten pins and current first selections were independently
 rechecked with dangling-aware enumeration. The runner's own first-selection
 check still skips dangling paths; none was present at review. **Scoped GO for
 one guarded attempt03**, with the same outer-exit and both-report limitations.
+
+Attempt03 failed on the unavailable `LinearOrderedCommRing` identifier and
+its reports contain `sorryAx`; it is excluded. Attempt04 source SHA-256
+`4101fe161d5fc36f8dc062494b67de217a502bf51dbd3e09074f231c77a2cdb4`
+changes only that class declaration to `[CommRing R] [LinearOrder R]
+[IsStrictOrderedRing R]`, retaining the intended strictly linearly ordered
+commutative-ring scope and both theorem statements. The runner is unchanged;
+all ten pins and current direct first selections were rechecked, including
+for dangling shadows. **Scoped GO for one guarded attempt04**, with the same
+outer-exit and both-report limitations.
