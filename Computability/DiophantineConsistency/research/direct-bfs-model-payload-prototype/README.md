@@ -1,0 +1,5 @@
+# Definable direct-BFS payload lookup
+
+`DirectBFSModelPayload` supplies a Σ₁-definable model lookup for each of the four direct-table fields and the combined 41-bit payload. On any standard row index below 943, `payload_row` identifies that model value with the direct-BFS symbolic tile payload. This is an ingredient toward constructing selector/copy cells for the missing direct-family halt→graph packing; it is not a packing or completeness theorem.
+
+Guarded attempt `observations/directbfsmodelpayload-attempt01/` failed on a namespace and type-inference issue and is retained. Attempt `observations/directbfsmodelpayload-attempt02/` exited 0 without diagnostics; all three exact axiom reports are `[propext, Classical.choice, Quot.sound]`. Direct source imports were explicitly pinned and rechecked. Object `/tmp/direct-bfs-modelpayload-8aq5n85a/DirectBFSModelPayload.olean` has SHA-256 `779fbe25391b8ac9adc60f7ed336216fd244df7bf57083883c06c45fac33afc1`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

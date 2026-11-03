@@ -1,0 +1,37 @@
+import DirectBFSModelWordTransfer
+import DiophantineConsistency.OldWordIdentification
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DirectBFSModelPayload
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+open DiophantineConsistency ArithmeticStandardCasts ArithmeticWindowDigits ArithmeticWangTable
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def payload (a : V) : V := CompactTilePayload.value
+  (DirectBFSLocalWord.field (fun t => t.1) a) (DirectBFSLocalWord.field (fun t => t.2.1) a)
+  (DirectBFSLocalWord.field (fun t => t.2.2.1) a) (DirectBFSLocalWord.field (fun t => t.2.2.2) a)
+
+instance field_definable (f : DirectBFSLocalWord.Quad → ℕ) : 𝚺₁-Function₁[V] (DirectBFSLocalWord.field f) := by
+  have he : (DirectBFSLocalWord.field f : V → V) = ArithmeticWangTable.tabValue (DirectBFSSymbolicKernel.rows.map f) 0 := by
+    funext x
+    exact OldWordIdentificationDraft.tab_eq _ _ _
+  rw [he]
+  exact (tab_defined _ 0).to_definable.of_zero
+
+theorem payload_definable : 𝚺₁-Function₁[V] payload := by
+  unfold payload CompactTilePayload.value
+  definability
+
+theorem payload_row (i : Fin 943) : payload (i.val:V)=DirectBFSDecoder.tileValue i := by
+  unfold payload DirectBFSDecoder.tileValue
+  rw [DirectBFSModelWordTransfer.direct_cast (fun t => t.1) rfl i,
+      DirectBFSModelWordTransfer.direct_cast (fun t => t.2.1) rfl i,
+      DirectBFSModelWordTransfer.direct_cast (fun t => t.2.2.1) rfl i,
+      DirectBFSModelWordTransfer.direct_cast (fun t => t.2.2.2) rfl i]
+#print axioms DirectBFSModelPayload.field_definable
+#print axioms DirectBFSModelPayload.payload_definable
+#print axioms DirectBFSModelPayload.payload_row
+end DirectBFSModelPayload

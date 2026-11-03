@@ -459,8 +459,10 @@ and a [model forward-word theorem](research/direct-bfs-model-forward-word-protot
 that transfers the original local tiling predicate to the direct table.
 An [internal halt-to-direct-word join](research/direct-bfs-halt-word-prototype/README.md)
 now produces that direct local word from an internal halt and the existing
-power-based geometry. The direct-family packing and graph-witness construction
-are still separate. An
+power-based geometry. A [model payload lookup](research/direct-bfs-model-payload-prototype/README.md)
+adds definable direct-table fields and identifies them with the symbolic tile
+payload on standard row indices. The direct-family packing and graph-witness
+construction are still separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
@@ -621,8 +623,11 @@ package-transitive imports and dynamic dependencies remain unverified. A
 found nine direct-import hash drifts across five older producer receipts,
 including `ModelArithmetic` versus `ModelDifferenceRing`. A matching
 present-day search-path overlap does not establish producer-time compatibility;
-the observed reverse-dependency cone has 114 modules, and additional
-unmatched producers could enlarge it. A coherent rebuild or stronger audit is
+the initially observed reverse-dependency cone had 114 modules. Two additional
+drifts in [byte-matching adaptive producer records](reviews/ten-positive-80-adaptive-producer-drift/README.md)
+expand the combined provisional cone to 122 modules; those historical records
+are not proven to be unique origins. Further unmatched producers could enlarge
+it. A coherent rebuild or stronger audit is
 needed; the hashes alone do not show mathematical unsoundness. A [source preflight](reviews/ten-positive-80-rebuild-source-preflight/README.md)
 matches all 114 candidate source hashes to retained producer pins and their
 explicit import names to the captured headers; it is not a rebuild. A
