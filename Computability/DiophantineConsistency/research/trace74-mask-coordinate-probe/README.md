@@ -60,6 +60,14 @@ hypotheses have not been certified in Lean, and these ports are not the fixed
 BFS tuple. The check does not establish a fixed-port inequivalence or iPRA
 endpoint.
 
+The [standard-natural Pell interval](../trace74-boundary-natural-seed-rebuild/README.md),
+the [generic cast transfer](../trace74-boundary-generic-cast-transfer-rebuild/README.md)
+and the [generic model assembly](../trace74-boundary-generic-assembly-rebuild/README.md)
+have since passed guarded Lean checks and independent audits. The model
+assembly still requires its explicit natural Pell, subtraction-cast,
+coordinate, positivity, phase, exponential and growth hypotheses. It has not
+yet been specialized to a fully certified concrete zero.
+
 The `coefficient_binding` object, including the tuple description and all
 compressed/raw hashes, is copied verbatim from the pinned 75-row JSON. Its
 `coefficients/` path belongs to that source package's layout, not this probe's
