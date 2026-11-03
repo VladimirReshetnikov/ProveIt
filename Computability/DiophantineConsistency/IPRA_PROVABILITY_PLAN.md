@@ -845,7 +845,10 @@ A conditional [packed-column client](research/ordinary12-ipra-bridge/compact44-w
 identifies the selected band at both target phases using explicit packed
 selector and copy digit hypotheses. Its output equations retain the opposite
 band, bare rotations, temporal digit and incoming carry, and assume the
-corresponding `CarryInput`; those assumptions still need construction.
+corresponding `CarryInput`. A later [carry-input and packed-digit client](research/ordinary12-ipra-bridge/compact44-constructed-carry-input-prototype/README.md)
+constructs that input for the exact symbolic cyclic product from explicit
+radix and temporal bounds and transfers local cell-digit facts to the packed
+word. The required cell construction and temporal bounds remain open.
 A separate author-side [band-parity client](research/ordinary12-ipra-bridge/compact44-graph-band-parity-prototype/README.md)
 expands this relation into both selector sums, five bare digits, the temporal
 digit and incoming carry; even-weighted copy terms vanish modulo two. It does
