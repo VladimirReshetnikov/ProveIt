@@ -454,7 +454,9 @@ checks its selected 60 direct providers and axiom reports without replaying
 Lean. A [pointwise finite client](research/direct-bfs-lean-conjugacy-lift-prototype/README.md)
 then extracts row matching and bijections on the typed finite row/color
 indices, with original-to-direct orientation explicit. It remains an author
-check; the internal word and tiling lift remain separate.
+check; an [independent finite-lift audit](reviews/direct-bfs-conjugacy-lift-independent/README.md)
+checks its mapping direction, aggregate provider and selected receipts without
+replaying Lean. The internal word and tiling lift remain separate.
 The [sweep audit](reviews/direct-bfs-conjugacy-sweep-v2-independent/README.md)
 documents its single-run discipline, pinned inputs and explicit limits. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
