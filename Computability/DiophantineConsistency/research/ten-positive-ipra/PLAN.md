@@ -47,8 +47,16 @@ historical-provider overlay with five recorded object differences. Moreover,
 the earlier fresh trace provider replaced eight BFS baseline objects in the
 halt-seed closure. Their combined ancestry has not been coherently rebuilt;
 the [compatible-provider plan](../trace75-bfs-compatible-provider-plan/README.md)
-records the affected cone. No syntactic iPRA endpoint or external coefficient
-file binding follows from this exploratory model equivalence.
+records the affected cone. A [31-stage compatible trace replay](../trace75-bfs-compatible-provider-rebuild/README.md)
+and [13-stage reverse replay](../trace75-bfs-compatible-reverse-rebuild/README.md)
+have since passed and preserved the captured BFS halt-seed closure. The
+forward model-halt chain and final clients still require replay on that union;
+four affected baseline objects and package/dynamic ancestry remain inherited.
+An [exploratory iPRA client](../trace75-bfs-ipra-draft/README.md) checks the
+proof-existence statements on the mixed provider, not yet on the compatible
+union. The [decimal display](../trace75-bfs-decimal-display/README.md) has
+external graph, coefficient, source-transcription and exact-degree checks,
+not Lean semantics for external files.
 
 ## The source dependency (compact44 tuple)
 
