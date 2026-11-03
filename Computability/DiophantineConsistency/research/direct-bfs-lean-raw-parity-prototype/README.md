@@ -1,0 +1,7 @@
+# Direct-BFS raw carry parity
+
+`DirectBFSRawParity.lean` proves the direct-BFS raw column modulo two reduces to the two selector-digit sums, the unchanged bare column and temporal digit, and transfers the corresponding incoming-carry parity. It uses the direct row-dependent raw-column decomposition, so it does not reuse the retained-original coefficient family. This is a generic model theorem under explicit column bounds, not yet a graph-to-machine claim.
+
+The guarded author check `observations/directbfsrawparity-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`. Object `/tmp/direct-bfs-rawparity-rbmme6t5/DirectBFSRawParity.olean` SHA-256 `425015de1be16e6adad54d2846bba3798b82535174e2a4a7af13b7d5034acff2`. Selected inputs and resources are pinned, with inherited source/object, package and dynamic ancestry limits and no independent Lean replay. Temporal/selected-row decoding, color conjugacy, converse, iPRA and formal JSON/file binding remain open.
+
+After correcting the coefficient-decoder direct-import pin, frozen `run-v2.py` rebuilt this unchanged source against the new coefficient and raw-column producers: `observations/directbfsrawparity-attempt02/` passed at `/tmp/direct-bfs-rawparity-jmkuze4q/DirectBFSRawParity.olean`, with bit-identical object SHA `425015de1be16e6adad54d2846bba3798b82535174e2a4a7af13b7d5034acff2`. The first receipt remains preserved.

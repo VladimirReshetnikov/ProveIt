@@ -17,3 +17,11 @@ Accepted guarded check `observations/coordinate-attempt02/` produced
 Attempt01 retained an elementary addition-lemma elaboration error. The
 receipt pins selected objects and inherits project/package, dynamic-library,
 and transitive source-object provenance limitations.
+
+The original accepted receipt omitted an individual pin for its direct
+`ArithmeticPellFirstNorm.olean` import. Self-pinning `run-v2.py` adds the
+selected object SHA-256
+`82b45a6e4da9ab538940849ebb6515056e82a20fb7f57a353441a90f50438854`.
+The corrected check `observations/v2-attempt01/` produces
+`/tmp/first-coordinate-rdzd04a5/FirstCoordinate.olean`, bit-identical to
+the original. Broader transitive/project/package/dynamic limits remain.

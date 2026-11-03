@@ -26,3 +26,10 @@ Attempt01 failed due to an omitted import. The accepted runner individually
 pins its selected direct `ArithmeticPellCongruences.olean` and the corrected
 fresh-main-offset producer. It inherits the project/package, dynamic-library
 and historical transitive source-object limitations.
+
+The original FirstCoordinate provider receipt omitted an individual direct
+`ArithmeticPellFirstNorm.olean` pin. The self-pinning `run-v2.py` selects its
+corrected producer `/tmp/first-coordinate-rdzd04a5/`, whose v2 receipt pins
+that exact object. The dependent rebuild `observations/v2-attempt01/` outputs
+`/tmp/tenpositive-80freshfirstcoordinate-v0hdfs98/Direct80FreshFirstCoordinate.olean`,
+bit-identical to the earlier object. Broader inherited boundaries remain.

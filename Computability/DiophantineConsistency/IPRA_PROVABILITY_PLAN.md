@@ -362,7 +362,9 @@ expresses the full carry column with the direct tile payloads. The selected
 graph-column and machine conclusions are still separate. A receipt audit
 found that the coefficient-decoder runner did not individually pin its direct
 `ArithmeticWindowCarry.olean` import; a post-hoc hash does not establish its
-compile-time bytes, and corrected downstream rechecks are in progress. An
+compile-time bytes. A corrected author runner and fresh raw-column, raw-parity
+and graph-parity checks have since passed with bit-identical objects; their
+independent v2 audit remains separate. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An
@@ -431,7 +433,13 @@ A [fresh first-coordinate join](research/ten-positive-80-fresh-first-coordinate-
 adds a positive first-coordinate witness and first Pell norm to the same
 unscaled main witnesses and positive transport quotient. Its abstract
 [inequality lemma](research/ten-positive-first-coordinate-prototype/README.md)
-and the graph join do not yet establish the actual first-factor zero.
+and the graph join do not yet establish the actual first-factor zero. An
+independent receipt check found that the abstract lemma's runner did not
+individually pin its direct `ArithmeticPellFirstNorm.olean` import; its
+post-hoc object hash cannot establish the earlier compile-time bytes. A
+corrected author run and dependent recheck have now passed with bit-identical
+objects; an independent check of the v2 receipts is still pending. See the
+[independent first-coordinate review](reviews/ten-positive-80-fresh-first-coordinate-independent/README.md).
 A separate [receipt audit](reviews/direct-bfs-raw-column-positive-transport-independent/README.md)
 records the coefficient-decoder import-pin gap and the positive transport
 scope; it does not replay Lean.
