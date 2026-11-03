@@ -33,6 +33,8 @@ baseline hashes were retained in an author-side observation. The same is true
 for [stages 10–14](reviews/nine-variable-ipra-stages-10-14-author-observation/README.md);
 and for [stages 15–17](reviews/nine-variable-ipra-stages-15-17-author-observation/README.md)
 and [18–20](reviews/nine-variable-ipra-stages-18-20-author-observation/README.md).
+The author observations for [stages 21–23](reviews/nine-variable-ipra-stages-21-23-author-observation/README.md)
+cover model packing, master and nine-variable reduction.
 These observations do not establish a paired replay or full closure.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
