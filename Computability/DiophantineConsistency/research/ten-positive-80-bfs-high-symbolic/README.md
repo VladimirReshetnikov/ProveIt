@@ -1,0 +1,5 @@
+# Symbolic high-digit recipe for every radix
+
+`BFSHighSymbolic.high_recipe` proves for every natural radix `B` that `Nat.ofDigits B CompactHighPopulation.highDigits` equals `displayedHigh B`, the [checked interval-sum formula](../ten-positive-80-bfs-high-flat/README.md) using the actual symbolic digit weights `mu = 2^51−2`, `padding = 2^65−1`, and `lastPadding = 2^19−1`. It uses the established identity of `highDigits` with the run pattern and the arbitrary-radix expansion. No large fixed numeral is evaluated in this theorem.
+
+Guarded author `observations/attempt01/` and the enclosing tool session exited 0. Source SHA-256 is `22bcd8ea4301cb1141db3b51bf6ba08a664561cb6d670e551ee3d0c165daa841`; terminal SHA-256 is `14ab36e57e6db61a4a11036e95a05afa44b7cec31b01440b9db02c214a38cbf5`; output `/tmp/bfs-high-symbolic-85ibqx1z/BFSHighSymbolic.olean` SHA-256 is `be648d1039d9fa37de74883e13619b17df735e5693f6b7e7174b42922f312c9c`. The runner pins its direct `BFSHighFlat` provider and selected inherited objects. Full historical-source, transitive package and dynamic ancestry remain inherited; no independent Lean replay or PDF/TeX/JSON parsing theorem is claimed.
