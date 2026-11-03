@@ -381,10 +381,16 @@ independent receipt check found that the cell-shift runner did not
 individually pin its direct `SymbolicKBandDraft.olean` import. Its post-hoc
 hash is not evidence of the compile-time bytes. Corrected cell-shift and
 reset author checks now pin and preflight all direct imports, and produce
-bit-identical objects; an independent v3 audit remains separate. The
+bit-identical objects; an [independent v3 audit](reviews/direct-bfs-cell-reset-v3-independent/README.md)
+checks all selected direct imports and producer edges without replaying Lean. The
 [independent receipt review](reviews/direct-bfs-cell-and-80-source-data-independent/README.md)
 records this gap and checks the source-data witness scope without replaying
 Lean. An
+[arbitrary-phase local decoder](research/direct-bfs-lean-uniform-decoder-prototype/README.md)
+and [actual-graph join](research/direct-bfs-80-uniform-decoder-prototype/README.md)
+now establish the direct-table selector/copy decoding at every designated
+band phase under the direct symbolic ports. Full Wang-window and machine/color
+conjugacy remain open. An
 [independent graph-carry audit](reviews/direct-bfs-80-carry-independent/README.md)
 checks the selected producer receipts and same-length interface without
 replaying Lean. An

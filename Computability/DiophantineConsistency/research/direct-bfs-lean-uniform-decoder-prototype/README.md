@@ -1,0 +1,5 @@
+# Direct-BFS uniform clean-column decoder
+
+`DirectBFSUniformDecoder.lean` gives the direct table's arbitrary-column selector decoder and proves that, under explicit support, direct-family carry and reset hypotheses, the output digit at every 4393 or 5495 phase equals the appropriate direct decoder band. Its coefficients and tile values are the direct-BFS ones, and its carry slack comes from the direct family; no retained-original K or full-table equality is assumed.
+
+The guarded author check `observations/directbfsuniformdecoder-attempt01/` exited 0 without diagnostics and reported `propext`, `Classical.choice`, `Quot.sound`. Direct source imports were resolved, required to match explicit object pins, recorded and rechecked; object `/tmp/direct-bfs-uniformdecoder-ar34wori/DirectBFSUniformDecoder.olean` SHA-256 `f740d01583a1021b028fecbfdf02cf0f7c7244d31a8fbccf87d2903e55a4a549`. Inherited transitive source/object, package and dynamic ancestry remain unverified and no independent Lean replay is claimed. Binding these hypotheses to the graph, tile/color machine semantics, converse, iPRA and formal JSON/file binding remain separate.
