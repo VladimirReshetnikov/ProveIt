@@ -182,7 +182,8 @@ checks that certificate and the row/identity receipts without replaying Lean.
 A [guarded trace model iff](research/trace75-mask-coordinate-ring-probe/GUARDED.md)
 equates positive 75 and 74 zeros only with **both** respective coordinate
 guards explicit (`F+alpha<q` on the old side, `F+C<q` on the new side).
-Neither guard is derived there from a zero.
+Neither guard is derived there from a zero. An [independent trace-guard audit](reviews/trace74-guarded-iff-independent/README.md)
+checks both directions and selected provider evidence without replaying Lean.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
