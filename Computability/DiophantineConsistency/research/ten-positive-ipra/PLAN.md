@@ -75,9 +75,11 @@ establish that complete `SourceModel` or a Lean file-binding theorem.
 | K12 | assembly: kernel iff + `SourceModel` ⇒ bridge ⇒ native/standard/reference endpoints | `IPRAExpressionNative.equivalence_of_bridge`, `IPRAStandardTheory.provable_iff` | open |
 
 For the remaining K6 branch, [graph-derived index-two algebra](../trace75-root-probe/THREETWO.md)
-now gives the exact first-parameter and carrier equations and a signed eta
-identity under the explicit main-index-three premise. It does not yet yield
-the size-gap contradiction needed to exclude that branch.
+gives the exact first-parameter and carrier equations and a signed eta identity
+under the explicit main-index-three premise. A [subsequent contradiction](../trace75-root-probe/THREEEXCLUDED.md)
+excludes that premise for an actual positive zero and a first-ordinate witness
+when beta is at least two in the model. This author-checked theorem has not yet
+been combined with the odd-index existential or specialized to fixed ports.
 
 The kernel is first proved over `ℤ`, against the paper, then replayed over
 `Facts R` and instantiated in `DiffRing V`, as for the carrier forms. K4 and
