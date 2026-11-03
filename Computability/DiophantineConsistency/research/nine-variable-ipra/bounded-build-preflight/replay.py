@@ -83,6 +83,62 @@ def check_sources(out,xs):
     for x in xs:
         mod=x['module'];want=x['source_sha256'];frozen=path_of(out/'src',mod).with_suffix('.lean')
         need(digest(ROOT/x['source'])==want and digest(frozen)==want,('source drift',mod))
+def warning_policies(out,xs):
+    directory=out/'warning-policies';items=list(directory.iterdir());policies={}
+    for p in items:
+        need(p.is_file() and not p.is_symlink() and re.fullmatch(r'\d{3}\.(json|log)',p.name),
+             ('unsafe warning-policy entry',str(p)))
+    indices={int(p.stem) for p in items}
+    for index in indices:
+        need(1<=index<=len(xs),('warning-policy index',index))
+        meta=directory/f'{index:03d}.json';baseline=directory/f'{index:03d}.log'
+        need(meta.is_file() and baseline.is_file(),('orphan warning policy',index))
+        r=json.loads(meta.read_text());x=xs[index-1];text=baseline.read_text()
+        evidence=Path(r['evidence_attempt']);evidence_source=Path(r['evidence_source'])
+        raw=evidence/'compile.log';failure=evidence/'failure.json';obj=evidence/'object.olean'
+        need(r['module']==x['module'] and r['source_sha256']==x['source_sha256'] and
+             r['baseline_sha256']==digest(baseline) and r['warning_count']==text.count('warning:') and
+             r['warning_count']>0 and not any(y in text for y in ('error:','sorryAx')) and
+             digest(evidence_source)==r['source_sha256'] and digest(raw)==r['evidence_log_sha256'] and
+             digest(failure)==r['evidence_failure_sha256'] and digest(obj)==r['evidence_object_sha256'] and
+             raw.read_text().replace(str(evidence_source),'<SOURCE>')==text,
+             ('warning baseline drift',index))
+        policies[index]={'metadata':r,'text':text,'guards':{str(p):record(p) for p in
+                            (meta,baseline,evidence_source,raw,failure,obj)}}
+    return policies
+def warning_matches(text,source,policy):
+    if policy is None: return 'warning:' not in text
+    return text.replace(str(source),'<SOURCE>')==policy['text']
+def register_warning(out,xs,evidence):
+    evidence=evidence.resolve(strict=True)
+    need(evidence.is_dir() and evidence.parent.name=='attempts' and evidence.parent.parent.parent==Path('/tmp'),
+         'warning evidence must be an attempt under a direct /tmp child')
+    match=re.fullmatch(r'(\d{3})-\d{3}',evidence.name)
+    need(match is not None,'invalid evidence attempt name')
+    index=int(match.group(1));need(1<=index<=len(xs),'invalid evidence stage')
+    x=xs[index-1];eout=evidence.parent.parent
+    previous=json.loads((eout/'manifest.json').read_text())
+    need(previous['report_sha256']==PINS[REPORT] and previous['modules']==xs,'evidence plan mismatch')
+    source=path_of(eout/'src',x['module']).with_suffix('.lean')
+    need(digest(source)==x['source_sha256'],'evidence source hash mismatch')
+    f=json.loads((evidence/'failure.json').read_text());log=evidence/'compile.log';obj=evidence/'object.olean'
+    expected=[str(LEAN),'-M3000','-j1','-DElab.async=false','--root='+str(eout/'src'),
+              str(source),'-o',str(obj)]
+    need(f['stage']=='compile' and f['exit']==0 and f['object_present'] and f['command']==expected and
+         f['log_sha256']==digest(log) and obj.is_file(),'not a warning-only successful compiler attempt')
+    raw=log.read_text();text=raw.replace(str(source),'<SOURCE>')
+    need(raw.count('warning:')>0 and not any(y in raw for y in ('error:','sorryAx')),
+         'evidence contains no warning or contains an error/sorryAx')
+    directory=out/'warning-policies';meta=directory/f'{index:03d}.json';baseline=directory/f'{index:03d}.log'
+    need(not os.path.lexists(meta) and not os.path.lexists(baseline),'warning baseline already exists')
+    with baseline.open('x') as stream: stream.write(text)
+    save(meta,{'module':x['module'],'source_sha256':x['source_sha256'],'baseline_sha256':digest(baseline),
+         'warning_count':raw.count('warning:'),'evidence_attempt':str(evidence),
+         'evidence_log_sha256':digest(log),'evidence_failure_sha256':digest(evidence/'failure.json'),
+         'evidence_object_sha256':digest(obj),
+         'evidence_source':str(source),'scope':'explicit operator registration; full log after exact source-path normalization'})
+    warning_policies(out,xs)
+    print('REGISTERED_WARNING_BASELINE',index,x['module'],'warnings',raw.count('warning:'),flush=True)
 def safe_dirs(root,relative):
     cur=root
     for part in relative.parts:
@@ -97,7 +153,7 @@ def initialize(out,xs):
         for root in (SEED,PKG,TOOL):
             need(all(v is None for v in slots(path_of(root,x['module'])).values()),
                  ('planned output exists in input root',x['module'],str(root)))
-    out.mkdir(mode=0o700);(out/'lib').mkdir();(out/'src').mkdir();(out/'attempts').mkdir();(out/'receipts').mkdir()
+    out.mkdir(mode=0o700);(out/'lib').mkdir();(out/'src').mkdir();(out/'attempts').mkdir();(out/'receipts').mkdir();(out/'warning-policies').mkdir()
     c=subprocess.run(['/usr/bin/cp','-as',str(SEED)+'/.',str(out/'lib')+'/'],capture_output=True,text=True,timeout=120)
     need(c.returncode==0 and not c.stdout and not c.stderr,('seed overlay failed',c.stderr))
     for base,dirs,_ in os.walk(out/'lib',followlinks=False):
@@ -126,11 +182,13 @@ def run_process(cmd,env,log,timeout):
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--output',type=Path,required=True)
     ap.add_argument('--init',action='store_true');ap.add_argument('--check',action='store_true')
+    ap.add_argument('--register-warning',type=Path)
     ap.add_argument('--limit',type=int,default=1)
     args=ap.parse_args();out=args.output
     need(out.is_absolute() and out.parent==Path('/tmp'),'output must be a direct /tmp child')
     need(1<=args.limit<=104,'limit must be 1..104')
-    need(not (args.init and args.check),'choose at most one of --init and --check');xs=plan()
+    need(sum((args.init,args.check,args.register_warning is not None))<=1,
+         'choose at most one of --init, --check and --register-warning');xs=plan()
     if args.init:
         initialize(out,xs);return
     need(out.is_dir() and not out.is_symlink(),'missing or unsafe initialized output')
@@ -139,7 +197,10 @@ def main():
         manifest=json.loads((out/'manifest.json').read_text())
         need(manifest['runner_sha256']==digest(__file__) and manifest['modules']==xs and
              manifest['report_sha256']==PINS[REPORT],'manifest or runner drift')
-        check_sources(out,xs);check_parents();disk()
+        check_sources(out,xs);check_parents();disk();warning_policies(out,xs)
+        if args.register_warning is not None:
+            register_warning(out,xs,args.register_warning)
+            return
         receipts=[]
         for index,x in enumerate(xs,1):
             f=out/'receipts'/f'{index:03d}.json'
@@ -153,7 +214,7 @@ def main():
             need(r['status']=='PASS' and r['module']==x['module'] and r['source_sha256']==x['source_sha256'],
                  ('receipt mismatch',str(f)))
             need(record(target)==r['output'] and digest(r['log'])==r['log_sha256'],('completed output drift',x['module']))
-            check(r['direct_guards']);receipts.append(r)
+            check(r['direct_guards']);check(r['warning_policy_guards']);receipts.append(r)
         else:
             print('ALL_STAGES_RECORDED',len(xs),flush=True);return
         if args.check:
@@ -163,8 +224,9 @@ def main():
             index=len(receipts)+1
             if index>len(xs): print('ALL_STAGES_RECORDED',len(xs),flush=True);return
             x=xs[index-1];module=x['module'];source=path_of(out/'src',module).with_suffix('.lean')
-            disk();check_sources(out,xs);check_parents()
-            for r in receipts: check(r['direct_guards'])
+            disk();check_sources(out,xs);check_parents();policies=warning_policies(out,xs)
+            policy=policies.get(index)
+            for r in receipts: check(r['direct_guards']);check(r['warning_policy_guards'])
             target=path_of(out/'lib',module).with_suffix('.olean')
             safe_dirs(out/'lib',target.parent.relative_to(out/'lib'))
             need(all(v is None for v in slots(target.with_suffix('')).values()),('output slot occupied',module))
@@ -199,10 +261,12 @@ def main():
                 direct[name]={'path':str(path),'record':record(path)}
             need(set(direct)==({'Init'}|set(x['imports'])),('declared/direct import mismatch',module,list(direct),x['imports']))
             check(guards);check_sources(out,xs);check_parents()
+            if policy is not None: check(policy['guards'])
             obj=attempt/'object.olean';log=attempt/'compile.log'
             cmd=[str(LEAN),'-M3000','-j1','-DElab.async=false','--root='+str(out/'src'),str(source),'-o',str(obj)]
             code=run_process(cmd,env,log,600);text=log.read_text(errors='replace')
-            if code!=0 or not obj.is_file() or any(s in text for s in ('error:','warning:','sorryAx')):
+            warning_ok=warning_matches(text,source,policy)
+            if code!=0 or not obj.is_file() or any(s in text for s in ('error:','sorryAx')) or not warning_ok:
                 save(attempt/'failure.json',{'stage':'compile','exit':code,'command':cmd,
                      'log_sha256':digest(log),'object_present':obj.is_file()})
                 raise RuntimeError(('compile failed or warning',module,code,str(attempt)))
@@ -225,9 +289,12 @@ def main():
                 need({a.strip() for a in report.split(',')} <= {'propext','Classical.choice','Quot.sound'},
                      ('unexpected axioms',module,report))
             check(guards);check_sources(out,xs);check_parents()
+            if policy is not None: check(policy['guards'])
             os.link(obj,target)  # atomic no-overwrite publication on the same /tmp filesystem
             r={'status':'PASS','module':module,'source_sha256':x['source_sha256'],'command':cmd,
                'direct':direct,'direct_guards':guards,'output':record(target),'log':str(log),'log_sha256':digest(log),
+               'warning_policy':None if policy is None else policy['metadata'],
+               'warning_policy_guards':{} if policy is None else policy['guards'],
                'scope':'single-side incremental build; inherited transitive/package/dynamic ancestry'}
             save(out/'receipts'/f'{index:03d}.json',r);receipts.append(r)
             print('PASS',index,'/',len(xs),module,flush=True)

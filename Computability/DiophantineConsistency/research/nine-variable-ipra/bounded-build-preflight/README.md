@@ -50,8 +50,9 @@ recorded standard-QM40 and native parent guards, and checks declared direct
 imports and all recorded module companions before each build. Successful
 objects are published without overwrite and recorded in a contiguous receipt
 ledger; failed attempts are retained separately. Each compiler step uses
-`-M3000 -j1`, a 600-second timeout, strict rejection of warnings and
-`sorryAx`, and a 4 GiB free-space floor. The two endpoint audit stages require
+`-M3000 -j1`, a 600-second timeout, rejection of errors and `sorryAx`, and a
+4 GiB free-space floor. Warnings are rejected unless a reviewed baseline has
+been explicitly registered as described below. The two endpoint audit stages require
 the expected axiom-report names and allow only `propext`, `Classical.choice`,
 and `Quot.sound`.
 
@@ -62,12 +63,32 @@ allows up to N stages. The process lock excludes simultaneous users of the
 same overlay. An interrupted publication that leaves an object without a
 receipt is reported for inspection and is not silently removed or resumed.
 
-The exact runner was initialized at `/tmp/nine-ipra-guarded-author-20261102-e`
-and `--check` reported zero completed stages with `WeightedExpressionDegree`
-next. An overlay made with an earlier runner was rejected for runner drift,
-and optimized Python was rejected. These are initialization/control checks:
-**no compiler stage was launched by these checks**. The compiler path,
-warning behavior on these 104 sources, resource usage and full resumption
-after a real stage remain untested. Direct-input guards are sampled at stage
-boundaries; the inherited package, transitive and dynamic provider ancestry
-is not authenticated.
+An earlier runner was initialized at `/tmp/nine-ipra-guarded-author-20261102-e`.
+Stage 1 compiled and was published; stage 2's compiler exited 0 but the runner
+rejected its 11 warnings and did not publish that object. The sources, logs,
+dependency outputs, stage-1 receipt and stage-2 failure record are retained
+under `observations/first-stages/`; the binary objects remain in `/tmp`.
+
+The updated runner permits **explicit**, append-only registration of a
+warning-only failed attempt with `--register-warning ATTEMPT_PATH`. It checks
+the exact planned source hash, compiler command and successful compiler exit,
+rejects any error or `sorryAx`, and preserves the complete original log after
+replacing only its source path. An existing baseline cannot be overwritten.
+On retry, the entire normalized output must equal that registered log; any
+additional diagnostic or changed source is rejected. Baseline, metadata and
+original evidence are checked before and after the stage and recorded in the
+success receipt. Registration is an operator decision about a particular
+observed log, not a general claim that warnings are harmless.
+
+The updated runner was initialized at
+`/tmp/nine-ipra-guarded-author-20261102-h` and the complete 11-warning
+`ModelDifferenceRing` log was explicitly registered from the retained failed
+attempt. `--check` reported zero completed stages with
+`WeightedExpressionDegree` next. A separate scratch overlay demonstrated
+rejection of changed source, changed baseline, a duplicate registration and
+an additional diagnostic; old-runner drift, optimization and lock controls
+also rejected. See `WARNING_POLICY_CHECK.json`. These were control checks and
+did not launch Lean. The updated compiler path and real-stage resumption are
+not yet tested. Direct-input and warning-policy guards are sampled at stage
+boundaries; inherited package, transitive and dynamic ancestry is not
+authenticated.
