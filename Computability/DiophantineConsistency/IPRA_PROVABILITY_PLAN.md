@@ -223,7 +223,10 @@ supplies one of its two size estimates from positive inputs; a separate
 supplies the other for its returned graph witnesses. The [same-witness transport join](research/ten-positive-80-transport-model-prototype/README.md)
 now proves nonnegative transport and the strict mask gap for every positive
 graph zero with positive beta, without assuming signs. Fixed-port rank bounds,
-machine soundness and the iPRA endpoint remain open.
+machine soundness and the iPRA endpoint remain open. A further
+[rank-orientation theorem](research/ten-positive-80-rank-orientation-prototype/README.md)
+derives positivity of the signed graph rank from this transport result; the
+fixed-port rank window and exact index equality remain separate.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
