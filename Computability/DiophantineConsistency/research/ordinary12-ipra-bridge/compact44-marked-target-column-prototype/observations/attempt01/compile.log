@@ -1,0 +1,50 @@
+/tmp/compact44-marked-target-column-author-_c3zd6ar/CompactMarkedTargetColumn.lean:73:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  columnBand position 4393 n C (8807 * j + ↑4393)
+in the target expression
+  raw 67 coeff (GenericBandCarryFamily.word n C (bandOffsets position) T) (8807 * j + 4393) =
+    columnBand position 4393 n C (8807 * j + 4393) + columnBand position 5495 n C (8807 * j + 4393) +
+        bareColumn n C (8807 * j + 4393) +
+      dig 67 T (8807 * j + 4393)
+
+V : Type u_1
+inst✝³ : ORingStructure V
+inst✝² : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+row dummy : V → V
+inst✝¹ : 𝚺₁-Function₁ row
+inst✝ : 𝚺₁-Function₁ dummy
+N s : V
+hw : CompactWord row N s
+hN : 1 < N
+hs : s < N
+hbool : ∀ (j : V), dummy j ≤ 1
+j : V
+hj : j < N
+C : V := packedWord row dummy N
+n : V := 8807 * N
+T : V := temporalWord n (67 * (8807 * s)) C
+hn : 0 < n
+hC : C < Exp.exp (67 * n)
+hzero : ∀ k < n, ¬Bad (k % 8807) → dig 67 C k = 0
+hidx : ∀ q < 8807, 8807 * j + q < n ∧ (8807 * j + q) % 8807 = q
+htemporal : ∀ q < 8807, ¬Bad q → dig 67 T (8807 * j + q) = 0
+hsel : ∀ (i : Fin 943), dig 67 C (8807 * j + ↑↑i) = wordSelector row i j
+hcopy : ∀ (i : Fin 41), dig 67 C (8807 * j + ↑(position i)) = wordPayloadBit row i j
+htarget1 : columnBand position 4393 n C (8807 * j + ↑4393) = 1 + Exp.exp 51
+htarget2 : columnBand position 5495 n C (8807 * j + ↑5495) = 1 + Exp.exp 51
+hforeign1 : columnBand position 5495 (8807 * N) C (8807 * j + 4393) = 0 ∧ bareColumn (8807 * N) C (8807 * j + 4393) = 0
+hforeign2 : columnBand position 4393 (8807 * N) C (8807 * j + 5495) = 0 ∧ bareColumn (8807 * N) C (8807 * j + 5495) = 0
+ht1 : dig 67 T (8807 * j + 4393) = 0
+ht2 : dig 67 T (8807 * j + 5495) = 0
+hr1 :
+  raw 67 coeff (GenericBandCarryFamily.word n C (bandOffsets position) T) (8807 * j + 4393) =
+    columnBand position 4393 n C (8807 * j + 4393) + columnBand position 5495 n C (8807 * j + 4393) +
+        bareColumn n C (8807 * j + 4393) +
+      dig 67 T (8807 * j + 4393)
+hr2 :
+  raw 67 coeff (GenericBandCarryFamily.word n C (bandOffsets position) T) (8807 * j + 5495) =
+    columnBand position 4393 n C (8807 * j + 5495) + columnBand position 5495 n C (8807 * j + 5495) +
+        bareColumn n C (8807 * j + 5495) +
+      dig 67 T (8807 * j + 5495)
+⊢ dig 67 (blk 590069 (↑(paramKernel rho)) N s (cellWord row dummy) j) 4393 = 1 + Exp.exp 51 ∧
+    dig 67 (blk 590069 (↑(paramKernel rho)) N s (cellWord row dummy) j) 5495 = 1 + Exp.exp 51
+'CompactMarkedTargetColumn.marked_targets' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
