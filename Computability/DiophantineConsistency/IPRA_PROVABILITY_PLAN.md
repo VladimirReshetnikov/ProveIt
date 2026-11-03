@@ -503,7 +503,13 @@ from the selected 90 graph or a halt, and the remaining positive 80 carrier
 coordinates have not been constructed; the reverse implication remains open.
 A [fresh scaled-witness join](research/ten-positive-scaled-witness-from-unscaled-prototype/README.md)
 adds positive η′ and ζ′ for the scaled pair, explicitly distinct from the
-unscaled source witnesses. This is still a conditional model theorem.
+unscaled source witnesses. This is still a conditional model theorem. A
+[reverse-construction survey](reviews/ten-positive-90-to-80-reverse-plan/README.md)
+maps the shared graph coordinates, distinct Pell bases, internal period lemma,
+and outstanding carrier and provider obligations. A later [scaled strong-seed theorem](research/ten-positive-scaled-strong-seed-prototype/README.md)
+uses the internal arbitrary-modulus Pell result to construct positive seed
+indices and doubled coordinates for any positive c and τ. It is not yet
+joined to a 90 zero or the remaining 80 carriers.
 A generic [positive ordinary-seed theorem](research/ten-positive-pell-positive-seed-prototype/README.md)
 constructs the needed positive Pell coordinates from an explicit rank phase;
 it has not yet been bound to the same source graph valuation.
