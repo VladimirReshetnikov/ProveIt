@@ -462,7 +462,9 @@ now produces that direct local word from an internal halt and the existing
 power-based geometry. A [model payload lookup](research/direct-bfs-model-payload-prototype/README.md)
 adds definable direct-table fields and identifies them with the symbolic tile
 payload on standard row indices. The direct-family packing and graph-witness
-construction are still separate. An
+construction are still separate. A [cell-digit theorem](research/direct-bfs-cell-digit-prototype/README.md)
+adds jointly definable Boolean selector, dummy and payload-copy digits; it
+does not yet construct represented cells or packing. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
