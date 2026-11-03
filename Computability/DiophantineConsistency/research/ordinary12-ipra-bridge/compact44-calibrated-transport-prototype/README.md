@@ -1,0 +1,11 @@
+# Calibration supplies the positive compact transport
+
+`CompactCalibratedTransport.calibrated_transport` assumes a symbolic compact `PackingInput`, `0<s<N`, and calibration of that same packing's rank `R`:
+
+`R % (590069*N) = (590069*s) % (590069*N)`.
+
+It constructs a positive shifted quotient `z` with `q*w=2^R` and `(K+w)*C = F+z*(q−1)`, where `q=2^(590069*N)`, `w=2^(R−590069*N)`, and `C,F` are the packing's actual represented sums. The rank-size and rotation-congruence assumptions of the preceding positive-transport theorem are derived, respectively, from the compact packing and the displayed calibration. This remains conditional on the explicit calibration and does not itself construct the calibrated word, a graph zero, or an iPRA proof.
+
+`CompactGenericStride.stride` is a slim source-based port of the generic `ArithmeticControllerStride.stride`. Its proof body is retained, while the 2011 controller-data import and unused namespace opens are replaced by `ArithmeticCyclicWord`; the needed `one_lt_exp` helper is reproduced locally from `ArithmeticControllerData`. The original stride and controller-data source hashes are `97f9861a0859e7052e37a6c3ef8bd027545e88ffaa033a3689316c370d3e58c6` and `1a7261dfb12d4940925149a5f078702df1b0ff7b3f5f701ff2e85a495e139f9d`, respectively.
+
+The port source SHA-256 is `8fa22b4aa15afce0e6b49555d4b2e87b6f214ef4f802985e4c6ce75db8c90d75`; `observations/stride-attempt02` records a successful bounded author check and object `/tmp/compact44-generic-stride-author-kzeu_onl/CompactGenericStride.olean`, SHA-256 `256f87f2ee9d601c91e2cd235512d33004dbd47729dc69e734b6d480a2a7bd7f`. The join source SHA-256 is `a7827912bcb3ab2a058bd45dfb6534cdb31cdd716bb44fd7a4dbbb91cbb14397`; `observations/client-attempt01` records a successful check and object `/tmp/compact44-calibrated-transport-author-zh3yxtuc/CompactCalibratedTransport.olean`, SHA-256 `c59d12479d80fabf9b3c15b312f43dcca39357ac48d06d8a91eeb1e144964cfc`. Both named axiom reports are `[propext, Classical.choice, Quot.sound]`, with unchanged direct import and companion guards. The failed first port attempt and exact source snapshot are retained. These are single-author checks with inherited provider/package ancestry; they do not authenticate the transitive or dynamic closure and are not paired replay.
