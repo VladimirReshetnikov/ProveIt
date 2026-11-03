@@ -421,6 +421,9 @@ graph zero. An [all-block join](research/direct-bfs-80-all-blocks-prototype/READ
 propagates it to a selected direct tile at every internal block. These are
 author checks; an [independent all-blocks audit](reviews/direct-bfs-spatial-all-blocks-independent/README.md)
 checks the common length and unit-successor propagation without replaying Lean.
+The [represented-word client](research/direct-bfs-80-all-block-word-prototype/README.md)
+constructs one internal base-1024 word of selected direct tile indices at
+every block, using a [direct orbit word](research/direct-bfs-lean-orbit-row-prototype/README.md).
 Edge adjacency, complete tiling and machine semantics remain separate. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,

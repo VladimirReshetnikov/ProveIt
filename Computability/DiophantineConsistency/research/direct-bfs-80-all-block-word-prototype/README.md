@@ -1,0 +1,5 @@
+# Direct-BFS 80-graph represented row word
+
+`DirectBFS80AllBlockWord.graph_all_block_word` turns an actual positive 80-graph zero at the four explicit direct-BFS symbolic ports into a positive radix length and a base-1024 internal word representing selected direct-BFS tile indices at every block. Its selected tile and copy word use the same model-valued block position and radix length. The theorem does not yet assert edge adjacency or identify the sequence as a machine computation.
+
+The guarded author check `observations/directbfs80allword-attempt01/` exited 0 without diagnostics and reports axioms `propext`, `Classical.choice`, and `Quot.sound`. Every direct source import was resolved to an explicitly pinned object and rechecked. Object `/tmp/direct-bfs-80-allword-fw6e1ovj/DirectBFS80AllBlockWord.olean` has SHA-256 `24acb3fec71dbecd177fbb1ea47eb209d96f85ce0978cc95cb21463ad5b419b4`. Inherited transitive source/object, package and dynamic ancestry remain unverified; no independent Lean replay is claimed. The color/machine bridge, converse, iPRA and formal JSON/file binding remain open.
