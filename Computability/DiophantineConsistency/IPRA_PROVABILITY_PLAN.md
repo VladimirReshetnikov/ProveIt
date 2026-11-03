@@ -37,10 +37,11 @@ payload. For the MC port, a [guarded author build](research/ordinary12-ipra-brid
 now proves that a closed 73,759-entry Lean byte recipe decodes to the
 symbolic low mask. A separate [shifted-MF reconstruction](research/ordinary12-ipra-bridge/compact44-mf-byte-assembly-prototype/README.md)
 proves that a closed byte recipe decodes to beta plus the symbolic high mask,
-with beta added once. External pinned checks compare recipe transcriptions
-with the retained parent payloads; Lean does not yet establish those file or
-gzip correspondences. The K binding, supplement and PDF correspondence
-remain open. The
+with beta added once. A [four-port Lean theorem](research/ordinary12-ipra-bridge/compact44-four-port-byte-assembly2/README.md)
+now joins closed beta, K, MC and shifted-MF byte recipes to the exact symbolic
+tuple. External pinned checks compare recipe transcriptions with the retained
+parent payloads; Lean does not yet establish those file or gzip
+correspondences. Parent-to-supplement and PDF correspondence remain open. The
 [serialized-import inventory](research/ordinary12-ipra-bridge/compact12-ipra-object-import-prototype/README.md)
 also supports the initial 59-module rebuild within its scoped namespace,
 without certifying all other project or package ancestry. A guarded
@@ -52,8 +53,8 @@ unresolved affected ancestors and must be treated as provisional until
 those predecessors and the stages themselves are rebuilt coherently. The
 source files for the enlarged cone are identifiable; their historical
 source-to-object origins remain incompletely authenticated. A fresh,
-guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage63/README.md)
-has rebuilt its first 63 of 425 modules; the remaining stages and final
+guarded [expanded-cone build](research/ordinary12-ipra-bridge/compact12-ipra-expanded-cone-rebuild-stage65/README.md)
+has rebuilt its first 65 of 425 modules; the remaining stages and final
 client are open. A separately checked
 [conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
 also supplies standard and equality-only iPRA conclusions for any positive
@@ -66,7 +67,11 @@ the separate [CURRENT2011 nine-variable endpoint](Lean/DiophantineConsistency/IP
 does the same for a different equation. Both have now passed a
 [104-stage incremental author-side replay](reviews/nine-variable-ipra-complete-author-ledger/README.md)
 on a historical provider; the endpoint packets retain the 15 CURRENT2011 and
-four ExplicitZFC named axiom reports. Neither is yet a paired replay.
+four ExplicitZFC named axiom reports. A separate guarded peer has now also
+completed all 104 stages. Its [aggregate audit](reviews/nine-variable-ipra-complete-peer-ledger/README.md)
+records matching endpoint outputs and named reports but 20 differing object
+hashes and 31 differing direct-input pairs, so this is not an exact
+full-chain paired replay or a complete inherited-ancestry audit.
 A new guarded peer has compiled its first ten stages, with evidence for
 [stages 1–5](reviews/nine-variable-ipra-peer-first-five/README.md) and
 [6–10](reviews/nine-variable-ipra-peer-stages-six-ten/README.md). Several
