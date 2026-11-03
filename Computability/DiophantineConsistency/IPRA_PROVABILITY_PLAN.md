@@ -478,7 +478,9 @@ a [local low-mask lemma](research/direct-bfs-cell-low-pulse-prototype/README.md)
 handles normalized pulses for non-forbidden rows. Global origin, high-mask
 and rank calibration remain separate. A [word low-mask join](research/direct-bfs-word-low-fields-prototype/README.md)
 proves the positive origin and low-mask fields for a direct local word when
-the dummy at the origin is even; high-mask and calibrated packing remain open. An
+the dummy at the origin is even. A [conditional packing adapter](research/direct-bfs-conditional-packing-prototype/README.md)
+combines those fields with explicitly assumed transport/high-mask conditions;
+those conditions and calibrated graph witnesses remain open. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
