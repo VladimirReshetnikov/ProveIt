@@ -140,7 +140,11 @@ descendants share the externally checked finalizer shape but are distinct
 graphs. A separate [adjacent-Pell denominator lemma](research/ten-positive-adjacent-descent-prototype/README.md)
 proves that a reduced denominator's square divides the corresponding
 coefficient under the stated cross-multiplied equation. It does not yet prove
-the descent or denominator integrality required by the 80-row argument.
+the descent or denominator integrality required by the 80-row argument. A
+[separate step theorem](research/ten-positive-adjacent-preserve-prototype/README.md)
+establishes reducedness of the transformed numerator, integrality of the
+transformed first coordinate and a ring norm identity; strict decrease and
+the internal descent argument remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
