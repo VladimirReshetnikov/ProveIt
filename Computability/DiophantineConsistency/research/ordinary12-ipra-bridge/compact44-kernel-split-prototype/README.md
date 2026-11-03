@@ -18,9 +18,17 @@ symbolic product's low half modulo `2^590069` equals
 `lowerKernelAt rho * x`, and that this value is below `2^(67*8793+1)`.
 The separate compact cell product client proves the input bound for the
 actual base and pulsed cells. The bound leaves 13 completely unused radix
-digits and 66 further unused bits below the `2^590069` boundary. This result
-does not yet prove the whole cell-plus-block bound or a complete packing
-condition.
+digits and 66 further unused bits below the `2^590069` boundary.
+
+`CompactKernelBlockSize` adds the complementary exact high-half identity:
+for the same size-bound hypothesis, `K*x / 2^590069 = 2^(67*42)*x`.
+Consequently, for **any** model cell function whose values at every index
+below positive `N` satisfy that size bound, Lean proves the complete
+`cell_sum` field `X j + blk j < 2^590069` for each `j<N`. The cyclic
+predecessor and stride indices are below `N` because `N>0`. The earlier
+compact-cell and pulse-size results can supply the pointwise size premise;
+this generic client does not itself construct a row word, a full packing,
+high-mask facts, graph zero, or an iPRA theorem.
 
 Attempts 01–03 exited 1: initially two missing explicit radix reductions,
 then kernel memory exhaustion in a specialized split. Attempt 04 checked the
@@ -52,3 +60,13 @@ source is preserved with its observation. The comment was corrected, and the
 guarded sole-Lean rerun `low-product-attempt03`, session `43180`, exited 0
 with no warnings or `sorryAx` and unchanged direct and overlay guards. Its
 five axiom reports have the same three metatheoretic axioms as attempt 02.
+
+The first `CompactKernelBlockSize` attempt proved the high-half lemmas but
+failed at the last four-term exponent rewrite; its source and log are
+retained. Corrected attempt `block-size-attempt02`, session `38121`, exited 0
+without warnings or `sorryAx`, with the same three metatheoretic axioms in
+all three named reports. Its guarded mixed overlay covered 524 distinct
+project-file names, 339 names present in multiple providers and 338 present
+in all three; all overlapping hashes matched, and the overlay and sampled
+direct guards were unchanged. It has the same single-author and inherited
+ancestry limitations as the other clients.

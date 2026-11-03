@@ -1,0 +1,31 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/compact44-kernel-block-size-author-x7a3pz9a/CompactKernelBlockSize.lean:71:52: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+N s : V
+X : V → V
+hN : 0 < N
+hsmall : ∀ j < N, X j < Exp.exp (67 * 3297 + 1)
+j : V
+hj : j < N
+h0 : X j < Exp.exp (67 * 3297 + 1)
+h1 : X (cyc N j 1) < Exp.exp (67 * 3297 + 1)
+hs : X (cyc N j s) < Exp.exp (67 * 3297 + 1)
+E : V := Exp.exp (67 * 8793 + 1)
+hx : X j < E
+hs' : X (cyc N j s) < E
+hl : lo 590069 (↑(paramKernel rho)) X j < E
+hh : hi 590069 (↑(paramKernel rho)) X (cyc N j 1) < E
+hsum :
+  X j + (lo 590069 (↑(paramKernel rho)) X j + hi 590069 (↑(paramKernel rho)) X (cyc N j 1) + X (cyc N j s)) <
+    E + E + E + E
+⊢ Exp.exp 589131 * 8 = Exp.exp 589133 * 2
+'CompactKernelBlockSize.high_product' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CompactKernelBlockSize.high_product_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CompactKernelBlockSize.cell_sum_of_small' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
