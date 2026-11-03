@@ -17,8 +17,10 @@ to every model of IΣ₁. If `x < 2^(67*3297+1)`, it proves that the exact
 symbolic product's low half modulo `2^590069` equals
 `lowerKernelAt rho * x`, and that this value is below `2^(67*8793+1)`.
 The separate compact cell product client proves the input bound for the
-actual base and pulsed cells. This result does not yet prove the whole
-cell-plus-block bound or a complete packing condition.
+actual base and pulsed cells. The bound leaves 13 completely unused radix
+digits and 66 further unused bits below the `2^590069` boundary. This result
+does not yet prove the whole cell-plus-block bound or a complete packing
+condition.
 
 Attempts 01–03 exited 1: initially two missing explicit radix reductions,
 then kernel memory exhaustion in a specialized split. Attempt 04 checked the
@@ -42,3 +44,11 @@ without warnings or `sorryAx`. Its five named axiom reports contain only
 same 517-name, 338-overlap mixed project overlay were unchanged across the
 run; this author-side incremental client inherits the ancestry limitations
 above.
+
+An independent source inspection caught an explanatory comment in the
+successful attempt 02 that overstated the slack as fourteen whole radix
+digits; the theorem's explicit exponent was already correct. The prior exact
+source is preserved with its observation. The comment was corrected, and the
+guarded sole-Lean rerun `low-product-attempt03`, session `43180`, exited 0
+with no warnings or `sorryAx` and unchanged direct and overlay guards. Its
+five axiom reports have the same three metatheoretic axioms as attempt 02.

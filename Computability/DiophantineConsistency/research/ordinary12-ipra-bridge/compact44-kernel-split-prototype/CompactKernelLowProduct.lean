@@ -33,7 +33,8 @@ theorem lower_bound_model :
   simpa only [Nat.cast_mul, Nat.cast_ofNat] using h
 
 /-- Under the already-proved cell/pulse size bound, the low component has
-at least fourteen unused radix digits before the `2^590069` boundary. -/
+thirteen completely unused radix digits and 66 more unused bits before the
+`2^590069` boundary. -/
 theorem low_product_lt (x : V) (hx : x < Exp.exp (67*3297+1 : V)) :
     ((lowerKernelAt rho : ℕ) : V) * x < Exp.exp (67*8793+1 : V) := by
   calc

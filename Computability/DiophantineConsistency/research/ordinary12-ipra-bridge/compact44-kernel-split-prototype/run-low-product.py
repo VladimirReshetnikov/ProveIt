@@ -30,7 +30,7 @@ COPY = Path('/tmp/compact44-cell-copy-author-xh37hl8r')
 PROVIDER = Path('/tmp/ipra-compact-word-cell-author-01/lib')
 PACKAGE = Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib')
 LEAN = Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
-OBS = HERE / 'observations/low-product-attempt02'
+OBS = HERE / 'observations/low-product-attempt03'
 SUFFIXES = ('.olean', '.olean.private', '.olean.server', '.ir', '.ilean',
             '.olean.hash', '.olean.private.hash', '.olean.server.hash', '.ir.hash', '.ilean.hash')
 
