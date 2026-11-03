@@ -1,0 +1,42 @@
+/tmp/compact44-halt-pell-seed-author-v62v01pb/CompactHaltPellSeed.lean:34:30: error: unexpected token '∧'; expected term
+/tmp/compact44-halt-pell-seed-author-v62v01pb/CompactHaltPellSeed.lean:62:49: error: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+/tmp/compact44-halt-pell-seed-author-v62v01pb/CompactHaltPellSeed.lean:77:4: error: Type mismatch
+  seeds hp
+has type
+  have u := 590069 * N;
+  have R := rank (↑(paramKernel rho)) N s (perturb (baseCell (haltRow T)) δ);
+  ∃ sY n eta zeta gamma,
+    0 < sY ∧
+      0 < n ∧
+        0 < eta ∧
+          0 < zeta ∧
+            0 < gamma ∧
+              SeedRelations u R sY n eta zeta gamma ∧
+                sY * Exp.exp u ^ 3 ≤ power (Exp.exp R + 1) R ∧
+                  have Y := sY * Exp.exp u ^ 3;
+                  have a := Exp.exp R * Y + Y;
+                  have c := ycoord R a;
+                  ∃ f i T w y,
+                    0 < f ∧
+                      0 < i ∧
+                        0 < T ∧
+                          0 < w ∧
+                            0 < y ∧
+                              f = xcoord (R * c) a ∧
+                                ycoord (R * c) a = i * c * c ∧
+                                  f * f = 1 + delta a * (i * c * c) * (i * c * c) ∧
+                                    have I := delta a * i * c * c;
+                                    y = ycoord R (I - 2) ∧
+                                      xcoord R (I - 2) = I * w ∧
+                                        w = oddQuotient ((R - 1) / 2) (I - 2) ∧
+                                          (w + c) % (f * f) = 0 ∧
+                                            (w + R) % c = 0 ∧
+                                              f * f * c * T = w + c + f * f * R ∧
+                                                w = absdiff (f * f * c * T) (f * f * R + c) ∧
+                                                  I * I * w * w + y * y = 1 + I * I * y * y
+but is expected to have type
+  SeedBundle (↑(paramKernel rho)) (haltLength T) (haltStride T) (perturb (baseCell (haltRow T)) δ)
+'CompactHaltPellSeed.halt_calibrated_seeds' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
