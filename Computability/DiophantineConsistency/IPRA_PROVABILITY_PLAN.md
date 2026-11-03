@@ -434,6 +434,10 @@ the model-level color/machine interpretation, converse, iPRA or file binding.
 An [independent edge audit](reviews/direct-bfs-field-slices-tile-match-independent/README.md)
 checks the same N,W,s, selected indices and eight direct imports without a
 Lean replay; it does not assert `s>0` or boundary/machine behavior. An
+[internal local-word join](research/direct-bfs-80-local-word-prototype/README.md)
+now composes represented direct rows, origin/exclusion facts and local edge
+equalities at one length. Translating this direct-table word to the original
+machine table, the converse, iPRA and formal file binding remain open. An
 [array-shape check](research/direct-bfs-lean-conjugacy-shape-prototype/README.md)
 proves the candidate row/color map sizes and selected distinguished entries,
 but not the full inverse maps or row correspondences. A
