@@ -840,7 +840,9 @@ checks the arbitrary-port scope and selected graph object without replaying Lean
 A subsequent [explicit-row client](research/ten-positive-80-explicit-rows-binding/README.md#explicit-row-ipra-endpoints)
 checks all four standard and equality-only iPRA derivability statements for
 that same Lean row expression with the fixed symbolic ports and one positive
-shift. It uses the selected 127-module rebuilt provider and inherits its
+shift. An [independent source and receipt review](reviews/ten-positive-80-displayed-ipra-independent/README.md)
+checks the four conclusions and selected direct providers without a Lean
+replay. The client uses the selected 127-module rebuilt provider and inherits its
 remaining ancestry limits; the printed constant and file correspondences are
 still external.
 A generic [scaled-from-unscaled Pell theorem](research/ten-positive-scaled-from-unscaled-prototype/README.md)
