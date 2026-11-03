@@ -4,6 +4,14 @@ This is a source/file inspection and one external finite checker run. It is
 not a Lean replay, byte-to-expression theorem, PDF parser verification,
 coefficient binding or an iPRA proof.
 
+Subsequent work established a [Lean equality for all four symbolic byte
+recipes](../compact44-four-port-byte-assembly2/README.md) and a separate
+[model equivalence using those recipes](../compact44-byte-ports-model-iff-prototype/README.md).
+The supplement's missing binding, payloads and other manifest-pinned files
+have also been [restored and externally checked](../supplement-pinned-restoration/README.md)
+against the retained parent package. These later results do not formalize
+JSON, gzip or filesystem bytes in Lean and do not identify a displayed PDF.
+
 The all-model result uses `Ordinary12FreeJ.literal p`, an **unshifted**
 `Expr (Fin 12)` for the 95-operation free-J graph, with strictly positive
 model coordinates. Its exact symbolic tuple is `p = ![betaNat,
@@ -64,11 +72,11 @@ The 95-row graph's JSON lists domain “strictly positive integers”, the same
 96-operation parent; its SHA-256
 `2a8da9ac141de5078fbdca96acccab5a7c44f6b39f4bc6063261b29179cb68be`
 matches the 95-row JSON's recorded parent hash. This is an external graph
-ancestry observation, not an identification of concrete Lean coefficients
-with any retained compressed byte sequence. In particular the existing
-`compact44-k-serialization-plan` documents that no Lean theorem currently
-identifies `paramKernel rho` with the retained K bytes or a displayed
-coefficient. Formal coefficient binding and a separately specified checked
-TeX/PDF transcription or an explicit external provenance boundary are still
-needed before attributing the model result or a future iPRA theorem to a
-particular delivered PDF.
+ancestry observation. The later restoration re-establishes, by the frozen
+supplement manifest and repeated external checks, that the child's restored
+binding and compressed files are byte-identical to the retained parent
+package. The checked Lean port theorem is about closed recipes, and the
+recipe-to-file/transcription relationship remains external. A separately
+specified checked TeX/PDF transcription or an explicit external provenance
+boundary is still needed before attributing the model result or a future
+iPRA theorem to a particular delivered PDF.
