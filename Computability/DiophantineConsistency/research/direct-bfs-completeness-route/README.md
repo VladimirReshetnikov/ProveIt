@@ -45,3 +45,11 @@ replay and ancestry qualifications.
 The [reverse-graph review](../../reviews/direct-bfs-halt-80-graph-independent/README.md)
 checks all four model-port hypotheses and the common witnesses, without a new
 Lean replay or full ancestry audit.
+
+The [80-graph model equivalence](../direct-bfs-80-model-iff-corrected-prototype/README.md)
+now combines both directions in every IΣ₁ model, under four explicit natural
+port equalities for the direct-BFS symbolic coefficient tuple. An
+[independent source/receipt audit](../../reviews/direct-bfs-80-model-iff-independent/README.md)
+checks the selected inputs and both directions. It is not a fixed-port iPRA
+endpoint, a trace75 equivalence, or a Lean theorem about external payloads;
+full source/object and package ancestry and independent replay remain open.

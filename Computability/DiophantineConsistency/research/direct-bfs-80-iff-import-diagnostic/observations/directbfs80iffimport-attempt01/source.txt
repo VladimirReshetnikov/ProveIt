@@ -1,0 +1,10 @@
+import DirectBFSHalt80Graph
+import DirectBFS80ModelHalt
+import CompactSymbolicBetaCast
+import CompactSymbolicMaskData
+set_option autoImplicit false
+set_option Elab.async false
+namespace DirectBFS80IffImportDiagnostic
+theorem marker : True := by trivial
+#print axioms DirectBFS80IffImportDiagnostic.marker
+end DirectBFS80IffImportDiagnostic
