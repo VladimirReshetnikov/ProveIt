@@ -807,7 +807,11 @@ passed for the inspected transformation and theorem. This does not establish saf
 or the packed-rank variation identity. A [chosen-dimensions client](research/ordinary12-ipra-bridge/compact44-chosen-controller-calibration-prototype/README.md)
 discharges both bounds for explicit powers of `581197`, giving the abstract
 calibration for every model computation bound; it inherits the same remaining
-physical construction obligations.
+physical construction obligations. A [conditional variation client](research/ordinary12-ipra-bridge/compact44-conditional-rank-variation-prototype/README.md)
+checks the exact symbolic rank-variation identity and calibrated congruence
+assuming two valid packings, the stated cell perturbation, Boolean and
+nonwrapping support, and the calibration congruence. It does not construct
+either physical packing or prove the selected changes safe.
 Separate source reviews of the [unit theorem](reviews/compact44-controller-unit-mathematical-source-review/README.md)
 and [residue theorem](reviews/compact44-symbolic-k-horner-mathematical-review/README.md)
 found no defect in the inspected arguments; these reviews predate the joined
