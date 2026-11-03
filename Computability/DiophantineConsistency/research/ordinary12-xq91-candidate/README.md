@@ -34,12 +34,12 @@ Conversely, any positive new witness maps to a positive old witness by
 This use of compact-beta alignment is **specific to the fixed ports and their
 proved bounds**; the converse is not claimed for arbitrary ports.
 
-The three residual comparisons have passed a guarded Lean check over every
-commutative ring; see [ALGEBRA.md](ALGEBRA.md). The positive-witness
-existence comparison and fixed-port model join remain open. This packet does
-not claim an iPRA derivation, a Lean interpretation of JSON/gzip/PDF, or
-global minimality. Subsequent model joins must record their exact provider
-and proof scope separately.
+The ring residual comparisons have passed Lean; see [ALGEBRA.md](ALGEBRA.md).
+A separate guarded all-model proof now establishes the fixed-port positive
+zero/halt equivalence and its shifted byte-recipe version; see [HALT.md](HALT.md)
+for its exact scope and provider evidence. The JSON-to-Lean comparison is an
+external source check. This packet does **not** claim an iPRA derivation, a
+Lean interpretation of JSON/gzip/PDF, or global minimality.
 
 From this directory, run:
 
