@@ -22,6 +22,9 @@ A [build preflight](research/nine-variable-ipra/bounded-build-preflight/README.m
 identifies 103 missing project modules across the two source-declared closures
 on the selected historical provider. Existing object availability and the
 sampled source comparisons do not authenticate its full dependency closure.
+The first two author-side stages of the [resumable build](reviews/nine-variable-ipra-first-two-stages-author-audit/README.md)
+passed an independent artifact check; the second uses a source-bound warning
+baseline and has an earlier rejected object with a different unexplained hash.
 
 The newer [13-variable degree-36 equation](equation36.pdf) has an
 87-operation evaluator. Its exact fixed-port literal now has a no-premise
@@ -821,7 +824,11 @@ found no defect in the inspected adaptation or algebra. A further
 [realization-conditional client](research/ordinary12-ipra-bridge/compact44-controller-realizable-bridge-prototype/README.md)
 combines chosen calibration with variation, assuming a valid initial packing
 and a valid perturbed packing for every admissible selector; it does not prove
-that uniform realization assumption.
+that uniform realization assumption. A separate [source review](reviews/compact44-chosen-rank-realization-source-review/README.md)
+confirms that the same selector and packing witnesses are used throughout.
+The [canonical perturbation client](research/ordinary12-ipra-bridge/compact44-canonical-perturbation-prototype/README.md)
+defines the modified word explicitly, but still assumes that every admissible
+perturbation preserves all packing conditions.
 A [static-field client](research/ordinary12-ipra-bridge/compact44-packing-static-fields-prototype/README.md)
 proves the chosen-dimension inequalities and three bounds for the exact
 symbolic native masks. This exploratory mixed-provider build checks selected
