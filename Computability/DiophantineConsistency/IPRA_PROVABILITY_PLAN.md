@@ -187,8 +187,10 @@ norm. A [graph-specific signed congruence](research/ten-positive-80-residue-bind
 is checked and [joined to the same magnitude witness](research/ten-positive-80-folding-joined-prototype/README.md)
 as the indices. A [folding-input corollary](research/ten-positive-80-folding-consequences-prototype/README.md)
 then gives `c≤I` and the signed congruence between `c` and the auxiliary
-ordinate. The remaining all-index folding, machine calibration and iPRA
-endpoint remain open.
+ordinate. An [independent audit](reviews/ten-positive-80-indices-residue-independent/README.md)
+checks the common witness and noncircular source dependencies without replaying
+Lean. The remaining all-index folding, machine calibration and iPRA endpoint
+remain open.
 A [serialized-import preflight](research/ordinary12-sum-squares-endpoint-import-preflight/README.md)
 and its [independent review](reviews/ordinary12-sum-squares-endpoint-import-preflight-independent/README.md)
 find no member of the 425-module rebuild cone among the recorded selected-project
