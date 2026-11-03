@@ -6,7 +6,8 @@ The candidate replaces the 89-row graph's `g31=(ell+k)+r` by a new independent p
 
 The [first-factor packet](FIRST.md) extracts the scaled norm and a positive
 first Pell root from a full graph zero. It does not establish transport
-positivity or the reverse direction.
+positivity or the reverse direction. The [signed-root packet](SIGNS.md)
+checks both first-root alternatives assuming the transport bound explicitly.
 
 The proposed reverse idea is to use divisibility `Bt=b*t` and the positive first-root branch to show `r_new=(1+k*b)*t+first>ell+k`; for the negative branch, reflection by `2*first` should preserve the whole graph and produce a witness above that threshold. Those claims have not yet been bound to this actual graph in Lean. Neither bounded-port model equivalence, halt, iPRA, nor a PDF binding is asserted for the 88 graph.
 

@@ -123,6 +123,8 @@ An [88-operation absorbed-root draft](research/ordinary12-absorb88-probe/README.
 has an externally checked live graph and Lean-checked forward ring identities.
 The [first-factor extraction](research/ordinary12-absorb88-probe/FIRST.md)
 is now checked in models, including a positive Pell root when beta is positive.
+The [signed-root alternatives](research/ordinary12-absorb88-probe/SIGNS.md)
+are checked conditional on the unresolved transport bound.
 Its reverse argument is open: exact first-factor examples show the needed
 transport positivity cannot be derived from that factor alone, including one
 under the abstract port bounds. Neither example is a full-graph counterexample.

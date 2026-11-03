@@ -1,0 +1,5 @@
+# Conditional first-root signs
+
+`Absorb88Transport.root_rep` binds the signed first-root expression to the actual 88 graph. `Absorb88Signs.first_branches` obtains the positive first root, positive transport term, norm and either signed root equation, assuming the explicit strict bound `(F+alpha)*(K0+w)+F < q*(K0+w)`. That bound is equivalent to positivity of the transport term, and is **not** derived here. The actual-graph examples in the README show that the first residual alone cannot provide it.
+
+The guarded two-stage author check `run-signs.py` passed in session 86269 (attempt03, exit 0). The first two attempts were rejected solely for unused-variable or unused-simp-argument warnings, and their exact sources/logs remain under `observations/signs-attempt01/` and `signs-attempt02/`. Attempt03 and all provider/resource evidence are under `observations/signs-attempt03/`. Imported first-norm source locally suppresses the two corresponding linter classes. No independent Lean replay is claimed, and package-transitive, dynamic and historical source/object ancestry are inherited.
