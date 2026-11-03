@@ -36,7 +36,15 @@ external check separately matches that list to the retained compressed
 payload. The other three port bindings and formal file correspondence remain
 open. The [serialized-import inventory](research/ordinary12-ipra-bridge/compact12-ipra-object-import-prototype/README.md)
 also supports the initial 59-module rebuild within its scoped namespace,
-without certifying all other project or package ancestry.
+without certifying all other project or package ancestry. A guarded
+[15-stage author prefix](research/ordinary12-ipra-bridge/compact12-ipra-incremental-rebuild-merged-batch03/README.md)
+has since compiled, but conflicts in `BusyBeaver.*` and another project
+namespace make a broader reverse-impact scan necessary before the proposed
+59-module cone can be considered complete. A separately checked
+[conditional adapter](research/ordinary12-ipra-bridge/positive-model-ipra-standard-adapter-prototype/README.md)
+also supplies standard and equality-only iPRA conclusions for any positive
+all-model bridge; it has not been joined to the compact bridge in a coherent
+build.
 
 The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
 states native, standard and equality-only iPRA equivalences without hypotheses;
@@ -45,6 +53,13 @@ does the same for a different equation. Both have now passed a
 [104-stage incremental author-side replay](reviews/nine-variable-ipra-complete-author-ledger/README.md)
 on a historical provider; the endpoint packets retain the 15 CURRENT2011 and
 four ExplicitZFC named axiom reports. Neither is yet a paired replay.
+A new guarded peer has compiled its first ten stages, with evidence for
+[stages 1–5](reviews/nine-variable-ipra-peer-first-five/README.md) and
+[6–10](reviews/nine-variable-ipra-peer-stages-six-ten/README.md). Several
+objects differ in bytes: the stage-two difference is localized to a source
+pathname, while a stage-six size/layout discrepancy remains unexplained by
+any proved Lean serialization semantics. These prefixes do not establish a
+matched endpoint replay.
 A separate [source-evidence inspection](reviews/nine-variable-ipra-endpoint-source-evidence/README.md)
 checks the endpoint statements and the source-level expression binding; it
 does not reproduce the reported builds or interpret the document's bytes.
