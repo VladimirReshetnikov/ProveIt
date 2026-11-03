@@ -368,10 +368,15 @@ finite phase cases; the [origin-transfer client](research/ordinary12-ipra-bridge
 supplies the special decremented origin mask. A [halt-to-packing theorem](research/ordinary12-ipra-bridge/compact44-halt-rank-no-high-prototype/README.md)
 therefore derives a full symbolic compact packing and calibrated rank from a
 model-internal halt, without separate physical premises, and its [source review](reviews/compact44-halt-rank-no-high-source-review/README.md)
-records the exact scope. Constructing a positive zero of the free-J graph,
-binding the retained/displayed coefficients and proving the iPRA endpoint
-remain separate obligations. The components use guarded single-author
-providers with inherited ancestry, as described in their linked records.
+records the exact scope. A [rank-forcing join](research/ordinary12-ipra-bridge/compact44-rank-residue-join-prototype/README.md)
+derives the compact rank population, mod-four phase and size from any such
+symbolic packing and identifies the relevant calibration constant. Separately,
+the exact free-J literal has a checked [factor equivalence](research/ordinary12-ipra-bridge/free-j-completeness-factor-bridge-prototype/README.md)
+and a [conditional ordinary-factor construction](research/ordinary12-ipra-bridge/free-j-ordinary-tail-witness-prototype/README.md).
+Constructing positive coordinates that meet all factor equations, binding the
+retained/displayed coefficients and proving the iPRA endpoint remain separate
+obligations. The components use guarded single-author providers with inherited
+ancestry, as described in their linked records.
 
 The existing ordinary 12-variable candidate has a [source-pinned internalization
 plan](research/ordinary12-ipra-bridge/PLAN.md), an isolated modulo-four Lean
