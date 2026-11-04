@@ -1,0 +1,5 @@
+# Independent source review: symbolic beta power
+
+Reviewed unchecked `research/trace74-symbolic-mask-beta-power-draft/Trace74BetaPower.lean` SHA-256 `7a4225fb1fa2f08c6f54fd94866e473b9d2450662e00ecbbb0af29c4944beae0`. The retained `CompactFixedBeta.lean` source and its byte-identical producer snapshot both SHA-256 `9adc356351adfdeb2ccfcfe61cbf18fcd8a8458c911fabd91d07fe49ce85fcd5` define `betaNat := 2^(67*8807)-1`. The displayed `Nat.one_le_two_pow` makes `Nat.sub_add_cancel` applicable, and the reverse `pow_mul` rewrite makes `(2^67)^8807` equal `2^(67*8807)` without evaluating the large numeral. The actual report directive names `Trace74BetaPower.beta_plus_one`.
+
+No mathematical mismatch found. Lean elaboration and resources are unchecked; no Lean run was performed. A future check must pin and select the actual CompactFixedBeta provider and its captured closure. This identity does not itself establish the low identity, strict defect bound, mask cover, all-model cast, graph guard, external-file binding or iPRA. The source evidence does not authenticate all transitive producer ancestry.

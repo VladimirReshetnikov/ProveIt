@@ -1,0 +1,5 @@
+# Generic-exponent beta-power retry
+
+The [independent prelaunch review](../../reviews/trace74-symbolic-beta-power-v2-prelaunch-independent/README.md) approved one run. Attempt01 completed with actual outer exit 0 and child status PASS. The [child result](observations/attempt01/result.json) SHA-256 is `2d4ef4f19f2ed38ddba0a098904e2a8805293e76e8c9a8262b32d2392b7693e0`; the [outer receipt](observations/outer-attempt01/terminal.json) SHA-256 is `32e300c273a1c5e22cda44a1a10824e11a7e34bbca0d78a5a2d4a9fb3de42b87`; output object SHA-256 is `5133c297b33b221cd56408d9e7fa3c946e6c7e8519423103a77da44b890a8b9c`. The [independent result audit](../../reviews/trace74-symbolic-beta-power-v2-result-independent/README.md) passed. The warning-rejected first attempt remains separately preserved.
+
+The accepted theorem proves the natural identity `betaNat+1=(2^67)^8807`; it does not establish the low or high mask bounds, combined cover, model cast or graph guard. Capture-relative provider and package ancestry limitations remain.
