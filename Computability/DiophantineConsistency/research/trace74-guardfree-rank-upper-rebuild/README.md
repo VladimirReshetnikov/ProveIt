@@ -1,0 +1,5 @@
+# Guard-free signed rank-upper check
+
+The one-stage check imports the selected rank-binding object from the audited 2,067-object conditional-join parent. Read-only preflight, 25 policy controls, six supervisor controls and the [independent prelaunch review](../../reviews/trace74-guardfree-rank-upper-prelaunch-independent/README.md) passed. The guarded run passed with actual outer exit 0: child SHA-256 `33b34e3f1f2eacf1eaad393cfc98644ee4d82cb0775113e1cb668040e6285e8b`, outer terminal SHA-256 `8b1029208113aa53fa88da7e96d6f96d218d24e51f59b445d4cd2837e6ca1be6`, object SHA-256 `b2df40152e0bd1cb7fcd2ccee358646ad0f4db4ebd7125fca09205a70a4bd07d`. All three named reports use only `propext`, `Classical.choice`, and `Quot.sound`. The [independent result audit](../../reviews/trace74-guardfree-rank-upper-result-independent/README.md) passed.
+
+The theorem uses nonnegative model scalars, positive `J,F,C`, `q=beta*J+1`, `MC<beta` and `MF<2*beta`; it does not assume individual `F/C` bounds, their sum guard or a graph zero. The captured-parent ancestry and external-file binding limits remain.
