@@ -1,7 +1,7 @@
 # Independent arithmetic review of the carrier CRT extension
 
 The reviewed [note](../../research/trace74-symbolic-carrier-crt/README.md)
-has SHA-256 `b3bafc2a218c28875de1b4ceb8a9489d28285ff4578cf00b6e701497344a9539`;
+has SHA-256 `179de1c70589badb82d563bf6b724690d309470d58e665d45faf539b18a6a123`;
 its [checker](../../research/trace74-symbolic-carrier-crt/check.py) has
 SHA-256 `e12a2c661a5649dc6c340c24c2a417e4b11e38c4a0733b782da3acb318d385e5`.
 The ordinary-integer proof is valid under its stated fixed candidate,

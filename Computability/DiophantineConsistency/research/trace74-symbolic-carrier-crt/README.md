@@ -71,9 +71,10 @@ Z=hD[H(v7−V²Breg)+Kreg]−H(DBreg+h e),   M=hDH.
 ```
 
 The two CRT consequences give `hD | DBreg+h e`. Also `H|Kreg`. To see
-the latter, set `a=Y(X+1)−1`, so `H=4a+3`. The main Pell abscissa `d`
-satisfies `d≡2^r+a c=X+a c (mod H)` by the represented projection
-identity used in the checked reduction; its norm gives
+the latter, set `a=Y(X+1)−1`, so `H=4a+3`. For Pell coordinates with
+base `a+2`, put `d_j=x_j−a y_j`. The recurrences give `d_0=1` and
+`d_(j+1)=2d_j+H y_j`, hence `x_r≡2^r+a y_r=X+a c (mod H)` by ordinary
+induction. The Pell norm then gives
 `H | X²+2aXc−1`. Since
 
 ```text
@@ -97,8 +98,9 @@ gcc -O2 -Wall -Wextra Computability/DiophantineConsistency/research/trace74-symb
 /tmp/trace74-crt-pell-gcd
 ```
 
-The Python check verifies the two stated symbolic finite gcds and tests
-the CRT, sign and actual `M|Z` register identity for the much smaller
+The Python check verifies all four compressed/raw payload hashes and bit
+lengths, the exact external beta value, and the two stated symbolic gcds.
+It also tests the CRT, sign and actual `M|Z` register identity for the much smaller
 analog `B=7,n=63,r=77`. The GMP program computes only
 `gcd(c,q²−1)` for the symbolic candidate. Neither check is a Lean proof,
 an exhaustive verification of the displayed symbolic construction,
