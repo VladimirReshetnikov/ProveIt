@@ -1,0 +1,5 @@
+# Independent result audit: same-zero n=5 graph exclusion
+
+PASS for captured run. Author reports actual outer session 87618 exit 0/reaped. Terminal `f4c835c39cf7d5d1a8928b1821c1bafa1c0bf43f043628e386d65a22b270acd0`; runner `378058609e1a474504761a40b311fee05124a50b9d846a73847fb7c7f252ee60`; object `96e679e279f3443f9ec28e73e6704b7177a04e3b7d75ad8813ad4ffcd44bf261`. Independently rehashed all 71 terminal input pins, output object and logs. Lean exit 0; exact named axiom report `[propext, Classical.choice, Quot.sound]`, stderr empty. Prelaunch checked six direct imports and four scalar parent objects selected uniquely along the then-current path.
+
+The theorem rules out the supplied first-coordinate index 5 for the same p/v given beta≥15, positive valuation, actual trace74 graph zero and explicit q≥2³⁰. It joins the checked n5→odd9, model Pell identities and scalar discrete contradiction; no guard, unrestricted q, exclusion of all indices, or iPRA endpoint is proved. Direct pins do not authenticate serialized transitive/package ancestry or continuously stable resolution.

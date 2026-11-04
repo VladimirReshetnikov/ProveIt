@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: n5 graph exclusion
+
+GO subject to root slot release and fresh locked resource preflight. Source `9075024fc8bd072a4f9bad6e82184850eda48282a5c7e11151fd145fe7245be3`, runner `378058609e1a474504761a40b311fee05124a50b9d846a73847fb7c7f252ee60`, policy `c810b37c7ce4d6c9ae04cf9e60c0e51782e75d1a610254a3d4ded5de6416f6f9`. The accepted scalar contradiction, n5→odd9 and ninth/fifth polynomial identities bind the same p/v and retain beta≥15, q≥2³⁰, positivity, graph zero and first index 5. No full first-index exclusion, fixed-port guard or iPRA endpoint is claimed. No Lean replay in this review.
+
+All six direct source imports and the four scalar endpoint/certificate modules currently resolve uniquely to the pinned expected objects on the actual configured path. Runner pins audited parent terminals and objects, performs pre/post hashing, exact report/empty stderr checks and locked resource guard; 13 actual-validator controls independently pass. The source/cast elaboration remains untested. Unique direct selection is a point-in-time observation, not serialized transitive/package ancestry or continuously stable search-path monitoring.
