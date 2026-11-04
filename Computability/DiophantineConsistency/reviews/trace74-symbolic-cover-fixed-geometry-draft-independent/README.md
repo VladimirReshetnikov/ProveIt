@@ -1,0 +1,5 @@
+# Independent source review: fixed geometry, symbolic values
+
+Reviewed unchecked `research/trace74-symbolic-cover-fixed-geometry-draft/Trace74FixedGeometryCover.lean` SHA-256 `2e388e66f67eb00d8692316bf552dea257a75669d9c8c3777f055943cfe55e77`. The theorem retains beta, low, defect and high as natural variables, with explicit beta+1=B^8807, low+defect+1=B^8807, defect<B^3297 and B^4393≤high hypotheses at B=2^67. Its application of the audited generic cover supplies the same values/exponents, B>0 and 3297≤4393 in the correct order, and its actual axiom directive names the proposed theorem. No mathematical mismatch found.
+
+`norm_num`, `decide`, elaboration, warning and resource behavior remain unchecked; no Lean was run in this review. The draft makes no inference about the active natural-cover run or its runtime. It is a generic conditional implication, not an actual fixed symbolic-port cover, model cast, graph guard, external-file binding or iPRA. A guarded check must select and capture a compatible GenericPowerCover provider and retained closures.
