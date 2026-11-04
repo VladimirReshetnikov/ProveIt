@@ -1,0 +1,5 @@
+# Independent N4/R7 scalar discrete source review
+
+Source-only mathematical review PASS for SHA `9374c93bbf16548a52f44c79a3a7eda2b0e8a7ea75927e259de6f3d5ec9b75e0`. In a linearly ordered commutative ring with explicit discrete hypothesis `∀z,0<z→1≤z`, q≥32, x≥32, Y≥1, x=q w, Y=q³s and the two displayed strict scalar inequalities, the two separately developed endpoint theorems give 18<2Y−(x³+6x²+15x)<22. Defining Z as that difference and T=2q²s−q²w³−6qw²−15w gives the exact identity Z=qT. Thus 0<Z<q, while q>0 forces T>0; discreteness then gives T≥1 and Z≥q, contradiction. The q,x,Y used in the endpoints and factorization are the same, and no sign on w or s is required for this algebra.
+
+The lower and upper providers must be checked and reconciled in the runner; lower was running during this source review. This is a conditional scalar contradiction, not graph binding, N4/R7 exclusion, guard or iPRA theorem. Tactic elaboration, imports and provider selection remain unchecked; no Lean was run for this review.
