@@ -75,6 +75,11 @@ tree also holds native and standard endpoints for the
 [26-variable](research/adaptive-square-sums26-degree8/equation8-26.pdf),
 [27-variable](equation8-27.pdf) and 28-variable degree-8 candidates
 ([promotion record](reviews/aq22-28-current-source-promotion/README.md)).
+The 12-variable, 95-operation, degree-70 free-J graph at the compact44 tuple
+`β = 2^590069 − 1` also has native, standard and equality-only endpoints in
+the tree ([`Compact44/IPRAOrdinary12`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12.lean)).
+They rest on its all-model halting calibration, whose 472-module research
+closure was [promoted into `Compact44/`](reviews/compact44-source-promotion/README.md).
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have

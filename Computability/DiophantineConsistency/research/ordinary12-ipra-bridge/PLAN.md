@@ -1,5 +1,20 @@
 # Concrete proof plan and dependency boundary
 
+**Landed in the tree (3 November 2026).** At Vladimir's direction the Claude
+session took over this lane's source closure. The import closure of
+`compact44-symbolic-model-unconditional-iff-prototype` (472 modules) was
+promoted into `Lean/DiophantineConsistency/Compact44/`, and the copies
+changed only import lines. The new
+[`Compact44/IPRAOrdinary12`](../../Lean/DiophantineConsistency/Compact44/IPRAOrdinary12.lean)
+gives native, standard and equality-only iPRA endpoints for the shifted
+free-J literal. The record, with a per-module source/hash manifest, is
+[here](../../reviews/compact44-source-promotion/README.md). The prototype
+copies in this directory are retained as historical inputs.
+
+Open items: the literal-to-payload/PDF binding, the 94-operation sum-of-squares
+variant's endpoint, and the compact-tuple package reductions. New work should
+import the `DiophantineConsistency.Compact44.*` tree modules.
+
 The initial restricted-J literal is
 `ordinary-unit-products/p12_ordinary_degree70.json`, SHA-256
 `444c25b68fbfee600ae174cb5bad1931897a55ffe2f9570fd22f3281f6e97010`:
