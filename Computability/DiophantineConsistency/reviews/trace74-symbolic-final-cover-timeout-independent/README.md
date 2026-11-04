@@ -1,0 +1,5 @@
+# Independent factual audit: symbolic final-cover timeout
+
+Attempt01 is FAILED and excluded. The author reports actual outer tool session 60286 exited 1 and was reaped. Retained outer terminal SHA-256 `a5d5fd903b43d9b5e4cfa5a7cd9893ca619103532a90ca9b8d43d4e024e811b4` records child exit 1/FAILED, points to child result SHA-256 `ebc110adf7771992d9e396576a27f0ffe9b0ceb7fb8cb18e88fc85e531238a4a`, and records stable wrapper/input hashes. The child records runner `26a3e099a187800ffa55057080232236a46f5d92979de5b9f1eef6357298787a`, stage `Trace74FinalSymbolicCover`, Lean exit −9, monitor reason `timeout` and elapsed 601.183 seconds. Independently checked both stage stdout/stderr are empty and match their recorded hashes, and outer stdout/stderr hashes match their receipt. No Lean replay was run in this audit.
+
+No final symbolic cover or model-cast theorem was accepted by this attempt. Empty logs do not identify an elaboration hotspot or establish a source error. The timeout does not invalidate separately accepted component theorems and does not establish the fixed-port guard, external-file binding or iPRA.
