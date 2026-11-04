@@ -1,0 +1,3 @@
+# Independent source review: n≥7 excludes r9
+
+Source-only PASS `ee5177ea15d31c7b2cceb00f38d4a263ad1657749e873623fe58d33d74c4dca9`, conditional on pending model-growth parent and compatible providers. No Lean replay. Same positive p/v, positive beta, actual 74 graph zero, explicit q≥64, first coordinate n≥7 and c=y9 give the proposed size inequality and audited r9 graph projection. Y≥q³ follows from positive v6; q−1=b and discrete DiffRing order bind both to accepted quotient-size contradiction. This excludes only r9 under the stated first-index bound, not all odd ordinates/guard/endpoint. Casts and provider compatibility remain untested.
