@@ -1,0 +1,5 @@
+Independent post-audit PASS for the specified all-model symbolic-port inequality; no Lean replay.
+
+Actual outer tool session 78859 was reported reaped with exit0. Child result 80aac76470d187d1eb71b40807bbcd56b4e3a50e727815d3c69bb85cb92d1c63; outer cb6e8d199beab6a0e3e06ed119a60a31d61525f15a4649f1e1c598c7845e4399; object 25859da844df8d5b985840ca22944f7399253138934b64c188b95e35b2d64cda. New stage exit0, empty stderr, exact sole report [propext, Classical.choice, Quot.sound], no new warning. check.py rehashes source/log/object/header, all 2054 union bundles, captured outside selections and every inherited parent closure/companion. Natural and beta ancestors carry separately documented exact exponent warnings; this clean cast stage does not erase those provenance facts.
+
+For any indicated IΣ₁ model V, the theorem establishes (betaNat:V)+1≤(lowNat:V)+(highNat:V). It is a model cast of the accepted natural symbolic-port inequality, not a graph-zero, guard, 74/75 equivalence or endpoint theorem. Four inherited baseline source ancestries and external package/dynamic historical limits remain.
