@@ -124,6 +124,38 @@ Its consistency check is `literal_halts`.
 6. Growth `2^R < Y` and the main projection `X ≡ 2^R (mod H)`, with
    `gcd(q,H) = 1`, give `power`.
 
+**Phase 2 progress.** These modules are landed:
+
+- `P72Graph` (`51d96df89e`);
+- `P72Root.strong_root` and `first_root` (§4, §5);
+- `P72Main.main_root` (`458ea8ff9d`).
+
+The remaining §6 order, with tree lemmas:
+
+1. `P72Aux`: `Aa = 0` with `Nf = bf`, `Vhat = L·V` and `yhat = L(V+u)`. This gives
+   `Qa·V² − (Qa−1)(V+u)² = 1`, where `Qa = Δ(f²−1) = (Δic²)²`, and
+   `z = absdiff (f²·Tc) (f²R + c)`.
+2. Indices:
+   - first: `ArithmeticPellFirstNorm.positive_parameter_solution Q τ k`, with
+     `Q = XY²` and parameter `2(Q−1)+1`;
+   - main: `ArithmeticPellClassification.solution_index a g c`.
+3. `μ ∣ v`: `g0 = gcd(S,H)` from `gcd_certificate_exists`, then
+   `S/g0 ∣ v` via `unit_certificate_cancel`.
+   - `g0 ∣ 3`, because `qH − (X+1)S = 3q` and `gcd(q,H) = 1`.
+   - That uses `q ≡ 2 (mod 3)`, from `β % 3 = 1` (a fact about the ℕ numeral).
+   - `μ ≥ 4qY/3 > q⁴ > R + 1`; `R < q⁴` comes from the packing bounds.
+4. `k ≡ 2n (mod 4Q)` (Pell first recurrence) and `μ ∣ 4Q` give
+   `2n ≡ R+1 (mod μ)`. So `n ≥ 25`, `m > n`, and `hbig` follows from
+   `large_of_six`.
+5. `2R < c`; then `signed_half_index_of_facts`, with `i' = Δi`, `rp = R`,
+   `rn = 0`, gives `m = R`. Then `2n = R+1`, and `first_transport` gives
+   `k = R+1+4Qt`.
+6. `q ∣ X`: since `M ∣ v`, `M ∣ HSX`, so `q ∣ HX`, so `q ∣ X`. This is
+   `projection`.
+7. `power`: `g = X + ac + Hγ'`, with `γ'` integral; the Pell projection
+   mod `H`; and growth `2^R < Y`. The model is `FreeJPowerFinish` and
+   `FreeJPowerGrowth` (math cores to be located).
+
 **Phase 3: halt ⇒ P13 zero.** Split `FreeJHaltModelZero.halt_positive_zero_of_ports`
 at its `zero_of_model_data` call. The model data already carries P13's forms:
 the normalized strong `f² = 1 + Δ(icc)²`, `Maux = Δicc`, `V = auxw` (via
