@@ -1,0 +1,5 @@
+# Independent seventh Pell identity prelaunch review
+
+Scoped source/prelaunch GO for source `b3ca5264a265d6b1ed93459651b512cf5839cbcb2f743bcc5fc7543dd8225ce5`, runner `187fd0ed9890179f76a9eeddda65045a26b7c6a9555a28ad446a9aa12f8bceee`, and policy `8622e21c226f4f01385bd40ad0fbf37214232589a999fa4960b8d4fa4a02c3db`. The recurrence gives y7=64t⁶−80t⁴+24t²−1 for t=b+2, equivalently the displayed subtraction-free y7+5(2t)⁴+1=(2t)⁶+6(2t)². The theorem is a generic IΣ₁-model identity, not a graph or index-exclusion result.
+
+I independently verified all 45 recorded direct pins and 13 report controls; the imported fifth-growth module has one observed first selection and all 2034 duplicate `.olean` paths scanned across listed roots have identical hashes. The shared lock, exact sole report, source/runner rechecks and strict warning/stderr policy are retained. Complete transitive/companion/dynamic ancestry and continuous path monitoring are outside this direct-pin scope. Elaboration is unchecked and no Lean was run in this review.
