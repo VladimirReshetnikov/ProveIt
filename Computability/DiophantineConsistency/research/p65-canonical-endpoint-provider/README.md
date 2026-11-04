@@ -25,6 +25,12 @@ are hash-pinned but their full transitive source/object ancestry remains
 unauthenticated. Their qualified build evidence is in the reverse-provider
 packet. This check does not remove that limitation.
 
+After this replay, origin commit `e1b79c42eb` changed the current
+`Compact44/P72Exact.lean` and `Compact44/P72Power.lean` sources used by the
+reverse-provider overlay. The recorded endpoint replay therefore concerns the
+earlier hash-pinned versions, not a rebuilt dependency chain after that merge;
+see the reverse-provider record for the specific hashes.
+
 `manifest.json` records the 30 canonical source hashes, generated shim
 hashes and exact import substitutions, plus the hashes of 24 selected
 captured direct-import objects. `results.json` records all 30 final object

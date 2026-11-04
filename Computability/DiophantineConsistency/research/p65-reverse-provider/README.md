@@ -19,6 +19,15 @@ The direct imported captured objects are hashed, but their full transitive
 source/object ancestry is not authenticated here. A canonical-source replay
 and the final model-to-iPRA bridge remain separate obligations.
 
+**Subsequent source drift.** After this replay, the merge of origin commit
+`e1b79c42eb` changed the current `Compact44/P72Exact.lean` and
+`Compact44/P72Power.lean` sources. The manifest retains their historical
+hashes `283cfc85…` and `8359cee0…`; current hashes are `b4d73644…` and
+`f46584fb…`, respectively. The recorded run is evidence for the pinned
+versions, not a replay of those later edits. The manifest checker is expected
+to reject a reproduction against the changed source until the relevant
+dependencies are rebuilt and re-audited.
+
 `manifest.json` pins each of the 62 canonical source files, its generated
 shim, the exact import substitutions, and 62 selected baseline object files.
 `results.json` pins the 62 successfully built objects and per-module logs.
