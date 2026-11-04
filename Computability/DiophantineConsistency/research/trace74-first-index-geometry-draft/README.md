@@ -1,0 +1,7 @@
+# First-index geometry from a positive 74 zero
+
+For an actual positive trace74 graph zero with positive beta, positive valuation and the stated arithmetic-model hypotheses, `Trace74FirstIndexGeometry.small_k_implies_X_lt_two_Y` proves that `k=8P+4` implies `X<2Y`, where `P=XY²`. Combining this with the first-Pell gap gives `X<2Y or 32P²+32P+6≤k` for the same graph zero. The proof substitutes the small-index equality into the independently checked odd-ordinate K-bound and uses elementary ordered-ring arithmetic. No individual F/C bound or reverse guard is assumed or concluded.
+
+Reviewed author attempt01 passed: actual tool session 65057, outer exit 0, and two clean named axiom reports. The terminal `observations/attempt01/terminal.json` SHA-256 is `84259a2bf99ccefe03062bff58afa23098c437be350f6f14638c5cd7477fef8a`; object `/tmp/trace74-first-index-geometry-pvp1gbkm/lib/Trace74FirstIndexGeometry.olean` SHA-256 is `c143b3e0c239004fbb36420c45645e07a87aec7e049a3a25657230fc4c8fd1cc`. Independent [result audit](../../reviews/trace74-first-index-geometry-result-independent/README.md) passed, SHA-256 `2504f365daec84a2c444d5c215a1bc6db028097f090625483e9997a1dc9e9d17`. Direct-pin/search-path and inherited project/package/dynamic ancestry limits remain.
+
+Independent [source review](../../reviews/trace74-first-index-geometry-draft-independent/README.md) and [prelaunch review](../../reviews/trace74-first-index-geometry-prelaunch-independent/README.md) are recorded separately.

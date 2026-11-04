@@ -1,0 +1,5 @@
+# Independent source review: first-index geometry dichotomy
+
+Reviewed unchecked `research/trace74-first-index-geometry-draft/Trace74FirstIndexGeometry.lean` SHA-256 `943f3582bab693571d2bbef88724a95ca8e01d1a9b2a81d0c860e809265c4591`. Both statements retain the same ports/valuation, positive beta and components, and actual 74 zero. Under k=8P+4 with P=XY², the proposed proof combines the accepted K-bound `4(Y(X+1)+1)^2≤k(Y+1)` with a contradiction from X≥2Y. In that case `2XY³≤X²Y²`; the displayed strictly positive remainder yields the strict reverse inequality. The final theorem combines this implication with the accepted first-Pell gap, giving `X<2Y ∨ 32P²+32P+6≤k`.
+
+No mathematical mismatch or hidden individual F/C or reverse guard assumption was found. Abstract-order `simp`/`norm_num`, multiplication rearrangement and tactic/resource behavior remain unchecked; no Lean was run here. It is a conditional graph-zero consequence, not an F/C bound, fixed-port guard or zero-existence result. Any guarded run must pin accepted K-bound and first-gap providers and retain direct/search-path/transitive ancestry limits.
