@@ -2822,3 +2822,19 @@ The 94-, 92-, 91-, 90- and 89-operation 12-variable graphs followed
 ([`Compact44/IPRAOrdinary12Chain`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12Chain.lean),
 [record](reviews/ordinary12-chain-source-promotion/README.md)). The
 speculative 88- and 86-operation graphs remain conditional research.
+
+So did package 115's 13-positive 87 / 51 free-J frontier point
+([`Compact44/IPRAOrdinary13`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary13.lean),
+[record](research/ordinary13-freej87-endpoint/README.md)). Its tail factors
+give the strong and auxiliary equations directly, so it reduces to the
+calibrated 95-operation literal in every `IΣ₁` model.
+
+Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
+That includes:
+
+- 163's 75 / 402, which has a guarded-provider endpoint in research;
+- 72's 28 / 98 and 24 / 101;
+- 170's 74 / 438;
+- 184's 104 / 174;
+- the ten-positive Pareto points;
+- 101's nine-positive points.

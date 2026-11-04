@@ -92,6 +92,12 @@ The smaller 12-variable graphs on the same tuple also have all three endpoints
 | 90 | 172 |
 | 89 | 172 |
 
+Package 115's 13-positive, 87-operation, degree-51 free-J equation is the
+thirteen-positive 51 / 87 frontier point. It has all three endpoints too
+([`Compact44/IPRAOrdinary13`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary13.lean),
+[record](research/ordinary13-freej87-endpoint/README.md)). They come from an
+all-model reduction to the 95-operation literal.
+
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
 native, standard and equality-only iPRA endpoints. They cover the 14-variable
