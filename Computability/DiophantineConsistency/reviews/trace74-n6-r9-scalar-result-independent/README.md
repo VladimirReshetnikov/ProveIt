@@ -1,0 +1,5 @@
+# Independent result audit: n6/r9 discrete scalar contradiction
+
+PASS for captured three-stage result. Author reports actual outer session 89479 exit 0/reaped. Terminal `ce5864a6f39f3092253694c94a52b5ccb27839cec8445b6936280d9eef473eb1`; runner `d70984cca8fe8a4d03df0e1e329d9fba1954e21a844b4d79bd16daf9022b5583`. All nine terminal pins, all three objects and logs independently rehashed. Each Lean stage exit 0, exact named report `[propext, Classical.choice, Quot.sound]`, stderr empty. Lower object `390ed90eecfe5f80ac6a1d4eac974787d4536780541d0ff5d278b163e3cdf24e`, upper `cdee4bfb2cb57ca147d38956e804cae6f4ddbec2d5b92476774e9818631c6e2b`, scalar `a2fc1302bf0f930186c9b2a540ac53de5a98df47fd749bdd764f1c3fe658d87c`.
+
+The final contradiction retains a discrete ordered ring, x≥32,t≥2 and explicit strict polynomial inequalities. It is a conditional scalar theorem only; no graph/Pell binding, q or guard conclusion. Direct pins do not establish full serialized transitive/package ancestry or continuously stable path resolution.
