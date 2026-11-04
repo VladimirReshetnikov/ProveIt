@@ -1,0 +1,9 @@
+# Fixed-mask conditional saturation specialization
+
+This source substitutes the actual symbolic-port model-cover theorem into the conditional saturation/guard theorem. It removes only the explicit mask-cover hypothesis. Every q definition, positivity, block identity, individual bound, population bound and rank-population premise remains explicit; it does not derive those premises from a 74 graph zero.
+
+The [guarded replay](../trace74-fixed-mask-saturation-conditional-rebuild/README.md) passed and its [independent result audit](../../reviews/trace74-fixed-mask-saturation-conditional-result-independent/README.md) checked the captured provider union and closures. This result does not establish the fixed-BFS graph guard, 74/75 equivalence, external equation-file binding or an iPRA endpoint. Both accepted exact unevaluated-exponent warnings remain inherited provenance.
+
+The model-cover client passed its guarded check and [independent result audit](../../reviews/trace74-symbolic-cover-model-cast-result-independent/README.md). The historical conditional client's directly recorded `ArithmeticRankForcing` and `ArithmeticSaturation` object hashes match those in the audited model-cover union, while the two historical top-level conditional clients were absent from that union. The replay rebuilt both conditional sources against the captured model-cover union before checking this specialization and recording the selected serialized closures. Matching direct hashes alone does not establish transitive compatibility or complete historical source ancestry.
+
+The [independent source review](../../reviews/trace74-fixed-mask-saturation-specialization-source-independent/README.md) confirms that only the cover premise is supplied; every other displayed premise remains explicit. It did not run Lean.
