@@ -1,0 +1,55 @@
+import DiophantineConsistency.Compact44.BlockCyclicIndex
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace FixedGraphBlockCopy
+open DiophantineConsistency CompactBitRotation CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs Ordinary12FreeJ
+open ArithmeticBinaryCarry ArithmeticRepunit ArithmeticWindowDigits ArithmeticCyclicWord CompactHeterogeneousCarry
+open CompactGenericAlignedMass CompactConcreteIndexedMass CompactTwoBandFlatten
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat lowNat highNat
+attribute [local irreducible] Compact943Data.rows selectors copies
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_block_copy (v : Fin 12 → V)
+    (hv : ∀ j,0<v j)
+    (hz : InternalZero (literal (fun j => (ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat j:ℤ))) v) :
+    let p := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+    let q : V := 1+v 0*(p 0:V)
+    let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
+    let C : V := q-v 1-v 2
+    let a := GenericBandCarryFamily.coefficient (fun j : Aligned (Fin 943) (Fin 41) => (alignedCoeff selectors copies j:V))
+    ∃ N w s : V, 0<N ∧ q=Exp.exp ((67*8807)*N) ∧ v 0=rep (67*8807) N ∧
+      (67*8807)*N≤R ∧ w=Exp.exp (R-(67*8807)*N) ∧ v 5=q*w ∧
+      let E := R-67*(8807*N)
+      let T := temporalWord (8807*N) E C
+      let X := GenericBandCarryFamily.word (8807*N) C (bandOffsets position) T
+      CarryInput 67 (8807*N) (v 1) 1 (GenericBandCarryFamily.cap (ι:=Aligned (Fin 943) (Fin 41))) a X ∧
+      E%67=0 ∧ s<N ∧ (E/67)%(8807*N)=8807*s ∧
+      ∀ h<N,
+        dig 67 C (8807*h+1095)=dig 67 C (8807*(cyc N h s)+2195) ∧
+        dig 67 C (8807*h+1095)=dig 67 C (8807*(cyc N h s)+3296) := by
+  obtain ⟨N,w,s,hN,hq,hJ,hle,hw,hv5,hcarry,haligned,hs,hshift,hpar1,hpar2⟩ :=
+    FixedGraphParityCopy.graph_parity_copy v hv hz
+  dsimp only at *
+  refine ⟨N,w,s,hN,hq,hJ,hle,hw,hv5,hcarry,haligned,hs,hshift,?_⟩
+  intro h hh
+  have hidx1 := BlockCyclicIndex.index N h 2195 hh (by norm_num)
+  have hidx2 := BlockCyclicIndex.index N h 3296 hh (by norm_num)
+  have href1 : cyc (8807*N) (8807*h+2195) 1100=8807*h+1095 := by
+    rw [BlockCyclicIndex.reflected N h 2195 1100 hh (by norm_num) (by norm_num)]
+    congr 1
+    exact (eq_tsub_of_add_eq (show (1095:V)+1100=2195 by norm_num)).symm
+  have href2 : cyc (8807*N) (8807*h+3296) 2201=8807*h+1095 := by
+    rw [BlockCyclicIndex.reflected N h 3296 2201 hh (by norm_num) (by norm_num)]
+    congr 1
+    exact (eq_tsub_of_add_eq (show (1095:V)+2201=3296 by norm_num)).symm
+  have heq1 := hpar1 (8807*h+2195) hidx1.1 hidx1.2
+  have heq2 := hpar2 (8807*h+3296) hidx2.1 hidx2.2
+  rw [href1,hshift,BlockCyclicIndex.shift N h s 2195 hh hs (by norm_num)] at heq1
+  rw [href2,hshift,BlockCyclicIndex.shift N h s 3296 hh hs (by norm_num)] at heq2
+  exact ⟨heq1,heq2⟩
+#print axioms FixedGraphBlockCopy.graph_block_copy
+end FixedGraphBlockCopy

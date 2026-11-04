@@ -19,6 +19,21 @@ the high port. A [source review](reviews/compact44-symbolic-model-unconditional-
 checks the final join, with disclosed overlap in authorship and without a
 fresh replay or complete ancestry audit.
 
+**In the Lean tree (3 November 2026).** That equivalence's 472-module
+closure was [promoted into `Lean/DiophantineConsistency/Compact44/`](reviews/compact44-source-promotion/README.md):
+
+- the copies change only import lines, and each is hash-pinned to its research
+  source;
+- the closure builds against current sources;
+- [`Compact44/IPRAOrdinary12`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12.lean)
+  joins it to the positive-model adapter.
+
+The result is native, standard and equality-only iPRA proofs that the shifted
+12-variable graph has no zero iff ZFC is consistent. Each proof reports only
+`propext`, `Classical.choice` and `Quot.sound`. This is an author build, not a
+paired replay. The binding of the Lean literal to the retained payload bytes
+and the PDF stays external, as below.
+
 A [12-variable, 94-operation variant](research/ordinary12-sum-of-squares-candidate/README.md)
 replaces the final unit-factor product with a sum of three residual squares.
 Lean checks same-valuation zero equivalence to the 95-operation expression in
@@ -2770,3 +2785,12 @@ forms and the nine-positive form) is built on the compact BFS943/H2082 tuple
 is not yet in the tree; it is the compact44 rebuild described at the top of
 this file. Kernel stages for one of them (package 163's 75/402) are tracked in
 [research/ten-positive-ipra/PLAN.md](research/ten-positive-ipra/PLAN.md).
+
+Update, 3 November 2026 (later). The compact44 calibration and the
+12-variable endpoint are now in the tree
+([promotion record](reviews/compact44-source-promotion/README.md),
+[`Compact44/IPRAOrdinary12`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12.lean)).
+That closes the first group above. The compact-tuple packages still need their
+own reductions to the outer data `CompactSymbolicModelIff.p` and
+`ArithmeticMachineRun215`. These can now import the tree modules instead of
+prototype providers.
