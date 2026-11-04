@@ -1,6 +1,6 @@
 # Conditional same-zero projection height contradiction
 
-`Trace74UniformGraphHeight.graph_height_impossible` proves in Lean, for any model of `IΣ₁`, that the following cannot all hold for **one** tuple: positive ports and witnesses; a zero of the 74-operation graph; a main Pell ordinate at an internal index `r ≥ 2`; and the explicitly assumed height inequality
+`Trace74UniformGraphHeight.graph_height_impossible` proves in Lean, for any model of `IΣ₁`, that the following cannot all hold for **one** tuple: a positive first port and positive witnesses; a zero of the 74-operation graph; a main Pell ordinate at an internal index `r ≥ 2`; and the explicitly assumed height inequality
 
 ```text
 8 b (2^r)^2 Y^2 < X.
@@ -8,7 +8,7 @@
 
 Here `2^r` is the model's represented exponential `Exp.exp r`, with `b`, `X`, and `Y` the trace74 quantities. The proof instantiates the same-zero reduced projection and the ordered-ring size contradiction in the model's difference ring. It derives the ring's discreteness, positivity, and `2^r = 4·2^(r−2)` from the supplied model assumptions. All quantities refer to the same graph valuation and ordinate index. The corollary `graph_height_upper` removes the height premise and gives the complementary bound `X ≤ 8 b (2^r)^2 Y^2` for every such zero and ordinate index.
 
-The height inequality is a **premise**; this theorem does not derive it from the Pell gap or an index window, exclude any index range without further hypotheses, prove a reverse guard, or establish an iPRA endpoint. In particular, no near-diagonal bound has been established here.
+The strict height inequality is a **premise** of `graph_height_impossible`; neither theorem derives it from the Pell gap or an index window, excludes an index range without further hypotheses, proves a reverse guard, or establishes an iPRA endpoint. In particular, no near-diagonal bound has been established here.
 
 The author invoked Lean 4.32.0 with `-M3000 -j1 -DElab.async=false`, a 120-second subprocess timeout, and this directory as `--root`. `LEAN_PATH` consisted of `/tmp:` followed by the captured `lean_path` field from [`trace74-main-index-eleven-draft/observations/attempt01/terminal.json`](../trace74-main-index-eleven-draft/observations/attempt01/terminal.json). The output object was `/tmp/Trace74UniformGraphHeight.olean`. The final subprocess exited 0 and both axiom reports were `[propext, Classical.choice, Quot.sound]`.
 
