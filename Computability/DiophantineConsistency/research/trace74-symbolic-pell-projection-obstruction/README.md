@@ -124,10 +124,10 @@ G=(R−RJ)/(q²−1)<0,   F=1,   C=q(q−1)−G>0.
 Then `G=q(q−F)−C`, `R=(q²−1)G+RJ`, and (5) gives
 `q⁴ | k−R−1`. Since `R<0` and `R≡r (mod c)`, its magnitude obeys
 `(|R|+r) mod c=0`, the negative alternative of the repository's
-`SignMod c |R| r` relation. Also `F+C≥q`, violating the reverse guard;
-for carrier input `w=1`, `(K0+w)C−F≥0` for every natural `K0`. By taking
-`R` sufficiently negative, the previously checked rank upper bound can
-also be met.
+`SignMod c |R| r` relation. Also `F+C≥q`, violating the reverse guard.
+The carrier input is the same `w=X/q≥1` required by the graph's `X=wq`;
+therefore `(K0+w)C−F≥0` for every natural `K0`. By taking `R` sufficiently
+negative, the previously checked rank upper bound can also be met.
 
 These are only selected scalar/register consequences. In particular no
 other norm/carrier equations, all positive graph witnesses, or graph output

@@ -66,7 +66,8 @@ assert k * Y < c < k * (Y + 1)
 assert X % q == 0 and (rr * (rr - nn) == s0 * (2 * nn - rr))
 assert k % (q**4) == (2 * nn) % (q**4)
 assert (q - 1) * X * (X - 2**rr) * (2**rr * X + 1) == 0
-MC, MF, K0, w = 2, q, 1, 1
+MC, MF, K0, w = 2, q, 1, X // q
+assert w > 0 and w * q == X
 RJ = MC + q * MF
 Rtarget = 2 * nn - 1
 assert c % 2 == 1 and gcd(c, q * q - 1) == 1

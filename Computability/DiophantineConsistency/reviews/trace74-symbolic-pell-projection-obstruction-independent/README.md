@@ -1,8 +1,8 @@
 # Independent review: symbolic-beta scalar obstruction
 
 The reviewed note and checker have SHA-256 values
-`5c07cd78363dacf1330981b3d116a65588b6c4fde0f92d2e6c266db120b389ee`
-and `2fd5dfbd4b1c6665dd95f96f5723e83f9ac68d185bb35d4e61e43efcec9dcab8`,
+`ec1a6a401ca62eb9930ec252ad14f3ecb54f6b5c12c98a4d1180267c4e01a631`
+and `496e1871d4614ed57ef07fc8accbeaa941a30d08327095931c84a602ac221393`,
 respectively. The primary modular-gcd program has SHA-256
 `7afbe833e37be4702dc71761abf8e128ca328b0ccfc3463a702fd0587a211cc4`.
 The ordinary-integer argument is correct under its explicit definitions,
@@ -29,7 +29,8 @@ coprime to `q⁴`; moreover `q⁴` and `q²−1` are coprime. The three stated
 rank congruences therefore have a simultaneous CRT solution. Subtracting
 whole multiples of the product makes `R<0` and gives `G<0`; then
 `F=1`, `C=q(q−1)−G` make `F,C>0`, `F+C≥q`, and the graph's displayed
-signed-rank formula equals `R`. Because `R≡r (mod c)` and `R<0`,
+signed-rank formula equals `R`. The carrier input is consistently
+`w=X/q≥1`. Because `R≡r (mod c)` and `R<0`,
 `(|R|+r)%c=0`, the negative `SignMod` alternative. The projection is zero
 because `X=2^r`; this is not a full graph evaluation.
 
