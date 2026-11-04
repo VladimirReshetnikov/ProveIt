@@ -1,0 +1,5 @@
+# Concrete-defect conditional diagnostic
+
+The [independent prelaunch review](../../reviews/trace74-cover-bind-defect-prelaunch-independent/README.md) approved one check. Attempt01 completed with actual outer exit 0 and child status PASS. The [child result](observations/attempt01/result.json) SHA-256 is `42890bde08cbce317629731ada1f5fc29ad2fefb856649e1151d5c5ee27397d9`; the [outer receipt](observations/outer-attempt01/terminal.json) SHA-256 is `76ed7b80e052e202d56f546b69f04cd4ad880878ae22a467846089bc80f9821b`; output object SHA-256 is `9978132ed8ea14861a519c924bbb6e924e6c3e4b436c1e4b35c83affb0da43db`. The [independent result audit](../../reviews/trace74-cover-bind-defect-result-independent/README.md) passed.
+
+The new stage is warning-free; the audited beta parent retains its explicitly accepted unevaluated-exponent warning. The theorem fixes the actual short defect but retains the low identity, strict defect bound and high bound as hypotheses. It does not establish the unconditional cover or graph guard. Capture-relative historical source, package and dynamic ancestry limitations remain.
