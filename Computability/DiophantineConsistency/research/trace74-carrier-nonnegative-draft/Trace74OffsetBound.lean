@@ -72,6 +72,7 @@ theorem graph_offset_bound (p : Fin 4 → ℕ) (v : Fin 10 → V)
   have beval : B=ι C*ι (v 4)-R := by
     dsimp [B,R,w]
     rw [b_def,Trace74Representatives.c_eval]
+    rfl
   have hEB : e<B := by rw [eeval,beval]; linarith
   have hV : vv=FF*B-ι C := by
     dsimp [vv,FF,B,w]
