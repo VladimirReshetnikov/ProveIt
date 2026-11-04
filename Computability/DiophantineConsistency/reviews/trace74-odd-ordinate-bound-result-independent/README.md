@@ -1,0 +1,7 @@
+# Independent result audit: odd-ordinate lower bound
+
+PASS within direct-pin and inherited provider scope. The author reports actual tool session 63469 exited 0 and was reaped. Retained attempt02 terminal SHA-256 `833d7fd8dd39cbb38d4f1fad72835e9b07797e9dee95696600d92cd476be9b55` records overall PASS using reviewed runner `63e7cffb27f1a1504a31f4921231d6aa15513a1650c0e6b2e10bba4215ca11ad`. Independently rehashed all 13 source/direct-provider/Lean/core pins, output object `a619576cc62abcde2dc1c57f779fe8a8d6ecf0276180e23f17bc0fdbd6a96caa` and stdout/stderr; stage records Lean exit 0, null monitor reason, empty stderr and exactly two named reports each with `[propext, Classical.choice, Quot.sound]`. No Lean replay was run.
+
+The generic recurrence identity is `ycoord 3 b+1=4(b+2)^2`. For the same p/v, the graph theorem assumes beta positive, every valuation component positive and actual 74 value zero, and concludes `4(A+1)^2≤c+1` via the checked positive odd-ordinate witness. No F/C bound or reverse guard is assumed or concluded. Attempt01 was excluded due to an orientation error and sorryAx; the prior factual/prelaunch review preserves it.
+
+This is a conditional graph-zero consequence, not a zero existence, fixed-port guard, 74/75 equivalence, external-file binding or iPRA theorem. Direct pins do not establish complete transitive project/package/dynamic ancestry, search-path first selection or intermediate output stability. Author-reported actual tool exit is separate from the retained terminal.
