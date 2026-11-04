@@ -1,0 +1,7 @@
+# Independent scoped prelaunch review: signed offset v3
+
+**GO for one coordinated author retry** with offset source SHA-256 `db50f4b5c7c4c9e0bef199a0bbe3681d6996d58162dcb6c5bdbeaa64133f1092` and runner SHA-256 `3767621464022f7d365931db324a92adfdf912c790d3b42619d0e8c77b815a73`, after current Lean work reaps and the locked resource preflight passes. No Lean was run in this review.
+
+The author reports actual attempt02 session 80309 exited 1 and was reaped; retained terminal SHA-256 `a6e3c4a12cd40098a46d8a1b8c1a0abce928506c12a53d95c22fc90ec6954646` records carrier stage PASS and offset failure. The prior source/runner snapshots are retained and the failed offset remains excluded. The v3 source diff changes only the two divisibility subproofs: it uses `change` to the definitionally equal original cast-valuation h/D/H/X registers, which do not depend on oldVal's changed coordinate 2, then the earlier `simp`/`ring` proof. The statement and synthetic valuation everywhere else remain unchanged. Runner changes only the source pin; all 13 actual report-policy controls pass.
+
+The check is direct-pin and sequential, with the earlier source/provider/shadowing/intermediate-object and package/dynamic ancestry limitations. A successful stage proves only the signed q⁴-divisibility under the explicit positive 74-zero assumptions, not a natural-rank, fixed-port guard or iPRA endpoint. Capture actual tool exit and independently audit terminal records.

@@ -1,0 +1,495 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-guardfree-adjacent-draft/Trace74OffsetDiv.lean:57:29: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (Trace74Mask.value74 (ports p) fun j => ι (v j)) = 0
+rr : Regs (DiffRing V) := regs (ports p) (masked p v)
+qq : DiffRing V := ι (q p v)
+tau f V0 Z0 y : V
+_ht : 0 < tau
+_hf : 0 < f
+_hV : 0 < V0
+_hy : 0 < y
+_hVsq : (regs (ports p) (masked p v)).V * (regs (ports p) (masked p v)).V = ι (V0 * V0)
+hZsq : (regs (ports p) (masked p v)).Z * (regs (ports p) (masked p v)).Z = ι (Z0 * Z0)
+hZeq : Z0 = M p v * tau * f * y
+_hbound : 2 * (tau * f * y) < V0 * V0
+Z : DiffRing V := rr.Z
+mz : DiffRing V := ι (M p v) * ι (tau * f * y)
+hsq : Z * Z = mz * mz
+hfactor : (Z - mz) * (Z + mz) = 0
+z : DiffRing V
+hZ : rr.Z = rr.h * rr.D * rr.H * z
+hM : rr.M = rr.h * rr.D * rr.H
+hshape : rr.Z = rr.h * rr.D * (rr.H * (ι (v 7) - rr.V * rr.V * rr.B) + rr.K) - rr.H * (rr.D * rr.B + rr.h * rr.e)
+hDdiv : rr.D ∣ rr.h * rr.H * rr.e
+⊢ (if 6 = 2 then
+      if 5 = 2 then
+        ⋯ - ⋯ - ⋯ * ⋯ - ⋯ * ⋯ * 12 - ⋯ * ⋯ * ⋯ ^ 3 * 8 - ⋯ * ⋯ * ι (v 1) * (if 0 = 2 then ⋯ else ⋯) ^ 4 * 2 -
+                                                                                              ↑(p 0) * ι (v 0) *
+                                                                                                  ι (v 2) *
+                                                                                                2 -
+                                                                                            (↑(p 0) * ι (v 0) *
+                                                                                                  ι (v 2) *
+                                                                                                if 0 = 2 then
+                                                                                                  ⋯ - ⋯ - ⋯ * ⋯ +
+                                                                                                    ⋯ ^ 2 * ι (v 0)
+                                                                                                else ↑(p 0) * ι (v 0)) *
+                                                                                              8 -
+                                                                                          ↑(p 0) * ι (v 0) * ι (v 2) *
+                                                                                              (if 0 = 2 then
+                                                                                                  ⋯ - ⋯ - ⋯ * ⋯ +
+                                                                                                    ⋯ ^ 2 * ι (v 0)
+                                                                                                else ↑(p 0) * ι (v 0)) ^
+                                                                                                2 *
+                                                                                            12 -
+                                                                                        ↑(p 0) * ι (v 0) * ι (v 2) *
+                                                                                            (if 0 = 2 then
+                                                                                                ↑(p 0) - ⋯ * ⋯ -
+                                                                                                    ↑(p 0) * ι (v 2) +
+                                                                                                  ↑(p 0) ^ 2 * ι (v 0)
+                                                                                              else ↑(p 0) * ι (v 0)) ^
+                                                                                              3 *
+                                                                                          8 -
+                                                                                      ↑(p 0) * ι (v 0) * ι (v 2) *
+                                                                                          (if 0 = 2 then
+                                                                                              ↑(p 0) -
+                                                                                                    ↑(p 0) * ι (v 1) -
+                                                                                                  ↑(p 0) * ι (v 2) +
+                                                                                                ↑(p 0) ^ 2 * ι (v 0)
+                                                                                            else ↑(p 0) * ι (v 0)) ^
+                                                                                            4 *
+                                                                                        2 +
+                                                                                    (↑(p 0) * ι (v 0) *
+                                                                                        if 0 = 2 then
+                                                                                          ↑(p 0) - ↑(p 0) * ι (v 1) -
+                                                                                              ↑(p 0) * ι (v 2) +
+                                                                                            ↑(p 0) ^ 2 * ι (v 0)
+                                                                                        else ↑(p 0) * ι (v 0)) *
+                                                                                      8 +
+                                                                                  ↑(p 0) * ι (v 0) *
+                                                                                      (if 0 = 2 then
+                                                                                          ↑(p 0) - ↑(p 0) * ι (v 1) -
+                                                                                              ↑(p 0) * ι (v 2) +
+                                                                                            ↑(p 0) ^ 2 * ι (v 0)
+                                                                                        else ↑(p 0) * ι (v 0)) ^
+                                                                                        2 *
+                                                                                    12 +
+                                                                                ↑(p 0) * ι (v 0) *
+                                                                                    (if 0 = 2 then
+                                                                                        ↑(p 0) - ↑(p 0) * ι (v 1) -
+                                                                                            ↑(p 0) * ι (v 2) +
+                                                                                          ↑(p 0) ^ 2 * ι (v 0)
+                                                                                      else ↑(p 0) * ι (v 0)) ^
+                                                                                      3 *
+                                                                                  8 +
+                                                                              ↑(p 0) * ι (v 0) *
+                                                                                  (if 0 = 2 then
+                                                                                      ↑(p 0) - ↑(p 0) * ι (v 1) -
+                                                                                          ↑(p 0) * ι (v 2) +
+                                                                                        ↑(p 0) ^ 2 * ι (v 0)
+                                                                                    else ↑(p 0) * ι (v 0)) ^
+                                                                                    4 *
+                                                                                2 +
+                                                                            ↑(p 0) ^ 2 * ι (v 0) ^ 2 +
+                                                                          (↑(p 0) ^ 2 * ι (v 0) ^ 2 *
+                                                                              if 0 = 2 then
+                                                                                ↑(p 0) - ↑(p 0) * ι (v 1) -
+                                                                                    ↑(p 0) * ι (v 2) +
+                                                                                  ↑(p 0) ^ 2 * ι (v 0)
+                                                                              else ↑(p 0) * ι (v 0)) *
+                                                                            4 +
+                                                                        ↑(p 0) ^ 2 * ι (v 0) ^ 2 *
+                                                                            (if 0 = 2 then
+                                                                                ↑(p 0) - ↑(p 0) * ι (v 1) -
+                                                                                    ↑(p 0) * ι (v 2) +
+                                                                                  ↑(p 0) ^ 2 * ι (v 0)
+                                                                              else ↑(p 0) * ι (v 0)) ^
+                                                                              2 *
+                                                                          6 +
+                                                                      ↑(p 0) ^ 2 * ι (v 0) ^ 2 *
+                                                                          (if 0 = 2 then
+                                                                              ↑(p 0) - ↑(p 0) * ι (v 1) -
+                                                                                  ↑(p 0) * ι (v 2) +
+                                                                                ↑(p 0) ^ 2 * ι (v 0)
+                                                                            else ↑(p 0) * ι (v 0)) ^
+                                                                            3 *
+                                                                        4 +
+                                                                    ↑(p 0) ^ 2 * ι (v 0) ^ 2 *
+                                                                      (if 0 = 2 then
+                                                                          ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                                            ↑(p 0) ^ 2 * ι (v 0)
+                                                                        else ↑(p 0) * ι (v 0)) ^
+                                                                        4 -
+                                                                  ι (v 1) * 2 +
+                                                                ι (v 1) * ι (v 2) * 2 +
+                                                              (ι (v 1) * ι (v 2) *
+                                                                  if 0 = 2 then
+                                                                    ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                                      ↑(p 0) ^ 2 * ι (v 0)
+                                                                  else ↑(p 0) * ι (v 0)) *
+                                                                8 +
+                                                            ι (v 1) * ι (v 2) *
+                                                                (if 0 = 2 then
+                                                                    ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                                      ↑(p 0) ^ 2 * ι (v 0)
+                                                                  else ↑(p 0) * ι (v 0)) ^
+                                                                  2 *
+                                                              12 +
+                                                          ι (v 1) * ι (v 2) *
+                                                              (if 0 = 2 then
+                                                                  ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                                    ↑(p 0) ^ 2 * ι (v 0)
+                                                                else ↑(p 0) * ι (v 0)) ^
+                                                                3 *
+                                                            8 +
+                                                        ι (v 1) * ι (v 2) *
+                                                            (if 0 = 2 then
+                                                                ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                                  ↑(p 0) ^ 2 * ι (v 0)
+                                                              else ↑(p 0) * ι (v 0)) ^
+                                                              4 *
+                                                          2 -
+                                                      (ι (v 1) *
+                                                          if 0 = 2 then
+                                                            ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                              ↑(p 0) ^ 2 * ι (v 0)
+                                                          else ↑(p 0) * ι (v 0)) *
+                                                        8 -
+                                                    ι (v 1) *
+                                                        (if 0 = 2 then
+                                                            ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                              ↑(p 0) ^ 2 * ι (v 0)
+                                                          else ↑(p 0) * ι (v 0)) ^
+                                                          2 *
+                                                      12 -
+                                                  ι (v 1) *
+                                                      (if 0 = 2 then
+                                                          ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                            ↑(p 0) ^ 2 * ι (v 0)
+                                                        else ↑(p 0) * ι (v 0)) ^
+                                                        3 *
+                                                    8 -
+                                                ι (v 1) *
+                                                    (if 0 = 2 then
+                                                        ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                          ↑(p 0) ^ 2 * ι (v 0)
+                                                      else ↑(p 0) * ι (v 0)) ^
+                                                      4 *
+                                                  2 +
+                                              ι (v 1) ^ 2 +
+                                            (ι (v 1) ^ 2 *
+                                                if 0 = 2 then
+                                                  ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                                else ↑(p 0) * ι (v 0)) *
+                                              4 +
+                                          ι (v 1) ^ 2 *
+                                              (if 0 = 2 then
+                                                  ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                                else ↑(p 0) * ι (v 0)) ^
+                                                2 *
+                                            6 +
+                                        ι (v 1) ^ 2 *
+                                            (if 0 = 2 then
+                                                ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                              else ↑(p 0) * ι (v 0)) ^
+                                              3 *
+                                          4 +
+                                      ι (v 1) ^ 2 *
+                                        (if 0 = 2 then
+                                            ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                          else ↑(p 0) * ι (v 0)) ^
+                                          4 -
+                                    ι (v 2) * 2 -
+                                  (ι (v 2) *
+                                      if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                      else ↑(p 0) * ι (v 0)) *
+                                    8 -
+                                ι (v 2) *
+                                    (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                      else ↑(p 0) * ι (v 0)) ^
+                                      2 *
+                                  12 -
+                              ι (v 2) *
+                                  (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                    else ↑(p 0) * ι (v 0)) ^
+                                    3 *
+                                8 -
+                            ι (v 2) *
+                                (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                  else ↑(p 0) * ι (v 0)) ^
+                                  4 *
+                              2 +
+                          ι (v 2) ^ 2 +
+                        (ι (v 2) ^ 2 *
+                            if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                            else ↑(p 0) * ι (v 0)) *
+                          4 +
+                      ι (v 2) ^ 2 *
+                          (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                            else ↑(p 0) * ι (v 0)) ^
+                            2 *
+                        6 +
+                    ι (v 2) ^ 2 *
+                        (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                          else ↑(p 0) * ι (v 0)) ^
+                          3 *
+                      4 +
+                  ι (v 2) ^ 2 *
+                    (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                      else ↑(p 0) * ι (v 0)) ^
+                      4 +
+                (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                  else ↑(p 0) * ι (v 0)) *
+                  4 +
+              (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                  else ↑(p 0) * ι (v 0)) ^
+                  2 *
+                6 +
+            (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0) else ↑(p 0) * ι (v 0)) ^
+                3 *
+              4 +
+          (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0) else ↑(p 0) * ι (v 0)) ^ 4
+      else
+        (↑(p 0) * ι (v 0) *
+                                                    if 0 = 2 then
+                                                      ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                        ↑(p 0) ^ 2 * ι (v 0)
+                                                    else ↑(p 0) * ι (v 0)) *
+                                                  ι (v 5) *
+                                                4 +
+                                              ↑(p 0) * ι (v 0) *
+                                                    (if 0 = 2 then
+                                                        ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                          ↑(p 0) ^ 2 * ι (v 0)
+                                                      else ↑(p 0) * ι (v 0)) ^
+                                                      2 *
+                                                  ι (v 5) *
+                                                6 +
+                                            ↑(p 0) * ι (v 0) *
+                                                  (if 0 = 2 then
+                                                      ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                        ↑(p 0) ^ 2 * ι (v 0)
+                                                    else ↑(p 0) * ι (v 0)) ^
+                                                    3 *
+                                                ι (v 5) *
+                                              4 +
+                                          ↑(p 0) * ι (v 0) *
+                                              (if 0 = 2 then
+                                                  ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                                else ↑(p 0) * ι (v 0)) ^
+                                                4 *
+                                            ι (v 5) +
+                                        ↑(p 0) * ι (v 0) * ι (v 5) -
+                                      (ι (v 1) *
+                                            if 0 = 2 then
+                                              ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                            else ↑(p 0) * ι (v 0)) *
+                                          ι (v 5) *
+                                        4 -
+                                    ι (v 1) *
+                                          (if 0 = 2 then
+                                              ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                            else ↑(p 0) * ι (v 0)) ^
+                                            2 *
+                                        ι (v 5) *
+                                      6 -
+                                  ι (v 1) *
+                                        (if 0 = 2 then
+                                            ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                          else ↑(p 0) * ι (v 0)) ^
+                                          3 *
+                                      ι (v 5) *
+                                    4 -
+                                ι (v 1) *
+                                    (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                      else ↑(p 0) * ι (v 0)) ^
+                                      4 *
+                                  ι (v 5) -
+                              ι (v 1) * ι (v 5) -
+                            (ι (v 2) *
+                                  if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                  else ↑(p 0) * ι (v 0)) *
+                                ι (v 5) *
+                              4 -
+                          ι (v 2) *
+                                (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                  else ↑(p 0) * ι (v 0)) ^
+                                  2 *
+                              ι (v 5) *
+                            6 -
+                        ι (v 2) *
+                              (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                else ↑(p 0) * ι (v 0)) ^
+                                3 *
+                            ι (v 5) *
+                          4 -
+                      ι (v 2) *
+                          (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                            else ↑(p 0) * ι (v 0)) ^
+                            4 *
+                        ι (v 5) -
+                    ι (v 2) * ι (v 5) +
+                  (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                      else ↑(p 0) * ι (v 0)) *
+                      ι (v 5) *
+                    4 +
+                (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                      else ↑(p 0) * ι (v 0)) ^
+                      2 *
+                    ι (v 5) *
+                  6 +
+              (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                    else ↑(p 0) * ι (v 0)) ^
+                    3 *
+                  ι (v 5) *
+                4 +
+            (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0) else ↑(p 0) * ι (v 0)) ^
+                4 *
+              ι (v 5) +
+          ι (v 5)
+    else
+      if 5 = 2 then
+        (↑(p 0) * ι (v 0) *
+                                                    if 0 = 2 then
+                                                      ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                        ↑(p 0) ^ 2 * ι (v 0)
+                                                    else ↑(p 0) * ι (v 0)) *
+                                                  ι (v 6) *
+                                                4 +
+                                              ↑(p 0) * ι (v 0) *
+                                                    (if 0 = 2 then
+                                                        ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                          ↑(p 0) ^ 2 * ι (v 0)
+                                                      else ↑(p 0) * ι (v 0)) ^
+                                                      2 *
+                                                  ι (v 6) *
+                                                6 +
+                                            ↑(p 0) * ι (v 0) *
+                                                  (if 0 = 2 then
+                                                      ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) +
+                                                        ↑(p 0) ^ 2 * ι (v 0)
+                                                    else ↑(p 0) * ι (v 0)) ^
+                                                    3 *
+                                                ι (v 6) *
+                                              4 +
+                                          ↑(p 0) * ι (v 0) *
+                                              (if 0 = 2 then
+                                                  ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                                else ↑(p 0) * ι (v 0)) ^
+                                                4 *
+                                            ι (v 6) +
+                                        ↑(p 0) * ι (v 0) * ι (v 6) -
+                                      (ι (v 1) *
+                                            if 0 = 2 then
+                                              ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                            else ↑(p 0) * ι (v 0)) *
+                                          ι (v 6) *
+                                        4 -
+                                    ι (v 1) *
+                                          (if 0 = 2 then
+                                              ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                            else ↑(p 0) * ι (v 0)) ^
+                                            2 *
+                                        ι (v 6) *
+                                      6 -
+                                  ι (v 1) *
+                                        (if 0 = 2 then
+                                            ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                          else ↑(p 0) * ι (v 0)) ^
+                                          3 *
+                                      ι (v 6) *
+                                    4 -
+                                ι (v 1) *
+                                    (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                      else ↑(p 0) * ι (v 0)) ^
+                                      4 *
+                                  ι (v 6) -
+                              ι (v 1) * ι (v 6) -
+                            (ι (v 2) *
+                                  if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                  else ↑(p 0) * ι (v 0)) *
+                                ι (v 6) *
+                              4 -
+                          ι (v 2) *
+                                (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                  else ↑(p 0) * ι (v 0)) ^
+                                  2 *
+                              ι (v 6) *
+                            6 -
+                        ι (v 2) *
+                              (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                                else ↑(p 0) * ι (v 0)) ^
+                                3 *
+                            ι (v 6) *
+                          4 -
+                      ι (v 2) *
+                          (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                            else ↑(p 0) * ι (v 0)) ^
+                            4 *
+                        ι (v 6) -
+                    ι (v 2) * ι (v 6) +
+                  (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                      else ↑(p 0) * ι (v 0)) *
+                      ι (v 6) *
+                    4 +
+                (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                      else ↑(p 0) * ι (v 0)) ^
+                      2 *
+                    ι (v 6) *
+                  6 +
+              (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                    else ↑(p 0) * ι (v 0)) ^
+                    3 *
+                  ι (v 6) *
+                4 +
+            (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0) else ↑(p 0) * ι (v 0)) ^
+                4 *
+              ι (v 6) +
+          ι (v 6)
+      else
+        (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0) else ↑(p 0) * ι (v 0)) *
+                      ι (v 5) *
+                    ι (v 6) *
+                  4 +
+                (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                        else ↑(p 0) * ι (v 0)) ^
+                        2 *
+                      ι (v 5) *
+                    ι (v 6) *
+                  6 +
+              (if 0 = 2 then ↑(p 0) - ↑(p 0) * ι (v 1) - ↑(p 0) * ι (v 2) + ↑(p 0) ^ 2 * ι (v 0)
+                      else ↑(p 0) * ι (v 0)) ^
+                      3 *
+                    ι (v 5) *
+                  ι (v 6) *
+                4 +
+            (if 0 = 2 then ↑(p 0) - ↑(p 0) * ⋯ - ⋯ + ⋯ else ⋯) ^ ⋯ * ⋯ * ⋯ +
+          ⋯) =
+    ⋯
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-guardfree-adjacent-draft/Trace74OffsetDiv.lean:67:17: error: Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+Tactic `simp` failed with a nested error:
+(deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-guardfree-adjacent-draft/Trace74OffsetDiv.lean:28:66: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-guardfree-adjacent-draft/Trace74OffsetDiv.lean:70:14: error(lean.unknownIdentifier): Unknown constant `Trace74OffsetDiv.graph_offset_divisible`

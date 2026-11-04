@@ -56,14 +56,19 @@ theorem graph_offset_divisible (p : Fin 4 → ℕ) (v : Fin 10 → V)
     linear_combination hshape - hZ
   have hqdivD : qq^4∣rr.D := by
     refine ⟨ι (v 5*v 6),?_⟩
-    dsimp [qq,rr]
-    simp only [D_def,X_def,Y_def,q_def,h_def,ports,q,b,map_mul,map_add,map_one,map_natCast,masked,Trace74Mask.oldVal,Fin.isValue,reduceCtorEq,↓reduceIte]
+    change (regs (ports p) (fun j => ι (v j))).D =
+      (ι (q p v):DiffRing V)^4 * ι (v 5*v 6)
+    simp only [D_def,X_def,Y_def,q_def,h_def,ports,q,b,map_mul,map_add,map_one,map_natCast]
     ring
   have hqe : qq^4∣(rr.h*rr.H)*rr.e := dvd_trans hqdivD hDdiv
   have hrq : qq∣rr.h*rr.H-1 := by
     refine ⟨4*(qq-1)*qq^2*ι (v 6)*(rr.X+1)-1,?_⟩
-    dsimp [qq,rr]
-    simp only [H_def,Am1_def,X_def,Y_def,q_def,h_def,ports,q,b,map_mul,map_add,map_one,map_natCast,masked,Trace74Mask.oldVal,Fin.isValue,reduceCtorEq,↓reduceIte]
+    change (regs (ports p) (fun j => ι (v j))).h *
+      (regs (ports p) (fun j => ι (v j))).H-1 =
+      (ι (q p v):DiffRing V) *
+        (4*((ι (q p v):DiffRing V)-1)*(ι (q p v):DiffRing V)^2*ι (v 6)*
+          ((regs (ports p) (fun j => ι (v j))).X+1)-1)
+    simp only [H_def,Am1_def,X_def,Y_def,q_def,h_def,ports,q,b,map_mul,map_add,map_one,map_natCast]
     ring
   exact cancel_one_mod_fourth qq (rr.h*rr.H) rr.e hrq hqe
 
