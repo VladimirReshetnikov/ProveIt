@@ -2852,8 +2852,11 @@ That includes:
 
 - 163's 75 / 402, which has a guarded-provider endpoint in research;
 - the rest of the fourteen-positive Pareto row (degree / operations): 65's
-  26 / 92, 64's 30 / 83, 55's and 59's 52 / 79, and 183's 150 / 65. Package
-  188's 94 / 67 and 118 / 66 have endpoints;
+  26 / 92, 64's 30 / 83, and 55's and 59's 52 / 79. Endpoints exist for the
+  formulas of 183's 150 / 65 and 188's 94 / 67 and 118 / 66, but only at the
+  maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The packages bind them to
+  admissible942 and block-mask2963. 192's thirteen-positive 174 / 69 is in the
+  same position;
 - 170's 74 / 438;
 - 184's 104 / 174;
 - the ten-positive Pareto points;
