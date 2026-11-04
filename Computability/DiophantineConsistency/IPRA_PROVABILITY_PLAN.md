@@ -2829,11 +2829,31 @@ So did package 115's 13-positive 87 / 51 free-J frontier point
 give the strong and auxiliary equations directly, so it reduces to the
 calibrated 95-operation literal in every `IΣ₁` model.
 
+Package 72's 13-positive 28 / 98 point followed on 4 November 2026
+([`Compact44/IPRAOrdinary72`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary72.lean),
+[record](research/ordinary13-p72-endpoint/README.md)). It needed its own
+soundness and converse, because it permits transport quotient one, which no
+free-J zero has.
+
+- Its forward direction reaches halting through the six
+  `CompactLeafFacts.LeafFacts`, on which the compact44 halting chain is now
+  also stated (`Compact44/Facts/`).
+- So any further compact44 equation needs only those six facts and a
+  converse.
+
+Its fourteen-positive sibling, 72's 24 / 101, followed on the same day
+([`Compact44/IPRAOrdinary72P14`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary72P14.lean),
+[record](research/ordinary13-p72-endpoint/README.md#the-fourteen-positive-sibling-p14)).
+It promotes the product `E = XY` to an unknown, with residual `E − XY`. So its
+zeros are P13's in every `IΣ₁` model, and its bridge composes with P13's.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
 - 163's 75 / 402, which has a guarded-provider endpoint in research;
-- 72's 28 / 98 and 24 / 101;
+- the rest of the fourteen-positive Pareto row (degree / operations): 65's
+  26 / 92, 64's 30 / 83, 55's and 59's 52 / 79, and 183's 150 / 65. Package
+  188's 94 / 67 and 118 / 66 have endpoints;
 - 170's 74 / 438;
 - 184's 104 / 174;
 - the ten-positive Pareto points;
