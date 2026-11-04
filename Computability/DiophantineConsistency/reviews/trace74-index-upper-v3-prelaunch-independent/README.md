@@ -1,0 +1,7 @@
+# Independent prelaunch review: generic index upper v3
+
+Scoped GO after fresh resource preflight and coordinated release; no Lean was run here. Revised source SHA-256 `9f39fe59ab3485332fa8acdfade81c9f5062454f908603259f6a2e5d33f34192`, runner `4f3e8ff49d87ea4d0abdc05814094167ef0275eaaa6afa0e1222ca116de2bd67`, unchanged policy script `c685ce41127a66eddbeb892bc6b19334b882db43fed5e4b48455c20430eefdf9`; 13 parser cases independently reran PASS.
+
+Attempt02 terminal `a2437a64e40197e7447eaa90d18809fa4508aa9bc1506da5c229660fbfd251dc` records Lean exit 1 and rejected sorryAx: one remaining `Y(X+1)≤Y(X+1)+1` goal and one no-progress simp following the y-successor rewrite. The retained post-exit/pre-edit source and runner copies match the attempt's original pinned hashes. Source diff adds `le_add_of_nonneg_right` to the first line and removes the trailing simp from the second; runner diff updates only the source pin. These target the logged diagnostics; elaboration success is not inferred. Attempt01's earlier failure also remains excluded.
+
+The generic theorem retains X≥16,Y≥1,n≥2, c/k/eta/zeta relations, zeta>0 and both explicit ordinate equations; conclusion r<2n does not infer graph zero, rank equality or guard. Existing direct source/provider pins, fresh output, resource/lock guard and strict one-report policy remain. Direct-pin provenance, future search-path shadowing and full transitive/package/dynamic ancestry are not authenticated.
