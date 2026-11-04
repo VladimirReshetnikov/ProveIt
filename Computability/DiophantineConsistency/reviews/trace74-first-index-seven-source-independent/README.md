@@ -1,0 +1,3 @@
+# Independent source review: first index at least seven
+
+Source-only PASS `11a500e5cd5a3a1bd2dc0a530cb0a6a7cac591c197f929f4a937394c6c3f2086`, conditional on pending n6 graph exclusion. No Lean replay. Same positive graph p/v, beta≥31 and explicit q≥2³⁰ provide accepted n≥6 and beta≥15; proposed n6 impossibility excludes equality, giving n≥7 by discreteness. Existential theorem retains the very same n, first-coordinate equation and residue from the accepted residue provider. It does not exclude n≥7, derive a guard or claim an endpoint. Parent theorem, tactics and provider compatibility remain untested.

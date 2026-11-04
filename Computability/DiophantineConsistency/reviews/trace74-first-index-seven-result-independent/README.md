@@ -1,0 +1,5 @@
+# Independent result audit: first index at least seven
+
+PASS for captured result. Author reports actual outer session 27878 exit 0/reaped. Terminal `9bc7fcdc87e0e93c74d5c882dffffbcadad681f91f9025d601970384624ac0d0`; corrected runner `084f4af2081ee5ad93f2f47717d554bf7c1025e5db372e2726ee8b25dfd5f7a5`; object `ec977bf8c5cd6039ab62ac1d415ceba91869f292c163661beef8a9c6c1d6a875`. All 134 terminal input pins, object and logs independently rehashed; Lean exit 0, two exact named reports each `[propext, Classical.choice, Quot.sound]`, stderr empty. Prelaunch checked both parent maps, direct imports, and 61/68 inherited pinned olean first selections; initial runner held until missing FirstIndexSix source pin was corrected.
+
+For same p/v, beta≥31, positive valuation, actual 74 graph zero and explicit q≥2³⁰, any first-coordinate n is ≥7. The existential theorem preserves the same n's coordinate and residue. No unrestricted q, exclusion of n≥7, guard or iPRA endpoint is proved. Direct pin/selection checks do not authenticate full serialized transitive/package ancestry or continuously stable resolution.
