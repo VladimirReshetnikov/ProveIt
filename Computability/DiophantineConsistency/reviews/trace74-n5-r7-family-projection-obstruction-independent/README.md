@@ -1,0 +1,7 @@
+# Independent N5/R7 scalar-family projection obstruction audit
+
+PASS for the stated ordinary-integer family. README `fc9024bcffde852dd3ca2652dbac2b28ba6d2ee82babaac18258e089f0c0c603`, checker `f57380533e78a096c63457d8231f937d0f8b3990b52b15d3dca3f7b041d7825a`, receipt `a9f1810c46dc34c1d418bbcf4680e962cc3a55c596f9064d62f79d01f75c8328`, stdout `187472212bed145fd45a790eaf1ef3257ce3c66fa9fdcd011ce734023afa8109`; stderr empty. Independently reran the prescribed command and reproduced stdout; missing flags, -O and -OO reject.
+
+For q≥256,m≥1,a=2q²m,X=a³,Y=a²/2,h=q−1, H=2a⁵+2a²−1 is positive and odd. Independent exact polynomial division verifies that multiplying the projected product by M³ for M=2a² gives the indicated product modulo H; after signs that product is −2h(2a²−1)(258a²−1)(127a²−64). H odd allows cancellation of 2. Independent polynomial arithmetic verifies the three Bézout identities with constants 1, 281370820607 and 4292918913; their product is K=1207902117350120440191. Thus projection divisibility implies H|hK without a coprimality assumption on the other factors. H>64q¹⁰, 64·256⁹>K and q>h>0 imply H>hK>0, impossible for a positive integer divisor.
+
+This rules out the weighted r7 projection only for the specified external scalar family and q≥256. It is not a general n5/r7 graph exclusion, a graph-zero construction, a nonstandard model proof, fixed-BFS result, guard theorem or iPRA endpoint. No Lean was run in this audit.
