@@ -1,0 +1,7 @@
+# Held split natural cover check
+
+Source-reviewed concrete application of accepted generic power-cover theorem, with five captured producer roots including generic/abstract dependency overlap. Read-only first preflight failed on stale duplicate audit pin, retained as v1; corrected preflight02 and 25 policy controls passed without Lean. Independent prelaunch review and coordination required. No concrete cover claimed. Captured provider and historical/package/dynamic ancestry limitations remain.
+
+The [independent prelaunch review](../../reviews/trace74-symbolic-cover-split-natural-prelaunch-independent/README.md) approved one check. Attempt01 reached the monitored 600-second limit: actual outer exit 1, Lean exit -9 with reason `timeout` after 601.494 seconds, and both stage logs empty. The [child result](observations/attempt01/result.json) SHA-256 is `94c0ab7dfb678c51f5a06dffdfe3d7a3ecb8b51716d7a373c378fdd3ce15d6c2`; the [outer receipt](observations/outer-attempt01/terminal.json) SHA-256 is `5784dd617424edd20dd2ba3126435e7b9bbda539ca0806ae297c7b86b3602480`. No natural-cover theorem was accepted and the empty logs do not identify the expensive step. The separate [fixed-geometry diagnostic](../trace74-symbolic-cover-fixed-geometry-draft/README.md) remains unchecked.
+
+The [independent factual audit](../../reviews/trace74-symbolic-cover-split-natural-timeout-independent/README.md) confirms the timeout and excludes the attempt from accepted theorems.
