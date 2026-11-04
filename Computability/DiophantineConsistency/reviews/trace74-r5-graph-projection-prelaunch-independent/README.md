@@ -1,0 +1,5 @@
+# Independent R5 graph projection source and prelaunch review
+
+Scoped GO: source `c42053945850fe7bcfefc2b03f39f04618c68448abbfecae58c450471e8d7b2e`, runner `62a61b850354e136d93e70ba37781af0fc9c34f8fc2d4d84c94bdfc45728e8ef`, policy `be4f2a066e309e465d372377ffb4f3d2c86f649f0dd5624733456a01bf0fcaa7`. The theorem assumes a single p/v, β>0, all v positive, the actual 74 value zero, and the explicit same-tuple c=ycoord 5 (A−1). It specializes the audited graph product at exp 5=32, binds H/h/X to the same masked registers and applies the audited all-ring reduction. Its result is the signed difference-ring H divisibility of h(4Y−1)(132Y−1)(31Y−8), not an N4 exclusion or guard.
+
+I verified all 35 direct hashes, exact report policy and 13 controls; the two direct project imports are unique observed first selections on the declared path. The runner rechecks pins/source and uses the shared resource lock. This is a point-in-time direct-pin/first-selection review, not full transitive project/package/dynamic ancestry or ongoing shadowing authentication. Elaboration is unchecked; no Lean run was made for this review.
