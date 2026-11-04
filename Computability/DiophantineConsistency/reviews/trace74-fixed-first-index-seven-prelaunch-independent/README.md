@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: fixed-beta first index ≥7
+
+GO subject to root slot release and fresh locked preflight. Source `2844943a93f3e88bb86ff26d072b872867ff15adc9609a22d3d7c282ad110265`, runner `50f450defc1aecca74469100cdbe7b5d4688a34240396d50c86708da45f29579`, policy `215edc20bd0bfa373fdc1b0a1ddb1fc39d1c4627a15f418f05b172e6388d86b8`. No Lean replay. With fixed p0=betaNat and same positive graph zero, accepted beta/q facts discharge explicit assumptions of first-index≥7; same p/v/n, coordinate/residue preserved, other p ports arbitrary. No guard/all-index endpoint.
+
+All 134 saved FirstIndexSeven input pins match runner map, and 85 parent pinned olean first selections match hashes. Five direct imports select expected objects; CompactFixedBeta has a later duplicate with identical current object hash. Runner conflict checks merged pins, verifies pre/post, exact two reports, empty stderr, and locked resources; 14 actual-validator controls pass. Point-in-time direct selections do not authenticate full serialized transitive/package ancestry or continuously stable resolution.
