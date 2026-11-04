@@ -1,0 +1,5 @@
+# Discrete scalar obstruction retry
+
+The reviewed three-stage replay rebuilt the upper certificate and upper interval, then checked the corrected scalar contradiction against the audited lower parent. Its [independent prelaunch review](../../reviews/trace74-n3-scalar-discrete-v2-prelaunch-independent/README.md) passed. The actual outer session exited 0; child SHA-256 `c56f50101472e542385769a4b8c69715483d3a00c9aa5f439d29be6accceb637`, outer terminal SHA-256 `92e15a214c3d33140141c2f30c7b0f0b5f695d5274b44bd313551909f9f9aa70`, and final object SHA-256 `1cbc0a63ccf24cc5b36f97f970abb3a7b96f26a1cc64b26179e96c8ef655e93a`. The final two reports list only `propext`, `Classical.choice`, and `Quot.sound`; the [independent result audit](../../reviews/trace74-n3-scalar-discrete-v2-result-independent/README.md) passed.
+
+The conclusion is a contradiction under explicit ordered-ring discreteness, q and X/Y bounds, factorizations, and strict polynomial inequalities. It does not yet bind those premises to an actual 74 zero or Pell index. The first failed attempt remains preserved; captured ancestry and external-file binding limitations remain.
