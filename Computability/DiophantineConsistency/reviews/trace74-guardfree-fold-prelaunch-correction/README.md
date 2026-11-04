@@ -1,0 +1,3 @@
+# Correction to fold prelaunch review
+
+The prior review `reviews/trace74-guardfree-fold-prelaunch-independent/README.md` SHA-256 `180d8903a820babe079e4fbbccfcc0e0033a03f04076a62a9055132a5eaca891` missed that the runner expected both `Trace74Fold.signed_coordinate` and `Trace74Fold.graph_odd_ordinate`, while the source prints only the latter. The author reports attempt01 was rejected on this policy mismatch after Fold Lean exited 0, and later stages were not run. The earlier GO must not be read as accepting that attempt. A revised runner requires new prelaunch review; the retained result requires separate terminal audit. Other source and provider scope of the prior review is unaffected.
