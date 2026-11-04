@@ -109,6 +109,13 @@ lowest-degree fourteen-positive point. It has all three endpoints as well
 [record](research/ordinary13-p72-endpoint/README.md#the-fourteen-positive-sibling-p14)).
 P14 promotes P13's product `E = XY` to an unknown and adds the residual
 `E − XY`, so in every `IΣ₁` model its zeros are exactly P13's.
+Package 65's fourteen-positive 92-operation, degree-26 equation also has all
+three endpoints
+([`Compact44/IPRAPositive65`](Lean/DiophantineConsistency/Compact44/IPRAPositive65.lean),
+[record](research/fourteen-p65-endpoint/README.md)). It reuses P13's generic
+soundness sections, with the exact-index section split so that it accepts 65's
+ordinary strong norm (`P72Exact.exact_ordinary`). Its converse reuses P13's
+extraction of the halt data.
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have

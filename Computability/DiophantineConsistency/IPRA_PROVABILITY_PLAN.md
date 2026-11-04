@@ -2847,12 +2847,19 @@ Its fourteen-positive sibling, 72's 24 / 101, followed on the same day
 It promotes the product `E = XY` to an unknown, with residual `E − XY`. So its
 zeros are P13's in every `IΣ₁` model, and its bridge composes with P13's.
 
+Package 65's 26 / 92 followed
+([`Compact44/IPRAPositive65`](Lean/DiophantineConsistency/Compact44/IPRAPositive65.lean),
+[record](research/fourteen-p65-endpoint/README.md)). Its main carrier is P13's
+divided by `β`, so P13's window, early, exact and power sections apply.
+`P72Exact.exact_ordinary` now takes the ordinary strong norm, which 65 has
+natively, and P13's `exact` is its corollary.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
 - 163's 75 / 402, which has a guarded-provider endpoint in research;
-- the rest of the fourteen-positive Pareto row (degree / operations): 65's
-  26 / 92, 64's 30 / 83, and 55's and 59's 52 / 79. Endpoints exist for the
+- the rest of the fourteen-positive Pareto row (degree / operations): 64's
+  30 / 83, and 55's and 59's 52 / 79. Endpoints exist for the
   formulas of 183's 150 / 65 and 188's 94 / 67 and 118 / 66, but only at the
   maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The packages bind them to
   admissible942 and block-mask2963. 192's thirteen-positive 174 / 69 is in the
