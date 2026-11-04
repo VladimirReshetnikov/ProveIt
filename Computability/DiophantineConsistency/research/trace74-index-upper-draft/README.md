@@ -13,5 +13,5 @@ source/runner copies were made after the corresponding runs, before editing,
 and are labeled accordingly. Direct-provider, search-path and full ancestry
 limitations remain.
 
-The separate `Trace74GraphIndexUpper.lean` is a graph-binding draft, not part of
-the generic result. It still needs its own successful check and result audit.
+The separate [graph-binding record](GRAPH-README.md) describes a checked and
+independently audited application to a positive trace74 zero with `beta ≥ 15`.
