@@ -73,3 +73,44 @@ are also needed by `graph_power`.
 
 Proposed size: Phase 1 is about 60 module edits, mechanical and verified by
 rebuild. Phases 2–3 are about 15–25 new modules.
+
+## Status and decisions (4 November 2026)
+
+**Phase 1 is built as a parallel chain, not by editing in place.**
+
+- *Why not in place:* `CompactSymbolicPorts` and `CompactSymbolicGraphDigits`
+  feed the low-byte, mask and beta infrastructure. Editing them in place
+  would rebuild 218 modules.
+- *What was done instead:*
+  - [`tools/factsgen.py`](tools/factsgen.py) writes `Compact44/Facts/<File>.lean`
+    for the 45 files holding the 49 forwarders, listed in
+    [`tools/forwarders.txt`](tools/forwarders.txt).
+  - Each copy re-opens the original namespace and restates the theorem as
+    `<name>_facts` over `CompactLeafFacts.LeafFacts`.
+  - No promoted module changes.
+  - [`tools/hzgraph.py`](tools/hzgraph.py) derives the forwarder list, and
+    [`tools/c44dag.py`](tools/c44dag.py) checks the import DAG: there are no
+    cycles, because the leaf closure contains no forwarder file.
+- *The transport field is weakened.* It is `0 < q − (F+α)` only. All three
+  forwarder uses take `.2`, and the strict `Fq < C·A` fails at `z_old = 1`.
+
+**Phase 2 map (2011 templates).** P13's normalized strong equation implies
+the ordinary one with `i' = Δi`, since `(i'c²)² = Δ(f²−1)`, and `Maux = i'c²`.
+So these 2011 lemmas apply as stated:
+
+- `AdaptiveGap85GenericSignedHalfIndex.signed_half_index_of_facts`;
+- `ArithmeticPellResidueAux.square_mod_one_of_relaxed_auxiliary`;
+- `ArithmeticPellResidueAux.signed_residue_of_relaxed_auxiliary`.
+
+`ArithmeticAdaptiveExactIndices2011.exact_indices_of_facts` shows the
+assembly. Its `Comparison` input is tied to the 2011 literal's folded first
+carrier, and that carrier has the same `z_old ≥ 2` obstruction. So P13 needs
+its own producers:
+
+| P13 producer | 2011 template |
+| --- | --- |
+| first and main norms from `A0` and `A1` | `ArithmeticAdaptiveScaledNorms2011` |
+| Pell classification into indices `n` and `m` | `ArithmeticAdaptivePellIndices2011.indices_of_quotients` |
+| rank window | `ArithmeticAdaptiveRankWindow2011` |
+| `2n ≡ R+1 (mod q⁴)` | `ArithmeticAdaptiveIndexComparison2011` |
+| strong and auxiliary norms | `ArithmeticAdaptiveStrongNorm2011`, `ArithmeticAdaptiveAuxNorm2011` |
