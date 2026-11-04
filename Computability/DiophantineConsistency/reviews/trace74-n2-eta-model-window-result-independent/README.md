@@ -1,0 +1,5 @@
+Independent post-audit PASS for stated conditional model inequality; no Lean replay.
+
+Actual author session 6278 reported outer exit 0 and reaped. Terminal b273a2208dece75b73562b50c4124a8b2617ced79d28ac2da2a3d276ff1fa7e7; source 982c56d777c7bb84f1a901b36f693a95eb5f37561be4f88a064d6bd6490b9aa3; runner cd0c3d3d7eddad07f4a5da94c443cdd29c13294fdea977b017d8d24fc47368d7; object f0520d41751019c4d890b5a5cf5f9380ee5a369462a714544e65ccde89b0f148. Stage exit0; exact sole report [propext, Classical.choice, Quot.sound], empty stderr. Rehashed all 30 recorded source/direct/tool/provider pins, logs and object. The two direct parents are independently audited generic eta-window and same-tuple graph eta identity.
+
+For the same p/v in an IΣ₁ model, with positive beta/valuation, 74 value-zero, q≥4 and k=8*firstParam+4, it concludes 2Y<X+3. The source obtains X≥4,Y≥64, transfers the eta identity into the generic ordered-ring lemma, and reflects strict order back. It does not alone exclude the branch, derive q≥4, prove a guard or endpoint. Direct pinning does not authenticate all transitive, search-path, package or dynamic ancestry.

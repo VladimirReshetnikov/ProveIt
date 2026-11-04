@@ -1,0 +1,7 @@
+# Same-witness right eta window
+
+`Trace74N2EtaModelWindow.graph_small_k_right_window` proves `2Y<X+3` in the stated arithmetic model from the same positive 74 graph zero, positive beta/valuation, explicit `q≥4`, and `k=8XY²+4`. It derives X≥4,Y≥64 in the model, applies the independently checked ordered-ring eta-window theorem to the signed graph eta identity, and transfers the strict inequality back through the canonical embedding. It assumes no F/C bound or reverse guard.
+
+The reviewed author check passed in actual tool session 6278, outer exit 0, with the named axiom report clean. Terminal `window-observations/attempt01/terminal.json` SHA-256 `b273a2208dece75b73562b50c4124a8b2617ced79d28ac2da2a3d276ff1fa7e7`; object `/tmp/trace74-n2-eta-model-window-z8d51kuj/lib/Trace74N2EtaModelWindow.olean` SHA-256 `f0520d41751019c4d890b5a5cf5f9380ee5a369462a714544e65ccde89b0f148`. Independent [result audit](../../reviews/trace74-n2-eta-model-window-result-independent/README.md) passed, SHA-256 `75155cc51059a045382e092619d65e2bc0a10ce9dda5adbb0b0cc9c1100e0c56`. Direct-pin/search-path and inherited project/package/dynamic ancestry limitations remain. This client alone does not exclude the small-k branch.
+
+[Source review](../../reviews/trace74-n2-eta-model-window-source-independent/README.md) and [prelaunch review](../../reviews/trace74-n2-eta-model-window-prelaunch-independent/README.md) are separately recorded.
