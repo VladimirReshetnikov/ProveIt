@@ -1,0 +1,73 @@
+import DiophantineConsistency.Compact44.QCube92Model
+import DiophantineConsistency.Compact44.FreeJRootBinding
+
+/-! Positive-coordinate existence comparison. The full imported-provider
+ancestry and the fixed-port end-to-end iPRA derivation are separate obligations. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace FreeJQCube92NamespacedExistence
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs Ordinary12FreeJ ModelDifferenceRing
+open FreeJQCube92 FreeJQCube92Model
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem transform_positive (p : Fin 4 → ℕ) (v : Fin 12 → V)
+    (hv : ∀ i, 0 < v i) : ∀ i, 0 < transform p v i := by
+  intro i
+  by_cases hi : i = 6
+  · subst i
+    have hq : 0 < 1 + v 0 * (p 0 : V) := by simp
+    simpa only [transform, Function.update_self] using
+      mul_pos (mul_pos hq (mul_pos hq hq)) (hv 6)
+  · simpa [transform, hi] using hv i
+
+theorem positive_zero_iff (p : Fin 4 → ℕ) (hbeta : 0 < (p 0 : V)) :
+    (∃ v : Fin 12 → V, (∀ i, 0 < v i) ∧ InternalZero (graph (integerPorts p)).output v) ↔
+    (∃ v : Fin 12 → V, (∀ i, 0 < v i) ∧ InternalZero (literal (integerPorts p)) v) := by
+  constructor
+  · rintro ⟨v,hv,hz⟩
+    refine ⟨transform p v, transform_positive p v hv, ?_⟩
+    have h94 := (zero_iff_transformed p v).mp hz
+    exact (FreeJSumSquares.zero_iff_literal (integerPorts p) (transform p v)).mp h94
+  · rintro ⟨v,hv,hz⟩
+    have hdiv := FreeJRootBinding.first_factor_forces_Y_divisible p v hz (hv 0) hbeta
+    obtain ⟨s,hs⟩ := hdiv
+    let q : V := 1 + v 0 * (p 0 : V)
+    have hsY : v 6 = q * (q * q) * s := by
+      dsimp only [q]
+      convert hs using 1; ring
+    have hspos : 0 < s := by
+      by_contra h
+      have hs0 : s = 0 := le_antisymm (le_of_not_gt h) (Arithmetic.zero_le s)
+      rw [hs0, mul_zero] at hsY
+      exact (ne_of_gt (hv 6)) hsY
+    let w : Fin 12 → V := Function.update v 6 s
+    have hw : ∀ i, 0 < w i := by
+      intro i
+      by_cases hi : i = 6
+      · subst i
+        simpa [w] using hspos
+      · simpa [w, hi] using hv i
+    have hw0 : w 0 = v 0 := by simp [w]
+    have hw6 : w 6 = s := by simp [w]
+    have htransform : transform p w = v := by
+      funext i
+      by_cases hi : i = 6
+      · subst i
+        simp only [transform, Function.update_self]
+        rw [hw0, hw6]
+        exact hsY.symm
+      · simp [transform, w, hi]
+    refine ⟨w,hw,?_⟩
+    apply (zero_iff_transformed p w).mpr
+    rw [htransform]
+    exact (FreeJSumSquares.zero_iff_literal (integerPorts p) v).mpr hz
+
+#print axioms FreeJQCube92NamespacedExistence.transform_positive
+#print axioms FreeJQCube92NamespacedExistence.positive_zero_iff
+end FreeJQCube92NamespacedExistence

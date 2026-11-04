@@ -34,6 +34,20 @@ The result is native, standard and equality-only iPRA proofs that the shifted
 paired replay. The binding of the Lean literal to the retained payload bytes
 and the PDF stays external, as below.
 
+**Smaller 12-variable graphs in the tree (3 November 2026).** The 94-, 92-,
+91-, 90- and 89-operation graphs described below now have native, standard and
+equality-only iPRA endpoints in
+[`Compact44/IPRAOrdinary12Chain`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12Chain.lean).
+Their exact degrees are 84, 164, 172, 172 and 172.
+
+- Their 87-module research closure was
+  [promoted the same way](reviews/ordinary12-chain-source-promotion/README.md).
+- All 15 endpoints report only `propext`, `Classical.choice` and `Quot.sound`.
+
+This supersedes the "not yet established" and "not yet compiled" remarks
+below for these five graphs. It is still an author build, and the JSON/PDF
+binding remains external.
+
 A [12-variable, 94-operation variant](research/ordinary12-sum-of-squares-candidate/README.md)
 replaces the final unit-factor product with a sum of three residual squares.
 Lean checks same-valuation zero equivalence to the 95-operation expression in
@@ -2794,3 +2808,8 @@ That closes the first group above. The compact-tuple packages still need their
 own reductions to the outer data `CompactSymbolicModelIff.p` and
 `ArithmeticMachineRun215`. These can now import the tree modules instead of
 prototype providers.
+
+The 94-, 92-, 91-, 90- and 89-operation 12-variable graphs followed
+([`Compact44/IPRAOrdinary12Chain`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12Chain.lean),
+[record](reviews/ordinary12-chain-source-promotion/README.md)). The
+speculative 88- and 86-operation graphs remain conditional research.
