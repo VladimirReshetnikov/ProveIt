@@ -39,11 +39,11 @@ from a positive graph zero for arbitrary ports, as shown below. Whether it
 follows at the fixed BFS tuple remains open. No unconditional positive-solution
 equivalence, halt equivalence or internal iPRA proof for this candidate is asserted.
 
-**Conditional mask-cover guard.** The separately [Lean-checked model lemma](../trace74-mask-cover-guard-draft/COMBINED.md) derives `F+C<q` from the natural four-block identity, its two population inequalities and stated size/positivity bounds, together with `beta+1≤MC+HP` and `HP≤beta`. Saturation supplies both no-carry facts before mask coverage supplies `F≤MC*J`; the guard is not assumed. This remains conditional: these block/population facts and symbolic fixed-mask hypotheses have not been derived from a fixed-BFS 74 zero. The check retains inherited provider ancestry and search-path limitations.
+**Conditional mask-cover guard.** The [fixed-symbolic-mask specialization](../trace74-fixed-mask-saturation-conditional-rebuild/README.md) now discharges the mask-cover inequality in every indicated arithmetic model and derives `F+C<q` under the remaining natural block, range, positivity and population hypotheses. Saturation supplies both no-carry facts before mask coverage supplies `F≤MC*J`; the guard is not assumed. These remaining hypotheses have not been derived from a fixed-BFS 74 zero. The check retains inherited provider ancestry, search-path and exact unevaluated-power-warning limitations.
 
 **Guard-independent roots.** For positive 74 witnesses and positive beta, the separately [Lean-checked model theorem](../trace74-arbitrary-root-draft/README.md) extracts the two positive root witnesses without assuming `F+C<q`. It uses the ring coordinate identity with a potentially negative synthetic old alpha and factors independent of that coordinate. A subsequent [Lean-checked Pell client](../trace74-arbitrary-root-draft/PELL.md) derives a positive first recurrence index and doubled norm, still without that guard. A further [first-index residue theorem](../trace74-arbitrary-root-draft/RESIDUE.md) shows `k ≡ 2*n (mod q⁴)` for the same positive Pell index, still without the guard. These direct-pin checks retain provider ancestry, search-path and intermediate-object limitations. The [guard-independent carrier and signed-offset theorem](../trace74-guardfree-adjacent-draft/OFFSET.md) also derives `q⁴ ∣ e` in the model difference ring for the same positive 74 zero. A further [signed-rank congruence](../trace74-signed-rank-congruence-draft/README.md) combines it with the same first Pell index: `q⁴ ∣ (rank+1−2n)` in the difference ring. The link to a natural rank, repunit, rank/population bounds, a fixed-port guard and an iPRA endpoint remain open.
 
-**Guard-independent Pell bounds.** A [four-stage checked client](../trace74-guardfree-fold-draft/README.md) further recovers an odd Pell ordinate and derives first Pell index `n≥2`, `8P+4≤k`, and `2q⁴<c` from a positive 74 zero without the reverse guard. Its direct-pin check retains provider ancestry and search-path limitations. The separate fixed-payload `n=2` partial scalar example satisfies the two size inequalities and is not a full graph zero.
+**Guard-independent Pell bounds.** A [four-stage checked client](../trace74-guardfree-fold-draft/README.md) recovers an odd Pell ordinate and derives first Pell index `n≥2`, `8P+4≤k`, and `2q⁴<c` from a positive 74 zero without the reverse guard. A later [checked exclusion](../trace74-n2-exclusion-join-draft/README.md) rules out the small first-index branch when `q≥4`, giving `n≥3` and `32P²+32P+6≤k`. The checks retain provider ancestry and search-path limitations. The separate fixed-payload `n=2` scalar example is only partial and is not a full graph zero.
 
 **Conditional natural rank.** Under the individual bounds `0<F<q`, `0<C≤q` and the stated port conditions, the [checked natural rank/window and difference-ring binding](../trace74-natural-rank-window-draft/README.md) give `3q<R` and `R+q³+q+1≤q⁴` without assuming `F+C<q`. It remains open whether a positive fixed-port 74 zero forces those individual bounds.
 
@@ -61,10 +61,11 @@ size, population, and `F <= MC*J` assumptions imply both no-carry facts and
 the guard. A separate [scalar example](../trace74-saturation-scalar-obstruction/README.md)
 shows why saturation and no-carry alone do not imply that comparison for
 arbitrary ports. For the retained fixed payload an [external exact check](../trace74-fixed-mask-cover/README.md)
-establishes `MC + HP > beta`; a conditional model-arithmetic draft uses that
-cover and the second no-carry fact to recover the comparison. The fixed mask
-check is not yet a Lean theorem about the symbolic ports, and neither route
-has derived the block and population assumptions from a 74 zero.
+establishes `MC + HP > beta`. A separate [Lean model theorem](../trace74-symbolic-cover-model-cast-rebuild/README.md)
+now proves coverage for the symbolic ports, and the fixed-mask saturation
+specialization above uses it. The connection between the external payload and
+those symbolic ports remains external; neither route has derived the block
+and population assumptions from a 74 zero.
 
 The `coefficient_binding` object, including the tuple description and all
 compressed/raw hashes, is copied verbatim from the pinned 75-row JSON. Its
