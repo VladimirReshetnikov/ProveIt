@@ -1,0 +1,7 @@
+# Independent result audit: generic r=5 projection reduction
+
+PASS within recorded direct-pin scope. Attempt02 terminal `2d6c1b937e59d1c037d9c78700b4893e83f5012f46dea43d8a4b49775ae2a34d` records Lean exit 0 and PASS; author reports outer session 39264 exit 0 and reaped. Independently rehashed all 32 direct pins, stdout/stderr, source `fdfd2f7738e740c2c31b273356bfa6f0bcfe5a274565b14f22ae5292922ecf97`, runner `4ec3644cdf760ccad0b0059b79d69884bd000e86c149551c4daf4d312d78678e`, and object `bb11746af3a1a17d6d3e572f527782067ef4ef40a864acd732256d2899bfdd39`. The sole named report lists `[propext, Quot.sound]`, with empty stderr and no warning.
+
+In every commutative ring, assuming H | hX(X−32)(32X+1) for H=4Y(X+1)−1, the theorem concludes H | h(4Y−1)(132Y−1)(31Y−8). This follows from the explicit ring identity and the imported all-ring cancellation for H=4t−1; no integral-domain or positivity assumption is needed. It does not assert the projection premise, graph zero, integer magnitude bound or N4/R5 exclusion.
+
+Attempt01 terminal `9063ce322386edd345c3216ac9ba2218c836f1cdfe65b968f86f9590bf590c2c` recorded Lean exit 0 but a linter warning; strict policy rejected it. Retry changes only tactic sequencing and the runner source pin. The prior snapshots are reconstructed after that run and hash-match the reviewed pins. Direct-pin scope does not include continuous full transitive or search-path authentication. No Lean was run for this audit.
