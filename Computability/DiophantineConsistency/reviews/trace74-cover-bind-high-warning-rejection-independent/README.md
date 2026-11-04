@@ -1,0 +1,3 @@
+Independent factual audit of rejected attempt; no Lean replay or accepted theorem.
+
+Actual outer session 17061 reported exit1 and reaped. Child result SHA ff5a78ffaf3df9f01a929d576ca24e084aa5f506b142cbd129b3859fc1e6c74b; outer terminal 02ae426f83a1f72fdaaad73dde0e4ffd178059c6eec88199fc76a22d17d9d5e2. Runner records Lean exit0 and reason null, but overall FAILED at strict report policy. Hashed stdout contains precisely a warning at copied source line 14:50 that exponent 4393 was not evaluated due to threshold 256, followed by the named cover_nat report [propext, Classical.choice, Quot.sound]; stderr is empty. The strict policy rejects this warning, so this attempt is not an accepted result, notwithstanding Lean's exit0. No threshold change or later retry inferred.
