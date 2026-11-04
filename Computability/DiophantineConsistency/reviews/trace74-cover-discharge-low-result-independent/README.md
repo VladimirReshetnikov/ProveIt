@@ -1,0 +1,5 @@
+Independent post-audit PASS, conditional theorem only; no Lean replay.
+
+Actual outer tool session 19847 was reported reaped with exit 0. Child result 032ec89fd0b8bd7ac6246dedfec435cb9d5c0506ea50197110317be1e2d04711, outer terminal 9fcdbc5e9c792bc2f6e236c50cdd7a9f4a20233cdde2a273caa8c18213f1c40b, output object 1c12cccf25551e3d6bb700ebe505787fb9f2fedf264cf154c230a79c15efdf1a. Stage exit 0 with no stderr/warning, single report [propext, Classical.choice, Quot.sound]. The actual low identity is discharged; the exact concrete-defect strict bound and symbolic high lower bound remain explicit. This is not yet unconditional cover or a graph guard.
+
+check.py rehashes source, logs, object, selected direct header, all 2049 union companion bundles, outside selections, all saved parent closures, and seven separately produced closure/header/companion captures; it checks child and outer input stability. The beta-binding ancestor's exact permitted exponent warning remains documented. Four inherited baseline source ancestries and external package/dynamic histories remain unproved.

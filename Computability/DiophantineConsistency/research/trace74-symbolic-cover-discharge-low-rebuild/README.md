@@ -1,0 +1,5 @@
+# Low-identity discharge diagnostic
+
+The [independent prelaunch review](../../reviews/trace74-cover-discharge-low-prelaunch-independent/README.md) approved one check. Attempt01 completed with actual outer exit 0 and child status PASS. The [child result](observations/attempt01/result.json) SHA-256 is `032ec89fd0b8bd7ac6246dedfec435cb9d5c0506ea50197110317be1e2d04711`; the [outer receipt](observations/outer-attempt01/terminal.json) SHA-256 is `9fcdbc5e9c792bc2f6e236c50cdd7a9f4a20233cdde2a273caa8c18213f1c40b`; output object SHA-256 is `1c12cccf25551e3d6bb700ebe505787fb9f2fedf264cf154c230a79c15efdf1a`. The [independent result audit](../../reviews/trace74-cover-discharge-low-result-independent/README.md) passed.
+
+The new stage is warning-free; the beta ancestor retains its explicitly accepted unevaluated-exponent warning. The actual low identity is discharged, but the strict actual defect bound and high bound remain explicit hypotheses. No unconditional symbolic cover or graph guard follows yet. Capture-relative historical source, package and dynamic ancestry limitations remain.
