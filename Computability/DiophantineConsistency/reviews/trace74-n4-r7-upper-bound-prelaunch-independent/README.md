@@ -1,0 +1,5 @@
+# Independent N4/R7 upper endpoint source and prelaunch review
+
+Scoped GO for source `f7e66139057410efc2e9aa4160e8f1cfdf06a2f23e176966a6e9656f70cc390c`, runner `8512d2c1c9a50bb3a5bfbd17fa74fb04b89aa4c7c61256601da03eb0764a8dad`, policy `1fc380046779ea79edebf72c280f3cfc25a771e6248afd327be180c54f716950`. The theorem assumes x≥32 and the displayed strict ky<c polynomial inequality in a linearly ordered commutative ring. If t≥x³+6x²+15x+22, substituting u=x−32,w=t−(x³+6x²+15x+22) into the independently audited 113-positive-term certificate yields ky−c>0, contradiction. Thus the strict endpoint is sound; no graph or Pell binding is asserted.
+
+All 30 direct pins match, 13 actual report controls pass, and direct certificate and Linarith imports are unique observed selections. The runner pins the accepted certificate object/terminal, uses the shared lock and strict exact named report policy. This is point-in-time direct-pin evidence; full package/core/companion/dynamic ancestry and continuous path stability remain outside scope. Lean elaboration and tactic cost remain unchecked; no Lean was run in this review.
