@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: r9 projection reduction and binding
+
+GO subject to root slot release and fresh locked preflight. Reduction source `78a3f1a26cc2a4f6dda92f643b9018a33979f60fd2b52eae8bd6f7ba0b2d6915`, graph source `be7c88f32f6f13779b47c7b09ce95fdb3ee7430914a8c663068ba8d4b825a7b4`, runner `3152592e93600b6813c84057a95b151f4d4b3770d7d638bfb7bb0ec8d8ee8bf3`, policy `3dbee53d4b15132e0071fa5510992a2e949c6c77d5f61ce8f3abc1b106cf3341`. No Lean replay. The all-ring reduction is conditional on projection divisibility; graph binding retains same p/v, positive beta/valuation, zero and c=y9; no n≥7 exclusion or guard.
+
+Fresh stage1 output precedes checked stage2; direct Projection, GraphProduct and Pell currently uniquely match pinned objects; parent terminals/objects pinned. Strict stage reports, empty stderr, pre/post pins and locked resource guard checked, 26 actual-validator controls pass. Point-in-time direct selection does not establish full serialized transitive/package ancestry or continuous resolution.

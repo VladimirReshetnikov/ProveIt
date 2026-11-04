@@ -1,0 +1,5 @@
+# Independent result audit: r9 projection reduction and graph binding
+
+PASS for captured two-stage run. Author reports actual outer session 81838 exit 0/reaped. Terminal `7a192aa31f787898df781fcee42d461d1a2b4a1f216a395cc1353adb8276a309`; runner `3152592e93600b6813c84057a95b151f4d4b3770d7d638bfb7bb0ec8d8ee8bf3`. All 34 terminal pins, both objects and logs independently rehashed; both Lean exits 0, exact named reports and empty stderr. Reduction object `b6d634af3de00ad2c8f62aa6e6475463e0ead2387aeeb720c529cecc871c9624` reports `[propext, Quot.sound]`; graph object `7ae0deb93f1535e83c8ff06109da0d0c8deb50ee73b0c3c5359e8766bd1bf1f4` reports `[propext, Classical.choice, Quot.sound]`.
+
+The first theorem is an all-ring consequence of explicit weighted r9 projection; the second binds its factors to the same positive 74 graph p/v under beta>0, zero and explicit c=y9. No n≥7/r9 exclusion, guard or endpoint follows by these alone. Direct pins/selections do not authenticate full serialized transitive/package ancestry or continuously stable resolution.

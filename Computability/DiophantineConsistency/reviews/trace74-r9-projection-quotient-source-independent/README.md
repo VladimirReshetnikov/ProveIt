@@ -1,0 +1,5 @@
+# Independent source review: r9 projection and bounded quotient
+
+Source-only PASS, no Lean replay: all-ring reduction `78a3f1a26cc2a4f6dda92f643b9018a33979f60fd2b52eae8bd6f7ba0b2d6915`, graph binding `be7c88f32f6f13779b47c7b09ce95fdb3ee7430914a8c663068ba8d4b825a7b4`, quotient `c9c3fc37150ccb1f3537561d9b7814d01c9329de36cd3feb57513868422877bb`. The independently expanded r9 reduction yields factors 4Y−1,2052Y−1,511Y−128; checked existing cancel_base removes factor 4 without an unproved domain cancellation. Graph source explicitly retains same p/v, positive beta/valuation, actual graph zero and c=y9.
+
+For quotient source, G=(4y−1)(2052y−1)(511y−128)=4194288y³−2101240y²+263679y−128, validating the displayed witnesses for y|(j−128h) and 4y|3y. With discrete order, h,y>0, 0<j<y and 128h<y, the small-divisor step gives j=128h; h≠0 cancellation then gives impossible 4y|3y. No graph/size implication is inferred by quotient theorem. Elaborations and provider compatibility unchecked; no n≥7 exclusion/guard claim.
