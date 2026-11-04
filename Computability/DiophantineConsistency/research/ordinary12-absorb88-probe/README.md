@@ -12,7 +12,8 @@ checks both first-root alternatives assuming the transport bound explicitly.
 The later [signed-divisibility theorem](../ordinary12-absorb88-signed-divisibility-draft/README.md)
 works directly from an actual positive 88 zero and proves `b ∣ q(Bp−Bn)`
 in the model difference ring for either first-root sign, without assuming
-transport positivity. It does not prove the positive normalization needed for
+transport positivity. A [checked corollary](../ordinary12-absorb88-signed-unscaled-draft/README.md)
+removes the factor `q`, giving `b ∣ (Bp−Bn)` in that ring. It does not prove the positive normalization needed for
 the reverse direction or a halt/iPRA endpoint. The recorded direct-provider
 and historical ancestry limits remain.
 
