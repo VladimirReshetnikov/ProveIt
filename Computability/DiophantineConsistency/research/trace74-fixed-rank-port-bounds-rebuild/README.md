@@ -1,0 +1,5 @@
+# Symbolic-port bound discharge check
+
+This single-stage client uses the audited symbolic-port rank/saturation parent and `CompactFixedBeta.bounds` selected from the same captured union. The read-only preflight, 25 policy controls, six supervisor controls and [independent prelaunch review](../../reviews/trace74-fixed-rank-port-bounds-prelaunch-independent/README.md) passed. The guarded author check passed with actual outer exit 0: child SHA-256 `8e60c87c1593b26a3a20b27aa6bdc266bc354a82f14a44b52b3f6de24119fff1`, outer terminal SHA-256 `4389212a2999cde77909dd86d22fbca305ee0aeca75d7b701c80ddfbfab5ab83`, object SHA-256 `697fed82279c31309863968ae7afb9b15d2aa2151a1597f1d397b2035bbf7897`. Its axiom report lists `propext`, `Classical.choice`, and `Quot.sound`; the [independent result audit](../../reviews/trace74-fixed-rank-port-bounds-result-independent/README.md) passed.
+
+Only three fixed-mask inequalities are supplied. The tuple equalities, individual `F/C` bounds, radix equality and both population hypotheses remain explicit; there is no 74-zero or endpoint claim. Parent ancestry, inherited exact unevaluated-power warnings and external file binding remain limited.
