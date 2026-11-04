@@ -1,0 +1,5 @@
+# Independent N4/R7 upper polynomial result audit
+
+PASS within recorded direct-pin scope. Attempt01 terminal `e8d0348fc77bbd6266af2d12787b536eaeb89553caf09fa0f4a9cd339ac572dd` records PASS and Lean exit 0; author reports actual outer session 40623 exit 0 and reaped. Independently rehashed all 27 direct pins, stdout/stderr, source `f3f315072c3ea6650d1f38331529d7c947e67d92ece2ad9949c7cd8655cf7fb7`, runner `b4e4c81cec77ac74bb8e4d0cdba2ce08db4c44d6129367f72e558dcd454814e3` and object `67199091e9df88839beefcc1f546e63466ddcf6abc6227e0d7355f82713828f8`. Sole named report lists `[propext, Classical.choice, Quot.sound]`; stderr is empty.
+
+The theorem proves the displayed strict shifted polynomial inequality in a linearly ordered commutative ring under u,w≥0. The independent source review verified 113 strictly positive coefficients. It makes no graph assertion, strict endpoint binding, index exclusion or guard claim. Complete transitive/companion/dynamic ancestry and continuous path selection remain outside recorded direct pins. No Lean was run for this audit.
