@@ -1,0 +1,3 @@
+Independent scoped retry prelaunch GO; no Lean. Source 46df3f58eec99c01aaed191ba1119b3903d11da2b5f96a3d361d4fb55a50ec32; runner 086a47f515e4a2502d01f056d42ec7e70ca81c021515cc00f67c9c0b7a2f7bd7.
+
+Attempt01 terminal 99caf5964c8281738178b7ec3873a05c0ef44e4442de64263ab3eaed05dcac06 records Lean exit1 and unresolved 4%2=1 in the abstract model; the sorryAx report is excluded. Source changes only that proof by rewriting 4=2*2 and using mod_mul_self_right then zero_ne_one; statement and graph hypotheses unchanged. Runner changes only source pin; twelve report policy controls pass. Locked pin/resource preflight still required; full provider/search-path ancestry limitations inherited. No Lean acceptance or guard claim.
