@@ -1,0 +1,5 @@
+# Same-witness main Pell index at least 11
+
+`Trace74MainIndexEleven.graph_main_index_ge_eleven` starts with the same positive 74 graph zero and a supplied first Pell index `n≥7` satisfying its ordinate equation. Under `β≥15` and `q≥64`, it returns an odd main index `r` with `11≤r`, `n<r<2n`, and the main ordinate equation for that same tuple. The proof synchronizes the supplied first index with the index-window witness using strict monotonicity, then excludes r=9 using the checked general projection theorem. It does not establish rank sign, a guard, or an iPRA endpoint.
+
+The controlled Lean check passed in actual outer session 48182, exit 0; terminal SHA-256 `71ac133f805e0015b1c4d659e3dced324523a49ccc4a56c81169b675072402dc`. The [independent result audit](../../reviews/trace74-main-index-eleven-result-independent/README.md) verified 60 recorded direct pins, object, log and report. Full historical project/package/dynamic ancestry and ongoing search-path selection remain outside this evidence.
