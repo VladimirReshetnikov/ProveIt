@@ -9,6 +9,13 @@ first Pell root from a full graph zero. It does not establish transport
 positivity or the reverse direction. The [signed-root packet](SIGNS.md)
 checks both first-root alternatives assuming the transport bound explicitly.
 
+The later [signed-divisibility theorem](../ordinary12-absorb88-signed-divisibility-draft/README.md)
+works directly from an actual positive 88 zero and proves `b ∣ q(Bp−Bn)`
+in the model difference ring for either first-root sign, without assuming
+transport positivity. It does not prove the positive normalization needed for
+the reverse direction or a halt/iPRA endpoint. The recorded direct-provider
+and historical ancestry limits remain.
+
 The proposed reverse idea is to use divisibility `Bt=b*t` and the positive first-root branch to show `r_new=(1+k*b)*t+first>ell+k`; for the negative branch, reflection by `2*first` should preserve the whole graph and produce a witness above that threshold. Those claims have not yet been bound to this actual graph in Lean. Neither bounded-port model equivalence, halt, iPRA, nor a PDF binding is asserted for the 88 graph.
 
 There is a substantive gap in that reverse plan: the existing 89 transport proof establishes `Bt>0` using the lower bound on the old expression `ell+k+r`. The new witness is only positive, and the actual 88 first residual permits `Bt<0` and a witness below `ell+k`. `check-obstruction.py` evaluates the actual pinned DAG with all witnesses and ports 1 except `r=251`: it obtains `ell=256`, `k=2`, `Bt=-2`, `Z=257`, and `A0=0`, while `r<ell+k=258`. The other two residuals are nonzero, so this does not refute full-graph soundness, but the first residual alone cannot supply the needed transport inequality. An argument using additional graph constraints is required.
