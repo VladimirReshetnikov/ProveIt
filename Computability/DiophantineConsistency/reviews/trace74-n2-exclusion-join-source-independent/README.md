@@ -1,0 +1,3 @@
+Independent source review; no Lean acceptance. Source SHA 2250ea20c121eb16be9024263e17a7c92fa424731e7619f198cc00017dedc4c2.
+
+Both drafted theorems retain the same p/v, positive beta/valuation, 74 value-zero and q≥4. Under the additional small-k equation, the first applies checked same-tuple geometry X<2Y, checked eta model window 2Y<X+3 and checked divisibility/discrete gap to derive False. The second applies the checked first-Pell dichotomy and excludes only its small branch, giving k≥32P²+32P+6 with P=firstParam for that same tuple. No F/C bounds, guard, concrete graph zero or equivalence are assumed or established. This is source-level composition only; Lean elaboration and the direct/provider closure compatibility require a separate check.
