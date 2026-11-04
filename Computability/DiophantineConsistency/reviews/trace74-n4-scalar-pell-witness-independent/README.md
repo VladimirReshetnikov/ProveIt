@@ -1,0 +1,9 @@
+# Independent audit: N4 scalar Pell witness
+
+PASS as an ordinary-integer scalar construction. Frozen packet hashes: README `bb6c874f6ff973a03deb207ba3a89ce877a2c96a9d343beb47fb2c9c3678069e`, checker `e986f74605ca9b5fa06151c54610026c914ba8c1e01ff8b3fcef88b7be1a00c7`, receipt `360bfbeb81cb3c7b3ce2d5c08dd2280bb75434c683d91e1f14010309d0bb0d39`, stdout `dcfcfdb7edf5f64b7080801ec8b0a7ee1de52091c7c0045591859126511c68ae`; stderr is empty. I independently ran the prescribed isolated, no-site, non-optimized command: exit 0 and stdout hash matches. Runs without required flags, with `-O`, and with `-OO` rejected with exit 1.
+
+Writing `t=b+2`, the recurrence gives `y4=8t³−4t` and `y5=16t⁴−12t²+1`. Thus with `P=XY²`, `A=Y(X+1)`, the stated k is exactly `128P³+192P²+80P+8` (coefficient 80), and c is `16(A+1)⁴−12(A+1)²+1`. I separately recomputed the q=32 case in integer arithmetic, including `q=31·1+1`, `q|X`, `q³|Y`, `4<5<8`, and `0<eta=c−kY<k`, so `zeta=k−eta>0` and both split equations hold.
+
+Independent polynomial arithmetic with `X=8Y³` and `Y=2+u` yields 14 strictly positive eta coefficients (constant 391618709, smallest 32768) and 16 strictly positive zeta coefficients (constant 1768468339, smallest 65536), verifying the ordinary-integer family for all q≥2 when Y=q³. As an additional independent scalar observation, substituting q=2+u into c−2q⁴ yields 49 strictly positive coefficients, smallest 65536; hence c>2q⁴ for that family. This additional calculation is not part of the packet's checked Lean results.
+
+These are scalar constraints only: the packet supplies no F/C, full graph-zero witness, fixed-BFS-port binding, graph guard, rank residue, or iPRA theorem. It does not prove such a witness exists in nonstandard models or that the other graph factors hold. No Lean was run in this audit.
