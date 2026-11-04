@@ -1,0 +1,46 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-n4-graph-exclusion-draft/Trace74N4GraphExclusion.lean:88:4: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb31 : 31 ≤ ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (Trace74Mask.value74 (ports p) fun j => ι (v j)) = 0
+hcoord : 2 * ycoord 4 (2 * (firstParam p v - 1) + 1) = k v
+hb : 0 < ↑(p 0)
+hq : 0 < q p v
+hX : 0 < X p v
+hY : 0 < Y p v
+hY1 : 1 ≤ Y p v
+hj1 : 1 ≤ v 0
+hw1 : 1 ≤ v 5
+hq32 : 32 ≤ q p v
+hX32 : 32 ≤ X p v
+P : V := ⋯
+B : V := ⋯
+hP : 0 < P
+hP1 : P - 1 + 1 = P
+hB : B + 2 = 2 * P + 1
+hk : k v = 128 * P ^ 3 + 192 * P ^ 2 + 80 * P + 8
+hA : A p v = Y p v * (X p v + 1)
+hApos : 0 < A p v
+hA1 : A p v - 1 + 1 = A p v
+hA2 : A p v - 1 + 2 = A p v + 1
+hc7 : c p v = ycoord 7 (A p v - 1)
+hy7 :
+  ycoord 7 (Y p v * (X p v + 1) - 1) + 5 * (2 * (Y p v * (X p v + 1) + 1)) ^ 4 + 1 =
+    (2 * (Y p v * (X p v + 1) + 1)) ^ 6 + 6 * (2 * (Y p v * (X p v + 1) + 1)) ^ 2
+hy7R :
+  ι (ycoord 7 (Y p v * (X p v + 1) - 1)) + 5 * (2 * (ι (Y p v) * (ι (X p v) + 1) + 1)) ^ 4 + 1 =
+    (2 * (ι (Y p v) * (ι (X p v) + 1) + 1)) ^ 6 + 6 * (2 * (ι (Y p v) * (ι (X p v) + 1) + 1)) ^ 2
+hlo : k v * Y p v < c p v
+hη : v 8 < k v
+hhi : c p v < k v * (Y p v + 1)
+hkR : ι (k v) = Trace74N4R7ScalarDiscrete.k (ι (X p v)) (2 * ι (Y p v))
+hkyR : ι (k v * Y p v) = Trace74N4R7ScalarDiscrete.ky (ι (X p v)) (2 * ι (Y p v))
+⊢ ι (ycoord 7 (A p v - 1)) - ι (ycoord 7 (Y p v * (X p v + 1) - 1)) = 0
+'Trace74N4GraphExclusion.graph_first_four_impossible' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
