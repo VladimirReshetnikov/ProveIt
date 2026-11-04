@@ -1,9 +1,10 @@
 # Conditional wider near-diagonal obstruction
 
 This note gives an **ordinary-integer** argument for three wider regions of
-the trace74 index plane. It is not a Lean theorem, an internal model proof, a
-reverse-guard proof, or an iPRA endpoint. In particular, it does not prove
-that any graph zero has the required index window.
+the trace74 index plane. The [width-three case](../trace74-width3-graph-join/README.md)
+has subsequently been checked in Lean for the stated same-zero hypotheses;
+the width-four and width-five cases below have not been formalized as model
+theorems. None is a reverse-guard proof or an iPRA endpoint.
 
 Fix `c` in `{3, 4, 5}`. Let integers `q, h, X, Y, n, r` satisfy
 
@@ -113,3 +114,6 @@ exponent `5c`, and apply multiplication-of-bases to
 `(2^(2c))^d=(2^d)^(2c)`. The companion `check.py` checks only the finite
 constant comparisons and exponent bookkeeping; it is not a proof of (1),
 (2), the analytic inequalities, or their applicability to a graph zero.
+The [independent arithmetic review](../../reviews/trace74-near-diagonal-width345-independent/README.md)
+applies to the earlier hash-pinned revision; the later opening paragraph
+records the separate width-three Lean result.
