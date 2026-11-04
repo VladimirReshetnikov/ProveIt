@@ -156,6 +156,49 @@ The remaining §6 order, with tree lemmas:
    mod `H`; and growth `2^R < Y`. The model is `FreeJPowerFinish` and
    `FreeJPowerGrowth` (math cores to be located).
 
+**Phase 2 done (`f9ec93c720`).** Modules:
+
+- `P72Mu`, `P72Window`, `P72Early`, `P72Exact`, `P72Power` — §6, from
+  `218e4741e6` to `e8a8acae90`;
+- `P72Facts.facts_ports` — the assembly into `LeafFacts`;
+- `P72Facts.halts` — a positive P13 zero ⇒ machine 215 halts.
+
+**Phase 3 detail (data available after `CompactHaltFirstGamma.halt_first_gamma`).**
+Take the halt context as in `FreeJHaltModelZero.halt_positive_zero_of_ports`:
+
+- `N = haltLength T`, `u = 590069N`, `q = 2^u`, `R = rank`, `X = 2^R`, `w_X = 2^{R−u}`;
+- `Y = sY·q³`;
+- `SeedRelations`: `τ = E·n + k − R`, `τ² = 1 + (EY)(EY+1)k²`, `d = X + ac + γ_old·H`,
+  `d² = 1 + δ(a)c²`, `c = ψ_a(R)`, `R = 2r+1`, `k = 2ψ_B(r+1)`;
+- `PositiveAuxData`: `f = χ_a(Rc)`, `ψ_a(Rc) = icc`, the normalized strong norm, `I = Δicc`,
+  `y = ψ_{I−2}(R)`, `f²cT = w + c + f²R` (so `V = w`), `I²w² + y² = 1 + I²y²`, and
+  `Δ(f²−1) = c⁴(Δi)²`;
+- `FirstData`: `(qK + X)C = qF + (q−1)(qz)`, so `Bt = (q−1)·qz`;
+- `GammaData`: `k = R + 1 + (Yq²)t`, `γ + w_X = γ_old + t`.
+
+The P13 witnesses, in the order `F α C f0 i T X Y r η ζ u γ`:
+
+- `Fw`, `alpha`, `Cw`, from the packing;
+- `f0 = f − j`, where `J = rep N = 3j+1`. This uses `N` odd (`power_p_odd`) and
+  `q ≡ 2 (mod 3)`;
+- `i`, `T`, `X = 2^R`, `Y`;
+- `r = τ − ell − s + qz`, positive since `τ > ell + s` (because `k > 2s`);
+- `η`, `ζ`;
+- `u = y − w`, positive since `y = ψ(R) ≥ 2`;
+- `γ = γ_old + t/4 − w_X`, which needs `4 ∣ t`. This follows from
+  `k − R − 1 = 4XY²s'` (`residue_quotients`), and `v/M = t/4 ≥ w_X·q² > w_X`.
+
+The residuals vanish identically:
+
+- `A0 = M0²(τ² − 1 − ell(ell+k))`;
+- `A1 = β²M²(d² − 1 − Δc²)`;
+- `As = b²(f² − 1 − Δ(c²i)²)`;
+- `Aa = b²L²(y² − I²(y² − w²) − 1)`.
+
+The ports: `CompactSymbolicPortProjections.beta`, `kernel`, `low` and `high`
+(as used by `CompactSymbolicModelUnconditionalIff`). The rank:
+`graph_rank_of_packing` at a dummy 12-valuation `![J, F, α, …]`.
+
 **Phase 3: halt ⇒ P13 zero.** Split `FreeJHaltModelZero.halt_positive_zero_of_ports`
 at its `zero_of_model_data` call. The model data already carries P13's forms:
 the normalized strong `f² = 1 + Δ(icc)²`, `Maux = Δicc`, `V = auxw` (via
