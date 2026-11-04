@@ -1,0 +1,5 @@
+# High-digit v5 diagnostic
+
+The [independent prelaunch review](../../reviews/trace74-high-digit-v5-prelaunch-independent/README.md) approved one check. Attempt01 completed with actual outer exit 0 and child status PASS. The [child result](observations/attempt01/result.json) SHA-256 is `ffa116b52a3555cd75d834bc2a1d535fb49f1e656117e71e39bcb80246a05fde`; the [outer receipt](observations/outer-attempt01/terminal.json) SHA-256 is `2baadb72193e4b2388b4f33d28ebe5c71100595519c6078f249779c135bf042c`; output object SHA-256 is `35f91b1c88f42797047af1d21fb21e8097acb2e095b2f7ab5cce0319c7fe51ce`. The [independent result audit](../../reviews/trace74-high-digit-v5-result-independent/README.md) passed.
+
+The accepted theorem gives the symbolic bound `(2^67)^4393 ≤ highNat`. It does not establish the low defect identity, combined mask cover, all-model cast or graph guard. Capture-relative provider and package ancestry limitations remain; all four earlier failed high-digit attempts remain separately retained.

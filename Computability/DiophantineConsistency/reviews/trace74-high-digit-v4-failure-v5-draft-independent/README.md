@@ -1,0 +1,5 @@
+# Independent factual audit: high-digit v4 failure and v5 source
+
+V4 attempt01 is failed and excluded: child result SHA-256 `52aea2a1c1b6058acf161ef4797fc83a8fce730f21b588c42e0ffc6f51c0ad28` records Lean exit 1, no monitor failure reason and an unsolved `high_split` goal differing by an `[] ++` subexpression; stdout also records unused `List.singleton_append` and a theorem report containing `sorryAx`. Outer terminal SHA-256 `4e520f7c199d9899a838c037e6e9b7fc7164de2a03a0b550eefdf65dab8e2f62` records child exit 1 and FAILED. Independently checked stdout/stderr hashes against the child. This is not a timeout or an accepted theorem.
+
+Unchecked v5 source SHA-256 `c20e82182a5bc684ae66c66923194f94bee36b606395d951a1fa403b05f1d58e` differs from v4 only by replacing the warned unused `List.singleton_append` simp argument with `List.nil_append`. It targets the displayed empty-list append while retaining the same digit recipe and theorem statement. Its tactic elaboration, warnings and resource behavior remain unchecked; no Lean was run for this review. No high-bound, full mask, graph guard or iPRA result follows from the failed attempt or source draft.
