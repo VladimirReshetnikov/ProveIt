@@ -1,0 +1,50 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-n4-r5-graph-exclusion-draft/Trace74N4R5GraphExclusion.lean:88:77: error: unsolved goals
+case e'_4
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb31 : 31 ≤ ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (Trace74Mask.value74 (ports p) fun j => ι (v j)) = 0
+hcoord : 2 * ycoord 4 (2 * (firstParam p v - 1) + 1) = k v
+hc5 : c p v = ycoord 5 (A p v - 1)
+hb : 0 < ↑(p 0)
+hq : 0 < q p v
+hX : 0 < X p v
+hY : 0 < Y p v
+hY1 : 1 ≤ Y p v
+hj1 : 1 ≤ v 0
+hw1 : 1 ≤ v 5
+hs1 : 1 ≤ v 6
+hq32 : 32 ≤ q p v
+hX32 : 32 ≤ X p v
+hYq : q p v ^ 3 ≤ Y p v
+P : V := firstParam p v
+B : V := 2 * (P - 1) + 1
+hP : 0 < P
+hP1 : P - 1 + 1 = P
+hB : B + 2 = 2 * P + 1
+hk : k v = 128 * P ^ 3 + 192 * P ^ 2 + 80 * P + 8
+hA : A p v = Y p v * (X p v + 1)
+hApos : 0 < A p v
+hA1 : A p v - 1 + 1 = A p v
+hc : c p v = 16 * A p v ^ 4 + 64 * A p v ^ 3 + 84 * A p v ^ 2 + 40 * A p v + 5
+hlo : k v * Y p v < c p v
+hh :
+  (128 * (ι (X p v) * (ι (Y p v) * ι (Y p v))) ^ 3 + 192 * (ι (X p v) * (ι (Y p v) * ι (Y p v))) ^ 2 +
+          80 * (ι (X p v) * (ι (Y p v) * ι (Y p v))) +
+        8) *
+      ι (Y p v) <
+    16 * (ι (Y p v) * (ι (X p v) + 1)) ^ 4 + 64 * (ι (Y p v) * (ι (X p v) + 1)) ^ 3 +
+          84 * (ι (Y p v) * (ι (X p v) + 1)) ^ 2 +
+        40 * (ι (Y p v) * (ι (X p v) + 1)) +
+      5
+⊢ 16 * (ι (Y p v) * (ι (X p v) + 1) + 1) ^ 4 - 12 * (ι (Y p v) * (ι (X p v) + 1) + 1) ^ 2 + 1 =
+    16 * (ι (Y p v) * (ι (X p v) + 1)) ^ 4 + 64 * (ι (Y p v) * (ι (X p v) + 1)) ^ 3 +
+          84 * (ι (Y p v) * (ι (X p v) + 1)) ^ 2 +
+        40 * (ι (Y p v) * (ι (X p v) + 1)) +
+      5
+'Trace74N4R5GraphExclusion.ordinate_four_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Trace74N4R5GraphExclusion.graph_n4_r5_impossible' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
