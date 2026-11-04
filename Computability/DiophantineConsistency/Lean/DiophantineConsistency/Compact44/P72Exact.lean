@@ -10,8 +10,7 @@ strong and auxiliary norms. Then:
 
 * `2n ≥ R + 1`, so `n ≥ 13` and `k ≥ R + 1`;
 * the comparison gives `n < m`, `14 ≤ m` and `2R < c`;
-* the signed half-index theorem gives `m = R`, with the ordinary strong index
-  `i' = Δi`. Then `2n = R + 1`;
+* the signed half-index theorem gives `m = R`. Then `2n = R + 1`;
 * `k − R − 1 = 4Qs` is a multiple of `M = 4q²Y`, so the carrier gives
   `M ∣ H·S·X`, hence `q ∣ H·X` and `q ∣ X`. -/
 set_option autoImplicit false
@@ -39,9 +38,9 @@ private theorem large_of_six (a p : V) (hp : 6 ≤ p) :
   rw [← ArithmeticPellFirstIndex.y_six] at h
   exact lt_of_lt_of_le h ((y_strictMono a).monotone hp)
 
-theorem exact (q X Y k R H M S g c a γ y0 i f T u n s μ m η : V)
+theorem exact_ordinary (q X Y k R H M S g c a γ y0 i' f T u n s μ m η : V)
     (hq3 : 3 ≤ q) (hX : 0 < X) (hy0 : 0 < y0) (hYq : Y = q * (q * q) * y0)
-    (hη : 0 < η) (hc : c = η + Y * k) (hi : 0 < i) (hf : 0 < f)
+    (hη : 0 < η) (hc : c = η + Y * k) (hi' : 0 < i') (hf : 0 < f)
     (ha : a = X * Y + Y)
     (hS : S = 4 * (Y * q)) (hM : M = S * q)
     (hcar : M * g + H * k = M * (X + a * c) + H * (M * γ + S * X + R + 1))
@@ -54,7 +53,7 @@ theorem exact (q X Y k R H M S g c a γ y0 i f T u n s μ m η : V)
     -- main, strong, auxiliary
     (hmy : ycoord m a = c)
     (hg : g * g = 1 + delta a * c * c)
-    (hstrong : f * f = 1 + ((3 + 4 * a) + a * a) * (((c * c) * i) * ((c * c) * i)))
+    (hs' : (i' * c * c) * (i' * c * c) + delta a = delta a * (f * f))
     (haux : ((3 + 4 * a) + a * a) * (f * f - 1) *
         (absdiff (f * f * (T * c)) (f * f * R + c) * absdiff (f * f * (T * c)) (f * f * R + c)) +
         absdiff (f * f * (T * c) + u) (f * f * R + c) * absdiff (f * f * (T * c) + u) (f * f * R + c) =
@@ -128,20 +127,18 @@ theorem exact (q X Y k R H M S g c a γ y0 i f T u n s μ m η : V)
     _ = c := by rw [hc]; ring
   have hbig : (a + 2) * delta a * delta a < c := by
     rw [← hmy]; exact large_of_six a m (le_trans (by norm_num) hm14)
-  -- the ordinary strong index i' = Δi
+  -- the ordinary strong norm
   have hD : (3 + 4 * a) + a * a = delta a := by unfold delta; ring
-  let i' : V := ((3 + 4 * a) + a * a) * i
-  have hi' : 0 < i' := mul_pos (by positivity) hi
-  have hs' : (i' * c * c) * (i' * c * c) + delta a = delta a * (f * f) := by
-    rw [hstrong, ← hD]; simp only [i']; ring
-  have hff : f * f - 1 = ((3 + 4 * a) + a * a) * (((c * c) * i) * ((c * c) * i)) := by
-    rw [hstrong]; simp
+  have hf1 : 1 ≤ f * f := one_le_mul_of_one_le_of_one_le (pos_iff_one_le.mp hf) (pos_iff_one_le.mp hf)
   let z : V := absdiff (f * f * (T * c + 0)) (f * f * R + c)
   let yv : V := absdiff (f * f * (T * c) + u) (f * f * R + c)
   have haux' : (i' * c * c) * (i' * c * c) * z * z + yv * yv =
       1 + (i' * c * c) * (i' * c * c) * yv * yv := by
     have e : ((3 + 4 * a) + a * a) * (f * f - 1) = (i' * c * c) * (i' * c * c) := by
-      rw [hff]; simp only [i']; ring
+      obtain ⟨g', hg'⟩ : ∃ g' : V, f * f = g' + 1 := ⟨f * f - 1, (tsub_add_cancel_of_le hf1).symm⟩
+      rw [hg', add_tsub_cancel_right, hD]
+      apply add_right_cancel (b := delta a)
+      rw [hs', hg']; ring
     rw [e] at haux
     simp only [z, yv, add_zero]
     linear_combination haux
@@ -211,6 +208,34 @@ theorem exact (q X Y k R H M S g c a γ y0 i f T u n s μ m η : V)
     exact (mul_dvd_mul_iff_right (ne_of_gt hS0)).mp hMd
   exact ⟨hn13, hnm, hmR, hnR1, unit_certificate_cancel (bez_swap hqH) hqHX⟩
 
+/-- P13's form: the normalized strong norm `f² = 1 + Δ(c²i)²`, through the
+ordinary strong index `i' = Δi`. -/
+theorem exact (q X Y k R H M S g c a γ y0 i f T u n s μ m η : V)
+    (hq3 : 3 ≤ q) (hX : 0 < X) (hy0 : 0 < y0) (hYq : Y = q * (q * q) * y0)
+    (hη : 0 < η) (hc : c = η + Y * k) (hi : 0 < i) (hf : 0 < f)
+    (ha : a = X * Y + Y)
+    (hS : S = 4 * (Y * q)) (hM : M = S * q)
+    (hcar : M * g + H * k = M * (X + a * c) + H * (M * γ + S * X + R + 1))
+    (hqH : Bez q H 1)
+    (hR26 : 26 ≤ R)
+    (hny : 2 * ycoord n (2 * ((X * Y) * Y - 1) + 1) = k)
+    (hks : k = 2 * n + 4 * ((X * Y) * Y) * s) (hRμ : R + 1 < μ)
+    (hnmod : (2 * n) % μ = R + 1)
+    (hmy : ycoord m a = c)
+    (hg : g * g = 1 + delta a * c * c)
+    (hstrong : f * f = 1 + ((3 + 4 * a) + a * a) * (((c * c) * i) * ((c * c) * i)))
+    (haux : ((3 + 4 * a) + a * a) * (f * f - 1) *
+        (absdiff (f * f * (T * c)) (f * f * R + c) * absdiff (f * f * (T * c)) (f * f * R + c)) +
+        absdiff (f * f * (T * c) + u) (f * f * R + c) * absdiff (f * f * (T * c) + u) (f * f * R + c) =
+      1 + ((3 + 4 * a) + a * a) * (f * f - 1) *
+        (absdiff (f * f * (T * c) + u) (f * f * R + c) * absdiff (f * f * (T * c) + u) (f * f * R + c))) :
+    13 ≤ n ∧ n < m ∧ m = R ∧ 2 * n = R + 1 ∧ q ∣ X := by
+  have hD : (3 + 4 * a) + a * a = delta a := by unfold delta; ring
+  exact exact_ordinary q X Y k R H M S g c a γ y0 (((3 + 4 * a) + a * a) * i) f T u n s μ m η
+    hq3 hX hy0 hYq hη hc (mul_pos (by positivity) hi) hf ha hS hM hcar hqH hR26 hny hks hRμ hnmod
+    hmy hg (by rw [hstrong, ← hD]; ring) haux
+
 end P72Exact
 
+#print axioms P72Exact.exact_ordinary
 #print axioms P72Exact.exact
