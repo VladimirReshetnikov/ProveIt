@@ -1,0 +1,5 @@
+# Independent source review: first-Pell discrete size gap
+
+Reviewed unchecked `research/trace74-first-pell-gap-draft/Trace74FirstPellGap.lean` SHA-256 `fbbe80fe20a09986b72f4deacff32aea4df4b7219c8f6fa90bda1f270f8806c9`. The proposed theorem retains the same ports/valuation, beta positivity, all positive components and actual 74 zero. It obtains the same first Pell n and k=2*y_n(2(P−1)+1), with P=XY²>0, then invokes the checked n≥2. If n=2, y2=2(2P+1) gives k=8P+4; if n>2, model discreteness yields n≥3 and ordinate monotonicity gives k≥2y3=32P²+32P+6. The displayed calculation of y3 follows the checked `ordinate_three` identity and P−1+1=P. No F/C bound or reverse guard is assumed.
+
+No mathematical mismatch found. `eq_or_lt_of_le` witness orientation, `rw` elaboration, cancellation in the abstract model, and tactic/resource behavior remain unchecked; no Lean was run. The theorem is a graph-zero consequence, not zero existence or a general rank/guard result. A guarded run must select compatible accepted Index and OddOrdinateBound parent providers and retain direct/search-path/transitive ancestry limits.
