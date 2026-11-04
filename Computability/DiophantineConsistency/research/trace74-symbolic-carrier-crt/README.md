@@ -98,10 +98,13 @@ gcc -O2 -Wall -Wextra Computability/DiophantineConsistency/research/trace74-symb
 /tmp/trace74-crt-pell-gcd
 ```
 
-The Python check verifies all four compressed/raw payload hashes and bit
+The Python check pins the external 74-row candidate JSON and compares its
+port order, witness order and four coefficient metadata entries to the
+available compressed/raw payloads and hashes. It verifies their bit
 lengths, the exact external beta value, and the two stated symbolic gcds.
 It also tests the CRT, sign and actual `M|Z` register identity for the much smaller
 analog `B=7,n=63,r=77`. The GMP program computes only
 `gcd(c,q²−1)` for the symbolic candidate. Neither check is a Lean proof,
 an exhaustive verification of the displayed symbolic construction,
-or a check of all graph factors.
+or a check of all graph factors. The metadata comparison is not a formal
+Lean semantics for the external JSON.

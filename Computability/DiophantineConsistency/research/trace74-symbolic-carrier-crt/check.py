@@ -6,6 +6,7 @@ This script does not construct the huge symbolic Pell ordinate or a graph zero.
 """
 import gzip
 import hashlib
+import json
 import math
 import sys
 from pathlib import Path
@@ -22,7 +23,16 @@ entries = {
     "MF": ("MF_source.bin.gz", "ea069f55029bab743997b0a79b0535d5ad558686848a03cb41d72faf596a6a6a", "48333b0d30a4edeb8579f44286cb59806c5622cb42b367f5b5f9ee827711c737", 590070),
 }
 ports = {}
+candidate_bytes = (ROOT / "research/trace74-mask-coordinate-probe/candidate.json").read_bytes()
+assert hashlib.sha256(candidate_bytes).hexdigest() == "dafefaa40173c9f75c414171896e19ddcf5f5eec82a0612d82a4e23988ee7353"
+candidate = json.loads(candidate_bytes)
+assert candidate["operations"] == 74
+assert candidate["fixed_numerals"] == ["beta", "K0", "MC", "MF"]
+assert candidate["witnesses"] == ["J", "F", "C", "i", "T", "w", "s", "n", "eta", "zeta"]
+assert set(candidate["coefficient_binding"]["ports"]) == set(entries)
 for name, (filename, compressed_hash, raw_hash, bits) in entries.items():
+    metadata = candidate["coefficient_binding"]["ports"][name]
+    assert (metadata["file"], metadata["parent_gzip_sha256"], metadata["raw_sha256"], metadata["bits"]) == (filename, compressed_hash, raw_hash, bits)
     compressed = (DIR / filename).read_bytes()
     assert hashlib.sha256(compressed).hexdigest() == compressed_hash
     raw = gzip.decompress(compressed)
@@ -38,7 +48,7 @@ wmod = 1 << ((r - B) % B)
 assert (r % B, (r - B) % B) == (93925, 93925)
 assert math.gcd(h, 4*xmod + 3) == 1
 assert math.gcd(h, K0+wmod) == 1
-print("four pinned payloads, symbolic beta, gcd(H,h)=gcd(K0+w,h)=1 PASS")
+print("candidate metadata, four pinned payloads, symbolic beta and two gcds PASS")
 
 def ordinate(index, coefficient):
     a, b = 0, 1

@@ -1,9 +1,9 @@
 # Independent arithmetic review of the carrier CRT extension
 
 The reviewed [note](../../research/trace74-symbolic-carrier-crt/README.md)
-has SHA-256 `179de1c70589badb82d563bf6b724690d309470d58e665d45faf539b18a6a123`;
+has SHA-256 `ab3f8afaeb76e3062bf2e41a2fe5119c76b637018173cc37240e9b74463200db`;
 its [checker](../../research/trace74-symbolic-carrier-crt/check.py) has
-SHA-256 `e12a2c661a5649dc6c340c24c2a417e4b11e38c4a0733b782da3acb318d385e5`.
+SHA-256 `781c98e89187dfbb1b6f4a440161007367d17289b784a4691d1ada4c7d65be31`.
 The ordinary-integer proof is valid under its stated fixed candidate,
 external coefficient choice, and finite gcd results. This review does not
 assert a full graph zero.
@@ -33,7 +33,11 @@ divisible by `M=hDH`. This argument uses the actual `w=v 5=X/q` and
 does not impose any unproved choice of `V` or `v 7`.
 
 The reviewed checker was rerun with `python3 -I -S -B` and exited 0,
-including its exact small `B=7` CRT and carrier test. Separately, an
+including its pinned 74-candidate metadata, all four compressed/raw payload
+hashes, the beta identity, and its exact small `B=7` CRT and carrier test. The payloads'
+declared roles match the separate decimal display generator; this source
+review does not itself prove those generated constants equal Lean ports.
+Separately, an
 alternate Python calculation using modular `pow` and `math.gcd` exited 0
 in tool session 45138: it authenticated the declared decompressed `K0`
 hash and independently obtained `gcd(H,h)=1` and `gcd(K0+w,h)=1`. These
