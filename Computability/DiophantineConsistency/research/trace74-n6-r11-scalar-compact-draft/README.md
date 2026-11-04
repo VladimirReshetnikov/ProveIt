@@ -1,0 +1,7 @@
+# N6/R11 scalar discrete join using factored upper bound
+
+This source takes the same discrete ordered-ring hypotheses as the [original scalar draft](../trace74-n6-r11-scalar-draft/README.md), but uses the independently audited compact upper endpoint rather than the timed-out bivariate upper certificate. The lower object is an independently audited passed stage from that earlier overall failed run. It assumes `q≥260`, `x≥32`, `Y≥1`, q-divisibility witnesses and both strict scalar inequalities; no graph or iPRA conclusion is asserted.
+
+The [independent source review](../../reviews/trace74-n6-r11-scalar-compact-source-independent/README.md) passed. `selection.json` checks current direct-source-import selections and is rechecked by the held runner; full serialized transitive/package and producer-time ancestry are not captured. The [independent prelaunch review](../../reviews/trace74-n6-r11-scalar-compact-prelaunch-independent/README.md) approved one coordinated check.
+
+One author run completed in actual tool session 40963, exit 0 and fully reaped. Its [terminal](observations/attempt01/terminal.json) SHA-256 is `79df348d375ebf64365b8a257ce4d7718a065840a2c24212d706e28927d07f43`; object `/tmp/trace74-n6-r11-scalar-compact-yom01ik5/lib/Trace74N6R11Scalar.olean` SHA-256 is `ddd4f66d65c8e5affe3618411f162c5cecc35bce46b6b3a0407dd7e0e10c1645`. The [independent result audit](../../reviews/trace74-n6-r11-scalar-compact-result-independent/README.md) passed; the theorem remains conditional scalar only.
