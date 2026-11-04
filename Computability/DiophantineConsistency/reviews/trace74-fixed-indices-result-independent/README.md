@@ -1,0 +1,7 @@
+# Independent post-audit: fixed-index generic defect
+
+**PASS within the selected provider closure.** Author reports actual outer tool session 31774 exited 0 and was reaped. Outer terminal SHA-256 `e984190e70e2d09deeb5f40c57b30af0065fc3bbef103efd767dfde657ffec35` records child exit 0/PASS and stable inputs; child result SHA-256 `10bb0bb2110d3255326fb78b3dc207b7cc2c1fac821596305e1a441289637cf8`. The stage and header-reader records report exit 0 with no termination reason.
+
+The selected/copied source SHA-256 is `b9f1ade6b0fdf8c8bff2c5fde6ccf8845671f9842157eb86260641894075e989`, output object `2861e8ade4581abb1eade8b4fb45b738fc9c8a0d59a71ab265532d7b311ef728`. The exact `Trace74FixedIndices.low_add_defect` report lists `[propext, Classical.choice, Quot.sound]`, stderr empty. The theorem fixes short=3297, long=8807, special=1063 while retaining arbitrary B and support S with B>=4 and `S⊆range 3297`. Its header names two Init entries and selected GenericDefect object `0aa1257ae2e0885a8e8c4cd1fa78f8442b23510de9c0106533e88bc25e639d90`.
+
+Independent `check.py` rehashed recorded inputs/source/output/logs, all 2,037 union object/companion bundles, 81 outside bundles and compared all 18 inherited parent closure sets and companion hashes. No Lean replay was run. Four inherited baseline objects and project/package/dynamic/transitive source ancestry retain prior limitations. This isolated theorem is not the fixed-radix-and-support join, concrete mask coverage, external file binding, 74 guard or iPRA result.
