@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: factored n6/r11 upper
+
+GO subject to root release and fresh locked preflight. Runner `3ce1082fae43e90fd0072f71bb01a574d7301adf523e8ddf655a7b4b513cfc32`, policy `f7ff571cc98d80c28d91184bd7a1bea2447e13dd73d49e8e23ee1f0876f8ff40`; base source `7923fcd2ecfb72f02f56b25bb6f4236c639ab059fb25fa04fcde5b1acaa838fd`, upper `b232a0507deff7edd9b3a7c577431399c72b5eadd97cc27ace0abf321a839a0f`. No Lean replay in review; source math and remaining tactic risks recorded in `reviews/trace74-n6-r11-upper-compact-source-independent/README.md`.
+
+Runner builds base then upper in fresh local output preceding pinned Mathlib package, checks sources/tool/direct objects pre/post, exact stage reports and empty stderr, enforces locked resource guard. Twenty-six actual-validator controls pass including path assertion. It proves only a conditional scalar upper bound if checked; no graph/guard claim. Direct pin evidence does not establish full serialized transitive/package ancestry or continuous resolution. Upper tactic behavior/resource completion remains untested.

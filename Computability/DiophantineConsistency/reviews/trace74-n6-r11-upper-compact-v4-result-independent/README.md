@@ -1,0 +1,5 @@
+# Independent result audit: compact n6/r11 upper v4
+
+PASS for captured two-stage result. Author reports actual outer session 14415 exit 0/reaped. Terminal `c755bc4ae693037fec8773824d44645d91e4ad54537d19885a7dd1ae624cdd00`; runner `ee2b412a8e9ccec5663c9e65537651de95f9ef11b16ade5bca697786bc40a96f`. All eight terminal input pins, both objects and logs independently rehashed. Both Lean stages exit 0, each exact named report `[propext, Classical.choice, Quot.sound]`, stderr empty. Base object `960d185dddc1b1a7494c8292e2423e4d38c0536ef43bd37df4ae87705f325411`, upper `cae7a590b48d4475b470a1f5a429cc9533b58bdeb02870b3b9fbccf88207821f`. Prior v1/v2/v3 upper failures excluded, v3/source correction recorded separately.
+
+The theorem is a generic ordered-ring scalar upper endpoint under x≥32,t≥1 and explicit strict polynomial inequality. It is not yet a joined scalar contradiction or graph/Pell/guard theorem. Direct pins do not establish full serialized transitive/package ancestry or continuously stable resolution.

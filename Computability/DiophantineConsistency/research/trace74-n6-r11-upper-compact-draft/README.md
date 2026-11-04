@@ -1,0 +1,7 @@
+# Factored n6/r11 upper endpoint Lean draft
+
+Unchecked sources encode the independently audited [compact arithmetic certificate](../trace74-n6-r11-upper-compact-certificate/README.md). The first proves the two univariate positivity bounds; the second compares powers and the factored scalar expressions to derive `t<B+260` from the explicit strict gap. No 397-term bivariate expansion, graph zero, fixed-port or iPRA claim is made. Source and guarded prelaunch review plus root slot sequencing are required before Lean.
+
+The [independent source review](../../reviews/trace74-n6-r11-upper-compact-source-independent/README.md) passed the mathematical argument; tactic elaboration and resource use remain untested. The [independent prelaunch review](../../reviews/trace74-n6-r11-upper-compact-prelaunch-independent/README.md) approved one coordinated check of the two-stage held runner.
+
+Attempt01 actual tool session 15829 exited 1 and fully reaped. Its [terminal](observations/attempt01/terminal.json) SHA-256 is `90994c089f7ad684bd54ee8039ac42270ab3d961053337b95051aa4208dd31f1`. The base stage passed. The upper stage failed on a nonnegative argument to `mul_le_mul` and deterministic heartbeat exhaustion during `nlinarith`; no upper theorem was accepted. The [independent factual audit](../../reviews/trace74-n6-r11-upper-compact-attempt01-independent/README.md) passed. A separately pinned factored repair is under review.
