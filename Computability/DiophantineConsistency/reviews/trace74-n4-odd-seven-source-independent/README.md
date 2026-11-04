@@ -1,0 +1,5 @@
+# Independent N4 odd-seven source review
+
+Mathematical source review PASS, no Lean claim: source `cf9411963c4e4828bd1c29a79b5f736238e5f41810f843ae6cb77c9081a5b9c4`. For the same natural ports p, positive model tuple v, actual 74 graph zero, β≥31 and explicitly supplied first-Pell coordinate at n=4, the audited index-window theorem supplies indices n,r and an r-ordinate for that tuple. Injectivity of the first recurrence identifies n=4. The window yields 4<r<8; the audited N4/R5 contradiction rules out r=5, and oddness rules out r=6. Discrete model order then forces r=7 and the same c=ycoord 7 (A−1). The proof uses no enumeration restricted to standard integers, no guard and no graph existence assumption beyond its explicit antecedent.
+
+This is a conditional r=7 consequence, not an exclusion of n=4 or any iPRA endpoint. The required checked graph exclusion/provider ancestry and source/direct module selections must be reconciled in a runner. Elaborator/tactic behavior, including the odd modulus and order endpoints, remains untested; no Lean was run in this review.
