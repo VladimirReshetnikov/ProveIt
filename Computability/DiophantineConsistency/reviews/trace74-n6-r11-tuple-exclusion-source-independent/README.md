@@ -1,0 +1,3 @@
+# Independent source review: n6/r11 same-tuple exclusion
+
+Source-only PASS `3a5daffef953d2660a73fe8925e053b7a0a35e9898fb6775f72d536b2eccdef4`, conditional on pending scalar and eleventh-ordinate parents. No Lean invocation. For same positive p/v, q≥260 and supplied first n6/second r11 equations, the subtraction-free identities bind k/2 and c to scalar polynomials, and eta/zeta positivity yields kY<c<k(Y+1). q|X and q³|Y bind the same tuple to the discrete scalar contradiction. The proof needs no graph zero, and excludes only this pair of explicit ordinate equations. Casts/linear_combination and provider reconciliation remain untested; no guard/endpoint claim.

@@ -1,0 +1,5 @@
+# Same-tuple first index 6 and main index 11 are incompatible
+
+`Trace74N6R11TupleExclusion.tuple_n6_r11_impossible` proves that the same positive 74 tuple cannot satisfy both the first-index-6 and main-index-11 ordinate equations when `q≥260`. A graph-zero premise is not needed: positive witnesses give the two carrier inequalities, and the checked compact scalar contradiction applies. This alone does not rule out other main indices, prove a guard, or establish an iPRA endpoint.
+
+The controlled Lean check passed in actual outer session 56959, exit 0; terminal SHA-256 `2dc7f9e25db1f7d1f68310f9f43bd9fc9d64985074abb626cea607486226febc`. The [independent result audit](../../reviews/trace74-n6-r11-tuple-exclusion-result-independent/README.md) verified 86 recorded direct pins, object, log and report. Its scalar parent uses the clean lower certificate stage from a separate failed three-stage run, and the independently accepted compact upper proof; the timed-out upper stage was not accepted. Full historical project/package/dynamic ancestry and ongoing search-path selection remain outside this evidence.
