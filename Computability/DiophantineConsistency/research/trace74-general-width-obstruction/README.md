@@ -85,9 +85,11 @@ represented exponential at `67*8807=590069`. For an ordinary positive
 `B=590069` permits fixed widths up to `c=885103` at sufficiently large
 `n`. The enormous numeral need not be expanded to state the corresponding
 model inequality: represented exponentiation and the symbolic identity
-are the appropriate interfaces. This note does not prove that model
-inequality, connect the symbolic port to an external payload, or prove
-that (P), (D), and (A) hold at a fixed tuple.
+are the appropriate interfaces. A separate [Lean model lemma](../trace74-fixed-q-symbolic-bound/README.md)
+now derives this represented lower bound on `q` from the symbolic first
+port and a positive first witness. The general-width obstruction itself
+has not been formalized in models; the symbolic port is not connected to an
+external payload by that lemma.
 
 The preceding computation excludes only widths bounded by the stated
 constant. It does not cover arbitrary gaps `r−n`, prove absence of graph
@@ -101,3 +103,6 @@ Run `python3 -I -S -B research/trace74-general-width-obstruction/check.py`
 from the `Computability/DiophantineConsistency` directory. The checker
 verifies example thresholds and constant bookkeeping only; it does not
 prove the universal inequalities or the graph assumptions.
+The [independent arithmetic review](../../reviews/trace74-general-width-obstruction-independent/README.md)
+applies to the earlier hash-pinned version of this note; the added link
+above records the separate Lean model bound.
