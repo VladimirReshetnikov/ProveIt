@@ -1,0 +1,5 @@
+Independent source review; no Lean. Source SHA faf9a1be9a1dc890c904e598bcb665c6c7f43b7cb1d5dd3f9e29057cf646490f.
+
+In an arbitrary commutative ring, the same p and u/v coordinates J,i,w,s,eta,zeta give the same h,q,X,Y,k,c,Am1,H,D,Delta,E,U,a,F0,f,Q,K,M,Gn after the 74 oldVal transformation; oldVal changes only slot2 and preserves all those selected inputs as well as T/n at slots4/7. The first explicit equation c·ΔT=ΔR yields ΔV=f(cΔT−ΔR)=0. With those unchanged registers and e=k−R−1, the second equation hD·Δn=(hD·V²+D)ΔB−hΔR makes ΔZ=H[hDΔn−(hDV²+D)ΔB+hΔR]=0. Therefore the value75 expression after coordinate_identity has the same Q,Z,M,Gn,V and equals value74 for both valuations. Signs and retained K term are correct; no division or positivity is used.
+
+This is a conditional ring identity, not a construction or proof that target witnesses exist/are positive, normalize F/C, satisfy either transport equation, or convert a graph zero. Definitional oldVal/register simp and linear_combination elaboration require a separate Lean/provider check; full ancestry remains outside this review.
