@@ -2851,6 +2851,9 @@ Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
 - 163's 75 / 402, which has a guarded-provider endpoint in research;
+- the rest of the fourteen-positive Pareto row (degree / operations): 65's
+  26 / 92, 64's 30 / 83, 55's and 59's 52 / 79, and 183's 150 / 65. Package
+  188's 94 / 67 and 118 / 66 have endpoints;
 - 170's 74 / 438;
 - 184's 104 / 174;
 - the ten-positive Pareto points;
