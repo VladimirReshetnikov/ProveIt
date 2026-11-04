@@ -1,0 +1,5 @@
+Independent scoped retry prelaunch GO; no Lean replay. Source SHA 23939fbe2ff657cfc4b4848990c6564cacb1724da25159b8cfee1bc6b946d6e4; runner SHA 9d31a882af7d0358d808142c8156b0d2abb8ed64dcbdfd69af23e7717ff1baaf.
+
+Attempt01 terminal SHA 747952d3d81d6fff48e92826052f32237cfeb30a6bc6ef0358bcdede546a79ee records Lean exit -6, reason null, empty stdout and no object; stderr reports interpreter memory_exception. Outer observation SHA 8a2a22418522aee3b7e7d2ca01da9d5a6f39dc6679d65c88eb4dc3c6aa6949c9 reports tool exit 1. No theorem was accepted and no precise proof hotspot is inferred.
+
+The source delta replaces only the last nlinarith with an exact expanded factor identity, sum nonnegativity, 4y>3 and a linear contradiction; theorem and assumptions unchanged. Expanding the identity reproduces the original equation. Runner changes only the source pin, and 11 actual parser tests pass. Recheck pins/resources under the shared lock when released; direct package and transitive/dynamic ancestry limits remain. Proof elaboration untested.

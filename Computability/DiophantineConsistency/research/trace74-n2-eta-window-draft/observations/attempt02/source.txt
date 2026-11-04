@@ -1,0 +1,35 @@
+import Mathlib.Tactic
+
+/-! UNCHECKED DRAFT. Ordered-ring consequence of the eta identity in the
+proposed n=2 exclusion. A later client must derive the identity from the
+same 74 zero in the model difference ring. -/
+set_option autoImplicit false
+namespace Trace74N2EtaWindow
+
+theorem eta_window {R : Type*} [LinearOrderedCommRing R]
+    (x y eta : R) (hx : 4≤x) (hy : 64≤y) (heta : 0<eta)
+    (heq : eta + 4*y^2*(2*x*y-(x+1)^2) = 8*y*x+4*y+3) :
+    2*y < x+3 := by
+  by_contra h
+  have hgap : 0≤2*y-x-3 := by linarith
+  have hx1 : 0≤x-1 := by linarith
+  have hy64 : 0≤y-64 := by linarith
+  have hp : 0≤(y-64)*(x-1) := mul_nonneg hy64 hx1
+  have hlarge : 2*x+2≤y*(x-1) := by nlinarith [hp]
+  have hy0 : 0≤y := by linarith
+  have hx0 : 0≤x := by linarith
+  have h1 : 0≤y*(y*(x-1)-(2*x+2)) :=
+    mul_nonneg hy0 (sub_nonneg.mpr hlarge)
+  have h2 : 0≤(2*y-x-3)*x*(y*y) :=
+    mul_nonneg (mul_nonneg hgap hx0) (mul_nonneg hy0 hy0)
+  have halg : eta + 4*((2*y-x-3)*x*(y*y)) +
+      4*(y*(y*(x-1)-(2*x+2))) + 4*y = 3 := by
+    linear_combination heq
+  have hsum : 0≤4*((2*y-x-3)*x*(y*y)) +
+      4*(y*(y*(x-1)-(2*x+2))) :=
+    add_nonneg (mul_nonneg (by norm_num) h2) (mul_nonneg (by norm_num) h1)
+  have hbig : (3:R)<4*y := by linarith
+  linarith only [halg,hsum,heta,hbig]
+
+#print axioms Trace74N2EtaWindow.eta_window
+end Trace74N2EtaWindow
