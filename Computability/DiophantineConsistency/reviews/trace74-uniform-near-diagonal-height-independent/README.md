@@ -1,0 +1,7 @@
+# Independent audit: conditional near-diagonal height obstruction
+
+PASS for the ordinary-integer mathematical argument, with explicit assumptions and no Lean/model proof. README `1f952836ffd29b580f63fd9aa1aafc56a1a248426683035ee8fb3b0d3bcc98c9`, checker `cd9989cc58e3f14f96024476cc0acdae34103e45471a82bce52be6f825a5d9a7`, receipt `c4991c8688f890d03ed0506f34b0039d4abc131c23730a2703a3d73ed892efef`. Documented isolated checker reran matching receipt; no flags, -O and -OO independently reject exit 1. Checker verifies exact ring identities, affine exponent comparison and one sample only; it does not itself establish the universal inequalities.
+
+Independent derivation: recurrence and monotonicity yield y_n(u+2)≥u^(n−1), y_r(z)≤z^(r−1). With r≤n+2, gap and z≤2Xt yield t^(n−2)<2^(n+1)X², hence Y^(n−2)<8X². For n≥8, Y≥q³, h<q, K≤2^(n+2), q≥2³⁰, 30(3n−20)−(4n+17)=86(n−8)+71>0 gives Y^(n−6)>512h²K⁴ and so X>8hK²Y². Algebraically setting M=4Y gives MX=H−a, M(X−K)=H−b and M(KX+1)=KH−4d; the displayed factorization and H|4habd follow, and H≡−1 mod 4 gives H|habd. Positive a,b,d and h give 0<S=habd<16hK²Y³, while H>4XY>32hK²Y³, contradicting H|S.
+
+All inputs—including the additional r≤n+2—remain explicit. The current checked graph window only gives n<r<2n. Uniform model-indexed induction, variable-base powers/cancellation, general reduced projection and same-tuple binding in nonstandard IΣ₁ remain unproved; no guard, full graph exclusion, 74/75 equivalence or endpoint is established. The numeric sample makes no graph projection claim.
