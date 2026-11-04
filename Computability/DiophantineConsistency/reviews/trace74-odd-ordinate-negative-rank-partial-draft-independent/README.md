@@ -1,0 +1,5 @@
+# Independent source inspection: proposed odd-ordinate partial assignment
+
+Inspected unrun `research/trace74-odd-ordinate-negative-rank-partial/check.py` SHA-256 `151f031b42e6c8c7d131e3f4b1060431feee3d93ffb239587bc85cd13553cf63`. It proposes an external fixed-payload scalar assignment with A=q^4+q^3 and c given by the computed fifth Pell ordinate. Its construction `k=4+q^4 floor((c−1−4Y)/(q^4 Y))` gives k≡4 mod q^4 and, when defined, kY≤c−1; eta=c−kY and zeta=k−eta. The code explicitly checks eta<k, size, negative rank, signed offset divisibility and B>0 before printing success. Those numeric assertions are not established by this source-only inspection.
+
+The asserted first-index value n=2 is explicitly only the congruence k≡2n mod q^4; the first Pell equation is not checked. The second Pell/adjacency/full carrier, remaining graph coordinates, full graph zero and formal payload-to-Lean binding are also excluded. No blocker identified in the static construction, but the script was not run; its successful author run and separate arithmetic audit are required before any certificate claim.
