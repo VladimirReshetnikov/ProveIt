@@ -1,0 +1,7 @@
+# Independent result review: ordered-ring lower endpoint
+
+PASS for author-reported actual outer session 60121 exit 0, consistent with recorded supervisor exit 0 and child PASS. Outer SHA-256 `8aaefb1f7ca37e0fcd7796f32a0f16672e38f30ac1e989b53feaaf8b94e55dfd`, child `d165ec74913ebce9a5d4e1ba5ba0eded960eae07079bb98430b5006ab937a01e`, object `209045587dd2794534aec3d253fef7e5e46e2fff9a32e869d895e256cbcbd251`. Draft and stage source match reviewed SHA `0bbf22dff40185310ea60c460befcc3b2729a59d7f49bb81e2d44dabb0d01c11`.
+
+The first theorem proves the displayed slack identity over arbitrary commutative rings under the equation `2Y+W=X²+4X+4`; its exact report is `[propext, Quot.sound]`. The second proves `k(X,Y)(Y+1)<c(X,Y)` in a linearly ordered strict ordered commutative ring under X≥0,Y≥1,W≥0 and the same equation; its exact report is `[propext, Classical.choice, Quot.sound]`. Lean exit 0, empty stderr and no warnings. These are generic polynomial facts, not a Pell recurrence, graph binding or n=3 exclusion.
+
+The accompanying script rehashes outer, child, inputs, source, both logs and object, verifies the serialized direct header, full 2069-module inventory and companion bytes/absence/targets, outside bundles and all captured parent closure roots. Scope is capture-relative; earlier exact warnings and historical source-object, transitive/package/dynamic and external-binding limitations remain. No Lean was run for this audit.
