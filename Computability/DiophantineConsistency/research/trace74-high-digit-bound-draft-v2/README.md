@@ -1,0 +1,5 @@
+# High-digit bound: source correction draft
+
+The [first high-digit attempt](../trace74-symbolic-mask-high-digit-bound-rebuild/observations/attempt01/result.json) failed with parsing errors on reserved identifier `prefix`, a later unsolved `omega` goal, an unused simp warning, and a consequential `sorryAx` axiom report. It did not prove a theorem. This unchecked draft renames the local list to `highPrefix` and makes the `mu`-headed tail explicit, applying `Nat.ofDigits_cons` followed by additive monotonicity to prove its positivity. The intended bound, radix, high digits, index and support recipe are unchanged.
+
+The [independent source review](../../reviews/trace74-high-digit-bound-v2-draft-independent/README.md) found no mathematical blocker and did not run Lean. A fresh pinned runner and prelaunch review are required before a guarded Lean check. The result, even if accepted, would give only the high bound; it would not itself establish the missing low identity, concrete coverage, all-model cast, graph guard or iPRA endpoint.
