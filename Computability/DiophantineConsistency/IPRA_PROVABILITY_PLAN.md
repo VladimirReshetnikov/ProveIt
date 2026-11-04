@@ -203,16 +203,25 @@ not replay Lean or eliminate the guard.
 A separate [74-row trace probe](research/trace74-mask-coordinate-probe/README.md)
 applies the same substitution to the upstream 75-row BFS-kernel chart. Its
 [Lean ring identity](research/trace75-mask-coordinate-ring-probe/README.md)
-is checked for arbitrary ports, with JSON comparison external. Neither
-positive-direction guard has been proved for that chart, and the parent
-trace75 itself does not yet have its machine/iPRA bridge. An [external degree certificate](research/trace74-degree-check/README.md)
+is checked for arbitrary ports, with JSON comparison external. The parent
+trace75 now has a [fixed-symbolic-port iPRA proof-existence assembly](research/trace75-bfs-ipra-final-assembly-plan/RUNNER.md)
+on its compatible captured provider, with the external payload and inherited
+ancestry qualifications described in the [trace75 status](research/ten-positive-ipra/PLAN.md).
+An [external degree certificate](research/trace74-degree-check/README.md)
 establishes exact degree 402 for its pinned coefficients; an [independent audit](reviews/trace74-ring-coordinate-independent/README.md)
 checks that certificate and the row/identity receipts without replaying Lean.
 A [guarded trace model iff](research/trace75-mask-coordinate-ring-probe/GUARDED.md)
 equates positive 75 and 74 zeros only with **both** respective coordinate
 guards explicit (`F+alpha<q` on the old side, `F+C<q` on the new side).
-Neither guard is derived there from a zero. An [independent trace-guard audit](reviews/trace74-guarded-iff-independent/README.md)
-checks both directions and selected provider evidence without replaying Lean.
+Neither guard is derived within that guarded iff. A later [model theorem](research/trace75-root-probe/TO74.md)
+derives the old-chart guard from a positive trace75 zero and obtains its
+equivalence with a positive trace74 zero **with the new-chart guard**. The
+guard for an arbitrary positive fixed-port trace74 zero remains open, as do
+its unguarded iPRA endpoint and formal external-file binding. The newer
+[trace74 status](research/trace74-mask-coordinate-probe/README.md) records
+the checked guard-free signed-rank, projection and index-window results.
+An [independent trace-guard audit](reviews/trace74-guarded-iff-independent/README.md)
+checks the original guarded directions and selected provider evidence without replaying Lean.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
