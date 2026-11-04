@@ -1,0 +1,5 @@
+# Independent scalar-growth failure and V2 source review
+
+Attempt01 terminal `62441b2b4bd703d15430deb77d6f6bd85589818dade7c7d4b18cfbc23b6b3a20` and stdout `f0527fbf09133f3d636568e48382353e41fb8d041913032aee34405746fb210b` record Lean exit 1: failure to synthesize `MulRightStrictMono R` at the final strict cancellation. Quartic and h_large reports list `[propext, Classical.choice, Quot.sound]`, but x_gt_four_y_cube lists sorryAx and the entire stage was rejected; these reports alone do not constitute an accepted full result. The author reports actual outer session 89070 exit 1.
+
+V2 source `e953b64c67ea177c25e22e5b42d5e9aa20b2076c50db9b94344b50aa777cd631` changes only that last proof step, retaining all theorem statements, premises and other proof steps. Assuming the negation of 4y³<x yields x≤4y³; multiplying by the nonnegative factor 32x³y⁴ gives the reverse weak inequality, contradicting the previously proved strict inequality. This is valid in the stated ordered-ring setting. Elaboration and linter outcomes remain unchecked; no Lean was run in this review.
