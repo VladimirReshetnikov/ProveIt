@@ -1,0 +1,3 @@
+# Independent source review: fixed-beta main index ≥11
+
+Source-only PASS `3067c1ad2be516a7187cc37c3c3a96896b88f78274c9de740cdefb1cbb89e78e`, conditional on pending generic main-index provider; no Lean replay. For same p/v with p0=betaNat, positive coordinates and actual 74 zero, accepted fixed beta/q and first-index≥7 results supply the explicit premises of proposed main-index theorem. In the existential theorem the n from accepted fixed first-index theorem is passed unchanged to the main-index theorem, preserving its coordinate/q⁴ residue and returning the same r with r≥11, n<r<2n, odd and c=y_r. Other p ports arbitrary; no all-ordinate, guard or endpoint assertion. Parent acceptance, elaboration and provider compatibility remain untested.
