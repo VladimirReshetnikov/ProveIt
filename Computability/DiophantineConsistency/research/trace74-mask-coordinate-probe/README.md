@@ -103,6 +103,17 @@ Lean's symbolic direct-BFS port or to any file/PDF displayed elsewhere.
 In particular, no other tuple is silently substituted for the exact inherited
 raw `K0` hash `0a86821a704294199c2e1a50379d242c96840a3366e9d965689ba3d74605203f`.
 
+**Fixed-port guard under investigation.** A [coupled-Pell construction](../trace74-symbolic-coupled-pell-strategy/README.md)
+proposes a positive 74 zero at the retained external ports with `F+C≥q`.
+An [independent mathematical review](../../reviews/trace74-symbolic-coupled-pell-strategy-independent/README.md)
+found the construction valid conditional on the recorded finite gcd checks
+and port/graph correspondence. The enormous witness has not been
+materialized, and the external computations and file-to-Lean binding are
+not Lean theorems. This is strong evidence against the universal reverse
+guard, not an independently kernel-checked counterexample or a decision of
+74/75 positive-existence equivalence. The maintained root equation is
+separate from this research candidate.
+
 Reproduce the read-only check from the repository root:
 
 ```
