@@ -1,0 +1,7 @@
+# First-Pell index at least three
+
+`Trace74FirstIndexThree.graph_first_index_ge_three` proves that every n satisfying the stated first-Pell ordinate equation for the same positive 74 graph zero is at least 3, assuming positive beta/valuation and `q≥4` in the arithmetic model. It combines the previously checked n≥2 result with the small-k exclusion. The first-Pell equation and same p/v are explicit; no identification with the independent odd-Pell index is made.
+
+Reviewed author attempt01 passed in actual session 72802, outer exit 0, with its single named axiom report clean. Terminal `index-observations/attempt01/terminal.json` SHA-256 `7e832d06fa2730c85f13b2c97e558c58ffde03b007784f92538101b1b861e3c9`; object `/tmp/trace74-first-index-three-wfm5i6o3/lib/Trace74FirstIndexThree.olean` SHA-256 `980f82c21f9acb90599704639100255542111eab7289b109dba8b81669bf9420`. Independent [result audit](../../reviews/trace74-first-index-three-result-independent/README.md) passed, SHA-256 `f00cf6409d1da5bfddafeb7707865b342a5bd5f69c2add9588df23bdf88c48dd`. Direct-pin/search-path and inherited project/package/dynamic ancestry limitations remain. No F/C bound, reverse guard or full equivalence is claimed.
+
+[Source review](../../reviews/trace74-first-index-three-source-independent/README.md) and [prelaunch review](../../reviews/trace74-first-index-three-prelaunch-independent/README.md) are separately recorded.
