@@ -1,10 +1,11 @@
 # A general fixed-width near-diagonal obstruction
 
 This is an ordinary-integer argument extending the previously reviewed
-widths 3, 4 and 5. It is not a Lean theorem, a statement about arbitrary
-elements of a nonstandard model, or a proof of the 74-operation reverse
-guard. The graph applicability and fixed-symbolic specialization are
-conditional on the stated same-tuple facts.
+widths 3, 4 and 5. A subsequent [Lean model theorem](../trace74-variable-width-index-client/README.md)
+checks a related same-zero criterion at arbitrary internal widths, with
+explicit threshold assumptions and the stronger condition `3c+1≤n`.
+Neither result proves the 74-operation reverse guard. The graph applicability
+and fixed-symbolic specialization retain their stated same-tuple facts.
 
 Let integers `B≥1`, `c≥1`, `n`, `r`, `q`, `h`, `X`, and `Y` satisfy
 
@@ -87,9 +88,10 @@ represented exponential at `67*8807=590069`. For an ordinary positive
 model inequality: represented exponentiation and the symbolic identity
 are the appropriate interfaces. A separate [Lean model lemma](../trace74-fixed-q-symbolic-bound/README.md)
 now derives this represented lower bound on `q` from the symbolic first
-port and a positive first witness. The general-width obstruction itself
-has not been formalized in models; the symbolic port is not connected to an
-external payload by that lemma.
+port and a positive first witness. The [direct-index model theorem](../trace74-variable-width-index-client/README.md)
+also supplies a conditional general-width exclusion; it does not cover the
+`n=3c` boundary. The symbolic port is not connected to an external payload
+by those lemmas.
 
 The preceding computation excludes only widths bounded by the stated
 constant. It does not cover arbitrary gaps `r−n`, prove absence of graph
@@ -104,5 +106,5 @@ from the `Computability/DiophantineConsistency` directory. The checker
 verifies example thresholds and constant bookkeeping only; it does not
 prove the universal inequalities or the graph assumptions.
 The [independent arithmetic review](../../reviews/trace74-general-width-obstruction-independent/README.md)
-applies to the earlier hash-pinned version of this note; the added link
-above records the separate Lean model bound.
+applies to the earlier hash-pinned version of this note; the updated
+opening and links above record the separate Lean model bounds.
