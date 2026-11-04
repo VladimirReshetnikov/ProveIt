@@ -116,6 +116,13 @@ three endpoints
 soundness sections, with the exact-index section split so that it accepts 65's
 ordinary strong norm (`P72Exact.exact_ordinary`). Its converse reuses P13's
 extraction of the halt data.
+An [alternate captured-provider assembly](research/p65-unconditional-ipra-alternate-provider/README.md)
+also checks the three unconditional endpoints for the same Lean expression,
+using a separately constructed halt-side witness and a
+[62-module replay](research/p65-reverse-provider/README.md) of the reverse
+direction. Its source was independently reviewed; inherited transitive
+provider ancestry and the external file binding remain separate from that
+check.
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
