@@ -120,9 +120,10 @@ An [alternate captured-provider assembly](research/p65-unconditional-ipra-altern
 also checks the three unconditional endpoints for the same Lean expression,
 using a separately constructed halt-side witness and a
 [62-module replay](research/p65-reverse-provider/README.md) of the reverse
-direction. Its source was independently reviewed; inherited transitive
-provider ancestry and the external file binding remain separate from that
-check.
+direction. A further [30-module captured-provider replay](research/p65-canonical-endpoint-provider/README.md)
+checks the merged canonical endpoint source and has an independent manifest
+and log review. Inherited transitive provider ancestry and the external file
+binding remain separate from these checks.
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
