@@ -1,0 +1,5 @@
+# Independent prelaunch review: carrier residue
+
+Scoped GO for one coordinated run with runner SHA-256 `5af22179bbf6df305e5a82cb4c82ca9cfc0e046955cc6397a72b31af21ab874a`. Reviewed source SHA-256 `18b8f0a0551535f37bd0a351f2798c1908e0563b725b91f8aa227ac94530d3b1` and its three actual report directives match runner order. Checked accepted CarrierBound object/terminal and related direct provider pins, shared lock, resource guard, no-clobber and warning/sorry policy; independently ran 13 parser controls, all PASS. The author reports fresh read-only preflight PASS; repeat locked preflight and coordinate shared slot before launch. Capture actual tool exit; no Lean was run here.
+
+The held graph residue requires same positive 74 zero/beta/valuation, retains coefficient 4 and signed difference-ring divisibility, and assumes no guard or coprimality. It does not cancel factors or establish F/C bounds. Direct pins do not establish complete project/package/dynamic ancestry, first-selection shadowing or intermediate output stability.

@@ -1,0 +1,7 @@
+# Independent result audit: 74 carrier residue
+
+PASS within direct-pin and inherited provider scope. The author reports actual tool session 99436 exited 0 and was reaped. Retained attempt02 terminal SHA-256 `45150d255e3dd399840d561432479130f1121bf8fb2ac7859e8190e9407201d7` records PASS using reviewed runner `303297578c3fd3fb071c6e3c9f0941b6da1f2bee4b91f4a2d16e62d6a9c6f07e`. Independently rehashed all 18 source/direct-provider/Lean/core pins, object `0740d7e62dfa1fd7e836a2664025d9ef23d52cba689df7af846f5e1f07b35fae`, and stdout/stderr; Lean exit 0, null monitor reason and empty stderr. The first and third exact named reports have `[propext, Classical.choice, Quot.sound]`; the generic ring reduction report has `[propext, Quot.sound]`. No Lean replay was run.
+
+For the same ports/valuation, positive beta and components and actual 74 zero, the graph conclusion gives signed difference-ring divisibility `h ∣ (4s(w+1)−1)ws((K0+w)C−F)`. The coefficient 4 and 74 synthetic C=v2 are explicit; the proof first obtains h|HDB then reduces q=h+1. It assumes no reverse guard or coprimality, and does not cancel factors to infer h|B. Earlier attempt01 with a masked-slot error and sorryAx was excluded.
+
+This is a conditional graph-zero consequence, not F/C boundedness, zero existence, fixed-port guard, external-file binding or iPRA. Direct pins do not establish complete transitive project/package/dynamic ancestry, first-selection shadowing or intermediate output stability. The author's actual exit report is separate from the retained terminal.
