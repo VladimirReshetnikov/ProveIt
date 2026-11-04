@@ -1,0 +1,5 @@
+# Same-tuple first index 6 and main index 9 are incompatible
+
+`Trace74N6R9GraphExclusion.graph_n6_r9_impossible` proves that the same positive 74 tuple cannot satisfy both the first-index-6 and main-index-9 ordinate equations when `q≥32`. A graph-zero premise is not needed: positivity of the tuple yields the carrier's two strict inequalities, and the checked scalar contradiction applies. This does not by itself exclude n6 with other main indices, prove a guard, or establish an iPRA endpoint.
+
+The controlled Lean check passed in actual outer session 30925, exit 0; terminal SHA-256 `b0d9568a99d0a15039c9bf08d0d22f18da5ea85093bb204c77d05d50dfb1209e`. The [independent result audit](../../reviews/trace74-n6-r9-graph-exclusion-result-independent/README.md) verified 77 recorded direct pins, object, log and report. Retained prelaunch-v1 source and runner record the explicit let-unfolding improvement before the only Lean run. Full historical project/package/dynamic ancestry and ongoing search-path selection remain outside this evidence.

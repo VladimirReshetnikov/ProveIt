@@ -1,0 +1,3 @@
+# Independent source review: n6/r9 tuple exclusion
+
+Source-only PASS `4a2e58eabda9a21efba6d0d5cd5cc818419bbd3d7a95a77f005ae98fb84a82cb`; no Lean replay. Same positive p/v and explicit q≥32, first n6 and second r9 equations give x≥32, t=2Y≥2 and kY<c<k(Y+1). The two independently checked subtraction-free recurrence identities cast into DiffRing match the accepted scalar theorem: 2(B+2)=4XY²+2=x(2Y)²+2 and 2(A+1)=2Y(X+1)+2. No graph zero is assumed; this excludes only simultaneous supplied ordinate equations. The hy6R cast/let unfolding and linear_combination normalization, model inequalities and provider compatibility remain unchecked; if Lean needs it, explicitly unfold B in the cast identity. No guard or endpoint is asserted.

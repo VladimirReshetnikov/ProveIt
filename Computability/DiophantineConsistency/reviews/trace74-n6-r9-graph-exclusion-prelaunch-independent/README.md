@@ -1,0 +1,7 @@
+# Independent scoped prelaunch: n6/r9 tuple exclusion
+
+GO subject to root slot release and fresh locked preflight. Source `4a2e58eabda9a21efba6d0d5cd5cc818419bbd3d7a95a77f005ae98fb84a82cb`, runner `01d0addb2f8c3ebd56dcf038f27ca690c1920483351957739716b2c17ccb49d3`, policy `c37f6848a204e412de10d8407e1f99ff1ae3c957f5ba6b5c894b593ce89bcbbc`. No Lean replay. The theorem needs same positive p/v, q≥32, first n6 and main r9 coordinate equations; no graph-zero premise.
+
+Five direct imports and two immediate scalar certificates currently uniquely resolve to expected pinned objects. Independently audited parent terminals/objects are pinned; runner checks pre/post pins, strict named report, empty stderr and locked resource guard; 13 actual-validator controls pass. The cast/let normalization remains a possible elaboration concern. Point-in-time direct selection does not establish full serialized transitive/package ancestry or continuous resolution. No unrestricted graph, guard or endpoint claim.
+
+Before launch the author revised source to `00e9fdfb7aa9aa41581fea39718e31d5819d1ba745c1478761e6a2b6304ed44d` by adding only `B` to the existing `dsimp` in the cast identity; revised runner `b3e6876c4972459e838f4992cc94e0c8babaf1ee046c591e8be5f89bea828ebe` changes its source pin. Original source/runner saved as `prelaunch-source-v1.lean` and `prelaunch-runner-v1.py`. GO applies to the revised bytes; policy unchanged and 13 controls rerun PASS. No theorem was changed or Lean invoked during revision review.
