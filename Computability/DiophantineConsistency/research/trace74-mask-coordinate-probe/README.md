@@ -92,3 +92,5 @@ symbolic identities, compares shared register evaluations on 100 deterministic
 modular samples, and checks the available parent coefficient payloads.
 Sampling is a diagnostic; the exact local normalization and row induction
 supply the all-ring reasoning.
+
+The [FreeJ transport comparison](../trace74-freej-transport-comparison/README.md) records the exact 74 versus Compact44 transport-register identity and why the positive synthetic alpha/guard cannot be assumed when applying that pattern to this independent C chart. The checked 74 B-nonnegativity consequence alone does not establish the guard.
