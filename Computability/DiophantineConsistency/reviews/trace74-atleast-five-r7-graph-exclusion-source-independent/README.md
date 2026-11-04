@@ -1,0 +1,3 @@
+# Independent source review: n≥5 excludes r7
+
+Source-only PASS `b9d50302ea9013dee7ee360d3bdd7edcffd1939ca1ac640e76eaa0c8e53fe8e5`, conditional on unchecked generalized growth parent and compatible providers. No Lean replay. For the same positive p/v, positive beta, actual 74 zero, explicit q≥2³⁰, first coordinate n≥5 and c=y7, the proposed growth lemma provides X>65532(q−1)Y. Checked r7 projection supplies the divisibility for that same tuple; q≥32 and Y≥q³ give the remaining premises of checked quotient-size impossibility in DiffRing. This only rules out r7 given the stated first-coordinate bound; it is not an all-ordinate or graph-zero exclusion, guard or endpoint. Model casts and provider compatibility remain unchecked.

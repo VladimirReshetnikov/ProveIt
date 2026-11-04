@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: n≥5 excludes r7
+
+GO subject to root slot release and fresh locked resource preflight. Source `b9d50302ea9013dee7ee360d3bdd7edcffd1939ca1ac640e76eaa0c8e53fe8e5`, runner `70f6bce34b5016b9dd746f73253274ed06e89b8cbf0aa38089587990abee933b`, policy `6523da32e5047ab0ee4bb6553d9c11daf10f3a7024f642359ee38bb3d17e4a2e`. No Lean replay here. Same p/v, positive beta and graph zero, q≥2³⁰, first n≥5 and r7 ordinate explicitly retained; no all-ordinate exclusion/guard.
+
+All four direct imports and the three immediate growth dependencies currently each have one selected object on the configured path, each matching its runner pin. Accepted generalized growth, projection, quotient-size parent outputs and terminals pinned; runner enforces pre/post pins, strict named-report/empty stderr and locked resource guard. Thirteen actual parser controls independently pass. This point-in-time direct selection check does not establish serialized transitive/package ancestry or continuously stable resolution.
