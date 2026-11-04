@@ -1,0 +1,5 @@
+# Independent N4/R7 lower endpoint result audit
+
+PASS within recorded direct-pin scope. Attempt01 terminal `38241de928159785a5c01d71c951b8f9e5c1ed2993606a530c6d47f001b40212` records PASS and two Lean exit-0 stages; author reports actual outer session 62525 exit 0. I rehashed all eight direct pins, both stage logs, runner `7d835d3a5f83b508a62157b471a6a0ecb3aec819a419b9433e2608c46e5cbc59` and objects `7e6d1cf2b2b17087ad6f760cce13c73f85e69f3807ebf4d73e30185e831ea4a7` / `0178426090e7def21a1cffa5428841672d032001f365433f1c204f83d200c028`. Both exact reports list `[propext, Classical.choice, Quot.sound]`; both stderr files are empty.
+
+The first result is the generic 39-positive-term shifted ordered-ring certificate. The second assumes x≥32, t≥1 and the explicit strict c<ky+k polynomial premise and derives x³+6x²+15x+18<t. These are conditional scalar statements, with no graph, Pell-index, guard or iPRA assertion. The point-in-time direct pins do not authenticate full transitive/companion/dynamic package/core ancestry or continuous path stability. No Lean was run in this audit.
