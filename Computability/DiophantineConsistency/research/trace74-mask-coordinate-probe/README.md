@@ -55,7 +55,7 @@ The subsequent [index-six exclusion](../trace74-n6-graph-exclusion-draft/README.
 
 The [fixed-symbolic client](../trace74-near-diagonal-fixed-client/README.md) combines these bounds for one positive zero: `n≥7`, `r≥11`, and `n+2<r<2n`, retaining both ordinate identities, oddness and the first-index residue. Its other ports remain arbitrary; the external fixed-payload link and the reverse guard remain open.
 
-For that same linked pair, the [width-three fixed-symbolic client](../trace74-width3-fixed-client/README.md) additionally proves `n≥12 → n+3<r`. The strengthened bound for smaller indices is not established by that client.
+The [global width-three fixed-symbolic client](../trace74-width3-fixed-global/README.md) strengthens that same linked pair to `n+3<r<2n` without an extra lower bound on `n`. It combines the large-`n` theorem with the separately checked exclusions of the two surviving small-index pairs, `n=8,r=11` and `n=10,r=13`.
 
 An [ordinary-integer extension](../trace74-near-diagonal-width345/README.md) analyzes wider windows `r≤n+c` for `c=3,4,5` at `n≥4c`, using the same graph projection assumptions and `Y≥q³`. The [width-three graph join](../trace74-width3-graph-join/README.md) now checks the `c=3` exclusion in Lean for `n≥12` and `q≥2³⁰`, retaining the same tuple and both supplied ordinate equations. The widths four and five remain ordinary-integer arguments. A separate [general fixed-width note](../trace74-general-width-obstruction/README.md) gives wider conditional thresholds and a symbolic-beta calculation, without a model-level proof of those general bounds.
 
