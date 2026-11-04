@@ -55,6 +55,8 @@ The subsequent [index-six exclusion](../trace74-n6-graph-exclusion-draft/README.
 
 The [fixed-symbolic client](../trace74-near-diagonal-fixed-client/README.md) combines these bounds for one positive zero: `n≥7`, `r≥11`, and `n+2<r<2n`, retaining both ordinate identities, oddness and the first-index residue. Its other ports remain arbitrary; the external fixed-payload link and the reverse guard remain open.
 
+For that same linked pair, the [width-three fixed-symbolic client](../trace74-width3-fixed-client/README.md) additionally proves `n≥12 → n+3<r`. The strengthened bound for smaller indices is not established by that client.
+
 An [ordinary-integer extension](../trace74-near-diagonal-width345/README.md) analyzes wider windows `r≤n+c` for `c=3,4,5` at `n≥4c`, using the same graph projection assumptions and `Y≥q³`. The [width-three graph join](../trace74-width3-graph-join/README.md) now checks the `c=3` exclusion in Lean for `n≥12` and `q≥2³⁰`, retaining the same tuple and both supplied ordinate equations. The widths four and five remain ordinary-integer arguments. A separate [general fixed-width note](../trace74-general-width-obstruction/README.md) gives wider conditional thresholds and a symbolic-beta calculation, without a model-level proof of those general bounds.
 
 **Conditional natural rank.** Under the individual bounds `0<F<q`, `0<C≤q` and the stated port conditions, the [checked natural rank/window and difference-ring binding](../trace74-natural-rank-window-draft/README.md) give `3q<R` and `R+q³+q+1≤q⁴` without assuming `F+C<q`. It remains open whether a positive fixed-port 74 zero forces those individual bounds.
