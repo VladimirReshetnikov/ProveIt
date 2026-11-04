@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: n5/r9 upper endpoint
+
+GO subject to coordinator slot release and fresh locked preflight. Source `911dfeccd8e1ba4521eb28632b7c228ca40971bf61c50aecbad3cc34a59b3d45`, runner `af24fced05c2217b5692aaf672719be982abad5d7a7edbe31bc713b01f4b35f1`, policy `944aa6431448ec48c24894bb892bf57d1fba13b57c1ccce3827db766f8ccf811`. No Lean replay by reviewer. For x≥32, denial of t<B+73 supplies nonnegative shifts u=x−32,w=t−(B+73); the accepted shifted positivity certificate then contradicts the explicit strict polynomial gap. No graph/Pell or index result claimed.
+
+The runner pins the independently audited certificate object and terminal, direct Mathlib object and source/tool inputs, checks exact report and empty stderr with resource lock and pre/post pins. The certificate and Linarith are each uniquely selected along the present path; 13 actual-parser controls pass. The saved preflight is a point-in-time observation. Direct selection and pins do not authenticate complete transitive/package ancestry or continuous search-path stability.
