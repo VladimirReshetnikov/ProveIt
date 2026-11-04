@@ -6,4 +6,4 @@ Reviewed attempt02 passed: actual author tool session 63469 returned outer exit 
 
 Retained attempt01 exited 1 on a final addition-order mismatch, and its graph theorem report contained `sorryAx`; it was rejected. Attempt02 changed the affected proof line using commutativity. [Source review](../../reviews/trace74-odd-ordinate-bound-draft-independent/README.md) and [retry prelaunch review](../../reviews/trace74-odd-ordinate-bound-retry-prelaunch-independent/README.md) are separately recorded.
 
-A separate unchecked client `Trace74OddOrdinateKBound.lean` proposes `4*(Y*(X+1)+1)^2 ≤ k*(Y+1)` for the same graph zero, using `c=kY+eta` and `eta<k`. Its [source review](../../reviews/trace74-odd-ordinate-k-bound-draft-independent/README.md) found no mathematical blocker, but this follow-on has not yet been Lean checked. Its runner and controls are separate from the verified result.
+The separate [K-bound client](KBOUND.md) proves `4*(Y*(X+1)+1)^2 ≤ k*(Y+1)` for the same graph zero, using `c=kY+eta` and `eta<k`. Its reviewed author check and independent result audit passed; its runner and controls are separate.
