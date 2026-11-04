@@ -1,4 +1,4 @@
-# Package 72's P13: iPRA endpoints
+# Package 72's P13 and P14: iPRA endpoints
 
 4 November 2026. Author-side build by the Claude session; not a paired replay.
 The campaign log is in [PLAN.md](PLAN.md).
@@ -22,7 +22,7 @@ degree at thirteen positive unknowns.
 [`Compact44/IPRAOrdinary72`](../../Lean/DiophantineConsistency/Compact44/IPRAOrdinary72.lean)
 states:
 
-- `positive_model_iff`: in every model of `𝗜𝚺₁`, P13 has a positive zero iff
+- `positiveBridge`: in every model of `𝗜𝚺₁`, P13 has a positive zero iff
   machine 215 halts;
 - native, standard and equality-only iPRA proofs of
   *no zero of `positiveShift expression`* ↔ *Con(ZFC)*, for the selected
@@ -86,3 +86,38 @@ three layers.
     ports, crashed `lean.exe` silently (stack overflow, exit `0xC0000409`). The
     fix was generic `B K L H` statements and a ring-generic `rankExpr_eval`;
   - `betaNat` must be locally irreducible wherever `simp` might see it.
+
+## The fourteen-positive sibling P14
+
+[`72-congruence-sextic/positive14/p14_degree24.json`](../../con-zfc-diophantine-forms/72-congruence-sextic/positive14/PROOF14.md),
+SHA-256 `91a307011482e1850b97ae4a4222f024bcbbde00a7a7850e6635e8b875729495`,
+is the fourteen-positive frontier point *24 / 101*:
+
+- 14 strictly positive unknowns: P13's thirteen and `E`;
+- 101 operations and exact degree 24.
+
+Its gates are P13's, except in three places:
+
+- P13's register `E := X * Y` becomes the input `E`, and the product is
+  recomputed as `Eprod`;
+- there is one extra residual `AE = E − Eprod`;
+- the output is P13's `A0² + A1² + Aa² + As²` plus `AE²`.
+
+[`Compact44/IPRAOrdinary72P14`](../../Lean/DiophantineConsistency/Compact44/IPRAOrdinary72P14.lean)
+proves:
+
+- `P72P14.zero_iff`: in every model of `𝗜𝚺₁`, a P14 zero is exactly a P13 zero
+  of the first thirteen coordinates with `E = XY`. Once `E = XY`, the four P13
+  residuals evaluate as P13's (`residuals_eval`), and a sum of five squares
+  vanishes only when each square does;
+- `positiveBridge`: P14 has a positive zero iff P13 has one. This composes
+  with P13's `positiveBridge`: the converse sets `E := XY`, which is positive
+  because `X` and `Y` are;
+- native, standard and equality-only iPRA proofs of
+  *no zero of `positiveShift expression`* ↔ *Con(ZFC)*.
+
+**Checks.**
+
+- `tools/generate_p14.py --check` passes: 101 gates and 6 derived leaves.
+- The module was built serially, with no errors or warnings.
+- Every axiom report is within `[propext, Classical.choice, Quot.sound]`.

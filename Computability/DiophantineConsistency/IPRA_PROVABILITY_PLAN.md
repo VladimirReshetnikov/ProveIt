@@ -2841,11 +2841,16 @@ free-J zero has.
 - So any further compact44 equation needs only those six facts and a
   converse.
 
+Its fourteen-positive sibling, 72's 24 / 101, followed on the same day
+([`Compact44/IPRAOrdinary72P14`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary72P14.lean),
+[record](research/ordinary13-p72-endpoint/README.md#the-fourteen-positive-sibling-p14)).
+It promotes the product `E = XY` to an unknown, with residual `E − XY`. So its
+zeros are P13's in every `IΣ₁` model, and its bridge composes with P13's.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
 - 163's 75 / 402, which has a guarded-provider endpoint in research;
-- 72's 24 / 101, the fourteen-positive variant with the extra coordinate `E = XY`;
 - 170's 74 / 438;
 - 184's 104 / 174;
 - the ten-positive Pareto points;

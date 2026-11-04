@@ -103,6 +103,12 @@ lowest-degree thirteen-positive point. It also has all three endpoints
 [record](research/ordinary13-p72-endpoint/README.md)). These rest on a
 dedicated soundness proof, through the six compact44 leaf facts, and a
 converse from the canonical halt data.
+Its fourteen-positive sibling P14 (101 operations, degree 24) is the
+lowest-degree fourteen-positive point. It has all three endpoints as well
+([`Compact44/IPRAOrdinary72P14`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary72P14.lean),
+[record](research/ordinary13-p72-endpoint/README.md#the-fourteen-positive-sibling-p14)).
+P14 promotes P13's product `E = XY` to an unknown and adds the residual
+`E − XY`, so in every `IΣ₁` model its zeros are exactly P13's.
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
