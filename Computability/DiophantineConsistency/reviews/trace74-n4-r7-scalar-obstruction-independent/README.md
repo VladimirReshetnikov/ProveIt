@@ -1,0 +1,7 @@
+# Independent audit: conditional N4/R7 scalar obstruction
+
+PASS for the stated ordinary-integer conditional argument. Reviewed README `a5143a57c528b1a45d61ca8686358d931f683d76e1235df48d39ed3a2f1c0452`, checker `86921fded9bdfbaa9131f6fd994aeb964c3ebc7d3b44906e4ea5d39a473e8e8c`, receipt `8776c637ef74dc520c1a4454e628c1821b971e3ef7c66220b40c2dec757323cd`, stdout `a9f0e3bc23cef4d09c0c0f1f01b57569436f3f995b2a680f01219b232d990ef0`, empty stderr. Independent prescribed-command rerun matched, and no flags / -O / -OO all rejected.
+
+For t=2Y, the displayed k indeed satisfies kY=ky. Independent arbitrary-precision bivariate expansions found exactly 39 positive coefficients for `(c−kY−k)−x³t⁶(B+18−t)` at x=32+u,t=1+v, minimum 12 and constant 539298029; and 113 positive coefficients for kY−c at x=32+u,t=B+22+w, minimum 1 and constant 142712638184880673811424625081433. Thus the upper and lower strict interval inequalities force 18<t−B<22, with endpoint strictness as stated. q divides B from q|x and divides t from q|Y. A positive multiple of q≥32 cannot lie in that interval. All steps use ordinary-integer signs and exact arithmetic.
+
+Pell-coordinate equations, same-tuple interval bounds and divisibility must still be bound to the actual graph; the external coefficient check is neither a Lean theorem nor an N4/R7 graph exclusion, fixed-BFS statement, guard or iPRA result. No Lean was run in this audit.
