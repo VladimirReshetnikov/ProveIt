@@ -1,0 +1,57 @@
+import DiophantineConsistency.Compact44.DirectMainProjection
+
+/-! Conditional estimates for the positive first-root sign. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DirectMainPlusBranch
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- A first norm with ell≥k makes the root exceed ell+k/3. -/
+theorem root_thirds (ell k first : V) (hk : k≤ell)
+    (hn : first*first=1+ell*(ell+k)) : 3*ell+k<3*first := by
+  have hprod : k*k≤ell*k := mul_le_mul_of_nonneg_right hk (by simp)
+  have h7 : 7*(ell*k)≤9*(ell*k) := by
+    have h := mul_le_mul_of_nonneg_right (show (7:V)≤9 by norm_num) (show (0:V)≤ell*k by simp)
+    exact h
+  apply lt_of_mul_self_lt_mul_self₀ (by simp)
+  calc
+    (3*ell+k)*(3*ell+k)=9*(ell*ell)+6*(ell*k)+k*k := by ring
+    _≤9*(ell*ell)+6*(ell*k)+ell*k := _root_.add_le_add (le_refl _) hprod
+    _=9*(ell*ell)+7*(ell*k) := by ring
+    _≤9*(ell*ell)+9*(ell*k) := _root_.add_le_add (le_refl _) h7
+    _<9*(ell*ell)+9*(ell*k)+9 := lt_add_of_pos_right _ (by norm_num)
+    _=9*(first*first) := by rw [hn]; ring
+    _=(3*first)*(3*first) := by ring
+
+/-- In the positive-sign branch, the third bound and `3*s≤k` force `s<r`. -/
+theorem positive_branch (b t ell k first s r : V)
+    (hbt : 1≤b*t) (hk : 3*s≤k) (hthird : 3*ell+k<3*first)
+    (hsign : ell+k+r=(1+k*b)*t+first) : s<r := by
+  have hA : k≤(1+k*b)*t := by
+    calc
+      k=k*1 := by ring
+      _≤k*(b*t) := mul_le_mul_of_nonneg_left hbt (by simp)
+      _≤k*(b*t)+t := by simp
+      _=(1+k*b)*t := by ring
+  have hfirst : first≤ell+r := by
+    apply (add_le_add_iff_left k).mp
+    calc
+      k+first≤(1+k*b)*t+first := _root_.add_le_add hA (le_refl first)
+      _=ell+k+r := hsign.symm
+      _=k+(ell+r) := by ring
+  have hscale : 3*s<3*r := by
+    apply (add_lt_add_iff_left (3*ell)).mp
+    calc
+      3*ell+3*s≤3*ell+k := _root_.add_le_add (le_refl _) hk
+      _<3*first := hthird
+      _≤3*(ell+r) := mul_le_mul_of_nonneg_left hfirst (by simp)
+      _=3*ell+3*r := by ring
+  exact lt_of_mul_lt_mul_left hscale (by simp)
+
+#print axioms DirectMainPlusBranch.root_thirds
+#print axioms DirectMainPlusBranch.positive_branch
+end DirectMainPlusBranch

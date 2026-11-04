@@ -80,6 +80,17 @@ The 12-variable, 95-operation, degree-70 free-J graph at the compact44 tuple
 the tree ([`Compact44/IPRAOrdinary12`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12.lean)).
 They rest on its all-model halting calibration, whose 472-module research
 closure was [promoted into `Compact44/`](reviews/compact44-source-promotion/README.md).
+The smaller 12-variable graphs on the same tuple also have all three endpoints
+([`Compact44/IPRAOrdinary12Chain`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12Chain.lean),
+[record](reviews/ordinary12-chain-source-promotion/README.md)):
+
+| Operations | Exact degree |
+| --- | --- |
+| 94 | 84 |
+| 92 | 164 |
+| 91 | 172 |
+| 90 | 172 |
+| 89 | 172 |
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have

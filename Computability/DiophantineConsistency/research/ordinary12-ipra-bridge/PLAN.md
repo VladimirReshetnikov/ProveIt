@@ -11,9 +11,17 @@ free-J literal. The record, with a per-module source/hash manifest, is
 [here](../../reviews/compact44-source-promotion/README.md). The prototype
 copies in this directory are retained as historical inputs.
 
-Open items: the literal-to-payload/PDF binding, the 94-operation sum-of-squares
-variant's endpoint, and the compact-tuple package reductions. New work should
-import the `DiophantineConsistency.Compact44.*` tree modules.
+The 94-, 92-, 91-, 90- and 89-operation successors followed:
+[`Compact44/IPRAOrdinary12Chain`](../../Lean/DiophantineConsistency/Compact44/IPRAOrdinary12Chain.lean)
+holds their endpoints, and [this record](../../reviews/ordinary12-chain-source-promotion/README.md)
+covers the promotion of their 87 modules.
+
+Open items:
+
+- the literal-to-payload/PDF binding;
+- the compact-tuple package reductions.
+
+New work should import the `DiophantineConsistency.Compact44.*` tree modules.
 
 The initial restricted-J literal is
 `ordinary-unit-products/p12_ordinary_degree70.json`, SHA-256
