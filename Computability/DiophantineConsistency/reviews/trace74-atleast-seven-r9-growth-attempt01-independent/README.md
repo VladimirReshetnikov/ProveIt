@@ -1,0 +1,3 @@
+# Independent factual audit: generic r9 growth attempt01
+
+Overall FAIL; no whole-stage object accepted. Author reports actual outer session 69559 exit 1/reaped. Terminal `26697e3ea3bf9a0abf56875b3d87dfa461e5e1f1e6e1aadd7b191977e15b9157`; all seven terminal pins and logs independently rehashed. Lean exit 1, no object. `squared_growth` failed at deterministic Linarith simplex heartbeat and subsequent whnf timeout, with unknown theorem report; `eighth_bound` and `large_size` emitted clean `[propext, Classical.choice, Quot.sound]` reports, but the strict whole-stage runner rejected the run. No squared growth theorem or graph claim is accepted. Direct pins do not establish serialized transitive/package ancestry or continuously stable resolution.
