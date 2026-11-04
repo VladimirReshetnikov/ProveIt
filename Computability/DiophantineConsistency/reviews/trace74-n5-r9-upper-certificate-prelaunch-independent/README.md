@@ -1,0 +1,7 @@
+# Independent scoped prelaunch: n5/r9 shifted upper certificate
+
+GO subject to root slot release and fresh resource preflight. Source `1b156f995aeadbc5059e4bc16d3cc4fb35ba50d03a81266c0e5df04a8e201159`, runner `a96fe09312ff342ba6e81869466366e30fe7e61542a5d57fca5eab0f637c9e45`, policy `1558f22e311fc8de3625e0f4e1c94914643e180c0ee6f2182289588806937521`. No Lean replay in this review.
+
+Source is the previously independently expanded shifted polynomial: 226 strictly positive integer coefficients, for x=32+u and t=x^4+8x^3+28x²+56x+73+w, u,w≥0. It claims generic ordered-ring positivity only; no graph, Pell, index exclusion or guard. Actual tactic elaboration and resource completion remain untested. Follow-on source `911dfeccd8e1ba4521eb28632b7c228ca40971bf61c50aecbad3cc34a59b3d45` soundly specializes at u=x−32, w=t−(B+73), to contradict the explicit reverse strict polynomial inequality; it too is unchecked and is not included in this runner.
+
+The runner's named-stage parser, fail-closed status checks, resource lock, and pre/post direct pins were examined; 13 actual-parser controls independently passed. The three direct Mathlib imports currently resolve uniquely to the pinned package along the configured path. Full transitive/package ancestry and dynamic path stability are not established. Preflight was deferred because another Lean check was active; a fresh locked preflight is required at launch.
