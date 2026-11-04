@@ -1,0 +1,5 @@
+# Fixed low-mask specialization draft
+
+This uncompiled source proposes a narrow join of the separately checked `Trace74GenericDefect` and `Trace74SupportShort` theorems, keeping the base power and digit lists symbolic. It aims to obtain the exact low-plus-defect identity and strict defect bound for the actual `CompactSymbolicPorts.lowNat` definition. The two provider objects were produced in distinct output unions; a new runner must capture and check both objects, select them in one compatible union, and verify their serialized closures before any conclusion. A reviewed source or a matching hash alone does not establish full provider ancestry.
+
+The [independent source review](../../reviews/trace74-defect-specialization-draft-independent/README.md) found no mathematical blocker and did not run Lean. The change to the actual `lowNat` definition and the concrete specializations may still trigger costly definitional reduction; the earlier timeout did not identify a hot spot. No Lean check or final symbolic mask-cover or model-cast theorem is claimed here. The high-digit and abstract-cover stages remain separate.
