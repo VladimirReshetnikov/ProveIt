@@ -94,6 +94,49 @@ rebuild. Phases 2–3 are about 15–25 new modules.
 - *The transport field is weakened.* It is `0 < q − (F+α)` only. All three
   forwarder uses take `.2`, and the strict `Fq < C·A` fails at `z_old = 1`.
 
+**Phase 1 landed (`3eb716174d`).** `CompactLeafFactsHalt.halts_of_facts` gives
+`LeafFacts` at the compact44 ports, at a positive valuation, ⇒ internal halt.
+Its consistency check is `literal_halts`.
+
+**Phase 2: P13 zero ⇒ `LeafFacts`, module by module.** The pseudo-valuation is
+`v' = ![J, F, α, 1, 1, X, Y, 1, η, ζ, 1, 1]`, so `1 + Jβ = q`.
+
+1. `P72Graph`: the 98-gate graph, generated and checked from JSON. The
+   derived leaves are `.constant`s computed from `p 0`. Then
+   `output = A0² + A1² + Aa² + As²` (gate order `((A0²+A1²)+Aa²)+As²`), and
+   a four-squares zero split.
+2. Evaluation lemmas over a generic `CommRing` for `Z`, `A0`, `Dhat`, `A1`,
+   `Aa`, `As`, plus the pair representation of `Z` (as in
+   `FreeJRootBinding.root_rep`):
+   `pos = M0(ell+r) + (q−1)Y + q³·qF`, `neg = q³(qK0+X)C`.
+3. §4: `NfV := 3βf0 + q − (β+1) > 0`. `scaled_quotient` gives `NfV = b·f`
+   and `f² = 1 + ΔI²`. Then `f ≥ f0`, `j = f − f0`, and
+   `q = 1 + β(3j+1)`.
+4. §5: `A0 = 0` ⇒ `|Z|² = M0²(…)` ⇒ `M0 ∣ |Z|` ⇒ `pos ≡ neg (mod M0)`.
+   - Mod `q³`: `q³ ∣ (q−1)Y`; the Bézout certificate
+     `q³ − (q−1)(q²+q+1) = 1` gives `ydiv`.
+   - Cancelling `q³`: `qF ≡ AC (mod q−1)`, which is `pairMod`.
+   - The `transport` gap is `C > 0`.
+5. §6: the main root `g` from `A1 = 0`, via `Dhat = β·Dstar`. Then Pell
+   classification, strong rank, `signed_half_index_of_facts` (with
+   `i' = Δi`), `p = R`, `2n = R+1`, `v = k − R − 1`, and `q ∣ X`. These give
+   `indices` and `projection`.
+6. Growth `2^R < Y` and the main projection `X ≡ 2^R (mod H)`, with
+   `gcd(q,H) = 1`, give `power`.
+
+**Phase 3: halt ⇒ P13 zero.** Split `FreeJHaltModelZero.halt_positive_zero_of_ports`
+at its `zero_of_model_data` call. The model data already carries P13's forms:
+the normalized strong `f² = 1 + Δ(icc)²`, `Maux = Δicc`, `V = auxw` (via
+`hlit`), `Bt = (q−1)·qz`, and `τ = seedTau`. The witnesses are:
+
+- `C = q − F − α`;
+- `f0 = f − j`, which needs `J ≡ 1 (mod 3)`. Here `J = rep N` with
+  `N = haltLength T = 581197^(2T+4)` odd (`power_p_odd`), and
+  `q = 2^(dN) ≡ 2 (mod 3)`, `β ≡ 1 (mod 3)`;
+- `u = y − V`;
+- `r = τ − ell − s + qz`, positive since `τ − ell > k/3 > s`;
+- `γ = γ_old + v/M − w`.
+
 **Phase 2 map (2011 templates).** P13's normalized strong equation implies
 the ordinary one with `i' = Δi`, since `(i'c²)² = Δ(f²−1)`, and `Maux = i'c²`.
 So these 2011 lemmas apply as stated:
