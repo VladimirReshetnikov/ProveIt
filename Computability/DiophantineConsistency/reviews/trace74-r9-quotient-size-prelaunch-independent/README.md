@@ -1,0 +1,5 @@
+# Independent scoped source/prelaunch: r9 quotient size
+
+GO subject to root release and fresh locked preflight. Source `fac5ba808332b8333462d78290b0f681eeb58baf25db6b548eee0ec6cd83516e`, runner `dcfd654db88ea94f613dac34081abf778909f21329f7a9d95044630e8713ed6a`, policy `8fdcdb94d9b13175ffbda44be7e675fe52e0a95caa6e101952d00db3ae4f4307`. No Lean replay. Under explicit discrete ring, q≥64, y≥q³ and x>1048572(q−1)y, positivity yields 128(q−1)<y and H>0; the factor product is <4194288(q−1)y³<H y, so its positive H quotient satisfies 0<j<y and the accepted quotient theorem applies. Constants and inequality directions match independently audited arithmetic. Tactic elaboration untested; no graph or guard inference.
+
+Direct quotient parent and immediate R5 provider currently uniquely select expected pinned objects; audited parent object/terminal pinned. Strict named report, empty stderr, pre/post pins and locked guard reviewed; 13 controls pass. Direct selections do not establish full serialized transitive/package ancestry or continuous resolution.
