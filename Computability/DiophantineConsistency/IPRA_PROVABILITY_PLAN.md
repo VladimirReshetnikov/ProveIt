@@ -65,6 +65,9 @@ review](reviews/current2011-unscaled66-model-independent/README.md) checks all
 and dynamic ancestry remain inherited. The degree audit is external, and
 recorded coefficient bytes have not been formally identified with the Lean
 ports.
+On the historical provider, a [translated-consistency client](research/current2011-unscaled66-translated/README.md)
+also checks the standard-iPRA equivalence with Foundation's mapped
+Gödel–Gentzen consistency sentence, with an [independent audit](reviews/current2011-unscaled66-translated-independent/README.md).
 
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
