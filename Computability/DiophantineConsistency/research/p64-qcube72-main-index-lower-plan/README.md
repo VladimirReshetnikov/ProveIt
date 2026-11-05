@@ -1,10 +1,17 @@
 # Free-carrier proof plan: the main index is at least six
 
-The free main carrier appears sufficient to derive `m≥6` at compact44-size
-ports **without** the missing first-index congruence. The argument below is a
-standard-integer proof and a model-level Lean plan. It is conditional on the
-stated root/carrier, q-scale and size hypotheses; no Lean lemma or actual
-compact44 extraction is claimed by this packet yet.
+The free main carrier yields `m≥6` under the stated root/carrier and size
+hypotheses **without** the missing first-index congruence. The generic lemma
+[`FreeMainIndexLower.six_le_index`](FreeMainIndexLower.lean) is now Lean-checked
+in every `IΣ₁` model: see [attempt02](observations/attempt02/result.json).
+Lean exited 0 with the expected axiom report `[propext, Classical.choice,
+Quot.sound]`, stable direct guards, no warnings or `sorryAx`, and no monitor
+stop. Its object SHA-256 is
+`27b2dac60724412a67574610fc5f613940fcf93bf403e1c61f3b5d2029cf18c1`.
+The first attempt and its repaired order-proof errors are retained separately.
+The source comment “unchecked draft” predates the successful check. Direct
+provider guards inherit transitive, dynamic and between-sample ancestry.
+Extraction of the hypotheses from an actual compact44 zero remains open.
 
 Let positive natural-model values satisfy
 
@@ -46,11 +53,10 @@ If `m≤5`, then `2^m≤32<q≤X<mu`. Both sides of the modular equality
 are already below `mu`, so it forces `2^m=X`, a contradiction. Therefore
 `m≥6` in the standard integers.
 
-The model-level proof can use the exact same existing gcd and projection
-lemmas, `Exp.exp` monotonicity for `m≤5`, and order cancellation. Its result
-must be checked in Lean before it is asserted for arbitrary nonstandard
-`IΣ₁` models. Combined with the separate `ycoord 6` identity/monotonicity,
-`m≥6` would supply `(a+2)delta(a)²<c`. Together with the conditional rank
+The checked model-level proof uses the same gcd and projection lemmas,
+`Exp.exp` monotonicity for `m≤5`, and order cancellation. Combined with the
+separate `ycoord 6` identity/monotonicity, `m≥6` supplies
+`(a+2)delta(a)²<c`. Together with the conditional rank
 half-window, the strong and auxiliary residuals could then meet the
 signed-half-index theorem's size hypotheses. That would establish `m=R`
 only after those residuals and the actual compact-port window are also
