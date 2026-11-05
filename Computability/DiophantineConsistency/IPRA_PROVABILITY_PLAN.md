@@ -54,9 +54,14 @@ ports. Its complete polynomial times `Delta` equals the maintained 65/150
 polynomial. An [independent exact audit](reviews/current2011-unscaled66-independent/README.md)
 checks this identity, the gate count and degree, including a nonzero leading
 coefficient on a univariate substitution; `Delta` is positive on the intended
-domain. This trades one extra operation for degree 138. The all-model Lean
-bridge, internal iPRA derivation, and recorded-byte-to-Lean-port binding for
-the new syntax remain open.
+domain. This trades one extra operation for degree 138. A [Lean client](research/current2011-unscaled66-model/README.md)
+checks the literal syntax, the factor identity, the all-model same-zero bridge
+and standard-iPRA derivability on a historical provider. Its [independent
+review](reviews/current2011-unscaled66-model-independent/README.md) checks all
+66 graph rows and the recorded direct inputs; historical package-transitive
+and dynamic ancestry remain inherited. The degree audit is external, and
+recorded coefficient bytes have not been formally identified with the Lean
+ports.
 
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
