@@ -1445,6 +1445,11 @@ scaled-strong-norm identity. This count is conditional on a Lean bridge using
 the norm theorem's ordered-model hypotheses and natural representatives for
 all four ports; that bridge, degree and normalization proofs, and Jones/iPRA
 endpoint have not yet been established.
+The 38-witness [Lean seed draft](research/nine-sharing-seed38-lean-draft/README.md)
+and [natural witness constructor](research/nine-sharing-forward38-draft/README.md)
+have separate source-only [residual](reviews/nine-sharing-seed38-lean-draft-independent/README.md)
+and [constructor](reviews/nine-sharing-forward38-draft-independent/README.md)
+audits; neither draft has been compiled or supplies the model bridge.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
