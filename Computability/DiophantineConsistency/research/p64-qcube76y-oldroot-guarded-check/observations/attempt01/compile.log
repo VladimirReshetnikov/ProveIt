@@ -1,0 +1,48 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube76-independent-y-oldroot-draft/IndependentYOldRootDraft.lean:22:22: error: Ambiguous term
+  sub_zero
+Possible interpretations:
+  _root_.sub_zero : ∀ (a : ?m.61), a - 0 = a
+  
+  Arithmetic.sub_zero : ∀ (a : ?m.61), a - 0 = a
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube76-independent-y-oldroot-draft/IndependentYOldRootDraft.lean:76:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  fun i => ι (lift p v i)
+in the target expression
+  (vals pp zw).V = P64QCube76YBinding.oldV pp z
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 14 → V
+hv : ∀ (j : Fin 14), 0 < v j
+hz : InternalZero (P64QCube77.graph fun j => ↑(p j)).output v
+pp : Fin 4 → ℤ := fun j => ↑(p j)
+z : Fin 14 → DiffRing V := fun j => ι (v j)
+w : Fin 14 → V := lift p v
+zw : Fin 14 → DiffRing V := fun j => ι (w j)
+hwpos : ∀ (j : Fin 14), 0 < w j
+hz78 : InternalZero (P64QCube78.graph fun j => ↑(p j)).output v
+left✝¹ : Expr.evalRing (fun i => ι (v i)) (P64QCube78.graph fun j => ↑(p j)).A0 = 1
+left✝ : Expr.evalRing (fun i => ι (v i)) (P64QCube78.graph fun j => ↑(p j)).M = 0
+right✝ : Expr.evalRing (fun i => ι (v i)) (P64QCube78.graph fun j => ↑(p j)).Lt = 0
+hw : zw 5 * ((vals pp zw).c * (vals pp zw).c) * (zw 5 * ((vals pp zw).c * (vals pp zw).c)) - (vals pp zw).Aaux = 0
+hn :
+  (vals pp zw).Aaux * ((vals pp zw).V * (vals pp zw).V - (vals pp zw).y * (vals pp zw).y) +
+      (vals pp zw).y * (vals pp zw).y =
+    1
+hc3 : 3 ≤ (w 10 + w 11) * w 7 + w 10
+hc : 3 ≤ (vals pp zw).c
+hi : 1 ≤ zw 5
+hcc : 2 ≤ (vals pp zw).c * (vals pp zw).c
+hI : 2 ≤ zw 5 * ((vals pp zw).c * (vals pp zw).c)
+hA : 2 ≤ (vals pp zw).Aaux
+⊢ (vals pp zw).V = P64QCube76YBinding.oldV pp z
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube76-independent-y-oldroot-draft/IndependentYOldRootDraft.lean:79:10: warning: This simp argument is unused:
+  zw
+
+Hint: Omit it from the simp argument list.
+  simp [̵z̵w̵,̵w̵,̵l̵i̵f̵t̵]̵[̲w̲,̲ ̲l̲i̲f̲t̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'IndependentYOldRootDraft.nonzero_of_aux_norm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'IndependentYOldRootDraft.old_root_ne_zero' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

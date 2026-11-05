@@ -1,4 +1,4 @@
-# Unchecked actual-zero old-root guard
+# Checked actual-zero old-root guard
 
 The signed auxiliary root in the 77 graph is `yold=V+e`; it can be negative
 for an arbitrary positive input tuple. The intended theorem
@@ -6,7 +6,7 @@ for an arbitrary positive input tuple. The intended theorem
 actual positive 77 zero. This is the guard needed before replacing it by a
 positive absolute-value witness in the independent-`y` graph.
 
-The draft's proposed chain is:
+The checked chain is:
 
 1. Use the existing same-valuation 77↔78 equivalence and 78 residual facts to
    obtain `W=0` and `Na=1` at the actual zero.
@@ -17,13 +17,11 @@ The draft's proposed chain is:
    discrete ordered-ring unit theorem forces `A=1` or `A=−1`, contradicting
    `A≥2`.
 
-`IndependentYOldRootDraft.lean` sketches both a generic discrete-ring lemma
-and its zero-specific graph application. **It has not been compiled.** In
-particular, casts, rewrites through the lifted graph, auxiliary-carrier
-identification and tactics may need correction; the imported independent-`y`
-binding is itself unchecked. This packet is not a Lean theorem, an
-absolute-value witness construction, a graph equivalence, or an iPRA endpoint.
-No Lean process was run while the current-source rebuild occupies the slot.
+`IndependentYOldRootDraft.lean` proves both the generic discrete-ring lemma
+and its zero-specific graph application. The [bounded guarded Lean check](../p64-qcube76y-oldroot-guarded-check/README.md)
+passed with no warnings or `sorryAx` against captured providers. The
+absolute-value witness construction, graph equivalence and iPRA endpoint
+remain separate, and transitive provider ancestry is inherited.
 
 [`check.py`](check.py) gives bounded integer sanity checks for the generic
 nonzero implication and the strong-norm lower-bound pattern, including the
@@ -37,6 +35,6 @@ python3 -I -S -B Computability/DiophantineConsistency/research/p64-qcube76-indep
 
 | Artifact | SHA-256 |
 | --- | --- |
-| `IndependentYOldRootDraft.lean` | `e494d91733972c7d03f9d8b0860ca7779853ab4606aea4a556d20b724d6d12e2` |
+| `IndependentYOldRootDraft.lean` | `9e557f49eace846edfdc9caeb2283ccf67f4c6c930147679fc2ab390e1aa2ef7` |
 | `check.py` | `246d7780de92b53465b02bdc77fb2df44a69134b82e21906e30f15036496cc30` |
 | `result.json` | `a0d39420356050bf273313ea7c047559aa1f50e7259f126b7cf4741bb3568e29` |

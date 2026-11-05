@@ -19,7 +19,7 @@ theorem nonzero_of_aux_norm (A v y : DiffRing V)
     (hA : 2≤A) (haux : A*(v*v-y*y)+y*y=1) : y≠0 := by
   intro hy
   rw [hy] at haux
-  simp only [mul_zero,sub_zero,add_zero] at haux
+  simp only [mul_zero,_root_.sub_zero,add_zero] at haux
   have hunit := DiscreteOrderedRingFacts.eq_one_or_neg_one_of_mul_eq_one
     ModelArithmetic.model_discrete haux
   rcases hunit with h | h <;> linarith
@@ -73,10 +73,11 @@ theorem old_root_ne_zero (p : Fin 4 → ℕ) (v : Fin 14 → V)
   have hy : (P64Graph.vals pp zw).y = P64QCube76YBinding.oldV pp z + ι (v 12) := by
     rw [P64Root.c_y]
     have hV : (P64Graph.vals pp zw).V = P64QCube76YBinding.oldV pp z := by
+      change (P64Graph.vals pp (fun j => ι (lift p v j))).V = P64QCube76YBinding.oldV pp z
       rw [P64QCubeMap.lift_cast p v]
-      simp [P64Graph.vals,P64QCubeMap.liftRing,P64QCube76YBinding.oldV]
+      simp [P64Graph.vals,P64QCubeMap.liftRing,P64QCube76YBinding.oldV,pp,z]
     rw [hV]
-    simp [zw,w,lift]
+    simp [w,lift]
   change P64QCube76YBinding.oldV pp z + ι (v 12) ≠ 0
   rw [←hy]
   exact nonzero_of_aux_norm _ _ _ hA hn
