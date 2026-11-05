@@ -3141,7 +3141,10 @@ zeros. A checked [generic 3-divisible-q obstruction](research/p64-qcube72-divisi
 shows that the main norm and free carrier imply `U∤h` when `3∣q` and `U>0`.
 A checked [actual-zero client](research/p64-qcube72-actual-divisible-q-obstruction-draft/README.md)
 applies this as `Y²∤h` at arbitrary natural ports and at the fixed compact
-ports, conditional on `3∣q`; it does not assert such a zero exists. A
+ports, conditional on `3∣q`; it does not assert such a zero exists. A checked
+[conditional no-gamma client](research/p64-qcube72-divisible-q-no-old-gamma-draft/README.md)
+further excludes a same-coordinate old-carrier witness under `3∣q`; it leaves
+alternative witnesses and existential reverse implication open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
