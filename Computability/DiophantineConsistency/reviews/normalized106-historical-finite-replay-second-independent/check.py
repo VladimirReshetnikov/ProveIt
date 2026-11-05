@@ -20,6 +20,14 @@ def digest(data): return hashlib.sha256(data).hexdigest()
 def need(condition, message):
     if not condition: raise RuntimeError(message)
 
+frozen = {
+    REPLAY / 'replay.py': '279391ee3495666b3a36c071173eeb8b8ca478d0719a931c15622435f85ffeb0',
+    REPLAY / 'observations/attempt01/result.json': 'efb69ba7f0177db329772da9b2fdda4cd860649d7716902a7f285b849624ed92',
+    REPLAY / 'observations/attempt01/outer-terminal.json': '96c732de8f30ba79ecef33a979ba4ea218e138afb30290bdeae53bc5695483a6',
+    REPLAY / 'observations/attempt01/stdout': '3f3a27b1cbd4a1e496d3812fd7eee6ffd6640ed6bdeb99dfb4cb2e3a2ac22b22',
+}
+for path, expected in frozen.items(): need(digest(path.read_bytes()) == expected, 'frozen file mismatch ' + str(path))
+need((REPLAY / 'observations/attempt01/stderr').read_bytes() == b'', 'saved stderr not empty')
 tree = ast.parse((REPLAY / 'replay.py').read_text())
 inputs = next(ast.literal_eval(n.value) for n in tree.body if isinstance(n, ast.Assign)
               and any(isinstance(t, ast.Name) and t.id == 'INPUTS' for t in n.targets))
@@ -56,6 +64,6 @@ with tempfile.TemporaryDirectory(prefix='normalized106-independent-') as temp:
         outputs.append(value)
     for dst, (source, expected) in inputs.items():
         need(digest(Path(source).read_bytes()) == digest((root / dst).read_bytes()) == expected, 'input drift ' + dst)
-need(outputs[0] == outputs[1], 'optimized replay mismatch')
+need(outputs[0] == outputs[1] == recorded['auditor_report'] == json.loads((REPLAY / 'observations/attempt01/stdout').read_bytes()), 'saved or optimized replay mismatch')
 print(json.dumps({'status': 'PASS', 'historical_commit': COMMIT, 'inputs': 16,
                   'two_isolated_replays': outputs, 'scope': 'historical finite audit; no Lean or live-source audit'}, sort_keys=True))
