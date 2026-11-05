@@ -2984,6 +2984,25 @@ not constitute a complete transitive rebuild. Finite graph and degree checks,
 retained payload/display correspondence, and filesystem/gzip/JSON/PDF
 semantics remain external; no global minimality is claimed.
 
+Two additional 76-operation proposals remain unproved. The
+[independent-y graph](research/p64-qcube76-independent-y-candidate/README.md)
+has 14 positive variables and externally checked degree 104. Its
+[mathematical witness-map argument](research/p64-qcube76-independent-y-analysis/README.md)
+has an independent [source review](reviews/p64-qcube76-independent-y-math-independent/README.md),
+and an [inequality-lemma Lean draft](research/p64-qcube76-independent-y-lemmas-draft/README.md)
+is unchecked. The generated Lean graph, positive-zero equivalence and iPRA
+endpoint have not been checked.
+
+The separate [transport-coordinate graph](research/p64-qcube76-transport-candidate/README.md)
+has 14 positive variables and externally checked degree 90. Its direct
+reverse substitution requires `C<q−F`. The [changed-port and conditional
+fixed-port transformations](research/p64-qcube76-boundary-obstruction/README.md)
+and the [generalized fixed-port analysis](research/p64-qcube76-fixed-port-boundary/README.md)
+show why a universal same-tuple inequality needs additional hypotheses; they
+are conditional on suitable seed tuples and construct no graph zero. The
+fixed-port analysis has an independent [review](reviews/p64-qcube76-fixed-port-boundary-independent/README.md).
+Neither a fixed-port existence counterexample nor an iPRA endpoint follows.
+
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
 [record](research/thirteen-p73-endpoint/README.md)). It reduces forward to the

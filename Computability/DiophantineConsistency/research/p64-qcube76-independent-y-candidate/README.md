@@ -12,8 +12,12 @@ positive parent tuple, and the reverse substitution `e=y−V` is positive only
 when `y>V`. Since the graph uses `y` only through `y²`, a proposed forward
 route chooses `|V+e|` after proving it is nonzero. A separate
 [mathematical analysis](../p64-qcube76-independent-y-analysis/README.md)
-examines the required zero-specific inequalities. **Neither direction of
-positive-zero equivalence nor an iPRA endpoint is established here.** No
+examines the required zero-specific inequalities, with an independent
+[argument review](../../reviews/p64-qcube76-independent-y-math-independent/README.md).
+An [inequality-lemma Lean draft](../p64-qcube76-independent-y-lemmas-draft/README.md)
+and a [ring-binding Lean draft](../fourteen-p64-qcube76-independent-y-binding-draft/README.md)
+have not been checked and do not establish those claims. **Neither direction
+of positive-zero equivalence nor an iPRA endpoint is established here.** No
 full graph-zero counterexample is claimed. The maintained root `equation.tex`
 and `equation.pdf` are unchanged.
 
