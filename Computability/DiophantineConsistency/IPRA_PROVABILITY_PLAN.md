@@ -3158,8 +3158,10 @@ witness or establish a 72 zero. A separately reviewed [partial scale swap](resea
 changes q class while preserving X and Y and satisfying transport under explicit
 divisibility conditions; a conditional rigidity argument shows it cannot be
 completed as a 76Y witness while also retaining c and k when the source has
-`3∣q`. It establishes neither zero existence nor a general reverse obstruction.
-A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
+`3∣q`. A checked [generic rigidity lemma](research/p64-qcube72-scale-rigidity-draft/README.md)
+now proves equal main index, root and carrier in the stated models under
+explicit shared-coordinate identities. Neither result establishes zero
+existence or a general reverse obstruction. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
 now proves `3∤q` for every positive 76Y zero at the fixed compact ports, by
 using the specific 76Y-to-72 witness map. It neither proves a 72 zero with
 `3∣q` exists nor excludes a changed-q witness. A reviewed
