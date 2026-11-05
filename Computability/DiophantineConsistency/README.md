@@ -147,6 +147,13 @@ endpoints
 95-operation free-J literal: the first and main carriers coincide, and the
 normalized strong norm is the ordinary one with index `Δi`. The converse uses
 the halt data.
+Package 62's thirteen-positive 83-operation, degree-114 equation has all three
+endpoints as well
+([`Compact44/IPRAPositive62`](Lean/DiophantineConsistency/Compact44/IPRAPositive62.lean),
+[record](research/thirteen-p62-endpoint/README.md)). They rest on four new pieces:
+a product-unit guard, a centered two-root restoration, an early congruence
+modulo `4q⁴` with `gcd(4q⁴, H) ∣ 3`, and a signed index theorem for the
+ordinary-blank ordinate `c(Tf − 1) − Rf²` (`OrdinaryBlankSignedIndex`).
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
