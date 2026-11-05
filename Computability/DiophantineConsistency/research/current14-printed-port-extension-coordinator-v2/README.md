@@ -7,3 +7,23 @@ After preflight it launches the v2 driver once and captures its actual outer exi
 The outer monitor records disk and memory samples and requires at least 10 GiB available memory and 4 GB free disk before launch. During execution the extension driver itself enforces its time and disk bounds; the memory samples are observational, not a running memory stop. If the outer monitor fails while its driver remains live, it waits for the actual driver exit rather than killing the coordinator group and leaving a separately sessioned Lean process. A forced coordinator or driver death, a child that escapes its session, kernel or `/proc` observation faults, and transient or unguarded transitive provider changes remain outside the guarantee; the driver's passive wait can be indefinite.
 
 `controls-observation.json` contains a passing 61-row synthetic terminal with one nonempty project dependency and targeted refusal controls, including nonzero outer exit, changed source, objects or deps log, wrong parent PID, undrained or unreaped child, inner failure, overlay shadows, failed emergency save and transient wait, and current live-base refusal. It did not invoke Lean or build an extension. Before using real outputs, independently review the source and controls, confirm the terminal fresh-base evidence and recapture all hashes. The 61-module extension is an intermediate dependency only: printed-port assembly and the endpoint join remain separate work.
+
+## Operator sequence after the base finishes
+
+The [independent coordinator review](../../reviews/current14-printed-port-coordinator-v2-independent/README.md) covers the frozen coordinator and verifier hashes; it is not an actual extension run. Keep the live base process and its watchdog running until they really exit. Observe and record the launcher's actual session exit, then inspect `research/current14-standard-fresh-rebuild-preflight/run-observation.json` and `/tmp/current14-standard-fresh-build-20261104/state.json`: require watchdog `PASS` and exit zero, base `PASS`, `CURRENT_AT_FINAL_CHECK`, and empty workspace source drift. A timeout while observing the process is not its exit. Preserve failures and do not restart solely because an observation waits.
+
+Only after those conditions hold, run the [independent fresh-base audit](../../reviews/current14-fresh-base-independent/README.md) as documented there and preserve its actual command exit. Require its `PASS_SINGLE_SOURCE_CURRENT_ARTIFACT_AUDIT` receipt; the audit's positive path has not yet been tested. If it refuses or fails, investigate instead of launching the extension. Recheck that the source and provider pins still match, the independent reviews still name the code being used, the intended output paths do not exist, and no other Lean build occupies the slot. Coordinate the launch with the task owner.
+
+From the repository root, first run the coordinator with `--check` and preserve its actual exit and output:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/research/current14-printed-port-extension-coordinator-v2/coordinator.py --check
+```
+
+After successful preflight and coordination, start the following as an observed long-running session and retain its session handle and actual exit; do not interpret an observation timeout as completion:
+
+```sh
+python3 -I -S -B -u Computability/DiophantineConsistency/research/current14-printed-port-extension-coordinator-v2/coordinator.py --run
+```
+
+Monitor `/tmp/current14-printed-port-extension-coordinator-v2-20261104/state.json` and `/tmp/current14-printed-port-extension-20261104/state.json`, the actual processes, free disk and available memory. The coordinator's internal `child_exit` is the v2 driver's actual exit; the coordinator's own outer session exit must be captured independently. Require both exits zero, coordinator `PASS`, extension `PASS`, the recorded terminal hashes and a successful independent audit of the final artifacts. Do not start the printed-port assembly or endpoint join on an observation timeout or failure. Even if extension validation passes, the assembly and structured endpoint still require their own coherent builds, axiom reports and reviews.

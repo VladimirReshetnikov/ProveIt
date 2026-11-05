@@ -3030,8 +3030,10 @@ recorded. A [generic Lean positivity lemma](research/p64-qcube72-forward-model-g
 checks the required root inequality under explicit hypotheses; a further
 [guarded graph theorem](research/p64-qcube72-forward-graph-draft/README.md)
 now derives its hypotheses at every positive 76Y zero and supplies a positive
-model-natural free-main gap. The 72-operation graph binding and reverse map
-remain open, as does its zero-existence equivalence. A
+model-natural free-main gap. The generated [72-operation graph and forward map](research/p64-qcube72-free-main-candidate/README.md)
+now pass guarded Lean checks: every positive 76Y zero yields a positive zero
+of the new graph at the same natural ports in the stated models. The reverse
+map and zero-existence equivalence remain open. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
