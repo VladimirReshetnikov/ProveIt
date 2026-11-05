@@ -3052,6 +3052,13 @@ Package 73's thirteen-positive 30 / 92 followed
 data (`P73Converse`), because a literal zero supplies only an ordinary strong
 index. Package 74 evaluates the same polynomial in 93 operations.
 
+Package 62's thirteen-positive 114 / 83 followed
+([`Compact44/IPRAPositive62`](Lean/DiophantineConsistency/Compact44/IPRAPositive62.lean),
+[record](research/thirteen-p62-endpoint/README.md)). Its signed index step uses
+`OrdinaryBlankSignedIndex.signed_half_index_blank`, for the auxiliary ordinate
+`c(Tf − 1) − Rf²` of packages 50, 57 and 62. It sits between
+`P72Exact.index_window` and `index_close`.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
@@ -3062,8 +3069,8 @@ That includes:
   maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The packages bind them to
   admissible942 and block-mask2963. 192's thirteen-positive 174 / 69 is in the
   same position;
-- the thirteen-positive 62's 114 / 83, 170's 154 / 72 and 162 / 71, and the
-  twelve-positive 57's 258 / 89;
+- the thirteen-positive 170's 154 / 72 and 162 / 71, and the twelve-positive
+  57's 258 / 89;
 - 170's 74 / 438;
 - 184's 104 / 174;
 - the ten-positive Pareto points;
