@@ -2363,7 +2363,11 @@ existential port tuple satisfying the four structured printed recipes and an
 The runner exited 0 and a separate [artifact audit](reviews/current14-mf-base-only-attempt02-terminal/README.md)
 passed for both clients and their six axiom reports. This is one client run,
 not a paired replay; its mapped Foundation refutation predicate and inherited
-external ancestry retain their stated interpretation and qualifications.
+external ancestry retain their stated interpretation and qualifications. A
+separate [translated-consistency client](research/current14-mf-translated-endpoint/README.md)
+has also compiled on the same tuple and base, giving iPRA derivability of the
+biconditional with Foundation's mapped Gödel–Gentzen-translated consistency
+sentence; its actual process exit and terminal artifact audit passed.
 The first supervised [printed-port extension attempt](reviews/current14-extension-v2-failure/README.md)
 exited 1 before compiling a module because its dependency guard rejected two
 identical `Init` paths reported by Lean. A reviewed v3 retry compiled all 61
