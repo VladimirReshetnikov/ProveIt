@@ -122,8 +122,12 @@ using a separately constructed halt-side witness and a
 [62-module replay](research/p65-reverse-provider/README.md) of the reverse
 direction. A further [30-module captured-provider replay](research/p65-canonical-endpoint-provider/README.md)
 checks the merged canonical endpoint source and has an independent manifest
-and log review. Inherited transitive provider ancestry and the external file
-binding remain separate from these checks.
+and log review. A later [post-merge replay](research/p65-post-merge-replay/README.md)
+recompiled all eight modules in the manifest-visible closure of the changed
+P72 sources, including the endpoint, and passed an independent artifact
+[review](reviews/p65-post-merge-replay-independent/README.md). These replays
+inherit transitive provider ancestry; the external file binding remains
+separate from the Lean checks.
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
