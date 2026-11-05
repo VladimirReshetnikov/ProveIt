@@ -3027,9 +3027,11 @@ A distinct [72-operation free-main experiment](research/p64-qcube72-free-main-ob
 removes the scaled gamma carrier. A paper-level forward positivity argument
 and an exact partial obstruction to the direct reverse divisibility are
 recorded. A [generic Lean positivity lemma](research/p64-qcube72-forward-model-guarded/README.md)
-checks the required root inequality under explicit hypotheses; composing it
-with the actual graph is still open. No full graph zero or existence
-equivalence is established. A
+checks the required root inequality under explicit hypotheses; a further
+[guarded graph theorem](research/p64-qcube72-forward-graph-draft/README.md)
+now derives its hypotheses at every positive 76Y zero and supplies a positive
+model-natural free-main gap. The 72-operation graph binding and reverse map
+remain open, as does its zero-existence equivalence. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
