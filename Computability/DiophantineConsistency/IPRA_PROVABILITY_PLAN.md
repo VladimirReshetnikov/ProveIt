@@ -3130,8 +3130,10 @@ its explicit assumptions. A checked [generic model-level cancellation](research/
 derives `e∣9`, `Y²=e*mu`, `q⁴≤mu` and `mu∣h` from the free carrier and scale
 hypotheses. A [fixed-port same-zero composition](research/p64-qcube72-fixed-compact-carrier-cancel-draft/README.md)
 now supplies those divisibility facts alongside the same `n` and its residue.
-The full corresponding model-level criterion, first-index congruence and reverse
-existence remain open. A
+A checked [conditional client](research/p64-qcube72-conditional-old-carrier-draft/README.md)
+derives `2n=R+1` in those models when a caller supplies an old-carrier witness;
+it does not construct one. The full model-level criterion, unconditional
+first-index congruence and reverse existence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
