@@ -210,6 +210,9 @@ PDF binding retains a manual decoder and rank-recipe boundary. A later
 joins the separate kernel and mask recipe theorems for all four ports using
 prebuilt mixed providers. It transcribes the mathematical formulas and does
 not formalize TeX/PDF interpretation or authenticate their full ancestry.
+A [source-frontier audit](research/current14-source-frontier/README.md)
+records 13 historical source differences and a 207-module conservative
+reverse closure at its pinned workspace state; it is not a new Lean replay.
 
 For the smaller [14-variable degree-30 direct-square equation](equation30-direct.pdf),
 the native endpoint was compiled in the matched fresh AQ29 parent pair. A
