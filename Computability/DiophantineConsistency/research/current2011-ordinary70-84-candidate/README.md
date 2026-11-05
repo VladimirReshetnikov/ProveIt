@@ -1,6 +1,6 @@
 # Current-port 70-operation degree-84 ordinary sphere candidate
 
-The proposed equation uses 14 strictly positive integer coordinates and the four current2011 integer ports. Let `P=N0`, `Q=N1`, `W=Nt`, `I=i*c²`,
+The equation uses 14 strictly positive integer coordinates and the four current2011 integer ports. Let `P=N0`, `Q=N1`, `W=Nt`, `I=i*c²`,
 
 ```
 A = Delta*(f²−1)
@@ -8,9 +8,9 @@ U = A*(V²−y²)+y²
 H = I²−A.
 ```
 
-Its equation is `U²+(P*Q*W−1)²+H²−1=0`. The graph reuses the first 61 rows of the 67/94 graph through `H`. It has 70 live binary operations (38 multiplications, 18 additions, 14 subtractions); all 14 coordinates and four integer ports remain live. The candidate is a potential Pareto tradeoff between 67/94 and 71/60; it does not replace the maintained equation/PDF.
+Its equation is `U²+(P*Q*W−1)²+H²−1=0`. The graph reuses the first 61 rows of the 67/94 graph through `H`. It has 70 live binary operations (38 multiplications, 18 additions, 14 subtractions); all 14 coordinates and four integer ports remain live. It is a tradeoff between 67/94 and 71/60; it does not replace the maintained equation/PDF.
 
-The intended all-model equivalence to 67/94 uses the existing model fact `U ≠ 0`, giving `U² ≥ 1`. A sphere zero forces `U²=1`, `P*Q*W=1` and `H=0`. The last identity rewrites the coefficient of `U` to the square `I²`, excluding `U=−1`; the known exclusions `P≠−1` and `Q≠−1` then force `U=P=Q=W=1`. Conversely the five unit factors of a 67/94 zero satisfy the sphere equation. This is a proof plan in this packet: the separate Lean model and iPRA proofs are not yet claimed here.
+The all-model equivalence to 67/94 uses the existing model fact `U ≠ 0`, giving `U² ≥ 1`. A sphere zero forces `U²=1`, `P*Q*W=1` and `H=0`. The last identity rewrites the coefficient of `U` to the square `I²`, excluding `U=−1`; the known exclusions `P≠−1` and `Q≠−1` then force `U=P=Q=W=1`. Conversely the five unit factors of a 67/94 zero satisfy the sphere equation. A later [Lean model join](../current2011-ordinary70-84-model-join/README.md) checks this same-valuation equivalence, and an independently reviewed [iPRA endpoint](../current2011-ordinary70-84-ipra/README.md) checks the mapped refutation and Gödel–Gentzen consistency formulations. The graph-to-source and degree checks remain external, with provider limitations stated in those packets.
 
 `check.py` authenticates the exact current port bytes and the entire graph/liveness. Using the pinned previous exact prefix certificate for its upper bound, the relevant factor degrees are `P:22`, `Q:18`, `U:30`, `W:2`, `H:22`, yielding degree at most 84. Evaluation of the complete graph on the ray all witnesses `t`, over the actual-port residues modulo 1,000,000,007, gives degree 84 and nonzero leading coefficient 589,155,221. Thus the specialized integer polynomial has exact degree 84, conditional on the audited prefix certificate. This is an external finite degree check, not a Lean total-degree theorem.
 

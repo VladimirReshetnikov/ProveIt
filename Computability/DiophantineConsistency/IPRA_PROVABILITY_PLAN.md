@@ -58,12 +58,17 @@ connect this to the 67/94 syntax, and a [Lean endpoint](research/current2011-ord
 checks standard-iPRA derivability for both the mapped refutation negation and
 mapped Gödel–Gentzen consistency. The degree and graph-to-file correspondence
 remain external checks, and package-transitive ancestry remains inherited.
-A [70-operation, degree-84 candidate](research/current2011-ordinary70-84-candidate/README.md)
+A [70-operation, degree-84 equation](research/current2011-ordinary70-84-candidate/README.md)
 has an independently checked [graph and fixed-byte degree](reviews/current2011-ordinary70-84-graph-independent/README.md).
 Its [generic ring proof](research/current2011-ordinary70-84-generic/README.md),
 [independently audited](reviews/current2011-ordinary70-84-generic-independent/README.md),
 establishes the same positive-coordinate zeros as 67/94 under its stated
-ordered-ring facts. The literal model join and iPRA endpoint remain in progress.
+ordered-ring facts. The [literal evaluator](research/current2011-ordinary70-84-literal/README.md)
+and [model join](research/current2011-ordinary70-84-model-join/README.md) carry
+this equality of zero predicates into every IΣ₁ model. A [Lean iPRA endpoint](research/current2011-ordinary70-84-ipra/README.md),
+[independently audited](reviews/current2011-ordinary70-84-ipra-independent/README.md),
+checks both mapped-refutation and mapped Gödel–Gentzen consistency forms;
+the graph degree and file correspondence remain external checks.
 A proposed one-gate reduction of the 71/80 sphere leaves an extra `W = -1`
 case. A [transport-only obstruction](research/sphere70-negative-transport-obstruction/README.md),
 [independently reviewed](reviews/sphere70-negative-transport-independent/README.md),
