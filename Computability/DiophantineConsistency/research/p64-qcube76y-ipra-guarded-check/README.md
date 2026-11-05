@@ -31,6 +31,9 @@ stop fired. Sampling is not a hard RSS reservation. The
 `-M2400` interpreter memory exception and produced no object or axiom reports;
 its receipt and log remain available. The shared missing-child controls are
 recorded in the [graph check packet](../p64-qcube76-independent-y-guarded-check/README.md).
+The successful runner sets its timeout to 180 seconds, but its timeout
+diagnostic string still says `120-second timeout`. No timeout fired in this
+run; the frozen runner is retained unchanged.
 
 This is a guarded client check against temporary prebuilt providers, not a
 paired end-to-end replay. Full transitive project, package, dynamic-library
