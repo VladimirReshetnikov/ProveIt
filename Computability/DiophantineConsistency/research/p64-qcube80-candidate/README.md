@@ -1,4 +1,4 @@
-# P64 q-cube absorption candidate: 14 positive variables and 80 operations
+# P64 q-cube absorption: 14 positive variables and 80 operations
 
 Starting with the checked 81-operation q-cube graph, let `r0 = rho + s` and
 replace its first residual
@@ -11,11 +11,17 @@ by `A0 = (ell + r0)^2 - (ell * (ell + k) + 1)`, with `r0` a separate
 positive coordinate. All other graph gates and all other coordinates remain
 unchanged. The resulting graph has 80 live gates, comprising 42 multiplications,
 22 additions and 16 subtractions, and 14 positive witness variables. Forward
-substitution from any positive 81 tuple is immediate at the algebra level. A
-converse requires `r0 > s` so that `rho = r0 - s` is positive; this remains
-to be derived for every 80 zero and connected to an iPRA endpoint. The
-separately checked [conditional remainder lemma](../fourteen-p64-qcube-absorb-remainder-draft/README.md)
-is a prospective ingredient, not yet a zero-existence theorem. No change to
+substitution from any positive 81 tuple is immediate at the algebra level.
+For the converse, the checked [actual-zero remainder theorem](../fourteen-p64-qcube80-gap-draft/README.md)
+establishes `r0 > s`, allowing the positive witness `rho = r0 - s`.
+The checked [positive-zero equivalence](../fourteen-p64-qcube80-existence-draft/README.md)
+proves both directions for arbitrary natural ports in the stated IΣ₁ models.
+The [iPRA endpoint client](../p64-qcube80-ipra-draft/README.md) checks the
+native, standard and equality-only proof-existence statements for the Lean
+graph at the symbolic compact44 ports, using the selected mapped Foundation
+refutation negation. These checks use captured providers and do not establish
+the complete transitive source-to-object ancestry or a formal identification
+of the retained payload and display with the Lean graph. No change to
 `equation.tex` or `equation.pdf` is claimed here.
 
 ## Evidence and scope
@@ -32,9 +38,9 @@ and computes symbolic leading forms using its polynomial machinery. The residual
 64 * beta^46 * J^46 * w^4 * s^14 * (eta+zeta)^2 * gamma^2.
 ```
 
-These are external symbolic and finite checks, not a Lean proof of equivalence
-or of the external JSON's relationship to the object language. Nor do they
-establish global minimality.
+These external symbolic and finite checks do not themselves prove the Lean
+equivalence described above or the external JSON's relationship to the object
+language. They do not establish global minimality.
 
 [`generate_lean.py`](generate_lean.py) transcribes the 80 gate rows to
 [`P64QCube80.lean`](P64QCube80.lean). The guarded Lean compilation in
