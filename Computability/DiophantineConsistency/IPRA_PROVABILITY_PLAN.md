@@ -3146,6 +3146,18 @@ Package 62's thirteen-positive 114 / 83 followed
 `c(Tf − 1) − Rf²` of packages 50, 57 and 62. It sits between
 `P72Exact.index_window` and `index_close`.
 
+Package 57's twelve-positive 258 / 89 followed
+([`Compact44/IPRAPositive57`](Lean/DiophantineConsistency/Compact44/IPRAPositive57.lean),
+[record](research/twelve-p57-endpoint/README.md)).
+
+- **Soundness.** Its fused carrier is restored by four roots
+  (`P57Root.four_root`). The early congruence then needs only
+  `(H·k) % U = (H(R+1)) % U` (`P57Early`). Its fused inner norm leaves the sign
+  of `f` free, so the index step uses either `signed_half_index_blank` or the
+  new `signed_half_index_blank_plus`.
+- **Converse.** It takes `y = (y_halt + 1)/(Δic²)²`, which is integral by
+  `ArithmeticOddOrdinateResidue.pair` at rank `≡ 3 (mod 4)`.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
@@ -3156,8 +3168,7 @@ That includes:
   maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The packages bind them to
   admissible942 and block-mask2963. 192's thirteen-positive 174 / 69 is in the
   same position;
-- the thirteen-positive 170's 154 / 72 and 162 / 71, and the twelve-positive
-  57's 258 / 89;
+- the thirteen-positive 170's 154 / 72 and 162 / 71;
 - 170's 74 / 438;
 - 184's 104 / 174;
 - the ten-positive Pareto points;
