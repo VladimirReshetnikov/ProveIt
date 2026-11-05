@@ -2357,6 +2357,10 @@ passed for its recorded sources, direct imports, outputs and target axiom
 reports. This is one rebuild, not a paired replay; package-transitive,
 dynamic and transient-mutation ancestry remains inherited. The four-port
 assembly and the structured endpoint join have not yet been rebuilt on it.
+The first supervised [printed-port extension attempt](reviews/current14-extension-v2-failure/README.md)
+exited 1 before compiling a module because its dependency guard rejected two
+identical `Init` paths reported by Lean. A narrowly scoped retry revision and
+its matching verifier are being prepared; no extension success is claimed.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
