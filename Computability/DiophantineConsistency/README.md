@@ -154,6 +154,15 @@ endpoints as well
 a product-unit guard, a centered two-root restoration, an early congruence
 modulo `4q⁴` with `gcd(4q⁴, H) ∣ 3`, and a signed index theorem for the
 ordinary-blank ordinate `c(Tf − 1) − Rf²` (`OrdinaryBlankSignedIndex`).
+Package 57's twelve-positive 89-operation, degree-258 equation followed
+([`Compact44/IPRAPositive57`](Lean/DiophantineConsistency/Compact44/IPRAPositive57.lean),
+[record](research/twelve-p57-endpoint/README.md)). It needs three further
+pieces:
+
+- a four-root restoration of its fused main-and-first carrier;
+- the plus-sign variant of the ordinary-blank index theorem, because its
+  fused strong/auxiliary norm leaves the sign of `f` free;
+- in the converse, the odd-ordinate residue `y_halt ≡ −1 (mod 4(Δic²)²)`.
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
