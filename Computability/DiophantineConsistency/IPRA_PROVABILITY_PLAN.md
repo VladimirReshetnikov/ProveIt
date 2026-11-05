@@ -1338,6 +1338,11 @@ completed all 104 stages. Its [aggregate audit](reviews/nine-variable-ipra-compl
 records matching endpoint outputs and named reports but 20 differing object
 hashes and 31 differing direct-input pairs, so this is not an exact
 full-chain paired replay or a complete inherited-ancestry audit.
+A [lightweight quartic bridge](research/nine-current-lightweight-quartic-probe/README.md),
+[independently reviewed](reviews/nine-current-lightweight-quartic-independent/README.md),
+now checks on a captured source-built provider while avoiding an unrelated
+current14-specific square-sum dependency. It is a generic IΣ₁-model bridge,
+not yet a fresh nine-variable encoding or iPRA endpoint.
 An additional equal-length-root replay has completed
 [all 104 stages](reviews/nine-variable-ipra-equal-length-stages-102-104-monitored/README.md):
 84 output objects match byte-for-byte, and 20 match after one equal-length
