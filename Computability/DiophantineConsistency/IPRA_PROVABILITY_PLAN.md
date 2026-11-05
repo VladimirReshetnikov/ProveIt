@@ -1383,6 +1383,13 @@ alternate provider's duplicate names; their [independent endpoint review](review
 checks the theorem and recorded source/provider scope. A separate [ring
 client](research/nine-current-fresh-symbolic-ring/README.md) checks the
 finite-sum formula for that unique-namespace expression.
+A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
+[independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
+identifies the current natural expression used by the endpoint with the
+positive-shifted expression at all four symbolic decoded ports. This does not
+formalize gzip or PDF contents. An [independent source-level count linkage](reviews/nine-current-fresh-seed-count-link-independent/README.md)
+also checks that the namespace-safe renaming preserves the previously counted
+tree shapes; the numerical count remains external to Lean.
 An additional equal-length-root replay has completed
 [all 104 stages](reviews/nine-variable-ipra-equal-length-stages-102-104-monitored/README.md):
 84 output objects match byte-for-byte, and 20 match after one equal-length
