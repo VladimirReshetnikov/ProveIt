@@ -2972,6 +2972,18 @@ not constitute a complete transitive rebuild. The finite graph and degree
 checks, retained payload/display correspondence, and filesystem/gzip/JSON/PDF
 semantics remain external; no global minimality is claimed.
 
+The [77-operation unit-product graph](research/p64-qcube77-candidate/README.md)
+retains 14 positive variables; its externally checked degree is 90, a tradeoff
+against the 78 graph's degree 68. The checked [positive-zero equivalence](research/fourteen-p64-qcube77-unit-draft/README.md)
+establishes both directions with the 78 graph on the same valuation for
+arbitrary natural ports in the stated IΣ₁ models. Its [iPRA endpoint client](research/p64-qcube77-ipra-draft/README.md)
+checks native, standard and equality-only proof-existence statements for the
+Lean graph at symbolic compact44 ports and the selected mapped Foundation
+refutation negation. These checks inherit captured-provider ancestry and do
+not constitute a complete transitive rebuild. Finite graph and degree checks,
+retained payload/display correspondence, and filesystem/gzip/JSON/PDF
+semantics remain external; no global minimality is claimed.
+
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
 [record](research/thirteen-p73-endpoint/README.md)). It reduces forward to the

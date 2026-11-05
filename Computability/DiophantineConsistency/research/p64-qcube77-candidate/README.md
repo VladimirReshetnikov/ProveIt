@@ -10,11 +10,16 @@ Starting from the 78-operation graph, retain its five residuals `A1`, `M`,
 This changes the polynomial, rather than a local pointwise rewrite. The new
 graph has 77 live gates: 42 multiplications, 19 additions, and 16 subtractions;
 it retains 14 positive witness variables. A zero forces `A1*Na=1` and the
-other three residuals to zero in an ordered ring. To recover the 78 graph's
-zero one must exclude the branch `A1=Na=−1`; this requires additional
-reasoning about the actual graph. Conversely, a 78 zero must be shown to
-have `A1=Na=1`. These implications and any iPRA endpoint are **not proved
-in this packet**. The root `equation.tex` and `equation.pdf` are unchanged.
+other three residuals to zero in an ordered ring. The checked [positive-zero
+equivalence](../fourteen-p64-qcube77-unit-draft/README.md) rules out the
+`A1=Na=−1` branch, proves the converse and establishes both directions on
+the same valuation for arbitrary natural ports in the stated IΣ₁ models. The
+[iPRA endpoint client](../p64-qcube77-ipra-draft/README.md) checks native,
+standard and equality-only proof-existence statements for the Lean graph at
+symbolic compact44 ports and the selected mapped Foundation refutation
+negation. These checks inherit captured-provider ancestry and do not establish
+formal file/display binding. The root `equation.tex` and `equation.pdf` are
+unchanged.
 
 [`build.py`](build.py) checks that the first 68 parent graph rows are
 unchanged, all inputs and gates are live, the unit-product polynomial identity,
@@ -27,9 +32,9 @@ with leading homogeneous form
 4 * beta^50 * J^50 * T^2 * e^2 * f^8 * s^14 * w^8 * (eta+zeta)^6.
 ```
 
-These external symbolic and finite checks are not a Lean proof of zero-set
-equivalence, an iPRA endpoint, an external-file identification, or global
-minimality. The [`generate_lean.py`](generate_lean.py) script transcribes the
+These external symbolic and finite checks do not themselves prove the Lean
+zero-set equivalence or iPRA endpoint above, external-file identification, or
+global minimality. The [`generate_lean.py`](generate_lean.py) script transcribes the
 graph to [`P64QCube77.lean`](P64QCube77.lean). Its guarded
 [Lean definition check](lean-check.json) exited 0 with empty output and stable
 direct input hashes. This checks that the definition elaborates, not its
