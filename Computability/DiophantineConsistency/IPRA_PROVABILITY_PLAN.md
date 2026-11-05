@@ -1534,6 +1534,10 @@ and [delta](research/nine-sharing-norm38-reference-delta-check/README.md)
 clients compiled; their [independent audit](reviews/nine-sharing-norm38-reference-w-delta-terminal-independent/README.md)
 checks both provider routes and axiom reports. The U and Z field identities
 remain open.
+A [factored U-edge client](research/nine-sharing-norm38-reference-u-edges-retry01/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-u-edges-terminal-independent/README.md),
+checks three reference DAG edge identities after a bounded recursion-depth
+adjustment. These support but do not establish the U field identity.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
