@@ -27,19 +27,20 @@ differences by model-natural witnesses:
 These are mathematical proof plans, **not checked Lean lemmas in this
 packet**. The existing `ArithmeticPellFirstIndex.scalar_window` supplies the
 window under its positive-input, transport and `MC<beta`, `MF<2*beta`
-hypotheses. `ArithmeticCarrier94Indices.ordinary_first_indices` supplies the
-first-index bound under its full transport, first, main, strict and auxiliary
-equations and positive-input hypotheses. One must explicitly transfer the
+hypotheses. `ArithmeticPellFirstIndex.maintained_first_indices` supplies the
+first-index bound directly with the original index under its full transport,
+first, main, strict and auxiliary equations and positive-input hypotheses.
+One must explicitly transfer the
 ring equations and fixed-port bounds to those natural-model hypotheses; in
 particular avoid silently treating truncated natural subtraction as ring
-subtraction. Its `i` is the **scaled** index `Delta * i_source`: then its
-`i*c²` is `S = Delta*i_source*c²`, its strict equation is exactly the
-`scaled_Ns=Delta` constraint, and its auxiliary equation is the displayed
-`Na=1` condition. This substitution and the source-to-natural equations are
-additional proof obligations, not an assertion that the theorem applies
-directly as written to `i_source`. The actual once-shifted high port and all
-four model-natural port casts must also be proved. No global sign assumption
-on arbitrary source inputs is valid or needed.
+subtraction. Alternatively, `ArithmeticCarrier94Indices.ordinary_first_indices`
+uses the **scaled** index `Delta * i_source`: then its `i*c²` is
+`S = Delta*i_source*c²`, its strict equation is exactly the `scaled_Ns=Delta`
+constraint, and its auxiliary equation is `Na=1`. This substitution and the
+source-to-natural equations remain proof obligations, not an assertion that
+the ordinary theorem applies directly to `i_source`. The actual once-shifted
+high port and all four model-natural port casts must also be proved. No global
+sign assumption on arbitrary source inputs is valid or needed.
 
 `check.py` externally replays all 60 used graph rows in the free commutative
 ring, checks both signs of each cut residual, the five norm residuals,

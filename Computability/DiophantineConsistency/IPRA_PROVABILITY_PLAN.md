@@ -1460,6 +1460,11 @@ has 24 quadratic residuals. Its forward construction requires five sign
 implications for every relevant model solution, with nontrivial port and
 natural-subtraction transports; these remain unproved. It is therefore a
 conditional candidate, not a completed reduction or iPRA endpoint.
+An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
+[independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
+uses the maintained first-index theorem directly and derives the sign
+implications from explicit bounds. Their natural-to-ring transfer, port casts
+and connection to the seed norms remain open.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
