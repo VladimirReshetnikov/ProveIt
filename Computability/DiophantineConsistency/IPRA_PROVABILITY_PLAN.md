@@ -179,8 +179,10 @@ identifies it with the evaluated main register and transfers the positivity.
 A further [oriented Pell balance](research/ordinary12-absorb88-main-balance-draft/README.md)
 selects the positive scaled root on the negative branch, with an independent
 [source review](reviews/absorb88-main-balance-independent/README.md). These
-results inherit temporary providers; the rank window and an 89 witness
-remain open. No 88-operation halt or iPRA endpoint is claimed.
+results inherit temporary providers. A further [checked signed-rank congruence](research/ordinary12-absorb88-signed-rank-congruence-draft/README.md)
+derives `q^4 ∣ (k−R−1)` on the negative branch, in the model difference
+ring. The rank window and an 89 witness remain open. No 88-operation halt
+or iPRA endpoint is claimed.
 
 A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
 has externally checked liveness and Lean ring identities for the transformed
