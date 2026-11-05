@@ -2356,6 +2356,12 @@ its [independent review](reviews/current14-seed-lines-binding-independent/README
 separately checks those digits against the TeX and PDF text extraction. This
 does not formalize PDF semantics or authenticate the inherited seed object's
 source ancestry.
+A [checked integer low-mask binding](research/current14-lowmask-integer-binding/README.md)
+now identifies the printed geometric recipe, interpreted as integer
+subtraction, with the low-mask slot of the four-port tuple. This is a
+structured Lean arithmetic theorem; its transcription to TeX and the other
+fixed-port recipes remain separate. The direct and transitive captured-provider
+qualifications are stated in its receipt.
 The language keeps `<` as a
 symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`. In the
 equality-only language, [`IPRAReferenceCurrentEndpoint`](Lean/DiophantineConsistency/IPRAReferenceCurrentEndpoint.lean)
@@ -2923,6 +2929,12 @@ project, package, dynamic and search-path ancestry. The finite graph and
 degree checks and the retained payload/display correspondence remain
 external; no Lean filesystem, gzip, JSON or PDF semantics is asserted. See
 the [candidate record](research/p64-qcube81-candidate/README.md).
+
+A separate [80-operation absorption candidate](research/p64-qcube80-candidate/README.md)
+has a generated Lean graph and an external degree-68 check. A guarded
+[ring binding](research/fourteen-p64-qcube80-binding-draft/README.md) checks
+its forward substitution from the 81 graph; this alone does not establish
+positive-zero equivalence or an iPRA endpoint.
 
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
