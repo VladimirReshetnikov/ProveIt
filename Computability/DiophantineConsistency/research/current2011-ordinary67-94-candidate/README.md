@@ -34,6 +34,14 @@ python3 -I -S -B Computability/DiophantineConsistency/research/current2011-ordin
 
 `build.py` is deterministic and refuses to overwrite the existing graph. These checks use no Lean.
 
+The graph's original `coefficient_binding.path` points to `coefficients/` in
+this directory. That path was initially missing; the four byte-identical
+payloads have now been copied from the audited 71/80 sphere packet so the
+unchanged graph metadata resolves directly. `check-metadata.py` verifies those
+paths, the recorded hashes and lengths, and the referenced certificate and
+proof. This does not prove Lean file semantics or establish new byte-to-port
+identities.
+
 | Artifact | SHA-256 |
 | --- | --- |
 | `build.py` | `16e395bf42e20142b531aa87dbf3278f10940b679d7e9f5a83050c85290854` |
