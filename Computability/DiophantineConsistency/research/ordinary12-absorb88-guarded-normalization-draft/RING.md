@@ -13,8 +13,10 @@ The checked lemmas show that the main and ordinary residuals are unchanged,
 the new transport is `b*(D*j−u)`, and the new first residual vanishes when
 `first` satisfies the first Pell norm. These are ring identities; they do
 not establish that the replacements are positive natural-model elements or
-that any guard witnesses exist. The separate `Absorb88GuardedNormalization.lean`
-is an **unchecked model/89 bridge draft** and is not evidence of a theorem.
+that any guard witnesses exist. The later checked
+[`Absorb88GuardedNormalization.lean`](README.md) model/89 bridge supplies a
+same-port 89 zero under explicit guard hypotheses; it does not establish
+those hypotheses for every 88 zero.
 
 On 2026-11-04, Lean 4.32.0 checked the ring module with exit 0; its six
 printed declarations depend on `[propext, Quot.sound]`, with no `sorryAx`.
