@@ -1499,6 +1499,11 @@ A [producer-guarded client](research/nine-sharing-norm38-five-norms-check-v2/REA
 now checks that a seed zero implies all five static norm targets under the
 IΣ₁-model and four port-cast hypotheses. Static gate recovery and the source
 graph bridge remain separate.
+A [gate-batch build](research/nine-sharing-norm38-gates-batched-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-gates-batched-terminal-independent/README.md),
+compiled all 60 individual conditional gate constraints. Its final `gatesHold`
+assembly failed on an omitted trivial conjunct, so the conjunction and source
+graph bridge remain open.
 A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
 proposes recovering the original 65-gate zero from those static conditions;
