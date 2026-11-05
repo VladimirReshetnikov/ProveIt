@@ -1355,6 +1355,10 @@ A [lightweight quartic bridge](research/nine-current-lightweight-quartic-probe/R
 now checks on a captured source-built provider while avoiding an unrelated
 current14-specific square-sum dependency. It is a generic IΣ₁-model bridge,
 not yet a fresh nine-variable encoding or iPRA endpoint.
+A subsequent [20-stage Jones model build](research/nine-current-lightweight-jones-probe/README.md),
+[independently audited](reviews/nine-current-lightweight-jones-independent/README.md),
+checks the generic nine-coordinate Jones correspondence over that provider.
+Its concrete iPRA endpoint and separate final axiom reports remain in progress.
 An additional equal-length-root replay has completed
 [all 104 stages](reviews/nine-variable-ipra-equal-length-stages-102-104-monitored/README.md):
 84 output objects match byte-for-byte, and 20 match after one equal-length
