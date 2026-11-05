@@ -2893,6 +2893,15 @@ Package 64's 30 / 83 followed
 - carrier-free cores of P13's sections (`P72Exact.indices_ordinary`,
   `P72Power.power_of_mod`).
 
+A subsequent [captured-provider replay](research/fourteen-p64-independent-replay/README.md)
+rebuilt the eight P64 modules with one import shim and passed an independent
+[artifact review](reviews/p64-captured-replay-independent/README.md); it is
+not a clean full-transitive rebuild. The missing pinned package files were
+[restored and externally verified](research/fourteen-p64-payload-provenance/RESTORATION.md),
+but file-to-Lean port equality remains outside that check. A restricted
+[local rewrite screen](research/p64-local-rewrite-search/README.md) found no
+smaller graph in its enumerated families and proves no global lower bound.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
