@@ -3003,6 +3003,11 @@ native, standard and equality-only proof-existence statements for the
 symbolic Lean graph and selected mapped Foundation refutation negation. The
 checks do not rebuild complete provider ancestry; external payload/display
 identification remains separate.
+An independent [eleven-stage receipt audit](reviews/p64-qcube76y-chain-receipt-independent/README.md)
+checks the recorded direct-object chain and axiom logs without rerunning Lean.
+A [restricted local rewrite screen](research/p64-qcube76y-local-rewrite-search/README.md)
+found no smaller candidate in its enumerated families and proves no global
+lower bound.
 
 The separate [transport-coordinate graph](research/p64-qcube76-transport-candidate/README.md)
 has 14 positive variables and externally checked degree 90. Its direct
