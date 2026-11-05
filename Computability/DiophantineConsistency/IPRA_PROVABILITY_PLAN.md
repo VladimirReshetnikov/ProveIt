@@ -3084,7 +3084,9 @@ ancestry qualifications and do not yield a reverse witness map. A checked
 constructs and classifies the oriented Pell root while retaining its carrier
 equation. A checked [large-`c` client](research/p64-qcube72-actual-large-draft/README.md)
 derives the signed-half-index size bound at actual zeros with `q≥33`; its
-specialization and remaining residual/window composition are separate.
+specialization and remaining norm/window composition are separate. A
+checked [residual split](research/p64-qcube72-residuals-draft/README.md)
+extracts the five required zero/unit equations at actual 72 zeros.
 Identifying the index with the rank remains open. A separate
 [conditional rank-half lemma](research/p64-qcube72-rank-half-draft/README.md)
 checks `2R<c` in the stated models from an explicit Pell equation and rank,
