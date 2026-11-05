@@ -1587,6 +1587,11 @@ A [port-parametric client](research/nine-sharing-norm38-four-variable-ports-chec
 nevertheless checks the seed/static equivalence from four separate pointwise
 cast hypotheses without expanding the concrete coefficients. Instantiating
 those hypotheses at the actual current ports remains open.
+A [direct four-cast client](research/nine-sharing-norm38-current-four-cast-instantiation-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-four-cast-terminal-independent/README.md),
+then checked that instantiation and the same-valuation seed/static equivalence
+at the actual symbolic current tuple, without constructing the memory-heavy
+universal cast. The source equation bridge and iPRA endpoint remain open.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
