@@ -1409,6 +1409,10 @@ and 46 quadratic residuals; the first residual is nonzero at zero witnesses,
 so its normalization needs no separate guard. These are external finite
 checks. Its Lean degree and normalization proofs, all-model zero bridge and
 Jones/iPRA endpoint remain open, and no final graph size is asserted.
+An [explicit Lean source draft](research/nine-sharing-seed59-lean-draft/README.md)
+and [independent transcription review](reviews/nine-sharing-seed59-lean-draft-independent/README.md)
+cover the 46 residual expressions, but the draft has not been compiled and
+its tentative degree and normalization proofs are not yet checked.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the

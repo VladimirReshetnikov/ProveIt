@@ -1,0 +1,7 @@
+# Independent review: uncompiled 59-witness Lean seed draft
+
+A separate parser reads every generated `Expr` term into Python ASTs and compares all 46 residual trees exactly with the previously reviewed seed JSON. It checks the full port map `beta → p 0`, `K0 → p 1`, `MC → p 2`, `MF → p 3`, all variable indices, the first residual, and that `seed` squares it and every remaining residual. The author's transcription checker also reproduces its retained result. This is a source-level check only: the file is explicitly uncompiled and none of its Lean declarations is an established theorem.
+
+The stated `seed_weightedDegree` and `seed_degree` goals match the external residual degree bound, and the first-residual normalization proof has the appropriate explicit hypothesis `0 < p 0`; that positivity and the actual current tuple still have to be supplied. The `NineFreshJones` dependency brings `WeightedExpressionDegree` through `ModelJonesSyntax`. Elaboration risks include expansion of the 45-term list and large syntax under `simp`, recursion/heartbeat or kernel memory limits, numeric `Fin` simplification, and proof tactic normalization. These are untested risks, not observed failures.
+
+The draft contains no proof connecting its sum of squares to the original 65-gate zero set in every IΣ₁ model, no concrete-port substitution theorem, and no Jones/iPRA endpoint for this seed. File/PDF semantics and final nine-variable operation/degree counts also remain outside scope. The review did not execute Lean or modify the draft.
