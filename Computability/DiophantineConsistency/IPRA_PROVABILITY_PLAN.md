@@ -123,7 +123,10 @@ report. The adapted [13/70 and 13/71 Forms module](research/thirteen-current2011
 now checks on that provider, and its [independently reviewed](reviews/thirteen-current2011-final-checks-4g-independent/README.md)
 [axiom-report client](research/thirteen-current2011-final-checks-4g/README.md)
 checks the two standard-iPRA mapped-refutation equivalences. Their graph and
-exact degree assertions remain external, as do file-content comparisons.
+exact degree assertions remain external, as do file-content comparisons. A
+[translated-consistency client](research/thirteen-current2011-translated-4g/README.md),
+[independently reviewed](reviews/thirteen-current2011-translated-4g-independent/README.md),
+also checks both mapped Gödel–Gentzen consistency formulations.
 An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
 [independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
 matches the entire candidate graph to the existing `Carrier94Syntax` source.
