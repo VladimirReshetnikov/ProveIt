@@ -27,6 +27,7 @@ def guard(g):
         p=Path(name)
         if expected is None:need(not os.path.lexists(p),('unexpected companion',name))
         else:need(p.is_file() and str(p.resolve())==expected['realpath'] and sha(p)==expected['sha256'],('guard mismatch',name))
+audit_sha=sha(__file__)
 need(not RESULT.exists(),'refusing existing audit receipt')
 need(OBS.is_file() and SUP.is_file(),'missing observed supervisor terminal evidence')
 obs=read(OBS);obshash=sha(OBS);sup=read(SUP)
@@ -75,8 +76,9 @@ guard(ext['base_overlay_guards']);guard(ext['external_guards']);guard(ext['overl
 for g in outputs.values():guard(g)
 _,_,_,final=client.authenticate();need(final==initial,'extension authentication changed during audit')
 need(sha(OBS)==obshash and obs['supervisor_receipt_sha256']==sha(SUP),'terminal evidence changed')
+need(sha(__file__)==audit_sha and sha(RUNNER)==EXPECTED_RUNNER,'audit or client runner changed during audit')
 row={'status':'PASS_SINGLE_EXTENSION_ARTIFACT_AUDIT','rows':61,'direct_edges':direct_edges,'init_multiplicity_counts':dict(counts),
-     'initial':initial,'outer_session_exit':obs['observed_session_exit'],'audit_sha256':sha(__file__),
+     'initial':initial,'outer_session_exit':obs['observed_session_exit'],'audit_sha256':audit_sha,
      'scope':'Artifact cross-check and reviewed verifier reuse, not a second Lean replay or full transitive/dynamic ancestry authentication.'}
 with RESULT.open('x') as f:json.dump(row,f,indent=2,sort_keys=True);f.write('\n')
 print(json.dumps(row,sort_keys=True))
