@@ -43,9 +43,14 @@ Its recorded direct `ModelThirteenCarrier` inputs agree with both preceding
 successor records, whose source hash is
 `57f3cf755891aa921e9d97877af373e9194c6aa709a259c47678e4a370fd0185`.
 The paired receipt and its separately observed outer exit are checked here.
-This is a connection to **historical recorded builds**, not a fresh Lean check
-of these JSON files, a translated-consistency client, or a complete dynamic
-or package-transitive ancestry audit.
+This is a connection to **historical recorded builds**, not a Lean check of
+these JSON files or a complete dynamic or package-transitive ancestry audit.
+A later [fresh-base Forms build](../thirteen-current2011-forms-4g/README.md)
+and [endpoint report client](../thirteen-current2011-final-checks-4g/README.md)
+check the two standard-iPRA mapped-refutation declarations; their [independent
+review](../../reviews/thirteen-current2011-final-checks-4g-independent/README.md)
+records the source and provider scope. Graph/file comparisons and the degree
+claims remain external.
 
 A fresh rerun of the historical independent audit was attempted and exited 1;
 its tool output named a missing `ZFCinPA/NativeGicDelta1.olean`. A second

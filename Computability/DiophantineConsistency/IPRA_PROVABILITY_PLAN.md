@@ -109,7 +109,7 @@ and [independent audit](reviews/thirteen-current2011-forms-frontier-independent/
 match the complete graphs with the historically checked Lean source and verify
 exact degrees for the recorded coefficient bytes. The recorded historical
 endpoint provider is currently incomplete, so its audit could not be replayed;
-the new graph comparison is not a fresh Lean endpoint or a byte-to-port theorem.
+the new graph comparison is not itself a fresh Lean endpoint or a file theorem.
 A [fresh-base build attempt](research/thirteen-current2011-fresh-model/REVIEW-MAP.md)
 compiled seven predecessors before the adapted carrier hit its memory cap.
 Its import-only, split-core, prelude and selected helper checks are recorded
@@ -119,7 +119,11 @@ An unchanged-statement [4-GB retry](research/thirteen-current2011-complete-4g-re
 [independently audited](reviews/thirteen-current2011-completion-4g-independent/README.md),
 subsequently checked the 13/69 completion and native/standard bridge; its
 resource monitoring is sampled and that run did not print a separate axiom
-report. The adapted 13/70 and 13/71 endpoints remain under construction.
+report. The adapted [13/70 and 13/71 Forms module](research/thirteen-current2011-forms-4g/README.md)
+now checks on that provider, and its [independently reviewed](reviews/thirteen-current2011-final-checks-4g-independent/README.md)
+[axiom-report client](research/thirteen-current2011-final-checks-4g/README.md)
+checks the two standard-iPRA mapped-refutation equivalences. Their graph and
+exact degree assertions remain external, as do file-content comparisons.
 An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
 [independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
 matches the entire candidate graph to the existing `Carrier94Syntax` source.
