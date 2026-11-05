@@ -1494,6 +1494,11 @@ An [uncompiled five-norm assembly draft](research/nine-sharing-norm38-five-norms
 [independently inspected](reviews/nine-sharing-norm38-five-norms-independent/README.md),
 isolates the five terminal conditions, assuming the pending indexed residual
 zero theorem; no delta cancellation is needed for this part.
+A [producer-guarded client](research/nine-sharing-norm38-five-norms-check-v2/README.md),
+[independently audited](reviews/nine-sharing-norm38-five-norms-v2-terminal-independent/README.md),
+now checks that a seed zero implies all five static norm targets under the
+IΣ₁-model and four port-cast hypotheses. Static gate recovery and the source
+graph bridge remain separate.
 A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
 proposes recovering the original 65-gate zero from those static conditions;
