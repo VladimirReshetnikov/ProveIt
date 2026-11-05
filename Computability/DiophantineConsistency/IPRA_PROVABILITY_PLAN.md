@@ -23,8 +23,13 @@ recovers its 67-operation/degree-106 certificate, without claiming a current-
 source audit. A [16-module current-base source preflight](research/normalized106-current14-sixteen-source-preflight/README.md)
 identifies a smaller route to rebuild the model bridge; a narrowly scoped
 [combined-import probe](research/normalized106-direct-import-probe-a/README.md)
-loaded the current endpoint with the five newly declared external modules.
-Neither is a build of those 16 modules or a complete package-ancestry audit.
+loaded the current endpoint with the five newly declared external modules. A
+subsequent [current14-base extension](research/normalized106-fresh-base-model-build/README.md)
+compiled all 16 modules and checked a same-zero bridge and standard-iPRA
+derivability theorem for the 67/106 syntax. Its [independent audit](reviews/normalized106-fresh-base-model-independent/README.md)
+checks the recorded direct inputs, outputs and process exits; external
+package-transitive and dynamic ancestry remain inherited. The expression's
+graph, degree and materialized-port correspondence are separate checks.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
