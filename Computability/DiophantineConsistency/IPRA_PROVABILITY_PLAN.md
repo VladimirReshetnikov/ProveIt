@@ -1525,6 +1525,10 @@ A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-dr
 checks all 60 gate conditions and their conjunction for the generated witness
 assignment over a commutative semiring mapped into a ring. It does not yet
 establish the five norms or the seed-zero conclusion.
+A [prefix client](research/nine-sharing-norm38-forward-prefix-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-forward-prefix-terminal-independent/README.md),
+also checks that the first fourteen constructed witnesses equal the original
+inputs over any commutative semiring.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
