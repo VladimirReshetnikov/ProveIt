@@ -169,7 +169,11 @@ For MC, a separate [six-run digit recipe theorem](research/current2011-mc-byte-b
 identifies its canonical base-256 decoding with the third Lean port; an
 [independent audit](reviews/current2011-mc-byte-binding-independent/README.md)
 reconstructs the value and compares both retained payloads externally. Lean
-does not read those files; the K port-byte link remains open.
+does not read those files. For K, an explicit [physical-order selector recipe](research/current2011-kernel-byte-recipe/README.md)
+is proved in Lean to decode to port 1, and an [independent audit](reviews/current2011-kernel-byte-recipe-independent/README.md)
+reconstructs and compares the recorded bytes externally. Thus all four ports
+have symbolic Lean byte-decoding theorems plus separate external payload
+comparisons; none is a Lean theorem about gzip or filesystem contents.
 For shifted MF, [partial diagnostics](research/current2011-mf-byte-binding/README.md)
 check the unshifted digit and beta identities in Lean and compare the once-
 shifted recipe with both payloads externally. The [independent review](reviews/current2011-mf-partial-binding-independent/README.md)
