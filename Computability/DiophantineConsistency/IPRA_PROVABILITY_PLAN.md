@@ -3133,7 +3133,11 @@ now supplies those divisibility facts alongside the same `n` and its residue.
 A checked [conditional client](research/p64-qcube72-conditional-old-carrier-draft/README.md)
 derives `2n=R+1` in those models when a caller supplies an old-carrier witness;
 it does not construct one. The full model-level criterion, unconditional
-first-index congruence and reverse existence remain open. A
+first-index congruence and reverse existence remain open. A reviewed
+[fixed-mask partial obstruction](research/p64-qcube72-fixed-mask-gcd-obstruction/README.md)
+shows the transport, quartic window and free carrier alone permit `e=1,3,9`
+and may fail `Y²∣h`; its assignments fail the first norm and are not graph
+zeros. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
