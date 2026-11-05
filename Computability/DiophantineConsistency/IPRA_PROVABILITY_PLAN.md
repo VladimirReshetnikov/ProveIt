@@ -2958,6 +2958,20 @@ not constitute a complete transitive rebuild. The degree and finite graph
 checks, retained payload/display correspondence, and filesystem/gzip/JSON/PDF
 semantics remain external; no global minimality is claimed.
 
+The [78-operation shifted-residual graph](research/p64-qcube78-candidate/README.md)
+retains 14 positive variables and externally checked degree 68. Its checked
+[actual-zero residual theorem](research/fourteen-p64-qcube78-split-draft/GRAPH.md)
+establishes that the shifted first residual is 1; the checked
+[positive-zero equivalence](research/fourteen-p64-qcube78-existence-draft/README.md)
+then proves both directions with the 79 graph on the same valuation for
+arbitrary natural ports in the stated IΣ₁ models. Its [iPRA endpoint client](research/p64-qcube78-ipra-draft/README.md)
+checks the native, standard and equality-only proof-existence statements for
+the Lean graph at symbolic compact44 ports and the selected mapped Foundation
+refutation negation. These checks inherit captured-provider ancestry and do
+not constitute a complete transitive rebuild. The finite graph and degree
+checks, retained payload/display correspondence, and filesystem/gzip/JSON/PDF
+semantics remain external; no global minimality is claimed.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 

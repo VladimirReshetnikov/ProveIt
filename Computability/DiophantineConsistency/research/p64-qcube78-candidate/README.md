@@ -12,13 +12,16 @@ are retained. The result has 78 live gates: 42 multiplications, 20 additions
 and 16 subtractions, with 14 positive witness variables.
 
 The two graphs are not pointwise equal: `A1 = A0+1`, and their outputs obey
-`output78 = output79 + 2*A0`. An actual 79 zero maps forward if its old first
-residual is zero. The reverse requires showing that, for every positive 78
-zero, the shifted first residual is exactly 1 and the remaining residuals
-have the required values. A separate generic residual-splitting and norm
-exclusion effort is in progress; **this graph has no checked zero-existence
-or iPRA equivalence here**. The maintained root `equation.tex` and
-`equation.pdf` are unchanged.
+`output78 = output79 + 2*A0`. The checked [actual-zero residual theorem](../fourteen-p64-qcube78-split-draft/GRAPH.md)
+establishes that the shifted first residual is 1 at every positive 78 zero.
+The checked [positive-zero equivalence](../fourteen-p64-qcube78-existence-draft/README.md)
+establishes both directions on the same valuation for arbitrary natural ports
+in the stated IΣ₁ models. The [iPRA endpoint client](../p64-qcube78-ipra-draft/README.md)
+checks native, standard and equality-only proof-existence statements for the
+Lean graph at symbolic compact44 ports and the selected mapped Foundation
+refutation negation. These checks inherit captured-provider ancestry; they do
+not establish formal file/display binding. The maintained root `equation.tex`
+and `equation.pdf` are unchanged.
 
 [`build.py`](build.py) checks the 76 unchanged parent graph rows, that all
 inputs and gates are live, the exact polynomial output-difference identity,
@@ -32,8 +35,9 @@ leading form
 64 * beta^46 * J^46 * w^4 * s^14 * (eta+zeta)^2 * gamma^2.
 ```
 
-These external symbolic and finite checks do not prove zero equivalence,
-an iPRA endpoint, external-file identification, or global minimality.
+These external symbolic and finite checks do not themselves prove the Lean
+zero equivalence or iPRA endpoint described above, external-file identification,
+or global minimality.
 [`generate_lean.py`](generate_lean.py) transcribes the graph to
 [`P64QCube78.lean`](P64QCube78.lean). Its guarded [Lean check](lean-check.json)
 exited 0 with empty output and stable direct input hashes. It checks the graph
