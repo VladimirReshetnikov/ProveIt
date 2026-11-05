@@ -57,3 +57,27 @@ still bridge the actual base to its residue, verify the final finite gcd
 or Bézout certificate in Lean, and avoid silently trusting an external
 computation. Whether the resulting million-bit kernel checks fit the
 available resource limits is not yet established.
+
+## Bounded certificate experiment
+
+A concrete next experiment is to generate a deterministic trace of the
+32 modular coordinate pairs and signed Bézout coefficients, treating all
+generated values as untrusted candidates. A Lean checker would verify
+every transition and the final identity in the kernel, retaining source
+and trace hashes, diagnostics, and the axiom report. An external GMP
+result or `native_decide` should not be presented as a kernel-reduced
+proof of this certificate.
+
+Start with scaled examples such as `B=17,257,4097`, each in an isolated
+run capped at 30 seconds and 2 GB. Increase scale or limits only after
+examining results; these scaled examples do not establish the actual
+candidate. At the real modulus size, 32 pairs of reduced coordinates
+occupy at most 9,441,152 packed bytes, excluding coefficients and
+metadata. Lean's numeral encodings, proof terms and kernel computation
+may use substantially more; full-size feasibility is unknown. No
+full-size Lean evaluation has been launched under this plan.
+
+The finite standard certificate must also be transferred to the
+represented model computation, with proofs of the actual symbolic q,
+modulus, power and Pell-base bindings. These obligations, the separate
+external payload binding, and the `gcd(W,h)=1` certificate remain open.
