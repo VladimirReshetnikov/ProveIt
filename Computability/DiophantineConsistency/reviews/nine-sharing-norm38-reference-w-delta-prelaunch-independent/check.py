@@ -1,0 +1,15 @@
+import hashlib,json,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+P=Path(__file__).resolve().parent;D=P.parents[1];R=D/'research';sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+cases={'w':{'number':'02','module':'Norm38ReferenceW','field':'W','index':66,'source':'e46712b893bf85dc33c3a184811c3c477a95bc6fb977bb176e9354ee1178e916','manifest':'8e6f54f21d60651f71629a2cee06d2b312c9b396e67ac04c7c9f566b5a422e0e','survey':'87e1d2eeaf785071884a4c7ee91b109e052039f3d3aa1e5b4344319200eddd14','runner':'903a876c8f16adf6a3452fb6bfacf08d5167280c20d7636acbe0d90b4cb74fe6'},'delta':{'number':'03','module':'Norm38ReferenceDelta','field':'delta','index':36,'source':'f9705206caaa688d1e1665be50446715b8017328d8875585fe92b1c2bc76eef9','manifest':'ec4484285c564dd7a68fe03c1500d150dfe92fc7487625677fab7646b662209a','survey':'c9ff6fbf6011169418be9f4d73fbe7a48768e26cf47554a62d0c738430dc42d5','runner':'de52874280b09577f07fa2c359f4f3e4e53cf166ed3cde161109f9991bbc8d6d'}}
+for name,d in cases.items():
+ q=R/f'nine-sharing-norm38-reference-{name}-check';old=R/f"nine-sharing-norm38-reference-fields{d['number']}-check";src=q/'src/DiophantineConsistency'/f"{d['module']}.lean";prior=old/'src/DiophantineConsistency'/f"Norm38ReferenceFields{d['number']}.lean";files={'source':src,'manifest':q/'source-manifest.json','survey':q/'carrier_preflight.py','runner':q/'run.py'}
+ for k,p in files.items():assert sha(p)==d[k],(name,k)
+ expected=(old/'run.py').read_text().replace(f"reference-fields{d['number']}-check-20261105",f'reference-{name}-check-20261105').replace(sha(old/'source-manifest.json'),d['manifest']).replace(sha(old/'carrier_preflight.py'),d['survey']).replace('two-field reference diagnostic','single-field reference diagnostic');assert expected==files['runner'].read_text()
+ expected=(old/'carrier_preflight.py').read_text().replace(f"Norm38ReferenceFields{d['number']}.olean",f"{d['module']}.olean");assert expected==files['survey'].read_text()
+ t=src.read_text();a=prior.read_text();theorem='theorem reference_'+d['field'];finish='\nend DiophantineConsistency.Norm38Reference';assert t[t.index(theorem):t.index(finish)]==a[a.index(theorem):a.index(finish)]
+ assert f"reference p x {d['index']} = (Carrier65.core p x).{d['field']} := by" in t and t.count('\ntheorem ')==1 and t.count('#print axioms')==1 and 'sorry' not in t
+ m=json.loads(files['manifest'].read_text())['rows'];assert len(m)==1 and m[0]['source_sha256']==sha(src) and m[0]['module']=='DiophantineConsistency.'+d['module'] and m[0]['imports']==['DiophantineConsistency.Norm38ReferenceBase','DiophantineConsistency.Carrier65']
+ x=subprocess.run([sys.executable,'-I','-S','-B',str(files['runner']),'--preflight'],capture_output=True,text=True,timeout=90);assert x.returncode==0 and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT' and not x.stderr,(name,x.stdout,x.stderr)
+print(json.dumps({'status':'PASS_PRELAUNCH_ONLY','candidates':['W','delta'],'scope':'Proof and resource fit remain untested; no Lean launched.'},indent=2,sort_keys=True))

@@ -1529,6 +1529,11 @@ and [Z/delta](research/nine-sharing-norm38-reference-fields03-check/README.md)
 clients both hit the interpreter memory limit before producing objects; their
 [failure evidence](reviews/nine-sharing-norm38-reference-fields02-03-terminal-independent/README.md)
 was independently audited.
+Subsequent isolated [W](research/nine-sharing-norm38-reference-w-check/README.md)
+and [delta](research/nine-sharing-norm38-reference-delta-check/README.md)
+clients compiled; their [independent audit](reviews/nine-sharing-norm38-reference-w-delta-terminal-independent/README.md)
+checks both provider routes and axiom reports. The U and Z field identities
+remain open.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit

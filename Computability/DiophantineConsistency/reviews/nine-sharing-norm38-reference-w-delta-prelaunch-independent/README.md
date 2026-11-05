@@ -1,0 +1,5 @@
+# Independent prelaunch review: isolated W and delta
+
+No material launch blocker found. Each source preserves the exact second theorem and proof from its failed two-field predecessor, deleting the preceding U or Z theorem. W states `reference p x 66 = (Carrier65.core p x).W`; delta states `reference p x 36 = (Carrier65.core p x).delta`, for arbitrary commutative rings and ports/coordinates. Whether either proof elaborates within the unchanged limits is unknown; neither would by itself give the Carrier65 model bridge or an iPRA endpoint.
+
+The checker pins both sets of source, manifest, survey and runner; verifies exact runner changes (fresh location, survey/manifest pins, and scope text) and survey target shadow changes; compares the retained theorem blocks; and reruns both no-Lean preflights. The predecessor terminal evidence is independently audited in `../nine-sharing-norm38-reference-fields02-03-terminal-independent/`. Provider and resource caveats are as in the predecessor reviews: successful selected producer rows and point observations do not establish full transitive/dynamic ancestry. No Lean was launched by this review.
