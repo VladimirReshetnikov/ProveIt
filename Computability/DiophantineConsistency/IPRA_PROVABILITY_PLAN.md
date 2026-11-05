@@ -69,6 +69,11 @@ this equality of zero predicates into every IΣ₁ model. A [Lean iPRA endpoint]
 [independently audited](reviews/current2011-ordinary70-84-ipra-independent/README.md),
 checks both mapped-refutation and mapped Gödel–Gentzen consistency forms;
 the graph degree and file correspondence remain external checks.
+A [69-operation degree-84 graph](research/current2011-ordinary69-84-candidate/README.md)
+uses `x(x−2) = (x−1)²−1` to compute exactly the same polynomial as the
+70/84 form with one fewer operation. Its [independent audit](reviews/current2011-ordinary69-84-candidate-independent/README.md)
+checks the full graph, fixed-byte degree and ring identity; the literal Lean
+binding and iPRA transfer are in progress.
 A proposed one-gate reduction of the 71/80 sphere leaves an extra `W = -1`
 case. A [transport-only obstruction](research/sphere70-negative-transport-obstruction/README.md),
 [independently reviewed](reviews/sphere70-negative-transport-independent/README.md),
