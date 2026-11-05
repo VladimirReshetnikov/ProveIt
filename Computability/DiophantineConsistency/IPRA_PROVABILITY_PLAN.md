@@ -1538,6 +1538,10 @@ A [factored U-edge client](research/nine-sharing-norm38-reference-u-edges-retry0
 [independently audited](reviews/nine-sharing-norm38-reference-u-edges-terminal-independent/README.md),
 checks three reference DAG edge identities after a bounded recursion-depth
 adjustment. These support but do not establish the U field identity.
+A [factored field client](research/nine-sharing-norm38-reference-u-factored-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-u-factored-terminal-independent/README.md),
+then checked the V, S and U reference projections over any commutative ring.
+The Z field and the graph/source bridge remain open.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
