@@ -173,7 +173,11 @@ does not read those files. For K, an explicit [physical-order selector recipe](r
 is proved in Lean to decode to port 1, and an [independent audit](reviews/current2011-kernel-byte-recipe-independent/README.md)
 reconstructs and compares the recorded bytes externally. Thus all four ports
 have symbolic Lean byte-decoding theorems plus separate external payload
-comparisons; none is a Lean theorem about gzip or filesystem contents.
+comparisons; none is a Lean theorem about gzip or filesystem contents. The
+four decoders have also been joined in two [checked pairs](research/current2011-four-port-byte-pairs/README.md).
+A [fully parametric assembly lemma](research/current2011-four-port-byte-generic/README.md)
+checks, but the concrete [four-port tuple attempts](research/current2011-four-port-byte-tuple/README.md)
+have not passed within the recorded memory cap; no tuple theorem is claimed.
 For shifted MF, [partial diagnostics](research/current2011-mf-byte-binding/README.md)
 check the unshifted digit and beta identities in Lean and compare the once-
 shifted recipe with both payloads externally. The [independent review](reviews/current2011-mf-partial-binding-independent/README.md)
