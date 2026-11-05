@@ -68,6 +68,11 @@ source-built 106 extension; its [independent audit](reviews/current2011-unscaled
 checks all graph rows and the recorded direct inputs. The degree audit is external, and
 recorded coefficient bytes have not been formally identified with the Lean
 ports.
+For the first port β, a [Lean decoding theorem](research/current2011-beta-byte-binding/README.md)
+identifies an explicit big-endian byte recipe with the current2011 port; an
+[independent audit](reviews/current2011-beta-byte-binding-independent/README.md)
+also compares that recipe with both recorded compressed payloads externally.
+Lean does not read those files, and the other three port-byte links remain open.
 On the historical provider, a [translated-consistency client](research/current2011-unscaled66-translated/README.md)
 also checks the standard-iPRA equivalence with Foundation's mapped
 Gödel–Gentzen consistency sentence, with an [independent audit](reviews/current2011-unscaled66-translated-independent/README.md).
