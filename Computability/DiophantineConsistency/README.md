@@ -140,6 +140,13 @@ P72 sources, including the endpoint, and passed an independent artifact
 [review](reviews/p65-post-merge-replay-independent/README.md). These replays
 inherit transitive provider ancestry; the external file binding remains
 separate from the Lean checks.
+Package 73's thirteen-positive 92-operation, degree-30 equation has all three
+endpoints
+([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
+[record](research/thirteen-p73-endpoint/README.md)). Its zeros map to zeros of the
+95-operation free-J literal: the first and main carriers coincide, and the
+normalized strong norm is the ordinary one with index `Δi`. The converse uses
+the halt data.
 
 **CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
 lower-degree carrier forms of the maintained coefficient tuple now also have
