@@ -3113,9 +3113,11 @@ mask inequalities. A [fixed compact-port composition](research/p64-qcube72-fixed
 now checks the rank window and main Pell coordinates for the same positive
 72-zero, with arbitrary natural K. A separate checked [comparison lemma](research/p64-qcube72-first-index-comparison-draft/README.md)
 derives the strict first/main index bound from explicit Pell-coordinate and
-scale hypotheses without the early carrier congruence; applying it to actual
-72-zeros remains separate. The first-index congruence and reverse existence
-remain open. A
+scale hypotheses without the early carrier congruence. A checked [first-norm
+extraction](research/p64-qcube72-first-index-extraction-draft/README.md)
+separately classifies the first Pell index at actual positive 72-zeros with
+arbitrary natural ports; composing these results remains separate. The
+first-index congruence and reverse existence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
