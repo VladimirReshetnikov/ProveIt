@@ -3111,7 +3111,11 @@ of the signed-half-index theorem excludes an auxiliary completion; it does not
 settle other witnesses or the actual compact44 ports. The separately
 [reviewed first-index analysis](reviews/p64-qcube72-first-index-gap-independent/README.md)
 identifies the congruence still needed even under a conditional main-index
-recovery; its finite screen concerns only a small non-compact44 family. A
+recovery; its finite screen concerns only a small non-compact44 family. An
+[independently reviewed full 72-zero](research/p64-qcube72-equal-rank-first-index-obstruction/README.md)
+now has `m=R` but violates both the old carrier and first-index congruences at
+explicit arbitrary ports. Its compact mask and rank-window hypotheses fail, so
+it does not settle the compact-port reverse direction. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
