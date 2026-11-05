@@ -1512,6 +1512,10 @@ A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/R
 [independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
 proposes recovering the original 65-gate zero from those static conditions;
 the source topology, port casts and proof scripts remain unchecked by Lean.
+A [conditional reference client](research/nine-sharing-norm38-reference-static-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-static-terminal-independent/README.md),
+hit Lean's interpreter memory limit before producing an object; its dependency
+scan alone does not establish the combined import or the concrete bridge.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
