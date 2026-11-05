@@ -2423,7 +2423,10 @@ derivation for the explicit cleared integer sentence on the same base. Its
 [same-source replay](research/rational-carrier64-cleared-pair-replay/README.md)
 matched the original object and log using the same captured providers.
 Displayed-file binding and an internal rational-language transfer remain
-separate, and the maintained integer-leaf count is unchanged.
+separate, and the maintained integer-leaf count is unchanged. A [finite affine screen](research/rational-carrier64-affine-leaf-screen/README.md)
+found no sub-64 replacement within its stated target-row family and sampled
+moduli at the separate reversed2521 ports; it does not cover current14 fixed
+ports or prove a general operation lower bound.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
