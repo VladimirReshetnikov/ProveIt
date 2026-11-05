@@ -1482,6 +1482,10 @@ A [batched check](research/nine-sharing-norm38-slots-batched-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-slots-batched-terminal-independent/README.md),
 subsequently compiled slots 0–5 before group 02 failed on unsimplified model
 numeral casts. The later slots and final assembly were not checked.
+A [numeral-cast retry](research/nine-sharing-norm38-slots-batched-retry01/README.md),
+[independently audited](reviews/nine-sharing-norm38-slots-batched-retry01-terminal-independent/README.md),
+compiled all 29 individual conditional identities. Its final assembly timed
+out without output, so no `seed_zero_static` theorem is yet established.
 A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
 proposes recovering the original 65-gate zero from those static conditions;
