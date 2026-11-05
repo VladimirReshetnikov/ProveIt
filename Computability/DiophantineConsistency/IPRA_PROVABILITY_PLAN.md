@@ -3822,11 +3822,19 @@ the packages' coefficient files with it:
   calibration exists (`research/direct-bfs-*`, `DirectBFS80FixedIPRA`); it is
   not in the tree.
 - **`wang943-mixed-121x8801`** (β of 1,064,921 bits): 55's and 59's
-  fourteen-positive 52 / 79 and 132's fifteen-integer 44 / 111. No Lean
-  calibration exists. 281 of the 618 `Compact44` modules use the 67×8807
-  layout constants directly. This is not only a change of constants: its
-  kernel is `K = D_C + B·D_R`, with its own packing interface and controller
-  (`55-congruence-norms/native/SOURCE_CHAIN.md`).
+  fourteen-positive 52 / 79 and 132's fifteen-integer 44 / 111. 281 of the
+  618 `Compact44` modules use the 67×8807 layout constants directly. This is
+  not only a change of constants: its kernel is `K = D_C + B·D_R`, with its
+  own packing interface and controller
+  (`55-congruence-norms/native/SOURCE_CHAIN.md`). A calibration was started
+  on 5 November 2026
+  ([record](research/mixed121-calibration/README.md), `Lean/…/Mixed121/`).
+  Six modules prove the following: the symbolic kernel and support facts; the
+  radix-four clause decoder and the coefficient digit form; one decoded
+  reflected band; `K` in every model as two rotated bands plus the bare part;
+  and the flattened family with its carry room `3·mass + 1 < 2^120`. The
+  graph-level clean carry, the overlap and alignment arguments, the
+  `λ = 2341` controller and both endpoints remain open.
 - **admissible942** (β of 189,269 bits; `candidates/one-page-admissible942`):
   183's 150 / 65 and 192's 174 / 69. 188 binds block-mask2963. No Lean module
   mentions the admissible942 exponent. The tree's endpoints for these
