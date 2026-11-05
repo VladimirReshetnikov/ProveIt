@@ -16,7 +16,11 @@ of its all-model same-zero bridge and standard-iPRA derivability, together
 with an independently reviewed [67-row source/graph comparison](research/normalized106-graph-syntax-binding/README.md).
 The focused endpoint inherits historical package and transitive ancestry;
 the numerical port-to-syntax binding and degree certificate remain separate
-finite checks, and this is not a fresh current-base rebuild.
+finite checks, and this is not a fresh current-base rebuild. The original
+finite degree auditor rejects the later refactored Lean sources; an
+[independently reproduced historical-input replay](research/normalized106-historical-finite-replay/README.md)
+recovers its 67-operation/degree-106 certificate, without claiming a current-
+source audit.
 
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
