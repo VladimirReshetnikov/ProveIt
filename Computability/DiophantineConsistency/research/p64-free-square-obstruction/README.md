@@ -31,6 +31,12 @@ parameter. It does not refute a graph-specific proof that the free input is
 a square, nor does it provide a candidate equation or a zero-existence
 equivalence.
 
+In fact the transport zero gives the stronger bound `q≥3`: it forces
+`C=q−F−alpha>0`, while the witnesses `F` and `alpha` are positive. Therefore
+`q≥F+alpha+1≥3`, so `Y≥27`, `X≥3`, and `a≥108`. These sharper inequalities
+assume an actual positive tuple satisfying the transport equation, and still
+do not make the partial norm example a graph witness.
+
 [`check.py`](check.py) checks both norm identities, the nonsquare interval,
 and the recurrence by exact integer arithmetic. It uses explicit failures and
 rejects optimized Python. Reproduce from the repository root:
