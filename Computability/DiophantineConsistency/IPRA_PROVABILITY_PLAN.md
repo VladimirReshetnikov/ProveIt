@@ -1536,6 +1536,10 @@ inputs over any commutative semiring.
 A [static-conditions-to-seed attempt](research/nine-sharing-norm38-static-to-seed-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-static-to-seed-terminal-independent/README.md),
 failed at the final list-index identification and produced no theorem.
+A [targeted retry](research/nine-sharing-norm38-static-to-seed-retry01/README.md),
+[independently audited](reviews/nine-sharing-norm38-static-to-seed-retry01-terminal-independent/README.md),
+then checked that static gate and norm conditions imply a seed zero under the
+IΣ₁-model and four port-cast hypotheses. Source correspondence remains open.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
