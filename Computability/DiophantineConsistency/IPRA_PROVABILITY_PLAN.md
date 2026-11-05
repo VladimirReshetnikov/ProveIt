@@ -3144,7 +3144,12 @@ applies this as `Y²∤h` at arbitrary natural ports and at the fixed compact
 ports, conditional on `3∣q`; it does not assert such a zero exists. A checked
 [conditional no-gamma client](research/p64-qcube72-divisible-q-no-old-gamma-draft/README.md)
 further excludes a same-coordinate old-carrier witness under `3∣q`; it leaves
-alternative witnesses and existential reverse implication open. An independently
+alternative witnesses and existential reverse implication open. An independent
+[rigidity analysis](research/p64-qcube72-alternate-witness-rigidity/README.md)
+shows in standard integers that fixing the main scale fixes the positively
+oriented carrier, and inspects the old-source path forcing q to be a power of
+two. This restricts same-q conversions; it does not rule out a changed-q
+witness or establish a 72 zero. An independently
 reviewed [all-moduli construction](research/p64-qcube72-fixed-mask-all-moduli-controls/README.md)
 produces strictly positive outputs divisible by `N⁴` for every positive `N` at
 two fixed K values, one in each q-divisibility class. It does not produce an
