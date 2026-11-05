@@ -3032,8 +3032,10 @@ checks the required root inequality under explicit hypotheses; a further
 now derives its hypotheses at every positive 76Y zero and supplies a positive
 model-natural free-main gap. The generated [72-operation graph and forward map](research/p64-qcube72-free-main-candidate/README.md)
 now pass guarded Lean checks: every positive 76Y zero yields a positive zero
-of the new graph at the same natural ports in the stated models. The reverse
-map and zero-existence equivalence remain open. A
+of the new graph at the same natural ports in the stated models. An
+[independent review](reviews/p64-qcube72-free-main-independent/README.md)
+checks the graph, direct receipt chain and theorem scope without rerunning
+Lean. The reverse map and zero-existence equivalence remain open. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
