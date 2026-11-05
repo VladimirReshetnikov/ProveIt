@@ -73,6 +73,11 @@ also checks the standard-iPRA equivalence with Foundation's mapped
 Gödel–Gentzen consistency sentence, with an [independent audit](reviews/current2011-unscaled66-translated-independent/README.md).
 The same formulation has since been checked on the [current14 base](research/current2011-unscaled66-fresh-translated/README.md)
 and independently audited [there](reviews/current2011-unscaled66-fresh-translated-independent/README.md).
+A [joint current-base client](research/current2011-unscaled66-vs106-fresh/README.md)
+checks that the 66/138 and 67/106 shifted expressions have the same zeros
+at each valuation in every IΣ₁ model, as well as a separate ring identity
+showing their values coincide when the strong norm is one. Its [review](reviews/current2011-unscaled66-vs106-fresh-independent/README.md)
+covers the recorded direct inputs and successful run.
 
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
