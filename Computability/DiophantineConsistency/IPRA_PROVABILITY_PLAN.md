@@ -15,9 +15,13 @@ The lower-degree P13 and P14 expressions have a [captured-provider replay](resea
 of their positive-model bridges and native, standard and equality-only iPRA
 mapped-refutation endpoints. Their externally compared graphs have 13 and 14
 positive variables and use 98 and 101 operations, respectively, counting six
-derived fixed integers as precomputed leaves. The package reports degrees 28
-and 24; this replay does not itself prove the degrees or parse the graph/files
-in Lean. A [translated-consistency client](research/p72-p13-p14-translated-captured/README.md),
+derived fixed integers as precomputed leaves. An external [fixed-byte degree
+certificate](research/p72-fixed-byte-degree-certificate/README.md), [independently
+audited](reviews/p72-fixed-byte-degree-independent/README.md), establishes
+exact degrees 28 and 24 using exact residual bounds and modular lower witnesses.
+The replay does not parse the graph/files in Lean. The [declared compact-port
+paths](research/p72-compact-port-path-restore/README.md) have been restored from
+hash-matched source44 payloads. A [translated-consistency client](research/p72-p13-p14-translated-captured/README.md),
 [independently reviewed](reviews/p72-p13-p14-translated-captured-independent/README.md),
 checks both mapped Gödel–Gentzen formulations on that same provider. It is a
 captured provider, not a fresh current-base closure.
