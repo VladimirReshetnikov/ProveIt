@@ -2355,8 +2355,15 @@ tree, with an observed launcher exit of zero and no source drift at its final
 check. An independent [artifact audit](reviews/current14-fresh-base-independent/README.md)
 passed for its recorded sources, direct imports, outputs and target axiom
 reports. This is one rebuild, not a paired replay; package-transitive,
-dynamic and transient-mutation ancestry remains inherited. The four-port
-assembly and the structured endpoint join have not yet been rebuilt on it.
+dynamic and transient-mutation ancestry remains inherited. A subsequent
+[matrix-free port assembly and endpoint](research/current14-mf-base-only-endpoint-attempt02/README.md)
+compiled together on that base. Its Lean theorem gives an outer-level
+existential port tuple satisfying the four structured printed recipes and an
+`iPRA ⊢ no-zero ↔ ¬refutation` derivability statement for that same tuple.
+The runner exited 0 and a separate [artifact audit](reviews/current14-mf-base-only-attempt02-terminal/README.md)
+passed for both clients and their six axiom reports. This is one client run,
+not a paired replay; its mapped Foundation refutation predicate and inherited
+external ancestry retain their stated interpretation and qualifications.
 The first supervised [printed-port extension attempt](reviews/current14-extension-v2-failure/README.md)
 exited 1 before compiling a module because its dependency guard rejected two
 identical `Init` paths reported by Lean. A reviewed v3 retry compiled all 61
@@ -2364,8 +2371,8 @@ extension modules, exited successfully, and passed a separate terminal
 artifact audit; it is not a paired replay and inherits package-transitive and
 dynamic ancestry. The subsequent coherent two-client build compiled the
 four-port assembly but failed when importing the structured endpoint because
-Lean reported a duplicate `Matrix.map.eq_1` declaration. The combined join
-therefore remains unproved; the import conflict is under investigation.
+Lean reported a duplicate `Matrix.map.eq_1` declaration. The subsequent
+matrix-free join above avoids that conflicting dependency closure.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
@@ -2376,9 +2383,10 @@ source ancestry.
 An existing [four-port recipe assembly](research/current14-literal-port-assembly/README.md)
 states structured Lean identities for all four printed coefficient recipes
 using captured providers. A separately developed [integer low-mask binding](research/current14-lowmask-integer-binding/README.md)
-reproves the low-mask slot using a generic radix support identity. The
-transcription to TeX, compressed-file correspondence and the coherent join
-with the endpoint remain separate. Both results retain the provider
+reproves the low-mask slot using a generic radix support identity. The newer
+matrix-free join checks the mathematical recipe transcription against the
+endpoint tuple; its correspondence to TeX and compressed coefficient files,
+and any formal PDF semantics, remain separate. The results retain the provider
 qualifications recorded in their receipts.
 The language keeps `<` as a
 symbol fixed by its explicit definition `x < y ↔ ltBit(x,y) = 1`. In the
