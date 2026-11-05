@@ -2362,8 +2362,11 @@ existential port tuple satisfying the four structured printed recipes and an
 `iPRA ⊢ no-zero ↔ ¬refutation` derivability statement for that same tuple.
 The runner exited 0 and a separate [artifact audit](reviews/current14-mf-base-only-attempt02-terminal/README.md)
 passed for both clients and their six axiom reports. This is one client run,
-not a paired replay; its mapped Foundation refutation predicate and inherited
-external ancestry retain their stated interpretation and qualifications. A
+followed by a [same-source replay](reviews/current14-mf-base-only-replay-terminal-independent/README.md)
+that exited successfully and matched both objects, direct dependencies and
+axiom reports. Both runs use the same base and package provider; the mapped
+Foundation refutation predicate and inherited external ancestry retain their
+stated interpretation and qualifications. A
 separate [translated-consistency client](research/current14-mf-translated-endpoint/README.md)
 has also compiled on the same tuple and base, giving iPRA derivability of the
 biconditional with Foundation's mapped Gödel–Gentzen-translated consistency
