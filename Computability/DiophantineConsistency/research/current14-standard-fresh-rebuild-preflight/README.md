@@ -9,6 +9,10 @@ and found all 1,000 sources tracked, with no differences from HEAD. Its
 are preserved here; the source copy itself is temporary, at
 `/tmp/current14-standard-fresh-source-20261104`. These are source-declared
 observations, not a Lean build or authoritative full dependency discovery.
+A later [follow-up audit](source-audit-followup.json) at workspace HEAD
+`cf3e786db8dcb5d59cc13cc59e7cf7f23562c141` also exited 0 with all 1,000
+sources matching. This is a point-in-time observation, not a guarantee that
+the files will remain unchanged throughout a later build.
 
 The read-only [`preflight.py`](preflight.py) exited 0 and records its
 [observation](preflight-observation.json): all 1,000 workspace and frozen
