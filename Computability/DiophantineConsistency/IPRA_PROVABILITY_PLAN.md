@@ -3169,8 +3169,11 @@ explicit shared-coordinate identities. A [two-zero client](research/p64-qcube72-
 checks that at the fixed compact ports, if the source has `3∣q` and two
 positive 72 zeros share X,Y,c,k, the second cannot satisfy an old-carrier
 equation. A further checked [72-to-76 fixed-scale client](research/p64-qcube72-to-76-fixed-scale-obstruction-draft/README.md)
-applies this to a positive 76Y target. Neither result establishes zero
-existence or a general reverse obstruction. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
+applies this to a positive 76Y target. A checked [first-ordinate uniqueness
+lemma](research/p64-qcube72-first-ordinate-unique-draft/README.md) proves that
+shared Pell base and scale interval force the same first index and k in the
+stated models; its graph application is separate. Neither result establishes
+zero existence or a general reverse obstruction. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
 now proves `3∤q` for every positive 76Y zero at the fixed compact ports, by
 using the specific 76Y-to-72 witness map. It neither proves a 72 zero with
 `3∣q` exists nor excludes a changed-q witness. A reviewed
