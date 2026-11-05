@@ -1450,6 +1450,10 @@ and [natural witness constructor](research/nine-sharing-forward38-draft/README.m
 have separate source-only [residual](reviews/nine-sharing-seed38-lean-draft-independent/README.md)
 and [constructor](reviews/nine-sharing-forward38-draft-independent/README.md)
 audits; neither draft has been compiled or supplies the model bridge.
+An [uncompiled 38-witness model-bridge draft](research/nine-sharing-norm38-model-bridge-draft/README.md)
+and [independent symbolic alignment review](reviews/nine-sharing-norm38-model-bridge-draft-independent/README.md)
+match its static assignment, all 60 graph gates and 29 residuals externally;
+the Lean trace, source evaluation, port casts and theorem transfer remain open.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
