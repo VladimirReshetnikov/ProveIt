@@ -14,12 +14,18 @@ Use `Y=q³s`, `U=Y²`, `X=wq`, `a=(X+1)Y`, `H=4a+3`,
 `D=a²+H`, and let the positive main root satisfy `g²=1+D c²`. The
 [checked generic carrier bridge](../p64-qcube72-model-carrier-draft/README.md)
 and [ring shape](../p64-qcube72-model-carrier-draft/FreeMainGraphShape.lean)
-make the natural carrier equations available once the still-unchecked graph
-client extracts them:
+support extracting the scaled-square and carrier equations, once the
+still-unchecked graph client is completed. Separately, identify the main
+Pell index `m` using [`ArithmeticPellClassification.solution_index`](../../Lean/DiophantineConsistency/ArithmeticPellClassification.lean),
+which requires the stated main Pell equation. With that additional
+classification step, assume
 
 ```
 U g = U(X+a c)+H h,       c=ycoord m a,       g=xcoord m a.
 ```
+
+The checked carrier and ring-shape modules alone do not establish the Pell
+index or this complete graph-level extraction.
 
 If `m=R`, the existing
 [Pell projection](../../Lean/DiophantineConsistency/ArithmeticPellPowerRecovery.lean)
