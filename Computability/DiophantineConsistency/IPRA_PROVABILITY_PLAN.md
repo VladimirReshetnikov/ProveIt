@@ -3074,9 +3074,10 @@ not an alternative witness construction or compact44 equivalence. A
 derives an additional necessary residue for a class of normalizations and
 proves `q ∣ h` for standard-integer zeros; neither result settles the
 compact44 converse. A guarded Lean [carrier-scale bridge](research/p64-qcube72-model-carrier-draft/README.md)
-now proves `q ∣ h` in the stated `IΣ₁` models from explicit carrier
-hypotheses, but the client extracting those hypotheses from an actual graph
-zero remains unchecked. A [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
+and graph client now prove `q ∣ h` for every positive 72-graph zero at natural
+ports in the stated `IΣ₁` models. The checks retain their direct-provider
+ancestry qualifications and do not yield a reverse witness map. A
+[compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
 main coordinates and rank, a [reviewed application](reviews/p64-qcube72-partial-aux-exclusion-independent/README.md)
