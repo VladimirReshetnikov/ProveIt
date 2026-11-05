@@ -2945,6 +2945,19 @@ and retained payload/display correspondence remain external, with no Lean
 filesystem, gzip, JSON or PDF semantics asserted. No global minimality is
 claimed.
 
+The [79-operation first-root graph](research/p64-qcube79-candidate/README.md)
+also has 14 positive variables and externally checked degree 68. Its
+[actual-zero root bound](research/fourteen-p64-qcube79-gap-draft/README.md)
+establishes `ell < t`; the checked [positive-zero equivalence](research/fourteen-p64-qcube79-existence-draft/README.md)
+then gives both directions with the 80 graph for arbitrary natural ports in the
+stated IΣ₁ models. The [iPRA endpoint client](research/p64-qcube79-ipra-draft/README.md)
+checks native, standard and equality-only proof-existence statements for the
+Lean graph at symbolic compact44 ports and the selected mapped Foundation
+refutation negation. These checks inherit captured-provider ancestry, and do
+not constitute a complete transitive rebuild. The degree and finite graph
+checks, retained payload/display correspondence, and filesystem/gzip/JSON/PDF
+semantics remain external; no global minimality is claimed.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 

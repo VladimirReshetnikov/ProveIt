@@ -8,13 +8,17 @@ first residual becomes `A0 = t² - (ell*(ell+k)+1)`. All other gates and
 coordinates are retained. The graph has 79 live gates: 42 multiplications,
 21 additions and 16 subtractions, with 14 positive witness variables.
 
-Forward substitution `t = ell+r0` preserves all residuals. For a reverse
-existence map one needs to prove that every positive 79 zero has `t>ell`;
-then `r0=t−ell` is a positive witness. The intended route is that residual
-splitting forces `t² = ell*(ell+k)+1`, while `ell` and `k` are positive.
-This argument and the graph equivalence are **not yet checked in Lean**.
-Neither an iPRA endpoint nor a file/display binding is claimed. In particular,
-the maintained root `equation.tex` and `equation.pdf` are unchanged.
+Forward substitution `t = ell+r0` preserves all residuals. For the reverse
+map, the checked [actual-zero root bound](../fourteen-p64-qcube79-gap-draft/README.md)
+proves `t>ell`, so `r0=t−ell` is positive. The checked
+[positive-zero equivalence](../fourteen-p64-qcube79-existence-draft/README.md)
+proves both directions for arbitrary natural ports in the stated IΣ₁ models.
+The [iPRA endpoint client](../p64-qcube79-ipra-draft/README.md) checks native,
+standard and equality-only proof-existence statements for the Lean graph at
+symbolic compact44 ports and the selected mapped Foundation refutation
+negation. These checks use captured providers and do not establish complete
+transitive source-to-object ancestry or formal file/display binding. The
+maintained root `equation.tex` and `equation.pdf` are unchanged.
 
 [`build.py`](build.py) verifies that the remaining 78 parent rows are
 structurally identical, all inputs/gates are live, the first residual's
@@ -28,14 +32,14 @@ verifier's symbolic polynomial machinery. Residual degrees are 22, 34, 22,
 64 * beta^46 * J^46 * w^4 * s^14 * (eta+zeta)^2 * gamma^2.
 ```
 
-This is external symbolic and finite evidence, not a Lean proof of zero
-equivalence, iPRA endpoint, or global minimality. The
+This external symbolic and finite evidence does not itself prove the Lean
+zero equivalence or iPRA endpoint above, or global minimality. The
 [`generate_lean.py`](generate_lean.py) script transcribes the graph to
 [`P64QCube79.lean`](P64QCube79.lean). The definition compiled in a guarded
 [Lean check](lean-check.json), with exit 0, empty output, and stable direct
 input hashes. This verifies the definition elaborates; it does not prove the
-transcription matches JSON or the reverse witness map. Full transitive provider
-ancestry remains inherited.
+transcription matches JSON; the reverse witness map is checked separately.
+Full transitive provider ancestry remains inherited.
 
 To reproduce the external checks:
 
