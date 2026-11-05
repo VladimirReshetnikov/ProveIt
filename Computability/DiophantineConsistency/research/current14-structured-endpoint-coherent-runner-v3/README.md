@@ -2,6 +2,12 @@
 
 The [v2 extension attempt failed](../../reviews/current14-extension-v2-failure/README.md) on two identical `Init.olean` lines and produced no extension module. This separate v3 supervisor and client runner point to fresh output paths and the [v3 retry coordinator](../current14-printed-port-extension-coordinator-v3/README.md). The client uses the same narrowly scoped exact-path Init multiplicity policy as the v3 driver and terminal verifier, retaining raw `--deps` logs. It has not been launched or Lean-checked.
 
+The v3 supervisor has been launched. The [point-in-time launch observation](extension-launch-observation.json)
+records supervisor PID 90419, coordinator PID 90421, driver PID 90489, and
+first-module Lean PID 90495 in session 6546. At that observation zero extension
+rows had completed. It does not record a terminal result; monitor the existing
+session and do not launch another copy.
+
 The supervisor must record the coordinator's actual process exit. The client requires its PASS receipt, reauthenticates the extension state and providers, then builds the literal-port assembly and structured endpoint in a private client root. It checks exact axiom-report names, rejects warnings and `sorry` patterns, and uses sampled time, disk and memory protections. These are sampled controls, not reservations or guarantees against between-sample events, escaping child sessions, forced process death, dynamic inputs, transitive ancestry or transient mutations.
 
 [controls-observation.json](controls-observation.json) records no-Lean test fixtures and refusal while the v3 supervisor receipt is absent; it does not exercise a successful real extension or client. The [independent policy and wiring review](../../reviews/current14-extension-v3-policy-independent/README.md) covers the frozen v3 sources and synthetic controls. **Do not launch the clients before coordinated resource checks and a successful v3 extension with independently reviewed terminal evidence.** A timeout observing a process is not its exit. The structured endpoint is a Lean-level existential tuple with an iPRA derivation; its compilation would not formalize TeX/PDF bytes or provide a second independent Lean replay.
