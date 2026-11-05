@@ -90,7 +90,11 @@ For the first port β, a [Lean decoding theorem](research/current2011-beta-byte-
 identifies an explicit big-endian byte recipe with the current2011 port; an
 [independent audit](reviews/current2011-beta-byte-binding-independent/README.md)
 also compares that recipe with both recorded compressed payloads externally.
-Lean does not read those files, and the other three port-byte links remain open.
+For MC, a separate [six-run digit recipe theorem](research/current2011-mc-byte-binding/README.md)
+identifies its canonical base-256 decoding with the third Lean port; an
+[independent audit](reviews/current2011-mc-byte-binding-independent/README.md)
+reconstructs the value and compares both retained payloads externally. Lean
+does not read those files; the K and shifted MF port-byte links remain open.
 On the historical provider, a [translated-consistency client](research/current2011-unscaled66-translated/README.md)
 also checks the standard-iPRA equivalence with Foundation's mapped
 Gödel–Gentzen consistency sentence, with an [independent audit](reviews/current2011-unscaled66-translated-independent/README.md).
