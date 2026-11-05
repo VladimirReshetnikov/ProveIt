@@ -1102,6 +1102,11 @@ also supplies standard and equality-only iPRA conclusions for any positive
 all-model bridge; it has now been joined to the 90-operation compact bridge in a coherent
 build.
 
+A read-only [current-base source survey](research/nine-variable-current-base-source-survey/README.md)
+identifies 995 shared modules and a 217-module extension for both nine-variable
+endpoints and the check client; the base records and sources were rehashed.
+This is not a Lean rebuild or a package-transitive compatibility check.
+
 The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
 states native, standard and equality-only iPRA equivalences without hypotheses;
 the separate [CURRENT2011 nine-variable endpoint](Lean/DiophantineConsistency/IPRANineCurrent.lean)
