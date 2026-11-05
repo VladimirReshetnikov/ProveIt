@@ -53,3 +53,24 @@ closure from the retained `strict-plan.json` (SHA-256
 `e21d3d303922ffaa21151c490ce093e06bfdb65a43cf6fd55befd831c2f62c82`)
 and compared the resulting module set with `result.json`; this matched. It
 was not an independent reviewer or an additional Lean build.
+
+## Local seed-byte availability observation
+
+On 2026-11-04 a separate read-only scan considered the 793 manifest
+ancestors outside the recorded 207-node affected closure. Among the five
+explicit temporary provider paths in [`scan_seed_objects.py`](scan_seed_objects.py),
+it found bytes matching the historical author-seed SHA-256 for 489 modules;
+304 had no matching bytes in those five locations. Its captured
+[`seed-scan-result.json`](seed-scan-result.json) lists the matches and
+unmatched modules. All five providers are machine-specific and can change or
+disappear. The scan did not look everywhere, guard against transient file
+mutation, authenticate source-to-object ancestry, or inspect external
+packages; an unmatched result is not proof that an object is unavailable
+elsewhere. Matching individual object hashes is not by itself a coherent
+replay provider.
+
+The scan can be repeated from the repository root with
+`python3 Computability/DiophantineConsistency/research/current14-source-frontier/scan_seed_objects.py`.
+It reads hundreds of object files and may take time. It uses the pinned
+historical preparation record and the recorded source frontier; its output
+reflects the local providers at the time of the rerun.
