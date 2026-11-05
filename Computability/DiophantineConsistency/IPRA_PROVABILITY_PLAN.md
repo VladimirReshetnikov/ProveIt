@@ -66,7 +66,10 @@ establishes the existential no-zero bridge and standard-iPRA equivalence.
 The reverse direction passes through machine soundness and may change witnesses;
 it is not a same-valuation equivalence. Fixed-byte degree and graph-to-source
 correspondence are external checks, and provider transitive ancestry remains
-inherited.
+inherited. A [translated-consistency client](research/current2011-ordinary94-fresh-translated/README.md),
+[independently reviewed](reviews/current2011-ordinary94-fresh-translated-independent/README.md),
+also checks the standard-iPRA equivalence with Foundation's mapped Gödel–Gentzen
+consistency sentence on that base.
 An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
 [independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
 matches the entire candidate graph to the existing `Carrier94Syntax` source.
