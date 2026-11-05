@@ -17,7 +17,10 @@ mapped-refutation endpoints. Their externally compared graphs have 13 and 14
 positive variables and use 98 and 101 operations, respectively, counting six
 derived fixed integers as precomputed leaves. The package reports degrees 28
 and 24; this replay does not itself prove the degrees or parse the graph/files
-in Lean. It uses a captured provider, not a fresh current-base closure.
+in Lean. A [translated-consistency client](research/p72-p13-p14-translated-captured/README.md),
+[independently reviewed](reviews/p72-p13-p14-translated-captured-independent/README.md),
+checks both mapped Gödel–Gentzen formulations on that same provider. It is a
+captured provider, not a fresh current-base closure.
 
 The [14-variable, 67-operation, degree-106 candidate](research/fourteen-normalized-product106/README.md)
 has a focused [historical-provider check](research/normalized106-historical-endpoint-client/README.md)
