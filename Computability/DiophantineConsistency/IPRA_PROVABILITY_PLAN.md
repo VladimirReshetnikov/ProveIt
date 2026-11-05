@@ -186,8 +186,11 @@ obtains `n≥2` and `q^4 ∣ (2n−R−1)` without identifying `n` with the rank
 An [exact partial-factor example](research/ordinary12-absorb88-normalization-obstruction/README.md)
 shows that the first factor, these scalar bounds and the signed congruence
 alone do not force `G`-preserving positive transport; its other graph
-residuals do not vanish. The rank window and an 89 witness remain open.
-No 88-operation halt or iPRA endpoint is claimed.
+residuals do not vanish. A [guarded normalization](research/ordinary12-absorb88-guarded-normalization-draft/README.md)
+constructs an 89 zero from an 88 zero when explicit decomposition and
+positivity witnesses exist. Deriving those witnesses from every relevant
+negative-branch zero, the rank window and an unconditional 89 witness remain
+open. No 88-operation halt or iPRA endpoint is claimed.
 
 A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
 has externally checked liveness and Lean ring identities for the transformed
