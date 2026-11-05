@@ -3099,14 +3099,16 @@ RSS guard without a Lean diagnostic or theorem object. A later [generic split](r
 checks rank positivity and `R+1<q⁴` at actual zeros assuming the two port-mask
 inequalities; an [independent artifact review](reviews/p64-qcube72-generic-rank-window-independent/README.md)
 confirms its stated direct-provider scope. The first compact specialization
-stopped at its memory guard without a theorem or Lean diagnostic. A separate
+stopped at its memory guard; a later [opaque-port client](research/p64-qcube72-compact-port-opaque-attempt02/README.md)
+checks the positive rank and quartic window at the compact44 beta and mask
+ports, with arbitrary natural K. A separate
 [conditional rank-half lemma](research/p64-qcube72-rank-half-draft/README.md)
 checks `2R<c` in the stated models from an explicit Pell equation and rank,
 scale and size hypotheses. A checked [graph-level composition](research/p64-qcube72-window-ranked-main-bridge-draft/README.md)
 now identifies the main Pell coordinates at the actual rank from a positive
 72-zero, `q≥33`, and the two port-mask inequalities, discharging positivity and
-the half-window. The compact-port specialization and first-index congruence
-remain open. A
+the half-window. The compact-port specialization of this main-index client and the first-index
+congruence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
