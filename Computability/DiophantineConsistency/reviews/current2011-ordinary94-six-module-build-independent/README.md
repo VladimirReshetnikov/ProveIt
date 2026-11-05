@@ -1,0 +1,9 @@
+# Independent review: six-stage fresh-base 94 provider
+
+The read-only `check.py` exited 0. It checked the six ordered source stages, their separately observed outer exits, Lean child exits, pinned source hashes and successful output hashes, source-declared direct imports against each recorded runner's selected direct providers, 1,508 recorded direct/producer guard entries, and all 1,016 private overlay symlink targets. It checked that each resulting object was installed as a regular file with the identical recorded hash. The prior independently reviewed 106 provider/base audit reran successfully; the six stages do not rebuild that base. The successful stage logs are empty and warning-free.
+
+The first extraction attempt, session 9401, had **Lean exit 0 but outer exit 1** because the guard rejected unused-simp linter warnings. The successful extraction retry, session 7791, compiled a **private source variant**, not a byte-identical copy of the workspace source: its sole diff removes `zero_mul` and `one_mul` from one `simp only` list. The checker verifies that exact diff, the original source hash and the retry's object/guard evidence. This is a proof-source variant rather than a claim of an unmodified source build. The 94 syntax object was checked separately in session 63168 and copied into the same overlay before the other five stages.
+
+These observations verify recorded direct routing and point-in-time overlay state. They do not give a full dynamic or package-transitive load trace, an independent project-base rebuild, atomic protection against transient changes, or an endpoint theorem by themselves. The successful checks used sampled resource monitoring; the failed lint-policy attempt is retained separately. No Lean process was run during this audit.
+
+SHA-256: `check.py` `e496b0480d5e670a5d01a6a437d3190e16f76f9f6bc92532bb6edb77ac82195a`; `result.json` `f65808a24e649a6a2e0ad627f4976ff96b796e049f4909728ef22de619327142`.
