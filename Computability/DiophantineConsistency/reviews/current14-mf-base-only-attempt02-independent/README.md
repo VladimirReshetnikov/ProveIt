@@ -1,0 +1,5 @@
+# Independent attempt02 delta review
+
+The [attempt02 source](../../research/current14-mf-base-only-endpoint-attempt02/Current14LiteralPortsMF.lean) changes the failed attempt01 assembly only by unfolding `geometricInt` and `G` before `ring` in `omega_eq`, directly addressing the preserved residual goal. The [runner](../../research/current14-mf-base-only-endpoint-attempt02/runner.py) changes only the source pin and uses a fresh output path; the endpoint source and synthetic controls are byte-identical to attempt01. [receipt.json](receipt.json) records all hashes and the independent no-Lean controls exit 0.
+
+This delta review does not establish that the revised tactic succeeds, that the full client pair elaborates or that the structured endpoint is proved. Actual Lean exits, axiom reports and separate artifact review remain necessary; the same transitive/dynamic/between-check provenance and resource-sampling limitations apply as in the [attempt01 runner review](../current14-mf-base-only-runner-independent/README.md).
