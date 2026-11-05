@@ -42,7 +42,10 @@ checks both complete graph-to-source comparisons and establishes the exact
 degrees for the recorded fixed bytes by upper bounds and modular univariate
 lower bounds. The graph and degree checks are external; the coefficient bytes
 are not yet fully bound to the Lean ports, and provider transitive and dynamic
-ancestry remains inherited.
+ancestry remains inherited. A [separate client](research/current2011-spheres-fresh-translated/README.md)
+checks both standard-iPRA equivalences with Foundation's mapped Gödel–Gentzen
+consistency sentence; its [independent audit](reviews/current2011-spheres-fresh-translated-independent/README.md)
+checks the recorded source and provider inputs.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
