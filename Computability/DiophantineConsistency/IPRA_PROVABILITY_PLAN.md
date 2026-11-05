@@ -3172,8 +3172,10 @@ equation. A further checked [72-to-76 fixed-scale client](research/p64-qcube72-t
 applies this to a positive 76Y target. A checked [first-ordinate uniqueness
 lemma](research/p64-qcube72-first-ordinate-unique-draft/README.md) proves that
 shared Pell base and scale interval force the same first index and k in the
-stated models; its graph application is separate. Neither result establishes
-zero existence or a general reverse obstruction. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
+stated models. Its [actual-zero application](research/p64-qcube72-actual-first-ordinate-unique-draft/README.md)
+now derives equal k for positive 72 zeros at the same natural ports when
+X,Y,c agree; the 76Y application is separate. Neither result establishes zero
+existence or a general reverse obstruction. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
 now proves `3∤q` for every positive 76Y zero at the fixed compact ports, by
 using the specific 76Y-to-72 witness map. It neither proves a 72 zero with
 `3∣q` exists nor excludes a changed-q witness. A reviewed
