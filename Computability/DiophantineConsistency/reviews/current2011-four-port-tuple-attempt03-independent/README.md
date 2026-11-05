@@ -1,0 +1,5 @@
+# Independent review: third tuple attempt
+
+The retained source imports the proved pair theorems and parametric assembly theorem, and attempts to instantiate the latter for the four closed lists. Outer session 2118 and its Lean child both exited 1: the compilation log reports kernel excessive memory consumption at the proposed `decoded_eq_ports` theorem. Its subsequent axiom print includes `decoded_eq_ports` itself, and is not evidence of a proved theorem. The receipt reports no output object or external resource-stop reason. The earlier proved pair and generic theorems are unaffected.
+
+`check.py` checks the captured source and runner pins, exact recorded exits, log and all 874 stable direct/nested guard slots. For the historical source slot it uses the retained attempt source; other guards are checked against current paths. The guard scope inherits prior provider ancestry and is not a full dynamic load trace or fresh Lean rebuild. Run the checker with Python 3; no Lean replay is performed.
