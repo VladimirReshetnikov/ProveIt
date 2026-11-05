@@ -2359,8 +2359,13 @@ dynamic and transient-mutation ancestry remains inherited. The four-port
 assembly and the structured endpoint join have not yet been rebuilt on it.
 The first supervised [printed-port extension attempt](reviews/current14-extension-v2-failure/README.md)
 exited 1 before compiling a module because its dependency guard rejected two
-identical `Init` paths reported by Lean. A narrowly scoped retry revision and
-its matching verifier are being prepared; no extension success is claimed.
+identical `Init` paths reported by Lean. A reviewed v3 retry compiled all 61
+extension modules, exited successfully, and passed a separate terminal
+artifact audit; it is not a paired replay and inherits package-transitive and
+dynamic ancestry. The subsequent coherent two-client build compiled the
+four-port assembly but failed when importing the structured endpoint because
+Lean reported a duplicate `Matrix.map.eq_1` declaration. The combined join
+therefore remains unproved; the import conflict is under investigation.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
