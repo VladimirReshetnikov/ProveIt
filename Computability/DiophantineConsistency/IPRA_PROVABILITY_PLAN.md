@@ -229,6 +229,14 @@ its unguarded iPRA endpoint and formal external-file binding. The newer
 the checked guard-free signed-rank, projection and index-window results.
 An [independent trace-guard audit](reviews/trace74-guarded-iff-independent/README.md)
 checks the original guarded directions and selected provider evidence without replaying Lean.
+A [proposed fixed-port coupled-Pell witness](research/trace74-symbolic-coupled-pell-strategy/README.md)
+would violate the guard if its explicit external gcd and binding assumptions
+hold; the complete zero is not kernel checked. Recent model-level components
+connect a [CRT-updated natural tuple to the first Pell inputs](research/trace74-positive-carrier/Trace74CRTPellFactorJoin.md)
+and verify a [binary Pell residue evaluator](research/trace74-pell-bitlist-checker/README.md).
+The concrete coprimality certificates, CRT modulus and rank binding, full
+positive witness, and unguarded equivalence remain open. These Lean checks
+inherit prebuilt-provider ancestry.
 
 The later ten-positive 80-operation, degree-750 descendant has an
 [80-row Lean syntax and model-root theorem](research/ten-positive-80-model-binding-prototype/README.md).
