@@ -1,0 +1,7 @@
+# Independent review: 52-witness sharing-aware quartic candidate
+
+This checker independently reconstructs every signed-pair gate identity of the pinned current2011 65-gate graph over a free commutative polynomial ring. It checks the 27 specified materialization cuts, 37 inlined internal gates (including 21 quadratic inlines), nonnegative coefficients in every natural pair component, every recorded residual, distinct coordinate assignments, source topology and all four actual fixed big-endian byte payloads. The independent 65-gate-to-Lean-source DAG comparison and both author checkers reran successfully.
+
+The exact structural counts are fourteen shifted input witnesses plus 38 materialized gate witnesses, for 52 natural witnesses and one unused distinguished input coordinate. There are 39 residuals. Every residual has syntactic witness degree at most two, so the external sum of squares has degree at most four. With all witnesses zero, the first residual is exactly `−(beta+1)^2`, independent of the distinguished input; the checked fixed beta is positive, so the seed is nonzero there.
+
+This establishes external gate identities and candidate properties. It does not establish a Lean IΣ₁-model zero bridge, Lean degree or normalization proof, Jones instantiation, iPRA endpoint, file/PDF semantics, or final nine-variable operation count or degree. The cut set is a bounded-search result, not a minimality proof. No Lean process was run.

@@ -1424,6 +1424,12 @@ size claim.
 The corresponding [Lean source draft](research/nine-sharing-seed54-lean-draft/README.md)
 has an [independent residual transcription audit](reviews/nine-sharing-seed54-lean-draft-independent/README.md),
 but its tentative theorems have not been compiled.
+A [bounded cut search](research/nine-sharing-quartic65-cut-search/README.md)
+subsequently produced a [52-witness seed candidate](research/nine-sharing-quartic65-52-candidate/README.md)
+with 39 quadratic residuals. Its [independent audit](reviews/nine-sharing-quartic65-52-independent/README.md)
+checks the exact signed-pair identities, degree bound, fixed ports and
+normalization externally. This is not a minimum, Lean model bridge or new
+Jones/iPRA endpoint.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the
