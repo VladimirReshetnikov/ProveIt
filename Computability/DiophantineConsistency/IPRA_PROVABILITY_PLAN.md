@@ -1454,6 +1454,12 @@ An [uncompiled 38-witness model-bridge draft](research/nine-sharing-norm38-model
 and [independent symbolic alignment review](reviews/nine-sharing-norm38-model-bridge-draft-independent/README.md)
 match its static assignment, all 60 graph gates and 29 residuals externally;
 the Lean trace, source evaluation, port casts and theorem transfer remain open.
+A [33-witness sign-compressed variant](research/nine-sharing-quartic65-sign33-candidate/README.md),
+[independently audited](reviews/nine-sharing-quartic65-sign33-independent/README.md),
+has 24 quadratic residuals. Its forward construction requires five sign
+implications for every relevant model solution, with nontrivial port and
+natural-subtraction transports; these remain unproved. It is therefore a
+conditional candidate, not a completed reduction or iPRA endpoint.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
