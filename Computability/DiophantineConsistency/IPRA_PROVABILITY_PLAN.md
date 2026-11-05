@@ -3182,3 +3182,19 @@ That includes:
 - 184's 104 / 174;
 - the ten-positive Pareto points;
 - 101's nine-positive points.
+
+**Tuple audit (4 November 2026).** After 57, every open point is at a tuple
+that the tree's Compact44 calibration does not cover. The tree's `paramKernel rho`
+is the original-order K payload (raw SHA-256 `c6d523bd…`). The audit compared
+the packages' coefficient files with it:
+
+- **Directly indexed BFS943 K0** (raw SHA-256 `0a86821a…`), the same 67×8807
+  layout with BFS row order: 163, 170, 171, 172, 179, 184, 193 and 194. This
+  covers every ten-positive Pareto point, 170's three points, 184's
+  eleven-positive point, and most ℤ rows. A research-only direct-BFS
+  calibration exists (`research/direct-bfs-*`, `DirectBFS80FixedIPRA`); it is
+  not in the tree.
+- **`wang943-mixed-121x8801`** (β of 1,064,921 bits): 55's and 59's
+  fourteen-positive 52 / 79 and 132's fifteen-integer 44 / 111. No Lean
+  calibration exists. 281 of the 618 `Compact44` modules use the 67×8807
+  layout constants directly.
