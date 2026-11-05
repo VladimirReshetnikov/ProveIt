@@ -11,23 +11,20 @@ the discrete Pell bound
 `V<y`, and the nonzero old auxiliary root; see the
 [mathematical argument](../p64-qcube76-independent-y-analysis/README.md).
 
-# Unchecked graph and witness drafts
+# Graph, witness and join status
 
 `IndependentYGraphDraft.lean` passed a [guarded check](../p64-qcube76y-graph-model-guarded-check/README.md)
 of the new graph's zero-specific residual split and main Pell-root extraction.
 `IndependentYSizeDraft.lean` also passed a [guarded check](../p64-qcube76y-size-guarded-check/README.md)
-of the actual-zero bound `f²>c+1`. The remaining two Lean files remain
-**source drafts and have not been checked by Lean**.
-`IndependentYWitnessDraft.lean` attempts
-positive model representatives and conditional graph witness maps: the old
-signed root must be nonzero, and the new root must strictly exceed evaluated
-`V`. Sequential checks require compiled providers for the generated
-`P64QCube76Y`, the 77 transport/unit helper, the generic draft, the graph
-draft and size draft, as well as the separate ring-binding draft before the
-witness draft. `IndependentYJoinDraft.lean` then attempts a positive-zero
-equivalence under exactly those two guards. No zero-specific Lean result has
-yet discharged them.
+of the actual-zero bound `f²>c+1`. `IndependentYWitnessDraft.lean` passed a
+[guarded check](../p64-qcube76y-witness-guarded-check/README.md) of positive
+model representatives and both conditional graph witness maps. The two
+zero-specific premises have been checked separately in the
+[old-root](../p64-qcube76y-oldroot-guarded-check/README.md) and
+[strict-root](../p64-qcube76y-strict-guarded-check/README.md) packets.
+`IndependentYJoinDraft.lean` remains unchecked; its conditional equivalence
+and the full join have not yet been checked.
 
-Elaboration errors, missing hypotheses and tactic failures remain possible in
-those drafts. The generic bounds alone are not a graph equivalence or iPRA
+Elaboration errors and tactic failures remain possible in the unchecked join.
+The separate checked ingredients alone are not yet a graph equivalence or iPRA
 endpoint.

@@ -66,7 +66,7 @@ theorem old_to_new_conditional (p : Fin 4 → ℕ) (v : Fin 14 → V)
     funext i
     by_cases hi : i=12
     · subst i; simp [w,P64QCube76YBinding.liftRing]
-    · simp [w,P64QCube76YBinding.liftRing,hi]
+    · simp [w,P64QCube76YBinding.liftRing,hi,z]
   have hs : (ι y:DiffRing V)*ι y =
       P64QCube76YBinding.liftRing pp z 12*P64QCube76YBinding.liftRing pp z 12 := by
     simpa [P64QCube76YBinding.liftRing,signed,z] using hysq
