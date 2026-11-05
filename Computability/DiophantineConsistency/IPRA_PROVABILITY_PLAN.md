@@ -1437,6 +1437,14 @@ Jones/iPRA endpoint.
 Its [Lean transcription draft](research/nine-sharing-seed52-lean-draft/README.md)
 has an [independent source-only audit](reviews/nine-sharing-seed52-lean-draft-independent/README.md);
 the tentative theorems remain uncompiled.
+A [five-norm seed candidate](research/nine-sharing-quartic65-norm38-candidate/README.md)
+uses the existing positive-domain norm characterization in place of the
+65-gate product finalizer. An [independent finite audit](reviews/nine-sharing-quartic65-norm38-independent/README.md)
+checks 38 natural witnesses, 29 quadratic residuals, the fixed bytes and the
+scaled-strong-norm identity. This count is conditional on a Lean bridge using
+the norm theorem's ordered-model hypotheses and natural representatives for
+all four ports; that bridge, degree and normalization proofs, and Jones/iPRA
+endpoint have not yet been established.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the
