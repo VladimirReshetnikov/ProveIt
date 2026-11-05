@@ -8,6 +8,33 @@ has 14 positive inputs and 72 live operations (41 multiplications, 18
 additions, 13 subtractions). This arithmetic count is not a claim of a
 zero-existence equivalence or an iPRA endpoint.
 
+## Why the forward coordinate is plausibly positive
+
+Assume an original positive zero supplies the oriented natural main root
+`g` and the zero-specific estimate `c≥2(a+2)` from the independent-`y`
+argument. The main-root alignment and `r=k−R−1` give
+
+```
+U*(g−(X+a*c)) = H*(U*gamma−r).
+```
+
+Here `U>0`, `H>0`, `Y≥1`, `a=Y*(X+1)`, and `X≥0`, so
+`c≥2(a+2)>X`. The root equation gives
+
+```
+g² − (X+a*c)²
+ = (2*a+2)*c² + 2*a*c*(c−X) + (c²−X²) + 1 > 0.
+```
+
+Because both `g` and `X+a*c` are nonnegative, `g>X+a*c`. The alignment
+then implies `h=U*gamma−r>0`. [`check_forward.py`](check_forward.py)
+checks the displayed polynomial identity exactly and the sign on 120
+bounded natural examples; three of those happen to give integral `h` in
+the alignment. This remains a paper argument using the cited zero-specific
+bound and *oriented* root equation, not a checked Lean composition or a
+claim that the examples are graph zeros. The converse still requires the
+divisibility and positivity needed to recover `gamma`.
+
 The obvious inverse requires a positive model-natural `gamma` satisfying
 
 ```
@@ -55,9 +82,12 @@ its hashes and bounded observations. No Lean process was run. Reproduce:
 
 ```sh
 nice -n 19 ionice -c 3 python3 -I -S -B Computability/DiophantineConsistency/research/p64-qcube72-free-main-obstruction/check.py
+nice -n 19 ionice -c 3 python3 -I -S -B Computability/DiophantineConsistency/research/p64-qcube72-free-main-obstruction/check_forward.py
 ```
 
 | Artifact | SHA-256 |
 | --- | --- |
 | `check.py` | `3e6e3fa65c5ad32886f165811556736733118cf31550c5c2071f031fa64ad4de` |
 | `result.json` | `65175e0ed6945fa2a09bd6c23d4e25df38301a1b831d93ab1fcabfbf0e535bee` |
+| `check_forward.py` | `e6d01af0a9770c4ac1e21b38a550660638993421a51c0199355fe4b62047a6fb` |
+| `forward-result.json` | `094a204ef4f8c63da56ab9ddab3eb1c76ecafa405a272525ca613e44f67e92c2` |
