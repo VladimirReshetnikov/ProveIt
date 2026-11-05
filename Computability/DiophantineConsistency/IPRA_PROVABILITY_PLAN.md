@@ -1486,6 +1486,10 @@ A [numeral-cast retry](research/nine-sharing-norm38-slots-batched-retry01/README
 [independently audited](reviews/nine-sharing-norm38-slots-batched-retry01-terminal-independent/README.md),
 compiled all 29 individual conditional identities. Its final assembly timed
 out without output, so no `seed_zero_static` theorem is yet established.
+An [uncompiled five-norm assembly draft](research/nine-sharing-norm38-five-norms-draft/README.md),
+[independently inspected](reviews/nine-sharing-norm38-five-norms-independent/README.md),
+isolates the five terminal conditions, assuming the pending indexed residual
+zero theorem; no delta cancellation is needed for this part.
 A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
 proposes recovering the original 65-gate zero from those static conditions;
