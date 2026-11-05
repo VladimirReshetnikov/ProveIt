@@ -4,7 +4,8 @@ On 2026-11-04 the read-only [`audit.py`](audit.py) produced the captured
 [`receipt.json`](receipt.json). The pinned package 73 JSON is present. The
 script independently constructs its Lean let-chain and matches the marked
 block in `P73Graph.lean`; all 92 gates and all 13 witnesses and four ports
-are live and topologically ordered. The gate count is 51 multiplications,
+are live and topologically ordered. It also checks the witness indices, port
+indices, and graph's selected output row. The gate count is 51 multiplications,
 24 additions and 17 subtractions. The upstream generator was also rerun in
 check mode and exited 0.
 
@@ -35,5 +36,6 @@ python3 -I -S -B Computability/DiophantineConsistency/reviews/thirteen-p73-sourc
 ```
 
 SHA-256: `audit.py`
-`f7e0f2dfac4adfed1884814f31e945aae4c541535eeb88d76e8b3d931c48665c`;
-`receipt.json` `7b6208d1dec00fc42f7e2eb63168a6a73a01ebede022e17d7e2c32d1f95766e7`.
+`dc5d1bd254fb6405bb315af42b844efc04d8cd770fac6fe29aa024b1abc8be85`;
+`receipt.json` `3d988e8027dc416b9e11b1abf936ed4f16ee1efd7d5827235a0e03a2fc13d343`.
+The earlier, narrower receipt is retained as `receipt-v1.json`.

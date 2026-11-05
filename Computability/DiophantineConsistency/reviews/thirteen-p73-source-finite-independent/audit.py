@@ -44,6 +44,11 @@ lean=data['Lean/DiophantineConsistency/Compact44/P73Graph.lean'].decode()
 begin='-- BEGIN LITERAL GRAPH\n';end='  -- END LITERAL GRAPH'
 block=lean.split(begin,1)[1].split(end,1)[0].rstrip('\n')
 assert block=='\n'.join(rows)
+for index,name in enumerate(g['witnesses']):
+    assert lean.count(f'  let {name} : Expr (Fin 13) := .var {index}\n')==1
+for index,name in enumerate(g['fixed_numerals']):
+    assert lean.count(f'  let {name} : Expr (Fin 13) := .constant (p {index})\n')==1
+assert lean.split(end,1)[1].startswith('\n  ⟨A0, A1, Aa, As, g91⟩\n')
 
 # Independent full univariate arithmetic: all 13 witnesses scale with t;
 # fixed numerals take 5,6,7,8 in F_p. This checks a specialization only.
@@ -70,7 +75,8 @@ for fragment in ('theorem positiveBridge', 'P73Halt.halts', 'P73Converse.convers
     assert fragment in endpoint
 print(json.dumps({'status':'PASS','source_hashes':PINS,'gates':92,'operation_counts':counts,
                  'live_gates':len(seen.intersection(deps)),'all_inputs_live':True,
-                 'lean_gate_block_matches_json':True,'ray_prime':p,'ray_degrees':degree,
+                 'lean_gate_block_matches_json':True,'lean_input_port_output_wiring_matches':True,
+                 'ray_prime':p,'ray_degrees':degree,
                  'ray_output_leading_coefficient':v['g91'][-1],
                  'scope':'Source and finite graph evidence only. No Lean replay, general degree proof, full provider ancestry or external payload binding.'},
                 indent=2,sort_keys=True))
