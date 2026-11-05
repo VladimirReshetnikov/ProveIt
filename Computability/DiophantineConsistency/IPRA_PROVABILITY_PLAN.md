@@ -3019,6 +3019,14 @@ are conditional on suitable seed tuples and construct no graph zero. The
 fixed-port analysis has an independent [review](reviews/p64-qcube76-fixed-port-boundary-independent/README.md).
 Neither a fixed-port existence counterexample nor an iPRA endpoint follows.
 
+A distinct [72-operation free-main experiment](research/p64-qcube72-free-main-obstruction/README.md)
+removes the scaled gamma carrier. A paper-level forward positivity argument
+and an exact partial obstruction to the direct reverse divisibility are
+recorded; no full graph zero or existence equivalence is established. A
+[separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
+likewise shows that selected q-cube and scalar-norm constraints alone do not
+force the required divisibility.
+
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
 [record](research/thirteen-p73-endpoint/README.md)). It reduces forward to the
