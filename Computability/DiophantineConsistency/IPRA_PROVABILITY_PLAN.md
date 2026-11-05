@@ -170,9 +170,11 @@ now applies to actual positive 88 zeros with positive beta, giving
 `eta+zeta >= 8XY^2+4` without a transport-sign assumption; it has a
 separate [source review](reviews/absorb88-two-norm-gap-independent/README.md).
 A [main-root orientation inequality](research/ordinary12-absorb88-negative-main-orientation-draft/README.md)
-is checked only under explicit ordered-ring bounds, including a signed-rank
-lower bound that has not yet been derived for the graph. Both checks inherit
-temporary providers. No 88-operation halt or iPRA endpoint is claimed.
+is checked under explicit ordered-ring bounds. On the negative-transport
+branch, a separate [actual-graph signed-rank bound](research/ordinary12-absorb88-negative-rank-bound-draft/README.md)
+now supplies the needed lower-bound form. Their full graph orientation
+composition has not yet been checked. These results inherit temporary
+providers. No 88-operation halt or iPRA endpoint is claimed.
 
 A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
 has externally checked liveness and Lean ring identities for the transformed
