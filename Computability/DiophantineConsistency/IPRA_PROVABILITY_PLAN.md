@@ -3149,7 +3149,10 @@ alternative witnesses and existential reverse implication open. An independent
 shows in standard integers that fixing the main scale fixes the positively
 oriented carrier, and inspects the old-source path forcing q to be a power of
 two. This restricts same-q conversions; it does not rule out a changed-q
-witness or establish a 72 zero. An independently
+witness or establish a 72 zero. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
+now proves `3∤q` for every positive 76Y zero at the fixed compact ports, by
+using the specific 76Y-to-72 witness map. It neither proves a 72 zero with
+`3∣q` exists nor excludes a changed-q witness. An independently
 reviewed [all-moduli construction](research/p64-qcube72-fixed-mask-all-moduli-controls/README.md)
 produces strictly positive outputs divisible by `N⁴` for every positive `N` at
 two fixed K values, one in each q-divisibility class. It does not produce an

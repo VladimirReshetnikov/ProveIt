@@ -1,0 +1,43 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube76y-fixed-q-not-three-draft/FreeMain76FixedQNotThree.lean:74:4: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+K : ℕ
+v : Fin 14 → V
+hv : ∀ (i : Fin 14), 0 < v i
+hz : InternalZero (P64QCube76Y.graph fun j => ↑(compactPorts K j)).output v
+p : Fin 4 → ℕ := ⋯
+pp : Fin 4 → ℤ := ⋯
+z : Fin 14 → DiffRing V := ⋯
+w : Fin 14 → V := ⋯
+zw : Fin 14 → DiffRing V := ⋯
+q : V := ⋯
+Y : V := ⋯
+k : V := ⋯
+R : V := ⋯
+h : V
+hpos : 0 < h
+u : Fin 14 → V := ⋯
+hup : ∀ (i : Fin 14), 0 < u i
+hgap : ι h = P64QCube72FreeBinding.gap pp z
+hcast : (fun i => ι (u i)) = P64QCube72FreeBinding.liftRing pp z
+hz72 : InternalZero (P64QCube72Free.graph pp).output u
+left✝³ : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).A0 = 1
+left✝² : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).M = 0
+left✝¹ : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).W = 0
+left✝ : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).Na = 1
+hlt : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).Lt = 0
+hlt' : InternalZero (P64Graph.graph pp).Lt w
+hwp : ∀ (i : Fin 14), 0 < lift p v i
+hF : w 1 ≤ ↑(p 0) * w 0 + 1
+hh :
+  ι h =
+    ι (w 7 * w 7) * zw 13 -
+      (ι (w 10 + w 11) -
+          ι
+            ((↑(p 0) * w 0 * (↑(p 0) * w 0 + 1 - w 1) + w 2) * ((↑(p 0) * w 0 + 1) * (↑(p 0) * w 0 + 1) - 1) +
+              (↑(p 2) + (↑(p 0) * w 0 + 1) * ↑(p 3)) * w 0) -
+        1)
+hh' : ι h = ι (Y * Y) * ι (v 13) - (ι k - ι R - 1)
+⊢ ι (Y * Y) * ι (v 13) - ι (v 13) * ι Y ^ 2 = 0
+'FreeMain76FixedQNotThree.fixed_q_not_divisible' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
