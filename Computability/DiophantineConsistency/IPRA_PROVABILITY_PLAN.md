@@ -3056,7 +3056,10 @@ not an alternative witness construction or compact44 equivalence. A
 [fixed-coordinate rank analysis](research/p64-qcube72-fixed-coordinate-rank-obstruction/README.md)
 derives an additional necessary residue for a class of normalizations and
 proves `q ∣ h` for standard-integer zeros; neither result settles the
-compact44 converse or is yet a Lean theorem. A
+compact44 converse. A guarded Lean [carrier-scale bridge](research/p64-qcube72-model-carrier-draft/README.md)
+now proves `q ∣ h` in the stated `IΣ₁` models from explicit carrier
+hypotheses, but the client extracting those hypotheses from an actual graph
+zero remains unchecked. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
