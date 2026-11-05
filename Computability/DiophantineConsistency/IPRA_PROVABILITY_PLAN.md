@@ -25,6 +25,14 @@ hash-matched source44 payloads. A [translated-consistency client](research/p72-p
 [independently reviewed](reviews/p72-p13-p14-translated-captured-independent/README.md),
 checks both mapped Gödel–Gentzen formulations on that same provider. It is a
 captured provider, not a fresh current-base closure.
+A subsequent [681-module current-base source extension](research/p72-current-base-extension-build-attempt02/README.md),
+[independently audited](reviews/p72-current-base-extension-attempt02-independent/README.md),
+completed with actual outer exit 0 and checked both P13 and P14 native,
+standard and equality-only mapped-refutation endpoints. Its existing current14
+base and package-transitive/dynamic ancestry retain their stated limits; the
+fixed-byte graph and degree checks are separate. The Gödel–Gentzen client
+above still uses the captured provider and has not yet been rebuilt on this
+fresh extension.
 A [source-declared closure survey](research/p72-current-base-source-survey/README.md)
 identifies 681 additional project modules over the current14 base. A separate
 [combined external-import probe](research/p72-current-base-external-import-probe/README.md),
