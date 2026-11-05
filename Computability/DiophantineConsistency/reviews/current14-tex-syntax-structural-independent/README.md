@@ -1,0 +1,7 @@
+# Independent review: displayed current14 arithmetic-core comparison
+
+The author's checker reproducibly compares the pinned `equation.tex` positive-domain declaration, all 22 displayed arithmetic abbreviations and boxed zero expression against the pinned `CurrentEquationSyntax2011.expressionAt` source. It verifies all fourteen Lean variable indices and four explicit port mappings. Its six negative controls pass. Parsing uses one shared expression parser and SHA-256 structural digests on both sides, so the original test is a source comparison under those parser and hashing assumptions, not formal TeX semantics.
+
+The independent checker uses a separate Python AST parser and hash-consed tuple nodes for expression comparison. It independently extracts the same sections and declarations, checks the same exact domain/indices and final tree, reruns the original result byte-for-byte, and rejects eight changes covering variable order, port assignment, powers, multiplication, signs and Lean indices. It confirms an intentional `rho` coefficient change outside the extracted arithmetic core is **not** detected: coefficient recipes are out of scope by design. The checks share ordinary arithmetic and TeX-grammar conventions, despite using different parser implementations.
+
+Neither checker interprets the rendered PDF, verifies the printed coefficient recipes, tile decoder, operation count or degree, or connects the page's text to Lean as an internal theorem. Run this independent checker with Python 3; it does not launch Lean.

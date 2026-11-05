@@ -2704,6 +2704,12 @@ found no sub-64 replacement within its stated target-row family and sampled
 moduli at the separate reversed2521 ports; it does not cover current14 fixed
 ports or prove a general operation lower bound.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
+A [structural source checker](research/current14-tex-syntax-structural-audit/README.md),
+with a separately implemented [independent review](reviews/current14-tex-syntax-structural-independent/README.md),
+compares the displayed positive domain, 22 arithmetic abbreviations and boxed
+equation with `expressionAt`, including coordinate and port positions. It
+strengthens the earlier manual comparison but does not interpret PDF, verify
+the printed coefficient recipes or supply a Lean file-semantics theorem.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
 its [independent review](reviews/current14-seed-lines-binding-independent/README.md)
