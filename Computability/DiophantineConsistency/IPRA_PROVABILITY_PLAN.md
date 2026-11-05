@@ -1544,6 +1544,11 @@ A [targeted retry](research/nine-sharing-norm38-static-to-seed-retry01/README.md
 [independently audited](reviews/nine-sharing-norm38-static-to-seed-retry01-terminal-independent/README.md),
 then checked that static gate and norm conditions imply a seed zero under the
 IΣ₁-model and four port-cast hypotheses. Source correspondence remains open.
+A [combined client](research/nine-sharing-norm38-seed-static-iff-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-seed-static-iff-terminal-independent/README.md),
+checks the same-valuation biconditional between seed zero and the conjunction
+of static gates and norms under those hypotheses. It does not yet relate them
+to Carrier65 or prove an iPRA endpoint.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
