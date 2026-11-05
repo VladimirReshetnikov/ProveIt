@@ -1372,7 +1372,11 @@ ring evaluator](research/nine-current-symbolic-ring-generic/README.md) and
 [readable equation](research/nine-current-symbolic-ring-generic/EQUATION.md)
 make the finite-sum/power recipe explicit; their [review](reviews/nine-current-symbolic-ring-independent/README.md)
 checks the recorded theorem and transcription without claiming a Lean
-Markdown or filesystem interpretation.
+Markdown or filesystem interpretation. An [external structural count](research/nine-current-seed-count-diagnostic/README.md),
+[independently checked](reviews/nine-current-seed-count-independent/README.md),
+finds 8,446,685 nodes on each natural split and 16,893,385 quartic witnesses.
+These are source-structure counts, not a Lean numerical equality or a count
+of operations in the resulting nine-variable equation.
 An additional equal-length-root replay has completed
 [all 104 stages](reviews/nine-variable-ipra-equal-length-stages-102-104-monitored/README.md):
 84 output objects match byte-for-byte, and 20 match after one equal-length

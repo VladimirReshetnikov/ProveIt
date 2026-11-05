@@ -1,0 +1,5 @@
+# Independent review: current Jones seed structural count
+
+A separate recursive-descent parser reads the pinned `expressionAt` source and evaluates *both* natural-split tree sizes, without assuming they are equal. Each substituted witness `var + 1` yields a three-node tree on each side; the checker follows the exact `splitNatural` add, subtraction and multiplication recurrences, as well as `Expr.pow`'s initial one and repeated multiplication. It verifies all fourteen witness names and indices, parses all source lets and the full final expression, and applies the literal `Gates.count`/`witnessCount` formula.
+
+The independent result agrees with the author: each split tree has 8,446,685 nodes, and `14 + 8,446,685 + (8,446,685 + 1) = 16,893,385` quartic witnesses. Renaming variables leaves this structural count unchanged. This is an external source-structure computation, not a Lean proof of the numeric count, an expanded coefficient list, a nine-variable literal graph operation count, or a degree claim. Run `python3 reviews/nine-current-seed-count-independent/check.py` from the DiophantineConsistency directory.
