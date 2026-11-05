@@ -115,7 +115,11 @@ compiled seven predecessors before the adapted carrier hit its memory cap.
 Its import-only, split-core, prelude and selected helper checks are recorded
 with [independent](reviews/thirteen-current2011-split-helpers-independent/README.md)
 [audits](reviews/thirteen-current2011-build-diagnostics-independent/README.md).
-The completion proof and fresh 13-variable iPRA endpoints remain unchecked.
+An unchanged-statement [4-GB retry](research/thirteen-current2011-complete-4g-retry/README.md),
+[independently audited](reviews/thirteen-current2011-completion-4g-independent/README.md),
+subsequently checked the 13/69 completion and native/standard bridge; its
+resource monitoring is sampled and that run did not print a separate axiom
+report. The adapted 13/70 and 13/71 endpoints remain under construction.
 An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
 [independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
 matches the entire candidate graph to the existing `Carrier94Syntax` source.
