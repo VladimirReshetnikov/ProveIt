@@ -43,6 +43,16 @@ equation. Their historical package and transitive ancestry remains inherited;
 the materialized numerical coefficient bytes are not formally identified with
 the Lean ports by this result.
 
+A different [66-operation integer-leaf candidate](research/current2011-unscaled66/README.md)
+has 14 positive variables and exact degree 138 at the recorded current2011
+ports. Its complete polynomial times `Delta` equals the maintained 65/150
+polynomial. An [independent exact audit](reviews/current2011-unscaled66-independent/README.md)
+checks this identity, the gate count and degree, including a nonzero leading
+coefficient on a univariate substitution; `Delta` is positive on the intended
+domain. This trades one extra operation for degree 138. The all-model Lean
+bridge, internal iPRA derivation, and recorded-byte-to-Lean-port binding for
+the new syntax remain open.
+
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
 in each model of IΣ₁, its fixed symbolic positive-zero predicate is
