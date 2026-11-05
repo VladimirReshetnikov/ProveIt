@@ -3128,8 +3128,10 @@ adds `k=2n+4P*s` for that same index in the stated models. A separately reviewed
 identifies the remaining same-witness conditions as `2n=R+1` and `U∣h` under
 its explicit assumptions. A checked [generic model-level cancellation](research/p64-qcube72-free-carrier-cancel-draft/README.md)
 derives `e∣9`, `Y²=e*mu`, `q⁴≤mu` and `mu∣h` from the free carrier and scale
-hypotheses; its actual-zero composition is separate. The full corresponding
-model-level criterion, first-index congruence and reverse existence remain open. A
+hypotheses. A [fixed-port same-zero composition](research/p64-qcube72-fixed-compact-carrier-cancel-draft/README.md)
+now supplies those divisibility facts alongside the same `n` and its residue.
+The full corresponding model-level criterion, first-index congruence and reverse
+existence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
