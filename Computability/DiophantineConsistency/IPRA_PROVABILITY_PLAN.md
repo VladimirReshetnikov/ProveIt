@@ -1471,6 +1471,10 @@ An [uncompiled slot-extraction draft](research/nine-sharing-norm38-slot-extracti
 [independently inspected](reviews/nine-sharing-norm38-slot-extraction-independent/README.md),
 maps the 29 vanishing seed residuals to the static gate and five norm
 conditions. Lean elaboration and the subsequent graph bridge remain open.
+A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/README.md),
+[independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
+proposes recovering the original 65-gate zero from those static conditions;
+the source topology, port casts and proof scripts remain unchecked by Lean.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
