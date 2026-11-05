@@ -1395,6 +1395,13 @@ alternate provider's duplicate names; their [independent endpoint review](review
 checks the theorem and recorded source/provider scope. A separate [ring
 client](research/nine-current-fresh-symbolic-ring/README.md) checks the
 finite-sum formula for that unique-namespace expression.
+A [sharing-aware quartic seed candidate](research/nine-sharing-quartic67-candidate/README.md)
+compiles the current 67/94 graph into 97 quadratic residuals with 110 natural
+witnesses, compared with the tree compiler's externally counted 16,893,385.
+Its [independent review](reviews/nine-sharing-quartic67-independent/README.md)
+checks every gate identity, degree bound and guard externally. The all-model
+zero bridge, Lean normalization and degree proofs, and new Jones/iPRA endpoint
+remain open; the count does not describe the final nine-variable graph.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the

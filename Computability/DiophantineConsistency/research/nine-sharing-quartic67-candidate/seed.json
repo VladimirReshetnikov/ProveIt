@@ -1,0 +1,3252 @@
+{
+  "coefficient_binding": {
+    "certificate": "../../research/padding-staircase-independent/certificate.json",
+    "certificate_sha256": "fae49c56a9c57d394335c8a47da395f000a0c25cb8267d1330104eddbbc7850f",
+    "ordinary_proof": "../../research/padding-staircase-independent/PROOF.md",
+    "ordinary_proof_sha256": "69ce844ef80894251f4bd9510d9f60468585b4a004f4a624d3b347ce3e144fb8",
+    "path": "coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 94941,
+        "file": "K.bin.gz",
+        "gzip_sha256": "cfc3229f5281580358370e198b433936161b732a7229a1f8dc4f8839a701f4ab",
+        "raw_bytes": 11868,
+        "raw_sha256": "64a62b9e1eb8642492a159fc5c3a2e1c131a99c0e2f1e3b8b90fac9241166ec7"
+      },
+      "MC": {
+        "bits": 94517,
+        "file": "MC.bin.gz",
+        "gzip_sha256": "b178777ae605e6d0073c824c48237e89e9b28911a2583bce7c6689a50ce3cdfd",
+        "raw_bytes": 11815,
+        "raw_sha256": "2b5c9296e32616260e64a051c92892645b9aa1bf0bf4c0d931e464080702ca9f"
+      },
+      "MF": {
+        "bits": 94518,
+        "file": "MF_source.bin.gz",
+        "gzip_sha256": "f04d074f8413c49581f262bcbb030c616f00745935010afc0d30050771627c3a",
+        "raw_bytes": 11815,
+        "raw_sha256": "5c15fc24e4978b878ed531abf30b2dcfe255083372034612b759b65eee1f0c25"
+      },
+      "beta": {
+        "bits": 94517,
+        "file": "beta.bin.gz",
+        "gzip_sha256": "a94c07b25b9c185fa920d5c76ab04ea4de69b0a6a439995cf5ee390be225c719",
+        "raw_bytes": 11815,
+        "raw_sha256": "a22ea3808ae016284c057d90f1bf2b76db1be2d34d11c0856f3315f6577d4b27"
+      }
+    },
+    "raw_bytes": 47313,
+    "schema": "padding_staircase2011_materialized_v1"
+  },
+  "coordinate_count": 111,
+  "domain": "coordinates 1..110 range over natural numbers; input coordinate fixed to 1",
+  "fixed_ports": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "gate_records": [
+    {
+      "known_nonnegative": true,
+      "left": "beta",
+      "name": "qm",
+      "op": "*",
+      "positive_coordinate": 15,
+      "right": "J"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "qm",
+      "name": "q",
+      "op": "+",
+      "positive_coordinate": 16,
+      "right": 1
+    },
+    {
+      "known_nonnegative": true,
+      "left": "q",
+      "name": "q2",
+      "op": "*",
+      "positive_coordinate": 17,
+      "right": "q"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "q2",
+      "name": "q3",
+      "op": "*",
+      "positive_coordinate": 18,
+      "right": "q"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "w",
+      "name": "X",
+      "op": "*",
+      "positive_coordinate": 19,
+      "right": "q"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "s",
+      "name": "Y",
+      "op": "*",
+      "positive_coordinate": 20,
+      "right": "q3"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "X",
+      "name": "E",
+      "op": "*",
+      "positive_coordinate": 21,
+      "right": "Y"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "eta",
+      "name": "k",
+      "op": "+",
+      "positive_coordinate": 22,
+      "right": "zeta"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "k",
+      "name": "kY",
+      "op": "*",
+      "positive_coordinate": 23,
+      "right": "Y"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "E",
+      "name": "ell",
+      "op": "*",
+      "positive_coordinate": 24,
+      "right": "kY"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "kY",
+      "name": "c",
+      "op": "+",
+      "positive_coordinate": 25,
+      "right": "eta"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "E",
+      "name": "a",
+      "op": "+",
+      "positive_coordinate": 26,
+      "right": "Y"
+    },
+    {
+      "known_nonnegative": true,
+      "left": 4,
+      "name": "four_a",
+      "op": "*",
+      "positive_coordinate": 27,
+      "right": "a"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "four_a",
+      "name": "H",
+      "op": "+",
+      "positive_coordinate": 28,
+      "right": 3
+    },
+    {
+      "known_nonnegative": true,
+      "left": "a",
+      "name": "a2",
+      "op": "*",
+      "positive_coordinate": 29,
+      "right": "a"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "a2",
+      "name": "Delta",
+      "op": "+",
+      "positive_coordinate": 30,
+      "right": "H"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "a",
+      "name": "ac",
+      "op": "*",
+      "positive_coordinate": 31,
+      "right": "c"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "X",
+      "name": "main_base",
+      "op": "+",
+      "positive_coordinate": 32,
+      "right": "ac"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "gamma",
+      "name": "gammaH",
+      "op": "*",
+      "positive_coordinate": 33,
+      "right": "H"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "main_base",
+      "name": "main_root",
+      "op": "+",
+      "positive_coordinate": 34,
+      "right": "gammaH"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "c",
+      "name": "c2",
+      "op": "*",
+      "positive_coordinate": 35,
+      "right": "c"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "Delta",
+      "name": "Dc2",
+      "op": "*",
+      "positive_coordinate": 36,
+      "right": "c2"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "main_root",
+      "name": "main_square",
+      "op": "*",
+      "positive_coordinate": 37,
+      "right": "main_root"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "main_square",
+      "name": "N1",
+      "negative_coordinate": 39,
+      "op": "-",
+      "positive_coordinate": 38,
+      "right": "Dc2"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "q",
+      "name": "qF",
+      "negative_coordinate": 41,
+      "op": "-",
+      "positive_coordinate": 40,
+      "right": "F"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "qF",
+      "name": "C",
+      "negative_coordinate": 43,
+      "op": "-",
+      "positive_coordinate": 42,
+      "right": "alpha"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "qm",
+      "name": "gap_product",
+      "negative_coordinate": 45,
+      "op": "*",
+      "positive_coordinate": 44,
+      "right": "qF"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "gap_product",
+      "name": "gap",
+      "negative_coordinate": 47,
+      "op": "+",
+      "positive_coordinate": 46,
+      "right": "alpha"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "q2",
+      "name": "q2minus1",
+      "negative_coordinate": 49,
+      "op": "-",
+      "positive_coordinate": 48,
+      "right": 1
+    },
+    {
+      "known_nonnegative": false,
+      "left": "gap",
+      "name": "rproduct",
+      "negative_coordinate": 51,
+      "op": "*",
+      "positive_coordinate": 50,
+      "right": "q2minus1"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "q",
+      "name": "qMF",
+      "op": "*",
+      "positive_coordinate": 52,
+      "right": "MF"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "MC",
+      "name": "maskfactor",
+      "op": "+",
+      "positive_coordinate": 53,
+      "right": "qMF"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "maskfactor",
+      "name": "mask",
+      "op": "*",
+      "positive_coordinate": 54,
+      "right": "J"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "rproduct",
+      "name": "R",
+      "negative_coordinate": 56,
+      "op": "+",
+      "positive_coordinate": 55,
+      "right": "mask"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "E",
+      "name": "En",
+      "op": "*",
+      "positive_coordinate": 57,
+      "right": "n"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "En",
+      "name": "tau_partial",
+      "op": "+",
+      "positive_coordinate": 58,
+      "right": "k"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "tau_partial",
+      "name": "tau",
+      "negative_coordinate": 60,
+      "op": "-",
+      "positive_coordinate": 59,
+      "right": "R"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "tau",
+      "name": "tau2",
+      "negative_coordinate": 62,
+      "op": "*",
+      "positive_coordinate": 61,
+      "right": "tau"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "ell",
+      "name": "ell_plus_k",
+      "op": "+",
+      "positive_coordinate": 63,
+      "right": "k"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "ell",
+      "name": "first_product",
+      "op": "*",
+      "positive_coordinate": 64,
+      "right": "ell_plus_k"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "tau2",
+      "name": "N0",
+      "negative_coordinate": 66,
+      "op": "-",
+      "positive_coordinate": 65,
+      "right": "first_product"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "K0",
+      "name": "Kw",
+      "op": "+",
+      "positive_coordinate": 67,
+      "right": "w"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "Kw",
+      "name": "transport",
+      "negative_coordinate": 69,
+      "op": "*",
+      "positive_coordinate": 68,
+      "right": "C"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "transport",
+      "name": "transport_partial",
+      "negative_coordinate": 71,
+      "op": "+",
+      "positive_coordinate": 70,
+      "right": "qF"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "z",
+      "name": "zqm",
+      "op": "*",
+      "positive_coordinate": 72,
+      "right": "qm"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "transport_partial",
+      "name": "Nt",
+      "negative_coordinate": 74,
+      "op": "-",
+      "positive_coordinate": 73,
+      "right": "zqm"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "f",
+      "name": "f2",
+      "op": "*",
+      "positive_coordinate": 75,
+      "right": "f"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "c",
+      "name": "cT",
+      "op": "*",
+      "positive_coordinate": 76,
+      "right": "T"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "cT",
+      "name": "cTminusR",
+      "negative_coordinate": 78,
+      "op": "-",
+      "positive_coordinate": 77,
+      "right": "R"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "f2",
+      "name": "f2inner",
+      "negative_coordinate": 80,
+      "op": "*",
+      "positive_coordinate": 79,
+      "right": "cTminusR"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "f2inner",
+      "name": "V",
+      "negative_coordinate": 82,
+      "op": "-",
+      "positive_coordinate": 81,
+      "right": "c"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "i",
+      "name": "I",
+      "op": "*",
+      "positive_coordinate": 83,
+      "right": "c2"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "I",
+      "name": "I2",
+      "op": "*",
+      "positive_coordinate": 84,
+      "right": "I"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "f2",
+      "name": "f2m1",
+      "negative_coordinate": 86,
+      "op": "-",
+      "positive_coordinate": 85,
+      "right": 1
+    },
+    {
+      "known_nonnegative": false,
+      "left": "Delta",
+      "name": "Aaux",
+      "negative_coordinate": 88,
+      "op": "*",
+      "positive_coordinate": 87,
+      "right": "f2m1"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "V",
+      "name": "V2",
+      "negative_coordinate": 90,
+      "op": "*",
+      "positive_coordinate": 89,
+      "right": "V"
+    },
+    {
+      "known_nonnegative": true,
+      "left": "y",
+      "name": "y2",
+      "op": "*",
+      "positive_coordinate": 91,
+      "right": "y"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "V2",
+      "name": "aux_gap",
+      "negative_coordinate": 93,
+      "op": "-",
+      "positive_coordinate": 92,
+      "right": "y2"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "Aaux",
+      "name": "aux_term",
+      "negative_coordinate": 95,
+      "op": "*",
+      "positive_coordinate": 94,
+      "right": "aux_gap"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "aux_term",
+      "name": "Na",
+      "negative_coordinate": 97,
+      "op": "+",
+      "positive_coordinate": 96,
+      "right": "y2"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "I2",
+      "name": "strong_residual",
+      "negative_coordinate": 99,
+      "op": "-",
+      "positive_coordinate": 98,
+      "right": "Aaux"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "strong_residual",
+      "name": "Ns",
+      "negative_coordinate": 101,
+      "op": "+",
+      "positive_coordinate": 100,
+      "right": 1
+    },
+    {
+      "known_nonnegative": false,
+      "left": "N0",
+      "name": "prod0",
+      "negative_coordinate": 103,
+      "op": "*",
+      "positive_coordinate": 102,
+      "right": "N1"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "prod0",
+      "name": "prod1",
+      "negative_coordinate": 105,
+      "op": "*",
+      "positive_coordinate": 104,
+      "right": "Na"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "prod1",
+      "name": "prod2",
+      "negative_coordinate": 107,
+      "op": "*",
+      "positive_coordinate": 106,
+      "right": "Nt"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "prod2",
+      "name": "prod3",
+      "negative_coordinate": 109,
+      "op": "*",
+      "positive_coordinate": 108,
+      "right": "Ns"
+    },
+    {
+      "known_nonnegative": false,
+      "left": "prod3",
+      "name": "polynomial",
+      "op": "-",
+      "output": true,
+      "right": 1
+    }
+  ],
+  "guard_coordinate": 110,
+  "input_coordinate": 0,
+  "jones_witness_count": 110,
+  "original_coordinates": {
+    "F": 2,
+    "J": 1,
+    "T": 7,
+    "alpha": 3,
+    "eta": 11,
+    "f": 5,
+    "gamma": 14,
+    "i": 6,
+    "n": 10,
+    "s": 8,
+    "w": 9,
+    "y": 13,
+    "z": 4,
+    "zeta": 12
+  },
+  "output": "sum of squares of every residual",
+  "positive_shift": 1,
+  "residuals": [
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          110
+        ],
+        [
+          "num",
+          1
+        ]
+      ],
+      "kind": "guard"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          15
+        ],
+        [
+          "mul",
+          [
+            "port",
+            "beta"
+          ],
+          [
+            "add",
+            [
+              "var",
+              1
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "qm",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          16
+        ],
+        [
+          "add",
+          [
+            "var",
+            15
+          ],
+          [
+            "num",
+            1
+          ]
+        ]
+      ],
+      "gate": "q",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          17
+        ],
+        [
+          "mul",
+          [
+            "var",
+            16
+          ],
+          [
+            "var",
+            16
+          ]
+        ]
+      ],
+      "gate": "q2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          18
+        ],
+        [
+          "mul",
+          [
+            "var",
+            17
+          ],
+          [
+            "var",
+            16
+          ]
+        ]
+      ],
+      "gate": "q3",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          19
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              9
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "var",
+            16
+          ]
+        ]
+      ],
+      "gate": "X",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          20
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              8
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "var",
+            18
+          ]
+        ]
+      ],
+      "gate": "Y",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          21
+        ],
+        [
+          "mul",
+          [
+            "var",
+            19
+          ],
+          [
+            "var",
+            20
+          ]
+        ]
+      ],
+      "gate": "E",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          22
+        ],
+        [
+          "add",
+          [
+            "add",
+            [
+              "var",
+              11
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              12
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "k",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          23
+        ],
+        [
+          "mul",
+          [
+            "var",
+            22
+          ],
+          [
+            "var",
+            20
+          ]
+        ]
+      ],
+      "gate": "kY",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          24
+        ],
+        [
+          "mul",
+          [
+            "var",
+            21
+          ],
+          [
+            "var",
+            23
+          ]
+        ]
+      ],
+      "gate": "ell",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          25
+        ],
+        [
+          "add",
+          [
+            "var",
+            23
+          ],
+          [
+            "add",
+            [
+              "var",
+              11
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "c",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          26
+        ],
+        [
+          "add",
+          [
+            "var",
+            21
+          ],
+          [
+            "var",
+            20
+          ]
+        ]
+      ],
+      "gate": "a",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          27
+        ],
+        [
+          "mul",
+          [
+            "num",
+            4
+          ],
+          [
+            "var",
+            26
+          ]
+        ]
+      ],
+      "gate": "four_a",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          28
+        ],
+        [
+          "add",
+          [
+            "var",
+            27
+          ],
+          [
+            "num",
+            3
+          ]
+        ]
+      ],
+      "gate": "H",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          29
+        ],
+        [
+          "mul",
+          [
+            "var",
+            26
+          ],
+          [
+            "var",
+            26
+          ]
+        ]
+      ],
+      "gate": "a2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          30
+        ],
+        [
+          "add",
+          [
+            "var",
+            29
+          ],
+          [
+            "var",
+            28
+          ]
+        ]
+      ],
+      "gate": "Delta",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          31
+        ],
+        [
+          "mul",
+          [
+            "var",
+            26
+          ],
+          [
+            "var",
+            25
+          ]
+        ]
+      ],
+      "gate": "ac",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          32
+        ],
+        [
+          "add",
+          [
+            "var",
+            19
+          ],
+          [
+            "var",
+            31
+          ]
+        ]
+      ],
+      "gate": "main_base",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          33
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              14
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "var",
+            28
+          ]
+        ]
+      ],
+      "gate": "gammaH",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          34
+        ],
+        [
+          "add",
+          [
+            "var",
+            32
+          ],
+          [
+            "var",
+            33
+          ]
+        ]
+      ],
+      "gate": "main_root",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          35
+        ],
+        [
+          "mul",
+          [
+            "var",
+            25
+          ],
+          [
+            "var",
+            25
+          ]
+        ]
+      ],
+      "gate": "c2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          36
+        ],
+        [
+          "mul",
+          [
+            "var",
+            30
+          ],
+          [
+            "var",
+            35
+          ]
+        ]
+      ],
+      "gate": "Dc2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          37
+        ],
+        [
+          "mul",
+          [
+            "var",
+            34
+          ],
+          [
+            "var",
+            34
+          ]
+        ]
+      ],
+      "gate": "main_square",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          38
+        ],
+        [
+          "add",
+          [
+            "var",
+            37
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "N1",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          39
+        ],
+        [
+          "add",
+          [
+            "num",
+            0
+          ],
+          [
+            "var",
+            36
+          ]
+        ]
+      ],
+      "gate": "N1",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          40
+        ],
+        [
+          "add",
+          [
+            "var",
+            16
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "qF",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          41
+        ],
+        [
+          "add",
+          [
+            "num",
+            0
+          ],
+          [
+            "add",
+            [
+              "var",
+              2
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "qF",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          42
+        ],
+        [
+          "add",
+          [
+            "var",
+            40
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "C",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          43
+        ],
+        [
+          "add",
+          [
+            "var",
+            41
+          ],
+          [
+            "add",
+            [
+              "var",
+              3
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "C",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          44
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              15
+            ],
+            [
+              "var",
+              40
+            ]
+          ],
+          [
+            "mul",
+            [
+              "num",
+              0
+            ],
+            [
+              "var",
+              41
+            ]
+          ]
+        ]
+      ],
+      "gate": "gap_product",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          45
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              15
+            ],
+            [
+              "var",
+              41
+            ]
+          ],
+          [
+            "mul",
+            [
+              "num",
+              0
+            ],
+            [
+              "var",
+              40
+            ]
+          ]
+        ]
+      ],
+      "gate": "gap_product",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          46
+        ],
+        [
+          "add",
+          [
+            "var",
+            44
+          ],
+          [
+            "add",
+            [
+              "var",
+              3
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "gap",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          47
+        ],
+        [
+          "add",
+          [
+            "var",
+            45
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "gap",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          48
+        ],
+        [
+          "add",
+          [
+            "var",
+            17
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "q2minus1",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          49
+        ],
+        [
+          "add",
+          [
+            "num",
+            0
+          ],
+          [
+            "num",
+            1
+          ]
+        ]
+      ],
+      "gate": "q2minus1",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          50
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              46
+            ],
+            [
+              "var",
+              48
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              47
+            ],
+            [
+              "var",
+              49
+            ]
+          ]
+        ]
+      ],
+      "gate": "rproduct",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          51
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              46
+            ],
+            [
+              "var",
+              49
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              47
+            ],
+            [
+              "var",
+              48
+            ]
+          ]
+        ]
+      ],
+      "gate": "rproduct",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          52
+        ],
+        [
+          "mul",
+          [
+            "var",
+            16
+          ],
+          [
+            "port",
+            "MF"
+          ]
+        ]
+      ],
+      "gate": "qMF",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          53
+        ],
+        [
+          "add",
+          [
+            "port",
+            "MC"
+          ],
+          [
+            "var",
+            52
+          ]
+        ]
+      ],
+      "gate": "maskfactor",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          54
+        ],
+        [
+          "mul",
+          [
+            "var",
+            53
+          ],
+          [
+            "add",
+            [
+              "var",
+              1
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "mask",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          55
+        ],
+        [
+          "add",
+          [
+            "var",
+            50
+          ],
+          [
+            "var",
+            54
+          ]
+        ]
+      ],
+      "gate": "R",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          56
+        ],
+        [
+          "add",
+          [
+            "var",
+            51
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "R",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          57
+        ],
+        [
+          "mul",
+          [
+            "var",
+            21
+          ],
+          [
+            "add",
+            [
+              "var",
+              10
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "En",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          58
+        ],
+        [
+          "add",
+          [
+            "var",
+            57
+          ],
+          [
+            "var",
+            22
+          ]
+        ]
+      ],
+      "gate": "tau_partial",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          59
+        ],
+        [
+          "add",
+          [
+            "var",
+            58
+          ],
+          [
+            "var",
+            56
+          ]
+        ]
+      ],
+      "gate": "tau",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          60
+        ],
+        [
+          "add",
+          [
+            "num",
+            0
+          ],
+          [
+            "var",
+            55
+          ]
+        ]
+      ],
+      "gate": "tau",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          61
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              59
+            ],
+            [
+              "var",
+              59
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              60
+            ],
+            [
+              "var",
+              60
+            ]
+          ]
+        ]
+      ],
+      "gate": "tau2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          62
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              59
+            ],
+            [
+              "var",
+              60
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              60
+            ],
+            [
+              "var",
+              59
+            ]
+          ]
+        ]
+      ],
+      "gate": "tau2",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          63
+        ],
+        [
+          "add",
+          [
+            "var",
+            24
+          ],
+          [
+            "var",
+            22
+          ]
+        ]
+      ],
+      "gate": "ell_plus_k",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          64
+        ],
+        [
+          "mul",
+          [
+            "var",
+            24
+          ],
+          [
+            "var",
+            63
+          ]
+        ]
+      ],
+      "gate": "first_product",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          65
+        ],
+        [
+          "add",
+          [
+            "var",
+            61
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "N0",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          66
+        ],
+        [
+          "add",
+          [
+            "var",
+            62
+          ],
+          [
+            "var",
+            64
+          ]
+        ]
+      ],
+      "gate": "N0",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          67
+        ],
+        [
+          "add",
+          [
+            "port",
+            "K0"
+          ],
+          [
+            "add",
+            [
+              "var",
+              9
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "Kw",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          68
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              67
+            ],
+            [
+              "var",
+              42
+            ]
+          ],
+          [
+            "mul",
+            [
+              "num",
+              0
+            ],
+            [
+              "var",
+              43
+            ]
+          ]
+        ]
+      ],
+      "gate": "transport",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          69
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              67
+            ],
+            [
+              "var",
+              43
+            ]
+          ],
+          [
+            "mul",
+            [
+              "num",
+              0
+            ],
+            [
+              "var",
+              42
+            ]
+          ]
+        ]
+      ],
+      "gate": "transport",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          70
+        ],
+        [
+          "add",
+          [
+            "var",
+            68
+          ],
+          [
+            "var",
+            40
+          ]
+        ]
+      ],
+      "gate": "transport_partial",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          71
+        ],
+        [
+          "add",
+          [
+            "var",
+            69
+          ],
+          [
+            "var",
+            41
+          ]
+        ]
+      ],
+      "gate": "transport_partial",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          72
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              4
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "var",
+            15
+          ]
+        ]
+      ],
+      "gate": "zqm",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          73
+        ],
+        [
+          "add",
+          [
+            "var",
+            70
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "Nt",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          74
+        ],
+        [
+          "add",
+          [
+            "var",
+            71
+          ],
+          [
+            "var",
+            72
+          ]
+        ]
+      ],
+      "gate": "Nt",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          75
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              5
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              5
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "f2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          76
+        ],
+        [
+          "mul",
+          [
+            "var",
+            25
+          ],
+          [
+            "add",
+            [
+              "var",
+              7
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "cT",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          77
+        ],
+        [
+          "add",
+          [
+            "var",
+            76
+          ],
+          [
+            "var",
+            56
+          ]
+        ]
+      ],
+      "gate": "cTminusR",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          78
+        ],
+        [
+          "add",
+          [
+            "num",
+            0
+          ],
+          [
+            "var",
+            55
+          ]
+        ]
+      ],
+      "gate": "cTminusR",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          79
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              75
+            ],
+            [
+              "var",
+              77
+            ]
+          ],
+          [
+            "mul",
+            [
+              "num",
+              0
+            ],
+            [
+              "var",
+              78
+            ]
+          ]
+        ]
+      ],
+      "gate": "f2inner",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          80
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              75
+            ],
+            [
+              "var",
+              78
+            ]
+          ],
+          [
+            "mul",
+            [
+              "num",
+              0
+            ],
+            [
+              "var",
+              77
+            ]
+          ]
+        ]
+      ],
+      "gate": "f2inner",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          81
+        ],
+        [
+          "add",
+          [
+            "var",
+            79
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "V",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          82
+        ],
+        [
+          "add",
+          [
+            "var",
+            80
+          ],
+          [
+            "var",
+            25
+          ]
+        ]
+      ],
+      "gate": "V",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          83
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              6
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "var",
+            35
+          ]
+        ]
+      ],
+      "gate": "I",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          84
+        ],
+        [
+          "mul",
+          [
+            "var",
+            83
+          ],
+          [
+            "var",
+            83
+          ]
+        ]
+      ],
+      "gate": "I2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          85
+        ],
+        [
+          "add",
+          [
+            "var",
+            75
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "f2m1",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          86
+        ],
+        [
+          "add",
+          [
+            "num",
+            0
+          ],
+          [
+            "num",
+            1
+          ]
+        ]
+      ],
+      "gate": "f2m1",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          87
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              30
+            ],
+            [
+              "var",
+              85
+            ]
+          ],
+          [
+            "mul",
+            [
+              "num",
+              0
+            ],
+            [
+              "var",
+              86
+            ]
+          ]
+        ]
+      ],
+      "gate": "Aaux",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          88
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              30
+            ],
+            [
+              "var",
+              86
+            ]
+          ],
+          [
+            "mul",
+            [
+              "num",
+              0
+            ],
+            [
+              "var",
+              85
+            ]
+          ]
+        ]
+      ],
+      "gate": "Aaux",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          89
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              81
+            ],
+            [
+              "var",
+              81
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              82
+            ],
+            [
+              "var",
+              82
+            ]
+          ]
+        ]
+      ],
+      "gate": "V2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          90
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              81
+            ],
+            [
+              "var",
+              82
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              82
+            ],
+            [
+              "var",
+              81
+            ]
+          ]
+        ]
+      ],
+      "gate": "V2",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          91
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              13
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              13
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "y2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          92
+        ],
+        [
+          "add",
+          [
+            "var",
+            89
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "aux_gap",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          93
+        ],
+        [
+          "add",
+          [
+            "var",
+            90
+          ],
+          [
+            "var",
+            91
+          ]
+        ]
+      ],
+      "gate": "aux_gap",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          94
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              87
+            ],
+            [
+              "var",
+              92
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              88
+            ],
+            [
+              "var",
+              93
+            ]
+          ]
+        ]
+      ],
+      "gate": "aux_term",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          95
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              87
+            ],
+            [
+              "var",
+              93
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              88
+            ],
+            [
+              "var",
+              92
+            ]
+          ]
+        ]
+      ],
+      "gate": "aux_term",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          96
+        ],
+        [
+          "add",
+          [
+            "var",
+            94
+          ],
+          [
+            "var",
+            91
+          ]
+        ]
+      ],
+      "gate": "Na",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          97
+        ],
+        [
+          "add",
+          [
+            "var",
+            95
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "Na",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          98
+        ],
+        [
+          "add",
+          [
+            "var",
+            84
+          ],
+          [
+            "var",
+            88
+          ]
+        ]
+      ],
+      "gate": "strong_residual",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          99
+        ],
+        [
+          "add",
+          [
+            "num",
+            0
+          ],
+          [
+            "var",
+            87
+          ]
+        ]
+      ],
+      "gate": "strong_residual",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          100
+        ],
+        [
+          "add",
+          [
+            "var",
+            98
+          ],
+          [
+            "num",
+            1
+          ]
+        ]
+      ],
+      "gate": "Ns",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          101
+        ],
+        [
+          "add",
+          [
+            "var",
+            99
+          ],
+          [
+            "num",
+            0
+          ]
+        ]
+      ],
+      "gate": "Ns",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          102
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              65
+            ],
+            [
+              "var",
+              38
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              66
+            ],
+            [
+              "var",
+              39
+            ]
+          ]
+        ]
+      ],
+      "gate": "prod0",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          103
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              65
+            ],
+            [
+              "var",
+              39
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              66
+            ],
+            [
+              "var",
+              38
+            ]
+          ]
+        ]
+      ],
+      "gate": "prod0",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          104
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              102
+            ],
+            [
+              "var",
+              96
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              103
+            ],
+            [
+              "var",
+              97
+            ]
+          ]
+        ]
+      ],
+      "gate": "prod1",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          105
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              102
+            ],
+            [
+              "var",
+              97
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              103
+            ],
+            [
+              "var",
+              96
+            ]
+          ]
+        ]
+      ],
+      "gate": "prod1",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          106
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              104
+            ],
+            [
+              "var",
+              73
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              105
+            ],
+            [
+              "var",
+              74
+            ]
+          ]
+        ]
+      ],
+      "gate": "prod2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          107
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              104
+            ],
+            [
+              "var",
+              74
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              105
+            ],
+            [
+              "var",
+              73
+            ]
+          ]
+        ]
+      ],
+      "gate": "prod2",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          108
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              106
+            ],
+            [
+              "var",
+              100
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              107
+            ],
+            [
+              "var",
+              101
+            ]
+          ]
+        ]
+      ],
+      "gate": "prod3",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          109
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              106
+            ],
+            [
+              "var",
+              101
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              107
+            ],
+            [
+              "var",
+              100
+            ]
+          ]
+        ]
+      ],
+      "gate": "prod3",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "add",
+          [
+            "var",
+            108
+          ],
+          [
+            "num",
+            0
+          ]
+        ],
+        [
+          "add",
+          [
+            "var",
+            109
+          ],
+          [
+            "num",
+            1
+          ]
+        ]
+      ],
+      "gate": "polynomial",
+      "kind": "output"
+    }
+  ],
+  "schema": "sharing-quartic-candidate-v1",
+  "source_graph": "../current2011-ordinary67-94-candidate/polynomial.json",
+  "source_graph_sha256": "d76264440a60d1fbdf6a98ddd0997ae28a504a61a96e5f7e494fc5c3f423badb",
+  "status": "external candidate; no Lean equivalence or Jones endpoint"
+}
