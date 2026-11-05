@@ -1,6 +1,6 @@
 # Unchecked independent-y inequality draft
 
-All four Lean files are **source drafts and have not been checked by Lean**.
+All five Lean files are **source drafts and have not been checked by Lean**.
 `IndependentYBounds.lean` attempts to isolate the discrete Pell bound
 `c≥2n`, the derived strong-norm bound `f²>c+1`, the auxiliary inequality
 `V<y`, and the nonzero old auxiliary root; see the
@@ -14,8 +14,9 @@ signed root must be nonzero, and the new root must strictly exceed evaluated
 `V`. Sequential checks require compiled providers for the generated
 `P64QCube76Y`, the 77 transport/unit helper, the generic draft, the graph
 draft and size draft, as well as the separate ring-binding draft before the
-witness draft. No zero-specific Lean result has yet discharged the two
-conditional witness-map premises.
+witness draft. `IndependentYJoinDraft.lean` then attempts a positive-zero
+equivalence under exactly those two guards. No zero-specific Lean result has
+yet discharged them.
 
 The current build occupies the shared Lean slot, so elaboration errors,
 missing hypotheses and tactic failures remain possible. These drafts are not
