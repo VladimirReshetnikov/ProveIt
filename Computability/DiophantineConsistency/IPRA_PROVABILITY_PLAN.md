@@ -1563,6 +1563,10 @@ A [current-port specialization attempt](research/nine-sharing-norm38-current-por
 [independently audited](reviews/nine-sharing-norm38-current-ports-terminal-independent/README.md),
 hit Lean's kernel memory limit in the four-cast proof. Its failed axiom reports
 are not proof evidence; actual model-port casts remain open.
+A [split-port check](research/nine-sharing-norm38-current-ports-split-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-ports-split-terminal-independent/README.md),
+then checked all four individual casts, but the universal `Fin 4` assembly
+again hit the kernel memory limit and the specialization did not run.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
