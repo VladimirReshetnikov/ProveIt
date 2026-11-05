@@ -29,7 +29,10 @@ compiled all 16 modules and checked a same-zero bridge and standard-iPRA
 derivability theorem for the 67/106 syntax. Its [independent audit](reviews/normalized106-fresh-base-model-independent/README.md)
 checks the recorded direct inputs, outputs and process exits; external
 package-transitive and dynamic ancestry remain inherited. The expression's
-graph, degree and materialized-port correspondence are separate checks.
+graph, degree and materialized-port correspondence are separate checks. A
+[translated-consistency client](research/normalized106-fresh-base-translated/README.md)
+also checks the equivalence with Foundation's mapped Gödel–Gentzen consistency
+sentence on that same base.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
