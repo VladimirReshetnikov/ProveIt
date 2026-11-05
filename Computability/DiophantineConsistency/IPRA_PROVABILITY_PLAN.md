@@ -1494,6 +1494,12 @@ assuming a positive first port, and equivalence between seed zero and vanishing
 of its 29 residuals in the indicated IΣ₁ models. It does not yet identify
 those residuals with the current graph, instantiate the actual port, or prove
 the Jones/iPRA endpoint; no axiom reports were captured in this build.
+A [current-port Jones client](research/nine-sharing-seed38-current-jones-retry01/README.md),
+[independently audited](reviews/nine-sharing-seed38-current-jones-terminal-independent/README.md),
+then checked positivity, degree, normalization and the all-model equivalence
+between the nine-natural-variable expression's zero and this 38-witness seed
+at input one. It does not supply the seed/current-equation bridge or an iPRA
+consistency endpoint.
 A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
 assembles the prospective seed/current equivalence from explicit extraction
