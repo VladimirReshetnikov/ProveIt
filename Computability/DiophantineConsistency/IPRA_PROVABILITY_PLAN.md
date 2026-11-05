@@ -3118,8 +3118,10 @@ extraction](research/p64-qcube72-first-index-extraction-draft/README.md)
 separately classifies the first Pell index at actual positive 72-zeros with
 arbitrary natural ports. A [fixed compact composition](research/p64-qcube72-fixed-compact-first-index-draft/README.md)
 now derives `n<R` and the first Pell coordinates for an actual positive zero
-with arbitrary natural K. The first-index congruence and reverse existence
-remain open. A
+with arbitrary natural K. A checked [generic second comparison](research/p64-qcube72-half-index-lower-draft/README.md)
+proves `m<2n` from the Pell coordinates and a positive remainder, without the
+early congruence; its fixed-port application is separate. The first-index
+congruence and reverse existence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
