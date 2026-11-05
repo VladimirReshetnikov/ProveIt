@@ -20,7 +20,10 @@ finite checks, and this is not a fresh current-base rebuild. The original
 finite degree auditor rejects the later refactored Lean sources; an
 [independently reproduced historical-input replay](research/normalized106-historical-finite-replay/README.md)
 recovers its 67-operation/degree-106 certificate, without claiming a current-
-source audit.
+source audit. A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
+computes the same degree-106 polynomial using one nonintegral fixed leaf;
+its operation count does not include construction or storage of fixed leaves,
+and the integer-leaf graph remains at 67 operations.
 
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
