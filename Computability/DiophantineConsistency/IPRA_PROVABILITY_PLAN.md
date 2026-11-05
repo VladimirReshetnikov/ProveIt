@@ -1457,6 +1457,11 @@ the Lean trace, source evaluation, port casts and theorem transfer remain open.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The actual build remains pending coordination with the live P72 rebuild.
+A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
+[independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
+assembles the prospective seed/current equivalence from explicit extraction
+and construction hypotheses. Those hypotheses, the provider route and the
+draft's Lean elaboration remain unverified.
 A [33-witness sign-compressed variant](research/nine-sharing-quartic65-sign33-candidate/README.md),
 [independently audited](reviews/nine-sharing-quartic65-sign33-independent/README.md),
 has 24 quadratic residuals. Its forward construction requires five sign
