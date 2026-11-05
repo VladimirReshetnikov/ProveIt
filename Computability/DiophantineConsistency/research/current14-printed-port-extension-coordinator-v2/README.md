@@ -1,4 +1,6 @@
-# Current14 printed-port extension coordinator v2 — draft, do not launch
+# Current14 printed-port extension coordinator v2 — failed attempt
+
+**Do not rerun v2.** Its actual supervised extension attempt exited 1 on a duplicated identical Init dependency; the [failure packet](../../reviews/current14-extension-v2-failure/README.md) preserves the evidence. The separately reviewed [v3 retry](../current14-printed-port-extension-coordinator-v3/README.md) addresses this case and uses fresh paths. The operator sequence below is historical for v2.
 
 This coordinator pins the [reviewed v2 extension driver](../current14-printed-port-extension-driver-v2/README.md), its guards and owned-session helper. It is separate from the [v1 coordinator](../current14-printed-port-extension-coordinator/README.md), which remains unsafe to launch. **Do not run the v2 coordinator until the live fresh base has passed, its evidence has been independently audited, and this coordinator has been independently reviewed.** The positive build path is untested.
 

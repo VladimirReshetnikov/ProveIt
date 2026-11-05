@@ -1,4 +1,4 @@
-# Structured endpoint runner v3 — reviewed source, unlaunched
+# Structured endpoint runner v3 — client unlaunched
 
 The [v2 extension attempt failed](../../reviews/current14-extension-v2-failure/README.md) on two identical `Init.olean` lines and produced no extension module. This separate v3 supervisor and client runner point to fresh output paths and the [v3 retry coordinator](../current14-printed-port-extension-coordinator-v3/README.md). The client uses the same narrowly scoped exact-path Init multiplicity policy as the v3 driver and terminal verifier, retaining raw `--deps` logs. It has not been launched or Lean-checked.
 
