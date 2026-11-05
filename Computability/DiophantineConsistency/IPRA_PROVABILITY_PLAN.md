@@ -62,6 +62,12 @@ would improve the 67/106 tradeoff. Its [independent audit](reviews/current2011-o
 checks the graph, exact fixed-byte degree and conditional forward algebra.
 The reverse witness construction, all-model bridge and iPRA equivalence remain
 open; it is not yet an established consistency equation.
+An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
+[independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
+matches the entire candidate graph to the existing `Carrier94Syntax` source.
+A [source-closure survey](research/current2011-ordinary94-source-closure-survey/README.md)
+identifies six additional modules for a current-base existential no-zero
+bridge; it is a build route, not a checked endpoint.
 A [checked partial Pell obstruction](research/ordinary67-relaxed-same-f-obstruction/README.md),
 [independently reviewed](reviews/ordinary67-relaxed-same-f-obstruction-independent/README.md),
 shows the relaxed divisibility hypotheses alone do not justify restoring the
