@@ -3040,7 +3040,9 @@ zero at those ports or settle the fixed compact44-port existence equivalence.
 A separate [q-squared scale test](research/p64-qcube75-q2-partial-obstruction/README.md)
 has natural-port data satisfying the first norm, main and transport equations
 while `q²` divides the scale and `q³` does not. A strong-norm witness is
-given symbolically, but the auxiliary-unit equation is still open; this is
+given symbolically. A subsequent [external argument](research/p64-qcube75-q2-all-strong-obstruction/README.md)
+rules out any simultaneous strong-norm and auxiliary-unit completion for
+that particular main tuple, not for the modified graph generally. This is
 not a full graph zero or a fixed-port equivalence result.
 
 Package 73's thirteen-positive 30 / 92 followed
