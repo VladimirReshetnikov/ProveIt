@@ -3111,8 +3111,11 @@ the half-window. A [symbolic-port client](research/p64-qcube72-symbolic-port-ran
 replaces `q≥33` with the compact exponential identity and uses the same two
 mask inequalities. A [fixed compact-port composition](research/p64-qcube72-fixed-compact-ranked-main-draft/README.md)
 now checks the rank window and main Pell coordinates for the same positive
-72-zero, with arbitrary natural K. The first-index congruence and reverse
-existence remain open. A
+72-zero, with arbitrary natural K. A separate checked [comparison lemma](research/p64-qcube72-first-index-comparison-draft/README.md)
+derives the strict first/main index bound from explicit Pell-coordinate and
+scale hypotheses without the early carrier congruence; applying it to actual
+72-zeros remains separate. The first-index congruence and reverse existence
+remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
