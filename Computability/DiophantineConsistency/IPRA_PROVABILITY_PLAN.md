@@ -77,6 +77,13 @@ inherited. A [translated-consistency client](research/current2011-ordinary94-fre
 [independently reviewed](reviews/current2011-ordinary94-fresh-translated-independent/README.md),
 also checks the standard-iPRA equivalence with Foundation's mapped Gödel–Gentzen
 consistency sentence on that base.
+
+For the 13-variable 70/140 and 71/128 forms, a [current-port graph comparison](research/thirteen-current2011-forms-frontier/README.md)
+and [independent audit](reviews/thirteen-current2011-forms-frontier-independent/README.md)
+match the complete graphs with the historically checked Lean source and verify
+exact degrees for the recorded coefficient bytes. The recorded historical
+endpoint provider is currently incomplete, so its audit could not be replayed;
+the new graph comparison is not a fresh Lean endpoint or a byte-to-port theorem.
 An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
 [independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
 matches the entire candidate graph to the existing `Carrier94Syntax` source.
