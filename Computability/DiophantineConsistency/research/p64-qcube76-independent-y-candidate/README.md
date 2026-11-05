@@ -17,7 +17,8 @@ examines the required zero-specific inequalities, with an independent
 The generic [inequality lemmas](../p64-qcube76-independent-y-lemmas-draft/README.md)
 and [ring bindings](../fourteen-p64-qcube76-independent-y-binding-draft/README.md)
 now check in Lean. A guarded [model split and main-root check](../p64-qcube76y-graph-model-guarded-check/README.md)
-also passes; the remaining graph-specific bounds and witness drafts are unchecked.
+also passes, as does the [actual-zero size bound](../p64-qcube76y-size-guarded-check/README.md)
+`f²>c+1`. The strict-root and witness drafts remain unchecked.
 **Neither direction of positive-zero equivalence nor an
 iPRA endpoint is established here.** No
 full graph-zero counterexample is claimed. The maintained root `equation.tex`
