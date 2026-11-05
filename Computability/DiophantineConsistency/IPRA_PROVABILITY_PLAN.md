@@ -3095,10 +3095,11 @@ and signed auxiliary natural norm are now extracted at actual zeros. A checked
 main Pell coordinates at the actual graph rank assuming `q≥33`, rank positivity
 and `2*rank<c`; deriving that window at graph zeros remains open. A [monolithic rank-window
 attempt](research/p64-qcube72-actual-rank-window-draft/README.md) stopped at its
-RSS guard without a Lean diagnostic or theorem object. The first generic check
-of an [unchecked split](research/p64-qcube72-actual-rank-window-split-draft/README.md)
-reached Lean but failed on missing helper identifiers and a simplification goal;
-it proves no rank bound. A separate
+RSS guard without a Lean diagnostic or theorem object. A later [generic split](research/p64-qcube72-actual-rank-window-split-attempt02/README.md)
+checks rank positivity and `R+1<q⁴` at actual zeros assuming the two port-mask
+inequalities; an [independent artifact review](reviews/p64-qcube72-generic-rank-window-independent/README.md)
+confirms its stated direct-provider scope. The first compact specialization
+stopped at its memory guard without a theorem or Lean diagnostic. A separate
 [conditional rank-half lemma](research/p64-qcube72-rank-half-draft/README.md)
 checks `2R<c` in the stated models from an explicit Pell equation and rank,
 scale and size hypotheses; its graph-specific hypotheses have not yet been
