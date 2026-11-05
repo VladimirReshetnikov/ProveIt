@@ -78,7 +78,23 @@ theorem strict_auxiliary (A c f V0 y z : DiffRing V)
   have hmul := mul_nonneg (sq_nonneg f) (show 0≤z-1 by linarith)
   nlinarith only [hmul,hzprod,hsize]
 
+theorem old_root_ne_zero (A V0 y : DiffRing V)
+    (hA : 2≤A) (haux : A*(V0*V0-y*y)+y*y=1) : y≠0 := by
+  intro hy
+  subst y
+  simp only [mul_zero,sub_zero,add_zero] at haux
+  have hV : V0≠0 := by
+    intro h
+    simp [h] at haux
+  have hV1 : 1≤|V0| := DiscreteOrderedRingFacts.abs_ge_one model_discrete hV
+  have hV2 : 1≤V0*V0 := by
+    have ha := abs_mul_abs_self V0
+    nlinarith [abs_nonneg V0]
+  have hprod := mul_nonneg (show 0≤A-2 by linarith) (show 0≤V0*V0-1 by linarith)
+  nlinarith only [haux,hA,hV2,hprod]
+
 #print axioms IndependentYBounds.pell_c_bound
 #print axioms IndependentYBounds.strong_f_bound
 #print axioms IndependentYBounds.strict_auxiliary
+#print axioms IndependentYBounds.old_root_ne_zero
 end IndependentYBounds
