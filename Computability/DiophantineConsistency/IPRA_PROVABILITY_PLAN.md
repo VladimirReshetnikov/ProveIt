@@ -1520,6 +1520,11 @@ A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/READM
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
 port-cast and positivity hypotheses; this direction is also uncompiled.
+A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
+checks all 60 gate conditions and their conjunction for the generated witness
+assignment over a commutative semiring mapped into a ring. It does not yet
+establish the five norms or the seed-zero conclusion.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
