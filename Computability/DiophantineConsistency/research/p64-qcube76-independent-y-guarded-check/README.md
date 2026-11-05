@@ -37,6 +37,26 @@ passed both finished-child and live-unmeasurable cases without launching Lean.
 Only the extra check's own process group is ever sent a termination signal.
 The check was run alongside the separately managed current14 rebuild.
 
+## Generic bounds
+
+The corrected `IndependentYBounds.lean` passed its third bounded check: Lean
+exit 0, four `[propext, Classical.choice, Quot.sound]` reports, no warnings or
+`sorryAx`, and stable direct guards. The [successful receipt](observations/bounds-attempt03/result.json)
+and [log](observations/bounds-attempt03/compile.log) record 80 RSS samples,
+with sampled maximum 2,129,199,104 bytes and minimum `MemAvailable`
+18,789,101,568 bytes; neither stop fired. Its object is
+`/tmp/p64-qcube76y-bounds-priority-check03/IndependentYBounds.olean`, SHA-256
+`6458991845eba747546b4d45c454a31a907e226a98fbb7301d6cf30ae41da582`.
+This proves the generic model lemmas, not their graph-specific hypotheses or
+either witness direction.
+
+The retained [first](observations/bounds-attempt01/compile.log) and
+[second](observations/bounds-attempt02/compile.log) checks exited 1 with
+source errors; the second report contained `sorryAx` in the unresolved
+strong-bound theorem. Both exact source versions are preserved alongside
+their receipts. The successful third source SHA-256 is
+`7ac6662b3b6055cb30091b0d9feb958a76246381207028dc45cbf8890db69744`.
+
 To repeat, choose a fresh output path in a copy of `check_graph_final.py` and
 coordinate the single additional Lean slot; do not overwrite prior evidence.
 

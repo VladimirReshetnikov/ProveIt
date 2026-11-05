@@ -1,10 +1,20 @@
-# Unchecked independent-y inequality draft
+# Independent-y model lemmas and unchecked graph drafts
 
-All five Lean files are **source drafts and have not been checked by Lean**.
-`IndependentYBounds.lean` attempts to isolate the discrete Pell bound
+# Checked generic model lemmas
+
+`IndependentYBounds.lean` passed a guarded Lean check: exit 0, four reports
+`[propext, Classical.choice, Quot.sound]`, and no warnings or `sorryAx`.
+The [receipt and earlier failed diagnostics](../p64-qcube76-independent-y-guarded-check/README.md#generic-bounds)
+record the bounded checks and captured-provider scope. The checked lemmas give
+the discrete Pell bound
 `c≥2n`, the derived strong-norm bound `f²>c+1`, the auxiliary inequality
 `V<y`, and the nonzero old auxiliary root; see the
 [mathematical argument](../p64-qcube76-independent-y-analysis/README.md).
+
+# Unchecked graph and witness drafts
+
+The other four Lean files remain **source drafts and have not been checked by
+Lean**.
 `IndependentYGraphDraft.lean` attempts the new graph's zero-specific residual
 split and main Pell-root extraction. `IndependentYSizeDraft.lean` attempts
 to apply the generic size inequality to the evaluated strong residual and
@@ -18,6 +28,6 @@ witness draft. `IndependentYJoinDraft.lean` then attempts a positive-zero
 equivalence under exactly those two guards. No zero-specific Lean result has
 yet discharged them.
 
-The current build occupies the shared Lean slot, so elaboration errors,
-missing hypotheses and tactic failures remain possible. These drafts are not
-evidence of a proof or an iPRA endpoint.
+Elaboration errors, missing hypotheses and tactic failures remain possible in
+those drafts. The generic bounds alone are not a graph equivalence or iPRA
+endpoint.

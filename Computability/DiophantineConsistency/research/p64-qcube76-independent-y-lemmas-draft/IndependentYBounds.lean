@@ -31,10 +31,10 @@ theorem pell_c_bound (n c g : DiffRing V)
   have hlow : (n*c-1)*(n*c-1) < g*g := by nlinarith only [hpell,hpos]
   linarith
 
-theorem strong_f_bound (n c g f i : DiffRing V)
-    (hn : 2≤n) (hc : 3≤c) (hg : 0≤g) (hf : 1≤f) (hi : 1≤i)
+theorem strong_f_bound (n c g f idx : DiffRing V)
+    (hn : 2≤n) (hc : 3≤c) (hg : 0≤g) (_hf : 1≤f) (hi : 1 ≤ idx)
     (hpell : g*g = 1+(n*n-1)*(c*c))
-    (hstrong : (n*n-1)*(f*f-1)=(i*(c*c))*(i*(c*c))) : c+1<f*f := by
+    (hstrong : (n*n-1)*(f*f-1)=(idx*(c*c))*(idx*(c*c))) : c+1<f*f := by
   have hcn := pell_c_bound n c g hn hc hg hpell
   have hdelta : 0≤n*n-1 := by nlinarith only [hn]
   have hc_ge : n≤c := by linarith
@@ -46,13 +46,13 @@ theorem strong_f_bound (n c g f i : DiffRing V)
   have h2 := mul_lt_mul_of_pos_right hdelta_lt (show 0<c by linarith)
   have hc2 : c≤c*c := by nlinarith only [hc]
   have h3 := mul_le_mul_of_nonneg_left hc2 (show 0≤c*c by positivity)
-  have hip := mul_nonneg (show 0≤i-1 by linarith) (sq_nonneg c)
-  have hi2 : c*c≤i*(c*c) := by nlinarith only [hip]
+  have hip := mul_nonneg (show 0 ≤ idx-1 by linarith) (sq_nonneg c)
+  have hi2 : c*c ≤ idx*(c*c) := by nlinarith only [hip]
   have h4 := mul_self_le_mul_self (show 0≤c*c by positivity) hi2
   nlinarith only [hstrong,h1,h2,h3,h4,hc]
 
 theorem strict_auxiliary (A c f V0 y z : DiffRing V)
-    (hA : 2≤A) (hc : 3≤c) (hf : 1≤f) (hy : 1≤y)
+    (hA : 2≤A) (hc : 3≤c) (_hf : 1≤f) (hy : 1≤y)
     (hsize : c+1<f*f) (hV : V0=f*f*z-c)
     (haux : A*(V0*V0-y*y)+y*y=1) : V0<y := by
   have hy2 : 1≤y*y := by nlinarith only [hy]
@@ -82,7 +82,7 @@ theorem old_root_ne_zero (A V0 y : DiffRing V)
     (hA : 2≤A) (haux : A*(V0*V0-y*y)+y*y=1) : y≠0 := by
   intro hy
   subst y
-  simp only [mul_zero,sub_zero,add_zero] at haux
+  simp only [mul_zero,_root_.sub_zero,add_zero] at haux
   have hV : V0≠0 := by
     intro h
     simp [h] at haux
