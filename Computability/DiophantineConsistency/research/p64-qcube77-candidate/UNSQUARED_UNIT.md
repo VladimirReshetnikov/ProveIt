@@ -15,10 +15,10 @@ to
 
 The second expression can vanish by cancellation even when the unit
 residual is nonzero. For a concrete assignment in the ordinary integers,
-take `A1=1`, `Na=-1`, `M=1`, `W=1`, and `Lt=0`. The unsquared expression
-is `-2 + 1 + 1 = 0`, while `A1*Na=-1`, so the squared expression is 6.
-The assignment even satisfies `A1≠−1` and `Lt=0`; those two conditions
-alone do not eliminate cancellation.
+take `A1=1`, `Na=-3`, `M=2`, `W=0`, and `Lt=0`. The unsquared expression
+is `-4 + 4 = 0`, while `A1*Na=-3`, so the squared expression is 20. The
+assignment even satisfies `A1≠−1`, `Na≠0`, `Na≠−1`, `W=0`, and `Lt=0`;
+those conditions alone do not eliminate cancellation.
 
 This is a counterexample to the *unrestricted residual-level implication*,
 not a solution of the actual graph. The residuals there share the same
