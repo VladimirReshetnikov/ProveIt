@@ -22,9 +22,8 @@ model representatives and both conditional graph witness maps. The two
 zero-specific premises have been checked separately in the
 [old-root](../p64-qcube76y-oldroot-guarded-check/README.md) and
 [strict-root](../p64-qcube76y-strict-guarded-check/README.md) packets.
-`IndependentYJoinDraft.lean` remains unchecked; its conditional equivalence
-and the full join have not yet been checked.
+`IndependentYJoinDraft.lean` and the full unconditional join now pass their
+[guarded checks](../p64-qcube76y-join-guarded-check/README.md).
 
-Elaboration errors and tactic failures remain possible in the unchecked join.
-The separate checked ingredients alone are not yet a graph equivalence or iPRA
-endpoint.
+The resulting all-model positive-zero equivalence is checked; an iPRA
+endpoint and external file/PDF binding remain separate.
