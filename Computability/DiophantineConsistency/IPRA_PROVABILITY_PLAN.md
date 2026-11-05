@@ -1402,6 +1402,13 @@ Its [independent review](reviews/nine-sharing-quartic67-independent/README.md)
 checks every gate identity, degree bound and guard externally. The all-model
 zero bridge, Lean normalization and degree proofs, and new Jones/iPRA endpoint
 remain open; the count does not describe the final nine-variable graph.
+A further [affine-inlined seed candidate](research/nine-sharing-quartic65-59-candidate/README.md),
+[independently audited](reviews/nine-sharing-quartic65-59-independent/README.md),
+works directly from the current 65-gate graph. It has 59 natural witnesses
+and 46 quadratic residuals; the first residual is nonzero at zero witnesses,
+so its normalization needs no separate guard. These are external finite
+checks. Its Lean degree and normalization proofs, all-model zero bridge and
+Jones/iPRA endpoint remain open, and no final graph size is asserted.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the
