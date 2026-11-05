@@ -1,0 +1,5 @@
+# Independent review: namespace-safe nine-variable endpoint
+
+The checked source gives `Expr (Fin 9)` as `ExecutableJones.expression seed 0`, with seed derived from the natural split of the maintained current equation. Its model-zero equivalence and native/standard mapped-refutation and standard mapped-Gödel–Gentzen derivations match the earlier reviewed endpoint proof bodies after the namespace change. Its local `renameNatural` has the same four recursive cases as the previous helper; this avoids introducing a conflicting global declaration. The nine model coordinates are natural-valued, including zero.
+
+Actual outer session 65720 and both Lean children exited 0. All five explicit Jones/bridge/endpoint axiom reports list only `propext`, `Classical.choice`, and `Quot.sound`. The checker verifies source and provider object pins, the unchanged named theorem bodies, direct-guard and 1,055-link overlay records, logs and sampled monitor outcomes. The inherited ancestry is not a complete dynamic load trace or clean independent rebuild. No literal graph, numeric degree, file semantics, or Lean replay is asserted here.

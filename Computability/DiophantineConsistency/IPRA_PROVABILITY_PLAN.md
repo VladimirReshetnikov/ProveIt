@@ -1377,6 +1377,12 @@ Markdown or filesystem interpretation. An [external structural count](research/n
 finds 8,446,685 nodes on each natural split and 16,893,385 quartic witnesses.
 These are source-structure counts, not a Lean numerical equality or a count
 of operations in the resulting nine-variable equation.
+A later [unique-namespace Jones client](research/nine-current-fresh-jones-client/README.md)
+and [endpoint](research/nine-current-fresh-endpoint/README.md) avoid the
+alternate provider's duplicate names; their [independent endpoint review](reviews/nine-current-fresh-endpoint-independent/README.md)
+checks the theorem and recorded source/provider scope. A separate [ring
+client](research/nine-current-fresh-symbolic-ring/README.md) checks the
+finite-sum formula for that unique-namespace expression.
 An additional equal-length-root replay has completed
 [all 104 stages](reviews/nine-variable-ipra-equal-length-stages-102-104-monitored/README.md):
 84 output objects match byte-for-byte, and 20 match after one equal-length
