@@ -3083,7 +3083,10 @@ ancestry qualifications and do not yield a reverse witness map. A checked
 [main-root bridge](research/p64-qcube72-main-root-draft/README.md) also
 constructs and classifies the oriented Pell root while retaining its carrier
 equation; identifying its index with the rank and proving the needed
-large-`c` bound remain open. A
+large-`c` bound remain open. A separate [conditional rank-half lemma](research/p64-qcube72-rank-half-draft/README.md)
+checks `2R<c` in the stated models from an explicit Pell equation and rank,
+scale and size hypotheses; its graph-specific hypotheses have not yet been
+assembled. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
