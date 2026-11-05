@@ -46,13 +46,18 @@ ancestry remains inherited. A [separate client](research/current2011-spheres-fre
 checks both standard-iPRA equivalences with Foundation's mapped Gödel–Gentzen
 consistency sentence; its [independent audit](reviews/current2011-spheres-fresh-translated-independent/README.md)
 checks the recorded source and provider inputs.
-A [71-operation, degree-60 sphere candidate](research/current2011-ordinary71-60-candidate/README.md)
+A [71-operation, degree-60 sphere equation](research/current2011-ordinary71-60-candidate/README.md)
 has a separately [audited graph and exact fixed-byte degree](reviews/current2011-ordinary71-60-graph-independent/README.md).
 Its [generic ring theorem](research/current2011-ordinary71-60-generic/README.md),
 [independently reviewed](reviews/current2011-ordinary71-60-generic-independent/README.md),
 proves zero equivalence to the 67/94 value at the same positive coordinates
-under the stated discrete-order and Pell facts. Its literal graph-to-model
-binding and iPRA endpoint have not yet passed Lean.
+under the stated discrete-order and Pell facts. A [literal evaluator](research/current2011-ordinary71-60-literal/README.md)
+and [all-model join](research/current2011-ordinary71-60-model-join/README.md)
+connect this to the 67/94 syntax, and a [Lean endpoint](research/current2011-ordinary71-60-ipra/README.md),
+[independently audited](reviews/current2011-ordinary71-60-ipra-independent/README.md),
+checks standard-iPRA derivability for both the mapped refutation negation and
+mapped Gödel–Gentzen consistency. The degree and graph-to-file correspondence
+remain external checks, and package-transitive ancestry remains inherited.
 A proposed one-gate reduction of the 71/80 sphere leaves an extra `W = -1`
 case. A [transport-only obstruction](research/sphere70-negative-transport-obstruction/README.md),
 [independently reviewed](reviews/sphere70-negative-transport-independent/README.md),
