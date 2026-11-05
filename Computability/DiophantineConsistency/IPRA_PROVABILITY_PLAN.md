@@ -1520,6 +1520,10 @@ A [smaller reference-base retry](research/nine-sharing-norm38-reference-base-ret
 [independently audited](reviews/nine-sharing-norm38-reference-base-terminal-independent/README.md),
 then checked topology of the actual 60-gate list from its 21 initial nodes.
 Reference gate equations, carrier fields and the model bridge remain open.
+A [separate field client](research/nine-sharing-norm38-reference-fields01-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-fields01-terminal-independent/README.md),
+checks that reference nodes 61 and 44 equal the original P and Q fields over
+any commutative ring. The other fields and graph/source bridge remain open.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
