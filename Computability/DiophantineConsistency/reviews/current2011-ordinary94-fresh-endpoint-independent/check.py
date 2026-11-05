@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+import hashlib,json,os,re,subprocess,sys
+from pathlib import Path
+if not sys.flags.isolated or not sys.flags.no_site or sys.flags.optimize:raise SystemExit('requires python3 -I -S -B')
+D=Path(__file__).resolve().parents[2];P=D/'research/current2011-ordinary94-fresh-endpoint';O=P/'attempt01';R=D/'reviews'
+def H(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def need(v,s):
+ if not v:raise RuntimeError(s)
+for n,h in {'FreshCarrier94.lean':'fc792393a91b12a34346e02aeefff3e799f710c1651afccdaaa5fd26c914747e','check01.py':'86f635d8dada820d2663120c7b6ecffc89effa3706ee0ad7b237ca0a6850e872','attempt01/result.json':'5378e5fae67be1259a9b28143ab9be3d08d3c6e3e6cdfef55ae05676923311de','attempt01/outer-observation.json':'0558700490d565cad5a56a22e74693f7d79b4e8b6b56c54d1cc3ab7f56c217f9'}.items():need(H(P/n)==h,'pin '+n)
+r=json.loads((O/'result.json').read_text());t=json.loads((O/'outer-observation.json').read_text());need(r['status']=='PASS' and r['exit']==0 and r['stop_reason'] is None and r['guards_stable'] and r['guards_before']==r['guards_after'] and len(r['guards_after'])==284,'result');need(t['session_id']==81138 and t['observed_outer_exit']==0,'outer exit')
+for n,m in r['guards_after'].items():
+ p=Path(m['path'] if m is not None and 'path' in m else n.rsplit(':',1)[-1]);
+ if m is None:need(not os.path.lexists(p),'unexpected '+n)
+ else:need(p.is_file() and str(p.resolve())==m['realpath'] and H(p)==m['sha256'],'guard '+n)
+for file,h in [('Carrier94Syntax.olean','b0a4f82738eb22627c3631b0cfc48053b8051682fb7ed5c2b958281a7e29c76b'),('Carrier94Value.olean','a9c320a8e69a693aa869dbb7b272fe642e1bf76420e2602e580abbdfff52e887'),('ArithmeticPellResidueAux.olean','822ff3a7319d4e56cab509034489ec8a984816078630cb3d7fdb01a4df00df29'),('ArithmeticCarrier94Indices.olean','e61314249a1cebf8cf30f800a884ad2299eed69ec4946d42d3e23eb36264d951'),('ArithmeticCarrier94Soundness.olean','85330b0536024a0afa6dcb693dfc11afe8c7a9469e0a86c65bae59d8cb788bf0'),('ArithmeticCarrier94Extraction.olean','51fb88739bbd625ce47e33a9fca193d962f4165186eca7ad6017bcd20f1b22ac'),('FreshModel106.olean','d18cea14c5bf1a363aac4fbc76a9afa72623a4df185eba25070112c514deb942')]:need(any(k.endswith('/'+file) and v and v['sha256']==h for k,v in r['guards_after'].items()),'provider '+file)
+need(H(O/'compile.log')==r['log_sha256']=='8418179400ea0bc51a9e2c86f4cc6182e059e25e8f46fc3c5a5ed3183194f0d2','log');l=(O/'compile.log').read_text();reports=re.findall(r"'DiophantineConsistency\.FreshCarrier94\.(\w+)' depends on axioms: \[([^]]*)\]",l,re.S);need({n:{x.strip() for x in v.split(',')} for n,v in reports}=={n:{'propext','Classical.choice','Quot.sound'} for n in ('halts_of_zero94','zero94_of_zero','bridge94','standard_equivalence94')} and not any(x in l for x in ('sorryAx','warning:','error:')),'axiom reports');need(H(Path('/tmp/current2011-ordinary94-fresh-endpoint-check01/FreshCarrier94.olean'))==r['object_sha256']=='dfe72edd726a5a140d509f606f866ce6dd8e8d1f008bc96a957c1c1509ce642c','object')
+for name,h in [('current2011-ordinary94-six-module-build-independent','e496b0480d5e670a5d01a6a437d3190e16f76f9f6bc92532bb6edb77ac82195a'),('current2011-ordinary67-94-syntax-binding-independent','cf240534b38a96d49e0072058423ea84a9613f723638ec6f3e128fc7a7e5bc1d'),('current2011-ordinary67-94-candidate-independent','827789a306816bcd95a430d365bf05a5b96ca4a376ffc59cebfb1fd8b14d3206')]:
+ p=R/name/'check.py';need(H(p)==h,'audit pin '+name);q=subprocess.run([sys.executable,'-I','-S','-B',str(p)],capture_output=True);need(q.returncode==0 and q.stdout==(p.parent/'result.json').read_bytes(),'audit rerun '+name)
+print(json.dumps({'status':'PASS_SCOPED_INDEPENDENT_AUDIT','direct_and_nested_provider_slots':284,'six_stage_graph_and_degree_audits':3,'success_session':81138,'scope':'Existential fixed-port 94 no-zero and standard iPRA derivation, recorded direct provider; no Lean replay, PDF or new package-transitive ancestry.'},sort_keys=True,indent=2))

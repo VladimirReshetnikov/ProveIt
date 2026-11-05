@@ -57,24 +57,32 @@ an [independent audit](reviews/sphere-factor-partition-screen-independent/README
 reproduces its operation counts and exact specialized degrees. None of that
 family's screened profiles improves the established operation–degree tradeoffs;
 the screen neither proves zero equivalences nor a global circuit lower bound.
-A [current-port 67-operation/degree-94 candidate](research/current2011-ordinary67-94-candidate/README.md)
-would improve the 67/106 tradeoff. Its [independent audit](reviews/current2011-ordinary67-94-candidate-independent/README.md)
+A [current-port 67-operation/degree-94 equation](research/current2011-ordinary67-94-candidate/README.md)
+improves the 67/106 tradeoff. Its [independent audit](reviews/current2011-ordinary67-94-candidate-independent/README.md)
 checks the graph, exact fixed-byte degree and conditional forward algebra.
-The reverse witness construction, all-model bridge and iPRA equivalence remain
-open; it is not yet an established consistency equation.
+A [current-base Lean endpoint](research/current2011-ordinary94-fresh-endpoint/README.md),
+[independently audited](reviews/current2011-ordinary94-fresh-endpoint-independent/README.md),
+establishes the existential no-zero bridge and standard-iPRA equivalence.
+The reverse direction passes through machine soundness and may change witnesses;
+it is not a same-valuation equivalence. Fixed-byte degree and graph-to-source
+correspondence are external checks, and provider transitive ancestry remains
+inherited.
 An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
 [independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
 matches the entire candidate graph to the existing `Carrier94Syntax` source.
 A [source-closure survey](research/current2011-ordinary94-source-closure-survey/README.md)
-identifies six additional modules for a current-base existential no-zero
-bridge; it is a build route, not a checked endpoint.
+identified six additional modules for the current-base existential no-zero
+bridge; the [six-module build](research/current2011-ordinary94-six-module-build/README.md)
+and its [independent review](reviews/current2011-ordinary94-six-module-build-independent/README.md)
+record the compiled sources, including the extraction source variant.
 A [checked partial Pell obstruction](research/ordinary67-relaxed-same-f-obstruction/README.md),
 [independently reviewed](reviews/ordinary67-relaxed-same-f-obstruction-independent/README.md),
 shows the relaxed divisibility hypotheses alone do not justify restoring the
 old multiplier while keeping `f` and `c` fixed. It does not rule out a
 different witness. The existing `ArithmeticPellAuxiliarySeed.auxiliary_seed`
 constructs a replacement strong and auxiliary seed under its stated index and
-phase hypotheses; deriving those hypotheses from a 67/94 zero remains open.
+phase hypotheses. The checked endpoint instead uses the existing index recovery
+and machine-soundness development for its existential reverse direction.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
