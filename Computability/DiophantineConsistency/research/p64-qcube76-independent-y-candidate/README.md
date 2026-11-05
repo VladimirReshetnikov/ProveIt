@@ -14,10 +14,11 @@ route chooses `|V+e|` after proving it is nonzero. A separate
 [mathematical analysis](../p64-qcube76-independent-y-analysis/README.md)
 examines the required zero-specific inequalities, with an independent
 [argument review](../../reviews/p64-qcube76-independent-y-math-independent/README.md).
-An [inequality-lemma Lean draft](../p64-qcube76-independent-y-lemmas-draft/README.md)
-and a [ring-binding Lean draft](../fourteen-p64-qcube76-independent-y-binding-draft/README.md)
-have not been checked and do not establish those claims. **Neither direction
-of positive-zero equivalence nor an iPRA endpoint is established here.** No
+The generic [inequality lemmas](../p64-qcube76-independent-y-lemmas-draft/README.md)
+now check in Lean; the graph-specific, witness and
+[ring-binding drafts](../fourteen-p64-qcube76-independent-y-binding-draft/README.md)
+remain unchecked. **Neither direction of positive-zero equivalence nor an
+iPRA endpoint is established here.** No
 full graph-zero counterexample is claimed. The maintained root `equation.tex`
 and `equation.pdf` are unchanged.
 
@@ -51,8 +52,11 @@ results are [`checks.json`](checks.json), [`ray-check.json`](ray-check.json),
 and [`external-check.json`](external-check.json).
 
 [`generate_lean.py`](generate_lean.py) transcribes the graph to
-[`P64QCube76Y.lean`](P64QCube76Y.lean), which **has not been compiled in Lean**.
-The external evidence does not prove zero equivalence, Lean/JSON or PDF
+[`P64QCube76Y.lean`](P64QCube76Y.lean), which passed a bounded
+[guarded Lean compilation](../p64-qcube76-independent-y-guarded-check/README.md)
+against captured providers. That check verifies the definition elaborates;
+it does not rebuild its complete provider ancestry. The external evidence
+does not prove zero equivalence, Lean/JSON or PDF
 semantics, or global minimality. To reproduce it:
 
 ```sh
