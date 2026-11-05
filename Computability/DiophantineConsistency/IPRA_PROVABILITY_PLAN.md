@@ -3005,6 +3005,10 @@ checks do not rebuild complete provider ancestry; external payload/display
 identification remains separate.
 An independent [eleven-stage receipt audit](reviews/p64-qcube76y-chain-receipt-independent/README.md)
 checks the recorded direct-object chain and axiom logs without rerunning Lean.
+A [source-closure plan](research/p64-qcube76y-source-closure-plan/README.md)
+identifies 689 additional project modules and 42 research modules for a
+prospective coherent replay on top of the currently running 14-variable base.
+It is a source survey, not a replay or authentication of the existing objects.
 A [restricted local rewrite screen](research/p64-qcube76y-local-rewrite-search/README.md)
 found no smaller candidate in its enumerated families and proves no global
 lower bound.
@@ -3022,10 +3026,17 @@ Neither a fixed-port existence counterexample nor an iPRA endpoint follows.
 A distinct [72-operation free-main experiment](research/p64-qcube72-free-main-obstruction/README.md)
 removes the scaled gamma carrier. A paper-level forward positivity argument
 and an exact partial obstruction to the direct reverse divisibility are
-recorded; no full graph zero or existence equivalence is established. A
+recorded. A [generic Lean positivity lemma](research/p64-qcube72-forward-model-guarded/README.md)
+checks the required root inequality under explicit hypotheses; composing it
+with the actual graph is still open. No full graph zero or existence
+equivalence is established. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
-force the required divisibility.
+force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
+independently [checked](reviews/p64-free-strong-index-full-zero-independent/README.md),
+shows that the direct strong-index inverse fails even when all 75 remaining
+gates vanish at certain natural ports. It does not exclude another original
+zero at those ports or settle the fixed compact44-port existence equivalence.
 
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
