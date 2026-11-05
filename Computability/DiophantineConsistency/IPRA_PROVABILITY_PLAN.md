@@ -165,7 +165,14 @@ An external [symmetry argument](reviews/ordinary12-absorb88-transport-obstructio
 further shows that, if a fixed-port 89 zero exists, there is a full 88 zero
 with negative transport. This rules out a universal positivity proof under
 that condition, but does not settle existential equivalence.
-No 88-operation halt or iPRA endpoint is claimed.
+A [two-norm bound](research/ordinary12-absorb88-main-root-draft/README.md)
+now applies to actual positive 88 zeros with positive beta, giving
+`eta+zeta >= 8XY^2+4` without a transport-sign assumption; it has a
+separate [source review](reviews/absorb88-two-norm-gap-independent/README.md).
+A [main-root orientation inequality](research/ordinary12-absorb88-negative-main-orientation-draft/README.md)
+is checked only under explicit ordered-ring bounds, including a signed-rank
+lower bound that has not yet been derived for the graph. Both checks inherit
+temporary providers. No 88-operation halt or iPRA endpoint is claimed.
 
 A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
 has externally checked liveness and Lean ring identities for the transformed
