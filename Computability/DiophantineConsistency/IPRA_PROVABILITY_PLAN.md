@@ -1105,7 +1105,12 @@ build.
 A read-only [current-base source survey](research/nine-variable-current-base-source-survey/README.md)
 identifies 995 shared modules and a 217-module extension for both nine-variable
 endpoints and the check client; the base records and sources were rehashed.
-This is not a Lean rebuild or a package-transitive compatibility check.
+This is not a Lean rebuild or a package-transitive compatibility check. A
+[bounded external-dependency probe](research/nine-variable-external-matrix-preflight/README.md)
+resolved direct seeds and visited 64 serialized headers, but 199 frontier
+modules remain; Matrix compatibility and full package reachability are still
+unresolved. Its independent audit also identifies process-cleanup requirements
+for any extended traversal.
 
 The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
 states native, standard and equality-only iPRA equivalences without hypotheses;
