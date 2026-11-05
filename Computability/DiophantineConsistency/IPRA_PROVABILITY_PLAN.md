@@ -32,6 +32,16 @@ and the integer-leaf graph remains at 67 operations. Its [Lean full-output
 binding](research/normalized106-rational66-lean/README.md) checks equality
 to the 67/106 syntax over commutative rings under the two fixed-leaf
 identities, on the historical provider.
+An [actual-port specialization](research/normalized106-rational66-actual/README.md)
+proves that the rational evaluator and integer syntax have the same positive
+zeros at the same valuation. A [combined client](research/normalized106-rational66-pair/README.md)
+checks this external equivalence alongside the existing integer-syntax iPRA
+derivability theorem, and a [same-provider replay](research/normalized106-rational66-pair-replay/README.md)
+matches its object and log. These are separate conjuncts: they do not express
+the rational evaluator as an iPRA formula or supply a 66-operation integer
+equation. Their historical package and transitive ancestry remains inherited;
+the materialized numerical coefficient bytes are not formally identified with
+the Lean ports by this result.
 
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
