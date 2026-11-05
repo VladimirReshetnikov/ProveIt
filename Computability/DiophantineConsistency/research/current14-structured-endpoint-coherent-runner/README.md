@@ -1,6 +1,16 @@
 # Structured endpoint coherent runner — reviewed draft, do not launch
 
-This is a source-reviewed, unlaunched attempt to build two source clients atop the single fresh current14 base and the reviewed v2 printed-port extension. It does not establish either the endpoint theorem or the semantics of the displayed PDF. **Do not launch until the fresh base has actually exited successfully, its independent audit has passed, the [independent source review](../../reviews/current14-structured-endpoint-coherent-independent/README.md) still matches the files, and execution is coordinated.** The current build and extension must not overlap.
+This is a source-reviewed attempt to build two source clients atop the single fresh current14 base and the reviewed v2 printed-port extension. It does not establish either the endpoint theorem or the semantics of the displayed PDF. **Do not launch until the fresh base has actually exited successfully, its independent audit has passed, the [independent source review](../../reviews/current14-structured-endpoint-coherent-independent/README.md) still matches the files, and execution is coordinated.** The current build and extension must not overlap.
+
+The extension supervisor has now been launched. The [live launch
+observation](extension-launch-observation.json) records supervisor PID 88471,
+coordinator PID 88478, its extension-driver child PID 88510 and session 65643.
+It is point-in-time evidence only. That supervisor session subsequently exited
+1; the [preserved failure packet](../../reviews/current14-extension-v2-failure/README.md)
+shows the first extension module rejected two identical `Init.olean` dependency
+lines. No extension module completed. The independently reviewed two-client
+runner remains unlaunched. Any retry requires a separately reviewed fix and
+fresh output paths; preserve the failed outputs.
 
 `extension_supervisor.py` independently observes the actual v2 coordinator child exit. Before creating anything it authenticates the pinned coordinator and its base preflight and checks the Lean slot. On launch it records the command, full process log, child exit, interruptions, supervisor/code hashes and coordinator-state digest in `/tmp/current14-printed-port-coordinator-supervisor-20261104/receipt.json`. An interruption prevents a PASS even if the child later succeeds; it continues to wait for that specific child rather than kill its separately sessioned descendants. A forced supervisor death, child/session escape, OS failure, or a permanently failing wait remain outside this guarantee. The coordinator itself records the extension driver's actual exit; an unobserved timeout is never an exit. The supervisor's own session exit must still be observed separately.
 
