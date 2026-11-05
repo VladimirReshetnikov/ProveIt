@@ -1,0 +1,5 @@
+# Slot00 explicit-index retry: passed
+
+The immediately preceding retry failed because Lean did not identify `(14 : Fin 38).succ` with `(15 : Fin 39)` under `simpa only []`. This uncompiled retry replaces that step with a proposed explicit equality proved by `decide`, rewrites the target, and uses the same `Fin.cons_succ` lemma with the explicit constant family. The theorem statement and all other proof text are unchanged; prior failure is retained in `research/nine-sharing-norm38-slot00-retry01/attempt01/`.
+
+Source SHA-256 `4862715a44bfe505e49271b975cb13a02f113bfe373f1e732b7f81ed832272d6`, manifest `f00a250894ead9ca6ba03d08acc7cd4e77677630cec47ba7c80f78a83172fb86`, runner `ad40eddc95b95b4981b68437126776aa9b376c9719b724c3e2913570c4da74aa`. The runner changes only fresh output path and manifest pin from the reviewed retry; no-Lean preflight exited 0. Independent review and coordinated slot release preceded actual session `76831`, which exited 0 and checked slot00; see `attempt01/`. A passing one-slot theorem would not establish the remaining slots, zero bridge or iPRA endpoint.

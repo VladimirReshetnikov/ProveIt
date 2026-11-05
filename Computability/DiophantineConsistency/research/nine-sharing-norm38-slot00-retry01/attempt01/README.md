@@ -1,0 +1,3 @@
+# Slot00 explicit-family retry failed on index equality
+
+The author observed session `99410` exit 1. State SHA-256 `a636fed2c3453c742cebe88b31beadd230ab92f508eb360e730b507eb049c975`; compile log SHA-256 `ce0e9b986e259ef62d4851f6df6898e79563343d02c82d3bf569bf963f19681c`. The dependency scan passed, Lean compile exited 1 without a monitor stop, and no object was produced. The explicit family resolved the earlier inference mismatch, but the resulting equality at `(14 : Fin 38).succ` did not match the target index `(15 : Fin 39)` under `simpa only []`. Additional linter warnings are retained. Final post-compile guard checks were not reached. The terminal record is author-recorded, not independent observation.

@@ -1,0 +1,5 @@
+# Slot00 dependent-family retry: failed
+
+The first isolated slot00 diagnostic failed because `Fin.cons_succ` could not infer its dependent family. This fresh source changes only that application to specify `(α := fun _ : Fin 39 => V)`, leaving the slot theorem statement and all remaining proof text unchanged. The previous failure is retained at `research/nine-sharing-norm38-slot00-probe/attempt01/`. Whether the explicit annotation and rest of the proof compile remains unknown.
+
+Source SHA-256 `5056ada6ac66c75d5182d93b6bd145578391b4329a06f27b3d6c7cf65e3c165b`, manifest `7a0d0798cb6a957649d55004460312f887b3cb94c63874a7c38c7e9b9083a6d8`, runner `5ba178ef41e91ffef9ebd0b88027524abb900bb7e7ce4ac71c52fabade40667d`. The runner differs only by fresh output path and manifest pin from the reviewed earlier diagnostic; no-Lean preflight exited 0. Independent review and coordinated slot release preceded actual session `99410`, which exited 1 because the successor index did not simplify to the Fin 39 numeral; see `attempt01/`. A successful one-slot result would not prove the other slots or the all-model bridge.

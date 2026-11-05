@@ -1474,10 +1474,18 @@ conditions. Its [guarded Lean attempt](research/nine-sharing-norm38-slot-extract
 [independently audited](reviews/nine-sharing-norm38-slot-extraction-terminal-independent/README.md),
 timed out after reporting unresolved `Fin.cons` goals; no extraction theorem
 was produced. The subsequent graph bridge also remains open.
+A [single-slot diagnostic](research/nine-sharing-norm38-slot00-retry02/README.md),
+[independently audited](reviews/nine-sharing-norm38-slot00-terminal-independent/README.md),
+then checked the first residual identity after explicit finite-index rewrites;
+the other 28 identities and their assembly remain unproved.
 A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
 proposes recovering the original 65-gate zero from those static conditions;
 the source topology, port casts and proof scripts remain unchecked by Lean.
+A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
+[independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
+proposes constructing seed witnesses from an original zero under explicit
+port-cast and positivity hypotheses; this direction is also uncompiled.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),

@@ -1,0 +1,7 @@
+# Independent prelaunch review of the slot00 diagnostic
+
+PASS for the scoped source and runner review. The checker confirms that the probe copies the prior `residuals`, `residualAt`, and exact slot00 statement, adding only a local proposed `Fin.cons_succ` equality and its use by `simp`. The earlier compile recorded an unsolved `Fin.cons 1 w 15 = w 14` goal and subsequently timed out, so this is a concrete diagnostic rather than an unchanged replay. The prior retained failure state and log are pinned and checked.
+
+The runner delta from the reviewed earlier slot-extraction runner consists only of the fresh output directory, manifest pin and diagnostic description/status text. Its one-entry manifest pins the source and two direct imports, and the target name does not shadow an inherited base object. An independent no-Lean preflight passed; its runner rechecks the ten weighted-seed provider stages and recorded direct guards. Reproduce using `python3 -I -S -B check.py` before the fresh output directory exists. Checker SHA-256 `b9ff328e03c2787582f78edcba75229e9ce857b83ea2900638eb9bc3637d1349`; result `d4a3606b3f198c313ec5a37d16cc65f03d161aee6462215936a53d4ff49afa4a`.
+
+No Lean run was made in this review. The proposed equality, simplification and theorem are not yet checked; a successful check would cover this single conditional model slot only. Dynamic/package-transitive provider ancestry is inherited and resource monitoring is sampled, with the runner's stated limitations.
