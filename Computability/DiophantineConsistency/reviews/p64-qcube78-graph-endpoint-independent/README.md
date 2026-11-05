@@ -27,8 +27,10 @@ that the endpoint composes `positive_zero_iff` with the 79 bridge and applies
 the native, standard and equality-only adapters for the symbolic compact44
 ports. The existence theorem uses a separate actual-zero split to obtain
 `A78=1` before applying the output-difference identity. The graph-split
-packet reports an author success and records hashes but retains no separate
-guarded replay receipt; this review does not replace that missing evidence.
+packet originally reported an author success and recorded hashes without a
+guarded replay. A later [guarded replay](../../research/fourteen-p64-qcube78-graphsplit-replay/README.md)
+exited 0 and produced the same object; it inherits the same transitive
+provider limitations.
 
 No Lean process was run for this review. The checks use captured temporary
 providers, and their full transitive project, package, dynamic-library and
