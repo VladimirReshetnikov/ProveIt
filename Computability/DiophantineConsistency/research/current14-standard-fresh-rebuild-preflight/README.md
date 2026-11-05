@@ -41,6 +41,12 @@ reservations or a guarantee against sudden external disk use. The run is
 is claimed here. A successful single pass would not itself be a paired replay
 or authenticate inherited package-transitive and dynamic dependencies.
 
+The separate [`busy-control.py`](busy-control.py) created a temporary process
+with the Linux process name `lean`, then invoked the launcher. The
+[recorded control](busy-control-observation.json) exited 0 after confirming
+that the launcher refused with exit 1 and left all build paths absent. This
+tests the launch refusal only, not successful compilation or disk-stop logic.
+
 Once the shared Lean slot is available, launch with:
 
 ```sh
