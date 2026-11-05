@@ -25,6 +25,12 @@ hash-matched source44 payloads. A [translated-consistency client](research/p72-p
 [independently reviewed](reviews/p72-p13-p14-translated-captured-independent/README.md),
 checks both mapped Gödel–Gentzen formulations on that same provider. It is a
 captured provider, not a fresh current-base closure.
+A [source-declared closure survey](research/p72-current-base-source-survey/README.md)
+identifies 681 additional project modules over the current14 base. A separate
+[combined external-import probe](research/p72-current-base-external-import-probe/README.md),
+[independently reviewed](reviews/p72-current-base-external-import-independent/README.md),
+checks the three additional external imports alongside the current endpoint;
+it does not build those 681 project modules or establish their compatibility.
 
 The [14-variable, 67-operation, degree-106 candidate](research/fourteen-normalized-product106/README.md)
 has a focused [historical-provider check](research/normalized106-historical-endpoint-client/README.md)
