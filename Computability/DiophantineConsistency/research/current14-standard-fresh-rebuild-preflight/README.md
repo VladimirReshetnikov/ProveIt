@@ -58,8 +58,19 @@ matched all 1,000 tracked sources; the [provider audit](provider-audit-at-launch
 again passed, with 12,419,260,416 free bytes. Tool session `7009` and builder
 PID `48282` were observed running. The [launch observation](launch-observation.json)
 records the live process and initial progress; it is **not** a completion
-receipt. The current state must be read from the live process or subsequent
-terminal record.
+receipt. The subsequent terminal result is recorded below.
+
+The build later completed: launcher session `7009` actually exited 0 after
+8,548.83 seconds, and the watchdog and builder both reported `PASS`,
+`CURRENT_AT_FINAL_CHECK` and empty workspace source drift. The [terminal
+observation](terminal-observation.json) records that actual exit and state
+hashes. A separate [independent artifact audit](../../reviews/current14-fresh-base-independent/README.md)
+exited 0 and checked all 1,000 sources and outputs, 4,179 direct input edges,
+11,050 input companion guards, 1,540 Foundation artifacts and four exact
+endpoint axiom reports. This is one build plus an artifact audit, not an
+independent second Lean replay; inherited package-transitive, dynamic and
+between-observation ancestry remains outside the audit. The structured
+printed-port link is separate and has not yet been built coherently.
 
 For reference, the launch command was:
 

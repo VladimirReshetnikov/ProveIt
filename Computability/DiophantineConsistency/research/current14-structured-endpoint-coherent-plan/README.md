@@ -9,6 +9,11 @@ expected axiom-report names, and observed the base RUNNING and extension
 state absent. The source-inspection process exited 0; no Lean was invoked.
 Its `NOT_AUTHENTICATED_OR_LAUNCHED` readiness is deliberate.
 
+The fresh base subsequently [completed with actual exit 0 and passed its
+independent artifact audit](../../reviews/current14-fresh-base-independent/README.md).
+The 61-module extension and these two clients have not yet been built atop
+that base; this note does not claim a coherent structured endpoint.
+
 ## Preconditions and operator evidence
 
 1. Observe the base watchdog's **actual outer process exit** and require exit

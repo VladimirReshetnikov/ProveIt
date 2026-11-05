@@ -2349,6 +2349,14 @@ author extension](reviews/ipra-standard-current14-author-trial/README.md)
 over the fresh AQ29 author provider passed, as did a separate [artifact audit](reviews/ipra-standard-current14-author-independent-audit/README.md).
 It is a historical hybrid. A later [paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
 matched all 16 additions and passed an [independent complete-result audit](reviews/ipra-standard-current14-historical-pair-independent-audit/README.md).
+A later single [fresh-project rebuild](research/current14-standard-fresh-rebuild-preflight/README.md)
+compiled the 1,000-module source-declared closure from an empty project-object
+tree, with an observed launcher exit of zero and no source drift at its final
+check. An independent [artifact audit](reviews/current14-fresh-base-independent/README.md)
+passed for its recorded sources, direct imports, outputs and target axiom
+reports. This is one rebuild, not a paired replay; package-transitive,
+dynamic and transient-mutation ancestry remains inherited. The four-port
+assembly and the structured endpoint join have not yet been rebuilt on it.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
@@ -3041,6 +3049,10 @@ at different explicit natural ports violates the required carrier congruence
 even modulo `q`; an [independent review](reviews/p64-qcube72-full-zero-mod-q-independent/README.md)
 checks the argument. This refutes the direct pointwise inverse at that zero,
 not an alternative witness construction or compact44 equivalence. A
+[fixed-coordinate rank analysis](research/p64-qcube72-fixed-coordinate-rank-obstruction/README.md)
+derives an additional necessary residue for a class of normalizations and
+proves `q ∣ h` for standard-integer zeros; neither result settles the
+compact44 converse or is yet a Lean theorem. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),

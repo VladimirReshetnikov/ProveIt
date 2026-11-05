@@ -1,33 +1,9 @@
-# Pending independent artifact audit of the fresh current14 base
+# Independent artifact audit of the fresh current14 base
 
-[`audit.py`](audit.py) is a read-only, fail-closed terminal audit prepared
-while the current 1,000-module project build is still running. The observed
-[preterminal refusal](preterminal-refusal.json) confirms it exited 1 without
-creating a success receipt when the watchdog was `RUNNING`. **It has not
-validated a successful base** and no completion is implied here.
+The 1,000-module fresh build completed with actual launcher-session exit 0 and source-current builder state. Its [terminal observation](../../research/current14-standard-fresh-rebuild-preflight/terminal-observation.json) records the separately observed launcher exit and binds the watchdog and build-state hashes. The independent [`audit.py`](audit.py) subsequently exited 0, as captured in [audit-execution.json](audit-execution.json); [receipt.json](receipt.json) reports `PASS_SINGLE_SOURCE_CURRENT_ARTIFACT_AUDIT`.
 
-If the watchdog reports a successful terminal exit, the script is designed
-to rehash all 1,000 frozen and current sources, recorded objects and logs,
-recorded direct-input and companion guards, the Foundation inventory and
-declared external guards; it also compares the four exact target axiom names
-and reports with the target log and ledger. It rechecks sources, output and
-input guards, logs, Foundation inputs and workspace diff at the end; it
-checks source tracking and verifies the watchdog's recorded base-state digest. The
-actual outer tool-session exit must be observed separately. A passing result
-would be a single-build artifact audit, not a second Lean replay or full
-package-transitive, dynamic-loading or transient-mutation authentication.
+The audit checked all 1,000 current and frozen source files, output artifacts and logs, 4,179 recorded direct-input edges, 11,050 input companion guards, 1,540 Foundation artifacts, declared external guards, and the four exact target axiom reports. Each target report lists only `propext`, `Classical.choice`, and `Quot.sound`. It rechecked sources, output/input guards, logs, Foundation inputs and workspace diff at the end, including the watchdog's recorded build-state digest. The earlier [preterminal refusal](preterminal-refusal.json) records that the same audit refused while the watchdog was still `RUNNING`.
 
-After an actual successful terminal observation, and only while the captured
-paths remain available, run from the repository root:
+This is **one** successful source-current Lean project build and a separate artifact audit; it is not a second Lean replay or authentication of all package-transitive dependencies, dynamic loading, or transient mutations between checks. The four metatheory axiom reports do not assert that those are iPRA axioms. This build covers the standard current endpoint; it does not establish that the literal recipes are coherently linked to that endpoint or formalize the PDF bytes.
 
-```sh
-python3 -I -S -B Computability/DiophantineConsistency/reviews/current14-fresh-base-independent/audit.py
-```
-
-The script refuses to overwrite `receipt.json`. Its success path has not yet
-run and may require correction if it encounters an unanticipated valid
-record shape; any failure must be retained and investigated rather than
-presented as an audit pass. Script SHA-256:
-`896d3ec17a86eaac845ed5857ae651c1b2de92fab15850ad39e7ab71a68b239c`.
-The first, narrower preterminal refusal is preserved as
-`preterminal-refusal-v1.json`.
+The captured output paths are temporary. The audit refuses to overwrite `receipt.json`; its script SHA-256 is `896d3ec17a86eaac845ed5857ae651c1b2de92fab15850ad39e7ab71a68b239c`. Any future rerun requires its own preserved receipt and actual exit; it must not replace this evidence. The first narrower preterminal refusal remains in `preterminal-refusal-v1.json`.
