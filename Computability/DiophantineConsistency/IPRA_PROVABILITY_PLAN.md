@@ -3102,8 +3102,11 @@ confirms its stated direct-provider scope. The first compact specialization
 stopped at its memory guard without a theorem or Lean diagnostic. A separate
 [conditional rank-half lemma](research/p64-qcube72-rank-half-draft/README.md)
 checks `2R<c` in the stated models from an explicit Pell equation and rank,
-scale and size hypotheses; its graph-specific hypotheses have not yet been
-assembled. A
+scale and size hypotheses. A checked [graph-level composition](research/p64-qcube72-window-ranked-main-bridge-draft/README.md)
+now identifies the main Pell coordinates at the actual rank from a positive
+72-zero, `q≥33`, and the two port-mask inequalities, discharging positivity and
+the half-window. The compact-port specialization and first-index congruence
+remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
