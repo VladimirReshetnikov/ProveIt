@@ -86,6 +86,10 @@ checks the exact ring identity and fixed-byte degree. The substitution does
 not automatically preserve strictly positive coordinates, and the all-model
 zero bridge and iPRA endpoint remain open. It is not yet an established
 consistency equation.
+An [uncompiled proof draft](research/current2011-sheared72-46-proof-draft/README.md),
+[statically reviewed](reviews/current2011-sheared72-46-proof-draft-independent/README.md),
+isolates the needed ordinary-Pell residue and conditional order lemmas; it
+does not derive their hypotheses from zeros or construct the model bridge.
 A [70-operation, degree-84 equation](research/current2011-ordinary70-84-candidate/README.md)
 has an independently checked [graph and fixed-byte degree](reviews/current2011-ordinary70-84-graph-independent/README.md).
 Its [generic ring proof](research/current2011-ordinary70-84-generic/README.md),
