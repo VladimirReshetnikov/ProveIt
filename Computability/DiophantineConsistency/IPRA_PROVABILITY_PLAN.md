@@ -3059,7 +3059,12 @@ proves `q ∣ h` for standard-integer zeros; neither result settles the
 compact44 converse. A guarded Lean [carrier-scale bridge](research/p64-qcube72-model-carrier-draft/README.md)
 now proves `q ∣ h` in the stated `IΣ₁` models from explicit carrier
 hypotheses, but the client extracting those hypotheses from an actual graph
-zero remains unchecked. A
+zero remains unchecked. A [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
+shows the first, main, strong and transport constraints and stated port-size
+bounds alone do not force the inverse congruence. For that assignment's fixed
+main coordinates and rank, a [reviewed application](reviews/p64-qcube72-partial-aux-exclusion-independent/README.md)
+of the signed-half-index theorem excludes an auxiliary completion; it does not
+settle other witnesses or the actual compact44 ports. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
