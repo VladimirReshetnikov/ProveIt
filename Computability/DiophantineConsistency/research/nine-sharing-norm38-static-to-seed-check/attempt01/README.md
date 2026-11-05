@@ -1,0 +1,3 @@
+# Static-to-seed check failed at list reindexing
+
+Author-observed session `24644` exited 1. Retained state SHA-256 `ef56385cda7a7446ae21987dafcf253bd68539e435de252abcd77b75a1cd87f8`; compile log SHA-256 `936f61a359484dc2290a04b412b99eef3d171780032221534a7968e8388b09cc`. The dependency scan passed, and Lean exited 1 after 36.789 seconds without monitor stop. Its error is a final mismatch between the indexed literal residual term and a list member `e`; no earlier slot-application errors were reported. No object or theorem was produced and final post-compile guards were not reached. The outer exit is author-recorded, not independently observed; provider and sampling caveats remain.

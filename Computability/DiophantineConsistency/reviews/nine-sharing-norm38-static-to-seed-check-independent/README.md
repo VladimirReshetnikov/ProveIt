@@ -1,0 +1,7 @@
+# Independent prelaunch review of static-to-seed client
+
+PASS for the scoped source and producer review. The client copies the `static_implies_seed_zero` theorem and proof exactly from the source-reviewed forward draft. Its conditional direction is static `gatesHold` and `fiveNorms` ⇒ seed zero at input 1, in an IΣ₁ model under four port-cast equalities. It does not show the static hypotheses hold for a source zero or establish a source equivalence or iPRA endpoint.
+
+The immediate forward-prefix provider, each-slot producer, and ten slot-group producer rows were independently checked against their source/object/log records and 1,200 recorded direct guard slots. The slot groups come from the first 11 successful rows of an overall-failed batch; its timed-out final assembly is explicitly excluded. The immediate prefix overlay's 1,104 links and each imported slot/each-slot object's route back to its recorded producer were checked. The source manifest and imports match and a fresh no-Lean preflight passed. Checks are point observations and deeper package/dynamic ancestry is inherited; resource monitoring remains sampled.
+
+No Lean was run in this review; the copied proof may still fail to elaborate or exhaust resources. Reproduce before the output exists with `python3 -I -S -B check.py`. Checker SHA-256 `c2fb5bb61c09f540f9931d6100c2e72ede003fd19268c5d2e8d925fa3df612f8`; result `97209e0cfa9f0f7036ff6f9cb445fff5f72bea0d3b6dbebea468bc5d7653fd00`.

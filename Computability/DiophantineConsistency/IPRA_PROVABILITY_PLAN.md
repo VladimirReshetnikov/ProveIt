@@ -1533,6 +1533,9 @@ A [prefix client](research/nine-sharing-norm38-forward-prefix-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-prefix-terminal-independent/README.md),
 also checks that the first fourteen constructed witnesses equal the original
 inputs over any commutative semiring.
+A [static-conditions-to-seed attempt](research/nine-sharing-norm38-static-to-seed-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-static-to-seed-terminal-independent/README.md),
+failed at the final list-index identification and produced no theorem.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
