@@ -1367,7 +1367,12 @@ The [concrete current-equation client](research/nine-current-lightweight-endpoin
 now checks native and standard iPRA mapped-refutation endpoints and the mapped
 Gödel–Gentzen standard endpoint, with five explicit axiom reports. Its nine
 coordinates range over naturals including zero; no literal graph, operation
-count, degree or file semantics is established by this client.
+count, degree or file semantics is established by this client. A [symbolic
+ring evaluator](research/nine-current-symbolic-ring-generic/README.md) and
+[readable equation](research/nine-current-symbolic-ring-generic/EQUATION.md)
+make the finite-sum/power recipe explicit; their [review](reviews/nine-current-symbolic-ring-independent/README.md)
+checks the recorded theorem and transcription without claiming a Lean
+Markdown or filesystem interpretation.
 An additional equal-length-root replay has completed
 [all 104 stages](reviews/nine-variable-ipra-equal-length-stages-102-104-monitored/README.md):
 84 output objects match byte-for-byte, and 20 match after one equal-length

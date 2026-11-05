@@ -1,0 +1,47 @@
+/tmp/nine-symbolic-ring-probe-20261105/src/DiophantineConsistency/NineCurrentRing.lean:31:92: error: unsolved goals
+a : Fin 9 → ℤ
+⊢ (have w :=
+      have b := Fin.cons 1 a 0 * ↑(indexY IPRANineCurrent.seed 0) + 1 + Fin.cons 1 a 1;
+      have B := b ^ 5;
+      have q := B ^ codingL4 (QuarticCompiler.witnessCount IPRANineCurrent.left IPRANineCurrent.right);
+      have n := q ^ 16;
+      have e :=
+        ∑ k ∈ codingStar (QuarticCompiler.witnessCount IPRANineCurrent.left IPRANineCurrent.right) 4,
+          (↑(indexZ IPRANineCurrent.seed 0) + ↑(pCoefficient IPRANineCurrent.seed k)) *
+            B ^
+              (codingLexp (QuarticCompiler.witnessCount IPRANineCurrent.left IPRANineCurrent.right) 4 -
+                codingExpo (QuarticCompiler.witnessCount IPRANineCurrent.left IPRANineCurrent.right) 4 k);
+      have l :=
+        ∑ i ∈ Finset.range (QuarticCompiler.witnessCount IPRANineCurrent.left IPRANineCurrent.right), B ^ 5 ^ (i + 1);
+      have lam :=
+        ∑ i ∈ Finset.range (4 * codingLexp (QuarticCompiler.witnessCount IPRANineCurrent.left IPRANineCurrent.right) 4),
+          B ^ i;
+      have g := Fin.cons 1 a 2 + 1;
+      have θ := B - 2 * ↑(indexZ IPRANineCurrent.seed 0);
+      { R := rankCode (Fin.cons 1 a 0) (↑(indexZ IPRANineCurrent.seed 0)) b e g l n q θ lam, N := n, b := b, g := g,
+        G := 32 * b * B ^ 5 ^ QuarticCompiler.witnessCount IPRANineCurrent.left IPRANineCurrent.right,
+        h := Fin.cons 1 a 3 + 1, s := Fin.cons 1 a 4 + 1, w := Fin.cons 1 a 5 + 1, φ := Fin.cons 1 a 6,
+        i := Fin.cons 1 a 7 + 1, j := Fin.cons 1 a 8 + 1 };
+    RefinedPair.value (w.rad 0) (w.rad 1) (w.wt 0) (w.wt 1) (a 8) w.dvsr w.dvnd w.marg) =
+    let ν := QuarticCompiler.witnessCount IPRANineCurrent.left IPRANineCurrent.right;
+    let seed := IPRANineCurrent.seed;
+    let z := indexZ seed 0;
+    let y := indexY seed 0;
+    let aa := Fin.cons 1 a;
+    let b := aa 0 * ↑y + 1 + aa 1;
+    let B := b ^ 5;
+    let q := B ^ codingL4 ν;
+    let n := q ^ 16;
+    let e := ∑ k ∈ codingStar ν 4, (↑z + pCoefficient seed k) * B ^ (codingLexp ν 4 - codingExpo ν 4 k);
+    let l := ∑ i ∈ Finset.range ν, B ^ 5 ^ (i + 1);
+    let lam := ∑ i ∈ Finset.range (4 * codingLexp ν 4), B ^ i;
+    let g := aa 2 + 1;
+    let θ := B - 2 * ↑z;
+    let v :=
+      { R := rankCode (aa 0) (↑z) b e g l n q θ lam, N := n, b := b, g := g, G := 32 * b * B ^ 5 ^ ν, h := aa 3 + 1,
+        s := aa 4 + 1, w := aa 5 + 1, φ := aa 6, i := aa 7 + 1, j := aa 8 + 1 };
+    RefinedPair.value (v.rad 0) (v.rad 1) (v.wt 0) (v.wt 1) (a 8) v.dvsr v.dvnd v.marg
+'DiophantineConsistency.NineCurrentRing.eval_current' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
