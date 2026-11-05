@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+"""Exact source/runner delta and prior diagnostic check; no Lean."""
+import hashlib,json,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site and not sys.flags.optimize
+P=Path(__file__).resolve().parent;D=P.parents[1];a=D/'research/nine-sharing-norm38-reference-base-check';b=D/'research/nine-sharing-norm38-reference-base-retry01';sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+for p,h in [(b/'run.py','46b0d433119039da0bbf03e72b0ac3a6c210cd32c4d8d6099ca4d554f75dc8ea'),(b/'source-manifest.json','4577e5397a6107c9d4d35012e930c1845b9830ed85f432e7445b6da2de5e4b06'),(b/'src/DiophantineConsistency/Norm38ReferenceBase.lean','10162dcedb28c493fced78925a28baf26c3cbd073601e9575ef68a81a80b1421')]:assert sha(p)==h
+old=(a/'src/DiophantineConsistency/Norm38ReferenceBase.lean').read_text();new=(b/'src/DiophantineConsistency/Norm38ReferenceBase.lean').read_text();prior='theorem graph_topological : Topological NormAssignment38.gates initialNodes := by\n  decide';replacement='theorem graph_topological : Topological NormAssignment38.gates initialNodes := by\n  simp only [NormAssignment38.gates, initialNodes, Topological]\n  all_goals decide';assert old.count(prior)==1 and old.replace(prior,replacement)==new
+old=(a/'run.py').read_text();new=(b/'run.py').read_text();assert old.replace('/tmp/nine-sharing-norm38-reference-base-check-20261105','/tmp/nine-sharing-norm38-reference-base-retry01-20261105').replace('fb7de5d7a9e274e99131768046ac0e37b022101035e0ce555049bb33a797d2a1','4577e5397a6107c9d4d35012e930c1845b9830ed85f432e7445b6da2de5e4b06')==new
+log=(a/'attempt01/Norm38ReferenceBase-compile.txt').read_text();assert 'failed to synthesize' in log and 'Decidable (Topological NormAssignment38.gates initialNodes)' in log and 'sorryAx' in log
+s=json.loads((a/'attempt01/state.json').read_text());assert s['status']=='FAILED' and len(s['rows'])==1 and s['rows'][0]['deps']['exit']==0 and s['rows'][0]['compile']['exit']==1 and s['rows'][0]['compile']['stop_reason'] is None and 'object_sha256' not in s['rows'][0]
+print(json.dumps({'status':'PASS_REFERENCE_RETRY_DELTA_ONLY','source_sha256':sha(b/'src/DiophantineConsistency/Norm38ReferenceBase.lean'),'runner_sha256':sha(b/'run.py'),'prior_state_sha256':sha(a/'attempt01/state.json'),'scope':'Exact proof/runner delta and prior failed log; no Lean retry, new topology proof or endpoint.'},indent=2,sort_keys=True))
