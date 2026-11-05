@@ -21,6 +21,11 @@ of positive-zero equivalence nor an iPRA endpoint is established here.** No
 full graph-zero counterexample is claimed. The maintained root `equation.tex`
 and `equation.pdf` are unchanged.
 
+The separate [full model-join draft](../p64-qcube76-independent-y-full-join-draft/README.md)
+and [iPRA client draft](../p64-qcube76-independent-y-ipra-draft/README.md)
+are also unchecked. They describe the intended composition once both
+zero-specific witness guards and all their prerequisites have been verified.
+
 [`build.py`](build.py) checks the auxiliary identity under `y=V+e` in an exact
 polynomial ring, verifies the 76 unchanged parent rows and all input/gate
 liveness, reruns four pinned P64 residual identities, and compares all five
