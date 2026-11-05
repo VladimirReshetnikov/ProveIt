@@ -30,9 +30,11 @@ A subsequent [681-module current-base source extension](research/p72-current-bas
 completed with actual outer exit 0 and checked both P13 and P14 native,
 standard and equality-only mapped-refutation endpoints. Its existing current14
 base and package-transitive/dynamic ancestry retain their stated limits; the
-fixed-byte graph and degree checks are separate. The Gödel–Gentzen client
-above still uses the captured provider and has not yet been rebuilt on this
-fresh extension.
+fixed-byte graph and degree checks are separate. A [fresh-provider translated
+client](research/p72-p13-p14-translated-fresh/README.md), [independently
+audited](reviews/p72-p13-p14-translated-fresh-terminal-independent/README.md),
+also checks both mapped Gödel–Gentzen consistency equivalences on this source
+extension.
 A [source-declared closure survey](research/p72-current-base-source-survey/README.md)
 identifies 681 additional project modules over the current14 base. A separate
 [combined external-import probe](research/p72-current-base-external-import-probe/README.md),
