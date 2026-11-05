@@ -183,8 +183,11 @@ results inherit temporary providers. A further [checked signed-rank congruence](
 derives `q^4 ∣ (k−R−1)` on the negative branch, in the model difference
 ring. A further [first-index binding](research/ordinary12-absorb88-signed-early-index-draft/README.md)
 obtains `n≥2` and `q^4 ∣ (2n−R−1)` without identifying `n` with the rank.
-The rank window and an 89 witness remain open. No 88-operation halt or
-iPRA endpoint is claimed.
+An [exact partial-factor example](research/ordinary12-absorb88-normalization-obstruction/README.md)
+shows that the first factor, these scalar bounds and the signed congruence
+alone do not force `G`-preserving positive transport; its other graph
+residuals do not vanish. The rank window and an 89 witness remain open.
+No 88-operation halt or iPRA endpoint is claimed.
 
 A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
 has externally checked liveness and Lean ring identities for the transformed
