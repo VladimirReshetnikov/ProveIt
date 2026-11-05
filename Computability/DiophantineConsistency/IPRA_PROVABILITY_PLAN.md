@@ -173,10 +173,11 @@ A [main-root orientation inequality](research/ordinary12-absorb88-negative-main-
 is checked under explicit ordered-ring bounds. On the negative-transport
 branch, a separate [actual-graph signed-rank bound](research/ordinary12-absorb88-negative-rank-bound-draft/README.md)
 now supplies the needed lower-bound form. Their [checked graph composition](research/ordinary12-absorb88-negative-main-graph-draft/README.md)
-proves positivity of the expanded signed main expression on that branch;
-it does not separately identify the expression with the evaluated register.
-These results inherit temporary providers. No 88-operation halt or iPRA
-endpoint is claimed.
+proves positivity of the expanded signed main expression on that branch.
+A [later Lean binding](research/ordinary12-absorb88-main-evaluation-draft/README.md)
+identifies it with the evaluated main register and transfers the positivity.
+These results inherit temporary providers; they do not yet construct an 89
+witness. No 88-operation halt or iPRA endpoint is claimed.
 
 A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
 has externally checked liveness and Lean ring identities for the transformed
