@@ -1558,6 +1558,10 @@ An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/
 separates signed-pair algebra and conditional trace replay from generated
 forward witnesses for the 52- and 54-witness seeds. The actual trace,
 port-image and source-graph proofs are not yet supplied.
+A [generic topology client](research/nine-sharing-norm38-topology-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-topology-terminal-independent/README.md),
+checks conditional topological replay and the static-assignment fixed point;
+it does not establish the concrete graph/source correspondence.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the
