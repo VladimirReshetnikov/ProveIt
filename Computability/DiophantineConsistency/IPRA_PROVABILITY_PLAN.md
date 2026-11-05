@@ -3090,8 +3090,8 @@ extracts the five required zero/unit equations at actual 72 zeros.
 The [conditional signed-half client](research/p64-qcube72-conditional-rank-draft/README.md)
 identifies the main index with a supplied positive rank when its half-window
 and natural norm identities are supplied. The [strong natural norm](research/p64-qcube72-natural-norms-draft/README.md)
-is now extracted at actual zeros; the auxiliary norm and binding the window
-to the actual graph rank remain open. A separate
+and signed auxiliary natural norm are now extracted at actual zeros; binding
+the window to the actual graph rank remains open. A separate
 [conditional rank-half lemma](research/p64-qcube72-rank-half-draft/README.md)
 checks `2R<c` in the stated models from an explicit Pell equation and rank,
 scale and size hypotheses; its graph-specific hypotheses have not yet been
