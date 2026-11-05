@@ -3148,7 +3148,10 @@ alternative witnesses and existential reverse implication open. An independently
 reviewed [all-moduli construction](research/p64-qcube72-fixed-mask-all-moduli-controls/README.md)
 produces strictly positive outputs divisible by `N⁴` for every positive `N` at
 two fixed K values, one in each q-divisibility class. It does not produce an
-integer zero or settle stronger modular or p-adic arguments. A
+integer zero or settle stronger modular or p-adic arguments. The accompanying
+[boundary construction](research/p64-qcube72-fixed-mask-boundary-zero/README.md)
+is an exact nonnegative zero with three zero coordinates; it is excluded by
+the graph's strict positivity requirement. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
