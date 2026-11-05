@@ -190,7 +190,10 @@ residuals do not vanish. A [guarded normalization](research/ordinary12-absorb88-
 constructs an 89 zero from an 88 zero when explicit decomposition and
 positivity witnesses exist. Deriving those witnesses from every relevant
 negative-branch zero, the rank window and an unconditional 89 witness remain
-open. No 88-operation halt or iPRA endpoint is claimed.
+open. A [checked necessary-condition theorem](research/ordinary12-absorb88-normalization-guard-obstruction-draft/README.md)
+shows that this particular guard requires `F≥q` and `alpha≥1+b²`; it does
+not rule out a different transformation or existence equivalence. No
+88-operation halt or iPRA endpoint is claimed.
 
 A more aggressive [86-operation signed experiment](research/ordinary12-absorb86-probe/README.md)
 has externally checked liveness and Lean ring identities for the transformed
