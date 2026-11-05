@@ -1,0 +1,3 @@
+# Each-slot diagnostic failed on theorem application
+
+The author observed outer session `12176` exit 1. State SHA-256 `8d0a9a33484138c7ae8ccb9e91641a6d5fa2d6da54f23388c01a8b078973cbb4`, compile log `9ee5c0717047e4fd5fa6924cfd83b664b7446df70b56c776f9fc7c1af5d7dc82`. The dependency scan passed, and Lean exited 1 in 2.015 seconds without a monitor stop because `internalZero_iff.mp` was parsed as an unknown constant. No object or each-slot theorem was produced; final post-compile guards were not reached. The overall failed base's earlier checked slot objects remain valid on their separately recorded provider chain. Terminal exit is author-recorded, not independently observed.

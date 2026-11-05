@@ -1,0 +1,7 @@
+# `each_slot_zero` diagnostic on partial provider: failed
+
+This uncompiled single-module diagnostic copies only the `each_slot_zero` theorem and its context from the assembly that timed out. It asks Lean to derive a zero for an indexed literal residual from the previously checked sum-of-squares theorem. It does not attempt gate or norm assembly.
+
+The base receipt `5e2b9bc0792962fe16bb2015ee035a06c4e806acfeb85eafc2d942029eef8edc` is explicitly **FAILED overall**: its last assembly compile timed out. The runner accepts it only with the recorded 12-row/timeout shape, selects the first 11 stages (base plus ten passing slot groups), and rechecks all their source/object/log/direct-guard records and inherited overlay links before creating a fresh output. It does not treat the failed assembly as a successful provider. Source SHA-256 `156374f2612d621b386039b93515a4cf3c3d3f750f15ada1eb3179863d9a5d90`, manifest `ad0aded0521481691a4e9e23158053e3634ce6f7b0314f99669378daf6ed2a8c`, runner `78d0525ff975850259ed0b48c0ceae45d627f375e9ab693d67afc2bf8b7356ab`. The original runner's per-call resource and direct-guard controls apply. No-Lean preflight passed; provider ancestry and sampled resource observations retain their limitations.
+
+Independent source and runner review plus coordinated Lean slot release preceded actual session `12176`, which exited 1 on an unknown `internalZero_iff.mp` identifier. See `attempt01/`. A passing indexed-residual theorem would not prove `gatesHold`, five norms, source correspondence or an iPRA endpoint.

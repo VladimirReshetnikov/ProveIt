@@ -1486,6 +1486,10 @@ A [numeral-cast retry](research/nine-sharing-norm38-slots-batched-retry01/README
 [independently audited](reviews/nine-sharing-norm38-slots-batched-retry01-terminal-independent/README.md),
 compiled all 29 individual conditional identities. Its final assembly timed
 out without output, so no `seed_zero_static` theorem is yet established.
+An [isolated indexed-residual client](research/nine-sharing-norm38-each-slot-retry01/README.md),
+[independently audited](reviews/nine-sharing-norm38-each-slot-terminal-independent/README.md),
+subsequently checked that a model seed zero makes every one of the 29 literal
+residual evaluations zero. The gate/norm assembly remains separate.
 An [uncompiled five-norm assembly draft](research/nine-sharing-norm38-five-norms-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-five-norms-independent/README.md),
 isolates the five terminal conditions, assuming the pending indexed residual

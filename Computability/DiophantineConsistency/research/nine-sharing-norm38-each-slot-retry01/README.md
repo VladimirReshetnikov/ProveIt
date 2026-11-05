@@ -1,0 +1,5 @@
+# Each-slot theorem-application retry: passed
+
+The isolated each-slot check failed because `internalZero_iff.mp` was parsed as an unknown constant. This source changes only that application to `(internalZero_iff _ _).mp`, leaving the theorem statement and all other text unchanged. The failure is retained at `research/nine-sharing-norm38-each-slot-check/attempt01/`. Its base remains the same explicitly partial eleven-stage provider; the failed assembly is excluded.
+
+Source SHA-256 `54cc7ca1a6fa4c6dac835a3ac5826d71b9edbf166d4c8505d8ac72a3f84f5232`, manifest `573cb5d57dc7d15544fc6e1b274ab42f8bd6f61fa84999c84bb891ad853e376b`, runner `79e41695f3df41b1b50e91236e42e11666f95cd3461e86ab0588f5ac062ad0d9`. Runner differs only in fresh output path and manifest pin; no-Lean preflight exited 0. Independent review and slot coordination preceded actual session `32937`, which exited 0. See `attempt01/`. The checked theorem establishes only indexed residual extraction; five norms, gatesHold, the source bridge and iPRA remain open.

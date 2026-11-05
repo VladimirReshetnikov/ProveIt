@@ -1,0 +1,5 @@
+# Indexed residual extraction compiled
+
+Author-observed outer session `32937` exited 0. Retained state SHA-256 `8bd674fad57bcb8dfe1d4d98dc8ba5716be15bc7d9c029f39198e53557bdfa70`; output object SHA-256 `2e3d38650deab38173769dc3a5e75e0c4ce992d647868bab04ac74c8855879da` remains under `/tmp/nine-sharing-norm38-each-slot-retry01-20261105/lib/DiophantineConsistency/`. Dependency scan and compile exited 0, the compile log is empty and final direct-provider guards passed; no axiom report was requested. Past outer exit is author-recorded, not independently observed.
+
+The checked `each_slot_zero` states: in an IΣ₁ model, a zero of the literal 38-witness seed at distinguished coordinate 1 implies the embedded evaluation of each indexed residual in `Fin 29` is zero. The provider is the explicitly selected 11-stage successful prefix of an overall failed earlier assembly, whose source/object/log/direct guards were rechecked; inherited and sampled-monitor caveats remain. This theorem alone does not establish five static norms, `gatesHold`, the current equation or any iPRA endpoint.
