@@ -2402,9 +2402,12 @@ binds the 65-row value to integer evaluation of the fresh current14 expression
 without the historical Carrier65 object. A [current-base rational
 specialization](research/rational-carrier64-current14-specialization/README.md)
 checks the same-valuation positive-integer-zero equivalence for arbitrary
-integer ports with nonzero beta. The particular fixed ports, displayed-file
-binding and an internal iPRA transfer remain separate; the maintained
-integer-leaf count is unchanged.
+integer ports with nonzero beta. A separate [current14 beta theorem](research/rational-carrier64-current14-actual-port-split/README.md)
+checks nonzeroness of the actual first port without expanding it. A first
+[combined actual-port attempt](research/rational-carrier64-current14-actual-port/README.md)
+hit Lean's memory limit before producing an object. Fixed-port composition,
+displayed-file binding and an internal iPRA transfer remain separate; the
+maintained integer-leaf count is unchanged.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
