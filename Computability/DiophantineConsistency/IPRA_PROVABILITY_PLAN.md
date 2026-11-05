@@ -10,6 +10,14 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+The [14-variable, 67-operation, degree-106 candidate](research/fourteen-normalized-product106/README.md)
+has a focused [historical-provider check](research/normalized106-historical-endpoint-client/README.md)
+of its all-model same-zero bridge and standard-iPRA derivability, together
+with an independently reviewed [67-row source/graph comparison](research/normalized106-graph-syntax-binding/README.md).
+The focused endpoint inherits historical package and transitive ancestry;
+the numerical port-to-syntax binding and degree certificate remain separate
+finite checks, and this is not a fresh current-base rebuild.
+
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
 in each model of IΣ₁, its fixed symbolic positive-zero predicate is
