@@ -28,11 +28,14 @@ verifier's symbolic polynomial machinery. Residual degrees are 22, 34, 22,
 64 * beta^46 * J^46 * w^4 * s^14 * (eta+zeta)^2 * gamma^2.
 ```
 
-This is external symbolic and finite evidence, not a Lean proof of the graph
-transcription, zero equivalence, iPRA endpoint, or global minimality. The
+This is external symbolic and finite evidence, not a Lean proof of zero
+equivalence, iPRA endpoint, or global minimality. The
 [`generate_lean.py`](generate_lean.py) script transcribes the graph to
-[`P64QCube79.lean`](P64QCube79.lean); that definition has not yet been
-compiled in Lean.
+[`P64QCube79.lean`](P64QCube79.lean). The definition compiled in a guarded
+[Lean check](lean-check.json), with exit 0, empty output, and stable direct
+input hashes. This verifies the definition elaborates; it does not prove the
+transcription matches JSON or the reverse witness map. Full transitive provider
+ancestry remains inherited.
 
 To reproduce the external checks:
 
@@ -48,3 +51,6 @@ python3 -I -S -B Computability/DiophantineConsistency/research/p64-qcube79-candi
 | `checks.json` | `f133f497d90d3e60c81bb349839644e3f149b20f6c91e7c8a3b89d35058c62c6` |
 | `generate_lean.py` | `2d5e554ed93027ba24d13d82c73c141afde378a2e5d909eb3697434c32901de4` |
 | `P64QCube79.lean` | `377abf054d664130d10e781e5b239f6776f4f3e31c175bfcbff27fb3f2002d4f` |
+| `check_lean.py` | `4d927184e52f82dcf8ff7e4a8851301b47057b3fb65d89a77b227700b09c2311` |
+| `lean-check.json` | `724ab848f9f27aed8325e44efd6f3bf03752dc39dca01d9b0a9377eb1731a796` |
+| `/tmp/P64QCube79.olean` | `9f9c2112fa677ac6b330bc722741386da048fd9e01d091aa09dcdb60d24def65` |
