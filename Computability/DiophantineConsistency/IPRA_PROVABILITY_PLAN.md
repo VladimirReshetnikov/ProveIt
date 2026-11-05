@@ -1582,6 +1582,11 @@ A further [abstract assembly retry](research/nine-sharing-norm38-current-ports-a
 [independently audited](reviews/nine-sharing-norm38-current-ports-abstract-terminal-independent/README.md),
 checked a generic finite-function lemma but still hit kernel memory when
 instantiated with the concrete ports; the universal cast remains open.
+A [port-parametric client](research/nine-sharing-norm38-four-variable-ports-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-four-variable-ports-terminal-independent/README.md),
+nevertheless checks the seed/static equivalence from four separate pointwise
+cast hypotheses without expanding the concrete coefficients. Instantiating
+those hypotheses at the actual current ports remains open.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
