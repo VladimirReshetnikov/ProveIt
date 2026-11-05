@@ -62,7 +62,10 @@ checks the literal syntax, the factor identity, the all-model same-zero bridge
 and standard-iPRA derivability on a historical provider. Its [independent
 review](reviews/current2011-unscaled66-model-independent/README.md) checks all
 66 graph rows and the recorded direct inputs; historical package-transitive
-and dynamic ancestry remain inherited. The degree audit is external, and
+and dynamic ancestry remain inherited. A subsequent [current14-base client](research/current2011-unscaled66-fresh-base/README.md)
+checks the same literal graph, model bridge and iPRA theorem using the new
+source-built 106 extension; its [independent audit](reviews/current2011-unscaled66-fresh-base-independent/README.md)
+checks all graph rows and the recorded direct inputs. The degree audit is external, and
 recorded coefficient bytes have not been formally identified with the Lean
 ports.
 On the historical provider, a [translated-consistency client](research/current2011-unscaled66-translated/README.md)
