@@ -80,6 +80,12 @@ connect this to the 67/94 syntax, and a [Lean endpoint](research/current2011-ord
 checks standard-iPRA derivability for both the mapped refutation negation and
 mapped Gödel–Gentzen consistency. The degree and graph-to-file correspondence
 remain external checks, and package-transitive ancestry remains inherited.
+A [72-operation, degree-46 shear candidate](research/current2011-sheared72-46-candidate/README.md)
+replaces the 71/60 auxiliary coordinate by `V+y`; its [independent graph audit](reviews/current2011-sheared72-46-independent/README.md)
+checks the exact ring identity and fixed-byte degree. The substitution does
+not automatically preserve strictly positive coordinates, and the all-model
+zero bridge and iPRA endpoint remain open. It is not yet an established
+consistency equation.
 A [70-operation, degree-84 equation](research/current2011-ordinary70-84-candidate/README.md)
 has an independently checked [graph and fixed-byte degree](reviews/current2011-ordinary70-84-graph-independent/README.md).
 Its [generic ring proof](research/current2011-ordinary70-84-generic/README.md),

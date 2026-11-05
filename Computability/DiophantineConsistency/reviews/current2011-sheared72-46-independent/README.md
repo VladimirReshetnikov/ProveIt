@@ -1,0 +1,7 @@
+# Independent review: 72-gate shear candidate
+
+The checker independently authenticates the parent and candidate graphs and the exact current-port gzip/raw bytes, including their bit lengths. All 72 rows are topological and live, with 38 multiplications, 20 additions and 14 subtractions. The 55-row prefix is identical to the parent and contains no `y`; the entire tail after the modified auxiliary factor is identical and does not otherwise use `y`. A sparse integer-polynomial calculation verifies the changed auxiliary factor for the substitution `y_parent = V + y`. Consequently the candidate polynomial equals the parent polynomial under that shear over every commutative ring. A sign mutation is rejected.
+
+For the fixed current bytes, degree propagation gives an upper bound of 46, using the exact cancellation `(X+ac+gamma H)^2-(a²+H)c² = X²+2Xac+2 gamma H(X+ac)+gamma²H²-Hc²`. An independently implemented diagonal finite-difference calculation modulo 1,000,000,007 gives a nonzero 46th difference, with leading coefficient 110,098,480 after dividing by 46!. Thus the external exact degree is 46.
+
+The shear identity by itself is **not** an equivalence over the strictly positive domain: positivity of `y` and `V+y` needs a separate all-model argument. Neither the positive-zero bridge, the Lean graph evaluator nor an iPRA endpoint is established here. This audit did not replay Lean; run `python3 -I -S -B check.py` from the DiophantineConsistency directory.
