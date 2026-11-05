@@ -59,7 +59,8 @@ for m in sorted(ancestors):
     current = sha(data)
     if current != record['sha256']:
         # Check the changed source's explicit import declarations.  This is
-        # deliberately conservative; unfamiliar syntax is reported as drift.
+        # a simple line scan, not a Lean parser: uncommon syntax or text inside
+        # block comments can be missed or misidentified.
         text = data.decode('utf-8')
         imports = []
         for line in re.findall(r'^import[ \t]+([^\n]*)', text, re.MULTILINE):
