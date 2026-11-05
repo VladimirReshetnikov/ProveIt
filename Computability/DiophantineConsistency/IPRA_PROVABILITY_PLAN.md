@@ -2995,9 +2995,11 @@ passed bounded checks against captured providers. The guarded [model split and m
 [actual-zero size bound](research/p64-qcube76y-size-guarded-check/README.md),
 [strict-root guard](research/p64-qcube76y-strict-guarded-check/README.md), and
 [old-root nonzero guard](research/p64-qcube76y-oldroot-guarded-check/README.md)
-also pass. Model-level witness maps,
-positive-zero equivalence and iPRA endpoint remain unchecked;
-the checks do not rebuild complete provider ancestry.
+also pass. The [model witness maps](research/p64-qcube76y-witness-guarded-check/README.md)
+and [positive-zero equivalence](research/p64-qcube76y-join-guarded-check/README.md)
+now check for arbitrary natural ports in the stated IΣ₁ models. The iPRA
+endpoint remains unchecked; these checks do not rebuild complete provider
+ancestry.
 
 The separate [transport-coordinate graph](research/p64-qcube76-transport-candidate/README.md)
 has 14 positive variables and externally checked degree 90. Its direct

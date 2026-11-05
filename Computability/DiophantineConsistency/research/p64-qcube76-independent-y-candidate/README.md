@@ -6,11 +6,11 @@ other 76 gate rows and the other 13 witness coordinates are unchanged. The
 new graph has 14 positive witnesses and 76 live operations: 42
 multiplications, 18 additions and 16 subtractions.
 
-The graph expressions agree algebraically under `y=V+e`, but the positive
-witness map needs more work: `V+e` need not be positive for an arbitrary
-positive parent tuple, and the reverse substitution `e=y−V` is positive only
-when `y>V`. Since the graph uses `y` only through `y²`, a proposed forward
-route chooses `|V+e|` after proving it is nonzero. A separate
+The graph expressions agree algebraically under `y=V+e`. The positive witness
+maps use zero-specific facts: `V+e` need not be positive for an arbitrary
+parent tuple, and `e=y−V` is positive only when `y>V`. Since the graph uses
+`y` only through `y²`, the forward map chooses `|V+e|` after proving it is
+nonzero. A separate
 [mathematical analysis](../p64-qcube76-independent-y-analysis/README.md)
 examines the required zero-specific inequalities, with an independent
 [argument review](../../reviews/p64-qcube76-independent-y-math-independent/README.md).
@@ -20,16 +20,16 @@ now check in Lean. A guarded [model split and main-root check](../p64-qcube76y-g
 also passes, as does the [actual-zero size bound](../p64-qcube76y-size-guarded-check/README.md)
 `f²>c+1`. Both the new→old [strict-root guard](../p64-qcube76y-strict-guarded-check/README.md)
 and old→new [nonzero-root guard](../p64-qcube76y-oldroot-guarded-check/README.md)
-also pass; the witness maps and full join remain unchecked.
-**Neither direction of positive-zero equivalence nor an
-iPRA endpoint is established here.** No
+also pass. The [witness maps](../p64-qcube76y-witness-guarded-check/README.md)
+and [full positive-zero join](../p64-qcube76y-join-guarded-check/README.md)
+now check for arbitrary natural ports in the stated IΣ₁ models. The iPRA
+endpoint remains unchecked. No
 full graph-zero counterexample is claimed. The maintained root `equation.tex`
 and `equation.pdf` are unchanged.
 
-The separate [full model-join draft](../p64-qcube76-independent-y-full-join-draft/README.md)
-and [iPRA client draft](../p64-qcube76-independent-y-ipra-draft/README.md)
-are also unchecked. They describe the intended composition once both
-zero-specific witness guards and all their prerequisites have been verified.
+The [full model join](../p64-qcube76-independent-y-full-join-draft/README.md)
+has passed its guarded check. The [iPRA client draft](../p64-qcube76-independent-y-ipra-draft/README.md)
+still needs checking.
 
 [`build.py`](build.py) checks the auxiliary identity under `y=V+e` in an exact
 polynomial ring, verifies the 76 unchanged parent rows and all input/gate
