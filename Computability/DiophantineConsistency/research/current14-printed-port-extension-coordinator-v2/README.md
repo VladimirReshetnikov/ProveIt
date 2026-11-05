@@ -20,10 +20,10 @@ From the repository root, first run the coordinator with `--check` and preserve 
 python3 -I -S -B Computability/DiophantineConsistency/research/current14-printed-port-extension-coordinator-v2/coordinator.py --check
 ```
 
-After successful preflight and coordination, start the following as an observed long-running session and retain its session handle and actual exit; do not interpret an observation timeout as completion:
+After successful preflight and coordination, start the independently reviewed [coordinator-exit supervisor](../current14-structured-endpoint-coherent-runner/README.md) as an observed long-running session and retain its session handle and actual exit; do not interpret an observation timeout as completion:
 
 ```sh
-python3 -I -S -B -u Computability/DiophantineConsistency/research/current14-printed-port-extension-coordinator-v2/coordinator.py --run
+python3 -I -S -B -u Computability/DiophantineConsistency/research/current14-structured-endpoint-coherent-runner/extension_supervisor.py
 ```
 
-Monitor `/tmp/current14-printed-port-extension-coordinator-v2-20261104/state.json` and `/tmp/current14-printed-port-extension-20261104/state.json`, the actual processes, free disk and available memory. The coordinator's internal `child_exit` is the v2 driver's actual exit; the coordinator's own outer session exit must be captured independently. Require both exits zero, coordinator `PASS`, extension `PASS`, the recorded terminal hashes and a successful independent audit of the final artifacts. Do not start the printed-port assembly or endpoint join on an observation timeout or failure. Even if extension validation passes, the assembly and structured endpoint still require their own coherent builds, axiom reports and reviews.
+Monitor `/tmp/current14-printed-port-extension-coordinator-v2-20261104/state.json` and `/tmp/current14-printed-port-extension-20261104/state.json`, the actual processes, free disk and available memory. The coordinator's internal `child_exit` is the v2 driver's actual exit; the supervisor's receipt captures the coordinator's actual exit and binds its state and log. Capture the supervisor's own outer session exit separately. Require all three exits zero, supervisor, coordinator and extension `PASS`, the recorded terminal hashes and a successful independent audit of the final artifacts. Do not start the printed-port assembly or endpoint join on an observation timeout or failure. Even if extension validation passes, the assembly and structured endpoint still require their own coherent builds, axiom reports and reviews.

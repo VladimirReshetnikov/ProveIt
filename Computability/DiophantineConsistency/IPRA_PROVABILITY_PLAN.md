@@ -3036,6 +3036,11 @@ of the new graph at the same natural ports in the stated models. An
 [independent review](reviews/p64-qcube72-free-main-independent/README.md)
 checks the graph, direct receipt chain and theorem scope without rerunning
 Lean. The reverse map and zero-existence equivalence remain open. A
+[full symbolic 72-zero](research/p64-qcube72-full-zero-mod-q-obstruction/README.md)
+at different explicit natural ports violates the required carrier congruence
+even modulo `q`; an [independent review](reviews/p64-qcube72-full-zero-mod-q-independent/README.md)
+checks the argument. This refutes the direct pointwise inverse at that zero,
+not an alternative witness construction or compact44 equivalence. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
