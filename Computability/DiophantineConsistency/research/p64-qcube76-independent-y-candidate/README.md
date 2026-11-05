@@ -18,7 +18,8 @@ The generic [inequality lemmas](../p64-qcube76-independent-y-lemmas-draft/README
 and [ring bindings](../fourteen-p64-qcube76-independent-y-binding-draft/README.md)
 now check in Lean. A guarded [model split and main-root check](../p64-qcube76y-graph-model-guarded-check/README.md)
 also passes, as does the [actual-zero size bound](../p64-qcube76y-size-guarded-check/README.md)
-`f²>c+1`. The strict-root and witness drafts remain unchecked.
+`f²>c+1`. The new→old [strict-root guard](../p64-qcube76y-strict-guarded-check/README.md)
+also passes; the witness maps and full join remain unchecked.
 **Neither direction of positive-zero equivalence nor an
 iPRA endpoint is established here.** No
 full graph-zero counterexample is claimed. The maintained root `equation.tex`
