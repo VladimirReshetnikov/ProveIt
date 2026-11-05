@@ -2408,9 +2408,11 @@ checks nonzeroness of the actual first port without expanding it. A first
 hit Lean's memory limit before producing an object. A split [actual-port
 external client](research/rational-carrier64-current14-actual-external/README.md)
 now checks the same-positive-integer-valuation zero equivalence at the exact
-current14 ports. It is not an internal rational-leaf sentence; displayed-file
-binding and an internal iPRA transfer remain separate, and the maintained
-integer-leaf count is unchanged.
+current14 ports. A [same-base pair](research/rational-carrier64-current14-pair/README.md)
+checks that external equivalence together with the existing iPRA derivability
+for the integer `noZero14` sentence. It is not an internal rational-leaf
+sentence; displayed-file binding and an internal rational-language transfer
+remain separate, and the maintained integer-leaf count is unchanged.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
