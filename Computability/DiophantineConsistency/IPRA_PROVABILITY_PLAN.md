@@ -20,7 +20,12 @@ finite checks, and this is not a fresh current-base rebuild. The original
 finite degree auditor rejects the later refactored Lean sources; an
 [independently reproduced historical-input replay](research/normalized106-historical-finite-replay/README.md)
 recovers its 67-operation/degree-106 certificate, without claiming a current-
-source audit. A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
+source audit. A [16-module current-base source preflight](research/normalized106-current14-sixteen-source-preflight/README.md)
+identifies a smaller route to rebuild the model bridge; a narrowly scoped
+[combined-import probe](research/normalized106-direct-import-probe-a/README.md)
+loaded the current endpoint with the five newly declared external modules.
+Neither is a build of those 16 modules or a complete package-ancestry audit.
+A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
 and the integer-leaf graph remains at 67 operations. Its [Lean full-output
