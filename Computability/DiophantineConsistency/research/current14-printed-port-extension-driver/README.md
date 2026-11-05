@@ -13,6 +13,8 @@ builder have both recorded successful exits, the base is current at its final
 source check, the state digest matches the watchdog receipt, all 1,000 rows
 exited 0 in the expected order, and the current sources, frozen sources,
 objects, logs, direct-input records and recorded companion guards match. It
+reparses the final log and compares its four exact declaration names and
+axiom reports with the recorded ledger. It
 also rechecks the Foundation inventory and external guards, the 84-source
 plan and its 61-module order, compiler and configuration pins, and free
 space. The three new Mathlib object hashes are pinned to the independent
@@ -42,7 +44,10 @@ and demonstrate refusal of an unfinished or historical base, a stale state
 hash, a failed recorded row, modified source/object, unexpected companion,
 same-bytes symlink swap, project or external namespace shadow, optimized
 Python, and mismatches between recorded and captured input or output hashes.
-No Lean process was invoked by those controls. Earlier intermediate
+The base gate also accepted a complete 1,000-row synthetic fixture and
+rejected a forged target axiom report even after its ledger and watchdog
+hashes were made consistent. No Lean process was invoked by those controls.
+Earlier intermediate
 control observations are retained with their original driver hashes.
 
 **The successful preflight and build paths have not been exercised.** An
@@ -66,7 +71,7 @@ preserve and move aside this packet's `controls-observation.json` first.
 All synthetic fixtures are placed in a fresh temporary directory.
 
 SHA-256: `driver.py`
-`32e0b09b31d2998cfb7a78a7414b7f3e87c7c836615a958f3df8a97c68fe2e0e`;
+`97fabce00462b878ce9c91fd60ffbc54030350b06e564a0578a62dc5550971e1`;
 `guards.py` `e42ef7c73da49653b1d664b947c3a9ea5fa2ae78206d0988472a948a901fafc3`;
-`controls.py` `2b67a35c1ab2cf8c774a27d8eea82c20bb956cea1b7a1f7fc9bfc2d65796f401`;
-`controls-observation.json` `ef28afae145c33670fc682df4c665b655aea22a55978682042dc5ba92c5c82ad`.
+`controls.py` `1f726b45adf844e91ca45b218ab106852d03669d39f270021ad333c9af774545`;
+`controls-observation.json` `93d0acb229802150500fcb3f151bbc3df7fcddde661a4dc5dc732be13aabf30b`.

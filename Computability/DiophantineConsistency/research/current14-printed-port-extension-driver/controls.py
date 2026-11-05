@@ -41,7 +41,7 @@ with tempfile.TemporaryDirectory(prefix='current14-extension-controls-') as d:
         'build_state_sha256':'0'*64}
     write(driver.WATCHDOG,wd)
     expect('stale_base_state_refused',driver.base_gate,'base state differs from watchdog')
-    names=['Synthetic.M'+str(i) for i in range(1000)]
+    names=['Synthetic.M'+str(i) for i in range(999)]+['DiophantineConsistency.IPRAStandardCurrentEndpointChecks']
     manifest={'order':names,'target':'DiophantineConsistency.IPRAStandardCurrentEndpointChecks',
               'lakefile_sha256':driver.digest(driver.ROOT/'lakefile.toml'),
               'lean_toolchain_sha256':driver.digest(driver.ROOT/'lean-toolchain')}
@@ -78,6 +78,43 @@ with tempfile.TemporaryDirectory(prefix='current14-extension-controls-') as d:
     state['outputs'][names[0]][str(objpath)]={'realpath':str(objpath),'sha256':'0'*64}
     write(driver.BASE_STATE,state);wd['build_state_sha256']=driver.digest(driver.BASE_STATE);write(driver.WATCHDOG,wd)
     expect('tampered_base_object_refused',driver.base_gate,'base object mismatch')
+    # Exercise the complete base gate with 1,000 tiny synthetic modules, then
+    # forge a target log while keeping its ledger and watchdog hashes coherent.
+    driver.PKG=root/'package';driver.PKG.mkdir();init=driver.PKG/'Init.olean';init.write_bytes(b'init')
+    source_rows={};records=[];outputs={};logdir=root/'logs';logdir.mkdir()
+    axiom_names=['DiophantineConsistency.IPRAStandardTheory.leibniz',
+                 'DiophantineConsistency.IPRAStandardTheory.provable_iff',
+                 'DiophantineConsistency.IPRAStandardCurrentEndpoint.ipra_current_iff_consistency',
+                 'DiophantineConsistency.IPRAStandardCurrentEndpoint.ipra_current_iff_translated_consistency']
+    axiom_text=''.join("'"+n+"' depends on axioms: [propext, Classical.choice, Quot.sound]\n" for n in axiom_names)
+    for i,n in enumerate(names):
+        rel=n.replace('.','/');snap=driver.SNAP/'src'/(rel+'.lean');workspace=root/'workspace'/(rel+'.lean')
+        snap.parent.mkdir(parents=True,exist_ok=True);workspace.parent.mkdir(parents=True,exist_ok=True)
+        snap.write_text('synthetic source '+str(i));workspace.write_bytes(snap.read_bytes())
+        source_rows[n]={'snapshot_path':str(snap.relative_to(driver.SNAP)),
+                        'workspace_path':str(workspace.relative_to(root)),
+                        'sha256':driver.digest(snap),'imports':[]}
+        obj=driver.BASE_DIR/'lib'/(rel+'.olean');obj.parent.mkdir(parents=True,exist_ok=True);obj.write_bytes(('object '+str(i)).encode())
+        log=logdir/(str(i)+'.log');log.write_text(axiom_text if i==999 else '')
+        records.append({'module':n,'exit':0,'source_sha256':driver.digest(snap),'object_sha256':driver.digest(obj),
+                        'log':str(log),'log_sha256':driver.digest(log),
+                        'direct_inputs':{'Init':{'path':str(init),'kind':'package','sha256':driver.digest(init)}},
+                        'axiom_reports':['propext, Classical.choice, Quot.sound']*4 if i==999 else []})
+        outputs[n]=driver.scan(Path(str(obj)[:-6]))
+    manifest['sources']=source_rows;write(driver.SNAP/'manifest.json',manifest)
+    driver.PINS[driver.SNAP/'manifest.json']=driver.digest(driver.SNAP/'manifest.json')
+    wd['snapshot_sha256']=driver.PINS[driver.SNAP/'manifest.json']
+    state.update(manifest_sha256=wd['snapshot_sha256'],package_overlay=str(driver.PKG),records=records,
+                 outputs=outputs,guarded_companions=driver.scan(driver.PKG/'Init'))
+    write(driver.BASE_STATE,state);wd['build_state_sha256']=driver.digest(driver.BASE_STATE);write(driver.WATCHDOG,wd)
+    _,passed_state,passed_manifest=driver.base_gate()
+    if len(passed_state['records'])!=1000 or passed_manifest['order']!=names:
+        raise RuntimeError('synthetic base success returned wrong rows')
+    results['synthetic_complete_base_accepted']='1000 source, object, log and guard rows'
+    target_log=Path(records[-1]['log']);target_log.write_text(axiom_text.replace(axiom_names[0],axiom_names[0]+'_forged'))
+    state['records'][-1]['log_sha256']=driver.digest(target_log)
+    write(driver.BASE_STATE,state);wd['build_state_sha256']=driver.digest(driver.BASE_STATE);write(driver.WATCHDOG,wd)
+    expect('forged_target_axiom_log_rejected',driver.base_gate,'base endpoint axiom reports differ from log')
     stem=root/'data';obj=Path(str(stem)+'.olean');obj.write_bytes(b'first')
     g=driver.scan(stem);driver.check_guard(g);obj.write_bytes(b'changed')
     expect('mutated_object_rejected',lambda:driver.check_guard(g),'input changed')

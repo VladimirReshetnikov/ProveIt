@@ -88,7 +88,7 @@ def base_gate():
     names=manifest['order']; records=state.get('records',[]); outputs=state.get('outputs',{})
     need(len(names)==1000 and len(records)==1000 and set(outputs)==set(names), 'incomplete base rows')
     need([r.get('module') for r in records]==names and all(r.get('exit')==0 for r in records),'base row order or exit failure')
-    need(manifest['target']=='DiophantineConsistency.IPRAStandardCurrentEndpointChecks','wrong base target')
+    need(manifest['target']=='DiophantineConsistency.IPRAStandardCurrentEndpointChecks' and names[-1]==manifest['target'],'wrong base target')
     for rec in records:
         name=rec['module'];row=manifest['sources'][name]
         src=SNAP/row['snapshot_path'];workspace=ROOT/row['workspace_path']
@@ -106,6 +106,14 @@ def base_gate():
         log=Path(rec['log']);need(log.is_file() and digest(log)==rec['log_sha256'],('base log mismatch',name))
         text=log.read_text()
         need(not re.search(r'(?m)^.*(?:error:|error\([^)]*\):)|\bsorryAx\b|\bsorry\b',text),('base rejected log',name))
+        if name==manifest['target']:
+            reports=re.findall(r"^'([^']+)' (?:depends on axioms: \[([^\]]*)\]|does not depend on any axioms)",text,re.M|re.S)
+            expected_names=['DiophantineConsistency.IPRAStandardTheory.leibniz',
+                            'DiophantineConsistency.IPRAStandardTheory.provable_iff',
+                            'DiophantineConsistency.IPRAStandardCurrentEndpoint.ipra_current_iff_consistency',
+                            'DiophantineConsistency.IPRAStandardCurrentEndpoint.ipra_current_iff_translated_consistency']
+            need([n for n,_ in reports]==expected_names and [r for _,r in reports]==rec['axiom_reports'],
+                 'base endpoint axiom reports differ from log')
         declared=set(row['imports']);actual=set(rec['direct_inputs'])
         need(declared<=actual and not actual-declared-{'Init'},('base recorded import mismatch',name))
         for module,info in rec['direct_inputs'].items():
