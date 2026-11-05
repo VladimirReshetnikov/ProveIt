@@ -49,8 +49,10 @@ P64(lift(v)) = P81(v) + (q^12−1)*A0_new(v)^2,
 ```
 
 where `lift` sends the index-7 input to `Y=q³s`. The formula follows from
-the exact first-residual identity and the structurally unchanged other rows;
-this does not itself establish the model-level zero equivalence.
+the exact first-residual identity and the structurally unchanged other rows.
+A [Lean residual binding](../fourteen-p64-qcube-quotient-binding-draft/README.md)
+checks the corresponding factors over commutative rings. This does not
+itself establish the model-level zero equivalence.
 [`generate_lean.py`](generate_lean.py) generates the 81 gate rows of
 [`P64QCube81.lean`](P64QCube81.lean), importing the canonical P64 graph.
 The generated graph definition has [compiled in Lean](../fourteen-p64-qcube-quotient-binding-draft/CANDIDATE_CHECK.md)
@@ -61,14 +63,14 @@ an iPRA endpoint.
 
 For an old P64 zero, the checked `P64Root.first_root` gives `q³ ∣ Y`;
 positivity should supply a positive `s` and first-residual cancellation.
-For a new zero, the key missing step is a model-level version of P64's
-five-square residual split that works with the unscaled first residual.
-Once it forces `A0_new=0` and the four unchanged residuals to their required
-values, the lift gives an old P64 zero. Both directions must be checked on
-the same tuple in every intended `IΣ₁` model, joined to the P64 halt bridge,
-and transported to the selected iPRA proof-existence statements. A first
-attempt at the generalized split timed out during provider loading and did
-not establish a theorem. The compressed-file and JSON bindings remain
+For a new zero, a [generalized residual split](../fourteen-p64-first-replacement/README.md)
+now works with any first residual and the four P64 factors. It can force
+`A0_new=0` and the other factors to their required values. A separate
+[quotient map](../fourteen-p64-qcube-quotient-map-draft/README.md) supplies
+the positive lift and old-zero quotient extraction. Their same-tuple
+composition in every intended `IΣ₁` model, the P64 halt bridge, and the
+selected iPRA proof-existence statements still need to be checked. The first
+split attempt timed out during provider loading; a later retry succeeded. The compressed-file and JSON bindings remain
 external. Neither `equation.tex` nor `equation.pdf` was changed.
 
 ## Reproduce the finite checks
