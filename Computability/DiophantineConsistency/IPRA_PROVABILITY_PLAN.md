@@ -2991,7 +2991,9 @@ has 14 positive variables and externally checked degree 104. Its
 has an independent [source review](reviews/p64-qcube76-independent-y-math-independent/README.md).
 The generated Lean graph, [generic model bounds](research/p64-qcube76-independent-y-guarded-check/README.md)
 and [ring bindings](research/p64-qcube76y-binding-guarded-check/README.md)
-passed bounded checks against captured providers. Model-level witness maps,
+passed bounded checks against captured providers. A guarded [model split and
+main-root check](research/p64-qcube76y-graph-model-guarded-check/README.md)
+also passes. Model-level witness maps,
 positive-zero equivalence and iPRA endpoint remain unchecked;
 the checks do not rebuild complete provider ancestry.
 
