@@ -1467,6 +1467,10 @@ An [uncompiled 38-witness model-bridge draft](research/nine-sharing-norm38-model
 and [independent symbolic alignment review](reviews/nine-sharing-norm38-model-bridge-draft-independent/README.md)
 match its static assignment, all 60 graph gates and 29 residuals externally;
 the Lean trace, source evaluation, port casts and theorem transfer remain open.
+An [uncompiled slot-extraction draft](research/nine-sharing-norm38-slot-extraction-draft/README.md),
+[independently inspected](reviews/nine-sharing-norm38-slot-extraction-independent/README.md),
+maps the 29 vanishing seed residuals to the static gate and five norm
+conditions. Lean elaboration and the subsequent graph bridge remain open.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
