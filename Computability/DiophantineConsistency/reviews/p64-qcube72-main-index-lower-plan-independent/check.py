@@ -4,6 +4,10 @@ import hashlib,json,math
 from pathlib import Path
 P=Path(__file__).resolve().parent/'history/pre-lean'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+old=json.loads((P/'result.json').read_text())
+assert sha(P/'packet-README.md')==old['packet_readme_sha256']
+assert sha(P/'packet-check.py')==old['packet_check_sha256']
+assert sha(P/'check.py')==old['review_script_sha256']
 parameters=0; indices=0;gcds=set()
 for X in range(33,101):
  for Y in range(3,53):
