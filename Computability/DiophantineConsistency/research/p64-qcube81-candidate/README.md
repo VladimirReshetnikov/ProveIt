@@ -33,7 +33,10 @@ leading form
 The residual degrees are 12, 34, 22, 23 and 2 for `A0`, `M`, `W`, `Na` and
 `Lt`. P64's actual fixed `beta` is positive, so the leading form is nonzero.
 The degree and operation counts are checked externally; neither is a Lean
-degree or minimality theorem. P64 remains the lower-degree equation.
+degree or minimality theorem. P64 remains the lower-degree equation. The
+repository also records a 14-variable 72-operation degree-68 endpoint at a
+different coefficient tuple, so this candidate is not claimed as a global
+Pareto improvement.
 
 [`build.py`](build.py) pins the 83-gate parent and its verifier, checks the
 first-residual identity and four parent local polynomial identities exactly,
