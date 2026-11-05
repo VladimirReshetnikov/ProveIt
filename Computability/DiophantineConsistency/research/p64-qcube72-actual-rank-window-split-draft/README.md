@@ -1,0 +1,5 @@
+# Split actual-72 rank window — source-only draft
+
+This is a proposed lower-memory decomposition of the [stopped monolithic attempt](../p64-qcube72-actual-rank-window-draft/README.md). `FreeMainActualRankWindowGeneric.lean` retains the actual-zero rank positivity and generic two-mask quartic window, but removes the direct `IndependentYStrictDraft` and `CompactSymbolicPorts` imports. It defines the same ring-level rank expression locally and keeps the residual/transport/lift/P64Root/P72Window argument. `FreeMainActualRankWindowCompact.lean` separately imports that generic theorem and `CompactSymbolicPorts`, then specializes it using `CompactFixedBeta.bounds`.
+
+Both files are **unchecked source drafts**. Removing direct imports and splitting elaboration may reduce peak memory, but no resource or correctness claim follows; in particular the theorem names, cast simplifications and module availability still need a guarded Lean check. No `2R<c`, rank/index equality, reverse map or iPRA endpoint is asserted. The earlier resource-stopped evidence remains untouched. No Lean process was launched to prepare these sources.

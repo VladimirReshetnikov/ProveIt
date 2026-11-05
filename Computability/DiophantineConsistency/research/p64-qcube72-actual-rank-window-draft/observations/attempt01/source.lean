@@ -1,0 +1,132 @@
+import FreeMainGraphResiduals
+import IndependentYStrictDraft
+import DiophantineConsistency.Compact44.P72Window
+import DiophantineConsistency.CompactSymbolicPorts
+
+/-! Source-only draft: the actual 72 rank is positive and lies in the
+compact-port window. No reverse implication is claimed here. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+set_option maxHeartbeats 8000000
+noncomputable section
+namespace FreeMainActualRankWindow
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open P64QCubeMap IndependentYStrictDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The natural-model rank represented by the unchanged graph expression. -/
+def rank (p : Fin 4 → ℕ) (v : Fin 14 → V) : V :=
+  let q : V := (p 0:V)*v 0+1
+  ((p 0:V)*v 0*(q-v 1)+v 2)*(q*q-1)+((p 2:V)+q*(p 3:V))*v 0
+
+/-- Extract positivity and the quartic window from a positive actual zero,
+assuming exactly the two port inequalities used by `P72Window`. -/
+theorem actual_window (p : Fin 4 → ℕ) (v : Fin 14 → V)
+    (hv : ∀ i, 0 < v i)
+    (hz : InternalZero (P64QCube72Free.graph (fun j => (p j:ℤ))).output v)
+    (hMC : (p 2:V) < (p 0:V)) (hMF : (p 3:V) < 2*(p 0:V)) :
+    let q : V := (p 0:V)*v 0+1
+    0 < rank p v ∧
+      (ι (rank p v) : DiffRing V)+1 < (ι q)*(ι q*((ι q)*(ι q))) := by
+  let pp : Fin 4 → ℤ := fun j => (p j:ℤ)
+  let z : Fin 14 → DiffRing V := fun i => ι (v i)
+  let w : Fin 14 → V := lift p v
+  let q : V := (p 0:V)*v 0+1
+  let R : V := rank p v
+  obtain ⟨_,_,_,_,hlt⟩ := FreeMainGraphResiduals.residuals p v hv hz
+  have hlt' : InternalZero (P64Graph.graph pp).Lt w := by
+    rw [internalZero_iff]
+    change (P64QCube72Free.graph pp).Lt.evalRing z=0 at hlt
+    rw [FreeMainGraphResiduals.transport_same pp,P64QCube78GraphSplit.transport_same pp,
+      ←P64QCubeBinding.transport pp z,←P64QCubeMap.lift_cast p v] at hlt
+    exact hlt
+  have hwp := P64QCubeMap.lift_pos p v hv
+  have hgapW := (P64Root.transport p w hwp hlt').1
+  have hgap : v 1+v 2<q := by simpa [w,lift,q] using hgapW
+  have hF : w 1≤(p 0:V)*w 0+1 := le_trans (by simp) (le_of_lt hgapW)
+  have hrank : rankValue pp z = ι R := by
+    have he : rankValue pp z=(P64Graph.vals pp (P64QCubeMap.liftRing pp z)).RR := by
+      simp [rankValue,P64Graph.vals,P64QCubeMap.liftRing]
+    rw [he,←P64QCubeMap.lift_cast p v]
+    simpa [w,lift,R,rank,q] using P64Root.c_RR p w hF
+  let Q : DiffRing V := ι q
+  let F : DiffRing V := ι (v 1)
+  let A : DiffRing V := ι (v 2)
+  let C : DiffRing V := ι (q-(v 1+v 2))
+  let B : DiffRing V := ι (p 0:V)
+  let J : DiffRing V := ι (v 0)
+  let MC : DiffRing V := ι (p 2:V)
+  let MF : DiffRing V := ι (p 3:V)
+  have hCeq : C=Q-F-A := by
+    dsimp [C,Q,F,A]
+    rw [P64Root.ι_tsub (le_of_lt hgap)]
+    simp only [map_add]
+    ring
+  have hQ : Q=F+(C+A) := by rw [hCeq]; ring
+  have hC : 1≤C := ι_one_le (tsub_pos_of_lt hgap)
+  have hF1 : 1≤F := ι_one_le (hv 1)
+  have hA1 : 1≤A := ι_one_le (hv 2)
+  have hJ1 : 1≤J := ι_one_le (hv 0)
+  have hBJ : B*J=Q-1 := by
+    dsimp [B,J,Q,q]
+    simp only [map_add,map_mul,map_one]
+    ring
+  have hMC1 : MC+1≤B := by
+    have h : (p 2:V)+1≤(p 0:V) := lt_iff_succ_le.mp hMC
+    have hh := (ι_le_ι (V:=V)).mpr h
+    simpa only [MC,B,map_add,map_one] using hh
+  have hMF1 : MF+1≤2*B := by
+    have h : (p 3:V)+1≤2*(p 0:V) := lt_iff_succ_le.mp hMF
+    have hh := (ι_le_ι (V:=V)).mpr h
+    simpa only [MF,B,map_add,map_mul,map_one,map_ofNat] using hh
+  have hwin := P72Window.window_ring hQ hF1 hA1 hC hJ1 hBJ hMC1 hMF1
+  have hshape : rankValue pp z = ((Q-1)*(Q-F)+A)*(Q*Q-1)+(MC+MF*Q)*J := by
+    simp [rankValue,pp,z,Q,F,A,MC,MF,J,q,map_add,map_mul,map_one] <;> ring
+  have hqr : (2:DiffRing V)<Q := by rw [hQ]; linarith
+  have hgap0 : 0<(Q-1)*(Q-F)+A := by
+    have h1 : 0≤Q-1 := by linarith
+    have h2 : 0≤Q-F := by rw [hQ]; linarith
+    have hA : 0<A := by linarith
+    exact add_pos_of_nonneg_of_pos (mul_nonneg h1 h2) hA
+  have hq2 : 0<Q*Q-1 := by
+    have hs := mul_self_nonneg (Q-1)
+    nlinarith
+  have hmask : 0≤(MC+MF*Q)*J := by
+    have hmc : 0≤MC := ι_nonneg _
+    have hmf : 0≤MF := ι_nonneg _
+    have hq : 0≤Q := by linarith
+    have hj : 0≤J := by linarith
+    exact mul_nonneg (add_nonneg hmc (mul_nonneg hmf hq)) hj
+  have hRring : (0:DiffRing V)<ι R := by
+    rw [←hrank,hshape]
+    exact add_pos_of_pos_of_nonneg (mul_pos hgap0 hq2) hmask
+  have hR : 0<R := (ι_lt_ι (V:=V)).mp (by simpa using hRring)
+  have hwindow : (ι R:DiffRing V)+1<Q*(Q*(Q*Q)) := by
+    rw [←hrank,hshape]
+    exact hwin
+  exact ⟨hR,hwindow⟩
+
+/-- Specialize the two port inequalities to the compact44 symbolic masks. -/
+theorem compact_window (K : ℕ) (v : Fin 14 → V) (hv : ∀ i,0<v i)
+    (hz : InternalZero (P64QCube72Free.graph
+      (fun j => (CompactSymbolicPorts.ports CompactFixedBeta.betaNat K
+        CompactSymbolicPorts.lowNat CompactSymbolicPorts.highNat j:ℤ))).output v) :
+    let p := CompactSymbolicPorts.ports CompactFixedBeta.betaNat K
+      CompactSymbolicPorts.lowNat CompactSymbolicPorts.highNat
+    let q : V := (p 0:V)*v 0+1
+    0<rank p v ∧ (ι (rank p v):DiffRing V)+1 < (ι q)*(ι q*((ι q)*(ι q))) := by
+  let p := CompactSymbolicPorts.ports CompactFixedBeta.betaNat K
+    CompactSymbolicPorts.lowNat CompactSymbolicPorts.highNat
+  have hb := CompactFixedBeta.bounds (V:=V) (v 0) (hv 0)
+  have hMC : (p 2:V)<(p 0:V) := by
+    simpa [p,CompactSymbolicPorts.ports,CompactSymbolicPorts.lowNat] using hb.2.1
+  have hMF : (p 3:V)<2*(p 0:V) := by
+    simpa [p,CompactSymbolicPorts.ports,CompactSymbolicPorts.highNat,Nat.cast_add] using hb.2.2.1
+  exact actual_window p v hv hz hMC hMF
+
+#print axioms actual_window
+#print axioms compact_window
+end FreeMainActualRankWindow
