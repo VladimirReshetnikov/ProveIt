@@ -127,6 +127,12 @@ exact degree assertions remain external, as do file-content comparisons. A
 [translated-consistency client](research/thirteen-current2011-translated-4g/README.md),
 [independently reviewed](reviews/thirteen-current2011-translated-4g-independent/README.md),
 also checks both mapped Gödel–Gentzen consistency formulations.
+The [13-variable 69-operation form](research/thirteen-current2011-69-174/README.md)
+has exact degree 174 for the recorded coefficient bytes by a separate
+[independent graph audit](reviews/thirteen-current2011-69-174-independent/README.md).
+Its [fresh-base Lean client](research/thirteen-current2011-69-endpoints-4g/README.md),
+[independently reviewed](reviews/thirteen-current2011-69-endpoints-4g-independent/README.md),
+checks both standard-iPRA mapped-refutation and mapped Gödel–Gentzen endpoints.
 An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
 [independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
 matches the entire candidate graph to the existing `Carrier94Syntax` source.
