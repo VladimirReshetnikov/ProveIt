@@ -3079,7 +3079,11 @@ proves `q ∣ h` for standard-integer zeros; neither result settles the
 compact44 converse. A guarded Lean [carrier-scale bridge](research/p64-qcube72-model-carrier-draft/README.md)
 and graph client now prove `q ∣ h` for every positive 72-graph zero at natural
 ports in the stated `IΣ₁` models. The checks retain their direct-provider
-ancestry qualifications and do not yield a reverse witness map. A
+ancestry qualifications and do not yield a reverse witness map. A checked
+[main-root bridge](research/p64-qcube72-main-root-draft/README.md) also
+constructs and classifies the oriented Pell root while retaining its carrier
+equation; identifying its index with the rank and proving the needed
+large-`c` bound remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
