@@ -27,9 +27,12 @@ packet. This check does not remove that limitation.
 
 After this replay, origin commit `e1b79c42eb` changed the current
 `Compact44/P72Exact.lean` and `Compact44/P72Power.lean` sources used by the
-reverse-provider overlay. The recorded endpoint replay therefore concerns the
-earlier hash-pinned versions, not a rebuilt dependency chain after that merge;
-see the reverse-provider record for the specific hashes.
+reverse-provider overlay. This recorded endpoint replay therefore concerns the
+earlier hash-pinned versions; see the reverse-provider record for the hashes.
+A later [post-merge replay](../p65-post-merge-replay/README.md) forcibly
+recompiled the affected closure visible in the recorded manifests through
+`IPRAPositive65`. It retains the captured-provider and unauthenticated
+transitive-ancestry limitations, and is not a clean current-source rebuild.
 
 `manifest.json` records the 30 canonical source hashes, generated shim
 hashes and exact import substitutions, plus the hashes of 24 selected

@@ -24,9 +24,12 @@ and the final model-to-iPRA bridge remain separate obligations.
 `Compact44/P72Power.lean` sources. The manifest retains their historical
 hashes `283cfc85…` and `8359cee0…`; current hashes are `b4d73644…` and
 `f46584fb…`, respectively. The recorded run is evidence for the pinned
-versions, not a replay of those later edits. The manifest checker is expected
-to reject a reproduction against the changed source until the relevant
-dependencies are rebuilt and re-audited.
+versions, not a replay of those later edits. Its historical manifest checker
+still rejects the changed source. A later [post-merge replay](../p65-post-merge-replay/README.md)
+forced recompilation of the affected closure visible in the recorded
+manifests, including `P65Facts` and the endpoint. That replay inherits the
+captured providers and their unauthenticated transitive ancestry; it is not
+a clean rebuild of all current canonical sources.
 
 `manifest.json` pins each of the 62 canonical source files, its generated
 shim, the exact import substitutions, and 62 selected baseline object files.
