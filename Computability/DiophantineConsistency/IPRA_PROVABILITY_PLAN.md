@@ -1421,6 +1421,9 @@ gate identity, exact fixed-byte ports, residual degree and normalization
 externally. The 54-witness Lean model bridge, degree and normalization proofs,
 and Jones/iPRA endpoint remain open; this is not a minimality or final graph
 size claim.
+The corresponding [Lean source draft](research/nine-sharing-seed54-lean-draft/README.md)
+has an [independent residual transcription audit](reviews/nine-sharing-seed54-lean-draft-independent/README.md),
+but its tentative theorems have not been compiled.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the
