@@ -14,6 +14,19 @@ an oriented Pell balance, prove nonnegative rank, normalize transport, derive
 an 89 zero, or establish an iPRA endpoint. The source's `Draft` comment
 predates the successful check below.
 
+## Remaining 89-witness obstacle
+
+Source analysis, not an additional checked theorem: the existing
+[`Absorb89Window.graph_window`](../ordinary12-absorb89-probe/Absorb89Window.lean)
+obtains `F+alpha<q` from **positive** transport. With its bounded-port
+hypotheses, that supplies `24≤R` and `R+q³+q+1≤q⁴`, used for early-index
+alignment. On the 88 negative branch the checked bound is only
+`−q²XY²≤R` in the difference ring. It permits negative ranks and is too
+wide to provide the 89 window. Positive main-root orientation is a possible
+starting point for a signed balance or congruence, but neither those new
+results nor a reconstruction of a positive-transport 89 witness follows
+from the present theorem alone.
+
 ## Observed check
 
 On 2026-11-04 Lean 4.32.0 exited 0 for this module. Both declarations
