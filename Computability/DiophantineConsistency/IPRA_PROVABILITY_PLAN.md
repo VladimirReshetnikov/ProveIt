@@ -23,7 +23,10 @@ recovers its 67-operation/degree-106 certificate, without claiming a current-
 source audit. A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
-and the integer-leaf graph remains at 67 operations.
+and the integer-leaf graph remains at 67 operations. Its [Lean full-output
+binding](research/normalized106-rational66-lean/README.md) checks equality
+to the 67/106 syntax over commutative rings under the two fixed-leaf
+identities, on the historical provider.
 
 For the distinct 12-variable, 95-operation free-J graph, a bounded author
 build now checks an [unconditional all-model equivalence](research/ordinary12-ipra-bridge/compact44-symbolic-model-unconditional-iff-prototype/README.md):
