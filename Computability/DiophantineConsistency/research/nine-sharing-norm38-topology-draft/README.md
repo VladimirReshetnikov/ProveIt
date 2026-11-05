@@ -1,0 +1,5 @@
+# Uncompiled topological gate-induction draft
+
+`SharingTopology38.lean` SHA-256 `abcda964ca908f2c032d83c191a07fce8be4cd74c0c33294508f2a73a8ff16ff` drafts a reusable induction for the checked generic `ringStep_extends` lemma. `Topological` requires both operands already among known nodes and each target fresh; `completed` records the resulting known set. Given a reference valuation satisfying each gate equation, `ringRun_agrees_of_topological` proposes that replay agrees with the reference on all completed nodes. A separate direct corollary applies the already checked fixed-point lemma to the static assignment, **assuming** `gatesHold`.
+
+Independent source review passed at `reviews/nine-sharing-norm38-topology-independent/`; no Lean run has occurred for this packet. Proof elaboration, concrete 60-row topology, source valuation equations, initial values, residual extraction, terminal norm identification, Δ cancellation, forward construction and the iPRA endpoint are open. No provider runner is included. This generic induction is a possible part of the source-to-static direction, not a complete zero bridge.

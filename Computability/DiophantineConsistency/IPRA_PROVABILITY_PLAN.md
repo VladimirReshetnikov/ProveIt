@@ -1470,7 +1470,10 @@ the Lean trace, source evaluation, port casts and theorem transfer remain open.
 An [uncompiled slot-extraction draft](research/nine-sharing-norm38-slot-extraction-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-slot-extraction-independent/README.md),
 maps the 29 vanishing seed residuals to the static gate and five norm
-conditions. Lean elaboration and the subsequent graph bridge remain open.
+conditions. Its [guarded Lean attempt](research/nine-sharing-norm38-slot-extraction-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-slot-extraction-terminal-independent/README.md),
+timed out after reporting unresolved `Fin.cons` goals; no extraction theorem
+was produced. The subsequent graph bridge also remains open.
 A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
 proposes recovering the original 65-gate zero from those static conditions;
