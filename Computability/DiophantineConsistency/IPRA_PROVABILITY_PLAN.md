@@ -2395,8 +2395,11 @@ checks that its complete literal graph equals the 65-row Carrier65 arithmetic
 front over any commutative ring under `beta*Urank=MF` and `Wrank=MC−MF`. Its
 [independent audit](reviews/rational-carrier64-lean-identity-independent/README.md)
 checks the row transcription and direct artifacts without replaying Lean.
-Actual rational-port instantiation, displayed-file binding and an internal
-iPRA transfer remain separate; the maintained integer-leaf count is unchanged.
+A checked [rational specialization](research/rational-carrier64-lean-specialization/README.md)
+now gives pointwise and positive-integer-zero equivalence for arbitrary integer
+ports with nonzero beta. The particular fixed ports, displayed-file binding
+and an internal iPRA transfer remain separate; the maintained integer-leaf
+count is unchanged.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
