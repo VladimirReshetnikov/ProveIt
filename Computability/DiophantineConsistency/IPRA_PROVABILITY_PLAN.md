@@ -46,6 +46,11 @@ ancestry remains inherited. A [separate client](research/current2011-spheres-fre
 checks both standard-iPRA equivalences with Foundation's mapped Gödel–Gentzen
 consistency sentence; its [independent audit](reviews/current2011-spheres-fresh-translated-independent/README.md)
 checks the recorded source and provider inputs.
+A proposed one-gate reduction of the 71/80 sphere leaves an extra `W = -1`
+case. A [transport-only obstruction](research/sphere70-negative-transport-obstruction/README.md),
+[independently reviewed](reviews/sphere70-negative-transport-independent/README.md),
+shows that positive transport inputs alone do not rule this out. It neither
+constructs a full graph zero nor disproves fixed-port existential equivalence.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
