@@ -41,3 +41,7 @@ source-declared order, and prints a deterministic result. The committed
 `result.json` is the captured point-in-time observation; future source changes
 can cause the script to refuse. Like the underlying source scanner, it is not
 an authoritative account of dynamic loads or of every possible Lean import.
+
+A separately [reviewed extension driver](../current14-printed-port-extension-driver/README.md)
+now prepares this sequence and refuses the still-running base. Its successful
+preflight and build paths remain untested; it has not been launched.
