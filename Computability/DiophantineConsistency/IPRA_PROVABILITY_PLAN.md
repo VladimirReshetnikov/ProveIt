@@ -57,6 +57,11 @@ an [independent audit](reviews/sphere-factor-partition-screen-independent/README
 reproduces its operation counts and exact specialized degrees. None of that
 family's screened profiles improves the established operation–degree tradeoffs;
 the screen neither proves zero equivalences nor a global circuit lower bound.
+A [current-port 67-operation/degree-94 candidate](research/current2011-ordinary67-94-candidate/README.md)
+would improve the 67/106 tradeoff. Its [independent audit](reviews/current2011-ordinary67-94-candidate-independent/README.md)
+checks the graph, exact fixed-byte degree and conditional forward algebra.
+The reverse witness construction, all-model bridge and iPRA equivalence remain
+open; it is not yet an established consistency equation.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
