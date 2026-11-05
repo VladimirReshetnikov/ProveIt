@@ -62,6 +62,13 @@ would improve the 67/106 tradeoff. Its [independent audit](reviews/current2011-o
 checks the graph, exact fixed-byte degree and conditional forward algebra.
 The reverse witness construction, all-model bridge and iPRA equivalence remain
 open; it is not yet an established consistency equation.
+A [checked partial Pell obstruction](research/ordinary67-relaxed-same-f-obstruction/README.md),
+[independently reviewed](reviews/ordinary67-relaxed-same-f-obstruction-independent/README.md),
+shows the relaxed divisibility hypotheses alone do not justify restoring the
+old multiplier while keeping `f` and `c` fixed. It does not rule out a
+different witness. The existing `ArithmeticPellAuxiliarySeed.auxiliary_seed`
+constructs a replacement strong and auxiliary seed under its stated index and
+phase hypotheses; deriving those hypotheses from a 67/94 zero remains open.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
