@@ -22,14 +22,17 @@ also passes, as does the [actual-zero size bound](../p64-qcube76y-size-guarded-c
 and old→new [nonzero-root guard](../p64-qcube76y-oldroot-guarded-check/README.md)
 also pass. The [witness maps](../p64-qcube76y-witness-guarded-check/README.md)
 and [full positive-zero join](../p64-qcube76y-join-guarded-check/README.md)
-now check for arbitrary natural ports in the stated IΣ₁ models. The iPRA
-endpoint remains unchecked. No
+now check for arbitrary natural ports in the stated IΣ₁ models. The guarded
+[iPRA client](../p64-qcube76y-ipra-guarded-check/README.md) also checks the
+native, standard and equality-only derivability statements for the symbolic
+Lean graph and selected mapped Foundation refutation negation. No
 full graph-zero counterexample is claimed. The maintained root `equation.tex`
 and `equation.pdf` are unchanged.
 
 The [full model join](../p64-qcube76-independent-y-full-join-draft/README.md)
-has passed its guarded check. The [iPRA client draft](../p64-qcube76-independent-y-ipra-draft/README.md)
-still needs checking.
+and [iPRA client](../p64-qcube76-independent-y-ipra-draft/README.md) have
+passed guarded checks against captured providers. Complete transitive
+provider ancestry and external payload/display identification remain separate.
 
 [`build.py`](build.py) checks the auxiliary identity under `y=V+e` in an exact
 polynomial ring, verifies the 76 unchanged parent rows and all input/gate

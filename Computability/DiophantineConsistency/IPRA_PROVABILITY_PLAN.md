@@ -2984,7 +2984,7 @@ not constitute a complete transitive rebuild. Finite graph and degree checks,
 retained payload/display correspondence, and filesystem/gzip/JSON/PDF
 semantics remain external; no global minimality is claimed.
 
-Two additional 76-operation proposals remain unproved. The
+Two additional 76-operation proposals are under investigation. The
 [independent-y graph](research/p64-qcube76-independent-y-candidate/README.md)
 has 14 positive variables and externally checked degree 104. Its
 [mathematical witness-map argument](research/p64-qcube76-independent-y-analysis/README.md)
@@ -2997,9 +2997,12 @@ passed bounded checks against captured providers. The guarded [model split and m
 [old-root nonzero guard](research/p64-qcube76y-oldroot-guarded-check/README.md)
 also pass. The [model witness maps](research/p64-qcube76y-witness-guarded-check/README.md)
 and [positive-zero equivalence](research/p64-qcube76y-join-guarded-check/README.md)
-now check for arbitrary natural ports in the stated IΣ₁ models. The iPRA
-endpoint remains unchecked; these checks do not rebuild complete provider
-ancestry.
+now check for arbitrary natural ports in the stated IΣ₁ models. The guarded
+[iPRA client](research/p64-qcube76y-ipra-guarded-check/README.md) checks the
+native, standard and equality-only proof-existence statements for the
+symbolic Lean graph and selected mapped Foundation refutation negation. The
+checks do not rebuild complete provider ancestry; external payload/display
+identification remains separate.
 
 The separate [transport-coordinate graph](research/p64-qcube76-transport-candidate/README.md)
 has 14 positive variables and externally checked degree 90. Its direct
