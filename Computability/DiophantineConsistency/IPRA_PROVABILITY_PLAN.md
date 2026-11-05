@@ -3109,8 +3109,10 @@ now identifies the main Pell coordinates at the actual rank from a positive
 72-zero, `q≥33`, and the two port-mask inequalities, discharging positivity and
 the half-window. A [symbolic-port client](research/p64-qcube72-symbolic-port-ranked-main-draft/README.md)
 replaces `q≥33` with the compact exponential identity and uses the same two
-mask inequalities. Its fixed compact-port application and the first-index
-congruence remain open. A
+mask inequalities. A [fixed compact-port composition](research/p64-qcube72-fixed-compact-ranked-main-draft/README.md)
+now checks the rank window and main Pell coordinates for the same positive
+72-zero, with arbitrary natural K. The first-index congruence and reverse
+existence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
