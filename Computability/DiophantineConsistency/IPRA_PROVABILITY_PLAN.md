@@ -2989,9 +2989,10 @@ Two additional 76-operation proposals remain unproved. The
 has 14 positive variables and externally checked degree 104. Its
 [mathematical witness-map argument](research/p64-qcube76-independent-y-analysis/README.md)
 has an independent [source review](reviews/p64-qcube76-independent-y-math-independent/README.md).
-The generated Lean graph and [generic model bounds](research/p64-qcube76-independent-y-guarded-check/README.md)
-passed bounded checks against captured providers. Graph-specific bindings,
-witness maps, positive-zero equivalence and iPRA endpoint remain unchecked;
+The generated Lean graph, [generic model bounds](research/p64-qcube76-independent-y-guarded-check/README.md)
+and [ring bindings](research/p64-qcube76y-binding-guarded-check/README.md)
+passed bounded checks against captured providers. Model-level witness maps,
+positive-zero equivalence and iPRA endpoint remain unchecked;
 the checks do not rebuild complete provider ancestry.
 
 The separate [transport-coordinate graph](research/p64-qcube76-transport-candidate/README.md)

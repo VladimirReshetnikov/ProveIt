@@ -15,9 +15,9 @@ route chooses `|V+e|` after proving it is nonzero. A separate
 examines the required zero-specific inequalities, with an independent
 [argument review](../../reviews/p64-qcube76-independent-y-math-independent/README.md).
 The generic [inequality lemmas](../p64-qcube76-independent-y-lemmas-draft/README.md)
-now check in Lean; the graph-specific, witness and
-[ring-binding drafts](../fourteen-p64-qcube76-independent-y-binding-draft/README.md)
-remain unchecked. **Neither direction of positive-zero equivalence nor an
+and [ring bindings](../fourteen-p64-qcube76-independent-y-binding-draft/README.md)
+now check in Lean; the graph-specific and witness drafts remain unchecked.
+**Neither direction of positive-zero equivalence nor an
 iPRA endpoint is established here.** No
 full graph-zero counterexample is claimed. The maintained root `equation.tex`
 and `equation.pdf` are unchanged.
