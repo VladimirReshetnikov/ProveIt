@@ -3144,7 +3144,11 @@ applies this as `Y²∤h` at arbitrary natural ports and at the fixed compact
 ports, conditional on `3∣q`; it does not assert such a zero exists. A checked
 [conditional no-gamma client](research/p64-qcube72-divisible-q-no-old-gamma-draft/README.md)
 further excludes a same-coordinate old-carrier witness under `3∣q`; it leaves
-alternative witnesses and existential reverse implication open. A
+alternative witnesses and existential reverse implication open. An independently
+reviewed [all-moduli construction](research/p64-qcube72-fixed-mask-all-moduli-controls/README.md)
+produces strictly positive outputs divisible by `N⁴` for every positive `N` at
+two fixed K values, one in each q-divisibility class. It does not produce an
+integer zero or settle stronger modular or p-adic arguments. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
@@ -3192,7 +3196,11 @@ similarly has an external forward substitution and a symbolic full zero whose
 free squared-coordinate is nonsquare modulo 31; its
 [independent review](reviews/p64-free-fsquare75-symbolic-full-zero-independent/README.md)
 confirms the bounded checks and argument. This obstructs the direct inverse
-at that zero, not another witness or compact44 existence equivalence.
+at that zero, not another witness or compact44 existence equivalence. An
+independently reviewed [free-first-square 75-operation candidate](research/p64-free-first-square75-obstruction/README.md)
+has a full symbolic zero with nonsquare first-root coordinate at arbitrary
+noncompact ports; this obstructs its direct same-witness inverse, not a different
+witness or fixed-port existence equivalence.
 
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
