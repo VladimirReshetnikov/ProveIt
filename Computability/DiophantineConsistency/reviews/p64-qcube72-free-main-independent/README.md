@@ -17,3 +17,32 @@ python3 -I -S -B path/to/p64-qcube72-free-main-independent/check.py
 ```
 
 Its frozen result is `result.json`.
+
+## Earlier review of the generic positivity lemma
+
+The separate read-only [`audit.py`](audit.py) exited 0 and produced
+[`receipt.json`](receipt.json). It rechecks the generic lemma's retained
+source, runner, helper, log, object and direct companion/shadow guards, three
+expected axiom reports and sampled resource fields. Its resolved direct
+`IndependentYBounds.olean` has the same hash and path as in the
+[76Y chain receipt audit](../p64-qcube76y-chain-receipt-independent/README.md).
+That review did not rerun Lean or reconstruct the transitive provider ancestry.
+
+The generic lemma assumes `n≥2`, `c≥3`, `g≥0`, `x<c` and
+`g²=1+(n²−1)c²`, and proves `x+(n−2)c<g`. The Pell equation gives
+`g²−((n−1)c)²=1+2(n−1)c²>0`, so nonnegative roots yield the strict
+comparison. Positive `U,H` and the stated alignment then force `h>0`.
+Its final theorem derives `x<c` from `x≤n−2` using the imported bound
+`2n≤c`; no nonnegativity of `x` is needed. The later graph-specific and
+forward checks above now compose these hypotheses for an actual 76Y zero.
+The generic review itself establishes no reverse map or iPRA endpoint.
+
+While the temporary providers remain available, reproduce that earlier audit:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/reviews/p64-qcube72-free-main-independent/audit.py
+```
+
+SHA-256: `audit.py`
+`610f9b1a93b4d130fc7f5db36b73a2c5e7c984a4117f7dd82a9b7e20b1bec5de`;
+`receipt.json` `21dfa1ea4092ae6a98c30fdedb38998f3fc634462c8362149f003658c3ea8395`.
