@@ -33,6 +33,16 @@ graph, degree and materialized-port correspondence are separate checks. A
 [translated-consistency client](research/normalized106-fresh-base-translated/README.md)
 also checks the equivalence with Foundation's mapped Gödel–Gentzen consistency
 sentence on that same base.
+
+The [71-operation/degree-80 and 72-operation/degree-68 integer sphere forms](research/fourteen-nonzero-spheres/README.md)
+now have [current-base Lean clients](research/current2011-spheres-fresh-base/README.md)
+proving same-valuation zero equivalences in all IΣ₁ models and standard-iPRA
+derivability for each no-zero sentence. An [independent audit](reviews/current2011-spheres-fresh-base-independent/README.md)
+checks both complete graph-to-source comparisons and establishes the exact
+degrees for the recorded fixed bytes by upper bounds and modular univariate
+lower bounds. The graph and degree checks are external; the coefficient bytes
+are not yet fully bound to the Lean ports, and provider transitive and dynamic
+ancestry remains inherited.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,

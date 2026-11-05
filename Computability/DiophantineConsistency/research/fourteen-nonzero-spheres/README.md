@@ -41,8 +41,11 @@ uses that lemma for unconditional nonvanishing of P,Q,Z,U. The f=1 case
 for U uses positive y; the f>=2 case uses an exact transformed norm. The
 negative-unit exclusion for U is used only after Z=1. Both whole positive
 zero-set equivalences then compose with the actual current-port external
-Lean ConZFC endpoint. No internal HA, PA or ZFC derivation follows from
-these external equivalences.
+Lean ConZFC endpoint. These external equivalences alone do not give an
+internal derivation. A later [current-base model client](../current2011-spheres-fresh-base/README.md)
+checks all-model same-zero bridges and standard-iPRA derivability for both
+forms; its [independent review](../../reviews/current2011-spheres-fresh-base-independent/README.md)
+checks the graph correspondence and exact degrees within the stated limits.
 
 The independent standard-library [auditor](audit.py) imports no project
 code. It binds the exact51-row parent prefix and both complete replacements,
