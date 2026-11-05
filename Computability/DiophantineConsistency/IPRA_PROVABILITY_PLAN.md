@@ -3044,6 +3044,13 @@ given symbolically. A subsequent [external argument](research/p64-qcube75-q2-all
 rules out any simultaneous strong-norm and auxiliary-unit completion for
 that particular main tuple, not for the modified graph generally. This is
 not a full graph zero or a fixed-port equivalence result.
+For a different main tuple, a [symbolic full zero](research/p64-qcube75-q2-symbolic-full-zero/README.md)
+of the 75-operation q-squared graph is now given at explicit natural ports,
+with `q³ ∤ Y`. An [independent review](reviews/p64-qcube75-q2-symbolic-full-zero-independent/README.md)
+checks the symbolic argument and the bounded exact arithmetic. It rules out
+the coordinate-preserving inverse at that zero, but does not exclude a
+different original zero at the same ports or settle compact44 existence
+equivalence; the argument has not been formalized in Lean.
 
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
