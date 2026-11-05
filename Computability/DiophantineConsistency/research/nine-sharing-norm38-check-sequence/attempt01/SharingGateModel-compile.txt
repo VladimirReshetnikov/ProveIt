@@ -1,0 +1,22 @@
+/tmp/nine-sharing-norm38-sequence-20261105/src/DiophantineConsistency/SharingGateModel.lean:101:35: error(lean.unknownIdentifier): Unknown identifier `Function.update_same`
+/tmp/nine-sharing-norm38-sequence-20261105/src/DiophantineConsistency/SharingGateModel.lean:102:4: error: Type mismatch
+  pairValue_compute embed g.op (v g.left) (v g.right)
+has type
+  pairValue embed (pairCompute g.op (v g.left) (v g.right)) =
+    ringCompute g.op (pairValue embed (v g.left)) (pairValue embed (v g.right))
+but is expected to have type
+  pairValue embed (Function.update v g.target (pairCompute g.op (v g.left) (v g.right)) g.target) =
+    Function.update (fun i => pairValue embed (v i)) g.target
+      (ringCompute g.op (pairValue embed (v g.left)) (pairValue embed (v g.right))) g.target
+/tmp/nine-sharing-norm38-sequence-20261105/src/DiophantineConsistency/SharingGateModel.lean:103:30: error(lean.unknownIdentifier): Unknown identifier `Function.update_noteq`
+/tmp/nine-sharing-norm38-sequence-20261105/src/DiophantineConsistency/SharingGateModel.lean:138:25: error(lean.unknownIdentifier): Unknown identifier `Function.update_same`
+/tmp/nine-sharing-norm38-sequence-20261105/src/DiophantineConsistency/SharingGateModel.lean:139:4: error: Type mismatch
+  materialized_value embed g.op (before g.left) (before g.right) (after g.target) h.right.left h.right.right
+has type
+  pairValue embed (after g.target) =
+    ringCompute g.op (pairValue embed (before g.left)) (pairValue embed (before g.right))
+but is expected to have type
+  pairValue embed (after g.target) =
+    Function.update (fun i => pairValue embed (before i)) g.target
+      (ringCompute g.op (pairValue embed (before g.left)) (pairValue embed (before g.right))) g.target
+/tmp/nine-sharing-norm38-sequence-20261105/src/DiophantineConsistency/SharingGateModel.lean:142:20: error(lean.unknownIdentifier): Unknown identifier `Function.update_noteq`

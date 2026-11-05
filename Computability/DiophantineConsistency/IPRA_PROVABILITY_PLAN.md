@@ -1466,7 +1466,10 @@ match its static assignment, all 60 graph gates and 29 residuals externally;
 the Lean trace, source evaluation, port casts and theorem transfer remain open.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
-The actual build remains pending coordination with the live P72 rebuild.
+The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
+[independently audited](reviews/nine-sharing-norm38-terminal-independent/README.md),
+compiled the generic gate algebra and forward-constructor definition before
+the seed module timed out; it proved no seed or model bridge theorem.
 A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
 assembles the prospective seed/current equivalence from explicit extraction
