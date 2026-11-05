@@ -10,20 +10,21 @@ would not parse TeX or PDF and would not itself prove an iPRA endpoint.
 
 The first bounded Lean run exhausted its 2 GiB Lean memory setting in the
 interpreter after 66 seconds; it did not produce an object. After sealing
-large definitions and raising the bound to 4 GiB, attempts 02 and 03 both
+large definitions and raising the bound to 4 GiB, attempts 02, 03 and 04 all
 reported kernel memory exhaustion while checking `ports_eq`; subsequent
 printed axiom diagnostics contain the failed declaration and do not establish
 any theorem. The retained observation files record the actual exits and
-inputs for each attempt. The current source is the failed attempt 03 version;
+inputs for each attempt. The current source is the failed attempt 04 version;
 earlier source versions were not separately retained, but their hashes and
 complete tool output are in their respective observations. The most recent
 runner source is recorded in the attempts; these checks used the assembly's
 captured mixed provider and did not authenticate its full ancestry.
 
 No additional retry is justified merely by raising limits. A follow-up should
-avoid kernel reduction of the huge concrete port expressions, for example by
-proving an abstract finite-vector transport lemma before instantiating it, and
-then use a source-authenticated endpoint provider. If retried with these
+avoid kernel reduction of the huge concrete port expressions; attempt 04
+introduced an abstract finite-vector transport lemma, but this alone did not
+resolve the memory failure. A successful join also needs a source-authenticated
+endpoint provider. If retried with these
 captured inputs still available, choose a fresh name:
 
 ```sh

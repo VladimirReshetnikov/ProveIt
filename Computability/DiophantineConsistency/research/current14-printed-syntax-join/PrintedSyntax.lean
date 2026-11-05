@@ -23,17 +23,22 @@ theorem kernel_floor : (CurrentKernel2011.K : ℤ) = ⌊Current14LiteralPorts.K�
   rw [← Current14LiteralPorts.K_eq]
   exact (Int.floor_natCast CurrentKernel2011.K).symm
 
+private theorem fin4_ext {α : Type*} (p q : Fin 4 → α)
+    (h0 : p 0 = q 0) (h1 : p 1 = q 1)
+    (h2 : p 2 = q 2) (h3 : p 3 = q 3) : p = q := by
+  funext i
+  fin_cases i
+  · exact h0
+  · exact h1
+  · exact h2
+  · exact h3
+
 theorem ports_eq : CurrentWindowCarry2011.ports = ports := by
   obtain ⟨h0, h1, h2, h3⟩ := Current14LiteralPorts.all_ports
   have h1int : CurrentWindowCarry2011.ports 1 = ⌊Current14LiteralPorts.K⌋ := by
     have h := congrArg Int.floor h1
     simpa only [Int.floor_intCast] using h
-  funext i
-  fin_cases i
-  · exact h0
-  · exact h1int
-  · exact h2
-  · exact h3
+  exact fin4_ext _ _ h0 h1int h2 h3
 
 theorem expression_eq : expression = expressionAt ports := by
   rw [expression, ports_eq]
