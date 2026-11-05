@@ -1454,6 +1454,9 @@ An [uncompiled 38-witness model-bridge draft](research/nine-sharing-norm38-model
 and [independent symbolic alignment review](reviews/nine-sharing-norm38-model-bridge-draft-independent/README.md)
 match its static assignment, all 60 graph gates and 29 residuals externally;
 the Lean trace, source evaluation, port casts and theorem transfer remain open.
+A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
+has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
+The actual build remains pending coordination with the live P72 rebuild.
 A [33-witness sign-compressed variant](research/nine-sharing-quartic65-sign33-candidate/README.md),
 [independently audited](reviews/nine-sharing-quartic65-sign33-independent/README.md),
 has 24 quadratic residuals. Its forward construction requires five sign
