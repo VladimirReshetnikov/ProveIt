@@ -58,6 +58,33 @@ theorem signed_half_index_blank (a c d f i T R y m : V)
     hmain hs hbig hhalf haux huf huc
   exact index_unique a m R (hmy.trans hcr)
 
+/-- The same for the ordinate `cTf + (f²R + c)`, which arises when the strong root
+is negative: its residues are `c` modulo `f` and `R` modulo `c` directly. -/
+theorem signed_half_index_blank_plus (a c d f i T R y m : V)
+    (hc : 0 < c) (hi : 0 < i) (hf : 0 < f) (hm : 0 < m) (hy : 0 < y)
+    (hmy : ycoord m a = c) (hR : 0 < R) (hhalf : 2 * R < c)
+    (hmain : d * d = 1 + delta a * c * c)
+    (hstrong : (i * c * c) * (i * c * c) + delta a = delta a * (f * f))
+    (hbig : (a + 2) * delta a * delta a < c)
+    (haux : (i * c * c) * (i * c * c) * (c * T * f + (f * f * R + c)) *
+        (c * T * f + (f * f * R + c)) + y * y = 1 + (i * c * c) * (i * c * c) * y * y) :
+    m = R := by
+  have hfmod := square_mod_one_of_relaxed_auxiliary a c m i f hm hi hf hc hmy hstrong hbig
+  have huf : SignMod f (c * T * f + (f * f * R + c)) c := by
+    left
+    rw [show c * T * f + (f * f * R + c) = c + f * (c * T + f * R) by ring, mod_add_mul' _ _ hf]
+  have huc : SignMod c (c * T * f + (f * f * R + c)) R := by
+    left
+    have hmul : (f * f * R) % c = R % c := by
+      rw [mod_mul hc, hfmod, ← mod_mul hc, one_mul]
+    rw [show c * T * f + (f * f * R + c) = f * f * R + c * (T * f + 1) by ring, mod_add_mul' _ _ hc, hmul]
+  have hs : (i * c * c) * (i * c * c) + delta a = delta a * f * f := by
+    simpa only [mul_assoc] using hstrong
+  obtain ⟨_, hcr⟩ := half_index a c d f i R y (c * T * f + (f * f * R + c)) hc hi hf hR hy
+    hmain hs hbig hhalf haux huf huc
+  exact index_unique a m R (hmy.trans hcr)
+
 end OrdinaryBlankSignedIndex
 
 #print axioms OrdinaryBlankSignedIndex.signed_half_index_blank
+#print axioms OrdinaryBlankSignedIndex.signed_half_index_blank_plus
