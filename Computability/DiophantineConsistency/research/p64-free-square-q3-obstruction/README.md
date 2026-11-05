@@ -42,6 +42,11 @@ In particular, the verifier does not establish the graph's main residual
 norm alone is weaker than the full `M=0` relation, which also depends on rank
 and witness alignment.
 
+An [independent review](../../reviews/p64-free-square-q3-independent/README.md)
+recomputed the Pell power by binary exponentiation and certified nonsquareness
+using an exact integer square root. It retains the same partial-constraint
+scope.
+
 [`check.py`](check.py) uses 12,099 exact Pell iterations, aborts if the
 Pell operands exceed 100,000 bits or the fourth power exceeds 400,000 bits,
 and certifies nonsquareness modulo 7 without a large square-root operation.
