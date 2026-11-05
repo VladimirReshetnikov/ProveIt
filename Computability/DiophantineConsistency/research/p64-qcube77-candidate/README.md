@@ -21,6 +21,10 @@ negation. These checks inherit captured-provider ancestry and do not establish
 formal file/display binding. The root `equation.tex` and `equation.pdf` are
 unchanged.
 
+A proposed [unsquared unit-residual probe](UNSQUARED_UNIT.md) would save one
+operation, but its output permits cancellation at the unrestricted residual
+level. Its actual-graph zero-existence equivalence remains open.
+
 [`build.py`](build.py) checks that the first 68 parent graph rows are
 unchanged, all inputs and gates are live, the unit-product polynomial identity,
 and 600 deterministic modular comparisons of all five residuals and the
