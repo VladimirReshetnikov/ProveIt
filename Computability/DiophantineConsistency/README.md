@@ -116,6 +116,13 @@ three endpoints
 soundness sections, with the exact-index section split so that it accepts 65's
 ordinary strong norm (`P72Exact.exact_ordinary`). Its converse reuses P13's
 extraction of the halt data.
+Package 64's fourteen-positive 83-operation, degree-30 equation has all three
+endpoints too
+([`Compact44/IPRAPositive64`](Lean/DiophantineConsistency/Compact44/IPRAPositive64.lean),
+[record](research/fourteen-p64-endpoint/README.md)). Its finalizer is a sum of
+squares minus one. A local norm minimum (`P64Norm`) shows that this forces the
+auxiliary residual to be `1` and the others to vanish. Its early congruence
+uses the modulus `Y²` with `gcd(Y², H) ∣ 9` (`P64Early`).
 An [alternate captured-provider assembly](research/p65-unconditional-ipra-alternate-provider/README.md)
 also checks the three unconditional endpoints for the same Lean expression,
 using a separately constructed halt-side witness and a
