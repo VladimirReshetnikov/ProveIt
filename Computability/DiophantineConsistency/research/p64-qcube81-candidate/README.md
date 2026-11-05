@@ -1,7 +1,8 @@
 # P64 q-cube quotient: 14 positive variables, 81 operations, degree 68
 
-This is a **candidate**, not yet a proved replacement for P64 or an iPRA
-endpoint. Starting with the 14-positive, 83-operation, degree-30 P64 graph,
+This research candidate now has a checked all-model positive-zero
+equivalence with P64 and a guarded symbolic-graph iPRA endpoint. Starting
+with the 14-positive, 83-operation, degree-30 P64 graph,
 replace its positive witness `Y` with a positive witness `s` and set
 `Y=q³s`. Replace only the first residual
 
@@ -54,27 +55,34 @@ P64(lift(v)) = P81(v) + (q^12−1)*A0_new(v)^2,
 where `lift` sends the index-7 input to `Y=q³s`. The formula follows from
 the exact first-residual identity and the structurally unchanged other rows.
 A [Lean residual binding](../fourteen-p64-qcube-quotient-binding-draft/README.md)
-checks the corresponding factors over commutative rings. This does not
-itself establish the model-level zero equivalence.
+checks the corresponding factors over commutative rings; a separate
+all-model theorem composes these bindings into zero equivalence.
 [`generate_lean.py`](generate_lean.py) generates the 81 gate rows of
 [`P64QCube81.lean`](P64QCube81.lean), importing the canonical P64 graph.
 The generated graph definition has [compiled in Lean](../fourteen-p64-qcube-quotient-binding-draft/CANDIDATE_CHECK.md)
-on a captured provider. That check does not establish zero-equivalence or
-an iPRA endpoint.
+on a captured provider. The separate results and their limits are below.
 
-## Missing proof obligations
+## Checked Lean bridge and remaining boundary
 
-For an old P64 zero, the checked `P64Root.first_root` gives `q³ ∣ Y`;
-positivity should supply a positive `s` and first-residual cancellation.
-For a new zero, a [generalized residual split](../fourteen-p64-first-replacement/README.md)
-now works with any first residual and the four P64 factors. It can force
-`A0_new=0` and the other factors to their required values. A separate
-[quotient map](../fourteen-p64-qcube-quotient-map-draft/README.md) supplies
-the positive lift and old-zero quotient extraction. Their same-tuple
-composition in every intended `IΣ₁` model, the P64 halt bridge, and the
-selected iPRA proof-existence statements still need to be checked. The first
-split attempt timed out during provider loading; a later retry succeeded. The compressed-file and JSON bindings remain
-external. Neither `equation.tex` nor `equation.pdf` was changed.
+For an old P64 zero, `P64Root.first_root` gives `q³ ∣ Y`; the checked
+[quotient map](../fourteen-p64-qcube-quotient-map-draft/README.md) supplies a
+positive `s` and first-residual cancellation. For a new zero, the checked
+[generalized residual split](../fourteen-p64-first-replacement/README.md)
+forces `A0_new=0` and the other four residuals to their required values.
+The resulting [positive-zero equivalence](../fourteen-p64-qcube-existence-draft/README.md)
+holds for every natural port tuple in each indicated model of IΣ₁.
+
+The [endpoint client](../p64-qcube81-ipra-draft/README.md) composes that
+equivalence with P64's positive-zero/halting bridge and checks native,
+standard and equality-only iPRA proof-existence statements for this Lean
+graph at the symbolic compact44 tuple, using the selected mapped Foundation
+refutation negation. These are not assertions that ZFC is consistent. The
+client check uses guarded temporary provider objects; full transitive
+source/object, package, dynamic and search-path ancestry remains inherited,
+and no paired end-to-end replay is claimed. The graph/degree and compressed
+payload bindings remain external checks, not Lean semantics for filesystem,
+gzip, JSON or PDF bytes. Neither root `equation.tex` nor `equation.pdf` was
+changed.
 
 ## Reproduce the finite checks
 

@@ -2911,6 +2911,19 @@ but file-to-Lean port equality remains outside that check. A restricted
 [local rewrite screen](research/p64-local-rewrite-search/README.md) found no
 smaller graph in its enumerated families and proves no global lower bound.
 
+The separate 14-positive q³ quotient of P64 has 81 operations and externally
+checked degree 68. Its [all-model positive-zero equivalence](research/fourteen-p64-qcube-existence-draft/README.md)
+with P64 holds for each natural port tuple, and its
+[endpoint client](research/p64-qcube81-ipra-draft/README.md) checked the
+native, standard and equality-only iPRA proof-existence statements for the
+Lean graph at the symbolic compact44 tuple. The statements use the selected
+mapped Foundation refutation negation. These are guarded checks against
+temporary providers, not a paired end-to-end replay or an audit of full
+project, package, dynamic and search-path ancestry. The finite graph and
+degree checks and the retained payload/display correspondence remain
+external; no Lean filesystem, gzip, JSON or PDF semantics is asserted. See
+the [candidate record](research/p64-qcube81-candidate/README.md).
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
