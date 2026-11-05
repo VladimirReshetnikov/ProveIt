@@ -41,9 +41,9 @@ log, state and exit, samples disk space and the builder's progress every ten
 seconds, and terminates its own process group at six hours or if a sample
 shows less than 4 GB free. These are sampled protections, not disk
 reservations or a guarantee against sudden external disk use. The run is
-**not launched by this preflight**, and no project build or endpoint theorem
-is claimed here. A successful single pass would not itself be a paired replay
-or authenticate inherited package-transitive and dynamic dependencies.
+separate from the preflight. A successful single pass would not itself be a
+paired replay or authenticate inherited package-transitive and dynamic
+dependencies.
 
 The separate [`busy-control.py`](busy-control.py) created a temporary process
 with the Linux process name `lean`, then invoked the launcher. The
@@ -51,7 +51,17 @@ with the Linux process name `lean`, then invoked the launcher. The
 that the launcher refused with exit 1 and left all build paths absent. This
 tests the launch refusal only, not successful compilation or disk-stop logic.
 
-Once the shared Lean slot is available, launch with:
+After the shared Lean slot became available, the source and provider audits
+were repeated, and the build was launched. The
+[source audit](source-audit-at-launch.json) at HEAD `bd80d5c669` again
+matched all 1,000 tracked sources; the [provider audit](provider-audit-at-launch.json)
+again passed, with 12,419,260,416 free bytes. Tool session `7009` and builder
+PID `48282` were observed running. The [launch observation](launch-observation.json)
+records the live process and initial progress; it is **not** a completion
+receipt. The current state must be read from the live process or subsequent
+terminal record.
+
+For reference, the launch command was:
 
 ```sh
 python3 -I -S -B Computability/DiophantineConsistency/research/current14-standard-fresh-rebuild-preflight/run.py
