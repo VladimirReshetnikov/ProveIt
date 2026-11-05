@@ -1110,7 +1110,10 @@ This is not a Lean rebuild or a package-transitive compatibility check. A
 resolved direct seeds and visited 64 serialized headers, but 199 frontier
 modules remain; Matrix compatibility and full package reachability are still
 unresolved. Its independent audit also identifies process-cleanup requirements
-for any extended traversal.
+for any extended traversal. A [revised runner review](reviews/nine-variable-header-resume-prelaunch-v3-independent/README.md)
+records passing synthetic controls but an unresolved numeric-PID reuse risk;
+a separately reviewed process-handle prototype is not production-ready. No
+continuation traversal has been launched.
 
 The newly merged [nine-variable endpoint](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
 states native, standard and equality-only iPRA equivalences without hypotheses;
