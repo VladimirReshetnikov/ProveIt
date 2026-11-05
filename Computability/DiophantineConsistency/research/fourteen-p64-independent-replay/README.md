@@ -73,9 +73,10 @@ degree theorem. The Lean endpoint uses the symbolic compact44 tuple. Exact
 identity with retained coefficient payloads or a rendered page is an
 external binding, not a theorem interpreting JSON, gzip or PDF bytes. At the
 time of this replay the JSON's referenced
-`positive14/native/COEFFICIENT_BINDING.json` was absent at that path; a
-separate restoration of the missing package files is underway.
+`positive14/native/COEFFICIENT_BINDING.json` was absent at that path; the
+missing package files have since been restored in the separately recorded
+[payload provenance packet](../fourteen-p64-payload-provenance/README.md).
 `positive14/SOURCE_PINS.json` records its historical
 Git blob `c54f7f1ce0698a5aad3bf56722c3dde343db6dff`, which is available in
-the local object database; that pin alone does not establish the missing
-path's contents or a Lean equality to the payloads.
+the local object database; matching the restored bytes does not establish
+a Lean equality to the payloads.
