@@ -1,0 +1,7 @@
+# Independent review of conditional rank half-window
+
+**PASS within the recorded direct-provider scope.** The no-Lean `check.py` verifies attempt02's exit/status, unchanged before/after direct guards, live source and retained snapshot, runner/helper hashes, log and object hashes, absence of an earlier `IndependentYBounds` shadow, and its exact object-hash link to the guarded bounds-attempt03 producer. The one theorem report contains only `propext`, `Classical.choice`, and `Quot.sound`. The failed attempt01 is not used. Transitive/dynamic and between-sample ancestry is inherited, not independently rebuilt.
+
+The precise theorem is conditional: for a repository `IΣ₁` model `V`, all six `q, X, Y, R, c, g` range over its difference ring `DiffRing V`, with assumptions `0≤q`, `q≤X`, `q³≤Y`, `R+1<q⁴`, `3≤c`, `0≤g`, and `g²=1+(((XY+Y)+2)²−1)c²`. It concludes the strict inequality `2R<c`. There is no additional positivity or integrality hypothesis on `R` stated beyond its membership in `DiffRing V`; the result is not presented as a theorem about arbitrary ordered rings without the model assumption.
+
+The proof applies `IndependentYBounds.pell_c_bound` to `a+2` for `a=XY+Y`, combines the window with `q⁴≤XY`, and derives the strict half-window. The client assumes rather than extracts the window and Pell hypotheses from a 72-graph zero or particular ports. It does not prove the separate large-`c` premise for signed half-index, `m=R`, a reverse witness map, or an iPRA endpoint.
