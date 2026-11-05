@@ -81,3 +81,11 @@ The finite standard certificate must also be transferred to the
 represented model computation, with proofs of the actual symbolic q,
 modulus, power and Pell-base bindings. These obligations, the separate
 external payload binding, and the `gcd(W,h)=1` certificate remain open.
+
+The [scaled runs](../trace74-scaled-kernel-certificate/README.md) passed for
+`B=17,257,4097`. A [separate B=65537 attempt](../trace74-next-scale-kernel-certificate/README.md)
+timed out after 30 seconds without a completed theorem, while four
+[isolated declarations](../trace74-next-scale-transition-bench/README.md)
+from that same certificate passed individually. This does not identify
+why the combined check timed out, verify its other 29 transitions or their
+chain, or establish feasibility at the full candidate modulus.
