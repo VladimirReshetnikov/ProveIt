@@ -1571,6 +1571,10 @@ A [split-port check](research/nine-sharing-norm38-current-ports-split-draft/READ
 [independently audited](reviews/nine-sharing-norm38-current-ports-split-terminal-independent/README.md),
 then checked all four individual casts, but the universal `Fin 4` assembly
 again hit the kernel memory limit and the specialization did not run.
+A further [abstract assembly retry](research/nine-sharing-norm38-current-ports-abstract-retry/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-ports-abstract-terminal-independent/README.md),
+checked a generic finite-function lemma but still hit kernel memory when
+instantiated with the concrete ports; the universal cast remains open.
 A [prepared six-stage source check](research/nine-sharing-norm38-check-sequence/README.md)
 has passed a [no-Lean preflight and independent runner review](reviews/nine-sharing-norm38-check-sequence-independent/README.md).
 The first run failed on unavailable update-lemma names. A [corrected retry](research/nine-sharing-norm38-check-retry01/README.md),
