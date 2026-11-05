@@ -119,6 +119,11 @@ identifies its canonical base-256 decoding with the third Lean port; an
 [independent audit](reviews/current2011-mc-byte-binding-independent/README.md)
 reconstructs the value and compares both retained payloads externally. Lean
 does not read those files; the K and shifted MF port-byte links remain open.
+For shifted MF, [partial diagnostics](research/current2011-mf-byte-binding/README.md)
+check the unshifted digit and beta identities in Lean and compare the once-
+shifted recipe with both payloads externally. The [independent review](reviews/current2011-mf-partial-binding-independent/README.md)
+confirms the remaining shifted-port composition did not pass within the
+recorded memory limit; no MF byte-to-port theorem is claimed.
 On the historical provider, a [translated-consistency client](research/current2011-unscaled66-translated/README.md)
 also checks the standard-iPRA equivalence with Foundation's mapped
 Gödel–Gentzen consistency sentence, with an [independent audit](reviews/current2011-unscaled66-translated-independent/README.md).
