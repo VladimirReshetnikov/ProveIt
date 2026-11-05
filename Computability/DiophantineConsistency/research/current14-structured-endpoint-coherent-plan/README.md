@@ -11,8 +11,10 @@ Its `NOT_AUTHENTICATED_OR_LAUNCHED` readiness is deliberate.
 
 The fresh base subsequently [completed with actual exit 0 and passed its
 independent artifact audit](../../reviews/current14-fresh-base-independent/README.md).
-The 61-module extension and these two clients have not yet been built atop
-that base; this note does not claim a coherent structured endpoint.
+The [v3 61-module extension](../../reviews/current14-extension-v3-terminal-independent/README.md)
+subsequently completed with actual supervisor exit 0 and passed an artifact
+audit. The two clients have not yet been built atop that extension; this note
+does not claim a coherent structured endpoint.
 
 ## Preconditions and operator evidence
 
