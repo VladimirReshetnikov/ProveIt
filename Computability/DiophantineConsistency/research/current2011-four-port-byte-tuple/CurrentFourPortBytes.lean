@@ -13,19 +13,19 @@ attribute [local irreducible] CurrentBetaBytes.bigBytes CurrentMCBytes.bigBytes
   CurrentWindowCarry2011.ports
 
 def bigBytes : Fin 4 → List ℕ :=
-  FourByteGeneric.bytes CurrentBetaBytes.bigBytes CurrentKernelBytes.bigBytes
-    CurrentMCBytes.bigBytes CurrentMFDecoderExplicit.bigBytes
+  FourByteGeneric.bytes CurrentBetaBytes.bigBytes ((Nat.digits 256 (CurrentKernelBytes.recipe (2 ^ 47))).reverse)
+    CurrentMCBytes.bigBytes ((Nat.digits 256 (Nat.ofDigits CurrentMFRecipe.rho CurrentMFRecipe.maskDigits + (CurrentMFRecipe.rho ^ 2011 - 1))).reverse)
 
 def decoded : Fin 4 → ℤ :=
-  FourByteGeneric.decoded CurrentBetaBytes.bigBytes CurrentKernelBytes.bigBytes
-    CurrentMCBytes.bigBytes CurrentMFDecoderExplicit.bigBytes
+  FourByteGeneric.decoded CurrentBetaBytes.bigBytes ((Nat.digits 256 (CurrentKernelBytes.recipe (2 ^ 47))).reverse)
+    CurrentMCBytes.bigBytes ((Nat.digits 256 (Nat.ofDigits CurrentMFRecipe.rho CurrentMFRecipe.maskDigits + (CurrentMFRecipe.rho ^ 2011 - 1))).reverse)
 
 theorem decoded_apply (j : Fin 4) : decoded j =
     ((Nat.ofDigits 256 ((bigBytes j).reverse) : ℕ) : ℤ) := rfl
 
 theorem decoded_eq_ports : decoded = CurrentWindowCarry2011.ports :=
-  FourByteGeneric.assemble CurrentBetaBytes.bigBytes CurrentKernelBytes.bigBytes
-    CurrentMCBytes.bigBytes CurrentMFDecoderExplicit.bigBytes CurrentWindowCarry2011.ports
+  FourByteGeneric.assemble CurrentBetaBytes.bigBytes ((Nat.digits 256 (CurrentKernelBytes.recipe (2 ^ 47))).reverse)
+    CurrentMCBytes.bigBytes ((Nat.digits 256 (Nat.ofDigits CurrentMFRecipe.rho CurrentMFRecipe.maskDigits + (CurrentMFRecipe.rho ^ 2011 - 1))).reverse) CurrentWindowCarry2011.ports
     BetaKernelPair.decode_pair.1 BetaKernelPair.decode_pair.2
     MaskPair.decode_pair.1 MaskPair.decode_pair.2
 

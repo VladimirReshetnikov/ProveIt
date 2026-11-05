@@ -182,8 +182,10 @@ have symbolic Lean byte-decoding theorems plus separate external payload
 comparisons; none is a Lean theorem about gzip or filesystem contents. The
 four decoders have also been joined in two [checked pairs](research/current2011-four-port-byte-pairs/README.md).
 A [fully parametric assembly lemma](research/current2011-four-port-byte-generic/README.md)
-checks, but the concrete [four-port tuple attempts](research/current2011-four-port-byte-tuple/README.md)
-have not passed within the recorded memory cap; no tuple theorem is claimed.
+and a [concrete four-port tuple theorem](research/current2011-four-port-byte-tuple/README.md)
+now check in Lean; an [independent audit](reviews/current2011-four-port-tuple-success-independent/README.md)
+verifies the recorded source, predecessor objects and successful exit. Three
+earlier tuple attempts failed at the memory cap and remain recorded.
 For shifted MF, [partial diagnostics](research/current2011-mf-byte-binding/README.md)
 check the unshifted digit and beta identities in Lean and compare the once-
 shifted recipe with both payloads externally. The [independent review](reviews/current2011-mf-partial-binding-independent/README.md)
