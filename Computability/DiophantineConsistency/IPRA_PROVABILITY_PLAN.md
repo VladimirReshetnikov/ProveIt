@@ -3120,8 +3120,9 @@ arbitrary natural ports. A [fixed compact composition](research/p64-qcube72-fixe
 now derives `n<R` and the first Pell coordinates for an actual positive zero
 with arbitrary natural K. A checked [generic second comparison](research/p64-qcube72-half-index-lower-draft/README.md)
 proves `m<2n` from the Pell coordinates and a positive remainder, without the
-early congruence; its fixed-port application is separate. The first-index
-congruence and reverse existence remain open. A
+early congruence. Its [fixed-port application](research/p64-qcube72-fixed-compact-index-window-draft/README.md)
+now gives `n<R<2n` for the same first Pell index at actual positive compact-port
+zeros. The first-index congruence and reverse existence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
