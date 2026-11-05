@@ -43,7 +43,7 @@ theorem residuals (p : Fin 4 → ℕ) (v : Fin 14 → V) (hv : ∀i,0<v i)
   let l := g.Lt.evalRing z
   have hs : (a*n-1)*(a*n-1)+m*m+w*w+l*l=0 := by
     rw [internalZero_iff,output_shape] at hz
-    simp only [Expr.evalRing_add,Expr.evalRing_mul,Expr.evalRing_sub,Expr.evalRing_ofNat] at hz
+    simp only [Expr.evalRing_add,Expr.evalRing_mul,Expr.evalRing_sub,Expr.evalRing_ofNat,Nat.cast_one] at hz
     exact hz
   have hu := mul_self_nonneg (a*n-1)
   have hm := mul_self_nonneg m
