@@ -1524,6 +1524,11 @@ A [separate field client](research/nine-sharing-norm38-reference-fields01-check/
 [independently audited](reviews/nine-sharing-norm38-reference-fields01-terminal-independent/README.md),
 checks that reference nodes 61 and 44 equal the original P and Q fields over
 any commutative ring. The other fields and graph/source bridge remain open.
+Separate [U/W](research/nine-sharing-norm38-reference-fields02-check/README.md)
+and [Z/delta](research/nine-sharing-norm38-reference-fields03-check/README.md)
+clients both hit the interpreter memory limit before producing objects; their
+[failure evidence](reviews/nine-sharing-norm38-reference-fields02-03-terminal-independent/README.md)
+was independently audited.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
