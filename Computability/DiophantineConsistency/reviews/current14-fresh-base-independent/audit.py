@@ -94,6 +94,19 @@ need(actual==set(pr['foundation_artifacts']),'Foundation inventory mismatch')
 def gitset(*args):return {p.decode() for p in subprocess.check_output(['git',*args,'--',*paths],cwd=ROOT).split(b'\0') if p}
 need(gitset('ls-files','-z')==set(paths),'snapshot sources no longer all tracked')
 need(not gitset('diff','--name-only','-z','HEAD'),'workspace source differs from HEAD')
+for rec in records:
+    name=rec['module'];row=rows[name]
+    need(sha(ROOT/row['workspace_path'])==row['sha256'] and sha(SNAP/row['snapshot_path'])==row['sha256'],('final source drift',name))
+    need(sha(rec['log'])==rec['log_sha256'],('final log drift',name))
+    guard(outputs[name])
+guard(state['guarded_companions']);guard(pr['declared_external_guard'])
+for rel,h in pr['foundation_artifacts'].items():
+    p=foundation/rel;need(p.is_file() and not p.is_symlink() and sha(p)==h,('final Foundation drift',rel))
+need({str(p.relative_to(foundation)) for p in foundation.rglob('*') if p.is_file() or p.is_symlink()}==actual,
+     'Foundation inventory changed during audit')
+need(not gitset('diff','--name-only','-z','HEAD'),'workspace source differs from final HEAD')
+need(sha(manifestpath)==EXPECTED['snapshot'] and sha(PROVIDER)==EXPECTED['provider'] and sha(RUNNER)==EXPECTED['runner'],
+     'snapshot, provider or runner changed during audit')
 need(sha(statepath)==wd['build_state_sha256'] and sha(WATCHDOG)==wdhash,'terminal evidence changed during audit')
 receipt={'status':'PASS_SINGLE_SOURCE_CURRENT_ARTIFACT_AUDIT','watchdog_sha256':wdhash,
          'base_state_sha256':wd['build_state_sha256'],'snapshot_sha256':EXPECTED['snapshot'],

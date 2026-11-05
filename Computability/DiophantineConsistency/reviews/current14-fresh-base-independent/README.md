@@ -10,8 +10,9 @@ If the watchdog reports a successful terminal exit, the script is designed
 to rehash all 1,000 frozen and current sources, recorded objects and logs,
 recorded direct-input and companion guards, the Foundation inventory and
 declared external guards; it also compares the four exact target axiom names
-and reports with the target log and ledger. It checks source tracking and
-current HEAD, and verifies the watchdog's recorded base-state digest. The
+and reports with the target log and ledger. It rechecks sources, output and
+input guards, logs, Foundation inputs and workspace diff at the end; it
+checks source tracking and verifies the watchdog's recorded base-state digest. The
 actual outer tool-session exit must be observed separately. A passing result
 would be a single-build artifact audit, not a second Lean replay or full
 package-transitive, dynamic-loading or transient-mutation authentication.
@@ -27,4 +28,6 @@ The script refuses to overwrite `receipt.json`. Its success path has not yet
 run and may require correction if it encounters an unanticipated valid
 record shape; any failure must be retained and investigated rather than
 presented as an audit pass. Script SHA-256:
-`2ff22e3a0b0116d1a609d49f5983b5a9c15a61339277583c244ed4f624591820`.
+`896d3ec17a86eaac845ed5857ae651c1b2de92fab15850ad39e7ab71a68b239c`.
+The first, narrower preterminal refusal is preserved as
+`preterminal-refusal-v1.json`.
