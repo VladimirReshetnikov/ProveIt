@@ -1362,7 +1362,12 @@ not yet a fresh nine-variable encoding or iPRA endpoint.
 A subsequent [20-stage Jones model build](research/nine-current-lightweight-jones-probe/README.md),
 [independently audited](reviews/nine-current-lightweight-jones-independent/README.md),
 checks the generic nine-coordinate Jones correspondence over that provider.
-Its concrete iPRA endpoint and separate final axiom reports remain in progress.
+The [concrete current-equation client](research/nine-current-lightweight-endpoint-retry/README.md),
+[independently audited](reviews/nine-current-lightweight-endpoint-independent/README.md),
+now checks native and standard iPRA mapped-refutation endpoints and the mapped
+Gödel–Gentzen standard endpoint, with five explicit axiom reports. Its nine
+coordinates range over naturals including zero; no literal graph, operation
+count, degree or file semantics is established by this client.
 An additional equal-length-root replay has completed
 [all 104 stages](reviews/nine-variable-ipra-equal-length-stages-102-104-monitored/README.md):
 84 output objects match byte-for-byte, and 20 match after one equal-length
