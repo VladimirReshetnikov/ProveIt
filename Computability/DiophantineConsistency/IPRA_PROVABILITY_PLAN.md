@@ -10,6 +10,15 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
+[independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
+of their positive-model bridges and native, standard and equality-only iPRA
+mapped-refutation endpoints. Their externally compared graphs have 13 and 14
+positive variables and use 98 and 101 operations, respectively, counting six
+derived fixed integers as precomputed leaves. The package reports degrees 28
+and 24; this replay does not itself prove the degrees or parse the graph/files
+in Lean. It uses a captured provider, not a fresh current-base closure.
+
 The [14-variable, 67-operation, degree-106 candidate](research/fourteen-normalized-product106/README.md)
 has a focused [historical-provider check](research/normalized106-historical-endpoint-client/README.md)
 of its all-model same-zero bridge and standard-iPRA derivability, together
