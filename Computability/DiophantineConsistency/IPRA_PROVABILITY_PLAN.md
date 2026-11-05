@@ -1413,6 +1413,14 @@ An [explicit Lean source draft](research/nine-sharing-seed59-lean-draft/README.m
 and [independent transcription review](reviews/nine-sharing-seed59-lean-draft-independent/README.md)
 cover the 46 residual expressions, but the draft has not been compiled and
 its tentative degree and normalization proofs are not yet checked.
+A [delayed-materialization seed](research/nine-sharing-quartic65-54-candidate/README.md)
+reduces the same 65-gate source to 54 natural witnesses and 41 quadratic
+residuals, by leaving selected quadratic intermediates inlined. Its [independent
+audit](reviews/nine-sharing-quartic65-54-independent/README.md) checks every
+gate identity, exact fixed-byte ports, residual degree and normalization
+externally. The 54-witness Lean model bridge, degree and normalization proofs,
+and Jones/iPRA endpoint remain open; this is not a minimality or final graph
+size claim.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the
