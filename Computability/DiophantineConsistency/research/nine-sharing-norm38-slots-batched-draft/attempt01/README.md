@@ -1,0 +1,5 @@
+# Six checked slot identities; later group failed
+
+Author-observed outer session `38247` exited 1. Retained state SHA-256 `a8ce8f12f4948c97b8a171e34c3c8c1f652ce03ec6d28251ae82555f6dc4b9f0` and failed group log SHA-256 `f6dd6ec40626bdbd002d5e2fd355fcbbe9001e9ba1e3da02795a777c23ba7a22`. The base and groups 00 and 01 dependency scans and compiles passed, establishing the stated conditional identities for slots 0–5 under their IΣ₁-model and port-cast hypotheses. Their object hashes and direct guards are recorded in state; objects remain in the temporary provider.
+
+Group 02's Lean compile exited 1 without a monitor stop. The log records unsolved goals comparing model-ring embeddings of the numerals 3 and 4 to the corresponding ring numerals; it also records linter warnings. Groups 03–09 and the final extraction assembly were not run. No claim is made for group 02 or any subsequent theorem, all-model bridge, Jones transfer or iPRA endpoint. The terminal record is author-recorded, not independently observed; provider and monitor limitations are in the packet README.

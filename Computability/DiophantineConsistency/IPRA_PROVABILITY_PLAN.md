@@ -1478,6 +1478,10 @@ A [single-slot diagnostic](research/nine-sharing-norm38-slot00-retry02/README.md
 [independently audited](reviews/nine-sharing-norm38-slot00-terminal-independent/README.md),
 then checked the first residual identity after explicit finite-index rewrites;
 the other 28 identities and their assembly remain unproved.
+A [batched check](research/nine-sharing-norm38-slots-batched-draft/README.md),
+[independently audited](reviews/nine-sharing-norm38-slots-batched-terminal-independent/README.md),
+subsequently compiled slots 0–5 before group 02 failed on unsimplified model
+numeral casts. The later slots and final assembly were not checked.
 A [one-way reference-graph draft](research/nine-sharing-norm38-reference-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-reference-independent/README.md),
 proposes recovering the original 65-gate zero from those static conditions;
