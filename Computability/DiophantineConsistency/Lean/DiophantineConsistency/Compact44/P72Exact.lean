@@ -38,26 +38,18 @@ private theorem large_of_six (a p : V) (hp : 6 ≤ p) :
   rw [← ArithmeticPellFirstIndex.y_six] at h
   exact lt_of_lt_of_le h ((y_strictMono a).monotone hp)
 
-/-- The index part: `13 ≤ n`, `n < m`, `m = R` and `2n = R + 1`, from the
-early congruence and the main, ordinary strong and auxiliary norms. No carrier
-is needed. -/
-theorem indices_ordinary (q X Y k R g c a y0 i' f T u n s μ m η : V)
+/-- The index window: from the early congruence alone, `13 ≤ n < m`, `14 ≤ m`,
+`2R < c` and the size bound `(a+2)Δ² < c` that the signed half-index step needs. -/
+theorem index_window (q X Y k R c a y0 n s μ m η : V)
     (hq3 : 3 ≤ q) (hX : 0 < X) (hy0 : 0 < y0) (hYq : Y = q * (q * q) * y0)
-    (hη : 0 < η) (hc : c = η + Y * k) (hi' : 0 < i') (hf : 0 < f)
-    (ha : a = X * Y + Y)
+    (hη : 0 < η) (hc : c = η + Y * k) (ha : a = X * Y + Y)
     (hR26 : 26 ≤ R)
     (hny : 2 * ycoord n (2 * ((X * Y) * Y - 1) + 1) = k)
-    (hks : k = 2 * n + 4 * ((X * Y) * Y) * s) (hRμ : R + 1 < μ)
+    (hks : k = 2 * n + 4 * ((X * Y) * Y) * s)
     (hnmod : (2 * n) % μ = R + 1)
-    (hmy : ycoord m a = c)
-    (hg : g * g = 1 + delta a * c * c)
-    (hs' : (i' * c * c) * (i' * c * c) + delta a = delta a * (f * f))
-    (haux : ((3 + 4 * a) + a * a) * (f * f - 1) *
-        (absdiff (f * f * (T * c)) (f * f * R + c) * absdiff (f * f * (T * c)) (f * f * R + c)) +
-        absdiff (f * f * (T * c) + u) (f * f * R + c) * absdiff (f * f * (T * c) + u) (f * f * R + c) =
-      1 + ((3 + 4 * a) + a * a) * (f * f - 1) *
-        (absdiff (f * f * (T * c) + u) (f * f * R + c) * absdiff (f * f * (T * c) + u) (f * f * R + c))) :
-    13 ≤ n ∧ n < m ∧ m = R ∧ 2 * n = R + 1 := by
+    (hmy : ycoord m a = c) :
+    13 ≤ n ∧ n < m ∧ 14 ≤ m ∧ 2 * R < c ∧ (a + 2) * delta a * delta a < c ∧ 0 < k ∧ 2 ≤ Y ∧
+      0 < c := by
   have hq0 : 0 < q := lt_of_lt_of_le (by norm_num) hq3
   have hY0 : 0 < Y := by rw [hYq]; exact mul_pos (mul_pos hq0 (mul_pos hq0 hq0)) hy0
   have hc0 : 0 < c := by rw [hc]; exact add_pos_of_pos_of_nonneg hη (Arithmetic.zero_le _)
@@ -125,6 +117,53 @@ theorem indices_ordinary (q X Y k R g c a y0 i' f T u n s μ m η : V)
     _ = c := by rw [hc]; ring
   have hbig : (a + 2) * delta a * delta a < c := by
     rw [← hmy]; exact large_of_six a m (le_trans (by norm_num) hm14)
+  exact ⟨hn13, hnm, hm14, hhalf, hbig, hk0, hY2, hc0⟩
+
+/-- Once the rank is the main index, the early congruence forces `2n = R + 1`. -/
+theorem index_close (R n μ m : V) (hRμ : R + 1 < μ) (hnmod : (2 * n) % μ = R + 1)
+    (hnm : n < m) (hmR : m = R) : 2 * n = R + 1 := by
+  -- 2n = R + 1
+  have hnR : n < R := by rwa [← hmR]
+  have hsmall : 2 * n < μ + (R + 1) := calc
+    2 * n < 2 * R := mul_lt_mul_of_pos_left hnR (by simp)
+    _ = R + R := by ring
+    _ < μ + (R + 1) := add_lt_add (lt_trans (lt_add_one R) hRμ) (lt_add_one R)
+  have hdiv : (2 * n) / μ = 0 := by
+    by_contra hz
+    have hd : 1 ≤ (2 * n) / μ := pos_iff_one_le.mp (pos_iff_ne_zero.mpr hz)
+    have he : μ + (R + 1) ≤ 2 * n := calc
+      μ + (R + 1) ≤ μ * ((2 * n) / μ) + (R + 1) :=
+        _root_.add_le_add (le_mul_of_one_le_right (by simp) hd) (le_refl _)
+      _ = 2 * n := by rw [← hnmod]; exact div_add_mod _ _
+    exact (not_le_of_gt hsmall) he
+  have hnR1 : 2 * n = R + 1 := by
+    have he := (div_add_mod (2 * n) μ).symm
+    rw [hdiv, hnmod] at he
+    simpa only [mul_zero, zero_add] using he
+  exact hnR1
+
+/-- The index part: `13 ≤ n`, `n < m`, `m = R` and `2n = R + 1`, from the
+early congruence and the main, ordinary strong and auxiliary norms. No carrier
+is needed. -/
+theorem indices_ordinary (q X Y k R g c a y0 i' f T u n s μ m η : V)
+    (hq3 : 3 ≤ q) (hX : 0 < X) (hy0 : 0 < y0) (hYq : Y = q * (q * q) * y0)
+    (hη : 0 < η) (hc : c = η + Y * k) (hi' : 0 < i') (hf : 0 < f)
+    (ha : a = X * Y + Y)
+    (hR26 : 26 ≤ R)
+    (hny : 2 * ycoord n (2 * ((X * Y) * Y - 1) + 1) = k)
+    (hks : k = 2 * n + 4 * ((X * Y) * Y) * s) (hRμ : R + 1 < μ)
+    (hnmod : (2 * n) % μ = R + 1)
+    (hmy : ycoord m a = c)
+    (hg : g * g = 1 + delta a * c * c)
+    (hs' : (i' * c * c) * (i' * c * c) + delta a = delta a * (f * f))
+    (haux : ((3 + 4 * a) + a * a) * (f * f - 1) *
+        (absdiff (f * f * (T * c)) (f * f * R + c) * absdiff (f * f * (T * c)) (f * f * R + c)) +
+        absdiff (f * f * (T * c) + u) (f * f * R + c) * absdiff (f * f * (T * c) + u) (f * f * R + c) =
+      1 + ((3 + 4 * a) + a * a) * (f * f - 1) *
+        (absdiff (f * f * (T * c) + u) (f * f * R + c) * absdiff (f * f * (T * c) + u) (f * f * R + c))) :
+    13 ≤ n ∧ n < m ∧ m = R ∧ 2 * n = R + 1 := by
+  obtain ⟨hn13, hnm, hm14, hhalf, hbig, hk0, hY2, hc0⟩ :=
+    index_window q X Y k R c a y0 n s μ m η hq3 hX hy0 hYq hη hc ha hR26 hny hks hnmod hmy
   -- the ordinary strong norm
   have hD : (3 + 4 * a) + a * a = delta a := by unfold delta; ring
   have hf1 : 1 ≤ f * f := one_le_mul_of_one_le_of_one_le (pos_iff_one_le.mp hf) (pos_iff_one_le.mp hf)
@@ -165,25 +204,7 @@ theorem indices_ordinary (q X Y k R g c a y0 i' f T u n s μ m η : V)
     have h := AdaptiveGap85GenericSignedHalfIndex.signed_half_index_of_facts a c g f i' T R 0 yv m
       hc0 hi' hf hm0 hyv hmy hR0 (by rw [hRabs]; exact hhalf) hg hs' hbig haux'
     rwa [hRabs] at h
-  -- 2n = R + 1
-  have hnR : n < R := by rwa [← hmR]
-  have hsmall : 2 * n < μ + (R + 1) := calc
-    2 * n < 2 * R := mul_lt_mul_of_pos_left hnR (by simp)
-    _ = R + R := by ring
-    _ < μ + (R + 1) := add_lt_add (lt_trans (lt_add_one R) hRμ) (lt_add_one R)
-  have hdiv : (2 * n) / μ = 0 := by
-    by_contra hz
-    have hd : 1 ≤ (2 * n) / μ := pos_iff_one_le.mp (pos_iff_ne_zero.mpr hz)
-    have he : μ + (R + 1) ≤ 2 * n := calc
-      μ + (R + 1) ≤ μ * ((2 * n) / μ) + (R + 1) :=
-        _root_.add_le_add (le_mul_of_one_le_right (by simp) hd) (le_refl _)
-      _ = 2 * n := by rw [← hnmod]; exact div_add_mod _ _
-    exact (not_le_of_gt hsmall) he
-  have hnR1 : 2 * n = R + 1 := by
-    have he := (div_add_mod (2 * n) μ).symm
-    rw [hdiv, hnmod] at he
-    simpa only [mul_zero, zero_add] using he
-  exact ⟨hn13, hnm, hmR, hnR1⟩
+  exact ⟨hn13, hnm, hmR, index_close R n μ m hRμ hnmod hnm hmR⟩
 
 theorem exact_ordinary (q X Y k R H M S g c a γ y0 i' f T u n s μ m η : V)
     (hq3 : 3 ≤ q) (hX : 0 < X) (hy0 : 0 < y0) (hYq : Y = q * (q * q) * y0)
@@ -263,6 +284,8 @@ theorem exact (q X Y k R H M S g c a γ y0 i f T u n s μ m η : V)
 
 end P72Exact
 
+#print axioms P72Exact.index_window
+#print axioms P72Exact.index_close
 #print axioms P72Exact.indices_ordinary
 #print axioms P72Exact.exact_ordinary
 #print axioms P72Exact.exact
