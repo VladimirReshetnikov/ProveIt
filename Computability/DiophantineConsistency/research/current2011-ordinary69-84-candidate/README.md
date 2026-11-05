@@ -26,11 +26,14 @@ leading coefficient 589,155,221. Hence the fixed-byte polynomial has exact
 degree 84. This is an external exact check, not a Lean `totalDegree` theorem
 or a Lean proof of JSON/file semantics.
 
-The parent 70/84 has a separately checked standard-iPRA endpoint, but a
-Lean literal-source binding and internal transfer for **this** 69-row syntax
-remain to be checked. The external polynomial identity alone is not claimed
-as a Lean iPRA derivation. The maintained 65/150 `equation.tex` and
-`equation.pdf` are unchanged. No global operation or degree minimum is claimed.
+The later [Lean literal client](../current2011-ordinary69-84-literal/README.md)
+checks the evaluator and exact ring identity with 70/84. A separate [iPRA
+endpoint](../current2011-ordinary69-84-ipra/README.md), [independently
+reviewed](../../reviews/current2011-ordinary69-84-ipra-independent/README.md),
+checks the same-valuation all-model bridge and derivability for mapped
+refutation and Gödel–Gentzen consistency. Graph and byte-file comparisons
+remain external. The maintained 65/150 `equation.tex` and `equation.pdf` are
+unchanged. No global operation or degree minimum is claimed.
 
 Run from the repository root:
 

@@ -72,8 +72,13 @@ the graph degree and file correspondence remain external checks.
 A [69-operation degree-84 graph](research/current2011-ordinary69-84-candidate/README.md)
 uses `x(x−2) = (x−1)²−1` to compute exactly the same polynomial as the
 70/84 form with one fewer operation. Its [independent audit](reviews/current2011-ordinary69-84-candidate-independent/README.md)
-checks the full graph, fixed-byte degree and ring identity; the literal Lean
-binding and iPRA transfer are in progress.
+checks the full graph, fixed-byte degree and ring identity. A [Lean literal
+client](research/current2011-ordinary69-84-literal/README.md) checks its
+commutative-ring evaluation and exact value identity with 70/84; an [iPRA
+endpoint](research/current2011-ordinary69-84-ipra/README.md), [independently
+reviewed](reviews/current2011-ordinary69-84-ipra-independent/README.md), checks
+both mapped-refutation and mapped Gödel–Gentzen consistency formulations.
+The graph/file comparison and degree remain external checks.
 A proposed one-gate reduction of the 71/80 sphere leaves an extra `W = -1`
 case. A [transport-only obstruction](research/sphere70-negative-transport-obstruction/README.md),
 [independently reviewed](reviews/sphere70-negative-transport-independent/README.md),
