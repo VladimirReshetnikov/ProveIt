@@ -3053,6 +3053,14 @@ checks the symbolic argument and the bounded exact arithmetic. It rules out
 the coordinate-preserving inverse at that zero, but does not exclude a
 different original zero at the same ports or settle compact44 existence
 equivalence; the argument has not been formalized in Lean.
+A separate [free-X 75-operation graph](research/p64-free-x75-symbolic-full-zero/README.md)
+has an externally checked forward witness map from 76Y and a symbolic full
+zero at natural ports with the freed coordinate not divisible by `q`.
+The [graph binding](research/p64-free-x75-graph-binding/README.md) and
+[independent review](reviews/p64-free-x75-symbolic-full-zero-independent/README.md)
+check the map and witness. The direct coordinate inverse fails there, but a
+different witness, fixed compact44 equivalence, and an iPRA endpoint remain
+unsettled.
 
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
