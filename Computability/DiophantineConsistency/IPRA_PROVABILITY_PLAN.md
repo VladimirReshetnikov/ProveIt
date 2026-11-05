@@ -2414,9 +2414,11 @@ for the integer `noZero14` sentence. It is not an internal rational-leaf
 sentence. A [cleared integer client](research/rational-carrier64-cleared-ipra/README.md)
 selects the existing normalized 65-row syntax, proves its no-zero sentence
 definitionally equals `noZero14`, and reuses its iPRA derivation. Rational-to-
-integer evaluation remains external; displayed-file binding and an internal
-rational-language transfer remain separate, and the maintained integer-leaf
-count is unchanged.
+integer evaluation remains external. A [cleared-pair client](research/rational-carrier64-cleared-pair/README.md)
+checks that external same-valuation equivalence together with the iPRA
+derivation for the explicit cleared integer sentence on the same base.
+Displayed-file binding and an internal rational-language transfer remain
+separate, and the maintained integer-leaf count is unchanged.
 The separate finite PDF binding retains its decoder and rank-recipe boundary.
 A [checked decimal-seed theorem](research/current14-seed-lines-binding/README.md)
 now identifies 715 explicit Lean decimal digits with the imported machine seed;
