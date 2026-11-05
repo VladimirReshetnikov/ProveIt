@@ -56,7 +56,10 @@ code. No review-gate or approval receipt was created by this audit.
    detected. Verify the helper bytes before executing them, ideally execute
    exactly the bytes that were checked, and add a controlled changed-helper
    regression. This is a fail-closed input-order finding, not evidence of a
-   malicious or changed helper in the observed workspace.
+   malicious or changed helper in the observed workspace. The launcher has
+   the analogous ordering: it imports `supervision.py` and `traversal_core.py`
+   before `main()` checks the gate's hashes. Those imports execute top-level
+   helper code, so gate-based drift rejection happens after that execution.
 
 There is also a **PID reuse race** worth addressing in the process design:
 `group_members` observes a numeric PID and `drain` later signals that PID.
