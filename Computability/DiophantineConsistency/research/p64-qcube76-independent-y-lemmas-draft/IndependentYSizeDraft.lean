@@ -63,7 +63,8 @@ theorem actual_f_bound (p : Fin 4 → ℕ) (v : Fin 14 → V) (hv : ∀i,0<v i)
         ((ι (v 4):DiffRing V)*ι (v 4)-1) := by
     rw [strong_eval]
     simp [z,pp,q,Y,X,a,c]
-    <;> ring
+    left
+    ring
   rw [heval] at hw
   have hstrong : (((ι a:DiffRing V)+2)*((ι a:DiffRing V)+2)-1)*
       ((ι (v 4):DiffRing V)*ι (v 4)-1) =

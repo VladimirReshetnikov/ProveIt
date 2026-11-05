@@ -1,0 +1,35 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube76-independent-y-lemmas-draft/IndependentYSizeDraft.lean:63:44: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 14 → V
+hv : ∀ (i : Fin 14), 0 < v i
+hz : InternalZero (P64QCube76Y.graph fun j => ↑(p j)).output v
+pp : Fin 4 → ℤ := fun j => ↑(p j)
+z : Fin 14 → DiffRing V := fun i => ι (v i)
+q : V := ↑(p 0) * v 0 + 1
+Y : V := q * q * q * v 7
+X : V := v 8 * q
+a : V := X * Y + Y
+c : V := (v 10 + v 11) * Y + v 10
+hq : 0 < q
+hY : 0 < Y
+hk2 : 2 ≤ v 10 + v 11
+hc3 : 3 ≤ c
+g : V
+hg : g * g = (a * a + (4 * a + 3)) * (c * c) + 1
+hnorm : ι g * ι g = 1 + ((ι a + 2) * (ι a + 2) - 1) * (ι c * ι c)
+left✝² : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).A0 = 1
+left✝¹ : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).M = 0
+left✝ : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).Na = 1
+right✝ : Expr.evalRing (fun i => ι (v i)) (P64QCube76Y.graph fun j => ↑(p j)).Lt = 0
+hw : Expr.evalRing z (P64QCube76Y.graph pp).W = 0
+⊢ True ∨ -1 + ι (v 4) ^ 2 = 0
+'IndependentYSizeDraft.actual_f_bound' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

@@ -15,10 +15,10 @@ the discrete Pell bound
 
 `IndependentYGraphDraft.lean` passed a [guarded check](../p64-qcube76y-graph-model-guarded-check/README.md)
 of the new graph's zero-specific residual split and main Pell-root extraction.
-The other three Lean files remain **source drafts and have not been checked by
-Lean**. `IndependentYSizeDraft.lean` attempts
-to apply the generic size inequality to the evaluated strong residual and
-main root of an actual 76Y zero. `IndependentYWitnessDraft.lean` attempts
+`IndependentYSizeDraft.lean` also passed a [guarded check](../p64-qcube76y-size-guarded-check/README.md)
+of the actual-zero bound `f²>c+1`. The remaining two Lean files remain
+**source drafts and have not been checked by Lean**.
+`IndependentYWitnessDraft.lean` attempts
 positive model representatives and conditional graph witness maps: the old
 signed root must be nonzero, and the new root must strictly exceed evaluated
 `V`. Sequential checks require compiled providers for the generated
