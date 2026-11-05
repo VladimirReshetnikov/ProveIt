@@ -22,6 +22,12 @@ window or rank congruence, construct an 89 witness, or establish an iPRA
 endpoint. The existing 89 window depends on positive transport and is not
 available automatically here.
 
+A possible next step, not proved by this file, is to derive the signed
+divisibility `q^5 ∣ H*(k−R−1)` from the balance and `W=q^5*s`, then
+use a signed-to-natural magnitude bridge to apply the existing factor
+cancellation theorem. Even a resulting `q^4 ∣ (k−R−1)` would not by
+itself supply the missing rank window.
+
 ## Observed check
 
 On 2026-11-04, Lean 4.32.0 exited 0 and reported both declarations depend on
