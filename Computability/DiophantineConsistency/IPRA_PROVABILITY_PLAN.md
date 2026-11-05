@@ -3122,7 +3122,10 @@ with arbitrary natural K. A checked [generic second comparison](research/p64-qcu
 proves `m<2n` from the Pell coordinates and a positive remainder, without the
 early congruence. Its [fixed-port application](research/p64-qcube72-fixed-compact-index-window-draft/README.md)
 now gives `n<R<2n` for the same first Pell index at actual positive compact-port
-zeros. The first-index congruence and reverse existence remain open. A
+zeros. A separately reviewed [standard-integer carrier criterion](research/p64-qcube72-fixed-compact-carrier-gap/README.md)
+identifies the remaining same-witness conditions as `2n=R+1` and `U∣h` under
+its explicit assumptions; a corresponding model-level theorem is not yet
+composed. The first-index congruence and reverse existence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
