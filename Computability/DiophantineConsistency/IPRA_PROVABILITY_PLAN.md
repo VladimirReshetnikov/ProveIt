@@ -3138,8 +3138,10 @@ first-index congruence and reverse existence remain open. A reviewed
 shows the transport, quartic window and free carrier alone permit `e=1,3,9`
 and may fail `Y²∣h`; its assignments fail the first norm and are not graph
 zeros. A checked [generic 3-divisible-q obstruction](research/p64-qcube72-divisible-q-obstruction-draft/README.md)
-shows that the main norm and free carrier imply `U∤h` when `3∣q` and `U>0`;
-its application to actual zeros is separate. A
+shows that the main norm and free carrier imply `U∤h` when `3∣q` and `U>0`.
+A checked [actual-zero client](research/p64-qcube72-actual-divisible-q-obstruction-draft/README.md)
+applies this as `Y²∤h` at arbitrary natural ports and at the fixed compact
+ports, conditional on `3∣q`; it does not assert such a zero exists. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
