@@ -122,9 +122,14 @@ endpoints too
 [record](research/fourteen-p64-endpoint/README.md)). Its finalizer is a sum of
 squares minus one. A local norm minimum (`P64Norm`) shows that this forces the
 auxiliary residual to be `1` and the others to vanish. Its early congruence
-uses the modulus `Y²` with `gcd(Y², H) ∣ 9` (`P64Early`).
-An [alternate captured-provider assembly](research/p65-unconditional-ipra-alternate-provider/README.md)
-also checks the three unconditional endpoints for the same Lean expression,
+uses the modulus `Y²` with `gcd(Y², H) ∣ 9` (`P64Early`). An independent
+[captured-provider replay](research/fourteen-p64-independent-replay/README.md)
+and [artifact review](reviews/p64-captured-replay-independent/README.md)
+check the eight P64 modules with one import shim. The package’s missing
+pinned source and payload files have been [restored](research/fourteen-p64-payload-provenance/RESTORATION.md);
+file-to-Lean port equality remains external.
+For package 65, an [alternate captured-provider assembly](research/p65-unconditional-ipra-alternate-provider/README.md)
+checks the three unconditional endpoints for the same P65 Lean expression,
 using a separately constructed halt-side witness and a
 [62-module replay](research/p65-reverse-provider/README.md) of the reverse
 direction. A further [30-module captured-provider replay](research/p65-canonical-endpoint-provider/README.md)

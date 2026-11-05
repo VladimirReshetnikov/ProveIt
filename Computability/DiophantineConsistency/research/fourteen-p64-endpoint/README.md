@@ -1,6 +1,6 @@
 # Package 64's 14-positive degree-30 equation: iPRA endpoints
 
-4 November 2026. Author-side build by the Claude session; not a paired replay.
+4 November 2026. The original build was author-side. A later [independent captured-provider replay](../fourteen-p64-independent-replay/README.md) rebuilt the eight modules with one import shim and passed an [artifact review](../../reviews/p64-captured-replay-independent/README.md); this is not a paired or full-transitive source replay. The package’s missing pinned files were subsequently [restored and externally verified](../fourteen-p64-payload-provenance/RESTORATION.md).
 
 ## The equation
 
