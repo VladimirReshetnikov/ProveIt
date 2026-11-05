@@ -1445,6 +1445,11 @@ scaled-strong-norm identity. This count is conditional on a Lean bridge using
 the norm theorem's ordered-model hypotheses and natural representatives for
 all four ports; that bridge, degree and normalization proofs, and Jones/iPRA
 endpoint have not yet been established.
+An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
+[independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
+separates signed-pair algebra and conditional trace replay from generated
+forward witnesses for the 52- and 54-witness seeds. The actual trace,
+port-image and source-graph proofs are not yet supplied.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the
