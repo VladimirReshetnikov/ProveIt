@@ -3152,7 +3152,11 @@ two. This restricts same-q conversions; it does not rule out a changed-q
 witness or establish a 72 zero. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
 now proves `3∤q` for every positive 76Y zero at the fixed compact ports, by
 using the specific 76Y-to-72 witness map. It neither proves a 72 zero with
-`3∣q` exists nor excludes a changed-q witness. An independently
+`3∣q` exists nor excludes a changed-q witness. A reviewed
+[preserving-Y obstruction](research/p64-qcube72-preserve-Y-normalization-obstruction/README.md)
+shows in standard integers that a hypothetical 72 zero with cube-free scale
+and the stated J bounds cannot be converted to a 76Y zero at the same ports
+while retaining Y; no such source zero is known. An independently
 reviewed [all-moduli construction](research/p64-qcube72-fixed-mask-all-moduli-controls/README.md)
 produces strictly positive outputs divisible by `N⁴` for every positive `N` at
 two fixed K values, one in each q-divisibility class. It does not produce an
