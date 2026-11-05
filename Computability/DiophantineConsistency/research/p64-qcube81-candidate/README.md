@@ -53,7 +53,9 @@ the exact first-residual identity and the structurally unchanged other rows;
 this does not itself establish the model-level zero equivalence.
 [`generate_lean.py`](generate_lean.py) generates the 81 gate rows of
 [`P64QCube81.lean`](P64QCube81.lean), importing the canonical P64 graph.
-This generated Lean source has **not yet been checked**.
+The generated graph definition has [compiled in Lean](../fourteen-p64-qcube-quotient-binding-draft/CANDIDATE_CHECK.md)
+on a captured provider. That check does not establish zero-equivalence or
+an iPRA endpoint.
 
 ## Missing proof obligations
 
