@@ -3160,8 +3160,11 @@ divisibility conditions; a conditional rigidity argument shows it cannot be
 completed as a 76Y witness while also retaining c and k when the source has
 `3∣q`. A checked [generic rigidity lemma](research/p64-qcube72-scale-rigidity-draft/README.md)
 now proves equal main index, root and carrier in the stated models under
-explicit shared-coordinate identities. Neither result establishes zero
-existence or a general reverse obstruction. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
+explicit shared-coordinate identities. A [two-zero client](research/p64-qcube72-two-zero-scale-obstruction-draft/README.md)
+checks that at the fixed compact ports, if the source has `3∣q` and two
+positive 72 zeros share X,Y,c,k, the second cannot satisfy an old-carrier
+equation. Neither result establishes zero existence or a general reverse
+obstruction. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
 now proves `3∤q` for every positive 76Y zero at the fixed compact ports, by
 using the specific 76Y-to-72 witness map. It neither proves a 72 zero with
 `3∣q` exists nor excludes a changed-q witness. A reviewed
