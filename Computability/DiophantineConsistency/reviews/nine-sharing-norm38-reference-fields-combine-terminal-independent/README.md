@@ -1,0 +1,5 @@
+# Independent terminal audit: combined fields and conditional carrier
+
+The first module successfully combines six arbitrary-ring reference-field identities, for nodes 61/P, 44/Q, 78/U, 66/W, 80/Z and 36/delta; its axiom report is `[propext, Quot.sound]`. The second module, which additionally assumes six static/reference terminal agreements and five norms, failed to rewrite under a local `let` binding. Its report contains `sorryAx` and is not proof evidence. No final conditional carrier implication or gate/reference bridge is established by this run.
+
+The checker pins the two sources, manifest, runner, retained/live state, logs and successful first object; checks both rows' 400 direct guard slots, 1,073 overlay routes, the first-to-second object route and five producer survey; and reruns all independent field producer reviews. Author-recorded outer session 27499 exited 1; this is not an independently observed transcript. The final postflight was not reached. Resource sampling and point checks do not prove complete transitive/dynamic ancestry. No Lean replay was performed.

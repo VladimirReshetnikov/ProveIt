@@ -1545,6 +1545,10 @@ A [factored Z client](research/nine-sharing-norm38-reference-z-factored-check/RE
 [independently audited](reviews/nine-sharing-norm38-reference-z-factored-terminal-independent/README.md),
 also checks the last of the six needed reference-field projections. Their
 combination and the graph/source bridge remain open.
+A [two-stage combination attempt](research/nine-sharing-norm38-reference-fields-combine-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-fields-combine-terminal-independent/README.md),
+compiled the six-field conjunction. Its following conditional Carrier65
+implication failed on a local `let` rewrite and was not accepted.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
 proposes constructing seed witnesses from an original zero under explicit
@@ -1585,8 +1589,8 @@ instantiated with the concrete ports; the universal cast remains open.
 A [port-parametric client](research/nine-sharing-norm38-four-variable-ports-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-four-variable-ports-terminal-independent/README.md),
 nevertheless checks the seed/static equivalence from four separate pointwise
-cast hypotheses without expanding the concrete coefficients. Instantiating
-those hypotheses at the actual current ports remains open.
+cast hypotheses without expanding the concrete coefficients. It does not by
+itself instantiate those hypotheses at the actual current ports.
 A [direct four-cast client](research/nine-sharing-norm38-current-four-cast-instantiation-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-four-cast-terminal-independent/README.md),
 then checked that instantiation and the same-valuation seed/static equivalence

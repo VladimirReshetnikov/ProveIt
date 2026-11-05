@@ -1,0 +1,57 @@
+/tmp/nine-sharing-norm38-reference-fields-combine-check-20261105/src/DiophantineConsistency/Norm38StaticCarrierConditional.lean:28:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  pairValue ι (NormAssignment38.assignment ports w 61)
+in the target expression
+  have v := NormAssignment38.assignment ports w;
+  pairValue ι (v 61) = 1 ∧
+    pairValue ι (v 44) = 1 ∧ pairValue ι (v 78) = 1 ∧ pairValue ι (v 66) = 1 ∧ pairValue ι (v 80) = pairValue ι (v 36)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+ports : Fin 4 → V
+w : Fin 38 → V
+hn :
+  have v := NormAssignment38.assignment ports w;
+  pairValue ι (v 61) = 1 ∧
+    pairValue ι (v 44) = 1 ∧ pairValue ι (v 78) = 1 ∧ pairValue ι (v 66) = 1 ∧ pairValue ι (v 80) = pairValue ι (v 36)
+ht0 :
+  pairValue ι (NormAssignment38.assignment ports w 61) =
+    reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 61
+ht1 :
+  pairValue ι (NormAssignment38.assignment ports w 44) =
+    reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 44
+hta :
+  pairValue ι (NormAssignment38.assignment ports w 78) =
+    reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 78
+htt :
+  pairValue ι (NormAssignment38.assignment ports w 66) =
+    reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 66
+hts :
+  pairValue ι (NormAssignment38.assignment ports w 80) =
+    reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 80
+htd :
+  pairValue ι (NormAssignment38.assignment ports w 36) =
+    reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 36
+hc0 :
+  reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 61 =
+    (Carrier65.core (fun j => ι (ports j)) fun j => ι (w (Fin.castLE ⋯ j) + 1)).P
+hc1 :
+  reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 44 =
+    (Carrier65.core (fun j => ι (ports j)) fun j => ι (w (Fin.castLE ⋯ j) + 1)).Q
+hca :
+  reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 78 =
+    (Carrier65.core (fun j => ι (ports j)) fun j => ι (w (Fin.castLE ⋯ j) + 1)).U
+hct :
+  reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 66 =
+    (Carrier65.core (fun j => ι (ports j)) fun j => ι (w (Fin.castLE ⋯ j) + 1)).W
+hcs :
+  reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 80 =
+    (Carrier65.core (fun j => ι (ports j)) fun j => ι (w (Fin.castLE ⋯ j) + 1)).Z
+hcd :
+  reference (fun j => ι (ports j)) (fun j => ι (w (Fin.castLE ⋯ j) + 1)) 36 =
+    (Carrier65.core (fun j => ι (ports j)) fun j => ι (w (Fin.castLE ⋯ j) + 1)).delta
+⊢ (Carrier65.value (fun j => ι (ports j)) fun j => ι (w (Fin.castLE ⋯ j) + 1)) = 0
+'DiophantineConsistency.Norm38Reference.static_terminals_norms_imply_value' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
