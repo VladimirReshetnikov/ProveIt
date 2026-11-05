@@ -2958,6 +2958,13 @@ not constitute a complete transitive rebuild. The degree and finite graph
 checks, retained payload/display correspondence, and filesystem/gzip/JSON/PDF
 semantics remain external; no global minimality is claimed.
 
+Package 73's thirteen-positive 30 / 92 followed
+([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
+[record](research/thirteen-p73-endpoint/README.md)). It reduces forward to the
+95-operation free-J literal (`P73Halt`). Its converse is built from the halt
+data (`P73Converse`), because a literal zero supplies only an ordinary strong
+index. Package 74 evaluates the same polynomial in 93 operations.
+
 Every other compact-tuple frontier point still lacks a Lean Con(ZFC) proof.
 That includes:
 
@@ -2968,6 +2975,8 @@ That includes:
   maintained CURRENT2011 tuple (`β = 2^94517 − 1`). The packages bind them to
   admissible942 and block-mask2963. 192's thirteen-positive 174 / 69 is in the
   same position;
+- the thirteen-positive 62's 114 / 83, 170's 154 / 72 and 162 / 71, and the
+  twelve-positive 57's 258 / 89;
 - 170's 74 / 438;
 - 184's 104 / 174;
 - the ten-positive Pareto points;
