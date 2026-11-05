@@ -95,15 +95,47 @@ exactly one tile is selected and all 44 copy and anchor digits equal that
 tile's radix-four digits. Identifying this band with a column of the full
 packed product is the overlap identity of the next phase.
 
+## Phase 3b: the kernel as rotated bands, and the carry room
+
+[`Mixed121/Mixed121Rotation`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Rotation.lean)
+generalizes Compact44's `BandCarryInputs` and `GenericBandCarryFamily` to an
+arbitrary width `w`. Their proofs used `67` only as the width. It proves:
+
+- `band_rotation_congr`: the 121-bit band rotation modulo `2^(121n) − 1`;
+- `combined_congr`: the same for the full product;
+- `kernel_bands`: in every model, the concrete kernel is
+  `kernelBand 4393 + kernelBand 5495 + bareKernel`, with bare terms
+  `ρ^30, ρ^62, ρ^1100, ρ^2200, ρ^8843`.
+
+[`Mixed121/Mixed121Flatten`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Flatten.lean)
+puts the bands into Compact44's width-free aligned family
+`Aligned (Fin 943) (Fin 44)`. It writes each raw column as two decoder inputs
+plus the bare column and the temporal digit (`decoder_bands`). It also proves
+the carry room `3·mass + 1 < 2^120` (`aligned_room`), the in-Lean counterpart
+of the recipe's §3 threshold. The proof needs no row evaluation: each clause
+coefficient is below `2^99` by its digit form, and each `W k` is below
+`2^98`.
+
+Build-time lessons:
+
+- `norm_num` with `Finset.sum_range_succ` or `Fin.sum_univ_succ` in its simp
+  set unrolled a 943-term selector sum. Generalizing each sum to an atom before
+  `norm_num` fixed it.
+- `congr 1` exhausted the recursion depth by unfolding `Compact943Data.row`.
+  Explicit `sum_congr` rewrites replaced it.
+
 ## Remaining phases
 
 Measured against the Compact44 calibration, which is 472 modules plus the
 endpoint layer:
 
-1. identifying each clause band with a column of the full packed product
-   `K·C` (the overlap identities of §2), so that `band_decode` applies at
-   every cell;
-2. the carry and padding bounds at `ρ = 2^121`, using the recipe's threshold;
+1. the graph-level clean-carry step: from a graph zero, a `CarryInput` for
+   the flattened family and a carry-free column at each clause target. This
+   is Compact44's `FixedGraphCleanCarry`, but it depends on each form's own
+   graph. The width-generic `carry_input` and the room above are its tuple
+   inputs;
+2. the padding cells `8792..8799`, and the mask populations and low bits of
+   §3;
 3. the spatial and temporal overlap identities, and the binary-alignment
    argument for `b = 121`;
 4. the packing, rank and controller layers. Compact44's `PackingInput d` is
