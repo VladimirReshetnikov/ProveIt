@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+"""Freeze source/import/provider plan for nine-module plus endpoint-report current-base 13-variable check; no Lean."""
+import hashlib,json,os,re,subprocess,sys
+from pathlib import Path
+if not sys.flags.isolated or not sys.flags.no_site or sys.flags.optimize:raise SystemExit('requires python3 -I -S -B')
+HERE=Path(__file__).resolve().parent;D=HERE.parents[1];ROOT=next(p for p in HERE.parents if (p/'lakefile.toml').is_file());R=D/'reviews';old=D/'Lean/DiophantineConsistency';overlay=Path('/tmp/normalized106-fresh-model-build-v2-20261105/lib');sphere=Path('/tmp/current2011-spheres-fresh-base-priority-check02');model=Path('/tmp/normalized106-fresh-model-client-20261105');pkg=Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib');tool=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean');lean=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean');OUT=Path('/tmp/thirteen-current2011-fresh-model-build-20261105')
+def H(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def need(v,s):
+ if not v:raise RuntimeError(s)
+pins={HERE/'prepare.py':'d04c6bafdf091959174c2d5ab65c20172b7e030f153675bb79d7497eb0b153f9',R/'current2011-spheres-fresh-base-independent/check.py':'1625cbb62969f5eae459978368ea137577b4e6d93fdd2188cf86d090190ed9f2',sphere/'FreshCarrierSpheres.olean':'37d9d82deafedceec4ec73146c6ec0cdfe0896b36d5a86f4182158d3f7f82020',model/'FreshModel106.olean':'d18cea14c5bf1a363aac4fbc76a9afa72623a4df185eba25070112c514deb942',lean:'e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550',ROOT/'lakefile.toml':'a378413000dd01d021315457d6c569202cca123f99dd224774e951fef3ec9b4f'}
+for p,h in pins.items():need(p.is_file() and H(p)==h,'pin '+str(p))
+q=subprocess.run([sys.executable,'-I','-S','-B',str(R/'current2011-spheres-fresh-base-independent/check.py')],capture_output=True);need(q.returncode==0 and q.stdout==(R/'current2011-spheres-fresh-base-independent/result.json').read_bytes(),'prior independent sphere/base audit')
+stages=[('FrontierBridge',HERE/'FrontierBridge.lean','384d0c9c9dd3c6e18dbea2137c616aeed8fd3f8e2193dee8494e5190d71eb73f'),('DiophantineConsistency.ThirteenCarrier',old/'ThirteenCarrier.lean','2f19e9690841d15d48a281cfafd8813270e0dcfe38a9f6c68ab9d2f9d85453ca'),('DiophantineConsistency.ArithmeticOddOrdinateResidue',old/'ArithmeticOddOrdinateResidue.lean','cb4080289e247320fe8f5930c471ceb02c5ad01fc6cb73cbdd813468ade7fa7c'),('DiophantineConsistency.ArithmeticPellPigeonhole',old/'ArithmeticPellPigeonhole.lean','ebdbc22e239754f8f686be6971742d1b02560c9ffa35d464d2aecc323370765c'),('DiophantineConsistency.ArithmeticThirteenSeed',old/'ArithmeticThirteenSeed.lean','e544942ce8142e4f4d23157dfc4c5c220ebb3d77d8932570dab44fe33db07673'),('DiophantineConsistency.ArithmeticThirteenOuter',old/'ArithmeticThirteenOuter.lean','6256c8145ccffc19b34478a6533fc818b0d29ca730a62efd092a64c732500792'),('DiophantineConsistency.ModelThirteenRestoration',HERE/'src/DiophantineConsistency/ModelThirteenRestoration.lean','da2ad42104f797fa58aa770e79d996f6661e5819309b3c1eced6ee74efac9b22'),('DiophantineConsistency.ModelThirteenCarrier',HERE/'src/DiophantineConsistency/ModelThirteenCarrier.lean','5675f2b35f58069b1b2fbbbc87e00fe2dd808c4e7cf3d364db8dc3c6bede7c10'),('DiophantineConsistency.ModelThirteenForms',HERE/'src/DiophantineConsistency/ModelThirteenForms.lean','788fb1c2a31d04dc6848243423306f4d64d5b5c5069d09ea60ec584520dcb554')]
+stages.append(('FrontierChecks', HERE/'FrontierChecks.lean', '779a7cc0745530138b39237569d6c46b929839523d21e21acee8a08a54bb8748'))
+names=[x[0] for x in stages];need(len(set(names))==10,'duplicate stage');records=[];roots=[overlay,sphere,model,pkg,tool]
+for i,(name,path,h) in enumerate(stages):
+ need(H(path)==h,'source pin '+name);imports=re.findall(r'^import ([A-Za-z0-9_.]+)$',path.read_text(),re.M);need(imports,'missing imports '+name);existing={}
+ for n in imports:
+  if n in names:need(names.index(n)<i,'future project dependency '+name+' '+n);continue
+  candidates=[r/(n.replace('.','/')+'.olean') for r in roots];hits=[p for p in candidates if p.is_file()];need(hits,'missing direct object '+name+' '+n)
+  # Report every candidate and select the first search-path occurrence; multiple
+  # roots remain visible rather than silently being claimed as authenticated.
+  existing[n]={'selected':str(hits[0]),'realpath':str(hits[0].resolve()),'sha256':H(hits[0]),'all_candidates':[{'path':str(p),'realpath':str(p.resolve()),'sha256':H(p)} for p in hits]}
+  need(len(hits)==1,'ambiguous direct candidates '+name+' '+n)
+ records.append({'module':name,'source':str(path),'sha256':h,'imports':imports,'existing_direct':existing})
+need(sys.argv[1:] in ([], ['--existing-output']),'unexpected arguments');need(not OUT.exists() or (sys.argv[1:]==['--existing-output'] and OUT.is_dir() and not OUT.is_symlink()),'output path occupied');print(json.dumps({'status':'PASS_SOURCE_PREFLIGHT_NOT_BUILD','stages':records,'search_roots':[str(x) for x in roots],'output':str(OUT),'prior_sphere_audit':'PASS','scope':'Source/import and point-in-time direct provider inventory only; no Lean launch, immutable snapshot, package-transitive or dynamic load trace, or build authorization.'},indent=2,sort_keys=True))

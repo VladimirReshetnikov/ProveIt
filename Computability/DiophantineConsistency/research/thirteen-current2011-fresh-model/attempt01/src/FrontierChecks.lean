@@ -1,0 +1,4 @@
+import DiophantineConsistency.ModelThirteenForms
+
+#print axioms DiophantineConsistency.ModelThirteenForms.standard_equivalence70
+#print axioms DiophantineConsistency.ModelThirteenForms.standard_equivalence71

@@ -110,6 +110,12 @@ match the complete graphs with the historically checked Lean source and verify
 exact degrees for the recorded coefficient bytes. The recorded historical
 endpoint provider is currently incomplete, so its audit could not be replayed;
 the new graph comparison is not a fresh Lean endpoint or a byte-to-port theorem.
+A [fresh-base build attempt](research/thirteen-current2011-fresh-model/REVIEW-MAP.md)
+compiled seven predecessors before the adapted carrier hit its memory cap.
+Its import-only, split-core, prelude and selected helper checks are recorded
+with [independent](reviews/thirteen-current2011-split-helpers-independent/README.md)
+[audits](reviews/thirteen-current2011-build-diagnostics-independent/README.md).
+The completion proof and fresh 13-variable iPRA endpoints remain unchecked.
 An [external syntax comparison](research/current2011-ordinary67-94-syntax-binding/README.md),
 [independently checked](reviews/current2011-ordinary67-94-syntax-binding-independent/README.md),
 matches the entire candidate graph to the existing `Carrier94Syntax` source.
