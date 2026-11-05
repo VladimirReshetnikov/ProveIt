@@ -68,8 +68,10 @@ Recheck the deterministic source plan from the repository root:
 python3 -I -S -B Computability/DiophantineConsistency/research/p64-qcube76y-source-closure-plan/survey.py
 ```
 
-The script rejects ambiguous flat module names, missing/untracked sources,
-tracked source changes and changed source hashes; a changed graph requires a
-new plan. SHA-256: `survey.py`
+The script rejects ambiguous flat module names, missing mapped project sources,
+untracked selected sources, tracked source changes and changed source hashes;
+an unmapped missing import can instead be classified as external, so its
+import classification must be reviewed before a replay. A changed graph
+requires a new plan. SHA-256: `survey.py`
 `aaae97248c99c8bf0dda4aabbb4b6738a68c537f305ed2ec27e269b17b9f539b`;
 `result.json` `bc594561278d7242d5f377b333b5ef6c1af8db817d05e3b79c70bd80565bd5bd`.

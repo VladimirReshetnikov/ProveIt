@@ -3037,6 +3037,11 @@ independently [checked](reviews/p64-free-strong-index-full-zero-independent/READ
 shows that the direct strong-index inverse fails even when all 75 remaining
 gates vanish at certain natural ports. It does not exclude another original
 zero at those ports or settle the fixed compact44-port existence equivalence.
+A separate [q-squared scale test](research/p64-qcube75-q2-partial-obstruction/README.md)
+has natural-port data satisfying the first norm, main and transport equations
+while `q²` divides the scale and `q³` does not. A strong-norm witness is
+given symbolically, but the auxiliary-unit equation is still open; this is
+not a full graph zero or a fixed-port equivalence result.
 
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
