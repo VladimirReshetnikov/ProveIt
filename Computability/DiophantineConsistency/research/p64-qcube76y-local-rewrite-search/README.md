@@ -43,3 +43,7 @@ nice -n 19 ionice -c 3 timeout 60s python3 -I -S -B Computability/DiophantineCon
 | --- | --- |
 | `search.py` | `3f6982c59a0148053ffa2b0e3f97b8267feff1e4eaeb0b2e645a439e91d32fea` |
 | `result.json` | `820e962b32d6759765b43122d2f91e94471a9d29a8c205079dfcc51882892b1b` |
+
+An [independent review](../../reviews/p64-qcube76y-local-rewrite-independent/README.md)
+reproduced the result and the candidate counts. It retains the same bounded
+filter scope and does not establish a global lower bound.
