@@ -1479,6 +1479,13 @@ subsequently checked the 38-seed syntax and its normalization for any positive
 first port and arbitrary distinguished input. Its separate weighted-degree
 proof failed with unsolved goals; the polynomial-degree theorem and remaining
 model stages did not run.
+A [targeted weighted-degree retry](research/nine-sharing-seed38-weighted-retry/README.md),
+[independently audited](reviews/nine-sharing-seed38-weighted-terminal-independent/README.md),
+then passed all ten stages. It checks total degree at most four, normalization
+assuming a positive first port, and equivalence between seed zero and vanishing
+of its 29 residuals in the indicated IΣ₁ models. It does not yet identify
+those residuals with the current graph, instantiate the actual port, or prove
+the Jones/iPRA endpoint; no axiom reports were captured in this build.
 A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
 assembles the prospective seed/current equivalence from explicit extraction
