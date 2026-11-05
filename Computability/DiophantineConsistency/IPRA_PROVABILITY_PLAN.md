@@ -3107,7 +3107,9 @@ checks `2R<c` in the stated models from an explicit Pell equation and rank,
 scale and size hypotheses. A checked [graph-level composition](research/p64-qcube72-window-ranked-main-bridge-draft/README.md)
 now identifies the main Pell coordinates at the actual rank from a positive
 72-zero, `q≥33`, and the two port-mask inequalities, discharging positivity and
-the half-window. The compact-port specialization of this main-index client and the first-index
+the half-window. A [symbolic-port client](research/p64-qcube72-symbolic-port-ranked-main-draft/README.md)
+replaces `q≥33` with the compact exponential identity and uses the same two
+mask inequalities. Its fixed compact-port application and the first-index
 congruence remain open. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
