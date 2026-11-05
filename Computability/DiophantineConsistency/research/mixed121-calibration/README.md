@@ -82,13 +82,27 @@ without evaluating the row table. Every `clause tile` equals
 `W k = 2^10·4^k`, and the native clause-target mask
 `μ = 1022 + Σ W_k` is the decoder's mask at `m = 44`.
 
+## Phase 3a: one reflected clause band
+
+[`Mixed121/Mixed121Band`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Band.lean)
+is the 121-bit analogue of Compact44's `CompactPartialBand`. Let `C` be an
+`n`-cell native word in radix `2^121`, and let `T` be a clause target. The
+band's selector and copy/anchor sum reads the digits of `C` at the cyclic
+source cells `T − e`. `band_decomposition` rewrites this sum into the
+decoder's input form. `band_decode` then concludes the following, given
+Boolean source digits and no carry against `μ`: either the band is empty, or
+exactly one tile is selected and all 44 copy and anchor digits equal that
+tile's radix-four digits. Identifying this band with a column of the full
+packed product is the overlap identity of the next phase.
+
 ## Remaining phases
 
 Measured against the Compact44 calibration, which is 472 modules plus the
 endpoint layer:
 
-1. binding the decoder's `f` and `g` to the native assignment's values at the
-   clause targets and at the 44 copy and anchor positions;
+1. identifying each clause band with a column of the full packed product
+   `K·C` (the overlap identities of §2), so that `band_decode` applies at
+   every cell;
 2. the carry and padding bounds at `ρ = 2^121`, using the recipe's threshold;
 3. the spatial and temporal overlap identities, and the binary-alignment
    argument for `b = 121`;
