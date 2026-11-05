@@ -3065,6 +3065,12 @@ The [graph binding](research/p64-free-x75-graph-binding/README.md) and
 check the map and witness. The direct coordinate inverse fails there, but a
 different witness, fixed compact44 equivalence, and an iPRA endpoint remain
 unsettled.
+The [free-square 75-operation graph](research/p64-free-fsquare75-symbolic-full-zero/README.md)
+similarly has an external forward substitution and a symbolic full zero whose
+free squared-coordinate is nonsquare modulo 31; its
+[independent review](reviews/p64-free-fsquare75-symbolic-full-zero-independent/README.md)
+confirms the bounded checks and argument. This obstructs the direct inverse
+at that zero, not another witness or compact44 existence equivalence.
 
 Package 73's thirteen-positive 30 / 92 followed
 ([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
