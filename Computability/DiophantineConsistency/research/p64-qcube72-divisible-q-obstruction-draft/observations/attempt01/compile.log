@@ -1,0 +1,34 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-divisible-q-obstruction-draft/FreeMainDivisibleQObstruction.lean:57:24: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+q w s U g c h : V
+hU : 0 < U
+X : V := w * q
+Y : V := q * q * q * s
+a : V := X * Y + Y
+H : V := 4 * a + 3
+hnorm : g * g = 1 + delta a * c * c
+hcar : U * g = U * (X + a * c) + H * h
+r : V
+hr : q = 3 * r
+y : V
+hy : Y = 3 * y
+ha3 : a = 3 * ((X + 1) * y)
+hH3 : H = 3 * (4 * ((X + 1) * y) + 1)
+hD3 : delta a = 3 * ((a + 1) * ((X + 1) * y + 1))
+t : V
+ht : h = U * t
+hg : g = X + a * c + H * t
+x : V
+hx : X = 3 * x
+⊢ x * 3 + X * y * c * 3 + X * y * t * 12 + y * c * 3 + y * t * 12 + t * 3 =
+    x * 3 + x * y * c * 9 + x * y * t * 36 + y * c * 3 + y * t * 12 + t * 3
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-divisible-q-obstruction-draft/FreeMainDivisibleQObstruction.lean:68:11: error(lean.unknownIdentifier): Unknown identifier `dvd_add_left`
+'FreeMainDivisibleQObstruction.not_dvd' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

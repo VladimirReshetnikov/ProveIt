@@ -3137,7 +3137,9 @@ first-index congruence and reverse existence remain open. A reviewed
 [fixed-mask partial obstruction](research/p64-qcube72-fixed-mask-gcd-obstruction/README.md)
 shows the transport, quartic window and free carrier alone permit `e=1,3,9`
 and may fail `Y²∣h`; its assignments fail the first norm and are not graph
-zeros. A
+zeros. A checked [generic 3-divisible-q obstruction](research/p64-qcube72-divisible-q-obstruction-draft/README.md)
+shows that the main norm and free carrier imply `U∤h` when `3∣q` and `U>0`;
+its application to actual zeros is separate. A
 [compact-window partial assignment](research/p64-qcube72-compact-window-partial-obstruction/README.md)
 shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
