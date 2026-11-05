@@ -205,7 +205,11 @@ For the maintained 14-variable equation, a [historical paired replay](reviews/ip
 has matched all 16 added modules, including the standard-iPRA endpoint, and
 passed an independent complete-result audit. The endpoint uses the selected
 mapped and translated Foundation consistency sentence; the separately checked
-PDF binding retains a manual decoder and rank-recipe boundary.
+PDF binding retains a manual decoder and rank-recipe boundary. A later
+[Lean port assembly](research/current14-literal-port-assembly/README.md)
+joins the separate kernel and mask recipe theorems for all four ports using
+prebuilt mixed providers. It transcribes the mathematical formulas and does
+not formalize TeX/PDF interpretation or authenticate their full ancestry.
 
 For the smaller [14-variable degree-30 direct-square equation](equation30-direct.pdf),
 the native endpoint was compiled in the matched fresh AQ29 parent pair. A
