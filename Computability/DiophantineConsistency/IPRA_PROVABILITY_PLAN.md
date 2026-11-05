@@ -1470,6 +1470,12 @@ The first run failed on unavailable update-lemma names. A [corrected retry](rese
 [independently audited](reviews/nine-sharing-norm38-terminal-independent/README.md),
 compiled the generic gate algebra and forward-constructor definition before
 the seed module timed out; it proved no seed or model bridge theorem.
+A [split build](research/nine-sharing-seed38-split-draft/README.md),
+[independently audited](reviews/nine-sharing-seed38-split-terminal-independent/README.md),
+subsequently checked the 38-seed syntax and its normalization for any positive
+first port and arbitrary distinguished input. Its separate weighted-degree
+proof failed with unsolved goals; the polynomial-degree theorem and remaining
+model stages did not run.
 A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
 assembles the prospective seed/current equivalence from explicit extraction
