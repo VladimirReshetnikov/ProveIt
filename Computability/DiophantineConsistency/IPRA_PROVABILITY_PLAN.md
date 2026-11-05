@@ -3154,7 +3154,12 @@ alternative witnesses and existential reverse implication open. An independent
 shows in standard integers that fixing the main scale fixes the positively
 oriented carrier, and inspects the old-source path forcing q to be a power of
 two. This restricts same-q conversions; it does not rule out a changed-q
-witness or establish a 72 zero. A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
+witness or establish a 72 zero. A separately reviewed [partial scale swap](research/p64-qcube72-scale-swap-partial-normalization/README.md)
+changes q class while preserving X and Y and satisfying transport under explicit
+divisibility conditions; a conditional rigidity argument shows it cannot be
+completed as a 76Y witness while also retaining c and k when the source has
+`3∣q`. It establishes neither zero existence nor a general reverse obstruction.
+A checked [76Y client](research/p64-qcube76y-fixed-q-not-three-draft/README.md)
 now proves `3∤q` for every positive 76Y zero at the fixed compact ports, by
 using the specific 76Y-to-72 witness map. It neither proves a 72 zero with
 `3∣q` exists nor excludes a changed-q witness. A reviewed
