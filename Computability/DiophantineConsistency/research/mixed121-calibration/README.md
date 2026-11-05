@@ -58,13 +58,37 @@ payloads exactly: β 1,064,921 bits, K 1,070,004, MC 1,064,921 and
 MF_source 1,064,922. This is finite external evidence for the transcription,
 not a Lean theorem about the files.
 
+## Phase 2: clause decoding
+
+[`Mixed121/Mixed121Decoder`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Decoder.lean)
+proves the recipe's §2 decoding argument in every model of `𝗜𝚺₁`, generically
+in the index type and the number `m` of radix-four fields. Consider a selector
+vector `f` with Boolean entries, clause coefficients
+`1 + 2^10·Σ_{k<m} b_ik 4^k`, and Boolean copy/anchor digits `g_k`. Suppose the
+clause sum has no carry against `(2^10 − 2) + 2^10·Σ_{k<m} 4^k`. Then either
+nothing is selected and every `g_k = 0`, or exactly one `i` is selected and
+`g_k = b_ik` for all `k`.
+
+The proof follows the recipe's order. First the low ten bits, which are
+exactly the selector count, give `n ≤ 1`. Only then does each radix-four field
+hold a digit below four, so that `noCarry_dsum_iff` at width 2 forces it into
+`{0, 2}`. No carry-freeness of the upper fields is assumed.
+
+[`Mixed121/Mixed121Digits`](../../Lean/DiophantineConsistency/Mixed121/Mixed121Digits.lean)
+puts the actual coefficients into that form, for an arbitrary tile and so
+without evaluating the row table. Every `clause tile` equals
+`1 + 2^10·Σ_{k<44} digit_k 4^k`. The digit `10t + j` is bit `j` of
+`x_t + 512`, and the four anchor digits are 1. Each extra weight is
+`W k = 2^10·4^k`, and the native clause-target mask
+`μ = 1022 + Σ W_k` is the decoder's mask at `m = 44`.
+
 ## Remaining phases
 
 Measured against the Compact44 calibration, which is 472 modules plus the
 endpoint layer:
 
-1. clause decoding for the radix-four field code: the low mask `1022`, the
-   `{0, 2}` field values, and the copy and anchor equalities;
+1. binding the decoder's `f` and `g` to the native assignment's values at the
+   clause targets and at the 44 copy and anchor positions;
 2. the carry and padding bounds at `ρ = 2^121`, using the recipe's threshold;
 3. the spatial and temporal overlap identities, and the binary-alignment
    argument for `b = 121`;
