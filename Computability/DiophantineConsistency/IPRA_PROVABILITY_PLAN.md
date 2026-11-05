@@ -3082,8 +3082,11 @@ ports in the stated `IΣ₁` models. The checks retain their direct-provider
 ancestry qualifications and do not yield a reverse witness map. A checked
 [main-root bridge](research/p64-qcube72-main-root-draft/README.md) also
 constructs and classifies the oriented Pell root while retaining its carrier
-equation; identifying its index with the rank and proving the needed
-large-`c` bound remain open. A separate [conditional rank-half lemma](research/p64-qcube72-rank-half-draft/README.md)
+equation. A checked [large-`c` client](research/p64-qcube72-actual-large-draft/README.md)
+derives the signed-half-index size bound at actual zeros with `q≥33`; its
+specialization and remaining residual/window composition are separate.
+Identifying the index with the rank remains open. A separate
+[conditional rank-half lemma](research/p64-qcube72-rank-half-draft/README.md)
 checks `2R<c` in the stated models from an explicit Pell equation and rank,
 scale and size hypotheses; its graph-specific hypotheses have not yet been
 assembled. A
