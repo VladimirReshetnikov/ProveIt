@@ -51,6 +51,12 @@ case. A [transport-only obstruction](research/sphere70-negative-transport-obstru
 [independently reviewed](reviews/sphere70-negative-transport-independent/README.md),
 shows that positive transport inputs alone do not rule this out. It neither
 constructs a full graph zero nor disproves fixed-port existential equivalence.
+A [separate bounded screen](research/sphere-factor-partition-screen/README.md)
+checks all 52 partitions in a specified unshared five-factor square-sum family;
+an [independent audit](reviews/sphere-factor-partition-screen-independent/README.md)
+reproduces its operation counts and exact specialized degrees. None of that
+family's screened profiles improves the established operation–degree tradeoffs;
+the screen neither proves zero equivalences nor a global circuit lower bound.
 A separately reviewed [66-operation rational evaluator](research/normalized106-rational66/README.md)
 computes the same degree-106 polynomial using one nonintegral fixed leaf;
 its operation count does not include construction or storage of fixed leaves,
