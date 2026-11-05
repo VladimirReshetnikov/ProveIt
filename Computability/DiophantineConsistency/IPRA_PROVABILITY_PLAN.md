@@ -1434,6 +1434,9 @@ with 39 quadratic residuals. Its [independent audit](reviews/nine-sharing-quarti
 checks the exact signed-pair identities, degree bound, fixed ports and
 normalization externally. This is not a minimum, Lean model bridge or new
 Jones/iPRA endpoint.
+Its [Lean transcription draft](research/nine-sharing-seed52-lean-draft/README.md)
+has an [independent source-only audit](reviews/nine-sharing-seed52-lean-draft-independent/README.md);
+the tentative theorems remain uncompiled.
 A [checked source-to-port join](research/nine-current-fresh-port-join-retry/README.md),
 [independently reviewed](reviews/nine-current-fresh-port-join-independent/README.md),
 identifies the current natural expression used by the endpoint with the

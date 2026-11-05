@@ -1,0 +1,5 @@
+# Independent review: uncompiled 52-witness Lean seed draft
+
+A separate Python AST parser matches all 39 generated residual trees exactly to the independently reviewed 52-witness seed JSON. It checks the entire beta/K/MC/MF port map, variable indices, first residual and squared-residual assembly. The author's transcription checker also reproduces its retained result. This is source-only: the file has not been compiled and none of its declarations is a checked Lean theorem.
+
+The proposed weighted/total-degree and first-residual normalization statements correspond to the external candidate properties, with explicit `0 < p 0` hypothesis. Actual port positivity and an all-IΣ₁-model zero bridge remain separate. Delayed quadratic inlining can enlarge terms, so `simp`, recursion/heartbeat limits, kernel memory and `Fin` numeral simplification are untested elaboration risks. No Jones instantiation, iPRA endpoint, final nine-variable graph/degree or file/PDF theorem is established. No Lean was run for this review.
