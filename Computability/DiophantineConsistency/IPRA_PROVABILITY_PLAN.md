@@ -3064,7 +3064,10 @@ shows the first, main, strong and transport constraints and stated port-size
 bounds alone do not force the inverse congruence. For that assignment's fixed
 main coordinates and rank, a [reviewed application](reviews/p64-qcube72-partial-aux-exclusion-independent/README.md)
 of the signed-half-index theorem excludes an auxiliary completion; it does not
-settle other witnesses or the actual compact44 ports. A
+settle other witnesses or the actual compact44 ports. The separately
+[reviewed first-index analysis](reviews/p64-qcube72-first-index-gap-independent/README.md)
+identifies the congruence still needed even under a conditional main-index
+recovery; its finite screen concerns only a small non-compact44 family. A
 [separate strong-index obstruction](research/p64-free-strong-index-obstruction/README.md)
 likewise shows that selected q-cube and scalar-norm constraints alone do not
 force the required divisibility. A subsequent [full modified-graph zero](research/p64-free-strong-index-full-zero/README.md),
