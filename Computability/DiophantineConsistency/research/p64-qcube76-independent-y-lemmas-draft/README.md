@@ -1,4 +1,4 @@
-# Independent-y model lemmas and unchecked graph drafts
+# Checked independent-y model lemmas
 
 # Checked generic model lemmas
 
@@ -25,5 +25,6 @@ zero-specific premises have been checked separately in the
 `IndependentYJoinDraft.lean` and the full unconditional join now pass their
 [guarded checks](../p64-qcube76y-join-guarded-check/README.md).
 
-The resulting all-model positive-zero equivalence is checked; an iPRA
-endpoint and external file/PDF binding remain separate.
+The resulting all-model positive-zero equivalence is checked. The separate
+[iPRA endpoint client](../p64-qcube76y-ipra-guarded-check/README.md) has also
+passed its guarded check; external file/PDF binding remains separate.
