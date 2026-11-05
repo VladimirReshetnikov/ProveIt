@@ -1,0 +1,5 @@
+# Seed-zero implies static gatesHold
+
+Author-observed session `2051` exited 0. State SHA-256 `1ca0968a7e2acfbd398302581e30f3c02caebcf2a4c81081ba73e0b913ea8b72`; object SHA-256 `70830fc749e108a9776b1ec8274427e47476d3dbb94916688b0a76a2fc476b09` remains in `/tmp/nine-sharing-norm38-gates-assembly-retry-20261105/lib/DiophantineConsistency/`. Both dependency scan and compile passed; final direct-provider and overlay guards passed. The retained compile log has two linter warnings; no axiom report was requested. The terminal receipt is author-recorded, not an independent observation.
+
+The checked theorem says that a literal seed zero at distinguished coordinate 1 implies `NormAssignment38.gatesHold` in each indicated IΣ₁ model, assuming the four explicit integer-port-to-natural-representative cast equalities. The runner authenticated each of the twelve successful per-gate producer rows from an overall failed batch and excluded its failed assembly. Inherited-provider/point-observation and sampled-monitor limitations remain. This does not identify the static graph with Carrier65, prove the reverse witness direction or provide an iPRA endpoint.
