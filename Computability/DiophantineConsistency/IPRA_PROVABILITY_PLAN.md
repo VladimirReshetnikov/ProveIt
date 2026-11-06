@@ -1538,8 +1538,9 @@ not retain a numeric outer exit; no such exit is inferred. A subsequent
 checks that the static gate constraints identify all six required terminal
 values with their reference nodes in IΣ₁ models. Its author observed outer
 exit 0; the inherited initial producer's numeric outer exit remains uncaptured.
-A later checked composition derives the carrier zero; the expression-level
-link and reverse source/seed construction remain separate.
+A later checked composition derives the carrier zero, and a generic-port
+client translates it to source-expression zero under explicit cast hypotheses.
+The reverse source/seed construction remains separate.
 A [separate field client](research/nine-sharing-norm38-reference-fields01-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-reference-fields01-terminal-independent/README.md),
 checks that reference nodes 61 and 44 equal the original P and Q fields over
@@ -1577,8 +1578,10 @@ IΣ₁ model. A later client checks the terminal-agreement hypotheses from the
 static gate constraints. A [composition client](research/nine-sharing-norm38-static-carrier-compose-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-static-carrier-compose-terminal-independent/README.md),
 then checks that the static gates and five norms imply a Carrier65 zero at
-the same shifted witness coordinates. This still needs the expression-level
-link and the source-to-seed construction; the initial-agreement producer's
+the same shifted witness coordinates. A [generic-port client](research/nine-sharing-norm38-static-source-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-static-source-terminal-independent/README.md),
+translates this to source-expression zero under four explicit model port casts.
+The source-to-seed construction remains open; the initial-agreement producer's
 numeric outer exit remains uncaptured.
 A [forward-bridge draft](research/nine-sharing-norm38-forward-bridge-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-forward-bridge-independent/README.md),
