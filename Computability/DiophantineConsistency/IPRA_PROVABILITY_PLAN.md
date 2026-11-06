@@ -115,6 +115,11 @@ A [structural-evaluator retry](research/nine-seed38-jones-prefix-rank-retry01/RE
 then checked the symbolic `d11` rank expression and its prefix carry
 substitutions. Its identification with `rankCode` and full recipe semantics
 remain separate.
+A [generic rank-code link](research/nine-seed38-jones-rankcode-link-check/README.md),
+[independently audited](reviews/nine-seed38-jones-rankcode-link-terminal-frontier-independent/README.md),
+checks the `rankRaw`/`rankCode` identity after the explicit `B=b^5`
+substitution. The actual-prefix substitution and full semantics remain
+separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
