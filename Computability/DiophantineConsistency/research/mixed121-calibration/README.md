@@ -164,6 +164,32 @@ triggered it. The module uses `rw` with `rfl` definition lemmas instead,
 literal-form instances (`digits_8801`), and arithmetic over variables. It now
 builds in under a minute of elaboration.
 
+## Phase 3d: up the halting chain to a clean clause column
+
+Six more links of the `LeafFacts` halting chain now hold at the 121x8801
+ports. Each is the counterpart of a Compact44 `Facts/` theorem:
+
+- `Mixed121Bands`: saturation (`saturated_aligned`) and the rotated-band
+  congruence (`symbolic_bands`);
+- `Mixed121Temporal`: the position no-carry and the temporal word;
+- `Mixed121Carry`: the band family's `CarryInput`, its mass hypothesis
+  following from the carry room;
+- `Mixed121Clean`: the hull `Bad`
+  (`x ≤ 1065 ∨ x ∈ {1095, 1096, 2195, 3296}`; Compact44's omits the second
+  anchor 1096), with zero cells outside it and Boolean cells off the dummy;
+- `Mixed121Source`: a safe zero source at one clause target for every
+  temporal phase;
+- `Mixed121CleanCarry`: a clause target `t` with zero carry into `t + 1`,
+  where the graph digit equals the raw band column.
+
+The bit-rotation argument underneath (the recipe's binary alignment for
+`b = 121`) is 21 Compact44 modules whose width enters only as a literal.
+[`tools/width_port.py`](tools/width_port.py) ports them mechanically to
+`Mixed121/W121/`. It substitutes `67/66/65` with `121/120/119`, renames
+namespaces to `W121.X`, and refuses any module that mentions the period
+`8807`. Every port built on its first attempt. The two carry-reset files
+were then retargeted at `Mixed121Rotation`'s width-generic carry family.
+
 ## Remaining phases
 
 Measured against the Compact44 calibration, which is 472 modules plus the

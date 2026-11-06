@@ -4397,7 +4397,8 @@ the packages' coefficient files with it:
   (`55-congruence-norms/native/SOURCE_CHAIN.md`). A calibration was started
   on 5 November 2026
   ([record](research/mixed121-calibration/README.md), `Lean/…/Mixed121/`).
-  Ten modules now prove the following:
+  Seventeen modules, plus 21 mechanical width ports in `Mixed121/W121/`, now
+  prove the following:
   - the symbolic kernel and support facts;
   - the radix-four clause decoder and the coefficient digit form;
   - one decoded reflected band;
@@ -4407,8 +4408,10 @@ the packages' coefficient files with it:
   - the §3 mask facts (`popcount(MC) = d − 989`, `popcount(MF) = 989`,
     `MC` even, `MF ≡ 4 (mod 8)`);
   - the native-cell decoder;
-  - `Mixed121Aligned.symbolic_aligned`, the first tuple-level link of the
-    halting chain.
+  - the `LeafFacts` halting chain at the 121x8801 ports, from
+    `symbolic_aligned` through `Mixed121CleanCarry.graph_clean_carry`: a
+    clause target with zero carry, where the graph digit equals the raw band
+    column.
 
   The halting chain consumes `CompactLeafFacts.LeafFacts p v`, which is stated
   for arbitrary ports, not a particular graph's zero. So the rest of the
