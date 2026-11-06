@@ -1,0 +1,5 @@
+# Independent prelaunch review: local absolute-difference square
+
+**Pass for bounded launch.** The proposed theorem states for arbitrary natural model values `x,y` that `ι(absdiff x y)^2 = (ιx-ιy)^2` in the difference ring. It splits the two total-order cases, casts only a bounded truncated subtraction, and squares away the possible sign. No positivity or source-zero assumption appears. Elaboration remains untested; this alone proves no auxiliary norm, sign33 zero bridge or endpoint.
+
+`check.py` pins the source, manifest, runner and survey, checks theorem/proof anchors, verifies selected current `ArithmeticPellHalfIndex` and `ModelDifferenceRing` producer routes, target collision absence and a fresh no-Lean preflight. The runner binds observed direct dependencies and guards to those hashes/realpaths and repeats checks on success. No P72 overlay object is injected. Point-in-time provider and sampled-resource limitations apply; an earlier initial-agreement numeric outer exit remains unavailable. Preflight needs a fresh output path and refuses after launch.

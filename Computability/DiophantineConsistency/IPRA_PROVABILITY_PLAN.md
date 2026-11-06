@@ -1819,6 +1819,10 @@ records one differing `ModelDifferenceRing` object among 1,007 overlapping
 paths. The initially reported half-index mismatch was a mistaken comparison
 to a different module; the correct half-index objects match. The differing
 bytes are not a proof of semantic incompatibility.
+A [fresh local absolute-difference square identity](research/nine-sharing-sign33-absdiff-square-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-absdiff-square-terminal-frontier-independent/README.md),
+has since been checked against the current model provider without injecting
+the historical P72 object. It does not by itself establish the auxiliary sign.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
