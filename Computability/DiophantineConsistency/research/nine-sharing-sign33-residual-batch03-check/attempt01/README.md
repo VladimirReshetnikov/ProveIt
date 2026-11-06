@@ -1,0 +1,7 @@
+# Sign33 c², Delta*c² and first norm checked
+
+Author-observed outer session `56254` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `5162fbb298874db8f114ee3bd5b2c18756690f86272f6ff0ef6d48db3551d599`; before and after provider surveys both hash to `9dbd8f5b4ec20b051457792a6534a4705acddaf9ee1e193e500a7ad259f37720`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ResidualBatch03` compiled in 4.652 seconds; object SHA-256 `63cd9e3752c33243326e16f99015e247b2f15f223ca740c74d0fc17ab6bc59c5` at `/tmp/nine-sharing-sign33-residual-batch03-check-20261106/lib/DiophantineConsistency/Sign33ResidualBatch03.olean`, compile log `f805067547b2991ce61c52d5459a1dc0c9eae9e43abd086b77996f80e5413994`. All four axiom reports list `[propext, Classical.choice, Quot.sound]`. Three unused-simp linter warnings were retained. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,156,384,256 bytes and minimum sampled available host memory was 19,015,639,040 bytes; sampling has the stated limitations.
+
+For arbitrary symbolic p, seed zero implies the c², Delta*c² and first norm links on the same full valuation without any port cast. No remaining residual/static identities, chronological graph replay, Lean proof of external JSON binding, source-zero bridge or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.
