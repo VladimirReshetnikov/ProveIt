@@ -1,5 +1,11 @@
 # Uncompiled iPRA endpoint draft for the 38-witness seed
 
+The source-only status below records this draft's original review. Its formerly
+future cast-free provider and a subsequent [guarded endpoint check](../nine-sharing-norm38-ipra-endpoint-check/README.md)
+have since compiled and passed an [independent terminal audit](../../reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md).
+The checked expression is symbolic; a literal export and final size metrics
+remain separate.
+
 This is a source-only draft. No Lean compilation, axiom report, iPRA endpoint or new equation-size claim follows from it. It defines the nine-natural-coordinate Jones expression built from `SharingSeed38.seed CurrentWindowCarry2011.ports` and drafts the transfer of the existing current-equation all-model `PolynomialBridge` to that expression. The native and standard iPRA mapped-refutation equivalences and the standard Gödel–Gentzen-translated equivalence follow the previously checked `nine-current-lightweight-endpoint-retry` pattern, but have not been checked for this expression.
 
 The first import, `DiophantineConsistency.Norm38CurrentCastFreeIff`, is a future provider. Its source-only proposed theorem `nine_exists_iff_shifted_source` states, in each indicated IΣ₁ model, that a nine-coordinate Jones zero exists iff the maintained current source has a zero at `u j + 1`. The endpoint draft changes the Jones ring-evaluation zero into `InternalZero` via `internalZero_iff`, and identifies the shifted source with `ObjectCurrentEquation2011.naturalExpression` via `ObjectCurrentEquation2011.internalZero_positiveShift`. These exact rewrites, namespace resolution, theorem orientations and definitional equalities remain to be checked. The other intended direct imports are `HACurrentEquation2011`, `IPRAExpressionNative`, and `IPRAStandardTheory`, matching the checked endpoint pattern.

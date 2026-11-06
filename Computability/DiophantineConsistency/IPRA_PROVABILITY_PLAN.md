@@ -10,6 +10,17 @@ repaired on that snapshot, and the 14-variable endpoint rechecked on the
 repaired parent; source-current and inherited external-ancestry qualifications
 remain as described below.
 
+A [nine-natural-coordinate Jones expression built from the 38-witness seed](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
+now has [independently audited Lean endpoints](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md)
+for the native and standard iPRA mapped-refutation equivalences and the
+standard mapped Gödel–Gentzen consistency equivalence. The checked expression
+is symbolic, `ExecutableJones.expression (SharingSeed38.seed
+CurrentWindowCarry2011.ports) 0`; the coordinates range over the naturals,
+including zero. This does not yet bind an exported literal equation or PDF,
+or establish the final expression's operation count or degree. The retained
+initial-agreement ancestor has successful Lean child exits but no captured
+numeric outer exit; its inherited provider and point-observation limits remain.
+
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
 of their positive-model bridges and native, standard and equality-only iPRA
@@ -1614,19 +1625,18 @@ given the four explicit model port casts, it constructs a 38-witness seed zero
 from a source-expression zero at shifted inputs. A [four-cast specialization](research/nine-sharing-norm38-current-source-cast-instantiation/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-source-cast-instantiation-terminal-independent/README.md),
 then checks this construction for the actual current model ports without a
-cast hypothesis. Combining the existential directions and the iPRA transfer
-remain separate. A [conditional existential composition](research/nine-sharing-norm38-current-existential-iff-draft/README.md),
+cast hypothesis. A [conditional existential composition](research/nine-sharing-norm38-current-existential-iff-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-existential-iff-terminal-independent/README.md),
 checks both seed/source and nine-variable/source existential equivalences
 under an explicit universal port-cast assumption. A [cast-free composition](research/nine-sharing-norm38-current-castfree-iff-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-castfree-iff-terminal-independent/README.md),
 then checks both equivalences in IΣ₁ models for the actual current symbolic
-ports and shifted source coordinates. The iPRA transfer remains separate.
+ports and shifted source coordinates.
 An [iPRA endpoint draft](research/nine-sharing-norm38-ipra-endpoint-draft/README.md)
 has passed a [source-only review](reviews/nine-sharing-norm38-ipra-endpoint-draft-independent/README.md);
 it follows the existing all-model bridge and native/standard transfer pattern.
-Its cast-free provider has since been checked, but the endpoint itself remains
-uncompiled.
+Its cast-free provider and a [guarded endpoint client](research/nine-sharing-norm38-ipra-endpoint-check/README.md)
+have since compiled and passed an [independent terminal audit](reviews/nine-sharing-norm38-ipra-endpoint-terminal-frontier-independent/README.md).
 A [forward-constructor gate build](research/nine-sharing-norm38-forward-gates-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-forward-gates-terminal-independent/README.md),
 checks all 60 gate conditions and their conjunction for the generated witness
@@ -1711,8 +1721,8 @@ checks that the nine-natural-variable expression has a zero iff some
 indicated IΣ₁ model. A [one-way Jones/source client](research/nine-sharing-norm38-current-nine-source-draft/README.md),
 [independently audited](reviews/nine-sharing-norm38-current-nine-source-terminal-independent/README.md),
 then checks that a zero of this expression yields a zero of the current source
-expression at the shifted first fourteen seed coordinates. The converse and
-iPRA transfer remain separate.
+expression at the shifted first fourteen seed coordinates. The later cast-free
+equivalence and iPRA endpoint are described above.
 A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
 assembles the prospective seed/current equivalence from explicit extraction
