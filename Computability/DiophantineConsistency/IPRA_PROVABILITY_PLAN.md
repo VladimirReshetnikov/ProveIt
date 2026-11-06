@@ -2044,8 +2044,12 @@ header incorrectly says six equations rather than three. All 60 individual
 gate equations are now checked under their stated hypotheses. A [gate assembly](research/nine-sharing-sign33-ring-gates-assembly-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-ring-gates-assembly-terminal-frontier-independent/README.md),
 checks that `AllCuts` implies all 60 ring-value gate equations for the same
-lifted valuation; its compile records two unused-simp warnings. The five norms
-and source-zero bridge remain separate.
+lifted valuation; its compile records two unused-simp warnings. A [five-norm
+client](research/nine-sharing-sign33-five-norms-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-five-norms-terminal-frontier-independent/README.md),
+checks that the same `AllCuts` hypothesis implies the five ring-value norms
+for that lift. Its individual stages record 17 warnings; the assembly has none.
+The source-zero bridge remains separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign

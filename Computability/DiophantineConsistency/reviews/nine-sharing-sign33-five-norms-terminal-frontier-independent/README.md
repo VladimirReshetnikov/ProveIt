@@ -1,0 +1,5 @@
+# Independent terminal review: five lifted norm identities
+
+The retained state records successful dependency scans and Lean compilations for all six stages; the author observation says session 37568 exited 0. The checker validates source, objects and logs, all six reports, five pairs of direct provider bindings, the final stage's five local producer bindings, 1,050 guard slots, 1,193 overlay links and matching before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. All six reports list `[propext, Classical.choice, Quot.sound]`. The five individual modules have 17 simp/tactic linter warnings in total; the final assembly has none.
+
+The checked final theorem derives all five ring-value norms for the canonical lift under the same ports, valuation and AllCuts hypothesis. It does not by itself prove the source bridge or an iPRA endpoint, and no component-level signed-pair gate equality is claimed. Provider observations are point-in-time and monitoring is sampled.

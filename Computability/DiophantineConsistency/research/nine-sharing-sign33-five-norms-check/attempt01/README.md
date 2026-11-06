@@ -1,0 +1,7 @@
+# Sign33-lift five-norm bridge checked
+
+Author-observed outer session `37568` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `748448e7eb40eff7b3ed5cbe716b8cd3baa167c7ecdab791615af859d2f8596c`; before and after provider surveys both hash to `792f49ee57956f5097b01a966d6ddb7a322aa5b55d8a86986a9faaa105bba2d6`. The outer record is an author observation, not an independently observed transcript.
+
+All five individual modules and final `Sign33LiftFiveNorms` compiled successfully; state retains their source, object, dependency and monitor records, and this directory their logs. The final object SHA-256 is `5bd49f713cc65773f9d3c6cce99bcf68248a121b65f215bd895da26c0c7767b2` at `/tmp/nine-sharing-sign33-five-norms-check-20261106/lib/DiophantineConsistency/Sign33LiftFiveNorms.olean`, compile log `0c146bd9af23657d13d7ddd4df79f6f431fccb70520cb8d6806fd6cd8bec1dde`. All six axiom reports list `[propext, Classical.choice, Quot.sound]`. The five individual logs retain 17 simp/tactic linter warnings in total; the final log has none. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Resource readings and sampling limitations are recorded per stage in state.
+
+For one full valuation and model-natural ports, `AllCuts` implies all five `NormAssignment38.fiveNorms` on the canonical lift. No source-zero graph replay, Lean proof of external JSON binding, or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.
