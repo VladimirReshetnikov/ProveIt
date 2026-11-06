@@ -1970,8 +1970,11 @@ conditions. A [second gate client](research/nine-sharing-sign33-ring-gates01-che
 [independently audited](reviews/nine-sharing-sign33-ring-gates01-terminal-frontier-independent/README.md),
 checks targets 24–26 under the same grouped conditions. A [third gate client](research/nine-sharing-sign33-ring-gates02-check/README.md),
 [independently audited](reviews/nine-sharing-sign33-ring-gates02-terminal-frontier-independent/README.md),
-checks targets 27–29; its compile records one unused-simp warning. The remaining
-51 gate equations, five norms and source-zero bridge are separate.
+checks targets 27–29; its compile records one unused-simp warning.
+A [six-gate client](research/nine-sharing-sign33-ring-gates03-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-ring-gates03-terminal-frontier-independent/README.md),
+checks targets 30–35; its compile records five unused-simp warnings. The
+remaining 45 gate equations, five norms and source-zero bridge are separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
