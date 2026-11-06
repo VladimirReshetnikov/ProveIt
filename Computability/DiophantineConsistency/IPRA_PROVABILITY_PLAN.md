@@ -182,6 +182,10 @@ counts 89 distinct named consumer edges and 403 single-snoc steps for a fresh
 per-entry carry strategy. These are external planning counts, not a Lean proof,
 minimality result or arithmetic operation count; existing carry lemmas may
 reduce the work.
+A [typed prefix-embedding client](research/nine-seed38-jones-prefix-embedding-check/README.md),
+[independently audited](reviews/nine-seed38-jones-prefix-embedding-terminal-frontier-independent/README.md),
+checks generic lookup preservation along a snoc path and a two-snoc example.
+Recipe-specific paths and full semantic composition remain separate.
 
 The lower-degree P13 and P14 expressions have a [captured-provider replay](research/p72-p13-p14-captured-endpoint-replay/README.md),
 [independently audited](reviews/p72-p13-p14-captured-endpoint-independent/README.md),
