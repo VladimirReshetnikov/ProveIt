@@ -1525,6 +1525,9 @@ A [batched reference-gate build](research/nine-sharing-norm38-reference-gates-ba
 subsequently checked all 60 reference equations and their universal assembly
 over arbitrary commutative rings. Initial static/reference agreement and the
 resulting source-equation bridge remain open.
+An [unsplit initial-agreement attempt](research/nine-sharing-norm38-reference-initial-check/README.md),
+[independently audited](reviews/nine-sharing-norm38-reference-initial-timeout-terminal-independent/README.md),
+timed out without producing a Lean object or axiom report.
 A [separate field client](research/nine-sharing-norm38-reference-fields01-check/README.md),
 [independently audited](reviews/nine-sharing-norm38-reference-fields01-terminal-independent/README.md),
 checks that reference nodes 61 and 44 equal the original P and Q fields over
