@@ -1,0 +1,5 @@
+# Independent terminal review: strong-norm lower bound
+
+**Pass for retained Lean evidence**, without a Lean replay. Author-observed outer session 26365 exited 0; this record is not an independent process transcript. The Lean object proves `2≤f` in the indicated IΣ₁ model under the explicit hypotheses `0<c`, `0<f`, `0<i`, and `f*f=1+delta a*(i*c*c)*(i*c*c)`. The axiom report is `[propext, Classical.choice, Quot.sound]`. The compiler emitted one lint warning suggesting `simp at hfprod` instead of `simpa using hfprod`; there are no errors or `sorryAx`.
+
+`check.py` verifies the exact source, state, object and logs, all 150 direct guard slots, both direct producer bindings, 1,162 overlay links, equal before/after surveys and a fresh survey replay. Both dependency scan and compile exited 0 with no sampled monitor stop or errors. The two direct providers include a successful row from an overall-failed build, and the inherited initial-agreement numeric outer exit is uncaptured. Checks are point-in-time and memory sampling can miss transient events. This conditional lemma does not establish the remaining signs, a sign33 zero bridge or an iPRA endpoint.

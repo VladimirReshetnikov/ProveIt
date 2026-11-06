@@ -1757,6 +1757,11 @@ A [model strong-norm client](research/nine-sharing-sign33-strong-f-check/README.
 [independently audited](reviews/nine-sharing-sign33-strong-f-failure-frontier-independent/README.md),
 failed on the final `1+1 ≤ f` versus `2 ≤ f` numeral normalization. It
 produced no object; the resulting `sorryAx` report is not proof evidence.
+A [targeted numeral retry](research/nine-sharing-sign33-strong-f-retry01/README.md),
+[independently audited](reviews/nine-sharing-sign33-strong-f-retry01-terminal-frontier-independent/README.md),
+then checked that the strong norm and the four stated positivity/equality
+hypotheses imply `2 ≤ f` in IΣ₁ models. Its compile has one linter suggestion;
+the remaining sign transports and 33-witness zero bridge are still open.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
