@@ -1,0 +1,5 @@
+# Independent terminal audit: current Jones/static equivalence
+
+In an IΣ₁ model, the checked theorem states that the current symbolic Jones expression has a zero among nine model-natural coordinates iff there is a 38-coordinate valuation satisfying the current static gates and five norms. The same witness valuation is used through the seed/static composition. Its axiom report is `[propext, Classical.choice, Quot.sound]`, with no warnings. This is not yet a correspondence with the maintained Carrier65/source equation, a literal external byte-file identity, or an iPRA consistency endpoint.
+
+The checker pins source, manifest, runner, retained/live state, logs and object, validates author-recorded session 19124 exit 0, checks 150 direct guard slots and 1,116 overlay routes, verifies both immediate object hashes and direct-guard routes, and reruns their independent terminal reviews. Successful PASS follows final candidate guards. The outer record is an author observation rather than an independently observed transcript; resource sampling and point checks do not establish continuous resource use or complete transitive/dynamic ancestry. No Lean replay was performed.

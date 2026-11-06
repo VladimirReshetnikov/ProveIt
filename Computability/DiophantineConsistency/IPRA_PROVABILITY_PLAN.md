@@ -1634,6 +1634,11 @@ then checked positivity, degree, normalization and the all-model equivalence
 between the nine-natural-variable expression's zero and this 38-witness seed
 at input one. It does not supply the seed/current-equation bridge or an iPRA
 consistency endpoint.
+A [Jones/static client](research/nine-sharing-norm38-current-jones-static-check-v2/README.md),
+[independently audited](reviews/nine-sharing-norm38-current-jones-static-v2-terminal-independent/README.md),
+checks that the nine-natural-variable expression has a zero iff some
+38-coordinate valuation satisfies the current static conditions in each
+indicated IΣ₁ model. Its connection to the original equation remains open.
 A separate [conditional composition draft](research/nine-sharing-norm38-compose-draft/README.md),
 [independently inspected](reviews/nine-sharing-norm38-compose-draft-independent/README.md),
 assembles the prospective seed/current equivalence from explicit extraction
