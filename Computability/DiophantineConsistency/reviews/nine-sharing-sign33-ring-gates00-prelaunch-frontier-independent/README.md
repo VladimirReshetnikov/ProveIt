@@ -1,0 +1,5 @@
+# Independent prelaunch review: first ring-value gates
+
+No launch blocker found. The checker pins source, runner, survey and manifest; checks the lift and NormAssignment38 imports, three theorem/report names and concrete graph gate tuples; and reruns the no-Lean preflight. The survey authenticates the exact successful lift and weighted 38 producer rows, while the runner binds each direct dependency and guard to the selected objects. Full postflight requires success; provider observations are point-in-time and monitoring is sampled.
+
+The candidate gates are targets 21=14*0, 22=21+18 and 23=22*22. The first two are inline computations; target 23 uses full v15 via lift coordinate w14 and the q² field of AllCuts. They use one valuation and model-natural ports, with no symbolic integer-port casts. Simplification/elaboration remains untested. These are ring-value equations only, not the other 57 gates, five norms, source bridge or iPRA endpoint. This checker is prelaunch-only because the output path must be absent.
