@@ -1,0 +1,9 @@
+# Uncompiled conditional five-witness assembly
+
+This source-only draft applies the three separately checked conditional sign transfers to the same explicitly supplied natural-model parameters. It proposes using `ModelDifferenceRing.nonneg_iff` to obtain five model-natural witnesses for the nonnegative gap, tau, inner and V ring expressions and for the *negation* of the auxiliary squared difference. It preserves the two window assumptions, `q,N` lower bounds, `c,T,f,i,S,y` positivity, half-window, strict strong norm and auxiliary norm as explicit hypotheses. The five witness equalities are ring-image equalities; no natural subtraction is silently identified with ring subtraction.
+
+No Lean compilation, axiom report or guarded provider union has been performed for this draft. Its imports refer to separately checked `Sign33GapTauRing`, `Sign33InnerVRing` and `Sign33AuxRing` objects from distinct output directories, and a future runner must authenticate and merge those exact object/provider routes, reject incompatible overlaps and bind all three direct dependencies to their producer receipts. The recently successful auxiliary client still awaits independent terminal audit.
+
+This abstract assembly does not identify `q,E,r,c,S,x,z` with concrete graph values, derive the hypotheses from `ArithmeticCarrierSoundness2011.current_equations` and its fixed-port bounds, prove `x−z` is the concrete V expression, or assemble a 33-coordinate seed witness. In particular, the true concrete rank includes truncated natural subtractions that require explicit bounds and cast identities. No 33-witness source-zero bridge, Jones correspondence or iPRA endpoint is claimed.
+
+Source SHA-256 `dbecb8b85c1e3f54446b50eb8e2b68e6dc5f389d49493d14ffe84962f20da893`; the `#print axioms` line requests future output and is not a report. Independent source and runner review, successful Lean checking, and terminal audit remain outstanding.

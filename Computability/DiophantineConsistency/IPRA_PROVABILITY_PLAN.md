@@ -1845,7 +1845,12 @@ A [no-new-import retry](research/nine-sharing-sign33-aux-ring-retry01/README.md)
 then checked the nonpositive auxiliary squared-difference sign from explicit
 positive `S,y` and the natural absolute-difference norm. All five sign
 consequences now have conditional ring-transport lemmas; source-zero premise
-recovery, natural witnesses and the 33-witness zero bridge remain open.
+recovery and the 33-witness zero bridge remain open.
+A [five-witness assembly](research/nine-sharing-sign33-five-witnesses-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-five-witnesses-terminal-frontier-independent/README.md),
+then constructs five model-natural representatives under the explicit window,
+positivity and norm hypotheses. Their identification with the concrete 33-seed
+cuts and recovery of the hypotheses from source zeros remain open.
 An [uncompiled generic gate-model draft](research/nine-sharing-gate-model-draft/README.md),
 [independently inspected](reviews/nine-sharing-gate-model-draft-independent/README.md),
 separates signed-pair algebra and conditional trace replay from generated
