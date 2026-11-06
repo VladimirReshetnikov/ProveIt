@@ -1859,6 +1859,10 @@ A [second residual client](research/nine-sharing-sign33-residual-batch01-check/R
 [independently audited](reviews/nine-sharing-sign33-residual-batch01-terminal-frontier-independent/README.md),
 checks the `Y`, `E` and `kY` cut identities at the same kind of valuation
 without port-cast hypotheses. Eighteen residual links remain separate.
+A [third residual client](research/nine-sharing-sign33-residual-batch02-check/README.md),
+[independently audited](reviews/nine-sharing-sign33-residual-batch02-terminal-frontier-independent/README.md),
+checks the `ell`, `Delta` and main-root cuts without port casts. Its compile
+records five unused-simp warnings; 15 residual links remain separate.
 An [uncompiled sign draft](research/nine-sharing-sign33-signs-draft/README.md),
 [independently inspected](reviews/nine-sharing-sign33-signs-draft-independent/README.md),
 uses the maintained first-index theorem directly and derives the sign
